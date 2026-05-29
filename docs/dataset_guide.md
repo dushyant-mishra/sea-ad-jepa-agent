@@ -257,6 +257,10 @@ A representation-learning approach where a model predicts latent embeddings rath
 
 In this project, JEPA is used to learn disease-relevant cell-state embeddings from gene expression.
 
+Why this matters:
+
+Single-nucleus RNA-seq gives a noisy count profile for each nucleus. The biological question is usually about the underlying cell state, not the exact observed count vector. A JEPA model is useful if its embedding captures disease-relevant programs that can predict pathology and point back to interpretable genes or pathways.
+
 ### C-JEPA
 
 **Contrastive Joint Embedding Predictive Architecture.**
@@ -317,4 +321,3 @@ gene ranking and hypothesis generation
 ## Current Takeaway
 
 The first Microglia-PVM baseline suggests that microglial expression carries donor-level signal for AT8/pTau pathology. This does not prove causality, but it gives a grounded starting point for gene-module discovery and validation.
-

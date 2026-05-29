@@ -8,7 +8,11 @@ SEA-AD JEPA Agent: Pathology-Grounded Gene Network Discovery in Alzheimer Diseas
 
 Alzheimer disease datasets increasingly contain single-cell transcriptomics, spatial assays, quantitative pathology, and imaging. The bottleneck is no longer only data access. The bottleneck is turning those modalities into **testable biological hypotheses**.
 
-This project builds a JEPA-agent framework that learns cell-state representations from SEA-AD and asks whether those states explain real neuropathology. The first pilot focuses on Microglia-PVM cells in the middle temporal gyrus and tests whether microglial expression programs predict AT8/pTau, A beta, Iba1, GFAP, and NeuN pathology.
+This project builds a JEPA-agent framework that learns cell-state representations from SEA-AD and asks whether those states explain real neuropathology.
+
+That matters because a raw single-nucleus expression profile is a noisy measurement, not the biological state itself. A useful cell-state representation should compress the count vector into a signal that reflects the active biological program: inflammatory activation, lipid handling, complement response, stress signaling, plaque response, tau-associated response, or other disease-relevant processes.
+
+The first pilot focuses on Microglia-PVM cells in the middle temporal gyrus and tests whether microglial expression programs predict AT8/pTau, A beta, Iba1, GFAP, and NeuN pathology.
 
 ## The Problem
 
@@ -60,14 +64,14 @@ Raw single-cell expression is sparse, noisy, and heavily affected by technical v
 
 JEPA-style learning is attractive because it predicts latent representations rather than raw observations. In this project, the model learns from partial gene-expression context and predicts a target cell-state embedding.
 
+This is important because the model is rewarded for recovering the underlying biological state, not for reproducing every dropout-prone observed count. If the representation is meaningful, it should help predict measured pathology in held-out donors.
+
 The intended shift is:
 
 ```text
 reconstruct all counts
         -> predict meaningful biological state
 ```
-
-That is important for biology because the object we care about is not the exact observed count vector. The object we care about is the underlying disease-relevant cell state.
 
 ## Why an Agentic Layer
 

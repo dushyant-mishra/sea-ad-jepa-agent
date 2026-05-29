@@ -49,6 +49,17 @@ Can partial biological context predict latent cell state?
 
 That is closer to the scientific goal. We want robust disease-state representations, not perfect reconstruction of every dropout-prone count.
 
+The reason this matters is practical:
+
+```text
+good cell-state representation
+        -> better donor-level disease features
+        -> stronger pathology prediction
+        -> clearer gene/module hypotheses
+```
+
+If JEPA embeddings do not improve or complement simpler pseudobulk baselines, then the model is not earning its complexity. That comparison is built into the project.
+
 ## Why the Agent Matters
 
 The agent is not the model. The agent is the evidence organizer.
@@ -119,4 +130,3 @@ association -> prediction -> regulatory candidate -> perturbational support -> v
 ```
 
 That discipline is part of the value of the project.
-

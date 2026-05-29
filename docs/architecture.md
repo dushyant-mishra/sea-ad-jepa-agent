@@ -64,6 +64,8 @@ gene ranking and hypothesis generation
 
 The JEPA component learns by predicting target embeddings from context embeddings.
 
+The purpose of this layer is to turn noisy gene counts into a compact cell-state representation. In disease biology, that representation is useful only if it preserves the programs that matter: inflammatory activation, plaque response, lipid metabolism, complement signaling, stress response, or neuronal vulnerability.
+
 For snRNA-seq:
 
 ```text

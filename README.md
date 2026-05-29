@@ -58,6 +58,26 @@ cell molecular state
 
 Single-cell expression is sparse and noisy. Reconstructing every raw count can force a model to learn technical noise. JEPA-style training instead asks the model to predict **latent biological state** from partial context.
 
+Why cell-state representations matter:
+
+```text
+a cell's raw gene counts
+        -> noisy measurement
+
+a cell-state representation
+        -> compact summary of the biological program active in that cell
+```
+
+For Alzheimer disease, the useful object is not one observed count vector from one nucleus. The useful object is the underlying state: inflammatory response, plaque-associated activation, lipid handling, complement signaling, stress response, neuronal vulnerability, or other disease-relevant programs.
+
+If a learned representation captures those states, we can:
+
+- compare cells and donors more robustly
+- aggregate cell states into donor-level disease features
+- test whether those features predict real pathology
+- map predictive states back to genes and pathways
+- prioritize hypotheses for spatial or experimental validation
+
 For this project, the initial JEPA task is:
 
 ```text
