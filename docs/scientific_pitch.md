@@ -111,6 +111,7 @@ Short term:
 Medium term:
 
 - pathway-aware JEPA masking
+- mixed random/module-aware JEPA masking for microglia biology
 - latent factor interpretation
 - spatial validation with SEA-AD spatial transcriptomics
 - agent-generated hypothesis reports

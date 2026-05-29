@@ -251,6 +251,36 @@ Options:
 - AD-relevant modules such as immune activation, synaptic genes, mitochondrial genes, complement genes
 - cell-type-specific marker modules
 
+Implemented microglia-aware modules:
+
+- plaque response
+- complement
+- lipid metabolism
+- lysosome/phagocytosis
+- interferon response
+- inflammatory signaling
+- first-pass AT8-associated genes
+
+Use `--mask-mode mixed` to combine random masking with curated module masking:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_jepa_snrna.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
+  --out-dir results/models/microglia_pvm_jepa_10k_mixed_masking `
+  --epochs 20 `
+  --mask-mode mixed `
+  --device auto
+```
+
+First observation:
+
+Mixed masking improves training loss and some donor-level pathology signals, but the current HVG-only pilot includes only partial overlap with curated microglia modules. The next data step should preserve curated module genes during pilot creation.
+
+Second observation:
+
+Preserving curated module genes during pilot creation improved module coverage and increased the JEPA association with `percent AT8 positive area_Grey matter` relative to the earlier JEPA runs. Pseudobulk remains the strongest first-pass AT8 predictor, but the module-preserved JEPA direction is more biologically plausible and should be used for the next representation-learning iteration.
+
 ### Why Latent Prediction
 
 Raw reconstruction can encourage the model to reproduce sparse count noise. JEPA-style latent prediction instead asks whether the model can predict biologically meaningful hidden state.

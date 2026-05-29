@@ -83,7 +83,7 @@ def subset_csr_rows(handle: h5py.File, row_idx: np.ndarray, row_block_size: int 
     return csr_matrix((data_concat, indices_concat, new_indptr), shape=(row_idx.size, shape[1]))
 
 
-def normalize_log_hvg(adata: ad.AnnData, n_top_genes: int) -> ad.AnnData:
+def normalize_log_hvg(adata: ad.AnnData, n_top_genes: int, preserve_genes: set[str] | None = None) -> ad.AnnData:
     x = adata.X.tocsr(copy=True)
     row_sums = np.asarray(x.sum(axis=1)).ravel()
     row_sums[row_sums == 0] = 1.0
@@ -94,8 +94,12 @@ def normalize_log_hvg(adata: ad.AnnData, n_top_genes: int) -> ad.AnnData:
     mean = np.asarray(x.mean(axis=0)).ravel()
     mean_sq = np.asarray(x.power(2).mean(axis=0)).ravel()
     variance = mean_sq - mean**2
-    top_idx = np.argsort(variance)[-n_top_genes:]
-    top_idx.sort()
+    preserve_genes = {gene.upper() for gene in (preserve_genes or set())}
+    gene_names = [str(gene) for gene in adata.var_names]
+    preserve_idx = {idx for idx, gene in enumerate(gene_names) if gene.upper() in preserve_genes}
+    n_hvg = max(0, n_top_genes - len(preserve_idx))
+    top_idx = set(np.argsort(variance)[-n_hvg:].tolist()) if n_hvg else set()
+    top_idx = np.asarray(sorted(top_idx | preserve_idx), dtype=np.int64)
 
     adata = adata[:, top_idx].copy()
     adata.X = x[:, top_idx].copy()

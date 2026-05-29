@@ -102,6 +102,32 @@ Training loss decreased from `0.627` to `0.431` over 20 epochs.
 results/tables/microglia_pvm_jepa_embedding_ridge.csv
 ```
 
+- Added and tested mixed random/module-aware JEPA masking:
+
+```text
+results/models/microglia_pvm_jepa_10k_mixed_masking/gene_jepa.pt
+results/tables/microglia_pvm_jepa_mixed_embedding_ridge.csv
+```
+
+Mixed masking reached lower training loss than the first random-masking JEPA run, and improved NeuN-related donor prediction. It still did not outperform pseudobulk for AT8/pTau, suggesting the next pilot should preserve curated module genes rather than relying only on highly variable gene selection.
+
+- Built and tested a module-preserving Microglia-PVM pilot:
+
+```text
+data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k_module_preserved.h5ad
+results/models/microglia_pvm_jepa_10k_module_preserved_mixed/gene_jepa.pt
+results/tables/microglia_pvm_jepa_module_preserved_embedding_ridge.csv
+```
+
+This increased curated module coverage from partial overlap to all seven curated microglia/AD modules. It also improved the JEPA AT8/pTau signal compared with the earlier JEPA runs:
+
+```text
+percent AT8 positive area_Grey matter
+  random JEPA: Spearman ~= 0.316
+  mixed HVG-only JEPA: Spearman ~= 0.295
+  module-preserved mixed JEPA: Spearman ~= 0.395
+```
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
@@ -128,8 +154,7 @@ The first attempted microglia-specific extraction was slow because microglia row
 
 ## Next Steps
 
-1. Improve JEPA objective with pathway-aware or module-aware masking.
-2. Add JEPA embedding-to-pathology comparison plots.
-3. Extract pathology-associated latent factors.
-4. Rank genes/modules associated with A beta, pTau, GFAP, Iba1, and NeuN targets.
-5. Add richer hypothesis reports that combine baseline metrics, JEPA metrics, gene rankings, and AD gene-set scores.
+1. Add JEPA embedding-to-pathology comparison plots.
+2. Extract pathology-associated latent factors.
+3. Rank genes/modules associated with A beta, pTau, GFAP, Iba1, and NeuN targets.
+4. Add richer hypothesis reports that compare pseudobulk, random-masking JEPA, mixed-masking JEPA, and module-preserved mixed JEPA.

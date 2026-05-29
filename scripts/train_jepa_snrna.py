@@ -9,6 +9,7 @@ import torch
 from torch.utils.data import DataLoader
 
 from sea_ad_jepa.datasets import DenseExpressionDataset
+from sea_ad_jepa.gene_sets import module_indices
 from sea_ad_jepa.jepa import GeneJEPA, jepa_loss
 
 
@@ -27,6 +28,8 @@ def main() -> None:
     parser.add_argument("--hidden-dim", type=int, default=512)
     parser.add_argument("--latent-dim", type=int, default=128)
     parser.add_argument("--mask-fraction", type=float, default=0.35)
+    parser.add_argument("--mask-mode", choices=["random", "module", "mixed"], default="random")
+    parser.add_argument("--min-module-genes", type=int, default=2)
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--seed", type=int, default=7)
@@ -39,7 +42,19 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     adata = ad.read_h5ad(args.h5ad)
-    dataset = DenseExpressionDataset(adata.X, mask_fraction=args.mask_fraction, seed=args.seed)
+    gene_names = adata.var_names.astype(str).tolist()
+    modules = module_indices(gene_names, min_genes=args.min_module_genes)
+    if args.mask_mode in {"module", "mixed"}:
+        print(f"Using {len(modules)} gene modules for {args.mask_mode} masking")
+        for name, idx in modules.items():
+            print(f"  - {name}: {len(idx)} genes")
+    dataset = DenseExpressionDataset(
+        adata.X,
+        mask_fraction=args.mask_fraction,
+        seed=args.seed,
+        mask_mode=args.mask_mode,
+        gene_modules=modules,
+    )
     loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True, drop_last=False)
 
     device = choose_device(args.device)
@@ -73,6 +88,7 @@ def main() -> None:
             "model_state": model.state_dict(),
             "n_genes": adata.n_vars,
             "gene_names": adata.var_names.astype(str).tolist(),
+            "gene_modules": modules,
             "args": vars(args),
             "history": history,
         },
@@ -83,4 +99,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

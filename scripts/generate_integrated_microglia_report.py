@@ -10,7 +10,7 @@ from sea_ad_jepa.interpretation import write_integrated_report
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate an integrated Microglia-PVM interpretation report.")
     parser.add_argument("--pseudobulk-results", default="results/tables/microglia_pvm_pseudobulk_ridge_1000genes.csv")
-    parser.add_argument("--jepa-results", default="results/tables/microglia_pvm_jepa_embedding_ridge.csv")
+    parser.add_argument("--jepa-results", default="results/tables/microglia_pvm_jepa_module_preserved_embedding_ridge.csv")
     parser.add_argument("--gene-rankings", default="results/tables/microglia_pvm_percent_AT8_gene_rankings.csv")
     parser.add_argument("--gene-set-scores", default="results/tables/microglia_pvm_percent_AT8_gene_set_scores.csv")
     parser.add_argument("--out", default="results/reports/microglia_pvm_integrated_report.md")

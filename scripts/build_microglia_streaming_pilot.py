@@ -10,6 +10,7 @@ import pandas as pd
 from scipy.sparse import csr_matrix
 
 from make_pilot_subset_fast import decode, decode_column, normalize_log_hvg, read_categorical, read_var_names
+from sea_ad_jepa.gene_sets import MICROGLIA_GENE_MODULES
 
 
 DEFAULT_OBS_COLUMNS = [
@@ -48,6 +49,7 @@ def build_outputs(
     pseudobulk_out: Path,
     counts_out: Path,
     obs_columns: list[str],
+    preserve_module_genes: bool,
 ) -> None:
     with h5py.File(h5ad_path, "r") as handle:
         x = handle["X"]
@@ -154,7 +156,10 @@ def build_outputs(
         )
         adata = ad.AnnData(X=pilot_x, obs=obs, var=var)
         if n_top_genes and n_top_genes < adata.n_vars:
-            adata = normalize_log_hvg(adata, n_top_genes)
+            preserve_genes = set()
+            if preserve_module_genes:
+                preserve_genes = set().union(*MICROGLIA_GENE_MODULES.values())
+            adata = normalize_log_hvg(adata, n_top_genes, preserve_genes=preserve_genes)
         adata.write_h5ad(pilot_out)
         print(f"Wrote pilot: {pilot_out} ({adata.n_obs:,} cells x {adata.n_vars:,} genes)")
 
@@ -174,6 +179,7 @@ def main() -> None:
     parser.add_argument("--pilot-out", default="data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad")
     parser.add_argument("--pseudobulk-out", default="data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv")
     parser.add_argument("--counts-out", default="data/processed/sea_ad_mtg_microglia_pvm_counts.csv")
+    parser.add_argument("--preserve-module-genes", action="store_true")
     parser.add_argument("--obs-columns", nargs="+", default=DEFAULT_OBS_COLUMNS)
     args = parser.parse_args()
 
@@ -189,9 +195,9 @@ def main() -> None:
         pseudobulk_out=Path(args.pseudobulk_out),
         counts_out=Path(args.counts_out),
         obs_columns=args.obs_columns,
+        preserve_module_genes=args.preserve_module_genes,
     )
 
 
 if __name__ == "__main__":
     main()
-

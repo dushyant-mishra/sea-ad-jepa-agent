@@ -112,12 +112,47 @@ Adjust `--donor-column` based on inspection output.
 
 ## 6. Train Minimal JEPA
 
+Random masking baseline:
+
 ```powershell
 $env:PYTHONPATH = "src"
 python scripts/train_jepa_snrna.py `
-  --h5ad data/processed/sea_ad_mtg_microglia_pilot.h5ad `
-  --out-dir results/models/microglia_jepa `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
+  --out-dir results/models/microglia_pvm_jepa_10k `
   --epochs 20 `
+  --device auto
+```
+
+Biology-aware mixed masking:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_jepa_snrna.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
+  --out-dir results/models/microglia_pvm_jepa_10k_mixed_masking `
+  --epochs 20 `
+  --mask-mode mixed `
+  --device auto
+```
+
+Recommended module-preserved mixed-masking run:
+
+```powershell
+python scripts/build_microglia_streaming_pilot.py `
+  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
+  --cell-max 10000 `
+  --n-top-genes 3000 `
+  --pilot-out data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k_module_preserved.h5ad `
+  --pseudobulk-out data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_module_preserved_refresh.csv `
+  --counts-out data/processed/sea_ad_mtg_microglia_pvm_counts_module_preserved_refresh.csv `
+  --preserve-module-genes
+
+$env:PYTHONPATH = "src"
+python scripts/train_jepa_snrna.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k_module_preserved.h5ad `
+  --out-dir results/models/microglia_pvm_jepa_10k_module_preserved_mixed `
+  --epochs 20 `
+  --mask-mode mixed `
   --device auto
 ```
 
@@ -139,6 +174,18 @@ python scripts/run_pseudobulk_baseline.py `
   --features results/tables/microglia_pvm_jepa_donor_embeddings.csv `
   --out results/tables/microglia_pvm_jepa_embedding_ridge.csv `
   --max-genes 0
+```
+
+Compare pseudobulk, random-masking JEPA, and mixed-masking JEPA:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/compare_pathology_results.py `
+  --result pseudobulk results/tables/microglia_pvm_pseudobulk_ridge_1000genes.csv `
+  --result jepa_random results/tables/microglia_pvm_jepa_embedding_ridge.csv `
+  --result jepa_mixed results/tables/microglia_pvm_jepa_mixed_embedding_ridge.csv `
+  --result jepa_module_preserved results/tables/microglia_pvm_jepa_module_preserved_embedding_ridge.csv `
+  --out results/tables/microglia_pvm_model_comparison.csv
 ```
 
 Rank genes associated with an AT8 pathology target:
