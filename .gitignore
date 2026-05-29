@@ -17,6 +17,7 @@ data/processed/
 # Results generated locally
 results/
 logs/
+runs/
 *.log
 
 # OS/editor

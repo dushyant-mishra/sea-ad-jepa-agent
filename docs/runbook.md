@@ -151,10 +151,19 @@ $env:PYTHONPATH = "src"
 python scripts/train_jepa_snrna.py `
   --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k_module_preserved.h5ad `
   --out-dir results/models/microglia_pvm_jepa_10k_module_preserved_mixed `
+  --log-dir runs/microglia_pvm_jepa_10k_module_preserved_mixed `
   --epochs 20 `
   --mask-mode mixed `
   --device auto
 ```
+
+View training progress with TensorBoard:
+
+```powershell
+tensorboard --logdir runs
+```
+
+Then open the local TensorBoard URL printed in the terminal.
 
 Embed cells and aggregate JEPA embeddings by donor:
 

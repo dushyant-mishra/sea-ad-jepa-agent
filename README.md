@@ -223,8 +223,15 @@ $env:PYTHONPATH = "src"
 python scripts/train_jepa_snrna.py `
   --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
   --out-dir results/models/microglia_pvm_jepa_10k `
+  --log-dir runs/microglia_pvm_jepa_10k `
   --epochs 20 `
   --device auto
+```
+
+Track training in TensorBoard:
+
+```powershell
+C:\Users\dushy\anaconda3\envs\sea-ad-jepa\Scripts\tensorboard.exe --logdir runs
 ```
 
 Rank genes associated with AT8 pathology:

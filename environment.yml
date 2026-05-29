@@ -12,6 +12,8 @@ dependencies:
   - scanpy=1.10.*
   - scikit-learn=1.5.*
   - scipy=1.13.*
+  - setuptools<81
+  - tensorboard>=2.16
   - tqdm=4.66.*
   - pip
   - pip:
