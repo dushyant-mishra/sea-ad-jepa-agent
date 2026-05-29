@@ -6,9 +6,10 @@ from pathlib import Path
 import anndata as ad
 import numpy as np
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, WeightedRandomSampler
 
 from sea_ad_jepa.datasets import DenseExpressionDataset
+from sea_ad_jepa.data import normalize_donor_id
 from sea_ad_jepa.gene_sets import module_indices
 from sea_ad_jepa.jepa import GeneJEPA, jepa_loss
 
@@ -42,7 +43,25 @@ def main() -> None:
         help="Optional gene_jepa.pt checkpoint to continue training from. Optimizer state is restarted.",
     )
     parser.add_argument("--epochs", type=int, default=20)
+    parser.add_argument(
+        "--checkpoint-every",
+        type=int,
+        default=0,
+        help="Write interim checkpoints every N epochs. Use 0 to save only at the end.",
+    )
     parser.add_argument("--batch-size", type=int, default=256)
+    parser.add_argument(
+        "--donor-balanced-sampling",
+        action="store_true",
+        help="Sample cells with inverse-donor-frequency weights so large donors do not dominate each epoch.",
+    )
+    parser.add_argument("--donor-column", default="Donor ID")
+    parser.add_argument(
+        "--samples-per-epoch",
+        type=int,
+        default=0,
+        help="Number of weighted samples per epoch. Defaults to the number of cells.",
+    )
     parser.add_argument("--hidden-dim", type=int, default=512)
     parser.add_argument("--latent-dim", type=int, default=128)
     parser.add_argument("--mask-fraction", type=float, default=0.35)
@@ -84,7 +103,25 @@ def main() -> None:
         gene_modules=modules,
         module_fill_random=not args.no_module_random_fill,
     )
-    loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True, drop_last=False)
+    sampler = None
+    shuffle = True
+    if args.donor_balanced_sampling:
+        if args.donor_column not in adata.obs:
+            raise KeyError(f"Donor column not found in AnnData obs: {args.donor_column}")
+        donor_ids = normalize_donor_id(adata.obs[args.donor_column])
+        donor_counts = donor_ids.value_counts()
+        weights = donor_ids.map(lambda donor_id: 1.0 / float(donor_counts[donor_id])).to_numpy(dtype=np.float64)
+        sampler = WeightedRandomSampler(
+            weights=torch.as_tensor(weights, dtype=torch.double),
+            num_samples=args.samples_per_epoch or len(dataset),
+            replacement=True,
+        )
+        shuffle = False
+        print(
+            "Using donor-balanced sampling "
+            f"across {donor_counts.size} donors and {args.samples_per_epoch or len(dataset):,} samples/epoch"
+        )
+    loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=shuffle, sampler=sampler, drop_last=False)
 
     device = choose_device(args.device)
     model = GeneJEPA(
@@ -116,9 +153,24 @@ def main() -> None:
         writer.add_text("config/mask_mode", args.mask_mode)
         writer.add_scalar("config/mask_fraction", args.mask_fraction, 0)
         writer.add_scalar("config/batch_size", args.batch_size, 0)
+        writer.add_scalar("config/donor_balanced_sampling", float(args.donor_balanced_sampling), 0)
+        writer.add_scalar("config/samples_per_epoch", args.samples_per_epoch or len(dataset), 0)
         writer.add_scalar("config/hidden_dim", args.hidden_dim, 0)
         writer.add_scalar("config/latent_dim", args.latent_dim, 0)
         writer.add_scalar("config/n_modules", len(modules), 0)
+
+    def save_checkpoint(path: Path) -> None:
+        torch.save(
+            {
+                "model_state": model.state_dict(),
+                "n_genes": adata.n_vars,
+                "gene_names": adata.var_names.astype(str).tolist(),
+                "gene_modules": modules,
+                "args": vars(args),
+                "history": history,
+            },
+            path,
+        )
 
     end_epoch = start_epoch + args.epochs - 1
     for epoch in range(start_epoch, end_epoch + 1):
@@ -140,18 +192,12 @@ def main() -> None:
             writer.add_scalar("train/loss_epoch", mean_loss, epoch)
             writer.add_scalar("train/lr", optimizer.param_groups[0]["lr"], epoch)
         print(f"epoch={epoch:03d} loss={mean_loss:.6f}")
+        if args.checkpoint_every and epoch % args.checkpoint_every == 0:
+            checkpoint_path = out_dir / f"gene_jepa_epoch_{epoch:03d}.pt"
+            save_checkpoint(checkpoint_path)
+            print(f"Wrote interim checkpoint: {checkpoint_path}")
 
-    torch.save(
-        {
-            "model_state": model.state_dict(),
-            "n_genes": adata.n_vars,
-            "gene_names": adata.var_names.astype(str).tolist(),
-            "gene_modules": modules,
-            "args": vars(args),
-            "history": history,
-        },
-        out_dir / "gene_jepa.pt",
-    )
+    save_checkpoint(out_dir / "gene_jepa.pt")
     if writer is not None:
         writer.flush()
         writer.close()

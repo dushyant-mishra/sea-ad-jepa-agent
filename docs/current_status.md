@@ -132,6 +132,69 @@ percent AT8 positive area_Grey matter
 
 The longer all-cell JEPA run improved the AT8 cell-count target and NeuN-related targets, but it did not yet beat the pseudobulk baseline for AT8 area. This suggests the next gains should come from better biological supervision or module design, not simply more epochs.
 
+- Expanded the curated microglia module list from 7 to 15 modules:
+
+```text
+plaque response
+complement
+lipid metabolism
+lysosome/phagocytosis
+interferon response
+inflammatory signaling
+AT8-associated first-pass genes
+homeostatic microglia
+disease-associated microglia
+senescence/stress
+oxidative stress
+synapse pruning
+antigen presentation
+vascular/barrier myeloid
+chemokine/migration
+```
+
+- Rebuilt the all-cell Microglia-PVM pilot with expanded module preservation:
+
+```text
+data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+40,000 cells x 2,957 genes
+```
+
+- Trained expanded-module JEPA with donor-balanced sampling:
+
+```text
+results/models/microglia_pvm_jepa_expanded_modules_balanced_e40/gene_jepa.pt
+results/models/microglia_pvm_jepa_expanded_modules_balanced_e80/gene_jepa.pt
+```
+
+The expanded-module donor-balanced model gave a small improvement for the main AT8 area target, but lower learning rate continuation did not improve it further:
+
+```text
+percent AT8 positive area_Grey matter
+  all-cell module-preserved mixed JEPA, 100 epochs: Spearman ~= 0.451
+  expanded-module donor-balanced JEPA, 40 epochs: Spearman ~= 0.457
+  expanded-module donor-balanced JEPA, 80 epochs: Spearman ~= 0.453
+```
+
+- Added pathology-aware fine-tuning with donor-held-out validation:
+
+```text
+scripts/finetune_jepa_pathology.py
+```
+
+First target:
+
+```text
+percent AT8 positive area_Grey matter
+```
+
+Held-out validation result from the first split:
+
+```text
+best validation Spearman ~= 0.738 at epoch 13
+```
+
+This is the strongest AT8 signal so far, but it is a supervised single-split result. It should be repeated across donor splits before being presented as stable model performance.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

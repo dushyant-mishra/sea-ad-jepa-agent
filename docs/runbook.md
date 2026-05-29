@@ -180,6 +180,49 @@ python scripts/train_jepa_snrna.py `
   --device auto
 ```
 
+Expanded-module donor-balanced training:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/build_microglia_streaming_pilot.py `
+  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
+  --cell-max 40000 `
+  --n-top-genes 3000 `
+  --pilot-out data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --pseudobulk-out data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv `
+  --counts-out data/processed/sea_ad_mtg_microglia_pvm_counts_expanded_modules.csv `
+  --preserve-module-genes
+
+python scripts/train_jepa_snrna.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --out-dir results/models/microglia_pvm_jepa_expanded_modules_balanced_e40 `
+  --log-dir runs/microglia_pvm_jepa_expanded_modules_balanced_e40 `
+  --epochs 40 `
+  --batch-size 512 `
+  --donor-balanced-sampling `
+  --mask-mode mixed `
+  --lr 0.0002 `
+  --checkpoint-every 10 `
+  --device auto
+```
+
+Pathology-aware fine-tuning with donor-held-out validation:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/finetune_jepa_pathology.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --checkpoint results/models/microglia_pvm_jepa_expanded_modules_balanced_e40/gene_jepa.pt `
+  --out-dir results/models/microglia_pvm_jepa_expanded_modules_at8_finetune `
+  --log-dir runs/microglia_pvm_jepa_expanded_modules_at8_finetune `
+  --target "percent AT8 positive area_Grey matter" `
+  --epochs 30 `
+  --batch-size 512 `
+  --samples-per-epoch 40000 `
+  --lr 0.00005 `
+  --device auto
+```
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
