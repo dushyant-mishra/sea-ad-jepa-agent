@@ -1,0 +1,25 @@
+# Environments
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.egg-info/
+
+# Data
+data/raw/
+data/processed/
+*.h5ad
+*.h5
+*.hdf5
+*.zarr/
+*.rds
+
+# Results generated locally
+results/
+logs/
+*.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/

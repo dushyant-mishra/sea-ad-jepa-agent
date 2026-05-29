@@ -1,0 +1,113 @@
+# Runbook
+
+This runbook is the operational path for the first SEA-AD JEPA pilot.
+
+## 1. Confirm Dataset Download
+
+```powershell
+.\scripts\check_download_progress.ps1
+```
+
+When the download completes, the final file should be:
+
+```text
+data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
+```
+
+If the file still has a temporary suffix such as `.4FEB38ED`, wait for the AWS CLI process to finish.
+
+## 2. Confirm GPU
+
+Install GPU PyTorch:
+
+```powershell
+conda activate sea-ad-jepa
+python -m pip install -r requirements-gpu.txt
+```
+
+Validate:
+
+```powershell
+python scripts/check_gpu.py
+```
+
+Expected:
+
+```text
+CUDA available: True
+GPU: NVIDIA GeForce RTX 3080 Laptop GPU
+Test matmul OK.
+```
+
+## 3. Inspect AnnData
+
+```powershell
+python scripts/inspect_h5ad.py `
+  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
+  --out-dir results/inspection
+```
+
+Then inspect:
+
+```text
+results/inspection/obs_columns.csv
+results/inspection/obs_head.csv
+```
+
+Identify:
+
+- donor ID column
+- cell class/subclass/type columns
+- disease/progression metadata columns if present
+
+## 4. Create Pilot Subset
+
+Example:
+
+```powershell
+python scripts/make_pilot_subset.py `
+  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
+  --out data/processed/sea_ad_mtg_microglia_pilot.h5ad `
+  --cell-type-column subclass `
+  --cell-type-values Microglia `
+  --max-cells 50000 `
+  --n-top-genes 3000
+```
+
+Adjust `--cell-type-column` and `--cell-type-values` based on the inspection output.
+
+## 5. Run Baseline
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/run_baseline_ridge.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pilot.h5ad `
+  --donor-column "Donor ID" `
+  --out results/tables/microglia_ridge_pathology.csv
+```
+
+Adjust `--donor-column` based on inspection output.
+
+## 6. Train Minimal JEPA
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_jepa_snrna.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pilot.h5ad `
+  --out-dir results/models/microglia_jepa `
+  --epochs 20 `
+  --device auto
+```
+
+## 7. Interpret First Results
+
+The first useful comparison is:
+
+```text
+mean-expression ridge baseline
+        vs
+JEPA embedding pathology prediction
+```
+
+Do not claim causality. The first milestone is predictive association and interpretable hypothesis generation.
+
