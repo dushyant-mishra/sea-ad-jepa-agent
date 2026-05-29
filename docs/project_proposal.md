@@ -105,6 +105,19 @@ single-cell expression
         -> clear validation hypotheses
 ```
 
+Microglia-PVM is the first biological focus because it captures brain immune cells: microglia and perivascular macrophages. Microglia are central to Alzheimer disease response biology, while perivascular macrophages connect immune state to vascular and tissue context. SEA-AD groups these related populations together under the `Microglia-PVM` label.
+
+The pseudobulk baseline is deliberately simple. We average Microglia-PVM gene expression per donor, then ask whether that donor-level immune-cell expression profile predicts donor-level neuropathology. This gives the project an honest reference point:
+
+```text
+Microglia-PVM nuclei
+        -> donor-level average gene expression
+        -> ridge regression
+        -> AT8, A beta, GFAP, Iba1, NeuN, and tau-related targets
+```
+
+If JEPA improves on pseudobulk, it suggests that cell-level state variation contains useful information beyond donor averages. If JEPA does not improve on pseudobulk, the result is still informative: the current representation-learning setup needs better biology-aware masking, donor balancing, pathology-aware fine-tuning, or multimodal input.
+
 ## First Result
 
 The first Microglia-PVM pseudobulk baseline shows that microglial expression features predict AT8/pTau-related pathology better than several other targets.

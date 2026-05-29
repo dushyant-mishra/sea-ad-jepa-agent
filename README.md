@@ -98,6 +98,25 @@ transcriptomics + pathology + spatial + imaging
 
 The first real biological pilot is Microglia-PVM in SEA-AD MTG.
 
+**Microglia-PVM expression** means gene-expression profiles from nuclei labeled as brain immune cells: microglia and perivascular macrophages. Microglia are resident immune cells in brain tissue. PVM stands for perivascular macrophages, immune cells associated with blood vessels. SEA-AD groups these related immune populations together as `Microglia-PVM`.
+
+For this pilot, the expression matrix is:
+
+```text
+one Microglia-PVM nucleus -> expression values for thousands of genes
+```
+
+The pseudobulk baseline averages those Microglia-PVM nuclei by donor:
+
+```text
+many Microglia-PVM nuclei from one donor
+        -> average expression per gene
+        -> one donor-level immune-cell expression profile
+        -> predict donor-level neuropathology
+```
+
+This gives us a strong, simple baseline before asking whether JEPA adds value.
+
 Completed locally:
 
 - Built Microglia-PVM donor pseudobulk features from the full SEA-AD MTG H5AD.

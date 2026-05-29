@@ -249,6 +249,38 @@ A major Alzheimer disease risk gene, especially the APOE4 allele.
 
 A microglial gene strongly linked to Alzheimer disease risk and microglial response states.
 
+### Microglia-PVM
+
+A SEA-AD cell-class label for the brain immune-cell compartment.
+
+**Microglia** are resident immune cells in the brain. They respond to plaques, damaged neurons, inflammatory signals, lipid stress, and complement-related processes.
+
+**PVM** means **perivascular macrophages**. These are macrophage-like immune cells associated with blood vessels in the brain.
+
+In this project, **Microglia-PVM expression** means gene-expression profiles from nuclei labeled as Microglia-PVM. Each nucleus has measured expression values for thousands of genes. We focus on this compartment first because microglia and related macrophages are strongly connected to Alzheimer disease biology, including `APOE`, `TREM2`, plaque response, phagocytosis, complement signaling, and inflammatory activation.
+
+### Pseudobulk
+
+Pseudobulk is a simple way to summarize single-cell or single-nucleus expression at the donor or sample level.
+
+Instead of modeling each nucleus separately, we average expression across a selected cell class:
+
+```text
+many Microglia-PVM nuclei from donor A
+        -> average expression for each gene
+        -> one donor-level Microglia-PVM expression profile
+```
+
+The pseudobulk baseline then asks:
+
+```text
+donor-level Microglia-PVM expression
+        -> ridge regression
+        -> predict donor-level neuropathology
+```
+
+This matters because pseudobulk is transparent and hard to beat. If a JEPA model does not improve on or complement pseudobulk, then the extra model complexity is not yet justified.
+
 ### JEPA
 
 **Joint Embedding Predictive Architecture.**
