@@ -46,6 +46,10 @@ Implemented so far:
 - Pathology target QC plotting
 - Public S3 prefix lister
 - AnnData inspection and pilot subsetting scripts
+- Sequential Microglia-PVM pseudobulk and pilot extraction
+- Microglia-specific pathology baselines
+- GPU JEPA training and donor embedding comparison
+- First-pass pathology-associated gene ranking
 
 Local processed metadata output:
 

@@ -61,22 +61,74 @@ results/tables/contiguous_10k_ridge_pathology_500genes.csv
 results/models/contiguous_10k_jepa_smoke/gene_jepa.pt
 ```
 
-## Notes
-
-The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. The current contiguous pilot is a smoke-test dataset, not the final biological pilot.
-
-Next optimization target:
+- Built full Microglia-PVM donor-level pseudobulk features from the full H5AD:
 
 ```text
-stream the full CSR matrix sequentially and build microglia donor-level pseudobulk features or a microglia-specific pilot without random HDF5 row access
+data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv
 ```
+
+- Created a 10,000-cell Microglia-PVM JEPA pilot:
+
+```text
+data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad
+```
+
+- Ran Microglia-PVM pseudobulk pathology baselines:
+
+```text
+results/tables/microglia_pvm_pseudobulk_ridge_1000genes.csv
+```
+
+Top held-out donor associations:
+
+```text
+number of AT8 positive cells per area_Grey matter: Spearman ~= 0.536
+percent AT8 positive area_Grey matter: Spearman ~= 0.531
+percent NeuN positive area_Grey matter: Spearman ~= 0.511
+```
+
+- Trained JEPA on the 10,000-cell Microglia-PVM pilot:
+
+```text
+results/models/microglia_pvm_jepa_10k/gene_jepa.pt
+```
+
+Training loss decreased from `0.627` to `0.431` over 20 epochs.
+
+- Extracted JEPA donor embeddings and compared them against pathology targets:
+
+```text
+results/tables/microglia_pvm_jepa_embedding_ridge.csv
+```
+
+- Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
+
+```text
+results/tables/microglia_pvm_percent_AT8_gene_rankings.csv
+results/tables/microglia_pvm_percent_AT8_gene_set_scores.csv
+```
+
+Top AT8-associated genes in the first pass include:
+
+```text
+PTPRG
+S100A4
+CHI3L1
+DRAM1
+TNFRSF11B
+IL27RA
+CTSD
+NFKBIA
+```
+
+## Notes
+
+The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.
 
 ## Next Steps
 
-1. Build a sequential CSR streaming extractor for Microglia-PVM.
-2. Create a proper Microglia-PVM pilot or donor-level pseudobulk matrix.
-3. Run baseline pathology prediction on microglia-specific features.
-4. Train JEPA on the microglia pilot.
-5. Extract pathology-associated latent factors.
-6. Rank genes/modules associated with A beta, pTau, GFAP, Iba1, and NeuN targets.
-
+1. Improve JEPA objective with pathway-aware or module-aware masking.
+2. Add JEPA embedding-to-pathology comparison plots.
+3. Extract pathology-associated latent factors.
+4. Rank genes/modules associated with A beta, pTau, GFAP, Iba1, and NeuN targets.
+5. Add richer hypothesis reports that combine baseline metrics, JEPA metrics, gene rankings, and AD gene-set scores.

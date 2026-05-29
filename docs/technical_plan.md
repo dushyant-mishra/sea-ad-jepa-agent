@@ -19,6 +19,11 @@ Completed:
 - Created a 10,000-cell contiguous smoke-test pilot.
 - Ran the first donor-level ridge baseline.
 - Ran a 2-epoch GPU JEPA smoke test.
+- Built the real Microglia-PVM donor pseudobulk and 10k cell pilot with sequential CSR streaming.
+- Ran Microglia-PVM pseudobulk pathology baselines.
+- Trained JEPA on the Microglia-PVM 10k pilot.
+- Extracted JEPA donor embeddings and compared them against pathology targets.
+- Added first-pass AT8-associated Microglia-PVM gene ranking.
 
 ## Phase 1: Data Access and Metadata Targets
 

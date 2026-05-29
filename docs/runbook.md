@@ -86,6 +86,28 @@ python scripts/run_baseline_ridge.py `
   --out results/tables/microglia_ridge_pathology.csv
 ```
 
+For the real Microglia-PVM pilot, build donor pseudobulk and a 10k cell-level pilot:
+
+```powershell
+python scripts/build_microglia_streaming_pilot.py `
+  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
+  --cell-max 10000 `
+  --n-top-genes 3000 `
+  --pilot-out data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
+  --pseudobulk-out data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv `
+  --counts-out data/processed/sea_ad_mtg_microglia_pvm_counts.csv
+```
+
+Run the Microglia-PVM pseudobulk baseline:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/run_pseudobulk_baseline.py `
+  --features data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv `
+  --out results/tables/microglia_pvm_pseudobulk_ridge_1000genes.csv `
+  --max-genes 1000
+```
+
 Adjust `--donor-column` based on inspection output.
 
 ## 6. Train Minimal JEPA
@@ -99,6 +121,37 @@ python scripts/train_jepa_snrna.py `
   --device auto
 ```
 
+Embed cells and aggregate JEPA embeddings by donor:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/embed_jepa_snrna.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
+  --checkpoint results/models/microglia_pvm_jepa_10k/gene_jepa.pt `
+  --donor-out results/tables/microglia_pvm_jepa_donor_embeddings.csv
+```
+
+Compare JEPA donor embeddings to pathology:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/run_pseudobulk_baseline.py `
+  --features results/tables/microglia_pvm_jepa_donor_embeddings.csv `
+  --out results/tables/microglia_pvm_jepa_embedding_ridge.csv `
+  --max-genes 0
+```
+
+Rank genes associated with an AT8 pathology target:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/rank_pseudobulk_genes.py `
+  --features data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv `
+  --target "percent AT8 positive area_Grey matter" `
+  --out results/tables/microglia_pvm_percent_AT8_gene_rankings.csv `
+  --gene-set-out results/tables/microglia_pvm_percent_AT8_gene_set_scores.csv
+```
+
 ## 7. Interpret First Results
 
 The first useful comparison is:
@@ -110,4 +163,3 @@ JEPA embedding pathology prediction
 ```
 
 Do not claim causality. The first milestone is predictive association and interpretable hypothesis generation.
-
