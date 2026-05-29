@@ -152,6 +152,14 @@ python scripts/rank_pseudobulk_genes.py `
   --gene-set-out results/tables/microglia_pvm_percent_AT8_gene_set_scores.csv
 ```
 
+Generate an integrated interpretation report:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/generate_integrated_microglia_report.py `
+  --out results/reports/microglia_pvm_integrated_report.md
+```
+
 ## 7. Interpret First Results
 
 The first useful comparison is:
