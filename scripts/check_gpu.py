@@ -20,7 +20,7 @@ def main() -> None:
     total_gb = props.total_memory / 1024**3
     print(f"GPU: {props.name}")
     print(f"Compute capability: {props.major}.{props.minor}")
-    print(f"Total VRAM: {total_gb:.2f} GiB")
+    print(f"Total VRAM: {total_gb:.2f} GB")
 
     x = torch.randn((2048, 2048), device=device)
     y = x @ x.T
@@ -30,4 +30,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

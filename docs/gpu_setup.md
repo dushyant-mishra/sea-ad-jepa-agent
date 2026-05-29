@@ -8,7 +8,7 @@ Current machine status:
 
 ```text
 GPU: NVIDIA GeForce RTX 3080 Laptop GPU
-VRAM: 16 GiB
+VRAM: 16 GB
 Driver CUDA capability: 12.8
 ```
 

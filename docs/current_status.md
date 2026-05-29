@@ -22,7 +22,7 @@ data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
 PyTorch: 2.7.0+cu128
 CUDA available: True
 GPU: NVIDIA GeForce RTX 3080 Laptop GPU
-VRAM: 16 GiB
+VRAM: 16 GB
 ```
 
 - Added fast H5AD metadata summary tooling.

@@ -19,7 +19,6 @@ $bar = ("#" * $filled) + ("-" * (50 - $filled))
 $gb = [math]::Round($size / 1GB, 3)
 $expectedGb = [math]::Round($ExpectedBytes / 1GB, 3)
 
-"[$bar] {0:N2}%  $gb / $expectedGb GiB" -f $pct
+"[$bar] {0:N2}%  $gb / $expectedGb GB" -f $pct
 "File: $($file.Name)"
 "LastWriteTime: $($file.LastWriteTime)"
-

@@ -126,7 +126,7 @@ Main expression file used in this pilot:
 s3://sea-ad-single-cell-profiling/MTG/RNAseq/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
 ```
 
-This file is about 33.8 GiB. It is not committed to the repository.
+This is a large file, so it is not committed to the repository.
 
 ## Repository Guide
 

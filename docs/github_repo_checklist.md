@@ -32,7 +32,7 @@ results/
 *.rds
 ```
 
-The SEA-AD MTG AnnData file is more than 30 GiB and should never be pushed to GitHub.
+The SEA-AD MTG AnnData file is very large and should never be pushed to GitHub.
 
 ## Suggested First Commit
 
@@ -73,4 +73,3 @@ Before publishing, confirm:
 - The setup commands work in a fresh conda environment.
 - The current workflow can reproduce metadata target tables from public files.
 - Any claims are framed as hypothesis generation unless experimentally validated.
-
