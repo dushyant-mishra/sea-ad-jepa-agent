@@ -15,6 +15,7 @@ data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
 ```
 
 - Installed CUDA-enabled PyTorch in `sea-ad-jepa`.
+- Pinned the scientific Python stack to avoid native Windows crashes from bleeding-edge NumPy/SciPy/scikit-learn builds.
 - Verified GPU access:
 
 ```text

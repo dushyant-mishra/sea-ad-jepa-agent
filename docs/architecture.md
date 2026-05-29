@@ -1,31 +1,35 @@
-# System Architecture
+# Architecture
 
-## Overview
+## The Discovery Loop
 
-The project is designed as a staged biological discovery system.
+The architecture is organized around a biological discovery loop, not around a single model.
 
-The first stage uses SEA-AD MTG single-nucleus RNA-seq and donor-level neuropathology. Later stages add spatial transcriptomics, pathology image features, and agentic interpretation.
+The system should repeatedly answer:
 
 ```text
-User question
-    |
-    v
-Agentic analysis layer
-    |
-    v
-Structured analysis tools
-    |
-    +--> AnnData preprocessing
-    +--> JEPA training
-    +--> pathology prediction
-    +--> gene module analysis
-    +--> enrichment and regulator ranking
-    |
-    v
-Biological hypothesis report
+What cell state predicts pathology?
+What genes explain that state?
+What evidence supports the hypothesis?
+What validation should come next?
 ```
 
-## Data Flow
+```text
+SEA-AD molecular data
+        |
+        v
+cell-state learning
+        |
+        v
+pathology-grounded prediction
+        |
+        v
+gene/module ranking
+        |
+        v
+evidence-aware hypothesis report
+```
+
+## Current Data Flow
 
 ```text
 SEA-AD donor metadata
@@ -38,10 +42,10 @@ SEA-AD MTG neuropathology
         v
 A beta, pTau, GFAP, Iba1, NeuN targets
 
-SEA-AD MTG snRNA-seq AnnData
+SEA-AD MTG snRNA-seq
         |
         v
-cell-type pilot subset
+Microglia-PVM cell-level pilot
         |
         v
 JEPA cell-state embeddings
@@ -50,10 +54,13 @@ JEPA cell-state embeddings
 donor-level aggregation
         |
         v
-pathology prediction and gene-network discovery
+pathology prediction
+        |
+        v
+gene ranking and hypothesis generation
 ```
 
-## Representation Learning Layer
+## Layer 1: Representation Learning
 
 The JEPA component learns by predicting target embeddings from context embeddings.
 
@@ -74,7 +81,9 @@ loss(predicted target embedding, target embedding)
 
 This encourages the model to learn latent biological state rather than reconstruct every noisy count.
 
-## Pathology Prediction Layer
+In the first implementation, JEPA is deliberately simple: an MLP context encoder, an MLP target encoder, and a predictor head. That is enough to test whether the representation-learning loop works before adding transformers, pathway-aware masking, or multimodal objectives.
+
+## Layer 2: Pathology-Grounded Evaluation
 
 Cell-level embeddings are aggregated at the donor level because pathology targets are donor-level labels.
 
@@ -97,11 +106,13 @@ Important rule:
 Train/test splits must be donor-level splits.
 ```
 
-Cell-level splits would leak donor pathology information.
+Cell-level splits would leak donor pathology information and overstate performance.
 
-## Gene Network Discovery Layer
+This layer is what makes the project biologically grounded. A representation is useful only if it helps explain measured disease burden, not merely because it separates known cell labels.
 
-Once a latent factor or state is associated with pathology, the analysis layer asks:
+## Layer 3: Gene Network Discovery
+
+Once a cell-state feature is associated with pathology, the analysis layer asks:
 
 - Which genes are associated with this state?
 - Which pathways are enriched?
@@ -127,7 +138,9 @@ complement / lipid-response enrichment
 candidate plaque-responsive microglial network
 ```
 
-## Agentic Interpretation Layer
+The first implementation ranks genes by donor-level pseudobulk association with pathology. Later versions should add regulon inference, pathway enrichment, and spatial validation.
+
+## Layer 4: Agentic Interpretation
 
 The agent should consume structured intermediate results, not invent conclusions from raw files.
 
@@ -148,6 +161,8 @@ Expected outputs:
 - validation suggestions
 - caveats and evidence levels
 - figure captions and report text
+
+The agent is intentionally downstream of the quantitative analysis. Its role is to organize evidence, expose caveats, and propose the next experiment.
 
 ## Future Multimodal Expansion
 
@@ -170,4 +185,3 @@ Potential cross-modal prediction tasks:
 - predict spatial neighborhood state from local transcriptomic programs
 - align snRNA and spatial transcriptomics latent factors
 - connect snATAC regulatory programs to expression-derived disease states
-

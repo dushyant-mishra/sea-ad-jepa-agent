@@ -2,162 +2,159 @@
 
 ## Title
 
-Multimodal JEPA-Agent Framework for Alzheimer Disease Gene Network Discovery
+SEA-AD JEPA Agent: Pathology-Grounded Gene Network Discovery in Alzheimer Disease
 
-## One-Sentence Summary
+## Short Pitch
 
-This project aims to learn robust latent disease-state representations from SEA-AD single-nucleus transcriptomics and neuropathology data, then use an agentic transformer layer to generate interpretable, evidence-aware Alzheimer disease gene-network hypotheses.
+Alzheimer disease datasets increasingly contain single-cell transcriptomics, spatial assays, quantitative pathology, and imaging. The bottleneck is no longer only data access. The bottleneck is turning those modalities into **testable biological hypotheses**.
 
-## Motivation
+This project builds a JEPA-agent framework that learns cell-state representations from SEA-AD and asks whether those states explain real neuropathology. The first pilot focuses on Microglia-PVM cells in the middle temporal gyrus and tests whether microglial expression programs predict AT8/pTau, A beta, Iba1, GFAP, and NeuN pathology.
 
-Gene network discovery in neurodegeneration is difficult because each data modality observes only part of the disease process.
+## The Problem
 
-Single-nucleus RNA-seq captures cell-type and cell-state expression programs, but it is sparse, noisy, and affected by donor and technical variation. Neuropathology and immunostaining capture tissue-level disease burden, but they often lack direct genome-wide molecular resolution. Spatial and imaging data preserve tissue context, but they can be difficult to connect to regulatory mechanisms.
-
-The central premise of this project is that a JEPA-style predictive representation model can learn a stable biological state space across noisy observations, while a transformer-based agent can orchestrate downstream analysis and translate latent states into testable biological hypotheses.
-
-The goal is not to build a chatbot over biological data. The goal is to build a biological discovery system where:
+Most single-cell workflows produce clusters, marker genes, and enrichment tables. Those are useful, but they often stop short of the biological question:
 
 ```text
-single-cell molecular state
-        + pathology burden
-        + spatial/imaging context
-        -> latent disease-state representation
-        -> candidate gene networks
-        -> ranked hypotheses and validation experiments
+Which cell-state programs are actually linked to disease pathology?
 ```
 
-## Why SEA-AD
+In Alzheimer disease, this matters because molecular state and tissue pathology are not the same thing.
 
-SEA-AD is a strong starting dataset because it is public, disease-focused, and multimodal. It includes processed single-nucleus profiling, donor metadata, quantitative neuropathology, and spatial transcriptomics resources focused on Alzheimer disease progression.
+Single-nucleus RNA-seq tells us what genes are active in a cell population. Neuropathology tells us where disease burden exists and how severe it is. Spatial and imaging assays show tissue context. A useful discovery system should connect these views, not analyze them as separate worlds.
 
-This makes SEA-AD useful for asking questions that go beyond cell-type classification:
+## The Opportunity
 
-- Which latent cell states track Alzheimer pathology burden?
-- Which microglial, astrocytic, and neuronal programs are associated with A beta, pTau, gliosis, or neuronal loss?
-- Can transcriptomic state predict donor-level neuropathology?
-- Can pathology-associated latent factors be translated into candidate gene modules or regulators?
-- Which outputs deserve follow-up with IHC, IF, spatial transcriptomics, or perturbation experiments?
+SEA-AD is an unusually good setting for this because it provides:
 
-## First Biological Question
+- human Alzheimer disease tissue
+- single-nucleus transcriptomics
+- donor metadata
+- quantitative neuropathology
+- spatial transcriptomics resources
+- disease progression annotations
 
-The first pilot question is:
+This lets us evaluate cell-state representations against real pathology instead of only asking whether they recover known cell types.
 
-> Can transcriptomic cell-state embeddings learned from SEA-AD MTG nuclei predict donor-level neuropathology burden and reveal candidate AD-associated gene networks?
+## Why Microglia First
 
-The first pathology targets are:
+Microglia are the right first wedge because they are central to several Alzheimer-relevant axes:
 
-- 6e10/A beta plaque burden
-- AT8/pTau burden
-- GFAP/reactive astrocyte burden
-- Iba1 and activated Iba1 microglial burden
-- NeuN neuronal signal and density
-- Biochemical amyloid and tau measures
+- plaque response
+- inflammatory activation
+- complement signaling
+- lipid metabolism
+- phagocytosis and lysosomal biology
+- known genetic risk pathways involving `APOE`, `TREM2`, `TYROBP`, `PLCG2`, and related genes
 
-## Initial Cell Populations
+SEA-AD also provides pathology targets that are directly meaningful for this cell population, including A beta plaque measures, AT8/pTau burden, Iba1 signal, and activated Iba1 counts.
 
-The first model will focus on a manageable subset rather than the entire atlas.
+The first pilot therefore asks:
 
-Microglia are a natural first target because they are central to AD inflammation, plaque response, and known genetic risk pathways such as APOE, TREM2, TYROBP, and complement signaling.
+> Which microglial expression programs predict donor-level Alzheimer pathology, and which genes/modules should be prioritized for validation?
 
-Astrocytes are the second target because GFAP pathology gives a direct tissue-level readout of reactive gliosis.
+## Why JEPA
 
-Excitatory neurons are the third target because neuronal vulnerability and loss are central to disease progression, and NeuN gives a tissue-level neuronal readout.
+Raw single-cell expression is sparse, noisy, and heavily affected by technical variation. A model that tries to reconstruct every raw gene count can spend capacity learning noise.
 
-## Proposed System
+JEPA-style learning is attractive because it predicts latent representations rather than raw observations. In this project, the model learns from partial gene-expression context and predicts a target cell-state embedding.
 
-The long-term system has three layers.
+The intended shift is:
 
-### 1. Representation Learning Layer
+```text
+reconstruct all counts
+        -> predict meaningful biological state
+```
 
-The JEPA model learns latent biological states by predicting target embeddings from context embeddings.
+That is important for biology because the object we care about is not the exact observed count vector. The object we care about is the underlying disease-relevant cell state.
 
-For snRNA-seq, the context could be a subset of genes or gene modules, and the target could be a held-out gene module embedding or a full-cell latent embedding.
+## Why an Agentic Layer
 
-For imaging and pathology, the context could be tissue regions or stain-derived features, and the target could be transcriptomic or pathology embeddings.
+The agentic layer is not the discovery model. It is the reasoning and orchestration layer.
 
-The key idea is to avoid reconstructing every raw count or pixel. Instead, the model learns predictive biological structure.
+Its job is to take structured outputs and produce evidence-aware hypotheses:
 
-### 2. Gene Network Discovery Layer
+- Which latent states predict pathology?
+- Which genes explain those states?
+- Which pathways are enriched?
+- Which findings match known Alzheimer biology?
+- Which validation experiment should come next?
 
-The learned embeddings are connected to downstream biological interpretation:
-
-- disease-state clustering
-- pathology prediction
-- gene-module extraction
-- pathway enrichment
-- candidate transcription factor or regulator ranking
-- cross-modal validation with pathology, spatial transcriptomics, or imaging
-
-### 3. Agentic Transformer Layer
-
-The agentic layer does not replace the discovery model. It coordinates and explains the analysis.
-
-Example tasks:
-
-- Select pathology-associated latent factors.
-- Extract top genes or modules linked to those factors.
-- Run enrichment analysis.
-- Compare candidates to known AD biology.
-- Rank hypotheses by evidence level.
-- Suggest IHC, IF, spatial, or perturbation validation.
-- Produce figure-ready summaries.
+The agent should never invent evidence. It should operate on tables, model outputs, gene rankings, enrichment results, and curated biological context.
 
 ## Minimum Viable Demonstration
 
-The first useful demo is deliberately narrow:
+The first demonstration has four steps:
+
+1. Build Microglia-PVM donor-level pseudobulk features from SEA-AD MTG.
+2. Predict donor-level neuropathology from microglial expression.
+3. Train a JEPA model on a Microglia-PVM cell-level pilot.
+4. Rank genes and modules associated with the strongest pathology-linked signals.
+
+Success does not require claiming a causal mechanism. Success means showing that the pipeline can move from:
 
 ```text
-SEA-AD MTG snRNA-seq
-        -> pilot subset by cell population
-        -> JEPA-style latent embeddings
-        -> donor-level aggregation
-        -> pathology prediction
-        -> gene-module/regulator hypotheses
+single-cell expression
+        -> pathology-linked prediction
+        -> candidate genes/modules
+        -> clear validation hypotheses
 ```
 
-Success for the first demo means:
+## First Result
 
-- The pipeline can load and subset SEA-AD processed AnnData.
-- The model learns embeddings that preserve cell identity and donor structure.
-- Aggregated embeddings predict one or more pathology targets better than simple baselines.
-- Pathology-associated latent factors yield biologically plausible genes and pathways.
-- The outputs can be described as ranked hypotheses rather than unsupported causal claims.
+The first Microglia-PVM pseudobulk baseline shows that microglial expression features predict AT8/pTau-related pathology better than several other targets.
 
-## Scientific Caution
-
-The framework should not claim causality from association alone.
-
-If a latent microglial state is associated with A beta burden, the correct claim is:
+Top held-out donor associations from the initial baseline:
 
 ```text
-This state is associated with, and may predict, A beta burden.
+number of AT8 positive cells per area_Grey matter: Spearman ~= 0.536
+percent AT8 positive area_Grey matter: Spearman ~= 0.531
+percent NeuN positive area_Grey matter: Spearman ~= 0.511
 ```
 
-It is not automatically correct to claim:
+The first AT8-associated gene ranking highlights candidates including:
 
 ```text
-This state causes A beta burden.
+PTPRG
+S100A4
+CHI3L1
+DRAM1
+TNFRSF11B
+IL27RA
+CTSD
+NFKBIA
 ```
 
-The documentation, reports, and agent outputs should separate evidence levels:
+These genes are not presented as final biology. They are starting points for enrichment analysis, spatial validation, literature review, and mechanistic follow-up.
 
-- association
-- held-out prediction
-- regulatory candidate
-- perturbational support
-- experimental validation
+## What Makes This Different
+
+This is not just another cell-type classifier.
+
+The distinctive claim is:
+
+> Learn disease-state representations and evaluate them against measured pathology, then convert the predictive signal into ranked gene-network hypotheses.
+
+This makes the project pathology-grounded from the beginning.
 
 ## Long-Term Vision
 
-After the snRNA-seq plus neuropathology pilot works, the framework can expand to:
+The project can expand in several directions:
 
-- SEA-AD spatial transcriptomics
-- neuropathology image-derived features
-- IHC/IF validation marker selection
-- snATAC regulatory evidence
-- external perturbation datasets such as LINCS or JUMP Cell Painting
-- literature-aware agentic hypothesis ranking
+- pathway-aware JEPA masking
+- spatial transcriptomics validation
+- neuropathology image feature extraction
+- snATAC regulatory support
+- IHC/IF marker recommendation
+- perturbation dataset comparison with LINCS or JUMP Cell Painting
+- agent-generated biological reports with evidence grading
 
-The final research story is a multimodal biological discovery system that learns disease-state representations from SEA-AD and helps convert them into testable gene-network hypotheses.
+The eventual system should help answer questions like:
 
+```text
+Which microglial programs track tau pathology?
+Which genes explain that program?
+Where should we look spatially?
+Which stain or perturbation would validate it?
+```
+
+That is the heart of the project.

@@ -71,6 +71,23 @@ python -m pip install -r requirements-gpu.txt
 
 inside the active environment.
 
+## Scientific Python Stability
+
+For this project, keep the scientific stack on stable pinned versions:
+
+```text
+numpy==1.26.4
+scipy>=1.13,<1.14
+pandas>=2.2,<2.3
+scikit-learn>=1.5,<1.6
+```
+
+Very new NumPy/SciPy/scikit-learn builds can trigger native Windows crashes in correlation or linear algebra routines. If `python.exe - Application Error` popups appear, first check these versions:
+
+```powershell
+python -c "import numpy, scipy, pandas, sklearn; print(numpy.__version__, scipy.__version__, pandas.__version__, sklearn.__version__)"
+```
+
 ## Validation
 
 Run:
@@ -86,4 +103,3 @@ CUDA available: True
 GPU: NVIDIA GeForce RTX 3080 Laptop GPU
 Test matmul OK.
 ```
-

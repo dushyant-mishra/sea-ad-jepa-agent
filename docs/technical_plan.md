@@ -1,8 +1,19 @@
 # Technical Plan
 
+This plan exists to keep the implementation tied to the scientific goal:
+
+```text
+learn cell-state representations
+        -> test them against measured pathology
+        -> rank genes/modules
+        -> generate validation-ready hypotheses
+```
+
+The first biological wedge is Microglia-PVM in SEA-AD MTG. The first pathology anchor is AT8/pTau burden, because the initial pseudobulk baseline shows the strongest held-out donor signal there.
+
 ## Phase 0: Project Setup
 
-Status: in progress.
+Status: complete for the first pilot.
 
 Completed:
 
@@ -77,14 +88,15 @@ The current target table includes 17 donor-level targets:
 
 ### Goal
 
-Create a manageable pilot AnnData file before training any model.
+Create a biologically meaningful pilot AnnData file before training any model.
 
 The raw processed MTG H5AD file is large, so workflows should use:
 
-- backed AnnData loading for metadata inspection
-- cell-type filtering before loading selected rows into memory
-- maximum cell caps for pilot experiments
-- highly variable gene selection
+- fast HDF5 metadata inspection
+- sequential CSR streaming for scattered cell populations
+- maximum cell caps for cell-level pilots
+- donor-level pseudobulk features for pathology prediction
+- highly variable gene selection for JEPA training
 
 ### Inspection Command
 
@@ -94,7 +106,28 @@ python scripts/inspect_h5ad.py `
   --out-dir results/inspection
 ```
 
-### Pilot Subset Command
+### Microglia-PVM Streaming Pilot
+
+Microglia-PVM rows are scattered across the full H5AD. Random backed slicing is slow, so the real pilot uses sequential CSR streaming:
+
+```powershell
+python scripts/build_microglia_streaming_pilot.py `
+  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
+  --cell-max 10000 `
+  --n-top-genes 3000 `
+  --pilot-out data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
+  --pseudobulk-out data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv `
+  --counts-out data/processed/sea_ad_mtg_microglia_pvm_counts.csv
+```
+
+Outputs:
+
+```text
+cell-level JEPA pilot: 10,000 Microglia-PVM cells x 3,000 HVGs
+donor pseudobulk: 89 donors x 36,601 genes
+```
+
+### Generic Pilot Subset Command
 
 The exact column names must be confirmed by inspection first.
 
