@@ -134,6 +134,7 @@ Start here:
 
 - [docs/project_proposal.md](docs/project_proposal.md): the scientific pitch.
 - [docs/scientific_pitch.md](docs/scientific_pitch.md): a concise reviewer-facing pitch.
+- [docs/dataset_guide.md](docs/dataset_guide.md): dataset descriptions and abbreviation glossary.
 - [docs/architecture.md](docs/architecture.md): the discovery system design.
 - [docs/technical_plan.md](docs/technical_plan.md): implementation phases and modeling details.
 - [docs/runbook.md](docs/runbook.md): commands for reproducing the local workflow.

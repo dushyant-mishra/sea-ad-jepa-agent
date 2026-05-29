@@ -33,6 +33,8 @@ SEA-AD is an unusually good setting for this because it provides:
 - spatial transcriptomics resources
 - disease progression annotations
 
+For dataset details and abbreviation definitions, see [dataset_guide.md](dataset_guide.md).
+
 This lets us evaluate cell-state representations against real pathology instead of only asking whether they recover known cell types.
 
 ## Why Microglia First
