@@ -36,6 +36,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Train a minimal JEPA model on a pilot snRNA-seq AnnData file.")
     parser.add_argument("--h5ad", required=True, help="Pilot AnnData file.")
     parser.add_argument("--out-dir", default="results/models/jepa_snrna")
+    parser.add_argument(
+        "--resume-checkpoint",
+        default="",
+        help="Optional gene_jepa.pt checkpoint to continue training from. Optimizer state is restarted.",
+    )
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--batch-size", type=int, default=256)
     parser.add_argument("--hidden-dim", type=int, default=512)
@@ -87,11 +92,27 @@ def main() -> None:
         hidden_dim=args.hidden_dim,
         latent_dim=args.latent_dim,
     ).to(device)
+    history = []
+    start_epoch = 1
+    if args.resume_checkpoint:
+        checkpoint = torch.load(args.resume_checkpoint, map_location="cpu", weights_only=False)
+        if int(checkpoint["n_genes"]) != adata.n_vars:
+            raise ValueError(
+                f"Checkpoint has {checkpoint['n_genes']} genes, but {args.h5ad} has {adata.n_vars} genes."
+            )
+        model.load_state_dict(checkpoint["model_state"])
+        history = list(checkpoint.get("history", []))
+        if history:
+            start_epoch = int(history[-1]["epoch"]) + 1
+        print(f"Resumed model weights from {args.resume_checkpoint}; starting at epoch {start_epoch}")
+
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
     writer = create_summary_writer(args.log_dir)
     if writer is not None:
         writer.add_text("config/h5ad", args.h5ad)
         writer.add_text("config/out_dir", str(out_dir))
+        if args.resume_checkpoint:
+            writer.add_text("config/resume_checkpoint", args.resume_checkpoint)
         writer.add_text("config/mask_mode", args.mask_mode)
         writer.add_scalar("config/mask_fraction", args.mask_fraction, 0)
         writer.add_scalar("config/batch_size", args.batch_size, 0)
@@ -99,8 +120,8 @@ def main() -> None:
         writer.add_scalar("config/latent_dim", args.latent_dim, 0)
         writer.add_scalar("config/n_modules", len(modules), 0)
 
-    history = []
-    for epoch in range(1, args.epochs + 1):
+    end_epoch = start_epoch + args.epochs - 1
+    for epoch in range(start_epoch, end_epoch + 1):
         model.train()
         losses = []
         for context_x, target_x in loader:

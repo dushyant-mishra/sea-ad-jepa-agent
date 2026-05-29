@@ -125,8 +125,12 @@ This increased curated module coverage from partial overlap to all seven curated
 percent AT8 positive area_Grey matter
   random JEPA: Spearman ~= 0.316
   mixed HVG-only JEPA: Spearman ~= 0.295
-  module-preserved mixed JEPA: Spearman ~= 0.395
+  10k module-preserved mixed JEPA: Spearman ~= 0.395
+  all-cell module-preserved mixed JEPA, 60 epochs: Spearman ~= 0.454
+  all-cell module-preserved mixed JEPA, 100 epochs: Spearman ~= 0.451
 ```
+
+The longer all-cell JEPA run improved the AT8 cell-count target and NeuN-related targets, but it did not yet beat the pseudobulk baseline for AT8 area. This suggests the next gains should come from better biological supervision or module design, not simply more epochs.
 
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 

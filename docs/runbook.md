@@ -165,6 +165,21 @@ tensorboard --logdir runs
 
 Then open the local TensorBoard URL printed in the terminal.
 
+To continue training from an existing checkpoint:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_jepa_snrna.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad `
+  --resume-checkpoint results/models/microglia_pvm_jepa_all_module_preserved_mixed_e60/gene_jepa.pt `
+  --out-dir results/models/microglia_pvm_jepa_all_module_preserved_mixed_e100 `
+  --log-dir runs/microglia_pvm_jepa_all_module_preserved_mixed_e100 `
+  --epochs 40 `
+  --mask-mode mixed `
+  --lr 0.0003 `
+  --device auto
+```
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
