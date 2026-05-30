@@ -360,6 +360,33 @@ python scripts/causal_latent_jacobian.py `
   --device auto
 ```
 
+Run confounder-adjusted module effects:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/causal_confounder_adjusted_effects.py `
+  --pseudobulk data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv `
+  --embeddings results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_donor_embeddings.csv `
+  --target "percent AT8 positive area_Grey matter" `
+  --mode module `
+  --out results/tables/confounder_adjusted_module_effects_at8.csv `
+  --device auto
+```
+
+Run confounder-adjusted top-gene effects:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/causal_confounder_adjusted_effects.py `
+  --pseudobulk data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv `
+  --embeddings results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_donor_embeddings.csv `
+  --target "percent AT8 positive area_Grey matter" `
+  --mode gene `
+  --genes PTPRG CHI3L1 MRC1 CTSD DRAM1 P2RY12 S100A4 MSR1 TNFRSF11B NFKBIA `
+  --out results/tables/confounder_adjusted_top_gene_effects_at8.csv `
+  --device auto
+```
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell

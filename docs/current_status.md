@@ -417,6 +417,42 @@ antigen presentation
 synapse pruning
 ```
 
+- Added confounder-adjusted donor-level causal estimates:
+
+```text
+scripts/causal_confounder_adjusted_effects.py
+```
+
+This residualizes candidate treatments and AT8 pathology against:
+
+```text
+JEPA donor embeddings
+Age at Death
+Sex
+APOE Genotype
+```
+
+Top adjusted module-level AT8 associations:
+
+```text
+at8_associated_first_pass: partial Spearman ~= +0.441
+lipid_metabolism:          partial Spearman ~= -0.314
+vascular_barrier_myeloid:  partial Spearman ~= -0.282
+complement:                partial Spearman ~= -0.201
+inflammatory_signaling:    partial Spearman ~= +0.198
+```
+
+Top adjusted gene-level AT8 associations among knockout candidates:
+
+```text
+CHI3L1
+PTPRG
+NFKBIA
+S100A4
+TNFRSF11B
+DRAM1
+```
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

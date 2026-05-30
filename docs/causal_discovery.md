@@ -189,8 +189,62 @@ These edges are not gene-to-gene causal proof. They are directed sensitivities i
 
 ## Next Causal Steps
 
+## Strategy 3: Confounder-Adjusted Donor Effects
+
+The third causal layer is implemented in:
+
+```text
+scripts/causal_confounder_adjusted_effects.py
+```
+
+This script estimates donor-level gene or module effects after adjusting for:
+
+```text
+JEPA donor embeddings
+Age at Death
+Sex
+APOE Genotype
+```
+
+It uses a residualization strategy:
+
+```text
+1. residualize outcome against confounders
+2. residualize treatment against confounders
+3. estimate association between residual treatment and residual outcome
+```
+
+This is a confounder-adjusted observational estimate, not causal proof. It asks whether a candidate gene or module still carries AT8 signal after accounting for donor-level latent state and major donor covariates.
+
+First module-level AT8 result:
+
+```text
+treatment                     partial Spearman
+at8_associated_first_pass      +0.441
+lipid_metabolism               -0.314
+vascular_barrier_myeloid       -0.282
+complement                     -0.201
+inflammatory_signaling         +0.198
+```
+
+First gene-level AT8 result for top knockout candidates:
+
+```text
+treatment     partial Spearman
+CHI3L1         +0.416
+PTPRG          +0.355
+NFKBIA         +0.349
+S100A4         +0.333
+TNFRSF11B      +0.306
+DRAM1          +0.281
+```
+
+Genes that appear in both the in-silico knockout screen and confounder-adjusted screen are stronger candidates for follow-up.
+
+## Next Causal Steps
+
 1. Run fold-specific knockouts using models trained inside the donor-held-out validation folds.
 2. Add single-gene screens for all genes in robust modules.
 3. Compare predicted perturbation effects with public CRISPR or drug perturbation datasets.
 4. Map high-Jacobian latent dimensions back to genes/modules more deeply.
-5. Add confounder-adjusted causal estimates using JEPA donor embeddings plus donor covariates.
+5. Add donor covariate sensitivity checks and alternative adjustment sets.
