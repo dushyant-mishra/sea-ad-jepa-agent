@@ -312,6 +312,37 @@ python scripts/repeated_donor_groupkfold_validation.py `
   --device auto
 ```
 
+Run the first in-silico causal module screen:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/causal_in_silico_knockout.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --checkpoint results/models/microglia_pvm_jepa_ema_expanded_at8_finetune/jepa_pathology_finetuned.pt `
+  --mode module `
+  --intervention global_mean `
+  --out results/tables/causal_module_knockouts_at8_global_mean.csv `
+  --donor-out results/tables/causal_module_knockouts_at8_global_mean_by_donor.csv `
+  --batch-size 1024 `
+  --device auto
+```
+
+Run single-gene follow-up in top modules:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/causal_in_silico_knockout.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --checkpoint results/models/microglia_pvm_jepa_ema_expanded_at8_finetune/jepa_pathology_finetuned.pt `
+  --mode gene `
+  --modules at8_associated_first_pass homeostatic_microglia vascular_barrier_myeloid complement antigen_presentation inflammatory_signaling `
+  --intervention global_mean `
+  --out results/tables/causal_gene_knockouts_top_modules_at8_global_mean.csv `
+  --donor-out results/tables/causal_gene_knockouts_top_modules_at8_global_mean_by_donor.csv `
+  --batch-size 1024 `
+  --device auto
+```
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell

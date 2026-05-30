@@ -329,6 +329,56 @@ pseudobulk ridge                    0.422
 
 This is the clearest current comparison: every prediction is held-out by donor, the final metric uses all donors at once, and JEPA remains ahead of pseudobulk on the pooled OOF rank metric.
 
+- Added the first causal-discovery workflow:
+
+```text
+scripts/causal_in_silico_knockout.py
+docs/causal_discovery.md
+```
+
+The workflow runs frozen-model in-silico perturbations and reports model-implied counterfactual effects:
+
+```text
+delta = perturbed predicted AT8 - baseline predicted AT8
+```
+
+Supported interventions:
+
+```text
+global_mean
+donor_mean
+zero
+```
+
+First module-level AT8 screen with global-mean replacement:
+
+```text
+module                         mean donor delta
+at8_associated_first_pass       -0.0195
+homeostatic_microglia           -0.0038
+vascular_barrier_myeloid        -0.0036
+complement                      +0.0035
+antigen_presentation            +0.0030
+inflammatory_signaling          -0.0028
+```
+
+First gene-level follow-up inside top modules highlighted:
+
+```text
+PTPRG
+CHI3L1
+MRC1
+CTSD
+DRAM1
+P2RY12
+S100A4
+MSR1
+TNFRSF11B
+NFKBIA
+```
+
+These are model-implied causal hypotheses, not validated causal effects.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
