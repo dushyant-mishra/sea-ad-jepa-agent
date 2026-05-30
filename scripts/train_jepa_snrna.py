@@ -64,6 +64,7 @@ def main() -> None:
     )
     parser.add_argument("--hidden-dim", type=int, default=512)
     parser.add_argument("--latent-dim", type=int, default=128)
+    parser.add_argument("--ema-decay", type=float, default=0.996)
     parser.add_argument("--mask-fraction", type=float, default=0.35)
     parser.add_argument("--mask-mode", choices=["random", "module", "mixed"], default="random")
     parser.add_argument("--min-module-genes", type=int, default=2)
@@ -73,6 +74,11 @@ def main() -> None:
         help="When using module masking, mask only module genes instead of filling the mask with random genes.",
     )
     parser.add_argument("--lr", type=float, default=1e-3)
+    parser.add_argument(
+        "--reset-target-on-resume",
+        action="store_true",
+        help="After loading a checkpoint, reset the EMA target encoder from the context encoder.",
+    )
     parser.add_argument("--device", default="auto")
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument(
@@ -128,6 +134,7 @@ def main() -> None:
         input_dim=adata.n_vars,
         hidden_dim=args.hidden_dim,
         latent_dim=args.latent_dim,
+        ema_decay=args.ema_decay,
     ).to(device)
     history = []
     start_epoch = 1
@@ -138,6 +145,9 @@ def main() -> None:
                 f"Checkpoint has {checkpoint['n_genes']} genes, but {args.h5ad} has {adata.n_vars} genes."
             )
         model.load_state_dict(checkpoint["model_state"])
+        if args.reset_target_on_resume:
+            model.reset_target_network()
+            print("Reset EMA target encoder from context encoder after loading checkpoint")
         history = list(checkpoint.get("history", []))
         if history:
             start_epoch = int(history[-1]["epoch"]) + 1
@@ -157,6 +167,7 @@ def main() -> None:
         writer.add_scalar("config/samples_per_epoch", args.samples_per_epoch or len(dataset), 0)
         writer.add_scalar("config/hidden_dim", args.hidden_dim, 0)
         writer.add_scalar("config/latent_dim", args.latent_dim, 0)
+        writer.add_scalar("config/ema_decay", args.ema_decay, 0)
         writer.add_scalar("config/n_modules", len(modules), 0)
 
     def save_checkpoint(path: Path) -> None:
@@ -184,6 +195,7 @@ def main() -> None:
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
             optimizer.step()
+            model.update_target_network()
             losses.append(loss.item())
 
         mean_loss = float(np.mean(losses))

@@ -45,6 +45,7 @@ def main() -> None:
         input_dim=int(checkpoint["n_genes"]),
         hidden_dim=int(model_args.get("hidden_dim", 512)),
         latent_dim=int(model_args.get("latent_dim", 128)),
+        ema_decay=float(model_args.get("ema_decay", 0.996)),
     ).to(device)
     model.load_state_dict(checkpoint["model_state"])
     model.eval()
@@ -79,4 +80,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

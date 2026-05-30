@@ -195,6 +195,55 @@ best validation Spearman ~= 0.738 at epoch 13
 
 This is the strongest AT8 signal so far, but it is a supervised single-split result. It should be repeated across donor splits before being presented as stable model performance.
 
+- Fixed the core JEPA architecture by adding an EMA target encoder:
+
+```text
+target_encoder starts as a clone of context_encoder
+target_encoder gradients are frozen
+after each optimizer step:
+  target <- ema_decay * target + (1 - ema_decay) * context
+```
+
+This replaced the earlier static random target encoder, which was a major bottleneck.
+
+- Trained a fresh EMA JEPA on the expanded-module donor-balanced pilot:
+
+```text
+results/models/microglia_pvm_jepa_ema_expanded_balanced_e40/
+```
+
+The EMA loss curve changed sharply:
+
+```text
+epoch 1:  loss ~= 0.380
+epoch 10: loss ~= 0.012
+epoch 20: loss ~= 0.013
+epoch 40: loss ~= 0.035
+```
+
+The best self-supervised EMA JEPA checkpoints nearly matched the pseudobulk AT8-area baseline:
+
+```text
+percent AT8 positive area_Grey matter
+  pseudobulk baseline: Spearman ~= 0.531
+  static-target expanded-module JEPA, 40 epochs: Spearman ~= 0.457
+  EMA expanded-module JEPA, 10 epochs: Spearman ~= 0.513
+  EMA expanded-module JEPA, 20 epochs: Spearman ~= 0.516
+  EMA expanded-module JEPA, 30 epochs: Spearman ~= 0.515
+  EMA expanded-module JEPA, 40 epochs: Spearman ~= 0.515
+```
+
+This is the strongest self-supervised JEPA result so far. It does not clearly beat pseudobulk yet, but the EMA fix removed most of the gap.
+
+- Fine-tuned the EMA checkpoint on AT8 pathology with donor-held-out validation:
+
+```text
+results/models/microglia_pvm_jepa_ema_expanded_at8_finetune/
+best validation Spearman ~= 0.699
+```
+
+This was strong, but lower than the earlier single-split pathology-aware result from the static-target encoder. The fine-tuning result should therefore be treated as promising but split-sensitive until repeated donor-split validation is implemented.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
