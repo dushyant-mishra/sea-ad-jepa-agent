@@ -379,6 +379,44 @@ NFKBIA
 
 These are model-implied causal hypotheses, not validated causal effects.
 
+- Added latent Jacobian causal analysis:
+
+```text
+scripts/causal_latent_jacobian.py
+```
+
+This extracts directed latent-state sensitivities from the JEPA predictor:
+
+```text
+J[i, j] = d predicted_target_latent_i / d context_latent_j
+```
+
+First run:
+
+```text
+checkpoint: results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt
+sample: 2,048 cells
+```
+
+Outputs:
+
+```text
+results/tables/latent_jacobian_ema_var_e30_matrix.csv
+results/tables/latent_jacobian_ema_var_e30_top_edges.csv
+results/tables/latent_jacobian_ema_var_e30_module_annotations.csv
+```
+
+The strongest directed latent edges were annotated with modules including:
+
+```text
+homeostatic microglia
+lysosome/phagocytosis
+vascular/barrier myeloid
+complement
+antigen presentation
+synapse pruning
+```
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

@@ -130,8 +130,67 @@ These are not causal claims. They are prioritized hypotheses for literature revi
 
 ## Next Causal Steps
 
+## Strategy 2: Latent Jacobian Analysis
+
+The second causal layer is implemented in:
+
+```text
+scripts/causal_latent_jacobian.py
+```
+
+This script examines the JEPA predictor directly. It asks:
+
+```text
+If latent state j changes slightly, how much does the predictor change latent state i?
+```
+
+Mathematically:
+
+```text
+J[i, j] = d predicted_target_latent_i / d context_latent_j
+```
+
+The script:
+
+1. Samples cells from the AnnData pilot.
+2. Encodes cells into JEPA context latents.
+3. Computes the predictor Jacobian with PyTorch autograd.
+4. Averages the Jacobian across cells.
+5. Annotates latent dimensions by correlation with curated microglia module scores.
+6. Exports the full matrix and top directed latent edges.
+
+First run:
+
+```text
+checkpoint: results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt
+sample: 2,048 Microglia-PVM cells
+```
+
+Outputs:
+
+```text
+results/tables/latent_jacobian_ema_var_e30_matrix.csv
+results/tables/latent_jacobian_ema_var_e30_top_edges.csv
+results/tables/latent_jacobian_ema_var_e30_module_annotations.csv
+```
+
+Top directed latent edges were enriched for module annotations involving:
+
+```text
+homeostatic microglia
+lysosome/phagocytosis
+vascular/barrier myeloid
+complement
+antigen presentation
+synapse pruning
+```
+
+These edges are not gene-to-gene causal proof. They are directed sensitivities inside the learned JEPA latent transition function. They help prioritize which latent programs to map back to genes and test with perturbation evidence.
+
+## Next Causal Steps
+
 1. Run fold-specific knockouts using models trained inside the donor-held-out validation folds.
 2. Add single-gene screens for all genes in robust modules.
 3. Compare predicted perturbation effects with public CRISPR or drug perturbation datasets.
-4. Add latent Jacobian analysis to infer directed latent-state dependencies.
+4. Map high-Jacobian latent dimensions back to genes/modules more deeply.
 5. Add confounder-adjusted causal estimates using JEPA donor embeddings plus donor covariates.

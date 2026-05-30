@@ -343,6 +343,23 @@ python scripts/causal_in_silico_knockout.py `
   --device auto
 ```
 
+Run latent Jacobian analysis:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/causal_latent_jacobian.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --checkpoint results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt `
+  --max-cells 2048 `
+  --batch-size 512 `
+  --jacobian-batch-size 128 `
+  --top-edges 500 `
+  --matrix-out results/tables/latent_jacobian_ema_var_e30_matrix.csv `
+  --edges-out results/tables/latent_jacobian_ema_var_e30_top_edges.csv `
+  --annotations-out results/tables/latent_jacobian_ema_var_e30_module_annotations.csv `
+  --device auto
+```
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
