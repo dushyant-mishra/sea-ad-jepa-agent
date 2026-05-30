@@ -284,6 +284,34 @@ python scripts/repeated_donor_groupkfold_validation.py `
   --device auto
 ```
 
+Stabilized donor validation with stratified folds, log-transformed target, and pooled out-of-fold scoring:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/repeated_donor_groupkfold_validation.py `
+  --target "percent AT8 positive area_Grey matter" `
+  --splitter stratified_groupkfold `
+  --target-bins 5 `
+  --target-transform log1p `
+  --feature-result pseudobulk data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv `
+  --feature-result jepa_ema_e20 results/tables/microglia_pvm_jepa_ema_expanded_balanced_e20_donor_embeddings.csv `
+  --feature-result jepa_ema_var_e30 results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_donor_embeddings.csv `
+  --finetune-h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --finetune-checkpoint results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt `
+  --finetune-label jepa_ema_var_pathology_finetune `
+  --finetune-epochs 15 `
+  --finetune-lr 0.00005 `
+  --batch-size 512 `
+  --samples-per-epoch 40000 `
+  --n-splits 5 `
+  --max-features 1000 `
+  --out results/tables/donor_stratified_groupkfold_validation_log1p.csv `
+  --summary-out results/tables/donor_stratified_groupkfold_validation_log1p_summary.csv `
+  --oof-out results/tables/donor_stratified_groupkfold_oof_log1p.csv `
+  --oof-summary-out results/tables/donor_stratified_groupkfold_oof_log1p_summary.csv `
+  --device auto
+```
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell

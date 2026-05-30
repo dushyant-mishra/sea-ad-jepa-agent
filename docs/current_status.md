@@ -299,6 +299,36 @@ pseudobulk ridge                    0.355 +/- 0.337
 
 This is the first fair donor-held-out comparison where JEPA variants are ahead of pseudobulk on mean Spearman. The high standard deviations mean the result should still be treated cautiously. The next validation improvement is repeated shuffled donor-group splits or repeated GroupShuffleSplit to estimate uncertainty over more than five folds.
 
+- Stabilized donor-held-out validation with pooled out-of-fold scoring:
+
+```text
+same donor-held-out folds
+collect every held-out donor prediction
+compute one pooled Spearman across all 84 held-out donors
+```
+
+The validation script now supports:
+
+```text
+--splitter groupkfold|stratified_groupkfold
+--target-bins 5
+--target-transform raw|log1p|rank
+```
+
+Using stratified donor folds and a log-transformed AT8 target reduced sensitivity to fold composition and target outliers. The pooled out-of-fold results were:
+
+```text
+percent AT8 positive area_Grey matter
+
+model                              pooled OOF Spearman
+pathology-aware EMA+variance JEPA   0.497
+EMA+variance JEPA embeddings        0.439
+EMA JEPA embeddings                 0.437
+pseudobulk ridge                    0.422
+```
+
+This is the clearest current comparison: every prediction is held-out by donor, the final metric uses all donors at once, and JEPA remains ahead of pseudobulk on the pooled OOF rank metric.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
