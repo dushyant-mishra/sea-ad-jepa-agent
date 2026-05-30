@@ -273,6 +273,32 @@ percent AT8 positive area_Grey matter
 
 This is the best self-supervised JEPA result so far, but it still does not clearly beat pseudobulk. The next evaluation step should be repeated donor-held-out validation across pseudobulk, EMA JEPA, EMA+variance JEPA, and pathology-aware JEPA.
 
+- Added donor-grouped 5-fold validation:
+
+```text
+scripts/repeated_donor_groupkfold_validation.py
+```
+
+This uses `GroupKFold` with `Donor ID` as the group, so every cell or donor feature profile from a donor stays entirely in either the training fold or validation fold. The same donor folds are reused across pseudobulk, JEPA embeddings, EMA+variance JEPA embeddings, and pathology-aware fine-tuning.
+
+First target:
+
+```text
+percent AT8 positive area_Grey matter
+```
+
+Results:
+
+```text
+model                              mean Spearman +/- std
+pathology-aware EMA+variance JEPA   0.462 +/- 0.295
+EMA+variance JEPA embeddings        0.425 +/- 0.251
+EMA JEPA embeddings                 0.406 +/- 0.257
+pseudobulk ridge                    0.355 +/- 0.337
+```
+
+This is the first fair donor-held-out comparison where JEPA variants are ahead of pseudobulk on mean Spearman. The high standard deviations mean the result should still be treated cautiously. The next validation improvement is repeated shuffled donor-group splits or repeated GroupShuffleSplit to estimate uncertainty over more than five folds.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

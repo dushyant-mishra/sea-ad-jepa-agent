@@ -261,6 +261,29 @@ python scripts/finetune_jepa_pathology.py `
   --device auto
 ```
 
+Donor-grouped 5-fold validation:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/repeated_donor_groupkfold_validation.py `
+  --target "percent AT8 positive area_Grey matter" `
+  --feature-result pseudobulk data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv `
+  --feature-result jepa_ema_e20 results/tables/microglia_pvm_jepa_ema_expanded_balanced_e20_donor_embeddings.csv `
+  --feature-result jepa_ema_var_e30 results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_donor_embeddings.csv `
+  --finetune-h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --finetune-checkpoint results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt `
+  --finetune-label jepa_ema_var_pathology_finetune `
+  --finetune-epochs 15 `
+  --finetune-lr 0.00005 `
+  --batch-size 512 `
+  --samples-per-epoch 40000 `
+  --n-splits 5 `
+  --max-features 1000 `
+  --out results/tables/donor_groupkfold_validation.csv `
+  --summary-out results/tables/donor_groupkfold_validation_summary.csv `
+  --device auto
+```
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
