@@ -516,6 +516,71 @@ ripa pTau
 
 Interpretation: JEPA appears strongest for neuronal-density and AT8-related axes, competitive for some biochemical amyloid/tau targets, and weak for Iba1 in the current Microglia-PVM transcriptomic setup.
 
+- Added fold-specific causal knockout workflow:
+
+```text
+scripts/causal_fold_specific_knockout.py
+```
+
+Purpose:
+
+```text
+train pathology head on 4 donor folds
+run digital knockouts only on the held-out donor fold
+pool held-out donor deltas across all 5 folds
+```
+
+This is stricter than the first knockout screen because each counterfactual effect is measured on donors that were not used to fit that fold's pathology head.
+
+First AT8 module runs:
+
+```text
+results/tables/causal_fold_specific_module_knockouts_at8_global_mean.csv
+results/tables/causal_fold_specific_module_knockouts_at8_donor_mean.csv
+results/tables/causal_fold_specific_module_knockouts_at8_zero.csv
+results/tables/causal_fold_specific_module_knockout_intervention_comparison.csv
+```
+
+Setup:
+
+```text
+checkpoint: EMA+variance JEPA epoch 30
+target: percent AT8 positive area_Grey matter
+splitter: StratifiedGroupKFold
+target transform: log1p
+encoder: frozen
+head: trained inside each fold
+```
+
+Mean held-out fold validation Spearman:
+
+```text
+0.443
+```
+
+Most stable conservative replacement effects:
+
+```text
+vascular_barrier_myeloid: positive under global_mean and donor_mean
+complement:               positive under global_mean and donor_mean
+lipid_metabolism:         positive under global_mean and donor_mean
+at8_associated_first_pass: negative under global_mean and donor_mean
+```
+
+Strongest zero-replacement effects:
+
+```text
+at8_associated_first_pass:       -0.0214
+lysosome_phagocytosis:           -0.0182
+disease_associated_microglia:    -0.0141
+plaque_response:                 -0.0135
+vascular_barrier_myeloid:        -0.0115
+lipid_metabolism:                -0.0102
+homeostatic_microglia:           +0.0093
+```
+
+Interpretation: fold-specific knockouts make the effect sizes smaller and more conservative. The AT8-associated first-pass module is the clearest cross-intervention negative signal. Vascular/barrier, complement, lipid, plaque-response, lysosomal/phagocytic, and disease-associated microglia modules are important to the model, but their sign depends on whether the intervention is a conservative mean replacement or an aggressive zero replacement.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

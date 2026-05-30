@@ -243,11 +243,73 @@ Genes that appear in both the in-silico knockout screen and confounder-adjusted 
 
 ## Next Causal Steps
 
-1. Run fold-specific knockouts using models trained inside the donor-held-out validation folds.
-2. Add single-gene screens for all genes in robust modules.
-3. Compare predicted perturbation effects with public CRISPR or drug perturbation datasets.
-4. Map high-Jacobian latent dimensions back to genes/modules more deeply.
-5. Add donor covariate sensitivity checks and alternative adjustment sets.
+## Fold-Specific Knockouts
+
+The stricter leakage-resistant knockout workflow is implemented in:
+
+```text
+scripts/causal_fold_specific_knockout.py
+```
+
+This script does not use one all-data pathology model. Instead, each fold is handled separately:
+
+```text
+1. split donors with GroupKFold or StratifiedGroupKFold
+2. initialize JEPA from the self-supervised checkpoint
+3. train the pathology head only on training donors
+4. run digital knockouts only on held-out donors
+5. pool donor-level deltas across folds
+```
+
+Default interpretation is still cautious:
+
+```text
+delta = held-out perturbed prediction - held-out baseline prediction
+```
+
+Negative delta means the fold-specific model predicts lower pathology when the module is perturbed. Positive delta means the model predicts higher pathology when the module is perturbed.
+
+First AT8 runs used:
+
+```text
+checkpoint: results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt
+target: percent AT8 positive area_Grey matter
+splitter: StratifiedGroupKFold
+target transform: log1p
+encoder: frozen
+head: fold-trained
+```
+
+Outputs:
+
+```text
+results/tables/causal_fold_specific_module_knockouts_at8_global_mean.csv
+results/tables/causal_fold_specific_module_knockouts_at8_donor_mean.csv
+results/tables/causal_fold_specific_module_knockouts_at8_zero.csv
+results/tables/causal_fold_specific_module_knockout_intervention_comparison.csv
+```
+
+The conservative replacement modes produced smaller effects than the original all-data fine-tuned knockout model. That is expected and is the point of this check: the result is less expressive, but more defensible.
+
+Key pattern:
+
+```text
+at8_associated_first_pass
+  negative under global_mean, donor_mean, and zero interventions
+
+vascular_barrier_myeloid, complement, lipid_metabolism
+  positive under conservative replacements
+  negative under zero replacement
+```
+
+This means the AT8-associated module is the cleanest fold-stable candidate from this specific screen. The other modules are clearly important to the prediction function, but their direction depends on intervention type, so they should be treated as sensitivity-prioritized rather than causal-direction-prioritized.
+
+## Next Causal Steps
+
+1. Add fold-specific single-gene screens for genes inside robust modules.
+2. Compare predicted perturbation effects with public CRISPR or drug perturbation datasets.
+3. Map high-Jacobian latent dimensions back to genes/modules more deeply.
+4. Add donor covariate sensitivity checks and alternative adjustment sets.
 
 External benchmark planning is in:
 

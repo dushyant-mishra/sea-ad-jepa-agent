@@ -364,6 +364,33 @@ python scripts/causal_in_silico_knockout.py `
   --device auto
 ```
 
+Run fold-specific donor-held-out causal module knockouts:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/causal_fold_specific_knockout.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --checkpoint results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt `
+  --target "percent AT8 positive area_Grey matter" `
+  --target-transform log1p `
+  --splitter stratified_groupkfold `
+  --target-bins 5 `
+  --n-splits 5 `
+  --mode module `
+  --intervention global_mean `
+  --epochs 15 `
+  --batch-size 512 `
+  --samples-per-epoch 40000 `
+  --lr 0.00005 `
+  --freeze-encoder `
+  --out results/tables/causal_fold_specific_module_knockouts_at8_global_mean.csv `
+  --donor-out results/tables/causal_fold_specific_module_knockouts_at8_global_mean_by_donor.csv `
+  --fold-out results/tables/causal_fold_specific_module_knockouts_at8_global_mean_by_fold.csv `
+  --device auto
+```
+
+Repeat with `--intervention donor_mean` and `--intervention zero` to distinguish conservative replacement effects from aggressive knockout stress-test effects.
+
 Run latent Jacobian analysis:
 
 ```powershell
