@@ -453,6 +453,32 @@ TNFRSF11B
 DRAM1
 ```
 
+- Added external perturbation benchmark plan:
+
+```text
+docs/external_perturbation_benchmarks.md
+```
+
+Recommended first external benchmark:
+
+```text
+Norman et al. Perturb-seq
+```
+
+Rationale:
+
+```text
+tractable size
+single and combinatorial perturbations
+useful for testing whether digital knockouts and latent interactions match real CRISPR perturbation responses
+```
+
+Recommended scale-up benchmark:
+
+```text
+Replogle et al. genome-scale Perturb-seq
+```
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

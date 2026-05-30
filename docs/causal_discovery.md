@@ -248,3 +248,21 @@ Genes that appear in both the in-silico knockout screen and confounder-adjusted 
 3. Compare predicted perturbation effects with public CRISPR or drug perturbation datasets.
 4. Map high-Jacobian latent dimensions back to genes/modules more deeply.
 5. Add donor covariate sensitivity checks and alternative adjustment sets.
+
+External benchmark planning is in:
+
+```text
+docs/external_perturbation_benchmarks.md
+```
+
+Recommended first benchmark:
+
+```text
+Norman et al. Perturb-seq
+```
+
+Recommended scale-up benchmark:
+
+```text
+Replogle et al. genome-scale Perturb-seq
+```
