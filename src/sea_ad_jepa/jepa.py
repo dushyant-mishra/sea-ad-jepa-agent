@@ -68,7 +68,29 @@ class GeneJEPA(nn.Module):
         return pred_z, target_z
 
 
-def jepa_loss(pred_z: torch.Tensor, target_z: torch.Tensor) -> torch.Tensor:
+def variance_loss(z: torch.Tensor, gamma: float = 1.0, eps: float = 1e-4) -> torch.Tensor:
+    std = torch.sqrt(z.var(dim=0, unbiased=False) + eps)
+    return torch.mean(F.relu(gamma - std))
+
+
+def jepa_loss(
+    pred_z: torch.Tensor,
+    target_z: torch.Tensor,
+    variance_weight: float = 0.0,
+    variance_gamma: float = 1.0,
+    eps: float = 1e-4,
+) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
     pred_z = F.normalize(pred_z, dim=-1)
     target_z = F.normalize(target_z, dim=-1)
-    return 2 - 2 * (pred_z * target_z).sum(dim=-1).mean()
+    alignment = 2 - 2 * (pred_z * target_z).sum(dim=-1).mean()
+    pred_variance = variance_loss(pred_z, gamma=variance_gamma, eps=eps)
+    target_variance = variance_loss(target_z, gamma=variance_gamma, eps=eps)
+    variance = 0.5 * (pred_variance + target_variance)
+    total = alignment + variance_weight * variance
+    parts = {
+        "alignment": alignment.detach(),
+        "variance": variance.detach(),
+        "pred_variance": pred_variance.detach(),
+        "target_variance": target_variance.detach(),
+    }
+    return total, parts

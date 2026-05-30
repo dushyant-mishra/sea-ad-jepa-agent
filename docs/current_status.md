@@ -244,6 +244,35 @@ best validation Spearman ~= 0.699
 
 This was strong, but lower than the earlier single-split pathology-aware result from the static-target encoder. The fine-tuning result should therefore be treated as promising but split-sensitive until repeated donor-split validation is implemented.
 
+- Added a VICReg-style variance hinge to the JEPA loss:
+
+```text
+loss = alignment_loss + variance_weight * variance_loss
+```
+
+The variance term penalizes latent dimensions whose batch standard deviation falls below a threshold. This is intended to reduce latent contraction during EMA training.
+
+First run:
+
+```text
+variance_weight = 0.05
+variance_gamma = 1.0
+```
+
+The variance term added a small improvement for the main AT8-area endpoint:
+
+```text
+percent AT8 positive area_Grey matter
+  EMA JEPA, 20 epochs: Spearman ~= 0.516
+  EMA + variance JEPA, 10 epochs: Spearman ~= 0.512
+  EMA + variance JEPA, 20 epochs: Spearman ~= 0.514
+  EMA + variance JEPA, 30 epochs: Spearman ~= 0.519
+  EMA + variance JEPA, 40 epochs: Spearman ~= 0.514
+  pseudobulk baseline: Spearman ~= 0.531
+```
+
+This is the best self-supervised JEPA result so far, but it still does not clearly beat pseudobulk. The next evaluation step should be repeated donor-held-out validation across pseudobulk, EMA JEPA, EMA+variance JEPA, and pathology-aware JEPA.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

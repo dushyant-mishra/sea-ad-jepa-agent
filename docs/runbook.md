@@ -224,6 +224,26 @@ python scripts/train_jepa_snrna.py `
   --device auto
 ```
 
+EMA-target JEPA with variance regularization:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_jepa_snrna.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --out-dir results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40 `
+  --log-dir runs/microglia_pvm_jepa_ema_var_expanded_balanced_e40 `
+  --epochs 40 `
+  --batch-size 512 `
+  --donor-balanced-sampling `
+  --mask-mode mixed `
+  --lr 0.0002 `
+  --ema-decay 0.996 `
+  --variance-weight 0.05 `
+  --variance-gamma 1.0 `
+  --checkpoint-every 10 `
+  --device auto
+```
+
 Pathology-aware fine-tuning with donor-held-out validation:
 
 ```powershell

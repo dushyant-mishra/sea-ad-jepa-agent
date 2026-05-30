@@ -65,6 +65,13 @@ def main() -> None:
     parser.add_argument("--hidden-dim", type=int, default=512)
     parser.add_argument("--latent-dim", type=int, default=128)
     parser.add_argument("--ema-decay", type=float, default=0.996)
+    parser.add_argument(
+        "--variance-weight",
+        type=float,
+        default=0.0,
+        help="Weight for the VICReg-style variance hinge loss. Use 0 to disable.",
+    )
+    parser.add_argument("--variance-gamma", type=float, default=1.0)
     parser.add_argument("--mask-fraction", type=float, default=0.35)
     parser.add_argument("--mask-mode", choices=["random", "module", "mixed"], default="random")
     parser.add_argument("--min-module-genes", type=int, default=2)
@@ -168,6 +175,8 @@ def main() -> None:
         writer.add_scalar("config/hidden_dim", args.hidden_dim, 0)
         writer.add_scalar("config/latent_dim", args.latent_dim, 0)
         writer.add_scalar("config/ema_decay", args.ema_decay, 0)
+        writer.add_scalar("config/variance_weight", args.variance_weight, 0)
+        writer.add_scalar("config/variance_gamma", args.variance_gamma, 0)
         writer.add_scalar("config/n_modules", len(modules), 0)
 
     def save_checkpoint(path: Path) -> None:
@@ -187,23 +196,46 @@ def main() -> None:
     for epoch in range(start_epoch, end_epoch + 1):
         model.train()
         losses = []
+        alignment_losses = []
+        variance_losses = []
         for context_x, target_x in loader:
             context_x = context_x.to(device)
             target_x = target_x.to(device)
             pred_z, target_z = model(context_x, target_x)
-            loss = jepa_loss(pred_z, target_z)
+            loss, loss_parts = jepa_loss(
+                pred_z,
+                target_z,
+                variance_weight=args.variance_weight,
+                variance_gamma=args.variance_gamma,
+            )
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
             optimizer.step()
             model.update_target_network()
             losses.append(loss.item())
+            alignment_losses.append(float(loss_parts["alignment"].cpu()))
+            variance_losses.append(float(loss_parts["variance"].cpu()))
 
         mean_loss = float(np.mean(losses))
-        history.append({"epoch": epoch, "loss": mean_loss})
+        mean_alignment = float(np.mean(alignment_losses))
+        mean_variance = float(np.mean(variance_losses))
+        history.append(
+            {
+                "epoch": epoch,
+                "loss": mean_loss,
+                "alignment_loss": mean_alignment,
+                "variance_loss": mean_variance,
+            }
+        )
         if writer is not None:
             writer.add_scalar("train/loss_epoch", mean_loss, epoch)
+            writer.add_scalar("train/alignment_loss_epoch", mean_alignment, epoch)
+            writer.add_scalar("train/variance_loss_epoch", mean_variance, epoch)
             writer.add_scalar("train/lr", optimizer.param_groups[0]["lr"], epoch)
-        print(f"epoch={epoch:03d} loss={mean_loss:.6f}")
+        print(
+            f"epoch={epoch:03d} loss={mean_loss:.6f} "
+            f"alignment={mean_alignment:.6f} variance={mean_variance:.6f}"
+        )
         if args.checkpoint_every and epoch % args.checkpoint_every == 0:
             checkpoint_path = out_dir / f"gene_jepa_epoch_{epoch:03d}.pt"
             save_checkpoint(checkpoint_path)
