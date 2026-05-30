@@ -479,6 +479,43 @@ Recommended scale-up benchmark:
 Replogle et al. genome-scale Perturb-seq
 ```
 
+- Extended pooled out-of-fold validation across multiple SEA-AD pathology targets:
+
+```text
+results/tables/multitarget_stratified_groupkfold_oof_log1p_ridge_summary.csv
+results/tables/multitarget_oof_jepa_vs_pseudobulk_summary.csv
+```
+
+Setup:
+
+```text
+splitter: StratifiedGroupKFold
+target transform: log1p
+models: pseudobulk, EMA JEPA, EMA+variance JEPA
+metric: pooled out-of-fold Spearman
+```
+
+Targets where the best JEPA embedding model beat pseudobulk:
+
+```text
+percent NeuN positive area:  +0.149
+percent AT8 positive area:   +0.018
+guhcl abeta42:               +0.014
+percent GFAP positive area:  +0.007
+guhcl pTau:                  +0.003
+```
+
+Targets where pseudobulk remained stronger:
+
+```text
+percent 6e10 positive area
+ripa abeta42
+percent Iba1 positive area
+ripa pTau
+```
+
+Interpretation: JEPA appears strongest for neuronal-density and AT8-related axes, competitive for some biochemical amyloid/tau targets, and weak for Iba1 in the current Microglia-PVM transcriptomic setup.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

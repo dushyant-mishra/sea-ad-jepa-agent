@@ -312,6 +312,27 @@ python scripts/repeated_donor_groupkfold_validation.py `
   --device auto
 ```
 
+Run the same stabilized validation across multiple neuropathology targets:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/repeated_donor_groupkfold_validation.py `
+  --splitter stratified_groupkfold `
+  --target-bins 5 `
+  --target-transform log1p `
+  --targets "percent AT8 positive area_Grey matter" "percent 6e10 positive area_Grey matter" "percent GFAP positive area_Grey matter" "percent Iba1 positive area_Grey matter" "percent NeuN positive area_Grey matter" "guhcl pTau_Grey matter" "guhcl abeta42_Grey matter" "ripa pTau_Grey matter" "ripa abeta42_Grey matter" `
+  --feature-result pseudobulk data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv `
+  --feature-result jepa_ema_e20 results/tables/microglia_pvm_jepa_ema_expanded_balanced_e20_donor_embeddings.csv `
+  --feature-result jepa_ema_var_e30 results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_donor_embeddings.csv `
+  --n-splits 5 `
+  --max-features 1000 `
+  --out results/tables/multitarget_stratified_groupkfold_validation_log1p_ridge.csv `
+  --summary-out results/tables/multitarget_stratified_groupkfold_validation_log1p_ridge_summary.csv `
+  --oof-out results/tables/multitarget_stratified_groupkfold_oof_log1p_ridge.csv `
+  --oof-summary-out results/tables/multitarget_stratified_groupkfold_oof_log1p_ridge_summary.csv `
+  --device auto
+```
+
 Run the first in-silico causal module screen:
 
 ```powershell

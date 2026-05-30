@@ -381,6 +381,12 @@ def main() -> None:
         help="Donor-level feature table to evaluate with ridge regression. Can be repeated.",
     )
     parser.add_argument("--target", default="percent AT8 positive area_Grey matter")
+    parser.add_argument(
+        "--targets",
+        nargs="*",
+        default=None,
+        help="Optional list of pathology targets. When set, runs validation once per target.",
+    )
     parser.add_argument("--n-splits", type=int, default=5)
     parser.add_argument("--splitter", choices=["groupkfold", "stratified_groupkfold"], default="groupkfold")
     parser.add_argument("--target-bins", type=int, default=5)
@@ -408,51 +414,58 @@ def main() -> None:
     device = choose_device(args.device)
     targets, _ = load_pathology_targets()
     targets["Donor ID"] = normalize_donor_id(targets["Donor ID"])
-    targets[args.target] = pd.to_numeric(targets[args.target], errors="coerce")
-    target_df = targets[["Donor ID", args.target]].dropna(subset=[args.target]).reset_index(drop=True)
-    if target_df.shape[0] < args.n_splits:
-        raise ValueError(f"Need at least {args.n_splits} donors with finite target values.")
-
-    groups = target_df["Donor ID"].to_numpy()
-    y_for_split = target_df[args.target].to_numpy()
-    if args.splitter == "stratified_groupkfold":
-        y_for_split = make_strata(y_for_split, args.target_bins)
-        splitter = StratifiedGroupKFold(n_splits=args.n_splits, shuffle=True, random_state=7)
-    else:
-        splitter = GroupKFold(n_splits=args.n_splits)
-    folds = list(splitter.split(target_df, y_for_split, groups=groups))
-
+    selected_targets = args.targets or [args.target]
     rows: list[dict[str, object]] = []
     prediction_rows: list[dict[str, object]] = []
-    for label, path in args.feature_result:
-        model_rows, model_prediction_rows = evaluate_feature_table(
-            label=label,
-            features_path=path,
-            target_df=target_df,
-            target=args.target,
-            folds=folds,
-            max_features=args.max_features,
-            alpha=args.alpha,
-            device=device,
-            target_transform=args.target_transform,
-        )
-        rows.extend(model_rows)
-        prediction_rows.extend(model_prediction_rows)
-        if model_rows:
-            print(f"{label}: mean Spearman={np.mean([row['spearman'] for row in model_rows]):.4f}")
 
-    if args.finetune_h5ad and args.finetune_checkpoint:
-        finetune_rows, finetune_prediction_rows = evaluate_pathology_finetune(
-            h5ad_path=args.finetune_h5ad,
-            checkpoint_path=args.finetune_checkpoint,
-            target_df=target_df,
-            target=args.target,
-            folds=folds,
-            args=args,
-            device=device,
-        )
-        rows.extend(finetune_rows)
-        prediction_rows.extend(finetune_prediction_rows)
+    for target_name in selected_targets:
+        if target_name not in targets.columns:
+            raise KeyError(f"Target not found in pathology table: {target_name}")
+        targets[target_name] = pd.to_numeric(targets[target_name], errors="coerce")
+        target_df = targets[["Donor ID", target_name]].dropna(subset=[target_name]).reset_index(drop=True)
+        if target_df.shape[0] < args.n_splits:
+            print(f"Skipping {target_name}: fewer than {args.n_splits} donors with finite target values")
+            continue
+
+        groups = target_df["Donor ID"].to_numpy()
+        y_for_split = target_df[target_name].to_numpy()
+        if args.splitter == "stratified_groupkfold":
+            y_for_split = make_strata(y_for_split, args.target_bins)
+            splitter = StratifiedGroupKFold(n_splits=args.n_splits, shuffle=True, random_state=7)
+        else:
+            splitter = GroupKFold(n_splits=args.n_splits)
+        folds = list(splitter.split(target_df, y_for_split, groups=groups))
+
+        print(f"\nTarget: {target_name}")
+        for label, path in args.feature_result:
+            model_rows, model_prediction_rows = evaluate_feature_table(
+                label=label,
+                features_path=path,
+                target_df=target_df,
+                target=target_name,
+                folds=folds,
+                max_features=args.max_features,
+                alpha=args.alpha,
+                device=device,
+                target_transform=args.target_transform,
+            )
+            rows.extend(model_rows)
+            prediction_rows.extend(model_prediction_rows)
+            if model_rows:
+                print(f"{label}: mean Spearman={np.mean([row['spearman'] for row in model_rows]):.4f}")
+
+        if args.finetune_h5ad and args.finetune_checkpoint:
+            finetune_rows, finetune_prediction_rows = evaluate_pathology_finetune(
+                h5ad_path=args.finetune_h5ad,
+                checkpoint_path=args.finetune_checkpoint,
+                target_df=target_df,
+                target=target_name,
+                folds=folds,
+                args=args,
+                device=device,
+            )
+            rows.extend(finetune_rows)
+            prediction_rows.extend(finetune_prediction_rows)
 
     results = pd.DataFrame(rows)
     predictions = pd.DataFrame(prediction_rows)
