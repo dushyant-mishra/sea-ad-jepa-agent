@@ -32,9 +32,11 @@ results/tables/*
 !results/tables/kampmann_deg_jepa_alignment_*.csv
 !results/tables/v1_hypothesis_*.csv
 !results/tables/v1_jepa_63_decode.csv
+!results/tables/all_jepa_umap_variance_rankings.csv
 !results/reports/
 results/reports/*
 !results/reports/v1_microglia_biological_hypotheses.md
+!results/reports/all_jepa_umap_variance_rankings.md
 !results/figures/
 results/figures/*
 !results/figures/*.svg

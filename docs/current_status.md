@@ -802,6 +802,33 @@ JEPA latent UMAP
 
 Interpretation: `jepa_63` is visibly part of the JEPA UMAP geometry, especially along the JEPA UMAP y-axis, but it does not explain the whole manifold. This is the right interpretation: UMAP is a 2D projection of the full 128D state space, while `jepa_63` is one latent axis inside that state space.
 
+- Ranked every JEPA latent dimension by alignment with the donor-level UMAP geometry:
+
+```text
+script: scripts/rank_all_latent_umap_alignment.py
+outputs:
+  results/tables/all_jepa_umap_variance_rankings.csv
+  results/reports/all_jepa_umap_variance_rankings.md
+```
+
+Main result:
+
+```text
+JEPA latent UMAP
+  top latent R2 ~= 0.867
+  median latent R2 ~= 0.385
+  jepa_63 rank: 83 of 128
+  jepa_63 R2 ~= 0.263
+
+Expression PCA UMAP
+  top latent R2 ~= 0.564
+  median latent R2 ~= 0.237
+  jepa_63 rank: 92 of 128
+  jepa_63 R2 ~= 0.097
+```
+
+Interpretation: `jepa_63` is pathology-relevant but not a dominant UMAP-shaping axis. The JEPA UMAP is mostly organized by stronger homeostatic, vascular/barrier, complement, and synapse-pruning axes. This is a useful correction to the v1 story: `jepa_63` should be presented as an AT8-linked latent hypothesis inside the broader manifold, not as the main visual axis of the manifold.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

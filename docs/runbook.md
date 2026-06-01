@@ -542,6 +542,22 @@ results/figures/jepa63_umap_alignment.svg
 
 This answers whether the `jepa_63` latent axis is visible in the 2D JEPA UMAP projection. A strong association supports the interpretation that `jepa_63` contributes to the observed manifold geometry. It should not be read as proof that UMAP discovered a causal axis by itself.
 
+Rank all JEPA latent dimensions by UMAP alignment:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/rank_all_latent_umap_alignment.py
+```
+
+Outputs:
+
+```text
+results/tables/all_jepa_umap_variance_rankings.csv
+results/reports/all_jepa_umap_variance_rankings.md
+```
+
+This gives the ceiling for the `jepa_63` result. If only a few latents have high R2, UMAP is dominated by those axes. If many latents have similar R2 values, the manifold is more distributed. The report joins each latent to its top module annotations so the geometry can be interpreted biologically.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
