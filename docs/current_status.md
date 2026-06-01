@@ -777,6 +777,31 @@ cleanest AT8-lowering module
 
 Interpretation: the most useful v1 biology is internal to SEA-AD rather than the external Kampmann stress test. The current model points to an AT8-linked inflammatory/stress program, a `jepa_63` complement/antigen-presentation/synapse-pruning axis, and vascular/barrier or lipid-context modules as follow-up hypotheses. These remain model-implied counterfactual hypotheses until tested against perturbation, spatial, or orthogonal pathology data.
 
+- Tested whether `jepa_63` aligns with the donor-level UMAP geometry:
+
+```text
+script: scripts/evaluate_jepa63_umap_alignment.py
+outputs:
+  results/tables/jepa63_umap_alignment_metrics.csv
+  results/figures/jepa63_umap_alignment.svg
+```
+
+Main result:
+
+```text
+expression PCA UMAP
+  linear 2D-coordinate R2 for jepa_63 ~= 0.097
+  Spearman x ~= 0.374
+  Spearman y ~= 0.140
+
+JEPA latent UMAP
+  linear 2D-coordinate R2 for jepa_63 ~= 0.263
+  Spearman x ~= 0.231
+  Spearman y ~= -0.434
+```
+
+Interpretation: `jepa_63` is visibly part of the JEPA UMAP geometry, especially along the JEPA UMAP y-axis, but it does not explain the whole manifold. This is the right interpretation: UMAP is a 2D projection of the full 128D state space, while `jepa_63` is one latent axis inside that state space.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

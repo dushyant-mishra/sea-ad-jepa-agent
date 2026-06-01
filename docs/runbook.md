@@ -526,6 +526,22 @@ results/tables/v1_jepa_63_decode.csv
 
 This report decodes `jepa_63`, joins gene/module digital knockouts with confounder-adjusted effects, and writes three concrete SEA-AD Microglia-PVM hypotheses. Treat these as model-implied hypotheses. They are useful for prioritization, but they are not experimental proof of causality.
 
+Test whether `jepa_63` aligns with the donor-level UMAP geometry:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/evaluate_jepa63_umap_alignment.py
+```
+
+Outputs:
+
+```text
+results/tables/jepa63_umap_alignment_metrics.csv
+results/figures/jepa63_umap_alignment.svg
+```
+
+This answers whether the `jepa_63` latent axis is visible in the 2D JEPA UMAP projection. A strong association supports the interpretation that `jepa_63` contributes to the observed manifold geometry. It should not be read as proof that UMAP discovered a causal axis by itself.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
