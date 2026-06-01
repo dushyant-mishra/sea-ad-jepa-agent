@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-import argparse
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+import argparse
 import anndata as ad
 import numpy as np
 import pandas as pd
@@ -10,23 +12,23 @@ import torch
 from scipy import sparse
 from sklearn.model_selection import GroupKFold, StratifiedGroupKFold
 from torch import nn
-from torch.utils.data import DataLoader, TensorDataset, WeightedRandomSampler
+from torch.utils.data import DataLoader, TensorDataset
 
 from sea_ad_jepa.baselines import spearman_corr
 from sea_ad_jepa.data import load_pathology_targets, normalize_donor_id
 from sea_ad_jepa.jepa import GeneJEPA
-
-
-def choose_device(requested: str) -> torch.device:
-    if requested == "auto":
-        return torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    return torch.device(requested)
-
-
-def to_dense_float32(matrix) -> np.ndarray:
-    if sparse.issparse(matrix):
-        matrix = matrix.toarray()
-    return np.asarray(matrix, dtype=np.float32)
+from sea_ad_jepa.evaluation_utils import (
+    choose_device,
+    to_dense_float32,
+    transform_target,
+    inverse_transform_prediction,
+    make_strata,
+    PathologyRegressor,
+    build_balanced_sampler,
+    predict_cells_by_donor,
+    predict_by_donor,
+    train_fold_head,
+)
 
 
 def select_train_variable_features(x_train: np.ndarray, max_features: int | None) -> np.ndarray:
@@ -35,32 +37,6 @@ def select_train_variable_features(x_train: np.ndarray, max_features: int | None
         return np.arange(n_features)
     variances = np.var(x_train, axis=0)
     return np.argsort(variances)[-max_features:]
-
-
-def transform_target(y: np.ndarray, mode: str) -> np.ndarray:
-    if mode == "raw":
-        return y.astype(np.float32, copy=True)
-    if mode == "log1p":
-        clipped = np.clip(y, a_min=0.0, a_max=None)
-        return np.log1p(clipped).astype(np.float32)
-    if mode == "rank":
-        return pd.Series(y).rank(method="average").to_numpy(dtype=np.float32)
-    raise ValueError(f"Unknown target transform: {mode}")
-
-
-def inverse_transform_prediction(pred: np.ndarray, mode: str) -> np.ndarray:
-    if mode == "log1p":
-        return np.expm1(pred).astype(np.float32)
-    return pred.astype(np.float32, copy=True)
-
-
-def make_strata(y: np.ndarray, n_bins: int) -> np.ndarray:
-    n_unique = pd.Series(y).nunique()
-    bins = max(2, min(n_bins, int(n_unique)))
-    try:
-        return pd.qcut(y, q=bins, labels=False, duplicates="drop").astype(int)
-    except ValueError:
-        return pd.cut(y, bins=bins, labels=False, include_lowest=True).astype(int)
 
 
 def ridge_predict(
@@ -159,57 +135,10 @@ def evaluate_feature_table(
             }
         )
     return rows, prediction_rows
-
-
 def r2_score(truth: np.ndarray, pred: np.ndarray) -> float:
     ss_res = float(np.sum((truth - pred) ** 2))
     ss_tot = float(np.sum((truth - truth.mean()) ** 2))
     return 1.0 - ss_res / ss_tot if ss_tot > 0 else float("nan")
-
-
-class PathologyRegressor(nn.Module):
-    def __init__(self, latent_dim: int, hidden_dim: int, dropout: float):
-        super().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(latent_dim, hidden_dim),
-            nn.GELU(),
-            nn.Dropout(dropout),
-            nn.Linear(hidden_dim, 1),
-        )
-
-    def forward(self, z: torch.Tensor) -> torch.Tensor:
-        return self.net(z).squeeze(-1)
-
-
-def build_balanced_sampler(donors: pd.Series, indices: np.ndarray, samples_per_epoch: int) -> WeightedRandomSampler:
-    donor_counts = donors.iloc[indices].value_counts()
-    weights = donors.iloc[indices].map(lambda donor_id: 1.0 / float(donor_counts[donor_id])).to_numpy(dtype=np.float64)
-    return WeightedRandomSampler(
-        weights=torch.as_tensor(weights, dtype=torch.double),
-        num_samples=samples_per_epoch or indices.size,
-        replacement=True,
-    )
-
-
-def predict_cells_by_donor(
-    model: GeneJEPA,
-    head: PathologyRegressor,
-    x: torch.Tensor,
-    donors: pd.Series,
-    indices: np.ndarray,
-    device: torch.device,
-    batch_size: int,
-) -> pd.DataFrame:
-    loader = DataLoader(TensorDataset(x[indices]), batch_size=batch_size, shuffle=False)
-    preds = []
-    model.eval()
-    head.eval()
-    with torch.no_grad():
-        for (batch,) in loader:
-            z = model.context_encoder(batch.to(device))
-            preds.append(head(z).cpu().numpy())
-    pred_df = pd.DataFrame({"Donor ID": donors.iloc[indices].to_numpy(), "prediction_z": np.concatenate(preds)})
-    return pred_df.groupby("Donor ID", as_index=False)["prediction_z"].mean()
 
 
 def evaluate_pathology_finetune(
@@ -229,9 +158,6 @@ def evaluate_pathology_finetune(
     y = transform_target(y_raw, args.target_transform)
     x = torch.from_numpy(to_dense_float32(adata.X))
 
-    checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
-    model_args = checkpoint.get("args", {})
-
     rows = []
     prediction_rows = []
     for fold_id, (train_donors_idx, val_donors_idx) in enumerate(folds, start=1):
@@ -242,96 +168,80 @@ def evaluate_pathology_finetune(
         if train_idx.size < 2 or val_idx.size < 2:
             continue
 
-        model = GeneJEPA(
-            input_dim=int(checkpoint["n_genes"]),
-            hidden_dim=int(model_args.get("hidden_dim", 512)),
-            latent_dim=int(model_args.get("latent_dim", 128)),
-            ema_decay=float(model_args.get("ema_decay", 0.996)),
-        ).to(device)
-        model.load_state_dict(checkpoint["model_state"])
-        head = PathologyRegressor(
-            latent_dim=int(model_args.get("latent_dim", 128)),
-            hidden_dim=args.head_hidden_dim,
-            dropout=args.dropout,
-        ).to(device)
-
-        train_mean = float(np.mean(y[train_idx]))
-        train_std = float(np.std(y[train_idx])) or 1.0
-        y_z = torch.as_tensor((y - train_mean) / train_std, dtype=torch.float32)
-        train_dataset = TensorDataset(x[train_idx], y_z[train_idx])
-        sampler = build_balanced_sampler(donors, train_idx, args.samples_per_epoch or train_idx.size)
-        loader = DataLoader(train_dataset, batch_size=args.batch_size, sampler=sampler, drop_last=False)
-
-        optimizer = torch.optim.AdamW(
-            list(model.context_encoder.parameters()) + list(head.parameters()),
+        model, head, fit_row, train_mean, train_std = train_fold_head(
+            checkpoint_path=checkpoint_path,
+            x=x,
+            donors=donors,
+            y_transformed=y,
+            train_idx=train_idx,
+            val_idx=val_idx,
+            label_lookup=label_lookup,
+            device=device,
+            epochs=args.finetune_epochs,
+            batch_size=args.batch_size,
+            samples_per_epoch=args.samples_per_epoch,
             lr=args.finetune_lr,
             weight_decay=args.weight_decay,
+            head_hidden_dim=args.head_hidden_dim,
+            dropout=args.dropout,
+            freeze_encoder=False,
+            target_transform=args.target_transform,
+            finetune_label=args.finetune_label,
         )
-        loss_fn = nn.MSELoss()
-        best_row = None
-        best_predictions = []
-        best_spearman = -np.inf
 
-        for epoch in range(1, args.finetune_epochs + 1):
-            model.train()
-            head.train()
-            losses = []
-            for batch_x, batch_y in loader:
-                batch_x = batch_x.to(device)
-                batch_y = batch_y.to(device)
-                pred = head(model.context_encoder(batch_x))
-                loss = loss_fn(pred, batch_y)
-                optimizer.zero_grad(set_to_none=True)
-                loss.backward()
-                optimizer.step()
-                losses.append(float(loss.detach().cpu()))
+        pred_by_donor = predict_by_donor(
+            model=model,
+            head=head,
+            x_np=x[val_idx].numpy(),
+            donors=donors.iloc[val_idx].reset_index(drop=True),
+            device=device,
+            batch_size=args.batch_size,
+            train_mean=train_mean,
+            train_std=train_std,
+            target_transform=args.target_transform,
+        )
+        truth = pred_by_donor["Donor ID"].map(label_lookup).to_numpy(dtype=np.float32)
+        pred_model_scale = pred_by_donor["prediction_model_scale"].to_numpy(dtype=np.float32)
+        pred_raw_scale = pred_by_donor["prediction"].to_numpy(dtype=np.float32)
+        residual = truth - pred_raw_scale
 
-            pred_by_donor = predict_cells_by_donor(model, head, x, donors, val_idx, device, args.batch_size)
-            pred_by_donor["prediction"] = pred_by_donor["prediction_z"] * train_std + train_mean
-            truth = pred_by_donor["Donor ID"].map(label_lookup).to_numpy(dtype=np.float32)
-            pred_model_scale = pred_by_donor["prediction"].to_numpy(dtype=np.float32)
-            pred_raw_scale = inverse_transform_prediction(pred_model_scale, args.target_transform)
-            spearman = spearman_corr(truth, pred_model_scale)
-            if np.isfinite(spearman) and spearman > best_spearman:
-                best_spearman = spearman
-                residual = truth - pred_raw_scale
-                best_row = {
-                    "model": args.finetune_label,
-                    "fold": fold_id,
-                    "target": target,
-                    "n_train_donors": len(train_donors),
-                    "n_val_donors": len(val_donors),
-                    "spearman": spearman,
-                    "mae": float(np.mean(np.abs(residual))),
-                    "r2": r2_score(truth, pred_raw_scale),
-                    "best_epoch": epoch,
-                    "train_loss_at_best": float(np.mean(losses)),
-                    "target_transform": args.target_transform,
-                }
-                best_predictions = [
-                    {
-                        "model": args.finetune_label,
-                        "fold": fold_id,
-                        "target": target,
-                        "donor_id": donor,
-                        "truth": float(truth_value),
-                        "prediction": float(prediction),
-                        "prediction_model_scale": float(model_prediction),
-                        "target_transform": args.target_transform,
-                    }
-                    for donor, truth_value, prediction, model_prediction in zip(
-                        pred_by_donor["Donor ID"], truth, pred_raw_scale, pred_model_scale
-                    )
-                ]
-        if best_row is not None:
-            rows.append(best_row)
-            prediction_rows.extend(best_predictions)
+        prediction_rows.extend(
+            {
+                "model": args.finetune_label,
+                "fold": fold_id,
+                "target": target,
+                "donor_id": donor,
+                "truth": float(truth_value),
+                "prediction": float(prediction),
+                "prediction_model_scale": float(model_prediction),
+                "target_transform": args.target_transform,
+            }
+            for donor, truth_value, prediction, model_prediction in zip(
+                pred_by_donor["Donor ID"], truth, pred_raw_scale, pred_model_scale
+            )
+        )
+
+        rows.append(
+            {
+                "model": args.finetune_label,
+                "fold": fold_id,
+                "target": target,
+                "n_train_donors": len(train_donors),
+                "n_val_donors": len(val_donors),
+                "spearman": fit_row["val_spearman"],
+                "mae": float(np.mean(np.abs(residual))),
+                "r2": r2_score(truth, pred_raw_scale),
+                "best_epoch": fit_row["best_epoch"],
+                "train_loss_at_best": fit_row["train_loss_at_best"],
+                "target_transform": args.target_transform,
+            }
+        )
+        if fit_row["best_epoch"] > 0:
             print(
                 f"{args.finetune_label} fold={fold_id} "
-                f"best_epoch={best_row['best_epoch']} spearman={best_row['spearman']:.4f}"
+                f"best_epoch={fit_row['best_epoch']} spearman={fit_row['val_spearman']:.4f}"
             )
     return rows, prediction_rows
-
 
 def summarize(results: pd.DataFrame) -> pd.DataFrame:
     summary = (

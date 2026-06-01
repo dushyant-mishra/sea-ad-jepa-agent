@@ -435,6 +435,32 @@ python scripts/causal_confounder_adjusted_effects.py `
   --device auto
 ```
 
+Evaluate donor-level PCA-vs-JEPA latent-space geometry for the dimensionality-reduction comparison:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/evaluate_latent_spaces.py `
+  --pseudobulk data/processed/sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv `
+  --jepa results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_donor_embeddings.csv `
+  --metrics-out results/tables/latent_space_evaluation_metrics.csv `
+  --embedding-out results/tables/latent_space_umap_coordinates.csv `
+  --figure-out results/figures/latent_space_pca_vs_jepa_umap_at8_neun.svg `
+  --html-out results/figures/latent_space_pca_vs_jepa_umap_at8_neun.html
+```
+
+Evaluate cell-level donor leakage and pathology mixing:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/evaluate_cell_level_mixing.py `
+  --sample-size 10000 `
+  --n-permutations 5 `
+  --chunk-size 512 `
+  --device auto `
+  --out results/tables/cell_level_mixing_metrics.csv `
+  --sample-out results/tables/cell_level_mixing_sample_metadata.csv
+```
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell

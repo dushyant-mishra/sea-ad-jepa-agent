@@ -581,6 +581,76 @@ homeostatic_microglia:           +0.0093
 
 Interpretation: fold-specific knockouts make the effect sizes smaller and more conservative. The AT8-associated first-pass module is the clearest cross-intervention negative signal. Vascular/barrier, complement, lipid, plaque-response, lysosomal/phagocytic, and disease-associated microglia modules are important to the model, but their sign depends on whether the intervention is a conservative mean replacement or an aggressive zero replacement.
 
+- Added PCA-vs-JEPA latent-space evaluation for the dimensionality-reduction story:
+
+```text
+scripts/evaluate_latent_spaces.py
+```
+
+Outputs:
+
+```text
+results/tables/latent_space_evaluation_metrics.csv
+results/tables/latent_space_evaluation_jepa_vs_pca_summary.csv
+results/tables/latent_space_umap_coordinates.csv
+results/figures/latent_space_pca_vs_jepa_umap_at8_neun.svg
+results/figures/latent_space_pca_vs_jepa_umap_at8_neun.html
+```
+
+This evaluates donor-level pseudobulk PCA against donor-level 128D JEPA embeddings. The visual output is a 2x2 PCA-vs-JEPA map colored by AT8 and NeuN, and the quantitative output tests whether the representation predicts donor pathology with out-of-fold kNN.
+
+JEPA minus PCA kNN Spearman deltas:
+
+```text
+GFAP:       +0.220
+A beta/6e10:+0.071
+Iba1:       +0.025
+AT8/pTau:   +0.017
+NeuN:       -0.007
+```
+
+Interpretation: JEPA is not simply a prettier t-SNE/UMAP. It is a disease-state representation that can be visualized with UMAP. In this first donor-level test, JEPA carries stronger predictive geometry for several glial/pathology axes, especially GFAP and A beta/6e10, while NeuN remains essentially tied/slightly PCA-favored.
+
+Environment note: default UMAP spectral initialization still crashed on Windows even after upgrading SciPy to 1.15.3. The analysis uses fixed UMAP `a/b` parameters and `init="random"` to avoid unstable SciPy `curve_fit` and ARPACK paths while preserving real UMAP optimization.
+
+- Added cell-level donor leakage and pathology mixing evaluation:
+
+```text
+scripts/evaluate_cell_level_mixing.py
+```
+
+Outputs:
+
+```text
+results/tables/cell_level_mixing_metrics.csv
+results/tables/cell_level_mixing_sample_metadata.csv
+```
+
+Setup:
+
+```text
+sample: 9,799 Microglia-PVM cells
+donors: 89
+target: percent AT8 positive area_Grey matter
+device: CUDA
+comparison: cell-level expression PCA-128 vs cell-level JEPA-128
+```
+
+Results:
+
+```text
+metric                         expression PCA     JEPA
+donor silhouette               -0.0403            -0.1181
+donor kNN accuracy              0.4450             0.2388
+donor majority baseline         0.0115             0.0115
+AT8 pathology silhouette       -0.0018            -0.0041
+permuted pathology silhouette  -0.0034            -0.0064
+pathology minus permuted        0.0016             0.0024
+pathology / abs(donor) ratio   -0.0447            -0.0343
+```
+
+Interpretation: JEPA does not appear to be simply memorizing donor identity in this cell-level test. Donor kNN accuracy is substantially lower in JEPA than in PCA, and donor silhouette is more negative, suggesting stronger donor mixing. Cell-level AT8 pathology separation is weak for both representations, which is expected because AT8 is a donor-level label broadcast to cells. After donor-level permutation control, JEPA has a modestly stronger AT8 signal than PCA.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

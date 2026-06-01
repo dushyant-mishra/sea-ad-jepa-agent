@@ -1,0 +1,2 @@
+model,target,n_oof_donors,pooled_oof_spearman,pooled_oof_r2,pooled_oof_mae
+pathology_aware_jepa,percent AT8 positive area_Grey matter,84,0.1501468057102359,-0.03816843994282526,1.0450044870376587

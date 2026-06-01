@@ -20,6 +20,22 @@ logs/
 runs/
 *.log
 
+# Lightweight reproducibility artifacts
+!results/
+results/*
+!results/tables/
+results/tables/*
+!results/tables/*summary*.csv
+!results/tables/*metrics*.csv
+!results/tables/*comparison*.csv
+!results/tables/perturbseq_streaming_validation.csv
+!results/figures/
+results/figures/*
+!results/figures/*.svg
+!results/figures/*.html
+results/figures/*debug*
+results/tables/*smoke*
+
 # OS/editor
 .DS_Store
 Thumbs.db

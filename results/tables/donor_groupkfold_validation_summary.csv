@@ -1,0 +1,2 @@
+model,target,n_folds,spearman_mean,spearman_std,r2_mean,r2_std,mae_mean,mae_std
+pathology_aware_jepa,percent AT8 positive area_Grey matter,3,0.4360518153621602,0.08136198939631299,-0.04822136004469076,0.10531102006558896,1.0450045267740886,0.12773566010817913
