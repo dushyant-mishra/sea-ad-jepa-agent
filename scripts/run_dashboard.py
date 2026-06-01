@@ -60,7 +60,45 @@ def show_missing(path: Path) -> None:
 
 
 def metric_delta(label: str, value: float, help_text: str | None = None) -> None:
-    st.metric(label, f"{value:+.3f}", help=help_text)
+    help_markup = f"<div class='metric-help'>{help_text}</div>" if help_text else ""
+    st.markdown(
+        f"""
+        <div class="metric-card">
+            <div class="metric-label">{label}</div>
+            <div class="metric-value">{value:+.3f}</div>
+            {help_markup}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def apply_plot_theme(fig):
+    fig.update_layout(
+        template="plotly_dark",
+        paper_bgcolor="#111827",
+        plot_bgcolor="#111827",
+        font={"color": "#e5e7eb", "family": "Inter, Segoe UI, sans-serif"},
+        title={"font": {"color": "#f9fafb", "size": 18}},
+        margin={"l": 20, "r": 20, "t": 60, "b": 40},
+        legend={"bgcolor": "rgba(17, 24, 39, 0)", "font": {"color": "#e5e7eb"}},
+        coloraxis_colorbar={"tickfont": {"color": "#e5e7eb"}, "title": {"font": {"color": "#e5e7eb"}}},
+    )
+    fig.update_xaxes(
+        gridcolor="#243044",
+        zerolinecolor="#4b5563",
+        linecolor="#374151",
+        tickfont={"color": "#d1d5db"},
+        title={"font": {"color": "#e5e7eb"}},
+    )
+    fig.update_yaxes(
+        gridcolor="#243044",
+        zerolinecolor="#4b5563",
+        linecolor="#374151",
+        tickfont={"color": "#d1d5db"},
+        title={"font": {"color": "#e5e7eb"}},
+    )
+    return fig
 
 
 st.set_page_config(
@@ -72,12 +110,132 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    .block-container { padding-top: 1.5rem; max-width: 1320px; }
-    div[data-testid="stMetric"] {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
+    :root {
+        --bg: #0b1018;
+        --panel: #111827;
+        --panel-2: #161f2f;
+        --line: #293548;
+        --text: #f4f7fb;
+        --muted: #a9b4c4;
+        --accent: #38bdf8;
+        --accent-2: #f59e0b;
+        --good: #34d399;
+    }
+
+    .stApp {
+        background: var(--bg);
+        color: var(--text);
+    }
+
+    .block-container {
+        padding-top: 2.1rem;
+        padding-bottom: 3rem;
+        max-width: 1480px;
+    }
+
+    section[data-testid="stSidebar"] {
+        background: #171d2a;
+        border-right: 1px solid var(--line);
+    }
+
+    section[data-testid="stSidebar"] * {
+        color: var(--text) !important;
+    }
+
+    h1 {
+        color: var(--text) !important;
+        font-size: 3.1rem !important;
+        letter-spacing: 0 !important;
+        margin-bottom: 0.35rem !important;
+    }
+
+    h2, h3 {
+        color: var(--text) !important;
+        letter-spacing: 0 !important;
+    }
+
+    p, li, label, span, div {
+        color: inherit;
+    }
+
+    [data-testid="stCaptionContainer"] p {
+        color: var(--muted) !important;
+        font-size: 1rem;
+    }
+
+    div[data-testid="stMarkdownContainer"] p {
+        color: #e8edf5;
+        font-size: 1.02rem;
+        line-height: 1.65;
+    }
+
+    .stTabs [data-baseweb="tab-list"] {
+        border-bottom: 1px solid var(--line);
+        gap: 0.35rem;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        color: var(--muted);
+        padding: 0.75rem 0.85rem;
+        border-radius: 6px 6px 0 0;
+    }
+
+    .stTabs [aria-selected="true"] {
+        color: var(--accent) !important;
+        border-bottom: 2px solid var(--accent);
+        background: rgba(56, 189, 248, 0.08);
+    }
+
+    .metric-card {
+        min-height: 128px;
+        background: linear-gradient(180deg, #172033 0%, #111827 100%);
+        border: 1px solid var(--line);
         border-radius: 8px;
-        padding: 0.8rem 1rem;
+        padding: 1rem 1.1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .metric-label {
+        color: var(--muted);
+        font-size: 0.88rem;
+        font-weight: 700;
+        line-height: 1.25;
+        text-transform: uppercase;
+    }
+
+    .metric-value {
+        color: var(--good);
+        font-size: 2.15rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-top: 0.75rem;
+    }
+
+    .metric-help {
+        color: #cbd5e1;
+        font-size: 0.86rem;
+        line-height: 1.35;
+        margin-top: 0.75rem;
+    }
+
+    div[data-testid="stDataFrame"] {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    div[data-testid="stAlert"] {
+        background: #122033;
+        border-color: #2f4f75;
+        color: var(--text);
+    }
+
+    .stSelectbox [data-baseweb="select"] {
+        background: #0f1724;
+        border-radius: 8px;
     }
     </style>
     """,
@@ -177,6 +335,7 @@ with representation_tab:
         )
         fig.update_traces(marker={"size": 8, "opacity": 0.85})
         fig.update_layout(height=520)
+        fig = apply_plot_theme(fig)
         st.plotly_chart(fig, width="stretch")
     else:
         show_missing(TABLES / "latent_space_umap_coordinates.csv")
@@ -211,6 +370,7 @@ with prediction_tab:
             title="JEPA minus pseudobulk pooled OOF Spearman",
         )
         fig.update_layout(yaxis={"autorange": "reversed"}, height=520)
+        fig = apply_plot_theme(fig)
         st.plotly_chart(fig, width="stretch")
         st.dataframe(plot_df, hide_index=True, width="stretch")
     else:
@@ -237,6 +397,7 @@ with counterfactual_tab:
                 color_continuous_scale="RdBu",
             )
             fig.update_layout(yaxis={"autorange": "reversed"}, height=560)
+            fig = apply_plot_theme(fig)
             st.plotly_chart(fig, width="stretch")
             st.dataframe(top, hide_index=True, width="stretch")
         else:
@@ -254,6 +415,7 @@ with counterfactual_tab:
                 color_continuous_scale="RdBu",
             )
             fig.update_layout(yaxis={"autorange": "reversed"}, height=560)
+            fig = apply_plot_theme(fig)
             st.plotly_chart(fig, width="stretch")
             st.dataframe(top_modules, hide_index=True, width="stretch")
         else:
@@ -275,6 +437,7 @@ with latent_tab:
             title=f"Latent dimensions most predictive of {target_info['label']}",
         )
         fig.update_layout(yaxis={"autorange": "reversed"}, height=560)
+        fig = apply_plot_theme(fig)
         st.plotly_chart(fig, width="stretch")
         st.dataframe(top, hide_index=True, width="stretch")
     else:
@@ -291,6 +454,7 @@ with perturb_tab:
         st.dataframe(k562, hide_index=True, width="stretch")
         if {"target_gene", "cosine_similarity"}.issubset(k562.columns):
             fig = px.bar(k562, x="target_gene", y="cosine_similarity", color="cosine_similarity", color_continuous_scale="RdBu")
+            fig = apply_plot_theme(fig)
             st.plotly_chart(fig, width="stretch")
     else:
         show_missing(TABLES / "perturbseq_streaming_validation.csv")
