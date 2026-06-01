@@ -475,11 +475,21 @@ python scripts/benchmark_perturbseq_streaming.py `
   --max-ntc 100 `
   --max-ko-cells 50 `
   --shuffle-cells 10 `
+  --counterfactual-mode input_erasure `
+  --max-retries 3 `
+  --retry-wait-seconds 2 `
   --out results/tables/perturbseq_streaming_validation.csv `
   --device auto
 ```
 
-This is an engineering smoke test for the benchmark machinery. It should not be interpreted as Alzheimer’s microglia validation.
+This is an engineering smoke test for the benchmark machinery. It should not be interpreted as Alzheimer's microglia validation.
+
+Two counterfactual modes are available:
+
+- `input_erasure`: mean-replace the target gene in control cells, then compare the context-encoder latent shift to the real CRISPR latent shift.
+- `predictive`: mean-replace the target gene in control cells, pass the masked controls through the JEPA predictor, then compare that predictor-space shift to the real CRISPR latent shift.
+
+The `predictive` mode is useful for testing whether the learned JEPA predictor contributes beyond local input sensitivity. The `--max-retries` and `--retry-wait-seconds` flags are mainly for remote HTTP-backed H5AD reads.
 
 Embed cells and aggregate JEPA embeddings by donor:
 

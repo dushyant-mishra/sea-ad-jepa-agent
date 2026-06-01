@@ -5,6 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import argparse
+import time
 import fsspec
 import h5py
 import numpy as np
@@ -15,6 +16,18 @@ from scipy import sparse
 
 from sea_ad_jepa.jepa import GeneJEPA
 from sea_ad_jepa.evaluation_utils import choose_device, load_jepa
+
+
+def retry_call(label: str, fn, max_retries: int, retry_wait_seconds: float):
+    for attempt in range(1, max_retries + 1):
+        try:
+            return fn()
+        except Exception:
+            if attempt >= max_retries:
+                raise
+            wait = retry_wait_seconds * attempt
+            print(f"Retrying {label} after transient read failure ({attempt}/{max_retries}); waiting {wait:.1f}s...")
+            time.sleep(wait)
 
 
 def read_obs_column(h5: h5py.File, col_name: str) -> list[str | None]:
@@ -54,14 +67,26 @@ def read_var_names(h5: h5py.File) -> list[str]:
     raise KeyError("Could not locate var index (gene names) in the remote H5AD file.")
 
 
-def stream_rows(h5: h5py.File, row_indices: list[int], n_vars: int, indptr_local: np.ndarray | None = None) -> np.ndarray:
+def stream_rows(
+    h5: h5py.File,
+    row_indices: list[int],
+    n_vars: int,
+    indptr_local: np.ndarray | None = None,
+    max_retries: int = 3,
+    retry_wait_seconds: float = 2.0,
+) -> np.ndarray:
     x_obj = h5["X"]
     
     if isinstance(x_obj, h5py.Dataset):
         # Dense matrix
         dense_rows = np.zeros((len(row_indices), n_vars), dtype=np.float32)
         for i, r_idx in enumerate(row_indices):
-            dense_rows[i] = x_obj[r_idx]
+            dense_rows[i] = retry_call(
+                f"dense row {r_idx}",
+                lambda r_idx=r_idx: x_obj[r_idx],
+                max_retries=max_retries,
+                retry_wait_seconds=retry_wait_seconds,
+            )
         return dense_rows
     else:
         # Sparse CSR group
@@ -73,14 +98,56 @@ def stream_rows(h5: h5py.File, row_indices: list[int], n_vars: int, indptr_local
             for i, r_idx in enumerate(row_indices):
                 start = indptr_local[r_idx]
                 end = indptr_local[r_idx + 1]
-                dense_rows[i, indices[start:end]] = data[start:end]
+                row_indices_local = retry_call(
+                    f"sparse row indices {r_idx}",
+                    lambda start=start, end=end: indices[start:end],
+                    max_retries=max_retries,
+                    retry_wait_seconds=retry_wait_seconds,
+                )
+                row_data = retry_call(
+                    f"sparse row data {r_idx}",
+                    lambda start=start, end=end: data[start:end],
+                    max_retries=max_retries,
+                    retry_wait_seconds=retry_wait_seconds,
+                )
+                dense_rows[i, row_indices_local] = row_data
         else:
             indptr = x_obj["indptr"]
             for i, r_idx in enumerate(row_indices):
-                start = indptr[r_idx]
-                end = indptr[r_idx + 1]
-                dense_rows[i, indices[start:end]] = data[start:end]
+                start = retry_call(
+                    f"sparse row start {r_idx}",
+                    lambda r_idx=r_idx: indptr[r_idx],
+                    max_retries=max_retries,
+                    retry_wait_seconds=retry_wait_seconds,
+                )
+                end = retry_call(
+                    f"sparse row end {r_idx}",
+                    lambda r_idx=r_idx: indptr[r_idx + 1],
+                    max_retries=max_retries,
+                    retry_wait_seconds=retry_wait_seconds,
+                )
+                row_indices_local = retry_call(
+                    f"sparse row indices {r_idx}",
+                    lambda start=start, end=end: indices[start:end],
+                    max_retries=max_retries,
+                    retry_wait_seconds=retry_wait_seconds,
+                )
+                row_data = retry_call(
+                    f"sparse row data {r_idx}",
+                    lambda start=start, end=end: data[start:end],
+                    max_retries=max_retries,
+                    retry_wait_seconds=retry_wait_seconds,
+                )
+                dense_rows[i, row_indices_local] = row_data
         return dense_rows
+
+
+def project_cells(model: GeneJEPA, x: torch.Tensor, mode: str) -> np.ndarray:
+    with torch.no_grad():
+        z = model.context_encoder(x)
+        if mode == "predictive":
+            z = model.predictor(z)
+        return z.cpu().numpy()
 
 
 def cosine_similarity(v1: np.ndarray, v2: np.ndarray) -> float:
@@ -148,6 +215,18 @@ def main() -> None:
     parser.add_argument("--max-ko-cells", type=int, default=0, help="Maximum KO cells per target. Use 0 for all.")
     parser.add_argument("--shuffle-cells", type=int, default=50, help="Maximum cells to stream per shuffle guide.")
     parser.add_argument("--out", default="results/tables/perturbseq_streaming_validation.csv")
+    parser.add_argument(
+        "--counterfactual-mode",
+        choices=["input_erasure", "predictive"],
+        default="input_erasure",
+        help=(
+            "input_erasure compares context-encoder shifts after mean-replacing the target gene; "
+            "predictive compares true CRISPR context-encoder shifts against predictor-space shifts "
+            "from masked controls."
+        ),
+    )
+    parser.add_argument("--max-retries", type=int, default=3, help="Maximum retries for H5 row reads.")
+    parser.add_argument("--retry-wait-seconds", type=float, default=2.0, help="Base backoff wait between retries.")
     parser.add_argument("--device", default="auto")
     parser.add_argument("--batch-size", type=int, default=128)
     args = parser.parse_args()
@@ -166,8 +245,18 @@ def main() -> None:
         print(f"\nConnecting to remote Perturb-seq file:\n{args.url}")
         fs = fsspec.filesystem("http")
         try:
-            remote_file = fs.open(args.url, "rb")
-            h5 = h5py.File(remote_file, "r")
+            remote_file = retry_call(
+                "open remote file",
+                lambda: fs.open(args.url, "rb"),
+                max_retries=args.max_retries,
+                retry_wait_seconds=args.retry_wait_seconds,
+            )
+            h5 = retry_call(
+                "open remote H5",
+                lambda: h5py.File(remote_file, "r"),
+                max_retries=args.max_retries,
+                retry_wait_seconds=args.retry_wait_seconds,
+            )
         except Exception as e:
             print(f"Error opening remote file: {e}")
             sys.exit(1)
@@ -231,7 +320,14 @@ def main() -> None:
     max_ntc = min(args.max_ntc, len(control_indices))
     selected_ntc_idx = np.random.choice(control_indices, size=max_ntc, replace=False).tolist()
     
-    ntc_raw_streamed = stream_rows(h5, selected_ntc_idx, n_vars, indptr_local)
+    ntc_raw_streamed = stream_rows(
+        h5,
+        selected_ntc_idx,
+        n_vars,
+        indptr_local,
+        max_retries=args.max_retries,
+        retry_wait_seconds=args.retry_wait_seconds,
+    )
     # Align to JEPA 3000 feature space (vectorized)
     ntc_aligned = np.zeros((len(selected_ntc_idx), len(jepa_genes)), dtype=np.float32)
     ntc_aligned[:, jepa_idxs] = ntc_raw_streamed[:, remote_idxs]
@@ -244,10 +340,12 @@ def main() -> None:
     # Convert NTC to PyTorch tensor
     ntc_tensor = torch.from_numpy(ntc_aligned).to(device)
     
-    # Project NTC cells to Latent Space
-    with torch.no_grad():
-        z_ntc = model.context_encoder(ntc_tensor).cpu().numpy()
+    # Project NTC cells to observed latent space. The observed CRISPR shift is always
+    # measured in context-encoder space; predictive mode only changes the model-implied
+    # counterfactual shift.
+    z_ntc = project_cells(model, ntc_tensor, mode="input_erasure")
     z_ntc_mean = z_ntc.mean(axis=0)
+    z_ntc_pred_mean = project_cells(model, ntc_tensor, mode="predictive").mean(axis=0)
     
     results = []
     
@@ -266,13 +364,19 @@ def main() -> None:
             if idx_sh % 20 == 0:
                 print(f"  Streaming and projecting shuffle {idx_sh}/{len(shuffled_guides)}: '{sh_guide}'...")
                 
-            sh_raw = stream_rows(h5, sh_indices[: args.shuffle_cells], n_vars, indptr_local)
+            sh_raw = stream_rows(
+                h5,
+                sh_indices[: args.shuffle_cells],
+                n_vars,
+                indptr_local,
+                max_retries=args.max_retries,
+                retry_wait_seconds=args.retry_wait_seconds,
+            )
             sh_aligned = np.zeros((sh_raw.shape[0], len(jepa_genes)), dtype=np.float32)
             sh_aligned[:, jepa_idxs] = sh_raw[:, remote_idxs]
             
             sh_tensor = torch.from_numpy(sh_aligned).to(device)
-            with torch.no_grad():
-                z_sh = model.context_encoder(sh_tensor).cpu().numpy()
+            z_sh = project_cells(model, sh_tensor, mode="input_erasure")
             z_sh_mean = z_sh.mean(axis=0)
             
             v_obs_sh = z_sh_mean - z_ntc_mean
@@ -297,14 +401,20 @@ def main() -> None:
         if args.max_ko_cells and len(ko_indices) > args.max_ko_cells:
             ko_indices = np.random.choice(ko_indices, size=args.max_ko_cells, replace=False).tolist()
             print(f"Capped target stream to {len(ko_indices)} cells.")
-        ko_raw_streamed = stream_rows(h5, ko_indices, n_vars, indptr_local)
+        ko_raw_streamed = stream_rows(
+            h5,
+            ko_indices,
+            n_vars,
+            indptr_local,
+            max_retries=args.max_retries,
+            retry_wait_seconds=args.retry_wait_seconds,
+        )
         ko_aligned = np.zeros((len(ko_indices), len(jepa_genes)), dtype=np.float32)
         ko_aligned[:, jepa_idxs] = ko_raw_streamed[:, remote_idxs]
             
         # Project real CRISPR KO to Latent Space
         ko_tensor = torch.from_numpy(ko_aligned).to(device)
-        with torch.no_grad():
-            z_ko_real = model.context_encoder(ko_tensor).cpu().numpy()
+        z_ko_real = project_cells(model, ko_tensor, mode="input_erasure")
         z_ko_real_mean = z_ko_real.mean(axis=0)
         
         # Observed Latent Vector (CRISPR KO - NTC)
@@ -320,14 +430,16 @@ def main() -> None:
         else:
             print(f"Warning: Target '{target}' is not in JEPA's 3000 gene list. Knocking out via embedding space only.")
             
-        # Project perturbed NTC cells
+        # Project perturbed NTC cells.
         ntc_perturbed_tensor = torch.from_numpy(ntc_perturbed).to(device)
-        with torch.no_grad():
-            z_ko_pred = model.context_encoder(ntc_perturbed_tensor).cpu().numpy()
+        z_ko_pred = project_cells(model, ntc_perturbed_tensor, mode=args.counterfactual_mode)
         z_ko_pred_mean = z_ko_pred.mean(axis=0)
         
         # Predicted Latent Vector (JEPA Counterfactual KO - NTC)
-        v_pred = z_ko_pred_mean - z_ntc_mean
+        if args.counterfactual_mode == "predictive":
+            v_pred = z_ko_pred_mean - z_ntc_pred_mean
+        else:
+            v_pred = z_ko_pred_mean - z_ntc_mean
         
         # C. Compute Congruence
         cos_sim = cosine_similarity(v_obs, v_pred)
@@ -352,6 +464,7 @@ def main() -> None:
         
         results.append({
             "target_gene": target,
+            "counterfactual_mode": args.counterfactual_mode,
             "cosine_similarity": cos_sim,
             "spearman_r": spearman_r,
             "empirical_p": empirical_p,

@@ -676,6 +676,30 @@ BRD4     -0.197    -0.167     1.0
 
 Interpretation: this is an engineering smoke test, not AD microglia validation. It proves the benchmark pipeline can align a Perturb-seq dataset to the SEA-AD JEPA gene space, stream selected cells, compute observed CRISPR latent shifts, compute digital knockout latent shifts, and write result CSVs. The weak/negative alignment is expected to remain biologically ambiguous in K562 because it is a leukemia cell line and not a microglia model.
 
+- Hardened the K562 benchmark script for the next round:
+
+```text
+script: scripts/benchmark_perturbseq_streaming.py
+new flags:
+  --counterfactual-mode input_erasure | predictive
+  --max-retries
+  --retry-wait-seconds
+```
+
+The original `input_erasure` mode measures a context-encoder shift after replacing the target gene in control cells. The new `predictive` mode measures a predictor-space shift after the same masking step, then compares it with the observed CRISPR context-encoder shift. This separates local input sensitivity from the JEPA predictor's learned latent-to-latent counterfactual behavior.
+
+Tiny local predictive-mode smoke test completed for HSP90B1:
+
+```text
+controls streamed: 20
+KO cells streamed: 10
+null shuffles: 1
+cosine: -0.688
+spearman: -0.628
+```
+
+This test only verifies that the new path executes. It should not be treated as a biological conclusion.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
