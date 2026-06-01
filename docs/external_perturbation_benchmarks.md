@@ -13,6 +13,55 @@ does a real CRISPR or drug perturbation dataset show a matching response?
 
 Perturb-seq combines pooled CRISPR perturbations with single-cell RNA-seq. It is the best match for testing gene-network causal predictions.
 
+### Kampmann Lab iPSC-Derived Microglia CRISPRi/a CROP-seq
+
+Use case:
+
+```text
+biology-matched external benchmark for microglia state perturbations
+```
+
+Why it matters:
+
+```text
+K562 validates the benchmark plumbing; iPSC-derived microglia test the disease-relevant cell type.
+```
+
+The strongest near-term biological pivot is the Kampmann Lab human iPSC-derived microglia CRISPRi/a platform. The associated Nature Neuroscience publication is listed by the Kampmann Lab as **"A CRISPRi/a platform in human iPSC-derived microglia uncovers regulators of disease states"**. The lab also hosts a **Microglia Analysis** resource page with RNA-seq and CROP-seq analysis scripts/notebooks.
+
+Reference/access:
+
+- Kampmann Lab microglia analysis page: https://kampmannlab.ucsf.edu/article/microglia-analysis
+- Kampmann Lab publication listing: https://kampmannlab.ucsf.edu/selected-publications
+- Publication DOI page via PubMed link from Kampmann Lab: https://pubmed.ncbi.nlm.nih.gov/35915164/
+
+How to use it:
+
+```text
+1. Locate processed CROP-seq count matrices or analysis objects from the linked resource.
+2. Confirm perturbation labels and control labels.
+3. Align shared genes to the SEA-AD JEPA input space.
+4. Run benchmark_perturbseq_streaming.py on microglia-relevant targets.
+5. Compare input_erasure and predictive counterfactual modes.
+```
+
+Best first targets:
+
+```text
+P2RY12
+CX3CR1
+TREM2
+APOE
+C1QA / C1QB / C1QC
+TYROBP
+```
+
+Interpretation:
+
+```text
+This is the first external perturbation benchmark that can plausibly validate microglia-specific Alzheimer's hypotheses.
+```
+
 ### Replogle et al. Genome-Scale Perturb-seq
 
 Use case:
@@ -156,6 +205,20 @@ How to use it later:
 The best immediate benchmark is:
 
 ```text
+Kampmann Lab iPSC-derived microglia CRISPRi/a CROP-seq
+```
+
+Why:
+
+```text
+closest cell-type match for SEA-AD Microglia-PVM biology
+more relevant to P2RY12, CX3CR1, TREM2, APOE, complement, and DAM/homeostatic modules
+better biological validation target than K562
+```
+
+The second choice is:
+
+```text
 Norman et al. Perturb-seq via GSE133344 or the Perturbseq_GI resources
 ```
 
@@ -165,9 +228,10 @@ Why:
 smaller and more tractable than genome-scale Replogle
 has single and combinatorial perturbations
 well suited for testing digital knockout and latent interaction logic
+useful if the microglia CROP-seq objects are not immediately easy to automate
 ```
 
-The second choice is:
+The third choice is:
 
 ```text
 Replogle genome-scale Perturb-seq
@@ -176,8 +240,9 @@ Replogle genome-scale Perturb-seq
 Why:
 
 ```text
-stronger scale and gene coverage
-better for broad gene-level validation after the benchmark code is stable
+strong scale and gene coverage
+already works as a local K562 benchmark after downloading the GWPS H5AD
+best used as engineering validation rather than microglia biology validation
 ```
 
 ## Benchmark Metrics
