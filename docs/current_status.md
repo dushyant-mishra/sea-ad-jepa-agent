@@ -739,6 +739,44 @@ predictive:
 
 Interpretation: this is the first biology-matched external stress test. The current v1 SEA-AD JEPA does not broadly align with observed iPSC-microglia CRISPRi DEG responses. That is not a failure of the project; it is a useful boundary on v1 and a concrete reason to add stronger module-level perturbations, CRISPRi-aware knockdown modeling, and cross-domain/foundation pretraining in JEPA v2.
 
+- Generated the v1 internal SEA-AD biological hypothesis report:
+
+```text
+script: scripts/generate_v1_biological_hypothesis_report.py
+report: results/reports/v1_microglia_biological_hypotheses.md
+tables:
+  results/tables/v1_hypothesis_candidate_genes.csv
+  results/tables/v1_hypothesis_candidate_modules.csv
+  results/tables/v1_jepa_63_decode.csv
+```
+
+Key extracted findings:
+
+```text
+jepa_63
+  strongest AT8/pTau latent coefficient
+  AT8 mean coefficient ~= -0.118
+  NeuN mean coefficient ~= -0.055
+  top module annotations: complement, antigen presentation, synapse pruning
+
+top model-implied AT8-lowering genes
+  CHI3L1
+  PTPRG
+  NFKBIA
+  S100A4
+  TNFRSF11B
+  DRAM1
+  P2RY12
+  MRC1
+  MSR1
+  CTSD
+
+cleanest AT8-lowering module
+  at8_associated_first_pass
+```
+
+Interpretation: the most useful v1 biology is internal to SEA-AD rather than the external Kampmann stress test. The current model points to an AT8-linked inflammatory/stress program, a `jepa_63` complement/antigen-presentation/synapse-pruning axis, and vascular/barrier or lipid-context modules as follow-up hypotheses. These remain model-implied counterfactual hypotheses until tested against perturbation, spatial, or orthogonal pathology data.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

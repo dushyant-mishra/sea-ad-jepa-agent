@@ -508,6 +508,24 @@ python scripts/benchmark_kampmann_deg_alignment.py `
 
 This benchmark uses `GSE178317` and the Dräger/Kampmann supplementary DEG table. It is more biologically relevant than K562, but it is not the same as a cell-level guide-assignment benchmark because GEO does not provide final per-cell sgRNA labels as a simple metadata table.
 
+Generate the v1 internal SEA-AD biological hypothesis report:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/generate_v1_biological_hypothesis_report.py
+```
+
+Outputs:
+
+```text
+results/reports/v1_microglia_biological_hypotheses.md
+results/tables/v1_hypothesis_candidate_genes.csv
+results/tables/v1_hypothesis_candidate_modules.csv
+results/tables/v1_jepa_63_decode.csv
+```
+
+This report decodes `jepa_63`, joins gene/module digital knockouts with confounder-adjusted effects, and writes three concrete SEA-AD Microglia-PVM hypotheses. Treat these as model-implied hypotheses. They are useful for prioritization, but they are not experimental proof of causality.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
