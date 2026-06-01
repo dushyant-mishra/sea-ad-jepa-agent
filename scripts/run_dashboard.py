@@ -1,137 +1,46 @@
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-import streamlit as st
 import pandas as pd
-import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
+import streamlit as st
 
-# --- PAGE CONFIGURATION & STYLING ---
-st.set_page_config(
-    page_title="Alzheimer's Causal Discovery Engine",
-    page_icon="🧠",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
-# Custom CSS for a premium look
-st.markdown("""
-<style>
-    .reportview-container {
-        background: #0f1116;
-    }
-    .main {
-        background: #0f1116;
-        color: #e2e8f0;
-        font-family: 'Inter', sans-serif;
-    }
-    h1, h2, h3 {
-        color: #f1f5f9 !important;
-        font-weight: 700 !important;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 24px;
-        background-color: transparent;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        white-space: pre-wrap;
-        background-color: #1e293b;
-        border-radius: 8px 8px 0px 0px;
-        color: #94a3b8;
-        padding-left: 20px;
-        padding-right: 20px;
-        font-weight: 600;
-        border: none;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #3b82f6 !important;
-        color: #ffffff !important;
-    }
-    div[data-testid="stExpander"] {
-        background-color: #1e293b;
-        border: 1px solid #334155;
-        border-radius: 8px;
-    }
-</style>
-""", unsafe_allow_html=True)
+ROOT = Path(__file__).resolve().parents[1]
+TABLES = ROOT / "results" / "tables"
+FIGURES = ROOT / "results" / "figures"
+MULTITARGET = TABLES / "multitarget_causal"
 
-# Title Header
-st.title("🧠 Myeloid Causal Discovery Engine")
-st.markdown("""
-*Translating PyTorch representation learning into actionable Alzheimer's therapeutic targets.*
-***
-""")
-
-# --- TARGET CONFIGURATION ---
-TARGETS_MAP = {
+TARGETS = {
     "percent AT8 positive area_Grey matter": {
-        "friendly_name": "Tau Tangles (IHC AT8)",
-        "units": "% Area",
-        "description": "Hyperphosphorylated tau neurofibrillary tangles, the primary driver of cognitive decline.",
-        "layman_take_gene": "**Resting vs. Active Immune States**: Deleting genes that maintain the microglia homeostatic resting state (e.g., **P2RY12**, **CX3CR1**) reduces predicted Tau accumulation. This implies that microglia must be driven out of their resting state to actively clear pathological aggregates.",
-        "layman_take_module": "**Vascular & Lipid Protection**: Lipid metabolism and vascular barrier modules show highly protective effects. Microglia supporting endothelial integrity and fat clearance are crucial barriers against tau propagation."
+        "label": "AT8 / pTau",
+        "definition": "IHC-positive hyperphosphorylated tau area in grey matter.",
     },
     "percent 6e10 positive area_Grey matter": {
-        "friendly_name": "Amyloid Plaques (IHC 6E10)",
-        "units": "% Area",
-        "description": "Extracellular amyloid-beta deposits forming senile plaques.",
-        "layman_take_gene": "**Plaque Response Signaling**: Turning off genes in the plaque-response module alters amyloid deposition predictions, reflecting active clearance dynamics.",
-        "layman_take_module": "**Phagocytic Clearance**: Lysosomal and phagocytic programs show protective causal scores, highlighting the role of phagocytosis in plaque removal."
+        "label": "A beta / 6E10",
+        "definition": "IHC-positive amyloid-beta plaque area in grey matter.",
     },
     "percent GFAP positive area_Grey matter": {
-        "friendly_name": "Astrogliosis (IHC GFAP)",
-        "units": "% Area",
-        "description": "Reactive astrogliosis, reflecting neuroinflammatory tissue scarring.",
-        "layman_take_gene": "**Neuroinflammatory Cascade**: Deleting reactive genes attenuates the predicted neuroinflammatory state, indicating a potential target to reduce brain scarring.",
-        "layman_take_module": "**Glial Crosstalk**: Inflammatory signaling modules act as major drivers of reactive astrogliosis, highlighting immune-astrocyte communication."
+        "label": "GFAP",
+        "definition": "Astrocyte reactivity / astrogliosis area in grey matter.",
     },
     "percent Iba1 positive area_Grey matter": {
-        "friendly_name": "Microgliosis (IHC Iba1)",
-        "units": "% Area",
-        "description": "Microglial activation and proliferation.",
-        "layman_take_gene": "**Proliferation Control**: Knocking out signaling receptors reduces predicted microglial density, indicating key nodes that control activation.",
-        "layman_take_module": "**Homeostatic Feedback**: Homeostatic programs causally suppress microgliosis, keeping microglial activation in check."
+        "label": "Iba1",
+        "definition": "Microglial activation / microgliosis area in grey matter.",
     },
     "percent NeuN positive area_Grey matter": {
-        "friendly_name": "Neuronal Density (IHC NeuN)",
-        "units": "% Area",
-        "description": "Marker of mature healthy neurons; lower density reflects neurodegeneration.",
-        "layman_take_gene": "**The Synaptic Pruning Hazard**: Deleting complement-related genes (e.g., **CR1**, **C3**) leads to a *decrease* in predicted neuronal density. This implies that these genes are vital correlates of neuronal survival, and deleting them disrupts necessary structural feedback.",
-        "layman_take_module": "**Pruning Safeguards**: Complement and pruning pathways show major contributions to neuronal prediction, indicating the model heavily links microglial immune pruning to neuronal survival."
+        "label": "NeuN",
+        "definition": "Mature neuronal marker area; lower signal is consistent with neuronal loss.",
     },
     "guhcl pTau_Grey matter": {
-        "friendly_name": "Guanidine-soluble pTau (Biochemical)",
-        "units": "pg/mg protein",
-        "description": "Biochemically extracted hyperphosphorylated tau, representing insoluble cytoskeletal pathology.",
-        "layman_take_gene": "**Phosphorylation Drivers**: Interferon and stress genes causally affect biochemical pTau, highlighting metabolic stress pathways.",
-        "layman_take_module": "**Senescence & Stress**: Stress pathways show strong associations with biochemical tau changes."
+        "label": "Guanidine pTau",
+        "definition": "Biochemically measured insoluble phosphorylated tau.",
     },
     "guhcl abeta42_Grey matter": {
-        "friendly_name": "Guanidine-soluble Aβ42 (Biochemical)",
-        "units": "pg/mg protein",
-        "description": "Biochemically extracted insoluble amyloid-beta 42.",
-        "layman_take_gene": "**Aβ Aggregation Control**: Core immune receptors causally influence abeta42 predictions.",
-        "layman_take_module": "**Lipid and Clearance Pathways**: Insoluble amyloid accumulation is highly sensitive to lipid metabolism modules."
+        "label": "Guanidine A beta 42",
+        "definition": "Biochemically measured insoluble amyloid-beta 42.",
     },
-    "ripa pTau_Grey matter": {
-        "friendly_name": "RIPA-soluble pTau (Biochemical)",
-        "units": "pg/mg protein",
-        "description": "Soluble hyperphosphorylated tau, representing early-stage tau pathology.",
-        "layman_take_gene": "**Early-stage Tau Phosphorylation**: Soluble tau levels are modulated by metabolic and homeostatic genes.",
-        "layman_take_module": "**Interferon Signaling**: Early tau changes correlate with interferon-induced neuroinflammation."
-    },
-    "ripa abeta42_Grey matter": {
-        "friendly_name": "RIPA-soluble Aβ42 (Biochemical)",
-        "units": "pg/mg protein",
-        "description": "Soluble amyloid-beta 42, the toxic oligomeric species.",
-        "layman_take_gene": "**Oligomer Dynamics**: Oligomeric amyloid species predictions are highly sensitive to immune activation states.",
-        "layman_take_module": "**Complement Clearance**: Complement modules are causally linked to soluble amyloid clearance."
-    }
 }
 
 
@@ -139,260 +48,251 @@ def slugify(name: str) -> str:
     return name.replace(" ", "_").replace("%", "percent").replace("/", "_").replace("+", "_plus_")
 
 
-# --- DATA LOADING FUNCTIONS ---
 @st.cache_data
-def load_gene_ko(target_name: str) -> pd.DataFrame | None:
-    slug = slugify(target_name)
-    path = Path(f"results/tables/multitarget_causal/causal_fold_specific_two_pass_{slug}.csv")
-    if path.exists():
-        df = pd.read_csv(path)
-        # Rename column for dashboard display
-        if "abs_mean_donor_delta" in df.columns:
-            return df.sort_values("abs_mean_donor_delta", ascending=False).reset_index(drop=True)
-        return df
-    return None
-
-
-@st.cache_data
-def load_module_ko(target_name: str) -> pd.DataFrame | None:
-    slug = slugify(target_name)
-    path = Path(f"results/tables/multitarget_causal/causal_fold_specific_two_pass_{slug}_modules.csv")
+def read_csv(path: Path) -> pd.DataFrame | None:
     if path.exists():
         return pd.read_csv(path)
     return None
 
 
-@st.cache_data
-def load_confounder_effects(target_name: str) -> pd.DataFrame | None:
-    slug = slugify(target_name)
-    path = Path(f"results/tables/multitarget_causal/confounder_adjusted_module_effects_{slug}.csv")
-    if path.exists():
-        return pd.read_csv(path)
-    return None
+def show_missing(path: Path) -> None:
+    st.info(f"Missing expected file: `{path.relative_to(ROOT)}`")
 
 
-@st.cache_data
-def load_latent_weights() -> pd.DataFrame | None:
-    path = Path("results/tables/pathology_latent_weights.csv")
-    if path.exists():
-        return pd.read_csv(path)
-    return None
+def metric_delta(label: str, value: float, help_text: str | None = None) -> None:
+    st.metric(label, f"{value:+.3f}", help=help_text)
 
 
-# --- SIDEBAR CONTROL PANEL ---
-st.sidebar.title("🎮 Control Panel")
-st.sidebar.write("Configure the target selection and parameters.")
-
-selected_friendly = st.sidebar.selectbox(
-    "Select Neuropathology Target:",
-    options=[TARGETS_MAP[t]["friendly_name"] for t in TARGETS_MAP.keys()]
+st.set_page_config(
+    page_title="SEA-AD JEPA Agent",
+    page_icon="",
+    layout="wide",
 )
 
-# Find the internal target name
-target_key = None
-for k, v in TARGETS_MAP.items():
-    if v["friendly_name"] == selected_friendly:
-        target_key = k
-        break
+st.markdown(
+    """
+    <style>
+    .block-container { padding-top: 1.5rem; max-width: 1320px; }
+    div[data-testid="stMetric"] {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-target_config = TARGETS_MAP[target_key]
-st.sidebar.markdown(f"**Description**:\n*{target_config['description']}*")
-st.sidebar.markdown(f"**Biological Units**: `{target_config['units']}`")
+st.title("SEA-AD JEPA Agent")
+st.caption(
+    "A pathology-grounded biological state space for Alzheimer's disease, with prediction, "
+    "representation diagnostics, and model-implied counterfactual screens."
+)
 
-# --- MAIN PAGE DETAILS ---
-st.subheader(f"Analyzing Target: {selected_friendly}")
-st.write(target_config["description"])
+target = st.sidebar.selectbox(
+    "Pathology target",
+    options=list(TARGETS),
+    format_func=lambda value: TARGETS[value]["label"],
+)
+target_info = TARGETS[target]
+target_slug = slugify(target)
 
-tab1, tab2, tab3 = st.tabs([
-    "🧬 Digital Gene Knockouts", 
-    "🧩 Systems Biology (Modules)", 
-    "🔮 AI Latent Dimensions"
-])
+st.sidebar.markdown(f"**{target_info['label']}**")
+st.sidebar.write(target_info["definition"])
+st.sidebar.markdown("---")
+st.sidebar.write("Interpretation boundary:")
+st.sidebar.write("Association and prediction are not biological proof of causality.")
+st.sidebar.write("Digital knockouts are model-implied counterfactual hypotheses.")
 
-# --- TAB 1: GENE KNOCKOUTS ---
-with tab1:
-    st.markdown("### 🧬 Counterfactual Gene Knockouts")
-    st.write(f"This chart displays the predicted impact of computationally knocking out individual microglia genes. The delta measures the change in prediction in raw biological units (`{target_config['units']}`).")
-    
-    gene_df = load_gene_ko(target_key)
-    
-    if gene_df is not None and not gene_df.empty:
-        # Display top 15 genes
-        top_genes = gene_df.head(15).copy()
-        
-        # Color coding for negative (protective/reducing) vs positive
-        top_genes["Direction"] = top_genes["mean_donor_delta"].apply(
-            lambda x: "Reduces Pathology" if x < 0 else "Increases Pathology"
-        )
-        
-        fig_gene = px.bar(
-            top_genes,
-            x="mean_donor_delta",
-            y="perturbation",
-            orientation="h",
-            color="Direction",
-            title=f"Top 15 Microglia Genes Driving Predicted {selected_friendly}",
-            labels={"mean_donor_delta": f"Causal Delta ({target_config['units']})", "perturbation": "Gene Name"},
-            color_discrete_map={"Reduces Pathology": "#3b82f6", "Increases Pathology": "#ef4444"},
-            category_orders={"perturbation": top_genes["perturbation"].tolist()}
-        )
-        fig_gene.update_layout(
-            template="plotly_dark",
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            yaxis=dict(autorange="reversed")
-        )
-        st.plotly_chart(fig_gene, use_container_width=True)
-        
-        # Table view
-        with st.expander("📋 View Complete Gene Knockout Rankings"):
-            st.dataframe(
-                gene_df[["perturbation", "module", "mean_donor_delta", "bootstrap_ci_low", "bootstrap_ci_high", "fold_sign_consistency"]],
-                column_config={
-                    "perturbation": "Gene",
-                    "module": "Microglia Module",
-                    "mean_donor_delta": "Causal Delta",
-                    "bootstrap_ci_low": "CI Low",
-                    "bootstrap_ci_high": "CI High",
-                    "fold_sign_consistency": "Fold Consistency"
-                },
-                hide_index=True
-            )
-            
-        # Layman take
-        st.markdown(f"""
-        <div style="background-color: #1e293b; padding: 20px; border-radius: 8px; border-left: 5px solid #3b82f6; margin-top: 15px;">
-            <h4>💡 Layman's Take on Gene Knockouts</h4>
-            <p>{target_config['layman_take_gene']}</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    else:
-        st.warning("No gene knockout data found for this target.")
+overview_tab, representation_tab, prediction_tab, counterfactual_tab, latent_tab, perturb_tab = st.tabs(
+    [
+        "Overview",
+        "Representation Space",
+        "Prediction",
+        "Counterfactuals",
+        "Latent Factors",
+        "External Perturbation",
+    ]
+)
 
-# --- TAB 2: MODULE-LEVEL CAUSATION VS CORRELATION ---
-with tab2:
-    st.markdown("### 🧩 Systems Biology: Modules")
-    st.write("We compare the **Confounder-Adjusted Module Effects** (observational correlation controlled for clinical covariates) vs. **Counterfactual Module Knockouts** (causal deletion).")
-    
-    col1, col2 = st.columns(2)
-    
-    conf_df = load_confounder_effects(target_key)
-    mod_df = load_module_ko(target_key)
-    
-    with col1:
-        st.markdown("#### 🔍 Confounder-Adjusted Associations")
-        st.write("Microglia modules adjusted for Age, Sex, APOE Genotype, and background embeddings.")
-        if conf_df is not None and not conf_df.empty:
-            conf_display = conf_df.copy()
-            conf_display["Effect"] = conf_display["adjusted_slope"].apply(
-                lambda x: "Positively Correlated" if x > 0 else "Negatively Correlated"
-            )
-            
-            fig_conf = px.bar(
-                conf_display,
-                x="adjusted_slope",
-                y="treatment",
-                orientation="h",
-                color="Effect",
-                labels={"adjusted_slope": "Adjusted Regression Slope", "treatment": "Module"},
-                color_discrete_map={"Positively Correlated": "#ef4444", "Negatively Correlated": "#10b981"},
-                category_orders={"treatment": conf_display["treatment"].tolist()}
-            )
-            fig_conf.update_layout(
-                template="plotly_dark",
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
-                yaxis=dict(autorange="reversed")
-            )
-            st.plotly_chart(fig_conf, use_container_width=True)
+with overview_tab:
+    st.subheader("Project Thesis")
+    st.write(
+        "The project asks whether a JEPA model can learn Microglia-PVM cell-state representations "
+        "that preserve disease-relevant biology better than standard expression-only dimensionality "
+        "reduction. The practical output is a ranked set of Alzheimer's gene-network hypotheses."
+    )
+
+    st.markdown("**Current v1 evidence**")
+    c1, c2, c3 = st.columns(3)
+    latent_summary = read_csv(TABLES / "latent_space_evaluation_jepa_vs_pca_summary.csv")
+    multitarget_summary = read_csv(TABLES / "multitarget_oof_jepa_vs_pseudobulk_summary.csv")
+    cell_mixing = read_csv(TABLES / "cell_level_mixing_metrics.csv")
+
+    with c1:
+        if latent_summary is not None:
+            best_delta = latent_summary["delta_knn_spearman"].max()
+            metric_delta("Best JEPA vs PCA neighborhood gain", best_delta, "kNN Spearman delta across pathology targets")
         else:
-            st.warning("Confounder-adjusted data not found.")
-            
-    with col2:
-        st.markdown("#### 🛠️ Counterfactual Module Deletions")
-        st.write("The physical simulated impact on prediction when an entire module's expression is removed.")
-        if mod_df is not None and not mod_df.empty:
-            mod_display = mod_df.copy()
-            mod_display["Direction"] = mod_display["mean_donor_delta"].apply(
-                lambda x: "Reduces Pathology" if x < 0 else "Increases Pathology"
-            )
-            
-            fig_mod = px.bar(
-                mod_display,
+            show_missing(TABLES / "latent_space_evaluation_jepa_vs_pca_summary.csv")
+    with c2:
+        if multitarget_summary is not None:
+            best_oof = multitarget_summary["jepa_minus_pseudobulk"].max()
+            metric_delta("Best JEPA vs pseudobulk OOF gain", best_oof, "Pooled held-out donor Spearman delta")
+        else:
+            show_missing(TABLES / "multitarget_oof_jepa_vs_pseudobulk_summary.csv")
+    with c3:
+        if cell_mixing is not None:
+            pca_acc = float(cell_mixing.loc[cell_mixing["representation"] == "expression_pca_128", "donor_knn_accuracy"].iloc[0])
+            jepa_acc = float(cell_mixing.loc[cell_mixing["representation"] == "jepa_latent_128", "donor_knn_accuracy"].iloc[0])
+            metric_delta("JEPA donor kNN accuracy reduction", jepa_acc - pca_acc, "Lower donor identity leakage is better")
+        else:
+            show_missing(TABLES / "cell_level_mixing_metrics.csv")
+
+    st.markdown("**What each result means**")
+    st.write(
+        "PCA/UMAP plots show geometry. kNN and pooled OOF scores test whether neighborhoods predict pathology. "
+        "Donor leakage metrics test whether the representation is merely memorizing patients. "
+        "Counterfactual screens identify genes and modules the trained model relies on when predicting pathology."
+    )
+
+with representation_tab:
+    st.subheader("PCA vs JEPA Latent Space")
+    umap_df = read_csv(TABLES / "latent_space_umap_coordinates.csv")
+    latent_summary = read_csv(TABLES / "latent_space_evaluation_jepa_vs_pca_summary.csv")
+    cell_mixing = read_csv(TABLES / "cell_level_mixing_metrics.csv")
+
+    if umap_df is not None:
+        color_col = target if target in umap_df.columns else "percent AT8 positive area_Grey matter"
+        fig = px.scatter(
+            umap_df,
+            x="x",
+            y="y",
+            color=color_col,
+            facet_col="representation",
+            hover_data=["Donor ID"],
+            color_continuous_scale="Viridis",
+            title=f"Donor-level UMAP colored by {TARGETS.get(color_col, {}).get('label', color_col)}",
+        )
+        fig.update_traces(marker={"size": 8, "opacity": 0.85})
+        fig.update_layout(height=520)
+        st.plotly_chart(fig, width="stretch")
+    else:
+        show_missing(TABLES / "latent_space_umap_coordinates.csv")
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("**Donor-level neighborhood metrics**")
+        if latent_summary is not None:
+            display = latent_summary.sort_values("delta_knn_spearman", ascending=False)
+            st.dataframe(display, hide_index=True, width="stretch")
+        else:
+            show_missing(TABLES / "latent_space_evaluation_jepa_vs_pca_summary.csv")
+    with c2:
+        st.markdown("**Cell-level donor leakage check**")
+        if cell_mixing is not None:
+            st.dataframe(cell_mixing, hide_index=True, width="stretch")
+        else:
+            show_missing(TABLES / "cell_level_mixing_metrics.csv")
+
+with prediction_tab:
+    st.subheader("Held-Out Donor Prediction")
+    multitarget_summary = read_csv(TABLES / "multitarget_oof_jepa_vs_pseudobulk_summary.csv")
+    if multitarget_summary is not None:
+        plot_df = multitarget_summary.sort_values("jepa_minus_pseudobulk", ascending=False)
+        fig = px.bar(
+            plot_df,
+            x="jepa_minus_pseudobulk",
+            y="target",
+            orientation="h",
+            color="jepa_minus_pseudobulk",
+            color_continuous_scale="RdBu",
+            title="JEPA minus pseudobulk pooled OOF Spearman",
+        )
+        fig.update_layout(yaxis={"autorange": "reversed"}, height=520)
+        st.plotly_chart(fig, width="stretch")
+        st.dataframe(plot_df, hide_index=True, width="stretch")
+    else:
+        show_missing(TABLES / "multitarget_oof_jepa_vs_pseudobulk_summary.csv")
+
+with counterfactual_tab:
+    st.subheader(f"Model-Implied Counterfactuals: {target_info['label']}")
+    gene_path = MULTITARGET / f"causal_fold_specific_two_pass_{target_slug}.csv"
+    module_path = MULTITARGET / f"causal_fold_specific_two_pass_{target_slug}_modules.csv"
+    gene_df = read_csv(gene_path)
+    module_df = read_csv(module_path)
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("**Top gene knockouts**")
+        if gene_df is not None:
+            top = gene_df.sort_values("abs_mean_donor_delta", ascending=False).head(20)
+            fig = px.bar(
+                top,
                 x="mean_donor_delta",
                 y="perturbation",
                 orientation="h",
-                color="Direction",
-                labels={"mean_donor_delta": f"Causal Delta ({target_config['units']})", "perturbation": "Module"},
-                color_discrete_map={"Reduces Pathology": "#3b82f6", "Increases Pathology": "#f59e0b"},
-                category_orders={"perturbation": mod_display["perturbation"].tolist()}
+                color="mean_donor_delta",
+                color_continuous_scale="RdBu",
             )
-            fig_mod.update_layout(
-                template="plotly_dark",
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
-                yaxis=dict(autorange="reversed")
-            )
-            st.plotly_chart(fig_mod, use_container_width=True)
+            fig.update_layout(yaxis={"autorange": "reversed"}, height=560)
+            st.plotly_chart(fig, width="stretch")
+            st.dataframe(top, hide_index=True, width="stretch")
         else:
-            st.warning("Counterfactual module deletion data not found.")
-            
-    # Layman take
-    st.markdown(f"""
-    <div style="background-color: #1e293b; padding: 20px; border-radius: 8px; border-left: 5px solid #10b981; margin-top: 15px;">
-        <h4>💡 Layman's Take on Systems Biology</h4>
-        <p>{target_config['layman_take_module']}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-# --- TAB 3: AI LATENT DIMENSIONS ---
-with tab3:
-    st.markdown("### 🔮 AI Hidden Features (Latent Factors)")
-    st.write("We fit linear Ridge regression models on the 128-dimensional JEPA embedding space. By checking which dimensions receive the highest absolute weights, we map the AI's internal 'super-features' back to physical pathology outcomes.")
-    
-    latent_df = load_latent_weights()
-    if latent_df is not None and not latent_df.empty:
-        # Filter for current target
-        target_latent = latent_df[latent_df["target"] == target_key].copy()
-        
-        if not target_latent.empty:
-            # Display top 10 latent dimensions
-            top_latents = target_latent.head(10).copy()
-            top_latents["Sign"] = top_latents["mean_coefficient"].apply(
-                lambda x: "Positive Coefficient (+)" if x > 0 else "Negative Coefficient (-)"
-            )
-            
-            fig_latent = px.bar(
-                top_latents,
-                x="mean_coefficient",
-                y="latent_dimension",
+            show_missing(gene_path)
+    with c2:
+        st.markdown("**Module knockouts**")
+        if module_df is not None:
+            top_modules = module_df.sort_values("abs_mean_donor_delta", ascending=False)
+            fig = px.bar(
+                top_modules,
+                x="mean_donor_delta",
+                y="perturbation",
                 orientation="h",
-                color="Sign",
-                labels={"mean_coefficient": "Mean Ridge Coefficient", "latent_dimension": "Latent Factor"},
-                color_discrete_map={"Positive Coefficient (+)": "#ec4899", "Negative Coefficient (-)": "#8b5cf6"},
-                category_orders={"latent_dimension": top_latents["latent_dimension"].tolist()}
+                color="mean_donor_delta",
+                color_continuous_scale="RdBu",
             )
-            fig_latent.update_layout(
-                template="plotly_dark",
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
-                yaxis=dict(autorange="reversed")
-            )
-            st.plotly_chart(fig_latent, use_container_width=True)
-            
-            # Layman take
-            st.info("""
-            **What is a Latent Dimension?** 
-            The self-supervised PyTorch JEPA model compresses 3,000 genes into a 128-dimensional coordinate system. 
-            The chart above shows which dimensions are the most important predictors of this pathology target. 
-            
-            For example, **jepa_63** is a major negative factor for both AT8 tau and NeuN density, indicating it represents an activation checkpoint that alters microglia biology across multiple pathological cascades.
-            """)
+            fig.update_layout(yaxis={"autorange": "reversed"}, height=560)
+            st.plotly_chart(fig, width="stretch")
+            st.dataframe(top_modules, hide_index=True, width="stretch")
         else:
-            st.warning("No latent dimension data found matching this target.")
-    else:
-        st.warning("pathology_latent_weights.csv not found.")
+            show_missing(module_path)
 
-st.markdown("---")
-st.caption("Powered by the SEA-AD JEPA Causal Discovery Engine | Out-of-Fold Cross-Validated")
+with latent_tab:
+    st.subheader("JEPA Latent Factors")
+    latent_weights = read_csv(TABLES / "pathology_latent_weights.csv")
+    if latent_weights is not None:
+        target_latents = latent_weights[latent_weights["target"] == target].sort_values("mean_abs_coefficient", ascending=False)
+        top = target_latents.head(20)
+        fig = px.bar(
+            top,
+            x="mean_coefficient",
+            y="latent_dimension",
+            orientation="h",
+            color="mean_coefficient",
+            color_continuous_scale="RdBu",
+            title=f"Latent dimensions most predictive of {target_info['label']}",
+        )
+        fig.update_layout(yaxis={"autorange": "reversed"}, height=560)
+        st.plotly_chart(fig, width="stretch")
+        st.dataframe(top, hide_index=True, width="stretch")
+    else:
+        show_missing(TABLES / "pathology_latent_weights.csv")
+
+with perturb_tab:
+    st.subheader("External Perturbation Smoke Tests")
+    st.write(
+        "K562 Perturb-seq is used here only to test the benchmark machinery. "
+        "The biologically meaningful next validation target is an iPSC-microglia or macrophage perturbation dataset."
+    )
+    k562 = read_csv(TABLES / "perturbseq_streaming_validation.csv")
+    if k562 is not None:
+        st.dataframe(k562, hide_index=True, width="stretch")
+        if {"target_gene", "cosine_similarity"}.issubset(k562.columns):
+            fig = px.bar(k562, x="target_gene", y="cosine_similarity", color="cosine_similarity", color_continuous_scale="RdBu")
+            st.plotly_chart(fig, width="stretch")
+    else:
+        show_missing(TABLES / "perturbseq_streaming_validation.csv")
+
+st.caption("Repository dashboard for SEA-AD JEPA v1 evaluation. Generated from lightweight CSV/SVG outputs in results/.")
