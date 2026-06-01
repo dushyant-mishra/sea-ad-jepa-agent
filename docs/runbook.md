@@ -461,6 +461,26 @@ python scripts/evaluate_cell_level_mixing.py `
   --sample-out results/tables/cell_level_mixing_sample_metadata.csv
 ```
 
+Run the K562 Perturb-seq engineering smoke test:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/benchmark_perturbseq_streaming.py `
+  --url data/raw/ReplogleWeissman2022_K562_gwps.h5ad `
+  --checkpoint results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt `
+  --target-genes HSP90B1 SOD1 BRD4 `
+  --control-label control `
+  --perturbation-col perturbation `
+  --n-shuffles 5 `
+  --max-ntc 100 `
+  --max-ko-cells 50 `
+  --shuffle-cells 10 `
+  --out results/tables/perturbseq_streaming_validation.csv `
+  --device auto
+```
+
+This is an engineering smoke test for the benchmark machinery. It should not be interpreted as Alzheimer’s microglia validation.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell

@@ -92,9 +92,14 @@ def cosine_similarity(v1: np.ndarray, v2: np.ndarray) -> float:
 
 
 def spearman_correlation(v1: np.ndarray, v2: np.ndarray) -> float:
-    s1 = pd.Series(v1)
-    s2 = pd.Series(v2)
-    return float(s1.corr(s2, method="spearman"))
+    r1 = pd.Series(v1).rank(method="average").to_numpy(dtype=np.float32)
+    r2 = pd.Series(v2).rank(method="average").to_numpy(dtype=np.float32)
+    r1 = r1 - r1.mean()
+    r2 = r2 - r2.mean()
+    denom = float(np.sqrt(np.sum(r1**2) * np.sum(r2**2)))
+    if denom == 0.0:
+        return float("nan")
+    return float(np.sum(r1 * r2) / denom)
 
 
 def main() -> None:
@@ -139,6 +144,10 @@ def main() -> None:
         default=100,
         help="Number of random guide shuffles to compute empirical p-values."
     )
+    parser.add_argument("--max-ntc", type=int, default=500, help="Maximum control cells to stream.")
+    parser.add_argument("--max-ko-cells", type=int, default=0, help="Maximum KO cells per target. Use 0 for all.")
+    parser.add_argument("--shuffle-cells", type=int, default=50, help="Maximum cells to stream per shuffle guide.")
+    parser.add_argument("--out", default="results/tables/perturbseq_streaming_validation.csv")
     parser.add_argument("--device", default="auto")
     parser.add_argument("--batch-size", type=int, default=128)
     args = parser.parse_args()
@@ -219,7 +228,7 @@ def main() -> None:
     # 4. Stream and Align NTC Expression Data
     print("\nStreaming NTC expression matrix chunks...")
     # Limit NTC size to speed up inference if too large
-    max_ntc = min(500, len(control_indices))
+    max_ntc = min(args.max_ntc, len(control_indices))
     selected_ntc_idx = np.random.choice(control_indices, size=max_ntc, replace=False).tolist()
     
     ntc_raw_streamed = stream_rows(h5, selected_ntc_idx, n_vars, indptr_local)
@@ -257,7 +266,7 @@ def main() -> None:
             if idx_sh % 20 == 0:
                 print(f"  Streaming and projecting shuffle {idx_sh}/{len(shuffled_guides)}: '{sh_guide}'...")
                 
-            sh_raw = stream_rows(h5, sh_indices[:50], n_vars, indptr_local)
+            sh_raw = stream_rows(h5, sh_indices[: args.shuffle_cells], n_vars, indptr_local)
             sh_aligned = np.zeros((sh_raw.shape[0], len(jepa_genes)), dtype=np.float32)
             sh_aligned[:, jepa_idxs] = sh_raw[:, remote_idxs]
             
@@ -285,6 +294,9 @@ def main() -> None:
         
         # A. Stream real CRISPR KO cells
         print(f"Streaming {len(ko_indices)} real CRISPR cells...")
+        if args.max_ko_cells and len(ko_indices) > args.max_ko_cells:
+            ko_indices = np.random.choice(ko_indices, size=args.max_ko_cells, replace=False).tolist()
+            print(f"Capped target stream to {len(ko_indices)} cells.")
         ko_raw_streamed = stream_rows(h5, ko_indices, n_vars, indptr_local)
         ko_aligned = np.zeros((len(ko_indices), len(jepa_genes)), dtype=np.float32)
         ko_aligned[:, jepa_idxs] = ko_raw_streamed[:, remote_idxs]
@@ -345,6 +357,11 @@ def main() -> None:
             "empirical_p": empirical_p,
             "cells_streamed": len(ko_indices)
         })
+        partial_df = pd.DataFrame(results)
+        partial_out = Path(args.out)
+        partial_out.parent.mkdir(parents=True, exist_ok=True)
+        partial_df.to_csv(partial_out, index=False)
+        print(f"Updated partial results at: {partial_out}")
         
     h5.close()
     
@@ -356,7 +373,7 @@ def main() -> None:
     print(res_df.to_string(index=False))
     
     # Save output
-    out_path = Path("results/tables/perturbseq_streaming_validation.csv")
+    out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     res_df.to_csv(out_path, index=False)
     print(f"\nWrote validation summary results to: {out_path}")

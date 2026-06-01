@@ -651,6 +651,31 @@ pathology / abs(donor) ratio   -0.0447            -0.0343
 
 Interpretation: JEPA does not appear to be simply memorizing donor identity in this cell-level test. Donor kNN accuracy is substantially lower in JEPA than in PCA, and donor silhouette is more negative, suggesting stronger donor mixing. Cell-level AT8 pathology separation is weak for both representations, which is expected because AT8 is a donor-level label broadcast to cells. After donor-level permutation control, JEPA has a modestly stronger AT8 signal than PCA.
 
+- Ran the first K562 Perturb-seq engineering smoke test:
+
+```text
+script: scripts/benchmark_perturbseq_streaming.py
+data: local ReplogleWeissman2022_K562_gwps.h5ad
+targets: HSP90B1, SOD1, BRD4
+controls streamed: 100
+KO cells per target: 50
+null shuffles: 5
+output: results/tables/perturbseq_streaming_validation.csv
+```
+
+Zenodo HTTPS streaming successfully connected and read metadata, but repeated row streaming was too slow and timed out. The same benchmark machinery completed against the local K562 GWPS file.
+
+Results:
+
+```text
+target   cosine    spearman   empirical p
+HSP90B1  -0.452    -0.440     0.2
+SOD1      0.051    -0.031     0.8
+BRD4     -0.197    -0.167     1.0
+```
+
+Interpretation: this is an engineering smoke test, not AD microglia validation. It proves the benchmark pipeline can align a Perturb-seq dataset to the SEA-AD JEPA gene space, stream selected cells, compute observed CRISPR latent shifts, compute digital knockout latent shifts, and write result CSVs. The weak/negative alignment is expected to remain biologically ambiguous in K562 because it is a leukemia cell line and not a microglia model.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
