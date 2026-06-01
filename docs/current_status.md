@@ -700,6 +700,45 @@ spearman: -0.628
 
 This test only verifies that the new path executes. It should not be treated as a biological conclusion.
 
+- Secured the Dräger/Kampmann iPSC-derived microglia CRISPRi/a dataset:
+
+```text
+GEO accession: GSE178317
+paper: A CRISPRi/a platform in human iPSC-derived microglia uncovers regulators of disease states
+local raw folder: data/raw/kampmann_gse178317/
+```
+
+The GEO series contains CROP-seq 10X expression lanes and sgRNA-enrichment lanes. The public H5 files are Cell Ranger count matrices; the final per-cell sgRNA assignments were produced by a separate guide-mapping/demux workflow and are not exposed as a simple metadata table in GEO.
+
+Because of that, the first automated Kampmann benchmark uses the published target-gene DEG vectors from Supplementary Table 9:
+
+```text
+script: scripts/benchmark_kampmann_deg_alignment.py
+outputs:
+  results/tables/kampmann_deg_jepa_alignment_input_erasure.csv
+  results/tables/kampmann_deg_jepa_alignment_predictive.csv
+```
+
+Available CROP-seq targets include `CSF1R`, `INPP5D`, `TGFBR2`, `CDK8`, `CDK12`, `MED1`, `NDUFA8`, and `NDUFS5`. The first SEA-AD candidates `P2RY12`, `CX3CR1`, `TREM2`, `APOE`, complement genes, `TYROBP`, and `F13A1` are not directly perturbed in this public CROP-seq screen.
+
+First DEG-vector alignment results:
+
+```text
+input_erasure:
+  CSF1R   cosine -0.515   Spearman -0.488
+  TGFBR2  cosine -0.269   Spearman -0.270
+  CDK8    cosine -0.510   Spearman -0.425
+  CDK12   cosine  0.350   Spearman  0.311
+
+predictive:
+  CSF1R   cosine -0.616   Spearman -0.587
+  TGFBR2  cosine -0.402   Spearman -0.399
+  CDK8    cosine -0.543   Spearman -0.493
+  CDK12   cosine  0.288   Spearman  0.258
+```
+
+Interpretation: this is the first biology-matched external stress test. The current v1 SEA-AD JEPA does not broadly align with observed iPSC-microglia CRISPRi DEG responses. That is not a failure of the project; it is a useful boundary on v1 and a concrete reason to add stronger module-level perturbations, CRISPRi-aware knockdown modeling, and cross-domain/foundation pretraining in JEPA v2.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

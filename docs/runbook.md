@@ -491,6 +491,23 @@ Two counterfactual modes are available:
 
 The `predictive` mode is useful for testing whether the learned JEPA predictor contributes beyond local input sensitivity. The `--max-retries` and `--retry-wait-seconds` flags are mainly for remote HTTP-backed H5AD reads.
 
+Run the Dräger/Kampmann iPSC-microglia DEG-vector benchmark:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/benchmark_kampmann_deg_alignment.py `
+  --counterfactual-mode input_erasure `
+  --out results/tables/kampmann_deg_jepa_alignment_input_erasure.csv `
+  --device auto
+
+python scripts/benchmark_kampmann_deg_alignment.py `
+  --counterfactual-mode predictive `
+  --out results/tables/kampmann_deg_jepa_alignment_predictive.csv `
+  --device auto
+```
+
+This benchmark uses `GSE178317` and the Dräger/Kampmann supplementary DEG table. It is more biologically relevant than K562, but it is not the same as a cell-level guide-assignment benchmark because GEO does not provide final per-cell sgRNA labels as a simple metadata table.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell

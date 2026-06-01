@@ -29,6 +29,7 @@ results/tables/*
 !results/tables/*metrics*.csv
 !results/tables/*comparison*.csv
 !results/tables/perturbseq_streaming_validation.csv
+!results/tables/kampmann_deg_jepa_alignment_*.csv
 !results/figures/
 results/figures/*
 !results/figures/*.svg

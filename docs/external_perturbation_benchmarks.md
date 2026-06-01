@@ -62,6 +62,82 @@ Interpretation:
 This is the first external perturbation benchmark that can plausibly validate microglia-specific Alzheimer's hypotheses.
 ```
 
+Current local status:
+
+```text
+GEO accession: GSE178317
+Downloaded locally:
+  data/raw/kampmann_gse178317/GSE178317_RAW.tar
+  data/raw/kampmann_gse178317/drager_2022_supplementary_tables.xlsx
+Extracted schema-inspection files:
+  GSM5387652_iTF_Microglia_10X_Lane1_filtered_feature_bc_matrix.h5
+  GSM5387656_iTF_Microglia_sgRNAenrichment_Lane1_filtered_feature_bc_matrix.h5
+```
+
+Important access finding:
+
+```text
+The public GEO H5 files provide Cell Ranger count matrices.
+The final per-cell sgRNA assignments are not exposed as a simple metadata table in GEO.
+The paper states that sgRNA assignment used a separate mapping workflow and demux/z-score filtering.
+```
+
+This means the first automated benchmark should not force the existing cell-level streaming script onto these files. Instead, the repo now includes a DEG-vector benchmark:
+
+```text
+scripts/benchmark_kampmann_deg_alignment.py
+```
+
+This script compares SEA-AD JEPA digital CRISPRi shifts against the published CROP-seq target-gene differential expression vectors from Supplementary Table 9.
+
+Targets available in the Dräger/Kampmann CROP-seq DEG table include:
+
+```text
+CSF1R
+INPP5D
+TGFBR2
+CDK8
+CDK12
+MED1
+NDUFA8
+NDUFS5
+```
+
+Targets not perturbed in this public CROP-seq screen include:
+
+```text
+P2RY12
+CX3CR1
+TREM2
+APOE
+C1QA / C1QB / C1QC
+TYROBP
+F13A1
+```
+
+First benchmark results:
+
+```text
+input_erasure:
+  CSF1R   cosine -0.515   Spearman -0.488
+  TGFBR2  cosine -0.269   Spearman -0.270
+  CDK8    cosine -0.510   Spearman -0.425
+  CDK12   cosine  0.350   Spearman  0.311
+
+predictive:
+  CSF1R   cosine -0.616   Spearman -0.587
+  TGFBR2  cosine -0.402   Spearman -0.399
+  CDK8    cosine -0.543   Spearman -0.493
+  CDK12   cosine  0.288   Spearman  0.258
+```
+
+Interpretation:
+
+```text
+This is a real biology-matched stress test, and the current v1 model does not yet align broadly with observed iPSC-microglia perturbation responses.
+That is a useful negative/partial result: it motivates module-level perturbation, CRISPRi-aware scaling, stronger cross-domain alignment, and eventually JEPA v2.
+```
+
 ### Replogle et al. Genome-Scale Perturb-seq
 
 Use case:
