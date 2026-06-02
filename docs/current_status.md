@@ -829,6 +829,29 @@ Expression PCA UMAP
 
 Interpretation: `jepa_63` is pathology-relevant but not a dominant UMAP-shaping axis. The JEPA UMAP is mostly organized by stronger homeostatic, vascular/barrier, complement, and synapse-pruning axes. This is a useful correction to the v1 story: `jepa_63` should be presented as an AT8-linked latent hypothesis inside the broader manifold, not as the main visual axis of the manifold.
 
+- Added a multi-panel JEPA representation overlay figure:
+
+```text
+script: scripts/plot_jepa_representation_overlays.py
+outputs:
+  results/figures/jepa_representation_overlays.svg
+  results/reports/jepa_representation_overlays.md
+  results/tables/jepa_representation_overlay_plot_data.csv
+```
+
+Panels:
+
+```text
+jepa_34   dominant homeostatic / vascular axis, rank 1/128, R2 ~= 0.867
+jepa_46   complement / synapse-pruning axis, rank 2/128, R2 ~= 0.826
+jepa_108  homeostatic / synapse-pruning axis, rank 3/128, R2 ~= 0.779
+jepa_63   AT8-linked complement axis, rank 83/128, R2 ~= 0.263
+AT8       pathology overlay, R2 ~= 0.079
+NeuN      pathology overlay, R2 ~= 0.182
+```
+
+Interpretation: this is the current best visual summary of the donor-level JEPA state space. It shows that the visible manifold is mainly a broad microglial-state map, while `jepa_63` marks a secondary AT8-linked substructure. The plot includes 89 donor embeddings; pathology overlays use the 84 donors with available target labels.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

@@ -558,6 +558,23 @@ results/reports/all_jepa_umap_variance_rankings.md
 
 This gives the ceiling for the `jepa_63` result. If only a few latents have high R2, UMAP is dominated by those axes. If many latents have similar R2 values, the manifold is more distributed. The report joins each latent to its top module annotations so the geometry can be interpreted biologically.
 
+Create the multi-panel JEPA representation overlay figure:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/plot_jepa_representation_overlays.py
+```
+
+Outputs:
+
+```text
+results/figures/jepa_representation_overlays.svg
+results/reports/jepa_representation_overlays.md
+results/tables/jepa_representation_overlay_plot_data.csv
+```
+
+This figure uses one shared donor-level JEPA UMAP coordinate system and colors it by dominant latent axes, `jepa_63`, AT8/pTau, and NeuN. It is intended as a representation map with quantitative guardrails, not as causal proof.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
