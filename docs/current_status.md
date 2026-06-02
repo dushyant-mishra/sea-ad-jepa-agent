@@ -875,6 +875,43 @@ Test whether AD/control labels separate in the frozen SEA-AD latent space
 
 Interpretation boundary: this is independent observational-cohort validation. If `jepa_63` separates AD/control in Grubman microglia, it supports the generalizability of the AT8-linked hypothesis axis. It still does not prove perturbational causality.
 
+- Ran the Grubman/GSE138852 zero-shot projection on strict public microglia labels:
+
+```text
+input files:
+  data/external/grubman_gse138852/GSE138852_counts.csv.gz
+  data/external/grubman_gse138852/GSE138852_covariates.csv.gz
+
+cell filter:
+  oupSample.cellType == mg
+
+outputs:
+  results/tables/grubman_zero_shot_sample_pool_embeddings.csv
+  results/tables/grubman_zero_shot_generalization.csv
+```
+
+Run summary:
+
+```text
+microglia nuclei projected: 449
+JEPA genes matched: 2,626 / 2,957
+aggregation level: 6 public sample pools
+  AD pools: AD1_AD2, AD3_AD4, AD5_AD6
+  control pools: Ct1_Ct2, Ct3_Ct4, Ct5_Ct6
+```
+
+Results:
+
+```text
+latent    AD mean    control mean    delta AD-control    rank-biserial    p
+jepa_63   -0.0389    -0.0491         +0.0102             +0.556          0.4
+jepa_34   +0.1358    +0.0567         +0.0791             +1.000          0.1
+jepa_46   +0.1132    +0.0666         +0.0467             +1.000          0.1
+jepa_108  +0.0404    +0.1180         -0.0776             -1.000          0.1
+```
+
+Interpretation: the zero-shot projection pipeline works, and gene overlap is strong. However, `jepa_63` does not show a decisive Grubman AD/control separation in this tiny public sample-pool view. The strongest separation appears in broader macro axes (`jepa_34`, `jepa_46`, `jepa_108`). This should be treated as a useful boundary on the v1 `jepa_63` claim, not a failure of the project. A better replication test needs individual donor metadata and pathology labels from a larger cohort such as ROSMAP/Mathys or a harmonized AD Knowledge Portal release.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

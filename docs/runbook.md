@@ -596,6 +596,22 @@ This freezes the SEA-AD JEPA encoder, aligns the public Grubman/GSE138852 genes 
 
 If a cell-type metadata file is not available yet, the script can be run with `--allow-all-cells` as a plumbing smoke test. Do not present that fallback as microglia-specific validation.
 
+For the public GEO files downloaded from GSE138852, use the strict microglia labels in the covariates table:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/project_grubman_zero_shot.py `
+  --cell-type-col "oupSample.cellType" `
+  --microglia-pattern "^mg$" `
+  --donor-col sample_pool `
+  --condition-col condition `
+  --out-donor results/tables/grubman_zero_shot_sample_pool_embeddings.csv `
+  --out-summary results/tables/grubman_zero_shot_generalization.csv `
+  --device auto
+```
+
+The public Grubman covariates expose sample pools such as `AD1_AD2` and `Ct1_Ct2`, not clean individual donor IDs. Treat this as a zero-shot transfer smoke test.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell

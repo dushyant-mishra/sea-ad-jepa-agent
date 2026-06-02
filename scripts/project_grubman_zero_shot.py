@@ -251,6 +251,86 @@ def load_mex_dataset(
     return x_all, obs_all, int(min(overlaps))
 
 
+def infer_sample_pool(cell_id: str) -> str:
+    match = re.search(r"_([^_]+_[^_]+)$", str(cell_id))
+    return match.group(1) if match else str(cell_id)
+
+
+def read_counts_csv_aligned(path: Path, jepa_genes: list[str], chunksize: int) -> tuple[np.ndarray, list[str], int]:
+    gene_to_jepa = {gene.upper(): idx for idx, gene in enumerate(jepa_genes)}
+    cell_ids: list[str] | None = None
+    cell_totals: np.ndarray | None = None
+    matched_rows: list[tuple[int, np.ndarray]] = []
+    matched_seen: set[int] = set()
+
+    for chunk in pd.read_csv(path, chunksize=chunksize):
+        gene_col = chunk.columns[0]
+        if cell_ids is None:
+            cell_ids = [str(c) for c in chunk.columns[1:]]
+            cell_totals = np.zeros(len(cell_ids), dtype=np.float64)
+        values = chunk.iloc[:, 1:].to_numpy(dtype=np.float32, copy=False)
+        cell_totals += values.sum(axis=0)
+        genes = chunk[gene_col].astype(str).tolist()
+        for row_idx, gene in enumerate(genes):
+            jepa_idx = gene_to_jepa.get(gene.upper())
+            if jepa_idx is None or jepa_idx in matched_seen:
+                continue
+            matched_seen.add(jepa_idx)
+            matched_rows.append((jepa_idx, values[row_idx].astype(np.float32, copy=True)))
+
+    if cell_ids is None or cell_totals is None:
+        raise ValueError(f"No data found in {path}")
+    if not matched_rows:
+        raise ValueError("No genes in the Grubman count matrix overlapped the SEA-AD JEPA gene list.")
+
+    cell_totals[cell_totals <= 0] = 1.0
+    x = np.zeros((len(cell_ids), len(jepa_genes)), dtype=np.float32)
+    scale = (10000.0 / cell_totals).astype(np.float32)
+    for jepa_idx, counts in matched_rows:
+        x[:, jepa_idx] = np.log1p(counts * scale)
+    return x, cell_ids, len(matched_rows)
+
+
+def load_counts_csv_dataset(
+    counts_csv: Path,
+    covariates_csv: Path,
+    jepa_genes: list[str],
+    donor_col: str,
+    condition_col: str,
+    cell_type_col: str | None,
+    microglia_pattern: str,
+    allow_all_cells: bool,
+    chunksize: int,
+) -> tuple[np.ndarray, pd.DataFrame, int]:
+    print(f"Loading count CSV: {counts_csv}")
+    x, cell_ids, n_overlap = read_counts_csv_aligned(counts_csv, jepa_genes, chunksize)
+    cov = pd.read_csv(covariates_csv)
+    if cov.columns[0] != "cell_id":
+        cov = cov.rename(columns={cov.columns[0]: "cell_id"})
+    cov["cell_id"] = cov["cell_id"].astype(str)
+    obs = pd.DataFrame({"cell_id": cell_ids})
+    obs = obs.merge(cov, on="cell_id", how="left")
+
+    if donor_col not in obs:
+        obs[donor_col] = obs["cell_id"].map(infer_sample_pool)
+    if condition_col not in obs:
+        if "oupSample.batchCond" in obs:
+            obs[condition_col] = obs["oupSample.batchCond"].map(lambda x: "Control" if str(x).lower() in {"ct", "ctrl", "control"} else str(x))
+        else:
+            obs[condition_col] = obs[donor_col].map(infer_condition)
+
+    if cell_type_col and cell_type_col in obs:
+        keep = obs[cell_type_col].astype(str).str.contains(microglia_pattern, case=False, na=False).to_numpy()
+        x = x[keep]
+        obs = obs.loc[keep].reset_index(drop=True)
+    elif not allow_all_cells:
+        raise KeyError(
+            f"Cell-type column '{cell_type_col}' was not found in covariates. Provide --cell-type-col or pass --allow-all-cells."
+        )
+
+    return x.astype(np.float32), obs, n_overlap
+
+
 def encode_cells(model: GeneJEPA, x: np.ndarray, device: torch.device, batch_size: int) -> np.ndarray:
     latents = []
     with torch.no_grad():
@@ -316,6 +396,8 @@ def summarize_donors(df: pd.DataFrame, donor_col: str, condition_col: str, laten
 def main() -> None:
     parser = argparse.ArgumentParser(description="Zero-shot project public Grubman/GSE138852 cells through the frozen SEA-AD JEPA encoder.")
     parser.add_argument("--mex-root", default="data/external/grubman_gse138852")
+    parser.add_argument("--counts-csv", default="data/external/grubman_gse138852/GSE138852_counts.csv.gz")
+    parser.add_argument("--covariates-csv", default="data/external/grubman_gse138852/GSE138852_covariates.csv.gz")
     parser.add_argument("--metadata", default="")
     parser.add_argument("--sample-metadata", default="")
     parser.add_argument("--local-h5ad", default="data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad")
@@ -327,6 +409,7 @@ def main() -> None:
     parser.add_argument("--cell-type-col", default="cell_type")
     parser.add_argument("--microglia-pattern", default="micro|myeloid")
     parser.add_argument("--allow-all-cells", action="store_true")
+    parser.add_argument("--counts-chunksize", type=int, default=250)
     parser.add_argument("--latents", nargs="+", default=DEFAULT_LATENTS)
     parser.add_argument("--batch-size", type=int, default=512)
     parser.add_argument("--out-donor", default="results/tables/grubman_zero_shot_donor_embeddings.csv")
@@ -342,19 +425,34 @@ def main() -> None:
 
     metadata = read_metadata(Path(args.metadata)) if args.metadata else None
     sample_metadata = read_metadata(Path(args.sample_metadata)) if args.sample_metadata else None
-    x, obs, n_overlap = load_mex_dataset(
-        mex_root=Path(args.mex_root),
-        jepa_genes=jepa_genes,
-        metadata=metadata,
-        sample_metadata=sample_metadata,
-        barcode_col=args.barcode_col or None,
-        donor_col=args.donor_col,
-        condition_col=args.condition_col,
-        sample_col=args.sample_col,
-        cell_type_col=args.cell_type_col or None,
-        microglia_pattern=args.microglia_pattern,
-        allow_all_cells=args.allow_all_cells,
-    )
+    counts_csv = Path(args.counts_csv)
+    covariates_csv = Path(args.covariates_csv)
+    if counts_csv.exists() and covariates_csv.exists():
+        x, obs, n_overlap = load_counts_csv_dataset(
+            counts_csv=counts_csv,
+            covariates_csv=covariates_csv,
+            jepa_genes=jepa_genes,
+            donor_col=args.donor_col,
+            condition_col=args.condition_col,
+            cell_type_col=args.cell_type_col or None,
+            microglia_pattern=args.microglia_pattern,
+            allow_all_cells=args.allow_all_cells,
+            chunksize=args.counts_chunksize,
+        )
+    else:
+        x, obs, n_overlap = load_mex_dataset(
+            mex_root=Path(args.mex_root),
+            jepa_genes=jepa_genes,
+            metadata=metadata,
+            sample_metadata=sample_metadata,
+            barcode_col=args.barcode_col or None,
+            donor_col=args.donor_col,
+            condition_col=args.condition_col,
+            sample_col=args.sample_col,
+            cell_type_col=args.cell_type_col or None,
+            microglia_pattern=args.microglia_pattern,
+            allow_all_cells=args.allow_all_cells,
+        )
 
     print(f"Cells projected: {x.shape[0]:,}")
     print(f"JEPA genes matched: {n_overlap:,} / {len(jepa_genes):,}")

@@ -1,0 +1,5 @@
+dataset,cell_filter,n_projected_cells,n_jepa_genes_matched,latent_factor,disease_label,control_label,n_disease_donors,n_control_donors,disease_mean,control_mean,mean_difference_disease_minus_control,rank_biserial_effect,mannwhitney_p
+GSE138852_Grubman,^mg$,449,2626,jepa_63,AD,Control,3,3,-0.03886233704785506,-0.04910405104358991,0.010241713995734855,0.5555555555555556,0.4
+GSE138852_Grubman,^mg$,449,2626,jepa_34,AD,Control,3,3,0.13582086314757666,0.05671387414137522,0.07910698900620144,1.0,0.1
+GSE138852_Grubman,^mg$,449,2626,jepa_46,AD,Control,3,3,0.11321959892908733,0.06655084093411763,0.046668757994969695,1.0,0.1
+GSE138852_Grubman,^mg$,449,2626,jepa_108,AD,Control,3,3,0.04035914440949758,0.11796938131252925,-0.07761023690303168,-1.0,0.1
