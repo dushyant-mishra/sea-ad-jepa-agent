@@ -852,6 +852,29 @@ NeuN      pathology overlay, R2 ~= 0.182
 
 Interpretation: this is the current best visual summary of the donor-level JEPA state space. It shows that the visible manifold is mainly a broad microglial-state map, while `jepa_63` marks a secondary AT8-linked substructure. The plot includes 89 donor embeddings; pathology overlays use the 84 donors with available target labels.
 
+- Added a zero-shot external cohort projection workflow for Grubman/GSE138852:
+
+```text
+script: scripts/project_grubman_zero_shot.py
+default checkpoint:
+  results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt
+expected outputs:
+  results/tables/grubman_zero_shot_donor_embeddings.csv
+  results/tables/grubman_zero_shot_generalization.csv
+```
+
+Purpose:
+
+```text
+Freeze SEA-AD JEPA encoder
+Align public Grubman/GSE138852 genes to SEA-AD JEPA gene order
+Project external cells without retraining
+Aggregate donor-level jepa_63, jepa_34, jepa_46, and jepa_108
+Test whether AD/control labels separate in the frozen SEA-AD latent space
+```
+
+Interpretation boundary: this is independent observational-cohort validation. If `jepa_63` separates AD/control in Grubman microglia, it supports the generalizability of the AT8-linked hypothesis axis. It still does not prove perturbational causality.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

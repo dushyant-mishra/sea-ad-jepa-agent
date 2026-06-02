@@ -8,6 +8,7 @@ __pycache__/
 # Data
 data/raw/
 data/processed/
+data/external/
 *.h5ad
 *.h5
 *.hdf5
@@ -34,6 +35,7 @@ results/tables/*
 !results/tables/v1_jepa_63_decode.csv
 !results/tables/all_jepa_umap_variance_rankings.csv
 !results/tables/jepa_representation_overlay_plot_data.csv
+!results/tables/grubman_zero_shot_*.csv
 !results/reports/
 results/reports/*
 !results/reports/v1_microglia_biological_hypotheses.md

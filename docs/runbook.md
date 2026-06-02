@@ -575,6 +575,27 @@ results/tables/jepa_representation_overlay_plot_data.csv
 
 This figure uses one shared donor-level JEPA UMAP coordinate system and colors it by dominant latent axes, `jepa_63`, AT8/pTau, and NeuN. It is intended as a representation map with quantitative guardrails, not as causal proof.
 
+Run the Grubman/GSE138852 zero-shot external cohort projection:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/project_grubman_zero_shot.py `
+  --mex-root data/external/grubman_gse138852 `
+  --metadata data/external/grubman_gse138852/cell_metadata.csv `
+  --cell-type-col cell_type `
+  --donor-col patient_id `
+  --condition-col condition `
+  --checkpoint results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt `
+  --local-h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --out-donor results/tables/grubman_zero_shot_donor_embeddings.csv `
+  --out-summary results/tables/grubman_zero_shot_generalization.csv `
+  --device auto
+```
+
+This freezes the SEA-AD JEPA encoder, aligns the public Grubman/GSE138852 genes to the SEA-AD JEPA input order, projects external cells, aggregates donor-level `jepa_63`, `jepa_34`, `jepa_46`, and `jepa_108`, then tests disease/control separation. It is an independent observational-cohort generalization test, not causal validation.
+
+If a cell-type metadata file is not available yet, the script can be run with `--allow-all-cells` as a plumbing smoke test. Do not present that fallback as microglia-specific validation.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
