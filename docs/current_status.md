@@ -1055,6 +1055,38 @@ TNFRSF11B
 
 Interpretation: this is the bridge from representation learning to translational target prioritization. These annotations should not constrain JEPA/GNN representation learning. They should be used after inference to rank model-implied interventions by druggability, surface accessibility, and biomarker potential.
 
+- Added Graph-JEPA v2 data/model scaffolding:
+
+```text
+src/sea_ad_jepa/graph_data.py
+src/sea_ad_jepa/graph_jepa.py
+scripts/check_graph_jepa_v2_inputs.py
+results/tables/graph_jepa_v2_input_check.csv
+```
+
+Design:
+
+```text
+nodes: genes
+edges: STRING/WGCNA consensus graph
+graph sample: one cell or nucleus
+node features: expression value plus optional annotations
+gene identity: learnable embedding indexed by node_id
+```
+
+This explicitly avoids the scalar-node collapse problem. The GNN does not see each gene as only a floating-point expression value; it also receives a learnable identity embedding so message passing can distinguish genes such as `CSF1R`, `P2RY12`, `TREM2`, and `CHI3L1`.
+
+Input validation currently passes:
+
+```text
+genes: 2,957
+edge_index columns after undirected conversion and self-loops: 231,015
+max edge node index: 2,956
+node annotation rows: 2,957
+```
+
+The next Graph-JEPA step is to add the Stage A training loop once the CELLxGENE healthy anchor is available and PyTorch Geometric is installed.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

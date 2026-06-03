@@ -699,6 +699,30 @@ results/reports/jepa_v2_translational_actionability.md
 
 This joins the JEPA gene space to Human Protein Atlas FDA-target, predicted membrane, and predicted secreted protein classes. Use these annotations after biological inference to prioritize practical interventions and biomarkers. Do not use them as a loss term during representation learning.
 
+Validate Graph-JEPA v2 inputs:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/check_graph_jepa_v2_inputs.py
+```
+
+After the CELLxGENE anchor is built, validate that its gene order matches the SEA-AD graph feature order:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/check_graph_jepa_v2_inputs.py `
+  --anchor-h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_strict_jepa_aligned.h5ad
+```
+
+Graph-JEPA v2 optional training dependency:
+
+```powershell
+conda activate sea-ad-jepa
+python -m pip install torch-geometric
+```
+
+The v2 model code keeps `torch_geometric` as an optional import so the rest of the repository can still run without it. Install it only before training the graph model.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

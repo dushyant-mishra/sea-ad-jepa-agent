@@ -40,6 +40,7 @@ results/tables/*
 !results/tables/sea_ad_low_pathology_anchor_audit_*.csv
 !results/tables/cellxgene_normal_microglia_*.csv
 !results/tables/jepa_v2_translational_actionability_*.csv
+!results/tables/graph_jepa_v2_input_check.csv
 !results/reports/
 results/reports/*
 !results/reports/v1_microglia_biological_hypotheses.md
