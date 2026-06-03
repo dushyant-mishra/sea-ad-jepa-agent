@@ -1,0 +1,2 @@
+graph,power,top_edges_requested,min_tom,n_genes,n_edges,n_connected_genes,connected_fraction,n_isolated_genes,n_components,largest_component_size,median_degree,max_degree,top_hub_genes
+WGCNA_TOM,6,100000,0.0,2957,100000,1821,0.6158268515387216,1136,1139,762,13.0,656,BRAF:656; WAPL:652; ANKHD1:638; DLG1:636; SMG1:634; PAFAH1B1:633; RC3H1:620; PHKB:614; PPP2R5E:580; TMEM131:549; HELZ:531; ERC1:526; SFSWAP:486; EXOC4:468; AGO3:466

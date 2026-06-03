@@ -912,6 +912,55 @@ jepa_108  +0.0404    +0.1180         -0.0776             -1.000          0.1
 
 Interpretation: the zero-shot projection pipeline works, and gene overlap is strong. However, `jepa_63` does not show a decisive Grubman AD/control separation in this tiny public sample-pool view. The strongest separation appears in broader macro axes (`jepa_34`, `jepa_46`, `jepa_108`). This should be treated as a useful boundary on the v1 `jepa_63` claim, not a failure of the project. A better replication test needs individual donor metadata and pathology labels from a larger cohort such as ROSMAP/Mathys or a harmonized AD Knowledge Portal release.
 
+- Built the first JEPA v2 graph-topology foundation:
+
+```text
+scripts:
+  scripts/build_string_graph.py
+  scripts/build_wgcna_tom_graph.py
+  scripts/build_consensus_graph.py
+
+report:
+  results/reports/v2_graph_foundation.md
+
+outputs:
+  results/tables/v2_graph_string_*.csv
+  results/tables/v2_graph_wgcna_*.csv
+  results/tables/v2_graph_consensus_*.csv
+```
+
+STRING prior graph:
+
+```text
+threshold 400: 55,027 edges, 2,789 / 2,957 connected genes
+threshold 700: 14,565 edges, 2,311 / 2,957 connected genes
+threshold 900:  6,781 edges, 1,789 / 2,957 connected genes
+```
+
+WGCNA/TOM empirical graph:
+
+```text
+power: 6
+top TOM edges exported: 100,000
+connected genes: 1,821 / 2,957
+largest component: 762 genes
+```
+
+Consensus graph using STRING threshold 700 plus WGCNA/TOM:
+
+```text
+union graph:
+  114,029 edges
+  2,676 / 2,957 connected genes
+  largest component: 2,666 genes
+
+both-supported graph:
+  536 edges
+  376 / 2,957 connected genes
+```
+
+Interpretation: the union of STRING and WGCNA/TOM is the practical first graph for GNN-JEPA v2 because it connects about 90.5% of the JEPA feature space. The strict both-supported graph is too small and housekeeping-heavy to use as the main topology, but it is useful as a high-confidence interpretation or ablation subset.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

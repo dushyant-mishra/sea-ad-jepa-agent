@@ -612,6 +612,42 @@ python scripts/project_grubman_zero_shot.py `
 
 The public Grubman covariates expose sample pools such as `AD1_AD2` and `Ct1_Ct2`, not clean individual donor IDs. Treat this as a zero-shot transfer smoke test.
 
+Build JEPA v2 graph foundations:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/build_string_graph.py
+
+python scripts/build_wgcna_tom_graph.py `
+  --top-edges 100000 `
+  --power 6
+
+python scripts/build_consensus_graph.py
+```
+
+Outputs:
+
+```text
+results/tables/v2_graph_string_*.csv
+results/tables/v2_graph_wgcna_*.csv
+results/tables/v2_graph_consensus_*.csv
+results/reports/v2_graph_foundation.md
+```
+
+The recommended first v2 message-passing graph is the consensus union graph:
+
+```text
+results/tables/v2_graph_consensus_edge_index.csv
+```
+
+The strict both-supported graph is useful for interpretation and ablation, but it is too small to use as the main GNN topology:
+
+```text
+results/tables/v2_graph_consensus_both_edges.csv
+```
+
+Interpretation boundary: STRING is an external protein/functional association prior, and WGCNA/TOM is empirical co-expression topology. Neither graph is causal by itself.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
