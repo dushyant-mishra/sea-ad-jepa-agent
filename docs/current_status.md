@@ -1002,6 +1002,59 @@ AT8 q25 threshold: 0.0491383
 
 Interpretation: SEA-AD does not contain enough strict low-pathology donors to serve as the only homeostatic baseline for v2. Use SEA-AD low-pathology donors as a matched internal aging/postmortem calibration set, but add external healthy/normal microglia, such as CELLxGENE/Siletti, for broad Stage A pretraining.
 
+- Added the strict CELLxGENE Stage A healthy-anchor ingestion script:
+
+```text
+scripts/build_cellxgene_healthy_anchor_strict.py
+```
+
+Purpose:
+
+```text
+stream normal human brain microglia nuclei from CELLxGENE Census
+restrict to primary data, nucleus suspension, and 10x 3' v3 transcription profiling
+align the result to the exact 2,957-gene SEA-AD JEPA input order
+zero-pad missing genes only after fetching matched genes
+write a local H5AD anchor plus lightweight QC CSVs
+```
+
+This anchor is intended for JEPA v2 Stage A pretraining. It addresses the problem that SEA-AD low-pathology donors are useful matched aging/postmortem controls, but not a large enough or clean enough homeostatic baseline by themselves.
+
+- Added the first translational actionability audit:
+
+```text
+script:
+  scripts/audit_druggability_biomarkers.py
+
+outputs:
+  results/tables/jepa_v2_translational_actionability_matrix.csv
+  results/tables/jepa_v2_translational_actionability_summary.csv
+  results/reports/jepa_v2_translational_actionability.md
+```
+
+The audit joins the 2,957 JEPA genes to Human Protein Atlas protein-class annotations and v1 SEA-AD candidate-gene evidence. Current HPA overlap:
+
+```text
+HPA FDA drug targets:        136
+HPA predicted membrane:      735
+HPA predicted secreted:      105
+FDA target and membrane:      66
+```
+
+Highest-priority biology-led candidates include:
+
+```text
+PTPRG
+CHI3L1
+MRC1
+DRAM1
+S100A4
+P2RY12
+TNFRSF11B
+```
+
+Interpretation: this is the bridge from representation learning to translational target prioritization. These annotations should not constrain JEPA/GNN representation learning. They should be used after inference to rank model-implied interventions by druggability, surface accessibility, and biomarker potential.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

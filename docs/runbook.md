@@ -648,6 +648,57 @@ results/tables/v2_graph_consensus_both_edges.csv
 
 Interpretation boundary: STRING is an external protein/functional association prior, and WGCNA/TOM is empirical co-expression topology. Neither graph is causal by itself.
 
+Build the strict CELLxGENE healthy microglia Stage A anchor:
+
+```powershell
+conda activate sea-ad-jepa
+conda install -n sea-ad-jepa -c conda-forge cellxgene-census
+
+$env:PYTHONPATH = "src"
+python scripts/build_cellxgene_healthy_anchor_strict.py `
+  --max-cells 10000
+```
+
+Outputs:
+
+```text
+data/processed/v2_pretraining/cellxgene_normal_microglia_strict_jepa_aligned.h5ad
+results/tables/cellxgene_normal_microglia_anchor_qc.csv
+results/tables/cellxgene_normal_microglia_matched_genes.csv
+results/tables/cellxgene_normal_microglia_missing_genes.csv
+results/tables/cellxgene_normal_microglia_*_counts.csv
+```
+
+Default filter:
+
+```text
+disease == 'normal'
+cell_type == 'microglial cell'
+tissue_general == 'brain'
+is_primary_data == True
+suspension_type == 'nucleus'
+assay == "10x 3' v3 transcription profiling"
+```
+
+This is intentionally strict. It sacrifices cell count to reduce the CELLxGENE batch-effect problem before v2 graph pretraining. If the strict query returns too few cells, relax one technical constraint at a time and record the changed filter in the QC table.
+
+Audit JEPA v2 translational actionability:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/audit_druggability_biomarkers.py
+```
+
+Outputs:
+
+```text
+results/tables/jepa_v2_translational_actionability_matrix.csv
+results/tables/jepa_v2_translational_actionability_summary.csv
+results/reports/jepa_v2_translational_actionability.md
+```
+
+This joins the JEPA gene space to Human Protein Atlas FDA-target, predicted membrane, and predicted secreted protein classes. Use these annotations after biological inference to prioritize practical interventions and biomarkers. Do not use them as a loss term during representation learning.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell
