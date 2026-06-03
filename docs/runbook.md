@@ -723,6 +723,39 @@ python -m pip install torch-geometric
 
 The v2 model code keeps `torch_geometric` as an optional import so the rest of the repository can still run without it. Install it only before training the graph model.
 
+Train Stage A Graph-JEPA on the CELLxGENE healthy microglia anchor:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_graph_jepa_stage_a.py `
+  --h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --epochs 5 `
+  --batch-size 16 `
+  --hidden-dim 128 `
+  --gene-embed-dim 32 `
+  --latent-dim 128 `
+  --n-layers 2 `
+  --variance-weight 1.0 `
+  --lr 0.0001 `
+  --mask-fraction 0.5 `
+  --checkpoint-every 5 `
+  --out-dir results/models/graph_jepa_stage_a_string_t700_rawvar_e5 `
+  --log-dir runs/graph_jepa_stage_a_string_t700_rawvar_e5 `
+  --device auto
+```
+
+This first Stage A run uses the lighter STRING t700 graph for development speed. The full STRING/WGCNA consensus graph is available for scale-up after the training loop is stable.
+
+Expected corrected-loss behavior:
+
+```text
+variance loss should decrease over epochs
+alignment should not instantly collapse to exactly zero
+```
+
+If variance stays near `~0.99` while alignment collapses near zero, verify that `jepa_loss` computes variance on raw latent vectors, not L2-normalized vectors.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

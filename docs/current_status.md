@@ -1087,6 +1087,73 @@ node annotation rows: 2,957
 
 The next Graph-JEPA step is to add the Stage A training loop once the CELLxGENE healthy anchor is available and PyTorch Geometric is installed.
 
+- Built and validated the CELLxGENE Stage A healthy microglia anchor through WSL/Linux:
+
+```text
+data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad
+```
+
+Anchor summary:
+
+```text
+cells: 10,000
+donors: 692
+matched JEPA genes: 2,863 / 2,957
+zero-padded JEPA genes: 94
+anchor gene order matches SEA-AD graph order: yes
+```
+
+Assay composition:
+
+```text
+10x 3' v3:       7,949
+10x multiome:    1,295
+10x 3' v2:         342
+sci-RNA-seq3:      340
+other assays:       74
+```
+
+The original strict query requiring `assay == "10x 3' v3 transcription profiling"` returned zero cells. The successful anchor keeps the nucleus and normal/microglia/brain filters, but relaxes the assay filter. This is a reasonable Stage A compromise because most retained cells are still 10x 3' v3.
+
+- Added and smoke-tested the Stage A Graph-JEPA trainer:
+
+```text
+script:
+  scripts/train_graph_jepa_stage_a.py
+
+smoke checkpoint:
+  results/models/graph_jepa_stage_a_smoke/graph_jepa.pt
+
+first full-anchor checkpoint:
+  results/models/graph_jepa_stage_a_string_t700_rawvar_e5/graph_jepa.pt
+```
+
+Training setup:
+
+```text
+anchor: CELLxGENE normal microglia nuclei, 10,000 cells
+graph: STRING t700 gene graph
+node features: expression only
+gene identity: learnable embedding
+epochs: 5
+batch size: 16
+device: CUDA
+```
+
+Important loss fix:
+
+```text
+alignment uses normalized latent vectors
+variance hinge now uses raw latent vectors
+```
+
+Before this fix, the variance regularizer was applied after L2 normalization, making `variance_gamma=1.0` effectively unreachable in 128D and allowing collapse-like behavior. After the fix, the Stage A run showed meaningful variance improvement:
+
+```text
+epoch 1: loss 1.0529, alignment 0.0677, variance 0.9853
+epoch 5: loss 0.5062, alignment 0.0450, variance 0.4612
+```
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

@@ -6,3 +6,5 @@ n_annotation_rows,2957
 annotation_sum_is_hpa_fda_drug_target,136
 annotation_sum_is_hpa_predicted_secreted,105
 annotation_sum_is_hpa_predicted_membrane,735
+anchor_n_genes,2957
+anchor_exact_gene_order_match,1

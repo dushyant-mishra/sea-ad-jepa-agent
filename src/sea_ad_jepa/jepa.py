@@ -80,11 +80,13 @@ def jepa_loss(
     variance_gamma: float = 1.0,
     eps: float = 1e-4,
 ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
-    pred_z = F.normalize(pred_z, dim=-1)
-    target_z = F.normalize(target_z, dim=-1)
-    alignment = 2 - 2 * (pred_z * target_z).sum(dim=-1).mean()
-    pred_variance = variance_loss(pred_z, gamma=variance_gamma, eps=eps)
-    target_variance = variance_loss(target_z, gamma=variance_gamma, eps=eps)
+    pred_raw = pred_z
+    target_raw = target_z
+    pred_norm = F.normalize(pred_raw, dim=-1)
+    target_norm = F.normalize(target_raw, dim=-1)
+    alignment = 2 - 2 * (pred_norm * target_norm).sum(dim=-1).mean()
+    pred_variance = variance_loss(pred_raw, gamma=variance_gamma, eps=eps)
+    target_variance = variance_loss(target_raw, gamma=variance_gamma, eps=eps)
     variance = 0.5 * (pred_variance + target_variance)
     total = alignment + variance_weight * variance
     parts = {
