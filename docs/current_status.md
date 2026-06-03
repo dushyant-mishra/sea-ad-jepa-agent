@@ -961,6 +961,47 @@ both-supported graph:
 
 Interpretation: the union of STRING and WGCNA/TOM is the practical first graph for GNN-JEPA v2 because it connects about 90.5% of the JEPA feature space. The strict both-supported graph is too small and housekeeping-heavy to use as the main topology, but it is useful as a high-confidence interpretation or ablation subset.
 
+- Audited SEA-AD low-pathology donors as possible internal v2 control anchors:
+
+```text
+script:
+  scripts/audit_sea_ad_control_anchors.py
+
+outputs:
+  results/tables/sea_ad_low_pathology_anchor_audit_donors.csv
+  results/tables/sea_ad_low_pathology_anchor_audit_summary.csv
+  results/reports/sea_ad_low_pathology_anchor_audit.md
+```
+
+Definitions:
+
+```text
+relaxed anchor:
+  ADNC Not AD/Low
+  low AT8, <= cohort q25
+  low 6e10/A beta, <= cohort q25
+  no dementia
+  >= 200 Microglia-PVM cells
+
+strict anchor:
+  relaxed anchor
+  plus Braak <= II
+  plus Thal <= 2
+```
+
+Results:
+
+```text
+total donors with metadata/counts: 89
+relaxed low-pathology anchors: 10
+strict low-pathology anchors: 4
+
+AT8 q25 threshold: 0.0491383
+6e10/A beta q25 threshold: 0.158095
+```
+
+Interpretation: SEA-AD does not contain enough strict low-pathology donors to serve as the only homeostatic baseline for v2. Use SEA-AD low-pathology donors as a matched internal aging/postmortem calibration set, but add external healthy/normal microglia, such as CELLxGENE/Siletti, for broad Stage A pretraining.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

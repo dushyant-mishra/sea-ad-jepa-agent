@@ -648,6 +648,29 @@ results/tables/v2_graph_consensus_both_edges.csv
 
 Interpretation boundary: STRING is an external protein/functional association prior, and WGCNA/TOM is empirical co-expression topology. Neither graph is causal by itself.
 
+Audit SEA-AD low-pathology donors as internal v2 anchors:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/audit_sea_ad_control_anchors.py
+```
+
+Outputs:
+
+```text
+results/tables/sea_ad_low_pathology_anchor_audit_donors.csv
+results/tables/sea_ad_low_pathology_anchor_audit_summary.csv
+results/reports/sea_ad_low_pathology_anchor_audit.md
+```
+
+Use this audit to separate:
+
+- low-pathology internal reference donors
+- disease-deviation donors
+- donors with insufficient Microglia-PVM cell counts
+
+Terminology matters: SEA-AD low-pathology donors are not pristine healthy controls. They are aged postmortem reference donors. For v2, use them for matched internal calibration and add external healthy/normal microglia for broad pretraining.
+
 Embed cells and aggregate JEPA embeddings by donor:
 
 ```powershell
