@@ -1175,6 +1175,27 @@ epoch 30: loss 0.3699, alignment 0.0024, variance 0.3675
 
 Interpretation: Stage A Graph-JEPA continues to improve past 5 epochs, and the raw-latent variance penalty keeps decreasing rather than remaining frozen. This supports continuing Stage A to a longer run or moving to Stage B calibration with this checkpoint as the current foundation.
 
+Batch-size 64 comparison run:
+
+```text
+checkpoint:
+  results/models/graph_jepa_stage_a_string_t700_rawvar_e30_b64/graph_jepa.pt
+
+TensorBoard logs:
+  runs/graph_jepa_stage_a_string_t700_rawvar_e30_b64
+```
+
+The batch-64 run completed without triggering the collapse guardrail:
+
+```text
+epoch 1:  loss 1.2518, alignment 0.2658, variance 0.9860
+epoch 10: loss 0.6295, alignment 0.1042, variance 0.5253
+epoch 20: loss 0.4921, alignment 0.0372, variance 0.4548
+epoch 30: loss 0.4614, alignment 0.0154, variance 0.4461
+```
+
+Interpretation: batch 64 is stable and likely improves GPU utilization, but it does not reach the same low variance penalty by epoch 30 as the batch-16 run. It may need longer training or a modest learning-rate adjustment. For now, the batch-16 epoch-30 checkpoint remains the stronger Stage A representation candidate by raw variance spread, while batch 64 is a useful efficiency/stability comparison.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
