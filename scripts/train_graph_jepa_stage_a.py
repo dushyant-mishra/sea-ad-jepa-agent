@@ -68,6 +68,19 @@ def main() -> None:
     parser.add_argument("--mask-fraction", type=float, default=0.35)
     parser.add_argument("--variance-weight", type=float, default=0.05)
     parser.add_argument("--variance-gamma", type=float, default=1.0)
+    parser.add_argument(
+        "--collapse-alignment-threshold",
+        type=float,
+        default=1e-4,
+        help="Stop if alignment falls below this while variance penalty remains high.",
+    )
+    parser.add_argument(
+        "--collapse-variance-threshold",
+        type=float,
+        default=0.90,
+        help="Stop if variance penalty stays above this after warmup while alignment is near zero.",
+    )
+    parser.add_argument("--collapse-warmup-epochs", type=int, default=5)
     parser.add_argument("--lr", type=float, default=2e-4)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument(
@@ -192,6 +205,17 @@ def main() -> None:
             f"epoch={epoch:03d} loss={mean_loss:.6f} "
             f"alignment={mean_alignment:.6f} variance={mean_variance:.6f}"
         )
+        if (
+            epoch >= args.collapse_warmup_epochs
+            and mean_alignment < args.collapse_alignment_threshold
+            and mean_variance > args.collapse_variance_threshold
+        ):
+            print(
+                "\n[FATAL] Possible representation collapse: "
+                f"alignment={mean_alignment:.6f}, variance_penalty={mean_variance:.6f} "
+                f"at epoch {epoch}. Halting."
+            )
+            break
         if args.checkpoint_every and epoch % args.checkpoint_every == 0:
             checkpoint_path = out_dir / f"graph_jepa_epoch_{epoch:03d}.pt"
             save_checkpoint(checkpoint_path)

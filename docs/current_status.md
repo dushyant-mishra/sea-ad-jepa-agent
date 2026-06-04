@@ -1154,6 +1154,27 @@ epoch 1: loss 1.0529, alignment 0.0677, variance 0.9853
 epoch 5: loss 0.5062, alignment 0.0450, variance 0.4612
 ```
 
+Extended Stage A run:
+
+```text
+checkpoint:
+  results/models/graph_jepa_stage_a_string_t700_rawvar_e30/graph_jepa.pt
+
+TensorBoard logs:
+  runs/graph_jepa_stage_a_string_t700_rawvar_e30
+```
+
+The 30-epoch run completed without triggering the collapse guardrail:
+
+```text
+epoch 1:  loss 1.0529, alignment 0.0677, variance 0.9853
+epoch 10: loss 0.4420, alignment 0.0095, variance 0.4326
+epoch 20: loss 0.4005, alignment 0.0031, variance 0.3975
+epoch 30: loss 0.3699, alignment 0.0024, variance 0.3675
+```
+
+Interpretation: Stage A Graph-JEPA continues to improve past 5 epochs, and the raw-latent variance penalty keeps decreasing rather than remaining frozen. This supports continuing Stage A to a longer run or moving to Stage B calibration with this checkpoint as the current foundation.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
