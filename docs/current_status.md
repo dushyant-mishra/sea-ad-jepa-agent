@@ -1196,6 +1196,40 @@ epoch 30: loss 0.4614, alignment 0.0154, variance 0.4461
 
 Interpretation: batch 64 is stable and likely improves GPU utilization, but it does not reach the same low variance penalty by epoch 30 as the batch-16 run. It may need longer training or a modest learning-rate adjustment. For now, the batch-16 epoch-30 checkpoint remains the stronger Stage A representation candidate by raw variance spread, while batch 64 is a useful efficiency/stability comparison.
 
+GeneJEPA-inspired scheduler/covariance experiment:
+
+```text
+checkpoint:
+  results/models/graph_jepa_stage_a_string_t700_sched_e30_b64/graph_jepa.pt
+
+TensorBoard logs:
+  runs/graph_jepa_stage_a_string_t700_sched_e30_b64
+```
+
+Training changes:
+
+```text
+mask fraction warmup: 0.20 -> 0.50 over 10 epochs
+EMA decay warmup: 0.992 -> 0.9995 over 10 epochs
+gradient clipping: 1.0
+raw-latent covariance penalty: weight 0.01
+```
+
+Result:
+
+```text
+epoch 1:  loss 1.2344, alignment 0.2440, variance 0.9860, covariance 0.4423
+epoch 10: loss 0.9899, alignment 0.0007, variance 0.9855, covariance 0.3742
+epoch 20: loss 0.9399, alignment 0.0231, variance 0.8675, covariance 4.9270
+epoch 30: loss 0.8306, alignment 0.0330, variance 0.6597, covariance 13.7966
+```
+
+Interpretation: the scheduler works, but this exact covariance setting is not yet better than the simpler raw-variance run. The covariance penalty rises as the latent dimensions spread, suggesting that the model is learning broader variance but not yet decorrelating dimensions effectively. Treat this as a useful diagnostic, not the new best checkpoint. The current best Stage A checkpoint remains:
+
+```text
+results/models/graph_jepa_stage_a_string_t700_rawvar_e30/graph_jepa.pt
+```
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

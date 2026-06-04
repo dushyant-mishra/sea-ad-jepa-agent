@@ -45,6 +45,14 @@ def require_pyg():
     return DataLoader
 
 
+def linear_schedule(epoch: int, total_epochs: int, start: float, end: float, warmup_epochs: int) -> float:
+    if warmup_epochs <= 1:
+        return end
+    step = min(max(epoch - 1, 0), warmup_epochs - 1)
+    frac = step / float(warmup_epochs - 1)
+    return start + frac * (end - start)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Stage A Graph-JEPA pretraining on healthy/normal microglia anchors.")
     parser.add_argument(
@@ -64,10 +72,15 @@ def main() -> None:
     parser.add_argument("--n-layers", type=int, default=2)
     parser.add_argument("--conv", choices=["sage", "gcn"], default="sage")
     parser.add_argument("--dropout", type=float, default=0.1)
-    parser.add_argument("--ema-decay", type=float, default=0.996)
-    parser.add_argument("--mask-fraction", type=float, default=0.35)
+    parser.add_argument("--ema-decay", type=float, default=0.9995)
+    parser.add_argument("--ema-start-decay", type=float, default=0.992)
+    parser.add_argument("--ema-warmup-epochs", type=int, default=10)
+    parser.add_argument("--mask-fraction", type=float, default=0.5)
+    parser.add_argument("--mask-start-fraction", type=float, default=0.2)
+    parser.add_argument("--mask-warmup-epochs", type=int, default=10)
     parser.add_argument("--variance-weight", type=float, default=0.05)
     parser.add_argument("--variance-gamma", type=float, default=1.0)
+    parser.add_argument("--covariance-weight", type=float, default=0.01)
     parser.add_argument(
         "--collapse-alignment-threshold",
         type=float,
@@ -83,6 +96,7 @@ def main() -> None:
     parser.add_argument("--collapse-warmup-epochs", type=int, default=5)
     parser.add_argument("--lr", type=float, default=2e-4)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
+    parser.add_argument("--gradient-clip-val", type=float, default=1.0)
     parser.add_argument(
         "--use-node-annotations",
         action="store_true",
@@ -147,6 +161,12 @@ def main() -> None:
         writer.add_scalar("config/batch_size", args.batch_size, 0)
         writer.add_scalar("config/use_node_annotations", float(args.use_node_annotations), 0)
         writer.add_scalar("config/node_feature_dim", node_feature_dim, 0)
+        writer.add_scalar("config/ema_start_decay", args.ema_start_decay, 0)
+        writer.add_scalar("config/ema_end_decay", args.ema_decay, 0)
+        writer.add_scalar("config/mask_start_fraction", args.mask_start_fraction, 0)
+        writer.add_scalar("config/mask_end_fraction", args.mask_fraction, 0)
+        writer.add_scalar("config/covariance_weight", args.covariance_weight, 0)
+        writer.add_scalar("config/gradient_clip_val", args.gradient_clip_val, 0)
 
     history = []
 
@@ -164,9 +184,27 @@ def main() -> None:
 
     for epoch in range(1, args.epochs + 1):
         model.train()
+        current_mask_fraction = linear_schedule(
+            epoch,
+            args.epochs,
+            args.mask_start_fraction,
+            args.mask_fraction,
+            args.mask_warmup_epochs,
+        )
+        current_ema_decay = linear_schedule(
+            epoch,
+            args.epochs,
+            args.ema_start_decay,
+            args.ema_decay,
+            args.ema_warmup_epochs,
+        )
+        dataset.mask_fraction = current_mask_fraction
+        model.ema_decay = current_ema_decay
         losses = []
         alignment_losses = []
         variance_losses = []
+        covariance_losses = []
+        grad_norms = []
         for context_data, target_data in loader:
             context_data = context_data.to(device)
             target_data = target_data.to(device)
@@ -176,34 +214,51 @@ def main() -> None:
                 target_z,
                 variance_weight=args.variance_weight,
                 variance_gamma=args.variance_gamma,
+                covariance_weight=args.covariance_weight,
             )
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
+            if args.gradient_clip_val > 0:
+                grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), args.gradient_clip_val)
+                grad_norms.append(float(grad_norm.detach().cpu()))
             optimizer.step()
             model.update_target_network()
             losses.append(float(loss.detach().cpu()))
             alignment_losses.append(float(loss_parts["alignment"].cpu()))
             variance_losses.append(float(loss_parts["variance"].cpu()))
+            covariance_losses.append(float(loss_parts["covariance"].cpu()))
 
         mean_loss = float(np.mean(losses))
         mean_alignment = float(np.mean(alignment_losses))
         mean_variance = float(np.mean(variance_losses))
+        mean_covariance = float(np.mean(covariance_losses))
+        mean_grad_norm = float(np.mean(grad_norms)) if grad_norms else 0.0
         history.append(
             {
                 "epoch": epoch,
                 "loss": mean_loss,
                 "alignment_loss": mean_alignment,
                 "variance_loss": mean_variance,
+                "covariance_loss": mean_covariance,
+                "mask_fraction": current_mask_fraction,
+                "ema_decay": current_ema_decay,
+                "grad_norm": mean_grad_norm,
             }
         )
         if writer is not None:
             writer.add_scalar("train/loss_epoch", mean_loss, epoch)
             writer.add_scalar("train/alignment_loss_epoch", mean_alignment, epoch)
             writer.add_scalar("train/variance_loss_epoch", mean_variance, epoch)
+            writer.add_scalar("train/covariance_loss_epoch", mean_covariance, epoch)
             writer.add_scalar("train/lr", optimizer.param_groups[0]["lr"], epoch)
+            writer.add_scalar("train/mask_fraction", current_mask_fraction, epoch)
+            writer.add_scalar("train/ema_decay", current_ema_decay, epoch)
+            writer.add_scalar("train/grad_norm", mean_grad_norm, epoch)
         print(
             f"epoch={epoch:03d} loss={mean_loss:.6f} "
-            f"alignment={mean_alignment:.6f} variance={mean_variance:.6f}"
+            f"alignment={mean_alignment:.6f} variance={mean_variance:.6f} "
+            f"covariance={mean_covariance:.6f} mask={current_mask_fraction:.3f} "
+            f"ema={current_ema_decay:.5f} grad_norm={mean_grad_norm:.3f}"
         )
         if (
             epoch >= args.collapse_warmup_epochs

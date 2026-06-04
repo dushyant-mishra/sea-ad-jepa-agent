@@ -73,11 +73,24 @@ def variance_loss(z: torch.Tensor, gamma: float = 1.0, eps: float = 1e-4) -> tor
     return torch.mean(F.relu(gamma - std))
 
 
+def covariance_loss(z: torch.Tensor, eps: float = 1e-4) -> torch.Tensor:
+    """Penalize off-diagonal latent covariance, VICReg-style."""
+    if z.shape[0] < 2:
+        return z.new_tensor(0.0)
+    z = z - z.mean(dim=0, keepdim=True)
+    cov = (z.T @ z) / (z.shape[0] - 1)
+    cov = cov / (torch.sqrt(torch.diag(cov) + eps).unsqueeze(0) + eps)
+    cov = cov / (torch.sqrt(torch.diag(cov) + eps).unsqueeze(1) + eps)
+    off_diag = cov - torch.diag(torch.diag(cov))
+    return off_diag.pow(2).sum() / z.shape[1]
+
+
 def jepa_loss(
     pred_z: torch.Tensor,
     target_z: torch.Tensor,
     variance_weight: float = 0.0,
     variance_gamma: float = 1.0,
+    covariance_weight: float = 0.0,
     eps: float = 1e-4,
 ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
     pred_raw = pred_z
@@ -88,11 +101,17 @@ def jepa_loss(
     pred_variance = variance_loss(pred_raw, gamma=variance_gamma, eps=eps)
     target_variance = variance_loss(target_raw, gamma=variance_gamma, eps=eps)
     variance = 0.5 * (pred_variance + target_variance)
-    total = alignment + variance_weight * variance
+    pred_covariance = covariance_loss(pred_raw, eps=eps)
+    target_covariance = covariance_loss(target_raw, eps=eps)
+    covariance = 0.5 * (pred_covariance + target_covariance)
+    total = alignment + variance_weight * variance + covariance_weight * covariance
     parts = {
         "alignment": alignment.detach(),
         "variance": variance.detach(),
         "pred_variance": pred_variance.detach(),
         "target_variance": target_variance.detach(),
+        "covariance": covariance.detach(),
+        "pred_covariance": pred_covariance.detach(),
+        "target_covariance": target_covariance.detach(),
     }
     return total, parts

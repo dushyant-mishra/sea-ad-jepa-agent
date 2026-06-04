@@ -756,6 +756,37 @@ alignment should not instantly collapse to exactly zero
 
 If variance stays near `~0.99` while alignment collapses near zero, verify that `jepa_loss` computes variance on raw latent vectors, not L2-normalized vectors.
 
+Optional scheduler/covariance experiment inspired by foundation-scale GeneJEPA training:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_graph_jepa_stage_a.py `
+  --h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --epochs 30 `
+  --batch-size 64 `
+  --hidden-dim 128 `
+  --gene-embed-dim 32 `
+  --latent-dim 128 `
+  --n-layers 2 `
+  --variance-weight 1.0 `
+  --covariance-weight 0.01 `
+  --lr 0.0001 `
+  --mask-start-fraction 0.2 `
+  --mask-fraction 0.5 `
+  --mask-warmup-epochs 10 `
+  --ema-start-decay 0.992 `
+  --ema-decay 0.9995 `
+  --ema-warmup-epochs 10 `
+  --gradient-clip-val 1.0 `
+  --checkpoint-every 5 `
+  --out-dir results/models/graph_jepa_stage_a_string_t700_sched_e30_b64 `
+  --log-dir runs/graph_jepa_stage_a_string_t700_sched_e30_b64 `
+  --device auto
+```
+
+Interpret this run cautiously. A good scheduled run should improve variance without letting covariance rise unchecked.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell
