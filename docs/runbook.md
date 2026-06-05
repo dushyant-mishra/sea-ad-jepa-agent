@@ -943,6 +943,79 @@ python scripts/train_graph_jepa_stage_c_disease.py `
 
 Stage C is where the disease manifold is allowed to move. Do not interpret a Stage C run until both anchors are re-extracted and audited for Stage B-to-C drift.
 
+After Stage C, extract anchors, audit drift, and evaluate donor-level pathology:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/extract_stage_a_frozen_anchors.py `
+  --checkpoint results/models/graph_jepa_stage_c_disease_rehearsal_e20/graph_jepa_stage_c.pt `
+  --h5ad data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad `
+  --anchor-type sea_ad_low_pathology_relaxed_stage_c `
+  --out-csv results/tables/stage_c_rehearsal_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --batch-size 64 `
+  --device auto
+
+python scripts/extract_stage_a_frozen_anchors.py `
+  --checkpoint results/models/graph_jepa_stage_c_disease_rehearsal_e20/graph_jepa_stage_c.pt `
+  --h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad `
+  --anchor-type cellxgene_normal_microglia_stage_c `
+  --out-csv results/tables/stage_c_rehearsal_cellxgene_normal_microglia_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --batch-size 64 `
+  --device auto
+
+python scripts/audit_latent_coordinate_drift.py `
+  --before results/tables/stage_b_rehearsal_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --after results/tables/stage_c_rehearsal_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --label sea_ad_low_pathology_relaxed_stage_b_to_c `
+  --summary-out results/tables/stage_c_rehearsal_anchor_drift_summary.csv `
+  --cell-out results/tables/stage_c_rehearsal_sea_ad_low_pathology_relaxed_drift.csv
+
+python scripts/audit_latent_coordinate_drift.py `
+  --before results/tables/stage_b_rehearsal_cellxgene_normal_microglia_coordinates.csv `
+  --after results/tables/stage_c_rehearsal_cellxgene_normal_microglia_coordinates.csv `
+  --label cellxgene_normal_microglia_stage_b_to_c `
+  --summary-out results/tables/stage_c_rehearsal_anchor_drift_summary.csv `
+  --cell-out results/tables/stage_c_rehearsal_cellxgene_normal_microglia_drift.csv
+```
+
+Extract full SEA-AD Stage C coordinates and aggregate them to donor embeddings:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/extract_stage_a_frozen_anchors.py `
+  --checkpoint results/models/graph_jepa_stage_c_disease_rehearsal_e20/graph_jepa_stage_c.pt `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --anchor-type sea_ad_microglia_pvm_stage_c_all `
+  --out-csv results/tables/stage_c_rehearsal_sea_ad_microglia_pvm_all_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --batch-size 64 `
+  --device auto
+
+python scripts/aggregate_latent_coordinates_by_donor.py `
+  --coordinates results/tables/stage_c_rehearsal_sea_ad_microglia_pvm_all_coordinates.csv `
+  --out results/tables/stage_c_rehearsal_sea_ad_microglia_pvm_donor_embeddings.csv
+```
+
+Evaluate Stage C donor embeddings:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/run_pseudobulk_baseline.py `
+  --features results/tables/stage_c_rehearsal_sea_ad_microglia_pvm_donor_embeddings.csv `
+  --out results/tables/stage_c_rehearsal_donor_embedding_ridge_pathology.csv `
+  --max-genes 0 `
+  --device auto
+
+python scripts/evaluate_latent_spaces.py `
+  --jepa results/tables/stage_c_rehearsal_sea_ad_microglia_pvm_donor_embeddings.csv `
+  --metrics-out results/tables/stage_c_latent_space_evaluation_metrics.csv `
+  --embedding-out results/tables/stage_c_latent_space_umap_coordinates.csv `
+  --figure-out results/figures/stage_c_latent_space_pca_vs_jepa_umap_at8_neun.svg `
+  --html-out results/figures/stage_c_latent_space_pca_vs_jepa_umap_at8_neun.html
+```
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

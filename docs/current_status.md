@@ -1381,6 +1381,86 @@ epoch 2: loss 0.430117, disease JEPA 0.430047, SEA rehearsal 0.000054, CELLxGENE
 
 Interpretation: the Stage C trainer runs with deterministic three-stream batch composition and tensorized frozen-coordinate rehearsal. The smoke test shows the disease objective can move while both anchor losses remain near zero. The full Stage C run should be followed by a Stage B-to-C anchor drift audit and pathology-axis evaluation before claiming any disease-vector improvement.
 
+Full 20-epoch Stage C run:
+
+```text
+checkpoint:
+  results/models/graph_jepa_stage_c_disease_rehearsal_e20/graph_jepa_stage_c.pt
+
+history:
+  results/tables/graph_jepa_stage_c_disease_rehearsal_history.csv
+
+TensorBoard logs:
+  runs/graph_jepa_stage_c_disease_rehearsal_e20
+```
+
+Training summary:
+
+```text
+epoch 1:  loss 0.407584, disease JEPA 0.404780, SEA rehearsal 0.002740, CELLxGENE rehearsal 0.002868, variance 0.393387
+epoch 10: loss 0.360180, disease JEPA 0.360125, SEA rehearsal 0.000027, CELLxGENE rehearsal 0.000083, variance 0.359478
+epoch 20: loss 0.355651, disease JEPA 0.355642, SEA rehearsal 0.000005, CELLxGENE rehearsal 0.000014, variance 0.355031
+```
+
+Stage B-to-C anchor drift audit:
+
+```text
+summary:
+  results/tables/stage_c_rehearsal_anchor_drift_summary.csv
+```
+
+Results:
+
+```text
+SEA-AD low-pathology anchors:
+  cells: 4,467
+  mean cosine before/after: 0.9998
+  mean L2 delta: 0.5186
+
+CELLxGENE normal microglia anchors:
+  cells: 10,000
+  mean cosine before/after: 0.9992
+  mean L2 delta: 0.3082
+```
+
+First donor-level pathology readout from Stage C embeddings:
+
+```text
+donor embeddings:
+  results/tables/stage_c_rehearsal_sea_ad_microglia_pvm_donor_embeddings.csv
+
+ridge pathology result:
+  results/tables/stage_c_rehearsal_donor_embedding_ridge_pathology.csv
+
+latent-space geometry result:
+  results/tables/stage_c_latent_space_evaluation_metrics.csv
+```
+
+Top ridge Spearman signals:
+
+```text
+percent NeuN positive area:             0.315
+guhcl pTau:                             0.287
+AT8 positive cells per area:            0.278
+NeuN positive cells per area:           0.261
+percent AT8 positive area:              0.260
+percent GFAP positive area:             0.253
+percent Iba1 positive area:             0.201
+```
+
+PCA-vs-Stage-C kNN geometry:
+
+```text
+target                       PCA kNN Spearman   Stage C kNN Spearman
+AT8 / pTau                   0.219              0.053
+NeuN                         0.330              0.269
+A beta / 6e10                0.099              0.159
+GFAP                        -0.012             -0.150
+Iba1                        -0.044              0.013
+```
+
+Interpretation: Stage C preserved both reference anchors extremely well, so the three-stream rehearsal design worked. The first disease-readout is biologically plausible but not yet a clear representational win over PCA in donor-neighborhood geometry. Treat this as a successful Stage C engineering milestone plus a tuning target: the next pass should test less aggressive anchor weights, a shorter checkpoint such as epoch 10/15, or a pathology-aware Stage C objective.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
