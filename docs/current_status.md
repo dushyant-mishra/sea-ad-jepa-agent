@@ -1495,6 +1495,97 @@ Iba1                         0.013                      -0.044
 
 Interpretation: the early-checkpoint hypothesis is partly supported. Epoch 5 is the best Stage C checkpoint by ridge for AT8, NeuN, and GFAP, suggesting useful disease signal appears early and then fades under continued training. However, donor-neighborhood kNN geometry still does not recover AT8 better than PCA. The main geometry improvement is for A beta/6e10, with NeuN roughly tied to PCA at epoch 5. The next experiment should loosen rehearsal weights rather than simply selecting a later checkpoint.
 
+- Ran the first elastic Stage C rehearsal experiment:
+
+```text
+script:
+  scripts/train_graph_jepa_stage_c_disease.py
+
+checkpoint:
+  results/models/graph_jepa_stage_c_elastic_w005_e10/graph_jepa_stage_c.pt
+
+history:
+  results/tables/graph_jepa_stage_c_elastic_w005_e10_history.csv
+
+TensorBoard logs:
+  runs/graph_jepa_stage_c_elastic_w005_e10
+```
+
+Training changes:
+
+```text
+SEA rehearsal weight: 0.05
+CELLxGENE rehearsal weight: 0.05
+rehearsal loss: cosine softplus margin
+margin: 0.95
+temperature: 100
+epochs: 10
+```
+
+New telemetry:
+
+```text
+anchor cosines
+disease-to-CELLxGENE-centroid L2 distance
+disease latent variance spread
+disease effective dimensionality
+disease top singular value ratio
+```
+
+Elastic telemetry summary:
+
+```text
+epoch 1:
+  disease-to-CELLxGENE L2: 107.85
+  disease variance spread: 23.57
+  effective dims: 3.47
+  top singular value ratio: 0.695
+  SEA / CELLxGENE anchor cosine: 0.939 / 0.945
+
+epoch 5:
+  disease-to-CELLxGENE L2: 111.19
+  disease variance spread: 23.85
+  effective dims: 3.29
+  top singular value ratio: 0.712
+  SEA / CELLxGENE anchor cosine: 0.988 / 0.982
+
+epoch 10:
+  disease-to-CELLxGENE L2: 132.27
+  disease variance spread: 36.54
+  effective dims: 2.10
+  top singular value ratio: 0.821
+  SEA / CELLxGENE anchor cosine: 0.987 / 0.981
+```
+
+Elastic pathology readout:
+
+```text
+epoch 5 ridge Spearman:
+  NeuN percent: 0.388
+  guhcl pTau:   0.307
+  AT8 percent:  0.204
+  GFAP percent: 0.168
+
+epoch 10 ridge Spearman:
+  NeuN percent: 0.391
+  AT8 percent:  0.283
+  GFAP percent: 0.258
+  Iba1 percent: 0.175
+```
+
+Elastic kNN geometry:
+
+```text
+target                       epoch 5 Stage C   epoch 10 Stage C   PCA reference
+AT8 / pTau                  -0.100            -0.086             0.219
+NeuN                         0.267             0.312             0.330
+A beta / 6e10                0.079             0.162             0.099
+GFAP                        -0.038            -0.077            -0.012
+Iba1                        -0.143            -0.103            -0.044
+```
+
+Interpretation: elastic rehearsal released the anchors enough for disease distance and variance to grow, but it did not create a rich local disease manifold. Effective dimensionality fell from 3.47 to 2.10 while the top singular value ratio rose to 0.821, indicating a narrow disease tube. This explains why ridge can still recover some AT8/NeuN signal but kNN remains weak. The next Stage C objective should add a controlled disease-manifold spreading term or evaluate a non-Euclidean/neighborhood metric before adding a stronger contrastive loss.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

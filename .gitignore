@@ -43,6 +43,8 @@ results/tables/*
 !results/tables/graph_jepa_v2_input_check.csv
 !results/tables/graph_jepa_stage_c_disease_rehearsal_history.csv
 !results/tables/stage_c_rehearsal_donor_embedding_ridge_pathology.csv
+!results/tables/graph_jepa_stage_c_elastic_w005_e10_history.csv
+!results/tables/stage_c_elastic_w005_epoch_*_donor_embedding_ridge_pathology.csv
 !results/reports/
 results/reports/*
 !results/reports/v1_microglia_biological_hypotheses.md

@@ -1054,6 +1054,48 @@ python scripts/summarize_stage_c_checkpoint_evaluation.py
 
 Use this before launching another Stage C run. If an early checkpoint beats the final checkpoint, disease geometry is being learned early and then washed out by the current objective.
 
+Run elastic Stage C rehearsal with bungee-style anchor preservation:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_graph_jepa_stage_c_disease.py `
+  --checkpoint results/models/graph_jepa_stage_b_low_pathology_rehearsal_e20/graph_jepa_stage_b.pt `
+  --disease-h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --sea-anchor-h5ad data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad `
+  --sea-anchor-coordinates results/tables/stage_b_rehearsal_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --cellxgene-anchor-h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad `
+  --cellxgene-anchor-coordinates results/tables/stage_b_rehearsal_cellxgene_normal_microglia_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --epochs 10 `
+  --disease-batch-size 16 `
+  --sea-anchor-batch-size 8 `
+  --cellxgene-anchor-batch-size 8 `
+  --sea-rehearsal-weight 0.05 `
+  --cellxgene-rehearsal-weight 0.05 `
+  --rehearsal-loss-mode cosine_softplus_margin `
+  --rehearsal-margin 0.95 `
+  --rehearsal-temperature 100 `
+  --lr 0.00002 `
+  --checkpoint-every 5 `
+  --out-dir results/models/graph_jepa_stage_c_elastic_w005_e10 `
+  --log-dir runs/graph_jepa_stage_c_elastic_w005_e10 `
+  --history-out results/tables/graph_jepa_stage_c_elastic_w005_e10_history.csv `
+  --device auto
+```
+
+The elastic run logs additional telemetry:
+
+```text
+sea_anchor_cosine
+cellxgene_anchor_cosine
+disease_to_cellxgene_centroid_l2
+disease_variance_spread
+disease_effective_dims
+disease_top_sv_ratio
+```
+
+Interpretation guardrail: increasing disease-to-anchor distance without increasing effective dimensionality indicates a narrow disease tube, not a rich local pathology manifold.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

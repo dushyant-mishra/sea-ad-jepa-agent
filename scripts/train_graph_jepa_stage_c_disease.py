@@ -68,9 +68,36 @@ def make_dataset(
     return adata, dataset
 
 
-def rehearsal_loss(current_z: torch.Tensor, frozen_bank: torch.Tensor, sample_id: torch.Tensor) -> torch.Tensor:
+def rehearsal_loss(
+    current_z: torch.Tensor,
+    frozen_bank: torch.Tensor,
+    sample_id: torch.Tensor,
+    mode: str,
+    margin: float,
+    temperature: float,
+) -> tuple[torch.Tensor, torch.Tensor]:
     frozen = frozen_bank[sample_id.long()].to(current_z.device)
-    return F.mse_loss(F.normalize(current_z, dim=-1), F.normalize(frozen, dim=-1))
+    cosine = F.cosine_similarity(current_z, frozen, dim=-1)
+    if mode == "mse":
+        loss = F.mse_loss(F.normalize(current_z, dim=-1), F.normalize(frozen, dim=-1))
+    elif mode == "cosine_margin":
+        loss = F.relu(margin - cosine).mean()
+    elif mode == "cosine_softplus_margin":
+        loss = (F.softplus(temperature * (margin - cosine)) / temperature).mean()
+    else:
+        raise ValueError("mode must be 'mse', 'cosine_margin', or 'cosine_softplus_margin'")
+    return loss, cosine.mean()
+
+
+def singular_value_telemetry(z: torch.Tensor) -> tuple[float, float]:
+    centered = z - z.mean(dim=0, keepdim=True)
+    singular_values = torch.linalg.svdvals(centered)
+    total = singular_values.sum() + 1e-8
+    probabilities = singular_values / total
+    entropy = -torch.sum(probabilities * torch.log(probabilities + 1e-8))
+    effective_dims = torch.exp(entropy)
+    top_sv_ratio = singular_values[0] / total
+    return float(effective_dims), float(top_sv_ratio)
 
 
 def checkpoint_arg(checkpoint: dict, key: str, default):
@@ -98,6 +125,9 @@ def main() -> None:
     parser.add_argument("--cellxgene-anchor-batch-size", type=int, default=8)
     parser.add_argument("--sea-rehearsal-weight", type=float, default=0.5)
     parser.add_argument("--cellxgene-rehearsal-weight", type=float, default=0.5)
+    parser.add_argument("--rehearsal-loss-mode", choices=["mse", "cosine_margin", "cosine_softplus_margin"], default="mse")
+    parser.add_argument("--rehearsal-margin", type=float, default=0.95)
+    parser.add_argument("--rehearsal-temperature", type=float, default=100.0)
     parser.add_argument("--variance-weight", type=float, default=1.0)
     parser.add_argument("--variance-gamma", type=float, default=1.0)
     parser.add_argument("--covariance-weight", type=float, default=0.0)
@@ -191,6 +221,7 @@ def main() -> None:
     history = []
     sea_frozen = sea_frozen.to(device)
     cellxgene_frozen = cellxgene_frozen.to(device)
+    cellxgene_frozen_centroid = cellxgene_frozen.mean(dim=0)
 
     def save_checkpoint(path: Path) -> None:
         torch.save(
@@ -218,9 +249,14 @@ def main() -> None:
         disease_jepa_losses = []
         sea_rehearsal_losses = []
         cellxgene_rehearsal_losses = []
+        sea_anchor_cosines = []
+        cellxgene_anchor_cosines = []
+        disease_to_cellxgene_centroid_l2 = []
+        disease_variance_spreads = []
         alignment_losses = []
         variance_losses = []
         covariance_losses = []
+        epoch_disease_preds = []
 
         for step, (disease_context, disease_target) in enumerate(disease_loader, start=1):
             if args.max_steps_per_epoch and step > args.max_steps_per_epoch:
@@ -245,8 +281,24 @@ def main() -> None:
 
             sea_current = model.context_encoder(sea_anchor_target)
             cellxgene_current = model.context_encoder(cellxgene_anchor_target)
-            sea_anchor_loss = rehearsal_loss(sea_current, sea_frozen, sea_anchor_target.sample_id)
-            cellxgene_anchor_loss = rehearsal_loss(cellxgene_current, cellxgene_frozen, cellxgene_anchor_target.sample_id)
+            sea_anchor_loss, sea_anchor_cosine = rehearsal_loss(
+                sea_current,
+                sea_frozen,
+                sea_anchor_target.sample_id,
+                mode=args.rehearsal_loss_mode,
+                margin=args.rehearsal_margin,
+                temperature=args.rehearsal_temperature,
+            )
+            cellxgene_anchor_loss, cellxgene_anchor_cosine = rehearsal_loss(
+                cellxgene_current,
+                cellxgene_frozen,
+                cellxgene_anchor_target.sample_id,
+                mode=args.rehearsal_loss_mode,
+                margin=args.rehearsal_margin,
+                temperature=args.rehearsal_temperature,
+            )
+            disease_centroid_l2 = torch.norm(pred_z - cellxgene_frozen_centroid, dim=-1).mean()
+            disease_variance_spread = torch.var(pred_z, dim=0, unbiased=False).mean()
 
             loss = (
                 disease_loss
@@ -265,9 +317,17 @@ def main() -> None:
             disease_jepa_losses.append(float(disease_loss.detach().cpu()))
             sea_rehearsal_losses.append(float(sea_anchor_loss.detach().cpu()))
             cellxgene_rehearsal_losses.append(float(cellxgene_anchor_loss.detach().cpu()))
+            sea_anchor_cosines.append(float(sea_anchor_cosine.detach().cpu()))
+            cellxgene_anchor_cosines.append(float(cellxgene_anchor_cosine.detach().cpu()))
+            disease_to_cellxgene_centroid_l2.append(float(disease_centroid_l2.detach().cpu()))
+            disease_variance_spreads.append(float(disease_variance_spread.detach().cpu()))
             alignment_losses.append(float(parts["alignment"].cpu()))
             variance_losses.append(float(parts["variance"].cpu()))
             covariance_losses.append(float(parts.get("covariance", torch.tensor(0.0)).cpu()))
+            epoch_disease_preds.append(pred_z.detach().cpu())
+
+        all_disease_preds = torch.cat(epoch_disease_preds, dim=0)
+        disease_effective_dims, disease_top_sv_ratio = singular_value_telemetry(all_disease_preds)
 
         row = {
             "epoch": epoch,
@@ -275,6 +335,12 @@ def main() -> None:
             "disease_jepa_loss": float(np.mean(disease_jepa_losses)),
             "sea_rehearsal_loss": float(np.mean(sea_rehearsal_losses)),
             "cellxgene_rehearsal_loss": float(np.mean(cellxgene_rehearsal_losses)),
+            "sea_anchor_cosine": float(np.mean(sea_anchor_cosines)),
+            "cellxgene_anchor_cosine": float(np.mean(cellxgene_anchor_cosines)),
+            "disease_to_cellxgene_centroid_l2": float(np.mean(disease_to_cellxgene_centroid_l2)),
+            "disease_variance_spread": float(np.mean(disease_variance_spreads)),
+            "disease_effective_dims": disease_effective_dims,
+            "disease_top_sv_ratio": disease_top_sv_ratio,
             "alignment_loss": float(np.mean(alignment_losses)),
             "variance_loss": float(np.mean(variance_losses)),
             "covariance_loss": float(np.mean(covariance_losses)),
@@ -291,6 +357,12 @@ def main() -> None:
             f"epoch={epoch:03d} loss={row['loss']:.6f} disease_jepa={row['disease_jepa_loss']:.6f} "
             f"sea_rehearsal={row['sea_rehearsal_loss']:.6f} "
             f"cellxgene_rehearsal={row['cellxgene_rehearsal_loss']:.6f} "
+            f"sea_cos={row['sea_anchor_cosine']:.4f} "
+            f"cx_cos={row['cellxgene_anchor_cosine']:.4f} "
+            f"disease_cx_l2={row['disease_to_cellxgene_centroid_l2']:.4f} "
+            f"disease_var={row['disease_variance_spread']:.6f} "
+            f"eff_dims={row['disease_effective_dims']:.2f} "
+            f"top_sv={row['disease_top_sv_ratio']:.4f} "
             f"alignment={row['alignment_loss']:.6f} variance={row['variance_loss']:.6f} steps={row['steps']}"
         )
         if args.checkpoint_every and epoch % args.checkpoint_every == 0:
