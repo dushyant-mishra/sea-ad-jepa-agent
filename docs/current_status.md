@@ -1296,6 +1296,50 @@ epoch 2: loss 0.408651, JEPA 0.407133, primary rehearsal 0.002597, external rehe
 
 Interpretation: the Stage B rehearsal machinery works and does not immediately erase the Stage A anchor geometry. The rehearsal losses are small in the smoke test, which is expected because Stage B starts from the Stage A checkpoint and should calibrate gently rather than relearn the manifold from scratch.
 
+Full 20-epoch Stage B run:
+
+```text
+checkpoint:
+  results/models/graph_jepa_stage_b_low_pathology_rehearsal_e20/graph_jepa_stage_b.pt
+
+TensorBoard logs:
+  runs/graph_jepa_stage_b_low_pathology_rehearsal_e20
+```
+
+Training summary:
+
+```text
+epoch 1:  loss 0.409593, JEPA 0.408263, primary rehearsal 0.002270, external rehearsal 0.003050, variance 0.396048
+epoch 10: loss 0.384238, JEPA 0.384006, primary rehearsal 0.000279, external rehearsal 0.000647, variance 0.381008
+epoch 20: loss 0.377224, JEPA 0.377146, primary rehearsal 0.000080, external rehearsal 0.000229, variance 0.375715
+```
+
+Stage A-to-B coordinate drift audit:
+
+```text
+script:
+  scripts/audit_latent_coordinate_drift.py
+
+summary:
+  results/tables/stage_b_rehearsal_anchor_drift_summary.csv
+```
+
+Results:
+
+```text
+sea_ad_low_pathology_relaxed:
+  cells: 4,467
+  mean cosine before/after: 0.9916
+  mean L2 delta: 1.0873
+
+cellxgene_normal_microglia:
+  cells: 10,000
+  mean cosine before/after: 0.9754
+  mean L2 delta: 1.3305
+```
+
+Interpretation: Stage B calibrated the latent space without catastrophic forgetting. SEA-AD low-pathology anchors stayed very close to their Stage A coordinates, and external CELLxGENE rehearsal cells also remained strongly aligned. These are reference-coordinate diagnostics, not biological validation metrics.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

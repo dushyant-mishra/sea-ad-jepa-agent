@@ -862,6 +862,45 @@ python scripts/train_graph_jepa_stage_b_rehearsal.py `
 
 This is Stage B calibration, not disease fine-tuning. The goal is to adapt the Stage A healthy/reference geometry to SEA-AD's aged postmortem technical context while using CELLxGENE rehearsal to reduce catastrophic forgetting.
 
+Extract Stage B coordinates and audit Stage A-to-B drift:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/extract_stage_a_frozen_anchors.py `
+  --checkpoint results/models/graph_jepa_stage_b_low_pathology_rehearsal_e20/graph_jepa_stage_b.pt `
+  --h5ad data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad `
+  --anchor-type sea_ad_low_pathology_relaxed_stage_b `
+  --out-csv results/tables/stage_b_rehearsal_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --batch-size 64 `
+  --device auto
+
+python scripts/extract_stage_a_frozen_anchors.py `
+  --checkpoint results/models/graph_jepa_stage_b_low_pathology_rehearsal_e20/graph_jepa_stage_b.pt `
+  --h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad `
+  --anchor-type cellxgene_normal_microglia_stage_b `
+  --out-csv results/tables/stage_b_rehearsal_cellxgene_normal_microglia_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --batch-size 64 `
+  --device auto
+
+python scripts/audit_latent_coordinate_drift.py `
+  --before results/tables/stage_a_frozen_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --after results/tables/stage_b_rehearsal_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --label sea_ad_low_pathology_relaxed_stage_a_to_b `
+  --summary-out results/tables/stage_b_rehearsal_anchor_drift_summary.csv `
+  --cell-out results/tables/stage_b_rehearsal_sea_ad_low_pathology_relaxed_drift.csv
+
+python scripts/audit_latent_coordinate_drift.py `
+  --before results/tables/stage_a_frozen_cellxgene_normal_microglia_coordinates.csv `
+  --after results/tables/stage_b_rehearsal_cellxgene_normal_microglia_coordinates.csv `
+  --label cellxgene_normal_microglia_stage_a_to_b `
+  --summary-out results/tables/stage_b_rehearsal_anchor_drift_summary.csv `
+  --cell-out results/tables/stage_b_rehearsal_cellxgene_normal_microglia_drift.csv
+```
+
+High cosine similarity between Stage A and Stage B coordinates means calibration preserved the healthy/reference anchor geometry. Low similarity would indicate catastrophic forgetting or overly aggressive calibration.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell
