@@ -1230,6 +1230,72 @@ Interpretation: the scheduler works, but this exact covariance setting is not ye
 results/models/graph_jepa_stage_a_string_t700_rawvar_e30/graph_jepa.pt
 ```
 
+- Built SEA-AD low-pathology anchor H5AD subsets for Stage B calibration:
+
+```text
+script:
+  scripts/build_sea_ad_low_pathology_anchor_subset.py
+
+relaxed anchor:
+  data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad
+  donors: 10
+  cells: 4,467
+
+strict anchor:
+  data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_strict_jepa_aligned.h5ad
+  donors: 4
+  cells: 1,883
+```
+
+- Extracted frozen Stage A reference coordinates:
+
+```text
+script:
+  scripts/extract_stage_a_frozen_anchors.py
+
+summary:
+  results/tables/stage_a_frozen_anchor_coordinate_summary.csv
+
+local coordinate banks:
+  results/tables/stage_a_frozen_cellxgene_normal_microglia_coordinates.csv
+  results/tables/stage_a_frozen_sea_ad_low_pathology_relaxed_coordinates.csv
+  results/tables/stage_a_frozen_sea_ad_low_pathology_strict_coordinates.csv
+```
+
+These are frozen healthy/reference coordinates from the Stage A teacher encoder, not causal labels. They are intended for Stage B/C rehearsal so later SEA-AD calibration does not erase the Stage A healthy microglia reference geometry.
+
+- Added and smoke-tested Stage B Graph-JEPA low-pathology calibration with rehearsal:
+
+```text
+script:
+  scripts/train_graph_jepa_stage_b_rehearsal.py
+
+smoke checkpoint:
+  results/models/graph_jepa_stage_b_rehearsal_smoke/graph_jepa_stage_b.pt
+
+TensorBoard logs:
+  runs/graph_jepa_stage_b_rehearsal_smoke
+```
+
+Design:
+
+```text
+initialize from best Stage A Graph-JEPA checkpoint
+primary batch: SEA-AD low-pathology Microglia-PVM nuclei
+rehearsal batch: CELLxGENE normal-labeled microglia nuclei
+primary rehearsal loss: keep SEA-AD low-pathology cells near frozen Stage A coordinates
+external rehearsal loss: keep CELLxGENE anchor cells near frozen Stage A coordinates
+```
+
+Smoke-test result:
+
+```text
+epoch 1: loss 0.400822, JEPA 0.399966, primary rehearsal 0.001419, external rehearsal 0.002006
+epoch 2: loss 0.408651, JEPA 0.407133, primary rehearsal 0.002597, external rehearsal 0.003474
+```
+
+Interpretation: the Stage B rehearsal machinery works and does not immediately erase the Stage A anchor geometry. The rehearsal losses are small in the smoke test, which is expected because Stage B starts from the Stage A checkpoint and should calibrate gently rather than relearn the manifold from scratch.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

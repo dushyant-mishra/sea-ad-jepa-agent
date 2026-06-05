@@ -787,6 +787,81 @@ python scripts/train_graph_jepa_stage_a.py `
 
 Interpret this run cautiously. A good scheduled run should improve variance without letting covariance rise unchecked.
 
+Build SEA-AD low-pathology Stage B anchor subsets:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/build_sea_ad_low_pathology_anchor_subset.py `
+  --anchor-column internal_low_pathology_anchor_relaxed `
+  --out data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad `
+  --summary-out results/tables/sea_ad_low_pathology_microglia_pvm_relaxed_subset_summary.csv
+
+python scripts/build_sea_ad_low_pathology_anchor_subset.py `
+  --anchor-column internal_low_pathology_anchor_strict `
+  --out data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_strict_jepa_aligned.h5ad `
+  --summary-out results/tables/sea_ad_low_pathology_microglia_pvm_strict_subset_summary.csv
+```
+
+Extract frozen Stage A anchor coordinates:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/extract_stage_a_frozen_anchors.py `
+  --h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad `
+  --anchor-type cellxgene_normal_microglia `
+  --out-csv results/tables/stage_a_frozen_cellxgene_normal_microglia_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --batch-size 64 `
+  --device auto
+
+python scripts/extract_stage_a_frozen_anchors.py `
+  --h5ad data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad `
+  --anchor-type sea_ad_low_pathology_relaxed `
+  --out-csv results/tables/stage_a_frozen_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --batch-size 64 `
+  --device auto
+
+python scripts/extract_stage_a_frozen_anchors.py `
+  --h5ad data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_strict_jepa_aligned.h5ad `
+  --anchor-type sea_ad_low_pathology_strict `
+  --out-csv results/tables/stage_a_frozen_sea_ad_low_pathology_strict_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --batch-size 64 `
+  --device auto
+```
+
+Use the same edge graph that was used during Stage A training. For the current best checkpoint, that is:
+
+```text
+results/tables/v2_graph_string_edges_t700.csv
+```
+
+Run Stage B Graph-JEPA calibration with low-pathology SEA-AD anchors and CELLxGENE rehearsal:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_graph_jepa_stage_b_rehearsal.py `
+  --checkpoint results/models/graph_jepa_stage_a_string_t700_rawvar_e30/graph_jepa.pt `
+  --primary-h5ad data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad `
+  --primary-coordinates results/tables/stage_a_frozen_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --rehearsal-h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad `
+  --rehearsal-coordinates results/tables/stage_a_frozen_cellxgene_normal_microglia_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --epochs 20 `
+  --batch-size 16 `
+  --rehearsal-batch-size 16 `
+  --primary-rehearsal-weight 0.25 `
+  --external-rehearsal-weight 0.25 `
+  --lr 0.00005 `
+  --checkpoint-every 5 `
+  --out-dir results/models/graph_jepa_stage_b_low_pathology_rehearsal_e20 `
+  --log-dir runs/graph_jepa_stage_b_low_pathology_rehearsal_e20 `
+  --device auto
+```
+
+This is Stage B calibration, not disease fine-tuning. The goal is to adapt the Stage A healthy/reference geometry to SEA-AD's aged postmortem technical context while using CELLxGENE rehearsal to reduce catastrophic forgetting.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

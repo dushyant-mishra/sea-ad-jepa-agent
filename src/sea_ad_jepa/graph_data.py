@@ -103,7 +103,7 @@ class GraphSample:
     x: torch.Tensor
     edge_index: torch.Tensor
     node_id: torch.Tensor
-    obs_index: int
+    sample_id: int
 
 
 class GraphExpressionDataset:
@@ -163,6 +163,8 @@ class GraphExpressionDataset:
         return np.asarray(self.matrix[index], dtype=np.float32).copy()
 
     def _choose_mask(self) -> np.ndarray:
+        if self.mask_fraction <= 0:
+            return np.asarray([], dtype=np.int64)
         n_mask = max(1, int(self.n_genes * self.mask_fraction))
         return self.rng.choice(self.n_genes, size=n_mask, replace=False)
 
@@ -174,7 +176,7 @@ class GraphExpressionDataset:
             x = expr
 
         if not self.return_pyg_data:
-            return GraphSample(x=x, edge_index=self.edge_index, node_id=self.node_id, obs_index=index)
+            return GraphSample(x=x, edge_index=self.edge_index, node_id=self.node_id, sample_id=index)
 
         try:
             from torch_geometric.data import Data
@@ -185,5 +187,5 @@ class GraphExpressionDataset:
             x=x,
             edge_index=self.edge_index,
             node_id=self.node_id,
-            obs_index=torch.tensor([index], dtype=torch.long),
+            sample_id=torch.tensor([index], dtype=torch.long),
         )
