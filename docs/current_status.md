@@ -1340,6 +1340,47 @@ cellxgene_normal_microglia:
 
 Interpretation: Stage B calibrated the latent space without catastrophic forgetting. SEA-AD low-pathology anchors stayed very close to their Stage A coordinates, and external CELLxGENE rehearsal cells also remained strongly aligned. These are reference-coordinate diagnostics, not biological validation metrics.
 
+- Added and smoke-tested Stage C Graph-JEPA disease-vector training with three-stream rehearsal:
+
+```text
+script:
+  scripts/train_graph_jepa_stage_c_disease.py
+
+smoke checkpoint:
+  results/models/graph_jepa_stage_c_disease_rehearsal_smoke/graph_jepa_stage_c.pt
+
+smoke history:
+  results/tables/graph_jepa_stage_c_disease_rehearsal_smoke_history.csv
+
+TensorBoard logs:
+  runs/graph_jepa_stage_c_disease_rehearsal_smoke
+```
+
+Design:
+
+```text
+stream 1: full SEA-AD Microglia-PVM disease manifold, masked JEPA objective
+stream 2: SEA-AD low-pathology anchor, unmasked rehearsal objective
+stream 3: CELLxGENE normal microglia anchor, unmasked rehearsal objective
+```
+
+Default batch composition:
+
+```text
+disease: 16 cells
+SEA-AD low-pathology anchor: 8 cells
+CELLxGENE normal anchor: 8 cells
+```
+
+Smoke-test result:
+
+```text
+epoch 1: loss 0.503819, disease JEPA 0.503760, SEA rehearsal 0.000043, CELLxGENE rehearsal 0.000076, variance 0.431909
+epoch 2: loss 0.430117, disease JEPA 0.430047, SEA rehearsal 0.000054, CELLxGENE rehearsal 0.000086, variance 0.389643
+```
+
+Interpretation: the Stage C trainer runs with deterministic three-stream batch composition and tensorized frozen-coordinate rehearsal. The smoke test shows the disease objective can move while both anchor losses remain near zero. The full Stage C run should be followed by a Stage B-to-C anchor drift audit and pathology-axis evaluation before claiming any disease-vector improvement.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text
