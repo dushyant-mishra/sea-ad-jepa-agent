@@ -1461,6 +1461,40 @@ Iba1                        -0.044              0.013
 
 Interpretation: Stage C preserved both reference anchors extremely well, so the three-stream rehearsal design worked. The first disease-readout is biologically plausible but not yet a clear representational win over PCA in donor-neighborhood geometry. Treat this as a successful Stage C engineering milestone plus a tuning target: the next pass should test less aggressive anchor weights, a shorter checkpoint such as epoch 10/15, or a pathology-aware Stage C objective.
 
+- Evaluated intermediate Stage C checkpoints:
+
+```text
+script:
+  scripts/summarize_stage_c_checkpoint_evaluation.py
+
+summary:
+  results/tables/stage_c_checkpoint_evaluation_summary.csv
+```
+
+Ridge Spearman checkpoint comparison:
+
+```text
+target                       epoch 5   epoch 10   epoch 15   epoch 20
+AT8 / pTau                   0.316     0.256      0.243      0.260
+NeuN                         0.457     0.250      0.272      0.315
+A beta / 6e10               -0.088    -0.213     -0.199     -0.097
+GFAP                         0.278     0.235      0.242      0.253
+Iba1                         0.209     0.224      0.216      0.201
+```
+
+kNN geometry comparison against PCA:
+
+```text
+target                       best Stage C kNN Spearman   PCA kNN Spearman
+AT8 / pTau                   0.053                       0.219
+NeuN                         0.332                       0.330
+A beta / 6e10                0.207                       0.099
+GFAP                        -0.066                      -0.012
+Iba1                         0.013                      -0.044
+```
+
+Interpretation: the early-checkpoint hypothesis is partly supported. Epoch 5 is the best Stage C checkpoint by ridge for AT8, NeuN, and GFAP, suggesting useful disease signal appears early and then fades under continued training. However, donor-neighborhood kNN geometry still does not recover AT8 better than PCA. The main geometry improvement is for A beta/6e10, with NeuN roughly tied to PCA at epoch 5. The next experiment should loosen rehearsal weights rather than simply selecting a later checkpoint.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

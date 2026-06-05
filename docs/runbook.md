@@ -1016,6 +1016,44 @@ python scripts/evaluate_latent_spaces.py `
   --html-out results/figures/stage_c_latent_space_pca_vs_jepa_umap_at8_neun.html
 ```
 
+Evaluate intermediate Stage C checkpoints:
+
+```powershell
+$env:PYTHONPATH = "src"
+foreach ($e in 5,10,15) {
+  $epoch = "{0:D3}" -f $e
+  python scripts/extract_stage_a_frozen_anchors.py `
+    --checkpoint results/models/graph_jepa_stage_c_disease_rehearsal_e20/graph_jepa_stage_c_epoch_$epoch.pt `
+    --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+    --anchor-type sea_ad_microglia_pvm_stage_c_epoch_$epoch `
+    --out-csv results/tables/stage_c_epoch_${epoch}_sea_ad_microglia_pvm_all_coordinates.csv `
+    --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+    --batch-size 64 `
+    --device auto
+
+  python scripts/aggregate_latent_coordinates_by_donor.py `
+    --coordinates results/tables/stage_c_epoch_${epoch}_sea_ad_microglia_pvm_all_coordinates.csv `
+    --out results/tables/stage_c_epoch_${epoch}_sea_ad_microglia_pvm_donor_embeddings.csv
+
+  python scripts/run_pseudobulk_baseline.py `
+    --features results/tables/stage_c_epoch_${epoch}_sea_ad_microglia_pvm_donor_embeddings.csv `
+    --out results/tables/stage_c_epoch_${epoch}_donor_embedding_ridge_pathology.csv `
+    --max-genes 0 `
+    --device auto
+
+  python scripts/evaluate_latent_spaces.py `
+    --jepa results/tables/stage_c_epoch_${epoch}_sea_ad_microglia_pvm_donor_embeddings.csv `
+    --metrics-out results/tables/stage_c_epoch_${epoch}_latent_space_evaluation_metrics.csv `
+    --embedding-out results/tables/stage_c_epoch_${epoch}_latent_space_umap_coordinates.csv `
+    --figure-out results/figures/stage_c_epoch_${epoch}_latent_space_pca_vs_jepa_umap_at8_neun.svg `
+    --html-out results/figures/stage_c_epoch_${epoch}_latent_space_pca_vs_jepa_umap_at8_neun.html
+}
+
+python scripts/summarize_stage_c_checkpoint_evaluation.py
+```
+
+Use this before launching another Stage C run. If an early checkpoint beats the final checkpoint, disease geometry is being learned early and then washed out by the current objective.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell
