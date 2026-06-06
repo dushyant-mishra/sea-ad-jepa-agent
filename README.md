@@ -1,150 +1,286 @@
 # SEA-AD Graph-JEPA Agent
 
-**A pathology-grounded representation learning and counterfactual hypothesis engine for Alzheimer disease single-cell data.**
+**A Graph-JEPA framework for Alzheimer disease microglia: pathology-grounded representation learning, donor-held-out validation, and model-implied counterfactual gene-network discovery.**
 
-This project asks a simple question:
+This repository is an end-to-end research prototype built around the Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD). The current focus is Microglia-PVM nuclei from middle temporal gyrus (MTG), paired with quantitative neuropathology targets such as AT8/pTau, 6e10/A beta, GFAP, Iba1, and NeuN.
 
-> Can we learn cell-state representations that connect molecular programs in the brain to measurable Alzheimer pathology, then use those representations to propose candidate gene networks for follow-up?
+The central question is:
 
-The project focuses on the Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD), especially Microglia-PVM nuclei from the middle temporal gyrus (MTG). Microglia are a natural first target because they sit at the intersection of plaque response, inflammation, lipid biology, complement signaling, vascular/barrier biology, and major Alzheimer risk genes such as `APOE` and `TREM2`.
+> Can a JEPA-style model learn a biological cell-state space that connects microglial gene programs to real Alzheimer pathology, and can that space be interrogated to generate testable gene-network hypotheses?
 
-## Why This Exists
-
-Single-cell data is powerful, but by itself it often leaves us with long gene lists and unclear biological stories. Pathology and imaging data are biologically grounded, but they do not directly tell us which gene programs are active inside specific cell populations.
-
-This project tries to bridge that gap.
-
-Instead of asking only:
+This is not a chatbot over a dataset. It is a representation-learning and hypothesis-generation system.
 
 ```text
-Which genes differ between groups?
+single-nucleus expression
+        -> pathology-grounded latent state
+        -> donor-held-out prediction
+        -> module/gene counterfactual screen
+        -> ranked biological hypotheses
+        -> external perturbation, spatial, or imaging validation
+```
+
+## Why This Project Exists
+
+Single-cell RNA-seq often gives long gene lists. Neuropathology gives real tissue phenotypes, but it does not directly identify which cell-state programs explain those phenotypes. This project tries to connect those layers.
+
+Instead of only asking:
+
+```text
+Which genes are differentially expressed?
 ```
 
 we ask:
 
 ```text
-Which cell-state programs predict real tissue pathology?
-Which genes and pathways explain those predictive states?
-Which hypotheses are strong enough to justify spatial, imaging, or perturbational validation?
-```
-
-## Core Idea
-
-The system has three parts:
-
-1. **Biological state learning**
-
-   Learn robust cell-state representations from noisy single-nucleus RNA-seq using JEPA-style latent prediction.
-
-2. **Pathology-grounded evaluation**
-
-   Test whether cell-state features predict donor-level neuropathology: AT8/pTau, 6e10/A beta, GFAP, Iba1, NeuN, and biochemical amyloid/tau.
-
-3. **Counterfactual hypothesis generation**
-
-   Convert predictive signals into ranked gene/module hypotheses with explicit boundaries between association, prediction, model-implied counterfactuals, and true causal validation.
-
-The aim is not to build a chatbot over a dataset. The aim is to build a discovery loop:
-
-```text
-cell molecular state
-        -> pathology-grounded latent space
-        -> donor-held-out prediction
-        -> module/gene counterfactual screen
-        -> ranked biological hypotheses
-        -> external perturbation or spatial validation
+Which learned microglial states predict measured Alzheimer pathology?
+Which genes/modules define those states?
+What does the model predict would happen if those genes/modules were perturbed?
+Which hypotheses survive donor-held-out and confounder-adjusted checks?
 ```
 
 ## Why JEPA
 
-Single-cell expression is sparse and noisy. Reconstructing every raw count can force a model to learn technical noise. JEPA-style training instead asks the model to predict **latent biological state** from partial context.
+Single-nucleus expression is sparse, noisy, and dropout-heavy. Reconstructing raw counts can force a model to learn technical artifacts. JEPA-style training predicts latent biological state from partial context instead of reconstructing every observed count.
 
-Why cell-state representations matter:
+For Alzheimer disease, the useful object is not one noisy count vector. The useful object is the underlying cell state: homeostatic microglia, plaque response, lysosomal/phagocytic activation, complement signaling, lipid handling, vascular/barrier myeloid biology, inflammatory signaling, and disease-associated microglial programs.
+
+## What v1 Taught Us
+
+The first version used a flat-vector snRNA JEPA:
 
 ```text
-a cell's raw gene counts
-        -> noisy measurement
-
-a cell-state representation
-        -> compact summary of the biological program active in that cell
+cell = vector of 2,957 genes
+encoder = MLP-style expression encoder
+objective = predict target latent state from masked/module-masked context
 ```
 
-For Alzheimer disease, the useful object is not one observed count vector from one nucleus. The useful object is the underlying state: inflammatory response, plaque-associated activation, lipid handling, complement signaling, stress response, neuronal vulnerability, or other disease-relevant programs.
+Important v1 improvements:
 
-If a learned representation captures those states, we can:
+- EMA target encoder fixed a major target-network bug.
+- Module-aware masking was better than purely random masking.
+- Variance regularization reduced latent contraction.
+- Donor-held-out pooled OOF validation showed JEPA could beat pseudobulk on some pathology axes.
+- Digital knockouts, latent Jacobians, and confounder-adjusted effects produced useful SEA-AD hypotheses.
 
-- compare cells and donors more robustly
-- aggregate cell states into donor-level disease features
-- test whether those features predict real pathology
-- map predictive states back to genes and pathways
-- prioritize hypotheses for spatial or experimental validation
-
-For this project, the initial JEPA task is:
+Key v1 results:
 
 ```text
-masked/partial gene expression
-        -> context encoder
-        -> predictor
-        -> target cell-state embedding
+Stabilized pooled donor-held-out AT8:
+  pathology-aware EMA+variance JEPA: Spearman ~= 0.497
+  pseudobulk ridge:                  Spearman ~= 0.422
+
+PCA-vs-JEPA donor latent-space deltas:
+  GFAP:        +0.220 kNN Spearman
+  A beta/6e10: +0.071
+  Iba1:        +0.025
+  AT8/pTau:    +0.017
+  NeuN:        -0.007
 ```
 
-The long-term goal is to make this multimodal:
+But v1 also exposed real limitations:
+
+- **Flat-vector topology flaw:** genes were independent columns, so `CSF1R`, `TREM2`, `P2RY12`, and complement genes had no explicit network structure.
+- **Over-pinning/fine-tuning issue:** early Stage C-like disease signal appeared, then later training compressed it.
+- **Disease tube problem:** elastic rehearsal let disease cells move, but the model sometimes stretched one dominant latent axis instead of building a rich neighborhood geometry.
+- **External perturbation mismatch:** K562 and Kampmann/iPSC-microglia tests were useful engineering diagnostics, but v1 was not a true dynamic causal model.
+- **Causal boundary:** digital knockouts are model-implied counterfactual hypotheses, not experimental proof.
+
+Those failures motivated v2.
+
+## Graph-JEPA v2
+
+v2 changes the representation from a flat expression vector to a gene graph.
 
 ```text
-transcriptomics + pathology + spatial + imaging
-        -> shared latent disease-state space
+node = gene
+edge = STRING gene/protein relationship
+node features = expression scalar + learnable gene identity embedding
+graph encoder = message-passing neural network
+objective = JEPA latent prediction with anchor-preserving rehearsal
 ```
 
-## Current State
+This directly addresses the v1 topology flaw. The model is no longer told that genes are just unrelated columns. It receives a prior graph so perturbing one gene can influence connected subgraphs.
 
-The first biological pilot is Microglia-PVM in SEA-AD MTG.
-
-**Microglia-PVM expression** means gene-expression profiles from nuclei labeled as brain immune cells: microglia and perivascular macrophages. Microglia are resident immune cells in brain tissue. PVM stands for perivascular macrophages, immune cells associated with blood vessels. SEA-AD groups these related immune populations together as `Microglia-PVM`.
-
-For this pilot, the expression matrix is:
+The current graph input check:
 
 ```text
-one Microglia-PVM nucleus -> expression values for thousands of genes
+genes: 2,957
+STRING t700 edge columns: 231,015
+max edge node index: 2,956
+HPA/FDA drug targets in graph annotations: 136
+predicted membrane genes: 735
+predicted secreted genes: 105
 ```
 
-The pseudobulk baseline averages those Microglia-PVM nuclei by donor:
+## v2 Training Curriculum
+
+The v2 curriculum is designed to avoid two traps: learning only diseased SEA-AD biology, and forgetting healthy/reference biology during disease fine-tuning.
+
+### Stage A: Healthy Anchor Pretraining
+
+Train Graph-JEPA on normal-labeled human brain microglia nuclei from CELLxGENE.
+
+Purpose:
 
 ```text
-many Microglia-PVM nuclei from one donor
-        -> average expression per gene
-        -> one donor-level immune-cell expression profile
-        -> predict donor-level neuropathology
+learn a broad healthy/reference microglial graph manifold
 ```
 
-This gives us a strong, simple baseline before asking whether JEPA adds value.
-
-Completed:
-
-- Built Microglia-PVM donor pseudobulk features from the full SEA-AD MTG H5AD.
-- Trained flat-vector snRNA JEPA baselines with EMA target updates, module-aware masking, and variance regularization.
-- Built a Graph-JEPA v2 path using a STRING gene graph, learnable gene identity embeddings, CELLxGENE normal microglia anchors, and SEA-AD low-pathology anchors.
-- Ran Stage A healthy-anchor pretraining, Stage B SEA-AD low-pathology calibration, and Stage C disease-vector training with three-stream rehearsal.
-- Added donor-held-out validation, PCA-vs-JEPA representation diagnostics, cell-level donor leakage checks, digital knockout screens, latent Jacobian analysis, and confounder-adjusted module/gene effects.
-- Added a reproducible Stage C hyperparameter sweep to tune the balance between disease movement and anchor preservation.
-
-Current Stage C tuning result:
+The successful CELLxGENE anchor:
 
 ```text
-best run: fine_loose_01_r005_cov0005
+cells: 10,000
+donors: 692
+matched JEPA genes: 2,863 / 2,957
+zero-padded missing genes: 94
+dominant assay: 10x 3' v3
+```
+
+Current best Stage A checkpoint:
+
+```text
+results/models/graph_jepa_stage_a_string_t700_rawvar_e30/graph_jepa.pt
+```
+
+Stage A result:
+
+```text
+epoch 1:  loss 1.0529, alignment 0.0677, variance 0.9853
+epoch 30: loss 0.3699, alignment 0.0024, variance 0.3675
+```
+
+### Stage B: SEA-AD Low-Pathology Calibration
+
+Calibrate the Stage A model on low-pathology SEA-AD Microglia-PVM anchors while rehearsing CELLxGENE anchors.
+
+Purpose:
+
+```text
+adapt from broad healthy/reference cells to SEA-AD's aged postmortem technical context
+without erasing the Stage A reference manifold
+```
+
+Stage B anchors:
+
+```text
+relaxed low-pathology SEA-AD anchor: 4,467 cells, 10 donors
+strict low-pathology SEA-AD anchor:  1,883 cells, 4 donors
+```
+
+Stage A-to-B drift audit:
+
+```text
+SEA-AD low-pathology anchor cosine: 0.9916
+CELLxGENE anchor cosine:           0.9754
+```
+
+Interpretation: Stage B calibrated the model without catastrophic forgetting.
+
+### Stage C: Disease-Vector Training With Rehearsal
+
+Train on the full SEA-AD Microglia-PVM disease manifold while preserving both anchors.
+
+Purpose:
+
+```text
+learn pathology-relevant disease movement
+while retaining healthy/reference geometry
+```
+
+The Stage C trainer uses three streams:
+
+```text
+stream 1: full SEA-AD Microglia-PVM disease cells
+stream 2: SEA-AD low-pathology anchor cells
+stream 3: CELLxGENE normal microglia anchor cells
+```
+
+This avoids catastrophic forgetting more directly than a purely sequential curriculum.
+
+## Problems We Faced in Stage C
+
+The first Stage C run preserved anchors too well:
+
+```text
+SEA-AD anchor cosine:    0.9998
+CELLxGENE anchor cosine: 0.9992
+```
+
+That looked safe, but it over-pinned the manifold. The disease cells could not reorganize enough to improve local pathology geometry.
+
+We then tried elastic rehearsal:
+
+```text
+cosine softplus margin
+margin: 0.95
+temperature: 100
+```
+
+This let the disease manifold move, but telemetry found a new failure:
+
+```text
+effective dimensions fell to about 2.10
+top singular value ratio rose to about 0.821
+```
+
+Interpretation: the model escaped the anchors by stretching into a narrow disease tube. Ridge could still find a pathology vector, but Euclidean kNN struggled because the local neighborhood geometry was poor.
+
+We then added a small disease covariance penalty to reduce the tube effect. A large covariance weight over-damped disease movement, so we built a targeted sweep to tune the balance.
+
+## Current Best Stage C Result
+
+The reproducible sweep is implemented in:
+
+```text
+scripts/sweep_stage_c_finetuning.py
+```
+
+Sweep outputs:
+
+```text
+results/tables/stage_c_finetuning_sweep_summary.csv
+results/tables/stage_c_finetuning_fine_tight_summary.csv
+results/tables/stage_c_finetuning_fine_loose_summary.csv
+results/tables/stage_c_finetuning_combined_leaderboard.csv
+```
+
+Best current configuration:
+
+```text
+run: fine_loose_01_r005_cov0005
 checkpoint: epoch 5
 SEA/CELLxGENE rehearsal weight: 0.005
 disease covariance weight: 0.0005
-AT8 ridge Spearman: 0.356
-NeuN ridge Spearman: 0.374
-AT8 cosine kNN Spearman: 0.227
-NeuN cosine kNN Spearman: 0.258
-SEA anchor cosine: 0.956
-CELLxGENE anchor cosine: 0.952
+composite score: 1.544
 ```
 
-Interpretation: the current best Stage C setting is intentionally elastic. It allows the disease manifold to move while preserving both healthy/reference anchors just above the 0.95 cosine safety boundary. This is a tuning result and representation diagnostic, not experimental proof of causality.
+Key metrics:
 
-Early SEA-AD Microglia-PVM hypothesis candidates include:
+```text
+AT8 ridge Spearman:          0.356
+NeuN ridge Spearman:         0.374
+AT8 Euclidean kNN Spearman:  0.065
+NeuN Euclidean kNN Spearman: 0.271
+AT8 cosine kNN Spearman:     0.227
+NeuN cosine kNN Spearman:    0.258
+effective dimensions:        4.76
+top singular value ratio:    0.481
+SEA anchor cosine:           0.956
+CELLxGENE anchor cosine:     0.952
+```
+
+Interpretation:
+
+```text
+The best current Stage C setting is elastic.
+It allows disease movement while keeping both anchors just above the 0.95 cosine safety floor.
+It improves over the over-pinned runs and reduces the narrow-tube failure mode.
+It is still a tuning result, not a final biological validation claim.
+```
+
+## Current Biological Hypotheses
+
+Early SEA-AD Microglia-PVM candidates from internal v1/v2 analyses include:
 
 ```text
 PTPRG
@@ -155,9 +291,25 @@ TNFRSF11B
 IL27RA
 CTSD
 NFKBIA
+P2RY12
+CX3CR1
+F13A1
 ```
 
-These are not causal claims. They are model-prioritized candidates that need spatial, perturbational, or experimental validation.
+Important modules include:
+
+```text
+homeostatic microglia
+vascular/barrier myeloid
+lysosome/phagocytosis
+complement
+lipid metabolism
+plaque response
+disease-associated microglia
+AT8-associated first-pass genes
+```
+
+These are model-prioritized hypotheses. They should be validated with independent cohorts, perturbation data, spatial transcriptomics, IHC/imaging, or wet-lab experiments.
 
 ## Dataset
 
@@ -171,27 +323,27 @@ Public processed S3 buckets:
 - Quantitative neuropathology: `s3://sea-ad-quantitative-neuropathology/`
 - Spatial transcriptomics: `s3://sea-ad-spatial-transcriptomics/`
 
-Main expression file used in this pilot:
+Main expression file used locally:
 
 ```text
 s3://sea-ad-single-cell-profiling/MTG/RNAseq/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
 ```
 
-This is a large file, so it is not committed to the repository.
+This file is large and is not committed to the repository.
 
 ## Repository Guide
 
 Start here:
 
-- [docs/project_proposal.md](docs/project_proposal.md): the scientific pitch.
-- [docs/scientific_pitch.md](docs/scientific_pitch.md): a concise reviewer-facing pitch.
+- [docs/current_status.md](docs/current_status.md): full completed-work log and results.
+- [docs/runbook.md](docs/runbook.md): commands for reproducing the workflow.
 - [docs/dataset_guide.md](docs/dataset_guide.md): dataset descriptions and abbreviation glossary.
-- [docs/architecture.md](docs/architecture.md): the discovery system design.
-- [docs/technical_plan.md](docs/technical_plan.md): implementation phases and modeling details.
-- [docs/causal_discovery.md](docs/causal_discovery.md): model-implied counterfactual and causal-validation strategy.
-- [docs/runbook.md](docs/runbook.md): commands for reproducing the local workflow.
-- [docs/current_status.md](docs/current_status.md): what has been completed.
+- [docs/architecture.md](docs/architecture.md): system architecture.
+- [docs/causal_discovery.md](docs/causal_discovery.md): counterfactual and causal-validation strategy.
+- [docs/project_proposal.md](docs/project_proposal.md): scientific pitch.
+- [docs/scientific_pitch.md](docs/scientific_pitch.md): concise reviewer-facing pitch.
 - [docs/gpu_setup.md](docs/gpu_setup.md): CUDA/PyTorch setup.
+- [docs/github_about.md](docs/github_about.md): GitHub About description and topics.
 
 ## Quick Setup
 
@@ -208,96 +360,58 @@ If the environment already exists:
 conda activate sea-ad-jepa
 ```
 
-## Reproduce the First Microglia Pilot
-
-Download metadata:
-
-```powershell
-.\scripts\download_metadata.ps1
-python scripts/build_metadata_targets.py
-```
-
-Download the processed MTG AnnData:
-
-```powershell
-.\scripts\download_s3_file.ps1 `
-  -Bucket sea-ad-single-cell-profiling `
-  -Key "MTG/RNAseq/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad" `
-  -OutFile "data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad"
-```
-
-Build Microglia-PVM pseudobulk and a 10k JEPA pilot:
-
-```powershell
-python scripts/build_microglia_streaming_pilot.py `
-  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
-  --cell-max 10000 `
-  --n-top-genes 3000 `
-  --pilot-out data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
-  --pseudobulk-out data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv `
-  --counts-out data/processed/sea_ad_mtg_microglia_pvm_counts.csv
-```
-
-Run the microglia pathology baseline:
-
-```powershell
-$env:PYTHONPATH = "src"
-python scripts/run_pseudobulk_baseline.py `
-  --features data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv `
-  --out results/tables/microglia_pvm_pseudobulk_ridge_1000genes.csv `
-  --max-genes 1000
-```
-
-Train JEPA:
-
-```powershell
-$env:PYTHONPATH = "src"
-python scripts/train_jepa_snrna.py `
-  --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
-  --out-dir results/models/microglia_pvm_jepa_10k `
-  --log-dir runs/microglia_pvm_jepa_10k `
-  --epochs 20 `
-  --device auto
-```
-
 Track training in TensorBoard:
 
 ```powershell
 C:\Users\dushy\anaconda3\envs\sea-ad-jepa\Scripts\tensorboard.exe --logdir runs
 ```
 
-Rank genes associated with AT8 pathology:
+## Reproduce the Current Stage C Sweep
+
+Run the coarse sweep:
 
 ```powershell
 $env:PYTHONPATH = "src"
-python scripts/rank_pseudobulk_genes.py `
-  --features data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv `
-  --target "percent AT8 positive area_Grey matter" `
-  --out results/tables/microglia_pvm_percent_AT8_gene_rankings.csv `
-  --gene-set-out results/tables/microglia_pvm_percent_AT8_gene_set_scores.csv
+python scripts/sweep_stage_c_finetuning.py `
+  --preset coarse `
+  --epochs 10 `
+  --checkpoint-epochs 005 010 `
+  --device auto `
+  --out results/tables/stage_c_finetuning_sweep_summary.csv
+```
+
+Run the tight and loose refinements:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/sweep_stage_c_finetuning.py `
+  --preset fine_tight `
+  --epochs 5 `
+  --checkpoint-epochs 005 `
+  --device auto `
+  --out results/tables/stage_c_finetuning_fine_tight_summary.csv
+
+python scripts/sweep_stage_c_finetuning.py `
+  --preset fine_loose `
+  --epochs 5 `
+  --checkpoint-epochs 005 `
+  --device auto `
+  --out results/tables/stage_c_finetuning_fine_loose_summary.csv
+```
+
+The current best setting is:
+
+```text
+fine_loose_01_r005_cov0005
 ```
 
 ## Evidence Discipline
 
-This project is for discovery and hypothesis generation. It separates:
+This project separates:
 
-- **Association**: a signal correlates with pathology.
-- **Prediction**: a signal predicts held-out donors.
-- **Mechanistic candidate**: genes/modules suggest a plausible pathway.
-- **Validated biology**: supported by spatial, imaging, perturbational, or experimental evidence.
+- **Association:** a gene/module correlates with pathology.
+- **Prediction:** a representation predicts held-out donors.
+- **Model-implied counterfactual:** a frozen model predicts a change after digital perturbation.
+- **Causal validation:** external perturbation, spatial, imaging, or experimental evidence supports the mechanism.
 
-That separation is central. A model can help prioritize hypotheses, but it does not turn correlation into causation.
-
-## GitHub About
-
-Suggested repository description:
-
-```text
-Graph-JEPA framework for SEA-AD Alzheimer microglia: pathology-grounded representation learning, donor-held-out validation, and counterfactual gene-network hypothesis generation.
-```
-
-Suggested topics:
-
-```text
-alzheimer-disease, single-cell-rna-seq, jepa, graph-neural-network, causal-discovery, bioinformatics, pytorch, sea-ad, microglia, computational-biology
-```
+This boundary matters. A useful model can prioritize hypotheses, but it does not turn observational single-cell data into proof of causality.

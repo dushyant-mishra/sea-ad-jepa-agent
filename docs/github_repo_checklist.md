@@ -47,20 +47,22 @@ git commit -m "Initialize SEA-AD JEPA agent project"
 ## Suggested Repository Description
 
 ```text
-JEPA-agent framework for Alzheimer disease gene-network discovery from SEA-AD single-nucleus transcriptomics and neuropathology data.
+Graph-JEPA framework for SEA-AD Alzheimer microglia: pathology-grounded representation learning, donor-held-out validation, and counterfactual gene-network hypothesis generation.
 ```
 
 ## Suggested GitHub Topics
 
 ```text
-single-cell
-scrna-seq
-alzheimers-disease
+alzheimer-disease
+single-cell-rna-seq
 jepa
-gene-regulatory-networks
+graph-neural-network
+causal-discovery
 bioinformatics
-neurodegeneration
-multimodal-learning
+pytorch
+sea-ad
+microglia
+computational-biology
 ```
 
 ## README Checks
@@ -68,6 +70,9 @@ multimodal-learning
 Before publishing, confirm:
 
 - The project goal is clear in the first screen.
+- The v1-to-v2 story is clear: flat-vector JEPA exposed failure modes, Graph-JEPA addresses gene topology.
+- The Stage A/B/C training curriculum is explained.
+- Current Stage C sweep results and limitations are included.
 - Data source links are included.
 - Large data files are excluded by `.gitignore`.
 - The setup commands work in a fresh conda environment.

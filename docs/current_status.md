@@ -1,6 +1,56 @@
 # Current Status
 
-Last updated: 2026-05-27
+Last updated: 2026-06-06
+
+## Executive Summary
+
+The project has moved from v1 flat-vector snRNA JEPA to v2 Graph-JEPA.
+
+v1 established the core SEA-AD Microglia-PVM pipeline:
+
+```text
+Microglia-PVM expression
+        -> JEPA latent state
+        -> donor-held-out pathology prediction
+        -> digital knockout / latent Jacobian / confounder-adjusted hypotheses
+```
+
+v1 also exposed the key limitations:
+
+```text
+genes were independent columns rather than graph-connected nodes
+disease fine-tuning could over-pin anchors or collapse into a narrow disease tube
+external perturbation alignment was weak for specific microglial regulators
+observational counterfactuals remain hypotheses, not causal proof
+```
+
+v2 addresses those issues with Graph-JEPA:
+
+```text
+node = gene
+edge = STRING relationship
+node feature = expression scalar + learnable gene identity embedding
+training = Stage A healthy/reference pretraining, Stage B SEA-AD low-pathology calibration,
+           Stage C disease-vector training with three-stream rehearsal
+```
+
+Current best Stage C tuning result:
+
+```text
+run: fine_loose_01_r005_cov0005
+checkpoint: epoch 5
+SEA/CELLxGENE rehearsal weight: 0.005
+disease covariance weight: 0.0005
+composite score: 1.544
+AT8 ridge Spearman: 0.356
+NeuN ridge Spearman: 0.374
+AT8 cosine kNN Spearman: 0.227
+NeuN cosine kNN Spearman: 0.258
+SEA anchor cosine: 0.956
+CELLxGENE anchor cosine: 0.952
+```
+
+Interpretation: the current best v2 model is intentionally elastic. It allows pathology-linked disease movement while preserving both SEA-AD low-pathology and CELLxGENE reference anchors just above the 0.95 cosine safety boundary.
 
 ## Completed
 

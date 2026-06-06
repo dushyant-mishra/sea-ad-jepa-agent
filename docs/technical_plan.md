@@ -1,398 +1,353 @@
 # Technical Plan
 
-This plan exists to keep the implementation tied to the scientific goal:
+This plan keeps the implementation tied to the scientific goal:
 
 ```text
-learn cell-state representations
-        -> test them against measured pathology
-        -> rank genes/modules
-        -> generate validation-ready hypotheses
+learn pathology-grounded microglial state representations
+        -> validate with donor-held-out pathology prediction
+        -> diagnose representation geometry
+        -> rank genes/modules with counterfactual screens
+        -> prepare external validation
 ```
 
-The first biological wedge is Microglia-PVM in SEA-AD MTG. The first pathology anchor is AT8/pTau burden, because the initial pseudobulk baseline shows the strongest held-out donor signal there.
+## Current Project Direction
 
-## Phase 0: Project Setup
+The project has moved from v1 flat-vector snRNA JEPA to v2 Graph-JEPA.
 
-Status: complete for the first pilot.
+v1 remains important because it established baselines, hypothesis candidates, and failure modes. v2 is the main architecture for future work because it represents cells as gene graphs instead of independent gene columns.
+
+## Phase 0: Data and Environment
+
+Status: complete.
 
 Completed:
 
-- Created `sea-ad-jepa` conda environment.
-- Added scripts for SEA-AD metadata download.
-- Added scripts for public S3 prefix listing.
-- Added donor/pathology target table builder.
-- Added metadata QC figure generation.
-- Started download of the SEA-AD MTG final-nuclei AnnData file.
-- Added donor-level ridge baseline scaffolding.
-- Added minimal JEPA model skeleton.
-- Downloaded the SEA-AD MTG H5AD file.
-- Installed and verified CUDA-enabled PyTorch.
-- Created a 10,000-cell contiguous smoke-test pilot.
-- Ran the first donor-level ridge baseline.
-- Ran a 2-epoch GPU JEPA smoke test.
-- Built the real Microglia-PVM donor pseudobulk and 10k cell pilot with sequential CSR streaming.
-- Ran Microglia-PVM pseudobulk pathology baselines.
-- Trained JEPA on the Microglia-PVM 10k pilot.
-- Extracted JEPA donor embeddings and compared them against pathology targets.
-- Added first-pass AT8-associated Microglia-PVM gene ranking.
-
-## Phase 1: Data Access and Metadata Targets
-
-### Inputs
-
-Small metadata files:
+- SEA-AD metadata and quantitative neuropathology download.
+- SEA-AD MTG final-nuclei H5AD download.
+- CUDA-enabled PyTorch setup.
+- Microglia-PVM streaming extraction from the full H5AD.
+- Donor pathology target table with 84 donors and 17 pathology targets.
+- Expanded-module Microglia-PVM pilot:
 
 ```text
-data/raw/metadata/sea-ad_cohort_donor_metadata_072524.xlsx
-data/raw/metadata/sea-ad_all_mtg_quant_neuropath_bydonorid_081122.csv
+data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+40,000 cells x 2,957 genes
 ```
 
-Main expression file:
+## Phase 1: v1 Flat-JEPA Baseline
+
+Status: complete for the proof-of-concept.
+
+Implemented:
+
+- donor-level pseudobulk ridge baselines
+- random and module-aware JEPA masking
+- EMA target encoder
+- variance regularization
+- pathology-aware fine-tuning
+- pooled donor-held-out validation
+- PCA-vs-JEPA latent-space diagnostics
+- cell-level donor leakage checks
+- digital knockout screens
+- latent Jacobian analysis
+- confounder-adjusted gene/module effects
+
+Representative result:
 
 ```text
-data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
+percent AT8 positive area_Grey matter
+  pathology-aware EMA+variance JEPA pooled OOF Spearman: ~= 0.497
+  pseudobulk ridge pooled OOF Spearman:                  ~= 0.422
 ```
 
-### Generated Metadata Outputs
+v1 limitations to carry forward:
+
+- no gene topology
+- perturbation alignment is weak for specific microglial regulators
+- longer training can collapse or over-compress disease geometry
+- observational counterfactuals are hypotheses, not causal proof
+
+## Phase 2: Graph Construction
+
+Status: complete for the current v2 graph.
+
+Inputs:
 
 ```text
-data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
-data/processed/metadata/pathology_target_columns.csv
-data/processed/metadata/pathology_target_summary.csv
-data/processed/metadata/pathology_target_spearman_corr.csv
+2,957 JEPA genes
+STRING t700 edge graph
+Human Protein Atlas / FDA actionability annotations
 ```
 
-### Selected Pathology Targets
+Current graph check:
 
-The current target table includes 17 donor-level targets:
-
-- `percent 6e10 positive area_Grey matter`
-- `number of 6e10 positive objects per area_Grey matter`
-- `percent AT8 positive area_Grey matter`
-- `number of AT8 positive cells per area_Grey matter`
-- `percent GFAP positive area_Grey matter`
-- `percent Iba1 positive area_Grey matter`
-- `number of activated Iba1 positive cells_Grey matter`
-- `percent NeuN positive area_Grey matter`
-- `number of NeuN positive cells per area_Grey matter`
-- `guhcl abeta40_Grey matter`
-- `guhcl abeta42_Grey matter`
-- `guhcl pTau_Grey matter`
-- `guhcl tTau_Grey matter`
-- `ripa abeta40_Grey matter`
-- `ripa abeta42_Grey matter`
-- `ripa pTau_Grey matter`
-- `ripa tTau_Grey matter`
-
-## Phase 2: AnnData Inspection and Pilot Subsetting
-
-### Goal
-
-Create a biologically meaningful pilot AnnData file before training any model.
-
-The raw processed MTG H5AD file is large, so workflows should use:
-
-- fast HDF5 metadata inspection
-- sequential CSR streaming for scattered cell populations
-- maximum cell caps for cell-level pilots
-- donor-level pseudobulk features for pathology prediction
-- highly variable gene selection for JEPA training
-
-### Inspection Command
-
-```powershell
-python scripts/inspect_h5ad.py `
-  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
-  --out-dir results/inspection
+```text
+n_genes: 2,957
+n_edge_index_columns: 231,015
+max_edge_node_idx: 2,956
+HPA/FDA drug target genes: 136
+predicted membrane genes: 735
+predicted secreted genes: 105
 ```
 
-### Microglia-PVM Streaming Pilot
+Key design decision:
 
-Microglia-PVM rows are scattered across the full H5AD. Random backed slicing is slow, so the real pilot uses sequential CSR streaming:
+```text
+node feature = expression scalar + learnable gene identity embedding
+```
 
-```powershell
-python scripts/build_microglia_streaming_pilot.py `
-  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
-  --cell-max 10000 `
-  --n-top-genes 3000 `
-  --pilot-out data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
-  --pseudobulk-out data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv `
-  --counts-out data/processed/sea_ad_mtg_microglia_pvm_counts.csv
+This avoids scalar-node over-smoothing and gives the graph model gene identity.
+
+## Phase 3: Stage A Healthy/Reference Pretraining
+
+Status: complete for the first anchor.
+
+Anchor:
+
+```text
+CELLxGENE normal-labeled human brain microglia nuclei
+10,000 cells
+692 donors
+2,863 / 2,957 genes matched
+94 genes zero-padded
+```
+
+Best current Stage A checkpoint:
+
+```text
+results/models/graph_jepa_stage_a_string_t700_rawvar_e30/graph_jepa.pt
+```
+
+Training summary:
+
+```text
+epoch 1:  loss 1.0529, alignment 0.0677, variance 0.9853
+epoch 30: loss 0.3699, alignment 0.0024, variance 0.3675
+```
+
+Notes:
+
+- Batch 64 was stable but less strong by raw variance at epoch 30.
+- Scheduler/covariance Stage A experiment was informative but not the best checkpoint.
+- The current Stage A default remains the raw-variance epoch-30 checkpoint.
+
+## Phase 4: Stage B SEA-AD Low-Pathology Calibration
+
+Status: complete.
+
+Purpose:
+
+```text
+calibrate the healthy/reference graph model to SEA-AD's aged postmortem context
+without catastrophic forgetting
+```
+
+Inputs:
+
+```text
+SEA-AD low-pathology relaxed anchor: 4,467 cells, 10 donors
+SEA-AD low-pathology strict anchor:  1,883 cells, 4 donors
+CELLxGENE rehearsal coordinates
+```
+
+Best Stage B checkpoint:
+
+```text
+results/models/graph_jepa_stage_b_low_pathology_rehearsal_e20/graph_jepa_stage_b.pt
+```
+
+Stage A-to-B drift:
+
+```text
+SEA-AD low-pathology anchor cosine: 0.9916
+CELLxGENE anchor cosine:           0.9754
+```
+
+Interpretation: Stage B adapted to SEA-AD without erasing the healthy/reference manifold.
+
+## Phase 5: Stage C Disease-Vector Training
+
+Status: implemented and tuned.
+
+Purpose:
+
+```text
+learn disease-relevant movement from the full SEA-AD Microglia-PVM cohort
+while preserving SEA-AD low-pathology and CELLxGENE anchors
+```
+
+Trainer:
+
+```text
+scripts/train_graph_jepa_stage_c_disease.py
+```
+
+Batch streams:
+
+```text
+disease stream: full SEA-AD Microglia-PVM
+SEA anchor stream: low-pathology SEA-AD Microglia-PVM
+CELLxGENE stream: normal-labeled microglia nuclei
+```
+
+Loss components:
+
+```text
+disease JEPA loss
+cosine-softplus rehearsal loss
+disease covariance penalty
+```
+
+Telemetry:
+
+```text
+anchor cosine
+disease-to-anchor centroid distance
+disease variance spread
+disease effective dimensions
+top singular value ratio
+```
+
+## Phase 6: Stage C Tuning Sweep
+
+Status: complete for the first coarse and fine sweeps.
+
+Sweep script:
+
+```text
+scripts/sweep_stage_c_finetuning.py
 ```
 
 Outputs:
 
 ```text
-cell-level JEPA pilot: 10,000 Microglia-PVM cells x 3,000 HVGs
-donor pseudobulk: 89 donors x 36,601 genes
+results/tables/stage_c_finetuning_sweep_summary.csv
+results/tables/stage_c_finetuning_fine_tight_summary.csv
+results/tables/stage_c_finetuning_fine_loose_summary.csv
+results/tables/stage_c_finetuning_combined_leaderboard.csv
 ```
 
-### Generic Pilot Subset Command
-
-The exact column names must be confirmed by inspection first.
-
-```powershell
-python scripts/make_pilot_subset.py `
-  --h5ad data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad `
-  --out data/processed/sea_ad_mtg_microglia_pilot.h5ad `
-  --cell-type-column subclass `
-  --cell-type-values Microglia `
-  --max-cells 50000 `
-  --n-top-genes 3000
-```
-
-### Pilot Dataset Requirements
-
-The pilot AnnData should retain:
-
-- cell barcode/index
-- donor ID
-- cell class/subclass/type labels
-- disease or progression metadata if present
-- selected highly variable genes
-- normalized/log-transformed matrix or clear preprocessing provenance
-
-The donor ID column is essential because pathology labels are donor-level.
-
-## Phase 3: Baselines
-
-Before implementing JEPA, build simple baselines.
-
-### Baseline 1: Donor-Level Gene Aggregation
-
-For each donor and target cell population:
+Best current setting:
 
 ```text
-cell expression
-        -> mean expression by donor
-        -> ridge/elastic net pathology prediction
+run: fine_loose_01_r005_cov0005
+checkpoint: epoch 5
+SEA/CELLxGENE rehearsal weight: 0.005
+disease covariance weight: 0.0005
 ```
-
-This gives a simple reference for predicting pathology from gene expression.
-
-Implemented entry point:
-
-```powershell
-$env:PYTHONPATH = "src"
-python scripts/run_baseline_ridge.py `
-  --h5ad data/processed/sea_ad_mtg_microglia_pilot.h5ad `
-  --donor-column "Donor ID" `
-  --out results/tables/microglia_ridge_pathology.csv
-```
-
-### Baseline 2: PCA Embeddings
-
-```text
-single-cell expression
-        -> PCA
-        -> donor-level aggregation
-        -> pathology prediction
-```
-
-### Baseline 3: scVI or Similar Single-Cell Latent Model
-
-If compute allows:
-
-```text
-single-cell expression
-        -> scVI latent space
-        -> donor-level aggregation
-        -> pathology prediction
-```
-
-## Phase 4: snRNA-seq JEPA
-
-### Model Concept
-
-The first JEPA should be simple and interpretable.
-
-```text
-context genes
-        -> context encoder
-        -> predictor
-        -> predicted target embedding
-
-target genes
-        -> target encoder
-        -> target embedding
-```
-
-The loss compares predicted and target embeddings:
-
-```text
-loss = cosine_loss(predicted_target, stop_gradient(target_embedding))
-```
-
-or:
-
-```text
-loss = mean_squared_error(predicted_target, stop_gradient(target_embedding))
-```
-
-Implemented entry point:
-
-```powershell
-$env:PYTHONPATH = "src"
-python scripts/train_jepa_snrna.py `
-  --h5ad data/processed/sea_ad_mtg_microglia_pilot.h5ad `
-  --out-dir results/models/microglia_jepa `
-  --epochs 20 `
-  --device auto
-```
-
-### Masking Strategies
-
-Start with random gene masking, then move to biology-aware masking.
-
-Options:
-
-- random highly variable gene subsets
-- pathway or gene-set masking
-- AD-relevant modules such as immune activation, synaptic genes, mitochondrial genes, complement genes
-- cell-type-specific marker modules
-
-Implemented microglia-aware modules:
-
-- plaque response
-- complement
-- lipid metabolism
-- lysosome/phagocytosis
-- interferon response
-- inflammatory signaling
-- first-pass AT8-associated genes
-
-Use `--mask-mode mixed` to combine random masking with curated module masking:
-
-```powershell
-$env:PYTHONPATH = "src"
-python scripts/train_jepa_snrna.py `
-  --h5ad data/processed/sea_ad_mtg_microglia_pvm_10k_hvg3k.h5ad `
-  --out-dir results/models/microglia_pvm_jepa_10k_mixed_masking `
-  --epochs 20 `
-  --mask-mode mixed `
-  --device auto
-```
-
-First observation:
-
-Mixed masking improves training loss and some donor-level pathology signals, but the current HVG-only pilot includes only partial overlap with curated microglia modules. The next data step should preserve curated module genes during pilot creation.
-
-Second observation:
-
-Preserving curated module genes during pilot creation improved module coverage and increased the JEPA association with `percent AT8 positive area_Grey matter` relative to the earlier JEPA runs. Pseudobulk remains the strongest first-pass AT8 predictor, but the module-preserved JEPA direction is more biologically plausible and should be used for the next representation-learning iteration.
-
-### Why Latent Prediction
-
-Raw reconstruction can encourage the model to reproduce sparse count noise. JEPA-style latent prediction instead asks whether the model can predict biologically meaningful hidden state.
-
-## Phase 5: Pathology Prediction
-
-After training, compute embeddings for cells and aggregate by donor.
-
-Aggregation options:
-
-- mean embedding per donor and cell type
-- attention-weighted donor embedding
-- cluster/state proportions per donor
-- distribution summaries such as mean, variance, and quantiles
-
-Prediction targets:
-
-- A beta burden
-- pTau/AT8 burden
-- GFAP burden
-- Iba1 burden
-- NeuN signal/density
-- biochemical amyloid/tau measures
 
 Metrics:
 
-- Spearman correlation
-- Pearson correlation
-- R squared
-- mean absolute error
-- cross-validated performance by held-out donor
-
-The main split should be donor-level, not cell-level, to avoid leakage.
-
-## Phase 6: Gene Module and Regulator Discovery
-
-For pathology-associated latent dimensions or clusters:
-
-1. Rank genes associated with the latent factor.
-2. Identify enriched pathways or gene sets.
-3. Compare to known AD genes and pathways.
-4. Infer candidate regulators where possible.
-5. Generate candidate networks.
-
-Potential methods:
-
-- differential expression across latent states
-- correlation of genes with latent dimensions
-- pathway enrichment
-- regulon enrichment
-- SCENIC/pySCENIC, CellOracle, or GRNBoost2 for comparison
-
-## Phase 7: Agentic Interpretation Layer
-
-The agent should operate on structured outputs, not raw data alone.
-
-Inputs:
-
-- pathology prediction results
-- latent factor summaries
-- top genes/modules
-- enrichment tables
-- candidate regulators
-- known marker and validation target tables
-
-Agent outputs:
-
-- ranked biological hypotheses
-- evidence summaries
-- suggested validation stains or perturbations
-- figure captions
-- caveats and confidence levels
-
-Example output shape:
-
 ```text
-Hypothesis:
-  A microglial latent state associated with high 6e10 A beta burden reflects plaque-responsive immune activation.
-
-Evidence:
-  - Predicts held-out donor A beta target.
-  - Enriched for complement and lipid-response genes.
-  - Candidate regulators include APOE/TREM2/TYROBP-axis genes.
-
-Validation:
-  - Iba1 plus 6e10 co-localization.
-  - APOE/TREM2/C1q staining near plaques.
-  - Spatial enrichment analysis near plaque-heavy regions.
+composite score:             1.544
+AT8 ridge Spearman:          0.356
+NeuN ridge Spearman:         0.374
+AT8 Euclidean kNN Spearman:  0.065
+NeuN Euclidean kNN Spearman: 0.271
+AT8 cosine kNN Spearman:     0.227
+NeuN cosine kNN Spearman:    0.258
+effective dimensions:        4.76
+top singular value ratio:    0.481
+SEA anchor cosine:           0.956
+CELLxGENE anchor cosine:     0.952
 ```
 
-## Engineering Notes
+Interpretation:
 
-### Large File Handling
+```text
+The useful Stage C regime is elastic, not tightly pinned.
+The anchor cosines should remain above about 0.95.
+The disease manifold should avoid both collapse and one-dimensional tube behavior.
+```
 
-Do not commit data files. The `.gitignore` excludes:
+## Phase 7: Hypothesis Generation
 
-- `data/raw/`
-- `data/processed/`
-- large AnnData/HDF5 files
-- generated figures and logs
+Status: implemented for first internal SEA-AD hypotheses.
 
-### Reproducibility
+Current evidence sources:
 
-Each generated output should be reproducible from:
+- pseudobulk gene/pathology rankings
+- JEPA latent factor decoding
+- digital module/gene knockouts
+- fold-specific knockouts
+- latent Jacobian edges
+- confounder-adjusted module/gene effects
 
-- source scripts
-- environment file
-- command-line arguments
-- downloaded public SEA-AD objects
+Candidate genes:
 
-### Modeling Safety
+```text
+PTPRG
+S100A4
+CHI3L1
+DRAM1
+TNFRSF11B
+IL27RA
+CTSD
+NFKBIA
+P2RY12
+CX3CR1
+F13A1
+```
 
-Avoid reporting cell-level cross-validation when the target is donor-level pathology. The split must be by donor.
+Candidate modules:
 
-Avoid causal language unless perturbational or longitudinal evidence supports it.
+```text
+homeostatic microglia
+vascular/barrier myeloid
+lysosome/phagocytosis
+complement
+lipid metabolism
+plaque response
+disease-associated microglia
+AT8-associated first-pass genes
+```
+
+## Phase 8: External Validation
+
+Status: partially implemented.
+
+Completed:
+
+- K562/Replogle streaming smoke test machinery.
+- Kampmann/iPSC-microglia DEG-vector benchmark.
+
+Interpretation:
+
+```text
+K562 is mainly an engineering smoke test.
+Kampmann/iPSC-microglia is more relevant but still not a perfect cell-level guide-assignment validation.
+```
+
+Next validation targets:
+
+- better iPSC-microglia or macrophage Perturb-seq with per-cell guide labels
+- independent Alzheimer single-nucleus cohorts for zero-shot projection
+- spatial transcriptomics validation near AT8/6e10 pathology fields
+
+## Phase 9: Multimodal Expansion
+
+Future work:
+
+```text
+gene graph JEPA
+        -> cell embeddings
+        -> spatial/tissue graph
+        -> pathology image and IHC alignment
+```
+
+Important architecture boundary:
+
+```text
+gene graph: nodes are genes
+tissue graph: nodes are cells or spatial regions
+```
+
+These should be connected hierarchically, not mixed into one graph without care.
+
+## Modeling Rules
+
+- Use donor-level splits for donor-level pathology targets.
+- Treat digital knockouts as model-implied counterfactuals.
+- Do not claim causality without perturbational or experimental support.
+- Keep raw data, checkpoints, and coordinate banks out of git.
+- Commit lightweight summaries, figures, and runbook commands.

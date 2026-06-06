@@ -1,189 +1,297 @@
 # Architecture
 
-## The Discovery Loop
+## Discovery Loop
 
-The architecture is organized around a biological discovery loop, not around a single model.
-
-The system should repeatedly answer:
+The project is organized around a discovery loop:
 
 ```text
-What cell state predicts pathology?
-What genes explain that state?
-What evidence supports the hypothesis?
-What validation should come next?
+SEA-AD Microglia-PVM expression
+        |
+        v
+cell-state representation learning
+        |
+        v
+donor-held-out pathology prediction
+        |
+        v
+gene/module interpretation
+        |
+        v
+model-implied counterfactuals
+        |
+        v
+evidence-aware biological hypotheses
 ```
+
+The model is only one part of the system. The full architecture includes data access, representation learning, validation, counterfactual analysis, and reporting.
+
+## Data Layer
+
+Primary dataset:
 
 ```text
-SEA-AD molecular data
-        |
-        v
-cell-state learning
-        |
-        v
-pathology-grounded prediction
-        |
-        v
-gene/module ranking
-        |
-        v
-evidence-aware hypothesis report
+SEA-AD MTG single-nucleus RNA-seq
+Microglia-PVM subset
+40,000 nuclei x 2,957 genes in the current expanded-module pilot
 ```
 
-## Current Data Flow
+Pathology targets:
 
 ```text
-SEA-AD donor metadata
-        |
-        v
-donor-level covariates
-
-SEA-AD MTG neuropathology
-        |
-        v
-A beta, pTau, GFAP, Iba1, NeuN targets
-
-SEA-AD MTG snRNA-seq
-        |
-        v
-Microglia-PVM cell-level pilot
-        |
-        v
-JEPA cell-state embeddings
-        |
-        v
-donor-level aggregation
-        |
-        v
-pathology prediction
-        |
-        v
-gene ranking and hypothesis generation
+AT8 / pTau
+6e10 / A beta
+GFAP
+Iba1
+NeuN
+biochemical amyloid/tau readouts
 ```
 
-## Layer 1: Representation Learning
-
-The JEPA component learns by predicting target embeddings from context embeddings.
-
-The purpose of this layer is to turn noisy gene counts into a compact cell-state representation. In disease biology, that representation is useful only if it preserves the programs that matter: inflammatory activation, plaque response, lipid metabolism, complement signaling, stress response, or neuronal vulnerability.
-
-For snRNA-seq:
+External/reference anchors:
 
 ```text
-cell expression vector
-        |
-        +--> context genes/modules --> context encoder
-        |
-        +--> target genes/modules  --> target encoder
-
-context embedding --> predictor --> predicted target embedding
-target embedding  --> stop gradient
-
-loss(predicted target embedding, target embedding)
+CELLxGENE normal-labeled human brain microglia nuclei
+SEA-AD low-pathology Microglia-PVM nuclei
 ```
 
-This encourages the model to learn latent biological state rather than reconstruct every noisy count.
-
-In the first implementation, JEPA is deliberately simple: an MLP context encoder, an MLP target encoder, and a predictor head. That is enough to test whether the representation-learning loop works before adding transformers, pathway-aware masking, or multimodal objectives.
-
-## Layer 2: Pathology-Grounded Evaluation
-
-Cell-level embeddings are aggregated at the donor level because pathology targets are donor-level labels.
+Graph prior:
 
 ```text
-cell embeddings
-        |
-        v
-group by donor and cell population
-        |
-        v
-mean/proportion/distribution summaries
-        |
-        v
-predict pathology targets
+STRING t700 gene graph
+2,957 genes
+231,015 edge-index columns
 ```
 
-Important rule:
+## v1 Flat-JEPA Layer
+
+The first architecture represented each cell as a flat gene-expression vector.
 
 ```text
-Train/test splits must be donor-level splits.
+expression vector
+        -> context encoder
+        -> predictor
+        -> predicted target latent
+
+masked target expression
+        -> EMA target encoder
+        -> target latent
 ```
 
-Cell-level splits would leak donor pathology information and overstate performance.
+v1 improvements:
 
-This layer is what makes the project biologically grounded. A representation is useful only if it helps explain measured disease burden, not merely because it separates known cell labels.
+- EMA target encoder
+- curated module-aware masking
+- donor-balanced sampling
+- variance regularization
+- pathology-aware fine-tuning
+- donor-held-out pooled OOF validation
 
-## Layer 3: Gene Network Discovery
+v1 limitations:
 
-Once a cell-state feature is associated with pathology, the analysis layer asks:
+- no explicit gene graph
+- weak perturbation dynamics for specific regulators
+- possible disease-tube collapse during fine-tuning
+- observational counterfactuals remain hypotheses
 
-- Which genes are associated with this state?
-- Which pathways are enriched?
-- Which regulators may explain the module?
-- Does the module match known AD biology?
-- Which pathology or imaging readouts support it?
+v1 remains useful as a baseline and hypothesis generator, but v2 is the main architecture direction.
 
-Example:
+## v2 Graph-JEPA Layer
+
+Graph-JEPA represents each cell as a gene graph.
 
 ```text
-high A beta predicted state
-        |
-        v
-microglial latent factor
-        |
-        v
-top associated genes
-        |
-        v
-complement / lipid-response enrichment
-        |
-        v
-candidate plaque-responsive microglial network
+node = gene
+edge = STRING relationship
+node feature = [expression scalar, learnable gene identity embedding]
+graph encoder = message-passing model
+cell latent = pooled graph representation
 ```
 
-The first implementation ranks genes by donor-level pseudobulk association with pathology. Later versions should add regulon inference, pathway enrichment, and spatial validation.
+Why gene identity embeddings matter:
 
-## Layer 4: Agentic Interpretation
+```text
+expression-only scalar node
+        -> graph layers can over-smooth and forget which gene is which
 
-The agent should consume structured intermediate results, not invent conclusions from raw files.
+expression + gene identity vector
+        -> graph layers know both abundance and biological node identity
+```
 
-Expected inputs:
+The JEPA objective remains latent predictive learning:
 
-- model metrics
-- target prediction tables
-- latent factor summaries
-- top gene rankings
-- pathway enrichment outputs
-- candidate regulator tables
-- relevant known marker lists
+```text
+masked context graph
+        -> context graph encoder
+        -> predictor
+        -> predicted target latent
 
-Expected outputs:
+target graph
+        -> EMA target graph encoder
+        -> target latent
+```
 
-- ranked hypotheses
+## Stage A/B/C Curriculum
+
+### Stage A: Healthy/Reference Pretraining
+
+Input:
+
+```text
+CELLxGENE normal-labeled brain microglia nuclei
+```
+
+Goal:
+
+```text
+learn a broad healthy/reference microglial graph manifold
+```
+
+Current best Stage A checkpoint:
+
+```text
+results/models/graph_jepa_stage_a_string_t700_rawvar_e30/graph_jepa.pt
+```
+
+### Stage B: SEA-AD Calibration
+
+Input:
+
+```text
+SEA-AD low-pathology Microglia-PVM nuclei
+CELLxGENE rehearsal anchors
+```
+
+Goal:
+
+```text
+adapt to SEA-AD aged postmortem technical context
+without forgetting the Stage A healthy/reference manifold
+```
+
+Drift audit:
+
+```text
+SEA-AD low-pathology cosine: 0.9916
+CELLxGENE cosine:           0.9754
+```
+
+### Stage C: Disease-Vector Training
+
+Input streams:
+
+```text
+full SEA-AD Microglia-PVM disease stream
+SEA-AD low-pathology anchor stream
+CELLxGENE normal microglia anchor stream
+```
+
+Goal:
+
+```text
+learn pathology-linked movement while preserving anchors
+```
+
+This is a rehearsal curriculum, not a purely sequential curriculum. The model sees disease and anchors in the same training phase so healthy/reference geometry is not overwritten.
+
+## Stage C Losses
+
+The Stage C objective combines:
+
+```text
+disease JEPA loss
+anchor rehearsal loss
+disease covariance penalty
+```
+
+Rehearsal uses a cosine softplus margin:
+
+```text
+margin: 0.95
+temperature: 100
+```
+
+This acts like an elastic safety boundary. Anchors may move slightly, but the penalty rises when they drift below the cosine margin.
+
+The disease covariance penalty is used to reduce narrow-tube collapse, where one latent axis carries most of the disease signal.
+
+## Telemetry
+
+Stage C logs:
+
+```text
+disease JEPA loss
+SEA anchor cosine
+CELLxGENE anchor cosine
+disease-to-CELLxGENE centroid L2
+disease variance spread
+disease effective dimensionality
+disease top singular value ratio
+```
+
+Why this matters:
+
+```text
+Ridge can succeed on a 1D disease tube.
+kNN needs useful local neighborhood geometry.
+Effective dimensions and top singular value ratio tell us whether the manifold is broad or collapsed.
+```
+
+## Current Best Stage C Configuration
+
+From the combined sweep leaderboard:
+
+```text
+run: fine_loose_01_r005_cov0005
+checkpoint: epoch 5
+SEA/CELLxGENE rehearsal weight: 0.005
+disease covariance weight: 0.0005
+composite score: 1.544
+```
+
+Key metrics:
+
+```text
+AT8 ridge Spearman:          0.356
+NeuN ridge Spearman:         0.374
+AT8 cosine kNN Spearman:     0.227
+NeuN cosine kNN Spearman:    0.258
+effective dimensions:        4.76
+top singular value ratio:    0.481
+SEA anchor cosine:           0.956
+CELLxGENE anchor cosine:     0.952
+```
+
+## Interpretation Layer
+
+The interpretation layer consumes structured outputs:
+
+- donor-held-out prediction metrics
+- latent geometry diagnostics
+- gene/module digital knockout tables
+- latent Jacobian edges
+- confounder-adjusted gene/module effects
+- external perturbation benchmark results
+
+It produces:
+
+- ranked biological hypotheses
 - evidence summaries
 - validation suggestions
 - caveats and evidence levels
-- figure captions and report text
 
-The agent is intentionally downstream of the quantitative analysis. Its role is to organize evidence, expose caveats, and propose the next experiment.
+The agentic component should not invent evidence. It should summarize structured model outputs and literature/context with clear uncertainty.
 
 ## Future Multimodal Expansion
 
-After the snRNA-seq pilot:
+The graph architecture is gene-level. Spatial transcriptomics and pathology images require a higher-level tissue graph.
+
+Planned hierarchy:
 
 ```text
-snRNA-seq embeddings
-        + neuropathology image features
-        + spatial transcriptomics
-        + snATAC/regulatory evidence
-        |
-        v
-multimodal latent disease-state space
+gene graph JEPA
+        -> cell/nucleus embeddings
+        -> donor or spatial-region summaries
+        -> cell/tissue graph model
+        -> spatial and imaging alignment
 ```
 
-Potential cross-modal prediction tasks:
-
-- predict transcriptomic state from pathology image features
-- predict pathology burden from cell-state composition
-- predict spatial neighborhood state from local transcriptomic programs
-- align snRNA and spatial transcriptomics latent factors
-- connect snATAC regulatory programs to expression-derived disease states
+This keeps gene-network structure and tissue-neighborhood structure conceptually separate.

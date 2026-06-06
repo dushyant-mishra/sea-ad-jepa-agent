@@ -29,7 +29,25 @@ computational-biology
 
 ## Short Project Thesis
 
-This project builds a JEPA-based biological state space for SEA-AD Alzheimer disease microglia. It asks whether learned cell-state representations can preserve disease-relevant biology better than standard expression-only dimensionality reduction and support counterfactual gene-network hypothesis generation.
+This project builds a Graph-JEPA biological state space for SEA-AD Alzheimer disease microglia. It asks whether learned cell-state representations can connect Microglia-PVM transcriptomic programs to measured neuropathology and support counterfactual gene-network hypothesis generation.
+
+The current v2 direction addresses limitations found in v1 flat-vector JEPA:
+
+```text
+v1 problem: genes were independent columns
+v2 response: genes are graph nodes with STRING edges and learnable gene identity embeddings
+
+v1 problem: disease fine-tuning could over-pin or collapse geometry
+v2 response: Stage A/B/C curriculum with anchor rehearsal, covariance diagnostics, and sweep-based tuning
+```
+
+Current best Stage C setting:
+
+```text
+rehearsal weight: 0.005
+disease covariance weight: 0.0005
+checkpoint: epoch 5
+```
 
 ## Evidence Boundary
 

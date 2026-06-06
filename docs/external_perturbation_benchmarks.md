@@ -2,11 +2,25 @@
 
 The SEA-AD model is trained on observational human brain data. To test whether its model-implied counterfactuals reflect real intervention biology, we need public datasets where genes or pathways were actually perturbed.
 
+This document now has two roles:
+
+```text
+v1: explain why flat-vector JEPA was not sufficient for perturbation alignment
+v2: define the external validation gate for Graph-JEPA counterfactuals
+```
+
 The benchmark question is:
 
 ```text
 If JEPA predicts that perturbing a gene/module changes cell state,
 does a real CRISPR or drug perturbation dataset show a matching response?
+```
+
+For Graph-JEPA v2, the benchmark question becomes more specific:
+
+```text
+If Graph-JEPA perturbs a gene node or module subgraph,
+does the predicted latent shift align with a real CRISPRi/CRISPR/drug transcriptomic shift?
 ```
 
 ## Benchmark 1: Perturb-seq
@@ -82,7 +96,7 @@ The final per-cell sgRNA assignments are not exposed as a simple metadata table 
 The paper states that sgRNA assignment used a separate mapping workflow and demux/z-score filtering.
 ```
 
-This means the first automated benchmark should not force the existing cell-level streaming script onto these files. Instead, the repo now includes a DEG-vector benchmark:
+This means the first automated benchmark should not force the existing cell-level streaming script onto these files. Instead, the repo includes a DEG-vector benchmark:
 
 ```text
 scripts/benchmark_kampmann_deg_alignment.py
@@ -134,8 +148,18 @@ predictive:
 Interpretation:
 
 ```text
-This is a real biology-matched stress test, and the current v1 model does not yet align broadly with observed iPSC-microglia perturbation responses.
-That is a useful negative/partial result: it motivates module-level perturbation, CRISPRi-aware scaling, stronger cross-domain alignment, and eventually JEPA v2.
+This is a real biology-matched stress test, and the v1 flat-vector model did not align broadly with observed iPSC-microglia perturbation responses.
+That is a useful negative/partial result: it motivates Graph-JEPA v2, module/subgraph perturbation, CRISPRi-aware scaling, and stronger cross-domain alignment.
+```
+
+For v2, this benchmark should be rerun in graph mode:
+
+```text
+1. Load the trained Graph-JEPA Stage C checkpoint.
+2. Apply CRISPRi-like scaling to the perturbed gene node.
+3. Optionally perturb the local graph neighborhood or curated module.
+4. Compare predicted Graph-JEPA latent shift with published DEG-vector shift.
+5. Report target-wise cosine/Spearman alignment and null-shuffle significance.
 ```
 
 ### Replogle et al. Genome-Scale Perturb-seq

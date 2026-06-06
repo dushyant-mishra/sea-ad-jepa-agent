@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project currently uses data from the **Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD)**.
+This project uses the **Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD)** as the primary disease dataset, plus CELLxGENE normal-labeled microglia and a STRING gene graph for Graph-JEPA v2.
 
 SEA-AD is a public human brain atlas focused on Alzheimer disease progression. It includes molecular, cellular, spatial, and neuropathology measurements from postmortem human brain tissue. The aim of the dataset is to help researchers understand how different brain cell types change across Alzheimer disease and related pathology.
 
@@ -12,7 +12,23 @@ In this project, SEA-AD is used for one specific purpose:
 connect cell-type-specific gene expression programs to measured Alzheimer neuropathology
 ```
 
-The first pilot focuses on:
+In v2, the data role is broader:
+
+```text
+SEA-AD disease cohort
+        -> pathology-grounded disease manifold
+
+SEA-AD low-pathology donors
+        -> matched aged/postmortem calibration anchors
+
+CELLxGENE normal microglia
+        -> external healthy/reference anchors
+
+STRING gene graph
+        -> gene topology for Graph-JEPA
+```
+
+The current biological focus is:
 
 ```text
 Brain region: middle temporal gyrus
@@ -96,11 +112,79 @@ Why it matters:
 
 This file lets us isolate a cell population such as Microglia-PVM and study its gene-expression programs across donors.
 
+### 4. SEA-AD Low-Pathology Anchors
+
+Files generated locally:
+
+```text
+data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad
+data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_strict_jepa_aligned.h5ad
+```
+
+These are not pristine healthy controls. They are aged postmortem SEA-AD donors with low pathology, used as internal calibration anchors.
+
+Current anchor sizes:
+
+```text
+relaxed anchor: 4,467 cells, 10 donors
+strict anchor:  1,883 cells, 4 donors
+```
+
+Why it matters:
+
+Stage B uses these anchors to adapt the CELLxGENE-pretrained Graph-JEPA model to SEA-AD's technical and biological context without immediately training on severe disease.
+
+### 5. CELLxGENE Normal Microglia Anchor
+
+File generated locally through the CELLxGENE Census API:
+
+```text
+data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad
+```
+
+Current anchor:
+
+```text
+cells: 10,000
+donors: 692
+matched JEPA genes: 2,863 / 2,957
+zero-padded genes: 94
+dominant assay: 10x 3' v3
+```
+
+Why it matters:
+
+Stage A uses this dataset to learn a broad healthy/reference microglial graph manifold before SEA-AD disease training.
+
+### 6. STRING Gene Graph
+
+Files generated locally:
+
+```text
+results/tables/v2_graph_string_edges_t700.csv
+results/tables/graph_jepa_v2_input_check.csv
+```
+
+Current graph check:
+
+```text
+genes: 2,957
+edge-index columns: 231,015
+max edge node index: 2,956
+HPA/FDA drug targets: 136
+predicted membrane genes: 735
+predicted secreted genes: 105
+```
+
+Why it matters:
+
+Graph-JEPA v2 uses this gene graph so genes are no longer treated as independent columns.
+
 ## Current Biological Pilot
 
 The current pilot uses **Microglia-PVM** cells from the SEA-AD MTG snRNA-seq file.
 
-The workflow is:
+The v1 workflow was:
 
 ```text
 full SEA-AD MTG snRNA-seq
@@ -109,6 +193,19 @@ full SEA-AD MTG snRNA-seq
         -> predict donor-level pathology
         -> rank genes associated with pathology
         -> train JEPA on cell-level microglia expression
+```
+
+The v2 workflow is:
+
+```text
+CELLxGENE normal microglia + STRING graph
+        -> Stage A Graph-JEPA healthy/reference pretraining
+
+SEA-AD low-pathology Microglia-PVM
+        -> Stage B calibration
+
+full SEA-AD Microglia-PVM
+        -> Stage C disease-vector training with rehearsal
 ```
 
 ## Why Microglia-PVM

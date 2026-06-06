@@ -1,6 +1,14 @@
-# Causal Discovery Plan
+# Causal Discovery and Counterfactual Hypothesis Plan
 
-This project uses causal language carefully. The current SEA-AD models are trained on observational data, so in-silico perturbations are not proof of biological causality. They are **model-implied counterfactual effects**: hypotheses about which genes or modules the trained model relies on when predicting pathology.
+This project uses causal language carefully. SEA-AD is observational postmortem data, so model perturbations are not proof of biological causality. They are **model-implied counterfactual hypotheses**.
+
+The causal-discovery layer is useful because it asks:
+
+```text
+Which genes/modules does the trained model rely on when predicting pathology?
+Which predicted effects survive donor-held-out or confounder-adjusted checks?
+Which hypotheses are worth testing in external perturbation, spatial, or imaging data?
+```
 
 ## Evidence Levels
 
@@ -12,7 +20,7 @@ Prediction
   a feature predicts held-out donor pathology
 
 Model-implied counterfactual
-  perturbing a gene/module changes the frozen model's pathology prediction
+  perturbing a gene/module changes a frozen model's prediction or latent state
 
 External perturbation support
   an interventional dataset shows a matching transcriptomic or imaging response
@@ -21,160 +29,109 @@ Experimental validation
   wet-lab perturbation confirms the effect
 ```
 
-## Strategy 1: In-Silico Knockouts
+## v1 Causal Layer: Flat-JEPA Hypothesis Generation
 
-The first causal layer is implemented in:
+The first causal tools were built on the v1 flat-vector JEPA family.
+
+Implemented:
 
 ```text
 scripts/causal_in_silico_knockout.py
+scripts/causal_fold_specific_knockout.py
+scripts/causal_latent_jacobian.py
+scripts/causal_confounder_adjusted_effects.py
 ```
 
-The script loads a trained JEPA pathology model, predicts baseline AT8 pathology, perturbs a gene module or individual gene, predicts AT8 again, and reports:
+These workflows produced useful SEA-AD hypotheses, but they inherit the v1 limitation: genes are treated as columns rather than graph-connected biological nodes.
+
+## Digital Knockouts
+
+Digital knockout workflow:
 
 ```text
+baseline expression
+        -> frozen model
+        -> baseline prediction
+
+perturbed expression
+        -> frozen model
+        -> counterfactual prediction
+
 delta = perturbed prediction - baseline prediction
+```
+
+Intervention modes:
+
+```text
+global_mean
+  replace selected genes with global mean expression
+  conservative default
+
+donor_mean
+  replace selected genes with donor-specific mean expression
+  tests within-donor cell-state variation
+
+zero
+  set selected genes to zero
+  stress test, more out-of-distribution
 ```
 
 Interpretation:
 
 ```text
 negative delta
-  replacing the module lowers predicted AT8
-  the model treats that module as supporting higher AT8 prediction
+  model predicts lower pathology after perturbation
 
 positive delta
-  replacing the module raises predicted AT8
-  the model treats that module as suppressing predicted AT8 or as a resilience-associated signal
+  model predicts higher pathology after perturbation
 
 near-zero delta
-  the model does not rely strongly on that module for AT8 prediction
+  model is not sensitive to that perturbation
 ```
 
-## Intervention Types
+These are model sensitivities, not biological causal effects.
 
-The script supports three intervention modes:
+## Fold-Specific Knockouts
+
+The stricter leakage-resistant workflow:
 
 ```text
-global_mean
-  replace selected genes with their global mean expression
-  safest default; less out-of-distribution than zeroing
-
-donor_mean
-  replace selected genes with each donor's own mean expression
-  tests whether within-donor cell-state variation matters
-
-zero
-  set selected genes to zero
-  useful as a stress test, but more out-of-distribution
+1. split donors with GroupKFold or StratifiedGroupKFold
+2. train pathology head on training donors
+3. run digital knockouts only on held-out donors
+4. pool donor-level deltas across folds
 ```
 
-## First AT8 Module Screen
+This is more conservative than one all-data pathology model.
 
-Model:
-
-```text
-results/models/microglia_pvm_jepa_ema_expanded_at8_finetune/jepa_pathology_finetuned.pt
-```
-
-Input:
-
-```text
-data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
-```
-
-Primary target:
-
-```text
-percent AT8 positive area_Grey matter
-```
-
-Global-mean module replacement ranked the largest model-implied effects as:
-
-```text
-module                         mean donor delta
-at8_associated_first_pass       -0.0195
-homeostatic_microglia           -0.0038
-vascular_barrier_myeloid        -0.0036
-complement                      +0.0035
-antigen_presentation            +0.0030
-inflammatory_signaling          -0.0028
-```
-
-The most robust negative-delta modules across intervention checks were:
+Key v1 pattern:
 
 ```text
 at8_associated_first_pass
-inflammatory_signaling
+  negative under global_mean, donor_mean, and zero interventions
+
+vascular_barrier_myeloid, complement, lipid_metabolism
+  important to prediction
+  direction depends on intervention type
 ```
 
-These are candidate driver-like modules in the model's learned AT8 prediction function.
+## Latent Jacobian Analysis
 
-## First Gene-Level Follow-Up
-
-Single-gene perturbations were run inside the top module hits. The strongest negative-delta genes under global-mean replacement included:
-
-```text
-PTPRG
-CHI3L1
-MRC1
-CTSD
-DRAM1
-P2RY12
-S100A4
-MSR1
-TNFRSF11B
-NFKBIA
-```
-
-These are not causal claims. They are prioritized hypotheses for literature review, external perturbation benchmarking, and possible experimental validation.
-
-## Next Causal Steps
-
-## Strategy 2: Latent Jacobian Analysis
-
-The second causal layer is implemented in:
-
-```text
-scripts/causal_latent_jacobian.py
-```
-
-This script examines the JEPA predictor directly. It asks:
-
-```text
-If latent state j changes slightly, how much does the predictor change latent state i?
-```
-
-Mathematically:
+The latent Jacobian asks how the JEPA predictor transforms one latent state into another.
 
 ```text
 J[i, j] = d predicted_target_latent_i / d context_latent_j
 ```
 
-The script:
-
-1. Samples cells from the AnnData pilot.
-2. Encodes cells into JEPA context latents.
-3. Computes the predictor Jacobian with PyTorch autograd.
-4. Averages the Jacobian across cells.
-5. Annotates latent dimensions by correlation with curated microglia module scores.
-6. Exports the full matrix and top directed latent edges.
-
-First run:
+It is implemented in:
 
 ```text
-checkpoint: results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt
-sample: 2,048 Microglia-PVM cells
+scripts/causal_latent_jacobian.py
 ```
 
-Outputs:
+It identifies directed sensitivities inside the learned latent transition function. These are not gene-to-gene causal edges, but they help prioritize latent programs for gene/module decoding.
 
-```text
-results/tables/latent_jacobian_ema_var_e30_matrix.csv
-results/tables/latent_jacobian_ema_var_e30_top_edges.csv
-results/tables/latent_jacobian_ema_var_e30_module_annotations.csv
-```
-
-Top directed latent edges were enriched for module annotations involving:
+Early annotations involved:
 
 ```text
 homeostatic microglia
@@ -185,19 +142,15 @@ antigen presentation
 synapse pruning
 ```
 
-These edges are not gene-to-gene causal proof. They are directed sensitivities inside the learned JEPA latent transition function. They help prioritize which latent programs to map back to genes and test with perturbation evidence.
+## Confounder-Adjusted Effects
 
-## Next Causal Steps
-
-## Strategy 3: Confounder-Adjusted Donor Effects
-
-The third causal layer is implemented in:
+Confounder-adjusted donor-level estimates are implemented in:
 
 ```text
 scripts/causal_confounder_adjusted_effects.py
 ```
 
-This script estimates donor-level gene or module effects after adjusting for:
+Adjustment set:
 
 ```text
 JEPA donor embeddings
@@ -206,125 +159,156 @@ Sex
 APOE Genotype
 ```
 
-It uses a residualization strategy:
+This uses residualization:
 
 ```text
-1. residualize outcome against confounders
-2. residualize treatment against confounders
-3. estimate association between residual treatment and residual outcome
+residualize treatment against confounders
+residualize outcome against confounders
+estimate association between residuals
 ```
 
-This is a confounder-adjusted observational estimate, not causal proof. It asks whether a candidate gene or module still carries AT8 signal after accounting for donor-level latent state and major donor covariates.
+This is still observational, but it asks whether a gene/module carries pathology signal beyond broad donor state and major covariates.
 
-First module-level AT8 result:
+Candidate genes appearing in early screens:
 
 ```text
-treatment                     partial Spearman
-at8_associated_first_pass      +0.441
-lipid_metabolism               -0.314
-vascular_barrier_myeloid       -0.282
-complement                     -0.201
-inflammatory_signaling         +0.198
+CHI3L1
+PTPRG
+NFKBIA
+S100A4
+TNFRSF11B
+DRAM1
+P2RY12
+CX3CR1
+F13A1
 ```
 
-First gene-level AT8 result for top knockout candidates:
+## Why v2 Matters for Causal Discovery
+
+v1 can rank hypotheses, but it is not a true graph-aware perturbation model.
+
+The core v1 limitation:
 
 ```text
-treatment     partial Spearman
-CHI3L1         +0.416
-PTPRG          +0.355
-NFKBIA         +0.349
-S100A4         +0.333
-TNFRSF11B      +0.306
-DRAM1          +0.281
+gene perturbation = changing one column in a vector
 ```
 
-Genes that appear in both the in-silico knockout screen and confounder-adjusted screen are stronger candidates for follow-up.
-
-## Next Causal Steps
-
-## Fold-Specific Knockouts
-
-The stricter leakage-resistant knockout workflow is implemented in:
+The v2 goal:
 
 ```text
-scripts/causal_fold_specific_knockout.py
+gene perturbation = changing a node in a graph and observing downstream subgraph/state movement
 ```
 
-This script does not use one all-data pathology model. Instead, each fold is handled separately:
+Graph-JEPA v2 is therefore the right place to continue causal-discovery work.
+
+## v2 Counterfactual Plan
+
+For Graph-JEPA, counterfactuals should operate at multiple levels.
+
+### 1. Node-Level Perturbation
+
+Perturb a gene node:
 
 ```text
-1. split donors with GroupKFold or StratifiedGroupKFold
-2. initialize JEPA from the self-supervised checkpoint
-3. train the pathology head only on training donors
-4. run digital knockouts only on held-out donors
-5. pool donor-level deltas across folds
+set expression to mean
+scale expression down for CRISPRi-like knockdown
+zero expression for stress-test knockout
 ```
 
-Default interpretation is still cautious:
+Measure:
 
 ```text
-delta = held-out perturbed prediction - held-out baseline prediction
+latent shift
+pathology-head shift
+subgraph activation shift
 ```
 
-Negative delta means the fold-specific model predicts lower pathology when the module is perturbed. Positive delta means the model predicts higher pathology when the module is perturbed.
+### 2. Module/Subgraph Perturbation
 
-First AT8 runs used:
+Perturb a full module or graph neighborhood:
 
 ```text
-checkpoint: results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt
-target: percent AT8 positive area_Grey matter
-splitter: StratifiedGroupKFold
-target transform: log1p
-encoder: frozen
-head: fold-trained
+homeostatic microglia
+complement
+lysosome/phagocytosis
+vascular/barrier myeloid
+lipid metabolism
+plaque response
 ```
 
-Outputs:
+This is more biologically realistic than single-gene perturbation when pathways are redundant.
+
+### 3. Predictive-Mode Perturbation
+
+Use the JEPA predictor, not just input erasure:
 
 ```text
-results/tables/causal_fold_specific_module_knockouts_at8_global_mean.csv
-results/tables/causal_fold_specific_module_knockouts_at8_donor_mean.csv
-results/tables/causal_fold_specific_module_knockouts_at8_zero.csv
-results/tables/causal_fold_specific_module_knockout_intervention_comparison.csv
+masked/perturbed context graph
+        -> context encoder
+        -> predictor
+        -> predicted downstream latent state
 ```
 
-The conservative replacement modes produced smaller effects than the original all-data fine-tuned knockout model. That is expected and is the point of this check: the result is less expressive, but more defensible.
+This tests whether JEPA's learned transition function contributes beyond local input sensitivity.
 
-Key pattern:
+### 4. Donor-Held-Out Counterfactuals
+
+Counterfactual effects should be evaluated on held-out donors:
 
 ```text
-at8_associated_first_pass
-  negative under global_mean, donor_mean, and zero interventions
-
-vascular_barrier_myeloid, complement, lipid_metabolism
-  positive under conservative replacements
-  negative under zero replacement
+train or fit head on donor folds
+run perturbations on held-out donors
+pool effects across folds
 ```
 
-This means the AT8-associated module is the cleanest fold-stable candidate from this specific screen. The other modules are clearly important to the prediction function, but their direction depends on intervention type, so they should be treated as sensitivity-prioritized rather than causal-direction-prioritized.
+## External Validation
 
-## Next Causal Steps
+External datasets are needed to move from model-implied hypotheses toward causal support.
 
-1. Add fold-specific single-gene screens for genes inside robust modules.
-2. Compare predicted perturbation effects with public CRISPR or drug perturbation datasets.
-3. Map high-Jacobian latent dimensions back to genes/modules more deeply.
-4. Add donor covariate sensitivity checks and alternative adjustment sets.
-
-External benchmark planning is in:
+Current benchmark status:
 
 ```text
-docs/external_perturbation_benchmarks.md
+K562/Replogle
+  useful engineering smoke test
+  not Alzheimer's microglia biology
+
+Kampmann/iPSC-microglia DEG benchmark
+  more biologically relevant
+  not yet ideal for per-cell guide-level validation
 ```
 
-Recommended first benchmark:
+Desired next benchmark:
 
 ```text
-Norman et al. Perturb-seq
+iPSC-microglia or macrophage Perturb-seq
+with per-cell perturbation labels
+and AD-relevant targets such as TREM2, APOE, CSF1R, CX3CR1, P2RY12, complement, lysosomal, and lipid genes
 ```
 
-Recommended scale-up benchmark:
+Independent observational validation is also useful:
 
 ```text
-Replogle et al. genome-scale Perturb-seq
+project external AD microglia into frozen Graph-JEPA
+test whether candidate latent axes or modules track Braak/tau/AD labels
+without retraining
 ```
+
+## Current Evidence Boundary
+
+Current outputs should be described as:
+
+```text
+pathology-grounded representation learning
+model-implied counterfactual prioritization
+candidate gene-network hypotheses
+```
+
+They should not be described as:
+
+```text
+validated causal drivers
+therapeutic targets proven by the model
+experimental perturbation results
+```
+
+That boundary is essential for scientific credibility.
