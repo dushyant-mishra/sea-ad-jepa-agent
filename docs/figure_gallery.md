@@ -12,6 +12,8 @@ The figures are intentionally lightweight and GitHub-friendly. They summarize th
 
 ![Graph-JEPA v2 curriculum](../results/figures/public_v2_curriculum_schematic.svg)
 
+**Figure legend:** Graph-JEPA v2 is organized as a staged training curriculum. Stage A learns a healthy/reference microglial manifold from normal-labeled CELLxGENE nuclei. Stage B calibrates that reference to low-pathology SEA-AD Microglia-PVM nuclei so the model can account for aged postmortem tissue and SEA-AD-specific processing. Stage C trains on the full SEA-AD Microglia-PVM cohort while rehearsing both healthy and low-pathology anchors, allowing disease-associated movement without fully forgetting the reference state.
+
 **What it shows:** The v2 model is trained as a three-stage curriculum.
 
 ```text
@@ -26,6 +28,8 @@ Stage C: full SEA-AD Microglia-PVM -> disease-vector learning with rehearsal
 
 ![v1 problems and v2 responses](../results/figures/public_v1_to_v2_problem_solution.svg)
 
+**Figure legend:** The v1 flat-vector JEPA produced useful pathology-linked representations, but the follow-up diagnostics exposed architectural limits: genes were treated as independent columns, healthy anchors could be over-pinned during disease fine-tuning, and disease signal could collapse into a narrow latent direction. Graph-JEPA v2 responds by adding gene-graph topology, learnable gene identity embeddings, elastic anchor rehearsal, and explicit manifold telemetry.
+
 **What it shows:** The main limitations of v1 flat-vector JEPA and the corresponding v2 design responses.
 
 **Key message:** v1 was useful for hypothesis generation, but it treated genes as independent columns. Graph-JEPA v2 adds gene topology, gene identity embeddings, elastic rehearsal, and explicit geometry telemetry.
@@ -33,6 +37,8 @@ Stage C: full SEA-AD Microglia-PVM -> disease-vector learning with rehearsal
 ## 3. Stage C Sweep Leaderboard
 
 ![Stage C sweep leaderboard](../results/figures/public_stage_c_sweep_leaderboard.svg)
+
+**Figure legend:** Stage C fine-tuning configurations are ranked by a composite score that balances pathology predictivity, manifold geometry, and anchor preservation. The current best run uses loose rehearsal plus a small disease covariance penalty, suggesting that the disease manifold needs room to expand while still staying tied to healthy/reference anchors.
 
 **What it shows:** The top Stage C fine-tuning configurations ranked by the current composite score.
 
@@ -51,6 +57,8 @@ disease covariance weight: 0.0005
 
 ![PCA vs JEPA pathology geometry](../results/figures/public_pca_vs_jepa_pathology_geometry.svg)
 
+**Figure legend:** Donor-level representations are compared by asking whether local neighborhoods predict pathology targets. PCA is a strong expression-only baseline, while JEPA tests whether self-supervised latent prediction produces neighborhoods that better reflect neuropathology. Improvements here support the claim that JEPA is learning pathology-relevant geometry rather than only producing visually appealing clusters.
+
 **What it shows:** Donor-level kNN Spearman for PCA and JEPA representations across pathology targets.
 
 **Key message:** JEPA improves several pathology-neighborhood signals, especially GFAP and A beta/6e10, while NeuN is roughly tied or slightly PCA-favored in this view.
@@ -59,6 +67,8 @@ disease covariance weight: 0.0005
 
 ![Cell-level donor leakage and pathology mixing](../results/figures/public_cell_level_mixing.svg)
 
+**Figure legend:** Cell-level diagnostics test whether the latent space is dominated by donor identity or by disease-relevant biology. Lower donor leakage suggests better mixing across patients, while pathology separation is interpreted cautiously because donor-level pathology labels are broadcast to many individual cells from the same donor.
+
 **What it shows:** Cell-level donor leakage diagnostics comparing expression PCA and JEPA.
 
 **Key message:** JEPA has lower donor kNN accuracy than PCA, suggesting it is less dominated by donor identity. Cell-level pathology separation is weak for both models because AT8 is a donor-level label broadcast to cells.
@@ -66,6 +76,8 @@ disease covariance weight: 0.0005
 ## 6. Multi-Target Donor-Held-Out Validation
 
 ![Multi-target OOF validation](../results/figures/public_multitarget_oof_validation.svg)
+
+**Figure legend:** Pooled out-of-fold validation compares the best JEPA representation against a pseudobulk ridge baseline across multiple neuropathology axes. Positive values indicate targets where JEPA outperforms pseudobulk under donor-held-out evaluation; negative values highlight targets where the simpler baseline remains stronger. This figure is meant to show both wins and current limits.
 
 **What it shows:** Best JEPA minus pseudobulk Spearman across multiple pathology targets in pooled donor-held-out validation.
 

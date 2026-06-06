@@ -19,6 +19,27 @@ single-nucleus expression
         -> external perturbation, spatial, or imaging validation
 ```
 
+## Project Dashboard
+
+The figures below are the GitHub-facing overview of the project. They are generated from lightweight result tables and schematics, so readers can understand the workflow and current evidence without downloading raw SEA-AD files or model checkpoints.
+
+| Workflow | Why v2 Exists |
+|---|---|
+| ![Graph-JEPA v2 curriculum](results/figures/public_v2_curriculum_schematic.svg) | ![v1 problems and v2 responses](results/figures/public_v1_to_v2_problem_solution.svg) |
+| **Figure legend:** Graph-JEPA v2 uses a staged curriculum: CELLxGENE normal microglia define a healthy/reference manifold, low-pathology SEA-AD nuclei calibrate that reference to aged postmortem tissue, and full SEA-AD Microglia-PVM training learns disease movement with anchor rehearsal. | **Figure legend:** v1 showed that flat-vector JEPA could learn pathology-linked representations, but also exposed limits: no gene topology, over-pinned anchors, and narrow disease-tube geometry. v2 responds with a gene graph, learnable gene identity embeddings, elastic rehearsal, and manifold telemetry. |
+
+| Stage C Tuning | Donor-Level Pathology Geometry |
+|---|---|
+| ![Stage C sweep leaderboard](results/figures/public_stage_c_sweep_leaderboard.svg) | ![PCA vs JEPA pathology geometry](results/figures/public_pca_vs_jepa_pathology_geometry.svg) |
+| **Figure legend:** Stage C configurations are ranked by a composite score balancing pathology predictivity, manifold geometry, and anchor preservation. The current best run is elastic: loose rehearsal plus a small disease covariance penalty keeps anchors near the reference state while allowing disease geometry to move. | **Figure legend:** Donor-level PCA and JEPA spaces are compared by asking whether local neighborhoods predict neuropathology targets. JEPA improves several pathology-neighborhood signals, especially GFAP and A beta/6e10, showing that the representation is more than a prettier UMAP. |
+
+| Cell-Level Diagnostics | Multi-Target Held-Out Validation |
+|---|---|
+| ![Cell-level donor leakage and pathology mixing](results/figures/public_cell_level_mixing.svg) | ![Multi-target OOF validation](results/figures/public_multitarget_oof_validation.svg) |
+| **Figure legend:** Cell-level diagnostics test whether the latent space is dominated by donor identity. JEPA shows lower donor leakage than PCA, while cell-level pathology separation remains difficult because donor pathology scores are broadcast to many individual cells. | **Figure legend:** Pooled donor-held-out validation compares JEPA against pseudobulk ridge across neuropathology targets. Positive values mark where JEPA outperforms the simpler baseline; negative values show where pseudobulk remains stronger. This plot intentionally shows both wins and limitations. |
+
+Full-size figures and captions are collected in [docs/figure_gallery.md](docs/figure_gallery.md).
+
 ## Why This Project Exists
 
 Single-cell RNA-seq often gives long gene lists. Neuropathology gives real tissue phenotypes, but it does not directly identify which cell-state programs explain those phenotypes. This project tries to connect those layers.
