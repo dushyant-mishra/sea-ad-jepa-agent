@@ -336,6 +336,7 @@ This file is large and is not committed to the repository.
 Start here:
 
 - [docs/current_status.md](docs/current_status.md): full completed-work log and results.
+- [docs/figure_gallery.md](docs/figure_gallery.md): public schematics and result graphs with captions.
 - [docs/runbook.md](docs/runbook.md): commands for reproducing the workflow.
 - [docs/dataset_guide.md](docs/dataset_guide.md): dataset descriptions and abbreviation glossary.
 - [docs/architecture.md](docs/architecture.md): system architecture.

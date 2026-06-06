@@ -73,6 +73,7 @@ Before publishing, confirm:
 - The v1-to-v2 story is clear: flat-vector JEPA exposed failure modes, Graph-JEPA addresses gene topology.
 - The Stage A/B/C training curriculum is explained.
 - Current Stage C sweep results and limitations are included.
+- Public schematics and result graphs are linked from `docs/figure_gallery.md`.
 - Data source links are included.
 - Large data files are excluded by `.gitignore`.
 - The setup commands work in a fresh conda environment.
