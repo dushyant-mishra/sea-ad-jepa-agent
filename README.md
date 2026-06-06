@@ -33,10 +33,15 @@ The figures below are the GitHub-facing overview of the project. They are genera
 | ![Stage C sweep leaderboard](results/figures/public_stage_c_sweep_leaderboard.svg) | ![PCA vs JEPA pathology geometry](results/figures/public_pca_vs_jepa_pathology_geometry.svg) |
 | **Figure legend:** Stage C configurations are ranked by a composite score balancing pathology predictivity, manifold geometry, and anchor preservation. The current best run is elastic: loose rehearsal plus a small disease covariance penalty keeps anchors near the reference state while allowing disease geometry to move. | **Figure legend:** Donor-level PCA and JEPA spaces are compared by asking whether local neighborhoods predict neuropathology targets. JEPA improves several pathology-neighborhood signals, especially GFAP and A beta/6e10, showing that the representation is more than a prettier UMAP. |
 
-| Cell-Level Diagnostics | Multi-Target Held-Out Validation |
+| Fine-Tuned Stage C Diagnostics | Cell-Level Diagnostics |
 |---|---|
-| ![Cell-level donor leakage and pathology mixing](results/figures/public_cell_level_mixing.svg) | ![Multi-target OOF validation](results/figures/public_multitarget_oof_validation.svg) |
-| **Figure legend:** Cell-level diagnostics test whether the latent space is dominated by donor identity. JEPA shows lower donor leakage than PCA, while cell-level pathology separation remains difficult because donor pathology scores are broadcast to many individual cells. | **Figure legend:** Pooled donor-held-out validation compares JEPA against pseudobulk ridge across neuropathology targets. Positive values mark where JEPA outperforms the simpler baseline; negative values show where pseudobulk remains stronger. This plot intentionally shows both wins and limitations. |
+| ![Stage C fine-tuning diagnostics](results/figures/public_stage_c_finetuning_parameter_sensitivity.svg) | ![Cell-level donor leakage and pathology mixing](results/figures/public_cell_level_mixing.svg) |
+| **Figure legend:** Fine-tuning diagnostics show why `fine_loose_01_r005_cov0005` is the current active v2 baseline: it balances AT8/NeuN signal, effective dimensionality, and anchor safety better than tighter or heavier-covariance alternatives. | **Figure legend:** Cell-level diagnostics test whether the latent space is dominated by donor identity. JEPA shows lower donor leakage than PCA, while cell-level pathology separation remains difficult because donor pathology scores are broadcast to many individual cells. |
+
+| Multi-Target Held-Out Validation |
+|---|
+| ![Multi-target OOF validation](results/figures/public_multitarget_oof_validation.svg) |
+| **Figure legend:** Pooled donor-held-out validation compares JEPA against pseudobulk ridge across neuropathology targets. Positive values mark where JEPA outperforms the simpler baseline; negative values show where pseudobulk remains stronger. This plot intentionally shows both wins and limitations. |
 
 Full-size figures and captions are collected in [docs/figure_gallery.md](docs/figure_gallery.md).
 
@@ -358,6 +363,7 @@ Start here:
 
 - [docs/current_status.md](docs/current_status.md): full completed-work log and results.
 - [docs/figure_gallery.md](docs/figure_gallery.md): public schematics and result graphs with captions.
+- [docs/stage_c_finetuning_analysis.md](docs/stage_c_finetuning_analysis.md): current Stage C fine-tuning baseline, parameter takeaways, and next default.
 - [docs/runbook.md](docs/runbook.md): commands for reproducing the workflow.
 - [docs/dataset_guide.md](docs/dataset_guide.md): dataset descriptions and abbreviation glossary.
 - [docs/architecture.md](docs/architecture.md): system architecture.

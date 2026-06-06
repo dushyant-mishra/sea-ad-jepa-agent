@@ -1782,7 +1782,8 @@ The first attempted microglia-specific extraction was slow because microglia row
 
 ## Next Steps
 
-1. Add JEPA embedding-to-pathology comparison plots.
-2. Extract pathology-associated latent factors.
-3. Rank genes/modules associated with A beta, pTau, GFAP, Iba1, and NeuN targets.
-4. Add richer hypothesis reports that compare pseudobulk, random-masking JEPA, mixed-masking JEPA, and module-preserved mixed JEPA.
+1. Use `fine_loose_01_r005_cov0005` at epoch 5 as the active Stage C v2 baseline.
+2. Run a narrow Stage C sweep around rehearsal `0.003-0.008` and disease covariance `0.00025-0.00075`.
+3. Evaluate the best narrow-sweep checkpoint with donor-held-out pathology prediction and module/gene attribution.
+4. Generate a model-implied hypothesis report from the current best Stage C checkpoint, keeping the causal boundary explicit.
+5. Use external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.
