@@ -1128,6 +1128,50 @@ python scripts/train_graph_jepa_stage_c_disease.py `
 
 This is a diagnostic, not a default training recipe. If disease covariance lowers `disease_top_sv_ratio` but also collapses `disease_to_cellxgene_centroid_l2` and `disease_variance_spread`, the covariance pressure is too blunt or too early.
 
+Run the Stage C fine-tuning sweep:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/sweep_stage_c_finetuning.py `
+  --preset coarse `
+  --epochs 10 `
+  --checkpoint-epochs 005 010 `
+  --device auto `
+  --out results/tables/stage_c_finetuning_sweep_summary.csv
+
+python scripts/sweep_stage_c_finetuning.py `
+  --preset fine_tight `
+  --epochs 5 `
+  --checkpoint-epochs 005 `
+  --device auto `
+  --out results/tables/stage_c_finetuning_fine_tight_summary.csv
+
+python scripts/sweep_stage_c_finetuning.py `
+  --preset fine_loose `
+  --epochs 5 `
+  --checkpoint-epochs 005 `
+  --device auto `
+  --out results/tables/stage_c_finetuning_fine_loose_summary.csv
+```
+
+Combine and inspect the leaderboards:
+
+```powershell
+$env:PYTHONPATH = "src"
+python -c "import pandas as pd; files=['results/tables/stage_c_finetuning_sweep_summary.csv','results/tables/stage_c_finetuning_fine_tight_summary.csv','results/tables/stage_c_finetuning_fine_loose_summary.csv']; df=pd.concat([pd.read_csv(f).assign(source=f) for f in files], ignore_index=True).sort_values('composite_score', ascending=False); df.to_csv('results/tables/stage_c_finetuning_combined_leaderboard.csv', index=False); print(df.head(12).to_string(index=False))"
+```
+
+Current recommended Stage C candidate:
+
+```text
+run: fine_loose_01_r005_cov0005
+checkpoint: epoch 5
+SEA/CELLxGENE rehearsal weight: 0.005
+disease covariance weight: 0.0005
+```
+
+This setting is intentionally elastic. It preserves both anchors just above the cosine safety boundary while allowing more disease-geometry movement than the earlier over-pinned Stage C runs.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

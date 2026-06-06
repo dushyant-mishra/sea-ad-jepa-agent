@@ -1,0 +1,6 @@
+target,n_donors,cosine_knn_spearman
+percent AT8 positive area_Grey matter,84,0.22719449225473323
+percent NeuN positive area_Grey matter,84,0.25785157436468564
+percent 6e10 positive area_Grey matter,84,0.038878201883162905
+percent GFAP positive area_Grey matter,84,0.20524450744153083
+percent Iba1 positive area_Grey matter,84,0.03422091728257568

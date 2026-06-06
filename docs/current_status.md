@@ -1680,6 +1680,52 @@ CTSD
 NFKBIA
 ```
 
+- Added a reproducible Stage C fine-tuning sweep:
+
+```text
+script:
+  scripts/sweep_stage_c_finetuning.py
+
+summaries:
+  results/tables/stage_c_finetuning_sweep_summary.csv
+  results/tables/stage_c_finetuning_fine_tight_summary.csv
+  results/tables/stage_c_finetuning_fine_loose_summary.csv
+  results/tables/stage_c_finetuning_combined_leaderboard.csv
+```
+
+The sweep evaluates each Stage C checkpoint with:
+
+```text
+AT8 and NeuN ridge Spearman
+AT8 and NeuN Euclidean kNN Spearman
+AT8 and NeuN cosine kNN Spearman
+disease effective dimensionality
+top singular value ratio
+SEA-AD and CELLxGENE anchor cosine safety checks
+```
+
+Best current configuration:
+
+```text
+run: fine_loose_01_r005_cov0005
+checkpoint: epoch 5
+SEA/CELLxGENE rehearsal weight: 0.005
+disease covariance weight: 0.0005
+composite score: 1.544
+AT8 ridge Spearman: 0.356
+NeuN ridge Spearman: 0.374
+AT8 Euclidean kNN Spearman: 0.065
+NeuN Euclidean kNN Spearman: 0.271
+AT8 cosine kNN Spearman: 0.227
+NeuN cosine kNN Spearman: 0.258
+disease effective dimensions: 4.76
+top singular value ratio: 0.481
+SEA anchor cosine: 0.956
+CELLxGENE anchor cosine: 0.952
+```
+
+Interpretation: the best run found so far is much more elastic than the first Stage C run. It lets the disease manifold move while keeping both healthy/reference anchors just above the 0.95 cosine safety boundary. The result supports using a small rehearsal weight plus a very small covariance term as the current Stage C default. This is a tuning result, not a claim of final biological validation.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.

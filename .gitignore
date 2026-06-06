@@ -27,6 +27,7 @@ results/*
 !results/tables/
 results/tables/*
 !results/tables/*summary*.csv
+!results/tables/*leaderboard*.csv
 !results/tables/*metrics*.csv
 !results/tables/*comparison*.csv
 !results/tables/perturbseq_streaming_validation.csv
