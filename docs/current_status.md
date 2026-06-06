@@ -1586,6 +1586,80 @@ Iba1                        -0.143            -0.103            -0.044
 
 Interpretation: elastic rehearsal released the anchors enough for disease distance and variance to grow, but it did not create a rich local disease manifold. Effective dimensionality fell from 3.47 to 2.10 while the top singular value ratio rose to 0.821, indicating a narrow disease tube. This explains why ridge can still recover some AT8/NeuN signal but kNN remains weak. The next Stage C objective should add a controlled disease-manifold spreading term or evaluate a non-Euclidean/neighborhood metric before adding a stronger contrastive loss.
 
+- Ran a Stage C elastic rehearsal plus disease-covariance diagnostic:
+
+```text
+checkpoint:
+  results/models/graph_jepa_stage_c_elastic_cov001_e10/graph_jepa_stage_c.pt
+
+history:
+  results/tables/graph_jepa_stage_c_elastic_cov001_e10_history.csv
+
+TensorBoard logs:
+  runs/graph_jepa_stage_c_elastic_cov001_e10
+```
+
+Training changes relative to the elastic run:
+
+```text
+disease_covariance_weight: 0.01
+all other elastic settings unchanged
+```
+
+Telemetry summary:
+
+```text
+epoch 1:
+  disease-to-CELLxGENE L2: 80.76
+  disease variance spread: 1.94
+  effective dims: 4.48
+  top singular value ratio: 0.592
+  SEA / CELLxGENE anchor cosine: 0.913 / 0.913
+
+epoch 5:
+  disease-to-CELLxGENE L2: 39.34
+  disease variance spread: 1.60
+  effective dims: 4.95
+  top singular value ratio: 0.437
+  SEA / CELLxGENE anchor cosine: 0.977 / 0.975
+
+epoch 10:
+  disease-to-CELLxGENE L2: 45.38
+  disease variance spread: 1.55
+  effective dims: 4.72
+  top singular value ratio: 0.435
+  SEA / CELLxGENE anchor cosine: 0.974 / 0.967
+```
+
+Disease-covariance pathology readout:
+
+```text
+epoch 5 ridge Spearman:
+  NeuN percent: 0.344
+  Iba1 percent: 0.286
+  guhcl pTau:   0.271
+  AT8 percent:  0.191
+
+epoch 10 ridge Spearman:
+  NeuN percent: 0.317
+  AT8 percent:  0.269
+  GFAP percent: 0.228
+  Iba1 percent: 0.216
+```
+
+Disease-covariance kNN geometry:
+
+```text
+target                       epoch 5 Stage C   epoch 10 Stage C   PCA reference
+AT8 / pTau                  -0.118            -0.020             0.219
+NeuN                         0.244             0.275             0.330
+A beta / 6e10                0.209             0.154             0.099
+GFAP                        -0.063            -0.015            -0.012
+Iba1                        -0.062            -0.042            -0.044
+```
+
+Interpretation: disease covariance reduced the narrow-tube pathology (`top_sv_ratio` improved from about 0.82 in elastic-only to about 0.43), but it also over-damped the disease manifold. Disease-to-anchor distance and variance spread fell sharply, and AT8 kNN still did not improve. The current evidence suggests a simple covariance penalty is too blunt at `0.01`; the next diagnostic should either use a much smaller covariance weight, apply covariance only after a warmup, or shift toward metric/evaluation changes before adding stronger contrastive pressure.
+
 - Ranked Microglia-PVM pseudobulk genes associated with AT8 pathology:
 
 ```text

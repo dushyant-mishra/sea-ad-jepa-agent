@@ -100,6 +100,16 @@ def singular_value_telemetry(z: torch.Tensor) -> tuple[float, float]:
     return float(effective_dims), float(top_sv_ratio)
 
 
+def off_diagonal_covariance_loss(z: torch.Tensor) -> torch.Tensor:
+    if z.shape[0] < 2:
+        return z.new_tensor(0.0)
+    centered = z - z.mean(dim=0, keepdim=True)
+    covariance = (centered.T @ centered) / float(z.shape[0] - 1)
+    covariance = covariance.clone()
+    covariance.fill_diagonal_(0.0)
+    return covariance.pow(2).mean()
+
+
 def checkpoint_arg(checkpoint: dict, key: str, default):
     value = checkpoint.get("args", {}).get(key, default)
     return default if value is None else value
@@ -131,6 +141,7 @@ def main() -> None:
     parser.add_argument("--variance-weight", type=float, default=1.0)
     parser.add_argument("--variance-gamma", type=float, default=1.0)
     parser.add_argument("--covariance-weight", type=float, default=0.0)
+    parser.add_argument("--disease-covariance-weight", type=float, default=0.0)
     parser.add_argument("--mask-start-fraction", type=float, default=0.2)
     parser.add_argument("--mask-fraction", type=float, default=0.5)
     parser.add_argument("--mask-warmup-epochs", type=int, default=10)
@@ -253,6 +264,7 @@ def main() -> None:
         cellxgene_anchor_cosines = []
         disease_to_cellxgene_centroid_l2 = []
         disease_variance_spreads = []
+        disease_covariance_losses = []
         alignment_losses = []
         variance_losses = []
         covariance_losses = []
@@ -299,11 +311,13 @@ def main() -> None:
             )
             disease_centroid_l2 = torch.norm(pred_z - cellxgene_frozen_centroid, dim=-1).mean()
             disease_variance_spread = torch.var(pred_z, dim=0, unbiased=False).mean()
+            disease_covariance_loss = off_diagonal_covariance_loss(pred_z)
 
             loss = (
                 disease_loss
                 + args.sea_rehearsal_weight * sea_anchor_loss
                 + args.cellxgene_rehearsal_weight * cellxgene_anchor_loss
+                + args.disease_covariance_weight * disease_covariance_loss
             )
 
             optimizer.zero_grad(set_to_none=True)
@@ -321,6 +335,7 @@ def main() -> None:
             cellxgene_anchor_cosines.append(float(cellxgene_anchor_cosine.detach().cpu()))
             disease_to_cellxgene_centroid_l2.append(float(disease_centroid_l2.detach().cpu()))
             disease_variance_spreads.append(float(disease_variance_spread.detach().cpu()))
+            disease_covariance_losses.append(float(disease_covariance_loss.detach().cpu()))
             alignment_losses.append(float(parts["alignment"].cpu()))
             variance_losses.append(float(parts["variance"].cpu()))
             covariance_losses.append(float(parts.get("covariance", torch.tensor(0.0)).cpu()))
@@ -339,6 +354,7 @@ def main() -> None:
             "cellxgene_anchor_cosine": float(np.mean(cellxgene_anchor_cosines)),
             "disease_to_cellxgene_centroid_l2": float(np.mean(disease_to_cellxgene_centroid_l2)),
             "disease_variance_spread": float(np.mean(disease_variance_spreads)),
+            "disease_covariance_loss": float(np.mean(disease_covariance_losses)),
             "disease_effective_dims": disease_effective_dims,
             "disease_top_sv_ratio": disease_top_sv_ratio,
             "alignment_loss": float(np.mean(alignment_losses)),
@@ -361,6 +377,7 @@ def main() -> None:
             f"cx_cos={row['cellxgene_anchor_cosine']:.4f} "
             f"disease_cx_l2={row['disease_to_cellxgene_centroid_l2']:.4f} "
             f"disease_var={row['disease_variance_spread']:.6f} "
+            f"disease_cov={row['disease_covariance_loss']:.6f} "
             f"eff_dims={row['disease_effective_dims']:.2f} "
             f"top_sv={row['disease_top_sv_ratio']:.4f} "
             f"alignment={row['alignment_loss']:.6f} variance={row['variance_loss']:.6f} steps={row['steps']}"

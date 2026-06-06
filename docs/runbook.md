@@ -1096,6 +1096,38 @@ disease_top_sv_ratio
 
 Interpretation guardrail: increasing disease-to-anchor distance without increasing effective dimensionality indicates a narrow disease tube, not a rich local pathology manifold.
 
+Run elastic Stage C with a small disease-covariance tube-busting diagnostic:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_graph_jepa_stage_c_disease.py `
+  --checkpoint results/models/graph_jepa_stage_b_low_pathology_rehearsal_e20/graph_jepa_stage_b.pt `
+  --disease-h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --sea-anchor-h5ad data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad `
+  --sea-anchor-coordinates results/tables/stage_b_rehearsal_sea_ad_low_pathology_relaxed_coordinates.csv `
+  --cellxgene-anchor-h5ad data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad `
+  --cellxgene-anchor-coordinates results/tables/stage_b_rehearsal_cellxgene_normal_microglia_coordinates.csv `
+  --edge-csv results/tables/v2_graph_string_edges_t700.csv `
+  --epochs 10 `
+  --disease-batch-size 16 `
+  --sea-anchor-batch-size 8 `
+  --cellxgene-anchor-batch-size 8 `
+  --sea-rehearsal-weight 0.05 `
+  --cellxgene-rehearsal-weight 0.05 `
+  --rehearsal-loss-mode cosine_softplus_margin `
+  --rehearsal-margin 0.95 `
+  --rehearsal-temperature 100 `
+  --disease-covariance-weight 0.01 `
+  --lr 0.00002 `
+  --checkpoint-every 5 `
+  --out-dir results/models/graph_jepa_stage_c_elastic_cov001_e10 `
+  --log-dir runs/graph_jepa_stage_c_elastic_cov001_e10 `
+  --history-out results/tables/graph_jepa_stage_c_elastic_cov001_e10_history.csv `
+  --device auto
+```
+
+This is a diagnostic, not a default training recipe. If disease covariance lowers `disease_top_sv_ratio` but also collapses `disease_to_cellxgene_centroid_l2` and `disease_variance_spread`, the covariance pressure is too blunt or too early.
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell
