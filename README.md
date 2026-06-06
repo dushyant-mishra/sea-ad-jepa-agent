@@ -1,12 +1,12 @@
-# SEA-AD JEPA Agent
+# SEA-AD Graph-JEPA Agent
 
-**A biological discovery system for turning Alzheimer disease single-cell and pathology data into testable gene-network hypotheses.**
+**A pathology-grounded representation learning and counterfactual hypothesis engine for Alzheimer disease single-cell data.**
 
 This project asks a simple question:
 
 > Can we learn cell-state representations that connect molecular programs in the brain to measurable Alzheimer pathology, then use those representations to propose candidate gene networks for follow-up?
 
-The first version focuses on the Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD), especially microglia in the middle temporal gyrus (MTG). Microglia are a natural first target because they sit at the intersection of plaque response, inflammation, lipid biology, complement signaling, and major Alzheimer risk genes such as `APOE` and `TREM2`.
+The project focuses on the Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD), especially Microglia-PVM nuclei from the middle temporal gyrus (MTG). Microglia are a natural first target because they sit at the intersection of plaque response, inflammation, lipid biology, complement signaling, vascular/barrier biology, and major Alzheimer risk genes such as `APOE` and `TREM2`.
 
 ## Why This Exists
 
@@ -34,24 +34,25 @@ The system has three parts:
 
 1. **Biological state learning**
 
-   Learn robust representations from noisy single-nucleus RNA-seq using JEPA-style latent prediction.
+   Learn robust cell-state representations from noisy single-nucleus RNA-seq using JEPA-style latent prediction.
 
 2. **Pathology-grounded evaluation**
 
    Test whether cell-state features predict donor-level neuropathology: AT8/pTau, 6e10/A beta, GFAP, Iba1, NeuN, and biochemical amyloid/tau.
 
-3. **Hypothesis generation**
+3. **Counterfactual hypothesis generation**
 
-   Convert predictive signals into ranked gene-network hypotheses, with clear evidence levels and validation suggestions.
+   Convert predictive signals into ranked gene/module hypotheses with explicit boundaries between association, prediction, model-implied counterfactuals, and true causal validation.
 
 The aim is not to build a chatbot over a dataset. The aim is to build a discovery loop:
 
 ```text
 cell molecular state
-        -> pathology prediction
-        -> gene/module ranking
-        -> interpretable hypothesis
-        -> validation plan
+        -> pathology-grounded latent space
+        -> donor-held-out prediction
+        -> module/gene counterfactual screen
+        -> ranked biological hypotheses
+        -> external perturbation or spatial validation
 ```
 
 ## Why JEPA
@@ -94,9 +95,9 @@ transcriptomics + pathology + spatial + imaging
         -> shared latent disease-state space
 ```
 
-## Current Wedge Result
+## Current State
 
-The first real biological pilot is Microglia-PVM in SEA-AD MTG.
+The first biological pilot is Microglia-PVM in SEA-AD MTG.
 
 **Microglia-PVM expression** means gene-expression profiles from nuclei labeled as brain immune cells: microglia and perivascular macrophages. Microglia are resident immune cells in brain tissue. PVM stands for perivascular macrophages, immune cells associated with blood vessels. SEA-AD groups these related immune populations together as `Microglia-PVM`.
 
@@ -117,22 +118,33 @@ many Microglia-PVM nuclei from one donor
 
 This gives us a strong, simple baseline before asking whether JEPA adds value.
 
-Completed locally:
+Completed:
 
 - Built Microglia-PVM donor pseudobulk features from the full SEA-AD MTG H5AD.
-- Created a 10,000-cell Microglia-PVM JEPA pilot.
-- Ran donor-level pathology prediction baselines.
-- Trained a GPU JEPA model on the microglia pilot.
-- Ranked microglial genes associated with AT8/pTau pathology.
+- Trained flat-vector snRNA JEPA baselines with EMA target updates, module-aware masking, and variance regularization.
+- Built a Graph-JEPA v2 path using a STRING gene graph, learnable gene identity embeddings, CELLxGENE normal microglia anchors, and SEA-AD low-pathology anchors.
+- Ran Stage A healthy-anchor pretraining, Stage B SEA-AD low-pathology calibration, and Stage C disease-vector training with three-stream rehearsal.
+- Added donor-held-out validation, PCA-vs-JEPA representation diagnostics, cell-level donor leakage checks, digital knockout screens, latent Jacobian analysis, and confounder-adjusted module/gene effects.
+- Added a reproducible Stage C hyperparameter sweep to tune the balance between disease movement and anchor preservation.
 
-First baseline signal:
+Current Stage C tuning result:
 
 ```text
-Microglia-PVM pseudobulk -> AT8/pTau pathology
-Spearman ~= 0.53 across held-out donor folds
+best run: fine_loose_01_r005_cov0005
+checkpoint: epoch 5
+SEA/CELLxGENE rehearsal weight: 0.005
+disease covariance weight: 0.0005
+AT8 ridge Spearman: 0.356
+NeuN ridge Spearman: 0.374
+AT8 cosine kNN Spearman: 0.227
+NeuN cosine kNN Spearman: 0.258
+SEA anchor cosine: 0.956
+CELLxGENE anchor cosine: 0.952
 ```
 
-Top AT8-associated genes in the first pass include:
+Interpretation: the current best Stage C setting is intentionally elastic. It allows the disease manifold to move while preserving both healthy/reference anchors just above the 0.95 cosine safety boundary. This is a tuning result and representation diagnostic, not experimental proof of causality.
+
+Early SEA-AD Microglia-PVM hypothesis candidates include:
 
 ```text
 PTPRG
@@ -145,7 +157,7 @@ CTSD
 NFKBIA
 ```
 
-These are not causal claims. They are pathology-linked candidate signals that should be tested through enrichment, spatial validation, literature review, and eventually perturbational evidence.
+These are not causal claims. They are model-prioritized candidates that need spatial, perturbational, or experimental validation.
 
 ## Dataset
 
@@ -176,6 +188,7 @@ Start here:
 - [docs/dataset_guide.md](docs/dataset_guide.md): dataset descriptions and abbreviation glossary.
 - [docs/architecture.md](docs/architecture.md): the discovery system design.
 - [docs/technical_plan.md](docs/technical_plan.md): implementation phases and modeling details.
+- [docs/causal_discovery.md](docs/causal_discovery.md): model-implied counterfactual and causal-validation strategy.
 - [docs/runbook.md](docs/runbook.md): commands for reproducing the local workflow.
 - [docs/current_status.md](docs/current_status.md): what has been completed.
 - [docs/gpu_setup.md](docs/gpu_setup.md): CUDA/PyTorch setup.
@@ -274,3 +287,17 @@ This project is for discovery and hypothesis generation. It separates:
 - **Validated biology**: supported by spatial, imaging, perturbational, or experimental evidence.
 
 That separation is central. A model can help prioritize hypotheses, but it does not turn correlation into causation.
+
+## GitHub About
+
+Suggested repository description:
+
+```text
+Graph-JEPA framework for SEA-AD Alzheimer microglia: pathology-grounded representation learning, donor-held-out validation, and counterfactual gene-network hypothesis generation.
+```
+
+Suggested topics:
+
+```text
+alzheimer-disease, single-cell-rna-seq, jepa, graph-neural-network, causal-discovery, bioinformatics, pytorch, sea-ad, microglia, computational-biology
+```
