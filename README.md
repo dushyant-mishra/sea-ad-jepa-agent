@@ -353,6 +353,54 @@ GFAP dimensions:     z_63, z_38, z_120, z_107, z_71
 
 This suggests that tau pathology, neuronal density, and astrocyte-reactive tissue state are partially overlapping but not identical axes in the Graph-JEPA manifold.
 
+## Current v2.1 Biology Extraction
+
+After selecting `upgrade_fine_08_r0045_cov0005_pc0075`, we decoded its latent axes and compared them with the AT8-sensitive `fine_bridge_06_r0045_cov0005` checkpoint. The goal was to stop tuning blindly and ask what biology the model is actually using.
+
+Primary outputs:
+
+- [v2.1 microglia hypothesis report](results/reports/v2_1_microglia_biological_hypotheses.md)
+- [ranked v2.1 target matrix](results/tables/v2_1_ranked_target_matrix.csv)
+- [module-level AT8 counterfactuals](results/tables/v2_1_upgrade_fine_08_module_counterfactual_at8.csv)
+- [gene-level AT8 counterfactuals](results/tables/v2_1_upgrade_fine_08_gene_counterfactual_at8.csv)
+
+Key readout:
+
+```text
+strongest AT8-lowering module perturbations:
+  antigen presentation
+  vascular/barrier myeloid
+  inflammatory signaling
+  complement
+
+strongest AT8-up module perturbations:
+  lipid metabolism
+  homeostatic microglia
+  senescence/stress
+  lysosome/phagocytosis
+```
+
+The predictor Jacobian analysis converged on lysosome/phagocytosis-related latent routing in both `upgrade_fine_08` and `fine_bridge_06`, suggesting that phagocytic/lysosomal state is a stable internal axis rather than a one-checkpoint artifact.
+
+The top ranked gene-level hypothesis matrix currently prioritizes:
+
+```text
+APP
+BCL2
+TLR2
+CD4
+P2RY12
+APOE
+MAPK1
+CX3CR1
+STAT3
+CSF1R
+UGCG
+ROCK1
+```
+
+These are not claimed as validated causal drivers. They are ranked, model-implied intervention hypotheses that now need independent cohort, perturbation, spatial, or imaging validation.
+
 ## Dataset
 
 Primary data source:

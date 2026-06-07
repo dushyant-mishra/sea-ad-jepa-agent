@@ -55,6 +55,35 @@ CELLxGENE anchor cosine: 0.961
 
 Interpretation: `upgrade_fine_08` is now the strongest balanced v2.1 candidate and is anchor-safe. It does not maximize AT8 ridge performance; `fine_bridge_06` remains an important comparator for AT8-heavy biological analyses.
 
+Latest biology extraction:
+
+```text
+active model: upgrade_fine_08_r0045_cov0005_pc0075, epoch 5
+AT8 comparator: fine_bridge_06_r0045_cov0005, epoch 5
+
+report:
+  results/reports/v2_1_microglia_biological_hypotheses.md
+
+ranked target matrix:
+  results/tables/v2_1_ranked_target_matrix.csv
+
+module counterfactual screen:
+  strongest AT8-lowering shifts: antigen presentation, vascular/barrier myeloid,
+                                 inflammatory signaling, complement
+  strongest AT8-up shifts: lipid metabolism, homeostatic microglia,
+                           senescence/stress, lysosome/phagocytosis
+
+top ranked gene hypotheses:
+  APP, BCL2, TLR2, CD4, P2RY12, APOE, MAPK1, CX3CR1,
+  STAT3, CSF1R, UGCG, ROCK1
+
+cross-model Jacobian signal:
+  both upgrade_fine_08 and fine_bridge_06 route high-sensitivity predictor
+  edges through lysosome/phagocytosis-annotated latent factors
+```
+
+Interpretation: v2.1 has moved from representation tuning back into biological extraction. The current result is coherent enough to pause broad tuning and prioritize independent validation of the ranked modules and genes.
+
 Latest v2.1 upgrade comparison:
 
 ```text

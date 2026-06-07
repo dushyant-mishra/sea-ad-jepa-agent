@@ -1188,6 +1188,99 @@ pathology contrastive weight: 0.075
 
 This setting is intentionally elastic and anchor-safe. It uses projection-head disease geometry and pathology-neighborhood organization while preserving both anchors above the 0.95 cosine safety boundary.
 
+Decode v2.1 biology from the selected checkpoint:
+
+```powershell
+$env:PYTHONPATH = "src"
+
+python scripts/decode_graph_latent_gene_weights.py `
+  --checkpoint results/models/stage_c_upgrade_fine_08_r0045_cov0005_pc0075/graph_jepa_stage_c_epoch_005.pt `
+  --model-label upgrade_fine_08 `
+  --latent-dims 120 26 30 94 71 63 1 57 103 100 125 38 107 `
+  --max-cells 2048 `
+  --batch-size 16 `
+  --out results/tables/v2_1_upgrade_fine_08_latent_gene_attributions.csv `
+  --device auto
+
+python scripts/decode_graph_latent_gene_weights.py `
+  --checkpoint results/models/stage_c_fine_bridge_06_r0045_cov0005/graph_jepa_stage_c_epoch_005.pt `
+  --model-label fine_bridge_06 `
+  --latent-dims 120 26 30 94 71 63 1 57 103 100 125 38 107 `
+  --max-cells 2048 `
+  --batch-size 16 `
+  --out results/tables/v2_1_fine_bridge_06_latent_gene_attributions.csv `
+  --device auto
+```
+
+Run Graph-JEPA predictor Jacobian maps:
+
+```powershell
+$env:PYTHONPATH = "src"
+
+python scripts/causal_graph_latent_jacobian.py `
+  --checkpoint results/models/stage_c_upgrade_fine_08_r0045_cov0005_pc0075/graph_jepa_stage_c_epoch_005.pt `
+  --model-label upgrade_fine_08 `
+  --max-cells 4096 `
+  --batch-size 32 `
+  --jacobian-batch-size 128 `
+  --matrix-out results/tables/v2_1_upgrade_fine_08_latent_jacobian_matrix.csv `
+  --edges-out results/tables/v2_1_upgrade_fine_08_latent_jacobian_top_edges.csv `
+  --annotations-out results/tables/v2_1_upgrade_fine_08_latent_jacobian_module_annotations.csv `
+  --device auto
+
+python scripts/causal_graph_latent_jacobian.py `
+  --checkpoint results/models/stage_c_fine_bridge_06_r0045_cov0005/graph_jepa_stage_c_epoch_005.pt `
+  --model-label fine_bridge_06 `
+  --max-cells 4096 `
+  --batch-size 32 `
+  --jacobian-batch-size 128 `
+  --matrix-out results/tables/v2_1_fine_bridge_06_latent_jacobian_matrix.csv `
+  --edges-out results/tables/v2_1_fine_bridge_06_latent_jacobian_top_edges.csv `
+  --annotations-out results/tables/v2_1_fine_bridge_06_latent_jacobian_module_annotations.csv `
+  --device auto
+```
+
+Run the v2.1 AT8 counterfactual screen and build the hypothesis report:
+
+```powershell
+$env:PYTHONPATH = "src"
+
+python scripts/graph_counterfactual_knockout.py `
+  --checkpoint results/models/stage_c_upgrade_fine_08_r0045_cov0005_pc0075/graph_jepa_stage_c_epoch_005.pt `
+  --model-label upgrade_fine_08 `
+  --mode module `
+  --modules complement lipid_metabolism lysosome_phagocytosis homeostatic_microglia vascular_barrier_myeloid plaque_response disease_associated_microglia inflammatory_signaling antigen_presentation senescence_stress `
+  --intervention global_mean `
+  --target "percent AT8 positive area_Grey matter" `
+  --max-cells 12000 `
+  --batch-size 64 `
+  --out results/tables/v2_1_upgrade_fine_08_module_counterfactual_at8.csv `
+  --donor-out results/tables/v2_1_upgrade_fine_08_module_counterfactual_at8_by_donor.csv `
+  --device auto
+
+python scripts/graph_counterfactual_knockout.py `
+  --checkpoint results/models/stage_c_upgrade_fine_08_r0045_cov0005_pc0075/graph_jepa_stage_c_epoch_005.pt `
+  --model-label upgrade_fine_08 `
+  --mode gene `
+  --genes CSF1R TLR2 BCL2 CD4 P2RY12 APP APOE CD74 PLCG2 MAPK1 ROCK1 HSP90AA1 UGCG STAT3 HIF1A GRB2 RHOA CTSD P2RY13 CX3CR1 F13A1 CHI3L1 DRAM1 PTPRG `
+  --intervention global_mean `
+  --target "percent AT8 positive area_Grey matter" `
+  --max-cells 12000 `
+  --batch-size 64 `
+  --out results/tables/v2_1_upgrade_fine_08_gene_counterfactual_at8.csv `
+  --donor-out results/tables/v2_1_upgrade_fine_08_gene_counterfactual_at8_by_donor.csv `
+  --device auto
+
+python scripts/build_v21_hypothesis_report.py
+```
+
+Outputs:
+
+```text
+results/tables/v2_1_ranked_target_matrix.csv
+results/reports/v2_1_microglia_biological_hypotheses.md
+```
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

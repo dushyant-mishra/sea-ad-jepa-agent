@@ -1,0 +1,25 @@
+gene,module,upgrade_best_latent,upgrade_best_rank,bridge_best_latent,bridge_best_rank,mean_delta_raw_scale,abs_mean_delta_raw_scale,direction,druggability_evidence,cross_model_support,evidence_score
+APP,unannotated,z_71,105,z_30,7,0.0128721520304679,0.0128721520304679,AT8-up when perturbed,HPA/FDA drug target; predicted membrane; predicted secreted,also decoded in fine_bridge_06,2.9583333333333335
+BCL2,unannotated,z_30,1,z_120,1,0.0048683919012546,0.0048683919012546,AT8-up when perturbed,HPA/FDA drug target; predicted membrane,also decoded in fine_bridge_06,2.5
+TLR2,unannotated,z_125,9,z_125,1,-0.0029971925541758,0.0029971925541758,AT8-down when perturbed,HPA/FDA drug target; predicted membrane,also decoded in fine_bridge_06,2.4166666666666665
+CD4,unannotated,z_71,8,z_26,10,-0.0025843996554613,0.0025843996554613,AT8-down when perturbed,HPA/FDA drug target; predicted membrane,also decoded in fine_bridge_06,2.375
+P2RY12,homeostatic_microglia,z_1,9,z_125,29,0.0020372555591166,0.0020372555591166,AT8-up when perturbed,HPA/FDA drug target; predicted membrane,also decoded in fine_bridge_06,2.25
+APOE,disease_associated_microglia;lipid_metabolism;plaque_response,z_30,169,z_57,3,0.0063072899356484,0.0063072899356484,AT8-up when perturbed,predicted secreted,also decoded in fine_bridge_06,2.125
+MAPK1,unannotated,z_30,10,z_94,4,0.0025016348809003,0.0025016348809003,AT8-up when perturbed,HPA/FDA drug target,also decoded in fine_bridge_06,2.0833333333333335
+CX3CR1,chemokine_migration;homeostatic_microglia;synapse_pruning,z_94,154,z_107,261,0.0050454409793019,0.0050454409793019,AT8-up when perturbed,predicted membrane,also decoded in fine_bridge_06,2.0416666666666665
+STAT3,unannotated,z_57,4,z_125,4,0.017108004540205,0.017108004540205,AT8-up when perturbed,no HPA actionability flag,also decoded in fine_bridge_06,2.0
+CSF1R,homeostatic_microglia,z_100,1,z_63,7,0.0009486317867413,0.0009486317867413,AT8-up when perturbed,HPA/FDA drug target; predicted membrane,also decoded in fine_bridge_06,2.0
+UGCG,unannotated,z_100,88,z_94,10,0.0007971750455908,0.0007971750455908,AT8-up when perturbed,HPA/FDA drug target; predicted membrane,also decoded in fine_bridge_06,1.9583333333333335
+ROCK1,unannotated,z_100,6,z_120,6,-0.0019059550249949,0.0019059550249949,AT8-down when perturbed,HPA/FDA drug target,also decoded in fine_bridge_06,1.9583333333333333
+GRB2,unannotated,z_120,1,z_94,1,0.0063339839689433,0.0063339839689433,AT8-up when perturbed,no HPA actionability flag,also decoded in fine_bridge_06,1.9166666666666665
+F13A1,vascular_barrier_myeloid,z_71,1548,z_26,1674,0.0007706399192102,0.0007706399192102,AT8-up when perturbed,HPA/FDA drug target; predicted secreted,also decoded in fine_bridge_06,1.9166666666666665
+HSP90AA1,senescence_stress,z_38,3,z_103,6,0.0058206892572343,0.0058206892572343,AT8-up when perturbed,no HPA actionability flag,also decoded in fine_bridge_06,1.8333333333333335
+CD74,antigen_presentation,z_57,27,z_94,3,0.0012450320646166,0.0012450320646166,AT8-up when perturbed,predicted membrane; predicted secreted,also decoded in fine_bridge_06,1.8333333333333333
+PTPRG,at8_associated_first_pass,z_107,996,z_71,2150,-0.0024802442640066,0.0024802442640066,AT8-down when perturbed,predicted membrane,also decoded in fine_bridge_06,1.7916666666666665
+HIF1A,unannotated,z_94,2,z_71,2,0.004148312844336,0.004148312844336,AT8-up when perturbed,no HPA actionability flag,also decoded in fine_bridge_06,1.7083333333333335
+P2RY13,homeostatic_microglia,z_63,1388,z_57,1657,-0.0017155760433524,0.0017155760433524,AT8-down when perturbed,predicted membrane,also decoded in fine_bridge_06,1.6666666666666667
+CTSD,at8_associated_first_pass;disease_associated_microglia;lysosome_phagocytosis;plaque_response,z_107,343,z_71,330,0.0012059407308697,0.0012059407308697,AT8-up when perturbed,predicted secreted,also decoded in fine_bridge_06,1.5416666666666667
+RHOA,unannotated,z_94,1,z_26,1,0.0014317638706415,0.0014317638706415,AT8-up when perturbed,no HPA actionability flag,also decoded in fine_bridge_06,1.375
+DRAM1,at8_associated_first_pass,z_71,1905,z_30,2018,0.0007611562032252,0.0007611562032252,AT8-up when perturbed,predicted membrane,also decoded in fine_bridge_06,1.375
+CHI3L1,at8_associated_first_pass,z_94,2867,z_71,2834,-0.0003336023073643,0.0003336023073643,AT8-down when perturbed,predicted secreted,also decoded in fine_bridge_06,1.2916666666666665
+PLCG2,lipid_metabolism,z_38,43,z_94,9,0.0006295369239524,0.0006295369239524,AT8-up when perturbed,no HPA actionability flag,also decoded in fine_bridge_06,1.0833333333333335
