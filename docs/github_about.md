@@ -38,15 +38,19 @@ v1 problem: genes were independent columns
 v2 response: genes are graph nodes with STRING edges and learnable gene identity embeddings
 
 v1 problem: disease fine-tuning could over-pin or collapse geometry
-v2 response: Stage A/B/C curriculum with anchor rehearsal, covariance diagnostics, and sweep-based tuning
+v2 response: Stage A/B/C curriculum with anchor rehearsal, covariance diagnostics, projection-head disease geometry, and sweep-based tuning
 ```
 
 Current best Stage C setting:
 
 ```text
-rehearsal weight: 0.005
+run: upgrade_fine_08_r0045_cov0005_pc0075
+rehearsal weight: 0.0045
 disease covariance weight: 0.0005
+pathology contrastive weight: 0.075
 checkpoint: epoch 5
+composite score: 1.686
+anchor cosines: SEA 0.975, CELLxGENE 0.961
 ```
 
 ## Evidence Boundary

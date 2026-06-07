@@ -31,6 +31,7 @@ def main() -> None:
     parser.add_argument("--anchor-type", required=True)
     parser.add_argument("--out-csv", required=True)
     parser.add_argument("--batch-size", type=int, default=64)
+    parser.add_argument("--embedding-space", choices=["auto", "target_encoder", "encoder", "projector"], default="auto")
     parser.add_argument("--device", default="auto")
     args = parser.parse_args()
 
@@ -68,16 +69,27 @@ def main() -> None:
         dropout=float(model_args.get("dropout", 0.1)),
         conv=str(model_args.get("conv", "sage")),
         ema_decay=float(model_args.get("ema_decay", 0.996)),
+        use_projection_head=bool(model_args.get("use_projection_head", False)),
+        projection_hidden_dim=int(model_args.get("projection_hidden_dim", 0)) or None,
     ).to(device)
-    model.load_state_dict(checkpoint["model_state"])
+    model.load_state_dict(checkpoint["model_state"], strict=False)
     model.eval()
+
+    embedding_space = args.embedding_space
+    if embedding_space == "auto":
+        embedding_space = str(model_args.get("downstream_embedding_space", ""))
+        if not embedding_space:
+            embedding_space = "projector" if bool(model_args.get("use_projection_head", False)) else "target_encoder"
 
     latents = []
     with torch.no_grad():
         for batch in loader:
             data = batch[1] if isinstance(batch, (list, tuple)) else batch
             data = data.to(device)
-            z = model.target_encoder(data)
+            if embedding_space == "target_encoder":
+                z = model.target_encoder(data)
+            else:
+                z = model.encode_raw(data, space=embedding_space)
             latents.append(z.cpu().numpy())
     z_all = np.concatenate(latents, axis=0)
 
@@ -96,7 +108,7 @@ def main() -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out.to_csv(out_path, index=False)
     print(f"Wrote {out_path}")
-    print(f"cells={out.shape[0]:,} latent_dim={z_all.shape[1]} anchor_type={args.anchor_type}")
+    print(f"cells={out.shape[0]:,} latent_dim={z_all.shape[1]} anchor_type={args.anchor_type} embedding_space={embedding_space}")
 
 
 if __name__ == "__main__":

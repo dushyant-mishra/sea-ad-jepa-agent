@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+import argparse
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import Ridge
@@ -73,7 +74,15 @@ def extract_weights_for_target(
 
 
 def main() -> None:
-    embeddings_path = Path("results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_donor_embeddings.csv")
+    parser = argparse.ArgumentParser(description="Extract donor-held-out pathology weights for JEPA latent factors.")
+    parser.add_argument("--embeddings", default="results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_donor_embeddings.csv")
+    parser.add_argument("--out", default="results/tables/pathology_latent_weights.csv")
+    parser.add_argument("--targets", nargs="+", default=["percent AT8 positive area_Grey matter", "percent NeuN positive area_Grey matter"])
+    parser.add_argument("--alpha", type=float, default=10.0)
+    parser.add_argument("--n-splits", type=int, default=5)
+    args = parser.parse_args()
+
+    embeddings_path = Path(args.embeddings)
     if not embeddings_path.exists():
         raise FileNotFoundError(f"Required embeddings file not found: {embeddings_path}")
         
@@ -86,22 +95,25 @@ def main() -> None:
     
     merged = embeddings.merge(targets, on="Donor ID", how="inner")
     
-    feature_columns = [col for col in embeddings.columns if col != "Donor ID"]
+    feature_columns = [col for col in embeddings.columns if col.startswith("z_") or col.startswith("jepa_")]
+    if not feature_columns:
+        feature_columns = [col for col in embeddings.columns if col != "Donor ID"]
     
     print(f"Loaded {merged.shape[0]} donors with embeddings and pathology targets.")
     
     results = {}
     
-    target_tasks = {
-        "percent AT8 positive area_Grey matter": "percent AT8 positive area_Grey matter",
-        "percent NeuN positive area_Grey matter": "percent NeuN positive area_Grey matter"
-    }
-    
     all_coefs_list = []
     
-    for display_name, target in target_tasks.items():
-        print(f"\nExtracting latent factor weights for: {display_name}")
-        coef_df, _ = extract_weights_for_target(merged, target, feature_columns)
+    for target in args.targets:
+        print(f"\nExtracting latent factor weights for: {target}")
+        coef_df, _ = extract_weights_for_target(
+            merged,
+            target,
+            feature_columns,
+            alpha=args.alpha,
+            n_splits=args.n_splits,
+        )
         
         print("Top 5 Latent Factors by Mean Absolute Coefficient:")
         print(coef_df.head(5)[["latent_dimension", "mean_coefficient", "mean_abs_coefficient"]].to_string(index=False))
@@ -110,7 +122,7 @@ def main() -> None:
         all_coefs_list.append(coef_df)
         
     combined_coef_df = pd.concat(all_coefs_list, ignore_index=True)
-    out_path = Path("results/tables/pathology_latent_weights.csv")
+    out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     combined_coef_df.to_csv(out_path, index=False)
     print(f"\nWrote combined latent factor weights to {out_path}")

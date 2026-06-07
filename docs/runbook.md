@@ -1147,30 +1147,46 @@ python scripts/sweep_stage_c_finetuning.py `
   --out results/tables/stage_c_finetuning_fine_tight_summary.csv
 
 python scripts/sweep_stage_c_finetuning.py `
-  --preset fine_loose `
+  --preset upgrade_fine `
   --epochs 5 `
   --checkpoint-epochs 005 `
   --device auto `
-  --out results/tables/stage_c_finetuning_fine_loose_summary.csv
+  --out results/tables/stage_c_upgrade_fine_summary.csv
 ```
 
 Combine and inspect the leaderboards:
 
 ```powershell
-$env:PYTHONPATH = "src"
-python -c "import pandas as pd; files=['results/tables/stage_c_finetuning_sweep_summary.csv','results/tables/stage_c_finetuning_fine_tight_summary.csv','results/tables/stage_c_finetuning_fine_loose_summary.csv']; df=pd.concat([pd.read_csv(f).assign(source=f) for f in files], ignore_index=True).sort_values('composite_score', ascending=False); df.to_csv('results/tables/stage_c_finetuning_combined_leaderboard.csv', index=False); print(df.head(12).to_string(index=False))"
+$files = @(
+  "results/tables/stage_c_finetuning_sweep_summary.csv",
+  "results/tables/stage_c_finetuning_fine_tight_summary.csv",
+  "results/tables/stage_c_finetuning_fine_loose_summary.csv",
+  "results/tables/stage_c_finetuning_fine_narrow_summary.csv",
+  "results/tables/stage_c_finetuning_fine_bridge_summary.csv",
+  "results/tables/stage_c_finetuning_fine_safety_summary.csv",
+  "results/tables/stage_c_upgrade_sweep_summary.csv",
+  "results/tables/stage_c_upgrade_fine_summary.csv"
+)
+$frames = foreach ($f in $files) { if (Test-Path $f) { Import-Csv $f } }
+$frames |
+  Sort-Object {[double]$_.composite_score} -Descending |
+  Export-Csv -NoTypeInformation results/tables/stage_c_finetuning_combined_leaderboard.csv
+Import-Csv results/tables/stage_c_finetuning_combined_leaderboard.csv |
+  Select-Object -First 12 |
+  Format-Table -AutoSize
 ```
 
 Current recommended Stage C candidate:
 
 ```text
-run: fine_loose_01_r005_cov0005
+run: upgrade_fine_08_r0045_cov0005_pc0075
 checkpoint: epoch 5
-SEA/CELLxGENE rehearsal weight: 0.005
+SEA/CELLxGENE rehearsal weight: 0.0045
 disease covariance weight: 0.0005
+pathology contrastive weight: 0.075
 ```
 
-This setting is intentionally elastic. It preserves both anchors just above the cosine safety boundary while allowing more disease-geometry movement than the earlier over-pinned Stage C runs.
+This setting is intentionally elastic and anchor-safe. It uses projection-head disease geometry and pathology-neighborhood organization while preserving both anchors above the 0.95 cosine safety boundary.
 
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 

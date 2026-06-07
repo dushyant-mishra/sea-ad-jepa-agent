@@ -157,30 +157,32 @@ effective dimensions: about 2.10
 top singular value ratio: about 0.821
 ```
 
-A targeted sweep found a better balance.
+A targeted sweep first found a better elastic v2 balance. A later v2.1 sweep improved the balanced score by adding projection-head disease geometry and a gentle pathology-neighborhood loss.
 
 ```text
-best current Stage C run: fine_loose_01_r005_cov0005
+best current Stage C run: upgrade_fine_08_r0045_cov0005_pc0075
 checkpoint: epoch 5
-SEA/CELLxGENE rehearsal weight: 0.005
+SEA/CELLxGENE rehearsal weight: 0.0045
 disease covariance weight: 0.0005
-composite score: 1.544
+pathology contrastive weight: 0.075
+composite score: 1.686
 ```
 
 Key metrics:
 
 ```text
-AT8 ridge Spearman:          0.356
-NeuN ridge Spearman:         0.374
-AT8 cosine kNN Spearman:     0.227
-NeuN cosine kNN Spearman:    0.258
-effective dimensions:        4.76
-top singular value ratio:    0.481
-SEA anchor cosine:           0.956
-CELLxGENE anchor cosine:     0.952
+AT8 ridge Spearman:          0.213
+NeuN ridge Spearman:         0.426
+AT8 cosine kNN Spearman:     0.266
+NeuN cosine kNN Spearman:    0.303
+GFAP cosine kNN Spearman:    0.408
+effective dimensions:        7.19
+top singular value ratio:    0.430
+SEA anchor cosine:           0.975
+CELLxGENE anchor cosine:     0.961
 ```
 
-Interpretation: the current best v2 Stage C setting is intentionally elastic. It allows pathology-related movement while keeping both anchors just above the 0.95 cosine safety boundary.
+Interpretation: the current best v2.1 Stage C setting is intentionally elastic and anchor-safe. It allows pathology-related movement while keeping both anchors above the 0.95 cosine safety boundary.
 
 ## Hypothesis Layer
 

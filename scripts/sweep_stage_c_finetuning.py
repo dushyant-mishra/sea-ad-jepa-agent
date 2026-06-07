@@ -55,10 +55,139 @@ FINE_LOOSE_RUNS = [
 ]
 
 
+FINE_NARROW_RUNS = [
+    {"run_id": "fine_narrow_01_r003_cov00025", "rehearsal": 0.003, "covariance": 0.00025},
+    {"run_id": "fine_narrow_02_r003_cov0005", "rehearsal": 0.003, "covariance": 0.0005},
+    {"run_id": "fine_narrow_03_r005_cov00025", "rehearsal": 0.005, "covariance": 0.00025},
+    {"run_id": "fine_narrow_04_r005_cov00075", "rehearsal": 0.005, "covariance": 0.00075},
+    {"run_id": "fine_narrow_05_r008_cov00025", "rehearsal": 0.008, "covariance": 0.00025},
+    {"run_id": "fine_narrow_06_r008_cov0005", "rehearsal": 0.008, "covariance": 0.0005},
+    {"run_id": "fine_narrow_07_r008_cov00075", "rehearsal": 0.008, "covariance": 0.00075},
+]
+
+
+FINE_BRIDGE_RUNS = [
+    {"run_id": "fine_bridge_01_r0035_cov00025", "rehearsal": 0.0035, "covariance": 0.00025},
+    {"run_id": "fine_bridge_02_r0035_cov0005", "rehearsal": 0.0035, "covariance": 0.0005},
+    {"run_id": "fine_bridge_03_r004_cov00025", "rehearsal": 0.004, "covariance": 0.00025},
+    {"run_id": "fine_bridge_04_r004_cov0005", "rehearsal": 0.004, "covariance": 0.0005},
+    {"run_id": "fine_bridge_05_r0045_cov00025", "rehearsal": 0.0045, "covariance": 0.00025},
+    {"run_id": "fine_bridge_06_r0045_cov0005", "rehearsal": 0.0045, "covariance": 0.0005},
+]
+
+
+FINE_SAFETY_RUNS = [
+    {"run_id": "fine_safety_01_r00475_cov0004", "rehearsal": 0.00475, "covariance": 0.0004},
+    {"run_id": "fine_safety_02_r00475_cov0005", "rehearsal": 0.00475, "covariance": 0.0005},
+    {"run_id": "fine_safety_03_r005_cov00035", "rehearsal": 0.005, "covariance": 0.00035},
+    {"run_id": "fine_safety_04_r005_cov0004", "rehearsal": 0.005, "covariance": 0.0004},
+]
+
+
+UPGRADE_RUNS = [
+    {
+        "run_id": "upgrade_01_projector",
+        "rehearsal": 0.0045,
+        "covariance": 0.0005,
+        "extra_train_args": [
+            "--use-projection-head",
+            "--stage-c-prediction-space",
+            "projector",
+            "--rehearsal-space",
+            "encoder",
+            "--downstream-embedding-space",
+            "projector",
+        ],
+        "embedding_space": "auto",
+    },
+    {
+        "run_id": "upgrade_02_projector_pathology",
+        "rehearsal": 0.0045,
+        "covariance": 0.0005,
+        "extra_train_args": [
+            "--use-projection-head",
+            "--stage-c-prediction-space",
+            "projector",
+            "--rehearsal-space",
+            "encoder",
+            "--downstream-embedding-space",
+            "projector",
+            "--pathology-contrastive-weight",
+            "0.05",
+            "--pathology-contrastive-temperature",
+            "0.75",
+        ],
+        "embedding_space": "auto",
+    },
+    {
+        "run_id": "upgrade_03_projector_pathology_elasticity",
+        "rehearsal": 0.0045,
+        "covariance": 0.0005,
+        "extra_train_args": [
+            "--use-projection-head",
+            "--stage-c-prediction-space",
+            "projector",
+            "--rehearsal-space",
+            "encoder",
+            "--downstream-embedding-space",
+            "projector",
+            "--pathology-contrastive-weight",
+            "0.05",
+            "--pathology-contrastive-temperature",
+            "0.75",
+            "--latent-elasticity-policy",
+            "results/tables/latent_elasticity_policy_v1.csv",
+            "--latent-elasticity-weight",
+            "0.01",
+        ],
+        "embedding_space": "auto",
+    },
+]
+
+
+def projector_pathology_run(run_id: str, rehearsal: float, covariance: float, pathology_weight: float) -> dict:
+    return {
+        "run_id": run_id,
+        "rehearsal": rehearsal,
+        "covariance": covariance,
+        "extra_train_args": [
+            "--use-projection-head",
+            "--stage-c-prediction-space",
+            "projector",
+            "--rehearsal-space",
+            "encoder",
+            "--downstream-embedding-space",
+            "projector",
+            "--pathology-contrastive-weight",
+            str(pathology_weight),
+            "--pathology-contrastive-temperature",
+            "0.75",
+        ],
+        "embedding_space": "auto",
+    }
+
+
+UPGRADE_FINE_RUNS = [
+    projector_pathology_run("upgrade_fine_01_r004_cov00025_pc005", 0.004, 0.00025, 0.05),
+    projector_pathology_run("upgrade_fine_02_r004_cov0005_pc005", 0.004, 0.0005, 0.05),
+    projector_pathology_run("upgrade_fine_03_r0045_cov00025_pc005", 0.0045, 0.00025, 0.05),
+    projector_pathology_run("upgrade_fine_04_r0045_cov0005_pc005", 0.0045, 0.0005, 0.05),
+    projector_pathology_run("upgrade_fine_05_r005_cov00025_pc005", 0.005, 0.00025, 0.05),
+    projector_pathology_run("upgrade_fine_06_r005_cov0005_pc005", 0.005, 0.0005, 0.05),
+    projector_pathology_run("upgrade_fine_07_r0045_cov0005_pc0025", 0.0045, 0.0005, 0.025),
+    projector_pathology_run("upgrade_fine_08_r0045_cov0005_pc0075", 0.0045, 0.0005, 0.075),
+]
+
+
 PRESETS = {
     "coarse": DEFAULT_RUNS,
     "fine_tight": FINE_TIGHT_RUNS,
     "fine_loose": FINE_LOOSE_RUNS,
+    "fine_narrow": FINE_NARROW_RUNS,
+    "fine_bridge": FINE_BRIDGE_RUNS,
+    "fine_safety": FINE_SAFETY_RUNS,
+    "upgrades": UPGRADE_RUNS,
+    "upgrade_fine": UPGRADE_FINE_RUNS,
 }
 
 
@@ -219,8 +348,7 @@ def main() -> None:
         final_model = model_dir / "graph_jepa_stage_c.pt"
 
         if not (args.skip_existing and final_model.exists()):
-            run_command(
-                [
+            train_command = [
                     sys.executable,
                     "scripts/train_graph_jepa_stage_c_disease.py",
                     "--epochs",
@@ -247,10 +375,9 @@ def main() -> None:
                     str(history),
                     "--device",
                     args.device,
-                ],
-                dry_run=args.dry_run,
-                env=env,
-            )
+                ]
+            train_command.extend(run.get("extra_train_args", []))
+            run_command(train_command, dry_run=args.dry_run, env=env)
 
         for epoch in args.checkpoint_epochs:
             checkpoint = model_dir / f"graph_jepa_stage_c_epoch_{epoch}.pt"
@@ -281,6 +408,8 @@ def main() -> None:
                     "results/tables/v2_graph_string_edges_t700.csv",
                     "--batch-size",
                     "64",
+                    "--embedding-space",
+                    str(run.get("embedding_space", "auto")),
                     "--device",
                     args.device,
                 ],

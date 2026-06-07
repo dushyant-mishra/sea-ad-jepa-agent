@@ -14,6 +14,7 @@ import torch
 import torch.nn.functional as F
 from torch_geometric.loader import DataLoader
 
+from sea_ad_jepa.data import load_pathology_targets, normalize_donor_id
 from sea_ad_jepa.graph_data import GraphExpressionDataset, load_consensus_edge_index, node_annotation_tensor
 from sea_ad_jepa.graph_jepa import GraphGeneJEPA
 from sea_ad_jepa.jepa import jepa_loss
@@ -89,6 +90,25 @@ def rehearsal_loss(
     return loss, cosine.mean()
 
 
+def dimension_elasticity_loss(
+    current_z: torch.Tensor,
+    frozen_bank: torch.Tensor,
+    sample_id: torch.Tensor,
+    margins: torch.Tensor,
+    weights: torch.Tensor,
+    temperature: float,
+) -> torch.Tensor:
+    frozen = frozen_bank[sample_id.long()].to(current_z.device)
+    current = F.normalize(current_z, dim=-1)
+    frozen = F.normalize(frozen, dim=-1)
+    margins = margins.to(current_z.device).view(1, -1)
+    weights = weights.to(current_z.device).view(1, -1)
+    allowed_delta = (1.0 - margins).clamp_min(0.0)
+    delta = torch.abs(current - frozen)
+    penalty = F.softplus(temperature * (delta - allowed_delta)) / temperature
+    return (penalty * weights).sum() / weights.sum().clamp_min(1e-8) / float(current.shape[0])
+
+
 def singular_value_telemetry(z: torch.Tensor) -> tuple[float, float]:
     centered = z - z.mean(dim=0, keepdim=True)
     singular_values = torch.linalg.svdvals(centered)
@@ -108,6 +128,71 @@ def off_diagonal_covariance_loss(z: torch.Tensor) -> torch.Tensor:
     covariance = covariance.clone()
     covariance.fill_diagonal_(0.0)
     return covariance.pow(2).mean()
+
+
+def pathology_similarity_loss(z: torch.Tensor, y: torch.Tensor, temperature: float) -> torch.Tensor:
+    """Gently pulls cells with similar donor pathology toward similar directions.
+
+    This is intentionally not a full contrastive repulsion objective. Covariance
+    handles manifold spreading; this term only asks the expanded space to preserve
+    local pathology neighborhoods.
+    """
+    if z.shape[0] < 2 or y.numel() == 0:
+        return z.new_tensor(0.0)
+    valid = torch.isfinite(y).all(dim=1)
+    if int(valid.sum().item()) < 2:
+        return z.new_tensor(0.0)
+    z = F.normalize(z[valid], dim=-1)
+    y = y[valid]
+    y_std = torch.std(y, dim=0, unbiased=False, keepdim=True).clamp_min(1e-6)
+    y = (y - torch.mean(y, dim=0, keepdim=True)) / y_std
+    target_distance = torch.cdist(y, y, p=1) / float(y.shape[1])
+    weights = torch.exp(-target_distance / max(temperature, 1e-6))
+    eye = torch.eye(weights.shape[0], dtype=torch.bool, device=weights.device)
+    weights = weights.masked_fill(eye, 0.0)
+    denominator = weights.sum().clamp_min(1e-8)
+    cosine = z @ z.T
+    return (weights * (1.0 - cosine)).sum() / denominator
+
+
+def build_pathology_matrix(
+    adata: ad.AnnData,
+    donor_column: str,
+    target_columns: list[str],
+    targets_path: str,
+    target_columns_path: str,
+) -> torch.Tensor:
+    targets, _ = load_pathology_targets(targets_path, target_columns_path)
+    targets = targets.copy()
+    targets["Donor ID"] = normalize_donor_id(targets["Donor ID"])
+    if donor_column not in adata.obs:
+        raise KeyError(f"Donor column not found in disease H5AD obs: {donor_column}")
+    missing = [column for column in target_columns if column not in targets.columns]
+    if missing:
+        raise KeyError(f"Pathology target columns not found: {missing}")
+
+    donor_to_targets = targets.set_index("Donor ID")[target_columns]
+    donors = normalize_donor_id(adata.obs[donor_column]).reset_index(drop=True)
+    values = donor_to_targets.reindex(donors).to_numpy(dtype=np.float32)
+    return torch.as_tensor(values, dtype=torch.float32)
+
+
+def load_latent_elasticity_policy(path: str | Path, latent_dim: int) -> tuple[torch.Tensor, torch.Tensor]:
+    policy = pd.read_csv(path)
+    if "latent_id" not in policy:
+        if "latent_factor" not in policy:
+            raise ValueError("Latent elasticity policy must include latent_id or latent_factor.")
+        policy["latent_id"] = policy["latent_factor"].astype(str).str.extract(r"(\d+)").astype(int)
+    if "margin" not in policy or "weight" not in policy:
+        raise ValueError("Latent elasticity policy must include margin and weight columns.")
+    margins = torch.full((latent_dim,), 0.95, dtype=torch.float32)
+    weights = torch.ones(latent_dim, dtype=torch.float32)
+    for row in policy.itertuples(index=False):
+        latent_id = int(getattr(row, "latent_id"))
+        if 0 <= latent_id < latent_dim:
+            margins[latent_id] = float(getattr(row, "margin"))
+            weights[latent_id] = float(getattr(row, "weight"))
+    return margins, weights
 
 
 def checkpoint_arg(checkpoint: dict, key: str, default):
@@ -142,6 +227,23 @@ def main() -> None:
     parser.add_argument("--variance-gamma", type=float, default=1.0)
     parser.add_argument("--covariance-weight", type=float, default=0.0)
     parser.add_argument("--disease-covariance-weight", type=float, default=0.0)
+    parser.add_argument("--use-projection-head", action="store_true")
+    parser.add_argument("--projection-hidden-dim", type=int, default=0)
+    parser.add_argument("--stage-c-prediction-space", choices=["encoder", "projector"], default="encoder")
+    parser.add_argument("--rehearsal-space", choices=["encoder", "projector"], default="encoder")
+    parser.add_argument("--downstream-embedding-space", choices=["encoder", "projector"], default="encoder")
+    parser.add_argument("--pathology-contrastive-weight", type=float, default=0.0)
+    parser.add_argument("--pathology-contrastive-temperature", type=float, default=0.75)
+    parser.add_argument(
+        "--pathology-contrastive-targets",
+        nargs="+",
+        default=["percent AT8 positive area_Grey matter", "percent NeuN positive area_Grey matter"],
+    )
+    parser.add_argument("--pathology-targets-path", default="data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv")
+    parser.add_argument("--pathology-target-columns-path", default="data/processed/metadata/pathology_target_columns.csv")
+    parser.add_argument("--donor-column", default="Donor ID")
+    parser.add_argument("--latent-elasticity-policy", default="")
+    parser.add_argument("--latent-elasticity-weight", type=float, default=0.0)
     parser.add_argument("--mask-start-fraction", type=float, default=0.2)
     parser.add_argument("--mask-fraction", type=float, default=0.5)
     parser.add_argument("--mask-warmup-epochs", type=int, default=10)
@@ -224,8 +326,13 @@ def main() -> None:
         dropout=float(checkpoint_arg(checkpoint, "dropout", 0.1)),
         conv=str(checkpoint_arg(checkpoint, "conv", "sage")),
         ema_decay=float(checkpoint_arg(checkpoint, "ema_decay", args.ema_start_decay)),
+        use_projection_head=args.use_projection_head,
+        projection_hidden_dim=args.projection_hidden_dim or None,
     ).to(device)
-    model.load_state_dict(checkpoint["model_state"])
+    load_result = model.load_state_dict(checkpoint["model_state"], strict=not args.use_projection_head)
+    if args.use_projection_head:
+        print(f"Loaded checkpoint with projection head initialized fresh. Missing keys: {len(load_result.missing_keys)}")
+        model.reset_target_network()
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     writer = create_summary_writer(args.log_dir)
@@ -233,6 +340,35 @@ def main() -> None:
     sea_frozen = sea_frozen.to(device)
     cellxgene_frozen = cellxgene_frozen.to(device)
     cellxgene_frozen_centroid = cellxgene_frozen.mean(dim=0)
+    disease_pathology = None
+    if args.pathology_contrastive_weight > 0:
+        disease_pathology = build_pathology_matrix(
+            disease_adata,
+            donor_column=args.donor_column,
+            target_columns=args.pathology_contrastive_targets,
+            targets_path=args.pathology_targets_path,
+            target_columns_path=args.pathology_target_columns_path,
+        ).to(device)
+        print(
+            "Loaded pathology contrastive targets: "
+            + ", ".join(args.pathology_contrastive_targets)
+            + f" ({disease_pathology.shape[0]:,} cells x {disease_pathology.shape[1]} targets)"
+        )
+    latent_elasticity_margins = None
+    latent_elasticity_weights = None
+    if args.latent_elasticity_weight > 0:
+        if not args.latent_elasticity_policy:
+            raise ValueError("--latent-elasticity-policy is required when --latent-elasticity-weight > 0")
+        latent_dim = int(checkpoint_arg(checkpoint, "latent_dim", 128))
+        latent_elasticity_margins, latent_elasticity_weights = load_latent_elasticity_policy(
+            args.latent_elasticity_policy,
+            latent_dim=latent_dim,
+        )
+        print(
+            f"Loaded latent elasticity policy: {args.latent_elasticity_policy} "
+            f"(margin range {latent_elasticity_margins.min():.3f}-{latent_elasticity_margins.max():.3f}, "
+            f"weight range {latent_elasticity_weights.min():.3f}-{latent_elasticity_weights.max():.3f})"
+        )
 
     def save_checkpoint(path: Path) -> None:
         torch.save(
@@ -265,6 +401,8 @@ def main() -> None:
         disease_to_cellxgene_centroid_l2 = []
         disease_variance_spreads = []
         disease_covariance_losses = []
+        pathology_contrastive_losses = []
+        latent_elasticity_losses = []
         alignment_losses = []
         variance_losses = []
         covariance_losses = []
@@ -282,7 +420,7 @@ def main() -> None:
             sea_anchor_target = sea_anchor_target.to(device)
             cellxgene_anchor_target = cellxgene_anchor_target.to(device)
 
-            pred_z, target_z = model(disease_context, disease_target)
+            pred_z, target_z = model(disease_context, disease_target, prediction_space=args.stage_c_prediction_space)
             disease_loss, parts = jepa_loss(
                 pred_z,
                 target_z,
@@ -291,8 +429,8 @@ def main() -> None:
                 covariance_weight=args.covariance_weight,
             )
 
-            sea_current = model.context_encoder(sea_anchor_target)
-            cellxgene_current = model.context_encoder(cellxgene_anchor_target)
+            sea_current = model.encode_raw(sea_anchor_target, space=args.rehearsal_space)
+            cellxgene_current = model.encode_raw(cellxgene_anchor_target, space=args.rehearsal_space)
             sea_anchor_loss, sea_anchor_cosine = rehearsal_loss(
                 sea_current,
                 sea_frozen,
@@ -309,15 +447,46 @@ def main() -> None:
                 margin=args.rehearsal_margin,
                 temperature=args.rehearsal_temperature,
             )
+            if latent_elasticity_margins is not None and latent_elasticity_weights is not None:
+                sea_latent_elasticity_loss = dimension_elasticity_loss(
+                    sea_current,
+                    sea_frozen,
+                    sea_anchor_target.sample_id,
+                    margins=latent_elasticity_margins,
+                    weights=latent_elasticity_weights,
+                    temperature=args.rehearsal_temperature,
+                )
+                cellxgene_latent_elasticity_loss = dimension_elasticity_loss(
+                    cellxgene_current,
+                    cellxgene_frozen,
+                    cellxgene_anchor_target.sample_id,
+                    margins=latent_elasticity_margins,
+                    weights=latent_elasticity_weights,
+                    temperature=args.rehearsal_temperature,
+                )
+                latent_elasticity_loss = 0.5 * (sea_latent_elasticity_loss + cellxgene_latent_elasticity_loss)
+            else:
+                latent_elasticity_loss = pred_z.new_tensor(0.0)
             disease_centroid_l2 = torch.norm(pred_z - cellxgene_frozen_centroid, dim=-1).mean()
             disease_variance_spread = torch.var(pred_z, dim=0, unbiased=False).mean()
             disease_covariance_loss = off_diagonal_covariance_loss(pred_z)
+            if disease_pathology is not None:
+                batch_pathology = disease_pathology[disease_target.sample_id.long()]
+                pathology_loss = pathology_similarity_loss(
+                    pred_z,
+                    batch_pathology,
+                    temperature=args.pathology_contrastive_temperature,
+                )
+            else:
+                pathology_loss = pred_z.new_tensor(0.0)
 
             loss = (
                 disease_loss
                 + args.sea_rehearsal_weight * sea_anchor_loss
                 + args.cellxgene_rehearsal_weight * cellxgene_anchor_loss
                 + args.disease_covariance_weight * disease_covariance_loss
+                + args.pathology_contrastive_weight * pathology_loss
+                + args.latent_elasticity_weight * latent_elasticity_loss
             )
 
             optimizer.zero_grad(set_to_none=True)
@@ -336,6 +505,8 @@ def main() -> None:
             disease_to_cellxgene_centroid_l2.append(float(disease_centroid_l2.detach().cpu()))
             disease_variance_spreads.append(float(disease_variance_spread.detach().cpu()))
             disease_covariance_losses.append(float(disease_covariance_loss.detach().cpu()))
+            pathology_contrastive_losses.append(float(pathology_loss.detach().cpu()))
+            latent_elasticity_losses.append(float(latent_elasticity_loss.detach().cpu()))
             alignment_losses.append(float(parts["alignment"].cpu()))
             variance_losses.append(float(parts["variance"].cpu()))
             covariance_losses.append(float(parts.get("covariance", torch.tensor(0.0)).cpu()))
@@ -355,6 +526,8 @@ def main() -> None:
             "disease_to_cellxgene_centroid_l2": float(np.mean(disease_to_cellxgene_centroid_l2)),
             "disease_variance_spread": float(np.mean(disease_variance_spreads)),
             "disease_covariance_loss": float(np.mean(disease_covariance_losses)),
+            "pathology_contrastive_loss": float(np.mean(pathology_contrastive_losses)),
+            "latent_elasticity_loss": float(np.mean(latent_elasticity_losses)),
             "disease_effective_dims": disease_effective_dims,
             "disease_top_sv_ratio": disease_top_sv_ratio,
             "alignment_loss": float(np.mean(alignment_losses)),
@@ -378,6 +551,8 @@ def main() -> None:
             f"disease_cx_l2={row['disease_to_cellxgene_centroid_l2']:.4f} "
             f"disease_var={row['disease_variance_spread']:.6f} "
             f"disease_cov={row['disease_covariance_loss']:.6f} "
+            f"pathology_ctr={row['pathology_contrastive_loss']:.6f} "
+            f"latent_elastic={row['latent_elasticity_loss']:.6f} "
             f"eff_dims={row['disease_effective_dims']:.2f} "
             f"top_sv={row['disease_top_sv_ratio']:.4f} "
             f"alignment={row['alignment_loss']:.6f} variance={row['variance_loss']:.6f} steps={row['steps']}"

@@ -1,6 +1,6 @@
 # Current Status
 
-Last updated: 2026-06-06
+Last updated: 2026-06-07
 
 ## Executive Summary
 
@@ -34,23 +34,42 @@ training = Stage A healthy/reference pretraining, Stage B SEA-AD low-pathology c
            Stage C disease-vector training with three-stream rehearsal
 ```
 
-Current best Stage C tuning result:
+Current best Stage C tuning result by composite score:
 
 ```text
-run: fine_loose_01_r005_cov0005
+run: upgrade_fine_08_r0045_cov0005_pc0075
 checkpoint: epoch 5
-SEA/CELLxGENE rehearsal weight: 0.005
+SEA/CELLxGENE rehearsal weight: 0.0045
 disease covariance weight: 0.0005
-composite score: 1.544
-AT8 ridge Spearman: 0.356
-NeuN ridge Spearman: 0.374
-AT8 cosine kNN Spearman: 0.227
-NeuN cosine kNN Spearman: 0.258
-SEA anchor cosine: 0.956
-CELLxGENE anchor cosine: 0.952
+pathology contrastive weight: 0.075
+architecture: projection-head disease space + pathology-neighborhood loss
+composite score: 1.686
+AT8 ridge Spearman: 0.213
+NeuN ridge Spearman: 0.426
+AT8 cosine kNN Spearman: 0.266
+NeuN cosine kNN Spearman: 0.303
+GFAP cosine kNN Spearman: 0.408
+SEA anchor cosine: 0.975
+CELLxGENE anchor cosine: 0.961
 ```
 
-Interpretation: the current best v2 model is intentionally elastic. It allows pathology-linked disease movement while preserving both SEA-AD low-pathology and CELLxGENE reference anchors just above the 0.95 cosine safety boundary.
+Interpretation: `upgrade_fine_08` is now the strongest balanced v2.1 candidate and is anchor-safe. It does not maximize AT8 ridge performance; `fine_bridge_06` remains an important comparator for AT8-heavy biological analyses.
+
+Latest v2.1 upgrade comparison:
+
+```text
+best initial upgrade screen: upgrade_02_projector_pathology
+change: projection-head disease space + pathology-neighborhood loss
+composite score: 1.634
+AT8 ridge Spearman: 0.265
+NeuN ridge Spearman: 0.428
+AT8 cosine kNN Spearman: 0.277
+NeuN cosine kNN Spearman: 0.306
+SEA anchor cosine: 0.975
+CELLxGENE anchor cosine: 0.961
+```
+
+Interpretation: projection-head decoupling plus gentle pathology-aware neighborhood organization became the winning v2.1 direction after the focused `upgrade_fine` sweep. The first pathway-specific elasticity policy did not help at weight 0.01 and should remain experimental rather than the default.
 
 ## Completed
 

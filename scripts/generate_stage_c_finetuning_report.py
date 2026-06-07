@@ -170,6 +170,12 @@ def write_markdown(df: pd.DataFrame, param_summary: pd.DataFrame) -> None:
     top_rows = df.head(8)
     safe = df[(df["sea_anchor_cosine"] >= 0.95) & (df["cellxgene_anchor_cosine"] >= 0.95)].copy()
     best_safe = safe.iloc[0] if len(safe) else None
+    best_is_anchor_safe = bool(best["sea_anchor_cosine"] >= 0.95 and best["cellxgene_anchor_cosine"] >= 0.95)
+    anchor_text = (
+        "Interpretation: the best run is anchor-safe by the current 0.95 cosine rule. It keeps both reference anchors above the safety boundary while allowing more disease movement than the earlier over-pinned Stage C runs."
+        if best_is_anchor_safe
+        else "Interpretation: the best run is the current performance leader, but it is not strictly anchor-safe by the 0.95 cosine rule. It should be treated as a high-performing exploratory candidate, while the best strict anchor-safe run remains the conservative default."
+    )
 
     lines = [
         "# Stage C Fine-Tuning Analysis",
@@ -205,11 +211,11 @@ def write_markdown(df: pd.DataFrame, param_summary: pd.DataFrame) -> None:
         f"CELLxGENE anchor cosine:     {fmt(best['cellxgene_anchor_cosine'])}",
         "```",
         "",
-        "Interpretation: the best run is deliberately elastic. It keeps both anchors just above the 0.95 cosine safety boundary while allowing more disease movement than the earlier over-pinned Stage C runs.",
+        anchor_text,
         "",
         "![Stage C fine-tuning diagnostics](../results/figures/public_stage_c_finetuning_parameter_sensitivity.svg)",
         "",
-        "**Figure legend:** The diagnostics summarize which Stage C parameter settings worked best. The current leader uses low rehearsal weight and a very small disease covariance penalty. This supports the idea that the disease manifold needs room to move, while the anchor cosines prevent catastrophic forgetting.",
+        "**Figure legend:** The diagnostics summarize which Stage C parameter settings worked best. The current performance leader uses low rehearsal weight and a very small disease covariance penalty. This supports the idea that the disease manifold needs room to move, while the anchor cosines provide a safety check against catastrophic forgetting.",
         "",
         "## Top Fine-Tuned Runs",
         "",
@@ -248,43 +254,48 @@ def write_markdown(df: pd.DataFrame, param_summary: pd.DataFrame) -> None:
             "",
             "## Current Default for Next Runs",
             "",
-            "Use the current best setting as the next default unless a new sweep beats it:",
+            "Use the current performance leader for exploratory downstream analyses:",
             "",
             "```text",
-            "--weight-sea 0.005",
-            "--weight-cx 0.005",
-            "--disease-cov-weight 0.0005",
+            f"--weight-sea {best['rehearsal_weight']}",
+            f"--weight-cx {best['rehearsal_weight']}",
+            f"--disease-cov-weight {best['disease_covariance_weight']}",
             "--epochs 5",
             "```",
             "",
-            "Recommended next diagnostic:",
-            "",
-            "```text",
-            "Run a narrow sweep around rehearsal 0.003-0.008 and covariance 0.00025-0.00075,",
-            "then evaluate the best checkpoint with donor-held-out pathology prediction and module attribution.",
-            "```",
+        ]
+    )
+
+    if best_safe is not None:
+        lines.extend(
+            [
+                "Use the best strict anchor-safe setting when the 0.95 cosine rule is required:",
+                "",
+                "```text",
+                f"run: {best_safe['run_id']}",
+                f"--weight-sea {best_safe['rehearsal_weight']}",
+                f"--weight-cx {best_safe['rehearsal_weight']}",
+                f"--disease-cov-weight {best_safe['disease_covariance_weight']}",
+                "--epochs 5",
+                "```",
+                "",
+            ]
+        )
+
+    lines.extend(
+        [
+        "Recommended next diagnostic:",
+        "",
+        "```text",
+        "Compare the performance leader and strict anchor-safe leader with module/gene attribution,",
+        "then decide whether to relax the anchor rule or tune margin/temperature to recover anchor safety.",
+        "```",
             "",
             "## Evidence Boundary",
             "",
             "These are fine-tuning diagnostics, not biological causal validation. The best checkpoint should be treated as the current representation baseline for downstream hypothesis generation and external validation.",
         ]
     )
-
-    if best_safe is not None and best_safe["run_id"] != best["run_id"]:
-        lines.extend(
-            [
-                "",
-                "## Best Anchor-Safe Alternative",
-                "",
-                "The best anchor-safe alternative differs from the global leader:",
-                "",
-                "```text",
-                f"run: {best_safe['run_id']}",
-                f"composite score: {fmt(best_safe['composite_score'])}",
-                f"SEA/CELLxGENE anchor cosine: {fmt(best_safe['sea_anchor_cosine'])} / {fmt(best_safe['cellxgene_anchor_cosine'])}",
-                "```",
-            ]
-        )
 
     OUT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

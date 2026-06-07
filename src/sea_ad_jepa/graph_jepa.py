@@ -106,9 +106,13 @@ class GraphGeneJEPA(nn.Module):
         dropout: float = 0.1,
         conv: str = "sage",
         ema_decay: float = 0.996,
+        use_projection_head: bool = False,
+        projection_hidden_dim: int | None = None,
     ):
         super().__init__()
         self.ema_decay = ema_decay
+        self.use_projection_head = use_projection_head
+        self.latent_dim = latent_dim
         self.context_encoder = GraphGeneEncoder(
             n_genes=n_genes,
             node_feature_dim=node_feature_dim,
@@ -122,6 +126,20 @@ class GraphGeneJEPA(nn.Module):
         self.target_encoder = copy.deepcopy(self.context_encoder)
         for param in self.target_encoder.parameters():
             param.requires_grad = False
+        projection_hidden_dim = projection_hidden_dim or hidden_dim
+        if use_projection_head:
+            self.projector = nn.Sequential(
+                nn.Linear(latent_dim, projection_hidden_dim),
+                nn.LayerNorm(projection_hidden_dim),
+                nn.GELU(),
+                nn.Linear(projection_hidden_dim, latent_dim),
+            )
+            self.target_projector = copy.deepcopy(self.projector)
+            for param in self.target_projector.parameters():
+                param.requires_grad = False
+        else:
+            self.projector = nn.Identity()
+            self.target_projector = nn.Identity()
         self.predictor = nn.Sequential(
             nn.Linear(latent_dim, hidden_dim),
             nn.LayerNorm(hidden_dim),
@@ -133,19 +151,40 @@ class GraphGeneJEPA(nn.Module):
     def update_target_network(self) -> None:
         for context_param, target_param in zip(self.context_encoder.parameters(), self.target_encoder.parameters()):
             target_param.data.mul_(self.ema_decay).add_(context_param.data, alpha=1.0 - self.ema_decay)
+        if self.use_projection_head:
+            for context_param, target_param in zip(self.projector.parameters(), self.target_projector.parameters()):
+                target_param.data.mul_(self.ema_decay).add_(context_param.data, alpha=1.0 - self.ema_decay)
 
     def reset_target_network(self) -> None:
         self.target_encoder.load_state_dict(self.context_encoder.state_dict())
         for param in self.target_encoder.parameters():
             param.requires_grad = False
+        if self.use_projection_head:
+            self.target_projector.load_state_dict(self.projector.state_dict())
+            for param in self.target_projector.parameters():
+                param.requires_grad = False
 
     @torch.no_grad()
     def encode(self, data) -> torch.Tensor:
-        return F.normalize(self.context_encoder(data), dim=-1)
+        return F.normalize(self.encode_raw(data), dim=-1)
 
-    def forward(self, context_data, target_data) -> tuple[torch.Tensor, torch.Tensor]:
+    def encode_raw(self, data, space: str = "encoder") -> torch.Tensor:
+        context_z = self.context_encoder(data)
+        if space == "encoder":
+            return context_z
+        if space == "projector":
+            return self.projector(context_z)
+        raise ValueError("space must be 'encoder' or 'projector'")
+
+    def forward(self, context_data, target_data, prediction_space: str = "encoder") -> tuple[torch.Tensor, torch.Tensor]:
         context_z = self.context_encoder(context_data)
+        if prediction_space == "projector":
+            context_z = self.projector(context_z)
+        elif prediction_space != "encoder":
+            raise ValueError("prediction_space must be 'encoder' or 'projector'")
         pred_z = self.predictor(context_z)
         with torch.no_grad():
             target_z = self.target_encoder(target_data)
+            if prediction_space == "projector":
+                target_z = self.target_projector(target_z)
         return pred_z, target_z

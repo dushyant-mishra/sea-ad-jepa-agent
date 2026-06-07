@@ -44,20 +44,21 @@ Stage C: full SEA-AD Microglia-PVM -> disease-vector learning with rehearsal
 
 ![Stage C sweep leaderboard](../results/figures/public_stage_c_sweep_leaderboard.svg)
 
-**Figure legend:** Stage C fine-tuning configurations are ranked by a composite score that balances pathology predictivity, manifold geometry, and anchor preservation. The current best run uses loose rehearsal plus a small disease covariance penalty, suggesting that the disease manifold needs room to expand while still staying tied to healthy/reference anchors.
+**Figure legend:** Stage C fine-tuning configurations are ranked by a composite score that balances pathology predictivity, manifold geometry, and anchor preservation. The current best run adds projection-head disease geometry and pathology-neighborhood organization on top of loose rehearsal plus a small disease covariance penalty.
 
 **What it shows:** The top Stage C fine-tuning configurations ranked by the current composite score.
 
 Best current setting:
 
 ```text
-run: fine_loose_01_r005_cov0005
+run: upgrade_fine_08_r0045_cov0005_pc0075
 checkpoint: epoch 5
-SEA/CELLxGENE rehearsal weight: 0.005
+SEA/CELLxGENE rehearsal weight: 0.0045
 disease covariance weight: 0.0005
+pathology contrastive weight: 0.075
 ```
 
-**Why it matters:** The best run is elastic, not tightly pinned. It keeps both reference anchors above the 0.95 cosine safety floor while allowing more disease-geometry movement than earlier Stage C runs.
+**Why it matters:** The best run is elastic and anchor-safe. It keeps both reference anchors above the 0.95 cosine safety floor while using a projection head to let disease geometry move without dragging the reference encoder.
 
 ## 4. Donor-Level PCA vs JEPA Pathology Geometry
 
@@ -93,11 +94,11 @@ disease covariance weight: 0.0005
 
 ![Stage C fine-tuning diagnostics](../results/figures/public_stage_c_finetuning_parameter_sensitivity.svg)
 
-**Figure legend:** The fine-tuning diagnostics summarize the current active v2 baseline. The best run, `fine_loose_01_r005_cov0005`, uses low rehearsal weight and a very small disease covariance penalty. It preserves SEA-AD and CELLxGENE anchors just above the 0.95 cosine safety boundary while improving disease movement relative to over-pinned Stage C runs.
+**Figure legend:** The fine-tuning diagnostics summarize the current active v2.1 baseline. The best run, `upgrade_fine_08_r0045_cov0005_pc0075`, uses low rehearsal weight, a very small disease covariance penalty, a projection-head disease space, and a gentle pathology-neighborhood loss. It preserves SEA-AD and CELLxGENE anchors above the 0.95 cosine safety boundary while improving balanced disease geometry.
 
 **What it shows:** Top Stage C configurations, rehearsal-weight sensitivity, pathology readouts for the best checkpoint, and scaled geometry/anchor-safety diagnostics.
 
-**Key message:** The current useful regime is elastic. Tighter rehearsal preserves anchors but can compress disease geometry; heavier covariance can reduce the disease tube but over-damp pathology movement. The next experiments should narrow the sweep around rehearsal `0.003-0.008` and covariance `0.00025-0.00075`.
+**Key message:** The current useful regime is elastic, but not purely unsupervised. Projection-head decoupling and gentle pathology-neighborhood organization improved the balanced composite score. The first pathway-specific elasticity policy did not help and should remain experimental.
 
 ## Interpretation Boundary
 

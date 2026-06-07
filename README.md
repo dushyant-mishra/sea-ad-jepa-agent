@@ -36,7 +36,7 @@ The figures below are the GitHub-facing overview of the project. They are genera
 | Fine-Tuned Stage C Diagnostics | Cell-Level Diagnostics |
 |---|---|
 | ![Stage C fine-tuning diagnostics](results/figures/public_stage_c_finetuning_parameter_sensitivity.svg) | ![Cell-level donor leakage and pathology mixing](results/figures/public_cell_level_mixing.svg) |
-| **Figure legend:** Fine-tuning diagnostics show why `fine_loose_01_r005_cov0005` is the current active v2 baseline: it balances AT8/NeuN signal, effective dimensionality, and anchor safety better than tighter or heavier-covariance alternatives. | **Figure legend:** Cell-level diagnostics test whether the latent space is dominated by donor identity. JEPA shows lower donor leakage than PCA, while cell-level pathology separation remains difficult because donor pathology scores are broadcast to many individual cells. |
+| **Figure legend:** Fine-tuning diagnostics show why `upgrade_fine_08_r0045_cov0005_pc0075` is the current active v2.1 baseline: projection-head disease geometry plus pathology-neighborhood loss improves the balanced composite score while preserving both SEA-AD and CELLxGENE anchors above the 0.95 safety rule. | **Figure legend:** Cell-level diagnostics test whether the latent space is dominated by donor identity. JEPA shows lower donor leakage than PCA, while cell-level pathology separation remains difficult because donor pathology scores are broadcast to many individual cells. |
 
 | Multi-Target Held-Out Validation |
 |---|
@@ -267,40 +267,46 @@ Sweep outputs:
 results/tables/stage_c_finetuning_sweep_summary.csv
 results/tables/stage_c_finetuning_fine_tight_summary.csv
 results/tables/stage_c_finetuning_fine_loose_summary.csv
+results/tables/stage_c_upgrade_sweep_summary.csv
+results/tables/stage_c_upgrade_fine_summary.csv
 results/tables/stage_c_finetuning_combined_leaderboard.csv
 ```
 
 Best current configuration:
 
 ```text
-run: fine_loose_01_r005_cov0005
+run: upgrade_fine_08_r0045_cov0005_pc0075
 checkpoint: epoch 5
-SEA/CELLxGENE rehearsal weight: 0.005
+SEA/CELLxGENE rehearsal weight: 0.0045
 disease covariance weight: 0.0005
-composite score: 1.544
+pathology contrastive weight: 0.075
+architecture: projection-head disease space + pathology-neighborhood loss
+composite score: 1.686
 ```
 
 Key metrics:
 
 ```text
-AT8 ridge Spearman:          0.356
-NeuN ridge Spearman:         0.374
-AT8 Euclidean kNN Spearman:  0.065
-NeuN Euclidean kNN Spearman: 0.271
-AT8 cosine kNN Spearman:     0.227
-NeuN cosine kNN Spearman:    0.258
-effective dimensions:        4.76
-top singular value ratio:    0.481
-SEA anchor cosine:           0.956
-CELLxGENE anchor cosine:     0.952
+AT8 ridge Spearman:          0.213
+NeuN ridge Spearman:         0.426
+AT8 Euclidean kNN Spearman: -0.037
+NeuN Euclidean kNN Spearman: 0.295
+AT8 cosine kNN Spearman:     0.266
+NeuN cosine kNN Spearman:    0.303
+GFAP cosine kNN Spearman:    0.408
+effective dimensions:        7.19
+top singular value ratio:    0.430
+SEA anchor cosine:           0.975
+CELLxGENE anchor cosine:     0.961
 ```
 
 Interpretation:
 
 ```text
-The best current Stage C setting is elastic.
-It allows disease movement while keeping both anchors just above the 0.95 cosine safety floor.
-It improves over the over-pinned runs and reduces the narrow-tube failure mode.
+The best current Stage C setting is v2.1 elastic and anchor-safe.
+Projection-head decoupling lets the disease representation move without dragging the reference encoder.
+Pathology-neighborhood loss improves balanced NeuN/GFAP/cosine-neighborhood behavior.
+fine_bridge_06 remains an important AT8-heavy comparator, but it is less anchor-safe.
 It is still a tuning result, not a final biological validation claim.
 ```
 
@@ -336,6 +342,16 @@ AT8-associated first-pass genes
 ```
 
 These are model-prioritized hypotheses. They should be validated with independent cohorts, perturbation data, spatial transcriptomics, IHC/imaging, or wet-lab experiments.
+
+The selected v2.1 model now points to a more distributed latent disease geometry:
+
+```text
+AT8/pTau dimensions: z_120, z_26, z_30, z_94, z_71
+NeuN dimensions:     z_1, z_57, z_103, z_100, z_125
+GFAP dimensions:     z_63, z_38, z_120, z_107, z_71
+```
+
+This suggests that tau pathology, neuronal density, and astrocyte-reactive tissue state are partially overlapping but not identical axes in the Graph-JEPA manifold.
 
 ## Dataset
 
@@ -408,29 +424,22 @@ python scripts/sweep_stage_c_finetuning.py `
   --out results/tables/stage_c_finetuning_sweep_summary.csv
 ```
 
-Run the tight and loose refinements:
+Run the current v2.1 focused refinement:
 
 ```powershell
 $env:PYTHONPATH = "src"
 python scripts/sweep_stage_c_finetuning.py `
-  --preset fine_tight `
+  --preset upgrade_fine `
   --epochs 5 `
   --checkpoint-epochs 005 `
   --device auto `
-  --out results/tables/stage_c_finetuning_fine_tight_summary.csv
-
-python scripts/sweep_stage_c_finetuning.py `
-  --preset fine_loose `
-  --epochs 5 `
-  --checkpoint-epochs 005 `
-  --device auto `
-  --out results/tables/stage_c_finetuning_fine_loose_summary.csv
+  --out results/tables/stage_c_upgrade_fine_summary.csv
 ```
 
 The current best setting is:
 
 ```text
-fine_loose_01_r005_cov0005
+upgrade_fine_08_r0045_cov0005_pc0075
 ```
 
 ## Evidence Discipline
