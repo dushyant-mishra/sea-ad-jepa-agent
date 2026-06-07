@@ -360,6 +360,8 @@ After selecting `upgrade_fine_08_r0045_cov0005_pc0075`, we decoded its latent ax
 Primary outputs:
 
 - [v2.1 microglia hypothesis report](results/reports/v2_1_microglia_biological_hypotheses.md)
+- [v2.1 named biological programs](results/reports/v2_1_named_biological_programs.md)
+- [multi-target counterfactual stability report](results/reports/v2_1_multitarget_counterfactual_stability.md)
 - [ranked v2.1 target matrix](results/tables/v2_1_ranked_target_matrix.csv)
 - [module-level AT8 counterfactuals](results/tables/v2_1_upgrade_fine_08_module_counterfactual_at8.csv)
 - [gene-level AT8 counterfactuals](results/tables/v2_1_upgrade_fine_08_gene_counterfactual_at8.csv)
@@ -397,6 +399,39 @@ STAT3
 CSF1R
 UGCG
 ROCK1
+```
+
+After extending the counterfactual screen across AT8/pTau, A beta/6e10, GFAP, Iba1, and NeuN, the broadest multi-target module axes are:
+
+```text
+lysosome/phagocytosis
+homeostatic microglia
+plaque response
+disease-associated microglia
+lipid metabolism
+senescence/stress
+antigen presentation
+vascular/barrier myeloid
+```
+
+The most stable multi-target gene-level effects are:
+
+```text
+APP
+STAT3
+GRB2
+HSP90AA1
+BCL2
+HIF1A
+MAPK1
+APOE
+RHOA
+CTSD
+CX3CR1
+CD4
+TLR2
+CD74
+P2RY12
 ```
 
 These are not claimed as validated causal drivers. They are ranked, model-implied intervention hypotheses that now need independent cohort, perturbation, spatial, or imaging validation.

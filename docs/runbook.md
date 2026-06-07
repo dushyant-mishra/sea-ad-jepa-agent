@@ -1281,6 +1281,35 @@ results/tables/v2_1_ranked_target_matrix.csv
 results/reports/v2_1_microglia_biological_hypotheses.md
 ```
 
+Extend the same counterfactual screen across the remaining major targets by reusing the commands above and changing:
+
+```text
+target -> output suffix
+
+"percent 6e10 positive area_Grey matter" -> 6e10
+"percent GFAP positive area_Grey matter" -> gfap
+"percent Iba1 positive area_Grey matter" -> iba1
+"percent NeuN positive area_Grey matter" -> neun
+```
+
+Then summarize multi-target stability:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/summarize_v21_multitarget_counterfactuals.py
+```
+
+Outputs:
+
+```text
+results/tables/v2_1_multitarget_module_counterfactual_long.csv
+results/tables/v2_1_multitarget_gene_counterfactual_long.csv
+results/tables/v2_1_multitarget_module_counterfactual_summary.csv
+results/tables/v2_1_multitarget_gene_counterfactual_summary.csv
+results/reports/v2_1_multitarget_counterfactual_stability.md
+results/reports/v2_1_named_biological_programs.md
+```
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

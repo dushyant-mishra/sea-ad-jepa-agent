@@ -84,6 +84,50 @@ cross-model Jacobian signal:
 
 Interpretation: v2.1 has moved from representation tuning back into biological extraction. The current result is coherent enough to pause broad tuning and prioritize independent validation of the ranked modules and genes.
 
+Latest multi-target counterfactual stability pass:
+
+```text
+targets:
+  AT8/pTau
+  A beta/6e10
+  GFAP
+  Iba1
+  NeuN
+
+reports:
+  results/reports/v2_1_multitarget_counterfactual_stability.md
+  results/reports/v2_1_named_biological_programs.md
+
+top multi-target module axes by mean absolute effect:
+  lysosome/phagocytosis
+  homeostatic microglia
+  plaque response
+  disease-associated microglia
+  lipid metabolism
+  senescence/stress
+  antigen presentation
+  vascular/barrier myeloid
+
+top multi-target gene effects by mean absolute effect:
+  APP
+  STAT3
+  GRB2
+  HSP90AA1
+  BCL2
+  HIF1A
+  MAPK1
+  APOE
+  RHOA
+  CTSD
+  CX3CR1
+  CD4
+  TLR2
+  CD74
+  P2RY12
+```
+
+Interpretation: the multi-target pass separates broad tissue-state axes from cleaner pathology-lowering hypotheses. Lysosome/phagocytosis, homeostatic surveillance, lipid/plaque/DAM, and stress/survival programs are broad state axes. Antigen presentation, vascular/barrier myeloid, complement, and inflammatory signaling are more directly pathology-lowering in the current AT8/A beta screens. This strengthens the case for validation rather than more broad parameter tuning.
+
 Latest v2.1 upgrade comparison:
 
 ```text
