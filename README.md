@@ -436,6 +436,29 @@ P2RY12
 
 These are not claimed as validated causal drivers. They are ranked, model-implied intervention hypotheses that now need independent cohort, perturbation, spatial, or imaging validation.
 
+### Artifact-Control Pass
+
+Before accepting the v2.1 target matrix, we added three negative-control screens:
+
+- **Alien-cell check:** asks whether digital perturbations leave the real SEA-AD latent manifold.
+- **Covariate-confounder check:** asks whether major latent axes track available donor covariates more strongly than pathology.
+- **Within-state check:** reruns top perturbations only within high plaque-response/DAM-like cells to test whether effects are compositional artifacts.
+
+Current result:
+
+```text
+top-10 alien-cell violations: 0 / 10
+top-5 within-state compositional artifacts: 0 / 5
+covariate caution: z_107 only, affecting CX3CR1 through the bridge comparator
+available covariates tested: Age at Death, Sex
+missing in joined metadata table: PMI, RIN/RNA quality
+```
+
+Validated output:
+
+- [validated v2.1 target matrix](results/tables/v2_1_target_validation_validated_target_matrix.csv)
+- [artifact-validation report](results/tables/v2_1_target_validation_report.md)
+
 ## Dataset
 
 Primary data source:

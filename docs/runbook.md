@@ -1310,6 +1310,29 @@ results/reports/v2_1_multitarget_counterfactual_stability.md
 results/reports/v2_1_named_biological_programs.md
 ```
 
+Run artifact-control validation before accepting ranked targets:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/validate_v21_target_matrix.py `
+  --top-n 10 `
+  --within-state-top-n 5 `
+  --max-cells 12000 `
+  --batch-size 64 `
+  --device auto
+```
+
+Outputs:
+
+```text
+results/tables/v2_1_target_validation_alien_cell_check.csv
+results/tables/v2_1_target_validation_covariate_correlations.csv
+results/tables/v2_1_target_validation_covariate_flags.csv
+results/tables/v2_1_target_validation_within_state_check.csv
+results/tables/v2_1_target_validation_validated_target_matrix.csv
+results/tables/v2_1_target_validation_report.md
+```
+
 Audit SEA-AD low-pathology donors as internal v2 anchors:
 
 ```powershell

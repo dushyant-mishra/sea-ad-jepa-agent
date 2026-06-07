@@ -128,6 +128,37 @@ top multi-target gene effects by mean absolute effect:
 
 Interpretation: the multi-target pass separates broad tissue-state axes from cleaner pathology-lowering hypotheses. Lysosome/phagocytosis, homeostatic surveillance, lipid/plaque/DAM, and stress/survival programs are broad state axes. Antigen presentation, vascular/barrier myeloid, complement, and inflammatory signaling are more directly pathology-lowering in the current AT8/A beta screens. This strengthens the case for validation rather than more broad parameter tuning.
 
+Artifact-control validation of the v2.1 target matrix:
+
+```text
+script:
+  scripts/validate_v21_target_matrix.py
+
+outputs:
+  results/tables/v2_1_target_validation_alien_cell_check.csv
+  results/tables/v2_1_target_validation_covariate_correlations.csv
+  results/tables/v2_1_target_validation_covariate_flags.csv
+  results/tables/v2_1_target_validation_within_state_check.csv
+  results/tables/v2_1_target_validation_validated_target_matrix.csv
+  results/tables/v2_1_target_validation_report.md
+
+alien-cell check:
+  top-10 target perturbations tested
+  manifold violations: 0 / 10
+
+covariate-confounder check:
+  available donor covariates: Age at Death, Sex
+  missing from joined target table: PMI, RIN/RNA quality
+  flagged latent factor: z_107 only
+  affected ranked target: CX3CR1 receives one caution flag via bridge_best_latent z_107
+
+within-state compositional-artifact check:
+  top-5 target perturbations tested inside top-quartile plaque-response/DAM-like cells
+  compositional artifacts: 0 / 5
+```
+
+Interpretation: the top five ranked targets survive the current falsification screens. The target matrix should now be read with validation tiers rather than raw rank alone. The remaining limitation is incomplete donor technical covariates: PMI/RIN/RNA-quality were not available in the joined local metadata table.
+
 Latest v2.1 upgrade comparison:
 
 ```text

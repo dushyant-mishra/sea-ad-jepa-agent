@@ -1,0 +1,14 @@
+latent_factor,max_abs_covariate_rho,max_abs_pathology_rho,covariate_confounded,available_covariates,missing_covariates
+z_1,0.19050626842809643,0.2735041004353549,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_100,0.22368150250792324,0.2909992912827782,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_103,0.2075965405298254,0.25191859876480716,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_107,0.23675053411512773,0.2364280652019844,True,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_120,0.12564249153114085,0.3090817049711451,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_125,0.05881064223242027,0.3982788296041308,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_26,0.10807083829034493,0.4404778778981473,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_30,0.023648562544748012,0.3284398096588033,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_38,0.09370223410357933,0.42122101852789307,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_57,0.221670882260661,0.28198845803381595,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_63,0.03769912963616684,0.35537106408828595,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_71,0.03924870731815872,0.27287637946744964,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
+z_94,0.06283188272694472,0.40564948871114714,False,Age at Death;Sex,PMI;Post-Mortem Interval;Postmortem Interval;RIN;RNA Integrity Number;RNA quality
