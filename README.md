@@ -450,14 +450,38 @@ Current result:
 top-10 alien-cell violations: 0 / 10
 top-5 within-state compositional artifacts: 0 / 5
 covariate caution: z_107 only, affecting CX3CR1 through the bridge comparator
-available covariates tested: Age at Death, Sex
-missing in joined metadata table: PMI, RIN/RNA quality
 ```
+
+Full-covariate metadata-hardening update:
+
+```text
+script:
+  scripts/audit_sea_ad_full_donor_metadata.py
+
+new enriched covariate table:
+  results/tables/sea_ad_full_metadata_targets_with_covariates.csv
+
+rerun:
+  scripts/validate_v21_target_matrix.py --metadata results/tables/sea_ad_full_metadata_targets_with_covariates.csv
+
+nuisance covariates tested:
+  Age at Death, Sex, PMI, RIN, Brain pH, Fresh Brain Weight
+
+result:
+  top five targets still pass all current controls
+  z_107 remains the only covariate-caution axis
+```
+
+The stricter artifact-control pass did not overturn the top target matrix. `APP`, `BCL2`, `TLR2`, `CD4`, and `P2RY12` remain the cleanest internally controlled hypotheses. `CX3CR1` remains biologically interesting but should carry a caution flag because its bridge-model support routes through `z_107`.
 
 Validated output:
 
 - [validated v2.1 target matrix](results/tables/v2_1_target_validation_validated_target_matrix.csv)
 - [artifact-validation report](results/tables/v2_1_target_validation_report.md)
+- [full-covariate validated target matrix](results/tables/v2_1_target_validation_full_covariates_validated_target_matrix.csv)
+- [full-covariate artifact-validation report](results/tables/v2_1_target_validation_full_covariates_report.md)
+- [SEA-AD full metadata covariate audit](results/reports/sea_ad_full_metadata_covariate_audit.md)
+- [external validation next steps](docs/external_validation_next_steps.md)
 
 ## Dataset
 
@@ -486,6 +510,7 @@ Start here:
 - [docs/current_status.md](docs/current_status.md): full completed-work log and results.
 - [docs/figure_gallery.md](docs/figure_gallery.md): public schematics and result graphs with captions.
 - [docs/stage_c_finetuning_analysis.md](docs/stage_c_finetuning_analysis.md): current Stage C fine-tuning baseline, parameter takeaways, and next default.
+- [docs/external_validation_next_steps.md](docs/external_validation_next_steps.md): external validation candidates and the next dataset sequence.
 - [docs/runbook.md](docs/runbook.md): commands for reproducing the workflow.
 - [docs/dataset_guide.md](docs/dataset_guide.md): dataset descriptions and abbreviation glossary.
 - [docs/architecture.md](docs/architecture.md): system architecture.

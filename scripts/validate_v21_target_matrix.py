@@ -121,11 +121,9 @@ def run_covariate_check(
         "Age at Death",
         "Sex",
         "PMI",
-        "Post-Mortem Interval",
-        "Postmortem Interval",
         "RIN",
-        "RNA Integrity Number",
-        "RNA quality",
+        "Brain pH",
+        "Fresh Brain Weight",
     ]
     covariates = [c for c in candidate_covariates if c in merged.columns]
     missing = [c for c in candidate_covariates if c not in merged.columns]
@@ -352,6 +350,27 @@ def main() -> None:
     cov_flags.to_csv(prefix.with_name(prefix.name + "_covariate_flags.csv"), index=False)
     within.to_csv(prefix.with_name(prefix.name + "_within_state_check.csv"), index=False)
     validated.to_csv(prefix.with_name(prefix.name + "_validated_target_matrix.csv"), index=False)
+    available_covariates = "none"
+    missing_covariates = "none"
+    if not cov_flags.empty:
+        available_values = sorted(
+            {
+                covariate
+                for value in cov_flags["available_covariates"].dropna().astype(str)
+                for covariate in value.split(";")
+                if covariate
+            }
+        )
+        missing_values = sorted(
+            {
+                covariate
+                for value in cov_flags["missing_covariates"].dropna().astype(str)
+                for covariate in value.split(";")
+                if covariate
+            }
+        )
+        available_covariates = ", ".join(available_values) if available_values else "none"
+        missing_covariates = ", ".join(missing_values) if missing_values else "none"
     report_path = prefix.with_name(prefix.name + "_report.md")
     report_path.write_text(
         "\n".join(
@@ -369,10 +388,11 @@ def main() -> None:
                 "",
                 "## Covariate Confounder Check",
                 "",
-                "Donor-level latent factors were correlated with available donor covariates and pathology targets. The local metadata table contains Age at Death and Sex; PMI/RIN/RNA-quality fields were not available in the joined target table.",
+                "Donor-level latent factors were correlated with available nuisance covariates and pathology targets.",
                 "",
+                f"- Available nuisance covariates: {available_covariates}",
+                f"- Missing nuisance covariates: {missing_covariates}",
                 f"- Covariate-confounded latent factors: {int(cov_flags['covariate_confounded'].sum())} / {cov_flags.shape[0]} tested factors",
-                "- Missing covariates are recorded in the covariate flag table.",
                 "",
                 "## Within-State Compositional Artifact Check",
                 "",

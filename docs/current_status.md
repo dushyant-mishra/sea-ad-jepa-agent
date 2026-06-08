@@ -147,8 +147,8 @@ alien-cell check:
   manifold violations: 0 / 10
 
 covariate-confounder check:
-  available donor covariates: Age at Death, Sex
-  missing from joined target table: PMI, RIN/RNA quality
+  original available donor covariates: Age at Death, Sex
+  original missing fields: PMI, RIN/RNA quality
   flagged latent factor: z_107 only
   affected ranked target: CX3CR1 receives one caution flag via bridge_best_latent z_107
 
@@ -157,7 +157,58 @@ within-state compositional-artifact check:
   compositional artifacts: 0 / 5
 ```
 
-Interpretation: the top five ranked targets survive the current falsification screens. The target matrix should now be read with validation tiers rather than raw rank alone. The remaining limitation is incomplete donor technical covariates: PMI/RIN/RNA-quality were not available in the joined local metadata table.
+Interpretation: the top five ranked targets survive the first falsification screens. The target matrix should now be read with validation tiers rather than raw rank alone.
+
+SEA-AD full donor metadata audit:
+
+```text
+script:
+  scripts/audit_sea_ad_full_donor_metadata.py
+
+outputs:
+  results/tables/sea_ad_full_metadata_covariate_audit.csv
+  results/tables/sea_ad_full_metadata_targets_with_covariates.csv
+  results/reports/sea_ad_full_metadata_covariate_audit.md
+
+new covariates recovered from the donor workbook:
+  PMI: 84 / 84 donors
+  RIN: 84 / 84 donors
+  Brain pH: 84 / 84 donors
+  Braak: 84 / 84 donors
+  Thal: 84 / 84 donors
+  APOE Genotype: 84 / 84 donors
+  Cognitive Status: 84 / 84 donors
+```
+
+Full-covariate v2.1 artifact validation:
+
+```text
+command:
+  conda run -n sea-ad-jepa python scripts/validate_v21_target_matrix.py --metadata results/tables/sea_ad_full_metadata_targets_with_covariates.csv --out-prefix results/tables/v2_1_target_validation_full_covariates
+
+outputs:
+  results/tables/v2_1_target_validation_full_covariates_alien_cell_check.csv
+  results/tables/v2_1_target_validation_full_covariates_covariate_correlations.csv
+  results/tables/v2_1_target_validation_full_covariates_covariate_flags.csv
+  results/tables/v2_1_target_validation_full_covariates_within_state_check.csv
+  results/tables/v2_1_target_validation_full_covariates_validated_target_matrix.csv
+  results/tables/v2_1_target_validation_full_covariates_report.md
+
+available nuisance covariates:
+  Age at Death, Sex, PMI, RIN, Brain pH, Fresh Brain Weight
+
+alien-cell manifold violations:
+  0 / 10 tested genes
+
+within-state compositional artifacts:
+  0 / 5 tested genes
+
+covariate-confounded latent factors:
+  1 / 13 tested factors
+  z_107 remains the only caution axis
+```
+
+Interpretation: adding PMI, RIN, brain pH, and fresh brain weight did not overturn the main target matrix. `APP`, `BCL2`, `TLR2`, `CD4`, and `P2RY12` still pass all current internal controls. `CX3CR1` remains useful but should carry a caution flag because its bridge-model support routes through `z_107`, where nuisance-covariate correlation is marginally higher than pathology correlation.
 
 Latest v2.1 upgrade comparison:
 

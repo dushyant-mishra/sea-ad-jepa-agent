@@ -1,0 +1,67 @@
+sheet,column,bucket,n_rows,n_non_null,missing_fraction,n_unique,numeric_non_null,is_numeric_like,example_values,numeric_min,numeric_median,numeric_max
+SEA-AD_Cohort_Metadata,Cognitive Status,clinical_cognitive,84,84,0.0,2,0,False,No dementia; Dementia,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Alzheimers Possible/ Probable),clinical_cognitive,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Alzheimers disease),clinical_cognitive,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Ataxia),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Control),clinical_cognitive,84,84,0.0,2,0,False,Checked; Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Corticobasal Degeneration),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Dementia with Lewy Bodies/ Lewy Body Disease),clinical_cognitive,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Frontotemporal lobar degeneration),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Huntingtons disease),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Motor Neuron disease),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Other),clinical_cognitive,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Parkinsons Cognitive Impairment - no dementia),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Parkinsons Disease Dementia),clinical_cognitive,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Parkinsons disease),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Prion),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Progressive Supranuclear Palsy),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Taupathy),clinical_cognitive,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Unknown),clinical_cognitive,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Vascular Dementia),clinical_cognitive,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Interval from last CASI in months,clinical_cognitive,84,69,0.1785714285714286,60,69,True,,0.7,25.8,127.2
+SEA-AD_Cohort_Metadata,Interval from last MMSE in months,clinical_cognitive,84,80,0.04761904761904767,70,80,True,,1.8,27.7,117.6
+SEA-AD_Cohort_Metadata,Interval from last MOCA in months,clinical_cognitive,84,15,0.8214285714285714,14,15,True,,10.1,33.4,62.2
+SEA-AD_Cohort_Metadata,Last CASI Score,clinical_cognitive,84,69,0.1785714285714286,29,69,True,,66.0,89.0,99.0
+SEA-AD_Cohort_Metadata,Last MMSE Score,clinical_cognitive,84,80,0.04761904761904767,18,80,True,,6.0,25.0,33.0
+SEA-AD_Cohort_Metadata,Last MOCA Score,clinical_cognitive,84,15,0.8214285714285714,10,15,True,,4.0,20.0,25.0
+SEA-AD_Cohort_Metadata,Age at Death,demographic,84,84,0.0,30,84,True,,65.0,90.0,102.0
+SEA-AD_Cohort_Metadata,Age of Dementia diagnosis,demographic,84,36,0.5714285714285714,18,36,True,,53.0,86.0,97.0
+SEA-AD_Cohort_Metadata,Age of onset cognitive symptoms,demographic,84,38,0.5476190476190477,22,38,True,,53.0,84.0,94.0
+SEA-AD_Cohort_Metadata,Highest level of education,demographic,84,84,0.0,5,0,False,Bachelors; High School; Trade School/ Tech School; Graduate (PhD/Masters); Professional,,,
+SEA-AD_Cohort_Metadata,Hispanic/Latino,demographic,84,84,0.0,3,0,False,No; Yes; Unknown,,,
+SEA-AD_Cohort_Metadata,Race (choice=American Indian/ Alaska Native),demographic,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Race (choice=Asian),demographic,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Race (choice=Black/ African American),demographic,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Race (choice=Native Hawaiian or Pacific Islander),demographic,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Race (choice=Other),demographic,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Race (choice=Unknown or unreported),demographic,84,84,0.0,1,0,False,Unchecked,,,
+SEA-AD_Cohort_Metadata,Race (choice=White),demographic,84,84,0.0,2,0,False,Checked; Unchecked,,,
+SEA-AD_Cohort_Metadata,Sex,demographic,84,84,0.0,2,0,False,Female; Male,,,
+SEA-AD_Cohort_Metadata,Years of education,demographic,84,84,0.0,10,84,True,,12.0,16.0,21.0
+SEA-AD_Cohort_Metadata,specify other race,demographic,84,3,0.9642857142857143,1,0,False,Mixed,,,
+SEA-AD_Cohort_Metadata,APOE Genotype,genetic,84,84,0.0,6,0,False,3/3; 2/3; 3/4; 4/4; 2/2; 2/4,,,
+SEA-AD_Cohort_Metadata,Braak,neuropathology,84,84,0.0,6,0,False,Braak IV; Braak V; Braak III; Braak VI; Braak 0; Braak II,,,
+SEA-AD_Cohort_Metadata,CERAD score,neuropathology,84,84,0.0,4,0,False,Absent; Sparse; Frequent; Moderate,,,
+SEA-AD_Cohort_Metadata,Highest Lewy Body Disease,neuropathology,84,84,0.0,7,0,False,Not Identified (olfactory bulb not assessed); Limbic (Transitional); Neocortical (Diffuse); Amygdala-predominant; Olfactory bulb only; Not Identified (olfactory bulb assessed); Brainstem-predominant,,,
+SEA-AD_Cohort_Metadata,LATE,neuropathology,84,84,0.0,5,0,False,Not Identified; LATE Stage 2; LATE Stage 1; LATE Stage 3; Unclassifiable,,,
+SEA-AD_Cohort_Metadata,Overall AD neuropathological Change,neuropathology,84,84,0.0,4,0,False,Not AD; Low; High; Intermediate,,,
+SEA-AD_Cohort_Metadata,Overall CAA Score,neuropathology,84,84,0.0,4,0,False,Not identified; Moderate; Mild; Severe,,,
+SEA-AD_Cohort_Metadata,Thal,neuropathology,84,84,0.0,6,0,False,Thal 0; Thal 2; Thal 5; Thal 3; Thal 4; Thal 1,,,
+SEA-AD_Cohort_Metadata,Total Microinfarcts (not observed grossly),neuropathology,84,84,0.0,10,84,True,,0.0,0.0,15.0
+SEA-AD_Cohort_Metadata,Total microinfarcts in screening sections,neuropathology,84,84,0.0,9,84,True,,0.0,0.0,10.0
+SEA-AD_Cohort_Metadata,Arteriolosclerosis,other,84,84,0.0,3,0,False,Moderate; Mild; Severe,,,
+SEA-AD_Cohort_Metadata,Atherosclerosis,other,84,84,0.0,4,0,False,Mild; Moderate; None; Severe,,,
+SEA-AD_Cohort_Metadata,Donor ID,other,84,84,0.0,84,0,False,H19.33.004; H20.33.001; H20.33.002; H20.33.004; H20.33.005; H20.33.008; H20.33.011; H20.33.012,,,
+SEA-AD_Cohort_Metadata,Ex Vivo Imaging,other,84,84,0.0,2,0,False,Yes; No,,,
+SEA-AD_Cohort_Metadata,Have they had neuroimaging,other,84,84,0.0,3,0,False,Unknown; Yes; No,,,
+SEA-AD_Cohort_Metadata,"If other Consensus dx, describe",other,84,9,0.8928571428571429,8,0,False,"late onset AD; EOAD; MCI multidomain (amnestic, language, attention, executive, visuospatial); Note in 2018 OPCA vs MSA?; brain mets; Declining cognitive abilities; dementia due to multiple etiologies; dementia related to subdural, has Parkinsonian features",,,
+SEA-AD_Cohort_Metadata,Known head injury,other,84,27,0.6785714285714286,2,0,False,No; Yes,,,
+SEA-AD_Cohort_Metadata,Primary Study Name,other,84,84,0.0,2,0,False,ACT; ADRC Clinical Core,,,
+SEA-AD_Cohort_Metadata,Secondary Study Name,other,84,6,0.9285714285714286,2,0,False,ADRC Clinical Core; SLS,,,
+SEA-AD_Cohort_Metadata,Severely Affected Donor,other,84,11,0.8690476190476191,1,0,False,Y,,,
+SEA-AD_Cohort_Metadata,PMI,postmortem_interval,84,84,0.0,60,84,True,,3.2,6.90833333333335,11.416666666667
+SEA-AD_Cohort_Metadata,RIN,rna_quality,84,84,0.0,65,84,True,,2.9,8.63,9.6
+SEA-AD_Cohort_Metadata,Brain pH,tissue_quality,84,84,0.0,14,84,True,,4.5,6.7,7.6
+SEA-AD_Cohort_Metadata,Consensus Clinical Dx (choice=Multiple System Atrophy),tissue_quality,84,84,0.0,2,0,False,Unchecked; Checked,,,
+SEA-AD_Cohort_Metadata,Fresh Brain Weight,tissue_quality,84,84,0.0,74,83,True,,908.0,1162.0,1397.0
+SEA-AD_Cohort_Metadata,Rapid Frozen Tissue Type,tissue_quality,84,84,0.0,1,0,False,Precision Slices,,,
