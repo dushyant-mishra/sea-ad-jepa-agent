@@ -101,10 +101,62 @@ Best use:
 First public external projection smoke test.
 ```
 
+Completed smoke-test run:
+
+```text
+download:
+  powershell -ExecutionPolicy Bypass -File scripts/download_gse138852.ps1
+
+projection:
+  conda run -n sea-ad-jepa python scripts/project_external_ad_microglia.py
+
+outputs:
+  results/tables/gse138852_graph_jepa_zero_shot_donor_embeddings.csv
+  results/tables/gse138852_graph_jepa_zero_shot_predicted_pathology.csv
+  results/tables/gse138852_graph_jepa_zero_shot_module_scores.csv
+  results/tables/gse138852_graph_jepa_zero_shot_summary.csv
+  results/tables/gse138852_graph_jepa_zero_shot_report.md
+```
+
+Run summary:
+
+```text
+strict freeze:
+  upgrade_fine_08 checkpoint
+  all model parameters require_grad=False
+  projector embedding space
+
+feature alignment:
+  projected microglia cells: 449
+  external groups: 6
+  matched genes: 2,626 / 2,957
+  gene overlap: 0.888
+
+strongest AD-up module signals:
+  complement: AUC 1.000
+  disease-associated microglia: AUC 1.000
+  plaque response: AUC 1.000
+  AT8-associated first-pass module: AUC 1.000
+  vascular/barrier myeloid: AUC 0.889
+
+strongest Control-up module signals:
+  homeostatic microglia: AUC 0.000
+  chemokine migration: AUC 0.000
+  lipid metabolism: AUC 0.111
+```
+
+Interpretation:
+
+```text
+This is a successful external engineering smoke test and a promising module-level biological replication signal.
+It is not yet a continuous pathology prediction success. SEA-AD-calibrated Ridge pathology heads did not cleanly transfer in this tiny AD/control cohort.
+```
+
 Limitations:
 
 - Small cohort.
 - Metadata is more likely to be categorical than continuous AT8/A beta/GFAP/Iba1/NeuN-style pathology.
+- Only 449 microglia and 6 sample pools were available after filtering, so p-values are not expected to be strong.
 
 ### 3. Morabito / Swarup PFC Multi-omic AD Dataset
 
@@ -194,20 +246,26 @@ Top disease axes remain more pathology-linked than nuisance-covariate-linked aft
 
 ### Step 2: Public External Smoke Test
 
+Status:
+
+```text
+completed for GSE138852
+```
+
 Target:
 
 ```text
 GSE138852 / Grubman-Leng entorhinal cortex
 ```
 
-Actions:
+Completed:
 
-1. Download or load processed matrix and annotations.
-2. Filter to microglia / immune nuclei.
-3. Align genes to the 2,957 Graph-JEPA input genes.
-4. Freeze `upgrade_fine_08`.
-5. Project cells into the Graph-JEPA latent space.
-6. Test AD/control separation, module score shifts, and target gene/module shifts.
+1. Downloaded processed count/covariate files from GEO.
+2. Filtered to `mg` microglia.
+3. Aligned genes to the 2,957 Graph-JEPA input genes with zero padding for missing genes.
+4. Froze `upgrade_fine_08`.
+5. Projected cells into the Graph-JEPA projector space.
+6. Tested AD/control separation for latent axes, SEA-AD-calibrated pathology heads, and module scores.
 
 ### Step 3: Public Serious Validation
 
@@ -242,10 +300,10 @@ Actions:
 
 ## Immediate Engineering Tasks
 
-1. Create `scripts/project_external_ad_microglia.py`.
-2. Create a dataset adapter for `GSE138852`.
-3. Create a dataset adapter for `GSE174367`.
-4. Extend validation output to include latent-axis, module-score, and target-gene disease separation.
+1. Create a dataset adapter for `GSE174367`.
+2. Extend validation output to include target-gene disease separation.
+3. Add optional plotting for external AD/control module shifts.
+4. Pursue a larger cohort with donor-level clinical/pathology metadata for the true continuous severity test.
 
 ## Current Recommendation
 
@@ -254,9 +312,9 @@ Do not tune the Graph-JEPA model further right now.
 The strongest next move is:
 
 ```text
-1. run GSE138852 as a public smoke test
-2. run GSE174367 as the first serious public validation
-3. pursue ROSMAP/Mathys controlled-access validation after the public pipeline works
+1. run GSE174367 as the first serious public validation
+2. pursue ROSMAP/Mathys controlled-access validation after the public pipeline works
+3. use continuous pathology/cognitive variables, not only AD/control labels, for the Nature-tier test
 ```
 
 This sequence is the fastest route from "internally validated hypothesis engine" to "externally credible biological discovery platform."

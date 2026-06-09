@@ -210,6 +210,60 @@ covariate-confounded latent factors:
 
 Interpretation: adding PMI, RIN, brain pH, and fresh brain weight did not overturn the main target matrix. `APP`, `BCL2`, `TLR2`, `CD4`, and `P2RY12` still pass all current internal controls. `CX3CR1` remains useful but should carry a caution flag because its bridge-model support routes through `z_107`, where nuisance-covariate correlation is marginally higher than pathology correlation.
 
+First frozen external projection smoke test:
+
+```text
+dataset:
+  GSE138852 / Grubman-Leng entorhinal cortex
+
+source:
+  GEO processed files
+  GSE138852_counts.csv.gz
+  GSE138852_covariates.csv.gz
+
+script:
+  scripts/project_external_ad_microglia.py
+
+model:
+  upgrade_fine_08_r0045_cov0005_pc0075, epoch 5
+  strict freeze, no weight updates
+  projector embedding space
+
+feature alignment:
+  projected microglia cells: 449
+  external groups: 6
+  matched genes: 2,626 / 2,957
+  gene overlap fraction: 0.888
+
+outputs:
+  results/tables/gse138852_graph_jepa_zero_shot_donor_embeddings.csv
+  results/tables/gse138852_graph_jepa_zero_shot_predicted_pathology.csv
+  results/tables/gse138852_graph_jepa_zero_shot_module_scores.csv
+  results/tables/gse138852_graph_jepa_zero_shot_summary.csv
+  results/tables/gse138852_graph_jepa_zero_shot_report.md
+```
+
+External smoke-test result:
+
+```text
+AD-up modules:
+  complement: AUC 1.000
+  disease-associated microglia: AUC 1.000
+  plaque response: AUC 1.000
+  AT8-associated first-pass module: AUC 1.000
+  vascular/barrier myeloid: AUC 0.889
+
+Control-up modules:
+  homeostatic microglia: AUC 0.000
+  chemokine migration: AUC 0.000
+  lipid metabolism: AUC 0.111
+
+SEA-AD-calibrated pathology heads:
+  did not cleanly transfer in this tiny categorical cohort
+```
+
+Interpretation: this is a successful zero-shot engineering smoke test and a promising module-level biological replication signal. It is not yet a continuous pathology-severity validation. The next external target should be `GSE174367`, followed by ROSMAP/Mathys if individual-level clinical/pathology metadata access is available.
+
 Latest v2.1 upgrade comparison:
 
 ```text

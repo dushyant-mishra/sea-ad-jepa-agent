@@ -483,6 +483,50 @@ Validated output:
 - [SEA-AD full metadata covariate audit](results/reports/sea_ad_full_metadata_covariate_audit.md)
 - [external validation next steps](docs/external_validation_next_steps.md)
 
+## External Validation Smoke Test
+
+The first frozen external projection has been run on the public Grubman/Leng entorhinal cortex dataset `GSE138852`.
+
+```text
+script:
+  scripts/project_external_ad_microglia.py
+
+model:
+  upgrade_fine_08, strictly frozen
+
+external cells:
+  449 microglia
+
+external groups:
+  6 AD/control sample pools
+
+matched genes:
+  2,626 / 2,957 Graph-JEPA input genes
+```
+
+The useful first signal is module-level replication, not continuous pathology regression. Several SEA-AD-named programs separate AD vs control sample pools in the expected direction:
+
+```text
+AD-up in GSE138852:
+  complement
+  disease-associated microglia
+  plaque response
+  AT8-associated first-pass module
+  vascular/barrier myeloid
+
+Control-up in GSE138852:
+  homeostatic microglia
+  chemokine migration
+  lipid metabolism
+```
+
+The SEA-AD-calibrated Ridge pathology heads do not yet transfer cleanly in this tiny categorical cohort. That is the right boundary: `GSE138852` is a successful frozen-projection smoke test and module-replication signal, while `GSE174367` or ROSMAP/Mathys are needed for stronger donor-level severity validation.
+
+Outputs:
+
+- [GSE138852 zero-shot report](results/tables/gse138852_graph_jepa_zero_shot_report.md)
+- [GSE138852 summary table](results/tables/gse138852_graph_jepa_zero_shot_summary.csv)
+
 ## Dataset
 
 Primary data source:
