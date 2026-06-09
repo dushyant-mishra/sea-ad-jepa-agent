@@ -264,6 +264,40 @@ SEA-AD-calibrated pathology heads:
 
 Interpretation: this is a successful zero-shot engineering smoke test and a promising module-level biological replication signal. It is not yet a continuous pathology-severity validation. The next external target should be `GSE174367`, followed by ROSMAP/Mathys if individual-level clinical/pathology metadata access is available.
 
+Improved external projection alignment:
+
+```text
+command:
+  conda run -n sea-ad-jepa python scripts/project_external_ad_microglia.py --missing-gene-imputation sea_ad_low_pathology_mean --alignment control_centroid_shift --out-prefix results/tables/gse138852_graph_jepa_zero_shot_aligned
+
+method:
+  missing genes imputed with SEA-AD low-pathology Microglia-PVM mean expression
+  external control centroid shifted to the SEA-AD low-pathology centroid
+  external groups scored along SEA-AD disease trajectory vectors
+
+outputs:
+  results/tables/gse138852_graph_jepa_zero_shot_aligned_summary.csv
+  results/tables/gse138852_graph_jepa_zero_shot_aligned_report.md
+  results/tables/gse138852_graph_jepa_zero_shot_alignment_comparison.csv
+```
+
+Aligned-run result:
+
+```text
+all five SEA-AD disease trajectories:
+  AD groups shifted further along the disease direction than controls
+
+A beta/6e10 model-scale score:
+  AUC improved from 0.333 to 0.778
+  mean AD-control difference changed from -3.211 to +1.732
+
+AT8/pTau model-scale score:
+  AUC improved from 0.333 to 0.556
+  mean AD-control difference changed from -1.854 to +0.240
+```
+
+Interpretation: control-centroid alignment and trajectory scoring partially solve the Ridge-intercept/batch-shift problem identified in the first GSE138852 run. The module-level signal remains the strongest finding, while the trajectory/pathology-head improvements make the external projection more biologically interpretable.
+
 Latest v2.1 upgrade comparison:
 
 ```text

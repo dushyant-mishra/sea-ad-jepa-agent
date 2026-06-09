@@ -110,12 +110,18 @@ download:
 projection:
   conda run -n sea-ad-jepa python scripts/project_external_ad_microglia.py
 
+aligned projection:
+  conda run -n sea-ad-jepa python scripts/project_external_ad_microglia.py --missing-gene-imputation sea_ad_low_pathology_mean --alignment control_centroid_shift --out-prefix results/tables/gse138852_graph_jepa_zero_shot_aligned
+
 outputs:
   results/tables/gse138852_graph_jepa_zero_shot_donor_embeddings.csv
   results/tables/gse138852_graph_jepa_zero_shot_predicted_pathology.csv
   results/tables/gse138852_graph_jepa_zero_shot_module_scores.csv
   results/tables/gse138852_graph_jepa_zero_shot_summary.csv
   results/tables/gse138852_graph_jepa_zero_shot_report.md
+  results/tables/gse138852_graph_jepa_zero_shot_aligned_summary.csv
+  results/tables/gse138852_graph_jepa_zero_shot_aligned_report.md
+  results/tables/gse138852_graph_jepa_zero_shot_alignment_comparison.csv
 ```
 
 Run summary:
@@ -149,7 +155,17 @@ Interpretation:
 
 ```text
 This is a successful external engineering smoke test and a promising module-level biological replication signal.
-It is not yet a continuous pathology prediction success. SEA-AD-calibrated Ridge pathology heads did not cleanly transfer in this tiny AD/control cohort.
+The upgraded alignment run is more appropriate than direct absolute Ridge scoring:
+  missing genes are imputed with SEA-AD low-pathology means
+  external controls are shifted to the SEA-AD low-pathology centroid
+  external groups are scored along SEA-AD disease trajectories
+
+After alignment:
+  all five SEA-AD disease trajectories shift AD-up
+  A beta/6e10 model-scale AUC improves from 0.333 to 0.778
+  AT8/pTau model-scale AUC improves from 0.333 to 0.556
+
+This is still not a continuous pathology prediction success because GSE138852 is tiny and categorical.
 ```
 
 Limitations:

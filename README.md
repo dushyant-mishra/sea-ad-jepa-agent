@@ -522,10 +522,27 @@ Control-up in GSE138852:
 
 The SEA-AD-calibrated Ridge pathology heads do not yet transfer cleanly in this tiny categorical cohort. That is the right boundary: `GSE138852` is a successful frozen-projection smoke test and module-replication signal, while `GSE174367` or ROSMAP/Mathys are needed for stronger donor-level severity validation.
 
+Follow-up alignment run:
+
+```text
+missing genes:
+  imputed with SEA-AD low-pathology Microglia-PVM means
+
+alignment:
+  external controls shifted to the SEA-AD low-pathology centroid
+
+trajectory scoring:
+  external donors projected along SEA-AD AT8, A beta/6e10, GFAP, Iba1, and NeuN disease vectors
+```
+
+This improved the geometry-based readout. After alignment, all five SEA-AD disease trajectory scores shifted AD-up in `GSE138852`, and SEA-AD-calibrated A beta/6e10 and AT8 model-scale scores moved in the expected AD direction. Because the cohort has only six sample pools, this remains a directionality smoke test rather than definitive external validation.
+
 Outputs:
 
 - [GSE138852 zero-shot report](results/tables/gse138852_graph_jepa_zero_shot_report.md)
 - [GSE138852 summary table](results/tables/gse138852_graph_jepa_zero_shot_summary.csv)
+- [GSE138852 aligned zero-shot report](results/tables/gse138852_graph_jepa_zero_shot_aligned_report.md)
+- [GSE138852 baseline-vs-aligned comparison](results/tables/gse138852_graph_jepa_zero_shot_alignment_comparison.csv)
 
 ## Dataset
 
