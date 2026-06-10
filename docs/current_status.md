@@ -84,6 +84,66 @@ cross-model Jacobian signal:
 
 Interpretation: v2.1 has moved from representation tuning back into biological extraction. The current result is coherent enough to pause broad tuning and prioritize independent validation of the ranked modules and genes.
 
+Latest external validation:
+
+```text
+dataset:
+  GSE174367 / Morabito prefrontal cortex snRNA-seq
+
+model:
+  upgrade_fine_08_r0045_cov0005_pc0075, epoch 5, strictly frozen
+
+cells:
+  4,126 microglia across 18 donors/samples
+
+feature alignment:
+  2,924 / 2,957 Graph-JEPA genes matched
+  33 missing genes imputed with SEA-AD low-pathology Microglia-PVM means
+  control-centroid shift applied
+
+important cohort structure:
+  tangle stages 1, 2, 5, and 6 are present
+  tangle stages 3 and 4 are absent
+```
+
+Result:
+
+```text
+AT8/pTau SEA-AD trajectory vs Morabito tangle stage:
+  donor Spearman rho: 0.224
+  p-value: 0.372
+
+early tangle stages 1-2 vs late stages 5-6:
+  AT8/pTau trajectory AUC: 0.623
+  rank-biserial effect: 0.247
+
+leave-one-donor-out Spearman range:
+  0.131 to 0.320
+
+donor-level covariates:
+  PMI, RIN, age, and batch do not dominate the AT8 trajectory score
+```
+
+Interpretation: this is a modest positive external transfer signal, not definitive validation. It supports early-versus-late tau-state transfer in an independent PFC cohort, but the missing tangle stages 3-4 mean the result should not be described as continuous Braak trajectory tracking.
+
+Outputs:
+
+```text
+script:
+  scripts/project_gse174367_morabito.py
+
+report:
+  results/reports/external_validation_gse174367.md
+
+tables:
+  results/tables/v2_1_gse174367_trajectory_correlations.csv
+  results/tables/v2_1_gse174367_transition_boundary_auc.csv
+  results/tables/v2_1_gse174367_covariate_audit.csv
+
+figure:
+  results/figures/v2_1_gse174367_at8_trajectory_by_tangle.svg
+```
+
 Latest multi-target counterfactual stability pass:
 
 ```text

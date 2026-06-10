@@ -32,6 +32,7 @@ results/tables/*
 !results/tables/*comparison*.csv
 !results/tables/perturbseq_streaming_validation.csv
 !results/tables/kampmann_deg_jepa_alignment_*.csv
+!results/tables/v2_1_gse174367_*.csv
 !results/tables/v1_hypothesis_*.csv
 !results/tables/v1_jepa_63_decode.csv
 !results/tables/all_jepa_umap_variance_rankings.csv
@@ -56,6 +57,7 @@ results/reports/*
 !results/reports/v2_graph_foundation.md
 !results/reports/sea_ad_low_pathology_anchor_audit.md
 !results/reports/jepa_v2_translational_actionability.md
+!results/reports/external_validation_gse174367.md
 !results/figures/
 results/figures/*
 !results/figures/*.svg

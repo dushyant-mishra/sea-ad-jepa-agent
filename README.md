@@ -544,6 +544,54 @@ Outputs:
 - [GSE138852 aligned zero-shot report](results/tables/gse138852_graph_jepa_zero_shot_aligned_report.md)
 - [GSE138852 baseline-vs-aligned comparison](results/tables/gse138852_graph_jepa_zero_shot_alignment_comparison.csv)
 
+## External Validation: Morabito GSE174367
+
+The next frozen projection was run on `GSE174367` / Morabito et al. prefrontal cortex snRNA-seq. This cohort is more useful than `GSE138852` for severity testing because the public cell metadata includes diagnosis, age, sex, PMI, RIN, batch, tangle stage, and plaque stage.
+
+```text
+model:
+  upgrade_fine_08, strictly frozen
+
+external cells:
+  4,126 microglia
+
+external donors:
+  18 samples
+
+matched genes:
+  2,924 / 2,957 Graph-JEPA input genes
+
+alignment:
+  SEA-AD low-pathology mean imputation + control-centroid shift
+```
+
+Important interpretation boundary: GSE174367 contains tangle stages `1`, `2`, `5`, and `6`, but not stages `3` or `4`. Therefore this is best treated as an **early-versus-late tau-state transfer test**, not a smooth Braak trajectory test.
+
+Main result:
+
+```text
+AT8/pTau SEA-AD trajectory vs Morabito tangle stage:
+  donor Spearman rho: 0.224
+  p-value: 0.372
+
+early tangle stages 1-2 vs late stages 5-6:
+  AT8/pTau trajectory AUC: 0.623
+  rank-biserial effect: 0.247
+
+leave-one-donor-out Spearman range:
+  0.131 to 0.320
+```
+
+This is a **modest positive transfer signal**, not a definitive validation. The useful finding is that the frozen SEA-AD AT8/A beta trajectories shift in the expected late-tangle direction without retraining, and the donor-level covariate audit does not show stronger PMI, RIN, age, or batch dependence than the disease-stage readout.
+
+Outputs:
+
+- [GSE174367 external validation report](results/reports/external_validation_gse174367.md)
+- [GSE174367 trajectory correlations](results/tables/v2_1_gse174367_trajectory_correlations.csv)
+- [GSE174367 transition-boundary AUC](results/tables/v2_1_gse174367_transition_boundary_auc.csv)
+- [GSE174367 covariate audit](results/tables/v2_1_gse174367_covariate_audit.csv)
+- ![GSE174367 AT8 trajectory by tangle stage](results/figures/v2_1_gse174367_at8_trajectory_by_tangle.svg)
+
 ## Dataset
 
 Primary data source:

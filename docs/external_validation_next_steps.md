@@ -196,7 +196,53 @@ First serious public validation dataset after the GSE138852 smoke test.
 Limitations:
 
 - Late-stage AD/control design rather than SEA-AD's full progression continuum.
-- Supplementary metadata and cell annotations need careful parsing.
+- Tangle stages 1, 2, 5, and 6 are present; stages 3 and 4 are absent.
+- This makes the cohort an early-versus-late tau-state boundary test, not a smooth Braak trajectory test.
+
+Completed run:
+
+```text
+script:
+  scripts/project_gse174367_morabito.py
+
+model:
+  upgrade_fine_08_r0045_cov0005_pc0075, epoch 5, strictly frozen
+
+projection:
+  4,126 microglia
+  18 donors/samples
+  2,924 / 2,957 Graph-JEPA genes matched
+  33 missing genes imputed with SEA-AD low-pathology means
+  control-centroid shift applied
+
+outputs:
+  results/reports/external_validation_gse174367.md
+  results/tables/v2_1_gse174367_trajectory_correlations.csv
+  results/tables/v2_1_gse174367_transition_boundary_auc.csv
+  results/tables/v2_1_gse174367_covariate_audit.csv
+  results/figures/v2_1_gse174367_at8_trajectory_by_tangle.svg
+```
+
+Result:
+
+```text
+AT8/pTau trajectory vs tangle stage:
+  donor Spearman rho = 0.224
+  p = 0.372
+
+early tangle stages 1-2 vs late stages 5-6:
+  AT8/pTau trajectory AUC = 0.623
+  rank-biserial effect = 0.247
+
+leave-one-donor-out Spearman range:
+  0.131 to 0.320
+```
+
+Interpretation:
+
+```text
+This is a modest positive transfer signal. It is useful because the model is frozen and the cohort is independent, but it is not strong enough to claim definitive cross-cohort pathology prediction. The right manuscript language is "early-versus-late tau-state transfer signal" rather than "continuous Braak-stage validation."
+```
 
 ### 4. Mathys / ROSMAP 2019 DLPFC Dataset
 
@@ -291,13 +337,19 @@ Target:
 GSE174367 / Morabito-Swarup PFC snRNA-seq
 ```
 
-Actions:
+Status:
 
-1. Parse snRNA count matrices and cell annotations.
-2. Filter microglia/CNS myeloid cells.
-3. Align to Graph-JEPA genes.
-4. Project into frozen v2.1 space.
-5. Test AD/control and Braak/plaque staging if available from supplementary metadata.
+```text
+completed
+```
+
+Completed:
+
+1. Parsed snRNA count matrix and cell metadata.
+2. Filtered to `Cell.Type == MG`.
+3. Aligned to Graph-JEPA genes.
+4. Projected into frozen v2.1 projector space.
+5. Tested tangle-stage, plaque-stage, leave-one-donor-out stability, early-versus-late AUC, and covariate correlations.
 
 ### Step 4: Controlled-Access Gold Standard
 
@@ -316,10 +368,10 @@ Actions:
 
 ## Immediate Engineering Tasks
 
-1. Create a dataset adapter for `GSE174367`.
-2. Extend validation output to include target-gene disease separation.
-3. Add optional plotting for external AD/control module shifts.
-4. Pursue a larger cohort with donor-level clinical/pathology metadata for the true continuous severity test.
+1. Add target-gene/module disease-separation plots for `GSE174367`.
+2. Add a larger public or controlled-access cohort with intermediate disease stages.
+3. Pursue ROSMAP/Mathys for continuous severity and cognitive-pathology validation.
+4. Keep `upgrade_fine_08` frozen for all external validation unless a new model version is explicitly declared.
 
 ## Current Recommendation
 
@@ -328,9 +380,9 @@ Do not tune the Graph-JEPA model further right now.
 The strongest next move is:
 
 ```text
-1. run GSE174367 as the first serious public validation
-2. pursue ROSMAP/Mathys controlled-access validation after the public pipeline works
-3. use continuous pathology/cognitive variables, not only AD/control labels, for the Nature-tier test
+1. use GSE174367 as a modest positive public external validation
+2. pursue ROSMAP/Mathys controlled-access validation next
+3. prioritize cohorts with intermediate stages and continuous pathology/cognitive variables
 ```
 
 This sequence is the fastest route from "internally validated hypothesis engine" to "externally credible biological discovery platform."
