@@ -582,7 +582,7 @@ leave-one-donor-out Spearman range:
   0.131 to 0.320
 ```
 
-This is a **modest positive transfer signal**, not a definitive validation. The useful finding is that the frozen SEA-AD AT8/A beta trajectories shift in the expected late-tangle direction without retraining, and the donor-level covariate audit does not show stronger PMI, RIN, age, or batch dependence than the disease-stage readout.
+This is a **weak/negative tau-transfer stress test**, not a validation win. The useful finding is boundary-setting: the frozen SEA-AD AT8/A beta trajectories shift slightly in the expected late-tangle direction, but the association is not statistically convincing. The donor-level covariate audit does not show stronger PMI, RIN, age, or batch dependence than the disease-stage readout, but this does not rescue the weak tau-stage transfer result.
 
 Outputs:
 
@@ -591,6 +591,10 @@ Outputs:
 - [GSE174367 transition-boundary AUC](results/tables/v2_1_gse174367_transition_boundary_auc.csv)
 - [GSE174367 covariate audit](results/tables/v2_1_gse174367_covariate_audit.csv)
 - ![GSE174367 AT8 trajectory by tangle stage](results/figures/v2_1_gse174367_at8_trajectory_by_tangle.svg)
+
+The next validation-planning document separates public alignment cohorts from final locked-validation cohorts:
+
+- [external cohort reconnaissance](docs/external_cohort_reconnaissance.md)
 
 ## Dataset
 

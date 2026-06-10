@@ -124,7 +124,7 @@ donor-level covariates:
   PMI, RIN, age, and batch do not dominate the AT8 trajectory score
 ```
 
-Interpretation: this is a modest positive external transfer signal, not definitive validation. It supports early-versus-late tau-state transfer in an independent PFC cohort, but the missing tangle stages 3-4 mean the result should not be described as continuous Braak trajectory tracking.
+Interpretation: this is a weak/negative tau-transfer stress test, not definitive validation. The direction is slightly positive for AT8/A beta trajectories, but the effect is small and not statistically convincing. The missing tangle stages 3-4 also mean the result should not be described as continuous Braak trajectory tracking.
 
 Outputs:
 

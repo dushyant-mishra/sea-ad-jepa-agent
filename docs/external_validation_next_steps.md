@@ -4,6 +4,10 @@ Last updated: 2026-06-08
 
 This document summarizes the next phase: moving from internally validated SEA-AD Graph-JEPA hypotheses to external validation.
 
+Detailed cohort reconnaissance is tracked here:
+
+- [external cohort reconnaissance](external_cohort_reconnaissance.md)
+
 ## Why This Phase Matters
 
 The current v2.1 target matrix has survived first-pass internal artifact checks:
@@ -380,9 +384,9 @@ Do not tune the Graph-JEPA model further right now.
 The strongest next move is:
 
 ```text
-1. use GSE174367 as a modest positive public external validation
-2. pursue ROSMAP/Mathys controlled-access validation next
-3. prioritize cohorts with intermediate stages and continuous pathology/cognitive variables
+1. treat GSE174367 as a weak/negative tau-transfer stress test, not a validation win
+2. use public cohorts such as Rexach cross-dementia for v2.2 alignment/invariance
+3. reserve ROSMAP/Mathys or another untouched cohort for locked validation
 ```
 
 This sequence is the fastest route from "internally validated hypothesis engine" to "externally credible biological discovery platform."
