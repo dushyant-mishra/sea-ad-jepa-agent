@@ -330,6 +330,46 @@ result:
 
 Interpretation: Stage B code is wired and ready. The smoke result only validates implementation mechanics; it is not a biological/domain-alignment result. The real Stage B run should start from the best completed Stage A fast checkpoint.
 
+Latest Stage C counterfactual scoring upgrade:
+
+```text
+script:
+  scripts/graph_counterfactual_knockout.py
+
+new scoring:
+  disease_axis_reversal
+  orthogonal_shift
+  orthogonal_to_axis_ratio
+
+new intervention:
+  p99 high-expression agonist/rescue perturbation
+
+new interpretation field:
+  perturbation_direction = suppressor | agonist
+```
+
+Rationale: raw Euclidean movement toward a healthy centroid can reward
+nonspecific coordinate scrambling. Disease-axis projection asks whether a
+perturbation moves cells backward along the same pathology trajectory that
+separates low-pathology and high-pathology donors, while orthogonal shift flags
+large off-axis effects.
+
+Smoke tests:
+
+```text
+TLR2 suppressor/global_mean:
+  completed with axis metrics
+
+TLR2 agonist/p99:
+  completed with axis metrics
+```
+
+Interpretation: future target matrices should separate suppressor candidates
+(CRISPRi, inhibitors, blockade) from agonist/rescue candidates
+(overexpression, rescue plasmids, activation). Ranking should prioritize high
+disease-axis reversal with controlled orthogonal shift rather than raw distance
+to a reference centroid.
+
 Latest multi-target counterfactual stability pass:
 
 ```text

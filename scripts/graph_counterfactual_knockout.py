@@ -136,9 +136,105 @@ def apply_intervention(x: np.ndarray, idx: list[int], intervention: str, global_
         perturbed[:, idx] = 0.0
     elif intervention == "global_mean":
         perturbed[:, idx] = global_means[idx]
+    elif intervention == "p99":
+        perturbed[:, idx] = np.percentile(x[:, idx], 99, axis=0).astype(np.float32)
     else:
-        raise ValueError("intervention must be 'zero' or 'global_mean'")
+        raise ValueError("intervention must be 'zero', 'global_mean', or 'p99'")
     return perturbed
+
+
+def disease_axis_scores(
+    z_base: np.ndarray,
+    z_perturbed: np.ndarray,
+    donors: pd.Series,
+    target: str,
+    target_transform: str,
+) -> tuple[dict[str, float], pd.DataFrame]:
+    """Score perturbations by projection against a donor-level disease axis.
+
+    The axis points from low-pathology donors to high-pathology donors for the
+    selected target. Positive reversal means the perturbation moves cells
+    backwards along that axis. Orthogonal shift measures off-axis scrambling.
+    """
+
+    targets, _ = load_pathology_targets()
+    targets["Donor ID"] = normalize_donor_id(targets["Donor ID"])
+    donor_targets = pd.DataFrame({"Donor ID": donors.astype(str).to_numpy()}).drop_duplicates()
+    donor_targets = donor_targets.merge(targets[["Donor ID", target]], on="Donor ID", how="inner").dropna(subset=[target])
+    if donor_targets[target].nunique() < 3:
+        empty = pd.DataFrame({"cell_index": np.arange(z_base.shape[0])})
+        return {
+            "axis_available": 0.0,
+            "mean_disease_axis_reversal": np.nan,
+            "median_disease_axis_reversal": np.nan,
+            "mean_orthogonal_shift": np.nan,
+            "mean_total_shift": np.nan,
+            "orthogonal_to_axis_ratio": np.nan,
+        }, empty
+
+    y = transform_target(donor_targets[target].to_numpy(dtype=np.float32), target_transform)
+    low_cut = np.nanquantile(y, 0.25)
+    high_cut = np.nanquantile(y, 0.75)
+    low_donors = set(donor_targets.loc[y <= low_cut, "Donor ID"].astype(str))
+    high_donors = set(donor_targets.loc[y >= high_cut, "Donor ID"].astype(str))
+    donor_array = donors.astype(str).to_numpy()
+    low_mask = np.asarray([donor in low_donors for donor in donor_array], dtype=bool)
+    high_mask = np.asarray([donor in high_donors for donor in donor_array], dtype=bool)
+    if low_mask.sum() == 0 or high_mask.sum() == 0:
+        empty = pd.DataFrame({"cell_index": np.arange(z_base.shape[0])})
+        return {
+            "axis_available": 0.0,
+            "mean_disease_axis_reversal": np.nan,
+            "median_disease_axis_reversal": np.nan,
+            "mean_orthogonal_shift": np.nan,
+            "mean_total_shift": np.nan,
+            "orthogonal_to_axis_ratio": np.nan,
+        }, empty
+
+    axis = z_base[high_mask].mean(axis=0) - z_base[low_mask].mean(axis=0)
+    axis_norm = float(np.linalg.norm(axis))
+    if axis_norm < 1e-8:
+        empty = pd.DataFrame({"cell_index": np.arange(z_base.shape[0])})
+        return {
+            "axis_available": 0.0,
+            "mean_disease_axis_reversal": np.nan,
+            "median_disease_axis_reversal": np.nan,
+            "mean_orthogonal_shift": np.nan,
+            "mean_total_shift": np.nan,
+            "orthogonal_to_axis_ratio": np.nan,
+        }, empty
+
+    axis_unit = axis / axis_norm
+    delta = z_perturbed - z_base
+    forward_projection = delta @ axis_unit
+    reversal = -forward_projection
+    orthogonal = delta - np.outer(forward_projection, axis_unit)
+    orthogonal_shift = np.linalg.norm(orthogonal, axis=1)
+    total_shift = np.linalg.norm(delta, axis=1)
+    cell_scores = pd.DataFrame(
+        {
+            "cell_index": np.arange(z_base.shape[0]),
+            "Donor ID": donor_array,
+            "disease_axis_reversal": reversal,
+            "orthogonal_shift": orthogonal_shift,
+            "total_shift": total_shift,
+            "forward_disease_projection": forward_projection,
+        }
+    )
+    summary = {
+        "axis_available": 1.0,
+        "axis_low_donors": len(low_donors),
+        "axis_high_donors": len(high_donors),
+        "axis_low_cells": int(low_mask.sum()),
+        "axis_high_cells": int(high_mask.sum()),
+        "axis_norm": axis_norm,
+        "mean_disease_axis_reversal": float(np.mean(reversal)),
+        "median_disease_axis_reversal": float(np.median(reversal)),
+        "mean_orthogonal_shift": float(np.mean(orthogonal_shift)),
+        "mean_total_shift": float(np.mean(total_shift)),
+        "orthogonal_to_axis_ratio": float(np.mean(orthogonal_shift) / (abs(np.mean(reversal)) + 1e-8)),
+    }
+    return summary, cell_scores
 
 
 def fit_target_head(donor_embeddings: pd.DataFrame, target: str, target_transform: str):
@@ -175,7 +271,13 @@ def main() -> None:
     parser.add_argument("--mode", choices=["module", "gene"], default="module")
     parser.add_argument("--modules", nargs="*", default=None)
     parser.add_argument("--genes", nargs="*", default=None)
-    parser.add_argument("--intervention", choices=["global_mean", "zero"], default="global_mean")
+    parser.add_argument("--intervention", choices=["global_mean", "zero", "p99"], default="global_mean")
+    parser.add_argument(
+        "--perturbation-direction",
+        choices=["auto", "suppressor", "agonist"],
+        default="auto",
+        help="Wet-lab interpretation. suppressor maps to low-expression interventions; agonist maps to high-expression rescue.",
+    )
     parser.add_argument("--target", default="percent AT8 positive area_Grey matter")
     parser.add_argument("--target-transform", choices=["raw", "log1p", "rank"], default="log1p")
     parser.add_argument("--donor-column", default="Donor ID")
@@ -186,6 +288,7 @@ def main() -> None:
     parser.add_argument("--device", default="auto")
     parser.add_argument("--out", required=True)
     parser.add_argument("--donor-out", required=True)
+    parser.add_argument("--axis-cell-out", default="", help="Optional per-cell disease-axis projection scores.")
     args = parser.parse_args()
 
     device = choose_device(args.device)
@@ -197,6 +300,10 @@ def main() -> None:
     gene_names = adata.var_names.astype(str).tolist()
     x = to_dense_float32(adata.X)
     global_means = x.mean(axis=0)
+    intervention = args.intervention
+    perturbation_direction = args.perturbation_direction
+    if perturbation_direction == "auto":
+        perturbation_direction = "agonist" if intervention == "p99" else "suppressor"
     model, checkpoint, edge_index, node_annotations = load_graph_model(args.checkpoint, adata, args.edge_csv, args.annotation_csv, device)
     model_args = checkpoint.get("args", {})
     embedding_space = args.embedding_space
@@ -214,10 +321,12 @@ def main() -> None:
 
     summary_rows = []
     donor_rows = []
+    axis_cell_rows = []
     for module, perturbation, genes, idx in perturbations:
         print(f"Perturbing {perturbation} ({len(idx)} genes)")
-        x_perturbed = apply_intervention(x, idx, args.intervention, global_means)
+        x_perturbed = apply_intervention(x, idx, intervention, global_means)
         z_perturbed = encode_cells(model, x_perturbed, edge_index, node_annotations, embedding_space, device, args.batch_size, args.seed)
+        axis_summary, axis_cells = disease_axis_scores(z_base, z_perturbed, donors, args.target, args.target_transform)
         donor_perturbed = aggregate_by_donor(z_perturbed, donors)
         perturbed_pred = predict_donor(head, scaler, donor_perturbed, donor_order, args.target_transform)
         merged = baseline_pred.merge(perturbed_pred, on="Donor ID", suffixes=("_baseline", "_perturbed"))
@@ -227,15 +336,25 @@ def main() -> None:
         merged.insert(1, "target", args.target)
         merged.insert(2, "module", module)
         merged.insert(3, "perturbation", perturbation)
-        merged.insert(4, "intervention", args.intervention)
+        merged.insert(4, "intervention", intervention)
+        merged.insert(5, "perturbation_direction", perturbation_direction)
         donor_rows.append(merged)
+        if args.axis_cell_out:
+            axis_cells.insert(0, "model", args.model_label)
+            axis_cells.insert(1, "target", args.target)
+            axis_cells.insert(2, "module", module)
+            axis_cells.insert(3, "perturbation", perturbation)
+            axis_cells.insert(4, "intervention", intervention)
+            axis_cells.insert(5, "perturbation_direction", perturbation_direction)
+            axis_cell_rows.append(axis_cells)
         summary_rows.append(
             {
                 "model": args.model_label,
                 "target": args.target,
                 "module": module,
                 "perturbation": perturbation,
-                "intervention": args.intervention,
+                "intervention": intervention,
+                "perturbation_direction": perturbation_direction,
                 "n_genes_perturbed": len(idx),
                 "genes": ";".join(genes),
                 "mean_delta_model_scale": float(merged["delta_model_scale"].mean()),
@@ -244,17 +363,27 @@ def main() -> None:
                 "abs_mean_delta_raw_scale": float(abs(merged["delta_raw_scale"].mean())),
                 "n_donors": int(merged["Donor ID"].nunique()),
                 "n_cells": int(x.shape[0]),
+                **axis_summary,
             }
         )
 
-    summary = pd.DataFrame(summary_rows).sort_values("abs_mean_delta_raw_scale", ascending=False)
-    donor_df = pd.concat(donor_rows, ignore_index=True)
+    summary = pd.DataFrame(summary_rows).sort_values(
+        ["mean_disease_axis_reversal", "mean_orthogonal_shift", "abs_mean_delta_raw_scale"],
+        ascending=[False, True, False],
+    )
+    donor_df = pd.concat([row for row in donor_rows if "delta_raw_scale" in row.columns], ignore_index=True)
     out_path = Path(args.out)
     donor_path = Path(args.donor_out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     donor_path.parent.mkdir(parents=True, exist_ok=True)
     summary.to_csv(out_path, index=False)
     donor_df.to_csv(donor_path, index=False)
+    if args.axis_cell_out:
+        if axis_cell_rows:
+            axis_path = Path(args.axis_cell_out)
+            axis_path.parent.mkdir(parents=True, exist_ok=True)
+            pd.concat(axis_cell_rows, ignore_index=True).to_csv(axis_path, index=False)
+            print(f"Wrote {axis_path}")
     print(f"Wrote {out_path}")
     print(f"Wrote {donor_path}")
     print(summary.head(20).to_string(index=False))

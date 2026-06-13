@@ -74,6 +74,10 @@ donor_mean
 zero
   set selected genes to zero
   stress test, more out-of-distribution
+
+p99
+  set selected genes to the 99th percentile expression
+  agonist/rescue stress test
 ```
 
 Interpretation:
@@ -90,6 +94,41 @@ near-zero delta
 ```
 
 These are model sensitivities, not biological causal effects.
+
+For Graph-JEPA v2.1 and later, raw distance-to-healthy should not be the primary
+counterfactual score. A perturbation can move a cell closer to a reference
+centroid by scrambling the latent coordinates rather than reversing disease.
+The safer score is disease-axis projection:
+
+```text
+disease_axis = severe_pathology_centroid - low_pathology_centroid
+delta_z = perturbed_z - baseline_z
+
+disease_axis_reversal = - dot(delta_z, normalize(disease_axis))
+orthogonal_shift = || delta_z - projection(delta_z onto disease_axis) ||
+```
+
+Interpretation:
+
+```text
+high disease_axis_reversal + modest orthogonal_shift
+  stronger model-implied therapeutic reversal hypothesis
+
+high orthogonal_shift with weak disease_axis_reversal
+  possible nonspecific scrambling or toxicity-like artifact
+```
+
+Suppressor and agonist sweeps have different experimental meanings:
+
+```text
+suppressor sweep:
+  zero or mean-replacement intervention
+  maps to CRISPRi, shRNA, inhibitors, antibody blockade
+
+agonist/rescue sweep:
+  p99 high-expression intervention
+  maps to overexpression, rescue plasmids, or activating therapeutics
+```
 
 ## Fold-Specific Knockouts
 

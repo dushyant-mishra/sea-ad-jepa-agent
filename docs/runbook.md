@@ -1437,6 +1437,7 @@ python scripts/graph_counterfactual_knockout.py `
   --mode module `
   --modules complement lipid_metabolism lysosome_phagocytosis homeostatic_microglia vascular_barrier_myeloid plaque_response disease_associated_microglia inflammatory_signaling antigen_presentation senescence_stress `
   --intervention global_mean `
+  --perturbation-direction suppressor `
   --target "percent AT8 positive area_Grey matter" `
   --max-cells 12000 `
   --batch-size 64 `
@@ -1450,6 +1451,7 @@ python scripts/graph_counterfactual_knockout.py `
   --mode gene `
   --genes CSF1R TLR2 BCL2 CD4 P2RY12 APP APOE CD74 PLCG2 MAPK1 ROCK1 HSP90AA1 UGCG STAT3 HIF1A GRB2 RHOA CTSD P2RY13 CX3CR1 F13A1 CHI3L1 DRAM1 PTPRG `
   --intervention global_mean `
+  --perturbation-direction suppressor `
   --target "percent AT8 positive area_Grey matter" `
   --max-cells 12000 `
   --batch-size 64 `
@@ -1458,6 +1460,50 @@ python scripts/graph_counterfactual_knockout.py `
   --device auto
 
 python scripts/build_v21_hypothesis_report.py
+```
+
+Graph counterfactual scoring now includes disease-axis projection metrics:
+
+```text
+disease_axis_reversal:
+  positive means the perturbation moves cells backward along the selected
+  pathology axis
+
+orthogonal_shift:
+  off-axis movement, useful for flagging nonspecific coordinate scrambling
+
+orthogonal_to_axis_ratio:
+  high values mean the perturbation moves mostly somewhere else, not cleanly
+  backward along disease
+```
+
+Run an agonist/rescue stress test by switching the intervention:
+
+```powershell
+python scripts/graph_counterfactual_knockout.py `
+  --checkpoint results/models/stage_c_upgrade_fine_08_r0045_cov0005_pc0075/graph_jepa_stage_c_epoch_005.pt `
+  --model-label upgrade_fine_08 `
+  --mode gene `
+  --genes P2RY12 CX3CR1 TREM2 APOE `
+  --intervention p99 `
+  --perturbation-direction agonist `
+  --target "percent AT8 positive area_Grey matter" `
+  --max-cells 12000 `
+  --batch-size 64 `
+  --out results/tables/v2_1_upgrade_fine_08_gene_counterfactual_at8_agonist_p99.csv `
+  --donor-out results/tables/v2_1_upgrade_fine_08_gene_counterfactual_at8_agonist_p99_by_donor.csv `
+  --axis-cell-out results/tables/v2_1_upgrade_fine_08_gene_counterfactual_at8_agonist_p99_cells.csv `
+  --device auto
+```
+
+Interpretation:
+
+```text
+suppressor hits:
+  CRISPRi, shRNA, inhibitors, antibody blockade
+
+agonist hits:
+  overexpression, rescue plasmids, activating therapeutics
 ```
 
 Outputs:
