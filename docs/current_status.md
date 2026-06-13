@@ -2324,6 +2324,44 @@ CELLxGENE anchor cosine: 0.952
 
 Interpretation: the best run found so far is much more elastic than the first Stage C run. It lets the disease manifold move while keeping both healthy/reference anchors just above the 0.95 cosine safety boundary. The result supports using a small rehearsal weight plus a very small covariance term as the current Stage C default. This is a tuning result, not a claim of final biological validation.
 
+## v2.2 Stage A Fast Graph-JEPA Checkpoint Selection
+
+The full 50-epoch fast shared-topology Stage A run completed successfully on the full SEA-AD Microglia-PVM training object.
+
+```text
+run:
+  v2_2_topology_dropout_full_e50_fast
+
+history:
+  results/tables/v2_2_topology_dropout_full_e50_fast_history.csv
+
+checkpoint ranking:
+  results/tables/v2_2_topology_dropout_full_e50_fast_checkpoint_ranking.csv
+```
+
+The final epoch completed without one-dimensional collapse, but the best saved checkpoint by the combined geometry score was epoch 30 rather than epoch 50.
+
+Selected Stage A checkpoint for downstream Stage B:
+
+```text
+results/models/v2_2_topology_dropout_full_e50_fast/fast_graph_jepa_epoch_030.pt
+```
+
+Selection metrics:
+
+```text
+epoch: 30
+loss: 0.006109
+alignment loss: 0.000066
+variance loss: 0.008786
+covariance loss: 0.085719
+effective dimensions: 65.67
+top singular value ratio: 0.056
+cells/sec: 230.18
+```
+
+Interpretation: epoch 30 gives the best available balance of broad disease-manifold dimensionality, low top singular-vector dominance, and still-stable covariance. The true best raw epoch by the same scoring rule was epoch 32, but checkpointing was every five epochs, so epoch 30 is the active downstream checkpoint. `configs/train/stage_b_adversarial.yaml` now points to this epoch-30 checkpoint.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.

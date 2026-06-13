@@ -1,7 +1,7 @@
 defaults:
   - _self_
 
-stage_a_checkpoint: results/models/v2_2_topology_dropout_full_e50_fast/fast_graph_jepa_epoch_005.pt
+stage_a_checkpoint: results/models/v2_2_topology_dropout_full_e50_fast/fast_graph_jepa_epoch_030.pt
 
 sea_ad_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
 rexach_h5ad: data/processed/v2_alignment/rexach_cross_dementia_microglia_jepa_aligned.h5ad
