@@ -657,7 +657,7 @@ results/tables/contiguous_10k_ridge_pathology_500genes.csv
 - Ran a 2-epoch GPU JEPA smoke test:
 
 ```text
-results/models/contiguous_10k_jepa_smoke/gene_jepa.pt
+results/archive/smoke_and_benchmark/models/contiguous_10k_jepa_smoke/gene_jepa.pt
 ```
 
 - Built full Microglia-PVM donor-level pseudobulk features from the full H5AD:
@@ -1720,7 +1720,7 @@ script:
   scripts/train_graph_jepa_stage_a.py
 
 smoke checkpoint:
-  results/models/graph_jepa_stage_a_smoke/graph_jepa.pt
+  results/archive/smoke_and_benchmark/models/graph_jepa_stage_a_smoke/graph_jepa.pt
 
 first full-anchor checkpoint:
   results/models/graph_jepa_stage_a_string_t700_rawvar_e5/graph_jepa.pt
@@ -1869,7 +1869,7 @@ script:
   scripts/train_graph_jepa_stage_b_rehearsal.py
 
 smoke checkpoint:
-  results/models/graph_jepa_stage_b_rehearsal_smoke/graph_jepa_stage_b.pt
+  results/archive/smoke_and_benchmark/models/graph_jepa_stage_b_rehearsal_smoke/graph_jepa_stage_b.pt
 
 TensorBoard logs:
   runs/graph_jepa_stage_b_rehearsal_smoke
@@ -1945,10 +1945,10 @@ script:
   scripts/train_graph_jepa_stage_c_disease.py
 
 smoke checkpoint:
-  results/models/graph_jepa_stage_c_disease_rehearsal_smoke/graph_jepa_stage_c.pt
+  results/archive/smoke_and_benchmark/models/graph_jepa_stage_c_disease_rehearsal_smoke/graph_jepa_stage_c.pt
 
 smoke history:
-  results/tables/graph_jepa_stage_c_disease_rehearsal_smoke_history.csv
+  results/archive/smoke_and_benchmark/tables/graph_jepa_stage_c_disease_rehearsal_smoke_history.csv
 
 TensorBoard logs:
   runs/graph_jepa_stage_c_disease_rehearsal_smoke
