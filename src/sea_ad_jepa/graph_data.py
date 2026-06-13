@@ -125,6 +125,12 @@ class GraphExpressionDataset:
         edge_index: torch.Tensor,
         node_annotations: torch.Tensor | None = None,
         mask_fraction: float = 0.35,
+        random_gene_dropout: float = 0.0,
+        module_dropout_prob: float = 0.0,
+        module_gene_indices: Sequence[Sequence[int]] | None = None,
+        external_gene_masks: Sequence[np.ndarray] | None = None,
+        external_mask_prob: float = 0.0,
+        edge_dropout: float = 0.0,
         seed: int = 7,
         return_pyg_data: bool = True,
     ):
@@ -136,10 +142,24 @@ class GraphExpressionDataset:
         self.edge_index = edge_index
         self.node_annotations = node_annotations
         self.mask_fraction = mask_fraction
+        self.random_gene_dropout = random_gene_dropout
+        self.module_dropout_prob = module_dropout_prob
+        self.module_gene_indices = [np.asarray(idx, dtype=np.int64) for idx in (module_gene_indices or []) if len(idx)]
+        self.external_gene_masks = [np.asarray(mask, dtype=bool) for mask in (external_gene_masks or []) if np.asarray(mask).any()]
+        self.external_mask_prob = external_mask_prob
+        self.edge_dropout = edge_dropout
         self.rng = np.random.default_rng(seed)
         self.return_pyg_data = return_pyg_data
         self.n_genes = matrix.shape[1]
         self.node_id = torch.arange(self.n_genes, dtype=torch.long)
+        self.augmentation_counts = {
+            "random_gene_dropout_genes": 0,
+            "module_dropout_events": 0,
+            "module_dropout_genes": 0,
+            "external_mask_events": 0,
+            "external_mask_genes": 0,
+            "edge_dropout_edges": 0,
+        }
 
         if node_annotations is not None and node_annotations.shape[0] != self.n_genes:
             raise ValueError("node_annotations must have one row per gene")
@@ -152,8 +172,9 @@ class GraphExpressionDataset:
         context_expr = target_expr.copy()
         mask_idx = self._choose_mask()
         context_expr[mask_idx] = 0.0
+        self._apply_context_augmentations(context_expr)
 
-        context = self._make_sample(context_expr, index)
+        context = self._make_sample(context_expr, index, edge_index=self._context_edge_index())
         target = self._make_sample(target_expr, index)
         return context, target
 
@@ -168,15 +189,63 @@ class GraphExpressionDataset:
         n_mask = max(1, int(self.n_genes * self.mask_fraction))
         return self.rng.choice(self.n_genes, size=n_mask, replace=False)
 
-    def _make_sample(self, expression: np.ndarray, index: int):
+    def _apply_context_augmentations(self, expression: np.ndarray) -> None:
+        """Apply training-time robustness masks to expression scalars only.
+
+        Gene identity embeddings and graph node IDs are intentionally preserved.
+        This simulates unknown/missing gene activity without deleting the gene
+        from the biological coordinate system.
+        """
+
+        if self.random_gene_dropout > 0:
+            n_drop = int(self.n_genes * self.random_gene_dropout)
+            if n_drop > 0:
+                idx = self.rng.choice(self.n_genes, size=n_drop, replace=False)
+                expression[idx] = 0.0
+                self.augmentation_counts["random_gene_dropout_genes"] += int(n_drop)
+
+        if self.module_gene_indices and self.module_dropout_prob > 0 and self.rng.random() < self.module_dropout_prob:
+            module_idx = self.module_gene_indices[int(self.rng.integers(0, len(self.module_gene_indices)))]
+            if module_idx.size:
+                expression[module_idx] = 0.0
+                self.augmentation_counts["module_dropout_events"] += 1
+                self.augmentation_counts["module_dropout_genes"] += int(module_idx.size)
+
+        if self.external_gene_masks and self.external_mask_prob > 0 and self.rng.random() < self.external_mask_prob:
+            mask = self.external_gene_masks[int(self.rng.integers(0, len(self.external_gene_masks)))]
+            if mask.shape[0] != self.n_genes:
+                raise ValueError("external_gene_masks must have one boolean per gene")
+            expression[mask] = 0.0
+            self.augmentation_counts["external_mask_events"] += 1
+            self.augmentation_counts["external_mask_genes"] += int(mask.sum())
+
+    def _context_edge_index(self) -> torch.Tensor:
+        if self.edge_dropout <= 0:
+            return self.edge_index
+        n_edges = int(self.edge_index.shape[1])
+        if n_edges <= 1:
+            return self.edge_index
+        keep = self.rng.random(n_edges) >= self.edge_dropout
+        if not keep.any():
+            keep[int(self.rng.integers(0, n_edges))] = True
+        dropped = int(n_edges - keep.sum())
+        self.augmentation_counts["edge_dropout_edges"] += dropped
+        return self.edge_index[:, torch.as_tensor(keep, dtype=torch.bool)]
+
+    def reset_augmentation_counts(self) -> None:
+        for key in self.augmentation_counts:
+            self.augmentation_counts[key] = 0
+
+    def _make_sample(self, expression: np.ndarray, index: int, edge_index: torch.Tensor | None = None):
         expr = torch.as_tensor(expression[:, None], dtype=torch.float32)
         if self.node_annotations is not None:
             x = torch.cat([expr, self.node_annotations], dim=1)
         else:
             x = expr
+        edge_index = edge_index if edge_index is not None else self.edge_index
 
         if not self.return_pyg_data:
-            return GraphSample(x=x, edge_index=self.edge_index, node_id=self.node_id, sample_id=index)
+            return GraphSample(x=x, edge_index=edge_index, node_id=self.node_id, sample_id=index)
 
         try:
             from torch_geometric.data import Data
@@ -185,7 +254,7 @@ class GraphExpressionDataset:
 
         return Data(
             x=x,
-            edge_index=self.edge_index,
+            edge_index=edge_index,
             node_id=self.node_id,
             sample_id=torch.tensor([index], dtype=torch.long),
         )

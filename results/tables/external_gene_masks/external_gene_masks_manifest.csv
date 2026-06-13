@@ -1,0 +1,3 @@
+cohort,mask_file
+gse174367_morabito,results\tables\external_gene_masks\gse174367_morabito_missing_genes.txt
+gse138852_grubman,results\tables\external_gene_masks\gse138852_grubman_missing_genes.txt

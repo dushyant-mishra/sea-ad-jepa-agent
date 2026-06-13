@@ -756,6 +756,59 @@ alignment should not instantly collapse to exactly zero
 
 If variance stays near `~0.99` while alignment collapses near zero, verify that `jepa_loss` computes variance on raw latent vectors, not L2-normalized vectors.
 
+### v2.2 Topology and Feature Dropout Smoke Test
+
+Build external missing-gene masks from local public validation files:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/build_external_gene_masks.py
+```
+
+Current masks:
+
+```text
+GSE174367 / Morabito: 33 missing Graph-JEPA genes
+GSE138852 / Grubman: 331 missing Graph-JEPA genes
+```
+
+Run the v2.2 robustness smoke test on SEA-AD Microglia-PVM:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_graph_jepa_stage_a.py `
+  --h5ad data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad `
+  --epochs 5 `
+  --checkpoint-every 5 `
+  --max-cells 2000 `
+  --batch-size 8 `
+  --random-gene-dropout 0.15 `
+  --module-dropout-prob 0.10 `
+  --external-mask-files `
+      results/tables/external_gene_masks/gse174367_morabito_missing_genes.txt `
+      results/tables/external_gene_masks/gse138852_grubman_missing_genes.txt `
+  --external-mask-prob 0.25 `
+  --edge-dropout 0.10 `
+  --variance-gamma 0.02 `
+  --variance-weight 0.20 `
+  --covariance-weight 0.05 `
+  --out-dir results/models/v2_2_topology_dropout_test `
+  --log-dir runs/v2_2_topology_dropout_test `
+  --history-csv results/tables/v2_2_topology_dropout_test_history.csv `
+  --log-file results/logs/v2_2_topology_dropout_test.log `
+  --device auto
+```
+
+Interpretation of the current smoke run:
+
+```text
+loss: 0.0988 -> 0.0063
+effective dimensions: 9.4 -> 62.0
+top singular-value ratio: 0.381 -> 0.117
+```
+
+This means the augmented run completed and the latent geometry expanded rather than collapsing into a single tube. The earlier default `variance_gamma = 1.0` was too high for raw graph-pooled latent scale and tripped the collapse guard.
+
 Optional scheduler/covariance experiment inspired by foundation-scale GeneJEPA training:
 
 ```powershell

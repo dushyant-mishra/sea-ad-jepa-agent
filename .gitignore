@@ -33,6 +33,10 @@ results/tables/*
 !results/tables/perturbseq_streaming_validation.csv
 !results/tables/kampmann_deg_jepa_alignment_*.csv
 !results/tables/v2_1_gse174367_*.csv
+!results/tables/external_gene_masks/
+!results/tables/external_gene_masks/*.txt
+!results/tables/external_gene_masks/*.csv
+!results/tables/v2_2_topology_dropout*_history.csv
 !results/tables/v1_hypothesis_*.csv
 !results/tables/v1_jepa_63_decode.csv
 !results/tables/all_jepa_umap_variance_rankings.csv

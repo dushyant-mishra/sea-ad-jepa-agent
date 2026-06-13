@@ -144,6 +144,51 @@ figure:
   results/figures/v2_1_gse174367_at8_trajectory_by_tangle.svg
 ```
 
+Latest v2.2 robustness smoke test:
+
+```text
+objective:
+  harden Graph-JEPA against external feature mismatch before ingesting new cohorts
+
+implementation:
+  random expression-scalar dropout
+  module expression-scalar dropout
+  known external missing-gene mask simulation
+  context-only DropEdge
+  gene identity embeddings preserved
+  master STRING/consensus graph unchanged
+
+external masks generated from local files:
+  GSE174367 / Morabito: 33 missing genes
+  GSE138852 / Grubman: 331 missing genes
+
+script:
+  scripts/build_external_gene_masks.py
+  scripts/train_graph_jepa_stage_a.py
+
+smoke data:
+  SEA-AD Microglia-PVM, 2,000-cell cap
+
+successful run:
+  results/tables/v2_2_topology_dropout_test_history.csv
+```
+
+Smoke-test result:
+
+```text
+epoch 1 -> epoch 5:
+  loss: 0.0988 -> 0.0063
+  effective dimensions: 9.4 -> 62.0
+  top singular-value ratio: 0.381 -> 0.117
+  mean latent dimension std: 0.1246 -> 0.0027
+
+interpretation:
+  the augmented run completed without the collapse guard firing when using
+  graph-appropriate variance scaling (variance_gamma = 0.02)
+```
+
+Important lesson: the first aggressive smoke test with the default `variance_gamma = 1.0` tripped the collapse guard at epoch 5. That did not invalidate the augmentation design; it showed that raw graph-pooled latent scale is much smaller than the old variance floor assumed. v2.2 diagnostics should track effective dimensions and top singular-value ratio, not only raw variance penalty.
+
 Latest multi-target counterfactual stability pass:
 
 ```text
