@@ -19,6 +19,7 @@ data/external/
 results/
 logs/
 runs/
+outputs/
 *.log
 
 # Lightweight reproducibility artifacts
