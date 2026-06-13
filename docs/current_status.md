@@ -285,6 +285,51 @@ full 40,000-cell benchmark, batch 512:
 
 Interpretation: the fast trainer resolves the Phase 1 scaling bottleneck. Batch 256 is the current default, and the full 50-epoch Phase 1 pretraining run is now practical on the local RTX 3080 Laptop GPU.
 
+Latest Stage B domain-adversarial alignment scaffold:
+
+```text
+objective:
+  align SEA-AD, Rexach, and Olah microglia into a more cohort-invariant
+  latent space while preserving Graph-JEPA biological structure
+
+new files:
+  scripts/train_graph_jepa_stage_b_adversarial.py
+  configs/train/stage_b_adversarial.yaml
+
+inputs:
+  SEA-AD Microglia-PVM full cohort
+  Rexach cross-dementia microglia adapter
+  Olah live microglia adapter
+  Stage A fast Graph-JEPA checkpoint
+
+batching:
+  deterministic balanced batches
+  equal SEA-AD, Rexach, and Olah cells per update
+
+loss:
+  total = JEPA predictive loss + domain_loss_weight * domain classifier loss
+  domain classifier receives z through a Gradient Reversal Layer
+
+default freeze mode:
+  partial_encoder
+  unfreezes context encoder output layer and predictor
+```
+
+Smoke test:
+
+```text
+command:
+  python scripts/train_graph_jepa_stage_b_adversarial.py epochs=1 max_steps_per_epoch=2 per_domain_batch_size=8 checkpoint_every=0
+
+result:
+  completed
+  domain accuracy: 0.354
+  effective dimensions: 23.84
+  top singular-value ratio: 0.283
+```
+
+Interpretation: Stage B code is wired and ready. The smoke result only validates implementation mechanics; it is not a biological/domain-alignment result. The real Stage B run should start from the best completed Stage A fast checkpoint.
+
 Latest multi-target counterfactual stability pass:
 
 ```text

@@ -1,0 +1,50 @@
+defaults:
+  - _self_
+
+stage_a_checkpoint: results/models/v2_2_topology_dropout_full_e50_fast/fast_graph_jepa_epoch_005.pt
+
+sea_ad_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+rexach_h5ad: data/processed/v2_alignment/rexach_cross_dementia_microglia_jepa_aligned.h5ad
+olah_h5ad: data/processed/v2_alignment/olah_live_microglia_microglia_jepa_aligned.h5ad
+edge_csv: results/tables/v2_graph_consensus_edge_index.csv
+
+out_dir: results/models/v2_2_stage_b_adversarial
+log_dir: runs/v2_2_stage_b_adversarial
+history_csv: results/tables/v2_2_stage_b_adversarial_history.csv
+log_file: results/logs/v2_2_stage_b_adversarial.log
+
+epochs: 20
+checkpoint_every: 5
+per_domain_batch_size: 64
+max_steps_per_epoch: 0
+
+freeze_mode: partial_encoder
+domain_loss_weight: 0.1
+lambda_grl_max: 1.0
+
+mask_fraction: 0.5
+mask_start_fraction: 0.2
+mask_warmup_epochs: 5
+random_gene_dropout: 0.15
+module_dropout_prob: 0.10
+external_mask_files:
+  - results/tables/external_gene_masks/gse174367_morabito_missing_genes.txt
+  - results/tables/external_gene_masks/gse138852_grubman_missing_genes.txt
+external_mask_prob: 0.25
+edge_dropout: 0.10
+
+variance_weight: 0.20
+variance_gamma: 0.02
+covariance_weight: 0.05
+
+domain_hidden_dim: 128
+lr: 0.00005
+domain_lr: 0.0002
+weight_decay: 0.0001
+gradient_clip_val: 1.0
+device: auto
+seed: 7
+
+hydra:
+  job:
+    chdir: false

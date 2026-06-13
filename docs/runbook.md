@@ -871,6 +871,77 @@ Current benchmark:
 
 Use batch 256 as the current default. It is faster than batch 512 on the RTX 3080 Laptop GPU, likely because the larger graph-tensor batch increases memory pressure without improving throughput.
 
+Run Stage B domain-adversarial alignment:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_graph_jepa_stage_b_adversarial.py
+```
+
+Default config:
+
+```text
+configs/train/stage_b_adversarial.yaml
+```
+
+Purpose:
+
+```text
+SEA-AD + Rexach + Olah
+  -> balanced deterministic batches
+  -> FastGraphGeneJEPA encoder
+  -> JEPA loss preserves microglial structure
+  -> Gradient Reversal Layer removes cohort/domain identity
+```
+
+The Stage B script supports:
+
+```text
+freeze_mode:
+  frozen
+  partial_encoder
+  full
+
+domain_loss_weight:
+  default 0.1
+
+GRL lambda:
+  DANN warmup schedule
+  lambda_p = 2 / (1 + exp(-10p)) - 1
+```
+
+Tiny smoke test:
+
+```powershell
+python scripts/train_graph_jepa_stage_b_adversarial.py `
+  epochs=1 `
+  max_steps_per_epoch=2 `
+  per_domain_batch_size=8 `
+  checkpoint_every=0 `
+  out_dir=results/models/v2_2_stage_b_adversarial_smoke `
+  log_dir=runs/v2_2_stage_b_adversarial_smoke `
+  history_csv=results/tables/v2_2_stage_b_adversarial_smoke_history.csv `
+  log_file=results/logs/v2_2_stage_b_adversarial_smoke.log
+```
+
+Interpretation guardrails:
+
+```text
+domain_accuracy:
+  should move toward ~0.33 during successful three-domain alignment
+
+jepa_loss:
+  should remain stable, otherwise alignment is erasing biology
+
+effective_dims / top_sv_ratio:
+  should stay healthy; do not accept a domain-confused collapsed manifold
+
+centroid_l2_*:
+  domain centroids should shrink gradually, not snap to zero
+```
+
+Do not treat Stage B as biological discovery. It is an adapter that should reduce cohort identity before Stage C pathology-aware disease-vector training.
+
 Optional scheduler/covariance experiment inspired by foundation-scale GeneJEPA training:
 
 ```powershell
