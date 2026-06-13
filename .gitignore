@@ -37,6 +37,7 @@ results/tables/*
 !results/tables/external_gene_masks/*.txt
 !results/tables/external_gene_masks/*.csv
 !results/tables/v2_2_topology_dropout*_history.csv
+!results/tables/v2_2_cellxgene_alignment_stats.csv
 !results/tables/v1_hypothesis_*.csv
 !results/tables/v1_jepa_63_decode.csv
 !results/tables/all_jepa_umap_variance_rankings.csv
@@ -62,6 +63,7 @@ results/reports/*
 !results/reports/sea_ad_low_pathology_anchor_audit.md
 !results/reports/jepa_v2_translational_actionability.md
 !results/reports/external_validation_gse174367.md
+!results/reports/v2_2_cellxgene_alignment_stats.md
 !results/figures/
 results/figures/*
 !results/figures/*.svg

@@ -1,6 +1,6 @@
 # Current Status
 
-Last updated: 2026-06-07
+Last updated: 2026-06-13
 
 ## Executive Summary
 
@@ -188,6 +188,61 @@ interpretation:
 ```
 
 Important lesson: the first aggressive smoke test with the default `variance_gamma = 1.0` tripped the collapse guard at epoch 5. That did not invalidate the augmentation design; it showed that raw graph-pooled latent scale is much smaller than the old variance floor assumed. v2.2 diagnostics should track effective dimensions and top singular-value ratio, not only raw variance penalty.
+
+Latest v2.2 external-cohort adapter build:
+
+```text
+objective:
+  prepare public CELLxGENE cohorts for Phase 2 domain-alignment experiments
+
+script:
+  scripts/build_cellxgene_adapters.py
+
+raw local inputs:
+  data/external/cellxgene/rexach_cross_dementia.h5ad
+  data/external/cellxgene/olah_live_microglia.h5ad
+
+aligned local outputs:
+  data/processed/v2_alignment/rexach_cross_dementia_microglia_jepa_aligned.h5ad
+  data/processed/v2_alignment/olah_live_microglia_microglia_jepa_aligned.h5ad
+
+tracked summaries:
+  results/tables/v2_2_cellxgene_alignment_stats.csv
+  results/reports/v2_2_cellxgene_alignment_stats.md
+```
+
+Adapter rules:
+
+```text
+cell filter:
+  cell_type == "microglial cell"
+  or cell_type_ontology_term_id == "CL:0000129"
+
+feature alignment:
+  exact 2,957-gene Graph-JEPA order from the SEA-AD Phase 1 object
+  missing external genes are zero-filled
+  master STRING/consensus graph topology is not modified
+```
+
+Alignment result:
+
+```text
+Rexach cross-dementia:
+  microglia: 21,575
+  donors: 40
+  matched genes: 2,837 / 2,957
+  overlap: 95.9%
+  diseases: Alzheimer disease, PSP, Pick disease, normal
+
+Olah live microglia:
+  microglia: 16,099
+  donors: 17
+  matched genes: 2,846 / 2,957
+  overlap: 96.2%
+  diseases: Alzheimer disease, temporal lobe epilepsy
+```
+
+Interpretation: Phase 2 now has two public, Graph-JEPA-aligned external microglia cohorts ready for adapter training and domain-adversarial experiments. These are training/alignment resources, not final held-out validation cohorts.
 
 Latest multi-target counterfactual stability pass:
 

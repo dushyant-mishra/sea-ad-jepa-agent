@@ -1471,3 +1471,75 @@ JEPA embedding pathology prediction
 ```
 
 Do not claim causality. The first milestone is predictive association and interpretable hypothesis generation.
+
+## 8. Build CELLxGENE External Adapters
+
+Use this step to prepare public CELLxGENE cohorts for v2.2 domain-alignment experiments. These adapters do not alter the SEA-AD Graph-JEPA gene order or master graph topology.
+
+Raw CELLxGENE files are kept local and ignored by Git:
+
+```text
+data/external/cellxgene/rexach_cross_dementia.h5ad
+data/external/cellxgene/olah_live_microglia.h5ad
+```
+
+Current public CELLxGENE assets used:
+
+```text
+Rexach cross-dementia:
+  https://datasets.cellxgene.cziscience.com/aa87f914-07e0-48aa-b915-8de906c95baf.h5ad
+
+Olah live human microglia:
+  https://datasets.cellxgene.cziscience.com/dddc40f4-4969-4eb6-b5e9-b30f03ddd672.h5ad
+```
+
+Build aligned microglia-only H5AD adapters:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/build_cellxgene_adapters.py `
+  --rexach-h5ad data/external/cellxgene/rexach_cross_dementia.h5ad `
+  --olah-h5ad data/external/cellxgene/olah_live_microglia.h5ad
+```
+
+The adapter filters for CELLxGENE microglia using:
+
+```text
+cell_type == "microglial cell"
+or
+cell_type_ontology_term_id == "CL:0000129"
+```
+
+It then aligns each cohort to the exact 2,957-gene Graph-JEPA input order. Missing genes are zero-filled, because the v2.2 topology-dropout training explicitly teaches the encoder to handle structural feature absence.
+
+Expected aligned outputs:
+
+```text
+data/processed/v2_alignment/rexach_cross_dementia_microglia_jepa_aligned.h5ad
+data/processed/v2_alignment/olah_live_microglia_microglia_jepa_aligned.h5ad
+```
+
+Expected tracked summaries:
+
+```text
+results/tables/v2_2_cellxgene_alignment_stats.csv
+results/reports/v2_2_cellxgene_alignment_stats.md
+```
+
+Current adapter result:
+
+```text
+Rexach cross-dementia:
+  microglia: 21,575
+  donors: 40
+  matched genes: 2,837 / 2,957
+  overlap: 95.9%
+
+Olah live microglia:
+  microglia: 16,099
+  donors: 17
+  matched genes: 2,846 / 2,957
+  overlap: 96.2%
+```
+
+Use these aligned objects for the next domain-adversarial/adaptor phase. Do not treat them as final held-out biological validation if they are used during model alignment.
