@@ -809,6 +809,68 @@ top singular-value ratio: 0.381 -> 0.117
 
 This means the augmented run completed and the latent geometry expanded rather than collapsing into a single tube. The earlier default `variance_gamma = 1.0` was too high for raw graph-pooled latent scale and tripped the collapse guard.
 
+Fast shared-topology Phase 1 pretraining:
+
+The original PyG Stage A trainer is useful for architecture validation, but it is too slow for full-cohort topology-dropout pretraining because it materializes one graph per cell. Use the fast trainer for full Phase 1 runs. It batches expression as `[batch, genes]` and reuses one shared sparse gene adjacency.
+
+Hydra-configured full run:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_graph_jepa_stage_a_fast_hydra.py
+```
+
+Default config:
+
+```text
+configs/train/graph_jepa_stage_a_fast.yaml
+```
+
+The config preserves the successful gentle v2.2 augmentation recipe:
+
+```text
+random gene scalar dropout: 0.15
+module scalar dropout probability: 0.10
+external missing-gene mask probability: 0.25
+DropEdge: 0.10
+variance_gamma: 0.02
+variance_weight: 0.20
+covariance_weight: 0.05
+batch_size: 256
+epochs: 50
+```
+
+Useful Hydra overrides:
+
+```powershell
+python scripts/train_graph_jepa_stage_a_fast_hydra.py `
+  epochs=1 `
+  max_cells=2000 `
+  batch_size=256 `
+  out_dir=results/models/fast_smoke `
+  log_dir=runs/fast_smoke `
+  history_csv=results/tables/fast_smoke_history.csv `
+  log_file=results/logs/fast_smoke.log
+```
+
+Current benchmark:
+
+```text
+2,000-cell smoke, batch 256:
+  epoch time: 8.6 seconds
+  throughput: 231.5 cells/sec
+
+40,000-cell full epoch, batch 256:
+  epoch time: 171-175 seconds
+  throughput: 228-234 cells/sec
+
+40,000-cell full epoch, batch 512:
+  epoch time: 187.5 seconds
+  throughput: 213.3 cells/sec
+```
+
+Use batch 256 as the current default. It is faster than batch 512 on the RTX 3080 Laptop GPU, likely because the larger graph-tensor batch increases memory pressure without improving throughput.
+
 Optional scheduler/covariance experiment inspired by foundation-scale GeneJEPA training:
 
 ```powershell

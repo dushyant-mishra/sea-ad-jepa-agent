@@ -244,6 +244,47 @@ Olah live microglia:
 
 Interpretation: Phase 2 now has two public, Graph-JEPA-aligned external microglia cohorts ready for adapter training and domain-adversarial experiments. These are training/alignment resources, not final held-out validation cohorts.
 
+Latest Phase 1 scaling fix:
+
+```text
+problem:
+  the original PyG Stage A trainer was too slow for full 40,000-cell
+  topology-dropout pretraining because it materialized one graph per cell
+
+solution:
+  fast shared-topology Graph-JEPA trainer
+
+new files:
+  scripts/train_graph_jepa_stage_a_fast.py
+  scripts/train_graph_jepa_stage_a_fast_hydra.py
+  configs/train/graph_jepa_stage_a_fast.yaml
+
+architecture:
+  expression batch: [batch, 2,957 genes]
+  graph topology: one shared sparse gene adjacency
+  gene identity: learned embedding per gene
+  augmentations: vectorized expression-scalar masking, module masking,
+                 external missing-gene masks, and DropEdge
+```
+
+Benchmark:
+
+```text
+2,000-cell benchmark, batch 256:
+  8.6 sec/epoch
+  231.5 cells/sec
+
+full 40,000-cell benchmark, batch 256:
+  171-175 sec/epoch
+  228-234 cells/sec
+
+full 40,000-cell benchmark, batch 512:
+  187.5 sec/epoch
+  213.3 cells/sec
+```
+
+Interpretation: the fast trainer resolves the Phase 1 scaling bottleneck. Batch 256 is the current default, and the full 50-epoch Phase 1 pretraining run is now practical on the local RTX 3080 Laptop GPU.
+
 Latest multi-target counterfactual stability pass:
 
 ```text

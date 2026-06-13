@@ -188,3 +188,153 @@ class GraphGeneJEPA(nn.Module):
             if prediction_space == "projector":
                 target_z = self.target_projector(target_z)
         return pred_z, target_z
+
+
+class FastGraphGeneEncoder(nn.Module):
+    """Shared-topology Graph-JEPA encoder for batched expression tensors.
+
+    This encoder keeps the same biological ingredients as `GraphGeneEncoder`:
+
+    - node expression scalar and optional fixed node annotations
+    - learnable gene identity embedding
+    - graph message passing over a fixed gene adjacency
+
+    The difference is operational. Instead of materializing one PyG `Data`
+    object per cell, it consumes a dense expression batch shaped
+    `[batch, genes]` and a shared normalized sparse adjacency. This avoids the
+    Python/PyG batching overhead that dominates full-cohort Stage A training.
+    """
+
+    def __init__(
+        self,
+        n_genes: int,
+        node_feature_dim: int,
+        gene_embed_dim: int = 32,
+        hidden_dim: int = 128,
+        latent_dim: int = 128,
+        n_layers: int = 2,
+        dropout: float = 0.1,
+    ):
+        super().__init__()
+        if n_layers < 1:
+            raise ValueError("n_layers must be >= 1")
+        self.n_genes = n_genes
+        self.node_feature_dim = node_feature_dim
+        self.gene_embedding = nn.Embedding(n_genes, gene_embed_dim)
+        self.input_proj = nn.Sequential(
+            nn.Linear(node_feature_dim + gene_embed_dim, hidden_dim),
+            nn.LayerNorm(hidden_dim),
+            nn.GELU(),
+        )
+        self.self_linears = nn.ModuleList([nn.Linear(hidden_dim, hidden_dim) for _ in range(n_layers)])
+        self.neighbor_linears = nn.ModuleList([nn.Linear(hidden_dim, hidden_dim) for _ in range(n_layers)])
+        self.norms = nn.ModuleList([nn.LayerNorm(hidden_dim) for _ in range(n_layers)])
+        self.dropout = nn.Dropout(dropout)
+        self.out = nn.Linear(hidden_dim, latent_dim)
+
+    @staticmethod
+    def _aggregate(adj: torch.Tensor, h: torch.Tensor) -> torch.Tensor:
+        """Apply a shared sparse adjacency to batched node states."""
+
+        batch_size, n_nodes, hidden_dim = h.shape
+        flat = h.permute(1, 0, 2).reshape(n_nodes, batch_size * hidden_dim)
+        aggregated = torch.sparse.mm(adj, flat)
+        return aggregated.reshape(n_nodes, batch_size, hidden_dim).permute(1, 0, 2)
+
+    def forward(
+        self,
+        expression: torch.Tensor,
+        adj: torch.Tensor,
+        node_annotations: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        if expression.ndim != 2:
+            raise ValueError("expression must have shape [batch, genes]")
+        if expression.shape[1] != self.n_genes:
+            raise ValueError(f"expected {self.n_genes} genes, got {expression.shape[1]}")
+
+        x = expression.unsqueeze(-1)
+        if node_annotations is not None:
+            annotations = node_annotations.to(device=expression.device, dtype=expression.dtype)
+            x = torch.cat([x, annotations.unsqueeze(0).expand(expression.shape[0], -1, -1)], dim=-1)
+
+        node_ids = torch.arange(self.n_genes, device=expression.device)
+        gene_id = self.gene_embedding(node_ids).unsqueeze(0).expand(expression.shape[0], -1, -1)
+        h = self.input_proj(torch.cat([x, gene_id], dim=-1))
+        for self_linear, neighbor_linear, norm in zip(self.self_linears, self.neighbor_linears, self.norms):
+            residual = h
+            neighbor_h = self._aggregate(adj, h)
+            h = self_linear(h) + neighbor_linear(neighbor_h)
+            h = norm(h)
+            h = F.gelu(h)
+            h = self.dropout(h)
+            h = h + residual
+        return self.out(h.mean(dim=1))
+
+
+class FastGraphGeneJEPA(nn.Module):
+    """EMA-target Graph-JEPA using the shared-topology fast encoder."""
+
+    def __init__(
+        self,
+        n_genes: int,
+        node_feature_dim: int,
+        gene_embed_dim: int = 32,
+        hidden_dim: int = 128,
+        latent_dim: int = 128,
+        n_layers: int = 2,
+        dropout: float = 0.1,
+        ema_decay: float = 0.996,
+    ):
+        super().__init__()
+        self.ema_decay = ema_decay
+        self.context_encoder = FastGraphGeneEncoder(
+            n_genes=n_genes,
+            node_feature_dim=node_feature_dim,
+            gene_embed_dim=gene_embed_dim,
+            hidden_dim=hidden_dim,
+            latent_dim=latent_dim,
+            n_layers=n_layers,
+            dropout=dropout,
+        )
+        self.target_encoder = copy.deepcopy(self.context_encoder)
+        for param in self.target_encoder.parameters():
+            param.requires_grad = False
+        self.predictor = nn.Sequential(
+            nn.Linear(latent_dim, hidden_dim),
+            nn.LayerNorm(hidden_dim),
+            nn.GELU(),
+            nn.Linear(hidden_dim, latent_dim),
+        )
+
+    @torch.no_grad()
+    def update_target_network(self) -> None:
+        for context_param, target_param in zip(self.context_encoder.parameters(), self.target_encoder.parameters()):
+            target_param.data.mul_(self.ema_decay).add_(context_param.data, alpha=1.0 - self.ema_decay)
+
+    def reset_target_network(self) -> None:
+        self.target_encoder.load_state_dict(self.context_encoder.state_dict())
+        for param in self.target_encoder.parameters():
+            param.requires_grad = False
+
+    @torch.no_grad()
+    def encode_raw(
+        self,
+        expression: torch.Tensor,
+        adj: torch.Tensor,
+        node_annotations: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        return self.context_encoder(expression, adj, node_annotations=node_annotations)
+
+    def forward(
+        self,
+        context_expression: torch.Tensor,
+        target_expression: torch.Tensor,
+        context_adj: torch.Tensor,
+        target_adj: torch.Tensor,
+        node_annotations: torch.Tensor | None = None,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        context_z = self.context_encoder(context_expression, context_adj, node_annotations=node_annotations)
+        pred_z = self.predictor(context_z)
+        with torch.no_grad():
+            target_z = self.target_encoder(target_expression, target_adj, node_annotations=node_annotations)
+        return pred_z, target_z
