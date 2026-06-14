@@ -36,6 +36,7 @@ from scripts.train_graph_jepa_stage_a_fast import (
 
 
 DOMAIN_NAMES = ("sea_ad", "rexach", "olah")
+STATE_NAMES = ("reference_like", "disease_like", "unknown")
 
 
 class GradientReversal(torch.autograd.Function):
@@ -68,13 +69,67 @@ class DomainClassifier(nn.Module):
         return self.net(z)
 
 
-def load_dense_matrix(path: str) -> tuple[torch.Tensor, list[str]]:
+def load_dense_matrix(path: str) -> tuple[torch.Tensor, list[str], pd.DataFrame]:
     adata = ad.read_h5ad(path)
     x = adata.X
     if sparse.issparse(x):
         x = x.toarray()
     x = np.asarray(x, dtype=np.float32)
-    return torch.from_numpy(x), adata.var_names.astype(str).tolist()
+    obs = adata.obs.copy()
+    return torch.from_numpy(x), adata.var_names.astype(str).tolist(), obs
+
+
+def infer_stage_b_states(domain_name: str, obs: pd.DataFrame) -> pd.Series:
+    """Infer coarse disease states for safe domain-adversarial alignment.
+
+    The GRL should remove cohort/assay identity among comparable biological
+    states. It should not force severe AD cells to overlap with non-demented
+    surgical/reference cells, so we use conservative metadata-derived strata.
+    """
+
+    states = pd.Series("unknown", index=obs.index, dtype="object")
+    domain_name = domain_name.lower()
+    if domain_name == "sea_ad":
+        adnc = obs.get("Overall AD neuropathological Change")
+        braak = obs.get("Braak")
+        cognitive = obs.get("Cognitive Status")
+        if adnc is not None:
+            adnc_norm = adnc.astype(str).str.lower()
+            states.loc[adnc_norm.isin(["not ad", "low", "reference"])] = "reference_like"
+            states.loc[adnc_norm.isin(["intermediate", "high"])] = "disease_like"
+        if braak is not None:
+            braak_norm = braak.astype(str).str.lower()
+            states.loc[braak_norm.isin(["braak 0", "braak i", "braak ii", "reference"])] = "reference_like"
+            states.loc[braak_norm.isin(["braak iv", "braak v", "braak vi"])] = "disease_like"
+        if cognitive is not None:
+            cog_norm = cognitive.astype(str).str.lower()
+            states.loc[(states == "unknown") & cog_norm.isin(["no dementia", "reference"])] = "reference_like"
+            states.loc[(states == "unknown") & cog_norm.eq("dementia")] = "disease_like"
+    else:
+        disease = obs.get("disease")
+        if disease is not None:
+            disease_norm = disease.astype(str).str.lower()
+            states.loc[disease_norm.isin(["normal", "temporal lobe epilepsy"])] = "reference_like"
+            states.loc[
+                disease_norm.isin(
+                    [
+                        "alzheimer disease",
+                        "progressive supranuclear palsy",
+                        "pick disease",
+                        "frontotemporal dementia",
+                    ]
+                )
+            ] = "disease_like"
+    return states
+
+
+def select_state_mask(states: pd.Series, alignment_state: str) -> np.ndarray:
+    alignment_state = alignment_state.lower()
+    if alignment_state == "all":
+        return np.ones(len(states), dtype=bool)
+    if alignment_state not in STATE_NAMES:
+        raise ValueError(f"alignment_state must be one of: all, {', '.join(STATE_NAMES)}")
+    return states.to_numpy() == alignment_state
 
 
 def cycle_loader(loader: DataLoader):
@@ -166,13 +221,26 @@ def main(cfg: DictConfig) -> None:
 
     matrices = []
     genes_by_domain = []
-    for path in (cfg.sea_ad_h5ad, cfg.rexach_h5ad, cfg.olah_h5ad):
-        matrix, genes = load_dense_matrix(str(path))
-        matrices.append(matrix)
+    state_summaries = []
+    for domain_name, path in zip(DOMAIN_NAMES, (cfg.sea_ad_h5ad, cfg.rexach_h5ad, cfg.olah_h5ad), strict=True):
+        matrix, genes, obs = load_dense_matrix(str(path))
+        states = infer_stage_b_states(domain_name, obs)
+        state_counts = states.value_counts(dropna=False).to_dict()
+        state_summaries.append({"domain": domain_name, **{f"state_{k}": int(v) for k, v in state_counts.items()}})
+        mask = select_state_mask(states, str(cfg.alignment_state))
+        if not mask.any():
+            raise ValueError(
+                f"No cells selected for domain={domain_name!r} with alignment_state={cfg.alignment_state!r}. "
+                f"Available state counts: {state_counts}"
+            )
+        matrices.append(matrix[torch.from_numpy(mask)])
         genes_by_domain.append(genes)
     if any(genes != genes_by_domain[0] for genes in genes_by_domain[1:]):
         raise ValueError("All Stage B H5AD inputs must already be aligned to the exact same gene order")
     gene_names = genes_by_domain[0]
+    print(f"Stage B alignment_state={cfg.alignment_state}")
+    for summary, matrix in zip(state_summaries, matrices, strict=True):
+        print(f"  {summary['domain']}: selected={matrix.shape[0]:,} state_counts={summary}")
 
     loaders = [
         DataLoader(
@@ -204,6 +272,10 @@ def main(cfg: DictConfig) -> None:
         log_handle = log_path.open("w", encoding="utf-8")
         log_handle.write("Graph-JEPA Stage B domain-adversarial training log\n")
         log_handle.write(OmegaConf.to_yaml(cfg, resolve=True))
+        log_handle.write("\n")
+        log_handle.write("State-aware alignment summaries:\n")
+        for summary, matrix in zip(state_summaries, matrices, strict=True):
+            log_handle.write(f"  {summary['domain']}: selected={matrix.shape[0]} state_counts={summary}\n")
         log_handle.write("\n")
 
     def save_checkpoint(path: Path) -> None:
@@ -325,6 +397,10 @@ def main(cfg: DictConfig) -> None:
             "jepa_loss": float(np.mean(jepa_losses)),
             "domain_loss": float(np.mean(domain_losses)),
             "domain_accuracy": float(domain_correct / max(domain_total, 1)),
+            "alignment_state": str(cfg.alignment_state),
+            "selected_sea_ad_cells": int(matrices[0].shape[0]),
+            "selected_rexach_cells": int(matrices[1].shape[0]),
+            "selected_olah_cells": int(matrices[2].shape[0]),
             "lambda_grl": float(np.mean(lambdas)) if lambdas else 0.0,
             "mask_fraction": current_mask_fraction,
             "epoch_seconds": epoch_seconds,

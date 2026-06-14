@@ -888,11 +888,27 @@ Purpose:
 
 ```text
 SEA-AD + Rexach + Olah
-  -> balanced deterministic batches
+  -> state-aware, balanced deterministic batches
   -> FastGraphGeneJEPA encoder
   -> JEPA loss preserves microglial structure
-  -> Gradient Reversal Layer removes cohort/domain identity
+  -> Gradient Reversal Layer removes cohort/domain identity within comparable biology
 ```
+
+Default Stage B alignment is intentionally conservative:
+
+```text
+alignment_state:
+  reference_like
+
+reference_like means:
+  SEA-AD low / Not AD / reference-like cells
+  Rexach normal cells
+  Olah temporal-lobe-epilepsy / non-AD reference cells
+```
+
+This avoids the "forced overlap" failure mode. Do not globally adversarially
+align all disease-loaded and non-disease cohorts unless the experiment is
+explicitly designed to test that failure mode.
 
 The Stage B script supports:
 
@@ -901,6 +917,12 @@ freeze_mode:
   frozen
   partial_encoder
   full
+
+alignment_state:
+  reference_like
+  disease_like
+  unknown
+  all
 
 domain_loss_weight:
   default 0.1
@@ -928,7 +950,7 @@ Interpretation guardrails:
 
 ```text
 domain_accuracy:
-  should move toward ~0.33 during successful three-domain alignment
+  should move toward ~0.33 during successful three-domain alignment within the selected state
 
 jepa_loss:
   should remain stable, otherwise alignment is erasing biology

@@ -305,6 +305,7 @@ inputs:
 batching:
   deterministic balanced batches
   equal SEA-AD, Rexach, and Olah cells per update
+  state-aware adversarial alignment by default
 
 loss:
   total = JEPA predictive loss + domain_loss_weight * domain classifier loss
@@ -313,6 +314,14 @@ loss:
 default freeze mode:
   partial_encoder
   unfreezes context encoder output layer and predictor
+
+default alignment state:
+  reference_like
+
+reference-like cells selected for the Stage B smoke test:
+  SEA-AD: 6,263 low/Not-AD/reference-like cells
+  Rexach: 3,605 normal cells
+  Olah: 2,013 temporal-lobe-epilepsy/non-AD reference cells
 ```
 
 Smoke test:
@@ -323,12 +332,13 @@ command:
 
 result:
   completed
+  alignment state: reference_like
   domain accuracy: 0.354
-  effective dimensions: 23.84
-  top singular-value ratio: 0.283
+  effective dimensions: 20.15
+  top singular-value ratio: 0.338
 ```
 
-Interpretation: Stage B code is wired and ready. The smoke result only validates implementation mechanics; it is not a biological/domain-alignment result. The real Stage B run should start from the best completed Stage A fast checkpoint.
+Interpretation: Stage B code is wired and ready, with a guardrail against the "forced overlap" failure mode. The GRL now removes cohort identity among comparable reference-like cells rather than forcing heavily diseased SEA-AD/Rexach cells to overlap with non-AD surgical/reference cells. The smoke result only validates implementation mechanics; it is not a biological/domain-alignment result. The real Stage B run should start from the selected Stage A fast checkpoint.
 
 Latest Stage C counterfactual scoring upgrade:
 

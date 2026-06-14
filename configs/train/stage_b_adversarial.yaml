@@ -21,6 +21,7 @@ max_steps_per_epoch: 0
 freeze_mode: partial_encoder
 domain_loss_weight: 0.1
 lambda_grl_max: 1.0
+alignment_state: reference_like # reference_like | disease_like | unknown | all
 
 mask_fraction: 0.5
 mask_start_fraction: 0.2
