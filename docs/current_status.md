@@ -340,6 +340,38 @@ result:
 
 Interpretation: Stage B code is wired and ready, with a guardrail against the "forced overlap" failure mode. The GRL now removes cohort identity among comparable reference-like cells rather than forcing heavily diseased SEA-AD/Rexach cells to overlap with non-AD surgical/reference cells. The smoke result only validates implementation mechanics; it is not a biological/domain-alignment result. The real Stage B run should start from the selected Stage A fast checkpoint.
 
+Full Stage B reference-like run:
+
+```text
+checkpoint:
+  results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt
+
+history:
+  results/tables/v2_2_stage_b_adversarial_history.csv
+
+checkpoint ranking:
+  results/tables/v2_2_stage_b_adversarial_checkpoint_ranking.csv
+```
+
+Final epoch:
+
+```text
+epoch: 20
+alignment_state: reference_like
+selected cells:
+  SEA-AD: 6,263
+  Rexach: 3,605
+  Olah: 2,013
+loss: 0.085567
+JEPA loss: 0.009913
+domain loss: 0.756541
+domain accuracy: 0.625
+effective dimensions: 64.58
+top singular-value ratio: 0.141
+```
+
+Interpretation: the state-aware Stage B run preserved a broad latent manifold, but it did not achieve strong domain confusion. Domain accuracy remained around 0.62 rather than approaching the three-domain chance level of 0.33. Treat this as a biologically safer partial adapter, not as solved cohort invariance. The next diagnostic should increase alignment pressure carefully, for example `domain_loss_weight=0.2-0.3` or `freeze_mode=full`, while monitoring JEPA loss and effective dimensions for biological collapse.
+
 Latest Stage C counterfactual scoring upgrade:
 
 ```text
