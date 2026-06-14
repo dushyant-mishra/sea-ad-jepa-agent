@@ -1,0 +1,2 @@
+model,target,oof_spearman,n_donors,n_cells,n_splits,epochs,hidden_dim,dropout,lr,weight_decay,max_cells_per_bag
+gated_attention_mil,percent 6e10 positive area_Grey matter,-0.09656778374000202,84,40000,5,120,32,0.05,0.0001,0.0001,1024

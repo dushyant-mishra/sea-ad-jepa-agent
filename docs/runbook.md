@@ -1977,3 +1977,58 @@ top-50 DGE overlap with canonical APOE/C1Q/TREM2/SPP1 plaque/DAM marker set:
 ```
 
 Interpretation: the sparse A beta axis is useful as a donor-level amyloid-associated readout, but the top cells are not currently validated as canonical plaque-proximal microglia. Keep the claim bounded unless spatial/plaque-proximity validation becomes available.
+
+## 13. Train a Gated-Attention MIL A Beta Head
+
+This experiment tests whether donor-level 6e10 is better modeled as a multiple-instance learning problem: each donor is a bag of microglia, and the model learns which cells in the bag explain amyloid burden.
+
+The MIL head is deliberately small and interpretable:
+
+```text
+src/sea_ad_jepa/mil_head.py
+```
+
+Run the default MIL experiment:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/train_abeta_mil_head.py `
+  --epochs 80 `
+  --print-every 20 `
+  --max-cells-per-bag 512
+```
+
+Run the smaller stabilized variant:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/train_abeta_mil_head.py `
+  --epochs 120 `
+  --print-every 30 `
+  --max-cells-per-bag 1024 `
+  --dropout 0.05 `
+  --lr 0.0001 `
+  --weight-decay 0.0001 `
+  --hidden-dim 32 `
+  --metrics-out results/tables/v2_2_abeta_mil_head_stable_metrics.csv `
+  --predictions-out results/tables/v2_2_abeta_mil_head_stable_oof_predictions.csv `
+  --attention-out results/tables/v2_2_abeta_mil_head_stable_attention.csv `
+  --out-dir results/models/v2_2_abeta_mil_head_stable
+```
+
+Current result:
+
+```text
+default MIL OOF Spearman:    -0.147
+stabilized MIL OOF Spearman: -0.097
+```
+
+Interpretation: the MIL machinery runs and exports attention weights, but the current head does not generalize for 6e10. Do not interpret high-attention cells biologically unless a future MIL configuration passes the donor-held-out prediction gate.
+
+If a future MIL head passes the prediction gate, validate attention biology with:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/validate_abeta_mil_biology.py `
+  --attention results/tables/v2_2_abeta_mil_head_attention.csv
+```

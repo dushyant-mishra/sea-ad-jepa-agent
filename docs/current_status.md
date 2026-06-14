@@ -2812,6 +2812,43 @@ Top DGE genes in the A beta-axis-high cells included `BRAF`, `PPP2R5E`, `EXOC4`,
 
 Interpretation: the A beta axis is strongly donor-level 6e10-associated when projected over all cells, but the top-scoring cells do not look like a canonical APOE/C1Q/TREM2/SPP1 plaque-proximal DAM/PIG state under this DGE test. The safest claim is that Graph-JEPA recovered a sparse amyloid-associated latent program, not a validated plaque-responsive microglial subtype. A spatial or plaque-proximity dataset would be needed to upgrade this to a true plaque-triggered-cell claim.
 
+## Gated-Attention MIL A Beta Test
+
+The next hypothesis was that donor-level mean pooling may hide a small plaque-responsive subset of microglia. A classic gated-attention MIL head was added on top of frozen Stage B single-cell embeddings to learn which cells in each donor bag best explain 6e10.
+
+```text
+MIL module:
+  src/sea_ad_jepa/mil_head.py
+
+training script:
+  scripts/train_abeta_mil_head.py
+
+biology validation script:
+  scripts/validate_abeta_mil_biology.py
+```
+
+Two donor-held-out MIL runs were tested:
+
+```text
+default MIL:
+  epochs: 80
+  hidden_dim: 64
+  dropout: 0.25
+  lr: 3e-4
+  max_cells_per_bag: 512
+  OOF Spearman: -0.147
+
+stabilized smaller MIL:
+  epochs: 120
+  hidden_dim: 32
+  dropout: 0.05
+  lr: 1e-4
+  max_cells_per_bag: 1024
+  OOF Spearman: -0.097
+```
+
+Interpretation: the MIL implementation runs on the frozen Graph-JEPA embeddings and exports cell attention weights, but the current attention head does not learn a reliable donor-level 6e10 predictor. Since the predictive gate fails, its attention weights should not be used for biological claims yet. The stronger current amyloid result remains the frozen ElasticNet A beta axis, with the caveat that it tracks donor 6e10 without matching canonical early/late PIG markers.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.
