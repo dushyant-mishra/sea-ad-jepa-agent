@@ -2652,6 +2652,95 @@ MLP head:
 
 Interpretation: the frozen Stage B backbone already contains a strong, linearly decodable AT8/NeuN signal. This is the best evidence so far for pausing encoder fine-tuning: the pathology signal is present, and forcing the encoder to contort around donor-level labels has repeatedly damaged geometry. The linear pathology head is currently the preferred Stage C readout.
 
+## Pathology-Head Counterfactuals
+
+Counterfactual scoring was updated to keep the graph encoder in the loop. The new scorer does not multiply gene deltas directly by pathology-head weights. Instead it uses:
+
+```text
+baseline expression -> frozen FastGraph-JEPA encoder -> frozen linear pathology head
+perturbed expression -> frozen FastGraph-JEPA encoder -> frozen linear pathology head
+delta = perturbed pathology prediction - baseline pathology prediction
+```
+
+Script:
+
+```text
+scripts/pathology_head_counterfactual_knockout.py
+```
+
+Conservative `global_mean` module screen outputs:
+
+```text
+results/tables/pathology_head_module_counterfactual_summary.csv
+results/tables/pathology_head_module_counterfactual_donor.csv
+```
+
+Focused gene screen outputs:
+
+```text
+results/tables/pathology_head_gene_counterfactual_summary.csv
+results/tables/pathology_head_gene_counterfactual_donor.csv
+```
+
+Top focused gene results under `global_mean` intervention:
+
+```text
+AT8-lowering:
+  APOE  -0.035
+  APP   -0.035
+  CSF1R -0.028
+  CD4   -0.027
+  TLR2  -0.026
+  STAT3 -0.024
+
+cleaner AT8-down / NeuN-up candidates:
+  TLR2
+  APP
+  CD4
+  APOE
+
+manifold violation fraction:
+  0.0 for all focused genes and modules
+```
+
+Interpretation: these are graph-mediated, pathology-head-scored hypotheses. The `global_mean` intervention is deliberately conservative and produces small latent shifts, so these rankings should be treated as prioritization hints rather than strong CRISPRi simulations.
+
+## A Beta / 6e10 Forked-Backbone Gate
+
+A dedicated amyloid fork was tested because the frozen Stage B linear head only weakly decoded 6e10 (`Spearman = 0.183`). The fork followed a strict CV-first protocol with geometry safety gates:
+
+```text
+min_effective_dims: 20.0
+max_top_sv_ratio: 0.35
+source checkpoint:
+  results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt
+
+target:
+  percent 6e10 positive area_Grey matter
+
+record:
+  results/tables/v2_2_ft_abeta_cv_gate_failure.csv
+```
+
+Result: the A beta fork failed the CV gate in fold 1.
+
+```text
+epoch 1:
+  validation Spearman: -0.039
+  effective dims: 39.97
+  top SV ratio: 0.273
+
+epoch 5:
+  validation Spearman: -0.076
+  effective dims: 32.14
+  top SV ratio: 0.337
+
+epoch 6:
+  aborted by geometry safety gate
+```
+
+Interpretation: the fork started with weak/negative validation signal and compressed geometry toward the top-singular-vector limit. Full-dataset A beta training and A beta-specific counterfactuals were not run. The result supports keeping the main frozen Stage B backbone as the active representation and not forcing a 6e10-specific encoder branch with this setup.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.
@@ -2659,7 +2748,7 @@ The first attempted microglia-specific extraction was slow because microglia row
 ## Next Steps
 
 1. Treat the frozen Stage B encoder plus linear pathology head as the active Stage C readout.
-2. Update counterfactual scoring to use predicted pathology delta from the frozen encoder + pathology head, not only latent centroid distance.
-3. Use MLP heads only as a secondary comparison; the first MLP underperformed the linear head.
-4. Avoid encoder fine-tuning unless a future validation experiment proves the frozen representation lacks the needed signal.
+2. Use pathology-head counterfactuals for AT8/NeuN-oriented hypothesis ranking, while keeping manifold-safety columns in every report.
+3. Do not proceed with the current A beta fork; it failed the CV geometry gate.
+4. If amyloid remains a priority, try a safer amyloid readout first: frozen encoder plus regularized target-specific head, amyloid-specific module scores, or multimodal plaque/spatial validation rather than encoder fine-tuning.
 5. Keep external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.
