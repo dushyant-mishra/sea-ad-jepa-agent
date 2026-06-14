@@ -150,7 +150,7 @@ def pathology_matrix(obs: pd.DataFrame, donor_column: str, target_columns: list[
     return torch.as_tensor(values, dtype=torch.float32)
 
 
-def main() -> None:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Fast Stage C Graph-JEPA disease fine-tuning with safety gates.")
     parser.add_argument("--checkpoint", default="results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt")
     parser.add_argument("--disease-h5ad", default="data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad")
@@ -207,8 +207,10 @@ def main() -> None:
     parser.add_argument("--max-embedding-top-sv-ratio", type=float, default=0.2)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--seed", type=int, default=7)
-    args = parser.parse_args()
+    return parser
 
+
+def run(args: argparse.Namespace) -> None:
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     rng = np.random.default_rng(args.seed)
@@ -404,5 +406,12 @@ def main() -> None:
     print(f"Wrote history to {history_path}")
 
 
+def main() -> None:
+    parser = build_parser()
+    args = parser.parse_args()
+    run(args)
+
+
 if __name__ == "__main__":
     main()
+

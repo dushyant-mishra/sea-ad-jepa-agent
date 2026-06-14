@@ -1,0 +1,74 @@
+defaults:
+  - _self_
+
+checkpoint: results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt
+
+disease_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+sea_anchor_h5ad: data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pvm_relaxed_jepa_aligned.h5ad
+cellxgene_anchor_h5ad: data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad
+edge_csv: results/tables/v2_graph_consensus_edge_index.csv
+
+out_dir: results/models/v2_2_fast_stage_c_supcon
+log_dir: runs/v2_2_fast_stage_c_supcon
+history_out: results/tables/v2_2_fast_stage_c_supcon_history.csv
+
+epochs: 20
+checkpoint_every: 5
+disease_batch_size: 256
+anchor_batch_size: 128
+max_steps_per_epoch: 0
+
+mask_start_fraction: 0.2
+mask_fraction: 0.5
+mask_warmup_epochs: 5
+ema_start_decay: 0.995
+ema_decay: 0.9995
+ema_warmup_epochs: 5
+
+random_gene_dropout: 0.15
+module_dropout_prob: 0.10
+external_mask_files:
+  - results/tables/external_gene_masks/gse174367_morabito_missing_genes.txt
+  - results/tables/external_gene_masks/gse138852_grubman_missing_genes.txt
+external_mask_prob: 0.25
+edge_dropout: 0.10
+
+# Rehearsal anchors — relaxed to let the encoder move
+sea_rehearsal_weight: 0.001
+cellxgene_rehearsal_weight: 0.001
+rehearsal_margin: 0.85
+rehearsal_temperature: 100.0
+
+variance_weight: 1.0
+variance_gamma: 1.0
+covariance_weight: 0.0
+disease_covariance_weight: 0.0005
+
+# SupCon pathology loss
+pathology_contrastive_weight: 1.0
+pathology_contrastive_warmup_epochs: 5
+pathology_contrastive_temperature: 2.0
+pathology_latent_temperature: 0.1
+pathology_contrastive_targets:
+  - "percent AT8 positive area_Grey matter"
+  - "percent NeuN positive area_Grey matter"
+
+pathology_targets_path: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+pathology_target_columns_path: data/processed/metadata/pathology_target_columns.csv
+donor_column: "Donor ID"
+
+# Learning rates — unfrozen encoder to let SupCon gradients propagate
+base_lr: 0.000005     # 5e-6 (graph reader)
+lr: 0.00005           # 5e-5 (head/predictor)
+weight_decay: 0.0001
+gradient_clip_val: 1.0
+
+safety_gate_start_epoch: 6
+min_embedding_effective_dims: 50.0
+max_embedding_top_sv_ratio: 0.2
+device: auto
+seed: 7
+
+hydra:
+  job:
+    chdir: false

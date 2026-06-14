@@ -1744,3 +1744,128 @@ Olah live microglia:
 ```
 
 Use these aligned objects for the next domain-adversarial/adaptor phase. Do not treat them as final held-out biological validation if they are used during model alignment.
+
+## 9. Fast Stage C Disease Training (SupCon)
+
+The fast Stage C disease trainer fine-tunes the Stage B encoder with a Supervised Contrastive (SupCon) pathology loss while maintaining geometry safety gates and rehearsal anchors.
+
+Hydra-configured training:
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts/train_fast_graph_jepa_stage_c_disease_hydra.py
+```
+
+Default config:
+
+```text
+configs/train/fast_stage_c_supcon.yaml
+```
+
+Key parameters in the default config:
+
+```text
+loss: SupCon (continuous supervised contrastive)
+pathology_contrastive_weight: 1.0
+pathology_contrastive_temperature: 2.0
+pathology_latent_temperature: 0.1
+
+learning rates (unfrozen encoder):
+  base_lr: 5e-6 (graph reader)
+  lr: 5e-5 (head/predictor)
+
+rehearsal anchors (relaxed):
+  sea_rehearsal_weight: 0.001
+  cellxgene_rehearsal_weight: 0.001
+  rehearsal_margin: 0.85
+
+safety gates:
+  min_embedding_effective_dims: 50.0
+  max_embedding_top_sv_ratio: 0.2
+  safety_gate_start_epoch: 6
+```
+
+Useful Hydra overrides:
+
+```powershell
+python scripts/train_fast_graph_jepa_stage_c_disease_hydra.py \
+  epochs=10 \
+  base_lr=0.00001 \
+  lr=0.0001 \
+  out_dir=results/models/fast_stage_c_experiment \
+  log_dir=runs/fast_stage_c_experiment \
+  history_out=results/tables/fast_stage_c_experiment_history.csv
+```
+
+Direct argparse invocation (without Hydra):
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/train_fast_graph_jepa_stage_c_disease.py `
+  --checkpoint results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt `
+  --base-lr 5e-6 `
+  --lr 5e-5 `
+  --sea-rehearsal-weight 0.001 `
+  --cellxgene-rehearsal-weight 0.001 `
+  --pathology-contrastive-weight 1.0 `
+  --pathology-contrastive-temperature 2.0 `
+  --pathology-latent-temperature 0.1 `
+  --epochs 10 `
+  --checkpoint-every 5 `
+  --out-dir results/models/v2_2_fast_stage_c_supcon_unfrozen_e10 `
+  --log-dir runs/v2_2_fast_stage_c_supcon_unfrozen_e10 `
+  --history-out results/tables/v2_2_fast_stage_c_supcon_unfrozen_e10_history.csv
+```
+
+### Important: Gradient Absorption Lesson
+
+The original fast Stage C trainer used `base_lr=1e-6` and `head_lr=2e-5` (a 20x gap). This caused the fast-moving head to absorb the SupCon gradients entirely, leaving the context encoder frozen solid. The Ridge Spearman numbers were numerically identical across Stage B, dead-gradient smoke, and SupCon smoke checkpoints.
+
+Fix: Close the LR gap (`base_lr=5e-6`, `head_lr=5e-5`, a 10x gap) and relax rehearsal weights from `0.0045` to `0.001` so the encoder has permission to move.
+
+## 10. Evaluate Fast Stage C Checkpoints
+
+Run the embedding extractor and pathology evaluator:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/evaluate_fast_stage_c.py `
+  --checkpoint <path_to_checkpoint.pt> `
+  --label "descriptive label"
+```
+
+The evaluator:
+- Loads a `FastGraphGeneJEPA` checkpoint
+- Encodes all ~40,000 SEA-AD Microglia-PVM cells through the frozen context encoder
+- Pools to donor level (mean aggregation)
+- Scores against all 5 IHC pathology targets using Ridge (linear) and distance-weighted cosine kNN (manifold)
+- Appends results to `results/tables/v2_2_fast_stage_c_evaluation.csv`
+
+Default targets:
+
+```text
+percent AT8 positive area_Grey matter
+percent NeuN positive area_Grey matter
+percent GFAP positive area_Grey matter
+percent Iba1 positive area_Grey matter
+percent 6e10 positive area_Grey matter
+```
+
+### Fast Stage C Evaluation Results (2026-06-14)
+
+Three-checkpoint comparison ladder:
+
+```text
+Checkpoint                              | AT8 Ridge | AT8 kNN | NeuN Ridge | NeuN kNN | GFAP Ridge | GFAP kNN | Iba1 Ridge | Iba1 kNN | 6e10 Ridge | 6e10 kNN | Eff Dims
+Stage B adapter (no disease)            |     0.127 |   0.047 |      0.267 |    0.028 |     -0.257 |   -0.121 |      0.185 |    0.044 |     -0.163 |   -0.033 |    41.00
+Safety smoke (dead pathology loss)      |     0.127 |   0.100 |      0.266 |    0.231 |     -0.256 |   -0.204 |      0.161 |   -0.007 |     -0.162 |    0.028 |    39.70
+SupCon smoke (active loss, frozen enc)  |     0.127 |  -0.152 |      0.266 |    0.095 |     -0.256 |   -0.264 |      0.161 |    0.035 |     -0.162 |   -0.060 |    39.69
+```
+
+Interpretation:
+
+- Ridge Spearman was identical across all three checkpoints, proving the context encoder did not move.
+- kNN degraded under SupCon because the frozen encoder could not follow the head's contortions.
+- This is the gradient absorption failure: the 20x LR gap let the head absorb all SupCon gradients without teaching the encoder anything.
+- Fix: unfrozen encoder run with relaxed LR gap and reduced rehearsal weights.
+

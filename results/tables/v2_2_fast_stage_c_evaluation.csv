@@ -1,0 +1,16 @@
+checkpoint,target,ridge_spearman,cosine_knn_spearman,valid_donors,effective_dims,top_sv_ratio
+Stage B adapter (no disease),percent AT8 positive area_Grey matter,0.127488103675205,0.0469575782120076,84,40.99702835083008,0.2657946348190307
+Stage B adapter (no disease),percent NeuN positive area_Grey matter,0.2667206641692821,0.0278424622861192,84,40.99702835083008,0.2657946348190307
+Stage B adapter (no disease),percent GFAP positive area_Grey matter,-0.2566568796193176,-0.1213728865039991,84,40.99702835083008,0.2657946348190307
+Stage B adapter (no disease),percent Iba1 positive area_Grey matter,0.185299179912929,0.0439404677533664,84,40.99702835083008,0.2657946348190307
+Stage B adapter (no disease),percent 6e10 positive area_Grey matter,-0.1629442138301103,-0.033309709425939,84,40.99702835083008,0.2657946348190307
+Safety smoke (dead pathology loss),percent AT8 positive area_Grey matter,0.1268806317707806,0.1002936114204718,84,39.69846725463867,0.2754210829734802
+Safety smoke (dead pathology loss),percent NeuN positive area_Grey matter,0.2660929432013769,0.2310620633795687,84,39.69846725463867,0.2754210829734802
+Safety smoke (dead pathology loss),percent GFAP positive area_Grey matter,-0.2560089095879315,-0.2039890655057203,84,39.69846725463867,0.2754210829734802
+Safety smoke (dead pathology loss),percent Iba1 positive area_Grey matter,0.1607978131011441,-0.0066214437582261,84,39.69846725463867,0.2754210829734802
+Safety smoke (dead pathology loss),percent 6e10 positive area_Grey matter,-0.1623367419256859,0.0278222132226384,84,39.69846725463867,0.2754210829734802
+SupCon smoke (active pathology loss),percent AT8 positive area_Grey matter,0.1268806317707806,-0.15180799741005194,84,39.692012786865234,0.2755180895328522
+SupCon smoke (active pathology loss),percent NeuN positive area_Grey matter,0.26609294320137694,0.09477622140559532,84,39.692012786865234,0.2755180895328522
+SupCon smoke (active pathology loss),percent GFAP positive area_Grey matter,-0.25600890958793154,-0.26437311113587275,84,39.692012786865234,0.2755180895328522
+SupCon smoke (active pathology loss),percent Iba1 positive area_Grey matter,0.1607978131011441,0.03522342423566565,84,39.692012786865234,0.2755180895328522
+SupCon smoke (active pathology loss),percent 6e10 positive area_Grey matter,-0.16233674192568592,-0.0600489017366292,84,39.692012786865234,0.2755180895328522
