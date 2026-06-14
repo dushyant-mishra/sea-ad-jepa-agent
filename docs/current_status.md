@@ -2741,6 +2741,77 @@ epoch 6:
 
 Interpretation: the fork started with weak/negative validation signal and compressed geometry toward the top-singular-vector limit. Full-dataset A beta training and A beta-specific counterfactuals were not run. The result supports keeping the main frozen Stage B backbone as the active representation and not forcing a 6e10-specific encoder branch with this setup.
 
+## Frozen A Beta Axis and Responsive-Cell Scan
+
+A final conservative amyloid readout was tested without changing the encoder and without adding hand-curated module features. The sweep uses only the frozen Stage B donor embeddings and regularized donor-level heads.
+
+```text
+script:
+  scripts/sweep_frozen_embedding_abeta_elasticnet.py
+
+inputs:
+  results/tables/pathology_head_stage_b_frozen_donor_embeddings.csv
+
+target:
+  percent 6e10 positive area_Grey matter
+
+outputs:
+  results/tables/v2_2_abeta_frozen_embedding_elasticnet_sweep.csv
+  results/tables/v2_2_abeta_frozen_embedding_elasticnet_oof_predictions.csv
+```
+
+Best multi-seed result:
+
+```text
+model: ElasticNet
+alpha: 0.01
+l1_ratio: 0.95
+mean OOF Spearman across seeds: 0.264 +/- 0.056
+representative seed OOF Spearman: 0.296
+```
+
+Interpretation: the frozen Stage B manifold contains a weak but reproducible amyloid/6e10 axis. It improves over the original linear head's `0.183` Spearman, but remains much weaker than the AT8 and NeuN axes. This should be treated as a bounded amyloid-associated readout, not as justification for another encoder fine-tuning fork.
+
+The best sparse A beta axis was then projected back to single cells to ask whether the axis identifies a specific microglial subpopulation.
+
+```text
+script:
+  scripts/identify_abeta_responsive_microglia.py
+
+outputs:
+  results/tables/v2_2_abeta_responsive_microglia_axis_coefficients_summary.csv
+  results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv
+  results/tables/v2_2_abeta_responsive_microglia_donor_validation_summary.csv
+  results/tables/v2_2_abeta_responsive_microglia_dge_all_summary.csv
+  results/tables/v2_2_abeta_responsive_microglia_dge_upregulated_summary.csv
+  results/tables/v2_2_abeta_responsive_microglia_validation_metrics_summary.csv
+```
+
+Full SEA-AD Microglia-PVM result:
+
+```text
+cells scored: 40,000
+top A beta-axis cells: 2,000
+
+donor mean A beta-axis score vs 6e10:
+  Spearman: 0.677
+  Pearson:  0.741
+  Pearson p: 7.65e-16
+
+donor responder fraction vs 6e10:
+  Spearman: 0.327
+  Pearson:  0.498
+  Pearson p: 1.0e-6
+
+canonical plaque/DAM marker overlap among top 50 upregulated genes:
+  overlap: 0
+  hypergeometric p: 1.0
+```
+
+Top DGE genes in the A beta-axis-high cells included `BRAF`, `PPP2R5E`, `EXOC4`, `KCNIP4`, `HELZ`, `CAMK1D`, `ANKRD11`, `DLEU1`, `KMT2C`, and `GAB2`.
+
+Interpretation: the A beta axis is strongly donor-level 6e10-associated when projected over all cells, but the top-scoring cells do not look like a canonical APOE/C1Q/TREM2/SPP1 plaque-proximal DAM/PIG state under this DGE test. The safest claim is that Graph-JEPA recovered a sparse amyloid-associated latent program, not a validated plaque-responsive microglial subtype. A spatial or plaque-proximity dataset would be needed to upgrade this to a true plaque-triggered-cell claim.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.
@@ -2750,5 +2821,5 @@ The first attempted microglia-specific extraction was slow because microglia row
 1. Treat the frozen Stage B encoder plus linear pathology head as the active Stage C readout.
 2. Use pathology-head counterfactuals for AT8/NeuN-oriented hypothesis ranking, while keeping manifold-safety columns in every report.
 3. Do not proceed with the current A beta fork; it failed the CV geometry gate.
-4. If amyloid remains a priority, try a safer amyloid readout first: frozen encoder plus regularized target-specific head, amyloid-specific module scores, or multimodal plaque/spatial validation rather than encoder fine-tuning.
+4. Treat the frozen A beta ElasticNet axis as an exploratory donor-level amyloid readout. Do not claim it has identified plaque-proximal microglia unless future spatial/plaque-proximity validation supports that claim.
 5. Keep external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.

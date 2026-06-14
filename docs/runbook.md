@@ -1915,4 +1915,65 @@ MLP head:
 ```
 
 Interpretation: the frozen Stage B representation already contains a strong, linearly decodable AT8/NeuN signal. This argues against additional encoder fine-tuning for now. Counterfactual screens should next score perturbations by the pathology-head delta rather than by latent centroid distance alone.
-- Fix: unfrozen encoder run with relaxed LR gap and reduced rehearsal weights.
+
+## 12. Probe the Frozen A Beta / 6e10 Axis
+
+Do not fine-tune another amyloid-specific encoder branch unless the frozen representation fails every conservative readout. The safer final amyloid probe uses only the frozen Stage B donor embeddings and a regularized donor-level model.
+
+Run the multi-seed Ridge/ElasticNet sweep:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/sweep_frozen_embedding_abeta_elasticnet.py `
+  --seeds "11,17,23,31,47"
+```
+
+Expected outputs:
+
+```text
+results/tables/v2_2_abeta_frozen_embedding_elasticnet_sweep.csv
+results/tables/v2_2_abeta_frozen_embedding_elasticnet_oof_predictions.csv
+```
+
+Current best stable result:
+
+```text
+ElasticNet(alpha=0.01, l1_ratio=0.95)
+mean OOF Spearman across seeds: 0.264 +/- 0.056
+representative seed OOF Spearman: 0.296
+```
+
+To project that sparse amyloid axis back to single cells and run DGE on the original RNA matrix:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/identify_abeta_responsive_microglia.py
+```
+
+Expected outputs:
+
+```text
+results/tables/v2_2_abeta_responsive_microglia_axis_coefficients_summary.csv
+results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv
+results/tables/v2_2_abeta_responsive_microglia_donor_validation_summary.csv
+results/tables/v2_2_abeta_responsive_microglia_dge_all_summary.csv
+results/tables/v2_2_abeta_responsive_microglia_dge_upregulated_summary.csv
+results/tables/v2_2_abeta_responsive_microglia_validation_metrics_summary.csv
+```
+
+Current full-cohort result:
+
+```text
+cells scored: 40,000
+top A beta-axis cells: 2,000
+
+donor mean A beta-axis score vs 6e10:
+  Spearman: 0.677
+  Pearson:  0.741
+  p:        7.65e-16
+
+top-50 DGE overlap with canonical APOE/C1Q/TREM2/SPP1 plaque/DAM marker set:
+  overlap: 0
+```
+
+Interpretation: the sparse A beta axis is useful as a donor-level amyloid-associated readout, but the top cells are not currently validated as canonical plaque-proximal microglia. Keep the claim bounded unless spatial/plaque-proximity validation becomes available.
