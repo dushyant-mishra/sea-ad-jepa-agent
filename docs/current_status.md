@@ -401,6 +401,55 @@ TTUR slow-discriminator run:
 
 Interpretation: the full-encoder escalation preserved geometry but did not improve domain confusion. The TTUR slow-discriminator run reached chance-level domain accuracy, but it did so by damaging the latent geometry; this is not acceptable alignment. The active Stage B checkpoint remains the baseline state-aware partial-encoder run until a method reduces domain accuracy while keeping effective dimensions above roughly 50 and `top_sv_ratio` below roughly 0.2.
 
+Latest fast Stage C safety smoke:
+
+```text
+script:
+  scripts/train_fast_graph_jepa_stage_c_disease.py
+
+checkpoint:
+  results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt
+
+output:
+  results/models/v2_2_fast_stage_c_safety_smoke_e10/fast_graph_jepa_stage_c.pt
+
+history:
+  results/tables/v2_2_fast_stage_c_safety_smoke_e10_history.csv
+```
+
+Design:
+
+```text
+model family:
+  FastGraphGeneJEPA
+
+batching:
+  dense [batch, genes] tensors
+  no PyG Data objects
+
+safety updates:
+  pathology contrastive warmup over 5 epochs
+  relaxed rehearsal margin 0.85
+  differential learning rates
+    base graph reader: 1e-6
+    head coordinate map: 2e-5
+  embedding-level geometry safety gates
+```
+
+10-epoch smoke result:
+
+```text
+epoch 10:
+  embedding effective dimensions: 75.40
+  embedding top singular-value ratio: 0.109
+  predictor effective dimensions: 55.42
+  predictor top singular-value ratio: 0.063
+  SEA-AD anchor cosine: 0.99994
+  CELLxGENE anchor cosine: 0.99994
+```
+
+Interpretation: the fast Stage C trainer now correctly consumes the conservative fast Stage B checkpoint and passes the geometry safety gates under full pathology-pressure epochs. However, the pathology contrastive term is currently too small to meaningfully shape the model (`~2.7e-6` before weighting), and the anchors remain almost perfectly pinned. This run validates the fast Stage C plumbing and safety instrumentation, not final disease-vector learning. The next Stage C step should recalibrate the pathology objective scale or add a stronger pathology-supervised head while keeping the same geometry gates.
+
 Latest Stage C counterfactual scoring upgrade:
 
 ```text

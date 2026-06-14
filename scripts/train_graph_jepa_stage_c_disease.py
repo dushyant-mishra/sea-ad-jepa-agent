@@ -200,6 +200,52 @@ def checkpoint_arg(checkpoint: dict, key: str, default):
     return default if value is None else value
 
 
+def build_optimizer(
+    model: GraphGeneJEPA,
+    base_lr: float,
+    head_lr: float,
+    weight_decay: float,
+) -> torch.optim.Optimizer:
+    """Create differential LR groups for Stage C fine-tuning.
+
+    The lower graph reader learns slowly so it does not forget STRING topology;
+    the output/projector/predictor layers get the larger pathology-mapping LR.
+    """
+
+    base_modules = [
+        model.context_encoder.gene_embedding,
+        model.context_encoder.input_proj,
+        model.context_encoder.convs,
+        model.context_encoder.norms,
+    ]
+    head_modules = [
+        model.context_encoder.out,
+        model.predictor,
+    ]
+    if model.use_projection_head:
+        head_modules.append(model.projector)
+
+    seen: set[int] = set()
+
+    def collect(modules: list[torch.nn.Module]) -> list[torch.nn.Parameter]:
+        params = []
+        for module in modules:
+            for param in module.parameters():
+                if param.requires_grad and id(param) not in seen:
+                    seen.add(id(param))
+                    params.append(param)
+        return params
+
+    base_params = collect(base_modules)
+    head_params = collect(head_modules)
+    groups = []
+    if base_params:
+        groups.append({"params": base_params, "lr": base_lr, "name": "base_graph_reader"})
+    if head_params:
+        groups.append({"params": head_params, "lr": head_lr, "name": "head_coordinate_map"})
+    return torch.optim.AdamW(groups, weight_decay=weight_decay)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Stage C Graph-JEPA disease-vector training with three-stream rehearsal.")
     parser.add_argument("--checkpoint", default="results/models/graph_jepa_stage_b_low_pathology_rehearsal_e20/graph_jepa_stage_b.pt")
@@ -221,7 +267,7 @@ def main() -> None:
     parser.add_argument("--sea-rehearsal-weight", type=float, default=0.5)
     parser.add_argument("--cellxgene-rehearsal-weight", type=float, default=0.5)
     parser.add_argument("--rehearsal-loss-mode", choices=["mse", "cosine_margin", "cosine_softplus_margin"], default="mse")
-    parser.add_argument("--rehearsal-margin", type=float, default=0.95)
+    parser.add_argument("--rehearsal-margin", type=float, default=0.85)
     parser.add_argument("--rehearsal-temperature", type=float, default=100.0)
     parser.add_argument("--variance-weight", type=float, default=1.0)
     parser.add_argument("--variance-gamma", type=float, default=1.0)
@@ -233,6 +279,7 @@ def main() -> None:
     parser.add_argument("--rehearsal-space", choices=["encoder", "projector"], default="encoder")
     parser.add_argument("--downstream-embedding-space", choices=["encoder", "projector"], default="encoder")
     parser.add_argument("--pathology-contrastive-weight", type=float, default=0.0)
+    parser.add_argument("--pathology-contrastive-warmup-epochs", type=int, default=5)
     parser.add_argument("--pathology-contrastive-temperature", type=float, default=0.75)
     parser.add_argument(
         "--pathology-contrastive-targets",
@@ -250,9 +297,13 @@ def main() -> None:
     parser.add_argument("--ema-start-decay", type=float, default=0.995)
     parser.add_argument("--ema-decay", type=float, default=0.9995)
     parser.add_argument("--ema-warmup-epochs", type=int, default=10)
-    parser.add_argument("--lr", type=float, default=2e-5)
+    parser.add_argument("--lr", type=float, default=2e-5, help="Head/projection/predictor learning rate.")
+    parser.add_argument("--base-lr", type=float, default=1e-6, help="Lower graph-reader learning rate.")
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--gradient-clip-val", type=float, default=1.0)
+    parser.add_argument("--safety-gate-start-epoch", type=int, default=0)
+    parser.add_argument("--min-embedding-effective-dims", type=float, default=0.0)
+    parser.add_argument("--max-embedding-top-sv-ratio", type=float, default=1.0)
     parser.add_argument("--max-steps-per-epoch", type=int, default=0, help="Optional cap for smoke tests. 0 uses all disease batches.")
     parser.add_argument("--use-node-annotations", action="store_true")
     parser.add_argument("--device", default="auto")
@@ -334,7 +385,11 @@ def main() -> None:
         print(f"Loaded checkpoint with projection head initialized fresh. Missing keys: {len(load_result.missing_keys)}")
         model.reset_target_network()
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    optimizer = build_optimizer(model, base_lr=args.base_lr, head_lr=args.lr, weight_decay=args.weight_decay)
+    print(
+        "Stage C optimizer parameter groups: "
+        + ", ".join(f"{group.get('name', 'group')} lr={group['lr']:.2e}" for group in optimizer.param_groups)
+    )
     writer = create_summary_writer(args.log_dir)
     history = []
     sea_frozen = sea_frozen.to(device)
@@ -386,6 +441,12 @@ def main() -> None:
         model.train()
         current_mask_fraction = linear_schedule(epoch, args.mask_start_fraction, args.mask_fraction, args.mask_warmup_epochs)
         current_ema_decay = linear_schedule(epoch, args.ema_start_decay, args.ema_decay, args.ema_warmup_epochs)
+        current_pathology_contrastive_weight = linear_schedule(
+            epoch,
+            0.0,
+            args.pathology_contrastive_weight,
+            args.pathology_contrastive_warmup_epochs,
+        )
         disease_dataset.mask_fraction = current_mask_fraction
         model.ema_decay = current_ema_decay
 
@@ -407,6 +468,7 @@ def main() -> None:
         variance_losses = []
         covariance_losses = []
         epoch_disease_preds = []
+        epoch_disease_embeddings = []
 
         for step, (disease_context, disease_target) in enumerate(disease_loader, start=1):
             if args.max_steps_per_epoch and step > args.max_steps_per_epoch:
@@ -421,6 +483,8 @@ def main() -> None:
             cellxgene_anchor_target = cellxgene_anchor_target.to(device)
 
             pred_z, target_z = model(disease_context, disease_target, prediction_space=args.stage_c_prediction_space)
+            with torch.no_grad():
+                disease_embedding_z = model.encode_raw(disease_target, space=args.downstream_embedding_space)
             disease_loss, parts = jepa_loss(
                 pred_z,
                 target_z,
@@ -485,7 +549,7 @@ def main() -> None:
                 + args.sea_rehearsal_weight * sea_anchor_loss
                 + args.cellxgene_rehearsal_weight * cellxgene_anchor_loss
                 + args.disease_covariance_weight * disease_covariance_loss
-                + args.pathology_contrastive_weight * pathology_loss
+                + current_pathology_contrastive_weight * pathology_loss
                 + args.latent_elasticity_weight * latent_elasticity_loss
             )
 
@@ -511,9 +575,12 @@ def main() -> None:
             variance_losses.append(float(parts["variance"].cpu()))
             covariance_losses.append(float(parts.get("covariance", torch.tensor(0.0)).cpu()))
             epoch_disease_preds.append(pred_z.detach().cpu())
+            epoch_disease_embeddings.append(disease_embedding_z.detach().cpu())
 
         all_disease_preds = torch.cat(epoch_disease_preds, dim=0)
+        all_disease_embeddings = torch.cat(epoch_disease_embeddings, dim=0)
         disease_effective_dims, disease_top_sv_ratio = singular_value_telemetry(all_disease_preds)
+        embedding_effective_dims, embedding_top_sv_ratio = singular_value_telemetry(all_disease_embeddings)
 
         row = {
             "epoch": epoch,
@@ -527,14 +594,19 @@ def main() -> None:
             "disease_variance_spread": float(np.mean(disease_variance_spreads)),
             "disease_covariance_loss": float(np.mean(disease_covariance_losses)),
             "pathology_contrastive_loss": float(np.mean(pathology_contrastive_losses)),
+            "pathology_contrastive_weight": float(current_pathology_contrastive_weight),
             "latent_elasticity_loss": float(np.mean(latent_elasticity_losses)),
             "disease_effective_dims": disease_effective_dims,
             "disease_top_sv_ratio": disease_top_sv_ratio,
+            "embedding_effective_dims": embedding_effective_dims,
+            "embedding_top_sv_ratio": embedding_top_sv_ratio,
             "alignment_loss": float(np.mean(alignment_losses)),
             "variance_loss": float(np.mean(variance_losses)),
             "covariance_loss": float(np.mean(covariance_losses)),
             "mask_fraction": current_mask_fraction,
             "ema_decay": current_ema_decay,
+            "base_lr": float(args.base_lr),
+            "head_lr": float(args.lr),
             "steps": int(len(losses)),
         }
         history.append(row)
@@ -552,11 +624,27 @@ def main() -> None:
             f"disease_var={row['disease_variance_spread']:.6f} "
             f"disease_cov={row['disease_covariance_loss']:.6f} "
             f"pathology_ctr={row['pathology_contrastive_loss']:.6f} "
+            f"pathology_w={row['pathology_contrastive_weight']:.5f} "
             f"latent_elastic={row['latent_elasticity_loss']:.6f} "
             f"eff_dims={row['disease_effective_dims']:.2f} "
             f"top_sv={row['disease_top_sv_ratio']:.4f} "
+            f"embed_eff_dims={row['embedding_effective_dims']:.2f} "
+            f"embed_top_sv={row['embedding_top_sv_ratio']:.4f} "
             f"alignment={row['alignment_loss']:.6f} variance={row['variance_loss']:.6f} steps={row['steps']}"
         )
+        if args.safety_gate_start_epoch and epoch >= args.safety_gate_start_epoch:
+            if row["embedding_effective_dims"] < args.min_embedding_effective_dims:
+                raise RuntimeError(
+                    "Stage C safety gate failed: "
+                    f"embedding_effective_dims={row['embedding_effective_dims']:.2f} "
+                    f"< {args.min_embedding_effective_dims:.2f}"
+                )
+            if row["embedding_top_sv_ratio"] > args.max_embedding_top_sv_ratio:
+                raise RuntimeError(
+                    "Stage C safety gate failed: "
+                    f"embedding_top_sv_ratio={row['embedding_top_sv_ratio']:.4f} "
+                    f"> {args.max_embedding_top_sv_ratio:.4f}"
+                )
         if args.checkpoint_every and epoch % args.checkpoint_every == 0:
             path = out_dir / f"graph_jepa_stage_c_epoch_{epoch:03d}.pt"
             save_checkpoint(path)
