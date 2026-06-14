@@ -1,6 +1,6 @@
 # Current Status
 
-Last updated: 2026-06-13
+Last updated: 2026-06-14
 
 ## Executive Summary
 
@@ -2508,14 +2508,83 @@ cells/sec: 230.18
 
 Interpretation: epoch 30 gives the best available balance of broad disease-manifold dimensionality, low top singular-vector dominance, and still-stable covariance. The true best raw epoch by the same scoring rule was epoch 32, but checkpointing was every five epochs, so epoch 30 is the active downstream checkpoint. `configs/train/stage_b_adversarial.yaml` now points to this epoch-30 checkpoint.
 
+## v2.2 Stage B and Fast Stage C Diagnostics
+
+Stage B domain-adversarial alignment was tested conservatively and with stronger adversarial pressure.
+
+```text
+active Stage B checkpoint:
+  results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt
+
+conservative state-aware adapter:
+  domain accuracy: 0.625
+  effective dimensions: 64.58
+  top singular-value ratio: 0.141
+
+rejected TTUR/domain-confusion escalation:
+  domain accuracy: 0.324
+  effective dimensions: 19.49
+  top singular-value ratio: 0.394
+```
+
+Interpretation: forcing chance-level domain confusion can erase too much biology. The active Stage B adapter remains the conservative checkpoint because it preserves the high-dimensional microglial manifold.
+
+Fast Stage C was refactored to use dense batches and the fast shared-topology Graph-JEPA checkpoint path:
+
+```text
+script:
+  scripts/train_fast_graph_jepa_stage_c_disease.py
+
+active input checkpoint:
+  results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt
+```
+
+The first fast Stage C safety runs showed that the original pathology contrastive term was effectively invisible to the optimizer:
+
+```text
+old weighted pathology contribution:
+  about 0.0000026 even with pathology_contrastive_weight = 1.0
+
+geometry:
+  embedding effective dimensions: about 75
+  embedding top singular-value ratio: about 0.109
+  anchor cosine: about 0.9999
+```
+
+The pathology objective was then replaced with a continuous supervised contrastive loss. Instead of only pulling all cells together with slightly different weights, the new objective matches latent-neighborhood probabilities to pathology-neighborhood probabilities using a log-softmax competition.
+
+```text
+SupCon smoke run:
+  results/tables/v2_2_fast_stage_c_supcon_smoke_e10_history.csv
+
+comparison table:
+  results/tables/v2_2_fast_stage_c_supcon_comparison.csv
+
+final epoch:
+  loss: 6.502
+  JEPA loss: 0.989
+  pathology contrastive loss: 5.513
+  pathology contrastive weight: 1.0
+  pathology temperature: 2.0
+  latent temperature: 0.1
+  embedding effective dimensions: 75.40
+  embedding top singular-value ratio: 0.109
+  predictor effective dimensions: 55.41
+  predictor top singular-value ratio: 0.063
+  SEA anchor cosine: 0.99993
+  CELLxGENE anchor cosine: 0.99994
+```
+
+Interpretation: the SupCon formulation fixes the dead-gradient pathology-loss problem while preserving the safety geometry. This is not yet a biological win. The next required step is to extract donor embeddings from this fast Stage C checkpoint and evaluate ridge/cosine-kNN pathology prediction against the previous v2.1/v2.2 baselines.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.
 
 ## Next Steps
 
-1. Use `fine_loose_01_r005_cov0005` at epoch 5 as the active Stage C v2 baseline.
-2. Run a narrow Stage C sweep around rehearsal `0.003-0.008` and disease covariance `0.00025-0.00075`.
-3. Evaluate the best narrow-sweep checkpoint with donor-held-out pathology prediction and module/gene attribution.
-4. Generate a model-implied hypothesis report from the current best Stage C checkpoint, keeping the causal boundary explicit.
-5. Use external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.
+1. Add a fast-checkpoint embedding extractor/evaluator for `FastGraphGeneJEPA` Stage C outputs.
+2. Evaluate `v2_2_fast_stage_c_supcon_smoke_e10` with donor-level ridge, cosine kNN, and PCA/JEPA geometry metrics.
+3. If SupCon improves downstream pathology geometry without anchor drift, run a longer full-data Stage C pass with the same safety gates.
+4. If SupCon remains flat in downstream metrics, tune `pathology_latent_temperature`, then pathology weight, rather than escalating domain alignment.
+5. Keep external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.

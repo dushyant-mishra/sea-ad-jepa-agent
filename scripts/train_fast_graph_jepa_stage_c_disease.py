@@ -119,7 +119,8 @@ def off_diagonal_covariance_loss(z: torch.Tensor) -> torch.Tensor:
     return covariance.pow(2).mean()
 
 
-def pathology_similarity_loss(z: torch.Tensor, y: torch.Tensor, temperature: float) -> torch.Tensor:
+def pathology_similarity_loss(z: torch.Tensor, y: torch.Tensor, temperature: float, latent_temperature: float) -> torch.Tensor:
+    """Continuous supervised contrastive loss for donor-level pathology alignment."""
     if z.shape[0] < 2:
         return z.new_tensor(0.0)
     valid = torch.isfinite(y).all(dim=1)
@@ -127,13 +128,17 @@ def pathology_similarity_loss(z: torch.Tensor, y: torch.Tensor, temperature: flo
         return z.new_tensor(0.0)
     z = F.normalize(z[valid], dim=-1)
     y = y[valid]
-    y = (y - y.mean(dim=0, keepdim=True)) / y.std(dim=0, unbiased=False, keepdim=True).clamp_min(1e-6)
-    target_distance = torch.cdist(y, y, p=1) / float(y.shape[1])
-    weights = torch.exp(-target_distance / max(temperature, 1e-6))
-    eye = torch.eye(weights.shape[0], dtype=torch.bool, device=weights.device)
-    weights = weights.masked_fill(eye, 0.0)
-    cosine = z @ z.T
-    return (weights * (1.0 - cosine)).sum() / weights.sum().clamp_min(1e-8)
+    y_scaled = (y - y.mean(dim=0, keepdim=True)) / y.std(dim=0, unbiased=False, keepdim=True).clamp_min(1e-6)
+    pathology_distance = torch.cdist(y_scaled, y_scaled, p=1) / float(y.shape[1])
+    affinity = torch.exp(-pathology_distance / max(temperature, 1e-6))
+    eye = torch.eye(affinity.shape[0], dtype=torch.bool, device=affinity.device)
+    affinity = affinity.masked_fill(eye, 0.0)
+    target_probs = affinity / affinity.sum(dim=1, keepdim=True).clamp_min(1e-8)
+
+    similarity = (z @ z.T) / max(latent_temperature, 1e-6)
+    similarity = similarity.masked_fill(eye, -1e9)
+    predicted_log_probs = F.log_softmax(similarity, dim=1)
+    return -(target_probs * predicted_log_probs).sum(dim=1).mean()
 
 
 def pathology_matrix(obs: pd.DataFrame, donor_column: str, target_columns: list[str], targets_path: str, columns_path: str) -> torch.Tensor:
@@ -185,6 +190,7 @@ def main() -> None:
     parser.add_argument("--pathology-contrastive-weight", type=float, default=0.075)
     parser.add_argument("--pathology-contrastive-warmup-epochs", type=int, default=5)
     parser.add_argument("--pathology-contrastive-temperature", type=float, default=0.75)
+    parser.add_argument("--pathology-latent-temperature", type=float, default=0.1)
     parser.add_argument("--pathology-contrastive-targets", nargs="+", default=[
         "percent AT8 positive area_Grey matter",
         "percent NeuN positive area_Grey matter",
@@ -310,7 +316,12 @@ def main() -> None:
             sea_loss, sea_cos = rehearsal_loss(sea_z, sea_frozen[sea_ids].to(device), args.rehearsal_margin, args.rehearsal_temperature)
             cx_loss, cx_cos = rehearsal_loss(cx_z, cx_frozen[cx_ids].to(device), args.rehearsal_margin, args.rehearsal_temperature)
             disease_cov = off_diagonal_covariance_loss(pred_z)
-            pathology_loss = pathology_similarity_loss(pred_z, pathology[cell_ids].to(device), args.pathology_contrastive_temperature)
+            pathology_loss = pathology_similarity_loss(
+                pred_z,
+                pathology[cell_ids].to(device),
+                args.pathology_contrastive_temperature,
+                args.pathology_latent_temperature,
+            )
             loss = (
                 loss_jepa
                 + args.sea_rehearsal_weight * sea_loss
@@ -349,6 +360,8 @@ def main() -> None:
             "cellxgene_anchor_cosine": float(np.mean(cx_cosines)),
             "pathology_contrastive_loss": float(np.mean(pathology_losses)),
             "pathology_contrastive_weight": current_pathology_weight,
+            "pathology_contrastive_temperature": args.pathology_contrastive_temperature,
+            "pathology_latent_temperature": args.pathology_latent_temperature,
             "embedding_effective_dims": embedding_geometry["effective_dims"],
             "embedding_top_sv_ratio": embedding_geometry["top_sv_ratio"],
             "embedding_mean_dim_std": embedding_geometry["mean_dim_std"],
