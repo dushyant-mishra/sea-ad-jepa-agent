@@ -1745,9 +1745,9 @@ Olah live microglia:
 
 Use these aligned objects for the next domain-adversarial/adaptor phase. Do not treat them as final held-out biological validation if they are used during model alignment.
 
-## 9. Fast Stage C Disease Training (SupCon)
+## 9. Fast Stage C Disease Training
 
-The fast Stage C disease trainer fine-tunes the Stage B encoder with a Supervised Contrastive (SupCon) pathology loss while maintaining geometry safety gates and rehearsal anchors.
+The fast Stage C disease trainer fine-tunes the Stage B encoder while maintaining geometry safety gates and rehearsal anchors. SupCon remains available as an experimental mode, but the active default is now a joint pathology regression head because the SupCon runs produced near-uniform contrastive neighborhoods without improving donor-level pathology geometry.
 
 Hydra-configured training:
 
@@ -1765,18 +1765,21 @@ configs/train/fast_stage_c_supcon.yaml
 Key parameters in the default config:
 
 ```text
-loss: SupCon (continuous supervised contrastive)
+loss: joint pathology regression head
+pathology_loss_mode: regression
+pathology_regression_loss: huber
+pathology_head_lr: 0.001
 pathology_contrastive_weight: 1.0
 pathology_contrastive_temperature: 2.0
 pathology_latent_temperature: 0.1
 
-learning rates (unfrozen encoder):
-  base_lr: 5e-6 (graph reader)
-  lr: 5e-5 (head/predictor)
+learning rates:
+  base_lr: 1e-6 (graph reader)
+  lr: 2e-5 (head/predictor)
 
-rehearsal anchors (relaxed):
-  sea_rehearsal_weight: 0.001
-  cellxgene_rehearsal_weight: 0.001
+rehearsal anchors:
+  sea_rehearsal_weight: 0.0045
+  cellxgene_rehearsal_weight: 0.0045
   rehearsal_margin: 0.85
 
 safety gates:
@@ -1803,25 +1806,30 @@ Direct argparse invocation (without Hydra):
 $env:PYTHONPATH = "src"
 conda run -n sea-ad-jepa python scripts/train_fast_graph_jepa_stage_c_disease.py `
   --checkpoint results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt `
-  --base-lr 5e-6 `
-  --lr 5e-5 `
-  --sea-rehearsal-weight 0.001 `
-  --cellxgene-rehearsal-weight 0.001 `
+  --pathology-loss-mode regression `
+  --pathology-regression-loss huber `
+  --pathology-head-lr 0.001 `
+  --base-lr 1e-6 `
+  --lr 2e-5 `
+  --sea-rehearsal-weight 0.0045 `
+  --cellxgene-rehearsal-weight 0.0045 `
   --pathology-contrastive-weight 1.0 `
   --pathology-contrastive-temperature 2.0 `
   --pathology-latent-temperature 0.1 `
   --epochs 10 `
   --checkpoint-every 5 `
-  --out-dir results/models/v2_2_fast_stage_c_supcon_unfrozen_e10 `
-  --log-dir runs/v2_2_fast_stage_c_supcon_unfrozen_e10 `
-  --history-out results/tables/v2_2_fast_stage_c_supcon_unfrozen_e10_history.csv
+  --out-dir results/models/v2_2_fast_stage_c_regression `
+  --log-dir runs/v2_2_fast_stage_c_regression `
+  --history-out results/tables/v2_2_fast_stage_c_regression_history.csv
 ```
 
-### Important: Gradient Absorption Lesson
+### Important: Pathology Objective Lessons
 
 The original fast Stage C trainer used `base_lr=1e-6` and `head_lr=2e-5` (a 20x gap). This caused the fast-moving head to absorb the SupCon gradients entirely, leaving the context encoder frozen solid. The Ridge Spearman numbers were numerically identical across Stage B, dead-gradient smoke, and SupCon smoke checkpoints.
 
-Fix: Close the LR gap (`base_lr=5e-6`, `head_lr=5e-5`, a 10x gap) and relax rehearsal weights from `0.0045` to `0.001` so the encoder has permission to move.
+An unfrozen SupCon run with stronger base updates moved the encoder, but it damaged geometry. A gentler run partially recovered dimensions but still did not clearly improve pathology geometry. The current pivot is to train a small supervised regression head from the unmasked context-encoder embedding. This gives a direct continuous-label signal without forcing continuous pathology into a classification-style contrastive objective.
+
+The first regression-head smoke test showed the head can learn: Huber pathology loss dropped from `0.756` to about `0.39` while epoch-sampled training geometry remained safe. However, the full-dataset evaluator still reported weaker global geometry (`effective_dims=40.62`, `top_sv_ratio=0.268`), so future runs should use full-dataset evaluation as the safety gate, not only 20-step epoch telemetry.
 
 ## 10. Evaluate Fast Stage C Checkpoints
 
@@ -1860,6 +1868,7 @@ Checkpoint                              | AT8 Ridge | AT8 kNN | NeuN Ridge | Neu
 Stage B adapter (no disease)            |     0.127 |   0.047 |      0.267 |    0.028 |     -0.257 |   -0.121 |      0.185 |    0.044 |     -0.163 |   -0.033 |    41.00
 Safety smoke (dead pathology loss)      |     0.127 |   0.100 |      0.266 |    0.231 |     -0.256 |   -0.204 |      0.161 |   -0.007 |     -0.162 |    0.028 |    39.70
 SupCon smoke (active loss, frozen enc)  |     0.127 |  -0.152 |      0.266 |    0.095 |     -0.256 |   -0.264 |      0.161 |    0.035 |     -0.162 |   -0.060 |    39.69
+Regression head smoke e8                |     0.127 |   0.050 |      0.266 |    0.084 |     -0.256 |    0.158 |      0.187 |    0.122 |     -0.163 |  -0.112 |    40.62
 ```
 
 Interpretation:
@@ -1867,5 +1876,5 @@ Interpretation:
 - Ridge Spearman was identical across all three checkpoints, proving the context encoder did not move.
 - kNN degraded under SupCon because the frozen encoder could not follow the head's contortions.
 - This is the gradient absorption failure: the 20x LR gap let the head absorb all SupCon gradients without teaching the encoder anything.
+- The regression-head smoke learned a supervised pathology loss and improved GFAP/Iba1 kNN, but did not improve AT8/NeuN donor geometry. This is a useful diagnostic, not the final Stage C solution.
 - Fix: unfrozen encoder run with relaxed LR gap and reduced rehearsal weights.
-

@@ -12,6 +12,7 @@ import anndata as ad
 import numpy as np
 import pandas as pd
 import torch
+from torch import nn
 import torch.nn.functional as F
 from scipy import sparse
 from torch.utils.data import DataLoader, TensorDataset
@@ -61,7 +62,14 @@ def infer_fast_model(checkpoint: dict) -> FastGraphGeneJEPA:
     return model
 
 
-def build_optimizer(model: FastGraphGeneJEPA, base_lr: float, head_lr: float, weight_decay: float) -> torch.optim.Optimizer:
+def build_optimizer(
+    model: FastGraphGeneJEPA,
+    base_lr: float,
+    head_lr: float,
+    weight_decay: float,
+    pathology_head: nn.Module | None = None,
+    pathology_head_lr: float | None = None,
+) -> torch.optim.Optimizer:
     base_modules = [
         model.context_encoder.gene_embedding,
         model.context_encoder.input_proj,
@@ -84,13 +92,22 @@ def build_optimizer(model: FastGraphGeneJEPA, base_lr: float, head_lr: float, we
                     params.append(param)
         return params
 
-    return torch.optim.AdamW(
-        [
-            {"params": collect(base_modules), "lr": base_lr, "name": "base_graph_reader"},
-            {"params": collect(head_modules), "lr": head_lr, "name": "head_coordinate_map"},
-        ],
-        weight_decay=weight_decay,
-    )
+    param_groups = [
+        {"params": collect(base_modules), "lr": base_lr, "name": "base_graph_reader"},
+        {"params": collect(head_modules), "lr": head_lr, "name": "head_coordinate_map"},
+    ]
+    if pathology_head is not None:
+        pathology_params = [param for param in pathology_head.parameters() if param.requires_grad]
+        if pathology_params:
+            param_groups.append(
+                {
+                    "params": pathology_params,
+                    "lr": pathology_head_lr if pathology_head_lr is not None else head_lr,
+                    "name": "pathology_regression_head",
+                }
+            )
+
+    return torch.optim.AdamW(param_groups, weight_decay=weight_decay)
 
 
 @torch.no_grad()
@@ -141,6 +158,17 @@ def pathology_similarity_loss(z: torch.Tensor, y: torch.Tensor, temperature: flo
     return -(target_probs * predicted_log_probs).sum(dim=1).mean()
 
 
+def pathology_regression_loss(prediction: torch.Tensor, target: torch.Tensor, loss_name: str) -> torch.Tensor:
+    valid = torch.isfinite(target).all(dim=1)
+    if int(valid.sum().item()) == 0:
+        return prediction.new_tensor(0.0)
+    if loss_name == "mse":
+        return F.mse_loss(prediction[valid], target[valid])
+    if loss_name == "huber":
+        return F.smooth_l1_loss(prediction[valid], target[valid])
+    raise ValueError(f"Unknown pathology regression loss: {loss_name}")
+
+
 def pathology_matrix(obs: pd.DataFrame, donor_column: str, target_columns: list[str], targets_path: str, columns_path: str) -> torch.Tensor:
     targets, _ = load_pathology_targets(targets_path, columns_path)
     targets = targets.copy()
@@ -187,10 +215,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--variance-gamma", type=float, default=1.0)
     parser.add_argument("--covariance-weight", type=float, default=0.0)
     parser.add_argument("--disease-covariance-weight", type=float, default=0.0005)
+    parser.add_argument("--pathology-loss-mode", choices=["supcon", "regression", "none"], default="supcon")
     parser.add_argument("--pathology-contrastive-weight", type=float, default=0.075)
     parser.add_argument("--pathology-contrastive-warmup-epochs", type=int, default=5)
     parser.add_argument("--pathology-contrastive-temperature", type=float, default=0.75)
     parser.add_argument("--pathology-latent-temperature", type=float, default=0.1)
+    parser.add_argument("--pathology-regression-loss", choices=["huber", "mse"], default="huber")
+    parser.add_argument("--pathology-head-lr", type=float, default=1e-3)
     parser.add_argument("--pathology-contrastive-targets", nargs="+", default=[
         "percent AT8 positive area_Grey matter",
         "percent NeuN positive area_Grey matter",
@@ -220,8 +251,6 @@ def run(args: argparse.Namespace) -> None:
 
     checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
     model = infer_fast_model(checkpoint).to(device)
-    optimizer = build_optimizer(model, args.base_lr, args.lr, args.weight_decay)
-    print("optimizer groups: " + ", ".join(f"{g.get('name')} lr={g['lr']:.2e}" for g in optimizer.param_groups))
 
     disease_x, gene_names, disease_obs = dense_h5ad(args.disease_h5ad)
     sea_x, sea_genes, _ = dense_h5ad(args.sea_anchor_h5ad)
@@ -245,6 +274,16 @@ def run(args: argparse.Namespace) -> None:
         args.pathology_targets_path,
         args.pathology_target_columns_path,
     ).to(device)
+    pathology_mean = torch.nanmean(pathology, dim=0, keepdim=True)
+    pathology_std = torch.sqrt(torch.nanmean((pathology - pathology_mean).pow(2), dim=0, keepdim=True)).clamp_min(1e-6)
+    pathology_scaled = (pathology - pathology_mean) / pathology_std
+
+    latent_dim = int(checkpoint["model_state"]["context_encoder.out.weight"].shape[0])
+    pathology_head = None
+    if args.pathology_loss_mode == "regression":
+        pathology_head = nn.Linear(latent_dim, len(args.pathology_contrastive_targets)).to(device)
+    optimizer = build_optimizer(model, args.base_lr, args.lr, args.weight_decay, pathology_head, args.pathology_head_lr)
+    print("optimizer groups: " + ", ".join(f"{g.get('name')} lr={g['lr']:.2e}" for g in optimizer.param_groups))
 
     disease_loader = DataLoader(TensorDataset(disease_x, torch.arange(disease_x.shape[0])), batch_size=args.disease_batch_size, shuffle=True)
     sea_loader = DataLoader(TensorDataset(sea_x, torch.arange(sea_x.shape[0])), batch_size=args.anchor_batch_size, shuffle=True, drop_last=True)
@@ -260,6 +299,9 @@ def run(args: argparse.Namespace) -> None:
                 "args": vars(args),
                 "history": history,
                 "model_class": "FastGraphGeneJEPA",
+                "pathology_head_state": pathology_head.state_dict() if pathology_head is not None else None,
+                "pathology_target_mean": pathology_mean.detach().cpu(),
+                "pathology_target_std": pathology_std.detach().cpu(),
             },
             path,
         )
@@ -278,6 +320,7 @@ def run(args: argparse.Namespace) -> None:
         sea_losses = []
         cx_losses = []
         pathology_losses = []
+        pathology_regression_losses = []
         embedding_chunks = []
         pred_chunks = []
         sea_cosines = []
@@ -318,12 +361,26 @@ def run(args: argparse.Namespace) -> None:
             sea_loss, sea_cos = rehearsal_loss(sea_z, sea_frozen[sea_ids].to(device), args.rehearsal_margin, args.rehearsal_temperature)
             cx_loss, cx_cos = rehearsal_loss(cx_z, cx_frozen[cx_ids].to(device), args.rehearsal_margin, args.rehearsal_temperature)
             disease_cov = off_diagonal_covariance_loss(pred_z)
-            pathology_loss = pathology_similarity_loss(
-                pred_z,
-                pathology[cell_ids].to(device),
-                args.pathology_contrastive_temperature,
-                args.pathology_latent_temperature,
-            )
+            pathology_loss = pred_z.new_tensor(0.0)
+            pathology_reg_loss = pred_z.new_tensor(0.0)
+            if args.pathology_loss_mode == "supcon":
+                pathology_loss = pathology_similarity_loss(
+                    pred_z,
+                    pathology[cell_ids].to(device),
+                    args.pathology_contrastive_temperature,
+                    args.pathology_latent_temperature,
+                )
+            elif args.pathology_loss_mode == "regression":
+                if pathology_head is None:
+                    raise RuntimeError("Regression mode requires pathology_head")
+                disease_embedding_z = model.context_encoder(target_batch, target_adj, node_annotations=None)
+                pathology_prediction = pathology_head(disease_embedding_z)
+                pathology_reg_loss = pathology_regression_loss(
+                    pathology_prediction,
+                    pathology_scaled[cell_ids].to(device),
+                    args.pathology_regression_loss,
+                )
+                pathology_loss = pathology_reg_loss
             loss = (
                 loss_jepa
                 + args.sea_rehearsal_weight * sea_loss
@@ -345,6 +402,7 @@ def run(args: argparse.Namespace) -> None:
             sea_losses.append(float(sea_loss.detach().cpu()))
             cx_losses.append(float(cx_loss.detach().cpu()))
             pathology_losses.append(float(pathology_loss.detach().cpu()))
+            pathology_regression_losses.append(float(pathology_reg_loss.detach().cpu()))
             sea_cosines.append(float(sea_cos.detach().cpu()))
             cx_cosines.append(float(cx_cos.detach().cpu()))
             embedding_chunks.append(embedding_z.detach().cpu())
@@ -364,6 +422,9 @@ def run(args: argparse.Namespace) -> None:
             "pathology_contrastive_weight": current_pathology_weight,
             "pathology_contrastive_temperature": args.pathology_contrastive_temperature,
             "pathology_latent_temperature": args.pathology_latent_temperature,
+            "pathology_loss_mode": args.pathology_loss_mode,
+            "pathology_regression_loss": float(np.mean(pathology_regression_losses)),
+            "pathology_head_lr": args.pathology_head_lr,
             "embedding_effective_dims": embedding_geometry["effective_dims"],
             "embedding_top_sv_ratio": embedding_geometry["top_sv_ratio"],
             "embedding_mean_dim_std": embedding_geometry["mean_dim_std"],
@@ -378,10 +439,12 @@ def run(args: argparse.Namespace) -> None:
         history.append(row)
         if writer is not None:
             for key, value in row.items():
-                writer.add_scalar(f"fast_stage_c/{key}", value, epoch)
+                if isinstance(value, (int, float, np.integer, np.floating)):
+                    writer.add_scalar(f"fast_stage_c/{key}", value, epoch)
         print(
             f"epoch={epoch:03d} loss={row['loss']:.6f} jepa={row['jepa_loss']:.6f} "
-            f"pathology_w={row['pathology_contrastive_weight']:.5f} "
+            f"pathology_mode={row['pathology_loss_mode']} pathology_w={row['pathology_contrastive_weight']:.5f} "
+            f"pathology={row['pathology_contrastive_loss']:.6f} "
             f"embed_eff={row['embedding_effective_dims']:.2f} embed_top={row['embedding_top_sv_ratio']:.3f} "
             f"pred_eff={row['predictor_effective_dims']:.2f} pred_top={row['predictor_top_sv_ratio']:.3f} "
             f"sea_cos={row['sea_anchor_cosine']:.4f} cx_cos={row['cellxgene_anchor_cosine']:.4f} steps={row['steps']}",
@@ -414,4 +477,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

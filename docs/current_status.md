@@ -2575,7 +2575,42 @@ final epoch:
   CELLxGENE anchor cosine: 0.99994
 ```
 
-Interpretation: the SupCon formulation fixes the dead-gradient pathology-loss problem while preserving the safety geometry. This is not yet a biological win. The next required step is to extract donor embeddings from this fast Stage C checkpoint and evaluate ridge/cosine-kNN pathology prediction against the previous v2.1/v2.2 baselines.
+Interpretation: the SupCon formulation fixed the invisible-loss-scale problem, but downstream evaluation showed it did not improve donor-level pathology geometry. The SupCon smoke had essentially unchanged Ridge Spearman and weaker AT8/GFAP kNN than the safety smoke. A more aggressive unfrozen SupCon run moved the encoder but collapsed global geometry, while a gentler run only partially recovered.
+
+Stage C was then pivoted to a joint supervised pathology regression head. The regression head is trained from the unmasked context-encoder embedding with standardized AT8/NeuN targets while the JEPA loss and rehearsal anchors continue to protect the representation.
+
+```text
+regression-head smoke run:
+  results/tables/v2_2_fast_stage_c_regression_smoke_e8_history.csv
+
+checkpoint:
+  results/models/v2_2_fast_stage_c_regression_smoke_e8/fast_graph_jepa_stage_c.pt
+
+final epoch:
+  pathology loss mode: regression
+  pathology regression loss: Huber
+  pathology regression loss: 0.393
+  embedding effective dimensions, 20-step telemetry: 75.51
+  embedding top singular-value ratio, 20-step telemetry: 0.104
+  SEA anchor cosine: 0.99962
+  CELLxGENE anchor cosine: 0.99962
+```
+
+Fast evaluator result for the same checkpoint:
+
+```text
+Regression head smoke e8:
+  full-dataset effective dimensions: 40.62
+  full-dataset top singular-value ratio: 0.268
+  AT8 Ridge Spearman: 0.127
+  AT8 cosine kNN Spearman: 0.050
+  NeuN Ridge Spearman: 0.266
+  NeuN cosine kNN Spearman: 0.084
+  GFAP cosine kNN Spearman: 0.158
+  Iba1 cosine kNN Spearman: 0.122
+```
+
+Interpretation: the regression head learns its supervised objective, but the current conservative setup still does not clearly improve AT8/NeuN donor-level geometry. The discrepancy between 20-step epoch telemetry and full-dataset evaluation also shows that future Stage C diagnostics need full-dataset geometry checks before declaring a run safe.
 
 ## Notes
 
@@ -2583,8 +2618,8 @@ The first attempted microglia-specific extraction was slow because microglia row
 
 ## Next Steps
 
-1. Add a fast-checkpoint embedding extractor/evaluator for `FastGraphGeneJEPA` Stage C outputs.
-2. Evaluate `v2_2_fast_stage_c_supcon_smoke_e10` with donor-level ridge, cosine kNN, and PCA/JEPA geometry metrics.
-3. If SupCon improves downstream pathology geometry without anchor drift, run a longer full-data Stage C pass with the same safety gates.
-4. If SupCon remains flat in downstream metrics, tune `pathology_latent_temperature`, then pathology weight, rather than escalating domain alignment.
+1. Use the fast evaluator after every Stage C diagnostic; do not rely only on sampled epoch telemetry.
+2. For the next regression-head test, either lower pathology-head LR or use a staged freeze schedule so the head cannot learn while the encoder remains unchanged.
+3. Add a full-dataset geometry safety check to the trainer or run evaluator automatically at checkpoints.
+4. If regression-head tuning still fails to improve AT8/NeuN geometry, pause Stage C optimization and return to biological extraction from the stable v2.1 models.
 5. Keep external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.

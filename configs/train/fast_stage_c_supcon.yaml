@@ -8,9 +8,9 @@ sea_anchor_h5ad: data/processed/v2_pretraining/sea_ad_low_pathology_microglia_pv
 cellxgene_anchor_h5ad: data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad
 edge_csv: results/tables/v2_graph_consensus_edge_index.csv
 
-out_dir: results/models/v2_2_fast_stage_c_supcon
-log_dir: runs/v2_2_fast_stage_c_supcon
-history_out: results/tables/v2_2_fast_stage_c_supcon_history.csv
+out_dir: results/models/v2_2_fast_stage_c_regression
+log_dir: runs/v2_2_fast_stage_c_regression
+history_out: results/tables/v2_2_fast_stage_c_regression_history.csv
 
 epochs: 20
 checkpoint_every: 5
@@ -34,8 +34,8 @@ external_mask_prob: 0.25
 edge_dropout: 0.10
 
 # Rehearsal anchors — relaxed to let the encoder move
-sea_rehearsal_weight: 0.001
-cellxgene_rehearsal_weight: 0.001
+sea_rehearsal_weight: 0.0045
+cellxgene_rehearsal_weight: 0.0045
 rehearsal_margin: 0.85
 rehearsal_temperature: 100.0
 
@@ -44,11 +44,15 @@ variance_gamma: 1.0
 covariance_weight: 0.0
 disease_covariance_weight: 0.0005
 
-# SupCon pathology loss
+# Pathology objective. Regression is the active default because SupCon produced
+# uniform-neighborhood loss without improving donor-level pathology geometry.
+pathology_loss_mode: regression
 pathology_contrastive_weight: 1.0
 pathology_contrastive_warmup_epochs: 5
 pathology_contrastive_temperature: 2.0
 pathology_latent_temperature: 0.1
+pathology_regression_loss: huber
+pathology_head_lr: 0.001
 pathology_contrastive_targets:
   - "percent AT8 positive area_Grey matter"
   - "percent NeuN positive area_Grey matter"
@@ -58,8 +62,8 @@ pathology_target_columns_path: data/processed/metadata/pathology_target_columns.
 donor_column: "Donor ID"
 
 # Learning rates — unfrozen encoder to let SupCon gradients propagate
-base_lr: 0.000005     # 5e-6 (graph reader)
-lr: 0.00005           # 5e-5 (head/predictor)
+base_lr: 0.000001     # 1e-6 (graph reader)
+lr: 0.00002           # 2e-5 (head/predictor)
 weight_decay: 0.0001
 gradient_clip_val: 1.0
 
