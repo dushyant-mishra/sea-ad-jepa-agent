@@ -450,6 +450,32 @@ epoch 10:
 
 Interpretation: the fast Stage C trainer now correctly consumes the conservative fast Stage B checkpoint and passes the geometry safety gates under full pathology-pressure epochs. However, the pathology contrastive term is currently too small to meaningfully shape the model (`~2.7e-6` before weighting), and the anchors remain almost perfectly pinned. This run validates the fast Stage C plumbing and safety instrumentation, not final disease-vector learning. The next Stage C step should recalibrate the pathology objective scale or add a stronger pathology-supervised head while keeping the same geometry gates.
 
+Stage C pathology-pressure escalation:
+
+```text
+comparison:
+  results/tables/v2_2_fast_stage_c_escalation_comparison.csv
+
+Run A:
+  pathology_contrastive_weight: 1.0
+  pathology_contrastive_temperature: 0.75
+  head lr: 2e-5
+
+Run B:
+  pathology_contrastive_weight: 1.0
+  pathology_contrastive_temperature: 2.0
+  head lr: 2e-5
+
+Run C:
+  pathology_contrastive_weight: 1.0
+  pathology_contrastive_temperature: 2.0
+  head lr: 1e-4
+```
+
+All three escalation runs passed the embedding-geometry safety gates. Final embedding effective dimensions stayed around `75-76`, and final embedding top singular-value ratio stayed around `0.109-0.113`. However, none of the three runs produced meaningful pathology leverage. The raw pathology contrastive loss remained around `2.6e-6` to `2.8e-6`, so increasing the weight, relaxing the temperature, and accelerating the head did not materially change the disease-coordinate map.
+
+Interpretation: the current pathology similarity objective is too weak or too locally saturated for Stage C disease-vector learning. The next Stage C iteration should replace or supplement it with an explicit supervised pathology prediction head or a donor-level trajectory loss, while keeping the same warmup, differential LR, and embedding-geometry safety gates.
+
 Latest Stage C counterfactual scoring upgrade:
 
 ```text
