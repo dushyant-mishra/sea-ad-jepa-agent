@@ -1877,4 +1877,42 @@ Interpretation:
 - kNN degraded under SupCon because the frozen encoder could not follow the head's contortions.
 - This is the gradient absorption failure: the 20x LR gap let the head absorb all SupCon gradients without teaching the encoder anything.
 - The regression-head smoke learned a supervised pathology loss and improved GFAP/Iba1 kNN, but did not improve AT8/NeuN donor geometry. This is a useful diagnostic, not the final Stage C solution.
+
+## 11. Train Frozen-Backbone Pathology Heads
+
+The preferred Stage C readout is now a frozen Graph-JEPA backbone with a supervised pathology head. This follows the foundation-model pattern: preserve the biological representation and train small heads to decode downstream clinical axes.
+
+Run the linear-vs-MLP probe:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/train_pathology_mlp_head.py `
+  --checkpoint results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt `
+  --heads linear mlp `
+  --epochs 500 `
+  --hidden-dim 64 `
+  --dropout 0.15 `
+  --lr 0.001 `
+  --weight-decay 0.001 `
+  --out-dir results/models/pathology_heads_stage_b_lp `
+  --metrics-out results/tables/pathology_head_stage_b_lp_metrics.csv `
+  --predictions-out results/tables/pathology_head_stage_b_lp_oof_predictions.csv `
+  --donor-embeddings-out results/tables/pathology_head_stage_b_frozen_donor_embeddings.csv
+```
+
+Current result:
+
+```text
+linear head:
+  AT8 Spearman:  0.457
+  NeuN Spearman: 0.474
+  mean Spearman across five targets: 0.279
+
+MLP head:
+  AT8 Spearman:  0.291
+  NeuN Spearman: 0.235
+  mean Spearman across five targets: 0.176
+```
+
+Interpretation: the frozen Stage B representation already contains a strong, linearly decodable AT8/NeuN signal. This argues against additional encoder fine-tuning for now. Counterfactual screens should next score perturbations by the pathology-head delta rather than by latent centroid distance alone.
 - Fix: unfrozen encoder run with relaxed LR gap and reduced rehearsal weights.

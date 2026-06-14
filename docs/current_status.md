@@ -2612,14 +2612,54 @@ Regression head smoke e8:
 
 Interpretation: the regression head learns its supervised objective, but the current conservative setup still does not clearly improve AT8/NeuN donor-level geometry. The discrepancy between 20-step epoch telemetry and full-dataset evaluation also shows that future Stage C diagnostics need full-dataset geometry checks before declaring a run safe.
 
+## Frozen Backbone Pathology Heads
+
+The next diagnostic tested the foundation-model interpretation directly: freeze the conservative Stage B Graph-JEPA encoder and train small donor-level pathology heads on top of the frozen donor embeddings.
+
+```text
+script:
+  scripts/train_pathology_mlp_head.py
+
+source checkpoint:
+  results/models/v2_2_stage_b_adversarial/stage_b_adversarial.pt
+
+outputs:
+  results/tables/pathology_head_stage_b_lp_metrics.csv
+  results/tables/pathology_head_stage_b_lp_oof_predictions.csv
+  results/tables/pathology_head_stage_b_frozen_donor_embeddings.csv
+  results/models/pathology_heads_stage_b_lp/best_pathology_head.pt
+```
+
+Frozen-backbone donor-held-out results:
+
+```text
+linear head:
+  AT8 Spearman:  0.457
+  NeuN Spearman: 0.474
+  GFAP Spearman: 0.177
+  Iba1 Spearman: 0.105
+  6e10 Spearman: 0.183
+  mean Spearman: 0.279
+
+MLP head:
+  AT8 Spearman:  0.291
+  NeuN Spearman: 0.235
+  GFAP Spearman: 0.265
+  Iba1 Spearman: -0.059
+  6e10 Spearman: 0.147
+  mean Spearman: 0.176
+```
+
+Interpretation: the frozen Stage B backbone already contains a strong, linearly decodable AT8/NeuN signal. This is the best evidence so far for pausing encoder fine-tuning: the pathology signal is present, and forcing the encoder to contort around donor-level labels has repeatedly damaged geometry. The linear pathology head is currently the preferred Stage C readout.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.
 
 ## Next Steps
 
-1. Use the fast evaluator after every Stage C diagnostic; do not rely only on sampled epoch telemetry.
-2. For the next regression-head test, either lower pathology-head LR or use a staged freeze schedule so the head cannot learn while the encoder remains unchanged.
-3. Add a full-dataset geometry safety check to the trainer or run evaluator automatically at checkpoints.
-4. If regression-head tuning still fails to improve AT8/NeuN geometry, pause Stage C optimization and return to biological extraction from the stable v2.1 models.
+1. Treat the frozen Stage B encoder plus linear pathology head as the active Stage C readout.
+2. Update counterfactual scoring to use predicted pathology delta from the frozen encoder + pathology head, not only latent centroid distance.
+3. Use MLP heads only as a secondary comparison; the first MLP underperformed the linear head.
+4. Avoid encoder fine-tuning unless a future validation experiment proves the frozen representation lacks the needed signal.
 5. Keep external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.
