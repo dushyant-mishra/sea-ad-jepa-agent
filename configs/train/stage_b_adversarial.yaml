@@ -39,6 +39,7 @@ variance_gamma: 0.02
 covariance_weight: 0.05
 
 domain_hidden_dim: 128
+domain_dropout: 0.1
 lr: 0.00005
 domain_lr: 0.0002
 weight_decay: 0.0001

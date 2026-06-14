@@ -372,6 +372,35 @@ top singular-value ratio: 0.141
 
 Interpretation: the state-aware Stage B run preserved a broad latent manifold, but it did not achieve strong domain confusion. Domain accuracy remained around 0.62 rather than approaching the three-domain chance level of 0.33. Treat this as a biologically safer partial adapter, not as solved cohort invariance. The next diagnostic should increase alignment pressure carefully, for example `domain_loss_weight=0.2-0.3` or `freeze_mode=full`, while monitoring JEPA loss and effective dimensions for biological collapse.
 
+Stage B escalation diagnostics:
+
+```text
+comparison:
+  results/tables/v2_2_stage_b_adversarial_experiment_comparison.csv
+
+full encoder + stronger domain penalty:
+  run: v2_2_stage_b_adversarial_full_w05
+  freeze_mode: full
+  encoder lr: 1e-5
+  domain_loss_weight: 0.5
+  final domain accuracy: 0.655
+  effective dimensions: 62.22
+  top singular-value ratio: 0.176
+
+TTUR slow-discriminator run:
+  run: v2_2_stage_b_adversarial_ttur_w02
+  freeze_mode: partial_encoder
+  encoder lr: 5e-5
+  domain lr: 1e-5
+  domain_dropout: 0.3
+  domain_loss_weight: 0.2
+  final domain accuracy: 0.324
+  effective dimensions: 19.49
+  top singular-value ratio: 0.394
+```
+
+Interpretation: the full-encoder escalation preserved geometry but did not improve domain confusion. The TTUR slow-discriminator run reached chance-level domain accuracy, but it did so by damaging the latent geometry; this is not acceptable alignment. The active Stage B checkpoint remains the baseline state-aware partial-encoder run until a method reduces domain accuracy while keeping effective dimensions above roughly 50 and `top_sv_ratio` below roughly 0.2.
+
 Latest Stage C counterfactual scoring upgrade:
 
 ```text

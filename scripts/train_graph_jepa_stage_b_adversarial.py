@@ -211,7 +211,11 @@ def main(cfg: DictConfig) -> None:
     model, stage_a_args = build_model_from_checkpoint(str(cfg.stage_a_checkpoint), device)
     apply_freeze_mode(model, str(cfg.freeze_mode))
     latent_dim = int(stage_a_args.get("latent_dim", 128))
-    domain_classifier = DomainClassifier(latent_dim, hidden_dim=int(cfg.domain_hidden_dim)).to(device)
+    domain_classifier = DomainClassifier(
+        latent_dim,
+        hidden_dim=int(cfg.domain_hidden_dim),
+        dropout=float(cfg.domain_dropout),
+    ).to(device)
 
     optimizer_groups = [{"params": domain_classifier.parameters(), "lr": float(cfg.domain_lr)}]
     model_params = trainable_parameters(model)
