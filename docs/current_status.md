@@ -2849,6 +2849,44 @@ stabilized smaller MIL:
 
 Interpretation: the MIL implementation runs on the frozen Graph-JEPA embeddings and exports cell attention weights, but the current attention head does not learn a reliable donor-level 6e10 predictor. Since the predictive gate fails, its attention weights should not be used for biological claims yet. The stronger current amyloid result remains the frozen ElasticNet A beta axis, with the caveat that it tracks donor 6e10 without matching canonical early/late PIG markers.
 
+## Target Covariate Artifact Audit
+
+Before druggability triage, the Golden Quadrant AT8/NeuN counterfactual genes were audited against donor covariates and donor-level expression-quality proxies.
+
+```text
+script:
+  scripts/audit_target_covariates.py
+
+inputs:
+  results/tables/pathology_head_gene_counterfactual_summary.csv
+  data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+  data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+
+outputs:
+  results/tables/v2_2_target_covariate_audit.csv
+  results/tables/v2_2_target_covariate_audit_long.csv
+```
+
+Golden Quadrant genes:
+
+```text
+APOE
+APP
+CD4
+TLR2
+```
+
+Artifact screen:
+
+```text
+APOE: CLEARED
+APP:  CLEARED
+TLR2: CLEARED
+CD4:  WARNING: Technical Artifact
+```
+
+`CD4` was flagged because donor-level expression correlated with total-count and detected-gene proxies (`rho ~0.37-0.41`, p <= `4.9e-4`). This does not prove CD4 is false biology, but it should be downgraded before druggability prioritization unless it passes a stricter sensitivity analysis. The clean first-pass target set for downstream translational triage is currently `APOE`, `APP`, and `TLR2`.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.

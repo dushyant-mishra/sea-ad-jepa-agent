@@ -2032,3 +2032,30 @@ $env:PYTHONPATH = "src"
 conda run -n sea-ad-jepa python scripts/validate_abeta_mil_biology.py `
   --attention results/tables/v2_2_abeta_mil_head_attention.csv
 ```
+
+## 14. Audit Counterfactual Targets Against Covariates
+
+Before druggability screening, audit the Golden Quadrant counterfactual genes for technical covariate artifacts.
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/audit_target_covariates.py
+```
+
+Outputs:
+
+```text
+results/tables/v2_2_target_covariate_audit.csv
+results/tables/v2_2_target_covariate_audit_long.csv
+```
+
+Current result:
+
+```text
+APOE: CLEARED
+APP:  CLEARED
+TLR2: CLEARED
+CD4:  WARNING: Technical Artifact
+```
+
+`CD4` is flagged because donor-level expression correlates with total-count and detected-gene proxies. Prioritize `APOE`, `APP`, and `TLR2` for the first druggability/actionability pass.
