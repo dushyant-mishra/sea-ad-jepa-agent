@@ -1,231 +1,361 @@
 from __future__ import annotations
 
 import argparse
-import urllib.request
+import json
+import time
 from pathlib import Path
+from typing import Any
 
-import h5py
-import numpy as np
 import pandas as pd
+import requests
 
 
-HPA_QUERIES = {
-    "hpa_fda_drug_target": "protein_class:FDA+approved+drug+targets",
-    "hpa_predicted_secreted": "protein_class:Predicted+secreted+proteins",
-    "hpa_predicted_membrane": "protein_class:Predicted+membrane+proteins",
+TARGETS = ["TLR2", "APP", "APOE"]
+
+
+FALLBACKS: dict[str, dict[str, Any]] = {
+    "TLR2": {
+        "uniprot_id": "O60603",
+        "protein_name": "Toll-like receptor 2",
+        "subcellular_location": "Cell membrane; single-pass type I membrane protein.",
+        "is_membrane": True,
+        "is_secreted": False,
+        "fallback_strategy": "Surface immunomodulatory target; prioritize antibody, biologic, or antagonist repurposing review.",
+        "caution": "Innate immune receptor with infection and inflammatory-pleiotropy risk.",
+    },
+    "APP": {
+        "uniprot_id": "P05067",
+        "protein_name": "Amyloid-beta precursor protein",
+        "subcellular_location": "Cell membrane; secreted soluble APP and amyloid-beta peptides after proteolytic processing.",
+        "is_membrane": True,
+        "is_secreted": True,
+        "fallback_strategy": "Diagnostic biomarker and high-risk therapeutic pathway target.",
+        "caution": "Broad neuronal biology; direct APP targeting must be separated from secretase-pathway effects.",
+    },
+    "APOE": {
+        "uniprot_id": "P02649",
+        "protein_name": "Apolipoprotein E",
+        "subcellular_location": "Secreted; extracellular/lipoprotein particle associated.",
+        "is_membrane": False,
+        "is_secreted": True,
+        "fallback_strategy": "Diagnostic biomarker and lipid-transport pathway target.",
+        "caution": "Isoform- and context-dependent AD biology; direct pharmacology is harder than pathway modulation.",
+    },
 }
 
 
-def decode_array(values) -> list[str]:
-    return [x.decode("utf-8") if isinstance(x, bytes) else str(x) for x in values]
+def request_json(
+    url: str,
+    params: dict[str, Any] | None = None,
+    *,
+    timeout: int = 25,
+    retries: int = 3,
+    sleep_seconds: float = 1.5,
+) -> dict[str, Any] | None:
+    for attempt in range(1, retries + 1):
+        try:
+            response = requests.get(
+                url,
+                params=params,
+                headers={"Accept": "application/json", "User-Agent": "sea-ad-jepa-druggability-audit/1.0"},
+                timeout=timeout,
+            )
+            if response.status_code in {429, 500, 502, 503, 504} and attempt < retries:
+                time.sleep(sleep_seconds * attempt)
+                continue
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException:
+            if attempt == retries:
+                return None
+            time.sleep(sleep_seconds * attempt)
+    return None
 
 
-def read_h5ad_var_names(path: Path) -> list[str]:
-    with h5py.File(path, "r") as h5:
-        var = h5["var"]
-        index_key = var.attrs.get("_index", None)
-        if isinstance(index_key, bytes):
-            index_key = index_key.decode("utf-8")
-        if index_key and index_key in var:
-            return decode_array(var[index_key][()])
-        if "_index" in var:
-            return decode_array(var["_index"][()])
-    raise KeyError(f"Could not read var names from {path}")
+def text_blob(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value
+    try:
+        return json.dumps(value, sort_keys=True)
+    except TypeError:
+        return str(value)
 
 
-def load_jepa_genes(local_h5ad: Path, fallback_gene_csv: Path | None) -> list[str]:
-    if local_h5ad.exists():
-        return read_h5ad_var_names(local_h5ad)
-    if fallback_gene_csv and fallback_gene_csv.exists():
-        df = pd.read_csv(fallback_gene_csv)
-        gene_col = find_col(df, ["gene", "Gene", "feature_name"])
-        return df[gene_col].astype(str).tolist()
-    raise FileNotFoundError(f"Could not find {local_h5ad} or fallback gene CSV {fallback_gene_csv}")
+def parse_uniprot_location(record: dict[str, Any], fallback: dict[str, Any]) -> dict[str, Any]:
+    protein_name = fallback["protein_name"]
+    protein_description = record.get("proteinDescription") or {}
+    recommended_name = protein_description.get("recommendedName") or {}
+    full_name = recommended_name.get("fullName") or {}
+    if full_name.get("value"):
+        protein_name = full_name["value"]
+
+    location_parts: list[str] = []
+    for comment in record.get("comments", []):
+        if comment.get("commentType") != "SUBCELLULAR LOCATION":
+            continue
+        for sublocation in comment.get("subcellularLocations", []):
+            location = sublocation.get("location") or {}
+            value = location.get("value")
+            if value:
+                location_parts.append(value)
+        for text in comment.get("texts", []):
+            if text.get("value"):
+                location_parts.append(text["value"])
+
+    if not location_parts:
+        for comment in record.get("comments", []):
+            blob = text_blob(comment)
+            if "membrane" in blob.lower() or "secret" in blob.lower() or "extracellular" in blob.lower():
+                location_parts.append(blob)
+
+    subcellular_location = "; ".join(dict.fromkeys(location_parts)) or fallback["subcellular_location"]
+    lower_location = subcellular_location.lower()
+
+    return {
+        "UniProt_ID": record.get("primaryAccession") or fallback["uniprot_id"],
+        "Protein_Name": protein_name,
+        "Subcellular_Location": subcellular_location,
+        "Is_Membrane": bool(fallback["is_membrane"] or "membrane" in lower_location),
+        "Is_Secreted": bool(
+            fallback["is_secreted"]
+            or "secreted" in lower_location
+            or "extracellular" in lower_location
+            or "lipoprotein" in lower_location
+        ),
+    }
 
 
-def find_col(df: pd.DataFrame, candidates: list[str]) -> str:
-    for col in candidates:
-        if col in df.columns:
-            return col
-    raise KeyError(f"None of {candidates} found in columns: {list(df.columns)}")
-
-
-def hpa_url(query: str) -> str:
-    return (
-        "https://www.proteinatlas.org/api/search_download.php?"
-        f"search={query}&format=tsv&columns=g,gs&compress=no"
-    )
-
-
-def download_hpa_table(name: str, query: str, out_dir: Path, refresh: bool) -> Path:
-    out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"{name}.tsv"
-    if path.exists() and not refresh:
-        return path
-    req = urllib.request.Request(hpa_url(query), headers={"User-Agent": "sea-ad-jepa-translational-audit/1.0"})
-    with urllib.request.urlopen(req, timeout=120) as response:
-        path.write_bytes(response.read())
-    return path
-
-
-def read_hpa_genes(path: Path) -> set[str]:
-    df = pd.read_csv(path, sep="\t")
-    gene_col = find_col(df, ["Gene", "gene", "Gene name", "gene_name"])
-    return set(df[gene_col].dropna().astype(str).str.upper())
-
-
-def minmax(values: pd.Series) -> pd.Series:
-    values = pd.to_numeric(values, errors="coerce")
-    if values.notna().sum() == 0:
-        return pd.Series(np.zeros(len(values)), index=values.index)
-    lo = values.min()
-    hi = values.max()
-    if not np.isfinite(lo) or not np.isfinite(hi) or hi == lo:
-        return pd.Series(np.zeros(len(values)), index=values.index)
-    return (values - lo) / (hi - lo)
-
-
-def load_optional_csv(path: Path, label: str) -> pd.DataFrame | None:
-    if not path.exists():
-        print(f"[WARN] Missing {label}: {path}")
-        return None
-    return pd.read_csv(path)
-
-
-def build_master_table(args: argparse.Namespace, hpa_sets: dict[str, set[str]]) -> pd.DataFrame:
-    jepa_genes = load_jepa_genes(Path(args.local_h5ad), Path(args.fallback_gene_csv) if args.fallback_gene_csv else None)
-    master = pd.DataFrame({"gene": jepa_genes})
-    master["gene_upper"] = master["gene"].astype(str).str.upper()
-
-    v1 = load_optional_csv(Path(args.v1_candidates), "v1 candidate genes")
-    if v1 is not None:
-        gene_col = find_col(v1, ["gene", "Gene"])
-        v1 = v1.rename(columns={gene_col: "gene"})
-        v1["gene_upper"] = v1["gene"].astype(str).str.upper()
-        keep = [
-            "gene_upper",
-            "module",
-            "mean_donor_delta",
-            "bootstrap_ci_low",
-            "bootstrap_ci_high",
-            "adjusted_slope",
-            "partial_spearman",
-            "model_implied_at8_reducing_knockout",
-            "confounder_adjusted_abs_partial_spearman",
-        ]
-        keep = [col for col in keep if col in v1.columns]
-        master = master.merge(v1[keep].drop_duplicates("gene_upper"), on="gene_upper", how="left")
-
-    at8 = load_optional_csv(Path(args.at8_rankings), "AT8 gene rankings")
-    if at8 is not None:
-        gene_col = find_col(at8, ["gene", "Gene"])
-        at8 = at8.rename(columns={gene_col: "gene"})
-        at8["gene_upper"] = at8["gene"].astype(str).str.upper()
-        score_col = find_col(at8, ["score", "abs_score"])
-        at8 = at8[["gene_upper", score_col]].drop_duplicates("gene_upper").rename(columns={score_col: "at8_pseudobulk_score"})
-        master = master.merge(at8, on="gene_upper", how="left")
-
-    for name, genes in hpa_sets.items():
-        master[f"is_{name}"] = master["gene_upper"].isin(genes).astype(int)
-
-    master["biology_score"] = 0.0
-    if "confounder_adjusted_abs_partial_spearman" in master:
-        master["biology_score"] += minmax(master["confounder_adjusted_abs_partial_spearman"]).fillna(0) * 0.45
-    if "mean_donor_delta" in master:
-        knockout_strength = pd.to_numeric(master["mean_donor_delta"], errors="coerce").abs()
-        master["biology_score"] += minmax(knockout_strength).fillna(0) * 0.35
-    if "at8_pseudobulk_score" in master:
-        master["biology_score"] += minmax(pd.to_numeric(master["at8_pseudobulk_score"], errors="coerce").abs()).fillna(0) * 0.20
-
-    master["translational_bonus"] = (
-        master["is_hpa_fda_drug_target"] * 0.25
-        + master["is_hpa_predicted_membrane"] * 0.20
-        + master["is_hpa_predicted_secreted"] * 0.15
-    )
-    master["translational_priority_score"] = master["biology_score"] + master["translational_bonus"]
-
-    def category(row: pd.Series) -> str:
-        if row["is_hpa_fda_drug_target"] and row["is_hpa_predicted_membrane"]:
-            return "actionable_surface_drug_target"
-        if row["is_hpa_fda_drug_target"]:
-            return "known_drug_target"
-        if row["is_hpa_predicted_membrane"]:
-            return "surface_target_candidate"
-        if row["is_hpa_predicted_secreted"]:
-            return "secreted_biomarker_candidate"
-        return "biology_first_hard_target"
-
-    master["translational_category"] = master.apply(category, axis=1)
-    master = master.sort_values(
-        ["translational_priority_score", "biology_score", "gene"],
-        ascending=[False, False, True],
-    )
-    return master.drop(columns=["gene_upper"])
-
-
-def write_summary(master: pd.DataFrame, out_path: Path, summary_path: Path) -> None:
-    rows = [
-        {"metric": "n_jepa_genes", "value": int(len(master))},
-        {"metric": "n_hpa_fda_drug_targets", "value": int(master["is_hpa_fda_drug_target"].sum())},
-        {"metric": "n_hpa_predicted_secreted", "value": int(master["is_hpa_predicted_secreted"].sum())},
-        {"metric": "n_hpa_predicted_membrane", "value": int(master["is_hpa_predicted_membrane"].sum())},
+def fetch_uniprot_annotation(gene: str) -> dict[str, Any]:
+    fallback = FALLBACKS[gene]
+    data = request_json(
+        "https://rest.uniprot.org/uniprotkb/search",
         {
-            "metric": "n_fda_and_membrane",
-            "value": int(((master["is_hpa_fda_drug_target"] == 1) & (master["is_hpa_predicted_membrane"] == 1)).sum()),
+            "query": f"gene_exact:{gene} AND organism_id:9606 AND reviewed:true",
+            "format": "json",
+            "size": 1,
+            "fields": "accession,protein_name,cc_subcellular_location",
         },
-    ]
-    category_counts = master["translational_category"].value_counts()
-    for category, value in category_counts.items():
-        rows.append({"metric": f"category_{category}", "value": int(value)})
-    pd.DataFrame(rows).to_csv(summary_path, index=False)
-    master.to_csv(out_path, index=False)
+    )
+    if not data or not data.get("results"):
+        return {
+            "UniProt_ID": fallback["uniprot_id"],
+            "Protein_Name": fallback["protein_name"],
+            "Subcellular_Location": fallback["subcellular_location"],
+            "Is_Membrane": fallback["is_membrane"],
+            "Is_Secreted": fallback["is_secreted"],
+        }
+    return parse_uniprot_location(data["results"][0], fallback)
+
+
+def component_symbols(target: dict[str, Any]) -> set[str]:
+    symbols: set[str] = set()
+    for component in target.get("target_components", []) or []:
+        for synonym in component.get("target_component_synonyms", []) or []:
+            if synonym.get("syn_type") in {"GENE_SYMBOL", "GENE NAME", "UNIPROT"} and synonym.get("component_synonym"):
+                symbols.add(str(synonym["component_synonym"]).upper())
+    return symbols
+
+
+def choose_chembl_target(gene: str, targets: list[dict[str, Any]]) -> dict[str, Any] | None:
+    human_targets = [t for t in targets if t.get("organism") == "Homo sapiens"]
+    single_protein = [t for t in human_targets if t.get("target_type") in {"SINGLE PROTEIN", "PROTEIN COMPLEX"}]
+
+    for target in single_protein + human_targets:
+        if gene.upper() in component_symbols(target):
+            return target
+
+    for target in single_protein + human_targets:
+        joined = " ".join(
+            str(target.get(k, "")) for k in ["pref_name", "target_chembl_id", "target_type", "organism"]
+        ).upper()
+        if gene.upper() in joined:
+            return target
+    return None
+
+
+def fetch_all_pages(url: str, params: dict[str, Any], key: str, limit_pages: int = 20) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    next_url: str | None = url
+    next_params: dict[str, Any] | None = params.copy()
+    pages = 0
+    while next_url and pages < limit_pages:
+        data = request_json(next_url, next_params)
+        if not data:
+            break
+        rows.extend(data.get(key, []))
+        next_path = (data.get("page_meta") or {}).get("next")
+        if next_path:
+            next_url = "https://www.ebi.ac.uk" + next_path if next_path.startswith("/") else next_path
+            next_params = None
+        else:
+            next_url = None
+        pages += 1
+    return rows
+
+
+def is_active_activity(activity: dict[str, Any]) -> bool:
+    pchembl = activity.get("pchembl_value")
+    if pchembl not in {None, ""}:
+        try:
+            return float(pchembl) >= 5.0
+        except (TypeError, ValueError):
+            pass
+
+    standard_value = activity.get("standard_value")
+    units = str(activity.get("standard_units") or "").lower()
+    relation = str(activity.get("standard_relation") or "")
+    try:
+        value = float(standard_value)
+    except (TypeError, ValueError):
+        return False
+    if units in {"nm", "nanomolar"} and relation in {"=", "<", "<="}:
+        return value <= 10_000.0
+    return False
+
+
+def parse_molecule_phase(molecule: dict[str, Any], fallback_name: str) -> tuple[float, str]:
+    phase = molecule.get("max_phase")
+    try:
+        max_phase = float(phase or 0.0)
+    except (TypeError, ValueError):
+        max_phase = 0.0
+    return max_phase, str(molecule.get("pref_name") or fallback_name)
+
+
+def fetch_molecule_phases_batch(molecule_chembl_ids: list[str], chunk_size: int = 100) -> dict[str, tuple[float, str]]:
+    phases: dict[str, tuple[float, str]] = {}
+    for start in range(0, len(molecule_chembl_ids), chunk_size):
+        chunk = molecule_chembl_ids[start : start + chunk_size]
+        data = request_json(
+            "https://www.ebi.ac.uk/chembl/api/data/molecule.json",
+            {"molecule_chembl_id__in": ",".join(chunk), "limit": len(chunk)},
+        )
+        if not data:
+            continue
+        for molecule in data.get("molecules", []):
+            molecule_id = molecule.get("molecule_chembl_id")
+            if molecule_id:
+                phases[str(molecule_id)] = parse_molecule_phase(molecule, str(molecule_id))
+    return phases
+
+
+def fetch_chembl_summary(gene: str, max_molecule_phase_queries: int) -> dict[str, Any]:
+    search = request_json("https://www.ebi.ac.uk/chembl/api/data/target/search.json", {"q": gene, "limit": 20})
+    target = choose_chembl_target(gene, search.get("targets", []) if search else [])
+    if not target:
+        return {
+            "ChEMBL_Target_ID": "",
+            "Known_Compounds_Count": 0,
+            "Max_Clinical_Trial_Phase": 0.0,
+            "Clinical_Molecules": "",
+        }
+
+    target_id = target["target_chembl_id"]
+    activities = fetch_all_pages(
+        "https://www.ebi.ac.uk/chembl/api/data/activity.json",
+        {
+            "target_chembl_id": target_id,
+            "standard_type__in": "IC50,Ki,Kd,EC50,Potency",
+            "limit": 1000,
+        },
+        "activities",
+        limit_pages=25,
+    )
+
+    active_molecules = sorted(
+        {
+            str(activity.get("molecule_chembl_id"))
+            for activity in activities
+            if activity.get("molecule_chembl_id") and is_active_activity(activity)
+        }
+    )
+
+    phase_sample = active_molecules[:max_molecule_phase_queries]
+    phase_lookup = fetch_molecule_phases_batch(phase_sample)
+
+    max_phase = 0.0
+    clinical_names: list[str] = []
+    for molecule_id in phase_sample:
+        phase, name = phase_lookup.get(molecule_id, (0.0, molecule_id))
+        if phase > max_phase:
+            max_phase = phase
+        if phase >= 1:
+            clinical_names.append(f"{name} (phase {phase:g})")
+
+    return {
+        "ChEMBL_Target_ID": target_id,
+        "Known_Compounds_Count": len(active_molecules),
+        "Max_Clinical_Trial_Phase": max_phase,
+        "Clinical_Molecules": "; ".join(clinical_names[:10]),
+    }
+
+
+def choose_strategy(row: dict[str, Any]) -> str:
+    strategies: list[str] = []
+    if row["Is_Membrane"] and float(row["Max_Clinical_Trial_Phase"]) > 0:
+        strategies.append("Repurpose Existing Drug / Monoclonal Target")
+    elif row["Is_Membrane"]:
+        strategies.append("Surface / Monoclonal Target")
+    if row["Is_Secreted"]:
+        strategies.append("Diagnostic Biomarker Target")
+    if not row["Is_Membrane"] and not row["Is_Secreted"] and int(row["Known_Compounds_Count"]) == 0:
+        strategies.append("Difficult Small Molecule Target")
+    return " + ".join(strategies) if strategies else FALLBACKS[row["Target_Gene"]]["fallback_strategy"]
+
+
+def audit_target(gene: str, max_molecule_phase_queries: int) -> dict[str, Any]:
+    localization = fetch_uniprot_annotation(gene)
+    chembl = fetch_chembl_summary(gene, max_molecule_phase_queries)
+    row: dict[str, Any] = {
+        "Target_Gene": gene,
+        **localization,
+        **chembl,
+        "Caution": FALLBACKS[gene]["caution"],
+    }
+    row["Translational_Strategy"] = choose_strategy(row)
+    return row
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Audit JEPA genes for translational actionability annotations.")
-    parser.add_argument("--local-h5ad", default="data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad")
-    parser.add_argument("--fallback-gene-csv", default="")
-    parser.add_argument("--v1-candidates", default="results/tables/v1_hypothesis_candidate_genes.csv")
-    parser.add_argument("--at8-rankings", default="results/tables/microglia_pvm_percent_AT8_gene_rankings.csv")
-    parser.add_argument("--hpa-dir", default="data/external/hpa")
-    parser.add_argument("--out", default="results/tables/jepa_v2_translational_actionability_matrix.csv")
-    parser.add_argument("--summary-out", default="results/tables/jepa_v2_translational_actionability_summary.csv")
-    parser.add_argument("--refresh-hpa", action="store_true")
+    parser = argparse.ArgumentParser(
+        description="Audit artifact-cleared SEA-AD Graph-JEPA targets for localization, biomarker potential, and ChEMBL druggability."
+    )
+    parser.add_argument("--out", default="results/tables/v2_2_druggability_summary.csv")
+    parser.add_argument("--targets", nargs="+", default=TARGETS)
+    parser.add_argument("--max-molecule-phase-queries", type=int, default=2000)
     args = parser.parse_args()
 
-    hpa_dir = Path(args.hpa_dir)
-    hpa_sets = {}
-    for name, query in HPA_QUERIES.items():
-        print(f"Loading HPA annotation: {name}")
-        path = download_hpa_table(name, query, hpa_dir, args.refresh_hpa)
-        hpa_sets[name] = read_hpa_genes(path)
-        print(f"  {len(hpa_sets[name]):,} genes")
+    unknown = [target for target in args.targets if target not in FALLBACKS]
+    if unknown:
+        raise ValueError(f"No fallback annotation is defined for: {unknown}")
 
-    master = build_master_table(args, hpa_sets)
-    out_path = Path(args.out)
-    summary_path = Path(args.summary_out)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    write_summary(master, out_path, summary_path)
+    rows = [audit_target(target, args.max_molecule_phase_queries) for target in args.targets]
+    df = pd.DataFrame(rows)
 
-    print("\nTranslational audit summary")
-    print(pd.read_csv(summary_path).to_string(index=False))
-    print("\nTop 20 prioritized genes")
-    top_cols = [
-        "gene",
-        "module",
-        "biology_score",
-        "translational_bonus",
-        "translational_priority_score",
-        "translational_category",
-        "is_hpa_fda_drug_target",
-        "is_hpa_predicted_membrane",
-        "is_hpa_predicted_secreted",
+    ordered_columns = [
+        "Target_Gene",
+        "UniProt_ID",
+        "Protein_Name",
+        "Subcellular_Location",
+        "Is_Membrane",
+        "Is_Secreted",
+        "ChEMBL_Target_ID",
+        "Known_Compounds_Count",
+        "Max_Clinical_Trial_Phase",
+        "Clinical_Molecules",
+        "Translational_Strategy",
+        "Caution",
     ]
-    top_cols = [col for col in top_cols if col in master.columns]
-    print(master[top_cols].head(20).to_string(index=False))
-    print(f"\nWrote matrix: {out_path}")
-    print(f"Wrote summary: {summary_path}")
+    df = df[ordered_columns]
+
+    out_path = Path(args.out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(out_path, index=False)
+
+    print(df.to_string(index=False))
+    print(f"\nWrote {out_path}")
 
 
 if __name__ == "__main__":

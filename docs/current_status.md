@@ -2887,6 +2887,42 @@ CD4:  WARNING: Technical Artifact
 
 `CD4` was flagged because donor-level expression correlated with total-count and detected-gene proxies (`rho ~0.37-0.41`, p <= `4.9e-4`). This does not prove CD4 is false biology, but it should be downgraded before druggability prioritization unless it passes a stricter sensitivity analysis. The clean first-pass target set for downstream translational triage is currently `APOE`, `APP`, and `TLR2`.
 
+## Druggability and Biomarker Audit
+
+The artifact-cleared first-pass targets were screened against UniProt localization and ChEMBL direct-target activity.
+
+```text
+script:
+  scripts/audit_druggability_biomarkers.py
+
+output:
+  results/tables/v2_2_druggability_summary.csv
+```
+
+Current target triage:
+
+```text
+TLR2:
+  localization: membrane/phagosome membrane/membrane raft
+  ChEMBL direct active compounds: 13
+  max observed clinical phase in direct active set: 0
+  strategy: surface immunomodulatory target; antibody/antagonist review
+
+APP:
+  localization: membrane plus secreted/processed products
+  ChEMBL direct active compounds: 1535
+  max observed clinical phase in direct active set: 4
+  strategy: biomarker plus druggability/pathway review
+
+APOE:
+  localization: secreted/extracellular/lipoprotein-associated
+  ChEMBL direct active compounds: 0
+  max observed clinical phase in direct active set: 0
+  strategy: biomarker and lipid-transport pathway target
+```
+
+Interpretation: `TLR2` is the cleanest membrane-accessible immunomodulatory target from the artifact-cleared set. `APP` is strongly connected to existing compounds and clinical imaging/diagnostic molecules, but direct APP modulation is biologically broad and must be separated from secretase/pathway effects. `APOE` is most defensible as a secreted biomarker and lipid-transport pathway node rather than an easy direct small-molecule target.
+
 ## Notes
 
 The first attempted microglia-specific extraction was slow because microglia rows are distributed across the full H5AD file. This is now handled by sequential CSR streaming in `scripts/build_microglia_streaming_pilot.py`.
@@ -2897,4 +2933,5 @@ The first attempted microglia-specific extraction was slow because microglia row
 2. Use pathology-head counterfactuals for AT8/NeuN-oriented hypothesis ranking, while keeping manifold-safety columns in every report.
 3. Do not proceed with the current A beta fork; it failed the CV geometry gate.
 4. Treat the frozen A beta ElasticNet axis as an exploratory donor-level amyloid readout. Do not claim it has identified plaque-proximal microglia unless future spatial/plaque-proximity validation supports that claim.
-5. Keep external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.
+5. Follow up `TLR2`, `APP`, and `APOE` with literature-level mechanism review, existing drug class review, and biomarker feasibility checks before proposing any wet-lab validation.
+6. Keep external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.

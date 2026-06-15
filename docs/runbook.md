@@ -2059,3 +2059,36 @@ CD4:  WARNING: Technical Artifact
 ```
 
 `CD4` is flagged because donor-level expression correlates with total-count and detected-gene proxies. Prioritize `APOE`, `APP`, and `TLR2` for the first druggability/actionability pass.
+
+## 15. Audit Druggability and Biomarker Potential
+
+After the covariate audit clears the first-pass target set, screen those genes for protein localization and existing ChEMBL activity.
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python scripts/audit_druggability_biomarkers.py
+```
+
+Output:
+
+```text
+results/tables/v2_2_druggability_summary.csv
+```
+
+Current result:
+
+```text
+TLR2: membrane target, 13 direct ChEMBL active compounds, max phase 0
+APP:  membrane/secreted target, 1535 direct ChEMBL active compounds, max phase 4
+APOE: secreted/extracellular target, 0 direct ChEMBL active compounds, max phase 0
+```
+
+Interpretation:
+
+```text
+TLR2 is the strongest surface-accessible immunomodulatory target.
+APP has strong druggability and diagnostic-tracer signal, but direct therapeutic interpretation is broad and high-risk.
+APOE is currently more convincing as a secreted biomarker/pathway target than as a direct small-molecule target.
+```
+
+The script uses live UniProt and ChEMBL lookups when possible and conservative built-in fallbacks for reproducibility. The ChEMBL clinical-phase search is bounded for speed, so treat the phase field as a triage signal rather than a complete regulatory audit.
