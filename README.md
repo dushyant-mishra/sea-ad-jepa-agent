@@ -45,6 +45,36 @@ The figures below are the GitHub-facing overview of the project. They are genera
 
 Full-size figures and captions are collected in [docs/figure_gallery.md](docs/figure_gallery.md).
 
+## Latest Snapshot
+
+The current repository state has moved beyond the original v1 latent-space demo. The active story is now:
+
+```text
+Graph-JEPA v2.2 backbone
+  -> frozen Stage B biological representation
+  -> linear pathology heads for AT8/NeuN
+  -> graph-mediated counterfactual screens
+  -> covariate/artifact audit
+  -> druggability and biomarker triage
+```
+
+Current high-level results:
+
+| Layer | Current Finding | Interpretation Boundary |
+|---|---|---|
+| Tau/neurodegeneration readout | Frozen Graph-JEPA plus a linear pathology head gives the strongest defensible AT8/NeuN readout. | Use this as the active Stage C clinical readout; do not warp the backbone further unless a future gate clearly passes. |
+| Golden Quadrant targets | `APOE`, `APP`, `CD4`, and `TLR2` predicted lower AT8 and higher NeuN in the pathology-head counterfactual screen. | These are model-implied intervention hypotheses, not causal proof. |
+| Covariate audit | `APOE`, `APP`, and `TLR2` cleared the first technical-covariate screen; `CD4` was downgraded for count-depth artifacts. | The clean first-pass translational set is `APOE`, `APP`, and `TLR2`. |
+| Druggability/biomarker triage | `TLR2` is membrane-accessible, `APP` is membrane/secreted with many ChEMBL actives, and `APOE` is secreted/extracellular. | `TLR2` is the cleanest surface immunomodulatory target; `APP` and `APOE` need careful biomarker/pathway framing. |
+| Amyloid/6e10 | A frozen ElasticNet axis finds a weak but reproducible donor-level 6e10 signal; MIL did not generalize. | Treat A beta as exploratory. Do not claim plaque-proximal microglia without spatial/plaque validation. |
+| External transfer | Grubman/Leng is a useful directionality smoke test; Morabito tau transfer is weak/negative. | External projections currently define boundaries, not final validation wins. |
+
+Newest translational outputs:
+
+- [target covariate audit](results/tables/v2_2_target_covariate_audit.csv)
+- [target covariate audit, long form](results/tables/v2_2_target_covariate_audit_long.csv)
+- [druggability and biomarker summary](results/tables/v2_2_druggability_summary.csv)
+
 ## Why This Project Exists
 
 Single-cell RNA-seq often gives long gene lists. Neuropathology gives real tissue phenotypes, but it does not directly identify which cell-state programs explain those phenotypes. This project tries to connect those layers.
@@ -595,6 +625,44 @@ Outputs:
 The next validation-planning document separates public alignment cohorts from final locked-validation cohorts:
 
 - [external cohort reconnaissance](docs/external_cohort_reconnaissance.md)
+
+## Current Biological Extraction and Translation Layer
+
+The active biological extraction layer uses a frozen Graph-JEPA backbone plus trained pathology heads. Counterfactual screens are scored by passing perturbed expression through the graph encoder first, then reading out predicted pathology through the head. This preserves the graph-mediated representation shift and avoids directly querying linear head weights as if they were causal mechanisms.
+
+The latest AT8/NeuN target workflow is:
+
+```text
+1. graph-mediated pathology-head counterfactual screen
+2. Golden Quadrant filter: predicted AT8 decrease and NeuN increase
+3. covariate/artifact audit across age, sex, cell count, total-count proxy, and detected-gene proxy
+4. druggability/biomarker triage using UniProt localization and ChEMBL activity
+```
+
+Current artifact-audited target set:
+
+| Gene | Counterfactual Role | Covariate Status | Translational Readout |
+|---|---|---|---|
+| `TLR2` | Predicted AT8-lowering / NeuN-preserving hit | Cleared | Membrane-accessible immunomodulatory target; 13 direct ChEMBL active compounds. |
+| `APP` | Predicted AT8-lowering / NeuN-preserving hit | Cleared | Membrane/secreted AD pathway and biomarker node; 1535 ChEMBL actives, including phase 4 diagnostic/clinical molecules. |
+| `APOE` | Predicted AT8-lowering / NeuN-preserving hit | Cleared | Secreted/extracellular lipid-transport and biomarker target; direct small-molecule pharmacology remains limited. |
+| `CD4` | Initial Golden Quadrant hit | Downgraded | Flagged for technical count-depth correlation; not part of the first-pass translational set. |
+
+Age-at-death audit for the clean target set:
+
+```text
+APOE: Spearman rho -0.103, p 0.349
+APP:  Spearman rho -0.096, p 0.386
+TLR2: Spearman rho -0.046, p 0.679
+```
+
+Interpretation: the clean target set is not obviously driven by age at death in the current donor-level audit. `CD4` is not discarded forever, but it needs stricter sensitivity analysis before it belongs in a translational target shortlist.
+
+Current scripts:
+
+- [scripts/pathology_head_counterfactual_knockout.py](scripts/pathology_head_counterfactual_knockout.py)
+- [scripts/audit_target_covariates.py](scripts/audit_target_covariates.py)
+- [scripts/audit_druggability_biomarkers.py](scripts/audit_druggability_biomarkers.py)
 
 ## Dataset
 

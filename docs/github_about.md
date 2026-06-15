@@ -5,7 +5,7 @@ Use this text for the GitHub repository About panel.
 ## Description
 
 ```text
-Graph-JEPA framework for SEA-AD Alzheimer microglia: pathology-grounded representation learning, donor-held-out validation, and counterfactual gene-network hypothesis generation.
+Graph-JEPA framework for SEA-AD Alzheimer microglia: pathology-grounded representation learning, graph-mediated counterfactual screens, artifact-audited targets, and translational triage.
 ```
 
 ## Website
@@ -51,6 +51,39 @@ pathology contrastive weight: 0.075
 checkpoint: epoch 5
 composite score: 1.686
 anchor cosines: SEA 0.975, CELLxGENE 0.961
+```
+
+Current biological extraction layer:
+
+```text
+active readout:
+  frozen Graph-JEPA Stage B backbone + linear pathology heads
+
+clean first-pass translational target set:
+  TLR2
+  APP
+  APOE
+
+downgraded target:
+  CD4, flagged for technical count-depth correlation
+
+latest triage:
+  TLR2: membrane-accessible immunomodulatory target
+  APP: membrane/secreted AD pathway and biomarker node
+  APOE: secreted lipid-transport / biomarker target
+```
+
+Amyloid/6e10 boundary:
+
+```text
+frozen ElasticNet axis:
+  weak but reproducible donor-level 6e10 signal
+
+gated-attention MIL:
+  did not generalize in donor-held-out evaluation
+
+claim boundary:
+  exploratory amyloid-associated readout, not validated plaque-proximal microglia
 ```
 
 ## Evidence Boundary
