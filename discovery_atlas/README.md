@@ -114,6 +114,31 @@ $env:PYTHONPATH = "src"
 conda run -n sea-ad-jepa python discovery_atlas/feature_wide_counterfactuals.py --pilot
 ```
 
+Validated pilot command used:
+
+```powershell
+conda run -n sea-ad-jepa python discovery_atlas/feature_wide_counterfactuals.py --pilot --scope graph_connected --batch-size 32 --pilot-out results\tables\discovery_pilot_feature_wide_pathology_axis_counterfactuals.csv
+conda run -n sea-ad-jepa python discovery_atlas/validate_feature_wide_pilot.py --observed-runtime-seconds 3277
+```
+
+Pilot validation output:
+
+```text
+results/tables/discovery_pilot_feature_wide_pathology_axis_counterfactuals.csv
+results/tables/discovery_pilot_feature_wide_reference_comparison.csv
+results/reports/discovery_pilot_feature_wide_counterfactual_validation.md
+```
+
+Pilot result summary:
+
+```text
+221 / 221 perturbations succeeded
+0 manifold violations
+~54.6 minutes observed runtime
+~14.8 seconds per gene
+overlap with existing pathology-head gene counterfactuals: sign agreement = 1.0 and Spearman = 1.0 across AT8, 6e10, GFAP, Iba1, and NeuN
+```
+
 Full graph-connected feature run:
 
 ```powershell

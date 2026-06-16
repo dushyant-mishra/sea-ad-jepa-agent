@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 import anndata as ad
+import numpy as np
 import pandas as pd
 
 
@@ -243,6 +244,9 @@ def normalize_existing_summary(summary: pd.DataFrame, scope: str) -> pd.DataFram
 def run_chunk(args: argparse.Namespace, genes: list[str], chunk_idx: int, temp_dir: Path) -> pd.DataFrame:
     summary_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_summary.csv"
     donor_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_donor.csv"
+    if summary_path.exists():
+        print(f"Reusing existing chunk summary: {summary_path}")
+        return pd.read_csv(summary_path)
     cmd = [
         sys.executable,
         "scripts/pathology_head_counterfactual_knockout.py",
