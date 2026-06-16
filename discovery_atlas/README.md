@@ -61,6 +61,24 @@ results/reports/discovery_pathology_axis_fingerprints.md
 
 Each candidate receives continuous scores for tau lowering, amyloid lowering, NeuN preservation, gliosis penalty, broad shift, therapeutic-like behavior, and axis selectivity. Categorical labels are conservative and should be treated as convenience summaries, not hard biological states.
 
+## Phase 2: Graph-Neighborhood Coherence
+
+Test whether candidate genes sit in coherent one-hop graph neighborhoods relative to degree-matched null nodes:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python discovery_atlas/graph_neighborhood_coherence.py
+```
+
+Outputs:
+
+```text
+results/tables/discovery_graph_neighborhood_coherence.csv
+results/reports/discovery_graph_neighborhood_coherence.md
+```
+
+This is a graph sanity check, not a mechanistic proof. It asks whether candidates are near other scored candidates or same-axis candidates more often than expected for genes with similar graph degree. Targets that fail this check are not discarded automatically; they are treated as isolated or unsupported by the current graph prior.
+
 ## Planned A Beta Boundary Module
 
 A beta/6e10 is handled as a boundary problem, not as another forced-positive target. The planned module will ask whether the current SEA-AD Microglia-PVM setup supports:
