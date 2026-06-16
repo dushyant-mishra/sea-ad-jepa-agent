@@ -96,7 +96,56 @@ results/reports/discovery_graph_neighborhood_coherence.md
 
 This is a graph sanity check, not a mechanistic proof. It asks whether candidates are near other scored candidates or same-axis candidates more often than expected for genes with similar graph degree. Targets that fail this check are not discarded automatically; they are treated as isolated or unsupported by the current graph prior.
 
-## Phase 3: Preliminary Negative Controls
+## Phase 3A: Feature-Wide Pathology-Axis Counterfactuals
+
+Candidate-space nulls are useful but limited because pathology-axis scores currently exist only for the scored candidate/fingerprint table. A stronger Atlas needs feature-wide or graph-connected feature-gene counterfactual scores first.
+
+Dry run:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python discovery_atlas/feature_wide_counterfactuals.py --dry-run
+```
+
+Pilot run:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python discovery_atlas/feature_wide_counterfactuals.py --pilot
+```
+
+Full graph-connected feature run:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python discovery_atlas/feature_wide_counterfactuals.py --scope graph_connected
+```
+
+Full feature-wide run:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python discovery_atlas/feature_wide_counterfactuals.py --scope feature_wide
+```
+
+Outputs:
+
+```text
+results/reports/discovery_feature_wide_counterfactual_feasibility.md
+results/tables/discovery_pilot_feature_wide_pathology_axis_counterfactuals.csv
+results/tables/discovery_feature_wide_pathology_axis_counterfactuals.csv
+```
+
+Terminology:
+
+```text
+feature-wide = all Graph-JEPA feature genes, not genome-wide
+graph-connected = Graph-JEPA feature genes present in the consensus graph
+```
+
+Feature-wide counterfactuals are still model-implied perturbation scores, not biological intervention results. They improve null testing and ranking robustness, but they do not prove causality.
+
+## Phase 3B: Preliminary Negative Controls
 
 Run the first falsification layer:
 
