@@ -41,6 +41,40 @@ blocked
 
 This prevents the Atlas from fabricating completeness. Missing analyses should be represented as TODO rows until real inputs exist.
 
+## Phase 1: Pathology-Axis Fingerprints
+
+Build gene and module fingerprints from existing multi-target counterfactual outputs:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python discovery_atlas/pathology_axis_fingerprints.py
+```
+
+Outputs:
+
+```text
+results/tables/discovery_pathology_axis_gene_fingerprints.csv
+results/tables/discovery_pathology_axis_module_fingerprints.csv
+results/tables/discovery_candidate_scorecard_v1.csv
+results/reports/discovery_pathology_axis_fingerprints.md
+```
+
+Each candidate receives continuous scores for tau lowering, amyloid lowering, NeuN preservation, gliosis penalty, broad shift, therapeutic-like behavior, and axis selectivity. Categorical labels are conservative and should be treated as convenience summaries, not hard biological states.
+
+## Planned A Beta Boundary Module
+
+A beta/6e10 is handled as a boundary problem, not as another forced-positive target. The planned module will ask whether the current SEA-AD Microglia-PVM setup supports:
+
+```text
+discrete hidden A beta-responsive population
+continuous donor-level A beta axis
+graph-neighborhood A beta signal
+tau/gliosis/neurodegeneration confound
+spatial-data-limited boundary case
+```
+
+This module should reuse existing ElasticNet, MIL, responder-cell, graph-neighborhood, and multi-target counterfactual outputs. It must not claim plaque-proximal microglia without spatial/plaque-distance evidence.
+
 ## Claim Boundary
 
 Allowed:

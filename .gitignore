@@ -31,6 +31,7 @@ results/tables/*
 !results/tables/*leaderboard*.csv
 !results/tables/*metrics*.csv
 !results/tables/*comparison*.csv
+!results/tables/discovery_*.csv
 !results/tables/perturbseq_streaming_validation.csv
 !results/tables/kampmann_deg_jepa_alignment_*.csv
 !results/tables/v2_1_gse174367_*.csv
@@ -66,6 +67,7 @@ results/reports/*
 !results/reports/external_validation_gse174367.md
 !results/reports/v2_2_cellxgene_alignment_stats.md
 !results/reports/discovery_atlas_*.md
+!results/reports/discovery_*.md
 !results/figures/
 results/figures/*
 !results/figures/*.svg
