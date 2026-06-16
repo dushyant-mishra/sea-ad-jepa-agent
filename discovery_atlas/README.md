@@ -96,6 +96,38 @@ results/reports/discovery_graph_neighborhood_coherence.md
 
 This is a graph sanity check, not a mechanistic proof. It asks whether candidates are near other scored candidates or same-axis candidates more often than expected for genes with similar graph degree. Targets that fail this check are not discarded automatically; they are treated as isolated or unsupported by the current graph prior.
 
+## Phase 3: Preliminary Negative Controls
+
+Run the first falsification layer:
+
+```powershell
+$env:PYTHONPATH = "src"
+conda run -n sea-ad-jepa python discovery_atlas/negative_controls.py
+```
+
+Outputs:
+
+```text
+results/tables/discovery_negative_control_summary.csv
+results/tables/discovery_degree_matched_decoy_controls.csv
+results/tables/discovery_label_shuffle_controls.csv
+results/tables/discovery_housekeeping_hub_controls.csv
+results/reports/discovery_negative_controls.md
+```
+
+Important scope limit: this is a score-available candidate-space negative-control layer, not a genome-wide null. Current pathology-axis scores exist only for the scored candidate/fingerprint table. Degree-matched decoys therefore sample only from genes with available pathology-axis scores.
+
+Status interpretation:
+
+```text
+preliminary_support = candidate has some decoy-relative or graph-control support inside the scored candidate space
+not_extreme_within_scored_candidate_space = candidate is not extreme against available scored decoys
+not_testable_due_to_thin_null_pool = fewer than a defensible number of matched scored decoys
+requires_expanded_decoy_perturbations = current controls are inconclusive or hub-like
+```
+
+Negative controls are a falsification layer, not validation. Stronger nulls require either counterfactual scores for a much larger gene universe or rerunning perturbations for degree/expression-matched decoy genes.
+
 ## Planned A Beta Boundary Module
 
 A beta/6e10 is handled as a boundary problem, not as another forced-positive target. The planned module will ask whether the current SEA-AD Microglia-PVM setup supports:
