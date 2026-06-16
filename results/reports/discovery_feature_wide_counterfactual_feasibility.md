@@ -31,7 +31,7 @@
 
 ## Estimated Output Paths
 
-- Full feature-wide output: `results\tables\discovery_feature_wide_pathology_axis_counterfactuals.csv`
+- Full feature-wide output: `results\tables\discovery_graph_connected_feature_wide_pathology_axis_counterfactuals.csv`
 - Pilot output: `results\tables\discovery_pilot_feature_wide_pathology_axis_counterfactuals.csv`
 
 ## Claim Boundary

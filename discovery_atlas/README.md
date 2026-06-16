@@ -139,11 +139,38 @@ Pilot result summary:
 overlap with existing pathology-head gene counterfactuals: sign agreement = 1.0 and Spearman = 1.0 across AT8, 6e10, GFAP, Iba1, and NeuN
 ```
 
+Resume-safe chunk test:
+
+```powershell
+conda run -n sea-ad-jepa python -u discovery_atlas\feature_wide_counterfactuals.py `
+  --pilot `
+  --scope graph_connected `
+  --chunk-size 2 `
+  --limit-genes 4 `
+  --max-cells 200 `
+  --batch-size 32 `
+  --resume `
+  --pilot-out results\tables\test_resume_feature_wide_tiny.csv
+```
+
+Run the same command twice. The second run should report `Skipping completed normalized chunk ...` for every completed chunk and regenerate the final combined output from normalized chunk files. Per-chunk normalized outputs are written under:
+
+```text
+results/tables/_feature_wide_counterfactual_chunks/feature_wide_chunk_XXXX_normalized.csv
+results/reports/discovery_feature_wide_run_manifest.md
+```
+
 Full graph-connected feature run:
 
 ```powershell
 $env:PYTHONPATH = "src"
-conda run -n sea-ad-jepa python discovery_atlas/feature_wide_counterfactuals.py --scope graph_connected
+conda run -n sea-ad-jepa python -u discovery_atlas\feature_wide_counterfactuals.py `
+  --scope graph_connected `
+  --batch-size 32 `
+  --chunk-size 100 `
+  --max-cells 10000 `
+  --resume `
+  --out results\tables\discovery_graph_connected_feature_wide_pathology_axis_counterfactuals.csv
 ```
 
 Full feature-wide run:

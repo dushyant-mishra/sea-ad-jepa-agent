@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import math
 import random
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import anndata as ad
@@ -20,6 +22,7 @@ DEFAULT_HEAD = Path("results/models/pathology_heads_stage_b_lp/best_pathology_he
 DEFAULT_OUT = Path("results/tables/discovery_feature_wide_pathology_axis_counterfactuals.csv")
 DEFAULT_PILOT_OUT = Path("results/tables/discovery_pilot_feature_wide_pathology_axis_counterfactuals.csv")
 DEFAULT_REPORT = Path("results/reports/discovery_feature_wide_counterfactual_feasibility.md")
+DEFAULT_MANIFEST = Path("results/reports/discovery_feature_wide_run_manifest.md")
 
 TARGET_TO_DELTA = {
     "percent AT8 positive area_Grey matter": "AT8_delta",
@@ -75,11 +78,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--feasibility-report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--pilot", action="store_true")
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--limit-genes", type=int, default=None)
+    parser.add_argument("--start-chunk", type=int, default=1)
     parser.add_argument("--chunk-size", type=int, default=100)
     parser.add_argument("--max-cells", type=int, default=10000)
     parser.add_argument("--intervention", choices=["zero", "global_mean", "p99"], default="global_mean")
     parser.add_argument("--seed", type=int, default=19)
     parser.add_argument("--device", default="auto")
+    parser.add_argument("--manifest-out", type=Path, default=DEFAULT_MANIFEST)
     return parser.parse_args()
 
 
@@ -141,11 +148,47 @@ def choose_genes(args: argparse.Namespace) -> tuple[list[str], list[str], set[st
         random_genes = rng.sample(pool, min(100, len(pool))) if pool else []
         pilot_genes = sorted(set(current + hubs[:100] + random_genes))
         genes = pilot_genes
+    if args.limit_genes is not None:
+        genes = genes[: max(args.limit_genes, 0)]
     return genes, feature_genes, graph_genes
 
 
 def chunks(items: list[str], size: int) -> list[list[str]]:
     return [items[i : i + size] for i in range(0, len(items), size)]
+
+
+def stable_hash(values: list[str]) -> str:
+    digest = hashlib.sha256()
+    for value in values:
+        digest.update(value.encode("utf-8"))
+        digest.update(b"\n")
+    return digest.hexdigest()[:16]
+
+
+def run_signature(args: argparse.Namespace, genes: list[str]) -> str:
+    parts = [
+        f"scope={args.scope}",
+        f"pilot={args.pilot}",
+        f"out={args.pilot_out if args.pilot else args.out}",
+        f"checkpoint={args.checkpoint}",
+        f"pathology_head={args.pathology_head}",
+        f"h5ad={args.h5ad}",
+        f"edge_csv={args.edge_csv}",
+        f"intervention={args.intervention}",
+        f"max_cells={args.max_cells}",
+        f"batch_size={args.batch_size}",
+        f"chunk_size={args.chunk_size}",
+        f"seed={args.seed}",
+        f"genes_hash={stable_hash(genes)}",
+    ]
+    return stable_hash(parts)
+
+
+def chunk_paths(temp_dir: Path, chunk_idx: int) -> tuple[Path, Path, Path]:
+    summary_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_summary.csv"
+    donor_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_donor.csv"
+    normalized_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_normalized.csv"
+    return summary_path, donor_path, normalized_path
 
 
 def write_feasibility_report(
@@ -241,12 +284,33 @@ def normalize_existing_summary(summary: pd.DataFrame, scope: str) -> pd.DataFram
     return out
 
 
-def run_chunk(args: argparse.Namespace, genes: list[str], chunk_idx: int, temp_dir: Path) -> pd.DataFrame:
-    summary_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_summary.csv"
-    donor_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_donor.csv"
-    if summary_path.exists():
-        print(f"Reusing existing chunk summary: {summary_path}")
-        return pd.read_csv(summary_path)
+def run_chunk(
+    args: argparse.Namespace,
+    genes: list[str],
+    chunk_idx: int,
+    temp_dir: Path,
+    *,
+    current_signature: str,
+) -> tuple[pd.DataFrame, dict[str, object]]:
+    summary_path, donor_path, normalized_path = chunk_paths(temp_dir, chunk_idx)
+    metadata_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_metadata.csv"
+    started = time.time()
+    if args.resume and normalized_path.exists() and metadata_path.exists():
+        meta = pd.read_csv(metadata_path)
+        signature = str(meta.get("run_signature", pd.Series([""])).iloc[0])
+        if signature == current_signature:
+            print(f"Skipping completed normalized chunk {chunk_idx}: {normalized_path}")
+            elapsed = time.time() - started
+            return pd.read_csv(normalized_path), {
+                "chunk": chunk_idx,
+                "n_genes": len(genes),
+                "status": "skipped_resume",
+                "elapsed_seconds": elapsed,
+                "normalized_path": str(normalized_path),
+                "summary_path": str(summary_path),
+                "failure_reason": "",
+            }
+        print(f"Existing chunk {chunk_idx} has mismatched signature; recomputing.")
     cmd = [
         sys.executable,
         "scripts/pathology_head_counterfactual_knockout.py",
@@ -277,10 +341,107 @@ def run_chunk(args: argparse.Namespace, genes: list[str], chunk_idx: int, temp_d
         "--donor-out",
         str(donor_path),
     ]
+    print(f"Launching chunk {chunk_idx} with {len(genes)} genes")
     subprocess.run(cmd, check=True)
     if not summary_path.exists():
         raise FileNotFoundError(summary_path)
-    return pd.read_csv(summary_path)
+    raw = pd.read_csv(summary_path)
+    normalized = normalize_existing_summary(raw, args.scope)
+    normalized.to_csv(normalized_path, index=False)
+    elapsed = time.time() - started
+    pd.DataFrame(
+        [
+            {
+                "chunk": chunk_idx,
+                "run_signature": current_signature,
+                "n_genes": len(genes),
+                "genes_hash": stable_hash(genes),
+                "elapsed_seconds": elapsed,
+                "seconds_per_gene": elapsed / max(len(genes), 1),
+                "summary_path": str(summary_path),
+                "donor_path": str(donor_path),
+                "normalized_path": str(normalized_path),
+            }
+        ]
+    ).to_csv(metadata_path, index=False)
+    return normalized, {
+        "chunk": chunk_idx,
+        "n_genes": len(genes),
+        "status": "completed",
+        "elapsed_seconds": elapsed,
+        "normalized_path": str(normalized_path),
+        "summary_path": str(summary_path),
+        "failure_reason": "",
+    }
+
+
+def write_run_manifest(
+    args: argparse.Namespace,
+    selected_out: Path,
+    genes: list[str],
+    chunk_rows: list[dict[str, object]],
+    *,
+    current_signature: str,
+    total_elapsed: float,
+) -> None:
+    completed = sum(1 for row in chunk_rows if row.get("status") in {"completed", "skipped_resume"})
+    failed = sum(1 for row in chunk_rows if row.get("status") == "failed")
+    lines = [
+        "# Discovery Feature-Wide Counterfactual Run Manifest",
+        "",
+        "## Run Configuration",
+        "",
+        f"- Output: `{selected_out}`",
+        f"- Scope: `{args.scope}`",
+        f"- Pilot: `{args.pilot}`",
+        f"- Resume: `{args.resume}`",
+        f"- Start chunk: `{args.start_chunk}`",
+        f"- Limit genes: `{args.limit_genes}`",
+        f"- Chunk size: `{args.chunk_size}`",
+        f"- Batch size: `{args.batch_size}`",
+        f"- Max cells: `{args.max_cells}`",
+        f"- Intervention: `{args.intervention}`",
+        f"- Run signature: `{current_signature}`",
+        f"- Selected genes: {len(genes):,}",
+        "",
+        "## Progress",
+        "",
+        f"- Chunks completed or reused: {completed}",
+        f"- Chunks failed: {failed}",
+        f"- Total elapsed seconds: {total_elapsed:.1f}",
+        f"- Total elapsed minutes: {total_elapsed / 60.0:.1f}",
+        "",
+        "## Chunk Timing",
+        "",
+        "| chunk | n_genes | status | elapsed_seconds | seconds_per_gene | normalized_path | failure_reason |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in chunk_rows:
+        elapsed = float(row.get("elapsed_seconds", 0.0) or 0.0)
+        n_genes = int(row.get("n_genes", 0) or 0)
+        seconds_per_gene = elapsed / max(n_genes, 1)
+        lines.append(
+            "| {chunk} | {n_genes} | {status} | {elapsed:.1f} | {spg:.2f} | `{path}` | {failure} |".format(
+                chunk=row.get("chunk", ""),
+                n_genes=n_genes,
+                status=row.get("status", ""),
+                elapsed=elapsed,
+                spg=seconds_per_gene,
+                path=row.get("normalized_path", ""),
+                failure=str(row.get("failure_reason", "")).replace("|", "/"),
+            )
+        )
+    lines.extend(
+        [
+            "",
+            "## Claim Boundary",
+            "",
+            "Feature-wide counterfactuals are model-implied perturbation scores over the Graph-JEPA feature-gene universe, not biological intervention evidence and not genome-wide screening.",
+            "",
+        ]
+    )
+    args.manifest_out.parent.mkdir(parents=True, exist_ok=True)
+    args.manifest_out.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main() -> None:
@@ -332,33 +493,100 @@ def main() -> None:
     temp_dir = Path("results/tables/_feature_wide_counterfactual_chunks")
     temp_dir.mkdir(parents=True, exist_ok=True)
     frames = []
-    for idx, gene_chunk in enumerate(chunks(genes, args.chunk_size), start=1):
+    chunk_rows: list[dict[str, object]] = []
+    current_signature = run_signature(args, genes)
+    all_chunks = chunks(genes, args.chunk_size)
+    total_started = time.time()
+    for idx, gene_chunk in enumerate(all_chunks, start=1):
+        if idx < args.start_chunk:
+            print(f"Skipping chunk {idx}/{n_chunks} because --start-chunk={args.start_chunk}")
+            continue
         print(f"Running chunk {idx}/{n_chunks} ({len(gene_chunk)} genes)")
         try:
-            raw = run_chunk(args, gene_chunk, idx, temp_dir)
-            frames.append(normalize_existing_summary(raw, args.scope))
+            normalized, chunk_row = run_chunk(
+                args,
+                gene_chunk,
+                idx,
+                temp_dir,
+                current_signature=current_signature,
+            )
+            frames.append(normalized)
+            chunk_rows.append(chunk_row)
         except Exception as exc:
-            frames.append(
-                pd.DataFrame(
+            _, _, normalized_path = chunk_paths(temp_dir, idx)
+            failed = pd.DataFrame(
+                {
+                    "gene": gene_chunk,
+                    "scope": args.scope,
+                    "AT8_delta": np.nan,
+                    "A_beta_6e10_delta": np.nan,
+                    "GFAP_delta": np.nan,
+                    "Iba1_delta": np.nan,
+                    "NeuN_delta": np.nan,
+                    "manifold_safety_status": "not_available",
+                    "prediction_safety_status": "not_available",
+                    "perturbation_success": False,
+                    "failure_reason": str(exc),
+                }
+            )
+            failed.to_csv(normalized_path, index=False)
+            metadata_path = temp_dir / f"feature_wide_chunk_{idx:04d}_metadata.csv"
+            pd.DataFrame(
+                [
                     {
-                        "gene": gene_chunk,
-                        "scope": args.scope,
-                        "AT8_delta": np.nan,
-                        "A_beta_6e10_delta": np.nan,
-                        "GFAP_delta": np.nan,
-                        "Iba1_delta": np.nan,
-                        "NeuN_delta": np.nan,
-                        "manifold_safety_status": "not_available",
-                        "prediction_safety_status": "not_available",
-                        "perturbation_success": False,
+                        "chunk": idx,
+                        "run_signature": current_signature,
+                        "n_genes": len(gene_chunk),
+                        "genes_hash": stable_hash(gene_chunk),
+                        "elapsed_seconds": 0.0,
+                        "seconds_per_gene": 0.0,
+                        "summary_path": "",
+                        "donor_path": "",
+                        "normalized_path": str(normalized_path),
                         "failure_reason": str(exc),
                     }
-                )
+                ]
+            ).to_csv(metadata_path, index=False)
+            frames.append(
+                failed
             )
+            chunk_rows.append(
+                {
+                    "chunk": idx,
+                    "n_genes": len(gene_chunk),
+                    "status": "failed",
+                    "elapsed_seconds": 0.0,
+                    "normalized_path": str(normalized_path),
+                    "summary_path": "",
+                    "failure_reason": str(exc),
+                }
+            )
+    if args.resume:
+        # Regenerate final output from all normalized chunks for this run signature,
+        # including chunks completed in earlier invocations.
+        frames = []
+        for idx, _ in enumerate(all_chunks, start=1):
+            _, _, normalized_path = chunk_paths(temp_dir, idx)
+            metadata_path = temp_dir / f"feature_wide_chunk_{idx:04d}_metadata.csv"
+            if normalized_path.exists() and metadata_path.exists():
+                meta = pd.read_csv(metadata_path)
+                signature = str(meta.get("run_signature", pd.Series([""])).iloc[0])
+                if signature == current_signature:
+                    frames.append(pd.read_csv(normalized_path))
     out = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=schema)
     selected_out.parent.mkdir(parents=True, exist_ok=True)
     out.to_csv(selected_out, index=False)
     print(f"Wrote {selected_out}")
+    total_elapsed = time.time() - total_started
+    write_run_manifest(
+        args,
+        selected_out,
+        genes,
+        chunk_rows,
+        current_signature=current_signature,
+        total_elapsed=total_elapsed,
+    )
+    print(f"Wrote {args.manifest_out}")
 
 
 if __name__ == "__main__":
