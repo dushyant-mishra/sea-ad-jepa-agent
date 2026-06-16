@@ -1,0 +1,22 @@
+candidate,entity_type,old_pathology_axis_class,old_amyloid_selectivity_score,new_pathology_axis_class,new_amyloid_selectivity_score,classification_reason
+PTPRG,gene,mixed_or_unclear,-0.0032772049307823,dual_pathology_lowering_candidate,-0.0032772049307823,AT8 and A_beta both lower without strong NeuN loss; not automatically therapeutic
+CTSD,gene,amyloid_lowering_selective,-0.0084268138743936,amyloid_lowering_candidate,-0.008426813874393601,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+P2RY13,gene,amyloid_lowering_selective,-0.0037892512045798,amyloid_lowering_candidate,-0.0037892512045798995,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+ROCK1,gene,amyloid_lowering_selective,-0.0093866050010547,amyloid_lowering_candidate,-0.0093866050010547,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+HSP90AA1,gene,broad_reactive_state_shift,-0.0358174773864447,amyloid_lowering_candidate,-0.0358174773864447,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+TLR2,gene,gliosis_inflating,-0.0236167716793714,dual_pathology_lowering_candidate,-0.023616771679371498,AT8 and A_beta both lower without strong NeuN loss; not automatically therapeutic
+MAPK1,gene,broad_reactive_state_shift,-0.0312637793831526,amyloid_lowering_candidate,-0.0312637793831526,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+CX3CR1,gene,broad_reactive_state_shift,-0.0311244007752974,gliosis_inflating,-0.0311244007752974,GFAP/Iba1 penalty exceeds threshold
+BCL2,gene,broad_reactive_state_shift,-0.0435833486262707,gliosis_inflating,-0.04358334862627079,GFAP/Iba1 penalty exceeds threshold
+HIF1A,gene,broad_reactive_state_shift,-0.0457766815088689,amyloid_lowering_candidate,-0.0457766815088689,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+GRB2,gene,broad_reactive_state_shift,-0.05645591346547,gliosis_inflating,-0.05645591346547,GFAP/Iba1 penalty exceeds threshold
+APOE,gene,broad_reactive_state_shift,-0.045510545838624,gliosis_inflating,-0.045510545838624,GFAP/Iba1 penalty exceeds threshold
+APP,gene,broad_reactive_state_shift,-0.0935033611021933,gliosis_inflating,-0.09350336110219339,GFAP/Iba1 penalty exceeds threshold
+STAT3,gene,broad_reactive_state_shift,-0.1003915574401616,gliosis_inflating,-0.10039155744016161,GFAP/Iba1 penalty exceeds threshold
+vascular_barrier_myeloid,module,mixed_or_unclear,-0.0141139188781379,dual_pathology_lowering_candidate,-0.014113918878137902,AT8 and A_beta both lower without strong NeuN loss; not automatically therapeutic
+complement,module,amyloid_lowering_selective,-0.0041598957031965,amyloid_lowering_candidate,-0.004159895703196501,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+plaque_response,module,amyloid_lowering_selective,-0.049218790140003,amyloid_lowering_candidate,-0.049218790140003,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+disease_associated_microglia,module,broad_reactive_state_shift,-0.0517959101125597,amyloid_lowering_candidate,-0.0517959101125597,A_beta lowered but selectivity score or tau/gliosis penalties weaken amyloid specificity
+lysosome_phagocytosis,module,broad_reactive_state_shift,-0.1066422746516762,gliosis_inflating,-0.10664227465167629,GFAP/Iba1 penalty exceeds threshold
+lipid_metabolism,module,broad_reactive_state_shift,-0.1254098244244232,gliosis_inflating,-0.1254098244244232,GFAP/Iba1 penalty exceeds threshold
+homeostatic_microglia,module,broad_reactive_state_shift,-0.1301733581349253,gliosis_inflating,-0.1301733581349253,GFAP/Iba1 penalty exceeds threshold

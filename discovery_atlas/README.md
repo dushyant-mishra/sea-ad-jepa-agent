@@ -61,6 +61,23 @@ results/reports/discovery_pathology_axis_fingerprints.md
 
 Each candidate receives continuous scores for tau lowering, amyloid lowering, NeuN preservation, gliosis penalty, broad shift, therapeutic-like behavior, and axis selectivity. Categorical labels are conservative and should be treated as convenience summaries, not hard biological states.
 
+Important label boundary:
+
+```text
+amyloid_lowering_candidate = lowers A beta/6e10, but may have tau/gliosis/broad-state penalties
+amyloid_selective = lowers A beta/6e10 with positive amyloid_selectivity_score and low spillover
+tau_lowering_candidate = lowers AT8, but may not preserve neurons or avoid gliosis
+tau_lowering_neuron_preserving = lowers AT8, preserves/increases NeuN, and avoids gliosis inflation
+```
+
+The pipeline also writes `pathology_axis_label_confidence` and `classification_reason` columns. These are still internal model-implied labels; negative controls can later upgrade or downgrade confidence.
+
+The script also emits a label-change audit when previous outputs exist:
+
+```text
+results/tables/discovery_pathology_axis_label_changes.csv
+```
+
 ## Phase 2: Graph-Neighborhood Coherence
 
 Test whether candidate genes sit in coherent one-hop graph neighborhoods relative to degree-matched null nodes:
