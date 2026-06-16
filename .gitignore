@@ -65,6 +65,7 @@ results/reports/*
 !results/reports/jepa_v2_translational_actionability.md
 !results/reports/external_validation_gse174367.md
 !results/reports/v2_2_cellxgene_alignment_stats.md
+!results/reports/discovery_atlas_*.md
 !results/figures/
 results/figures/*
 !results/figures/*.svg
