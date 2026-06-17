@@ -156,8 +156,33 @@ conda run -n sea-ad-jepa python -u discovery_atlas\feature_wide_counterfactuals.
 Run the same command twice. The second run should report `Skipping completed normalized chunk ...` for every completed chunk and regenerate the final combined output from normalized chunk files. Per-chunk normalized outputs are written under:
 
 ```text
-results/tables/_feature_wide_counterfactual_chunks/feature_wide_chunk_XXXX_normalized.csv
+results/tables/_feature_wide_counterfactual_chunks/<output_stem>/feature_wide_chunk_XXXX_normalized.csv
 results/reports/discovery_feature_wide_run_manifest.md
+```
+
+Operational safeguards:
+
+```text
+default behavior = fail fast on the first failed chunk
+--continue-on-error = explicitly allow failed rows and continue
+chunk cache = run-specific by output stem, so pilot/test/full runs do not share chunks
+chunk reuse = allowed only when the exact chunk signature matches
+subprocess thread env = OMP/MKL/OPENBLAS/NUMEXPR/SKLEARN threads pinned to 1
+--skip-manifold-nearest-neighbor = optional fallback if Windows sklearn nearest-neighbor checks fail
+```
+
+If `--skip-manifold-nearest-neighbor` is used, pathology deltas are still computed, but manifold fields are labeled `not_computed`. Do not describe those outputs as manifold-verified.
+
+Failure-resistant threadfix test:
+
+```powershell
+conda run -n sea-ad-jepa python -u discovery_atlas\feature_wide_counterfactuals.py `
+  --scope graph_connected `
+  --batch-size 32 `
+  --chunk-size 5 `
+  --max-cells 1000 `
+  --limit-genes 15 `
+  --out results\tables\test_graph_connected_feature_wide_threadfix.csv
 ```
 
 Full graph-connected feature run:

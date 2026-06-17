@@ -182,6 +182,7 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=512)
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--device", default="auto")
+    parser.add_argument("--skip-manifold-nearest-neighbor", action="store_true")
     parser.add_argument("--summary-out", default="results/tables/pathology_head_module_counterfactual_summary.csv")
     parser.add_argument("--donor-out", default="results/tables/pathology_head_module_counterfactual_donor.csv")
     args = parser.parse_args()
@@ -213,9 +214,14 @@ def main() -> None:
     donor_base = aggregate_by_donor(z_base, donors)
     baseline_pred = predict_pathology(head, head_payload, donor_base)
 
-    nearest = NearestNeighbors(n_neighbors=2, metric="euclidean").fit(z_base)
-    base_nn_dist, _ = nearest.kneighbors(z_base)
-    base_nn_p95 = float(np.quantile(base_nn_dist[:, 1], 0.95))
+    nearest = None
+    base_nn_p95 = np.nan
+    if args.skip_manifold_nearest_neighbor:
+        print("Skipping nearest-neighbor manifold check; manifold fields will be marked not_computed.")
+    else:
+        nearest = NearestNeighbors(n_neighbors=2, metric="euclidean").fit(z_base)
+        base_nn_dist, _ = nearest.kneighbors(z_base)
+        base_nn_p95 = float(np.quantile(base_nn_dist[:, 1], 0.95))
 
     summary_rows = []
     donor_rows = []
@@ -235,8 +241,16 @@ def main() -> None:
             merged[f"delta_{target}"] = merged[f"pred_{target}_perturbed"] - merged[f"pred_{target}_baseline"]
         donor_rows.append(merged)
 
-        pert_nn_dist, _ = nearest.kneighbors(z_perturbed, n_neighbors=1)
         latent_shift = np.linalg.norm(z_perturbed - z_base, axis=1)
+        if nearest is None:
+            mean_nn_dist = np.nan
+            p95_nn_dist = np.nan
+            manifold_violation_fraction = np.nan
+        else:
+            pert_nn_dist, _ = nearest.kneighbors(z_perturbed, n_neighbors=1)
+            mean_nn_dist = float(np.mean(pert_nn_dist[:, 0]))
+            p95_nn_dist = float(np.quantile(pert_nn_dist[:, 0], 0.95))
+            manifold_violation_fraction = float(np.mean(pert_nn_dist[:, 0] > base_nn_p95))
         row = {
             "module": module,
             "perturbation": perturbation,
@@ -246,10 +260,10 @@ def main() -> None:
             "genes": ";".join(genes),
             "mean_latent_shift": float(np.mean(latent_shift)),
             "median_latent_shift": float(np.median(latent_shift)),
-            "mean_nearest_real_cell_distance": float(np.mean(pert_nn_dist[:, 0])),
-            "p95_nearest_real_cell_distance": float(np.quantile(pert_nn_dist[:, 0], 0.95)),
+            "mean_nearest_real_cell_distance": mean_nn_dist,
+            "p95_nearest_real_cell_distance": p95_nn_dist,
             "baseline_nn_p95_threshold": base_nn_p95,
-            "manifold_violation_fraction": float(np.mean(pert_nn_dist[:, 0] > base_nn_p95)),
+            "manifold_violation_fraction": manifold_violation_fraction,
         }
         for target in head_payload["targets"]:
             delta = merged[f"delta_{target}"].to_numpy(dtype=np.float32)

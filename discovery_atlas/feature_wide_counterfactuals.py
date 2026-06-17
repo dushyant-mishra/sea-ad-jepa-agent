@@ -3,10 +3,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import math
+import os
 import random
 import subprocess
 import sys
 import time
+import traceback
 from pathlib import Path
 
 import anndata as ad
@@ -79,6 +81,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--pilot", action="store_true")
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--continue-on-error", action="store_true")
+    parser.add_argument("--skip-manifold-nearest-neighbor", action="store_true")
     parser.add_argument("--limit-genes", type=int, default=None)
     parser.add_argument("--start-chunk", type=int, default=1)
     parser.add_argument("--chunk-size", type=int, default=100)
@@ -166,6 +170,7 @@ def stable_hash(values: list[str]) -> str:
 
 
 def run_signature(args: argparse.Namespace, genes: list[str]) -> str:
+    wrapper_hash = stable_hash([Path(__file__).read_text(encoding="utf-8")])
     parts = [
         f"scope={args.scope}",
         f"pilot={args.pilot}",
@@ -179,9 +184,19 @@ def run_signature(args: argparse.Namespace, genes: list[str]) -> str:
         f"batch_size={args.batch_size}",
         f"chunk_size={args.chunk_size}",
         f"seed={args.seed}",
+        f"skip_manifold_nearest_neighbor={args.skip_manifold_nearest_neighbor}",
+        f"wrapper_hash={wrapper_hash}",
         f"genes_hash={stable_hash(genes)}",
     ]
     return stable_hash(parts)
+
+
+def chunk_signature(args: argparse.Namespace, genes: list[str]) -> str:
+    return run_signature(args, genes)
+
+
+def chunk_cache_dir(selected_out: Path) -> Path:
+    return Path("results/tables/_feature_wide_counterfactual_chunks") / selected_out.stem
 
 
 def chunk_paths(temp_dir: Path, chunk_idx: int) -> tuple[Path, Path, Path]:
@@ -262,10 +277,11 @@ def normalize_existing_summary(summary: pd.DataFrame, scope: str) -> pd.DataFram
     for source, dest in TARGET_TO_DELTA.items():
         col = f"mean_delta_{source}"
         out[dest] = pd.to_numeric(summary[col], errors="coerce") if col in summary.columns else np.nan
+    manifold_fraction = pd.to_numeric(summary.get("manifold_violation_fraction", np.nan), errors="coerce")
     out["manifold_safety_status"] = np.where(
-        pd.to_numeric(summary.get("manifold_violation_fraction", np.nan), errors="coerce").fillna(1.0) <= 0.05,
-        "within_manifold_threshold",
-        "manifold_caution",
+        manifold_fraction.isna(),
+        "not_computed",
+        np.where(manifold_fraction <= 0.05, "within_manifold_threshold", "manifold_caution"),
     )
     out["prediction_safety_status"] = "not_separately_audited"
     out["perturbation_success"] = True
@@ -294,11 +310,13 @@ def run_chunk(
 ) -> tuple[pd.DataFrame, dict[str, object]]:
     summary_path, donor_path, normalized_path = chunk_paths(temp_dir, chunk_idx)
     metadata_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}_metadata.csv"
+    log_path = temp_dir / f"feature_wide_chunk_{chunk_idx:04d}.log"
+    this_signature = chunk_signature(args, genes)
     started = time.time()
     if args.resume and normalized_path.exists() and metadata_path.exists():
         meta = pd.read_csv(metadata_path)
         signature = str(meta.get("run_signature", pd.Series([""])).iloc[0])
-        if signature == current_signature:
+        if signature == this_signature:
             print(f"Skipping completed normalized chunk {chunk_idx}: {normalized_path}")
             elapsed = time.time() - started
             return pd.read_csv(normalized_path), {
@@ -307,6 +325,7 @@ def run_chunk(
                 "status": "skipped_resume",
                 "elapsed_seconds": elapsed,
                 "normalized_path": str(normalized_path),
+                "log_path": str(log_path),
                 "summary_path": str(summary_path),
                 "failure_reason": "",
             }
@@ -341,8 +360,21 @@ def run_chunk(
         "--donor-out",
         str(donor_path),
     ]
+    if args.skip_manifold_nearest_neighbor:
+        cmd.append("--skip-manifold-nearest-neighbor")
     print(f"Launching chunk {chunk_idx} with {len(genes)} genes")
-    subprocess.run(cmd, check=True)
+    env = os.environ.copy()
+    env.setdefault("OMP_NUM_THREADS", "1")
+    env.setdefault("MKL_NUM_THREADS", "1")
+    env.setdefault("OPENBLAS_NUM_THREADS", "1")
+    env.setdefault("NUMEXPR_NUM_THREADS", "1")
+    env.setdefault("SKLEARN_NUM_THREADS", "1")
+    with log_path.open("w", encoding="utf-8") as log:
+        log.write("Command:\n")
+        log.write(" ".join(cmd))
+        log.write("\n\n")
+        log.flush()
+        subprocess.run(cmd, check=True, env=env, stdout=log, stderr=subprocess.STDOUT)
     if not summary_path.exists():
         raise FileNotFoundError(summary_path)
     raw = pd.read_csv(summary_path)
@@ -353,7 +385,8 @@ def run_chunk(
         [
             {
                 "chunk": chunk_idx,
-                "run_signature": current_signature,
+                "run_signature": this_signature,
+                "chunk_signature": this_signature,
                 "n_genes": len(genes),
                 "genes_hash": stable_hash(genes),
                 "elapsed_seconds": elapsed,
@@ -361,6 +394,7 @@ def run_chunk(
                 "summary_path": str(summary_path),
                 "donor_path": str(donor_path),
                 "normalized_path": str(normalized_path),
+                "log_path": str(log_path),
             }
         ]
     ).to_csv(metadata_path, index=False)
@@ -371,6 +405,7 @@ def run_chunk(
         "elapsed_seconds": elapsed,
         "normalized_path": str(normalized_path),
         "summary_path": str(summary_path),
+        "log_path": str(log_path),
         "failure_reason": "",
     }
 
@@ -413,21 +448,22 @@ def write_run_manifest(
         "",
         "## Chunk Timing",
         "",
-        "| chunk | n_genes | status | elapsed_seconds | seconds_per_gene | normalized_path | failure_reason |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
+        "| chunk | n_genes | status | elapsed_seconds | seconds_per_gene | normalized_path | log_path | failure_reason |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for row in chunk_rows:
         elapsed = float(row.get("elapsed_seconds", 0.0) or 0.0)
         n_genes = int(row.get("n_genes", 0) or 0)
         seconds_per_gene = elapsed / max(n_genes, 1)
         lines.append(
-            "| {chunk} | {n_genes} | {status} | {elapsed:.1f} | {spg:.2f} | `{path}` | {failure} |".format(
+            "| {chunk} | {n_genes} | {status} | {elapsed:.1f} | {spg:.2f} | `{path}` | `{log_path}` | {failure} |".format(
                 chunk=row.get("chunk", ""),
                 n_genes=n_genes,
                 status=row.get("status", ""),
                 elapsed=elapsed,
                 spg=seconds_per_gene,
                 path=row.get("normalized_path", ""),
+                log_path=row.get("log_path", ""),
                 failure=str(row.get("failure_reason", "")).replace("|", "/"),
             )
         )
@@ -490,7 +526,7 @@ def main() -> None:
     if not feasible:
         raise RuntimeError("Feature-wide counterfactual scoring is not feasible; see feasibility report.")
 
-    temp_dir = Path("results/tables/_feature_wide_counterfactual_chunks")
+    temp_dir = chunk_cache_dir(selected_out)
     temp_dir.mkdir(parents=True, exist_ok=True)
     frames = []
     chunk_rows: list[dict[str, object]] = []
@@ -513,7 +549,55 @@ def main() -> None:
             frames.append(normalized)
             chunk_rows.append(chunk_row)
         except Exception as exc:
+            failure_reason = f"{type(exc).__name__}: {exc}"
+            failure_traceback = traceback.format_exc()
             _, _, normalized_path = chunk_paths(temp_dir, idx)
+            metadata_path = temp_dir / f"feature_wide_chunk_{idx:04d}_metadata.csv"
+            log_path = temp_dir / f"feature_wide_chunk_{idx:04d}.log"
+            pd.DataFrame(
+                [
+                    {
+                        "chunk": idx,
+                        "run_signature": chunk_signature(args, gene_chunk),
+                        "n_genes": len(gene_chunk),
+                        "genes_hash": stable_hash(gene_chunk),
+                        "elapsed_seconds": 0.0,
+                        "seconds_per_gene": 0.0,
+                        "summary_path": "",
+                        "donor_path": "",
+                        "normalized_path": str(normalized_path),
+                        "log_path": str(log_path),
+                        "failure_reason": failure_reason,
+                    }
+                ]
+            ).to_csv(metadata_path, index=False)
+            chunk_rows.append(
+                {
+                    "chunk": idx,
+                    "n_genes": len(gene_chunk),
+                    "status": "failed",
+                    "elapsed_seconds": 0.0,
+                    "normalized_path": str(normalized_path),
+                    "log_path": str(log_path),
+                    "summary_path": "",
+                    "failure_reason": failure_reason,
+                }
+            )
+            if not args.continue_on_error:
+                total_elapsed = time.time() - total_started
+                write_run_manifest(
+                    args,
+                    selected_out,
+                    genes,
+                    chunk_rows,
+                    current_signature=current_signature,
+                    total_elapsed=total_elapsed,
+                )
+                print(f"Wrote failure manifest: {args.manifest_out}")
+                raise RuntimeError(
+                    f"Chunk {idx} failed with {failure_reason}. "
+                    f"See {log_path}. Traceback:\n{failure_traceback}"
+                ) from exc
             failed = pd.DataFrame(
                 {
                     "gene": gene_chunk,
@@ -526,41 +610,11 @@ def main() -> None:
                     "manifold_safety_status": "not_available",
                     "prediction_safety_status": "not_available",
                     "perturbation_success": False,
-                    "failure_reason": str(exc),
+                    "failure_reason": failure_reason,
                 }
             )
             failed.to_csv(normalized_path, index=False)
-            metadata_path = temp_dir / f"feature_wide_chunk_{idx:04d}_metadata.csv"
-            pd.DataFrame(
-                [
-                    {
-                        "chunk": idx,
-                        "run_signature": current_signature,
-                        "n_genes": len(gene_chunk),
-                        "genes_hash": stable_hash(gene_chunk),
-                        "elapsed_seconds": 0.0,
-                        "seconds_per_gene": 0.0,
-                        "summary_path": "",
-                        "donor_path": "",
-                        "normalized_path": str(normalized_path),
-                        "failure_reason": str(exc),
-                    }
-                ]
-            ).to_csv(metadata_path, index=False)
-            frames.append(
-                failed
-            )
-            chunk_rows.append(
-                {
-                    "chunk": idx,
-                    "n_genes": len(gene_chunk),
-                    "status": "failed",
-                    "elapsed_seconds": 0.0,
-                    "normalized_path": str(normalized_path),
-                    "summary_path": "",
-                    "failure_reason": str(exc),
-                }
-            )
+            frames.append(failed)
     if args.resume:
         # Regenerate final output from all normalized chunks for this run signature,
         # including chunks completed in earlier invocations.
@@ -571,7 +625,8 @@ def main() -> None:
             if normalized_path.exists() and metadata_path.exists():
                 meta = pd.read_csv(metadata_path)
                 signature = str(meta.get("run_signature", pd.Series([""])).iloc[0])
-                if signature == current_signature:
+                expected_signature = chunk_signature(args, all_chunks[idx - 1])
+                if signature == expected_signature:
                     frames.append(pd.read_csv(normalized_path))
     out = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=schema)
     selected_out.parent.mkdir(parents=True, exist_ok=True)
