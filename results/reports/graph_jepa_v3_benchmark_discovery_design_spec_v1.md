@@ -1,6 +1,6 @@
 # Graph-JEPA v3 Benchmark-Discovery Design Spec v1
 
-Model name: `Module-Gated Typed Perturbation Graph-JEPA v3`
+Model name: `Causal Module-Gated Typed Perturbation Graph-JEPA v3`
 
 ## 1. V3 objective
 
@@ -8,6 +8,7 @@ Graph-JEPA v3 has two required goals:
 
 1. Benchmark dominance first: v3 must beat the strongest v2 donor-level predictor, not merely beat graph controls.
 2. Conservative Discovery Atlas second: v3 must remain usable for gene-ablation-style hypothesis generation without weakening evidence gates.
+3. Causal inference layer third: v3 must prioritize, stress-test, and refute gene perturbation hypotheses while clearly separating model-implied counterfactuals from causal proof.
 
 Both goals are required. A model that wins benchmarks but breaks Discovery Atlas discipline is not acceptable, and a model that generates attractive candidate rankings but fails simple baselines is not sufficient.
 
@@ -78,6 +79,7 @@ Both goals are required. A model that wins benchmarks but breaks Discovery Atlas
 - Residual no-graph branch.
 - Target-specific heads for AT8, 6e10/Aβ, GFAP, Iba1, and NeuN.
 - Perturbation/discovery head for gene-ablation-style counterfactuals.
+- Causal evidence layer for causal priors, environment invariance, observational effect estimates, refutations, and perturbation-supervised calibration when available.
 
 ## 5. Graph source handling
 
@@ -87,6 +89,8 @@ Both goals are required. A model that wins benchmarks but breaks Discovery Atlas
 - Learn edge gates.
 - Include strict shuffled controls for each graph type where feasible.
 - Include no-graph control.
+- Treat STRING, WGCNA/TOM, pathway, coexpression, module, and GRN/TF-target edges as causal/biological priors, not causal truth.
+- Preserve source/type labels and learn source-aware edge-type weights/gates rather than collapsing all edges into one anonymous graph.
 
 ## 6. Training objectives
 
@@ -96,6 +100,8 @@ Both goals are required. A model that wins benchmarks but breaks Discovery Atlas
 - Graph contrastive or edge-type consistency loss.
 - Edge-gate sparsity/regularization.
 - Optional perturbation-shift consistency loss.
+- Optional environment-invariance penalty for unstable gene/pathology relationships across safe metadata-defined environments.
+- Optional observational causal effect-estimation objective for shortlisted genes only, with refutation and sensitivity reporting.
 
 ## 7. Success criteria
 
@@ -115,6 +121,7 @@ Graph-specific criterion:
 Discovery criterion:
 
 - Top perturbation candidates must pass manifold QC, donor robustness, gliosis diagnostics, negative controls, and graph-neighborhood checks.
+- Top causal-prior candidates must pass causal-tier reporting: causal priors, environment stability, observational effect estimates where feasible, refutation tests, and perturbation evidence status.
 
 ## 8. Anti-leakage rules
 
@@ -124,8 +131,71 @@ Discovery criterion:
 - No external validation during model selection.
 - No dropping targets after seeing results.
 - No changing small-difference thresholds post hoc.
+- Do not describe observational/model-only outputs as experimentally causal.
+- Distinguish prediction, counterfactual simulation, observational causal estimate, and experimental validation in all reports.
 
-## 9. Implementation stages
+## 9. Causal inference layer
+
+SEA-AD is observational. Graph-JEPA counterfactual outputs are model-implied perturbation hypotheses, not proven causal effects. The causal inference layer exists to prioritize, stress-test, and refute hypotheses; it must not claim experimental causality without perturbation, CRISPR, Perturb-seq, or related functional evidence.
+
+### Causal inference objective
+
+- Use causal inference to prioritize and refute gene perturbation hypotheses.
+- Do not treat model counterfactuals as causal proof.
+- Distinguish prediction, counterfactual simulation, observational causal estimate, and experimental validation.
+
+### Causal-prior graph layer
+
+- STRING, WGCNA/TOM, pathway, coexpression, module, and GRN/TF-target edges are causal/biological priors, not causal truth.
+- Preserve edge source/type labels.
+- Learn edge-type weights/gates.
+- Do not collapse all edges into one anonymous graph.
+
+### Environment-invariance module
+
+- Define environments from donor, batch, sex, diagnosis/pathology strata, cell-state cluster, microglia/PVM state, and other safe metadata.
+- Penalize unstable gene/pathology relationships across environments.
+- Report environment-specific effect signs and stability.
+- Treat stable effects as causal-plausibility evidence, not proof.
+
+### Exploratory causal discovery module
+
+- Optionally test NOTEARS, additive-noise, or DAG-style methods on module-level or reduced feature spaces.
+- Mark outputs as exploratory causal priors only.
+- Do not let learned DAGs override benchmark, robustness, or evidence gates.
+
+### Observational causal effect estimation module
+
+- Run only for shortlisted genes.
+- Use doubly robust, TMLE, DoWhy, or EconML-style workflows where feasible.
+- Include placebo treatment, bootstrap, covariate subset refutation, random common-cause addition, and unobserved-confounding sensitivity if available.
+- Label estimates as assumption-dependent observational estimates.
+
+### Perturbation-supervised extension
+
+- Design interfaces for Perturb-seq, CRISPRi, CRISPRa, or related perturbation data.
+- If perturbation data are unavailable for SEA-AD, keep this as future calibration/validation.
+- Do not claim perturbation validation from SEA-AD observational data alone.
+
+### Causal evidence tiers
+
+- `causal_hypothesis_only`
+- `causal_prior_supported`
+- `environment_invariant_supported`
+- `observational_effect_supported`
+- `refutation_resistant_observational`
+- `experimentally_supported`
+- `not_causal_supported`
+
+### Allowed claim language
+
+- Observational/model-only candidates: “causal-hypothesis candidate”.
+- Candidates with causal priors and invariant effects: “causal-plausibility-supported hypothesis”.
+- Candidates with observational effect estimates passing refutation: “refutation-resistant observational causal hypothesis”.
+- Candidates with perturbation evidence: “experimentally supported causal candidate”.
+- Never call a gene a validated therapeutic target without experimental/functional validation.
+
+## 10. Implementation stages
 
 - Stage 23: inventory available module annotations, WGCNA outputs, STRING edges, pathway edges, and embedding packages.
 - Stage 24: build locked benchmark harness for PCA/t-SNE/UMAP/PHATE/diffusion/WGCNA/STRING/expression baselines.

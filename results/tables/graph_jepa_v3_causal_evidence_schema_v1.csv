@@ -1,0 +1,18 @@
+field_name,field_type,description,allowed_values,required,notes
+gene,string,Gene symbol or feature identifier,,True,Must match canonical 2957-gene universe where applicable
+predicted_effect_axis,string,Pathology or biology axis for the predicted effect,"AT8|6e10/Aβ|GFAP|Iba1|NeuN|composite|other",True,Report exact target/axis used
+counterfactual_delta,float,Model-implied perturbation delta,,True,Model simulation only; not causal proof
+donor_environment_stability,float,Summary stability score across locked donor/environment strata,,True,Define scale in downstream implementation
+environment_effect_sign_consistency,float,Fraction or score for consistent effect signs across environments,,True,Stable signs support plausibility not proof
+causal_prior_support,string,Summary causal-prior support status,"none|weak|moderate|strong|conflicting",True,Priors are not causal truth
+causal_prior_sources,string,Typed prior sources supporting the hypothesis,"STRING|WGCNA/TOM|pathway|coexpression|module|GRN/TF-target|multiple|none",True,Preserve source labels
+observational_effect_estimate,float,Assumption-dependent estimated effect size,,False,Shortlisted genes only
+effect_estimator,string,Estimator used for observational effect,"doubly_robust|TMLE|DoWhy|EconML|linear_adjustment|matching|other|not_run",True,Use not_run when unavailable
+effect_confidence_interval,string,Confidence interval for observational estimate,,False,Store as formatted lower/upper or JSON-like string
+refutation_status,string,Refutation test status,"not_run|passed|failed|mixed|not_applicable",True,Include placebo/bootstrap/covariate/random-cause tests where feasible
+sensitivity_status,string,Sensitivity analysis status,"not_run|robust|sensitive|mixed|not_applicable",True,Includes unobserved-confounding sensitivity where available
+perturbation_evidence_status,string,Experimental/functional perturbation support,"not_available|not_tested|negative|mixed|positive|replicated_positive",True,SEA-AD observational data alone cannot populate positive perturbation validation
+causal_evidence_tier,string,Controlled causal evidence tier,"causal_hypothesis_only|causal_prior_supported|environment_invariant_supported|observational_effect_supported|refutation_resistant_observational|experimentally_supported|not_causal_supported",True,Determines allowed causal language
+allowed_claim,string,Permitted claim wording,"causal-hypothesis candidate|causal-plausibility-supported hypothesis|refutation-resistant observational causal hypothesis|experimentally supported causal candidate|no causal-support claim",True,Never overstate beyond evidence tier
+disallowed_claims,string,Claims explicitly not allowed,,True,Include validated therapeutic target unless experimental/functional validation exists
+notes,string,Free-text caveats and implementation notes,,False,Use to explain failed/refuted/missing evidence
