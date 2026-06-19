@@ -5,6 +5,10 @@ from pathlib import Path
 
 import pandas as pd
 
+try:
+    from discovery_atlas.discovery_logic import classify_manifold_qc
+except ModuleNotFoundError:
+    from discovery_logic import classify_manifold_qc
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -42,13 +46,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def classify(value: float) -> str:
-    if pd.isna(value):
-        return "not_computed"
-    if value <= 0.05:
-        return "manifold_safe"
-    if value <= 0.10:
-        return "borderline_manifold_shift"
-    return "manifold_violation_warning"
+    return classify_manifold_qc(value)
 
 
 def interpretation(status: str) -> str:

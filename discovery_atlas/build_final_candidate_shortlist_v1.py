@@ -6,6 +6,18 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+try:
+    from discovery_atlas.discovery_logic import (
+        assign_shortlist_tier,
+        shortlist_deprioritization_reason,
+        shortlist_graph_interpretation,
+    )
+except ModuleNotFoundError:
+    from discovery_logic import (
+        assign_shortlist_tier,
+        shortlist_deprioritization_reason,
+        shortlist_graph_interpretation,
+    )
 
 PRIOR_CANDIDATES = [
     "TLR2",
@@ -268,27 +280,7 @@ def select_candidate_pool(scorecard: pd.DataFrame, broad_limit: int) -> pd.DataF
 
 
 def assign_tier(row: pd.Series) -> str:
-    class_name = str(row["pathology_axis_class"])
-    clean_scorecard = (
-        class_name in CLEANER_CLASSES
-        and float(row["therapeutic_like_score_percentile"]) >= 95
-        and float(row["tau_lowering_score_percentile"]) >= 90
-        and float(row["neuron_preservation_score_percentile"]) >= 50
-        and float(row["gliosis_penalty_percentile"]) < 60
-        and float(row["broad_shift_score_percentile"]) < 90
-    )
-    broad_caution = (
-        class_name in {"broad_reactive_state_shift", "gliosis_inflating", "neuron_risk"}
-        or float(row["gliosis_penalty_percentile"]) >= 90
-        or float(row["broad_shift_score_percentile"]) >= 95
-    )
-    if clean_scorecard:
-        return "scorecard_supported_isolated_hypothesis"
-    if bool(row["prior_candidate_flag"]) and not broad_caution:
-        return "biological_anchor_prior_candidate"
-    if broad_caution:
-        return "broad_state_caution"
-    return "unsupported_or_deprioritized"
+    return assign_shortlist_tier(row, CLEANER_CLASSES)
 
 
 def promotion_reason(row: pd.Series) -> str:
@@ -303,27 +295,7 @@ def promotion_reason(row: pd.Series) -> str:
 
 
 def deprioritization_reason(row: pd.Series) -> str:
-    tier = str(row["final_tier"])
-    class_name = str(row["pathology_axis_class"])
-    therapeutic = float(row["therapeutic_like_score_percentile"])
-    broad = float(row["broad_shift_score_percentile"])
-    gliosis = float(row["gliosis_penalty_percentile"])
-
-    if tier == "scorecard_supported_isolated_hypothesis":
-        return "none"
-    if tier == "biological_anchor_prior_candidate":
-        return "prior_candidate_not_globally_enriched"
-    if class_name == "neuron_risk":
-        return "neuron_risk_penalty"
-    if broad >= 90:
-        if therapeutic >= 95:
-            return "high_score_but_broad_shift_penalized"
-        return "broad_shift_penalty"
-    if gliosis >= 60:
-        return "gliosis_penalty"
-    if tier == "broad_state_caution":
-        return "broad_shift_penalty"
-    return "not_supported_by_scorecard_or_graph"
+    return shortlist_deprioritization_reason(row)
 
 
 def scorecard_interpretation(row: pd.Series) -> str:
@@ -345,14 +317,7 @@ def scorecard_interpretation(row: pd.Series) -> str:
 
 
 def graph_interpretation(row: pd.Series) -> str:
-    label = str(row["graph_neighborhood_label"])
-    if label == "isolated_high_score_gene":
-        return "isolated_high_score_no_fdr_supported_neighborhood"
-    if label == "no_graph_support":
-        return "no_supportive_one_hop_enrichment"
-    if label == "broad_reactive_neighborhood":
-        return "broad_neighbor_context_not_fdr_supported"
-    return "graph_support_not_testable"
+    return shortlist_graph_interpretation(str(row["graph_neighborhood_label"]))
 
 
 def caution_note(row: pd.Series) -> str:

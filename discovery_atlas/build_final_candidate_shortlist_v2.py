@@ -6,6 +6,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+try:
+    from discovery_atlas.discovery_logic import classify_manifold_qc
+except ModuleNotFoundError:
+    from discovery_logic import classify_manifold_qc
 
 TIER1 = "scorecard_supported_isolated_hypothesis"
 PRIOR = "biological_anchor_prior_candidate"
@@ -56,13 +60,7 @@ def read_csv(path: Path) -> pd.DataFrame:
 
 
 def classify_manifold_status(value: float) -> str:
-    if pd.isna(value):
-        return "not_audited"
-    if value <= 0.05:
-        return "manifold_safe"
-    if value <= 0.10:
-        return "borderline_manifold_shift"
-    return "manifold_violation_warning"
+    return classify_manifold_qc(value, missing_label="not_audited")
 
 
 def manifold_interpretation(row: pd.Series) -> str:
