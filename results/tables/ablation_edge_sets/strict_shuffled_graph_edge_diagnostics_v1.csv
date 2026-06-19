@@ -1,0 +1,19 @@
+metric,value,notes
+seed,20260619,Fixed deterministic generation seed.
+n_nodes_indexed,2957,Node indices span the model feature space.
+original_edge_count,114029,Simple undirected edges.
+starting_edge_count,114029,Current shuffled graph edge count.
+final_edge_count,114029,Strict shuffled graph edge count.
+starting_overlap_count,27815,Current shuffled edges also present in the original graph.
+starting_overlap_fraction,0.24392917591139096,Starting overlap divided by original edge count.
+final_overlap_count,0,Strict shuffled edges also present in the original graph.
+final_overlap_fraction,0.0,Final overlap divided by original edge count.
+swaps_attempted,145122,Candidate double-edge swaps examined.
+swaps_accepted,25913,Valid accepted double-edge swaps.
+improving_swaps_accepted,25913,Accepted swaps that reduced original-edge overlap.
+neutral_swaps_accepted,0,Accepted neutral swaps used only after a stall.
+degree_sequence_exactly_preserved,True,Compared node-by-node with the original graph.
+zero_overlap_achieved,True,Final overlap count equals zero.
+no_self_loops,True,Required simple-graph invariant.
+no_duplicate_undirected_edges,True,Required simple-graph invariant.
+safe_for_training,True,Structural invariants pass and overlap improved.
