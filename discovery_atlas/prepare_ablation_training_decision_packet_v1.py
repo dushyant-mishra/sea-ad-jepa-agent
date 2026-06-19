@@ -111,20 +111,27 @@ def main() -> None:
         rows.append(
             {
                 "artifact_name": artifact,
-                "status": source_row["status"],
+                "current_status": source_row["status"],
                 "scientific_question": QUESTIONS[artifact],
+                "required_training_or_artifact": (
+                    "matched identity/no-graph JEPA artifact"
+                    if artifact == "no_graph_jepa"
+                    else "matched deterministic shuffled-graph JEPA artifact"
+                    if artifact == "shuffled_graph_jepa"
+                    else "matched expression-only autoencoder artifact"
+                ),
                 "recommended_training_order": ORDER[artifact],
-                "training_script_candidate": source_row[
+                "candidate_script": source_row[
                     "training_script_candidate"
                 ],
-                "config_candidate": source_row["config_candidate"],
+                "candidate_config": source_row["config_candidate"],
                 "confirmed_script_flags": source_row["confirmed_script_flags"],
                 "smoke_test_command": source_row["smoke_test_command"],
-                "full_training_command_template": source_row[
+                "confirmed_command_template": source_row[
                     "full_training_command_template"
                 ],
-                "required_comparison_metrics": metrics,
-                "compute_and_design_risks": COMPUTE_RISKS[artifact],
+                "comparison_metrics_after_training": metrics,
+                "expected_runtime_risk": COMPUTE_RISKS[artifact],
                 "approval_required_before_training": True,
                 "decision_status": "do_not_train_until_approved",
             }
@@ -156,7 +163,7 @@ def main() -> None:
         "## Missing ablation artifacts",
         "",
         *[
-            f"- `{row.artifact_name}`: `{row.status}`"
+            f"- `{row.artifact_name}`: `{row.current_status}`"
             for row in packet.itertuples(index=False)
         ],
         "",
@@ -178,9 +185,9 @@ def main() -> None:
                     row.recommended_training_order,
                     row.artifact_name,
                     row.scientific_question,
-                    row.training_script_candidate,
+                    row.candidate_script,
                     row.smoke_test_command,
-                    row.full_training_command_template,
+                    row.confirmed_command_template,
                 ]
             )
             + " |"
@@ -198,7 +205,7 @@ def main() -> None:
         "## Compute and design risks",
         "",
         *[
-            f"- `{row.artifact_name}`: {row.compute_and_design_risks}"
+            f"- `{row.artifact_name}`: {row.expected_runtime_risk}"
             for row in packet.itertuples(index=False)
         ],
         "",
@@ -213,7 +220,7 @@ def main() -> None:
     ]
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text("\n".join(lines), encoding="utf-8")
-    print(packet[["artifact_name", "status", "recommended_training_order"]].to_string(index=False))
+    print(packet[["artifact_name", "current_status", "recommended_training_order"]].to_string(index=False))
     print(f"Wrote {args.out}")
     print(f"Wrote {args.report}")
 
