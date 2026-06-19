@@ -83,6 +83,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--continue-on-error", action="store_true")
     parser.add_argument("--skip-manifold-nearest-neighbor", action="store_true")
+    parser.add_argument(
+        "--manifold-nn-backend",
+        choices=["sklearn", "torch"],
+        default="sklearn",
+    )
+    parser.add_argument("--manifold-query-batch-size", type=int, default=512)
+    parser.add_argument("--manifold-reference-batch-size", type=int, default=2048)
     parser.add_argument("--limit-genes", type=int, default=None)
     parser.add_argument("--start-chunk", type=int, default=1)
     parser.add_argument("--chunk-size", type=int, default=100)
@@ -185,6 +192,9 @@ def run_signature(args: argparse.Namespace, genes: list[str]) -> str:
         f"chunk_size={args.chunk_size}",
         f"seed={args.seed}",
         f"skip_manifold_nearest_neighbor={args.skip_manifold_nearest_neighbor}",
+        f"manifold_nn_backend={args.manifold_nn_backend}",
+        f"manifold_query_batch_size={args.manifold_query_batch_size}",
+        f"manifold_reference_batch_size={args.manifold_reference_batch_size}",
         f"wrapper_hash={wrapper_hash}",
         f"genes_hash={stable_hash(genes)}",
     ]
@@ -293,6 +303,7 @@ def normalize_existing_summary(summary: pd.DataFrame, scope: str) -> pd.DataFram
         "p95_nearest_real_cell_distance",
         "baseline_nn_p95_threshold",
         "manifold_violation_fraction",
+        "manifold_nn_backend",
     ]
     for col in passthrough:
         if col in summary.columns:
@@ -355,6 +366,12 @@ def run_chunk(
         str(args.seed),
         "--device",
         args.device,
+        "--manifold-nn-backend",
+        args.manifold_nn_backend,
+        "--manifold-query-batch-size",
+        str(args.manifold_query_batch_size),
+        "--manifold-reference-batch-size",
+        str(args.manifold_reference_batch_size),
         "--summary-out",
         str(summary_path),
         "--donor-out",
@@ -436,6 +453,9 @@ def write_run_manifest(
         f"- Batch size: `{args.batch_size}`",
         f"- Max cells: `{args.max_cells}`",
         f"- Intervention: `{args.intervention}`",
+        f"- Manifold NN backend: `{args.manifold_nn_backend}`",
+        f"- Manifold query batch size: `{args.manifold_query_batch_size}`",
+        f"- Manifold reference batch size: `{args.manifold_reference_batch_size}`",
         f"- Run signature: `{current_signature}`",
         f"- Selected genes: {len(genes):,}",
         "",

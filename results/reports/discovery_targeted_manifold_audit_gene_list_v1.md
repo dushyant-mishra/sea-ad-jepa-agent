@@ -1,6 +1,6 @@
 # Discovery Targeted Manifold Audit Gene List v1
 
-This is a bounded candidate list for a future targeted manifold audit. The audit has **not** been run.
+This is the bounded, pre-specified candidate list used for the targeted manifold audit. Audit results are reported separately in `results/reports/discovery_targeted_manifold_audit_v1.md`.
 
 Graph-neighborhood evidence is carried only as penalty/context. No gene is selected because of positive 1-hop graph support, because no coherent cleaner neighborhood survived FDR.
 
@@ -67,5 +67,5 @@ Graph-neighborhood evidence is carried only as penalty/context. No gene is selec
 - The full feature-wide graph-connected screen is the official pathology-delta ranking.
 - The full run skipped nearest-neighbor manifold checking because of the Windows sklearn/threadpoolctl failure.
 - The successful pilot supports feasibility and manifold safety for the pilot subset only.
-- This candidate list prepares candidate-level QC; it does not report targeted manifold-audit results.
+- This candidate-list artifact defines the audit scope; it does not itself report targeted manifold-audit results.
 - No current result proves causality, druggability, spatial plaque proximity, or experimental therapeutic efficacy.

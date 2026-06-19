@@ -12,7 +12,6 @@ import numpy as np
 import pandas as pd
 import torch
 from scipy import sparse
-from sklearn.neighbors import NearestNeighbors
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -109,6 +108,60 @@ def encode_matrix(
     return np.concatenate(chunks, axis=0).astype(np.float32)
 
 
+@torch.no_grad()
+def torch_nearest_distances(
+    query: np.ndarray,
+    reference: np.ndarray,
+    device: torch.device,
+    *,
+    query_batch_size: int,
+    reference_batch_size: int,
+    exclude_aligned_self: bool = False,
+) -> np.ndarray:
+    if query.ndim != 2 or reference.ndim != 2:
+        raise ValueError("query and reference must be rank-2 arrays")
+    if query.shape[1] != reference.shape[1]:
+        raise ValueError("query and reference latent dimensions differ")
+    if exclude_aligned_self and query.shape[0] != reference.shape[0]:
+        raise ValueError("exclude_aligned_self requires aligned query/reference rows")
+    if query_batch_size <= 0 or reference_batch_size <= 0:
+        raise ValueError("nearest-neighbor batch sizes must be positive")
+
+    reference_cpu = torch.from_numpy(np.asarray(reference, dtype=np.float32))
+    nearest_chunks: list[torch.Tensor] = []
+    for query_start in range(0, query.shape[0], query_batch_size):
+        query_stop = min(query_start + query_batch_size, query.shape[0])
+        query_tensor = torch.from_numpy(
+            np.asarray(query[query_start:query_stop], dtype=np.float32)
+        ).to(device)
+        best = torch.full(
+            (query_stop - query_start,),
+            float("inf"),
+            dtype=torch.float32,
+            device=device,
+        )
+        for reference_start in range(0, reference.shape[0], reference_batch_size):
+            reference_stop = min(
+                reference_start + reference_batch_size, reference.shape[0]
+            )
+            reference_tensor = reference_cpu[reference_start:reference_stop].to(device)
+            distances = torch.cdist(query_tensor, reference_tensor, p=2)
+            if exclude_aligned_self:
+                overlap_start = max(query_start, reference_start)
+                overlap_stop = min(query_stop, reference_stop)
+                if overlap_start < overlap_stop:
+                    aligned = torch.arange(
+                        overlap_start, overlap_stop, device=device
+                    )
+                    distances[
+                        aligned - query_start,
+                        aligned - reference_start,
+                    ] = float("inf")
+            best = torch.minimum(best, distances.min(dim=1).values)
+        nearest_chunks.append(best.cpu())
+    return torch.cat(nearest_chunks).numpy().astype(np.float32, copy=False)
+
+
 def aggregate_by_donor(z: np.ndarray, donors: pd.Series) -> pd.DataFrame:
     df = pd.DataFrame(z, columns=[f"z_{i}" for i in range(z.shape[1])])
     df.insert(0, "Donor ID", donors.astype(str).to_numpy())
@@ -183,6 +236,13 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--skip-manifold-nearest-neighbor", action="store_true")
+    parser.add_argument(
+        "--manifold-nn-backend",
+        choices=["sklearn", "torch"],
+        default="sklearn",
+    )
+    parser.add_argument("--manifold-query-batch-size", type=int, default=512)
+    parser.add_argument("--manifold-reference-batch-size", type=int, default=2048)
     parser.add_argument("--summary-out", default="results/tables/pathology_head_module_counterfactual_summary.csv")
     parser.add_argument("--donor-out", default="results/tables/pathology_head_module_counterfactual_donor.csv")
     args = parser.parse_args()
@@ -216,9 +276,28 @@ def main() -> None:
 
     nearest = None
     base_nn_p95 = np.nan
+    torch_reference = None
     if args.skip_manifold_nearest_neighbor:
         print("Skipping nearest-neighbor manifold check; manifold fields will be marked not_computed.")
+    elif args.manifold_nn_backend == "torch":
+        print(
+            "Computing baseline nearest-neighbor threshold with torch "
+            f"(query_batch={args.manifold_query_batch_size}, "
+            f"reference_batch={args.manifold_reference_batch_size}, device={device})"
+        )
+        base_nn_dist = torch_nearest_distances(
+            z_base,
+            z_base,
+            device,
+            query_batch_size=args.manifold_query_batch_size,
+            reference_batch_size=args.manifold_reference_batch_size,
+            exclude_aligned_self=True,
+        )
+        base_nn_p95 = float(np.quantile(base_nn_dist, 0.95))
+        torch_reference = z_base
     else:
+        from sklearn.neighbors import NearestNeighbors
+
         nearest = NearestNeighbors(n_neighbors=2, metric="euclidean").fit(z_base)
         base_nn_dist, _ = nearest.kneighbors(z_base)
         base_nn_p95 = float(np.quantile(base_nn_dist[:, 1], 0.95))
@@ -242,10 +321,21 @@ def main() -> None:
         donor_rows.append(merged)
 
         latent_shift = np.linalg.norm(z_perturbed - z_base, axis=1)
-        if nearest is None:
+        if nearest is None and torch_reference is None:
             mean_nn_dist = np.nan
             p95_nn_dist = np.nan
             manifold_violation_fraction = np.nan
+        elif torch_reference is not None:
+            pert_nn_dist = torch_nearest_distances(
+                z_perturbed,
+                torch_reference,
+                device,
+                query_batch_size=args.manifold_query_batch_size,
+                reference_batch_size=args.manifold_reference_batch_size,
+            )
+            mean_nn_dist = float(np.mean(pert_nn_dist))
+            p95_nn_dist = float(np.quantile(pert_nn_dist, 0.95))
+            manifold_violation_fraction = float(np.mean(pert_nn_dist > base_nn_p95))
         else:
             pert_nn_dist, _ = nearest.kneighbors(z_perturbed, n_neighbors=1)
             mean_nn_dist = float(np.mean(pert_nn_dist[:, 0]))
@@ -264,6 +354,11 @@ def main() -> None:
             "p95_nearest_real_cell_distance": p95_nn_dist,
             "baseline_nn_p95_threshold": base_nn_p95,
             "manifold_violation_fraction": manifold_violation_fraction,
+            "manifold_nn_backend": (
+                "not_computed"
+                if args.skip_manifold_nearest_neighbor
+                else args.manifold_nn_backend
+            ),
         }
         for target in head_payload["targets"]:
             delta = merged[f"delta_{target}"].to_numpy(dtype=np.float32)
