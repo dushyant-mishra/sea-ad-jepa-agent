@@ -1,0 +1,6 @@
+target_name,target_alias,available,n_donors_with_target,target_type,used_for_primary_benchmark,notes
+AT8,percent AT8 positive area_Grey matter,True,84,pathology_immunostaining,True,Preserved for v3 benchmark manifest; do not drop after seeing results.
+6e10/Aβ,percent 6e10 positive area_Grey matter,True,84,pathology_immunostaining,True,Preserved for v3 benchmark manifest; do not drop after seeing results.
+GFAP,percent GFAP positive area_Grey matter,True,84,gliosis_immunostaining,True,Preserved for v3 benchmark manifest; do not drop after seeing results.
+Iba1,percent Iba1 positive area_Grey matter,True,84,microglia_immunostaining,True,Preserved for v3 benchmark manifest; do not drop after seeing results.
+NeuN,percent NeuN positive area_Grey matter,True,84,neuronal_marker_immunostaining,True,Preserved for v3 benchmark manifest; do not drop after seeing results.
