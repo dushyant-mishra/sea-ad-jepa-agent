@@ -247,6 +247,30 @@ def missing_packages(rows: list[dict[str, str]], env_name: str) -> list[str]:
 
 
 def choose_recommendation(rows: list[dict[str, str]], env_names: list[str]) -> tuple[str, str]:
+    v3_required = {
+        "torch",
+        "torch_geometric",
+        "scanpy",
+        "anndata",
+        "umap",
+        "openTSNE",
+        "phate",
+        "pydiffmap",
+        "scvi",
+        "xgboost",
+        "lightgbm",
+        "dowhy",
+        "econml",
+        "src_package_import",
+        "graph_jepa_module_import",
+    }
+    if "sea-ad-jepa-v3" in env_names and all(
+        is_available(rows, "sea-ad-jepa-v3", package) for package in v3_required
+    ):
+        return (
+            "use `sea-ad-jepa-v3` for v3 evaluation/runtime",
+            "`sea-ad-jepa-v3` now imports the cloned v2 neural stack, torch/PyG with CUDA, project runtime modules, and the requested optional v3 baseline/causal packages.",
+        )
     if "sea-ad-jepa" not in env_names:
         return (
             "create fresh `sea-ad-jepa-v3`",
@@ -318,10 +342,18 @@ def write_reports(envs: list[EnvSpec], rows: list[dict[str, str]]) -> None:
     env_names = [env.name for env in envs]
     recommendation, rationale = choose_recommendation(rows, env_names)
     sea_missing = missing_packages(rows, "sea-ad-jepa") if "sea-ad-jepa" in env_names else []
+    v3_complete = (
+        "sea-ad-jepa-v3" in env_names
+        and choose_recommendation(rows, env_names)[0] == "use `sea-ad-jepa-v3` for v3 evaluation/runtime"
+    )
     v3_presence_note = (
-        "`sea-ad-jepa-v3` was already present at audit time. It should not be treated as the historical v2 runtime; use the `sea-ad-jepa` rows to decide whether cloning preserves continuity."
-        if "sea-ad-jepa-v3" in env_names
-        else "`sea-ad-jepa-v3` was not present at audit time."
+        "`sea-ad-jepa-v3` is present and currently passes the requested v3 runtime import checks. It should be treated as the selected v3 runtime, not as the historical v2 runtime."
+        if v3_complete
+        else (
+            "`sea-ad-jepa-v3` is present but should not be treated as the historical v2 runtime; use the `sea-ad-jepa` rows to decide whether cloning preserves continuity."
+            if "sea-ad-jepa-v3" in env_names
+            else "`sea-ad-jepa-v3` was not present at audit time."
+        )
     )
 
     def yn(env: str, package: str) -> str:
@@ -365,7 +397,7 @@ def write_reports(envs: list[EnvSpec], rows: list[dict[str, str]]) -> None:
             [
                 "# Existing Graph-JEPA environment package audit v1",
                 "",
-                "This audit is read-only: no package installs, model training, benchmarks, evidence-level changes, or external validation were run by this script.",
+                "This audit script is read-only: no package installs, model training, benchmarks, evidence-level changes, or external validation are run by the script.",
                 "",
                 "## Existing environments audited",
                 "",
@@ -413,8 +445,14 @@ def write_reports(envs: list[EnvSpec], rows: list[dict[str, str]]) -> None:
         encoding="utf-8",
     )
 
+    v3_missing = missing_packages(rows, "sea-ad-jepa-v3") if "sea-ad-jepa-v3" in env_names else []
     install_lines = []
-    if "sea-ad-jepa" in env_names:
+    if "sea-ad-jepa-v3" in env_names and not v3_missing:
+        install_lines.append("- No missing requested packages were detected in `sea-ad-jepa-v3`.")
+    elif "sea-ad-jepa-v3" in env_names:
+        for pkg in v3_missing:
+            install_lines.append(f"- Install or validate `{pkg}` in `sea-ad-jepa-v3` before v3 use.")
+    elif "sea-ad-jepa" in env_names:
         for pkg in sea_missing:
             install_lines.append(f"- Install or validate `{pkg}` only after cloning/choosing the target v3 environment.")
     if not install_lines:
@@ -435,7 +473,7 @@ def write_reports(envs: list[EnvSpec], rows: list[dict[str, str]]) -> None:
                 "",
                 *install_lines,
                 "",
-                "If cloning is selected, clone `sea-ad-jepa` first and install only missing v3 optional/baseline packages into the clone. If a fresh environment is selected, recreate the core v2 neural stack before adding optional benchmark packages.",
+                "If cloning is selected, clone `sea-ad-jepa` first and install only missing v3 optional/baseline packages into the clone. If `sea-ad-jepa-v3` is complete, use it directly for no-training v3 evaluation/runtime checks.",
                 "",
                 "## Boundaries",
                 "",
@@ -443,7 +481,7 @@ def write_reports(envs: list[EnvSpec], rows: list[dict[str, str]]) -> None:
                 "- No benchmarks were run.",
                 "- No external validation was run.",
                 "- No evidence levels or conclusions were modified.",
-                "- This audit did not install packages.",
+                "- The audit script did not install packages.",
                 f"- {v3_presence_note}",
                 "- Note: `sea-ad-jepa-v3` is included if present, but selection is based on audited compatibility rather than assuming the current/base interpreter represented the project runtime.",
             ]
