@@ -1,0 +1,7 @@
+comparison,left,right,delta_mean_oof_spearman,interpretation
+real_graph_minus_no_graph,graph_jepa_real_graph_latent,graph_jepa_no_graph_identity_latent,0.03783335020755291,Real graph improves over identity/no-graph by more than the 0.01 band.
+real_graph_minus_strict_shuffled,graph_jepa_real_graph_latent,graph_jepa_strict_shuffled_graph_latent,0.04216259997975094,Real graph improves over zero-overlap degree-preserving shuffle.
+strict_shuffled_minus_no_graph,graph_jepa_strict_shuffled_graph_latent,graph_jepa_no_graph_identity_latent,-0.004329249772198035,Strict shuffled and no-graph are within the 0.01 small-difference band.
+module_mean_minus_real_graph,module_mean_baseline,graph_jepa_real_graph_latent,0.010699605143262125,Module mean remains the strongest absolute predictor.
+raw_expression_minus_real_graph,raw_expression_regularized_baseline,graph_jepa_real_graph_latent,-0.0024541864938746882,Raw regularized expression is slightly below real graph.
+pca_expression_minus_real_graph,pca_expression_baseline,graph_jepa_real_graph_latent,-0.004815227295737579,PCA expression is slightly below real graph.

@@ -1,0 +1,7 @@
+rank,representation,mean_oof_spearman,display_name,benchmark_role,interpretation
+1,module_mean_baseline,0.29988458033815935,Module mean baseline,strongest_absolute_baseline,Strongest absolute donor-level predictor in v2.
+2,graph_jepa_real_graph_latent,0.2891849751948972,Graph-JEPA v2 real graph,v2_real_graph_model,Graph-specific benefit relative to identity/no-graph and strict shuffled controls; not benchmark-dominating because module mean remains higher.
+3,raw_expression_regularized_baseline,0.28673078870102253,Raw expression regularized baseline,regularized_expression_baseline,Regularized expression baseline close to v2 real graph.
+4,pca_expression_baseline,0.28436974789915964,PCA expression baseline,linear_embedding_baseline,Simple expression embedding baseline close to v2 real graph.
+5,graph_jepa_no_graph_identity_latent,0.2513516249873443,Graph-JEPA v2 identity/no-graph,identity_control,Matched no-message-passing control.
+6,graph_jepa_strict_shuffled_graph_latent,0.24702237521514628,Graph-JEPA v2 strict shuffled graph,degree_preserving_zero_overlap_control,Degree-preserving zero-overlap topology control; below real graph.
