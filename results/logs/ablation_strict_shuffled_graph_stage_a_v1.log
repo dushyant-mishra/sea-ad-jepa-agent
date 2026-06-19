@@ -1,0 +1,54 @@
+Fast Graph-JEPA Stage A training log
+args={'h5ad': 'data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad', 'edge_csv': 'results/tables/ablation_edge_sets/strict_shuffled_graph_edges_v1.csv', 'annotation_csv': 'results/tables/jepa_v2_translational_actionability_matrix.csv', 'out_dir': 'results/models/ablation_strict_shuffled_graph_stage_a_v1', 'log_dir': 'runs/v2_2_topology_dropout_full_e50_fast', 'epochs': 50, 'checkpoint_every': 5, 'batch_size': 128, 'hidden_dim': 128, 'latent_dim': 128, 'gene_embed_dim': 32, 'n_layers': 2, 'dropout': 0.1, 'ema_decay': 0.9995, 'ema_start_decay': 0.992, 'ema_warmup_epochs': 10, 'mask_fraction': 0.5, 'mask_start_fraction': 0.2, 'mask_warmup_epochs': 10, 'random_gene_dropout': 0.15, 'module_dropout_prob': 0.1, 'external_mask_files': [], 'external_mask_prob': 0.25, 'edge_dropout': 0.1, 'variance_weight': 0.2, 'variance_gamma': 0.02, 'covariance_weight': 0.05, 'lr': 0.0002, 'weight_decay': 0.0001, 'gradient_clip_val': 1.0, 'use_node_annotations': False, 'max_cells': 0, 'num_workers': 0, 'device': 'auto', 'seed': 7, 'history_csv': 'results/tables/ablation_strict_shuffled_graph_stage_a_v1_history.csv', 'log_file': 'results/logs/ablation_strict_shuffled_graph_stage_a_v1.log'}
+n_module_masks=15 n_external_masks=0
+epoch=001 loss=0.069439 alignment=0.061389 variance=0.008245 covariance=0.128037 mask=0.200 ema=0.99200 eff_dims=8.84 top_sv=0.356 mean_std=0.1213 sec=162.6 cells_s=246.0
+epoch=002 loss=0.005622 alignment=0.000112 variance=0.008703 covariance=0.075407 mask=0.233 ema=0.99283 eff_dims=20.69 top_sv=0.434 mean_std=0.0080 sec=167.4 cells_s=239.0
+epoch=003 loss=0.005257 alignment=0.000095 variance=0.008798 covariance=0.068053 mask=0.267 ema=0.99367 eff_dims=48.46 top_sv=0.187 mean_std=0.0029 sec=174.8 cells_s=228.8
+epoch=004 loss=0.005144 alignment=0.000086 variance=0.008847 covariance=0.065765 mask=0.300 ema=0.99450 eff_dims=53.89 top_sv=0.153 mean_std=0.0025 sec=176.6 cells_s=226.5
+epoch=005 loss=0.005105 alignment=0.000079 variance=0.008875 covariance=0.065021 mask=0.333 ema=0.99533 eff_dims=55.87 top_sv=0.144 mean_std=0.0022 sec=178.6 cells_s=223.9
+epoch=006 loss=0.005122 alignment=0.000075 variance=0.008893 covariance=0.065373 mask=0.367 ema=0.99617 eff_dims=56.93 top_sv=0.140 mean_std=0.0022 sec=179.9 cells_s=222.4
+epoch=007 loss=0.005180 alignment=0.000071 variance=0.008900 covariance=0.066574 mask=0.400 ema=0.99700 eff_dims=58.42 top_sv=0.134 mean_std=0.0021 sec=180.2 cells_s=222.0
+epoch=008 loss=0.005254 alignment=0.000069 variance=0.008902 covariance=0.068087 mask=0.433 ema=0.99783 eff_dims=60.01 top_sv=0.127 mean_std=0.0020 sec=180.2 cells_s=222.0
+epoch=009 loss=0.005331 alignment=0.000067 variance=0.008899 covariance=0.069686 mask=0.467 ema=0.99867 eff_dims=61.44 top_sv=0.122 mean_std=0.0019 sec=181.1 cells_s=220.8
+epoch=010 loss=0.005399 alignment=0.000066 variance=0.008896 covariance=0.071078 mask=0.500 ema=0.99950 eff_dims=63.11 top_sv=0.111 mean_std=0.0018 sec=181.1 cells_s=220.9
+epoch=011 loss=0.005468 alignment=0.000064 variance=0.008890 covariance=0.072513 mask=0.500 ema=0.99950 eff_dims=66.28 top_sv=0.097 mean_std=0.0017 sec=183.2 cells_s=218.3
+epoch=012 loss=0.005564 alignment=0.000064 variance=0.008882 covariance=0.074468 mask=0.500 ema=0.99950 eff_dims=63.19 top_sv=0.115 mean_std=0.0018 sec=183.5 cells_s=218.0
+epoch=013 loss=0.005676 alignment=0.000064 variance=0.008870 covariance=0.076749 mask=0.500 ema=0.99950 eff_dims=62.49 top_sv=0.115 mean_std=0.0018 sec=184.8 cells_s=216.5
+epoch=014 loss=0.005797 alignment=0.000063 variance=0.008859 covariance=0.079256 mask=0.500 ema=0.99950 eff_dims=64.47 top_sv=0.107 mean_std=0.0017 sec=184.2 cells_s=217.2
+epoch=015 loss=0.005942 alignment=0.000062 variance=0.008842 covariance=0.082221 mask=0.500 ema=0.99950 eff_dims=66.36 top_sv=0.096 mean_std=0.0016 sec=184.7 cells_s=216.5
+epoch=016 loss=0.006100 alignment=0.000061 variance=0.008825 covariance=0.085477 mask=0.500 ema=0.99950 eff_dims=68.97 top_sv=0.086 mean_std=0.0015 sec=186.5 cells_s=214.5
+epoch=017 loss=0.006279 alignment=0.000062 variance=0.008805 covariance=0.089117 mask=0.500 ema=0.99950 eff_dims=65.56 top_sv=0.101 mean_std=0.0017 sec=185.1 cells_s=216.1
+epoch=018 loss=0.006489 alignment=0.000062 variance=0.008781 covariance=0.093428 mask=0.500 ema=0.99950 eff_dims=69.75 top_sv=0.077 mean_std=0.0015 sec=183.9 cells_s=217.6
+epoch=019 loss=0.006729 alignment=0.000061 variance=0.008750 covariance=0.098355 mask=0.500 ema=0.99950 eff_dims=71.02 top_sv=0.074 mean_std=0.0014 sec=180.3 cells_s=221.8
+epoch=020 loss=0.006974 alignment=0.000062 variance=0.008719 covariance=0.103351 mask=0.500 ema=0.99950 eff_dims=69.31 top_sv=0.076 mean_std=0.0015 sec=186.7 cells_s=214.2
+epoch=021 loss=0.007281 alignment=0.000063 variance=0.008681 covariance=0.109635 mask=0.500 ema=0.99950 eff_dims=69.21 top_sv=0.074 mean_std=0.0015 sec=187.7 cells_s=213.1
+epoch=022 loss=0.007609 alignment=0.000064 variance=0.008640 covariance=0.116329 mask=0.500 ema=0.99950 eff_dims=66.91 top_sv=0.082 mean_std=0.0015 sec=179.1 cells_s=223.4
+epoch=023 loss=0.007971 alignment=0.000064 variance=0.008592 covariance=0.123774 mask=0.500 ema=0.99950 eff_dims=60.68 top_sv=0.134 mean_std=0.0017 sec=189.3 cells_s=211.3
+epoch=024 loss=0.008376 alignment=0.000066 variance=0.008541 covariance=0.132044 mask=0.500 ema=0.99950 eff_dims=56.09 top_sv=0.166 mean_std=0.0019 sec=184.2 cells_s=217.2
+epoch=025 loss=0.008824 alignment=0.000067 variance=0.008486 covariance=0.141193 mask=0.500 ema=0.99950 eff_dims=51.94 top_sv=0.190 mean_std=0.0021 sec=183.2 cells_s=218.4
+epoch=026 loss=0.009290 alignment=0.000069 variance=0.008426 covariance=0.150708 mask=0.500 ema=0.99950 eff_dims=46.61 top_sv=0.226 mean_std=0.0024 sec=183.1 cells_s=218.4
+epoch=027 loss=0.009821 alignment=0.000072 variance=0.008359 covariance=0.161544 mask=0.500 ema=0.99950 eff_dims=46.36 top_sv=0.222 mean_std=0.0024 sec=183.4 cells_s=218.1
+epoch=028 loss=0.010408 alignment=0.000073 variance=0.008288 covariance=0.173544 mask=0.500 ema=0.99950 eff_dims=33.48 top_sv=0.324 mean_std=0.0034 sec=182.6 cells_s=219.1
+epoch=029 loss=0.011060 alignment=0.000075 variance=0.008209 covariance=0.186858 mask=0.500 ema=0.99950 eff_dims=27.51 top_sv=0.380 mean_std=0.0039 sec=182.2 cells_s=219.6
+epoch=030 loss=0.011775 alignment=0.000081 variance=0.008128 covariance=0.201383 mask=0.500 ema=0.99950 eff_dims=32.08 top_sv=0.327 mean_std=0.0034 sec=182.0 cells_s=219.8
+epoch=031 loss=0.012575 alignment=0.000084 variance=0.008040 covariance=0.217667 mask=0.500 ema=0.99950 eff_dims=26.49 top_sv=0.378 mean_std=0.0039 sec=180.5 cells_s=221.5
+epoch=032 loss=0.013514 alignment=0.000086 variance=0.007943 covariance=0.236800 mask=0.500 ema=0.99950 eff_dims=18.46 top_sv=0.475 mean_std=0.0051 sec=181.1 cells_s=220.9
+epoch=033 loss=0.014549 alignment=0.000093 variance=0.007840 covariance=0.257762 mask=0.500 ema=0.99950 eff_dims=18.61 top_sv=0.467 mean_std=0.0051 sec=182.0 cells_s=219.7
+epoch=034 loss=0.015763 alignment=0.000096 variance=0.007727 covariance=0.282428 mask=0.500 ema=0.99950 eff_dims=14.87 top_sv=0.519 mean_std=0.0057 sec=182.6 cells_s=219.0
+epoch=035 loss=0.017175 alignment=0.000101 variance=0.007604 covariance=0.311067 mask=0.500 ema=0.99950 eff_dims=12.55 top_sv=0.556 mean_std=0.0063 sec=182.3 cells_s=219.4
+epoch=036 loss=0.018848 alignment=0.000106 variance=0.007472 covariance=0.344945 mask=0.500 ema=0.99950 eff_dims=10.80 top_sv=0.588 mean_std=0.0067 sec=182.6 cells_s=219.1
+epoch=037 loss=0.020794 alignment=0.000111 variance=0.007328 covariance=0.384348 mask=0.500 ema=0.99950 eff_dims=10.41 top_sv=0.593 mean_std=0.0065 sec=182.9 cells_s=218.7
+epoch=038 loss=0.023079 alignment=0.000112 variance=0.007174 covariance=0.430652 mask=0.500 ema=0.99950 eff_dims=8.73 top_sv=0.630 mean_std=0.0072 sec=182.4 cells_s=219.3
+epoch=039 loss=0.025647 alignment=0.000117 variance=0.007030 covariance=0.482466 mask=0.500 ema=0.99950 eff_dims=10.38 top_sv=0.585 mean_std=0.0059 sec=183.5 cells_s=218.0
+epoch=040 loss=0.028627 alignment=0.000114 variance=0.006889 covariance=0.542698 mask=0.500 ema=0.99950 eff_dims=9.84 top_sv=0.592 mean_std=0.0055 sec=183.1 cells_s=218.4
+epoch=041 loss=0.031811 alignment=0.000110 variance=0.006764 covariance=0.606957 mask=0.500 ema=0.99950 eff_dims=11.82 top_sv=0.544 mean_std=0.0044 sec=182.8 cells_s=218.8
+epoch=042 loss=0.035096 alignment=0.000107 variance=0.006657 covariance=0.673144 mask=0.500 ema=0.99950 eff_dims=16.10 top_sv=0.461 mean_std=0.0031 sec=183.7 cells_s=217.7
+epoch=043 loss=0.038341 alignment=0.000103 variance=0.006569 covariance=0.738491 mask=0.500 ema=0.99950 eff_dims=18.80 top_sv=0.410 mean_std=0.0024 sec=186.7 cells_s=214.2
+epoch=044 loss=0.041474 alignment=0.000099 variance=0.006493 covariance=0.801524 mask=0.500 ema=0.99950 eff_dims=23.74 top_sv=0.334 mean_std=0.0017 sec=187.5 cells_s=213.3
+epoch=045 loss=0.044427 alignment=0.000097 variance=0.006428 covariance=0.860878 mask=0.500 ema=0.99950 eff_dims=27.79 top_sv=0.273 mean_std=0.0014 sec=183.7 cells_s=217.8
+epoch=046 loss=0.047195 alignment=0.000093 variance=0.006370 covariance=0.916561 mask=0.500 ema=0.99950 eff_dims=29.65 top_sv=0.248 mean_std=0.0012 sec=182.4 cells_s=219.3
+epoch=047 loss=0.049745 alignment=0.000092 variance=0.006320 covariance=0.967774 mask=0.500 ema=0.99950 eff_dims=32.21 top_sv=0.209 mean_std=0.0011 sec=183.0 cells_s=218.6
+epoch=048 loss=0.051969 alignment=0.000090 variance=0.006281 covariance=1.012445 mask=0.500 ema=0.99950 eff_dims=36.73 top_sv=0.212 mean_std=0.0009 sec=177.7 cells_s=225.0
+epoch=049 loss=0.054046 alignment=0.000087 variance=0.006246 covariance=1.054200 mask=0.500 ema=0.99950 eff_dims=35.64 top_sv=0.220 mean_std=0.0009 sec=173.8 cells_s=230.2
+epoch=050 loss=0.055919 alignment=0.000087 variance=0.006216 covariance=1.091781 mask=0.500 ema=0.99950 eff_dims=36.02 top_sv=0.226 mean_std=0.0008 sec=173.6 cells_s=230.4
+Wrote results\models\ablation_strict_shuffled_graph_stage_a_v1\fast_graph_jepa.pt
