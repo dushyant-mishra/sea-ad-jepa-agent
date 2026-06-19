@@ -419,6 +419,12 @@ def build_targeted_audit_list(shortlist: pd.DataFrame) -> pd.DataFrame:
     audit = shortlist[shortlist["gene"].isin(requested)].copy()
     for group, members in group_members.items():
         audit[f"audit_group::{group}"] = audit["gene"].isin(members)
+    audit["in_top20_tier1"] = audit["audit_group::top20_tier1"]
+    audit["in_prior_anchor_group"] = audit["audit_group::prior_anchor"]
+    audit["in_broad_state_control_group"] = audit[
+        "audit_group::broad_state_caution_control"
+    ]
+    audit["in_special_review_group"] = audit["audit_group::special_review"]
     group_columns = [f"audit_group::{group}" for group in group_members]
     audit["audit_groups"] = audit.apply(
         lambda row: "|".join(
@@ -468,6 +474,7 @@ def build_targeted_audit_list(shortlist: pd.DataFrame) -> pd.DataFrame:
         ],
         default="not_selected",
     )
+    audit["targeted_manifold_audit_priority"] = audit["audit_priority"]
     priority_order = {
         "priority_1_top_tier1": 1,
         "priority_2_special_review": 2,
@@ -799,23 +806,30 @@ def main() -> None:
     write_report(pool, args)
     targeted_columns = [
         "gene",
+        "in_top20_tier1",
+        "in_prior_anchor_group",
+        "in_broad_state_control_group",
+        "in_special_review_group",
+        "audit_selection_reason",
+        "final_tier",
+        "therapeutic_like_score_percentile",
+        "gliosis_penalty_percentile",
+        "broad_shift_score_percentile",
+        "graph_neighborhood_label",
+        "prior_candidate_flag",
+        "targeted_manifold_audit_priority",
         "audit_priority",
         "audit_groups",
-        "audit_selection_reason",
         "audit_group::top20_tier1",
         "audit_group::prior_anchor",
         "audit_group::broad_state_caution_control",
         "audit_group::special_review",
-        "final_tier",
         "promotion_reason",
         "deprioritization_reason",
         "scorecard_interpretation",
         "graph_interpretation",
-        "therapeutic_like_score_percentile",
         "tau_lowering_score_percentile",
         "neuron_preservation_score_percentile",
-        "gliosis_penalty_percentile",
-        "broad_shift_score_percentile",
         "known_biology_note",
         "claim_boundary",
     ]
