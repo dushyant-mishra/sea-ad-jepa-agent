@@ -73,7 +73,26 @@ NEURO_SUPPORT_TERMS = {
     "oligodendrocyte precursor cell",
 }
 PERIPHERAL_TERMS = {"macrophage", "monocyte"}
-ALREADY_USED_MARKERS = {"GSE174367", "GSE138852"}
+ALREADY_USED_MARKERS = {
+    "GSE174367",
+    "GSE138852",
+    "SEA-AD",
+    "Seattle Alzheimer",
+    "Rexach",
+    "Cross-dementia human brain",
+    "Olah",
+    "Leng",
+    "Grubman",
+    "selectively vulnerable neurons",
+}
+ALREADY_USED_COLLECTION_IDS = {
+    # Primary discovery/training atlas; never a clean external holdout.
+    "1ca90a2d-2943-483d-b678-b809bf464c30",
+    # Leng/Grubman/GSE138852 historical smoke-test/plausibility collection.
+    "180bff9c-c8a5-4539-b13b-ddbc00d643e6",
+    # Rexach cross-dementia was adapted in v2.2 alignment context.
+    "c53573b2-eff4-4c5e-9ad0-b24d422dfd9b",
+}
 
 CANDIDATE_COLUMNS = [
     "dataset_id",
@@ -353,7 +372,8 @@ def enrich_dataset_row(dataset_row: pd.Series, obs_rows: pd.DataFrame, organism:
     has_donor = len({norm(v) for v in donor_values if norm(v)}) > 0
     is_human = organism == "Homo sapiens"
     is_mouse = organism == "Mus musculus"
-    already_used = contains_any(text_blob, ALREADY_USED_MARKERS)
+    collection_id = norm(get_first(dataset_row, ["collection_id"]))
+    already_used = collection_id in ALREADY_USED_COLLECTION_IDS or contains_any(text_blob, ALREADY_USED_MARKERS)
     provenance_unclear = not norm(get_first(dataset_row, ["collection_name"])) or not norm(
         get_first(dataset_row, ["dataset_title", "title", "dataset_label"])
     )
@@ -416,7 +436,7 @@ def enrich_dataset_row(dataset_row: pd.Series, obs_rows: pd.DataFrame, organism:
 
     return {
         "dataset_id": norm(dataset_row["dataset_id"]),
-        "collection_id": norm(get_first(dataset_row, ["collection_id"])),
+        "collection_id": collection_id,
         "collection_name": norm(get_first(dataset_row, ["collection_name"])),
         "dataset_title": norm(get_first(dataset_row, ["dataset_title", "title", "dataset_label"])),
         "organism": organism,
