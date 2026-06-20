@@ -1,0 +1,9 @@
+protocol_component,v2_value,stage25_value,same_or_different,risk_if_different,notes
+donor_count,84,84,same,medium,Donor count must match for direct apples-to-apples comparison.
+fold_split,5_fold_donor_cv; not_run,"locked Stage 24 5-fold donor split, seed 7",unknown,medium,V2 reports 5-fold donor CV but does not expose exact donor fold assignment in this table.
+target_table,percent 6e10 positive area_Grey matter; percent AT8 positive area_Grey matter; percent GFAP positive area_Grey matter; percent Iba1 positive area_Grey matter; percent NeuN positive area_Grey matter,percent 6e10 positive area_Grey matter; percent AT8 positive area_Grey matter; percent GFAP positive area_Grey matter; percent Iba1 positive area_Grey matter; percent NeuN positive area_Grey matter,same,medium,Both use the same five SEA-AD pathology target aliases when visible.
+feature_table,prior baseline comparison assets; exact raw feature table not fully encoded in comparison CSV,data\processed\sea_ad_mtg_microglia_pvm_pseudobulk_expanded_modules.csv,unknown,high,Direct comparison to 0.2999 needs caveat unless feature-table identity is proven.
+module_definitions,module mean baseline definitions not fully encoded in comparison CSV,src/sea_ad_jepa/gene_sets.py MICROGLIA_GENE_MODULES,unknown,high,"Stage25 modules are target-independent, but exact equivalence to old v2 module mean requires provenance check."
+target_transform,unknown in comparison CSV,log1p,unknown,medium,Stage25 stores OOF prediction scale as log1p.
+metric_aggregation,oof_spearman column available; likely pooled or aggregate OOF but not proven from CSV alone,Stage25 report/ranking used mean of fold-level Spearman; Stage25B recommends pooled donor-level OOF,different,high,This is the core Stage25B concern.
+missing_target_handling,all visible target rows report n_donors=84,all five targets available for 84 donors,same,low,No target-specific donor drops detected.
