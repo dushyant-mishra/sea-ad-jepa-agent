@@ -1,0 +1,16 @@
+run_id,architecture_condition,target,target_alias,n_bootstrap_resamples,spearman_ci_low,spearman_ci_median,spearman_ci_high,uncertainty_status
+v3_sea_ad_only_non_graph,expression_residual_only_mlp,6e10/Aβ,percent 6e10 positive area_Grey matter,500,-0.19550178793926068,0.039382964213512825,0.26786792808091836,complete
+v3_sea_ad_only_non_graph,expression_residual_only_mlp,AT8,percent AT8 positive area_Grey matter,500,-0.07105325818345981,0.16593386554281314,0.37292756985747133,complete
+v3_sea_ad_only_non_graph,expression_residual_only_mlp,GFAP,percent GFAP positive area_Grey matter,500,-0.08704109120898347,0.14469954585230158,0.36613260768408673,complete
+v3_sea_ad_only_non_graph,expression_residual_only_mlp,Iba1,percent Iba1 positive area_Grey matter,500,-0.2932223436439,-0.07074772133227744,0.13197325592348108,complete
+v3_sea_ad_only_non_graph,expression_residual_only_mlp,NeuN,percent NeuN positive area_Grey matter,500,0.2613413735594541,0.47275973274821437,0.6325289911285845,complete
+v3_sea_ad_only_non_graph,late_fusion_module_residual_mlp,6e10/Aβ,percent 6e10 positive area_Grey matter,500,-0.15037004983032565,0.0752696857662746,0.27052728155475686,complete
+v3_sea_ad_only_non_graph,late_fusion_module_residual_mlp,AT8,percent AT8 positive area_Grey matter,500,-0.005097352441292507,0.2068899026365289,0.4175995725813105,complete
+v3_sea_ad_only_non_graph,late_fusion_module_residual_mlp,GFAP,percent GFAP positive area_Grey matter,500,-0.009141386763502278,0.21990376703068296,0.3992093491481345,complete
+v3_sea_ad_only_non_graph,late_fusion_module_residual_mlp,Iba1,percent Iba1 positive area_Grey matter,500,-0.3030312403094239,-0.11002937909058919,0.11806481989565905,complete
+v3_sea_ad_only_non_graph,late_fusion_module_residual_mlp,NeuN,percent NeuN positive area_Grey matter,500,0.3006579203195566,0.47981892632979095,0.6395737882773973,complete
+v3_sea_ad_only_non_graph,module_only_mlp,6e10/Aβ,percent 6e10 positive area_Grey matter,500,-0.07123786554263871,0.1416242519442324,0.331202935660402,complete
+v3_sea_ad_only_non_graph,module_only_mlp,AT8,percent AT8 positive area_Grey matter,500,0.24880027424795112,0.4391787825507165,0.5999126189477499,complete
+v3_sea_ad_only_non_graph,module_only_mlp,GFAP,percent GFAP positive area_Grey matter,500,-0.035192699273040653,0.1880460922008711,0.3891217846565261,complete
+v3_sea_ad_only_non_graph,module_only_mlp,Iba1,percent Iba1 positive area_Grey matter,500,-0.2855123722425203,-0.08979579311371676,0.1161185763120286,complete
+v3_sea_ad_only_non_graph,module_only_mlp,NeuN,percent NeuN positive area_Grey matter,500,0.03720391128618177,0.26588561719970244,0.47787977706838536,complete

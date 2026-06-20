@@ -66,3 +66,6 @@ Current results do not prove causality, druggability, spatial plaque proximity, 
 
 Clean external validation is not yet available. Stage 26B/26C are metadata/schema discovery stages only.
 
+## Stage 27A/27B run status
+
+Stage 27 non-graph v3 has been run for SEA-AD-only conditions. The external-pretrained interface is implemented but remains skipped unless approved local external matrices are available. No graph branch or graph-specific control has been run in Stage 27.

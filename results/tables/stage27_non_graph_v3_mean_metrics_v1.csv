@@ -1,0 +1,4 @@
+run_id,architecture_condition,mean_pooled_oof_spearman,min_target_pooled_oof_spearman,n_targets
+v3_sea_ad_only_non_graph,expression_residual_only_mlp,0.1484237782015982,-0.07801964159157639,5
+v3_sea_ad_only_non_graph,late_fusion_module_residual_mlp,0.1781277802259438,-0.10073909081704971,5
+v3_sea_ad_only_non_graph,module_only_mlp,0.18826769261921633,-0.10104282676926192,5

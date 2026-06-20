@@ -91,3 +91,6 @@ Use the lowest accurate causal language:
 
 Do not use "therapeutic target," "causal regulator," "drug target," or "validated mechanism" unless the evidence tier supports it.
 
+## Stage 27 non-graph status
+
+Best completed SEA-AD-only non-graph condition: `module_only_mlp` (`0.1883`). Stage 27B external-pretrained status: `missing_external_matrix`. These are non-graph training regimes and do not support graph-specific claims.
