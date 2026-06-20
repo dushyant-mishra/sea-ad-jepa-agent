@@ -4,6 +4,20 @@
 
 This repository is an end-to-end research prototype built around the Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD). The current focus is Microglia-PVM nuclei from middle temporal gyrus (MTG), paired with quantitative neuropathology targets such as AT8/pTau, 6e10/A beta, GFAP, Iba1, and NeuN.
 
+## Current v3 status
+
+Graph-JEPA v3 is the active publication framework. v1 is proof-of-concept history, and v2 is graph-specificity/failure-analysis motivation and controls.
+
+The official internal v3 metric is pooled donor-level out-of-fold Spearman. The current official internal baseline is `module_mean_baseline = 0.3128`, and the minimum v3 success threshold is `0.3228`. All five targets must be reported: AT8, 6e10/A beta, GFAP, Iba1, and NeuN.
+
+The current next modeling step is Stage 27 non-graph v3 training regimes: Stage 27A is SEA-AD-only non-graph v3, and Stage 27B is external-pretrained non-graph v3. Both are training regimes within one Graph-JEPA v3 framework, not separate projects.
+
+Active control docs:
+
+- [Active v3 status](docs/ACTIVE_V3_STATUS.md)
+- [v3 scorecard](docs/V3_SCORECARD.md)
+- [v3 dataset registry](docs/DATASET_REGISTRY.md)
+
 The central question is:
 
 > Can a JEPA-style model learn a biological cell-state space that connects microglial gene programs to real Alzheimer pathology, and can that space be interrogated to generate testable gene-network hypotheses?

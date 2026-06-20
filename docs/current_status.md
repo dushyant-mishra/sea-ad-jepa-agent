@@ -1,5 +1,7 @@
 # Current Status
 
+> Warning: this file contains historical v1/v2/v2.2 status. For active v3 state, see [docs/ACTIVE_V3_STATUS.md](ACTIVE_V3_STATUS.md).
+
 Last updated: 2026-06-14
 
 ## Executive Summary
