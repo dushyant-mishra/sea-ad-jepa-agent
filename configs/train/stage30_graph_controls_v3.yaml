@@ -1,0 +1,22 @@
+stage: stage30_graph_controls_v3
+random_seed: 7
+official_metric: pooled_donor_level_oof_spearman
+official_module_mean_baseline: 0.3128
+minimum_success_threshold: 0.3228
+stage27c_reference_mean: 0.3267024400121495
+max_target_drop_vs_module_mean: -0.02
+
+graph:
+  smoothing_alpha: 0.5
+  real_edges: results/tables/v2_graph_consensus_edges.csv
+  no_graph_edges: results/tables/ablation_edge_sets/no_graph_identity_edges_v1.csv
+  strict_shuffled_edges: results/tables/ablation_edge_sets/strict_shuffled_graph_edges_v1.csv
+  strict_shuffled_diagnostics: results/tables/ablation_edge_sets/strict_shuffled_graph_edge_diagnostics_v1.csv
+
+head:
+  pca_components: 8
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0]
+
+bootstrap:
+  n_resamples: 500
+

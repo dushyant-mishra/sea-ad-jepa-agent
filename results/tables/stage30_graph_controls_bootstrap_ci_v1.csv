@@ -1,0 +1,21 @@
+condition,target,target_alias,n_bootstrap_resamples,spearman_ci_low,spearman_ci_median,spearman_ci_high,uncertainty_status
+stage27c_module_pca_ridge_reference,6e10/Aβ,percent 6e10 positive area_Grey matter,500,0.12680542466465225,0.32524764100310166,0.49675646321070166,complete
+stage27c_module_pca_ridge_reference,AT8,percent AT8 positive area_Grey matter,500,0.34312369549418287,0.5235017912110476,0.6869246495300898,complete
+stage27c_module_pca_ridge_reference,GFAP,percent GFAP positive area_Grey matter,500,0.10183125205611307,0.303103517645933,0.4780124635702778,complete
+stage27c_module_pca_ridge_reference,Iba1,percent Iba1 positive area_Grey matter,500,-0.20612358330901698,0.0067463137594792255,0.21946199220248874,complete
+stage27c_module_pca_ridge_reference,NeuN,percent NeuN positive area_Grey matter,500,0.2623977942737456,0.454560178553151,0.6176853840344527,complete
+v3_no_graph,6e10/Aβ,percent 6e10 positive area_Grey matter,500,0.12232498814640384,0.33573098378331123,0.5133201533284483,complete
+v3_no_graph,AT8,percent AT8 positive area_Grey matter,500,0.31646020085529014,0.5284763571761436,0.7006598423068677,complete
+v3_no_graph,GFAP,percent GFAP positive area_Grey matter,500,0.09425095766372245,0.2941611725100814,0.47255266451157246,complete
+v3_no_graph,Iba1,percent Iba1 positive area_Grey matter,500,-0.2088136062855599,0.017525530009951232,0.2638092115982217,complete
+v3_no_graph,NeuN,percent NeuN positive area_Grey matter,500,0.27055231724853324,0.4519148208726095,0.6126734343319151,complete
+v3_real_graph,6e10/Aβ,percent 6e10 positive area_Grey matter,500,0.0665261022055579,0.288606854392912,0.4923389557456008,complete
+v3_real_graph,AT8,percent AT8 positive area_Grey matter,500,0.2592050589327761,0.4490467858518943,0.6270637215442213,complete
+v3_real_graph,GFAP,percent GFAP positive area_Grey matter,500,0.03433509600726094,0.23468149118049556,0.430454982117552,complete
+v3_real_graph,Iba1,percent Iba1 positive area_Grey matter,500,-0.04316776811612432,0.17930561600940198,0.3868156635759838,complete
+v3_real_graph,NeuN,percent NeuN positive area_Grey matter,500,0.25000686319407267,0.4221844019873755,0.6156384837972643,complete
+v3_strict_shuffled_graph,6e10/Aβ,percent 6e10 positive area_Grey matter,500,0.03336224564519423,0.23424988545890618,0.4310704777602878,complete
+v3_strict_shuffled_graph,AT8,percent AT8 positive area_Grey matter,500,0.2505981020452133,0.4546256081337001,0.6387965779192281,complete
+v3_strict_shuffled_graph,GFAP,percent GFAP positive area_Grey matter,500,0.021023106154284446,0.22911330043542188,0.4244230865619026,complete
+v3_strict_shuffled_graph,Iba1,percent Iba1 positive area_Grey matter,500,-0.0714452168242082,0.15555306831311688,0.36942847168584647,complete
+v3_strict_shuffled_graph,NeuN,percent NeuN positive area_Grey matter,500,0.21019991622160078,0.39866388796074465,0.5675791561339858,complete

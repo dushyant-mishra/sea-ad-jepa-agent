@@ -69,10 +69,11 @@ Clean external validation is not yet available. Stage 26B/26C are metadata/schem
 ## Stage 27A/27B run status
 
 Stage 27 non-graph v3 has been run for SEA-AD-only conditions. The external-pretrained interface is implemented but remains skipped unless approved local external matrices are available. No graph branch or graph-specific control has been run in Stage 27.
-## Stage 27C diagnosis and rescue status
-
-Stage 27A failed and Stage 27B remains skipped because no approved external matrix is ready. Stage 27C completed with best condition `module_pca_ridge` at pooled mean OOF Spearman `0.3267`; pass=`True`; module reproduction pass=`True`. Graph-control status: non-graph gate passed; graph controls may proceed under locked protocol. No graph control was run in Stage 27C.
 
 ## Stage 27C diagnosis and rescue status
 
 Stage 27A failed and Stage 27B remains skipped because no approved external matrix is ready. Stage 27C completed with best condition `module_pca_ridge` at pooled mean OOF Spearman `0.3267`; pass=`True`; module reproduction pass=`True`. Graph-control status: non-graph gate passed; graph controls may proceed under locked protocol. No graph control was run in Stage 27C.
+
+## Stage 30 graph-control status
+
+Stage 30 graph controls are complete. Real graph mean pooled OOF Spearman: `0.3205`; graph-specific pass: `False`; controlled interpretation: `real_topology_beats_strict_shuffle_but_identity_no_graph_remains_best`. External validation remains not run, and in silico ablation remains unvalidated.

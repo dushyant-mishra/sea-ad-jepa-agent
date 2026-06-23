@@ -1,0 +1,10 @@
+check_id,status,passed,details
+canonical_node_count_2957,pass,True,nodes=2957
+all_conditions_same_node_count,pass,True,"{'v3_real_graph': (2957, 2957), 'v3_no_graph': (2957, 2957), 'v3_strict_shuffled_graph': (2957, 2957)}"
+no_graph_identity_edge_count,pass,True,edges=2957
+real_graph_nonempty,pass,True,edges=114029
+strict_graph_edge_count_matches_real,pass,True,real=114029; strict=114029
+strict_degree_sequence_preserved,pass,True,True
+strict_zero_overlap,pass,True,0.0
+strict_no_self_loops,pass,True,True
+strict_safe_for_training,pass,True,True
