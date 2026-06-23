@@ -94,3 +94,10 @@ Do not use "therapeutic target," "causal regulator," "drug target," or "validate
 ## Stage 27 non-graph status
 
 Best completed SEA-AD-only non-graph condition: `module_only_mlp` (`0.1883`). Stage 27B external-pretrained status: `missing_external_matrix`. These are non-graph training regimes and do not support graph-specific claims.
+## Stage 27C rescue status
+
+Best controlled non-graph rescue: `module_pca_ridge` (`0.3267`). Module baseline reproduction pass: `True`. Overall Stage 27C pass: `True`. Graph-control status: non-graph gate passed; graph controls may proceed under locked protocol. Stage 27C itself makes no graph-specific claim.
+
+## Stage 27C rescue status
+
+Best controlled non-graph rescue: `module_pca_ridge` (`0.3267`). Module baseline reproduction pass: `True`. Overall Stage 27C pass: `True`. Graph-control status: non-graph gate passed; graph controls may proceed under locked protocol. Stage 27C itself makes no graph-specific claim.

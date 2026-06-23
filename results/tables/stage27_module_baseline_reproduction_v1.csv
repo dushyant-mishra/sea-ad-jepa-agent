@@ -1,0 +1,6 @@
+target,target_alias,n_donors,reproduced_target_spearman,official_module_target_spearman,target_difference,reproduced_mean_spearman,official_module_mean_spearman,mean_difference,reproduction_tolerance,reproduction_pass
+6e10/Aβ,percent 6e10 positive area_Grey matter,84,0.3267793864533765,0.3267793864533765,0.0,0.31283993115318415,0.3128,3.99311531841251e-05,0.01,True
+AT8,percent AT8 positive area_Grey matter,84,0.5417434443656981,0.5417434443656981,0.0,0.31283993115318415,0.3128,3.99311531841251e-05,0.01,True
+GFAP,percent GFAP positive area_Grey matter,84,0.2607876885694037,0.2607876885694037,0.0,0.31283993115318415,0.3128,3.99311531841251e-05,0.01,True
+Iba1,percent Iba1 positive area_Grey matter,84,0.029118153285410554,0.0291181532854105,5.204170427930421e-17,0.31283993115318415,0.3128,3.99311531841251e-05,0.01,True
+NeuN,percent NeuN positive area_Grey matter,84,0.405770983092032,0.405770983092032,0.0,0.31283993115318415,0.3128,3.99311531841251e-05,0.01,True

@@ -1,0 +1,9 @@
+run_id,condition,mean_pooled_oof_spearman,min_target_delta_vs_module_mean,n_targets
+stage27c_non_graph_rescue,module_elasticnet,0.30394223589833425,-0.08838716209375322,5
+stage27c_non_graph_rescue,module_pca_ridge,0.3267024400121495,-0.013303634706894774,5
+stage27c_non_graph_rescue,module_plus_residual_elasticnet,0.23844337765829898,-0.25939797452109997,5
+stage27c_non_graph_rescue,module_plus_residual_ridge,0.2664088285916776,-0.13783537511390098,5
+stage27c_non_graph_rescue,module_ridge,0.3128399311531842,0.0,5
+stage27c_non_graph_rescue,stacked_linear_fusion,0.20297661233167963,-0.33182140326009923,5
+stage27c_non_graph_rescue,tiny_late_fusion_mlp,0.18012756909992914,-0.22731598663561808,5
+stage27c_non_graph_rescue,tiny_module_mlp,0.19936119462417812,-0.27876353178950736,5

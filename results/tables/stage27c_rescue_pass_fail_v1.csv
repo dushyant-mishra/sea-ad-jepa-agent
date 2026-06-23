@@ -1,0 +1,9 @@
+condition,status,mean_pooled_oof_spearman,minimum_success_threshold,all_five_targets_present,target_degradation_gate_pass,module_reproduction_pass,diagnosis_integrity_pass,clean_holdout_used,heldout_donor_leakage_detected,stage27c_pass
+module_elasticnet,complete,0.30394223589833425,0.3228,True,False,True,True,False,False,False
+module_pca_ridge,complete,0.3267024400121495,0.3228,True,True,True,True,False,False,True
+module_plus_residual_elasticnet,complete,0.23844337765829898,0.3228,True,False,True,True,False,False,False
+module_plus_residual_ridge,complete,0.2664088285916776,0.3228,True,False,True,True,False,False,False
+module_ridge,complete,0.3128399311531842,0.3228,True,True,True,True,False,False,False
+stacked_linear_fusion,complete,0.20297661233167963,0.3228,True,False,True,True,False,False,False
+tiny_late_fusion_mlp,complete,0.18012756909992914,0.3228,True,False,True,True,False,False,False
+tiny_module_mlp,complete,0.19936119462417812,0.3228,True,False,True,True,False,False,False

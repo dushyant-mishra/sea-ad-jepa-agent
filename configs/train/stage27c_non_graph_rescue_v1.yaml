@@ -1,0 +1,29 @@
+stage: stage27c_non_graph_rescue
+random_seed: 7
+official_module_mean_baseline: 0.3128
+minimum_success_threshold: 0.3228
+module_reproduction_tolerance: 0.01
+max_target_drop_vs_module_mean: -0.02
+
+linear:
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0]
+  elasticnet_alphas: [0.001, 0.01, 0.1, 1.0]
+  elasticnet_l1_ratios: [0.1, 0.5, 0.9]
+  residual_max_features: 250
+  module_pca_components: 8
+  stacked_inner_folds: 3
+
+tiny_neural:
+  hidden_dim: 8
+  dropout: 0.3
+  weight_decay: 0.01
+  learning_rate: 0.001
+  epochs: 300
+  patience: 50
+  inner_validation_fraction: 0.2
+
+external_matrix_search_roots:
+  - data/processed/v3_pretraining
+  - data/processed/v2_alignment
+  - data/external
+
