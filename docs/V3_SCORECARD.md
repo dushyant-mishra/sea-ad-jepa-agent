@@ -102,3 +102,7 @@ Best controlled non-graph rescue: `module_pca_ridge` (`0.3267`). Module baseline
 ## Stage 30 graph-control result
 
 Real graph: `0.3205`; real minus Stage 27C reference: `-0.0062`; real minus no-graph: `-0.0062`; real minus strict-shuffled: `0.0219`. Graph-specific pass: `False`. Interpretation: `real_topology_beats_strict_shuffle_but_identity_no_graph_remains_best`.
+
+## Stage 31 residual graph-control result
+
+Best Stage 31 condition: `weak_diffusion_real_graph_residual_pca_ridge_alpha_0_05`; mean pooled OOF Spearman: `0.3264`; best minus Stage 27C reference: `-0.0003`; best minus no-graph residual: `-0.0003`; best minus strict-shuffled residual: `0.0581`. Full pass: `False`. Interpretation: `graph_like_residual_features_contain_structure_but_topology_specific_utility_not_established`.

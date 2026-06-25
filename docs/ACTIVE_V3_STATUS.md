@@ -77,3 +77,7 @@ Stage 27A failed and Stage 27B remains skipped because no approved external matr
 ## Stage 30 graph-control status
 
 Stage 30 graph controls are complete. Real graph mean pooled OOF Spearman: `0.3205`; graph-specific pass: `False`; controlled interpretation: `real_topology_beats_strict_shuffle_but_identity_no_graph_remains_best`. External validation remains not run, and in silico ablation remains unvalidated.
+
+## Stage 31 residual graph-control status
+
+Stage 31 residual graph controls are complete as an anti-oversmoothing experiment. Best Stage 31 condition: `weak_diffusion_real_graph_residual_pca_ridge_alpha_0_05` (`0.3264`). Full Stage 31 pass: `False`. Controlled interpretation: `graph_like_residual_features_contain_structure_but_topology_specific_utility_not_established`. Stage 27C remains the reference unless a residual graph condition passes all gates. External validation remains not run, and in silico ablation remains unvalidated.
