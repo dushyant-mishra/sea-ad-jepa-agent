@@ -110,3 +110,11 @@ Best Stage 31 condition: `weak_diffusion_real_graph_residual_pca_ridge_alpha_0_0
 ## Stage 32 external pretraining matrix result
 
 Audit complete: `True`; matrix built: `False`; Stage 33 may proceed: `False`. No model was trained and no benchmark/manuscript claims are updated.
+
+## Stage 32B external pretraining acquisition result
+
+Stage 32B pass: `True`; matrix built: `False`; Stage 33A ready: `False`.
+
+## Stage 33A external-pretrained JEPA result
+
+Stage 33A skipped: `True`; full pass: `False`; graph-specific pass: `False`. Interpretation: `Stage 33A skipped because no approved external pretraining matrix was available`.

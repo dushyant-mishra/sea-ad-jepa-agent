@@ -85,3 +85,11 @@ Stage 31 residual graph controls are complete as an anti-oversmoothing experimen
 ## Stage 32 external pretraining matrix status
 
 Stage 32 external pretraining matrix audit/build is complete. Matrix built: `False`; Stage 33 ready: `False`. Stage 27C remains the current best internal no-graph benchmark. Stage 30 mandatory graph controls failed graph-specific pass. Stage 31 weak residual graph nearly matched Stage 27C but did not beat it. External validation remains not run, and in silico ablation remains unvalidated.
+
+## Stage 32B external pretraining acquisition status
+
+Stage 32B acquisition/build audit is complete. Matrix built: `False`; Stage 33A ready: `False`. If no matrix was built, next action is manual approval/download/build of a specific approved pretraining candidate. External validation remains not run and in silico ablation remains unvalidated.
+
+## Stage 33A external-pretrained benchmark status
+
+Stage 33A status: `skipped`. Stage 33A full pass: `False`. Interpretation: `Stage 33A skipped because no approved external pretraining matrix was available`. External validation remains not run, manuscript claims are unchanged, and in silico ablation remains unvalidated.

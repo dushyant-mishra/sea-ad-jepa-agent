@@ -1,0 +1,21 @@
+stage: stage33a_external_pretrained_jepa_v1
+random_seed: 7
+official_metric: pooled_donor_level_oof_spearman
+minimum_success_threshold: 0.3228
+stage27c_reference_mean: 0.3267024400121495
+stage31_best_reference_mean: 0.32637035537106407
+max_target_drop_vs_reference: -0.02
+
+stage32b_pass_fail_path: results/tables/stage32b_pass_fail_v1.csv
+stage32b_manifest_path: results/tables/stage32b_pretraining_matrix_manifest_v1.csv
+stage32b_matrix_path: data/external_pretraining/stage32b/stage32b_external_pretraining_matrix.h5ad
+
+required_targets:
+  - AT8
+  - 6e10/A_beta
+  - GFAP
+  - Iba1
+  - NeuN
+
+default_mode: frozen_external_pretrained_encoder_plus_fold_local_ridge
+run_training_only_if_stage32b_ready: true
