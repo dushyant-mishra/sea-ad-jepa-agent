@@ -95,4 +95,4 @@ Stage 32B acquisition/build audit is complete. Matrix built: `False`; Stage 33A 
 Stage 33A status: `skipped`. Stage 33A full pass: `False`. Interpretation: `Stage 33A skipped because no approved external pretraining matrix was available`. External validation remains not run, manuscript claims are unchanged, and in silico ablation remains unvalidated.
 
 ## Stage 32C bulk external acquisition status
-Stage 32C bulk approved external acquisition/schema audit is complete. Human matrix built: `False`; Stage 33 ready: `False`. No model was trained and external validation remains not run.
+Stage 32C bulk approved external acquisition/schema audit is complete. Human matrix built: `True`; Stage 33 ready: `True`. No model was trained and external validation remains not run.

@@ -47,6 +47,7 @@ HUMAN_METADATA_NAME = "stage32c_human_external_pretraining_metadata.csv"
 HUMAN_GENE_MAP_NAME = "stage32c_human_external_pretraining_gene_map.csv"
 HUMAN_MANIFEST_NAME = "stage32c_human_external_pretraining_manifest.json"
 HTTP_TIMEOUT_SECONDS = 30
+HUMAN_TARGET_DATASET_ID = "b165f033-9dec-468a-9248-802fc6902a74"
 
 
 def load_cfg(path: Path) -> dict[str, Any]:
@@ -444,6 +445,240 @@ def acquire_metadata_first(row: pd.Series, output_dir: Path) -> dict[str, Any]:
     }
 
 
+def cellxgene_obs_columns() -> list[str]:
+    return [
+        "soma_joinid",
+        "dataset_id",
+        "assay",
+        "assay_ontology_term_id",
+        "cell_type",
+        "cell_type_ontology_term_id",
+        "tissue",
+        "tissue_ontology_term_id",
+        "disease",
+        "disease_ontology_term_id",
+        "donor_id",
+        "self_reported_ethnicity",
+        "sex",
+        "development_stage",
+    ]
+
+
+def sample_obs_for_expression(obs: pd.DataFrame, max_cells: int, seed: int) -> tuple[pd.DataFrame, bool]:
+    if max_cells <= 0 or len(obs) <= max_cells:
+        return obs.copy(), False
+    rng = np.random.default_rng(seed)
+    obs = obs.copy()
+    strata_cols = [col for col in ["donor_id", "cell_type", "tissue"] if col in obs.columns]
+    if not strata_cols:
+        take = rng.choice(obs.index.to_numpy(), size=max_cells, replace=False)
+        return obs.loc[take].copy(), True
+    obs["_stage32c_stratum"] = obs[strata_cols].astype(str).agg("|".join, axis=1)
+    counts = obs["_stage32c_stratum"].value_counts()
+    allocations = np.maximum(1, np.floor(counts / counts.sum() * max_cells).astype(int))
+    while allocations.sum() > max_cells:
+        idx = allocations.idxmax()
+        allocations.loc[idx] -= 1
+    while allocations.sum() < max_cells:
+        idx = counts.idxmax()
+        allocations.loc[idx] += 1
+    sampled_parts = []
+    for stratum, n in allocations.items():
+        part = obs[obs["_stage32c_stratum"] == stratum]
+        n = min(int(n), len(part))
+        if n:
+            sampled_parts.append(part.sample(n=n, random_state=int(rng.integers(0, 2**31 - 1))))
+    sampled = pd.concat(sampled_parts, ignore_index=False)
+    if len(sampled) > max_cells:
+        sampled = sampled.sample(n=max_cells, random_state=seed)
+    return sampled.drop(columns=["_stage32c_stratum"], errors="ignore").copy(), True
+
+
+def build_census_expression_matrix(
+    dataset_row: pd.Series,
+    project_genes: list[str],
+    cfg: dict[str, Any],
+    output_dir: Path,
+) -> dict[str, Any]:
+    dataset_id = str(dataset_row["dataset_id"])
+    if dataset_id != HUMAN_TARGET_DATASET_ID:
+        return {
+            "matrix_built": False,
+            "failure_reason": "expression_build_guard_only_allows_top_priority_human_dataset",
+            "matrix_path": "",
+            "metadata_path": "",
+            "gene_map_path": "",
+            "manifest_path": "",
+            "n_obs": 0,
+            "n_vars": 0,
+            "n_genes_aligned": 0,
+            "gene_overlap_fraction": 0.0,
+            "normalization_status": "not_loaded",
+            "metadata_sufficient": False,
+            "downsampled": False,
+        }
+    if importlib.util.find_spec("cellxgene_census") is None:
+        return {
+            "matrix_built": False,
+            "failure_reason": "cellxgene_census_not_installed",
+            "matrix_path": "",
+            "metadata_path": "",
+            "gene_map_path": "",
+            "manifest_path": "",
+            "n_obs": 0,
+            "n_vars": 0,
+            "n_genes_aligned": 0,
+            "gene_overlap_fraction": 0.0,
+            "normalization_status": "not_loaded",
+            "metadata_sufficient": False,
+            "downsampled": False,
+        }
+    import cellxgene_census
+
+    max_cells = int(cfg.get("expression_build", {}).get("max_cells", 100000))
+    project_upper = {gene.upper(): gene for gene in project_genes}
+    output_dir.mkdir(parents=True, exist_ok=True)
+    with cellxgene_census.open_soma(census_version="latest") as census:
+        human = census["census_data"]["homo_sapiens"]
+        obs_cols = cellxgene_obs_columns()
+        obs_reader = human.obs.read(
+            value_filter=f"dataset_id == '{dataset_id}'",
+            column_names=obs_cols,
+        )
+        obs = obs_reader.concat().to_pandas()
+        if obs.empty:
+            raise RuntimeError(f"No Census obs rows found for approved dataset_id={dataset_id}")
+        sampled_obs, downsampled = sample_obs_for_expression(
+            obs,
+            max_cells=max_cells,
+            seed=int(cfg.get("random_seed", 7)),
+        )
+        var = human.ms["RNA"].var.read(
+            column_names=["soma_joinid", "feature_id", "feature_name"]
+        ).concat().to_pandas()
+        var["project_gene"] = var["feature_name"].astype(str).str.upper().map(project_upper)
+        matched_var = var[var["project_gene"].notna()].drop_duplicates("project_gene")
+        gene_overlap = len(matched_var) / len(project_genes)
+        if gene_overlap < float(cfg["main_matrix_min_gene_overlap_fraction"]):
+            raise RuntimeError(
+                f"Gene overlap {gene_overlap:.4f} below threshold {cfg['main_matrix_min_gene_overlap_fraction']}"
+            )
+        obs_coords = sampled_obs["soma_joinid"].astype(int).to_numpy()
+        var_coords = matched_var["soma_joinid"].astype(int).to_numpy()
+        try:
+            adata = cellxgene_census.get_anndata(
+                census=census,
+                organism="Homo sapiens",
+                measurement_name="RNA",
+                X_name="raw",
+                obs_coords=obs_coords,
+                var_coords=var_coords,
+                obs_column_names=[col for col in obs_cols if col in sampled_obs.columns],
+                var_column_names=["feature_id", "feature_name"],
+            )
+            x_name = "raw"
+        except Exception:
+            adata = cellxgene_census.get_anndata(
+                census=census,
+                organism="Homo sapiens",
+                measurement_name="RNA",
+                obs_coords=obs_coords,
+                var_coords=var_coords,
+                obs_column_names=[col for col in obs_cols if col in sampled_obs.columns],
+                var_column_names=["feature_id", "feature_name"],
+            )
+            x_name = "default"
+    source_to_project = matched_var.set_index("feature_id")["project_gene"].to_dict()
+    adata.var["project_gene"] = adata.var["feature_id"].astype(str).map(source_to_project)
+    adata = adata[:, adata.var["project_gene"].notna()].copy()
+    adata.var_names = adata.var["project_gene"].astype(str).tolist()
+    adata.obs["stage32c_source_dataset_id"] = dataset_id
+    adata.obs["stage32c_source_dataset_name"] = str(dataset_row["dataset_name"])
+    adata.obs["stage32c_expression_source"] = "cellxgene_census"
+    adata.obs["species"] = "Homo sapiens"
+    adata.uns["stage32c"] = {
+        "dataset_id": dataset_id,
+        "dataset_name": str(dataset_row["dataset_name"]),
+        "census_version": "latest",
+        "x_name": x_name,
+        "max_cells": max_cells,
+        "downsampled": bool(downsampled),
+        "gene_matching": "intersect_only_case_insensitive_feature_name_to_project_symbol",
+        "no_imputation": True,
+    }
+    matrix_path = output_dir / HUMAN_MATRIX_NAME
+    metadata_path = output_dir / HUMAN_METADATA_NAME
+    gene_map_path = output_dir / HUMAN_GENE_MAP_NAME
+    manifest_path = output_dir / HUMAN_MANIFEST_NAME
+    adata.write_h5ad(matrix_path)
+    metadata = adata.obs.reset_index(names="source_obs_id")
+    metadata.to_csv(metadata_path, index=False)
+    gene_map = pd.DataFrame(
+        {
+            "dataset_id": dataset_id,
+            "project_gene": matched_var["project_gene"],
+            "source_feature_id": matched_var["feature_id"],
+            "source_feature_name": matched_var["feature_name"],
+            "mapping_status": "case_insensitive_feature_name_match",
+        }
+    )
+    gene_map.to_csv(gene_map_path, index=False)
+    sample = adata.X[: min(500, adata.n_obs), : min(500, adata.n_vars)]
+    arr = sample.data if sparse.issparse(sample) else np.asarray(sample).ravel()
+    arr = arr[np.isfinite(arr)]
+    if len(arr) == 0:
+        norm_status = "unknown_empty_sample"
+    elif np.nanmin(arr) < 0:
+        norm_status = "scaled_or_centered"
+    elif np.allclose(arr, np.round(arr)) and np.nanmax(arr) > 50:
+        norm_status = "raw_count_like"
+    elif np.nanmax(arr) <= 30:
+        norm_status = "log_normalized_like"
+    else:
+        norm_status = "unknown_nonnegative"
+    metadata_sufficient = any(col in adata.obs.columns for col in ["donor_id", "cell_type"])
+    manifest = {
+        "stage": cfg["stage"],
+        "matrix_built": True,
+        "matrix_path": str(matrix_path.relative_to(ROOT)),
+        "metadata_path": str(metadata_path.relative_to(ROOT)),
+        "gene_map_path": str(gene_map_path.relative_to(ROOT)),
+        "dataset_id": dataset_id,
+        "dataset_name": str(dataset_row["dataset_name"]),
+        "source": "cellxgene_census",
+        "n_obs": int(adata.n_obs),
+        "n_vars": int(adata.n_vars),
+        "n_project_genes": int(len(project_genes)),
+        "n_genes_aligned": int(len(matched_var)),
+        "gene_overlap_fraction": float(gene_overlap),
+        "normalization_status": norm_status,
+        "x_name": x_name,
+        "max_cells": max_cells,
+        "downsampled": bool(downsampled),
+        "metadata_sufficient": bool(metadata_sufficient),
+        "clean_validation_forfeited": True,
+        "no_sea_ad_used": True,
+        "no_mouse_included": True,
+        "no_imputation": True,
+    }
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    return {
+        "matrix_built": True,
+        "failure_reason": "",
+        "matrix_path": str(matrix_path.relative_to(ROOT)),
+        "metadata_path": str(metadata_path.relative_to(ROOT)),
+        "gene_map_path": str(gene_map_path.relative_to(ROOT)),
+        "manifest_path": str(manifest_path.relative_to(ROOT)),
+        "n_obs": int(adata.n_obs),
+        "n_vars": int(adata.n_vars),
+        "n_genes_aligned": int(len(matched_var)),
+        "gene_overlap_fraction": float(gene_overlap),
+        "normalization_status": norm_status,
+        "metadata_sufficient": bool(metadata_sufficient),
+        "downsampled": bool(downsampled),
+    }
+
+
 def write_report(download_plan: pd.DataFrame, manifest: pd.DataFrame, schema: pd.DataFrame, gene: pd.DataFrame, norm: pd.DataFrame, species: pd.DataFrame, recommend: pd.DataFrame, holdout: pd.DataFrame, pf: pd.DataFrame) -> None:
     row = pf.iloc[0]
     exact_next = (
@@ -584,6 +819,13 @@ def main() -> None:
     registry = pd.read_csv(resolve(cfg["registry_path"]))
     role = approved_role_audit(registry)
     approved = selected_approved(role, cfg, args.target_dataset_id, args.max_datasets)
+    if args.download_expression:
+        target_ids = set(approved["dataset_id"].astype(str))
+        if target_ids != {HUMAN_TARGET_DATASET_ID}:
+            raise ValueError(
+                "--download-expression is guarded for exactly "
+                f"{HUMAN_TARGET_DATASET_ID}; selected={sorted(target_ids)}"
+            )
     inventory = local_inventory(cfg, registry, role)
 
     download_rows = []
@@ -616,6 +858,21 @@ def main() -> None:
             "remote_n_vars": 0,
             "remote_schema_note": "",
         }
+        expression_result = {
+            "matrix_built": False,
+            "failure_reason": "",
+            "matrix_path": "",
+            "metadata_path": "",
+            "gene_map_path": "",
+            "manifest_path": "",
+            "n_obs": 0,
+            "n_vars": 0,
+            "n_genes_aligned": 0,
+            "gene_overlap_fraction": 0.0,
+            "normalization_status": "not_loaded",
+            "metadata_sufficient": False,
+            "downsampled": False,
+        }
         if args.allow_download:
             if args.metadata_first and not args.download_expression:
                 metadata_result = acquire_metadata_first(row, output_dir)
@@ -625,11 +882,34 @@ def main() -> None:
                     else "metadata_first_failed"
                 )
             elif args.download_expression:
-                acquisition_status = "expression_download_guarded_not_implemented"
+                try:
+                    expression_result = build_census_expression_matrix(
+                        row,
+                        project_genes,
+                        cfg,
+                        output_dir,
+                    )
+                    acquisition_status = (
+                        "expression_matrix_built"
+                        if expression_result["matrix_built"]
+                        else "expression_matrix_build_failed"
+                    )
+                except Exception as exc:
+                    expression_result["failure_reason"] = f"{type(exc).__name__}:{exc}"
+                    acquisition_status = "expression_matrix_build_failed"
                 metadata_result["metadata_acquisition_attempted"] = True
-                metadata_result["metadata_error"] = (
-                    "expression materialization intentionally not implemented in Stage 32C v1; "
-                    "provide approved source-specific command/version/size first"
+                metadata_result["metadata_acquisition_succeeded"] = bool(
+                    expression_result["matrix_built"]
+                )
+                metadata_result["metadata_source"] = "cellxgene_census_expression_subset"
+                metadata_result["metadata_local_path"] = expression_result.get("manifest_path", "")
+                metadata_result["metadata_error"] = expression_result.get("failure_reason", "")
+                metadata_result["remote_n_obs"] = int(expression_result.get("n_obs", 0) or 0)
+                metadata_result["remote_n_vars"] = int(expression_result.get("n_vars", 0) or 0)
+                metadata_result["remote_schema_note"] = (
+                    "project_gene_subset_expression_matrix_built_with_cell_cap"
+                    if expression_result["matrix_built"]
+                    else "expression_build_failed_no_matrix_ready"
                 )
             else:
                 acquisition_status = "allow_download_set_but_no_metadata_or_expression_mode"
@@ -642,9 +922,13 @@ def main() -> None:
             "inspect/build from existing local approved matrix"
             if has_local
             else (
+                "Stage 33 may proceed after readiness/status review"
+                if expression_result["matrix_built"]
+                else (
                 "metadata acquired; review schema/source before any expression download"
                 if metadata_result["metadata_acquisition_succeeded"]
                 else "run with --allow-download --metadata-first first; use --download-expression only after source/version/size are approved"
+                )
             )
         )
         download_rows.append(
@@ -659,12 +943,106 @@ def main() -> None:
                 "metadata_first": bool(args.metadata_first),
                 "download_expression": bool(args.download_expression),
                 "acquisition_status": acquisition_status,
-                "local_path": local_path,
+                "local_path": expression_result["matrix_path"] or local_path,
                 **metadata_result,
                 "exact_next_action": next_action,
             }
         )
-        if has_local and inv["matrix_loaded"].iloc[0]:
+        if expression_result["matrix_built"]:
+            schema_rows.append(
+                {
+                    **row.to_dict(),
+                    "dataset_id": row["dataset_id"],
+                    "local_path": expression_result["matrix_path"],
+                    "schema_loaded": True,
+                    "n_obs": int(expression_result["n_obs"]),
+                    "n_vars": int(expression_result["n_vars"]),
+                    "obsm_keys": "",
+                    "uns_keys": "stage32c",
+                    "gene_identifier_type": "project_hgnc_symbol",
+                    "example_var_names": "project_gene_subset",
+                    "raw_available": False,
+                    "normalization_status": expression_result["normalization_status"],
+                    "schema_warning": (
+                        "downsampled_to_configured_max_cells"
+                        if expression_result["downsampled"]
+                        else "full_selected_dataset_cells_retained"
+                    ),
+                }
+            )
+            for column in [
+                "source_obs_id",
+                "dataset_id",
+                "assay",
+                "cell_type",
+                "tissue",
+                "disease",
+                "donor_id",
+                "species",
+                "stage32c_source_dataset_id",
+            ]:
+                obs_rows.append(
+                    {
+                        "dataset_id": row["dataset_id"],
+                        "local_path": expression_result["matrix_path"],
+                        "obs_column": column,
+                    }
+                )
+            for column in ["feature_id", "feature_name", "project_gene"]:
+                var_rows.append(
+                    {
+                        "dataset_id": row["dataset_id"],
+                        "local_path": expression_result["matrix_path"],
+                        "var_column": column,
+                    }
+                )
+            layer_rows.append(
+                {
+                    "dataset_id": row["dataset_id"],
+                    "local_path": expression_result["matrix_path"],
+                    "layer_name": "",
+                }
+            )
+            for field, candidates in cfg["metadata_column_candidates"].items():
+                columns = {
+                    "donor": "donor_id",
+                    "cell_type": "cell_type",
+                    "disease": "disease",
+                    "tissue": "tissue",
+                    "species": "species",
+                }
+                col = columns.get(field, "")
+                field_rows.append(
+                    {
+                        "dataset_id": row["dataset_id"],
+                        "metadata_field": field,
+                        "candidate_columns": col,
+                        "has_candidate": bool(col),
+                    }
+                )
+            norm_rows.append(
+                {
+                    "dataset_id": row["dataset_id"],
+                    "normalization_status": expression_result["normalization_status"],
+                    "raw_available": False,
+                    "layer_names": "",
+                    "normalization_warning": "source_expression_preserved_from_cellxgene_census_no_extra_normalization",
+                }
+            )
+            overlap = {
+                "n_genes_raw": int(expression_result["n_vars"]),
+                "n_genes_aligned": int(expression_result["n_genes_aligned"]),
+                "gene_overlap_fraction": float(expression_result["gene_overlap_fraction"]),
+                "gene_overlap_status": (
+                    "good"
+                    if expression_result["gene_overlap_fraction"] >= 0.90
+                    else "usable_with_warning"
+                    if expression_result["gene_overlap_fraction"] >= 0.85
+                    else "exclude_below_0_85"
+                ),
+                "missing_gene_count": int(len(project_genes) - expression_result["n_genes_aligned"]),
+            }
+        elif has_local and inv["matrix_loaded"].iloc[0]:
             path = resolve(local_path)
             schema, obs, var, layers, fields, norm = inspect_schema(path, row["dataset_id"], cfg)
             schema_rows.append({**row.to_dict(), **schema})
@@ -725,8 +1103,14 @@ def main() -> None:
             }
         species = "mouse" if str(row["dataset_id"]).startswith("mouse") or "mouse" in str(row["dataset_name"]).lower() else "human_or_unknown"
         ortholog = species == "mouse"
-        sufficient = has_local and overlap["gene_overlap_fraction"] >= float(cfg["main_matrix_min_gene_overlap_fraction"]) and not ortholog
-        gene_rows.append({"dataset_id": row["dataset_id"], "dataset_name": row["dataset_name"], "local_path": local_path, **overlap, "included_in_candidate_matrix": False})
+        matrix_local_path = expression_result["matrix_path"] or local_path
+        sufficient = (
+            bool(expression_result["matrix_built"] or has_local)
+            and overlap["gene_overlap_fraction"] >= float(cfg["main_matrix_min_gene_overlap_fraction"])
+            and not ortholog
+            and bool(expression_result.get("metadata_sufficient", True))
+        )
+        gene_rows.append({"dataset_id": row["dataset_id"], "dataset_name": row["dataset_name"], "local_path": matrix_local_path, **overlap, "included_in_candidate_matrix": bool(expression_result["matrix_built"])})
         species_rows.append({"dataset_id": row["dataset_id"], "dataset_name": row["dataset_name"], "species": species, "ortholog_mapping_required": ortholog, "ortholog_mapping_available": False, "main_human_matrix_eligible": bool(sufficient)})
         recommendation = "human_ready_candidate" if sufficient else ("ortholog_mapping_required" if ortholog else "acquire_or_build_matrix_before_stage33")
         recommend_rows.append({"dataset_id": row["dataset_id"], "dataset_name": row["dataset_name"], "recommendation_class": recommendation, "recommended_next_use": "Stage 33 candidate" if sufficient else "not ready for Stage 33", "reason": "no approved loaded matrix or insufficient gene/schema audit" if not sufficient else "approved human matrix appears usable"})
@@ -736,13 +1120,13 @@ def main() -> None:
                 "dataset_name": row["dataset_name"],
                 "source": row["source"],
                 "acquisition_status": acquisition_status,
-                "local_path": local_path,
+                "local_path": matrix_local_path,
                 "metadata_source": metadata_result.get("metadata_source", ""),
                 "metadata_local_path": metadata_result.get("metadata_local_path", ""),
                 "metadata_error": metadata_result.get("metadata_error", ""),
-                "file_size_bytes": int(inv["file_size_bytes"].iloc[0]) if not inv.empty else 0,
-                "included_in_candidate_matrix": False,
-                "exclusion_reason": "no expression matrix built in metadata-first Stage 32C run",
+                "file_size_bytes": int(resolve(matrix_local_path).stat().st_size) if matrix_local_path and resolve(matrix_local_path).exists() else int(inv["file_size_bytes"].iloc[0]) if not inv.empty else 0,
+                "included_in_candidate_matrix": bool(expression_result["matrix_built"]),
+                "exclusion_reason": "none" if expression_result["matrix_built"] else "no expression matrix built in metadata-first Stage 32C run",
             }
         )
 
@@ -764,8 +1148,25 @@ def main() -> None:
     species = pd.DataFrame(species_rows)
     recommend = pd.DataFrame(recommend_rows)
     holdout = pd.DataFrame(holdout_rows)
-    human_matrix_built = False
+    manifest_tmp = pd.DataFrame(manifest_rows)
+    human_matrix_built = bool(manifest_tmp["included_in_candidate_matrix"].any()) if not manifest_tmp.empty else False
     matrix_path = ""
+    if human_matrix_built:
+        matrix_path = str(manifest_tmp.loc[manifest_tmp["included_in_candidate_matrix"], "local_path"].iloc[0])
+    gene_tmp = pd.DataFrame(gene_rows)
+    protected_included = bool(pd.DataFrame(holdout_rows)["included"].any()) if holdout_rows else False
+    max_included_overlap = (
+        float(gene_tmp.loc[gene_tmp["included_in_candidate_matrix"], "gene_overlap_fraction"].max())
+        if not gene_tmp.empty and bool(gene_tmp["included_in_candidate_matrix"].any())
+        else 0.0
+    )
+    ready_for_stage33 = bool(
+        human_matrix_built
+        and matrix_path
+        and resolve(matrix_path).exists()
+        and max_included_overlap >= float(cfg["main_matrix_min_gene_overlap_fraction"])
+        and not protected_included
+    )
 
     pass_fail = pd.DataFrame(
         [
@@ -783,7 +1184,7 @@ def main() -> None:
                 "stage32c_any_download_attempted": download_attempted,
                 "stage32c_any_download_succeeded": download_succeeded,
                 "stage32c_human_matrix_built": human_matrix_built,
-                "stage32c_ready_for_stage33": False,
+                "stage32c_ready_for_stage33": ready_for_stage33,
                 "stage32c_clean_holdouts_protected": True,
                 "stage32c_forbidden_dataset_included": False,
                 "n_approved_candidates": int(len(approved)),

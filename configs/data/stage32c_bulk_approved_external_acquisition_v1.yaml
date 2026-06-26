@@ -4,6 +4,17 @@ allow_download: false
 metadata_first: false
 download_expression: false
 build_human_matrix_if_safe: false
+expression_build:
+  enabled: true
+  max_cells: 100000
+  stratify_columns:
+    - donor_id
+    - cell_type
+    - tissue
+  x_name_preference:
+    - raw
+    - normalized
+    - data
 main_matrix_min_gene_overlap_fraction: 0.85
 good_gene_overlap_fraction: 0.90
 usable_gene_overlap_fraction: 0.85

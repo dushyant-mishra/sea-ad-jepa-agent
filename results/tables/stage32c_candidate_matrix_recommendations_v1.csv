@@ -1,7 +1,2 @@
 dataset_id,dataset_name,recommendation_class,recommended_next_use,reason
-b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,acquire_or_build_matrix_before_stage33,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,acquire_or_build_matrix_before_stage33,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,acquire_or_build_matrix_before_stage33,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-GSE98969,Mouse DAM/microglia auxiliary candidate,ortholog_mapping_required,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,ortholog_mapping_required,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,ortholog_mapping_required,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,human_ready_candidate,Stage 33 candidate,approved human matrix appears usable

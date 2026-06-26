@@ -2,7 +2,7 @@
 
 ## 1. Executive summary
 
-Approved candidates: `6`. Download attempted: `True`. Download succeeded: `True`. Human matrix built: `False`. Ready for Stage 33: `False`.
+Approved candidates: `1`. Download attempted: `True`. Download succeeded: `True`. Human matrix built: `True`. Ready for Stage 33: `True`.
 
 ## 2. Why Stage 32C was run
 
@@ -12,78 +12,49 @@ Stage 32C performs a bulk acquisition/schema audit for all registry-approved sel
 
 ```csv
 dataset_id,dataset_name,source,collection_name,priority_rank,approved_for_pretraining,allow_download,metadata_first,download_expression,acquisition_status,local_path,metadata_acquisition_attempted,metadata_acquisition_succeeded,metadata_source,metadata_local_path,metadata_error,cellxgene_census_available,remote_payload_keys,remote_n_obs,remote_n_vars,remote_schema_note,exact_next_action
-b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,CELLxGENE,Human Brain Cell Atlas v1.0,0,True,True,True,False,metadata_first_succeeded,,True,True,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/b165f033-9dec-468a-9248-802fc6902a74_cellxgene_census_metadata.json,,True,soma_joinid;citation;collection_id;collection_name;collection_doi;collection_doi_label;dataset_id;dataset_version_id;dataset_title;dataset_h5ad_path;dataset_total_cell_count,888263,0,CELLxGENE Census dataset metadata only; no expression matrix materialized,metadata acquired; review schema/source before any expression download
-5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,CELLxGENE,Population-scale cross-disorder atlas of the human prefrontal cortex at single-cell resolution,1,True,True,True,False,metadata_first_succeeded,,True,True,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/5c97eeeb-7e52-44b3-b010-b832b1f5424c_cellxgene_census_metadata.json,,True,soma_joinid;citation;collection_id;collection_name;collection_doi;collection_doi_label;dataset_id;dataset_version_id;dataset_title;dataset_h5ad_path;dataset_total_cell_count,1486324,0,CELLxGENE Census dataset metadata only; no expression matrix materialized,metadata acquired; review schema/source before any expression download
-4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,CELLxGENE,Population-scale cross-disorder atlas of the human prefrontal cortex at single-cell resolution,2,True,True,True,False,metadata_first_succeeded,,True,True,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/4442d412-91cb-4261-acca-8adf5fa04c11_cellxgene_census_metadata.json,,True,soma_joinid;citation;collection_id;collection_name;collection_doi;collection_doi_label;dataset_id;dataset_version_id;dataset_title;dataset_h5ad_path;dataset_total_cell_count,1332155,0,CELLxGENE Census dataset metadata only; no expression matrix materialized,metadata acquired; review schema/source before any expression download
-GSE98969,Mouse DAM/microglia auxiliary candidate,GEO,,3,True,True,True,False,metadata_first_succeeded,,True,True,https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE98969&targ=self&form=text&view=brief,data/external_pretraining/stage32c/GSE98969_geo_metadata.txt,,False,geo_text_metadata,97,0,GEO metadata/sample/file manifest only; no raw expression downloaded; platforms=GPL19057; supplementary_files=ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE98nnn/GSE98969/suppl/GSE98969_RAW.tar;ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE98nnn/GSE98969/suppl/GSE98969_experimental_design_f.txt.gz; title=Single cell RNA-seq identifies a unique microglia type associated with Alzheimerâs disease [RNA],metadata acquired; review schema/source before any expression download
-mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,CELLxGENE,A taxonomy of transcriptomic cell types across the isocortex and hippocampal formation,4,True,True,True,False,metadata_first_failed,,True,False,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/mouse_isocortex_hippocampus_cellxgene_census_dataset_matches.csv,cellxgene_census_available_but_exact_dataset_id_not_found; candidate_match_rows=20; review metadata match CSV or provide approved H5AD URL,True,soma_joinid;citation;collection_id;collection_name;collection_doi;collection_doi_label;dataset_id;dataset_version_id;dataset_title;dataset_h5ad_path;dataset_total_cell_count,0,0,CELLxGENE Census queried without expression download,run with --allow-download --metadata-first first; use --download-expression only after source/version/size are approved
-mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,CELLxGENE,Molecular and spatial signatures of mouse brain aging at single-cell resolution,5,True,True,True,False,metadata_first_failed,,True,False,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/mouse_brain_aging_atlas_cellxgene_census_dataset_matches.csv,cellxgene_census_available_but_exact_dataset_id_not_found; candidate_match_rows=20; review metadata match CSV or provide approved H5AD URL,True,soma_joinid;citation;collection_id;collection_name;collection_doi;collection_doi_label;dataset_id;dataset_version_id;dataset_title;dataset_h5ad_path;dataset_total_cell_count,0,0,CELLxGENE Census queried without expression download,run with --allow-download --metadata-first first; use --download-expression only after source/version/size are approved
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,CELLxGENE,Human Brain Cell Atlas v1.0,0,True,True,False,True,expression_matrix_built,data/external_pretraining/stage32c/stage32c_human_external_pretraining_matrix.h5ad,True,True,cellxgene_census_expression_subset,data/external_pretraining/stage32c/stage32c_human_external_pretraining_manifest.json,,True,,100000,2863,project_gene_subset_expression_matrix_built_with_cell_cap,Stage 33 may proceed after readiness/status review
 ```
 
 ## 4. Download/acquisition results
 
 ```csv
 dataset_id,dataset_name,source,acquisition_status,local_path,metadata_source,metadata_local_path,metadata_error,file_size_bytes,included_in_candidate_matrix,exclusion_reason
-b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,CELLxGENE,metadata_first_succeeded,,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/b165f033-9dec-468a-9248-802fc6902a74_cellxgene_census_metadata.json,,0,False,no expression matrix built in metadata-first Stage 32C run
-5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,CELLxGENE,metadata_first_succeeded,,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/5c97eeeb-7e52-44b3-b010-b832b1f5424c_cellxgene_census_metadata.json,,0,False,no expression matrix built in metadata-first Stage 32C run
-4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,CELLxGENE,metadata_first_succeeded,,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/4442d412-91cb-4261-acca-8adf5fa04c11_cellxgene_census_metadata.json,,0,False,no expression matrix built in metadata-first Stage 32C run
-GSE98969,Mouse DAM/microglia auxiliary candidate,GEO,metadata_first_succeeded,,https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE98969&targ=self&form=text&view=brief,data/external_pretraining/stage32c/GSE98969_geo_metadata.txt,,0,False,no expression matrix built in metadata-first Stage 32C run
-mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,CELLxGENE,metadata_first_failed,,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/mouse_isocortex_hippocampus_cellxgene_census_dataset_matches.csv,cellxgene_census_available_but_exact_dataset_id_not_found; candidate_match_rows=20; review metadata match CSV or provide approved H5AD URL,0,False,no expression matrix built in metadata-first Stage 32C run
-mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,CELLxGENE,metadata_first_failed,,cellxgene_census:census_info/datasets,data/external_pretraining/stage32c/mouse_brain_aging_atlas_cellxgene_census_dataset_matches.csv,cellxgene_census_available_but_exact_dataset_id_not_found; candidate_match_rows=20; review metadata match CSV or provide approved H5AD URL,0,False,no expression matrix built in metadata-first Stage 32C run
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,CELLxGENE,expression_matrix_built,data/external_pretraining/stage32c/stage32c_human_external_pretraining_matrix.h5ad,cellxgene_census_expression_subset,data/external_pretraining/stage32c/stage32c_human_external_pretraining_manifest.json,,707295000,True,none
 ```
 
 ## 5. Schema and column-name inventory
 
 ```csv
 dataset_id,dataset_name,source,collection_name,registry_role,allowed_for_pretraining,reserved_for_clean_validation,allowed_for_model_selection,already_used,normalized_role,approved_for_pretraining,clean_holdout_protected,stress_test_only,plausibility_only,internal_dataset,model_selection_excluded,role_exclusion_reason,priority_rank,local_path,schema_loaded,n_obs,n_vars,obsm_keys,uns_keys,gene_identifier_type,example_var_names,raw_available,normalization_status,schema_warning
-b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,CELLxGENE,Human Brain Cell Atlas v1.0,external_training_pretraining_pool,True,False,False,False,approved_self_supervised_pretraining,True,False,False,False,False,False,none,0,,True,888263,0,,,unknown,,False,not_loaded,CELLxGENE Census dataset metadata only; no expression matrix materialized
-5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,CELLxGENE,Population-scale cross-disorder atlas of the human prefrontal cortex at single-cell resolution,external_training_pretraining_pool,True,False,False,False,approved_self_supervised_pretraining,True,False,False,False,False,False,none,1,,True,1486324,0,,,unknown,,False,not_loaded,CELLxGENE Census dataset metadata only; no expression matrix materialized
-4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,CELLxGENE,Population-scale cross-disorder atlas of the human prefrontal cortex at single-cell resolution,external_training_pretraining_pool,True,False,False,False,approved_self_supervised_pretraining,True,False,False,False,False,False,none,2,,True,1332155,0,,,unknown,,False,not_loaded,CELLxGENE Census dataset metadata only; no expression matrix materialized
-GSE98969,Mouse DAM/microglia auxiliary candidate,GEO,,external_training_pretraining_pool,True,False,False,False,approved_self_supervised_pretraining,True,False,False,False,False,False,none,3,,True,97,0,,,unknown,,False,not_loaded,GEO metadata/sample/file manifest only; no raw expression downloaded; platforms=GPL19057; supplementary_files=ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE98nnn/GSE98969/suppl/GSE98969_RAW.tar;ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE98nnn/GSE98969/suppl/GSE98969_experimental_design_f.txt.gz; title=Single cell RNA-seq identifies a unique microglia type associated with Alzheimerâs disease [RNA]
-mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,CELLxGENE,A taxonomy of transcriptomic cell types across the isocortex and hippocampal formation,mouse_auxiliary_only,True,False,False,False,approved_self_supervised_pretraining,True,False,False,False,False,False,none,4,,False,0,0,,,unknown,,False,not_loaded,cellxgene_census_available_but_exact_dataset_id_not_found; candidate_match_rows=20; review metadata match CSV or provide approved H5AD URL
-mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,CELLxGENE,Molecular and spatial signatures of mouse brain aging at single-cell resolution,mouse_auxiliary_only,True,False,False,False,approved_self_supervised_pretraining,True,False,False,False,False,False,none,5,,False,0,0,,,unknown,,False,not_loaded,cellxgene_census_available_but_exact_dataset_id_not_found; candidate_match_rows=20; review metadata match CSV or provide approved H5AD URL
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,CELLxGENE,Human Brain Cell Atlas v1.0,external_training_pretraining_pool,True,False,False,False,approved_self_supervised_pretraining,True,False,False,False,False,False,none,0,data/external_pretraining/stage32c/stage32c_human_external_pretraining_matrix.h5ad,True,100000,2863,,stage32c,project_hgnc_symbol,project_gene_subset,False,raw_count_like,downsampled_to_configured_max_cells
 ```
 
 ## 6. Gene overlap results
 
 ```csv
 dataset_id,dataset_name,local_path,n_genes_raw,n_genes_aligned,gene_overlap_fraction,gene_overlap_status,missing_gene_count,included_in_candidate_matrix
-b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,,0,0,0.0,not_evaluated_no_matrix,2957,False
-5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,,0,0,0.0,not_evaluated_no_matrix,2957,False
-4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,,0,0,0.0,not_evaluated_no_matrix,2957,False
-GSE98969,Mouse DAM/microglia auxiliary candidate,,0,0,0.0,not_evaluated_no_matrix,2957,False
-mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,,0,0,0.0,not_evaluated_no_matrix,2957,False
-mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,,0,0,0.0,not_evaluated_no_matrix,2957,False
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,data/external_pretraining/stage32c/stage32c_human_external_pretraining_matrix.h5ad,2863,2863,0.968211024687183,good,94,True
 ```
 
 ## 7. Normalization and layer audit
 
 ```csv
 dataset_id,normalization_status,raw_available,layer_names,normalization_warning
-b165f033-9dec-468a-9248-802fc6902a74,not_loaded,False,,metadata_only_no_expression_matrix
-5c97eeeb-7e52-44b3-b010-b832b1f5424c,not_loaded,False,,metadata_only_no_expression_matrix
-4442d412-91cb-4261-acca-8adf5fa04c11,not_loaded,False,,metadata_only_no_expression_matrix
-GSE98969,not_loaded,False,,metadata_only_no_expression_matrix
-mouse_isocortex_hippocampus,not_loaded,False,,no_approved_local_loaded_matrix
-mouse_brain_aging_atlas,not_loaded,False,,no_approved_local_loaded_matrix
+b165f033-9dec-468a-9248-802fc6902a74,raw_count_like,False,,source_expression_preserved_from_cellxgene_census_no_extra_normalization
 ```
 
 ## 8. Human-ready datasets
 
 ```csv
 dataset_id,dataset_name,recommendation_class,recommended_next_use,reason
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,human_ready_candidate,Stage 33 candidate,approved human matrix appears usable
 ```
 
 ## 9. Mouse/ortholog-required datasets
 
 ```csv
 dataset_id,dataset_name,species,ortholog_mapping_required,ortholog_mapping_available,main_human_matrix_eligible
-b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,human_or_unknown,False,False,False
-5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,human_or_unknown,False,False,False
-4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,human_or_unknown,False,False,False
-GSE98969,Mouse DAM/microglia auxiliary candidate,mouse,True,False,False
-mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,mouse,True,False,False
-mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,mouse,True,False,False
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,human_or_unknown,False,False,True
 ```
 
 ## 10. Protected holdout audit
@@ -115,12 +86,7 @@ Tabula_Sapiens_myeloid,Tabula Sapiens myeloid/immune cells,auxiliary_training_po
 
 ```csv
 dataset_id,dataset_name,recommendation_class,recommended_next_use,reason
-b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,acquire_or_build_matrix_before_stage33,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,acquire_or_build_matrix_before_stage33,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,acquire_or_build_matrix_before_stage33,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-GSE98969,Mouse DAM/microglia auxiliary candidate,ortholog_mapping_required,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,ortholog_mapping_required,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
-mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,ortholog_mapping_required,not ready for Stage 33,no approved loaded matrix or insufficient gene/schema audit
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,human_ready_candidate,Stage 33 candidate,approved human matrix appears usable
 ```
 
 ## 12. Whether Stage 33 can proceed
@@ -133,4 +99,4 @@ Stage 32C does not train a model. Stage 32C does not run external validation. St
 
 ## 14. Exact next command
 
-`python scripts/acquire_stage32c_bulk_approved_external_datasets_v1.py --config configs/data/stage32c_bulk_approved_external_acquisition_v1.yaml --allow-download --metadata-first`
+`python scripts/run_stage33a_external_pretrained_jepa_v1.py --config configs/train/stage33a_external_pretrained_jepa_v1.yaml`
