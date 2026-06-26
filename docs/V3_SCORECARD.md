@@ -118,3 +118,6 @@ Stage 32B pass: `True`; matrix built: `False`; Stage 33A ready: `False`.
 ## Stage 33A external-pretrained JEPA result
 
 Stage 33A skipped: `True`; full pass: `False`; graph-specific pass: `False`. Interpretation: `Stage 33A skipped because no approved external pretraining matrix was available`.
+
+## Stage 32C bulk external acquisition result
+Stage 32C pass: `True`; downloads attempted: `False`; human matrix built: `False`; Stage 33 ready: `False`.

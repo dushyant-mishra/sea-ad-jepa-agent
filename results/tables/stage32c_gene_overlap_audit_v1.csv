@@ -1,0 +1,7 @@
+dataset_id,dataset_name,local_path,n_genes_raw,n_genes_aligned,gene_overlap_fraction,gene_overlap_status,missing_gene_count,included_in_candidate_matrix
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,,0,0,0.0,not_evaluated_no_matrix,2957,False
+5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,,0,0,0.0,not_evaluated_no_matrix,2957,False
+4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,,0,0,0.0,not_evaluated_no_matrix,2957,False
+GSE98969,Mouse DAM/microglia auxiliary candidate,,0,0,0.0,not_evaluated_no_matrix,2957,False
+mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,,0,0,0.0,not_evaluated_no_matrix,2957,False
+mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,,0,0,0.0,not_evaluated_no_matrix,2957,False

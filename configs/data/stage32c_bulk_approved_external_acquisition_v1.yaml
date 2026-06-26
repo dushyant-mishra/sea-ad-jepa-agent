@@ -1,0 +1,81 @@
+stage: stage32c_bulk_approved_external_acquisition_v1
+random_seed: 7
+allow_download: false
+metadata_first: false
+download_expression: false
+build_human_matrix_if_safe: false
+main_matrix_min_gene_overlap_fraction: 0.85
+good_gene_overlap_fraction: 0.90
+usable_gene_overlap_fraction: 0.85
+
+registry_path: results/tables/v3_dataset_role_registry_v1.csv
+canonical_gene_universe_path: results/tables/ablation_edge_sets/no_graph_identity_edges_v1.csv
+
+matrix_search_roots:
+  - data/external
+  - data/processed
+  - data/raw
+
+output_dir: data/external_pretraining/stage32c
+
+expected_currently_approved_pretraining_dataset_ids:
+  - GSE98969
+  - b165f033-9dec-468a-9248-802fc6902a74
+  - 5c97eeeb-7e52-44b3-b010-b832b1f5424c
+  - 4442d412-91cb-4261-acca-8adf5fa04c11
+  - mouse_isocortex_hippocampus
+  - mouse_brain_aging_atlas
+
+candidate_priority_order:
+  - b165f033-9dec-468a-9248-802fc6902a74
+  - 5c97eeeb-7e52-44b3-b010-b832b1f5424c
+  - 4442d412-91cb-4261-acca-8adf5fa04c11
+  - GSE98969
+  - mouse_isocortex_hippocampus
+  - mouse_brain_aging_atlas
+
+matrix_extensions:
+  - .h5ad
+  - .h5
+  - .loom
+  - .mtx
+  - .zarr
+
+metadata_column_candidates:
+  donor:
+    - donor_id
+    - Donor ID
+    - donor
+    - subject
+    - subject_id
+    - individual
+    - sample_id
+  cell_type:
+    - cell_type
+    - celltype
+    - Cell Type
+    - cell_type_alias_label
+    - subclass
+    - Subclass
+    - class
+    - Class
+    - Supertype
+  disease:
+    - disease
+    - Disease
+    - diagnosis
+    - Diagnosis
+    - condition
+    - Condition
+  tissue:
+    - tissue
+    - Tissue
+    - tissue_general
+    - tissue_general_ontology_term_label
+    - brain_region
+    - Brain Region
+    - region
+  species:
+    - species
+    - organism
+    - organism_ontology_term_label

@@ -1,0 +1,7 @@
+dataset_id,dataset_name,source,acquisition_status,local_path,file_size_bytes,included_in_candidate_matrix,exclusion_reason
+b165f033-9dec-468a-9248-802fc6902a74,All non-neuronal cells,CELLxGENE,not_acquired_no_download_default,,0,False,no safe human matrix built in Stage 32C default run
+5c97eeeb-7e52-44b3-b010-b832b1f5424c,HBCC_Cohort,CELLxGENE,not_acquired_no_download_default,,0,False,no safe human matrix built in Stage 32C default run
+4442d412-91cb-4261-acca-8adf5fa04c11,Aging_Cohort,CELLxGENE,not_acquired_no_download_default,,0,False,no safe human matrix built in Stage 32C default run
+GSE98969,Mouse DAM/microglia auxiliary candidate,GEO,not_acquired_no_download_default,,0,False,no safe human matrix built in Stage 32C default run
+mouse_isocortex_hippocampus,Mouse isocortex and hippocampal formation taxonomy,CELLxGENE,not_acquired_no_download_default,,0,False,no safe human matrix built in Stage 32C default run
+mouse_brain_aging_atlas,BrainAgingSpatialAtlas_snRNAseq,CELLxGENE,not_acquired_no_download_default,,0,False,no safe human matrix built in Stage 32C default run
