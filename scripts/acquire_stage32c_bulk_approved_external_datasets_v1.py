@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import importlib.util
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -228,11 +229,105 @@ def nested_get_int(payload: Any, keys: list[str]) -> int:
 
 def acquire_cellxgene_metadata(row: pd.Series, output_dir: Path) -> dict[str, Any]:
     dataset_id = str(row["dataset_id"])
+    census_available = importlib.util.find_spec("cellxgene_census") is not None
+    if census_available:
+        try:
+            import cellxgene_census
+
+            with cellxgene_census.open_soma(census_version="latest") as census:
+                datasets = (
+                    census["census_info"]["datasets"]
+                    .read()
+                    .concat()
+                    .to_pandas()
+                )
+            datasets = datasets.copy()
+            datasets["dataset_id"] = datasets["dataset_id"].astype(str)
+            hit = datasets[datasets["dataset_id"] == dataset_id].copy()
+            if hit.empty:
+                search_text = (
+                    str(row.get("dataset_name", ""))
+                    + " "
+                    + str(row.get("collection_name", ""))
+                ).lower()
+                text_cols = [
+                    col
+                    for col in [
+                        "dataset_title",
+                        "collection_name",
+                        "collection_id",
+                        "dataset_id",
+                    ]
+                    if col in datasets.columns
+                ]
+                if text_cols and search_text.strip():
+                    mask = pd.Series(False, index=datasets.index)
+                    for token in [
+                        part
+                        for part in re.split(r"[^a-zA-Z0-9]+", search_text)
+                        if len(part) >= 5
+                    ]:
+                        for col in text_cols:
+                            mask = mask | datasets[col].astype(str).str.lower().str.contains(token, regex=False)
+                    hit = datasets[mask].head(20).copy()
+            out_csv = output_dir / f"{dataset_id}_cellxgene_census_dataset_matches.csv"
+            hit.to_csv(out_csv, index=False)
+            if not hit.empty and (hit["dataset_id"].astype(str) == dataset_id).any():
+                exact = hit[hit["dataset_id"].astype(str) == dataset_id].iloc[0].to_dict()
+                out_json = output_dir / f"{dataset_id}_cellxgene_census_metadata.json"
+                out_json.write_text(json.dumps(exact, indent=2, default=str), encoding="utf-8")
+                n_obs = 0
+                for key in ["dataset_total_cell_count", "cell_count", "n_obs"]:
+                    if key in exact:
+                        try:
+                            n_obs = int(exact[key])
+                            break
+                        except Exception:
+                            pass
+                n_vars = 0
+                for key in ["feature_count", "gene_count", "n_vars"]:
+                    if key in exact:
+                        try:
+                            n_vars = int(exact[key])
+                            break
+                        except Exception:
+                            pass
+                return {
+                    "metadata_acquisition_attempted": True,
+                    "metadata_acquisition_succeeded": True,
+                    "metadata_source": "cellxgene_census:census_info/datasets",
+                    "metadata_local_path": str(out_json.relative_to(ROOT)),
+                    "metadata_error": "",
+                    "cellxgene_census_available": True,
+                    "remote_payload_keys": ";".join(map(str, exact.keys())),
+                    "remote_n_obs": n_obs,
+                    "remote_n_vars": n_vars,
+                    "remote_schema_note": "CELLxGENE Census dataset metadata only; no expression matrix materialized",
+                }
+            return {
+                "metadata_acquisition_attempted": True,
+                "metadata_acquisition_succeeded": False,
+                "metadata_source": "cellxgene_census:census_info/datasets",
+                "metadata_local_path": str(out_csv.relative_to(ROOT)),
+                "metadata_error": (
+                    "cellxgene_census_available_but_exact_dataset_id_not_found; "
+                    f"candidate_match_rows={len(hit)}; review metadata match CSV or provide approved H5AD URL"
+                ),
+                "cellxgene_census_available": True,
+                "remote_payload_keys": ";".join(map(str, datasets.columns)),
+                "remote_n_obs": 0,
+                "remote_n_vars": 0,
+                "remote_schema_note": "CELLxGENE Census queried without expression download",
+            }
+        except Exception as exc:
+            census_error = f"cellxgene_census_query_failed:{type(exc).__name__}:{exc}"
+    else:
+        census_error = "cellxgene_census_not_installed"
+
     urls = [
         f"https://api.cellxgene.cziscience.com/curation/v1/datasets/{dataset_id}",
         f"https://api.cellxgene.cziscience.com/dp/v1/datasets/{dataset_id}",
     ]
-    census_available = importlib.util.find_spec("cellxgene_census") is not None
     errors = []
     for url in urls:
         try:
@@ -263,9 +358,8 @@ def acquire_cellxgene_metadata(row: pd.Series, output_dir: Path) -> dict[str, An
         "metadata_acquisition_succeeded": False,
         "metadata_source": "cellxgene_public_api",
         "metadata_local_path": "",
-        "metadata_error": (
-            "cellxgene_census_not_installed; " if not census_available else ""
-        )
+        "metadata_error": census_error
+        + "; "
         + " | ".join(errors)
         + "; next_command=python -m pip install cellxgene-census or provide approved H5AD URL",
         "cellxgene_census_available": census_available,
