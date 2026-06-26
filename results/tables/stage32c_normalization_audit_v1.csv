@@ -2,6 +2,6 @@ dataset_id,normalization_status,raw_available,layer_names,normalization_warning
 b165f033-9dec-468a-9248-802fc6902a74,not_loaded,False,,no_approved_local_loaded_matrix
 5c97eeeb-7e52-44b3-b010-b832b1f5424c,not_loaded,False,,no_approved_local_loaded_matrix
 4442d412-91cb-4261-acca-8adf5fa04c11,not_loaded,False,,no_approved_local_loaded_matrix
-GSE98969,not_loaded,False,,no_approved_local_loaded_matrix
+GSE98969,not_loaded,False,,metadata_only_no_expression_matrix
 mouse_isocortex_hippocampus,not_loaded,False,,no_approved_local_loaded_matrix
 mouse_brain_aging_atlas,not_loaded,False,,no_approved_local_loaded_matrix

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import importlib.util
 import sys
 from pathlib import Path
 from typing import Any
@@ -9,6 +10,7 @@ from typing import Any
 import anndata as ad
 import numpy as np
 import pandas as pd
+import requests
 import yaml
 from scipy import sparse
 
@@ -43,6 +45,7 @@ HUMAN_MATRIX_NAME = "stage32c_human_external_pretraining_matrix.h5ad"
 HUMAN_METADATA_NAME = "stage32c_human_external_pretraining_metadata.csv"
 HUMAN_GENE_MAP_NAME = "stage32c_human_external_pretraining_gene_map.csv"
 HUMAN_MANIFEST_NAME = "stage32c_human_external_pretraining_manifest.json"
+HTTP_TIMEOUT_SECONDS = 30
 
 
 def load_cfg(path: Path) -> dict[str, Any]:
@@ -201,6 +204,150 @@ def inspect_schema(path: Path, dataset_id: str, cfg: dict[str, Any]) -> tuple[di
         base["schema_warning"] = f"schema_inspection_failed:{type(exc).__name__}:{exc}"
         norm["normalization_warning"] = base["schema_warning"]
     return base, obs_rows, var_rows, layer_rows, field_rows, norm
+
+
+def nested_get_int(payload: Any, keys: list[str]) -> int:
+    found: list[int] = []
+
+    def visit(value: Any) -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if str(key) in keys:
+                    try:
+                        found.append(int(child))
+                    except Exception:
+                        pass
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    visit(payload)
+    return found[0] if found else 0
+
+
+def acquire_cellxgene_metadata(row: pd.Series, output_dir: Path) -> dict[str, Any]:
+    dataset_id = str(row["dataset_id"])
+    urls = [
+        f"https://api.cellxgene.cziscience.com/curation/v1/datasets/{dataset_id}",
+        f"https://api.cellxgene.cziscience.com/dp/v1/datasets/{dataset_id}",
+    ]
+    census_available = importlib.util.find_spec("cellxgene_census") is not None
+    errors = []
+    for url in urls:
+        try:
+            response = requests.get(url, timeout=HTTP_TIMEOUT_SECONDS)
+            if response.status_code != 200:
+                errors.append(f"{url}:HTTP_{response.status_code}")
+                continue
+            payload = response.json()
+            out_path = output_dir / f"{dataset_id}_cellxgene_metadata.json"
+            out_path.write_text(json.dumps(payload, indent=2)[:2_000_000], encoding="utf-8")
+            keys = sorted(payload.keys()) if isinstance(payload, dict) else []
+            return {
+                "metadata_acquisition_attempted": True,
+                "metadata_acquisition_succeeded": True,
+                "metadata_source": url,
+                "metadata_local_path": str(out_path.relative_to(ROOT)),
+                "metadata_error": "",
+                "cellxgene_census_available": census_available,
+                "remote_payload_keys": ";".join(map(str, keys[:50])),
+                "remote_n_obs": nested_get_int(payload, ["cell_count", "n_obs", "cell_counts"]),
+                "remote_n_vars": nested_get_int(payload, ["feature_count", "n_vars", "gene_count"]),
+                "remote_schema_note": "public_api_dataset_metadata_only_no_expression_matrix",
+            }
+        except Exception as exc:
+            errors.append(f"{url}:{type(exc).__name__}:{exc}")
+    return {
+        "metadata_acquisition_attempted": True,
+        "metadata_acquisition_succeeded": False,
+        "metadata_source": "cellxgene_public_api",
+        "metadata_local_path": "",
+        "metadata_error": (
+            "cellxgene_census_not_installed; " if not census_available else ""
+        )
+        + " | ".join(errors)
+        + "; next_command=python -m pip install cellxgene-census or provide approved H5AD URL",
+        "cellxgene_census_available": census_available,
+        "remote_payload_keys": "",
+        "remote_n_obs": 0,
+        "remote_n_vars": 0,
+        "remote_schema_note": "metadata_first_failed_no_expression_downloaded",
+    }
+
+
+def acquire_geo_metadata(row: pd.Series, output_dir: Path) -> dict[str, Any]:
+    dataset_id = str(row["dataset_id"])
+    url = f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={dataset_id}&targ=self&form=text&view=brief"
+    try:
+        response = requests.get(url, timeout=HTTP_TIMEOUT_SECONDS)
+        if response.status_code != 200:
+            raise RuntimeError(f"HTTP_{response.status_code}")
+        text = response.text
+        out_path = output_dir / f"{dataset_id}_geo_metadata.txt"
+        out_path.write_text(text[:2_000_000], encoding="utf-8")
+        sample_count = 0
+        supplementary_files = []
+        platform_ids = []
+        titles = []
+        for line in text.splitlines():
+            if line.startswith("!Series_sample_id"):
+                sample_count += line.count("GSM")
+            elif line.startswith("!Series_supplementary_file"):
+                supplementary_files.append(line.split("=", 1)[-1].strip())
+            elif line.startswith("!Series_platform_id"):
+                platform_ids.append(line.split("=", 1)[-1].strip())
+            elif line.startswith("!Series_title"):
+                titles.append(line.split("=", 1)[-1].strip())
+        return {
+            "metadata_acquisition_attempted": True,
+            "metadata_acquisition_succeeded": True,
+            "metadata_source": url,
+            "metadata_local_path": str(out_path.relative_to(ROOT)),
+            "metadata_error": "",
+            "cellxgene_census_available": False,
+            "remote_payload_keys": "geo_text_metadata",
+            "remote_n_obs": sample_count,
+            "remote_n_vars": 0,
+            "remote_schema_note": (
+                "GEO metadata/sample/file manifest only; no raw expression downloaded; "
+                f"platforms={';'.join(platform_ids[:5])}; supplementary_files={';'.join(supplementary_files[:5])}; "
+                f"title={';'.join(titles[:1])}"
+            ),
+        }
+    except Exception as exc:
+        return {
+            "metadata_acquisition_attempted": True,
+            "metadata_acquisition_succeeded": False,
+            "metadata_source": url,
+            "metadata_local_path": "",
+            "metadata_error": f"{type(exc).__name__}:{exc}; next_command=manual GEO metadata check for {dataset_id}",
+            "cellxgene_census_available": False,
+            "remote_payload_keys": "",
+            "remote_n_obs": 0,
+            "remote_n_vars": 0,
+            "remote_schema_note": "metadata_first_failed_no_expression_downloaded",
+        }
+
+
+def acquire_metadata_first(row: pd.Series, output_dir: Path) -> dict[str, Any]:
+    source = str(row.get("source", ""))
+    if source == "CELLxGENE":
+        return acquire_cellxgene_metadata(row, output_dir)
+    if source == "GEO":
+        return acquire_geo_metadata(row, output_dir)
+    return {
+        "metadata_acquisition_attempted": True,
+        "metadata_acquisition_succeeded": False,
+        "metadata_source": source,
+        "metadata_local_path": "",
+        "metadata_error": f"unsupported_metadata_source:{source}",
+        "cellxgene_census_available": False,
+        "remote_payload_keys": "",
+        "remote_n_obs": 0,
+        "remote_n_vars": 0,
+        "remote_schema_note": "metadata_first_not_supported_for_source",
+    }
 
 
 def write_report(download_plan: pd.DataFrame, manifest: pd.DataFrame, schema: pd.DataFrame, gene: pd.DataFrame, norm: pd.DataFrame, species: pd.DataFrame, recommend: pd.DataFrame, holdout: pd.DataFrame, pf: pd.DataFrame) -> None:
@@ -363,16 +510,48 @@ def main() -> None:
         inv = inventory[inventory["dataset_id"] == row["dataset_id"]].copy()
         local_path = str(inv["local_path"].iloc[0]) if not inv.empty else ""
         has_local = bool(local_path)
+        metadata_result = {
+            "metadata_acquisition_attempted": False,
+            "metadata_acquisition_succeeded": False,
+            "metadata_source": "",
+            "metadata_local_path": "",
+            "metadata_error": "",
+            "cellxgene_census_available": importlib.util.find_spec("cellxgene_census") is not None,
+            "remote_payload_keys": "",
+            "remote_n_obs": 0,
+            "remote_n_vars": 0,
+            "remote_schema_note": "",
+        }
         if args.allow_download:
-            acquisition_status = "download_not_implemented_metadata_plan_only"
+            if args.metadata_first and not args.download_expression:
+                metadata_result = acquire_metadata_first(row, output_dir)
+                acquisition_status = (
+                    "metadata_first_succeeded"
+                    if metadata_result["metadata_acquisition_succeeded"]
+                    else "metadata_first_failed"
+                )
+            elif args.download_expression:
+                acquisition_status = "expression_download_guarded_not_implemented"
+                metadata_result["metadata_acquisition_attempted"] = True
+                metadata_result["metadata_error"] = (
+                    "expression materialization intentionally not implemented in Stage 32C v1; "
+                    "provide approved source-specific command/version/size first"
+                )
+            else:
+                acquisition_status = "allow_download_set_but_no_metadata_or_expression_mode"
         elif has_local:
             acquisition_status = "existing_local_candidate_found"
         else:
             acquisition_status = "not_acquired_no_download_default"
+        download_succeeded = download_succeeded or bool(metadata_result["metadata_acquisition_succeeded"])
         next_action = (
             "inspect/build from existing local approved matrix"
             if has_local
-            else "run with --allow-download --metadata-first first; use --download-expression only after source/version/size are approved"
+            else (
+                "metadata acquired; review schema/source before any expression download"
+                if metadata_result["metadata_acquisition_succeeded"]
+                else "run with --allow-download --metadata-first first; use --download-expression only after source/version/size are approved"
+            )
         )
         download_rows.append(
             {
@@ -387,6 +566,7 @@ def main() -> None:
                 "download_expression": bool(args.download_expression),
                 "acquisition_status": acquisition_status,
                 "local_path": local_path,
+                **metadata_result,
                 "exact_next_action": next_action,
             }
         )
@@ -412,22 +592,36 @@ def main() -> None:
                     **row.to_dict(),
                     "dataset_id": row["dataset_id"],
                     "local_path": local_path,
-                    "schema_loaded": False,
-                    "n_obs": 0,
-                    "n_vars": 0,
+                    "schema_loaded": bool(metadata_result["metadata_acquisition_succeeded"]),
+                    "n_obs": int(metadata_result.get("remote_n_obs", 0) or 0),
+                    "n_vars": int(metadata_result.get("remote_n_vars", 0) or 0),
                     "obsm_keys": "",
                     "uns_keys": "",
                     "gene_identifier_type": "unknown",
                     "example_var_names": "",
                     "raw_available": False,
                     "normalization_status": "not_loaded",
-                    "schema_warning": "no_approved_local_loaded_matrix",
+                    "schema_warning": metadata_result.get("metadata_error", "")
+                    or metadata_result.get("remote_schema_note", "")
+                    or "no_approved_local_loaded_matrix",
                 }
             )
             layer_rows.append({"dataset_id": row["dataset_id"], "local_path": local_path, "layer_name": ""})
             for field in cfg["metadata_column_candidates"]:
                 field_rows.append({"dataset_id": row["dataset_id"], "metadata_field": field, "candidate_columns": "", "has_candidate": False})
-            norm_rows.append({"dataset_id": row["dataset_id"], "normalization_status": "not_loaded", "raw_available": False, "layer_names": "", "normalization_warning": "no_approved_local_loaded_matrix"})
+            norm_rows.append(
+                {
+                    "dataset_id": row["dataset_id"],
+                    "normalization_status": "not_loaded",
+                    "raw_available": False,
+                    "layer_names": "",
+                    "normalization_warning": (
+                        "metadata_only_no_expression_matrix"
+                        if metadata_result["metadata_acquisition_succeeded"]
+                        else "no_approved_local_loaded_matrix"
+                    ),
+                }
+            )
             overlap = {
                 "n_genes_raw": 0,
                 "n_genes_aligned": 0,
@@ -442,7 +636,21 @@ def main() -> None:
         species_rows.append({"dataset_id": row["dataset_id"], "dataset_name": row["dataset_name"], "species": species, "ortholog_mapping_required": ortholog, "ortholog_mapping_available": False, "main_human_matrix_eligible": bool(sufficient)})
         recommendation = "human_ready_candidate" if sufficient else ("ortholog_mapping_required" if ortholog else "acquire_or_build_matrix_before_stage33")
         recommend_rows.append({"dataset_id": row["dataset_id"], "dataset_name": row["dataset_name"], "recommendation_class": recommendation, "recommended_next_use": "Stage 33 candidate" if sufficient else "not ready for Stage 33", "reason": "no approved loaded matrix or insufficient gene/schema audit" if not sufficient else "approved human matrix appears usable"})
-        manifest_rows.append({"dataset_id": row["dataset_id"], "dataset_name": row["dataset_name"], "source": row["source"], "acquisition_status": acquisition_status, "local_path": local_path, "file_size_bytes": int(inv["file_size_bytes"].iloc[0]) if not inv.empty else 0, "included_in_candidate_matrix": False, "exclusion_reason": "no safe human matrix built in Stage 32C default run"})
+        manifest_rows.append(
+            {
+                "dataset_id": row["dataset_id"],
+                "dataset_name": row["dataset_name"],
+                "source": row["source"],
+                "acquisition_status": acquisition_status,
+                "local_path": local_path,
+                "metadata_source": metadata_result.get("metadata_source", ""),
+                "metadata_local_path": metadata_result.get("metadata_local_path", ""),
+                "metadata_error": metadata_result.get("metadata_error", ""),
+                "file_size_bytes": int(inv["file_size_bytes"].iloc[0]) if not inv.empty else 0,
+                "included_in_candidate_matrix": False,
+                "exclusion_reason": "no expression matrix built in metadata-first Stage 32C run",
+            }
+        )
 
     holdout_rows = []
     for _, h in role.iterrows():
