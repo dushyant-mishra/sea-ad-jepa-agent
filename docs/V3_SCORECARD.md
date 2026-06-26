@@ -121,3 +121,6 @@ Stage 33A skipped: `True`; full pass: `False`; graph-specific pass: `False`. Int
 
 ## Stage 32C bulk external acquisition result
 Stage 32C pass: `True`; downloads attempted: `True`; human matrix built: `True`; Stage 33 ready: `True`.
+
+## Stage 33B external-pretrained benchmark result
+Best external condition: `external_pretrained_no_graph_identity_jepa_ridge`; mean pooled OOF Spearman: `0.2711`; minus Stage 27C: `-0.0556`; graph-specific pass: `False`.

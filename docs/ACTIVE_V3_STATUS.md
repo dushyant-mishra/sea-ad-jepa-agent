@@ -96,3 +96,6 @@ Stage 33A status: `skipped`. Stage 33A full pass: `False`. Interpretation: `Stag
 
 ## Stage 32C bulk external acquisition status
 Stage 32C bulk approved external acquisition/schema audit is complete. Human matrix built: `True`; Stage 33 ready: `True`. No model was trained and external validation remains not run.
+
+## Stage 33B external-pretrained benchmark status
+Stage 33B external-pretrained internal benchmark is complete. Best external condition: `external_pretrained_no_graph_identity_jepa_ridge` (`0.2711`). Internal performance pass: `False`; graph-specific pass: `False`. No external validation or manuscript claim update.
