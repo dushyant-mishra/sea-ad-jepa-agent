@@ -124,3 +124,6 @@ Stage 32C pass: `True`; downloads attempted: `True`; human matrix built: `True`;
 
 ## Stage 33B external-pretrained benchmark result
 Best external condition: `external_pretrained_no_graph_identity_jepa_ridge`; mean pooled OOF Spearman: `0.2711`; minus Stage 27C: `-0.0556`; graph-specific pass: `False`.
+
+## Stage 33C external-pretrained diagnostic/rescue result
+Best Stage 33C condition: `ext_svd32_raw_count_size_factor_log1p_direct_no_graph`; mean pooled OOF Spearman: `0.3049`; minus Stage 33B: `0.0338`; minus Stage 27C: `-0.0218`; graph-specific pass: `False`. Stage 33C rescued part of the external-pretraining deficit but did not improve over the Stage 27C internal no-graph reference.
