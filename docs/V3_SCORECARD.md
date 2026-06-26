@@ -106,3 +106,7 @@ Real graph: `0.3205`; real minus Stage 27C reference: `-0.0062`; real minus no-g
 ## Stage 31 residual graph-control result
 
 Best Stage 31 condition: `weak_diffusion_real_graph_residual_pca_ridge_alpha_0_05`; mean pooled OOF Spearman: `0.3264`; best minus Stage 27C reference: `-0.0003`; best minus no-graph residual: `-0.0003`; best minus strict-shuffled residual: `0.0581`. Full pass: `False`. Interpretation: `graph_like_residual_features_contain_structure_but_topology_specific_utility_not_established`.
+
+## Stage 32 external pretraining matrix result
+
+Audit complete: `True`; matrix built: `False`; Stage 33 may proceed: `False`. No model was trained and no benchmark/manuscript claims are updated.
