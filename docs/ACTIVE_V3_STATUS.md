@@ -123,3 +123,6 @@ Stage 35C is complete. Best condition: `module_graph_real_overlap_aux_weight_0_1
 
 ## Stage 35D perturbation graph diagnostic status
 Stage 35D is complete as a feasibility audit. Benchmark run: `False`. Stage 35D completed a perturbation-graph feasibility audit but did not run a benchmark because no approved local perturbation-derived graph was available. No external validation, causal validation, or manuscript claim update.
+
+## Stage 35E graph diagnostics synthesis status
+Stage 35E graph diagnostics synthesis is complete. Across Stage 30, Stage 31, Stage 35A, Stage 35B, Stage 35C, and Stage 35D, most graph strategies did not improve over the Stage 27C no-graph reference. Stage 35C is the first guarded internal positive module-scale graph result, with best mean pooled OOF Spearman 0.327265 versus Stage 27C 0.326702 and matched module graph controls passed. The result is small, internal only, and not external validation.
