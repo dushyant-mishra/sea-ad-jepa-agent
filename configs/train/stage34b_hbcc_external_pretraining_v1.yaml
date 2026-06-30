@@ -1,0 +1,79 @@
+stage: stage34b_hbcc_external_pretraining_v1
+random_seed: 7
+approved_dataset_id: 5c97eeeb-7e52-44b3-b010-b832b1f5424c
+approved_dataset_name: HBCC_Cohort
+approved_collection_name: Population-scale cross-disorder atlas of the human prefrontal cortex at single-cell resolution
+official_metric: pooled_donor_level_oof_spearman
+minimum_success_threshold: 0.3228
+stage27c_reference_mean: 0.3267024400121495
+stage31_best_reference_mean: 0.32637035537106407
+stage33c_best_mean: 0.3049387465829706
+stage34a_best_mean: 0.2945226283284398
+stage33c_best_condition: ext_svd32_raw_count_size_factor_log1p_direct_no_graph
+stage34a_best_condition: filtered_ext_svd16_raw_count_size_factor_log1p_direct_no_graph
+max_target_drop_vs_stage27c_reference: -0.02
+
+registry_path: results/tables/v3_dataset_role_registry_v1.csv
+canonical_gene_universe: results/tables/ablation_edge_sets/no_graph_identity_edges_v1.csv
+stage34b_matrix: data/external_pretraining/stage34b/stage34b_hbcc_external_pretraining_matrix.h5ad
+stage34b_metadata: data/external_pretraining/stage34b/stage34b_hbcc_external_pretraining_metadata.csv
+stage34b_gene_map: data/external_pretraining/stage34b/stage34b_hbcc_external_pretraining_gene_map.csv
+minimum_gene_overlap_fraction: 0.85
+max_cells: 100000
+
+matrix_build:
+  source: cellxgene_census
+  census_version: latest
+  organism: Homo sapiens
+  measurement_name: RNA
+  preferred_x_name: raw
+  stratify_columns:
+    - donor_id
+    - cell_type
+    - tissue
+    - disease
+  obs_columns:
+    - soma_joinid
+    - dataset_id
+    - assay
+    - assay_ontology_term_id
+    - cell_type
+    - cell_type_ontology_term_id
+    - tissue
+    - tissue_ontology_term_id
+    - disease
+    - disease_ontology_term_id
+    - donor_id
+    - sex
+    - development_stage
+
+references:
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage31_oof: results/tables/stage31_residual_graph_oof_predictions_v1.csv
+  stage31_condition: weak_diffusion_real_graph_residual_pca_ridge_alpha_0_05
+  stage33c_target_metrics: results/tables/stage33c_target_metrics_v1.csv
+  stage34a_target_metrics: results/tables/stage34a_target_metrics_v1.csv
+
+external_encoder:
+  method: truncated_svd_frozen_external_encoder
+  transform: raw_count_size_factor_log1p
+  components: [16, 32]
+
+module_pca:
+  n_components: 8
+
+downstream:
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0]
+
+graph:
+  real_edges: results/tables/v2_graph_consensus_edges.csv
+  no_graph_edges: results/tables/ablation_edge_sets/no_graph_identity_edges_v1.csv
+  strict_shuffled_edges: results/tables/ablation_edge_sets/strict_shuffled_graph_edges_v1.csv
+  alpha: 0.05
+
+required_targets:
+  - AT8
+  - 6e10/A_beta
+  - GFAP
+  - Iba1
+  - NeuN

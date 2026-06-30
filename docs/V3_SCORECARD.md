@@ -130,3 +130,6 @@ Best Stage 33C condition: `ext_svd32_raw_count_size_factor_log1p_direct_no_graph
 
 ## Stage 34A HBCA microglia/myeloid-filtered external pretraining result
 Best Stage 34A condition: `filtered_ext_svd16_raw_count_size_factor_log1p_direct_no_graph`; mean pooled OOF Spearman: `0.2945`; minus Stage 33C: `-0.0104`; minus Stage 27C: `-0.0322`; biological-filter rescue pass: `False`; graph-specific pass: `False`. Microglia/myeloid filtering did not rescue the external-pretraining deficit under this implementation.
+
+## Stage 34B HBCC external pretraining result
+Best Stage 34B condition: `hbcc_ext_svd32_raw_count_size_factor_log1p_concat_module_pca_no_graph`; mean pooled OOF Spearman: `0.2782`; minus Stage 33C: `-0.0267`; minus Stage 27C: `-0.0485`; dataset rescue pass: `False`; graph-specific pass: `False`. HBCC external pretraining did not rescue the external-pretraining deficit under this compact benchmark.
