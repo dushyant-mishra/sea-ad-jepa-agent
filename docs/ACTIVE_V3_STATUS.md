@@ -102,3 +102,6 @@ Stage 33B external-pretrained internal benchmark is complete. Best external cond
 
 ## Stage 33C external-pretrained diagnostic/rescue status
 Stage 33C external-pretrained diagnostic/rescue is complete. Best condition: `ext_svd32_raw_count_size_factor_log1p_direct_no_graph` (`0.3049`). Rescue performance pass: `False`; graph-specific pass: `False`. Stage 33C rescued part of the external-pretraining deficit but did not improve over the Stage 27C internal no-graph reference. Real topology outperformed shuffled topology but did not improve over the no-graph identity reference. No external validation or manuscript claim update.
+
+## Stage 34A HBCA microglia/myeloid-filtered external pretraining status
+Stage 34A is complete. Filtered HBCA cells: `10325`. Best condition: `filtered_ext_svd16_raw_count_size_factor_log1p_direct_no_graph` (`0.2945`). Biological-filter rescue pass: `False`; full internal performance pass: `False`; graph-specific pass: `False`. Microglia/myeloid filtering did not rescue the external-pretraining deficit under this implementation. Real topology outperformed shuffled topology but did not improve over the no-graph identity reference. No external validation or manuscript claim update.

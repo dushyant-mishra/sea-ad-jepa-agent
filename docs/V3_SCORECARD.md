@@ -127,3 +127,6 @@ Best external condition: `external_pretrained_no_graph_identity_jepa_ridge`; mea
 
 ## Stage 33C external-pretrained diagnostic/rescue result
 Best Stage 33C condition: `ext_svd32_raw_count_size_factor_log1p_direct_no_graph`; mean pooled OOF Spearman: `0.3049`; minus Stage 33B: `0.0338`; minus Stage 27C: `-0.0218`; graph-specific pass: `False`. Stage 33C rescued part of the external-pretraining deficit but did not improve over the Stage 27C internal no-graph reference.
+
+## Stage 34A HBCA microglia/myeloid-filtered external pretraining result
+Best Stage 34A condition: `filtered_ext_svd16_raw_count_size_factor_log1p_direct_no_graph`; mean pooled OOF Spearman: `0.2945`; minus Stage 33C: `-0.0104`; minus Stage 27C: `-0.0322`; biological-filter rescue pass: `False`; graph-specific pass: `False`. Microglia/myeloid filtering did not rescue the external-pretraining deficit under this implementation.
