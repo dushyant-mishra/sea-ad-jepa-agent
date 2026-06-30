@@ -1,0 +1,32 @@
+stage: stage35c_latent_module_graph_v1
+random_seed: 7
+official_metric: pooled_donor_level_oof_spearman
+minimum_success_threshold: 0.3228
+stage27c_reference_mean: 0.3267024400121495
+stage31_best_reference_mean: 0.32637035537106407
+stage35a_best_reference_mean: 0.3267024400121495
+max_target_drop_vs_stage27c_reference: -0.02
+
+references:
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage31_oof: results/tables/stage31_residual_graph_oof_predictions_v1.csv
+  stage31_condition: weak_diffusion_real_graph_residual_pca_ridge_alpha_0_05
+  stage35a_mean: results/tables/stage35a_mean_metrics_v1.csv
+  stage35b_mean: results/tables/stage35b_mean_metrics_v1.csv
+
+module_graph:
+  aux_weights: [0.025, 0.05, 0.10]
+  strict_shuffle_seed: 7
+
+backbone:
+  module_pca_components: 8
+
+downstream:
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0]
+
+required_targets:
+  - AT8
+  - 6e10/A_beta
+  - GFAP
+  - Iba1
+  - NeuN

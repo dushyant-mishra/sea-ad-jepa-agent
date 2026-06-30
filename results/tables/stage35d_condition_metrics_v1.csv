@@ -1,0 +1,2 @@
+condition,skip_reason
+stage35d_benchmark_skipped,Stage 35D completed a perturbation-graph feasibility audit but did not run a benchmark because no approved local perturbation-derived graph was available.

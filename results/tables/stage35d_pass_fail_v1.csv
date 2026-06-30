@@ -1,0 +1,2 @@
+stage35d_run,resource_search_completed,perturbation_resource_audit_written,graph_alignment_audit_written,leakage_audit_written,report_written,stage35d_audit_run_pass,perturbation_graph_benchmark_run,stage35d_benchmark_run_pass,stage35d_internal_performance_pass,stage35d_graph_specific_pass,controlled_interpretation
+True,True,True,True,True,True,True,False,False,False,False,Stage 35D completed a perturbation-graph feasibility audit but did not run a benchmark because no approved local perturbation-derived graph was available.

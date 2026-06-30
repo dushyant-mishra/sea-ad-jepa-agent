@@ -139,3 +139,12 @@ Best Stage 35A condition: `target_aware_no_graph_identity_aux_ridge`; mean poole
 
 ## Stage 36A module counterfactual agent result
 Stage 36A produced module-level model-implied counterfactual hypotheses from the Stage 27C module_pca_ridge backbone. Run pass: `True`; gene-level pass: `True`; knowledge-grounding pass: `False`; validation pass: `False`. These are hypothesis-generation outputs only.
+
+## Stage 35B graph Laplacian regularized ridge result
+Best Stage 35B condition: `laplacian_real_graph_lambda_0_1_ridge`; mean pooled OOF Spearman: `0.3194`; minus Stage 27C: `-0.0073`; graph-specific pass: `True`. Graph Laplacian regularization did not improve over the Stage 27C internal no-graph reference under this implementation.
+
+## Stage 35C latent module graph diagnostic result
+Best Stage 35C condition: `module_graph_real_overlap_aux_weight_0_1_ridge`; mean pooled OOF Spearman: `0.3273`; minus Stage 27C: `0.0006`; module graph-specific pass: `True`. Stage 35C completed under guarded internal benchmark rules.
+
+## Stage 35D perturbation graph diagnostic result
+Stage 35D completed the perturbation graph feasibility audit. Benchmark run: `False`; internal performance pass: `False`; graph-specific pass: `False`. Stage 35D completed a perturbation-graph feasibility audit but did not run a benchmark because no approved local perturbation-derived graph was available.

@@ -114,3 +114,12 @@ Stage 35A is complete. Best condition: `target_aware_no_graph_identity_aux_ridge
 
 ## Stage 36A module counterfactual agent status
 Stage 36A is complete. Run pass: `True`; gene-level pass: `True`; knowledge-grounding pass: `False`; validation pass: `False`. Outputs are model-implied counterfactual hypotheses from the Stage 27C module_pca_ridge backbone and require independent validation. No external validation or therapeutic/causal claim update.
+
+## Stage 35B graph Laplacian regularized ridge status
+Stage 35B is complete. Best condition: `laplacian_real_graph_lambda_0_1_ridge` (`0.3194`). Graph-specific pass: `True`. Graph Laplacian regularization did not improve over the Stage 27C internal no-graph reference under this implementation. No external validation or manuscript claim update.
+
+## Stage 35C latent module graph diagnostic status
+Stage 35C is complete. Best condition: `module_graph_real_overlap_aux_weight_0_1_ridge` (`0.3273`). Module graph-specific pass: `True`; target-specific rescue candidates: `1`. Stage 35C completed under guarded internal benchmark rules. No external validation or manuscript claim update.
+
+## Stage 35D perturbation graph diagnostic status
+Stage 35D is complete as a feasibility audit. Benchmark run: `False`. Stage 35D completed a perturbation-graph feasibility audit but did not run a benchmark because no approved local perturbation-derived graph was available. No external validation, causal validation, or manuscript claim update.
