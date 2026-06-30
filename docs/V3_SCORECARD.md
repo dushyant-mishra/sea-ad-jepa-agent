@@ -136,3 +136,6 @@ Best Stage 34B condition: `hbcc_ext_svd32_raw_count_size_factor_log1p_concat_mod
 
 ## Stage 35A target-aware weak graph rescue result
 Best Stage 35A condition: `target_aware_no_graph_identity_aux_ridge`; mean pooled OOF Spearman: `0.3267`; minus Stage 27C: `0.0000`; global graph-specific pass: `False`; target-specific rescue candidates: `0`. Target-aware weak graph injection did not improve over the Stage 27C internal no-graph reference under this implementation.
+
+## Stage 36A module counterfactual agent result
+Stage 36A produced module-level model-implied counterfactual hypotheses from the Stage 27C module_pca_ridge backbone. Run pass: `True`; gene-level pass: `True`; knowledge-grounding pass: `False`; validation pass: `False`. These are hypothesis-generation outputs only.

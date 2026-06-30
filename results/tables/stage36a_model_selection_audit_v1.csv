@@ -1,0 +1,2 @@
+primary_backbone,stage27c_reference_mean,stage35a_pass_fail_exists,stage35a_internal_performance_pass,stage35a_used_as_primary,external_pretrained_models_used_as_primary,selection_reason
+stage27c_module_pca_ridge,0.3267024400121495,True,False,False,False,Stage 35A did not beat Stage 27C; Stage 27C remains primary hypothesis engine.

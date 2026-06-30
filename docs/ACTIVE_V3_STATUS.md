@@ -111,3 +111,6 @@ Stage 34B is complete. HBCC cells used: `100000`. Best condition: `hbcc_ext_svd3
 
 ## Stage 35A target-aware weak graph rescue status
 Stage 35A is complete. Best condition: `target_aware_no_graph_identity_aux_ridge` (`0.3267`). Best real graph condition: `target_aware_real_graph_aux_weight_0_01_ridge` (`0.3264`). Internal performance pass: `False`; global graph-specific pass: `False`; target-specific rescue candidates: `0`. Target-aware weak graph injection did not improve over the Stage 27C internal no-graph reference under this implementation. Graph-specific utility remains unestablished. No external validation or manuscript claim update.
+
+## Stage 36A module counterfactual agent status
+Stage 36A is complete. Run pass: `True`; gene-level pass: `True`; knowledge-grounding pass: `False`; validation pass: `False`. Outputs are model-implied counterfactual hypotheses from the Stage 27C module_pca_ridge backbone and require independent validation. No external validation or therapeutic/causal claim update.

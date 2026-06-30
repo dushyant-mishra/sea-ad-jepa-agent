@@ -1,0 +1,6 @@
+target,target_key,target_alias,baseline_metric,n_donors,n_counterfactual_features,max_importance_score,top_feature
+6e10/Aβ,6e10/A_beta,percent 6e10 positive area_Grey matter,0.3347372684013365,84,23,0.17997367621747498,module_pca_component_1
+AT8,AT8,percent AT8 positive area_Grey matter,0.5284398096588033,84,23,0.2636428065201985,module_at8_associated_first_pass
+GFAP,GFAP,percent GFAP positive area_Grey matter,0.30229826870507237,84,23,0.40002024906348077,module_pca_component_1
+Iba1,Iba1,percent Iba1 positive area_Grey matter,0.016077756403766325,84,23,0.2918700010124532,module_pca_component_1
+NeuN,NeuN,percent NeuN positive area_Grey matter,0.4519590968917688,84,23,0.08923762275994734,module_pca_component_2

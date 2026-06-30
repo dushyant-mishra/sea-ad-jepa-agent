@@ -1,0 +1,39 @@
+stage: stage36a_module_counterfactual_agent_v1
+random_seed: 7
+official_metric: pooled_donor_level_oof_spearman
+stage27c_reference_mean: 0.3267024400121495
+stage35a_pass_fail: results/tables/stage35a_pass_fail_v1.csv
+
+references:
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage27c_pass_fail: results/tables/stage27c_rescue_pass_fail_v1.csv
+
+model:
+  primary_backbone: stage27c_module_pca_ridge
+  module_pca_components: 8
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0]
+  ablation_value: training_fold_mean_before_scaling
+  include_pca_component_counterfactuals: true
+
+hypotheses:
+  top_n_per_target: 25
+  top_gene_n_per_target: 50
+  recommended_validation_type: independent_experimental_or_external_validation_required
+
+knowledge_grounding:
+  local_search_roots:
+    - results/tables
+    - docs
+  filename_patterns:
+    - "*knowledge*"
+    - "*kg*"
+    - "*prior*"
+    - "*candidate*gene*"
+  enabled: true
+
+required_targets:
+  - AT8
+  - 6e10/A_beta
+  - GFAP
+  - Iba1
+  - NeuN
