@@ -154,3 +154,6 @@ Stage 35E graph diagnostics synthesis is complete. Across Stage 30, Stage 31, St
 
 ## Stage 36B local knowledge grounding result
 Stage 36B local knowledge grounding is complete. Knowledge grounding pass: `True`; schema-stable local resources: `103`; annotated Stage 36A gene hypotheses: `770`. This is local prior-knowledge annotation only, not validation, causality, or therapeutic evidence.
+
+## Stage 36C ranked hypothesis package result
+Stage 36C ranked hypothesis package is complete. It combines Stage 36A model-implied counterfactual sensitivity with Stage 36B local knowledge grounding for follow-up prioritization only. No new modeling, external validation, causal validation, or treatment claim was made.
