@@ -133,3 +133,6 @@ Best Stage 34A condition: `filtered_ext_svd16_raw_count_size_factor_log1p_direct
 
 ## Stage 34B HBCC external pretraining result
 Best Stage 34B condition: `hbcc_ext_svd32_raw_count_size_factor_log1p_concat_module_pca_no_graph`; mean pooled OOF Spearman: `0.2782`; minus Stage 33C: `-0.0267`; minus Stage 27C: `-0.0485`; dataset rescue pass: `False`; graph-specific pass: `False`. HBCC external pretraining did not rescue the external-pretraining deficit under this compact benchmark.
+
+## Stage 35A target-aware weak graph rescue result
+Best Stage 35A condition: `target_aware_no_graph_identity_aux_ridge`; mean pooled OOF Spearman: `0.3267`; minus Stage 27C: `0.0000`; global graph-specific pass: `False`; target-specific rescue candidates: `0`. Target-aware weak graph injection did not improve over the Stage 27C internal no-graph reference under this implementation.
