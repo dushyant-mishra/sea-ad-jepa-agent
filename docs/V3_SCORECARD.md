@@ -157,3 +157,9 @@ Stage 36B local knowledge grounding is complete. Knowledge grounding pass: `True
 
 ## Stage 36C ranked hypothesis package result
 Stage 36C ranked hypothesis package is complete. It combines Stage 36A model-implied counterfactual sensitivity with Stage 36B local knowledge grounding for follow-up prioritization only. No new modeling, external validation, causal validation, or treatment claim was made.
+
+## Stage 36D validation handoff result
+Stage 36D is complete. Run pass: `True`. It used Stage 36C outputs only to produce a frozen candidate shortlist, assay-planning table, PI meeting summary, and validation-readiness audit. This is a planning handoff only, not validation.
+
+## Stage 36E frozen validation protocol result
+Stage 36E is complete. Run pass: `True`. It froze four mechanism bins and validation decision rules from Stage 36C/36D outputs only. This is a protocol/registry package only, not validation.
