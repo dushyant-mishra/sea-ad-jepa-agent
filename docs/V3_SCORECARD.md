@@ -163,3 +163,9 @@ Stage 36D is complete. Run pass: `True`. It used Stage 36C outputs only to produ
 
 ## Stage 36E frozen validation protocol result
 Stage 36E is complete. Run pass: `True`. It froze four mechanism bins and validation decision rules from Stage 36C/36D outputs only. This is a protocol/registry package only, not validation.
+
+## Stage 37A validation dataset eligibility audit result
+Stage 37A is complete. Run pass: `True`. It is a validation eligibility audit only and does not establish any external validation result. Recommended next stage: `Stage37B_manual_dataset_approval`.
+
+## Stage 37B manual dataset approval result
+Stage 37B is complete. Run pass: `True`. It produced a manual dataset approval dossier and kept the clean-validation gate `closed`. This is not validation.

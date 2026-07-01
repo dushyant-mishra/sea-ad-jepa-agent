@@ -1,0 +1,36 @@
+stage: stage37b_manual_dataset_approval_v1
+random_seed: 7
+
+inputs:
+  stage37a_dataset_inventory: results/tables/stage37a_dataset_inventory_v1.csv
+  stage37a_dataset_role_classification: results/tables/stage37a_dataset_role_classification_v1.csv
+  stage37a_clean_validation_eligibility: results/tables/stage37a_clean_validation_eligibility_v1.csv
+  stage37a_contamination_audit: results/tables/stage37a_contamination_audit_v1.csv
+  stage37a_stage37b_recommendation: results/tables/stage37a_stage37b_recommendation_v1.csv
+  stage37a_pass_fail: results/tables/stage37a_pass_fail_v1.csv
+  stage37a_report: results/reports/stage37a_validation_dataset_eligibility_audit_v1.md
+  stage37a_pi_report: results/reports/stage37a_pi_dataset_decision_summary_v1.md
+  stage36e_report: results/reports/stage36e_frozen_validation_protocol_v1.md
+  stage36e_validation_decision_rules: results/tables/stage36e_validation_decision_rules_v1.csv
+  stage36e_frozen_mechanism_registry: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage36e_priority_candidate_registry: results/tables/stage36e_priority_candidate_registry_v1.csv
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  active_v3_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  dataset_decision_matrix: results/tables/stage37b_dataset_decision_matrix_v1.csv
+  manual_review_packet: results/tables/stage37b_manual_review_packet_v1.csv
+  required_metadata_checklist: results/tables/stage37b_required_metadata_checklist_v1.csv
+  dataset_use_policy: results/tables/stage37b_dataset_use_policy_v1.csv
+  candidate_validation_route: results/tables/stage37b_candidate_validation_route_v1.csv
+  pi_approval_template: results/tables/stage37b_pi_approval_template_v1.csv
+  clean_validation_gate: results/tables/stage37b_clean_validation_gate_v1.csv
+  pass_fail: results/tables/stage37b_pass_fail_v1.csv
+  report: results/reports/stage37b_manual_dataset_approval_dossier_v1.md
+  pi_report: results/reports/stage37b_pi_dataset_approval_summary_v1.md
+
+status_updates:
+  active_status: docs/ACTIVE_V3_STATUS.md
+  scorecard_md: docs/V3_SCORECARD.md
+  scorecard_csv: results/tables/v3_scorecard_status_v1.csv

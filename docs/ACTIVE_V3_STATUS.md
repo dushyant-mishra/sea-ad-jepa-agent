@@ -138,3 +138,9 @@ Stage 36D validation handoff is complete. It freezes the Stage 36C ranked, local
 
 ## Stage 36E frozen validation protocol status
 Stage 36E frozen validation protocol is complete. It consolidates Stage 36C/36D follow-up hypotheses into frozen mechanism bins, a priority candidate registry, assay map, and validation decision rules before new validation data are examined. No new modeling, download, web scraping, external validation, causal validation, gene-ablation claim, or therapeutic claim was made.
+
+## Stage 37A validation dataset eligibility audit status
+Stage 37A validation dataset eligibility audit is complete. It classified already identified datasets/resources for clean validation, stress-test, projection/signature, robustness-only, manual-review, or exclusion roles. No validation, modeling, download, or web scraping was run. Recommended next stage: `Stage37B_manual_dataset_approval`.
+
+## Stage 37B manual dataset approval status
+Stage 37B manual dataset approval dossier is complete. It converts the Stage 37A eligibility audit into a PI-facing decision packet, metadata checklist, dataset-use policy, candidate validation routes, approval template, and clean-validation gate. Stage 37C clean external validation allowed now: `False`. No validation, modeling, downloads, or external-validation claim was made.
