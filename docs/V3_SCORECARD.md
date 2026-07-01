@@ -169,3 +169,9 @@ Stage 37A is complete. Run pass: `True`. It is a validation eligibility audit on
 
 ## Stage 37B manual dataset approval result
 Stage 37B is complete. Run pass: `True`. It produced a manual dataset approval dossier and kept the clean-validation gate `closed`. This is not validation.
+
+## Stage 37B-rev1 dataset claim reclassification result
+Stage 37B-rev1 is complete. Run pass: `True`. It preserves the closed clean-validation gate while clarifying that many resources remain reusable for conditional validation review, external biological support, projection/signature support, stress-test support, or robustness-only support.
+
+## Stage 37C-F multi-dataset external support result
+Stage 37C-F is complete. It is an external-support/readiness suite, not clean external validation. Microglia specificity is included as a target-aware supporting dimension.

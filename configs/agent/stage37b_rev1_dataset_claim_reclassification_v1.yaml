@@ -1,0 +1,58 @@
+stage: stage37b_rev1_dataset_claim_reclassification_v1
+random_seed: 7
+
+inputs:
+  stage37a_dataset_inventory: results/tables/stage37a_dataset_inventory_v1.csv
+  stage37a_dataset_role_classification: results/tables/stage37a_dataset_role_classification_v1.csv
+  stage37a_clean_validation_eligibility: results/tables/stage37a_clean_validation_eligibility_v1.csv
+  stage37a_contamination_audit: results/tables/stage37a_contamination_audit_v1.csv
+  stage37a_stage37b_recommendation: results/tables/stage37a_stage37b_recommendation_v1.csv
+  stage37a_pass_fail: results/tables/stage37a_pass_fail_v1.csv
+  stage37a_report: results/reports/stage37a_validation_dataset_eligibility_audit_v1.md
+  stage37a_pi_report: results/reports/stage37a_pi_dataset_decision_summary_v1.md
+  stage37b_dataset_decision_matrix: results/tables/stage37b_dataset_decision_matrix_v1.csv
+  stage37b_manual_review_packet: results/tables/stage37b_manual_review_packet_v1.csv
+  stage37b_required_metadata_checklist: results/tables/stage37b_required_metadata_checklist_v1.csv
+  stage37b_dataset_use_policy: results/tables/stage37b_dataset_use_policy_v1.csv
+  stage37b_candidate_validation_route: results/tables/stage37b_candidate_validation_route_v1.csv
+  stage37b_pi_approval_template: results/tables/stage37b_pi_approval_template_v1.csv
+  stage37b_clean_validation_gate: results/tables/stage37b_clean_validation_gate_v1.csv
+  stage37b_pass_fail: results/tables/stage37b_pass_fail_v1.csv
+  stage37b_report: results/reports/stage37b_manual_dataset_approval_dossier_v1.md
+  stage37b_pi_report: results/reports/stage37b_pi_dataset_approval_summary_v1.md
+  stage36e_report: results/reports/stage36e_frozen_validation_protocol_v1.md
+  stage36e_validation_decision_rules: results/tables/stage36e_validation_decision_rules_v1.csv
+  stage36e_frozen_mechanism_registry: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage36e_priority_candidate_registry: results/tables/stage36e_priority_candidate_registry_v1.csv
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  active_v3_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+seed_manual_acquisition_candidates:
+  - dataset_id: GSE160936
+    dataset_name: GSE160936
+    aliases: GSE160936;pTau;AT8;glial
+    suggested_claim_level: external_biological_support_candidate
+    reason: High-priority external biological support candidate for pTau/AT8-linked glial mechanisms if metadata and independence are confirmed.
+  - dataset_id: ROSMAP_AMP_AD
+    dataset_name: ROSMAP / AMP-AD
+    aliases: ROSMAP;AMP-AD;AMPAD
+    suggested_claim_level: manual_metadata_review_required
+    reason: High-value validation data acquisition/manual metadata review candidate if access, frozen readouts, and independence are confirmed.
+
+outputs:
+  claim_level_matrix: results/tables/stage37b_rev1_dataset_claim_level_matrix_v1.csv
+  reclassification_summary: results/tables/stage37b_rev1_reclassification_summary_v1.csv
+  conditional_candidates: results/tables/stage37b_rev1_conditional_validation_candidates_v1.csv
+  external_support_candidates: results/tables/stage37b_rev1_external_support_candidates_v1.csv
+  known_disqualified: results/tables/stage37b_rev1_known_disqualified_datasets_v1.csv
+  manual_metadata_review_queue: results/tables/stage37b_rev1_manual_metadata_review_queue_v1.csv
+  stage37c_gate: results/tables/stage37b_rev1_stage37c_gate_v1.csv
+  pass_fail: results/tables/stage37b_rev1_pass_fail_v1.csv
+  report: results/reports/stage37b_rev1_dataset_claim_reclassification_report_v1.md
+  pi_report: results/reports/stage37b_rev1_pi_reuse_recommendation_summary_v1.md
+
+status_updates:
+  active_status: docs/ACTIVE_V3_STATUS.md
+  scorecard_md: docs/V3_SCORECARD.md
+  scorecard_csv: results/tables/v3_scorecard_status_v1.csv

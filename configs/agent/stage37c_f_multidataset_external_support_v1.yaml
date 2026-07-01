@@ -1,0 +1,80 @@
+stage: stage37c_f_multidataset_external_support_v1
+random_seed: 7
+
+inputs:
+  stage36e_frozen_mechanism_registry: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage36e_priority_candidate_registry: results/tables/stage36e_priority_candidate_registry_v1.csv
+  stage36e_validation_decision_rules: results/tables/stage36e_validation_decision_rules_v1.csv
+  stage36e_report: results/reports/stage36e_frozen_validation_protocol_v1.md
+  stage37a_dataset_inventory: results/tables/stage37a_dataset_inventory_v1.csv
+  stage37a_clean_validation_eligibility: results/tables/stage37a_clean_validation_eligibility_v1.csv
+  stage37b_dataset_decision_matrix: results/tables/stage37b_dataset_decision_matrix_v1.csv
+  stage37b_clean_validation_gate: results/tables/stage37b_clean_validation_gate_v1.csv
+  stage37b_rev1_claim_level_matrix: results/tables/stage37b_rev1_dataset_claim_level_matrix_v1.csv
+  stage37b_rev1_conditional_candidates: results/tables/stage37b_rev1_conditional_validation_candidates_v1.csv
+  stage37b_rev1_external_support_candidates: results/tables/stage37b_rev1_external_support_candidates_v1.csv
+  stage37b_rev1_stage37c_gate: results/tables/stage37b_rev1_stage37c_gate_v1.csv
+
+datasets:
+  - dataset_id: gse160936
+    accession: GSE160936
+    stage_label: Stage37C
+    dataset_name: GSE160936 pTau-linked glial support
+    role: pTau-linked glial external support / conditional validation
+    focus: AT8/pTau glial, GFAP astrocyte, Iba1 microglia, endolysosomal, oxidative, inflammatory support
+    safe_claim_level: external_biological_support
+  - dataset_id: gse125050
+    accession: GSE125050
+    stage_label: Stage37D
+    dataset_name: GSE125050 pathology-confirmed AD cell-type support
+    role: pathology-confirmed AD cell-type validation/support
+    focus: amyloid-positive/pathology-confirmed AD/control, neuron, astrocyte, myeloid, endothelial support
+    safe_claim_level: conditional_validation_support_pending_manual_approval
+  - dataset_id: gse157827
+    accession: GSE157827
+    stage_label: Stage37E
+    dataset_name: GSE157827 broad AD/control snRNA-seq support
+    role: broad AD/control single-nucleus external mechanism support
+    focus: broad AD/control directionality, cell-type disease biology, glial activation, neuronal/synaptic, immune/vascular support
+    safe_claim_level: conditional_validation_support_pending_manual_approval
+  - dataset_id: gse138852
+    accession: GSE138852
+    stage_label: Stage37F
+    dataset_name: GSE138852 Grubman-Leng entorhinal cortex smoke test
+    role: smaller entorhinal cortex directional smoke test
+    focus: AD/control directionality and candidate gene/cell-type sanity check
+    safe_claim_level: external_biological_support
+  - dataset_id: gse174367
+    accession: GSE174367
+    stage_label: optional_secondary
+    dataset_name: GSE174367 Morabito optional secondary stress-test
+    role: optional secondary stress-test/projection support only
+    focus: secondary stress-test/projection because local v2 artifacts already exist
+    safe_claim_level: stress_test_projection_support_only
+    optional: true
+
+search_roots:
+  - data/external
+  - data
+  - external
+  - results/external
+
+outputs:
+  dataset_readiness_matrix: results/tables/stage37c_f_dataset_readiness_matrix_v1.csv
+  data_acquisition_manifest: results/tables/stage37c_f_data_acquisition_manifest_v1.csv
+  candidate_gene_mapping_matrix: results/tables/stage37c_f_candidate_gene_mapping_matrix_v1.csv
+  mechanism_gene_coverage_matrix: results/tables/stage37c_f_mechanism_gene_coverage_matrix_v1.csv
+  dataset_specific_support_scores: results/tables/stage37c_f_dataset_specific_support_scores_v1.csv
+  cross_dataset_concordance_summary: results/tables/stage37c_f_cross_dataset_concordance_summary_v1.csv
+  mechanism_level_external_support_summary: results/tables/stage37c_f_mechanism_level_external_support_summary_v1.csv
+  candidate_level_external_support_summary: results/tables/stage37c_f_candidate_level_external_support_summary_v1.csv
+  dataset_claim_level_summary: results/tables/stage37c_f_dataset_claim_level_summary_v1.csv
+  claim_boundary_audit: results/tables/stage37c_f_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage37c_f_pass_fail_v1.csv
+  report: results/reports/stage37c_f_multidataset_external_support_report_v1.md
+  pi_report: results/reports/stage37c_f_pi_multidataset_summary_v1.md
+
+status_updates:
+  active_status: docs/ACTIVE_V3_STATUS.md
+  scorecard_md: docs/V3_SCORECARD.md
+  scorecard_csv: results/tables/v3_scorecard_status_v1.csv

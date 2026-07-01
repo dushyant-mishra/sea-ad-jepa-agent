@@ -144,3 +144,9 @@ Stage 37A validation dataset eligibility audit is complete. It classified alread
 
 ## Stage 37B manual dataset approval status
 Stage 37B manual dataset approval dossier is complete. It converts the Stage 37A eligibility audit into a PI-facing decision packet, metadata checklist, dataset-use policy, candidate validation routes, approval template, and clean-validation gate. Stage 37C clean external validation allowed now: `False`. No validation, modeling, downloads, or external-validation claim was made.
+
+## Stage 37B-rev1 dataset claim reclassification status
+Stage 37B-rev1 is complete. It corrects Stage 37B wording by classifying datasets/resources by allowed claim level. Missing metadata is not treated as rejection; known disqualification requires explicit evidence. Stage 37C clean external validation allowed now: `False`.
+
+## Stage 37C-F multi-dataset external support status
+Stage 37C-F multi-dataset external support suite is complete. It checked local readiness, candidate mapping, mechanism coverage, support tiers, and microglia/cell-type specificity fields for frozen Stage 36E candidates. It did not run SEA-AD model training, select candidates, tune thresholds, download data, or claim clean external validation.

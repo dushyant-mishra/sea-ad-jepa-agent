@@ -1,0 +1,2 @@
+n_datasets_total,n_approved_clean_external_validation,n_conditional_clean_validation_candidates,n_external_biological_support_candidates,n_projection_or_signature_support_candidates,n_stress_test_candidates,n_robustness_only,n_manual_metadata_review_required,n_known_disqualified_from_clean_validation,stage37c_clean_external_validation_allowed,key_interpretation
+34,0,4,2,8,0,4,21,13,False,"No clean validation is currently approved, but missing metadata is not rejection; multiple resources remain reusable at bounded claim levels."

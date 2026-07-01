@@ -1,0 +1,2 @@
+stage37c_clean_external_validation_allowed,reason,approved_datasets,conditional_candidates,recommended_next_stage,claim_boundary
+False,No dataset has explicit complete approval evidence in the repo.,,GSE174367;GSE157827;GSE147528;ROSMAP_AMP_AD,Stage37C_external_support_first_pass_or_manual_metadata_review,Stage 37B-rev1 reclassifies claim levels only; it does not complete validation.
