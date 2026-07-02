@@ -197,3 +197,6 @@ Stage 39D run pass: `True`. Best condition: `rank_int_latent_composition_ridge`;
 
 ## Stage 39E strong simple-model leaderboard result
 Stage 39E run pass: `True`. Best condition: `rank_inverse_normal_module_direct_elasticnet`; mean pooled OOF Spearman: `0.37851256756728835`; delta versus Stage 39C: `0.03270311125464276`; material leaderboard pass: `False`.
+
+## Stage 39F robustness confirmation result
+Stage 39F run pass: `True`. New benchmark locked: `False`. Recommended next stage: `Stage39G_restricted_rescue_or_Stage40A_conditional`.

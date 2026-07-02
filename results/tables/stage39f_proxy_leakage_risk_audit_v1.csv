@@ -1,0 +1,7 @@
+candidate_id,proxy_or_leakage_risk_level,suspected_proxy_features,restricted_sensitivity_score,unrestricted_score,sensitivity_delta,lock_allowed,reason
+stage27c_locked_reference,low,none in primary benchmark inputs,,0.3267024400121495,,True,"uses module OOF predictions, not Stage39D composition proxy features"
+stage39c_rank_int_module_pca_ridge,low,none in primary benchmark inputs,,0.34580945631264554,,True,"uses module OOF predictions, not Stage39D composition proxy features"
+stage39d_no_pseudo_no_seaad_restricted,low_after_restriction,removed,0.31541966184063985,0.31541966184063985,0.0,False,restricted score does not beat Stage27C
+stage39d_rank_int_latent_composition_ridge_proxy_risk,high,pseudoprogression;SEAAD-labeled/fine composition features,0.31541966184063985,0.5048658499544396,0.18944618811379976,False,large full score collapses after restricted proxy removal
+stage39e_rank_inverse_normal_module_direct_elasticnet,low,none in primary benchmark inputs,,0.3785125675672884,,True,"uses module OOF predictions, not Stage39D composition proxy features"
+stage39e_rank_inverse_normal_module_pca8_ridge,low,none in primary benchmark inputs,,0.35808116279206914,,True,"uses module OOF predictions, not Stage39D composition proxy features"

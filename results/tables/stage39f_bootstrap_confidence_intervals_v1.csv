@@ -1,0 +1,7 @@
+candidate_id,n_bootstrap,bootstrap_unit,mean_oof_spearman,ci_lower_95,ci_upper_95,lower_ci_above_stage27c,lower_ci_above_0_3317,bootstrap_confirmation_pass,notes
+stage27c_locked_reference,500,donor,0.3267024400121495,0.2125019906760157,0.42635302821627746,False,False,False,donor bootstrap over existing OOF predictions
+stage39c_rank_int_module_pca_ridge,500,donor,0.34580945631264554,0.24932456692965593,0.4378643786868736,False,False,False,donor bootstrap over existing OOF predictions
+stage39d_no_pseudo_no_seaad_restricted,0,not_available_summary_only,,,,False,False,False,OOF predictions unavailable for donor bootstrap
+stage39d_rank_int_latent_composition_ridge_proxy_risk,500,donor,0.5048658499544396,0.41767440920016424,0.5707503519807144,True,True,True,donor bootstrap over existing OOF predictions
+stage39e_rank_inverse_normal_module_direct_elasticnet,500,donor,0.3785125675672884,0.2813235156768179,0.4621462646162579,False,False,False,donor bootstrap over existing OOF predictions
+stage39e_rank_inverse_normal_module_pca8_ridge,500,donor,0.35808116279206914,0.2440153669355859,0.4498411498099251,False,False,False,donor bootstrap over existing OOF predictions

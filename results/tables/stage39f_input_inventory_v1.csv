@@ -1,0 +1,12 @@
+input_name,path,exists,size_bytes
+stage27c_oof,results/tables/stage27c_rescue_oof_predictions_v1.csv,True,568535
+stage27c_target_metrics,results/tables/stage27c_rescue_target_metrics_v1.csv,True,10495
+stage39c_oof,results/tables/stage39c_oof_predictions_v1.csv,True,460244
+stage39c_target_metrics,results/tables/stage39c_target_metrics_v1.csv,True,4186
+stage39c_control_results,results/tables/stage39c_control_results_v1.csv,True,379
+stage39d_oof,results/tables/stage39d_oof_predictions_v1.csv,True,505678
+stage39d_restricted_composition_sensitivity,results/tables/stage39d_restricted_composition_sensitivity_v1.csv,True,1642
+stage39d_delta,results/tables/stage39d_delta_vs_stage39c_stage27c_v1.csv,True,1118
+stage39e_oof,results/tables/stage39e_oof_predictions_v1.csv,True,1758241
+stage39e_negative_controls,results/tables/stage39e_negative_control_results_v1.csv,True,425
+stage39e_leaderboard,results/tables/stage39e_strong_simple_model_leaderboard_v1.csv,True,5224

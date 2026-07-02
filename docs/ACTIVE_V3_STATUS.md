@@ -172,3 +172,6 @@ Stage 39D is complete with proxy-risk sensitivity added. Best condition: `rank_i
 
 ## Stage 39E strong simple-model leaderboard status
 Stage 39E is complete. Best condition: `rank_inverse_normal_module_direct_elasticnet`; mean pooled OOF Spearman: `0.37851256756728835`; delta versus Stage 39C: `0.03270311125464276`; material leaderboard pass: `False`. Composition/proxy features from Stage 39D were excluded from the primary benchmark.
+
+## Stage 39F robustness confirmation status
+Stage 39F is complete. New benchmark locked: `False`. Recommended next stage: `Stage39G_restricted_rescue_or_Stage40A_conditional`. This reused existing internal OOF predictions only.
