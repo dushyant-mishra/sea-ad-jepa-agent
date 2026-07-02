@@ -1,0 +1,5 @@
+comparison,delta,passes
+best_vs_latent_only,0.15905639364179402,True
+best_vs_metadata_only,0.26241166346056494,True
+best_vs_composition_only,0.013327933583071716,True
+best_vs_shuffled_context_control,0.5370780601397186,True

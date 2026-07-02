@@ -1,0 +1,9 @@
+condition,target_transform,feature_mode,model,control
+raw_log1p_module_pca_ridge,raw_log1p,module_pca,ridge,False
+winsor_log1p_module_pca_ridge,winsor_log1p,module_pca,ridge,False
+rank_int_module_pca_ridge,rank_inverse_normal,module_pca,ridge,False
+covariate_residual_log1p_module_pca_ridge,covariate_residual_log1p,module_pca,ridge,False
+raw_log1p_module_pca_elasticnet,raw_log1p,module_pca,elasticnet,False
+raw_log1p_module_pca_huber,raw_log1p,module_pca,huber,False
+raw_log1p_metadata_only_ridge,raw_log1p,metadata_only,ridge,True
+raw_log1p_module_pca_ridge_donor_shuffled_control,raw_log1p,module_pca,ridge,True

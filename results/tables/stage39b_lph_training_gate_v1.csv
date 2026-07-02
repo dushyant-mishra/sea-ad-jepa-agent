@@ -1,0 +1,2 @@
+training_allowed,training_gate_reason,donor_heldout_required,external_data_allowed,ridge_only_first_pass,graph_context_used
+True,required internal inputs found,True,False,True,False

@@ -150,3 +150,25 @@ Stage 37B-rev1 is complete. It corrects Stage 37B wording by classifying dataset
 
 ## Stage 37C-F multi-dataset external support status
 Stage 37C-F multi-dataset external support suite is complete. It checked local readiness, candidate mapping, mechanism coverage, support tiers, and microglia/cell-type specificity fields for frozen Stage 36E candidates. It did not run SEA-AD model training, select candidates, tune thresholds, download data, or claim clean external validation.
+
+## Stage 38B prepared external support analysis status
+Stage 38B prepared external support analysis is blocked. Ready datasets: `0`; analyzed datasets: `0`. It uses frozen Stage 36E candidates only and does not train SEA-AD models, tune thresholds, select candidates, or claim causal/therapeutic validation.
+
+## Stage 38C external support prioritization status
+Stage 38C external support prioritization is complete. It converts Stage 38B outputs into bounded PI-facing priorities using frozen Stage 36E mechanisms/candidates. No new candidates, causal claims, or therapeutic claims were created.
+
+## Stage 38A external data acquisition/preprocessing status
+Stage 38A is complete. It prepared local external inputs where available and wrote manifests/readiness summaries. No validation/modeling/candidate selection was run.
+## Stage 39A external metadata rescue status
+Stage 39A is complete. It inspected local external files, rescued explicit metadata mappings where possible, and wrote Stage 39B-ready input mappings plus manual acquisition/preprocessing gaps. Ready-for-Stage39B datasets: `gse138852`. No model training, threshold tuning, candidate selection, clean external validation, causal claim, therapeutic claim, or gene-ablation claim was made.
+
+## Stage 39B-LPH internal model rescue status
+Stage 39B-LPH is complete. LPH training allowed: `True`; training ran: `True`; best condition: `lph_aux_head_shuffled_latent_target`; best mean pooled OOF Spearman: `0.32559684114609705`; delta versus Stage 27C: `-0.0011055988660524374`; internal performance pass: `False`. This is an internal model-improvement experiment only, not external validation or causal/therapeutic evidence.
+
+## Stage 39C target engineering residual-stack status
+Stage 39C is complete. Best condition: `rank_int_module_pca_ridge`; mean pooled OOF Spearman: `0.3458094563126456`; delta versus Stage 27C: `0.019107016300496105`; internal rescue pass: `False`. This is an internal target-engineering benchmark only, not external validation or causal/therapeutic evidence.
+## Stage 39D metadata/composition stack status
+Stage 39D is complete with proxy-risk sensitivity added. Best condition: `rank_int_latent_composition_ridge`; mean pooled OOF Spearman: `0.5048658499544396`; delta versus Stage 39C: `0.15905639364179402`; restricted no-pseudo/no-SEAAD mean: `0.31541966184063985`; context enrichment pass: `False`. This is an internal metadata/composition benchmark only.
+
+## Stage 39E strong simple-model leaderboard status
+Stage 39E is complete. Best condition: `rank_inverse_normal_module_direct_elasticnet`; mean pooled OOF Spearman: `0.37851256756728835`; delta versus Stage 39C: `0.03270311125464276`; material leaderboard pass: `False`. Composition/proxy features from Stage 39D were excluded from the primary benchmark.

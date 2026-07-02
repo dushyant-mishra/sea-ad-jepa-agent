@@ -1,0 +1,81 @@
+stage: Stage39C
+version: v1
+description: Target engineering and residual-stack benchmark under locked donor-held-out safeguards.
+
+references:
+  stage27c_reference_mean: 0.3267024400121495
+  stage27c_rescue_margin: 0.005
+  rescue_threshold: 0.3317024400121495
+  minimum_success_threshold: 0.3228
+  official_module_mean_baseline: 0.3128
+  bootstrap_iterations: 500
+  random_seed: 7
+  required_targets:
+    - AT8
+    - 6e10/A_beta
+    - GFAP
+    - Iba1
+    - NeuN
+
+inputs:
+  stage27c_script: scripts/run_stage27c_non_graph_rescue_v1.py
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage27c_target_metrics: results/tables/stage27c_rescue_target_metrics_v1.csv
+  stage27c_mean_metrics: results/tables/stage27c_rescue_mean_metrics_v1.csv
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  donor_metadata_targets: results/tables/sea_ad_full_metadata_targets_with_covariates.csv
+
+outputs:
+  input_inventory: results/tables/stage39c_input_inventory_v1.csv
+  feature_covariate_audit: results/tables/stage39c_feature_covariate_audit_v1.csv
+  target_transform_design: results/tables/stage39c_target_transform_design_v1.csv
+  training_gate: results/tables/stage39c_training_gate_v1.csv
+  model_registry: results/tables/stage39c_model_registry_v1.csv
+  oof_predictions: results/tables/stage39c_oof_predictions_v1.csv
+  target_metrics: results/tables/stage39c_target_metrics_v1.csv
+  mean_metrics: results/tables/stage39c_mean_metrics_v1.csv
+  control_results: results/tables/stage39c_control_results_v1.csv
+  bootstrap_ci: results/tables/stage39c_bootstrap_ci_v1.csv
+  leakage_audit: results/tables/stage39c_leakage_audit_v1.csv
+  delta_vs_stage27c: results/tables/stage39c_delta_vs_stage27c_v1.csv
+  claim_boundary_audit: results/tables/stage39c_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage39c_pass_fail_v1.csv
+  technical_report: results/reports/stage39c_target_engineering_residual_stack_report_v1.md
+  pi_summary: results/reports/stage39c_pi_target_engineering_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+models:
+  ridge_alphas: [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0]
+  elasticnet_alphas: [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]
+  elasticnet_l1_ratios: [0.05, 0.1, 0.25, 0.5, 0.8]
+  module_pca_components: 8
+  huber_epsilons: [1.2, 1.35, 1.8]
+
+target_transforms:
+  - raw_log1p
+  - winsor_log1p
+  - rank_inverse_normal
+  - covariate_residual_log1p
+
+safe_covariates:
+  numeric:
+    - Age at Death
+    - PMI
+    - RIN
+    - Years of education
+  categorical:
+    - Sex
+    - APOE Genotype
+    - Primary Study Name
+
+safety:
+  train_fold_only_preprocessing: true
+  donor_heldout_only: true
+  no_external_data: true
+  no_candidate_selection: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true

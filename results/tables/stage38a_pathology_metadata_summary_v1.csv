@@ -1,0 +1,6 @@
+dataset_id,disease_or_diagnosis_available,tau_or_ptau_available,amyloid_or_abeta_available,braak_or_cerad_available,pathology_columns,usable_for_at8_or_tau_support,usable_for_abeta_support,usable_for_glial_support,usable_for_neuronal_support,notes
+gse160936,False,False,False,False,,False,False,False,False,manual_acquisition_or_full_preprocessing_required
+gse125050,False,False,False,False,,False,False,False,False,manual_acquisition_or_full_preprocessing_required
+gse157827,False,False,False,False,,False,False,False,False,manual_acquisition_or_full_preprocessing_required
+gse138852,True,False,False,False,,False,False,True,True,
+gse174367,True,False,False,False,Plaque.Stage,False,False,False,False,manual_acquisition_or_full_preprocessing_required

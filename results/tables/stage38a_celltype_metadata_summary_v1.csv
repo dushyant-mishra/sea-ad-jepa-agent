@@ -1,0 +1,6 @@
+dataset_id,celltype_column,n_celltypes,celltype_labels,microglia_label_detected,astrocyte_label_detected,neuron_label_detected,myeloid_label_detected,endothelial_label_detected,notes
+gse160936,,0,,False,False,False,False,False,manual_acquisition_or_full_preprocessing_required
+gse125050,,0,,False,False,False,False,False,manual_acquisition_or_full_preprocessing_required
+gse157827,,0,,False,False,False,False,False,manual_acquisition_or_full_preprocessing_required
+gse138852,oupSample.cellType,8,OPC;astro;doublet;endo;mg;neuron;oligo;unID,False,True,True,False,True,
+gse174367,,0,,False,False,False,False,False,manual_acquisition_or_full_preprocessing_required

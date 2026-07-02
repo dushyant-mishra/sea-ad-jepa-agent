@@ -1,0 +1,5 @@
+failure_mode,prior_evidence,lph_response
+external_pretraining_deficit,Stage 33B/33C/34A/34B did not improve over Stage 27C,test internal representation-space auxiliary head before further external pretraining
+graph_smoothing_or_topology_mismatch,Stage 30/31/35A/35B mostly failed to beat Stage 27C; Stage 35C signal was small and module-scale,use no-graph/identity first-pass LPH; graph-specific claims disabled unless graph context is explicitly used
+external_metadata_testability_gap,Stage 38B/38C limited by metadata gates; Stage 39A rescued only bounded readiness,stay internal and donor-held-out; do not use external data for model selection
+small_n_capacity_risk,84-donor setting makes neural overcapacity risky,ridge-only low-capacity implementation for v1

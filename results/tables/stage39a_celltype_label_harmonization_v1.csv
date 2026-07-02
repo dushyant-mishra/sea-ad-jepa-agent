@@ -1,0 +1,6 @@
+dataset_id,metadata_path,celltype_column,celltype_values_detected,microglia_values,astrocyte_values,neuron_values,oligodendrocyte_values,opc_values,endothelial_values,celltype_label_ready,microglia_label_ready,astrocyte_label_ready,harmonization_note
+gse138852,data\external\gse138852\processed\stage38a_gse138852_metadata.csv,oupSample.cellType,oligo;unID;astro;OPC;neuron;endo;mg;doublet,mg,astro,neuron,oligo,OPC,,True,True,True,cell-type labels found
+gse157827,,,,,,,,,,False,False,False,cell-type labels not safely harmonized
+gse174367,data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz,cluster,ODC9;ODC7;ODC1;ODC2;ODC6;ODC13;ODC11;ODC8;ODC4;ODC12;ODC3;ODC5;ODC10;MG1;MG3;MG2;OPC1;OPC2;INH1;INH2;INH4;INH3;EX2;EX3;EX4;EX1;EX5;ASC3;ASC1;ASC2;ASC4;PER.END2;PER.END3;PER.END1,MG1;MG3;MG2,ASC3;ASC1;ASC2;ASC4,INH1;INH2;INH4;INH3;EX2;EX3;EX4;EX1;EX5,ODC9;ODC7;ODC1;ODC2;ODC6;ODC13;ODC11;ODC8;ODC4;ODC12;ODC3;ODC5;ODC10,OPC1;OPC2,PER.END2;PER.END3;PER.END1,True,True,True,cell-type labels found
+gse160936,,,,,,,,,,False,False,False,cell-type labels not safely harmonized
+gse125050,,,,,,,,,,False,False,False,cell-type labels not safely harmonized

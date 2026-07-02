@@ -1,0 +1,9 @@
+condition,mean_pooled_oof_spearman,min_target_spearman,n_targets
+covariate_residual_log1p_module_pca_ridge,0.3215834767641997,-0.11313151766730789,5
+rank_int_module_pca_ridge,0.3458094563126456,0.025473321858864025,5
+raw_log1p_metadata_only_ridge,0.1414032600992204,-0.18086463501063077,5
+raw_log1p_module_pca_elasticnet,0.29264212616953955,-0.08973054562289069,5
+raw_log1p_module_pca_huber,0.33112078566366304,-0.02824744355573555,5
+raw_log1p_module_pca_ridge,0.2920522425837805,-0.09755998785056191,5
+raw_log1p_module_pca_ridge_donor_shuffled_control,-0.1687637946744963,-0.26712564543889844,5
+winsor_log1p_module_pca_ridge,0.28896628530930446,-0.09745874253315785,5

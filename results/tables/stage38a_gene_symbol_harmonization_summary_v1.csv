@@ -1,0 +1,6 @@
+dataset_id,n_frozen_candidate_genes,n_matched_genes,n_missing_genes,matched_genes,missing_genes,gene_symbol_strategy,notes
+gse160936,18,0,18,,APOE;BSG;CST7;CTSB;CTSD;GPX4;HMOX1;IL27RA;LAMP2;LAPTM5;LGALS3;NFKBIA;NPC2;NQO1;SLC6A12;SOD1;SOD2;TREM2,uppercase exact symbol match against frozen Stage 36E candidates,manual_acquisition_or_full_preprocessing_required
+gse125050,18,0,18,,APOE;BSG;CST7;CTSB;CTSD;GPX4;HMOX1;IL27RA;LAMP2;LAPTM5;LGALS3;NFKBIA;NPC2;NQO1;SLC6A12;SOD1;SOD2;TREM2,uppercase exact symbol match against frozen Stage 36E candidates,manual_acquisition_or_full_preprocessing_required
+gse157827,18,0,18,,APOE;BSG;CST7;CTSB;CTSD;GPX4;HMOX1;IL27RA;LAMP2;LAPTM5;LGALS3;NFKBIA;NPC2;NQO1;SLC6A12;SOD1;SOD2;TREM2,uppercase exact symbol match against frozen Stage 36E candidates,manual_acquisition_or_full_preprocessing_required
+gse138852,18,12,6,LAPTM5;SOD2;LAMP2;CTSB;SLC6A12;NFKBIA;LGALS3;NPC2;BSG;GPX4;APOE;SOD1,CST7;CTSD;HMOX1;IL27RA;NQO1;TREM2,uppercase exact symbol match against frozen Stage 36E candidates,
+gse174367,18,0,18,,APOE;BSG;CST7;CTSB;CTSD;GPX4;HMOX1;IL27RA;LAMP2;LAPTM5;LGALS3;NFKBIA;NPC2;NQO1;SLC6A12;SOD1;SOD2;TREM2,uppercase exact symbol match against frozen Stage 36E candidates,manual_acquisition_or_full_preprocessing_required

@@ -1,0 +1,6 @@
+dataset_id,manual_fix_needed,exact_requirement,priority,claim_impact
+gse138852,pathology_labels_not_resolved,ready for Stage 39B bounded support analysis,high,prevents or limits Stage 39B testability
+gse157827,metadata_file_missing,acquire missing GSE157827 metadata/expression matrix beyond GEO series metadata,high,prevents or limits Stage 39B testability
+gse174367,sample_id_linkage_not_resolved,manual acquisition/preprocessing/metadata mapping required,high,prevents or limits Stage 39B testability
+gse160936,expression_file_missing;metadata_file_missing,manual acquisition of expression and metadata files required,medium,prevents or limits Stage 39B testability
+gse125050,expression_file_missing;metadata_file_missing,manual acquisition of expression and metadata files required,medium,prevents or limits Stage 39B testability

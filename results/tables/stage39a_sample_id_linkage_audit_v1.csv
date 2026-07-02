@@ -1,0 +1,6 @@
+dataset_id,expression_path,metadata_path,sample_id_column_expression,sample_id_column_metadata,n_expression_ids_previewed,n_metadata_ids_previewed,n_overlapping_ids,sample_id_linkage_ready,linkage_note
+gse138852,data\external\gse138852\processed\stage38a_gse138852_candidate_expression.csv,data\external\gse138852\processed\stage38a_gse138852_metadata.csv,cell_id,cell_id,13214,13214,13214,True,expression and metadata identifiers overlap
+gse157827,data/external/public_schema_audit/GSE157827/GSE157827_series_matrix.txt.gz,,,,0,0,0,False,no safe expression-metadata identifier overlap detected
+gse174367,data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5,data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz,matrix/barcodes,SampleID,61770,18,0,False,no safe expression-metadata identifier overlap detected
+gse160936,,,,,0,0,0,False,no safe expression-metadata identifier overlap detected
+gse125050,,,,,0,0,0,False,no safe expression-metadata identifier overlap detected

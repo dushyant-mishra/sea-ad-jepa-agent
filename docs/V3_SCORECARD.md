@@ -175,3 +175,25 @@ Stage 37B-rev1 is complete. Run pass: `True`. It preserves the closed clean-vali
 
 ## Stage 37C-F multi-dataset external support result
 Stage 37C-F is complete. It is an external-support/readiness suite, not clean external validation. Microglia specificity is included as a target-aware supporting dimension.
+
+## Stage 38B prepared external support analysis result
+Stage 38B run pass: `False`. This is external support / conditional validation support only; no clean validation claim is made unless the dataset gate explicitly allows it.
+
+## Stage 38C external support prioritization result
+Stage 38C run pass: `True`. Priorities are bounded by Stage 38B readiness/support and should not be described as causal or therapeutic validation.
+
+## Stage 38A external data acquisition/preprocessing result
+Stage 38A run pass: `True`. Prepared inputs are bounded external-support inputs only.
+## Stage 39A external metadata rescue result
+Stage 39A run pass: `True`. Ready-for-Stage39B datasets after metadata rescue: `1`. This is metadata/testability rescue only, not validation.
+
+## Stage 39B-LPH internal model rescue result
+Stage 39B-LPH run pass: `True`. Best condition: `lph_aux_head_shuffled_latent_target`; mean pooled OOF Spearman: `0.32559684114609705`; delta versus Stage 27C: `-0.0011055988660524374`; internal performance pass: `False`. No external validation, causal, therapeutic, gene-ablation, or disease-modifying claim is made.
+
+## Stage 39C target engineering residual-stack result
+Stage 39C run pass: `True`. Best condition: `rank_int_module_pca_ridge`; mean pooled OOF Spearman: `0.3458094563126456`; delta versus Stage 27C: `0.019107016300496105`; internal rescue pass: `False`.
+## Stage 39D metadata/composition stack result
+Stage 39D run pass: `True`. Best condition: `rank_int_latent_composition_ridge`; mean pooled OOF Spearman: `0.5048658499544396`; delta versus Stage 39C: `0.15905639364179402`; restricted no-pseudo/no-SEAAD mean: `0.31541966184063985`; proxy sensitivity pass: `False`; context enrichment pass: `False`.
+
+## Stage 39E strong simple-model leaderboard result
+Stage 39E run pass: `True`. Best condition: `rank_inverse_normal_module_direct_elasticnet`; mean pooled OOF Spearman: `0.37851256756728835`; delta versus Stage 39C: `0.03270311125464276`; material leaderboard pass: `False`.

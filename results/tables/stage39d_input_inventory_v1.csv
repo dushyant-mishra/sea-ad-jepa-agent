@@ -1,0 +1,8 @@
+input_name,path,exists,size_bytes
+stage27c_script,scripts/run_stage27c_non_graph_rescue_v1.py,True,36188
+locked_folds,results/tables/v3_locked_donor_folds_v1.csv,True,12554
+donor_metadata_targets,results/tables/sea_ad_full_metadata_targets_with_covariates.csv,True,63304
+stage39c_mean_metrics,results/tables/stage39c_mean_metrics_v1.csv,True,678
+stage39c_target_metrics,results/tables/stage39c_target_metrics_v1.csv,True,4186
+h5ad_module_preserved,data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,True,462024617
+microglia_cell_count,data/processed/sea_ad_mtg_microglia_pvm_counts_module_preserved_refresh.csv,True,1452

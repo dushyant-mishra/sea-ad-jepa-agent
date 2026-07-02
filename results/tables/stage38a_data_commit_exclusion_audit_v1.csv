@@ -1,0 +1,2 @@
+raw_data_under_data_external,raw_data_not_staged_for_commit,processed_large_data_not_staged_for_commit,only_code_manifests_reports_results_committable,unrelated_dirty_files_not_modified,safety_audit_pass
+True,True,True,True,True,True

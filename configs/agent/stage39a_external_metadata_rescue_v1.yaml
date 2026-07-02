@@ -1,0 +1,118 @@
+stage: Stage39A
+version: v1
+description: External metadata harmonization rescue and acquisition-gap fixer for Stage 39B readiness.
+
+datasets:
+  inspect:
+    - gse138852
+    - gse157827
+    - gse174367
+  acquisition_gap:
+    - gse160936
+    - gse125050
+
+inputs:
+  stage38a_processed_input_index: results/tables/stage38a_processed_input_index_v1.csv
+  stage38a_preprocessing_readiness: results/tables/stage38a_preprocessing_readiness_v1.csv
+  stage38a_local_file_inventory: results/tables/stage38a_local_file_inventory_v1.csv
+  stage38a_metadata_harmonization_summary: results/tables/stage38a_metadata_harmonization_summary_v1.csv
+  stage38a_celltype_metadata_summary: results/tables/stage38a_celltype_metadata_summary_v1.csv
+  stage38a_pathology_metadata_summary: results/tables/stage38a_pathology_metadata_summary_v1.csv
+  stage38b_dataset_analysis_status: results/tables/stage38b_dataset_analysis_status_v1.csv
+  stage38b_negative_null_results: results/tables/stage38b_negative_null_results_v1.csv
+  stage38c_validation_gap_table: results/tables/stage38c_validation_gap_table_v1.csv
+  stage36e_frozen_mechanism_registry: results/tables/stage36e_frozen_mechanism_registry_v1.csv
+  stage36e_priority_candidate_registry: results/tables/stage36e_priority_candidate_registry_v1.csv
+
+outputs:
+  external_file_metadata_inventory: results/tables/stage39a_external_file_metadata_inventory_v1.csv
+  metadata_column_candidates: results/tables/stage39a_metadata_column_candidates_v1.csv
+  sample_id_linkage_audit: results/tables/stage39a_sample_id_linkage_audit_v1.csv
+  disease_label_harmonization: results/tables/stage39a_disease_label_harmonization_v1.csv
+  celltype_label_harmonization: results/tables/stage39a_celltype_label_harmonization_v1.csv
+  pathology_label_harmonization: results/tables/stage39a_pathology_label_harmonization_v1.csv
+  microglia_astrocyte_label_audit: results/tables/stage39a_microglia_astrocyte_label_audit_v1.csv
+  dataset_testability_after_rescue: results/tables/stage39a_dataset_testability_after_rescue_v1.csv
+  required_manual_metadata_fixes: results/tables/stage39a_required_manual_metadata_fixes_v1.csv
+  stage39b_ready_inputs: results/tables/stage39a_stage39b_ready_inputs_v1.csv
+  claim_boundary_audit: results/tables/stage39a_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage39a_pass_fail_v1.csv
+  rescue_report: results/reports/stage39a_external_metadata_rescue_report_v1.md
+  pi_gap_summary: results/reports/stage39a_pi_metadata_gap_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+candidate_terms:
+  sample_id:
+    - cell_id
+    - barcode
+    - sampleid
+    - sample_id
+    - sample
+    - donor
+    - donor_id
+    - subject
+  disease:
+    - disease
+    - diagnosis
+    - condition
+    - pathology
+    - batchcond
+    - ad
+    - control
+  pathology:
+    - braak
+    - cerad
+    - amyloid
+    - abeta
+    - plaque
+    - tau
+    - ptau
+    - tangle
+  celltype:
+    - cell_type
+    - celltype
+    - cell.type
+    - subclass
+    - class
+    - cluster
+    - annotation
+    - major_cell_type
+  microglia:
+    - microglia
+    - micro
+    - mg
+    - myeloid
+  astrocyte:
+    - astrocyte
+    - astro
+    - asc
+  neuron:
+    - neuron
+    - excitatory
+    - inhibitory
+    - glutamatergic
+    - gabaergic
+    - inh
+    - ex
+  oligodendrocyte:
+    - oligodendrocyte
+    - oligo
+    - odc
+  opc:
+    - opc
+    - oligodendrocyte precursor
+  endothelial:
+    - endothelial
+    - vascular
+    - per.end
+
+safety:
+  no_model_training: true
+  no_threshold_tuning: true
+  no_candidate_selection: true
+  no_frozen_candidate_modification: true
+  no_clean_external_validation_claim: true
+  no_causal_or_therapeutic_claim: true
+  no_raw_data_commit: true

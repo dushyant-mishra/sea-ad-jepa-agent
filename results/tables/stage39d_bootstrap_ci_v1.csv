@@ -1,0 +1,2 @@
+condition,n_bootstrap,bootstrap_mean,ci_lower_95,ci_upper_95
+rank_int_latent_composition_ridge,500,0.4980204698450781,0.4243225718919451,0.5696572943742619

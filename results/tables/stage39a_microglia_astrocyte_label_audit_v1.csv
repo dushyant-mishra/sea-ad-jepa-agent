@@ -1,0 +1,6 @@
+dataset_id,celltype_column,microglia_values,astrocyte_values,microglia_label_ready,astrocyte_label_ready,recommended_use
+gse138852,oupSample.cellType,mg,astro,True,True,microglia/astrocyte specificity support can be tested
+gse157827,,,,False,False,manual cell-type mapping required
+gse174367,cluster,MG1;MG3;MG2,ASC3;ASC1;ASC2;ASC4,True,True,microglia/astrocyte specificity support can be tested
+gse160936,,,,False,False,manual cell-type mapping required
+gse125050,,,,False,False,manual cell-type mapping required

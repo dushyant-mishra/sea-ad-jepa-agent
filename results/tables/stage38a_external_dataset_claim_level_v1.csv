@@ -1,0 +1,6 @@
+dataset_id,accession,claim_level_allowed_after_38a,clean_validation_claim_allowed,external_support_claim_allowed,conditional_validation_support_allowed,stress_test_claim_allowed,reason,required_next_gate_for_clean_validation
+gse160936,GSE160936,readiness_or_manual_acquisition_only,False,False,False,False,Stage 38A prepares data only; clean-validation gate not opened,manual approval plus Stage 38B/38C support and claim-level gate
+gse125050,GSE125050,readiness_or_manual_acquisition_only,False,False,False,False,Stage 38A prepares data only; clean-validation gate not opened,manual approval plus Stage 38B/38C support and claim-level gate
+gse157827,GSE157827,readiness_or_manual_acquisition_only,False,False,False,False,Stage 38A prepares data only; clean-validation gate not opened,manual approval plus Stage 38B/38C support and claim-level gate
+gse138852,GSE138852,external_support_or_conditional_support_only,False,True,True,False,Stage 38A prepares data only; clean-validation gate not opened,manual approval plus Stage 38B/38C support and claim-level gate
+gse174367,GSE174367,readiness_or_manual_acquisition_only,False,False,False,True,Stage 38A prepares data only; clean-validation gate not opened,manual approval plus Stage 38B/38C support and claim-level gate

@@ -1,0 +1,4 @@
+audit_item,value,reason
+candidate_reprioritization_allowed,False,Stage 39B-LPH is an internal model-rescue benchmark; frozen Stage 36E candidates are preserved.
+candidate_interpretation_if_lph_positive,hypothesis_prioritization_only,"Even a positive internal LPH result would not establish external validation, causality, or therapeutic relevance."
+candidate_interpretation_if_lph_null,no_candidate_change,Null/negative internal LPH results do not prove biological irrelevance.

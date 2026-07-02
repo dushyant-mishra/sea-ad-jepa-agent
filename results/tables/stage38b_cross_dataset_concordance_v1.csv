@@ -1,0 +1,5 @@
+mechanism_id,mechanism_name,n_datasets_testable,n_datasets_supporting,datasets_supporting,datasets_no_support,datasets_not_testable,cross_dataset_tier,claim_boundary
+M1,Endolysosomal / autophagy / proteostasis,0,0,,,gse138852,not_testable,external support / conditional validation support only; frozen Stage 36E candidates require further validation
+M2,Glial activation / disease-associated microglia-astrocyte state,0,0,,,gse138852,not_testable,external support / conditional validation support only; frozen Stage 36E candidates require further validation
+M3,Oxidative stress / antioxidant response,0,0,,,gse138852,not_testable,external support / conditional validation support only; frozen Stage 36E candidates require further validation
+M4,Inflammatory signaling / transport / cell-state modulation,0,0,,,gse138852,not_testable,external support / conditional validation support only; frozen Stage 36E candidates require further validation
