@@ -1,0 +1,2 @@
+stage40a_run,inputs_inventoried,training_gate_written,training_allowed,training_ran,model_registry_written,oof_predictions_written,target_metrics_written,bootstrap_ci_written,target_guard_audit_written,iba1_rescue_audit_written,negative_controls_written,benchmark_decision_written,claim_boundary_audit_written,reports_written,safety_audit_pass,stage40a_run_pass
+True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True

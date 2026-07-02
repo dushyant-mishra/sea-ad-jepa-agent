@@ -200,3 +200,9 @@ Stage 39E run pass: `True`. Best condition: `rank_inverse_normal_module_direct_e
 
 ## Stage 39F robustness confirmation result
 Stage 39F run pass: `True`. New benchmark locked: `False`. Recommended next stage: `Stage39G_restricted_rescue_or_Stage40A_conditional`.
+
+## Stage 39H proxy-safe context decomposition result
+Stage 39H run pass: `True`. Lock-eligible candidates: `0`. Recommended next stage: `manual multimodal feature acquisition or Stage40A_conditional_dualhead_ema_vicreg`.
+
+## Stage 40A conditional dual-head EMA+VICReg result
+Stage 40A run pass: `True`. Lock-eligible candidates: `0`. Recommended next stage: `manual multimodal feature acquisition_or_stop_internal_rescue`.

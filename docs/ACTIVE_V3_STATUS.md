@@ -175,3 +175,9 @@ Stage 39E is complete. Best condition: `rank_inverse_normal_module_direct_elasti
 
 ## Stage 39F robustness confirmation status
 Stage 39F is complete. New benchmark locked: `False`. Recommended next stage: `Stage39G_restricted_rescue_or_Stage40A_conditional`. This reused existing internal OOF predictions only.
+
+## Stage 39H proxy-safe context decomposition status
+Stage 39H is complete. Best proxy-safe/caution candidate: `latent_plus_tier1_plus_tier2`. Lock-eligible candidates: `0`. Recommended next stage: `manual multimodal feature acquisition or Stage40A_conditional_dualhead_ema_vicreg`.
+
+## Stage 40A conditional dual-head EMA+VICReg status
+Stage 40A is complete. Lock-eligible candidates: `0`. Recommended next stage: `manual multimodal feature acquisition_or_stop_internal_rescue`.

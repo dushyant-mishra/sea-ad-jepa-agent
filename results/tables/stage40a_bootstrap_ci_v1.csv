@@ -1,0 +1,6 @@
+condition,n_bootstrap,ci_lower_95,ci_upper_95,lower_ci_above_stage27c,lower_ci_above_material_threshold
+dualhead_ema_vicreg_latent16,500,0.08744154637976982,0.3196575261390173,False,False
+dualhead_ema_vicreg_latent8,500,0.05618325229843622,0.27940169103932816,False,False
+dualhead_ema_vicreg_latent8_target_shuffled_control,500,-0.12213319718446718,0.11556958253887754,False,False
+stage39e_pca8_reference,500,0.24500594348797894,0.4550058824577675,False,False
+supervised_mlp_no_ema_latent8_control,500,0.03631608156849642,0.28627701186812565,False,False

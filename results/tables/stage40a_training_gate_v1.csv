@@ -1,0 +1,2 @@
+inputs_found,stage39f_no_benchmark_locked,stage39h_no_proxy_safe_lock_candidate,torch_available,no_external_data,no_proxy_context_features,stage40a_training_allowed,reason
+True,True,True,True,True,True,True,Stage 39F/H did not lock a new benchmark; conditional low-capacity Stage 40A allowed

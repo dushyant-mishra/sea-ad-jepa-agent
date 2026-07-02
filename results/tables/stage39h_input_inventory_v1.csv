@@ -1,0 +1,10 @@
+input_name,path,exists,size_bytes
+stage27c_script,scripts/run_stage27c_non_graph_rescue_v1.py,True,36188
+stage27c_oof,results/tables/stage27c_rescue_oof_predictions_v1.csv,True,568535
+stage39d_composition_features,results/tables/stage39d_donor_composition_features_v1.csv,True,26680
+stage39d_proxy_audit,results/tables/stage39d_composition_proxy_audit_v1.csv,True,4787
+stage39d_restricted_composition_sensitivity,results/tables/stage39d_restricted_composition_sensitivity_v1.csv,True,1642
+stage39e_oof,results/tables/stage39e_oof_predictions_v1.csv,True,1758241
+stage39f_lock_decision,results/tables/stage39f_benchmark_lock_decision_v1.csv,True,2936
+donor_metadata_targets,results/tables/sea_ad_full_metadata_targets_with_covariates.csv,True,63304
+locked_folds,results/tables/v3_locked_donor_folds_v1.csv,True,12554

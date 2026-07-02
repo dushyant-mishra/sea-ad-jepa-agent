@@ -1,0 +1,102 @@
+stage: Stage40A
+version: v1
+description: Conditional low-capacity dual-head EMA+VICReg rescue after proxy-safe Stage 39H did not lock a benchmark.
+
+references:
+  stage27c_reference_mean: 0.3267024400121495
+  stage39e_pca8_reference_mean: 0.35808116279206914
+  material_threshold: 0.3317024400121495
+  target_drop_guard: 0.05
+  bootstrap_iterations: 500
+  random_seed: 7
+  required_targets:
+    - AT8
+    - 6e10/A_beta
+    - GFAP
+    - Iba1
+    - NeuN
+
+inputs:
+  stage27c_script: scripts/run_stage27c_non_graph_rescue_v1.py
+  stage39e_oof: results/tables/stage39e_oof_predictions_v1.csv
+  stage39f_lock_decision: results/tables/stage39f_benchmark_lock_decision_v1.csv
+  stage39h_lock_decision: results/tables/stage39h_benchmark_lock_decision_v1.csv
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage40a_input_inventory_v1.csv
+  training_gate: results/tables/stage40a_training_gate_v1.csv
+  model_registry: results/tables/stage40a_model_registry_v1.csv
+  training_history: results/tables/stage40a_training_history_v1.csv
+  oof_predictions: results/tables/stage40a_oof_predictions_v1.csv
+  target_metrics: results/tables/stage40a_target_metrics_v1.csv
+  mean_metrics: results/tables/stage40a_mean_metrics_v1.csv
+  bootstrap_ci: results/tables/stage40a_bootstrap_ci_v1.csv
+  target_guard_audit: results/tables/stage40a_target_guard_audit_v1.csv
+  iba1_rescue_audit: results/tables/stage40a_iba1_rescue_audit_v1.csv
+  negative_control_results: results/tables/stage40a_negative_control_results_v1.csv
+  benchmark_decision: results/tables/stage40a_benchmark_decision_v1.csv
+  claim_boundary_audit: results/tables/stage40a_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage40a_pass_fail_v1.csv
+  technical_report: results/reports/stage40a_conditional_dualhead_ema_vicreg_report_v1.md
+  pi_summary: results/reports/stage40a_pi_conditional_dualhead_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+models:
+  max_epochs: 250
+  patience: 35
+  learning_rate: 0.001
+  weight_decay: 0.01
+  batch_size: 32
+  hidden_dim: 24
+  dropout: 0.10
+  input_noise_std: 0.05
+  ema_decay: 0.98
+  supervised_weight: 1.0
+  ema_weight: 0.10
+  vicreg_weight: 0.02
+  vicreg_var_weight: 1.0
+  vicreg_cov_weight: 0.05
+  ridge_alphas: [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
+  conditions:
+    - condition: stage39e_pca8_reference
+      model_type: reference_oof
+      latent_dim: 8
+      lock_candidate: false
+      comparator_only: true
+    - condition: dualhead_ema_vicreg_latent8
+      model_type: dualhead_ema_vicreg
+      latent_dim: 8
+      lock_candidate: true
+      comparator_only: false
+    - condition: dualhead_ema_vicreg_latent16
+      model_type: dualhead_ema_vicreg
+      latent_dim: 16
+      lock_candidate: true
+      comparator_only: false
+    - condition: supervised_mlp_no_ema_latent8_control
+      model_type: supervised_mlp_no_ema
+      latent_dim: 8
+      lock_candidate: false
+      comparator_only: true
+    - condition: dualhead_ema_vicreg_latent8_target_shuffled_control
+      model_type: dualhead_ema_vicreg
+      latent_dim: 8
+      lock_candidate: false
+      comparator_only: true
+      shuffle_targets: true
+
+safety:
+  conditional_after_stage39h_no_lock: true
+  no_external_data: true
+  no_proxy_context_features: true
+  no_graph_additions: true
+  no_candidate_selection: true
+  donor_heldout_evaluation_preserved: true
+  train_fold_only_preprocessing: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true

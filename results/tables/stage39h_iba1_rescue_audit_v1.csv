@@ -1,0 +1,13 @@
+candidate_id,feature_set_id,target,n_donors,pooled_oof_spearman,stage27c_iba1_score,delta_vs_stage27c,iba1_nonnegative,iba1_improved_vs_stage27c,iba1_rescue_status
+full_39d_reconstruction_comparator,full_39d_reconstruction_comparator,Iba1,84,0.2375215146299484,0.016077756403766325,0.22144375822618206,True,True,Iba1 improved
+latent_only,latent_only,Iba1,84,0.025473321858864025,0.016077756403766325,0.0093955654550977,True,True,Iba1 improved
+latent_plus_tier1_plus_tier2,latent_plus_tier1_plus_tier2,Iba1,84,0.11258479295332592,0.016077756403766325,0.0965070365495596,True,True,Iba1 improved
+latent_plus_tier1_safe_metadata,latent_plus_tier1_safe_metadata,Iba1,84,0.013688366913030272,0.016077756403766325,-0.002389389490736053,True,False,Iba1 not improved
+latent_plus_tier2_composition,latent_plus_tier2_composition,Iba1,84,0.04837501265566467,0.016077756403766325,0.032297256251898346,True,True,Iba1 improved
+restricted_no_pseudo_no_seaad_reconstruction,restricted_no_pseudo_no_seaad_reconstruction,Iba1,84,0.2856940366508049,0.016077756403766325,0.26961628024703854,True,True,Iba1 improved
+safe_composition_only,safe_composition_only,Iba1,84,0.11171464875433593,0.016077756403766325,0.0956368923505696,True,True,Iba1 improved
+safe_metadata_only,safe_metadata_only,Iba1,84,0.009800546724713984,0.016077756403766325,-0.006277209679052341,True,False,Iba1 not improved
+stage27c_reference,stage27c_reference,Iba1,84,0.016077756403766325,0.016077756403766325,0.0,True,False,Iba1 not improved
+stage39e_pca8_reference,stage39e_pca8_reference,Iba1,84,0.056974172849842526,0.016077756403766325,0.0408964164460762,True,True,Iba1 improved
+target_shuffled_control,target_shuffled_control,Iba1,84,-0.018446896831021565,0.016077756403766325,-0.034524653234787886,False,False,Iba1 not improved
+tier3_proxy_only_comparator,tier3_proxy_only_comparator,Iba1,84,0.2649792447099322,0.016077756403766325,0.2489014883061659,True,True,Iba1 improved

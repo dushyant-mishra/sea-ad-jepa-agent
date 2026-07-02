@@ -1,0 +1,86 @@
+stage: Stage39H
+version: v1
+description: Proxy-safe composition and metadata decomposition audit for Stage 39D context signal.
+
+references:
+  stage27c_reference_mean: 0.3267024400121495
+  stage39e_pca8_reference_mean: 0.35808116279206914
+  material_threshold: 0.3317024400121495
+  target_drop_guard: 0.05
+  high_proxy_abs_correlation: 0.70
+  bootstrap_iterations: 500
+  random_seed: 7
+  required_targets:
+    - AT8
+    - 6e10/A_beta
+    - GFAP
+    - Iba1
+    - NeuN
+
+inputs:
+  stage27c_script: scripts/run_stage27c_non_graph_rescue_v1.py
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage39d_composition_features: results/tables/stage39d_donor_composition_features_v1.csv
+  stage39d_proxy_audit: results/tables/stage39d_composition_proxy_audit_v1.csv
+  stage39d_restricted_composition_sensitivity: results/tables/stage39d_restricted_composition_sensitivity_v1.csv
+  stage39e_oof: results/tables/stage39e_oof_predictions_v1.csv
+  stage39f_lock_decision: results/tables/stage39f_benchmark_lock_decision_v1.csv
+  donor_metadata_targets: results/tables/sea_ad_full_metadata_targets_with_covariates.csv
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage39h_input_inventory_v1.csv
+  feature_block_inventory: results/tables/stage39h_feature_block_inventory_v1.csv
+  feature_risk_tier_assignment: results/tables/stage39h_feature_risk_tier_assignment_v1.csv
+  proxy_target_correlation_audit: results/tables/stage39h_proxy_target_correlation_audit_v1.csv
+  feature_block_ablation_registry: results/tables/stage39h_feature_block_ablation_registry_v1.csv
+  model_registry: results/tables/stage39h_model_registry_v1.csv
+  oof_results: results/tables/stage39h_oof_results_v1.csv
+  target_level_results: results/tables/stage39h_target_level_results_v1.csv
+  feature_block_contribution: results/tables/stage39h_feature_block_contribution_v1.csv
+  composition_only_results: results/tables/stage39h_composition_only_results_v1.csv
+  metadata_only_results: results/tables/stage39h_metadata_only_results_v1.csv
+  latent_plus_safe_context_results: results/tables/stage39h_latent_plus_safe_context_results_v1.csv
+  bootstrap_ci: results/tables/stage39h_bootstrap_ci_v1.csv
+  fold_sensitivity: results/tables/stage39h_fold_sensitivity_v1.csv
+  donor_influence_audit: results/tables/stage39h_donor_influence_audit_v1.csv
+  target_guard_audit: results/tables/stage39h_target_guard_audit_v1.csv
+  abeta_guard_audit: results/tables/stage39h_abeta_guard_audit_v1.csv
+  iba1_rescue_audit: results/tables/stage39h_iba1_rescue_audit_v1.csv
+  negative_control_results: results/tables/stage39h_negative_control_results_v1.csv
+  proxy_leakage_decision: results/tables/stage39h_proxy_leakage_decision_v1.csv
+  benchmark_lock_decision: results/tables/stage39h_benchmark_lock_decision_v1.csv
+  claim_boundary_audit: results/tables/stage39h_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage39h_pass_fail_v1.csv
+  technical_report: results/reports/stage39h_proxy_safe_composition_decomposition_report_v1.md
+  pi_summary: results/reports/stage39h_pi_proxy_safe_context_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+safe_metadata_covariates:
+  numeric:
+    - Age at Death
+    - PMI
+    - RIN
+    - Years of education
+  categorical:
+    - Sex
+    - APOE Genotype
+    - Primary Study Name
+
+models:
+  ridge_alphas: [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0]
+  module_pca_components: 8
+
+safety:
+  no_new_architecture: true
+  no_external_data: true
+  no_external_model_selection: true
+  no_candidate_selection: true
+  donor_heldout_evaluation_preserved: true
+  train_fold_only_preprocessing: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
