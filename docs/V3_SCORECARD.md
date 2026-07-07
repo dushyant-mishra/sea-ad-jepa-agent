@@ -234,3 +234,7 @@ Stage44 prepared manuscript v2, publication-ready tables, figure-ready CSVs, PI 
 ## Stage 47 cross-version candidate/network/druggability synthesis
 
 Stage47 consolidated v1/v2/v3 candidate genes, modules, networks, in-silico perturbation evidence, and druggability gaps into a claim-bounded Graph-JEPA disease-state model story. Stage47 did not change the locked benchmark. Stage27C remains official locked benchmark. Stage41C remains best credible unlocked signal unless superseded by later validated stages. Candidate genes/networks/drugs remain hypothesis-generating.
+
+## Stage 48 candidate evidence consistency dossier
+
+Stage48 completed a bounded candidate evidence consistency/dossier audit. It did not rerun gene discovery or alter benchmarks. The decision is not to rerun the broad gene discovery/modeling stack now; final candidates are sufficiently traceable for PI review, with remaining work focused on targeted validation planning and manual review.
