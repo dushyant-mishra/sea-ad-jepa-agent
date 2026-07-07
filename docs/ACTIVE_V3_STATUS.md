@@ -198,3 +198,6 @@ Allowed claim: safe SEA-AD resource acquisition and benchmark-readiness support 
 Stage 41B built donor-linked Tier-1 metadata/MRI matrices from Stage 41ABC downloads and ran locked donor-held-out ridge benchmarks. Best condition: `latent_plus_safe_metadata` with mean pooled OOF Spearman `0.339423`. Lock decision: `do_not_lock_stage41b`.
 ## Stage 41 Full safe feature stability pipeline
 Stage 41 Full completed the safe metadata/latent stability rescue. Best Stage 41C candidate: `blend_stage41b_with_stage39e_pca8` with mean pooled OOF Spearman `0.368087` and bootstrap lower 95% CI `0.260360`. Final decision: `credible_unlocked_stage41_signal`. Locked benchmark after Stage 41: `Stage27C`.
+
+## Stage 42 safe external-support and manuscript synthesis
+Stage 42 completed report/readiness-only synthesis. Stage 27C remains the official locked internal benchmark. Stage 41C is the best credible unlocked signal and is not rebranded as locked. Final decision: `proceed_to_manuscript_draft`. No external validation, clean validation, causal, therapeutic, gene-ablation, or disease-modifying claim is made.

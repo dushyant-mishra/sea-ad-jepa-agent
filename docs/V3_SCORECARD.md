@@ -219,3 +219,6 @@ Stage 41ABC completed the acquisition/readiness gate. It does not replace Stage 
 Stage 41B tested safe donor metadata and MRI volumetric features. Best result: `latent_plus_safe_metadata` = `0.339423`; Stage 27C remains locked unless strict lock guards pass. Decision: `do_not_lock_stage41b`.
 ## Stage 41 Full safe feature stability pipeline
 Stage 41 Full tested stability rescue candidates for the Stage 41B latent+safe metadata signal. Final decision: `credible_unlocked_stage41_signal`. Stage 27C remains locked unless this table reports `lock_new_stage41_benchmark`.
+
+## Stage 42 safe external-support and manuscript synthesis
+Stage 42 consolidated benchmark evidence, frozen mechanisms, external readiness, negative/null results, and manuscript plans. Stage 27C remains locked; Stage 41C remains credible-unlocked. Decision: `proceed_to_manuscript_draft`.

@@ -1,0 +1,37 @@
+dataset_id,metadata_feature,present,comparable_to_seaad,support_use,limitation,notes
+GSE160936,age,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE160936,sex,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE160936,APOE,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE160936,education,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE160936,PMI/RIN,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE160936,study/source metadata,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE125050,age,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE125050,sex,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE125050,APOE,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE125050,education,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE125050,PMI/RIN,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE125050,study/source metadata,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE157827,age,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE157827,sex,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE157827,APOE,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE157827,education,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE157827,PMI/RIN,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE157827,study/source metadata,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE138852,age,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE138852,sex,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE138852,APOE,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE138852,education,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE138852,PMI/RIN,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE138852,study/source metadata,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE174367,age,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE174367,sex,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE174367,APOE,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE174367,education,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE174367,PMI/RIN,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+GSE174367,study/source metadata,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+stage37_38_39_external_outputs,age,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+stage37_38_39_external_outputs,sex,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+stage37_38_39_external_outputs,APOE,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+stage37_38_39_external_outputs,education,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+stage37_38_39_external_outputs,PMI/RIN,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed
+stage37_38_39_external_outputs,study/source metadata,False,False,not validation; context only,not available in compatible processed support table,manual harmonization needed

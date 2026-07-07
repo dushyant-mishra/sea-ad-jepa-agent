@@ -1,0 +1,8 @@
+feature_set_id,source_stage,feature_classes,risk_tier,used_in_locked_benchmark,used_in_credible_unlocked_candidate,allowed_for_future_support,excluded_reason,notes
+stage27c_module_pca,Stage27C,module PCA features,Tier0,True,False,True,,official locked internal benchmark
+stage39e_pca8,Stage39E,rank inverse normal module PCA8,Tier0,False,True,True,,credible unlocked reference
+stage41b_safe_metadata,Stage41B,age/sex/APOE/education/PMI/RIN after forbidden exclusion,Tier1,False,True,True,,helped latent+safe metadata signal
+stage41b_latent_module,Stage41B,module/latent features,Tier0,False,True,True,,combined with safe metadata
+stage41c_oof_blend,Stage41C,predeclared OOF blend of Stage41B and Stage39E,Tier0/Tier1,False,True,True,,best credible unlocked signal
+stage41b_mri,Stage41B,MRI volumetrics,Tier1,False,False,True,not helpful enough for lock,tested but did not rescue lock
+forbidden_features,all,Luminex/pathology/diagnosis/Braak/CERAD/Thal/ADNC/HALO/same-stain,Tier4,False,False,False,forbidden leakage/proxy risk,excluded
