@@ -1,0 +1,17 @@
+audit_item,pass,evidence
+no_model_training,True,Stage 41A is planning-only and writes safety boundaries.
+no_feature_fabrication,True,Stage 41A is planning-only and writes safety boundaries.
+no_downloads_performed,True,Stage 41A is planning-only and writes safety boundaries.
+no_raw_data_added_to_git,True,Stage 41A is planning-only and writes safety boundaries.
+no_external_model_selection,True,Stage 41A is planning-only and writes safety boundaries.
+target_predictors_forbidden,True,Stage 41A is planning-only and writes safety boundaries.
+same_stain_same_target_predictors_forbidden,True,Stage 41A is planning-only and writes safety boundaries.
+halo_target_quantification_predictors_forbidden,True,Stage 41A is planning-only and writes safety boundaries.
+braak_cerad_thal_adnc_predictors_forbidden,True,Stage 41A is planning-only and writes safety boundaries.
+frozen_candidates_preserved,True,Stage 41A is planning-only and writes safety boundaries.
+no_clean_external_validation_claim,True,Stage 41A is planning-only and writes safety boundaries.
+no_causal_claim,True,Stage 41A is planning-only and writes safety boundaries.
+no_therapeutic_claim,True,Stage 41A is planning-only and writes safety boundaries.
+no_gene_ablation_claim,True,Stage 41A is planning-only and writes safety boundaries.
+no_disease_modifying_claim,True,Stage 41A is planning-only and writes safety boundaries.
+safety_audit_pass,True,all safety checks passed

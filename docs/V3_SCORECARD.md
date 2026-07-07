@@ -206,3 +206,10 @@ Stage 39H run pass: `True`. Lock-eligible candidates: `0`. Recommended next stag
 
 ## Stage 40A conditional dual-head EMA+VICReg result
 Stage 40A run pass: `True`. Lock-eligible candidates: `0`. Recommended next stage: `manual multimodal feature acquisition_or_stop_internal_rescue`.
+
+## Stage 40B terminal rescue synthesis result
+Stage 40B run pass: `True`. Locked benchmark: Stage 27C module_pca_ridge. Best unlocked candidate: Stage 39E pca8 ridge. Recommended next stage: Stage41A manual/internal multimodal feature acquisition.
+## Stage 41 internal multimodal feature acquisition result
+Stage 41 run pass: `True`. Benchmark training ran: `False`. Recommended next stage: `Stage41A_manual_internal_feature_acquisition`.
+## Stage 41A manual internal feature acquisition result
+Stage 41A run pass: `True`. No modeling or downloading was performed. Recommended next stage: Stage41B safe donor-linked metadata/MRI feature matrix build.

@@ -181,3 +181,10 @@ Stage 39H is complete. Best proxy-safe/caution candidate: `latent_plus_tier1_plu
 
 ## Stage 40A conditional dual-head EMA+VICReg status
 Stage 40A is complete. Lock-eligible candidates: `0`. Recommended next stage: `manual multimodal feature acquisition_or_stop_internal_rescue`.
+
+## Stage 40B terminal rescue synthesis status
+Stage 40B is complete. Stage 27C remains the locked benchmark; Stage 39E pca8 remains the best credible unlocked candidate; internal architecture tuning on the current feature matrix should pause; recommended next stage is Stage41A manual/internal multimodal feature acquisition.
+## Stage 41 internal multimodal feature acquisition status
+Stage 41 is complete. Safe new donor-linked multimodal/spatial/image sources available for benchmark training: `0`. Benchmark training ran: `False`. Recommended next stage: `Stage41A_manual_internal_feature_acquisition`.
+## Stage 41A manual internal feature acquisition status
+Stage 41A is complete. Highest priority resources are SEA-AD donor metadata and postmortem MRI volumetrics; safest first benchmark matrix is donor-linked safe metadata + MRI. Next executable stage is Stage41B safe feature matrix build after manual acquisition.

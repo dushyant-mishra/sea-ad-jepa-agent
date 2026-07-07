@@ -1,0 +1,52 @@
+stage: Stage40B
+version: v1
+description: Terminal model-rescue synthesis and next-data acquisition decision audit.
+
+references:
+  locked_benchmark: Stage27C module_pca_ridge
+  stage27c_reference_mean: 0.3267024400121495
+  best_unlocked_candidate: Stage39E rank_inverse_normal_module_pca8_ridge
+  best_unlocked_candidate_mean: 0.35808116279206914
+  recommended_next_stage: Stage41A_manual_multimodal_feature_acquisition
+
+inputs:
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage30_status: results/tables/stage30_graph_control_pass_fail_v1.csv
+  stage31_status: results/tables/stage31_residual_graph_pass_fail_v1.csv
+  stage39f_lock_decision: results/tables/stage39f_benchmark_lock_decision_v1.csv
+  stage39h_lock_decision: results/tables/stage39h_benchmark_lock_decision_v1.csv
+  stage40a_benchmark_decision: results/tables/stage40a_benchmark_decision_v1.csv
+  stage40a_mean_metrics: results/tables/stage40a_mean_metrics_v1.csv
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+
+outputs:
+  rescue_attempt_inventory: results/tables/stage40b_rescue_attempt_inventory_v1.csv
+  best_candidate_summary: results/tables/stage40b_best_candidate_summary_v1.csv
+  lock_status_summary: results/tables/stage40b_lock_status_summary_v1.csv
+  failure_mode_summary: results/tables/stage40b_failure_mode_summary_v1.csv
+  what_worked_vs_failed: results/tables/stage40b_what_worked_vs_failed_v1.csv
+  stop_continue_decision: results/tables/stage40b_stop_continue_decision_v1.csv
+  missing_information_inventory: results/tables/stage40b_missing_information_inventory_v1.csv
+  multimodal_feature_acquisition_plan: results/tables/stage40b_multimodal_feature_acquisition_plan_v1.csv
+  external_metadata_repair_plan: results/tables/stage40b_external_metadata_repair_plan_v1.csv
+  manuscript_readiness_summary: results/tables/stage40b_manuscript_readiness_summary_v1.csv
+  claim_boundary_audit: results/tables/stage40b_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage40b_pass_fail_v1.csv
+  technical_report: results/reports/stage40b_terminal_rescue_synthesis_report_v1.md
+  pi_summary: results/reports/stage40b_pi_next_steps_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+safety:
+  no_new_model_training: true
+  no_external_data_used_for_model_selection: true
+  frozen_candidates_preserved: true
+  stage27c_locked_benchmark_preserved: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
+  no_disease_modifying_claim: true

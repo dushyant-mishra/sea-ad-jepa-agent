@@ -1,0 +1,5 @@
+decision_item,value,status
+locked_benchmark,Stage 27C module_pca_ridge,preserved
+new_benchmark_locked_after_39c_to_40a,False,no_candidate_passed_all_gates
+best_unlocked_candidate,Stage 39E pca8 ridge,retain_as_candidate_only
+architecture_tuning_on_current_matrix,pause,not_recommended

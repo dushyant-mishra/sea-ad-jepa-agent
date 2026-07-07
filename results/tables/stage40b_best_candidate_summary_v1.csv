@@ -1,0 +1,5 @@
+candidate,role,mean_pooled_oof_spearman,lock_status,reason
+Stage 27C module_pca_ridge,official_locked_benchmark,0.3267024400121495,locked,pre-existing official internal benchmark; no later candidate passed all lock gates
+Stage 39E rank_inverse_normal_module_pca8_ridge,best_credible_unlocked_candidate,0.35808116279206914,unlocked,"passes target guard and improves point estimate, but bootstrap lower CI did not clear lock gates"
+Stage 39H latent_plus_tier1_plus_tier2,useful_context_candidate,0.38781411359724616,unlocked_not_lockable,useful context signal but target guard/proxy-caution/CI gates failed
+Stage 40A dualhead_ema_vicreg_latent16,conditional_architecture_rescue,0.20855839806587548,failed,failed versus Stage 39E pca8 reference

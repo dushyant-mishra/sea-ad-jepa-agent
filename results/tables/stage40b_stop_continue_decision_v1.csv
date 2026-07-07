@@ -1,0 +1,5 @@
+decision,value,rationale,next_action
+keep_stage27c_locked,True,No Stage 39C-H or Stage 40A candidate was benchmark-lock eligible.,Use Stage 27C for official internal benchmark language.
+continue_internal_architecture_tuning_on_current_features,False,Stage 40A failed badly versus Stage 39E pca8; further tuning risks overfitting 84 donors.,Pause architecture rescue on current feature matrix.
+start_manual_multimodal_feature_acquisition,True,Useful signal likely requires safer additional internal modalities/features.,Run Stage41A manual/internal multimodal feature acquisition.
+continue_external_metadata_repair,True,External branch remains useful for support/readiness but not clean validation.,Maintain as separate support-readiness branch.

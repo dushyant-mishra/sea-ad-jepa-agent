@@ -1,0 +1,46 @@
+stage: Stage41A
+version: v1
+description: Manual internal feature acquisition plan for SEA-AD safe multimodal/spatial/image/context features.
+
+references:
+  locked_benchmark: Stage27C module_pca_ridge
+  best_unlocked_candidate: Stage39E rank_inverse_normal_module_pca8_ridge
+  recommended_next_stage: Stage41B_build_donor_linked_safe_feature_matrices
+  primary_resource_urls:
+    sea_ad_data: https://brain-map.org/consortia/sea-ad/our-data
+    sea_ad_resources: https://brain-map.org/consortia/sea-ad/our-resources
+    cellxgene_collection: https://cellxgene.cziscience.com/collections/1ca90a2d-2943-483d-b678-b809bf464c30
+
+outputs:
+  resource_inventory: results/tables/stage41a_resource_inventory_v1.csv
+  manual_download_manifest: results/tables/stage41a_manual_download_manifest_v1.csv
+  feature_source_priority: results/tables/stage41a_feature_source_priority_v1.csv
+  feature_safety_tier_plan: results/tables/stage41a_feature_safety_tier_plan_v1.csv
+  donor_linkage_requirements: results/tables/stage41a_donor_linkage_requirements_v1.csv
+  expected_feature_matrix_schema: results/tables/stage41a_expected_feature_matrix_schema_v1.csv
+  forbidden_predictor_list: results/tables/stage41a_forbidden_predictor_list_v1.csv
+  whitepaper_provenance_inventory: results/tables/stage41a_whitepaper_provenance_inventory_v1.csv
+  next_build_steps: results/tables/stage41a_next_build_steps_v1.csv
+  claim_boundary_audit: results/tables/stage41a_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage41a_pass_fail_v1.csv
+  technical_report: results/reports/stage41a_manual_internal_feature_acquisition_report_v1.md
+  pi_summary: results/reports/stage41a_pi_manual_acquisition_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+safety:
+  no_model_training: true
+  no_feature_fabrication: true
+  no_raw_data_git_add: true
+  no_external_model_selection: true
+  no_target_predictors: true
+  no_luminex_abeta_tau_predictors: true
+  no_same_stain_same_target_predictors: true
+  no_halo_target_quantification_predictors: true
+  no_braak_cerad_thal_adnc_predictors: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
+  no_disease_modifying_claim: true

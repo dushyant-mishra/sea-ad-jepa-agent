@@ -1,0 +1,5 @@
+repair_task,description,purpose,claim_boundary
+repair_sample_metadata,"map sample/cell IDs, disease labels, pathology metadata",support_readiness,do not use for internal model selection
+celltype_harmonization,microglia/astrocyte/neuron labels where available,support_readiness,no clean validation claim
+pathology_label_harmonization,tau/pTau/Aβ/amyloid metadata if available,conditional_support,claim only external support if prior gates permit
+claim_level_audit,dataset-by-dataset allowed claim language,safety,avoid clean external validation overclaim

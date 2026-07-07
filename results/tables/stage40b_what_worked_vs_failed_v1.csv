@@ -1,0 +1,8 @@
+outcome_class,item,interpretation
+worked_partially,rank inverse-normal target handling,Stage 39C/39E improved point estimates
+worked_partially,simple ridge/PCA module baseline,Stage 39E pca8 remains best credible unlocked candidate
+worked_partially,safe metadata/context decomposition,Stage 39H showed context can improve point estimates
+failed_lock_gate,full composition/context,too proxy-sensitive to lock
+failed_lock_gate,direct elastic net high-score model,Aβ guard failed
+failed,low-capacity neural dual-head EMA+VICReg,Stage 40A did not rescue benchmark
+recommended,new safe feature acquisition,likely missing information is outside current matrix

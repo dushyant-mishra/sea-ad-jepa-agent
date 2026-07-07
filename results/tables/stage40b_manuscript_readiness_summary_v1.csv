@@ -1,0 +1,7 @@
+manuscript_item,status_summary,readiness
+locked_internal_benchmark,Stage 27C remains locked,ready
+model_rescue_attempts,Stage 39C-H and 40A negative/partial results preserved,ready_as_methods_or_supplement
+candidate_model_language,Stage 39E pca8 is unlocked candidate only,safe_with_limitations
+external_validation_language,not clean external validation,not_ready
+causal_therapeutic_language,not supported,forbidden
+next_data_acquisition,Stage41A recommended,ready_to_plan
