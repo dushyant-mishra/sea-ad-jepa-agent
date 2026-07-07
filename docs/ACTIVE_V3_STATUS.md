@@ -221,3 +221,7 @@ Stage48 completed a bounded candidate evidence consistency/dossier audit. It did
 ## Stage 49 known experimental evidence concordance
 
 Stage49 performed a post hoc known-evidence concordance audit for Stage47/48 Graph-JEPA candidate genes, modules, networks, and druggability hypotheses. It did not run new modeling or change benchmark status. Stage27C remains official locked benchmark, Stage41C remains credible-unlocked, and Stage45 remains negative. Known evidence is treated as orthogonal support for hypothesis prioritization, not as model validation of causality or therapy.
+
+## Stage 50 graph-specific Graph-JEPA topology audit
+
+Stage50 attempted the graph-specific Graph-JEPA topology audit. It did not alter benchmark status. Stage27C remains official locked benchmark, Stage41C remains credible-unlocked, and Stage45 remains negative. Graph-specific decision: graph_specific_test_inconclusive_missing_controls. Graph-specific claims remain limited unless real graph models beat no-graph, random, and shuffled controls under leakage-safe frozen evaluation.

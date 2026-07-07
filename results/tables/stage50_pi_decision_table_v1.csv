@@ -1,0 +1,6 @@
+question_id,decision_question,recommendation,consequence
+Q1,Did real graph topology improve frozen disease-state recovery?,Not established in Stage50.,No strong graph-specific claim.
+Q2,Did it beat no-graph and shuffled controls?,Not run; controls/input alignment missing.,Use modest graph-informed language.
+Q3,"Main text, supplement, or deferred?",Supplement/gap unless curated graph controls are acquired.,Keeps story safe.
+Q4,Can candidate/druggability story proceed?,"Yes, as graph-informed hypothesis generation.",Independent of topology-specific proof.
+Q5,Next manual dataset needed?,Curated graph edge list aligned to donor expression/module matrix.,Enables definitive audit.

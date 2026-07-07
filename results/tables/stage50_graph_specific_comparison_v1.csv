@@ -1,0 +1,2 @@
+comparison_id,real_graph_model,control_model,metric,real_graph_score,control_score,delta,real_graph_beats_control,passes_negative_controls,graph_specific_pass,notes
+not_run_gap,not_run_gap,not_run_gap,mean_pooled_oof_spearman,,,,False,False,False,Inputs require future alignment/training before a graph-specific claim can be made.

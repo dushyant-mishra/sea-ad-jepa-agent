@@ -1,0 +1,6 @@
+gap_id,gap_present,recommended_action
+curated_ppi_grn_graph,False,Acquire or define a clean curated PPI/GRN/pathway edge list with gene identifiers matching donor expression features.
+strict_graph_controls,True,"Build no-graph, beta0, random, gene-label-shuffled, and degree-preserving shuffled controls over the same node universe."
+graph_expression_overlap,True,Align graph nodes to the selected donor expression/module matrix before any JEPA run.
+frozen_embeddings_for_probe,True,"Only after leakage-safe pretraining, evaluate frozen embeddings with donor-held-out probes."
+external_validation_cohort,True,Required before external validation language.

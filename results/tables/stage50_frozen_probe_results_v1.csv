@@ -1,0 +1,2 @@
+model_variant,target,mean_pooled_oof_spearman,stage27c_reference,stage41c_reference,evaluation_ran,skip_reason
+not_run_gap,AT8;6e10/A_beta;GFAP;Iba1;NeuN,,0.3267024400121495,0.36808747595423713,False,No frozen graph-JEPA embeddings from leakage-safe graph-specific pretraining.

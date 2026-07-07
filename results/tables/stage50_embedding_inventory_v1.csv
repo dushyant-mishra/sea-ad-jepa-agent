@@ -1,0 +1,2 @@
+embedding_id,model_variant,path,n_donors,n_dimensions,committed,notes
+not_written,not_run_gap,,89,0,False,No embeddings generated because JEPA training was skipped safely.
