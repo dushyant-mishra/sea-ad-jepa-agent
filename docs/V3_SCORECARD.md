@@ -213,3 +213,8 @@ Stage 40B run pass: `True`. Locked benchmark: Stage 27C module_pca_ridge. Best u
 Stage 41 run pass: `True`. Benchmark training ran: `False`. Recommended next stage: `Stage41A_manual_internal_feature_acquisition`.
 ## Stage 41A manual internal feature acquisition result
 Stage 41A run pass: `True`. No modeling or downloading was performed. Recommended next stage: Stage41B safe donor-linked metadata/MRI feature matrix build.
+## Stage 41ABC SEA-AD safe feature acquisition/download benchmark gate
+Stage 41ABC completed the acquisition/readiness gate. It does not replace Stage 27C unless a safe donor-linked matrix produces a robust donor-held-out improvement; in this run the benchmark decision is `manual_feature_acquisition_required`.
+
+## Stage 41B safe metadata/MRI benchmark
+Stage 41B tested safe donor metadata and MRI volumetric features. Best result: `safe_metadata_plus_mri` = `0.263019`; Stage 27C remains locked unless strict lock guards pass. Decision: `do_not_lock_stage41b`.

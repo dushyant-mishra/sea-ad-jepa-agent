@@ -1,0 +1,3 @@
+feature_source,n_feature_donors,n_target_donors,n_overlap,overlap_fraction,linkage_ready,notes
+safe_metadata,84,84,84,1.0,True,donor ID overlap with locked folds
+mri_volumetrics,84,84,84,1.0,True,donor ID overlap with locked folds

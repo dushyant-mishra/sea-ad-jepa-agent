@@ -1,0 +1,4 @@
+condition,target,iba1_spearman,n_donors,stage27c_iba1_reference,iba1_nonnegative,iba1_improved_vs_stage27c
+safe_metadata_only,Iba1,-0.05313354257365597,84,-0.0149855907827034,False,False
+mri_only,Iba1,-0.023124664622675786,84,-0.0149855907827034,False,False
+safe_metadata_plus_mri,Iba1,0.039951402247646046,84,-0.0149855907827034,True,True

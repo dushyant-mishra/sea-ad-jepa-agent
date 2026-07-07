@@ -1,0 +1,4 @@
+page_id,url,fetch_success,http_content_type,content_length_bytes,n_links_parsed,error
+sea_ad_data,https://brain-map.org/consortia/sea-ad/our-data,True,text/html; charset=utf-8,0,174,
+sea_ad_resources,https://brain-map.org/consortia/sea-ad/our-resources,True,text/html; charset=utf-8,0,167,
+cellxgene_collection,https://cellxgene.cziscience.com/collections/1ca90a2d-2943-483d-b678-b809bf464c30,True,text/html; charset=utf-8,36044,8,

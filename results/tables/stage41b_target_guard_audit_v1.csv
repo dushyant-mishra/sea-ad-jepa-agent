@@ -1,0 +1,4 @@
+condition,target_guard_pass,min_target_spearman,notes
+mri_only,True,-0.023124664622675786,guard requires no severely negative target
+safe_metadata_only,False,-0.05313354257365597,guard requires no severely negative target
+safe_metadata_plus_mri,True,0.039951402247646046,guard requires no severely negative target

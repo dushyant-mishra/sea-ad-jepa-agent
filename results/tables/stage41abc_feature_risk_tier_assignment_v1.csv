@@ -1,0 +1,6 @@
+risk_tier,feature_class,examples,allowed_for_lock_candidate,comparator_only,forbidden,recommended_use
+0,existing internal module/latent features,Stage 27C/39E module features,True,False,False,reference/baseline
+1,safe donor metadata; MRI volumetrics; broad region/anatomy; technical covariates,"age, sex, APOE, PMI, RIN, MRI volumes",True,False,False,lock-candidate eligible after linkage audit
+2,cell-type composition; spatial neighborhoods; microglia/astrocyte/neuron state summaries; snATAC; H&E-LFB morphology,context biology/features not directly target-derived,False,False,False,caution features requiring proxy audit
+3,high-risk proxy features,section/pathology-adjacent summaries and strongly target-correlated descriptors,False,True,False,comparator-only
+4,forbidden predictors,"quantitative neuropathology, Luminex A_beta/tau, Braak/CERAD/Thal/ADNC, same-stain same-target, HALO target quantifications, pseudo-labels",False,False,True,excluded from modeling

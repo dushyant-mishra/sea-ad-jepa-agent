@@ -1,0 +1,4 @@
+feature_matrix_id,local_processed_path,safe_feature_matrix_built,n_donors,n_features,tier,training_allowed,committed_to_git
+safe_metadata_only,data\sea_ad\stage41b\processed\stage41b_safe_metadata_only_feature_matrix_v1.csv,True,84,17,Tier1,True,False
+mri_only,data\sea_ad\stage41b\processed\stage41b_mri_only_feature_matrix_v1.csv,True,84,148,Tier1,True,False
+safe_metadata_plus_mri,data\sea_ad\stage41b\processed\stage41b_safe_metadata_plus_mri_feature_matrix_v1.csv,True,84,165,Tier1,True,False

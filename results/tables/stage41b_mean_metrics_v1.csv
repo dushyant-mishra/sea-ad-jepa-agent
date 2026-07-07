@@ -1,0 +1,4 @@
+condition,mean_pooled_oof_spearman,min_target_spearman,n_targets
+safe_metadata_only,0.1704849650703655,-0.05313354257365597,5
+mri_only,0.19411556258525117,-0.023124664622675786,5
+safe_metadata_plus_mri,0.26301913536498944,0.039951402247646046,5

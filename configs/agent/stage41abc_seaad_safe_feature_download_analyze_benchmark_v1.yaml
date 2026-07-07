@@ -1,0 +1,79 @@
+stage: Stage41ABC
+version: v1
+description: SEA-AD safe resource discovery, bounded download, analysis, donor-linked feature matrix construction, and first benchmark gate.
+
+references:
+  locked_benchmark_condition: Stage27C module_pca_ridge
+  locked_benchmark_mean_pooled_oof_spearman: 0.3267024400121495
+  material_rescue_threshold: 0.3317
+  stage39e_best_credible_unlocked: rank_inverse_normal_module_pca8_ridge
+  stage39e_best_credible_unlocked_mean_pooled_oof_spearman: 0.35808116279206914
+  resource_pages:
+    sea_ad_data: https://brain-map.org/consortia/sea-ad/our-data
+    sea_ad_resources: https://brain-map.org/consortia/sea-ad/our-resources
+    cellxgene_collection: https://cellxgene.cziscience.com/collections/1ca90a2d-2943-483d-b678-b809bf464c30
+
+paths:
+  raw_dir: data/sea_ad/stage41abc/raw
+  interim_dir: data/sea_ad/stage41abc/interim
+  processed_dir: data/sea_ad/stage41abc/processed
+  manifest_dir: data/sea_ad/stage41abc/manifests
+  whitepaper_dir: data/sea_ad/stage41abc/whitepapers
+
+download_policy:
+  max_download_mb: 250
+  max_pdf_mb: 100
+  user_agent: Mozilla/5.0 Stage41ABC SEA-AD safe resource audit
+
+inputs:
+  targets_path: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  target_columns_path: data/processed/metadata/pathology_target_columns.csv
+  stage27c_mean_metrics: results/tables/stage27c_rescue_mean_metrics_v1.csv
+  stage27c_target_metrics: results/tables/stage27c_rescue_target_metrics_v1.csv
+  stage39e_mean_metrics: results/tables/stage39e_mean_metrics_v1.csv
+  stage39e_target_metrics: results/tables/stage39e_target_metrics_v1.csv
+
+outputs:
+  resource_page_inventory: results/tables/stage41abc_resource_page_inventory_v1.csv
+  discovered_download_links: results/tables/stage41abc_discovered_download_links_v1.csv
+  download_attempts: results/tables/stage41abc_download_attempts_v1.csv
+  download_manifest: results/tables/stage41abc_download_manifest_v1.csv
+  file_checksum_manifest: results/tables/stage41abc_file_checksum_manifest_v1.csv
+  whitepaper_inventory: results/tables/stage41abc_whitepaper_inventory_v1.csv
+  downloaded_file_analysis: results/tables/stage41abc_downloaded_file_analysis_v1.csv
+  donor_metadata_analysis: results/tables/stage41abc_donor_metadata_analysis_v1.csv
+  mri_volumetrics_analysis: results/tables/stage41abc_mri_volumetrics_analysis_v1.csv
+  cellxgene_metadata_analysis: results/tables/stage41abc_cellxgene_metadata_analysis_v1.csv
+  spatial_resource_analysis: results/tables/stage41abc_spatial_resource_analysis_v1.csv
+  feature_source_priority: results/tables/stage41abc_feature_source_priority_v1.csv
+  feature_risk_tier_assignment: results/tables/stage41abc_feature_risk_tier_assignment_v1.csv
+  donor_linkage_audit: results/tables/stage41abc_donor_linkage_audit_v1.csv
+  safe_feature_matrix_manifest: results/tables/stage41abc_safe_feature_matrix_manifest_v1.csv
+  safe_metadata_mri_feature_matrix_summary: results/tables/stage41abc_safe_metadata_mri_feature_matrix_summary_v1.csv
+  forbidden_predictor_audit: results/tables/stage41abc_forbidden_predictor_audit_v1.csv
+  manual_acquisition_gaps: results/tables/stage41abc_manual_acquisition_gaps_v1.csv
+  model_registry: results/tables/stage41abc_model_registry_v1.csv
+  oof_results: results/tables/stage41abc_oof_results_v1.csv
+  target_level_results: results/tables/stage41abc_target_level_results_v1.csv
+  delta_vs_references: results/tables/stage41abc_delta_vs_references_v1.csv
+  bootstrap_ci: results/tables/stage41abc_bootstrap_ci_v1.csv
+  negative_control_results: results/tables/stage41abc_negative_control_results_v1.csv
+  proxy_leakage_decision: results/tables/stage41abc_proxy_leakage_decision_v1.csv
+  benchmark_lock_decision: results/tables/stage41abc_benchmark_lock_decision_v1.csv
+  claim_boundary_audit: results/tables/stage41abc_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage41abc_pass_fail_v1.csv
+  technical_report: results/reports/stage41abc_seaad_safe_feature_download_analyze_benchmark_report_v1.md
+  pi_summary: results/reports/stage41abc_pi_download_feature_summary_v1.md
+  manual_download_instructions: results/reports/stage41abc_manual_download_instructions_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+safety:
+  no_raw_data_committed: true
+  no_external_model_selection: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true
+  no_disease_modifying_claim: true

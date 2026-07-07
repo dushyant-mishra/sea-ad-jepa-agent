@@ -1,0 +1,16 @@
+condition,target,spearman,n_donors
+safe_metadata_only,AT8,0.43239850156930243,84
+safe_metadata_only,6e10/A_beta,0.3831932773109244,84
+safe_metadata_only,GFAP,0.10045560392831832,84
+safe_metadata_only,Iba1,-0.05313354257365597,84
+safe_metadata_only,NeuN,-0.010489014883061658,84
+mri_only,AT8,0.2952647085775367,84
+mri_only,6e10/A_beta,0.19356275755530455,84
+mri_only,GFAP,0.2349117638245725,84
+mri_only,Iba1,-0.023124664622675786,84
+mri_only,NeuN,0.26996324759151796,84
+safe_metadata_plus_mri,AT8,0.3470486989976714,84
+safe_metadata_plus_mri,6e10/A_beta,0.3285410549762074,84
+safe_metadata_plus_mri,GFAP,0.3232762984711957,84
+safe_metadata_plus_mri,Iba1,0.039951402247646046,84
+safe_metadata_plus_mri,NeuN,0.27627822213222636,84

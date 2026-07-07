@@ -1,0 +1,8 @@
+input_name,path,exists,size_bytes
+stage41abc_download_manifest,results/tables/stage41abc_download_manifest_v1.csv,True,6227
+targets_path,data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv,True,21982
+locked_folds,results/tables/v3_locked_donor_folds_v1.csv,True,12554
+stage27c_mean_metrics,results/tables/stage27c_rescue_mean_metrics_v1.csv,True,792
+stage27c_target_metrics,results/tables/stage27c_rescue_target_metrics_v1.csv,True,10495
+stage39e_mean_metrics,results/tables/stage39e_mean_metrics_v1.csv,True,3556
+stage39e_target_metrics,results/tables/stage39e_target_metrics_v1.csv,True,23221

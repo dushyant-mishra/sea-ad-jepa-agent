@@ -1,0 +1,8 @@
+priority,feature_source,resource_type,risk_tier,expected_signal,importance,stage41abc_action
+1,SEA-AD donor metadata,donor metadata,Tier1,safe linkage/covariates,high,attempt automatic download if small public file exists
+1,postmortem MRI volumetrics,MRI volumetrics,Tier1,anatomy/volume context,high,attempt automatic download if small public file exists
+2,CELLxGENE / SEA-AD snRNA donor-cell metadata,single-cell metadata,Tier2,donor cell-type composition,high,manifest/manual unless small metadata export exists
+3,spatial transcriptomics metadata/summaries,spatial,Tier2,neighborhood summaries,medium,manifest/manual by default
+4,snATAC / regulatory summaries,snATAC,Tier2,regulatory context,medium,manifest/manual by default
+5,microglia-enriched multiregion state summaries,microglia states,Tier2,Iba1/microglia biology context,medium,manual schema review
+6,H&E-LFB or non-target image morphology,non-target morphology,Tier2,tissue architecture,medium,manual/precomputed summaries only

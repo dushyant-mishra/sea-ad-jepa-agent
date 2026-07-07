@@ -188,3 +188,12 @@ Stage 40B is complete. Stage 27C remains the locked benchmark; Stage 39E pca8 re
 Stage 41 is complete. Safe new donor-linked multimodal/spatial/image sources available for benchmark training: `0`. Benchmark training ran: `False`. Recommended next stage: `Stage41A_manual_internal_feature_acquisition`.
 ## Stage 41A manual internal feature acquisition status
 Stage 41A is complete. Highest priority resources are SEA-AD donor metadata and postmortem MRI volumetrics; safest first benchmark matrix is donor-linked safe metadata + MRI. Next executable stage is Stage41B safe feature matrix build after manual acquisition.
+## Stage 41ABC SEA-AD safe feature acquisition/download benchmark gate
+Stage 41ABC fetched SEA-AD resource pages, attempted bounded safe downloads, analyzed downloaded files/manifests, wrote safety/linkage audits, and preserved the Stage 27C locked benchmark unless a schema-reviewed donor-linked safe matrix exists.
+
+Run pass: `True`. Benchmark decision: `manual_feature_acquisition_required`. Benchmark training ran: `False`.
+
+Allowed claim: safe SEA-AD resource acquisition and benchmark-readiness support only. Disallowed claim: external validation; clean validation; causal mechanism; therapeutic target; gene-ablation validation; disease-modifying effect.
+
+## Stage 41B safe metadata/MRI benchmark
+Stage 41B built donor-linked Tier-1 metadata/MRI matrices from Stage 41ABC downloads and ran locked donor-held-out ridge benchmarks. Best condition: `safe_metadata_plus_mri` with mean pooled OOF Spearman `0.263019`. Lock decision: `do_not_lock_stage41b`.

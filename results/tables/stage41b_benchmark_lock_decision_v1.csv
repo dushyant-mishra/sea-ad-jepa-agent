@@ -1,0 +1,2 @@
+candidate,benchmark_training_ran,mean_pooled_oof_spearman,benchmark_lock_eligible,locked_benchmark_preserved,stage27c_reference,material_threshold,bootstrap_lower_95,decision,reason
+safe_metadata_plus_mri,True,0.26301913536498944,False,True,0.3267024400121495,0.3317,0.15293586061534112,do_not_lock_stage41b,one or more strict lock guards failed

@@ -1,0 +1,3 @@
+resource,access_type,file_type,downloaded_or_manifest_only,donor_linkage_possible,feature_build_possible_now,proposed_spatial_features,leakage_risk,required_manual_step
+https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/index.html,public_or_manifest,.html,manifest_only,unknown_until_manual_schema_review,False,donor/region neighborhood summaries computed without target labels,medium,Acquire schema/metadata first; skip raw spatial matrices unless size-approved.
+https://brain-map.org/consortia/sea-ad/our-resources#spatial,public_or_manifest,,manifest_only,unknown_until_manual_schema_review,False,donor/region neighborhood summaries computed without target labels,medium,Acquire schema/metadata first; skip raw spatial matrices unless size-approved.
