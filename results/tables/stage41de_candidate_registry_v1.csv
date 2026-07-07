@@ -1,0 +1,2 @@
+candidate_id,stage41c_success,eligible_for_lock_confirmation,reason
+,False,False,No Stage41C candidate passed strict CI/guard gates.

@@ -1,0 +1,33 @@
+feature_name,feature_type,n_missing,missing_fraction,n_unique,rare_category_flag,fold_imbalance_flag,high_influence_flag,safe_tier,recommended_action,reason
+module_plaque_response,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_complement,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_lipid_metabolism,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_lysosome_phagocytosis,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_interferon_response,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_inflammatory_signaling,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_at8_associated_first_pass,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_homeostatic_microglia,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_disease_associated_microglia,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_senescence_stress,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_oxidative_stress,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_synapse_pruning,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_antigen_presentation,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_vascular_barrier_myeloid,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+module_chemokine_migration,module,0,0.0,84,False,False,False,Tier1,keep,Tier0 latent/module feature
+meta__Age at Death,metadata,0,0.0,30,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__Sex_Female,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__Sex_Male,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__Highest level of education_Bachelors,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__Highest level of education_Graduate (PhD/Masters),metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__Highest level of education_High School,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__Highest level of education_Professional,metadata,0,0.0,2,True,False,False,Tier1,drop_for_lock_candidate,"high missingness, sparse category, or fold imbalance"
+meta__Highest level of education_Trade School/ Tech School,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__Years of education,metadata,0,0.0,10,True,False,False,Tier1,drop_for_lock_candidate,"high missingness, sparse category, or fold imbalance"
+meta__APOE Genotype_2/2,metadata,0,0.0,2,True,False,False,Tier1,drop_for_lock_candidate,"high missingness, sparse category, or fold imbalance"
+meta__APOE Genotype_2/3,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__APOE Genotype_2/4,metadata,0,0.0,2,True,False,False,Tier1,drop_for_lock_candidate,"high missingness, sparse category, or fold imbalance"
+meta__APOE Genotype_3/3,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__APOE Genotype_3/4,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__APOE Genotype_4/4,metadata,0,0.0,2,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__PMI,metadata,0,0.0,60,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance
+meta__RIN,metadata,0,0.0,65,False,False,False,Tier1,keep,safe metadata column with acceptable missingness/fold balance

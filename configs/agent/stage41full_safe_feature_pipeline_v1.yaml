@@ -1,0 +1,89 @@
+stage: Stage41Full
+version: v1
+description: End-to-end safe SEA-AD feature pipeline continuation with Stage 41C stability rescue and conditional Stage 41D/E lock confirmation.
+
+references:
+  stage27c_reference: 0.3267024400121495
+  material_threshold: 0.3317
+  stage39e_pca8_reference: 0.35808116279206914
+  stage41b_best_candidate: latent_plus_safe_metadata
+  stage41b_best_mean: 0.3394229016907968
+  stage41b_bootstrap_lower_95: 0.24331358424470376
+
+inputs:
+  locked_folds: results/tables/v3_locked_donor_folds_v1.csv
+  targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  stage27c_oof: results/tables/stage27c_rescue_oof_predictions_v1.csv
+  stage27c_mean: results/tables/stage27c_rescue_mean_metrics_v1.csv
+  stage27c_target: results/tables/stage27c_rescue_target_metrics_v1.csv
+  stage39e_oof: results/tables/stage39e_oof_predictions_v1.csv
+  stage39e_mean: results/tables/stage39e_mean_metrics_v1.csv
+  stage39e_target: results/tables/stage39e_target_metrics_v1.csv
+  stage39h_decision: results/tables/stage39h_proxy_safe_lock_decision_v1.csv
+  stage40a_pass_fail: results/tables/stage40a_pass_fail_v1.csv
+  stage41_pass_fail: results/tables/stage41_pass_fail_v1.csv
+  stage41abc_pass_fail: results/tables/stage41abc_pass_fail_v1.csv
+  stage41b_oof: results/tables/stage41b_oof_results_v1.csv
+  stage41b_mean: results/tables/stage41b_mean_metrics_v1.csv
+  stage41b_target: results/tables/stage41b_target_level_results_v1.csv
+  stage41b_bootstrap: results/tables/stage41b_bootstrap_ci_v1.csv
+  stage41b_lock: results/tables/stage41b_benchmark_lock_decision_v1.csv
+  stage41b_latent_metadata_matrix: data/sea_ad/stage41b/processed/stage41b_latent_plus_safe_metadata_feature_matrix_v1.csv
+  stage41b_latent_metadata_mri_matrix: data/sea_ad/stage41b/processed/stage41b_latent_plus_safe_metadata_plus_mri_feature_matrix_v1.csv
+
+targets_map:
+  AT8: percent AT8 positive area_Grey matter
+  6e10/A_beta: percent 6e10 positive area_Grey matter
+  GFAP: percent GFAP positive area_Grey matter
+  Iba1: percent Iba1 positive area_Grey matter
+  NeuN: percent NeuN positive area_Grey matter
+
+model:
+  ridge_alphas: [10, 30, 100, 300, 1000, 3000, 10000]
+  bagged_alpha: 1000
+  n_bags: 80
+  bootstrap_samples: 500
+  random_seed: 7
+
+outputs:
+  input_inventory: results/tables/stage41full_input_inventory_v1.csv
+  stage_summary: results/tables/stage41full_stage_summary_v1.csv
+  existing_output_audit: results/tables/stage41full_existing_output_audit_v1.csv
+  candidate_registry: results/tables/stage41c_candidate_registry_v1.csv
+  metadata_stability_audit: results/tables/stage41c_metadata_stability_audit_v1.csv
+  feature_pruning_plan: results/tables/stage41c_feature_pruning_plan_v1.csv
+  model_registry: results/tables/stage41c_model_registry_v1.csv
+  oof_results: results/tables/stage41c_oof_results_v1.csv
+  target_level_results: results/tables/stage41c_target_level_results_v1.csv
+  delta_vs_references: results/tables/stage41c_delta_vs_references_v1.csv
+  bootstrap_ci: results/tables/stage41c_bootstrap_ci_v1.csv
+  fold_sensitivity: results/tables/stage41c_fold_sensitivity_v1.csv
+  donor_influence: results/tables/stage41c_donor_influence_audit_v1.csv
+  target_guard: results/tables/stage41c_target_guard_audit_v1.csv
+  abeta_guard: results/tables/stage41c_abeta_guard_audit_v1.csv
+  iba1_rescue: results/tables/stage41c_iba1_rescue_audit_v1.csv
+  negative_controls: results/tables/stage41c_negative_control_results_v1.csv
+  proxy_leakage: results/tables/stage41c_proxy_leakage_decision_v1.csv
+  stability_decision: results/tables/stage41c_stability_rescue_decision_v1.csv
+  stage41de_candidate_registry: results/tables/stage41de_candidate_registry_v1.csv
+  stage41de_lock_confirmation: results/tables/stage41de_lock_confirmation_v1.csv
+  stage41de_frozen_feature_recipe: results/tables/stage41de_frozen_feature_recipe_v1.csv
+  stage41de_claim_boundary_audit: results/tables/stage41de_claim_boundary_audit_v1.csv
+  final_lock_decision: results/tables/stage41full_benchmark_lock_decision_v1.csv
+  pass_fail: results/tables/stage41full_pass_fail_v1.csv
+  full_report: results/reports/stage41full_safe_feature_pipeline_report_v1.md
+  stage41c_report: results/reports/stage41c_stability_rescue_report_v1.md
+  stage41de_report: results/reports/stage41de_lock_confirmation_report_v1.md
+  pi_summary: results/reports/stage41full_pi_summary_v1.md
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+safety:
+  no_raw_data_committed: true
+  no_forbidden_predictors: true
+  no_external_model_selection: true
+  no_clean_external_validation_claim: true
+  no_causal_claim: true
+  no_therapeutic_claim: true
+  no_gene_ablation_claim: true

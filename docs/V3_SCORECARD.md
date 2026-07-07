@@ -217,3 +217,5 @@ Stage 41A run pass: `True`. No modeling or downloading was performed. Recommende
 Stage 41ABC completed the acquisition/readiness gate. It does not replace Stage 27C unless a safe donor-linked matrix produces a robust donor-held-out improvement; in this run the benchmark decision is `manual_feature_acquisition_required`.
 ## Stage 41B safe metadata/MRI benchmark
 Stage 41B tested safe donor metadata and MRI volumetric features. Best result: `latent_plus_safe_metadata` = `0.339423`; Stage 27C remains locked unless strict lock guards pass. Decision: `do_not_lock_stage41b`.
+## Stage 41 Full safe feature stability pipeline
+Stage 41 Full tested stability rescue candidates for the Stage 41B latent+safe metadata signal. Final decision: `credible_unlocked_stage41_signal`. Stage 27C remains locked unless this table reports `lock_new_stage41_benchmark`.

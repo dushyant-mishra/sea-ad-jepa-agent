@@ -196,3 +196,5 @@ Run pass: `True`. Benchmark decision: `manual_feature_acquisition_required`. Ben
 Allowed claim: safe SEA-AD resource acquisition and benchmark-readiness support only. Disallowed claim: external validation; clean validation; causal mechanism; therapeutic target; gene-ablation validation; disease-modifying effect.
 ## Stage 41B safe metadata/MRI benchmark
 Stage 41B built donor-linked Tier-1 metadata/MRI matrices from Stage 41ABC downloads and ran locked donor-held-out ridge benchmarks. Best condition: `latent_plus_safe_metadata` with mean pooled OOF Spearman `0.339423`. Lock decision: `do_not_lock_stage41b`.
+## Stage 41 Full safe feature stability pipeline
+Stage 41 Full completed the safe metadata/latent stability rescue. Best Stage 41C candidate: `blend_stage41b_with_stage39e_pca8` with mean pooled OOF Spearman `0.368087` and bootstrap lower 95% CI `0.260360`. Final decision: `credible_unlocked_stage41_signal`. Locked benchmark after Stage 41: `Stage27C`.
