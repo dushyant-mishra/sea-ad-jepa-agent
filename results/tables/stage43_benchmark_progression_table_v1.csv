@@ -1,0 +1,8 @@
+stage,candidate_id,role,mean_pooled_oof_spearman,bootstrap_lower_95,delta_vs_stage27c,lock_status,reason_locked_or_not_locked,interpretation
+Stage27C,module_pca_ridge,official locked internal benchmark,0.3267024400121495,,0.0,locked,passed locked benchmark gate,official locked internal benchmark
+Stage39E,rank_inverse_normal_module_pca8_ridge,credible unlocked candidate,0.35808116279206914,,0.031378722779919654,credible_unlocked,strict robustness limits,strong but not locked
+Stage39H,context/proxy candidate,context/proxy candidate,,,,not_locked,proxy/stability caution,context signal only
+Stage40A,neural rescue,failed rescue,,,,not_locked,neural rescue failed,negative result
+Stage41B,latent_plus_safe_metadata,credible unlocked,0.3394229016907968,,0.012720461678647321,credible_unlocked,bootstrap lower CI below Stage27C,safe metadata/latent point-estimate gain
+Stage41C,blend_stage41b_with_stage39e_pca8,best credible unlocked internal signal,0.36808747595423713,0.2603604646376338,0.041385035942087645,credible_unlocked_not_locked,bootstrap lower CI below Stage27C,"best credible unlocked internal signal, not locked"
+Stage45,latent_plus_safe_metadata_plus_cellxgene_plus_mri_engineered,negative new-feature result,0.3121433633694442,0.214644,-0.014559,do_not_lock,below Stage27C and Stage41C,successful acquisition but negative benchmark result

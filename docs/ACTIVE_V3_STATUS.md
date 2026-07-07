@@ -203,3 +203,6 @@ Stage 41 Full completed the safe metadata/latent stability rescue. Best Stage 41
 Stage 42 completed report/readiness-only synthesis. Stage 27C remains the official locked internal benchmark. Stage 41C is the best credible unlocked signal and is not rebranded as locked. Final decision: `proceed_to_manuscript_draft`. No external validation, clean validation, causal, therapeutic, gene-ablation, or disease-modifying claim is made.
 ## Stage 45 new safe feature acquisition benchmark
 Stage45 built CELLxGENE donor composition and engineered MRI feature candidates. Best candidate `latent_plus_safe_metadata_plus_cellxgene_plus_mri_engineered` score `0.312143`; decision `do_not_lock_stage45`. Stage27C remains locked unless Stage45 decision says lock_new_stage45_benchmark.
+
+## Stage 43 manuscript draft package
+Stage43 generated the manuscript draft and PI review package. Stage27C remains official locked benchmark; Stage41C remains best credible unlocked signal; Stage45 remains a negative safe feature-acquisition benchmark. Next action: PI review / manuscript editing.

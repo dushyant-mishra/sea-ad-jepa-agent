@@ -1,0 +1,8 @@
+stage_or_group,strategy,best_result,outcome,reason_not_locked,manuscript_message
+Graph controls/rescue,graph smoothing/residual graph controls,did not beat Stage27C,negative,graph-specific pass failed or no robust improvement,Graph machinery was not sufficient under donor-held-out safeguards.
+External pretraining,approved external pretraining attempts,failed to rescue benchmark,negative,did not improve locked benchmark,External pretraining did not justify relocking.
+Stage39B LPH,latent-prediction auxiliary head,failed,negative,no robust material rescue,LPH did not solve benchmark instability.
+Stage39H,metadata/context proxy audit,useful signal,not locked,proxy/stability caution,Context signal is informative but bounded.
+Stage40A,neural rescue,failed,negative,small donor count/capacity risk,Stop architecture tuning without new data.
+Stage41B/41C,safe metadata/latent blending,0.368087 best credible signal,credible unlocked,CI lower bound below Stage27C,Promising but not lockable.
+Stage45,CELLxGENE composition + engineered MRI,0.312143,negative,below Stage27C and Stage41C,New safe features did not rescue performance.

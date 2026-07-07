@@ -1,0 +1,2 @@
+stage41b_best,stage41b_score,stage41c_best,stage41c_score,target_guard,abeta_guard,iba1_status,negative_control,proxy_leakage,bootstrap_limitation,allowed_claim
+latent_plus_safe_metadata,0.3394229016907968,blend_stage41b_with_stage39e_pca8,0.36808747595423713,passed,passed,nonnegative/improved,passed,passed,lower CI 0.2603604646376338 below Stage27C 0.3267024400121495,Stage41C produced a credible internal donor-held-out point-estimate improvement but did not pass strict benchmark-lock robustness.

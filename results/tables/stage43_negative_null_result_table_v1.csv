@@ -1,0 +1,8 @@
+result_id,stage,negative_or_null_result,why_it_matters,included_in_manuscript
+N1,External pretraining,failed to rescue benchmark,shows pretraining alone was insufficient,True
+N2,Graph controls,graph did not beat Stage27C robustly,prevents overclaiming graph utility,True
+N3,LPH,latent-prediction head failure,rules out auxiliary-head shortcut,True
+N4,Stage40A,neural rescue failure,supports stopping architecture tuning,True
+N5,Stage41,not lockable despite strong point estimate,separates credible signal from locked benchmark,True
+N6,Stage45,new safe feature negative result,composition/MRI additions insufficient,True
+N7,External support,not-testable limitations,keeps support claims bounded,True

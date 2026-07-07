@@ -1,0 +1,2 @@
+external_dataset_inventory,support_tests_ready,support_tests_total,readiness_status,clean_validation,missing_data_limitations
+Stage42 readiness outputs,4,24,support/readiness only,False,compatible processed external support files remain limited

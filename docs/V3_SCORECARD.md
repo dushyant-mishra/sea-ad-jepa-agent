@@ -224,3 +224,6 @@ Stage 41 Full tested stability rescue candidates for the Stage 41B latent+safe m
 Stage 42 consolidated benchmark evidence, frozen mechanisms, external readiness, negative/null results, and manuscript plans. Stage 27C remains locked; Stage 41C remains credible-unlocked. Decision: `proceed_to_manuscript_draft`.
 ## Stage 45 new safe feature acquisition benchmark
 Stage45 attempted new safe/caution feature construction from CELLxGENE metadata and engineered MRI. Decision: `do_not_lock_stage45`.
+
+## Stage 43 manuscript draft package
+Stage43 created manuscript-ready tables, reports, captions, claim boundaries, and PI review summary. No new modeling or benchmark changes were performed.

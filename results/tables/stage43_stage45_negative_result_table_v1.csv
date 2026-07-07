@@ -1,0 +1,2 @@
+cellxgene_metadata_available,exact_donor_overlap,feature_matrices_built,benchmark_ran,best_stage45_score,below_stage27c,below_stage41c,decision,manuscript_message
+True,84/84,7,True,0.3121433633694442,True,True,do_not_lock_stage45,"Successful acquisition and donor linkage of new safe CELLxGENE composition and engineered MRI features did not rescue benchmark performance, supporting the conclusion that simple composition/volumetric additions were insufficient."
