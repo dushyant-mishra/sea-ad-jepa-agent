@@ -1,0 +1,37 @@
+stage: Stage51
+version: v1
+stage_name: Stage51_string_graph_topology_jepa_run_v1
+description: Leakage-safe small label-free Graph-JEPA topology run using local SEA-AD pseudobulk and STRING graph controls.
+
+inputs:
+  pseudobulk_matrix: data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv
+  string_edges: results/tables/v2_graph_string_edges_t900.csv
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  primary_beta: 0.5
+  latent_dim: 8
+  n_splits: 5
+  random_seed: 107
+  max_features: 2500
+  ridge_alpha: 1.0
+
+outputs:
+  input_inventory: results/tables/stage51_input_inventory_v1.csv
+  matrix_sanitization: results/tables/stage51_matrix_sanitization_audit_v1.csv
+  graph_alignment: results/tables/stage51_graph_matrix_alignment_v1.csv
+  graph_control_registry: results/tables/stage51_graph_control_registry_v1.csv
+  jepa_training_summary: results/tables/stage51_jepa_training_summary_v1.csv
+  frozen_probe_results: results/tables/stage51_frozen_probe_results_v1.csv
+  target_level_results: results/tables/stage51_target_level_results_v1.csv
+  graph_specific_comparison: results/tables/stage51_graph_specific_comparison_v1.csv
+  graph_claim_decision: results/tables/stage51_graph_claim_decision_v1.csv
+  leakage_audit: results/tables/stage51_leakage_audit_v1.csv
+  negative_control_results: results/tables/stage51_negative_control_results_v1.csv
+  pass_fail: results/tables/stage51_pass_fail_v1.csv
+  report: results/reports/stage51_string_graph_topology_jepa_run_report_v1.md
+  pi_summary: results/reports/stage51_pi_summary_v1.md
+  claim_final_check: results/reports/stage51_claim_boundary_final_check_v1.md

@@ -225,3 +225,7 @@ Stage49 performed a post hoc known-evidence concordance audit for Stage47/48 Gra
 ## Stage 50 graph-specific Graph-JEPA topology audit
 
 Stage50 attempted the graph-specific Graph-JEPA topology audit. It did not alter benchmark status. Stage27C remains official locked benchmark, Stage41C remains credible-unlocked, and Stage45 remains negative. Graph-specific decision: graph_specific_test_inconclusive_missing_controls. Graph-specific claims remain limited unless real graph models beat no-graph, random, and shuffled controls under leakage-safe frozen evaluation.
+
+## Stage 51 STRING graph topology JEPA run
+
+Stage51 ran a small leakage-safe STRING graph topology JEPA audit. Decision: graph_topology_benefit_not_established. Stage27C remains official locked benchmark and Stage41C remains credible-unlocked.

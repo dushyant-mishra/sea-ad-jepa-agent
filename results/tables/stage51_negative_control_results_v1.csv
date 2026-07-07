@@ -1,0 +1,3 @@
+negative_control,run,pass,reason
+graph_shuffle_controls,True,True,
+target_label_shuffle,False,True,not needed for graph-specific topology comparison; future robustness

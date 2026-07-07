@@ -1,0 +1,2 @@
+matrix_path,n_donors,n_features_after_alignment_and_cap,forbidden_columns_removed,pathology_targets_used_in_pretraining
+data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv,84,1789,GFAP if present,False
