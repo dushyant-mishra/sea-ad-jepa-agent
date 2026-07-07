@@ -1,0 +1,3 @@
+candidate,mean_score,bootstrap_lower_95,stage27c_reference,material_threshold,ci_pass,lock_status
+Stage41C,0.36808747595423713,0.2603604646376338,0.3267024400121495,0.3317,False,credible_unlocked_not_locked
+Stage45,0.3121433633694442,0.214644,0.3267024400121495,0.3317,False,do_not_lock

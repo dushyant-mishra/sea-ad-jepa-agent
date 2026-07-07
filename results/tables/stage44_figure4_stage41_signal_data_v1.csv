@@ -1,0 +1,2 @@
+candidate,score,target_guard,abeta_guard,iba1_status,negative_control,proxy_leakage,lock_status
+Stage41C,0.36808747595423713,passed,passed,nonnegative/improved,passed,passed,credible_unlocked_not_locked

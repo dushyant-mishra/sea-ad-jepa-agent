@@ -227,3 +227,6 @@ Stage45 attempted new safe/caution feature construction from CELLxGENE metadata 
 
 ## Stage 43 manuscript draft package
 Stage43 created manuscript-ready tables, reports, captions, claim boundaries, and PI review summary. No new modeling or benchmark changes were performed.
+
+## Stage 44 manuscript polish and PI review package
+Stage44 prepared manuscript v2, publication-ready tables, figure-ready CSVs, PI review packet, and final claim-boundary checks. No new modeling or benchmark changes were performed.

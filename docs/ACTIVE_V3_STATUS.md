@@ -206,3 +206,6 @@ Stage45 built CELLxGENE donor composition and engineered MRI feature candidates.
 
 ## Stage 43 manuscript draft package
 Stage43 generated the manuscript draft and PI review package. Stage27C remains official locked benchmark; Stage41C remains best credible unlocked signal; Stage45 remains a negative safe feature-acquisition benchmark. Next action: PI review / manuscript editing.
+
+## Stage 44 manuscript polish and PI review package
+Stage44 generated polished manuscript v2, publication table package, figure specs, and PI review packet. Stage27C remains official locked benchmark; Stage41C remains best credible unlocked signal; Stage45 remains negative safe feature-acquisition result. Next action: PI review and manual manuscript editing.

@@ -1,0 +1,8 @@
+strategy,representative_stage,best_outcome,lock_result,reason_not_locked,manuscript_message
+graph/topology rescue,Stage30/31,did not beat Stage27C,not locked,graph-specific/stability gates failed,Graph machinery did not robustly improve the locked benchmark.
+external pretraining,Stage33/34,failed rescue,not locked,no benchmark rescue,External pretraining alone was insufficient.
+latent prediction head,Stage39B,failed rescue,not locked,no robust material improvement,LPH branch was a useful negative result.
+neural rescue,Stage40A,failed,not locked,capacity/small donor risk,Stop architecture tuning without new data.
+safe metadata/MRI,Stage41B,0.339423,not locked,CI guard failed,Safe metadata helped point estimate but not robustness.
+Stage41 stability rescue,Stage41C,0.368087,credible unlocked,CI lower bound below Stage27C,Best credible signal but not locked.
+CELLxGENE/MRI engineered feature acquisition,Stage45,0.312143,not locked,below Stage27C/Stage41C,Successful acquisition but negative performance result.

@@ -1,0 +1,6 @@
+stage,candidate,score,lock_status,locked,credible_unlocked,negative_result
+Stage27C,module_pca_ridge,0.3267024400121495,locked,True,False,False
+Stage39E,rank_inverse_normal_module_pca8_ridge,0.35808116279206914,credible_unlocked,False,True,False
+Stage41B,latent_plus_safe_metadata,0.3394229016907968,credible_unlocked,False,True,False
+Stage41C,blend_stage41b_with_stage39e_pca8,0.36808747595423713,credible_unlocked_not_locked,False,True,False
+Stage45,latent_plus_safe_metadata_plus_cellxgene_plus_mri_engineered,0.3121433633694442,do_not_lock,False,False,True
