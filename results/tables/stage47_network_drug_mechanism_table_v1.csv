@@ -1,0 +1,5 @@
+network_name,drug_mapping_status,safe_interpretation,therapeutic_claim_allowed
+Glial activation / disease-associated microglia-astrocyte state,manual_mapping_needed,candidate druggable mechanism for follow-up only,False
+Inflammatory signaling / transport / cell-state modulation,manual_mapping_needed,candidate druggable mechanism for follow-up only,False
+Endolysosomal / autophagy / proteostasis,manual_mapping_needed,candidate druggable mechanism for follow-up only,False
+Oxidative stress / antioxidant response,manual_mapping_needed,candidate druggable mechanism for follow-up only,False

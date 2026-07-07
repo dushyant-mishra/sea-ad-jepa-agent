@@ -1,0 +1,5 @@
+old_framing,new_framing,reason,affected_section,claim_boundary
+SEA-AD pathology benchmark,SEA-AD as stringent donor-held-out testbed for label-free disease-state representation,restores original project scope,Title/Abstract/Introduction,Benchmark remains internal; no external validation overclaim
+gene ablation,model-based in-silico perturbation / ablation-like sensitivity analysis,avoids experimental-ablation overclaim,Methods/Results,not validated gene ablation
+drug candidates,candidate druggable mechanisms for follow-up,no local therapeutic validation,Discussion,not therapeutic targets
+Stage41C best model,credible unlocked signal below lock CI gate,preserves benchmark discipline,Results,Stage27C remains locked

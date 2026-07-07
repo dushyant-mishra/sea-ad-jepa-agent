@@ -1,0 +1,3 @@
+source_id,source_name,source_path,found,source_type,n_records_if_readable,usable_for_stage47,limitation
+DRUG001,hpa_fda_drug_target,data\external\hpa\hpa_fda_drug_target.tsv,True,local_drug_or_compound_resource,0,False,local file requires manual source-quality review before therapeutic interpretation
+DRUG002,v2_2_druggability_summary,results\tables\v2_2_druggability_summary.csv,True,local_drug_or_compound_resource,3,True,local file requires manual source-quality review before therapeutic interpretation

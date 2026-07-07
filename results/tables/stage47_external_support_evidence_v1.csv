@@ -1,0 +1,5 @@
+source_file,found,n_rows,usable_datasets_summary,candidate_support_summary,not_testable_summary,claim_boundary
+results\tables\stage38b_candidate_gene_external_results_v1.csv,True,29,see source table,"bounded support/readiness, often not-testable",preserved in Stage38/42 negative/null/gap tables,external support/readiness only; not clean validation
+results\tables\stage38c_candidate_priority_after_external_support_v1.csv,True,29,see source table,"bounded support/readiness, often not-testable",preserved in Stage38/42 negative/null/gap tables,external support/readiness only; not clean validation
+results\tables\stage42_external_support_readiness_v1.csv,True,24,see source table,"bounded support/readiness, often not-testable",preserved in Stage38/42 negative/null/gap tables,external support/readiness only; not clean validation
+results\tables\stage38c_validation_gap_table_v1.csv,True,0,see source table,"bounded support/readiness, often not-testable",preserved in Stage38/42 negative/null/gap tables,external support/readiness only; not clean validation

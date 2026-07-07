@@ -230,3 +230,7 @@ Stage43 created manuscript-ready tables, reports, captions, claim boundaries, an
 
 ## Stage 44 manuscript polish and PI review package
 Stage44 prepared manuscript v2, publication-ready tables, figure-ready CSVs, PI review packet, and final claim-boundary checks. No new modeling or benchmark changes were performed.
+
+## Stage 47 cross-version candidate/network/druggability synthesis
+
+Stage47 consolidated v1/v2/v3 candidate genes, modules, networks, in-silico perturbation evidence, and druggability gaps into a claim-bounded Graph-JEPA disease-state model story. Stage47 did not change the locked benchmark. Stage27C remains official locked benchmark. Stage41C remains best credible unlocked signal unless superseded by later validated stages. Candidate genes/networks/drugs remain hypothesis-generating.

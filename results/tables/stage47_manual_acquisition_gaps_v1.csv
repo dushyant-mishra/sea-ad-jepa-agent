@@ -1,0 +1,8 @@
+gap_id,gap_present,recommended_action
+local_druggability_database,False,"Acquire/review DGIdb, DrugCentral, ChEMBL, OpenTargets, LINCS/CMap, or PI-curated table."
+curated_ppi_grn_graph_file,True,Needed for graph-specific network claims and Stage46-style graph-prior audit.
+clean_donor_expression_matrix,True,Needed for expression-state JEPA/graph-prior extensions.
+experimental_perturbation_validation,True,Needed before causal/gene-ablation language.
+independent_external_validation_cohort,True,Needed before clean validation language.
+spatial_cell_state_validation_data,True,Needed to localize candidate mechanisms to plaque/cell-state context.
+pi_decision_on_v2_exploratory_results,True,Decide whether to include v2 exploratory Aβ/microglia evidence in main text or supplement.
