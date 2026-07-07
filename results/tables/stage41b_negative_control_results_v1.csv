@@ -1,2 +1,2 @@
 negative_control,mean_pooled_oof_spearman,best_real_condition,best_real_score,pass,notes
-safe_metadata_plus_mri_shuffled_targets,-0.13407309911916573,safe_metadata_plus_mri,0.26301913536498944,True,donor-target shuffled negative control
+latent_plus_safe_metadata_shuffled_targets,-0.19005770983092032,latent_plus_safe_metadata,0.3394229016907968,True,donor-target shuffled negative control

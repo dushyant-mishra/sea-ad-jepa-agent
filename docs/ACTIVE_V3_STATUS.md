@@ -194,6 +194,5 @@ Stage 41ABC fetched SEA-AD resource pages, attempted bounded safe downloads, ana
 Run pass: `True`. Benchmark decision: `manual_feature_acquisition_required`. Benchmark training ran: `False`.
 
 Allowed claim: safe SEA-AD resource acquisition and benchmark-readiness support only. Disallowed claim: external validation; clean validation; causal mechanism; therapeutic target; gene-ablation validation; disease-modifying effect.
-
 ## Stage 41B safe metadata/MRI benchmark
-Stage 41B built donor-linked Tier-1 metadata/MRI matrices from Stage 41ABC downloads and ran locked donor-held-out ridge benchmarks. Best condition: `safe_metadata_plus_mri` with mean pooled OOF Spearman `0.263019`. Lock decision: `do_not_lock_stage41b`.
+Stage 41B built donor-linked Tier-1 metadata/MRI matrices from Stage 41ABC downloads and ran locked donor-held-out ridge benchmarks. Best condition: `latent_plus_safe_metadata` with mean pooled OOF Spearman `0.339423`. Lock decision: `do_not_lock_stage41b`.

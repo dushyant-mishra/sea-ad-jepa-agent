@@ -5,6 +5,7 @@ import math
 import sys
 from pathlib import Path
 from typing import Any
+import importlib
 
 import numpy as np
 import pandas as pd
@@ -32,6 +33,11 @@ FORBIDDEN_TOKENS = [
 ]
 SAFE_METADATA_TOKENS = ["age", "sex", "apoe", "pmi", "rin", "education"]
 MRI_TOKENS = ["volume", "volumetric", "mri", "icv", "brain", "cortex", "white", "gray", "grey", "hippocampus", "entorhinal", "ventricle"]
+s25 = None
+try:
+    s25 = importlib.import_module("run_v3_primary_baseline_benchmark_suite_v1")
+except Exception:
+    s25 = None
 
 
 def resolve(value: str | Path) -> Path:
@@ -249,11 +255,11 @@ def encode_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def load_reference_modules(donors: list[str]) -> pd.DataFrame:
-    # Keep Stage 41B independent from the Stage 25 benchmark helper because that
-    # module imports optional model packages not needed for this ridge-only
-    # metadata/MRI test. Latent+safe-feature fusion is left for a follow-up
-    # loader once a dependency-light module matrix path is available.
-    return pd.DataFrame(index=donors)
+    if s25 is None:
+        return pd.DataFrame(index=donors)
+    expr = s25.load_expression_matrix(donors)
+    modules = s25.build_predefined_module_features(expr).matrix
+    return modules.reindex(donors)
 
 
 def build_target_matrix(cfg: dict[str, Any], donors: list[str]) -> pd.DataFrame:

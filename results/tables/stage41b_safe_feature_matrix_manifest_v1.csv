@@ -2,3 +2,6 @@ feature_matrix_id,local_processed_path,safe_feature_matrix_built,n_donors,n_feat
 safe_metadata_only,data\sea_ad\stage41b\processed\stage41b_safe_metadata_only_feature_matrix_v1.csv,True,84,17,Tier1,True,False
 mri_only,data\sea_ad\stage41b\processed\stage41b_mri_only_feature_matrix_v1.csv,True,84,148,Tier1,True,False
 safe_metadata_plus_mri,data\sea_ad\stage41b\processed\stage41b_safe_metadata_plus_mri_feature_matrix_v1.csv,True,84,165,Tier1,True,False
+latent_plus_safe_metadata,data\sea_ad\stage41b\processed\stage41b_latent_plus_safe_metadata_feature_matrix_v1.csv,True,84,32,Tier1,True,False
+latent_plus_mri,data\sea_ad\stage41b\processed\stage41b_latent_plus_mri_feature_matrix_v1.csv,True,84,163,Tier1,True,False
+latent_plus_safe_metadata_plus_mri,data\sea_ad\stage41b\processed\stage41b_latent_plus_safe_metadata_plus_mri_feature_matrix_v1.csv,True,84,180,Tier1,True,False
