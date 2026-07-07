@@ -1,0 +1,9 @@
+gap_id,gap_present,recommended_action
+source_OPENTARGETS,True,Acquire/manual review for Open Targets: not queried in automated Stage49 because stable target ID mapping was not prevalidated
+source_AGORA,True,Acquire/manual review for Agora / AD Knowledge Portal: manual/curated export recommended
+source_LINCS_CMAP,True,Acquire/manual review for LINCS/CMap/CLUE: API key/local matrix not configured
+source_DRUGCENTRAL_CTD_TTD,True,Acquire/manual review for DrugCentral/CTD/TTD: local tables not prevalidated for automated query
+valid_control_background,True,Define a legitimate non-target-derived model gene universe/control set before formal enrichment.
+manual_pi_curated_evidence_review,True,Manually review top candidate evidence before manuscript claims.
+experimental_perturbation_validation,True,Required before causal/ablation language.
+independent_external_validation_cohort,True,Required before clean validation language.

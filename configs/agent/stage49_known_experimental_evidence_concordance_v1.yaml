@@ -1,0 +1,60 @@
+stage: Stage49
+version: v1
+stage_name: Stage49_known_experimental_evidence_concordance_v1
+description: Thorough post hoc known-evidence concordance audit for Stage47/48 Graph-JEPA candidates. No new modeling or candidate rediscovery.
+
+query_policy:
+  online_queries_enabled: true
+  pubmed_retmax_per_query: 20
+  request_timeout_seconds: 20
+  polite_sleep_seconds: 0.34
+  cache_raw_metadata_under_data: true
+
+inputs:
+  stage47_candidate_consensus: results/tables/stage47_candidate_gene_consensus_v1.csv
+  stage47_module_consensus: results/tables/stage47_candidate_module_consensus_v1.csv
+  stage47_network_consensus: results/tables/stage47_candidate_network_consensus_v1.csv
+  stage47_drug_mapping: results/tables/stage47_druggable_candidate_mapping_v1.csv
+  stage47_evidence_tiers: results/tables/stage47_candidate_evidence_tiers_v1.csv
+  stage47_pass_fail: results/tables/stage47_pass_fail_v1.csv
+  stage48_candidate_dossier: results/tables/stage48_candidate_evidence_dossier_v1.csv
+  stage48_traceability: results/tables/stage48_final_candidate_traceability_v1.csv
+  v2_trajectory: results/tables/v2_1_gse174367_cell_trajectory_scores.csv
+  v2_abeta_microglia: results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage49_input_inventory_v1.csv
+  candidate_set: results/tables/stage49_candidate_set_v1.csv
+  control_candidate_sets: results/tables/stage49_control_candidate_sets_v1.csv
+  source_inventory: results/tables/stage49_known_evidence_source_inventory_v1.csv
+  query_log: results/tables/stage49_query_log_v1.csv
+  ad_evidence: results/tables/stage49_ad_evidence_raw_summary_v1.csv
+  perturbation_evidence: results/tables/stage49_perturbation_evidence_raw_summary_v1.csv
+  druggability_evidence: results/tables/stage49_druggability_evidence_raw_summary_v1.csv
+  directionality_evidence: results/tables/stage49_directionality_evidence_raw_summary_v1.csv
+  candidate_concordance: results/tables/stage49_candidate_known_evidence_concordance_v1.csv
+  module_concordance: results/tables/stage49_module_known_evidence_concordance_v1.csv
+  network_concordance: results/tables/stage49_network_known_evidence_concordance_v1.csv
+  enrichment_summary: results/tables/stage49_known_evidence_enrichment_summary_v1.csv
+  candidate_vs_control: results/tables/stage49_candidate_vs_control_evidence_comparison_v1.csv
+  candidate_priority_update: results/tables/stage49_candidate_priority_update_v1.csv
+  evidence_tier_update: results/tables/stage49_evidence_tier_update_v1.csv
+  drug_target_concordance: results/tables/stage49_drug_target_concordance_v1.csv
+  claim_boundary_audit: results/tables/stage49_claim_boundary_audit_v1.csv
+  manual_acquisition_gaps: results/tables/stage49_manual_acquisition_gaps_v1.csv
+  pi_decision_table: results/tables/stage49_pi_decision_table_v1.csv
+  pass_fail: results/tables/stage49_pass_fail_v1.csv
+
+  concordance_report: results/reports/stage49_known_experimental_evidence_concordance_report_v1.md
+  candidate_summary: results/reports/stage49_candidate_evidence_summary_v1.md
+  module_network_summary: results/reports/stage49_module_network_evidence_summary_v1.md
+  druggability_summary: results/reports/stage49_druggability_concordance_summary_v1.md
+  enrichment_report: results/reports/stage49_known_evidence_enrichment_summary_v1.md
+  external_limitations: results/reports/stage49_external_evidence_limitations_v1.md
+  pi_summary: results/reports/stage49_pi_summary_v1.md
+  manuscript_update: results/reports/stage49_manuscript_update_note_v1.md
+  claim_final_check: results/reports/stage49_claim_boundary_final_check_v1.md
+  manual_gaps_report: results/reports/stage49_manual_acquisition_gaps_v1.md

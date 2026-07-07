@@ -1,0 +1,2 @@
+control_set_id,control_type,gene_symbol,source,valid_for_enrichment,notes
+NO_VALID_BACKGROUND,none_available,,,False,No legitimate non-target-derived local gene universe/control set was identified for formal enrichment; descriptive concordance only.

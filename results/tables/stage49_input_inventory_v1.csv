@@ -1,0 +1,14 @@
+input_id,expected_path,found,input_type,required,used,notes
+stage47_candidate_consensus,results/tables/stage47_candidate_gene_consensus_v1.csv,True,stage47_synthesis,True,True,read-only evidence source; no model training or rediscovery
+stage47_module_consensus,results/tables/stage47_candidate_module_consensus_v1.csv,True,stage47_synthesis,False,True,read-only evidence source; no model training or rediscovery
+stage47_network_consensus,results/tables/stage47_candidate_network_consensus_v1.csv,True,stage47_synthesis,False,True,read-only evidence source; no model training or rediscovery
+stage47_drug_mapping,results/tables/stage47_druggable_candidate_mapping_v1.csv,True,stage47_synthesis,False,True,read-only evidence source; no model training or rediscovery
+stage47_evidence_tiers,results/tables/stage47_candidate_evidence_tiers_v1.csv,True,stage47_synthesis,False,True,read-only evidence source; no model training or rediscovery
+stage47_pass_fail,results/tables/stage47_pass_fail_v1.csv,True,stage47_synthesis,False,True,read-only evidence source; no model training or rediscovery
+stage48_candidate_dossier,results/tables/stage48_candidate_evidence_dossier_v1.csv,True,stage48_traceability_dossier,False,True,read-only evidence source; no model training or rediscovery
+stage48_traceability,results/tables/stage48_final_candidate_traceability_v1.csv,True,stage48_traceability_dossier,False,True,read-only evidence source; no model training or rediscovery
+v2_trajectory,results/tables/v2_1_gse174367_cell_trajectory_scores.csv,True,v2_exploratory_evidence,False,True,read-only evidence source; no model training or rediscovery
+v2_abeta_microglia,results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv,True,v2_exploratory_evidence,False,True,read-only evidence source; no model training or rediscovery
+active_status,docs/ACTIVE_V3_STATUS.md,True,status_doc,False,False,read-only evidence source; no model training or rediscovery
+v3_scorecard_md,docs/V3_SCORECARD.md,True,status_doc,False,False,read-only evidence source; no model training or rediscovery
+v3_scorecard_csv,results/tables/v3_scorecard_status_v1.csv,True,status_doc,False,False,read-only evidence source; no model training or rediscovery

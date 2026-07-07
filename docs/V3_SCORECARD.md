@@ -238,3 +238,7 @@ Stage47 consolidated v1/v2/v3 candidate genes, modules, networks, in-silico pert
 ## Stage 48 candidate evidence consistency dossier
 
 Stage48 completed a bounded candidate evidence consistency/dossier audit. It did not rerun gene discovery or alter benchmarks. The decision is not to rerun the broad gene discovery/modeling stack now; final candidates are sufficiently traceable for PI review, with remaining work focused on targeted validation planning and manual review.
+
+## Stage 49 known experimental evidence concordance
+
+Stage49 performed a post hoc known-evidence concordance audit for Stage47/48 Graph-JEPA candidate genes, modules, networks, and druggability hypotheses. It did not run new modeling or change benchmark status. Stage27C remains official locked benchmark, Stage41C remains credible-unlocked, and Stage45 remains negative. Known evidence is treated as orthogonal support for hypothesis prioritization, not as model validation of causality or therapy.
