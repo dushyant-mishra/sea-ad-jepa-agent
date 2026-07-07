@@ -1,0 +1,5 @@
+feature_class,risk_tier,allowed_for_lock_candidate
+latent/module,Tier0,True
+safe metadata / engineered MRI,Tier1,True
+CELLxGENE composition,Tier2,caution_proxy_audit_required
+diagnosis/disease/pathology/Luminex/Braak/CERAD/Thal/ADNC,Tier4,False

@@ -1,0 +1,2 @@
+matrix_id,built,local_path,n_donors,n_features,notes
+mri_engineered,True,data\sea_ad\stage45\processed\stage45_mri_engineered_feature_matrix_v1.csv,84,150,log1p volumes and broad MRI row summaries

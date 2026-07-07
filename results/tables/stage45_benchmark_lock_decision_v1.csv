@@ -1,0 +1,2 @@
+candidate_id,mean_pooled_oof_spearman,delta_vs_stage27c,delta_vs_stage41c,bootstrap_lower_95,benchmark_lock_eligible,locked_benchmark_after_stage45,decision,reason
+latent_plus_safe_metadata_plus_cellxgene_plus_mri_engineered,0.3121433633694442,-0.014559076642705282,-0.05594411258479293,0.21464445278049232,False,Stage27C,do_not_lock_stage45,one or more strict lock guards failed

@@ -1,0 +1,12 @@
+input_id,expected_path,found,stage_source,required,notes
+locked_folds,results/tables/v3_locked_donor_folds_v1.csv,True,locked,True,found
+targets,data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv,True,targets,True,found
+stage27c_oof,results/tables/stage27c_rescue_oof_predictions_v1.csv,True,stage27c,False,found
+stage39e_oof,results/tables/stage39e_oof_predictions_v1.csv,True,stage39e,False,found
+stage41b_oof,results/tables/stage41b_oof_results_v1.csv,True,stage41b,False,found
+stage41c_oof,results/tables/stage41c_oof_results_v1.csv,True,stage41c,False,found
+stage41b_latent_metadata,data/sea_ad/stage41b/processed/stage41b_latent_plus_safe_metadata_feature_matrix_v1.csv,True,stage41b,False,found
+stage41b_safe_metadata,data/sea_ad/stage41b/processed/stage41b_safe_metadata_only_feature_matrix_v1.csv,True,stage41b,False,found
+stage41b_mri,data/sea_ad/stage41b/processed/stage41b_mri_only_feature_matrix_v1.csv,True,stage41b,False,found
+stage41abc_mri_xlsx,data/sea_ad/stage41abc/raw/68debdfdae5f82b97af2fb0f_sea-ad_cohort_mri_volumetrics.xlsx,True,stage41abc,False,found
+stage42_decision,results/tables/stage42_next_action_decision_v1.csv,True,stage42,False,found

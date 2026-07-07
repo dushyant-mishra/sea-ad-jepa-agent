@@ -1,0 +1,11 @@
+candidate_id,donor_id_or_group,leave_one_donor_or_group_out_delta,high_influence_flag,interpretation
+cellxgene_composition_only,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+latent_plus_cellxgene_composition,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+latent_plus_mri_engineered,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+latent_plus_safe_metadata_plus_cellxgene_composition,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+latent_plus_safe_metadata_plus_cellxgene_plus_mri_engineered,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+latent_plus_safe_metadata_plus_mri_engineered,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+mri_engineered_only,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+stage27c_reference,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+stage39e_reference,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used
+stage41b_reference,not_computed_full,,False,bounded audit; bootstrap/fold sensitivity used

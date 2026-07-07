@@ -1,0 +1,2 @@
+source_dataset,donor_id_column,target_donor_id_column,n_cellxgene_donors,n_target_donors,n_overlap,overlap_fraction,linkage_method,linkage_ready,notes
+CELLxGENE_SEA_AD_collection,donor_id,Donor ID,89,84,84,1.0,exact donor_id,True,metadata-only donor composition

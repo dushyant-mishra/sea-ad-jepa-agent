@@ -1,0 +1,5 @@
+resource,path,found,use
+CELLxGENE SEA-AD metadata,data/sea_ad/stage45/cellxgene,True,donor cell-type composition
+Stage41ABC MRI volumetrics,data/sea_ad/stage41abc/raw/68debdfdae5f82b97af2fb0f_sea-ad_cohort_mri_volumetrics.xlsx,True,engineered MRI features
+spatial resources,data/sea_ad/stage45/spatial,False,manifest/manual only
+image resources,data/sea_ad/stage45/image,False,manifest/manual only
