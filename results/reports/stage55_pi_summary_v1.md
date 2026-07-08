@@ -1,0 +1,25 @@
+# Stage55 full state-specific microglia/PVM programming report
+
+Stage55 expanded Stage54 from predeclared state-module summaries to full donor-by-Supertype pseudobulk programming features over the highest-variance genes, plus module summaries and state-label shuffled controls. Pathology targets were used only after feature construction for donor-held-out frozen probes.
+
+## Branch comparison
+
+| model_variant | latent_dim | seed | mean_pooled_oof_spearman | delta_vs_stage27c_locked | delta_vs_stage54_best_combined |
+| --- | --- | --- | --- | --- | --- |
+| programming_plus_state_module_programming | 8 | 107 | 0.32603017110458643 | -0.0006722689075630561 | 0.0009395565455097565 |
+| negative_control_programming_plus_state_label_shuffled_modules | 8 | 107 | 0.3230697580236914 | -0.003632681988458064 | -0.0020208565353852515 |
+| programming_only_pca_jepa | 8 | 107 | 0.3182423812898653 | -0.00846005872228417 | -0.006848233269211357 |
+| programming_plus_state_module_plus_state_pseudobulk | 32 | 107 | 0.2927326111167359 | -0.03396982889541361 | -0.0323580034423408 |
+| programming_plus_state_pseudobulk_programming | 32 | 107 | 0.2893550673281361 | -0.03734737268401339 | -0.03573554723094058 |
+| state_abundance_and_module_programming | 8 | 307 | 0.2769059431001316 | -0.049796496912017874 | -0.04818467145894506 |
+| state_pseudobulk_programming | 32 | 107 | 0.26725523944517565 | -0.059447200566973835 | -0.05783537511390102 |
+| negative_control_programming_plus_state_label_shuffled_pseudobulk | 16 | 107 | 0.25747089197124634 | -0.06923154804090315 | -0.06761972258783033 |
+
+## Interpretation
+
+- Programming-only best: `0.318242`
+- Best full state-specific branch: `0.326030`
+- Stage54 best combined: `0.325091`
+- Stage27C locked benchmark: `0.326702`
+
+This stage tests whether state-specific expression/programming carries signal beyond donor-average pseudobulk and abundance-only heterogeneity. It does not establish causality, therapeutic targets, external validation, or new microglia subtype discovery.

@@ -258,3 +258,7 @@ Stage53 built and evaluated heterogeneity/composition-aware auxiliary branches f
 ## Stage 54 state-specific microglia programming
 
 Stage54 computed donor-by-Micro-PVM-Supertype module activity features from the local processed SEA-AD microglia/PVM H5AD and benchmarked them with frozen donor-held-out probes. Stage27C remains the locked benchmark. No external validation, causal, therapeutic, gene-ablation, or new-microglia-type discovery claim is made.
+
+## Stage 55 full state-specific microglia programming
+
+Stage55 ran a full state-specific microglia/PVM programming benchmark using donor-by-Supertype pseudobulk and module features from the local processed H5AD. Stage27C remains the locked benchmark unless Stage55 branch gates explicitly outperform it and controls. No causal, therapeutic, external-validation, gene-ablation, or new-microglia-type discovery claim is made.

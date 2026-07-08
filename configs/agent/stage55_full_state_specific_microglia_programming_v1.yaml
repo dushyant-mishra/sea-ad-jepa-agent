@@ -1,0 +1,41 @@
+stage: Stage55
+version: v1
+stage_name: Stage55_full_state_specific_microglia_programming_v1
+description: Full-scale state-specific microglia/PVM programming benchmark with donor-by-Supertype pseudobulk and module controls.
+
+inputs:
+  programming_matrix: data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv
+  microglia_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  donor_col: Donor ID
+  state_col: Supertype
+  max_programming_features: 3000
+  max_state_pseudobulk_gene_features: 1200
+  latent_dims: [8, 16, 32]
+  random_seeds: [107, 211, 307]
+  n_splits: 5
+  ridge_alpha: 1.0
+  high_cell_quantile: 0.90
+  min_cells_per_donor_state: 5
+
+outputs:
+  input_inventory: results/tables/stage55_input_inventory_v1.csv
+  module_gene_availability: results/tables/stage55_module_gene_availability_v1.csv
+  state_feature_inventory: results/tables/stage55_state_feature_inventory_v1.csv
+  branch_matrix_summary: results/tables/stage55_branch_matrix_summary_v1.csv
+  frozen_probe_results: results/tables/stage55_frozen_probe_results_v1.csv
+  target_level_results: results/tables/stage55_target_level_results_v1.csv
+  branch_comparison: results/tables/stage55_branch_comparison_v1.csv
+  negative_control_results: results/tables/stage55_negative_control_results_v1.csv
+  target_family_summary: results/tables/stage55_target_family_summary_v1.csv
+  leakage_audit: results/tables/stage55_leakage_audit_v1.csv
+  claim_boundary_audit: results/tables/stage55_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage55_pass_fail_v1.csv
+  report: results/reports/stage55_full_state_specific_microglia_programming_report_v1.md
+  pi_summary: results/reports/stage55_pi_summary_v1.md
+  claim_final_check: results/reports/stage55_claim_boundary_final_check_v1.md
