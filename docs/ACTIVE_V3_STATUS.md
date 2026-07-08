@@ -241,3 +241,7 @@ Stage54 computed donor-by-Micro-PVM-Supertype module activity features from the 
 ## Stage 55 full state-specific microglia programming
 
 Stage55 ran a full state-specific microglia/PVM programming benchmark using donor-by-Supertype pseudobulk and module features from the local processed H5AD. Stage27C remains the locked benchmark unless Stage55 branch gates explicitly outperform it and controls. No causal, therapeutic, external-validation, gene-ablation, or new-microglia-type discovery claim is made.
+
+## Stage 56 target-gated state-programming ensemble
+
+Stage56 ran a nested target-gated state-programming ensemble audit. Branch choices were made by inner CV on training donors only, then evaluated on held-out donors. Stage27C remains locked unless the nested gate beats it and controls. No external validation, causal, therapeutic, gene-ablation, or new-microglia-type claim is made.

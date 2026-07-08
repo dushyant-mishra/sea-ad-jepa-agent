@@ -1,0 +1,3 @@
+model_variant,latent_dim,seed,mean_pooled_oof_spearman,delta_vs_stage27c_locked,delta_vs_stage55_best
+nested_target_gated_programming_vs_state_module,8,107,0.3225068340589248,-0.0041956059532247125,-0.0035233370456616564
+negative_control_nested_target_gated_programming_vs_shuffled_state_module,8,107,0.32202895616077754,-0.004673483851371951,-0.004001214943808895
