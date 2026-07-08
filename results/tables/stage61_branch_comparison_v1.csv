@@ -1,0 +1,5 @@
+model_variant,latent_dim,seed,mean_pooled_oof_spearman,delta_vs_stage27c_locked,delta_vs_stage55_mtg_best
+mtg_programming_plus_dlpfc_state_modules,16,307,0.33876699484294426,0.012064554830794771,0.012736823738357828
+mtg_programming_only,16,307,0.3358368495077356,0.009134409495586138,0.009806678403149194
+negative_control_mtg_programming_plus_donor_shuffled_dlpfc,16,307,0.332962962962963,0.00626052295081353,0.006932791858376586
+dlpfc_state_modules_only,8,107,0.20036568213783404,-0.12633675787431545,-0.1256644889667524

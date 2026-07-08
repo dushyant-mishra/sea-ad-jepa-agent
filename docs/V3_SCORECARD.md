@@ -282,3 +282,7 @@ Stage59 audited the DLPFC Microglia-PVM CELLxGENE dataset using local Stage45 me
 ## Stage 60 gene-preserved MTG microglia module rebuild
 
 Stage60 rebuilt gene-preserved MTG Microglia-PVM state-module features from the raw H5AD using selected predeclared genes only. Raw data were not written or committed. Stage27C remains locked unless Stage60 branch gates beat it and controls.
+
+## Stage 61 DLPFC Microglia-PVM support audit
+
+Stage61 acquired/audited the DLPFC Microglia-PVM H5AD to an untracked data path and ran a claim-bounded regional support audit if schema permitted. Raw H5AD is not committed. No clean external validation, causal, therapeutic, or new-subtype claim is made.
