@@ -1,0 +1,2 @@
+model_variant,latent_dim,seed,mean_pooled_oof_spearman,delta_vs_stage27c_locked,delta_vs_stage55_best
+negative_control_programming_plus_state_shuffled_gene_preserved,8,107,0.32102865242482537,-0.0056737875873241195,-0.005001518679761063

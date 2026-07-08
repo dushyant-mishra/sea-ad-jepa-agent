@@ -1,0 +1,5 @@
+model_variant,latent_dim,seed,mean_pooled_oof_spearman,delta_vs_stage27c_locked,delta_vs_stage55_best
+programming_plus_gene_preserved_state_modules,8,107,0.3245884377847525,-0.002114002227396994,-0.0014417333198339377
+negative_control_programming_plus_state_shuffled_gene_preserved,8,107,0.32102865242482537,-0.0056737875873241195,-0.005001518679761063
+programming_only_pca_jepa,8,107,0.3182423812898653,-0.00846005872228417,-0.007787789814721113
+gene_preserved_state_modules,8,307,0.26782221322263844,-0.05888022678951105,-0.05820795788194799

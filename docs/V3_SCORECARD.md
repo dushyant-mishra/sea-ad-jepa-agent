@@ -270,3 +270,15 @@ Stage56 ran a nested target-gated state-programming ensemble audit. Branch choic
 ## Stage 57 repaired state-module confirmation
 
 Stage57 ran a repaired low-dimensional state-module confirmation after the Stage55 near-miss. It tested focus-state module summaries, compressed state-module PCs, and shuffled-state/module controls. Stage27C remains locked unless Stage57 branch gates beat it and controls. No external validation, causal, therapeutic, gene-ablation, or new-microglia-type claim is made.
+
+## Stage 58 state-programming decision synthesis
+
+Stage58 synthesized Stage53-57. Stage55 remains the strongest state-programming near-miss, but Stage27C remains locked. Next priorities are gene-preserved MTG module extraction, DLPFC Microglia-PVM audit, and spatial/plaque-proximity feature acquisition. No new modeling or validation claim was made.
+
+## Stage 59 DLPFC Microglia-PVM acquisition audit
+
+Stage59 audited the DLPFC Microglia-PVM CELLxGENE dataset using local Stage45 metadata. Metadata and donor overlap are present, but the DLPFC H5AD expression asset is not locally available unless manually acquired. No external validation claim was made.
+
+## Stage 60 gene-preserved MTG microglia module rebuild
+
+Stage60 rebuilt gene-preserved MTG Microglia-PVM state-module features from the raw H5AD using selected predeclared genes only. Raw data were not written or committed. Stage27C remains locked unless Stage60 branch gates beat it and controls.

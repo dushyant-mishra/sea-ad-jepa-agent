@@ -1,0 +1,36 @@
+stage: Stage60
+version: v1
+stage_name: Stage60_gene_preserved_mtg_microglia_module_rebuild_v1
+description: Gene-preserved MTG Microglia-PVM module rebuild from raw H5AD for missing stress/module genes.
+inputs:
+  raw_mtg_h5ad: data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
+  programming_matrix: data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+parameters:
+  donor_col: Donor ID
+  state_col: Supertype
+  max_programming_features: 3000
+  latent_dims: [8, 16]
+  random_seeds: [107, 211, 307]
+  n_splits: 5
+  ridge_alpha: 1.0
+  high_cell_quantile: 0.90
+  min_cells_per_donor_state: 5
+outputs:
+  input_inventory: results/tables/stage60_input_inventory_v1.csv
+  raw_gene_availability: results/tables/stage60_raw_gene_availability_v1.csv
+  gene_preserved_feature_inventory: results/tables/stage60_gene_preserved_feature_inventory_v1.csv
+  branch_matrix_summary: results/tables/stage60_branch_matrix_summary_v1.csv
+  frozen_probe_results: results/tables/stage60_frozen_probe_results_v1.csv
+  target_level_results: results/tables/stage60_target_level_results_v1.csv
+  branch_comparison: results/tables/stage60_branch_comparison_v1.csv
+  negative_control_results: results/tables/stage60_negative_control_results_v1.csv
+  leakage_audit: results/tables/stage60_leakage_audit_v1.csv
+  claim_boundary_audit: results/tables/stage60_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage60_pass_fail_v1.csv
+  report: results/reports/stage60_gene_preserved_mtg_microglia_module_rebuild_report_v1.md
+  pi_summary: results/reports/stage60_pi_summary_v1.md
+  claim_final_check: results/reports/stage60_claim_boundary_final_check_v1.md

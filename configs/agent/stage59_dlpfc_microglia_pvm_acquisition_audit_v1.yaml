@@ -1,0 +1,18 @@
+stage: Stage59
+version: v1
+stage_name: Stage59_dlpfc_microglia_pvm_acquisition_audit_v1
+description: DLPFC Microglia-PVM acquisition/support audit using local Stage45 metadata and official CELLxGENE collection metadata.
+inputs:
+  collection_inventory: data/sea_ad/stage45/cellxgene/stage45_cellxgene_collection_datasets.csv
+  dlpfc_metadata: data/sea_ad/stage45/cellxgene/stage45_cellxgene_obs_metadata_100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.csv
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+outputs:
+  dataset_audit: results/tables/stage59_dlpfc_dataset_audit_v1.csv
+  donor_overlap_audit: results/tables/stage59_dlpfc_donor_overlap_audit_v1.csv
+  acquisition_plan: results/tables/stage59_dlpfc_acquisition_plan_v1.csv
+  pass_fail: results/tables/stage59_pass_fail_v1.csv
+  report: results/reports/stage59_dlpfc_microglia_pvm_acquisition_audit_report_v1.md
+  pi_summary: results/reports/stage59_pi_summary_v1.md

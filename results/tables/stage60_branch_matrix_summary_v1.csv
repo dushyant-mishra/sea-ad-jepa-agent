@@ -1,0 +1,5 @@
+model_variant,n_donors,n_features
+programming_only_pca_jepa,84,3000
+gene_preserved_state_modules,84,72
+programming_plus_gene_preserved_state_modules,84,3072
+negative_control_programming_plus_state_shuffled_gene_preserved,84,3072

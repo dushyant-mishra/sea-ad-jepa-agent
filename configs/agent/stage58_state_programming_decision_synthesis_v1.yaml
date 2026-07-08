@@ -1,0 +1,19 @@
+stage: Stage58
+version: v1
+stage_name: Stage58_state_programming_decision_synthesis_v1
+description: Decision synthesis after Stage53-57 microglia heterogeneity/state-programming audits.
+inputs:
+  stage53_branch: results/tables/stage53_branch_comparison_v1.csv
+  stage54_branch: results/tables/stage54_branch_comparison_v1.csv
+  stage55_branch: results/tables/stage55_branch_comparison_v1.csv
+  stage56_branch: results/tables/stage56_branch_comparison_v1.csv
+  stage57_branch: results/tables/stage57_branch_comparison_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+outputs:
+  synthesis_table: results/tables/stage58_state_programming_synthesis_v1.csv
+  next_data_priority: results/tables/stage58_next_data_priority_v1.csv
+  pass_fail: results/tables/stage58_pass_fail_v1.csv
+  report: results/reports/stage58_state_programming_decision_synthesis_report_v1.md
+  pi_summary: results/reports/stage58_pi_summary_v1.md

@@ -1,0 +1,4 @@
+step,action,status,safety
+1,Acquire DLPFC Microglia-PVM H5AD asset to untracked data/sea_ad/stage45/cellxgene/h5ad_assets/ if expression support is needed,pending_manual_or_wsl_download,do not commit h5ad
+2,Inspect DLPFC obs Supertype/Donor ID and gene coverage,ready_after_h5ad,metadata/expression feature summaries only
+3,Run DLPFC state-module support with frozen MTG modules if donor overlap/pathology linkage is adequate,conditional,"support only, not clean external validation"
