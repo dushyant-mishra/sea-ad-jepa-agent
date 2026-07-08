@@ -1,2 +1,2 @@
-branch,n_donors,n_features,analysis_ready
-dlpfc_state_modules,80,120,True
+branch,n_donors,n_features,n_state_abundance_features,n_state_module_expression_features,analysis_ready
+dlpfc_state_modules,80,120,12,108,True

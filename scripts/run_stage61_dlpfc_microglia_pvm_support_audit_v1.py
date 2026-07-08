@@ -164,7 +164,10 @@ def extract_features(cfg):
             return pd.DataFrame(), pd.DataFrame(), schema, pd.DataFrame(), 0, donor_col, state_col
         donors = decode_elem(obs[donor_col]).astype(str)
         states = decode_elem(obs[state_col]).astype(str)
-        genes = [v.decode("utf-8", "replace") if isinstance(v, bytes) else str(v) for v in f["var"]["_index"][:]]
+        if "feature_name" in f["var"]:
+            genes = decode_elem(f["var"]["feature_name"])
+        else:
+            genes = np.array([v.decode("utf-8", "replace") if isinstance(v, bytes) else str(v) for v in f["var"]["_index"][:]], dtype=object)
         X = csr_from_h5_group(f["X"])
     gene_index = {g: i for i, g in enumerate(genes)}
     availability = []
@@ -182,8 +185,22 @@ def extract_features(cfg):
     inv = []
     for (d, s), sub in meta.groupby(["Donor ID", "state_label"]):
         rows.setdefault(d, {})
-        rows[d][f"dlpfc_state__{s}__n_cells"] = len(sub)
-        rows[d][f"dlpfc_state__{s}__fraction"] = len(sub) / max(1, int((meta["Donor ID"] == d).sum()))
+        for stat, val in {
+            "n_cells": len(sub),
+            "fraction": len(sub) / max(1, int((meta["Donor ID"] == d).sum())),
+        }.items():
+            col = f"dlpfc_state__{s}__{stat}"
+            rows[d][col] = float(val)
+            inv.append(
+                {
+                    "feature_name": col,
+                    "state": s,
+                    "module": "state_abundance",
+                    "statistic": stat,
+                    "feature_source": "obs_state_count_or_fraction",
+                    "pathology_used_to_define_feature": False,
+                }
+            )
         if len(sub) < int(cfg["parameters"]["min_cells_per_donor_state"]):
             continue
         for m in MODULES:
@@ -191,8 +208,18 @@ def extract_features(cfg):
             for stat, val in {"mean": np.mean(arr), "q90": np.quantile(arr, 0.90), "high_cell_fraction": sub[f"{m}__high"].mean()}.items():
                 col = f"dlpfc_state_module__{s}__{m}__{stat}"
                 rows[d][col] = float(val)
-                inv.append({"feature_name": col, "state": s, "module": m, "statistic": stat, "pathology_used_to_define_feature": False})
-    return pd.DataFrame.from_dict(rows, orient="index").fillna(0.0).sort_index(), pd.DataFrame(availability), schema, pd.DataFrame(inv), len(meta), donor_col, state_col
+                inv.append(
+                    {
+                        "feature_name": col,
+                        "state": s,
+                        "module": m,
+                        "statistic": stat,
+                        "feature_source": "gene_expression_module_score_within_state",
+                        "pathology_used_to_define_feature": False,
+                    }
+                )
+    inv_df = pd.DataFrame(inv).drop_duplicates() if inv else pd.DataFrame(columns=["feature_name", "state", "module", "statistic", "feature_source", "pathology_used_to_define_feature"])
+    return pd.DataFrame.from_dict(rows, orient="index").fillna(0.0).sort_index(), pd.DataFrame(availability), schema, inv_df, len(meta), donor_col, state_col
 
 
 def sp(y, p):
@@ -292,13 +319,21 @@ def run(cfg):
         neg = pd.DataFrame()
     best_real = branch[~branch["model_variant"].str.contains("negative_control", na=False)]["mean_pooled_oof_spearman"].max() if not branch.empty else np.nan
     best_neg = neg["mean_pooled_oof_spearman"].max() if not neg.empty else np.nan
-    matrix = pd.DataFrame([{"branch": "dlpfc_state_modules", "n_donors": features.shape[0], "n_features": features.shape[1], "analysis_ready": not features.empty}])
+    n_state_abundance = int(finv["feature_source"].eq("obs_state_count_or_fraction").sum()) if "feature_source" in finv else 0
+    n_state_module_expression = int(finv["feature_source"].eq("gene_expression_module_score_within_state").sum()) if "feature_source" in finv else 0
+    matrix = pd.DataFrame([{"branch": "dlpfc_state_modules", "n_donors": features.shape[0], "n_features": features.shape[1], "n_state_abundance_features": n_state_abundance, "n_state_module_expression_features": n_state_module_expression, "analysis_ready": not features.empty}])
     leakage = pd.DataFrame([{"downloaded_h5ad_untracked": True, "raw_h5ad_committed": False, "no_pathology_targets_used_in_feature_construction": True, "donor_held_out_evaluation_used_or_gap": not branch.empty, "no_clean_external_validation_claim": True, "no_causal_claim": True, "no_therapeutic_claim": True, "raw_data_not_committed": True, "leakage_audit_pass": True, "safety_audit_pass": True}])
     claims = pd.DataFrame([{"claim_area": "dlpfc_support", "allowed_claim": "DLPFC regional support/internal support audit", "disallowed_claim": "clean external validation; causal mechanism; therapeutic target", "passes": True}])
     pf = pd.DataFrame([{**{"stage61_run": True, "acquisition_audit_written": True, "schema_audit_written": True, "donor_overlap_audit_written": True, "feature_inventory_written_or_gap": True, "benchmark_run_or_gap": not branch.empty, "stage61_run_pass": True, "best_real_beats_stage55": bool(best_real > BASELINES["stage55_mtg_best"]) if np.isfinite(best_real) else False, "best_real_beats_stage27c": bool(best_real > BASELINES["stage27c_locked"]) if np.isfinite(best_real) else False, "best_real_beats_negative_control": bool(best_real > best_neg) if np.isfinite(best_real) and np.isfinite(best_neg) else False}, **leakage.iloc[0].to_dict()}])
     for key, df in {"acquisition_audit": acq, "schema_audit": schema, "donor_overlap_audit": overlap, "gene_availability": genes, "feature_inventory": finv, "branch_matrix_summary": matrix, "frozen_probe_results": oof, "target_level_results": target, "branch_comparison": branch, "negative_control_results": neg, "leakage_audit": leakage, "claim_boundary_audit": claims, "pass_fail": pf}.items():
         write_csv(df, out[key])
-    report = f"# Stage61 DLPFC Microglia-PVM support audit\n\n## Acquisition\n\n{md(acq)}\n\n## Donor/schema overlap\n\n{md(overlap)}\n\n## Branch comparison\n\n{md(branch)}\n\nBest real: `{best_real if np.isfinite(best_real) else 'not_run'}`; best negative control: `{best_neg if np.isfinite(best_neg) else 'not_run'}`.\n\nThis is regional/internal support only, not clean external validation.\n"
+    feature_note = (
+        "DLPFC gene symbols are read from `var/feature_name`; `var/_index` contains Ensembl IDs in this H5AD. "
+        f"The DLPFC branch contains {features.shape[1]} features: {n_state_abundance} obs-derived state abundance features "
+        f"and {n_state_module_expression} gene-expression module-score features computed within Supertype/state strata. "
+        "The feature inventory labels these sources explicitly."
+    )
+    report = f"# Stage61 DLPFC Microglia-PVM support audit\n\n## Acquisition\n\n{md(acq)}\n\n## Donor/schema overlap\n\n{md(overlap)}\n\n## Feature-source audit\n\n{feature_note}\n\n## Gene availability\n\n{md(genes)}\n\n## Branch comparison\n\n{md(branch)}\n\nBest real: `{best_real if np.isfinite(best_real) else 'not_run'}`; best negative control: `{best_neg if np.isfinite(best_neg) else 'not_run'}`.\n\nThis is regional/internal support only, not clean external validation.\n"
     write_text(report, out["report"])
     write_text(report, out["pi_summary"])
     write_text("# Stage61 claim boundary final check\n\nSafety audit passed. DLPFC H5AD is raw data and must remain uncommitted. No clean external validation, causal, or therapeutic claim is made.\n", out["claim_final_check"])

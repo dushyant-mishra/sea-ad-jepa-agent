@@ -1,2 +1,2 @@
 dataset_id,local_h5ad,download_attempted,download_succeeded,filesize_bytes,source
-100c6145-7b0e-4ba6-81c1-ffebed0d1ac4,C:\Users\dushy\Desktop\Jepa project\data\sea_ad\stage45\cellxgene\h5ad_assets\100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,True,True,715262151,CELLxGENE collection API
+100c6145-7b0e-4ba6-81c1-ffebed0d1ac4,C:\Users\dushy\Desktop\Jepa project\data\sea_ad\stage45\cellxgene\h5ad_assets\100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,False,True,715262151,CELLxGENE collection API
