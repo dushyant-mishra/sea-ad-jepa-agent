@@ -254,3 +254,7 @@ Stage51 ran a small leakage-safe STRING graph topology JEPA audit. Decision: gra
 ## Stage 53 heterogeneity/composition auxiliary JEPA
 
 Stage53 built and evaluated heterogeneity/composition-aware auxiliary branches for the donor-level JEPA disease-state framework. It used local SEA-AD microglia/PVM Supertype labels and Stage45 CELLxGENE composition metadata to test whether within-donor microglial state heterogeneity and cell-type/cell-state composition improve frozen disease-state recovery beyond pseudobulk programming alone. Stage27C remains official locked benchmark, Stage41C remains credible-unlocked, Stage45 remains negative, and Stage51 remains graph-topology-null. No causal, therapeutic, validated-ablation, STRING-topology, or new-microglia-type discovery claim is made.
+
+## Stage 54 state-specific microglia programming
+
+Stage54 computed donor-by-Micro-PVM-Supertype module activity features from the local processed SEA-AD microglia/PVM H5AD and benchmarked them with frozen donor-held-out probes. Stage27C remains the locked benchmark. No external validation, causal, therapeutic, gene-ablation, or new-microglia-type discovery claim is made.

@@ -1,0 +1,5 @@
+module_name,requested_genes,present_genes,missing_genes,n_present,usable
+endolysosomal_autophagy_proteostasis,CTSD;CTSB;LAPTM5;NPC2;LAMP2,CTSD;CTSB;LAPTM5;NPC2;LAMP2,,5,True
+glial_activation_dam_like,TREM2;CST7;APOE;LGALS3;CTSD,TREM2;CST7;APOE;LGALS3;CTSD,,5,True
+oxidative_stress_antioxidant,HMOX1;NQO1;SOD2;SOD1;GPX4,SOD2,HMOX1;NQO1;SOD1;GPX4,1,True
+inflammatory_transport_state_modulation,BSG;SLC6A12;IL27RA;NFKBIA,BSG;SLC6A12;IL27RA;NFKBIA,,4,True

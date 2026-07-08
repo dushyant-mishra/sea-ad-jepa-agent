@@ -1,0 +1,4 @@
+input_id,path,found,used,role
+programming_matrix,data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv,True,True,programming baseline
+microglia_h5ad,data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,True,True,state-specific module features
+pathology_targets,data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv,True,posthoc_frozen_probe_only,targets
