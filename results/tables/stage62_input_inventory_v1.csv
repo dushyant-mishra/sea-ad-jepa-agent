@@ -1,0 +1,8 @@
+input_name,path,exists,filesize_bytes
+local_h5ad,C:\Users\dushy\Desktop\Jepa project\data\sea_ad\stage45\cellxgene\h5ad_assets\100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,True,715262151
+programming_matrix,C:\Users\dushy\Desktop\Jepa project\data\processed\sea_ad_mtg_microglia_pvm_pseudobulk.csv,True,45190101
+pathology_targets,C:\Users\dushy\Desktop\Jepa project\data\processed\metadata\sea_ad_mtg_donor_pathology_targets.csv,True,21982
+stage61_branch_comparison,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_branch_comparison_v1.csv,True,531
+stage61_feature_inventory,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_dlpfc_feature_inventory_v1.csv,True,20089
+stage61_gene_availability,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_dlpfc_gene_availability_v1.csv,True,777
+stage61_pass_fail,C:\Users\dushy\Desktop\Jepa project\results\tables\stage61_pass_fail_v1.csv,True,608

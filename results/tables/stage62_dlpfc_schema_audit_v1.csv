@@ -1,0 +1,41 @@
+obs_key,kind,attrs
+ADNC,Group,encoding-type;encoding-version;ordered
+APOE4 status,Group,encoding-type;encoding-version;ordered
+Age at death,Group,encoding-type;encoding-version;ordered
+Braak stage,Group,encoding-type;encoding-version;ordered
+CERAD score,Group,encoding-type;encoding-version;ordered
+Class,Group,encoding-type;encoding-version;ordered
+Cognitive status,Group,encoding-type;encoding-version;ordered
+Fraction mitochrondrial UMIs,Dataset,encoding-type;encoding-version
+Genes detected,Dataset,encoding-type;encoding-version
+LATE-NC stage,Group,encoding-type;encoding-version;ordered
+Lewy body disease pathology,Group,encoding-type;encoding-version;ordered
+Microinfarct pathology,Group,encoding-type;encoding-version;ordered
+Neurotypical reference,Group,encoding-type;encoding-version;ordered
+Number of UMIs,Dataset,encoding-type;encoding-version
+PMI,Group,encoding-type;encoding-version;ordered
+Specimen ID,Group,encoding-type;encoding-version;ordered
+Subclass,Group,encoding-type;encoding-version;ordered
+Supertype,Group,encoding-type;encoding-version;ordered
+Thal phase,Group,encoding-type;encoding-version;ordered
+Years of education,Group,encoding-type;encoding-version;ordered
+assay,Group,encoding-type;encoding-version;ordered
+assay_ontology_term_id,Group,encoding-type;encoding-version;ordered
+cell_type,Group,encoding-type;encoding-version;ordered
+cell_type_ontology_term_id,Group,encoding-type;encoding-version;ordered
+development_stage,Group,encoding-type;encoding-version;ordered
+development_stage_ontology_term_id,Group,encoding-type;encoding-version;ordered
+disease,Group,encoding-type;encoding-version;ordered
+disease_ontology_term_id,Group,encoding-type;encoding-version;ordered
+donor_id,Group,encoding-type;encoding-version;ordered
+exp_component_name,Dataset,encoding-type;encoding-version
+is_primary_data,Dataset,encoding-type;encoding-version
+observation_joinid,Dataset,encoding-type;encoding-version
+self_reported_ethnicity,Group,encoding-type;encoding-version;ordered
+self_reported_ethnicity_ontology_term_id,Group,encoding-type;encoding-version;ordered
+sex,Group,encoding-type;encoding-version;ordered
+sex_ontology_term_id,Group,encoding-type;encoding-version;ordered
+suspension_type,Group,encoding-type;encoding-version;ordered
+tissue,Group,encoding-type;encoding-version;ordered
+tissue_ontology_term_id,Group,encoding-type;encoding-version;ordered
+tissue_type,Group,encoding-type;encoding-version;ordered

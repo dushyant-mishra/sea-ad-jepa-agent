@@ -265,3 +265,7 @@ Stage60 rebuilt gene-preserved MTG Microglia-PVM state-module features from the 
 ## Stage 61 DLPFC Microglia-PVM support audit
 
 Stage61 acquired/audited the DLPFC Microglia-PVM H5AD to an untracked data path and ran a claim-bounded regional support audit if schema permitted. Raw H5AD is not committed. No clean external validation, causal, therapeutic, or new-subtype claim is made.
+
+## Stage 62 DLPFC state-module robustness lock audit
+
+Stage62 audited the corrected Stage61 DLPFC Microglia-PVM state-stratified module signal using repeated donor-held-out probes, same-80-donor MTG programming baseline, shuffled/ablated controls, seed stability, bootstrap deltas, and feature-source checks. Stage62 classifies the result as robust regional support, benchmark-lock candidate, new locked benchmark, or non-locking support based on predeclared gates. No clean external validation, causal, therapeutic, validated-ablation, or new-subtype claim is made.
