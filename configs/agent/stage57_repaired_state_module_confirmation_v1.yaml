@@ -1,0 +1,43 @@
+stage: Stage57
+version: v1
+stage_name: Stage57_repaired_state_module_confirmation_v1
+description: Repaired low-dimensional state-module microglia/PVM programming confirmation after Stage55 near-miss.
+
+inputs:
+  programming_matrix: data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv
+  microglia_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  donor_col: Donor ID
+  state_col: Supertype
+  max_programming_features: 3000
+  n_state_module_pcs: 8
+  latent_dims: [8, 16]
+  random_seeds: [107, 211, 307, 401, 503]
+  n_splits: 5
+  ridge_alpha: 1.0
+  high_cell_quantile: 0.90
+  min_cells_per_donor_state: 5
+  bootstrap_iterations: 400
+
+outputs:
+  input_inventory: results/tables/stage57_input_inventory_v1.csv
+  repaired_module_registry: results/tables/stage57_repaired_module_registry_v1.csv
+  repaired_state_module_feature_inventory: results/tables/stage57_repaired_state_module_feature_inventory_v1.csv
+  branch_matrix_summary: results/tables/stage57_branch_matrix_summary_v1.csv
+  frozen_probe_results: results/tables/stage57_frozen_probe_results_v1.csv
+  target_level_results: results/tables/stage57_target_level_results_v1.csv
+  branch_comparison: results/tables/stage57_branch_comparison_v1.csv
+  target_family_summary: results/tables/stage57_target_family_summary_v1.csv
+  bootstrap_summary: results/tables/stage57_bootstrap_summary_v1.csv
+  negative_control_results: results/tables/stage57_negative_control_results_v1.csv
+  leakage_audit: results/tables/stage57_leakage_audit_v1.csv
+  claim_boundary_audit: results/tables/stage57_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage57_pass_fail_v1.csv
+  report: results/reports/stage57_repaired_state_module_confirmation_report_v1.md
+  pi_summary: results/reports/stage57_pi_summary_v1.md
+  claim_final_check: results/reports/stage57_claim_boundary_final_check_v1.md

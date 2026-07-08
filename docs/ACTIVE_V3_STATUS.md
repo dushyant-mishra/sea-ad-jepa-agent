@@ -245,3 +245,7 @@ Stage55 ran a full state-specific microglia/PVM programming benchmark using dono
 ## Stage 56 target-gated state-programming ensemble
 
 Stage56 ran a nested target-gated state-programming ensemble audit. Branch choices were made by inner CV on training donors only, then evaluated on held-out donors. Stage27C remains locked unless the nested gate beats it and controls. No external validation, causal, therapeutic, gene-ablation, or new-microglia-type claim is made.
+
+## Stage 57 repaired state-module confirmation
+
+Stage57 ran a repaired low-dimensional state-module confirmation after the Stage55 near-miss. It tested focus-state module summaries, compressed state-module PCs, and shuffled-state/module controls. Stage27C remains locked unless Stage57 branch gates beat it and controls. No external validation, causal, therapeutic, gene-ablation, or new-microglia-type claim is made.

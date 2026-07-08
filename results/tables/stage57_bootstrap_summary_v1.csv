@@ -1,0 +1,8 @@
+model_variant,latent_dim,seed,bootstrap_mean,bootstrap_ci_low,bootstrap_ci_high,ci_low_above_stage27c
+programming_plus_repaired_state_modules_full,8,107,0.3252124694556514,0.21871630135106523,0.4240027245749682,False
+repaired_state_modules_full,8,401,0.3198701755192424,0.22767264955533498,0.41862385868422175,False
+negative_control_programming_plus_module_shuffled_compressed,8,107,0.3099063351034071,0.20474228360907887,0.41160792237853816,False
+programming_plus_repaired_state_modules_compressed,8,107,0.316239170837128,0.21165981737346992,0.40719461899987236,False
+negative_control_programming_plus_state_shuffled_compressed,8,107,0.3204364766197865,0.21300012127963558,0.4151252989523196,False
+programming_only_pca_jepa,8,107,0.31577539644859476,0.20081348012182915,0.4186690888732378,False
+repaired_state_modules_compressed_pc,8,211,0.29708463332222446,0.1976186514195618,0.39674694868791743,False

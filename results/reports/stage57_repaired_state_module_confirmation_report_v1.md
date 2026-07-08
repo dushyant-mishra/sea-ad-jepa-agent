@@ -1,0 +1,25 @@
+# Stage57 repaired state-module confirmation report
+
+Stage57 repaired and compressed the state-module branch after the Stage55 near-miss. It used predeclared module families, focus-state summaries, module-level state dispersion summaries, compressed PCs, and shuffled-state/module controls.
+
+## Branch comparison
+
+| model_variant | latent_dim | seed | mean_pooled_oof_spearman | delta_vs_stage27c_locked | delta_vs_stage55_best |
+| --- | --- | --- | --- | --- | --- |
+| programming_plus_repaired_state_modules_full | 8 | 107 | 0.32566973777462793 | -0.0010327022375215544 | -0.0003604333299584983 |
+| repaired_state_modules_full | 8 | 401 | 0.3251068138098613 | -0.0015956262022882028 | -0.0009233572947251467 |
+| negative_control_programming_plus_module_shuffled_compressed | 8 | 107 | 0.31973676217474944 | -0.006965677837400042 | -0.0062934089298369855 |
+| programming_plus_repaired_state_modules_compressed | 8 | 107 | 0.31917788802267893 | -0.0075245519894705515 | -0.006852283081907495 |
+| negative_control_programming_plus_state_shuffled_compressed | 8 | 107 | 0.31915763895919813 | -0.007544801052951355 | -0.006872532145388299 |
+| programming_only_pca_jepa | 8 | 107 | 0.3182423812898653 | -0.00846005872228417 | -0.007787789814721113 |
+| repaired_state_modules_compressed_pc | 8 | 211 | 0.2992204110559887 | -0.02748202895616081 | -0.026809760048597753 |
+
+## Interpretation
+
+- Best real repaired branch: `0.325670`
+- Best negative control: `0.319737`
+- Stage55 best: `0.326030`
+- Stage27C locked benchmark: `0.326702`
+- Material rescue threshold: `0.331700`
+
+Stage57 remains an internal confirmation audit. It does not establish external validation, causality, therapeutic targets, gene ablation, or new microglia subtype discovery.
