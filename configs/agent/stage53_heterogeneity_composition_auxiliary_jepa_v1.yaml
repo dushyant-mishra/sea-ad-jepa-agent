@@ -1,0 +1,61 @@
+stage: Stage53
+version: v1
+stage_name: Stage53_heterogeneity_composition_auxiliary_jepa_v1
+description: Heterogeneity/composition-aware auxiliary-branch JEPA suite using local SEA-AD donor pseudobulk and microglia/PVM state labels.
+
+inputs:
+  programming_matrix: data/processed/sea_ad_mtg_microglia_pvm_pseudobulk.csv
+  microglia_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  cellxgene_metadata_dir: data/sea_ad/stage45/cellxgene
+  stage47_candidates: results/tables/stage47_candidate_gene_consensus_v1.csv
+  stage51_pass_fail: results/tables/stage51_pass_fail_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  donor_col: Donor ID
+  max_programming_features: 3000
+  latent_dims: [8, 16]
+  n_splits: 5
+  random_seeds: [107, 211, 307]
+  ridge_alpha: 1.0
+  rare_state_thresholds: [0.05, 0.02]
+  module_score_high_quantile: 0.90
+
+outputs:
+  input_inventory: results/tables/stage53_input_inventory_v1.csv
+  programming_input_inventory: results/tables/stage53_programming_input_inventory_v1.csv
+  cell_level_input_inventory: results/tables/stage53_cell_level_input_inventory_v1.csv
+  composition_input_inventory: results/tables/stage53_composition_input_inventory_v1.csv
+  heterogeneity_feature_inventory: results/tables/stage53_heterogeneity_feature_inventory_v1.csv
+  composition_feature_inventory: results/tables/stage53_composition_feature_inventory_v1.csv
+  branch_matrix_summary: results/tables/stage53_branch_matrix_summary_v1.csv
+  auxiliary_branch_registry: results/tables/stage53_auxiliary_branch_registry_v1.csv
+  label_free_pretraining_registry: results/tables/stage53_label_free_pretraining_registry_v1.csv
+  embedding_inventory: results/tables/stage53_embedding_inventory_v1.csv
+  frozen_probe_results: results/tables/stage53_frozen_probe_results_v1.csv
+  target_level_results: results/tables/stage53_target_level_results_v1.csv
+  branch_comparison: results/tables/stage53_branch_comparison_v1.csv
+  programming_vs_composition_decomposition: results/tables/stage53_programming_vs_composition_decomposition_v1.csv
+  hidden_microglia_state_candidate_scores: results/tables/stage53_hidden_microglia_state_candidate_scores_v1.csv
+  rare_state_enrichment_summary: results/tables/stage53_rare_state_enrichment_summary_v1.csv
+  candidate_module_state_association: results/tables/stage53_candidate_module_state_association_v1.csv
+  negative_control_results: results/tables/stage53_negative_control_results_v1.csv
+  leakage_audit: results/tables/stage53_leakage_audit_v1.csv
+  claim_boundary_audit: results/tables/stage53_claim_boundary_audit_v1.csv
+  manual_acquisition_gaps: results/tables/stage53_manual_acquisition_gaps_v1.csv
+  pi_decision_table: results/tables/stage53_pi_decision_table_v1.csv
+  pass_fail: results/tables/stage53_pass_fail_v1.csv
+  report: results/reports/stage53_heterogeneity_composition_auxiliary_jepa_report_v1.md
+  branch_input_inventory_report: results/reports/stage53_branch_input_inventory_report_v1.md
+  label_free_auxiliary_jepa_summary: results/reports/stage53_label_free_auxiliary_jepa_summary_v1.md
+  frozen_branch_probe_summary: results/reports/stage53_frozen_branch_probe_summary_v1.md
+  decomposition_report: results/reports/stage53_programming_vs_composition_decomposition_v1.md
+  hidden_microglia_state_candidates_report: results/reports/stage53_hidden_microglia_state_candidates_v1.md
+  rare_state_limitations_report: results/reports/stage53_rare_state_and_cell_state_limitations_v1.md
+  pi_summary: results/reports/stage53_pi_summary_v1.md
+  manuscript_update_note: results/reports/stage53_manuscript_update_note_v1.md
+  claim_final_check: results/reports/stage53_claim_boundary_final_check_v1.md
+  manual_acquisition_gaps_report: results/reports/stage53_manual_acquisition_gaps_v1.md

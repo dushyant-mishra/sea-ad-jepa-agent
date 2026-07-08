@@ -1,0 +1,8 @@
+question,answer,detail
+Were heterogeneity inputs found?,True,Microglia/PVM Supertype labels found in local processed H5AD.
+Were composition inputs found?,True,Stage45 CELLxGENE donor/cell_type metadata found.
+Did auxiliary branch training run?,True,Fold-specific label-free PCA latent encoders plus frozen ridge probes.
+Did heterogeneity improve over programming-only?,False,See decomposition table.
+Did composition explain much of the signal?,False,See decomposition table.
+Were hidden/rare microglial states nominated?,True,Post hoc state-fraction associations only; no new subtype claim.
+Is this main-text worthy?,supplement_or_methods_caution,Use as heterogeneity/composition limitation and follow-up analysis unless independently confirmed.

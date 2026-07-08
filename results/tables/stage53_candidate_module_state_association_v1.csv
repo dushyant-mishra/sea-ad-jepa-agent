@@ -1,0 +1,5 @@
+module_name,module_genes,genes_present_in_available_matrices,n_genes_present,state_level_expression_scoring_run,reason
+endolysosomal_autophagy_proteostasis,CTSD;CTSB;LAPTM5;NPC2;LAMP2,CTSD;CTSB;LAPTM5;NPC2;LAMP2,5,False,Stage53 used safe supertype composition labels only; cell-level expression/module scoring was not loaded to avoid raw expression materialization
+glial_activation_dam_like,TREM2;CST7;APOE;LGALS3;CTSD,TREM2;CST7;APOE;LGALS3;CTSD,5,False,Stage53 used safe supertype composition labels only; cell-level expression/module scoring was not loaded to avoid raw expression materialization
+oxidative_stress_antioxidant,HMOX1;NQO1;SOD2;SOD1;GPX4,SOD2,1,False,Stage53 used safe supertype composition labels only; cell-level expression/module scoring was not loaded to avoid raw expression materialization
+inflammatory_transport_state_modulation,BSG;SLC6A12;IL27RA;NFKBIA,BSG;SLC6A12;IL27RA;NFKBIA,4,False,Stage53 used safe supertype composition labels only; cell-level expression/module scoring was not loaded to avoid raw expression materialization

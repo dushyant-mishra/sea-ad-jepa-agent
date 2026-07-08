@@ -1,0 +1,2 @@
+feature_source,n_cells,n_donors,n_supertypes,n_features,state_label_column,donor_column,pathology_labels_used_to_define_features,notes
+data\processed\sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,40000,89,8,16,Supertype,Donor ID,False,real SEA-AD Microglia-PVM supertype labels; no pathology used in feature construction

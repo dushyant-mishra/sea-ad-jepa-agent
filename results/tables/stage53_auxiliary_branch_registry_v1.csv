@@ -1,0 +1,9 @@
+model_variant,uses_programming,uses_heterogeneity,uses_composition,allowed
+programming_only_jepa,True,False,False,True
+heterogeneity_only_jepa,False,True,False,True
+composition_only_jepa,False,False,True,True
+programming_plus_heterogeneity_jepa,True,True,False,True
+programming_plus_composition_jepa,True,False,True,True
+heterogeneity_plus_composition_jepa,False,True,True,True
+all_branches_jepa,True,True,True,True
+programming_residualized_against_composition_jepa,True,False,True,True

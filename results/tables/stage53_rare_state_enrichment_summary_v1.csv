@@ -1,0 +1,9 @@
+microglia_state,global_cell_count,global_fraction,rare_lt5pct_global,rare_lt2pct_global,support_level,safe_wording,forbidden_wording
+Micro-PVM_2,22427,0.560675,False,False,possible_state,candidate microglia/PVM supertype for follow-up association audit,discovered new microglia type; causal subtype; therapeutic target
+Micro-PVM_2_3-SEAAD,9019,0.225475,False,False,possible_state,candidate microglia/PVM supertype for follow-up association audit,discovered new microglia type; causal subtype; therapeutic target
+Micro-PVM_3-SEAAD,5107,0.127675,False,False,possible_state,candidate microglia/PVM supertype for follow-up association audit,discovered new microglia type; causal subtype; therapeutic target
+Micro-PVM_1,1621,0.040525,True,False,possible_state,candidate microglia/PVM supertype for follow-up association audit,discovered new microglia type; causal subtype; therapeutic target
+Lymphocyte,855,0.021375,True,False,context_or_non_microglia_pvm_label,candidate microglia/PVM supertype for follow-up association audit,discovered new microglia type; causal subtype; therapeutic target
+Micro-PVM_4-SEAAD,422,0.01055,True,True,possible_state,candidate microglia/PVM supertype for follow-up association audit,discovered new microglia type; causal subtype; therapeutic target
+Micro-PVM_2_1-SEAAD,289,0.007225,True,True,possible_state,candidate microglia/PVM supertype for follow-up association audit,discovered new microglia type; causal subtype; therapeutic target
+Monocyte,260,0.0065,True,True,context_or_non_microglia_pvm_label,candidate microglia/PVM supertype for follow-up association audit,discovered new microglia type; causal subtype; therapeutic target
