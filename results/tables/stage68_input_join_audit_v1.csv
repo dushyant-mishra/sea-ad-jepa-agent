@@ -1,0 +1,3 @@
+dataset,path,exists,x_shape,n_genes,donor_column,state_column,stage64_dataset_present,stage64_export_rows,stage64_row_index_compatible,full_h5ad_cells_scored_for_stage68,requested_genes,present_requested_genes,missing_requested_genes,missing_genes_sample
+MTG,C:\Users\dushy\Desktop\Jepa project\data\processed\sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,True,"(40000, 2977)",2977,Donor ID,Supertype,True,5000,True,40000,57,48,9,GBA;FCER1G;AIF1;IFITM3;HMOX1;NQO1;SOD1;GPX4;PRDX1
+DLPFC,C:\Users\dushy\Desktop\Jepa project\data\sea_ad\stage45\cellxgene\h5ad_assets\100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,True,"(42486, 35483)",35483,donor_id,Supertype,True,5000,True,42486,57,56,1,GBA

@@ -1,0 +1,80 @@
+stage: stage68_rare_tail_cell_extraction_expression_contrast_v1
+description: >
+  Extract Stage64 rare/high-tail Micro-PVM cells, join them to available SEA-AD
+  MTG/DLPFC H5AD expression rows, and run bounded within-donor high-vs-low
+  expression/state contrasts. This is a diagnostic expression-contrast stage,
+  not a new model, benchmark, subtype discovery, or validation claim.
+
+inputs:
+  stage64_cell_scores: results/tables/stage64_cell_level_module_score_table_v1.csv
+  stage67_recommended_inputs: results/tables/stage67_recommended_stage68_inputs_v1.csv
+  stage67_legacy_inventory: results/tables/stage67_legacy_cell_artifact_inventory_v1.csv
+  mtg_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  dlpfc_h5ad: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+datasets:
+  MTG:
+    path: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  DLPFC:
+    path: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+
+parameters:
+  high_quantile: 0.95
+  low_quantile: 0.50
+  min_cells_per_donor: 20
+  min_high_cells_per_donor: 3
+  max_export_cells_per_dataset: 5000
+  donor_column_candidates:
+    - donor_id
+    - Donor ID
+    - donor
+  state_column_candidates:
+    - Supertype
+    - Subclass
+    - cell_type
+    - ct_subcluster
+    - author_cell_type
+  expression_gene_set:
+    stage64_modules: true
+    stage47_candidate_overlap: true
+    extra_genes:
+      - APOE
+      - TREM2
+      - TYROBP
+      - C1QA
+      - C1QB
+      - C1QC
+      - CTSD
+      - CTSB
+      - CD74
+      - HLA-DRA
+      - HLA-DRB1
+      - B2M
+      - MSR1
+      - PLD3
+      - SLC38A9
+      - AP1G1
+      - HMOX1
+      - NQO1
+      - GPX4
+      - SOD1
+      - SOD2
+      - LPL
+      - APOC1
+
+outputs:
+  input_join_audit: results/tables/stage68_input_join_audit_v1.csv
+  rare_cell_selection_summary: results/tables/stage68_rare_cell_selection_summary_v1.csv
+  candidate_cell_export_index: results/tables/stage68_candidate_cell_export_index_v1.csv
+  high_vs_low_expression_contrast: results/tables/stage68_high_vs_low_expression_contrast_v1.csv
+  signature_gene_contrast: results/tables/stage68_signature_gene_contrast_v1.csv
+  state_enrichment: results/tables/stage68_state_enrichment_v1.csv
+  legacy_overlay_joinability: results/tables/stage68_legacy_overlay_joinability_v1.csv
+  claim_boundary_audit: results/tables/stage68_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage68_pass_fail_v1.csv
+  report: results/reports/stage68_rare_tail_cell_extraction_expression_contrast_report_v1.md
+  pi_summary: results/reports/stage68_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage68_claim_boundary_final_check_v1.md
