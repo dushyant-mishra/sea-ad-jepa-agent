@@ -314,3 +314,7 @@ Stage67 audited legacy v1/v2/v3 cell-level artifacts, trajectory/embedding/laten
 ## Stage 68 rare-tail cell extraction and expression contrast
 
 Stage68 extracted rare/high-tail Micro-PVM candidate cells by recomputing the frozen Stage64 module definitions on the full local MTG/DLPFC SEA-AD H5ADs, then ran bounded within-donor high-vs-low expression and state-enrichment contrasts. The capped Stage64 cell table was used only as an anchor/check, not as the low-reference universe. Stage68 also audited legacy v1/v2/v3 cell-level artifact overlay feasibility. It writes cell indices and summary contrasts only, not raw expression matrices. It is hypothesis-generating and makes no benchmark, external-validation, causal, therapeutic, validated-biomarker, or new-subtype claim.
+
+## Stage 69 rare-microglia auxiliary-head JEPA audit
+
+Stage69 tested a low-capacity rare-microglia auxiliary-head proxy using frozen Stage64/68 rare-tail donor features as pathology-blind auxiliary targets and Stage27C donor-held-out module features as inputs. It compared rare-auxiliary PLS shared-latent models against no-aux and shuffled-aux controls. Stage69 is an internal diagnostic only and does not claim external validation, causality, therapeutic relevance, gene ablation, new microglia subtype, or a benchmark lock.
