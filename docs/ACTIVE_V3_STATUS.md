@@ -285,3 +285,7 @@ Stage65 retrospectively backtraced Stage64 rare/high-tail Micro-PVM signatures i
 ## Stage 66 graph rare-tail signal preservation audit
 
 Stage66 audited whether the previous graph-JEPA failures could reflect graph smoothing of sparse rare-tail Micro-PVM disease signal. It used frozen Stage64/65 rare-tail signatures, pre-existing STRING graph edges, degree-matched graph proximity nulls, fixed graph smoothing strengths, hub-capped/hub-removed variants, and donor-level rare-tail pathology associations. This is a diagnostic graph information-preservation audit only: no new Graph-JEPA rescue model, no benchmark claim, no graph-alpha tuning, and no causal/therapeutic/validated-biomarker/new-subtype claim.
+
+## Stage 67 legacy cell artifact and SEA-AD availability audit
+
+Stage67 audited legacy v1/v2/v3 cell-level artifacts, trajectory/embedding/latent outputs, and SEA-AD/local H5AD availability before rare-tail cell extraction. It found available Stage64 rare-tail cell scores, multiple legacy cell-level JEPA/trajectory artifacts for potential intersection, and local MTG/DLPFC H5ADs suitable for same-donor high-vs-low expression contrast. Stage67 is inventory-only: no new model, no expression contrast yet, and no validation/causal/therapeutic claim.
