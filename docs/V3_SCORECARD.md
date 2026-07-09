@@ -298,3 +298,7 @@ Stage63 diagnosed the corrected Stage61-to-Stage62 DLPFC signal discrepancy with
 ## Stage 64 cell-level rare microglia state mining
 
 Stage64 mined MTG and DLPFC Micro-PVM cells with pathology-blind frozen module scores, high-tail donor burdens, state-tail metrics, composite disease-program fractions, and within-donor high-vs-low contrasts. This stage tests whether rare/high-score microglia signatures may be diluted by donor means. It produces hypothesis-generating signatures for Stage65 external support only; it does not run a rescue model, create a new benchmark, claim clean external validation, causality, therapeutic relevance, validated biomarkers, or a new microglia subtype.
+
+## Stage 65 retrospective rare-tail signal backtrace
+
+Stage65 retrospectively backtraced Stage64 rare/high-tail Micro-PVM signatures into earlier failed or unstable internal stages. It found that many Stage64 tail/variance metrics were stronger than corresponding donor means, supporting the interpretation that earlier donor-average, state-average, graph-smoothed, or module-average attempts may have diluted sparse disease-program signal. Stage65 is diagnostic only: Stage27C remains locked, no old stage is rebranded as successful, and frozen rare-tail signatures are handed to Stage66 for external support testing.

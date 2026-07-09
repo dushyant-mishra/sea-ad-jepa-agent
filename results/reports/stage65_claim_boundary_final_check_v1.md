@@ -1,0 +1,5 @@
+# Stage65 claim boundary final check
+
+| stage65_run_is_retrospective_audit_only | no_new_rescue_model_run | no_old_stage_rerun_for_rescue | no_threshold_tuning_by_pathology | no_gene_selection_by_target_association | stage27c_remains_locked | stage64_signatures_remain_hypothesis_generating | no_clean_external_validation_claim | no_causal_claim | no_therapeutic_claim | no_validated_biomarker_claim | no_new_microglia_subtype_claim | raw_data_not_committed | safety_audit_pass |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| True | True | True | True | True | True | True | True | True | True | True | True | True | True |
