@@ -269,3 +269,7 @@ Stage61 acquired/audited the DLPFC Microglia-PVM H5AD to an untracked data path 
 ## Stage 62 DLPFC state-module robustness lock audit
 
 Stage62 audited the corrected Stage61 DLPFC Microglia-PVM state-stratified module signal using repeated donor-held-out probes, same-80-donor MTG programming baseline, shuffled/ablated controls, seed stability, bootstrap deltas, and feature-source checks. Stage62 classifies the result as robust regional support, benchmark-lock candidate, new locked benchmark, or non-locking support based on predeclared gates. No clean external validation, causal, therapeutic, validated-ablation, or new-subtype claim is made.
+
+## Stage 63 DLPFC signal instability diagnosis and external handoff
+
+Stage63 diagnosed the corrected Stage61-to-Stage62 DLPFC signal discrepancy without running a new rescue model. It preserves Stage27C as the locked benchmark, keeps Stage61 as positive regional support only, explains the Stage62 robustness failure through seed/fold/target/control diagnostics, and freezes only hypothesis-generating DLPFC module/state signatures for later external support testing. No clean external validation, causal, therapeutic, validated-biomarker, or new-subtype claim is made.

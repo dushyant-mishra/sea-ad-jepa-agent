@@ -1,0 +1,3 @@
+signature_type,signature_name,leave_one_out_score,estimated_positive_contribution,evidence_strength,handoff_status,allowed_claim
+state_or_supertype,Micro-PVM_2_2-SEAAD,0.2782566807313643,-0.0009416315049226021,unstable_or_negative,keep_for_supplement,hypothesis-generating state-stratified signature only
+feature_family_inventory,state_abundance__obs_state_count_or_fraction,,,inventory_only,keep_for_supplement,inventory only; not validated biomarker

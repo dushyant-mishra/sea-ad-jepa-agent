@@ -1,0 +1,4 @@
+target_family,targets,stage61_best_family_score,stage62_aggregate_family_score,stage62_minus_stage61,interpretation
+amyloid_tau,6e10/A_beta;AT8,0.3796647913736521,0.2957612517580872,-0.0839035396155649,unstable_or_deflated
+glial_reactivity,GFAP;Iba1,0.2316690107829348,0.15551511954992966,-0.07615389123300514,unstable_or_deflated
+neuronal_preservation,NeuN,0.4939521800281293,0.4840225035161744,-0.009929676511954921,relatively_preserved
