@@ -1,0 +1,5 @@
+# Stage64 claim boundary final check
+
+| stage64_run_is_bounded_rare_cell_mining | no_new_rescue_model_run | no_new_benchmark_claim | module_definitions_pathology_blind | high_tail_thresholds_pathology_blind | pathology_used_only_after_feature_construction | no_target_tuned_feature_selection | no_clean_external_validation_claim | no_causal_claim | no_therapeutic_claim | no_validated_biomarker_claim | no_new_microglia_subtype_claim | raw_data_not_committed | safety_audit_pass |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| True | True | True | True | True | True | True | True | True | True | True | True | True | True |

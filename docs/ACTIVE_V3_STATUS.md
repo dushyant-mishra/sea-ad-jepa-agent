@@ -273,3 +273,7 @@ Stage62 audited the corrected Stage61 DLPFC Microglia-PVM state-stratified modul
 ## Stage 63 DLPFC signal instability diagnosis and external handoff
 
 Stage63 diagnosed the corrected Stage61-to-Stage62 DLPFC signal discrepancy without running a new rescue model. It preserves Stage27C as the locked benchmark, keeps Stage61 as positive regional support only, explains the Stage62 robustness failure through seed/fold/target/control diagnostics, and freezes only hypothesis-generating DLPFC module/state signatures for later external support testing. No clean external validation, causal, therapeutic, validated-biomarker, or new-subtype claim is made.
+
+## Stage 64 cell-level rare microglia state mining
+
+Stage64 mined MTG and DLPFC Micro-PVM cells with pathology-blind frozen module scores, high-tail donor burdens, state-tail metrics, composite disease-program fractions, and within-donor high-vs-low contrasts. This stage tests whether rare/high-score microglia signatures may be diluted by donor means. It produces hypothesis-generating signatures for Stage65 external support only; it does not run a rescue model, create a new benchmark, claim clean external validation, causality, therapeutic relevance, validated biomarkers, or a new microglia subtype.
