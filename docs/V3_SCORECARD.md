@@ -302,3 +302,7 @@ Stage64 mined MTG and DLPFC Micro-PVM cells with pathology-blind frozen module s
 ## Stage 65 retrospective rare-tail signal backtrace
 
 Stage65 retrospectively backtraced Stage64 rare/high-tail Micro-PVM signatures into earlier failed or unstable internal stages. It found that many Stage64 tail/variance metrics were stronger than corresponding donor means, supporting the interpretation that earlier donor-average, state-average, graph-smoothed, or module-average attempts may have diluted sparse disease-program signal. Stage65 is diagnostic only: Stage27C remains locked, no old stage is rebranded as successful, and frozen rare-tail signatures are handed to Stage66 for external support testing.
+
+## Stage 66 graph rare-tail signal preservation audit
+
+Stage66 audited whether the previous graph-JEPA failures could reflect graph smoothing of sparse rare-tail Micro-PVM disease signal. It used frozen Stage64/65 rare-tail signatures, pre-existing STRING graph edges, degree-matched graph proximity nulls, fixed graph smoothing strengths, hub-capped/hub-removed variants, and donor-level rare-tail pathology associations. This is a diagnostic graph information-preservation audit only: no new Graph-JEPA rescue model, no benchmark claim, no graph-alpha tuning, and no causal/therapeutic/validated-biomarker/new-subtype claim.

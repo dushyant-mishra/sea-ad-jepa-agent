@@ -1,0 +1,45 @@
+stage: Stage66
+version: v1
+stage_name: Stage66_graph_rare_tail_signal_preservation_audit_v1
+description: Diagnostic audit testing whether graph topology preserves or dilutes rare/high-tail microglia disease-program signal.
+
+inputs:
+  mtg_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  dlpfc_h5ad: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+  pathology_targets: data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv
+  graph_edges: results/tables/v2_graph_string_edges_t700.csv
+  stage64_gene_availability: results/tables/stage64_gene_availability_v1.csv
+  stage64_mean_vs_tail_target_association: results/tables/stage64_mean_vs_tail_target_association_v1.csv
+  stage64_high_vs_low_gene_contrast: results/tables/stage64_high_vs_low_module_gene_contrast_v1.csv
+  stage65_external_handoff_signature: results/tables/stage65_external_handoff_signature_v1.csv
+  stage65_pass_fail: results/tables/stage65_pass_fail_v1.csv
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+parameters:
+  donor_column_candidates: [Donor ID, donor_id, donor]
+  state_column_candidates: [Supertype, supertype, Subclass, subclass, cell_type, Cell Type]
+  graph_alphas: [0.0, 0.05, 0.10, 0.25, 0.50, 1.0]
+  high_quantile: 0.95
+  random_seed: 6601
+  degree_matched_random_iterations: 200
+  hub_degree_quantile: 0.95
+  min_cells_per_donor: 20
+
+outputs:
+  input_inventory: results/tables/stage66_input_inventory_v1.csv
+  graph_input_audit: results/tables/stage66_graph_input_audit_v1.csv
+  rare_signature_gene_registry: results/tables/stage66_rare_signature_gene_registry_v1.csv
+  graph_proximity_results: results/tables/stage66_graph_proximity_results_v1.csv
+  degree_matched_null_results: results/tables/stage66_degree_matched_null_results_v1.csv
+  graph_smoothing_tail_association: results/tables/stage66_graph_smoothing_tail_association_v1.csv
+  graph_smoothing_delta_summary: results/tables/stage66_graph_smoothing_delta_summary_v1.csv
+  hub_capping_preservation_results: results/tables/stage66_hub_capping_preservation_results_v1.csv
+  rare_cell_subset_graph_signal: results/tables/stage66_rare_cell_subset_graph_signal_v1.csv
+  graph_washout_decision: results/tables/stage66_graph_washout_decision_v1.csv
+  claim_boundary_audit: results/tables/stage66_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage66_pass_fail_v1.csv
+  report: results/reports/stage66_graph_rare_tail_signal_preservation_audit_report_v1.md
+  pi_summary: results/reports/stage66_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage66_claim_boundary_final_check_v1.md

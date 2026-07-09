@@ -1,0 +1,2 @@
+graph_edges,graph_nodes,mean_degree,hub_degree_cutoff,n_hubs,graph_source
+14565,2311,12.604932929467763,49.0,113,results/tables/v2_graph_string_edges_t700.csv
