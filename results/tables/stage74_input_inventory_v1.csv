@@ -1,0 +1,6 @@
+input_name,path,exists,size_bytes
+mtg_h5ad,data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,True,462024617
+dlpfc_h5ad,data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,True,715262151
+stage72b_candidate_edges,results/tables/stage72b_tf_target_candidate_edges_v1.csv,True,287059
+stage72b_readiness,results/tables/stage72b_grn_readiness_decision_v1.csv,True,367
+stage73r_control_integrity,results/tables/stage73r_graph_control_integrity_audit_v1.csv,True,1017

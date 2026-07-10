@@ -342,3 +342,7 @@ Stage73 benchmarked the Stage72B Morabito/GSE174367 microglia candidate coactivi
 ## Stage 73R context-specific GRN control repair
 
 Stage73R repaired the Stage73 candidate-GRN negative-control mode-label bug, verified that target-shuffled and gene-label-permuted controls are structurally distinct from the Stage72B context graph, and reran the frozen Stage71 rare-cell donor-held-out graph diagnostic. It is a diagnostic graph-prior test only: no clean external validation, causal regulatory, therapeutic, gene-ablation, or validated-GRN claim is made.
+
+## Stage 74 directed Micro-PVM GRN perturbation audit
+
+Stage74 tested the Stage72B candidate TF-target graph as a directed perturbation-prior layer rather than an undirected prediction-smoothing branch. Fixed-dose regulator perturbations were propagated downstream through one-hop/two-hop directed targets and compared with expression-only, reversed, target-shuffled, and random directed controls. This is an in-silico hypothesis-prioritization audit only: it does not update Stage27C, does not claim causal knockout validity, and does not claim therapeutic targets.

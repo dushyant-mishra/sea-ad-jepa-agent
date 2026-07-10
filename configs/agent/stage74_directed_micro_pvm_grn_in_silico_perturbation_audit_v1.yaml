@@ -1,0 +1,61 @@
+stage: stage74_directed_micro_pvm_grn_in_silico_perturbation_audit_v1
+description: >
+  Directed Micro-PVM GRN perturbation audit using the Stage72B candidate
+  TF-target coactivity graph. This is not a prediction-rescue stage and does
+  not claim causal knockout validity. It tests whether the directed graph is
+  useful for organizing fixed-dose downstream program perturbation hypotheses.
+
+references:
+  perturbation_doses: [0.25, 0.50, 0.75, 1.00]
+  hop1_weight: 1.0
+  hop2_weight: 0.5
+  random_seed: 7401
+  bootstrap_iterations: 500
+  core_signature_genes:
+    - APOE
+    - C1QA
+    - C1QB
+    - C1QC
+    - HLA-DRA
+    - HLA-DRB1
+    - CD74
+    - B2M
+    - CTSD
+    - TREM2
+    - TYROBP
+
+inputs:
+  mtg_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+  dlpfc_h5ad: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+  stage72b_candidate_edges: results/tables/stage72b_tf_target_candidate_edges_v1.csv
+  stage72b_readiness: results/tables/stage72b_grn_readiness_decision_v1.csv
+  stage73r_control_integrity: results/tables/stage73r_graph_control_integrity_audit_v1.csv
+  stage71_script: scripts/run_stage71_full_rare_microglia_graph_jepa_hierarchical_benchmark_v1.py
+  active_status: docs/ACTIVE_V3_STATUS.md
+  v3_scorecard_md: docs/V3_SCORECARD.md
+  v3_scorecard_csv: results/tables/v3_scorecard_status_v1.csv
+
+outputs:
+  input_inventory: results/tables/stage74_input_inventory_v1.csv
+  directed_graph_registry: results/tables/stage74_directed_graph_registry_v1.csv
+  perturbation_response_curves: results/tables/stage74_perturbation_response_curves_v1.csv
+  module_response_summary: results/tables/stage74_module_response_summary_v1.csv
+  donor_bootstrap_stability: results/tables/stage74_donor_bootstrap_stability_v1.csv
+  control_specificity_results: results/tables/stage74_control_specificity_results_v1.csv
+  regulator_priority_table: results/tables/stage74_regulator_priority_table_v1.csv
+  decision_audit: results/tables/stage74_decision_audit_v1.csv
+  claim_boundary_audit: results/tables/stage74_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage74_pass_fail_v1.csv
+  report: results/reports/stage74_directed_micro_pvm_grn_in_silico_perturbation_audit_report_v1.md
+  pi_summary: results/reports/stage74_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage74_claim_boundary_final_check_v1.md
+
+safety:
+  no_prediction_benchmark_update: true
+  no_model_rescue_training: true
+  no_external_validation_claim: true
+  no_causal_knockout_claim: true
+  no_therapeutic_claim: true
+  no_validated_grn_claim: true
+  fixed_doses_no_tuning: true
+  frozen_stage72b_edges: true
