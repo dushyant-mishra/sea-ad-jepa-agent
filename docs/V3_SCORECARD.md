@@ -350,3 +350,7 @@ Stage74 tested the Stage72B candidate TF-target graph as a directed perturbation
 ## Stage 75A SCENIC+/CellOracle eGRN readiness
 
 Stage75A audited readiness for upgrading Stage74 into a SCENIC+/CellOracle-style state-specific perturbation framework. It found the current repo has the GSE174367 snRNA/snATAC matrices and local MTG/DLPFC expression context, but the current env does not have SCENIC+/CellOracle dependencies and the repo does not yet contain the motif/ranking, genome annotation, TF list, or peak-to-gene resources required for a true TF->region->gene eGRN. Stage75A is planning/readiness only and makes no causal, therapeutic, validated-GRN, external-validation, or benchmark-update claim.
+
+## Stage 75B SCENIC+/CellOracle resource acquisition
+
+Stage75B created a controlled SCENIC+/CellOracle resource acquisition manifest and downloaded only requested small resources. Large Aerts Lab cisTarget feather databases are recorded for WSL/background download and are not committed. No SCENIC+, CellOracle, model training, or validation analysis was run.
