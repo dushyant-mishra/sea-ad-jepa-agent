@@ -338,3 +338,7 @@ Stage72B constructed a bounded GSE174367 microglia TF-target coactivity graph fr
 ## Stage 73 context-specific GRN graph-JEPA diagnostic
 
 Stage73 benchmarked the Stage72B Morabito/GSE174367 microglia candidate coactivity graph against no-graph, STRING, target-shuffled, and gene-label permuted graph controls using the frozen Stage71 rare-cell donor-held-out machinery. It is a diagnostic graph-prior test only: no clean external validation, causal regulatory, therapeutic, gene-ablation, or validated-GRN claim is made.
+
+## Stage 73R context-specific GRN control repair
+
+Stage73R repaired the Stage73 candidate-GRN negative-control mode-label bug, verified that target-shuffled and gene-label-permuted controls are structurally distinct from the Stage72B context graph, and reran the frozen Stage71 rare-cell donor-held-out graph diagnostic. It is a diagnostic graph-prior test only: no clean external validation, causal regulatory, therapeutic, gene-ablation, or validated-GRN claim is made.
