@@ -301,3 +301,7 @@ Stage69 tested a low-capacity rare-microglia auxiliary-head proxy using frozen S
 ## Stage 70 rare-microglia auxiliary-head robustness lock audit
 
 Stage70 froze the Stage69 rare_aux_pls4_w0p2 auxiliary-head setup and ran a strict internal robustness/lock-candidate audit across exact reproduction, repeated donor-held-out seeds, stronger negative controls, predeclared rare-auxiliary ablations, bootstrap deltas, and target guards. It remains internal only: no clean external validation, causal, therapeutic, gene-ablation, or new-microglia-subtype claim is made.
+
+## Stage 71 full rare-microglia graph JEPA hierarchical benchmark
+
+Stage71 ran a full-cell rare-microglia graph-aware hierarchical benchmark using local MTG/DLPFC cells, frozen Stage64/68 signatures, hub-capped STRING graph context, rare-tail pooling, graph/random controls, and separate representation/prediction lock gates. It is internal only and makes no external-validation, causal, therapeutic, gene-ablation, or new-subtype claim.

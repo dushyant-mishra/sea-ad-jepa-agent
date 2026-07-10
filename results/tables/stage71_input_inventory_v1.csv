@@ -1,0 +1,8 @@
+input_name,path,exists,size_bytes
+mtg_h5ad,data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,True,462024617
+dlpfc_h5ad,data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,True,715262151
+string_edges,results/tables/v2_graph_string_edges_t700.csv,True,382734
+stage68_expression_contrast,results/tables/stage68_high_vs_low_expression_contrast_v1.csv,True,15324
+stage68_candidate_cells,results/tables/stage68_candidate_cell_export_index_v1.csv,True,3333189
+stage69_script,scripts/run_stage69_rare_microglia_auxiliary_head_jepa_audit_v1.py,True,26917
+stage70_lock_gate,results/tables/stage70_lock_gate_decision_v1.csv,True,572

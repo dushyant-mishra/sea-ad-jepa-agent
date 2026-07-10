@@ -1,0 +1,4 @@
+comparison,mean_delta,ci_lower_2p5,ci_upper_97p5,bootstrap_iterations,bootstrap_level
+real_graph_aux_vs_stage27c,-0.007304064797003167,-0.01514062974587427,0.003671560190341151,1000,seed_summary
+real_graph_aux_vs_no_aux,0.008431190037460762,0.005715905639364194,0.011292497721980377,1000,seed_summary
+real_graph_aux_vs_random_graph,-0.007725377341297959,-0.014313657993317743,0.0005013668117849757,1000,seed_summary
