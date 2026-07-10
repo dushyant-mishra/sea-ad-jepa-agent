@@ -1,0 +1,6 @@
+input_name,path,exists,size_bytes
+stage69_script,scripts/run_stage69_rare_microglia_auxiliary_head_jepa_audit_v1.py,True,26917
+stage69_pass_fail,results/tables/stage69_pass_fail_v1.csv,True,1121
+stage69_mean_metrics,results/tables/stage69_mean_metrics_v1.csv,True,5117
+stage69_target_metrics,results/tables/stage69_target_metrics_v1.csv,True,16630
+locked_folds,results/tables/v3_locked_donor_folds_v1.csv,True,12554

@@ -297,3 +297,7 @@ Stage68 extracted rare/high-tail Micro-PVM candidate cells by recomputing the fr
 ## Stage 69 rare-microglia auxiliary-head JEPA audit
 
 Stage69 tested a low-capacity rare-microglia auxiliary-head proxy using frozen Stage64/68 rare-tail donor features as pathology-blind auxiliary targets and Stage27C donor-held-out module features as inputs. It compared rare-auxiliary PLS shared-latent models against no-aux and shuffled-aux controls. Stage69 is an internal diagnostic only and does not claim external validation, causality, therapeutic relevance, gene ablation, new microglia subtype, or a benchmark lock.
+
+## Stage 70 rare-microglia auxiliary-head robustness lock audit
+
+Stage70 froze the Stage69 rare_aux_pls4_w0p2 auxiliary-head setup and ran a strict internal robustness/lock-candidate audit across exact reproduction, repeated donor-held-out seeds, stronger negative controls, predeclared rare-auxiliary ablations, bootstrap deltas, and target guards. It remains internal only: no clean external validation, causal, therapeutic, gene-ablation, or new-microglia-subtype claim is made.

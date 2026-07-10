@@ -1,0 +1,2 @@
+condition,stage69_expected_score,stage70_reproduced_score,absolute_difference,exact_reproduction_tolerance,exact_reproduction_pass
+rare_aux_pls4_w0p2,0.3591037979163019,0.3591037979163019,0.0,1e-06,True

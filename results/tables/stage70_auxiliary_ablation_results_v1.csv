@@ -1,0 +1,12 @@
+condition,aux_condition_type,mean_pooled_oof_spearman,min_delta_vs_stage27c_target,iba1_spearman,n_targets,delta_vs_stage27c_mean,delta_vs_best_no_aux,delta_vs_best_shuffled_aux,ablation,n_aux_features
+rare_aux_ablation__all,rare_microglia_auxiliary_head,0.3591037979163019,-0.0036354921401640095,0.08971457470258709,5,0.03240135790415244,,,all,78
+rare_aux_ablation__mtg_only,rare_microglia_auxiliary_head,0.34439387950014716,-0.0021532118483924157,0.013924544555373885,5,0.017691439487997673,,,mtg_only,39
+rare_aux_ablation__dlpfc_only,rare_microglia_auxiliary_head,0.3386985773420352,-0.010460601351902632,0.03032006283548321,5,0.011996137329885692,,,dlpfc_only,39
+rare_aux_ablation__variance_only,rare_microglia_auxiliary_head,0.3269099146055116,-0.054833561504432374,-0.03875580510066608,5,0.00020747459336212248,,,variance_only,12
+rare_aux_ablation__fraction_only,rare_microglia_auxiliary_head,0.33419645074754156,-0.041516633438747536,-0.02543887703498124,5,0.007494010735392076,,,fraction_only,16
+rare_aux_ablation__top_tail_only,rare_microglia_auxiliary_head,0.344569638206795,-0.002957031728908155,0.02719083791358464,5,0.017867198194645495,,,top_tail_only,48
+rare_aux_ablation__lysosomal_only,rare_microglia_auxiliary_head,0.33289527619305254,-0.05285880791294299,-0.03678105150917669,5,0.00619283618090305,,,lysosomal_only,12
+rare_aux_ablation__dam_lipid_only,rare_microglia_auxiliary_head,0.33450587401016074,-0.04246856593926037,-0.02639080953549407,5,0.0078034339980112555,,,dam_lipid_only,12
+rare_aux_ablation__complement_only,rare_microglia_auxiliary_head,0.3280997832876835,-0.06081858392786944,-0.04474082752410315,5,0.0013973432755340354,,,complement_only,12
+rare_aux_ablation__antigen_only,rare_microglia_auxiliary_head,0.32335265815793435,-0.07383170374870977,-0.05775394734494347,5,-0.003349781854215139,,,antigen_only,18
+rare_aux_ablation__disease_program_only,rare_microglia_auxiliary_head,0.331498226400576,-0.03793169614958219,-0.021853939745815888,5,0.004795786388426537,,,disease_program_only,16

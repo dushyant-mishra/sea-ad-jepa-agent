@@ -1,0 +1,6 @@
+condition,aux_condition_type,mean_pooled_oof_spearman,min_delta_vs_stage27c_target,iba1_spearman,n_targets,delta_vs_stage27c_mean,delta_vs_best_no_aux,delta_vs_best_shuffled_aux,control_type
+no_aux_baseline,no_aux_baseline,0.34006364315332804,-0.04615477264337389,-0.03007701623960759,5,0.013361203141178557,0.0,,no_aux_baseline
+shuffled_aux_train_rows,shuffled_aux_negative_control,0.3220875496982861,-0.03679140893844063,0.01368149795949827,5,-0.004614890313863362,,0.0,shuffled_aux_train_rows
+donor_shuffled_aux_targets,rare_microglia_auxiliary_head,0.3219783244454288,-0.09895664559735166,-0.08287888919358537,5,-0.004724115566720699,,,donor_shuffled_aux_targets
+random_matched_aux_targets,rare_microglia_auxiliary_head,0.32609824176266733,-0.06454529839796225,-0.048467541994195944,5,-0.0006041982494821574,,,random_matched_aux_targets
+mean_module_aux_targets,rare_microglia_auxiliary_head,0.3348807496027001,-0.05710199639927148,-0.041024239995505175,5,0.008178309590550603,,,mean_module_aux_targets
