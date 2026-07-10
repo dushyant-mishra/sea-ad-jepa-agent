@@ -1,0 +1,9 @@
+engine_step,max_iterations,fixed_doses,readout,control,required_before_regulator_pass
+iterative_signed_delta_expression,3,0.25;0.50;0.75;1.00,frozen_JEPA_latent_shift; rare_tail_score_shift; donor_bootstrap,no_propagation_tf_perturbation,True
+iterative_signed_delta_expression,3,0.25;0.50;0.75;1.00,frozen_JEPA_latent_shift; rare_tail_score_shift; donor_bootstrap,degree_preserved_target_shuffled_directed_graph,True
+iterative_signed_delta_expression,3,0.25;0.50;0.75;1.00,frozen_JEPA_latent_shift; rare_tail_score_shift; donor_bootstrap,sign_shuffled_graph,True
+iterative_signed_delta_expression,3,0.25;0.50;0.75;1.00,frozen_JEPA_latent_shift; rare_tail_score_shift; donor_bootstrap,tf_label_shuffled_graph,True
+iterative_signed_delta_expression,3,0.25;0.50;0.75;1.00,frozen_JEPA_latent_shift; rare_tail_score_shift; donor_bootstrap,region_to_gene_shuffled_graph,True
+iterative_signed_delta_expression,3,0.25;0.50;0.75;1.00,frozen_JEPA_latent_shift; rare_tail_score_shift; donor_bootstrap,state_label_shuffled_coefficients,True
+iterative_signed_delta_expression,3,0.25;0.50;0.75;1.00,frozen_JEPA_latent_shift; rare_tail_score_shift; donor_bootstrap,expression_matched_random_regulator,True
+iterative_signed_delta_expression,3,0.25;0.50;0.75;1.00,frozen_JEPA_latent_shift; rare_tail_score_shift; donor_bootstrap,background_coefficients_applied_to_rare_high_cells,True
