@@ -1,0 +1,120 @@
+stage: stage72b_external_morabito_micro_pvm_grn_construction
+version: v1
+description: >
+  Construct a bounded external Morabito/GSE174367 microglia candidate regulatory
+  coactivity graph from acquired processed snRNA/snATAC resources. The graph is
+  intended for downstream Graph-JEPA diagnostic testing only and is not claimed
+  as a validated TF-peak-gene GRN.
+
+inputs:
+  snrna_matrix_h5: data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5
+  snrna_cell_metadata: data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz
+  snatac_matrix_h5: data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5
+  snatac_cell_metadata: data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz
+
+microglia_label: MG
+sample_column_rna: SampleID
+sample_column_atac: Sample.ID
+cell_type_column: Cell.Type
+barcode_column: Barcode
+
+tf_candidates:
+  - SPI1
+  - IRF8
+  - CEBPB
+  - CEBPA
+  - MAFB
+  - MAF
+  - JUN
+  - FOS
+  - NFKB1
+  - RELA
+  - STAT1
+  - STAT3
+  - SREBF1
+  - MITF
+  - RUNX1
+  - ETS1
+  - ELF1
+  - KLF4
+  - PPARG
+  - NRF1
+  - BACH1
+  - NFE2L2
+
+target_genes:
+  - APOE
+  - TREM2
+  - LPL
+  - APOC1
+  - TYROBP
+  - CST7
+  - LGALS3
+  - CTSD
+  - CTSB
+  - LAPTM5
+  - NPC2
+  - LAMP2
+  - CTSS
+  - GBA
+  - PSAP
+  - C1QA
+  - C1QB
+  - C1QC
+  - FCER1G
+  - AIF1
+  - CD74
+  - HLA-DRA
+  - HLA-DRB1
+  - HLA-DPA1
+  - HLA-DPB1
+  - B2M
+  - NFKBIA
+  - IRF8
+  - STAT1
+  - IFITM3
+  - IL27RA
+  - SLC6A12
+  - BSG
+  - HMOX1
+  - NQO1
+  - SOD2
+  - SOD1
+  - GPX4
+  - PRDX1
+  - TXNIP
+  - MSR1
+  - PLD3
+  - SLC38A9
+  - AP1G1
+
+edge_rules:
+  min_samples: 8
+  min_tf_expressed_fraction: 0.05
+  min_target_expressed_fraction: 0.05
+  min_abs_spearman: 0.20
+  min_bootstrap_sign_stability: 0.70
+  bootstrap_iterations: 200
+  random_seed: 7202
+
+outputs:
+  input_inventory: results/tables/stage72b_input_inventory_v1.csv
+  microglia_subset_qc: results/tables/stage72b_microglia_subset_qc_v1.csv
+  gene_coverage: results/tables/stage72b_gene_coverage_v1.csv
+  tf_target_candidate_edges: results/tables/stage72b_tf_target_candidate_edges_v1.csv
+  edge_stability_summary: results/tables/stage72b_edge_stability_summary_v1.csv
+  atac_peak_support_audit: results/tables/stage72b_atac_peak_support_audit_v1.csv
+  graph_control_registry: results/tables/stage72b_graph_control_registry_v1.csv
+  grn_readiness_decision: results/tables/stage72b_grn_readiness_decision_v1.csv
+  claim_boundary_audit: results/tables/stage72b_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage72b_pass_fail_v1.csv
+  technical_report: results/reports/stage72b_external_morabito_micro_pvm_grn_construction_report_v1.md
+  pi_summary: results/reports/stage72b_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage72b_claim_boundary_final_check_v1.md
+
+claim_boundaries:
+  no_model_training: true
+  no_external_validation_claim: true
+  no_causal_regulatory_claim: true
+  no_therapeutic_claim: true
+  no_tf_peak_gene_claim_without_motif_or_gene_mapping: true

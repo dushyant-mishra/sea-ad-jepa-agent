@@ -1,0 +1,5 @@
+control_graph,purpose,required_for_stage73
+degree_preserved_randomized_candidate_grn,test whether candidate graph topology matters beyond degree distribution,True
+target_gene_shuffled_candidate_grn,test whether TF-target assignments matter,True
+no_graph_identity,baseline expression-only/identity comparison,True
+STRING_context_unaware,compare context-specific graph against generic protein interaction graph,True

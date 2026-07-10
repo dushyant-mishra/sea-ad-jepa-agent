@@ -309,3 +309,7 @@ Stage71 ran a full-cell rare-microglia graph-aware hierarchical benchmark using 
 ## Stage 72A external multiomic GRN resource eligibility audit
 
 Stage72A audited and optionally acquired public GSE174367 snRNA/snATAC processed resources for a context-specific Micro-PVM regulatory graph branch, while preserving claim boundaries. It does not construct a graph, train a model, or open GSE157827 as validation.
+
+## Stage 72B external Morabito Micro-PVM candidate GRN construction
+
+Stage72B constructed a bounded GSE174367 microglia TF-target coactivity graph from predeclared rare-tail target genes and microglia regulatory TF candidates. Because the acquired snATAC peak matrix contains genomic intervals without bundled motif or peak-to-gene annotation, the output is labeled as a candidate coactivity/regulon graph for future diagnostics, not a validated TF-peak-gene GRN. No model training, clean external validation, causal, therapeutic, or gene-ablation claim is made.

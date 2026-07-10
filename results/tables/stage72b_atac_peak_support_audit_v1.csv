@@ -1,0 +1,2 @@
+resource,exists,n_peaks,n_cells,feature_format,n_first_1000_interval_like,n_first_1000_gene_like,gene_mappable_without_external_annotation,motif_annotation_available,usable_for_tf_peak_gene_edges_stage72b,limitation
+GSE174367_snATAC_peak_matrix,True,219070,143401,genomic_interval,1000,0,False,False,False,processed peak matrix contains genomic intervals but no bundled gene/motif annotation; use as resource availability only until a peak-to-gene/motif map is added
