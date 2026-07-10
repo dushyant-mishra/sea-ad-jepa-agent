@@ -1,0 +1,2 @@
+stage75d_handoff_written,large_download_run_in_codex,environment_install_run_in_codex,ready_for_stage75e_after_user_wsl_completion,stage75e_should_verify_files_before_running
+True,False,False,True,True

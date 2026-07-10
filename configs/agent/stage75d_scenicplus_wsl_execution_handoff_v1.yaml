@@ -1,0 +1,34 @@
+stage: stage75d_scenicplus_wsl_execution_handoff_v1
+description: >
+  WSL/background execution handoff package for installing SCENIC+/CellOracle
+  dependencies and downloading large cisTarget feather databases needed before a
+  true Stage75E SCENIC+ eGRN run. This stage writes command scripts and readiness
+  gates only; it does not run SCENIC+, CellOracle, or large downloads inside
+  Codex.
+
+resource_dir_wsl: /mnt/c/Users/dushy/Desktop/Jepa project/data/external_resources/stage75b
+repo_dir_wsl: /mnt/c/Users/dushy/Desktop/Jepa project
+conda_env_name: sea-ad-scenicplus
+
+outputs:
+  wsl_command_table: results/tables/stage75d_wsl_command_table_v1.csv
+  large_download_checklist: results/tables/stage75d_large_download_checklist_v1.csv
+  dependency_install_checklist: results/tables/stage75d_dependency_install_checklist_v1.csv
+  readiness: results/tables/stage75d_readiness_v1.csv
+  claim_boundary_audit: results/tables/stage75d_claim_boundary_audit_v1.csv
+  pass_fail: results/tables/stage75d_pass_fail_v1.csv
+  wsl_download_script: scripts/stage75d_download_large_cistarget_resources_wsl.sh
+  wsl_env_script: scripts/stage75d_create_scenicplus_env_wsl.sh
+  report: results/reports/stage75d_scenicplus_wsl_execution_handoff_report_v1.md
+  pi_summary: results/reports/stage75d_pi_summary_v1.md
+  claim_boundary_final_check: results/reports/stage75d_claim_boundary_final_check_v1.md
+
+safety:
+  no_large_download_run_in_codex: true
+  no_scenicplus_run: true
+  no_celloracle_run: true
+  no_model_training: true
+  raw_downloads_not_committed: true
+  no_external_validation_claim: true
+  no_causal_knockout_claim: true
+  no_therapeutic_claim: true

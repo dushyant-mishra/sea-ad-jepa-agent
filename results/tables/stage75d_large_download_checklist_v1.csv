@@ -1,0 +1,5 @@
+resource,path_wsl,expected_size,required_before_stage75e
+rankings_feather,/mnt/c/Users/dushy/Desktop/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather,33G,True
+scores_feather,/mnt/c/Users/dushy/Desktop/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather,13G,True
+rankings_sha1,/mnt/c/Users/dushy/Desktop/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather.sha1sum.txt,99B,True
+scores_sha1,/mnt/c/Users/dushy/Desktop/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather.sha1sum.txt,97B,True
