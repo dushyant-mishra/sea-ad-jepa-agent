@@ -305,3 +305,7 @@ Stage70 froze the Stage69 rare_aux_pls4_w0p2 auxiliary-head setup and ran a stri
 ## Stage 71 full rare-microglia graph JEPA hierarchical benchmark
 
 Stage71 ran a full-cell rare-microglia graph-aware hierarchical benchmark using local MTG/DLPFC cells, frozen Stage64/68 signatures, hub-capped STRING graph context, rare-tail pooling, graph/random controls, and separate representation/prediction lock gates. It is internal only and makes no external-validation, causal, therapeutic, gene-ablation, or new-subtype claim.
+
+## Stage 72A external multiomic GRN resource eligibility audit
+
+Stage72A audited and optionally acquired public GSE174367 snRNA/snATAC processed resources for a context-specific Micro-PVM regulatory graph branch, while preserving claim boundaries. It does not construct a graph, train a model, or open GSE157827 as validation.

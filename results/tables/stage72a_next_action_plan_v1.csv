@@ -1,0 +1,4 @@
+priority,action,stage,requires_network
+1,Use acquired GSE174367 snRNA+snATAC processed files to build a Morabito microglia regulatory graph candidate.,Stage72B,False
+2,"Audit whether SEA-AD ATAC/Multiome controlled-access resources are locally available and donor-linkable; if not, prepare manual acquisition list.",Stage72C,False
+3,Keep GSE157827 protected until expression availability and approval are confirmed; use only for frozen projection.,Stage73,True

@@ -1,0 +1,2 @@
+ready_for_stage72b_grn_construction,gse174367_snRNA_available,gse174367_snATAC_available,sea_ad_atac_or_multiome_confirmed_local,sea_ad_rna_context_available,recommended_next_stage,limitation
+True,True,True,False,True,Stage72B_external_morabito_micro_pvm_grn_construction_v1,SEA-AD ATAC/Multiome controlled-access files are not confirmed local; initial contextualization may be RNA-only unless acquired separately.
