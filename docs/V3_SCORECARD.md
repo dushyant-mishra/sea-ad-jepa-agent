@@ -334,3 +334,7 @@ Stage72A audited and optionally acquired public GSE174367 snRNA/snATAC processed
 ## Stage 72B external Morabito Micro-PVM candidate GRN construction
 
 Stage72B constructed a bounded GSE174367 microglia TF-target coactivity graph from predeclared rare-tail target genes and microglia regulatory TF candidates. Because the acquired snATAC peak matrix contains genomic intervals without bundled motif or peak-to-gene annotation, the output is labeled as a candidate coactivity/regulon graph for future diagnostics, not a validated TF-peak-gene GRN. No model training, clean external validation, causal, therapeutic, or gene-ablation claim is made.
+
+## Stage 73 context-specific GRN graph-JEPA diagnostic
+
+Stage73 benchmarked the Stage72B Morabito/GSE174367 microglia candidate coactivity graph against no-graph, STRING, target-shuffled, and gene-label permuted graph controls using the frozen Stage71 rare-cell donor-held-out machinery. It is a diagnostic graph-prior test only: no clean external validation, causal regulatory, therapeutic, gene-ablation, or validated-GRN claim is made.
