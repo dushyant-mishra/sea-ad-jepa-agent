@@ -1,0 +1,6 @@
+input_name,path,exists,size_bytes
+snatac_matrix_h5,data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5,True,360317403
+gencode_gtf_gz,data/external_resources/stage75b/gencode.v44.annotation.gtf.gz,True,49721965
+chrom_sizes,data/external_resources/stage75b/hg38.chrom.sizes,True,11672
+stage72b_edges,results/tables/stage72b_tf_target_candidate_edges_v1.csv,True,287059
+stage75b_readiness,results/tables/stage75b_readiness_v1.csv,True,328

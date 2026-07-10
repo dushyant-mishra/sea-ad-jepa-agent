@@ -333,3 +333,7 @@ Stage75A audited readiness for upgrading Stage74 into a SCENIC+/CellOracle-style
 ## Stage 75B SCENIC+/CellOracle resource acquisition
 
 Stage75B created a controlled SCENIC+/CellOracle resource acquisition manifest and downloaded only requested small resources. Large Aerts Lab cisTarget feather databases are recorded for WSL/background download and are not committed. No SCENIC+, CellOracle, model training, or validation analysis was run.
+
+## Stage 75C peak-gene preflight annotation
+
+Stage75C built a memory-safe peak-to-nearest-gene preflight annotation for GSE174367 snATAC peaks using hg38 chromosome sizes and GENCODE v44. This creates a proximity scaffold for later SCENIC+/CellOracle work, but it is not motif evidence, not a validated peak-to-gene map, and not a SCENIC+ eGRN.

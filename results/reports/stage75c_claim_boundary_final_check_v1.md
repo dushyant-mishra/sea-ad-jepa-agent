@@ -1,0 +1,5 @@
+# Stage75C claim-boundary final check
+
+| stage75c_preflight_only | proximity_only_not_regulatory | no_motif_evidence_claim | no_scenicplus_run | no_celloracle_run | no_model_training | no_external_validation_claim | no_causal_knockout_claim | raw_data_not_committed | safety_audit_pass |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| True | True | True | True | True | True | True | True | True | True |

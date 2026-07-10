@@ -1,0 +1,2 @@
+stage75c_peak_gene_preflight_run,inputs_found,n_total_peaks,n_parseable_peaks,n_annotated_peak_rows,n_rare_genes_with_nearest_peak,n_rare_genes_with_promoter_peak,proximity_scaffold_ready,ready_for_true_scenicplus_egrn,proximity_only_not_regulatory
+True,True,219070,219070,219070,54,44,True,False,True
