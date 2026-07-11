@@ -14,6 +14,7 @@ fi
 docker info >/dev/null
 
 docker build \
+  --no-cache \
   --progress=plain \
   -t "${IMAGE_TAG}" \
   -f docker/scenicplus/Dockerfile \
