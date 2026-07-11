@@ -60,8 +60,9 @@ USER $MAMBA_USER
 ARG SCENICPLUS_REF=v1.0a2
 
 RUN git clone --depth 1 --branch ${SCENICPLUS_REF} https://github.com/aertslab/scenicplus.git /tmp/scenicplus \
-    && micromamba run -n base python -m pip install --upgrade pip setuptools wheel \
-    && micromamba run -n base python -m pip install /tmp/scenicplus \
+    && micromamba run -n base python -m pip install --upgrade pip setuptools wheel "cython<3" "numpy<2" \
+    && micromamba run -n base python -m pip install --no-build-isolation pybedtools==0.9.1 \
+    && micromamba run -n base python -m pip install --no-build-isolation /tmp/scenicplus \
     && rm -rf /tmp/scenicplus
 
 RUN micromamba run -n base python - <<'PY'
