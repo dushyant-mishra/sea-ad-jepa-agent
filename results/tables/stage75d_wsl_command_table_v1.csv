@@ -2,7 +2,7 @@ step,command
 remove_failed_env_if_needed,conda env remove -y -n sea-ad-scenicplus || true
 create_env,conda create -y -n sea-ad-scenicplus python=3.10.13
 install_base,conda run -n sea-ad-scenicplus python -m pip install --upgrade pip wheel setuptools
-install_compiled_genomics_deps,conda install -y -n sea-ad-scenicplus -c conda-forge -c bioconda pybedtools=0.9.1 bedtools cython numpy pandas scipy
+install_compiled_genomics_deps,conda install -y -n sea-ad-scenicplus -c conda-forge -c bioconda pybedtools=0.9.1 bedtools macs2=2.2.9.1 cython=0.29.37 numpy pandas scipy
 verify_pybedtools_preinstalled,"conda run -n sea-ad-scenicplus python - <<'PY'
 import setuptools, pybedtools
 print('setuptools', setuptools.__version__)

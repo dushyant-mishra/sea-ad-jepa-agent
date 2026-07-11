@@ -76,7 +76,7 @@ def run(cfg: dict[str, Any]) -> None:
         ("remove_failed_env_if_needed", f"conda env remove -y -n {env} || true"),
         ("create_env", f"conda create -y -n {env} python={pyver}"),
         ("install_base", f"conda run -n {env} python -m pip install --upgrade pip wheel setuptools"),
-        ("install_compiled_genomics_deps", f"conda install -y -n {env} -c conda-forge -c bioconda pybedtools=0.9.1 bedtools cython numpy pandas scipy"),
+        ("install_compiled_genomics_deps", f"conda install -y -n {env} -c conda-forge -c bioconda pybedtools=0.9.1 bedtools macs2=2.2.9.1 cython=0.29.37 numpy pandas scipy"),
         ("verify_pybedtools_preinstalled", f"conda run -n {env} python - <<'PY'\nimport setuptools, pybedtools\nprint('setuptools', setuptools.__version__)\nprint('pybedtools', pybedtools.__version__)\nPY"),
         ("install_scenicplus", f"cd /tmp && rm -rf scenicplus && git clone https://github.com/aertslab/scenicplus && cd scenicplus && git checkout development && (conda run -n {env} python -m pip install . || (conda run -n {env} python -m pip install 'poetry<1.2' poetry-core 'packaging>=24.2' && conda run -n {env} python -m pip install --no-build-isolation .))"),
         ("install_celloracle_helpers", f"conda run -n {env} python -m pip install celloracle pyranges pybiomart mudata scanpy anndata"),
@@ -113,11 +113,16 @@ set -euo pipefail
 conda env remove -y -n {env} || true
 conda create -y -n {env} python={pyver}
 conda run -n {env} python -m pip install --upgrade pip wheel setuptools
-conda install -y -n {env} -c conda-forge -c bioconda pybedtools=0.9.1 bedtools cython numpy pandas scipy
+conda install -y -n {env} -c conda-forge -c bioconda pybedtools=0.9.1 bedtools macs2=2.2.9.1 cython=0.29.37 numpy pandas scipy
 conda run -n {env} python - <<'PY'
 import setuptools, pybedtools
 print("setuptools", setuptools.__version__)
 print("pybedtools", pybedtools.__version__)
+try:
+    import MACS2
+    print("MACS2", getattr(MACS2, "__version__", "installed"))
+except Exception as exc:
+    print("MACS2 import check failed", type(exc).__name__, exc)
 PY
 cd /tmp
 rm -rf scenicplus
