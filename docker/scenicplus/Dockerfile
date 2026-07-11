@@ -112,7 +112,12 @@ PY
 RUN micromamba run -n base bedtools --version \
     && micromamba run -n base macs2 --version \
     && micromamba run -n base scenicplus --help >/dev/null \
-    && /opt/mallet/bin/mallet train-topics --help >/dev/null \
+    && ( \
+         /opt/mallet/bin/mallet train-topics --help TRUE >/tmp/mallet-train-topics-help.txt 2>&1 \
+         || test $? -eq 255 \
+       ) \
+    && grep -q -- "--num-topics" /tmp/mallet-train-topics-help.txt \
+    && rm -f /tmp/mallet-train-topics-help.txt \
     && (cbust --help >/dev/null 2>&1 || test $? -eq 1) \
     && create_cistarget_motif_databases.py --help >/dev/null \
     && liftOver 2>&1 | grep -q "liftOver" \

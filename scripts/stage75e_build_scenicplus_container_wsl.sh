@@ -33,8 +33,12 @@ docker run --rm "${IMAGE_TAG}" \
 docker run --rm "${IMAGE_TAG}" \
   micromamba run -n base meme -version
 
-docker run --rm "${IMAGE_TAG}" \
-  /opt/mallet/bin/mallet train-topics --help >/dev/null
+docker run --rm "${IMAGE_TAG}" sh -c '
+  /opt/mallet/bin/mallet train-topics --help TRUE >/tmp/mallet-train-topics-help.txt 2>&1
+  rc=$?
+  grep -q -- "--num-topics" /tmp/mallet-train-topics-help.txt &&
+    { [ "${rc}" -eq 0 ] || [ "${rc}" -eq 255 ]; }
+'
 
 docker run --rm "${IMAGE_TAG}" \
   create_cistarget_motif_databases.py --help >/dev/null
