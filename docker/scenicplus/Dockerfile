@@ -44,9 +44,12 @@ RUN micromamba install -y -n base \
 
 USER root
 
-RUN git clone --depth 1 https://github.com/mimno/Mallet.git /opt/mallet \
-    && cd /opt/mallet \
-    && ant
+RUN git clone --depth 1 https://github.com/mimno/Mallet.git /opt/mallet-src \
+    && MALLET_BUILD_XML="$(find /opt/mallet-src -name build.xml -print -quit)" \
+    && test -n "${MALLET_BUILD_XML}" \
+    && cd "$(dirname "${MALLET_BUILD_XML}")" \
+    && ant \
+    && ln -s "$(dirname "${MALLET_BUILD_XML}")" /opt/mallet
 
 ENV MALLET_HOME=/opt/mallet
 ENV PATH="/opt/mallet/bin:${PATH}"
