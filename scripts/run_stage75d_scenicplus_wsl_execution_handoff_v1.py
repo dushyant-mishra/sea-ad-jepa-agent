@@ -76,6 +76,7 @@ def run(cfg: dict[str, Any]) -> None:
         ("remove_failed_env_if_needed", f"conda env remove -y -n {env} || true"),
         ("create_env", f"conda create -y -n {env} python={pyver}"),
         ("install_base", f"conda run -n {env} python -m pip install --upgrade pip wheel setuptools"),
+        ("install_compiled_genomics_deps", f"conda install -y -n {env} -c conda-forge pybedtools bedtools cython numpy pandas scipy"),
         ("install_scenicplus", f"cd /tmp && rm -rf scenicplus && git clone https://github.com/aertslab/scenicplus && cd scenicplus && git checkout development && conda run -n {env} python -m pip install ."),
         ("install_celloracle_helpers", f"conda run -n {env} python -m pip install celloracle pyranges pybiomart mudata scanpy anndata"),
         ("download_rankings", f"cd '{repo}' && mkdir -p '{res}' && wget -c -O '{res}/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather' '{rankings_url}'"),
@@ -111,6 +112,7 @@ set -euo pipefail
 conda env remove -y -n {env} || true
 conda create -y -n {env} python={pyver}
 conda run -n {env} python -m pip install --upgrade pip wheel setuptools
+conda install -y -n {env} -c conda-forge pybedtools bedtools cython numpy pandas scipy
 cd /tmp
 rm -rf scenicplus
 git clone https://github.com/aertslab/scenicplus
