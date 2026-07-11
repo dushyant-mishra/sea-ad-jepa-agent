@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2-dev \
     libxrender1 \
     libxslt1-dev \
-    openjdk-11-jdk \
+    default-jdk \
     pkg-config \
     procps \
     swig \
