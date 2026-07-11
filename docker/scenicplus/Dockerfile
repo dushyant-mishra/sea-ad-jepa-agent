@@ -66,6 +66,7 @@ RUN git clone --depth 1 --branch ${SCENICPLUS_REF} https://github.com/aertslab/s
     && micromamba run -n base python -c "import setuptools, pkg_resources; print('setuptools', setuptools.__version__); print('pkg_resources OK')" \
     && micromamba run -n base python -m pip install --no-cache-dir pysam==0.22.0 \
     && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir pybedtools==0.9.1 \
+    && micromamba run -n base python -m pip install --no-cache-dir "poetry<1.2" poetry-core \
     && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir /tmp/scenicplus \
     && rm -rf /tmp/scenicplus
 
