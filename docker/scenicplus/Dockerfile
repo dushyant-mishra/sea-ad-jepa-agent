@@ -34,6 +34,7 @@ RUN micromamba install -y -n base \
     -c bioconda \
     bedtools \
     cython=0.29.37 \
+    datrie=0.8.2 \
     ipykernel \
     jupyterlab \
     macs2=2.2.9.1 \
