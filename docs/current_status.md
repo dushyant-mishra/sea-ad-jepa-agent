@@ -2937,3 +2937,16 @@ The first attempted microglia-specific extraction was slow because microglia row
 4. Treat the frozen A beta ElasticNet axis as an exploratory donor-level amyloid readout. Do not claim it has identified plaque-proximal microglia unless future spatial/plaque-proximity validation supports that claim.
 5. Follow up `TLR2`, `APP`, and `APOE` with literature-level mechanism review, existing drug class review, and biomarker feasibility checks before proposing any wet-lab validation.
 6. Keep external perturbation, spatial, imaging, or independent cohort data as validation layers rather than claiming causality from SEA-AD counterfactuals alone.
+
+## Stage75E SCENIC+ Container Route
+
+Stage75 remains dependency/resource preparation for motif/accessibility-supported eGRN preflight around rare microglia / Micro-PVM signatures. It does not change model conclusions or validate causal regulation.
+
+The conda-only SCENIC+ setup is currently not reliable enough to be the primary path. A pinned Docker scaffold was added:
+
+```text
+docker/scenicplus/Dockerfile
+scripts/stage75e_build_scenicplus_container_wsl.sh
+```
+
+The image target is `scenicplus:1.0a2` with Python 3.11.8, SCENIC+ v1.0a2, pycisTopic, pycisTarget, pySCENIC, MACS2, MEME, MALLET, Scanpy, Anndata, and JupyterLab. The helper script fails unless imports and command-line checks pass. Large cisTarget databases remain untracked external resources.

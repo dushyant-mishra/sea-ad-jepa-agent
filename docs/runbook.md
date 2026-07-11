@@ -2092,3 +2092,39 @@ APOE is currently more convincing as a secreted biomarker/pathway target than as
 ```
 
 The script uses live UniProt and ChEMBL lookups when possible and conservative built-in fallbacks for reproducibility. The ChEMBL clinical-phase search is bounded for speed, so treat the phase field as a triage signal rather than a complete regulatory audit.
+
+## 16. Build Stage75E SCENIC+ Container
+
+Stage75 SCENIC+/CellOracle/cisTarget work is dependency and resource preparation only. It must not be used to upgrade coactivity/proximity results into causal, therapeutic, gene-ablation, or validated eGRN claims.
+
+The conda-only SCENIC+ route proved fragile because the current Python 3.11 recommendation conflicts with older binary-heavy dependencies in several solver paths, while the legacy upstream Dockerfile expects local subproject copies. Use the pinned local container scaffold instead:
+
+```bash
+cd "/mnt/c/Users/dushy/Desktop/Jepa project"
+bash scripts/stage75e_build_scenicplus_container_wsl.sh
+```
+
+The script builds `scenicplus:1.0a2` from [docker/scenicplus/Dockerfile](../docker/scenicplus/Dockerfile) and requires all checks to pass before use:
+
+```text
+scenicplus, pycisTopic, pycistarget, pyscenic, scanpy imports
+scenicplus --help
+macs2 --version
+meme -version
+mallet --help
+```
+
+Run the verified container interactively from the project directory:
+
+```bash
+docker run --rm -it \
+  --name scenicplus \
+  --shm-size=16g \
+  --memory=96g \
+  --cpus=20 \
+  -v "$PWD":/workspace \
+  -w /workspace \
+  scenicplus:1.0a2
+```
+
+Large cisTarget ranking and score databases remain external resources and should not be committed. Store them outside the image and mount them read-only when needed.
