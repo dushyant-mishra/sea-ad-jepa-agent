@@ -34,13 +34,19 @@ RUN micromamba install -y -n base \
     -c conda-forge \
     -c bioconda \
     bedtools \
+    cython=0.29.37 \
     ipykernel \
     jupyterlab \
     macs2=2.2.9.1 \
     meme=5.5.9 \
+    numpy \
     pip \
+    pybedtools=0.9.1 \
     python=3.11.8 \
+    pysam=0.22.0 \
     samtools \
+    setuptools \
+    wheel \
     && micromamba clean --all --yes
 
 USER root
@@ -60,23 +66,29 @@ USER $MAMBA_USER
 ARG SCENICPLUS_REF=v1.0a2
 
 RUN git clone --depth 1 --branch ${SCENICPLUS_REF} https://github.com/aertslab/scenicplus.git /tmp/scenicplus \
-    && micromamba run -n base python -m pip install --upgrade pip setuptools wheel "cython<3" "numpy<2" \
-    && micromamba run -n base python -m pip install --no-build-isolation pybedtools==0.9.1 \
-    && micromamba run -n base python -m pip install --no-build-isolation /tmp/scenicplus \
+    && micromamba run -n base python -m pip install --upgrade "pip<25.2" setuptools wheel \
+    && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir /tmp/scenicplus \
     && rm -rf /tmp/scenicplus
 
 RUN micromamba run -n base python - <<'PY'
 import anndata
+import pybedtools
 import pycisTopic
 import pycistarget
 import pyscenic
+import pysam
 import scanpy
 import scenicplus
 
+print("scenicplus:", getattr(scenicplus, "__version__", "version unavailable"))
+print("pybedtools:", pybedtools.__version__)
+print("pysam:", pysam.__version__)
 print("SCENIC+ container import test passed")
 PY
 
-RUN micromamba run -n base scenicplus --help >/dev/null
+RUN micromamba run -n base bedtools --version \
+    && micromamba run -n base macs2 --version \
+    && micromamba run -n base scenicplus --help >/dev/null
 
 WORKDIR /workspace
 
