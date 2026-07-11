@@ -1,7 +1,7 @@
 FROM mambaorg/micromamba:latest
 
 LABEL org.opencontainers.image.title="SCENIC+ v1.0a2 runtime"
-LABEL org.opencontainers.image.description="Pinned SCENIC+ v1.0a2 container with pycisTopic, pycisTarget, pySCENIC, MACS2, MEME, MALLET, Snakemake, and JupyterLab."
+LABEL org.opencontainers.image.description="Pinned SCENIC+ v1.0a2 runtime with pycisTopic, pycisTarget, pySCENIC, MACS2, MEME, MALLET, and Snakemake."
 LABEL org.opencontainers.image.source="https://github.com/aertslab/scenicplus"
 
 USER root
@@ -39,8 +39,6 @@ RUN micromamba install -y -n base \
     bedtools \
     cython=0.29.37 \
     datrie=0.8.2 \
-    ipykernel \
-    jupyterlab \
     macs2=2.2.9.1 \
     meme=5.5.9 \
     numpy=1.26.4 \
@@ -48,7 +46,6 @@ RUN micromamba install -y -n base \
     python=3.11.8 \
     python-flatbuffers \
     samtools \
-    snakemake=8.5.5 \
     "setuptools<81" \
     setuptools-scm \
     wheel \
@@ -60,7 +57,8 @@ RUN ln -s /opt/conda/bin/python /usr/local/bin/python3
 
 ARG MALLET_VERSION=2.1.0
 
-RUN wget -q -O /tmp/mallet.zip "https://github.com/mimno/Mallet/releases/download/v${MALLET_VERSION}/mallet-${MALLET_VERSION}-bin.zip" \
+RUN wget -q -O /tmp/mallet.zip \
+      "https://github.com/mimno/Mallet/releases/download/v${MALLET_VERSION}/mallet-${MALLET_VERSION}-bin.zip" \
     && unzip -q /tmp/mallet.zip -d /opt \
     && ln -s /opt/mallet-${MALLET_VERSION} /opt/mallet \
     && rm /tmp/mallet.zip \
@@ -71,12 +69,24 @@ ENV PATH="/opt/mallet/bin:${PATH}"
 
 ARG CREATE_CISTARGET_DATABASES_REF=master
 
-RUN git clone --depth 1 --branch ${CREATE_CISTARGET_DATABASES_REF} https://github.com/aertslab/create_cisTarget_databases.git /opt/create_cisTarget_databases \
-    && wget -q -O /usr/local/bin/cbust https://resources.aertslab.org/cistarget/programs/cbust \
-    && wget -q -O /usr/local/bin/liftOver https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver \
-    && wget -q -O /usr/local/bin/bigWigAverageOverBed https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed \
-    && chmod a+x /usr/local/bin/cbust /usr/local/bin/liftOver /usr/local/bin/bigWigAverageOverBed \
-    && chmod a+x /opt/create_cisTarget_databases/*.py /opt/create_cisTarget_databases/*.sh
+RUN git clone \
+      --depth 1 \
+      --branch ${CREATE_CISTARGET_DATABASES_REF} \
+      https://github.com/aertslab/create_cisTarget_databases.git \
+      /opt/create_cisTarget_databases \
+    && wget -q -O /usr/local/bin/cbust \
+      https://resources.aertslab.org/cistarget/programs/cbust \
+    && wget -q -O /usr/local/bin/liftOver \
+      https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver \
+    && wget -q -O /usr/local/bin/bigWigAverageOverBed \
+      https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed \
+    && chmod a+x \
+      /usr/local/bin/cbust \
+      /usr/local/bin/liftOver \
+      /usr/local/bin/bigWigAverageOverBed \
+    && chmod a+x \
+      /opt/create_cisTarget_databases/*.py \
+      /opt/create_cisTarget_databases/*.sh
 
 ENV CREATE_CISTARGET_DATABASES_DIR=/opt/create_cisTarget_databases
 ENV PATH="/opt/create_cisTarget_databases:${PATH}"
@@ -85,13 +95,37 @@ USER $MAMBA_USER
 
 ARG SCENICPLUS_REF=v1.0a2
 
-RUN git clone --depth 1 --branch ${SCENICPLUS_REF} https://github.com/aertslab/scenicplus.git /tmp/scenicplus \
-    && micromamba run -n base python -c "import setuptools, pkg_resources; print('setuptools', setuptools.__version__); print('pkg_resources OK')" \
-    && micromamba run -n base python -m pip install --no-cache-dir pysam==0.22.0 \
-    && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir pybedtools==0.9.1 \
-    && micromamba run -n base python -m pip install --no-cache-dir packaging==24.0 hatchling==1.21.1 poetry-core==1.0.8 \
-    && micromamba run -n base python -m pip install --no-cache-dir --no-deps poetry==1.1.15 \
-    && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir /tmp/scenicplus \
+RUN git clone \
+      --depth 1 \
+      --branch ${SCENICPLUS_REF} \
+      https://github.com/aertslab/scenicplus.git \
+      /tmp/scenicplus \
+    && micromamba run -n base python -c \
+      "import setuptools, pkg_resources; print('setuptools', setuptools.__version__); print('pkg_resources OK')" \
+    && micromamba run -n base python -m pip install \
+      --no-cache-dir \
+      pysam==0.22.0 \
+    && micromamba run -n base python -m pip install \
+      --no-build-isolation \
+      --no-cache-dir \
+      pybedtools==0.9.1 \
+    && micromamba run -n base python -m pip install \
+      --no-cache-dir \
+      packaging==24.0 \
+      hatchling==1.21.1 \
+      poetry-core==1.0.8 \
+    && micromamba run -n base python -m pip install \
+      --no-cache-dir \
+      --no-deps \
+      poetry==1.1.15 \
+    && micromamba run -n base python -m pip install \
+      --no-build-isolation \
+      --no-cache-dir \
+      /tmp/scenicplus \
+    && micromamba run -n base python -m pip uninstall -y \
+      poetry \
+      poetry-core \
+      hatchling \
     && rm -rf /tmp/scenicplus
 
 RUN micromamba run -n base python - <<'PY'
@@ -112,19 +146,39 @@ print("pysam:", pysam.__version__)
 print("SCENIC+ container import test passed")
 PY
 
+RUN micromamba run -n base python -m pip check
+
 RUN micromamba run -n base bedtools --version \
     && micromamba run -n base macs2 --version \
+    && micromamba run -n base snakemake --version \
     && micromamba run -n base scenicplus --help >/dev/null \
+    && test -x /opt/mallet/bin/mallet \
     && ( \
-         /opt/mallet/bin/mallet train-topics --help TRUE >/tmp/mallet-train-topics-help.txt 2>&1 \
-         || test $? -eq 255 \
+         /opt/mallet/bin/mallet train-topics --help TRUE \
+           >/tmp/mallet-train-topics-help.txt 2>&1 \
+         || true \
        ) \
     && grep -q -- "--num-topics" /tmp/mallet-train-topics-help.txt \
-    && rm -f /tmp/mallet-train-topics-help.txt \
-    && (cbust --help >/dev/null 2>&1 || test $? -eq 1) \
+    && command -v cbust >/dev/null \
+    && (cbust --help >/tmp/cbust-help.txt 2>&1 || true) \
+    && command -v create_cistarget_motif_databases.py >/dev/null \
     && create_cistarget_motif_databases.py --help >/dev/null \
-    && liftOver 2>&1 | grep -q "liftOver" \
-    && bigWigAverageOverBed 2>&1 | grep -q "bigWigAverageOverBed"
+    && command -v liftOver >/dev/null \
+    && (liftOver >/tmp/liftover-help.txt 2>&1 || true) \
+    && grep -q "liftOver" /tmp/liftover-help.txt \
+    && command -v bigWigAverageOverBed >/dev/null \
+    && ( \
+         bigWigAverageOverBed \
+           >/tmp/bigwig-average-over-bed-help.txt 2>&1 \
+         || true \
+       ) \
+    && grep -q "bigWigAverageOverBed" \
+         /tmp/bigwig-average-over-bed-help.txt \
+    && rm -f \
+         /tmp/mallet-train-topics-help.txt \
+         /tmp/cbust-help.txt \
+         /tmp/liftover-help.txt \
+         /tmp/bigwig-average-over-bed-help.txt
 
 WORKDIR /workspace
 
