@@ -41,9 +41,7 @@ RUN micromamba install -y -n base \
     meme=5.5.9 \
     numpy \
     pip \
-    pybedtools=0.9.1 \
     python=3.11.8 \
-    pysam=0.22.0 \
     samtools \
     setuptools \
     wheel \
@@ -67,6 +65,7 @@ ARG SCENICPLUS_REF=v1.0a2
 
 RUN git clone --depth 1 --branch ${SCENICPLUS_REF} https://github.com/aertslab/scenicplus.git /tmp/scenicplus \
     && micromamba run -n base python -m pip install --upgrade "pip<25.2" setuptools wheel \
+    && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir pysam==0.22.0 pybedtools==0.9.1 \
     && micromamba run -n base python -m pip install --no-build-isolation --no-cache-dir /tmp/scenicplus \
     && rm -rf /tmp/scenicplus
 
