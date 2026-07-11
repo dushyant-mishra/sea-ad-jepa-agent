@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     procps \
     swig \
+    unzip \
     wget \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -44,12 +45,12 @@ RUN micromamba install -y -n base \
 
 USER root
 
-RUN git clone --depth 1 https://github.com/mimno/Mallet.git /opt/mallet-src \
-    && MALLET_BUILD_XML="$(find /opt/mallet-src -name build.xml -print -quit)" \
-    && test -n "${MALLET_BUILD_XML}" \
-    && cd "$(dirname "${MALLET_BUILD_XML}")" \
-    && ant \
-    && ln -s "$(dirname "${MALLET_BUILD_XML}")" /opt/mallet
+ARG MALLET_VERSION=2.1.0
+
+RUN wget -q -O /tmp/mallet.zip "https://github.com/mimno/Mallet/releases/download/v${MALLET_VERSION}/mallet-${MALLET_VERSION}-bin.zip" \
+    && unzip -q /tmp/mallet.zip -d /opt \
+    && ln -s /opt/mallet-${MALLET_VERSION} /opt/mallet \
+    && rm /tmp/mallet.zip
 
 ENV MALLET_HOME=/opt/mallet
 ENV PATH="/opt/mallet/bin:${PATH}"
