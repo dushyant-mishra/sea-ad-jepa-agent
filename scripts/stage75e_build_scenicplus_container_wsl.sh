@@ -36,6 +36,15 @@ docker run --rm "${IMAGE_TAG}" \
 docker run --rm "${IMAGE_TAG}" \
   /opt/mallet/bin/mallet train-topics --help >/dev/null
 
+docker run --rm "${IMAGE_TAG}" \
+  create_cistarget_motif_databases.py --help >/dev/null
+
+docker run --rm "${IMAGE_TAG}" \
+  sh -lc 'cbust --help >/dev/null 2>&1 || test $? -eq 1'
+
+docker run --rm "${IMAGE_TAG}" \
+  sh -lc 'liftOver 2>&1 | grep -q "liftOver" && bigWigAverageOverBed 2>&1 | grep -q "bigWigAverageOverBed"'
+
 cat <<'EOF'
 Stage75E SCENIC+ container verification passed.
 

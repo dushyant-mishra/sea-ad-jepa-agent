@@ -66,6 +66,18 @@ RUN wget -q -O /tmp/mallet.zip "https://github.com/mimno/Mallet/releases/downloa
 ENV MALLET_HOME=/opt/mallet
 ENV PATH="/opt/mallet/bin:${PATH}"
 
+ARG CREATE_CISTARGET_DATABASES_REF=master
+
+RUN git clone --depth 1 --branch ${CREATE_CISTARGET_DATABASES_REF} https://github.com/aertslab/create_cisTarget_databases.git /opt/create_cisTarget_databases \
+    && wget -q -O /usr/local/bin/cbust https://resources.aertslab.org/cistarget/programs/cbust \
+    && wget -q -O /usr/local/bin/liftOver https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver \
+    && wget -q -O /usr/local/bin/bigWigAverageOverBed https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed \
+    && chmod a+x /usr/local/bin/cbust /usr/local/bin/liftOver /usr/local/bin/bigWigAverageOverBed \
+    && chmod a+x /opt/create_cisTarget_databases/*.py /opt/create_cisTarget_databases/*.sh
+
+ENV CREATE_CISTARGET_DATABASES_DIR=/opt/create_cisTarget_databases
+ENV PATH="/opt/create_cisTarget_databases:${PATH}"
+
 USER $MAMBA_USER
 
 ARG SCENICPLUS_REF=v1.0a2
@@ -100,7 +112,11 @@ PY
 RUN micromamba run -n base bedtools --version \
     && micromamba run -n base macs2 --version \
     && micromamba run -n base scenicplus --help >/dev/null \
-    && /opt/mallet/bin/mallet train-topics --help >/dev/null
+    && /opt/mallet/bin/mallet train-topics --help >/dev/null \
+    && (cbust --help >/dev/null 2>&1 || test $? -eq 1) \
+    && create_cistarget_motif_databases.py --help >/dev/null \
+    && liftOver 2>&1 | grep -q "liftOver" \
+    && bigWigAverageOverBed 2>&1 | grep -q "bigWigAverageOverBed"
 
 WORKDIR /workspace
 

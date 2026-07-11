@@ -14,6 +14,9 @@ This directory contains a pinned Docker runtime for SCENIC+ v1.0a2. It is intend
 - MACS2 2.2.9.1
 - MEME 5.5.9
 - MALLET 2.1.0
+- create_cisTarget_databases helper scripts
+- Cluster-Buster `cbust`
+- UCSC `liftOver` and `bigWigAverageOverBed`
 - bedtools and samtools
 - JupyterLab
 
@@ -57,6 +60,15 @@ docker run --rm scenicplus:1.0a2 \
 
 docker run --rm scenicplus:1.0a2 \
   /opt/mallet/bin/mallet train-topics --help >/dev/null
+
+docker run --rm scenicplus:1.0a2 \
+  create_cistarget_motif_databases.py --help >/dev/null
+
+docker run --rm scenicplus:1.0a2 \
+  sh -lc 'cbust --help >/dev/null 2>&1 || test $? -eq 1'
+
+docker run --rm scenicplus:1.0a2 \
+  sh -lc 'liftOver 2>&1 | grep -q "liftOver" && bigWigAverageOverBed 2>&1 | grep -q "bigWigAverageOverBed"'
 ```
 
 ## Run Interactively
@@ -92,3 +104,4 @@ docker run --rm -it \
 - `datrie==0.8.2` and `snakemake==8.5.5` are installed with micromamba to avoid fragile source builds.
 - MALLET is installed from the official binary release ZIP; current source checkout layout is not assumed.
 - `mallet train-topics --help` is used as the smoke test because `mallet --help` is not a valid top-level command.
+- `create_cisTarget_databases`, `cbust`, `liftOver`, and `bigWigAverageOverBed` are included for custom cisTarget database creation, but motif collections, genome FASTA files, and precomputed ranking/score databases are external resources.
