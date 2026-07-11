@@ -1,5 +1,9 @@
 FROM mambaorg/micromamba:latest
 
+LABEL org.opencontainers.image.title="SCENIC+ v1.0a2 runtime"
+LABEL org.opencontainers.image.description="Pinned SCENIC+ v1.0a2 container with pycisTopic, pycisTarget, pySCENIC, MACS2, MEME, MALLET, Snakemake, and JupyterLab."
+LABEL org.opencontainers.image.source="https://github.com/aertslab/scenicplus"
+
 USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
