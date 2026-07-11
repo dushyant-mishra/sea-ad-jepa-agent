@@ -78,7 +78,7 @@ def run(cfg: dict[str, Any]) -> None:
         ("install_base", f"conda run -n {env} python -m pip install --upgrade pip wheel setuptools"),
         ("install_compiled_genomics_deps", f"conda install -y -n {env} -c conda-forge -c bioconda pybedtools=0.9.1 bedtools macs2=2.2.9.1 cython=0.29.37 numpy pandas scipy"),
         ("verify_pybedtools_preinstalled", f"conda run -n {env} python - <<'PY'\nimport setuptools, pybedtools\nprint('setuptools', setuptools.__version__)\nprint('pybedtools', pybedtools.__version__)\nPY"),
-        ("install_scenicplus", f"cd /tmp && rm -rf scenicplus && git clone https://github.com/aertslab/scenicplus && cd scenicplus && git checkout development && (conda run -n {env} python -m pip install . || (conda run -n {env} python -m pip install 'poetry<1.2' poetry-core 'packaging>=24.2' && conda run -n {env} python -m pip install --no-build-isolation .))"),
+        ("install_scenicplus", f"cd /tmp && rm -rf scenicplus && git clone https://github.com/aertslab/scenicplus && cd scenicplus && git checkout development && (conda run -n {env} python -m pip install . || (conda run -n {env} python -m pip install 'poetry<1.2' poetry-core hatchling 'packaging>=24.2' && conda run -n {env} python -m pip install --no-build-isolation .))"),
         ("install_celloracle_helpers", f"conda run -n {env} python -m pip install celloracle pyranges pybiomart mudata scanpy anndata"),
         ("download_rankings", f"cd '{repo}' && mkdir -p '{res}' && wget -c -O '{res}/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather' '{rankings_url}'"),
         ("download_scores", f"cd '{repo}' && mkdir -p '{res}' && wget -c -O '{res}/hg38_screen_v10_clust.regions_vs_motifs.scores.feather' '{scores_url}'"),
@@ -131,7 +131,7 @@ cd scenicplus
 git checkout development
 if ! conda run -n {env} python -m pip install .; then
   echo "Primary SCENIC+ install failed; trying no-build-isolation fallback with Poetry backend and modern packaging..."
-  conda run -n {env} python -m pip install 'poetry<1.2' poetry-core 'packaging>=24.2'
+  conda run -n {env} python -m pip install 'poetry<1.2' poetry-core hatchling 'packaging>=24.2'
   conda run -n {env} python -m pip install --no-build-isolation .
 fi
 conda run -n {env} python -m pip install celloracle pyranges pybiomart mudata scanpy anndata
