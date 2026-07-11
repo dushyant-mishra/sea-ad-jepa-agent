@@ -102,6 +102,7 @@ docker run --rm -it \
 - `pysam==0.22.0` is installed before `pybedtools==0.9.1`.
 - `pybedtools==0.9.1` is installed with `--no-build-isolation`.
 - `datrie==0.8.2` and `snakemake==8.5.5` are installed with micromamba to avoid fragile source builds.
+- `python-flatbuffers` is installed for the `create_cisTarget_databases` feather v1/v2 helper modules.
 - MALLET is installed from the official binary release ZIP; current source checkout layout is not assumed.
 - `mallet train-topics --help` is used as the smoke test because `mallet --help` is not a valid top-level command.
 - `create_cisTarget_databases`, `cbust`, `liftOver`, and `bigWigAverageOverBed` are included for custom cisTarget database creation, but motif collections, genome FASTA files, and precomputed ranking/score databases are external resources.

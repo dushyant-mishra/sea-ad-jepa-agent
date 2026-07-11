@@ -46,6 +46,7 @@ RUN micromamba install -y -n base \
     numpy=1.26.4 \
     pip=24.3.1 \
     python=3.11.8 \
+    python-flatbuffers \
     samtools \
     snakemake=8.5.5 \
     "setuptools<81" \
