@@ -69,10 +69,12 @@ def run(cfg: dict[str, Any]) -> None:
     repo = cfg["repo_dir_wsl"]
     res = cfg["resource_dir_wsl"]
     env = cfg["conda_env_name"]
+    pyver = str(cfg.get("python_version", "3.11.8"))
     rankings_url = "https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather"
     scores_url = "https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.scores.feather"
     commands = [
-        ("create_env", f"conda create -y -n {env} python=3.11"),
+        ("remove_failed_env_if_needed", f"conda env remove -y -n {env} || true"),
+        ("create_env", f"conda create -y -n {env} python={pyver}"),
         ("install_base", f"conda run -n {env} python -m pip install --upgrade pip wheel setuptools"),
         ("install_scenicplus", f"cd /tmp && rm -rf scenicplus && git clone https://github.com/aertslab/scenicplus && cd scenicplus && git checkout development && conda run -n {env} python -m pip install ."),
         ("install_celloracle_helpers", f"conda run -n {env} python -m pip install celloracle pyranges pybiomart mudata scanpy anndata"),
@@ -106,7 +108,8 @@ sha1sum -c hg38_screen_v10_clust.regions_vs_motifs.scores.feather.sha1sum.txt
 """
     env_script = f"""#!/usr/bin/env bash
 set -euo pipefail
-conda create -y -n {env} python=3.11
+conda env remove -y -n {env} || true
+conda create -y -n {env} python={pyver}
 conda run -n {env} python -m pip install --upgrade pip wheel setuptools
 cd /tmp
 rm -rf scenicplus

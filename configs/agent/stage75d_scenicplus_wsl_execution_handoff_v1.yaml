@@ -9,6 +9,7 @@ description: >
 resource_dir_wsl: /mnt/c/Users/dushy/Desktop/Jepa project/data/external_resources/stage75b
 repo_dir_wsl: /mnt/c/Users/dushy/Desktop/Jepa project
 conda_env_name: sea-ad-scenicplus
+python_version: 3.11.8
 
 outputs:
   wsl_command_table: results/tables/stage75d_wsl_command_table_v1.csv

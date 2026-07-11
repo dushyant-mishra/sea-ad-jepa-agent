@@ -10,7 +10,8 @@
 
 | step | command |
 | --- | --- |
-| create_env | conda create -y -n sea-ad-scenicplus python=3.11 |
+| remove_failed_env_if_needed | conda env remove -y -n sea-ad-scenicplus // true |
+| create_env | conda create -y -n sea-ad-scenicplus python=3.11.8 |
 | install_base | conda run -n sea-ad-scenicplus python -m pip install --upgrade pip wheel setuptools |
 | install_scenicplus | cd /tmp && rm -rf scenicplus && git clone https://github.com/aertslab/scenicplus && cd scenicplus && git checkout development && conda run -n sea-ad-scenicplus python -m pip install . |
 | install_celloracle_helpers | conda run -n sea-ad-scenicplus python -m pip install celloracle pyranges pybiomart mudata scanpy anndata |

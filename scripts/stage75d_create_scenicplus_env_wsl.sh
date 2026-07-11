@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-conda create -y -n sea-ad-scenicplus python=3.11
+conda env remove -y -n sea-ad-scenicplus || true
+conda create -y -n sea-ad-scenicplus python=3.11.8
 conda run -n sea-ad-scenicplus python -m pip install --upgrade pip wheel setuptools
 cd /tmp
 rm -rf scenicplus
