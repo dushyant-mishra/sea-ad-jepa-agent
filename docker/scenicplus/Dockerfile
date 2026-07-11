@@ -55,6 +55,8 @@ RUN micromamba install -y -n base \
 
 USER root
 
+RUN ln -s /opt/conda/bin/python /usr/local/bin/python3
+
 ARG MALLET_VERSION=2.1.0
 
 RUN wget -q -O /tmp/mallet.zip "https://github.com/mimno/Mallet/releases/download/v${MALLET_VERSION}/mallet-${MALLET_VERSION}-bin.zip" \
