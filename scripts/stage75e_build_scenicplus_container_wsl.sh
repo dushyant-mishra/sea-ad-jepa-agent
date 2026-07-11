@@ -34,7 +34,7 @@ docker run --rm "${IMAGE_TAG}" \
   micromamba run -n base meme -version
 
 docker run --rm "${IMAGE_TAG}" \
-  /opt/mallet/bin/mallet --help >/dev/null
+  /opt/mallet/bin/mallet train-topics --help >/dev/null
 
 cat <<'EOF'
 Stage75E SCENIC+ container verification passed.

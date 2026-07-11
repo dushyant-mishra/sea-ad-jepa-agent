@@ -96,7 +96,7 @@ PY
 RUN micromamba run -n base bedtools --version \
     && micromamba run -n base macs2 --version \
     && micromamba run -n base scenicplus --help >/dev/null \
-    && /opt/mallet/bin/mallet --help >/dev/null
+    && /opt/mallet/bin/mallet train-topics --help >/dev/null
 
 WORKDIR /workspace
 
