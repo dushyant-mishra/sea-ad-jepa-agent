@@ -2,7 +2,7 @@ step,command
 remove_failed_env_if_needed,conda env remove -y -n sea-ad-scenicplus || true
 create_env,conda create -y -n sea-ad-scenicplus python=3.11.8
 install_base,conda run -n sea-ad-scenicplus python -m pip install --upgrade pip wheel setuptools
-install_compiled_genomics_deps,conda install -y -n sea-ad-scenicplus -c conda-forge pybedtools bedtools cython numpy pandas scipy
+install_compiled_genomics_deps,conda install -y -n sea-ad-scenicplus -c conda-forge -c bioconda pybedtools bedtools cython numpy pandas scipy
 install_scenicplus,cd /tmp && rm -rf scenicplus && git clone https://github.com/aertslab/scenicplus && cd scenicplus && git checkout development && conda run -n sea-ad-scenicplus python -m pip install .
 install_celloracle_helpers,conda run -n sea-ad-scenicplus python -m pip install celloracle pyranges pybiomart mudata scanpy anndata
 download_rankings,cd '/mnt/c/Users/dushy/Desktop/Jepa project' && mkdir -p '/mnt/c/Users/dushy/Desktop/Jepa project/data/external_resources/stage75b' && wget -c -O '/mnt/c/Users/dushy/Desktop/Jepa project/data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather' 'https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather'
