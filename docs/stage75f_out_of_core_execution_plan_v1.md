@@ -94,6 +94,28 @@ This writes small, restartable batch inputs:
 
 These are preparation artifacts, not motif-supported eRegulons.
 
+## F5a - cisTarget region mapping audit
+
+Before motif enrichment, map Stage75F batch BED regions onto the cisTarget
+SCREEN region universe. Exact peak IDs are not guaranteed to match cisTarget
+column names, so this step builds a reusable region-index sidecar from bounded
+Feather column reads and reports exact/overlap coverage.
+
+```bash
+cd "/mnt/d/Jepa project"
+IMAGE=scenicplus:1.0a2-container.1 bash scripts/stage75f_run_cistarget_region_mapping_wsl.sh
+```
+
+Outputs:
+
+- `data/processed/stage75f/hg38_screen_v10_clust_rankings_region_index_v1.csv.gz`
+- `results/tables/stage75f_cistarget_region_mapping_v1.csv`
+- `results/reports/stage75f_cistarget_region_mapping_v1.json`
+
+The sidecar index remains local processed data and must not be committed. The
+mapping table is an audit artifact, not motif enrichment and not validated
+regulation.
+
 ## F5/F6 - Motif-enrichment pilots and expansion
 
 Run IRF8 and STAT1 first. Expand to ELF1, RELA, BACH1, NRF1, SPI1, CEBPA,
