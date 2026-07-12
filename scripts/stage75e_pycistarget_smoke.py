@@ -78,17 +78,17 @@ def inspect_arrow_schema(path: Path, max_fields: int) -> dict[str, Any]:
         return info
     info["size_bytes"] = path.stat().st_size
     try:
-        import pyarrow as pa
-        import pyarrow.ipc as ipc
-        with pa.OSFile(str(path), "rb") as source:
-            reader = ipc.open_file(source)
-            schema = reader.schema
-            info.update({
-                "open_pass": True,
-                "record_batches": int(reader.num_record_batches),
-                "n_schema_fields": int(len(schema)),
-                "first_schema_fields": [str(field.name) for field in list(schema)[:max_fields]],
-            })
+        import pyarrow.feather as feather
+
+        table = feather.read_table(str(path), columns=[], memory_map=False)
+        schema = table.schema
+        info.update({
+            "open_pass": True,
+            "reader": "pyarrow.feather.read_table(columns=[], memory_map=False)",
+            "n_rows": int(table.num_rows),
+            "n_schema_fields_read": int(len(schema)),
+            "first_schema_fields_read": [str(field.name) for field in list(schema)[:max_fields]],
+        })
     except Exception as exc:
         info.update({"open_pass": False, "error": f"{type(exc).__name__}: {exc}"})
     return info
