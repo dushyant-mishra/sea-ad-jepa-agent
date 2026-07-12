@@ -164,8 +164,9 @@ def append_1d(array: Any, values: np.ndarray) -> None:
     if values.size == 0:
         return
     start = int(array.shape[0])
-    array.resize(start + int(values.size))
-    array[start:start + int(values.size)] = values
+    new_size = start + int(values.size)
+    array.resize((new_size,))
+    array[start:new_size] = values
 
 
 def extract_sparse_csc(
