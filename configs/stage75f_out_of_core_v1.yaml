@@ -1,0 +1,89 @@
+stage: stage75f_out_of_core_v1
+description: >
+  Out-of-core Stage75F preparation for bounded SCENIC+/pycisTarget execution.
+  F1/F2 stream GSE174367 microglia-only snRNA/snATAC subsets from 10x HDF5
+  into disk-backed Zarr CSC arrays. Later steps create regulator/target/region
+  batches for resumable motif-enrichment pilots. This stage does not infer a
+  validated GRN, update prediction benchmarks, or make causal/therapeutic
+  claims.
+
+container_image: scenicplus:1.0a2-container.1
+
+inputs:
+  snrna_matrix: data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5
+  snrna_metadata: data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz
+  snatac_matrix: data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5
+  snatac_metadata: data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz
+  stage72b_edges: results/tables/stage72b_tf_target_candidate_edges_v1.csv
+  stage75c_peak_to_gene: results/tables/stage75c_peak_to_gene_preflight_v1.csv
+  stage75e_pycistarget_smoke: results/reports/stage75e_pycistarget_smoke_v1.json
+  motif_annotation: data/external_resources/stage75b/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl
+  cistarget_rankings: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather
+  cistarget_scores: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather
+
+metadata_schema:
+  snrna:
+    cell_type_column: Cell.Type
+    microglia_label: MG
+    sample_column: SampleID
+    barcode_column: Barcode
+  snatac:
+    cell_type_column: Cell.Type
+    microglia_label: MG
+    sample_column: Sample.ID
+    barcode_column: Barcode
+
+streaming_10x:
+  zarr_nnz_chunk: 2000000
+  progress_every_cells: 1000
+  outputs:
+    manifest_json: results/reports/stage75f_stream_microglia_10x_manifest_v1.json
+    snrna:
+      zarr: data/processed/stage75f/gse174367_mg_snrna.zarr
+      cell_metadata: data/processed/stage75f/gse174367_mg_snrna_cell_metadata.parquet
+      feature_metadata: data/processed/stage75f/gse174367_mg_snrna_feature_metadata.parquet
+    snatac:
+      zarr: data/processed/stage75f/gse174367_mg_snatac.zarr
+      cell_metadata: data/processed/stage75f/gse174367_mg_snatac_cell_metadata.parquet
+      feature_metadata: data/processed/stage75f/gse174367_mg_snatac_feature_metadata.parquet
+
+regulators:
+  primary_passed_all_stage74_gates:
+    - IRF8
+    - STAT1
+  descriptive_secondary_hypotheses:
+    - ELF1
+    - RELA
+    - BACH1
+    - NRF1
+    - SPI1
+    - CEBPA
+    - STAT3
+    - MITF
+
+batching:
+  target_mode: stage72b_candidate_edges
+  top_targets_per_tf: 50
+  top_peaks_per_target: 10
+  max_regions_per_batch: 5000
+  peak_chunksize: 250000
+  prefer_peak_classes:
+    - promoter_proximal
+    - proximal_100kb
+  include_secondary_regulators: true
+  purpose: out_of_core_prep_not_candidate_selection
+
+outputs:
+  candidate_edges: results/tables/stage75f_candidate_tf_target_edges_v1.csv
+  candidate_peak_gene_links: results/tables/stage75f_candidate_peak_gene_links_v1.csv
+  batch_manifest_csv: results/tables/stage75f_batch_manifest_v1.csv
+  manifest_json: results/reports/stage75f_out_of_core_manifest_v1.json
+  batch_dir: results/stage75f_batches
+
+safety:
+  prediction_benchmark_updated: false
+  causal_validation_pass: false
+  therapeutic_target_claim: false
+  validated_grn_claim: false
+  motif_enrichment_completed: false
+  approved_wording: Model-based, enhancer-informed perturbation hypotheses requiring experimental validation.
