@@ -13,10 +13,11 @@ docker image inspect "${IMAGE}" >/dev/null
 
 docker run --rm \
   --memory="${DOCKER_MEMORY:-16g}" \
+  -e PYTHONUNBUFFERED=1 \
   -v "${PROJECT_DIR}:/workspace" \
   -w /workspace \
   "${IMAGE}" \
-  micromamba run -n base python \
+  /opt/conda/bin/python -u \
   scripts/stage75e_pycistarget_smoke.py \
   --config "${CONFIG}" \
   --project-dir /workspace \

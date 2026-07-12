@@ -70,8 +70,14 @@ def inspect_bed(path: Path) -> dict[str, Any]:
     }
 
 
-def inspect_arrow_schema(path: Path, max_fields: int) -> dict[str, Any]:
-    info: dict[str, Any] = {"path": str(path), "exists": path.exists()}
+def inspect_arrow_bounded_column(path: Path, label: str) -> dict[str, Any]:
+    """Read exactly one cisTarget Feather column without enumerating the full schema."""
+    info: dict[str, Any] = {
+        "path": str(path),
+        "exists": path.exists(),
+        "bounded_read": True,
+        "requested_column_index": 0,
+    }
     if not path.exists():
         info["open_pass"] = False
         info["error"] = "missing"
@@ -79,19 +85,22 @@ def inspect_arrow_schema(path: Path, max_fields: int) -> dict[str, Any]:
     info["size_bytes"] = path.stat().st_size
     try:
         import pyarrow.feather as feather
-
-        table = feather.read_table(str(path), columns=[], memory_map=False)
-        schema = table.schema
+        print(f"{label}: starting bounded cisTarget column-index read", flush=True)
+        table = feather.read_table(str(path), columns=[0], memory_map=False, use_threads=False)
+        field = table.schema.field(0)
         info.update({
             "open_pass": True,
-            "reader": "pyarrow.feather.read_table(columns=[], memory_map=False)",
+            "reader": "pyarrow.feather.read_table(columns=[0], memory_map=False, use_threads=False)",
             "n_rows": int(table.num_rows),
-            "n_schema_fields_read": int(len(schema)),
-            "first_schema_fields_read": [str(field.name) for field in list(schema)[:max_fields]],
+            "n_columns_read": int(table.num_columns),
+            "selected_column_name": str(field.name),
+            "selected_column_dtype": str(field.type),
         })
+        print(f"{label}: bounded read PASS rows={table.num_rows} column={field.name} dtype={field.type}", flush=True)
     except Exception as exc:
         info.update({"open_pass": False, "error": f"{type(exc).__name__}: {exc}"})
     return info
+
 
 
 def inspect_motif_tf_overlap(path: Path, tfs: list[str]) -> dict[str, Any]:
@@ -161,8 +170,8 @@ def main() -> int:
     genes = read_list(gene_path)
     bed_info = inspect_bed(bed_path)
     motif_info = inspect_motif_tf_overlap(motif_path, tfs)
-    rankings_info = inspect_arrow_schema(project / paths["cistarget_rankings"]["path"], args.max_schema_fields)
-    scores_info = inspect_arrow_schema(project / paths["cistarget_scores"]["path"], args.max_schema_fields)
+    rankings_info = inspect_arrow_bounded_column(project / paths["cistarget_rankings"]["path"], "rankings")
+    scores_info = inspect_arrow_bounded_column(project / paths["cistarget_scores"]["path"], "scores")
 
     checks = [
         {"check": "scenicplus_import", "pass": module_status["scenicplus"]},
@@ -173,14 +182,14 @@ def main() -> int:
         {"check": "tf_list_nonempty", "pass": len(tfs) > 0},
         {"check": "gene_list_nonempty", "pass": len(genes) > 0},
         {"check": "motif_table_tf_overlap", "pass": motif_info["motif_table_pass"]},
-        {"check": "rankings_arrow_schema_open", "pass": rankings_info["open_pass"]},
-        {"check": "scores_arrow_schema_open", "pass": scores_info["open_pass"]},
+        {"check": "rankings_bounded_column_read", "pass": rankings_info["open_pass"]},
+        {"check": "scores_bounded_column_read", "pass": scores_info["open_pass"]},
     ]
     smoke_pass = all(bool(row["pass"]) for row in checks)
 
     report = {
         "stage": "stage75e_pycistarget_mechanics_smoke_v1",
-        "purpose": "mechanics-only resource and API smoke test; not motif enrichment inference",
+        "purpose": "mechanics-only bounded resource and API smoke test; not motif enrichment inference",
         "not_for_candidate_selection": True,
         "not_motif_supported_yet": True,
         "not_validated_regulation": True,
