@@ -31,7 +31,7 @@ streaming. The pipeline uses a thin adapter layer around the domain-specific
 formats:
 
 - stream 10x HDF5 sparse arrays with `h5py`;
-- write microglia-only sparse subsets to Zarr;
+- write microglia-only sparse subsets to a disk-backed CSC store;
 - use bounded Feather column reads for cisTarget databases;
 - run motif-enrichment pilots in restartable regulator/region batches.
 
@@ -54,12 +54,12 @@ MODE=extract DOCKER_MEMORY=24g IMAGE=scenicplus:1.0a2-container.1 bash scripts/s
 
 Outputs are local processed intermediates and must not be committed:
 
-- `data/processed/stage75f/gse174367_mg_snrna.zarr`
-- `data/processed/stage75f/gse174367_mg_snatac.zarr`
+- `data/processed/stage75f/gse174367_mg_snrna.csc.h5`
+- `data/processed/stage75f/gse174367_mg_snatac.csc.h5`
 - `data/processed/stage75f/*metadata.parquet` or gzip CSV fallbacks
 - `results/reports/stage75f_stream_microglia_10x_manifest_v1.json`
 
-The Zarr matrix layout is a CSC sparse representation with `data`, `indices`,
+The default HDF5 matrix layout is a CSC sparse representation with `data`, `indices`,
 `indptr`, and `shape` arrays. This preserves the 10x sparse-column structure and
 avoids loading the full source matrix.
 
@@ -124,7 +124,7 @@ Only after batched motif support exists:
 Do not stage:
 
 - raw 10x HDF5 files;
-- Zarr extracted matrices;
+- Stage75F extracted sparse matrices;
 - cisTarget feather databases;
 - motif tables;
 - download logs;

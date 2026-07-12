@@ -3,7 +3,7 @@
 
 This script audits and optionally extracts microglia-only columns from 10x HDF5
 sparse matrices without loading the full matrix into memory. It writes a
-Zarr-backed CSC representation plus metadata sidecars. It does not run motif
+disk-backed sparse CSC representation plus metadata sidecars. It does not run motif
 enrichment, construct eRegulons, update prediction benchmarks, or make causal
 claims.
 """
@@ -168,52 +168,102 @@ def append_1d(array: Any, values: np.ndarray) -> None:
     array[start:start + int(values.size)] = values
 
 
-def extract_sparse_csc(matrix: TenxMatrix, selected_cols: list[int], output_dir: Path, chunk_nnz: int, progress_every: int) -> dict[str, Any]:
-    try:
-        import zarr
-    except Exception as exc:
-        raise RuntimeError("Stage75F extraction requires zarr in the runtime") from exc
+def extract_sparse_csc(
+    matrix: TenxMatrix,
+    selected_cols: list[int],
+    output_path: Path,
+    chunk_nnz: int,
+    progress_every: int,
+    backend: str,
+) -> dict[str, Any]:
+    backend = backend.lower()
+    if backend not in {"hdf5", "zarr"}:
+        raise ValueError(f"Unsupported Stage75F sparse backend: {backend}")
 
-    output_dir.mkdir(parents=True, exist_ok=True)
-    root = zarr.open_group(str(output_dir), mode="w")
-    arrays = root.create_group("matrix")
-    data_out = create_1d(arrays, "data", matrix.data.dtype, chunk_nnz)
-    indices_out = create_1d(arrays, "indices", matrix.indices.dtype, chunk_nnz)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if output_path.exists():
+        if output_path.is_dir():
+            import shutil
+            shutil.rmtree(output_path)
+        else:
+            output_path.unlink()
+
+    if backend == "zarr":
+        try:
+            import zarr
+        except Exception as exc:
+            raise RuntimeError(
+                "Stage75F zarr backend requires zarr in the runtime; use backend: hdf5 "
+                "with the current SCENIC+ container."
+            ) from exc
+        root = zarr.open_group(str(output_path), mode="w")
+        arrays = root.create_group("matrix")
+        data_out = create_1d(arrays, "data", matrix.data.dtype, chunk_nnz)
+        indices_out = create_1d(arrays, "indices", matrix.indices.dtype, chunk_nnz)
+        attrs = root.attrs
+    else:
+        root = h5py.File(output_path, "w")
+        arrays = root.create_group("matrix")
+        data_out = arrays.create_dataset(
+            "data",
+            shape=(0,),
+            maxshape=(None,),
+            chunks=(chunk_nnz,),
+            dtype=matrix.data.dtype,
+        )
+        indices_out = arrays.create_dataset(
+            "indices",
+            shape=(0,),
+            maxshape=(None,),
+            chunks=(chunk_nnz,),
+            dtype=matrix.indices.dtype,
+        )
+        attrs = root.attrs
+
     indptr_values = np.zeros(len(selected_cols) + 1, dtype=matrix.indptr.dtype)
-
     nnz_total = 0
     max_col_nnz = 0
-    for out_col, source_col in enumerate(selected_cols, start=1):
-        start = int(matrix.indptr[source_col])
-        end = int(matrix.indptr[source_col + 1])
-        col_nnz = end - start
-        if col_nnz:
-            append_1d(data_out, matrix.data[start:end])
-            append_1d(indices_out, matrix.indices[start:end])
-        nnz_total += col_nnz
-        max_col_nnz = max(max_col_nnz, col_nnz)
-        indptr_values[out_col] = nnz_total
-        if progress_every > 0 and (out_col % progress_every == 0 or out_col == len(selected_cols)):
-            print(f"  streamed {out_col}/{len(selected_cols)} columns nnz={nnz_total}", flush=True)
+    try:
+        for out_col, source_col in enumerate(selected_cols, start=1):
+            start = int(matrix.indptr[source_col])
+            end = int(matrix.indptr[source_col + 1])
+            col_nnz = end - start
+            if col_nnz:
+                append_1d(data_out, matrix.data[start:end])
+                append_1d(indices_out, matrix.indices[start:end])
+            nnz_total += col_nnz
+            max_col_nnz = max(max_col_nnz, col_nnz)
+            indptr_values[out_col] = nnz_total
+            if progress_every > 0 and (out_col % progress_every == 0 or out_col == len(selected_cols)):
+                print(f"  streamed {out_col}/{len(selected_cols)} columns nnz={nnz_total}", flush=True)
 
-    arrays.create_dataset("indptr", data=indptr_values, chunks=(min(len(indptr_values), 1000000),))
-    arrays.create_dataset("shape", data=np.array([matrix.shape[0], len(selected_cols)], dtype=np.int64))
-    root.attrs.update({
-        "format": "stage75f_10x_csc_zarr_v1",
-        "source_path": str(matrix.path),
-        "source_group": matrix.group_path,
-        "source_shape": [int(matrix.shape[0]), int(matrix.shape[1])],
-        "subset_shape": [int(matrix.shape[0]), int(len(selected_cols))],
-        "nnz": int(nnz_total),
-        "max_selected_column_nnz": int(max_col_nnz),
-    })
+        arrays.create_dataset(
+            "indptr",
+            data=indptr_values,
+            chunks=(min(len(indptr_values), 1000000),),
+        )
+        arrays.create_dataset("shape", data=np.array([matrix.shape[0], len(selected_cols)], dtype=np.int64))
+        attrs.update({
+            "format": f"stage75f_10x_csc_{backend}_v1",
+            "backend": backend,
+            "source_path": str(matrix.path),
+            "source_group": matrix.group_path,
+            "source_shape": json.dumps([int(matrix.shape[0]), int(matrix.shape[1])]),
+            "subset_shape": json.dumps([int(matrix.shape[0]), int(len(selected_cols))]),
+            "nnz": int(nnz_total),
+            "max_selected_column_nnz": int(max_col_nnz),
+        })
+    finally:
+        if backend == "hdf5":
+            root.close()
+
     return {
-        "zarr_path": str(output_dir),
+        "store_backend": backend,
+        "store_path": str(output_path),
         "subset_shape": [int(matrix.shape[0]), int(len(selected_cols))],
         "nnz": int(nnz_total),
         "max_selected_column_nnz": int(max_col_nnz),
     }
-
 
 def write_feature_metadata(matrix: TenxMatrix, output_path: Path) -> str:
     feature_frame = pd.DataFrame({
@@ -231,7 +281,7 @@ def process_modality(name: str, cfg: dict[str, Any], project: Path, mode: str) -
     output_cfg = cfg["streaming_10x"]["outputs"][name]
     h5_path = project / paths[f"{name}_matrix"]
     meta_path = project / paths[f"{name}_metadata"]
-    output_dir = project / output_cfg["zarr"]
+    output_path = project / output_cfg.get("store", output_cfg.get("zarr"))
     cell_meta_path = project / output_cfg["cell_metadata"]
     feature_meta_path = project / output_cfg["feature_metadata"]
 
@@ -263,9 +313,10 @@ def process_modality(name: str, cfg: dict[str, Any], project: Path, mode: str) -
         extraction = extract_sparse_csc(
             matrix,
             selected_cols,
-            output_dir,
-            chunk_nnz=int(cfg["streaming_10x"].get("zarr_nnz_chunk", 2000000)),
+            output_path,
+            chunk_nnz=int(cfg["streaming_10x"].get("sparse_nnz_chunk", cfg["streaming_10x"].get("zarr_nnz_chunk", 2000000))),
             progress_every=int(cfg["streaming_10x"].get("progress_every_cells", 1000)),
+            backend=str(cfg["streaming_10x"].get("backend", "hdf5")),
         )
         stats.update(extraction)
         stats["cell_metadata_output"] = str(cell_meta_path)

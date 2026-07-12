@@ -2,7 +2,7 @@ stage: stage75f_out_of_core_v1
 description: >
   Out-of-core Stage75F preparation for bounded SCENIC+/pycisTarget execution.
   F1/F2 stream GSE174367 microglia-only snRNA/snATAC subsets from 10x HDF5
-  into disk-backed Zarr CSC arrays. Later steps create regulator/target/region
+  into disk-backed sparse CSC arrays. Later steps create regulator/target/region
   batches for resumable motif-enrichment pilots. This stage does not infer a
   validated GRN, update prediction benchmarks, or make causal/therapeutic
   claims.
@@ -34,16 +34,17 @@ metadata_schema:
     barcode_column: Barcode
 
 streaming_10x:
-  zarr_nnz_chunk: 2000000
+  backend: hdf5
+  sparse_nnz_chunk: 2000000
   progress_every_cells: 1000
   outputs:
     manifest_json: results/reports/stage75f_stream_microglia_10x_manifest_v1.json
     snrna:
-      zarr: data/processed/stage75f/gse174367_mg_snrna.zarr
+      store: data/processed/stage75f/gse174367_mg_snrna.csc.h5
       cell_metadata: data/processed/stage75f/gse174367_mg_snrna_cell_metadata.parquet
       feature_metadata: data/processed/stage75f/gse174367_mg_snrna_feature_metadata.parquet
     snatac:
-      zarr: data/processed/stage75f/gse174367_mg_snatac.zarr
+      store: data/processed/stage75f/gse174367_mg_snatac.csc.h5
       cell_metadata: data/processed/stage75f/gse174367_mg_snatac_cell_metadata.parquet
       feature_metadata: data/processed/stage75f/gse174367_mg_snatac_feature_metadata.parquet
 
