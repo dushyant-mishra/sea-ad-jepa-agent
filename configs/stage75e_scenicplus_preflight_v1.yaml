@@ -151,6 +151,8 @@ outputs:
   smoke_tf_list: results/tables/stage75e_smoke_tf_list_v1.txt
   smoke_gene_list: results/tables/stage75e_smoke_gene_list_v1.txt
   smoke_manifest: results/reports/stage75e_smoke_subset_manifest_v1.json
+  pycistarget_smoke_csv: results/tables/stage75e_pycistarget_smoke_v1.csv
+  pycistarget_smoke_json: results/reports/stage75e_pycistarget_smoke_v1.json
 
 safety:
   prediction_benchmark_updated: false

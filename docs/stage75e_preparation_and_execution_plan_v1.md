@@ -79,14 +79,17 @@ The downloader already performs the authoritative checksum validation.
 
 ### E4 - Minimal mechanics-only pycisTarget/SCENIC+ smoke test
 
-Use the generated bounded BED/TF/gene files to verify:
+Use the generated bounded BED/TF/gene files to verify mechanics without making
+biological claims:
 
-1. the database opens;
-2. regions can be matched to the hg38 database;
-3. motif enrichment can write a small result object;
-4. outputs can be consumed by SCENIC+ preparation code.
+```bash
+IMAGE=scenicplus:1.0a2-container.1 bash scripts/stage75e_run_pycistarget_smoke_wsl.sh
+```
 
-This is an execution smoke test, not biological inference.
+This checks SCENIC+/pycisTarget imports, bounded region/TF/gene inputs,
+motif-to-TF annotation overlap, and non-memory-mapped Arrow schema access for
+the cisTarget databases. It is a resource/API smoke test, not motif enrichment
+inference and not biological validation.
 
 ### E5 - Full enhancer-supported eGRN construction
 
