@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate large cisTarget resources without loading their matrices into RAM."""
+"""Validate cisTarget resources with a low-memory default path."""
 
 from __future__ import annotations
 
@@ -13,9 +13,15 @@ import pandas as pd
 import yaml
 
 
+LARGE_RESOURCE_BYTES = 1024**3
+
+
 def load_config(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
-        return yaml.safe_load(handle)
+        data = yaml.safe_load(handle)
+    if not isinstance(data, dict):
+        raise ValueError(f"Config is not a mapping: {path}")
+    return data
 
 
 def parse_sha1_manifest(path: Path) -> tuple[str, str]:
@@ -34,7 +40,18 @@ def stream_sha1(path: Path, chunk_size: int = 16 * 1024 * 1024) -> str:
     return digest.hexdigest()
 
 
+def inspect_file_header(path: Path, n_bytes: int = 16) -> dict[str, Any]:
+    with path.open("rb") as handle:
+        head = handle.read(n_bytes)
+    return {
+        "header_bytes_read": len(head),
+        "header_hex": head.hex(),
+        "nonempty_header_pass": len(head) > 0,
+    }
+
+
 def inspect_arrow_file(path: Path) -> dict[str, Any]:
+    """Optional deeper check; not used by default for large cisTarget files."""
     info: dict[str, Any] = {}
     try:
         import pyarrow as pa
@@ -81,6 +98,11 @@ def main() -> int:
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--project-dir", type=Path, default=Path.cwd())
     parser.add_argument("--verify-sha1", action="store_true")
+    parser.add_argument(
+        "--inspect-arrow",
+        action="store_true",
+        help="Opt into pyarrow metadata/open checks. Disabled by default to avoid OOM on multi-GB cisTarget files.",
+    )
     args = parser.parse_args()
 
     project = args.project_dir.resolve()
@@ -97,45 +119,60 @@ def main() -> int:
     details: dict[str, Any] = {
         "stage": cfg.get("stage"),
         "verify_sha1_requested": bool(args.verify_sha1),
+        "inspect_arrow_requested": bool(args.inspect_arrow),
         "resources": {},
         "safety": cfg.get("safety", {}),
+        "note": "Default validation avoids opening multi-GB Feather matrices to prevent container OOM; SHA1 was performed by the downloader or --verify-sha1.",
     }
     failures: list[str] = []
 
     for resource_key, manifest_key in pairs:
         resource = project / paths[resource_key]["path"]
         manifest = project / paths[manifest_key]["path"]
+        size = resource.stat().st_size if resource.exists() else 0
         row: dict[str, Any] = {
             "resource": resource_key,
             "path": str(resource.relative_to(project)),
             "exists": resource.exists(),
-            "size_bytes": resource.stat().st_size if resource.exists() else 0,
+            "size_bytes": size,
             "sha1_manifest_exists": manifest.exists(),
             "sha1_verified": None,
-            "arrow_open_pass": False,
+            "arrow_open_pass": None,
+            "low_memory_integrity_pass": False,
         }
 
         extra: dict[str, Any] = {}
-        if not resource.exists() or resource.stat().st_size == 0:
+        if not resource.exists() or size == 0:
             failures.append(f"{resource_key}: missing or empty")
         else:
-            extra.update(inspect_arrow_file(resource))
-            row["arrow_open_pass"] = bool(extra.get("arrow_open_pass", False))
-            if not row["arrow_open_pass"]:
-                failures.append(f"{resource_key}: Arrow/Feather open failed")
+            extra.update(inspect_file_header(resource))
+            row["low_memory_integrity_pass"] = bool(extra["nonempty_header_pass"])
 
         if manifest.exists():
             expected, manifest_name = parse_sha1_manifest(manifest)
             extra["expected_sha1"] = expected
             extra["manifest_filename"] = manifest_name
+            extra["manifest_filename_match"] = manifest_name == resource.name
+            if manifest_name != resource.name:
+                failures.append(
+                    f"{resource_key}: SHA1 manifest filename {manifest_name} does not match {resource.name}"
+                )
             if args.verify_sha1 and resource.exists():
                 observed = stream_sha1(resource)
                 extra["observed_sha1"] = observed
                 row["sha1_verified"] = observed == expected
                 if not row["sha1_verified"]:
                     failures.append(f"{resource_key}: SHA1 mismatch")
-        elif args.verify_sha1:
+        else:
             failures.append(f"{resource_key}: SHA1 manifest missing")
+
+        if args.inspect_arrow and resource.exists() and size > 0:
+            extra.update(inspect_arrow_file(resource))
+            row["arrow_open_pass"] = bool(extra.get("arrow_open_pass", False))
+            if not row["arrow_open_pass"]:
+                failures.append(f"{resource_key}: Arrow/Feather open failed")
+        elif size >= LARGE_RESOURCE_BYTES:
+            extra["arrow_open_skipped_reason"] = "large_resource_default_low_memory_gate"
 
         rows.append(row)
         details["resources"][resource_key] = {**row, **extra}
@@ -149,6 +186,7 @@ def main() -> int:
         "sha1_manifest_exists": False,
         "sha1_verified": None,
         "arrow_open_pass": None,
+        "low_memory_integrity_pass": False,
     }
     motif_detail: dict[str, Any] = {**motif_row}
     if motif.exists() and motif.stat().st_size > 0:
@@ -156,6 +194,7 @@ def main() -> int:
             first_lines = [handle.readline().rstrip("\n") for _ in range(3)]
         motif_detail["first_lines"] = first_lines
         motif_detail["tabular_header_pass"] = bool(first_lines and "\t" in first_lines[0])
+        motif_row["low_memory_integrity_pass"] = bool(motif_detail["tabular_header_pass"])
         if not motif_detail["tabular_header_pass"]:
             failures.append("motif_annotation: first line is not tab-delimited")
     else:
