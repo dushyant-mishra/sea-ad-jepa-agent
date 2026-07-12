@@ -87,7 +87,7 @@ def inspect_arrow_schema(path: Path, max_fields: int) -> dict[str, Any]:
                 "open_pass": True,
                 "record_batches": int(reader.num_record_batches),
                 "n_schema_fields": int(len(schema)),
-                "first_schema_fields": [str(field.name) for field in schema[:max_fields]],
+                "first_schema_fields": [str(field.name) for field in list(schema)[:max_fields]],
             })
     except Exception as exc:
         info.update({"open_pass": False, "error": f"{type(exc).__name__}: {exc}"})
