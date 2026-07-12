@@ -79,3 +79,4 @@ results/tables/*smoke*
 .DS_Store
 Thumbs.db
 .vscode/
+wget-log

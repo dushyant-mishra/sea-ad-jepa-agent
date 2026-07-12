@@ -1,0 +1,160 @@
+stage: stage75e_scenicplus_input_preflight_v1
+description: >
+  Input, schema, and resource preflight for the first true SCENIC+ execution
+  stage. This preparation does not run SCENIC+, train a model, update the
+  prediction benchmark, or create a validated GRN claim.
+
+container_image: scenicplus:1.0a2
+
+paths:
+  cistarget_rankings:
+    path: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather
+    role: cisTarget region-to-motif rankings database
+    required_now: false
+    required_for_full_scenicplus: true
+  cistarget_rankings_sha1:
+    path: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather.sha1sum.txt
+    role: rankings database SHA1 manifest
+    required_now: true
+    required_for_full_scenicplus: true
+  cistarget_scores:
+    path: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather
+    role: cisTarget region-to-motif scores database
+    required_now: false
+    required_for_full_scenicplus: true
+  cistarget_scores_sha1:
+    path: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather.sha1sum.txt
+    role: scores database SHA1 manifest
+    required_now: true
+    required_for_full_scenicplus: true
+  motif_annotation:
+    path: data/external_resources/stage75b/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl
+    role: human motif-to-TF annotation
+    required_now: false
+    required_for_full_scenicplus: true
+  chrom_sizes:
+    path: data/external_resources/stage75b/hg38.chrom.sizes
+    role: hg38 chromosome sizes
+    required_now: true
+    required_for_full_scenicplus: true
+  gencode_gtf:
+    path: data/external_resources/stage75b/gencode.v44.annotation.gtf.gz
+    role: GENCODE v44 gene annotation
+    required_now: true
+    required_for_full_scenicplus: true
+
+  snrna_matrix:
+    path: data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5
+    role: GSE174367 snRNA 10x matrix
+    required_now: true
+    required_for_full_scenicplus: true
+  snrna_metadata:
+    path: data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz
+    role: GSE174367 snRNA cell metadata
+    required_now: true
+    required_for_full_scenicplus: true
+  snatac_matrix:
+    path: data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5
+    role: GSE174367 snATAC 10x peak matrix
+    required_now: true
+    required_for_full_scenicplus: true
+  snatac_metadata:
+    path: data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz
+    role: GSE174367 snATAC cell metadata
+    required_now: true
+    required_for_full_scenicplus: true
+
+  mtg_h5ad:
+    path: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+    role: local MTG Microglia-PVM expression context
+    required_now: true
+    required_for_full_scenicplus: false
+  dlpfc_h5ad:
+    path: data/sea_ad/stage45/cellxgene/h5ad_assets/100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad
+    role: local DLPFC Microglia-PVM expression context
+    required_now: true
+    required_for_full_scenicplus: false
+
+  stage72b_edges:
+    path: results/tables/stage72b_tf_target_candidate_edges_v1.csv
+    role: frozen candidate TF-target coactivity edges
+    required_now: true
+    required_for_full_scenicplus: false
+  stage73r_control_integrity:
+    path: results/tables/stage73r_graph_control_integrity_audit_v1.csv
+    role: repaired graph-control integrity audit
+    required_now: true
+    required_for_full_scenicplus: false
+  stage74_regulator_priority:
+    path: results/tables/stage74_regulator_priority_table_v1.csv
+    role: directed perturbation regulator priorities
+    required_now: true
+    required_for_full_scenicplus: false
+  stage74_decision:
+    path: results/tables/stage74_decision_audit_v1.csv
+    role: Stage74 decision boundary
+    required_now: true
+    required_for_full_scenicplus: false
+  stage75c_peak_to_gene:
+    path: results/tables/stage75c_peak_to_gene_preflight_v1.csv
+    role: proximity-only peak-to-nearest-gene scaffold
+    required_now: true
+    required_for_full_scenicplus: false
+  stage75c_rare_gene_peak_support:
+    path: results/tables/stage75c_rare_gene_peak_support_v1.csv
+    role: rare/TF gene proximity-support summary
+    required_now: true
+    required_for_full_scenicplus: false
+
+metadata_schema:
+  snrna:
+    cell_type_column: Cell.Type
+    microglia_label: MG
+    sample_column: SampleID
+    barcode_column: Barcode
+  snatac:
+    cell_type_column: Cell.Type
+    microglia_label: MG
+    sample_column: Sample.ID
+    barcode_column: Barcode
+
+regulators:
+  primary_passed_all_stage74_gates:
+    - IRF8
+    - STAT1
+  descriptive_secondary_hypotheses:
+    - ELF1
+    - RELA
+    - BACH1
+    - NRF1
+    - SPI1
+    - CEBPA
+    - STAT3
+    - MITF
+
+smoke_subset:
+  top_targets_per_tf: 10
+  top_peaks_per_target: 3
+  prefer_peak_classes:
+    - promoter_proximal
+    - proximal_100kb
+  purpose: mechanics_only_not_candidate_selection
+
+outputs:
+  input_inventory_csv: results/tables/stage75e_input_inventory_v1.csv
+  input_inventory_json: results/reports/stage75e_input_inventory_v1.json
+  cistarget_inventory_csv: results/tables/stage75e_cistarget_resource_integrity_v1.csv
+  cistarget_inventory_json: results/reports/stage75e_cistarget_resource_integrity_v1.json
+  smoke_edges: results/tables/stage75e_smoke_tf_target_edges_v1.csv
+  smoke_peak_gene_links: results/tables/stage75e_smoke_peak_gene_links_v1.csv
+  smoke_regions_bed: results/tables/stage75e_smoke_regions_v1.bed
+  smoke_tf_list: results/tables/stage75e_smoke_tf_list_v1.txt
+  smoke_gene_list: results/tables/stage75e_smoke_gene_list_v1.txt
+  smoke_manifest: results/reports/stage75e_smoke_subset_manifest_v1.json
+
+safety:
+  prediction_benchmark_updated: false
+  causal_validation_pass: false
+  therapeutic_target_claim: false
+  validated_grn_claim: false
+  approved_wording: Model-based, enhancer-informed perturbation hypotheses requiring experimental validation.
