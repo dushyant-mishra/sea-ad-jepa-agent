@@ -101,16 +101,26 @@ SCREEN region universe. Exact peak IDs are not guaranteed to match cisTarget
 column names, so this step builds a reusable region-index sidecar from bounded
 Feather column reads and reports exact/overlap coverage.
 
+The mapper follows the pycisTarget-style overlap rule: retain all database
+regions where either the query-overlap fraction or the database-region-overlap
+fraction is strictly greater than `0.4`. It builds the coordinate index from the
+smaller scores database, then checks sampled numeric-column parity against the
+rankings database before downstream use.
+
 ```bash
 cd "/mnt/d/Jepa project"
-IMAGE=scenicplus:1.0a2-container.1 bash scripts/stage75f_run_cistarget_region_mapping_wsl.sh
+REBUILD_INDEX=1 IMAGE=scenicplus:1.0a2-container.1 bash scripts/stage75f_run_cistarget_region_mapping_wsl.sh
 ```
 
 Outputs:
 
-- `data/processed/stage75f/hg38_screen_v10_clust_rankings_region_index_v1.csv.gz`
+- `data/processed/stage75f/hg38_screen_v10_clust_scores_region_index_v2.csv.gz`
+- `data/processed/stage75f/hg38_screen_v10_clust_scores_region_index_manifest_v2.json`
 - `results/tables/stage75f_cistarget_region_mapping_v1.csv`
+- `results/tables/stage75f_cistarget_region_coverage_v1.csv`
 - `results/reports/stage75f_cistarget_region_mapping_v1.json`
+- `results/stage75f_batches/*.cistarget_regions.txt`
+- `results/stage75f_batches/*.unmapped_regions.txt`
 
 The sidecar index remains local processed data and must not be committed. The
 mapping table is an audit artifact, not motif enrichment and not validated

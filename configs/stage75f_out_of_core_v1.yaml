@@ -75,11 +75,20 @@ batching:
   purpose: out_of_core_prep_not_candidate_selection
 
 cistarget_region_mapping:
-  database: rankings
+  # Build the coordinate sidecar from the smaller scores database.
+  database: scores
   column_batch_size: 4096
-  min_overlap_bp: 1
-  index_csv_gz: data/processed/stage75f/hg38_screen_v10_clust_rankings_region_index_v1.csv.gz
+  mapping_chunksize: 250000
+  schema_parity_sample_columns: 32
+
+  # Match pycisTarget target_to_query:
+  # overlap/query_length > 0.4 OR overlap/database_length > 0.4
+  fraction_overlap: 0.4
+
+  index_csv_gz: data/processed/stage75f/hg38_screen_v10_clust_scores_region_index_v2.csv.gz
+  index_manifest_json: data/processed/stage75f/hg38_screen_v10_clust_scores_region_index_manifest_v2.json
   mapping_csv: results/tables/stage75f_cistarget_region_mapping_v1.csv
+  coverage_csv: results/tables/stage75f_cistarget_region_coverage_v1.csv
   summary_json: results/reports/stage75f_cistarget_region_mapping_v1.json
 
 outputs:
