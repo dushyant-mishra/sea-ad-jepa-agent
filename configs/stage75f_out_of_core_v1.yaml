@@ -133,3 +133,29 @@ primary_tf_region_gene_evidence:
     target_summary_csv: results/tables/stage75f_primary_tf_target_gene_evidence_summary_v1.csv
     tf_summary_csv: results/tables/stage75f_primary_tf_region_gene_summary_v1.csv
     report_json: results/reports/stage75f_primary_tf_region_gene_evidence_v1.json
+
+cistarget_secondary_pilot:
+  # Ordered by the existing F4 batch IDs 3-10.
+  tfs:
+    - BACH1
+    - CEBPA
+    - ELF1
+    - MITF
+    - NRF1
+    - RELA
+    - SPI1
+    - STAT3
+
+  # Same cisTarget parameters used for the primary F5b pilot.
+  auc_threshold: 0.005
+  nes_threshold: 3.0
+  rank_threshold_fraction: 0.05
+  recovery_motif_batch_size: 64
+
+  output_dir: results/stage75f_secondary_motif_pilot
+  outputs:
+    all_motifs_csv_gz: results/tables/stage75f_secondary_motif_enrichment_all_v1.csv.gz
+    enriched_motifs_csv: results/tables/stage75f_secondary_motif_enrichment_enriched_v1.csv
+    motif_hits_csv: results/tables/stage75f_secondary_motif_hits_v1.csv
+    tf_support_summary_csv: results/tables/stage75f_secondary_tf_motif_support_summary_v1.csv
+    report_json: results/reports/stage75f_secondary_motif_pilot_v1.json
