@@ -105,3 +105,24 @@ safety:
   validated_grn_claim: false
   motif_enrichment_completed: false
   approved_wording: Model-based, enhancer-informed perturbation hypotheses requiring experimental validation.
+
+cistarget_primary_pilot:
+  tfs:
+    - IRF8
+    - STAT1
+
+  # pycisTarget cisTarget defaults.
+  auc_threshold: 0.005
+  nes_threshold: 3.0
+  rank_threshold_fraction: 0.05
+
+  # Bounds temporary recovery-curve memory.
+  recovery_motif_batch_size: 64
+
+  output_dir: results/stage75f_motif_pilot
+  outputs:
+    all_motifs_csv_gz: results/tables/stage75f_primary_motif_enrichment_all_v1.csv.gz
+    enriched_motifs_csv: results/tables/stage75f_primary_motif_enrichment_enriched_v1.csv
+    motif_hits_csv: results/tables/stage75f_primary_motif_hits_v1.csv
+    tf_support_summary_csv: results/tables/stage75f_primary_tf_motif_support_summary_v1.csv
+    report_json: results/reports/stage75f_primary_motif_pilot_v1.json
