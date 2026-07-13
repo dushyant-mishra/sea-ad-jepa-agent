@@ -126,3 +126,10 @@ cistarget_primary_pilot:
     motif_hits_csv: results/tables/stage75f_primary_motif_hits_v1.csv
     tf_support_summary_csv: results/tables/stage75f_primary_tf_motif_support_summary_v1.csv
     report_json: results/reports/stage75f_primary_motif_pilot_v1.json
+
+primary_tf_region_gene_evidence:
+  outputs:
+    evidence_csv: results/tables/stage75f_primary_tf_region_gene_evidence_v1.csv
+    target_summary_csv: results/tables/stage75f_primary_tf_target_gene_evidence_summary_v1.csv
+    tf_summary_csv: results/tables/stage75f_primary_tf_region_gene_summary_v1.csv
+    report_json: results/reports/stage75f_primary_tf_region_gene_evidence_v1.json
