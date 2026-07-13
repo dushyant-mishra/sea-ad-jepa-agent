@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -112,6 +113,9 @@ def atomic_write_json(payload: dict[str, Any], path: Path) -> None:
 
 
 def git_head(project: Path) -> str:
+    from_env = os.environ.get("STAGE75_GIT_COMMIT", "").strip()
+    if from_env:
+        return from_env
     result = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=project,

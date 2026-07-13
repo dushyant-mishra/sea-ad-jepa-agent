@@ -11,10 +11,12 @@ cd "${PROJECT_DIR}"
 mkdir -p results/tables results/reports results/stage75e_container
 
 docker image inspect "${IMAGE}" >/dev/null
+GIT_COMMIT="$(git rev-parse HEAD)"
 
 docker run --rm \
   --memory="${DOCKER_MEMORY}" \
   -e PYTHONUNBUFFERED=1 \
+  -e STAGE75_GIT_COMMIT="${GIT_COMMIT}" \
   -v "${PROJECT_DIR}:/workspace" \
   -w /workspace \
   "${IMAGE}" \
