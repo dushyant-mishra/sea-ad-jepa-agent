@@ -167,3 +167,38 @@ secondary_tf_region_gene_evidence:
     tf_summary_csv: results/tables/stage75f_secondary_tf_region_gene_summary_v1.csv
     gate_csv: results/tables/stage75f_secondary_tf_evidence_gate_v1.csv
     report_json: results/reports/stage75f_secondary_tf_region_gene_evidence_v1.json
+integrated_stage75_evidence_freeze:
+  sources:
+    primary_regulator_summary: results/tables/stage75f_primary_tf_region_gene_summary_v1.csv
+    primary_tf_target_summary: results/tables/stage75f_primary_tf_target_gene_evidence_summary_v1.csv
+    primary_motif_support_summary: results/tables/stage75f_primary_tf_motif_support_summary_v1.csv
+    secondary_evidence_gate: results/tables/stage75f_secondary_tf_evidence_gate_v1.csv
+    secondary_regulator_summary: results/tables/stage75f_secondary_tf_region_gene_summary_v1.csv
+    secondary_tf_target_summary: results/tables/stage75f_secondary_tf_target_gene_evidence_summary_v1.csv
+    secondary_motif_support_summary: results/tables/stage75f_secondary_tf_motif_support_summary_v1.csv
+  tiers:
+    Tier A:
+      - STAT1
+      - ELF1
+      - SPI1
+    Tier B:
+      - IRF8
+      - BACH1
+      - CEBPA
+      - RELA
+    Tier C:
+      - MITF
+      - NRF1
+      - STAT3
+  parameters:
+    cistarget_global_region_count: 1837304
+    motif_count_per_batch: 5876
+    overlap_threshold: 0.4
+    auc_threshold: 0.005
+    nes_threshold: 3.0
+    recovery_rank_fraction: 0.05
+  outputs:
+    regulator_summary_csv: results/tables/stage75_integrated_regulator_summary_v1.csv
+    tf_target_summary_csv: results/tables/stage75_integrated_tf_target_summary_v1.csv
+    negative_regulator_gate_csv: results/tables/stage75_integrated_negative_regulator_gate_v1.csv
+    manifest_json: results/reports/stage75_integrated_evidence_manifest_v1.json
