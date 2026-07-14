@@ -268,3 +268,45 @@ stage76_perturbation_readiness:
     regulator_readiness_csv: results/tables/stage76_regulator_readiness_v1.csv
     baseline_reproduction_csv: results/tables/stage76_jepa_baseline_reproduction_v1.csv
     report_json: results/reports/stage76_perturbation_readiness_v1.json
+
+stage77_tier_a_perturbation_mvp:
+  sources:
+    signed_tf_target_hypotheses: results/tables/stage76_signed_tf_target_hypotheses_v1.csv
+    edge_coverage: results/tables/stage76_perturbation_graph_edge_coverage_v1.csv
+    regulator_readiness: results/tables/stage76_regulator_readiness_v1.csv
+    readiness_report: results/reports/stage76_perturbation_readiness_v1.json
+  jepa:
+    feature_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+    matrix_source: h5ad_X
+    feature_order_source: h5ad_var_index
+    model_input_scale: existing_processed_h5ad_X_values
+    input_scale_interpretation: unitless_model_input_space_not_dose_or_fold_change
+  simulation:
+    regulators:
+      - STAT1
+      - ELF1
+      - SPI1
+    directions:
+      - up
+      - down
+    magnitudes:
+      - 0.10
+      - 0.25
+    include_baseline: true
+    random_seed: 7
+    subset_max_cells: 32
+    subset_state_column: Supertype
+    subset_donor_column: Donor ID
+    subset_region_column: Brain Region
+    edge_weight_formula: abs(edge_bootstrap_median_rho) * edge_bootstrap_sign_stability
+    propagation: one_hop_linear_no_feedback_no_recursion
+    expected_usable_edges:
+      STAT1: 16
+      ELF1: 23
+      SPI1: 14
+  outputs:
+    scenario_manifest_csv: results/tables/stage77_perturbation_scenario_manifest_v1.csv
+    edge_weights_csv: results/tables/stage77_tier_a_edge_weights_v1.csv
+    qc_summary_csv: results/tables/stage77_perturbation_qc_summary_v1.csv
+    predicted_expression_deltas_csv_gz: results/tables/stage77_predicted_expression_deltas_v1.csv.gz
+    report_json: results/reports/stage77_tier_a_perturbation_mvp_v1.json
