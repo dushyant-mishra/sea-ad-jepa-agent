@@ -221,3 +221,42 @@ stage76_directionality_audit:
     regulator_directionality_csv: results/tables/stage76_regulator_directionality_summary_v1.csv
     unresolved_directionality_csv: results/tables/stage76_unresolved_directionality_v1.csv
     report_json: results/reports/stage76_directionality_audit_v1.json
+stage76_perturbation_readiness:
+  sources:
+    integrated_regulator_summary: results/tables/stage75_integrated_regulator_summary_v1.csv
+    integrated_tf_target_summary: results/tables/stage75_integrated_tf_target_summary_v1.csv
+    integrated_negative_regulator_gate: results/tables/stage75_integrated_negative_regulator_gate_v1.csv
+    integrated_manifest: results/reports/stage75_integrated_evidence_manifest_v1.json
+    signed_tf_target_hypotheses: results/tables/stage76_signed_tf_target_hypotheses_v1.csv
+    regulator_directionality_summary: results/tables/stage76_regulator_directionality_summary_v1.csv
+    unresolved_directionality: results/tables/stage76_unresolved_directionality_v1.csv
+    directionality_report: results/reports/stage76_directionality_audit_v1.json
+  jepa:
+    checkpoint_path: results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt
+    architecture_loader_path: src/sea_ad_jepa/evaluation_utils.py
+    model_family: GeneJEPA
+    feature_h5ad: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+    feature_order_source: h5ad_var_index
+    baseline_reference_embeddings: results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_cell_embeddings.csv
+    preprocessing:
+      matrix_source: h5ad_X
+      feature_order: var_names
+      assumed_transform_from_training_lineage: existing_processed_h5ad_values
+      independent_preprocessing_verification_required: true
+    deterministic_inference:
+      subset_n_cells: 32
+      batch_size: 64
+      seed: 7
+      device: cpu
+    metadata_columns:
+      - Donor ID
+      - Brain Region
+      - Class
+      - Supertype
+      - Overall AD neuropathological Change
+  outputs:
+    feature_coverage_csv: results/tables/stage76_jepa_feature_coverage_v1.csv
+    edge_coverage_csv: results/tables/stage76_perturbation_graph_edge_coverage_v1.csv
+    regulator_readiness_csv: results/tables/stage76_regulator_readiness_v1.csv
+    baseline_reproduction_csv: results/tables/stage76_jepa_baseline_reproduction_v1.csv
+    report_json: results/reports/stage76_perturbation_readiness_v1.json
