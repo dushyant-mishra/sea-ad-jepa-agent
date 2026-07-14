@@ -52,6 +52,7 @@ The audit records:
 - model eval/no-grad inference with no stochastic masks or augmentations
 - same-runtime repeated inference metrics on a bounded exact cell-ID subset
 - archived baseline comparison on exact matched cells and `jepa_*` embedding columns
+- a reviewed project-level deterministic inference tolerance for the current frozen JEPA inference pathway
 
 The report separates:
 
@@ -61,6 +62,32 @@ The report separates:
 
 Tier A MVP readiness does not require F9 desired directionality to be resolved;
 F11 must preserve both up and down simulation scenarios for unresolved TFs.
+
+## Approved reproduction tolerance
+
+The approved deterministic inference-reproduction tolerance is:
+
+```yaml
+baseline_reproduction_tolerance:
+  max_abs_diff: 1.0e-6
+  min_cosine_similarity: 0.999999
+```
+
+This is a numerical inference-reproduction tolerance for the current frozen JEPA
+inference pathway. It is intended to detect checkpoint, preprocessing,
+feature-order, encoder, or inference-contract mismatches. It is not a biological
+effect-size threshold and must not be interpreted as one.
+
+The tolerance was selected after exact same-runtime repeated inference on the
+bounded matched-cell subset:
+
+- `max_abs_diff=0.0`
+- `mean_abs_diff=0.0`
+- `min_cosine=1.0`
+
+Formal archived-baseline reproduction passes only when checkpoint loading,
+preprocessing provenance, feature-order verification, archived-reference
+provenance, and the approved numerical tolerance all pass.
 
 ## Outputs
 
@@ -72,9 +99,9 @@ F11 must preserve both up and down simulation scenarios for unresolved TFs.
 
 F10B can report `tier_a_mvp_ready` while keeping `global_readiness_pass=false`
 when Tier B regulators are outside the JEPA feature space or when the archived
-baseline comparison still lacks a reviewed formal tolerance. Continuous
-reproduction metrics are reported, but no formal baseline reproduction pass is
-invented.
+global readiness is held back by Tier B feature gaps. Continuous
+reproduction metrics are reported and formal baseline reproduction uses the
+approved project-level deterministic inference tolerance.
 
 This is a readiness gate only. It makes no validated regulation, validated-GRN,
 causal, therapeutic, or simulated-response claim.

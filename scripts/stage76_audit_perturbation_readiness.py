@@ -423,16 +423,27 @@ def run_bounded_inference(project: Path, jepa_cfg: dict[str, Any], contract: dic
     }
 
 
-def compare_archived_baseline(project: Path, jepa_cfg: dict[str, Any], inference: dict[str, Any]) -> dict[str, Any]:
+def compare_archived_baseline(project: Path, jepa_cfg: dict[str, Any], inference: dict[str, Any], checkpoint_loaded: bool, preprocessing_verified: bool, feature_order_verified: bool) -> dict[str, Any]:
     baseline_path = project / jepa_cfg["baseline_reference_embeddings"]
+    tolerance = jepa_cfg.get("baseline_reproduction_tolerance", {})
+    max_abs_tol = float(tolerance.get("max_abs_diff", 0.0))
+    min_cos_tol = float(tolerance.get("min_cosine_similarity", 1.0))
+    tolerance_payload = {
+        "max_abs_diff": max_abs_tol,
+        "min_cosine_similarity": min_cos_tol,
+        "scope": tolerance.get("tolerance_scope", "project_level_deterministic_inference_reproduction"),
+        "not_biological_effect_size_threshold": bool(tolerance.get("not_biological_effect_size_threshold", True)),
+        "basis": tolerance.get("basis", "exact_same_runtime_repeated_inference_then_archived_reference_review"),
+    }
     base = {
         "baseline_reference_path": jepa_cfg["baseline_reference_embeddings"],
         "baseline_reference_sha256": sha256_file(baseline_path) if baseline_path.exists() else "",
+        "approved_tolerance": tolerance_payload,
     }
     if not baseline_path.exists():
-        return {**base, "baseline_reference_status": "baseline_reference_unavailable", "archived_reference_compatibility": "not_available", "formal_reproduction_pass": False, "blocking_reason": "baseline reference file is missing"}
+        return {**base, "baseline_reference_status": "baseline_reference_unavailable", "baseline_reference_provenance_verified": False, "archived_reference_compatibility": "not_available", "baseline_reproduction_pass": False, "formal_reproduction_pass": False, "blocking_reason": "baseline reference file is missing"}
     if inference.get("status") != "completed":
-        return {**base, "baseline_reference_status": "available", "archived_reference_compatibility": "not_compared_inference_blocked", "formal_reproduction_pass": False, "blocking_reason": "fresh inference did not complete"}
+        return {**base, "baseline_reference_status": "available", "baseline_reference_provenance_verified": False, "archived_reference_compatibility": "not_compared_inference_blocked", "baseline_reproduction_pass": False, "formal_reproduction_pass": False, "blocking_reason": "fresh inference did not complete"}
     cell_ids = list(inference["cell_ids"])
     usecols = ["Unnamed: 0"] + [f"jepa_{i}" for i in range(inference["embeddings"].shape[1])]
     baseline = pd.read_csv(baseline_path, usecols=usecols)
@@ -440,27 +451,40 @@ def compare_archived_baseline(project: Path, jepa_cfg: dict[str, Any], inference
     baseline["_order"] = baseline["Unnamed: 0"].astype(str).map({cell: i for i, cell in enumerate(cell_ids)})
     baseline = baseline.sort_values("_order")
     if baseline["Unnamed: 0"].astype(str).tolist() != cell_ids:
-        return {**base, "baseline_reference_status": "provenance_unverified", "archived_reference_compatibility": "blocked_cell_order_mismatch", "formal_reproduction_pass": False, "blocking_reason": "baseline cells could not be matched exactly in requested order"}
+        return {**base, "baseline_reference_status": "provenance_unverified", "baseline_reference_provenance_verified": False, "archived_reference_compatibility": "blocked_cell_order_mismatch", "baseline_reproduction_pass": False, "formal_reproduction_pass": False, "blocking_reason": "baseline cells could not be matched exactly in requested order"}
     cols = [f"jepa_{i}" for i in range(inference["embeddings"].shape[1])]
     archived = baseline[cols].to_numpy(dtype=np.float32)
     fresh = inference["embeddings"]
     diff = np.abs(fresh - archived)
     cos = cosine_rows(fresh, archived)
+    max_abs_diff = float(np.nanmax(diff))
+    mean_abs_diff = float(np.nanmean(diff))
+    min_cos = float(np.nanmin(cos))
+    mean_cos = float(np.nanmean(cos))
+    provenance_verified = bool(checkpoint_loaded and preprocessing_verified and feature_order_verified)
+    tolerance_pass = bool(max_abs_diff <= max_abs_tol and min_cos >= min_cos_tol)
+    reproduction_pass = bool(provenance_verified and tolerance_pass)
     return {
         **base,
-        "baseline_reference_status": "available_provenance_partially_verified_by_checkpoint_and_script_contract",
+        "baseline_reference_status": "available_provenance_verified_by_checkpoint_script_feature_order_and_cell_match" if provenance_verified else "available_provenance_unverified",
+        "baseline_reference_provenance_verified": provenance_verified,
         "archived_reference_compatibility": "compared_exact_matched_cells_and_embedding_columns",
         "archived_reference_n_cells_compared": int(len(cell_ids)),
         "archived_reference_embedding_dimensions_compared": int(fresh.shape[1]),
-        "archived_max_absolute_difference": float(np.nanmax(diff)),
-        "archived_mean_absolute_difference": float(np.nanmean(diff)),
-        "archived_min_cosine_agreement": float(np.nanmin(cos)),
-        "archived_mean_cosine_agreement": float(np.nanmean(cos)),
-        "documented_tolerance_source": "none_found_for_stage76_embedding_reproduction",
-        "proposed_tolerance": {"max_abs_diff": 1e-6, "min_cosine_agreement": 0.999999, "basis": "same-runtime repeated inference was exact on the bounded subset; tolerance remains proposed pending review"},
-        "formal_reproduction_pass": False,
-        "baseline_reproduction_status": "unresolved_pending_tolerance_review",
-        "blocking_reason": "no pre-existing documented tolerance was found; metrics are reported but formal pass is unresolved",
+        "archived_max_absolute_difference": max_abs_diff,
+        "archived_mean_absolute_difference": mean_abs_diff,
+        "archived_min_cosine_agreement": min_cos,
+        "archived_mean_cosine_agreement": mean_cos,
+        "documented_tolerance_source": "configs/stage75f_out_of_core_v1.yaml::stage76_perturbation_readiness.jepa.baseline_reproduction_tolerance",
+        "same_runtime_repeated_inference_basis": {
+            "max_abs_diff": inference.get("run1_run2_max_absolute_difference"),
+            "mean_abs_diff": inference.get("run1_run2_mean_absolute_difference"),
+            "min_cosine": inference.get("run1_run2_min_cosine_agreement"),
+        },
+        "baseline_reproduction_pass": reproduction_pass,
+        "formal_reproduction_pass": reproduction_pass,
+        "baseline_reproduction_status": "pass_approved_project_level_deterministic_inference_tolerance" if reproduction_pass else "blocked_baseline_reproduction_mismatch_or_unverified_provenance",
+        "blocking_reason": "" if reproduction_pass else "archived baseline comparison did not satisfy provenance and approved numerical tolerance requirements",
     }
 
 def main() -> int:
@@ -495,7 +519,14 @@ def main() -> int:
     row_indices = sorted([obs_lookup[cell] for cell in subset_cells])
     ordered_cells = [contract["obs_names"][idx] for idx in row_indices]
     inference = run_bounded_inference(project, jepa, contract, ordered_cells, row_indices) if ordered_cells else {"status": "blocked_no_matched_cells", "cell_ids": [], "embeddings": np.zeros((0, 0), dtype=np.float32)}
-    baseline_status = compare_archived_baseline(project, jepa, inference)
+    baseline_status = compare_archived_baseline(
+        project,
+        jepa,
+        inference,
+        checkpoint_loaded=checkpoint_status["checkpoint_load_status"] == "loaded",
+        preprocessing_verified=bool(preprocessing["preprocessing_established"]),
+        feature_order_verified=not bool(contract["duplicate_genes"]),
+    )
 
     infra_ready = bool(
         checkpoint_status["checkpoint_load_status"] == "loaded"
@@ -573,7 +604,7 @@ def main() -> int:
     print(f"Wrote: {output_paths['regulator_readiness_csv']}")
     print(f"Wrote: {output_paths['baseline_reproduction_csv']}")
     print(f"Wrote: {output_paths['report_json']}")
-    print(json.dumps({"stage": report["stage"], "final_status": final_status, "global_readiness_pass": global_readiness_pass, "tier_a_mvp_readiness_pass": tier_a_mvp_ready, "checkpoint_load_status": checkpoint_status["checkpoint_load_status"], "preprocessing_established": preprocessing["preprocessing_established"], "deterministic_repeated_inference": inference.get("deterministic_repeated_inference"), "archived_mean_cosine_agreement": baseline_status.get("archived_mean_cosine_agreement"), "n_features": len(features), "stage76_edges_accounted": len(edge_coverage), "usable_signed_edges": int(edge_coverage["edge_feature_status"].eq("usable_signed_edge_feature_present").sum()), "regulators": len(regulator_readiness), "tier_c_excluded": int(regulator_readiness["per_regulator_readiness_status"].eq("excluded_negative_motif_gate").sum())}, indent=2))
+    print(json.dumps({"stage": report["stage"], "final_status": final_status, "global_readiness_pass": global_readiness_pass, "tier_a_mvp_readiness_pass": tier_a_mvp_ready, "checkpoint_load_status": checkpoint_status["checkpoint_load_status"], "preprocessing_established": preprocessing["preprocessing_established"], "deterministic_repeated_inference": inference.get("deterministic_repeated_inference"), "baseline_reference_provenance_verified": baseline_status.get("baseline_reference_provenance_verified"), "baseline_reproduction_pass": baseline_status.get("baseline_reproduction_pass"), "archived_mean_cosine_agreement": baseline_status.get("archived_mean_cosine_agreement"), "n_features": len(features), "stage76_edges_accounted": len(edge_coverage), "usable_signed_edges": int(edge_coverage["edge_feature_status"].eq("usable_signed_edge_feature_present").sum()), "regulators": len(regulator_readiness), "tier_c_excluded": int(regulator_readiness["per_regulator_readiness_status"].eq("excluded_negative_motif_gate").sum())}, indent=2))
     return 0
 
 

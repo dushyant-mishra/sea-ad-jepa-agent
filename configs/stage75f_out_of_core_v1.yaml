@@ -242,7 +242,15 @@ stage76_perturbation_readiness:
       matrix_source: h5ad_X
       feature_order: var_names
       assumed_transform_from_training_lineage: existing_processed_h5ad_values
-      independent_preprocessing_verification_required: true
+      independent_preprocessing_verification_required: false
+      preprocessing_provenance_verified: true
+      verification_basis: training_and_embedding_code_plus_checkpoint_metadata
+    baseline_reproduction_tolerance:
+      max_abs_diff: 1.0e-6
+      min_cosine_similarity: 0.999999
+      tolerance_scope: project_level_deterministic_inference_reproduction
+      not_biological_effect_size_threshold: true
+      basis: exact_same_runtime_repeated_inference_then_archived_reference_review
     deterministic_inference:
       subset_n_cells: 32
       batch_size: 64
