@@ -1,0 +1,297 @@
+{
+  "stage": "stage76_perturbation_readiness_v1",
+  "purpose": "frozen-JEPA perturbation readiness audit; no simulation",
+  "git_commit": "52a818d6f44619c641f1e3dec42c6dbb754ad424",
+  "runtime": {
+    "python_executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa-v3\\python.exe",
+    "torch_available": true
+  },
+  "final_status": "tier_a_mvp_ready",
+  "global_readiness_pass": false,
+  "tier_a_mvp_readiness_pass": true,
+  "readiness_pass": false,
+  "checkpoint_audit": {
+    "checkpoint_path": "results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40/gene_jepa_epoch_030.pt",
+    "checkpoint_sha256": "83b67fc582e556c278dc5d816f89024e52adc0bf48e2954a7a1185a0a10be957",
+    "architecture_loader_path": "src/sea_ad_jepa/evaluation_utils.py",
+    "architecture_loader_sha256": "f7a97fefbc699bf3dc20dff06b1b180ab600e6908f27e337f87249463a256784",
+    "model_definition_path": "src/sea_ad_jepa/jepa.py",
+    "model_definition_sha256": "0675e606e48fd261a9ca6be14c1abc03ee3e95ee057ccae7ddd51f23763e57e8",
+    "observed_input_dim": 2957,
+    "encoder_frozen": true,
+    "checkpoint_load_status": "loaded",
+    "model_load_status": "model_instantiated_and_state_dict_loaded",
+    "expected_input_dim": 2957,
+    "device_used_for_validation": "cpu",
+    "checkpoint_args": {
+      "h5ad": "data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad",
+      "out_dir": "results/models/microglia_pvm_jepa_ema_var_expanded_balanced_e40",
+      "resume_checkpoint": "",
+      "epochs": 40,
+      "checkpoint_every": 10,
+      "batch_size": 512,
+      "donor_balanced_sampling": true,
+      "donor_column": "Donor ID",
+      "samples_per_epoch": 0,
+      "hidden_dim": 512,
+      "latent_dim": 128,
+      "ema_decay": 0.996,
+      "variance_weight": 0.05,
+      "variance_gamma": 1.0,
+      "mask_fraction": 0.35,
+      "mask_mode": "mixed",
+      "min_module_genes": 2,
+      "no_module_random_fill": false,
+      "lr": 0.0002,
+      "reset_target_on_resume": false,
+      "device": "auto",
+      "seed": 7,
+      "log_dir": "runs/microglia_pvm_jepa_ema_var_expanded_balanced_e40"
+    },
+    "blocking_reason": ""
+  },
+  "feature_order": {
+    "feature_h5ad": "data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad",
+    "feature_order_source": "h5ad var/_index",
+    "feature_order_sha256": "4f65c677c8673754756118c6d978a3c04e73a57f7002d42e8550932b94b89662",
+    "n_features": 2957,
+    "duplicate_feature_rule": "no_duplicate_features_detected",
+    "duplicate_features": []
+  },
+  "preprocessing": {
+    "configuration": {
+      "matrix_source": "h5ad_X",
+      "feature_order": "var_names",
+      "assumed_transform_from_training_lineage": "existing_processed_h5ad_values",
+      "independent_preprocessing_verification_required": false,
+      "preprocessing_provenance_verified": true,
+      "verification_basis": "training_and_embedding_code_plus_checkpoint_metadata"
+    },
+    "preprocessing_config_sha256": "d4237a7f39c3e8fc01525285238d4534a1ec95ccb984fe8a0210c01ef7689617",
+    "preprocessing_established": true,
+    "blocking_reason": "",
+    "source_h5ad_path_from_checkpoint": "data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad",
+    "configured_feature_h5ad": "data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad",
+    "source_h5ad_matches_config": true,
+    "matrix_used": "adata.X",
+    "layer_or_raw_used": "X; no raw.X or named layer used by scripts/train_jepa_snrna.py or scripts/embed_jepa_snrna.py",
+    "normalization_from_training_script": "none applied in training or embedding scripts after reading H5AD",
+    "target_sum_normalization": "not applied by training or embedding scripts",
+    "log1p_usage": "not applied by training or embedding scripts",
+    "centering_or_scaling": "not applied to model inputs by training or embedding scripts",
+    "clipping": "not applied to model inputs by training or embedding scripts",
+    "feature_selection": "pre-existing H5AD var_names; no additional selection in training or embedding scripts",
+    "feature_order": "adata.var_names / h5ad var/_index",
+    "sparse_handling_training": "DenseExpressionDataset converts sparse AnnData X to dense numpy array",
+    "sparse_handling_embedding": "embed_jepa_snrna.to_dense_float32 converts sparse AnnData X to dense numpy array",
+    "dtype": "float32 model input tensor",
+    "missing_value_handling": "no imputation or NaN handling in training/embedding scripts; values are passed through from H5AD X",
+    "model_input_tensor_shape": [
+      40000,
+      2957
+    ],
+    "training_masking": {
+      "mask_fraction": 0.35,
+      "mask_mode": "mixed",
+      "min_module_genes": 2,
+      "module_random_fill": true
+    },
+    "inference_masks_or_augmentations": "disabled; embedding script calls model.encode on full unmasked batch in model.eval()/torch.no_grad()",
+    "embedding_encoder_branch": "context_encoder via GeneJEPA.encode with L2 normalization",
+    "ema_vs_non_ema": "archived embeddings and fresh inference use context_encoder, not EMA target_encoder",
+    "evaluation_mode": "model.eval() with torch.no_grad()",
+    "source_files": [
+      {
+        "path": "scripts/train_jepa_snrna.py",
+        "exists": true,
+        "sha256": "409140d17240be791b0f6d22d72a5ffda62a41617458c5c6777346a588bcf60f"
+      },
+      {
+        "path": "scripts/embed_jepa_snrna.py",
+        "exists": true,
+        "sha256": "dccf81dd4b5db0f157d4bb4a2bb56b87e3034a139d96d62ddbc092d6dfb334ac"
+      },
+      {
+        "path": "src/sea_ad_jepa/datasets.py",
+        "exists": true,
+        "sha256": "445fea9407e80aecf7701950f80c14e0abeeeea1e5593da9b7d7b3ba3619f713"
+      },
+      {
+        "path": "src/sea_ad_jepa/jepa.py",
+        "exists": true,
+        "sha256": "0675e606e48fd261a9ca6be14c1abc03ee3e95ee057ccae7ddd51f23763e57e8"
+      },
+      {
+        "path": "src/sea_ad_jepa/evaluation_utils.py",
+        "exists": true,
+        "sha256": "f7a97fefbc699bf3dc20dff06b1b180ab600e6908f27e337f87249463a256784"
+      },
+      {
+        "path": "src/sea_ad_jepa/gene_sets.py",
+        "exists": true,
+        "sha256": "3864f081768fdf9ba01f0c65db41c7382b2e4b307c849af55de7e5533fd02928"
+      },
+      {
+        "path": "src/sea_ad_jepa/data.py",
+        "exists": true,
+        "sha256": "b91c3e18ae57955a5dc6a005d582a81ccdc03c41bc1725b07cf35ba365b68552"
+      },
+      {
+        "path": "docs/runbook.md",
+        "exists": true,
+        "sha256": "b92ab92c3bcab7de71b0afad263ab8b29e208bbb4201c97f7402f7ff42ae3543"
+      },
+      {
+        "path": "configs/stage75f_out_of_core_v1.yaml",
+        "exists": true,
+        "sha256": "29de3f8a465d907aa0dfd00c25c3015829b821ac308ad34a98b54f6b42727e63"
+      }
+    ]
+  },
+  "input_matrix": {
+    "path": "data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad",
+    "sha256": "d0385e86da482b2f0048e2d0d83116056b889b8449cc8778828b3eae1d1eed93",
+    "x_shape": [
+      40000,
+      2957
+    ],
+    "x_storage": "csr_matrix",
+    "x_dtype": "float32"
+  },
+  "metadata_coverage": {
+    "Donor ID": {
+      "present": true,
+      "n_non_missing": 40000,
+      "n_unique": 89
+    },
+    "Brain Region": {
+      "present": true,
+      "n_non_missing": 40000,
+      "n_unique": 3
+    },
+    "Class": {
+      "present": true,
+      "n_non_missing": 40000,
+      "n_unique": 1
+    },
+    "Supertype": {
+      "present": true,
+      "n_non_missing": 40000,
+      "n_unique": 8
+    },
+    "Overall AD neuropathological Change": {
+      "present": true,
+      "n_non_missing": 40000,
+      "n_unique": 5
+    }
+  },
+  "edge_accounting": {
+    "total_stage76_edges": 96,
+    "usable_signed_edge_feature_present": 67,
+    "missing_tf_feature": 21,
+    "missing_target_feature": 6,
+    "missing_tf_and_target_features": 2
+  },
+  "deterministic_repeated_inference": {
+    "status": "completed",
+    "subset_selection_rule": "first N archived baseline cell IDs that exactly match H5AD obs/_index, preserving H5AD row order",
+    "cell_ids": [
+      "cell_32",
+      "cell_60",
+      "cell_121",
+      "cell_195",
+      "cell_247",
+      "cell_264",
+      "cell_309",
+      "cell_337",
+      "cell_396",
+      "cell_408",
+      "cell_494",
+      "cell_500",
+      "cell_519",
+      "cell_573",
+      "cell_591",
+      "cell_631",
+      "cell_685",
+      "cell_708",
+      "cell_710",
+      "cell_738",
+      "cell_773",
+      "cell_841",
+      "cell_862",
+      "cell_865",
+      "cell_878",
+      "cell_886",
+      "cell_894",
+      "cell_921",
+      "cell_940",
+      "cell_942",
+      "cell_976",
+      "cell_1111"
+    ],
+    "n_cells": 32,
+    "input_feature_count": 2957,
+    "device": "cpu",
+    "dtype": "float32",
+    "batch_size": 64,
+    "random_seed": 7,
+    "model_mode": "eval",
+    "encoder_branch": "context_encoder via GeneJEPA.encode",
+    "checkpoint_epoch_history_last": {
+      "epoch": 30,
+      "loss": 0.07055242519967164,
+      "alignment_loss": 0.02257678478578978,
+      "variance_loss": 0.959512783756739
+    },
+    "run1_run2_max_absolute_difference": 0.0,
+    "run1_run2_mean_absolute_difference": 0.0,
+    "run1_run2_min_cosine_agreement": 1.0,
+    "run1_run2_mean_cosine_agreement": 1.0,
+    "deterministic_repeated_inference": true
+  },
+  "baseline_reproduction": {
+    "baseline_reference_path": "results/tables/microglia_pvm_jepa_ema_var_expanded_balanced_e30_cell_embeddings.csv",
+    "baseline_reference_sha256": "c9d6a8542a2aede27e62101ae1815c26e61e8fb8db37eaf7eb1d8a79e07f8088",
+    "approved_tolerance": {
+      "max_abs_diff": 1e-06,
+      "min_cosine_similarity": 0.999999,
+      "scope": "project_level_deterministic_inference_reproduction",
+      "not_biological_effect_size_threshold": true,
+      "basis": "exact_same_runtime_repeated_inference_then_archived_reference_review"
+    },
+    "baseline_reference_status": "available_provenance_verified_by_checkpoint_script_feature_order_and_cell_match",
+    "baseline_reference_provenance_verified": true,
+    "archived_reference_compatibility": "compared_exact_matched_cells_and_embedding_columns",
+    "archived_reference_n_cells_compared": 32,
+    "archived_reference_embedding_dimensions_compared": 128,
+    "archived_max_absolute_difference": 1.1920928955078125e-07,
+    "archived_mean_absolute_difference": 1.560701434755174e-08,
+    "archived_min_cosine_agreement": 0.9999998807907104,
+    "archived_mean_cosine_agreement": 1.0,
+    "documented_tolerance_source": "configs/stage75f_out_of_core_v1.yaml::stage76_perturbation_readiness.jepa.baseline_reproduction_tolerance",
+    "same_runtime_repeated_inference_basis": {
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "min_cosine": 1.0
+    },
+    "baseline_reproduction_pass": true,
+    "formal_reproduction_pass": true,
+    "baseline_reproduction_status": "pass_approved_project_level_deterministic_inference_tolerance",
+    "blocking_reason": ""
+  },
+  "outputs": {
+    "feature_coverage_csv": "results/tables/stage76_jepa_feature_coverage_v1.csv",
+    "edge_coverage_csv": "results/tables/stage76_perturbation_graph_edge_coverage_v1.csv",
+    "regulator_readiness_csv": "results/tables/stage76_regulator_readiness_v1.csv",
+    "baseline_reproduction_csv": "results/tables/stage76_jepa_baseline_reproduction_v1.csv",
+    "report_json": "results/reports/stage76_perturbation_readiness_v1.json"
+  },
+  "claim_boundaries": {
+    "validated_regulation": false,
+    "validated_grn_claim": false,
+    "causal_validation_pass": false,
+    "therapeutic_target_claim": false,
+    "perturbation_simulation_run": false,
+    "approved_wording": "Model-based, enhancer-informed perturbation hypotheses requiring experimental validation."
+  }
+}
