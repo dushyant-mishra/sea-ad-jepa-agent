@@ -375,6 +375,17 @@ def run(cfg: dict[str, Any], project: Path) -> dict[str, Any]:
     atomic_write_csv(edge_weights, out["edge_weights_csv"])
     atomic_write_csv(qc, out["qc_summary_csv"])
     atomic_write_csv_gz(deltas, out["predicted_expression_deltas_csv_gz"])
+    detailed_delta_artifact = {
+        "path": outputs["predicted_expression_deltas_csv_gz"],
+        "sha256": sha256_file(out["predicted_expression_deltas_csv_gz"]),
+        "byte_size": int(out["predicted_expression_deltas_csv_gz"].stat().st_size),
+        "row_count": int(len(deltas)),
+        "cell_count": int(deltas["cell_id"].nunique()),
+        "scenario_count": int(deltas["scenario_id"].nunique()),
+        "affected_gene_count": int(deltas["gene_symbol"].nunique()),
+        "regulator_count": int(deltas.loc[deltas["scenario_type"].eq("perturbation"), "regulator"].nunique()),
+        "local_detailed_artifact_not_committed_by_default": True,
+    }
     report = {
         "stage": "stage77_tier_a_perturbation_mvp_v1",
         "purpose": "bounded Tier A one-hop input-space expression delta simulation only",
@@ -402,6 +413,7 @@ def run(cfg: dict[str, Any], project: Path) -> dict[str, Any]:
         },
         "edge_counts": {k: int(v) for k, v in edge_weights.groupby("tf").size().to_dict().items()},
         "scenario_count": {"baseline": int(manifest["scenario_type"].eq("baseline").sum()), "perturbation": int(manifest["scenario_type"].eq("perturbation").sum()), "total": int(len(manifest))},
+        "detailed_delta_artifact": detailed_delta_artifact,
         "qc_global": qc_global.iloc[0].to_dict(),
         "outputs": outputs,
         "claim_boundaries": {**FALSE_CLAIMS, "approved_wording": APPROVED_WORDING},
