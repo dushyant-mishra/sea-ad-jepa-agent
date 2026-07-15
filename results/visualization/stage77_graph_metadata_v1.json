@@ -30,7 +30,7 @@
   },
   "delta_label": "Simulated input-space expression delta",
   "edge_label": "Coactivity-signed candidate influence",
-  "git_head": "b71190169fa98948bf02e93c7cd4716c0fbeb0cd",
+  "git_head": "7ff80c86b186a7ec2341c09a13db64d9f878f4f1",
   "hypothesis_label": "Model-based perturbation hypothesis",
   "legend_warning": "Color represents simulated input-space delta, not experimentally observed expression.",
   "payload_hashes": {
