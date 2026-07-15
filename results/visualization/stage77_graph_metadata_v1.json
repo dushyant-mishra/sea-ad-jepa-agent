@@ -1,0 +1,127 @@
+{
+  "build_timestamp_utc": "not_recorded_for_deterministic_rerun",
+  "claim_boundaries": {
+    "approved_wording": "Model-based, enhancer-informed perturbation hypotheses requiring experimental validation.",
+    "causal_validation_pass": false,
+    "forbidden_interpretation": [
+      "causal effect",
+      "transcriptional activation/repression",
+      "therapeutic response",
+      "rescue score",
+      "validated regulation",
+      "validated GRN"
+    ],
+    "jepa_embedding_run": false,
+    "therapeutic_target_claim": false,
+    "validated_grn_claim": false,
+    "validated_regulation": false,
+    "visualization_recalculates_analysis": false
+  },
+  "counts": {
+    "baseline_scenarios": 1,
+    "edges": 96,
+    "nodes": 37,
+    "perturbation_scenarios": 12,
+    "scenario_node_effects": 481,
+    "scenarios": 13,
+    "target_gene_nodes": 27,
+    "tf_nodes": 10,
+    "usable_stage77_edges": 53
+  },
+  "delta_label": "Simulated input-space expression delta",
+  "edge_label": "Coactivity-signed candidate influence",
+  "git_head": "b71190169fa98948bf02e93c7cd4716c0fbeb0cd",
+  "hypothesis_label": "Model-based perturbation hypothesis",
+  "legend_warning": "Color represents simulated input-space delta, not experimentally observed expression.",
+  "payload_hashes": {
+    "edges_json": "4711c7e01d1960f1f8e2beb96585d04ceaf7e8ef42dc8bd69bb12a3004260c9f",
+    "nodes_json": "c1f9ce8be12f88e37e95cbdd38f8514796535394cb03510654d7aa98954195c4",
+    "scenario_node_effects_json": "7fd52ba24e0a015af6b3625c2550c9c1816242898186fc13a25a048ae959e041",
+    "scenarios_json": "8f917696e84bb5a51e042d6b13ee94bac65490b7c25470f4b717efa0d5b72299"
+  },
+  "read_only_downstream_visualization": true,
+  "schema_version": "1.1",
+  "source_hashes": {
+    "integrated_regulator_summary": {
+      "byte_size": 4598,
+      "path": "results/tables/stage75_integrated_regulator_summary_v1.csv",
+      "sha256": "4fa3d182b1d3d903dd7ae95eae0aeac2004f937db2b76eddecf661c04816ae73"
+    },
+    "stage76_edge_coverage": {
+      "byte_size": 104484,
+      "path": "results/tables/stage76_perturbation_graph_edge_coverage_v1.csv",
+      "sha256": "f6d1b164567ce736a7f1297e5fb45f5674b31a704b743ea26f7b42e1ffff03e2"
+    },
+    "stage76_regulator_readiness": {
+      "byte_size": 3102,
+      "path": "results/tables/stage76_regulator_readiness_v1.csv",
+      "sha256": "a06ac7b01a1ace9e801690d3105034b02d93ea2440dfae28aa161bd0965a761d"
+    },
+    "stage77_edge_weights": {
+      "byte_size": 10343,
+      "path": "results/tables/stage77_tier_a_edge_weights_v1.csv",
+      "sha256": "d185cf4e85fc45dbeb2ecab7b0c31ba70d0134460daf39432103f1c4bfbc8795"
+    },
+    "stage77_predicted_expression_deltas": {
+      "byte_size": 95570,
+      "path": "results/tables/stage77_predicted_expression_deltas_v1.csv.gz",
+      "sha256": "9d04ecf268e5e8b3318a766ff3a5a669d29dbde9d746140e7077467663e7734f"
+    },
+    "stage77_report": {
+      "byte_size": 3758,
+      "path": "results/reports/stage77_tier_a_perturbation_mvp_v1.json",
+      "sha256": "be4843a65602acdc2bd1910a152063f6f397050f1f4c886bbfd3804cf42f1969"
+    },
+    "stage77_scenario_manifest": {
+      "byte_size": 5055,
+      "path": "results/tables/stage77_perturbation_scenario_manifest_v1.csv",
+      "sha256": "a9c6a12f064cccc2d8b9b60acc7a73f8e30af8ce36382847cdec9bb5e7a7ef14"
+    }
+  },
+  "stage": "stage77_f11v_perturbation_graph_visualization_v1",
+  "stage77_qc_global": {
+    "baseline_zero_delta": true,
+    "clipping_count": 2642,
+    "clipping_fraction": 0.33025,
+    "deterministic_repeat_check_pass": true,
+    "edge_count_validation_pass": true,
+    "exact_scenario_count": true,
+    "feature_order_unchanged": true,
+    "n_values_checked": 8000,
+    "no_changes_outside_selected_tf_targets": true,
+    "no_infinite_values": true,
+    "no_nan_values": true,
+    "normalized_weight_sums_to_one": true,
+    "opposite_direction_check_pass": true,
+    "output_values_within_observed_bounds": true,
+    "scenario_id": "GLOBAL_QC"
+  },
+  "validation_checks": {
+    "all_validation_checks_pass": true,
+    "baseline_effects_exactly_zero": true,
+    "baseline_scenarios_1": true,
+    "deterministic_rerun_produces_identical_json": true,
+    "every_effect_node_known": true,
+    "every_node_effect_maps_once_per_scenario": true,
+    "every_scenario_id_maps_once": true,
+    "every_usable_tier_a_edge_maps_exactly_once": true,
+    "no_javascript_side_scientific_calculations": true,
+    "perturbation_scenarios_12": true,
+    "scenarios_13": true,
+    "stable_edges_96": true,
+    "stable_nodes_37": true,
+    "unavailable_edges_never_receive_effect_weights": true,
+    "usable_edges_53": true
+  },
+  "visual_encodings": {
+    "dashed_edge": "extended_only_motif_evidence",
+    "edge_opacity": "bootstrap_sign_stability",
+    "edge_width": "normalized_propagation_weight",
+    "gray_edge": "not_usable_in_jepa_feature_space",
+    "legend_warning": "color_represents_simulated_input_space_delta_not_experimentally_observed_expression",
+    "node_fill_intensity": "predicted_expression_delta_magnitude",
+    "node_hue": "predicted_expression_delta_direction",
+    "solid_edge": "direct_motif_evidence",
+    "warning_outline": "value_reached_clipping_bound"
+  }
+}
