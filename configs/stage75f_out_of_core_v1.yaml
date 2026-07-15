@@ -310,3 +310,40 @@ stage77_tier_a_perturbation_mvp:
     qc_summary_csv: results/tables/stage77_perturbation_qc_summary_v1.csv
     predicted_expression_deltas_csv_gz: results/tables/stage77_predicted_expression_deltas_v1.csv.gz
     report_json: results/reports/stage77_tier_a_perturbation_mvp_v1.json
+
+stage77_visualization:
+  purpose: read_only_perturbation_graph_data_contract_and_static_prototype
+  sources:
+    integrated_regulator_summary: results/tables/stage75_integrated_regulator_summary_v1.csv
+    stage76_edge_coverage: results/tables/stage76_perturbation_graph_edge_coverage_v1.csv
+    stage76_regulator_readiness: results/tables/stage76_regulator_readiness_v1.csv
+    stage77_edge_weights: results/tables/stage77_tier_a_edge_weights_v1.csv
+    stage77_scenario_manifest: results/tables/stage77_perturbation_scenario_manifest_v1.csv
+    stage77_predicted_expression_deltas: results/tables/stage77_predicted_expression_deltas_v1.csv.gz
+    stage77_report: results/reports/stage77_tier_a_perturbation_mvp_v1.json
+  required_edge_label: Coactivity-signed candidate influence
+  read_only_rules:
+    recalculates_edge_weights: false
+    changes_thresholds: false
+    infers_missing_directions: false
+    silently_removes_genes: false
+    runs_jepa_embeddings: false
+    computes_rescue_scores: false
+    computes_drug_matches: false
+  visual_encodings:
+    node_fill_intensity: predicted_expression_delta_magnitude
+    node_hue: predicted_expression_delta_direction
+    edge_width: normalized_propagation_weight
+    edge_opacity: bootstrap_sign_stability
+    solid_edge: direct_motif_evidence
+    dashed_edge: extended_only_motif_evidence
+    gray_edge: not_usable_in_jepa_feature_space
+    warning_outline: value_reached_clipping_bound
+    legend_warning: color_represents_simulated_input_space_delta_not_experimentally_observed_expression
+  outputs:
+    nodes_json: results/visualization/stage77_graph_nodes_v1.json
+    edges_json: results/visualization/stage77_graph_edges_v1.json
+    scenarios_json: results/visualization/stage77_graph_scenarios_v1.json
+    scenario_node_effects_json: results/visualization/stage77_graph_scenario_node_effects_v1.json
+    metadata_json: results/visualization/stage77_graph_metadata_v1.json
+    prototype_html: results/visualization/stage77_graph_prototype_v1.html
