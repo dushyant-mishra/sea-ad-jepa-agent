@@ -7,7 +7,6 @@
     "external_script_count": 0,
     "external_stylesheet_count": 0,
     "file_protocol_smoke_pass": true,
-    "file_url": "file:///D:/Jepa%20project/results/visualization/stage78_graph_explorer_cytoscape_plotly_v2.html",
     "final_scenario": "STAT1_up_0p25",
     "graph_edges": 18,
     "graph_nodes": 19,
@@ -15,7 +14,9 @@
     "plotly_runtime_used": true,
     "runtime_network_request_count": 0,
     "runtime_network_requests": [],
-    "scenario_count": 13
+    "scenario_count": 13,
+    "smoke_test_artifact": "results/visualization/stage78_graph_explorer_cytoscape_plotly_v2.html",
+    "smoke_test_protocol": "file://"
   },
   "cell_count": 32,
   "centroid_count": 8,
@@ -71,7 +72,7 @@
     "src/state.js": "15c0725383e17f2a1fbdc95d2960f11bab103658e6d011f9cab4d79c40bea35c",
     "src/styles.css": "f72f5e32138cde291b8050b75a8985ffb35d96b19c956925491b82d4bdb78d27"
   },
-  "git_head": "1bda86910c59959a14915fe05aa3278876b7c3eb",
+  "git_head": "95cb1c14bbab73ade4eb7d857370ed01e60c4170",
   "graph_counts": {
     "edges": 96,
     "nodes": 37,
@@ -103,6 +104,8 @@
   },
   "schema_version": "2.0",
   "self_contained": true,
+  "smoke_test_artifact": "results/visualization/stage78_graph_explorer_cytoscape_plotly_v2.html",
+  "smoke_test_protocol": "file://",
   "source_stage77_hashes": {
     "stage77_edges_json": {
       "byte_size": 103516,
@@ -110,9 +113,9 @@
       "sha256": "4711c7e01d1960f1f8e2beb96585d04ceaf7e8ef42dc8bd69bb12a3004260c9f"
     },
     "stage77_metadata_json": {
-      "byte_size": 5179,
+      "byte_size": 5306,
       "path": "results/visualization/stage77_graph_metadata_v1.json",
-      "sha256": "3a0c5a736bc1fd7d53ea9cb81c934d3d76f96e73bcedacea851efdd42234c428"
+      "sha256": "4747ff3e8a4ddba8c78e009f7686da2a0b59dcab790c491087a22d20672e2469"
     },
     "stage77_nodes_json": {
       "byte_size": 24024,
@@ -177,6 +180,7 @@
     "external_stylesheet_count_zero": true,
     "file_protocol_smoke_pass": true,
     "no_absolute_paths": true,
+    "no_absolute_paths_in_generated_outputs": true,
     "no_scientific_computation_in_browser": true,
     "nodes_37": true,
     "perturbation_scenarios_12": true,
