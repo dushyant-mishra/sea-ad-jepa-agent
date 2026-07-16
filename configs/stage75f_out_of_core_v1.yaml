@@ -378,3 +378,34 @@ stage78_jepa_latent_shift:
     donor_concordance_csv: results/tables/stage78_jepa_donor_concordance_v1.csv
     scenario_qc_csv: results/tables/stage78_jepa_scenario_qc_v1.csv
     report_json: results/reports/stage78_jepa_latent_shift_v1.json
+stage78_visualization:
+  purpose: read_only_cytoscape_plotly_latent_displacement_explorer_v2
+  sources:
+    stage77_nodes_json: results/visualization/stage77_graph_nodes_v1.json
+    stage77_edges_json: results/visualization/stage77_graph_edges_v1.json
+    stage77_scenarios_json: results/visualization/stage77_graph_scenarios_v1.json
+    stage77_scenario_node_effects_json: results/visualization/stage77_graph_scenario_node_effects_v1.json
+    stage77_metadata_json: results/visualization/stage77_graph_metadata_v1.json
+    stage78_summary: results/tables/stage78_jepa_latent_shift_summary_v1.csv
+    stage78_donor_concordance: results/tables/stage78_jepa_donor_concordance_v1.csv
+    stage78_scenario_qc: results/tables/stage78_jepa_scenario_qc_v1.csv
+    stage78_by_cell: results/tables/stage78_jepa_latent_shift_by_cell_v1.csv.gz
+    stage78_report: results/reports/stage78_jepa_latent_shift_v1.json
+  read_only_rules:
+    reruns_stage77_perturbations: false
+    reruns_jepa: false
+    recomputes_embeddings: false
+    recomputes_centroids: false
+    recomputes_perturbation_deltas: false
+    modifies_graph_weights: false
+    modifies_scientific_thresholds: false
+    infers_disease_direction: false
+    calculates_rescue: false
+    calculates_benefit: false
+    calculates_therapeutic_potential: false
+  outputs:
+    latent_effects_json: results/visualization/stage78_graph_scenario_latent_effects_v1.json
+    donor_concordance_json: results/visualization/stage78_graph_donor_concordance_v1.json
+    centroid_effects_json: results/visualization/stage78_graph_supertype_centroid_effects_v1.json
+    metadata_json: results/visualization/stage78_graph_explorer_metadata_v2.json
+    html: results/visualization/stage78_graph_explorer_cytoscape_plotly_v2.html

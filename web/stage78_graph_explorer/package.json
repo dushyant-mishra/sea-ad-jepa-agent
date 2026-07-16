@@ -1,0 +1,1 @@
+{"name":"stage78-graph-explorer","version":"0.1.0","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs"},"dependencies":{"cytoscape":"3.34.0","plotly.js-basic-dist-min":"3.7.0"},"devDependencies":{"esbuild":"0.28.1"}}
