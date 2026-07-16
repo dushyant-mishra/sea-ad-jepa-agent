@@ -89,16 +89,32 @@ def degree_shuffle(real,seed):
     return out,{'swap_attempts':att,'accepted_swaps':acc,'rejected_duplicate_edges':dup,'rejected_invalid_self_edges':selfe,'rejected_same_tf':same,'final_edge_overlap_with_real':len(pairs&realpairs)}
 
 def tf_label_shuffle(real,seed):
-    rng=random.Random(seed); base=real.copy().sort_values(['target_gene','tf']).reset_index(drop=True); realpairs=set(zip(real.tf,real.target_gene)); targets=base.target_gene.astype(str).tolist()
-    for att in range(1,501):
-        remaining=REQ_COUNTS.copy(); assigned=[None]*len(base); order=list(range(len(base))); rng.shuffle(order); used_by_target={}
-        ok=True
-        for i in order:
-            target=targets[i]; used=used_by_target.setdefault(target,set()); choices=[tf for tf,n in remaining.items() if n>0 and tf not in used]
-            if not choices: ok=False; break
-            choices=sorted(choices); tf=choices[rng.randrange(len(choices))]
-            assigned[i]=tf; remaining[tf]-=1; used.add(tf)
-        if not ok or any(v!=0 for v in remaining.values()): continue
+    rng=random.Random(seed); base=real.copy().sort_values(['target_gene','tf']).reset_index(drop=True); realpairs=set(zip(real.tf,real.target_gene))
+    target_to_indices={}
+    for i,t in enumerate(base.target_gene.astype(str)): target_to_indices.setdefault(t,[]).append(i)
+    groups=sorted(target_to_indices.items(), key=lambda kv:(-len(kv[1]), kv[0]))
+    tfs=sorted(REQ_COUNTS)
+    for att in range(1,101):
+        remaining=REQ_COUNTS.copy(); assigned=[None]*len(base)
+        def rec(pos):
+            if pos==len(groups): return all(v==0 for v in remaining.values())
+            target,idxs=groups[pos]; choices=tfs[:]; rng.shuffle(choices)
+            combos=[]
+            def combo(cur,avail,k):
+                if k==0: combos.append(cur[:]); return
+                for tf in avail:
+                    if remaining[tf]>0:
+                        nxt=[x for x in avail if x!=tf]; cur.append(tf); combo(cur,nxt,k-1); cur.pop()
+            combo([],choices,len(idxs)); rng.shuffle(combos)
+            for combo_labels in combos:
+                if any(remaining[tf]<=0 for tf in combo_labels): continue
+                for tf in combo_labels: remaining[tf]-=1
+                for idx,tf in zip(idxs,combo_labels): assigned[idx]=tf
+                if rec(pos+1): return True
+                for idx in idxs: assigned[idx]=None
+                for tf in combo_labels: remaining[tf]+=1
+            return False
+        if not rec(0): continue
         out=base.copy(); out['tf']=assigned; pairs=list(zip(out.tf,out.target_gene))
         if len(set(pairs))!=len(pairs) or set(pairs)==realpairs: continue
         out=renorm(out); return out,{'label_shuffle_attempts':att,'tf_label_changed_fraction':sum(base.tf!=out.tf)/len(out)}
