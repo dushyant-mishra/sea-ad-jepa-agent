@@ -1,0 +1,16 @@
+check,passed
+source_hashes_match,True
+checkpoint_hash_matches,True
+feature_order_hash_matches,True
+baseline_cell_order_matches,True
+real_graph_reproduction_passes,True
+no_graph_target_deltas_zero,True
+stochastic_graph_count_150,True
+nonreal_control_variants_151,True
+nonreal_scenario_runs_1812,True
+nonreal_by_cell_rows_57984,True
+six_donors,True
+eight_centroids,True
+deterministic_repeated_inference,True
+no_nan_or_inf,True
+claim_boundaries,True
