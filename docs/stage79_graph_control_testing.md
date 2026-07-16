@@ -1,4 +1,4 @@
-﻿# Stage79 F13 - Graph-Control Testing
+# Stage79 F13 - Graph-Control Testing
 
 Stage79 compares the Real frozen regulatory graph against bounded graph controls using the frozen Stage77 one-hop input-space perturbation contract and the frozen Stage78 JEPA encoder. It is a Model-based graph-control comparison, not causal validation.
 
@@ -21,4 +21,3 @@ For stochastic controls, empirical p-values use `(1 + count(null >= observed)) /
 Movement relative to an existing Supertype centroid is a geometric model summary, not rescue. Stage79 does not alter Stage75 evidence tiers.
 
 Approved wording: Stage79 compares the frozen real graph against bounded structural and expression-matched controls. Differences are model-based control results and do not establish causal regulation or therapeutic benefit.
-

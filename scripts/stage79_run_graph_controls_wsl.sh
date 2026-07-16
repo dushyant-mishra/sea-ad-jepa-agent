@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 PROJECT_DIR="${PROJECT_DIR:-/mnt/d/Jepa project}"
 POWERSHELL_EXE="${POWERSHELL_EXE:-powershell.exe}"

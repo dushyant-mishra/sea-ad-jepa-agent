@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 from __future__ import annotations
 import argparse, gzip, hashlib, importlib.util, json, math, random, subprocess, sys, tempfile
 from pathlib import Path
@@ -74,7 +74,18 @@ def degree_shuffle(real,seed):
         if (fi,tj) in pairs or (fj,ti) in pairs: dup+=1; continue
         out.at[i,'target_gene']=tj; out.at[j,'target_gene']=ti; acc+=1
     out=renorm(out); pairs=set(zip(out.tf,out.target_gene))
-    if pairs==realpairs: raise RuntimeError(f'degree shuffle unchanged seed {seed}')
+    if pairs==realpairs:
+        fixed=False
+        for i in range(len(out)):
+            for j in range(i+1,len(out)):
+                fi,fj=out.at[i,'tf'],out.at[j,'tf']; ti,tj=out.at[i,'target_gene'],out.at[j,'target_gene']
+                if fi!=fj and fi!=tj and fj!=ti:
+                    tmp=out.copy(); tmp.at[i,'target_gene']=tj; tmp.at[j,'target_gene']=ti
+                    tp=set(zip(tmp.tf,tmp.target_gene))
+                    if len(tp)==len(tmp) and tp!=realpairs:
+                        out=renorm(tmp); pairs=tp; acc+=1; fixed=True; break
+            if fixed: break
+        if not fixed: raise RuntimeError(f'degree shuffle unchanged seed {seed}')
     return out,{'swap_attempts':att,'accepted_swaps':acc,'rejected_duplicate_edges':dup,'rejected_invalid_self_edges':selfe,'rejected_same_tf':same,'final_edge_overlap_with_real':len(pairs&realpairs)}
 
 def tf_label_shuffle(real,seed):
@@ -224,4 +235,3 @@ def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--config',default='configs/stage75f_out_of_core_v1.yaml'); ap.add_argument('--project-dir',default='.')
     a=ap.parse_args(); project=Path(a.project_dir).resolve(); run(load_yaml(project/a.config),project); return 0
 if __name__=='__main__': raise SystemExit(main())
-
