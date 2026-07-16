@@ -409,3 +409,40 @@ stage78_visualization:
     centroid_effects_json: results/visualization/stage78_graph_supertype_centroid_effects_v1.json
     metadata_json: results/visualization/stage78_graph_explorer_metadata_v2.json
     html: results/visualization/stage78_graph_explorer_cytoscape_plotly_v2.html
+
+stage79_graph_controls:
+  purpose: bounded_graph_control_testing
+  stochastic_seed_start: 79001
+  stochastic_seed_count: 50
+  empirical_pseudocount: 1
+  controls:
+    - real_graph
+    - no_graph
+    - degree_preserving_edge_shuffle
+    - tf_label_shuffle
+    - expression_matched_random_targets
+  regulators:
+    - ELF1
+    - SPI1
+    - STAT1
+  directions:
+    - down
+    - up
+  magnitudes:
+    - 0.10
+    - 0.25
+  reuse_frozen_stage77_real_results: true
+  reuse_frozen_stage78_real_results: true
+  donor_column: Donor ID
+  outputs:
+    control_expression_deltas_by_cell_csv_gz: results/tables/stage79_control_expression_deltas_by_cell_v1.csv.gz
+    control_latent_shift_by_cell_csv_gz: results/tables/stage79_control_latent_shift_by_cell_v1.csv.gz
+    control_graph_manifest_csv: results/tables/stage79_control_graph_manifest_v1.csv
+    control_edge_sets_csv_gz: results/tables/stage79_control_edge_sets_v1.csv.gz
+    control_scenario_manifest_csv: results/tables/stage79_control_scenario_manifest_v1.csv
+    control_expression_summary_csv: results/tables/stage79_control_expression_summary_v1.csv
+    control_latent_summary_csv: results/tables/stage79_control_latent_summary_v1.csv
+    control_donor_summary_csv: results/tables/stage79_control_donor_summary_v1.csv
+    real_vs_control_statistics_csv: results/tables/stage79_real_vs_control_statistics_v1.csv
+    control_qc_csv: results/tables/stage79_control_qc_v1.csv
+    report_json: results/reports/stage79_graph_controls_v1.json
