@@ -1,0 +1,194 @@
+{
+  "browser_console_errors": [],
+  "browser_smoke": {
+    "browser_console_errors": [],
+    "cytoscape_runtime_used": true,
+    "errors": [],
+    "external_script_count": 0,
+    "external_stylesheet_count": 0,
+    "file_protocol_smoke_pass": true,
+    "file_url": "file:///D:/Jepa%20project/results/visualization/stage78_graph_explorer_cytoscape_plotly_v2.html",
+    "final_scenario": "STAT1_up_0p25",
+    "graph_edges": 18,
+    "graph_nodes": 19,
+    "plotly_panel_count": 3,
+    "plotly_runtime_used": true,
+    "runtime_network_request_count": 0,
+    "runtime_network_requests": [],
+    "scenario_count": 13
+  },
+  "cell_count": 32,
+  "centroid_count": 8,
+  "chart_renderer": "Plotly.js basic distribution",
+  "claim_boundaries": {
+    "allowed_wording": [
+      "Predicted latent displacement under a bounded input-space perturbation",
+      "Existing Supertype reference centroid",
+      "Donor-level concordance",
+      "Simulated input-space expression delta",
+      "Coactivity-signed candidate influence",
+      "Model-based perturbation hypothesis"
+    ],
+    "beneficial_direction_inferred": false,
+    "causal_validation_pass": false,
+    "forbidden_wording": [
+      "rescue",
+      "disease reversal",
+      "beneficial perturbation",
+      "treatment effect",
+      "therapeutic response",
+      "causal effect",
+      "transcriptional activation",
+      "transcriptional repression",
+      "normalized microglial state"
+    ],
+    "jepa_rerun": false,
+    "rescue_calculated": false,
+    "therapeutic_target_claim": false,
+    "validated_grn_claim": false,
+    "validated_regulation": false,
+    "visualization_recalculates_analysis": false
+  },
+  "cytoscape_runtime_used": true,
+  "cytoscape_version": "3.34.0",
+  "deterministic_layout": "preset: TF nodes fixed left column, target genes sorted into fixed right columns",
+  "donor_count": 6,
+  "esbuild_version": "0.28.1",
+  "external_runtime_dependencies": false,
+  "external_script_count": 0,
+  "external_stylesheet_count": 0,
+  "file_protocol_smoke_pass": true,
+  "frontend_bundle_contains": {
+    "cytoscape": true,
+    "plotly": true
+  },
+  "frontend_source_hashes": {
+    "scripts/build.mjs": "85b352be17c905ff21d9e8b28c4f939fa5b6fb22ceee9c9c833bc2f1b775b6d5",
+    "src/app.js": "2e4b6164f2e8ac324d5cf97c6d00b3e4332878dbc04be1e11f503ea4f90a7332",
+    "src/graph.js": "64df3ce04cc7a4e45780a33ba3d94b9eb928dfad0cb03862ac307c5d19abf5f6",
+    "src/inspector.js": "d57cebf553909a5a8defc91d538fc7eccc49283bea73f01b7c1a07a878addd4e",
+    "src/plots.js": "a50205ed155cb3b8adc83e30bec6f010d9b540cf0978345d9ddd6797a98b4257",
+    "src/state.js": "15c0725383e17f2a1fbdc95d2960f11bab103658e6d011f9cab4d79c40bea35c",
+    "src/styles.css": "f72f5e32138cde291b8050b75a8985ffb35d96b19c956925491b82d4bdb78d27"
+  },
+  "git_head": "1bda86910c59959a14915fe05aa3278876b7c3eb",
+  "graph_counts": {
+    "edges": 96,
+    "nodes": 37,
+    "stage77_usable_edges": 53,
+    "target_nodes": 27,
+    "tf_nodes": 10
+  },
+  "graph_renderer": "Cytoscape.js",
+  "node_version": "v24.15.0",
+  "npm_version": "11.12.1",
+  "output_hashes": {
+    "centroid_effects_json": "2b36ef9c297bcbb33bef56a8ba6746746372279dd79a7a136ea0b2ad16b7e6e3",
+    "donor_concordance_json": "23d822763112d34a633b22584e21d02600d7ae9addd5e72aa112e72126907dbd",
+    "html": "9d3429248f6ff66c5e5fed1f08827959e10f73dfdf8db9044bb76fecaf8d98d2",
+    "latent_effects_json": "292416176283828838c13cbb6663fb86021b20a3cf858239505418e1b9f67bb9"
+  },
+  "package_lock_sha256": "04015a854e0fba4151118b3490cf755ba0b15abff5b2799b4e20182f93350a46",
+  "plotly_distribution": "plotly.js-basic-dist-min",
+  "plotly_runtime_used": true,
+  "plotly_version": "3.7.0",
+  "read_only": true,
+  "runtime_network_request_count": 0,
+  "runtime_network_requests": [],
+  "scenario_counts": {
+    "baseline_scenarios": 1,
+    "perturbation_scenarios": 12,
+    "scenario_node_effects": 481,
+    "scenarios": 13
+  },
+  "schema_version": "2.0",
+  "self_contained": true,
+  "source_stage77_hashes": {
+    "stage77_edges_json": {
+      "byte_size": 103516,
+      "path": "results/visualization/stage77_graph_edges_v1.json",
+      "sha256": "4711c7e01d1960f1f8e2beb96585d04ceaf7e8ef42dc8bd69bb12a3004260c9f"
+    },
+    "stage77_metadata_json": {
+      "byte_size": 5179,
+      "path": "results/visualization/stage77_graph_metadata_v1.json",
+      "sha256": "3a0c5a736bc1fd7d53ea9cb81c934d3d76f96e73bcedacea851efdd42234c428"
+    },
+    "stage77_nodes_json": {
+      "byte_size": 24024,
+      "path": "results/visualization/stage77_graph_nodes_v1.json",
+      "sha256": "c1f9ce8be12f88e37e95cbdd38f8514796535394cb03510654d7aa98954195c4"
+    },
+    "stage77_scenario_node_effects_json": {
+      "byte_size": 660509,
+      "path": "results/visualization/stage77_graph_scenario_node_effects_v1.json",
+      "sha256": "7fd52ba24e0a015af6b3625c2550c9c1816242898186fc13a25a048ae959e041"
+    },
+    "stage77_scenarios_json": {
+      "byte_size": 7799,
+      "path": "results/visualization/stage77_graph_scenarios_v1.json",
+      "sha256": "8f917696e84bb5a51e042d6b13ee94bac65490b7c25470f4b717efa0d5b72299"
+    }
+  },
+  "source_stage78_hashes": {
+    "stage78_by_cell": {
+      "byte_size": 34467,
+      "path": "results/tables/stage78_jepa_latent_shift_by_cell_v1.csv.gz",
+      "sha256": "1c79e3763786dae9b8ba7fa035cf33bbee176072c7a2d19c9ef4729bb57aab62"
+    },
+    "stage78_donor_concordance": {
+      "byte_size": 14368,
+      "path": "results/tables/stage78_jepa_donor_concordance_v1.csv",
+      "sha256": "80a3a66997e6eb526069a316054a23f4d2581a852f49be58e4135f9d75511f60"
+    },
+    "stage78_report": {
+      "byte_size": 10125,
+      "path": "results/reports/stage78_jepa_latent_shift_v1.json",
+      "sha256": "0b8c1eb2f0b2562eece5847960dad76f834009e4c7c3c74de4cb8eb18f4f6c49"
+    },
+    "stage78_scenario_qc": {
+      "byte_size": 848,
+      "path": "results/tables/stage78_jepa_scenario_qc_v1.csv",
+      "sha256": "05fdc39abf79da820e48cadad045552b622746a00d06229db729d475753935c3"
+    },
+    "stage78_summary": {
+      "byte_size": 5273,
+      "path": "results/tables/stage78_jepa_latent_shift_summary_v1.csv",
+      "sha256": "c9869d1d2eb2b26194068cb41b803bd83c1deb8ac6f38f8d41fe2eb338829d4d"
+    }
+  },
+  "stage": "stage78_graph_explorer_cytoscape_plotly_v2",
+  "validation_results": {
+    "all_validation_checks_pass": true,
+    "baseline_input_space_effects_zero": true,
+    "baseline_latent_zero": true,
+    "baseline_scenarios_1": true,
+    "browser_console_errors_zero": true,
+    "cells_per_scenario_32": true,
+    "centroid_records_reconcile": true,
+    "directed_edges_96": true,
+    "donor_rows_78": true,
+    "donor_rows_reconcile": true,
+    "donors_6": true,
+    "every_scenario_maps_once": true,
+    "every_usable_edge_maps_once": true,
+    "exact_stage77_stage78_scenario_match": true,
+    "external_script_count_zero": true,
+    "external_stylesheet_count_zero": true,
+    "file_protocol_smoke_pass": true,
+    "no_absolute_paths": true,
+    "no_scientific_computation_in_browser": true,
+    "nodes_37": true,
+    "perturbation_scenarios_12": true,
+    "runtime_network_request_count_zero": true,
+    "scenario_node_effects_481": true,
+    "scenarios_13": true,
+    "stage77_usable_edges_53": true,
+    "stage78_by_cell_rows_416": true,
+    "supertype_centroids_8": true,
+    "target_nodes_27": true,
+    "tf_nodes_10": true,
+    "v1_files_unchanged": true
+  },
+  "visualization_recalculates_analysis": false
+}
