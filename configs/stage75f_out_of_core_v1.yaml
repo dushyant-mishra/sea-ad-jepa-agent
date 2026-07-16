@@ -446,3 +446,77 @@ stage79_graph_controls:
     real_vs_control_statistics_csv: results/tables/stage79_real_vs_control_statistics_v1.csv
     control_qc_csv: results/tables/stage79_control_qc_v1.csv
     report_json: results/reports/stage79_graph_controls_v1.json
+
+
+stage79_control_interpretation:
+  purpose: read_only_interpretation_of_frozen_stage79_graph_controls
+  expected_implementation_commit: 201589df6b89d1bc7eb088aad47757e7c3987222
+  expected_freeze_commit: 3f6e380034a13fa3bdae0bf18bd0b09d84cc5f1b
+  percentile_rank_formula: (1 + count(null_values <= observed)) / (1 + number_of_null_values)
+  interpretation_scope: model_based_control_comparison_not_causal_or_therapeutic
+  sources:
+    control_graph_manifest_csv: results/tables/stage79_control_graph_manifest_v1.csv
+    control_edge_sets_csv_gz: results/tables/stage79_control_edge_sets_v1.csv.gz
+    control_scenario_manifest_csv: results/tables/stage79_control_scenario_manifest_v1.csv
+    control_expression_summary_csv: results/tables/stage79_control_expression_summary_v1.csv
+    control_latent_summary_csv: results/tables/stage79_control_latent_summary_v1.csv
+    control_donor_summary_csv: results/tables/stage79_control_donor_summary_v1.csv
+    real_vs_control_statistics_csv: results/tables/stage79_real_vs_control_statistics_v1.csv
+    control_qc_csv: results/tables/stage79_control_qc_v1.csv
+    report_json: results/reports/stage79_graph_controls_v1.json
+    control_expression_deltas_by_cell_csv_gz: results/tables/stage79_control_expression_deltas_by_cell_v1.csv.gz
+    control_latent_shift_by_cell_csv_gz: results/tables/stage79_control_latent_shift_by_cell_v1.csv.gz
+    stage78_summary_csv: results/tables/stage78_jepa_latent_shift_summary_v1.csv
+    stage78_donor_concordance_csv: results/tables/stage78_jepa_donor_concordance_v1.csv
+    stage78_by_cell_csv_gz: results/tables/stage78_jepa_latent_shift_by_cell_v1.csv.gz
+  outputs:
+    control_edge_diversity_csv: results/tables/stage79_control_edge_diversity_v1.csv
+    null_distribution_diagnostics_csv: results/tables/stage79_null_distribution_diagnostics_v1.csv
+    donor_paired_differences_csv: results/tables/stage79_donor_paired_differences_v1.csv
+    scenario_control_interpretation_csv: results/tables/stage79_scenario_control_interpretation_v1.csv
+    regulator_control_summary_csv: results/tables/stage79_regulator_control_summary_v1.csv
+    report_json: results/reports/stage79_control_interpretation_v1.json
+
+stage79_control_visualization:
+  purpose: read_only_cytoscape_plotly_stage79_control_explorer_v3
+  sources:
+    stage77_nodes_json: results/visualization/stage77_graph_nodes_v1.json
+    stage77_edges_json: results/visualization/stage77_graph_edges_v1.json
+    stage77_scenarios_json: results/visualization/stage77_graph_scenarios_v1.json
+    stage77_scenario_node_effects_json: results/visualization/stage77_graph_scenario_node_effects_v1.json
+    stage78_latent_effects_json: results/visualization/stage78_graph_scenario_latent_effects_v1.json
+    stage78_donor_concordance_json: results/visualization/stage78_graph_donor_concordance_v1.json
+    stage78_centroid_effects_json: results/visualization/stage78_graph_supertype_centroid_effects_v1.json
+    stage78_metadata_json: results/visualization/stage78_graph_explorer_metadata_v2.json
+    stage79_control_graph_manifest_csv: results/tables/stage79_control_graph_manifest_v1.csv
+    stage79_control_edge_sets_csv_gz: results/tables/stage79_control_edge_sets_v1.csv.gz
+    stage79_control_scenario_manifest_csv: results/tables/stage79_control_scenario_manifest_v1.csv
+    stage79_control_latent_summary_csv: results/tables/stage79_control_latent_summary_v1.csv
+    stage79_control_donor_summary_csv: results/tables/stage79_control_donor_summary_v1.csv
+    stage79_real_vs_control_statistics_csv: results/tables/stage79_real_vs_control_statistics_v1.csv
+    stage79_control_edge_diversity_csv: results/tables/stage79_control_edge_diversity_v1.csv
+    stage79_null_distribution_diagnostics_csv: results/tables/stage79_null_distribution_diagnostics_v1.csv
+    stage79_donor_paired_differences_csv: results/tables/stage79_donor_paired_differences_v1.csv
+    stage79_scenario_control_interpretation_csv: results/tables/stage79_scenario_control_interpretation_v1.csv
+    stage79_regulator_control_summary_csv: results/tables/stage79_regulator_control_summary_v1.csv
+    stage79_interpretation_report_json: results/reports/stage79_control_interpretation_v1.json
+    stage79_graph_controls_report_json: results/reports/stage79_graph_controls_v1.json
+  read_only_rules:
+    reruns_stage75_evidence: false
+    reruns_stage77_perturbations: false
+    reruns_stage78_jepa: false
+    reruns_stage79_controls: false
+    recomputes_scientific_aggregates_in_browser: false
+    modifies_graph_weights: false
+    modifies_scientific_thresholds: false
+    infers_causal_direction: false
+    calculates_rescue: false
+    calculates_benefit: false
+    calculates_therapeutic_potential: false
+  outputs:
+    control_distributions_json: results/visualization/stage79_graph_control_distributions_v1.json
+    control_donor_differences_json: results/visualization/stage79_graph_control_donor_differences_v1.json
+    control_networks_json_gz: results/visualization/stage79_graph_control_networks_v1.json.gz
+    control_interpretation_json: results/visualization/stage79_graph_control_interpretation_v1.json
+    metadata_json: results/visualization/stage79_graph_control_explorer_metadata_v3.json
+    html: results/visualization/stage79_graph_control_explorer_cytoscape_plotly_v3.html
