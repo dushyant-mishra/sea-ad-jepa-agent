@@ -89,14 +89,20 @@ def degree_shuffle(real,seed):
     return out,{'swap_attempts':att,'accepted_swaps':acc,'rejected_duplicate_edges':dup,'rejected_invalid_self_edges':selfe,'rejected_same_tf':same,'final_edge_overlap_with_real':len(pairs&realpairs)}
 
 def tf_label_shuffle(real,seed):
-    rng=random.Random(seed); base=real.copy().sort_values(['target_gene','tf']).reset_index(drop=True); labels=list(real.sort_values(['tf','target_gene']).tf); realpairs=set(zip(real.tf,real.target_gene))
-    for att in range(1,5001):
-        lab=labels[:]; rng.shuffle(lab); out=base.copy(); out['tf']=lab; pairs=list(zip(out.tf,out.target_gene))
+    rng=random.Random(seed); base=real.copy().sort_values(['target_gene','tf']).reset_index(drop=True); realpairs=set(zip(real.tf,real.target_gene)); targets=base.target_gene.astype(str).tolist()
+    for att in range(1,501):
+        remaining=REQ_COUNTS.copy(); assigned=[None]*len(base); order=list(range(len(base))); rng.shuffle(order); used_by_target={}
+        ok=True
+        for i in order:
+            target=targets[i]; used=used_by_target.setdefault(target,set()); choices=[tf for tf,n in remaining.items() if n>0 and tf not in used]
+            if not choices: ok=False; break
+            choices=sorted(choices); tf=choices[rng.randrange(len(choices))]
+            assigned[i]=tf; remaining[tf]-=1; used.add(tf)
+        if not ok or any(v!=0 for v in remaining.values()): continue
+        out=base.copy(); out['tf']=assigned; pairs=list(zip(out.tf,out.target_gene))
         if len(set(pairs))!=len(pairs) or set(pairs)==realpairs: continue
-        if out.groupby('tf').size().to_dict()!=REQ_COUNTS: continue
         out=renorm(out); return out,{'label_shuffle_attempts':att,'tf_label_changed_fraction':sum(base.tf!=out.tf)/len(out)}
     raise RuntimeError(f'tf label shuffle failed {seed}')
-
 def strata(base,genes):
     mean=base.mean(0); nz=(base!=0).mean(0)
     return pd.DataFrame({'gene':genes,'feature_index':range(len(genes)),'mean_decile':pd.qcut(pd.Series(mean).rank(method='first'),10,labels=False).astype(int),'nonzero_decile':pd.qcut(pd.Series(nz).rank(method='first'),10,labels=False).astype(int)})
