@@ -1,0 +1,225 @@
+{
+  "claim_boundaries": {
+    "approved_wording": "Stage79 interpretation describes how the frozen real-graph outputs compare with bounded control distributions. These are model-based control comparisons and do not establish causal regulation, biological benefit, or therapeutic validity.",
+    "causal_validation_pass": false,
+    "jepa_rerun": false,
+    "stage79_rerun": false,
+    "therapeutic_target_claim": false,
+    "validated_grn_claim": false,
+    "validated_regulation": false,
+    "visualization_recalculates_analysis": false
+  },
+  "cytoscape_version": "3.34.0",
+  "distinct_control_input_hash_counts": {
+    "distinct_edge_set_count": 150,
+    "distinct_input_delta_vector_count": 1476,
+    "distinct_latent_output_vector_count": 1476,
+    "donor_difference_metric_rows_available": 144,
+    "metric_invariant_diagnostic_count": 10,
+    "zero_variance_null_count": 38
+  },
+  "donor_counts": {
+    "donor_difference_rows": 32616,
+    "donors": 6
+  },
+  "esbuild_version": "0.28.1",
+  "file_protocol_smoke_results": {
+    "artifact": "results/visualization/stage79_graph_control_explorer_cytoscape_plotly_v3.html",
+    "console_errors": [],
+    "pass": true,
+    "protocol": "file://"
+  },
+  "frontend_source_hashes": {
+    "scripts/build-stage79.mjs": "e2f096ab87da81b3a1000b9856e16f9da1a31325e0729cd6f850a44ac8d02dbd",
+    "src/stage79/app.js": "9587c46ae6bd2952c999a6e647c997774c2f7f9d1a2577fb07375008c23e59b9",
+    "src/stage79/styles.css": "2d0d5e728af4028a560bff230e91dbb78586386e8aa9910e057c91ea4d58eca8"
+  },
+  "graph_counts": {
+    "edge_rows": 8003,
+    "real_stage77_nodes": 37,
+    "total_graphs": 152
+  },
+  "html_hash": "32b25cfe8e34c9ca869b3128ab7d3439e0b15c73dafa8c30fea6fa21ca67e7ee",
+  "implementation_git_commit": "d5a8aaf5f98405e589063051efadaf06c215c6de",
+  "interpretation_output_hashes": {
+    "control_edge_diversity_csv": {
+      "byte_size": 81241,
+      "path": "results/tables/stage79_control_edge_diversity_v1.csv",
+      "sha256": "c033547495f027ba2aa607662f18ab05e259c2c9997e3766bbd87416870a40c9"
+    },
+    "donor_paired_differences_csv": {
+      "byte_size": 6948605,
+      "path": "results/tables/stage79_donor_paired_differences_v1.csv",
+      "sha256": "a0f74dc6d3b747b48a91cb1245b9c76bbedc183c9a4d21d6f41ae8e822e7c4b4"
+    },
+    "null_distribution_diagnostics_csv": {
+      "byte_size": 80138,
+      "path": "results/tables/stage79_null_distribution_diagnostics_v1.csv",
+      "sha256": "3b07fc1714825d2b35111a5b3689bd5ec634a8d2f5d7dee4d6746cfca0aaa5d6"
+    },
+    "regulator_control_summary_csv": {
+      "byte_size": 2098,
+      "path": "results/tables/stage79_regulator_control_summary_v1.csv",
+      "sha256": "41be3aaf5e3d346bab9dbc983329ffd64c57e0eb59f117ca689c38b76eeedc4f"
+    },
+    "scenario_control_interpretation_csv": {
+      "byte_size": 176571,
+      "path": "results/tables/stage79_scenario_control_interpretation_v1.csv",
+      "sha256": "10cda38e103e5974e8195bbce616b4da68ce1625a5939ac9dcb37fafa24a3a67"
+    }
+  },
+  "jepa_rerun": false,
+  "metric_counts": {
+    "interpretation_rows": 336,
+    "metrics": 7
+  },
+  "package_lock_sha256": "04015a854e0fba4151118b3490cf755ba0b15abff5b2799b4e20182f93350a46",
+  "plotly_version": "3.7.0",
+  "read_only": true,
+  "runtime_network_request_count": 0,
+  "scenario_counts": {
+    "control_scenario_rows": 1812,
+    "perturbation_scenarios": 12
+  },
+  "schema_version": "3.0",
+  "source_hashes": {
+    "stage77_edges_json": {
+      "byte_size": 103516,
+      "path": "results/visualization/stage77_graph_edges_v1.json",
+      "sha256": "4711c7e01d1960f1f8e2beb96585d04ceaf7e8ef42dc8bd69bb12a3004260c9f"
+    },
+    "stage77_nodes_json": {
+      "byte_size": 24024,
+      "path": "results/visualization/stage77_graph_nodes_v1.json",
+      "sha256": "c1f9ce8be12f88e37e95cbdd38f8514796535394cb03510654d7aa98954195c4"
+    },
+    "stage77_scenario_node_effects_json": {
+      "byte_size": 660509,
+      "path": "results/visualization/stage77_graph_scenario_node_effects_v1.json",
+      "sha256": "7fd52ba24e0a015af6b3625c2550c9c1816242898186fc13a25a048ae959e041"
+    },
+    "stage77_scenarios_json": {
+      "byte_size": 7799,
+      "path": "results/visualization/stage77_graph_scenarios_v1.json",
+      "sha256": "8f917696e84bb5a51e042d6b13ee94bac65490b7c25470f4b717efa0d5b72299"
+    },
+    "stage78_centroid_effects_json": {
+      "byte_size": 71774,
+      "path": "results/visualization/stage78_graph_supertype_centroid_effects_v1.json",
+      "sha256": "2b36ef9c297bcbb33bef56a8ba6746746372279dd79a7a136ea0b2ad16b7e6e3"
+    },
+    "stage78_donor_concordance_json": {
+      "byte_size": 65770,
+      "path": "results/visualization/stage78_graph_donor_concordance_v1.json",
+      "sha256": "23d822763112d34a633b22584e21d02600d7ae9addd5e72aa112e72126907dbd"
+    },
+    "stage78_latent_effects_json": {
+      "byte_size": 101556,
+      "path": "results/visualization/stage78_graph_scenario_latent_effects_v1.json",
+      "sha256": "292416176283828838c13cbb6663fb86021b20a3cf858239505418e1b9f67bb9"
+    },
+    "stage78_metadata_json": {
+      "byte_size": 7613,
+      "path": "results/visualization/stage78_graph_explorer_metadata_v2.json",
+      "sha256": "7060964ce1e5173e063ada8b300e74ddc1dded244f1159150240325d0b28b6a3"
+    },
+    "stage79_control_donor_summary_csv": {
+      "byte_size": 4696756,
+      "path": "results/tables/stage79_control_donor_summary_v1.csv",
+      "sha256": "5f1ebef963c30b388543123716b2b44e6ae33a24e8e6cd953b2147e911361718"
+    },
+    "stage79_control_edge_diversity_csv": {
+      "byte_size": 81241,
+      "path": "results/tables/stage79_control_edge_diversity_v1.csv",
+      "sha256": "c033547495f027ba2aa607662f18ab05e259c2c9997e3766bbd87416870a40c9"
+    },
+    "stage79_control_edge_sets_csv_gz": {
+      "byte_size": 108944,
+      "path": "results/tables/stage79_control_edge_sets_v1.csv.gz",
+      "sha256": "eac86dcbe76845a8e61b3e4d5da4c46857a8b2977bfac769775a7cf309915492"
+    },
+    "stage79_control_graph_manifest_csv": {
+      "byte_size": 17348,
+      "path": "results/tables/stage79_control_graph_manifest_v1.csv",
+      "sha256": "4118207f5f2794d904b0a41581c069056e1715ff2049f276302119ef737d59e9"
+    },
+    "stage79_control_latent_summary_csv": {
+      "byte_size": 684641,
+      "path": "results/tables/stage79_control_latent_summary_v1.csv",
+      "sha256": "ca8fcd7a6e37b0ce1e823a3f932908cfc5592112327b72130e150207064932c8"
+    },
+    "stage79_control_scenario_manifest_csv": {
+      "byte_size": 196688,
+      "path": "results/tables/stage79_control_scenario_manifest_v1.csv",
+      "sha256": "0894cf853e4e1261f788060e8bea6898dfc68c0d9b0c7058dc44d791dc3327d4"
+    },
+    "stage79_donor_paired_differences_csv": {
+      "byte_size": 6948605,
+      "path": "results/tables/stage79_donor_paired_differences_v1.csv",
+      "sha256": "a0f74dc6d3b747b48a91cb1245b9c76bbedc183c9a4d21d6f41ae8e822e7c4b4"
+    },
+    "stage79_graph_controls_report_json": {
+      "byte_size": 13132,
+      "path": "results/reports/stage79_graph_controls_v1.json",
+      "sha256": "5ee0ef9ffa2c67f70e9d245bc7ce771a8d9c856af08b2ab83cfd752a267b3bd4"
+    },
+    "stage79_interpretation_report_json": {
+      "byte_size": 6290,
+      "path": "results/reports/stage79_control_interpretation_v1.json",
+      "sha256": "eab4296f5d97b1e4ad6b5b1013311c54ed75c6c41de7d8e66254f06f9963da55"
+    },
+    "stage79_null_distribution_diagnostics_csv": {
+      "byte_size": 80138,
+      "path": "results/tables/stage79_null_distribution_diagnostics_v1.csv",
+      "sha256": "3b07fc1714825d2b35111a5b3689bd5ec634a8d2f5d7dee4d6746cfca0aaa5d6"
+    },
+    "stage79_real_vs_control_statistics_csv": {
+      "byte_size": 111998,
+      "path": "results/tables/stage79_real_vs_control_statistics_v1.csv",
+      "sha256": "69f1e0bb0292cd57a102eff035f4699932b1cd24ef35a62d639507329df9c4f8"
+    },
+    "stage79_regulator_control_summary_csv": {
+      "byte_size": 2098,
+      "path": "results/tables/stage79_regulator_control_summary_v1.csv",
+      "sha256": "41be3aaf5e3d346bab9dbc983329ffd64c57e0eb59f117ca689c38b76eeedc4f"
+    },
+    "stage79_scenario_control_interpretation_csv": {
+      "byte_size": 176571,
+      "path": "results/tables/stage79_scenario_control_interpretation_v1.csv",
+      "sha256": "10cda38e103e5974e8195bbce616b4da68ce1625a5939ac9dcb37fafa24a3a67"
+    }
+  },
+  "stage": "stage79_graph_control_explorer_cytoscape_plotly_v3",
+  "stage79_freeze_commit": "3f6e380034a13fa3bdae0bf18bd0b09d84cc5f1b",
+  "stage79_implementation_commit": "201589df6b89d1bc7eb088aad47757e7c3987222",
+  "stage79_rerun": false,
+  "visualization_payload_hashes": {
+    "control_distributions_json": {
+      "byte_size": 972690,
+      "path": "results/visualization/stage79_graph_control_distributions_v1.json",
+      "sha256": "c765fec8f81b9a5eabffc34afb104097b8344692e998bca40b93cb355f690d0b"
+    },
+    "control_donor_differences_json": {
+      "byte_size": 18838157,
+      "path": "results/visualization/stage79_graph_control_donor_differences_v1.json",
+      "sha256": "c292dec881ecb79e80245ccce3a85c0d1b4f3e6249e5a87d9d5af66787b82fcc"
+    },
+    "control_interpretation_json": {
+      "byte_size": 1101076,
+      "path": "results/visualization/stage79_graph_control_interpretation_v1.json",
+      "sha256": "6ecf1b64d222f9bcdf4d0fe97d4bffc694f8c71dbbd97a0b18a2f1c5ee03e8d7"
+    },
+    "control_networks_json_gz": {
+      "byte_size": 490782,
+      "path": "results/visualization/stage79_graph_control_networks_v1.json.gz",
+      "sha256": "b5fc6785468977666be410f45172bee0065baa6ba9b41a8e4490910d28c59dec"
+    },
+    "html": {
+      "byte_size": 26219020,
+      "path": "results/visualization/stage79_graph_control_explorer_cytoscape_plotly_v3.html",
+      "sha256": "32b25cfe8e34c9ca869b3128ab7d3439e0b15c73dafa8c30fea6fa21ca67e7ee"
+    }
+  },
+  "visualization_recalculates_analysis": false,
+  "zero_variance_diagnostic_counts": 38
+}

@@ -1,0 +1,141 @@
+{
+  "approved_wording": "Stage79 interpretation describes how the frozen real-graph outputs compare with bounded control distributions. These are model-based control comparisons and do not establish causal regulation, biological benefit, or therapeutic validity.",
+  "claim_boundaries": {
+    "approved_wording": "Stage79 interpretation describes how the frozen real-graph outputs compare with bounded control distributions. These are model-based control comparisons and do not establish causal regulation, biological benefit, or therapeutic validity.",
+    "biological_benefit_claim": false,
+    "causal_validation_pass": false,
+    "therapeutic_target_claim": false,
+    "validated_grn_claim": false,
+    "validated_regulation": false
+  },
+  "diagnostics": {
+    "distinct_edge_set_count": 150,
+    "distinct_input_delta_vector_count": 1476,
+    "distinct_latent_output_vector_count": 1476,
+    "donor_difference_metric_rows_available": 144,
+    "metric_invariant_diagnostic_count": 10,
+    "zero_variance_null_count": 38
+  },
+  "implementation_git_commit": "d5a8aaf5f98405e589063051efadaf06c215c6de",
+  "output_hashes": {
+    "control_edge_diversity_csv": {
+      "byte_size": 81241,
+      "path": "results/tables/stage79_control_edge_diversity_v1.csv",
+      "sha256": "c033547495f027ba2aa607662f18ab05e259c2c9997e3766bbd87416870a40c9"
+    },
+    "donor_paired_differences_csv": {
+      "byte_size": 6948605,
+      "path": "results/tables/stage79_donor_paired_differences_v1.csv",
+      "sha256": "a0f74dc6d3b747b48a91cb1245b9c76bbedc183c9a4d21d6f41ae8e822e7c4b4"
+    },
+    "null_distribution_diagnostics_csv": {
+      "byte_size": 80138,
+      "path": "results/tables/stage79_null_distribution_diagnostics_v1.csv",
+      "sha256": "3b07fc1714825d2b35111a5b3689bd5ec634a8d2f5d7dee4d6746cfca0aaa5d6"
+    },
+    "regulator_control_summary_csv": {
+      "byte_size": 2098,
+      "path": "results/tables/stage79_regulator_control_summary_v1.csv",
+      "sha256": "41be3aaf5e3d346bab9dbc983329ffd64c57e0eb59f117ca689c38b76eeedc4f"
+    },
+    "scenario_control_interpretation_csv": {
+      "byte_size": 176571,
+      "path": "results/tables/stage79_scenario_control_interpretation_v1.csv",
+      "sha256": "10cda38e103e5974e8195bbce616b4da68ce1625a5939ac9dcb37fafa24a3a67"
+    }
+  },
+  "row_counts": {
+    "control_edge_diversity": 152,
+    "donor_paired_differences": 32616,
+    "null_distribution_diagnostics": 336,
+    "regulator_control_summary": 12,
+    "scenario_control_interpretation": 336
+  },
+  "schema_version": "1.0",
+  "source_hashes": {
+    "control_donor_summary_csv": {
+      "byte_size": 4696756,
+      "path": "results/tables/stage79_control_donor_summary_v1.csv",
+      "sha256": "5f1ebef963c30b388543123716b2b44e6ae33a24e8e6cd953b2147e911361718"
+    },
+    "control_edge_sets_csv_gz": {
+      "byte_size": 108944,
+      "path": "results/tables/stage79_control_edge_sets_v1.csv.gz",
+      "sha256": "eac86dcbe76845a8e61b3e4d5da4c46857a8b2977bfac769775a7cf309915492"
+    },
+    "control_expression_deltas_by_cell_csv_gz": {
+      "byte_size": 12250246,
+      "path": "results/tables/stage79_control_expression_deltas_by_cell_v1.csv.gz",
+      "sha256": "2a66d4689a01305719b4edc0d7e31cf5d09a6ab7b03e8fa512089bc5150edba5"
+    },
+    "control_expression_summary_csv": {
+      "byte_size": 381324,
+      "path": "results/tables/stage79_control_expression_summary_v1.csv",
+      "sha256": "a4fe9bbc06fac91159c6b30064e24371d2f84fa01828a14ee914adc3c51dc0c0"
+    },
+    "control_graph_manifest_csv": {
+      "byte_size": 17348,
+      "path": "results/tables/stage79_control_graph_manifest_v1.csv",
+      "sha256": "4118207f5f2794d904b0a41581c069056e1715ff2049f276302119ef737d59e9"
+    },
+    "control_latent_shift_by_cell_csv_gz": {
+      "byte_size": 6101841,
+      "path": "results/tables/stage79_control_latent_shift_by_cell_v1.csv.gz",
+      "sha256": "95a3ad7efd49af1eda081dd9597de9b8c749f37e58da7b5b7d770d5e3ebc6912"
+    },
+    "control_latent_summary_csv": {
+      "byte_size": 684641,
+      "path": "results/tables/stage79_control_latent_summary_v1.csv",
+      "sha256": "ca8fcd7a6e37b0ce1e823a3f932908cfc5592112327b72130e150207064932c8"
+    },
+    "control_qc_csv": {
+      "byte_size": 463,
+      "path": "results/tables/stage79_control_qc_v1.csv",
+      "sha256": "ba4d0f5a0dc43718ce2c5a2019dfc4f5caece64a385792f109db3f3f0d34352d"
+    },
+    "control_scenario_manifest_csv": {
+      "byte_size": 196688,
+      "path": "results/tables/stage79_control_scenario_manifest_v1.csv",
+      "sha256": "0894cf853e4e1261f788060e8bea6898dfc68c0d9b0c7058dc44d791dc3327d4"
+    },
+    "real_vs_control_statistics_csv": {
+      "byte_size": 111998,
+      "path": "results/tables/stage79_real_vs_control_statistics_v1.csv",
+      "sha256": "69f1e0bb0292cd57a102eff035f4699932b1cd24ef35a62d639507329df9c4f8"
+    },
+    "report_json": {
+      "byte_size": 13132,
+      "path": "results/reports/stage79_graph_controls_v1.json",
+      "sha256": "5ee0ef9ffa2c67f70e9d245bc7ce771a8d9c856af08b2ab83cfd752a267b3bd4"
+    },
+    "stage78_by_cell_csv_gz": {
+      "byte_size": 34467,
+      "path": "results/tables/stage78_jepa_latent_shift_by_cell_v1.csv.gz",
+      "sha256": "1c79e3763786dae9b8ba7fa035cf33bbee176072c7a2d19c9ef4729bb57aab62"
+    },
+    "stage78_donor_concordance_csv": {
+      "byte_size": 14368,
+      "path": "results/tables/stage78_jepa_donor_concordance_v1.csv",
+      "sha256": "80a3a66997e6eb526069a316054a23f4d2581a852f49be58e4135f9d75511f60"
+    },
+    "stage78_summary_csv": {
+      "byte_size": 5273,
+      "path": "results/tables/stage78_jepa_latent_shift_summary_v1.csv",
+      "sha256": "c9869d1d2eb2b26194068cb41b803bd83c1deb8ac6f38f8d41fe2eb338829d4d"
+    }
+  },
+  "stage": "stage79_control_interpretation_v1",
+  "stage79_freeze_commit": "3f6e380034a13fa3bdae0bf18bd0b09d84cc5f1b",
+  "stage79_interpretation_pass": true,
+  "stage79_report_implementation_git_commit": "201589df6b89d1bc7eb088aad47757e7c3987222",
+  "validation": {
+    "all_stage79_source_hashes_match": true,
+    "control_diversity_audit_pass": true,
+    "detailed_local_hashes_match": true,
+    "deterministic_outputs": true,
+    "donor_paired_differences_populated": true,
+    "no_graph_p_values_null": true,
+    "statistics_rows_reconcile": true,
+    "zero_variance_without_infinity": true
+  }
+}

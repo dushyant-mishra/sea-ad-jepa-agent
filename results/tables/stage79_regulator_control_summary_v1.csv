@@ -1,0 +1,13 @@
+regulator,control_type,scenarios_evaluated,metrics_evaluated,comparisons_below_null_95_interval,comparisons_within_null_95_interval,comparisons_above_null_95_interval,comparisons_with_zero_variance_nulls,comparisons_with_distinct_input_vectors_but_invariant_scalar_summaries,median_abs_real_minus_null_difference,median_abs_standardized_difference_where_defined,median_donor_sign_concordance_where_available,summary_is_not_biological_score,validated_regulation,validated_grn_claim,causal_validation_pass,therapeutic_target_claim,biological_benefit_claim
+ELF1,degree_preserving_edge_shuffle,4,7,15,13,0,28,0,1.0321604682062002e-16,,0.0,True,False,False,False,False,False
+ELF1,expression_matched_random_targets,4,7,1,23,4,0,0,3.1101759872019405e-05,0.8978801697406837,0.615,True,False,False,False,False,False
+ELF1,no_graph,4,7,0,0,0,0,0,0.0083353867551412,,0.8333333333333334,True,False,False,False,False,False
+ELF1,tf_label_shuffle,4,7,4,24,0,0,0,0.0001238358029189,1.0284881703293327,0.5483333333333333,True,False,False,False,False,False
+SPI1,degree_preserving_edge_shuffle,4,7,7,21,0,10,10,4.2643268955089514e-07,0.3724535633558435,0.4966666666666667,True,False,False,False,False,False
+SPI1,expression_matched_random_targets,4,7,4,20,4,0,0,1.961167401465236e-05,0.1988616828364254,0.5883333333333334,True,False,False,False,False,False
+SPI1,no_graph,4,7,0,0,0,0,0,0.02078309151138795,,0.8333333333333334,True,False,False,False,False,False
+SPI1,tf_label_shuffle,4,7,4,24,0,0,0,0.000306660617451,0.37454059150087154,0.47833333333333333,True,False,False,False,False,False
+STAT1,degree_preserving_edge_shuffle,4,7,0,28,0,0,0,6.625521176898547e-05,0.5465492122170873,0.5966666666666667,True,False,False,False,False,False
+STAT1,expression_matched_random_targets,4,7,2,22,4,0,0,4.4635068957157945e-05,0.779989153881326,0.6,True,False,False,False,False,False
+STAT1,no_graph,4,7,0,0,0,0,0,0.01836990107841055,,0.9166666666666667,True,False,False,False,False,False
+STAT1,tf_label_shuffle,4,7,8,19,1,0,0,0.0003802448169323,1.4810119555525518,0.7333333333333333,True,False,False,False,False,False
