@@ -8,6 +8,7 @@ import yaml
 
 FALSE={"validated_regulation":False,"validated_grn_claim":False,"causal_validation_pass":False,"therapeutic_target_claim":False,"beneficial_direction_inferred":False,"rescue_calculated":False,"visualization_recalculates_analysis":False,"jepa_rerun":False}
 FORBIDDEN=["rescue","disease reversal","beneficial perturbation","treatment effect","therapeutic response","causal effect","transcriptional activation","transcriptional repression","normalized microglial state"]
+ABSOLUTE_PATH_PATTERNS=[r'(?i)\b[A-Z]:[\\/][A-Za-z0-9_ .()\-\\/]+',r'/mnt/[cd]/[A-Za-z0-9_ .()\-/]+']
 
 def sha(p:Path)->str:
     h=hashlib.sha256()
@@ -41,10 +42,16 @@ def clean_row(r): return {k:num(v) for k,v in r.items()}
 def git_head(project): return subprocess.run(['git','rev-parse','HEAD'],cwd=project,text=True,capture_output=True,check=True).stdout.strip()
 def cmd(args,cwd): return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout.strip()
 def source_hashes(project:Path,sources:dict[str,str]): return {k:{'path':v,'sha256':sha(project/v),'byte_size':(project/v).stat().st_size} for k,v in sorted(sources.items())}
-def assert_no_abs(payloads):
-    s=json.dumps(payloads,sort_keys=True)
-    hits=[x for x in ['D:\\\\','C:\\\\','/mnt/d/','/mnt/c/'] if x in s]
-    if hits: raise RuntimeError(f'absolute path leak: {hits}')
+def absolute_path_hits(payloads):
+    if isinstance(payloads,str): s=payloads
+    else: s=json.dumps(payloads,sort_keys=True)
+    hits=[]
+    for pat in ABSOLUTE_PATH_PATTERNS:
+        hits.extend(re.findall(pat,s))
+    return sorted(set(hits))
+def assert_no_abs(payloads,label='payload'):
+    hits=absolute_path_hits(payloads)
+    if hits: raise RuntimeError(f'absolute path leak in {label}: {hits}')
 def safe_label(label): return ''.join(ch.lower() if ch.isalnum() else '_' for ch in label).strip('_')
 
 def positions(nodes):
@@ -90,7 +97,7 @@ def validate(nodes,edges,scenarios,effects,latent,donors,cents,summary,cell,repo
     if html_text is not None:
         external_script_count=len(re.findall(r'<script[^>]+\bsrc\s*=',html_text,re.I))
         external_stylesheet_count=len(re.findall(r'<link[^>]+\brel=[\"\']stylesheet[\"\']',html_text,re.I))
-        checks.update({'external_script_count_zero':external_script_count==0,'external_stylesheet_count_zero':external_stylesheet_count==0,'no_absolute_paths':not any(x in html_text for x in ['D:/','D:\\','/mnt/d/','C:/','C:\\'])})
+        checks.update({'external_script_count_zero':external_script_count==0,'external_stylesheet_count_zero':external_stylesheet_count==0,'no_absolute_paths':not absolute_path_hits(html_text)})
     checks['all_validation_checks_pass']=all(bool(v) for v in checks.values())
     if not checks['all_validation_checks_pass']: raise RuntimeError(json.dumps(checks,indent=2))
     return checks
@@ -148,6 +155,8 @@ def main():
       'external_script_count':external_script_count,
       'external_stylesheet_count':external_stylesheet_count,
       'file_protocol_smoke_pass':False,
+      'smoke_test_protocol':'file://',
+      'smoke_test_artifact':out['html'],
       'browser_console_errors':None,
       'read_only':True,
       'visualization_recalculates_analysis':False,
@@ -155,6 +164,8 @@ def main():
       'git_head':git_head(project),
       'validation_results':checks,
     }
+    assert_no_abs({'html':html,'latent_effects':latent,'donor_concordance':donors,'centroid_effects':cents,'metadata':metadata},'Stage78 generated outputs')
+    metadata['validation_results']['no_absolute_paths_in_generated_outputs']=True
     awrite(metadata,project/out['metadata_json'])
     counts={**metadata['graph_counts'], **metadata['scenario_counts'], 'cells_per_scenario':32, 'stage78_by_cell_rows':len(cell), 'donor_rows':len(donors), 'donors':6, 'centroids':8}
     print(json.dumps({'stage':metadata['stage'],'counts':counts,'validation':checks},indent=2,sort_keys=True))

@@ -24,3 +24,12 @@ The browser does not rerun JEPA, recompute embeddings, recompute centroids, reco
 - `results/visualization/stage78_graph_explorer_cytoscape_plotly_v2.html`
 
 The frozen Stage77 v1 JSON and HTML artifacts are read as inputs and must remain unchanged.
+
+## Portable Provenance
+
+The browser smoke test is executed through `file://`, but machine-specific file URLs are not serialized into the frozen metadata. The metadata records only:
+
+- `smoke_test_protocol: file://`
+- `smoke_test_artifact: results/visualization/stage78_graph_explorer_cytoscape_plotly_v2.html`
+
+The builder rejects absolute-path leaks across generated HTML, generated JSON payloads, and the renderer metadata.
