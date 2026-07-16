@@ -74,6 +74,7 @@ def main():
     web=project/'web/stage78_graph_explorer'; js=(web/'dist/stage79_graph_control_explorer.iife.js').read_text(encoding='utf-8'); cssp=web/'dist/stage79_graph_control_explorer.iife.css'; css=cssp.read_text(encoding='utf-8') if cssp.exists() else (web/'src/stage79/styles.css').read_text(encoding='utf-8')
     data={'distributions':distributions,'donor_differences':donor_payload,'networks':networks,'diagnostics':records(diag),'metadata':{'read_only':True,'approved_wording':APPROVED,'stage78_metadata':stage78_meta.get('stage'),'stage79_pass':stage79_report.get('stage79_pass')}}
     html=html_doc(css,js,data)
+    html='\n'.join(line.rstrip() for line in html.splitlines())+'\n'
     if re.search(r'<script[^>]+\bsrc\s*=',html,re.I) or re.search(r'<link[^>]+\brel=["\']stylesheet["\']',html,re.I): raise RuntimeError('external script/style tag found')
     if hits(html): raise RuntimeError(f'absolute path leak in html: {hits(html)}')
     twrite(html,out['html'])
