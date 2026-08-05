@@ -1,0 +1,122 @@
+schema_version: "1.0"
+stage_id: stage81a1b
+governing_stage81a0_contract: configs/v4/stage81a0_v4_design_contract.yaml
+governing_stage81a1_report: results/v4/stage81a1_multimodal_inventory_report.json
+locked_compute_contract: configs/v4/locked_local_compute_contract.yaml
+required_ancestor_commits:
+  - 16e287766be2981531d55f1b99404b85b61cf679
+  - 7523399d639119071a0e3cc5873b2303d827fc5f
+
+policy:
+  no_model_training: true
+  no_final_vocabulary_freeze: true
+  no_donor_split_freeze: true
+  no_graph_rebuild: true
+  pathology_values_used: false
+  minimum_free_bytes_after_acquisition: 805306368000
+  data_root: data/external/v4/sea_ad
+  temporary_suffix: .part
+  canonical_gene_policy: preserve_official_symbol_and_stable_id_without_alias_inference
+
+official_sources:
+  - provider: Allen Institute SEA-AD Open Data on AWS
+    record: https://registry.opendata.aws/allen-sea-ad-atlas/
+  - provider: Allen Institute SEA-AD single-cell profiling
+    record: https://sea-ad-single-cell-profiling.s3.amazonaws.com/README.md
+  - provider: Allen Institute SEA-AD spatial transcriptomics
+    record: https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/
+  - provider: AD Knowledge Portal
+    record: https://adknowledgeportal.synapse.org/Explore/Studies/DetailsPage/StudyDetails?Study=syn26223298
+
+assets:
+  - asset_id: sea_ad_mtg_rna_final_2026
+    modality: snRNA
+    region: MTG
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/MTG/RNAseq/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 32978570763
+    remote_etag: 4bee2271c0e1138b53e44ff1b9419129-3932
+    destination: mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: foundation_training_source
+    supersedes_local: data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
+  - asset_id: sea_ad_pfc_a9_rna_final_2026
+    modality: snRNA
+    region: PFC_A9_DFC
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/PFC/RNAseq/SEAAD_DFC_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 38520614071
+    remote_etag: 3c7ffbd9a14ff04121d85b5583a1e0ea-4593
+    destination: a9_dlpfc/SEAAD_DFC_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: regional_replication_candidate
+  - asset_id: sea_ad_mtg_atac_final_2024
+    modality: snATAC
+    region: MTG
+    release: "2024-12-06"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/MTG/ATACseq/SEAAD_MTG_ATACseq_final-nuclei.2024-12-06.h5ad
+    remote_size: 18260707597
+    remote_etag: 5786152411f1f83eef97cc08bb3732b6-3483
+    destination: snatac/SEAAD_MTG_ATACseq_final-nuclei.2024-12-06.h5ad
+    decision: download
+    required: true
+    role: regulatory_prior_source
+  - asset_id: sea_ad_mtg_merfish_combined_2024
+    modality: MERFISH
+    region: MTG
+    release: "2024-12-11"
+    remote_url: https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/middle-temporal-gyrus/combined_anndata_object/SEAAD_MTG_MERFISH.2024-12-11.h5ad
+    remote_size: 497737587
+    remote_etag: 0b36ab1f3524510e20e6352129da1f6d-60
+    destination: merfish/SEAAD_MTG_MERFISH.2024-12-11.h5ad
+    decision: download
+    required: true
+    role: future_spatial_training_and_evaluation_source
+  - asset_id: local_mtg_rna_final_2024
+    modality: snRNA
+    region: MTG
+    release: "2024-02-13"
+    destination: ../../../../raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
+    expected_sha256: 9c1b48266d0a9aef76ad20fb8487d604158b10fad18dc0de85d5261ef06cb7c8
+    decision: preserve_deprecated_official_source
+    required: false
+    role: historical_foundation_source
+
+skipped_asset_classes:
+  - asset_class: all_nuclei_duplicates
+    reason: final_nuclei_consolidated_objects_are_sufficient_for_the_single_model_contract
+  - asset_class: donor_level_duplicates
+    reason: consolidated_objects_preserve_donor_and_library_metadata
+  - asset_class: raw_fastq_bam_and_microscopy
+    reason: prohibited_by_stage_scope
+  - asset_class: official_fragments
+    reason: processed_atac_matrix_is_available_and_no_bounded_additional_role_is_documented
+  - asset_class: standalone_gene_activity_motif_accessibility_peak_to_gene
+    reason: not_advertised_as_official_processed_products_in_the_consulted_release_catalog
+
+preserved_regulatory_sources:
+  - {evidence_id: stage75_integrated_tf_target, path: results/tables/stage75_integrated_tf_target_summary_v1.csv, lineage: stage75_79_tf_target_graph}
+  - {evidence_id: stage75_regulator_summary, path: results/tables/stage75_integrated_regulator_summary_v1.csv, lineage: stage75_79_tf_target_graph}
+  - {evidence_id: stage76_signed_edge_coverage, path: results/tables/stage76_perturbation_graph_edge_coverage_v1.csv, lineage: stage75_79_tf_target_graph}
+  - {evidence_id: stage76_regulator_readiness, path: results/tables/stage76_regulator_readiness_v1.csv, lineage: stage75_79_tf_target_graph}
+  - {evidence_id: stage77_scenario_manifest, path: results/tables/stage77_perturbation_scenario_manifest_v1.csv, lineage: stage75_79_tf_target_graph}
+  - {evidence_id: stage79_control_manifest, path: results/tables/stage79_control_graph_manifest_v1.csv, lineage: stage75_79_tf_target_graph}
+  - {evidence_id: stage75_integrated_manifest, path: results/reports/stage75_integrated_evidence_manifest_v1.json, lineage: motif_enhancer_atac_cistarget_evidence}
+  - {evidence_id: cistarget_rankings, path: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather, lineage: motif_enhancer_atac_cistarget_evidence}
+  - {evidence_id: cistarget_scores, path: data/external_resources/stage75b/hg38_screen_v10_clust.regions_vs_motifs.scores.feather, lineage: motif_enhancer_atac_cistarget_evidence}
+  - {evidence_id: cistarget_annotations, path: data/external_resources/stage75b/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl, lineage: motif_enhancer_atac_cistarget_evidence}
+  - {evidence_id: gse174367_microglia_snrna, path: data/processed/stage75f/gse174367_mg_snrna.csc.h5, lineage: motif_enhancer_atac_cistarget_evidence}
+  - {evidence_id: gse174367_microglia_snatac, path: data/processed/stage75f/gse174367_mg_snatac.csc.h5, lineage: motif_enhancer_atac_cistarget_evidence}
+
+graph_lineages:
+  - {lineage: stage27c_35c_expression_module_graph, allowed_model_role: historical_baseline_and_module_annotation, prohibited_claim: tf_target_regulatory_prior}
+  - {lineage: stage51_string_graph, allowed_model_role: generic_interaction_control_or_optional_annotation, prohibited_claim: microglia_specific_directional_regulation}
+  - {lineage: stage75_79_tf_target_graph, allowed_model_role: soft_v4b_prior_candidate_with_matched_controls, prohibited_claim: validated_grn_causal_controller_or_experimentally_established_direction}
+  - {lineage: motif_enhancer_atac_cistarget_evidence, allowed_model_role: evidence_features_provenance_uncertainty_and_prior_initialization, prohibited_claim: standalone_predictive_or_causal_graph}
+
+protected_worktree_signatures:
+  docs/stage_c_finetuning_analysis.md: d1ae570bac1a7c87a04faa35ddf5f2546d8dc7f6fc03ccc9379ccf9ce0b182a9
+  results/tables/v2_1_gse174367_cell_trajectory_scores.csv: e56d5c349b6f477c871592ff9ab29a358546a9cdc7adf88e22507292d98ac22f
+  results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv: 543cff1bfb0af9e79b09ef6d40d9f01eb9aa7efee64926b6d2a1287a49757a5d
