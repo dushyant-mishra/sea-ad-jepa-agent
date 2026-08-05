@@ -40,6 +40,9 @@ def test_scope_and_official_portfolio_are_locked() -> None:
         "sea_ad_mtg_merfish_combined_2024",
     }
     assert all("amazonaws.com" in x["remote_url"] for x in config["assets"] if x["decision"] == "download")
+    local = next(x for x in config["assets"] if x["asset_id"] == "local_mtg_rna_final_2024")
+    resolved = (PROJECT / config["policy"]["data_root"] / local["destination"]).resolve()
+    assert resolved == (PROJECT / "data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad").resolve()
 
 
 def test_regulatory_lineages_and_integration_schema_are_explicit() -> None:

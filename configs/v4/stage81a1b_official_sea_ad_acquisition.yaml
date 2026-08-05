@@ -78,7 +78,7 @@ assets:
     modality: snRNA
     region: MTG
     release: "2024-02-13"
-    destination: ../../../../raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
+    destination: ../../../raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
     expected_sha256: 9c1b48266d0a9aef76ad20fb8487d604158b10fad18dc0de85d5261ef06cb7c8
     decision: preserve_deprecated_official_source
     required: false
