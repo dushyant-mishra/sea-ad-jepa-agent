@@ -80,3 +80,18 @@ results/tables/*smoke*
 Thumbs.db
 .vscode/
 wget-log
+
+# Local raw/resource data namespaces
+/data/external_resources/
+/data/external_pretraining/
+/data/sea_ad/
+
+# v4 local training outputs
+/data/v4/
+/runs/v4/
+/logs/v4/
+/outputs/v4/
+/results/v4/
+/checkpoints/
+*.ckpt
+*.pth

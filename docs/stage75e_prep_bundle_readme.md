@@ -1,3 +1,9 @@
+# Stage75E Preparation Bundle Readme
+
+This file was moved from the repository root during v4 launchpad cleanup. It is retained as provenance for the Stage75E SCENIC+/cisTarget setup work.
+
+Original contents:
+
 Stage75E preparation bundle
 ===========================
 
