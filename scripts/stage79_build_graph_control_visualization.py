@@ -23,7 +23,7 @@ def awrite(o:Any,p:Path):
 def awrite_gz(o:Any,p:Path):
     p.parent.mkdir(parents=True,exist_ok=True)
     with tempfile.NamedTemporaryFile('wb',dir=p.parent,prefix='.'+p.name+'.',suffix='.tmp',delete=False) as raw: t=Path(raw.name)
-    with gzip.open(t,'wb') as f: f.write(stable(o))
+    with gzip.GzipFile(filename='',mode='wb',fileobj=t.open('wb'),mtime=0) as f: f.write(stable(o))
     t.replace(p)
 def twrite(s:str,p:Path):
     p.parent.mkdir(parents=True,exist_ok=True)
