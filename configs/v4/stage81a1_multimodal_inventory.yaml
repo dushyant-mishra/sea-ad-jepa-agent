@@ -1,0 +1,168 @@
+schema_version: "1.0"
+stage_id: stage81a1
+governing_contract: configs/v4/stage81a0_v4_design_contract.yaml
+governing_report: results/v4/stage81a0_v4_stage_report.json
+governing_failure_registry: results/v4/stage81a0_v4_failure_registry.json
+
+audit_policy:
+  read_only_source_access: true
+  no_downloads: true
+  no_model_training: true
+  pathology_schema_only: true
+  pathology_values_used: false
+  bounded_row_indices: [0, 1, 99, 20000, -1]
+  canonical_gene_policy: preserve_source_symbol_and_ensembl_id_without_alias_conversion
+  primary_expression_selection_rule: prefer_the_resolved_40k_microglia_pvm_matrix_for_immediate_v4a_compatibility_and_retain_the_full_source_for_stage81a2_vocabulary_design
+
+primary_expression_candidate: sea_ad_mtg_microglia_pvm_expanded
+stage81a2_vocabulary_source: sea_ad_mtg_full_source
+canonical_donor_field: Donor ID
+canonical_cell_id_field: obs_names
+cell_type_field: Subclass
+region_field: Brain Region
+supertype_field: Supertype
+microglia_pvm_label: Microglia-PVM
+v3_feature_order_sha256: 4f65c677c8673754756118c6d978a3c04e73a57f7002d42e8550932b94b89662
+ten_regulators: [STAT1, ELF1, SPI1, IRF8, BACH1, CEBPA, RELA, MITF, NRF1, STAT3]
+
+rna_candidates:
+  - asset_id: sea_ad_mtg_full_source
+    logical_name: SEA-AD MTG final nuclei expression source
+    path: data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
+    expected_sha256: 9c1b48266d0a9aef76ad20fb8487d604158b10fad18dc0de85d5261ef06cb7c8
+    source_dataset: SEA-AD MTG
+    candidate_role: stage81a2_feature_vocabulary_source
+    matrix_slot: X
+    documented_normalization: log1p_library_size_normalized_10000
+    normalization_evidence: H5AD uns/X_normalization=ln(UP10K+1); integer UMIs retained in layers/UMIs
+    training_eligibility: not_selected_in_stage81a1
+    validation_eligibility: not_clean_validation_same_foundation_cohort
+  - asset_id: sea_ad_mtg_microglia_pvm_expanded
+    logical_name: SEA-AD MTG 40k Microglia-PVM expanded v3 feature matrix
+    path: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_expanded_modules.h5ad
+    expected_sha256: d0385e86da482b2f0048e2d0d83116056b889b8449cc8778828b3eae1d1eed93
+    source_dataset: SEA-AD MTG
+    candidate_role: foundation_training_candidate
+    matrix_slot: X
+    documented_normalization: log1p_library_size_normalized_10000
+    normalization_evidence: scripts/make_pilot_subset_fast.py selects Microglia-PVM then applies row sum 1e4 and log1p; Stage76 independently verified this preprocessing lineage
+    training_eligibility: eligible_after_stage81a2_feature_policy_freeze
+    validation_eligibility: donor_holdout_only_not_clean_external_validation
+  - asset_id: sea_ad_mtg_microglia_pvm_module_preserved
+    logical_name: SEA-AD MTG 40k Microglia-PVM module-preserved matrix
+    path: data/processed/sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad
+    expected_sha256: fc40b7c64b8bacd42e19b28227e4b6f02c3a9a3f09aefc8cddc9ea0bde09ca5d
+    source_dataset: SEA-AD MTG
+    candidate_role: self_supervised_validation_candidate
+    matrix_slot: X
+    documented_normalization: log1p_library_size_normalized_10000
+    normalization_evidence: same builder lineage as expanded matrix; bounded values and identifiers audited independently
+    training_eligibility: comparison_only_until_role_freeze
+    validation_eligibility: internal_feature_policy_comparison_not_clean_validation
+
+regulatory_sources:
+  - evidence_id: stage75_integrated_tf_target
+    path: results/tables/stage75_integrated_tf_target_summary_v1.csv
+    lineage: stage75_79_tf_target_perturbation
+    source_type: motif_enhancer_coactivity_candidate_edges
+    allowed_future_role: soft_regulatory_prior_candidate_after_vocabulary_and_control_gates
+    forbidden_future_role: causal_grn_or_experimentally_validated_direction
+  - evidence_id: stage76_signed_edge_coverage
+    path: results/tables/stage76_perturbation_graph_edge_coverage_v1.csv
+    lineage: stage75_79_tf_target_perturbation
+    source_type: coactivity_signed_candidate_edges
+    allowed_future_role: annotation_and_matched_control_design
+    forbidden_future_role: activation_repression_ground_truth
+  - evidence_id: stage75_regulator_gate
+    path: results/tables/stage75_integrated_regulator_summary_v1.csv
+    lineage: stage75_79_tf_target_perturbation
+    source_type: bounded_cistarget_motif_support_summary
+    allowed_future_role: regulator_annotation_and_prior_weight_initialization_candidate
+    forbidden_future_role: causal_regulator_ranking
+  - evidence_id: cistarget_motif_annotations
+    path: data/external_resources/stage75b/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl
+    lineage: motif_chromatin_evidence_not_predictive_graph
+    source_type: motif_annotation_resource
+    allowed_future_role: annotation_only
+    forbidden_future_role: direct_predictive_graph_without_controls
+  - evidence_id: gse174367_microglia_snrna
+    path: data/processed/stage75f/gse174367_mg_snrna.csc.h5
+    lineage: motif_chromatin_evidence_not_predictive_graph
+    source_type: bounded_microglia_expression_counts
+    allowed_future_role: coactivity_provenance_and_context_only
+    forbidden_future_role: clean_external_validation
+  - evidence_id: gse174367_microglia_snatac
+    path: data/processed/stage75f/gse174367_mg_snatac.csc.h5
+    lineage: motif_chromatin_evidence_not_predictive_graph
+    source_type: bounded_microglia_peak_counts
+    allowed_future_role: chromatin_support_annotation
+    forbidden_future_role: causal_enhancer_validation
+
+graph_lineages:
+  - graph_or_evidence_id: stage27c_35c_predictive_module_graph
+    lineage: stage27c_35c_predictive_or_module_graph
+    source_path: results/tables/stage35c_module_graph_audit_v1.csv
+    source_type: module_membership_jaccard_graph
+    directed: false
+    signed: false
+    sign_semantics: none
+    allowed_future_role: historical_predictive_baseline_only
+    forbidden_future_role: regulatory_tf_target_prior
+  - graph_or_evidence_id: stage51_local_string_graph
+    lineage: stage51_local_string_graph
+    source_path: results/tables/v2_graph_string_edges_t900.csv
+    source_type: generic_protein_association_graph
+    directed: false
+    signed: false
+    sign_semantics: none
+    allowed_future_role: generic_context_control_only
+    forbidden_future_role: microglia_specific_regulatory_direction
+  - graph_or_evidence_id: stage75_79_tf_target_graph
+    lineage: stage75_79_tf_target_perturbation_graph
+    source_path: results/tables/stage76_perturbation_graph_edge_coverage_v1.csv
+    source_type: directed_motif_supported_coactivity_candidates
+    directed: true
+    signed: true
+    sign_semantics: predicted_response_sign_from_coactivity_not_activation_or_repression
+    allowed_future_role: soft_v4b_prior_candidate_with_required_controls
+    forbidden_future_role: validated_grn_or_causal_controller
+  - graph_or_evidence_id: motif_atac_cistarget_evidence
+    lineage: motif_enhancer_atac_evidence_not_promoted_to_graph
+    source_path: results/reports/stage75_integrated_evidence_manifest_v1.json
+    source_type: motif_enrichment_peak_proximity_and_coactivity_evidence
+    directed: false
+    signed: false
+    sign_semantics: motif_support_and_coactivity_are_not_causal_direction
+    allowed_future_role: edge_annotation_and_prior_provenance
+    forbidden_future_role: standalone_predictive_graph
+
+other_assets:
+  - {asset_id: sea_ad_donor_metadata, logical_name: SEA-AD cohort donor metadata, path: data/raw/metadata/sea-ad_cohort_donor_metadata_072524.xlsx, source_dataset: SEA-AD, modality: metadata, candidate_role: donor_provenance_schema_only}
+  - {asset_id: sea_ad_pathology_schema, logical_name: SEA-AD quantitative neuropathology, path: data/raw/metadata/sea-ad_all_mtg_quant_neuropath_bydonorid_081122.csv, source_dataset: SEA-AD, modality: pathology_metadata, candidate_role: post_freeze_evaluation_schema_only}
+  - {asset_id: stage76_feature_readiness, logical_name: frozen v3 feature readiness, path: results/tables/stage76_regulator_readiness_v1.csv, source_dataset: project_v3, modality: audit, candidate_role: annotation_only}
+  - {asset_id: stage79_graph_controls, logical_name: frozen graph-control results, path: results/tables/stage79_control_graph_manifest_v1.csv, source_dataset: project_v3, modality: audit, candidate_role: historical_control_context}
+  - {asset_id: string_links, logical_name: STRING v12 links, path: data/external/string/9606.protein.links.v12.0.txt.gz, source_dataset: STRING, modality: protein_association, candidate_role: context_only}
+  - {asset_id: replogle_k562, logical_name: Replogle-Weissman K562 genome-wide Perturb-seq, path: data/raw/ReplogleWeissman2022_K562_gwps.h5ad, source_dataset: ReplogleWeissman2022, modality: perturbation_expression, candidate_role: generic_perturbation_pretraining}
+  - {asset_id: kampmann_microglia_expression, logical_name: GSE178317 iTF Microglia expression lane, path: data/raw/kampmann_gse178317/GSM5387652_iTF_Microglia_10X_Lane1_filtered_feature_bc_matrix.h5, source_dataset: GSE178317, modality: perturbation_expression, candidate_role: experimental_perturbation_calibration}
+  - {asset_id: kampmann_microglia_sgrna, logical_name: GSE178317 iTF Microglia sgRNA enrichment lane, path: data/raw/kampmann_gse178317/GSM5387656_iTF_Microglia_sgRNAenrichment_Lane1_filtered_feature_bc_matrix.h5, source_dataset: GSE178317, modality: perturbation_assignment, candidate_role: experimental_perturbation_calibration}
+  - {asset_id: kampmann_supplement, logical_name: GSE178317 supplementary tables, path: data/raw/kampmann_gse178317/drager_2022_supplementary_tables.xlsx, source_dataset: GSE178317, modality: perturbation_metadata, candidate_role: experimental_perturbation_calibration}
+  - {asset_id: gse174367_snrna, logical_name: GSE174367 snRNA counts, path: data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5, source_dataset: GSE174367, modality: snRNA, candidate_role: context_only}
+  - {asset_id: gse174367_snatac, logical_name: GSE174367 snATAC peaks, path: data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5, source_dataset: GSE174367, modality: snATAC, candidate_role: regulatory_prior_candidate}
+
+priority_missing_assets:
+  - {resource_id: sea_ad_a9_expression, logical_name: SEA-AD A9 regional expression matrix, expected_future_role: regional_replication_candidate}
+  - {resource_id: sea_ad_mtg_merfish, logical_name: SEA-AD MTG MERFISH expression with coordinates and sections, expected_future_role: spatial_training_and_section_held_out_evaluation}
+  - {resource_id: sea_ad_multiregion, logical_name: SEA-AD multiregion expression release, expected_future_role: choose_continuation_pretraining_or_generalization_not_both}
+  - {resource_id: human_ipsc_microglia_crispri_a, logical_name: human iPSC-derived microglia CRISPRi/a with authoritative perturbation assignments, expected_future_role: v4e_calibration_or_held_out_evaluation_not_both}
+  - {resource_id: microglia_compound_response, logical_name: relevant microglial compound-response expression data, expected_future_role: future_drug_signature_evaluation_after_v4e}
+
+resolved_stage81a0_issue_ids:
+  - D01_matrix_scale_semantics
+  - D02_source_layer_semantics
+  - D04_gene_symbol_uniqueness
+  - G06_graph_lineage_separation
+
+protected_worktree_signatures:
+  docs/stage_c_finetuning_analysis.md: d1ae570bac1a7c87a04faa35ddf5f2546d8dc7f6fc03ccc9379ccf9ce0b182a9
+  results/tables/v2_1_gse174367_cell_trajectory_scores.csv: e56d5c349b6f477c871592ff9ab29a358546a9cdc7adf88e22507292d98ac22f
+  results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv: 543cff1bfb0af9e79b09ef6d40d9f01eb9aa7efee64926b6d2a1287a49757a5d
