@@ -59,3 +59,21 @@ conda run -n sea-ad-jepa-v3 python scripts\v4\build_git_provenance_index.py
 ```
 
 This index is a map only. It does not certify biological conclusions, and it does not replace frozen result manifests or checksums.
+
+## Phase 3-5 Cleanup Indexes
+
+The next cleanup layers are indexed rather than moved:
+
+| Index | Purpose |
+|---|---|
+| `results/tables/project_doc_config_index_v1.csv` | Maps docs/configs by stage, version bucket, role, reference count, and move policy. |
+| `results/tables/project_script_dependency_inventory_v1.csv` | Maps scripts, imports/modules, local path mentions, output path mentions, and wrapper/move policy. |
+| `results/tables/project_frozen_results_index_v1.csv` | Maps tracked result artifacts with stage, role, byte size, SHA-256, and freeze status. |
+| `results/reports/project_cleanup_phase3_5_summary_v1.json` | Summarizes Phase 3-5 counts and confirms no physical moves or raw-data commits. |
+
+Regenerate them with:
+
+```powershell
+cd "D:\Jepa project"
+conda run -n sea-ad-jepa-v3 python scripts\v4\build_cleanup_phase_indexes.py
+```

@@ -26,3 +26,16 @@ Build a regulatory-aware Graph-JEPA v4 while preserving the strongest v3 idea: d
 - Which regulators and target genes must be included in the feature space before training starts?
 - Which v3 metrics define non-regression for disease-state geometry?
 - Which perturbation claims should be deferred until v4 shows meaningful latent movement against controls?
+
+## Cleanup Indexes For v4 Startup
+
+Use these maps before adding or moving v4 files:
+
+- `results/tables/project_file_inventory_v1.csv`
+- `results/tables/project_git_provenance_index_v1.csv`
+- `results/tables/project_doc_config_index_v1.csv`
+- `results/tables/project_script_dependency_inventory_v1.csv`
+- `results/tables/project_frozen_results_index_v1.csv`
+- `results/reports/project_cleanup_phase3_5_summary_v1.json`
+
+The intended workflow is: check the map, preserve frozen v3 paths, add new v4 work under v4 namespaces, then freeze only compact reviewed outputs.
