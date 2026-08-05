@@ -1,7 +1,7 @@
 # Stage81A1B Official SEA-AD Acquisition
 
-Stage81A1B acquires the smallest consolidated official processed portfolio
-needed to close the pre-vocabulary cross-modal contract. It does not train a
+Stage81A1B revision `june_2026_complete_multiregion` acquires the consolidated
+official processed foundation needed to close the pre-vocabulary cross-modal contract. It does not train a
 model, freeze the 4,096-gene vocabulary, freeze a donor split, construct a
 graph, or inspect pathology values.
 
@@ -13,16 +13,27 @@ the older MTG/PFC release as deprecated and identifies the multiregion release
 as its replacement. PFC/A9 is published under `PFC/RNAseq` with `DFC` object
 names.
 
-The bounded portfolio contains:
+The bounded live discovery identifies:
 
-- MTG final-nuclei RNA, release 2026-06-22;
-- PFC/A9 final-nuclei RNA, release 2026-06-22;
+- final-nuclei RNA for all ten June 2026 cortical regions: MTG, DFC/PFC/A9,
+  STG, V1C, MEC, LEC, HIP, ITG, AnG and FI;
+- the current consolidated Caudate object, which is the eleventh region in the
+  official portal and is presently published only as an all-nuclei object;
+- the June 2026 ten-region Immune/Microglia-PVM subclass object;
 - MTG final-nuclei ATAC, release 2024-12-06;
-- the combined MTG MERFISH AnnData object, release 2024-12-11.
+- combined MTG MERFISH, HIP and MEC MERSCOPE, and Caudate Xenium AnnData.
 
-All-nuclei copies, donor-level duplicates, raw sequence files, raw microscopy,
-and duplicate MERFISH objects are excluded. The local 2024 MTG RNA object is
+Redundant all-nuclei copies, donor-level duplicates, raw microscopy, and
+duplicate spatial objects are excluded. The Caudate all-nuclei object is not a
+duplicate because no final-nuclei alternative is advertised. The local 2024 MTG RNA object is
 preserved as an official historical source, not overwritten.
+
+Processed ATAC availability is recorded independently of RNA availability.
+The bounded regional catalogs currently expose the MTG processed ATAC matrix;
+other regions are recorded as announced/pending. Official fragment files are
+controlled through AD Knowledge Portal study `syn26223298`. The acquisition
+does not bypass terms or credentials, and records an exact human-action blocker
+for each region.
 
 ## Download safety
 
@@ -43,6 +54,12 @@ For a catalog-only validation:
 
 ```powershell
 conda run -n sea-ad-jepa-v3 python scripts/v4/stage81a1b_acquire_official_sea_ad.py --mode catalog
+```
+
+For bounded live HEAD verification of every frozen open object:
+
+```powershell
+conda run -n sea-ad-jepa-v3 python scripts/v4/stage81a1b_acquire_official_sea_ad.py --mode discover
 ```
 
 The downloader can be resumed by repeating the same command. WSL may be used
@@ -69,6 +86,24 @@ sign is never relabeled as activation or repression. No old graph is rebuilt.
 New SEA-AD RNA/ATAC availability augments these records. It does not erase the
 GSE174367 or cisTarget lineages and does not establish edge-level SEA-AD
 regulation without an official linked product.
+
+## Release lineage
+
+The official AWS README and Multiregion 2026 repository govern release
+precedence. June 2026 MTG and DFC/PFC/A9 objects supersede the earlier release
+for production candidacy, while old local objects remain byte-preserved for v3
+reproducibility. The official `mixup_investigation_02-14-2025.csv` is registered
+as the donor/library correction authority; no donor swap is inferred from
+partial identifiers or expression similarity. Old/new comparison is bounded to
+shape, feature IDs, donor IDs, index samples and schema fields.
+
+## Stage81A1C boundary
+
+Stage81A1B records, but does not download, a planning registry for eight
+official GEO series: GSE178317, GSE175721, GSE301119, GSE293118, GSE311359,
+GSE254205, GSE241858 and GSE240609. Their roles distinguish direct microglial
+Perturb-seq from myeloid auxiliary, regulatory-element, genotype/context and
+bulk validation evidence. No GEO data are acquired in this SEA-AD stage.
 
 ## Pathology firewall
 

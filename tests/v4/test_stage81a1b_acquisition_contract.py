@@ -32,17 +32,83 @@ def test_scope_and_official_portfolio_are_locked() -> None:
     assert config["policy"]["no_donor_split_freeze"] is True
     assert config["policy"]["no_graph_rebuild"] is True
     assert config["policy"]["pathology_values_used"] is False
-    required = {x["asset_id"] for x in config["assets"] if x["required"]}
-    assert required == {
-        "sea_ad_mtg_rna_final_2026",
-        "sea_ad_pfc_a9_rna_final_2026",
-        "sea_ad_mtg_atac_final_2024",
-        "sea_ad_mtg_merfish_combined_2024",
-    }
+    assert config["schema_version"] == "2.0"
+    assert config["contract_revision"] == "june_2026_complete_multiregion"
+    required = [x for x in config["assets"] if x["required"]]
+    assert len(required) == 17
     assert all("amazonaws.com" in x["remote_url"] for x in config["assets"] if x["decision"] == "download")
     local = next(x for x in config["assets"] if x["asset_id"] == "local_mtg_rna_final_2024")
     resolved = (PROJECT / config["policy"]["data_root"] / local["destination"]).resolve()
     assert resolved == (PROJECT / "data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad").resolve()
+
+
+def test_governing_ancestry_and_region_inventory() -> None:
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    assert {
+        "16e287766be2981531d55f1b99404b85b61cf679",
+        "7523399d639119071a0e3cc5873b2303d827fc5f",
+    }.issubset(config["required_ancestor_commits"])
+    regions = config["discovery"]["official_region_inventory"]
+    assert len(regions) == 11
+    assert set(regions) == {"MTG", "PFC_A9_DFC", "STG", "V1C", "MEC", "LEC", "HIP", "ITG", "AnG", "FI", "Caudate_Nucleus"}
+
+
+def test_current_authorities_and_deprecated_source_preservation() -> None:
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    assets = {x["asset_id"]: x for x in config["assets"]}
+    assert assets["sea_ad_mtg_rna_final_2026"]["release"] == "2026-06-22"
+    assert assets["sea_ad_pfc_a9_rna_final_2026"]["region"] == "PFC_A9_DFC"
+    assert assets["sea_ad_multiregion_immune_rna_final_2026"]["role"] == "microglia_specialization_candidate"
+    assert assets["local_mtg_rna_final_2024"]["decision"] == "preserve_deprecated_official_source"
+    rna = [x for x in config["assets"] if x["modality"] == "snRNA" and x["decision"] == "download"]
+    by_region = {}
+    for asset in rna:
+        by_region.setdefault(asset["region"], []).append(asset)
+    assert all(len(items) == 1 for region, items in by_region.items() if region != "MULTIREGION_10")
+    assert next(x for x in rna if x["region"] == "Caudate_Nucleus")["object_scope"] == "all_nuclei_only_current_consolidated_release"
+
+
+def test_modality_spatial_fragment_and_etag_contracts() -> None:
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    allowed = {"processed_current", "processed_historical", "fragments_only", "announced_pending", "not_released", "access_blocked", "not_applicable"}
+    for row in config["modality_availability"]:
+        assert row["rna_status"] in allowed
+        assert row["atac_status"] in allowed
+        assert row["fragments_status"] in allowed
+    assert sum(row["atac_status"] == "processed_current" for row in config["modality_availability"]) == 1
+    modalities = {x["modality"] for x in config["assets"] if x["required"]}
+    assert {"MERFISH", "MERSCOPE", "Xenium", "snATAC"}.issubset(modalities)
+    assert all(row["fragments_status"] == "access_blocked" for row in config["modality_availability"])
+    module = load_script()
+    catalog = module.catalog_rows(config)
+    multipart = [row for row in catalog if "-" in str(row["etag"])]
+    assert multipart
+    assert all(row["checksum_type"] == "s3_multipart_etag_not_a_checksum" for row in multipart)
+
+
+def test_download_safety_and_compute_boundary_are_explicit() -> None:
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    assert config["policy"]["minimum_free_bytes_after_acquisition"] == 805306368000
+    source = SCRIPT.read_text(encoding="utf-8")
+    assert '"--continue-at", "-"' in source
+    assert "part.stat().st_size != expected_size" in source
+    assert "bounded_open_status(part)" in source
+    assert "os.replace(part, target)" in source
+    download_block = source[source.index("def download_asset("):source.index("def download_documentation(")]
+    assert download_block.index("bounded_open_status(part)") < download_block.index("os.replace(part, target)")
+    assert "import torch" not in source
+    assert ".toarray(" not in source
+
+
+def test_perturbation_next_stage_registry_is_planning_only() -> None:
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    rows = config["perturbation_next_stage_candidates"]
+    assert {x["accession"] for x in rows} == {
+        "GSE178317", "GSE175721", "GSE301119", "GSE293118",
+        "GSE311359", "GSE254205", "GSE241858", "GSE240609",
+    }
+    assert all(x["official_record_verified"] is True for x in rows)
+    assert all(x["download_decision_for_stage81a1c"] == "acquire_processed" for x in rows)
 
 
 def test_regulatory_lineages_and_integration_schema_are_explicit() -> None:

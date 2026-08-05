@@ -1,5 +1,6 @@
-schema_version: "1.0"
+schema_version: "2.0"
 stage_id: stage81a1b
+contract_revision: june_2026_complete_multiregion
 governing_stage81a0_contract: configs/v4/stage81a0_v4_design_contract.yaml
 governing_stage81a1_report: results/v4/stage81a1_multimodal_inventory_report.json
 locked_compute_contract: configs/v4/locked_local_compute_contract.yaml
@@ -39,7 +40,7 @@ assets:
     destination: mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad
     decision: download
     required: true
-    role: foundation_training_source
+    role: primary_foundation_candidate
     supersedes_local: data/raw/snrna/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
   - asset_id: sea_ad_pfc_a9_rna_final_2026
     modality: snRNA
@@ -52,6 +53,117 @@ assets:
     decision: download
     required: true
     role: regional_replication_candidate
+  - asset_id: sea_ad_stg_rna_final_2026
+    modality: snRNA
+    region: STG
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/STG/RNAseq/SEAAD_STG_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 16144376554
+    remote_etag: 4b1342636b68c673f83e4c57f45a9968-1925
+    destination: multiregion/STG/SEAAD_STG_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_v1c_rna_final_2026
+    modality: snRNA
+    region: V1C
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/V1C/RNAseq/SEAAD_V1C_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 16540631157
+    remote_etag: 83d99e510078bed6042b40897fc48214-1972
+    destination: multiregion/V1C/SEAAD_V1C_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_mec_rna_final_2026
+    modality: snRNA
+    region: MEC
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/MEC/RNAseq/SEAAD_MEC_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 25705658446
+    remote_etag: 843ca41e03b3bc291610de0866334129-3065
+    destination: multiregion/MEC/SEAAD_MEC_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_lec_rna_final_2026
+    modality: snRNA
+    region: LEC
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/LEC/RNAseq/SEAAD_LEC_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 4241947425
+    remote_etag: a7a9ce724dd70fb1651f7af11ec07f4b-506
+    destination: multiregion/LEC/SEAAD_LEC_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_hip_rna_final_2026
+    modality: snRNA
+    region: HIP
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/HIP/RNAseq/SEAAD_HIP_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 4976204965
+    remote_etag: 0ac97a78f34c853b690aadb750e1ecfd-594
+    destination: multiregion/HIP/SEAAD_HIP_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_itg_rna_final_2026
+    modality: snRNA
+    region: ITG
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/ITG/RNAseq/SEAAD_ITG_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 11472832562
+    remote_etag: 48b77baba96736e3fb6af3e79a009d18-1368
+    destination: multiregion/ITG/SEAAD_ITG_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_ang_rna_final_2026
+    modality: snRNA
+    region: AnG
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/AnG/RNAseq/SEAAD_AnG_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 5326721562
+    remote_etag: 989e051373bc4b67a2af3c998a2da6ed-635
+    destination: multiregion/AnG/SEAAD_AnG_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_fi_rna_final_2026
+    modality: snRNA
+    region: FI
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/FI/RNAseq/SEAAD_FI_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 5389393159
+    remote_etag: 18063c6c4d5548d8df9e762de224d04b-643
+    destination: multiregion/FI/SEAAD_FI_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_caudate_rna_all_2025
+    modality: snRNA
+    region: Caudate_Nucleus
+    release: "2025-12-29"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/Caudate_Nucleus/CaH_all_nuclei.2025-12-29.h5ad
+    remote_size: 128171432912
+    remote_etag: bf80995dbc344d393cfdaf84094a79d5-7640
+    destination: multiregion/Caudate_Nucleus/CaH_all_nuclei.2025-12-29.h5ad
+    decision: download
+    required: true
+    object_scope: all_nuclei_only_current_consolidated_release
+    role: multiregion_foundation_or_replication_candidate_pending_stage81a2
+  - asset_id: sea_ad_multiregion_immune_rna_final_2026
+    modality: snRNA
+    region: MULTIREGION_10
+    release: "2026-06-22"
+    remote_url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/Multiregion_2026/subclass_objects/SEAAD_Immune_HIP_MEC_LEC_ITG_MTG_FI_STG_DFC_AnG_V1C_RNAseq_final-nuclei.2026-06-22.h5ad
+    remote_size: 3271409777
+    remote_etag: f9315349ea9da8c206aecd81cdb1fe86-390
+    destination: multiregion/SEAAD_Immune_10-region_RNAseq_final-nuclei.2026-06-22.h5ad
+    decision: download
+    required: true
+    role: microglia_specialization_candidate
   - asset_id: sea_ad_mtg_atac_final_2024
     modality: snATAC
     region: MTG
@@ -74,6 +186,39 @@ assets:
     decision: download
     required: true
     role: future_spatial_training_and_evaluation_source
+  - asset_id: sea_ad_caudate_xenium_combined_2026
+    modality: Xenium
+    region: Caudate_Nucleus
+    release: "2026-01-07"
+    remote_url: https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/caudate_nucleus/combined_anndata_object/CaH_Xenium.2026-01-07.h5ad
+    remote_size: 3133846231
+    remote_etag: 8a5e2134eb92ec6db29beea4b4264981-374
+    destination: xenium/CaH_Xenium.2026-01-07.h5ad
+    decision: download
+    required: true
+    role: future_spatial_training_and_evaluation_source
+  - asset_id: sea_ad_hip_merscope_combined_2026
+    modality: MERSCOPE
+    region: HIP
+    release: "2026-06-30"
+    remote_url: https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/hippocampus/combined_anndata_object/1444211893_HPF_mapped.h5ad
+    remote_size: 107711584
+    remote_etag: 6f6fb9a34aa7a22f970a65e37a67599f-13
+    destination: merfish/1444211893_HPF_mapped.h5ad
+    decision: download
+    required: true
+    role: future_spatial_training_and_evaluation_source
+  - asset_id: sea_ad_mec_merscope_combined_2026
+    modality: MERSCOPE
+    region: MEC
+    release: "2026-06-30"
+    remote_url: https://sea-ad-spatial-transcriptomics.s3.amazonaws.com/medial-entorhinal-cortex/combined_anndata_object/1444201261_MEC_mapped.h5ad
+    remote_size: 75877782
+    remote_etag: 924203fb70a858bb6545e314451e5aeb-10
+    destination: merfish/1444201261_MEC_mapped.h5ad
+    decision: download
+    required: true
+    role: future_spatial_training_and_evaluation_source
   - asset_id: local_mtg_rna_final_2024
     modality: snRNA
     region: MTG
@@ -92,9 +237,57 @@ skipped_asset_classes:
   - asset_class: raw_fastq_bam_and_microscopy
     reason: prohibited_by_stage_scope
   - asset_class: official_fragments
-    reason: processed_atac_matrix_is_available_and_no_bounded_additional_role_is_documented
+    reason: controlled_ad_knowledge_portal_access_requires_human_terms_acceptance_and_credentials
   - asset_class: standalone_gene_activity_motif_accessibility_peak_to_gene
     reason: not_advertised_as_official_processed_products_in_the_consulted_release_catalog
+
+discovery:
+  official_region_inventory: [MTG, PFC_A9_DFC, STG, V1C, MEC, LEC, HIP, ITG, AnG, FI, Caudate_Nucleus]
+  june2026_regions: [MTG, PFC_A9_DFC, STG, V1C, MEC, LEC, HIP, ITG, AnG, FI]
+  bounded_prefixes:
+    - MTG/RNAseq/
+    - PFC/RNAseq/
+    - STG/RNAseq/
+    - V1C/RNAseq/
+    - MEC/RNAseq/
+    - LEC/RNAseq/
+    - HIP/RNAseq/
+    - ITG/RNAseq/
+    - AnG/RNAseq/
+    - FI/RNAseq/
+    - Caudate_Nucleus/
+    - Multiregion_2026/subclass_objects/
+  live_catalog_authority: official_s3_listobjects_v2_and_allen_multiregion_repository
+
+modality_availability:
+  - {region: MTG, rna_status: processed_current, atac_status: processed_current, fragments_status: access_blocked}
+  - {region: PFC_A9_DFC, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: STG, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: V1C, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: MEC, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: LEC, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: HIP, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: ITG, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: AnG, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: FI, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+  - {region: Caudate_Nucleus, rna_status: processed_current, atac_status: announced_pending, fragments_status: access_blocked}
+
+documentation_assets:
+  - {document_id: official_aws_readme, official_record: https://sea-ad-single-cell-profiling.s3.amazonaws.com/README.md, destination: documentation/SEA_AD_AWS_README.md, remote_size: 6474, intended_role: release_and_anndata_semantics}
+  - {document_id: multiregion_repository_readme, official_record: https://raw.githubusercontent.com/AllenInstitute/SEA-AD_Multiregion_2026/main/README.md, destination: documentation/SEA_AD_Multiregion_2026_README.md, remote_size: 14057, intended_role: curation_and_release_provenance}
+  - {document_id: library_mixup_investigation, official_record: https://raw.githubusercontent.com/AllenInstitute/SEA-AD_Multiregion_2026/main/00_data_curation/00_single_nucleus_multiome/06_finalize_data_assets/mixup_investigation_02-14-2025.csv, destination: manifests/mixup_investigation_02-14-2025.csv, remote_size: 514, intended_role: official_donor_library_correction_mapping}
+  - {document_id: allen_terms, official_record: https://alleninstitute.org/terms-of-use/, intended_role: terms_reference}
+  - {document_id: allen_citation_policy, official_record: https://alleninstitute.org/citation-policy/, intended_role: citation_reference}
+
+perturbation_next_stage_candidates:
+  - {accession: GSE178317, organism: Homo sapiens, cell_model: iTF_iPSC_derived_microglia, single_cell_or_bulk: both, perturbation_type: CRISPRi_and_CRISPRa, guide_assignment_available: yes, non_targeting_controls_available: yes, replicate_structure: four_10x_lanes_plus_bulk_conditions, processed_file_types: 10x_matrices_and_abundance_csv, processed_download_size: resolve_in_stage81a1c, genome_build: source_record_specific, candidate_role: primary_perturbation_training, known_limitations: induced_microglia_not_primary_brain_microglia, download_decision_for_stage81a1c: acquire_processed, official_record_verified: true}
+  - {accession: GSE175721, organism: Homo sapiens, cell_model: microglia_containing_cortical_organoid, single_cell_or_bulk: single_cell, perturbation_type: pooled_CRISPRi_in_abeta_context, guide_assignment_available: yes, non_targeting_controls_available: verify_sample_level, replicate_structure: source_record_defined, processed_file_types: CRISPR_reference_and_RAW_processed_matrices, processed_download_size: resolve_in_stage81a1c, genome_build: source_record_specific, candidate_role: abeta_context_validation, known_limitations: organoid_microglia_and_context_specificity, download_decision_for_stage81a1c: acquire_processed, official_record_verified: true}
+  - {accession: GSE301119, organism: Homo sapiens, cell_model: primary_macrophage_and_THP1, single_cell_or_bulk: single_cell, perturbation_type: CRISPRa_and_CRISPRi_Perturb_seq, guide_assignment_available: yes, non_targeting_controls_available: verify_sample_level, replicate_structure: source_record_defined, processed_file_types: Seurat_v5_RDS, processed_download_size: resolve_in_stage81a1c, genome_build: source_record_specific, candidate_role: myeloid_auxiliary_training, known_limitations: macrophage_or_monocytic_not_microglia, download_decision_for_stage81a1c: acquire_processed, official_record_verified: true}
+  - {accession: GSE293118, organism: Homo sapiens, cell_model: HMC3_microglial_cell_line, single_cell_or_bulk: single_cell, perturbation_type: noncoding_CRISPRi, guide_assignment_available: yes, non_targeting_controls_available: yes, replicate_structure: pooled_screen, processed_file_types: 10x_RAW_matrices_and_feature_reference, processed_download_size: resolve_in_stage81a1c, genome_build: source_record_specific, candidate_role: regulatory_element_perturbation, known_limitations: immortalized_cell_line, download_decision_for_stage81a1c: acquire_processed, official_record_verified: true}
+  - {accession: GSE311359, organism: Homo sapiens, cell_model: iPSC_derived_microglia, single_cell_or_bulk: single_cell, perturbation_type: risk_locus_Perturb_seq_CRISPRi, guide_assignment_available: yes, non_targeting_controls_available: verify_sample_level, replicate_structure: source_record_defined, processed_file_types: GEO_RAW_processed_matrices, processed_download_size: resolve_in_stage81a1c, genome_build: source_record_specific, candidate_role: microglial_auxiliary_training, known_limitations: multiple_sclerosis_risk_context, download_decision_for_stage81a1c: acquire_processed, official_record_verified: true}
+  - {accession: GSE254205, organism: Homo sapiens, cell_model: iPSC_derived_microglia_and_human_brain, single_cell_or_bulk: both, perturbation_type: APOE_genotype_abeta_and_GNE317, guide_assignment_available: not_applicable, non_targeting_controls_available: not_applicable, replicate_structure: genotype_and_treatment_replicates, processed_file_types: H5AD_and_bulk_RNA_ATAC_archives, processed_download_size: resolve_in_stage81a1c, genome_build: source_record_specific, candidate_role: genotype_by_context_validation, known_limitations: mixed_assays_and_no_pooled_guide_assignment, download_decision_for_stage81a1c: acquire_processed, official_record_verified: true}
+  - {accession: GSE241858, organism: Homo sapiens, cell_model: iPSC_derived_microglia, single_cell_or_bulk: bulk, perturbation_type: TREM2_R47H_and_cytokine_context, guide_assignment_available: not_applicable, non_targeting_controls_available: not_applicable, replicate_structure: two_clones_per_genotype_plus_treatments, processed_file_types: count_tables, processed_download_size: resolve_in_stage81a1c, genome_build: source_record_specific, candidate_role: genotype_by_context_validation, known_limitations: bulk_and_targeted_genotype, download_decision_for_stage81a1c: acquire_processed, official_record_verified: true}
+  - {accession: GSE240609, organism: Homo sapiens, cell_model: iPSC_derived_microglia_neuron_coculture, single_cell_or_bulk: bulk, perturbation_type: APOE3_Christchurch_genotype_context, guide_assignment_available: not_applicable, non_targeting_controls_available: not_applicable, replicate_structure: genotype_and_neuron_context_replicates, processed_file_types: GEO_RAW_processed_counts, processed_download_size: resolve_in_stage81a1c, genome_build: source_record_specific, candidate_role: mechanistic_bulk_validation, known_limitations: bulk_coculture_derived_microglia, download_decision_for_stage81a1c: acquire_processed, official_record_verified: true}
 
 preserved_regulatory_sources:
   - {evidence_id: stage75_integrated_tf_target, path: results/tables/stage75_integrated_tf_target_summary_v1.csv, lineage: stage75_79_tf_target_graph}
