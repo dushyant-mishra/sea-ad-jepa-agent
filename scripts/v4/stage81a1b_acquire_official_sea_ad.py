@@ -260,7 +260,7 @@ def download_asset(project: Path, config: dict[str, Any], asset: dict[str, Any],
         return {"status": "already_complete", "path": relative(project, target), "bytes_downloaded": 0}
     part = target.with_name(target.name + config["policy"]["temporary_suffix"])
     command = [
-        curl, "--fail", "--location", "--retry", "8", "--retry-delay", "5",
+        curl, "--fail", "--location", "--silent", "--show-error", "--retry", "8", "--retry-delay", "5",
         "--continue-at", "-", "--output", str(part), asset["remote_url"],
     ]
     subprocess.run(command, cwd=project, check=True)
@@ -292,7 +292,7 @@ def download_documentation(project: Path, config: dict[str, Any], item: dict[str
         return {"asset_id": item["document_id"], "status": "already_complete", "path": relative(project, target), "bytes_downloaded": 0}
     part = target.with_name(target.name + config["policy"]["temporary_suffix"])
     subprocess.run([
-        curl, "--fail", "--location", "--retry", "8", "--retry-delay", "5",
+        curl, "--fail", "--location", "--silent", "--show-error", "--retry", "8", "--retry-delay", "5",
         "--continue-at", "-", "--output", str(part), item["official_record"],
     ], cwd=project, check=True)
     if part.stat().st_size != expected_size:
