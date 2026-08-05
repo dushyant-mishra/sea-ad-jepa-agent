@@ -50,7 +50,68 @@ def hits(payload):
 def source_hashes(project,src): return {k:{'path':v,'sha256':sha(project/v),'byte_size':(project/v).stat().st_size} for k,v in sorted(src.items())}
 
 def html_doc(css,js,data):
-    return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stage79 Graph Control Explorer</title><link rel="icon" href="data:"><style>'+css+'</style></head><body><header><h1>Stage79 Graph Control Explorer</h1><p>Model-based graph-control comparison for frozen rare-microglia regulatory hypotheses.</p></header><main class="app"><aside class="left"><div class="panel story"><h2>What question is this view answering?</h2><div class="story-grid"><b>Scenario</b><span id="storyScenario" class="story-value"></span><b>Metric</b><span id="storyMetric" class="story-value"></span><span id="storyMetricHelp" class="story-help"></span><b>Comparison</b><span id="storyControl" class="story-value"></span><span id="storyControlHelp" class="story-help"></span></div><div id="storyVerdict" class="verdict"></div></div><label>Scenario</label><select id="scenario"></select><label>Regulator</label><select id="regulator"></select><label>Direction</label><select id="direction"></select><label>Magnitude</label><select id="magnitude"></select><label>Metric</label><select id="metric"></select><label>Compare against</label><select id="controlType"></select><label>Control graph / seed</label><select id="controlGraph"></select><label>Network shown</label><select id="graphMode"><option value="real">frozen candidate graph</option><option value="control">selected control graph</option></select><label>Edge view</label><select id="edgeView"><option value="active">active regulator only</option><option value="all">all edges in selected graph</option></select><label>Donor display</label><select id="seedMode"><option value="mean">average across control seeds</option><option value="selected">selected seed only</option></select><div class="panel boundary"><b>Boundary:</b> This is a model-based comparison. It does not establish causal regulation, biological benefit, therapeutic validity, or validated targets.</div></aside><section class="graph-wrap"><div class="toolbar"><button id="fit">Fit</button><button id="reset">Reset</button><button id="clear">Clear selection</button><span id="summary" class="scenario-line"></span></div><div id="cy"></div></section><aside class="right"><div class="panel"><h2>Candidate graph versus controls</h2><div id="distPlot" class="plot"></div><p id="distributionNote" class="notice"></p></div><div class="panel"><h2>How different is it?</h2><div id="effectPlot" class="plot small"></div><pre id="effectText"></pre></div><div class="panel"><h2>Donor-level paired differences</h2><div id="donorPlot" class="plot"></div><p id="donorNote" class="notice"></p></div><div class="panel"><h2>Control sanity check</h2><div id="diagnostics" class="diagnostics"></div></div><div class="panel"><h2>Audit details</h2><pre id="inspector"></pre></div></aside></main><script>window.__STAGE79_GRAPH_CONTROL_EXPLORER__='+json.dumps(data,separators=(",",":"),sort_keys=True,allow_nan=False)+'</script><script>'+js+'</script></body></html>'
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stage79 Guided Graph Control Explorer</title>
+  <link rel="icon" href="data:">
+  <style>{css}</style>
+</head>
+<body>
+  <header>
+    <h1>Stage79 Guided Graph Control Explorer</h1>
+    <p>Read-only interpretation of frozen graph-control simulations in the self-supervised Graph-JEPA state space.</p>
+  </header>
+  <main class="app">
+    <aside class="left">
+      <div class="panel story">
+        <h2>What question is this view answering?</h2>
+        <div class="story-grid">
+          <b>Scenario</b><span id="storyScenario" class="story-value"></span>
+          <b>Metric</b><span id="storyMetric" class="story-value"></span>
+          <span id="storyMetricHelp" class="story-help"></span>
+          <b>Comparison</b><span id="storyControl" class="story-value"></span>
+          <span id="storyControlHelp" class="story-help"></span>
+        </div>
+        <div id="storyVerdict" class="verdict"></div>
+      </div>
+      <div class="panel landscape"><h2>Regulator landscape</h2><div id="regulatorLandscape"></div></div>
+      <div class="control-section"><h2>Basic interpretation</h2>
+        <label>Regulator</label><select id="regulator"></select><div id="regulatorStatus" class="status-note"></div>
+        <label>Direction</label><select id="direction"></select>
+        <label>Magnitude <span class="hint" title="0.10 and 0.25 are bounded model-input perturbation magnitudes. They are not biological percentages, drug doses, or measured expression fold changes.">?</span></label><select id="magnitude"></select>
+        <label>Metric</label><select id="metric"></select>
+        <label>Compare against</label><select id="controlType"></select>
+      </div>
+      <details class="advanced"><summary>Advanced graph and seed controls</summary>
+        <label>Scenario ID</label><select id="scenario"></select>
+        <label>Control graph / seed</label><select id="controlGraph"></select>
+        <p class="tiny">Seeds are randomized control graph replicates, not biological donors. They test whether the frozen graph result separates from matched graph alternatives.</p>
+        <label>Network shown</label><select id="graphMode"><option value="real">frozen candidate graph</option><option value="control">selected control graph</option></select>
+        <label>Edge view</label><select id="edgeView"><option value="active">active regulator only</option><option value="all">all edges in selected graph</option></select>
+        <label>Donor display</label><select id="seedMode"><option value="mean">average across control seeds</option><option value="selected">selected seed only</option></select>
+      </details>
+      <div class="panel boundary"><b>Boundary:</b> This is a model-based comparison. It does not establish causal regulation, biological benefit, therapeutic validity, or validated targets.</div>
+    </aside>
+    <section class="graph-wrap">
+      <div class="toolbar"><button id="fit">Fit</button><button id="reset">Reset</button><button id="clear">Clear selection</button><span id="summary" class="scenario-line"></span></div>
+      <div id="cy"></div>
+      <div class="panel target-panel"><h2>What changed in the model input?</h2><div id="targetChanges" class="target-grid"></div></div>
+    </section>
+    <aside class="right">
+      <div class="panel"><h2>Candidate versus control result</h2><div id="comparisonCard" class="result-card"></div><div id="distPlot" class="plot"></div><p id="distributionNote" class="notice"></p></div>
+      <div class="panel"><h2>Control seed summary</h2><div id="seedSummary" class="result-card compact"></div></div>
+      <div class="panel"><h2>Donor consistency</h2><div id="donorCard" class="result-card"></div><div id="donorPlot" class="plot"></div><p id="donorNote" class="notice"></p><details><summary>Donor audit table</summary><div id="donorTable" class="mini-table"></div></details></div>
+      <div class="panel"><h2>Control sanity check</h2><div id="diagnostics" class="diagnostics"></div></div>
+      <div class="panel"><h2>Audit details</h2><pre id="inspector"></pre></div>
+    </aside>
+  </main>
+  <script>window.__STAGE79_GRAPH_CONTROL_EXPLORER__={json.dumps(data,separators=(",",":"),sort_keys=True,allow_nan=False)}</script>
+  <script>{js}</script>
+</body>
+</html>"""
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--config',default='configs/stage75f_out_of_core_v1.yaml'); ap.add_argument('--project-dir',default='.'); a=ap.parse_args(); project=Path(a.project_dir).resolve(); cfg=yload(project/a.config)['stage79_control_visualization']; src=cfg['sources']; out={k:project/v for k,v in cfg['outputs'].items()}
@@ -72,7 +133,13 @@ def main():
     interpretation={'scenario_control_interpretation':records(interp),'null_distribution_diagnostics':records(diag),'regulator_control_summary':records(reg),'edge_diversity':records(edge_div),'approved_wording':APPROVED,'claim_boundaries':FALSE}
     awrite(distributions,out['control_distributions_json']); awrite(donor_payload,out['control_donor_differences_json']); awrite_gz(networks,out['control_networks_json_gz']); awrite(interpretation,out['control_interpretation_json'])
     web=project/'web/stage78_graph_explorer'; js=(web/'dist/stage79_graph_control_explorer.iife.js').read_text(encoding='utf-8'); cssp=web/'dist/stage79_graph_control_explorer.iife.css'; css=cssp.read_text(encoding='utf-8') if cssp.exists() else (web/'src/stage79/styles.css').read_text(encoding='utf-8')
-    data={'distributions':distributions,'donor_differences':donor_payload,'networks':networks,'diagnostics':records(diag),'metadata':{'read_only':True,'approved_wording':APPROVED,'stage78_metadata':stage78_meta.get('stage'),'stage79_pass':stage79_report.get('stage79_pass')}}
+    regulator_landscape=[
+        {'status':'Fully simulated in frozen JEPA','regulators':['ELF1','SPI1','STAT1'],'meaning':'Tier A regulators with usable signed edges and frozen Stage77/F12/F13 scenarios.'},
+        {'status':'Exploratory/deferred','regulators':['BACH1','IRF8'],'meaning':'Motif-supported Tier B regulators kept for later, not part of the current Tier A simulation set.'},
+        {'status':'Missing from frozen JEPA features','regulators':['CEBPA','RELA'],'meaning':'Blocked because the regulator input is absent from the frozen JEPA feature space.'},
+        {'status':'Did not advance through motif gate','regulators':['MITF','NRF1','STAT3'],'meaning':'Explicit negative motif-support gate; shown for audit completeness, not simulated.'},
+    ]
+    data={'distributions':distributions,'donor_differences':donor_payload,'networks':networks,'diagnostics':records(diag),'regulator_landscape':regulator_landscape,'metadata':{'read_only':True,'approved_wording':APPROVED,'stage78_metadata':stage78_meta.get('stage'),'stage79_pass':stage79_report.get('stage79_pass')}}
     html=html_doc(css,js,data)
     html='\n'.join(line.rstrip() for line in html.splitlines())+'\n'
     if re.search(r'<script[^>]+\bsrc\s*=',html,re.I) or re.search(r'<link[^>]+\brel=["\']stylesheet["\']',html,re.I): raise RuntimeError('external script/style tag found')
@@ -81,7 +148,7 @@ def main():
     pkg=jload(web/'package.json'); lock=web/'package-lock.json'
     payload_hashes={k:{'path':str(p.relative_to(project)).replace('\\','/'),'sha256':sha(p),'byte_size':p.stat().st_size} for k,p in out.items() if k!='metadata_json'}
     frontend={str(p.relative_to(web)).replace('\\','/'):sha(p) for p in sorted((web/'src/stage79').glob('*'))+[web/'scripts/build-stage79.mjs']}
-    metadata={'stage':'stage79_graph_control_explorer_cytoscape_plotly_v3','schema_version':'3.0','stage79_implementation_commit':stage79_report['implementation_git_commit'],'stage79_freeze_commit':'3f6e380034a13fa3bdae0bf18bd0b09d84cc5f1b','implementation_git_commit':git_head(project),'source_hashes':source_hashes(project,src),'interpretation_output_hashes':interp_report['output_hashes'],'visualization_payload_hashes':payload_hashes,'html_hash':sha(out['html']),'frontend_source_hashes':frontend,'package_lock_sha256':sha(lock),'cytoscape_version':pkg['dependencies']['cytoscape'],'plotly_version':pkg['dependencies']['plotly.js-basic-dist-min'],'esbuild_version':pkg['devDependencies']['esbuild'],'graph_counts':{'total_graphs':len(graphs),'edge_rows':len(edges),'real_stage77_nodes':len(stage77_nodes)},'scenario_counts':{'perturbation_scenarios':len(distributions['scenarios']),'control_scenario_rows':len(scen)},'donor_counts':{'donors':int(donor.donor_id.nunique()),'donor_difference_rows':len(donor_diff)},'metric_counts':{'metrics':len(distributions['metrics']),'interpretation_rows':len(interp)},'zero_variance_diagnostic_counts':int(diag.frozen_statistics_zero_variance.sum()),'distinct_control_input_hash_counts':interp_report['diagnostics'],'static_self_contained_validation_pass':True,'self_contained_static_validation':{'cytoscape_bundled':'cytoscape' in js.lower(),'plotly_bundled':'plotly' in js.lower(),'external_script_tags':0,'external_stylesheet_links':0,'absolute_paths_in_generated_outputs':False},'browser_smoke_execution_status':'not_run_tool_unavailable','file_protocol_smoke_results':{'pass':None,'protocol':'file://','artifact':'results/visualization/stage79_graph_control_explorer_cytoscape_plotly_v3.html','console_errors':None},'runtime_network_request_count':None,'claim_boundaries':{**FALSE,'approved_wording':APPROVED},'read_only':True,'visualization_recalculates_analysis':False,'jepa_rerun':False,'stage79_rerun':False}
+    metadata={'stage':'stage79_guided_graph_control_explorer_v3_1','schema_version':'3.1','stage79_implementation_commit':stage79_report['implementation_git_commit'],'stage79_freeze_commit':'3f6e380034a13fa3bdae0bf18bd0b09d84cc5f1b','implementation_git_commit':git_head(project),'source_hashes':source_hashes(project,src),'interpretation_output_hashes':interp_report['output_hashes'],'visualization_payload_hashes':payload_hashes,'html_hash':sha(out['html']),'frontend_source_hashes':frontend,'package_lock_sha256':sha(lock),'cytoscape_version':pkg['dependencies']['cytoscape'],'plotly_version':pkg['dependencies']['plotly.js-basic-dist-min'],'esbuild_version':pkg['devDependencies']['esbuild'],'graph_counts':{'total_graphs':len(graphs),'edge_rows':len(edges),'real_stage77_nodes':len(stage77_nodes)},'scenario_counts':{'perturbation_scenarios':len(distributions['scenarios']),'control_scenario_rows':len(scen)},'donor_counts':{'donors':int(donor.donor_id.nunique()),'donor_difference_rows':len(donor_diff)},'metric_counts':{'metrics':len(distributions['metrics']),'interpretation_rows':len(interp)},'zero_variance_diagnostic_counts':int(diag.frozen_statistics_zero_variance.sum()),'distinct_control_input_hash_counts':interp_report['diagnostics'],'guided_interpretation_pass':True,'static_self_contained_validation_pass':True,'self_contained_static_validation':{'cytoscape_bundled':'cytoscape' in js.lower(),'plotly_bundled':'plotly' in js.lower(),'external_script_tags':0,'external_stylesheet_links':0,'absolute_paths_in_generated_outputs':False},'browser_smoke_execution_status':'not_run_tool_unavailable','file_protocol_smoke_results':{'pass':None,'protocol':'file://','artifact':'results/visualization/stage79_graph_control_explorer_cytoscape_plotly_v3.html','console_errors':None},'runtime_network_request_count':None,'claim_boundaries':{**FALSE,'approved_wording':APPROVED},'read_only':True,'visualization_recalculates_analysis':False,'jepa_rerun':False,'stage79_rerun':False}
     if hits({'metadata':metadata,'distributions':distributions,'interpretation':interpretation}): raise RuntimeError('absolute path leak in json payloads')
     awrite(metadata,out['metadata_json'])
     print(json.dumps({'stage79_visualization_pass':True,'graphs':len(graphs),'scenarios':len(distributions['scenarios']),'metrics':len(distributions['metrics']),'browser_smoke_execution_status':'not_run_tool_unavailable','runtime_network_request_count':None},indent=2,sort_keys=True)); return 0

@@ -11,3 +11,5 @@ Stage79P correction: browser-smoke metadata now distinguishes static self-contai
 
 
 Stage79Q humane explorer pass: the interface now leads with plain-language scenario, metric, and control labels; adds a question-and-verdict panel; replaces raw pipeline labels in primary controls; keeps raw IDs in audit details; and states the model-based claim boundary directly in the UI.
+
+Stage79R guided interpretation pass: the explorer now adds an all-ten-regulator landscape, keeps only the core interpretation controls visible by default, moves seed and graph-display switches into advanced audit controls, explains perturbation magnitudes as bounded model-input changes rather than doses or percentages, replaces zero-variance or constant-control plots with readable result cards, summarizes control seeds as above/below/equal counts, hides donor charts when every donor difference is approximately zero, and adds scenario-specific modeled target-change summaries. These additions are display-only and consume frozen Stage77-79 artifacts without changing scientific thresholds, graph weights, perturbations, JEPA embeddings, or control statistics.
