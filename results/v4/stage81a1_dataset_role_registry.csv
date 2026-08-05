@@ -1,0 +1,11 @@
+asset_id,dataset,primary_role,recommended_use,clean_validation_status,role_frozen,feature_selection_use,architecture_choice_use,threshold_setting_use,candidate_filtering_use,pretraining_use
+sea_ad_mtg_microglia_pvm_expanded,SEA-AD MTG,foundation_training_candidate,Proposed v4A parent cohort with donor-held-out evaluation; final split deferred,not clean external validation,false,false,false,false,false,true
+sea_ad_mtg_full_source,SEA-AD MTG,annotation_only,Stage81A2 vocabulary and transform source,same cohort as foundation candidate,false,false,false,false,false,false
+sea_ad_mtg_microglia_pvm_module_preserved,SEA-AD MTG,self_supervised_validation_candidate,Feature-policy comparison only until role freeze,same cells and donors as foundation candidate,false,false,false,false,false,false
+stage75_integrated_tf_target,Stage75,regulatory_prior_candidate,Soft prior candidate for later v4B after matched controls,not causal or validated GRN evidence,false,false,false,false,false,false
+GSE174367,GSE174367,context_only,Already used for Stage72/75 coactivity and chromatin support,cannot be clean validation,false,false,false,false,false,false
+ReplogleWeissman2022_K562_gwps,ReplogleWeissman2022,generic_perturbation_pretraining,Controller benchmarking only,high domain gap; not AD validation,false,false,false,false,false,true
+GSE178317_iTF_Microglia,GSE178317,experimental_perturbation_calibration,Provisional v4E calibration candidate; cannot also validate same perturbations,assignments and controls unresolved,false,false,false,false,false,false
+SEA_AD_A9,absent_local_asset,regional_replication_candidate,Reserve for regional replication if acquired later,no download attempted,false,false,false,false,false,false
+SEA_AD_MTG_MERFISH,absent_local_asset,spatial_section_test_candidate,Reserve sections for held-out spatial evaluation if acquired later,no download attempted,false,false,false,false,false,false
+SEA_AD_multiregion,absent_local_asset,not_ready,"Choose continuation pretraining or generalization, never both",no download attempted,false,false,false,false,false,false
