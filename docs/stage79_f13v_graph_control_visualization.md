@@ -8,3 +8,6 @@ The explorer must not be interpreted as validating graph topology. It presents m
 
 
 Stage79P correction: browser-smoke metadata now distinguishes static self-contained validation from an instrumented runtime browser/network test. Until an instrumented browser test is actually run, `browser_smoke_execution_status` remains `not_run_tool_unavailable`, `file_protocol_smoke_results.pass` remains null, and `runtime_network_request_count` remains null. The explorer also hides edge labels by default, uses stable graph layout, formats tiny values in scientific notation, separates effect-size quantities into a table, and renders readable control diagnostics.
+
+
+Stage79Q humane explorer pass: the interface now leads with plain-language scenario, metric, and control labels; adds a question-and-verdict panel; replaces raw pipeline labels in primary controls; keeps raw IDs in audit details; and states the model-based claim boundary directly in the UI.
