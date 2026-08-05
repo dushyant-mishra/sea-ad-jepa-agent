@@ -3,6 +3,9 @@ path,version_bucket,stage_hint,role,archive_status,byte_size,physical_move_recom
 .gitignore,unclassified,,project_file,needs_review,2646,false,low,mapped_only_paths_preserved
 .streamlit/config.toml,unclassified,,project_file,needs_review,61,false,low,mapped_only_paths_preserved
 README.md,unclassified,,project_file,needs_review,31201,false,low,mapped_only_paths_preserved
+archive/v1/README.md,unclassified,v1,project_file,needs_review,193,false,low,mapped_only_paths_preserved
+archive/v2/README.md,unclassified,v2,project_file,needs_review,193,false,low,mapped_only_paths_preserved
+archive/v3/README.md,v3,v3,project_file,frozen_or_current_provenance,176,false,low,mapped_only_paths_preserved
 configs/agent/stage36a_module_counterfactual_agent_v1.yaml,v3,stage36a,config,frozen_or_current_provenance,997,false,high,mapped_only_paths_preserved
 configs/agent/stage36b_local_knowledge_grounding_schema_v1.yaml,v3,stage36b,config,frozen_or_current_provenance,1569,false,high,mapped_only_paths_preserved
 configs/agent/stage36c_ranked_hypothesis_package_v1.yaml,v3,stage36c,config,frozen_or_current_provenance,1342,false,high,mapped_only_paths_preserved
@@ -153,6 +156,7 @@ docs/figure_gallery.md,unclassified,,doc,needs_review,7619,false,low,mapped_only
 docs/github_about.md,unclassified,,doc,needs_review,2482,false,low,mapped_only_paths_preserved
 docs/github_repo_checklist.md,unclassified,,doc,needs_review,1850,false,low,mapped_only_paths_preserved
 docs/gpu_setup.md,unclassified,,doc,needs_review,2341,false,low,mapped_only_paths_preserved
+docs/project_file_map.md,unclassified,,doc,needs_review,3679,false,low,mapped_only_paths_preserved
 docs/project_proposal.md,unclassified,,doc,needs_review,7618,false,low,mapped_only_paths_preserved
 docs/runbook.md,unclassified,,doc,needs_review,78327,false,low,mapped_only_paths_preserved
 docs/scientific_pitch.md,unclassified,,doc,needs_review,5222,false,low,mapped_only_paths_preserved
@@ -176,7 +180,9 @@ docs/stage79_graph_control_testing.md,v3,stage79,doc,frozen_or_current_provenanc
 docs/stage_c_finetuning_analysis.md,v3,stagec,doc,frozen_or_current_provenance,4192,false,low,mapped_only_paths_preserved
 docs/stage_c_v21_upgrade_experiments.md,v3,stagec,doc,frozen_or_current_provenance,3673,false,low,mapped_only_paths_preserved
 docs/technical_plan.md,unclassified,,doc,needs_review,8151,false,low,mapped_only_paths_preserved
-docs/v4/README.md,v4,v4,doc,active_planning,2015,false,low,mapped_only_paths_preserved
+docs/v3_frozen_artifact_index.md,v3,v3,doc,frozen_or_current_provenance,2324,false,low,mapped_only_paths_preserved
+docs/v4/README.md,v4,v4,doc,active_planning,2583,false,low,mapped_only_paths_preserved
+docs/v4_migration_plan.md,unclassified,v4,doc,needs_review,3195,false,low,mapped_only_paths_preserved
 environment.lock.yml,unclassified,,project_file,needs_review,366,false,low,mapped_only_paths_preserved
 environment.yml,unclassified,,project_file,needs_review,426,false,low,mapped_only_paths_preserved
 open_validation/align_to_graph_jepa.py,unclassified,,project_file,needs_review,8217,false,low,mapped_only_paths_preserved
@@ -311,6 +317,8 @@ results/reports/no_graph_ablation_predictive_representation_comparison_v1.md,v1,
 results/reports/no_graph_ablation_preflight_v1.md,v1,,result_report,legacy_reference,2554,false,low,mapped_only_paths_preserved
 results/reports/no_graph_ablation_training_run_manifest_v1.md,v1,,result_report,legacy_reference,3186,false,low,mapped_only_paths_preserved
 results/reports/open_validation_framework_plan_v1.md,v1,,result_report,legacy_reference,7680,false,low,mapped_only_paths_preserved
+results/reports/project_cleanup_phase3_5_summary_v1.json,v1,,result_report,legacy_reference,1332,false,low,mapped_only_paths_preserved
+results/reports/project_git_provenance_summary_v1.json,v1,,result_report,legacy_reference,1008,false,low,mapped_only_paths_preserved
 results/reports/sea_ad_full_metadata_covariate_audit.md,unclassified,,result_report,needs_review,3100,false,low,mapped_only_paths_preserved
 results/reports/sea_ad_low_pathology_anchor_audit.md,unclassified,,result_report,needs_review,3141,false,low,mapped_only_paths_preserved
 results/reports/shuffled_graph_ablation_preflight_v1.md,v1,,result_report,legacy_reference,4301,false,low,mapped_only_paths_preserved
@@ -704,6 +712,11 @@ results/tables/pathology_head_stage_b_frozen_donor_embeddings.csv,unclassified,,
 results/tables/pathology_head_stage_b_lp_metrics.csv,unclassified,,result_table,needs_review,1019,false,low,mapped_only_paths_preserved
 results/tables/pathology_head_stage_b_lp_oof_predictions.csv,unclassified,,result_table,needs_review,80346,false,low,mapped_only_paths_preserved
 results/tables/perturbseq_streaming_validation.csv,unclassified,,result_table,needs_review,234,false,low,mapped_only_paths_preserved
+results/tables/project_doc_config_index_v1.csv,v1,,result_table,legacy_reference,18846,false,low,mapped_only_paths_preserved
+results/tables/project_file_inventory_v1.csv,v1,,result_table,legacy_reference,332036,false,low,mapped_only_paths_preserved
+results/tables/project_frozen_results_index_v1.csv,v1,,result_table,legacy_reference,349108,false,low,mapped_only_paths_preserved
+results/tables/project_git_provenance_index_v1.csv,v1,,result_table,legacy_reference,846549,false,low,mapped_only_paths_preserved
+results/tables/project_script_dependency_inventory_v1.csv,v1,,result_table,legacy_reference,111048,false,low,mapped_only_paths_preserved
 results/tables/sea_ad_full_metadata_covariate_audit.csv,unclassified,,result_table,needs_review,8198,false,low,mapped_only_paths_preserved
 results/tables/sea_ad_full_metadata_targets_with_covariates.csv,unclassified,,result_table,needs_review,63304,false,low,mapped_only_paths_preserved
 results/tables/sea_ad_low_pathology_anchor_audit_donors.csv,unclassified,,result_table,needs_review,30175,false,low,mapped_only_paths_preserved
@@ -2180,6 +2193,9 @@ scripts/train_graph_jepa_stage_c_disease.py,v3,stagec,script,frozen_or_current_p
 scripts/train_jepa_snrna.py,unclassified,,script,needs_review,10444,false,low,mapped_only_paths_preserved
 scripts/train_pathology_mlp_head.py,unclassified,,script,needs_review,27962,false,low,mapped_only_paths_preserved
 scripts/v4/README.md,v4,v4,script,active_planning,421,false,low,mapped_only_paths_preserved
+scripts/v4/build_cleanup_phase_indexes.py,v4,v4,script,active_planning,10957,false,low,mapped_only_paths_preserved
+scripts/v4/build_git_provenance_index.py,v4,v4,script,active_planning,5868,false,low,mapped_only_paths_preserved
+scripts/v4/build_project_file_inventory.py,v4,v4,script,active_planning,3394,false,low,mapped_only_paths_preserved
 scripts/validate_abeta_mil_biology.py,unclassified,,script,needs_review,6329,false,low,mapped_only_paths_preserved
 scripts/validate_v21_target_matrix.py,unclassified,,script,needs_review,19102,false,low,mapped_only_paths_preserved
 scripts/visualize_validation_results.py,unclassified,,script,needs_review,7260,false,low,mapped_only_paths_preserved

@@ -11,8 +11,8 @@
     "v4": 3
   },
   "n_doc_config_rows": 129,
-  "n_result_rows": 1722,
-  "n_script_rows": 290,
+  "n_result_rows": 1726,
+  "n_script_rows": 291,
   "outputs": {
     "doc_config_index": "results/tables/project_doc_config_index_v1.csv",
     "frozen_results_index": "results/tables/project_frozen_results_index_v1.csv",
@@ -27,12 +27,12 @@
   "purpose": "non-destructive organization indexes for v4 migration",
   "result_version_counts": {
     "unclassified": 108,
-    "v1": 77,
+    "v1": 81,
     "v2": 112,
     "v3": 1425
   },
   "script_status_counts": {
-    "active_v4_tooling": 3,
+    "active_v4_tooling": 4,
     "frozen_v3_pipeline": 51,
     "legacy_reference": 5,
     "review_before_move": 145,

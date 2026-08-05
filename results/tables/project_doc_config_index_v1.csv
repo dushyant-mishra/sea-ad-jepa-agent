@@ -101,7 +101,7 @@ docs/figure_gallery.md,unclassified,,project_doc,7619,1,false,move_only_after_re
 docs/github_about.md,unclassified,,project_doc,2482,0,false,move_only_after_reference_audit,phase3_index_only
 docs/github_repo_checklist.md,unclassified,,project_doc,1850,0,false,move_only_after_reference_audit,phase3_index_only
 docs/gpu_setup.md,unclassified,,project_doc,2341,0,false,move_only_after_reference_audit,phase3_index_only
-docs/project_file_map.md,unclassified,,project_doc,2826,1,false,move_only_after_reference_audit,phase3_index_only
+docs/project_file_map.md,unclassified,,project_doc,3679,1,false,move_only_after_reference_audit,phase3_index_only
 docs/project_proposal.md,unclassified,,project_doc,7618,0,false,move_only_after_reference_audit,phase3_index_only
 docs/runbook.md,unclassified,,project_doc,78327,0,false,move_only_after_reference_audit,phase3_index_only
 docs/scientific_pitch.md,unclassified,,project_doc,5222,0,false,move_only_after_reference_audit,phase3_index_only
@@ -126,5 +126,5 @@ docs/stage_c_finetuning_analysis.md,v3,stagec,stage_doc,4192,0,false,path_stable
 docs/stage_c_v21_upgrade_experiments.md,v3,stagec,stage_doc,3673,0,false,path_stable_or_wrapper_required,phase3_index_only
 docs/technical_plan.md,unclassified,,project_doc,8151,0,false,move_only_after_reference_audit,phase3_index_only
 docs/v3_frozen_artifact_index.md,v3,,project_doc,2324,1,false,path_stable_or_wrapper_required,phase3_index_only
-docs/v4/README.md,v4,v4,active_v4_doc,2015,0,false,active_v4_namespace,phase3_index_only
-docs/v4_migration_plan.md,unclassified,,project_doc,2211,0,false,move_only_after_reference_audit,phase3_index_only
+docs/v4/README.md,v4,v4,active_v4_doc,2583,0,false,active_v4_namespace,phase3_index_only
+docs/v4_migration_plan.md,unclassified,,project_doc,3195,0,false,move_only_after_reference_audit,phase3_index_only
