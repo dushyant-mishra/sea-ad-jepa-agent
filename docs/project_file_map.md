@@ -1,4 +1,4 @@
-﻿# Project File Map
+# Project File Map
 
 This map is the first phase of repository organization for the v4 transition. It is deliberately non-destructive: existing v1/v2/v3 paths remain stable so old scripts, manifests, hashes, and documentation links do not break.
 
@@ -44,3 +44,18 @@ Do not move scripts, configs, or frozen results merely to make the tree prettier
 - docs and configs can be updated in the same commit;
 - frozen hashes/manifests either remain valid or are intentionally re-frozen;
 - the move improves v4 usability more than it harms v3 reproducibility.
+
+## GitHub Provenance Index
+
+GitHub is the provenance backstop for cleanup. Before physically moving or archiving any tracked file, check its latest pushed commit and blob URL in:
+
+`results/tables/project_git_provenance_index_v1.csv`
+
+Regenerate it with:
+
+```powershell
+cd "D:\Jepa project"
+conda run -n sea-ad-jepa-v3 python scripts\v4\build_git_provenance_index.py
+```
+
+This index is a map only. It does not certify biological conclusions, and it does not replace frozen result manifests or checksums.

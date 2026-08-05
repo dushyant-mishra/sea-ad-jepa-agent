@@ -1,0 +1,28 @@
+{
+  "anchor_class_counts": {
+    "archive_placeholder": 3,
+    "tracked_project_file": 2126,
+    "v3_frozen_report": 19,
+    "v3_frozen_table": 64,
+    "v3_frozen_visualization": 17,
+    "v4_launchpad": 5
+  },
+  "branch": "main",
+  "cleanup_boundary": {
+    "physical_moves_performed": false,
+    "protected_unrelated_files_staged": false,
+    "raw_data_committed": false
+  },
+  "head_commit": "d8ef42bbcbcd3fa372914c801b0ef1a48bbdd7a7",
+  "head_matches_origin_main": true,
+  "n_files_missing_latest_commit": 0,
+  "n_tracked_files": 2234,
+  "origin_main_commit": "d8ef42bbcbcd3fa372914c801b0ef1a48bbdd7a7",
+  "outputs": {
+    "csv": "results/tables/project_git_provenance_index_v1.csv",
+    "summary_json": "results/reports/project_git_provenance_summary_v1.json"
+  },
+  "purpose": "cleanup provenance map for v4 migration; no file moves performed",
+  "repository_remote": "https://github.com/dushyant-mishra/sea-ad-jepa-agent.git",
+  "stage": "project_git_provenance_index_v1"
+}

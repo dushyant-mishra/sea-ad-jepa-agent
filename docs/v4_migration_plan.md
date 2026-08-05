@@ -1,4 +1,4 @@
-﻿# v4 Migration Plan
+# v4 Migration Plan
 
 This is the phased organization plan for moving from the crowded v1/v2/v3 repository state into clean v4 development without breaking paths.
 
@@ -12,13 +12,14 @@ Status: started.
 - Add tracked inventory `results/tables/project_file_inventory_v1.csv`.
 - Add `scripts/v4/build_project_file_inventory.py` to regenerate the inventory.
 
-## Phase 2: Tighten Ignore Rules
+## Phase 2: Tighten Ignore Rules And Provenance
 
-Status: partially complete.
+Status: in progress.
 
 - Ignore local raw/resource data.
 - Ignore v4 run, log, output, results, and checkpoint namespaces.
 - Keep tracked lightweight summaries and frozen visualization artifacts path-stable.
+- Generate `results/tables/project_git_provenance_index_v1.csv` before any physical move.
 
 ## Phase 3: Organize Docs And Configs
 
