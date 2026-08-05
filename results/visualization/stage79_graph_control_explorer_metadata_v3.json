@@ -1,4 +1,5 @@
 {
+  "browser_smoke_execution_status": "not_run_tool_unavailable",
   "claim_boundaries": {
     "approved_wording": "Stage79 interpretation describes how the frozen real-graph outputs compare with bounded control distributions. These are model-based control comparisons and do not establish causal regulation, biological benefit, or therapeutic validity.",
     "causal_validation_pass": false,
@@ -25,22 +26,22 @@
   "esbuild_version": "0.28.1",
   "file_protocol_smoke_results": {
     "artifact": "results/visualization/stage79_graph_control_explorer_cytoscape_plotly_v3.html",
-    "console_errors": [],
-    "pass": true,
+    "console_errors": null,
+    "pass": null,
     "protocol": "file://"
   },
   "frontend_source_hashes": {
     "scripts/build-stage79.mjs": "e2f096ab87da81b3a1000b9856e16f9da1a31325e0729cd6f850a44ac8d02dbd",
-    "src/stage79/app.js": "9587c46ae6bd2952c999a6e647c997774c2f7f9d1a2577fb07375008c23e59b9",
-    "src/stage79/styles.css": "2d0d5e728af4028a560bff230e91dbb78586386e8aa9910e057c91ea4d58eca8"
+    "src/stage79/app.js": "4d919ed504d8a677789b41df08e3c588fd0863e5e9c6c642fc8bd17f78b8f75c",
+    "src/stage79/styles.css": "af1370dced81324263c04f4e4208d5fcd00fc46541516e0e0ee0ef86e617ee3b"
   },
   "graph_counts": {
     "edge_rows": 8003,
     "real_stage77_nodes": 37,
     "total_graphs": 152
   },
-  "html_hash": "32b25cfe8e34c9ca869b3128ab7d3439e0b15c73dafa8c30fea6fa21ca67e7ee",
-  "implementation_git_commit": "d5a8aaf5f98405e589063051efadaf06c215c6de",
+  "html_hash": "67f5232548d8629eb66515b6607c3251a8f4aa4c6cf5b39cf395d278890b85cf",
+  "implementation_git_commit": "1ff6b39c757a65f31090b96d32bc01d82eda727a",
   "interpretation_output_hashes": {
     "control_edge_diversity_csv": {
       "byte_size": 81241,
@@ -76,12 +77,19 @@
   "package_lock_sha256": "04015a854e0fba4151118b3490cf755ba0b15abff5b2799b4e20182f93350a46",
   "plotly_version": "3.7.0",
   "read_only": true,
-  "runtime_network_request_count": 0,
+  "runtime_network_request_count": null,
   "scenario_counts": {
     "control_scenario_rows": 1812,
     "perturbation_scenarios": 12
   },
   "schema_version": "3.0",
+  "self_contained_static_validation": {
+    "absolute_paths_in_generated_outputs": false,
+    "cytoscape_bundled": true,
+    "external_script_tags": 0,
+    "external_stylesheet_links": 0,
+    "plotly_bundled": true
+  },
   "source_hashes": {
     "stage77_edges_json": {
       "byte_size": 103516,
@@ -166,7 +174,7 @@
     "stage79_interpretation_report_json": {
       "byte_size": 6290,
       "path": "results/reports/stage79_control_interpretation_v1.json",
-      "sha256": "eab4296f5d97b1e4ad6b5b1013311c54ed75c6c41de7d8e66254f06f9963da55"
+      "sha256": "4cbe0bd1b0fdd298e15b3d5a10b97b6ef0e6d363f254ac901595cee12ced77cb"
     },
     "stage79_null_distribution_diagnostics_csv": {
       "byte_size": 80138,
@@ -193,6 +201,7 @@
   "stage79_freeze_commit": "3f6e380034a13fa3bdae0bf18bd0b09d84cc5f1b",
   "stage79_implementation_commit": "201589df6b89d1bc7eb088aad47757e7c3987222",
   "stage79_rerun": false,
+  "static_self_contained_validation_pass": true,
   "visualization_payload_hashes": {
     "control_distributions_json": {
       "byte_size": 972690,
@@ -210,14 +219,14 @@
       "sha256": "6ecf1b64d222f9bcdf4d0fe97d4bffc694f8c71dbbd97a0b18a2f1c5ee03e8d7"
     },
     "control_networks_json_gz": {
-      "byte_size": 490782,
+      "byte_size": 490726,
       "path": "results/visualization/stage79_graph_control_networks_v1.json.gz",
-      "sha256": "b5fc6785468977666be410f45172bee0065baa6ba9b41a8e4490910d28c59dec"
+      "sha256": "5e33c418ce7a9b67f739fb7d69525a5306875439fdcb9abe0db9ae8e0f37f8f3"
     },
     "html": {
-      "byte_size": 26219020,
+      "byte_size": 26222484,
       "path": "results/visualization/stage79_graph_control_explorer_cytoscape_plotly_v3.html",
-      "sha256": "32b25cfe8e34c9ca869b3128ab7d3439e0b15c73dafa8c30fea6fa21ca67e7ee"
+      "sha256": "67f5232548d8629eb66515b6607c3251a8f4aa4c6cf5b39cf395d278890b85cf"
     }
   },
   "visualization_recalculates_analysis": false,
