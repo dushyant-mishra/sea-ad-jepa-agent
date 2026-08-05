@@ -5,3 +5,6 @@ F13V is a self-contained Cytoscape.js and Plotly.js explorer for the frozen Stag
 The real graph retains the Stage77 edge label `Coactivity-signed candidate influence`. Control graph edges are neutral `Control-only propagated edge` records with `evidence_support=null_control`.
 
 The explorer must not be interpreted as validating graph topology. It presents model-based control comparisons only.
+
+
+Stage79P correction: browser-smoke metadata now distinguishes static self-contained validation from an instrumented runtime browser/network test. Until an instrumented browser test is actually run, `browser_smoke_execution_status` remains `not_run_tool_unavailable`, `file_protocol_smoke_results.pass` remains null, and `runtime_network_request_count` remains null. The explorer also hides edge labels by default, uses stable graph layout, formats tiny values in scientific notation, separates effect-size quantities into a table, and renders readable control diagnostics.
