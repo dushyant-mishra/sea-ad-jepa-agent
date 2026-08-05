@@ -1,5 +1,8 @@
 # Graph-JEPA v4 Launchpad
 
+Current compute authority:
+`LOCKED_LOCAL_HARDWARE_AND_COMPUTE_CONTRACT.md`.
+
 This directory is the clean planning area for SEA-AD Graph-JEPA v4. It keeps v4 training design separate from the frozen v3/Stage75-79 evidence and visualization artifacts.
 
 ## Current v3 checkpoint

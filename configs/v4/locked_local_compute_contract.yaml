@@ -1,0 +1,147 @@
+schema_version: "1.0"
+contract_id: v4_locked_local_compute_contract
+status: locked
+precedence: supersedes_all_earlier_speculative_hardware_assumptions
+captured_hardware:
+  manufacturer_model: Lenovo_82K6
+  cpu: Intel_Core_i9_11980HK
+  physical_cpu_cores: 8
+  logical_processors: 16
+  system_ram_bytes: 34115739648
+  gpu: NVIDIA_GeForce_RTX_3080_Laptop_GPU
+  gpu_vram_mib: 16384
+  gpu_power_limit_watts: 115
+  machine_count: 1
+  gpu_count: 1
+  operating_system: Windows
+  large_data_filesystem: exFAT
+  large_data_free_space_at_capture_approx_tb: 7.2
+  system_volume_free_space_at_capture_approx_gb: 262
+
+validated_runtime:
+  python: "3.11.15"
+  pytorch: "2.7.0+cu128"
+  pytorch_cuda_runtime: "12.8"
+  cuda_available: true
+  driver_reported_cuda_alignment_required: false
+  hardware_preflight_required: false
+  protected_packages:
+    - pytorch
+    - cuda_runtime
+    - anndata
+    - scanpy
+    - zarr
+    - numpy
+    - pytorch_lightning
+    - pytorch_geometric
+  package_change_rule: change_only_after_a_concrete_reproduced_failure
+
+compute_authority:
+  cloud_compute_authorized: false
+  distributed_training_available: false
+  production_checkpoint_lineages: 1
+  canonical_feature_vocabularies: 1
+  donor_splits: 1
+  production_seeds: 1
+  rna_foundation_training_trajectories: 1
+  training_progression: continuous_whole_mtg_to_microglia_pvm
+  later_controls: lightweight_adapter_only
+  forbidden:
+    - full_architecture_sweeps
+    - multiple_full_feature_panels
+    - multiple_full_donor_splits
+    - disposable_pilot_training
+    - three_full_production_seeds
+    - repeated_throughput_profiling
+    - full_backbone_retraining_for_shuffled_graph_controls
+    - full_backbone_retraining_for_spatial_controls
+
+fixed_model_envelope:
+  architecture: perceiver_gene_token_to_latent_cross_attention
+  gene_vocabulary_target: 4096
+  gene_identities_frozen_once_during_feature_contract: true
+  gene_identity_dimension: 48
+  model_width: 160
+  latent_slots: 24
+  latent_blocks: 2
+  attention_heads: 4
+  cell_latent_dimension: 160
+  dropout: 0.10
+  precision: fp16_mixed
+  initial_microbatch_size: 8
+  target_effective_batch_size: 256
+  production_seed_count: 1
+  full_gene_to_gene_attention: forbidden
+  model_dimension_search: forbidden
+
+cuda_oom_fallback:
+  ordered_actions:
+    - set_microbatch_to_4
+    - set_microbatch_to_2
+    - set_microbatch_to_1
+    - increase_gradient_accumulation_to_preserve_effective_batch
+    - enable_activation_checkpointing
+  architecture_change_allowed_before_microbatch_1_failure: false
+  resume_from_most_recent_valid_checkpoint: true
+
+production_startup_window:
+  optimizer_steps: 300
+  belongs_to_production_trajectory: true
+  disposable_pilot: false
+  hard_checks:
+    - finite_forward_loss
+    - finite_gradients
+    - target_encoder_receives_no_gradient
+    - ema_target_changes_correctly
+    - feature_dataset_and_split_hashes_match
+    - gpu_memory_safe
+    - system_ram_safe
+    - data_loading_no_deadlock
+    - checkpoint_save_succeeds
+    - checkpoint_reload_and_resume_succeed
+  step_300_actions:
+    - save_atomic_checkpoint
+    - record_observed_throughput
+    - record_projected_runtime
+    - continue_same_trajectory_when_hard_checks_pass
+  model_reinitialization_at_step_300: forbidden
+  pathology_diagnosis_or_downstream_biology_in_gate: forbidden
+
+exfat_safety:
+  download_suffix: .part
+  verify_size_before_rename: true
+  verify_sha256_before_rename: true
+  overwrite_existing_different_hash: forbidden
+  training_shard_policy: relatively_few_large_shards
+  millions_of_small_zarr_chunks: forbidden
+  preferred_storage:
+    - consolidated_zarr_metadata
+    - large_hdf5_shards
+    - large_parquet_shards
+  source_files_immutable: true
+  atomic_checkpoint_replacement_same_volume: true
+  checkpoint_retention:
+    - latest_valid
+    - previous_valid
+  verify_frozen_artifact_after_write: true
+  tracked_reports_may_contain_machine_absolute_paths: false
+
+data_authority:
+  official_processed_sea_ad_portfolio_download_authorized: true
+  authorized_processed_assets:
+    - mtg_snrna
+    - a9_dlpfc_snrna
+    - snmultiome
+    - snatac
+    - relevant_official_fragment_files
+    - merfish_expression_and_coordinates
+    - taxonomy_and_donor_specimen_metadata
+    - documentation_and_checksums
+    - sealed_pathology_metadata_and_processed_masks
+  requires_later_explicit_approval:
+    - raw_fastq
+    - bam
+    - raw_optical_image_stacks
+  asset_download_does_not_assign_dataset_role: true
+  preserve_one_approved_regional_dataset_for_frozen_replication: true
+  current_stage_training_allowed: false
