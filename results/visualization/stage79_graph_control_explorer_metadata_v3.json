@@ -32,16 +32,17 @@
   },
   "frontend_source_hashes": {
     "scripts/build-stage79.mjs": "e2f096ab87da81b3a1000b9856e16f9da1a31325e0729cd6f850a44ac8d02dbd",
-    "src/stage79/app.js": "3c634c5de78765902d50bb1a545d906556d98d9dceb626e08fa2dd6a3c8c4d80",
-    "src/stage79/styles.css": "548851ac34e3ab7af7750181fcd523f2226dd9d4b671c8fb6b5e4a1e740761a9"
+    "src/stage79/app.js": "91ebef84955a4163c885694e692bee73c96c05e2353a37287d5d2242c7a4cf39",
+    "src/stage79/styles.css": "f5d105abd0fc5b008e960c4b547753fc16f247f95b109612ef10c78a1696cccc"
   },
   "graph_counts": {
     "edge_rows": 8003,
     "real_stage77_nodes": 37,
     "total_graphs": 152
   },
-  "html_hash": "7893add2a91e61bdea7df35c3e5e2c05ac4dcba0dd780bf24c9cfcdb6cc3f76b",
-  "implementation_git_commit": "9a7bef2679a5dd04bf71b169d67fa680620f8332",
+  "guided_interpretation_pass": true,
+  "html_hash": "8f6232e2888d1ec747ce2727b843d0b0ed38ea7cba6a1c9591d2f619d4501a7c",
+  "implementation_git_commit": "5087f02f4c37821352df210d6735863e77911852",
   "interpretation_output_hashes": {
     "control_edge_diversity_csv": {
       "byte_size": 81241,
@@ -82,7 +83,7 @@
     "control_scenario_rows": 1812,
     "perturbation_scenarios": 12
   },
-  "schema_version": "3.0",
+  "schema_version": "3.1",
   "self_contained_static_validation": {
     "absolute_paths_in_generated_outputs": false,
     "cytoscape_bundled": true,
@@ -197,7 +198,7 @@
       "sha256": "10cda38e103e5974e8195bbce616b4da68ce1625a5939ac9dcb37fafa24a3a67"
     }
   },
-  "stage": "stage79_graph_control_explorer_cytoscape_plotly_v3",
+  "stage": "stage79_guided_graph_control_explorer_v3_1",
   "stage79_freeze_commit": "3f6e380034a13fa3bdae0bf18bd0b09d84cc5f1b",
   "stage79_implementation_commit": "201589df6b89d1bc7eb088aad47757e7c3987222",
   "stage79_rerun": false,
@@ -224,9 +225,9 @@
       "sha256": "5e33c418ce7a9b67f739fb7d69525a5306875439fdcb9abe0db9ae8e0f37f8f3"
     },
     "html": {
-      "byte_size": 26227719,
+      "byte_size": 26234869,
       "path": "results/visualization/stage79_graph_control_explorer_cytoscape_plotly_v3.html",
-      "sha256": "7893add2a91e61bdea7df35c3e5e2c05ac4dcba0dd780bf24c9cfcdb6cc3f76b"
+      "sha256": "8f6232e2888d1ec747ce2727b843d0b0ed38ea7cba6a1c9591d2f619d4501a7c"
     }
   },
   "visualization_recalculates_analysis": false,
