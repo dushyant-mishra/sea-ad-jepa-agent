@@ -51,6 +51,15 @@ measurement masks in later harmonization; they are never zero-filled silently.
 The source-matrix and final-annotation cell counts are reported separately and
 are never assumed to describe identical cell populations.
 
+The GEO audit derives donor IDs only from accession-specific, anchored source
+title rules. In particular, GSE226602 RNA and GSE226267 ATAC each contain 50
+exact donor IDs and share 45 IDs; no fuzzy matching is used. Published GEO RDS
+objects are nested-gzip streams. `scripts/v4/stage81a1d_audit_geo_rds.R` opens
+both compression layers read-only, verifies the sparse object dimensions and
+unique feature/cell identifiers, and records those facts in the matrix-semantics
+registry. Raw counts, log-normalized expression, genomic peak matrices, bulk
+RNA, and miRNA representations remain explicitly distinct.
+
 ## Claim boundaries
 
 The outputs are acquisition and provenance evidence. Living surgical, NPH,

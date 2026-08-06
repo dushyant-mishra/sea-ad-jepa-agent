@@ -11,6 +11,7 @@ import html.parser
 import json
 import os
 import re
+import shlex
 import shutil
 import ssl
 import subprocess
@@ -83,6 +84,20 @@ def git(project: Path, *args: str) -> str:
 
 def relative(project: Path, path: Path) -> str:
     return path.resolve().relative_to(project.resolve()).as_posix()
+
+
+def external_command(command: str, arguments: Iterable[Path | str]) -> list[str]:
+    parts = shlex.split(command, posix=True)
+    if not parts:
+        raise RuntimeError("External command is empty")
+    use_wsl_paths = os.name == "nt" and parts[0].lower() in {"wsl", "wsl.exe"}
+    converted: list[str] = []
+    for argument in arguments:
+        value = str(argument)
+        if use_wsl_paths and re.match(r"^[A-Za-z]:[\\/]", value):
+            value = f"/mnt/{value[0].lower()}/{value[3:].replace(chr(92), '/')}"
+        converted.append(value)
+    return parts + converted
 
 
 def atomic_text(path: Path, value: str) -> None:
@@ -392,10 +407,10 @@ def audit_nph_annotations(
     summary_csv = sealed_root / "nph52_exact_summary.csv"
     matrix_csv = sealed_root / "nph52_exact_matrix_audit.csv"
     helper = project / "scripts/v4/stage81a1d_audit_nph_annotations.R"
-    command = [
-        rscript, str(helper), str(annotation_dir), str(organized_dir),
-        str(donors_csv), str(summary_csv), str(matrix_csv),
-    ]
+    command = external_command(
+        rscript,
+        [helper, annotation_dir, organized_dir, donors_csv, summary_csv, matrix_csv],
+    )
     try:
         subprocess.run(command, cwd=project, check=True)
     except (FileNotFoundError, subprocess.CalledProcessError) as exc:
@@ -491,6 +506,67 @@ def inspect_plain_asset(path: Path, row: dict[str, Any]) -> dict[str, Any]:
     name = path.name.lower()
     if name.endswith(".h5ad"):
         return inspect_h5ad(path)
+    if name.endswith("family.soft.gz"):
+        with gzip.open(path, "rb") as handle:
+            first = handle.read(4096)
+        return {
+            "open_pass": first.startswith(b"^DATABASE") or b"^SERIES" in first,
+            "matrix_semantics": "geo_soft_sample_metadata",
+            "feature_identifier_type": "not_applicable",
+        }
+    if name.endswith("matrix.mtx.gz"):
+        with gzip.open(path, "rt", encoding="ascii", errors="strict") as handle:
+            header = handle.readline().strip()
+            dimensions = ""
+            for line in handle:
+                if not line.startswith("%"):
+                    dimensions = line.strip()
+                    break
+        if header != "%%MatrixMarket matrix coordinate integer general" or not dimensions:
+            raise RuntimeError(f"Invalid Matrix Market header: {path.name}")
+        n_features, n_cells, nnz = (int(value) for value in dimensions.split())
+        return {
+            "open_pass": True,
+            "n_obs": n_cells,
+            "n_vars": n_features,
+            "nonzero_entries": nnz,
+            "matrix_semantics": "raw_integer_counts_10x_feature_by_cell_source",
+            "feature_identifier_type": "companion_10x_features_tsv",
+        }
+    if name.endswith(".rds.gz"):
+        with gzip.open(path, "rb") as handle:
+            first = handle.read(10)
+        nested_gzip = first.startswith(b"\x1f\x8b")
+        return {
+            "open_pass": bool(first),
+            "compression_layers": 2 if nested_gzip else 1,
+            "matrix_semantics": (
+                "published_raw_sparse_peak_matrix_rds"
+                if "raw_peaks" in name
+                else "published_raw_count_rds"
+                if "raw_counts" in name
+                else "published_lognormalized_expression_rds"
+            ),
+            "feature_identifier_type": "genomic_peak_coordinates" if "peaks" in name else "gene_symbol",
+        }
+    if name.endswith("counts.csv.gz"):
+        with gzip.open(path, "rt", encoding="utf-8", errors="strict", newline="") as handle:
+            header = next(csv.reader(handle))
+        return {
+            "open_pass": len(header) > 1,
+            "n_obs": len(header) - 6 if len(header) >= 7 else "",
+            "matrix_semantics": "published_raw_count_gene_by_cell_csv",
+            "feature_identifier_type": "gene_symbol_with_genomic_annotation_columns",
+        }
+    if name.endswith("lognorm_expression.csv.gz"):
+        with gzip.open(path, "rt", encoding="utf-8", errors="strict", newline="") as handle:
+            header = next(csv.reader(handle))
+        return {
+            "open_pass": len(header) > 1,
+            "n_obs": len(header) - 6 if len(header) >= 7 else "",
+            "matrix_semantics": "published_lognormalized_gene_by_cell_csv",
+            "feature_identifier_type": "gene_symbol_with_genomic_annotation_columns",
+        }
     members, unsafe = archive_members(path)
     if members:
         return {"open_pass": True, "archive_members": members, "unsafe_members": unsafe,
@@ -507,7 +583,25 @@ def inspect_plain_asset(path: Path, row: dict[str, Any]) -> dict[str, Any]:
             "feature_identifier_type": "inspect_during_harmonization"}
 
 
-def parse_geo_soft(path: Path) -> dict[str, Any]:
+def exact_geo_donor_id(study_id: str, title: str) -> str:
+    patterns = {
+        "GSE134577": r"^CSF_((?:HC|AD|MCI)\d+)$",
+        "GSE181279": r"^((?:AD|NC)\d+)_(?:GEX|BCR|TCR)$",
+        "GSE200164": r"^CSF_(?:Healthy|MCI/AD)_([A-H]\d+)$",
+        "GSE226267": r"^PBMC_(\d+)_",
+        "GSE226602": r"^(?:GEX|TCR)_PBMC_(\d+)_(?:GEX|TCR)_",
+        "GSE292141": r"^Patient (\d+) (?:CSF|PBMC)",
+        "GSE302937": r"^((?:Clinical AD|Pre-clinical AD|Control) Subject \d+)$",
+    }
+    pattern = patterns.get(study_id)
+    if not pattern:
+        return ""
+    match = re.search(pattern, title)
+    return match.group(1) if match else ""
+
+
+def parse_geo_soft(path: Path, study_id: str = "") -> dict[str, Any]:
+    study_id = study_id or path.parent.name
     samples: list[dict[str, list[str]]] = []
     current: dict[str, list[str]] | None = None
     with gzip.open(path, "rt", encoding="utf-8", errors="replace") as handle:
@@ -523,6 +617,19 @@ def parse_geo_soft(path: Path) -> dict[str, Any]:
     donor_values: set[str] = set()
     group_values: set[str] = set()
     for sample in samples:
+        title = sample.get("Sample_title", [""])[0]
+        exact_donor = exact_geo_donor_id(study_id, title)
+        sample["exact_donor_id"] = [exact_donor]
+        if exact_donor:
+            donor_values.add(exact_donor)
+        if study_id == "GSE292141":
+            match = re.search(r" (High|Low|Unknown) MOCA ", title)
+            if match:
+                group_values.add(f"{match.group(1)} MOCA")
+        if study_id == "GSE302937":
+            match = re.match(r"^(Clinical AD|Pre-clinical AD|Control) Subject", title)
+            if match:
+                group_values.add(match.group(1))
         for value in sample.get("Sample_characteristics_ch1", []):
             key, _, content = value.partition(":")
             normalized = key.strip().lower()
@@ -675,6 +782,24 @@ def role_for(config: dict[str, Any], study_id: str) -> dict[str, Any]:
     return next(item for item in config["geo"] if item["study_id"] == study_id)
 
 
+def audit_geo_rds(
+    project: Path, config: dict[str, Any], rows: list[dict[str, Any]], rscript: str,
+) -> dict[str, dict[str, str]]:
+    paths = [
+        data_path(project, config, row) for row in rows
+        if row["file_name"].lower().endswith(".rds.gz")
+        and data_path(project, config, row).exists()
+        and data_path(project, config, row).stat().st_size == int(row["remote_size"])
+    ]
+    if not paths:
+        return {}
+    output = project / config["policy"]["sealed_root"] / "geo_rds_exact_audit.tsv"
+    helper = project / "scripts/v4/stage81a1d_audit_geo_rds.R"
+    subprocess.run(external_command(rscript, [helper, output, *paths]), cwd=project, check=True)
+    with output.open("r", encoding="utf-8", newline="") as handle:
+        return {row["source_file"]: row for row in csv.DictReader(handle, delimiter="\t")}
+
+
 def audit(
     project: Path, config: dict[str, Any], rows: list[dict[str, Any]],
     metadata: dict[str, Any], output_dir: Path, rscript: str,
@@ -687,6 +812,7 @@ def audit(
     hvs_open = 0
     geo_metadata: dict[str, dict[str, Any]] = {}
     required_missing: list[str] = []
+    rds_audit = audit_geo_rds(project, config, rows, rscript)
     for row in rows:
         path = data_path(project, config, row)
         if not path.exists() or path.stat().st_size != int(row["remote_size"]):
@@ -700,6 +826,17 @@ def audit(
         if not official_pass:
             raise RuntimeError(f"Official checksum mismatch: {row['asset_id']}")
         info = inspect_plain_asset(path, row)
+        if path.name in rds_audit:
+            rds_info = rds_audit[path.name]
+            if rds_info["row_ids_unique"] != "TRUE" or rds_info["column_ids_unique"] != "TRUE":
+                raise RuntimeError(f"Duplicate RDS feature or observation identifiers: {path.name}")
+            info.update({
+                "open_pass": True,
+                "n_obs": int(rds_info["n_observations"]),
+                "n_vars": int(rds_info["n_features"]),
+                "r_object_class": rds_info["object_class"],
+                "compression_layers": int(rds_info["compression_layers"]),
+            })
         hash_rows.append({
             "asset_id": row["asset_id"], "study_id": row["study_id"], "source_path": relative(project, path),
             "size_bytes": path.stat().st_size, "sha256": local_sha,
@@ -712,6 +849,10 @@ def audit(
             "matrix_semantics": info.get("matrix_semantics", "metadata"),
             "feature_identifier_type": info.get("feature_identifier_type", "not_applicable"),
             "n_obs": info.get("n_obs", ""), "n_vars": info.get("n_vars", ""),
+            "r_object_class": info.get("r_object_class", ""),
+            "compression_layers": info.get("compression_layers", ""),
+            "archive_member_count": len(info.get("archive_members", [])),
+            "unsafe_archive_member_count": info.get("unsafe_members", 0),
             "matrix_orientation": "cell_by_feature_or_source_documented",
             "rna_vocabulary_eligible": role_for(config, row["study_id"]).get("modality") not in ("scATAC-seq", "miRNA_RT_qPCR"),
             "open_read_only_pass": info["open_pass"], "physical_merge_performed": False,
@@ -725,7 +866,7 @@ def audit(
             if not info["cell_ids_unique"]:
                 raise RuntimeError(f"Duplicate cell IDs within HVS partition: {row['asset_id']}")
         if row["file_type"] == "geo_soft":
-            geo_metadata[row["study_id"]] = parse_geo_soft(path)
+            geo_metadata[row["study_id"]] = parse_geo_soft(path, row["study_id"])
 
     nph_rows = [row for row in rows if row["study_id"] == "NPH52" and row["required"]]
     nph_verified = all(any(x["asset_id"] == row["asset_id"] for x in hash_rows) for row in nph_rows)
@@ -756,6 +897,9 @@ def audit(
             "matrix_semantics": nph_summary["matrix_semantics"],
             "feature_identifier_type": "gene_symbol", "n_obs": nph_summary["matrix_nph_cell_count"],
             "n_vars": nph_summary["matrix_feature_union_count"],
+            "r_object_class": "SingleCellExperiment_source_objects",
+            "compression_layers": "", "archive_member_count": len(nph_members.get("organized_data.zip", [])),
+            "unsafe_archive_member_count": 0,
             "matrix_orientation": "cell_by_feature_logical_view_from_gene_by_cell_source",
             "rna_vocabulary_eligible": True, "open_read_only_pass": True,
             "physical_merge_performed": False,
@@ -780,7 +924,11 @@ def audit(
             "assay": item.get("assay", ""), "modality": item.get("modality", ""),
             "clinical_context": "sealed_or_source_metadata_not_used_for_foundation_selection",
             "living_control_definition": config["hvs"]["living_control_definition"] if study_id == "HVS" else "not_healthy_volunteer",
-            "donor_count": len(hvs_donors) if study_id == "HVS" else meta.get("donor_count", "pending_exact_audit"),
+            "donor_count": (
+                len(hvs_donors) if study_id == "HVS" else
+                nph_counts["donors"] if study_id == "NPH52" else
+                meta.get("donor_count", "pending_exact_audit")
+            ),
             "sample_count": meta.get("sample_count", "partitioned_source" if study_id == "HVS" else "pending_exact_audit"),
             "cell_count": sum(int(row.get("advertised_cell_count") or 0) for row in assets),
             "matrix_semantics": "source_representations_retained_separately",
@@ -824,20 +972,25 @@ def audit(
     blocker_rows.extend({"source_id": item["study_id"], "source_type": "unreleased_candidate",
                          "access_tier": item["acquisition_status"], "blocker": item["acquisition_status"],
                          "required_for_stage81a1d_pass": False} for item in config["unreleased_candidates"])
+    rna_donors = set(geo_metadata.get("GSE226602", {}).get("donor_values", []))
+    atac_donors = set(geo_metadata.get("GSE226267", {}).get("donor_values", []))
+    shared_peripheral_donors = sorted(rna_donors & atac_donors)
     duplicate_rows = [
         {"left_dataset": "GSE226602", "right_dataset": "GSE226267", "comparison": "exact_donor_ids",
-         "exact_overlap_count": "pending_GEO_sample_field_harmonization", "fuzzy_matching_used": False,
-         "action": "resolve_before_adapter_training"},
+         "exact_overlap_count": len(shared_peripheral_donors), "fuzzy_matching_used": False,
+         "action": "retain_cross_modal_donor_linkage_without_pooling_modalities"},
         {"left_dataset": "GSE146639", "right_dataset": "living_human_portfolio", "comparison": "tissue_state",
          "exact_overlap_count": 0, "fuzzy_matching_used": False, "action": "retain_postmortem_only"},
     ]
     crosswalk_rows = []
     for study_id, value in sorted(geo_metadata.items()):
         for sample in value["samples"]:
+            donor_id = sample.get("exact_donor_id", [""])[0]
             crosswalk_rows.append({"dataset_id": study_id, "study_id": study_id,
-                                   "donor_id": "unresolved_exact_from_characteristics",
+                                   "donor_id": donor_id or "unresolved_exact_from_source_metadata",
                                    "sample_id": sample["accession"][0], "cell_id": "not_expanded_in_acquisition_audit",
-                                   "matching_method": "exact_source_metadata_only", "fuzzy_matching_used": False})
+                                   "matching_method": "exact_geo_sample_title_rule" if donor_id else "exact_source_metadata_unresolved",
+                                   "fuzzy_matching_used": False})
     crosswalk_rows.extend({"dataset_id": "HVS", "study_id": "HVS", "donor_id": donor,
                            "sample_id": "partitioned_source", "cell_id": "not_emitted_compact_evidence",
                            "matching_method": "exact_h5ad_donor_id", "fuzzy_matching_used": False}
@@ -881,7 +1034,7 @@ def audit(
         ),
         "living_brain_project_processed_files_acquired": 0,
         "living_brain_project_access_tier": sorted({row["access_tier"] for row in synapse_rows if row["synapse_id"] in config["synapse"]["living_brain_ids"]}),
-        "gse226602_gse226267_exact_shared_donor_count": "pending_exact_sample_metadata_harmonization",
+        "gse226602_gse226267_exact_shared_donor_count": len(shared_peripheral_donors),
         "open_synapse_file_count": sum(str(row["access_tier"]).startswith("open_") for row in synapse_rows),
         "controlled_synapse_file_count": sum(row["access_tier"] == "controlled_institutional_access" for row in synapse_rows),
         "clickthrough_required_file_count": sum(bool(row["clickthrough_required"]) for row in synapse_rows),

@@ -142,6 +142,31 @@ def test_synapse_policy_never_accepts_terms() -> None:
     assert "exceeded 5000 objects" in text
 
 
+def test_exact_geo_donor_rules_do_not_use_fuzzy_matching() -> None:
+    module = load_script()
+    examples = {
+        ("GSE134577", "CSF_MCI7"): "MCI7",
+        ("GSE181279", "AD2_TCR"): "AD2",
+        ("GSE200164", "CSF_MCI/AD_H1"): "H1",
+        ("GSE226267", "PBMC_1086_Healthy Control"): "1086",
+        ("GSE226602", "GEX_PBMC_1028_GEX_Healthy Control"): "1028",
+        ("GSE292141", "Patient 10 CSF Low MOCA scRNAseq"): "10",
+        ("GSE302937", "Pre-clinical AD Subject 8"): "Pre-clinical AD Subject 8",
+    }
+    for (study_id, title), expected in examples.items():
+        assert module.exact_geo_donor_id(study_id, title) == expected
+    assert module.exact_geo_donor_id("GSE226602", "PBMC-1028") == ""
+
+
+def test_wsl_rscript_command_keeps_portable_source_code(monkeypatch) -> None:
+    module = load_script()
+    monkeypatch.setattr(module.os, "name", "nt")
+    command = module.external_command(
+        "wsl -e /opt/Rscript", [Path("D:/Jepa project/scripts/audit.R")]
+    )
+    assert command == ["wsl", "-e", "/opt/Rscript", "/mnt/d/Jepa project/scripts/audit.R"]
+
+
 def test_protected_signatures_are_unchanged() -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
     for name, expected in config["protected_worktree_signatures"].items():
