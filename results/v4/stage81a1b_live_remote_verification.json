@@ -1,0 +1,125 @@
+{
+  "assets": [
+    {
+      "asset_id": "sea_ad_mtg_rna_final_2026",
+      "etag": "4bee2271c0e1138b53e44ff1b9419129-3932",
+      "last_modified": "Tue, 23 Jun 2026 16:30:37 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 32978570763
+    },
+    {
+      "asset_id": "sea_ad_pfc_a9_rna_final_2026",
+      "etag": "3c7ffbd9a14ff04121d85b5583a1e0ea-4593",
+      "last_modified": "Tue, 23 Jun 2026 16:36:18 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 38520614071
+    },
+    {
+      "asset_id": "sea_ad_stg_rna_final_2026",
+      "etag": "4b1342636b68c673f83e4c57f45a9968-1925",
+      "last_modified": "Tue, 23 Jun 2026 17:02:39 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 16144376554
+    },
+    {
+      "asset_id": "sea_ad_v1c_rna_final_2026",
+      "etag": "83d99e510078bed6042b40897fc48214-1972",
+      "last_modified": "Tue, 23 Jun 2026 17:05:25 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 16540631157
+    },
+    {
+      "asset_id": "sea_ad_mec_rna_final_2026",
+      "etag": "843ca41e03b3bc291610de0866334129-3065",
+      "last_modified": "Tue, 23 Jun 2026 16:51:14 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 25705658446
+    },
+    {
+      "asset_id": "sea_ad_lec_rna_final_2026",
+      "etag": "a7a9ce724dd70fb1651f7af11ec07f4b-506",
+      "last_modified": "Tue, 23 Jun 2026 16:50:21 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 4241947425
+    },
+    {
+      "asset_id": "sea_ad_hip_rna_final_2026",
+      "etag": "0ac97a78f34c853b690aadb750e1ecfd-594",
+      "last_modified": "Tue, 23 Jun 2026 16:46:49 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 4976204965
+    },
+    {
+      "asset_id": "sea_ad_itg_rna_final_2026",
+      "etag": "48b77baba96736e3fb6af3e79a009d18-1368",
+      "last_modified": "Tue, 23 Jun 2026 16:48:31 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 11472832562
+    },
+    {
+      "asset_id": "sea_ad_ang_rna_final_2026",
+      "etag": "989e051373bc4b67a2af3c998a2da6ed-635",
+      "last_modified": "Tue, 23 Jun 2026 16:41:10 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 5326721562
+    },
+    {
+      "asset_id": "sea_ad_fi_rna_final_2026",
+      "etag": "18063c6c4d5548d8df9e762de224d04b-643",
+      "last_modified": "Tue, 23 Jun 2026 16:44:56 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 5389393159
+    },
+    {
+      "asset_id": "sea_ad_caudate_rna_all_2025",
+      "etag": "bf80995dbc344d393cfdaf84094a79d5-7640",
+      "last_modified": "Thu, 08 Jan 2026 20:18:08 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 128171432912
+    },
+    {
+      "asset_id": "sea_ad_multiregion_immune_rna_final_2026",
+      "etag": "f9315349ea9da8c206aecd81cdb1fe86-390",
+      "last_modified": "Tue, 23 Jun 2026 18:37:03 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 3271409777
+    },
+    {
+      "asset_id": "sea_ad_mtg_atac_final_2024",
+      "etag": "5786152411f1f83eef97cc08bb3732b6-3483",
+      "last_modified": "Fri, 06 Dec 2024 23:38:02 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 18260707597
+    },
+    {
+      "asset_id": "sea_ad_mtg_merfish_combined_2024",
+      "etag": "0b36ab1f3524510e20e6352129da1f6d-60",
+      "last_modified": "Tue, 30 Jun 2026 16:16:56 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 497737587
+    },
+    {
+      "asset_id": "sea_ad_caudate_xenium_combined_2026",
+      "etag": "8a5e2134eb92ec6db29beea4b4264981-374",
+      "last_modified": "Thu, 08 Jan 2026 22:28:38 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 3133846231
+    },
+    {
+      "asset_id": "sea_ad_hip_merscope_combined_2026",
+      "etag": "6f6fb9a34aa7a22f970a65e37a67599f-13",
+      "last_modified": "Tue, 30 Jun 2026 16:24:12 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 107711584
+    },
+    {
+      "asset_id": "sea_ad_mec_merscope_combined_2026",
+      "etag": "924203fb70a858bb6545e314451e5aeb-10",
+      "last_modified": "Tue, 30 Jun 2026 16:19:10 GMT",
+      "multipart_etag_not_treated_as_md5": true,
+      "remote_size": 75877782
+    }
+  ],
+  "contract_revision": "june_2026_complete_multiregion",
+  "stage_id": "stage81a1b"
+}

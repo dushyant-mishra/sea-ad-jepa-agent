@@ -1,0 +1,13 @@
+brain_region,ar_id,original_donor_id,predicted_corrected_donor_id,comparison_asset_id,observed_final_nuclei_donor_ids,compatibility_status,present_in_final_nuclei,predicted_donor_exact_match,partial_string_matching_used
+CaH,1225051613,H20.33.025,H20.33.015,sea_ad_caudate_rna_all_2025,,absent_from_final_nuclei,False,False,False
+CaH,1225051615,H20.33.015,H20.33.025,sea_ad_caudate_rna_all_2025,,absent_from_final_nuclei,False,False,False
+V1C,1212705196,H20.33.013,H20.33.015,sea_ad_v1c_rna_final_2026,H20.33.015,compatible_present,True,True,False
+V1C,1212705197,H20.33.015,H20.33.013,sea_ad_v1c_rna_final_2026,H20.33.013,compatible_present,True,True,False
+DFC,1122806995,H20.33.016,H21.33.037,sea_ad_pfc_a9_rna_final_2026,,absent_from_final_nuclei,False,False,False
+MTG,1153814324,H21.33.037,H20.33.016,sea_ad_mtg_rna_final_2026,,absent_from_final_nuclei,False,False,False
+STG,1243673663,H20.33.031,H20.33.020,sea_ad_stg_rna_final_2026,H20.33.020,compatible_present,True,True,False
+STG,1244670536,H20.33.020,H20.33.031,sea_ad_stg_rna_final_2026,H20.33.031,compatible_present,True,True,False
+STG,1244668542,H21.33.002,H21.33.003,sea_ad_stg_rna_final_2026,H21.33.003,compatible_present,True,True,False
+STG,1244668543,H21.33.003,H21.33.002,sea_ad_stg_rna_final_2026,H21.33.002,compatible_present,True,True,False
+STG,1249629864,H21.33.018,H21.33.004,sea_ad_stg_rna_final_2026,H21.33.004,compatible_present,True,True,False
+STG,1249629865,H21.33.004,H21.33.018,sea_ad_stg_rna_final_2026,H21.33.018,compatible_present,True,True,False
