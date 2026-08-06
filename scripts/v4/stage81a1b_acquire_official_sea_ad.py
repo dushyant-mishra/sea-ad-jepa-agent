@@ -42,6 +42,7 @@ OUTPUT_NAMES = {
     "metadata_schema": "stage81a1b_regional_metadata_schema_comparison.csv",
     "metadata_decisions": "stage81a1b_regional_metadata_download_decisions.csv",
     "library_swap": "stage81a1b_library_swap_validation.json",
+    "library_swap_compatibility": "stage81a1b_library_swap_compatibility.csv",
     "roles": "stage81a1b_dataset_role_registry.csv",
     "regulatory": "stage81a1b_existing_regulatory_evidence_integration.csv",
     "preservation": "stage81a1b_regulatory_evidence_preservation_registry.csv",
@@ -737,13 +738,46 @@ def asset_hash_rows(
     return sorted(rows, key=lambda row: row["asset_id"])
 
 
-def preserved_hashes(project: Path, config: dict[str, Any]) -> dict[str, str]:
+def preserved_hashes(
+    project: Path,
+    config: dict[str, Any],
+    source_commit: str,
+) -> dict[str, str]:
     values = {}
+    cache_dir = (
+        project
+        / config["policy"]["data_root"]
+        / "manifests/preserved_hash_bindings"
+    )
     for item in config["preserved_regulatory_sources"]:
         path = project / item["path"]
         if not path.exists():
             raise RuntimeError(f"Required preserved evidence is missing: {item['path']}")
-        values[item["path"]] = sha256(path)
+        stat = path.stat()
+        cache_name = hashlib.sha256(item["path"].encode("utf-8")).hexdigest() + ".json"
+        cache_path = cache_dir / cache_name
+        existing: dict[str, Any] = {}
+        if cache_path.exists():
+            existing = json.loads(cache_path.read_text(encoding="utf-8"))
+        binding_matches = all([
+            existing.get("relative_path") == item["path"],
+            existing.get("size_bytes") == stat.st_size,
+            existing.get("mtime_ns") == stat.st_mtime_ns,
+            isinstance(existing.get("sha256"), str)
+            and len(existing.get("sha256", "")) == 64,
+        ])
+        digest = existing["sha256"] if binding_matches else sha256(path)
+        if not binding_matches:
+            write_json(cache_path, {
+                "relative_path": item["path"],
+                "size_bytes": stat.st_size,
+                "mtime_ns": stat.st_mtime_ns,
+                "sha256": digest,
+                "verification_source_commit": source_commit,
+                "verification_schema_version": config["policy"]["verification_schema_version"],
+                "verification_tool_version": config["policy"]["verification_tool_version"],
+            })
+        values[item["path"]] = digest
     return values
 
 
@@ -1108,12 +1142,23 @@ def regional_metadata_audit(
     return catalog, schema, decisions
 
 
+def classify_library_swap_record(
+    observed_donors: set[str],
+    predicted_donor: str,
+) -> str:
+    if not observed_donors:
+        return "absent_from_final_nuclei"
+    if observed_donors == {predicted_donor}:
+        return "compatible_present"
+    return "conflicting_present"
+
+
 def validate_library_swap(
     project: Path,
     config: dict[str, Any],
     summaries: dict[str, dict[str, Any]],
     assets: dict[str, dict[str, Any]],
-) -> dict[str, Any]:
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     path = project / config["policy"]["data_root"] / "manifests/mixup_investigation_02-14-2025.csv"
     rows = read_csv(path)
     required = ["Brain Region", "ar_id", "original Donor ID", "predicted Donor ID"]
@@ -1122,9 +1167,11 @@ def validate_library_swap(
     malformed = [row for row in rows if any(not row[field].strip() for field in required)]
     region_map = {"CaH": "Caudate_Nucleus", "DFC": "PFC_A9_DFC"}
     observed_by_region: dict[str, dict[str, set[str]]] = {}
+    source_asset_by_region: dict[str, str] = {}
     for source_region in sorted({row["Brain Region"] for row in rows}):
         region = region_map.get(source_region, source_region)
         candidate = next((key for key, asset in assets.items() if key in summaries and asset["region"] == region and asset["modality"] == "snRNA"), "")
+        source_asset_by_region[source_region] = candidate
         if not candidate:
             observed_by_region[source_region] = {}
             continue
@@ -1137,11 +1184,30 @@ def validate_library_swap(
         for ar_id, donor in zip(ar_ids, donors):
             mapping.setdefault(ar_id, set()).add(donor)
         observed_by_region[source_region] = mapping
-    compatibility = []
+    compatibility_rows = []
     for row in rows:
         observed = observed_by_region[row["Brain Region"]].get(row["ar_id"], set())
-        compatibility.append(observed == {row["predicted Donor ID"]})
-    return {
+        status = classify_library_swap_record(observed, row["predicted Donor ID"])
+        compatibility_rows.append({
+            "brain_region": row["Brain Region"],
+            "ar_id": row["ar_id"],
+            "original_donor_id": row["original Donor ID"],
+            "predicted_corrected_donor_id": row["predicted Donor ID"],
+            "comparison_asset_id": source_asset_by_region[row["Brain Region"]],
+            "observed_final_nuclei_donor_ids": ";".join(sorted(observed)),
+            "compatibility_status": status,
+            "present_in_final_nuclei": bool(observed),
+            "predicted_donor_exact_match": status == "compatible_present",
+            "partial_string_matching_used": False,
+        })
+    status_counts = Counter(row["compatibility_status"] for row in compatibility_rows)
+    no_conflicts = status_counts["conflicting_present"] == 0
+    structurally_valid = all([
+        not malformed,
+        len({row["ar_id"] for row in rows}) == len(rows),
+        all(row["original Donor ID"] != row["predicted Donor ID"] for row in rows),
+    ])
+    report = {
         "source_path": relative(project, path),
         "source_release": "official_multiregion_repository_2026",
         "readable_tabular_structure": True,
@@ -1151,12 +1217,20 @@ def validate_library_swap(
         "malformed_required_identifier_count": len(malformed),
         "explicit_semantics": "original_donor_id_to_predicted_corrected_donor_id_by_exact_ar_id",
         "all_rows_are_corrections": all(row["original Donor ID"] != row["predicted Donor ID"] for row in rows),
-        "downloaded_release_compatibility_rows": sum(compatibility),
-        "downloaded_release_compatibility_pass": all(compatibility),
+        "downloaded_release_compatibility_rows": status_counts["compatible_present"],
+        "compatible_present_rows": status_counts["compatible_present"],
+        "absent_from_final_nuclei_rows": status_counts["absent_from_final_nuclei"],
+        "conflicting_present_rows": status_counts["conflicting_present"],
+        "release_compatibility_status_counts": dict(sorted(status_counts.items())),
+        "downloaded_release_coverage_complete": status_counts["absent_from_final_nuclei"] == 0,
+        "downloaded_release_no_conflict_pass": no_conflicts,
+        "downloaded_release_compatibility_pass": no_conflicts,
+        "absent_record_interpretation": "correction_authority_retained; library_not_present_in_consolidated_final_nuclei_object",
         "partial_string_matching_used": False,
         "pathology_values_used": False,
-        "library_swap_validation_pass": not malformed and len({row["ar_id"] for row in rows}) == len(rows) and all(compatibility),
+        "library_swap_validation_pass": structurally_valid and no_conflicts,
     }
+    return report, compatibility_rows
 
 
 def exact_multiome_linkage(
@@ -1317,7 +1391,7 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path, download_e
         asset = assets[asset_id]
         path = destination_path(project, config, asset)
         summaries[asset_id] = h5ad_summary(path, asset["modality"], config["identity_fields"].get(asset["modality"], {}))
-    preserved = preserved_hashes(project, config)
+    preserved = preserved_hashes(project, config, source_commit)
     preservation = preservation_rows(project, config, preserved)
     stage75 = read_csv(project / "results/tables/stage75_integrated_tf_target_summary_v1.csv")
     regulatory_genes = {r["tf"] for r in stage75} | {r["target_gene"] for r in stage75}
@@ -1325,7 +1399,9 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path, download_e
     crosswalk, identity_crosswalk = crosswalk_rows(project, config, summaries, assets)
     matrix_semantics = matrix_semantics_rows(summaries, assets)
     metadata_catalog, metadata_schema, metadata_decisions = regional_metadata_audit(config, summaries, assets)
-    library_swap = validate_library_swap(project, config, summaries, assets)
+    library_swap, library_swap_compatibility = validate_library_swap(
+        project, config, summaries, assets
+    )
     multiome_linkage = exact_multiome_linkage(project, config, assets)
     regulatory = regulatory_rows(project, summaries, preserved, multiome_linkage)
     registry = []
@@ -1378,6 +1454,10 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path, download_e
     write_csv(output_dir / OUTPUT_NAMES["metadata_schema"], metadata_schema)
     write_csv(output_dir / OUTPUT_NAMES["metadata_decisions"], metadata_decisions)
     write_json(output_dir / OUTPUT_NAMES["library_swap"], library_swap)
+    write_csv(
+        output_dir / OUTPUT_NAMES["library_swap_compatibility"],
+        library_swap_compatibility,
+    )
     write_csv(output_dir / OUTPUT_NAMES["roles"], roles)
     write_csv(output_dir / OUTPUT_NAMES["regulatory"], regulatory, INTEGRATION_COLUMNS)
     write_csv(output_dir / OUTPUT_NAMES["preservation"], preservation)
@@ -1545,7 +1625,13 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path, download_e
     report["ready_for_stage81a1c"] = report["stage81a1b_pass"]
     report["ready_for_stage81a2"] = report["stage81a1b_pass"] and section_ready
     if not section_ready:
-        report["blocking_issues"].append("MERFISH tissue-section identity was not found in the acquired processed object")
+        report["blocking_issues"].append(
+            "Spatial section identity remains unresolved for one or more HIP, MEC, or Caudate processed objects; resolve during pre-Stage81A2 harmonization"
+        )
+    if not library_swap["library_swap_validation_pass"]:
+        report["blocking_issues"].append(
+            "Official library-swap corrections contain a malformed row or a present final-nuclei donor conflict"
+        )
     write_json(output_dir / OUTPUT_NAMES["report"], report)
     return report
 

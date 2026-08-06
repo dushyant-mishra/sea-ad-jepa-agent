@@ -111,6 +111,16 @@ region, original donor and corrected donor fields against the downloaded
 release metadata. Path existence alone is not a passing check, and partial
 identifier matching is prohibited.
 
+Compatibility is reported row by row as `compatible_present`,
+`absent_from_final_nuclei`, or `conflicting_present`. A correction library that
+is absent from a consolidated final-nuclei object remains registered from the
+official correction authority but is not treated as either confirmed or
+contradicted by that object. Any library that is present under a donor other
+than the exact predicted corrected donor is a hard failure. Preserved v3
+evidence hashes are cached only with matching repository-relative path, byte
+size, modification time, and SHA-256 bindings so repeated finalization does not
+rehash unchanged large files.
+
 ## Identity and metadata audit
 
 Stage81A1B records exact official donor, specimen, library, run, region,

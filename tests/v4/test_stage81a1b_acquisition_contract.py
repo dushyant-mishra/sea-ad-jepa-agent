@@ -215,8 +215,42 @@ def test_metadata_audit_is_header_only_and_outputs_are_registered() -> None:
         "asset_id": "x",
         "remote_url": "https://example.org/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad",
     }).endswith("SEAAD_MTG_RNAseq_final-nuclei_metadata.2026-06-22.csv")
-    for key in ("events", "ledger", "identity_crosswalk", "matrix_semantics", "metadata_catalog", "metadata_schema", "metadata_decisions", "library_swap"):
+    for key in ("events", "ledger", "identity_crosswalk", "matrix_semantics", "metadata_catalog", "metadata_schema", "metadata_decisions", "library_swap", "library_swap_compatibility"):
         assert key in module.OUTPUT_NAMES
+
+
+def test_library_swap_compatibility_distinguishes_absence_from_conflict() -> None:
+    module = load_script()
+    assert module.classify_library_swap_record(set(), "D2") == "absent_from_final_nuclei"
+    assert module.classify_library_swap_record({"D2"}, "D2") == "compatible_present"
+    assert module.classify_library_swap_record({"D1"}, "D2") == "conflicting_present"
+    assert module.classify_library_swap_record({"D1", "D2"}, "D2") == "conflicting_present"
+
+
+def test_preserved_hash_cache_is_bound_to_path_size_and_mtime(tmp_path: Path) -> None:
+    module = load_script()
+    source = tmp_path / "evidence.csv"
+    source.write_text("a,b\n1,2\n", encoding="utf-8")
+    config = {
+        "policy": {
+            "data_root": "data/external/v4/sea_ad",
+            "verification_schema_version": "1.0",
+            "verification_tool_version": "test",
+        },
+        "preserved_regulatory_sources": [{"path": "evidence.csv"}],
+    }
+    first = module.preserved_hashes(tmp_path, config, "commit-a")
+    second = module.preserved_hashes(tmp_path, config, "commit-b")
+    assert first == second
+    bindings = list((tmp_path / config["policy"]["data_root"] / "manifests/preserved_hash_bindings").glob("*.json"))
+    assert len(bindings) == 1
+    record = json.loads(bindings[0].read_text(encoding="utf-8"))
+    assert record["verification_source_commit"] == "commit-a"
+    stat = source.stat()
+    os.utime(source, ns=(stat.st_atime_ns, stat.st_mtime_ns + 2_000_000_000))
+    module.preserved_hashes(tmp_path, config, "commit-c")
+    refreshed = json.loads(bindings[0].read_text(encoding="utf-8"))
+    assert refreshed["verification_source_commit"] == "commit-c"
 
 
 def test_catalog_mode_is_deterministic_and_portable(tmp_path: Path) -> None:
