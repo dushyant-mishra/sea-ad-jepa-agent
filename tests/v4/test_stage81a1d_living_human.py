@@ -120,6 +120,11 @@ def test_pathology_sidecar_is_outside_committed_evidence() -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
     assert config["policy"]["sealed_root"].startswith("data/processed/")
     assert not config["policy"]["sealed_root"].startswith("results/")
+    helper = PROJECT / "scripts/v4/stage81a1d_audit_nph_annotations.R"
+    text = helper.read_text(encoding="utf-8")
+    assert 'frame$ds_batch == "human_NPH"' in text
+    assert "anno_batch" in text
+    assert "anno_condition" in text
 
 
 def test_synapse_policy_never_accepts_terms() -> None:

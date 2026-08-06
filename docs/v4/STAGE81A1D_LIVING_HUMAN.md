@@ -38,6 +38,12 @@ performs metadata requests only. Required downloads are written below
 `data/external/v4/living_human/` through resumable `.part` files. The script
 checks actual free space before transfers and applies no arbitrary stage cap.
 
+The exact NPH annotation audit uses `scripts/v4/stage81a1d_audit_nph_annotations.R`
+with R `qs`. Set `STAGE81A1D_RSCRIPT` (or pass `--rscript`) when that reader is
+not on `PATH`. It filters exactly on `ds_batch == human_NPH`, treats
+`anno_batch` as the source donor field, and seals `anno_condition` outside
+committed evidence.
+
 ## Claim boundaries
 
 The outputs are acquisition and provenance evidence. Living surgical, NPH,

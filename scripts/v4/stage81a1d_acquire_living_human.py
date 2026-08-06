@@ -56,6 +56,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--study", action="append", default=[])
     parser.add_argument("--curl", default="curl.exe" if os.name == "nt" else "curl")
+    parser.add_argument("--rscript", default=os.environ.get("STAGE81A1D_RSCRIPT", "Rscript"))
     parser.add_argument("--offline", action="store_true")
     return parser.parse_args()
 
@@ -350,6 +351,66 @@ def archive_members(path: Path) -> tuple[list[str], int]:
     return sorted(names), unsafe
 
 
+def audit_nph_annotations(
+    project: Path,
+    config: dict[str, Any],
+    annotations_zip: Path,
+    rscript: str,
+) -> dict[str, Any]:
+    sealed_root = project / config["policy"]["sealed_root"]
+    extraction = sealed_root / "nph52_annotations"
+    extraction.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(annotations_zip) as handle:
+        members = handle.infolist()
+        for member in members:
+            if unsafe_member(member.filename):
+                raise RuntimeError(f"Unsafe NPH annotation member: {member.filename}")
+        handle.extractall(extraction)
+    annotation_dir = extraction / "annotations"
+    donors_csv = sealed_root / "nph52_exact_donors.csv"
+    summary_csv = sealed_root / "nph52_exact_summary.csv"
+    helper = project / "scripts/v4/stage81a1d_audit_nph_annotations.R"
+    command = [rscript, str(helper), str(annotation_dir), str(donors_csv), str(summary_csv)]
+    try:
+        subprocess.run(command, cwd=project, check=True)
+    except (FileNotFoundError, subprocess.CalledProcessError) as exc:
+        sidecar = sealed_root / config["nph52"]["pathology_sidecar"]
+        if not sidecar.exists():
+            raise RuntimeError(
+                "NPH exact audit requires Rscript with qs, or a matching verified sealed sidecar"
+            ) from exc
+        cached = json.loads(sidecar.read_text(encoding="utf-8"))
+        if cached.get("annotations_archive_sha256") != sha256(annotations_zip):
+            raise RuntimeError("Sealed NPH audit does not match annotations archive") from exc
+        return cached
+    with donors_csv.open("r", encoding="utf-8", newline="") as handle:
+        donors = list(csv.DictReader(handle))
+    with summary_csv.open("r", encoding="utf-8", newline="") as handle:
+        summaries = list(csv.DictReader(handle))
+    if len(summaries) != 1:
+        raise RuntimeError("NPH annotation audit did not emit exactly one summary")
+    summary = summaries[0]
+    integer_fields = (
+        "source_qs_count", "nph_cell_count", "nph_unique_cell_count", "nph_donor_count",
+        "pathology_negative_donor_count", "amyloid_positive_donor_count",
+        "amyloid_tau_positive_donor_count", "integrated_non_nph_annotation_row_count",
+    )
+    for key in integer_fields:
+        summary[key] = int(summary[key])
+    if len(donors) != summary["nph_donor_count"]:
+        raise RuntimeError("NPH donor table and summary disagree")
+    sidecar_value = {
+        "stage_id": config["stage_id"], "source": "NPH52 official annotations.zip",
+        "annotations_archive_sha256": sha256(annotations_zip),
+        "summary": summary, "donors": donors,
+        "foundation_selection_load_allowed": False,
+        "pathology_metadata_sealed": True,
+    }
+    sidecar = sealed_root / config["nph52"]["pathology_sidecar"]
+    write_json(sidecar, sidecar_value)
+    return sidecar_value
+
+
 def decode(values: Iterable[Any]) -> list[str]:
     return [value.decode() if isinstance(value, bytes) else str(value) for value in values]
 
@@ -584,7 +645,10 @@ def role_for(config: dict[str, Any], study_id: str) -> dict[str, Any]:
     return next(item for item in config["geo"] if item["study_id"] == study_id)
 
 
-def audit(project: Path, config: dict[str, Any], rows: list[dict[str, Any]], metadata: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+def audit(
+    project: Path, config: dict[str, Any], rows: list[dict[str, Any]],
+    metadata: dict[str, Any], output_dir: Path, rscript: str,
+) -> dict[str, Any]:
     hash_rows: list[dict[str, Any]] = []
     matrix_rows: list[dict[str, Any]] = []
     hvs_donors: set[str] = set()
@@ -640,14 +704,20 @@ def audit(project: Path, config: dict[str, Any], rows: list[dict[str, Any]], met
         path = data_path(project, config, row)
         if path.exists():
             nph_members[row["file_name"]] = archive_members(path)[0]
-    # Exact donor/pathology isolation is deliberately unresolved until source annotation tables are parsed.
     nph_counts = {"donors": 0, "pathology_negative": 0, "amyloid_positive": 0, "amyloid_tau_positive": 0}
     sealed = project / config["policy"]["sealed_root"] / config["nph52"]["pathology_sidecar"]
     if nph_verified:
-        write_json(sealed, {
-            "stage_id": config["stage_id"], "source": "NPH52 annotations archive",
-            "status": "sealed_pending_exact_annotation_member_parsing", "foundation_selection_load_allowed": False,
-        })
+        annotation_row = next(row for row in nph_rows if row["file_name"] == "annotations.zip")
+        nph_audit = audit_nph_annotations(
+            project, config, data_path(project, config, annotation_row), rscript,
+        )
+        nph_summary = nph_audit["summary"]
+        nph_counts = {
+            "donors": int(nph_summary["nph_donor_count"]),
+            "pathology_negative": int(nph_summary["pathology_negative_donor_count"]),
+            "amyloid_positive": int(nph_summary["amyloid_positive_donor_count"]),
+            "amyloid_tau_positive": int(nph_summary["amyloid_tau_positive_donor_count"]),
+        }
 
     role_rows = []
     tissue_rows = []
@@ -755,7 +825,9 @@ def audit(project: Path, config: dict[str, Any], rows: list[dict[str, Any]], met
         "nph_pathology_negative_donor_count": nph_counts["pathology_negative"],
         "nph_amyloid_positive_donor_count": nph_counts["amyloid_positive"],
         "nph_amyloid_tau_positive_donor_count": nph_counts["amyloid_tau_positive"],
-        "nph_integrated_non_nph_assets_excluded": bool(nph_members),
+        "nph_integrated_non_nph_assets_excluded": bool(nph_members) and (
+            not nph_verified or int(nph_summary["integrated_non_nph_annotation_row_count"]) > 0
+        ),
         "living_brain_project_processed_files_acquired": 0,
         "living_brain_project_access_tier": sorted({row["access_tier"] for row in synapse_rows if row["synapse_id"] in config["synapse"]["living_brain_ids"]}),
         "gse226602_gse226267_exact_shared_donor_count": "pending_exact_sample_metadata_harmonization",
@@ -819,7 +891,7 @@ def main() -> int:
     if args.mode == "acquire":
         acquire(project, config, rows, args)
         return 0
-    report = audit(project, config, rows, metadata, output_dir)
+    report = audit(project, config, rows, metadata, output_dir, args.rscript)
     print(json.dumps({
         "stage81a1d_pass": report["stage81a1d_pass"],
         "verified_asset_count": report["verified_asset_count"],
