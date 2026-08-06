@@ -33,7 +33,9 @@ def test_scope_roles_and_no_fixed_cap() -> None:
     assert config["policy"]["no_donor_split_freeze"] is True
     assert config["policy"]["pathology_values_used"] is False
     assert {asset["primary_role"] for asset in config["assets"]} <= {
-        "normal_training_reference", "clean_normal_holdout", "technical_compatibility_only"
+        "normal_training_reference", "clean_normal_holdout", "technical_compatibility_only",
+        "aged_normal_and_pathology_context_validation", "aged_primary_microglia_validation",
+        "aged_primary_microglia_reference", "regional_primary_microglia_reference",
     }
 
 
@@ -49,8 +51,11 @@ def test_clean_holdout_is_study_isolated_and_not_duplicated() -> None:
 
 def test_only_processed_compact_files_are_selected() -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
-    assert len(config["assets"]) == 5
-    assert {asset["file_type"] for asset in config["assets"]} == {"h5ad", "gzipped_text_matrix", "text"}
+    assert len(config["assets"]) == 10
+    assert {asset["file_type"] for asset in config["assets"]} == {
+        "h5ad", "h5ad_gzip", "gzipped_text_matrix", "gzipped_tabular_matrix",
+        "processed_tar_archive", "text",
+    }
     forbidden = ("fastq", "bam", "cram", ".sra", "raw image")
     assert not any(token in asset["remote_url"].lower() for asset in config["assets"] for token in forbidden)
 
@@ -96,6 +101,7 @@ def test_frozen_outputs_when_present() -> None:
     assert report["clean_normal_holdout_resolved"] is True
     assert report["normal_training_reference_candidate_resolved"] is True
     assert report["normal_adult_microglia_coverage_assessed"] is True
+    assert report["aged_primary_microglia_references_resolved"] is True
     assert report["microglia_partition_counts_assumed_equivalent"] is False
     assert report["pathology_values_used"] is False
     assert report["model_trained"] is False

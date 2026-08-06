@@ -20,6 +20,15 @@ candidate. Its three processed snDrop-seq UMI matrices cover frontal cortex,
 visual cortex and cerebellar hemisphere. Their missing explicit cell-to-donor
 mapping is retained as a limitation and must be resolved before any donor split.
 
+The storage-policy reconsideration adds four nonredundant official processed
+studies on scientific grounds. GSE99074 provides purified microglia counts from
+39 intact-cognition donors. GSE146639 provides direct primary microglia across
+plaque-free, plaque-positive non-demented and AD contexts. GSE243292 provides a
+single-nucleus DLPFC object spanning explicit normal, pathological-aging and AD
+contexts. GSE133357 provides patient-matched STG and cerebellar microglia. Mixed
+condition studies remain validation candidates until exact sample-level
+harmonization; their inclusion does not authorize pathology modeling.
+
 The old 10,000-cell mixed CELLxGENE anchor is not promoted into v4. It samples
 38 datasets and includes non-adult developmental stages. It is audited only to
 identify exact overlap and is classified `excluded_incompatible`.

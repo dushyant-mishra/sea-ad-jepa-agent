@@ -12,6 +12,7 @@ import os
 import shutil
 import ssl
 import subprocess
+import tarfile
 import tempfile
 import urllib.request
 from collections import Counter
@@ -207,11 +208,73 @@ def inspect_text(path: Path) -> dict[str, Any]:
     return {"open_pass": bool(first), "first_line": first}
 
 
+def inspect_h5ad_gzip(path: Path) -> dict[str, Any]:
+    with tempfile.NamedTemporaryFile(suffix=".h5ad", dir=path.parent, delete=False) as temporary:
+        temporary_path = Path(temporary.name)
+        with gzip.open(path, "rb") as source:
+            shutil.copyfileobj(source, temporary, length=16 * 1024 * 1024)
+    try:
+        return inspect_h5ad(temporary_path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+
+
+def inspect_gzip_table(path: Path) -> dict[str, Any]:
+    with gzip.open(path, "rt", encoding="utf-8", errors="strict", newline="") as handle:
+        first = handle.readline().rstrip("\r\n")
+        if not first:
+            raise RuntimeError(f"Empty processed table: {path.name}")
+        delimiter = "\t" if "\t" in first else ","
+        width = len(first.split(delimiter))
+        rows = 0
+        for line in handle:
+            if not line.strip():
+                continue
+            if len(line.rstrip("\r\n").split(delimiter)) != width:
+                raise RuntimeError(f"Inconsistent processed table width: {path.name}")
+            rows += 1
+    return {
+        "open_pass": True,
+        "delimiter": "tab" if delimiter == "\t" else "comma",
+        "table_columns": width,
+        "data_rows": rows,
+        "matrix_orientation": "source_defined_tabular_matrix",
+        "donor_linkage_present": "donor" in first.lower() or "sample" in first.lower(),
+    }
+
+
+def inspect_processed_tar(path: Path) -> dict[str, Any]:
+    with tarfile.open(path, "r:*") as archive:
+        names = [member.name for member in archive.getmembers() if member.isfile()]
+    if not names:
+        raise RuntimeError(f"Empty processed archive: {path.name}")
+    if any(Path(name).is_absolute() or ".." in Path(name).parts for name in names):
+        raise RuntimeError(f"Unsafe member path in processed archive: {path.name}")
+    forbidden = (".fastq", ".fastq.gz", ".fq", ".fq.gz", ".bam", ".cram", ".sra")
+    raw_members = [name for name in names if name.lower().endswith(forbidden)]
+    if raw_members:
+        raise RuntimeError(f"Raw sequencing members found in {path.name}: {raw_members[:3]}")
+    return {
+        "open_pass": True,
+        "archive_member_count": len(names),
+        "archive_members": names,
+        "raw_sequencing_member_count": 0,
+        "matrix_orientation": "archive_of_source_processed_matrices",
+        "donor_linkage_present": any("donor" in name.lower() or "metadata" in name.lower() for name in names),
+    }
+
+
 def inspect_asset(path: Path, file_type: str) -> dict[str, Any]:
     if file_type == "h5ad":
         return inspect_h5ad(path)
+    if file_type == "h5ad_gzip":
+        return inspect_h5ad_gzip(path)
     if file_type == "gzipped_text_matrix":
         return inspect_gzip_matrix(path)
+    if file_type == "gzipped_tabular_matrix":
+        return inspect_gzip_table(path)
+    if file_type == "processed_tar_archive":
+        return inspect_processed_tar(path)
     if file_type == "text":
         return inspect_text(path)
     raise RuntimeError(f"Unsupported file type: {file_type}")
@@ -292,6 +355,8 @@ def catalog_rows(config: dict[str, Any]) -> list[dict[str, Any]]:
             "organism": asset["organism"],
             "primary_role": asset["primary_role"],
             "decision": asset["decision"],
+            "scientific_reason": asset.get("scientific_reason", "approved_processed_reference"),
+            "storage_assessment": "fits_current_portfolio_no_fixed_cap_applied",
         })
     return sorted(rows, key=lambda row: row["asset_id"])
 
@@ -407,7 +472,7 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path) -> dict[st
         "primary_role": asset["primary_role"],
         "accepted": True,
         "whole_study_training_exclusion": asset["study_id"] == config["holdout_contract"]["study_id"],
-        "limitations": "none_beyond_postmortem_and_assay_scope" if asset["study_id"] == config["holdout_contract"]["study_id"] else "processed_region_matrices_lack_explicit_cell_to_donor_mapping",
+        "limitations": asset.get("limitations", "none_beyond_postmortem_and_assay_scope" if asset["study_id"] == config["holdout_contract"]["study_id"] else "processed_region_matrices_lack_explicit_cell_to_donor_mapping"),
     } for asset in config["assets"] if asset["file_type"] != "text"]
     role_rows.extend({
         "dataset_id": row["dataset_id"], "study_id": row["study_id"],
@@ -457,6 +522,9 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path) -> dict[st
         "required_asset_count": len(config["assets"]),
         "all_required_assets_verified": len(records) == len(config["assets"]) and all(row["open_pass"] for row in records),
         "normal_training_reference_candidate_resolved": all(details[key]["open_pass"] for key in ("gse97930_cerebellar_umi", "gse97930_frontal_cortex_umi", "gse97930_visual_cortex_umi")),
+        "aged_primary_microglia_references_resolved": all(details[key]["open_pass"] for key in ("gse146639_processed_microglia_archive", "gse99074_human_microglia_counts")),
+        "regional_primary_microglia_reference_resolved": details["gse133357_regional_microglia_fpkm"]["open_pass"],
+        "aged_normal_context_validation_resolved": details["gse243292_full_dlpfc_h5ad"]["open_pass"],
         "clean_normal_holdout_resolved": disease_values == {"normal"} and adult_only and microglia_count > 0,
         "clean_holdout_study": config["holdout_contract"]["study_id"],
         "whole_study_training_exclusion": True,
@@ -467,7 +535,7 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path) -> dict[st
         "microglia_partition_counts_assumed_equivalent": False,
         "normal_holdout_donor_count": len(holdout_donors),
         "normal_holdout_region_count": len(counts["tissue"]),
-        "age_limitations": "Siletti study age distribution is retained as ontology labels; GSE97930 processed matrices do not expose cell-to-donor age linkage",
+        "age_limitations": "Siletti age ontology is retained; mixed-condition GSE243292 and GSE146639 require exact donor-condition harmonization before role assignment",
         "region_limitations": "GSE97930 covers frontal cortex, visual cortex, and cerebellar hemisphere; Siletti holdout spans the study non-neuronal tissue inventory",
         "duplicate_sources_excluded": True,
         "existing_mixed_anchor_dataset_count": anchor["dataset_count"],
@@ -483,6 +551,9 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path) -> dict[st
     report["stage81a1c_n_pass"] = all([
         report["all_required_assets_verified"],
         report["normal_training_reference_candidate_resolved"],
+        report["aged_primary_microglia_references_resolved"],
+        report["regional_primary_microglia_reference_resolved"],
+        report["aged_normal_context_validation_resolved"],
         report["clean_normal_holdout_resolved"],
         report["normal_adult_microglia_coverage_assessed"],
         report["duplicate_sources_excluded"],
@@ -512,7 +583,8 @@ def main() -> int:
     decisions = [{
         "asset_id": row["asset_id"], "study_id": row["study_id"],
         "decision": row["decision"], "primary_role": row["primary_role"],
-        "decision_reason": "required_processed_reference_or_documentation",
+        "decision_reason": row["scientific_reason"],
+        "storage_assessment": row["storage_assessment"],
     } for row in catalog]
     write_csv(output_dir / OUTPUTS["catalog"], catalog)
     write_csv(output_dir / OUTPUTS["decisions"], decisions)

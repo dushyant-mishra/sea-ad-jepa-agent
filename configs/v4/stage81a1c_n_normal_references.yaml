@@ -115,6 +115,90 @@ assets:
     required: true
     decision: download
 
+  - asset_id: gse243292_full_dlpfc_h5ad
+    study_id: GSE243292
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE243292
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE243nnn/GSE243292/suppl/GSE243292_ADsnRNAseq_GEO.h5ad.gz
+    remote_size: 294960107
+    last_modified: Fri, 15 Sep 2023 00:59:36 GMT
+    destination: gse243292/GSE243292_ADsnRNAseq_GEO.h5ad.gz
+    file_type: h5ad_gzip
+    organism: Homo sapiens
+    region: dorsolateral prefrontal cortex
+    primary_role: aged_normal_and_pathology_context_validation
+    scientific_reason: processed_single_nucleus_object_contains_explicit_normal_pathological_aging_and_AD_donor_contexts
+    limitations: mixed_condition_study_not_training_eligible_until_exact_donor_condition_harmonization
+    required: true
+    decision: download_required
+
+  - asset_id: gse243292_readme
+    study_id: GSE243292
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE243292
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE243nnn/GSE243292/suppl/GSE243292_processed_data_readme.txt
+    remote_size: 680
+    last_modified: Fri, 15 Sep 2023 00:58:56 GMT
+    destination: gse243292/GSE243292_processed_data_readme.txt
+    file_type: text
+    organism: Homo sapiens
+    primary_role: technical_compatibility_only
+    scientific_reason: official_processed_object_documentation
+    limitations: documentation_only
+    required: true
+    decision: download_required
+
+  - asset_id: gse146639_processed_microglia_archive
+    study_id: GSE146639
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE146639
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE146nnn/GSE146639/suppl/GSE146639_RAW.tar
+    remote_size: 46796800
+    last_modified: Wed, 16 Nov 2022 01:05:24 GMT
+    destination: gse146639/GSE146639_RAW.tar
+    file_type: processed_tar_archive
+    organism: Homo sapiens
+    region: superior_parietal_lobule_and_superior_frontal_gyrus
+    primary_role: aged_primary_microglia_validation
+    scientific_reason: direct_primary_human_microglia_with_non_demented_plaque_free_plaque_positive_and_AD_contexts
+    limitations: mixed_condition_study_and_multiple_assays_require_sample_level_harmonization
+    required: true
+    decision: download_required
+
+  - asset_id: gse99074_human_microglia_counts
+    study_id: GSE99074
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99074
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE99nnn/GSE99074/suppl/GSE99074_HumanMicrogliaBrainCounts.txt.gz
+    remote_size: 2564392
+    last_modified: Wed, 04 Apr 2018 17:52:26 GMT
+    destination: gse99074/GSE99074_HumanMicrogliaBrainCounts.txt.gz
+    file_type: gzipped_tabular_matrix
+    organism: Homo sapiens
+    region: parietal_cortex
+    primary_role: aged_primary_microglia_reference
+    scientific_reason: purified_primary_microglia_from_39_intact_cognition_human_donors_with_processed_gene_counts
+    limitations: bulk_purified_microglia_and_sample_metadata_require_harmonization
+    required: true
+    decision: download_required
+
+  - asset_id: gse133357_regional_microglia_fpkm
+    study_id: GSE133357
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE133357
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE133nnn/GSE133357/suppl/GSE133357_Unfiltered_Human_microglia_FPKM.csv.gz
+    remote_size: 245528
+    last_modified: Wed, 26 Jun 2019 17:33:07 GMT
+    destination: gse133357/GSE133357_Unfiltered_Human_microglia_FPKM.csv.gz
+    file_type: gzipped_tabular_matrix
+    organism: Homo sapiens
+    region: superior_temporal_gyrus_and_cerebellum
+    primary_role: regional_primary_microglia_reference
+    scientific_reason: patient_matched_primary_human_microglia_across_forebrain_and_cerebellum
+    limitations: two_donors_and_FPKM_not_integer_counts
+    required: true
+    decision: download_useful
+
 catalog_only_candidates:
   - dataset_id: 700aed19-c16e-4ba8-9191-07da098a8626
     study_id: siletti_human_brain_cell_atlas_v1
@@ -135,6 +219,10 @@ catalog_only_candidates:
     decision_reason: official package is a 50-nuclei-per-cluster subset rather than a whole-study reference
 
 source_assertions:
+  reconsidered_after_storage_policy_correction:
+    prior_size_based_deferral_count: 0
+    newly_selected_scientific_gap_studies: [GSE243292, GSE146639, GSE99074, GSE133357]
+    selection_basis: scientific_role_source_authority_processed_status_identity_availability_and_nonduplication
   gse97930:
     organism: Homo sapiens
     assay: snDrop-seq
