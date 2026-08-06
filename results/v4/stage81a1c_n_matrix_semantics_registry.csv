@@ -4,3 +4,8 @@ gse97930_cerebellar_umi,GSE97930,gzipped_text_matrix,"[37235, 5602]",text_matrix
 gse97930_frontal_cortex_umi,GSE97930,gzipped_text_matrix,"[34305, 10319]",text_matrix_or_documentation,text,not_applicable,,False,True
 gse97930_visual_cortex_umi,GSE97930,gzipped_text_matrix,"[41541, 19368]",text_matrix_or_documentation,text,not_applicable,,False,True
 gse97930_readme,GSE97930,text,"[""not_applicable"", ""not_applicable""]",text_matrix_or_documentation,text,not_applicable,,False,True
+gse243292_full_dlpfc_h5ad,GSE243292,h5ad_gzip,"[122606, 26423]",csr_matrix,float32,False,,False,True
+gse243292_readme,GSE243292,text,"[""not_applicable"", ""not_applicable""]",text_matrix_or_documentation,text,not_applicable,,False,True
+gse146639_processed_microglia_archive,GSE146639,processed_tar_archive,"[""not_applicable"", ""not_applicable""]",text_matrix_or_documentation,text,not_applicable,,True,True
+gse99074_human_microglia_counts,GSE99074,gzipped_tabular_matrix,"[""not_applicable"", ""not_applicable""]",text_matrix_or_documentation,text,not_applicable,,False,True
+gse133357_regional_microglia_fpkm,GSE133357,gzipped_tabular_matrix,"[""not_applicable"", ""not_applicable""]",text_matrix_or_documentation,text,not_applicable,,False,True

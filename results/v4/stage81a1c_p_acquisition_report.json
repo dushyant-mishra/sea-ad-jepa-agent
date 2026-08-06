@@ -1,0 +1,41 @@
+{
+  "all_processed_assets_verified": true,
+  "all_studies_have_compact_metadata": true,
+  "all_studies_reverified_from_official_geo": true,
+  "donor_split_frozen": false,
+  "final_vocabulary_frozen": false,
+  "guide_assignment_studies": [
+    "GSE175721",
+    "GSE178317",
+    "GSE293118",
+    "GSE301119",
+    "GSE311359"
+  ],
+  "model_trained": false,
+  "no_fixed_stage_download_cap": true,
+  "pathology_values_used": false,
+  "perturbation_controller_trained": false,
+  "primary_microglial_training_study": "GSE178317",
+  "processed_asset_count": 16,
+  "raw_microscopy_downloaded": false,
+  "raw_sequencing_downloaded": false,
+  "rds_full_object_audit_count": 2,
+  "rds_full_object_audit_pass": true,
+  "rds_full_object_audit_path": "results/v4/stage81a1c_p_seurat_object_audit.csv",
+  "roles": {
+    "GSE175721": "amyloid_context_validation",
+    "GSE178317": "primary_microglial_perturbation_training",
+    "GSE240609": "mechanistic_bulk_validation",
+    "GSE241858": "genotype_context_validation",
+    "GSE254205": "genotype_context_validation",
+    "GSE293118": "regulatory_element_perturbation",
+    "GSE301119": "myeloid_auxiliary_training",
+    "GSE311359": "microglial_auxiliary_training"
+  },
+  "schema_version": "1.0",
+  "source_commit": "acc4e1f642769c1e564ba579b0735486d0d918b8",
+  "stage81a1c_p_pass": true,
+  "stage_id": "stage81a1c_p",
+  "study_count": 8,
+  "unfinished_part_file_count": 0
+}

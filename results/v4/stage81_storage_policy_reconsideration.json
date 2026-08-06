@@ -1,0 +1,39 @@
+{
+  "authoritative_source_data_deleted": false,
+  "current_free_bytes": 7443355533312,
+  "decision_count": 62,
+  "decision_counts": {
+    "controlled_access_blocked": 1,
+    "download_required": 42,
+    "download_useful": 1,
+    "duplicate_excluded": 13,
+    "metadata_only": 1,
+    "raw_data_excluded": 1,
+    "scientifically_incompatible": 2,
+    "source_unverified": 1
+  },
+  "new_normal_reference_studies": [
+    "GSE133357",
+    "GSE146639",
+    "GSE243292",
+    "GSE99074"
+  ],
+  "no_fixed_stage_download_cap": true,
+  "no_per_object_size_approval_threshold": true,
+  "normal_reference_gap_found_and_resolved": true,
+  "perturbation_studies_acquired": [
+    "GSE175721",
+    "GSE178317",
+    "GSE240609",
+    "GSE241858",
+    "GSE254205",
+    "GSE293118",
+    "GSE301119",
+    "GSE311359"
+  ],
+  "prior_size_based_exclusion_count": 0,
+  "source_commit": "ae1f2207add883671eea45fc591a673ae0c685fb",
+  "stage_id": "stage81_storage_policy_reconsideration_v1",
+  "storage_policy_audit_pass": true,
+  "surviving_revoked_statuses": []
+}
