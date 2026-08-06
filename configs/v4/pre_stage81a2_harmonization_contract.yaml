@@ -1,0 +1,47 @@
+stage_id: pre_stage81a2_harmonization
+schema_version: "1.0"
+required_ancestor_commits: [45c80ed, 3e96993, 6055d88]
+
+policy:
+  mapping_root: data/processed/v4/pre_stage81a2/mappings
+  bounded_sample_path: outputs/v4/pre_stage81a2_bounded_feature_samples.json
+  physical_full_matrix_merge_performed: false
+  final_vocabulary_frozen: false
+  donor_split_frozen: false
+  pathology_values_used: false
+  model_trained: false
+  fuzzy_gene_aliasing_allowed: false
+  exact_source_identifiers_preserved: true
+  gene_mapping_policy: exact_source_symbol_or_exact_source_ensembl_only
+  no_fixed_storage_cap: true
+
+inputs:
+  sea_ad_assets: results/v4/stage81a1b_authoritative_asset_registry.csv
+  sea_ad_semantics: results/v4/stage81a1b_matrix_semantics_registry.csv
+  sea_ad_identity: results/v4/stage81a1b_donor_modality_section_crosswalk.csv
+  sea_ad_release_lineage: results/v4/stage81a1b_release_lineage.csv
+  normal_catalog: results/v4/stage81a1c_n_remote_asset_catalog.csv
+  normal_hashes: results/v4/stage81a1c_n_download_hashes.csv
+  normal_semantics: results/v4/stage81a1c_n_matrix_semantics_registry.csv
+  normal_roles: results/v4/stage81a1c_n_dataset_role_registry.csv
+  normal_duplicates: results/v4/stage81a1c_n_duplicate_overlap_registry.csv
+  perturbation_catalog: results/v4/stage81a1c_p_processed_asset_catalog.csv
+  perturbation_hashes: results/v4/stage81a1c_p_download_hashes.csv
+  perturbation_identity: results/v4/stage81a1c_p_perturbation_identity_registry.csv
+  perturbation_seurat: results/v4/stage81a1c_p_seurat_object_audit.csv
+
+role_contracts:
+  sea_ad:
+    allowed_role: candidate_foundation_regulatory_or_spatial_source_pending_stage81a2
+    forbidden_role: clean_external_validation_or_pathology_supervision_before_freeze
+  normal_reference:
+    allowed_role: source_specific_training_or_validation_candidate_as_registered
+    forbidden_role: cross_study_clean_validation_without_whole_study_and_donor_isolation
+  perturbation:
+    allowed_role: perturbation_calibration_or_validation_candidate_pending_identity_harmonization
+    forbidden_role: causal_controller_ground_truth_or_therapeutic_claim
+
+protected_worktree_signatures:
+  docs/stage_c_finetuning_analysis.md: d1ae570bac1a7c87a04faa35ddf5f2546d8dc7f6fc03ccc9379ccf9ce0b182a9
+  results/tables/v2_1_gse174367_cell_trajectory_scores.csv: e56d5c349b6f477c871592ff9ab29a358546a9cdc7adf88e22507292d98ac22f
+  results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv: 543cff1bfb0af9e79b09ef6d40d9f01eb9aa7efee64926b6d2a1287a49757a5d
