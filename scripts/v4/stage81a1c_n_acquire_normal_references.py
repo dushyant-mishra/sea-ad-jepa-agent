@@ -376,6 +376,9 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path) -> dict[st
     stages = set(counts["development_stage"])
     adult_only = bool(stages) and all(is_adult_stage(stage) for stage in stages)
     microglia_count = sum(value for key, value in counts["cell_type"].items() if "microgl" in key.lower())
+    cataloged_microglia_count = int(
+        config["source_assertions"]["siletti_hbca"]["microglia_subset_cells_cataloged"]
+    )
     holdout_donors = set(counts["donor_id"])
     anchor = existing_anchor_audit(project, config)
     donor_overlap = sorted(holdout_donors & anchor["donors"])
@@ -436,6 +439,10 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path) -> dict[st
         "normal_label_verified": disease_values == {"normal"},
         "adult_only_verified": adult_only,
         "microglia_cell_count": microglia_count,
+        "cataloged_separate_microglia_partition_cell_count": cataloged_microglia_count,
+        "observed_minus_cataloged_cell_count": microglia_count - cataloged_microglia_count,
+        "partition_counts_assumed_equivalent": False,
+        "count_difference_interpretation": "separate official collection partitions and curation scopes; no cell-level equivalence inferred",
         "donor_count": len(holdout_donors),
         "region_count": len(counts["tissue"]),
         "primary_role": "normal_microglia_holdout",
@@ -454,6 +461,9 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path) -> dict[st
         "whole_study_training_exclusion": True,
         "normal_adult_microglia_coverage_assessed": microglia_count > 0,
         "normal_adult_microglia_cells": microglia_count,
+        "cataloged_separate_microglia_partition_cells": cataloged_microglia_count,
+        "microglia_partition_count_difference": microglia_count - cataloged_microglia_count,
+        "microglia_partition_counts_assumed_equivalent": False,
         "normal_holdout_donor_count": len(holdout_donors),
         "normal_holdout_region_count": len(counts["tissue"]),
         "age_limitations": "Siletti study age distribution is retained as ontology labels; GSE97930 processed matrices do not expose cell-to-donor age linkage",

@@ -95,6 +95,7 @@ def test_frozen_outputs_when_present() -> None:
     assert report["clean_normal_holdout_resolved"] is True
     assert report["normal_training_reference_candidate_resolved"] is True
     assert report["normal_adult_microglia_coverage_assessed"] is True
+    assert report["microglia_partition_counts_assumed_equivalent"] is False
     assert report["pathology_values_used"] is False
     assert report["model_trained"] is False
     assert report["final_vocabulary_frozen"] is False

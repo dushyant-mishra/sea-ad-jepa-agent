@@ -11,7 +11,9 @@ training and model selection. Its official CELLxGENE `All non-neuronal cells`
 partition is acquired as the relevant clean normal holdout. Other partitions
 from that study are not training candidates. The official microglia
 supercluster is cataloged but not downloaded because it is a duplicate subset
-of the acquired partition.
+of the acquired partition. Its catalog count is not assumed to equal the
+number of cells carrying a microglial cell-type label in the broader partition;
+both counts and their difference are preserved for later harmonization.
 
 GSE97930 is an independent adult human-brain regional training-reference
 candidate. Its three processed snDrop-seq UMI matrices cover frontal cortex,
