@@ -44,6 +44,15 @@ An existing object with a different size is never overwritten. Download
 destinations must be ignored by Git, and the storage preflight reserves at
 least 750 GiB after the outstanding portfolio.
 
+Verification is bound to repository-relative path, byte size, nanosecond
+modification time, SHA-256, HDF5-open status, verifier version and source
+commit. A plain 64-character sidecar is never accepted as sufficient proof.
+Hashes may be reused only when the full bound verification record still
+matches the file. The tracked `stage81a1b_download_events.jsonl` is an
+append-only, hash-chained event stream; the deterministic
+`stage81a1b_download_ledger.json` is derived from it and does not replace the
+event history.
+
 Run from the repository root in the Windows `sea-ad-jepa-v3` environment:
 
 ```powershell
@@ -96,6 +105,49 @@ reproducibility. The official `mixup_investigation_02-14-2025.csv` is registered
 as the donor/library correction authority; no donor swap is inferred from
 partial identifiers or expression similarity. Old/new comparison is bounded to
 shape, feature IDs, donor IDs, index samples and schema fields.
+
+The correction CSV is parsed as a table and validated by exact `ar_id`, source
+region, original donor and corrected donor fields against the downloaded
+release metadata. Path existence alone is not a passing check, and partial
+identifier matching is prohibited.
+
+## Identity and metadata audit
+
+Stage81A1B records exact official donor, specimen, library, run, region,
+method, section and cell/nucleus identifier fields when they exist. A
+long-form crosswalk aggregates exact observed identity combinations without
+loading expression matrices. Missing specimen or section fields remain
+explicitly unresolved; placeholder strings are forbidden.
+
+Each June 2026 regional `final-nuclei_metadata` CSV is cataloged by official
+key, size, ETag and last-modified value. Schema comparison reads only the first
+CSV line and closes the response. Data rows are not consumed. The CSVs remain
+undownloaded when required identity, QC and taxonomy fields already exist in
+the corresponding H5AD `obs`; all-nuclei and donor-level duplicate matrices
+remain excluded.
+
+Matrix semantics are recorded structurally for every acquired H5AD: shape,
+X encoding/dtype, sparse or dense representation, raw/layers, count-like
+layers, normalization and log-transform fields, feature and observation
+identifier fields, methods, donors, regions, sections, coordinates and `obsm`
+keys. Expression matrices are never dense-loaded.
+
+## Multiome claim boundary
+
+RNA cells labeled `10xMulti` and the processed MTG ATAC matrix establish that
+both modalities are present. They do not establish paired cells by
+themselves. Stage81A1B compares exact official observation identifiers and
+records separately:
+
+- `multiome_rna_cells_present`;
+- `processed_atac_matrix_present`;
+- `exact_rna_atac_barcode_linkage_verified`;
+- `paired_multiome_contract_ready`;
+- the exact linkage evidence and limitations.
+
+No barcode trimming, partial matching or inferred pairing is allowed. Even
+when exact pairing is available, it is modality provenance rather than
+edge-level regulatory evidence.
 
 ## Stage81A1C boundary
 

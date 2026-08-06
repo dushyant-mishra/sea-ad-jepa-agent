@@ -4,10 +4,13 @@ import csv
 import hashlib
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 
+import h5py
+import numpy as np
 import yaml
 
 
@@ -98,6 +101,10 @@ def test_download_safety_and_compute_boundary_are_explicit() -> None:
     assert download_block.index("bounded_open_status(part)") < download_block.index("os.replace(part, target)")
     assert "import torch" not in source
     assert ".toarray(" not in source
+    assert "stage81a1b_download_events.jsonl" in source
+    assert "stage81a1b_download_ledger.json" in source
+    assert "mtime_ns" in source
+    assert "verification_schema_version" in source
 
 
 def test_perturbation_next_stage_registry_is_planning_only() -> None:
@@ -141,6 +148,77 @@ def test_protected_signatures_are_unchanged() -> None:
         assert actual == expected
 
 
+def test_repair_contract_uses_exact_safe_identity_fields() -> None:
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    assert config["policy"]["metadata_csv_data_rows_must_not_be_read"] is True
+    assert config["identity_fields"]["snRNA"]["method"][0] == "method"
+    assert "Section" in config["identity_fields"]["MERFISH"]["section"]
+    assert "Total microinfarcts in screening sections" not in config["identity_fields"]["MERFISH"]["section"]
+    assert config["commit_provenance"]["original_stage81a1b_commit"] == "e70be4f69d9cd06ddbbaa30952ffd58fbf4b25b4"
+    assert config["commit_provenance"]["june2026_expansion_commit"] == "94137398df48677c96602ee7d1c6260a7a071230"
+    assert config["commit_provenance"]["transport_update_commit"] == "9bccfc0e5760091554801e9a7a4044dd7c441e1c"
+
+
+def test_append_only_event_chain_and_ledger_are_deterministic(tmp_path: Path) -> None:
+    module = load_script()
+    path = tmp_path / "events.jsonl"
+    kwargs = dict(
+        asset_id="asset", event_type="discovered", relative_path="data/asset.h5ad",
+        expected_size=10, observed_size=0, status="known", source_commit="abc",
+        tool_version="test",
+    )
+    first = module.append_event(path, **kwargs)
+    original = path.read_bytes()
+    duplicate = module.append_event(path, **kwargs)
+    assert first == duplicate
+    assert path.read_bytes() == original
+    module.append_event(path, **{**kwargs, "event_type": "size_verified", "observed_size": 10})
+    events = module.read_event_log(path)
+    assert len(events) == 2
+    assert events[1]["previous_event_hash"] == events[0]["event_hash"]
+    ledger = module.build_download_ledger(events)
+    assert ledger["event_count"] == 2
+    assert ledger["assets"][0]["event_types"] == ["discovered", "size_verified"]
+
+
+def test_bound_verification_reuse_requires_size_mtime_and_schema(tmp_path: Path) -> None:
+    module = load_script()
+    project = tmp_path
+    path = project / "data" / "small.h5ad"
+    path.parent.mkdir(parents=True)
+    with h5py.File(path, "w") as handle:
+        handle.create_dataset("X", data=np.zeros((2, 3), dtype=np.float32))
+        obs = handle.create_group("obs")
+        obs.attrs["_index"] = "index"
+        obs.create_dataset("index", data=np.asarray([b"a", b"b"]))
+        var = handle.create_group("var")
+        var.attrs["_index"] = "index"
+        var.create_dataset("index", data=np.asarray([b"g1", b"g2", b"g3"]))
+    config = {"policy": {"verification_schema_version": "1.0", "verification_tool_version": "test"}}
+    first = module.verify_bound_asset(project, config, path, "commit-a", {})
+    assert first["hash_computed_this_run"] is True
+    second = module.verify_bound_asset(project, config, path, "commit-b", {})
+    assert second["hash_computed_this_run"] is False
+    stat = path.stat()
+    os.utime(path, ns=(stat.st_atime_ns, stat.st_mtime_ns + 2_000_000_000))
+    third = module.verify_bound_asset(project, config, path, "commit-c", {})
+    assert third["hash_computed_this_run"] is True
+
+
+def test_metadata_audit_is_header_only_and_outputs_are_registered() -> None:
+    module = load_script()
+    source = SCRIPT.read_text(encoding="utf-8")
+    block = source[source.index("def remote_csv_header("):source.index("def regional_metadata_audit(")]
+    assert ".readline(" in block
+    assert ".read(" not in block
+    assert module.metadata_url_for_asset({
+        "asset_id": "x",
+        "remote_url": "https://example.org/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad",
+    }).endswith("SEAAD_MTG_RNAseq_final-nuclei_metadata.2026-06-22.csv")
+    for key in ("events", "ledger", "identity_crosswalk", "matrix_semantics", "metadata_catalog", "metadata_schema", "metadata_decisions", "library_swap"):
+        assert key in module.OUTPUT_NAMES
+
+
 def test_catalog_mode_is_deterministic_and_portable(tmp_path: Path) -> None:
     outputs = []
     for name in ("first", "second"):
@@ -180,6 +258,11 @@ def test_frozen_outputs_when_present() -> None:
     assert report["no_model_trained"] is True
     assert report["no_graph_rebuilt"] is True
     assert report["final_vocabulary_frozen"] is False
+    assert report["regional_metadata_audit_complete"] is True
+    assert report["matrix_semantics_registry_ready"] is True
+    assert report["donor_library_specimen_crosswalk_ready"] is True
+    assert "processed_multiome_ready" not in report
+    assert report["paired_multiome_contract_ready"] == report["exact_rna_atac_barcode_linkage_verified"]
     integration = PROJECT / "results/v4/stage81a1b_existing_regulatory_evidence_integration.csv"
     with integration.open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))

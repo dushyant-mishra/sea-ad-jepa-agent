@@ -18,6 +18,63 @@ policy:
   data_root: data/external/v4/sea_ad
   temporary_suffix: .part
   canonical_gene_policy: preserve_official_symbol_and_stable_id_without_alias_inference
+  verification_schema_version: "1.0"
+  verification_tool_version: stage81a1b-verifier-2.1
+  metadata_header_max_bytes: 1048576
+  metadata_csv_data_rows_must_not_be_read: true
+
+commit_provenance:
+  original_stage81a1b_commit: e70be4f69d9cd06ddbbaa30952ffd58fbf4b25b4
+  june2026_expansion_commit: 94137398df48677c96602ee7d1c6260a7a071230
+  transport_update_commit: 9bccfc0e5760091554801e9a7a4044dd7c441e1c
+  finalizer_repair_commit: derive_from_head_after_repair_commit
+
+identity_fields:
+  snRNA:
+    donor: [Donor ID, donor_id, donor]
+    specimen: [Specimen ID, specimen_id, Specimen_ID]
+    library: [sample_name]
+    library_run: [load_name, ar_id]
+    region: [Brain Region, region]
+    method: [method, Method]
+    section: [Section, section, section_id, tissue_section]
+    cell_or_nucleus_id: [exp_component_name, sample_id]
+  snATAC:
+    donor: [Donor ID, donor_id, donor]
+    specimen: [Specimen ID, specimen_id, Specimen_ID]
+    library: [sample_name]
+    library_run: [load_name, ar_id]
+    region: [Brain Region, region]
+    method: [method, Method]
+    section: [Section, section, section_id, tissue_section]
+    cell_or_nucleus_id: [index, sample_id]
+  MERFISH:
+    donor: [Donor ID, donor_id, donor]
+    specimen: [Specimen Barcode, Specimen_ID, specimen_id]
+    library: [Merscope, LIMS2_Barcode]
+    library_run: []
+    region: [Brain Region, region]
+    method: [segmentation_method]
+    section: [Section, section, section_id, tissue_section]
+    cell_or_nucleus_id: [Cell ID, cell_id]
+  MERSCOPE:
+    donor: [Donor ID, donor_id, donor]
+    specimen: [Specimen Barcode, Specimen_ID, specimen_id]
+    library: [Merscope, LIMS2_Barcode]
+    library_run: []
+    region: [Brain Region, region]
+    method: [segmentation_method]
+    section: [Section, section, section_id, tissue_section]
+    cell_or_nucleus_id: [Cell ID, cell_id]
+  Xenium:
+    donor: [Donor ID, donor_id, donor]
+    specimen: [Specimen_ID, Specimen Barcode, specimen_id]
+    library: [LIMS2_Barcode]
+    library_run: []
+    region: [Brain Region, region]
+    method: [segmentation_method]
+    section: [Section, section, section_id, tissue_section]
+    cell_or_nucleus_id: [Cell ID, cell_id]
 
 official_sources:
   - provider: Allen Institute SEA-AD Open Data on AWS
