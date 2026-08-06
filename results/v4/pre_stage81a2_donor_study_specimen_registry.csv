@@ -1,0 +1,44 @@
+dataset_id,study_id,donor_field,donor_count,specimen_field,section_field,region_field,assay_field,cell_identifier_field,future_split_grouping_keys,unresolved_identity_fields,fuzzy_identity_inference_used,split_frozen
+gse133357_regional_microglia_fpkm,GSE133357,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse146639_processed_microglia_archive,GSE146639,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse175721_09deb6fed0c6,GSE175721,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse175721_efcc78179a9c,GSE175721,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse178317_ba77161eeaa1,GSE178317,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse178317_f5881facc710,GSE178317,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse240609_1155194f2ab8,GSE240609,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse241858_139c1d1976d8,GSE241858,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse241858_cb7d87bdeb0f,GSE241858,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse243292_full_dlpfc_h5ad,GSE243292,unresolved,0,unresolved,unresolved,unresolved,unresolved,index,study_id,donor;specimen;section,False,False
+gse243292_readme,GSE243292,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse254205_3bc2196b5493,GSE254205,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse254205_8ae26813ce5d,GSE254205,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse254205_cff143b59c0c,GSE254205,unresolved,0,unresolved,unresolved,unresolved,unresolved,index,study_id,donor;specimen;section,False,False
+gse254205_fca1d393501d,GSE254205,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse293118_1d15aff2e5fa,GSE293118,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse293118_6dab6ce5e82e,GSE293118,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse301119_1c0fbaf672ab,GSE301119,donor,2,unresolved,unresolved,unresolved,unresolved,unresolved,study_id;donor,specimen;section,False,False
+gse301119_5ff4821904a5,GSE301119,donor,2,unresolved,unresolved,unresolved,unresolved,unresolved,study_id;donor,specimen;section,False,False
+gse311359_7d3438f8c8db,GSE311359,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse97930_cerebellar_umi,GSE97930,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse97930_frontal_cortex_umi,GSE97930,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse97930_readme,GSE97930,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse97930_visual_cortex_umi,GSE97930,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+gse99074_human_microglia_counts,GSE99074,unresolved,0,unresolved,unresolved,unresolved,unresolved,unresolved,study_id,donor;specimen;section,False,False
+sea_ad_ang_rna_final_2026,SEA_AD,Donor ID,43,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_caudate_rna_all_2025,SEA_AD,Donor ID,43,unresolved,unresolved,Brain Region,unresolved,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_caudate_xenium_combined_2026,SEA_AD,Donor ID,10,Specimen_ID,unresolved,Brain Region,segmentation_method,_index,study_id;Donor ID;Specimen_ID,section,False,False
+sea_ad_fi_rna_final_2026,SEA_AD,Donor ID,41,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_hip_merscope_combined_2026,SEA_AD,unresolved,0,unresolved,unresolved,region,segmentation_method,_index,study_id,donor;specimen;section,False,False
+sea_ad_hip_rna_final_2026,SEA_AD,Donor ID,40,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_itg_rna_final_2026,SEA_AD,Donor ID,43,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_lec_rna_final_2026,SEA_AD,Donor ID,34,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_mec_merscope_combined_2026,SEA_AD,unresolved,0,unresolved,unresolved,region,segmentation_method,_index,study_id,donor;specimen;section,False,False
+sea_ad_mec_rna_final_2026,SEA_AD,Donor ID,81,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_mtg_atac_final_2024,SEA_AD,Donor ID,86,unresolved,unresolved,Brain Region,method,index,study_id;Donor ID,specimen;section,False,False
+sea_ad_mtg_merfish_combined_2024,SEA_AD,Donor ID,27,Specimen Barcode,Section,unresolved,unresolved,_index,study_id;Donor ID;Specimen Barcode;Section,,False,False
+sea_ad_mtg_rna_final_2026,SEA_AD,Donor ID,84,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_multiregion_immune_rna_final_2026,SEA_AD,Donor ID,84,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_pfc_a9_rna_final_2026,SEA_AD,Donor ID,80,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_stg_rna_final_2026,SEA_AD,Donor ID,43,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+sea_ad_v1c_rna_final_2026,SEA_AD,Donor ID,43,unresolved,unresolved,Brain Region,method,exp_component_name,study_id;Donor ID,specimen;section,False,False
+siletti_hbca_all_non_neuronal,siletti_human_brain_cell_atlas_v1,donor_id,4,sample_id,unresolved,tissue,assay,CellID,study_id;donor_id;sample_id,section,False,False

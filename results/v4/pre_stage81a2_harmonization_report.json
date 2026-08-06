@@ -1,0 +1,26 @@
+{
+  "all_source_hashes_registered": true,
+  "all_source_paths_exist_and_sizes_match": true,
+  "bounded_feature_samples_written": 35,
+  "dataset_count": 43,
+  "donor_split_frozen": false,
+  "final_vocabulary_frozen": false,
+  "fuzzy_donor_inference_used": false,
+  "fuzzy_gene_aliasing_used": false,
+  "mapping_sidecar_count": 21,
+  "model_trained": false,
+  "pathology_values_used": false,
+  "physical_full_matrix_merge_performed": false,
+  "readiness_blockers": [
+    "exact_spatial_section_identity_unresolved"
+  ],
+  "ready_for_stage81a2_review": false,
+  "schema_version": "1.0",
+  "source_commit": "05d246b74f3616d9ce9752bb26df9fd7dc093753",
+  "stage_id": "pre_stage81a2_harmonization",
+  "unresolved_donor_dataset_count": 21,
+  "unresolved_exact_feature_mapping_count": 4,
+  "unresolved_spatial_section_dataset_count": 3,
+  "virtual_harmonization_layer_pass": true,
+  "virtual_matrix_dataset_count": 39
+}
