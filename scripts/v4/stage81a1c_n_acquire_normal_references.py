@@ -184,8 +184,9 @@ def inspect_gzip_matrix(path: Path) -> dict[str, Any]:
                 continue
             width = len(line.rstrip("\r\n").split(delimiter))
             first_width = width if first_width is None else first_width
-            if width != len(columns):
-                raise RuntimeError(f"Matrix width drift in {path.name}: {width} != {len(columns)}")
+            expected_width = len(columns) + 1
+            if width != expected_width:
+                raise RuntimeError(f"Matrix width drift in {path.name}: {width} != {expected_width}")
             row_count += 1
     return {
         "open_pass": True,
@@ -193,9 +194,9 @@ def inspect_gzip_matrix(path: Path) -> dict[str, Any]:
         "header_columns": len(columns),
         "data_rows": row_count,
         "first_header_field": columns[0],
-        "cell_rows": row_count,
-        "gene_columns": max(0, len(columns) - 1),
-        "matrix_orientation": "cell_barcode_rows_by_gene_columns",
+        "cell_columns": len(columns),
+        "gene_rows": row_count,
+        "matrix_orientation": "gene_rows_by_cell_barcode_columns",
         "donor_linkage_present": any("donor" in value.lower() for value in columns),
     }
 
@@ -386,7 +387,7 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path) -> dict[st
             "asset_id": asset["asset_id"],
             "study_id": asset["study_id"],
             "file_type": asset["file_type"],
-            "shape_or_rows_columns": json.dumps(info.get("shape", [info.get("cell_rows", "not_applicable"), info.get("gene_columns", "not_applicable")])),
+            "shape_or_rows_columns": json.dumps(info.get("shape", [info.get("gene_rows", "not_applicable"), info.get("cell_columns", "not_applicable")])),
             "x_encoding": info.get("x_encoding", "text_matrix_or_documentation"),
             "x_dtype": info.get("x_dtype", "text"),
             "raw_present": info.get("raw_present", "not_applicable"),
