@@ -1,0 +1,146 @@
+stage_id: stage81a1d
+schema_version: "1.0"
+contract_revision: living_human_bridge_2026
+
+required_ancestor_commits:
+  - de7df984398c4c62099d12602d8655435e220226
+  - f34c9da4c0f24d5b29c0d828c7ab0597384925ef
+
+policy:
+  data_root: data/external/v4/living_human
+  sealed_root: data/processed/v4/stage81a1d/sealed
+  no_fixed_stage_download_cap: true
+  inspect_free_space_before_large_transfer: true
+  processed_data_only: true
+  pathology_firewall_active: true
+  no_model_training: true
+  no_final_vocabulary_freeze: true
+  no_donor_split_freeze: true
+  no_physical_matrix_merge: true
+  forbidden_suffixes: [.fastq, .fastq.gz, .bam, .cram, .sra]
+
+protected_worktree_signatures:
+  docs/stage_c_finetuning_analysis.md: d1ae570bac1a7c87a04faa35ddf5f2546d8dc7f6fc03ccc9379ccf9ce0b182a9
+  results/tables/v2_1_gse174367_cell_trajectory_scores.csv: e56d5c349b6f477c871592ff9ab29a358546a9cdc7adf88e22507292d98ac22f
+  results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv: 543cff1bfb0af9e79b09ef6d40d9f01eb9aa7efee64926b6d2a1287a49757a5d
+
+hvs:
+  collection_id: 35928d1c-36fc-4f93-9a8d-0b921ab41745
+  api_url: https://api.cellxgene.cziscience.com/curation/v1/collections/35928d1c-36fc-4f93-9a8d-0b921ab41745
+  destination: hvs
+  required: true
+  tissue_state: living_surgical_cortex
+  registered_role: living_surgical_cortex_foundation_candidate
+  living_control_definition: nonpathological_sampled_neocortex_from_neurosurgical_patients
+  known_caveat: epilepsy_or_tumor_surgical_context_not_healthy_volunteer
+
+nph52:
+  record_id: 8319719
+  api_url: https://zenodo.org/api/records/8319719
+  destination: nph52
+  required_files:
+    organized_data.zip: 3aa418e4f218ff4bfbdefbc21bc89b5a
+    annotations.zip: 0981c257713e79e9fe775e2576872f9b
+  catalog_only_files:
+    NPH_DE_res.zip: 36e55f2da169f949f9dbcb765a7dcea7
+  expected_groups:
+    pathology_negative: 25
+    amyloid_positive: 19
+    amyloid_tau_positive: 8
+  pathology_sidecar: nph52_pathology_sidecar.json
+
+geo:
+  - study_id: GSE302937
+    selected_patterns: [GSE302937_RAW.tar]
+    tissue_state: living_olfactory_epithelium
+    role: living_olfactory_neural_immune_adapter_candidate
+    modality: scRNA-seq
+    assay: 10x_3prime_and_5prime
+    required: true
+  - study_id: GSE200164
+    selected_patterns: [GSE200164_counts.csv.gz, GSE200164_lognorm_expression.csv.gz]
+    tissue_state: living_csf
+    role: living_csf_immune_adapter_and_validation_candidate
+    modality: scRNA-seq
+    assay: processed_counts_and_lognormalized_expression
+    required: true
+  - study_id: GSE226602
+    selected_patterns: [GSE226602_rna_raw_counts.rds.gz, GSE226602_rna_lognorm_expression.rds.gz]
+    tissue_state: living_pbmc
+    role: living_peripheral_immune_rna_adapter_candidate
+    modality: scRNA-seq
+    assay: processed_counts_and_lognormalized_expression
+    required: true
+  - study_id: GSE226267
+    selected_patterns: [GSE226267_atac_cd4_raw_peaks.rds.gz, GSE226267_atac_noncd4_raw_peaks.rds.gz]
+    tissue_state: living_pbmc
+    role: living_peripheral_regulatory_adapter_candidate
+    modality: scATAC-seq
+    assay: processed_raw_peak_matrix
+    required: true
+  - study_id: GSE181279
+    selected_patterns: [GSE181279_barcodes.tsv.gz, GSE181279_features.tsv.gz, GSE181279_matrix.mtx.gz]
+    tissue_state: living_pbmc
+    role: living_blood_independent_validation_only
+    modality: scRNA-seq
+    assay: 10x_processed_matrix_triplet
+    required: true
+  - study_id: GSE134577
+    selected_patterns: [GSE134577_RAW.tar]
+    tissue_state: living_csf
+    role: living_csf_external_validation_only
+    modality: scRNA-seq
+    assay: processed_archive_pending_member_audit
+    required: true
+  - study_id: GSE292141
+    selected_patterns: [GSE292141_RAW.tar]
+    tissue_state: living_csf_and_living_pbmc
+    role: living_nph_blood_csf_context_and_adapter_candidate
+    modality: scRNA-seq
+    assay: 10x_processed_matrix_triplets
+    required: true
+  - study_id: GSE270454
+    selected_patterns: [GSE270454_RNAseq-combined-counts-matrix.csv.gz]
+    tissue_state: living_whole_blood
+    role: living_whole_blood_secondary_validation_candidate
+    modality: bulk_RNA-seq
+    assay: processed_counts
+    required: false
+    catalog_first: true
+  - study_id: GSE305625
+    selected_patterns: [GSE305625_non_normalized.txt.gz, GSE305625_normalized_data.txt.gz]
+    tissue_state: living_csf_and_living_plasma
+    role: living_biofluid_mirna_secondary_validation_candidate
+    modality: miRNA_RT_qPCR
+    assay: non_normalized_and_normalized_mirna
+    required: false
+    catalog_first: true
+
+synapse:
+  candidate_ids:
+    - syn26337520
+    - syn2580853
+    - syn65929068
+    - syn65929069
+    - syn27127036
+    - syn27127033
+    - syn51622714
+    - syn21898410
+  living_brain_ids: [syn26337520, syn2580853, syn65929068, syn65929069, syn27127036, syn27127033, syn51622714]
+  nph_bulk_id: syn21898410
+  optional: true
+  accept_terms_automatically: false
+  display_credentials: false
+
+existing_dataset_corrections:
+  - study_id: GSE146639
+    source_path: data/external/v4/normal_references/gse146639/GSE146639_RAW.tar
+    tissue_state: postmortem_brain
+    registered_role: postmortem_primary_microglia_reference_or_validation
+    redownload: false
+
+unreleased_candidates:
+  - study_id: expanded_nph_294_donor
+    acquisition_status: full_public_processed_release_pending
+  - study_id: candi_ad_csf_single_cell
+    acquisition_status: public_accession_unverified
