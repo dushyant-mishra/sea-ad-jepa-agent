@@ -366,7 +366,9 @@ def audit_nph_annotations(
         for member in members:
             if unsafe_member(member.filename):
                 raise RuntimeError(f"Unsafe NPH annotation member: {member.filename}")
-        handle.extractall(extraction)
+            target = extraction / member.filename
+            if member.is_dir() or not target.exists() or target.stat().st_size != member.file_size:
+                handle.extract(member, extraction)
     annotation_dir = extraction / "annotations"
     organized_root = sealed_root / "nph52_organized"
     organized_root.mkdir(parents=True, exist_ok=True)
@@ -382,7 +384,9 @@ def audit_nph_annotations(
         for member in selected_members:
             if unsafe_member(member.filename):
                 raise RuntimeError(f"Unsafe NPH source member: {member.filename}")
-            handle.extract(member, organized_root)
+            target = organized_root / member.filename
+            if not target.exists() or target.stat().st_size != member.file_size:
+                handle.extract(member, organized_root)
     organized_dir = organized_root / nph_prefix
     donors_csv = sealed_root / "nph52_exact_donors.csv"
     summary_csv = sealed_root / "nph52_exact_summary.csv"
@@ -418,7 +422,8 @@ def audit_nph_annotations(
         "pathology_negative_donor_count", "amyloid_positive_donor_count",
         "amyloid_tau_positive_donor_count", "integrated_non_nph_annotation_row_count",
         "exact_nph_source_object_count", "matrix_nph_cell_count",
-        "matrix_unique_nph_cell_count", "matrix_feature_count",
+        "matrix_unique_nph_cell_count", "matrix_feature_union_count",
+        "matrix_feature_intersection_count",
     )
     for key in integer_fields:
         summary[key] = int(summary[key])
@@ -750,7 +755,7 @@ def audit(
             "source_path": "data/external/v4/living_human/nph52/organized_data.zip",
             "matrix_semantics": nph_summary["matrix_semantics"],
             "feature_identifier_type": "gene_symbol", "n_obs": nph_summary["matrix_nph_cell_count"],
-            "n_vars": nph_summary["matrix_feature_count"],
+            "n_vars": nph_summary["matrix_feature_union_count"],
             "matrix_orientation": "cell_by_feature_logical_view_from_gene_by_cell_source",
             "rna_vocabulary_eligible": True, "open_read_only_pass": True,
             "physical_merge_performed": False,
@@ -862,6 +867,15 @@ def audit(
         "nph_pathology_negative_donor_count": nph_counts["pathology_negative"],
         "nph_amyloid_positive_donor_count": nph_counts["amyloid_positive"],
         "nph_amyloid_tau_positive_donor_count": nph_counts["amyloid_tau_positive"],
+        "nph_final_annotation_cell_count": int(nph_summary["nph_cell_count"]) if nph_verified else 0,
+        "nph_source_matrix_cell_count": int(nph_summary["matrix_nph_cell_count"]) if nph_verified else 0,
+        "nph_annotation_and_source_matrix_cells_assumed_equivalent": False,
+        "nph_feature_union_count": int(nph_summary["matrix_feature_union_count"]) if nph_verified else 0,
+        "nph_feature_intersection_count": int(nph_summary["matrix_feature_intersection_count"]) if nph_verified else 0,
+        "nph_measurement_mask_required": (
+            str(nph_summary["matrix_measurement_mask_required"]).lower() == "true"
+            if nph_verified else False
+        ),
         "nph_integrated_non_nph_assets_excluded": bool(nph_members) and (
             not nph_verified or int(nph_summary["integrated_non_nph_annotation_row_count"]) > 0
         ),

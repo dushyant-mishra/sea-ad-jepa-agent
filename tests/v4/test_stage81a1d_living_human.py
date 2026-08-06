@@ -126,7 +126,9 @@ def test_pathology_sidecar_is_outside_committed_evidence() -> None:
     assert "anno_batch" in text
     assert "anno_condition" in text
     assert 'assayNames(object), "counts"' in text
-    assert "NPH feature order differs" in text
+    assert "matrix_feature_union_count" in text
+    assert "matrix_feature_intersection_count" in text
+    assert "matrix_measurement_mask_required" in text
     assert "NPH cell identifiers overlap" in text
 
 
@@ -169,3 +171,5 @@ def test_frozen_report_boundaries_when_present() -> None:
     assert report["donor_split_frozen"] is False
     assert report["model_trained"] is False
     assert report["postmortem_dataset_mislabeled_as_living_count"] == 0
+    if report.get("stage81a1d_pass"):
+        assert report["nph_annotation_and_source_matrix_cells_assumed_equivalent"] is False

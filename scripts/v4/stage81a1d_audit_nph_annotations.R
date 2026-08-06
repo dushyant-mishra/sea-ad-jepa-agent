@@ -55,6 +55,9 @@ if (length(source_files) != 7) {
 }
 matrix_rows <- list()
 feature_reference <- NULL
+feature_union <- character()
+feature_intersection <- NULL
+feature_order_shared <- TRUE
 all_cells <- character()
 for (path in source_files) {
   object <- qread(path)
@@ -68,8 +71,10 @@ for (path in source_files) {
   if (is.null(feature_reference)) {
     feature_reference <- features
   } else if (!identical(features, feature_reference)) {
-    stop(sprintf("NPH feature order differs in %s", basename(path)))
+    feature_order_shared <- FALSE
   }
+  feature_union <- union(feature_union, features)
+  feature_intersection <- if (is.null(feature_intersection)) features else intersect(feature_intersection, features)
   cells <- colnames(object)
   if (anyDuplicated(cells)) {
     stop(sprintf("Duplicate cells within %s", basename(path)))
@@ -87,6 +92,7 @@ for (path in source_files) {
     assay_name = "counts",
     assay_class = class(assay(object, "counts"))[[1]],
     feature_identifier_type = "gene_symbol",
+    feature_order_identical_to_first = identical(features, feature_reference),
     donor_count = length(unique(column_data$dataset)),
     pathology_group_count = length(unique(column_data$status)),
     matrix_orientation = "gene_rows_by_cell_columns",
@@ -112,8 +118,10 @@ summary <- data.frame(
   exact_nph_source_object_count = nrow(matrix_audit),
   matrix_nph_cell_count = sum(matrix_audit$n_cells),
   matrix_unique_nph_cell_count = length(unique(all_cells)),
-  matrix_feature_count = length(feature_reference),
-  matrix_exact_feature_order_shared = TRUE,
+  matrix_feature_union_count = length(feature_union),
+  matrix_feature_intersection_count = length(feature_intersection),
+  matrix_exact_feature_order_shared = feature_order_shared,
+  matrix_measurement_mask_required = !feature_order_shared,
   matrix_semantics = "sparse_published_counts",
   nph_region = "PFC",
   donor_field = "anno_batch",

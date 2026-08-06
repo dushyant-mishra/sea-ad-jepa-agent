@@ -44,8 +44,12 @@ not on `PATH`. It filters exactly on `ds_batch == human_NPH`, treats
 `anno_batch` as the source donor field, and seals `anno_condition` outside
 committed evidence. The helper also reads only the seven exact NPH
 `SingleCellExperiment` source objects from the integrated archive, verifies the
-sparse `counts` assay, shared gene-symbol order, donor linkage and disjoint cell
-IDs, and leaves every non-NPH object unextracted.
+sparse `counts` assay, records per-object gene-symbol order plus feature union
+and intersection, verifies donor linkage and disjoint cell IDs, and leaves every
+non-NPH object unextracted. Unequal source feature universes require explicit
+measurement masks in later harmonization; they are never zero-filled silently.
+The source-matrix and final-annotation cell counts are reported separately and
+are never assumed to describe identical cell populations.
 
 ## Claim boundaries
 
