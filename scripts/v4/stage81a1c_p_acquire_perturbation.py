@@ -32,6 +32,7 @@ OUTPUTS = {
     "hashes": "stage81a1c_p_download_hashes.csv",
     "contents": "stage81a1c_p_archive_content_registry.csv",
     "identity": "stage81a1c_p_perturbation_identity_registry.csv",
+    "seurat": "stage81a1c_p_seurat_object_audit.csv",
     "report": "stage81a1c_p_acquisition_report.json",
 }
 
@@ -382,6 +383,21 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path, catalog: l
         "soft_metadata_sha256": sha256(soft_path(project, config, study["accession"])),
     } for study in config["studies"]]
     contents = archive_rows(records)
+    seurat_path = output_dir / OUTPUTS["seurat"]
+    if not seurat_path.exists():
+        raise RuntimeError(
+            "Missing full Seurat audit; run scripts/v4/stage81a1c_p_audit_seurat.R "
+            "in the documented R/SeuratObject runtime"
+        )
+    seurat_rows = list(csv.DictReader(seurat_path.open(encoding="utf-8", newline="")))
+    expected_seurat = int(config["seurat_audit"]["expected_object_count"])
+    seurat_pass = (
+        len(seurat_rows) == expected_seurat
+        and all(row.get("full_object_audit_pass", "").lower() == "true" for row in seurat_rows)
+        and {row.get("accession") for row in seurat_rows} == {config["seurat_audit"]["expected_accession"]}
+    )
+    if not seurat_pass:
+        raise RuntimeError("Full Seurat object audit did not satisfy the Stage81A1C-P contract")
     roles = {study["accession"]: study["primary_role"] for study in config["studies"]}
     report = {
         "stage_id": config["stage_id"], "schema_version": config["schema_version"],
@@ -393,8 +409,9 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path, catalog: l
         "guide_assignment_studies": sorted(study["accession"] for study in config["studies"] if study["guide_assignment_available"]),
         "primary_microglial_training_study": "GSE178317",
         "roles": dict(sorted(roles.items())),
-        "rds_full_object_audit_deferred": [record["relative_path"] for record in records if record["relative_path"].endswith(".rds")],
-        "rds_defer_reason": "R_and_Seurat_runtime_not_required_for_byte_and_serialization_acquisition_validation",
+        "rds_full_object_audit_pass": seurat_pass,
+        "rds_full_object_audit_count": len(seurat_rows),
+        "rds_full_object_audit_path": relative(project, seurat_path),
         "unfinished_part_file_count": len(list((project / config["policy"]["data_root"]).rglob("*.part"))),
         "raw_sequencing_downloaded": False, "raw_microscopy_downloaded": False,
         "pathology_values_used": False, "model_trained": False,
@@ -404,6 +421,7 @@ def finalize(project: Path, config: dict[str, Any], output_dir: Path, catalog: l
     report["stage81a1c_p_pass"] = all([
         report["all_studies_reverified_from_official_geo"],
         report["all_processed_assets_verified"], report["all_studies_have_compact_metadata"],
+        report["rds_full_object_audit_pass"],
         len(report["guide_assignment_studies"]) == 5,
         report["unfinished_part_file_count"] == 0,
         not report["raw_sequencing_downloaded"],

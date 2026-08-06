@@ -17,6 +17,17 @@ policy:
   verification_schema_version: "1.0"
   verification_tool_version: stage81a1c-p-python-tarfile-h5py-v1
 
+seurat_audit:
+  runtime_image: rocker/r-ver:4.4.3
+  required_package: SeuratObject
+  expected_accession: GSE301119
+  expected_object_count: 2
+  require_guide_identity: true
+  require_gene_target: true
+  require_donor: true
+  require_crispr_mode: true
+  require_non_targeting_controls: true
+
 protected_worktree_signatures:
   docs/stage_c_finetuning_analysis.md: d1ae570bac1a7c87a04faa35ddf5f2546d8dc7f6fc03ccc9379ccf9ce0b182a9
   results/tables/v2_1_gse174367_cell_trajectory_scores.csv: e56d5c349b6f477c871592ff9ab29a358546a9cdc7adf88e22507292d98ac22f

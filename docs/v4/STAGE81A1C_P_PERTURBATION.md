@@ -13,14 +13,22 @@ regulatory-element screen. GSE311359 is an iPSC-microglia MS-risk auxiliary
 study. GSE254205, GSE241858 and GSE240609 are genotype, pharmacology or bulk
 mechanistic validation sources.
 
-RDS files receive byte, hash and R-serialization signature validation. Full
-Seurat object inspection remains explicitly deferred until an R/Seurat runtime
-is part of the data-audit environment; this does not convert those objects into
-training-ready matrices.
+RDS files receive byte, hash and R-serialization signature validation. The two
+GSE301119 objects also require a full read-only audit with R 4.4.3 and
+`SeuratObject`: object class, dimensions, assays, metadata schema, guide and
+target identities, donor fields, CRISPR mode and non-targeting controls are
+verified without materializing an expression matrix. This does not convert the
+objects into training-ready matrices.
 
 Run:
 
 ```powershell
+docker run --rm `
+  -v stage81-r-library:/usr/local/lib/R/site-library `
+  -v "${PWD}:/workspace" -w /workspace `
+  rocker/r-ver:4.4.3 `
+  Rscript scripts/v4/stage81a1c_p_audit_seurat.R /workspace
+
 conda run -n sea-ad-jepa-v3 python scripts/v4/stage81a1c_p_acquire_perturbation.py --mode all
 ```
 

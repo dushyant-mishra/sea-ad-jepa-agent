@@ -42,6 +42,7 @@ def test_roles_and_modalities_remain_distinct() -> None:
     assert by_id["GSE293118"]["non_targeting_controls"] == "23_guides"
     assert by_id["GSE241858"]["single_cell_or_bulk"] == "bulk"
     assert sum(bool(row["guide_assignment_available"]) for row in config["studies"]) == 5
+    assert config["seurat_audit"]["expected_object_count"] == 2
 
 
 def test_raw_extensions_are_forbidden() -> None:
@@ -67,6 +68,7 @@ def test_frozen_outputs_when_present() -> None:
     assert report["stage81a1c_p_pass"] is True
     assert report["study_count"] == 8
     assert report["all_processed_assets_verified"] is True
+    assert report["rds_full_object_audit_pass"] is True
     assert report["raw_sequencing_downloaded"] is False
     assert report["model_trained"] is False
     assert report["perturbation_controller_trained"] is False
