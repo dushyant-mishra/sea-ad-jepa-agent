@@ -1,0 +1,60 @@
+schema_version: "1.0"
+current_version: v4
+current_stage: pre_stage81a2_harmonization
+model_training_started: false
+
+human_entry_points:
+  - START_HERE.md
+  - docs/v4/V4_START_HERE.md
+  - docs/v4/STAGE81A0_V4_FAILURE_REGISTRY_AND_DESIGN_CONTRACT.md
+  - docs/v4/PRE_STAGE81A2_HARMONIZATION.md
+
+canonical_current_outputs:
+  - results/v4/pre_stage81a2_harmonization_report.json
+  - results/v4/pre_stage81a2_modality_integration_registry.csv
+  - results/v4/pre_stage81a2_perturbation_readiness_registry.csv
+  - results/v4/pre_stage81a2_dataset_role_candidates.csv
+  - results/v4/pre_stage81a2_dataset_manifest.csv
+
+supporting_current_outputs:
+  - results/v4/pre_stage81a2_matrix_semantics_registry.csv
+  - results/v4/pre_stage81a2_feature_identifier_registry.csv
+  - results/v4/pre_stage81a2_gene_mapping_registry.csv
+  - results/v4/pre_stage81a2_donor_study_specimen_registry.csv
+  - results/v4/pre_stage81a2_duplicate_overlap_registry.csv
+  - results/v4/pre_stage81a2_virtual_concat_manifest.json
+
+reproducibility_builders:
+  current:
+    - scripts/v4/build_pre_stage81a2_harmonization.py
+  acquisition_provenance:
+    - scripts/v4/stage81a1b_acquire_official_sea_ad.py
+    - scripts/v4/stage81a1c_n_acquire_normal_references.py
+    - scripts/v4/stage81a1c_p_acquire_perturbation.py
+    - scripts/v4/stage81a1c_p_audit_seurat.R
+  inventory_and_history:
+    - scripts/v4/stage81a1_audit_local_multimodal_assets.py
+    - scripts/v4/stage81_reconsider_storage_policy.py
+    - scripts/v4/build_stage81a0_failure_registry.py
+    - scripts/v4/build_project_file_inventory.py
+    - scripts/v4/build_git_provenance_index.py
+    - scripts/v4/build_cleanup_phase_indexes.py
+
+local_generated_not_entry_points:
+  - data/processed/v4/
+  - outputs/v4/
+  - logs/v4/
+  - runs/v4/
+  - checkpoints/
+
+protected_unrelated_worktree_files:
+  - docs/stage_c_finetuning_analysis.md
+  - results/tables/v2_1_gse174367_cell_trajectory_scores.csv
+  - results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv
+
+classification_rules:
+  canonical: current decision surface; read first
+  supporting: frozen provenance; inspect only for audit or implementation
+  builder: reproducibility code; never interpret as a result
+  local_generated: intermediate or large product; not a navigation entry point
+  historical: preserved v1-v3 evidence and provenance; do not silently rewrite

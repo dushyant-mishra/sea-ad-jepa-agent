@@ -1,5 +1,9 @@
 # SEA-AD Graph-JEPA Agent
 
+> **Current work is v4 / Stage81.** Begin with [START_HERE.md](START_HERE.md).
+> The material below includes the preserved v1-v3 project history and should
+> not be read as the current execution status.
+
 **A Graph-JEPA framework for Alzheimer disease microglia: pathology-grounded representation learning, donor-held-out validation, and model-implied counterfactual gene-network discovery.**
 
 This repository is an end-to-end research prototype built around the Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD). The current focus is Microglia-PVM nuclei from middle temporal gyrus (MTG), paired with quantitative neuropathology targets such as AT8/pTau, 6e10/A beta, GFAP, Iba1, and NeuN.

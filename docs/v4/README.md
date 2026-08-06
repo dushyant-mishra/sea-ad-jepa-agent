@@ -1,5 +1,9 @@
 # Graph-JEPA v4 Launchpad
 
+**Begin with [`V4_START_HERE.md`](V4_START_HERE.md).** It identifies the five
+current canonical outputs and separates them from supporting provenance and
+generated intermediates.
+
 Current compute authority:
 `LOCKED_LOCAL_HARDWARE_AND_COMPUTE_CONTRACT.md`.
 
