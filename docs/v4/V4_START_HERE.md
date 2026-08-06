@@ -7,15 +7,16 @@ but Stage81A2 has not started and no v4 model has been trained.
 
 ## What Matters Now
 
-Read only these five artifacts for the current decision state:
+Read only these six artifacts for the current decision state:
 
 | Priority | Artifact | Why it matters |
 |---|---|---|
-| 1 | `results/v4/pre_stage81a2_harmonization_report.json` | Current pass/fail status and blockers |
-| 2 | `results/v4/pre_stage81a2_modality_integration_registry.csv` | Which datasets can enter RNA, spatial, regulatory, holdout or validation paths |
-| 3 | `results/v4/pre_stage81a2_perturbation_readiness_registry.csv` | Exact unresolved work before perturbation training |
-| 4 | `results/v4/pre_stage81a2_dataset_role_candidates.csv` | Candidate role and leakage restrictions for every dataset |
-| 5 | `results/v4/pre_stage81a2_dataset_manifest.csv` | Source path, hash, size and shape inventory |
+| 1 | `results/v4/pre_stage81a2_readiness_report.json` | Four independent readiness decisions and their blockers |
+| 2 | `results/v4/pre_stage81a2_foundation_readiness.csv` | Foundation-specific dataset gate |
+| 3 | `results/v4/pre_stage81a2_modality_integration_registry.csv` | Which datasets can enter RNA, spatial, regulatory, holdout or validation paths |
+| 4 | `results/v4/pre_stage81a2_perturbation_readiness_registry.csv` | Exact unresolved work before perturbation training |
+| 5 | `results/v4/pre_stage81a2_dataset_role_candidates.csv` | Candidate role and leakage restrictions for every dataset |
+| 6 | `results/v4/pre_stage81a2_dataset_manifest.csv` | Source path, hash, size and shape inventory |
 
 Everything else in `results/v4/` is supporting provenance for one of those
 files or a frozen output from an earlier Stage81 substage.
@@ -33,10 +34,10 @@ files or a frozen output from an earlier Stage81 substage.
 
 ## Current Blockers
 
-1. Exact spatial section identity is unresolved for three spatial datasets.
-2. Fourteen perturbation assets still have unresolved source archive/table
-   shapes and require content-level harmonization.
-3. GSE301119 CRISPRa and CRISPRi require exact stable-feature alignment and
+1. The three GSE97930 normal-training matrices lack exact cell-to-donor grouping.
+2. Exact spatial section identity is unresolved for three spatial datasets.
+3. Perturbation-controller assets require content-level harmonization.
+4. GSE301119 CRISPRa and CRISPRi require exact stable-feature alignment and
    explicit measurement masks for their unequal 19,162/36,601 feature spaces.
 
 ## Artifact Classes

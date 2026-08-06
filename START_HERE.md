@@ -35,5 +35,5 @@ The machine-readable classification is
 ## Current Boundary
 
 No v4 model has been trained. The data portfolio is acquired and virtually
-registered, but Stage81A2 remains blocked by unresolved spatial section identity
-and incomplete perturbation-asset content harmonization.
+registered. Foundation review is currently blocked by GSE97930 donor grouping;
+the later spatial and perturbation stages retain their own independent blockers.

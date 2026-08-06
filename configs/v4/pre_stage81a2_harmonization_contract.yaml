@@ -45,6 +45,37 @@ dataset_contracts:
     integration_path: perturbation_alignment_with_stable_features_and_measurement_mask
   gse301119_1c0fbaf672ab:
     integration_path: perturbation_alignment_with_stable_features_and_measurement_mask
+  gse254205_3bc2196b5493:
+    integration_path: future_regulatory_evidence_harmonization
+
+readiness_assets:
+  foundation_training:
+    - sea_ad_mtg_rna_final_2026
+  microglia_specialization:
+    - sea_ad_multiregion_immune_rna_final_2026
+  normal_training:
+    - gse97930_cerebellar_umi
+    - gse97930_frontal_cortex_umi
+    - gse97930_visual_cortex_umi
+  clean_holdout:
+    - siletti_hbca_all_non_neuronal
+  pathology_context_validation:
+    - gse243292_full_dlpfc_h5ad
+  regulatory_adapter:
+    - sea_ad_mtg_atac_final_2024
+  spatial_branch:
+    - sea_ad_mtg_merfish_combined_2024
+    - sea_ad_hip_merscope_combined_2026
+    - sea_ad_mec_merscope_combined_2026
+    - sea_ad_caudate_xenium_combined_2026
+  perturbation_controller:
+    - gse175721_09deb6fed0c6
+    - gse178317_ba77161eeaa1
+    - gse178317_f5881facc710
+    - gse293118_1d15aff2e5fa
+    - gse301119_1c0fbaf672ab
+    - gse301119_5ff4821904a5
+    - gse311359_7d3438f8c8db
 
 inputs:
   sea_ad_assets: results/v4/stage81a1b_authoritative_asset_registry.csv
@@ -60,6 +91,7 @@ inputs:
   perturbation_hashes: results/v4/stage81a1c_p_download_hashes.csv
   perturbation_identity: results/v4/stage81a1c_p_perturbation_identity_registry.csv
   perturbation_seurat: results/v4/stage81a1c_p_seurat_object_audit.csv
+  regulatory_integration: results/v4/stage81a1b_existing_regulatory_evidence_integration.csv
 
 role_contracts:
   sea_ad:

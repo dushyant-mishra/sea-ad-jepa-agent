@@ -43,6 +43,22 @@ identifiers, guide-to-cell assignments where applicable, controls, samples,
 replicates and perturbation identities. Until those fields pass, the asset is
 blocked from perturbation training even when its download and hash are valid.
 
+## Stage-specific readiness
+
+Readiness is evaluated separately for the foundation RNA review, regulatory
+adapter review, spatial branch review and perturbation-controller review. A
+spatial or perturbation blocker cannot by itself fail the foundation review.
+The legacy `ready_for_stage81a2_review` field is retained only as a deprecated
+alias for foundation-review readiness.
+
+The foundation denominator is explicit: MTG foundation RNA, Immune
+Microglia/PVM specialization, the three GSE97930 normal-training matrices and
+the Siletti clean-holdout firewall. GSE243292 is represented only to verify its
+pathology-context exclusion. Current source-integrity evidence means a valid
+hash is present in a frozen acquisition ledger and the present path and size
+match that ledger; the builder does not claim to recompute every large source
+hash on each run.
+
 Run:
 
 ```powershell

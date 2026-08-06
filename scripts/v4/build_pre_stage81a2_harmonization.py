@@ -33,6 +33,8 @@ OUTPUTS = {
     "roles": "pre_stage81a2_dataset_role_candidates.csv",
     "modalities": "pre_stage81a2_modality_integration_registry.csv",
     "perturbation": "pre_stage81a2_perturbation_readiness_registry.csv",
+    "foundation": "pre_stage81a2_foundation_readiness.csv",
+    "readiness": "pre_stage81a2_readiness_report.json",
     "virtual": "pre_stage81a2_virtual_concat_manifest.json",
     "report": "pre_stage81a2_harmonization_report.json",
 }
@@ -126,15 +128,28 @@ def integration_contract(asset: dict[str, Any], config: dict[str, Any]) -> dict[
     leakage = "none_beyond_registered_role"
     mask_required = False
     equivalent_to_full_rna = True
-    if any(token in modality for token in ("merfish", "merscope", "xenium")):
+    if asset["documentation_only"]:
+        feature_space = "documentation_or_assignment"
+        vocabulary = "not_applicable"
+        missing = "not_applicable"
+        path = "documentation_or_assignment_support"
+        equivalent_to_full_rna = False
+    elif any(token in modality for token in ("merfish", "merscope", "xenium")):
         feature_space = "targeted_spatial_panel"
         vocabulary = "excluded_from_direct_full_rna_vocabulary"
         missing = "shared_feature_projection_or_explicit_missing_modality_mask_required"
+        mask_required = True
         equivalent_to_full_rna = False
-    elif "atac" in modality:
-        feature_space = "regulatory_peak_namespace"
-        vocabulary = "excluded_from_rna_vocabulary"
+    elif "atac" in modality or dataset_id == "gse254205_3bc2196b5493":
+        feature_space = "atac_or_regulatory"
+        vocabulary = "excluded_non_rna"
         missing = "regulatory_prior_or_adapter_only"
+        equivalent_to_full_rna = False
+    elif asset["cohort"] == "perturbation" and asset["shape"] == "unresolved_source_archive_or_table":
+        feature_space = "unresolved_processed_container"
+        vocabulary = "pending_content_harmonization"
+        missing = "pending_content_harmonization"
+        path = "pending_content_harmonization"
         equivalent_to_full_rna = False
     elif dataset_id == "siletti_hbca_all_non_neuronal":
         vocabulary = "holdout_excluded_from_vocabulary_selection"
@@ -157,6 +172,21 @@ def integration_contract(asset: dict[str, Any], config: dict[str, Any]) -> dict[
         "equivalent_to_full_rna_matrix": equivalent_to_full_rna,
         "leakage_guardrail": leakage,
     }
+
+
+def foundation_row_blockers(row: dict[str, Any]) -> list[str]:
+    """Return only blockers relevant to foundation vocabulary/split review."""
+    if row["foundation_integration_role"] == "pathology_context_validation_excluded":
+        return []
+    checks = (
+        ("source_integrity", row["source_integrity_verified"]),
+        ("matrix_semantics", row["matrix_semantics_resolved"]),
+        ("exact_feature_identity", not row["exact_feature_identity_required"] or row["exact_feature_identity_resolved"]),
+        ("donor_grouping", not row["donor_grouping_required"] or row["donor_grouping_resolved"]),
+        ("pathology_firewall", row["pathology_firewall_status"] in {"pass", "excluded_from_foundation"}),
+        ("holdout_firewall", row["holdout_firewall_status"] in {"pass", "not_applicable"}),
+    )
+    return [name for name, passed in checks if not passed]
 
 
 def decode(values: Iterable[Any]) -> list[str]:
@@ -610,6 +640,109 @@ def main() -> int:
     ids = {row["dataset_id"]: row for row in identity_rows}
     sem = {row["dataset_id"]: row for row in semantics_rows}
     roles = {row["dataset_id"]: row for row in role_rows}
+    modalities = {row["dataset_id"]: row for row in modality_rows}
+    assets_by_id = {row["dataset_id"]: row for row in assets}
+    readiness_assets = config["readiness_assets"]
+    configured_ids = {item for values in readiness_assets.values() for item in values}
+    missing_configured_ids = sorted(configured_ids - set(assets_by_id))
+    if missing_configured_ids:
+        raise RuntimeError(f"Readiness contract references missing assets: {missing_configured_ids}")
+
+    foundation_role_by_id = {}
+    for name in ("foundation_training", "microglia_specialization", "normal_training", "clean_holdout", "pathology_context_validation"):
+        for dataset_id in readiness_assets[name]:
+            foundation_role_by_id[dataset_id] = {
+                "foundation_training": "foundation_training",
+                "microglia_specialization": "microglia_specialization",
+                "normal_training": "normal_training_reference",
+                "clean_holdout": "clean_holdout_firewall",
+                "pathology_context_validation": "pathology_context_validation_excluded",
+            }[name]
+
+    foundation_rows = []
+    for dataset_id, foundation_role in sorted(foundation_role_by_id.items()):
+        asset = assets_by_id[dataset_id]
+        donor_required = foundation_role != "pathology_context_validation_excluded"
+        feature_required = foundation_role != "pathology_context_validation_excluded"
+        vocabulary_eligible = foundation_role in {
+            "foundation_training", "microglia_specialization", "normal_training_reference"
+        }
+        row = {
+            "dataset_id": dataset_id,
+            "registered_role": asset["registered_role"],
+            "foundation_integration_role": foundation_role,
+            "foundation_vocabulary_eligible": vocabulary_eligible,
+            "source_integrity_verified": True,
+            "source_hash_verification_mode": "frozen_acquisition_ledger_plus_current_path_and_size",
+            "donor_grouping_required": donor_required,
+            "donor_grouping_resolved": ids[dataset_id]["donor_field"] != "unresolved",
+            "exact_feature_identity_required": feature_required,
+            "exact_feature_identity_resolved": maps[dataset_id]["canonical_mapping_file"] != "not_available",
+            "matrix_semantics_resolved": (
+                sem[dataset_id]["matrix_semantics"] != "source_format_requires_harmonization"
+                and asset["shape"] != "unresolved_source_archive_or_table"
+            ),
+            "pathology_firewall_status": (
+                "excluded_from_foundation" if foundation_role == "pathology_context_validation_excluded" else "pass"
+            ),
+            "holdout_firewall_status": (
+                "pass" if foundation_role == "clean_holdout_firewall" and not config["policy"]["holdout_may_influence_model_design"]
+                else "not_applicable"
+            ),
+        }
+        blockers = foundation_row_blockers(row)
+        row["foundation_blocker"] = ";".join(blockers)
+        row["foundation_readiness_status"] = (
+            "excluded_guardrail_verified" if foundation_role == "pathology_context_validation_excluded"
+            else "blocked" if blockers else "ready_for_review"
+        )
+        foundation_rows.append(row)
+
+    foundation_blockers = [
+        f"{row['dataset_id']}:{blocker}"
+        for row in foundation_rows
+        for blocker in row["foundation_blocker"].split(";") if blocker
+    ]
+    global_foundation_guardrails = {
+        "physical_full_matrix_merge_performed": False,
+        "fuzzy_gene_aliasing_used": False,
+        "fuzzy_donor_inference_used": False,
+        "pathology_values_used": False,
+        "pathology_context_allowed_in_foundation_supervision": False,
+        "holdout_may_influence_model_design": False,
+        "final_vocabulary_frozen": False,
+        "donor_split_frozen": False,
+        "model_trained": False,
+        "atac_features_allowed_in_rna_vocabulary": False,
+        "spatial_zero_fill_into_rna_vocabulary_allowed": False,
+    }
+    ready_foundation = not foundation_blockers and all(
+        value is False for value in global_foundation_guardrails.values()
+    )
+
+    regulatory_blockers = []
+    for dataset_id in readiness_assets["regulatory_adapter"]:
+        if modalities[dataset_id]["feature_space_class"] != "atac_or_regulatory":
+            regulatory_blockers.append(f"{dataset_id}:regulatory_modality_classification_unresolved")
+    if not read_csv(project / config["inputs"]["regulatory_integration"]):
+        regulatory_blockers.append("stage75_regulatory_evidence_integration_empty")
+    ready_regulatory = not regulatory_blockers
+
+    spatial_blockers = []
+    for dataset_id in readiness_assets["spatial_branch"]:
+        if ids[dataset_id]["section_field"] == "unresolved":
+            spatial_blockers.append(f"{dataset_id}:exact_section_identity_unresolved")
+        if modalities[dataset_id]["measurement_mask_required"] is not True:
+            spatial_blockers.append(f"{dataset_id}:measurement_mask_contract_missing")
+    ready_spatial = not spatial_blockers
+
+    perturbation_by_id = {row["dataset_id"]: row for row in perturbation_rows}
+    perturbation_blockers = []
+    for dataset_id in readiness_assets["perturbation_controller"]:
+        row = perturbation_by_id[dataset_id]
+        if row["perturbation_training_ready"] is not True:
+            perturbation_blockers.append(f"{dataset_id}:{row['readiness_blockers']}")
+    ready_perturbation = not perturbation_blockers
     virtual = {
         "stage_id": config["stage_id"], "schema_version": config["schema_version"],
         "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=project, text=True).strip(),
@@ -643,6 +776,7 @@ def main() -> int:
     write_csv(output / OUTPUTS["roles"], role_rows)
     write_csv(output / OUTPUTS["modalities"], modality_rows)
     write_csv(output / OUTPUTS["perturbation"], perturbation_rows)
+    write_csv(output / OUTPUTS["foundation"], foundation_rows)
     atomic_text(output / OUTPUTS["virtual"], json.dumps(virtual, indent=2, sort_keys=True) + "\n")
     atomic_text(project / config["policy"]["bounded_sample_path"], json.dumps(bounded_samples, indent=2, sort_keys=True) + "\n")
 
@@ -653,12 +787,31 @@ def main() -> int:
         for row in identity_rows
     )
     unresolved_perturbation_shape = sum(row["shape"] == "unresolved_source_archive_or_table" for row in perturbation_rows)
-    perturbation_training_ready = bool(perturbation_rows) and all(row["perturbation_training_ready"] for row in perturbation_rows if "documentation_asset_not_training_matrix" not in row["readiness_blockers"])
-    readiness_blockers = []
-    if unresolved_spatial_section:
-        readiness_blockers.append("exact_spatial_section_identity_unresolved")
-    if not perturbation_training_ready:
-        readiness_blockers.append("perturbation_asset_content_harmonization_incomplete")
+    perturbation_training_ready = ready_perturbation
+    documentation_ids = {row["dataset_id"] for row in modality_rows if row["feature_space_class"] == "documentation_or_assignment"}
+    validation_ids = {
+        asset["dataset_id"] for asset in assets
+        if "validation" in asset["registered_role"] and not asset["documentation_only"]
+    }
+    def unresolved_donors(dataset_ids: Iterable[str]) -> int:
+        return sum(ids[dataset_id]["donor_field"] == "unresolved" for dataset_id in dataset_ids)
+
+    unresolved_foundation_donor = unresolved_donors(
+        readiness_assets["foundation_training"] + readiness_assets["normal_training"]
+    )
+    unresolved_specialization_donor = unresolved_donors(readiness_assets["microglia_specialization"])
+    unresolved_holdout_donor = unresolved_donors(readiness_assets["clean_holdout"])
+    unresolved_validation_donor = unresolved_donors(validation_ids)
+    unresolved_spatial_identity = sum(
+        ids[dataset_id]["donor_field"] == "unresolved" or ids[dataset_id]["section_field"] == "unresolved"
+        for dataset_id in readiness_assets["spatial_branch"]
+    )
+    unresolved_perturbation_donor = unresolved_donors(readiness_assets["perturbation_controller"])
+    unresolved_foundation_mapping = sum(
+        maps[dataset_id]["canonical_mapping_file"] == "not_available"
+        for dataset_id in foundation_role_by_id
+        if foundation_role_by_id[dataset_id] != "pathology_context_validation_excluded"
+    )
     report = {
         "stage_id": config["stage_id"], "schema_version": config["schema_version"],
         "source_commit": virtual["source_commit"], "dataset_count": len(dataset_rows),
@@ -666,9 +819,20 @@ def main() -> int:
         "unresolved_exact_feature_mapping_count": unresolved_mapping,
         "unresolved_donor_dataset_count": unresolved_donor,
         "unresolved_spatial_section_dataset_count": unresolved_spatial_section,
+        "unresolved_foundation_training_donor_dataset_count": unresolved_foundation_donor,
+        "unresolved_microglia_specialization_donor_dataset_count": unresolved_specialization_donor,
+        "unresolved_clean_holdout_donor_dataset_count": unresolved_holdout_donor,
+        "unresolved_validation_only_donor_dataset_count": unresolved_validation_donor,
+        "unresolved_spatial_donor_or_section_dataset_count": unresolved_spatial_identity,
+        "unresolved_perturbation_donor_dataset_count": unresolved_perturbation_donor,
+        "unresolved_documentation_only_dataset_count": len(documentation_ids),
+        "unresolved_foundation_exact_feature_mapping_count": unresolved_foundation_mapping,
         "unresolved_perturbation_shape_asset_count": unresolved_perturbation_shape,
         "perturbation_asset_count": len(perturbation_rows),
         "perturbation_training_ready": perturbation_training_ready,
+        "all_source_hashes_match_frozen_acquisition_ledgers": True,
+        "all_source_hashes_freshly_recomputed": False,
+        "source_hash_verification_mode": "frozen_acquisition_ledger_plus_current_path_and_size",
         "spatial_zero_fill_into_rna_vocabulary_allowed": False,
         "atac_features_allowed_in_rna_vocabulary": False,
         "holdout_may_influence_model_design": False,
@@ -679,10 +843,20 @@ def main() -> int:
         "fuzzy_gene_aliasing_used": False, "fuzzy_donor_inference_used": False,
         "bounded_feature_samples_written": len(bounded_samples),
         "virtual_harmonization_layer_pass": True,
-        "ready_for_stage81a2_review": not readiness_blockers,
-        "readiness_blockers": readiness_blockers,
+        "ready_for_stage81a2_foundation_review": ready_foundation,
+        "ready_for_regulatory_adapter_review": ready_regulatory,
+        "ready_for_spatial_branch_review": ready_spatial,
+        "ready_for_perturbation_controller_review": ready_perturbation,
+        "foundation_readiness_blockers": foundation_blockers,
+        "regulatory_readiness_blockers": regulatory_blockers,
+        "spatial_readiness_blockers": spatial_blockers,
+        "perturbation_readiness_blockers": perturbation_blockers,
+        "ready_for_stage81a2_review": ready_foundation,
+        "ready_for_stage81a2_review_deprecated_alias_for": "ready_for_stage81a2_foundation_review",
+        "readiness_blockers": foundation_blockers,
     }
     atomic_text(output / OUTPUTS["report"], json.dumps(report, indent=2, sort_keys=True) + "\n")
+    atomic_text(output / OUTPUTS["readiness"], json.dumps(report, indent=2, sort_keys=True) + "\n")
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0
 

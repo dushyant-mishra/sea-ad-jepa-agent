@@ -36,14 +36,15 @@ def test_canonical_and_supporting_outputs_do_not_overlap() -> None:
 def test_artifact_map_matches_current_report() -> None:
     registry = yaml.safe_load(MAP.read_text(encoding="utf-8"))
     report = json.loads(
-        (PROJECT / "results/v4/pre_stage81a2_harmonization_report.json").read_text(
+        (PROJECT / "results/v4/pre_stage81a2_readiness_report.json").read_text(
             encoding="utf-8"
         )
     )
     assert registry["current_stage"] == report["stage_id"]
     assert report["model_trained"] is False
-    assert report["ready_for_stage81a2_review"] is False
+    assert report["ready_for_stage81a2_foundation_review"] is False
     assert report["readiness_blockers"] == [
-        "exact_spatial_section_identity_unresolved",
-        "perturbation_asset_content_harmonization_incomplete",
+        "gse97930_cerebellar_umi:donor_grouping",
+        "gse97930_frontal_cortex_umi:donor_grouping",
+        "gse97930_visual_cortex_umi:donor_grouping",
     ]

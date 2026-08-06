@@ -52,6 +52,7 @@ def test_frozen_outputs_when_present() -> None:
     assert report["pathology_context_allowed_in_foundation_supervision"] is False
     assert report["perturbation_training_ready"] is False
     assert report["unresolved_perturbation_shape_asset_count"] == 14
+    assert report["ready_for_stage81a2_review_deprecated_alias_for"] == "ready_for_stage81a2_foundation_review"
 
 
 def test_virtual_manifest_has_required_fields_when_present() -> None:
@@ -87,7 +88,8 @@ def test_modality_and_perturbation_gates_when_present() -> None:
     ):
         assert modalities[dataset_id]["equivalent_to_full_rna_matrix"] == "False"
         assert modalities[dataset_id]["rna_vocabulary_eligibility"] == "excluded_from_direct_full_rna_vocabulary"
-    assert modalities["sea_ad_mtg_atac_final_2024"]["rna_vocabulary_eligibility"] == "excluded_from_rna_vocabulary"
+        assert modalities[dataset_id]["measurement_mask_required"] == "True"
+    assert modalities["sea_ad_mtg_atac_final_2024"]["rna_vocabulary_eligibility"] == "excluded_non_rna"
     assert modalities["siletti_hbca_all_non_neuronal"]["integration_path"] == "clean_holdout_only"
     with perturbation_path.open(encoding="utf-8", newline="") as handle:
         perturbations = list(csv.DictReader(handle))
