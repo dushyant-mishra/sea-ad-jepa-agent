@@ -1,0 +1,6 @@
+asset_id,study_id,file_type,shape_or_rows_columns,x_encoding,x_dtype,raw_present,layers,donor_linkage_present,open_pass
+siletti_hbca_all_non_neuronal,siletti_human_brain_cell_atlas_v1,h5ad,"[888263, 58232]",csr_matrix,float32,False,,True,True
+gse97930_cerebellar_umi,GSE97930,gzipped_text_matrix,"[37235, 5602]",text_matrix_or_documentation,text,not_applicable,,False,True
+gse97930_frontal_cortex_umi,GSE97930,gzipped_text_matrix,"[34305, 10319]",text_matrix_or_documentation,text,not_applicable,,False,True
+gse97930_visual_cortex_umi,GSE97930,gzipped_text_matrix,"[41541, 19368]",text_matrix_or_documentation,text,not_applicable,,False,True
+gse97930_readme,GSE97930,text,"[""not_applicable"", ""not_applicable""]",text_matrix_or_documentation,text,not_applicable,,False,True
