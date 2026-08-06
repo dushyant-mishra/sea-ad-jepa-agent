@@ -16,6 +16,33 @@ gene-vocabulary freeze, donor split, or training matrix. Pathology-bearing
 columns may exist in authoritative sources, but this builder never reads their
 values.
 
+## Non-equivalent modalities and roles
+
+The 180-feature MTG MERFISH, 433-feature HIP/MEC MERSCOPE and 464-feature
+Caudate Xenium panels are spatial measurements, not incomplete copies of the
+36,601-feature RNA matrices. They require a dedicated spatial branch,
+shared-feature projection, or explicit missing-modality mechanism. Zero-filling
+them into the RNA vocabulary and presenting them as equivalent is prohibited.
+
+The 218,882-feature MTG ATAC object is restricted to the regulatory-prior or
+adapter pathway and is excluded from the RNA vocabulary. The Siletti object is
+a clean holdout and may not influence training, vocabulary, architecture,
+thresholds, checkpoint selection or hyperparameters. GSE243292 is restricted
+to pathology-context validation; pathology fields cannot supervise the
+pathology-blind foundation stage.
+
+GSE301119 CRISPRa and CRISPRi have unequal feature universes. Later use must
+align exact stable features and carry explicit measurement masks. The objects
+must never be treated as identically measured matrices.
+
+## Perturbation readiness gate
+
+Acquisition provenance is not model readiness. Every perturbation asset must
+separately resolve source archive members, matrix orientation, exact feature
+identifiers, guide-to-cell assignments where applicable, controls, samples,
+replicates and perturbation identities. Until those fields pass, the asset is
+blocked from perturbation training even when its download and hash are valid.
+
 Run:
 
 ```powershell

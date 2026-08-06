@@ -31,6 +31,8 @@ OUTPUTS = {
     "identity": "pre_stage81a2_donor_study_specimen_registry.csv",
     "duplicates": "pre_stage81a2_duplicate_overlap_registry.csv",
     "roles": "pre_stage81a2_dataset_role_candidates.csv",
+    "modalities": "pre_stage81a2_modality_integration_registry.csv",
+    "perturbation": "pre_stage81a2_perturbation_readiness_registry.csv",
     "virtual": "pre_stage81a2_virtual_concat_manifest.json",
     "report": "pre_stage81a2_harmonization_report.json",
 }
@@ -102,6 +104,59 @@ def verify_governance(project: Path, config: dict[str, Any]) -> None:
     )
     if any(policy[name] is not False for name in required_false):
         raise RuntimeError("Harmonization safety contract is not active")
+    required_false = (
+        "spatial_zero_fill_into_rna_vocabulary_allowed",
+        "atac_features_allowed_in_rna_vocabulary",
+        "holdout_may_influence_model_design",
+        "pathology_context_allowed_in_foundation_supervision",
+    )
+    if any(policy[name] is not False for name in required_false):
+        raise RuntimeError("Modality or leakage guardrail is not active")
+    if policy["perturbation_training_requires_complete_asset_audit"] is not True:
+        raise RuntimeError("Perturbation readiness gate is not active")
+
+
+def integration_contract(asset: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
+    dataset_id = asset["dataset_id"]
+    modality = asset["modality"].lower()
+    path = config.get("dataset_contracts", {}).get(dataset_id, {}).get("integration_path", "")
+    feature_space = "rna_expression_candidate"
+    vocabulary = "pending_exact_gene_identity_and_stage81a2"
+    missing = "not_applicable"
+    leakage = "none_beyond_registered_role"
+    mask_required = False
+    equivalent_to_full_rna = True
+    if any(token in modality for token in ("merfish", "merscope", "xenium")):
+        feature_space = "targeted_spatial_panel"
+        vocabulary = "excluded_from_direct_full_rna_vocabulary"
+        missing = "shared_feature_projection_or_explicit_missing_modality_mask_required"
+        equivalent_to_full_rna = False
+    elif "atac" in modality:
+        feature_space = "regulatory_peak_namespace"
+        vocabulary = "excluded_from_rna_vocabulary"
+        missing = "regulatory_prior_or_adapter_only"
+        equivalent_to_full_rna = False
+    elif dataset_id == "siletti_hbca_all_non_neuronal":
+        vocabulary = "holdout_excluded_from_vocabulary_selection"
+        leakage = "exclude_from_training_vocabulary_architecture_threshold_checkpoint_and_hyperparameter_decisions"
+    elif dataset_id == "gse243292_full_dlpfc_h5ad":
+        vocabulary = "validation_only_not_foundation_vocabulary_selection"
+        leakage = "pathology_fields_prohibited_from_pathology_blind_foundation_supervision"
+    elif asset["study_id"] == "GSE301119":
+        feature_space = "perturbation_expression_unequal_feature_universe"
+        vocabulary = "exact_stable_feature_intersection_or_projection_pending"
+        missing = "explicit_measurement_mask_required"
+        mask_required = True
+        equivalent_to_full_rna = False
+    return {
+        "integration_path": path or "role_pending_stage81a2",
+        "feature_space_class": feature_space,
+        "rna_vocabulary_eligibility": vocabulary,
+        "missing_modality_policy": missing,
+        "measurement_mask_required": mask_required,
+        "equivalent_to_full_rna_matrix": equivalent_to_full_rna,
+        "leakage_guardrail": leakage,
+    }
 
 
 def decode(values: Iterable[Any]) -> list[str]:
@@ -370,14 +425,21 @@ def main() -> int:
     mapping_registry = []
     identity_rows = []
     role_rows = []
+    modality_rows = []
+    perturbation_rows = []
     mapping_cache: dict[str, str] = {}
     bounded_samples = []
+    perturbation_identity = {
+        row["accession"]: row
+        for row in read_csv(project / config["inputs"]["perturbation_identity"])
+    }
 
     for asset in assets:
         path = project / asset["source_path"]
         if not path.exists() or path.stat().st_size != int(asset["size_bytes"]):
             raise RuntimeError(f"Missing or size-drifted source: {asset['dataset_id']}")
         contract = config["role_contracts"][asset["cohort"]]
+        integration = integration_contract(asset, config)
         semantics = source_semantics.get(asset["dataset_id"], {})
         identity = source_identity.get(asset["dataset_id"], {})
         records: list[tuple[str, str, str]] = []
@@ -426,6 +488,7 @@ def main() -> int:
         region_field = identity.get("region_field", h5_identity.get("region_field", ""))
         assay_field = identity.get("method_field", h5_identity.get("assay_field", ""))
         cell_field = identity.get("cell_or_nucleus_id_field", h5_identity.get("cell_identifier_field", ""))
+        audit: dict[str, str] = {}
         if asset["study_id"] == "GSE301119":
             audit = next((row for row in read_csv(project / config["inputs"]["perturbation_seurat"]) if row["source_path"] == asset["source_path"]), {})
             donor_field, donor_count = "donor", audit.get("donor_count", 0)
@@ -446,6 +509,8 @@ def main() -> int:
             "integer_count_layer_available": semantics.get("integer_count_layer_available", "unknown"),
             "normalization_evidence": semantics.get("log_transform_evidence", "not_resolved_from_compact_source"),
             "expression_matrix_loaded": False,
+            "feature_space_class": integration["feature_space_class"],
+            "equivalent_to_full_rna_matrix": integration["equivalent_to_full_rna_matrix"],
         })
         feature_rows.append({
             "dataset_id": asset["dataset_id"], "gene_namespace": "exact_source_feature_identifiers" if records else "unresolved_or_non_gene",
@@ -472,7 +537,51 @@ def main() -> int:
             "dataset_id": asset["dataset_id"], "registered_role": asset["registered_role"],
             "allowed_role": contract["allowed_role"], "forbidden_role": contract["forbidden_role"],
             "role_status": "candidate_not_frozen", "pathology_supervision_allowed": False,
+            "integration_path": integration["integration_path"],
+            "rna_vocabulary_eligibility": integration["rna_vocabulary_eligibility"],
+            "leakage_guardrail": integration["leakage_guardrail"],
         })
+        modality_rows.append({
+            "dataset_id": asset["dataset_id"], "modality": asset["modality"],
+            "shape": asset["shape"], "feature_space_class": integration["feature_space_class"],
+            "integration_path": integration["integration_path"],
+            "rna_vocabulary_eligibility": integration["rna_vocabulary_eligibility"],
+            "missing_modality_policy": integration["missing_modality_policy"],
+            "measurement_mask_required": integration["measurement_mask_required"],
+            "equivalent_to_full_rna_matrix": integration["equivalent_to_full_rna_matrix"],
+            "leakage_guardrail": integration["leakage_guardrail"],
+        })
+        if asset["cohort"] == "perturbation":
+            is_rds = lower.endswith(".rds")
+            is_documentation = asset["documentation_only"]
+            shape_resolved = asset["shape"] != "unresolved_source_archive_or_table"
+            study_identity = perturbation_identity[asset["study_id"]]
+            rds_identity_verified = is_rds and audit.get("full_object_audit_pass", "").lower() == "true"
+            blockers = []
+            gates = {
+                "archive_members_resolved": is_rds,
+                "matrix_orientation_resolved": is_rds,
+                "exact_feature_identifiers_resolved": bool(mapping_path),
+                "guide_to_cell_assignments_resolved": rds_identity_verified and int(audit.get("n_guide_identities", 0)) > 0,
+                "controls_resolved": rds_identity_verified and int(audit.get("n_non_targeting_control_cells", 0)) > 0,
+                "samples_resolved": rds_identity_verified and int(audit.get("donor_count", 0)) > 0,
+                "replicates_resolved": rds_identity_verified and "replicate" in study_identity["replicate_structure"].lower(),
+                "perturbation_identities_resolved": rds_identity_verified and int(audit.get("n_target_genes", 0)) > 0,
+            }
+            if is_documentation:
+                blockers.append("documentation_asset_not_training_matrix")
+            if not shape_resolved:
+                blockers.append("source_archive_or_table_shape_unresolved")
+            blockers.extend(name for name, passed in gates.items() if not passed)
+            if asset["study_id"] == "GSE301119":
+                blockers.append("unequal_crispra_crispri_feature_universes_require_stable_alignment_and_measurement_masks")
+            perturbation_rows.append({
+                "dataset_id": asset["dataset_id"], "study_id": asset["study_id"],
+                "source_path": asset["source_path"], "shape": asset["shape"],
+                **gates, "measurement_mask_required": integration["measurement_mask_required"],
+                "perturbation_training_ready": False,
+                "readiness_blockers": ";".join(dict.fromkeys(blockers)),
+            })
 
     duplicate_rows = []
     for source in read_csv(project / config["inputs"]["normal_duplicates"]):
@@ -517,6 +626,11 @@ def main() -> int:
             "duplicate_group": ";".join(item["duplicate_group"] for item in duplicate_rows if row["dataset_id"] in {item["left_dataset"], item["right_dataset"]}) or "none_registered",
             "future_vocabulary_projection_status": maps[row["dataset_id"]]["future_vocabulary_projection_status"],
             "future_split_grouping_keys": ids[row["dataset_id"]]["future_split_grouping_keys"],
+            "feature_space_class": next(item["feature_space_class"] for item in modality_rows if item["dataset_id"] == row["dataset_id"]),
+            "integration_path": next(item["integration_path"] for item in modality_rows if item["dataset_id"] == row["dataset_id"]),
+            "missing_modality_policy": next(item["missing_modality_policy"] for item in modality_rows if item["dataset_id"] == row["dataset_id"]),
+            "measurement_mask_required": next(item["measurement_mask_required"] for item in modality_rows if item["dataset_id"] == row["dataset_id"]),
+            "equivalent_to_full_rna_matrix": next(item["equivalent_to_full_rna_matrix"] for item in modality_rows if item["dataset_id"] == row["dataset_id"]),
         } for row in matrix_assets],
     }
 
@@ -527,6 +641,8 @@ def main() -> int:
     write_csv(output / OUTPUTS["identity"], identity_rows)
     write_csv(output / OUTPUTS["duplicates"], sorted(duplicate_rows, key=lambda row: row["duplicate_group"]))
     write_csv(output / OUTPUTS["roles"], role_rows)
+    write_csv(output / OUTPUTS["modalities"], modality_rows)
+    write_csv(output / OUTPUTS["perturbation"], perturbation_rows)
     atomic_text(output / OUTPUTS["virtual"], json.dumps(virtual, indent=2, sort_keys=True) + "\n")
     atomic_text(project / config["policy"]["bounded_sample_path"], json.dumps(bounded_samples, indent=2, sort_keys=True) + "\n")
 
@@ -536,6 +652,13 @@ def main() -> int:
         row["section_field"] == "unresolved" and any(token in next(asset["modality"] for asset in assets if asset["dataset_id"] == row["dataset_id"]).lower() for token in ("merfish", "merscope", "xenium"))
         for row in identity_rows
     )
+    unresolved_perturbation_shape = sum(row["shape"] == "unresolved_source_archive_or_table" for row in perturbation_rows)
+    perturbation_training_ready = bool(perturbation_rows) and all(row["perturbation_training_ready"] for row in perturbation_rows if "documentation_asset_not_training_matrix" not in row["readiness_blockers"])
+    readiness_blockers = []
+    if unresolved_spatial_section:
+        readiness_blockers.append("exact_spatial_section_identity_unresolved")
+    if not perturbation_training_ready:
+        readiness_blockers.append("perturbation_asset_content_harmonization_incomplete")
     report = {
         "stage_id": config["stage_id"], "schema_version": config["schema_version"],
         "source_commit": virtual["source_commit"], "dataset_count": len(dataset_rows),
@@ -543,14 +666,21 @@ def main() -> int:
         "unresolved_exact_feature_mapping_count": unresolved_mapping,
         "unresolved_donor_dataset_count": unresolved_donor,
         "unresolved_spatial_section_dataset_count": unresolved_spatial_section,
+        "unresolved_perturbation_shape_asset_count": unresolved_perturbation_shape,
+        "perturbation_asset_count": len(perturbation_rows),
+        "perturbation_training_ready": perturbation_training_ready,
+        "spatial_zero_fill_into_rna_vocabulary_allowed": False,
+        "atac_features_allowed_in_rna_vocabulary": False,
+        "holdout_may_influence_model_design": False,
+        "pathology_context_allowed_in_foundation_supervision": False,
         "all_source_paths_exist_and_sizes_match": True, "all_source_hashes_registered": all(len(row["source_hash"]) == 64 for row in dataset_rows),
         "physical_full_matrix_merge_performed": False, "final_vocabulary_frozen": False,
         "donor_split_frozen": False, "pathology_values_used": False, "model_trained": False,
         "fuzzy_gene_aliasing_used": False, "fuzzy_donor_inference_used": False,
         "bounded_feature_samples_written": len(bounded_samples),
         "virtual_harmonization_layer_pass": True,
-        "ready_for_stage81a2_review": unresolved_spatial_section == 0,
-        "readiness_blockers": (["exact_spatial_section_identity_unresolved"] if unresolved_spatial_section else []),
+        "ready_for_stage81a2_review": not readiness_blockers,
+        "readiness_blockers": readiness_blockers,
     }
     atomic_text(output / OUTPUTS["report"], json.dumps(report, indent=2, sort_keys=True) + "\n")
     print(json.dumps(report, indent=2, sort_keys=True))

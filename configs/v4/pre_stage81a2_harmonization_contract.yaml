@@ -14,6 +14,37 @@ policy:
   exact_source_identifiers_preserved: true
   gene_mapping_policy: exact_source_symbol_or_exact_source_ensembl_only
   no_fixed_storage_cap: true
+  spatial_zero_fill_into_rna_vocabulary_allowed: false
+  atac_features_allowed_in_rna_vocabulary: false
+  holdout_may_influence_model_design: false
+  pathology_context_allowed_in_foundation_supervision: false
+  perturbation_training_requires_complete_asset_audit: true
+
+dataset_contracts:
+  sea_ad_mtg_rna_final_2026:
+    integration_path: primary_foundation_expression_candidate
+  sea_ad_multiregion_immune_rna_final_2026:
+    integration_path: microglia_pvm_specialization_expression_candidate
+  sea_ad_pfc_a9_rna_final_2026:
+    integration_path: regional_replication_expression_candidate
+  sea_ad_mtg_merfish_combined_2024:
+    integration_path: dedicated_spatial_branch_or_shared_feature_projection_or_missing_modality_mechanism
+  sea_ad_hip_merscope_combined_2026:
+    integration_path: dedicated_spatial_branch_or_shared_feature_projection_or_missing_modality_mechanism
+  sea_ad_mec_merscope_combined_2026:
+    integration_path: dedicated_spatial_branch_or_shared_feature_projection_or_missing_modality_mechanism
+  sea_ad_caudate_xenium_combined_2026:
+    integration_path: dedicated_spatial_branch_or_shared_feature_projection_or_missing_modality_mechanism
+  sea_ad_mtg_atac_final_2024:
+    integration_path: regulatory_prior_or_adapter_pathway
+  siletti_hbca_all_non_neuronal:
+    integration_path: clean_holdout_only
+  gse243292_full_dlpfc_h5ad:
+    integration_path: pathology_context_validation_only
+  gse301119_5ff4821904a5:
+    integration_path: perturbation_alignment_with_stable_features_and_measurement_mask
+  gse301119_1c0fbaf672ab:
+    integration_path: perturbation_alignment_with_stable_features_and_measurement_mask
 
 inputs:
   sea_ad_assets: results/v4/stage81a1b_authoritative_asset_registry.csv
