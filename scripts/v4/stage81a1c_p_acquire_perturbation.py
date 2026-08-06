@@ -179,8 +179,9 @@ def soft_path(project: Path, config: dict[str, Any], accession: str) -> Path:
     return project / config["policy"]["data_root"] / accession / f"{accession}.soft.txt"
 
 
-def audit_tar(path: Path) -> dict[str, Any]:
-    mode = "r:gz" if path.name.endswith((".tar.gz", ".tgz")) else "r:"
+def audit_tar(path: Path, logical_name: str | None = None) -> dict[str, Any]:
+    name = (logical_name or path.name).lower()
+    mode = "r:gz" if name.endswith((".tar.gz", ".tgz")) else "r:"
     with tarfile.open(path, mode) as archive:
         members = [member for member in archive.getmembers() if member.isfile()]
         names = [member.name for member in members]
@@ -241,7 +242,7 @@ def audit_rds(path: Path) -> dict[str, Any]:
 def audit_asset(path: Path, logical_name: str | None = None) -> dict[str, Any]:
     lower = (logical_name or path.name).lower()
     if lower.endswith((".tar", ".tar.gz", ".tgz")):
-        return audit_tar(path)
+        return audit_tar(path, logical_name)
     if lower.endswith(".h5ad.gz"):
         return audit_h5ad_gzip(path)
     if lower.endswith(".rds"):

@@ -9,7 +9,8 @@ required_ancestor_commits:
 
 policy:
   data_root: data/external/v4/normal_references
-  minimum_free_bytes: 805306368000
+  minimum_free_bytes: 0
+  free_space_policy: monitor_capacity_without_fixed_reserve
   no_fixed_stage_download_cap: true
   processed_data_only: true
   no_model_training: true

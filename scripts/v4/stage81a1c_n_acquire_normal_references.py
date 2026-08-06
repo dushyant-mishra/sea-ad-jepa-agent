@@ -317,8 +317,9 @@ def preflight(project: Path, config: dict[str, Any]) -> dict[str, Any]:
         "outstanding_download_bytes": outstanding,
         "estimated_free_bytes_after": usage.free - outstanding,
         "minimum_free_bytes": int(config["policy"]["minimum_free_bytes"]),
+        "free_space_policy": config["policy"]["free_space_policy"],
         "no_fixed_stage_download_cap": True,
-        "pass": usage.free - outstanding >= int(config["policy"]["minimum_free_bytes"]),
+        "pass": usage.free >= outstanding,
     }
 
 
@@ -506,7 +507,7 @@ def main() -> int:
     verify_governance(project, config)
     storage = preflight(project, config)
     if not storage["pass"]:
-        raise RuntimeError("Normal-reference acquisition would violate the free-space safety reserve")
+        raise RuntimeError("Normal-reference acquisition does not fit in currently available space")
     catalog = catalog_rows(config)
     decisions = [{
         "asset_id": row["asset_id"], "study_id": row["study_id"],

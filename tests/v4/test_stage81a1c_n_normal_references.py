@@ -27,6 +27,7 @@ def test_scope_roles_and_no_fixed_cap() -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
     assert config["stage_id"] == "stage81a1c_n"
     assert config["policy"]["no_fixed_stage_download_cap"] is True
+    assert config["policy"]["free_space_policy"] == "monitor_capacity_without_fixed_reserve"
     assert config["policy"]["no_model_training"] is True
     assert config["policy"]["no_final_vocabulary_freeze"] is True
     assert config["policy"]["no_donor_split_freeze"] is True

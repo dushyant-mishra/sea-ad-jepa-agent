@@ -34,9 +34,10 @@ Downloads are resumable through `.part` files. Promotion requires exact byte
 count and format validation. SHA-256 is bound to repository-relative path,
 size, modification time, format-open result and verification schema.
 
-There is no fixed Stage81A1C-N download-volume cap. The script still preserves
-the project safety reserve, avoids redundant data, and downloads processed
-matrices and compact documentation only.
+There is no fixed Stage81A1C-N download-volume cap or fixed free-space reserve.
+The script reports available capacity and requires only that selected assets
+fit. Dataset eligibility remains scientific: redundant data are excluded, and
+only processed matrices and compact documentation are downloaded.
 
 ## Claim boundary
 
