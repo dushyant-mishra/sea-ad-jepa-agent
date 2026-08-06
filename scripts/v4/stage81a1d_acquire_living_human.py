@@ -355,6 +355,7 @@ def audit_nph_annotations(
     project: Path,
     config: dict[str, Any],
     annotations_zip: Path,
+    organized_zip: Path,
     rscript: str,
 ) -> dict[str, Any]:
     sealed_root = project / config["policy"]["sealed_root"]
@@ -367,10 +368,30 @@ def audit_nph_annotations(
                 raise RuntimeError(f"Unsafe NPH annotation member: {member.filename}")
         handle.extractall(extraction)
     annotation_dir = extraction / "annotations"
+    organized_root = sealed_root / "nph52_organized"
+    organized_root.mkdir(parents=True, exist_ok=True)
+    nph_prefix = "organized_data/Human/brain/snRNA/NPH/"
+    with zipfile.ZipFile(organized_zip) as handle:
+        all_members = handle.infolist()
+        selected_members = [
+            member for member in all_members
+            if member.filename.startswith(nph_prefix) and member.filename.endswith(".qs")
+        ]
+        if len(selected_members) != 7:
+            raise RuntimeError(f"Expected seven exact NPH source objects, found {len(selected_members)}")
+        for member in selected_members:
+            if unsafe_member(member.filename):
+                raise RuntimeError(f"Unsafe NPH source member: {member.filename}")
+            handle.extract(member, organized_root)
+    organized_dir = organized_root / nph_prefix
     donors_csv = sealed_root / "nph52_exact_donors.csv"
     summary_csv = sealed_root / "nph52_exact_summary.csv"
+    matrix_csv = sealed_root / "nph52_exact_matrix_audit.csv"
     helper = project / "scripts/v4/stage81a1d_audit_nph_annotations.R"
-    command = [rscript, str(helper), str(annotation_dir), str(donors_csv), str(summary_csv)]
+    command = [
+        rscript, str(helper), str(annotation_dir), str(organized_dir),
+        str(donors_csv), str(summary_csv), str(matrix_csv),
+    ]
     try:
         subprocess.run(command, cwd=project, check=True)
     except (FileNotFoundError, subprocess.CalledProcessError) as exc:
@@ -387,6 +408,8 @@ def audit_nph_annotations(
         donors = list(csv.DictReader(handle))
     with summary_csv.open("r", encoding="utf-8", newline="") as handle:
         summaries = list(csv.DictReader(handle))
+    with matrix_csv.open("r", encoding="utf-8", newline="") as handle:
+        matrix_objects = list(csv.DictReader(handle))
     if len(summaries) != 1:
         raise RuntimeError("NPH annotation audit did not emit exactly one summary")
     summary = summaries[0]
@@ -394,6 +417,8 @@ def audit_nph_annotations(
         "source_qs_count", "nph_cell_count", "nph_unique_cell_count", "nph_donor_count",
         "pathology_negative_donor_count", "amyloid_positive_donor_count",
         "amyloid_tau_positive_donor_count", "integrated_non_nph_annotation_row_count",
+        "exact_nph_source_object_count", "matrix_nph_cell_count",
+        "matrix_unique_nph_cell_count", "matrix_feature_count",
     )
     for key in integer_fields:
         summary[key] = int(summary[key])
@@ -402,7 +427,7 @@ def audit_nph_annotations(
     sidecar_value = {
         "stage_id": config["stage_id"], "source": "NPH52 official annotations.zip",
         "annotations_archive_sha256": sha256(annotations_zip),
-        "summary": summary, "donors": donors,
+        "summary": summary, "donors": donors, "matrix_objects": matrix_objects,
         "foundation_selection_load_allowed": False,
         "pathology_metadata_sealed": True,
     }
@@ -709,7 +734,9 @@ def audit(
     if nph_verified:
         annotation_row = next(row for row in nph_rows if row["file_name"] == "annotations.zip")
         nph_audit = audit_nph_annotations(
-            project, config, data_path(project, config, annotation_row), rscript,
+            project, config, data_path(project, config, annotation_row),
+            data_path(project, config, next(row for row in nph_rows if row["file_name"] == "organized_data.zip")),
+            rscript,
         )
         nph_summary = nph_audit["summary"]
         nph_counts = {
@@ -718,6 +745,16 @@ def audit(
             "amyloid_positive": int(nph_summary["amyloid_positive_donor_count"]),
             "amyloid_tau_positive": int(nph_summary["amyloid_tau_positive_donor_count"]),
         }
+        matrix_rows.append({
+            "dataset_id": "NPH52_exact_source_objects", "study_id": "NPH52",
+            "source_path": "data/external/v4/living_human/nph52/organized_data.zip",
+            "matrix_semantics": nph_summary["matrix_semantics"],
+            "feature_identifier_type": "gene_symbol", "n_obs": nph_summary["matrix_nph_cell_count"],
+            "n_vars": nph_summary["matrix_feature_count"],
+            "matrix_orientation": "cell_by_feature_logical_view_from_gene_by_cell_source",
+            "rna_vocabulary_eligible": True, "open_read_only_pass": True,
+            "physical_merge_performed": False,
+        })
 
     role_rows = []
     tissue_rows = []

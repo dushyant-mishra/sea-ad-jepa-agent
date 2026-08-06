@@ -42,7 +42,10 @@ The exact NPH annotation audit uses `scripts/v4/stage81a1d_audit_nph_annotations
 with R `qs`. Set `STAGE81A1D_RSCRIPT` (or pass `--rscript`) when that reader is
 not on `PATH`. It filters exactly on `ds_batch == human_NPH`, treats
 `anno_batch` as the source donor field, and seals `anno_condition` outside
-committed evidence.
+committed evidence. The helper also reads only the seven exact NPH
+`SingleCellExperiment` source objects from the integrated archive, verifies the
+sparse `counts` assay, shared gene-symbol order, donor linkage and disjoint cell
+IDs, and leaves every non-NPH object unextracted.
 
 ## Claim boundaries
 

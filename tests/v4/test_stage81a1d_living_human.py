@@ -125,6 +125,9 @@ def test_pathology_sidecar_is_outside_committed_evidence() -> None:
     assert 'frame$ds_batch == "human_NPH"' in text
     assert "anno_batch" in text
     assert "anno_condition" in text
+    assert 'assayNames(object), "counts"' in text
+    assert "NPH feature order differs" in text
+    assert "NPH cell identifiers overlap" in text
 
 
 def test_synapse_policy_never_accepts_terms() -> None:
