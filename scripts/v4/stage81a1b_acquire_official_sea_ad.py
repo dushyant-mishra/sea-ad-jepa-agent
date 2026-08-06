@@ -11,6 +11,7 @@ import io
 import json
 import os
 import shutil
+import ssl
 import subprocess
 import sys
 import tempfile
@@ -23,6 +24,7 @@ from typing import Any, Optional
 import h5py
 import numpy as np
 import yaml
+import certifi
 
 
 OUTPUT_NAMES = {
@@ -65,6 +67,8 @@ INTEGRATION_COLUMNS = [
     "direction_confidence", "allowed_model_role", "prohibited_claim",
     "source_paths", "source_hashes",
 ]
+
+HTTPS_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 
 
 def parse_args() -> argparse.Namespace:
@@ -1025,7 +1029,7 @@ def metadata_url_for_asset(asset: dict[str, Any]) -> str:
 
 def remote_head(url: str) -> dict[str, Any]:
     request = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "stage81a1b/2.1"})
-    with urllib.request.urlopen(request, timeout=60) as response:
+    with urllib.request.urlopen(request, timeout=60, context=HTTPS_CONTEXT) as response:
         return {
             "remote_size": int(response.headers["Content-Length"]),
             "etag": response.headers.get("ETag", "").strip('"'),
@@ -1035,7 +1039,7 @@ def remote_head(url: str) -> dict[str, Any]:
 
 def remote_csv_header(url: str, max_bytes: int) -> list[str]:
     request = urllib.request.Request(url, headers={"User-Agent": "stage81a1b/2.1"})
-    with urllib.request.urlopen(request, timeout=60) as response:
+    with urllib.request.urlopen(request, timeout=60, context=HTTPS_CONTEXT) as response:
         line = response.readline(max_bytes + 1)
     if len(line) > max_bytes or not line.endswith((b"\n", b"\r\n")):
         raise RuntimeError("Regional metadata CSV header exceeds bounded read contract")
