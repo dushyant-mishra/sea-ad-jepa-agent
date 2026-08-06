@@ -1,0 +1,12 @@
+study_id,tissue_state,clinical_context_separate,postmortem,healthy_volunteer_label_allowed
+GSE134577,living_csf,True,False,False
+GSE181279,living_pbmc,True,False,False
+GSE200164,living_csf,True,False,False
+GSE226267,living_pbmc,True,False,False
+GSE226602,living_pbmc,True,False,False
+GSE270454,living_whole_blood,True,False,False
+GSE292141,living_csf_and_living_pbmc,True,False,False
+GSE302937,living_olfactory_epithelium,True,False,False
+GSE305625,living_csf_and_living_plasma,True,False,False
+HVS,living_surgical_cortex,True,False,False
+NPH52,living_nph_cortex,True,False,False
