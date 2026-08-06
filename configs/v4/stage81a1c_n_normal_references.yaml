@@ -1,0 +1,150 @@
+stage_id: stage81a1c_n
+schema_version: "1.0"
+contract_revision: normal_reference_acquisition_2026
+
+required_ancestor_commits:
+  - 16e287766be2981531d55f1b99404b85b61cf679
+  - 7523399d639119071a0e3cc5873b2303d827fc5f
+  - 45c80ed
+
+policy:
+  data_root: data/external/v4/normal_references
+  minimum_free_bytes: 805306368000
+  no_fixed_stage_download_cap: true
+  processed_data_only: true
+  no_model_training: true
+  no_final_vocabulary_freeze: true
+  no_donor_split_freeze: true
+  no_physical_atlas_concat: true
+  pathology_values_used: false
+  verification_schema_version: "1.0"
+  verification_tool_version: stage81a1c-n-python-h5py-gzip-v1
+
+protected_worktree_signatures:
+  docs/stage_c_finetuning_analysis.md: d1ae570bac1a7c87a04faa35ddf5f2546d8dc7f6fc03ccc9379ccf9ce0b182a9
+  results/tables/v2_1_gse174367_cell_trajectory_scores.csv: e56d5c349b6f477c871592ff9ab29a358546a9cdc7adf88e22507292d98ac22f
+  results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv: 543cff1bfb0af9e79b09ef6d40d9f01eb9aa7efee64926b6d2a1287a49757a5d
+
+holdout_contract:
+  study_id: siletti_human_brain_cell_atlas_v1
+  collection_id: 283d65eb-dd53-496d-adb7-7570c7caa443
+  acquired_partition_dataset_id: b165f033-9dec-468a-9248-802fc6902a74
+  acquired_partition_title: All non-neuronal cells
+  rule: exclude_the_complete_source_study_from_all_v4_training_and_model_selection
+  primary_role: clean_normal_holdout
+  disease_label_required: normal
+  adult_only_required: true
+  whole_study_isolation_required: true
+  note: The relevant full study-defined non-neuronal partition is acquired; all other partitions from the same study remain excluded from training.
+
+assets:
+  - asset_id: siletti_hbca_all_non_neuronal
+    study_id: siletti_human_brain_cell_atlas_v1
+    provider: CZ CELLxGENE Discover
+    official_record: https://cellxgene.cziscience.com/collections/283d65eb-dd53-496d-adb7-7570c7caa443
+    dataset_id: b165f033-9dec-468a-9248-802fc6902a74
+    remote_url: https://datasets.cellxgene.cziscience.com/039472a3-8d05-4309-a494-9f02af48398e.h5ad
+    remote_size: 4666929361
+    remote_etag: 408733901ce6e6ebb0878e883c574534-557
+    last_modified: Wed, 10 Jun 2026 17:45:22 GMT
+    destination: siletti_hbca/all_non_neuronal.b165f033.h5ad
+    file_type: h5ad
+    organism: Homo sapiens
+    disease_label: normal
+    primary_role: clean_normal_holdout
+    required: true
+    decision: download
+
+  - asset_id: gse97930_cerebellar_umi
+    study_id: GSE97930
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE97930
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE97nnn/GSE97930/suppl/GSE97930_CerebellarHem_snDrop-seq_UMI_Count_Matrix_08-01-2017.txt.gz
+    remote_size: 6297013
+    last_modified: Mon, 07 Aug 2017 12:18:42 GMT
+    destination: gse97930/GSE97930_CerebellarHem_snDrop-seq_UMI_Count_Matrix_08-01-2017.txt.gz
+    file_type: gzipped_text_matrix
+    organism: Homo sapiens
+    region: cerebellar hemisphere
+    primary_role: normal_training_reference
+    required: true
+    decision: download
+
+  - asset_id: gse97930_frontal_cortex_umi
+    study_id: GSE97930
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE97930
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE97nnn/GSE97930/suppl/GSE97930_FrontalCortex_snDrop-seq_UMI_Count_Matrix_08-01-2017.txt.gz
+    remote_size: 12617100
+    last_modified: Mon, 07 Aug 2017 12:18:52 GMT
+    destination: gse97930/GSE97930_FrontalCortex_snDrop-seq_UMI_Count_Matrix_08-01-2017.txt.gz
+    file_type: gzipped_text_matrix
+    organism: Homo sapiens
+    region: frontal cortex
+    primary_role: normal_training_reference
+    required: true
+    decision: download
+
+  - asset_id: gse97930_visual_cortex_umi
+    study_id: GSE97930
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE97930
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE97nnn/GSE97930/suppl/GSE97930_VisualCortex_snDrop-seq_UMI_Count_Matrix_08-01-2017.txt.gz
+    remote_size: 28357910
+    last_modified: Mon, 07 Aug 2017 12:19:14 GMT
+    destination: gse97930/GSE97930_VisualCortex_snDrop-seq_UMI_Count_Matrix_08-01-2017.txt.gz
+    file_type: gzipped_text_matrix
+    organism: Homo sapiens
+    region: visual cortex
+    primary_role: normal_training_reference
+    required: true
+    decision: download
+
+  - asset_id: gse97930_readme
+    study_id: GSE97930
+    provider: NCBI GEO
+    official_record: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE97930
+    remote_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE97nnn/GSE97930/suppl/GSE97930_README.txt
+    remote_size: 3073
+    last_modified: Tue, 18 Apr 2017 15:33:15 GMT
+    destination: gse97930/GSE97930_README.txt
+    file_type: text
+    organism: Homo sapiens
+    primary_role: technical_compatibility_only
+    required: true
+    decision: download
+
+catalog_only_candidates:
+  - dataset_id: 700aed19-c16e-4ba8-9191-07da098a8626
+    study_id: siletti_human_brain_cell_atlas_v1
+    title: Supercluster Microglia
+    cell_count: 91838
+    remote_size: 351002326
+    primary_role: excluded_duplicate
+    decision_reason: exact study-defined subset of the acquired all-non-neuronal holdout partition
+  - dataset_id: local_v2_cellxgene_mixed_normal_microglia_anchor
+    study_id: mixed_cellxgene_census_snapshot
+    path: data/processed/v2_pretraining/cellxgene_normal_microglia_nucleus_relaxed_assay_jepa_aligned.h5ad
+    primary_role: excluded_incompatible
+    decision_reason: mixed 38-dataset sample includes non-adult developmental stages and may overlap the Siletti holdout
+  - dataset_id: allen_hodge2019_subset_r_package
+    study_id: Hodge2019
+    official_record: https://alleninstitute.github.io/hodge2019data/
+    primary_role: technical_compatibility_only
+    decision_reason: official package is a 50-nuclei-per-cluster subset rather than a whole-study reference
+
+source_assertions:
+  gse97930:
+    organism: Homo sapiens
+    assay: snDrop-seq
+    adult_brains: 6
+    regions: [visual cortex, frontal cortex, cerebellar hemisphere]
+    processed_matrix_files: 3
+    donor_linkage_in_processed_matrices: verify_after_download
+    neurological_status: neurotypical_adult_reported_in_study_literature
+  siletti_hbca:
+    disease: normal
+    organism: Homo sapiens
+    assay: "10x 3' v3"
+    acquired_partition_cells: 888263
+    microglia_subset_cells_cataloged: 91838
