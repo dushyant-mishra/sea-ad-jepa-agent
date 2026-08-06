@@ -1,0 +1,152 @@
+stage_id: stage81a1c_p
+schema_version: "1.0"
+contract_revision: processed_perturbation_acquisition_2026
+required_ancestor_commits: [45c80ed, 3e96993]
+
+policy:
+  data_root: data/external/v4/perturbation
+  minimum_free_bytes: 0
+  free_space_policy: monitor_capacity_without_fixed_reserve
+  no_fixed_stage_download_cap: true
+  processed_data_only: true
+  no_model_training: true
+  no_perturbation_controller: true
+  no_final_vocabulary_freeze: true
+  no_donor_split_freeze: true
+  pathology_values_used: false
+  verification_schema_version: "1.0"
+  verification_tool_version: stage81a1c-p-python-tarfile-h5py-v1
+
+protected_worktree_signatures:
+  docs/stage_c_finetuning_analysis.md: d1ae570bac1a7c87a04faa35ddf5f2546d8dc7f6fc03ccc9379ccf9ce0b182a9
+  results/tables/v2_1_gse174367_cell_trajectory_scores.csv: e56d5c349b6f477c871592ff9ab29a358546a9cdc7adf88e22507292d98ac22f
+  results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv: 543cff1bfb0af9e79b09ef6d40d9f01eb9aa7efee64926b6d2a1287a49757a5d
+
+studies:
+  - accession: GSE178317
+    organism: Homo sapiens
+    cell_model: iTF_iPSC_derived_microglia
+    single_cell_or_bulk: both
+    perturbation_type: CRISPRi_and_CRISPRa_CROP_seq_plus_bulk_contexts
+    crispr_mode: CRISPRi_and_CRISPRa
+    guide_assignment_available: true
+    non_targeting_controls: available
+    replicate_structure: four_10x_lanes_with_matched_guide_enrichment_and_bulk_replicates
+    dose: source_sample_specific
+    time: day_8_CROP_seq_and_multiple_bulk_days
+    treatment_context: baseline_and_LPS
+    genome_build: source_record_or_object_specific
+    primary_role: primary_microglial_perturbation_training
+    limitations: induced_transcription_factor_microglia_not_primary_brain_microglia
+
+  - accession: GSE175721
+    organism: Homo sapiens
+    cell_model: hESC_cortical_organoid_engineered_microglia
+    single_cell_or_bulk: single_cell
+    perturbation_type: pooled_CRISPRi_CROP_seq
+    crispr_mode: CRISPRi
+    guide_assignment_available: true
+    non_targeting_controls: verify_from_processed_feature_reference
+    replicate_structure: two_context_samples
+    dose: amyloid_beta_context_source_defined
+    time: source_record_specific
+    treatment_context: baseline_and_amyloid_beta
+    genome_build: source_record_or_object_specific
+    primary_role: amyloid_context_validation
+    limitations: organoid_engineered_microglia_and_two_context_samples
+
+  - accession: GSE301119
+    organism: Homo sapiens
+    cell_model: primary_human_macrophage
+    single_cell_or_bulk: single_cell
+    perturbation_type: Perturb_seq
+    crispr_mode: CRISPRi_and_CRISPRa
+    guide_assignment_available: true
+    non_targeting_controls: verify_inside_Seurat_objects
+    replicate_structure: two_donors_multiple_replicates_with_paired_gene_expression_and_guide_capture
+    dose: not_applicable_pooled_screen
+    time: source_record_specific
+    treatment_context: lipid_and_lysosomal_function_screen
+    genome_build: source_record_or_object_specific
+    primary_role: myeloid_auxiliary_training
+    limitations: primary_macrophage_not_microglia_and_RDS_requires_R_Seurat_for_full_object_audit
+
+  - accession: GSE293118
+    organism: Homo sapiens
+    cell_model: HMC3_microglial_cell_line
+    single_cell_or_bulk: single_cell
+    perturbation_type: noncoding_CRISPRi_screen
+    crispr_mode: CRISPRi
+    guide_assignment_available: true
+    non_targeting_controls: 23_guides
+    replicate_structure: one_GEX_and_one_guide_capture_library
+    dose: low_MOI_pooled_library
+    time: 12_days_post_transduction
+    treatment_context: AD_GWAS_candidate_regulatory_regions
+    genome_build: source_record_or_object_specific
+    primary_role: regulatory_element_perturbation
+    limitations: immortalized_HMC3_cell_line
+
+  - accession: GSE311359
+    organism: Homo sapiens
+    cell_model: iPSC_derived_microglia
+    single_cell_or_bulk: single_cell
+    perturbation_type: MS_risk_locus_Perturb_seq
+    crispr_mode: CRISPRi
+    guide_assignment_available: true
+    non_targeting_controls: verify_from_processed_matrices
+    replicate_structure: seven_GEO_samples
+    dose: source_record_specific
+    time: 7_days_after_transduction
+    treatment_context: multiple_sclerosis_risk_loci
+    genome_build: source_record_or_object_specific
+    primary_role: microglial_auxiliary_training
+    limitations: iPSC_microglia_and_MS_context
+
+  - accession: GSE254205
+    organism: Homo sapiens
+    cell_model: human_brain_and_iPSC_derived_microglia
+    single_cell_or_bulk: both
+    perturbation_type: APOE_genotype_fibrillar_amyloid_beta_and_GNE317
+    crispr_mode: genotype_and_pharmacology_not_pooled_CRISPR
+    guide_assignment_available: false
+    non_targeting_controls: not_applicable
+    replicate_structure: genotype_treatment_and_sorting_replicates
+    dose: source_sample_specific
+    time: source_sample_specific
+    treatment_context: APOE4_fibrillar_amyloid_beta_lipid_droplet_and_GNE317
+    genome_build: source_record_or_object_specific
+    primary_role: genotype_context_validation
+    limitations: mixed_human_brain_single_nucleus_and_bulk_iMG_assays
+
+  - accession: GSE241858
+    organism: Homo sapiens
+    cell_model: iPSC_derived_microglia
+    single_cell_or_bulk: bulk
+    perturbation_type: TREM2_R47H_genotype_and_cytokine
+    crispr_mode: isogenic_CRISPR_edited_genotype
+    guide_assignment_available: false
+    non_targeting_controls: wild_type_isogenic_controls
+    replicate_structure: two_clones_per_genotype_with_biological_replicates
+    dose: LPS_or_IFNgamma_source_defined
+    time: source_sample_specific
+    treatment_context: baseline_LPS_and_IFNgamma
+    genome_build: source_record_or_object_specific
+    primary_role: genotype_context_validation
+    limitations: bulk_RNA_and_targeted_genotype
+
+  - accession: GSE240609
+    organism: Homo sapiens
+    cell_model: iPSC_microglia_neuron_coculture
+    single_cell_or_bulk: bulk
+    perturbation_type: APOE3_Christchurch_isogenic_genotype
+    crispr_mode: isogenic_CRISPR_edited_genotype
+    guide_assignment_available: false
+    non_targeting_controls: APOE3_isogenic_comparator
+    replicate_structure: four_genotype_by_neuron_context_samples
+    dose: not_applicable
+    time: 10_day_coculture
+    treatment_context: wild_type_or_PSEN1_mutant_neurons
+    genome_build: source_record_or_object_specific
+    primary_role: mechanistic_bulk_validation
+    limitations: bulk_purified_coculture_microglia
