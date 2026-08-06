@@ -911,7 +911,12 @@ def audit(
     for study_id in sorted({row["study_id"] for row in rows}):
         item = role_for(config, study_id)
         assets = [row for row in rows if row["study_id"] == study_id]
-        acquired = [row for row in assets if data_path(project, config, row).exists()]
+        selected_assets = [row for row in assets if row["selected"]]
+        all_selected_assets_verified = bool(selected_assets) and all(
+            data_path(project, config, row).exists()
+            and data_path(project, config, row).stat().st_size == int(row["remote_size"])
+            for row in selected_assets
+        )
         meta = geo_metadata.get(study_id, {})
         direct = study_id == "HVS" or study_id == "NPH52"
         early = study_id == "NPH52"
@@ -929,8 +934,15 @@ def audit(
                 nph_counts["donors"] if study_id == "NPH52" else
                 meta.get("donor_count", "pending_exact_audit")
             ),
-            "sample_count": meta.get("sample_count", "partitioned_source" if study_id == "HVS" else "pending_exact_audit"),
-            "cell_count": sum(int(row.get("advertised_cell_count") or 0) for row in assets),
+            "sample_count": (
+                "partitioned_source" if study_id == "HVS" else
+                nph_counts["donors"] if study_id == "NPH52" else
+                meta.get("sample_count", "pending_exact_audit")
+            ),
+            "cell_count": (
+                int(nph_summary["matrix_nph_cell_count"]) if study_id == "NPH52" and nph_verified else
+                sum(int(row.get("advertised_cell_count") or 0) for row in assets)
+            ),
             "matrix_semantics": "source_representations_retained_separately",
             "feature_identifier_type": "source_native_pending_harmonization",
             "direct_brain_foundation_eligible": "candidate_pending_feature_and_donor_harmonization" if direct else False,
@@ -939,7 +951,7 @@ def audit(
             "validation_role": role if "validation" in role else "",
             "pathology_metadata_sealed": study_id == "NPH52",
             "known_caveat": config["hvs"]["known_caveat"] if study_id == "HVS" else "tissue_specific_role_not_equivalent_to_postmortem_brain",
-            "acquisition_status": "verified" if acquired and len(acquired) == len([x for x in assets if x["selected"] and not x.get("catalog_first")]) else "cataloged_or_partial",
+            "acquisition_status": "verified" if all_selected_assets_verified else "cataloged_or_partial",
         })
         tissue_rows.append({"study_id": study_id, "tissue_state": item["tissue_state"],
                             "clinical_context_separate": True, "postmortem": False,
