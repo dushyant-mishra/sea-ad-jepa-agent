@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import gzip
 import hashlib
+import io
 import importlib.util
 import json
 import subprocess
@@ -94,6 +96,29 @@ def test_safe_archive_member_handling(tmp_path: Path) -> None:
         assert "Unsafe" in str(exc)
     else:
         raise AssertionError("unsafe member was accepted")
+
+
+def test_processed_10x_tar_is_dimension_audited(tmp_path: Path) -> None:
+    module = load_script()
+    archive = tmp_path / "processed_RAW.tar"
+    payloads = {
+        "S_barcodes.tsv.gz": gzip.compress(b"cell1\ncell2\n"),
+        "S_features.tsv.gz": gzip.compress(b"g1\tA\ng2\tB\ng3\tC\n"),
+        "S_matrix.mtx.gz": gzip.compress(
+            b"%%MatrixMarket matrix coordinate integer general\n%\n3 2 1\n1 1 4\n"
+        ),
+    }
+    with tarfile.open(archive, "w") as handle:
+        for name, payload in payloads.items():
+            member = tarfile.TarInfo(name)
+            member.size = len(payload)
+            handle.addfile(member, io.BytesIO(payload))
+    audit = module.inspect_10x_tar_archive(archive)
+    assert audit is not None
+    assert audit["n_obs"] == 2
+    assert audit["n_vars"] == 3
+    assert audit["partition_count"] == 1
+    assert audit["matrix_dimension_consistency_pass"] is True
 
 
 def test_tissue_state_and_modality_boundaries() -> None:

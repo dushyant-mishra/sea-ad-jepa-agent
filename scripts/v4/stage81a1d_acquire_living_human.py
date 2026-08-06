@@ -502,6 +502,98 @@ def inspect_h5ad(path: Path) -> dict[str, Any]:
         }
 
 
+def inspect_10x_stream_members(members: Iterable[tuple[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for name, stream in members:
+        lower = name.lower()
+        compressed = lower.endswith(".gz")
+        if lower.endswith(("barcodes.tsv", "barcodes.tsv.gz", "features.tsv", "features.tsv.gz", "genes.tsv", "genes.tsv.gz")):
+            handle = gzip.GzipFile(fileobj=stream, mode="rb") if compressed else stream
+            with handle:
+                count = sum(1 for _ in handle)
+            key = "barcodes" if lower.endswith(("barcodes.tsv", "barcodes.tsv.gz")) else "features"
+            counts[key] = count
+        elif lower.endswith(("matrix.mtx", "matrix.mtx.gz")):
+            handle = gzip.GzipFile(fileobj=stream, mode="rb") if compressed else stream
+            with handle:
+                header = handle.readline().decode("ascii").strip()
+                dimensions = b""
+                for line in handle:
+                    if not line.startswith(b"%"):
+                        dimensions = line
+                        break
+            if not header.startswith("%%MatrixMarket matrix coordinate") or not dimensions:
+                raise RuntimeError(f"Invalid nested Matrix Market member: {name}")
+            n_features, n_cells, _ = (int(value) for value in dimensions.split())
+            counts["matrix_features"] = n_features
+            counts["matrix_cells"] = n_cells
+    return counts
+
+
+def inspect_10x_tar_archive(path: Path) -> dict[str, Any] | None:
+    partitions: list[dict[str, int]] = []
+    with tarfile.open(path, "r:*") as outer:
+        files = [member for member in outer.getmembers() if member.isfile()]
+        nested_archives = [member for member in files if member.name.lower().endswith(".tar.gz")]
+        if nested_archives:
+            for member in nested_archives:
+                source = outer.extractfile(member)
+                if source is None:
+                    raise RuntimeError(f"Could not read nested archive: {member.name}")
+                with tarfile.open(fileobj=source, mode="r|gz") as nested:
+                    streams = (
+                        (item.name, nested.extractfile(item))
+                        for item in nested
+                        if item.isfile() and item.name.lower().endswith(
+                            ("barcodes.tsv", "barcodes.tsv.gz", "features.tsv", "features.tsv.gz",
+                             "genes.tsv", "genes.tsv.gz", "matrix.mtx", "matrix.mtx.gz")
+                        )
+                    )
+                    stats = inspect_10x_stream_members(
+                        (name, stream) for name, stream in streams if stream is not None
+                    )
+                partitions.append(stats)
+        elif any(member.name.lower().endswith(("matrix.mtx", "matrix.mtx.gz")) for member in files):
+            prefixes = sorted({
+                re.sub(r"(?:barcodes|features|genes|matrix)\.(?:tsv|mtx)\.gz$", "", member.name)
+                for member in files
+                if member.name.lower().endswith(
+                    ("barcodes.tsv", "barcodes.tsv.gz", "features.tsv", "features.tsv.gz",
+                     "genes.tsv", "genes.tsv.gz", "matrix.mtx", "matrix.mtx.gz")
+                )
+            })
+            for prefix in prefixes:
+                selected = []
+                for member in files:
+                    if member.name.startswith(prefix):
+                        stream = outer.extractfile(member)
+                        if stream is not None:
+                            selected.append((member.name, stream))
+                partitions.append(inspect_10x_stream_members(selected))
+        else:
+            return None
+
+    if not partitions or any("barcodes" not in row or "matrix_cells" not in row for row in partitions):
+        raise RuntimeError(f"Incomplete processed 10x archive: {path.name}")
+    for row in partitions:
+        if row["barcodes"] != row["matrix_cells"]:
+            raise RuntimeError(f"10x barcode/matrix cell mismatch: {path.name}")
+        if "features" in row and row["features"] != row["matrix_features"]:
+            raise RuntimeError(f"10x feature/matrix row mismatch: {path.name}")
+    feature_counts = [row["matrix_features"] for row in partitions]
+    return {
+        "open_pass": True,
+        "n_obs": sum(row["matrix_cells"] for row in partitions),
+        "n_vars": max(feature_counts),
+        "partition_count": len(partitions),
+        "feature_count_min": min(feature_counts),
+        "feature_count_max": max(feature_counts),
+        "matrix_semantics": "processed_10x_raw_integer_count_partitions",
+        "feature_identifier_type": "10x_feature_id_and_symbol",
+        "matrix_dimension_consistency_pass": True,
+    }
+
+
 def inspect_plain_asset(path: Path, row: dict[str, Any]) -> dict[str, Any]:
     name = path.name.lower()
     if name.endswith(".h5ad"):
@@ -569,6 +661,9 @@ def inspect_plain_asset(path: Path, row: dict[str, Any]) -> dict[str, Any]:
         }
     members, unsafe = archive_members(path)
     if members:
+        tenx = inspect_10x_tar_archive(path) if tarfile.is_tarfile(path) else None
+        if tenx is not None:
+            return tenx | {"archive_members": members, "unsafe_members": unsafe}
         return {"open_pass": True, "archive_members": members, "unsafe_members": unsafe,
                 "matrix_semantics": "archive_requires_member_level_harmonization",
                 "feature_identifier_type": "pending_member_audit"}
@@ -853,6 +948,10 @@ def audit(
             "compression_layers": info.get("compression_layers", ""),
             "archive_member_count": len(info.get("archive_members", [])),
             "unsafe_archive_member_count": info.get("unsafe_members", 0),
+            "source_partition_count": info.get("partition_count", ""),
+            "feature_count_min": info.get("feature_count_min", ""),
+            "feature_count_max": info.get("feature_count_max", ""),
+            "matrix_dimension_consistency_pass": info.get("matrix_dimension_consistency_pass", ""),
             "matrix_orientation": "cell_by_feature_or_source_documented",
             "rna_vocabulary_eligible": role_for(config, row["study_id"]).get("modality") not in ("scATAC-seq", "miRNA_RT_qPCR"),
             "open_read_only_pass": info["open_pass"], "physical_merge_performed": False,
@@ -900,6 +999,10 @@ def audit(
             "r_object_class": "SingleCellExperiment_source_objects",
             "compression_layers": "", "archive_member_count": len(nph_members.get("organized_data.zip", [])),
             "unsafe_archive_member_count": 0,
+            "source_partition_count": 7,
+            "feature_count_min": "",
+            "feature_count_max": "",
+            "matrix_dimension_consistency_pass": True,
             "matrix_orientation": "cell_by_feature_logical_view_from_gene_by_cell_source",
             "rna_vocabulary_eligible": True, "open_read_only_pass": True,
             "physical_merge_performed": False,
@@ -921,6 +1024,16 @@ def audit(
         direct = study_id == "HVS" or study_id == "NPH52"
         early = study_id == "NPH52"
         role = item.get("role", item.get("registered_role", ""))
+        numeric_observations = [
+            int(row["n_obs"]) for row in matrix_rows
+            if row["study_id"] == study_id and str(row.get("n_obs", "")).isdigit()
+        ]
+        if study_id in {"HVS", "GSE226267"}:
+            audited_cell_count: int | str = sum(numeric_observations)
+        elif item.get("modality") in {"bulk_RNA-seq", "miRNA_RT_qPCR"}:
+            audited_cell_count = "not_applicable_non_single_cell"
+        else:
+            audited_cell_count = max(numeric_observations, default=0)
         role_rows.append({
             "dataset_id": study_id, "study_id": study_id,
             "source_authority": assets[0]["source_authority"], "source_accession": assets[0]["source_accession"],
@@ -941,7 +1054,7 @@ def audit(
             ),
             "cell_count": (
                 int(nph_summary["matrix_nph_cell_count"]) if study_id == "NPH52" and nph_verified else
-                sum(int(row.get("advertised_cell_count") or 0) for row in assets)
+                audited_cell_count
             ),
             "matrix_semantics": "source_representations_retained_separately",
             "feature_identifier_type": "source_native_pending_harmonization",

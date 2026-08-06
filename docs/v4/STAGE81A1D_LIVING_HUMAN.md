@@ -60,6 +60,14 @@ unique feature/cell identifiers, and records those facts in the matrix-semantics
 registry. Raw counts, log-normalized expression, genomic peak matrices, bulk
 RNA, and miRNA representations remain explicitly distinct.
 
+Nested GEO 10x archives are inspected in place without extraction. Barcode,
+feature, and Matrix Market dimensions must agree for every partition. The
+current audit finds 25,092 cells across 18 GSE134577 CSF partitions, 150,505
+cells across 20 paired GSE292141 CSF/PBMC partitions, and 351,327 cells across
+22 GSE302937 olfactory partitions. GSE302937 has unequal published feature
+universes (36,601 to 38,606), so later harmonization must use explicit feature
+alignment and measurement masks.
+
 ## Claim boundaries
 
 The outputs are acquisition and provenance evidence. Living surgical, NPH,
