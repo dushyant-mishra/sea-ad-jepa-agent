@@ -1,0 +1,10 @@
+{
+  "cohort_labels_used_only_for_nph_roster_partition": true,
+  "pathology_fields_in_foundation_manifest_count": 0,
+  "pathology_fields_in_foundation_vocabulary": [],
+  "pathology_free_vocabulary_reproduction_succeeded": true,
+  "pathology_sidecar": "data/processed/v4/stage81a1d/sealed/nph52_pathology_sidecar.json",
+  "pathology_sidecar_sha256": "b1629dbba37273d9716991aa6574b1e85f35632dfaf528ac0aacec5ee08c666b",
+  "sidecar_schema_recorded_without_embedding_values": true,
+  "vocabulary_function_accepts_no_pathology_argument": true
+}
