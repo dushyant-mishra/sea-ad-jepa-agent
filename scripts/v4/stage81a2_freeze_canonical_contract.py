@@ -136,7 +136,6 @@ def hvs_audit(project: Path, pattern: str) -> tuple[pd.DataFrame, list[dict[str,
         with h5py.File(path, "r") as handle:
             donors = read_h5_vector(handle["obs"], "donor_id")
             classes = read_h5_vector(handle["obs"], "Class")
-            samples = read_h5_vector(handle["obs"], "exp_component_name")
             tissues = read_h5_vector(handle["obs"], "tissue")
             obs_index_field = handle["obs"].attrs.get("_index", "_index")
             if isinstance(obs_index_field, bytes):
@@ -158,14 +157,13 @@ def hvs_audit(project: Path, pattern: str) -> tuple[pd.DataFrame, list[dict[str,
                     gene_pairs[symbol] = pair
                 elif prior != pair:
                     gene_pairs[symbol] = ("", symbol)
-            frame = pd.DataFrame({"donor": donors, "class": classes, "sample": samples, "tissue": tissues})
-            grouped = frame.groupby(["donor", "sample", "tissue"], dropna=False).size().reset_index(name="cell_count")
-            donor_partition_counts = frame.groupby("donor").size().to_dict()
+            frame = pd.DataFrame({"donor": donors, "cell_class": classes, "tissue": tissues})
+            grouped = frame.groupby(["donor", "tissue", "cell_class"], dropna=False).size().reset_index(name="cell_count")
             for item in grouped.itertuples(index=False):
                 rows.append({
                     "source_partition": relpath(path, project), "exact_source_donor_id": item.donor,
-                    "donor_field_name": "obs/donor_id", "sample_field": item.sample,
-                    "tissue_or_cell_class_partition": item.tissue, "cell_count": int(item.cell_count),
+                    "donor_field_name": "obs/donor_id", "sample_field": path.stem,
+                    "tissue_or_cell_class_partition": f"{item.tissue}|{item.cell_class}", "cell_count": int(item.cell_count),
                     "donor_appears_in_multiple_partitions": False,
                     "other_exact_person_field": "", "explicit_alias_table_exists": False,
                     "complete_foundation_metadata": bool(item.donor and item.tissue),

@@ -60,6 +60,8 @@ def test_hvs_exact_resolution_when_audit_output_exists() -> None:
     assert frame.source_partition.nunique() == 24
     assert frame.exact_source_donor_id.nunique() == 78
     assert int(frame.cell_count.sum()) == 379330
+    assert len(frame) < 10000
+    assert frame.sample_field.nunique() == 24
     assert not frame.fuzzy_matching_used.astype(bool).any()
     assert not frame.explicit_alias_table_exists.astype(bool).any()
 
