@@ -184,7 +184,7 @@ if (length(args) == 7L) {
   donor_sum <- matrix(0, nrow = length(all_features), ncol = length(train_donors),
                       dimnames = list(all_features, train_donors))
   donor_detection <- donor_sum
-  donor_object_count <- donor_sum
+  donor_measured_cell_count <- donor_sum
   class_coverage <- integer(length(all_features))
   names(class_coverage) <- all_features
   sample_cap <- 16L
@@ -204,22 +204,26 @@ if (length(args) == 7L) {
         columns <- columns[unique(round(seq(1, length(columns), length.out = sample_cap)))]
       }
       block <- counts[, columns, drop = FALSE]
-      transformed <- block
+      library_size <- Matrix::colSums(block)
+      if (any(library_size <= 0)) {
+        stop(sprintf("Zero-library selected NPH cell in %s for %s", basename(path), donor))
+      }
+      transformed <- block %*% Matrix::Diagonal(x = 10000 / library_size)
       transformed@x <- log1p(transformed@x)
-      donor_sum[feature_index, donor] <- donor_sum[feature_index, donor] + Matrix::rowMeans(transformed)
-      donor_detection[feature_index, donor] <- donor_detection[feature_index, donor] + Matrix::rowMeans(block > 0)
-      donor_object_count[feature_index, donor] <- donor_object_count[feature_index, donor] + 1
+      donor_sum[feature_index, donor] <- donor_sum[feature_index, donor] + Matrix::rowSums(transformed)
+      donor_detection[feature_index, donor] <- donor_detection[feature_index, donor] + Matrix::rowSums(block > 0)
+      donor_measured_cell_count[feature_index, donor] <- donor_measured_cell_count[feature_index, donor] + length(columns)
       class_detected <- class_detected | Matrix::rowSums(block > 0) > 0
     }
     class_coverage[feature_index[class_detected]] <- class_coverage[feature_index[class_detected]] + 1L
     rm(object, counts)
     gc(verbose = FALSE)
   }
-  observed <- donor_object_count > 0
+  observed <- donor_measured_cell_count > 0
   donor_mean <- donor_sum
   donor_detect <- donor_detection
-  donor_mean[observed] <- donor_sum[observed] / donor_object_count[observed]
-  donor_detect[observed] <- donor_detection[observed] / donor_object_count[observed]
+  donor_mean[observed] <- donor_sum[observed] / donor_measured_cell_count[observed]
+  donor_detect[observed] <- donor_detection[observed] / donor_measured_cell_count[observed]
   donor_mean[!observed] <- NA_real_
   donor_detect[!observed] <- NA_real_
   gene_stats <- data.frame(
@@ -230,6 +234,10 @@ if (length(args) == 7L) {
     donor_balanced_expression_variability = apply(donor_mean, 1, stats::var, na.rm = TRUE),
     broad_class_objects_detected = unname(class_coverage[all_features]),
     sample_cap_per_donor_class_object = sample_cap,
+    normalization_target = 10000,
+    expression_transform = "per_cell_library_size_normalize_then_log1p",
+    detection_definition = "raw_counts_greater_than_zero",
+    donor_aggregation = "actual_selected_cell_weighted_with_source_measurement_mask",
     stringsAsFactors = FALSE
   )
   stats_connection <- gzfile(args[[7]], open = "wt")

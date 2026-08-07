@@ -80,6 +80,31 @@ def test_nph_exact_52_and_25_19_8_groups() -> None:
     assert donors.pathology_group.value_counts().to_dict() == {"Ctrl": 25, "Abeta": 19, "AbetaTau": 8}
 
 
+def test_nph_bounded_normalization_and_cell_weighting_contract() -> None:
+    source = (PROJECT / "scripts/v4/stage81a2_audit_nph_freeze.R").read_text(encoding="utf-8")
+    assert "sample_cap <- 16L" in source
+    assert 'split_registry$cohort == "NPH_Ctrl" & split_registry$split == "train"' in source
+    assert "Expected 19 NPH control training donors" in source
+    assert "library_size <- Matrix::colSums(block)" in source
+    assert "10000 / library_size" in source
+    assert "transformed@x <- log1p(transformed@x)" in source
+    assert "Matrix::rowSums(transformed)" in source
+    assert "Matrix::rowSums(block > 0)" in source
+    assert "donor_measured_cell_count" in source
+    assert "donor_sum[observed] / donor_measured_cell_count[observed]" in source
+    assert "donor_detection[observed] / donor_measured_cell_count[observed]" in source
+    assert "rowMeans(transformed)" not in source
+    assert "donor_object_count" not in source
+
+
+def test_nph_measurement_masks_remain_source_specific() -> None:
+    source = (PROJECT / "scripts/v4/stage81a2_audit_nph_freeze.R").read_text(encoding="utf-8")
+    assert "feature_index <- match(rownames(object), all_features)" in source
+    assert "donor_measured_cell_count[feature_index, donor]" in source
+    assert "training_donors_measured = rowSums(observed)" in source
+    assert 'donor_aggregation = "actual_selected_cell_weighted_with_source_measurement_mask"' in source
+
+
 def test_known_exact_rna_atac_overlap_is_45() -> None:
     frame = pd.read_csv(RESULTS / "stage81a1d_living_human_duplicate_overlap_registry.csv")
     row = frame[(frame.left_dataset == "GSE226602") & (frame.right_dataset == "GSE226267")].iloc[0]
