@@ -589,6 +589,8 @@ def measurement_and_vocabulary(genes: pd.DataFrame, matrices: pd.DataFrame,
     candidates.insert(0, "vocabulary_index", np.arange(len(candidates), dtype=int))
     vocabulary_hash = source_hash(candidates.canonical_ensembl_gene_id.astype(str))
     candidates["vocabulary_hash"] = vocabulary_hash
+    vocabulary_ids = set(candidates.canonical_ensembl_gene_id)
+    measured = measured[measured.canonical_ensembl_gene_id.isin(vocabulary_ids)]
     return measured.sort_values(["source_dataset_id", "canonical_ensembl_gene_id"]), candidates, vocabulary_hash
 
 

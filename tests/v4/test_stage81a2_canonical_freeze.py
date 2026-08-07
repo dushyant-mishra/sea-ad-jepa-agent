@@ -186,6 +186,9 @@ def test_measurement_contract_distinguishes_zero_from_unmeasured_when_present() 
         "measured_value_requires_runtime_zero_nonzero_resolution",
         "not_in_source_feature_universe",
     })
+    report_path = RESULTS / "stage81a2_freeze_report.json"
+    if report_path.exists() and json.loads(report_path.read_text(encoding="utf-8")).get("stage81a2_pass"):
+        assert frame.canonical_ensembl_gene_id.nunique() == 4096
 
 
 def test_matrix_semantics_are_explicit_when_present() -> None:
