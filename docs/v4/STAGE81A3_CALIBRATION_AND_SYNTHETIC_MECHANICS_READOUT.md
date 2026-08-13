@@ -3283,3 +3283,51 @@ The human reviewer subsequently adjudicated SCP2167 using only Russell AJ et al.
 Post-adjudication identifiability is **YES** for bounded real context value, **YES** for cross-donor context value, and **YES** for cross-technology context replication. The broad anchor is one-donor Slide-tags SCP2167; independent directly measured replication is supplied by five eligible Fang STG MERFISH experiments across two donors and 954 frozen genes. The five Fang MTG experiments remain quarantined for surgical-provenance review and were not used.
 
 This result establishes that a real context-value experiment is identifiable, not that context benefit has been demonstrated. No physical-neighbor graph, context masking, experiment, model training, optimizer update, or architecture change was performed. Stage81A3 remains unfrozen and Stage81B was not started.
+
+## CHECKPOINT GOVERNANCE AMENDMENT: ADDRESS SPACE AND REPRESENTATION RESOLUTION
+
+The repository checkpoint review identified two linked but independent open
+architectural blockers that postdate the completed audits above. This amendment
+does not rerun, delete, or reinterpret the historical experiments.
+
+First, the frozen 4,096-gene vocabulary was a configured top-K capacity after
+eligibility and ranking, not a transcriptome-derived biological saturation
+point. Stage81A2 remains immutable historical evidence, but a versioned
+maximal-exact-transcriptome data-contract revision is required before
+Stage81A3 Freeze 1.
+
+Second, the number 160 has two distinct historical roles that must no longer be
+implicitly tied together:
+
+- `d_gene=160`: learned contextual width per Molecular Ledger gene token;
+- `d_cell=160`: PCA160 global whole-cell coordinate resolution.
+
+Expanding the biological address space `G` adds explicit gene tokens and does
+not require compressing all genes into one 160-dimensional vector. The per-gene
+contextual width is therefore a model-capacity parameter whose future
+sufficiency remains unresolved. PCA160 is a genuine global compression and must
+be treated as a derived summary rather than the complete molecular identity of
+a cell. The canonical Molecular Ledger should continue to retain explicit gene
+identity, observed expression, and measured/unmeasured state in addition to any
+learned context vector.
+
+Future qualification must decouple `G`, `d_gene`, and `d_cell`. Global state is
+a resolution question; if no defensible saturation exists, multiple nested or
+multiresolution summaries may be required instead of replacing 160 with another
+arbitrary fixed number. No vocabulary change, width change, PCA change, sweep,
+evidence regeneration, Stage81B work, or Stage81C work occurred in this
+checkpoint.
+
+**BIOLOGICAL GENE ADDRESS SPACE: OPEN BLOCKER**
+
+**GENE-TOKEN CONTEXTUAL CAPACITY: OPEN BLOCKER**
+
+**GLOBAL-STATE RESOLUTION: OPEN BLOCKER**
+
+**STAGE81A3 COMPLETE: NO**
+
+**FREEZE 1 DECLARED: NO**
+
+**STAGE81B STARTED: NO**
+
+**STAGE81C STARTED: NO**
