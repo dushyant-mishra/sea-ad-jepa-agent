@@ -13,6 +13,7 @@ from torch import nn
 from torch.utils.checkpoint import checkpoint
 
 from .gene_tokenizer import GeneExpressionTokenizer
+from .contracts import MECHANICS_CONTRACT
 from .masking import keyed_mask_seed
 
 
@@ -260,9 +261,13 @@ class IPBEncoder(nn.Module):
         ffn_width: int = 320,
         dropout: float = 0.10,
         gradient_checkpointing: bool = False,
+        vocabulary_size: int = MECHANICS_CONTRACT.vocabulary_size,
     ) -> None:
         super().__init__()
-        self.tokenizer = GeneExpressionTokenizer(width=width)
+        self.tokenizer = GeneExpressionTokenizer(
+            vocabulary_size=vocabulary_size,
+            width=width,
+        )
         self.cell_token = nn.Parameter(torch.empty(1, 1, width))
         nn.init.normal_(self.cell_token, mean=0.0, std=0.02)
         self.blocks = nn.ModuleList([
