@@ -1,0 +1,4 @@
+holdout_type,identifiable_units,total_units,identifiable_fraction,performance_where_identifiable,identifiability_coverage,median_balanced_accuracy_where_identifiable,median_neighbor_purity_where_identifiable,combined_interpretation
+matrix,10,36,0.2777777777777778,STRONG,PARTIAL,1.0,0.996875,STRONG WHERE IDENTIFIABLE / PARTIAL COVERAGE
+dataset,11,13,0.8461538461538461,STRONG,BROAD,1.0,0.9963541666666668,STRONG WHERE IDENTIFIABLE / BROAD COVERAGE
+technology,4,4,1.0,STRONG,BROAD,0.9962585706751056,0.9934027777777779,STRONG WHERE IDENTIFIABLE / BROAD COVERAGE

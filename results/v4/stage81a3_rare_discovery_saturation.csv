@@ -1,0 +1,5 @@
+donor_fraction,donors,annotation_defined_recurring_states,data_defined_recurring_neighborhoods,recurring_extreme_states,total_recurring_candidates,new_candidates_vs_previous_fraction,recovered_previous_candidates,candidate_identity_hash,saturation_classification
+0.25,38,10,0,0,10,10,0,1eeefade77ff84cb721408887e99a53005ec8b3dc3adce2b74cc7f058cc9bb35,SATURATING
+0.5,75,13,2,442,457,447,10,acef287b597219f01ea2503993e6f2f26296f5931ecf4a7fc72e6181105eed6a,SATURATING
+0.75,112,14,2,461,477,21,456,5001f871ea20d0abd2bfafb5ce3bc080793c4dab562d0d3f163df5790a0a194d,SATURATING
+1.0,149,14,3,462,479,2,477,affe90f096142964b0d94a54f77f65c6db79e4d5839657a43e2ccce8859ac93e,SATURATING

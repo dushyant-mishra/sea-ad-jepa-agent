@@ -1,0 +1,2 @@
+mask_hash,measured_genes,measured_fraction,median_missing_state_energy,median_fraction_state_energy_omitted,deficit_energy_p10,deficit_energy_p50,deficit_energy_p90,deficit_energy_cv,coordinate_coverage_min,coordinate_coverage_p10,coordinate_coverage_median,weak_coordinates_below_0_5,applicable_broader_matrix_count
+6cd903be0554bdccfe1cc7f90beeef84014aaa1e83e6eb81bfee03a5ec1310a2,4096,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,0,0

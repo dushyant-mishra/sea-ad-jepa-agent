@@ -1,0 +1,11 @@
+broad_family,cells,candidate_cells,neighborhoods,rna_ledger_pca,rna_ledger_not_pca,donor_private,limited,recurring,high_technical,compression_review,continuous_extreme_sets,recurring_extreme_sets,stable_recurring_extreme_sets,annotation_defined_recurring_states
+Astrocytes,193,3,2,1,1,1,1,0,1,0,154,0,154,1.0
+Endothelial / vascular,169,6,3,0,0,1,2,0,0,0,154,0,154,1.0
+Ependymal,10,1,1,1,0,1,0,0,0,0,154,0,154,1.0
+Excitatory neurons,1024,20,15,4,5,13,2,0,6,0,154,154,154,1.0
+Inhibitory neurons,1024,24,17,1,6,15,1,1,0,1,154,154,154,5.0
+Microglia / immune,142,6,1,0,0,0,0,1,0,0,154,0,154,1.0
+OPCs,76,2,2,0,1,2,0,0,1,0,154,0,154,2.0
+Oligodendrocytes,186,4,4,0,1,4,0,0,1,0,154,0,154,1.0
+Other authorized families,1024,33,18,0,0,11,6,1,1,0,154,154,154,1.0
+Pericyte / mural,153,6,2,0,0,1,1,0,0,0,154,0,154,0.0

@@ -1,0 +1,392 @@
+{
+  "abundance_is_not_state": "This audit concerns rare cellular states, not disease-related cell abundance.",
+  "annotation_defined_rare_states_audited": 14,
+  "another_intrinsic_neural_architecture_run_required": false,
+  "astrocyte_unannotated_rare_states": 0,
+  "bounded_discovery_cells": 4001,
+  "bounded_discovery_contract": {
+    "cache_dir": "data/cache/stage81a3_rare_biology_completeness",
+    "candidate_fraction": 0.01,
+    "donor_fractions": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "family_cell_cap": 1024,
+    "local_isolation_k": 30,
+    "neighborhood_overlap_fraction": 0.5,
+    "recurrence_donor_thresholds": {
+      "limited_min": 2,
+      "recurring_min": 5
+    },
+    "resample_family_fraction": 0.75,
+    "resample_roots": [
+      8117301,
+      8117302,
+      8117303,
+      8117304
+    ],
+    "technical_high_abs_robust_z": 3.0,
+    "technical_mixed_abs_robust_z": 1.5
+  },
+  "bounded_discovery_donors": 149,
+  "combined_freeze_readiness": [
+    {
+      "gate": "annotation_defined_coverage_audit_complete",
+      "pass": true
+    },
+    {
+      "gate": "data_defined_completeness_audit_complete",
+      "pass": true
+    },
+    {
+      "gate": "no_supported_molecular_encoder_erasure",
+      "pass": true
+    },
+    {
+      "gate": "data_defined_recurring_conclusions_stable",
+      "pass": false
+    },
+    {
+      "gate": "continuous_extreme_recurrence_stable",
+      "pass": true
+    },
+    {
+      "gate": "technical_masqueraders_distinguished",
+      "pass": true
+    },
+    {
+      "gate": "discovery_saturation_reported",
+      "pass": true
+    },
+    {
+      "gate": "ready_for_human_a3_freeze_review",
+      "pass": false
+    }
+  ],
+  "continuous_extreme_biology_audited": true,
+  "cross_dataset_rare_states": 2,
+  "cross_technology_rare_states": 2,
+  "data_defined_conclusions_stable": false,
+  "data_defined_rare_candidate_cells": 105,
+  "data_defined_rare_molecular_neighborhoods": 65,
+  "discovery_saturation": "SATURATING",
+  "donor_private_biological_candidates": 41,
+  "donor_private_states_retained_in_evidence_registry": true,
+  "donor_recurring_data_defined_rare_states": 3,
+  "excitatory_neuron_unannotated_rare_states": 0,
+  "family_summaries": [
+    {
+      "annotation_defined_recurring_states": 1.0,
+      "broad_family": "Astrocytes",
+      "candidate_cells": 3,
+      "cells": 193,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 1,
+      "high_technical": 1,
+      "limited": 1,
+      "neighborhoods": 2,
+      "recurring": 0,
+      "recurring_extreme_sets": 0,
+      "rna_ledger_not_pca": 1,
+      "rna_ledger_pca": 1,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 1.0,
+      "broad_family": "Endothelial / vascular",
+      "candidate_cells": 6,
+      "cells": 169,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 1,
+      "high_technical": 0,
+      "limited": 2,
+      "neighborhoods": 3,
+      "recurring": 0,
+      "recurring_extreme_sets": 0,
+      "rna_ledger_not_pca": 0,
+      "rna_ledger_pca": 0,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 1.0,
+      "broad_family": "Ependymal",
+      "candidate_cells": 1,
+      "cells": 10,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 1,
+      "high_technical": 0,
+      "limited": 0,
+      "neighborhoods": 1,
+      "recurring": 0,
+      "recurring_extreme_sets": 0,
+      "rna_ledger_not_pca": 0,
+      "rna_ledger_pca": 1,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 1.0,
+      "broad_family": "Excitatory neurons",
+      "candidate_cells": 20,
+      "cells": 1024,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 13,
+      "high_technical": 6,
+      "limited": 2,
+      "neighborhoods": 15,
+      "recurring": 0,
+      "recurring_extreme_sets": 154,
+      "rna_ledger_not_pca": 5,
+      "rna_ledger_pca": 4,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 5.0,
+      "broad_family": "Inhibitory neurons",
+      "candidate_cells": 24,
+      "cells": 1024,
+      "compression_review": 1,
+      "continuous_extreme_sets": 154,
+      "donor_private": 15,
+      "high_technical": 0,
+      "limited": 1,
+      "neighborhoods": 17,
+      "recurring": 1,
+      "recurring_extreme_sets": 154,
+      "rna_ledger_not_pca": 6,
+      "rna_ledger_pca": 1,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 1.0,
+      "broad_family": "Microglia / immune",
+      "candidate_cells": 6,
+      "cells": 142,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 0,
+      "high_technical": 0,
+      "limited": 0,
+      "neighborhoods": 1,
+      "recurring": 1,
+      "recurring_extreme_sets": 0,
+      "rna_ledger_not_pca": 0,
+      "rna_ledger_pca": 0,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 2.0,
+      "broad_family": "OPCs",
+      "candidate_cells": 2,
+      "cells": 76,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 2,
+      "high_technical": 1,
+      "limited": 0,
+      "neighborhoods": 2,
+      "recurring": 0,
+      "recurring_extreme_sets": 0,
+      "rna_ledger_not_pca": 1,
+      "rna_ledger_pca": 0,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 1.0,
+      "broad_family": "Oligodendrocytes",
+      "candidate_cells": 4,
+      "cells": 186,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 4,
+      "high_technical": 1,
+      "limited": 0,
+      "neighborhoods": 4,
+      "recurring": 0,
+      "recurring_extreme_sets": 0,
+      "rna_ledger_not_pca": 1,
+      "rna_ledger_pca": 0,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 1.0,
+      "broad_family": "Other authorized families",
+      "candidate_cells": 33,
+      "cells": 1024,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 11,
+      "high_technical": 1,
+      "limited": 6,
+      "neighborhoods": 18,
+      "recurring": 1,
+      "recurring_extreme_sets": 154,
+      "rna_ledger_not_pca": 0,
+      "rna_ledger_pca": 0,
+      "stable_recurring_extreme_sets": 154
+    },
+    {
+      "annotation_defined_recurring_states": 0.0,
+      "broad_family": "Pericyte / mural",
+      "candidate_cells": 6,
+      "cells": 153,
+      "compression_review": 0,
+      "continuous_extreme_sets": 154,
+      "donor_private": 1,
+      "high_technical": 0,
+      "limited": 1,
+      "neighborhoods": 2,
+      "recurring": 0,
+      "recurring_extreme_sets": 0,
+      "rna_ledger_not_pca": 0,
+      "rna_ledger_pca": 0,
+      "stable_recurring_extreme_sets": 154
+    }
+  ],
+  "freeze_blockers": [
+    "3 donor-recurring data-defined neighborhoods failed four-resample recurrence stability",
+    "0 recurring continuous/extreme definitions failed four-resample recurrence stability",
+    "1 raw RNA-to-ledger attenuation review flags; 0 meet the architecture-failure evidence rule"
+  ],
+  "governance": {
+    "context_optimizer_updates": 0,
+    "development_expression_accessed": false,
+    "ema_updates": 0,
+    "intrinsic_backward_calls": 0,
+    "intrinsic_optimizer_updates": 0,
+    "pathology_opened": false,
+    "production_basis_frozen": false,
+    "sealed_expression_accessed": false,
+    "stage81b_started": false,
+    "train_expression_only": true
+  },
+  "high_technical_concern_rare_candidates": 10,
+  "inhibitory_neuron_unannotated_rare_states": 1,
+  "ledger_rare_rna_not_rare_states": 0,
+  "limited_recurrence_rare_candidates": 13,
+  "microglia_unannotated_rare_states": 0,
+  "molecular_ledger_parameter_hash_after": "e466b1ddb49edfdc90725e80e65424867a23d882626786bad1892a92902e0cef",
+  "molecular_ledger_parameter_hash_before": "e466b1ddb49edfdc90725e80e65424867a23d882626786bad1892a92902e0cef",
+  "molecular_ledger_rare_biology_preservation": "PARTIAL",
+  "other_cell_family_unannotated_rare_states": 1,
+  "pathology_blind": true,
+  "pca160_rare_biology_preservation": "PARTIAL",
+  "pca_rare_only_states": 0,
+  "rare_biology_completeness_classification": "D. RARE BIOLOGY DISCOVERY NOT SATURATED / DATA COVERAGE INCOMPLETE",
+  "ready_for_human_a3_freeze_review": false,
+  "rep160_material_rare_state_advantage": "NO",
+  "required_completeness_questions": {
+    "01_annotation_defined_donor_recurring_states": 14,
+    "02_data_defined_donor_recurring_neighborhoods": 3,
+    "03_donor_private_well_measured_populations": 41,
+    "04_limited_recurrence_candidates": 13,
+    "05_families_with_most_rare_state_diversity": [
+      {
+        "broad_family": "Inhibitory neurons",
+        "total_rare_evidence": 160.0
+      },
+      {
+        "broad_family": "Other authorized families",
+        "total_rare_evidence": 156.0
+      },
+      {
+        "broad_family": "Excitatory neurons",
+        "total_rare_evidence": 155.0
+      },
+      {
+        "broad_family": "Microglia / immune",
+        "total_rare_evidence": 2.0
+      },
+      {
+        "broad_family": "OPCs",
+        "total_rare_evidence": 2.0
+      }
+    ],
+    "06_rare_states_source_concentration": {
+      "multi_dataset": 0,
+      "multi_technology": 2,
+      "single_dataset": 1
+    },
+    "07_high_measurement_quality_association_count": 10,
+    "08_rna_and_ledger_rare_but_not_pca160": 1,
+    "09_rna_rare_but_not_ledger": {
+      "raw_review_flags": 1,
+      "supported_architecture_failures": 0
+    },
+    "10_encoding_or_compression_only_rare": {
+      "ledger_only": 0,
+      "pca_only": 0
+    },
+    "11_microglia_pvm_unannotated_recurring_substates": 0,
+    "12_common_neuronal_annotations_with_recurring_substates": 1,
+    "13_recurring_continuous_extreme_states": 462,
+    "14_discovery_saturation": "SATURATING",
+    "15_molecular_ledger_preserves_rare_biology": "PARTIAL",
+    "16_pca160_global_map_role": "PARTIAL",
+    "17_rep160_material_advantage_candidates": 0,
+    "18_primarily_technical_candidates": 10,
+    "19_donor_private_candidate_ids": [
+      "Astrocytes::002",
+      "Endothelial___vascular::002",
+      "Ependymal::001",
+      "Excitatory_neurons::001",
+      "Excitatory_neurons::003",
+      "Excitatory_neurons::005",
+      "Excitatory_neurons::007",
+      "Excitatory_neurons::009",
+      "Excitatory_neurons::010",
+      "Excitatory_neurons::011",
+      "Excitatory_neurons::012",
+      "Inhibitory_neurons::001",
+      "Inhibitory_neurons::002",
+      "Inhibitory_neurons::003",
+      "Inhibitory_neurons::004",
+      "Inhibitory_neurons::005",
+      "Inhibitory_neurons::007",
+      "Inhibitory_neurons::008",
+      "Inhibitory_neurons::009",
+      "Inhibitory_neurons::011",
+      "Inhibitory_neurons::012",
+      "Inhibitory_neurons::013",
+      "Inhibitory_neurons::014",
+      "Inhibitory_neurons::015",
+      "Inhibitory_neurons::016",
+      "Inhibitory_neurons::017",
+      "OPCs::002",
+      "Oligodendrocytes::001",
+      "Oligodendrocytes::003",
+      "Oligodendrocytes::004",
+      "Other_authorized_families::001",
+      "Other_authorized_families::003",
+      "Other_authorized_families::008",
+      "Other_authorized_families::009",
+      "Other_authorized_families::010",
+      "Other_authorized_families::012",
+      "Other_authorized_families::015",
+      "Other_authorized_families::016",
+      "Other_authorized_families::017",
+      "Other_authorized_families::018",
+      "Pericyte___mural::002"
+    ],
+    "20_another_intrinsic_neural_run_required": false
+  },
+  "rna_ledger_rare_pca_not_rare_states": 1,
+  "rna_rare_ledger_not_rare_states": 1,
+  "stable_rna_ledger_rare_pca_not_rare_states": 0,
+  "stage": "stage81a3_rare_biology_completeness",
+  "stage81a3_complete": false,
+  "stage81b_started": false,
+  "supported_intrinsic_architecture_failure": false,
+  "supported_rna_rare_ledger_not_rare_states": 0,
+  "train_only": true,
+  "unannotated_limitation": "The bounded audit is a serious deterministic discovery attempt, not proof that every possible rare molecular state has been discovered.",
+  "unannotated_rare_biology_audited": true,
+  "unstable_donor_recurring_neighborhoods": 3,
+  "unstable_recurring_extreme_states": 0,
+  "wall_seconds": 204.84186320006847
+}

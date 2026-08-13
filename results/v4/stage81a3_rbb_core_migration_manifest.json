@@ -1,0 +1,90 @@
+{
+  "destination_belief_parameters": 370080,
+  "destination_checkpoint": "results\\v4\\stage81a3_rbb_core_simplified_checkpoint.pt",
+  "destination_checkpoint_sha256": "ffab118f5f4573edfc0a83be1fbe2029ab53198ad5942f6c3a5aae532d7e089f",
+  "destination_state_sha256": "75a23b434d721205a8a00a3161c6a1313de76effd30fdb74f10403a9fe376706",
+  "discarded": [
+    {
+      "parameters": 10240,
+      "sha256": "ae88ea11b8b38cd302193692a96a28ff4e05b5c1c34c0230d4adcfccb3e56f7c",
+      "source": "evidence_output.weight[320:352]"
+    },
+    {
+      "parameters": 32,
+      "sha256": "16e120a25643c2607dabb52e9aa17e5cdbc5f0bc6cef733946986c8ce196acfc",
+      "source": "evidence_output.bias[320:352]"
+    },
+    {
+      "parameters": 5120,
+      "sha256": "d63a0da9b34e40b63312fab0839f5d17bf7c2ee9b257983e381cb1344ba9ebcf",
+      "source": "correlated_directions"
+    }
+  ],
+  "parameter_count_difference": 15392,
+  "retained": [
+    {
+      "destination": "mask_context.0.weight",
+      "parameters": 163840,
+      "sha256": "9673ab77d4396f5033f1563055ee392fe3c5110a47439b520d75c7cdb05ccdd7",
+      "source": "mask_context.0.weight"
+    },
+    {
+      "destination": "mask_context.0.bias",
+      "parameters": 320,
+      "sha256": "02e90ea3c3c28c653c7430257c0663e1e654774a871bd02294497cc601fef13e",
+      "source": "mask_context.0.bias"
+    },
+    {
+      "destination": "mask_context.2.weight",
+      "parameters": 51200,
+      "sha256": "0ba8c20949c1aa3c5d96b6854460677a516c65d470a1bbd4b96bb2906a6830d4",
+      "source": "mask_context.2.weight"
+    },
+    {
+      "destination": "mask_context.2.bias",
+      "parameters": 160,
+      "sha256": "370b76f26c3513a072daa7d1c94849b998b60556f6764fab33864810b1c023a7",
+      "source": "mask_context.2.bias"
+    },
+    {
+      "destination": "evidence_norm.weight",
+      "parameters": 160,
+      "sha256": "f3be209c4ece6a5a664e3f075a4cf06930c0c73b2357024770759e37a7d6592d",
+      "source": "evidence_norm.weight"
+    },
+    {
+      "destination": "evidence_norm.bias",
+      "parameters": 160,
+      "sha256": "6e167ce81e5f2bbb815655b8449a6072c48c91153c5d4fd074eb4f39a3e5fac0",
+      "source": "evidence_norm.bias"
+    },
+    {
+      "destination": "evidence_hidden.0.weight",
+      "parameters": 51200,
+      "sha256": "b72e6a12238c67e93606ca4487567510d17abd690a6394e25fa564fe08c82c68",
+      "source": "evidence_hidden.0.weight"
+    },
+    {
+      "destination": "evidence_hidden.0.bias",
+      "parameters": 320,
+      "sha256": "78101df3706535f59a4144ed10f23bea56685a4f052bd3e7b2b17efe7f3502a3",
+      "source": "evidence_hidden.0.bias"
+    },
+    {
+      "destination": "evidence_output.weight",
+      "parameters": 102400,
+      "sha256": "affbaa733fd79b436d08fa360b09d97a907272f719bd734103a18ad359dda5f0",
+      "source": "evidence_output.weight[:320]"
+    },
+    {
+      "destination": "evidence_output.bias",
+      "parameters": 320,
+      "sha256": "608f9c9059c843c51916565c82ef269b2fedd069916ec6cfe425adb97bf9aa2e",
+      "source": "evidence_output.bias[:320]"
+    }
+  ],
+  "source_belief_parameters": 385472,
+  "source_checkpoint": "results\\v4\\stage81a3_rbb_frozen_recovery_belief_state.pt",
+  "source_checkpoint_sha256": "8ef9667e42f6c44be937b94cb54d89152805c3fbe0c254d23891a940d4474b24",
+  "source_checkpoint_unchanged": true
+}

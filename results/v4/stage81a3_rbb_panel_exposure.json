@@ -1,0 +1,1187 @@
+{
+  "anchor": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "belief_checkpoint": {
+    "metadata": {
+      "anchor": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+      "basis_sha256": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "effective_batch": 256,
+      "learning_rate": 0.0001,
+      "microbatch": 32,
+      "molecular_sha256": {
+        "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+        "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+        "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4"
+      },
+      "optimizer": "AdamW",
+      "panel_bank_sha256": {
+        "ORDINARY_BLOCK_40": "0e11b4655656649e3966f5fe599ecebdcd36ee274e56596679b25d23dfacb4c1",
+        "ORDINARY_RANDOM_40": "dbb353eb9118af284e32c54033a776ede14a7712a9d6113293dcf2dd22880387",
+        "STRUCTURAL_COHERENT_P40": "fb4eb53dac7a2fb6eaa360b189a7dac3f20a664c2dae41e58fdccf9a3c8132bc",
+        "STRUCTURAL_COHERENT_P60": "e74bf1120cc5fa6ca173eb6833714bcb1961bf3ed0172e136beaa5a50c3d3a02",
+        "STRUCTURAL_COHERENT_P80": "250daf148a1bfb51a74a35fc162d60894664772cc302c38d800800b12e4be7ee",
+        "STRUCTURAL_RANDOM_P40": "f5a0e92f902b45c3a53bfe01b52a9afa4a66444ae29838994d80dd057488addb",
+        "STRUCTURAL_RANDOM_P60": "761668c0c9b35770d55621234965103ccb0374f533353674bd1abbc45caaabca",
+        "STRUCTURAL_RANDOM_P80": "216ac13fd33fb00b75eb76f0d30eb0d68d9edd8264866ae58c3f33de1086243e"
+      },
+      "r_max": 32,
+      "seed": 8114001,
+      "strata": {
+        "ORDINARY_BLOCK_40": 32,
+        "ORDINARY_RANDOM_40": 32,
+        "STRUCTURAL_COHERENT_P40": 32,
+        "STRUCTURAL_COHERENT_P60": 32,
+        "STRUCTURAL_COHERENT_P80": 32,
+        "STRUCTURAL_RANDOM_P40": 32,
+        "STRUCTURAL_RANDOM_P60": 32,
+        "STRUCTURAL_RANDOM_P80": 32
+      },
+      "updates": 150,
+      "weight_decay": 0.01
+    },
+    "path": "results\\v4\\stage81a3_rbb_panel_exposure_checkpoint.pt",
+    "sha256": "c78cf055ceb020c2d0e928c021703d1063a24c010e92f6bbef7e572a368e8396"
+  },
+  "belief_initialization_sha256": "5bae2e914ecd6cd0ecedf2e98e73877ddbe7906088de9520cd3e130c22764866",
+  "classification": "SCALAR RECALIBRATION IS SUFFICIENT; NEURAL PANEL EXPOSURE NOT EARNED",
+  "complexity_decision": {
+    "candidate_for_removal_before_final_a3_freeze": true,
+    "correlated_component": "NOT EARNED",
+    "human_decision_required": true,
+    "three_converging_negative_results": true
+  },
+  "counterfactual_sidecar": {
+    "reason": "optional compute omitted; prior NOT SUPPORTED evidence unchanged",
+    "run": false
+  },
+  "cross_panel_summary": {
+    "same_cell_compatibility_pass": true,
+    "union_uncertainty_reduction_pass": true
+  },
+  "evaluation_panel_construction": {
+    "construction_inputs": "seed plus TRAIN-derived pathology-blind coexpression graph only",
+    "exact_cardinalities": true,
+    "factor_labels_used": false,
+    "hashes": {
+      "COHERENT_STRUCTURAL": [
+        "e9cf32c2f30bb76424042c248c4151af199829403417271868a8ca3a6d659cee",
+        "2f2255e427009f19056a3905c6ada401bfa341e44531e8cf959ff0da4242241a",
+        "8c2746679aabe5e254815284d45d3e629e9f19ff8fafe6e54b59dfb6df5f1ba2",
+        "1a750501c8d698b302875c14abfe11bb49edb71c558223f5c08b2a64c6273d0f"
+      ],
+      "RANDOM_STRUCTURAL": [
+        "7b59b6ff039d33803326e6daa3743bae8f1ed1fd3919dc64c29de35dab5e927f",
+        "61518652e2762abd88908dc61a3e5f8bec9b2aac718809dd30d42d91ddb17239",
+        "41d3a9fc69d280eb450d140cf6630d5c6e9b312c7bff39abf37d3028ec4ad1b2",
+        "737591ac244c4de36a34d9f824bd7512f364743102989ac5d7c3df1d08e01982"
+      ]
+    },
+    "nested": true,
+    "sealed_used": false,
+    "views": 4
+  },
+  "gaussian_adequacy": {
+    "family_concern": false,
+    "maximum_primary_severe_fraction": 0.012500000186264515
+  },
+  "governance": {
+    "belief_updates": 150,
+    "factor_labels_used_for_training": false,
+    "molecular_updates": 0,
+    "panel_exposure_models": 1,
+    "pathology_opened": false,
+    "real_rna_accessed": false,
+    "sealed_used_for_fitting": false,
+    "stage81a3_complete": false,
+    "stage81a3_frozen": false,
+    "stage81b_started": false
+  },
+  "gradient_firewall": [
+    {
+      "maximum_absolute_molecular_gradient": 0.0,
+      "update": 1
+    },
+    {
+      "maximum_absolute_molecular_gradient": 0.0,
+      "update": 25
+    },
+    {
+      "maximum_absolute_molecular_gradient": 0.0,
+      "update": 150
+    }
+  ],
+  "initial_retention": {
+    "contextual_mean_factor_r2": 0.7505210041999817,
+    "contextual_median_factor_r2": 0.7500036358833313,
+    "retention_ratio": 1.0020574895396623,
+    "step": 0,
+    "tokenizer_mean_factor_r2": 0.7489799857139587,
+    "tokenizer_median_factor_r2": 0.7484269738197327
+  },
+  "measurement_semantics_reaudit": {
+    "legacy_parity_max_abs": {
+      "belief_mean": 0.0,
+      "conditional_diagonal": 0.0,
+      "conditional_low_rank": 0.0,
+      "correlated_activation_amplitudes": 0.0,
+      "evidence_diagonal": 0.0,
+      "evidence_low_rank": 0.0,
+      "evidence_mean": 0.0,
+      "molecular_evidence_tokens": 0.0,
+      "nll": 0.0,
+      "posterior_missing_mean": 0.0,
+      "total_diagonal": 0.0,
+      "total_low_rank": 0.0,
+      "visible_state": 0.0
+    },
+    "legacy_parity_pass": true,
+    "measured_zero": {
+      "cell_gene_examples": 386705,
+      "measured_zero_median_visible_contribution_norm": 0.1519271731376648,
+      "measured_zero_nonzero_visible_contribution_fraction": 1.0,
+      "measured_zero_observed": true,
+      "proof_subset_at_least_256": true,
+      "state_codes_distinct": true,
+      "structural_zero_not_observed": true,
+      "structural_zero_visible_contribution_norm": 0.0,
+      "visible_state_contribution_examples": 256
+    },
+    "structural_firewall_pass": true,
+    "structural_substitution_max_abs": {
+      "nonsense": 0.0,
+      "shuffled": 0.0,
+      "true": 0.0,
+      "zero": 0.0
+    },
+    "training_vs_structural": {
+      "both_belief_missing": true,
+      "structural_target_eligible": false,
+      "training_mask_target_eligible": true
+    }
+  },
+  "molecular_hash_trajectory": [
+    {
+      "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+      "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+      "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4",
+      "update": 0
+    },
+    {
+      "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+      "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+      "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4",
+      "update": 25
+    },
+    {
+      "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+      "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+      "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4",
+      "update": 50
+    },
+    {
+      "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+      "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+      "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4",
+      "update": 100
+    },
+    {
+      "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+      "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+      "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4",
+      "update": 150
+    }
+  ],
+  "molecular_hashes_step0": {
+    "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+    "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+    "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4"
+  },
+  "optimizer_firewall": {
+    "belief_parameters": 385472,
+    "molecular_optimizer_overlap": 0,
+    "molecular_parameters": 1450112,
+    "optimized_parameters": 385472
+  },
+  "ordinary_summary": {
+    "COEXPRESSION_BLOCK_40": {
+      "belief_factor_r2": 0.8601316809654236,
+      "belief_minus_visible_factor_r2": 2.115964889526367e-06,
+      "belief_state_cosine": 0.31801046431064606,
+      "coverage_1_96sigma": 0.935342401266098,
+      "coverage_1sigma": 0.6742889583110809,
+      "diagonalized_nll": 0.7892477512359619,
+      "gaussian_excess_kurtosis_median": 0.41567111015319824,
+      "gaussian_severe_fraction": 0.0,
+      "gaussian_skewness_median": -0.0010305237956345081,
+      "joint_scale": 1.1259067058563232,
+      "nll": 0.7892451286315918,
+      "prior_nll": 0.832300066947937,
+      "replicate_factor_prediction_correlation": 0.8679909706115723,
+      "replicate_paired_standardized_distance": 14.396102905273438,
+      "uncertainty_error_spearman": 0.947228342294693,
+      "visible_factor_r2": 0.8601290285587311
+    },
+    "RANDOM_40": {
+      "belief_factor_r2": 0.8840811550617218,
+      "belief_minus_visible_factor_r2": 7.152557373046875e-07,
+      "belief_state_cosine": 0.3330894559621811,
+      "coverage_1_96sigma": 0.949932873249054,
+      "coverage_1sigma": 0.699240118265152,
+      "diagonalized_nll": 0.6752641201019287,
+      "gaussian_excess_kurtosis_median": 0.24795210361480713,
+      "gaussian_severe_fraction": 0.0,
+      "gaussian_skewness_median": 0.003982190042734146,
+      "joint_scale": 0.9783616065979004,
+      "nll": 0.6752650737762451,
+      "prior_nll": 0.6986249685287476,
+      "replicate_factor_prediction_correlation": 0.8857115805149078,
+      "replicate_paired_standardized_distance": 14.64450740814209,
+      "uncertainty_error_spearman": 0.9325769543647766,
+      "visible_factor_r2": 0.884080320596695
+    }
+  },
+  "p60_three_way_comparison": {
+    "COHERENT_STRUCTURAL": {
+      "meaningful_neural_change": false,
+      "post": {
+        "belief_factor_r2": 0.8581479489803314,
+        "belief_minus_visible_factor_r2": 3.6656856536865234e-06,
+        "belief_state_cosine": 0.31647220253944397,
+        "coverage_1_96sigma": 0.9836059510707855,
+        "coverage_1sigma": 0.905529797077179,
+        "diagonalized_nll": 0.44532276690006256,
+        "gaussian_excess_kurtosis_median": -0.005017638206481934,
+        "gaussian_severe_fraction": 0.0,
+        "gaussian_skewness_median": 0.0011401940137147903,
+        "joint_scale": 0.43803130090236664,
+        "mean_correlated_energy": 1.6184079640879645e-06,
+        "median_correlated_rank": 30.796180725097656,
+        "median_logdet": -221.66706085205078,
+        "median_trace": 40.579627990722656,
+        "nll": 0.4453454911708832,
+        "prior_nll": 0.5881407558917999,
+        "recoverable_gap_fraction": 2.5707002129577435e-05,
+        "replicate_factor_prediction_correlation": 0.8672265708446503,
+        "replicate_paired_standardized_distance": 14.408841133117676,
+        "standardized_variance": 0.31359025835990906,
+        "synthetic_full_expected_factor_r2": 0.9997169971466064,
+        "uncertainty_error_spearman": 0.06818306818604469,
+        "visible_factor_r2": 0.8581441640853882
+      },
+      "post_minus_pre_localization": -0.0035252422094345093,
+      "post_minus_scalar_localization": -0.003526546061038971,
+      "pre": {
+        "belief_factor_r2": 0.858147919178009,
+        "belief_factor_r2_median": 0.8582398891448975,
+        "coverage_1_96sigma": 0.9839111566543579,
+        "coverage_1sigma": 0.9082183837890625,
+        "diagonalized_nll": 0.4478679597377777,
+        "family": "COHERENT_STRUCTURAL",
+        "family_monotonic_fraction": 1.0,
+        "family_primary_median_spearman": 0.0801091231405735,
+        "joint_scale": 0.4320642799139023,
+        "mean_correlated_energy": 4.8262243581120856e-05,
+        "median_logdet": -219.87982940673828,
+        "median_trace": 41.077083587646484,
+        "nll": 0.4479473829269409,
+        "panel": "P60",
+        "prior_nll": 0.5881407558917999,
+        "uncertainty_error_spearman": 0.0717083103954792,
+        "visible_factor_r2": 0.8581441640853882,
+        "visible_factor_r2_median": 0.8582428693771362
+      },
+      "scalar": {
+        "belief_factor_r2": 0.858147919178009,
+        "coverage_1_96sigma": 0.944476306438446,
+        "coverage_1sigma": 0.7499603033065796,
+        "joint_scale": 1.09597247838974,
+        "median_trace": 16.193782806396484,
+        "sealed_nll": 0.3144899904727936,
+        "uncertainty_error_spearman": 0.07170961424708366,
+        "variance_temperature": 0.39422914385795593
+      },
+      "scalar_family_sufficient": true
+    },
+    "RANDOM_STRUCTURAL": {
+      "meaningful_neural_change": false,
+      "post": {
+        "belief_factor_r2": 0.8849425911903381,
+        "belief_minus_visible_factor_r2": 9.238719940185547e-07,
+        "belief_state_cosine": 0.3328469544649124,
+        "coverage_1_96sigma": 0.9879699647426605,
+        "coverage_1sigma": 0.9186798334121704,
+        "diagonalized_nll": 0.3641284257173538,
+        "gaussian_excess_kurtosis_median": -0.0352020263671875,
+        "gaussian_severe_fraction": 0.0031250000465661287,
+        "gaussian_skewness_median": -0.0050636399537324905,
+        "joint_scale": 0.3561539947986603,
+        "mean_correlated_energy": 1.5111151583369065e-06,
+        "median_correlated_rank": 30.781448364257812,
+        "median_logdet": -234.54562377929688,
+        "median_trace": 37.5606689453125,
+        "nll": 0.36415091156959534,
+        "prior_nll": 0.46355289220809937,
+        "recoverable_gap_fraction": 8.050991152573666e-06,
+        "replicate_factor_prediction_correlation": 0.8883006274700165,
+        "replicate_paired_standardized_distance": 14.656753540039062,
+        "standardized_variance": 0.28517796099185944,
+        "synthetic_full_expected_factor_r2": 0.9997169971466064,
+        "uncertainty_error_spearman": 0.11140857264399529,
+        "visible_factor_r2": 0.8849415183067322
+      },
+      "post_minus_pre_localization": 0.0023566782474517822,
+      "post_minus_scalar_localization": 0.0023566782474517822,
+      "pre": {
+        "belief_factor_r2": 0.8849426805973053,
+        "belief_factor_r2_median": 0.8855147063732147,
+        "coverage_1_96sigma": 0.988116443157196,
+        "coverage_1sigma": 0.9190307557582855,
+        "diagonalized_nll": 0.36826246976852417,
+        "family": "RANDOM_STRUCTURAL",
+        "family_monotonic_fraction": 1.0,
+        "family_primary_median_spearman": 0.10520503669977188,
+        "joint_scale": 0.35412000119686127,
+        "mean_correlated_energy": 4.7009674744913355e-05,
+        "median_logdet": -232.87551879882812,
+        "median_trace": 37.98194694519043,
+        "nll": 0.3683355003595352,
+        "panel": "P60",
+        "prior_nll": 0.46355289220809937,
+        "uncertainty_error_spearman": 0.1090518943965435,
+        "visible_factor_r2": 0.8849415183067322,
+        "visible_factor_r2_median": 0.8855136632919312
+      },
+      "scalar": {
+        "belief_factor_r2": 0.8849426805973053,
+        "coverage_1_96sigma": 0.951446533203125,
+        "coverage_1sigma": 0.780160516500473,
+        "joint_scale": 0.8982594013214111,
+        "median_trace": 14.97359037399292,
+        "sealed_nll": 0.17499367892742157,
+        "uncertainty_error_spearman": 0.1090518943965435,
+        "variance_temperature": 0.39422914385795593
+      },
+      "scalar_family_sufficient": true
+    }
+  },
+  "panel_banks": {
+    "exact_counts": {
+      "ORDINARY_BLOCK_40": [
+        2458
+      ],
+      "ORDINARY_RANDOM_40": [
+        2458
+      ],
+      "STRUCTURAL_COHERENT_P40": [
+        1638
+      ],
+      "STRUCTURAL_COHERENT_P60": [
+        2458
+      ],
+      "STRUCTURAL_COHERENT_P80": [
+        3277
+      ],
+      "STRUCTURAL_RANDOM_P40": [
+        1638
+      ],
+      "STRUCTURAL_RANDOM_P60": [
+        2458
+      ],
+      "STRUCTURAL_RANDOM_P80": [
+        3277
+      ]
+    },
+    "factor_labels_used": false,
+    "hashes": {
+      "ORDINARY_BLOCK_40": "0e11b4655656649e3966f5fe599ecebdcd36ee274e56596679b25d23dfacb4c1",
+      "ORDINARY_RANDOM_40": "dbb353eb9118af284e32c54033a776ede14a7712a9d6113293dcf2dd22880387",
+      "STRUCTURAL_COHERENT_P40": "fb4eb53dac7a2fb6eaa360b189a7dac3f20a664c2dae41e58fdccf9a3c8132bc",
+      "STRUCTURAL_COHERENT_P60": "e74bf1120cc5fa6ca173eb6833714bcb1961bf3ed0172e136beaa5a50c3d3a02",
+      "STRUCTURAL_COHERENT_P80": "250daf148a1bfb51a74a35fc162d60894664772cc302c38d800800b12e4be7ee",
+      "STRUCTURAL_RANDOM_P40": "f5a0e92f902b45c3a53bfe01b52a9afa4a66444ae29838994d80dd057488addb",
+      "STRUCTURAL_RANDOM_P60": "761668c0c9b35770d55621234965103ccb0374f533353674bd1abbc45caaabca",
+      "STRUCTURAL_RANDOM_P80": "216ac13fd33fb00b75eb76f0d30eb0d68d9edd8264866ae58c3f33de1086243e"
+    },
+    "ordinary_hashes_match_recovery": true,
+    "p20_present": false,
+    "sealed_used": false,
+    "structural_masks_per_stratum": 128,
+    "train_only": true
+  },
+  "primary_gates": {
+    "cross_panel_identity": true,
+    "gradient_firewall": true,
+    "measurement_semantics": true,
+    "ordinary_no_forgetting": true,
+    "p60_calibration": false,
+    "p60_no_harm": true,
+    "p60_proper_score": true,
+    "p60_uncertainty_localization": false,
+    "p80_p40_generalization": true,
+    "token_retention": true,
+    "uncertainty_monotonic": true,
+    "union_uncertainty_reduction": true
+  },
+  "prior_evidence_hashes": {
+    "results/v4/stage81a3_conditional_predictability_audit.json": "fae778621cbec948c0a238998d2683aae09be680b1c96f7ed4f2b6b8cc7ed6f5",
+    "results/v4/stage81a3_ipb_jepa_feasibility.json": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+    "results/v4/stage81a3_rbb_adaptive_correlated_probe.json": "c73440b97830f4dc09467797aaefe5d59d99649fa6c98c6ed60cb23e82e083d3",
+    "results/v4/stage81a3_rbb_belief_geometry_audit.json": "9e3986ec12767e8d04acdb9ac921c88a4f288ca20b3c4da4abf24fcdbe444b59",
+    "results/v4/stage81a3_rbb_frozen_encoder_probe.json": "915e76e4123b5fa7dd3b026072b1faef10d98063b349fc26f1d3e5b7e201b71f",
+    "results/v4/stage81a3_rbb_oof_covariance_audit.json": "7a5042125860f2c598a28038f41fa3211074bf21d9e204dc6386b5246982a87f",
+    "results/v4/stage81a3_rbb_structural_panel_audit.json": "4a6fb3e78fc9ccc87b600d5a1ff8f49fecfe4643f3c16657ac9f9293f34ce9ac",
+    "results/v4/stage81a3_rbb_validation_covariance_audit.json": "03d0e36d405150851753be333067ee553d17e847fce50a2d983b83f0b4777239",
+    "results/v4/stage81a3_reproducible_state_basis.pt": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+    "results/v4/stage81a3_rlc_causal_fast_probe.json": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+    "results\\v4\\stage81a3_rbb_frozen_recovery.json": "49088ce3e2d677c62e5ac346e798f922ad7ff85c71a2abd039ca304ba52f98b7",
+    "results\\v4\\stage81a3_rbb_frozen_recovery_belief_state.pt": "8ef9667e42f6c44be937b94cb54d89152805c3fbe0c254d23891a940d4474b24"
+  },
+  "retention": [
+    {
+      "contextual_mean_factor_r2": 0.7505210041999817,
+      "contextual_median_factor_r2": 0.7500036358833313,
+      "retention_ratio": 1.0020574895396623,
+      "step": 0,
+      "tokenizer_mean_factor_r2": 0.7489799857139587,
+      "tokenizer_median_factor_r2": 0.7484269738197327
+    },
+    {
+      "contextual_mean_factor_r2": 0.7505210041999817,
+      "contextual_median_factor_r2": 0.7500036358833313,
+      "retention_ratio": 1.0020574895396623,
+      "step": 25,
+      "tokenizer_mean_factor_r2": 0.7489799857139587,
+      "tokenizer_median_factor_r2": 0.7484269738197327
+    },
+    {
+      "contextual_mean_factor_r2": 0.7505210041999817,
+      "contextual_median_factor_r2": 0.7500036358833313,
+      "retention_ratio": 1.0020574895396623,
+      "step": 50,
+      "tokenizer_mean_factor_r2": 0.7489799857139587,
+      "tokenizer_median_factor_r2": 0.7484269738197327
+    },
+    {
+      "contextual_mean_factor_r2": 0.7505210041999817,
+      "contextual_median_factor_r2": 0.7500036358833313,
+      "retention_ratio": 1.0020574895396623,
+      "step": 100,
+      "tokenizer_mean_factor_r2": 0.7489799857139587,
+      "tokenizer_median_factor_r2": 0.7484269738197327
+    },
+    {
+      "contextual_mean_factor_r2": 0.7505210041999817,
+      "contextual_median_factor_r2": 0.7500036358833313,
+      "retention_ratio": 1.0020574895396623,
+      "step": 150,
+      "tokenizer_mean_factor_r2": 0.7489799857139587,
+      "tokenizer_median_factor_r2": 0.7484269738197327
+    }
+  ],
+  "retention_pass": true,
+  "scalar_recalibration": {
+    "fit_split": "VALIDATION",
+    "posterior_mean_changed": false,
+    "sealed_used_for_fit": false,
+    "shared_across_families_and_p80_p60_p40": true,
+    "summary": {
+      "COHERENT_STRUCTURAL": {
+        "P40": {
+          "belief_factor_r2": 0.8042730093002319,
+          "coverage_1_96sigma": 0.924102783203125,
+          "coverage_1sigma": 0.7675140500068665,
+          "joint_scale": 1.5017626285552979,
+          "median_trace": 17.172672271728516,
+          "sealed_nll": 0.5449564456939697,
+          "uncertainty_error_spearman": 0.08132293075323105,
+          "variance_temperature": 0.39422914385795593
+        },
+        "P60": {
+          "belief_factor_r2": 0.858147919178009,
+          "coverage_1_96sigma": 0.944476306438446,
+          "coverage_1sigma": 0.7499603033065796,
+          "joint_scale": 1.09597247838974,
+          "median_trace": 16.193782806396484,
+          "sealed_nll": 0.3144899904727936,
+          "uncertainty_error_spearman": 0.07170961424708366,
+          "variance_temperature": 0.39422914385795593
+        },
+        "P80": {
+          "belief_factor_r2": 0.8988568782806396,
+          "coverage_1_96sigma": 0.974865734577179,
+          "coverage_1sigma": 0.7975494265556335,
+          "joint_scale": 0.6838427484035492,
+          "median_trace": 15.559785842895508,
+          "sealed_nll": 0.08937548100948334,
+          "uncertainty_error_spearman": 0.0921129360795021,
+          "variance_temperature": 0.39422914385795593
+        }
+      },
+      "RANDOM_STRUCTURAL": {
+        "P40": {
+          "belief_factor_r2": 0.8442188203334808,
+          "coverage_1_96sigma": 0.9131011962890625,
+          "coverage_1sigma": 0.7384185791015625,
+          "joint_scale": 1.5473871231079102,
+          "median_trace": 15.695478439331055,
+          "sealed_nll": 0.5217826664447784,
+          "uncertainty_error_spearman": 0.10696863383054733,
+          "variance_temperature": 0.39422914385795593
+        },
+        "P60": {
+          "belief_factor_r2": 0.8849426805973053,
+          "coverage_1_96sigma": 0.951446533203125,
+          "coverage_1sigma": 0.780160516500473,
+          "joint_scale": 0.8982594013214111,
+          "median_trace": 14.97359037399292,
+          "sealed_nll": 0.17499367892742157,
+          "uncertainty_error_spearman": 0.1090518943965435,
+          "variance_temperature": 0.39422914385795593
+        },
+        "P80": {
+          "belief_factor_r2": 0.9078801572322845,
+          "coverage_1_96sigma": 0.9963745176792145,
+          "coverage_1sigma": 0.893301397562027,
+          "joint_scale": 0.394221231341362,
+          "median_trace": 14.492876052856445,
+          "sealed_nll": -0.09259238466620445,
+          "uncertainty_error_spearman": 0.08050798997282982,
+          "variance_temperature": 0.39422914385795593
+        }
+      }
+    },
+    "uncertainty_ranking_changed": false,
+    "variance_temperature": 0.39422914385795593
+  },
+  "scientific_contract": {
+    "hyperparameter_sweep": false,
+    "models": 1,
+    "pathology": false,
+    "real_rna": false,
+    "seed_sweep": false,
+    "single_change": "belief exposure to structural-panel simulation"
+  },
+  "secondary_classifications": {
+    "correlated_component": "NOT EARNED",
+    "cross_panel_identity": "SUPPORTED",
+    "p20": "UNCERTAIN BUT CALIBRATION-DEGRADED",
+    "point_state_recovery": "NEGLIGIBLE",
+    "scalar_recalibration": "SUFFICIENT"
+  },
+  "seed": 8114001,
+  "stage": "stage81a3_rbb_panel_exposure",
+  "status": "complete",
+  "structural_summary": {
+    "COHERENT_STRUCTURAL": {
+      "monotonic_coordinate_fraction": 1.0,
+      "panels": {
+        "FULL": {
+          "belief_factor_r2": 0.9218271374702454,
+          "belief_minus_visible_factor_r2": 1.4901161193847656e-06,
+          "belief_state_cosine": 0.37457743287086487,
+          "coverage_1_96sigma": 1.0,
+          "coverage_1sigma": 1.0,
+          "diagonalized_nll": 0.19089576601982117,
+          "gaussian_excess_kurtosis_median": 0.8318741321563721,
+          "gaussian_severe_fraction": 0.3187499940395355,
+          "gaussian_skewness_median": 0.20743988454341888,
+          "joint_scale": 0.0025018921587616205,
+          "mean_correlated_energy": 1.4006647006681305e-06,
+          "median_correlated_rank": 30.769132614135742,
+          "median_logdet": -233.390625,
+          "median_trace": 37.596290588378906,
+          "nll": 0.1909395158290863,
+          "prior_nll": 0.4079236686229706,
+          "recoverable_gap_fraction": 1.9130700948882767e-05,
+          "replicate_factor_prediction_correlation": 0.9224979877471924,
+          "replicate_paired_standardized_distance": 15.139631271362305,
+          "standardized_variance": 3.92973015550524e-05,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": -0.999920666217804,
+          "visible_factor_r2": 0.921825647354126
+        },
+        "P20": {
+          "belief_factor_r2": 0.6967280805110931,
+          "belief_minus_visible_factor_r2": 2.294778823852539e-06,
+          "belief_state_cosine": 0.245176762342453,
+          "coverage_1_96sigma": 0.953106701374054,
+          "coverage_1sigma": 0.8878631591796875,
+          "diagonalized_nll": 0.6882219910621643,
+          "gaussian_excess_kurtosis_median": 0.14863038063049316,
+          "gaussian_severe_fraction": 0.012500000186264515,
+          "gaussian_skewness_median": -0.012450164183974266,
+          "joint_scale": 0.7697980999946594,
+          "mean_correlated_energy": 1.8436003870192508e-06,
+          "median_correlated_rank": 30.82213020324707,
+          "median_logdet": -197.00682830810547,
+          "median_trace": 48.003509521484375,
+          "nll": 0.6882297694683075,
+          "prior_nll": 0.7664017379283905,
+          "recoverable_gap_fraction": 7.63220925664355e-06,
+          "replicate_factor_prediction_correlation": 0.7210039794445038,
+          "replicate_paired_standardized_distance": 14.692780494689941,
+          "standardized_variance": 0.5576914846897125,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": 0.07422242313623428,
+          "visible_factor_r2": 0.6967265605926514
+        },
+        "P40": {
+          "belief_factor_r2": 0.8042729496955872,
+          "belief_minus_visible_factor_r2": 2.7120113372802734e-06,
+          "belief_state_cosine": 0.2797497361898422,
+          "coverage_1_96sigma": 0.967489629983902,
+          "coverage_1sigma": 0.8928772211074829,
+          "diagonalized_nll": 0.554850310087204,
+          "gaussian_excess_kurtosis_median": 0.0343097448348999,
+          "gaussian_severe_fraction": 0.0031250000465661287,
+          "gaussian_skewness_median": 0.002793269231915474,
+          "joint_scale": 0.5978357493877411,
+          "mean_correlated_energy": 1.7299329329034663e-06,
+          "median_correlated_rank": 30.80982780456543,
+          "median_logdet": -212.1891860961914,
+          "median_trace": 43.217058181762695,
+          "nll": 0.5548667311668396,
+          "prior_nll": 0.6712396144866943,
+          "recoverable_gap_fraction": 1.3893164518160136e-05,
+          "replicate_factor_prediction_correlation": 0.818220466375351,
+          "replicate_paired_standardized_distance": 14.506823062896729,
+          "standardized_variance": 0.4397473633289337,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": 0.08211084455251694,
+          "visible_factor_r2": 0.8042683601379395
+        },
+        "P60": {
+          "belief_factor_r2": 0.8581479489803314,
+          "belief_minus_visible_factor_r2": 3.6656856536865234e-06,
+          "belief_state_cosine": 0.31647220253944397,
+          "coverage_1_96sigma": 0.9836059510707855,
+          "coverage_1sigma": 0.905529797077179,
+          "diagonalized_nll": 0.44532276690006256,
+          "gaussian_excess_kurtosis_median": -0.005017638206481934,
+          "gaussian_severe_fraction": 0.0,
+          "gaussian_skewness_median": 0.0011401940137147903,
+          "joint_scale": 0.43803130090236664,
+          "mean_correlated_energy": 1.6184079640879645e-06,
+          "median_correlated_rank": 30.796180725097656,
+          "median_logdet": -221.66706085205078,
+          "median_trace": 40.579627990722656,
+          "nll": 0.4453454911708832,
+          "prior_nll": 0.5881407558917999,
+          "recoverable_gap_fraction": 2.5707002129577435e-05,
+          "replicate_factor_prediction_correlation": 0.8672265708446503,
+          "replicate_paired_standardized_distance": 14.408841133117676,
+          "standardized_variance": 0.31359025835990906,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": 0.06818306818604469,
+          "visible_factor_r2": 0.8581441640853882
+        },
+        "P80": {
+          "belief_factor_r2": 0.8988568186759949,
+          "belief_minus_visible_factor_r2": 1.8775463104248047e-06,
+          "belief_state_cosine": 0.36073072254657745,
+          "coverage_1_96sigma": 0.99847412109375,
+          "coverage_1sigma": 0.9411682188510895,
+          "diagonalized_nll": 0.34277062118053436,
+          "gaussian_excess_kurtosis_median": -0.029718518257141113,
+          "gaussian_severe_fraction": 0.0,
+          "gaussian_skewness_median": -0.00815471913665533,
+          "joint_scale": 0.27492935955524445,
+          "mean_correlated_energy": 1.495186836564244e-06,
+          "median_correlated_rank": 30.781352996826172,
+          "median_logdet": -228.38750457763672,
+          "median_trace": 38.83508110046387,
+          "nll": 0.3427993953227997,
+          "prior_nll": 0.5039730072021484,
+          "recoverable_gap_fraction": 1.881511382699823e-05,
+          "replicate_factor_prediction_correlation": 0.902641624212265,
+          "replicate_paired_standardized_distance": 14.607948303222656,
+          "standardized_variance": 0.1939532309770584,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": 0.0894354060292244,
+          "visible_factor_r2": 0.8988549709320068
+        }
+      }
+    },
+    "RANDOM_STRUCTURAL": {
+      "monotonic_coordinate_fraction": 1.0,
+      "panels": {
+        "FULL": {
+          "belief_factor_r2": 0.9218267202377319,
+          "belief_minus_visible_factor_r2": 1.0728836059570312e-06,
+          "belief_state_cosine": 0.37454333901405334,
+          "coverage_1_96sigma": 1.0,
+          "coverage_1sigma": 1.0,
+          "diagonalized_nll": 0.1575034111738205,
+          "gaussian_excess_kurtosis_median": 0.8253107070922852,
+          "gaussian_severe_fraction": 0.3187499940395355,
+          "gaussian_skewness_median": -0.054140590131282806,
+          "joint_scale": 0.0023038676008582115,
+          "mean_correlated_energy": 1.3722425364903756e-06,
+          "median_correlated_rank": 30.76344871520996,
+          "median_logdet": -244.04159545898438,
+          "median_trace": 35.312339782714844,
+          "nll": 0.1575438529253006,
+          "prior_nll": 0.3114178478717804,
+          "recoverable_gap_fraction": 1.3774104683195593e-05,
+          "replicate_factor_prediction_correlation": 0.9224975109100342,
+          "replicate_paired_standardized_distance": 15.139642715454102,
+          "standardized_variance": 3.64857041859068e-05,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": -0.9997850656509399,
+          "visible_factor_r2": 0.921825647354126
+        },
+        "P20": {
+          "belief_factor_r2": 0.7544629573822021,
+          "belief_minus_visible_factor_r2": 1.4603137969970703e-06,
+          "belief_state_cosine": 0.28261598944664,
+          "coverage_1_96sigma": 0.939126580953598,
+          "coverage_1sigma": 0.8656280636787415,
+          "diagonalized_nll": 0.6998332142829895,
+          "gaussian_excess_kurtosis_median": 0.09868526458740234,
+          "gaussian_severe_fraction": 0.0062500000931322575,
+          "gaussian_skewness_median": -0.01108640432357788,
+          "joint_scale": 0.9069100022315979,
+          "mean_correlated_energy": 1.7170181081382907e-06,
+          "median_correlated_rank": 30.806958198547363,
+          "median_logdet": -215.2586898803711,
+          "median_trace": 42.73035430908203,
+          "nll": 0.6998396515846252,
+          "prior_nll": 0.7457578778266907,
+          "recoverable_gap_fraction": 5.921865471813308e-06,
+          "replicate_factor_prediction_correlation": 0.7700152397155762,
+          "replicate_paired_standardized_distance": 14.411635875701904,
+          "standardized_variance": 0.7431199252605438,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": 0.10847260430455208,
+          "visible_factor_r2": 0.7544614374637604
+        },
+        "P40": {
+          "belief_factor_r2": 0.8442189395427704,
+          "belief_minus_visible_factor_r2": 4.470348358154297e-07,
+          "belief_state_cosine": 0.31213997304439545,
+          "coverage_1_96sigma": 0.9625976383686066,
+          "coverage_1sigma": 0.877371221780777,
+          "diagonalized_nll": 0.5160629451274872,
+          "gaussian_excess_kurtosis_median": 0.0335310697555542,
+          "gaussian_severe_fraction": 0.0062500000931322575,
+          "gaussian_skewness_median": 0.006288335658609867,
+          "joint_scale": 0.6122494041919708,
+          "mean_correlated_energy": 1.6069607227109373e-06,
+          "median_correlated_rank": 30.794053077697754,
+          "median_logdet": -226.91018676757812,
+          "median_trace": 39.50471115112305,
+          "nll": 0.5160774886608124,
+          "prior_nll": 0.5895431637763977,
+          "recoverable_gap_fraction": 2.9279239205788847e-06,
+          "replicate_factor_prediction_correlation": 0.8519391119480133,
+          "replicate_paired_standardized_distance": 14.457717418670654,
+          "standardized_variance": 0.4963024705648422,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": 0.10868819802999496,
+          "visible_factor_r2": 0.844218909740448
+        },
+        "P60": {
+          "belief_factor_r2": 0.8849425911903381,
+          "belief_minus_visible_factor_r2": 9.238719940185547e-07,
+          "belief_state_cosine": 0.3328469544649124,
+          "coverage_1_96sigma": 0.9879699647426605,
+          "coverage_1sigma": 0.9186798334121704,
+          "diagonalized_nll": 0.3641284257173538,
+          "gaussian_excess_kurtosis_median": -0.0352020263671875,
+          "gaussian_severe_fraction": 0.0031250000465661287,
+          "gaussian_skewness_median": -0.0050636399537324905,
+          "joint_scale": 0.3561539947986603,
+          "mean_correlated_energy": 1.5111151583369065e-06,
+          "median_correlated_rank": 30.781448364257812,
+          "median_logdet": -234.54562377929688,
+          "median_trace": 37.5606689453125,
+          "nll": 0.36415091156959534,
+          "prior_nll": 0.46355289220809937,
+          "recoverable_gap_fraction": 8.050991152573666e-06,
+          "replicate_factor_prediction_correlation": 0.8883006274700165,
+          "replicate_paired_standardized_distance": 14.656753540039062,
+          "standardized_variance": 0.28517796099185944,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": 0.11140857264399529,
+          "visible_factor_r2": 0.8849415183067322
+        },
+        "P80": {
+          "belief_factor_r2": 0.9078801870346069,
+          "belief_minus_visible_factor_r2": 1.043081283569336e-06,
+          "belief_state_cosine": 0.3530077189207077,
+          "coverage_1_96sigma": 0.999987781047821,
+          "coverage_1sigma": 0.9831909239292145,
+          "diagonalized_nll": 0.24743130058050156,
+          "gaussian_excess_kurtosis_median": -0.06168246269226074,
+          "gaussian_severe_fraction": 0.0,
+          "gaussian_skewness_median": -0.005267320666462183,
+          "joint_scale": 0.15668676793575287,
+          "mean_correlated_energy": 1.4324302242130216e-06,
+          "median_correlated_rank": 30.77136993408203,
+          "median_logdet": -239.97173309326172,
+          "median_trace": 36.25343132019043,
+          "nll": 0.2474619746208191,
+          "prior_nll": 0.37297312915325165,
+          "recoverable_gap_fraction": 1.1413658852132517e-05,
+          "replicate_factor_prediction_correlation": 0.9093150496482849,
+          "replicate_paired_standardized_distance": 14.88068675994873,
+          "standardized_variance": 0.11832426115870476,
+          "synthetic_full_expected_factor_r2": 0.9997169971466064,
+          "uncertainty_error_spearman": 0.0778602808713913,
+          "visible_factor_r2": 0.9078790843486786
+        }
+      }
+    }
+  },
+  "total_wall_seconds": 965.837413799949,
+  "training": {
+    "accumulation_microbatches": 8,
+    "belief_optimizer_updates": 150,
+    "effective_batch": 256,
+    "examples": 38400,
+    "examples_per_second": 163.60128856575457,
+    "gradient_firewall": [
+      {
+        "maximum_absolute_molecular_gradient": 0.0,
+        "update": 1
+      },
+      {
+        "maximum_absolute_molecular_gradient": 0.0,
+        "update": 25
+      },
+      {
+        "maximum_absolute_molecular_gradient": 0.0,
+        "update": 150
+      }
+    ],
+    "microbatch": 32,
+    "molecular_optimizer_updates": 0,
+    "nonfinite_events": 0,
+    "peak_allocated_gb": 2.482978343963623,
+    "peak_reserved_gb": 2.748046875,
+    "seconds_per_update": 1.5647798513341695,
+    "updates": 150,
+    "wall_seconds": 234.71697770012543
+  },
+  "training_telemetry": [
+    {
+      "joint_scale": 0.8382679224014282,
+      "mean_predicted_variance": 0.296122282743454,
+      "mean_squared_error": 0.23962205818863502,
+      "nll": 0.7082473635673523,
+      "stratum": "ORDINARY_RANDOM_40",
+      "update": 0
+    },
+    {
+      "joint_scale": 0.931624710559845,
+      "mean_predicted_variance": 0.3534606099128723,
+      "mean_squared_error": 0.2866724765498894,
+      "nll": 0.830615222454071,
+      "stratum": "ORDINARY_BLOCK_40",
+      "update": 0
+    },
+    {
+      "joint_scale": 0.3924783170223236,
+      "mean_predicted_variance": 0.29231521487236023,
+      "mean_squared_error": 0.11610785883038598,
+      "nll": 0.4786085784435272,
+      "stratum": "STRUCTURAL_RANDOM_P80",
+      "update": 0
+    },
+    {
+      "joint_scale": 0.8193504810333252,
+      "mean_predicted_variance": 0.296122282743454,
+      "mean_squared_error": 0.23413299141473828,
+      "nll": 0.6987886428833008,
+      "stratum": "STRUCTURAL_RANDOM_P60",
+      "update": 0
+    },
+    {
+      "joint_scale": 1.3124442100524902,
+      "mean_predicted_variance": 0.30021101236343384,
+      "mean_squared_error": 0.36647466769307563,
+      "nll": 0.9524114727973938,
+      "stratum": "STRUCTURAL_RANDOM_P40",
+      "update": 0
+    },
+    {
+      "joint_scale": 0.5191586017608643,
+      "mean_predicted_variance": 0.34286585450172424,
+      "mean_squared_error": 0.16576689248700383,
+      "nll": 0.6126109957695007,
+      "stratum": "STRUCTURAL_COHERENT_P80",
+      "update": 0
+    },
+    {
+      "joint_scale": 0.9657540321350098,
+      "mean_predicted_variance": 0.3534606099128723,
+      "mean_squared_error": 0.29787710907358395,
+      "nll": 0.8476800322532654,
+      "stratum": "STRUCTURAL_COHERENT_P60",
+      "update": 0
+    },
+    {
+      "joint_scale": 1.344158411026001,
+      "mean_predicted_variance": 0.36616894602775574,
+      "mean_squared_error": 0.4183505471932689,
+      "nll": 1.049772024154663,
+      "stratum": "STRUCTURAL_COHERENT_P40",
+      "update": 0
+    },
+    {
+      "joint_scale": 0.8305498361587524,
+      "mean_predicted_variance": 0.29445692896842957,
+      "mean_squared_error": 0.2364113609596864,
+      "nll": 0.7021130919456482,
+      "stratum": "ORDINARY_RANDOM_40",
+      "update": 25
+    },
+    {
+      "joint_scale": 0.948675274848938,
+      "mean_predicted_variance": 0.3484930992126465,
+      "mean_squared_error": 0.2905326330787695,
+      "nll": 0.8346511125564575,
+      "stratum": "ORDINARY_BLOCK_40",
+      "update": 25
+    },
+    {
+      "joint_scale": 0.39417946338653564,
+      "mean_predicted_variance": 0.2902323305606842,
+      "mean_squared_error": 0.1163992194784313,
+      "nll": 0.4765680432319641,
+      "stratum": "STRUCTURAL_RANDOM_P80",
+      "update": 25
+    },
+    {
+      "joint_scale": 0.846729576587677,
+      "mean_predicted_variance": 0.2944541871547699,
+      "mean_squared_error": 0.2416200294200843,
+      "nll": 0.7101990580558777,
+      "stratum": "STRUCTURAL_RANDOM_P60",
+      "update": 25
+    },
+    {
+      "joint_scale": 1.3330103158950806,
+      "mean_predicted_variance": 0.299021452665329,
+      "mean_squared_error": 0.37099632037884406,
+      "nll": 0.9610969424247742,
+      "stratum": "STRUCTURAL_RANDOM_P40",
+      "update": 25
+    },
+    {
+      "joint_scale": 0.5184907913208008,
+      "mean_predicted_variance": 0.3372976779937744,
+      "mean_squared_error": 0.16106388502682079,
+      "nll": 0.6068364381790161,
+      "stratum": "STRUCTURAL_COHERENT_P80",
+      "update": 25
+    },
+    {
+      "joint_scale": 0.950383186340332,
+      "mean_predicted_variance": 0.34849604964256287,
+      "mean_squared_error": 0.29037718977357113,
+      "nll": 0.8355078101158142,
+      "stratum": "STRUCTURAL_COHERENT_P60",
+      "update": 25
+    },
+    {
+      "joint_scale": 1.3257982730865479,
+      "mean_predicted_variance": 0.3620982766151428,
+      "mean_squared_error": 0.4106886057099168,
+      "nll": 1.03725266456604,
+      "stratum": "STRUCTURAL_COHERENT_P40",
+      "update": 25
+    },
+    {
+      "joint_scale": 0.8195498585700989,
+      "mean_predicted_variance": 0.28774020075798035,
+      "mean_squared_error": 0.2288878708584563,
+      "nll": 0.6868065595626831,
+      "stratum": "ORDINARY_RANDOM_40",
+      "update": 50
+    },
+    {
+      "joint_scale": 0.9793861508369446,
+      "mean_predicted_variance": 0.33147189021110535,
+      "mean_squared_error": 0.29395599463821914,
+      "nll": 0.8325908780097961,
+      "stratum": "ORDINARY_BLOCK_40",
+      "update": 50
+    },
+    {
+      "joint_scale": 0.38703006505966187,
+      "mean_predicted_variance": 0.2821780741214752,
+      "mean_squared_error": 0.1110800445733803,
+      "nll": 0.46099695563316345,
+      "stratum": "STRUCTURAL_RANDOM_P80",
+      "update": 50
+    },
+    {
+      "joint_scale": 0.8399601578712463,
+      "mean_predicted_variance": 0.2877458930015564,
+      "mean_squared_error": 0.23439343109865593,
+      "nll": 0.6970206499099731,
+      "stratum": "STRUCTURAL_RANDOM_P60",
+      "update": 50
+    },
+    {
+      "joint_scale": 1.3255963325500488,
+      "mean_predicted_variance": 0.29403233528137207,
+      "mean_squared_error": 0.3641780814950417,
+      "nll": 0.9502711296081543,
+      "stratum": "STRUCTURAL_RANDOM_P40",
+      "update": 50
+    },
+    {
+      "joint_scale": 0.5296773910522461,
+      "mean_predicted_variance": 0.31903931498527527,
+      "mean_squared_error": 0.1624988267022138,
+      "nll": 0.5921182036399841,
+      "stratum": "STRUCTURAL_COHERENT_P80",
+      "update": 50
+    },
+    {
+      "joint_scale": 0.9723954200744629,
+      "mean_predicted_variance": 0.3314586281776428,
+      "mean_squared_error": 0.29116461947378947,
+      "nll": 0.8290807604789734,
+      "stratum": "STRUCTURAL_COHERENT_P60",
+      "update": 50
+    },
+    {
+      "joint_scale": 1.3214850425720215,
+      "mean_predicted_variance": 0.34738680720329285,
+      "mean_squared_error": 0.40437646262670274,
+      "nll": 1.0216026306152344,
+      "stratum": "STRUCTURAL_COHERENT_P40",
+      "update": 50
+    },
+    {
+      "joint_scale": 1.0286306142807007,
+      "mean_predicted_variance": 0.23193387687206268,
+      "mean_squared_error": 0.23904093561597267,
+      "nll": 0.6944712996482849,
+      "stratum": "ORDINARY_RANDOM_40",
+      "update": 100
+    },
+    {
+      "joint_scale": 1.1849398612976074,
+      "mean_predicted_variance": 0.24928238987922668,
+      "mean_squared_error": 0.28784449187130046,
+      "nll": 0.8104608654975891,
+      "stratum": "ORDINARY_BLOCK_40",
+      "update": 100
+    },
+    {
+      "joint_scale": 0.49254584312438965,
+      "mean_predicted_variance": 0.22435760498046875,
+      "mean_squared_error": 0.11301409318758263,
+      "nll": 0.4104383587837219,
+      "stratum": "STRUCTURAL_RANDOM_P80",
+      "update": 100
+    },
+    {
+      "joint_scale": 1.0192631483078003,
+      "mean_predicted_variance": 0.2319439947605133,
+      "mean_squared_error": 0.23611078265979255,
+      "nll": 0.6898078322410583,
+      "stratum": "STRUCTURAL_RANDOM_P60",
+      "update": 100
+    },
+    {
+      "joint_scale": 1.5087289810180664,
+      "mean_predicted_variance": 0.2434946745634079,
+      "mean_squared_error": 0.35676719173635896,
+      "nll": 0.9576382637023926,
+      "stratum": "STRUCTURAL_RANDOM_P40",
+      "update": 100
+    },
+    {
+      "joint_scale": 0.6617538928985596,
+      "mean_predicted_variance": 0.23939095437526703,
+      "mean_squared_error": 0.1567911534075475,
+      "nll": 0.5294274687767029,
+      "stratum": "STRUCTURAL_COHERENT_P80",
+      "update": 100
+    },
+    {
+      "joint_scale": 1.2020645141601562,
+      "mean_predicted_variance": 0.2492833137512207,
+      "mean_squared_error": 0.29228153705684534,
+      "nll": 0.8190251588821411,
+      "stratum": "STRUCTURAL_COHERENT_P60",
+      "update": 100
+    },
+    {
+      "joint_scale": 1.5914428234100342,
+      "mean_predicted_variance": 0.26465359330177307,
+      "mean_squared_error": 0.40572282814657135,
+      "nll": 1.0420738458633423,
+      "stratum": "STRUCTURAL_COHERENT_P40",
+      "update": 100
+    },
+    {
+      "joint_scale": 0.9783459901809692,
+      "mean_predicted_variance": 0.2348581850528717,
+      "mean_squared_error": 0.22940144255519193,
+      "nll": 0.6753634810447693,
+      "stratum": "ORDINARY_RANDOM_40",
+      "update": 150
+    },
+    {
+      "joint_scale": 1.1960294246673584,
+      "mean_predicted_variance": 0.25371789932250977,
+      "mean_squared_error": 0.2963229245613121,
+      "nll": 0.8244240880012512,
+      "stratum": "ORDINARY_BLOCK_40",
+      "update": 150
+    },
+    {
+      "joint_scale": 0.500969409942627,
+      "mean_predicted_variance": 0.22666220366954803,
+      "mean_squared_error": 0.11634928255017543,
+      "nll": 0.41967296600341797,
+      "stratum": "STRUCTURAL_RANDOM_P80",
+      "update": 150
+    },
+    {
+      "joint_scale": 0.9860240817070007,
+      "mean_predicted_variance": 0.23482875525951385,
+      "mean_squared_error": 0.23085332349656756,
+      "nll": 0.6791439056396484,
+      "stratum": "STRUCTURAL_RANDOM_P60",
+      "update": 150
+    },
+    {
+      "joint_scale": 1.522127389907837,
+      "mean_predicted_variance": 0.24700747430324554,
+      "mean_squared_error": 0.3629685615347711,
+      "nll": 0.9711006283760071,
+      "stratum": "STRUCTURAL_RANDOM_P40",
+      "update": 150
+    },
+    {
+      "joint_scale": 0.6878973245620728,
+      "mean_predicted_variance": 0.2428281307220459,
+      "mean_squared_error": 0.16564493315427697,
+      "nll": 0.5493942499160767,
+      "stratum": "STRUCTURAL_COHERENT_P80",
+      "update": 150
+    },
+    {
+      "joint_scale": 1.174358606338501,
+      "mean_predicted_variance": 0.253728449344635,
+      "mean_squared_error": 0.29086730100127006,
+      "nll": 0.8136088252067566,
+      "stratum": "STRUCTURAL_COHERENT_P60",
+      "update": 150
+    },
+    {
+      "joint_scale": 1.5595144033432007,
+      "mean_predicted_variance": 0.27021798491477966,
+      "mean_squared_error": 0.40492843709109005,
+      "nll": 1.0357977151870728,
+      "stratum": "STRUCTURAL_COHERENT_P40",
+      "update": 150
+    }
+  ]
+}

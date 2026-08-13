@@ -1,0 +1,76 @@
+{
+  "anchor": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "annotation_defined_gate_pass": true,
+  "annotation_defined_limitation": "Annotation-defined rare-state coverage is not equivalent to exhaustive discovery of all rare molecular states.",
+  "annotation_rare_classes": 14,
+  "borderline_resample_stability_states": 0,
+  "carried_forward": {
+    "context_architecture": "QUALIFIED-MECHANICS",
+    "dataset_transfer": "STRONG / BROAD",
+    "matrix_transfer": "STRONG / PARTIAL COVERAGE",
+    "normalization": "PLAUSIBLE-WITH-QUALITY-CONTEXT",
+    "qc_measurement_context": "EARNED",
+    "real_context_value": "NOT-TESTABLE",
+    "state_axes": "ROTATING",
+    "state_subspace": "STABLE",
+    "technology_transfer": "STRONG / BROAD",
+    "uncertainty_interpretation": "SUBSPACE"
+  },
+  "completeness_gate_required": true,
+  "critical_pca_rare_state_flags": 0,
+  "donor_recurring_rare_classes": 14,
+  "donor_recurring_rare_classes_reaudited": 14,
+  "full_train_annotation_classes": 25,
+  "governance": {
+    "context_optimizer_updates": 0,
+    "development_expression_accessed": false,
+    "ema_updates": 0,
+    "intrinsic_backward_calls": 0,
+    "intrinsic_optimizer_updates": 0,
+    "pathology_opened": false,
+    "production_basis_frozen": false,
+    "sealed_expression_accessed": false,
+    "stage81b_started": false,
+    "train_expression_only": true
+  },
+  "identifiable_but_sparse": 0,
+  "microglia_rare_state_preservation": "ADEQUATE",
+  "molecular_ledger": {
+    "gene_tokens": 4096,
+    "learned_pooling": false,
+    "parameter_hash_after": "e466b1ddb49edfdc90725e80e65424867a23d882626786bad1892a92902e0cef",
+    "parameter_hash_before": "e466b1ddb49edfdc90725e80e65424867a23d882626786bad1892a92902e0cef",
+    "status": "PRESERVED",
+    "width": 160
+  },
+  "not_identifiable": 0,
+  "other_rare_state_preservation": "ADEQUATE",
+  "pca160_rare_state_preservation": "QUALIFIED",
+  "performance": {
+    "device": "cuda",
+    "wall_seconds": 185.1240027002059
+  },
+  "previously_adequate_rare_states_rechecked": 9,
+  "primary_classification": "ANNOTATION-DEFINED GATE PASSED - DATA-DEFINED COMPLETENESS REQUIRED",
+  "prior_prrc_sha256": "7a2b3f97555cbbf95428b9c70b0f2192584d6a40d0804a55ddf6fa572711105e",
+  "production_basis_proposal": "A. PCA160 RARE-STATE PRESERVATION QUALIFIED ACROSS DONOR-RECURRING ANNOTATION-DEFINED RARE STATES",
+  "prrc_rare_state_under_sampling": {
+    "classification": "SYSTEMATIC",
+    "count_bins": {
+      "16_to_31": 2,
+      "32_plus": 7,
+      "lt16": 5
+    },
+    "prrc_union_cells": 417,
+    "rho_donor_breadth_vs_prrc_count": -0.17805479570258056,
+    "rho_full_frequency_vs_prrc_count": 0.8566446723947745,
+    "total_train_cells": 6351753
+  },
+  "rare_neuron_preservation": "ADEQUATE",
+  "ready_for_human_a3_freeze_review": false,
+  "rep160_rare_state_advantage": "NONE",
+  "robustly_identifiable": 14,
+  "stage": "stage81a3_rscr_expanded",
+  "superseded_global_readiness_by": "results/v4/stage81a3_rare_biology_completeness.json",
+  "unannotated_rare_molecular_states_exhaustively_tested": false
+}

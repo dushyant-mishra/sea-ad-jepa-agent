@@ -1,0 +1,1128 @@
+{
+  "cuda_memory": {
+    "device": "cuda",
+    "microbatch": 8,
+    "oom": false,
+    "peak_allocated_bytes": 312226816,
+    "peak_reserved_bytes": 513802240
+  },
+  "forward_numerics": {
+    "activation_magnitude": {
+      "online_student_latent_magnitude": {
+        "max": 2.8264496326446533,
+        "median": 0.6258595883846283,
+        "min": 8.721202107153658e-07,
+        "p05": 0.056226814724504956,
+        "p95": 2.0268176078796385,
+        "p99": 2.398481919765472
+      },
+      "predictor_output_magnitude": {
+        "max": 3.417344808578491,
+        "median": 0.7076324820518494,
+        "min": 2.9802322387695312e-08,
+        "p05": 0.08684262372553349,
+        "p95": 2.1891405940055835,
+        "p99": 2.8406558561325066
+      },
+      "target_latent_magnitude": {
+        "max": 2.8114030361175537,
+        "median": 0.6256411969661713,
+        "min": 2.3868429366302735e-07,
+        "p05": 0.05654953736811877,
+        "p95": 2.024954581260681,
+        "p99": 2.39689516544342
+      }
+    },
+    "canonical_pooled_embedding_norm": {
+      "max": 12.592703819274902,
+      "median": 12.589890480041504,
+      "min": 12.587440490722656,
+      "p05": 12.588713073730469,
+      "p95": 12.591206502914428,
+      "p99": 12.59176043510437
+    },
+    "finite_audit": {
+      "diagnostic_loss": {
+        "finite": true,
+        "inf_count": 0,
+        "nan_count": 0
+      },
+      "online_student": {
+        "finite": true,
+        "inf_count": 0,
+        "nan_count": 0
+      },
+      "predicted_target": {
+        "finite": true,
+        "inf_count": 0,
+        "nan_count": 0
+      },
+      "target_full": {
+        "finite": true,
+        "inf_count": 0,
+        "nan_count": 0
+      }
+    },
+    "jepa_diagnostic_loss": {
+      "max": 0.22641991078853607,
+      "median": 0.21997500956058502,
+      "min": 0.21374809741973877,
+      "p05": 0.21642633751034737,
+      "p95": 0.22385554611682892,
+      "p99": 0.22477737352252006
+    },
+    "predicted_pooled_embedding_norm": {
+      "max": 14.152200698852539,
+      "median": 14.097383499145508,
+      "min": 14.03614330291748,
+      "p05": 14.06564621925354,
+      "p95": 14.122234296798705,
+      "p99": 14.129880180358887
+    },
+    "target_pooled_embedding_norm": {
+      "max": 12.591598510742188,
+      "median": 12.58985185623169,
+      "min": 12.588655471801758,
+      "p05": 12.589108848571778,
+      "p95": 12.590811252593994,
+      "p99": 12.591028890609742
+    }
+  },
+  "gene_vocabulary": {
+    "duplicates": 0,
+    "exact_order_verified": true,
+    "model_positions": 4096,
+    "semantic_hash": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+    "size": 4096
+  },
+  "initialization_geometry": {
+    "by_broad_class_minimum_8": [
+      {
+        "cross_cell_std_mean": 0.05054626986384392,
+        "effective_rank": 2.4647462368011475,
+        "embedding_norm": {
+          "max": 12.590261459350586,
+          "median": 12.589177131652832,
+          "min": 12.588680267333984,
+          "p05": 12.588781356811523,
+          "p95": 12.589975595474243,
+          "p99": 12.590176677703857
+        },
+        "median_pairwise_distance": 0.5276368260383606,
+        "n_cells": 36,
+        "singular_value_count": 36,
+        "singular_values_first_10": [
+          4.656304836273193,
+          0.47009652853012085,
+          0.15977375209331512,
+          0.05272684618830681,
+          0.035606078803539276,
+          0.02878342568874359,
+          0.026246052235364914,
+          0.023840878158807755,
+          0.022914009168744087,
+          0.02156951278448105
+        ],
+        "stratum": "Astro",
+        "top_singular_energy_fraction": 0.9883303046226501,
+        "top_singular_l1_fraction": 0.8152877688407898
+      },
+      {
+        "cross_cell_std_mean": 0.026131952181458473,
+        "effective_rank": 2.0458431243896484,
+        "embedding_norm": {
+          "max": 12.58971118927002,
+          "median": 12.58941650390625,
+          "min": 12.58910846710205,
+          "p05": 12.589172172546387,
+          "p95": 12.589668464660644,
+          "p99": 12.589702644348144
+        },
+        "median_pairwise_distance": 0.45679643750190735,
+        "n_cells": 9,
+        "singular_value_count": 9,
+        "singular_values_first_10": [
+          1.1897515058517456,
+          0.20105960965156555,
+          0.02855474315583706,
+          0.01718103513121605,
+          0.01490547601133585,
+          0.010511290282011032,
+          0.010174321942031384,
+          0.007121643051505089,
+          2.200381914008176e-06
+        ],
+        "stratum": "AstrocyteSubclass",
+        "top_singular_energy_fraction": 0.9711688160896301,
+        "top_singular_l1_fraction": 0.804287314414978
+      },
+      {
+        "cross_cell_std_mean": 0.04476739093661308,
+        "effective_rank": 1.8548498153686523,
+        "embedding_norm": {
+          "max": 12.590840339660645,
+          "median": 12.589969635009766,
+          "min": 12.58952522277832,
+          "p05": 12.58956069946289,
+          "p95": 12.590754508972168,
+          "p99": 12.59082317352295
+        },
+        "median_pairwise_distance": 0.7556158900260925,
+        "n_cells": 9,
+        "singular_value_count": 9,
+        "singular_values_first_10": [
+          2.061354875564575,
+          0.22203557193279266,
+          0.05587092787027359,
+          0.027889035642147064,
+          0.019399119541049004,
+          0.018177837133407593,
+          0.011893201619386673,
+          0.009149761870503426,
+          2.1610501335089793e-06
+        ],
+        "stratum": "CN LAMP5-CXCL14 GABASubclass",
+        "top_singular_energy_fraction": 0.9874210953712463,
+        "top_singular_l1_fraction": 0.8497725129127502
+      },
+      {
+        "cross_cell_std_mean": 0.03513985127210617,
+        "effective_rank": 1.9428746700286865,
+        "embedding_norm": {
+          "max": 12.59051513671875,
+          "median": 12.590106964111328,
+          "min": 12.589448928833008,
+          "p05": 12.589501953125,
+          "p95": 12.590456008911133,
+          "p99": 12.590503311157226
+        },
+        "median_pairwise_distance": 0.5769097805023193,
+        "n_cells": 9,
+        "singular_value_count": 9,
+        "singular_values_first_10": [
+          1.5952913761138916,
+          0.2475644052028656,
+          0.034401800483465195,
+          0.023059818893671036,
+          0.016542496159672737,
+          0.010674839839339256,
+          0.009365884587168694,
+          0.007156116422265768,
+          1.8622550896907342e-06
+        ],
+        "stratum": "CN ST18 GABASubclass",
+        "top_singular_energy_fraction": 0.9756448864936829,
+        "top_singular_l1_fraction": 0.820598304271698
+      },
+      {
+        "cross_cell_std_mean": 0.0654510036110878,
+        "effective_rank": 2.5994272232055664,
+        "embedding_norm": {
+          "max": 12.590903282165527,
+          "median": 12.589324951171875,
+          "min": 12.588655471801758,
+          "p05": 12.588859701156617,
+          "p95": 12.59074363708496,
+          "p99": 12.590869407653809
+        },
+        "median_pairwise_distance": 0.9743168354034424,
+        "n_cells": 38,
+        "singular_value_count": 38,
+        "singular_values_first_10": [
+          6.156774520874023,
+          0.9001530408859253,
+          0.20864786207675934,
+          0.0701528862118721,
+          0.036744628101587296,
+          0.034226737916469574,
+          0.03324418514966965,
+          0.03208873048424721,
+          0.029180385172367096,
+          0.026217788457870483
+        ],
+        "stratum": "Endo",
+        "top_singular_energy_fraction": 0.9775773286819458,
+        "top_singular_l1_fraction": 0.7865929007530212
+      },
+      {
+        "cross_cell_std_mean": 0.0760827288031578,
+        "effective_rank": 1.6012060642242432,
+        "embedding_norm": {
+          "max": 12.590675354003906,
+          "median": 12.590302467346191,
+          "min": 12.589984893798828,
+          "p05": 12.590006923675537,
+          "p95": 12.59061827659607,
+          "p99": 12.590663938522338
+        },
+        "median_pairwise_distance": 0.44260430335998535,
+        "n_cells": 8,
+        "singular_value_count": 8,
+        "singular_values_first_10": [
+          3.3127999305725098,
+          0.2918923795223236,
+          0.06826693564653397,
+          0.030691254884004593,
+          0.012650914490222931,
+          0.011307536624372005,
+          0.009648710489273071,
+          1.5135751709749456e-06
+        ],
+        "stratum": "EndothelialSubclass",
+        "top_singular_energy_fraction": 0.991759717464447,
+        "top_singular_l1_fraction": 0.8864250779151917
+      },
+      {
+        "cross_cell_std_mean": 0.0449824184179306,
+        "effective_rank": 2.3778252601623535,
+        "embedding_norm": {
+          "max": 12.591175079345703,
+          "median": 12.59053659439087,
+          "min": 12.589733123779297,
+          "p05": 12.589898347854614,
+          "p95": 12.59096794128418,
+          "p99": 12.591121273040772
+        },
+        "median_pairwise_distance": 0.36577799916267395,
+        "n_cells": 32,
+        "singular_value_count": 32,
+        "singular_values_first_10": [
+          3.897080421447754,
+          0.3903356194496155,
+          0.13854816555976868,
+          0.07092171162366867,
+          0.026914946734905243,
+          0.024023516103625298,
+          0.02250712178647518,
+          0.01792280375957489,
+          0.015536630526185036,
+          0.014364587143063545
+        ],
+        "stratum": "ExN",
+        "top_singular_energy_fraction": 0.9882619380950928,
+        "top_singular_l1_fraction": 0.8184898495674133
+      },
+      {
+        "cross_cell_std_mean": 0.03993869572877884,
+        "effective_rank": 2.567460536956787,
+        "embedding_norm": {
+          "max": 12.591113090515137,
+          "median": 12.590339183807373,
+          "min": 12.589503288269043,
+          "p05": 12.589643049240113,
+          "p95": 12.590889596939087,
+          "p99": 12.591072587966918
+        },
+        "median_pairwise_distance": 0.3581598699092865,
+        "n_cells": 32,
+        "singular_value_count": 32,
+        "singular_values_first_10": [
+          3.4588332176208496,
+          0.36213719844818115,
+          0.09682724624872208,
+          0.060255374759435654,
+          0.02990267612040043,
+          0.02585170604288578,
+          0.024483822286128998,
+          0.021439827978610992,
+          0.019306566566228867,
+          0.01737762801349163
+        ],
+        "stratum": "InN",
+        "top_singular_energy_fraction": 0.9876818656921387,
+        "top_singular_l1_fraction": 0.8064054846763611
+      },
+      {
+        "cross_cell_std_mean": 0.04505441337823868,
+        "effective_rank": 2.830854892730713,
+        "embedding_norm": {
+          "max": 12.590662956237793,
+          "median": 12.589533805847168,
+          "min": 12.589051246643066,
+          "p05": 12.589178562164307,
+          "p95": 12.590396881103516,
+          "p99": 12.59065294265747
+        },
+        "median_pairwise_distance": 0.6195873022079468,
+        "n_cells": 36,
+        "singular_value_count": 36,
+        "singular_values_first_10": [
+          4.179632663726807,
+          0.3649241626262665,
+          0.13700619339942932,
+          0.0480855256319046,
+          0.04514642432332039,
+          0.035062119364738464,
+          0.03471047803759575,
+          0.0300910584628582,
+          0.02788943238556385,
+          0.026708004996180534
+        ],
+        "stratum": "MG",
+        "top_singular_energy_fraction": 0.9905905723571777,
+        "top_singular_l1_fraction": 0.7985185980796814
+      },
+      {
+        "cross_cell_std_mean": 0.04399411380290985,
+        "effective_rank": 3.1958885192871094,
+        "embedding_norm": {
+          "max": 12.590858459472656,
+          "median": 12.589987754821777,
+          "min": 12.589160919189453,
+          "p05": 12.589555931091308,
+          "p95": 12.590685653686524,
+          "p99": 12.590765533447266
+        },
+        "median_pairwise_distance": 0.6281374096870422,
+        "n_cells": 59,
+        "singular_value_count": 59,
+        "singular_values_first_10": [
+          5.11105489730835,
+          0.7419179677963257,
+          0.16967210173606873,
+          0.07528108358383179,
+          0.04766230285167694,
+          0.04207118973135948,
+          0.03476020693778992,
+          0.03346899896860123,
+          0.02930050529539585,
+          0.02813062258064747
+        ],
+        "stratum": "Neuronal: GABAergic",
+        "top_singular_energy_fraction": 0.9775684475898743,
+        "top_singular_l1_fraction": 0.7580803632736206
+      },
+      {
+        "cross_cell_std_mean": 0.03647396340966225,
+        "effective_rank": 3.1704161167144775,
+        "embedding_norm": {
+          "max": 12.591156005859375,
+          "median": 12.590282917022705,
+          "min": 12.58935260772705,
+          "p05": 12.589667320251465,
+          "p95": 12.590946674346924,
+          "p99": 12.591098928451538
+        },
+        "median_pairwise_distance": 0.5428023338317871,
+        "n_cells": 46,
+        "singular_value_count": 46,
+        "singular_values_first_10": [
+          3.733618974685669,
+          0.5839560031890869,
+          0.10659566521644592,
+          0.0597967728972435,
+          0.03532390296459198,
+          0.03303472325205803,
+          0.030121713876724243,
+          0.025765174999833107,
+          0.02449670247733593,
+          0.02224392257630825
+        ],
+        "stratum": "Neuronal: Glutamatergic",
+        "top_singular_energy_fraction": 0.9744957089424133,
+        "top_singular_l1_fraction": 0.7528538703918457
+      },
+      {
+        "cross_cell_std_mean": 0.06502057611942291,
+        "effective_rank": 2.6321771144866943,
+        "embedding_norm": {
+          "max": 12.591598510742188,
+          "median": 12.589731216430664,
+          "min": 12.589191436767578,
+          "p05": 12.589323329925538,
+          "p95": 12.590501022338866,
+          "p99": 12.591459350585938
+        },
+        "median_pairwise_distance": 0.885333776473999,
+        "n_cells": 39,
+        "singular_value_count": 39,
+        "singular_values_first_10": [
+          6.208536624908447,
+          0.6833921670913696,
+          0.3139505684375763,
+          0.07235821336507797,
+          0.04511834681034088,
+          0.038465213030576706,
+          0.03649354726076126,
+          0.033148057758808136,
+          0.029937034472823143,
+          0.025978758931159973
+        ],
+        "stratum": "Non-neuronal and Non-neural",
+        "top_singular_energy_fraction": 0.9851004481315613,
+        "top_singular_l1_fraction": 0.7960110902786255
+      },
+      {
+        "cross_cell_std_mean": 0.03896450996398926,
+        "effective_rank": 2.8282625675201416,
+        "embedding_norm": {
+          "max": 12.590173721313477,
+          "median": 12.589807033538818,
+          "min": 12.589181900024414,
+          "p05": 12.589470624923706,
+          "p95": 12.590123414993286,
+          "p99": 12.59016137123108
+        },
+        "median_pairwise_distance": 0.4073081314563751,
+        "n_cells": 36,
+        "singular_value_count": 36,
+        "singular_values_first_10": [
+          3.571070432662964,
+          0.397676020860672,
+          0.12864787876605988,
+          0.06529910117387772,
+          0.026715729385614395,
+          0.026013050228357315,
+          0.02486739493906498,
+          0.023078596219420433,
+          0.022327668964862823,
+          0.020375259220600128
+        ],
+        "stratum": "OPC",
+        "top_singular_energy_fraction": 0.9856889247894287,
+        "top_singular_l1_fraction": 0.7868262529373169
+      },
+      {
+        "cross_cell_std_mean": 0.05599384754896164,
+        "effective_rank": 2.491685628890991,
+        "embedding_norm": {
+          "max": 12.59088134765625,
+          "median": 12.589427471160889,
+          "min": 12.589008331298828,
+          "p05": 12.589191913604736,
+          "p95": 12.590331315994263,
+          "p99": 12.590740156173705
+        },
+        "median_pairwise_distance": 0.7718417644500732,
+        "n_cells": 36,
+        "singular_value_count": 36,
+        "singular_values_first_10": [
+          5.172911167144775,
+          0.46248680353164673,
+          0.19442185759544373,
+          0.05108502879738808,
+          0.04047849401831627,
+          0.03333922103047371,
+          0.030937304720282555,
+          0.029536131769418716,
+          0.025924887508153915,
+          0.024062275886535645
+        ],
+        "stratum": "Oligo",
+        "top_singular_energy_fraction": 0.9902427196502686,
+        "top_singular_l1_fraction": 0.817902147769928
+      }
+    ],
+    "by_density_stratum": [
+      {
+        "cross_cell_std_mean": 0.025535475462675095,
+        "effective_rank": 4.982599258422852,
+        "embedding_norm": {
+          "max": 12.591598510742188,
+          "median": 12.590317726135254,
+          "min": 12.588680267333984,
+          "p05": 12.589173316955566,
+          "p95": 12.59094171524048,
+          "p99": 12.591164016723633
+        },
+        "median_pairwise_distance": 0.36386701464653015,
+        "n_cells": 159,
+        "singular_value_count": 159,
+        "singular_values_first_10": [
+          4.723623752593994,
+          1.0864554643630981,
+          0.17058978974819183,
+          0.08529779314994812,
+          0.06627123057842255,
+          0.05657946318387985,
+          0.053336501121520996,
+          0.049219828099012375,
+          0.04373513534665108,
+          0.04133870452642441
+        ],
+        "stratum": "dense",
+        "top_singular_energy_fraction": 0.946986734867096,
+        "top_singular_l1_fraction": 0.6585301756858826
+      },
+      {
+        "cross_cell_std_mean": 0.03091472014784813,
+        "effective_rank": 4.944197654724121,
+        "embedding_norm": {
+          "max": 12.590851783752441,
+          "median": 12.589682579040527,
+          "min": 12.588655471801758,
+          "p05": 12.588991165161133,
+          "p95": 12.590450859069824,
+          "p99": 12.590679302215577
+        },
+        "median_pairwise_distance": 0.48176366090774536,
+        "n_cells": 178,
+        "singular_value_count": 160,
+        "singular_values_first_10": [
+          6.107515811920166,
+          1.2647991180419922,
+          0.1768513321876526,
+          0.1392381340265274,
+          0.0879281535744667,
+          0.08027569949626923,
+          0.07134614139795303,
+          0.06507256627082825,
+          0.0593203604221344,
+          0.055225878953933716
+        ],
+        "stratum": "middle",
+        "top_singular_energy_fraction": 0.9562334418296814,
+        "top_singular_l1_fraction": 0.6689199805259705
+      },
+      {
+        "cross_cell_std_mean": 0.057394467294216156,
+        "effective_rank": 3.611345052719116,
+        "embedding_norm": {
+          "max": 12.591232299804688,
+          "median": 12.589706420898438,
+          "min": 12.588844299316406,
+          "p05": 12.589279747009277,
+          "p95": 12.59047203063965,
+          "p99": 12.59088924407959
+        },
+        "median_pairwise_distance": 0.8536079525947571,
+        "n_cells": 165,
+        "singular_value_count": 160,
+        "singular_values_first_10": [
+          11.300436019897461,
+          1.334693193435669,
+          0.4935741424560547,
+          0.14215467870235443,
+          0.09223011136054993,
+          0.08353274315595627,
+          0.0776437371969223,
+          0.0755818709731102,
+          0.06746918708086014,
+          0.06417687237262726
+        ],
+        "stratum": "sparse",
+        "top_singular_energy_fraction": 0.9836471080780029,
+        "top_singular_l1_fraction": 0.7538869976997375
+      }
+    ],
+    "by_source": [
+      {
+        "cross_cell_std_mean": 0.05355188995599747,
+        "effective_rank": 3.3069870471954346,
+        "embedding_norm": {
+          "max": 12.591598510742188,
+          "median": 12.590028285980225,
+          "min": 12.589160919189453,
+          "p05": 12.589463376998902,
+          "p95": 12.590856122970582,
+          "p99": 12.591101160049439
+        },
+        "median_pairwise_distance": 0.7259473204612732,
+        "n_cells": 128,
+        "singular_value_count": 128,
+        "singular_values_first_10": [
+          9.227029800415039,
+          1.0620646476745605,
+          0.4148876368999481,
+          0.12676900625228882,
+          0.06597423553466797,
+          0.0567641407251358,
+          0.054768141359090805,
+          0.05259888619184494,
+          0.048637505620718,
+          0.04806327447295189
+        ],
+        "stratum": "HVS",
+        "top_singular_energy_fraction": 0.9843460321426392,
+        "top_singular_l1_fraction": 0.7678831219673157
+      },
+      {
+        "cross_cell_std_mean": 0.07598263025283813,
+        "effective_rank": 3.016117811203003,
+        "embedding_norm": {
+          "max": 12.591175079345703,
+          "median": 12.589656352996826,
+          "min": 12.588655471801758,
+          "p05": 12.588960647583008,
+          "p95": 12.590794324874878,
+          "p99": 12.59099292755127
+        },
+        "median_pairwise_distance": 1.1428784132003784,
+        "n_cells": 246,
+        "singular_value_count": 160,
+        "singular_values_first_10": [
+          18.184314727783203,
+          2.0096466541290283,
+          0.9566606879234314,
+          0.22568263113498688,
+          0.11464691162109375,
+          0.09905536472797394,
+          0.092429980635643,
+          0.0836135521531105,
+          0.06936496496200562,
+          0.06564828753471375
+        ],
+        "stratum": "NPH52",
+        "top_singular_energy_fraction": 0.9848220944404602,
+        "top_singular_l1_fraction": 0.7822790741920471
+      },
+      {
+        "cross_cell_std_mean": 0.061271052807569504,
+        "effective_rank": 3.1639180183410645,
+        "embedding_norm": {
+          "max": 12.591232299804688,
+          "median": 12.589962482452393,
+          "min": 12.588921546936035,
+          "p05": 12.58929991722107,
+          "p95": 12.590771627426147,
+          "p99": 12.59100058555603
+        },
+        "median_pairwise_distance": 0.786583662033081,
+        "n_cells": 128,
+        "singular_value_count": 128,
+        "singular_values_first_10": [
+          10.515724182128906,
+          1.4121813774108887,
+          0.5285587310791016,
+          0.1606171578168869,
+          0.06943867355585098,
+          0.06330923736095428,
+          0.054878201335668564,
+          0.05330312252044678,
+          0.04711054265499115,
+          0.04588639736175537
+        ],
+        "stratum": "SEA_AD",
+        "top_singular_energy_fraction": 0.9793093204498291,
+        "top_singular_l1_fraction": 0.7635442614555359
+      }
+    ],
+    "canonical_target_pooled_160d": {
+      "cross_cell_std_mean": 0.06967581808567047,
+      "effective_rank": 3.2241017818450928,
+      "embedding_norm": {
+        "max": 12.591598510742188,
+        "median": 12.58985185623169,
+        "min": 12.588655471801758,
+        "p05": 12.589108848571778,
+        "p95": 12.590811252593994,
+        "p99": 12.591028890609742
+      },
+      "median_pairwise_distance": 0.9821973443031311,
+      "n_cells": 502,
+      "singular_value_count": 160,
+      "singular_values_first_10": [
+        23.745561599731445,
+        2.902182102203369,
+        1.2120319604873657,
+        0.3319798707962036,
+        0.14115196466445923,
+        0.1290922313928604,
+        0.12049432098865509,
+        0.11463656276464462,
+        0.10488606989383698,
+        0.09931772202253342
+      ],
+      "top_singular_energy_fraction": 0.9822630882263184,
+      "top_singular_l1_fraction": 0.7681942582130432
+    },
+    "slot_geometry": {
+      "corresponding_slot_cross_cell_std_max": 0.2752438485622406,
+      "corresponding_slot_cross_cell_std_mean": 0.06968914717435837,
+      "corresponding_slot_cross_cell_std_min": 0.002317095408216119,
+      "per_slot_effective_rank": {
+        "max": 3.5906982421875,
+        "median": 3.5622557401657104,
+        "min": 3.549406051635742,
+        "p05": 3.5515141606330873,
+        "p95": 3.583158779144287,
+        "p99": 3.588970351219177
+      },
+      "within_cell_slot_cosine_mean": 0.9902580380439758,
+      "within_cell_slot_variance_mean": 0.009336003102362156
+    }
+  },
+  "masking": {
+    "by_source": [
+      {
+        "intentionally_hidden_genes": {
+          "maximum": 1638,
+          "median": 1638.0,
+          "minimum": 1638
+        },
+        "measured_genes": {
+          "maximum": 4096,
+          "median": 4096.0,
+          "minimum": 4096
+        },
+        "n_cells": 128,
+        "source": "HVS",
+        "visible_detected_genes": {
+          "maximum": 2182,
+          "median": 1300.0,
+          "minimum": 402
+        },
+        "visible_measured_genes": {
+          "maximum": 2458,
+          "median": 2458.0,
+          "minimum": 2458
+        }
+      },
+      {
+        "intentionally_hidden_genes": {
+          "maximum": 1638,
+          "median": 1638.0,
+          "minimum": 1638
+        },
+        "measured_genes": {
+          "maximum": 4096,
+          "median": 4096.0,
+          "minimum": 4096
+        },
+        "n_cells": 246,
+        "source": "NPH52",
+        "visible_detected_genes": {
+          "maximum": 2400,
+          "median": 1139.5,
+          "minimum": 219
+        },
+        "visible_measured_genes": {
+          "maximum": 2458,
+          "median": 2458.0,
+          "minimum": 2458
+        }
+      },
+      {
+        "intentionally_hidden_genes": {
+          "maximum": 1638,
+          "median": 1638.0,
+          "minimum": 1638
+        },
+        "measured_genes": {
+          "maximum": 4096,
+          "median": 4096.0,
+          "minimum": 4096
+        },
+        "n_cells": 128,
+        "source": "SEA_AD",
+        "visible_detected_genes": {
+          "maximum": 2338,
+          "median": 1512.0,
+          "minimum": 191
+        },
+        "visible_measured_genes": {
+          "maximum": 2458,
+          "median": 2458.0,
+          "minimum": 2458
+        }
+      }
+    ],
+    "hidden_genes": {
+      "max": 1638.0,
+      "median": 1638.0,
+      "min": 1638.0,
+      "p05": 1638.0,
+      "p95": 1638.0,
+      "p99": 1638.0
+    },
+    "measured_genes": {
+      "max": 4096.0,
+      "median": 4096.0,
+      "min": 4096.0,
+      "p05": 4096.0,
+      "p95": 4096.0,
+      "p99": 4096.0
+    },
+    "realized_fraction": {
+      "max": 0.39990234375,
+      "median": 0.39990234375,
+      "min": 0.39990234375,
+      "p05": 0.39990234375,
+      "p95": 0.39990234375,
+      "p99": 0.39990234375
+    },
+    "rule": "exact_count_floor_40_percent_of_measured_genes",
+    "visible_detected_genes": {
+      "max": 2400.0,
+      "median": 1235.5,
+      "min": 191.0,
+      "p05": 442.85,
+      "p95": 2181.95,
+      "p99": 2301.94
+    },
+    "visible_measured_genes": {
+      "max": 2458.0,
+      "median": 2458.0,
+      "min": 2458.0,
+      "p05": 2458.0,
+      "p95": 2458.0,
+      "p99": 2458.0
+    }
+  },
+  "normalization_verification": {
+    "HVS": {
+      "finite": true,
+      "library_size_target": 10000,
+      "log1p_applied_exactly_once": true,
+      "matrix_slots": [
+        "raw/X"
+      ],
+      "measured_zero_count": 242080,
+      "measurement_mask_source": "results/v4/stage81a2_gene_measurement_registry.csv",
+      "normalization_paths": [
+        "library_size_normalize_10000_then_log1p_once"
+      ],
+      "normalization_reproduction_max_abs_diff": 0.0,
+      "normalized_expression": {
+        "max": 7.553008556365967,
+        "median": 0.4152662754058838,
+        "min": 0.0,
+        "p05": 0.0,
+        "p95": 1.9864990711212158,
+        "p99": 2.9536375069618264
+      },
+      "source_artifacts": [
+        "data/external/v4/living_human/hvs/19cd530b-622c-4bd8-b738-dbf169412cb0.h5ad",
+        "data/external/v4/living_human/hvs/38374d1b-6549-4429-b59a-ff2706dacd96.h5ad",
+        "data/external/v4/living_human/hvs/4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd.h5ad",
+        "data/external/v4/living_human/hvs/57f3c92b-a07a-41da-b660-88eb9f93c4c9.h5ad",
+        "data/external/v4/living_human/hvs/5fff0955-173e-407d-b160-64f513ca6db6.h5ad",
+        "data/external/v4/living_human/hvs/6201fd7d-f35b-4487-bace-99426881237b.h5ad",
+        "data/external/v4/living_human/hvs/77dc6994-2777-4fad-a445-4ff7d143a682.h5ad",
+        "data/external/v4/living_human/hvs/7958eba0-1d79-42e3-8947-a198f98578f2.h5ad",
+        "data/external/v4/living_human/hvs/7b96819c-598c-47a1-9cea-f410fc0c37fa.h5ad",
+        "data/external/v4/living_human/hvs/7be9f52d-7eef-4bdd-a0ba-c8f2d4986551.h5ad",
+        "data/external/v4/living_human/hvs/900faaa3-adec-4fd9-81b0-1e90a2ab256f.h5ad",
+        "data/external/v4/living_human/hvs/9adebd17-bc24-47b6-acdb-0db488bc602d.h5ad",
+        "data/external/v4/living_human/hvs/a9b5738d-997d-433f-8d86-12dbfc8f01fb.h5ad",
+        "data/external/v4/living_human/hvs/ab88770a-7a74-4da5-a166-d68f02d644f2.h5ad",
+        "data/external/v4/living_human/hvs/bb3c4200-5c1b-4f8a-a846-e021919b7241.h5ad",
+        "data/external/v4/living_human/hvs/c3b47645-c927-4a0a-868f-eb7640ea3354.h5ad",
+        "data/external/v4/living_human/hvs/c5e9db26-7b51-4290-b721-dd540ac906b1.h5ad",
+        "data/external/v4/living_human/hvs/c9143d44-4c95-4f06-8edc-e03d3491ab97.h5ad",
+        "data/external/v4/living_human/hvs/d1303087-592a-4c3d-aa3e-21de203927dc.h5ad",
+        "data/external/v4/living_human/hvs/e813d04b-7833-4b02-b14f-0247d6128516.h5ad"
+      ],
+      "starting_values": [
+        "raw_integer_counts"
+      ],
+      "unmeasured_count": 0
+    },
+    "NPH52": {
+      "finite": true,
+      "library_size_target": 10000,
+      "log1p_applied_exactly_once": true,
+      "matrix_slots": [
+        "counts_extracted_to_compact_cache"
+      ],
+      "measured_zero_count": 515901,
+      "measurement_mask_source": "results/v4/stage81a2_gene_measurement_registry.csv",
+      "normalization_paths": [
+        "library_size_normalize_10000_then_log1p_once_in_verified_cache"
+      ],
+      "normalization_reproduction_max_abs_diff": 5.329070518200751e-15,
+      "normalized_expression": {
+        "max": 7.086854457855225,
+        "median": 0.0,
+        "min": 0.0,
+        "p05": 0.0,
+        "p95": 1.954270839691162,
+        "p99": 2.8367559909820557
+      },
+      "source_artifacts": [
+        "data/processed/v4/stage81a3/stage81a3_nph_sample_nonzero.csv.gz"
+      ],
+      "starting_values": [
+        "raw_integer_counts_with_verified_compact_transformed_cache"
+      ],
+      "unmeasured_count": 0
+    },
+    "SEA_AD": {
+      "finite": true,
+      "library_size_target": 10000,
+      "log1p_applied_exactly_once": true,
+      "matrix_slots": [
+        "layers/UMIs"
+      ],
+      "measured_zero_count": 212368,
+      "measurement_mask_source": "results/v4/stage81a2_gene_measurement_registry.csv",
+      "normalization_paths": [
+        "library_size_normalize_10000_then_log1p_once"
+      ],
+      "normalization_reproduction_max_abs_diff": 0.0,
+      "normalized_expression": {
+        "max": 7.437281608581543,
+        "median": 0.40585437417030334,
+        "min": 0.0,
+        "p05": 0.0,
+        "p95": 1.9772392511367798,
+        "p99": 2.923186779022217
+      },
+      "source_artifacts": [
+        "data/external/v4/sea_ad/a9_dlpfc/SEAAD_DFC_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "data/external/v4/sea_ad/multiregion/Caudate_Nucleus/CaH_all_nuclei.2025-12-29.h5ad",
+        "data/external/v4/sea_ad/multiregion/FI/SEAAD_FI_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "data/external/v4/sea_ad/multiregion/ITG/SEAAD_ITG_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "data/external/v4/sea_ad/multiregion/LEC/SEAAD_LEC_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "data/external/v4/sea_ad/multiregion/MEC/SEAAD_MEC_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "data/external/v4/sea_ad/multiregion/STG/SEAAD_STG_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "data/external/v4/sea_ad/multiregion/V1C/SEAAD_V1C_RNAseq_final-nuclei.2026-06-22.h5ad"
+      ],
+      "starting_values": [
+        "raw_integer_counts"
+      ],
+      "unmeasured_count": 0
+    }
+  },
+  "online_target_initialization": {
+    "exact_parameter_copy_at_instantiation": true,
+    "maximum_absolute_full_view_latent_difference": 0.0
+  },
+  "real_mask_semantics_spot_check": {
+    "actual_unmeasured_check_status": "not_applicable_all_4096_vocabulary_genes_measured_in_all_sources",
+    "actual_unmeasured_positions_in_selected_vocabulary": 0,
+    "cells_checked": 4,
+    "context_hidden_measured_value_max_difference": 0.0,
+    "measured_zero_visible_token_checks_passed": 4,
+    "source_data_modified": false,
+    "synthetic_in_memory_unmeasured_placeholder_max_difference": 0.0
+  },
+  "safety": {
+    "backward_calls": 0,
+    "checkpoint_selection_performed": false,
+    "development_donors_used": false,
+    "ema_updates": 0,
+    "optimizer_steps": 0,
+    "pathology_accessed": false,
+    "real_rna_training": false,
+    "sealed_donors_used": false,
+    "stage81b_started": false,
+    "stage81c_started": false
+  },
+  "sample": {
+    "cells_by_broad_class": {
+      "Astro": 36,
+      "AstrocyteSubclass": 9,
+      "CN LAMP5-CXCL14 GABASubclass": 9,
+      "CN ST18 GABASubclass": 9,
+      "Endo": 38,
+      "EndothelialSubclass": 8,
+      "EpendymalSubclass": 6,
+      "ExN": 32,
+      "InN": 32,
+      "LSXSubclass": 6,
+      "MG": 36,
+      "Microglia-PVMSubclass": 6,
+      "Neuronal: GABAergic": 59,
+      "Neuronal: Glutamatergic": 46,
+      "Non-neuronal and Non-neural": 39,
+      "OB GabaSubclass": 6,
+      "OPC": 36,
+      "OPCSubclass": 6,
+      "Oligo": 36,
+      "OligodendrocyteSubclass": 5,
+      "STR D1 MSNSubclass": 6,
+      "STR D2 MSNSubclass": 6,
+      "STR Hybrid MSNSubclass": 6,
+      "STR RSPO2 GABASubclass": 6,
+      "Sst ChodlSubclass": 6,
+      "VLMCSubclass": 6,
+      "VipSubclass": 6
+    },
+    "cells_by_source": {
+      "HVS": 128,
+      "NPH52": 246,
+      "SEA_AD": 128
+    },
+    "density_strata": {
+      "dense": 159,
+      "middle": 178,
+      "sparse": 165
+    },
+    "detected_genes": {
+      "max": 3999.0,
+      "median": 2073.0,
+      "min": 323.0,
+      "p05": 740.05,
+      "p95": 3639.0,
+      "p99": 3852.75
+    },
+    "measured_genes": {
+      "max": 4096.0,
+      "median": 4096.0,
+      "min": 4096.0,
+      "p05": 4096.0,
+      "p95": 4096.0,
+      "p99": 4096.0
+    },
+    "selection_rule": "pre_model_sha256_donor_class_candidates_then_balanced_class_x_density_round_robin",
+    "total_cells": 502,
+    "train_donors_by_source": {
+      "HVS": 54,
+      "NPH52": 19,
+      "SEA_AD": 36
+    },
+    "train_donors_represented": 109
+  },
+  "smoke_configuration": {
+    "covariance_training_weight": 0.0,
+    "ema_candidate_field": 0.99925,
+    "ema_note": "SMOKE CONFIGURATION ONLY - NO EMA UPDATE OCCURRED",
+    "mask_fraction": 0.4,
+    "mask_rule": "exact_count_measured_only_refreshed_one_view",
+    "microbatch": 8,
+    "mixed_precision": "fp16_autocast_on_cuda",
+    "sample_selected_before_model_instantiation": true,
+    "seed": 8113001,
+    "seed_role": "TEST_SMOKE_ONLY_NOT_PRODUCTION_TRAINING_SEED",
+    "variance_training_weight": 0.0
+  },
+  "stage": "Stage81A3_real_RNA_forward_only_smoke",
+  "stage81a2_evidence_commit": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "two_mask_self_consistency": {
+    "context_embedding_cosine": {
+      "max": 0.999606192111969,
+      "median": 0.9992876946926117,
+      "min": 0.9988832473754883,
+      "p05": 0.9989381611347199,
+      "p95": 0.9995344460010529,
+      "p99": 0.999586735367775
+    },
+    "context_embedding_l2": {
+      "max": 0.5950177311897278,
+      "median": 0.4751780480146408,
+      "min": 0.3533509373664856,
+      "p05": 0.384183494746685,
+      "p95": 0.5801774591207505,
+      "p99": 0.5917115443944931
+    },
+    "n_cells": 32,
+    "view0_prediction_to_target_mse": {
+      "max": 0.22477784752845764,
+      "median": 0.21923892199993134,
+      "min": 0.21616493165493011,
+      "p05": 0.21663332656025885,
+      "p95": 0.22399888411164284,
+      "p99": 0.22455150350928307
+    },
+    "view1_prediction_to_target_mse": {
+      "max": 0.22466367483139038,
+      "median": 0.21997910737991333,
+      "min": 0.21455658972263336,
+      "p05": 0.2167644150555134,
+      "p95": 0.2227512016892433,
+      "p99": 0.22407197177410126
+    }
+  },
+  "zero_weight_change_proof": {
+    "backward_calls": 0,
+    "ema_updates": 0,
+    "maximum_parameter_difference": {
+      "online": 0.0,
+      "predictor": 0.0,
+      "target": 0.0
+    },
+    "optimizer_steps": 0
+  }
+}

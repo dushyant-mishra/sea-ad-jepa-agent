@@ -1,0 +1,1291 @@
+{
+  "acquisition_manifest_rows": 234,
+  "audit_implementation_exceptions": [
+    {
+      "code": "PATHOLOGY_FIREWALL_INCIDENTAL_EXPOSURE",
+      "detail": "A generic SCP2167 disease=normal value was displayed by a schema-preview command before the audited reader ran. It was quarantined and not used in any qualification decision.",
+      "scope": "pre_audit_terminal_preview"
+    },
+    {
+      "code": "AUDIT_IMPLEMENTATION_EXCEPTION",
+      "detail": "No safely readable feature universe was available in the acquired representation.",
+      "scope": "10x_Xenium_healthy_cortex_preview"
+    },
+    {
+      "code": "AUDIT_IMPLEMENTATION_EXCEPTION",
+      "detail": "No safely readable feature universe was available in the acquired representation.",
+      "scope": "CosMx_WTX_human_hippocampus"
+    },
+    {
+      "code": "AUDIT_IMPLEMENTATION_EXCEPTION",
+      "detail": "No safely readable feature universe was available in the acquired representation.",
+      "scope": "CosMx_human_frontal_cortex_6K"
+    },
+    {
+      "code": "AUDIT_IMPLEMENTATION_EXCEPTION",
+      "detail": "No safely readable feature universe was available in the acquired representation.",
+      "scope": "HPA_human_brain_StereoSeq"
+    },
+    {
+      "code": "AUDIT_IMPLEMENTATION_EXCEPTION",
+      "detail": "No safely readable feature universe was available in the acquired representation.",
+      "scope": "spatialDLPFC"
+    },
+    {
+      "code": "AUDIT_IMPLEMENTATION_EXCEPTION",
+      "detail": "No safely readable feature universe was available in the acquired representation.",
+      "scope": "spatialLIBD_classic_DLPFC"
+    }
+  ],
+  "contract_hashes": [
+    "b66c420f01741b5a044d2309ffdde0c8e20aceb1952400aff4f23bb559f48723  configs/v4/stage81a3_uniform_context_data_qualification.yaml",
+    "812678ba4f4f08523b91e18e1207e90f965a6b3873a10d4691d30e99f7460340  results/v4/stage81a3_uniform_context_data_qualification_contract.json"
+  ],
+  "dataset_count": 21,
+  "governance": {
+    "context_model_training_started": false,
+    "incidental_pathology_value_exposed_in_terminal": true,
+    "intrinsic_model_training_started": false,
+    "optimizer_updates": 0,
+    "pathology_values_used": false,
+    "production_foundation_training_started": false,
+    "ready_for_stage81b": false,
+    "real_dev_rna_accessed": false,
+    "real_sealed_rna_accessed": false,
+    "stage81a3_frozen": false,
+    "staged_committed_or_pushed": false
+  },
+  "governance_compliant_completion": false,
+  "governance_exception": "Incidental generic pathology-field exposure occurred in a pre-audit terminal preview; audited code did not read or use pathology values.",
+  "identifiability": {
+    "BOUNDED_REAL_CONTEXT_VALUE_IDENTIFIABLE": "NO",
+    "CROSS_DONOR_CONTEXT_VALUE_IDENTIFIABLE": "PARTIAL_TARGETED_ONLY",
+    "CROSS_TECHNOLOGY_CONTEXT_REPLICATION_IDENTIFIABLE": "NO",
+    "context_benefit_claim": false,
+    "experiment_run": false,
+    "final_classification": "REAL CONTEXT QUALIFICATION NOT IDENTIFIABLE"
+  },
+  "nonclaims": [
+    "context improves biology",
+    "neighbors predict molecular state",
+    "physical context is causal",
+    "targeted panels reconstruct the whole transcriptome"
+  ],
+  "outputs": {
+    "dataset": "results/v4/stage81a3_context_dataset_qualification.csv",
+    "decisions": "results/v4/stage81a3_context_identifiability_decision.json",
+    "doc": "docs/v4/STAGE81A3_UNIFORM_CONTEXT_DATA_QUALIFICATION.md",
+    "donors": "results/v4/stage81a3_context_exact_donor_groups.csv",
+    "geometry": "results/v4/stage81a3_context_spatial_geometry.csv",
+    "measurement": "results/v4/stage81a3_context_measurement_semantics.csv",
+    "multi_region": "results/v4/stage81a3_context_same_person_multi_region_pairs.csv",
+    "pairing": "results/v4/stage81a3_context_same_entity_pairing.csv",
+    "provenance": "results/v4/stage81a3_context_provenance_review.csv",
+    "report": "results/v4/stage81a3_uniform_context_data_qualification.json",
+    "roles": "results/v4/stage81a3_context_dataset_role_matrix.csv",
+    "sample": "results/v4/stage81a3_context_sample_qualification.csv",
+    "support": "results/v4/stage81a3_context_frozen4096_support.csv",
+    "technology": "results/v4/stage81a3_context_technology_coverage.csv"
+  },
+  "protected_evidence": {
+    "FBSDQ": {
+      "expected_sha256": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "observed_sha256": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "pass": true,
+      "path": "results/v4/stage81a3_foundation_biological_state_domain_qualification.json"
+    },
+    "IPB": {
+      "expected_sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "observed_sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "pass": true,
+      "path": "results/v4/stage81a3_ipb_jepa_feasibility.json"
+    },
+    "RLC-CD": {
+      "expected_sha256": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "observed_sha256": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "pass": true,
+      "path": "results/v4/stage81a3_rlc_causal_fast_probe.json"
+    }
+  },
+  "qualification_computation_complete": true,
+  "qualification_contract_changed_after_results": false,
+  "role_counts": {
+    "ACCESS_TRACE_ONLY": 1,
+    "CELL_RESOLVED_MINIMAL_PANEL_CONTEXT": 13,
+    "CELL_RESOLVED_TARGETED_CONTEXT": 4,
+    "CORE_CELL_RESOLVED_HIGH_PLEX_CONTEXT": 5,
+    "MOLECULAR_REFERENCE_ONLY": 61,
+    "MULTIDONOR_SPOT_CONTEXT": 97,
+    "QUARANTINED_PENDING_GOVERNANCE": 9,
+    "REGIONAL_REFERENCE_ONLY": 2,
+    "UNRESOLVED": 42
+  },
+  "sample_qualification_rows": 234,
+  "source_file_integrity": {
+    "all_pass": true,
+    "checksum_files": 21,
+    "failed": 0,
+    "file_records": 165,
+    "passed": 165,
+    "records": [
+      {
+        "dataset_folder": "10x_Xenium_healthy_cortex_preview",
+        "expected_sha256": "ef79725ecba21cd2cd6a99aa3aa90a94d79451dab98c34e14c32e5e0250c892f",
+        "observed_sha256": "ef79725ecba21cd2cd6a99aa3aa90a94d79451dab98c34e14c32e5e0250c892f",
+        "pass": true,
+        "relative_path": "ACQUISITION_SKIPPED.md"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "776b0342d79f6ee55efbf0878868a6000d5c084b61fdaa701ec9acc199b710f6",
+        "observed_sha256": "776b0342d79f6ee55efbf0878868a6000d5c084b61fdaa701ec9acc199b710f6",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep1.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "dc5c2bba91d896f3ee3cb9b8af276bc6b89c273d1cea60dd50b8197f3c1554e5",
+        "observed_sha256": "dc5c2bba91d896f3ee3cb9b8af276bc6b89c273d1cea60dd50b8197f3c1554e5",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep1.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep1.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "f330ce402222d4f0a00bb526feef8fd5860b8b37c23e93e9f048a36c1b0eef46",
+        "observed_sha256": "f330ce402222d4f0a00bb526feef8fd5860b8b37c23e93e9f048a36c1b0eef46",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep1.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "f8574f1cdf4a2bf3ea11d0d2871b1b56a3233f2fc9e92d45a8e3f262fd21e1cb",
+        "observed_sha256": "f8574f1cdf4a2bf3ea11d0d2871b1b56a3233f2fc9e92d45a8e3f262fd21e1cb",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep2.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "03bb9d32cf007fb078373f668ee85d62c6c15d70bd3c39a23cfcaff58678d1be",
+        "observed_sha256": "03bb9d32cf007fb078373f668ee85d62c6c15d70bd3c39a23cfcaff58678d1be",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep2.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep2.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "6336d28534675c9b2deb72383e1d1dc8e097991a05251be4e062af48086c9154",
+        "observed_sha256": "6336d28534675c9b2deb72383e1d1dc8e097991a05251be4e062af48086c9154",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep2.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "e31dc4b6dd847e16ab305d406fd177b673e580f825b156c7fc536baa0c699391",
+        "observed_sha256": "e31dc4b6dd847e16ab305d406fd177b673e580f825b156c7fc536baa0c699391",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep3.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "3761ba2a689e2081162f414b3ab9790bd77dd9270ccb12f750a62b1d192a2f27",
+        "observed_sha256": "3761ba2a689e2081162f414b3ab9790bd77dd9270ccb12f750a62b1d192a2f27",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep3.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep3.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "cc163fe7e0dd7f30228abeb03ca7b08de381a0cec96055fb81379e77308119be",
+        "observed_sha256": "cc163fe7e0dd7f30228abeb03ca7b08de381a0cec96055fb81379e77308119be",
+        "pass": true,
+        "relative_path": "H18.06.006.MTG.4000.expand.rep3.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "22cc38efec73299baa2ee740b489ed3e3d7b2179582b06d82b4f172344f773d6",
+        "observed_sha256": "22cc38efec73299baa2ee740b489ed3e3d7b2179582b06d82b4f172344f773d6",
+        "pass": true,
+        "relative_path": "H19.30.001.STG.4000.expand.rep1.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "a32e82cffa5ac18c8329e76f19cfa9dee1169a7ece1a7fd83f9a84a94a4ddc33",
+        "observed_sha256": "a32e82cffa5ac18c8329e76f19cfa9dee1169a7ece1a7fd83f9a84a94a4ddc33",
+        "pass": true,
+        "relative_path": "H19.30.001.STG.4000.expand.rep1.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H19.30.001.STG.4000.expand.rep1.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "3f3c221579ffe5af8ac3bed4539e01b12665b31fc772e4cd5338416e709cd443",
+        "observed_sha256": "3f3c221579ffe5af8ac3bed4539e01b12665b31fc772e4cd5338416e709cd443",
+        "pass": true,
+        "relative_path": "H19.30.001.STG.4000.expand.rep1.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "17f11bcb8b397ddd222eb9b61e4215abc422411d183f2faf68f213bc21175a4d",
+        "observed_sha256": "17f11bcb8b397ddd222eb9b61e4215abc422411d183f2faf68f213bc21175a4d",
+        "pass": true,
+        "relative_path": "H19.30.001.STG.4000.expand.rep2.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "aa60dfb58bbfef29d0928c42b4e7d8cddb4cd7f881e2b72996481154c2233a2b",
+        "observed_sha256": "aa60dfb58bbfef29d0928c42b4e7d8cddb4cd7f881e2b72996481154c2233a2b",
+        "pass": true,
+        "relative_path": "H19.30.001.STG.4000.expand.rep2.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H19.30.001.STG.4000.expand.rep2.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "13d097ea056d760f212f88bb4c3ee6093d00317d559d46d795df8b3450452a57",
+        "observed_sha256": "13d097ea056d760f212f88bb4c3ee6093d00317d559d46d795df8b3450452a57",
+        "pass": true,
+        "relative_path": "H19.30.001.STG.4000.expand.rep2.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "6ecf4e31b6e66c4f6574f6f2ff1e876ff514f889bb3a538c808f64c3af29bda2",
+        "observed_sha256": "6ecf4e31b6e66c4f6574f6f2ff1e876ff514f889bb3a538c808f64c3af29bda2",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep1.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b337507d7a75e6dc093298f3e585282f01bcc88605a7d08651d364ad61fa313f",
+        "observed_sha256": "b337507d7a75e6dc093298f3e585282f01bcc88605a7d08651d364ad61fa313f",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep1.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep1.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "ec571c6ff78963667f77be1afab00fa502f1371df54b392829feef580c14397a",
+        "observed_sha256": "ec571c6ff78963667f77be1afab00fa502f1371df54b392829feef580c14397a",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep1.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "25745e38e09b408f8d9f1012f26e34512f47a06dd972a7dc6faa83c4b2d2bce5",
+        "observed_sha256": "25745e38e09b408f8d9f1012f26e34512f47a06dd972a7dc6faa83c4b2d2bce5",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep2.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "523b3231a20a2092659348bb79c56ca96b641dff5e2eafeee4d2139241f5b63a",
+        "observed_sha256": "523b3231a20a2092659348bb79c56ca96b641dff5e2eafeee4d2139241f5b63a",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep2.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep2.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "22eca3160270547dbe59268a6dc3f766c8469d718d4855787139651fa569ea23",
+        "observed_sha256": "22eca3160270547dbe59268a6dc3f766c8469d718d4855787139651fa569ea23",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep2.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "7f50cd0859a348fdce9a37e2c6b5fe4548227100bac2aa65c2f4e7059c9137bb",
+        "observed_sha256": "7f50cd0859a348fdce9a37e2c6b5fe4548227100bac2aa65c2f4e7059c9137bb",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep3.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "bafa46c852b5d762e9b2ce25598451d6215264ed9bab269a40fb34a8bd35950b",
+        "observed_sha256": "bafa46c852b5d762e9b2ce25598451d6215264ed9bab269a40fb34a8bd35950b",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep3.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep3.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "a31146287ad55782402250b4492ad816b1671cebd492dd56d2c42450302373b2",
+        "observed_sha256": "a31146287ad55782402250b4492ad816b1671cebd492dd56d2c42450302373b2",
+        "pass": true,
+        "relative_path": "H20.30.001.STG.4000.expand.rep3.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "8eea2f1050badb33f375e072f0f70cb264f93ebb3183cf4e7e3ab74faaa59834",
+        "observed_sha256": "8eea2f1050badb33f375e072f0f70cb264f93ebb3183cf4e7e3ab74faaa59834",
+        "pass": true,
+        "relative_path": "H22.26.401.MTG.4000.expand.rep1.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b2c845b7eb0c07e7f64ae33c8b1f4855626017839b63be213a0307477b75ec1a",
+        "observed_sha256": "b2c845b7eb0c07e7f64ae33c8b1f4855626017839b63be213a0307477b75ec1a",
+        "pass": true,
+        "relative_path": "H22.26.401.MTG.4000.expand.rep1.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H22.26.401.MTG.4000.expand.rep1.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "1b0d8a163d6a37f06ddaacfc13a3ed640331298b7ffdcf57e1fe8c32dd5ef584",
+        "observed_sha256": "1b0d8a163d6a37f06ddaacfc13a3ed640331298b7ffdcf57e1fe8c32dd5ef584",
+        "pass": true,
+        "relative_path": "H22.26.401.MTG.4000.expand.rep1.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "ce9180a9a3c8a0dfdacbaec36877ff60a9602d8b7149cb22784c102f1a52cc8e",
+        "observed_sha256": "ce9180a9a3c8a0dfdacbaec36877ff60a9602d8b7149cb22784c102f1a52cc8e",
+        "pass": true,
+        "relative_path": "H22.26.401.MTG.4000.expand.rep2.barcodes.csv.gz"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "5b39d7f27448dc5d82176b634455705de15f7af87ec85f7d9751272e024f5c70",
+        "observed_sha256": "5b39d7f27448dc5d82176b634455705de15f7af87ec85f7d9751272e024f5c70",
+        "pass": true,
+        "relative_path": "H22.26.401.MTG.4000.expand.rep2.features.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "observed_sha256": "b7d883115e28f43e7b52dd172b25ffb4ba7a74a974816603529bb34342b01475",
+        "pass": true,
+        "relative_path": "H22.26.401.MTG.4000.expand.rep2.genes.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "8781b304ad000d8bf1e700eabdbf65f18e0cf6630a6c9a43015e861055236ad7",
+        "observed_sha256": "8781b304ad000d8bf1e700eabdbf65f18e0cf6630a6c9a43015e861055236ad7",
+        "pass": true,
+        "relative_path": "H22.26.401.MTG.4000.expand.rep2.matrix.csv"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "e536101b18c29b29e69c030a17c71dc1653b7c2ef7a6694838ec89779b32bd51",
+        "observed_sha256": "e536101b18c29b29e69c030a17c71dc1653b7c2ef7a6694838ec89779b32bd51",
+        "pass": true,
+        "relative_path": "README.txt"
+      },
+      {
+        "dataset_folder": "Fang_MERFISH_human_cortex_4000",
+        "expected_sha256": "d3fe0fba303b3f072ad1546db236ee9aada5b052d31b3cf926eb7545cfa61eb4",
+        "observed_sha256": "d3fe0fba303b3f072ad1546db236ee9aada5b052d31b3cf926eb7545cfa61eb4",
+        "pass": true,
+        "relative_path": "sample_metadata.csv"
+      },
+      {
+        "dataset_folder": "GSE248545_healthy_DG_Visium",
+        "expected_sha256": "163471bfe30921dfe355c1c9358815f67e41fc787c4bbdce9d33c690a25d8598",
+        "observed_sha256": "163471bfe30921dfe355c1c9358815f67e41fc787c4bbdce9d33c690a25d8598",
+        "pass": true,
+        "relative_path": "GSE248545_RAW.tar"
+      },
+      {
+        "dataset_folder": "GSE248545_healthy_DG_Visium",
+        "expected_sha256": "3b69fc1f2da1538397fc4134d1e355dcaca1a9e70aeb791888d1437547bd80f8",
+        "observed_sha256": "3b69fc1f2da1538397fc4134d1e355dcaca1a9e70aeb791888d1437547bd80f8",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE248545_healthy_DG_Visium",
+        "expected_sha256": "5d2c43dc3c3d1b1d9fe6ab607de992c25ea1261769b576720c97768157f8b691",
+        "observed_sha256": "5d2c43dc3c3d1b1d9fe6ab607de992c25ea1261769b576720c97768157f8b691",
+        "pass": true,
+        "relative_path": "GSE248545_family.soft.gz"
+      },
+      {
+        "dataset_folder": "GSE248545_healthy_DG_Visium",
+        "expected_sha256": "2518b332fd0c136f58ea9e3802852340d0edb21e62da74abe61cbadbb0a92703",
+        "observed_sha256": "2518b332fd0c136f58ea9e3802852340d0edb21e62da74abe61cbadbb0a92703",
+        "pass": true,
+        "relative_path": "GSE248545_CombinedSeuratObject_HPC.rds.gz"
+      },
+      {
+        "dataset_folder": "GSE264624_human_hippocampus_snRNA",
+        "expected_sha256": "0321b0febeca2be1cd0b87c8ec9e207e566a72a3e30daa42e6463c09c28a38e7",
+        "observed_sha256": "0321b0febeca2be1cd0b87c8ec9e207e566a72a3e30daa42e6463c09c28a38e7",
+        "pass": true,
+        "relative_path": "GSE264624_RAW.tar"
+      },
+      {
+        "dataset_folder": "GSE264624_human_hippocampus_snRNA",
+        "expected_sha256": "bdbd3880ffb082cf448deb924d7b4b898f62fcb2e7de2f3fc06088305f5dc87a",
+        "observed_sha256": "bdbd3880ffb082cf448deb924d7b4b898f62fcb2e7de2f3fc06088305f5dc87a",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE264624_human_hippocampus_snRNA",
+        "expected_sha256": "e46b9e3c0bbcf9da4d84e72354f04b69723023a55afbd438266f5e1a0582b3e5",
+        "observed_sha256": "e46b9e3c0bbcf9da4d84e72354f04b69723023a55afbd438266f5e1a0582b3e5",
+        "pass": true,
+        "relative_path": "GSE264624_family.soft.gz"
+      },
+      {
+        "dataset_folder": "GSE264692_human_hippocampus_Visium",
+        "expected_sha256": "185fae83aeae4cc4fa61752639439efa66f55ea1eee367a4b5f0387a963947c4",
+        "observed_sha256": "185fae83aeae4cc4fa61752639439efa66f55ea1eee367a4b5f0387a963947c4",
+        "pass": true,
+        "relative_path": "GSE264692_RAW.tar"
+      },
+      {
+        "dataset_folder": "GSE264692_human_hippocampus_Visium",
+        "expected_sha256": "0295ce5ea1c0dd4de0320e85064351655bbde45507ba7e3b33ab8d72ce54f1ea",
+        "observed_sha256": "0295ce5ea1c0dd4de0320e85064351655bbde45507ba7e3b33ab8d72ce54f1ea",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE264692_human_hippocampus_Visium",
+        "expected_sha256": "955f97393100fb344053204b28d3b6e1a72fde4cbe6d5a3f10e3bebe59bd1d5e",
+        "observed_sha256": "955f97393100fb344053204b28d3b6e1a72fde4cbe6d5a3f10e3bebe59bd1d5e",
+        "pass": true,
+        "relative_path": "GSE264692_family.soft.gz"
+      },
+      {
+        "dataset_folder": "GSE264692_human_hippocampus_Visium",
+        "expected_sha256": "266200117ba922d580a683f735aebbd48e9bd1f1ea703c19fd7f73ce1733f3eb",
+        "observed_sha256": "266200117ba922d580a683f735aebbd48e9bd1f1ea703c19fd7f73ce1733f3eb",
+        "pass": true,
+        "relative_path": "GSE264692_humanHippocampus2024_SRT_sample-info.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE264692_human_hippocampus_Visium",
+        "expected_sha256": "c45fbc403d59f452da862ce03f67a49aa8a60e5c4fbe7f2f3d629525f718a28c",
+        "observed_sha256": "c45fbc403d59f452da862ce03f67a49aa8a60e5c4fbe7f2f3d629525f718a28c",
+        "pass": true,
+        "relative_path": "GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE278848_HYPOMAP_Visium",
+        "expected_sha256": "acc69b848a60e03f0ccfd8b424d715c6bae17d07df2accc6923c7b8dd8ef309f",
+        "observed_sha256": "acc69b848a60e03f0ccfd8b424d715c6bae17d07df2accc6923c7b8dd8ef309f",
+        "pass": true,
+        "relative_path": "GSE278848_RAW.tar"
+      },
+      {
+        "dataset_folder": "GSE278848_HYPOMAP_Visium",
+        "expected_sha256": "c547593cb5d5a488dac9a80c358e46d7d4fd11005fe745372a58e0a32c0b9666",
+        "observed_sha256": "c547593cb5d5a488dac9a80c358e46d7d4fd11005fe745372a58e0a32c0b9666",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE278848_HYPOMAP_Visium",
+        "expected_sha256": "5f5780aa06a54532e32de96f13ba026edebe94685f8d1eea34ba7d6c4259c1ee",
+        "observed_sha256": "5f5780aa06a54532e32de96f13ba026edebe94685f8d1eea34ba7d6c4259c1ee",
+        "pass": true,
+        "relative_path": "GSE278848_family.soft.gz"
+      },
+      {
+        "dataset_folder": "GSE278848_HYPOMAP_Visium",
+        "expected_sha256": "da64e097309a51d8e3e40347936e2924629f11257fe16740bf5ef75a6dc1302e",
+        "observed_sha256": "da64e097309a51d8e3e40347936e2924629f11257fe16740bf5ef75a6dc1302e",
+        "pass": true,
+        "relative_path": "GSE278848_tissue_positions_lists.tar.gz"
+      },
+      {
+        "dataset_folder": "GSE280316_human_HYP_Visium",
+        "expected_sha256": "c2d0172c0cdb2feae5e3beb8c0d1e79332682877ec16688e89d7fe79ab867cf6",
+        "observed_sha256": "c2d0172c0cdb2feae5e3beb8c0d1e79332682877ec16688e89d7fe79ab867cf6",
+        "pass": true,
+        "relative_path": "GSE280316_RAW.tar"
+      },
+      {
+        "dataset_folder": "GSE280316_human_HYP_Visium",
+        "expected_sha256": "9a803bcf710c55d983c82bd22599e84a266b9702b0f651a3c370de2c1b7d618a",
+        "observed_sha256": "9a803bcf710c55d983c82bd22599e84a266b9702b0f651a3c370de2c1b7d618a",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE280316_human_HYP_Visium",
+        "expected_sha256": "1073625a9c97e3443707850f0608b3e684ef063afcfc359a6704875fe074b143",
+        "observed_sha256": "1073625a9c97e3443707850f0608b3e684ef063afcfc359a6704875fe074b143",
+        "pass": true,
+        "relative_path": "GSE280316_family.soft.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "8c9464efd6c4410a15167a0a7008e5c1347f2962402ba03bdc3e54f20d406e6f",
+        "observed_sha256": "8c9464efd6c4410a15167a0a7008e5c1347f2962402ba03bdc3e54f20d406e6f",
+        "pass": true,
+        "relative_path": "GSM8598169_X36_5459A--x5459B_M--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "655ebc75b1e5af19a06504192f8de0b7a9587761b465b70d539c7a67c2923afb",
+        "observed_sha256": "655ebc75b1e5af19a06504192f8de0b7a9587761b465b70d539c7a67c2923afb",
+        "pass": true,
+        "relative_path": "GSM8598169_x5459B_M-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "76c528eb8d34416762d0e0fbfac2b40fb02bc91c778082c75134985abaa02dac",
+        "observed_sha256": "76c528eb8d34416762d0e0fbfac2b40fb02bc91c778082c75134985abaa02dac",
+        "pass": true,
+        "relative_path": "GSM8598169_x5459B_M-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "e5b9580dd80ed9ad374318c62ad0bf697bb14f41227a5f294fa721ca83b8b401",
+        "observed_sha256": "e5b9580dd80ed9ad374318c62ad0bf697bb14f41227a5f294fa721ca83b8b401",
+        "pass": true,
+        "relative_path": "GSM8598169_x5459B_M-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "b6f53eb71e623d580aabcab2e8e1e6d978f5cfbd66b3276685d3fd84a0234a0b",
+        "observed_sha256": "b6f53eb71e623d580aabcab2e8e1e6d978f5cfbd66b3276685d3fd84a0234a0b",
+        "pass": true,
+        "relative_path": "GSM8598170_X36_5459B--x5459C_M--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "32603877ad83f5a48e7f3f91b4ef11a53cf4c2878bdf98cee69b585010aa4617",
+        "observed_sha256": "32603877ad83f5a48e7f3f91b4ef11a53cf4c2878bdf98cee69b585010aa4617",
+        "pass": true,
+        "relative_path": "GSM8598170_x5459C_M-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "f846eb57bfae4a15f3ffd9991d774d5e698aa2cc2f68ef7d08ea98d4e2eb0dd1",
+        "observed_sha256": "f846eb57bfae4a15f3ffd9991d774d5e698aa2cc2f68ef7d08ea98d4e2eb0dd1",
+        "pass": true,
+        "relative_path": "GSM8598170_x5459C_M-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "bf2c1f446d8785a84f8fd47323d35810a84854aabd9e5e114fc9dc35de92e835",
+        "observed_sha256": "bf2c1f446d8785a84f8fd47323d35810a84854aabd9e5e114fc9dc35de92e835",
+        "pass": true,
+        "relative_path": "GSM8598170_x5459C_M-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "36e86332d2b256d1168dc8a2b9b97d791141a2a30b3668b1e2b2605867a7c9d8",
+        "observed_sha256": "36e86332d2b256d1168dc8a2b9b97d791141a2a30b3668b1e2b2605867a7c9d8",
+        "pass": true,
+        "relative_path": "GSM8598171_X36_8667C--x8667B_F--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "3798d602482d5620cf9c16fce78d0b1cc864d8c69f05f946263863b2f86911d0",
+        "observed_sha256": "3798d602482d5620cf9c16fce78d0b1cc864d8c69f05f946263863b2f86911d0",
+        "pass": true,
+        "relative_path": "GSM8598171_x8667B_F-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "db33255d75dfc0a0684524e22aa0fd2832db2c1737694f70d529b851df2b4f84",
+        "observed_sha256": "db33255d75dfc0a0684524e22aa0fd2832db2c1737694f70d529b851df2b4f84",
+        "pass": true,
+        "relative_path": "GSM8598171_x8667B_F-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "f8774d5886609caa584d04ed074608708fa76fcf20d077f128fb1c46c6b1d455",
+        "observed_sha256": "f8774d5886609caa584d04ed074608708fa76fcf20d077f128fb1c46c6b1d455",
+        "pass": true,
+        "relative_path": "GSM8598171_x8667B_F-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "6a7474667064a6061a52ca799f4dc62de9f85208d0c968920cf4e089b581f644",
+        "observed_sha256": "6a7474667064a6061a52ca799f4dc62de9f85208d0c968920cf4e089b581f644",
+        "pass": true,
+        "relative_path": "GSM8598172_X86_reg1--x6197B_M--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "093b31548d053e8cfd98fcd01a0c9b0099d508d5cc9f0da4911de39814d8f632",
+        "observed_sha256": "093b31548d053e8cfd98fcd01a0c9b0099d508d5cc9f0da4911de39814d8f632",
+        "pass": true,
+        "relative_path": "GSM8598172_x6197B_M-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "168211626fb736a4ea9ec9ce26d879d57d19a3dc2a1300d49df3b6ab572ce959",
+        "observed_sha256": "168211626fb736a4ea9ec9ce26d879d57d19a3dc2a1300d49df3b6ab572ce959",
+        "pass": true,
+        "relative_path": "GSM8598172_x6197B_M-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "38bd3d670d609f5e6b232f958f7e1ef1c92d5e9ecfac0ef31a99f91aaa1602a3",
+        "observed_sha256": "38bd3d670d609f5e6b232f958f7e1ef1c92d5e9ecfac0ef31a99f91aaa1602a3",
+        "pass": true,
+        "relative_path": "GSM8598172_x6197B_M-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "9bcd541f731ad3296bdfe23c1f9d23a341426ab8764994f320e0ac90b248161e",
+        "observed_sha256": "9bcd541f731ad3296bdfe23c1f9d23a341426ab8764994f320e0ac90b248161e",
+        "pass": true,
+        "relative_path": "GSM8598173_X86_reg2--x5993B_F--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "eba73b36594c9c341895217b126ff95102dc528adad0e6dc0fa74cf97eb60696",
+        "observed_sha256": "eba73b36594c9c341895217b126ff95102dc528adad0e6dc0fa74cf97eb60696",
+        "pass": true,
+        "relative_path": "GSM8598173_x5993B_F-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "867bedaaa6ba07cbad6794165b06865c9bfb1ac33287ac4d1c1be0d6b1bf801b",
+        "observed_sha256": "867bedaaa6ba07cbad6794165b06865c9bfb1ac33287ac4d1c1be0d6b1bf801b",
+        "pass": true,
+        "relative_path": "GSM8598173_x5993B_F-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "6b6869bb8d00dd2bbfbcba33975b0f8f9b610cf0f4df0bbeb47546ee17e3f72a",
+        "observed_sha256": "6b6869bb8d00dd2bbfbcba33975b0f8f9b610cf0f4df0bbeb47546ee17e3f72a",
+        "pass": true,
+        "relative_path": "GSM8598173_x5993B_F-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "4343c35cfc18f8ca184c779819280ce18ab846380ff10d8bf65aba26d321b1eb",
+        "observed_sha256": "4343c35cfc18f8ca184c779819280ce18ab846380ff10d8bf65aba26d321b1eb",
+        "pass": true,
+        "relative_path": "GSM8598174_X86_reg3--x5993C_F--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "d6661822a96096e97f17d6b23a73827d7f4c31e1fb0a66eaf310deb133f05c8b",
+        "observed_sha256": "d6661822a96096e97f17d6b23a73827d7f4c31e1fb0a66eaf310deb133f05c8b",
+        "pass": true,
+        "relative_path": "GSM8598174_x5993C_F-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "4b28cf1a2bc10e041b624e19113eef7e1201d22091a118eee5bff1cd5fce0501",
+        "observed_sha256": "4b28cf1a2bc10e041b624e19113eef7e1201d22091a118eee5bff1cd5fce0501",
+        "pass": true,
+        "relative_path": "GSM8598174_x5993C_F-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "f8d1b6b427e973d14a0e9e26655dda4636e9499e168c659e8db1060c261a9973",
+        "observed_sha256": "f8d1b6b427e973d14a0e9e26655dda4636e9499e168c659e8db1060c261a9973",
+        "pass": true,
+        "relative_path": "GSM8598174_x5993C_F-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "bde9bdbe02a8f53951533b36156530bbaca31986695715b45aca1b7c30fdb0f4",
+        "observed_sha256": "bde9bdbe02a8f53951533b36156530bbaca31986695715b45aca1b7c30fdb0f4",
+        "pass": true,
+        "relative_path": "GSM8598175_X97_reg1--x1735B_M--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "13e2e73ebb0bc96fa12dd41f4c4a0e54a7754cfd96364ebfad4d72d190e71409",
+        "observed_sha256": "13e2e73ebb0bc96fa12dd41f4c4a0e54a7754cfd96364ebfad4d72d190e71409",
+        "pass": true,
+        "relative_path": "GSM8598175_x1735B_M-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "b019c01aa77ff21aaf0e1454529aee38022b91e614453b0c9d3842379a8b386b",
+        "observed_sha256": "b019c01aa77ff21aaf0e1454529aee38022b91e614453b0c9d3842379a8b386b",
+        "pass": true,
+        "relative_path": "GSM8598175_x1735B_M-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "769154311da377712c9cbde5baaa35d4f75f9930cb4ee8d24f7e75b6a5f6c26f",
+        "observed_sha256": "769154311da377712c9cbde5baaa35d4f75f9930cb4ee8d24f7e75b6a5f6c26f",
+        "pass": true,
+        "relative_path": "GSM8598175_x1735B_M-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "6f84408a17715e69caeb8077259b2392f60770c9e37cec2f811b4372a340ef59",
+        "observed_sha256": "6f84408a17715e69caeb8077259b2392f60770c9e37cec2f811b4372a340ef59",
+        "pass": true,
+        "relative_path": "GSM8598176_X97_reg2--x1735C_M--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "7f48d78d97ec445069ef255ffb93899de4e9faff9d3b4acc7c0f3132c7a6c575",
+        "observed_sha256": "7f48d78d97ec445069ef255ffb93899de4e9faff9d3b4acc7c0f3132c7a6c575",
+        "pass": true,
+        "relative_path": "GSM8598176_x1735C_M-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "313c5207d1fb6e18ab60a251d96aaa8d7154e57641d54b2b789ea22c8a9d6722",
+        "observed_sha256": "313c5207d1fb6e18ab60a251d96aaa8d7154e57641d54b2b789ea22c8a9d6722",
+        "pass": true,
+        "relative_path": "GSM8598176_x1735C_M-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "d8d4d410d0ddfd9532f1dec9905a5d1959779e60c56ea6fcecb717f11466d48e",
+        "observed_sha256": "d8d4d410d0ddfd9532f1dec9905a5d1959779e60c56ea6fcecb717f11466d48e",
+        "pass": true,
+        "relative_path": "GSM8598176_x1735C_M-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "2467c77288bf4018b8592f67670eb2bfb4c48ebc0e7c49fc9221580d602e28ea",
+        "observed_sha256": "2467c77288bf4018b8592f67670eb2bfb4c48ebc0e7c49fc9221580d602e28ea",
+        "pass": true,
+        "relative_path": "GSM8598177_X97_reg3--x6588C_F--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "dd4a7af7ac8c54d0d6085f3f667fe1386f77dbc86c725c4c0f6f950cdcd5c9a5",
+        "observed_sha256": "dd4a7af7ac8c54d0d6085f3f667fe1386f77dbc86c725c4c0f6f950cdcd5c9a5",
+        "pass": true,
+        "relative_path": "GSM8598177_x6588C_F-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "719d31b3b87e5aa1c46417e5f8c7739325d3efee1e98239e1101339fc1f0ce8a",
+        "observed_sha256": "719d31b3b87e5aa1c46417e5f8c7739325d3efee1e98239e1101339fc1f0ce8a",
+        "pass": true,
+        "relative_path": "GSM8598177_x6588C_F-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "ecbdbbb0fbfb0750f8a89f81514f4b04e5cc3be60ebe1b2b3da065bdbcd1d242",
+        "observed_sha256": "ecbdbbb0fbfb0750f8a89f81514f4b04e5cc3be60ebe1b2b3da065bdbcd1d242",
+        "pass": true,
+        "relative_path": "GSM8598177_x6588C_F-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "dbf6acb52c904d26b37d58195399074e0e6181af36a45a51f03e79af5ade7595",
+        "observed_sha256": "dbf6acb52c904d26b37d58195399074e0e6181af36a45a51f03e79af5ade7595",
+        "pass": true,
+        "relative_path": "GSM8598178_X99_1225A--x1225B_M--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "5cd986d20c33c9006f69efa1ee77f97fe2a327d9925ce22da03828a5da05bd34",
+        "observed_sha256": "5cd986d20c33c9006f69efa1ee77f97fe2a327d9925ce22da03828a5da05bd34",
+        "pass": true,
+        "relative_path": "GSM8598178_x1225B_M-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "3c0c95e24d0807ab7cae718d56403301a2e47848019b08408b1b660d25b6b946",
+        "observed_sha256": "3c0c95e24d0807ab7cae718d56403301a2e47848019b08408b1b660d25b6b946",
+        "pass": true,
+        "relative_path": "GSM8598178_x1225B_M-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "5b69078fe65a8197a6e934ccf541e0b571764700608847625e501c9efd30c477",
+        "observed_sha256": "5b69078fe65a8197a6e934ccf541e0b571764700608847625e501c9efd30c477",
+        "pass": true,
+        "relative_path": "GSM8598178_x1225B_M-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "cc7af9238db8e64ea508f5cf7afc921e92acf7e85f948bce9ee3033aa8edffd1",
+        "observed_sha256": "cc7af9238db8e64ea508f5cf7afc921e92acf7e85f948bce9ee3033aa8edffd1",
+        "pass": true,
+        "relative_path": "GSM8598179_X99_1225B--x1225C_M--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "f705c8ba6d5efe02bc5a17a59fc4772f44f8191a89dfe22cafc9c37c47453206",
+        "observed_sha256": "f705c8ba6d5efe02bc5a17a59fc4772f44f8191a89dfe22cafc9c37c47453206",
+        "pass": true,
+        "relative_path": "GSM8598179_x1225C_M-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "e909364e5a7dd4f4bf6d17d2bfbb5c8724b46a142e646a7b3c526b14120c0667",
+        "observed_sha256": "e909364e5a7dd4f4bf6d17d2bfbb5c8724b46a142e646a7b3c526b14120c0667",
+        "pass": true,
+        "relative_path": "GSM8598179_x1225C_M-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "b5ec5e1f9da3510cec2896a6dba984b12f6dfc893fcb658024ce19015ffd56cf",
+        "observed_sha256": "b5ec5e1f9da3510cec2896a6dba984b12f6dfc893fcb658024ce19015ffd56cf",
+        "pass": true,
+        "relative_path": "GSM8598179_x1225C_M-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "a69cffbfccb44319c0401ac9820e80e0cf55a8fd7e388eeb794768ea45b11433",
+        "observed_sha256": "a69cffbfccb44319c0401ac9820e80e0cf55a8fd7e388eeb794768ea45b11433",
+        "pass": true,
+        "relative_path": "GSM8598180_X99_8741C--x8741C_F--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "894b5d6af0c80d736fa260bfac28c75aeace6cead572b19e721d3a75c9891a8a",
+        "observed_sha256": "894b5d6af0c80d736fa260bfac28c75aeace6cead572b19e721d3a75c9891a8a",
+        "pass": true,
+        "relative_path": "GSM8598180_x8741C_F-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "b4c6c94d167c519a4313921b8d0c3d5dbd1742d50c4d9fa153a96b4fe06c3c84",
+        "observed_sha256": "b4c6c94d167c519a4313921b8d0c3d5dbd1742d50c4d9fa153a96b4fe06c3c84",
+        "pass": true,
+        "relative_path": "GSM8598180_x8741C_F-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "54a4ae1e9c9d4f5d430c9cdaa46e8df96778f8adc522be6943e14f2e2eca3aa4",
+        "observed_sha256": "54a4ae1e9c9d4f5d430c9cdaa46e8df96778f8adc522be6943e14f2e2eca3aa4",
+        "pass": true,
+        "relative_path": "GSM8598180_x8741C_F-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "feb079665516d19a3ca5cfcbf240cec8c04aa9891bfceadd3a056643534d8060",
+        "observed_sha256": "feb079665516d19a3ca5cfcbf240cec8c04aa9891bfceadd3a056643534d8060",
+        "pass": true,
+        "relative_path": "GSM8598181_X99_8741D--x8741D_F--singlesampMetadataGEO.txt.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "1e185dc1d3fbc5c2b38b440e32bae46f414d7d3d2ba8b88c3a257e131cb0c5f1",
+        "observed_sha256": "1e185dc1d3fbc5c2b38b440e32bae46f414d7d3d2ba8b88c3a257e131cb0c5f1",
+        "pass": true,
+        "relative_path": "GSM8598181_x8741D_F-cell_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "9f055f8cf193bcc5a63c0fa04c7d6863838ef8b48f1852226628ece6135ab3fb",
+        "observed_sha256": "9f055f8cf193bcc5a63c0fa04c7d6863838ef8b48f1852226628ece6135ab3fb",
+        "pass": true,
+        "relative_path": "GSM8598181_x8741D_F-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "c7a36fb7e3269240a75b6798e22530557358f5502449ac0dd79edf0305056eef",
+        "observed_sha256": "c7a36fb7e3269240a75b6798e22530557358f5502449ac0dd79edf0305056eef",
+        "pass": true,
+        "relative_path": "GSM8598181_x8741D_F-nucleus_boundaries.csv.gz"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "21de2a8ae9236dc113f1504929a1683946de9f2a04a55ddd03576a9beec08f93",
+        "observed_sha256": "21de2a8ae9236dc113f1504929a1683946de9f2a04a55ddd03576a9beec08f93",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE280460_human_HYP_Xenium",
+        "expected_sha256": "26635364f5edfb4d5b250974ef6fd31f0bb4b61de10ee3d4f519d61d0d66113f",
+        "observed_sha256": "26635364f5edfb4d5b250974ef6fd31f0bb4b61de10ee3d4f519d61d0d66113f",
+        "pass": true,
+        "relative_path": "GSE280460_family.soft.gz"
+      },
+      {
+        "dataset_folder": "GSE307586_human_NAc_Visium",
+        "expected_sha256": "21d64644efa97e0eb012fd5b10cd21fcf64941a06db057af4834c6b9ee49ad22",
+        "observed_sha256": "21d64644efa97e0eb012fd5b10cd21fcf64941a06db057af4834c6b9ee49ad22",
+        "pass": true,
+        "relative_path": "GSE307586_RAW.tar"
+      },
+      {
+        "dataset_folder": "GSE307586_human_NAc_Visium",
+        "expected_sha256": "8529cf06b18c9e6d8066b79214f53695afea556a301315fe68a7ecaab008a4cd",
+        "observed_sha256": "8529cf06b18c9e6d8066b79214f53695afea556a301315fe68a7ecaab008a4cd",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE307586_human_NAc_Visium",
+        "expected_sha256": "21f5bf7bf9cd048c1ec7fedeb8f9b6d1c1ab94bffc874e7bad8056425f7bcfd9",
+        "observed_sha256": "21f5bf7bf9cd048c1ec7fedeb8f9b6d1c1ab94bffc874e7bad8056425f7bcfd9",
+        "pass": true,
+        "relative_path": "GSE307586_family.soft.gz"
+      },
+      {
+        "dataset_folder": "GSE307587_human_NAc_snRNA",
+        "expected_sha256": "018c50a67edb74f52a551f24765313a7833e9773aea384577d519703d3429b72",
+        "observed_sha256": "018c50a67edb74f52a551f24765313a7833e9773aea384577d519703d3429b72",
+        "pass": true,
+        "relative_path": "GSE307587_RAW.tar"
+      },
+      {
+        "dataset_folder": "GSE307587_human_NAc_snRNA",
+        "expected_sha256": "8fc75409d7f5950d846edf3d075f5ca8df1a589469a5239896c8fcbcd3b6025d",
+        "observed_sha256": "8fc75409d7f5950d846edf3d075f5ca8df1a589469a5239896c8fcbcd3b6025d",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE307587_human_NAc_snRNA",
+        "expected_sha256": "9564eaf12793a49cab91347a0ea71e8a8ef3b89a982fd8478a75657c662d81d3",
+        "observed_sha256": "9564eaf12793a49cab91347a0ea71e8a8ef3b89a982fd8478a75657c662d81d3",
+        "pass": true,
+        "relative_path": "GSE307587_family.soft.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "630719addf68f8ff03648b9d9d916b331af893856dd6cacd20bcea6a44af2778",
+        "observed_sha256": "630719addf68f8ff03648b9d9d916b331af893856dd6cacd20bcea6a44af2778",
+        "pass": true,
+        "relative_path": "GSM9604821_Br6522-cell_boundaries.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "58ba349115ec03e5efe1635c338e6410b3a0367c4ee670846b52f03d534ebcd2",
+        "observed_sha256": "58ba349115ec03e5efe1635c338e6410b3a0367c4ee670846b52f03d534ebcd2",
+        "pass": true,
+        "relative_path": "GSM9604821_Br6522-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "cb80b551e78ace4a90389b7f57ebd7067718f2fd2e17851820a3240e5ee3bb89",
+        "observed_sha256": "cb80b551e78ace4a90389b7f57ebd7067718f2fd2e17851820a3240e5ee3bb89",
+        "pass": true,
+        "relative_path": "GSM9604821_Br6522-cells.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "751b3b282a64ad195e24248f51468064031dc191afb2fbb633d1d537e8feec52",
+        "observed_sha256": "751b3b282a64ad195e24248f51468064031dc191afb2fbb633d1d537e8feec52",
+        "pass": true,
+        "relative_path": "GSM9604821_Br6522-nucleus_boundaries.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "a7c7c472e09bfd1d9b5cb1b0b9774a258f087cbe3aea454aa7f049fc82c5bbab",
+        "observed_sha256": "a7c7c472e09bfd1d9b5cb1b0b9774a258f087cbe3aea454aa7f049fc82c5bbab",
+        "pass": true,
+        "relative_path": "GSM9604822_Br2720-cell_boundaries.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "dbf61675e24d2685753611834ae9187b32a948b8317b10a2943ca38abe97349b",
+        "observed_sha256": "dbf61675e24d2685753611834ae9187b32a948b8317b10a2943ca38abe97349b",
+        "pass": true,
+        "relative_path": "GSM9604822_Br2720-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "c7165b4cd65791d3d6a423441af3c26ecfff5428de2adf3894c9e3bcfe506a67",
+        "observed_sha256": "c7165b4cd65791d3d6a423441af3c26ecfff5428de2adf3894c9e3bcfe506a67",
+        "pass": true,
+        "relative_path": "GSM9604822_Br2720-cells.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "70426bdbf1e9cebe99d304f66e168fef4aa650b8c9c0cff27de70e6460c94a7c",
+        "observed_sha256": "70426bdbf1e9cebe99d304f66e168fef4aa650b8c9c0cff27de70e6460c94a7c",
+        "pass": true,
+        "relative_path": "GSM9604822_Br2720-nucleus_boundaries.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "8f3ccd155760087d53af03b7f8c243c199f4ed62efba61db708063a17aaf5229",
+        "observed_sha256": "8f3ccd155760087d53af03b7f8c243c199f4ed62efba61db708063a17aaf5229",
+        "pass": true,
+        "relative_path": "GSM9604823_Br6432-cell_boundaries.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "0343b527e8994a334a2e9edbee9b1c044d2b6a0759ac78cd2d6ddb5e18aefb35",
+        "observed_sha256": "0343b527e8994a334a2e9edbee9b1c044d2b6a0759ac78cd2d6ddb5e18aefb35",
+        "pass": true,
+        "relative_path": "GSM9604823_Br6432-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "7455aa1bd153e22d2d614dd9e7ac7bd4372da80ccca5718a0600b4430fcfc933",
+        "observed_sha256": "7455aa1bd153e22d2d614dd9e7ac7bd4372da80ccca5718a0600b4430fcfc933",
+        "pass": true,
+        "relative_path": "GSM9604823_Br6432-cells.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "ac4f420ce175e9294443e49ba146d1593fb6e6b98caed4dfc1328f0c001b2846",
+        "observed_sha256": "ac4f420ce175e9294443e49ba146d1593fb6e6b98caed4dfc1328f0c001b2846",
+        "pass": true,
+        "relative_path": "GSM9604823_Br6432-nucleus_boundaries.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "553b1e737f3f0a109aff9fe94dd69000ef8aa7f2d178556da89a407220a3086d",
+        "observed_sha256": "553b1e737f3f0a109aff9fe94dd69000ef8aa7f2d178556da89a407220a3086d",
+        "pass": true,
+        "relative_path": "GSM9604824_Br6471-cell_boundaries.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "8fb1ed51998e303e022deb08a6fcaa53793069f0ae60288026fe38ad8cb932ef",
+        "observed_sha256": "8fb1ed51998e303e022deb08a6fcaa53793069f0ae60288026fe38ad8cb932ef",
+        "pass": true,
+        "relative_path": "GSM9604824_Br6471-cell_feature_matrix.h5"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "3450e2e25f7af2149f645760c95fe94d5a4322df5f92f12a56f7a92b1118db55",
+        "observed_sha256": "3450e2e25f7af2149f645760c95fe94d5a4322df5f92f12a56f7a92b1118db55",
+        "pass": true,
+        "relative_path": "GSM9604824_Br6471-cells.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "412ed55a5190448015ede2183b9c70f0e609d4e18eaf0be694436781e43a54a7",
+        "observed_sha256": "412ed55a5190448015ede2183b9c70f0e609d4e18eaf0be694436781e43a54a7",
+        "pass": true,
+        "relative_path": "GSM9604824_Br6471-nucleus_boundaries.parquet.gz"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "68bc2102b44e253c6449afd88d63bd5946216ae4fb8c61f441c78224d2f7a46b",
+        "observed_sha256": "68bc2102b44e253c6449afd88d63bd5946216ae4fb8c61f441c78224d2f7a46b",
+        "pass": true,
+        "relative_path": "official_filelist.txt"
+      },
+      {
+        "dataset_folder": "GSE325489_human_NAc_Xenium",
+        "expected_sha256": "c32eba33d1d0fce0f023f2553503132d260197bc9a8b0e84176b3555adbcf7eb",
+        "observed_sha256": "c32eba33d1d0fce0f023f2553503132d260197bc9a8b0e84176b3555adbcf7eb",
+        "pass": true,
+        "relative_path": "GSE325489_family.soft.gz"
+      },
+      {
+        "dataset_folder": "HPA_human_brain_StereoSeq",
+        "expected_sha256": "bee47b2408d9efdbfbd3ebfd05aeb3e48fd270a33618abfff33d9b149c474866",
+        "observed_sha256": "bee47b2408d9efdbfbd3ebfd05aeb3e48fd270a33618abfff33d9b149c474866",
+        "pass": true,
+        "relative_path": "HPA_STEREOSEQ_ACCESS_TRACE.md"
+      },
+      {
+        "dataset_folder": "HPA_regional_human_brain_RNA",
+        "expected_sha256": "d7de4d3f7ec2176edf81bff63f488b124b497dd4a93df14907c0151342ff3b62",
+        "observed_sha256": "d7de4d3f7ec2176edf81bff63f488b124b497dd4a93df14907c0151342ff3b62",
+        "pass": true,
+        "relative_path": "transcript_rna_brain.tsv.zip"
+      },
+      {
+        "dataset_folder": "HPA_regional_human_brain_RNA",
+        "expected_sha256": "bb1f2f67df13a9f3b6b8091d6d84741d02ffa64d0570efb789d02387f37bd8a4",
+        "observed_sha256": "bb1f2f67df13a9f3b6b8091d6d84741d02ffa64d0570efb789d02387f37bd8a4",
+        "pass": true,
+        "relative_path": "rna_brain_hpa.tsv.zip"
+      },
+      {
+        "dataset_folder": "HPA_regional_human_brain_RNA",
+        "expected_sha256": "3cd24ab5c090bb07c2c618916ef65dca3872c9d9fd79c3376124e94929aa0058",
+        "observed_sha256": "3cd24ab5c090bb07c2c618916ef65dca3872c9d9fd79c3376124e94929aa0058",
+        "pass": true,
+        "relative_path": "HPA_brain_data_page.html"
+      },
+      {
+        "dataset_folder": "HPA_Zhong_PFC_RNA",
+        "expected_sha256": "b6acb2a8b0c496c8e22d00a7ce6777c8fbd1649f778e41664280d2727ec62bb0",
+        "observed_sha256": "b6acb2a8b0c496c8e22d00a7ce6777c8fbd1649f778e41664280d2727ec62bb0",
+        "pass": true,
+        "relative_path": "transcript_rna_pfcbrain.tsv.zip"
+      },
+      {
+        "dataset_folder": "HPA_Zhong_PFC_RNA",
+        "expected_sha256": "0d95ea46ef32f67ca44899b44b5deebade9f190c840eb9040b10540190ff927d",
+        "observed_sha256": "0d95ea46ef32f67ca44899b44b5deebade9f190c840eb9040b10540190ff927d",
+        "pass": true,
+        "relative_path": "rna_pfc_brain_hpa.tsv.zip"
+      },
+      {
+        "dataset_folder": "HPA_Zhong_PFC_RNA",
+        "expected_sha256": "3cd24ab5c090bb07c2c618916ef65dca3872c9d9fd79c3376124e94929aa0058",
+        "observed_sha256": "3cd24ab5c090bb07c2c618916ef65dca3872c9d9fd79c3376124e94929aa0058",
+        "pass": true,
+        "relative_path": "HPA_brain_data_page.html"
+      },
+      {
+        "dataset_folder": "HYPOMAP_snRNA_reference",
+        "expected_sha256": "be57c19981e67a76f7ff0f1c6005cd5c9d550e47d3f742c2123b2c9062bb7b43",
+        "observed_sha256": "be57c19981e67a76f7ff0f1c6005cd5c9d550e47d3f742c2123b2c9062bb7b43",
+        "pass": true,
+        "relative_path": "HYPOMAP_human_snRNA_cellxgene.h5ad"
+      },
+      {
+        "dataset_folder": "LIBD_spatialDLPFC",
+        "expected_sha256": "651ef4ba925bc59e22548846dcfabb1e799fe8e4a0701e00aca8711fe38fe769",
+        "observed_sha256": "651ef4ba925bc59e22548846dcfabb1e799fe8e4a0701e00aca8711fe38fe769",
+        "pass": true,
+        "relative_path": "spatialDLPFC_README.md"
+      },
+      {
+        "dataset_folder": "LIBD_spatialDLPFC",
+        "expected_sha256": "24c98ddcbc47083591a68957f8b8dd3934160e0dde9649d2349c5908e42fe77e",
+        "observed_sha256": "24c98ddcbc47083591a68957f8b8dd3934160e0dde9649d2349c5908e42fe77e",
+        "pass": true,
+        "relative_path": "spe_filtered_final_with_clusters_and_deconvolution_results.rds"
+      },
+      {
+        "dataset_folder": "LIBD_spatialDLPFC",
+        "expected_sha256": "15176538edd4d632fb19376229fd83b9446b90cfbc7cf0de7fbc599443a49c75",
+        "observed_sha256": "15176538edd4d632fb19376229fd83b9446b90cfbc7cf0de7fbc599443a49c75",
+        "pass": true,
+        "relative_path": "sce_DLPFC_annotated.zip"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "4c3ff089e5058ceea3918b8054b6e80175c8e0d551f5101614ae106fff00879c",
+        "observed_sha256": "4c3ff089e5058ceea3918b8054b6e80175c8e0d551f5101614ae106fff00879c",
+        "pass": true,
+        "relative_path": "SCP2167/10x_barcodes_file/lld_barcodes.tsv.gz"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "355e6fd8d2f9e049e8a42491573f3fb5c95b03e1a2e33aa86b755ab1f2fe495e",
+        "observed_sha256": "355e6fd8d2f9e049e8a42491573f3fb5c95b03e1a2e33aa86b755ab1f2fe495e",
+        "pass": true,
+        "relative_path": "SCP2167/10x_genes_file/lld_features.tsv.gz"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "8facce9644c74febac7aa9a03db54740079855d201c6e68a80cf901ca22bb5ee",
+        "observed_sha256": "8facce9644c74febac7aa9a03db54740079855d201c6e68a80cf901ca22bb5ee",
+        "pass": true,
+        "relative_path": "SCP2167/cluster/humancortex_cluster.csv"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "003f623ad8fb4994d3e3e835435dbcad9a77610cd5f03769dfa2887e383fd009",
+        "observed_sha256": "003f623ad8fb4994d3e3e835435dbcad9a77610cd5f03769dfa2887e383fd009",
+        "pass": true,
+        "relative_path": "SCP2167/cluster/humancortex_spatial.csv"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "e3ab683d72d026be31c5ea8a6fec03b61d469f4a9a171062f2aa367fc5954d4c",
+        "observed_sha256": "e3ab683d72d026be31c5ea8a6fec03b61d469f4a9a171062f2aa367fc5954d4c",
+        "pass": true,
+        "relative_path": "SCP2167/expression/64265d4084cbeaef62ef36a9/barcodes.tsv.gz"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "610d291e282040436343e14c1592cb08f9e3763d016c518ef3b5c477da985cdb",
+        "observed_sha256": "610d291e282040436343e14c1592cb08f9e3763d016c518ef3b5c477da985cdb",
+        "pass": true,
+        "relative_path": "SCP2167/expression/64265d4084cbeaef62ef36a9/features.tsv.gz"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "cd9c8b0d861d4caf5ece0feb6214b09d16ed5ef3918ef04b2a428726b83bb6dc",
+        "observed_sha256": "cd9c8b0d861d4caf5ece0feb6214b09d16ed5ef3918ef04b2a428726b83bb6dc",
+        "pass": true,
+        "relative_path": "SCP2167/expression/64265d4084cbeaef62ef36a9/matrix.mtx.gz"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "ee1471f06ac134a76efb92fa3b21f9cffe6549441ccda053a90e8107b6760f85",
+        "observed_sha256": "ee1471f06ac134a76efb92fa3b21f9cffe6549441ccda053a90e8107b6760f85",
+        "pass": true,
+        "relative_path": "SCP2167/expression/humancortex_expression55.csv.gz"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "ef611020e08934c19c45c7fce089c2311dcbd052e0e9c7d6b25608a8b9afa441",
+        "observed_sha256": "ef611020e08934c19c45c7fce089c2311dcbd052e0e9c7d6b25608a8b9afa441",
+        "pass": true,
+        "relative_path": "SCP2167/file_supplemental_info.tsv"
+      },
+      {
+        "dataset_folder": "SCP2167_slidetags_PFC",
+        "expected_sha256": "985b26fcd1bab040119e736258c9bc76c7c6928237f6db35529ba951eb7a3261",
+        "observed_sha256": "985b26fcd1bab040119e736258c9bc76c7c6928237f6db35529ba951eb7a3261",
+        "pass": true,
+        "relative_path": "SCP2167/metadata/humancortex_metadata.csv"
+      },
+      {
+        "dataset_folder": "Siletti_HBCA",
+        "expected_sha256": "7f68c907c45983b2cc2fb05dc5182e34a64df1bd6d8e69d5ff45dd448c57640c",
+        "observed_sha256": "7f68c907c45983b2cc2fb05dc5182e34a64df1bd6d8e69d5ff45dd448c57640c",
+        "pass": true,
+        "relative_path": "Siletti_HBCA_all_non_neuronal_cells.h5ad"
+      },
+      {
+        "dataset_folder": "Siletti_HBCA",
+        "expected_sha256": "0efc5e1c3d3e56cda572f15479c05207e6f8ad0034a08f4d228263a9963451a6",
+        "observed_sha256": "0efc5e1c3d3e56cda572f15479c05207e6f8ad0034a08f4d228263a9963451a6",
+        "pass": true,
+        "relative_path": "Siletti_HBCA_all_neurons.h5ad"
+      },
+      {
+        "dataset_folder": "spatialLIBD_classic_DLPFC",
+        "expected_sha256": "c6de58aa59c79ae45d6cc9d6c99b31eff12e2a51833c5d55b20c5ef9e53a71e3",
+        "observed_sha256": "c6de58aa59c79ae45d6cc9d6c99b31eff12e2a51833c5d55b20c5ef9e53a71e3",
+        "pass": true,
+        "relative_path": "Human_DLPFC_Visium_processedData_sce_scran_spatialLIBD.Rdata"
+      },
+      {
+        "dataset_folder": "spatialLIBD_classic_DLPFC",
+        "expected_sha256": "99bfdf9693f175b6ab9d099d7734e8dfbfe2b6595650f41f6bda4ce61169529e",
+        "observed_sha256": "99bfdf9693f175b6ab9d099d7734e8dfbfe2b6595650f41f6bda4ce61169529e",
+        "pass": true,
+        "relative_path": "HumanPilot_README.md"
+      }
+    ]
+  },
+  "stage": "STAGE81A3-UCDQ",
+  "vocabulary_semantic_hash": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+  "vocabulary_size": 4096
+}

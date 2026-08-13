@@ -1,0 +1,161 @@
+{
+  "anchor": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "context_classification": "B. CONTEXT ARCHITECTURE MECHANICS QUALIFIED; REAL CONTEXT DATA INSUFFICIENT",
+  "context_data": {
+    "context_optimizer_updates": 0,
+    "legitimate_physical_context_data": "AVAILABLE",
+    "real_context_qualification": "BLOCKED BY DATA AVAILABILITY",
+    "real_probe_eligible_assets": 0
+  },
+  "context_mechanics": {
+    "context_exemplars": 8,
+    "context_overwrites_intrinsic_state": false,
+    "directional_association": true,
+    "expression_similarity_used_as_physical_context": false,
+    "fine_ledger_query_shape": [
+      1,
+      1,
+      160
+    ],
+    "iterative_message_passing": false,
+    "mechanics_pass": true,
+    "neighbors_unchanged": true,
+    "null_context_finite": true,
+    "target_unchanged": true
+  },
+  "donor_transfer_root_cause": {
+    "classification": "RARE-STATE DOMINATED",
+    "rho_donor_breadth_vs_recall": 0.48024940240856867,
+    "rho_log_cell_count_vs_recall": 0.8467527699292076
+  },
+  "governance": {
+    "context_optimizer_updates": 0,
+    "development_expression_accessed": false,
+    "intrinsic_optimizer_updates": 0,
+    "pathology_opened": false,
+    "production_basis_frozen": false,
+    "sealed_expression_accessed": false,
+    "stage81b_started": false,
+    "train_expression_only": true
+  },
+  "hard_gates": {
+    "basis_not_frozen": true,
+    "dev_closed": true,
+    "intrinsic_not_mutated": true,
+    "molecular_ledger_preserved": true,
+    "no_expression_similarity_edges": true,
+    "no_id_embeddings": true,
+    "no_message_passing": true,
+    "no_pathology_rarity": true,
+    "no_production_training": true,
+    "pathology_closed": true,
+    "sealed_closed": true,
+    "split_preserved": true,
+    "stage81b_not_started": true,
+    "thresholds_predeclared": true
+  },
+  "outputs": {
+    "context_inventory": "results/v4/stage81a3_context_data_inventory.csv",
+    "context_mechanics": "results/v4/stage81a3_context_mechanics.json",
+    "context_rare_neighbor": "results/v4/stage81a3_context_rare_neighbor.csv",
+    "data_rare": "results/v4/stage81a3_data_defined_rare_candidates.csv",
+    "donor_class": "results/v4/stage81a3_donor_transfer_by_class.csv",
+    "freeze_readiness": "results/v4/stage81a3_prrc_freeze_readiness.csv",
+    "qc": "results/v4/stage81a3_qc_earning_repair.csv",
+    "rare_preservation": "results/v4/stage81a3_rare_state_preservation.csv",
+    "rare_registry": "results/v4/stage81a3_rare_state_registry.csv",
+    "report": "results/v4/stage81a3_prrc_report.json",
+    "transfer": "results/v4/stage81a3_transfer_taxonomy_repair.csv",
+    "uncertainty": "results/v4/stage81a3_subspace_uncertainty_blocks.csv"
+  },
+  "performance": {
+    "peak_cpu_rss_bytes": 5574696960,
+    "peak_gpu_allocated_bytes": 168209920,
+    "wall_seconds": 818.0560583001934
+  },
+  "primary_classification": "B. CORE INTRINSIC ARCHITECTURE VALID; RARE-STATE ISSUE REQUIRES PRE-FREEZE REVISION",
+  "qc": {
+    "classification": "EARNED",
+    "evaluable_matrices": 36,
+    "favorable_matrix_fraction": 1.0,
+    "median_quality_spearman": 0.9751434831959641,
+    "median_relative_mae_improvement": 0.7199005504495266,
+    "minimum_technology_median_improvement": 0.4965975942394752
+  },
+  "rare_state": {
+    "annotation_rare": 13,
+    "critical_compression_flag": false,
+    "donor_recurring_rare": 13,
+    "frequency_scope": "all eligible pathology-blind TRAIN metadata",
+    "pca_rare_state_decision": "E. RARE-STATE IDENTIFIABILITY INSUFFICIENT",
+    "preservation_scope": "paired bounded TRAIN sample; k=15 requires at least 16 evaluated class cells",
+    "registry_rows": 26,
+    "unidentifiable_donor_recurring_rare_annotations": [
+      "CN LAMP5-CXCL14 GABASubclass",
+      "EpendymalSubclass",
+      "STR RSPO2 GABASubclass",
+      "VipSubclass"
+    ]
+  },
+  "ready_for_human_a3_freeze_review": false,
+  "recommendations": [
+    {
+      "item": "human review of bounded rare-state and context-data conclusions",
+      "timing": "REQUIRED BEFORE A3 FREEZE"
+    },
+    {
+      "item": "retain QC only in measurement stream if earned",
+      "timing": "REQUIRED BEFORE PRODUCTION FOUNDATION TRAINING"
+    },
+    {
+      "item": "acquire or pair full-state pathology-blind physical context for real qualification",
+      "timing": "DOWNSTREAM AFTER FOUNDATION FREEZE"
+    },
+    {
+      "item": "retain REP160 only as diagnostic control",
+      "timing": "OPTIONAL"
+    }
+  ],
+  "stage": "stage81a3_prrc",
+  "subspace_uncertainty": {
+    "blocks": 164,
+    "classification": "SUBSPACE",
+    "pathway_labels": false,
+    "relative_eigengap": 0.01
+  },
+  "transfer_taxonomy": {
+    "dataset": {
+      "combined_interpretation": "STRONG WHERE IDENTIFIABLE / BROAD COVERAGE",
+      "holdout_type": "dataset",
+      "identifiability_coverage": "BROAD",
+      "identifiable_fraction": 0.8461538461538461,
+      "identifiable_units": 11,
+      "median_balanced_accuracy_where_identifiable": 1.0,
+      "median_neighbor_purity_where_identifiable": 0.9963541666666668,
+      "performance_where_identifiable": "STRONG",
+      "total_units": 13
+    },
+    "matrix": {
+      "combined_interpretation": "STRONG WHERE IDENTIFIABLE / PARTIAL COVERAGE",
+      "holdout_type": "matrix",
+      "identifiability_coverage": "PARTIAL",
+      "identifiable_fraction": 0.2777777777777778,
+      "identifiable_units": 10,
+      "median_balanced_accuracy_where_identifiable": 1.0,
+      "median_neighbor_purity_where_identifiable": 0.996875,
+      "performance_where_identifiable": "STRONG",
+      "total_units": 36
+    },
+    "technology": {
+      "combined_interpretation": "STRONG WHERE IDENTIFIABLE / BROAD COVERAGE",
+      "holdout_type": "technology",
+      "identifiability_coverage": "BROAD",
+      "identifiable_fraction": 1.0,
+      "identifiable_units": 4,
+      "median_balanced_accuracy_where_identifiable": 0.9962585706751056,
+      "median_neighbor_purity_where_identifiable": 0.9934027777777779,
+      "performance_where_identifiable": "STRONG",
+      "total_units": 4
+    }
+  }
+}

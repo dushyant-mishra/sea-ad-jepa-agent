@@ -1,0 +1,66 @@
+rare_neighborhood_id,broad_family,technical_concern,log_library_median_abs_robust_z,detected_genes_median_abs_robust_z,zero_fraction_median_abs_robust_z,quality_fields_used,new_qc_filter_applied
+Astrocytes::001,Astrocytes,HIGH TECHNICAL CONCERN,3.5178709572405094,2.624025572102459,2.624025572102459,library_size;detected_genes;zero_fraction,False
+Astrocytes::002,Astrocytes,MIXED TECHNICAL ASSOCIATION,2.7704414304899743,2.19699898388797,2.19699898388797,library_size;detected_genes;zero_fraction,False
+Endothelial___vascular::001,Endothelial / vascular,MIXED TECHNICAL ASSOCIATION,2.1696598589640916,0.9656994683299823,0.9656994683299823,library_size;detected_genes;zero_fraction,False
+Endothelial___vascular::002,Endothelial / vascular,LOW TECHNICAL CONCERN,0.5841064542604422,0.5089014936580025,0.5089014936580025,library_size;detected_genes;zero_fraction,False
+Endothelial___vascular::003,Endothelial / vascular,LOW TECHNICAL CONCERN,0.4168819546938908,0.3347472658143102,0.3347472658143102,library_size;detected_genes;zero_fraction,False
+Ependymal::001,Ependymal,LOW TECHNICAL CONCERN,1.431754112202598,1.0666903606130718,1.0666903606130718,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::001,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,2.132528743681742,2.7249744464130994,2.7249744464130994,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::002,Excitatory neurons,HIGH TECHNICAL CONCERN,2.626679151321618,3.4479268505635137,3.4479268505635137,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::003,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,1.2035656556882344,1.6429291997616005,1.6429291997616005,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::004,Excitatory neurons,HIGH TECHNICAL CONCERN,2.5080589412013974,3.4352155995015283,3.4352155995015283,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::005,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,2.473580654961667,2.8727427400086785,2.8727427400086785,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::006,Excitatory neurons,HIGH TECHNICAL CONCERN,2.998730305740165,3.521016544169929,3.521016544169929,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::007,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,2.506380831302297,2.860031488946693,2.860031488946693,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::008,Excitatory neurons,HIGH TECHNICAL CONCERN,3.3694604769043646,3.6910295271239826,3.6910295271239826,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::009,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,2.7107366502715986,2.9696660293563166,2.9696660293563166,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::010,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,2.155808717500792,2.8298422676744783,2.8298422676744783,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::011,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,1.4509822985358676,2.6359956889792024,2.6359956889792024,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::012,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,2.5403497799252825,2.8473202378847082,2.8473202378847082,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::013,Excitatory neurons,MIXED TECHNICAL ASSOCIATION,1.4908712319221769,1.9654771954594776,1.9654771954594776,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::014,Excitatory neurons,HIGH TECHNICAL CONCERN,2.8961345853979887,3.29539183781969,3.29539183781969,library_size;detected_genes;zero_fraction,False
+Excitatory_neurons::015,Excitatory neurons,HIGH TECHNICAL CONCERN,3.0486034829384323,3.414559816525802,3.414559816525802,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::001,Inhibitory neurons,LOW TECHNICAL CONCERN,1.1855610368484655,0.8933870763350797,0.8933870763350797,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::002,Inhibitory neurons,LOW TECHNICAL CONCERN,0.6099799721338739,0.6942705471445306,0.6942705471445306,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::003,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.095134146462664,1.907430857444565,1.907430857444565,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::004,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.4758431140381094,2.1395136994150064,2.1395136994150064,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::005,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.316895975652416,1.9812753980715236,1.9812753980715236,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::006,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.6244925129946624,2.2792908656017494,2.2792908656017494,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::007,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,1.9189569399857218,1.5949102122911865,1.5949102122911865,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::008,Inhibitory neurons,LOW TECHNICAL CONCERN,0.5106214550683594,0.5703172110921357,0.5703172110921357,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::009,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.556983620553192,2.3214877459600114,2.3214877459600114,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::010,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.8506041338072308,2.4362105144340367,2.4362105144340367,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::011,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.409922090309815,2.3083012208480547,2.3083012208480547,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::012,Inhibitory neurons,LOW TECHNICAL CONCERN,1.4756781900333356,1.2428299918019374,1.2428299918019374,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::013,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,1.7325030987225436,1.695127803142059,1.695127803142059,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::014,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,1.533089452961592,1.5171097141306409,1.5171097141306409,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::015,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.554219023888557,2.3478607961839253,2.3478607961839253,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::016,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,2.1705943391717533,1.9390785177132615,1.9390785177132615,library_size;detected_genes;zero_fraction,False
+Inhibitory_neurons::017,Inhibitory neurons,MIXED TECHNICAL ASSOCIATION,1.5705423063133532,2.1883038423292467,2.1883038423292467,library_size;detected_genes;zero_fraction,False
+Microglia___immune::001,Microglia / immune,MIXED TECHNICAL ASSOCIATION,1.6117286867020277,1.0726553164285404,1.0726553164285404,library_size;detected_genes;zero_fraction,False
+OPCs::001,OPCs,HIGH TECHNICAL CONCERN,4.518520677673366,3.362326308501946,3.362326308501946,library_size;detected_genes;zero_fraction,False
+OPCs::002,OPCs,LOW TECHNICAL CONCERN,1.2859120700255975,0.9722389325788761,0.9722389325788761,library_size;detected_genes;zero_fraction,False
+Oligodendrocytes::001,Oligodendrocytes,MIXED TECHNICAL ASSOCIATION,2.5043221117070975,1.8796058283475203,1.8796058283475203,library_size;detected_genes;zero_fraction,False
+Oligodendrocytes::002,Oligodendrocytes,HIGH TECHNICAL CONCERN,3.2060740388100593,2.204706637624328,2.204706637624328,library_size;detected_genes;zero_fraction,False
+Oligodendrocytes::003,Oligodendrocytes,MIXED TECHNICAL ASSOCIATION,2.066798978598174,1.5563734145263264,1.5563734145263264,library_size;detected_genes;zero_fraction,False
+Oligodendrocytes::004,Oligodendrocytes,MIXED TECHNICAL ASSOCIATION,2.1885748166663657,1.5769257645380788,1.5769257645380788,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::001,Other authorized families,LOW TECHNICAL CONCERN,0.5788362733089747,1.268957191557662,1.268957191557662,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::002,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.7957705539826765,2.9168050760900703,2.9168050760900703,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::003,Other authorized families,MIXED TECHNICAL ASSOCIATION,2.0785176855811742,2.9657995622505977,2.9657995622505977,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::004,Other authorized families,HIGH TECHNICAL CONCERN,2.1174444861511024,3.0948183758066534,3.0948183758066534,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::005,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.562697600894906,1.2003649109329235,1.2003649109329235,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::006,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.557536833427311,2.4823872988000595,2.4823872988000595,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::007,Other authorized families,MIXED TECHNICAL ASSOCIATION,2.9190706006699845,1.8928203153350456,1.8928203153350456,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::008,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.9167905682617676,1.4012423041910862,1.4012423041910862,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::009,Other authorized families,LOW TECHNICAL CONCERN,1.4718607459463515,1.4241063977326658,1.4241063977326658,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::010,Other authorized families,LOW TECHNICAL CONCERN,1.4388194747801406,1.014185863522919,1.014185863522919,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::011,Other authorized families,MIXED TECHNICAL ASSOCIATION,2.5964126232050697,1.7319550857746469,1.7319550857746469,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::012,Other authorized families,MIXED TECHNICAL ASSOCIATION,2.068545299270095,1.575989304830301,1.575989304830301,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::013,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.5933493800891623,1.2558919952481882,1.2558919952481882,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::014,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.577358974605985,1.1236068826147638,1.1236068826147638,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::015,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.2424938727727728,2.1426921947537356,2.1426921947537356,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::016,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.8495360370362794,1.3587804161852959,1.3587804161852959,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::017,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.6423746217737238,2.080632512283734,2.080632512283734,library_size;detected_genes;zero_fraction,False
+Other_authorized_families::018,Other authorized families,MIXED TECHNICAL ASSOCIATION,1.0081162138876105,1.6380489873003026,1.6380489873003026,library_size;detected_genes;zero_fraction,False
+Pericyte___mural::001,Pericyte / mural,LOW TECHNICAL CONCERN,0.77320869684721,0.7104723227852399,0.7104723227852399,library_size;detected_genes;zero_fraction,False
+Pericyte___mural::002,Pericyte / mural,LOW TECHNICAL CONCERN,0.18105246620035034,0.20084254428643522,0.20084254428643522,library_size;detected_genes;zero_fraction,False

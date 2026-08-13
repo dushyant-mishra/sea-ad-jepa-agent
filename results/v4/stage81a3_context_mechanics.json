@@ -1,0 +1,16 @@
+{
+  "context_exemplars": 8,
+  "context_overwrites_intrinsic_state": false,
+  "directional_association": true,
+  "expression_similarity_used_as_physical_context": false,
+  "fine_ledger_query_shape": [
+    1,
+    1,
+    160
+  ],
+  "iterative_message_passing": false,
+  "mechanics_pass": true,
+  "neighbors_unchanged": true,
+  "null_context_finite": true,
+  "target_unchanged": true
+}

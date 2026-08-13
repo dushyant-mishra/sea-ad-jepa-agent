@@ -1,0 +1,5 @@
+path,context_classification,n_cells,n_features,coordinate_key,donor_identifier_available,full_4096_gene_target_reference,real_probe_eligible,eligibility_reason,pathology_values_opened,rna_similarity_used_for_edges
+data/external/v4/sea_ad/merfish/SEAAD_MTG_MERFISH.2024-12-11.h5ad,CELL-RESOLVED PHYSICAL CONTEXT,1887729,180,spatial,True,False,False,cell-resolved coordinates present; full 4096-gene paired target reference absent,False,False
+data/external/v4/sea_ad/merfish/1444211893_HPF_mapped.h5ad,CELL-RESOLVED PHYSICAL CONTEXT,132120,433,spatial,False,False,False,cell-resolved coordinates present; full 4096-gene paired target reference absent,False,False
+data/external/v4/sea_ad/merfish/1444201261_MEC_mapped.h5ad,CELL-RESOLVED PHYSICAL CONTEXT,130345,433,spatial,False,False,False,cell-resolved coordinates present; full 4096-gene paired target reference absent,False,False
+data/external/v4/sea_ad/xenium/CaH_Xenium.2026-01-07.h5ad,CELL-RESOLVED PHYSICAL CONTEXT,1541477,464,spatial,True,False,False,cell-resolved coordinates present; full 4096-gene paired target reference absent,False,False

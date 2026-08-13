@@ -1,0 +1,5 @@
+basis,metric,before,after,change
+BALANCED_PCA160,technology_balanced_accuracy,0.86341299548023,0.779260879117223,-0.08415211636300701
+BALANCED_PCA160,broad_class_balanced_accuracy,,,
+BALANCED_REP160,technology_balanced_accuracy,0.860573094876751,0.7584956185259827,-0.10207747635076836
+BALANCED_REP160,broad_class_balanced_accuracy,,,

@@ -1,0 +1,7 @@
+condition,definition,mask_sensitivity_ratio,mean_between_cell_squared_distance_within_matching_mask,mean_within_cell_squared_distance_across_mask_pairs,stage
+original,mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,0.0436803247268337,94.69911193847656,4.13648796081543,cross_attention_slots
+original,mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,0.034321250264862796,59.69853210449219,2.0489282608032227,post_latent_final_slots
+original,mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,0.034467684233539665,2.474407434463501,0.08528709411621094,pooled_representation
+scaled_learned_ranking,mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,0.07005567917148817,129.1083221435547,9.044771194458008,cross_attention_slots
+scaled_learned_ranking,mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,0.052754041238988324,81.4674301147461,4.297736167907715,post_latent_final_slots
+scaled_learned_ranking,mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,0.034240708679940605,2.895533800125122,0.09914512932300568,pooled_representation

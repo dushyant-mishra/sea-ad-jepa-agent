@@ -1,0 +1,11 @@
+broad_family,annotation_rare_states,donor_recurring_rare_states,robustly_identifiable,identifiable_but_sparse,not_identifiable,adequately_preserved,borderline,critical
+Astrocytes,1,1,1,0,0,1,0,0
+Endothelial / vascular,1,1,1,0,0,1,0,0
+Ependymal,1,1,1,0,0,1,0,0
+Excitatory neurons,1,1,1,0,0,1,0,0
+Inhibitory neurons,5,5,5,0,0,5,0,0
+Microglia / immune,1,1,1,0,0,1,0,0
+OPCs,2,2,2,0,0,2,0,0
+Oligodendrocytes,1,1,1,0,0,1,0,0
+Other authorized families,1,1,1,0,0,1,0,0
+Pericyte / mural,0,0,0,0,0,0,0,0

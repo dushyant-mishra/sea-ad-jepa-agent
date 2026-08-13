@@ -1,0 +1,64 @@
+{
+  "anchor": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "classification": "ENGINEERING / NUMERICAL FAILURE",
+  "failure": {
+    "error": "RuntimeError: expected scalar type Double but found Float",
+    "location": "counterfactual changed-direction uncertainty finalization",
+    "stage": "after 150 optimizer updates and after eight frozen-encoder SEALED mask evaluations",
+    "scientific_model_failure": false,
+    "trained_model_recoverable": false,
+    "rerun_performed": false
+  },
+  "firewall_evidence": {
+    "frozen_gradient_checks_passed_in_process": [1, 25, 150],
+    "frozen_hash_checks_passed_in_process": [0, 25, 50, 100, 150],
+    "hash_digests_persisted": false,
+    "molecular_encoder_optimizer_updates": 0,
+    "tokenizer_optimizer_updates": 0
+  },
+  "governance": {
+    "belief_optimizer_updates": 150,
+    "frozen_encoder_models_trained": 1,
+    "hyperparameter_sweep": false,
+    "pathology_opened": false,
+    "preservation_regularizer_added": false,
+    "ready_for_stage81b": false,
+    "real_rna_accessed": false,
+    "seed_sweep": false,
+    "stage81a3_complete": false
+  },
+  "initialization_parity": {
+    "absolute_retention_difference": 0.0,
+    "pass": true,
+    "previous_step0_retention": 1.0020574895396623,
+    "reconstructed_step0_retention": 1.0020574895396623
+  },
+  "outputs_not_persisted_due_atomic_finalization_failure": [
+    "calibration",
+    "correlated_activity",
+    "replicate_consistency",
+    "counterfactual_sidecar",
+    "parameter_hash_digests",
+    "performance_accounting"
+  ],
+  "stage": "stage81a3_rbb_frozen_encoder_probe",
+  "telemetry_observed": [
+    {"nll_per_dimension": 0.693592, "retention_ratio": 1.0020574895396623, "step": 25},
+    {"nll_per_dimension": 0.800885, "retention_ratio": 1.0020574895396623, "step": 50},
+    {"nll_per_dimension": 0.788535, "retention_ratio": 1.0020574895396623, "step": 100},
+    {"nll_per_dimension": 0.782296, "retention_ratio": 1.0020574895396623, "step": 150}
+  ],
+  "token_retention": {
+    "all_milestones_at_or_above_0_95": true,
+    "maximum_observed_change": 0.0,
+    "milestones": [0, 25, 50, 100, 150],
+    "previous_trainable_step150": 0.8811191875486374,
+    "values": [
+      1.0020574895396623,
+      1.0020574895396623,
+      1.0020574895396623,
+      1.0020574895396623,
+      1.0020574895396623
+    ]
+  }
+}

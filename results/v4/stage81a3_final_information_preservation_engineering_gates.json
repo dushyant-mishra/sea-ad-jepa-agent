@@ -1,0 +1,115 @@
+{
+  "engineering_gates": {
+    "checkpoint_resume": true,
+    "compute_contract": true,
+    "determinism_reproducibility": true,
+    "ema_correctness": true,
+    "ema_counts": true,
+    "focused_candidate_tests": true,
+    "masking_semantics": true,
+    "mixed_precision_health": true,
+    "online_gradients": true,
+    "pathology_firewall": true,
+    "post_qualification_full_tests": true,
+    "predictor_gradients": true,
+    "protected_files_unchanged": true,
+    "repository_integrity": true,
+    "unapproved_training_behavior": false,
+    "zero_target_gradients": true
+  },
+  "engineering_qualification_pass": true,
+  "evidence": {
+    "checkpoint_resume": {
+      "checkpoint_update": 1,
+      "continuation_updates": 1,
+      "counters_equal": true,
+      "first_loss": 0.25149182649329305,
+      "gradscaler_state_equal": true,
+      "mask_generator_restored": true,
+      "maximum_differences": {
+        "loss": 0.0,
+        "online": 0.0,
+        "predictor": 0.0,
+        "target": 0.0
+      },
+      "optimizer_state_equal": true,
+      "pass": true,
+      "resumed_loss": 0.15016306238248944,
+      "rng_state_restored": true,
+      "temporary_checkpoint_removed": true,
+      "uninterrupted_loss": 0.15016306238248944
+    },
+    "ema_mechanics": {
+      "ema_updates": 1,
+      "float32_formula_tolerance": 5e-07,
+      "maximum_formula_error": 2.384185791015625e-07,
+      "momentum": 0.996,
+      "optimizer_updates": 1,
+      "pass": true,
+      "target_requires_grad": false,
+      "update_order_contract": "after_successful_optimizer_step"
+    },
+    "focused_tests": {
+      "pass": true,
+      "return_code": 0,
+      "stderr": "",
+      "stdout": "................                                                         [100%]\n16 passed in 3.37s"
+    },
+    "masking": {
+      "checks": {
+        "exact_hidden_count": true,
+        "hidden_is_measured_subset": true,
+        "stateless_determinism": true,
+        "student_valid_contract": true,
+        "target_valid_contract": true
+      },
+      "hidden_counts": [
+        40,
+        80,
+        400
+      ],
+      "pass": true
+    },
+    "pathology_firewall": {
+      "executable_forbidden_field_accesses": [],
+      "factor_labels_enter_model_optimizer_ema_mask_or_pca": false,
+      "pass": true,
+      "runtime_input_source": "deterministic synthetic_fixture only",
+      "textual claim-boundary mentions_are_not_data_access": true
+    },
+    "peak_allocated_bytes": 271799296,
+    "post_qualification_full_tests": {
+      "pass": true,
+      "return_code": 0,
+      "stderr": "",
+      "stdout": "........................................................................ [ 40%]\n........................................................................ [ 80%]\n...................................                                      [100%]\n179 passed in 38.50s"
+    },
+    "protected_tracked_file_hashes_after": {
+      "results/v4/stage81a0_v4_stage_report.json": "073c764be8176cc1f798861789d993ed9d61bc8c853b9430a82bc94db6f99a3c"
+    },
+    "protected_tracked_file_hashes_before": {
+      "results/v4/stage81a0_v4_stage_report.json": "073c764be8176cc1f798861789d993ed9d61bc8c853b9430a82bc94db6f99a3c"
+    },
+    "repository": {
+      "branch": "main",
+      "expected_evidence_commit": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+      "head": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+      "origin_main": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+      "pass": true,
+      "staged_paths": []
+    }
+  },
+  "parameter_audit": {
+    "categorical_cell_type_input": false,
+    "full_gene_gene_attention": false,
+    "graph_propagation": false,
+    "online_encoder": 730752,
+    "pathology_input": false,
+    "pca_component_values": 614400,
+    "pca_mean_values": 3840,
+    "pca_trainable_neural_parameters": 0,
+    "predictor": 206560,
+    "source_donor_study_input": false
+  },
+  "stage": "stage81a3_final_information_preservation_qualification"
+}

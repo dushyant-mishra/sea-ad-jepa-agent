@@ -1,0 +1,235 @@
+brain_region,canonical_person_group_id,dataset_id,evidence_source,exact_identity_evidence,sample_id,source_donor_id,technology
+cortex,UNRESOLVED,10x_Xenium_healthy_cortex_preview,stage81a3_context_candidate_donor_graph.csv,none,dataset_level,unresolved,10x Xenium
+approximately 100 adult human brain dissections,PERSON_0002,CELLxGENE:283d65eb-dd53-496d-adb7-7570c7caa443,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_H18.30.001,H18.30.001,10x 3' v3 snRNA-seq
+approximately 100 adult human brain dissections,PERSON_0003,CELLxGENE:283d65eb-dd53-496d-adb7-7570c7caa443,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_H18.30.002,H18.30.002,10x 3' v3 snRNA-seq
+approximately 100 adult human brain dissections,PERSON_0004,CELLxGENE:283d65eb-dd53-496d-adb7-7570c7caa443,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_H19.30.001,H19.30.001,10x 3' v3 snRNA-seq
+approximately 100 adult human brain dissections,PERSON_0005,CELLxGENE:283d65eb-dd53-496d-adb7-7570c7caa443,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_H19.30.002,H19.30.002,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0006,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_1C41i,1C41i,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0007,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_3u5kk,3u5kk,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0008,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_TweV8,TweV8,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0009,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_buFpQ,buFpQ,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0010,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_eXCJJ,eXCJJ,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0011,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_f5sVM,f5sVM,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0012,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_siletti_H18.30.002,siletti_H18.30.002,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0013,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_siletti_H19.30.001,siletti_H19.30.001,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0014,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_siletti_H19.30.002,siletti_H19.30.002,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0015,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_tzan2,tzan2,10x 3' v3 snRNA-seq
+hypothalamus,PERSON_0016,CELLxGENE:d0941303-7ce3-4422-9249-cf31eb98c480,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,donor_znZv1,znZv1,10x 3' v3 snRNA-seq
+hippocampus,UNRESOLVED,CosMx_WTX_human_hippocampus,stage81a3_context_candidate_donor_graph.csv,none,dataset_level,unresolved,CosMx SMI WTX
+frontal cortex,UNRESOLVED,CosMx_human_frontal_cortex_6K,stage81a3_context_candidate_donor_graph.csv,none,dataset_level,unresolved,CosMx SMI
+hippocampus,PERSON_0049,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V10B01-085_A1,Br6423,10x Visium
+hippocampus,PERSON_0049,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V10B01-085_B1,Br6423,10x Visium
+hippocampus,PERSON_0049,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V10B01-085_C1,Br6423,10x Visium
+hippocampus,PERSON_0049,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V10B01-085_D1,Br6423,10x Visium
+hippocampus,PERSON_0050,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V10B01-086_A1,Br6432,10x Visium
+hippocampus,PERSON_0050,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V10B01-086_B1,Br6432,10x Visium
+hippocampus,PERSON_0051,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V10B01-086_C1,Br2743,10x Visium
+hippocampus,PERSON_0051,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V10B01-086_D1,Br2743,10x Visium
+hippocampus,PERSON_0052,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11A20-297_A1,Br8325,10x Visium
+hippocampus,PERSON_0052,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11A20-297_B1,Br8325,10x Visium
+hippocampus,PERSON_0052,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11A20-297_C1,Br8325,10x Visium
+hippocampus,PERSON_0052,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11A20-297_D1,Br8325,10x Visium
+hippocampus,PERSON_0053,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-333_A1,Br3942,10x Visium
+hippocampus,PERSON_0053,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-333_B1,Br3942,10x Visium
+hippocampus,PERSON_0053,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-333_C1,Br3942,10x Visium
+hippocampus,PERSON_0053,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-333_D1,Br3942,10x Visium
+hippocampus,PERSON_0054,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-335_A1,Br6471,10x Visium
+hippocampus,PERSON_0054,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-335_B1,Br6471,10x Visium
+hippocampus,PERSON_0054,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-335_C1,Br6471,10x Visium
+hippocampus,PERSON_0052,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-335_D1,Br8325,10x Visium
+hippocampus,PERSON_0055,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-336_A1,Br8667,10x Visium
+hippocampus,PERSON_0055,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-336_B1,Br8667,10x Visium
+hippocampus,PERSON_0055,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-336_C1,Br8667,10x Visium
+hippocampus,PERSON_0055,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11L05-336_D1,Br8667,10x Visium
+hippocampus,PERSON_0056,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11U08-081_A1,Br8492,10x Visium
+hippocampus,PERSON_0056,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11U08-081_B1,Br8492,10x Visium
+hippocampus,PERSON_0051,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11U08-081_C1,Br2743,10x Visium
+hippocampus,PERSON_0051,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11U08-081_D1,Br2743,10x Visium
+hippocampus,PERSON_0057,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11U08-084_A1,Br6522,10x Visium
+hippocampus,PERSON_0057,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11U08-084_B1,Br6522,10x Visium
+hippocampus,PERSON_0057,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11U08-084_C1,Br6522,10x Visium
+hippocampus,PERSON_0057,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V11U08-084_D1,Br6522,10x Visium
+hippocampus,PERSON_0058,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V12F14-051_A1,Br2720,10x Visium
+hippocampus,PERSON_0058,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V12F14-051_B1,Br2720,10x Visium
+hippocampus,PERSON_0058,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V12F14-051_C1,Br2720,10x Visium
+hippocampus,PERSON_0058,GSE264692,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,V12F14-051_D1,Br2720,10x Visium
+hypothalamus,PERSON_0068,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594572,1225,10x Visium
+hypothalamus,PERSON_0069,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594573,1735,10x Visium
+hypothalamus,PERSON_0070,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594574,5459,10x Visium
+hypothalamus,PERSON_0071,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594575,5993,10x Visium
+hypothalamus,PERSON_0072,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594576,6197,10x Visium
+hypothalamus,PERSON_0073,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594577,6588,10x Visium
+hypothalamus,PERSON_0073,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594578,6588,10x Visium
+hypothalamus,PERSON_0074,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594579,8667,10x Visium
+hypothalamus,PERSON_0075,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594580,8741,10x Visium
+hypothalamus,PERSON_0075,GSE280316,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8594581,8741,10x Visium
+hypothalamus,PERSON_0070,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598169,5459,10x Xenium
+hypothalamus,PERSON_0070,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598170,5459,10x Xenium
+hypothalamus,PERSON_0074,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598171,8667,10x Xenium
+hypothalamus,PERSON_0072,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598172,6197,10x Xenium
+hypothalamus,PERSON_0071,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598173,5993,10x Xenium
+hypothalamus,PERSON_0071,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598174,5993,10x Xenium
+hypothalamus,PERSON_0069,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598175,1735,10x Xenium
+hypothalamus,PERSON_0069,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598176,1735,10x Xenium
+hypothalamus,PERSON_0073,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598177,6588,10x Xenium
+hypothalamus,PERSON_0068,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598178,1225,10x Xenium
+hypothalamus,PERSON_0068,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598179,1225,10x Xenium
+hypothalamus,PERSON_0075,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598180,8741,10x Xenium
+hypothalamus,PERSON_0075,GSE280460,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM8598181,8741,10x Xenium
+nucleus accumbens,PERSON_0058,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227428,Br2720,10x Visium
+nucleus accumbens,PERSON_0058,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227429,Br2720,10x Visium
+nucleus accumbens,PERSON_0058,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227430,Br2720,10x Visium
+nucleus accumbens,PERSON_0058,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227431,Br2720,10x Visium
+nucleus accumbens,PERSON_0056,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227432,Br8492,10x Visium
+nucleus accumbens,PERSON_0056,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227433,Br8492,10x Visium
+nucleus accumbens,PERSON_0056,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227434,Br8492,10x Visium
+nucleus accumbens,PERSON_0056,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227435,Br8492,10x Visium
+nucleus accumbens,PERSON_0057,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227436,Br6522,10x Visium
+nucleus accumbens,PERSON_0057,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227437,Br6522,10x Visium
+nucleus accumbens,PERSON_0057,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227438,Br6522,10x Visium
+nucleus accumbens,PERSON_0057,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227439,Br6522,10x Visium
+nucleus accumbens,PERSON_0049,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227440,Br6423,10x Visium
+nucleus accumbens,PERSON_0049,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227441,Br6423,10x Visium
+nucleus accumbens,PERSON_0052,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227442,Br8325,10x Visium
+nucleus accumbens,PERSON_0049,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227443,Br6423,10x Visium
+nucleus accumbens,PERSON_0052,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227444,Br8325,10x Visium
+nucleus accumbens,PERSON_0052,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227445,Br8325,10x Visium
+nucleus accumbens,PERSON_0052,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227446,Br8325,10x Visium
+nucleus accumbens,PERSON_0052,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227447,Br8325,10x Visium
+nucleus accumbens,PERSON_0050,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227448,Br6432,10x Visium
+nucleus accumbens,PERSON_0050,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227449,Br6432,10x Visium
+nucleus accumbens,PERSON_0050,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227450,Br6432,10x Visium
+nucleus accumbens,PERSON_0050,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227451,Br6432,10x Visium
+nucleus accumbens,PERSON_0054,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227452,Br6471,10x Visium
+nucleus accumbens,PERSON_0054,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227453,Br6471,10x Visium
+nucleus accumbens,PERSON_0054,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227454,Br6471,10x Visium
+nucleus accumbens,PERSON_0054,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227455,Br6471,10x Visium
+nucleus accumbens,PERSON_0051,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227456,Br2743,10x Visium
+nucleus accumbens,PERSON_0051,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227457,Br2743,10x Visium
+nucleus accumbens,PERSON_0051,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227458,Br2743,10x Visium
+nucleus accumbens,PERSON_0051,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227459,Br2743,10x Visium
+nucleus accumbens,PERSON_0053,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227460,Br3942,10x Visium
+nucleus accumbens,PERSON_0053,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227461,Br3942,10x Visium
+nucleus accumbens,PERSON_0053,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227462,Br3942,10x Visium
+nucleus accumbens,PERSON_0053,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227463,Br3942,10x Visium
+nucleus accumbens,PERSON_0055,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227464,Br8667,10x Visium
+nucleus accumbens,PERSON_0055,GSE307586,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227465,Br8667,10x Visium
+nucleus accumbens,PERSON_0052,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227466,Br8325,10x snRNA-seq
+nucleus accumbens,PERSON_0052,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227467,Br8325,10x snRNA-seq
+nucleus accumbens,PERSON_0056,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227468,Br8492,10x snRNA-seq
+nucleus accumbens,PERSON_0056,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227469,Br8492,10x snRNA-seq
+nucleus accumbens,PERSON_0058,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227470,Br2720,10x snRNA-seq
+nucleus accumbens,PERSON_0058,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227471,Br2720,10x snRNA-seq
+nucleus accumbens,PERSON_0049,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227472,Br6423,10x snRNA-seq
+nucleus accumbens,PERSON_0049,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227473,Br6423,10x snRNA-seq
+nucleus accumbens,PERSON_0051,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227474,Br2743,10x snRNA-seq
+nucleus accumbens,PERSON_0051,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227475,Br2743,10x snRNA-seq
+nucleus accumbens,PERSON_0053,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227476,Br3942,10x snRNA-seq
+nucleus accumbens,PERSON_0053,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227477,Br3942,10x snRNA-seq
+nucleus accumbens,PERSON_0050,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227478,Br6432,10x snRNA-seq
+nucleus accumbens,PERSON_0050,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227479,Br6432,10x snRNA-seq
+nucleus accumbens,PERSON_0054,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227480,Br6471,10x snRNA-seq
+nucleus accumbens,PERSON_0054,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227481,Br6471,10x snRNA-seq
+nucleus accumbens,PERSON_0057,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227482,Br6522,10x snRNA-seq
+nucleus accumbens,PERSON_0057,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227483,Br6522,10x snRNA-seq
+nucleus accumbens,PERSON_0055,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227484,Br8667,10x snRNA-seq
+nucleus accumbens,PERSON_0055,GSE307587,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9227485,Br8667,10x snRNA-seq
+nucleus accumbens,PERSON_0057,GSE325489,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9604821,Br6522,10x Xenium
+nucleus accumbens,PERSON_0058,GSE325489,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9604822,Br2720,10x Xenium
+nucleus accumbens,PERSON_0050,GSE325489,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9604823,Br6432,10x Xenium
+nucleus accumbens,PERSON_0054,GSE325489,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,GSM9604824,Br6471,10x Xenium
+20 PFC/reference cortical regional categories,UNRESOLVED,HPA_Zhong_PFC_RNA,stage81a3_context_candidate_donor_graph.csv,none,dataset_level,unresolved,bulk RNA-seq
+frontal cortex and cerebellum,UNRESOLVED,HPA_human_brain_StereoSeq,stage81a3_context_candidate_donor_graph.csv,none,dataset_level,unresolved,Stereo-seq
+193 anatomical brain subregions,UNRESOLVED,HPA_regional_human_brain_RNA,stage81a3_context_candidate_donor_graph.csv,none,dataset_level,unresolved,bulk RNA-seq
+MTG,PERSON_0080,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H18.06.006.MTG.4000.expand.rep1,H18.06.006,MERFISH
+MTG,PERSON_0080,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H18.06.006.MTG.4000.expand.rep2,H18.06.006,MERFISH
+MTG,PERSON_0080,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H18.06.006.MTG.4000.expand.rep3,H18.06.006,MERFISH
+STG,PERSON_0004,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H19.30.001.STG.4000.expand.rep1,H19.30.001,MERFISH
+STG,PERSON_0004,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H19.30.001.STG.4000.expand.rep2,H19.30.001,MERFISH
+STG,PERSON_0081,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H20.30.001.STG.4000.expand.rep1,H20.30.001,MERFISH
+STG,PERSON_0081,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H20.30.001.STG.4000.expand.rep2,H20.30.001,MERFISH
+STG,PERSON_0081,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H20.30.001.STG.4000.expand.rep3,H20.30.001,MERFISH
+MTG,PERSON_0082,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H22.26.401.MTG.4000.expand.rep1,H22.26.401,MERFISH
+MTG,PERSON_0082,doi:10.5061/dryad.x3ffbg7mw,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,H22.26.401.MTG.4000.expand.rep2,H22.26.401,MERFISH
+DLPFC,PERSON_0058,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br2720_ant,Br2720,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0058,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br2720_mid,Br2720,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0058,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br2720_post,Br2720,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0051,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br2743_ant,Br2743,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0051,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br2743_mid,Br2743,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0051,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br2743_post,Br2743,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0053,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br3942_ant,Br3942,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0053,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br3942_mid,Br3942,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0053,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br3942_post,Br3942,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0049,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6423_ant,Br6423,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0049,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6423_mid,Br6423,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0049,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6423_post,Br6423,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0050,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6432_ant,Br6432,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0050,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6432_mid,Br6432,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0050,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6432_post,Br6432,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0054,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6471_ant,Br6471,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0054,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6471_mid,Br6471,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0054,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6471_post,Br6471,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0057,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6522_ant,Br6522,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0057,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6522_mid,Br6522,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0057,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br6522_post,Br6522,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0052,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8325_ant,Br8325,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0052,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8325_mid,Br8325,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0052,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8325_post,Br8325,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0056,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8492_ant,Br8492,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0056,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8492_mid,Br8492,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0056,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8492_post,Br8492,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0055,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8667_ant,Br8667,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0055,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8667_mid,Br8667,10x Visium and 10x snRNA-seq
+DLPFC,PERSON_0055,spatialDLPFC,stage81a3_context_candidate_donor_graph.csv,acquisition exact-donor graph,Br8667_post,Br8667,10x Visium and 10x snRNA-seq
+prefrontal cortex,PERSON_SCP2167_human_cortex1,SCP2167,SCP2167/metadata/humancortex_metadata.csv,exact allowed donor_id column in acquired SCP2167 metadata,dataset_level,human_cortex1,Slide-tags / snRNA-seq
+dentate gyrus / hippocampus,PERSON_GSE248545_Subject_1,GSE248545,GSE248545_family.soft.gz,official GEO sample title identifies one of four distinct subjects,GSM7916581,Subject_1,10x Visium
+dentate gyrus / hippocampus,PERSON_GSE248545_Subject_2,GSE248545,GSE248545_family.soft.gz,official GEO sample title identifies one of four distinct subjects,GSM7916582,Subject_2,10x Visium
+dentate gyrus / hippocampus,PERSON_GSE248545_Subject_3,GSE248545,GSE248545_family.soft.gz,official GEO sample title identifies one of four distinct subjects,GSM7916583,Subject_3,10x Visium
+dentate gyrus / hippocampus,PERSON_GSE248545_Subject_4,GSE248545,GSE248545_family.soft.gz,official GEO sample title identifies one of four distinct subjects,GSM7916584,Subject_4,10x Visium
+hypothalamus,PERSON_GSE278848_oytkk,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555878,oytkk,10x Visium CytAssist v2
+hypothalamus,PERSON_GSE278848_hp9yr,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555879,hp9yr,10x Visium CytAssist v2
+hypothalamus,PERSON_GSE278848_oytkk,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555880,oytkk,10x Visium CytAssist v2
+hypothalamus,PERSON_GSE278848_jplut,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555881,jplut,10x Visium CytAssist v2
+hypothalamus,PERSON_GSE278848_ogtif,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555882,ogtif,10x Visium CytAssist v2
+hypothalamus,PERSON_GSE278848_jplut,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555883,jplut,10x Visium CytAssist v2
+hypothalamus,PERSON_GSE278848_bt5r4,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555884,bt5r4,10x Visium CytAssist v2
+hypothalamus,PERSON_GSE278848_ibv8d,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555885,ibv8d,10x Visium CytAssist v2
+hypothalamus,PERSON_GSE278848_q65kc,GSE278848,GSE278848_family.soft.gz,official sample pseudonym; case-normalized source spelling agrees with the published seven-donor/nine-section design,GSM8555886,q65kc,10x Visium CytAssist v2
+hippocampus,PERSON_0052,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224155,Br8325,10x snRNA-seq
+hippocampus,PERSON_0052,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224156,Br8325,10x snRNA-seq
+hippocampus,PERSON_0055,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224157,Br8667,10x snRNA-seq
+hippocampus,PERSON_0055,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224158,Br8667,10x snRNA-seq
+hippocampus,PERSON_0053,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224159,Br3942,10x snRNA-seq
+hippocampus,PERSON_0053,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224160,Br3942,10x snRNA-seq
+hippocampus,PERSON_0051,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224161,Br2743,10x snRNA-seq
+hippocampus,PERSON_0051,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224162,Br2743,10x snRNA-seq
+hippocampus,PERSON_0054,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224163,Br6471,10x snRNA-seq
+hippocampus,PERSON_0054,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224164,Br6471,10x snRNA-seq
+hippocampus,PERSON_0050,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224165,Br6432,10x snRNA-seq
+hippocampus,PERSON_0050,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224166,Br6432,10x snRNA-seq
+hippocampus,PERSON_0056,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224167,Br8492,10x snRNA-seq
+hippocampus,PERSON_0056,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224168,Br8492,10x snRNA-seq
+hippocampus,PERSON_0049,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224169,Br6423,10x snRNA-seq
+hippocampus,PERSON_0049,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224170,Br6423,10x snRNA-seq
+hippocampus,PERSON_0058,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224171,Br2720,10x snRNA-seq
+hippocampus,PERSON_0058,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224172,Br2720,10x snRNA-seq
+hippocampus,PERSON_0057,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224173,Br6522,10x snRNA-seq
+hippocampus,PERSON_0057,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224174,Br6522,10x snRNA-seq
+hippocampus,PERSON_0057,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224175,Br6522,10x snRNA-seq
+hippocampus,PERSON_0057,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224176,Br6522,10x snRNA-seq
+hippocampus,PERSON_0049,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224177,Br6423,10x snRNA-seq
+hippocampus,PERSON_0049,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224178,Br6423,10x snRNA-seq
+hippocampus,PERSON_0058,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224179,Br2720,10x snRNA-seq
+hippocampus,PERSON_0058,GSE264624,GSE264692_humanHippocampus2024_snRNAseq_sample-info.csv.gz,official acquired snRNA sample-info exact brnum mapping,GSM8224180,Br2720,10x snRNA-seq
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_1,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151507,classic_subject_1,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_1,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151508,classic_subject_1,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_1,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151509,classic_subject_1,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_1,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151510,classic_subject_1,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_2,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151669,classic_subject_2,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_2,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151670,classic_subject_2,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_2,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151671,classic_subject_2,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_2,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151672,classic_subject_2,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_3,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151673,classic_subject_3,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_3,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151674,classic_subject_3,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_3,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151675,classic_subject_3,10x Visium
+DLPFC,PERSON_spatialLIBD_classic_DLPFC_classic_subject_3,spatialLIBD_classic_DLPFC,HumanPilot_README.md,official 12-section study design: three subjects with four adjacent sections each,151676,classic_subject_3,10x Visium

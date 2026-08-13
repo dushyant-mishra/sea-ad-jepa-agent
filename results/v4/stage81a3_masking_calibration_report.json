@@ -1,0 +1,248 @@
+{
+  "candidate_fractions_status": "exploratory_not_frozen",
+  "candidate_mask_fractions": [
+    0.15,
+    0.25,
+    0.4,
+    0.5,
+    0.6,
+    0.7
+  ],
+  "cells_per_donor_source_class_cap": 2,
+  "data_boundaries": {
+    "development_donors_used": false,
+    "foundation_train_only": true,
+    "sealed_donors_used": false,
+    "source_and_class_change_mask_probability": false,
+    "unmeasured_genes_eligible_for_masking": false
+  },
+  "mask_evaluations": 124128,
+  "mask_replicates_per_cell": 3,
+  "masking_calibration_seed": 8102,
+  "minimum_stratum_cells": 20,
+  "outputs": {
+    "report": "results/v4/stage81a3_masking_calibration_report.json",
+    "strata": "results/v4/stage81a3_masking_calibration_strata.csv",
+    "summary": "results/v4/stage81a3_masking_calibration_summary.csv"
+  },
+  "production_seed_resolved": false,
+  "purpose": "pre_implementation_masking_calibration_only",
+  "runtime_seconds": 278.314,
+  "runtime_warnings": [],
+  "safety": {
+    "masking_policy_frozen": false,
+    "model_training_performed": false,
+    "pathology_opened": false,
+    "stage81a3_model_implemented": false,
+    "stage81b_started": false,
+    "training_shards_created": false
+  },
+  "sampled_cells_by_source": {
+    "HVS": 2817,
+    "NPH52": 246,
+    "SEA_AD": 3833
+  },
+  "sampled_cells_by_source_and_class": [
+    {
+      "broad_cell_class": "Neuronal: GABAergic",
+      "sampled_cells": 1092,
+      "source": "HVS"
+    },
+    {
+      "broad_cell_class": "Neuronal: Glutamatergic",
+      "sampled_cells": 1096,
+      "source": "HVS"
+    },
+    {
+      "broad_cell_class": "Non-neuronal and Non-neural",
+      "sampled_cells": 629,
+      "source": "HVS"
+    },
+    {
+      "broad_cell_class": "Astro",
+      "sampled_cells": 36,
+      "source": "NPH52"
+    },
+    {
+      "broad_cell_class": "Endo",
+      "sampled_cells": 38,
+      "source": "NPH52"
+    },
+    {
+      "broad_cell_class": "ExN",
+      "sampled_cells": 32,
+      "source": "NPH52"
+    },
+    {
+      "broad_cell_class": "InN",
+      "sampled_cells": 32,
+      "source": "NPH52"
+    },
+    {
+      "broad_cell_class": "MG",
+      "sampled_cells": 36,
+      "source": "NPH52"
+    },
+    {
+      "broad_cell_class": "OPC",
+      "sampled_cells": 36,
+      "source": "NPH52"
+    },
+    {
+      "broad_cell_class": "Oligo",
+      "sampled_cells": 36,
+      "source": "NPH52"
+    },
+    {
+      "broad_cell_class": "AstrocyteSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "CN LAMP5-CXCL14 GABASubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "CN ST18 GABASubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "EndothelialSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "EpendymalSubclass",
+      "sampled_cells": 67,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "LSXSubclass",
+      "sampled_cells": 35,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "Microglia-PVMSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "Neuronal: GABAergic",
+      "sampled_cells": 888,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "Neuronal: Glutamatergic",
+      "sampled_cells": 888,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "Non-neuronal and Non-neural",
+      "sampled_cells": 888,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "OB GabaSubclass",
+      "sampled_cells": 31,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "OPCSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "OligodendrocyteSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "STR D1 MSNSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "STR D2 MSNSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "STR Hybrid MSNSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "STR RSPO2 GABASubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "Sst ChodlSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "VLMCSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    },
+    {
+      "broad_cell_class": "VipSubclass",
+      "sampled_cells": 74,
+      "source": "SEA_AD"
+    }
+  ],
+  "sampled_unique_cells": 6896,
+  "sampling_rule": "lowest_sha256_cell_ids_per_foundation_train_donor_x_source_object_x_broad_class",
+  "source_commit": "0d3a8088bc626d035a709845e5d32cb61de7fdd2",
+  "source_effective_difficulty_ranges": [
+    {
+      "mask_fraction": 0.15,
+      "source_median_signal_retained_max": 0.8501931167046016,
+      "source_median_signal_retained_min": 0.8499613244902876,
+      "source_p05_visible_detected_max": 818.5,
+      "source_p05_visible_detected_min": 549.95
+    },
+    {
+      "mask_fraction": 0.25,
+      "source_median_signal_retained_max": 0.7502842673977268,
+      "source_median_signal_retained_min": 0.7499170368408763,
+      "source_p05_visible_detected_max": 717.0,
+      "source_p05_visible_detected_min": 480.85
+    },
+    {
+      "mask_fraction": 0.4,
+      "source_median_signal_retained_max": 0.6008905163144777,
+      "source_median_signal_retained_min": 0.6000063013211244,
+      "source_p05_visible_detected_max": 574.0,
+      "source_p05_visible_detected_min": 384.85
+    },
+    {
+      "mask_fraction": 0.5,
+      "source_median_signal_retained_max": 0.5007676649259383,
+      "source_median_signal_retained_min": 0.49985366025253614,
+      "source_p05_visible_detected_max": 480.5,
+      "source_p05_visible_detected_min": 316.85
+    },
+    {
+      "mask_fraction": 0.6,
+      "source_median_signal_retained_max": 0.4002676882144736,
+      "source_median_signal_retained_min": 0.3999005069678463,
+      "source_p05_visible_detected_max": 384.0,
+      "source_p05_visible_detected_min": 251.85
+    },
+    {
+      "mask_fraction": 0.7,
+      "source_median_signal_retained_max": 0.299893913437789,
+      "source_median_signal_retained_min": 0.2998349639816306,
+      "source_p05_visible_detected_max": 286.0,
+      "source_p05_visible_detected_min": 190.0
+    }
+  ],
+  "stage81a2_evidence_commit": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "stage_id": "stage81a3_masking_calibration",
+  "vocabulary_hash": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+  "vocabulary_size": 4096
+}

@@ -1,0 +1,6 @@
+step,tokenizer_mean_factor_r2,contextual_mean_factor_r2,retention_ratio,evidence_status
+0,,,1.0020574895396623,reconstructed_step0_parity_pass
+25,,,1.0020574895396623,in_process_gate_pass
+50,,,1.0020574895396623,in_process_gate_pass
+100,,,1.0020574895396623,in_process_gate_pass
+150,,,1.0020574895396623,in_process_gate_pass

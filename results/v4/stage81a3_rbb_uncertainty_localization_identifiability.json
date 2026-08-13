@@ -1,0 +1,524 @@
+{
+  "anchor": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "best_diagnostic_spearman": {
+    "COHERENT_STRUCTURAL": 0.9857451319694519,
+    "RANDOM_STRUCTURAL": 0.9863125085830688
+  },
+  "classification": "ENGINEERING / NUMERICAL FAILURE",
+  "classification_contract": {
+    "computed_metrics_valid": true,
+    "reason": "Observed combination is outside predeclared A-E definitions",
+    "taxonomy_conflict": true
+  },
+  "diagnostic_contract": {
+    "alpha": 0.001,
+    "features_exclude": [
+      "LAMBDA",
+      "factors",
+      "hidden expression",
+      "target replicates"
+    ],
+    "fits": 2,
+    "models_persisted": false,
+    "sealed_fit": false,
+    "train_standardization_only": true,
+    "validation_fit": false
+  },
+  "family_summary": {
+    "COHERENT_STRUCTURAL": {
+      "base_diagnostic_sealed_spearman": 0.9855989813804626,
+      "biological_risk_dynamic_range": {
+        "coefficient_of_variation": 0.16886458280290254,
+        "mean": 0.09763284368273162,
+        "p10": 0.07937536612153054,
+        "p25": 0.08552253618836403,
+        "p50": 0.09503792226314545,
+        "p75": 0.10703835636377335,
+        "p90": 0.11861219853162765,
+        "p95": 0.1271300666034221,
+        "std": 0.016486729416345474
+      },
+      "measurement_noise_fraction_of_mean_total_risk": 0.7664214372634888,
+      "median_error_rank_reliability_index": 0.9088928401470184,
+      "median_jackknife_delta_trace_vs_total": 0.7846159934997559,
+      "median_jackknife_fragility_vs_bio": 0.047666966915130615,
+      "median_jackknife_fragility_vs_total": 0.9706754088401794,
+      "median_jackknife_max_shift_vs_total": 0.9410285651683807,
+      "median_jackknife_shifted_negative_control": -0.11661458015441895,
+      "median_rbb_trace_conditional_vs_bio": 0.0682888962328434,
+      "median_rbb_trace_noise_vs_noise": 0.10210833325982094,
+      "median_rbb_trace_total_vs_bio": 0.06825841590762138,
+      "median_rbb_trace_total_vs_single": 0.9387111067771912,
+      "median_rbb_trace_total_vs_total": 0.983616292476654,
+      "median_replicate_disagreement_vs_bio": -0.08844814449548721,
+      "median_replicate_disagreement_vs_noise": 0.9472451210021973,
+      "median_replicate_disagreement_vs_total": 0.9012292921543121,
+      "median_single_vs_total_spearman": 0.9551766514778137,
+      "median_split_half_spearman": 0.9932822585105896,
+      "median_standardized_disagreement_vs_total": 0.9009027779102325,
+      "stability_diagnostic_sealed_spearman": 0.9857451319694519,
+      "total_risk_dynamic_range": {
+        "coefficient_of_variation": 0.3350054122968052,
+        "mean": 0.2798995817975083,
+        "p10": 0.17292485684156417,
+        "p25": 0.21050377935171127,
+        "p50": 0.26378990709781647,
+        "p75": 0.3294873312115669,
+        "p90": 0.4159503698348999,
+        "p95": 0.45398540794849396,
+        "std": 0.09376787480177762
+      },
+      "trace_variance_across_cells": {
+        "conditional_trace": 0.002440592274069786,
+        "noise_trace": 0.0,
+        "total_trace": 0.002440592274069786
+      },
+      "views": 4
+    },
+    "ORDINARY_BLOCK_40": {
+      "biological_risk_dynamic_range": {
+        "coefficient_of_variation": 0.17300045163249023,
+        "mean": 0.09687582662627392,
+        "p10": 0.07823446393013,
+        "p25": 0.08502244018018246,
+        "p50": 0.09447670727968216,
+        "p75": 0.10574286989867687,
+        "p90": 0.11753622889518738,
+        "p95": 0.12663044705986976,
+        "std": 0.01675956175861621
+      },
+      "measurement_noise_fraction_of_mean_total_risk": 0.7617244720458984,
+      "median_error_rank_reliability_index": 0.907825231552124,
+      "median_rbb_trace_conditional_vs_bio": 0.08223384618759155,
+      "median_rbb_trace_noise_vs_noise": 0.10224441066384315,
+      "median_rbb_trace_total_vs_bio": 0.08220850303769112,
+      "median_rbb_trace_total_vs_single": 0.937953919172287,
+      "median_rbb_trace_total_vs_total": 0.9835438430309296,
+      "median_single_vs_total_spearman": 0.9546688199043274,
+      "median_split_half_spearman": 0.993643194437027,
+      "total_risk_dynamic_range": {
+        "coefficient_of_variation": 0.3327250523506109,
+        "mean": 0.27866509836530895,
+        "p10": 0.172044038772583,
+        "p25": 0.21054380759596825,
+        "p50": 0.2622770667076111,
+        "p75": 0.32801417261362076,
+        "p90": 0.41345752477645875,
+        "p95": 0.45252598077058787,
+        "std": 0.09271885944188556
+      },
+      "trace_variance_across_cells": {
+        "conditional_trace": 0.002441447228193283,
+        "noise_trace": 0.0,
+        "total_trace": 0.0024414381477981806
+      },
+      "views": 4
+    },
+    "ORDINARY_RANDOM_40": {
+      "biological_risk_dynamic_range": {
+        "coefficient_of_variation": 0.19493202858030717,
+        "mean": 0.07178014717646874,
+        "p10": 0.05593534745275974,
+        "p25": 0.06217363569885492,
+        "p50": 0.06976066529750824,
+        "p75": 0.07959344610571861,
+        "p90": 0.08882232606410981,
+        "p95": 0.09715818576514712,
+        "std": 0.01399224970090206
+      },
+      "measurement_noise_fraction_of_mean_total_risk": 0.7997063994407654,
+      "median_error_rank_reliability_index": 0.8815971314907074,
+      "median_rbb_trace_conditional_vs_bio": 0.1041913814842701,
+      "median_rbb_trace_noise_vs_noise": 0.10296646133065224,
+      "median_rbb_trace_total_vs_bio": 0.10417439788579941,
+      "median_rbb_trace_total_vs_single": 0.93339604139328,
+      "median_rbb_trace_total_vs_total": 0.9883262813091278,
+      "median_single_vs_total_spearman": 0.944136381149292,
+      "median_split_half_spearman": 0.9927217960357666,
+      "total_risk_dynamic_range": {
+        "coefficient_of_variation": 0.3031375613693134,
+        "mean": 0.22717432339777588,
+        "p10": 0.14241805523633957,
+        "p25": 0.1745799295604229,
+        "p50": 0.21778210252523422,
+        "p75": 0.2705005258321762,
+        "p90": 0.32900928854942324,
+        "p95": 0.3526721626520155,
+        "std": 0.06886507040052554
+      },
+      "trace_variance_across_cells": {
+        "conditional_trace": 0.0017043466214090586,
+        "noise_trace": 3.637978807091713e-12,
+        "total_trace": 0.0017043401021510363
+      },
+      "views": 4
+    },
+    "RANDOM_STRUCTURAL": {
+      "base_diagnostic_sealed_spearman": 0.9863125085830688,
+      "biological_risk_dynamic_range": {
+        "coefficient_of_variation": 0.19796856469679133,
+        "mean": 0.07120285474411503,
+        "p10": 0.05487147495150566,
+        "p25": 0.061391654424369335,
+        "p50": 0.0693792812526226,
+        "p75": 0.07944746688008308,
+        "p90": 0.09026681408286094,
+        "p95": 0.09608433879911896,
+        "std": 0.014095926956006572
+      },
+      "measurement_noise_fraction_of_mean_total_risk": 0.7956689596176147,
+      "median_error_rank_reliability_index": 0.8827899098396301,
+      "median_jackknife_delta_trace_vs_total": 0.41795022785663605,
+      "median_jackknife_fragility_vs_bio": 0.09863964095711708,
+      "median_jackknife_fragility_vs_total": 0.9762001037597656,
+      "median_jackknife_max_shift_vs_total": 0.9458433091640472,
+      "median_jackknife_shifted_negative_control": -0.08834031969308853,
+      "median_rbb_trace_conditional_vs_bio": 0.10695863142609596,
+      "median_rbb_trace_noise_vs_noise": 0.10298331454396248,
+      "median_rbb_trace_total_vs_bio": 0.10694723203778267,
+      "median_rbb_trace_total_vs_single": 0.9289881587028503,
+      "median_rbb_trace_total_vs_total": 0.9874842464923859,
+      "median_replicate_disagreement_vs_bio": -0.04981891252100468,
+      "median_replicate_disagreement_vs_noise": 0.9581408202648163,
+      "median_replicate_disagreement_vs_total": 0.9241536259651184,
+      "median_single_vs_total_spearman": 0.9436972737312317,
+      "median_split_half_spearman": 0.9928712248802185,
+      "median_standardized_disagreement_vs_total": 0.9246596992015839,
+      "stability_diagnostic_sealed_spearman": 0.9862565398216248,
+      "total_risk_dynamic_range": {
+        "coefficient_of_variation": 0.30229619909631494,
+        "mean": 0.22641512607515324,
+        "p10": 0.14266255497932434,
+        "p25": 0.17501433566212654,
+        "p50": 0.217680886387825,
+        "p75": 0.26946568489074707,
+        "p90": 0.3276326239109039,
+        "p95": 0.3524000108242034,
+        "std": 0.06844443203043177
+      },
+      "trace_variance_across_cells": {
+        "conditional_trace": 0.0017126047750934958,
+        "noise_trace": 3.637978807091713e-12,
+        "total_trace": 0.0017126089660450816
+      },
+      "views": 4
+    }
+  },
+  "frozen_core": {
+    "checkpoint": "results\\v4\\stage81a3_rbb_core_simplified_checkpoint.pt",
+    "checkpoint_unchanged": true,
+    "parameters_unchanged": true,
+    "sha256": "ffab118f5f4573edfc0a83be1fbe2029ab53198ad5942f6c3a5aae532d7e089f"
+  },
+  "gates": {
+    "expected_biological_risk_gate": "FAIL",
+    "molecular_information_preserved": true,
+    "new_b01_single_realization_gate": "PASS",
+    "original_single_realization_gate": "FAIL",
+    "replicate_averaged_risk_reliable": true,
+    "replicate_averaged_total_risk_gate": "PASS",
+    "target_replicate_firewall": true,
+    "visible_state_hard_preserved": true
+  },
+  "governance": {
+    "core_model_training": false,
+    "core_neural_optimizer_updates": 0,
+    "diagnostic_models_adopted": false,
+    "diagnostic_ridge_fits": 2,
+    "factor_labels_as_features": false,
+    "hyperparameter_sweep": false,
+    "lambda_as_features": false,
+    "pathology_opened": false,
+    "ready_for_stage81b": false,
+    "real_rna_accessed": false,
+    "sealed_used_for_fitting": false,
+    "seed_sweep": false,
+    "stage81a3_complete": false,
+    "stage81a3_frozen": false
+  },
+  "historical_localization_target_audit": {
+    "historical_gate_remains_failed": true,
+    "historical_target": "EXPECTED_BIOLOGICAL_STATE_FROM_LAMBDA_NORM",
+    "historical_target_was_single_stochastic_realization": false,
+    "interpretation_correction": "The prior structural rho near 0.1 measured expected-biological-risk localization, not single-target sequencing-noise localization."
+  },
+  "larger_goal_interpretation": {
+    "another_neural_architecture_currently_justified": "NO",
+    "biological_world_model_direction_changed": false,
+    "factual_visible_state_preserved": true,
+    "molecular_state_preserved": true,
+    "structural_failure_explanation": "classified from bounded reliability, stability, and diagnostic-ceiling evidence above"
+  },
+  "mask_provenance": {
+    "ordinary": {
+      "exact_counts": {
+        "ORDINARY_BLOCK_40": [
+          2458
+        ],
+        "ORDINARY_RANDOM_40": [
+          2458
+        ],
+        "STRUCTURAL_COHERENT_P40": [
+          1638
+        ],
+        "STRUCTURAL_COHERENT_P60": [
+          2458
+        ],
+        "STRUCTURAL_COHERENT_P80": [
+          3277
+        ],
+        "STRUCTURAL_RANDOM_P40": [
+          1638
+        ],
+        "STRUCTURAL_RANDOM_P60": [
+          2458
+        ],
+        "STRUCTURAL_RANDOM_P80": [
+          3277
+        ]
+      },
+      "factor_labels_used": false,
+      "hashes": {
+        "ORDINARY_BLOCK_40": "0e11b4655656649e3966f5fe599ecebdcd36ee274e56596679b25d23dfacb4c1",
+        "ORDINARY_RANDOM_40": "dbb353eb9118af284e32c54033a776ede14a7712a9d6113293dcf2dd22880387",
+        "STRUCTURAL_COHERENT_P40": "fb4eb53dac7a2fb6eaa360b189a7dac3f20a664c2dae41e58fdccf9a3c8132bc",
+        "STRUCTURAL_COHERENT_P60": "e74bf1120cc5fa6ca173eb6833714bcb1961bf3ed0172e136beaa5a50c3d3a02",
+        "STRUCTURAL_COHERENT_P80": "250daf148a1bfb51a74a35fc162d60894664772cc302c38d800800b12e4be7ee",
+        "STRUCTURAL_RANDOM_P40": "f5a0e92f902b45c3a53bfe01b52a9afa4a66444ae29838994d80dd057488addb",
+        "STRUCTURAL_RANDOM_P60": "761668c0c9b35770d55621234965103ccb0374f533353674bd1abbc45caaabca",
+        "STRUCTURAL_RANDOM_P80": "216ac13fd33fb00b75eb76f0d30eb0d68d9edd8264866ae58c3f33de1086243e"
+      },
+      "ordinary_hashes_match_recovery": true,
+      "p20_present": false,
+      "sealed_used": false,
+      "structural_masks_per_stratum": 128,
+      "train_only": true
+    },
+    "ordinary_indices": [
+      0,
+      32,
+      64,
+      96
+    ],
+    "structural": {
+      "construction_inputs": "seed plus TRAIN-derived pathology-blind coexpression graph only",
+      "exact_cardinalities": true,
+      "factor_labels_used": false,
+      "hashes": {
+        "COHERENT_STRUCTURAL": [
+          "e9cf32c2f30bb76424042c248c4151af199829403417271868a8ca3a6d659cee",
+          "2f2255e427009f19056a3905c6ada401bfa341e44531e8cf959ff0da4242241a",
+          "8c2746679aabe5e254815284d45d3e629e9f19ff8fafe6e54b59dfb6df5f1ba2",
+          "1a750501c8d698b302875c14abfe11bb49edb71c558223f5c08b2a64c6273d0f"
+        ],
+        "RANDOM_STRUCTURAL": [
+          "7b59b6ff039d33803326e6daa3743bae8f1ed1fd3919dc64c29de35dab5e927f",
+          "61518652e2762abd88908dc61a3e5f8bec9b2aac718809dd30d42d91ddb17239",
+          "41d3a9fc69d280eb450d140cf6630d5c6e9b312c7bff39abf37d3028ec4ad1b2",
+          "737591ac244c4de36a34d9f824bd7512f364743102989ac5d7c3df1d08e01982"
+        ]
+      },
+      "nested": true,
+      "sealed_used": false,
+      "views": 4
+    }
+  },
+  "molecular_hashes_after": {
+    "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+    "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+    "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4"
+  },
+  "molecular_hashes_before": {
+    "complete_molecular_ledger": "b51a941101be0a014be66633f3e48b3b2e0c9aa35f9f8533bfaf538625543964",
+    "encoder_without_tokenizer": "e99c5bf758337c0c964ef67df92324b47fbb12c2bdb1536dd28926181e026e4b",
+    "tokenizer": "35a5328f2496570be213b119e6755ffca17dbc516569fccb876e6565fa4773f4"
+  },
+  "performance": {
+    "diagnostic_fitting_seconds": 1.9233307000249624,
+    "jackknife_forward_seconds": 883.5382574000396,
+    "mean_gpu_utilization": "unavailable_without_sampling_sidecar",
+    "model_forward_seconds": 331.03630329994485,
+    "peak_allocated_vram_gb": 1.021848201751709,
+    "peak_reserved_vram_gb": 1.328125,
+    "target_replicate_generation_and_projection_seconds": 12.361429299693555,
+    "total_wall_seconds": 1269.5005299998447
+  },
+  "prior_evidence_hashes": {
+    "results/v4/stage81a3_conditional_predictability_audit.json": "fae778621cbec948c0a238998d2683aae09be680b1c96f7ed4f2b6b8cc7ed6f5",
+    "results/v4/stage81a3_ipb_jepa_feasibility.json": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+    "results/v4/stage81a3_rbb_adaptive_correlated_probe.json": "c73440b97830f4dc09467797aaefe5d59d99649fa6c98c6ed60cb23e82e083d3",
+    "results/v4/stage81a3_rbb_belief_geometry_audit.json": "9e3986ec12767e8d04acdb9ac921c88a4f288ca20b3c4da4abf24fcdbe444b59",
+    "results/v4/stage81a3_rbb_frozen_encoder_probe.json": "915e76e4123b5fa7dd3b026072b1faef10d98063b349fc26f1d3e5b7e201b71f",
+    "results/v4/stage81a3_rbb_oof_covariance_audit.json": "7a5042125860f2c598a28038f41fa3211074bf21d9e204dc6386b5246982a87f",
+    "results/v4/stage81a3_rbb_structural_panel_audit.json": "4a6fb3e78fc9ccc87b600d5a1ff8f49fecfe4643f3c16657ac9f9293f34ce9ac",
+    "results/v4/stage81a3_rbb_validation_covariance_audit.json": "03d0e36d405150851753be333067ee553d17e847fce50a2d983b83f0b4777239",
+    "results/v4/stage81a3_reproducible_state_basis.pt": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+    "results/v4/stage81a3_rlc_causal_fast_probe.json": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+    "results\\v4\\stage81a3_rbb_core_migration_manifest.json": "59269f41c6e9c32a20b9941034e2a00fc1f59a1047b06ac52d4ee33f4f5a08b7",
+    "results\\v4\\stage81a3_rbb_core_simplification.json": "26bf8ed54d1b3efeed8012ab57d37e459a074d19bb75cf6a5431223d4e0bde28",
+    "results\\v4\\stage81a3_rbb_core_simplified_checkpoint.pt": "ffab118f5f4573edfc0a83be1fbe2029ab53198ad5942f6c3a5aae532d7e089f",
+    "results\\v4\\stage81a3_rbb_frozen_recovery.json": "49088ce3e2d677c62e5ac346e798f922ad7ff85c71a2abd039ca304ba52f98b7",
+    "results\\v4\\stage81a3_rbb_frozen_recovery_belief_state.pt": "8ef9667e42f6c44be937b94cb54d89152805c3fbe0c254d23891a940d4474b24",
+    "results\\v4\\stage81a3_rbb_panel_exposure.json": "207302fb720924f46a62162fcdc6eb29c6fb7cd796189765fe4bb45e98fbe7f0",
+    "results\\v4\\stage81a3_rbb_panel_exposure_checkpoint.pt": "c78cf055ceb020c2d0e928c021703d1063a24c010e92f6bbef7e572a368e8396"
+  },
+  "recommended_next_step_not_executed": "FIX THE EVALUATION CLASSIFICATION CONTRACT ONLY. The computed forensic metrics remain valid, but no predeclared A-E class covers reliable single/total predictive-risk localization with failed biological-risk localization.",
+  "risk_definitions": {
+    "biological": "||r_lambda - mu_H||^2 / 160",
+    "measurement_noise": "mean_k ||r_Bk - r_lambda||^2 / 160",
+    "single": "||r_B01 - mu_H||^2 / 160",
+    "total": "mean_k ||r_Bk - mu_H||^2 / 160"
+  },
+  "secondary_classifications": {
+    "current_rbb_uncertainty": "ADEQUATE FOR REPLICATE-AVERAGED RISK",
+    "evidence_jackknife_signal": "STRONG",
+    "expected_biological_risk_localization": "NOT SUPPORTED",
+    "measurement_noise_dominance": "SUPPORTED",
+    "replicate_disagreement_signal": "STRONG",
+    "single_replicate_error_as_cell_ranking_target": "RELIABLE",
+    "visible_evidence_diagnostic_ceiling": "ABOVE 0.50"
+  },
+  "seed": 8114001,
+  "stage": "stage81a3_rbb_uncertainty_localization_identifiability",
+  "strong_signal_gates": {
+    "base_diagnostic": true,
+    "jackknife_fragility": true,
+    "replicate_disagreement": true,
+    "stability_diagnostic": true
+  },
+  "target_replicates": {
+    "count": 32,
+    "evaluation_targets_only": true,
+    "rng_derivation": [
+      {
+        "replicate": 1,
+        "seed": 9114004
+      },
+      {
+        "replicate": 2,
+        "seed": 10114007
+      },
+      {
+        "replicate": 3,
+        "seed": 11114010
+      },
+      {
+        "replicate": 4,
+        "seed": 12114013
+      },
+      {
+        "replicate": 5,
+        "seed": 13114016
+      },
+      {
+        "replicate": 6,
+        "seed": 14114019
+      },
+      {
+        "replicate": 7,
+        "seed": 15114022
+      },
+      {
+        "replicate": 8,
+        "seed": 16114025
+      },
+      {
+        "replicate": 9,
+        "seed": 17114028
+      },
+      {
+        "replicate": 10,
+        "seed": 18114031
+      },
+      {
+        "replicate": 11,
+        "seed": 19114034
+      },
+      {
+        "replicate": 12,
+        "seed": 20114037
+      },
+      {
+        "replicate": 13,
+        "seed": 21114040
+      },
+      {
+        "replicate": 14,
+        "seed": 22114043
+      },
+      {
+        "replicate": 15,
+        "seed": 23114046
+      },
+      {
+        "replicate": 16,
+        "seed": 24114049
+      },
+      {
+        "replicate": 17,
+        "seed": 25114052
+      },
+      {
+        "replicate": 18,
+        "seed": 26114055
+      },
+      {
+        "replicate": 19,
+        "seed": 27114058
+      },
+      {
+        "replicate": 20,
+        "seed": 28114061
+      },
+      {
+        "replicate": 21,
+        "seed": 29114064
+      },
+      {
+        "replicate": 22,
+        "seed": 30114067
+      },
+      {
+        "replicate": 23,
+        "seed": 31114070
+      },
+      {
+        "replicate": 24,
+        "seed": 32114073
+      },
+      {
+        "replicate": 25,
+        "seed": 33114076
+      },
+      {
+        "replicate": 26,
+        "seed": 34114079
+      },
+      {
+        "replicate": 27,
+        "seed": 35114082
+      },
+      {
+        "replicate": 28,
+        "seed": 36114085
+      },
+      {
+        "replicate": 29,
+        "seed": 37114088
+      },
+      {
+        "replicate": 30,
+        "seed": 38114091
+      },
+      {
+        "replicate": 31,
+        "seed": 39114094
+      },
+      {
+        "replicate": 32,
+        "seed": 40114097
+      }
+    ],
+    "visible_observation_fixed": "X_A"
+  }
+}

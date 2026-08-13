@@ -1,0 +1,13 @@
+direct_count_samples,eligible_roles,entity_count,exact_donors,frozen4096_support_max,frozen4096_support_min,physical_coordinate_samples,regions,technology
+0,"[""MOLECULAR_REFERENCE_ONLY""]",0,15,0.999755859375,0.99951171875,0,"[""approximately 100 adult human brain dissections"", ""hypothalamus""]",10x 3' v3 snRNA-seq
+100,"[""MULTIDONOR_SPOT_CONTEXT"", ""UNRESOLVED""]",0,25,1.0,0.0,100,"[""DLPFC"", ""dentate gyrus / hippocampus"", ""hippocampus"", ""hypothalamus"", ""nucleus accumbens""]",10x Visium
+9,"[""MULTIDONOR_SPOT_CONTEXT""]",0,7,0.959716796875,0.959716796875,9,"[""hypothalamus""]",10x Visium CytAssist v2
+30,"[""UNRESOLVED""]",0,10,0.0,0.0,30,"[""DLPFC""]",10x Visium and 10x snRNA-seq
+18,"[""CELL_RESOLVED_MINIMAL_PANEL_CONTEXT"", ""CELL_RESOLVED_TARGETED_CONTEXT"", ""QUARANTINED_PENDING_GOVERNANCE""]",1698040,12,0.01220703125,0.0,17,"[""cortex"", ""hypothalamus"", ""nucleus accumbens""]",10x Xenium
+0,"[""MOLECULAR_REFERENCE_ONLY""]",0,10,1.0,1.0,0,"[""hippocampus"", ""nucleus accumbens""]",10x snRNA-seq
+0,"[""QUARANTINED_PENDING_GOVERNANCE""]",0,0,0.0,0.0,0,"[""frontal cortex""]",CosMx SMI
+0,"[""QUARANTINED_PENDING_GOVERNANCE""]",0,0,0.0,0.0,0,"[""hippocampus""]",CosMx SMI WTX
+10,"[""CORE_CELL_RESOLVED_HIGH_PLEX_CONTEXT"", ""QUARANTINED_PENDING_GOVERNANCE""]",44261,4,0.23291015625,0.23291015625,10,"[""MTG"", ""STG""]",MERFISH
+1,"[""QUARANTINED_PENDING_GOVERNANCE""]",14165,1,1.0,1.0,1,"[""prefrontal cortex""]",Slide-tags / snRNA-seq
+0,"[""ACCESS_TRACE_ONLY""]",0,0,0.0,0.0,0,"[""frontal cortex and cerebellum""]",Stereo-seq
+0,"[""REGIONAL_REFERENCE_ONLY""]",0,0,0.987060546875,0.987060546875,0,"[""193 anatomical brain subregions"", ""20 PFC/reference cortical regional categories""]",bulk RNA-seq

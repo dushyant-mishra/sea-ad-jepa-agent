@@ -1,0 +1,21 @@
+definition,full_token_tensor_persisted,mask_sensitivity_ratio,mean_between_cell_squared_distance_within_matching_mask,mean_within_cell_squared_distance_across_mask_pairs,optimizer_step,stage
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.6483791419609248,4457.9072265625,2890.4140625,0,raw_visible_expression
+visible tokenizer tensors; same transparent squared-distance ratio as other stages,False,0.9222664067597158,341125.1313191732,314608.24911717005,0,visible_tokenizer_tensor
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.06000267337564359,73.04411315917969,4.382842063903809,0,online_context_slots
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.06032994729880457,3.024409055709839,0.1824624389410019,0,pooled_online_context
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.06462627927929185,82.01374053955078,5.300242900848389,0,predictor_output
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.651518745458553,4450.51806640625,2899.595947265625,100,raw_visible_expression
+visible tokenizer tensors; same transparent squared-distance ratio as other stages,False,0.922325686483462,341041.7780843099,314551.59209115163,100,visible_tokenizer_tensor
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.04015067411840426,53.17625427246094,2.1350624561309814,100,online_context_slots
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.04031239615365858,2.204760789871216,0.08887919038534164,100,pooled_online_context
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.04445953069509985,57.490699768066406,2.556009531021118,100,predictor_output
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.6511304974333594,4448.50927734375,2896.56005859375,300,raw_visible_expression
+visible tokenizer tensors; same transparent squared-distance ratio as other stages,False,0.9216984326325771,340729.2682647705,314049.63251168386,300,visible_tokenizer_tensor
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.02979759990502518,58.545021057128906,1.7445011138916016,300,online_context_slots
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.029911678774858945,2.4269423484802246,0.07259391993284225,300,pooled_online_context
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.03501151027272339,58.80410385131836,2.0588204860687256,300,predictor_output
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.6487109476103846,4457.85693359375,2891.860595703125,500,raw_visible_expression
+visible tokenizer tensors; same transparent squared-distance ratio as other stages,False,0.9223523530191796,340250.045401001,313830.42999049596,500,visible_tokenizer_tensor
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.025374150252156488,58.436058044433594,1.4827653169631958,500,online_context_slots
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.025467956656834337,2.422175645828247,0.06168786436319351,500,pooled_online_context
+mean within-cell squared distance over all 28 mask pairs divided by mean between-cell squared distance within each matching mask,,0.029219805886207817,57.52355194091797,1.680827021598816,500,predictor_output

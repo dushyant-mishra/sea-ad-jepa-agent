@@ -1,0 +1,33 @@
+broad_family,agreement_category,candidate_cells
+Astrocytes,PCA RARE ONLY,1
+Astrocytes,RNA + LEDGER + PCA RARE,1
+Astrocytes,RNA + LEDGER RARE / PCA NOT RARE,1
+Endothelial / vascular,LEDGER RARE / RNA NOT RARE,2
+Endothelial / vascular,PCA RARE ONLY,2
+Endothelial / vascular,RNA RARE / LEDGER NOT RARE,2
+Ependymal,RNA + LEDGER + PCA RARE,1
+Excitatory neurons,LEDGER RARE / RNA NOT RARE,2
+Excitatory neurons,PCA RARE ONLY,7
+Excitatory neurons,RNA + LEDGER + PCA RARE,4
+Excitatory neurons,RNA + LEDGER RARE / PCA NOT RARE,5
+Excitatory neurons,RNA RARE / LEDGER NOT RARE,2
+Inhibitory neurons,LEDGER RARE / RNA NOT RARE,4
+Inhibitory neurons,PCA RARE ONLY,9
+Inhibitory neurons,RNA + LEDGER + PCA RARE,1
+Inhibitory neurons,RNA + LEDGER RARE / PCA NOT RARE,6
+Inhibitory neurons,RNA RARE / LEDGER NOT RARE,4
+Microglia / immune,LEDGER RARE / RNA NOT RARE,2
+Microglia / immune,PCA RARE ONLY,2
+Microglia / immune,RNA RARE / LEDGER NOT RARE,2
+OPCs,PCA RARE ONLY,1
+OPCs,RNA + LEDGER RARE / PCA NOT RARE,1
+Oligodendrocytes,LEDGER RARE / RNA NOT RARE,1
+Oligodendrocytes,PCA RARE ONLY,1
+Oligodendrocytes,RNA + LEDGER RARE / PCA NOT RARE,1
+Oligodendrocytes,RNA RARE / LEDGER NOT RARE,1
+Other authorized families,LEDGER RARE / RNA NOT RARE,11
+Other authorized families,PCA RARE ONLY,11
+Other authorized families,RNA RARE / LEDGER NOT RARE,11
+Pericyte / mural,LEDGER RARE / RNA NOT RARE,2
+Pericyte / mural,PCA RARE ONLY,2
+Pericyte / mural,RNA RARE / LEDGER NOT RARE,2

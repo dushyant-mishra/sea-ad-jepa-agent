@@ -1,0 +1,644 @@
+git_status,path,classification,size_bytes,staged,inventory_state
+??,.tmp/cpiu_prechange_pytest/test_append_only_event_chain_a0/events.jsonl,GENERATED CACHE - do not commit,941,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/first/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_audit_outputs_are_determi0/second/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_bound_verification_reuse_0/data/small.h5ad.sha256,GENERATED CACHE - do not commit,65,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_bound_verification_reuse_0/data/small.h5ad.verification.json,GENERATED CACHE - do not commit,411,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_is_deterministic_0/one/stage81a1c_n_download_decisions.csv,GENERATED CACHE - do not commit,1885,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_is_deterministic_0/one/stage81a1c_n_remote_asset_catalog.csv,GENERATED CACHE - do not commit,5011,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_is_deterministic_0/two/stage81a1c_n_download_decisions.csv,GENERATED CACHE - do not commit,1885,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_is_deterministic_0/two/stage81a1c_n_remote_asset_catalog.csv,GENERATED CACHE - do not commit,5011,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_mode_is_determini0/first/stage81a1b_download_decisions.csv,GENERATED CACHE - do not commit,3374,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_mode_is_determini0/first/stage81a1b_download_manifest.json,GENERATED CACHE - do not commit,216,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_mode_is_determini0/first/stage81a1b_remote_asset_catalog.csv,GENERATED CACHE - do not commit,14839,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_mode_is_determini0/first/stage81a1b_storage_preflight.json,GENERATED CACHE - do not commit,298,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_mode_is_determini0/second/stage81a1b_download_decisions.csv,GENERATED CACHE - do not commit,3374,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_mode_is_determini0/second/stage81a1b_download_manifest.json,GENERATED CACHE - do not commit,216,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_mode_is_determini0/second/stage81a1b_remote_asset_catalog.csv,GENERATED CACHE - do not commit,14839,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_mode_is_determini0/second/stage81a1b_storage_preflight.json,GENERATED CACHE - do not commit,298,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_output_is_determi0/one/stage81a1d_live_catalog_cache.json,GENERATED CACHE - do not commit,267,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_output_is_determi0/one/stage81a1d_living_human_remote_asset_catalog.csv,GENERATED CACHE - do not commit,80,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_output_is_determi0/two/stage81a1d_live_catalog_cache.json,GENERATED CACHE - do not commit,267,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_catalog_output_is_determi0/two/stage81a1d_living_human_remote_asset_catalog.csv,GENERATED CACHE - do not commit,80,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_exact_gene_mapping_has_no0/nph.csv.gz,GENERATED CACHE - do not commit,121,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_expression_and_gene_contr0/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_graph_spatial_perturbatio0/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_outputs_are_deterministic0/first/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_outputs_are_deterministic0/first/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_outputs_are_deterministic0/first/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,39398,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_outputs_are_deterministic0/second/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_outputs_are_deterministic0/second/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_outputs_are_deterministic0/second/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,39726,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_preserved_hash_cache_is_b0/data/external/v4/sea_ad/manifests/preserved_hash_bindings/3fee2efca8955842367d41fde9413fc5ad977b5d35a4f9964bedd25832dcae60.json,GENERATED CACHE - do not commit,296,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_preserved_hash_cache_is_b0/evidence.csv,GENERATED CACHE - do not commit,10,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_processed_10x_tar_is_dime0/processed_RAW.tar,GENERATED CACHE - do not commit,10240,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_registry_sources_are_real0/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_registry_sources_are_real0/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_registry_sources_are_real0/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,39088,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_safe_archive_member_handl0/safe.zip,GENERATED CACHE - do not commit,131,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_safe_archive_member_handl0/unsafe.tar,GENERATED CACHE - do not commit,10240,False,dirty_or_untracked
+??,.tmp/cpiu_prechange_pytest/test_safe_archive_member_handl0/value,GENERATED CACHE - do not commit,1,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_append_only_event_chain_a0/events.jsonl,GENERATED CACHE - do not commit,941,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_bound_verification_reuse_0/data/small.h5ad.sha256,GENERATED CACHE - do not commit,65,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_bound_verification_reuse_0/data/small.h5ad.verification.json,GENERATED CACHE - do not commit,411,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_is_deterministic_0/one/stage81a1c_n_download_decisions.csv,GENERATED CACHE - do not commit,1885,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_is_deterministic_0/one/stage81a1c_n_remote_asset_catalog.csv,GENERATED CACHE - do not commit,5011,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_is_deterministic_0/two/stage81a1c_n_download_decisions.csv,GENERATED CACHE - do not commit,1885,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_is_deterministic_0/two/stage81a1c_n_remote_asset_catalog.csv,GENERATED CACHE - do not commit,5011,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/first/stage81a1b_download_decisions.csv,GENERATED CACHE - do not commit,3374,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/first/stage81a1b_download_manifest.json,GENERATED CACHE - do not commit,216,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/first/stage81a1b_remote_asset_catalog.csv,GENERATED CACHE - do not commit,14839,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/first/stage81a1b_storage_preflight.json,GENERATED CACHE - do not commit,298,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/second/stage81a1b_download_decisions.csv,GENERATED CACHE - do not commit,3374,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/second/stage81a1b_download_manifest.json,GENERATED CACHE - do not commit,216,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/second/stage81a1b_remote_asset_catalog.csv,GENERATED CACHE - do not commit,14839,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/second/stage81a1b_storage_preflight.json,GENERATED CACHE - do not commit,298,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_output_is_determi0/one/stage81a1d_live_catalog_cache.json,GENERATED CACHE - do not commit,267,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_output_is_determi0/one/stage81a1d_living_human_remote_asset_catalog.csv,GENERATED CACHE - do not commit,80,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_output_is_determi0/two/stage81a1d_live_catalog_cache.json,GENERATED CACHE - do not commit,267,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_catalog_output_is_determi0/two/stage81a1d_living_human_remote_asset_catalog.csv,GENERATED CACHE - do not commit,80,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_exact_gene_mapping_has_no0/nph.csv.gz,GENERATED CACHE - do not commit,121,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/first/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/first/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/first/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,11173,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/second/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/second/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/second/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,11510,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_preserved_hash_cache_is_b0/data/external/v4/sea_ad/manifests/preserved_hash_bindings/3fee2efca8955842367d41fde9413fc5ad977b5d35a4f9964bedd25832dcae60.json,GENERATED CACHE - do not commit,296,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_preserved_hash_cache_is_b0/evidence.csv,GENERATED CACHE - do not commit,10,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_processed_10x_tar_is_dime0/processed_RAW.tar,GENERATED CACHE - do not commit,10240,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_registry_sources_are_real0/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_registry_sources_are_real0/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_registry_sources_are_real0/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,10854,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_safe_archive_member_handl0/safe.zip,GENERATED CACHE - do not commit,131,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_safe_archive_member_handl0/unsafe.tar,GENERATED CACHE - do not commit,10240,False,dirty_or_untracked
+??,.tmp/pytest-stage81a3-ema-pre/test_safe_archive_member_handl0/value,GENERATED CACHE - do not commit,1,False,dirty_or_untracked
+??,.tmp/pytest/tmpxx87ol8o.bat,GENERATED CACHE - do not commit,2827,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_append_only_event_chain_a0/events.jsonl,GENERATED CACHE - do not commit,941,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/first/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_audit_outputs_are_determi0/second/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_bound_verification_reuse_0/data/small.h5ad.sha256,GENERATED CACHE - do not commit,65,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_bound_verification_reuse_0/data/small.h5ad.verification.json,GENERATED CACHE - do not commit,411,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_is_deterministic_0/one/stage81a1c_n_download_decisions.csv,GENERATED CACHE - do not commit,1885,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_is_deterministic_0/one/stage81a1c_n_remote_asset_catalog.csv,GENERATED CACHE - do not commit,5011,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_is_deterministic_0/two/stage81a1c_n_download_decisions.csv,GENERATED CACHE - do not commit,1885,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_is_deterministic_0/two/stage81a1c_n_remote_asset_catalog.csv,GENERATED CACHE - do not commit,5011,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_mode_is_determini0/first/stage81a1b_download_decisions.csv,GENERATED CACHE - do not commit,3374,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_mode_is_determini0/first/stage81a1b_download_manifest.json,GENERATED CACHE - do not commit,216,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_mode_is_determini0/first/stage81a1b_remote_asset_catalog.csv,GENERATED CACHE - do not commit,14839,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_mode_is_determini0/first/stage81a1b_storage_preflight.json,GENERATED CACHE - do not commit,298,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_mode_is_determini0/second/stage81a1b_download_decisions.csv,GENERATED CACHE - do not commit,3374,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_mode_is_determini0/second/stage81a1b_download_manifest.json,GENERATED CACHE - do not commit,216,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_mode_is_determini0/second/stage81a1b_remote_asset_catalog.csv,GENERATED CACHE - do not commit,14839,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_mode_is_determini0/second/stage81a1b_storage_preflight.json,GENERATED CACHE - do not commit,298,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_output_is_determi0/one/stage81a1d_live_catalog_cache.json,GENERATED CACHE - do not commit,267,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_output_is_determi0/one/stage81a1d_living_human_remote_asset_catalog.csv,GENERATED CACHE - do not commit,80,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_output_is_determi0/two/stage81a1d_live_catalog_cache.json,GENERATED CACHE - do not commit,267,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_catalog_output_is_determi0/two/stage81a1d_living_human_remote_asset_catalog.csv,GENERATED CACHE - do not commit,80,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_exact_gene_mapping_has_no0/nph.csv.gz,GENERATED CACHE - do not commit,121,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_expression_and_gene_contr0/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_dataset_role_registry.csv,GENERATED CACHE - do not commit,2087,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_donor_modality_section_crosswalk.csv,GENERATED CACHE - do not commit,32401,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_gene_identifier_audit.csv,GENERATED CACHE - do not commit,6694,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_graph_lineage_registry.csv,GENERATED CACHE - do not commit,2255,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_local_asset_manifest.csv,GENERATED CACHE - do not commit,6198,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_multimodal_inventory_report.json,GENERATED CACHE - do not commit,9354,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_perturbation_asset_audit.csv,GENERATED CACHE - do not commit,1672,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_priority_missing_assets.csv,GENERATED CACHE - do not commit,873,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_regulatory_evidence_audit.csv,GENERATED CACHE - do not commit,6138,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_rna_matrix_audit.csv,GENERATED CACHE - do not commit,4561,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_graph_spatial_perturbatio0/stage81a1_spatial_asset_audit.csv,GENERATED CACHE - do not commit,2148,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_outputs_are_deterministic0/first/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_outputs_are_deterministic0/first/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_outputs_are_deterministic0/first/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,29684,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_outputs_are_deterministic0/second/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_outputs_are_deterministic0/second/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_outputs_are_deterministic0/second/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,30039,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_preserved_hash_cache_is_b0/data/external/v4/sea_ad/manifests/preserved_hash_bindings/3fee2efca8955842367d41fde9413fc5ad977b5d35a4f9964bedd25832dcae60.json,GENERATED CACHE - do not commit,296,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_preserved_hash_cache_is_b0/evidence.csv,GENERATED CACHE - do not commit,10,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_processed_10x_tar_is_dime0/processed_RAW.tar,GENERATED CACHE - do not commit,10240,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_registry_sources_are_real0/stage81a0_v4_failure_registry.csv,GENERATED CACHE - do not commit,29753,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_registry_sources_are_real0/stage81a0_v4_failure_registry.json,GENERATED CACHE - do not commit,51026,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_registry_sources_are_real0/stage81a0_v4_stage_report.json,GENERATED CACHE - do not commit,29347,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_safe_archive_member_handl0/safe.zip,GENERATED CACHE - do not commit,131,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_safe_archive_member_handl0/unsafe.tar,GENERATED CACHE - do not commit,10240,False,dirty_or_untracked
+??,.tmp/stage81a3_candidate_pytest_pre/test_safe_archive_member_handl0/value,GENERATED CACHE - do not commit,1,False,dirty_or_untracked
+??,configs/v4/stage81a3_conditional_predictability_audit.yaml,A3 TEST/CONFIG - candidate,1166,False,dirty_or_untracked
+??,configs/v4/stage81a3_foundation_biological_state_domain_qualification.yaml,A3 TEST/CONFIG - candidate,3835,False,dirty_or_untracked
+??,configs/v4/stage81a3_foundation_heterogeneity_reality_audit.yaml,A3 TEST/CONFIG - candidate,3516,False,dirty_or_untracked
+??,configs/v4/stage81a3_information_preserving_candidate.yaml,A3 TEST/CONFIG - candidate,1944,False,dirty_or_untracked
+??,configs/v4/stage81a3_ipb_jepa_feasibility.yaml,A3 TEST/CONFIG - candidate,2070,False,dirty_or_untracked
+??,configs/v4/stage81a3_preref_resolution_rare_context.yaml,A3 TEST/CONFIG - candidate,2672,False,dirty_or_untracked
+??,configs/v4/stage81a3_rare_state_coverage_resolution.yaml,A3 TEST/CONFIG - candidate,4027,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_adaptive_correlated_probe.yaml,A3 TEST/CONFIG - candidate,1233,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_belief_geometry_audit.yaml,A3 TEST/CONFIG - candidate,1047,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_core_simplification.yaml,A3 TEST/CONFIG - candidate,1284,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_frozen_encoder_probe.yaml,A3 TEST/CONFIG - candidate,1092,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_frozen_recovery.yaml,A3 TEST/CONFIG - candidate,891,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_oof_covariance.yaml,A3 TEST/CONFIG - candidate,1135,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_panel_exposure.yaml,A3 TEST/CONFIG - candidate,1435,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_structural_panel.yaml,A3 TEST/CONFIG - candidate,1115,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_uncertainty_localization_identifiability.yaml,A3 TEST/CONFIG - candidate,1493,False,dirty_or_untracked
+??,configs/v4/stage81a3_rbb_validation_covariance.yaml,A3 TEST/CONFIG - candidate,1055,False,dirty_or_untracked
+??,configs/v4/stage81a3_reproducible_state_basis.yaml,A3 TEST/CONFIG - candidate,995,False,dirty_or_untracked
+??,configs/v4/stage81a3_rlc_causal_fast_probe.yaml,A3 TEST/CONFIG - candidate,1110,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_append_only_event_chain_a0/events.jsonl,DATA - do not commit,941,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_dataset_role_registry.csv,DATA - do not commit,2087,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_donor_modality_section_crosswalk.csv,DATA - do not commit,32401,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_gene_identifier_audit.csv,DATA - do not commit,6694,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_graph_lineage_registry.csv,DATA - do not commit,2255,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_local_asset_manifest.csv,DATA - do not commit,6198,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_multimodal_inventory_report.json,DATA - do not commit,9354,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_perturbation_asset_audit.csv,DATA - do not commit,1672,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_priority_missing_assets.csv,DATA - do not commit,873,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_regulatory_evidence_audit.csv,DATA - do not commit,6138,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_rna_matrix_audit.csv,DATA - do not commit,4561,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/first/stage81a1_spatial_asset_audit.csv,DATA - do not commit,2148,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_dataset_role_registry.csv,DATA - do not commit,2087,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_donor_modality_section_crosswalk.csv,DATA - do not commit,32401,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_gene_identifier_audit.csv,DATA - do not commit,6694,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_graph_lineage_registry.csv,DATA - do not commit,2255,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_local_asset_manifest.csv,DATA - do not commit,6198,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_multimodal_inventory_report.json,DATA - do not commit,9354,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_perturbation_asset_audit.csv,DATA - do not commit,1672,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_priority_missing_assets.csv,DATA - do not commit,873,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_regulatory_evidence_audit.csv,DATA - do not commit,6138,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_rna_matrix_audit.csv,DATA - do not commit,4561,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_audit_outputs_are_determi0/second/stage81a1_spatial_asset_audit.csv,DATA - do not commit,2148,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_bound_verification_reuse_0/data/small.h5ad.sha256,DATA - do not commit,65,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_bound_verification_reuse_0/data/small.h5ad.verification.json,DATA - do not commit,411,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_is_deterministic_0/one/stage81a1c_n_download_decisions.csv,DATA - do not commit,1885,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_is_deterministic_0/one/stage81a1c_n_remote_asset_catalog.csv,DATA - do not commit,5011,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_is_deterministic_0/two/stage81a1c_n_download_decisions.csv,DATA - do not commit,1885,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_is_deterministic_0/two/stage81a1c_n_remote_asset_catalog.csv,DATA - do not commit,5011,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/first/stage81a1b_download_decisions.csv,DATA - do not commit,3374,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/first/stage81a1b_download_manifest.json,DATA - do not commit,216,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/first/stage81a1b_remote_asset_catalog.csv,DATA - do not commit,14839,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/first/stage81a1b_storage_preflight.json,DATA - do not commit,298,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/second/stage81a1b_download_decisions.csv,DATA - do not commit,3374,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/second/stage81a1b_download_manifest.json,DATA - do not commit,216,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/second/stage81a1b_remote_asset_catalog.csv,DATA - do not commit,14839,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_mode_is_determini0/second/stage81a1b_storage_preflight.json,DATA - do not commit,298,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_output_is_determi0/one/stage81a1d_live_catalog_cache.json,DATA - do not commit,267,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_output_is_determi0/one/stage81a1d_living_human_remote_asset_catalog.csv,DATA - do not commit,80,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_output_is_determi0/two/stage81a1d_live_catalog_cache.json,DATA - do not commit,267,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_catalog_output_is_determi0/two/stage81a1d_living_human_remote_asset_catalog.csv,DATA - do not commit,80,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_exact_gene_mapping_has_no0/nph.csv.gz,DATA - do not commit,121,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_dataset_role_registry.csv,DATA - do not commit,2087,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_donor_modality_section_crosswalk.csv,DATA - do not commit,32401,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_gene_identifier_audit.csv,DATA - do not commit,6694,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_graph_lineage_registry.csv,DATA - do not commit,2255,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_local_asset_manifest.csv,DATA - do not commit,6198,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_multimodal_inventory_report.json,DATA - do not commit,9354,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_perturbation_asset_audit.csv,DATA - do not commit,1672,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_priority_missing_assets.csv,DATA - do not commit,873,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_regulatory_evidence_audit.csv,DATA - do not commit,6138,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_rna_matrix_audit.csv,DATA - do not commit,4561,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_expression_and_gene_contr0/stage81a1_spatial_asset_audit.csv,DATA - do not commit,2148,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_dataset_role_registry.csv,DATA - do not commit,2087,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_donor_modality_section_crosswalk.csv,DATA - do not commit,32401,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_gene_identifier_audit.csv,DATA - do not commit,6694,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_graph_lineage_registry.csv,DATA - do not commit,2255,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_local_asset_manifest.csv,DATA - do not commit,6198,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_multimodal_inventory_report.json,DATA - do not commit,9354,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_perturbation_asset_audit.csv,DATA - do not commit,1672,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_priority_missing_assets.csv,DATA - do not commit,873,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_regulatory_evidence_audit.csv,DATA - do not commit,6138,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_rna_matrix_audit.csv,DATA - do not commit,4561,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_graph_spatial_perturbatio0/stage81a1_spatial_asset_audit.csv,DATA - do not commit,2148,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/first/stage81a0_v4_failure_registry.csv,DATA - do not commit,29753,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/first/stage81a0_v4_failure_registry.json,DATA - do not commit,51026,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/first/stage81a0_v4_stage_report.json,DATA - do not commit,20040,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/second/stage81a0_v4_failure_registry.csv,DATA - do not commit,29753,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/second/stage81a0_v4_failure_registry.json,DATA - do not commit,51026,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_outputs_are_deterministic0/second/stage81a0_v4_stage_report.json,DATA - do not commit,20389,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_preserved_hash_cache_is_b0/data/external/v4/sea_ad/manifests/preserved_hash_bindings/3fee2efca8955842367d41fde9413fc5ad977b5d35a4f9964bedd25832dcae60.json,DATA - do not commit,296,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_preserved_hash_cache_is_b0/evidence.csv,DATA - do not commit,10,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_processed_10x_tar_is_dime0/processed_RAW.tar,DATA - do not commit,10240,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_registry_sources_are_real0/stage81a0_v4_failure_registry.csv,DATA - do not commit,29753,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_registry_sources_are_real0/stage81a0_v4_failure_registry.json,DATA - do not commit,51026,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_registry_sources_are_real0/stage81a0_v4_stage_report.json,DATA - do not commit,19709,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_safe_archive_member_handl0/safe.zip,DATA - do not commit,131,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_safe_archive_member_handl0/unsafe.tar,DATA - do not commit,10240,False,dirty_or_untracked
+??,data/tmp/pytest-stage81a3-ema-pre/test_safe_archive_member_handl0/value,DATA - do not commit,1,False,dirty_or_untracked
+ M,docs/stage_c_finetuning_analysis.md,UNRELATED - exclude,4192,False,dirty_or_untracked
+??,docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md,A3 DOCUMENTATION - candidate,168491,False,dirty_or_untracked
+??,docs/v4/STAGE81A3_CONTEXT_EVIDENCE_AND_FREEZE_REVIEW.md,A3 DOCUMENTATION - candidate,2958,False,dirty_or_untracked
+??,results/tables/v2_1_gse174367_cell_trajectory_scores.csv,NEEDS HUMAN REVIEW,690380,False,dirty_or_untracked
+??,results/tables/v2_2_abeta_responsive_microglia_cell_scores_summary.csv,NEEDS HUMAN REVIEW,3009769,False,dirty_or_untracked
+ M,results/v4/stage81a0_v4_stage_report.json,NEEDS HUMAN REVIEW,8799,False,dirty_or_untracked
+!!,results/v4/stage81a3_all_donor_recurring_rare_preservation.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,20058,False,ignored
+!!,results/v4/stage81a3_all_donor_recurring_rare_target_support.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,12514,False,ignored
+!!,results/v4/stage81a3_attention_logit_scale_diagnostic.json,A3 EVIDENCE - candidate for later freeze/evidence commit,139635,False,ignored
+!!,results/v4/stage81a3_attention_logit_scale_factor_readout.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2542,False,ignored
+!!,results/v4/stage81a3_attention_logit_scale_geometry.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2208,False,ignored
+!!,results/v4/stage81a3_attention_logit_scale_mask_sensitivity.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1513,False,ignored
+!!,results/v4/stage81a3_balanced_pca160_diagnostic.npz,A3 EVIDENCE - candidate for later freeze/evidence commit,2462091,False,ignored
+!!,results/v4/stage81a3_balanced_rep160_diagnostic.npz,A3 EVIDENCE - candidate for later freeze/evidence commit,2462894,False,ignored
+!!,results/v4/stage81a3_basis_comparison.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,201,False,ignored
+!!,results/v4/stage81a3_basis_stability.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2633,False,ignored
+!!,results/v4/stage81a3_conditional_domain_imprint.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,894,False,ignored
+!!,results/v4/stage81a3_conditional_predictability_audit.json,A3 EVIDENCE - candidate for later freeze/evidence commit,54000,False,ignored
+!!,results/v4/stage81a3_context_data_inventory.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1100,False,ignored
+!!,results/v4/stage81a3_context_evidence_audit.json,A3 EVIDENCE - candidate for later freeze/evidence commit,12976,False,ignored
+!!,results/v4/stage81a3_context_mechanics.json,A3 EVIDENCE - candidate for later freeze/evidence commit,382,False,ignored
+!!,results/v4/stage81a3_context_rare_neighbor.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,80,False,ignored
+!!,results/v4/stage81a3_context_resource_registry.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,6255,False,ignored
+!!,results/v4/stage81a3_continuous_extreme_states.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,609212,False,ignored
+!!,results/v4/stage81a3_coordinate_accountability.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,90903,False,ignored
+!!,results/v4/stage81a3_countsplit_reproducibility.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,13099,False,ignored
+!!,results/v4/stage81a3_data_defined_rare_candidates.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,128575,False,ignored
+!!,results/v4/stage81a3_data_defined_rare_cells.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,43444,False,ignored
+!!,results/v4/stage81a3_data_defined_rare_neighborhoods.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,33271,False,ignored
+!!,results/v4/stage81a3_data_defined_rare_state_resample_stability.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2171,False,ignored
+!!,results/v4/stage81a3_dataset_transfer.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,6673,False,ignored
+!!,results/v4/stage81a3_depth_response.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,6847014,False,ignored
+!!,results/v4/stage81a3_domain_support_2axis.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,12534,False,ignored
+!!,results/v4/stage81a3_donor_private_rare_candidates.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,20848,False,ignored
+!!,results/v4/stage81a3_donor_transfer.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2421,False,ignored
+!!,results/v4/stage81a3_donor_transfer_by_class.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,35934,False,ignored
+!!,results/v4/stage81a3_ema_bootstrap_disambiguation.json,A3 EVIDENCE - candidate for later freeze/evidence commit,4140720,False,ignored
+!!,results/v4/stage81a3_ema_bootstrap_disambiguation_trajectory.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,41609,False,ignored
+!!,results/v4/stage81a3_ema_bootstrap_module_telemetry.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,217528,False,ignored
+!!,results/v4/stage81a3_ema_variance_resolution.json,A3 EVIDENCE - candidate for later freeze/evidence commit,52362,False,ignored
+!!,results/v4/stage81a3_evidence_depth_separation.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,9840,False,ignored
+!!,results/v4/stage81a3_evidence_response.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,50028071,False,ignored
+!!,results/v4/stage81a3_final_information_preservation_engineering_gates.json,A3 EVIDENCE - candidate for later freeze/evidence commit,3937,False,ignored
+!!,results/v4/stage81a3_final_information_preservation_factors.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,6526263,False,ignored
+!!,results/v4/stage81a3_final_information_preservation_geometry.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,31604,False,ignored
+!!,results/v4/stage81a3_final_information_preservation_qualification.json,A3 EVIDENCE - candidate for later freeze/evidence commit,5968830,False,ignored
+!!,results/v4/stage81a3_final_information_preservation_runs.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,3945,False,ignored
+!!,results/v4/stage81a3_forensic_attention_qkvo.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,6175,False,ignored
+!!,results/v4/stage81a3_forensic_failed_trajectory_replay.json,A3 EVIDENCE - candidate for later freeze/evidence commit,473580,False,ignored
+!!,results/v4/stage81a3_forensic_loss_decomposition.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,35697,False,ignored
+!!,results/v4/stage81a3_forensic_mask_sensitivity.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,4271,False,ignored
+!!,results/v4/stage81a3_forensic_token_information.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,3529,False,ignored
+!!,results/v4/stage81a3_foundation_architecture_revisit.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,967,False,ignored
+!!,results/v4/stage81a3_foundation_biological_state_domain_qualification.json,A3 EVIDENCE - candidate for later freeze/evidence commit,18239,False,ignored
+!!,results/v4/stage81a3_foundation_countsplit_readiness.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,6026,False,ignored
+!!,results/v4/stage81a3_foundation_domain_support.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,4758,False,ignored
+!!,results/v4/stage81a3_foundation_gene_support.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,529331,False,ignored
+!!,results/v4/stage81a3_foundation_heterogeneity_reality_audit.json,A3 EVIDENCE - candidate for later freeze/evidence commit,107214,False,ignored
+!!,results/v4/stage81a3_foundation_mask_library.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,6452,False,ignored
+!!,results/v4/stage81a3_foundation_matrix_inventory.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,14787,False,ignored
+!!,results/v4/stage81a3_foundation_overlap_graph.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,70002,False,ignored
+!!,results/v4/stage81a3_foundation_qc_summary.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,20485,False,ignored
+!!,results/v4/stage81a3_foundation_real_mask_state_deficit.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,431,False,ignored
+!!,results/v4/stage81a3_foundation_real_measurement_masks.npz,A3 EVIDENCE - candidate for later freeze/evidence commit,532,False,ignored
+!!,results/v4/stage81a3_foundation_real_pca_diagnostic.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,4058,False,ignored
+!!,results/v4/stage81a3_foundation_reference_graph.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,132,False,ignored
+!!,results/v4/stage81a3_foundation_source_balance.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1122,False,ignored
+!!,results/v4/stage81a3_freeze_readiness.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,329,False,ignored
+!!,results/v4/stage81a3_freeze_review_readiness.json,A3 EVIDENCE - candidate for later freeze/evidence commit,1278,False,ignored
+!!,results/v4/stage81a3_full_rare_state_coverage_census.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,5793,False,ignored
+!!,results/v4/stage81a3_initialization_geometry_diagnostic.json,A3 EVIDENCE - candidate for later freeze/evidence commit,175506,False,ignored
+!!,results/v4/stage81a3_initialization_geometry_stages.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,10060,False,ignored
+!!,results/v4/stage81a3_ipb_jepa_feasibility.json,A3 EVIDENCE - candidate for later freeze/evidence commit,1249442,False,ignored
+!!,results/v4/stage81a3_local_working_tree_freeze_inventory.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,SELF,False,ignored
+!!,results/v4/stage81a3_masking_calibration_report.json,A3 EVIDENCE - candidate for later freeze/evidence commit,6683,False,ignored
+!!,results/v4/stage81a3_masking_calibration_strata.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,160529,False,ignored
+!!,results/v4/stage81a3_masking_calibration_summary.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,3592,False,ignored
+!!,results/v4/stage81a3_matrix_transfer.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,17879,False,ignored
+!!,results/v4/stage81a3_measurement_quality_earning.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,20435,False,ignored
+!!,results/v4/stage81a3_observation_input_policy.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,812,False,ignored
+!!,results/v4/stage81a3_predictability_counterfactuals.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,8061,False,ignored
+!!,results/v4/stage81a3_predictability_factors.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,98242,False,ignored
+!!,results/v4/stage81a3_predictability_genes.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,19776525,False,ignored
+!!,results/v4/stage81a3_predictability_latent_dimensions.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,35912,False,ignored
+!!,results/v4/stage81a3_predictability_masks.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,264744,False,ignored
+!!,results/v4/stage81a3_prrc_freeze_readiness.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,227,False,ignored
+!!,results/v4/stage81a3_prrc_report.json,A3 EVIDENCE - candidate for later freeze/evidence commit,6016,False,ignored
+!!,results/v4/stage81a3_qc_earning_repair.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,7210,False,ignored
+!!,results/v4/stage81a3_rare_biology_completeness.json,A3 EVIDENCE - candidate for later freeze/evidence commit,12441,False,ignored
+!!,results/v4/stage81a3_rare_biology_family_summary.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,804,False,ignored
+!!,results/v4/stage81a3_rare_discovery_saturation.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,673,False,ignored
+!!,results/v4/stage81a3_rare_state_coverage_freeze_readiness.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,354,False,ignored
+!!,results/v4/stage81a3_rare_state_coverage_resolution.json,A3 EVIDENCE - candidate for later freeze/evidence commit,3045,False,ignored
+!!,results/v4/stage81a3_rare_state_family_summary.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,494,False,ignored
+!!,results/v4/stage81a3_rare_state_preservation.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,11326,False,ignored
+!!,results/v4/stage81a3_rare_state_registry.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,4227,False,ignored
+!!,results/v4/stage81a3_rare_state_resample_stability.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,3797,False,ignored
+!!,results/v4/stage81a3_rare_state_sampling_bias.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2567,False,ignored
+!!,results/v4/stage81a3_rare_state_target_support.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,12514,False,ignored
+!!,results/v4/stage81a3_rare_state_targeted_preservation.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,20058,False,ignored
+!!,results/v4/stage81a3_rare_state_technical_firewall.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,11603,False,ignored
+!!,results/v4/stage81a3_rbb_adaptive_calibration.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2803,False,ignored
+!!,results/v4/stage81a3_rbb_adaptive_correlated_activity.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,680836,False,ignored
+!!,results/v4/stage81a3_rbb_adaptive_correlated_probe.json,A3 EVIDENCE - candidate for later freeze/evidence commit,18271,False,ignored
+!!,results/v4/stage81a3_rbb_adaptive_counterfactual.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,3642,False,ignored
+!!,results/v4/stage81a3_rbb_adaptive_factors.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,48747,False,ignored
+!!,results/v4/stage81a3_rbb_belief_geometry_audit.json,A3 EVIDENCE - candidate for later freeze/evidence commit,48315,False,ignored
+!!,results/v4/stage81a3_rbb_coordinate_uncertainty.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,315858,False,ignored
+!!,results/v4/stage81a3_rbb_core_calibration.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,7997,False,ignored
+!!,results/v4/stage81a3_rbb_core_cross_panel.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,3316,False,ignored
+!!,results/v4/stage81a3_rbb_core_failure_registry.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1089,False,ignored
+!!,results/v4/stage81a3_rbb_core_migration_manifest.json,A3 EVIDENCE - candidate for later freeze/evidence commit,3275,False,ignored
+!!,results/v4/stage81a3_rbb_core_ordinary.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2462,False,ignored
+!!,results/v4/stage81a3_rbb_core_run.stderr.log,A3 EVIDENCE - candidate for later freeze/evidence commit,0,False,ignored
+!!,results/v4/stage81a3_rbb_core_run.stdout.log,A3 EVIDENCE - candidate for later freeze/evidence commit,4600,False,ignored
+!!,results/v4/stage81a3_rbb_core_simplification.json,A3 EVIDENCE - candidate for later freeze/evidence commit,42078,False,ignored
+!!,results/v4/stage81a3_rbb_core_simplified_checkpoint.pt,A3 EVIDENCE - candidate for later freeze/evidence commit,1485397,False,ignored
+!!,results/v4/stage81a3_rbb_core_structural.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,38401,False,ignored
+!!,results/v4/stage81a3_rbb_covariance_matrices.pt,A3 EVIDENCE - candidate for later freeze/evidence commit,4924383,False,ignored
+!!,results/v4/stage81a3_rbb_covariance_summary.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,13079,False,ignored
+!!,results/v4/stage81a3_rbb_cross_panel_compatibility.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1282,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_encoder_probe.json,A3 EVIDENCE - candidate for later freeze/evidence commit,2324,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_encoder_retention.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,325,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_recovery.json,A3 EVIDENCE - candidate for later freeze/evidence commit,58762,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_recovery_belief_state.pt,A3 EVIDENCE - candidate for later freeze/evidence commit,1548185,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_recovery_calibration.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2803,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_recovery_correlated_activity.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,6056688,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_recovery_counterfactual.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,25428,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_recovery_replicate.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,7441,False,ignored
+!!,results/v4/stage81a3_rbb_frozen_recovery_retention.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,618,False,ignored
+!!,results/v4/stage81a3_rbb_oof_covariance_audit.json,A3 EVIDENCE - candidate for later freeze/evidence commit,140199,False,ignored
+!!,results/v4/stage81a3_rbb_oof_covariance_masks.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2656,False,ignored
+!!,results/v4/stage81a3_rbb_oof_covariance_spectrum.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,34725,False,ignored
+!!,results/v4/stage81a3_rbb_panel_exposure.json,A3 EVIDENCE - candidate for later freeze/evidence commit,48158,False,ignored
+!!,results/v4/stage81a3_rbb_panel_exposure_checkpoint.pt,A3 EVIDENCE - candidate for later freeze/evidence commit,1548710,False,ignored
+!!,results/v4/stage81a3_rbb_panel_exposure_correlated.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,395638,False,ignored
+!!,results/v4/stage81a3_rbb_panel_exposure_cross_panel.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1275,False,ignored
+!!,results/v4/stage81a3_rbb_panel_exposure_ordinary.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2842,False,ignored
+!!,results/v4/stage81a3_rbb_panel_exposure_scalar_control.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,4419,False,ignored
+!!,results/v4/stage81a3_rbb_panel_exposure_structural.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,19360,False,ignored
+!!,results/v4/stage81a3_rbb_panel_exposure_training.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,4153,False,ignored
+!!,results/v4/stage81a3_rbb_structural_correlated_activity.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,297837,False,ignored
+!!,results/v4/stage81a3_rbb_structural_panel_audit.json,A3 EVIDENCE - candidate for later freeze/evidence commit,18174,False,ignored
+!!,results/v4/stage81a3_rbb_structural_panel_calibration.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,8774,False,ignored
+!!,results/v4/stage81a3_rbb_structural_panel_metrics.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,138331,False,ignored
+!!,results/v4/stage81a3_rbb_uli_diagnostic_ceiling.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1065,False,ignored
+!!,results/v4/stage81a3_rbb_uli_factor_readout.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,161695,False,ignored
+!!,results/v4/stage81a3_rbb_uli_jackknife.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,8107523,False,ignored
+!!,results/v4/stage81a3_rbb_uli_rbb_uncertainty.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,9505296,False,ignored
+!!,results/v4/stage81a3_rbb_uli_reliability.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,7329,False,ignored
+!!,results/v4/stage81a3_rbb_uli_replicate_disagreement.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,5488243,False,ignored
+!!,results/v4/stage81a3_rbb_uli_replicate_risk.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,10283924,False,ignored
+!!,results/v4/stage81a3_rbb_uli_run.stderr.log,A3 EVIDENCE - candidate for later freeze/evidence commit,0,False,ignored
+!!,results/v4/stage81a3_rbb_uli_run.stdout.log,A3 EVIDENCE - candidate for later freeze/evidence commit,6340,False,ignored
+!!,results/v4/stage81a3_rbb_uncertainty_localization_identifiability.json,A3 EVIDENCE - candidate for later freeze/evidence commit,19882,False,ignored
+!!,results/v4/stage81a3_rbb_validation_covariance_audit.json,A3 EVIDENCE - candidate for later freeze/evidence commit,110275,False,ignored
+!!,results/v4/stage81a3_rbb_validation_covariance_masks.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,4356,False,ignored
+!!,results/v4/stage81a3_real_rna_forward_smoke.json,A3 EVIDENCE - candidate for later freeze/evidence commit,36402,False,ignored
+!!,results/v4/stage81a3_real_rna_forward_smoke_cells.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,122855,False,ignored
+!!,results/v4/stage81a3_recurring_rare_molecular_states.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2840,False,ignored
+!!,results/v4/stage81a3_remaining_mechanics_calibration.json,A3 EVIDENCE - candidate for later freeze/evidence commit,61946,False,ignored
+!!,results/v4/stage81a3_representation_rarity_agreement.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1446,False,ignored
+!!,results/v4/stage81a3_reproducible_state_basis.pt,A3 EVIDENCE - candidate for later freeze/evidence commit,5279480,False,ignored
+!!,results/v4/stage81a3_reproducible_state_basis_audit.json,A3 EVIDENCE - candidate for later freeze/evidence commit,28249,False,ignored
+!!,results/v4/stage81a3_reproducible_state_coordinates.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,21551,False,ignored
+!!,results/v4/stage81a3_reproducible_state_masks.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,222895,False,ignored
+!!,results/v4/stage81a3_rlc_causal_conditions.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,500,False,ignored
+!!,results/v4/stage81a3_rlc_causal_dag.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,7902,False,ignored
+!!,results/v4/stage81a3_rlc_causal_factors.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,30037,False,ignored
+!!,results/v4/stage81a3_rlc_causal_fast_probe.json,A3 EVIDENCE - candidate for later freeze/evidence commit,122514,False,ignored
+!!,results/v4/stage81a3_rlc_causal_genes.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,1806634,False,ignored
+!!,results/v4/stage81a3_sampling_analysis.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,477,False,ignored
+!!,results/v4/stage81a3_stage75_spatial_edge_overlap.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,5143,False,ignored
+!!,results/v4/stage81a3_subspace_uncertainty_blocks.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,20394,False,ignored
+!!,results/v4/stage81a3_synthetic_geometry_escape.json,A3 EVIDENCE - candidate for later freeze/evidence commit,3193545,False,ignored
+!!,results/v4/stage81a3_synthetic_geometry_escape_trajectory.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,34336,False,ignored
+!!,results/v4/stage81a3_technology_surgery.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,335,False,ignored
+!!,results/v4/stage81a3_technology_transfer.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,2292,False,ignored
+!!,results/v4/stage81a3_transfer_taxonomy_repair.csv,A3 EVIDENCE - candidate for later freeze/evidence commit,562,False,ignored
+??,scripts/v4/stage81a3_attention_logit_scale_diagnostic.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,37873,False,dirty_or_untracked
+??,scripts/v4/stage81a3_audit_context_evidence.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,31376,False,dirty_or_untracked
+??,scripts/v4/stage81a3_audit_masking_calibration.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,24287,False,dirty_or_untracked
+??,scripts/v4/stage81a3_calibrate_remaining_mechanics.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,20041,False,dirty_or_untracked
+??,scripts/v4/stage81a3_complete_rare_state_coverage_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,51056,False,dirty_or_untracked
+??,scripts/v4/stage81a3_conditional_predictability_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,44031,False,dirty_or_untracked
+??,scripts/v4/stage81a3_diagnose_initialization_geometry.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,43817,False,dirty_or_untracked
+??,scripts/v4/stage81a3_ema_bootstrap_disambiguation.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,33786,False,dirty_or_untracked
+??,scripts/v4/stage81a3_extract_nph_sample.R,A3 IMPLEMENTATION - candidate for eventual implementation commit,4017,False,dirty_or_untracked
+??,scripts/v4/stage81a3_final_information_preservation_qualification.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,56926,False,dirty_or_untracked
+??,scripts/v4/stage81a3_forensic_failed_trajectory_replay.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,46121,False,dirty_or_untracked
+??,scripts/v4/stage81a3_foundation_biological_state_domain_qualification.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,81621,False,dirty_or_untracked
+??,scripts/v4/stage81a3_foundation_heterogeneity_reality_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,56682,False,dirty_or_untracked
+??,scripts/v4/stage81a3_ipb_jepa_feasibility.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,54815,False,dirty_or_untracked
+??,scripts/v4/stage81a3_preref_resolution_rare_context.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,40079,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rare_biology_completeness_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,49600,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rare_state_coverage_resolution.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,29815,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_adaptive_correlated_probe.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,44149,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_belief_geometry_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,23950,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_core_simplification_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,48953,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_frozen_encoder_probe.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,27061,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_frozen_recovery.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,23078,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_oof_covariance_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,28026,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_panel_exposure.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,42142,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_structural_panel_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,38521,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_uncertainty_localization_identifiability.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,45105,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rbb_validation_covariance_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,21576,False,dirty_or_untracked
+??,scripts/v4/stage81a3_real_rna_forward_smoke.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,39493,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rebuild_nph_disposition_cache.R,GENERATED CACHE - do not commit,5981,False,dirty_or_untracked
+??,scripts/v4/stage81a3_reproducible_state_basis_audit.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,19071,False,dirty_or_untracked
+??,scripts/v4/stage81a3_resolve_ema_variance_evidence.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,19724,False,dirty_or_untracked
+??,scripts/v4/stage81a3_rlc_causal_fast_probe.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,54603,False,dirty_or_untracked
+??,scripts/v4/stage81a3_synthetic_geometry_escape.py,A3 IMPLEMENTATION - candidate for eventual implementation commit,37003,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/__init__.py,NEEDS HUMAN REVIEW,2608,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/belief_geometry.py,NEEDS HUMAN REVIEW,3313,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/calibration.py,NEEDS HUMAN REVIEW,3551,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/checkpointing.py,NEEDS HUMAN REVIEW,3989,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/conditional_predictability.py,NEEDS HUMAN REVIEW,13222,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/context_entities.py,NEEDS HUMAN REVIEW,1580,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/context_ledger_query.py,NEEDS HUMAN REVIEW,1146,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/context_reader.py,NEEDS HUMAN REVIEW,3358,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/contracts.py,NEEDS HUMAN REVIEW,1891,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/ema.py,NEEDS HUMAN REVIEW,7050,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/foundation_domain_support.py,NEEDS HUMAN REVIEW,2948,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/foundation_heterogeneity.py,NEEDS HUMAN REVIEW,3627,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/foundation_measurement_masks.py,NEEDS HUMAN REVIEW,2852,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/foundation_observation.py,NEEDS HUMAN REVIEW,3809,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/foundation_state_basis.py,NEEDS HUMAN REVIEW,4290,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/foundation_state_stability.py,NEEDS HUMAN REVIEW,1708,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/foundation_transfer.py,NEEDS HUMAN REVIEW,3912,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/foundation_uncertainty_mechanics.py,NEEDS HUMAN REVIEW,1662,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/gene_tokenizer.py,NEEDS HUMAN REVIEW,2124,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/intrinsic_cell_package.py,NEEDS HUMAN REVIEW,1058,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/ipb_jepa.py,NEEDS HUMAN REVIEW,17825,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/losses.py,NEEDS HUMAN REVIEW,2176,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/masking.py,NEEDS HUMAN REVIEW,2681,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/measurement_state.py,NEEDS HUMAN REVIEW,3054,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/observation_calibration.py,NEEDS HUMAN REVIEW,4378,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/observation_process.py,NEEDS HUMAN REVIEW,3031,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/oof_covariance.py,NEEDS HUMAN REVIEW,4868,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/pca_summary.py,NEEDS HUMAN REVIEW,1647,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/perceiver_encoder.py,NEEDS HUMAN REVIEW,9794,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/predictor.py,NEEDS HUMAN REVIEW,1861,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/rare_state_audit.py,NEEDS HUMAN REVIEW,4939,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/rbb_adaptive.py,NEEDS HUMAN REVIEW,15527,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/rbb_core.py,NEEDS HUMAN REVIEW,6949,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/reproducible_state.py,NEEDS HUMAN REVIEW,5016,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/rlc_causal.py,NEEDS HUMAN REVIEW,13503,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/subspace_uncertainty.py,NEEDS HUMAN REVIEW,1275,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/telemetry.py,NEEDS HUMAN REVIEW,12158,False,dirty_or_untracked
+??,src/sea_ad_jepa/v4/validation_covariance.py,NEEDS HUMAN REVIEW,1461,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_checkpoint_resume.py,A3 TEST/CONFIG - candidate,5297,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_collapse_metrics.py,A3 TEST/CONFIG - candidate,5400,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_complete_rare_state_coverage_audit.py,A3 TEST/CONFIG - candidate,5863,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_conditional_predictability_audit.py,A3 TEST/CONFIG - candidate,7049,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_context_entities.py,A3 TEST/CONFIG - candidate,1171,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_context_evidence_audit.py,A3 TEST/CONFIG - candidate,1761,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_context_firewall.py,A3 TEST/CONFIG - candidate,1298,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_context_reader.py,A3 TEST/CONFIG - candidate,2489,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_covariance_policy.py,A3 TEST/CONFIG - candidate,1866,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_cuda_memory.py,A3 TEST/CONFIG - candidate,3131,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_ema.py,A3 TEST/CONFIG - candidate,6772,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_ema_schedule.py,A3 TEST/CONFIG - candidate,4536,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_ema_telemetry.py,A3 TEST/CONFIG - candidate,3336,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_fbsdq_outputs.py,A3 TEST/CONFIG - candidate,6161,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_domain_support.py,A3 TEST/CONFIG - candidate,3790,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_domain_support_fbsdq.py,A3 TEST/CONFIG - candidate,528,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_heterogeneity.py,A3 TEST/CONFIG - candidate,4170,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_measurement_masks.py,A3 TEST/CONFIG - candidate,2458,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_observation.py,A3 TEST/CONFIG - candidate,3061,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_state_basis.py,A3 TEST/CONFIG - candidate,1614,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_state_stability.py,A3 TEST/CONFIG - candidate,1261,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_transfer.py,A3 TEST/CONFIG - candidate,1112,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_foundation_uncertainty_mechanics.py,A3 TEST/CONFIG - candidate,948,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_gene_tokenizer.py,A3 TEST/CONFIG - candidate,3381,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_gradient_firewall.py,A3 TEST/CONFIG - candidate,1918,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_information_preserving_candidate.py,A3 TEST/CONFIG - candidate,7821,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_input_firewall.py,A3 TEST/CONFIG - candidate,2992,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_ipb_jepa.py,A3 TEST/CONFIG - candidate,12845,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_jepa_loss.py,A3 TEST/CONFIG - candidate,2055,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_masking_calibration.py,A3 TEST/CONFIG - candidate,7092,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_masking_policy.py,A3 TEST/CONFIG - candidate,2764,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_multiseed_mechanics.py,A3 TEST/CONFIG - candidate,3285,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_observation_calibration.py,A3 TEST/CONFIG - candidate,5737,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_observation_process.py,A3 TEST/CONFIG - candidate,931,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_permutation_invariance.py,A3 TEST/CONFIG - candidate,1613,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_predictor.py,A3 TEST/CONFIG - candidate,1922,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_prrc_outputs.py,A3 TEST/CONFIG - candidate,2482,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_qc_earning_repair.py,A3 TEST/CONFIG - candidate,742,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rare_biology_completeness_audit.py,A3 TEST/CONFIG - candidate,4553,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rare_state.py,A3 TEST/CONFIG - candidate,1964,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rare_state_coverage_resolution.py,A3 TEST/CONFIG - candidate,4555,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_adaptive.py,A3 TEST/CONFIG - candidate,10319,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_belief_geometry.py,A3 TEST/CONFIG - candidate,4938,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_core.py,A3 TEST/CONFIG - candidate,6927,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_frozen_encoder.py,A3 TEST/CONFIG - candidate,6757,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_frozen_recovery.py,A3 TEST/CONFIG - candidate,3448,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_oof_covariance.py,A3 TEST/CONFIG - candidate,6285,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_panel_exposure.py,A3 TEST/CONFIG - candidate,7733,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_structural_panel.py,A3 TEST/CONFIG - candidate,7456,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_uncertainty_localization_identifiability.py,A3 TEST/CONFIG - candidate,8991,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rbb_validation_covariance.py,A3 TEST/CONFIG - candidate,4295,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_reproducible_state.py,A3 TEST/CONFIG - candidate,3439,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_rlc_causal.py,A3 TEST/CONFIG - candidate,9413,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_subspace_uncertainty.py,A3 TEST/CONFIG - candidate,792,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_transfer_taxonomy.py,A3 TEST/CONFIG - candidate,842,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_variance_policy.py,A3 TEST/CONFIG - candidate,4267,False,dirty_or_untracked
+??,tests/v4/test_stage81a3_visibility_semantics.py,A3 TEST/CONFIG - candidate,3677,False,dirty_or_untracked

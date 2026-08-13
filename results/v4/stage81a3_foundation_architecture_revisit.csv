@@ -1,0 +1,17 @@
+assumption,classification
+4096 shared vocabulary,KEEP AS ARCHITECTURE CONTRACT
+60/40 missingness,KEEP AS MECHANISM TEST ONLY
+random masking,KEEP AS MECHANISM TEST ONLY
+coherent graph masking,KEEP AS MECHANISM TEST ONLY
+all genes measured before masking,KEEP AS ARCHITECTURE CONTRACT FOR CURRENT FROZEN VOCABULARY; REQUALIFY FOR FUTURE PANELS
+perfect 100% teacher,REJECT
+single normalization law,REVISE BEFORE REAL TRAINING WITH QUALITY-CONTEXT AUDIT
+fixed synthetic RepPCA basis,REJECT AS REAL PRODUCTION BASIS
+measurement-noise model,KEEP AS MECHANISM TEST ONLY
+structural mask semantics,KEEP AS ARCHITECTURE CONTRACT
+frozen molecular ledger,KEEP AS ARCHITECTURE CONTRACT
+gradient firewall,KEEP AS ARCHITECTURE CONTRACT
+diagonal belief uncertainty,KEEP AS CURRENT EVIDENCE-EARNED CONTRACT
+fixed prior covariance,KEEP AS CURRENT EVIDENCE-EARNED CONTRACT
+single global scalar calibration,REVISE BEFORE REAL TRAINING
+counterfactual sidecar,REJECT AS CURRENT CAPABILITY
