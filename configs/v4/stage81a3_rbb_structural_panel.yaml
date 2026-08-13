@@ -1,0 +1,45 @@
+stage_id: stage81a3_rbb_structural_panel
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+mode: forward_only
+fixture:
+  cells: 4096
+  genes: 4096
+  factors: 32
+  train: 3072
+  validation: 512
+  sealed: 512
+panel_cardinalities:
+  FULL: 4096
+  P80: 3277
+  P60: 2458
+  P40: 1638
+  P20: 819
+panel_views: 4
+primary_operating_panels: [P80, P60, P40]
+proper_score_gate_panel: P60
+extreme_stress_panel: P20
+complementary_panel:
+  pairs: 4
+  measured_per_panel: 2458
+  intersection: 820
+  union: 4096
+tolerances:
+  forward_parity_max_abs: 1.0e-6
+  structural_firewall_max_abs: 1.0e-6
+  no_harm_factor_r2: 0.02
+  joint_scale: [0.80, 1.25]
+  coverage_1sigma: [0.58, 0.78]
+  coverage_1_96sigma: [0.88, 0.99]
+  monotonic_coordinate_fraction: 0.75
+  uncertainty_error_median_spearman: 0.50
+  cross_panel_fraction: 0.75
+  union_reduction_fraction: 0.75
+boundaries:
+  optimizer_updates: 0
+  model_training: forbidden
+  real_rna: forbidden
+  pathology: forbidden
+  factor_labels_for_panel_construction: forbidden
+  sealed_for_panel_construction: forbidden
+  globally_never_observed_inference_claim: forbidden

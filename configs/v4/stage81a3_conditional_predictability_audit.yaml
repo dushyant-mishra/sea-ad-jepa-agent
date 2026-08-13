@@ -1,0 +1,43 @@
+stage_id: stage81a3_conditional_predictability_audit
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+synthetic:
+  cells: 4096
+  genes: 4096
+  factors: 32
+  causal_mechanisms: 12
+  train_cells: 3072
+  validation_cells: 512
+  sealed_test_cells: 512
+  normalization: library_size_10000_then_log1p
+reference:
+  pca_components: 160
+  pca_fit_source: train_lambda_norm_only
+  epsilon: 1.0e-6
+masking:
+  families: [RANDOM_40, COEXPRESSION_BLOCK_40, ORACLE_COVERAGE_40]
+  views_per_family: 4
+  hidden_genes: 1638
+  graph_top_k: 8
+  graph_blocks: 4
+ridge:
+  alpha: 1.0e-3
+diagnostic_mlp:
+  count_families: [RANDOM_40, COEXPRESSION_BLOCK_40, ORACLE_COVERAGE_40]
+  expected_families: [RANDOM_40, COEXPRESSION_BLOCK_40]
+  architecture: [8192, 512, 256, 160]
+  optimizer: AdamW
+  learning_rate: 1.0e-3
+  weight_decay: 1.0e-4
+  effective_batch: 512
+  microbatch: 128
+  updates: 150
+  precision: fp16_with_float32_loss
+boundaries:
+  foundation_training: forbidden
+  jepa_training: forbidden
+  real_rna: forbidden
+  pathology: forbidden
+  factor_labels_as_predictor_input: forbidden
+  true_dag_as_training_input: forbidden
+  hyperparameter_sweep: forbidden
