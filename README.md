@@ -1,24 +1,83 @@
-# SEA-AD Graph-JEPA Agent
+# SEA-AD MRA-JEPA / Graph-JEPA Research Repository
 
-> **Current work is v4 / Stage81.** Begin with [START_HERE.md](START_HERE.md).
-> The material below includes the preserved v1-v3 project history and should
-> not be read as the current execution status.
+> **Current checkpoint:** Stage81A2 is frozen; Stage81A3 is in development and
+> is not frozen. Freeze 1 is not declared, and Stage81B/Stage81C are not
+> started. Begin with the [current-state handoff](docs/v4/CURRENT_STATE_HANDOFF.md)
+> or the shorter [start page](START_HERE.md).
 
-**A Graph-JEPA framework for Alzheimer disease microglia: pathology-grounded representation learning, donor-held-out validation, and model-implied counterfactual gene-network discovery.**
+This repository preserves the full SEA-AD JEPA research lineage from v1-v3
+Graph-JEPA through the current v4 MRA-JEPA design. Earlier pathology,
+regulatory, perturbation, and visualization results remain important evidence,
+but they are not the current execution state and must not be read as frozen v4
+conclusions.
 
-This repository is an end-to-end research prototype built around the Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD). The current focus is Microglia-PVM nuclei from middle temporal gyrus (MTG), paired with quantitative neuropathology targets such as AT8/pTau, 6e10/A beta, GFAP, Iba1, and NeuN.
+## Current v4 Checkpoint
 
-## Current v3 status
+| Item | Current authority |
+|---|---|
+| Stage81A2 | **FROZEN** at `808ce4f`; 13 datasets, 36 matrices, 149/19/19 TRAIN/DEV/SEALED donors, zero detected split leakage |
+| Stage81A3 | **IN PROGRESS / NOT FROZEN** on `stage81a3-checkpoint-20260813` |
+| Checkpoint evidence base | `24a006f`; implementation, tests, evidence, chronology, and design-blocker amendment pushed to GitHub; use `git rev-parse HEAD` for the branch tip |
+| Regression state | 754 v4 tests passed; frozen A2 and protected A3 hashes verified |
+| Freeze 1 | **NOT DECLARED** |
+| Stage81B / Stage81C | **NOT STARTED** |
+| Data firewall | DEV RNA, SEALED RNA, and pathology as a foundation input remain closed |
 
-Graph-JEPA v3 is the active publication framework. v1 is proof-of-concept history, and v2 is graph-specificity/failure-analysis motivation and controls.
+The tested v4 intrinsic lineage uses an explicit Molecular Ledger over the
+historical frozen 4,096-gene vocabulary, with per-gene contextual tokens and
+PCA160 as a derived global summary. Historical 160-D experiments remain valid
+evidence about the architecture that was tested; they are not a frozen future
+design.
 
-The official internal v3 metric is pooled donor-level out-of-fold Spearman. The current official internal baseline is `module_mean_baseline = 0.3128`, and the minimum v3 success threshold is `0.3228`. All five targets must be reported: AT8, 6e10/A beta, GFAP, Iba1, and NeuN.
+Two linked design decisions must be resolved before Freeze 1:
 
-The current next modeling step is Stage 27 non-graph v3 training regimes: Stage 27A is SEA-AD-only non-graph v3, and Stage 27B is external-pretrained non-graph v3. Both are training regimes within one Graph-JEPA v3 framework, not separate projects.
+1. **Biological address space:** 4,096 was a configured top-K capacity, not a
+   transcriptome-derived saturation point. A versioned maximal-exact-
+   transcriptome contract must be qualified without rewriting Stage81A2.
+2. **Representation capacity and resolution:** `G` (gene address-space size),
+   `d_gene` (per-gene contextual width), and `d_cell` (global-state resolution)
+   must be qualified independently. The Molecular Ledger is the fine molecular
+   state; a low-dimensional global state is a derived coordinate view.
 
-Active control docs:
+No redesign, width sweep, production foundation training, Stage81B work, or
+Stage81C work has begun. The exact authority hierarchy, negative results,
+local-only dependencies, and reproduction commands are in
+[the canonical handoff](docs/v4/CURRENT_STATE_HANDOFF.md). The full ordered A3
+experiment history is in the
+[Stage81A evidence readout](docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md).
 
-- [Active v3 status](docs/ACTIVE_V3_STATUS.md)
+## Scientific Scope
+
+The project asks whether self-supervised molecular representations can preserve
+biological cell-state structure, separate biological state from observation
+processes, and support carefully bounded downstream pathology, regulatory,
+spatial, and perturbational questions. The v4 foundation trajectory remains
+pathology-blind by design.
+
+The current conceptual flow is:
+
+```text
+approved pathology-blind TRAIN RNA
+        -> explicit molecular evidence ledger
+        -> derived global state at qualified resolution(s)
+        -> frozen foundation qualification
+        -> only then gated context/pathology/regulatory/perturbation work
+```
+
+## Preserved v3 Status
+
+Graph-JEPA v3 is the preserved publication and historical validation framework;
+it is not the active model-development stage. v1 is proof-of-concept history,
+and v2 supplies graph-specificity, failure-analysis, and control evidence.
+
+The official internal v3 metric was pooled donor-level out-of-fold Spearman.
+Its internal baseline was `module_mean_baseline = 0.3128`, with a minimum v3
+success threshold of `0.3228`. The five reported targets were AT8, 6e10/A beta,
+GFAP, Iba1, and NeuN.
+
+Historical v3 control documents:
+
+- [v3 status at that checkpoint](docs/ACTIVE_V3_STATUS.md)
 - [v3 scorecard](docs/V3_SCORECARD.md)
 - [v3 dataset registry](docs/DATASET_REGISTRY.md)
 
@@ -37,9 +96,11 @@ single-nucleus expression
         -> external perturbation, spatial, or imaging validation
 ```
 
-## Project Dashboard
+## Historical Project Dashboard
 
-The figures below are the GitHub-facing overview of the project. They are generated from lightweight result tables and schematics, so readers can understand the workflow and current evidence without downloading raw SEA-AD files or model checkpoints.
+The figures below preserve the v1-v3 GitHub-facing overview. They are generated
+from lightweight result tables and schematics and are historical rather than a
+dashboard of the current v4 checkpoint.
 
 | Workflow | Why v2 Exists |
 |---|---|
@@ -49,12 +110,12 @@ The figures below are the GitHub-facing overview of the project. They are genera
 | Stage C Tuning | Donor-Level Pathology Geometry |
 |---|---|
 | ![Stage C sweep leaderboard](results/figures/public_stage_c_sweep_leaderboard.svg) | ![PCA vs JEPA pathology geometry](results/figures/public_pca_vs_jepa_pathology_geometry.svg) |
-| **Figure legend:** Stage C configurations are ranked by a composite score balancing pathology predictivity, manifold geometry, and anchor preservation. The current best run is elastic: loose rehearsal plus a small disease covariance penalty keeps anchors near the reference state while allowing disease geometry to move. | **Figure legend:** Donor-level PCA and JEPA spaces are compared by asking whether local neighborhoods predict neuropathology targets. JEPA improves several pathology-neighborhood signals, especially GFAP and A beta/6e10, showing that the representation is more than a prettier UMAP. |
+| **Historical figure legend:** Stage C configurations were ranked by a composite score balancing pathology predictivity, manifold geometry, and anchor preservation. The selected run was elastic: loose rehearsal plus a small disease covariance penalty kept anchors near the reference state while allowing disease geometry to move. | **Historical figure legend:** Donor-level PCA and JEPA spaces were compared by asking whether local neighborhoods predicted neuropathology targets. JEPA improved several pathology-neighborhood signals, especially GFAP and A beta/6e10. |
 
 | Fine-Tuned Stage C Diagnostics | Cell-Level Diagnostics |
 |---|---|
 | ![Stage C fine-tuning diagnostics](results/figures/public_stage_c_finetuning_parameter_sensitivity.svg) | ![Cell-level donor leakage and pathology mixing](results/figures/public_cell_level_mixing.svg) |
-| **Figure legend:** Fine-tuning diagnostics show why `upgrade_fine_08_r0045_cov0005_pc0075` is the current active v2.1 baseline: projection-head disease geometry plus pathology-neighborhood loss improves the balanced composite score while preserving both SEA-AD and CELLxGENE anchors above the 0.95 safety rule. | **Figure legend:** Cell-level diagnostics test whether the latent space is dominated by donor identity. JEPA shows lower donor leakage than PCA, while cell-level pathology separation remains difficult because donor pathology scores are broadcast to many individual cells. |
+| **Historical figure legend:** Fine-tuning diagnostics supported `upgrade_fine_08_r0045_cov0005_pc0075` as the selected v2.1 baseline at that checkpoint. | **Historical figure legend:** Cell-level diagnostics tested whether the latent space was dominated by donor identity; cell-level pathology separation remained difficult because donor pathology scores were broadcast to many cells. |
 
 | Multi-Target Held-Out Validation |
 |---|
@@ -63,9 +124,10 @@ The figures below are the GitHub-facing overview of the project. They are genera
 
 Full-size figures and captions are collected in [docs/figure_gallery.md](docs/figure_gallery.md).
 
-## Latest Snapshot
+## Preserved v2.2/v3 Snapshot
 
-The current repository state has moved beyond the original v1 latent-space demo. The active story is now:
+The following snapshot records the v2.2/v3 translational state and should not be
+interpreted as the current v4 execution plan:
 
 ```text
 Graph-JEPA v2.2 backbone
@@ -76,18 +138,18 @@ Graph-JEPA v2.2 backbone
   -> druggability and biomarker triage
 ```
 
-Current high-level results:
+Historical high-level results:
 
-| Layer | Current Finding | Interpretation Boundary |
+| Layer | Historical finding | Interpretation boundary |
 |---|---|---|
-| Tau/neurodegeneration readout | Frozen Graph-JEPA plus a linear pathology head gives the strongest defensible AT8/NeuN readout. | Use this as the active Stage C clinical readout; do not warp the backbone further unless a future gate clearly passes. |
+| Tau/neurodegeneration readout | Frozen Graph-JEPA plus a linear pathology head gave the strongest defensible AT8/NeuN readout in that lineage. | Historical Stage C readout; not a v4 foundation result. |
 | Golden Quadrant targets | `APOE`, `APP`, `CD4`, and `TLR2` predicted lower AT8 and higher NeuN in the pathology-head counterfactual screen. | These are model-implied intervention hypotheses, not causal proof. |
 | Covariate audit | `APOE`, `APP`, and `TLR2` cleared the first technical-covariate screen; `CD4` was downgraded for count-depth artifacts. | The clean first-pass translational set is `APOE`, `APP`, and `TLR2`. |
 | Druggability/biomarker triage | `TLR2` is membrane-accessible, `APP` is membrane/secreted with many ChEMBL actives, and `APOE` is secreted/extracellular. | `TLR2` is the cleanest surface immunomodulatory target; `APP` and `APOE` need careful biomarker/pathway framing. |
 | Amyloid/6e10 | A frozen ElasticNet axis finds a weak but reproducible donor-level 6e10 signal; MIL did not generalize. | Treat A beta as exploratory. Do not claim plaque-proximal microglia without spatial/plaque validation. |
-| External transfer | Grubman/Leng is a useful directionality smoke test; Morabito tau transfer is weak/negative. | External projections currently define boundaries, not final validation wins. |
+| External transfer | Grubman/Leng was a useful directionality smoke test; Morabito tau transfer was weak/negative. | Those external projections defined boundaries rather than final validation wins. |
 
-Newest translational outputs:
+Associated translational outputs:
 
 - [target covariate audit](results/tables/v2_2_target_covariate_audit.csv)
 - [target covariate audit, long form](results/tables/v2_2_target_covariate_audit_long.csv)
@@ -175,7 +237,7 @@ objective = JEPA latent prediction with anchor-preserving rehearsal
 
 This directly addresses the v1 topology flaw. The model is no longer told that genes are just unrelated columns. It receives a prior graph so perturbing one gene can influence connected subgraphs.
 
-The current graph input check:
+The graph input check at that historical checkpoint:
 
 ```text
 genes: 2,957
@@ -301,7 +363,7 @@ Interpretation: the model escaped the anchors by stretching into a narrow diseas
 
 We then added a small disease covariance penalty to reduce the tube effect. A large covariance weight over-damped disease movement, so we built a targeted sweep to tune the balance.
 
-## Current Best Stage C Result
+## Historical Best Stage C Result
 
 The reproducible sweep is implemented in:
 
@@ -320,7 +382,7 @@ results/tables/stage_c_upgrade_fine_summary.csv
 results/tables/stage_c_finetuning_combined_leaderboard.csv
 ```
 
-Best current configuration:
+Best configuration at that checkpoint:
 
 ```text
 run: upgrade_fine_08_r0045_cov0005_pc0075
@@ -351,14 +413,14 @@ CELLxGENE anchor cosine:     0.961
 Interpretation:
 
 ```text
-The best current Stage C setting is v2.1 elastic and anchor-safe.
+The selected Stage C setting at that checkpoint was v2.1 elastic and anchor-safe.
 Projection-head decoupling lets the disease representation move without dragging the reference encoder.
 Pathology-neighborhood loss improves balanced NeuN/GFAP/cosine-neighborhood behavior.
 fine_bridge_06 remains an important AT8-heavy comparator, but it is less anchor-safe.
 It is still a tuning result, not a final biological validation claim.
 ```
 
-## Current Biological Hypotheses
+## Historical Biological Hypotheses
 
 Early SEA-AD Microglia-PVM candidates from internal v1/v2 analyses include:
 
@@ -401,7 +463,7 @@ GFAP dimensions:     z_63, z_38, z_120, z_107, z_71
 
 This suggests that tau pathology, neuronal density, and astrocyte-reactive tissue state are partially overlapping but not identical axes in the Graph-JEPA manifold.
 
-## Current v2.1 Biology Extraction
+## Historical v2.1 Biology Extraction
 
 After selecting `upgrade_fine_08_r0045_cov0005_pc0075`, we decoded its latent axes and compared them with the AT8-sensitive `fine_bridge_06_r0045_cov0005` checkpoint. The goal was to stop tuning blindly and ask what biology the model is actually using.
 
@@ -432,7 +494,7 @@ strongest AT8-up module perturbations:
 
 The predictor Jacobian analysis converged on lysosome/phagocytosis-related latent routing in both `upgrade_fine_08` and `fine_bridge_06`, suggesting that phagocytic/lysosomal state is a stable internal axis rather than a one-checkpoint artifact.
 
-The top ranked gene-level hypothesis matrix currently prioritizes:
+The historical top-ranked gene-level hypothesis matrix prioritized:
 
 ```text
 APP
@@ -516,7 +578,7 @@ nuisance covariates tested:
   Age at Death, Sex, PMI, RIN, Brain pH, Fresh Brain Weight
 
 result:
-  top five targets still pass all current controls
+  top five targets passed all controls available at that checkpoint
   z_107 remains the only covariate-caution axis
 ```
 
@@ -644,11 +706,15 @@ The next validation-planning document separates public alignment cohorts from fi
 
 - [external cohort reconnaissance](docs/external_cohort_reconnaissance.md)
 
-## Current Biological Extraction and Translation Layer
+## Historical Biological Extraction and Translation Layer
 
-The active biological extraction layer uses a frozen Graph-JEPA backbone plus trained pathology heads. Counterfactual screens are scored by passing perturbed expression through the graph encoder first, then reading out predicted pathology through the head. This preserves the graph-mediated representation shift and avoids directly querying linear head weights as if they were causal mechanisms.
+The historical biological extraction layer used a frozen Graph-JEPA backbone
+plus trained pathology heads. Counterfactual screens passed perturbed expression
+through the graph encoder before reading predicted pathology through the head.
+This preserved the graph-mediated representation shift and avoided directly
+querying linear head weights as if they were causal mechanisms.
 
-The latest AT8/NeuN target workflow is:
+The final AT8/NeuN target workflow in that lineage was:
 
 ```text
 1. graph-mediated pathology-head counterfactual screen
@@ -674,15 +740,17 @@ APP:  Spearman rho -0.096, p 0.386
 TLR2: Spearman rho -0.046, p 0.679
 ```
 
-Interpretation: the clean target set is not obviously driven by age at death in the current donor-level audit. `CD4` is not discarded forever, but it needs stricter sensitivity analysis before it belongs in a translational target shortlist.
+Historical interpretation: the clean target set was not obviously driven by
+age at death in that donor-level audit. `CD4` required stricter sensitivity
+analysis before inclusion in a translational target shortlist.
 
-Current scripts:
+Historical scripts:
 
 - [scripts/pathology_head_counterfactual_knockout.py](scripts/pathology_head_counterfactual_knockout.py)
 - [scripts/audit_target_covariates.py](scripts/audit_target_covariates.py)
 - [scripts/audit_druggability_biomarkers.py](scripts/audit_druggability_biomarkers.py)
 
-## Dataset
+## Historical v1-v3 Dataset Notes
 
 Primary data source:
 
@@ -706,11 +774,18 @@ This file is large and is not committed to the repository.
 
 Start here:
 
-- [docs/current_status.md](docs/current_status.md): full completed-work log and results.
+- [docs/v4/CURRENT_STATE_HANDOFF.md](docs/v4/CURRENT_STATE_HANDOFF.md): canonical current state, authority levels, blockers, and reproduction commands.
+- [START_HERE.md](START_HERE.md): compact repository navigation.
+- [docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md](docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md): chronological Stage81A evidence ledger.
+- [docs/v4/STAGE81A2_CANONICAL_DATA_VOCABULARY_SPLIT_FREEZE.md](docs/v4/STAGE81A2_CANONICAL_DATA_VOCABULARY_SPLIT_FREEZE.md): immutable historical A2 contract.
+
+Historical v1-v3 references:
+
+- [docs/current_status.md](docs/current_status.md): v1-v3 completed-work log and results.
 - [docs/figure_gallery.md](docs/figure_gallery.md): public schematics and result graphs with captions.
-- [docs/stage_c_finetuning_analysis.md](docs/stage_c_finetuning_analysis.md): current Stage C fine-tuning baseline, parameter takeaways, and next default.
-- [docs/external_validation_next_steps.md](docs/external_validation_next_steps.md): external validation candidates and the next dataset sequence.
-- [docs/runbook.md](docs/runbook.md): commands for reproducing the workflow.
+- [docs/stage_c_finetuning_analysis.md](docs/stage_c_finetuning_analysis.md): historical Stage C parameter analysis.
+- [docs/external_validation_next_steps.md](docs/external_validation_next_steps.md): historical external-validation planning.
+- [docs/runbook.md](docs/runbook.md): v1-v3 workflow commands.
 - [docs/dataset_guide.md](docs/dataset_guide.md): dataset descriptions and abbreviation glossary.
 - [docs/architecture.md](docs/architecture.md): system architecture.
 - [docs/causal_discovery.md](docs/causal_discovery.md): counterfactual and causal-validation strategy.
@@ -719,7 +794,22 @@ Start here:
 - [docs/gpu_setup.md](docs/gpu_setup.md): CUDA/PyTorch setup.
 - [docs/github_about.md](docs/github_about.md): GitHub About description and topics.
 
-## Quick Setup
+## Current v4 Validation Environment
+
+The verified local Python environment for the current checkpoint is
+`sea-ad-jepa-v3`:
+
+```powershell
+conda run -n sea-ad-jepa-v3 python -m pytest -q tests/v4 `
+  --basetemp results/v4/.pytest-stage81a3-checkpoint
+```
+
+The WSL project path is `/mnt/d/Jepa project`. NPH R cache builders use the
+existing WSL environment documented in the
+[Stage81A2 freeze notes](docs/v4/STAGE81A2_CANONICAL_DATA_VOCABULARY_SPLIT_FREEZE.md).
+Do not regenerate frozen A2 evidence casually.
+
+## Historical v1-v3 Setup
 
 ```powershell
 conda env create -f environment.yml
@@ -740,7 +830,7 @@ Track training in TensorBoard:
 C:\Users\dushy\anaconda3\envs\sea-ad-jepa\Scripts\tensorboard.exe --logdir runs
 ```
 
-## Reproduce the Current Stage C Sweep
+## Reproduce the Historical Stage C Sweep
 
 Run the coarse sweep:
 
@@ -754,7 +844,7 @@ python scripts/sweep_stage_c_finetuning.py `
   --out results/tables/stage_c_finetuning_sweep_summary.csv
 ```
 
-Run the current v2.1 focused refinement:
+Run the selected v2.1 focused refinement from that historical stage:
 
 ```powershell
 $env:PYTHONPATH = "src"
@@ -766,7 +856,7 @@ python scripts/sweep_stage_c_finetuning.py `
   --out results/tables/stage_c_upgrade_fine_summary.csv
 ```
 
-The current best setting is:
+The selected historical setting was:
 
 ```text
 upgrade_fine_08_r0045_cov0005_pc0075
