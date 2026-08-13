@@ -1,0 +1,86 @@
+{
+  "G": 37346,
+  "blocks": 6,
+  "classification": "MECHANICALLY FEASIBLE",
+  "cuda_available": true,
+  "cuda_version": "12.8",
+  "d_gene": 160,
+  "dtype": "float16_autocast",
+  "ema_update_success": true,
+  "finite": true,
+  "full_molecular_evidence_packaged": true,
+  "gpu": "NVIDIA GeForce RTX 3080 Laptop GPU",
+  "gradient_checkpointing": true,
+  "gradient_norms": [
+    5.215972423553467,
+    5.022405624389648
+  ],
+  "heads": 4,
+  "losses": [
+    {
+      "gene_anchor": 0.4680326581001282,
+      "jepa": 2.1165237426757812,
+      "step": 0,
+      "total": 2.5845563411712646
+    },
+    {
+      "gene_anchor": 0.4383803606033325,
+      "jepa": 1.7533432245254517,
+      "step": 1,
+      "total": 2.191723585128784
+    }
+  ],
+  "memory_probe_count": 3,
+  "memory_probes": [
+    {
+      "classification": "MECHANICALLY FEASIBLE",
+      "microbatch": 1,
+      "optimizer_steps_completed": 2,
+      "peak_allocated_cuda_bytes": 674084864,
+      "peak_reserved_cuda_bytes": 771751936
+    },
+    {
+      "classification": "MECHANICALLY FEASIBLE",
+      "microbatch": 8,
+      "optimizer_steps_completed": 2,
+      "peak_allocated_cuda_bytes": 5269712896,
+      "peak_reserved_cuda_bytes": 5641338880
+    },
+    {
+      "classification": "MECHANICALLY FEASIBLE",
+      "microbatch": 16,
+      "optimizer_steps_completed": 2,
+      "peak_allocated_cuda_bytes": 10446487040,
+      "peak_reserved_cuda_bytes": 10926161920
+    }
+  ],
+  "microbatch": 16,
+  "minimum_linear_attention_denominator": 647305.9375,
+  "optimizer_state_created": true,
+  "optimizer_steps_completed": 2,
+  "optimizer_steps_requested": 2,
+  "peak_allocated_cuda_bytes": 10446487040,
+  "peak_reserved_cuda_bytes": 10926161920,
+  "pearson_graph_invoked": false,
+  "practical_microbatch_selected": 16,
+  "status": "PROVISIONAL_NOT_FROZEN",
+  "timing": [
+    {
+      "backward_seconds": 1.3767049999951269,
+      "forward_seconds": 1.1570988000021316,
+      "optimizer_ema_seconds": 0.01105509999615606,
+      "step": 0,
+      "total_seconds": 2.5505994999984978
+    },
+    {
+      "backward_seconds": 1.3772719999979017,
+      "forward_seconds": 0.9889727999980096,
+      "optimizer_ema_seconds": 0.005525499997020233,
+      "step": 1,
+      "total_seconds": 2.3772373999963747
+    }
+  ],
+  "torch_version": "2.7.0+cu128",
+  "total_vram_bytes": 17179344896,
+  "wall_seconds": 8.449892499993439
+}

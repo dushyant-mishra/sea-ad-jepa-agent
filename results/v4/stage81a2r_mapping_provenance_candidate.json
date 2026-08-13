@@ -1,0 +1,21 @@
+{
+  "ambiguous_unresolved_source_records": 106118,
+  "artifact_hashes": {
+    "results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0",
+    "results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f",
+    "results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284"
+  },
+  "biological_top_k_used": false,
+  "candidate_gene_count": 37346,
+  "claim_boundary": "PROVISIONAL DEVELOPMENT EVIDENCE; NOT FROZEN",
+  "exact_retained_source_records": 193646,
+  "external_mapping_downloaded": false,
+  "fuzzy_mapping_used": false,
+  "historical_stage81a2_modified": false,
+  "mapping_authority": "frozen Stage81A2 exact source-provided Ensembl/symbol evidence",
+  "semantic_hash": "d9d8b08bcf8e88b73d2f5483b573767c49b47ff661da57b99c5b5aab828aa8a2",
+  "source_mapping_records": 299775,
+  "stable_ids_with_symbol_release_conflict": 535,
+  "stage": "stage81a2r_a3r_full_transcriptome_microqual",
+  "status": "PROVISIONAL_NOT_FROZEN"
+}

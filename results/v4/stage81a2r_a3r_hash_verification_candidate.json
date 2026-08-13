@@ -1,0 +1,102 @@
+{
+  "generated": {
+    "results/v4/stage81a2r_a3r_input_access_manifest_candidate.json": {
+      "bytes": 2939,
+      "sha256": "d11d6172a6680c8315ff307015de52b0bfff553a21e54c998d2182f6746eb529"
+    },
+    "results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv": {
+      "bytes": 12774183,
+      "sha256": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0"
+    },
+    "results/v4/stage81a2r_mapping_provenance_candidate.json": {
+      "bytes": 1149,
+      "sha256": "644f69832596821deedc646ed3b6ad5eab0fa9730dd0a2be091aa01b0c52f90e"
+    },
+    "results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz": {
+      "bytes": 17151275,
+      "sha256": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f"
+    },
+    "results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz": {
+      "bytes": 3368393,
+      "sha256": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284"
+    },
+    "results/v4/stage81a3r_full_g_mechanics_candidate.json": {
+      "bytes": 2360,
+      "sha256": "7c43c1a3728b4018a06cef2baf5e6bf0465fbf5226c26dd540f7324ddb647fcb"
+    },
+    "results/v4/stage81a3r_global_hierarchy_candidate.csv": {
+      "bytes": 3634,
+      "sha256": "1054e314ee61212e81ff5fdba6e1cb360562806c4f3d5b6545dbc883836ad70b"
+    },
+    "results/v4/stage81a3r_hard_fixture_eigenspace_bands_candidate.csv": {
+      "bytes": 9543,
+      "sha256": "f817c2e88090027075cc0cd6d7d96183eb45bbcd101ae3a8e6192cd4a6003b69"
+    },
+    "results/v4/stage81a3r_hard_fixture_eigenspace_diagnostic_candidate.json": {
+      "bytes": 1311,
+      "sha256": "a5635fb12c8d5b498e8c518b6973cb35d120e0012781b4bb7febc8b15f43093d"
+    },
+    "results/v4/stage81a3r_hard_fixture_eigenspectrum_candidate.csv": {
+      "bytes": 46748,
+      "sha256": "9910e9ee4449d08cb55bce9b6540dbfd12680422edf6f5eeef003979925d4a2d"
+    },
+    "results/v4/stage81a3r_observation_operator_candidate.csv": {
+      "bytes": 1633,
+      "sha256": "b7a3b81212cf07320864e59a642f0bd5caffaa905b0f8d1fd938124003368d44"
+    },
+    "results/v4/stage81a3r_real_train_microaudit_candidate.json": {
+      "bytes": 2174,
+      "sha256": "1ce12ee7c7feb8cd0df0a63fcaf1ff7d80c71cc61177005d2096c5c13800d1e7"
+    },
+    "results/v4/stage81a3r_stability_audit_repair_candidate.csv": {
+      "bytes": 3695,
+      "sha256": "8513852a5382c60c833598e706f0d1d900b8c30616e087de43f35dcdaaa669ca"
+    },
+    "results/v4/stage81a3r_stability_audit_repair_candidate.json": {
+      "bytes": 2632,
+      "sha256": "22f76c8978a09cdf929631701aa4faa09e8a646322fdcb68e9bf98aeba2e5abb"
+    },
+    "results/v4/stage81a3r_synthetic_biology_audit_candidate.csv": {
+      "bytes": 2957,
+      "sha256": "acd3660d45bacd2e1dac9c23291619fb6c19810a5bcb018dd6f144a0346d760c"
+    },
+    "results/v4/stage81a3r_uncertainty_candidate.csv": {
+      "bytes": 1455,
+      "sha256": "d4fb1ce49b0ec30b601a9ee5e73001356ba88c69ef68257757d55c9fa2b059e0"
+    }
+  },
+  "protected": [
+    {
+      "expected_sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "observed_sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "pass": true,
+      "path": "results/v4/stage81a3_ipb_jepa_feasibility.json"
+    },
+    {
+      "expected_sha256": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "observed_sha256": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "pass": true,
+      "path": "results/v4/stage81a3_rlc_causal_fast_probe.json"
+    },
+    {
+      "expected_sha256": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "observed_sha256": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "pass": true,
+      "path": "results/v4/stage81a3_foundation_biological_state_domain_qualification.json"
+    },
+    {
+      "expected_sha256": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "observed_sha256": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "pass": true,
+      "path": "results/v4/stage81a3_reproducible_state_basis.pt"
+    },
+    {
+      "expected_sha256": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+      "observed_sha256": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+      "pass": true,
+      "path": "results/v4/stage81a2_foundation_vocabulary.csv::semantic"
+    }
+  ],
+  "protected_hashes_unchanged": true,
+  "status": "PROVISIONAL_NOT_FROZEN"
+}

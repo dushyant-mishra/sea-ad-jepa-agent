@@ -1,0 +1,17 @@
+{
+  "compileall_pass": true,
+  "focused_candidate": {
+    "failed": 0,
+    "passed": 33
+  },
+  "git_diff_check_pass": true,
+  "postchange_full_v4": {
+    "failed": 0,
+    "passed": 787
+  },
+  "prechange_full_v4": {
+    "failed": 0,
+    "passed": 754
+  },
+  "warnings": 0
+}

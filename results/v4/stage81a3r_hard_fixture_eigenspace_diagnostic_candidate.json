@@ -1,0 +1,40 @@
+{
+  "architecture_changed": false,
+  "dev_rna_accessed": false,
+  "dimension_or_band_promoted": false,
+  "generator_changed": false,
+  "global_resolution_decision": "UNADJUDICATED",
+  "hard_fixtures_only": true,
+  "neural_optimizer_updates": 0,
+  "pathology_accessed": false,
+  "sample_size_changed": false,
+  "sealed_rna_accessed": false,
+  "stage": "stage81a3r_hard_fixture_eigenspace_diagnostic_candidate",
+  "stage81b_started": false,
+  "stage81c_started": false,
+  "status": "PROVISIONAL_NOT_FROZEN",
+  "summaries": [
+    {
+      "cells": 768,
+      "classification": "DONOR-HETEROGENEITY / COMMON-SUBSPACE UNRESOLVED",
+      "dimension_or_band_promoted": false,
+      "fixture": "overlapping_programs",
+      "genes": 37346,
+      "raw_informative_mean_factor_r2": 0.600783195760515,
+      "stable_wider_weighted_band": false,
+      "stable_wider_weighted_band_end": null
+    },
+    {
+      "cells": 768,
+      "classification": "DONOR-HETEROGENEITY / COMMON-SUBSPACE UNRESOLVED",
+      "dimension_or_band_promoted": false,
+      "fixture": "rare_tail_difficult",
+      "genes": 37346,
+      "raw_informative_mean_factor_r2": 0.55020096566942,
+      "stable_wider_weighted_band": false,
+      "stable_wider_weighted_band_end": null
+    }
+  ],
+  "thresholds_changed": false,
+  "weighting_changed": false
+}
