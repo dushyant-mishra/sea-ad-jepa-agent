@@ -5,16 +5,18 @@ browsing `scripts/`, `results/`, or the full historical README.
 
 ## Current Work
 
-The active project is **Graph-JEPA v4, pre-Stage81A2 data harmonization**.
+The active project is **SEA-AD MRA-JEPA v4, Stage81A3 development checkpoint**.
+Stage81A2 is frozen; Stage81A3 and Freeze 1 are not frozen or declared.
 
 Read these in order:
 
-1. [V4_START_HERE.md](docs/v4/V4_START_HERE.md) - current status, blockers and
-   the small set of authoritative files.
-2. [STAGE81A0_V4_FAILURE_REGISTRY_AND_DESIGN_CONTRACT.md](docs/v4/STAGE81A0_V4_FAILURE_REGISTRY_AND_DESIGN_CONTRACT.md)
+1. [CURRENT_STATE_HANDOFF.md](docs/v4/CURRENT_STATE_HANDOFF.md) - canonical
+   stage authority, evidence chronology, blockers, and reproduction commands.
+2. [V4_START_HERE.md](docs/v4/V4_START_HERE.md) - compact v4 navigation.
+3. [STAGE81A0_V4_FAILURE_REGISTRY_AND_DESIGN_CONTRACT.md](docs/v4/STAGE81A0_V4_FAILURE_REGISTRY_AND_DESIGN_CONTRACT.md)
    - governing scientific design and claim boundaries.
-3. [PRE_STAGE81A2_HARMONIZATION.md](docs/v4/PRE_STAGE81A2_HARMONIZATION.md)
-   - current data-integration rules.
+4. [STAGE81A2_CANONICAL_DATA_VOCABULARY_SPLIT_FREEZE.md](docs/v4/STAGE81A2_CANONICAL_DATA_VOCABULARY_SPLIT_FREEZE.md)
+   - immutable historical A2 data contract.
 
 ## Directory Meaning
 
@@ -34,6 +36,10 @@ The machine-readable classification is
 
 ## Current Boundary
 
-No v4 model has been trained. The data portfolio is acquired and virtually
-registered. Foundation review is currently blocked by GSE97930 donor grouping;
-the later spatial and perturbation stages retain their own independent blockers.
+Stage81A3 contains substantial verified mechanics and bounded diagnostic work,
+but no production foundation trajectory has begun. DEV and SEALED RNA remain
+closed, pathology remains excluded from foundation development, and Stage81B/C
+are not started. The next blockers are a versioned reconsideration of the 4,096-
+gene address-space cap and independent qualification of per-gene contextual
+capacity versus global-state resolution before Freeze 1; do not rewrite frozen
+A2 or historical 160-D evidence in place.

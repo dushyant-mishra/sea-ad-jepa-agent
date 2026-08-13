@@ -2,24 +2,27 @@
 
 ## One-Sentence Status
 
-The v4 data portfolio is acquired and registered without fixed storage caps,
-but Stage81A2 has not started and no v4 model has been trained.
+Stage81A2 is frozen at `808ce4f`; Stage81A3 has verified development evidence
+but is not frozen. The 4,096-gene address-space cap and the independent 160-D
+gene-token/global-state assumptions must be reopened in a versioned revision
+before Freeze 1.
 
 ## What Matters Now
 
-Read only these six artifacts for the current decision state:
+Read these artifacts for the current decision state:
 
 | Priority | Artifact | Why it matters |
 |---|---|---|
-| 1 | `results/v4/pre_stage81a2_readiness_report.json` | Four independent readiness decisions and their blockers |
-| 2 | `results/v4/pre_stage81a2_foundation_readiness.csv` | Foundation-specific dataset gate |
-| 3 | `results/v4/pre_stage81a2_modality_integration_registry.csv` | Which datasets can enter RNA, spatial, regulatory, holdout or validation paths |
-| 4 | `results/v4/pre_stage81a2_perturbation_readiness_registry.csv` | Exact unresolved work before perturbation training |
-| 5 | `results/v4/pre_stage81a2_dataset_role_candidates.csv` | Candidate role and leakage restrictions for every dataset |
-| 6 | `results/v4/pre_stage81a2_dataset_manifest.csv` | Source path, hash, size and shape inventory |
+| 1 | `docs/v4/CURRENT_STATE_HANDOFF.md` | Canonical stage authority, chronology, blockers, and reproduction |
+| 2 | `results/v4/stage81_current_state_manifest.json` | Machine-readable checkpoint state |
+| 3 | `results/v4/stage81a2_freeze_report.json` | Frozen A2 contract and hashes |
+| 4 | `docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md` | Full A3 experiment chronology |
+| 5 | `results/v4/stage81a3_foundation_biological_state_domain_qualification.json` | Intrinsic state/domain qualification summary |
+| 6 | `results/v4/stage81a3_rare_biology_completeness.json` | Final rare-state chronology boundary |
+| 7 | `results/v4/stage81a3_context_identifiability_after_human_adjudication.json` | Context identifiability, not context benefit |
 
-Everything else in `results/v4/` is supporting provenance for one of those
-files or a frozen output from an earlier Stage81 substage.
+Everything else in `results/v4/` is supporting evidence, frozen provenance, or
+a tracked negative result. Start from the handoff rather than browsing by name.
 
 ## Current Scientific Layout
 
@@ -34,15 +37,20 @@ files or a frozen output from an earlier Stage81 substage.
 
 ## Current Blockers
 
-1. The three GSE97930 normal-training matrices lack exact cell-to-donor grouping.
-2. Exact spatial section identity is unresolved for three spatial datasets.
-3. Perturbation-controller assets require content-level harmonization.
-4. GSE301119 CRISPRa and CRISPRi require exact stable-feature alignment and
-   explicit measurement masks for their unequal 19,162/36,601 feature spaces.
+1. The 4,096 vocabulary was a configured top-K capacity, not a biological
+   saturation point. A versioned maximal-exact-gene revision is required before
+   Freeze 1; implementation has not started.
+2. `d_gene=160` and PCA160/`d_cell=160` are distinct capacity and resolution
+   assumptions. Historical tests remain valid, but neither value is frozen or
+   biologically privileged for the future revision.
+3. HVS retains 78 exact source donor IDs while the publication describes 75.
+4. Fang MTG surgical provenance remains quarantined.
+5. Local data/caches remain required for full regeneration and are inventoried
+   separately rather than committed as raw data.
 
 ## Artifact Classes
 
-**Canonical:** the five files above. Use these for current decisions.
+**Canonical:** the handoff and machine-readable current-state manifest above.
 
 **Supporting frozen provenance:** other tracked `results/v4/stage81*.csv/json`
 files. Consult them only to audit how a canonical conclusion was derived.
@@ -60,6 +68,8 @@ workflow dashboard.
 
 ## Next Work
 
-Resolve the two blocker groups above, refresh the pre-Stage81A2 registries, and
-review readiness. Do not begin model training merely because acquisition and
-hash verification passed.
+Re-establish the intrinsic representation under a versioned maximal-exact-
+transcriptome contract while independently qualifying `d_gene` contextual
+capacity and `d_cell` global-state resolution. Preserve Stage81A2 and historical
+160-D evidence unchanged; do not begin Stage81B, Stage81C, or production
+training in that design step.

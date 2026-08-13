@@ -1,23 +1,28 @@
 schema_version: "1.0"
 current_version: v4
 current_stage: pre_stage81a2_harmonization
+current_checkpoint_stage: stage81a3_development_checkpoint_not_frozen
 model_training_started: false
 
 human_entry_points:
   - START_HERE.md
+  - docs/v4/CURRENT_STATE_HANDOFF.md
   - docs/v4/V4_START_HERE.md
   - docs/v4/STAGE81A0_V4_FAILURE_REGISTRY_AND_DESIGN_CONTRACT.md
   - docs/v4/PRE_STAGE81A2_HARMONIZATION.md
 
 canonical_current_outputs:
-  - results/v4/pre_stage81a2_readiness_report.json
-  - results/v4/pre_stage81a2_foundation_readiness.csv
-  - results/v4/pre_stage81a2_modality_integration_registry.csv
-  - results/v4/pre_stage81a2_perturbation_readiness_registry.csv
-  - results/v4/pre_stage81a2_dataset_role_candidates.csv
-  - results/v4/pre_stage81a2_dataset_manifest.csv
+  - results/v4/stage81_current_state_manifest.json
+  - results/v4/stage81a2_freeze_report.json
+  - results/v4/stage81a3_foundation_biological_state_domain_qualification.json
+  - results/v4/stage81a3_rare_biology_completeness.json
+  - results/v4/stage81a3_context_identifiability_after_human_adjudication.json
 
 supporting_current_outputs:
+  - results/v4/stage81a3_local_only_artifact_manifest.csv
+  - results/v4/stage81a3_uniform_context_data_qualification.json
+  - results/v4/stage81a3_context_human_provenance_adjudication.json
+  - results/v4/stage81a3_final_information_preservation_qualification.json
   - results/v4/pre_stage81a2_harmonization_report.json
   - results/v4/pre_stage81a2_matrix_semantics_registry.csv
   - results/v4/pre_stage81a2_feature_identifier_registry.csv

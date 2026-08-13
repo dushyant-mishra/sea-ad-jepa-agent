@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "branch": "stage81a3-checkpoint-20260813",
+  "checkpoint_evidence_commit": "f1d07b6",
+  "canonical_stage81a2_commit": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "stage81a2": "frozen",
+  "stage81a3": "in_progress_not_frozen",
+  "stage81b": "not_started",
+  "stage81c": "not_started",
+  "freeze1_declared": false,
+  "freeze2_declared": false,
+  "open_blockers": [
+    "versioned_maximal_exact_gene_biological_address_space_adjudication",
+    "independent_gene_token_capacity_and_global_state_resolution_adjudication",
+    "hvs_78_exact_ids_vs_publication_75_provenance_discrepancy",
+    "fang_mtg_surgical_provenance_quarantine"
+  ],
+  "protected_hashes": {
+    "ipb": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+    "rlc_cd": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+    "stage81a2_vocabulary_semantic": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+    "stage81a2_vocabulary_csv": "d8fbe2f0d2208f0034103443b6424169ff66e1b674769eda6b635c8ce84523e4"
+  },
+  "protected_hash_status": "verified_2026-08-13",
+  "dev_rna_opened": false,
+  "sealed_rna_opened": false,
+  "pathology_used_for_foundation_training": false,
+  "stage81b_started": false,
+  "stage81c_started": false,
+  "context_model_training_started": false,
+  "scp2167_human_provenance_adjudication": "verified_human_authorized_checkpoint_evidence",
+  "context_benefit_demonstrated": false,
+  "canonical_handoff": "docs/v4/CURRENT_STATE_HANDOFF.md"
+}
