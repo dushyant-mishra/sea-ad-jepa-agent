@@ -16,7 +16,9 @@ This successor experiment starts from checkpoint `63a29ed74af4bb624e9a574b404692
 
 ### Measurement support
 
-The complete support table has 42 matrix contracts and 1,568,532 matrix-gene rows. A measured zero is always distinct from a structurally unmeasured gene.
+The complete support table has 42 matrix contracts and 1,568,532 matrix-gene rows. This does not conflict with the frozen Stage81A2 count of 36 matrices. Both contracts contain the same 24 HVS matrices and 11 SEA-AD matrices. Frozen Stage81A2 represents the seven NPH cell-class source objects as one virtual `NPH52_exact_source_objects` matrix contract (`24 + 11 + 1 = 36`), with their partition-specific feature universes delegated to its measurement registry. A2R preserves those seven NPH source objects as seven separate measurement-support contracts (`24 + 11 + 7 = 42`) so their differing feature universes remain explicit. No new biological dataset was added, and neither historical count is altered.
+
+A measured zero is always distinct from a structurally unmeasured gene.
 
 - `HVS_COMMON`: 24 matrix/matrices, 18,717 measured genes per matrix
 - `NPH52::Astro_data_arranged_updatedId_final_batches.qs`: 1 matrix/matrices, 19,769 measured genes per matrix
@@ -72,7 +74,7 @@ One final method-independent diagnostic retained the existing `N=768` hard fixtu
 - **overlapping_programs, cumulative 1-96:** median canonical correlation `0.0628`; cumulative reproducible variance within audited 96 `1.000`; donor/shared covariance fraction `0.028/0.972`; hidden-factor mean R2 `0.474`; stable `False`.
 - **rare_tail_difficult, cumulative 1-96:** median canonical correlation `0.0646`; cumulative reproducible variance within audited 96 `1.000`; donor/shared covariance fraction `0.020/0.980`; hidden-factor mean R2 `0.437`; stable `False`.
 
-Widening across the plateau did not restore donor-refit agreement, yet informative-gene recovery remained substantial (`R2=0.601` and `0.550`), and widening improved hidden-factor recovery. Classification for both fixtures: **DONOR-HETEROGENEITY / COMMON-SUBSPACE UNRESOLVED**. Donor covariance itself was only about 2-3% in the widest audited bands, so donor effects are not shown to dominate; the common-subspace/eigenspectrum issue remains unresolved. No dimension or band was promoted.
+Widening across the plateau did not restore donor-refit agreement, yet informative-gene recovery remained substantial (`R2=0.601` and `0.550`), and widening improved hidden-factor recovery. Primary classification for both fixtures: **COMMON-SUBSPACE / EIGENSPACE IDENTIFIABILITY UNRESOLVED**. Donor-subset instability was observed, but audited donor covariance was only about 2-3% in the widest bands; dominant donor effects were explicitly not demonstrated, so donor heterogeneity is not assigned as the causal mechanism. No dimension or band was promoted.
 
 ## Observation Operators And Uncertainty
 
@@ -105,6 +107,8 @@ Only existing pathology-blind TRAIN-derived summary caches were read: 55,337 H5 
 
 ## Human Decision
 
-**NOT READY - AUDIT INCOMPLETE**
+**READY FOR HUMAN A2R/A3R REVIEW - NOT READY FOR FREEZE1**
+
+Stage81A3 remains incomplete, and Freeze1 remains **NOT DECLARED**.
 
 The address-space and full-G mechanics candidates are ready for review, but the global-state audit is unsupported and real full-G reproducibility evidence is incomplete. No freeze is declared.
