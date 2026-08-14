@@ -1,0 +1,29 @@
+{
+  "accepted_analytic_lineage": {
+    "development_rna_used_in_analysis": false,
+    "discarded_mixed_split_cache_retained": false,
+    "discarded_mixed_split_cache_used": false,
+    "pathology_opened": false,
+    "sealed_rna_used_in_analysis": false,
+    "train_rna_only": true
+  },
+  "blocked_operator_family": "NPH52",
+  "classification": "TRAIN_ONLY_FULL_ADDRESS_EXTRACTION_NOT_POSSIBLE_UNDER_CURRENT_FIREWALL",
+  "corrected_real_train_rerun_permitted": false,
+  "execution_history_incident": {
+    "classification": "GOVERNANCE / DATA-ACCESS INCIDENT",
+    "mixed_split_rna_transiently_materialized": true
+  },
+  "full_successor_address_input_closure_pass": false,
+  "mixed_split_materialization_permitted": false,
+  "nph_authoritative_count_objects": 7,
+  "nph_column_addressable_full_feature_assets": 0,
+  "nph_source_storage_format": "monolithic_qs_serialized_SingleCellExperiment",
+  "operators": 42,
+  "operators_blocked": 7,
+  "operators_closed": 35,
+  "pilot_classification": "GLOBAL_STATE_PILOT_INPUT_CONTRACT_LIMITED",
+  "pilot_results_overwritten": false,
+  "qread_occurs_before_column_selection_in_repository_extractors": true,
+  "status": "GLOBAL_STATE_PILOT_INPUT_CONTRACT_LIMITED"
+}

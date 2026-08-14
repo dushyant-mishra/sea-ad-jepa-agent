@@ -1,0 +1,51 @@
+{
+  "cell_identity": {
+    "duplicate_source_cell_id_rows": 0,
+    "exact_cell_id_overlap_with_11_regional_union": 240651,
+    "source_cell_id_rows": 240651,
+    "source_cell_id_set_sha256": "ae1f4cd91f12a7e7db6f70405494161b613c7a99a27e344e135f8de67acfec0e",
+    "source_cell_ids_available": true,
+    "unique_source_cell_ids": 240651
+  },
+  "changes_frozen_address_registry": false,
+  "changes_k_bulk": false,
+  "compatibility_conclusion": "CAN_BE_MATERIALIZED_LATER_AGAINST_SAME_FROZEN_ADDRESS_CONTRACT_PENDING_COLLISION_POLICY",
+  "donors": {
+    "donor_overlap_is_duplicate_cell_evidence": false,
+    "donor_overlap_with_11_regional_union": 84,
+    "donor_set_sha256": "f1611f9cd23dd333792748f0d8d8dc3d7f4cf9bca48de526b2adac675eeb03b7",
+    "immune_unique_donors": 84,
+    "split_membership_counts": {
+      "development": 8,
+      "sealed_holdout": 8,
+      "train": 68
+    }
+  },
+  "excluded_from_phase_a_whole_taxonomy_operators": true,
+  "feature_compatibility": {
+    "aggregation_rule_applied": false,
+    "collision_classes": {
+      "MULTIPLE_HISTORICAL_IDENTITIES_TO_ONE_ADDRESS": 710
+    },
+    "current_exact_coverage": 35527,
+    "legacy_exact_coverage": 259,
+    "measured_frozen_molecular_addresses": 35786,
+    "source_native_anchored_coverage": 0,
+    "unique_universal_addresses_affected_by_collisions": 710,
+    "unresolved_nonuniversal_source_rows": 0,
+    "within_matrix_collision_pairs": 710
+  },
+  "frozen_address_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+  "included_in_a3r_global_basis": false,
+  "phase_b_sampling_must_handle_exact_cell_overlap": true,
+  "role": "PHASE_B_IMMUNE_MICROGLIA_PVM_CONTINUATION",
+  "source": {
+    "matrix_shape": [
+      240651,
+      36601
+    ],
+    "relative_path": "data/external/v4/sea_ad/multiregion/SEAAD_Immune_10-region_RNAseq_final-nuclei.2026-06-22.h5ad",
+    "source_feature_count": 36601
+  },
+  "status": "SEA_AD_IMMUNE_PHASE_B_COMPATIBILITY_ONLY"
+}

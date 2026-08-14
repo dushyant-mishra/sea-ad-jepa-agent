@@ -1,0 +1,86 @@
+{
+  "aggregation_rule_selected": false,
+  "collision_classes": {
+    "INSUFFICIENT_SEMANTICS_FOR_SCALAR_REDUCTION": {
+      "candidate_policy_if_human_approved": "MEASURED_COLLISION_UNRESOLVED",
+      "contributing_source_rows": 234,
+      "matrix_address_collision_pairs": 117,
+      "operators_affected": 7,
+      "policy_applied": false,
+      "unique_universal_addresses": 21
+    },
+    "MULTIPLE_HISTORICAL_IDENTITIES_TO_ONE_ADDRESS": {
+      "candidate_policy_if_human_approved": "MEASURED_COLLISION_UNRESOLVED",
+      "contributing_source_rows": 24291,
+      "matrix_address_collision_pairs": 11318,
+      "operators_affected": 18,
+      "policy_applied": false,
+      "unique_universal_addresses": 766
+    }
+  },
+  "corrected_global_basis_constructed": false,
+  "exact_count_vector_equal_pairs": 3399,
+  "exact_technical_duplicate_cases": 0,
+  "families": {
+    "HVS": {
+      "bounded_train_cells_total": 0,
+      "collision_source_count_mass": 0.0,
+      "collision_source_count_mass_fraction": 0.0,
+      "fraction_measured_operator_addresses_affected": 0.0,
+      "matrix_address_collision_pairs": 0,
+      "measured_operator_address_pairs": 449664,
+      "operators": 24,
+      "operators_affected": 0,
+      "source_rows_participating_in_collisions": 0,
+      "total_source_count_mass": NaN,
+      "unique_universal_addresses_affected": 0
+    },
+    "NPH52": {
+      "bounded_train_cells_total": 246,
+      "collision_source_count_mass": 40643.0,
+      "collision_source_count_mass_fraction": 0.011356650750646029,
+      "fraction_measured_operator_addresses_affected": 0.015757992018848734,
+      "matrix_address_collision_pairs": 3625,
+      "measured_operator_address_pairs": 230042,
+      "operators": 7,
+      "operators_affected": 7,
+      "source_rows_participating_in_collisions": 7750,
+      "total_source_count_mass": 3578784.0,
+      "unique_universal_addresses_affected": 573
+    },
+    "SEA_AD": {
+      "bounded_train_cells_total": 1408,
+      "collision_source_count_mass": 1428400.0,
+      "collision_source_count_mass_fraction": 0.0402286986308893,
+      "fraction_measured_operator_addresses_affected": 0.019840160956798747,
+      "matrix_address_collision_pairs": 7810,
+      "measured_operator_address_pairs": 393646,
+      "operators": 11,
+      "operators_affected": 11,
+      "source_rows_participating_in_collisions": 16775,
+      "total_source_count_mass": 35506990.0,
+      "unique_universal_addresses_affected": 710
+    }
+  },
+  "fraction_of_universal_addresses_affected": 0.019060090208060525,
+  "frozen_molecular_addresses": 41238,
+  "frozen_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+  "human_review_required": true,
+  "identity_classes_affected": {
+    "current_exact": 786
+  },
+  "matrix_address_collision_pairs": 11435,
+  "operators_affected": 18,
+  "primary_plus_redundancy_cases": 0,
+  "proven_additive_cases": 0,
+  "real_train_global_state_rerun_started": false,
+  "recommended_support_state": {
+    "assay_measured": true,
+    "scalar_materializable": false,
+    "state": "MEASURED_COLLISION_UNRESOLVED"
+  },
+  "status": "EXPRESSION_MATERIALIZATION_COLLISION_AUDIT_HUMAN_REVIEW_REQUIRED",
+  "total_contributing_source_rows": 24525,
+  "unique_universal_addresses_affected": 786,
+  "unresolved_collision_cases": 11435
+}

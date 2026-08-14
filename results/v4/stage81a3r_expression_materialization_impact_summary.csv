@@ -1,0 +1,4 @@
+operator_family,operators,operators_affected,source_rows_participating_in_collisions,matrix_address_collision_pairs,unique_universal_addresses_affected,measured_operator_address_pairs,fraction_measured_operator_addresses_affected,bounded_train_cells_total,collision_source_count_mass,total_source_count_mass,collision_source_count_mass_fraction
+HVS,24,0,0,0,0,449664,0.0,0,0.0,,0.0
+SEA_AD,11,11,16775,7810,710,393646,0.019840160956798747,1408,1428400.0,35506990.0,0.0402286986308893
+NPH52,7,7,7750,3625,573,230042,0.015757992018848734,246,40643.0,3578784.0,0.011356650750646029

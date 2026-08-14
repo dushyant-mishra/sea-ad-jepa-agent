@@ -1,0 +1,87 @@
+{
+  "affected_addresses": 786,
+  "affected_identity_breakdown": {
+    "current_exact": {
+      "affected_addresses": 786,
+      "collision_unresolved_in_every_measuring_operator": 288,
+      "with_collision_free_hvs_operator": 235,
+      "with_collision_free_nph52_operator": 316,
+      "with_collision_free_sea_ad_operator": 63,
+      "with_collision_free_train_operator": 498,
+      "zero_scalar_materializable_train_observations": 288
+    },
+    "legacy_exact": {
+      "affected_addresses": 0,
+      "collision_unresolved_in_every_measuring_operator": 0,
+      "with_collision_free_hvs_operator": 0,
+      "with_collision_free_nph52_operator": 0,
+      "with_collision_free_sea_ad_operator": 0,
+      "with_collision_free_train_operator": 0,
+      "zero_scalar_materializable_train_observations": 0
+    },
+    "source_native_anchored": {
+      "affected_addresses": 0,
+      "collision_unresolved_in_every_measuring_operator": 0,
+      "with_collision_free_hvs_operator": 0,
+      "with_collision_free_nph52_operator": 0,
+      "with_collision_free_sea_ad_operator": 0,
+      "with_collision_free_train_operator": 0,
+      "zero_scalar_materializable_train_observations": 0
+    }
+  },
+  "aggregation_rule_selected": false,
+  "classification": "DATA / PROVENANCE LIMITATION - SCALAR MATERIALIZATION UNRESOLVED",
+  "corrected_real_train_rerun_started": false,
+  "decision": "STOP_FOR_HUMAN_REVIEW_BEFORE_BASIS",
+  "frozen_molecular_addresses": 41238,
+  "frozen_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+  "global_basis_fit_started": false,
+  "global_support": {
+    "scalar_observable_in_all_families_that_measure_it": 40470,
+    "scalar_observable_in_at_least_one_train_operator": 40950,
+    "scalar_observable_in_at_least_two_operator_families": 30616,
+    "scalar_unobservable_everywhere_due_only_to_unresolved_collisions": 288
+  },
+  "observation_contract": {
+    "MEASURED_COLLISION_UNRESOLVED": {
+      "assay_measured": true,
+      "scalar_materializable": false
+    },
+    "scalar_matrix_input": "MEASURED_SCALAR_ONLY",
+    "states": [
+      "STRUCTURALLY_UNMEASURED",
+      "MEASURED_SCALAR",
+      "MEASURED_COLLISION_UNRESOLVED"
+    ]
+  },
+  "reproducibility_weight_consequence": {
+    "current_exact": {
+      "addresses": 40422,
+      "pilot_positive_weight_addresses": 27871,
+      "pilot_positive_weight_now_unavailable_due_collision": 224,
+      "scalar_eligible_addresses": 40134,
+      "status": "SCALAR_OBSERVABILITY_CLOSURE_HUMAN_REVIEW",
+      "successor_non4096_nph52_scalar_materializable_addresses": 30287,
+      "successor_non4096_scalar_materializable_addresses": 36038
+    },
+    "legacy_exact": {
+      "addresses": 773,
+      "pilot_positive_weight_addresses": 147,
+      "pilot_positive_weight_now_unavailable_due_collision": 0,
+      "scalar_eligible_addresses": 773,
+      "status": "SCALAR_OBSERVABILITY_CLOSURE_HUMAN_REVIEW",
+      "successor_non4096_nph52_scalar_materializable_addresses": 700,
+      "successor_non4096_scalar_materializable_addresses": 773
+    },
+    "source_native_anchored": {
+      "addresses": 43,
+      "pilot_positive_weight_addresses": 0,
+      "pilot_positive_weight_now_unavailable_due_collision": 0,
+      "scalar_eligible_addresses": 43,
+      "status": "SCALAR_OBSERVABILITY_CLOSURE_HUMAN_REVIEW",
+      "successor_non4096_nph52_scalar_materializable_addresses": 43,
+      "successor_non4096_scalar_materializable_addresses": 43
+    }
+  },
+  "status": "SCALAR_OBSERVABILITY_CLOSURE_HUMAN_REVIEW"
+}

@@ -1,0 +1,37 @@
+stage_id: stage81a3r_nph_train_firewall
+schema_version: "1.0"
+status: COLLISION_AWARE_SCALAR_MATERIALIZATION_CONTRACT_ACCEPTED
+frozen_address_semantic_hash: 5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff
+
+analytic_inputs:
+  nph_train_source_native_root: data/processed/v4/stage81a2r/nph52_physical_split/TRAIN
+  physical_firewall_report: data/processed/v4/stage81a2r/nph52_physical_split/nph52_physical_split_firewall_report.json
+  address_registry: results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv
+  measurement_support: results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz
+  source_provenance: results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz
+  split_registry: results/v4/stage81a2_split_registry.csv
+
+firewall:
+  original_mixed_split_nph_qs_accessible_to_a3r: false
+  development_derivatives_accessible_to_a3r: false
+  sealed_derivatives_accessible_to_a3r: false
+  pathology_accessible_to_a3r: false
+  train_derivatives: 7
+  measured_zero_distinct_from_structurally_unmeasured: true
+
+historical_cache:
+  classification: HISTORICAL_A2_COMPATIBILITY_ONLY
+  satisfies_successor_full_address_contract: false
+
+materialization:
+  universal_addresses: 41238
+  scalar_observable_addresses: 40950
+  scalar_unobservable_due_only_to_unresolved_collisions: 288
+  collision_aggregation_policy_selected: false
+  downstream_observation_state_contract_accepted: true
+  allowed_scalar_state: MEASURED_SCALAR
+  unresolved_state: MEASURED_COLLISION_UNRESOLVED
+  assay_measured: true
+  scalar_materializable: false
+  corrected_global_basis_permitted: true
+  corrected_real_train_rerun_permitted: true

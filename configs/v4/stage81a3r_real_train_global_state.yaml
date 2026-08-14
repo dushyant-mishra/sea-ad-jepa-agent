@@ -1,0 +1,125 @@
+stage_id: stage81a3r_real_train_global_state
+schema_version: "1.0"
+status: CORRECTED_REAL_TRAIN_AUTHORIZED_NOT_RUN
+synthetic_checkpoint_sha: deebd64bdfb34b18cb564e36f41f61118624f99f
+frozen_address_semantic_hash: 5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff
+
+governance:
+  train_rna_only: true
+  development_rna_forbidden: true
+  sealed_rna_forbidden: true
+  pathology_forbidden: true
+  future_data_forbidden: true
+  neural_training: false
+  stage81b_started: false
+  stage81c_started: false
+  freeze1_declared: false
+  corrected_real_train_runs_authorized: 1
+  corrected_real_train_runs_completed: 0
+  immune_object_phase_a_operator: false
+  immune_object_role: PHASE_B_IMMUNE_MICROGLIA_PVM_CONTINUATION
+  execution_history_mixed_split_nph_qs_materialized: true
+  accepted_analytic_lineage_train_only: true
+  discarded_mixed_split_cache_used: false
+  discarded_mixed_split_cache_retained: false
+
+sampling:
+  cells_per_h5_matrix: 128
+  donor_folds: 5
+  seed: 8137001
+  count_split_seed: 8137002
+
+basis:
+  maximum_dimensions: 256
+  prefix_step: 16
+  group_control_width: 32
+  randomized_oversamples: 24
+  randomized_iterations: 4
+  masked_projection_ridge: 1.0e-6
+  residual_tail_fdr: 0.05
+  residual_null:
+    family: WITHIN_OPERATOR_DETERMINISTIC_B_VIEW_CELL_PAIRING_PERMUTATION
+    permutations: 100
+    seed: 8137003
+    preserves:
+      - observation_operator
+      - scalar_support_mask
+      - depth_noise_distribution
+      - marginal_standardized_molecular_structure
+    destroys: SAME_CELL_CROSS_VIEW_BIOLOGICAL_CORRESPONDENCE
+    block_width: 16
+    bh_fdr: 0.05
+    donor_refit_support_required: true
+    contiguous_retention: true
+    stop_at_first_unsupported_block: true
+    later_support_after_gap: ORDERING_FAILURE
+
+inputs:
+  address_registry: results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv
+  measurement_support: results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz
+  source_provenance: results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz
+  injectivity_audit: results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json
+  assets: results/v4/stage81a2_canonical_asset_registry.csv
+  matrix_semantics: results/v4/stage81a2_matrix_semantics_contract.csv
+  split_registry: results/v4/stage81a2_split_registry.csv
+  nph_train_cells: data/processed/v4/stage81a3/stage81a3_nph_sample_cells.csv.gz
+  nph_train_nonzero: data/processed/v4/stage81a3/stage81a3_nph_sample_nonzero.csv.gz
+  nph_cache_vocabulary: results/v4/stage81a2_foundation_vocabulary.csv
+  nph_source_root: data/processed/v4/stage81a1d/sealed/nph52_organized/organized_data/Human/brain/snRNA/NPH
+  nph_physical_train_root: data/processed/v4/stage81a2r/nph52_physical_split/TRAIN
+  nph_physical_exactness_manifest: data/processed/v4/stage81a2r/nph52_physical_split/nph52_physical_split_exactness_manifest.csv
+  scalar_observability_address: results/v4/stage81a3r_scalar_observability_address_closure.csv.gz
+  scalar_observability_operator: results/v4/stage81a3r_scalar_observability_operator_summary.csv
+  scalar_observability_report: results/v4/stage81a3r_scalar_observability_closure.json
+  collision_ledger: results/v4/stage81a3r_expression_materialization_collision_ledger.csv.gz
+
+cache_dir: data/cache/stage81a3r_real_train
+
+outputs:
+  access_manifest: results/v4/stage81a3r_real_train_access_manifest_provisional.json
+  address_weights: results/v4/stage81a3r_real_train_address_weights_provisional.csv.gz
+  ordered_basis: results/v4/stage81a3r_real_train_ordered_basis_provisional.npz
+  eigenspectrum: results/v4/stage81a3r_real_train_eigenspectrum_provisional.csv
+  paired_reproducibility: results/v4/stage81a3r_real_train_paired_reproducibility_provisional.csv
+  prefix_qualification: results/v4/stage81a3r_real_train_prefix_qualification_provisional.csv
+  donor_stability: results/v4/stage81a3r_real_train_donor_subspace_stability_provisional.csv
+  bulk_decision: results/v4/stage81a3r_real_train_bulk_one_se_provisional.json
+  residual_tail: results/v4/stage81a3r_real_train_residual_tail_provisional.csv
+  ordering_audit: results/v4/stage81a3r_real_train_ordering_audit_provisional.json
+  operator_qualification: results/v4/stage81a3r_real_train_operator_qualification_provisional.csv
+  candidate: results/v4/stage81a3r_real_train_global_state_candidate_provisional.json
+  test_report: results/v4/stage81a3r_real_train_test_report_provisional.json
+  input_closure_audit: results/v4/stage81a3r_real_train_input_closure_pilot.csv
+  input_closure_report: results/v4/stage81a3r_real_train_input_closure_blocked.json
+  collision_ledger: results/v4/stage81a3r_expression_materialization_collision_ledger.csv.gz
+  collision_address_summary: results/v4/stage81a3r_expression_materialization_unique_address_summary.csv
+  collision_class_summary: results/v4/stage81a3r_expression_materialization_class_summary.csv
+  collision_diagnostics: results/v4/stage81a3r_expression_materialization_train_count_vector_diagnostics.csv.gz
+  collision_impact: results/v4/stage81a3r_expression_materialization_impact_summary.csv
+  collision_report: results/v4/stage81a3r_expression_materialization_collision_audit.json
+  scalar_observability_address: results/v4/stage81a3r_scalar_observability_address_closure.csv.gz
+  scalar_observability_operator: results/v4/stage81a3r_scalar_observability_operator_summary.csv
+  scalar_observability_train_impact: results/v4/stage81a3r_scalar_observability_train_cell_address_impact.csv
+  scalar_observability_weight_consequence: results/v4/stage81a3r_scalar_observability_weight_consequence.csv
+  scalar_observability_report: results/v4/stage81a3r_scalar_observability_closure.json
+  immune_phase_b_feature_summary: results/v4/stage81a3r_sea_ad_immune_phase_b_compatibility_feature_summary.csv
+  immune_phase_b_collision_ledger: results/v4/stage81a3r_sea_ad_immune_phase_b_compatibility_collision_ledger.csv.gz
+  immune_phase_b_cell_overlap: results/v4/stage81a3r_sea_ad_immune_phase_b_compatibility_cell_overlap.csv
+  immune_phase_b_exact_overlap_ids: results/v4/stage81a3r_sea_ad_immune_phase_b_compatibility_exact_overlap_ids.csv.gz
+  immune_phase_b_donor_membership: results/v4/stage81a3r_sea_ad_immune_phase_b_compatibility_donor_membership.csv
+  immune_phase_b_report: results/v4/stage81a3r_sea_ad_immune_phase_b_compatibility.json
+  corrected_access_manifest: results/v4/stage81a3r_corrected_real_train_access_manifest.json
+  corrected_address_weights: results/v4/stage81a3r_corrected_real_train_address_weights.csv.gz
+  corrected_ordered_basis: results/v4/stage81a3r_corrected_real_train_ordered_basis.npz
+  corrected_eigenspectrum: results/v4/stage81a3r_corrected_real_train_eigenspectrum.csv
+  corrected_paired_reproducibility: results/v4/stage81a3r_corrected_real_train_paired_reproducibility.csv
+  corrected_prefix_qualification: results/v4/stage81a3r_corrected_real_train_prefix_qualification.csv
+  corrected_donor_stability: results/v4/stage81a3r_corrected_real_train_donor_subspace_stability.csv
+  corrected_bulk_decision: results/v4/stage81a3r_corrected_real_train_bulk_one_se.json
+  corrected_residual_tail: results/v4/stage81a3r_corrected_real_train_residual_tail.csv
+  corrected_ordering_audit: results/v4/stage81a3r_corrected_real_train_ordering_audit.json
+  corrected_operator_qualification: results/v4/stage81a3r_corrected_real_train_operator_qualification.csv
+  corrected_pilot_comparison: results/v4/stage81a3r_corrected_real_train_pilot_comparison.json
+  corrected_candidate: results/v4/stage81a3r_corrected_real_train_global_state_candidate.json
+  corrected_test_report: results/v4/stage81a3r_corrected_real_train_test_report.json
+  readout: docs/v4/STAGE81A3R_REAL_TRAIN_GLOBAL_STATE_READOUT.md
