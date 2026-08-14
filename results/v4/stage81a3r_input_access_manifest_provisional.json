@@ -1,0 +1,29 @@
+{
+  "dataset_or_matrix_id_supplied_to_encoder": false,
+  "dev_rna_accessed": false,
+  "inputs": [
+    {
+      "expression_values_accessed": false,
+      "path": "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv",
+      "role": "registry",
+      "sha256": "7b4af6b5077ca1e8585622a82487fb9c2753b0d2feb8d535053222a2bd9b25d9"
+    },
+    {
+      "expression_values_accessed": false,
+      "path": "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz",
+      "role": "measurement_support",
+      "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa"
+    },
+    {
+      "expression_values_accessed": false,
+      "path": "results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json",
+      "role": "injectivity_audit",
+      "sha256": "17b478099d4323e3d663fa68a030faa996beba3a2d2b69004714b64d6f7c3c48"
+    }
+  ],
+  "pathology_accessed": false,
+  "real_rna_expression_accessed": false,
+  "sealed_rna_accessed": false,
+  "stage": "stage81a3r_final_address_qualification",
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+}

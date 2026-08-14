@@ -1,0 +1,33 @@
+{
+  "classification": "SEPARATION NOT DEMONSTRATED",
+  "combined_score_created": false,
+  "fixtures": [
+    {
+      "classification": "SEPARATION NOT DEMONSTRATED",
+      "combined_score_created": false,
+      "fixture": "overlap_dense",
+      "high_biology_high_measurement_distance": 0.13100634515285492,
+      "high_biology_low_measurement_distance": 0.18439540266990662,
+      "low_biology_high_measurement_distance": 0.01048014685511589,
+      "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+      "u_bio_monotonicity_violations": 0,
+      "u_meas_monotonicity_violations": 0
+    },
+    {
+      "classification": "SEPARATION NOT DEMONSTRATED",
+      "combined_score_created": false,
+      "fixture": "partial_correlation",
+      "high_biology_high_measurement_distance": 0.1328808069229126,
+      "high_biology_low_measurement_distance": 0.185118168592453,
+      "low_biology_high_measurement_distance": 0.011958351358771324,
+      "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+      "u_bio_monotonicity_violations": 0,
+      "u_meas_monotonicity_violations": 0
+    }
+  ],
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+  "u_bio_monotonicity_violations": 0,
+  "u_meas_level_1_interpretation": "Independent-measurement and depth/noise floor; zero is not expected. This is not a calibrated U_MEAS score.",
+  "u_meas_monotonicity_violations": 0,
+  "u_meas_reference_definition": "Each quality level is an independent Poisson remeasurement of the same latent rate. Level 1.0 uses complete support and reference depth 12,000 and is compared with the original independently sampled complete-support observation after library normalization; it is not an observation compared with itself."
+}

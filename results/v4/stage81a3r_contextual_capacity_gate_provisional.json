@@ -1,0 +1,9 @@
+{
+  "classification": "KEEP d_gene=160 PROVISIONAL",
+  "failure_concerns_h_itself": false,
+  "replicated_loss_families": [],
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+  "training_healthy_and_finite": true,
+  "width_160_gate_fired": false,
+  "width_256_run": false
+}

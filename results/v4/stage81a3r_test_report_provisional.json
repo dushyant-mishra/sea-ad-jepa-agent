@@ -1,0 +1,20 @@
+{
+  "clean_worktree_failure_classification": "HISTORICAL TEST-ARTIFACT PORTABILITY LIMITATION; NOT AN A3R SCIENTIFIC REGRESSION",
+  "clean_worktree_integrated_v4_failed": 28,
+  "clean_worktree_integrated_v4_passed": 845,
+  "compileall_passed": true,
+  "dev_rna_accessed": false,
+  "existing_full_v4_tests_passed_in_protected_artifact_environment": 862,
+  "failures": 0,
+  "focused_stage81a3r_tests_passed": 13,
+  "frozen_a2r_hash_unchanged": true,
+  "git_diff_check_passed": true,
+  "pathology_accessed": false,
+  "real_rna_accessed": false,
+  "repository_tests_passed": 874,
+  "sealed_rna_accessed": false,
+  "stage81b_started": false,
+  "stage81c_started": false,
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+  "warnings": 0
+}

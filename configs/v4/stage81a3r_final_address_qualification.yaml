@@ -1,0 +1,94 @@
+stage_id: stage81a3r_final_address_qualification
+schema_version: "1.0"
+status: PROVISIONAL_SYNTHETIC_ONLY_NOT_FROZEN
+parent_freeze_sha: 95d2cafe5cde68773f81c4aa64afc5788ae1d73b
+
+frozen_contract:
+  addresses: 41238
+  identity_classes:
+    current_exact: 40422
+    legacy_exact: 773
+    source_native_anchored: 43
+  measurement_operators: 42
+  matrix_address_rows: 1731996
+
+architecture:
+  d_gene: 160
+  blocks: 6
+  heads: 4
+  ffn_width: 320
+  cell_token: true
+  gradient_checkpointing: true
+  tokenizer: existing_gene_expression_tokenizer
+  predictor: existing_block_predictor
+  anchor_decoder: existing_gene_anchor_decoder
+  target: ema
+
+mechanics:
+  microbatches: [1, 8, 16]
+  optimizer_steps: 2
+
+synthetic:
+  genes: 4096
+  cells: 512
+  donors: 16
+
+fixtures:
+  - {name: overlap_dense, seed: 813101}
+  - {name: partial_correlation, seed: 813102}
+
+training:
+  seed: 813201
+  microbatch: 8
+  evaluation_microbatch: 64
+  learning_rate: 1.0e-4
+  ema_momentum: 0.99925
+  max_steps: 256
+  checkpoints: [64, 128, 256]
+
+capacity_gate:
+  raw_recoverable_r2: 0.20
+  loss_r2: 0.10
+
+operator:
+  seed: 813401
+  profiles:
+    - [O_A_high_support_high_depth, 0.95, 12000]
+    - [O_B_medium_support, 0.70, 7000]
+    - [O_C_limited_panel, 0.35, 3500]
+
+uncertainty:
+  seed: 813501
+  biology_fractions: [0.20, 0.40, 0.60, 0.80, 1.00]
+  measurement_quality: [0.25, 0.50, 0.75, 1.00]
+  reference_depth: 12000
+
+anti_top_k:
+  genes: 8192
+  cells: 512
+  seed: 813901
+
+inputs:
+  registry: results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv
+  measurement_support: results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz
+  injectivity_audit: results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json
+
+outputs:
+  mechanics: results/v4/stage81a3r_final_address_mechanics_provisional.json
+  capacity: results/v4/stage81a3r_contextual_capacity_provisional.csv
+  rare: results/v4/stage81a3r_contextual_rare_recovery_provisional.csv
+  capacity_gate: results/v4/stage81a3r_contextual_capacity_gate_provisional.json
+  graph_free: results/v4/stage81a3r_graph_free_masking_provisional.csv
+  graph_free_summary: results/v4/stage81a3r_graph_free_masking_provisional.json
+  operator: results/v4/stage81a3r_observation_operator_provisional.csv
+  operator_summary: results/v4/stage81a3r_observation_operator_provisional.json
+  uncertainty: results/v4/stage81a3r_u_bio_u_meas_provisional.csv
+  uncertainty_summary: results/v4/stage81a3r_u_bio_u_meas_provisional.json
+  anti_top_k: results/v4/stage81a3r_anti_top_k_regression_provisional.json
+  input_manifest: results/v4/stage81a3r_input_access_manifest_provisional.json
+  hashes: results/v4/stage81a3r_hash_verification_provisional.json
+  report: results/v4/stage81a3r_synthetic_closure_provisional.json
+  tests: results/v4/stage81a3r_test_report_provisional.json
+  portability_ledger: results/v4/stage81a3r_clean_worktree_portability_ledger.csv
+  portability_summary: results/v4/stage81a3r_clean_worktree_portability_summary.json
+  readout: docs/v4/STAGE81A3R_SYNTHETIC_CLOSURE_READOUT.md

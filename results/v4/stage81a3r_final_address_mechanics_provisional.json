@@ -1,0 +1,149 @@
+{
+  "classification": "FULL 41,238-ADDRESS MECHANICALLY FEASIBLE",
+  "probes": [
+    {
+      "classification": "FULL 41,238-ADDRESS MECHANICALLY FEASIBLE",
+      "ema_success": true,
+      "finite": true,
+      "microbatch": 1,
+      "optimizer_state_created": true,
+      "optimizer_steps_completed": 2,
+      "peak_cuda_allocated_bytes": 740763136,
+      "peak_cuda_reserved_bytes": 832569344,
+      "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+      "steps": [
+        {
+          "backward_seconds": 0.20271179999690503,
+          "ema_success": true,
+          "finite": true,
+          "forward_seconds": 0.45847369999682996,
+          "gene_anchor_loss": 0.4447953701019287,
+          "gradient_norm": 4.984452247619629,
+          "jepa_loss": 1.8524364233016968,
+          "minimum_linear_attention_denominator": 357753.71875,
+          "optimizer_ema_seconds": 0.03701010000077076,
+          "optimizer_state_created": true,
+          "total_loss": 2.297231674194336,
+          "total_step_seconds": 0.7249263000121573
+        },
+        {
+          "backward_seconds": 0.14071589999366552,
+          "ema_success": true,
+          "finite": true,
+          "forward_seconds": 0.11120129999471828,
+          "gene_anchor_loss": 0.42398613691329956,
+          "gradient_norm": 4.474353313446045,
+          "jepa_loss": 1.4807944297790527,
+          "minimum_linear_attention_denominator": 355745.5625,
+          "optimizer_ema_seconds": 0.007431999998516403,
+          "optimizer_state_created": true,
+          "total_loss": 1.904780626296997,
+          "total_step_seconds": 0.2678633000032278
+        }
+      ],
+      "support_profile_index": 0
+    },
+    {
+      "classification": "FULL 41,238-ADDRESS MECHANICALLY FEASIBLE",
+      "ema_success": true,
+      "finite": true,
+      "microbatch": 8,
+      "optimizer_state_created": true,
+      "optimizer_steps_completed": 2,
+      "peak_cuda_allocated_bytes": 5821076992,
+      "peak_cuda_reserved_bytes": 6134169600,
+      "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+      "steps": [
+        {
+          "backward_seconds": 0.7688316999992821,
+          "ema_success": true,
+          "finite": true,
+          "forward_seconds": 0.6258100000122795,
+          "gene_anchor_loss": 0.4305715262889862,
+          "gradient_norm": 5.0928497314453125,
+          "jepa_loss": 1.8214699029922485,
+          "minimum_linear_attention_denominator": 614320.4375,
+          "optimizer_ema_seconds": 0.0175219999946421,
+          "optimizer_state_created": true,
+          "total_loss": 2.2520413398742676,
+          "total_step_seconds": 1.4191205999959493
+        },
+        {
+          "backward_seconds": 0.7664776000019629,
+          "ema_success": true,
+          "finite": true,
+          "forward_seconds": 0.5578972999937832,
+          "gene_anchor_loss": 0.4143170714378357,
+          "gradient_norm": 3.967662811279297,
+          "jepa_loss": 1.4529075622558594,
+          "minimum_linear_attention_denominator": 613919.375,
+          "optimizer_ema_seconds": 0.0057708000094862655,
+          "optimizer_state_created": true,
+          "total_loss": 1.8672246932983398,
+          "total_step_seconds": 1.3379600000043865
+        }
+      ],
+      "support_profile_index": 1
+    },
+    {
+      "classification": "FULL 41,238-ADDRESS MECHANICALLY FEASIBLE",
+      "ema_success": true,
+      "finite": true,
+      "microbatch": 16,
+      "optimizer_state_created": true,
+      "optimizer_steps_completed": 2,
+      "peak_cuda_allocated_bytes": 11525861888,
+      "peak_cuda_reserved_bytes": 11729371136,
+      "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+      "steps": [
+        {
+          "backward_seconds": 1.5364993999974104,
+          "ema_success": true,
+          "finite": true,
+          "forward_seconds": 1.194506999992882,
+          "gene_anchor_loss": 0.4496466815471649,
+          "gradient_norm": 4.822534561157227,
+          "jepa_loss": 2.1097114086151123,
+          "minimum_linear_attention_denominator": 656941.0,
+          "optimizer_ema_seconds": 0.011362599994754419,
+          "optimizer_state_created": true,
+          "total_loss": 2.5593581199645996,
+          "total_step_seconds": 2.749218299999484
+        },
+        {
+          "backward_seconds": 1.5374908999947365,
+          "ema_success": true,
+          "finite": true,
+          "forward_seconds": 1.1083360000047833,
+          "gene_anchor_loss": 0.4303421378135681,
+          "gradient_norm": 4.122024059295654,
+          "jepa_loss": 1.7941694259643555,
+          "minimum_linear_attention_denominator": 659707.5,
+          "optimizer_ema_seconds": 0.005298599993693642,
+          "optimizer_state_created": true,
+          "total_loss": 2.2245116233825684,
+          "total_step_seconds": 2.6618795000104
+        }
+      ],
+      "support_profile_index": 2
+    }
+  ],
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+  "support_profiles": [
+    {
+      "matrix_id": "HVS::19cd530b-622c-4bd8-b738-dbf169412cb0",
+      "measured_addresses": 18736,
+      "support_class": "lower_support"
+    },
+    {
+      "matrix_id": "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+      "measured_addresses": 32977,
+      "support_class": "medium_support"
+    },
+    {
+      "matrix_id": "sea_ad_ang_rna_final_2026",
+      "measured_addresses": 35786,
+      "support_class": "high_support"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "a2r_hash_unchanged": true,
+  "expected_a2r_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+  "measurement_support_file_sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+  "observed_a2r_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+  "registry_file_sha256": "7b4af6b5077ca1e8585622a82487fb9c2753b0d2feb8d535053222a2bd9b25d9",
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+}

@@ -1,0 +1,17 @@
+status,fixture,masker,d_gene,checkpoint,raw_rare_auroc,raw_rare_ap,learned_h_rare_auroc,learned_h_rare_ap
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,overlap_dense,oracle,160,0,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,overlap_dense,oracle,160,64,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,overlap_dense,oracle,160,128,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,overlap_dense,oracle,160,256,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,overlap_dense,graph_free,160,0,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,overlap_dense,graph_free,160,64,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,overlap_dense,graph_free,160,128,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,overlap_dense,graph_free,160,256,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,partial_correlation,oracle,160,0,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,partial_correlation,oracle,160,64,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,partial_correlation,oracle,160,128,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,partial_correlation,oracle,160,256,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,partial_correlation,graph_free,160,0,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,partial_correlation,graph_free,160,64,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,partial_correlation,graph_free,160,128,1.0,1.0,1.0,1.0
+PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN,partial_correlation,graph_free,160,256,1.0,1.0,1.0,1.0

@@ -1,0 +1,19 @@
+{
+  "broad_genes_selected": 900,
+  "full_broad_r2": 0.9798702572887175,
+  "full_rare_ap": 1.0,
+  "full_rare_auroc": 1.0,
+  "genes": 8192,
+  "permanent_regression_pass": true,
+  "rare_genes_selected": 0,
+  "selector_accessed_latent_labels": false,
+  "selector_inputs": [
+    "detection",
+    "variance"
+  ],
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+  "top_k": 4096,
+  "topk_broad_r2": 0.9797754669648313,
+  "topk_rare_ap": 0.07770888482242791,
+  "topk_rare_auroc": 0.592896174863388
+}

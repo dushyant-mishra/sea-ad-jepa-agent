@@ -1,0 +1,594 @@
+{
+  "a2r_contract": {
+    "address_ids_unique": true,
+    "address_indices_contiguous": true,
+    "address_indices_unique": true,
+    "future_only_addresses": 0,
+    "identity_classes": {
+      "current_exact": 40422,
+      "legacy_exact": 773,
+      "source_native_anchored": 43
+    },
+    "matrix_address_rows": 1731996,
+    "measured_zero_distinct_from_structurally_unmeasured": true,
+    "measurement_operators": 42,
+    "one_row_per_matrix_address": true,
+    "registry_rows": 41238,
+    "semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+  },
+  "anti_top_k": {
+    "broad_genes_selected": 900,
+    "full_broad_r2": 0.9798702572887175,
+    "full_rare_ap": 1.0,
+    "full_rare_auroc": 1.0,
+    "genes": 8192,
+    "permanent_regression_pass": true,
+    "rare_genes_selected": 0,
+    "selector_accessed_latent_labels": false,
+    "selector_inputs": [
+      "detection",
+      "variance"
+    ],
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+    "top_k": 4096,
+    "topk_broad_r2": 0.9797754669648313,
+    "topk_rare_ap": 0.07770888482242791,
+    "topk_rare_auroc": 0.592896174863388
+  },
+  "capacity_gate": {
+    "classification": "KEEP d_gene=160 PROVISIONAL",
+    "failure_concerns_h_itself": false,
+    "replicated_loss_families": [],
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+    "training_healthy_and_finite": true,
+    "width_160_gate_fired": false,
+    "width_256_run": false
+  },
+  "clean_worktree_portability": {
+    "a3r_regressions": 0,
+    "classification_counts": {
+      "MISSING_IGNORED_HISTORICAL_ARTIFACT": 17,
+      "OTHER": 2,
+      "STALE_HISTORICAL_UCDQ_MANIFEST": 9
+    },
+    "clean_worktree_failed": 28,
+    "clean_worktree_passed": 845,
+    "conclusion": "HISTORICAL TEST-ARTIFACT PORTABILITY LIMITATION; NOT AN A3R SCIENTIFIC REGRESSION",
+    "failures_exercising_new_a3r_code": 0,
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+  },
+  "final_state": "STAGE81A3R_SYNTHETIC_CLOSURE_COMPLETE_NOT_FROZEN",
+  "governance": {
+    "a3_freeze1_declared": false,
+    "dev_rna_accessed": false,
+    "pathology_accessed": false,
+    "real_rna_accessed": false,
+    "sealed_rna_accessed": false,
+    "stage81b_started": false,
+    "stage81c_started": false
+  },
+  "graph_free": {
+    "classification": "PEARSON GRAPH NOT REQUIRED BY BOUNDED SYNTHETIC EVIDENCE",
+    "pearson_graph_invoked": false,
+    "rare_degradation_fixtures": [],
+    "replicated_factor_family_degradation": [],
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+  },
+  "mechanics": {
+    "classification": "FULL 41,238-ADDRESS MECHANICALLY FEASIBLE",
+    "probes": [
+      {
+        "classification": "FULL 41,238-ADDRESS MECHANICALLY FEASIBLE",
+        "ema_success": true,
+        "finite": true,
+        "microbatch": 1,
+        "optimizer_state_created": true,
+        "optimizer_steps_completed": 2,
+        "peak_cuda_allocated_bytes": 740763136,
+        "peak_cuda_reserved_bytes": 832569344,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "steps": [
+          {
+            "backward_seconds": 0.20271179999690503,
+            "ema_success": true,
+            "finite": true,
+            "forward_seconds": 0.45847369999682996,
+            "gene_anchor_loss": 0.4447953701019287,
+            "gradient_norm": 4.984452247619629,
+            "jepa_loss": 1.8524364233016968,
+            "minimum_linear_attention_denominator": 357753.71875,
+            "optimizer_ema_seconds": 0.03701010000077076,
+            "optimizer_state_created": true,
+            "total_loss": 2.297231674194336,
+            "total_step_seconds": 0.7249263000121573
+          },
+          {
+            "backward_seconds": 0.14071589999366552,
+            "ema_success": true,
+            "finite": true,
+            "forward_seconds": 0.11120129999471828,
+            "gene_anchor_loss": 0.42398613691329956,
+            "gradient_norm": 4.474353313446045,
+            "jepa_loss": 1.4807944297790527,
+            "minimum_linear_attention_denominator": 355745.5625,
+            "optimizer_ema_seconds": 0.007431999998516403,
+            "optimizer_state_created": true,
+            "total_loss": 1.904780626296997,
+            "total_step_seconds": 0.2678633000032278
+          }
+        ],
+        "support_profile_index": 0
+      },
+      {
+        "classification": "FULL 41,238-ADDRESS MECHANICALLY FEASIBLE",
+        "ema_success": true,
+        "finite": true,
+        "microbatch": 8,
+        "optimizer_state_created": true,
+        "optimizer_steps_completed": 2,
+        "peak_cuda_allocated_bytes": 5821076992,
+        "peak_cuda_reserved_bytes": 6134169600,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "steps": [
+          {
+            "backward_seconds": 0.7688316999992821,
+            "ema_success": true,
+            "finite": true,
+            "forward_seconds": 0.6258100000122795,
+            "gene_anchor_loss": 0.4305715262889862,
+            "gradient_norm": 5.0928497314453125,
+            "jepa_loss": 1.8214699029922485,
+            "minimum_linear_attention_denominator": 614320.4375,
+            "optimizer_ema_seconds": 0.0175219999946421,
+            "optimizer_state_created": true,
+            "total_loss": 2.2520413398742676,
+            "total_step_seconds": 1.4191205999959493
+          },
+          {
+            "backward_seconds": 0.7664776000019629,
+            "ema_success": true,
+            "finite": true,
+            "forward_seconds": 0.5578972999937832,
+            "gene_anchor_loss": 0.4143170714378357,
+            "gradient_norm": 3.967662811279297,
+            "jepa_loss": 1.4529075622558594,
+            "minimum_linear_attention_denominator": 613919.375,
+            "optimizer_ema_seconds": 0.0057708000094862655,
+            "optimizer_state_created": true,
+            "total_loss": 1.8672246932983398,
+            "total_step_seconds": 1.3379600000043865
+          }
+        ],
+        "support_profile_index": 1
+      },
+      {
+        "classification": "FULL 41,238-ADDRESS MECHANICALLY FEASIBLE",
+        "ema_success": true,
+        "finite": true,
+        "microbatch": 16,
+        "optimizer_state_created": true,
+        "optimizer_steps_completed": 2,
+        "peak_cuda_allocated_bytes": 11525861888,
+        "peak_cuda_reserved_bytes": 11729371136,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "steps": [
+          {
+            "backward_seconds": 1.5364993999974104,
+            "ema_success": true,
+            "finite": true,
+            "forward_seconds": 1.194506999992882,
+            "gene_anchor_loss": 0.4496466815471649,
+            "gradient_norm": 4.822534561157227,
+            "jepa_loss": 2.1097114086151123,
+            "minimum_linear_attention_denominator": 656941.0,
+            "optimizer_ema_seconds": 0.011362599994754419,
+            "optimizer_state_created": true,
+            "total_loss": 2.5593581199645996,
+            "total_step_seconds": 2.749218299999484
+          },
+          {
+            "backward_seconds": 1.5374908999947365,
+            "ema_success": true,
+            "finite": true,
+            "forward_seconds": 1.1083360000047833,
+            "gene_anchor_loss": 0.4303421378135681,
+            "gradient_norm": 4.122024059295654,
+            "jepa_loss": 1.7941694259643555,
+            "minimum_linear_attention_denominator": 659707.5,
+            "optimizer_ema_seconds": 0.005298599993693642,
+            "optimizer_state_created": true,
+            "total_loss": 2.2245116233825684,
+            "total_step_seconds": 2.6618795000104
+          }
+        ],
+        "support_profile_index": 2
+      }
+    ],
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+    "support_profiles": [
+      {
+        "matrix_id": "HVS::19cd530b-622c-4bd8-b738-dbf169412cb0",
+        "measured_addresses": 18736,
+        "support_class": "lower_support"
+      },
+      {
+        "matrix_id": "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+        "measured_addresses": 32977,
+        "support_class": "medium_support"
+      },
+      {
+        "matrix_id": "sea_ad_ang_rna_final_2026",
+        "measured_addresses": 35786,
+        "support_class": "high_support"
+      }
+    ]
+  },
+  "operator_summary": {
+    "classification_counts": {
+      "DATA / OPERATOR LIMITATION": 1,
+      "MEASUREMENT-AWARE TRANSFER SUPPORTED": 155
+    },
+    "fixtures": [
+      {
+        "fixture": "overlap_dense",
+        "jointly_measured_comparisons": [
+          {
+            "median_joint_measured_h_distance": 0.15199494361877441,
+            "operators": "O_A_high_support_high_depth_vs_O_B_medium_support"
+          },
+          {
+            "median_joint_measured_h_distance": 0.23357084393501282,
+            "operators": "O_B_medium_support_vs_O_C_limited_panel"
+          }
+        ],
+        "operator_ids_supplied_to_encoder": false,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+      },
+      {
+        "fixture": "partial_correlation",
+        "jointly_measured_comparisons": [
+          {
+            "median_joint_measured_h_distance": 0.15345549583435059,
+            "operators": "O_A_high_support_high_depth_vs_O_B_medium_support"
+          },
+          {
+            "median_joint_measured_h_distance": 0.23416906595230103,
+            "operators": "O_B_medium_support_vs_O_C_limited_panel"
+          }
+        ],
+        "operator_ids_supplied_to_encoder": false,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+      }
+    ],
+    "operator_ids_supplied_to_encoder": false,
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+  },
+  "quantitative_summary": {
+    "capacity_final": [
+      {
+        "fixture": "overlap_dense",
+        "learned_h_mean_r2": 0.7589511067573036,
+        "masker": "graph_free",
+        "mean_h_minus_raw_r2": -0.019641080156331182,
+        "raw_mean_r2": 0.7785921869136347,
+        "raw_recoverable_factors": 26
+      },
+      {
+        "fixture": "partial_correlation",
+        "learned_h_mean_r2": 0.8082811299642725,
+        "masker": "graph_free",
+        "mean_h_minus_raw_r2": -0.016698551202441077,
+        "raw_mean_r2": 0.8249796811667136,
+        "raw_recoverable_factors": 26
+      },
+      {
+        "fixture": "overlap_dense",
+        "learned_h_mean_r2": 0.7591248761098984,
+        "masker": "oracle",
+        "mean_h_minus_raw_r2": -0.019467310803736444,
+        "raw_mean_r2": 0.7785921869136347,
+        "raw_recoverable_factors": 26
+      },
+      {
+        "fixture": "partial_correlation",
+        "learned_h_mean_r2": 0.8084761228166938,
+        "masker": "oracle",
+        "mean_h_minus_raw_r2": -0.01650355835001977,
+        "raw_mean_r2": 0.8249796811667136,
+        "raw_recoverable_factors": 26
+      }
+    ],
+    "observation_operator": [
+      {
+        "fixture": "overlap_dense",
+        "learned_h_mean_r2": 0.8103240619925797,
+        "mean_h_minus_raw_panel_r2": -0.01669626896056234,
+        "operator": "O_A_high_support_high_depth",
+        "raw_panel_mean_r2": 0.827020330953142
+      },
+      {
+        "fixture": "overlap_dense",
+        "learned_h_mean_r2": 0.7174159768149332,
+        "mean_h_minus_raw_panel_r2": -0.029508113936597136,
+        "operator": "O_B_medium_support",
+        "raw_panel_mean_r2": 0.7469240907515304
+      },
+      {
+        "fixture": "overlap_dense",
+        "learned_h_mean_r2": 0.5503628374100275,
+        "mean_h_minus_raw_panel_r2": -0.04011511075390327,
+        "operator": "O_C_limited_panel",
+        "raw_panel_mean_r2": 0.5904779481639306
+      },
+      {
+        "fixture": "partial_correlation",
+        "learned_h_mean_r2": 0.8531338457252343,
+        "mean_h_minus_raw_panel_r2": -0.012596268244118247,
+        "operator": "O_A_high_support_high_depth",
+        "raw_panel_mean_r2": 0.8657301139693527
+      },
+      {
+        "fixture": "partial_correlation",
+        "learned_h_mean_r2": 0.770532173236287,
+        "mean_h_minus_raw_panel_r2": -0.026715190585417232,
+        "operator": "O_B_medium_support",
+        "raw_panel_mean_r2": 0.7972473638217044
+      },
+      {
+        "fixture": "partial_correlation",
+        "learned_h_mean_r2": 0.6059536407568388,
+        "mean_h_minus_raw_panel_r2": -0.04120814367543968,
+        "operator": "O_C_limited_panel",
+        "raw_panel_mean_r2": 0.6471617844322785
+      }
+    ],
+    "rare_final": [
+      {
+        "checkpoint": 256,
+        "d_gene": 160,
+        "fixture": "overlap_dense",
+        "learned_h_rare_ap": 1.0,
+        "learned_h_rare_auroc": 1.0,
+        "masker": "oracle",
+        "raw_rare_ap": 1.0,
+        "raw_rare_auroc": 1.0,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+      },
+      {
+        "checkpoint": 256,
+        "d_gene": 160,
+        "fixture": "overlap_dense",
+        "learned_h_rare_ap": 1.0,
+        "learned_h_rare_auroc": 1.0,
+        "masker": "graph_free",
+        "raw_rare_ap": 1.0,
+        "raw_rare_auroc": 1.0,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+      },
+      {
+        "checkpoint": 256,
+        "d_gene": 160,
+        "fixture": "partial_correlation",
+        "learned_h_rare_ap": 1.0,
+        "learned_h_rare_auroc": 1.0,
+        "masker": "oracle",
+        "raw_rare_ap": 1.0,
+        "raw_rare_auroc": 1.0,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+      },
+      {
+        "checkpoint": 256,
+        "d_gene": 160,
+        "fixture": "partial_correlation",
+        "learned_h_rare_ap": 1.0,
+        "learned_h_rare_auroc": 1.0,
+        "masker": "graph_free",
+        "raw_rare_ap": 1.0,
+        "raw_rare_auroc": 1.0,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+      }
+    ],
+    "uncertainty": [
+      {
+        "fixture": "overlap_dense",
+        "level": 0.2,
+        "mean_distance": 0.010711608454585,
+        "median_distance": 0.0104801468551158,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "overlap_dense",
+        "level": 0.4,
+        "mean_distance": 0.0073993587866425,
+        "median_distance": 0.007341313175857,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "overlap_dense",
+        "level": 0.6,
+        "mean_distance": 0.0055436408147215,
+        "median_distance": 0.0055019939318299,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "overlap_dense",
+        "level": 0.8,
+        "mean_distance": 0.0029852990992367,
+        "median_distance": 0.0029594786465168,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "overlap_dense",
+        "level": 1.0,
+        "mean_distance": 0.0,
+        "median_distance": 0.0,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "overlap_dense",
+        "level": 0.25,
+        "mean_distance": 0.1852963864803314,
+        "median_distance": 0.1843954026699066,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_MEAS"
+      },
+      {
+        "fixture": "overlap_dense",
+        "level": 0.5,
+        "mean_distance": 0.1549227088689804,
+        "median_distance": 0.1533489823341369,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_MEAS"
+      },
+      {
+        "fixture": "overlap_dense",
+        "level": 0.75,
+        "mean_distance": 0.1408289968967437,
+        "median_distance": 0.1388605684041977,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_MEAS"
+      },
+      {
+        "fixture": "overlap_dense",
+        "level": 1.0,
+        "mean_distance": 0.132986843585968,
+        "median_distance": 0.1310063451528549,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_MEAS"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 0.2,
+        "mean_distance": 0.0120615540072321,
+        "median_distance": 0.0119583513587713,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 0.4,
+        "mean_distance": 0.0095164589583873,
+        "median_distance": 0.0094776013866066,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 0.6,
+        "mean_distance": 0.0060706911608576,
+        "median_distance": 0.0060355626046657,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 0.8,
+        "mean_distance": 0.0037409595679491,
+        "median_distance": 0.0037170180585235,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 1.0,
+        "mean_distance": 0.0,
+        "median_distance": 0.0,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_BIO"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 0.25,
+        "mean_distance": 0.1853105127811432,
+        "median_distance": 0.185118168592453,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_MEAS"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 0.5,
+        "mean_distance": 0.1550554186105728,
+        "median_distance": 0.1541668772697448,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_MEAS"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 0.75,
+        "mean_distance": 0.1412389725446701,
+        "median_distance": 0.1407903879880905,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_MEAS"
+      },
+      {
+        "fixture": "partial_correlation",
+        "level": 1.0,
+        "mean_distance": 0.1334800720214843,
+        "median_distance": 0.1328808069229126,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "uncertainty": "U_MEAS"
+      }
+    ]
+  },
+  "stage": "stage81a3r_final_address_qualification",
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+  "uncertainty_summary": {
+    "classification": "SEPARATION NOT DEMONSTRATED",
+    "combined_score_created": false,
+    "fixtures": [
+      {
+        "classification": "SEPARATION NOT DEMONSTRATED",
+        "combined_score_created": false,
+        "fixture": "overlap_dense",
+        "high_biology_high_measurement_distance": 0.13100634515285492,
+        "high_biology_low_measurement_distance": 0.18439540266990662,
+        "low_biology_high_measurement_distance": 0.01048014685511589,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "u_bio_monotonicity_violations": 0,
+        "u_meas_monotonicity_violations": 0
+      },
+      {
+        "classification": "SEPARATION NOT DEMONSTRATED",
+        "combined_score_created": false,
+        "fixture": "partial_correlation",
+        "high_biology_high_measurement_distance": 0.1328808069229126,
+        "high_biology_low_measurement_distance": 0.185118168592453,
+        "low_biology_high_measurement_distance": 0.011958351358771324,
+        "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+        "u_bio_monotonicity_violations": 0,
+        "u_meas_monotonicity_violations": 0
+      }
+    ],
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+    "u_bio_monotonicity_violations": 0,
+    "u_meas_level_1_interpretation": "Independent-measurement and depth/noise floor; zero is not expected. This is not a calibrated U_MEAS score.",
+    "u_meas_monotonicity_violations": 0,
+    "u_meas_reference_definition": "Each quality level is an independent Poisson remeasurement of the same latent rate. Level 1.0 uses complete support and reference depth 12,000 and is compared with the original independently sampled complete-support observation after library normalization; it is not an observation compared with itself."
+  },
+  "validation": {
+    "clean_worktree_failure_classification": "HISTORICAL TEST-ARTIFACT PORTABILITY LIMITATION; NOT AN A3R SCIENTIFIC REGRESSION",
+    "clean_worktree_integrated_v4_failed": 28,
+    "clean_worktree_integrated_v4_passed": 845,
+    "compileall_passed": true,
+    "dev_rna_accessed": false,
+    "existing_full_v4_tests_passed_in_protected_artifact_environment": 862,
+    "failures": 0,
+    "focused_stage81a3r_tests_passed": 13,
+    "frozen_a2r_hash_unchanged": true,
+    "git_diff_check_passed": true,
+    "pathology_accessed": false,
+    "real_rna_accessed": false,
+    "repository_tests_passed": 874,
+    "sealed_rna_accessed": false,
+    "stage81b_started": false,
+    "stage81c_started": false,
+    "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN",
+    "warnings": 0
+  }
+}

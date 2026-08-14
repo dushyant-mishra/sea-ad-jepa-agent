@@ -190,6 +190,70 @@ def sample_target_blocks(
     )
 
 
+def sample_uniform_target_blocks(
+    measurement_mask: torch.Tensor,
+    *,
+    production_seed: int,
+    cell_indices: torch.Tensor,
+    sample_pass: int,
+    view_index: int,
+    mask_fraction: float = 0.40,
+    block_count: int = 16,
+) -> TargetBlocks:
+    """Create deterministic graph-free blocks from measured genes only.
+
+    This additive sampler intentionally accepts no expression matrix, graph,
+    source identity, or dataset identity. It preserves the historical target
+    block shape and exact hidden-union semantics while providing a scalable
+    graph-free masking control.
+    """
+    if measurement_mask.dtype is not torch.bool or measurement_mask.ndim != 2:
+        raise ValueError("measurement_mask must be boolean [cells, genes]")
+    if cell_indices.ndim != 1 or len(cell_indices) != len(measurement_mask):
+        raise ValueError("cell_indices must contain one index per cell")
+    if block_count < 1 or not 0.0 <= mask_fraction <= 1.0:
+        raise ValueError("invalid block_count or mask_fraction")
+    device = measurement_mask.device
+    measured_cpu = measurement_mask.cpu()
+    hidden = torch.zeros_like(measured_cpu)
+    row_blocks: list[list[list[int]]] = []
+    maximum_size = 0
+    for row in range(len(measured_cpu)):
+        measured = torch.nonzero(measured_cpu[row], as_tuple=False).flatten()
+        hidden_count = int(math.floor(mask_fraction * len(measured)))
+        sizes = _block_sizes(hidden_count, block_count)
+        maximum_size = max(maximum_size, max(sizes, default=0))
+        generator = torch.Generator(device="cpu").manual_seed(keyed_mask_seed(
+            production_seed=production_seed,
+            cell_index=int(cell_indices[row]),
+            sample_pass=sample_pass,
+            view_index=view_index,
+        ))
+        ranking = measured[torch.randperm(len(measured), generator=generator)]
+        cursor = 0
+        blocks = []
+        for size in sizes:
+            block = ranking[cursor:cursor + size].tolist()
+            blocks.append(block)
+            if block:
+                hidden[row, block] = True
+            cursor += size
+        if cursor != hidden_count:
+            raise RuntimeError("uniform target blocks do not match exact hidden count")
+        row_blocks.append(blocks)
+    indices = torch.full((len(row_blocks), block_count, maximum_size), -1, dtype=torch.int64)
+    members = torch.zeros_like(indices, dtype=torch.bool)
+    for row, blocks in enumerate(row_blocks):
+        for block_index, block in enumerate(blocks):
+            if block:
+                indices[row, block_index, :len(block)] = torch.tensor(block)
+                members[row, block_index, :len(block)] = True
+    return TargetBlocks(
+        hidden.to(device), indices.to(device), members.to(device),
+        torch.zeros(len(row_blocks), dtype=torch.int64, device=device),
+    )
+
+
 class KernelLinearAttention(nn.Module):
     """Four-head ELU+1 linear attention without an N-by-N score tensor."""
 

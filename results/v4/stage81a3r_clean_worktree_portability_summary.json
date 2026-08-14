@@ -1,0 +1,13 @@
+{
+  "a3r_regressions": 0,
+  "classification_counts": {
+    "MISSING_IGNORED_HISTORICAL_ARTIFACT": 17,
+    "OTHER": 2,
+    "STALE_HISTORICAL_UCDQ_MANIFEST": 9
+  },
+  "clean_worktree_failed": 28,
+  "clean_worktree_passed": 845,
+  "conclusion": "HISTORICAL TEST-ARTIFACT PORTABILITY LIMITATION; NOT AN A3R SCIENTIFIC REGRESSION",
+  "failures_exercising_new_a3r_code": 0,
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+}

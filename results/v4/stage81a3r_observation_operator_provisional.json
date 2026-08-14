@@ -1,0 +1,40 @@
+{
+  "classification_counts": {
+    "DATA / OPERATOR LIMITATION": 1,
+    "MEASUREMENT-AWARE TRANSFER SUPPORTED": 155
+  },
+  "fixtures": [
+    {
+      "fixture": "overlap_dense",
+      "jointly_measured_comparisons": [
+        {
+          "median_joint_measured_h_distance": 0.15199494361877441,
+          "operators": "O_A_high_support_high_depth_vs_O_B_medium_support"
+        },
+        {
+          "median_joint_measured_h_distance": 0.23357084393501282,
+          "operators": "O_B_medium_support_vs_O_C_limited_panel"
+        }
+      ],
+      "operator_ids_supplied_to_encoder": false,
+      "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+    },
+    {
+      "fixture": "partial_correlation",
+      "jointly_measured_comparisons": [
+        {
+          "median_joint_measured_h_distance": 0.15345549583435059,
+          "operators": "O_A_high_support_high_depth_vs_O_B_medium_support"
+        },
+        {
+          "median_joint_measured_h_distance": 0.23416906595230103,
+          "operators": "O_B_medium_support_vs_O_C_limited_panel"
+        }
+      ],
+      "operator_ids_supplied_to_encoder": false,
+      "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+    }
+  ],
+  "operator_ids_supplied_to_encoder": false,
+  "status": "PROVISIONAL - SYNTHETIC ONLY - NOT FROZEN"
+}
