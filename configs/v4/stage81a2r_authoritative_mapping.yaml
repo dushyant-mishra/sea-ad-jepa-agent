@@ -123,6 +123,14 @@ outputs:
   closure_report: docs/v4/STAGE81A2R_CLOSURE_REPORT.md
   closure_validation: results/v4/stage81a2r_closure_validation.json
   closure_hash_manifest: results/v4/stage81a2r_closure_hash_manifest.json
+  foundation_identity_accounting: results/v4/stage81a2r_foundation_identity_accounting.csv
+  foundation_address_policy: results/v4/stage81a2r_foundation_address_policy.csv
+  foundation_accounting_summary: results/v4/stage81a2r_foundation_identity_accounting.json
+  foundation_molecular_address_registry: results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv
+  foundation_molecular_address_provenance: results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz
+  foundation_molecular_address_measurement_support: results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz
+  foundation_nonuniversal_evidence: results/v4/stage81a2r_foundation_preserved_nonuniversal_evidence_candidate.csv.gz
+  foundation_address_injectivity_audit: results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json
 
 protected_hashes:
   results/v4/stage81a3_ipb_jepa_feasibility.json: aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308

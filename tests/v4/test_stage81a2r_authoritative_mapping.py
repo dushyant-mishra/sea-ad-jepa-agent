@@ -45,8 +45,11 @@ from scripts.v4.stage81a2r_adjudicate_unresolved_identities import (
     unique_map,
 )
 from scripts.v4.stage81a2r_close_authoritative_identity_audit import (
+    build_foundation_molecular_address_package,
     evidence_hash,
     finalize_dossier,
+    foundation_identity_accounting,
+    matrix_accounting_reconciliation,
     present,
     valid_ensembl,
     valid_ncbi,
@@ -563,3 +566,144 @@ def test_nph_frozen_vocab_adjudication_retains_every_frozen_gene():
     assert len(result) == 2
     assert result.nph_source_row_count.tolist() == [1, 0]
     assert not result.frozen_vocabulary_rewrite_allowed.any()
+
+
+def test_foundation_accounting_separates_rows_identities_and_address_policy():
+    def identity_row(dataset, index, disposition, *, current="", legacy="", native="", symbol=""):
+        return {
+            "source_record_index": f"{dataset}:{index}",
+            "source_dataset_id": dataset,
+            "source_object_or_matrix": dataset,
+            "source_feature_index": index,
+            "terminal_disposition": disposition,
+            "authority_current_ensembl_id": current,
+            "source_native_id": native,
+            "normalized_source_ensembl_id": legacy,
+            "source_exact_ensembl_id": legacy,
+            "source_refseq_id": "NM_000001" if disposition.startswith("EXACT_REFSEQ") else "",
+            "source_ncbi_gene_id": "",
+            "source_transcript_id": "",
+            "normalized_source_symbol": symbol,
+            "raw_source_feature_id": str(index),
+            "raw_source_feature_symbol": symbol,
+            "canonical_hgnc_symbol": symbol,
+            "source_biotype": "test_biotype",
+            "mapping_evidence_class": "TEST_EXACT",
+            "mapping_authority": "completed_test_ledger",
+            "mapping_evidence_file": "test-ledger.csv",
+            "hgnc_approved_ensembl": "",
+            "hgnc_previous_ensembl": "",
+            "hgnc_alias_ensembl": "",
+            "hgnc_withdrawn_ensembl": "",
+        }
+
+    decisions = pd.DataFrame([
+        identity_row("SEA_AD_COMMON", 0, "EXACT_CURRENT_ENSEMBL", current=eid(1), symbol="A"),
+        identity_row("SEA_AD_COMMON", 1, "LEGACY_EXACT_ENSEMBL_NO_CURRENT_REPLACEMENT", legacy=eid(10), symbol="OLD"),
+        identity_row("SEA_AD_COMMON", 2, "EXACT_REFSEQ_OR_NCBI_GENE", symbol="REF"),
+        identity_row("HVS_COMMON", 0, "EXACT_CURRENT_ENSEMBL", current=eid(1), symbol="A"),
+        identity_row("HVS_COMMON", 1, "SOURCE_NATIVE_TRANSCRIPT_MODEL", native="HGNC:99", symbol="NATIVE"),
+        identity_row("NPH52::A.qs", 0, "SOURCE_NATIVE_BIOLOGICAL_FEATURE_UNPROJECTED", symbol="LOCUS"),
+        identity_row("NPH52::A.qs", 1, "AMBIGUOUS_ALIAS", symbol="AMB"),
+        identity_row("NPH52::A.qs", 2, "TRULY_SYMBOL_ONLY_UNRESOLVED", symbol="POOR"),
+        identity_row("NPH52::B.qs", 3, "TRULY_SYMBOL_ONLY_UNRESOLVED", symbol="POOR"),
+        identity_row("NPH52::B.qs", 4, "NON_BIOLOGICAL_TECHNICAL_FEATURE", symbol="TECH"),
+    ])
+    reclassification = pd.DataFrame(columns=[
+        "dataset", "matrix_id", "source_feature_index", "new_terminal_disposition",
+        "recovered_canonical_ensembl_id",
+    ])
+
+    accounting, policy, summary, frame = foundation_identity_accounting(decisions, reclassification)
+
+    assert summary["source_rows_total"] == 10
+    assert summary["unique_source_features"] == 9
+    assert summary["unique_biological_identities"] == 8
+    assert set(summary["identity_layer_counts"].values()) == {1}
+    nph = accounting.set_index("scope").loc["NPH52"]
+    assert nph.foundation_source_rows_total == 5
+    assert nph.foundation_unique_source_features == 4
+    assert nph.foundation_unique_biological_identities == 4
+    assert nph.G_foundation_symbol_or_identifier_poor == 1
+    policy = policy.set_index("identity_layer")
+    assert policy.loc["source_native_anchored", "molecular_evidence_preserved"] == "YES"
+    assert policy.loc["source_native_anchored", "proposed_universal_encoder_eligibility"] == "ELIGIBLE"
+    assert policy.loc["symbol_or_identifier_poor", "universal_identity_established"] == "NO"
+    assert policy.loc["true_technical_nonbiological", "molecular_evidence_preserved"] == "NO"
+    assert len(frame) == len(decisions)
+
+    support = pd.DataFrame([
+        {
+            "matrix_id": "SEA_MATRIX", "source_dataset_id": "SEA_AD_COMMON",
+            "successor_gene_index": 0, "canonical_ensembl_gene_id": eid(1),
+            "canonical_symbol": "A", "measured_gene": True,
+            "measurement_status": "addressable_measured_zero_or_nonzero_at_runtime",
+            "measured_zero_distinct_from_unmeasured": True,
+            "source_feature_universe_hash": "sea-hash",
+        },
+        {
+            "matrix_id": "HVS_MATRIX", "source_dataset_id": "HVS_COMMON",
+            "successor_gene_index": 0, "canonical_ensembl_gene_id": eid(1),
+            "canonical_symbol": "A", "measured_gene": True,
+            "measurement_status": "addressable_measured_zero_or_nonzero_at_runtime",
+            "measured_zero_distinct_from_unmeasured": True,
+            "source_feature_universe_hash": "hvs-hash",
+        },
+    ])
+    registry, provenance, expanded, nonuniversal, injectivity = (
+        build_foundation_molecular_address_package(
+            frame,
+            support,
+            expected_address_counts={
+                "current_exact": 1,
+                "legacy_exact": 1,
+                "source_native_anchored": 1,
+            },
+            expected_nonuniversal_count=3,
+        )
+    )
+    assert registry.molecular_address_id.tolist() == [eid(1), eid(10), "HGNC:99"]
+    assert len(provenance) == 4
+    assert len(expanded) == 6
+    assert not expanded.duplicated(["matrix_id", "molecular_address_id"]).any()
+    assert len(nonuniversal) == 3
+    assert injectivity["exact_cross_layer_duplicate_equivalence_classes"] == 0
+    assert injectivity["final_distinct_universal_molecular_addresses"] == 3
+    assert not injectivity["dataset_or_source_family_used_in_address_id"]
+
+    shuffled = frame.sample(frac=1, random_state=7).reset_index(drop=True)
+    registry_2, provenance_2, expanded_2, nonuniversal_2, injectivity_2 = (
+        build_foundation_molecular_address_package(
+            shuffled,
+            support.sample(frac=1, random_state=7).reset_index(drop=True),
+            expected_address_counts={
+                "current_exact": 1,
+                "legacy_exact": 1,
+                "source_native_anchored": 1,
+            },
+            expected_nonuniversal_count=3,
+        )
+    )
+    pd.testing.assert_frame_equal(registry, registry_2)
+    pd.testing.assert_frame_equal(provenance, provenance_2)
+    pd.testing.assert_frame_equal(expanded, expanded_2)
+    pd.testing.assert_frame_equal(nonuniversal, nonuniversal_2)
+    assert injectivity == injectivity_2
+
+
+def test_matrix_accounting_reconciles_historical_aggregate_with_a2r_operators():
+    assets = pd.DataFrame(
+        [{"study_id": "HVS", "foundation_eligible": True}] * 24
+        + [{"study_id": "SEA_AD", "foundation_eligible": True}] * 11
+        + [{"study_id": "NPH52", "foundation_eligible": True}]
+        + [{"study_id": "FUTURE", "foundation_eligible": False}]
+    )
+    support = pd.DataFrame(
+        [{"matrix_id": f"HVS::{index}", "source_dataset_id": "HVS_COMMON"} for index in range(24)]
+        + [{"matrix_id": f"SEA::{index}", "source_dataset_id": "SEA_AD_COMMON"} for index in range(11)]
+        + [{"matrix_id": f"NPH::{index}", "source_dataset_id": f"NPH52::source-{index}.qs"} for index in range(7)]
+    )
+    result = matrix_accounting_reconciliation(assets, support)
+    assert result["historical_stage81a2_asset_entry_total"] == 36
+    assert result["current_stage81a2r_measurement_support_matrix_total"] == 42
+    assert result["new_foundation_datasets_introduced"] == 0

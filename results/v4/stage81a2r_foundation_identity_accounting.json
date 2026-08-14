@@ -1,0 +1,73 @@
+{
+  "expression_values_accessed": false,
+  "identity_layer_counts": {
+    "alternative_authority_exact": 0,
+    "ambiguous": 1,
+    "current_exact": 40422,
+    "legacy_exact": 773,
+    "source_native_anchored": 43,
+    "source_native_unprojected": 0,
+    "symbol_or_identifier_poor": 2009,
+    "true_technical_nonbiological": 0
+  },
+  "mapping_decisions_changed": false,
+  "nph_reconciliation": {
+    "HVS_identifier_poor": 0,
+    "NPH52_identifier_poor": 2009,
+    "SEA_AD_identifier_poor": 0,
+    "foundation_identifier_poor_total": 2009
+  },
+  "scope": "FOUNDATION ONLY: SEA-AD + HVS + NPH52",
+  "source_breakdown": [
+    {
+      "G_foundation_alternative_authority_exact": 0,
+      "G_foundation_ambiguous": 0,
+      "G_foundation_current_exact": 35527,
+      "G_foundation_legacy_exact": 259,
+      "G_foundation_source_native_anchored": 0,
+      "G_foundation_source_native_unprojected": 0,
+      "G_foundation_symbol_or_identifier_poor": 0,
+      "G_foundation_true_technical_nonbiological": 0,
+      "foundation_source_rows_total": 36601,
+      "foundation_unique_biological_identities": 35786,
+      "foundation_unique_source_features": 36601,
+      "scope": "SEA-AD"
+    },
+    {
+      "G_foundation_alternative_authority_exact": 0,
+      "G_foundation_ambiguous": 0,
+      "G_foundation_current_exact": 18735,
+      "G_foundation_legacy_exact": 1,
+      "G_foundation_source_native_anchored": 0,
+      "G_foundation_source_native_unprojected": 0,
+      "G_foundation_symbol_or_identifier_poor": 0,
+      "G_foundation_true_technical_nonbiological": 0,
+      "foundation_source_rows_total": 18736,
+      "foundation_unique_biological_identities": 18736,
+      "foundation_unique_source_features": 18736,
+      "scope": "HVS"
+    },
+    {
+      "G_foundation_alternative_authority_exact": 0,
+      "G_foundation_ambiguous": 1,
+      "G_foundation_current_exact": 34790,
+      "G_foundation_legacy_exact": 700,
+      "G_foundation_source_native_anchored": 43,
+      "G_foundation_source_native_unprojected": 0,
+      "G_foundation_symbol_or_identifier_poor": 2009,
+      "G_foundation_true_technical_nonbiological": 0,
+      "foundation_source_rows_total": 244438,
+      "foundation_unique_biological_identities": 37543,
+      "foundation_unique_source_features": 38199,
+      "scope": "NPH52"
+    }
+  ],
+  "source_rows_total": 299775,
+  "stage": "stage81a2r_foundation_identity_accounting",
+  "unique_biological_identities": 43248,
+  "unique_source_features": 93536,
+  "universal_identity_established": {
+    "false": 2010,
+    "true": 41238
+  }
+}

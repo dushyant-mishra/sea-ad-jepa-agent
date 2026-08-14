@@ -154,12 +154,117 @@
   "foundation": {
     "candidate_after_repair_gene_count": 40422,
     "current_exact_gene_count": 40422,
+    "foundation_molecular_address_count": 41238,
     "future_data_firewall_pass": true,
+    "molecular_address_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
     "new_genes": [],
     "no_atac_peak_enters_gene_vocabulary": true,
     "no_future_only_gene_contributes": true,
     "no_unresolved_feature_enters_canonical_registry": true,
+    "preserved_nonuniversal_evidence_count": 2010,
     "semantic_hash": "fbabd61a6ae89e1c16e7084854c3a15ce7de94de003455e400d2d82458ec2cab"
+  },
+  "foundation_identity_accounting": {
+    "expression_values_accessed": false,
+    "identity_layer_counts": {
+      "alternative_authority_exact": 0,
+      "ambiguous": 1,
+      "current_exact": 40422,
+      "legacy_exact": 773,
+      "source_native_anchored": 43,
+      "source_native_unprojected": 0,
+      "symbol_or_identifier_poor": 2009,
+      "true_technical_nonbiological": 0
+    },
+    "mapping_decisions_changed": false,
+    "nph_reconciliation": {
+      "HVS_identifier_poor": 0,
+      "NPH52_identifier_poor": 2009,
+      "SEA_AD_identifier_poor": 0,
+      "foundation_identifier_poor_total": 2009
+    },
+    "scope": "FOUNDATION ONLY: SEA-AD + HVS + NPH52",
+    "source_breakdown": [
+      {
+        "G_foundation_alternative_authority_exact": 0,
+        "G_foundation_ambiguous": 0,
+        "G_foundation_current_exact": 35527,
+        "G_foundation_legacy_exact": 259,
+        "G_foundation_source_native_anchored": 0,
+        "G_foundation_source_native_unprojected": 0,
+        "G_foundation_symbol_or_identifier_poor": 0,
+        "G_foundation_true_technical_nonbiological": 0,
+        "foundation_source_rows_total": 36601,
+        "foundation_unique_biological_identities": 35786,
+        "foundation_unique_source_features": 36601,
+        "scope": "SEA-AD"
+      },
+      {
+        "G_foundation_alternative_authority_exact": 0,
+        "G_foundation_ambiguous": 0,
+        "G_foundation_current_exact": 18735,
+        "G_foundation_legacy_exact": 1,
+        "G_foundation_source_native_anchored": 0,
+        "G_foundation_source_native_unprojected": 0,
+        "G_foundation_symbol_or_identifier_poor": 0,
+        "G_foundation_true_technical_nonbiological": 0,
+        "foundation_source_rows_total": 18736,
+        "foundation_unique_biological_identities": 18736,
+        "foundation_unique_source_features": 18736,
+        "scope": "HVS"
+      },
+      {
+        "G_foundation_alternative_authority_exact": 0,
+        "G_foundation_ambiguous": 1,
+        "G_foundation_current_exact": 34790,
+        "G_foundation_legacy_exact": 700,
+        "G_foundation_source_native_anchored": 43,
+        "G_foundation_source_native_unprojected": 0,
+        "G_foundation_symbol_or_identifier_poor": 2009,
+        "G_foundation_true_technical_nonbiological": 0,
+        "foundation_source_rows_total": 244438,
+        "foundation_unique_biological_identities": 37543,
+        "foundation_unique_source_features": 38199,
+        "scope": "NPH52"
+      }
+    ],
+    "source_rows_total": 299775,
+    "stage": "stage81a2r_foundation_identity_accounting",
+    "unique_biological_identities": 43248,
+    "unique_source_features": 93536,
+    "universal_identity_established": {
+      "false": 2010,
+      "true": 41238
+    }
+  },
+  "foundation_molecular_address_space": {
+    "complete_foundation_source_feature_provenance": true,
+    "dataset_or_source_family_used_in_address_id": false,
+    "deterministic_ordering": true,
+    "exact_cross_layer_duplicate_equivalence_classes": 0,
+    "exact_within_layer_duplicate_equivalence_classes": 0,
+    "expression_values_accessed": false,
+    "final_distinct_universal_molecular_addresses": 41238,
+    "foundation_preserved_nonuniversal_evidence": 2010,
+    "future_only_addresses": 0,
+    "historical_frozen_4096_modified": false,
+    "legacy_exact_alternate_of_current_exact_classes": 0,
+    "legacy_exact_within_layer_equivalence_classes": 0,
+    "measured_zero_distinct_from_structurally_unmeasured": true,
+    "measurement_support_matrices": 42,
+    "measurement_support_rows": 1731996,
+    "nonterminal_link_reason": "Completed terminal adjudication did not establish these links as exact biological equivalence; possible replacements, symbol links, coordinates, and namespace differences were not promoted.",
+    "nonterminal_symbol_or_namespace_links_not_promoted": 187,
+    "one_row_per_matrix_address": true,
+    "proposed_anchored_addresses": 43,
+    "proposed_current_addresses": 40422,
+    "proposed_legacy_addresses": 773,
+    "registry_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+    "scope": "FOUNDATION ONLY: SEA-AD + HVS + NPH52",
+    "source_native_anchor_cross_layer_equivalence_classes": 0,
+    "source_native_anchor_within_layer_equivalence_classes": 0,
+    "source_native_repeated_measurement_rows_collapsed": 176,
+    "stage": "stage81a2r_foundation_molecular_address_injectivity_audit"
   },
   "frozen_vocabulary": {
     "file_sha256": "d8fbe2f0d2208f0034103443b6424169ff66e1b674769eda6b635c8ce84523e4",
@@ -175,6 +280,23 @@
     "push_performed": false,
     "stage81a3r_started": false,
     "stage81b_started": false
+  },
+  "matrix_accounting_reconciliation": {
+    "accounting_granularity_only": true,
+    "current_stage81a2r_measurement_support_matrices": {
+      "HVS": 24,
+      "NPH52_QS_objects": 7,
+      "SEA_AD": 11
+    },
+    "current_stage81a2r_measurement_support_matrix_total": 42,
+    "explanation": "The historical registry represented NPH52 as one aggregate source collection; Stage81A2R preserves the seven NPH QS objects as separate matrix-level measurement operators.",
+    "historical_stage81a2_asset_entries": {
+      "HVS": 24,
+      "NPH52_aggregate_collections": 1,
+      "SEA_AD": 11
+    },
+    "historical_stage81a2_asset_entry_total": 36,
+    "new_foundation_datasets_introduced": 0
   },
   "nph_unresolved_sanity_check": {
     "ASSEMBLY_KNOWN": 0,
@@ -263,6 +385,7 @@
     "SOURCE_NATIVE_BIOLOGICAL_FEATURE_UNPROJECTED": 2851,
     "TRULY_SYMBOL_ONLY_UNRESOLVED": 41719
   },
+  "projectwide_scope_label": "PROJECT-WIDE - FOUNDATION + FUTURE DATASETS",
   "protected_case_decisions": [
     {
       "canonical_identity_correction_required": false,
@@ -399,5 +522,5 @@
   },
   "source_candidate_status": "UNRESOLVED_IDENTITY_AUDIT_COMPLETE_WITH_HUMAN_BLOCKERS",
   "stage": "stage81a2r_authoritative_identity_audit_closure",
-  "status": "STAGE81A2R_READY_TO_FREEZE_WITH_DOCUMENTED_UNRESOLVED_NONPROTECTED_IDENTITIES"
+  "status": "STAGE81A2R_READY_FOR_FREEZE"
 }

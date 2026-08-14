@@ -1,0 +1,9 @@
+identity_layer,molecular_evidence_preserved,universal_identity_established,proposed_universal_encoder_eligibility
+current_exact,YES,YES,ELIGIBLE
+legacy_exact,YES,YES,ELIGIBLE
+alternative_authority_exact,YES,YES,HUMAN POLICY REQUIRED
+source_native_anchored,YES,YES,ELIGIBLE
+source_native_unprojected,YES,NO,NOT YET ELIGIBLE
+ambiguous,YES,NO,NOT YET ELIGIBLE
+symbol_or_identifier_poor,YES,NO,NOT YET ELIGIBLE
+true_technical_nonbiological,NO,NO,NOT YET ELIGIBLE

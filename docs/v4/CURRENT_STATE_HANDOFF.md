@@ -4,15 +4,52 @@
 
 - Repository: `dushyant-mishra/sea-ad-jepa-agent`
 - Remote: `https://github.com/dushyant-mishra/sea-ad-jepa-agent.git`
-- Checkpoint branch: `stage81a3-checkpoint-20260813`
-- Checkpoint evidence base: `f1d07b6` (`Preserve Stage81A3 development evidence`)
+- Freeze branch: `stage81a2r-authoritative-mapping-recovery-20260813`
+- Freeze commit: this handoff is included in the Stage81A2R freeze commit;
+  resolve its immutable full SHA with `git rev-parse HEAD` after checkout.
+- Freeze parent: `ac06ebb6893cdc391b102718502ccc57ed2b9e3b`
 - Canonical historical Stage81A2 freeze: `808ce4f170055c5568cc5c1e0e3a56415b52f908`
-- Relationship: this branch adds an A3 development checkpoint without amending,
-  replacing, or declaring a successor freeze to Stage81A2.
+- Relationship: Stage81A2R is the immutable successor data-contract checkpoint.
+  It does not amend or delete historical Stage81A2 or Stage81A3 evidence.
 
-Resolve the exact branch tip with `git rev-parse HEAD`. The handoff cannot embed
-its own commit SHA without creating a self-reference; the evidence-base SHA
-above is the last scientific-evidence commit before this handoff update.
+The handoff cannot embed its own commit SHA without creating a self-reference.
+The full freeze SHA is therefore the commit containing this handoff, resolved
+with `git rev-parse HEAD`; the exact SHA is also reported by the freeze procedure.
+
+## Stage81A2R Frozen Checkpoint
+
+**Stage81A2R FROZEN**
+
+- Foundation Molecular Address Space: **41,238** universal addresses.
+- Current exact: **40,422**.
+- Legacy exact: **773**; historical identity and provenance are retained.
+- Source-native anchored: **43**; address identity uses the stable biological
+  anchor, never dataset or source-family identity.
+- Additional foundation identities preserved outside the unrestricted universal
+  address space: **2,010** (**1 ambiguous + 2,009 identifier-poor**).
+- Their absence from the universal address layer is a **DATA / PROVENANCE
+  LIMITATION**, not a biological top-K exclusion.
+- Successor molecular-address semantic SHA-256:
+  `5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff`.
+- Historical 4,096 vocabulary remains unchanged; semantic SHA-256:
+  `f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb`.
+- Measurement support: **42** matrix-level operators and **1,731,996**
+  matrix/address rows, with measured zero distinct from structurally unmeasured.
+- Historical Stage81A2 used 36 asset-registry entries: 24 HVS + 11 SEA-AD +
+  one aggregate NPH52 collection. Stage81A2R uses 24 + 11 + seven NPH QS
+  operators. This is accounting granularity only; no six datasets were added.
+- Exact cross-layer duplicate classes: **0**; exact within-layer duplicate
+  classes: **0**; future-only addresses: **0**.
+- Stage81A3R: **NOT STARTED**.
+- Stage81B: **NOT STARTED**.
+- Stage81C: **NOT STARTED**.
+
+The project-wide identity audit remains preserved separately from the Foundation
+address space: 47 scientific datasets, 85,660 biologically identifiable
+identities, 82,809 safely mapped to current Ensembl, 2,851 source-native or
+noncanonical identities, 98 ambiguous identities, and 41,719 identifier-poor
+identities. Future-use datasets do not contribute addresses to the frozen
+Foundation Molecular Address Space.
 
 ## Authority Labels
 
@@ -30,8 +67,9 @@ above is the last scientific-evidence commit before this handoff update.
 | Stage or freeze | Status | Authority |
 |---|---|---|
 | Stage81A2 | FROZEN | Commit `808ce4f` and tracked A2 evidence |
-| Stage81A3 | IN PROGRESS, NOT FROZEN | This development checkpoint |
-| Freeze 1 | NOT DECLARED | Blocked by address-space and representation-resolution adjudication |
+| Stage81A2R | FROZEN | This freeze commit and tracked A2R evidence |
+| Stage81A3 historical development | PRESERVED, NOT A FREEZE | Prior tracked development evidence |
+| Stage81A3R | NOT STARTED | Must branch directly from the A2R freeze SHA |
 | Stage81B | NOT STARTED | No deterministic representation stage begun |
 | Stage81C | NOT STARTED | No production foundation trajectory begun |
 | Freeze 2 | NOT DECLARED | Downstream of Stage81C qualification |
@@ -205,22 +243,15 @@ routes remain preserved. None of these steps declares Stage81A3 complete.
 - Claims that motif, graph, spatial, or perturbation evidence alone proves a
   causal regulator or validated GRN: **FORBIDDEN**.
 
-## Open Blockers
+## Post-Freeze Open Questions
 
-### 1. Biological address space versus the 4,096 cap
+### 1. Biological address space resolution
 
-This is the next scientific/governance blocker. Stage81A2 configured a target
-vocabulary size of 4,096 and selected the top-ranked eligible genes. The number
-was a computational capacity choice, not a transcriptome-derived biological
-saturation result. Cross-family support and ranking can disadvantage rare,
-lineage-specific, regulatory, receptor, ion-channel, neuropeptide, lncRNA, and
-other specialized biology.
-
-Stage81A2 remains immutable historical evidence. Before Freeze 1, a versioned
-Stage81A2 revision must forensically design and qualify a maximal exact-gene or
-full-transcriptome biological address space that is separate from tile/batch
-capacity. No such revision has started, and this checkpoint does not choose its
-size or implementation.
+The historical 4,096-cap blocker is **RESOLVED** by the frozen Stage81A2R
+Foundation Molecular Address Space of 41,238 universal identities. The 2,010
+nonuniversal identities remain preserved as provenance evidence. This data-
+contract resolution does not itself select an encoder architecture or prove
+biological sufficiency of any learned representation.
 
 ### 2. Independent representation-capacity and resolution assumptions
 
@@ -302,7 +333,7 @@ R cache builders.
 
 ## Exact Next Scientific Decision
 
-Re-establish the intrinsic representation under a versioned maximal-exact-
-transcriptome data contract while independently qualifying per-gene contextual
-capacity and global-state resolution, without imposing arbitrary biological
-top-K or fixed-dimension assumptions and while preserving Stage81A2 unchanged.
+Stage81A3R must qualify the intrinsic representation against the frozen 41,238-
+address Foundation Molecular Address Space while independently resolving per-
+gene contextual capacity and global-state resolution. It must preserve both
+the historical Stage81A2 contract and the Stage81A2R address/provenance contract.

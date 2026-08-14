@@ -18,6 +18,14 @@ ARTIFACT_KEYS = (
     "protected_identity_dossier_final",
     "closure_summary",
     "closure_report",
+    "foundation_identity_accounting",
+    "foundation_address_policy",
+    "foundation_accounting_summary",
+    "foundation_molecular_address_registry",
+    "foundation_molecular_address_provenance",
+    "foundation_molecular_address_measurement_support",
+    "foundation_nonuniversal_evidence",
+    "foundation_address_injectivity_audit",
 )
 
 
@@ -35,8 +43,8 @@ def main() -> int:
         config = yaml.safe_load(handle)
     outputs = {key: project / value for key, value in config["outputs"].items()}
     closure = json.loads(outputs["closure_summary"].read_text(encoding="utf-8"))
-    if closure["status"] != "STAGE81A2R_READY_TO_FREEZE_WITH_DOCUMENTED_UNRESOLVED_NONPROTECTED_IDENTITIES":
-        raise RuntimeError("Stage81A2R closure is not ready")
+    if closure["status"] != "STAGE81A2R_READY_FOR_FREEZE":
+        raise RuntimeError("Stage81A2R closure is not ready for freeze review")
     validation = {
         "stage": closure["stage"],
         "focused_stage81a2r_tests_passed": args.focused_passed,

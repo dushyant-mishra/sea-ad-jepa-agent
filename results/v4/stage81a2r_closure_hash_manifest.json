@@ -1,17 +1,49 @@
 {
-  "artifact_count": 7,
+  "artifact_count": 15,
   "artifacts": {
     "docs/v4/STAGE81A2R_CLOSURE_REPORT.md": {
-      "bytes": 3166,
-      "sha256": "3ba855f387edcb7244eee9c76fae995813b2152691348c5d5b18e1bd14e3657a"
+      "bytes": 6577,
+      "sha256": "0314ebdc7af10e0cc51d3ff9e674cbcaaf001c03b0b1b444007b987075990bc9"
     },
     "results/v4/stage81a2r_closure_summary.json": {
-      "bytes": 19416,
-      "sha256": "05433220962acc7007827081869d3812b752e7309bb14016f88028cf3b79ac39"
+      "bytes": 24750,
+      "sha256": "88d7fcbf988db0114a4f5e6eab7e8567154997117a938bca88558290a5e0967c"
     },
     "results/v4/stage81a2r_closure_validation.json": {
-      "bytes": 650,
-      "sha256": "508ff860ffa6e69fe05d9c3747e00109caf2f2365f0625859ce5a71e06684817"
+      "bytes": 651,
+      "sha256": "59257b37a94ef19f9a7ab0764789153f3b576648c05d49452b9a3432eaafec92"
+    },
+    "results/v4/stage81a2r_foundation_address_policy.csv": {
+      "bytes": 459,
+      "sha256": "6123db620d5e66948474ddb7002f1eb4212f114f169ea1b64f233ce911ad0e40"
+    },
+    "results/v4/stage81a2r_foundation_identity_accounting.csv": {
+      "bytes": 578,
+      "sha256": "9041a8ca23e79d0631a386f52053971f2e01ce44630152c28db3198a11ba2dac"
+    },
+    "results/v4/stage81a2r_foundation_identity_accounting.json": {
+      "bytes": 2557,
+      "sha256": "e4007650c1a7dc642008dff6cd876a92ab86435f6ede7a0b6ac66234d9b883b5"
+    },
+    "results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json": {
+      "bytes": 1573,
+      "sha256": "e80ddfe65e1b7edb620c2c976d9c338e2870c3e7489f3350b945754ce272eaed"
+    },
+    "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz": {
+      "bytes": 14663564,
+      "sha256": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa"
+    },
+    "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv": {
+      "bytes": 24946770,
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+    },
+    "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz": {
+      "bytes": 5764358,
+      "sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51"
+    },
+    "results/v4/stage81a2r_foundation_preserved_nonuniversal_evidence_candidate.csv.gz": {
+      "bytes": 142739,
+      "sha256": "3e7e8b7af6e30429a0be5a0dde335675b7339bed378e442706058b813b7b9ec2"
     },
     "results/v4/stage81a2r_nph_unresolved_sanity_check.csv": {
       "bytes": 599119,
