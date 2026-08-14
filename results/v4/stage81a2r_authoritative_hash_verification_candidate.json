@@ -1,0 +1,192 @@
+{
+  "generated": {
+    "docs/v4/STAGE81A2R_ALL_DOWNLOADED_DATASET_IDENTITY_AUDIT.md": {
+      "bytes": 11559,
+      "sha256": "c344c9ad5661b48988c301da2aa5d6ec2d8f9475f371ecc2bcc9551baa9d661e"
+    },
+    "docs/v4/STAGE81A2R_AUTHORITATIVE_GENE_IDENTITY_RECOVERY.md": {
+      "bytes": 9455,
+      "sha256": "9c20c4a08a56479f95c40b46c8997268f9f5d16ba0ff7ee486033f4bae0453e4"
+    },
+    "docs/v4/STAGE81A2R_PROJECTWIDE_SOURCE_IDENTITY_AUDIT.md": {
+      "bytes": 12466,
+      "sha256": "4d593d1874c4cb80f607a65eedfb92a6c7388047527539fcf4f2a96568f7f440"
+    },
+    "results/v4/stage81a2r_all_downloaded_asset_identity_inventory_candidate.csv": {
+      "bytes": 164733,
+      "sha256": "fffc6d640e77011181880ca2d6b91ad4cce2629cb8623c0aa649365e4c40299a"
+    },
+    "results/v4/stage81a2r_all_downloaded_identity_audit_summary_candidate.json": {
+      "bytes": 4177,
+      "sha256": "71c9116f611cb1644870386e436cd26b55a368f35b57ad1ea84c0409387fc193"
+    },
+    "results/v4/stage81a2r_authoritative_access_manifest_candidate.json": {
+      "bytes": 847,
+      "sha256": "5cb2854cfb5b9b32bf85709cd0d7ba3048d29bde9f4509c05ea9d681413298d6"
+    },
+    "results/v4/stage81a2r_authoritative_exact_current_gene_registry_candidate.csv": {
+      "bytes": 10890249,
+      "sha256": "d4fc3508b31ce1a1b0e9bdf06273bebe37b23a92706b766c85754d6a9521d160"
+    },
+    "results/v4/stage81a2r_authoritative_legacy_exact_gene_registry_candidate.csv": {
+      "bytes": 314273,
+      "sha256": "4be5856d8b1921929299431a52eaa511d007b9aadce916bde1be4b866dff2d20"
+    },
+    "results/v4/stage81a2r_authoritative_mapping_delta_candidate.csv": {
+      "bytes": 2167069,
+      "sha256": "6edd0535f7d9d48944a6a55122a22e2699d9b0f2edb63718bf805b036fb88b19"
+    },
+    "results/v4/stage81a2r_authoritative_mapping_summary_candidate.json": {
+      "bytes": 5271,
+      "sha256": "aa82d9752934c8d3f40464e4e0226d1d0e40db61e26e2b99eecac93267d579c6"
+    },
+    "results/v4/stage81a2r_authoritative_measurement_support_candidate.csv.gz": {
+      "bytes": 16500204,
+      "sha256": "c0e5a556f5f6dc7e730deacf3d4b4e5d61e9d1dcff233cb3411c49e1ee8fe457"
+    },
+    "results/v4/stage81a2r_authoritative_recovery_by_biotype_candidate.csv": {
+      "bytes": 3304,
+      "sha256": "8eec73ba71bd541eaf088feea714ae87f8d99383e2f7caf4e8a73f494057cb61"
+    },
+    "results/v4/stage81a2r_authoritative_recovery_by_source_candidate.csv": {
+      "bytes": 1524,
+      "sha256": "30d020da9ef7b738ab871d5a1452bc0d6eaa41f3a3e7b6c98e1cbecd411d46fd"
+    },
+    "results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz": {
+      "bytes": 17002348,
+      "sha256": "e3106248ac77f8840f5ea6035dc765d8e09feeba1f6da21c830b3945d694c773"
+    },
+    "results/v4/stage81a2r_authoritative_source_native_biological_feature_registry_candidate.csv.gz": {
+      "bytes": 2680,
+      "sha256": "86602bb324fd606fa9bb98a8f122864bfd751b00c3a24d63cd3719a40c238ba8"
+    },
+    "results/v4/stage81a2r_authoritative_unresolved_features_candidate.csv.gz": {
+      "bytes": 13517,
+      "sha256": "7c64cadf43ffd9fe5bf446136c8640154597b95665a6e810a32e70b161af2551"
+    },
+    "results/v4/stage81a2r_authority_manifest_candidate.json": {
+      "bytes": 34076,
+      "sha256": "1b305315623361c66eaf20b860b3173431899a4bb4109474ca8bd5e553b661f4"
+    },
+    "results/v4/stage81a2r_dataset_feature_identity_inventory_candidate.csv": {
+      "bytes": 202943,
+      "sha256": "829d2e8527f14c7ccd3305abc272088ca608861b6f24228f3ec444f32499e328"
+    },
+    "results/v4/stage81a2r_dataset_identity_summary_candidate.csv": {
+      "bytes": 11128,
+      "sha256": "35debc48300b64835b0c39a19776bf16920c2979c56c6036d497a52501691512"
+    },
+    "results/v4/stage81a2r_foundation_identity_layers_candidate.json": {
+      "bytes": 725,
+      "sha256": "3bda203265bd5c8bebb26631d816fa2973042adbbe11e9515514fdffffb4c8b0"
+    },
+    "results/v4/stage81a2r_future_annotation_provenance_candidate.csv": {
+      "bytes": 147631,
+      "sha256": "163ddf6b0308672b0a3b7fa8ecb9449a514aaef3b92cf573416a2b0dde1978dd"
+    },
+    "results/v4/stage81a2r_future_dataset_foundation_compatibility_candidate.csv": {
+      "bytes": 11128,
+      "sha256": "35debc48300b64835b0c39a19776bf16920c2979c56c6036d497a52501691512"
+    },
+    "results/v4/stage81a2r_future_rna_feature_identity_candidate.csv.gz": {
+      "bytes": 69860130,
+      "sha256": "6ccfaacc139b60cf15c98788ef0773173a035f59bd68d749f833eb05b102352a"
+    },
+    "results/v4/stage81a2r_future_within_matrix_mapping_collisions_candidate.csv": {
+      "bytes": 8020303,
+      "sha256": "db622c793cdef9982e0276af54b12c36aef5748f037506d44944ae90d8c1febd"
+    },
+    "results/v4/stage81a2r_projectwide_identity_audit_summary_candidate.json": {
+      "bytes": 4177,
+      "sha256": "71c9116f611cb1644870386e436cd26b55a368f35b57ad1ea84c0409387fc193"
+    },
+    "results/v4/stage81a2r_projectwide_legacy_exact_features_candidate.csv": {
+      "bytes": 12490594,
+      "sha256": "9f495b235f9494d619f2c650ba2acaf02866ce3861eb11cf60e3f39db0082016"
+    },
+    "results/v4/stage81a2r_projectwide_mapping_comparison_candidate.csv": {
+      "bytes": 48240516,
+      "sha256": "acaed0b3e17763c343fa9aa784ddde947f214faf74ba36b1fbe8d0aa8ee62cdd"
+    },
+    "results/v4/stage81a2r_projectwide_source_annotation_provenance_candidate.csv": {
+      "bytes": 147631,
+      "sha256": "163ddf6b0308672b0a3b7fa8ecb9449a514aaef3b92cf573416a2b0dde1978dd"
+    },
+    "results/v4/stage81a2r_projectwide_source_feature_identity_candidate.csv.gz": {
+      "bytes": 69856311,
+      "sha256": "39df3cdd2b7db9110f78d59f2b6c8b1a99f15debef0f9857722fcdce0e038ebc"
+    },
+    "results/v4/stage81a2r_projectwide_source_native_features_candidate.csv.gz": {
+      "bytes": 4126612,
+      "sha256": "8bacebcdf33aa7f7afa7fcee08a9e47943a9428e3d4a50115569dbbe14e5cabe"
+    },
+    "results/v4/stage81a2r_projectwide_unresolved_features_candidate.csv.gz": {
+      "bytes": 2295009,
+      "sha256": "9f1d5b1ea42b81ab00eba37d14a8c5e18443a6ea0139092f2184b926c5814c81"
+    },
+    "results/v4/stage81a2r_projectwide_within_matrix_collisions_candidate.csv": {
+      "bytes": 8020303,
+      "sha256": "db622c793cdef9982e0276af54b12c36aef5748f037506d44944ae90d8c1febd"
+    },
+    "results/v4/stage81a2r_unique_gene_identity_resolution_candidate.csv": {
+      "bytes": 43662517,
+      "sha256": "ed592ab9ef14c5e646a50bb57dbadbaebc8e526c3b71995e72f170f03431f958"
+    },
+    "results/v4/stage81a2r_within_matrix_mapping_collisions_candidate.csv": {
+      "bytes": 2898447,
+      "sha256": "fdf57ffd9326c7b8bcebc0148d4c77cd9ce488928695c13015e3602577607531"
+    }
+  },
+  "prior_a2r_semantic_hash_unchanged": true,
+  "protected": [
+    {
+      "expected_sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "observed_sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "pass": true,
+      "path": "results/v4/stage81a3_ipb_jepa_feasibility.json"
+    },
+    {
+      "expected_sha256": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "observed_sha256": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "pass": true,
+      "path": "results/v4/stage81a3_rlc_causal_fast_probe.json"
+    },
+    {
+      "expected_sha256": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "observed_sha256": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "pass": true,
+      "path": "results/v4/stage81a3_foundation_biological_state_domain_qualification.json"
+    },
+    {
+      "expected_sha256": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "observed_sha256": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "pass": true,
+      "path": "results/v4/stage81a3_reproducible_state_basis.pt"
+    },
+    {
+      "expected_sha256": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0",
+      "observed_sha256": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0",
+      "pass": true,
+      "path": "results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv"
+    },
+    {
+      "expected_sha256": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f",
+      "observed_sha256": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f",
+      "pass": true,
+      "path": "results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz"
+    },
+    {
+      "expected_sha256": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284",
+      "observed_sha256": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284",
+      "pass": true,
+      "path": "results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz"
+    },
+    {
+      "expected_sha256": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+      "observed_sha256": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+      "pass": true,
+      "path": "results/v4/stage81a2_foundation_vocabulary.csv::semantic"
+    }
+  ],
+  "protected_hashes_unchanged": true
+}

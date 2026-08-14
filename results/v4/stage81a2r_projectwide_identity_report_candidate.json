@@ -1,0 +1,218 @@
+{
+  "authority": {
+    "all_batches_hashed": true,
+    "appended_history_batch_count": 156,
+    "appended_history_batches_hashed": true,
+    "assembly": "GRCh38.p14",
+    "ensembl_release": 116,
+    "hgnc_snapshot": "2026-08",
+    "history_batch_count": 180,
+    "original_history_batch_count": 24,
+    "original_history_batch_integrity_pass": true
+  },
+  "expression_values_accessed": false,
+  "foundation": {
+    "audited_foundation_rna_current_exact_count": 40422,
+    "audited_foundation_semantic_hash": "fbabd61a6ae89e1c16e7084854c3a15ce7de94de003455e400d2d82458ec2cab",
+    "authoritative_current_exact_count": 40422,
+    "authoritative_semantic_hash": "fbabd61a6ae89e1c16e7084854c3a15ce7de94de003455e400d2d82458ec2cab",
+    "difference_gene_count": 0,
+    "foundation_future_counterfactual_members_identical": true,
+    "foundation_future_counterfactual_order_identical": true,
+    "foundation_future_counterfactual_semantic_hash_identical": true,
+    "foundation_reconciliation_exact": true,
+    "future_excluded_semantic_hash": "fbabd61a6ae89e1c16e7084854c3a15ce7de94de003455e400d2d82458ec2cab",
+    "future_present_semantic_hash": "fbabd61a6ae89e1c16e7084854c3a15ce7de94de003455e400d2d82458ec2cab"
+  },
+  "foundation_identity_categories": {
+    "alternative_authority_exact_source_rows": 0,
+    "alternative_authority_exact_unique_features": 0,
+    "current_canonical_gene_source_rows": 284447,
+    "current_canonical_unique_genes": 40422,
+    "legacy_exact_gene_source_rows": 4845,
+    "legacy_exact_unique_genes": 773,
+    "source_native_biological_source_rows": 219,
+    "source_native_biological_unique_features": 219,
+    "symbol_only_unresolved_source_rows": 10257,
+    "symbol_only_unresolved_unique_features": 2010,
+    "technical_nonbiological_source_rows": 0,
+    "technical_nonbiological_unique_features": 0
+  },
+  "frozen_4096": {
+    "affected_source_rows": 87,
+    "artifact_rewritten": false,
+    "classification_counts": {
+      "GENUINE_CANONICAL_ID_CORRECTION": 14,
+      "HISTORICAL_ID_SAME_GENE": 36,
+      "SOURCE_EXACT_AMBIGUOUS_HISTORY": 2,
+      "SYMBOL_ONLY": 35
+    },
+    "expected_semantic_hash": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+    "file_sha256": "d8fbe2f0d2208f0034103443b6424169ff66e1b674769eda6b635c8ce84523e4",
+    "genuine_canonical_correction_rows": 14,
+    "human_a2r_decision_required_rows": 51,
+    "members": 4096,
+    "pair_classification_counts": {
+      "GENUINE_CANONICAL_ID_CORRECTION": 2,
+      "HISTORICAL_ID_SAME_GENE": 16,
+      "SOURCE_EXACT_AMBIGUOUS_HISTORY": 2,
+      "SYMBOL_ONLY": 5
+    },
+    "semantic_hash": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+    "semantic_hash_unchanged": true,
+    "unique_frozen_genes_touched": 22,
+    "unique_identity_pairs": 25,
+    "unique_members": 4096
+  },
+  "frozen_vocabulary_modified": false,
+  "nph": {
+    "authority_reconstructed_with_valid_source_ensembl": 0,
+    "source_cache_validation_pass": true,
+    "source_exact_rows": 228158,
+    "source_native_ensembl_missing_rows": 11695,
+    "source_objects": 7,
+    "source_rows": 244438,
+    "valid_source_native_ensembl_rows": 232743
+  },
+  "pathology_opened": false,
+  "projectwide_completeness": {
+    "relevant_nonterminal_count": 0,
+    "relevant_nonterminal_datasets": [],
+    "status_counts": {
+      "ADMINISTRATIVE INVENTORY / NO MOLECULAR FEATURE CONTRACT": 1,
+      "COMPATIBLE WITH LEGACY FEATURES": 1,
+      "IDENTITY COMPATIBLE": 5,
+      "MATERIALIZATION POLICY NEEDED": 35,
+      "NON-RNA / SEPARATE FEATURE AUTHORITY": 1,
+      "SOURCE ASSET NOT LOCALLY AVAILABLE / ACQUISITION PLACEHOLDER": 4
+    }
+  },
+  "projectwide_identity_categories": {
+    "materialized_mapping_evidence_class_counts": {
+      "AMBIGUOUS_UNRESOLVED": 185,
+      "AUTHORITY_RECONSTRUCTED": 289698,
+      "NON_GENE_FEATURE": 919,
+      "SOURCE_ERA_EXACT": 721123,
+      "SOURCE_EXACT": 2829373,
+      "UNRESOLVED": 277167
+    },
+    "materialized_project_identity_class_counts": {
+      "AMBIGUOUS_ALIAS_MULTIPLE_TARGETS": 32,
+      "AMBIGUOUS_PREVIOUS_SYMBOL_MULTIPLE_TARGETS": 44,
+      "AMBIGUOUS_UNRESOLVED": 411082,
+      "CONFLICTING_AUTHORITATIVE_IDENTITY": 109,
+      "EXACT_ENSEMBL_CURRENT_SYMBOL_RECOVERED": 116,
+      "EXACT_HGNC_ALIAS_RECOVERED": 2334,
+      "EXACT_HGNC_APPROVED_TO_ENSEMBL": 273625,
+      "EXACT_HGNC_PREVIOUS_SYMBOL_RECOVERED": 13623,
+      "NON_BIOLOGICAL_TECHNICAL_FEATURE": 919,
+      "SOURCE_EXACT_CURRENT": 2365404,
+      "SOURCE_EXACT_HISTORICAL_TO_CURRENT": 33352,
+      "SOURCE_EXACT_LEGACY_MULTIPLE_CURRENT_PROJECTIONS": 641,
+      "SOURCE_EXACT_LEGACY_NO_UNIQUE_CURRENT_PROJECTION": 18894,
+      "SOURCE_NATIVE_BIOLOGICAL_FEATURE_UNPROJECTED": 1525,
+      "SOURCE_NATIVE_GENOMIC_LOCUS": 719598,
+      "SYMBOL_ONLY_UNRESOLVED": 277167
+    },
+    "source_row_mapping_evidence_class_counts": {
+      "AMBIGUOUS_UNRESOLVED": 221,
+      "AUTHORITY_RECONSTRUCTED": 321207,
+      "NON_GENE_FEATURE": 3205,
+      "SOURCE_ERA_EXACT": 1224334,
+      "SOURCE_EXACT": 10797139,
+      "UNRESOLVED": 281590
+    },
+    "source_row_project_identity_class_counts": {
+      "AMBIGUOUS_ALIAS_MULTIPLE_TARGETS": 32,
+      "AMBIGUOUS_PREVIOUS_SYMBOL_MULTIPLE_TARGETS": 53,
+      "AMBIGUOUS_UNRESOLVED": 411082,
+      "CONFLICTING_AUTHORITATIVE_IDENTITY": 136,
+      "EXACT_ENSEMBL_CURRENT_SYMBOL_RECOVERED": 143,
+      "EXACT_HGNC_ALIAS_RECOVERED": 2451,
+      "EXACT_HGNC_APPROVED_TO_ENSEMBL": 303064,
+      "EXACT_HGNC_PREVIOUS_SYMBOL_RECOVERED": 15549,
+      "NON_BIOLOGICAL_TECHNICAL_FEATURE": 3205,
+      "SOURCE_EXACT_CURRENT": 10083737,
+      "SOURCE_EXACT_HISTORICAL_TO_CURRENT": 221858,
+      "SOURCE_EXACT_LEGACY_MULTIPLE_CURRENT_PROJECTIONS": 3558,
+      "SOURCE_EXACT_LEGACY_NO_UNIQUE_CURRENT_PROJECTION": 76904,
+      "SOURCE_NATIVE_BIOLOGICAL_FEATURE_UNPROJECTED": 4020,
+      "SOURCE_NATIVE_GENOMIC_LOCUS": 1220314,
+      "SYMBOL_ONLY_UNRESOLVED": 281590
+    },
+    "unique_current_canonical_genes": 61309,
+    "unique_legacy_exact_ids": 2932,
+    "unique_source_native_features": 1131772,
+    "unique_symbol_only_unresolved": 64305
+  },
+  "protected_hashes": [
+    {
+      "expected": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "observed": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "pass": true,
+      "path": "results/v4/stage81a3_ipb_jepa_feasibility.json"
+    },
+    {
+      "expected": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "observed": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "pass": true,
+      "path": "results/v4/stage81a3_rlc_causal_fast_probe.json"
+    },
+    {
+      "expected": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "observed": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "pass": true,
+      "path": "results/v4/stage81a3_foundation_biological_state_domain_qualification.json"
+    },
+    {
+      "expected": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "observed": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "pass": true,
+      "path": "results/v4/stage81a3_reproducible_state_basis.pt"
+    },
+    {
+      "expected": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0",
+      "observed": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0",
+      "pass": true,
+      "path": "results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv"
+    },
+    {
+      "expected": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f",
+      "observed": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f",
+      "pass": true,
+      "path": "results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz"
+    },
+    {
+      "expected": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284",
+      "observed": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284",
+      "pass": true,
+      "path": "results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz"
+    }
+  ],
+  "protected_hashes_unchanged": true,
+  "push_performed": false,
+  "scientific_blockers": [
+    "protected 4,096 identities require human A2R adjudication"
+  ],
+  "scope": {
+    "feature_universes": 396,
+    "matrix_contracts": 129,
+    "normalized_feature_rows": 4118465,
+    "physical_source_files_inventoried": 495,
+    "scientific_datasets": 47,
+    "source_row_equivalent_count": 12627696
+  },
+  "stage": "stage81a2r_projectwide_identity_review_package",
+  "stage81a3r_started": false,
+  "stage81b_started": false,
+  "status": "READY_FOR_HUMAN_REVIEW_WITH_PROTECTED_IDENTITY_BLOCKER",
+  "validation": {
+    "broader_repository_tests_failed": 0,
+    "broader_repository_tests_passed": null,
+    "deterministic_reporting_rerun_pass": false,
+    "focused_stage81a2r_tests_passed": null,
+    "full_v4_tests_passed": null,
+    "full_v4_warnings": 0,
+    "r_feature_cache_smoke_pass": false
+  }
+}

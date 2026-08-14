@@ -1,0 +1,13 @@
+source,source_rows,prior_exact,prior_unresolved,newly_recovered_source_rows,support_only_recovered_rows,new_gene_recovered_rows,alternative_authority_exact_rows,source_native_biological_rows,symbol_only_unresolved_rows,technical_feature_rows,remaining_unresolved_rows,legacy_exact_rows,duplicate_canonical_collision_rows,measured_current_exact_genes_after_recovery
+HVS_COMMON,18736,18717,19,19,2,17,0,0,0,0,0,1,0,18735
+NPH52::Astro_data_arranged_updatedId_final_batches.qs,35028,19773,15255,13460,10671,2789,0,35,1446,0,1447,664,530,32279
+NPH52::Endo_data_arranged_updatedId_final_batches.qs,32373,19147,13226,11779,9901,1878,0,23,1085,0,1086,610,464,30128
+NPH52::ExN_data_arranged_updatedId_final_batches.qs,37477,20409,17068,14935,11118,3817,0,39,1867,0,1868,694,562,34237
+NPH52::InN_data_arranged_updatedId_final_batches.qs,35964,20050,15914,13991,10862,3129,0,34,1604,0,1605,680,537,33031
+NPH52::MG_data_arranged_updatedId_final_batches.qs,33441,19437,14004,12378,10164,2214,0,27,1265,0,1266,634,488,30961
+NPH52::OPC_data_arranged_updatedId_final_batches.qs,33761,19416,14345,12687,10314,2373,0,26,1306,0,1307,623,492,31245
+NPH52::Oligo_data_arranged_updatedId_final_batches.qs,36394,20126,16268,14288,10942,3346,0,35,1684,0,1685,680,552,33364
+SEA_AD_COMMON,36601,36571,19,10,1,9,0,0,0,0,0,259,7810,35527
+aggregate::SEA_AD,36601,36571,19,10,1,9,0,0,0,0,0,259,7810,35527
+aggregate::HVS,18736,18717,19,19,2,17,0,0,0,0,0,1,0,18735
+aggregate::NPH52,244438,138358,106080,93518,73972,19546,0,219,10257,0,10264,4585,3625,34790

@@ -1,0 +1,403 @@
+{
+  "authority_source_hashes": {
+    "ensembl_116_gtf_sha256": "ed992f0eac7197d9627bda618f8f831ba355c95bd5d0796af785387d462828b6",
+    "hgnc_complete_sha256": "faaeb6ae1e2a596be658b5f23ee44937c9c5379fa37d1f5ace54b94b16962b1c",
+    "hgnc_withdrawn_sha256": "77235063bba9492d09997e58387a50b6f750aed2de67a44c519c920b48f7ff87"
+  },
+  "canonical_identity_correction_required": false,
+  "ensembl_history_cache_hashes": [
+    {
+      "expected": "5b3e9105a00a56ea38f82b65e899f13e54746fdc92ea3a52655bcb8526ffe1e9",
+      "observed": "5b3e9105a00a56ea38f82b65e899f13e54746fdc92ea3a52655bcb8526ffe1e9",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0000.json"
+    },
+    {
+      "expected": "93f5286444aa7a8083fa50781776c87be202e237b1cfefb97975306131f22705",
+      "observed": "93f5286444aa7a8083fa50781776c87be202e237b1cfefb97975306131f22705",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0001.json"
+    },
+    {
+      "expected": "2ed9029ac87781e5ded058511b2bf423806491a456c5445ebac5fc9b95656b06",
+      "observed": "2ed9029ac87781e5ded058511b2bf423806491a456c5445ebac5fc9b95656b06",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0002.json"
+    },
+    {
+      "expected": "42b87e2af9d0f2ae2caf8c9b826588ad8b89c7a6a8aea5337b0c12e39a0a3346",
+      "observed": "42b87e2af9d0f2ae2caf8c9b826588ad8b89c7a6a8aea5337b0c12e39a0a3346",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0003.json"
+    },
+    {
+      "expected": "045d44878381100b0a7ee4b326f47cc99b0d8ffbba8f83b541dd33727feaf09c",
+      "observed": "045d44878381100b0a7ee4b326f47cc99b0d8ffbba8f83b541dd33727feaf09c",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0004.json"
+    },
+    {
+      "expected": "d6776362f92544685562db75a9d84859150da3face14cb47c0166f21d8f5b94f",
+      "observed": "d6776362f92544685562db75a9d84859150da3face14cb47c0166f21d8f5b94f",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0005.json"
+    },
+    {
+      "expected": "ef85bb7a3f2b8372d8150ea1f136a289cb90b537e116b5601e7b46c2410ff0d6",
+      "observed": "ef85bb7a3f2b8372d8150ea1f136a289cb90b537e116b5601e7b46c2410ff0d6",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0006.json"
+    },
+    {
+      "expected": "878b73c8cc013af790c5f992af596d14396c70ce0a82635bce28516dc13560a3",
+      "observed": "878b73c8cc013af790c5f992af596d14396c70ce0a82635bce28516dc13560a3",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0007.json"
+    },
+    {
+      "expected": "fa33d5b1890cb59bfdf8f2777368b87805f875a8ee6ef45d32c32a7ad605c4b3",
+      "observed": "fa33d5b1890cb59bfdf8f2777368b87805f875a8ee6ef45d32c32a7ad605c4b3",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0008.json"
+    },
+    {
+      "expected": "b20ebb1bdf1015f0e9de55e222ce2753a476a6118bc814114759470d6edee6b6",
+      "observed": "b20ebb1bdf1015f0e9de55e222ce2753a476a6118bc814114759470d6edee6b6",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0009.json"
+    },
+    {
+      "expected": "89944083942009b7279a2f329ceb67367a3e45e27c348af0b55ccacf77e1f69b",
+      "observed": "89944083942009b7279a2f329ceb67367a3e45e27c348af0b55ccacf77e1f69b",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0010.json"
+    },
+    {
+      "expected": "74b0cadc59e2dbec7a03cc77823852c9cddca10d3bb7f4820742a72763bf89d5",
+      "observed": "74b0cadc59e2dbec7a03cc77823852c9cddca10d3bb7f4820742a72763bf89d5",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0011.json"
+    },
+    {
+      "expected": "5e51336218050d879b753165e818cf26ff007b022cca7358150a2653a617d8ae",
+      "observed": "5e51336218050d879b753165e818cf26ff007b022cca7358150a2653a617d8ae",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0012.json"
+    },
+    {
+      "expected": "e39ad62a2643cb08cbac2371fa47609a5b82f620af1ef8c8f36df93f2e8618eb",
+      "observed": "e39ad62a2643cb08cbac2371fa47609a5b82f620af1ef8c8f36df93f2e8618eb",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0013.json"
+    },
+    {
+      "expected": "033ded4e30810addde7ae721b783c068c7c606c4dc04863a1be4ad461f6c81f9",
+      "observed": "033ded4e30810addde7ae721b783c068c7c606c4dc04863a1be4ad461f6c81f9",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0014.json"
+    },
+    {
+      "expected": "70d05f97c803e69b43194e3971a56aab164f5097dc09f91146416203400faea2",
+      "observed": "70d05f97c803e69b43194e3971a56aab164f5097dc09f91146416203400faea2",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0015.json"
+    },
+    {
+      "expected": "a470efe2a4c5d7aaeb2d41892022fb910a7dd7f8f3ea261a3a91116a1674faba",
+      "observed": "a470efe2a4c5d7aaeb2d41892022fb910a7dd7f8f3ea261a3a91116a1674faba",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0016.json"
+    },
+    {
+      "expected": "c9f8ead1bd00ca91a6dd71824ff32c6799e217c74d58e5aaf7e33a79bbb4e7d9",
+      "observed": "c9f8ead1bd00ca91a6dd71824ff32c6799e217c74d58e5aaf7e33a79bbb4e7d9",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0017.json"
+    },
+    {
+      "expected": "dde9f2d5275fbb09e6cea7dadfe6defad198f4d79133821b41e4edc35932553f",
+      "observed": "dde9f2d5275fbb09e6cea7dadfe6defad198f4d79133821b41e4edc35932553f",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0018.json"
+    },
+    {
+      "expected": "2e266ad577bd27f8b742b42079943d834c64ec7e0b6acec382dc7914842eb96e",
+      "observed": "2e266ad577bd27f8b742b42079943d834c64ec7e0b6acec382dc7914842eb96e",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0019.json"
+    },
+    {
+      "expected": "6a854c10c877d1b710e9fbade28463509f15fabfaeecd656ab8ea75787cfbc65",
+      "observed": "6a854c10c877d1b710e9fbade28463509f15fabfaeecd656ab8ea75787cfbc65",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0020.json"
+    },
+    {
+      "expected": "15a0b829aff57c7767c63c83d1d0769b34dc30982404130ae5b00eedf592800c",
+      "observed": "15a0b829aff57c7767c63c83d1d0769b34dc30982404130ae5b00eedf592800c",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0021.json"
+    },
+    {
+      "expected": "19997ef18f1ffc959c56bf5251ac1d3ae09fe540d768143b4c51de8f5a3f7600",
+      "observed": "19997ef18f1ffc959c56bf5251ac1d3ae09fe540d768143b4c51de8f5a3f7600",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0022.json"
+    },
+    {
+      "expected": "21aadb146eab6d8ee778a505b1c8b0e134c3d181348403eeaf9d5a98793c8231",
+      "observed": "21aadb146eab6d8ee778a505b1c8b0e134c3d181348403eeaf9d5a98793c8231",
+      "pass": true,
+      "path": "data/external/v4/gene_identity_authority/ensembl_archive_responses/archive_id_batch_0023.json"
+    }
+  ],
+  "foundation": {
+    "candidate_after_repair_gene_count": 40422,
+    "current_exact_gene_count": 40422,
+    "future_data_firewall_pass": true,
+    "new_genes": [],
+    "no_atac_peak_enters_gene_vocabulary": true,
+    "no_future_only_gene_contributes": true,
+    "no_unresolved_feature_enters_canonical_registry": true,
+    "semantic_hash": "fbabd61a6ae89e1c16e7084854c3a15ce7de94de003455e400d2d82458ec2cab"
+  },
+  "frozen_vocabulary": {
+    "file_sha256": "d8fbe2f0d2208f0034103443b6424169ff66e1b674769eda6b635c8ce84523e4",
+    "members": 4096,
+    "modified": false,
+    "semantic_hash": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+    "semantic_hash_unchanged": true
+  },
+  "governance": {
+    "expression_values_accessed": false,
+    "model_training": false,
+    "pathology_opened": false,
+    "push_performed": false,
+    "stage81a3r_started": false,
+    "stage81b_started": false
+  },
+  "nph_unresolved_sanity_check": {
+    "ASSEMBLY_KNOWN": 0,
+    "COORDINATES_PRESENT": 0,
+    "EXACT_ANCHOR_RECORDS_FOUND": 0,
+    "MULTIPLE_ANCHORS_PRESENT": 0,
+    "NCBI_GENE_PRESENT": 0,
+    "NO_EXACT_ANCHOR_PRESENT": 2009,
+    "NPH_MATERIALIZED_SOURCE_ROWS": 10250,
+    "NPH_TRULY_UNRESOLVED_TOTAL": 2009,
+    "REFSEQ_PRESENT": 0,
+    "SOURCE_ENSEMBL_PRESENT": 0,
+    "SOURCE_GENE_ID_PRESENT": 0,
+    "TRANSCRIPT_PRESENT": 0,
+    "interpretation": "All remaining NPH identities lack a unique exact biological anchor in the extracted source rowData fields.",
+    "source_cache_count": 7,
+    "source_expression_values_accessed": false,
+    "stage": "stage81a2r_nph_unresolved_identity_sanity_check",
+    "status": "PASS"
+  },
+  "projectwide_answers": {
+    "actually_biologically_identifiable_unique": 85660,
+    "ambiguous_unique": 98,
+    "foundation_registry_new_candidate_count": 40422,
+    "foundation_registry_new_genes": [],
+    "foundation_registry_old_count": 40422,
+    "frozen_semantic_identity_correction_required": true,
+    "identified_source_native_noncanonical_unique": 2851,
+    "percent_biologically_identifiable": 67.17325,
+    "percent_genuinely_unresolved": 32.792246,
+    "percent_safely_canonicalized": 64.93754,
+    "previous_protected_blockers": 9,
+    "remaining_category_reasons": {
+      "AMBIGUOUS_ALIAS": "pinned HGNC alias or previous-symbol evidence points to more than one current gene",
+      "AMBIGUOUS_HISTORY": "exact historical Ensembl evidence lacks a unique one-to-one current continuation",
+      "AMBIGUOUS_MULTIPLE_CURRENT_GENES": "exact authority channels conflict or support multiple current genes",
+      "ASSEMBLY_UNRESOLVED": "coordinates are present without a sufficient assembly-qualified unique projection",
+      "TRULY_SYMBOL_ONLY_UNRESOLVED": "no exact source-native stable ID, alternative authority ID, source-era dictionary anchor, or unique pinned authority mapping exists"
+    },
+    "remaining_protected_blockers": 4,
+    "safely_mapped_current_ensembl_unique_source_identities": 82809,
+    "technical_unique": 44,
+    "true_unresolved_affect_frozen_4096": false,
+    "true_unresolved_datasets": [
+      "Fang_MERFISH_human_cortex_4000",
+      "GSE133357",
+      "GSE200164",
+      "GSE226602",
+      "GSE240609",
+      "GSE241858",
+      "GSE243292",
+      "GSE254205",
+      "GSE270454",
+      "GSE301119",
+      "GSE97930",
+      "NPH52",
+      "SCP2167_slidetags_PFC"
+    ],
+    "true_unresolved_unique_identities_by_dataset": {
+      "Fang_MERFISH_human_cortex_4000": 493,
+      "GSE133357": 179,
+      "GSE200164": 3532,
+      "GSE226602": 4880,
+      "GSE240609": 1477,
+      "GSE241858": 1,
+      "GSE243292": 1,
+      "GSE254205": 10027,
+      "GSE270454": 2886,
+      "GSE301119": 148,
+      "GSE97930": 16182,
+      "NPH52": 2010,
+      "SCP2167_slidetags_PFC": 1
+    },
+    "truly_identifier_poor_unique": 41719,
+    "unique_current_ensembl_genes_represented_by_safe_mappings": 38618
+  },
+  "projectwide_identity_counts": {
+    "AMBIGUOUS_ALIAS": 38,
+    "AMBIGUOUS_HISTORY": 3,
+    "AMBIGUOUS_MULTIPLE_CURRENT_GENES": 57,
+    "CURRENT_ENSEMBL_RECOVERED": 54632,
+    "EXACT_NCBI_GENE_RECOVERED": 26230,
+    "HISTORICAL_ENSEMBL_UNIQUE_CURRENT_RECOVERY": 1946,
+    "NON_BIOLOGICAL_TECHNICAL_FEATURE": 44,
+    "SOURCE_ERA_EXACT_RECOVERED": 1,
+    "SOURCE_NATIVE_BIOLOGICAL_FEATURE_UNPROJECTED": 2851,
+    "TRULY_SYMBOL_ONLY_UNRESOLVED": 41719
+  },
+  "protected_case_decisions": [
+    {
+      "canonical_identity_correction_required": false,
+      "case_id": "MEG8_ENSG00000225746",
+      "decision": "SOURCE_METADATA_CONFLICT",
+      "decision_reason": "The source symbol is MEG8, but exact Ensembl ID ENSG00000258399 and its coordinates identify MIR493HG; conflicting source metadata cannot prove the frozen MEG8 identity wrong.",
+      "evidence_authority": "source rowData + Ensembl 116 + HGNC 2026-08",
+      "evidence_class": "EXACT_SOURCE_ID_SYMBOL_CONFLICT",
+      "frozen_ensembl_id": "ENSG00000225746",
+      "frozen_vocab_index": 3134,
+      "gene_symbol": "MEG8",
+      "history_topology": "distinct_current_genes_with_overlapping_loci",
+      "human_blocker_remaining": false,
+      "proposed_current_ensembl_id": "ENSG00000258399",
+      "review_evidence_hash": "2e6f105882f4c825af884a5d937c127fdfb02455d9ce0c7ad7ff043b65062460",
+      "review_timestamp": "2026-08-14T00:00:00Z",
+      "same_biological_gene": false,
+      "source_ensembl_id": "ENSG00000258399",
+      "source_ncbi_gene_id": "NA"
+    },
+    {
+      "canonical_identity_correction_required": false,
+      "case_id": "MEG8_ENSG00000288302",
+      "decision": "KEEP_FROZEN_SAME_BIOLOGICAL_GENE",
+      "decision_reason": "AL132709.8 is an exact HGNC alias for MEG8 and uniquely supports the already-frozen MEG8 canonical identity; the prior ENSG00000288302 assignment is not carried into the frozen vocabulary.",
+      "evidence_authority": "source rowData + HGNC 2026-08",
+      "evidence_class": "EXACT_HGNC_ALIAS",
+      "frozen_ensembl_id": "ENSG00000225746",
+      "frozen_vocab_index": 3134,
+      "gene_symbol": "MEG8",
+      "history_topology": "source_symbol_exact_hgnc_alias",
+      "human_blocker_remaining": false,
+      "proposed_current_ensembl_id": "ENSG00000225746",
+      "review_evidence_hash": "3bb8d6e1d905fe5c8ee833fde42f178f0a6170806fa60c654f735af95fd9e81e",
+      "review_timestamp": "2026-08-14T00:00:00Z",
+      "same_biological_gene": true,
+      "source_ensembl_id": "",
+      "source_ncbi_gene_id": "NULL"
+    },
+    {
+      "canonical_identity_correction_required": false,
+      "case_id": "SH3BGRL2_ENSG00000272137",
+      "decision": "KEEP_FROZEN_HISTORICAL_ID",
+      "decision_reason": "Historical source ID ENSG00000272137 is preserved in provenance. Both source IDs point as possible replacements to the frozen SH3BGRL2 ID, creating a many-to-one topology; possible_replacement is not proof and does not justify a protected rewrite.",
+      "evidence_authority": "source exact Ensembl ID + pinned Ensembl archive",
+      "evidence_class": "EXACT_HISTORICAL_ID_AMBIGUOUS_MANY_TO_ONE",
+      "frozen_ensembl_id": "ENSG00000198478",
+      "frozen_vocab_index": 3072,
+      "gene_symbol": "SH3BGRL2",
+      "history_topology": "many_to_one_possible_replacement",
+      "human_blocker_remaining": false,
+      "proposed_current_ensembl_id": "ENSG00000198478",
+      "review_evidence_hash": "f2c132d0ed8c5eb24b2a30a84e6fa839266f4d985d8a8cb630544f3826f917f4",
+      "review_timestamp": "2026-08-14T00:00:00Z",
+      "same_biological_gene": "not_proven",
+      "source_ensembl_id": "ENSG00000272137",
+      "source_ncbi_gene_id": ""
+    },
+    {
+      "canonical_identity_correction_required": false,
+      "case_id": "SH3BGRL2_ENSG00000287811",
+      "decision": "KEEP_FROZEN_HISTORICAL_ID",
+      "decision_reason": "Historical source ID ENSG00000287811 is preserved in provenance. Both source IDs point as possible replacements to the frozen SH3BGRL2 ID, creating a many-to-one topology; possible_replacement is not proof and does not justify a protected rewrite.",
+      "evidence_authority": "source exact Ensembl ID + pinned Ensembl archive",
+      "evidence_class": "EXACT_HISTORICAL_ID_AMBIGUOUS_MANY_TO_ONE",
+      "frozen_ensembl_id": "ENSG00000198478",
+      "frozen_vocab_index": 3072,
+      "gene_symbol": "SH3BGRL2",
+      "history_topology": "many_to_one_possible_replacement",
+      "human_blocker_remaining": false,
+      "proposed_current_ensembl_id": "ENSG00000198478",
+      "review_evidence_hash": "1cfa3c46b74f44a3e4c4f004e738c30d129d1c2498da7cffd5bad25f80ca6812",
+      "review_timestamp": "2026-08-14T00:00:00Z",
+      "same_biological_gene": "not_proven",
+      "source_ensembl_id": "ENSG00000287811",
+      "source_ncbi_gene_id": ""
+    }
+  ],
+  "protected_hashes": [
+    {
+      "expected": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "observed": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "pass": true,
+      "path": "results/v4/stage81a3_ipb_jepa_feasibility.json"
+    },
+    {
+      "expected": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "observed": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "pass": true,
+      "path": "results/v4/stage81a3_rlc_causal_fast_probe.json"
+    },
+    {
+      "expected": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "observed": "912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3",
+      "pass": true,
+      "path": "results/v4/stage81a3_foundation_biological_state_domain_qualification.json"
+    },
+    {
+      "expected": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "observed": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "pass": true,
+      "path": "results/v4/stage81a3_reproducible_state_basis.pt"
+    },
+    {
+      "expected": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0",
+      "observed": "5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0",
+      "pass": true,
+      "path": "results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv"
+    },
+    {
+      "expected": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f",
+      "observed": "2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f",
+      "pass": true,
+      "path": "results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz"
+    },
+    {
+      "expected": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284",
+      "observed": "27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284",
+      "pass": true,
+      "path": "results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz"
+    }
+  ],
+  "protected_hashes_pass": true,
+  "protected_human_blockers_remaining": 0,
+  "scope": {
+    "adjudicated_unique_source_identities": 127521,
+    "datasets_with_unresolved_rows": 16,
+    "old_foundation_only_unique_symbols": 2010,
+    "old_projectwide_unique_symbols": 64305,
+    "scientific_datasets": 47,
+    "scope_reconciliation_note": "2,010 was the foundation-only unresolved count; the complete project-wide ledger is the governing scope.",
+    "unresolved_materialized_rows": 277352,
+    "unresolved_source_row_equivalents": 281811
+  },
+  "source_candidate_status": "UNRESOLVED_IDENTITY_AUDIT_COMPLETE_WITH_HUMAN_BLOCKERS",
+  "stage": "stage81a2r_authoritative_identity_audit_closure",
+  "status": "STAGE81A2R_READY_TO_FREEZE_WITH_DOCUMENTED_UNRESOLVED_NONPROTECTED_IDENTITIES"
+}

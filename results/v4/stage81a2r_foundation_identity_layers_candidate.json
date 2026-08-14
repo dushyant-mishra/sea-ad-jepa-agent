@@ -1,0 +1,21 @@
+{
+  "G_foundation_alternative_authority_exact": 0,
+  "G_foundation_current_exact": 40422,
+  "G_foundation_legacy_exact": 773,
+  "G_foundation_source_native_anchored": 43,
+  "audited_foundation_rna_current_exact_delta": 0,
+  "foundation_address_space_finalized": false,
+  "foundation_dataset_ids": [
+    "HVS",
+    "NPH52",
+    "SEA_AD"
+  ],
+  "human_policy_required": true,
+  "materialized_unique_universe_rows": 1133314,
+  "prior_authoritative_current_exact_candidate": 40422,
+  "source_row_equivalent_count": 1133314,
+  "stage": "stage81a2r_foundation_identity_layers",
+  "status": "PROVISIONAL_NOT_FROZEN",
+  "unresolved_foundation_materialized_rows": 10264,
+  "unresolved_foundation_source_row_equivalent_count": 10264
+}

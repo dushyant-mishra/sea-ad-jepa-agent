@@ -1,0 +1,46 @@
+{
+  "artifact_count": 10,
+  "artifacts": {
+    "docs/v4/STAGE81A2R_UNRESOLVED_IDENTITY_ADJUDICATION_CANDIDATE.md": {
+      "bytes": 3549,
+      "sha256": "39338d7faa9966e2db262138069dc3b23ed2c5b9c412b311ea06a6da45ff6e89"
+    },
+    "results/v4/stage81a2r_foundation_registry_repair_comparison_candidate.csv": {
+      "bytes": 438,
+      "sha256": "3966cd28db0611948d5ea3c264c1e7e7b5e0cba745b46bb531d357a20f75d228"
+    },
+    "results/v4/stage81a2r_protected_identity_change_dossier_adjudicated_candidate.csv": {
+      "bytes": 16295,
+      "sha256": "01dbc71530f295b5c772b3417b5fab4d340fb57ae540ad915bc076101b75c9d0"
+    },
+    "results/v4/stage81a2r_still_truly_unresolved_candidate.csv.gz": {
+      "bytes": 1058826,
+      "sha256": "b3aee6f049adc152c19856c98715115b29f69da63a0249b1486cfbea7cc2a15c"
+    },
+    "results/v4/stage81a2r_unresolved_dataset_summary_candidate.csv": {
+      "bytes": 3305,
+      "sha256": "6d4ff8969e4c70639e530107dd72871314fffe0f00ce9f59f8466b8875cf6205"
+    },
+    "results/v4/stage81a2r_unresolved_identity_reclassification_candidate.csv.gz": {
+      "bytes": 4790758,
+      "sha256": "ebd216a1a2a46ffec64cd170f3752f822620efff7945e6d9bc8758f19e0947e6"
+    },
+    "results/v4/stage81a2r_unresolved_identity_unique_summary_candidate.csv": {
+      "bytes": 51718194,
+      "sha256": "61f506f9c599e201bc88645c06f26b94c4cbf3d4f231e0c3290b400ca7ced014"
+    },
+    "results/v4/stage81a2r_unresolved_recovery_evidence_candidate.csv.gz": {
+      "bytes": 3661971,
+      "sha256": "c57e26c0b0c674eced5fe9d16596cc96e6962364324d2959ad6fc41801b733c7"
+    },
+    "results/v4/stage81a2r_unresolved_resolution_summary_candidate.json": {
+      "bytes": 7510,
+      "sha256": "74c024b3442761071f1bc65bc4754a4ec5241cb792575fd78f6212bc5efa139c"
+    },
+    "results/v4/stage81a2r_unresolved_validation_candidate.json": {
+      "bytes": 634,
+      "sha256": "f3897eec64bfa5b1e7be3f4fe42b43e7712fcf8f0dc5f0c7d9c5d93c99839a1c"
+    }
+  },
+  "stage": "stage81a2r_projectwide_unresolved_identity_adjudication"
+}

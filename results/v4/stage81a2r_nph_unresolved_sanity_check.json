@@ -1,0 +1,19 @@
+{
+  "ASSEMBLY_KNOWN": 0,
+  "COORDINATES_PRESENT": 0,
+  "EXACT_ANCHOR_RECORDS_FOUND": 0,
+  "MULTIPLE_ANCHORS_PRESENT": 0,
+  "NCBI_GENE_PRESENT": 0,
+  "NO_EXACT_ANCHOR_PRESENT": 2009,
+  "NPH_MATERIALIZED_SOURCE_ROWS": 10250,
+  "NPH_TRULY_UNRESOLVED_TOTAL": 2009,
+  "REFSEQ_PRESENT": 0,
+  "SOURCE_ENSEMBL_PRESENT": 0,
+  "SOURCE_GENE_ID_PRESENT": 0,
+  "TRANSCRIPT_PRESENT": 0,
+  "interpretation": "All remaining NPH identities lack a unique exact biological anchor in the extracted source rowData fields.",
+  "source_cache_count": 7,
+  "source_expression_values_accessed": false,
+  "stage": "stage81a2r_nph_unresolved_identity_sanity_check",
+  "status": "PASS"
+}

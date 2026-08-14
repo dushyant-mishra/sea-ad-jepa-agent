@@ -1,0 +1,163 @@
+stage_id: stage81a2r_authoritative_gene_identity_recovery
+schema_version: "1.0"
+status: PROVISIONAL_NOT_FROZEN
+anchor_commit: 8b52dcca93ddca8eb51d563cdcd12f08700507b8
+
+governance:
+  mapping_only: true
+  fuzzy_mapping: false
+  biotype_filter: false
+  pathology_access: false
+  development_rna_access: false
+  sealed_rna_access: false
+  stage81a3r_paused: true
+  stage81b_started: false
+  stage81c_started: false
+  freeze1_declared: false
+
+authorities:
+  ensembl:
+    authority: Ensembl
+    release: 116
+    assembly: GRCh38.p14
+    filename: Homo_sapiens.GRCh38.116.gtf.gz
+    url: https://ftp.ensembl.org/pub/release-116/gtf/homo_sapiens/Homo_sapiens.GRCh38.116.gtf.gz
+    checksum_url: https://ftp.ensembl.org/pub/release-116/gtf/homo_sapiens/CHECKSUMS
+    source_checksum: "49151 137815 Homo_sapiens.GRCh38.116.gtf.gz"
+    local_path: data/external/v4/gene_identity_authority/ensembl_116/Homo_sapiens.GRCh38.116.gtf.gz
+    checksum_path: data/external/v4/gene_identity_authority/ensembl_116/CHECKSUMS
+    license_note: Ensembl data release-specific public download; attribution retained
+  hgnc_complete:
+    authority: HGNC
+    snapshot: 2026-08-07
+    filename: hgnc_complete_set_2026-08-07.txt
+    url: https://storage.googleapis.com/public-download-files/hgnc/archive/archive/monthly/tsv/hgnc_complete_set_2026-08-07.txt
+    local_path: data/external/v4/gene_identity_authority/hgnc_2026-08/hgnc_complete_set_2026-08-07.txt
+    source_md5_base64: DclkUEqs7mgaESh+LPKTxQ==
+    source_generation: "1786106235498772"
+    license_note: HGNC data are CC0
+  hgnc_withdrawn:
+    authority: HGNC
+    snapshot: 2026-08-04
+    filename: withdrawn_2026-08-04.txt
+    url: https://storage.googleapis.com/public-download-files/hgnc/archive/archive/monthly/tsv/withdrawn_2026-08-04.txt
+    local_path: data/external/v4/gene_identity_authority/hgnc_2026-08/withdrawn_2026-08-04.txt
+    source_md5_base64: r1z4vT2QD8Me7Ae4gW6GGg==
+    source_generation: "1785848506697635"
+    license_note: HGNC data are CC0
+  ensembl_history:
+    authority: Ensembl REST stable-ID archive
+    endpoint_template: https://rest.ensembl.org/archive/id/{stable_id}
+    local_path: data/external/v4/gene_identity_authority/ensembl_archive_responses
+
+inputs:
+  prior_source_decisions: results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz
+  prior_exact_registry: results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv
+  prior_measurement_support: results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz
+  frozen_asset_registry: results/v4/stage81a2_canonical_asset_registry.csv
+  r_feature_cache_manifest: data/external/v4/gene_identity_authority/r_feature_cache/r_feature_cache_manifest.csv
+
+outputs:
+  authority_manifest: results/v4/stage81a2r_authority_manifest_candidate.json
+  source_decisions: results/v4/stage81a2r_authoritative_source_mapping_decisions_candidate.csv.gz
+  exact_registry: results/v4/stage81a2r_authoritative_exact_current_gene_registry_candidate.csv
+  legacy_registry: results/v4/stage81a2r_authoritative_legacy_exact_gene_registry_candidate.csv
+  source_native_registry: results/v4/stage81a2r_authoritative_source_native_biological_feature_registry_candidate.csv.gz
+  unresolved: results/v4/stage81a2r_authoritative_unresolved_features_candidate.csv.gz
+  measurement_support: results/v4/stage81a2r_authoritative_measurement_support_candidate.csv.gz
+  mapping_delta: results/v4/stage81a2r_authoritative_mapping_delta_candidate.csv
+  collisions: results/v4/stage81a2r_within_matrix_mapping_collisions_candidate.csv
+  by_source: results/v4/stage81a2r_authoritative_recovery_by_source_candidate.csv
+  by_biotype: results/v4/stage81a2r_authoritative_recovery_by_biotype_candidate.csv
+  summary: results/v4/stage81a2r_authoritative_mapping_summary_candidate.json
+  access_manifest: results/v4/stage81a2r_authoritative_access_manifest_candidate.json
+  hash_verification: results/v4/stage81a2r_authoritative_hash_verification_candidate.json
+  test_report: results/v4/stage81a2r_authoritative_test_report_candidate.json
+  readout: docs/v4/STAGE81A2R_AUTHORITATIVE_GENE_IDENTITY_RECOVERY.md
+  all_downloaded_inventory: results/v4/stage81a2r_all_downloaded_asset_identity_inventory_candidate.csv
+  future_feature_identity: results/v4/stage81a2r_future_rna_feature_identity_candidate.csv.gz
+  future_compatibility: results/v4/stage81a2r_future_dataset_foundation_compatibility_candidate.csv
+  future_collisions: results/v4/stage81a2r_future_within_matrix_mapping_collisions_candidate.csv
+  future_annotation_provenance: results/v4/stage81a2r_future_annotation_provenance_candidate.csv
+  all_downloaded_summary: results/v4/stage81a2r_all_downloaded_identity_audit_summary_candidate.json
+  all_downloaded_readout: docs/v4/STAGE81A2R_ALL_DOWNLOADED_DATASET_IDENTITY_AUDIT.md
+  projectwide_mapping_comparison: results/v4/stage81a2r_projectwide_mapping_comparison_candidate.csv
+  projectwide_feature_universe_inventory: results/v4/stage81a2r_dataset_feature_identity_inventory_candidate.csv
+  projectwide_feature_identity: results/v4/stage81a2r_projectwide_source_feature_identity_candidate.csv.gz
+  projectwide_unique_identity: results/v4/stage81a2r_unique_gene_identity_resolution_candidate.csv
+  projectwide_dataset_summary: results/v4/stage81a2r_dataset_identity_summary_candidate.csv
+  projectwide_source_native: results/v4/stage81a2r_projectwide_source_native_features_candidate.csv.gz
+  projectwide_legacy: results/v4/stage81a2r_projectwide_legacy_exact_features_candidate.csv
+  projectwide_unresolved: results/v4/stage81a2r_projectwide_unresolved_features_candidate.csv.gz
+  projectwide_collisions: results/v4/stage81a2r_projectwide_within_matrix_collisions_candidate.csv
+  projectwide_provenance: results/v4/stage81a2r_projectwide_source_annotation_provenance_candidate.csv
+  foundation_identity_layers: results/v4/stage81a2r_foundation_identity_layers_candidate.json
+  projectwide_summary: results/v4/stage81a2r_projectwide_identity_audit_summary_candidate.json
+  projectwide_readout: docs/v4/STAGE81A2R_PROJECTWIDE_SOURCE_IDENTITY_AUDIT.md
+  authority_batch_integrity: results/v4/stage81a2r_authority_batch_integrity_candidate.csv
+  nph_cache_validation: results/v4/stage81a2r_nph_source_cache_validation_candidate.csv
+  nph_frozen_vocab_adjudication: results/v4/stage81a2r_nph_frozen_vocab_adjudication.csv
+  protected_identity_source_rows: results/v4/stage81a2r_protected_identity_change_source_rows_candidate.csv
+  protected_identity_dossier: results/v4/stage81a2r_protected_identity_change_dossier_candidate.csv
+  foundation_reconciliation: results/v4/stage81a2r_foundation_registry_reconciliation_candidate.csv
+  projectwide_final_report: results/v4/stage81a2r_projectwide_identity_report_candidate.json
+  projectwide_final_audit: docs/v4/STAGE81A2R_PROJECTWIDE_IDENTITY_AUDIT_CANDIDATE.md
+  review_hash_manifest: results/v4/stage81a2r_review_package_hash_manifest_candidate.json
+  r_environment_manifest: results/v4/stage81a2r_r_feature_audit_environment.txt
+  unresolved_reclassification: results/v4/stage81a2r_unresolved_identity_reclassification_candidate.csv.gz
+  unresolved_unique_summary: results/v4/stage81a2r_unresolved_identity_unique_summary_candidate.csv
+  unresolved_recovery_evidence: results/v4/stage81a2r_unresolved_recovery_evidence_candidate.csv.gz
+  still_truly_unresolved: results/v4/stage81a2r_still_truly_unresolved_candidate.csv.gz
+  unresolved_dataset_summary: results/v4/stage81a2r_unresolved_dataset_summary_candidate.csv
+  unresolved_resolution_summary: results/v4/stage81a2r_unresolved_resolution_summary_candidate.json
+  unresolved_resolution_audit: docs/v4/STAGE81A2R_UNRESOLVED_IDENTITY_ADJUDICATION_CANDIDATE.md
+  protected_identity_dossier_adjudicated: results/v4/stage81a2r_protected_identity_change_dossier_adjudicated_candidate.csv
+  foundation_registry_repair_comparison: results/v4/stage81a2r_foundation_registry_repair_comparison_candidate.csv
+  unresolved_validation: results/v4/stage81a2r_unresolved_validation_candidate.json
+  unresolved_hash_manifest: results/v4/stage81a2r_unresolved_hash_manifest_candidate.json
+  nph_unresolved_sanity: results/v4/stage81a2r_nph_unresolved_sanity_check.csv
+  nph_unresolved_sanity_summary: results/v4/stage81a2r_nph_unresolved_sanity_check.json
+  protected_identity_final_decisions: results/v4/stage81a2r_protected_identity_final_decisions.csv
+  protected_identity_dossier_final: results/v4/stage81a2r_protected_identity_change_dossier_final.csv
+  closure_summary: results/v4/stage81a2r_closure_summary.json
+  closure_report: docs/v4/STAGE81A2R_CLOSURE_REPORT.md
+  closure_validation: results/v4/stage81a2r_closure_validation.json
+  closure_hash_manifest: results/v4/stage81a2r_closure_hash_manifest.json
+
+protected_hashes:
+  results/v4/stage81a3_ipb_jepa_feasibility.json: aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308
+  results/v4/stage81a3_rlc_causal_fast_probe.json: ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc
+  results/v4/stage81a3_foundation_biological_state_domain_qualification.json: 912bf050f1091575bf141295ccb06bbce648614cd5991cf660c33f8951cff4b3
+  results/v4/stage81a3_reproducible_state_basis.pt: ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c
+  results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv: 5bafbbf7aeca7a58d3b8c8e40e4393d67601841914d97818023205eef5cb5ba0
+  results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz: 2bedf1d30544bebed9eb00e73af132bdb08f5f1c673ab69a7345146463fd9c1f
+  results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz: 27331548439ebb5ed0f29187daa17bd2d127e0b16153f0f9eda374f9fc95d284
+
+protected_semantic_hashes:
+  results/v4/stage81a2_foundation_vocabulary.csv: f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb
+
+original_history_batch_sha256:
+  archive_id_batch_0000.json: 5b3e9105a00a56ea38f82b65e899f13e54746fdc92ea3a52655bcb8526ffe1e9
+  archive_id_batch_0001.json: 93f5286444aa7a8083fa50781776c87be202e237b1cfefb97975306131f22705
+  archive_id_batch_0002.json: 2ed9029ac87781e5ded058511b2bf423806491a456c5445ebac5fc9b95656b06
+  archive_id_batch_0003.json: 42b87e2af9d0f2ae2caf8c9b826588ad8b89c7a6a8aea5337b0c12e39a0a3346
+  archive_id_batch_0004.json: 045d44878381100b0a7ee4b326f47cc99b0d8ffbba8f83b541dd33727feaf09c
+  archive_id_batch_0005.json: d6776362f92544685562db75a9d84859150da3face14cb47c0166f21d8f5b94f
+  archive_id_batch_0006.json: ef85bb7a3f2b8372d8150ea1f136a289cb90b537e116b5601e7b46c2410ff0d6
+  archive_id_batch_0007.json: 878b73c8cc013af790c5f992af596d14396c70ce0a82635bce28516dc13560a3
+  archive_id_batch_0008.json: fa33d5b1890cb59bfdf8f2777368b87805f875a8ee6ef45d32c32a7ad605c4b3
+  archive_id_batch_0009.json: b20ebb1bdf1015f0e9de55e222ce2753a476a6118bc814114759470d6edee6b6
+  archive_id_batch_0010.json: 89944083942009b7279a2f329ceb67367a3e45e27c348af0b55ccacf77e1f69b
+  archive_id_batch_0011.json: 74b0cadc59e2dbec7a03cc77823852c9cddca10d3bb7f4820742a72763bf89d5
+  archive_id_batch_0012.json: 5e51336218050d879b753165e818cf26ff007b022cca7358150a2653a617d8ae
+  archive_id_batch_0013.json: e39ad62a2643cb08cbac2371fa47609a5b82f620af1ef8c8f36df93f2e8618eb
+  archive_id_batch_0014.json: 033ded4e30810addde7ae721b783c068c7c606c4dc04863a1be4ad461f6c81f9
+  archive_id_batch_0015.json: 70d05f97c803e69b43194e3971a56aab164f5097dc09f91146416203400faea2
+  archive_id_batch_0016.json: a470efe2a4c5d7aaeb2d41892022fb910a7dd7f8f3ea261a3a91116a1674faba
+  archive_id_batch_0017.json: c9f8ead1bd00ca91a6dd71824ff32c6799e217c74d58e5aaf7e33a79bbb4e7d9
+  archive_id_batch_0018.json: dde9f2d5275fbb09e6cea7dadfe6defad198f4d79133821b41e4edc35932553f
+  archive_id_batch_0019.json: 2e266ad577bd27f8b742b42079943d834c64ec7e0b6acec382dc7914842eb96e
+  archive_id_batch_0020.json: 6a854c10c877d1b710e9fbade28463509f15fabfaeecd656ab8ea75787cfbc65
+  archive_id_batch_0021.json: 15a0b829aff57c7767c63c83d1d0769b34dc30982404130ae5b00eedf592800c
+  archive_id_batch_0022.json: 19997ef18f1ffc959c56bf5251ac1d3ae09fe540d768143b4c51de8f5a3f7600
+  archive_id_batch_0023.json: 21aadb146eab6d8ee778a505b1c8b0e134c3d181348403eeaf9d5a98793c8231

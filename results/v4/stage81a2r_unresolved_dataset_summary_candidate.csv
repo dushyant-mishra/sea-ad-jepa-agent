@@ -1,0 +1,48 @@
+dataset_id,modality,matrix_count,feature_universe_count,raw_source_row_count,previously_unresolved_source_rows,previously_unresolved_unique_identities,recovered_exact_current,recovered_historical,recovered_alt_locus,recovered_ncbi_refseq_gencode,source_native_identified_unprojected,ambiguous_remaining,truly_identifier_poor_remaining,technical_features
+10x_Xenium_healthy_cortex_preview,spatial RNA,0,0,0,0,0,0,0,0,0,0,0,0,0
+CosMx_WTX_human_hippocampus,spatial RNA,0,0,0,0,0,0,0,0,0,0,0,0,0
+CosMx_human_frontal_cortex_6K,spatial RNA,0,0,0,0,0,0,0,0,0,0,0,0,0
+Fang_MERFISH_human_cortex_4000,spatial RNA,30,1,39990,4930,493,0,0,0,0,0,4,489,0
+GSE133357,gene-level RNA,1,1,9126,179,179,0,0,0,0,0,6,173,0
+GSE134577,gene-level RNA,18,1,603684,0,0,0,0,0,0,0,0,0,0
+GSE146639,gene-level RNA,27,26,450785,0,0,0,0,0,0,0,0,0,0
+GSE175721,gene-level RNA,2,1,65476,0,0,0,0,0,0,0,0,0,0
+GSE178317,gene-level RNA,16,1,536608,0,0,0,0,0,0,0,0,0,0
+GSE181279,gene-level RNA,1,1,32738,0,0,0,0,0,0,0,0,0,0
+GSE200164,gene-level RNA,2,1,39378,7064,3532,0,0,0,0,0,10,3522,0
+GSE226267,ATAC/chromatin|gene-level RNA,2,1,1001432,0,0,0,0,0,0,0,0,0,0
+GSE226602,gene-level RNA,2,1,44930,9760,4880,0,0,0,0,0,8,4872,0
+GSE240609,gene-level RNA,4,4,108616,108443,27154,25677,0,0,0,0,10,1467,0
+GSE241858,gene-level RNA,2,1,56792,56786,28393,0,0,0,26230,2162,0,1,0
+GSE243292,gene-level RNA,1,1,26423,6687,6687,6063,394,0,0,229,1,0,0
+GSE248545,spatial RNA,4,1,146404,0,0,0,0,0,0,0,0,0,0
+GSE254205,ATAC/chromatin|gene-level RNA,1,1,33538,10027,10027,0,0,0,0,0,17,10010,0
+GSE264624,gene-level RNA,26,1,951626,0,0,0,0,0,0,0,0,0,0
+GSE264692,spatial RNA,42,1,1537242,0,0,0,0,0,0,0,0,0,0
+GSE270454,gene-level RNA,1,1,27663,2886,2886,0,0,0,0,0,16,2870,0
+GSE278848,spatial RNA,9,1,162765,0,0,0,0,0,0,0,0,0,0
+GSE280316,spatial RNA,10,1,366010,0,0,0,0,0,0,0,0,0,0
+GSE280460,spatial RNA,13,2,7033,26,2,0,0,0,0,2,0,0,0
+GSE292141,gene-level RNA,20,1,732020,0,0,0,0,0,0,0,0,0,0
+GSE293118,gene-level RNA,2,2,37139,0,0,0,0,0,0,0,0,0,0
+GSE301119,gene-level RNA,2,2,55763,12567,12567,11446,776,0,0,197,5,143,0
+GSE302937,gene-level RNA,22,2,839307,0,0,0,0,0,0,0,0,0,0
+GSE305625,miRNA,2,2,258,258,65,0,0,0,0,64,0,0,1
+GSE307586,spatial RNA,38,1,1390838,0,0,0,0,0,0,0,0,0,0
+GSE307587,gene-level RNA,20,1,732020,0,0,0,0,0,0,0,0,0,0
+GSE311359,gene-level RNA,7,1,258874,0,0,0,0,0,0,0,0,0,0
+GSE325489,spatial RNA,4,1,2164,0,0,0,0,0,0,0,0,0,0
+GSE97930,gene-level RNA,3,3,113084,39474,16185,0,0,0,0,0,19,16163,3
+GSE99074,gene-level RNA,1,1,28981,0,0,0,0,0,0,0,0,0,0
+HPA_Zhong_PFC_RNA,gene-level RNA,2,2,225703,0,0,0,0,0,0,0,0,0,0
+HPA_human_brain_StereoSeq,spatial RNA,0,0,0,0,0,0,0,0,0,0,0,0,0
+HPA_regional_human_brain_RNA,gene-level RNA,2,2,225703,0,0,0,0,0,0,0,0,0,0
+HVS,gene-level RNA,24,1,449664,0,0,0,0,0,0,0,0,0,0
+HYPOMAP_snRNA_reference,gene-level RNA,1,1,36924,0,0,0,0,0,0,0,0,0,0
+LIBD_spatialDLPFC,spatial RNA,1,1,28916,0,0,0,0,0,0,0,0,0,0
+NPH52,gene-level RNA,7,7,244438,10264,2011,1,0,0,0,0,1,2009,0
+SCP2167_slidetags_PFC,gene-level RNA|spatial RNA,3,2,109803,12420,12420,11446,776,0,0,197,1,0,0
+SEA_AD,ATAC/chromatin|gene-level RNA|spatial RNA,17,5,659604,40,40,0,0,0,0,0,0,0,40
+Siletti_HBCA,gene-level RNA,3,1,174696,0,0,0,0,0,0,0,0,0,0
+_acquisition,gene-level RNA,0,0,0,0,0,0,0,0,0,0,0,0,0
+spatialLIBD_classic_DLPFC,spatial RNA,1,1,33538,0,0,0,0,0,0,0,0,0,0

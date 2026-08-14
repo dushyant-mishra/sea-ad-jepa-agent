@@ -1,0 +1,34 @@
+{
+  "artifact_count": 7,
+  "artifacts": {
+    "docs/v4/STAGE81A2R_CLOSURE_REPORT.md": {
+      "bytes": 3166,
+      "sha256": "3ba855f387edcb7244eee9c76fae995813b2152691348c5d5b18e1bd14e3657a"
+    },
+    "results/v4/stage81a2r_closure_summary.json": {
+      "bytes": 19416,
+      "sha256": "05433220962acc7007827081869d3812b752e7309bb14016f88028cf3b79ac39"
+    },
+    "results/v4/stage81a2r_closure_validation.json": {
+      "bytes": 650,
+      "sha256": "508ff860ffa6e69fe05d9c3747e00109caf2f2365f0625859ce5a71e06684817"
+    },
+    "results/v4/stage81a2r_nph_unresolved_sanity_check.csv": {
+      "bytes": 599119,
+      "sha256": "4877ad044b17432b48f6bd382894e16815e9afe5b061a6f5cc696ae6a1394399"
+    },
+    "results/v4/stage81a2r_nph_unresolved_sanity_check.json": {
+      "bytes": 659,
+      "sha256": "ceff0597aa7ee51b8887b5555ff0ebe15a9e7aea36c53f3d143d5b5e68665d6b"
+    },
+    "results/v4/stage81a2r_protected_identity_change_dossier_final.csv": {
+      "bytes": 21081,
+      "sha256": "5234e98904ebe7c5f4c392184ed6866bfd4995f9b350e730cc7e0a2283472ca6"
+    },
+    "results/v4/stage81a2r_protected_identity_final_decisions.csv": {
+      "bytes": 2497,
+      "sha256": "ba711af5daeb40079664060b8868d752fe7413edff7fc70dedbdd6c29117d9d7"
+    }
+  },
+  "stage": "stage81a2r_authoritative_identity_audit_closure"
+}
