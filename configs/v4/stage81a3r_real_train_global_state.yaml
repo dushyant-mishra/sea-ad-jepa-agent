@@ -1,6 +1,6 @@
 stage_id: stage81a3r_real_train_global_state
 schema_version: "1.0"
-status: CORRECTED_REAL_TRAIN_AUTHORIZED_NOT_RUN
+status: STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN
 synthetic_checkpoint_sha: deebd64bdfb34b18cb564e36f41f61118624f99f
 frozen_address_semantic_hash: 5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff
 
@@ -15,7 +15,7 @@ governance:
   stage81c_started: false
   freeze1_declared: false
   corrected_real_train_runs_authorized: 1
-  corrected_real_train_runs_completed: 0
+  corrected_real_train_runs_completed: 1
   immune_object_phase_a_operator: false
   immune_object_role: PHASE_B_IMMUNE_MICROGLIA_PVM_CONTINUATION
   execution_history_mixed_split_nph_qs_materialized: true
@@ -50,9 +50,34 @@ basis:
     block_width: 16
     bh_fdr: 0.05
     donor_refit_support_required: true
+    donor_refit_min_median_canonical_correlation: 0.50
     contiguous_retention: true
     stop_at_first_unsupported_block: true
     later_support_after_gap: ORDERING_FAILURE
+
+range_closure:
+  status: STAGE81A3R_GLOBAL_DIMENSION_RANGE_CLOSURE_COMPLETE_NOT_FROZEN
+  purpose: RANGE_CLOSURE_CHECK_ONLY
+  accepted_prefix_maximum: 256
+  first_extension: [272, 288, 304, 320]
+  conditional_final_extension: [336, 352, 368, 384]
+  conditional_trigger: BEST_TESTED_PREFIX_EQUALS_320
+  hard_stop: 384
+  reuse_corrected_train_lineage: true
+  reuse_scalar_support_contract: true
+  reuse_reproducibility_weights: true
+  reuse_sampling_and_folds: true
+  reuse_residual_null: true
+  freeze1_declared: false
+  conditional_extension_run: true
+  final_tested_boundary: 384
+  best_tested_prefix: 336
+  best_at_final_boundary: false
+  one_se_k_bulk: 224
+  d_global_candidate: 224
+  first_unsupported_block: 225
+  ordering_failure: false
+  classification: ORDERED_GLOBAL_STATE_CANDIDATE_EARNED
 
 inputs:
   address_registry: results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv
@@ -72,6 +97,7 @@ inputs:
   scalar_observability_operator: results/v4/stage81a3r_scalar_observability_operator_summary.csv
   scalar_observability_report: results/v4/stage81a3r_scalar_observability_closure.json
   collision_ledger: results/v4/stage81a3r_expression_materialization_collision_ledger.csv.gz
+  supplemental_injectivity_collisions: results/v4/stage81a3r_scalar_mapping_unregistered_collisions.csv
 
 cache_dir: data/cache/stage81a3r_real_train
 
@@ -122,4 +148,10 @@ outputs:
   corrected_pilot_comparison: results/v4/stage81a3r_corrected_real_train_pilot_comparison.json
   corrected_candidate: results/v4/stage81a3r_corrected_real_train_global_state_candidate.json
   corrected_test_report: results/v4/stage81a3r_corrected_real_train_test_report.json
+  range_closure_ordered_basis: results/v4/stage81a3r_global_dimension_range_closure_ordered_basis.npz
+  range_closure_prefix: results/v4/stage81a3r_global_dimension_range_closure_prefix.csv
+  range_closure_donor_stability: results/v4/stage81a3r_global_dimension_range_closure_donor_stability.csv
+  range_closure_residual: results/v4/stage81a3r_global_dimension_range_closure_residual.csv
+  range_closure_report: results/v4/stage81a3r_global_dimension_range_closure.json
+  range_closure_test_report: results/v4/stage81a3r_global_dimension_range_closure_test_report.json
   readout: docs/v4/STAGE81A3R_REAL_TRAIN_GLOBAL_STATE_READOUT.md

@@ -4,17 +4,49 @@
 
 - Repository: `dushyant-mishra/sea-ad-jepa-agent`
 - Remote: `https://github.com/dushyant-mishra/sea-ad-jepa-agent.git`
-- Freeze branch: `stage81a2r-authoritative-mapping-recovery-20260813`
-- Freeze commit: this handoff is included in the Stage81A2R freeze commit;
+- Freeze branch: `stage81a3r-real-train-global-state-20260814`
+- Freeze commit: this handoff is included in the Stage81A3R Freeze1 commit;
   resolve its immutable full SHA with `git rev-parse HEAD` after checkout.
-- Freeze parent: `ac06ebb6893cdc391b102718502ccc57ed2b9e3b`
+- Freeze parent: `93e83f9bf9ada87283d8d501ccfb5f317d100099`
 - Canonical historical Stage81A2 freeze: `808ce4f170055c5568cc5c1e0e3a56415b52f908`
-- Relationship: Stage81A2R is the immutable successor data-contract checkpoint.
-  It does not amend or delete historical Stage81A2 or Stage81A3 evidence.
+- Relationship: Stage81A2R remains the immutable successor data-contract
+  checkpoint. Stage81A3R Freeze1 fixes the representation contract without
+  amending or deleting Stage81A2, Stage81A2R, or historical Stage81A3 evidence.
 
 The handoff cannot embed its own commit SHA without creating a self-reference.
 The full freeze SHA is therefore the commit containing this handoff, resolved
 with `git rev-parse HEAD`; the exact SHA is also reported by the freeze procedure.
+
+## Stage81A3R Freeze1 Checkpoint
+
+**STAGE81A3 FREEZE1 DECLARED**
+
+- Foundation Molecular Address Space: **41,238** universal addresses with the
+  unchanged Stage81A2R semantic hash
+  `5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff`.
+- Scalar support: **40,949** addresses observable somewhere in TRAIN and **289**
+  collision-only scalar-unobservable addresses.
+- Molecular Ledger: full universal namespace, token-preserving IPB,
+  **`d_gene=160`**, six blocks, four heads, retained CELL token, and graph-free
+  masking.
+- Global state: pathology-blind, reproducibility-weighted ordered linear
+  construction with measurement-aware masked projection; **`d_global=224`**.
+- Historical pre-range-closure candidate: **208**, preserved but superseded.
+- Final range-closed candidate: **224**, fixed for the production design; no
+  later dimension reselection is allowed.
+- Stage81B may perform one complete-authorized-TRAIN production-basis refit
+  using the frozen methods and `d_global=224`. The bounded qualification basis
+  is evidence, not the production basis. That one-time refit may not use DEV,
+  SEALED, pathology, biological outcomes, or alter the observation contract.
+- U_BIO/U_MEAS preferential separation was not demonstrated; calibrated
+  U_BIO/U_MEAS outputs are not part of Freeze1.
+- The SEA-AD Immune object remains Phase B continuation only. All 240,651 cells
+  overlap the regional RNA objects, so later reuse is curriculum reweighting,
+  not independent biological evidence.
+
+The governing machine-readable contract is
+`results/v4/stage81a3r_freeze1_contract.json`; the concise scientific decision
+is in `docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md`.
 
 ## Stage81A2R Frozen Checkpoint
 
@@ -40,7 +72,9 @@ with `git rev-parse HEAD`; the exact SHA is also reported by the freeze procedur
   operators. This is accounting granularity only; no six datasets were added.
 - Exact cross-layer duplicate classes: **0**; exact within-layer duplicate
   classes: **0**; future-only addresses: **0**.
-- Stage81A3R: **NOT STARTED**.
+- Stage81A3R synthetic qualification: **COMPLETE**.
+- Stage81A3R real-TRAIN qualification: **COMPLETE**.
+- Stage81A3 Freeze1: **DECLARED**.
 - Stage81B: **NOT STARTED**.
 - Stage81C: **NOT STARTED**.
 
@@ -67,9 +101,11 @@ Foundation Molecular Address Space.
 | Stage or freeze | Status | Authority |
 |---|---|---|
 | Stage81A2 | FROZEN | Commit `808ce4f` and tracked A2 evidence |
-| Stage81A2R | FROZEN | This freeze commit and tracked A2R evidence |
+| Stage81A2R | FROZEN | Frozen A2R commit and tracked A2R evidence |
 | Stage81A3 historical development | PRESERVED, NOT A FREEZE | Prior tracked development evidence |
-| Stage81A3R | NOT STARTED | Must branch directly from the A2R freeze SHA |
+| Stage81A3R synthetic qualification | COMPLETE | Full-address bounded synthetic evidence |
+| Stage81A3R real-TRAIN qualification | COMPLETE | Range-closed pathology-blind TRAIN evidence |
+| Stage81A3 Freeze1 | DECLARED | This freeze commit and tracked Freeze1 contract |
 | Stage81B | NOT STARTED | No deterministic representation stage begun |
 | Stage81C | NOT STARTED | No production foundation trajectory begun |
 | Freeze 2 | NOT DECLARED | Downstream of Stage81C qualification |
@@ -314,6 +350,8 @@ R cache builders.
 - SEALED RNA: closed and not opened by this checkpoint.
 - Pathology as a foundation input: closed and not used.
 - Context training before the appropriate freeze: prohibited.
+- Stage81A3R synthetic and real-TRAIN qualification: complete.
+- Stage81A3 Freeze1: declared with `d_gene=160` and `d_global=224`.
 - Stage81B: not started.
 - Stage81C: not started.
 
@@ -333,7 +371,9 @@ R cache builders.
 
 ## Exact Next Scientific Decision
 
-Stage81A3R must qualify the intrinsic representation against the frozen 41,238-
-address Foundation Molecular Address Space while independently resolving per-
-gene contextual capacity and global-state resolution. It must preserve both
-the historical Stage81A2 contract and the Stage81A2R address/provenance contract.
+Stage81B is the next stage, but it is **not started by this freeze**. Its first
+representation action is a one-time production global-basis refit over the
+complete authorized TRAIN corpus using the frozen address, scalar-support,
+preprocessing, reproducibility-weighting, ordered-linear, and `d_global=224`
+contract. It must not reselect dimension or access DEV, SEALED, pathology, or
+Phase-B Immune data. Stage81C remains not started.

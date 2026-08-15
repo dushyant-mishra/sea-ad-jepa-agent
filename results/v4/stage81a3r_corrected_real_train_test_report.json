@@ -1,0 +1,31 @@
+{
+  "base_checkpoint_sha": "93e83f9bf9ada87283d8d501ccfb5f317d100099",
+  "compileall_pass": true,
+  "corrected_candidate_sha256": "4b9a4559a88c71debb2e3d3c2394839c07663dff046d6b84c4a09b3b333b2f8b",
+  "corrected_ordered_basis_sha256": "f39d6e976ea970203055a98d9e049cbb54be1913cb1bd88cd56a29f05157bbcc",
+  "diff_check_pass": true,
+  "focused_and_frozen_address_tests": {
+    "failed": 0,
+    "passed": 28
+  },
+  "frozen_successor_address_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+  "full_v4_tests": {
+    "failed": 28,
+    "known_historical_portability_failures": 28,
+    "new_a3r_failures": 0,
+    "passed": 862
+  },
+  "historical_4096_semantic_hash": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+  "injectivity_preflight_sha256": "b7bf0278eb0ad38c1f1daa33af441308a28507bc80d32f3574ea07faf463437a",
+  "source_project_ipb_protected_sha256": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+  "repository_tests": {
+    "failed": 28,
+    "known_historical_portability_failures": 28,
+    "new_a3r_failures": 0,
+    "passed": 874
+  },
+  "source_project_protected_hashes_unchanged": true,
+  "source_project_rlc_cd_protected_sha256": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+  "scientific_audit_runs_completed": 1,
+  "status": "STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN"
+}

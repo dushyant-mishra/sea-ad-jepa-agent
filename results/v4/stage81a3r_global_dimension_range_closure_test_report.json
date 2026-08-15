@@ -1,0 +1,25 @@
+{
+  "compile_pass": true,
+  "diff_check_pass": true,
+  "focused_and_frozen_address_tests": {
+    "failed": 0,
+    "passed": 31
+  },
+  "frozen_a2r_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+  "full_v4_tests": {
+    "failed": 28,
+    "known_historical_portability_failures": 28,
+    "new_a3r_failures": 0,
+    "passed": 865
+  },
+  "range_closure_basis_sha256": "5ddee92a83cd4f54ae61a6c9ed192847ac8f941f725e5a5678512460f5308b84",
+  "range_closure_prefix_sha256": "5356eb2bc36c6ab69e59e69114cbca55a65fc066e84f9f0610fc153239a78be3",
+  "range_closure_report_sha256": "608ad808c3dc09c941304f1b582698ec8d3716e3718df32c93c548be6eaee5bd",
+  "repository_tests": {
+    "failed": 28,
+    "known_historical_portability_failures": 28,
+    "new_a3r_failures": 0,
+    "passed": 877
+  },
+  "status": "STAGE81A3R_GLOBAL_DIMENSION_RANGE_CLOSURE_COMPLETE_NOT_FROZEN"
+}

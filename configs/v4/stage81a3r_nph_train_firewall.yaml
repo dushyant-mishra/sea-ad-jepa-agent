@@ -25,8 +25,11 @@ historical_cache:
 
 materialization:
   universal_addresses: 41238
-  scalar_observable_addresses: 40950
-  scalar_unobservable_due_only_to_unresolved_collisions: 288
+  checkpoint_scalar_observable_addresses: 40950
+  checkpoint_scalar_unobservable_due_only_to_unresolved_collisions: 288
+  corrected_scalar_observable_addresses: 40949
+  corrected_scalar_unobservable_due_only_to_unresolved_collisions: 289
+  post_checkpoint_unregistered_nph_matrix_address_collisions: 14
   collision_aggregation_policy_selected: false
   downstream_observation_state_contract_accepted: true
   allowed_scalar_state: MEASURED_SCALAR

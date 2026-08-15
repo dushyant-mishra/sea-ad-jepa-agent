@@ -216,3 +216,150 @@ The raw measured-evidence availability ceiling is 1.0. It is not the noisy A-to-
 - Basis SHA-256: `fdd539a970c8f430e47b972c93b1f73a644e0fdb21344288250cd88f3f63d3e8`.
 
 **STAGE81A3R_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN**
+
+## Historical Pre-Range-Closure Corrected Audit (Superseded)
+
+This section preserves the accepted audit before the bounded range closure.
+Its `k_bulk=208` and first unsupported block 209-224 are historical evidence,
+not the current Freeze1 decision. The final range-closed candidate is 224.
+
+### Post-Checkpoint Injectivity Correction
+
+Before scalar materialization, a complete metadata-only injectivity preflight was run across all 42 Phase A operators. It found **14 matrix/address collision pairs** absent from the checkpoint collision ledger: two universal addresses recurring across all seven NPH operators. No authority search, identity remapping, expression aggregation, or registry change was performed.
+
+- `ENSG00000183889` retained collision-free scalar support in SEA-AD.
+- `ENSG00000281635` had NPH-only support and therefore lost all scalar-materializable TRAIN support after masking.
+- The frozen universal address registry remained **41,238**.
+- The checkpoint accounting **40,950 observable / 288 unobservable** remains historical checkpoint evidence.
+- Corrected scalar accounting is **40,949 observable / 289 collision-only unobservable**.
+
+The correction is a generation/accounting repair, not a biological exclusion. All unresolved source rows remain preserved as `MEASURED_COLLISION_UNRESOLVED`; none became measured zero or structurally unmeasured.
+
+### Authorized Execution and Firewall
+
+Exactly one corrected audit was run. It used **149 TRAIN donors**, **42 Phase A operators** (24 HVS, 11 SEA-AD, 7 NPH52), and **4,726 deterministically sampled cells**. NPH input came only from the physically split full-feature TRAIN derivatives. DEV RNA, SEALED RNA, pathology, future-use data, and the Phase B SEA-AD Immune object were not accessed. The Immune object remains `PHASE_B_IMMUNE_MICROGLIA_PVM_CONTINUATION` and contributed no cells or donors.
+
+Only `MEASURED_SCALAR` operator/address observations entered fitting, weighting, projection, and reconstruction. Collision-unresolved observations were masked rather than aggregated or replaced with zero. The 289 addresses without scalar support anywhere received zero reproducibility weight.
+
+### Corrected Weights and Prefix Decision
+
+Positive reproducibility weights were earned by **29,013 current-exact**, **298 legacy-exact**, and **3 source-native anchored** addresses. Relative to the historical 4,096-limited NPH pilot, 2,282 addresses moved from zero to positive weight and 986 moved from positive to zero; weight correlation was **0.8867**. At the shared 96-dimensional prefix, corrected versus pilot basis median canonical correlation was **0.6903** and projector similarity was **0.5093**, confirming a material lineage change.
+
+Held-out paired-view reconstruction increased from **0.2116 at 16 dimensions** to **0.2682 at 256 dimensions**. The best tested prefix was 256, with standard error **0.00620** and one-SE threshold **0.26200**. The smallest prefix meeting that threshold was:
+
+```text
+k_bulk = 208
+```
+
+This was the historical pre-range-closure candidate earned under the bounded
+linear audit. It was not a frozen architecture dimension and is superseded by
+the final range-closed candidate 224 below.
+
+### Donor Refits and Residual Null
+
+Across five donor refits at `k_bulk=208`, median canonical correlations ranged from **0.9807 to 0.9969** (median **0.9948**); projector similarities ranged from **0.6639 to 0.9746** (median **0.8600**). The predeclared donor-support threshold was 0.50.
+
+The only null family used was the predeclared **within-operator deterministic B-view cell-pairing permutation**, with 100 fixed-keyed permutations. It preserved operator, support mask, depth/noise distribution, and marginal standardized molecular structure while destroying same-cell A/B correspondence.
+
+The first post-bulk block, dimensions 209-224, was beyond the permutation null (`empirical p=0.009901`, BH `q=0.009901`) but its independent donor-refit block correlation was only **0.1298**, below the predeclared 0.50 threshold. It therefore failed the combined residual-retention rule. Retention stopped contiguously at 208. Later blocks were not retained and did not create an ordering failure.
+
+```text
+d_global_candidate = 208
+first unsupported block = 209-224
+ordering failure = false
+classification = ORDERED_GLOBAL_STATE_CANDIDATE_EARNED
+```
+
+### Operator-Family Recovery
+
+The raw measured-scalar ceiling is 1.0 by construction and should not be confused with noisy paired-view recovery.
+
+- **HVS (24 operators):** projected full-view recovery median 0.3012; paired-view projected median 0.2063; representation gap 0.6988.
+- **SEA-AD (11 operators):** projected full-view recovery median 0.4135; paired-view projected median 0.3333; representation gap 0.5865.
+- **NPH52 (7 operators):** projected full-view recovery median 0.5206; paired-view projected median 0.3891; representation gap 0.4794.
+
+The corrected full-feature NPH lineage lowered NPH recovery relative to the provisional 4,096-limited pilot (0.6343 to 0.5206 full-view median; 0.4516 to 0.3891 paired-view median). This is descriptive evidence of the changed measurement/address contract, not evidence that the added molecular addresses are biologically unimportant.
+
+### Corrected Audit Boundary
+
+The corrected audit produced a bounded **historical ordered linear global-state
+candidate** for human review. It did not train a neural model or validate
+biological sufficiency. Its 208-dimensional decision is preserved but
+superseded by range closure.
+
+Validation after the run:
+
+- Exact supplemental injectivity contract: **PASS**; checkpoint-only mask noninjective, exact 14-pair supplement accepted, combined mask injective.
+- Focused A3R plus frozen-address qualification: **28 passed**.
+- Full v4 suite: **862 passed, 28 known historical portability failures, 0 new A3R failures**.
+- Repository suite: **874 passed, the same 28 known historical portability failures, 0 new A3R failures**.
+- Compileall and `git diff --check`: **PASS**.
+- Frozen successor-address semantic hash: `5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff`.
+- Historical 4,096-address semantic hash: `f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb`.
+- Authoritative source-project IPB/RLC protected hashes: `aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308` / `ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc`, unchanged. The dedicated worktree retains older tracked snapshots; this is part of the known portability-failure profile, not a mutation made by this audit.
+- Corrected ordered-basis SHA-256: `f39d6e976ea970203055a98d9e049cbb54be1913cb1bd88cd56a29f05157bbcc`.
+
+The scientific audit was intentionally run once. Fixed seeds, keyed permutations, explicit source order, and atomic outputs make the execution contract deterministic, but no second scientific run was performed merely to claim byte-level regeneration.
+
+**STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN**
+
+## Final Global-Dimension Boundary Closure
+
+The accepted corrected audit ended with its best bulk score at the prior 256-dimensional ceiling. A single bounded range-closure check therefore preserved the same 41,238-address registry, 40,949/289 scalar-support split, 29,013/298/3 positive-weight composition, 149 TRAIN donors, 42 operators, 4,726 sampled cells, five donor folds, preprocessing vectors, reproducibility weights, paired-view metric, and residual-null contract.
+
+The accepted first 256 basis columns were preserved exactly. New components were fitted only in their orthogonal residual space. Before extension, every accepted 16-256 held-out mean and standard error reproduced at `atol=1e-12`. The first extension through 320 still placed the best score at 320, automatically triggering the one permitted extension through 384. No intermediate setting was changed or selected after inspection.
+
+The final prefix curve was:
+
+| Prefix | Mean held-out R2 | SE |
+| ---: | ---: | ---: |
+| 16 | 0.211647 | 0.006770 |
+| 32 | 0.233213 | 0.007623 |
+| 48 | 0.239293 | 0.007965 |
+| 64 | 0.243853 | 0.007740 |
+| 80 | 0.246216 | 0.007246 |
+| 96 | 0.248831 | 0.006898 |
+| 112 | 0.251469 | 0.006542 |
+| 128 | 0.253108 | 0.006683 |
+| 144 | 0.254876 | 0.006718 |
+| 160 | 0.257132 | 0.006187 |
+| 176 | 0.258952 | 0.005905 |
+| 192 | 0.261568 | 0.005996 |
+| 208 | 0.263816 | 0.005920 |
+| 224 | 0.265388 | 0.005864 |
+| 240 | 0.267004 | 0.006069 |
+| 256 | 0.268204 | 0.006204 |
+| 272 | 0.269355 | 0.006345 |
+| 288 | 0.270157 | 0.006338 |
+| 304 | 0.270597 | 0.006257 |
+| 320 | 0.270786 | 0.006200 |
+| 336 | **0.270817** | **0.006174** |
+| 352 | 0.270706 | 0.006177 |
+| 368 | 0.270535 | 0.006178 |
+| 384 | 0.270322 | 0.006177 |
+
+The best tested prefix was **336**, not the final boundary of 384. Its one-SE threshold was **0.264643**, selecting the smallest qualifying prefix, **k_bulk=224**. At 224, the five donor-refit cumulative subspaces had median canonical correlation **0.994907** and median projector similarity **0.860974**.
+
+Because `k_bulk` changed, residual adjudication restarted at dimensions 225-240 using the frozen 100-permutation within-operator B-view pairing null. The block was above its null (`empirical p=0.009901`, BH `q=0.009901`) but failed independent donor-refit support (median block canonical correlation **0.118861**, threshold 0.50). Held-out improvement was also unsupported. The block was not retained, the first unsupported dimension was 225, and no later block met the combined retention rule after the gap; ordering failure remained false.
+
+```text
+best tested prefix = 336
+best at final boundary = false
+one-SE k_bulk = 224
+first unsupported block = 225-240
+d_global_candidate = 224
+classification = ORDERED_GLOBAL_STATE_CANDIDATE_EARNED
+```
+
+This closes the bounded bulk range and supplies the accepted evidence for
+Freeze1. Human review subsequently fixed `d_global=224`; biological sufficiency
+of 224 dimensions is not claimed. Stage81B/C remain not started. DEV RNA,
+SEALED RNA, pathology, future-use data, and the Phase B Immune object were not
+accessed.
+
+Range-closure validation: **31 focused/frozen-address tests passed**; full v4 **865 passed with the same 28 historical portability failures**; repository **877 passed with the same 28 historical portability failures**; zero new A3R failures. Compilation and `git diff --check` passed. The extended ordered-basis SHA-256 is `5ddee92a83cd4f54ae61a6c9ed192847ac8f941f725e5a5678512460f5308b84`.
+
+**FINAL RANGE-CLOSED CANDIDATE = 224**
+
+This evidence is incorporated into the separately generated Stage81A3R
+Freeze1 contract. **STAGE81A3 FREEZE1 DECLARED.**

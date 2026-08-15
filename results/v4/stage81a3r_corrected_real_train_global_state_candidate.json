@@ -1,0 +1,48 @@
+{
+  "best_tested_prefix": 256,
+  "bulk_donor_refit_supported": true,
+  "checkpoint_scalar_observable_addresses": 40950,
+  "checkpoint_scalar_unobservable_collision_only": 288,
+  "classification": "ORDERED_GLOBAL_STATE_CANDIDATE_EARNED",
+  "d_global_candidate": 208,
+  "final_status": "STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN",
+  "first_unsupported_block": 209,
+  "freeze1_declared": false,
+  "k_bulk": 208,
+  "one_se_threshold": 0.26200015644673047,
+  "operator_summary": {
+    "HVS": {
+      "operators": 24,
+      "paired_view_projected_median": 0.20626199708148302,
+      "projected_recovery_median": 0.3011770901005961,
+      "representation_gap_median": 0.6988229098994039
+    },
+    "NPH52": {
+      "operators": 7,
+      "paired_view_projected_median": 0.38906110542972727,
+      "projected_recovery_median": 0.5206409620258038,
+      "representation_gap_median": 0.4793590379741962
+    },
+    "SEA_AD": {
+      "operators": 11,
+      "paired_view_projected_median": 0.3332915742391208,
+      "projected_recovery_median": 0.413510581680003,
+      "representation_gap_median": 0.586489418319997
+    }
+  },
+  "ordering_failure": false,
+  "positive_weights_by_identity_class": {
+    "current_exact": 29013,
+    "legacy_exact": 298,
+    "source_native_anchored": 3
+  },
+  "post_checkpoint_unregistered_collision_pairs": 14,
+  "residual_null_family": "WITHIN_OPERATOR_DETERMINISTIC_B_VIEW_CELL_PAIRING_PERMUTATION",
+  "residual_null_permutations": 100,
+  "scalar_observable_addresses": 40949,
+  "scalar_unobservable_collision_only": 289,
+  "stage81b_started": false,
+  "stage81c_started": false,
+  "status": "STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN",
+  "universal_molecular_addresses": 41238
+}

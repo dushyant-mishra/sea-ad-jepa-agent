@@ -26,7 +26,9 @@ def test_firewall_has_no_forbidden_input_path() -> None:
     assert CONFIG["governance"]["train_rna_only"] is True
     assert CONFIG["governance"]["development_rna_forbidden"] is True
     assert CONFIG["governance"]["sealed_rna_forbidden"] is True
-    assert CONFIG["status"] == "CORRECTED_REAL_TRAIN_AUTHORIZED_NOT_RUN"
+    assert CONFIG["status"] == "STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN"
+    assert CONFIG["governance"]["corrected_real_train_runs_authorized"] == 1
+    assert CONFIG["governance"]["corrected_real_train_runs_completed"] == 1
     assert CONFIG["governance"]["execution_history_mixed_split_nph_qs_materialized"] is True
     assert CONFIG["governance"]["discarded_mixed_split_cache_used"] is False
     assert CONFIG["governance"]["discarded_mixed_split_cache_retained"] is False
@@ -150,3 +152,71 @@ def test_corrected_residual_null_is_predeclared_before_results() -> None:
     assert null["contiguous_retention"] is True
     assert null["stop_at_first_unsupported_block"] is True
     assert null["later_support_after_gap"] == "ORDERING_FAILURE"
+    assert null["donor_refit_min_median_canonical_correlation"] == 0.50
+
+
+def test_corrected_nph_materializer_masks_collisions_without_aggregation() -> None:
+    text = (ROOT / "scripts/v4/stage81a3r_materialize_corrected_nph_train_sample.R").read_text(encoding="utf-8")
+    assert "blocked_rows <- collision_ledger$source_feature_index" in text
+    assert "mapping <- mapping[!(mapping$source_feature_index %in% blocked_rows)" in text
+    assert "anyDuplicated(mapping$molecular_address_index)" in text
+    assert "source_library <- as.numeric(colSums(source_counts" in text
+    assert all(term not in text.lower() for term in ("development", "sealed", "pathology", "diagnosis"))
+
+
+def test_corrected_audit_uses_only_phase_a_and_predeclared_null() -> None:
+    text = (ROOT / "scripts/v4/stage81a3r_corrected_real_train_global_state.py").read_text(encoding="utf-8")
+    assert "if len(phase_a[phase_a.study_id.eq(\"SEA_AD\")]) != 11" in text
+    assert '"immune_phase_b_object_accessed": False' in text
+    assert "rng.permutation(len(right))" in text
+    assert "null_cfg[\"seed\"]" in text
+    assert '"scalar_observable_addresses": 40_949' in text
+    assert '"scalar_unobservable_collision_only": 289' in text
+    assert '"post_checkpoint_unregistered_collision_pairs": 14' in text
+    assert '"freeze1_declared": False' in text
+
+
+def test_scalar_injectivity_preflight_accepts_only_known_supplemental_contract() -> None:
+    text = (ROOT / "scripts/v4/stage81a3r_verify_scalar_mapping_injectivity.py").read_text(encoding="utf-8")
+    assert 'EXPECTED_SUPPLEMENTAL_ADDRESSES = {"ENSG00000183889", "ENSG00000281635"}' in text
+    assert "observed_pairs == expected_pairs" in text
+    assert "frame.unregistered_source_rows.astype(int).eq(2).all()" in text
+    assert '"scalar_mapping_injective_after_checkpoint_plus_supplemental_mask"' in text
+
+
+def test_global_dimension_range_closure_is_bounded_and_conditional() -> None:
+    closure = CONFIG["range_closure"]
+    assert closure["purpose"] == "RANGE_CLOSURE_CHECK_ONLY"
+    assert closure["accepted_prefix_maximum"] == 256
+    assert closure["first_extension"] == [272, 288, 304, 320]
+    assert closure["conditional_final_extension"] == [336, 352, 368, 384]
+    assert closure["conditional_trigger"] == "BEST_TESTED_PREFIX_EQUALS_320"
+    assert closure["hard_stop"] == 384
+    assert closure["reuse_corrected_train_lineage"] is True
+    assert closure["reuse_reproducibility_weights"] is True
+    assert closure["reuse_residual_null"] is True
+    assert closure["freeze1_declared"] is False
+
+
+def test_range_closure_preserves_accepted_prefix_and_firewall() -> None:
+    text = (ROOT / "scripts/v4/stage81a3r_global_dimension_range_closure.py").read_text(encoding="utf-8")
+    assert "combined[:, :existing] - basis" in text
+    assert "accepted prefix means did not reproduce" in text
+    assert "accepted prefix standard errors did not reproduce" in text
+    assert 'conditional_extension_run = int(first_bulk["best_prefix"]) == 320' in text
+    assert 'if conditional_extension_run:' in text
+    assert '"hard_stop": 384' not in text
+    assert '"development_rna_accessed": False' in text
+    assert '"sealed_rna_accessed": False' in text
+    assert '"pathology_accessed": False' in text
+    assert '"immune_phase_b_accessed": False' in text
+    assert all(term not in text.lower() for term in ("diagnosis", "braak", "cerad", "amyloid"))
+
+
+def test_range_closure_reuses_residual_decision_only_when_k_bulk_is_208() -> None:
+    text = (ROOT / "scripts/v4/stage81a3r_global_dimension_range_closure.py").read_text(encoding="utf-8")
+    assert "if k_bulk == 208:" in text
+    assert "stage81a3r_corrected_real_train_residual_tail.csv" in text
+    assert 'corrected.keyed_seed(null_cfg["seed"], context["fold"], matrix, permutation)' in text
+    assert 'float(null_cfg["bh_fdr"])' in text
+    assert 'null_cfg["donor_refit_min_median_canonical_correlation"]' in text

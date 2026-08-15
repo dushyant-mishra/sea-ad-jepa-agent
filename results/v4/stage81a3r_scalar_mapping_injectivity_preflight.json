@@ -1,0 +1,123 @@
+{
+  "checkpoint_collision_mask_injective": false,
+  "known_supplemental_mask_accepted": true,
+  "operators_audited": 42,
+  "operators_with_unregistered_collisions": 7,
+  "rows": [
+    {
+      "mapping_evidence_classes": "SOURCE_EXACT|SOURCE_LOCAL_EXACT",
+      "matrix_id": "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000183889",
+      "source_dataset_id": "NPH52::Astro_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "1217|12903",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "LEGACY_ENSEMBL_EXACT",
+      "matrix_id": "NPH52::matrix::Astro_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000281635",
+      "source_dataset_id": "NPH52::Astro_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "29166|31663",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "SOURCE_EXACT|SOURCE_LOCAL_EXACT",
+      "matrix_id": "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000183889",
+      "source_dataset_id": "NPH52::Endo_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "693|10465",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "LEGACY_ENSEMBL_EXACT",
+      "matrix_id": "NPH52::matrix::Endo_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000281635",
+      "source_dataset_id": "NPH52::Endo_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "30848|31845",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "SOURCE_EXACT|SOURCE_LOCAL_EXACT",
+      "matrix_id": "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000183889",
+      "source_dataset_id": "NPH52::ExN_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "1666|14851",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "LEGACY_ENSEMBL_EXACT",
+      "matrix_id": "NPH52::matrix::ExN_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000281635",
+      "source_dataset_id": "NPH52::ExN_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "1016|1017",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "SOURCE_EXACT|SOURCE_LOCAL_EXACT",
+      "matrix_id": "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000183889",
+      "source_dataset_id": "NPH52::InN_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "1336|13522",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "LEGACY_ENSEMBL_EXACT",
+      "matrix_id": "NPH52::matrix::InN_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000281635",
+      "source_dataset_id": "NPH52::InN_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "849|30535",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "SOURCE_EXACT|SOURCE_LOCAL_EXACT",
+      "matrix_id": "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000183889",
+      "source_dataset_id": "NPH52::MG_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "1004|11985",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "LEGACY_ENSEMBL_EXACT",
+      "matrix_id": "NPH52::matrix::MG_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000281635",
+      "source_dataset_id": "NPH52::MG_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "29971|32095",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "SOURCE_EXACT|SOURCE_LOCAL_EXACT",
+      "matrix_id": "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000183889",
+      "source_dataset_id": "NPH52::OPC_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "1122|12242",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "LEGACY_ENSEMBL_EXACT",
+      "matrix_id": "NPH52::matrix::OPC_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000281635",
+      "source_dataset_id": "NPH52::OPC_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "27511|32530",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "SOURCE_EXACT|SOURCE_LOCAL_EXACT",
+      "matrix_id": "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000183889",
+      "source_dataset_id": "NPH52::Oligo_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "1552|14328",
+      "unregistered_source_rows": 2
+    },
+    {
+      "mapping_evidence_classes": "LEGACY_ENSEMBL_EXACT",
+      "matrix_id": "NPH52::matrix::Oligo_data_arranged_updatedId_final_batches.qs",
+      "molecular_address_id": "ENSG00000281635",
+      "source_dataset_id": "NPH52::Oligo_data_arranged_updatedId_final_batches.qs",
+      "source_feature_indices": "29983|32185",
+      "unregistered_source_rows": 2
+    }
+  ],
+  "scalar_mapping_injective_after_checkpoint_plus_supplemental_mask": true,
+  "unique_addresses": 2,
+  "unregistered_matrix_address_collisions": 14
+}

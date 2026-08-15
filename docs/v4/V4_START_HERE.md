@@ -2,10 +2,9 @@
 
 ## One-Sentence Status
 
-Stage81A2 is frozen at `808ce4f`; Stage81A3 has verified development evidence
-but is not frozen. The 4,096-gene address-space cap and the independent 160-D
-gene-token/global-state assumptions must be reopened in a versioned revision
-before Freeze 1.
+Stage81A2R is frozen with 41,238 universal molecular addresses, and Stage81A3
+Freeze1 is declared with `d_gene=160` and the final range-closed
+`d_global=224`; Stage81B and Stage81C have not started.
 
 ## What Matters Now
 
@@ -14,12 +13,11 @@ Read these artifacts for the current decision state:
 | Priority | Artifact | Why it matters |
 |---|---|---|
 | 1 | `docs/v4/CURRENT_STATE_HANDOFF.md` | Canonical stage authority, chronology, blockers, and reproduction |
-| 2 | `results/v4/stage81_current_state_manifest.json` | Machine-readable checkpoint state |
-| 3 | `results/v4/stage81a2_freeze_report.json` | Frozen A2 contract and hashes |
-| 4 | `docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md` | Full A3 experiment chronology |
-| 5 | `results/v4/stage81a3_foundation_biological_state_domain_qualification.json` | Intrinsic state/domain qualification summary |
-| 6 | `results/v4/stage81a3_rare_biology_completeness.json` | Final rare-state chronology boundary |
-| 7 | `results/v4/stage81a3_context_identifiability_after_human_adjudication.json` | Context identifiability, not context benefit |
+| 2 | `results/v4/stage81a3r_freeze1_contract.json` | Machine-readable frozen representation contract |
+| 3 | `docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md` | Concise Freeze1 evidence and boundaries |
+| 4 | `results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json` | Frozen A2R address counts and semantic hash |
+| 5 | `docs/v4/STAGE81A3R_REAL_TRAIN_GLOBAL_STATE_READOUT.md` | Historical 208 audit and final 224 range closure |
+| 6 | `docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md` | Full historical A3 experiment chronology |
 
 Everything else in `results/v4/` is supporting evidence, frozen provenance, or
 a tracked negative result. Start from the handoff rather than browsing by name.
@@ -35,17 +33,17 @@ a tracked negative result. Start from the handoff rather than browsing by name.
 | Pathology context | GSE243292 | Validation only; pathology fields cannot supervise the pathology-blind foundation stage |
 | Perturbation | 16 acquired processed assets | Blocked from training until content-level identity and matrix gates pass |
 
-## Current Blockers
+## Carried-Forward Boundaries
 
-1. The 4,096 vocabulary was a configured top-K capacity, not a biological
-   saturation point. A versioned maximal-exact-gene revision is required before
-   Freeze 1; implementation has not started.
-2. `d_gene=160` and PCA160/`d_cell=160` are distinct capacity and resolution
-   assumptions. Historical tests remain valid, but neither value is frozen or
-   biologically privileged for the future revision.
-3. HVS retains 78 exact source donor IDs while the publication describes 75.
-4. Fang MTG surgical provenance remains quarantined.
-5. Local data/caches remain required for full regeneration and are inventoried
+1. `d_gene=160` is frozen from bounded synthetic qualification, not claimed to
+   be a biologically complete contextual state.
+2. `d_global=224` is a derived ordered summary and is not claimed to contain all
+   molecular biology; the Molecular Ledger remains the high-resolution route.
+3. Preferential U_BIO/U_MEAS separation was not demonstrated, so calibrated
+   uncertainty outputs are excluded from Freeze1.
+4. HVS retains 78 exact source donor IDs while the publication describes 75.
+5. Fang MTG surgical provenance remains quarantined.
+6. Local data/caches remain required for full regeneration and are inventoried
    separately rather than committed as raw data.
 
 ## Artifact Classes
@@ -68,8 +66,9 @@ workflow dashboard.
 
 ## Next Work
 
-Re-establish the intrinsic representation under a versioned maximal-exact-
-transcriptome contract while independently qualifying `d_gene` contextual
-capacity and `d_cell` global-state resolution. Preserve Stage81A2 and historical
-160-D evidence unchanged; do not begin Stage81B, Stage81C, or production
-training in that design step.
+Begin Stage81B only under a separate authorization. Its first global-basis
+action is a one-time complete-authorized-TRAIN refit using the frozen molecular
+address, scalar-support, preprocessing, reproducibility-weighting,
+ordered-linear, and `d_global=224` contract. Dimension reselection and access to
+DEV, SEALED, pathology, or Phase-B Immune data are forbidden. Stage81C remains
+not started.

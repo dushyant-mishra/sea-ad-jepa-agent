@@ -1,0 +1,57 @@
+{
+  "basis_median_canonical_correlation": 0.6902962923049927,
+  "basis_projector_similarity": 0.5093080401420593,
+  "common_prefix_for_basis_comparison": 96,
+  "corrected_d_global_candidate": 208,
+  "corrected_first_unsupported_block": 209,
+  "corrected_k_bulk": 208,
+  "corrected_lineage": "NPH_PHYSICAL_FULL_FEATURE_COLLISION_AWARE",
+  "corrected_ordering_failure": false,
+  "operator_recovery_corrected": {
+    "HVS": {
+      "operators": 24,
+      "paired_view_projected_median": 0.20626199708148302,
+      "projected_recovery_median": 0.3011770901005961,
+      "representation_gap_median": 0.6988229098994039
+    },
+    "NPH52": {
+      "operators": 7,
+      "paired_view_projected_median": 0.38906110542972727,
+      "projected_recovery_median": 0.5206409620258038,
+      "representation_gap_median": 0.4793590379741962
+    },
+    "SEA_AD": {
+      "operators": 11,
+      "paired_view_projected_median": 0.3332915742391208,
+      "projected_recovery_median": 0.413510581680003,
+      "representation_gap_median": 0.586489418319997
+    }
+  },
+  "operator_recovery_pilot": {
+    "HVS": {
+      "operators": 24,
+      "paired_view_projected_median": 0.2087625136537456,
+      "projected_recovery_median": 0.30522464685348316,
+      "representation_gap_median": 0.6947753531465168
+    },
+    "NPH52": {
+      "operators": 7,
+      "paired_view_projected_median": 0.4516086777882341,
+      "projected_recovery_median": 0.634338116836463,
+      "representation_gap_median": 0.365661883163537
+    },
+    "SEA_AD": {
+      "operators": 11,
+      "paired_view_projected_median": 0.342187047742694,
+      "projected_recovery_median": 0.4280945590251851,
+      "representation_gap_median": 0.5719054409748149
+    }
+  },
+  "pilot_d_global_candidate": null,
+  "pilot_k_bulk": 96,
+  "pilot_lineage": "NPH_HISTORICAL_4096_LIMITED",
+  "positive_to_zero_weights": 986,
+  "status": "STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN",
+  "weight_pearson_correlation": 0.8866854825671586,
+  "zero_to_positive_weights": 2282
+}

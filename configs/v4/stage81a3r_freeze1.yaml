@@ -1,0 +1,128 @@
+stage_id: stage81a3r_freeze1
+schema_version: "1.0"
+status: STAGE81A3_FREEZE1_DECLARED
+
+foundation_molecular_space:
+  universal_addresses: 41238
+  current_exact: 40422
+  legacy_exact: 773
+  source_native_anchored: 43
+  semantic_hash: 5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff
+
+scalar_observation_contract:
+  scalar_observable_somewhere_in_train: 40949
+  collision_only_scalar_unobservable: 289
+  allowed_states:
+    - MEASURED_SCALAR
+    - STRUCTURALLY_UNMEASURED
+    - MEASURED_COLLISION_UNRESOLVED
+  forbidden_collision_materialization:
+    - sum
+    - mean
+    - max
+    - first_row
+    - zero
+
+molecular_ledger:
+  d_gene: 160
+  blocks: 6
+  heads: 4
+  token_preserving_ipb: true
+  cell_token_retained: true
+  graph_free_masking: true
+  full_universal_address_namespace: true
+
+global_state:
+  d_global: 224
+  qualification_basis_sha256: 5ddee92a83cd4f54ae61a6c9ed192847ac8f941f725e5a5678512460f5308b84
+  pathology_blind: true
+  reproducibility_weighted: true
+  ordered_linear_construction: true
+  measurement_aware_masked_projection: true
+  dimension_selection_closed: true
+
+real_train_qualification:
+  train_donors: 149
+  phase_a_operators: 42
+  qualification_cells: 4726
+  positive_reproducibility_weights:
+    current_exact: 29013
+    legacy_exact: 298
+    source_native_anchored: 3
+  best_tested_prefix: 336
+  best_mean_r2: 0.2708165995713791
+  best_standard_error: 0.00617362331278569
+  one_se_threshold: 0.2646429762585934
+  donor_refit_median_canonical_correlation: 0.9949065446853638
+  donor_refit_median_projector_similarity: 0.8609739542007446
+  first_residual_block: [225, 240]
+  first_residual_empirical_p: 0.009900990099009901
+  first_residual_bh_q: 0.009900990099009901
+  first_residual_donor_correlation: 0.11886070668697357
+  donor_support_threshold: 0.50
+  residual_retained: false
+  ordering_failure: false
+  classification: ORDERED_GLOBAL_STATE_CANDIDATE_EARNED
+
+production_basis_policy:
+  qualification_basis_role: DIMENSION_QUALIFICATION_EVIDENCE_ONLY
+  stage81b_action: ONE_TIME_COMPLETE_AUTHORIZED_TRAIN_REFIT
+  refit_dimension: 224
+  dimension_reselection_forbidden: true
+  dev_rna_forbidden: true
+  sealed_rna_forbidden: true
+  pathology_forbidden: true
+  biology_outcome_tuning_forbidden: true
+
+immune_phase_b:
+  role: PHASE_B_IMMUNE_MICROGLIA_PVM_CONTINUATION
+  independent_phase_a_cohort: false
+  exact_cells_overlapping_regional_rna: 240651
+  total_cells: 240651
+
+uncertainty:
+  u_bio_u_meas_preferential_separation_demonstrated: false
+  calibrated_outputs_in_freeze1_contract: false
+
+validation:
+  focused_a3r_and_frozen_address:
+    passed: 35
+    failed: 0
+  full_v4:
+    passed: 869
+    known_historical_portability_failures: 28
+    new_a3r_failures: 0
+  repository:
+    passed: 881
+    known_historical_portability_failures: 28
+    new_a3r_failures: 0
+  compileall_pass: true
+  diff_check_pass: true
+  protected_hashes:
+    stage81a3_ipb_jepa_feasibility.json: aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308
+    stage81a3_rlc_causal_fast_probe.json: ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc
+
+inputs:
+  address_audit: results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json
+  synthetic_closure: results/v4/stage81a3r_synthetic_closure_provisional.json
+  corrected_historical_candidate: results/v4/stage81a3r_corrected_real_train_global_state_candidate.json
+  range_closure: results/v4/stage81a3r_global_dimension_range_closure.json
+  range_prefix: results/v4/stage81a3r_global_dimension_range_closure_prefix.csv
+  range_residual: results/v4/stage81a3r_global_dimension_range_closure_residual.csv
+  range_donor_stability: results/v4/stage81a3r_global_dimension_range_closure_donor_stability.csv
+  immune_compatibility: results/v4/stage81a3r_sea_ad_immune_phase_b_compatibility.json
+
+outputs:
+  contract: results/v4/stage81a3r_freeze1_contract.json
+  evidence_manifest: results/v4/stage81a3r_freeze1_evidence_manifest.json
+  current_state: results/v4/stage81_current_state_manifest.json
+  readout: docs/v4/STAGE81A3R_FREEZE1_REPRESENTATION_CONTRACT.md
+
+governance:
+  stage81a2r: FROZEN
+  stage81a3r_synthetic_qualification: COMPLETE
+  stage81a3r_real_train_qualification: COMPLETE
+  stage81a3_freeze1: DECLARED
+  stage81b: NOT_STARTED
+  stage81c: NOT_STARTED
+  pathology_accessed: false

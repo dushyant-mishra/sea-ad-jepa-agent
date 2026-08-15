@@ -1,0 +1,58 @@
+{
+  "accepted_corrected_audit_status": "STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN",
+  "access": {
+    "cells": 4726,
+    "development_rna_accessed": false,
+    "future_data_accessed": false,
+    "immune_phase_b_accessed": false,
+    "operators": 42,
+    "pathology_accessed": false,
+    "sealed_rna_accessed": false,
+    "train_donors": 149
+  },
+  "best_at_final_boundary": false,
+  "best_mean": 0.2708165995713791,
+  "best_standard_error": 0.00617362331278569,
+  "best_tested_prefix": 336,
+  "classification": "ORDERED_GLOBAL_STATE_CANDIDATE_EARNED",
+  "conditional_extension_run": true,
+  "conditional_final_extension": [
+    336,
+    352,
+    368,
+    384
+  ],
+  "d_global_candidate": 224,
+  "donor_refit_median_canonical_correlation": 0.9949065446853638,
+  "donor_refit_median_projector_similarity": 0.8609739542007446,
+  "final_tested_boundary": 384,
+  "first_extension": [
+    272,
+    288,
+    304,
+    320
+  ],
+  "first_residual_block_after_k_bulk": [
+    225,
+    240
+  ],
+  "first_unsupported_block": 225,
+  "freeze1_declared": false,
+  "immutable_input_state": {
+    "frozen_a2r_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+    "positive_weights_by_identity_class": {
+      "current_exact": 29013,
+      "legacy_exact": 298,
+      "source_native_anchored": 3
+    },
+    "scalar_observable_addresses": 40949,
+    "scalar_unobservable_collision_only": 289,
+    "universal_molecular_addresses": 41238
+  },
+  "k_bulk": 224,
+  "one_se_threshold": 0.2646429762585934,
+  "ordering_failure": false,
+  "stage81b_started": false,
+  "stage81c_started": false,
+  "status": "STAGE81A3R_GLOBAL_DIMENSION_RANGE_CLOSURE_COMPLETE_NOT_FROZEN"
+}

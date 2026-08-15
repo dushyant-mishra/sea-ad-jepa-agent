@@ -1,0 +1,9 @@
+{
+  "best_mean": 0.2682044482116577,
+  "best_prefix": 256,
+  "best_standard_error": 0.006204291764927218,
+  "decision_rule": "smallest prefix within one SE of best held-out paired-view reconstruction",
+  "k_bulk": 208,
+  "one_se_threshold": 0.26200015644673047,
+  "status": "STAGE81A3R_CORRECTED_REAL_TRAIN_GLOBAL_STATE_AUDIT_COMPLETE_NOT_FROZEN"
+}
