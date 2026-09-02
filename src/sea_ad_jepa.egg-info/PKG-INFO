@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: sea-ad-jepa
+Version: 0.1.0
+Summary: JEPA-agent prototype for SEA-AD Alzheimer disease gene-network discovery.
+Requires-Python: >=3.11

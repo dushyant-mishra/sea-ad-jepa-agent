@@ -1,0 +1,23 @@
+{
+  "canonical_signs": true,
+  "float64_donor_sufficient_statistics": true,
+  "matched_null_singleton_cell_fraction": {
+    "A": 0.00010593473736728257,
+    "B": 0.00010593473736728257
+  },
+  "schema": "full104-shared-numerical-audit-v1",
+  "sketch_A": {
+    "condition": 1217.953453377506,
+    "maximum_generalized_residual": 3.796132951774147e-13,
+    "orthogonality": 2.637203882052305e-16,
+    "ridge": 1.4901161193847656e-08
+  },
+  "sketch_B": {
+    "condition": 1095.7405252779186,
+    "maximum_generalized_residual": 3.348774567919892e-13,
+    "orthogonality": 2.4658922335508437e-16,
+    "ridge": 1.4901161193847656e-08
+  },
+  "status": "PASS",
+  "two_sketch_sensitivity": true
+}

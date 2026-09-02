@@ -1,0 +1,9 @@
+{
+  "batch_id": 5,
+  "tf": "ELF1",
+  "chunk_index_for_tf": 1,
+  "n_target_genes": 33,
+  "n_regions": 91,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true
+}

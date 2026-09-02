@@ -1,0 +1,43 @@
+{
+  "checks": {
+    "NPH_component2_classification": true,
+    "audited_read_scope_only_nuisance_and_package": true,
+    "authenticated_inputs": true,
+    "authority_amendment_bound_before_result": true,
+    "equilibrated_ranks_match_raw": true,
+    "first_invalid_is_NPH_prefix": true,
+    "frontier_rows_through_stop": true,
+    "incremental_prefix_ranks": true,
+    "joint_augmented_rank": true,
+    "mandatory_base_columns": true,
+    "mandatory_base_rank_7": true,
+    "no_forbidden_data_access": true,
+    "production_helpers_not_imported": true,
+    "raw_augmented_ranks": true,
+    "terminal_matches": true
+  },
+  "frontier_rows_checked": 6,
+  "independent_first_invalid": [
+    [
+      0,
+      1,
+      0
+    ],
+    8,
+    8,
+    1.0000000000054072,
+    -5.4072302191343624e-12,
+    "NPH52::human_NPH_906"
+  ],
+  "independent_incremental_ranks": {
+    "HVS": 6,
+    "NPH52": 1,
+    "SEA_AD": 4
+  },
+  "independent_local_ranks": {
+    "HVS": 6,
+    "NPH52": 2,
+    "SEA_AD": 4
+  },
+  "terminal_status": "STOP_F1_HC3_INCREMENTAL_FRONTIER_HC3_NONESTIMABLE"
+}

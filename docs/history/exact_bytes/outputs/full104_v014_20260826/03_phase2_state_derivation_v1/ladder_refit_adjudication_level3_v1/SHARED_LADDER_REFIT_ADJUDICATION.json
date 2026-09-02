@@ -1,0 +1,46 @@
+{
+  "candidate_D_shared": null,
+  "comparison": {
+    "comparison_dimension": 13,
+    "current_bootstrap_one_se_floor": {
+      "A": 0.9431612005144844,
+      "B": 0.971452446289318
+    },
+    "current_candidate_D": 13,
+    "current_donor_se": 0.006650312394340724,
+    "current_level": 3,
+    "current_paired_heldout_predictability": 0.7384028511054159,
+    "dimension_intervals_overlap": false,
+    "no_material_subspace_loss": true,
+    "paired_donor_delta_mean": 0.0002025278036462392,
+    "paired_donor_delta_se": 0.0001348637283122301,
+    "previous_candidate_D": 6,
+    "previous_level": 2,
+    "previous_paired_heldout_predictability": 0.7382003233017697,
+    "previous_within_one_current_donor_se": true,
+    "principal_angle_subspace_overlap": {
+      "A": 0.9992039020244892,
+      "B": 0.9996920365553635
+    },
+    "successive_level_stable": false
+  },
+  "current_level_candidate_D": 13,
+  "downstream_consumable": false,
+  "frozen": false,
+  "full104_reached": false,
+  "independent_validator_pass": true,
+  "input_hashes": {
+    "code": "7facb2877e3642050d8206a29fdd8fbc83d2f3d3a2201188be3ef78efff348d2",
+    "current_analytic": "8368b255ed06e49a029363e495086b95f7d1496f7f2ecc5937aece9dd1ef0e22",
+    "current_selection": "700f05a7e59b4ee52d7056708af8ca6564769d3da6c2cb0896f8be3a98ad7b7b",
+    "harness": "d703264a72ba4527ff0872d41899c6e6fa7e2577c69e45e6356a97b65c2ce34c",
+    "independent": "6757cdb25254ffa92f6b24e3cc0c85a7afdfa46cdb8344b2830ea0a8d58277cc",
+    "previous_analytic": "30891dbf38c51aad0dd5f3dc4965e336ba5fbbb9379b31951a1b990d98869ed8",
+    "previous_selection": "705e354cd32d4e726fa15932d36036b95e50cfa389ed3608639e9b9f40968850"
+  },
+  "next_level_required": true,
+  "result_state": "PROVISIONAL",
+  "schema": "full104-shared-ladder-refit-harness-v1",
+  "status": "ADVANCE_LADDER",
+  "successive_level_converged": false
+}

@@ -1,0 +1,8 @@
+{
+  "admissible_rows": 30,
+  "design_selected_or_frozen": false,
+  "f1_run_authorized": false,
+  "frontier_rows": 70,
+  "nph_free_rows": 35,
+  "terminal_status": "PASS_F1_HC3_REPLICATION_FRONTIER_COMPLETE_AWAITING_EXTERNAL_REVIEW"
+}

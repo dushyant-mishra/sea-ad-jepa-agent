@@ -1,0 +1,2 @@
+source,forbidden_predictor,reason,excluded
+CELLxGENE metadata,disease,diagnosis/disease metadata not used as predictor,True

@@ -1,0 +1,16 @@
+audit_item,pass,evidence
+no_external_data_used_for_model_training,True,passed by Stage 41ABC safety gates
+no_external_model_selection,True,passed by Stage 41ABC safety gates
+no_candidate_selection,True,passed by Stage 41ABC safety gates
+frozen_candidates_preserved,True,passed by Stage 41ABC safety gates
+donor_held_out_evaluation_preserved,True,passed by Stage 41ABC safety gates
+train_fold_only_preprocessing_preserved,True,passed by Stage 41ABC safety gates
+forbidden_features_excluded,True,passed by Stage 41ABC safety gates
+proxy_risk_features_comparator_only,True,passed by Stage 41ABC safety gates
+negative_controls_reported_or_training_skipped,True,passed by Stage 41ABC safety gates
+no_clean_external_validation_claim,True,passed by Stage 41ABC safety gates
+no_causal_claim,True,passed by Stage 41ABC safety gates
+no_therapeutic_claim,True,passed by Stage 41ABC safety gates
+no_gene_ablation_claim,True,passed by Stage 41ABC safety gates
+no_disease_modifying_claim,True,passed by Stage 41ABC safety gates
+safety_audit_pass,True,all claim boundaries passed

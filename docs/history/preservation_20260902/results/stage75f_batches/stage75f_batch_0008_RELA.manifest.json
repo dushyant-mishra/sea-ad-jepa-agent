@@ -1,0 +1,9 @@
+{
+  "batch_id": 8,
+  "tf": "RELA",
+  "chunk_index_for_tf": 1,
+  "n_target_genes": 30,
+  "n_regions": 81,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true
+}

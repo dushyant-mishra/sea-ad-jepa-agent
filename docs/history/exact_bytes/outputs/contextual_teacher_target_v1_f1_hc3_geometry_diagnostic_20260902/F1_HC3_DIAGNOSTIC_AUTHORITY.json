@@ -1,0 +1,29 @@
+{
+  "design_selection_authorized": false,
+  "donor_counts": {
+    "HVS": 41,
+    "NPH52": 17,
+    "SEA_AD": 46
+  },
+  "firewall": {
+    "candidate_outcomes_read": false,
+    "expression_read": false,
+    "model_or_checkpoint_read": false,
+    "training_or_ema": false
+  },
+  "input_sha256": {
+    "exports\\contextual_biology_v6r5a_20260822\\reader_donor_split.csv": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "exports\\foundation_calibration_bundle_20260824\\support\\FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "outputs\\contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902\\F1_NUISANCE_COLUMN_SCHEMA.json": "9f90c764d0d97b5a10badc03dfcbafc364e0bf40e120a9aed6609e036b5924a7",
+    "outputs\\contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902\\F1_NUISANCE_DONOR_DESIGN_AUTHORITY.json": "2a09bdbb4403870e3b240d6c12c06360d550062aaa16b3a9d565f60b2bd7f1bb",
+    "outputs\\contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902\\F1_NUISANCE_DONOR_DESIGN_F64LE.bin": "1d8f837d18cedd8d1b8fd6138d1b25f886b8352c097a4723ca06421573334056",
+    "outputs\\contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902\\F1_NUISANCE_FORMULA_CONTRACT.md": "9c5c63fc850bb23856fcd450a60da9f175269b62aa8819133903f439c0480a89",
+    "outputs\\contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902\\F1_NUISANCE_HC3_COMPATIBILITY.json": "01adba7dcb1d6160dbfdd080317b310e87f51fa701ed97953a23769512d1eeda",
+    "outputs\\contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902\\F1_NUISANCE_MANIFEST.csv": "fcebe4aecbd1a03b184005fe09c77a34a201910553c9048810498f0b7206fde9",
+    "scripts\\v4\\contextual_target_f1_decision_v1.py": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34"
+  },
+  "primitive_nuisance_semantic_root": "2f0c95b1d9c098f8593827f240f64a0b8e5512ead92fe50540f6e2dc231742ec",
+  "raw_columns": 49,
+  "rows": 104,
+  "terminal_input_status": "PASS"
+}

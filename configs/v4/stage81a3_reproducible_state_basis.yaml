@@ -1,0 +1,35 @@
+stage_id: stage81a3_reproducible_state_basis_audit
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+fixture:
+  source: accepted_stage81a3_cpiu_synthetic_fixture
+  cells: 4096
+  genes: 4096
+  factors: 32
+  train: 3072
+  validation: 512
+  sealed: 512
+reppca:
+  components: 160
+  covariance: symmetrized_cross_replicate
+  positivity_relative_threshold: 1.0e-8
+  positivity_absolute_floor: 1.0e-10
+  whitening_epsilon: same_as_positivity_threshold
+control:
+  name: PAIRMEAN_PCA160
+  fit_source: train_pair_mean_counts
+qualification:
+  minimum_positive_eigenvalues: 160
+  orthogonality_tolerance: 1.0e-5
+  decomposition_tolerance: 1.0e-5
+  minimum_lambda_factor_r2: 0.97
+  maximum_factor_r2_trailing: 0.02
+  maximum_correlation_trailing: 0.02
+  maximum_distance_ratio_multiplier: 1.05
+boundaries:
+  factor_labels_in_basis_fit: forbidden
+  real_rna: forbidden
+  pathology: forbidden
+  neural_optimization: forbidden
+  jepa_training: forbidden
+  dimensionality_sweep: forbidden

@@ -1,0 +1,2 @@
+external_validation_claim_made,causal_claim_made,therapeutic_target_claim_made,novelty_overclaim_made,direct_gene_ablation_claim_made,in_silico_ablation_validated_claim_made,priority_score_presented_as_truth,safety_audit_pass
+False,False,False,False,False,False,False,True

@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "CLOSED_DSHARED_DO_NOT_USE": 3,
+    "CURRENT_CONTEXTUAL_DELTA_REQUIRED": 5,
+    "REUSE_ENGINEERING_PATTERN_ONLY": 9,
+    "REUSE_EXACT": 34
+  },
+  "delta_novelty_reconciliation": {
+    "FULL104_CONTEXTUAL_CACHE_RESUME_DELTA.md": "No prior inventory defines the contextual two-axis encoder-view/value-world cache identity and null payload binding.",
+    "FULL104_CONTEXTUAL_RESOURCE_DELTA.json": "No prior inventory contains current role/forward static planning envelope; upstream provides only nonfrozen identity counts.",
+    "FULL104_CONTEXT_CAPACITY_DELTA.json": "No prior inventory analytically translates 42-operator measured-scalar support through current nested evidence fractions.",
+    "FULL104_CURRENT_MODEL_MEMORY_ACCOUNTING.json": "No prior inventory gives exact current contextual encoder copy/gradient/state/checkpoint conversion accounting.",
+    "FULL104_TRAINING_COVERAGE_COORDINATES.json": "No prior inventory gives nonselecting FULL104 presentation arithmetic for the current contextual path."
+  },
+  "firewall": {
+    "backward": false,
+    "ema_update": false,
+    "expression_opened": false,
+    "f1_candidate_outcome_read": false,
+    "full_expression_scan": false,
+    "optimizer_step": false,
+    "protected_partitions_opened": false,
+    "training": false
+  },
+  "matrix_rows": 51,
+  "population": {
+    "addresses": 41238,
+    "cells": 4553407,
+    "donor_operator_strata": 1400,
+    "donors": 104,
+    "duplicate_cell_locators": 0,
+    "nph_quarantined": 22715,
+    "operators": 42,
+    "source_cells": {
+      "HVS": 198718,
+      "NPH52": 236476,
+      "SEA_AD": 4118213
+    }
+  },
+  "rule": "REUSE_FROZEN_BYTES_VERIFY_HASH_SEMANTICS_COMPUTE_ONLY_MISSING_DELTA",
+  "schema": "full104-reuse-authority-v1",
+  "scope_definition": {
+    "controlling_instruction_bytes": 13234,
+    "controlling_instruction_path": "C:\\Users\\dushy\\.codex\\attachments\\b29b307c-4978-444f-91ce-59722d8cd0a7\\pasted-text.txt",
+    "controlling_instruction_sha256": "f9fe9b3ad7c98cb2ad204c9081396565d6edc3e24719d2961df1c4d8146a619f",
+    "external_inventory_authorities": [
+      {
+        "bytes": 5998,
+        "path": "outputs/full104_v014_20260826/01_full104_metadata_adapter/FULL104_ADAPTER_SHA256_MANIFEST.csv",
+        "sha256": "54e4ba5b60e9c5d3ff23a307df03576f45ac725f3b71642888500a469ebdbc74"
+      },
+      {
+        "bytes": 30138,
+        "path": "exports/foundation_corpus_discovery_v1/FOUNDATION_CORPUS_DISCOVERY_HASH_MANIFEST.csv",
+        "sha256": "a21029603afc7fe4e9ed05ffad4bde7bb685fd0660651a43a35c42ce71d510f4"
+      },
+      {
+        "bytes": 8912,
+        "path": "outputs/contextual_teacher_target_v1_f1_reuse_reconciliation_20260901/F1_REUSE_TAXONOMY.csv",
+        "sha256": "b11f1531763ea5c3a223feef63ed2dd6d6fab1e61c2286b39b5cbcb6862d4dd7"
+      },
+      {
+        "bytes": 17048,
+        "path": "outputs/contextual_teacher_target_v1_code_discovery_20260901/CONTEXTUAL_TARGET_V1_CODE_PATH_DISCOVERY.json",
+        "sha256": "6cabab06887d710148a524e20c2b9959206984d83b22091a96e3b5467e889bd2"
+      }
+    ]
+  },
+  "status": "PASS_AUTHENTICATED_REUSE_MATRIX"
+}

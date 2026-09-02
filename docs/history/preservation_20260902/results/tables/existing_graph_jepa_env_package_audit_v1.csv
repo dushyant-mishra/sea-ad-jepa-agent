@@ -1,0 +1,73 @@
+env_name,python_executable,python_version,package_name,import_name,available,version,cuda_available_if_torch,needed_for_v3,blocking_if_missing,notes
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,numpy,numpy,True,1.24.2,,core_scientific,yes,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,pandas,pandas,True,1.5.3,,core_scientific,yes,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,scipy,scipy,True,1.10.1,,core_scientific,yes,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,sklearn,sklearn,True,1.2.1,,core_scientific,yes,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,networkx,networkx,True,2.6.3,,graph_runtime,yes,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,matplotlib,matplotlib,True,3.7.1,,reporting,baseline_only,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,statsmodels,statsmodels,True,0.12.2,,statistics,baseline_only,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,pyarrow,pyarrow,False,,,data_io,baseline_only,ModuleNotFoundError: No module named 'pyarrow'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,h5py,h5py,True,3.2.1,,data_io,baseline_only,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,anndata,anndata,False,,,single_cell_io,baseline_only,ModuleNotFoundError: No module named 'anndata'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,scanpy,scanpy,False,,,single_cell_analysis,baseline_only,ModuleNotFoundError: No module named 'scanpy'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,torch,torch,False,,,v3_neural_model,yes,ModuleNotFoundError: No module named 'torch'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,torch_geometric,torch_geometric,False,,,v3_graph_model,yes,ModuleNotFoundError: No module named 'torch_geometric'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,umap,umap,False,,,manifold_baseline,baseline_only,ModuleNotFoundError: No module named 'umap'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,openTSNE,openTSNE,False,,,manifold_baseline,baseline_only,ModuleNotFoundError: No module named 'openTSNE'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,phate,phate,False,,,manifold_baseline,baseline_only,ModuleNotFoundError: No module named 'phate'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,pydiffmap,pydiffmap,False,,,manifold_baseline,baseline_only,ModuleNotFoundError: No module named 'pydiffmap'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,scvi,scvi,False,,,optional_single_cell_model,no,ModuleNotFoundError: No module named 'scvi'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,xgboost,xgboost,False,,,boosting_baseline,baseline_only,ModuleNotFoundError: No module named 'xgboost'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,lightgbm,lightgbm,False,,,boosting_baseline,baseline_only,ModuleNotFoundError: No module named 'lightgbm'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,dowhy,dowhy,False,,,causal_optional,baseline_only,ModuleNotFoundError: No module named 'dowhy'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,econml,econml,False,,,causal_optional,baseline_only,ModuleNotFoundError: No module named 'econml'
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,src_package_import,sea_ad_jepa,True,import_ok,,v2_runtime_code,yes,
+base_current,C:\Users\dushy\anaconda3\python.exe,3.9.7,graph_jepa_module_import,sea_ad_jepa.graph_jepa,False,,,v2_runtime_code,yes,ModuleNotFoundError: No module named 'torch'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,numpy,numpy,True,1.26.4,,core_scientific,yes,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,pandas,pandas,True,2.2.3,,core_scientific,yes,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,scipy,scipy,True,1.15.3,,core_scientific,yes,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,sklearn,sklearn,True,1.5.2,,core_scientific,yes,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,networkx,networkx,True,3.6.1,,graph_runtime,yes,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,matplotlib,matplotlib,True,3.9.4,,reporting,baseline_only,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,statsmodels,statsmodels,True,0.14.6,,statistics,baseline_only,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,pyarrow,pyarrow,True,24.0.0,,data_io,baseline_only,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,h5py,h5py,True,3.11.0,,data_io,baseline_only,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,anndata,anndata,True,0.12.16,,single_cell_io,baseline_only,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,scanpy,scanpy,True,1.11.5,,single_cell_analysis,baseline_only,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,torch,torch,True,2.7.0+cu128,True,v3_neural_model,yes,torch_cuda=12.8; gpu=NVIDIA GeForce RTX 3080 Laptop GPU
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,torch_geometric,torch_geometric,True,2.7.0,,v3_graph_model,yes,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,umap,umap,True,0.5.6,,manifold_baseline,baseline_only,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,openTSNE,openTSNE,False,,,manifold_baseline,baseline_only,ModuleNotFoundError: No module named 'openTSNE'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,phate,phate,False,,,manifold_baseline,baseline_only,ModuleNotFoundError: No module named 'phate'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,pydiffmap,pydiffmap,False,,,manifold_baseline,baseline_only,ModuleNotFoundError: No module named 'pydiffmap'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,scvi,scvi,False,,,optional_single_cell_model,no,ModuleNotFoundError: No module named 'scvi'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,xgboost,xgboost,False,,,boosting_baseline,baseline_only,ModuleNotFoundError: No module named 'xgboost'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,lightgbm,lightgbm,False,,,boosting_baseline,baseline_only,ModuleNotFoundError: No module named 'lightgbm'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,dowhy,dowhy,False,,,causal_optional,baseline_only,ModuleNotFoundError: No module named 'dowhy'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,econml,econml,False,,,causal_optional,baseline_only,ModuleNotFoundError: No module named 'econml'
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,src_package_import,sea_ad_jepa,True,import_ok,,v2_runtime_code,yes,
+sea-ad-jepa,C:\Users\dushy\anaconda3\envs\sea-ad-jepa\python.exe,3.11.15,graph_jepa_module_import,sea_ad_jepa.graph_jepa,True,import_ok,,v2_runtime_code,yes,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,numpy,numpy,True,2.4.6,,core_scientific,yes,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,pandas,pandas,True,2.2.3,,core_scientific,yes,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,scipy,scipy,True,1.15.3,,core_scientific,yes,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,sklearn,sklearn,True,1.5.2,,core_scientific,yes,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,networkx,networkx,True,3.6.1,,graph_runtime,yes,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,matplotlib,matplotlib,True,3.9.4,,reporting,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,statsmodels,statsmodels,True,0.14.6,,statistics,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,pyarrow,pyarrow,True,24.0.0,,data_io,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,h5py,h5py,True,3.11.0,,data_io,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,anndata,anndata,True,0.12.16,,single_cell_io,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,scanpy,scanpy,True,1.11.5,,single_cell_analysis,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,torch,torch,True,2.7.0+cu128,True,v3_neural_model,yes,torch_cuda=12.8; gpu=NVIDIA GeForce RTX 3080 Laptop GPU
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,torch_geometric,torch_geometric,True,2.7.0,,v3_graph_model,yes,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,umap,umap,True,0.5.6,,manifold_baseline,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,openTSNE,openTSNE,True,1.0.4,,manifold_baseline,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,phate,phate,True,2.0.0,,manifold_baseline,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,pydiffmap,pydiffmap,True,unknown,,manifold_baseline,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,scvi,scvi,True,1.4.2,,optional_single_cell_model,no,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,xgboost,xgboost,True,3.2.0,,boosting_baseline,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,lightgbm,lightgbm,True,4.6.0,,boosting_baseline,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,dowhy,dowhy,True,0.14,,causal_optional,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,econml,econml,True,0.16.0,,causal_optional,baseline_only,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,src_package_import,sea_ad_jepa,True,import_ok,,v2_runtime_code,yes,
+sea-ad-jepa-v3,C:\Users\dushy\anaconda3\envs\sea-ad-jepa-v3\python.exe,3.11.15,graph_jepa_module_import,sea_ad_jepa.graph_jepa,True,import_ok,,v2_runtime_code,yes,

@@ -1,0 +1,103 @@
+stage_id: stage81a3_fhra
+schema_version: "1.0"
+anchor_commit: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8115001
+
+governance:
+  pathology_blind: true
+  train_expression_only: true
+  development_expression_forbidden: true
+  sealed_expression_forbidden: true
+  neural_optimizer_updates: 0
+  ema_updates: 0
+  physical_matrix_merge: false
+  production_basis_fit: false
+  stage81b_started: false
+
+inputs:
+  freeze_report: results/v4/stage81a2_freeze_report.json
+  assets: results/v4/stage81a2_canonical_asset_registry.csv
+  matrix_semantics: results/v4/stage81a2_matrix_semantics_contract.csv
+  split_registry: results/v4/stage81a2_split_registry.csv
+  vocabulary: results/v4/stage81a2_foundation_vocabulary.csv
+  gene_measurement_registry: results/v4/stage81a2_gene_measurement_registry.csv
+  nph_disposition: data/processed/v4/stage81a3/stage81a3_nph_disposition_detail.csv.gz
+  nph_sample_cells: data/processed/v4/stage81a3/stage81a3_nph_sample_cells.csv.gz
+  nph_sample_nonzero: data/processed/v4/stage81a3/stage81a3_nph_sample_nonzero.csv.gz
+
+allowed_metadata:
+  HVS:
+    donor: donor_id
+    broad_class: Class
+    broad_class_fallback: Subclass
+    tissue: tissue
+    assay: assay
+    suspension: suspension_type
+    cell_id: exp_component_name
+    library_size: Number of UMIs
+    detected_genes: Genes detected
+    mitochondrial_fraction: Fraction mitochrondrial UMIs
+  SEA_AD:
+    donor: Donor ID
+    broad_class: Class
+    broad_class_fallback: Subclass
+    tissue: Brain Region
+    assay: method
+    suspension: cell_prep_type
+    sample: sample_id
+    cell_id: exp_component_name
+    library_size: Number of UMIs
+    detected_genes: Genes detected
+    mitochondrial_fraction: Fraction mitochondrial UMIs
+  NPH52:
+    donor: donor_id
+    broad_class: broad_cell_class
+    cell_id: cell_id
+    source_object: source_object
+    library_size: raw_library_total
+
+explicitly_forbidden_metadata:
+  - disease
+  - disease_ontology_term_id
+  - Neurotypical reference
+  - Overall AD neuropathological Change
+  - Thal
+  - Braak
+  - CERAD score
+  - Cognitive Status
+  - APOE Genotype
+  - Severely Affected Donor
+  - Highest Lewy Body Disease
+  - LATE
+  - Atherosclerosis
+  - Arteriolosclerosis
+
+bounds:
+  pca_cells_per_matrix: 512
+  count_split_cells_per_matrix: 128
+  forward_cells: 64
+  pca_dimensions: 160
+  diagnostic_internal_test_fraction: 0.25
+  logistic_max_iter: 500
+
+reference_graph:
+  minimum_containment: 0.90
+  minimum_additional_genes: 256
+
+overlap_thresholds: [0.25, 0.50, 0.75, 0.90]
+
+outputs:
+  report: results/v4/stage81a3_foundation_heterogeneity_reality_audit.json
+  inventory: results/v4/stage81a3_foundation_matrix_inventory.csv
+  gene_support: results/v4/stage81a3_foundation_gene_support.csv
+  mask_library: results/v4/stage81a3_foundation_mask_library.csv
+  overlap_graph: results/v4/stage81a3_foundation_overlap_graph.csv
+  reference_graph: results/v4/stage81a3_foundation_reference_graph.csv
+  qc_summary: results/v4/stage81a3_foundation_qc_summary.csv
+  source_balance: results/v4/stage81a3_foundation_source_balance.csv
+  domain_support: results/v4/stage81a3_foundation_domain_support.csv
+  real_mask_state_deficit: results/v4/stage81a3_foundation_real_mask_state_deficit.csv
+  real_pca_diagnostic: results/v4/stage81a3_foundation_real_pca_diagnostic.csv
+  countsplit_readiness: results/v4/stage81a3_foundation_countsplit_readiness.csv
+  architecture_revisit: results/v4/stage81a3_foundation_architecture_revisit.csv
+  masks_npz: results/v4/stage81a3_foundation_real_measurement_masks.npz

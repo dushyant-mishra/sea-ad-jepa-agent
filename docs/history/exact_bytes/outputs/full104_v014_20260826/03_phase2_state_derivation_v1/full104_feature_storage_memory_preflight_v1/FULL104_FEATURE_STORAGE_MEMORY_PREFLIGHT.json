@@ -1,0 +1,40 @@
+{
+  "cells": 4553407,
+  "checks": {
+    "assembly_reopens_arrays_with_mmap_mode": true,
+    "assembly_uses_open_memmap": true,
+    "exactly_one_numeric_log1p_call_in_feature_builder": true,
+    "expression_is_raw_counts": true,
+    "feature_builder_block_rows_512": true,
+    "feature_builder_iterates_expression_blocks": true,
+    "feature_builder_no_whole_corpus_feature_array": true,
+    "headroom_exceeds_projected_new_outputs": true,
+    "shared_state_reads_features_with_mmap": true
+  },
+  "exact_full104_matrix_payload_bytes": 93367610535,
+  "feature_matrix_storage": "numpy open_memmap float32; blockwise writes; mmap reads downstream",
+  "free_bytes": 6886523928576,
+  "headroom_ratio": 47.07731318403639,
+  "input_hashes": {
+    "expression_manifest": "818ef14ac8c61ea4e93cc0c853a502dfa1cb75c198499b1cdafa6475e5a9eee9",
+    "feature_builder_code": "217d00332e2021797b4900710bb330a1d99ee30d9c8d7fb26532d59593b3acf5",
+    "matrix_assembly_code": "4c39d215657927e76141b073033dee086074c87b78b577a79116dc44063122e5",
+    "shared_state_code": "395562010dcfa3a546e50d22164de70e40d995d0ca02245230a1deb96166db8f"
+  },
+  "level3_feature_bytes": 12349880479,
+  "level3_matrix_bytes": 21826893003,
+  "maximum_feature_builder_dense_cell_rows": 512,
+  "normalization": "raw counts -> multiply once by 10000/full_source_library -> log1p once",
+  "normalization_implementation_lines": [
+    "scale = (10_000 / np.maximum(meta.source_library.to_numpy(np.float64), 1)).astype(np.float32)",
+    "values = raw.multiply(scale[:, None]).tocsr()",
+    "values.data = np.log1p(values.data)"
+  ],
+  "normalization_implementation_sha256": "6736354e491a91a6902533bb4e0ab273632297047af6a4834e42c582dedf84f7",
+  "projected_full104_feature_bytes": 52913548325,
+  "projected_new_output_bytes": 146281158860,
+  "schema": "full104-phase2-feature-storage-memory-preflight-v1",
+  "status": "PASS_FULL104_FEATURE_STORAGE_MEMORY_PREFLIGHT",
+  "whole_corpus_densification_prohibited": true,
+  "whole_feature_array_ram_materialization_prohibited": true
+}

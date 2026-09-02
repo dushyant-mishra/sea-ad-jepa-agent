@@ -1,0 +1,19 @@
+{
+  "block_manifest_sha256": "299f99bd72b9d9e0949f36c891fa1e2207108eb62743596e39bc2c5dbf8914ed",
+  "blocks": 896,
+  "cells": 449269,
+  "exact_visible_scalar_count_rule": true,
+  "feature_dim_per_view": 512,
+  "identity_or_biology_labels_in_features": false,
+  "measured_zero_visibility_channel_retained": true,
+  "operators": 42,
+  "optimizer_ema_lambda_query_schedule_gpu_mechanics_or_training": false,
+  "projection_sha256": "1aade3acf772eec621b2482b55ae42f4f7e77cd914d5f04a724f07e2836fd19b",
+  "protected_or_heldout_expression_opened": false,
+  "sample_level": 2,
+  "schema": "full104-phase2-multiview-features-v1",
+  "sketches": 2,
+  "status": "PASS_PHASE2_MULTIVIEW_FEATURES",
+  "views": 4,
+  "wall_seconds": 2031.3154830932617
+}

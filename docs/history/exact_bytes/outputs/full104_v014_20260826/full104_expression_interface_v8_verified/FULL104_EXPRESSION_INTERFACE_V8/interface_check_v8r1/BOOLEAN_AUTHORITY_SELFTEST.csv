@@ -1,0 +1,7 @@
+"input","parsed","invalid_rejected"
+"True",TRUE,TRUE
+"TRUE",TRUE,TRUE
+" true ",TRUE,TRUE
+"False",FALSE,TRUE
+"FALSE",FALSE,TRUE
+" false ",FALSE,TRUE

@@ -1,8 +1,8 @@
 # Graph-JEPA v4 Launchpad
 
-**Begin with [`V4_START_HERE.md`](V4_START_HERE.md).** It identifies the five
-current canonical outputs and separates them from supporting provenance and
-generated intermediates.
+**Begin with [`CURRENT_STATE_HANDOFF.md`](CURRENT_STATE_HANDOFF.md).** It records
+the frozen A2 baseline, the unfrozen A3 checkpoint, negative evidence, open
+vocabulary blocker, data firewall, and exact reproduction entry points.
 
 Current compute authority:
 `LOCKED_LOCAL_HARDWARE_AND_COMPUTE_CONTRACT.md`.

@@ -1,0 +1,41 @@
+{
+  "authorities_unchanged": true,
+  "expression_or_candidate_outcomes_accessed": false,
+  "independent_arithmetic": {
+    "base_exact_match": true,
+    "external_negative_program_reproduced": true,
+    "isolated_attack_exact_matches": {
+      "A_protected_program_finite_negative_report_only": true,
+      "B_direct_degradation": true,
+      "C_evidence_trend": true,
+      "D_qid_margin": true,
+      "E_qid_win": true,
+      "F_draw_sign": true,
+      "G_hc3_nuisance": true,
+      "H_cross_source": true,
+      "I_nonfinite_qid_margin": true,
+      "J_zero_variance_qid_win": true,
+      "K_overall_primary_failure_with_declared_shared_outcome_coupling": true,
+      "L_qid_program_negative_holm": true,
+      "M_legal_provenance": true,
+      "N_protected_program_unestimable": true
+    }
+  },
+  "no_stale_wholesale_v1_qualify": true,
+  "population": {
+    "assignments": 44496,
+    "cells": 2781,
+    "donors": 104,
+    "exact": true,
+    "operators": 42,
+    "record_universe": 222480
+  },
+  "real_forward_and_nuisance_unfrozen": true,
+  "status": "PASS_F1_DECISION_RECONCILIATION_INDEPENDENT_VALIDATION",
+  "training_or_ema_accessed": false,
+  "truth_table": {
+    "claim_scope_current": "FINITE_FROZEN_2781_DESIGN_SAMPLED_W2_EXPECTATION",
+    "families": 12,
+    "unique_single_gate_semantics": true
+  }
+}

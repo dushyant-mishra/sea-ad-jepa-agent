@@ -1,0 +1,21 @@
+{
+  "blocks": 592,
+  "cells": 292633,
+  "code_sha256": "c91c493fcb87b59cac454905b9cfea4c7344496792ff36712d4a54f01f22d70d",
+  "expression_block_manifest_sha256": "2928167527609a5e4b36b2841fb4d7452c1626bd5419d166eefe18a2d8b5d334",
+  "expression_manifest_sha256": "472bc3fdf5cbcbc16fb5637f2e0149f9bad25e2d7c75c9e5417b89d4d12bac1f",
+  "feature_dim_per_view": 512,
+  "freeze_manifest_sha256": "a92e436142c2ac85ae51756640d9f1961c5a17955a49951dbef2d5b8d138afb2",
+  "labels_or_identity_as_features": false,
+  "mask_blocks": 20,
+  "normalization": "log1p(raw_count*10000/full_source_library) exactly once",
+  "optimizer_ema_lambda_query_schedule_gpu_mechanics_or_training": false,
+  "schema": "full104-phase2-multiview-features-v1",
+  "selected_blocks": 12,
+  "sketches": 2,
+  "status": "PASS_PHASE2_MULTIVIEW_FEATURES",
+  "value_channels": 256,
+  "views": 4,
+  "visibility_channels": 256,
+  "visible_count": "exact floor(0.60*MEASURED_SCALAR) through deterministic <=8-address block-boundary repair"
+}

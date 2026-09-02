@@ -1,0 +1,29 @@
+{
+  "candidate_authority_evaluated": false,
+  "design_selected_or_frozen": false,
+  "firewall": {
+    "expression": false,
+    "model_checkpoint_or_forward": false,
+    "outcome": false,
+    "training_or_ema": false
+  },
+  "input_sha256": {
+    "15A2_manifest": "9b9434eb5056f80964a49843a1e75d9c85392d2dca230932ae6e4c61a7832973",
+    "15A_manifest": "1bb7010e0268fe99f3c0ea952a05d6818466fa0e54734fc15f3a2c2be5406230",
+    "donor_design": "1d8f837d18cedd8d1b8fd6138d1b25f886b8352c097a4723ca06421573334056",
+    "engine": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34",
+    "schema": "9f90c764d0d97b5a10badc03dfcbafc364e0bf40e120a9aed6609e036b5924a7"
+  },
+  "mandatory_base_observed_rank": 7,
+  "mandatory_base_required_rank_by_command": 8,
+  "mismatch": "Command 15A3 requires mandatory base rank 8, while both hash-bound prior packages and exact reconstruction give rank 7 (intercept + 2 source contrasts + 4 continuous nuisances).",
+  "old_design_reproduced": true,
+  "old_df": 86,
+  "old_rank": 18,
+  "old_unit_leverage_donors": [
+    "HVS::H20.06.354",
+    "NPH52::human_NPH_906"
+  ],
+  "raw_nuisance_root": "2f0c95b1d9c098f8593827f240f64a0b8e5512ead92fe50540f6e2dc231742ec",
+  "terminal_status": "STOP_F1_HC3_INCREMENTAL_RANK_REPRODUCTION_MISMATCH"
+}

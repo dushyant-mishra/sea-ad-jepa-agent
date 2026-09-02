@@ -1,0 +1,365 @@
+{
+  "schema": "f1-independent-repair-validation-v1",
+  "status": "PASS_INDEPENDENT_REPAIR_VALIDATION",
+  "production_helpers_imported": false,
+  "null": {
+    "bijection": true,
+    "donor_distinct": true,
+    "same_operator_source": true,
+    "maximum_donor_pair_count": 1,
+    "balance_optimality_proof": "observed maximum deviation 0 equals the nonnegative global lower bound",
+    "marginal_identity_proof": "within each operator source row-locator multiset exactly equals recipient multiset; therefore every per-address value/zero marginal and full-row cross-gene covariance are identical under permutation"
+  },
+  "query_order_exact_all_operators": true,
+  "query_delta_arithmetic_exact": true,
+  "query_support_labels_verified": {
+    "unique_donor_max": 104,
+    "donor_operator_max": 1400
+  },
+  "query_checks": [
+    {
+      "operator_index": 0,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 1,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 2,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 3,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 4,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 5,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 6,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 7,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 8,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 9,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 10,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 11,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 12,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 13,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 14,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 15,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 16,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 17,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 18,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 19,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 20,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 21,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 22,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 23,
+      "qmax": 18380,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 24,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 25,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 26,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 27,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 28,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 29,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 30,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 31,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 32,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 33,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 34,
+      "qmax": 28189,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 35,
+      "qmax": 25109,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 36,
+      "qmax": 24393,
+      "full_min_coverage": 0.9999999999999999
+    },
+    {
+      "operator_index": 37,
+      "qmax": 25647,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 38,
+      "qmax": 25340,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 39,
+      "qmax": 24674,
+      "full_min_coverage": 0.9999999999999999
+    },
+    {
+      "operator_index": 40,
+      "qmax": 24744,
+      "full_min_coverage": 0.9999999999999998
+    },
+    {
+      "operator_index": 41,
+      "qmax": 25410,
+      "full_min_coverage": 0.9999999999999998
+    }
+  ],
+  "support_overlap": {
+    "all_operator_scalar_common": 17186,
+    "any_operator_scalar": 40949,
+    "pairwise": {
+      "broad_common__weak_distributed": {
+        "min_jaccard": 1.0,
+        "max_jaccard": 1.0
+      },
+      "broad_common__local": {
+        "min_jaccard": 1.0,
+        "max_jaccard": 1.0
+      },
+      "broad_common__local_core": {
+        "min_jaccard": 0.0002837986448614708,
+        "max_jaccard": 0.0004352557127312296
+      },
+      "broad_common__local_halo": {
+        "min_jaccard": 0.0022703891588917663,
+        "max_jaccard": 0.003427638737758433
+      },
+      "broad_common__core_halo": {
+        "min_jaccard": 0.002554187803753237,
+        "max_jaccard": 0.0038628944504896625
+      },
+      "broad_common__sparse_marker_like": {
+        "min_jaccard": 0.0011351945794458832,
+        "max_jaccard": 0.0012593467138921684
+      },
+      "broad_common__innovation_tail": {
+        "min_jaccard": 1.0,
+        "max_jaccard": 1.0
+      },
+      "weak_distributed__local": {
+        "min_jaccard": 1.0,
+        "max_jaccard": 1.0
+      },
+      "weak_distributed__local_core": {
+        "min_jaccard": 0.0002837986448614708,
+        "max_jaccard": 0.0004352557127312296
+      },
+      "weak_distributed__local_halo": {
+        "min_jaccard": 0.0022703891588917663,
+        "max_jaccard": 0.003427638737758433
+      },
+      "weak_distributed__core_halo": {
+        "min_jaccard": 0.002554187803753237,
+        "max_jaccard": 0.0038628944504896625
+      },
+      "weak_distributed__sparse_marker_like": {
+        "min_jaccard": 0.0011351945794458832,
+        "max_jaccard": 0.0012593467138921684
+      },
+      "weak_distributed__innovation_tail": {
+        "min_jaccard": 1.0,
+        "max_jaccard": 1.0
+      },
+      "local__local_core": {
+        "min_jaccard": 0.0002837986448614708,
+        "max_jaccard": 0.0004352557127312296
+      },
+      "local__local_halo": {
+        "min_jaccard": 0.0022703891588917663,
+        "max_jaccard": 0.003427638737758433
+      },
+      "local__core_halo": {
+        "min_jaccard": 0.002554187803753237,
+        "max_jaccard": 0.0038628944504896625
+      },
+      "local__sparse_marker_like": {
+        "min_jaccard": 0.0011351945794458832,
+        "max_jaccard": 0.0012593467138921684
+      },
+      "local__innovation_tail": {
+        "min_jaccard": 1.0,
+        "max_jaccard": 1.0
+      },
+      "local_core__local_halo": {
+        "min_jaccard": 0.0,
+        "max_jaccard": 0.0
+      },
+      "local_core__core_halo": {
+        "min_jaccard": 0.1111111111111111,
+        "max_jaccard": 0.11267605633802817
+      },
+      "local_core__sparse_marker_like": {
+        "min_jaccard": 0.02564102564102564,
+        "max_jaccard": 0.03571428571428571
+      },
+      "local_core__innovation_tail": {
+        "min_jaccard": 0.0002837986448614708,
+        "max_jaccard": 0.0004352557127312296
+      },
+      "local_halo__core_halo": {
+        "min_jaccard": 0.8873239436619719,
+        "max_jaccard": 0.8888888888888888
+      },
+      "local_halo__sparse_marker_like": {
+        "min_jaccard": 0.03225806451612903,
+        "max_jaccard": 0.037037037037037035
+      },
+      "local_halo__innovation_tail": {
+        "min_jaccard": 0.0022703891588917663,
+        "max_jaccard": 0.003427638737758433
+      },
+      "core_halo__sparse_marker_like": {
+        "min_jaccard": 0.04,
+        "max_jaccard": 0.045454545454545456
+      },
+      "core_halo__innovation_tail": {
+        "min_jaccard": 0.002554187803753237,
+        "max_jaccard": 0.0038628944504896625
+      },
+      "sparse_marker_like__innovation_tail": {
+        "min_jaccard": 0.0011351945794458832,
+        "max_jaccard": 0.0012593467138921684
+      }
+    }
+  },
+  "T_true_cache_semantics": "same recipient rich teacher tensor reused; benchmark has separate teacher/correct/null roles and exact lean/F0 parity",
+  "S_null_provenance": "actual frozen map row drives authenticated materialized source values while recipient state/evidence/q are retained; independently asserted from parity artifact",
+  "decision_fixture_exact_full_path": true,
+  "decision_adversarial_fixtures": {
+    "negative_direct_rejected": true,
+    "constant_negative_direct_rejected": true,
+    "nan_direct_rejected": true,
+    "missing_program_rejected": true,
+    "nuisance_source_shortcut_rejected": true,
+    "rank_deficient_column_dropped": true,
+    "zero_variance_unestimable": true,
+    "holm_boundary_executed": true
+  },
+  "runtime_every_prefix_recomputed": true,
+  "candidate_performance_files_found": false,
+  "protected_expression_opened": false
+}

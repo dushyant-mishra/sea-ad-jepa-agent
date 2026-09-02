@@ -1,0 +1,15 @@
+audit_item,pass,evidence
+stage27c_locked_benchmark_preserved,True,Stage42 report/readiness-only synthesis
+stage41c_not_rebranded_as_locked,True,Stage42 report/readiness-only synthesis
+no_external_training,True,Stage42 report/readiness-only synthesis
+no_external_model_selection,True,Stage42 report/readiness-only synthesis
+no_external_validation_claim,True,Stage42 report/readiness-only synthesis
+no_clean_validation_claim,True,Stage42 report/readiness-only synthesis
+no_candidate_reprioritization_from_external_data,True,Stage42 report/readiness-only synthesis
+frozen_candidates_preserved,True,Stage42 report/readiness-only synthesis
+negative_null_results_preserved,True,Stage42 report/readiness-only synthesis
+no_causal_claim,True,Stage42 report/readiness-only synthesis
+no_therapeutic_claim,True,Stage42 report/readiness-only synthesis
+no_gene_ablation_claim,True,Stage42 report/readiness-only synthesis
+no_disease_modifying_claim,True,Stage42 report/readiness-only synthesis
+safety_audit_pass,True,all claim boundaries passed

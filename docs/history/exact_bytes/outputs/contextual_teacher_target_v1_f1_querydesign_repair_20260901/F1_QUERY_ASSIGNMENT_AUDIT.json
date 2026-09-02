@@ -1,0 +1,34 @@
+{
+  "schema": "f1-query-assignment-audit-v2",
+  "status": "PASS",
+  "assignments": 44496,
+  "cells": 2781,
+  "donors": 104,
+  "operators": 42,
+  "assignments_per_cell_min": 16,
+  "assignments_per_cell_max": 16,
+  "operator_program_strata": 336,
+  "all_selected_measured_scalar": true,
+  "cell_weight_authority_sha256": "018d80428c25a0060168a942ca03dc9e814783463cc077e3661008ba5f7b5eeb",
+  "cell_weight_rule": "1/(number of observed operators for donor * selected cells in donor-operator)",
+  "donor_weight_mass_max_abs_error": 6.661338147750939e-16,
+  "unique_q_per_cell": {
+    "min": 12,
+    "median": 16.0,
+    "max": 16
+  },
+  "same_program_replicate_collisions": 529,
+  "same_program_replicate_collisions_by_program": {
+    "sparse_marker_like": 107,
+    "local_core": 320,
+    "local_halo": 45,
+    "core_halo": 52,
+    "broad_common": 2,
+    "local": 2,
+    "innovation_tail": 1
+  },
+  "total_assignment_minus_unique_cell_q": 1388,
+  "randomization_key_sha256": "7d91edec79ae27fd7c9fd35ebaf33454e05aaf39a0dd8c24d23a9460a3b5242a",
+  "root_key_hex": "7e624206bac45838932145d6afff68560d6b3e1fee57b594b78d5aa654e532ba",
+  "rare_endpoint_boundary": "rare5 and rare1 are not among the eight F1 protected query-design programs; this package makes no rare-state claim"
+}

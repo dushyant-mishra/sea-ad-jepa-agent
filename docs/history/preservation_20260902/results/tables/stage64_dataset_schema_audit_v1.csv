@@ -1,0 +1,3 @@
+dataset,path,n_cells,n_genes,donor_col,state_col,n_donors,n_states
+MTG,C:\Users\dushy\Desktop\Jepa project\data\processed\sea_ad_mtg_microglia_pvm_all_hvg3k_module_preserved.h5ad,40000,2977,Donor ID,Supertype,89,8
+DLPFC,C:\Users\dushy\Desktop\Jepa project\data\sea_ad\stage45\cellxgene\h5ad_assets\100c6145-7b0e-4ba6-81c1-ffebed0d1ac4.h5ad,42486,35483,donor_id,Supertype,83,6

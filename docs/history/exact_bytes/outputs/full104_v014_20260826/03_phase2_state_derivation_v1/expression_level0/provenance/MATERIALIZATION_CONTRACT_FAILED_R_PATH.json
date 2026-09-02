@@ -1,0 +1,18 @@
+{
+  "addresses": 41238,
+  "block_rows": 512,
+  "cells": 292633,
+  "code_sha256": "59ead1de094ee871ce09ca1d4fb88dc658655f709e771191f79670d6bce08e13",
+  "donors": 104,
+  "freeze_manifest_sha256": "a92e436142c2ac85ae51756640d9f1961c5a17955a49951dbef2d5b8d138afb2",
+  "identity_is_audit_metadata_not_model_input": true,
+  "no_optimizer_ema_lambda_query_schedule_gpu_mechanics_or_training": true,
+  "no_validation_oracle_dev_sealed_pathology": true,
+  "normalization_deferred": "raw integer counts plus full-source library; downstream applies log1p(raw*10000/library) exactly once",
+  "operators": 42,
+  "original_mixed_nph_denied": true,
+  "schema": "full104-phase2-expression-materialization-v1",
+  "selection_manifest_sha256": "5f362c9b28ebddad7a8675edd577197b225b622830ca2a9b3b90d2df2d9597c3",
+  "selection_sha256": "4a015069d956fbdcd2da19cbe117cffeaa7422e08166c6e2146af8eb6b8cc019",
+  "status": "IN_PROGRESS"
+}

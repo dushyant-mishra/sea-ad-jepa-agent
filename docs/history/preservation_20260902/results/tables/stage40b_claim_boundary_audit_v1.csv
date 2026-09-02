@@ -1,0 +1,12 @@
+audit_item,pass,evidence
+no_new_model_training,True,Stage 40B is a report-only terminal synthesis.
+no_external_data_used_for_model_selection,True,Stage 40B is a report-only terminal synthesis.
+frozen_candidates_preserved,True,Stage 40B is a report-only terminal synthesis.
+stage27c_locked_benchmark_preserved,True,Stage 40B is a report-only terminal synthesis.
+no_clean_external_validation_claim,True,Stage 40B is a report-only terminal synthesis.
+no_causal_claim,True,Stage 40B is a report-only terminal synthesis.
+no_therapeutic_claim,True,Stage 40B is a report-only terminal synthesis.
+no_gene_ablation_claim,True,Stage 40B is a report-only terminal synthesis.
+no_disease_modifying_claim,True,Stage 40B is a report-only terminal synthesis.
+negative_results_preserved,True,Stage 40B is a report-only terminal synthesis.
+safety_audit_pass,True,all safety checks passed

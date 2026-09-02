@@ -1,0 +1,146 @@
+{
+  "checks": [
+    {
+      "pass": true,
+      "test": "freeze_root"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "test": "gapped_D6"
+    },
+    {
+      "pass": true,
+      "test": "gapped_D6_order_chunk"
+    },
+    {
+      "candidate": null,
+      "pass": true,
+      "prefix": [],
+      "test": "first_D1"
+    },
+    {
+      "pass": true,
+      "test": "first_D1_order_chunk"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "test": "gapped_D5_D13"
+    },
+    {
+      "pass": true,
+      "test": "gapped_D5_D13_order_chunk"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "test": "planted_contiguous"
+    },
+    {
+      "pass": true,
+      "test": "planted_contiguous_order_chunk"
+    },
+    {
+      "pass": true,
+      "test": "dense_solver_independence_small"
+    },
+    {
+      "details": {
+        "dimension": 512,
+        "eigenvalue_max_abs": 9.769962616701378e-15,
+        "frozen_tolerance": 3.967257101647895e-08,
+        "maximum_residual": 2.1538594327761687e-15,
+        "metric_orthogonality": 1.7374737241498016e-16,
+        "pass": true,
+        "principal_subspace_loss": 0.0,
+        "rank": 320
+      },
+      "pass": true,
+      "test": "dense_vs_production_full512_rank320_solver"
+    },
+    {
+      "pass": true,
+      "test": "no_top32_or_stale_path"
+    },
+    {
+      "pass": true,
+      "test": "null_refits_basis_with_numerical_gate"
+    },
+    {
+      "pass": true,
+      "test": "streaming_no_cell_cell"
+    },
+    {
+      "pass": true,
+      "test": "independent_selector_not_imported"
+    },
+    {
+      "maximum_error": 4.440892098500626e-16,
+      "pass": true,
+      "test": "ALL_natural_donor_mass"
+    },
+    {
+      "pass": true,
+      "test": "authority_population"
+    },
+    {
+      "details": {
+        "boolean_exact": true,
+        "candidate_exact": true,
+        "map_hash_exact": true,
+        "max_abs_differences": {
+          "between": 2.220446049250313e-16,
+          "mean": 0.0,
+          "null_full_eigen": 4.996003610813204e-16,
+          "null_heldout": 1.9984014443252818e-15,
+          "null_stability": 3.8746783559417963e-14,
+          "observed_bootstrap_eigen": 2.6645352591003757e-15,
+          "observed_heldout": 3.708144902248023e-14,
+          "observed_stability": 9.392486788328824e-14,
+          "paired_null_bootstrap_eigen": 8.881784197001252e-16,
+          "within": 1.1102230246251565e-16
+        },
+        "pass": true
+      },
+      "pass": true,
+      "test": "independent_end_to_end_weight_null_bootstrap_stability_heldout_selection"
+    },
+    {
+      "pass": true,
+      "test": "recursive_taint_private_block"
+    }
+  ],
+  "independent_selector": "local while-loop implementation; no production selector/core import",
+  "input_hashes": {
+    "core": "838d9c6f2dbdd6ee201566b281e22e6a621548723bb55b6286c51187d119f6e4",
+    "freeze_manifest": "593e14872b6fe07d3f2855a49dd8eac57bfa5819465b8801b801dd9f6d4b510c",
+    "production_fixture": "cfa6af9a0d9fb2d52409f16147e5bca59eadd843801d9c83f3c587a1309c0a76",
+    "runner": "6ed47421f0c72b9922c9ce57bb895b9c8509050e35ce981b82db8f8d6aae8b1e",
+    "validator": "aad4ee664b4c7367b435605454e4c20a2634cc0cc1eec50daded2fe93fa9e1aa"
+  },
+  "schema": "full104-refit-null-independent-implementation-validator-v1",
+  "status": "PASS_INDEPENDENT_IMPLEMENTATION_VALIDATOR"
+}

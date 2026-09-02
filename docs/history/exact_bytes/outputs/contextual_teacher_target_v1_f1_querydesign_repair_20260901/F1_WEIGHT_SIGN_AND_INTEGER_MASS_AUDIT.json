@@ -1,0 +1,269 @@
+{
+  "schema": "f1-weight-sign-integer-mass-audit-v2",
+  "status": "PASS",
+  "program_order": [
+    "broad_common",
+    "weak_distributed",
+    "local",
+    "local_core",
+    "local_halo",
+    "core_halo",
+    "sparse_marker_like",
+    "innovation_tail"
+  ],
+  "members": {
+    "molecular_address_id": {
+      "shape": [
+        41238
+      ],
+      "dtype": "object",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__broad_common": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__weak_distributed": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__local": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__local_core": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__local_halo": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__core_halo": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__sparse_marker_like": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__innovation_tail": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__recurrent_5pct": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "raw__recurrent_1pct": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__broad_common": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__weak_distributed": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__local": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__local_core": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__local_halo": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__core_halo": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__sparse_marker_like": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__innovation_tail": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__recurrent_5pct": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    },
+    "l2__recurrent_1pct": {
+      "shape": [
+        41238
+      ],
+      "dtype": "float32",
+      "c_contiguous": true,
+      "f_contiguous": true
+    }
+  },
+  "sign_counts": {
+    "broad_common": {
+      "negative": 0,
+      "zero": 11919,
+      "positive": 29319,
+      "nonfinite": 0,
+      "dtype": "float32",
+      "shape": [
+        41238
+      ]
+    },
+    "weak_distributed": {
+      "negative": 0,
+      "zero": 11919,
+      "positive": 29319,
+      "nonfinite": 0,
+      "dtype": "float32",
+      "shape": [
+        41238
+      ]
+    },
+    "local": {
+      "negative": 0,
+      "zero": 11919,
+      "positive": 29319,
+      "nonfinite": 0,
+      "dtype": "float32",
+      "shape": [
+        41238
+      ]
+    },
+    "local_core": {
+      "negative": 0,
+      "zero": 41230,
+      "positive": 8,
+      "nonfinite": 0,
+      "dtype": "float32",
+      "shape": [
+        41238
+      ]
+    },
+    "local_halo": {
+      "negative": 0,
+      "zero": 41174,
+      "positive": 64,
+      "nonfinite": 0,
+      "dtype": "float32",
+      "shape": [
+        41238
+      ]
+    },
+    "core_halo": {
+      "negative": 0,
+      "zero": 41166,
+      "positive": 72,
+      "nonfinite": 0,
+      "dtype": "float32",
+      "shape": [
+        41238
+      ]
+    },
+    "sparse_marker_like": {
+      "negative": 0,
+      "zero": 41206,
+      "positive": 32,
+      "nonfinite": 0,
+      "dtype": "float32",
+      "shape": [
+        41238
+      ]
+    },
+    "innovation_tail": {
+      "negative": 0,
+      "zero": 11919,
+      "positive": 29319,
+      "nonfinite": 0,
+      "dtype": "float32",
+      "shape": [
+        41238
+      ]
+    }
+  },
+  "operator_program_nonempty": 336,
+  "exact_rule": "float32.as_integer_ratio -> exact square -> common power-of-two denominator -> gcd reduction",
+  "weights_file_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"
+}

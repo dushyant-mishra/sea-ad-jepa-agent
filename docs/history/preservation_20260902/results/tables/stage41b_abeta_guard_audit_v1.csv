@@ -1,0 +1,7 @@
+condition,target,abeta_spearman,n_donors,abeta_guard_pass
+safe_metadata_only,6e10/A_beta,0.3831932773109244,84,True
+mri_only,6e10/A_beta,0.19356275755530455,84,True
+safe_metadata_plus_mri,6e10/A_beta,0.3285410549762074,84,True
+latent_plus_safe_metadata,6e10/A_beta,0.45637339273058625,84,True
+latent_plus_mri,6e10/A_beta,0.23191252404576287,84,True
+latent_plus_safe_metadata_plus_mri,6e10/A_beta,0.3408727346360231,84,True

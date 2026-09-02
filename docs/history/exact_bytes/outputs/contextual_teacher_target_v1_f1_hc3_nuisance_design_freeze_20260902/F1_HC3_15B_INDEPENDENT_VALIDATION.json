@@ -1,0 +1,33 @@
+{
+  "checks": {
+    "15A4_manifest_and_all_files_verified": true,
+    "admissible_set_30": true,
+    "all_104_loo_ranks_stable": true,
+    "all_70_rows_loaded": true,
+    "donor_indispensable_attack_rejected": true,
+    "hc3_estimable": true,
+    "independent_qr_rank_df": true,
+    "independent_synthetic_hc3_finite": true,
+    "no_expression_model_outcome_training_access": true,
+    "production_helpers_not_imported": true,
+    "selected_column_identities_exact": true,
+    "selected_design_bytes_exact": true,
+    "selected_design_exact_float64_array": true,
+    "selected_design_sha_exact": true,
+    "unique_componentwise_maximum": true
+  },
+  "df": 88,
+  "hc3_estimable": true,
+  "independent_max_leverage": 0.8693731662079767,
+  "independent_min_one_minus_h": 0.13062683379202333,
+  "loo_critical_donors": [],
+  "loo_rank_checks": 104,
+  "rank": 16,
+  "selected_design_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+  "selected_triple": [
+    5,
+    0,
+    4
+  ],
+  "status": "PASS"
+}

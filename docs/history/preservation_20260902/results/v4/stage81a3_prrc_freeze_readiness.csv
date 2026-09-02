@@ -1,0 +1,7 @@
+gate,pass,status
+transfer_taxonomy_repaired,True,
+qc_contract_repaired,True,
+no_critical_rare_state_loss,True,
+subspace_uncertainty_formalized,True,
+context_mechanics,True,
+real_context_probe,False,BLOCKED_BY_DATA_AVAILABILITY

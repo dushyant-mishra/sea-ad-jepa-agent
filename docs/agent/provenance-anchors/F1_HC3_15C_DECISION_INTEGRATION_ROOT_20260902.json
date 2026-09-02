@@ -1,0 +1,7 @@
+{
+  "schema": "f1-15c-external-root-v1",
+  "package": "outputs/contextual_teacher_target_v1_f1_hc3_15c_decision_integration_20260902",
+  "manifest_sha256": "6b50bc768346c9dcaff6b26ec986f3af21c68b7a5b54eefebbd5ae407fbbe436",
+  "handoff_sha256": "bda3a56a7da5cbdbac022190c0de7744867b27cc5908bcb90e16275ae17f67ac",
+  "terminal": "PASS_F1_HC3_15C_DECISION_INTEGRATION_AWAITING_EXTERNAL_REVIEW"
+}

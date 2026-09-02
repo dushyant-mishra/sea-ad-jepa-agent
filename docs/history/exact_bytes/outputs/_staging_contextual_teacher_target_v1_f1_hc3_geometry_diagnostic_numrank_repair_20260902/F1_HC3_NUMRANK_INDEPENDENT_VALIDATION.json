@@ -1,0 +1,16 @@
+{
+  "checks": {
+    "direct_engine_rank_increase": false,
+    "firewall": true,
+    "numpy_above_tau_R": true,
+    "production_classification_matches": true,
+    "scipy_gesvd_above_tau_R": true
+  },
+  "expression_model_outcome_access": false,
+  "independent_numpy_singular_value_2": 3.2151458547240373e-15,
+  "independent_numpy_tau_R": 1.4002762751953113e-15,
+  "independent_scipy_singular_value_2": 3.2218751159306597e-15,
+  "independent_scipy_tau_R": 1.4002762751953113e-15,
+  "production_helpers_imported": false,
+  "terminal": "STOP_F1_HC3_NPH_COMPONENT2_STATUS_CHANGED"
+}

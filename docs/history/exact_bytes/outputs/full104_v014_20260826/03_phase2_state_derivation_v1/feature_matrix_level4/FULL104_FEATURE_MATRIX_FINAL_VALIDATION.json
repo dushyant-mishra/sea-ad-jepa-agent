@@ -1,0 +1,87 @@
+{
+  "all_A_B_full_and_view_rows_finite": true,
+  "array_scans": [
+    {
+      "chunks": 278,
+      "dtype": "float32",
+      "name": "A_views",
+      "rows_scanned": 4553407,
+      "shape": [
+        4553407,
+        4,
+        512
+      ]
+    },
+    {
+      "chunks": 278,
+      "dtype": "float32",
+      "name": "B_views",
+      "rows_scanned": 4553407,
+      "shape": [
+        4553407,
+        4,
+        512
+      ]
+    },
+    {
+      "chunks": 278,
+      "dtype": "float32",
+      "name": "A_full",
+      "rows_scanned": 4553407,
+      "shape": [
+        4553407,
+        512
+      ]
+    },
+    {
+      "chunks": 278,
+      "dtype": "float32",
+      "name": "B_full",
+      "rows_scanned": 4553407,
+      "shape": [
+        4553407,
+        512
+      ]
+    },
+    {
+      "chunks": 278,
+      "dtype": "float32",
+      "name": "physical_descriptors",
+      "rows_scanned": 4553407,
+      "shape": [
+        4553407,
+        6
+      ]
+    },
+    {
+      "chunks": 278,
+      "dtype": "uint8",
+      "name": "ASSEMBLY_SEEN",
+      "rows_scanned": 4553407,
+      "shape": [
+        4553407
+      ]
+    }
+  ],
+  "arrays_rebuilt": false,
+  "assembly_seen_all_one": true,
+  "baseline_rss_bytes": 1044480,
+  "blocks": 8915,
+  "chunk_rows": 16384,
+  "feature_manifest_sha256": "d6f70ee1bca777f3d2cbd89dd560395cc46ec25f6a648ae4ba0fd6e77c1c2cf1",
+  "matrix_manifest_sha256": "986c9508314fdceadfac2397dad94767f2590126fb5902221307aea536accf91",
+  "patch_log_sha256": "d6df6f8cfdef030e3bc764487cc9730dd18657302ab44b9b3d7227ce2e15a900",
+  "peak_rss_bytes": 141660160,
+  "rows": 4553407,
+  "rss_bound_bytes": 806350848,
+  "rss_bounded": true,
+  "schema": "full104-feature-matrix-final-validation-v1",
+  "selection_sha256": "edec0fe29d1425ecbe9fa889a610c4ce18621ae060c8144866315db57c3fc62b",
+  "status": "PASS_FULL104_FEATURE_MATRIX_FINAL_VALIDATION",
+  "unique_block_keys": 8915,
+  "unique_selection_rows": 4553407,
+  "validation_only_diff_sha256": "ff076a18dc57f61256ef61a8c3eec4eb3da9b0112ec7539f81b0b47d3021463a",
+  "validation_publisher_code_sha256": "01a49a0623d87500865a7e202ad00956d739278d4c97380c06c9e5f0647514cf",
+  "write_semantics_changed": false,
+  "writer_code_sha256": "4c39d215657927e76141b073033dee086074c87b78b577a79116dc44063122e5"
+}

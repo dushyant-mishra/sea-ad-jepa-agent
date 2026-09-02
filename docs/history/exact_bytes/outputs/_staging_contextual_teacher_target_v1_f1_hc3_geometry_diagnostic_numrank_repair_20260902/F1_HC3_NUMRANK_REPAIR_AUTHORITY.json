@@ -1,0 +1,34 @@
+{
+  "design_selection_authorized": false,
+  "hard_firewall": {
+    "checkpoint_or_model": false,
+    "expression": false,
+    "outcome": false,
+    "training_or_ema": false
+  },
+  "input_sha256": {
+    "outputs/contextual_teacher_target_v1_f1_hc3_geometry_diagnostic_20260902/F1_HC3_MANIFEST.csv": "1bb7010e0268fe99f3c0ea952a05d6818466fa0e54734fc15f3a2c2be5406230",
+    "outputs/contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902/F1_NUISANCE_COLUMN_SCHEMA.json": "9f90c764d0d97b5a10badc03dfcbafc364e0bf40e120a9aed6609e036b5924a7",
+    "outputs/contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902/F1_NUISANCE_DONOR_DESIGN_F64LE.bin": "1d8f837d18cedd8d1b8fd6138d1b25f886b8352c097a4723ca06421573334056",
+    "scripts/v4/contextual_target_f1_decision_v1.py": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34"
+  },
+  "mandatory_base_columns": [
+    "correct_minus_null_measured_zero_rate",
+    "correct_minus_null_visible_depth",
+    "recipient_depth",
+    "recipient_physical_support",
+    "source_HVS",
+    "source_NPH52"
+  ],
+  "mandatory_base_rank": 7,
+  "old_df": 86,
+  "old_rank": 18,
+  "old_stop_reproduced": true,
+  "old_unit_leverage_donors": [
+    "HVS::H20.06.354",
+    "NPH52::human_NPH_906"
+  ],
+  "primitive_semantic_root": "2f0c95b1d9c098f8593827f240f64a0b8e5512ead92fe50540f6e2dc231742ec",
+  "prior_manifest_sha256": "1bb7010e0268fe99f3c0ea952a05d6818466fa0e54734fc15f3a2c2be5406230",
+  "status": "PASS_AUTHORITY"
+}

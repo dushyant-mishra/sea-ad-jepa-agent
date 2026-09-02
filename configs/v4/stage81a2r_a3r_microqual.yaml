@@ -1,0 +1,91 @@
+stage_id: stage81a2r_a3r_full_transcriptome_microqual
+schema_version: "1.0"
+status: PROVISIONAL_NOT_FROZEN
+anchor_commit: 63a29ed74af4bb624e9a574b404692f091b6f13f
+
+governance:
+  pathology_blind: true
+  train_expression_only: true
+  development_expression_forbidden: true
+  sealed_expression_forbidden: true
+  production_training: false
+  stage81b_started: false
+  stage81c_started: false
+  biological_top_k_cap: false
+
+candidate:
+  d_gene: 160
+  blocks: 6
+  heads: 4
+  ffn_width: 320
+  gradient_checkpointing: true
+  microbatch: 1
+  memory_probe_microbatches: [1, 8, 16]
+  mask_fraction: 0.40
+  target_blocks: 16
+  optimizer_steps: 2
+  ema_momentum: 0.99925
+
+synthetic:
+  cells: 192
+  fixtures:
+    - {name: overlapping_programs, seed: 812301}
+    - {name: rare_tail_difficult, seed: 812302}
+  global_audit_max_dim: 96
+  dimension_checkpoints: [16, 32, 48, 64, 80, 96]
+  residual_blocks: [[17, 32], [33, 48], [49, 64], [65, 80], [81, 96]]
+  support_fractions: [0.20, 0.40, 0.60, 0.80, 1.00]
+  noise_scales: [0.50, 0.25, 0.10, 0.00]
+  masked_projection_ridge: 1.0e-4
+  donor_subspace_min_canonical_correlation: 0.50
+  tail_split_view_min_spearman: 0.50
+  tail_donor_subspace_min_canonical_correlation: 0.50
+  tail_familywise_alpha: 0.05
+
+stability_audit_repair:
+  seed: 812701
+  calibration_gene_count: 4096
+  calibration_cells: 768
+  calibration_known_rank: 9
+  hard_fixture_cell_levels: [192, 384, 768]
+  evaluated_prefix: 16
+  stability_threshold: 0.50
+
+eigenspace_band_diagnostic:
+  cells: 768
+  max_dimension: 96
+  local_bands: [[1, 8], [9, 16], [17, 32], [33, 48], [49, 64], [65, 96]]
+  cumulative_bands: [[1, 16], [1, 32], [1, 48], [1, 64], [1, 96]]
+  stability_threshold: 0.50
+  raw_recoverability_r2_threshold: 0.20
+
+inputs:
+  frozen_gene_registry: results/v4/stage81a2_canonical_gene_registry.csv
+  frozen_asset_registry: results/v4/stage81a2_canonical_asset_registry.csv
+  frozen_split_registry: results/v4/stage81a2_split_registry.csv
+  frozen_h5_gene_stats: data/processed/v4/stage81a2/h5_donor_balanced_gene_stats.csv.gz
+  frozen_nph_gene_stats: data/processed/v4/stage81a2/nph52_donor_balanced_gene_stats.csv.gz
+  frozen_nph_feature_registry: data/processed/v4/stage81a2/nph52_source_feature_registry.csv.gz
+  historical_countsplit: results/v4/stage81a3_countsplit_reproducibility.csv
+  historical_fbsdq_report: results/v4/stage81a3_foundation_biological_state_domain_qualification.json
+
+outputs:
+  exact_registry: results/v4/stage81a2r_exact_canonical_gene_registry_candidate.csv
+  mapping_decisions: results/v4/stage81a2r_source_mapping_decisions_candidate.csv.gz
+  measurement_support: results/v4/stage81a2r_matrix_measurement_support_candidate.csv.gz
+  mapping_provenance: results/v4/stage81a2r_mapping_provenance_candidate.json
+  mechanics: results/v4/stage81a3r_full_g_mechanics_candidate.json
+  biology: results/v4/stage81a3r_synthetic_biology_audit_candidate.csv
+  hierarchy: results/v4/stage81a3r_global_hierarchy_candidate.csv
+  observation: results/v4/stage81a3r_observation_operator_candidate.csv
+  uncertainty: results/v4/stage81a3r_uncertainty_candidate.csv
+  stability_repair: results/v4/stage81a3r_stability_audit_repair_candidate.csv
+  stability_repair_report: results/v4/stage81a3r_stability_audit_repair_candidate.json
+  eigenspectrum: results/v4/stage81a3r_hard_fixture_eigenspectrum_candidate.csv
+  eigenspace_bands: results/v4/stage81a3r_hard_fixture_eigenspace_bands_candidate.csv
+  eigenspace_report: results/v4/stage81a3r_hard_fixture_eigenspace_diagnostic_candidate.json
+  real_train: results/v4/stage81a3r_real_train_microaudit_candidate.json
+  input_manifest: results/v4/stage81a2r_a3r_input_access_manifest_candidate.json
+  hashes: results/v4/stage81a2r_a3r_hash_verification_candidate.json
+  tests: results/v4/stage81a2r_a3r_test_report_candidate.json
+  readout: docs/v4/STAGE81A2R_A3R_FULL_TRANSCRIPTOME_MICROQUAL_READOUT.md

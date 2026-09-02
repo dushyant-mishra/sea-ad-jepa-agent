@@ -1,0 +1,52 @@
+{
+  "actual_benchmark": {
+    "mmap_read_seconds": 0.1563202000106685,
+    "one_rank320_generalized_fit_seconds": 0.46818959998199716,
+    "rows": 16384,
+    "six_full512_float64_cross_products_seconds": 0.1861788000096567,
+    "synthetic_1400_stratum_cap4_production_kernel_seconds": 8.718002899986459,
+    "synthetic_fragmentation_rows": 5485
+  },
+  "checks": {
+    "freeze_root": true,
+    "independent_validator": true,
+    "mechanics_tokens": true,
+    "no_dense_pattern": true,
+    "resource_headroom": true
+  },
+  "execution": {
+    "atomic_replicate_checkpoints": true,
+    "blockwise_mmap": true,
+    "exact_reuse": "ALL observed donor sufficient statistics only; all null eigensystems independently refitted",
+    "one_null_replicate_at_a_time": true,
+    "resume_hash_gate": true,
+    "whole_corpus_densification": false
+  },
+  "input_hashes": {
+    "core": "92765e23b86d7ad31c8ca6e01bfb5c40669394bbfc569220d7b786b056da17bd",
+    "freeze_manifest": "593e14872b6fe07d3f2855a49dd8eac57bfa5819465b8801b801dd9f6d4b510c",
+    "independent_manifest": "7d25e88d6fa9359691806bfe9e360aabbc6d6938f2dfe5bdc1125e619cb48fb6",
+    "runner": "caf8ddbdb608d39951a5b49f783ab5d4d496f4502990dd64638d93bc9abfd6bd"
+  },
+  "projection": {
+    "caps": 6,
+    "diagnostic_plus_ALL_selected_row_instances": 5488876,
+    "estimated_cpu_peak_bytes": 3493347328,
+    "estimated_gpu_peak_bytes": 3173564416,
+    "estimated_total_hours": 30.46634756458369,
+    "estimated_total_seconds": 109678.85123250129,
+    "fragmentation_safety_factor": 1.15,
+    "null_replicates": 256,
+    "projected_new_disk_bytes": 12884901888,
+    "sketches": 2
+  },
+  "resources": {
+    "disk_free_bytes": 6735584559104,
+    "gpu_name": "NVIDIA GeForce RTX 3080 Laptop GPU",
+    "gpu_total_bytes": 17179344896,
+    "ram_available_bytes": 17938530304,
+    "ram_total_bytes": 34115739648
+  },
+  "schema": "full104-refit-null-compute-preflight-v1",
+  "status": "PASS_COMPUTE_PREFLIGHT"
+}

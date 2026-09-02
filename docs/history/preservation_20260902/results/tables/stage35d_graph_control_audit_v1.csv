@@ -1,0 +1,2 @@
+comparison,left_condition,right_condition,delta_mean_pooled_oof_spearman,graph_gate_pass,notes
+perturbation_graph_benchmark_not_run,,,,False,No approved local perturbation-derived graph was available for matched graph controls.

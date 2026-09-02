@@ -1,0 +1,3 @@
+path,size_bytes,keyword_hits,candidate_edge_schema,approved_local_perturbation_graph,forbidden_or_clean_holdout_risk,benchmark_eligible,notes
+configs\train\stage35d_perturbation_graph_diagnostic_v1.yaml,529,perturbation,False,False,False,False,filename/resource audit only; no download or web scraping performed
+docs\external_perturbation_benchmarks.md,11014,perturbation,False,False,False,False,filename/resource audit only; no download or web scraping performed

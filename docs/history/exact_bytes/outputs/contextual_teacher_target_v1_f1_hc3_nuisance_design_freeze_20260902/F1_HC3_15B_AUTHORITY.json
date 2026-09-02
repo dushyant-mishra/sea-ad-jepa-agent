@@ -1,0 +1,30 @@
+{
+  "15A4_manifest_entries_verified": 15,
+  "15A4_manifest_sha256": "a112bd4907f2c20b4346179264391ceb8d3e9ceee42f7a8bcb1bcd153e4cb09f",
+  "current_F1_104_design_authority": {
+    "design_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+    "selected_triple": [
+      5,
+      0,
+      4
+    ]
+  },
+  "f1_evaluation_run": false,
+  "firewall": {
+    "expression": false,
+    "forward_or_outcome": false,
+    "model_or_checkpoint": false,
+    "training_or_ema": false
+  },
+  "production_f1_engine_patched": false,
+  "reusable_larger_cohort_procedure": {
+    "contract_sha256": "beeaa4538a3061ac0786caa48d7297e3034e5b88a3208899c145ccb023353e48",
+    "current_values_must_not_transfer": true
+  },
+  "selected_design_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+  "selection_application_started_after_utc": "2026-09-02T16:51:18Z",
+  "selection_contract_created_utc": "2026-09-02T16:51:16Z",
+  "selection_contract_frozen_before_application": true,
+  "selection_contract_sha256": "3fc95316ad51205dd758bf93c6425ecfaebe3ed52e2bfacd6f03bb0406d0a4ac",
+  "status": "PASS"
+}

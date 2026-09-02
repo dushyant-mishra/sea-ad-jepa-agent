@@ -1,0 +1,3 @@
+# F1 query identity v2 contract
+
+Per cell, deduplicate the 16 assignment addresses and require at least two. Sort unique queries by SHA-256 of typed domain, root key, cell ID, and uint32 address; cyclically map each to the next. At primary 60% evidence, compute own-minus-wrong cosine margin and win score (1/0.5/0). Map back to all assignment rows and aggregate replicate -> program -> cell -> donor. Qualification requires donor-aware lower CI >0 for overall margin and overall win-minus-0.5; every donor estimable; and no Holm-adjusted program-specific negative margin. Lack of a significant positive program result alone is not a veto.

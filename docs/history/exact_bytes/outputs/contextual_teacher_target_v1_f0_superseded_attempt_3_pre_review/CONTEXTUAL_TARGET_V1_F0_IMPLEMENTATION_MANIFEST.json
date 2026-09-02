@@ -1,0 +1,75 @@
+{
+  "schema": "contextual-target-v1-f0-implementation-manifest-v1",
+  "terminal_status": "TESTS_PASS_AWAITING_COUNCIL",
+  "source_paths_read": [
+    {
+      "path": "CONTEXTUAL_TARGET_V1_CODE_PATH_DISCOVERY.json",
+      "sha256": "6cabab06887d710148a524e20c2b9959206984d83b22091a96e3b5467e889bd2"
+    },
+    {
+      "path": "CONTEXTUAL_TARGET_V1_DISCOVERY_RED_TEAM.md",
+      "sha256": "a3060833eb0531df2f7d23461037b8304ae7c71763076ca282bbb50f535dbf6a"
+    },
+    {
+      "path": "CONTEXTUAL_TARGET_V1_F0_IMPLEMENTATION_PLAN.md",
+      "sha256": "4626325f16a37ef0862cc922536ff3cc8e2a8abaed9a05e9ce77f96d8a0714a5"
+    },
+    {
+      "path": "CONTEXTUAL_TARGET_V1_QUERY_SCALAR_CALL_GRAPH.md",
+      "sha256": "c3b6bd207f668239725a5a60b16a687bb99a442b81d721212de163d6cbc44e11"
+    },
+    {
+      "path": "exports\\foundation_calibration_bundle_20260824\\support\\FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+      "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+    },
+    {
+      "path": "exports\\prod41k_teacher_t1_20260823\\t1_run\\t1_checkpoint_u0000.pt",
+      "sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
+    },
+    {
+      "path": "src\\sea_ad_jepa\\v4\\gene_tokenizer.py",
+      "sha256": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4"
+    },
+    {
+      "path": "src\\sea_ad_jepa\\v4\\ipb_jepa.py",
+      "sha256": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a"
+    }
+  ],
+  "source_paths_added_or_changed": [
+    {
+      "path": "src/sea_ad_jepa/v4/contextual_query_local.py",
+      "pre_sha256": null,
+      "post_sha256": "ea361facf413ebe963f9d7d3d2a812fe257117dc678ec19de7f83828fa87e3fa",
+      "symbols": [
+        "QueryLocalStateResult",
+        "construct_query_local_contextual_state"
+      ],
+      "conclusion_bearing": true,
+      "reason": "own safe encoder forward and parameter-free same-pass contextual reduction"
+    },
+    {
+      "path": "scripts/v4/contextual_target_v1_f0_slow_reference.py",
+      "pre_sha256": null,
+      "post_sha256": "d019d176822f88c5a9a8dde4cb442bc00e23450bc2e547f26bfbab442f8528c1",
+      "symbols": [
+        "slow_true_singleton_reference"
+      ],
+      "conclusion_bearing": true,
+      "reason": "independent one-(cell,q)-at-a-time reference"
+    },
+    {
+      "path": "scripts/v4/run_contextual_target_v1_f0.py",
+      "pre_sha256": null,
+      "post_sha256": "13fb60bf4929029434b418305f593aa8ad7648d0122f0187668fddefdc536cf6",
+      "symbols": [
+        "main"
+      ],
+      "conclusion_bearing": true,
+      "reason": "bounded A-M F0 harness and fail-closed publication"
+    }
+  ],
+  "core_encoder_modified": false,
+  "tokenizer_modified": false,
+  "ema_modified": false,
+  "elapsed_seconds": 17.661871194839478
+}

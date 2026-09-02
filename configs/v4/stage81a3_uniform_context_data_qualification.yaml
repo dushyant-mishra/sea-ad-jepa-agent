@@ -1,0 +1,198 @@
+stage_id: STAGE81A3-UCDQ
+contract_version: 1
+purpose: uniform_read_only_context_data_qualification
+
+anchors:
+  repository_head: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+  vocabulary_path: results/v4/stage81a2_foundation_vocabulary.csv
+  vocabulary_size: 4096
+  vocabulary_semantic_hash: f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb
+  acquisition_root: data/external/v4/stage81a3_context
+  acquisition_manifest: data/external/v4/stage81a3_context/_acquisition/stage81a3_context_acquisition_manifest.csv
+  donor_graph: data/external/v4/stage81a3_context/_acquisition/stage81a3_context_candidate_donor_graph.csv
+
+gene_mapping:
+  primary_key: canonical_ensembl_gene_id
+  precedence:
+    - exact_canonical_ensembl
+    - ensembl_after_version_suffix_strip
+    - stage81a2_unambiguous_symbol_to_ensembl
+  free_form_symbol_guessing: false
+  ambiguous_symbol_action: AMBIGUOUS_UNSUPPORTED
+  merge_distinct_ensembl_with_same_symbol: false
+  additive_duplicate_rows_require_same_ensembl_and_raw_additive_counts: true
+
+measurement_semantics:
+  allowed:
+    - RAW_UMI_COUNT
+    - DIRECT_MOLECULE_COUNT
+    - RAW_FEATURE_COUNT
+    - RAW_SPOT_UMI_COUNT
+    - PROCESSED_COUNT_LIKE
+    - NORMALIZED_CONTINUOUS
+    - ESTIMATED_COUNT
+    - BINARY_DETECTION
+    - UNKNOWN
+  direct_classes:
+    - RAW_UMI_COUNT
+    - DIRECT_MOLECULE_COUNT
+    - RAW_FEATURE_COUNT
+  direct_spot_classes:
+    - RAW_SPOT_UMI_COUNT
+  processed_nonnegative_is_raw: false
+
+missingness:
+  measured_zero_distinct_from_structurally_unmeasured: true
+  support_requires_assay_feature_membership: true
+  unsupported_gene_imputation: false
+
+coordinate_classes:
+  physical:
+    - PHYSICAL_XY_KNOWN_UNITS
+    - PHYSICAL_XY_UNKNOWN_UNITS
+    - IMAGE_PIXEL_COORDINATES_WITH_TRANSFORM
+    - GRID_SPOT_COORDINATES
+    - CELL_BOUNDARY_GEOMETRY
+    - TRANSCRIPT_COORDINATES
+  nonphysical:
+    - EMBEDDING_NOT_PHYSICAL
+    - NO_SPATIAL_COORDINATES
+    - UNKNOWN
+  infer_units_without_metadata: false
+
+spatial_entity_types:
+  allowed: [NUCLEUS, CELL, SPOT, BEAD, TRANSCRIPT, REGION, NONE, UNKNOWN]
+  cell_resolved: [NUCLEUS, CELL]
+
+pairing:
+  classes:
+    - SAME_ENTITY_EXACT
+    - SAME_ENTITY_PARTIAL
+    - SAME_SECTION_NOT_SAME_ENTITY
+    - SAME_DONOR_NOT_SAME_SECTION
+    - REFERENCE_ONLY
+    - NONE
+    - UNKNOWN
+  exact_min_fraction_spatial_matched: 0.95
+  exact_requires_unique_identifiers: true
+
+role_gates:
+  CORE_SAME_ENTITY_BROAD_CONTEXT:
+    adult_human_brain: true
+    entity_types: [CELL, NUCLEUS]
+    pairing_classes: [SAME_ENTITY_EXACT]
+    measurement_classes: [RAW_UMI_COUNT, DIRECT_MOLECULE_COUNT, RAW_FEATURE_COUNT]
+    physical_coordinates_required: true
+    min_source_features: 10000
+    min_frozen4096_support_fraction: 0.90
+    pathology_blind_required: true
+  CORE_CELL_RESOLVED_HIGH_PLEX_CONTEXT:
+    adult_human_brain: true
+    entity_types: [CELL, NUCLEUS]
+    pairing_classes: [SAME_ENTITY_EXACT]
+    measurement_classes: [RAW_UMI_COUNT, DIRECT_MOLECULE_COUNT, RAW_FEATURE_COUNT]
+    physical_coordinates_required: true
+    min_source_features: 1000
+    min_frozen4096_supported: 512
+    pathology_blind_required: true
+  CELL_RESOLVED_TARGETED_CONTEXT:
+    entity_types: [CELL, NUCLEUS]
+    pairing_classes: [SAME_ENTITY_EXACT, SAME_ENTITY_PARTIAL]
+    measurement_classes: [RAW_UMI_COUNT, DIRECT_MOLECULE_COUNT, RAW_FEATURE_COUNT]
+    physical_coordinates_required: true
+    min_frozen4096_supported: 50
+    max_frozen4096_supported: 511
+  CELL_RESOLVED_MINIMAL_PANEL_CONTEXT:
+    entity_types: [CELL, NUCLEUS]
+    measurement_classes: [RAW_UMI_COUNT, DIRECT_MOLECULE_COUNT, RAW_FEATURE_COUNT]
+    physical_coordinates_required: true
+    max_frozen4096_supported: 49
+  MULTIDONOR_SPOT_CONTEXT:
+    entity_types: [SPOT]
+    measurement_classes: [RAW_SPOT_UMI_COUNT]
+    physical_coordinates_required: true
+    min_frozen4096_support_fraction: 0.90
+    min_exact_donors: 2
+  SINGLE_DONOR_SPOT_CONTEXT:
+    entity_types: [SPOT]
+    measurement_classes: [RAW_SPOT_UMI_COUNT]
+    physical_coordinates_required: true
+    min_frozen4096_support_fraction: 0.90
+    exact_donors: 1
+
+additional_roles:
+  - PAIRED_BLOCK_MOLECULAR_REFERENCE
+  - MOLECULAR_REFERENCE_ONLY
+  - REGIONAL_REFERENCE_ONLY
+  - ACCESS_TRACE_ONLY
+  - QUARANTINED_PENDING_GOVERNANCE
+  - POST_FREEZE_ONLY
+  - UNRESOLVED
+
+pathology_provenance_classes:
+  - CLEAR_PATHOLOGY_BLIND
+  - NEUROTYPICAL_DECLARED
+  - SURGICAL_TISSUE_PROVENANCE_REVIEW
+  - CASE_CONTROL_SELECTED
+  - DISEASE_RISK_GENOTYPE_SELECTED
+  - DISEASE_COHORT
+  - PATHOLOGY_STATUS_REQUIRED_FOR_SELECTION
+  - UNKNOWN
+  - REFERENCE_ONLY
+
+donor_identity:
+  exact_evidence_only: true
+  fuzzy_matching: false
+  rejected_pairs:
+    - [8667, Br8667]
+  future_split_unit: canonical_person_group_id
+  create_split_in_this_stage: false
+
+identifiability:
+  bounded_real_context:
+    required_role: CORE_SAME_ENTITY_BROAD_CONTEXT
+    min_exact_paired_entities: 1000
+    direct_measurement_required: true
+    physical_geometry_required: true
+  cross_donor:
+    broad_role_min_exact_donors: 2
+    alternative_high_plex_min_exact_donors: 2
+    targeted_only_result: PARTIAL_TARGETED_ONLY
+  cross_technology:
+    broad_role_required: true
+    independent_high_plex_role_required: true
+    genuinely_different_technology_required: true
+    physical_geometry_required: true
+    targeted_only_result: PARTIAL_TARGETED_ONLY
+
+dataset_policies:
+  SCP2167:
+    physical_coordinate_filename: humancortex_spatial.csv
+    rejected_coordinate_filename: humancortex_cluster.csv
+    processed_expression_cannot_supersede_raw: true
+  doi:10.5061/dryad.x3ffbg7mw:
+    allowed_panel_gene_count: 4000
+    excluded_panel_gene_count: 250
+    keep_regions_separate: [MTG, STG]
+  HPA_human_brain_StereoSeq:
+    unresolved_direct_files_role: ACCESS_TRACE_ONLY
+  CosMx_human_frontal_cortex_6K:
+    missing_files_status: NOT_ACQUIRED_MANUAL_ACCESS
+  CosMx_WTX_human_hippocampus:
+    missing_files_status: NOT_ACQUIRED_MANUAL_ACCESS
+
+governance:
+  read_only_source_data: true
+  pathology_values_opened: false
+  foundation_dev_rna_accessed: false
+  foundation_sealed_rna_accessed: false
+  context_model_training: false
+  intrinsic_model_training: false
+  optimizer_updates: 0
+  architecture_changes: false
+  build_neighbor_graphs: false
+  choose_neighbor_radius_or_top_k: false
+  choose_context_split: false
+  impute_or_smooth: false
+  stage81b_started: false
+  stage_or_commit_or_push: false

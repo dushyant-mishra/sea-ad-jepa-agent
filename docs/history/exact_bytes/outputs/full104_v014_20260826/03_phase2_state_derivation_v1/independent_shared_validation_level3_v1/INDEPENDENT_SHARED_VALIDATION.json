@@ -1,0 +1,66 @@
+{
+  "candidate_D_shared": 13,
+  "checks": [
+    {
+      "eigen_max_abs": 2.9976021664879227e-15,
+      "heldout_max_abs": 5.949130077453901e-13,
+      "pass": true,
+      "prefix_subspace_max_loss_D1_8": 1.2352768807843972e-09,
+      "statistic": "analytic_basis_A"
+    },
+    {
+      "eigen_max_abs": 3.3306690738754696e-15,
+      "heldout_max_abs": 5.26856336335868e-13,
+      "pass": true,
+      "prefix_subspace_max_loss_D1_8": 6.2723717331181206e-09,
+      "statistic": "analytic_basis_B"
+    },
+    {
+      "max_abs": 1.2501111257279263e-13,
+      "pass": true,
+      "statistic": "independent_sketch_agreement"
+    },
+    {
+      "null_eigen": 2.980203506197654e-08,
+      "null_heldout": 3.637978807091713e-12,
+      "null_stability": 2.979597524266353e-08,
+      "observed_eigen": 2.9792387556959454e-08,
+      "observed_heldout": 2.97998511422648e-08,
+      "observed_stability": 2.980135427321784e-08,
+      "pass": true,
+      "statistic": "refitted_empirical_null_A"
+    },
+    {
+      "null_eigen": 2.9801632717152415e-08,
+      "null_heldout": 5.960464477539063e-08,
+      "null_stability": 2.9800588108308546e-08,
+      "observed_eigen": 2.9801698553377776e-08,
+      "observed_heldout": 2.9795679368227468e-08,
+      "observed_stability": 2.979958746429645e-08,
+      "pass": true,
+      "statistic": "refitted_empirical_null_B"
+    },
+    {
+      "independent_candidate": 13,
+      "independent_interval": [
+        13
+      ],
+      "pass": true,
+      "production_candidate": 13,
+      "statistic": "one_se_selection"
+    }
+  ],
+  "independent_implementation": "symmetric whitening plus numpy.linalg.eigh; no production statistic import",
+  "input_hashes": {
+    "analytic": "8368b255ed06e49a029363e495086b95f7d1496f7f2ecc5937aece9dd1ef0e22",
+    "code": "c8feb9017fa9ef26db0154d10e8015a17100d78f063636a5e814aaa64a2369be",
+    "harness": "d703264a72ba4527ff0872d41899c6e6fa7e2577c69e45e6356a97b65c2ce34c",
+    "matrix": "9cce979b0702cd94a65fbca2f961329c9affc204b79648156653064c8f957d80",
+    "refit_null": "a3b9d1f9a8daf2dc9941649e2d9403a260c9743b616de9e1bd35b490e6ebd4c6",
+    "selection": "700f05a7e59b4ee52d7056708af8ca6564769d3da6c2cb0896f8be3a98ad7b7b"
+  },
+  "result_state": "QUALIFIED",
+  "sample_level": 3,
+  "schema": "full104-independent-shared-validator-v1",
+  "status": "PASS_INDEPENDENT_SHARED_VALIDATOR"
+}

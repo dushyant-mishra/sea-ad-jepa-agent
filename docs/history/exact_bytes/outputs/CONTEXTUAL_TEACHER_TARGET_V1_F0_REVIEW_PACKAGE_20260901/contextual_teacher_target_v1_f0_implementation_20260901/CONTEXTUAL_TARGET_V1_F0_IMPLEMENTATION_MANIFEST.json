@@ -1,0 +1,131 @@
+{
+  "schema": "contextual-target-v1-f0-implementation-manifest-v1",
+  "terminal_status": "PASS_CONTEXTUAL_TARGET_V1_F0_IMPLEMENTATION_AWAITING_EXTERNAL_REVIEW",
+  "council_synthesis": "PROCEED",
+  "review_binding": "current source bytes only",
+  "source_paths_read": [
+    {
+      "path": "CONTEXTUAL_TARGET_V1_CODE_PATH_DISCOVERY.json",
+      "sha256": "6cabab06887d710148a524e20c2b9959206984d83b22091a96e3b5467e889bd2"
+    },
+    {
+      "path": "CONTEXTUAL_TARGET_V1_DISCOVERY_RED_TEAM.md",
+      "sha256": "a3060833eb0531df2f7d23461037b8304ae7c71763076ca282bbb50f535dbf6a"
+    },
+    {
+      "path": "CONTEXTUAL_TARGET_V1_F0_IMPLEMENTATION_PLAN.md",
+      "sha256": "4626325f16a37ef0862cc922536ff3cc8e2a8abaed9a05e9ce77f96d8a0714a5"
+    },
+    {
+      "path": "CONTEXTUAL_TARGET_V1_QUERY_SCALAR_CALL_GRAPH.md",
+      "sha256": "c3b6bd207f668239725a5a60b16a687bb99a442b81d721212de163d6cbc44e11"
+    },
+    {
+      "path": "CONTEXTUAL_TEACHER_TARGET_V1_CODEX_PACKET_V2\\CONTEXTUAL_TEACHER_TARGET_V1_PROSPECTIVE_CONTRACT.md",
+      "sha256": "e7c33317b2ca9da59f8c836f70062409fb9cfc4e5489222978afcff83aeb5be3"
+    },
+    {
+      "path": "exports\\contextual_biology_v6r5a_20260822\\reader_donor_split.csv",
+      "sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"
+    },
+    {
+      "path": "exports\\foundation_calibration_bundle_20260824\\support\\FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+      "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+    },
+    {
+      "path": "exports\\prod41k_teacher_t1_20260823\\t1_run\\t1_checkpoint_u0000.pt",
+      "sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
+    },
+    {
+      "path": "outputs\\full104_v014_20260826\\03_phase2_state_derivation_v1\\full104_shared_state_final_adjudication_v1\\FULL104_SHARED_STATE_FINAL_ROOT_SHA256.txt",
+      "sha256": "fbb75aebadefd541c5ba25d4d34d7226588df9729c4acdba68055ed50e33b58d"
+    },
+    {
+      "path": "outputs\\full104_v014_20260826\\full104_expression_interface_v8_verified\\FULL104_EXPRESSION_INTERFACE_V8\\audit_identity\\FULL104_EXPRESSION_INTERFACE_IDENTITY.csv",
+      "sha256": "8a73338f171de459c5bb5733fa9f4f25d4cd4f16b14b8c7d3ff6ba0339690309"
+    },
+    {
+      "path": "outputs\\full104_v014_20260826\\full104_expression_interface_v8_verified\\FULL104_EXPRESSION_INTERFACE_V8\\code\\full104_expression_interface_consumer.py",
+      "sha256": "1fc1e7fcc90fe639e7826c996584e1fc220cae8c976748210d563a9f560edbdf"
+    },
+    {
+      "path": "outputs\\full104_v014_20260826\\full104_expression_interface_v8_verified\\FULL104_EXPRESSION_INTERFACE_V8\\interface_check_v8r1\\FULL104_EXPRESSION_INTERFACE_SELECTION.csv",
+      "sha256": "2f2eacee4274a0e07684e1744adf3750aae6b712f86264e061ccf517a6240acb"
+    },
+    {
+      "path": "outputs\\full104_v014_20260826\\full104_expression_interface_v8_verified\\FULL104_EXPRESSION_INTERFACE_V8\\model_inputs\\FULL104_EXPRESSION_INTERFACE_PAYLOAD.npz",
+      "sha256": "7faa3ebf4885563c055cba05897d8e421f65315dc991adb5e5bc6d23f46db18c"
+    },
+    {
+      "path": "scripts/v4/contextual_target_v1_f0_authenticated_fixture.py",
+      "sha256": "6e865c3f23f6297cb6f9446f2108c8a2d3d8e6b72ec80a2e96ab45a7f8185587"
+    },
+    {
+      "path": "scripts/v4/contextual_target_v1_f0_slow_reference.py",
+      "sha256": "80cd7aca623452355ba1a5b67fff77280e25cd9c83465c7fdb8222c8c97090b6"
+    },
+    {
+      "path": "scripts/v4/run_contextual_target_v1_f0.py",
+      "sha256": "2e4e5241be1ab1d671a100384d6d807bc66b6c6bdbd87ff15171d9120b25f6d3"
+    },
+    {
+      "path": "src/sea_ad_jepa/v4/contextual_query_local.py",
+      "sha256": "6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa"
+    },
+    {
+      "path": "src\\sea_ad_jepa\\v4\\gene_tokenizer.py",
+      "sha256": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4"
+    },
+    {
+      "path": "src\\sea_ad_jepa\\v4\\ipb_jepa.py",
+      "sha256": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a"
+    }
+  ],
+  "source_paths_added_or_changed": [
+    {
+      "path": "src/sea_ad_jepa/v4/contextual_query_local.py",
+      "pre_sha256": null,
+      "post_sha256": "6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa",
+      "symbols": [
+        "QueryLocalStateResult",
+        "construct_query_local_contextual_state"
+      ],
+      "conclusion_bearing": true,
+      "reason": "own safe encoder forward and parameter-free same-pass contextual reduction"
+    },
+    {
+      "path": "scripts/v4/contextual_target_v1_f0_slow_reference.py",
+      "pre_sha256": null,
+      "post_sha256": "80cd7aca623452355ba1a5b67fff77280e25cd9c83465c7fdb8222c8c97090b6",
+      "symbols": [
+        "slow_true_singleton_reference"
+      ],
+      "conclusion_bearing": true,
+      "reason": "independent one-(cell,q)-at-a-time reference"
+    },
+    {
+      "path": "scripts/v4/contextual_target_v1_f0_authenticated_fixture.py",
+      "pre_sha256": null,
+      "post_sha256": "6e865c3f23f6297cb6f9446f2108c8a2d3d8e6b72ec80a2e96ab45a7f8185587",
+      "symbols": [
+        "load_authenticated_reader_fit_fixture"
+      ],
+      "conclusion_bearing": true,
+      "reason": "hash-bound metadata-first reader-fit authorization before payload access"
+    },
+    {
+      "path": "scripts/v4/run_contextual_target_v1_f0.py",
+      "pre_sha256": null,
+      "post_sha256": "2e4e5241be1ab1d671a100384d6d807bc66b6c6bdbd87ff15171d9120b25f6d3",
+      "symbols": [
+        "main"
+      ],
+      "conclusion_bearing": true,
+      "reason": "bounded A-M F0 harness and fail-closed publication"
+    }
+  ],
+  "core_encoder_modified": false,
+  "tokenizer_modified": false,
+  "ema_modified": false,
+  "elapsed_seconds": 15.356658935546875
+}

@@ -1,0 +1,61 @@
+{
+  "authoritative": {
+    "analytic_shared_state": {
+      "path": "D:\\Jepa project\\scripts\\v4\\derive_full104_phase2_shared_state.py",
+      "sha256": "395562010dcfa3a546e50d22164de70e40d995d0ca02245230a1deb96166db8f"
+    },
+    "corrected_selection": {
+      "path": "D:\\Jepa project\\scripts\\v4\\correct_full104_phase2_shared_selection_with_refit_null.py",
+      "sha256": "8facc871d9700f21367ffb2fce2296efff6d4e1eb23b86258cead1c33056bd29"
+    },
+    "empirical_matched_null": {
+      "path": "D:\\Jepa project\\scripts\\v4\\derive_full104_phase2_shared_empirical_null.py",
+      "sha256": "2dcd775c4fa9127ca6b1224959c69dd788967a8dee3af4ec57b0f8c09351eacf"
+    },
+    "independent_validation": {
+      "path": "D:\\Jepa project\\scripts\\v4\\independent_validate_full104_phase2_shared_level.py",
+      "sha256": "6162a4721e46bd42c6dce71ca678154b119dd5dfa6b4bf96b05e90d13d898712"
+    },
+    "ladder_adjudication": {
+      "path": "D:\\Jepa project\\scripts\\v4\\adjudicate_full104_phase2_shared_ladder_refit.py",
+      "sha256": "d6c0357156fa8ab0ec10457afc03a9134cac18813e9fddc33790f1640ca9f149"
+    },
+    "p0_package_and_real_dag": {
+      "path": "D:\\Jepa project\\scripts\\v4\\build_full104_shared_p0_repair_package.py",
+      "sha256": "7ac749be7cceeba26c49f9ef14088ae60fb239dff4db557aa27e466f2d5993f4"
+    },
+    "promotion_state_core": {
+      "path": "D:\\Jepa project\\scripts\\v4\\jepa_scientific_promotion_harness_v1.py",
+      "sha256": "67056ed0c44f0b5073a776400aa9dea05ee9bbf882649dae5c38d3bab30e819e"
+    },
+    "refitted_null": {
+      "path": "D:\\Jepa project\\scripts\\v4\\validate_full104_phase2_empirical_null_refit.py",
+      "sha256": "174dc3b9044b3ec3c746424ef41c306e685807bb3c6b53298aceacde23abc888"
+    }
+  },
+  "frozen_authorities": {
+    "phase2_freeze": "5943e628bd2c8aa72622226c6267a610135ae1ef4bbb9f582e9ed3cd9f48f5c8",
+    "procedure_amendment": "3c3306380944fffb697050baee1447f434d06054399daa26ffc9f63ac597911c",
+    "promotion_harness_v1": "aef43d9be43a7eeb95b256bd592d8cd69c65a012ea65a1c1d9adce136da26548"
+  },
+  "schema": "full104-active-shared-d-code-authority-v1",
+  "status": "P0_REPAIRED_CODE_PATH__SCIENTIFIC_PROMOTION_BLOCKED",
+  "superseded_do_not_use": {
+    "adjudicate_full104_phase2_shared_ladder.py": {
+      "path": "D:\\Jepa project\\scripts\\v4\\adjudicate_full104_phase2_shared_ladder.py",
+      "reason": "pre-refit ladder route; executable fail-closed guard installed",
+      "sha256": "4fbc3ef8ae7c102803ada0a850bd669ab7d6a2aad524c679bec4cbe43c14e3b3"
+    },
+    "freeze_full104_phase2_shared_candidate.py": {
+      "path": "D:\\Jepa project\\scripts\\v4\\freeze_full104_phase2_shared_candidate.py",
+      "reason": "pre-refit Level-1 freezer; executable fail-closed guard installed",
+      "sha256": "55a67fd67a3c87fd075a40c6c383a047830e9f44eb20de29187a624acd3cfd91"
+    },
+    "record_full104_shared_promotion_state.py": {
+      "path": "D:\\Jepa project\\scripts\\v4\\record_full104_shared_promotion_state.py",
+      "reason": "Level-2-only snapshot; executable fail-closed guard installed",
+      "sha256": "ee5c2c93bec6567521279c79f331daee8daa87a40b6538eed81212a11a665572"
+    }
+  },
+  "upstream_recomputed": false
+}

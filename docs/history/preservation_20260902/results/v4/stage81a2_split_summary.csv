@@ -1,0 +1,17 @@
+split_domain,cohort,split,donor_count
+continuation,NPH_Abeta,development,3
+continuation,NPH_Abeta,sealed_holdout,3
+continuation,NPH_Abeta,train,13
+continuation,NPH_AbetaTau,development,2
+continuation,NPH_AbetaTau,sealed_holdout,2
+continuation,NPH_AbetaTau,train,4
+foundation,HVS,development,8
+foundation,HVS,sealed_holdout,8
+foundation,HVS,train,62
+foundation,NPH_Ctrl,development,3
+foundation,NPH_Ctrl,sealed_holdout,3
+foundation,NPH_Ctrl,train,19
+foundation,SEA_AD,development,8
+foundation,SEA_AD,sealed_holdout,8
+foundation,SEA_AD,train,68
+whole_study_external_holdout,Siletti,whole_study_external_holdout,1

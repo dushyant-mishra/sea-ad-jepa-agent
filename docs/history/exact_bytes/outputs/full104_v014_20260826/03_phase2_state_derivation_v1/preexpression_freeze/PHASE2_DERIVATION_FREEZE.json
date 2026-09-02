@@ -1,0 +1,141 @@
+{
+  "authority": "FROZEN_AUTHORITY",
+  "capacity": {
+    "d_gene_160_is_not_assumed_state_ceiling": true,
+    "historical_96_is_not_authority": true,
+    "test": "selected D_total against hash-pinned parameterized production tensor interfaces, serialization, forward shape, direct-route rank and contextual residual bottleneck; no inward dimension movement"
+  },
+  "direct_basis_ridge": {
+    "basis_grid": "D_total-scaled geometric prefixes through every eligible address, including full-universe candidate",
+    "eligible_universe": 41238,
+    "historical_4096_filter_prohibited": true,
+    "ranking": "donor-reproducible cross-fitted association with standardized frozen teacher state across full address universe, with physical availability explicit",
+    "ridge_grid": "trace-scaled log grid frozen by procedure before fold outcomes",
+    "selection": "nested grouped donor CV on standardized per-coordinate/block teacher-state error; smallest basis/ridge within one donor-level SE"
+  },
+  "no_expression_opened": true,
+  "no_optimizer_ema_lambda_query_schedule_gpu_mechanics_or_training": true,
+  "no_validation_or_oracle": true,
+  "primary_estimand": {
+    "forced_equal_thirds_prohibited": true,
+    "raw_cell_count_weighting_prohibited": true,
+    "rule": "equal influence for every reader-fit donor; equal cell influence within donor",
+    "sensitivities_nonselecting": [
+      "equal_source",
+      "leave_each_source_out"
+    ],
+    "source_weights_derived_from_fit_donor_composition": {
+      "HVS": 0.3942307692307692,
+      "NPH52": 0.16346153846153846,
+      "SEA_AD": 0.4423076923076923
+    }
+  },
+  "private": {
+    "selection": "contiguous residual prefix above matched null with nonzero donor-heldout partial-view predictability; smallest within one donor-level SE",
+    "starts_only_after_shared_hash_freeze": true,
+    "target": "full-rich molecular sketch residual after cross-fitted shared state and allowlisted physical descriptors",
+    "zero_is_lawful": true
+  },
+  "resume": {
+    "atomic_state": [
+      "input hashes",
+      "canonical cursor",
+      "processed row counts and weights",
+      "float64 donor sufficient statistics",
+      "fold/resample/null maps",
+      "RNG states",
+      "solver state",
+      "code/environment hashes"
+    ],
+    "failure_status": "STOP_NUMERICAL_GEOMETRY_UNSTABLE",
+    "restart_fixture_required": true
+  },
+  "sampling": {
+    "ladder_path": "PHASE2_SAMPLE_LADDER.csv",
+    "operator_role": "natural within-donor composition; coverage reported, never pooled-cell reweighting",
+    "selection_order": "SHA256(cell_order_key|source|donor|operator|canonical_cell_id|row_locator)",
+    "stopping": "smallest nested level within one donor-bootstrap SE of the largest evaluated level for held-donor predictability, with no material donor-resampled subspace loss; otherwise advance; full stream is fail-safe final level"
+  },
+  "schema": "full104-phase2-derivation-freeze-v1",
+  "scope": [
+    "shared_state",
+    "private_state",
+    "capacity_gate",
+    "teacher_standardization",
+    "direct_basis_ridge"
+  ],
+  "shared": {
+    "boundary": "stable unsaturated signal at maximum search rank => STUDENT_CAPACITY_LIMIT; no forced boundary selection",
+    "candidate_prefix_grid": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56,
+      64,
+      72,
+      80,
+      88,
+      96,
+      104,
+      112,
+      120,
+      128,
+      136,
+      144,
+      152,
+      160,
+      168,
+      176,
+      184,
+      192,
+      200,
+      208,
+      216,
+      224,
+      232,
+      240,
+      248,
+      256,
+      264,
+      272,
+      280,
+      288,
+      296,
+      304,
+      312,
+      320
+    ],
+    "candidate_search_rank": 320,
+    "donor_resamples": 256,
+    "exact_count_repair": "deterministic trim/add within boundary blocks to floor(0.60*MEASURED_SCALAR)",
+    "feature_channels": {
+      "value_signed_countsketch": 256,
+      "visibility_signed_countsketch": 256
+    },
+    "feature_sketch_dimension": 512,
+    "independent_sketches": 2,
+    "mask_blocks": 20,
+    "matched_null_replicates": 256,
+    "null": "independent view derangements within donor\u00d7operator; preserve source/operator/support/depth/view marginals; report unbroken singleton fraction",
+    "numerics": "canonical shard/operator order; float64 compensated donor sufficient statistics; two deterministic sketches; eigensolver residual/orthogonality/conditioning and principal-angle agreement",
+    "outer_folds": 5,
+    "selected_blocks": 12,
+    "selection": "contiguous observed prefix above selection-aware matched null and stable under donor resampling; smallest prefix within one donor-level SE of best held-donor cross-view predictability",
+    "views": 4,
+    "visible_fraction": 0.6
+  },
+  "standardization": "mergeable float64 equal-donor moments on fit104 teacher coordinates only; separate hash artifact; deterministic near-zero-scale rule",
+  "status": "FROZEN_BEFORE_PHASE2_EXPRESSION",
+  "stop_conditions": [
+    "authority/firewall/namespace/observation mismatch",
+    "protected expression access",
+    "TEACHER_BIOLOGY_LIMIT",
+    "STUDENT_CAPACITY_LIMIT",
+    "STOP_NUMERICAL_GEOMETRY_UNSTABLE",
+    "unstable direct-basis donor-CV solution",
+    "missing authority tag or artifact dependency"
+  ]
+}

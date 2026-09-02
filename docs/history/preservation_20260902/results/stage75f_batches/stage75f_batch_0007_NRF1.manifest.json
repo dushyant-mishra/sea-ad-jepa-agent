@@ -1,0 +1,9 @@
+{
+  "batch_id": 7,
+  "tf": "NRF1",
+  "chunk_index_for_tf": 1,
+  "n_target_genes": 29,
+  "n_regions": 76,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true
+}

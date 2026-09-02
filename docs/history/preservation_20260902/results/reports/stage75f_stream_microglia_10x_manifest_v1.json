@@ -1,0 +1,75 @@
+{
+  "stage": "stage75f_stream_microglia_10x_v1",
+  "mode": "extract",
+  "purpose": "F1/F2 out-of-core microglia-only 10x extraction prep",
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true,
+  "modalities": [
+    {
+      "metadata_rows": 61472,
+      "metadata_microglia_rows": 4126,
+      "matched_microglia_barcodes": 4126,
+      "unmatched_microglia_barcodes": 0,
+      "duplicate_microglia_matrix_columns": 0,
+      "modality": "snrna",
+      "matrix_path": "/workspace/data/external/gse174367/GSE174367_snRNA-seq_filtered_feature_bc_matrix.h5",
+      "metadata_path": "/workspace/data/external/gse174367/GSE174367_snRNA-seq_cell_meta.csv.gz",
+      "matrix_group": "matrix",
+      "matrix_shape": [
+        58721,
+        61770
+      ],
+      "matrix_nnz": 177178648,
+      "mode": "extract",
+      "store_backend": "hdf5",
+      "store_path": "/workspace/data/processed/stage75f/gse174367_mg_snrna.csc.h5",
+      "subset_shape": [
+        58721,
+        4126
+      ],
+      "nnz": 7587493,
+      "max_selected_column_nnz": 5982,
+      "cell_metadata_output": "/workspace/data/processed/stage75f/gse174367_mg_snrna_cell_metadata.parquet",
+      "cell_metadata_format": "parquet",
+      "feature_metadata_output": "/workspace/data/processed/stage75f/gse174367_mg_snrna_feature_metadata.parquet",
+      "feature_metadata_format": "parquet"
+    },
+    {
+      "metadata_rows": 130418,
+      "metadata_microglia_rows": 12232,
+      "matched_microglia_barcodes": 12232,
+      "unmatched_microglia_barcodes": 0,
+      "duplicate_microglia_matrix_columns": 0,
+      "modality": "snatac",
+      "matrix_path": "/workspace/data/external/gse174367/GSE174367_snATAC-seq_filtered_peak_bc_matrix.h5",
+      "metadata_path": "/workspace/data/external/gse174367/GSE174367_snATAC-seq_cell_meta.csv.gz",
+      "matrix_group": "matrix",
+      "matrix_shape": [
+        219070,
+        143401
+      ],
+      "matrix_nnz": 210861965,
+      "mode": "extract",
+      "store_backend": "hdf5",
+      "store_path": "/workspace/data/processed/stage75f/gse174367_mg_snatac.csc.h5",
+      "subset_shape": [
+        219070,
+        12232
+      ],
+      "nnz": 17891090,
+      "max_selected_column_nnz": 11137,
+      "cell_metadata_output": "/workspace/data/processed/stage75f/gse174367_mg_snatac_cell_metadata.parquet",
+      "cell_metadata_format": "parquet",
+      "feature_metadata_output": "/workspace/data/processed/stage75f/gse174367_mg_snatac_feature_metadata.parquet",
+      "feature_metadata_format": "parquet"
+    }
+  ],
+  "safety": {
+    "prediction_benchmark_updated": false,
+    "causal_validation_pass": false,
+    "therapeutic_target_claim": false,
+    "validated_grn_claim": false,
+    "motif_enrichment_completed": false,
+    "approved_wording": "Model-based, enhancer-informed perturbation hypotheses requiring experimental validation."
+  }
+}

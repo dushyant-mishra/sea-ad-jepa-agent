@@ -1,0 +1,9 @@
+{
+  "batch_id": 1,
+  "tf": "IRF8",
+  "chunk_index_for_tf": 1,
+  "n_target_genes": 22,
+  "n_regions": 67,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true
+}

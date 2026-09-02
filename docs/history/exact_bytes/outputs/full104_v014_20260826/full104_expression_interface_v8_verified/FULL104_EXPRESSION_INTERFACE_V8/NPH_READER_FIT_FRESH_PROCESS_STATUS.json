@@ -1,0 +1,13 @@
+{
+  "status": "PASS_NPH_READER_FIT_PHYSICAL_FIREWALL",
+  "fresh_process": true,
+  "opened_original_mixed_nph_assets": false,
+  "derivatives": 7,
+  "fit_donors": 17,
+  "fit_cells": 236476,
+  "human_NPH_1025_absent": true,
+  "human_NPH_878_absent": true,
+  "lineage_exact_no_extra_missing": true,
+  "frozen_lineage_shards_independently_authenticated_and_reopened": true,
+  "phase2_started": false
+}

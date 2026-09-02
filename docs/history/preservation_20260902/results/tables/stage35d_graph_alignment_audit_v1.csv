@@ -1,0 +1,2 @@
+approved_local_perturbation_graph_exists,selected_graph_path,graph_aligned_to_canonical_gene_universe,benchmark_alignment_pass,skipped_reason
+False,,False,False,Stage 35D completed a perturbation-graph feasibility audit but did not run a benchmark because no approved local perturbation-derived graph was available.

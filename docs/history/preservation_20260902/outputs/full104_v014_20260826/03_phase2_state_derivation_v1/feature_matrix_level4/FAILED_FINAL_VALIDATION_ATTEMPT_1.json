@@ -1,0 +1,10 @@
+{
+  "schema": "full104-feature-matrix-failed-final-validation-v1",
+  "status": "FAILED_CLOSED_ENGINEERING_VALIDATION_NOT_PUBLISHED",
+  "reason": "Windows retained mmap pages across chunks; RSS bound exceeded",
+  "peak_rss_bytes": 25321861120,
+  "rss_bound_bytes": 884985856,
+  "arrays_rebuilt": false,
+  "arrays_modified": false,
+  "published": false
+}

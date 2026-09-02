@@ -1,0 +1,39 @@
+stage_id: stage81a3_rbb_core_simplification
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+mode: zero_update_architecture_audit
+source_checkpoint:
+  role: frozen_recovery
+  sha256: 8ef9667e42f6c44be937b94cb54d89152805c3fbe0c254d23891a940d4474b24
+rejected_checkpoint:
+  role: panel_exposure_negative_evidence_only
+  sha256: c78cf055ceb020c2d0e928c021703d1063a24c010e92f6bbef7e572a368e8396
+architecture:
+  molecular_ledger_frozen: true
+  rep_pca_width: 160
+  evidence_covariance: diagonal
+  adaptive_correlated_evidence: removed
+  fixed_prior_correlation: retained
+  measurement_noise_separate: true
+calibration:
+  historical_total_scalar_source: results/v4/stage81a3_rbb_panel_exposure.json
+  historical_total_scalar_refit: false
+  conditional_only_scalar:
+    fit_split: validation
+    shared_families: true
+    shared_fractions: [P80, P60, P40]
+    sealed_used_for_fit: false
+  ordinary_scale: 1.0
+gates:
+  parity_max_abs: 1.0e-6
+  structural_localization_spearman: 0.50
+  uncertainty_monotonic_fraction: 0.75
+  cross_panel_fraction: 0.75
+boundaries:
+  optimizer_updates: 0
+  real_rna: forbidden
+  pathology: forbidden
+  factor_labels_for_fitting: forbidden
+  sealed_for_calibration_fitting: forbidden
+  architecture_sweep: forbidden
+  rank_sweep: forbidden

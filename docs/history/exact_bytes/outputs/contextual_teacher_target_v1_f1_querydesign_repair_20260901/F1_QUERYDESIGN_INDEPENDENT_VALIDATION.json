@@ -1,0 +1,81 @@
+{
+  "schema": "f1-querydesign-independent-validation-v2",
+  "status": "PASS",
+  "production_helpers_imported": false,
+  "assignment_rows_reproduced": 44496,
+  "assignment_mismatch_count": 0,
+  "exact_integer_mass_and_draw_match": true,
+  "golden_vectors_exact": true,
+  "namespace_order_exact": true,
+  "cell_weight_bytes_and_donor_mass_exact": true,
+  "cell_weight_authority_sha256": "018d80428c25a0060168a942ca03dc9e814783463cc077e3661008ba5f7b5eeb",
+  "weight_sign_counts": {
+    "broad_common": {
+      "negative": 0,
+      "zero": 11919,
+      "positive": 29319,
+      "nonfinite": 0
+    },
+    "weak_distributed": {
+      "negative": 0,
+      "zero": 11919,
+      "positive": 29319,
+      "nonfinite": 0
+    },
+    "local": {
+      "negative": 0,
+      "zero": 11919,
+      "positive": 29319,
+      "nonfinite": 0
+    },
+    "local_core": {
+      "negative": 0,
+      "zero": 41230,
+      "positive": 8,
+      "nonfinite": 0
+    },
+    "local_halo": {
+      "negative": 0,
+      "zero": 41174,
+      "positive": 64,
+      "nonfinite": 0
+    },
+    "core_halo": {
+      "negative": 0,
+      "zero": 41166,
+      "positive": 72,
+      "nonfinite": 0
+    },
+    "sparse_marker_like": {
+      "negative": 0,
+      "zero": 41206,
+      "positive": 32,
+      "nonfinite": 0
+    },
+    "innovation_tail": {
+      "negative": 0,
+      "zero": 11919,
+      "positive": 29319,
+      "nonfinite": 0
+    }
+  },
+  "qid_map_exact": true,
+  "query_design_algebra": {
+    "E_Zbar": 2.5,
+    "mu": 2.5,
+    "E_Vhat": 3.625,
+    "Var_Zbar": 3.625
+  },
+  "query_design_algebra_exact": true,
+  "independent_hierarchy_exact": true,
+  "independent_population_query_variance_positive": true,
+  "independent_negative_qid_holm_veto": true,
+  "independent_draw_sign_stop": true,
+  "production_fixture_boolean_agreement": true,
+  "firewall_zero_read_attacks": true,
+  "assignment_csv_sha256": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617",
+  "binding_csv_sha256": "8f8f33d0512117b1fc658c0f92d2d38ef9ffa0add72e189970bccaab0442f5a2",
+  "candidate_outcomes_read": false,
+  "protected_expression_read": false,
+  "training_or_ema": false
+}

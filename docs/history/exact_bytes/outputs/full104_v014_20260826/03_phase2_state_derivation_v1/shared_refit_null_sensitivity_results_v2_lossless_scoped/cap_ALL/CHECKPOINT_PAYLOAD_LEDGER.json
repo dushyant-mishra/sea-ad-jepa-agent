@@ -1,0 +1,10 @@
+{
+  "entries": {
+    "OBSERVED_FULL512_A.npz": "01515127dd937af6eefaf37f4a7cb46d0a0c977b6587e65f5c0ce24d0efd2902",
+    "null_replicates_A\\replicate_000.npz": "e3222fc7e7eae7f91e95209fa515ed8e144983c40ac9ed23ad4e966b0dc4964c"
+  },
+  "implementation_fingerprint": "26b8d20a57e107f7bdd56e775c0e5b51adc143a74b44c590bbad081556d54620",
+  "plan_semantic_sha256": "132fa3c3b9594a742daa650497d7f212375056f104fdc087375349bcb35b6b20",
+  "plan_sha256": "fc7249c4e1eafccc6a9535a30cd311e8b6fa6cf980b85c1c0a7607b65d611a21",
+  "schema": "full104-checkpoint-payload-ledger-v1"
+}

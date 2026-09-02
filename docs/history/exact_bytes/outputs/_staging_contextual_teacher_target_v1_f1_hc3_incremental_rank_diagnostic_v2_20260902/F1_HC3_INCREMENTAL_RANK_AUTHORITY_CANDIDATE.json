@@ -1,0 +1,32 @@
+{
+  "amendment": {
+    "classification": "COMMAND_15A3_AUTHORITY_TYPO / PREFIX-STATE-CONFLATION",
+    "corrected_reproduction": {
+      "B_plus_NPH_C1_plus_C2_rank": 8,
+      "B_plus_NPH_C1_rank": 8,
+      "mandatory_B_df": 97,
+      "mandatory_B_rank": 7
+    },
+    "scientific_machinery_changed": false
+  },
+  "basis_invariance_tolerance": 2.3092638912203256e-12,
+  "basis_invariance_tolerance_formula": "100*n*float64_eps",
+  "candidate_only": true,
+  "design_selected_or_frozen": false,
+  "firewall": {
+    "expression": false,
+    "model_checkpoint_or_forward": false,
+    "outcomes": false,
+    "training_or_ema": false
+  },
+  "input_sha256": {
+    "outputs/contextual_teacher_target_v1_f1_hc3_geometry_diagnostic_20260902/F1_HC3_MANIFEST.csv": "1bb7010e0268fe99f3c0ea952a05d6818466fa0e54734fc15f3a2c2be5406230",
+    "outputs/contextual_teacher_target_v1_f1_hc3_geometry_diagnostic_numrank_repair_20260902/F1_HC3_NUMRANK_MANIFEST.csv": "9b9434eb5056f80964a49843a1e75d9c85392d2dca230932ae6e4c61a7832973",
+    "outputs/contextual_teacher_target_v1_f1_hc3_incremental_rank_diagnostic_20260902/F1_HC3_INCREMENTAL_MANIFEST.csv": "4afcf03909dc01ceabef76ef4c7918288d1cc675facf153eebcfec53851b4ed3",
+    "outputs/contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902/F1_NUISANCE_COLUMN_SCHEMA.json": "9f90c764d0d97b5a10badc03dfcbafc364e0bf40e120a9aed6609e036b5924a7",
+    "outputs/contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902/F1_NUISANCE_DONOR_DESIGN_F64LE.bin": "1d8f837d18cedd8d1b8fd6138d1b25f886b8352c097a4723ca06421573334056",
+    "scripts/v4/contextual_target_f1_decision_v1.py": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34"
+  },
+  "raw_nuisance_root": "2f0c95b1d9c098f8593827f240f64a0b8e5512ead92fe50540f6e2dc231742ec",
+  "status": "CORRECTED_AUTHORITY_PASS"
+}

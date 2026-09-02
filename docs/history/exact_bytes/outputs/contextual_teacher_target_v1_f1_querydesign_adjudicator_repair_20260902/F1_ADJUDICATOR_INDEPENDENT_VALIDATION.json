@@ -1,0 +1,63 @@
+{
+  "authority": {
+    "all_104_donor_weight_mass_exact": true,
+    "assignment_keys": 44496,
+    "assignment_rows": 44496,
+    "cells": 2781,
+    "donors": 104,
+    "exact_assignment_population": true,
+    "operators": 42,
+    "programs": 8,
+    "result_key_universe": 222480
+  },
+  "decision_boundary": {
+    "component_only": true,
+    "engine_sha256": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34",
+    "mandatory_vetoes": {
+      "complete_payload_subset_rejected": true,
+      "cross_source_replication_veto": true,
+      "empty_nuisance_rejected": true,
+      "evidence_trend_failure_veto": true,
+      "hc3_nuisance_veto": true,
+      "missing_nuisance_category_rejected": true,
+      "missing_program_veto": true,
+      "nonfinite_endpoint_veto": true,
+      "nuisance_donor_omission_rejected": true,
+      "nuisance_nonestimable_veto": true,
+      "protected_program_primary_failure_veto": true,
+      "significant_direct_degradation_veto": true,
+      "source_confined_veto": true,
+      "zero_variance_endpoint_veto": true
+    }
+  },
+  "firewall": {
+    "expression_or_outcomes_accessed": false,
+    "real_execution_forward_authority_unfrozen": true,
+    "training_or_ema_accessed": false
+  },
+  "frozen_authorities": {
+    "assignment": true,
+    "cell_weights": true,
+    "namespace": true,
+    "null_map": true,
+    "old_root": true,
+    "random_key": true
+  },
+  "population_attacks": {
+    "cell_relabel_rejected": true,
+    "donor_relabel_rejected": true,
+    "drop_entire_cell_rejected": true,
+    "drop_entire_donor_rejected": true,
+    "duplicate_replace_rejected": true,
+    "extra_assignment_rejected": true,
+    "missing_assignment_evidence_rejected": true
+  },
+  "qid_win_domain_attacks": {
+    "-1.0": true,
+    "0.25": true,
+    "2.0": true,
+    "inf": true,
+    "nan": true
+  },
+  "status": "PASS_F1_QUERYDESIGN_ADJUDICATOR_INDEPENDENT_VALIDATION"
+}

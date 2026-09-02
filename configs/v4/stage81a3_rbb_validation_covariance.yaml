@@ -1,0 +1,35 @@
+stage_id: stage81a3_rbb_validation_covariance
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+fixture:
+  seed: 8114001
+  cells: 4096
+  genes: 4096
+  factors: 32
+  train: 3072
+  validation: 512
+  sealed: 512
+conditional_mean:
+  fitting_split: train_only
+  ridge_alpha: 1.0e-3
+covariance_calibration:
+  fitting_split: validation_only
+  architecture_rank: 9
+  lrd_diagonal_floor_multiplier: 1.0e-4
+  oas_shrinkage: analytic_only
+predeclared_qualification:
+  aggregation: family_median_then_conservative_across_families
+  acceptable_joint_scale_ratio: [0.80, 1.25]
+  acceptable_standardized_variance: [0.80, 1.25]
+  meaningful_nll_improvement_per_dimension: 0.02
+  maximum_lrd_oas_nll_gap_per_dimension: 0.02
+  comparable_joint_scale_absolute_difference: 0.10
+  maximum_severe_non_gaussian_fraction: 0.25
+boundaries:
+  neural_training: forbidden
+  optimizer_updates: 0
+  real_rna: forbidden
+  pathology: forbidden
+  sealed_fitting: forbidden
+  sealed_rank_selection: forbidden
+  factor_labels_in_fitting: forbidden
+  hyperparameter_sweep: forbidden

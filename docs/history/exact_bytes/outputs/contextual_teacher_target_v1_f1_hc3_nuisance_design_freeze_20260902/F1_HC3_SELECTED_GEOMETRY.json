@@ -1,0 +1,470 @@
+{
+  "all_finite": true,
+  "condition_number": 5871549.063684238,
+  "constructed_columns": 16,
+  "conventional_2k_over_n_report_only": 0.3076923076923077,
+  "conventional_3k_over_n_report_only": 0.46153846153846156,
+  "count_leverage_above_2k_over_n_report_only": 13,
+  "count_leverage_above_3k_over_n_report_only": 4,
+  "df": 88,
+  "hc3_boundary": 1.4901161193847656e-08,
+  "hc3_estimable": true,
+  "invertible_reparameterization_hat_invariant": true,
+  "invertible_reparameterization_hat_max_abs_difference": 7.771561172376096e-16,
+  "loo_critical_donors": [],
+  "loo_rank_losses": [
+    {
+      "donor_id": "HVS::H15.03.003",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H15.03.005",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H15.03.006",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H15.06.008",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H15.06.017",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H16.03.001",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H16.03.002",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H16.03.008",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H16.03.010",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H16.03.011",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H16.06.003",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H16.06.008",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H16.06.012",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H17.03.012",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H17.26.005",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.03.002",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.03.003",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.03.008",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.03.012",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.03.313",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.03.323",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.06.002",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.06.004",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.06.005",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.06.359",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.06.363",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.06.367",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.06.368",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H18.26.404",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.03.306",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.03.310",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.03.313",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.03.314",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.03.317",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.03.319",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.03.322",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.06.356",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.06.362",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H19.26.404",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H20.06.354",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "HVS::H20.26.406",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_1031",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_1055",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_1069",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_1075",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_873",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_881",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_884",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_896",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_898",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_906",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_907",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_909",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_910",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_916",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_923",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_944",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "NPH52::human_NPH_976",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H19.33.004",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.001",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.004",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.008",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.011",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.012",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.013",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.017",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.018",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.020",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.024",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.026",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.027",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.029",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.030",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.031",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.035",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.036",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.037",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.038",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.039",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.040",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.041",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.043",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H20.33.044",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.001",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.002",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.005",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.009",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.010",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.012",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.014",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.017",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.018",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.025",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.028",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.032",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.033",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.034",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.035",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.036",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.039",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.040",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.042",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.043",
+      "rank_loss": 0
+    },
+    {
+      "donor_id": "SEA_AD::H21.33.047",
+      "rank_loss": 0
+    }
+  ],
+  "loo_rank_stable": true,
+  "max_leverage": 0.8693731662079761,
+  "max_leverage_by_source": {
+    "HVS": 0.5629248470314269,
+    "NPH52": 0.8693731662079761,
+    "SEA_AD": 0.5168241234200966
+  },
+  "max_leverage_donor": "NPH52::human_NPH_906",
+  "min_one_minus_h": 0.1306268337920239,
+  "n_over_rank": 6.5,
+  "numerical_rank": 16,
+  "rank_tolerance": 2.3298797715034775e-09,
+  "shape": [
+    104,
+    16
+  ],
+  "singular_values": [
+    100892.74683424152,
+    69171.93590850233,
+    10.198039027185564,
+    3.383228489565254,
+    1.6598541137522167,
+    0.6444911840603866,
+    0.2285258461523766,
+    0.21042829959123996,
+    0.14587418771290633,
+    0.12266171263984116,
+    0.12110671017232762,
+    0.09403709888196371,
+    0.07763019902243139,
+    0.07624525952137022,
+    0.05368021374629642,
+    0.0171833268767636
+  ],
+  "sum_leverage": 15.999999999999984,
+  "sum_leverage_minus_rank": -1.5987211554602254e-14,
+  "svd_qr_max_abs_leverage_difference": 6.661338147750939e-16
+}

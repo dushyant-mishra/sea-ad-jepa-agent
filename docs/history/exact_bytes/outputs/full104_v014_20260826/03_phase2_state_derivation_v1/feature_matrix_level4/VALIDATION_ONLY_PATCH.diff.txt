@@ -1,0 +1,8 @@
+writer validation:
+    for array in arrays.values():
+        if not np.isfinite(array).all(): fail
+publisher validation:
+    finite_scan_rows = 16_384
+    for array in arrays.values():
+        for begin in range(0, len(array), finite_scan_rows):
+            if not np.isfinite(array[begin:begin + finite_scan_rows]).all(): fail

@@ -1,0 +1,9 @@
+{
+  "batch_id": 9,
+  "tf": "SPI1",
+  "chunk_index_for_tf": 1,
+  "n_target_genes": 32,
+  "n_regions": 86,
+  "not_motif_enrichment": true,
+  "not_validated_regulation": true
+}

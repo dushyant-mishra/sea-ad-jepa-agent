@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "constructed_columns": 7,
+    "forbidden_data_access": false,
+    "independent_rank": 7,
+    "matches_15A": true,
+    "matches_15A2": true,
+    "matches_command_required_8": false,
+    "matches_production": true,
+    "production_helpers_imported": false,
+    "retained_columns": [
+      "correct_minus_null_measured_zero_rate",
+      "correct_minus_null_visible_depth",
+      "recipient_depth",
+      "recipient_physical_support",
+      "source_HVS",
+      "source_NPH52"
+    ]
+  },
+  "terminal_status": "STOP_F1_HC3_INCREMENTAL_RANK_REPRODUCTION_MISMATCH"
+}

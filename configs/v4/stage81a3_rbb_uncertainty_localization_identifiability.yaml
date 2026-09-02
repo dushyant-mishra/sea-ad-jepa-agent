@@ -1,0 +1,43 @@
+stage_id: stage81a3_rbb_uncertainty_localization_identifiability
+short_name: RBB-ULI
+evidence_anchor: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+seed: 8114001
+mode: zero_core_update_diagnostic_audit
+core:
+  checkpoint: results/v4/stage81a3_rbb_core_simplified_checkpoint.pt
+  checkpoint_sha256: ffab118f5f4573edfc0a83be1fbe2029ab53198ad5942f6c3a5aae532d7e089f
+  migration_manifest: results/v4/stage81a3_rbb_core_migration_manifest.json
+  migration_manifest_sha256: 59269f41c6e9c32a20b9941034e2a00fc1f59a1047b06ac52d4ee33f4f5a08b7
+  raw_uncalibrated_outputs: true
+panels:
+  structural_families: [RANDOM_STRUCTURAL, COHERENT_STRUCTURAL]
+  structural_panel: P60
+  structural_views: [0, 1, 2, 3]
+  ordinary_bank_indices: [0, 32, 64, 96]
+replicates:
+  count: 32
+  split_a: [1, 16]
+  split_b: [17, 32]
+  rng: seed_plus_1000003_times_replicate_index
+jackknife:
+  groups: 8
+  removed_observed_genes_per_group: 123
+  remaining_observed_genes: 2335
+diagnostics:
+  ridge_alpha: 1.0e-3
+  models: [BASE_DIAGNOSTIC, STABILITY_DIAGNOSTIC]
+  strong_localization_spearman: 0.50
+  reliability_spearman: 0.85
+  material_improvement_spearman: 0.10
+boundaries:
+  core_optimizer_updates: 0
+  diagnostic_ridge_fits: 2
+  diagnostic_models_persisted: false
+  real_rna: forbidden
+  pathology: forbidden
+  factor_labels_as_features: forbidden
+  lambda_as_features: forbidden
+  target_replicates_as_features: forbidden
+  target_replicates_as_model_input: forbidden
+  hyperparameter_sweep: forbidden
+  seed_sweep: forbidden

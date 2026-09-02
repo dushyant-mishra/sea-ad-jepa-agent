@@ -1,0 +1,29 @@
+{
+  "checks": {
+    "all_paths_exist_and_hash_match": true,
+    "allowed_actions_only": true,
+    "cache_identity_axes_explicit": true,
+    "contextual_deltas_genuinely_new": true,
+    "delta_absent_from_prior_inventories_with_reconciliation": true,
+    "dshared_closure_present": true,
+    "external_scope_inventory_authenticated": true,
+    "forward_counts_preserve_upstream_nonfrozen_status": true,
+    "historical_runtime_not_claimed_current_exact": true,
+    "mandatory_authority_inventory_complete": true,
+    "no_dshared_scientific_reuse_exact": true,
+    "no_expression_scan": true,
+    "no_f1_outcome": true,
+    "no_hyperparameter_selected": true,
+    "no_training_optimizer_ema": true,
+    "novelty_semantics_explicit": true,
+    "reader_fit104_firewall_exact": true,
+    "required_17_present": true,
+    "source_manifest_current": true,
+    "static_parameter_arithmetic": true
+  },
+  "matrix_rows": 51,
+  "schema": "full104-reuse-delta-independent-validation-v1",
+  "status": "PASS_INDEPENDENT_VALIDATION",
+  "validator_sha256": "56b1875e2493a619df5697e247574cdd332dfd7e31a1f27b43fda97c374c5395",
+  "validator_source": "scripts/v4/validate_full104_parallel_reuse_delta.py"
+}

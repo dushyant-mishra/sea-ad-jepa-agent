@@ -1,0 +1,109 @@
+{
+  "checks": [
+    {
+      "pass": true,
+      "test": "freeze_root"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "test": "gapped_D6"
+    },
+    {
+      "pass": true,
+      "test": "gapped_D6_order_chunk"
+    },
+    {
+      "candidate": null,
+      "pass": true,
+      "prefix": [],
+      "test": "first_D1"
+    },
+    {
+      "pass": true,
+      "test": "first_D1_order_chunk"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "test": "gapped_D5_D13"
+    },
+    {
+      "pass": true,
+      "test": "gapped_D5_D13_order_chunk"
+    },
+    {
+      "candidate": 1,
+      "pass": true,
+      "prefix": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "test": "planted_contiguous"
+    },
+    {
+      "pass": true,
+      "test": "planted_contiguous_order_chunk"
+    },
+    {
+      "pass": true,
+      "test": "dense_solver_independence"
+    },
+    {
+      "pass": true,
+      "test": "no_top32_or_stale_path"
+    },
+    {
+      "pass": true,
+      "test": "null_refits_basis"
+    },
+    {
+      "pass": true,
+      "test": "streaming_no_cell_cell"
+    },
+    {
+      "pass": true,
+      "test": "independent_selector_not_imported"
+    },
+    {
+      "maximum_error": 4.440892098500626e-16,
+      "pass": true,
+      "test": "ALL_natural_donor_mass"
+    },
+    {
+      "pass": true,
+      "test": "authority_population"
+    },
+    {
+      "pass": true,
+      "test": "recursive_taint_private_block"
+    }
+  ],
+  "independent_selector": "local while-loop implementation; no production selector/core import",
+  "input_hashes": {
+    "core": "37bffab5b2fdeca51ca2a7089cd7091c53930a8f87fbeb9d7d31ba72d488410e",
+    "freeze_manifest": "593e14872b6fe07d3f2855a49dd8eac57bfa5819465b8801b801dd9f6d4b510c",
+    "runner": "df61202c6312288db35b97dd6d18eea4787e6b866e0f8785923bf5cc2b472f75",
+    "validator": "5988a0ddaec3ef5a5c90d5469ab02c12a613c5a11dd619964409ccc88da7af9a"
+  },
+  "schema": "full104-refit-null-independent-implementation-validator-v1",
+  "status": "PASS_INDEPENDENT_IMPLEMENTATION_VALIDATOR"
+}

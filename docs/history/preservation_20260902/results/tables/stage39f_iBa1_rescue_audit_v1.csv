@@ -1,0 +1,7 @@
+candidate_id,iba1_score,stage27c_iba1_score,delta_vs_stage27c,iba1_nonnegative,iba1_materially_improved,interpretation
+stage27c_locked_reference,0.016077756403766325,0.016077756403766325,0.0,True,False,Iba1 not materially improved
+stage39c_rank_int_module_pca_ridge,0.025473321858864025,0.016077756403766325,0.0093955654550977,True,False,Iba1 not materially improved
+stage39d_no_pseudo_no_seaad_restricted,0.1670142755897539,0.016077756403766325,0.15093651918598758,True,True,Iba1 materially improved
+stage39d_rank_int_latent_composition_ridge_proxy_risk,0.13704566163814924,0.016077756403766325,0.12096790523438292,True,True,Iba1 materially improved
+stage39e_rank_inverse_normal_module_direct_elasticnet,0.12208036796026417,0.016077756403766325,0.10600261155649784,True,True,Iba1 materially improved
+stage39e_rank_inverse_normal_module_pca8_ridge,0.056974172849842526,0.016077756403766325,0.0408964164460762,True,False,Iba1 not materially improved

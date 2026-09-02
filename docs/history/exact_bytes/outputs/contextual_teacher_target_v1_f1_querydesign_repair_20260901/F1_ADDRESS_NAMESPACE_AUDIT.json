@@ -1,0 +1,91 @@
+{
+  "schema": "f1-address-namespace-audit-v2",
+  "status": "PASS",
+  "length": 41238,
+  "ordered_namespace_semantic_sha256": "595fd8bc860b13ce9ec2a957b0f3d92f850effcb51ae6e2f06b8c5d25d7bd53f",
+  "canonical_namespace_file_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+  "program_weight_file_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+  "observation_state_file_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+  "ordered_mismatch_count": 0,
+  "duplicate_address_ids": 0,
+  "missing_address_ids": 0,
+  "missing_symbols": 0,
+  "duplicate_symbol_occurrences": 276,
+  "first": {
+    "position": 0,
+    "canonical_address_id": "ENSG00000000003",
+    "program_weight_address_id": "ENSG00000000003",
+    "observation_state_address_index": 0,
+    "expression_interface_column": 0,
+    "tokenizer_gene_id": 0,
+    "gene_symbol_reporting_only": "TSPAN6"
+  },
+  "last": {
+    "position": 41237,
+    "canonical_address_id": "HGNC:7519",
+    "program_weight_address_id": "HGNC:7519",
+    "observation_state_address_index": 41237,
+    "expression_interface_column": 41237,
+    "tokenizer_gene_id": 41237,
+    "gene_symbol_reporting_only": "MUC8"
+  },
+  "expression_positional_authority": {
+    "materializer_path": "scripts/v4/materialize_full104_phase2_expression.py",
+    "sha256": "575d02a4e7f7c5c6f3187eeed691a2eac7d3f1df9510621bc497b283806c270b",
+    "relevant_lines": "159-203",
+    "level4_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+  },
+  "tokenizer_positional_authority": {
+    "path": "src/sea_ad_jepa/v4/gene_tokenizer.py",
+    "sha256": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4",
+    "rule": "gene_ids are integer vocabulary positions 0..41237; symbols never define identity"
+  },
+  "f0_constructor_authority": {
+    "path": "src/sea_ad_jepa/v4/contextual_query_local.py",
+    "sha256": "6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa",
+    "rule": "canonical gene_ids arange(V), physical-code checks, visible subset of scalar, queried address scalar-but-withheld"
+  },
+  "materialization_mapping_authorities": {
+    "asset_registry": {
+      "path": "results/v4/stage81a2_canonical_asset_registry.csv",
+      "sha256": "24af817cbea5ea9da37eea851cb97c1d58bcc91bcd08682c4772fcd9c7e5c59f"
+    },
+    "matrix_semantics": {
+      "path": "results/v4/stage81a2_matrix_semantics_contract.csv",
+      "sha256": "3c34bb063e22cdd4d3c308b47cb6eba67ccaceac5fb1c182cc9f7dd755f5aeba"
+    },
+    "feature_provenance": {
+      "path": "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz",
+      "sha256": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51"
+    },
+    "collision_ledger": {
+      "path": "D:\\Jepa project-stage81a3r-20260814\\results\\v4\\stage81a3r_expression_materialization_collision_ledger.csv.gz",
+      "sha256": "f6909f81a2e73383b4346f8cf6d8b3ecfc282f81bfb42d695c6d6896b6c74722"
+    },
+    "collision_supplement": {
+      "path": "D:\\Jepa project-stage81a3r-20260814\\results\\v4\\stage81a3r_scalar_mapping_unregistered_collisions.csv",
+      "sha256": "16f4b62565d483bb4d77bb653f300dd1515df0423877b7dd36eb2545d89aedb1"
+    },
+    "materialization_contract": {
+      "path": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/MATERIALIZATION_CONTRACT.json",
+      "sha256": "612b45742ad80498cbe2f061a75af08c0a10692dc731e0ac8e649417b7e62f17"
+    },
+    "materialization_audit": {
+      "path": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json",
+      "sha256": "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf"
+    },
+    "materialization_manifest": {
+      "path": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_MANIFEST.csv",
+      "sha256": "818ef14ac8c61ea4e93cc0c853a502dfa1cb75c198499b1cdafa6475e5a9eee9"
+    }
+  },
+  "expression_block_geometry": {
+    "manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "blocks_checked": 8915,
+    "expected_columns": 41238,
+    "bad_shape_or_format_count": 0,
+    "values_opened": false,
+    "method": "read only NPZ shape and format members"
+  },
+  "npz_object_dtype_hazard": "molecular_address_id is object dtype and requires allow_pickle=True; F1_ADDRESS_NAMESPACE_BINDING.csv is the safe UTF-8 sidecar bound to the full NPZ SHA."
+}

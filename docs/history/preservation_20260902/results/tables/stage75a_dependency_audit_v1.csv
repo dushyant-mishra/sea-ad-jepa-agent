@@ -1,0 +1,10 @@
+python_module,installed_in_current_env,role
+scenicplus,False,enhancer-driven eGRN construction
+pycisTopic,False,ATAC topic/region processing for SCENIC+
+ctxcore,False,motif/ranking context support
+arboreto,False,GRNBoost-style expression network support
+celloracle,False,state-specific perturbation simulation framework
+pyranges,False,genomic interval operations
+pybiomart,False,gene annotation retrieval/harmonization
+mudata,False,multiomic object handling
+scanpy,True,single-cell preprocessing already available

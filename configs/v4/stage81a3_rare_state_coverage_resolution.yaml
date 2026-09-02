@@ -1,0 +1,93 @@
+stage_id: stage81a3_rscr
+schema_version: "1.0"
+anchor_commit: 808ce4f170055c5568cc5c1e0e3a56415b52f908
+
+inputs:
+  prrc_config: configs/v4/stage81a3_preref_resolution_rare_context.yaml
+  prrc_report: results/v4/stage81a3_prrc_report.json
+  prrc_sha256: 7a2b3f97555cbbf95428b9c70b0f2192584d6a40d0804a55ddf6fa572711105e
+  fbsdq_config: configs/v4/stage81a3_foundation_biological_state_domain_qualification.yaml
+  pca_basis: results/v4/stage81a3_balanced_pca160_diagnostic.npz
+  rep_basis: results/v4/stage81a3_balanced_rep160_diagnostic.npz
+
+target_populations:
+  - CN LAMP5-CXCL14 GABASubclass
+  - STR RSPO2 GABASubclass
+  - VipSubclass
+  - EpendymalSubclass
+
+fixed:
+  target_cell_cap: 256
+  reference_cell_cap: 128
+  knn_k: 15
+  ledger_gene_tokens: 4096
+  ledger_width: 160
+  ledger_seed: 8114001
+  critical_min_ledger_purity: 0.75
+  critical_min_ledger_recall: 0.70
+  critical_max_absolute_loss: 0.25
+
+outputs:
+  report: results/v4/stage81a3_rare_state_coverage_resolution.json
+  target_support: results/v4/stage81a3_rare_state_target_support.csv
+  targeted_preservation: results/v4/stage81a3_rare_state_targeted_preservation.csv
+  freeze_readiness: results/v4/stage81a3_rare_state_coverage_freeze_readiness.csv
+  readout: docs/v4/STAGE81A3_CALIBRATION_AND_SYNTHETIC_MECHANICS_READOUT.md
+  full_census: results/v4/stage81a3_full_rare_state_coverage_census.csv
+  sampling_bias: results/v4/stage81a3_rare_state_sampling_bias.csv
+  all_target_support: results/v4/stage81a3_all_donor_recurring_rare_target_support.csv
+  all_preservation: results/v4/stage81a3_all_donor_recurring_rare_preservation.csv
+  resample_stability: results/v4/stage81a3_rare_state_resample_stability.csv
+  family_summary: results/v4/stage81a3_rare_state_family_summary.csv
+
+expanded:
+  resample_roots: [8117201, 8117202, 8117203, 8117204]
+  resample_cell_cap: 128
+  robust_min_cells: 64
+  robust_min_donors: 8
+  robust_min_usable_folds: 4
+  reusable_reference_cache: data/cache/stage81a3_rscr_reuse
+  expanded_cache: data/cache/stage81a3_rscr_expanded
+  nph_manifest: data/cache/stage81a3_rscr_expanded/nph_target_manifest.csv
+  nph_cells: data/cache/stage81a3_rscr_expanded/nph_target_cells.csv.gz
+  nph_nonzero: data/cache/stage81a3_rscr_expanded/nph_target_nonzero.csv.gz
+  all_target_manifest: data/cache/stage81a3_rscr_expanded/all_rare_target_manifest.csv
+  all_target_support_cache: data/cache/stage81a3_rscr_expanded/all_rare_target_support.csv
+
+rare_biology_completeness:
+  family_cell_cap: 1024
+  local_isolation_k: 30
+  candidate_fraction: 0.01
+  neighborhood_overlap_fraction: 0.50
+  technical_mixed_abs_robust_z: 1.50
+  technical_high_abs_robust_z: 3.00
+  recurrence_donor_thresholds: {limited_min: 2, recurring_min: 5}
+  resample_roots: [8117301, 8117302, 8117303, 8117304]
+  resample_family_fraction: 0.75
+  donor_fractions: [0.25, 0.50, 0.75, 1.00]
+  cache_dir: data/cache/stage81a3_rare_biology_completeness
+
+rare_biology_outputs:
+  candidate_cells: results/v4/stage81a3_data_defined_rare_cells.csv
+  neighborhoods: results/v4/stage81a3_data_defined_rare_neighborhoods.csv
+  agreement: results/v4/stage81a3_representation_rarity_agreement.csv
+  donor_private: results/v4/stage81a3_donor_private_rare_candidates.csv
+  recurring: results/v4/stage81a3_recurring_rare_molecular_states.csv
+  continuous_extremes: results/v4/stage81a3_continuous_extreme_states.csv
+  technical_firewall: results/v4/stage81a3_rare_state_technical_firewall.csv
+  saturation: results/v4/stage81a3_rare_discovery_saturation.csv
+  family_summary: results/v4/stage81a3_rare_biology_family_summary.csv
+  resample_stability: results/v4/stage81a3_data_defined_rare_state_resample_stability.csv
+  report: results/v4/stage81a3_rare_biology_completeness.json
+
+governance:
+  pathology_opened: false
+  development_expression_accessed: false
+  sealed_expression_accessed: false
+  train_expression_only: true
+  intrinsic_optimizer_updates: 0
+  intrinsic_backward_calls: 0
+  ema_updates: 0
+  context_optimizer_updates: 0
+  stage81b_started: false
+  production_basis_frozen: false

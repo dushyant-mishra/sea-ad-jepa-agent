@@ -1,0 +1,30 @@
+{
+  "authority_amendment": {
+    "B_plus_NPH_C1_C2_rank": 8,
+    "B_plus_NPH_C1_rank": 8,
+    "class": "COMMAND_15A3_AUTHORITY_TYPO / PREFIX-STATE-CONFLATION",
+    "mandatory_B_df": 97,
+    "mandatory_B_rank": 7
+  },
+  "design_selected_or_frozen": false,
+  "firewall": {
+    "expression": false,
+    "forward_or_outcome": false,
+    "model_or_checkpoint": false,
+    "training_or_ema": false
+  },
+  "hc3_boundary": 1.4901161193847656e-08,
+  "independent_leverage": "PIVOTED_QR_COLUMN_SPACE_PROJECTION",
+  "input_sha256": {
+    "outputs/contextual_teacher_target_v1_f1_hc3_incremental_rank_diagnostic_v2_20260902/F1_HC3_INCREMENTAL_MANIFEST.csv": "b43d8947e8b86e99166903479ae033ce2ffc0e5b449fa12c796fbec2c1bf85e5",
+    "outputs/contextual_teacher_target_v1_f1_hc3_incremental_rank_diagnostic_v2_20260902/source_snapshot/derive_contextual_target_f1_hc3_incremental_rank_v2.py": "4b8690b415218b357f02251023c164ea6ab435455a38f8fafbe616036ab58571",
+    "outputs/contextual_teacher_target_v1_f1_hc3_incremental_rank_diagnostic_v2_20260902/source_snapshot/finalize_contextual_target_f1_hc3_incremental_rank_v2.py": "184283b702c750b882f360a33bd9aa495125c54d6c68cc30c9e2f9efc0161fea",
+    "outputs/contextual_teacher_target_v1_f1_hc3_incremental_rank_diagnostic_v2_20260902/source_snapshot/validate_contextual_target_f1_hc3_incremental_rank_v2.py": "4adfe014e524c0a4fa8ebe754d3ed237c1594f5443af591809d664a30a452640",
+    "outputs/contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902/F1_NUISANCE_COLUMN_SCHEMA.json": "9f90c764d0d97b5a10badc03dfcbafc364e0bf40e120a9aed6609e036b5924a7",
+    "outputs/contextual_teacher_target_v1_f1_nuisance_authority_recovery_20260902/F1_NUISANCE_DONOR_DESIGN_F64LE.bin": "1d8f837d18cedd8d1b8fd6138d1b25f886b8352c097a4723ca06421573334056"
+  },
+  "production_leverage": "SVD_COLUMN_SPACE_PROJECTION",
+  "semantic_root": "2f0c95b1d9c098f8593827f240f64a0b8e5512ead92fe50540f6e2dc231742ec",
+  "status": "PASS",
+  "tolerance": 2.3092638912203256e-12
+}
