@@ -1,0 +1,20 @@
+{
+  "schema": "full104-metadata-scope-terminal-status-v1",
+  "status": "PASS_FULL104_PRODUCTION_SCOPE_RECONCILED",
+  "gate": "FULL104_METADATA_SCOPE_PASS",
+  "fit_donors": 104,
+  "operators": 42,
+  "cells": 4553407,
+  "source_cells": {
+    "HVS": 198718,
+    "NPH52": 236476,
+    "SEA_AD": 4118213
+  },
+  "donor_operator_mismatches": 0,
+  "duplicate_source_scoped_cell_ids": 0,
+  "nph_quarantined_rows_not_admitted": 22715,
+  "dataset_fidelity_review": "PASS",
+  "red_team_review": "PASS",
+  "expression_read": false,
+  "phase2_started": false
+}

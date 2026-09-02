@@ -1,0 +1,7 @@
+# F1 matched value/support null contract (pre-result)
+
+For each operator and replicate, recipients are the frozen evaluation cells. Build a bipartite graph with one source-cell copy per recipient and edges only when source cell differs and source donor differs. Traverse recipients and candidate source cells in SHA-256 order keyed by `CTX-F1-NULL-V1`, replicate, operator and canonical identities; run deterministic augmenting-path perfect matching. A replicate fails rather than using a fallback if a perfect matching does not exist.
+
+The frozen panel admits donor-distinct bijective matching in all 42 operators. The source cell supplies scalar values; the recipient retains query/address, authoritative physical state, evidence mask, source/operator, and donor-primary weight. Reassignment is within operator and address and bijective, so scalar value distributions (including zeros) and support are preserved while cell-specific correspondence is broken. The same replicate mapping is reused across evidence levels.
+
+There are 319 null replicates. This is fixed outcome-independently as `ceil(2*Mmax/0.05)-1`, where the largest declared multiplicity family has `Mmax=8`; it provides two-sided family-tail resolution. Singleton/unmatchable strata are predeclared non-decision-bearing and reported, never silently remapped. Assignment tables, legality checks, and hashes must be published before result adjudication.

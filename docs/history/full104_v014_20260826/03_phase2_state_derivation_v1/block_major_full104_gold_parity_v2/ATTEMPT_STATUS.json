@@ -1,0 +1,8 @@
+{
+  "status": "ABORTED_ENGINEERING_NATIVE_PROCESS_EXIT_BEFORE_FIRST_CHECKPOINT",
+  "scientific_result": false,
+  "published_gate": false,
+  "python_traceback_emitted": false,
+  "windows_cuda_error_event_found": false,
+  "followup": "Retry with faulthandler, redirected logs, and a 10-stratum gold-test checkpoint cadence; production cadence remains separately derived as 700."
+}

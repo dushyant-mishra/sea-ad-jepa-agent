@@ -1,0 +1,33 @@
+{
+  "status": "FOUNDATION_CORPUS_DISCOVERY_V1_COMPLETE_FRESH_MATCHED_U0_ARM_REQUIRED",
+  "primary_next_action": "Prospectively specify one matched fresh-u0 arm from new unique fit-104 cells using stable metadata/support constraints only; retain authenticated u205 as a read-only comparator. Do not train until the new contract is frozen and separately authorized.",
+  "active_contract_sha256": "d932b9d3ff4fde7a9b0b292e650450781945a6478a954d715278175809e82271",
+  "completed_gate": "FOUNDATION_CORPUS_DISCOVERY_V1 completed and hash-froze direct 42-operator expression lineage, fit-104 corpus/support atlas, frozen 50K discovery expression, teacher shortcuts, heterogeneous synthetic stress, and multi-agent adjudication. Decision: FRESH_MATCHED_U0_ARM_REQUIRED.",
+  "evidence": {
+    "final_adjudication_sha256": "3aacf1b70af43735c4ea979698926de0487b9457058a26b872810009b29eb184",
+    "inventory_expansion_feasibility_sha256": "8000954a0db16ae1bf5f7535dfd1c01ac054136f6ac0c09efd1708f7d46da1d3",
+    "lawful_fit_cells": 4553407,
+    "current_cached_fit_cells": 3292,
+    "old_cache_source_total_variation": 0.5961013253259284,
+    "expression_lineage_v2_sha256": "223b9deec03767d9bb260f530717803fed20e67d737d99107efbb731886abe48",
+    "final_discovery_json_sha256": "d932b9d3ff4fde7a9b0b292e650450781945a6478a954d715278175809e82271",
+    "hash_manifest_sha256": "a21029603afc7fe4e9ed05ffad4bde7bb685fd0660651a43a35c42ce71d510f4"
+  },
+  "supersedes": [
+    "V6R5B residual address-selective predictor-capacity next-action prescription",
+    "full 2-vs-4-vs-8 view/capacity comparison before the four-view existence test"
+  ],
+  "forbidden": [
+    "hidden-gene anchor",
+    "random-u0 as biological teacher",
+    "tier-hiding cascade",
+    "new address-exposure sweep",
+    "arbitrary FP32 gates",
+    "student production training before teacher qualification",
+    "T1 execution before its exact evaluation contract is frozen and separately authorized",
+    "residual address-selective predictor-capacity diagnostic absent genuinely new explicit reauthorization"
+    ,"teacher-design T2 or all-149 production refit before teacher qualification"
+    ,"replay of the accepted 3292-cell fit cache beyond cap8"
+    ,"any new T1 training before the matched-arm contract is prospectively frozen and separately authorized"
+  ]
+}

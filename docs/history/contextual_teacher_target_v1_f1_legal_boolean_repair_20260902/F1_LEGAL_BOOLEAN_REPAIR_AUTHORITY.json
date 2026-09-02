@@ -1,0 +1,31 @@
+{
+  "status": "PRE_RESULT_STRICT_LEGAL_BOOLEAN_REPAIR",
+  "historical_stop": "STOP_F1_LEGAL_PROVENANCE_TYPE_FAIL_OPEN",
+  "submitted_package": {
+    "zip_sha256": "3b841042102583526d75260273d6f309def52be5514156cf054d4b226ecfdc91",
+    "manifest_sha256": "9ee0e2f196f20677f6ea723092a8c142e6fe641322935b358093c1631757ca61"
+  },
+  "unchanged_authorities": {
+    "truth_table_sha256": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e",
+    "population_component_v2_sha256": "ac8157105b66ccd1617efb3740768a91711b429e5288afc34fb9a54adedcc462",
+    "assignment_sha256": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617"
+  },
+  "pre_repair_sources": {
+    "decision_v4_sha256": "cd51a219a1075462e94a6e5ad77d7f647800b619b81431c83972aca4aca47b65",
+    "integration_v4_sha256": "6e7303155cdbd540263b4699439b293748e927c7afc64b0722ae05fda8daecc0"
+  },
+  "repaired_sources": {
+    "decision_v4_sha256": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+    "integration_v4_sha256": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a"
+  },
+  "strict_contract": {
+    "accepted_type": "builtins.bool",
+    "gate_pass_value": true,
+    "numpy_bool_accepted": false,
+    "truthiness_coercion_permitted": false
+  },
+  "real_forward_authority_frozen": false,
+  "real_nuisance_authority_frozen": false,
+  "expression_or_candidate_outcomes_accessed": false,
+  "training_or_ema_accessed": false
+}

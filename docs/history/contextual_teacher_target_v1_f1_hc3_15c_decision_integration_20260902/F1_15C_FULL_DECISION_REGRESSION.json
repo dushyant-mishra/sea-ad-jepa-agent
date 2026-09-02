@@ -1,0 +1,201 @@
+{
+  "all_14_pass": true,
+  "assignment_evidence_records": 222480,
+  "assignment_rows": 44496,
+  "claim_scope": "FINITE_FROZEN_2781_DESIGN_SAMPLED_W2_EXPECTATION",
+  "decision_v4_unchanged": true,
+  "integration_v4_unchanged": true,
+  "legacy_14_cases": [
+    {
+      "attack": "A_protected_program_finite_negative_report_only",
+      "changed_gates": [],
+      "isolated_pass": true
+    },
+    {
+      "attack": "B_direct_degradation",
+      "changed_gates": [
+        "no_contextual_minus_direct_degradation"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "C_evidence_trend",
+      "changed_gates": [
+        "evidence_trend_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "D_qid_margin",
+      "changed_gates": [
+        "qid_v2_margin_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "E_qid_win",
+      "changed_gates": [
+        "qid_v2_win_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "F_draw_sign",
+      "changed_gates": [
+        "two_draw_sign_stable"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "G_hc3_nuisance",
+      "changed_gates": [
+        "hc3_nuisance_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "H_cross_source",
+      "changed_gates": [
+        "cross_source_replication"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "I_nonfinite_qid_margin",
+      "changed_gates": [
+        "qid_v2_margin_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "J_zero_variance_qid_win",
+      "changed_gates": [
+        "qid_v2_win_one_sided_positive"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "K_overall_primary_failure_with_declared_shared_outcome_coupling",
+      "changed_gates": [
+        "overall_A_60_one_sided_positive",
+        "hc3_nuisance_positive",
+        "cross_source_replication"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "L_qid_program_negative_holm",
+      "changed_gates": [
+        "no_qid_v2_program_negative_margin"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "M_legal_provenance",
+      "changed_gates": [
+        "legal_provenance"
+      ],
+      "isolated_pass": true
+    },
+    {
+      "attack": "N_protected_program_unestimable",
+      "changed_gates": [
+        "protected_program_family_estimable"
+      ],
+      "isolated_pass": true
+    }
+  ],
+  "population_attacks": {
+    "drop_entire_cell_rejected": true,
+    "drop_entire_donor_rejected": true,
+    "duplicate_replace_rejected": true,
+    "exact_104_donor_population_verified": true,
+    "exact_222480_record_space_verified": true,
+    "exact_2781_cell_population_verified": true,
+    "exact_42_operator_population_verified": true,
+    "extra_assignment_rejected": true,
+    "missing_assignment_evidence_rejected": true
+  },
+  "program_estimand": "DESIGN_SAMPLED_W2_PROGRAM_ESTIMAND",
+  "record_identity_attacks": {
+    "cell_relabel_rejected": true,
+    "donor_relabel_rejected": true,
+    "qid_win_domain_attacks": {
+      "inf": true,
+      "nan": true,
+      "negative_one": true,
+      "quarter": true,
+      "two": true
+    }
+  },
+  "single_hc3_gate": true,
+  "status": "PASS_F1_15C_FULL_DECISION_REGRESSION",
+  "strict_legal_suite": [
+    {
+      "case": "True",
+      "expected": true,
+      "pass": true,
+      "qualified": true
+    },
+    {
+      "case": "False",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "str_true",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "str_false",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "int1",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "int0",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "list",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "dict",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "none",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "numpy_true",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    },
+    {
+      "case": "numpy_false",
+      "expected": false,
+      "pass": true,
+      "qualified": false
+    }
+  ]
+}

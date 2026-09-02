@@ -1,0 +1,21 @@
+READ FIRST, COMPLETELY:
+- JEPA_PROJECT_MEMORY_OS.md
+- DECISION_REGISTRY.csv
+- EXPERIMENT_LEDGER.csv
+- ACTIVE_STATE.md
+- ARCHITECTURE_CONTRACT.md
+- NEXT_ALLOWED_ACTION.json
+
+Treat them as controlling project state.
+
+Before proposing or running any experiment, perform:
+- exact scientific question
+- closest prior experiment IDs
+- closed decision IDs
+- novel delta
+- why prior evidence does not already answer it
+- duplication verdict
+
+If no genuine novel delta exists, DO NOT RUN THE EXPERIMENT.
+
+At experiment completion, update all controlling files before declaring the work complete.

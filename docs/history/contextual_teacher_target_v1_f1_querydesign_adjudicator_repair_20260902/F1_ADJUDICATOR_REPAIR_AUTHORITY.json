@@ -1,0 +1,20 @@
+{
+  "status": "PRE_RESULT_ADJUDICATOR_REPAIR",
+  "historical_stop": "STOP_F1_QUERYDESIGN_EXTERNAL_SOURCE_REVIEW_ADJUDICATOR_FAIL_OPEN",
+  "prior_package_root_sha256": "74ff3f54e0e15006d2d3970fa2429c1dd734abf1eb619886e2a2a68dd7c006e4",
+  "frozen_authorities": {
+    "random_key_sha256": "7d91edec79ae27fd7c9fd35ebaf33454e05aaf39a0dd8c24d23a9460a3b5242a",
+    "assignment_csv_sha256": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617",
+    "cell_weight_semantic_sha256": "018d80428c25a0060168a942ca03dc9e814783463cc077e3661008ba5f7b5eeb",
+    "namespace_semantic_sha256": "595fd8bc860b13ce9ec2a957b0f3d92f850effcb51ae6e2f06b8c5d25d7bd53f",
+    "primary_null_map_sha256": "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6",
+    "complete_decision_engine_sha256": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34",
+    "query_identity_v2_contract_sha256": "15d873871787e0820f63aaead8f27a6f1057541e16640d8492053144a9c69423"
+  },
+  "population": {"assignments": 44496, "assignment_evidence_records": 222480, "cells": 2781, "donors": 104, "operators": 42, "programs": 8, "evidence_levels": 5},
+  "decision_path": "PATH_A_QUERY_DESIGN_COMPONENT_PLUS_HASH_BOUND_COMPLETE_V1",
+  "real_forward_authority_frozen": false,
+  "real_nuisance_authority_frozen": false,
+  "expression_or_candidate_outcomes_accessed": false,
+  "training_or_ema_accessed": false
+}

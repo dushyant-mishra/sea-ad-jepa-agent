@@ -1,0 +1,6 @@
+{
+  "status": "ABORTED_ENGINEERING_CONSTANT_TRANSCRIPTION_ERROR",
+  "scientific_result": false,
+  "published_gate": false,
+  "reason": "The new executor transcribed the already-authenticated ALL lossless-plan file hash incorrectly. The on-disk authority and independently recomputed file hash agree; only the new implementation constant was corrected."
+}

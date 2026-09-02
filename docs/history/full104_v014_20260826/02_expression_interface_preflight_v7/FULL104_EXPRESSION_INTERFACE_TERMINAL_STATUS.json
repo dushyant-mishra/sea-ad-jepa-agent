@@ -1,0 +1,12 @@
+{
+  "status": "STOP_NPH_PROTECTED_EXPRESSION_REACHABLE",
+  "phase2_authorized": false,
+  "d_or_geometry_derived": false,
+  "gpu_or_training_started": false,
+  "v7_pass_report_superseded": true,
+  "reader_oracle_donors_reachable_in_nph_derivatives": [
+    "human_NPH_1025",
+    "human_NPH_878"
+  ],
+  "required_next_input": "authenticated reader-fit-only physical NPH derivatives or explicit authority for a quarantined one-time splitter"
+}

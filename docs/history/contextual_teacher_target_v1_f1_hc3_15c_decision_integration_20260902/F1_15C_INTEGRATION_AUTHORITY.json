@@ -1,0 +1,26 @@
+{
+  "address_namespace_semantic_root": "595fd8bc860b13ce9ec2a957b0f3d92f850effcb51ae6e2f06b8c5d25d7bd53f",
+  "chronology_claim": "EXECUTION_ENFORCED_PROSPECTIVELY__EXTERNAL_TIME_ANCHOR_UNAVAILABLE",
+  "chronology_limit_preserved": true,
+  "decision_v4_sha256": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+  "expression_or_model_access": false,
+  "external_authorities": {
+    "assignment": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617",
+    "component": "ac8157105b66ccd1617efb3740768a91711b429e5288afc34fb9a54adedcc462",
+    "legal_manifest": "e95aac28c3dacaeba94b202a2be53b46e94c848dd7fbb433b9d99b58efa94976",
+    "namespace_audit": "14b423d5ebca3cdda9a71d0d8b1974e7fe00aaaf84711355312cca01f5085384",
+    "null_map": "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6",
+    "truth_table": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e"
+  },
+  "integration_v4_sha256": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a",
+  "manifest_file_counts": {
+    "15a4": 15,
+    "15b": 17,
+    "provenance": 30
+  },
+  "real_reader_forward_authority": null,
+  "selected_design_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+  "separate_anchor_classification": "SEPARATE_LOCAL_ROOT_BINDING_NOT_PRE_RESULT_TIME_PROOF",
+  "status": "PASS_F1_15C_AUTHORITY_VERIFIED",
+  "truth_table_sha256": "76d420a0aa71f9b062b7394453f1f33282f7c78a956fc950fceb7ead682dcf5e"
+}

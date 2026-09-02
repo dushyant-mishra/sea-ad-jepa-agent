@@ -1,0 +1,7 @@
+{
+  "status": "ABORTED_ENGINEERING_TEST_FIXTURE_UNBOUNDED_RANDOM_MMAP_IO",
+  "scientific_result": false,
+  "production_code_failure": false,
+  "published_gate": false,
+  "reason": "The min/median/max real-subset fixture included the full 42,209-row maximum stratum and reproduced prolonged old-executor random mmap paging. The attempt was stopped and preserved; the fixture was bounded without changing production or scientific code."
+}

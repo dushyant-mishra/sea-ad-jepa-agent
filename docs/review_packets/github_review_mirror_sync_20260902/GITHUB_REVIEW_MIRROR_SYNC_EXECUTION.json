@@ -1,0 +1,35 @@
+{
+  "assertions": {
+    "archive_member_literal_paths": 0,
+    "conflicting_destination_paths": 0,
+    "donor_level_direct_sync": 0,
+    "force_push": false,
+    "git_filter_altered_direct_sync": 0,
+    "pytest_generated_backfill": 0,
+    "source_destination_sha_mismatches": 0,
+    "staged_blob_sha_mismatches": 0
+  },
+  "authority": {
+    "base_origin_main": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+    "repaired_preflight_manifest_sha256": "53674130433fc680564137e9cf5e000f970eb22fa8cbe7f11caeec71b8582880",
+    "repaired_preflight_zip_sha256": "2528d2f82492cfc6d1bbab48b53885740593648222e2de96804a5dfb0df080d4"
+  },
+  "chronology": "RECOVERED_HISTORICAL_BYTES__BACKFILLED_20260902",
+  "counts": {
+    "approved_direct_sync_rows": 787,
+    "approved_paths_already_exact_in_origin_main": 79,
+    "approved_paths_changed_by_commit": 708,
+    "current_governance_review": 499,
+    "excluded_default": 1225,
+    "historical_backfill": 288,
+    "ignored_allowlisted_forced_add": 4,
+    "ledger_only_donor": 7,
+    "ledger_only_git_filter_altered": 818,
+    "provenance_paths_added": 7,
+    "source_destination_hash_mismatches": 0,
+    "staged_blob_hash_mismatches": 0,
+    "synced_destination_files": 787
+  },
+  "provenance_note": "The 787 approved bytes were copied without scientific-content modification. The additional files in this directory are sync provenance required by the authorization and are not additional scientific sync candidates.",
+  "terminal_precommit_status": "PASS_GITHUB_REVIEW_MIRROR_SYNC_PRECOMMIT_VERIFIED"
+}

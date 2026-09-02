@@ -1,0 +1,26 @@
+{
+  "components_dtype": "float32",
+  "components_shape": [
+    512,
+    320
+  ],
+  "eigenvalues_dtype": "float64",
+  "eigenvalues_shape": [
+    320
+  ],
+  "finite": true,
+  "moment_sha256": "d3f67ec29463209e9233f2b78647b2af7cd31724cb8a2fc572bbd3badf995a11",
+  "observed_file_sha256": "74a445dfe737ba1cf1f2d19c1e93d5681826a4b1aa8596dddacf0c0a14a0611b",
+  "observed_refit_performed": false,
+  "payload_semantic_sha256": "01515127dd937af6eefaf37f4a7cb46d0a0c977b6587e65f5c0ce24d0efd2902",
+  "status": "PASS_AUTHENTICATED_OLD_OBSERVED_BASIS_INTERFACE",
+  "stored_numerical_diagnostics": {
+    "all_finite": true,
+    "fits": 262,
+    "maximum_condition": 1353.7157693831489,
+    "maximum_generalized_residual": 9.917644531245513e-13,
+    "maximum_metric_orthogonality": 3.295961239369634e-16,
+    "minimum_metric_eigenvalue": 0.047881995071435035,
+    "minimum_tolerance_margin": 1.6918979632475047e-05
+  }
+}

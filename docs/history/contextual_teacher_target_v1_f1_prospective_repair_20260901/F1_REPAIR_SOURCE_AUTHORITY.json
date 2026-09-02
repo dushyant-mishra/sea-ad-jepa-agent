@@ -1,0 +1,29 @@
+{
+  "schema":"f1-repair-source-authority-v1",
+  "result_state":"PRE_RESULT",
+  "authorities":{
+    "f0_output_root":"e45dd8d885c4f6918bcaf0b24bde971c08c16322b27555e112693f46e42ddb4b",
+    "contextual_constructor":{"path":"src/sea_ad_jepa/v4/contextual_query_local.py","sha256":"6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa"},
+    "f0_slow_reference":{"path":"scripts/v4/contextual_target_v1_f0_slow_reference.py","sha256":"80cd7aca623452355ba1a5b67fff77280e25cd9c83465c7fdb8222c8c97090b6"},
+    "protected_weights":{"path":"exports/contextual_biology_v6r5a_20260822/program_weights.npz","sha256":"001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"},
+    "observation_state":{"path":"exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz","sha256":"852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"},
+    "reader_fit_split":{"path":"exports/contextual_biology_v6r5a_20260822/reader_donor_split.csv","sha256":"efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"},
+    "full104_row_lineage":{"path":"outputs/full104_v014_20260826/01_full104_metadata_adapter/FULL104_ROW_LINEAGE.csv","sha256":"a6065751667b35a38c5990107c6b3f0177e262f7d145addb24bea24206eeb61b"},
+    "prospective_contract":{"path":"CONTEXTUAL_TEACHER_TARGET_V1_CODEX_PACKET_V2/CONTEXTUAL_TEACHER_TARGET_V1_PROSPECTIVE_CONTRACT.md","sha256":"e7c33317b2ca9da59f8c836f70062409fb9cfc4e5489222978afcff83aeb5be3"},
+    "reuse_reconciliation_manifest":{"path":"outputs/contextual_teacher_target_v1_f1_reuse_reconciliation_20260901/F1_REUSE_RECONCILIATION_MANIFEST.csv","sha256":"97bb7e3d6696483a40558edda4a046b41de990d69da216a2ef3bc80593298725"},
+    "frozen_cell_authority":{"path":"outputs/contextual_teacher_target_v1_f1_preflight_20260901/CONTEXTUAL_TARGET_V1_F1_CELL_DONOR_OPERATOR_AUTHORITY.json","sha256":"32437e5ebb01deb8fad771f8b2d4d9bd2b62b061f89c1e79fdbc6629d11af9fe"},
+    "wsl_environment":{"path":"outputs/full104_v014_20260826/03_phase2_state_derivation_v1/wsl_backend_preflight_v1/WSL_BACKEND_PREFLIGHT.json","sha256":"6e61a2ea722b7da6675349cb15e8164c2be8dcea1b34a629c7ca14a27e6a30b8"}
+    ,"full104_expression_level4_block_manifest":{"path":"outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv","sha256":"66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"}
+  },
+  "implementation":{
+    "scripts/v4/derive_contextual_target_f1_repair_v1.py":"63d9e153761c0a1f2d789e89abf2bff85f2dbe6dacaa9cea40232075e4b9c23d",
+    "scripts/v4/benchmark_contextual_target_f1_repair_v1.py":"4229a6622887d4ecb0a966c8aaa35c18f10bd2a81dcac8e1685258fe0eaa81d6",
+    "scripts/v4/contextual_target_f1_decision_v1.py":"204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34",
+    "scripts/v4/validate_contextual_target_f1_repair_v1.py":"664a1f8c55ff3d52f2744477ef7d95951f7c2ad70746add34292a9eb72f75802"
+  },
+  "f0_closed_unchanged":true,
+  "candidate_performance_computed":false,
+  "protected_expression_opened":false,
+  "historical_constants_promoted":[],
+  "terminal":"PASS_F1_REPAIR_AUTHORITY"
+}

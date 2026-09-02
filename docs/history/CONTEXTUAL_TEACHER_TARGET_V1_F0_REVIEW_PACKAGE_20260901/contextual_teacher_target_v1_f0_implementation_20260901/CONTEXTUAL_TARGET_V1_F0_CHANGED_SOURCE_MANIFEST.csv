@@ -1,0 +1,5 @@
+path,pre_sha256,post_sha256,bytes,conclusion_bearing,reason
+src/sea_ad_jepa/v4/contextual_query_local.py,,6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa,11175,true,"parameter-free provenance-bound same-pass query-local constructor"
+scripts/v4/contextual_target_v1_f0_slow_reference.py,,80cd7aca623452355ba1a5b67fff77280e25cd9c83465c7fdb8222c8c97090b6,5945,true,"independent one-cell-one-query slow reference"
+scripts/v4/contextual_target_v1_f0_authenticated_fixture.py,,6e865c3f23f6297cb6f9446f2108c8a2d3d8e6b72ec80a2e96ab45a7f8185587,4549,true,"hash-bound metadata-first reader-fit fixture firewall"
+scripts/v4/run_contextual_target_v1_f0.py,,2e4e5241be1ab1d671a100384d6d807bc66b6c6bdbd87ff15171d9120b25f6d3,45899,true,"bounded deterministic A-M F0 harness"
