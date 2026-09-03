@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" style="background:white;color:#1f2328" role="img" aria-labelledby="title desc">
+<rect width="100%" height="100%" fill="white"/>
+<title id="title">Contextual JEPA project overview</title>
+<desc id="desc">Partial RNA evidence is represented in a full molecular address ledger and used by a contextual JEPA model to predict biological programs and cell state rather than reconstruct every hidden transcript.</desc>
+<style>
+  text { font-family: Arial, Helvetica, sans-serif; fill: currentColor; }
+  .title { font-size: 34px; font-weight: 700; }
+  .subtitle { font-size: 20px; }
+  .box { fill: none; stroke: currentColor; stroke-width: 2.5; rx: 18; }
+  .arrow { stroke: currentColor; stroke-width: 3; fill: none; }
+  .head { font-size: 24px; font-weight: 700; }
+  .body { font-size: 18px; }
+  .note { font-size: 16px; }
+</style>
+<text x="60" y="62" class="title">What this JEPA project is trying to learn</text>
+<text x="60" y="98" class="subtitle">Predict biological state from partial RNA evidence without pretending that every unobserved transcript is known.</text>
+
+<rect x="60" y="165" width="285" height="230" class="box"/>
+<text x="88" y="210" class="head">Partial RNA evidence</text>
+<text x="88" y="255" class="body">Observed expression values</text>
+<text x="88" y="288" class="body">Measured zero is evidence</text>
+<text x="88" y="321" class="body">Structural absence is distinct</text>
+<text x="88" y="354" class="body">Query value can be withheld</text>
+
+<path d="M 365 280 L 475 280" class="arrow"/>
+<path d="M 475 280 L 455 268 M 475 280 L 455 292" class="arrow"/>
+
+<rect x="495" y="165" width="285" height="230" class="box"/>
+<text x="523" y="210" class="head">Contextual JEPA</text>
+<text x="523" y="255" class="body">Keeps molecular address identity</text>
+<text x="523" y="288" class="body">Uses the lawful cell context</text>
+<text x="523" y="321" class="body">Learns a latent biological target</text>
+<text x="523" y="354" class="body">No raw-count reconstruction goal</text>
+
+<path d="M 800 280 L 910 280" class="arrow"/>
+<path d="M 910 280 L 890 268 M 910 280 L 890 292" class="arrow"/>
+
+<rect x="930" y="165" width="210" height="230" class="box"/>
+<text x="958" y="210" class="head">Biology</text>
+<text x="958" y="255" class="body">Cell state</text>
+<text x="958" y="288" class="body">Distributed programs</text>
+<text x="958" y="321" class="body">Local programs</text>
+<text x="958" y="354" class="body">Rare programs</text>
+
+<rect x="60" y="445" width="1080" height="110" class="box"/>
+<text x="88" y="485" class="head">Full Molecular Ledger</text>
+<text x="88" y="522" class="body">41,238 molecular addresses are preserved. Physical measurement state and evidence masking remain separate.</text>
+<text x="88" y="550" class="note">The central question is whether context contains enough biological information to recover meaningful programs—not exact hidden-gene values.</text>
+</svg>

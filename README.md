@@ -1,784 +1,91 @@
-# SEA-AD Graph-JEPA Agent
+# JEPA for biological state from partial RNA
 
-> **Current work is v4 / Stage81.** Begin with [START_HERE.md](START_HERE.md).
-> The material below includes the preserved v1-v3 project history and should
-> not be read as the current execution status.
+This project asks a fairly simple biological question:
 
-**A Graph-JEPA framework for Alzheimer disease microglia: pathology-grounded representation learning, donor-held-out validation, and model-implied counterfactual gene-network discovery.**
+> **If we only see part of a cell's RNA profile, can we still recover the biological programs that define its state?**
 
-This repository is an end-to-end research prototype built around the Seattle Alzheimer Disease Brain Cell Atlas (SEA-AD). The current focus is Microglia-PVM nuclei from middle temporal gyrus (MTG), paired with quantitative neuropathology targets such as AT8/pTau, 6e10/A beta, GFAP, Iba1, and NeuN.
+The goal is **not** to guess every hidden transcript. Single-cell and single-nucleus measurements are incomplete in several different ways, and a measured zero is not the same thing as a gene that was never measurable in that assay. I want the model to respect those distinctions and learn from the biological context that is actually present.
 
-## Current v3 status
+The current work uses a contextual JEPA design over a **41,238-address molecular ledger**. Gene identity is preserved, physical measurement state is preserved, and the model is evaluated on whether partial evidence is sufficient to recover biologically meaningful programs and cell state.
 
-Graph-JEPA v3 is the active publication framework. v1 is proof-of-concept history, and v2 is graph-specificity/failure-analysis motivation and controls.
+For the exact live execution status, start with [`START_HERE.md`](START_HERE.md). The older v1-v3 work is still preserved in this repository for provenance, but it is no longer the current scientific story.
 
-The official internal v3 metric is pooled donor-level out-of-fold Spearman. The current official internal baseline is `module_mean_baseline = 0.3128`, and the minimum v3 success threshold is `0.3228`. All five targets must be reported: AT8, 6e10/A beta, GFAP, Iba1, and NeuN.
+## The idea
 
-The current next modeling step is Stage 27 non-graph v3 training regimes: Stage 27A is SEA-AD-only non-graph v3, and Stage 27B is external-pretrained non-graph v3. Both are training regimes within one Graph-JEPA v3 framework, not separate projects.
+![Contextual JEPA overview](results/figures/public_v4_contextual_jepa_overview.svg)
 
-Active control docs:
+In the current design, the query gene keeps its identity but its scalar value can be withheld. The model then has to use the rest of the lawful cellular context. That makes the question closer to the biological problem we care about: **does the surrounding molecular state contain enough information to infer the program?**
 
-- [Active v3 status](docs/ACTIVE_V3_STATUS.md)
-- [v3 scorecard](docs/V3_SCORECARD.md)
-- [v3 dataset registry](docs/DATASET_REGISTRY.md)
+The protected program set includes broad and distributed signals, local programs, core/halo structure, sparse marker-like signals, and an innovation tail. Rare biology is treated as something the representation should preserve rather than average away.
 
-The central question is:
+## The data scale
 
-> Can a JEPA-style model learn a biological cell-state space that connects microglial gene programs to real Alzheimer pathology, and can that space be interrogated to generate testable gene-network hypotheses?
+![FULL104 reader-fit scope](results/figures/public_v4_full104_scope.svg)
 
-This is not a chatbot over a dataset. It is a representation-learning and hypothesis-generation system.
+The frozen reader-fit corpus currently contains:
 
-```text
-single-nucleus expression
-        -> pathology-grounded latent state
-        -> donor-held-out prediction
-        -> module/gene counterfactual screen
-        -> ranked biological hypotheses
-        -> external perturbation, spatial, or imaging validation
-```
+- **4,553,407 cells**
+- **104 donors**
+- **42 measurement operators**
+- **41,238 molecular addresses**
 
-## Project Dashboard
+The source composition is 4,118,213 SEA-AD cells, 236,476 NPH52 cells, and 198,718 HVS cells. Development and sealed expression remain outside this reader-fit scope.
 
-The figures below are the GitHub-facing overview of the project. They are generated from lightweight result tables and schematics, so readers can understand the workflow and current evidence without downloading raw SEA-AD files or model checkpoints.
+This scale matters because quantities that depend on abundance, assay geometry, donor composition, or measurement structure are derived from the full lawful corpus. We do not carry over convenient values from small pilot cohorts.
 
-| Workflow | Why v2 Exists |
-|---|---|
-| ![Graph-JEPA v2 curriculum](results/figures/public_v2_curriculum_schematic.svg) | ![v1 problems and v2 responses](results/figures/public_v1_to_v2_problem_solution.svg) |
-| **Figure legend:** Graph-JEPA v2 uses a staged curriculum: CELLxGENE normal microglia define a healthy/reference manifold, low-pathology SEA-AD nuclei calibrate that reference to aged postmortem tissue, and full SEA-AD Microglia-PVM training learns disease movement with anchor rehearsal. | **Figure legend:** v1 showed that flat-vector JEPA could learn pathology-linked representations, but also exposed limits: no gene topology, over-pinned anchors, and narrow disease-tube geometry. v2 responds with a gene graph, learnable gene identity embeddings, elastic rehearsal, and manifold telemetry. |
+## What has been established so far
 
-| Stage C Tuning | Donor-Level Pathology Geometry |
-|---|---|
-| ![Stage C sweep leaderboard](results/figures/public_stage_c_sweep_leaderboard.svg) | ![PCA vs JEPA pathology geometry](results/figures/public_pca_vs_jepa_pathology_geometry.svg) |
-| **Figure legend:** Stage C configurations are ranked by a composite score balancing pathology predictivity, manifold geometry, and anchor preservation. The current best run is elastic: loose rehearsal plus a small disease covariance penalty keeps anchors near the reference state while allowing disease geometry to move. | **Figure legend:** Donor-level PCA and JEPA spaces are compared by asking whether local neighborhoods predict neuropathology targets. JEPA improves several pathology-neighborhood signals, especially GFAP and A beta/6e10, showing that the representation is more than a prettier UMAP. |
+A few pieces of the current framework are already settled.
 
-| Fine-Tuned Stage C Diagnostics | Cell-Level Diagnostics |
-|---|---|
-| ![Stage C fine-tuning diagnostics](results/figures/public_stage_c_finetuning_parameter_sensitivity.svg) | ![Cell-level donor leakage and pathology mixing](results/figures/public_cell_level_mixing.svg) |
-| **Figure legend:** Fine-tuning diagnostics show why `upgrade_fine_08_r0045_cov0005_pc0075` is the current active v2.1 baseline: projection-head disease geometry plus pathology-neighborhood loss improves the balanced composite score while preserving both SEA-AD and CELLxGENE anchors above the 0.95 safety rule. | **Figure legend:** Cell-level diagnostics test whether the latent space is dominated by donor identity. JEPA shows lower donor leakage than PCA, while cell-level pathology separation remains difficult because donor pathology scores are broadcast to many individual cells. |
+**The data and measurement semantics are frozen.** The full reader-fit population has been reconciled, duplicate cell locators checked, and the distinction between measured expression, structural non-measurement, and unresolved measurement collisions is explicit.
 
-| Multi-Target Held-Out Validation |
-|---|
-| ![Multi-target OOF validation](results/figures/public_multitarget_oof_validation.svg) |
-| **Figure legend:** Pooled donor-held-out validation compares JEPA against pseudobulk ridge across neuropathology targets. Positive values mark where JEPA outperforms the simpler baseline; negative values show where pseudobulk remains stronger. This plot intentionally shows both wins and limitations. |
+**The contextual target definition passed its F0 review.** The teacher can use the richest lawful context except the queried scalar; the student sees partial evidence; query identity remains present. This is the representation we now intend to test rather than another round of architectural search.
 
-Full-size figures and captions are collected in [docs/figure_gallery.md](docs/figure_gallery.md).
+**The F1 evaluation design is frozen.** It contains 2,781 evaluation cells from the 104 donors, 44,496 cell-query assignments, 43,108 unique `(cell, query)` pairs, and 222,480 assignment-by-evidence effect rows. The primary comparison is against a matched null rather than against an easy or unrelated negative control.
 
-## Latest Snapshot
+**The HC3 nuisance analysis has passed independent numerical review.** The production calculation now uses a QR-based route and the independent check uses SVD, avoiding the fragile normal-equation path that was present in the older implementation.
 
-The current repository state has moved beyond the original v1 latent-space demo. The active story is now:
+There is also an important boundary: **the real F1 biological outcome has not been run yet.** A narrow numerical defect in the historical evidence-trend arithmetic is being repaired prospectively before any real F1 result is allowed to exist. Training is also still blocked. I would rather leave the public page temporarily modest than publish a result that has not cleared its own statistical machinery.
 
-```text
-Graph-JEPA v2.2 backbone
-  -> frozen Stage B biological representation
-  -> linear pathology heads for AT8/NeuN
-  -> graph-mediated counterfactual screens
-  -> covariate/artifact audit
-  -> druggability and biomarker triage
-```
+## How I think about success
 
-Current high-level results:
+I do not want a model that only makes a good-looking embedding. A useful representation should survive several harder checks:
 
-| Layer | Current Finding | Interpretation Boundary |
-|---|---|---|
-| Tau/neurodegeneration readout | Frozen Graph-JEPA plus a linear pathology head gives the strongest defensible AT8/NeuN readout. | Use this as the active Stage C clinical readout; do not warp the backbone further unless a future gate clearly passes. |
-| Golden Quadrant targets | `APOE`, `APP`, `CD4`, and `TLR2` predicted lower AT8 and higher NeuN in the pathology-head counterfactual screen. | These are model-implied intervention hypotheses, not causal proof. |
-| Covariate audit | `APOE`, `APP`, and `TLR2` cleared the first technical-covariate screen; `CD4` was downgraded for count-depth artifacts. | The clean first-pass translational set is `APOE`, `APP`, and `TLR2`. |
-| Druggability/biomarker triage | `TLR2` is membrane-accessible, `APP` is membrane/secreted with many ChEMBL actives, and `APOE` is secreted/extracellular. | `TLR2` is the cleanest surface immunomodulatory target; `APP` and `APOE` need careful biomarker/pathway framing. |
-| Amyloid/6e10 | A frozen ElasticNet axis finds a weak but reproducible donor-level 6e10 signal; MIL did not generalize. | Treat A beta as exploratory. Do not claim plaque-proximal microglia without spatial/plaque validation. |
-| External transfer | Grubman/Leng is a useful directionality smoke test; Morabito tau transfer is weak/negative. | External projections currently define boundaries, not final validation wins. |
+- biological signal should be better for the correct cell than for a matched wrong-cell context;
+- the effect should be visible at the donor level, not through cell-level pseudoreplication;
+- it should hold across the protected program families, including weak and rare programs;
+- performance should improve as more lawful evidence becomes available;
+- query identity should matter in the right way;
+- source-specific and nuisance-adjusted checks should not reverse the conclusion.
 
-Newest translational outputs:
+The primary evidence ladder is 20%, 40%, 60%, 80%, and 100%, with 60% as the main operating point.
 
-- [target covariate audit](results/tables/v2_2_target_covariate_audit.csv)
-- [target covariate audit, long form](results/tables/v2_2_target_covariate_audit_long.csv)
-- [druggability and biomarker summary](results/tables/v2_2_druggability_summary.csv)
+## Why this may be useful
 
-## Why This Project Exists
+Many transcriptomic models are trained to reconstruct missing values. That is useful for some tasks, but it is not necessarily the right objective if the real scientific question is cell state.
 
-Single-cell RNA-seq often gives long gene lists. Neuropathology gives real tissue phenotypes, but it does not directly identify which cell-state programs explain those phenotypes. This project tries to connect those layers.
+A neuron, glial cell, immune cell, or diseased cell is not defined by one transcript. Its state is distributed across interacting programs. If a representation can recover those programs from partial and heterogeneous measurements while respecting what was actually observed, it may give us a more useful bridge across datasets, assays, and biological conditions.
 
-Instead of only asking:
+That is the long-term aim here.
 
-```text
-Which genes are differentially expressed?
-```
+## Current scientific boundary
 
-we ask:
+The live gate is maintained in [`START_HERE.md`](START_HERE.md) and [`docs/agent/memory-os/ACTIVE_STATE.md`](docs/agent/memory-os/ACTIVE_STATE.md). At the time of this README refresh:
 
-```text
-Which learned microglial states predict measured Alzheimer pathology?
-Which genes/modules define those states?
-What does the model predict would happen if those genes/modules were perturbed?
-Which hypotheses survive donor-held-out and confounder-adjusted checks?
-```
+- the FULL104 reader-fit authority is accepted;
+- Contextual Target V1 F0 is closed PASS;
+- the HC3 numerical-robustness repair is externally accepted;
+- the evidence-trend numerical repair is the only authorized scientific step;
+- real F1 model-forward execution and training are not yet authorized.
 
-## Why JEPA
+For audit-level details, use:
 
-Single-nucleus expression is sparse, noisy, and dropout-heavy. Reconstructing raw counts can force a model to learn technical artifacts. JEPA-style training predicts latent biological state from partial context instead of reconstructing every observed count.
+- [`docs/agent/CURRENT_AUTHORITY_INDEX.md`](docs/agent/CURRENT_AUTHORITY_INDEX.md)
+- [`docs/agent/CURRENT_SUPERSESSION_MAP.md`](docs/agent/CURRENT_SUPERSESSION_MAP.md)
+- [`docs/agent/EVIDENCE_INDEX.md`](docs/agent/EVIDENCE_INDEX.md)
 
-For Alzheimer disease, the useful object is not one noisy count vector. The useful object is the underlying cell state: homeostatic microglia, plaque response, lysosomal/phagocytic activation, complement signaling, lipid handling, vascular/barrier myeloid biology, inflammatory signaling, and disease-associated microglial programs.
+## Historical work
 
-## What v1 Taught Us
+The repository contains several earlier generations of the project, including the original SEA-AD pathology-focused v1-v3 work and its figures. Those files are retained because they document how the project evolved and which ideas failed or were superseded.
 
-The first version used a flat-vector snRNA JEPA:
-
-```text
-cell = vector of 2,957 genes
-encoder = MLP-style expression encoder
-objective = predict target latent state from masked/module-masked context
-```
-
-Important v1 improvements:
-
-- EMA target encoder fixed a major target-network bug.
-- Module-aware masking was better than purely random masking.
-- Variance regularization reduced latent contraction.
-- Donor-held-out pooled OOF validation showed JEPA could beat pseudobulk on some pathology axes.
-- Digital knockouts, latent Jacobians, and confounder-adjusted effects produced useful SEA-AD hypotheses.
-
-Key v1 results:
-
-```text
-Stabilized pooled donor-held-out AT8:
-  pathology-aware EMA+variance JEPA: Spearman ~= 0.497
-  pseudobulk ridge:                  Spearman ~= 0.422
-
-PCA-vs-JEPA donor latent-space deltas:
-  GFAP:        +0.220 kNN Spearman
-  A beta/6e10: +0.071
-  Iba1:        +0.025
-  AT8/pTau:    +0.017
-  NeuN:        -0.007
-```
-
-But v1 also exposed real limitations:
-
-- **Flat-vector topology flaw:** genes were independent columns, so `CSF1R`, `TREM2`, `P2RY12`, and complement genes had no explicit network structure.
-- **Over-pinning/fine-tuning issue:** early Stage C-like disease signal appeared, then later training compressed it.
-- **Disease tube problem:** elastic rehearsal let disease cells move, but the model sometimes stretched one dominant latent axis instead of building a rich neighborhood geometry.
-- **External perturbation mismatch:** K562 and Kampmann/iPSC-microglia tests were useful engineering diagnostics, but v1 was not a true dynamic causal model.
-- **Causal boundary:** digital knockouts are model-implied counterfactual hypotheses, not experimental proof.
-
-Those failures motivated v2.
-
-## Graph-JEPA v2
-
-v2 changes the representation from a flat expression vector to a gene graph.
-
-```text
-node = gene
-edge = STRING gene/protein relationship
-node features = expression scalar + learnable gene identity embedding
-graph encoder = message-passing neural network
-objective = JEPA latent prediction with anchor-preserving rehearsal
-```
-
-This directly addresses the v1 topology flaw. The model is no longer told that genes are just unrelated columns. It receives a prior graph so perturbing one gene can influence connected subgraphs.
-
-The current graph input check:
-
-```text
-genes: 2,957
-STRING t700 edge columns: 231,015
-max edge node index: 2,956
-HPA/FDA drug targets in graph annotations: 136
-predicted membrane genes: 735
-predicted secreted genes: 105
-```
-
-## v2 Training Curriculum
-
-The v2 curriculum is designed to avoid two traps: learning only diseased SEA-AD biology, and forgetting healthy/reference biology during disease fine-tuning.
-
-### Stage A: Healthy Anchor Pretraining
-
-Train Graph-JEPA on normal-labeled human brain microglia nuclei from CELLxGENE.
-
-Purpose:
-
-```text
-learn a broad healthy/reference microglial graph manifold
-```
-
-The successful CELLxGENE anchor:
-
-```text
-cells: 10,000
-donors: 692
-matched JEPA genes: 2,863 / 2,957
-zero-padded missing genes: 94
-dominant assay: 10x 3' v3
-```
-
-Current best Stage A checkpoint:
-
-```text
-results/models/graph_jepa_stage_a_string_t700_rawvar_e30/graph_jepa.pt
-```
-
-Stage A result:
-
-```text
-epoch 1:  loss 1.0529, alignment 0.0677, variance 0.9853
-epoch 30: loss 0.3699, alignment 0.0024, variance 0.3675
-```
-
-### Stage B: SEA-AD Low-Pathology Calibration
-
-Calibrate the Stage A model on low-pathology SEA-AD Microglia-PVM anchors while rehearsing CELLxGENE anchors.
-
-Purpose:
-
-```text
-adapt from broad healthy/reference cells to SEA-AD's aged postmortem technical context
-without erasing the Stage A reference manifold
-```
-
-Stage B anchors:
-
-```text
-relaxed low-pathology SEA-AD anchor: 4,467 cells, 10 donors
-strict low-pathology SEA-AD anchor:  1,883 cells, 4 donors
-```
-
-Stage A-to-B drift audit:
-
-```text
-SEA-AD low-pathology anchor cosine: 0.9916
-CELLxGENE anchor cosine:           0.9754
-```
-
-Interpretation: Stage B calibrated the model without catastrophic forgetting.
-
-### Stage C: Disease-Vector Training With Rehearsal
-
-Train on the full SEA-AD Microglia-PVM disease manifold while preserving both anchors.
-
-Purpose:
-
-```text
-learn pathology-relevant disease movement
-while retaining healthy/reference geometry
-```
-
-The Stage C trainer uses three streams:
-
-```text
-stream 1: full SEA-AD Microglia-PVM disease cells
-stream 2: SEA-AD low-pathology anchor cells
-stream 3: CELLxGENE normal microglia anchor cells
-```
-
-This avoids catastrophic forgetting more directly than a purely sequential curriculum.
-
-## Problems We Faced in Stage C
-
-The first Stage C run preserved anchors too well:
-
-```text
-SEA-AD anchor cosine:    0.9998
-CELLxGENE anchor cosine: 0.9992
-```
-
-That looked safe, but it over-pinned the manifold. The disease cells could not reorganize enough to improve local pathology geometry.
-
-We then tried elastic rehearsal:
-
-```text
-cosine softplus margin
-margin: 0.95
-temperature: 100
-```
-
-This let the disease manifold move, but telemetry found a new failure:
-
-```text
-effective dimensions fell to about 2.10
-top singular value ratio rose to about 0.821
-```
-
-Interpretation: the model escaped the anchors by stretching into a narrow disease tube. Ridge could still find a pathology vector, but Euclidean kNN struggled because the local neighborhood geometry was poor.
-
-We then added a small disease covariance penalty to reduce the tube effect. A large covariance weight over-damped disease movement, so we built a targeted sweep to tune the balance.
-
-## Current Best Stage C Result
-
-The reproducible sweep is implemented in:
-
-```text
-scripts/sweep_stage_c_finetuning.py
-```
-
-Sweep outputs:
-
-```text
-results/tables/stage_c_finetuning_sweep_summary.csv
-results/tables/stage_c_finetuning_fine_tight_summary.csv
-results/tables/stage_c_finetuning_fine_loose_summary.csv
-results/tables/stage_c_upgrade_sweep_summary.csv
-results/tables/stage_c_upgrade_fine_summary.csv
-results/tables/stage_c_finetuning_combined_leaderboard.csv
-```
-
-Best current configuration:
-
-```text
-run: upgrade_fine_08_r0045_cov0005_pc0075
-checkpoint: epoch 5
-SEA/CELLxGENE rehearsal weight: 0.0045
-disease covariance weight: 0.0005
-pathology contrastive weight: 0.075
-architecture: projection-head disease space + pathology-neighborhood loss
-composite score: 1.686
-```
-
-Key metrics:
-
-```text
-AT8 ridge Spearman:          0.213
-NeuN ridge Spearman:         0.426
-AT8 Euclidean kNN Spearman: -0.037
-NeuN Euclidean kNN Spearman: 0.295
-AT8 cosine kNN Spearman:     0.266
-NeuN cosine kNN Spearman:    0.303
-GFAP cosine kNN Spearman:    0.408
-effective dimensions:        7.19
-top singular value ratio:    0.430
-SEA anchor cosine:           0.975
-CELLxGENE anchor cosine:     0.961
-```
-
-Interpretation:
-
-```text
-The best current Stage C setting is v2.1 elastic and anchor-safe.
-Projection-head decoupling lets the disease representation move without dragging the reference encoder.
-Pathology-neighborhood loss improves balanced NeuN/GFAP/cosine-neighborhood behavior.
-fine_bridge_06 remains an important AT8-heavy comparator, but it is less anchor-safe.
-It is still a tuning result, not a final biological validation claim.
-```
-
-## Current Biological Hypotheses
-
-Early SEA-AD Microglia-PVM candidates from internal v1/v2 analyses include:
-
-```text
-PTPRG
-S100A4
-CHI3L1
-DRAM1
-TNFRSF11B
-IL27RA
-CTSD
-NFKBIA
-P2RY12
-CX3CR1
-F13A1
-```
-
-Important modules include:
-
-```text
-homeostatic microglia
-vascular/barrier myeloid
-lysosome/phagocytosis
-complement
-lipid metabolism
-plaque response
-disease-associated microglia
-AT8-associated first-pass genes
-```
-
-These are model-prioritized hypotheses. They should be validated with independent cohorts, perturbation data, spatial transcriptomics, IHC/imaging, or wet-lab experiments.
-
-The selected v2.1 model now points to a more distributed latent disease geometry:
-
-```text
-AT8/pTau dimensions: z_120, z_26, z_30, z_94, z_71
-NeuN dimensions:     z_1, z_57, z_103, z_100, z_125
-GFAP dimensions:     z_63, z_38, z_120, z_107, z_71
-```
-
-This suggests that tau pathology, neuronal density, and astrocyte-reactive tissue state are partially overlapping but not identical axes in the Graph-JEPA manifold.
-
-## Current v2.1 Biology Extraction
-
-After selecting `upgrade_fine_08_r0045_cov0005_pc0075`, we decoded its latent axes and compared them with the AT8-sensitive `fine_bridge_06_r0045_cov0005` checkpoint. The goal was to stop tuning blindly and ask what biology the model is actually using.
-
-Primary outputs:
-
-- [v2.1 microglia hypothesis report](results/reports/v2_1_microglia_biological_hypotheses.md)
-- [v2.1 named biological programs](results/reports/v2_1_named_biological_programs.md)
-- [multi-target counterfactual stability report](results/reports/v2_1_multitarget_counterfactual_stability.md)
-- [ranked v2.1 target matrix](results/tables/v2_1_ranked_target_matrix.csv)
-- [module-level AT8 counterfactuals](results/tables/v2_1_upgrade_fine_08_module_counterfactual_at8.csv)
-- [gene-level AT8 counterfactuals](results/tables/v2_1_upgrade_fine_08_gene_counterfactual_at8.csv)
-
-Key readout:
-
-```text
-strongest AT8-lowering module perturbations:
-  antigen presentation
-  vascular/barrier myeloid
-  inflammatory signaling
-  complement
-
-strongest AT8-up module perturbations:
-  lipid metabolism
-  homeostatic microglia
-  senescence/stress
-  lysosome/phagocytosis
-```
-
-The predictor Jacobian analysis converged on lysosome/phagocytosis-related latent routing in both `upgrade_fine_08` and `fine_bridge_06`, suggesting that phagocytic/lysosomal state is a stable internal axis rather than a one-checkpoint artifact.
-
-The top ranked gene-level hypothesis matrix currently prioritizes:
-
-```text
-APP
-BCL2
-TLR2
-CD4
-P2RY12
-APOE
-MAPK1
-CX3CR1
-STAT3
-CSF1R
-UGCG
-ROCK1
-```
-
-After extending the counterfactual screen across AT8/pTau, A beta/6e10, GFAP, Iba1, and NeuN, the broadest multi-target module axes are:
-
-```text
-lysosome/phagocytosis
-homeostatic microglia
-plaque response
-disease-associated microglia
-lipid metabolism
-senescence/stress
-antigen presentation
-vascular/barrier myeloid
-```
-
-The most stable multi-target gene-level effects are:
-
-```text
-APP
-STAT3
-GRB2
-HSP90AA1
-BCL2
-HIF1A
-MAPK1
-APOE
-RHOA
-CTSD
-CX3CR1
-CD4
-TLR2
-CD74
-P2RY12
-```
-
-These are not claimed as validated causal drivers. They are ranked, model-implied intervention hypotheses that now need independent cohort, perturbation, spatial, or imaging validation.
-
-### Artifact-Control Pass
-
-Before accepting the v2.1 target matrix, we added three negative-control screens:
-
-- **Alien-cell check:** asks whether digital perturbations leave the real SEA-AD latent manifold.
-- **Covariate-confounder check:** asks whether major latent axes track available donor covariates more strongly than pathology.
-- **Within-state check:** reruns top perturbations only within high plaque-response/DAM-like cells to test whether effects are compositional artifacts.
-
-Current result:
-
-```text
-top-10 alien-cell violations: 0 / 10
-top-5 within-state compositional artifacts: 0 / 5
-covariate caution: z_107 only, affecting CX3CR1 through the bridge comparator
-```
-
-Full-covariate metadata-hardening update:
-
-```text
-script:
-  scripts/audit_sea_ad_full_donor_metadata.py
-
-new enriched covariate table:
-  results/tables/sea_ad_full_metadata_targets_with_covariates.csv
-
-rerun:
-  scripts/validate_v21_target_matrix.py --metadata results/tables/sea_ad_full_metadata_targets_with_covariates.csv
-
-nuisance covariates tested:
-  Age at Death, Sex, PMI, RIN, Brain pH, Fresh Brain Weight
-
-result:
-  top five targets still pass all current controls
-  z_107 remains the only covariate-caution axis
-```
-
-The stricter artifact-control pass did not overturn the top target matrix. `APP`, `BCL2`, `TLR2`, `CD4`, and `P2RY12` remain the cleanest internally controlled hypotheses. `CX3CR1` remains biologically interesting but should carry a caution flag because its bridge-model support routes through `z_107`.
-
-Validated output:
-
-- [validated v2.1 target matrix](results/tables/v2_1_target_validation_validated_target_matrix.csv)
-- [artifact-validation report](results/tables/v2_1_target_validation_report.md)
-- [full-covariate validated target matrix](results/tables/v2_1_target_validation_full_covariates_validated_target_matrix.csv)
-- [full-covariate artifact-validation report](results/tables/v2_1_target_validation_full_covariates_report.md)
-- [SEA-AD full metadata covariate audit](results/reports/sea_ad_full_metadata_covariate_audit.md)
-- [external validation next steps](docs/external_validation_next_steps.md)
-
-## External Validation Smoke Test
-
-The first frozen external projection has been run on the public Grubman/Leng entorhinal cortex dataset `GSE138852`.
-
-```text
-script:
-  scripts/project_external_ad_microglia.py
-
-model:
-  upgrade_fine_08, strictly frozen
-
-external cells:
-  449 microglia
-
-external groups:
-  6 AD/control sample pools
-
-matched genes:
-  2,626 / 2,957 Graph-JEPA input genes
-```
-
-The useful first signal is module-level replication, not continuous pathology regression. Several SEA-AD-named programs separate AD vs control sample pools in the expected direction:
-
-```text
-AD-up in GSE138852:
-  complement
-  disease-associated microglia
-  plaque response
-  AT8-associated first-pass module
-  vascular/barrier myeloid
-
-Control-up in GSE138852:
-  homeostatic microglia
-  chemokine migration
-  lipid metabolism
-```
-
-The SEA-AD-calibrated Ridge pathology heads do not yet transfer cleanly in this tiny categorical cohort. That is the right boundary: `GSE138852` is a successful frozen-projection smoke test and module-replication signal, while `GSE174367` or ROSMAP/Mathys are needed for stronger donor-level severity validation.
-
-Follow-up alignment run:
-
-```text
-missing genes:
-  imputed with SEA-AD low-pathology Microglia-PVM means
-
-alignment:
-  external controls shifted to the SEA-AD low-pathology centroid
-
-trajectory scoring:
-  external donors projected along SEA-AD AT8, A beta/6e10, GFAP, Iba1, and NeuN disease vectors
-```
-
-This improved the geometry-based readout. After alignment, all five SEA-AD disease trajectory scores shifted AD-up in `GSE138852`, and SEA-AD-calibrated A beta/6e10 and AT8 model-scale scores moved in the expected AD direction. Because the cohort has only six sample pools, this remains a directionality smoke test rather than definitive external validation.
-
-Outputs:
-
-- [GSE138852 zero-shot report](results/tables/gse138852_graph_jepa_zero_shot_report.md)
-- [GSE138852 summary table](results/tables/gse138852_graph_jepa_zero_shot_summary.csv)
-- [GSE138852 aligned zero-shot report](results/tables/gse138852_graph_jepa_zero_shot_aligned_report.md)
-- [GSE138852 baseline-vs-aligned comparison](results/tables/gse138852_graph_jepa_zero_shot_alignment_comparison.csv)
-
-## External Validation: Morabito GSE174367
-
-The next frozen projection was run on `GSE174367` / Morabito et al. prefrontal cortex snRNA-seq. This cohort is more useful than `GSE138852` for severity testing because the public cell metadata includes diagnosis, age, sex, PMI, RIN, batch, tangle stage, and plaque stage.
-
-```text
-model:
-  upgrade_fine_08, strictly frozen
-
-external cells:
-  4,126 microglia
-
-external donors:
-  18 samples
-
-matched genes:
-  2,924 / 2,957 Graph-JEPA input genes
-
-alignment:
-  SEA-AD low-pathology mean imputation + control-centroid shift
-```
-
-Important interpretation boundary: GSE174367 contains tangle stages `1`, `2`, `5`, and `6`, but not stages `3` or `4`. Therefore this is best treated as an **early-versus-late tau-state transfer test**, not a smooth Braak trajectory test.
-
-Main result:
-
-```text
-AT8/pTau SEA-AD trajectory vs Morabito tangle stage:
-  donor Spearman rho: 0.224
-  p-value: 0.372
-
-early tangle stages 1-2 vs late stages 5-6:
-  AT8/pTau trajectory AUC: 0.623
-  rank-biserial effect: 0.247
-
-leave-one-donor-out Spearman range:
-  0.131 to 0.320
-```
-
-This is a **weak/negative tau-transfer stress test**, not a validation win. The useful finding is boundary-setting: the frozen SEA-AD AT8/A beta trajectories shift slightly in the expected late-tangle direction, but the association is not statistically convincing. The donor-level covariate audit does not show stronger PMI, RIN, age, or batch dependence than the disease-stage readout, but this does not rescue the weak tau-stage transfer result.
-
-Outputs:
-
-- [GSE174367 external validation report](results/reports/external_validation_gse174367.md)
-- [GSE174367 trajectory correlations](results/tables/v2_1_gse174367_trajectory_correlations.csv)
-- [GSE174367 transition-boundary AUC](results/tables/v2_1_gse174367_transition_boundary_auc.csv)
-- [GSE174367 covariate audit](results/tables/v2_1_gse174367_covariate_audit.csv)
-- ![GSE174367 AT8 trajectory by tangle stage](results/figures/v2_1_gse174367_at8_trajectory_by_tangle.svg)
-
-The next validation-planning document separates public alignment cohorts from final locked-validation cohorts:
-
-- [external cohort reconnaissance](docs/external_cohort_reconnaissance.md)
-
-## Current Biological Extraction and Translation Layer
-
-The active biological extraction layer uses a frozen Graph-JEPA backbone plus trained pathology heads. Counterfactual screens are scored by passing perturbed expression through the graph encoder first, then reading out predicted pathology through the head. This preserves the graph-mediated representation shift and avoids directly querying linear head weights as if they were causal mechanisms.
-
-The latest AT8/NeuN target workflow is:
-
-```text
-1. graph-mediated pathology-head counterfactual screen
-2. Golden Quadrant filter: predicted AT8 decrease and NeuN increase
-3. covariate/artifact audit across age, sex, cell count, total-count proxy, and detected-gene proxy
-4. druggability/biomarker triage using UniProt localization and ChEMBL activity
-```
-
-Current artifact-audited target set:
-
-| Gene | Counterfactual Role | Covariate Status | Translational Readout |
-|---|---|---|---|
-| `TLR2` | Predicted AT8-lowering / NeuN-preserving hit | Cleared | Membrane-accessible immunomodulatory target; 13 direct ChEMBL active compounds. |
-| `APP` | Predicted AT8-lowering / NeuN-preserving hit | Cleared | Membrane/secreted AD pathway and biomarker node; 1535 ChEMBL actives, including phase 4 diagnostic/clinical molecules. |
-| `APOE` | Predicted AT8-lowering / NeuN-preserving hit | Cleared | Secreted/extracellular lipid-transport and biomarker target; direct small-molecule pharmacology remains limited. |
-| `CD4` | Initial Golden Quadrant hit | Downgraded | Flagged for technical count-depth correlation; not part of the first-pass translational set. |
-
-Age-at-death audit for the clean target set:
-
-```text
-APOE: Spearman rho -0.103, p 0.349
-APP:  Spearman rho -0.096, p 0.386
-TLR2: Spearman rho -0.046, p 0.679
-```
-
-Interpretation: the clean target set is not obviously driven by age at death in the current donor-level audit. `CD4` is not discarded forever, but it needs stricter sensitivity analysis before it belongs in a translational target shortlist.
-
-Current scripts:
-
-- [scripts/pathology_head_counterfactual_knockout.py](scripts/pathology_head_counterfactual_knockout.py)
-- [scripts/audit_target_covariates.py](scripts/audit_target_covariates.py)
-- [scripts/audit_druggability_biomarkers.py](scripts/audit_druggability_biomarkers.py)
-
-## Dataset
-
-Primary data source:
-
-- Allen SEA-AD data page: https://brain-map.org/consortia/sea-ad/our-data
-
-Public processed S3 buckets:
-
-- Single-cell / single-nucleus profiling: `s3://sea-ad-single-cell-profiling/`
-- Quantitative neuropathology: `s3://sea-ad-quantitative-neuropathology/`
-- Spatial transcriptomics: `s3://sea-ad-spatial-transcriptomics/`
-
-Main expression file used locally:
-
-```text
-s3://sea-ad-single-cell-profiling/MTG/RNAseq/SEAAD_MTG_RNAseq_final-nuclei.2024-02-13.h5ad
-```
-
-This file is large and is not committed to the repository.
-
-## Repository Guide
-
-Start here:
-
-- [docs/current_status.md](docs/current_status.md): full completed-work log and results.
-- [docs/figure_gallery.md](docs/figure_gallery.md): public schematics and result graphs with captions.
-- [docs/stage_c_finetuning_analysis.md](docs/stage_c_finetuning_analysis.md): current Stage C fine-tuning baseline, parameter takeaways, and next default.
-- [docs/external_validation_next_steps.md](docs/external_validation_next_steps.md): external validation candidates and the next dataset sequence.
-- [docs/runbook.md](docs/runbook.md): commands for reproducing the workflow.
-- [docs/dataset_guide.md](docs/dataset_guide.md): dataset descriptions and abbreviation glossary.
-- [docs/architecture.md](docs/architecture.md): system architecture.
-- [docs/causal_discovery.md](docs/causal_discovery.md): counterfactual and causal-validation strategy.
-- [docs/project_proposal.md](docs/project_proposal.md): scientific pitch.
-- [docs/scientific_pitch.md](docs/scientific_pitch.md): concise reviewer-facing pitch.
-- [docs/gpu_setup.md](docs/gpu_setup.md): CUDA/PyTorch setup.
-- [docs/github_about.md](docs/github_about.md): GitHub About description and topics.
-
-## Quick Setup
-
-```powershell
-conda env create -f environment.yml
-conda activate sea-ad-jepa
-python -m pip install -r requirements-gpu.txt
-python scripts/check_gpu.py
-```
-
-If the environment already exists:
-
-```powershell
-conda activate sea-ad-jepa
-```
-
-Track training in TensorBoard:
-
-```powershell
-C:\Users\dushy\anaconda3\envs\sea-ad-jepa\Scripts\tensorboard.exe --logdir runs
-```
-
-## Reproduce the Current Stage C Sweep
-
-Run the coarse sweep:
-
-```powershell
-$env:PYTHONPATH = "src"
-python scripts/sweep_stage_c_finetuning.py `
-  --preset coarse `
-  --epochs 10 `
-  --checkpoint-epochs 005 010 `
-  --device auto `
-  --out results/tables/stage_c_finetuning_sweep_summary.csv
-```
-
-Run the current v2.1 focused refinement:
-
-```powershell
-$env:PYTHONPATH = "src"
-python scripts/sweep_stage_c_finetuning.py `
-  --preset upgrade_fine `
-  --epochs 5 `
-  --checkpoint-epochs 005 `
-  --device auto `
-  --out results/tables/stage_c_upgrade_fine_summary.csv
-```
-
-The current best setting is:
-
-```text
-upgrade_fine_08_r0045_cov0005_pc0075
-```
-
-## Evidence Discipline
-
-This project separates:
-
-- **Association:** a gene/module correlates with pathology.
-- **Prediction:** a representation predicts held-out donors.
-- **Model-implied counterfactual:** a frozen model predicts a change after digital perturbation.
-- **Causal validation:** external perturbation, spatial, imaging, or experimental evidence supports the mechanism.
-
-This boundary matters. A useful model can prioritize hypotheses, but it does not turn observational single-cell data into proof of causality.
+They should **not** be read as the current result set. The current public figures are collected in [`docs/figure_gallery.md`](docs/figure_gallery.md).

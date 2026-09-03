@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" style="background:white;color:#1f2328" role="img" aria-labelledby="title desc">
+<rect width="100%" height="100%" fill="white"/>
+<title id="title">FULL104 lawful reader-fit corpus</title>
+<desc id="desc">The frozen reader-fit corpus contains 4,553,407 cells from 104 donors and 42 operators across 41,238 molecular addresses, with source counts for SEA-AD, NPH52, and HVS.</desc>
+<style>
+  text { font-family: Arial, Helvetica, sans-serif; fill: currentColor; }
+  .title { font-size: 34px; font-weight: 700; }
+  .metric { font-size: 38px; font-weight: 700; }
+  .label { font-size: 18px; }
+  .source { font-size: 20px; font-weight: 700; }
+  .count { font-size: 20px; }
+  .outline { fill: none; stroke: currentColor; stroke-width: 2.5; rx: 16; }
+  .bar { fill: currentColor; opacity: 0.72; }
+  .track { fill: none; stroke: currentColor; stroke-width: 1.5; opacity: 0.35; }
+  .note { font-size: 16px; }
+</style>
+
+<text x="60" y="62" class="title">FULL104 lawful reader-fit corpus</text>
+
+<rect x="60" y="110" width="250" height="120" class="outline"/>
+<text x="85" y="165" class="metric">4,553,407</text>
+<text x="85" y="202" class="label">cells</text>
+
+<rect x="335" y="110" width="250" height="120" class="outline"/>
+<text x="360" y="165" class="metric">104</text>
+<text x="360" y="202" class="label">donors</text>
+
+<rect x="610" y="110" width="250" height="120" class="outline"/>
+<text x="635" y="165" class="metric">42</text>
+<text x="635" y="202" class="label">operators</text>
+
+<rect x="885" y="110" width="255" height="120" class="outline"/>
+<text x="910" y="165" class="metric">41,238</text>
+<text x="910" y="202" class="label">molecular addresses</text>
+
+<text x="60" y="292" class="source">Source composition</text>
+
+<text x="60" y="350" class="source">SEA-AD</text>
+<rect x="210" y="325" width="850" height="34" class="track"/>
+<rect x="210" y="325" width="768.8" height="34" class="bar"/>
+<text x="1080" y="351" text-anchor="end" class="count">4,118,213</text>
+
+<text x="60" y="420" class="source">NPH52</text>
+<rect x="210" y="395" width="850" height="34" class="track"/>
+<rect x="210" y="395" width="44.1" height="34" class="bar"/>
+<text x="1080" y="421" text-anchor="end" class="count">236,476</text>
+
+<text x="60" y="490" class="source">HVS</text>
+<rect x="210" y="465" width="850" height="34" class="track"/>
+<rect x="210" y="465" width="37.1" height="34" class="bar"/>
+<text x="1080" y="491" text-anchor="end" class="count">198,718</text>
+
+<line x1="60" y1="555" x2="1140" y2="555" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+<text x="60" y="590" class="note">These are the frozen lawful reader-fit counts used for dataset-dependent calibration and evaluation design.</text>
+<text x="60" y="618" class="note">Protected development and sealed expression remain outside this reader-fit scope.</text>
+</svg>
