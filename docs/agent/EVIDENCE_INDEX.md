@@ -8,19 +8,39 @@ Use this file to retrieve only the evidence needed for the current question. Do 
 - Machine-readable next action: `docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`
 - Current authority index: `docs/agent/CURRENT_AUTHORITY_INDEX.md`
 - Current supersession map: `docs/agent/CURRENT_SUPERSESSION_MAP.md`
-- Controlling external review: `docs/agent/reviews/F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW_20260902.md`
+- Controlling external review: `docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md`
 
-Current controlling terminal:
-`STOP_F1_EVIDENCE_TREND_NUMERICAL_DEFECT_UNRESOLVED`
+Current controlling gate:
+`STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN`
 
-## Evidence-trend repair evidence
+## Real reader/forward/executor preflight evidence
 
-- Historical frozen decision arithmetic: `scripts/v4/contextual_target_f1_decision_v1.py`
-- Current frozen-base decision: `scripts/v4/contextual_target_f1_decision_v4.py`
-- decision-v4 invokes historical v1 `evidence_slopes()` for the evidence-trend endpoint.
-- Frozen evidence grid: `(0.2,0.4,0.6,0.8,1.0)`.
-- Current prospective stable identity: `(A100-A20)+0.5*(A80-A40)`.
-- Do not edit historical decision-v1/v4 in place; the next work is a superseding synthetic-only decision layer with full gate-vector regression and fresh external review.
+Use this section for the current work only.
+
+- The next work is operational validation, not a new scientific decision rule.
+- Heavy GPU/I/O execution should reuse the established WSL/CUDA lineage if authentication succeeds.
+- Historical hardware/batch/K/worker/cache values are evidence only; current execution geometry must be re-derived from runtime resource detection and a prospectively frozen benchmark/selection rule.
+- Resource adaptation may change only mechanical batching/blocking/concurrency/prefetch/caching/scheduling.
+- Query design, evidence masks, matched nulls, donor order, protected programs, statistics, thresholds, HC3 design and model architecture remain invariant.
+- Before the real F1 sweep, bind model/checkpoint, encoder/tokenizer, 41,238-address namespace, observation semantics, evidence-mask authority, role, recipient/null source, q identity, dtype, constructor, run identity and shard identity.
+- Benchmark only a prospectively fixed non-conclusion-bearing technical fixture.
+- Validate query-safe masking before contextual mixing, block-major streaming, exact logical-order restoration, deterministic dedup/reuse, atomic shards, resume/restart and sufficient-statistic accumulation.
+- Full real F1 biological outcome adjudication remains forbidden until preflight external review.
+
+## Accepted evidence-trend numerical repair
+
+- Final reviewed commit: `249bc3b37cb6368ad97fde6bfb2a4560e83ff5a4`.
+- External review: `docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md`.
+- Repair output package: `outputs/contextual_teacher_target_v1_f1_evidence_trend_numerical_repair_20260903/`.
+- Package root SHA-256: `ce759e1397cba36d3d595603b14472ccbb756826144a4dbb3db31a964da0c607`.
+- Production slope source SHA-256: `afa32c5608ed6749e7c61f6ec7183f186377f6bcd29280b330af6a5265be00ce`.
+- Current stable slope: `(A100-A20)+0.5*(A80-A40)` for evidence `(0.2,0.4,0.6,0.8,1.0)`.
+- Independent slope path uses `math.fsum`.
+- Complete independent gate construction is `FROM_RAW_FROZEN_ENDPOINTS`, with zero copied production gates and all 11 gate comparisons exact on the frozen baseline.
+- Ten deliberate non-evidence production-gate flips are detected independently.
+- Historical decision-v1/v4 remain frozen and unedited in place.
+
+The earlier `STOP_F1_EVIDENCE_TREND_NUMERICAL_DEFECT_UNRESOLVED` is historical/resolved.
 
 ## Accepted 15C HC3 numerical repair
 
