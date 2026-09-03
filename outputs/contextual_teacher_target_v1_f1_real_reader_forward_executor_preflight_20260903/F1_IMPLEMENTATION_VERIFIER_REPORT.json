@@ -2,7 +2,7 @@
   "schema": "jepa-implementation-verifier-report-v1",
   "gate": "F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_REPAIR",
   "base_commit": "76fe7d63efe81451ef0fae3ef3eaf116be14f6be",
-  "implementation_commit": "941738b73957ea535632f53e5abfb1e2757acca2",
+  "implementation_commit": "a3c4452d48cedc8650ba9de4a9d6737cc926544c",
   "verifier_agent_identity": "Codex independent MANDATORY_IMPLEMENTATION_VERIFIER_V1 /root/implementation_verifier",
   "controlling_contracts": [
     "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
@@ -72,7 +72,7 @@
       "requirement_id": "I", "contract_source": "repair contract frozen fixture root", "contract_text_or_formula": "canonical selected fixture root equals bc953d90...", "production_file": "scripts/v4/contextual_target_f1_preflight_core_v1.py", "production_symbol": "validate_fixture_binding", "production_lines_or_blob_sha": "000600b1de55165f17ffd9f2edd287264148c2e22604b36d47b1ad1e0dba8cea", "independent_check_method": "canonical JSON hash selected rows and compare fixed root", "independent_reference_file_or_inline_method": "test_verifier_h_i_state_sha_and_exact_fixture_root", "adversarial_test": "stale/reordered fixture membership", "mutation_attack": "M16_STALE_SHARD_ACCEPTED", "applicable_mutations": ["M16_STALE_SHARD_ACCEPTED", "M17_HASH_NOT_RECOMPUTED"], "mutations_executed": ["M16_STALE_SHARD_ACCEPTED", "M17_HASH_NOT_RECOMPUTED"], "mutations_detected": ["M16_STALE_SHARD_ACCEPTED", "M17_HASH_NOT_RECOMPUTED"], "mutations_not_detected": [], "mutation_detected": true, "verdict": "PASS", "notes": "51-row fixture root matches frozen value"
     },
     {
-      "requirement_id": "J", "contract_source": "repair command section 9 Git/source provenance", "contract_text_or_formula": "implementation_source_commit=C_IMPL; root commit=C_ROOT; benchmark_execution_commit=C_ROOT, so implementation and benchmark commits differ while actual_git_head binds each stage", "production_file": "scripts/v4/run_contextual_target_f1_real_forward_preflight_v1.py", "production_symbol": "actual_git_head/authority_fields/environment_authentication", "production_lines_or_blob_sha": "ebe724c9e0070c8b8aec370f5ea97a05f5ba18b979ec593c5c4820e48542548e", "independent_check_method": "actual Git HEAD through production-under-test plus AST confirmation of required staged inequality", "independent_reference_file_or_inline_method": "test_verifier_j_actual_git_source_authority_is_stage_bound", "adversarial_test": "JEPA_PREFLIGHT_COMMIT-style fake value cannot replace actual Git HEAD", "mutation_attack": "MUT04_ACTUAL_GIT_ENV_SPOOF", "applicable_mutations": ["M17_HASH_NOT_RECOMPUTED", "MUT04_ACTUAL_GIT_ENV_SPOOF"], "mutations_executed": ["M17_HASH_NOT_RECOMPUTED", "MUT04_ACTUAL_GIT_ENV_SPOOF"], "mutations_detected": ["M17_HASH_NOT_RECOMPUTED", "MUT04_ACTUAL_GIT_ENV_SPOOF"], "mutations_not_detected": [], "mutation_detected": true, "verdict": "PASS", "notes": "actual_git_head returned 941738b; staged commit inequality is required by section 9"
+      "requirement_id": "J", "contract_source": "repair command section 9 Git/source provenance", "contract_text_or_formula": "post-root actual HEAD==benchmark commit; HEAD^==implementation commit; changed files from C_IMPL..C_ROOT exactly equal ROOT_FREEZE_ALLOWED_DIFF", "production_file": "scripts/v4/finalize_contextual_target_f1_real_forward_preflight_v1.py", "production_symbol": "validate_commit_chain/independent_validation", "production_lines_or_blob_sha": "9f5e00ba8ffc5136bf9c3b987034aa6b7e506568b32d8186413e97cfbdeba86b", "independent_check_method": "confirm implementation-stage actual HEAD a3c4452 and exercise all three post-root predicates with independent synthetic identities", "independent_reference_file_or_inline_method": "test_verifier_j_actual_git_source_authority_is_stage_bound", "adversarial_test": "wrong HEAD, wrong parent, and one extra changed file are independently rejected", "mutation_attack": "MUT04_ACTUAL_GIT_ENV_SPOOF", "applicable_mutations": ["M17_HASH_NOT_RECOMPUTED", "MUT04_ACTUAL_GIT_ENV_SPOOF"], "mutations_executed": ["M17_HASH_NOT_RECOMPUTED", "MUT04_ACTUAL_GIT_ENV_SPOOF"], "mutations_detected": ["M17_HASH_NOT_RECOMPUTED", "MUT04_ACTUAL_GIT_ENV_SPOOF"], "mutations_not_detected": [], "mutation_detected": true, "verdict": "PASS", "notes": "pre-root implementation HEAD is a3c4452; post-root validator accepts only all-three exact predicate match and rejects each mutation"
     },
     {
       "requirement_id": "K", "contract_source": "F1 preflight safety limits", "contract_text_or_formula": "pswpin and pswpout must both have zero delta", "production_file": "scripts/v4/contextual_target_f1_preflight_executor_v1.py", "production_symbol": "vmstat_swap/no_swap_activity", "production_lines_or_blob_sha": "9d82d0de48591eff705da41faf4a0235ca657a882000ce5f1264564ae18583b8", "independent_check_method": "literal before/after counter equality", "independent_reference_file_or_inline_method": "test_verifier_k_l_m_swap_selection_and_nonoverlap", "adversarial_test": "constant occupancy but incremented pswpin", "mutation_attack": "MUT05_SWAP_OCCUPANCY_USED", "applicable_mutations": ["MUT05_SWAP_OCCUPANCY_USED"], "mutations_executed": ["MUT05_SWAP_OCCUPANCY_USED"], "mutations_detected": ["MUT05_SWAP_OCCUPANCY_USED"], "mutations_not_detected": [], "mutation_detected": true, "verdict": "PASS", "notes": "activity rather than occupancy controls check"
@@ -90,7 +90,7 @@
       "requirement_id": "O", "contract_source": "repair contract explicit 41,238-address architecture binding", "contract_text_or_formula": "vocabulary=41238,width=160,heads=4,blocks=6,identity_dim=48,no checkpointing,eval", "production_file": "scripts/v4/contextual_target_f1_preflight_core_v1.py", "production_symbol": "F1_ARCHITECTURE/validate_encoder_architecture", "production_lines_or_blob_sha": "000600b1de55165f17ffd9f2edd287264148c2e22604b36d47b1ad1e0dba8cea", "independent_check_method": "independent synthetic encoder attributes then 4096 mutation", "independent_reference_file_or_inline_method": "test_verifier_o_41238_six_block_four_head_architecture", "adversarial_test": "replace production namespace with historical 4096", "mutation_attack": "MUT08_ARCHITECTURE_4096", "applicable_mutations": ["M21_WRONG_NAMESPACE_SIZE", "MUT08_ARCHITECTURE_4096"], "mutations_executed": ["M21_WRONG_NAMESPACE_SIZE", "MUT08_ARCHITECTURE_4096"], "mutations_detected": ["M21_WRONG_NAMESPACE_SIZE", "MUT08_ARCHITECTURE_4096"], "mutations_not_detected": [], "mutation_detected": true, "verdict": "PASS", "notes": "4096 mutation rejected"
     }
   ],
-  "independent_reference_summary": "A-O were reconstructed from the frozen mechanics/repair/QID contracts using literal NumPy math, canonical hashes, AST inspection, integer reconciliation, and bounded synthetic objects. Production helpers were invoked only as systems under test. Commit 941738b repairs the prior exact canonical-root fail-open and all A-O checks now pass.",
+  "independent_reference_summary": "A-O were reconstructed from the frozen mechanics/repair/QID contracts using literal NumPy math, canonical hashes, integer reconciliation, bounded synthetic objects, and adversarial Git-chain predicates. Production helpers were invoked only as systems under test. Commit a3c4452 retains the exact canonical-root repair and adds fail-closed post-root Git-chain validation; all A-O checks pass.",
   "independent_reference_uses_production_helper": false,
   "verifier_tests": [
     "test_verifier_a_b_c_cosine_direct_delta_and_qid_independence",
@@ -112,12 +112,12 @@
   ],
   "production_tests_observed": [
     "bounded implementer suite in WSL with PYTHONPATH omission: 32 passed, 1 import error",
-    "verifier-owned WSL CPU suite at 941738b: 10 passed, 0 failed",
+    "verifier-owned WSL CPU suite at a3c4452: 10 passed, 0 failed",
     "no GPU benchmark and no real F1 executed"
   ],
   "coverage_complete": true,
   "independence_confirmed": true,
   "verifier_verdict": "PASS_IMPLEMENTATION_VERIFIER",
   "stop_reason": null,
-  "timestamp": "2026-09-03T23:55:00Z"
+  "timestamp": "2026-09-04T00:20:00Z"
 }

@@ -111,16 +111,21 @@ class VerifierF1RepairTests(unittest.TestCase):
         self.assertEqual(fixture["membership_root_sha256"], EXPECTED_FIXTURE_ROOT)
 
     def test_verifier_j_actual_git_source_authority_is_stage_bound(self):
-        self.assertEqual(runner.actual_git_head(WORKTREE), "941738b73957ea535632f53e5abfb1e2757acca2")
-        tree = ast.parse(inspect.getsource(finalizer.independent_validation))
-        commit_comparisons = []
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Compare):
-                rendered = ast.unparse(node)
-                if "benchmark_execution_commit" in rendered and "implementation_source_commit" in rendered:
-                    commit_comparisons.append(node)
-        self.assertEqual(len(commit_comparisons), 1)
-        self.assertIsInstance(commit_comparisons[0].ops[0], ast.NotEq)
+        head = runner.actual_git_head(WORKTREE)
+        self.assertEqual(head, "a3c4452d48cedc8650ba9de4a9d6737cc926544c")
+        allowed = set(finalizer.ROOT_FREEZE_ALLOWED_DIFF)
+        self.assertTrue(finalizer.validate_commit_chain(
+            actual_head="root", benchmark_commit="root", parent_commit="impl",
+            implementation_commit="impl", changed_files=allowed,
+        ))
+        for attack in (
+            {"actual_head": "wrong", "benchmark_commit": "root", "parent_commit": "impl", "implementation_commit": "impl", "changed_files": allowed},
+            {"actual_head": "root", "benchmark_commit": "root", "parent_commit": "wrong", "implementation_commit": "impl", "changed_files": allowed},
+            {"actual_head": "root", "benchmark_commit": "root", "parent_commit": "impl", "implementation_commit": "impl", "changed_files": allowed | {"unexpected.py"}},
+        ):
+            with self.assertRaises(RuntimeError):
+                finalizer.validate_commit_chain(**attack)
+
 
     def test_verifier_k_l_m_swap_selection_and_nonoverlap(self):
         self.assertTrue(executor.no_swap_activity({"pswpin": 4, "pswpout": 9}, {"pswpin": 4, "pswpout": 9}))
