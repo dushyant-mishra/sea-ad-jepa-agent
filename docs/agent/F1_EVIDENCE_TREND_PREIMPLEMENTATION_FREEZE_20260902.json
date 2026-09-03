@@ -1,0 +1,13 @@
+{
+  "schema": "F1_EVIDENCE_TREND_PREIMPLEMENTATION_FREEZE_V1",
+  "date": "2026-09-02",
+  "historical_hc3_repair_reviewed_commit": "5e8127d360d1effd0867a73c2bb007ddffb2c901",
+  "organized_live_gate_head_before_contract": "de42bcac0341b7799e82c667503a8e8069295011",
+  "contract_path": "docs/agent/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_CONTRACT_20260902.md",
+  "contract_git_commit": "d810302bd67a1227f33be54266e59b8f335a94e5",
+  "tolerance_authority_path": "docs/agent/F1_EVIDENCE_TREND_NUMERICAL_TOLERANCE_AUTHORITY_20260902.json",
+  "tolerance_authority_git_commit": "9af769ae3784dbb4c04d16a840da8faff4e0f135",
+  "implementation_parent_head": "9af769ae3784dbb4c04d16a840da8faff4e0f135",
+  "freeze_statement": "Contract and tolerance authority were committed before any evidence-trend repair implementation or repair comparison output. The next executor must hash and bind these exact committed files before writing conclusion-bearing source.",
+  "real_f1_authorized": false
+}
