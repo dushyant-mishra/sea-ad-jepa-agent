@@ -227,7 +227,9 @@ def lean_query_local(
             expression=normalized_values,
             measurement_mask=measurement,
             hidden_target_mask=hidden,
-            view=role,
+            # Reviewed F0 uses the online encoder's student view for both roles;
+            # teacher changes no-grad/detach semantics only.
+            view="student",
         )
     if normalized_values.is_cuda:
         torch.cuda.synchronize()
