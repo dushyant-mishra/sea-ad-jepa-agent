@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="830" viewBox="0 0 1400 830" role="img" aria-labelledby="title desc">
+<title id="title">Single GPU data and compute strategy</title>
+<desc id="desc">Workflow showing how millions of cells are streamed and reduced on a laptop GPU without densifying the full corpus.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<style>
+text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #202A35; }
+.title { font-size: 35px; font-weight: 700; }
+.kicker { font-size: 18px; font-weight: 700; letter-spacing: 1.2px; fill: #2F6BFF; }
+.head { font-size: 21px; font-weight: 700; }
+.body { font-size: 17px; }
+.small { font-size: 15px; fill: #5E6A78; }
+.card { stroke: #D9E0E8; stroke-width: 1.5; rx: 18; }
+.arrow { fill: none; stroke: #0F2747; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+<text x="60" y="70" class="kicker">ENGINEERING IS PART OF THE SCIENCE</text>
+<text x="60" y="115" class="title">4.55 million cells on one laptop GPU.</text>
+<text x="60" y="153" class="title">The trick is to move less data — not to weaken the experiment.</text>
+<text x="60" y="188" class="body">The corpus is never densified in memory. Exact rows are streamed, provenance is preserved, and outputs are reduced to what the decision actually needs.</text>
+<rect x="60" y="245" width="220" height="175" fill="#F6F8FB" class="card"/><text x="85" y="285" class="head">Immutable shards</text><text x="85" y="325" class="body">SEA-AD</text><text x="85" y="356" class="body">NPH52</text><text x="85" y="387" class="body">HVS</text>
+<path d="M 300 333 L 350 333 M 350 333 L 332 321 M 350 333 L 332 345" class="arrow"/>
+<rect x="375" y="245" width="245" height="175" fill="#EDF3FF" class="card"/><text x="400" y="285" class="head">Row-lineage index</text><text x="400" y="325" class="body">donor · operator · cell</text><text x="400" y="356" class="body">physical row locator</text><text x="400" y="390" class="small">1,400 donor×operator strata</text>
+<path d="M 640 333 L 690 333 M 690 333 L 672 321 M 690 333 L 672 345" class="arrow"/>
+<rect x="715" y="245" width="245" height="175" fill="#ECF8F6" class="card"/><text x="740" y="285" class="head">Block-major streaming</text><text x="740" y="325" class="body">sorted physical reads</text><text x="740" y="356" class="body">restore logical order</text><text x="740" y="390" class="small">resume at safe boundaries</text>
+<path d="M 980 333 L 1030 333 M 1030 333 L 1012 321 M 1030 333 L 1012 345" class="arrow"/>
+<rect x="1055" y="245" width="285" height="175" fill="#F3EFFE" class="card"/><text x="1080" y="285" class="head">RTX 3080 Laptop GPU</text><text x="1080" y="325" class="body">16 GB VRAM · one GPU</text><text x="1080" y="356" class="body">mixed precision + microbatches</text><text x="1080" y="388" class="small">batch/accumulation are derived from</text><text x="1080" y="410" class="small">measured mechanics, not copied from pilots</text>
+<rect x="60" y="475" width="610" height="255" fill="#FFF4E7" class="card"/><text x="90" y="518" class="head">A solved historical example: FULL104 ALL executor</text><text x="90" y="560" class="body">Naive replicate-major design:</text><text x="330" y="560" class="body">&gt;100-day projected I/O.</text><text x="90" y="598" class="body">Repair: block-major reads + multiple null accumulators</text><text x="90" y="628" class="body">per expensive matrix pass + exact resume/parity controls.</text><text x="90" y="672" class="body">Validated K=32 plan: 16 effective passes, ~23.8 h projected.</text><text x="90" y="704" class="small">Estimator unchanged; execution order and reuse changed.</text>
+<rect x="700" y="475" width="640" height="255" fill="#F6F8FB" class="card"/><text x="730" y="518" class="head">Current F1 compute philosophy</text><text x="730" y="560" class="body">Do not persist every hidden tensor just because it was computed.</text><text x="730" y="598" class="body">The reviewed sufficient-statistics plan reduces qualification</text><text x="730" y="628" class="body">to four fixed-order float64 arrays (~4.05 MiB scalar payload).</text><text x="730" y="672" class="body">That avoids a multi-terabyte durable-state strategy.</text><text x="730" y="704" class="small">Execution plan pending final reader/forward authority; not a biological result.</text>
+<text x="60" y="785" class="small">Compute rule: reuse frozen bytes, verify hashes, compute only the missing delta. No cloud or distributed training is assumed.</text>
+</svg>
