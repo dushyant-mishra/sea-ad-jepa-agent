@@ -1,0 +1,82 @@
+{
+  "final_stability": {
+    "batch": 4,
+    "candidate_start_memavailable_bytes": 31169773568,
+    "configuration": 4,
+    "cuda_peak_allocated_bytes": 1319809536,
+    "cuda_peak_reserved_bytes": 1828716544,
+    "cuda_total_bytes": 17179344896,
+    "major_faults_delta": 6,
+    "median_throughput": 13.263907827379366,
+    "minor_faults_delta": 166973,
+    "model_state_sha256": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+    "peak_rss_bytes": 1731981312,
+    "pin": false,
+    "prefetch": 4,
+    "reader": {
+      "physical_block_reads": 64,
+      "reader_chunks": 9,
+      "reader_seconds": 2.322255718000065
+    },
+    "reader_block": 8,
+    "repetitions": [
+      {
+        "constructor_seconds": 1.134419259000083,
+        "elapsed_seconds": 3.653903755999977,
+        "h2d_seconds": 0.010608423000121547,
+        "model_forward_seconds": 2.4638893549998784,
+        "query_identities": 51,
+        "target_context_reduction_seconds": 0.033045505000131925,
+        "throughput": 13.957674696892132
+      },
+      {
+        "constructor_seconds": 1.3217368659999238,
+        "elapsed_seconds": 3.8450206880000906,
+        "h2d_seconds": 0.010232241000039721,
+        "model_forward_seconds": 2.4700239959997816,
+        "query_identities": 51,
+        "target_context_reduction_seconds": 0.03191967399970963,
+        "throughput": 13.263907827379366
+      },
+      {
+        "constructor_seconds": 1.5156266289998257,
+        "elapsed_seconds": 4.052129745000002,
+        "h2d_seconds": 0.012014254999826335,
+        "model_forward_seconds": 2.473336992999748,
+        "query_identities": 51,
+        "target_context_reduction_seconds": 0.037680582000007234,
+        "throughput": 12.585974094963234
+      }
+    ],
+    "role_counts": {
+      "correct_student": 15,
+      "matched_null_student": 16,
+      "teacher": 20
+    },
+    "role_seconds_median": {
+      "correct_student": 1.3026930669999501,
+      "matched_null_student": 1.5410221259999162,
+      "teacher": 1.0012839749999785
+    },
+    "safe": true,
+    "stage": "final_stability",
+    "swap_after_bytes": 0,
+    "swap_before_bytes": 0,
+    "throughput_unit": "query_identities_per_second",
+    "timed_repetitions": 3,
+    "warmups": 1,
+    "workers": 4
+  },
+  "fixture_membership_root_sha256": "bc953d90a94becb6f4925c731a66f3757176825042a26b5c3ca7e8d23d4e1be9",
+  "historical_batch_constant_used": false,
+  "prospective_rule": "smallest safe configuration with median throughput >=95% fastest safe",
+  "schema": "f1-preflight-resource-selection-v1",
+  "selected": {
+    "forward_batch": 4,
+    "pinned_memory": false,
+    "prefetch": 4,
+    "reader_block": 8,
+    "workers": 4
+  },
+  "status": "PASS"
+}

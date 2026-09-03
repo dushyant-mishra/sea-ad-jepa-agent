@@ -1,0 +1,15 @@
+{
+  "attacks_rejected": {
+    "dtype": true,
+    "forward_root": true,
+    "membership_root": true,
+    "order": true
+  },
+  "duplicate_write_rejected": true,
+  "interrupted_after_committed_shards": 1,
+  "ordered_bytes_exact": true,
+  "schema": "f1-preflight-shard-resume-test-v1",
+  "semantic_sha_resumed": "6eb8725b87427d0ec98e19c3c02ba9af11a61ba389b15ef000b7978b3054c377",
+  "semantic_sha_uninterrupted": "6eb8725b87427d0ec98e19c3c02ba9af11a61ba389b15ef000b7978b3054c377",
+  "status": "PASS"
+}

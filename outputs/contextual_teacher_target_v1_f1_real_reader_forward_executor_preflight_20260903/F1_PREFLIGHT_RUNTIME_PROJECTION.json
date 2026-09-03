@@ -1,0 +1,35 @@
+{
+  "T_commit_seconds": 383.35186540002724,
+  "T_finalization_seconds": 0.16445367999995142,
+  "T_forward_seconds": 41636.49270533594,
+  "T_io_seconds": 21591.878321706172,
+  "T_reduce_seconds": 296.7828700896924,
+  "T_total_projected_hours": 17.752408393392177,
+  "T_total_projected_seconds": 63908.67021621184,
+  "commit_and_finalization_measured_on_technical_fixture": true,
+  "geometry": {
+    "assignment_evidence_effect_rows": 222480,
+    "compute_only_dedups": 1388,
+    "correct_forwards": 215540,
+    "logical_donor_operator_shards": 1400,
+    "null_forwards": 215540,
+    "recipient_cells": 2781,
+    "statistical_assignments": 44496,
+    "teacher_forwards": 43108,
+    "total_expensive_forwards": 474188,
+    "unique_cell_q": 43108
+  },
+  "role_rates": {
+    "correct_student": 11.51460799169247,
+    "matched_null_student": 10.382719190107768,
+    "teacher": 19.974353429555716
+  },
+  "schema": "f1-preflight-runtime-projection-v1",
+  "selected_configuration": {
+    "forward_batch": 4,
+    "pinned_memory": false,
+    "prefetch": 4,
+    "reader_block": 8,
+    "workers": 4
+  }
+}

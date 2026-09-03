@@ -1,0 +1,2238 @@
+{
+  "all_fixture_records_compared_to_independent_slow_reference": true,
+  "batch_chunk_size_tested": 7,
+  "biological_metrics_computed": false,
+  "comparison_rule": {
+    "absolute_epsilon_multiplier": 256.0,
+    "machine_epsilon": 1.1920928955078125e-07,
+    "relative_epsilon_multiplier": 512.0,
+    "relative_floor": 1.1920928955078125e-07
+  },
+  "comparisons": [
+    {
+      "cell": "TCTATCACAGAACCGA-L8TX_190207_01_C09-894704806",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 0.00011387198173906654,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 0.00010382850450696424,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.654280903399922e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 0.00010024266521213576,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 9412,
+      "role": "teacher"
+    },
+    {
+      "cell": "CTGTAGAGTGCTTATG-L8TX_190207_01_B09-851472396",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.76697847363539e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.989910176955163e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.65586487937253e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 8.356271428056061e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 16593,
+      "role": "correct_student"
+    },
+    {
+      "cell": "TCAGTGAGTCCTCAGG-L8TX_200702_01_B02-1037743933",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.572344086132944e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.652087853988633e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6639757531229407e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.998053868301213e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 8512,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "CCATAAGTCAGACAAA-L8TX_200810_01_C07-1047975599",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.314719889312983e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.892783807823434e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.649814920616336e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.881864828756079e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 3397,
+      "role": "teacher"
+    },
+    {
+      "cell": "GATCACAGTAGTCACT-L8TX_190207_01_C10-894695513",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.893058500485495e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.185738988686353e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6646753364475444e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.522965122712776e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 36185,
+      "role": "correct_student"
+    },
+    {
+      "cell": "TGCAGGCAGGCGATAC-L8TX_190416_01_B06-894704796",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 0.00011152683873660862,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 0.00011558635742403567,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6515593314543366e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 9.827052417676896e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 1268,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "CAATGACGTTCACCGG-L8TX_190430_01_A09-899476115",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.808227383065969e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.076897211140022e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6424618378514424e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.549737008754164e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 1239,
+      "role": "teacher"
+    },
+    {
+      "cell": "TATGTTCTCGGCTTCT-L8TX_190207_01_H08-851472008",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.684282172704116e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.674008131492883e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.644479097099975e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.82933023199439e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 5176,
+      "role": "correct_student"
+    },
+    {
+      "cell": "TTCAATCGTAGCTTTG-L8TX_190614_01_H05-902409030",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 0.00010821029718499631,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.93660874478519e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.67625138501171e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 8.94829718163237e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 5482,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "ACTCTCGGTCAGGAGT-L8TX_200810_01_A06-1048915721",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.402830280829221e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.06221684999764e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6630389735801145e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 8.062853157753125e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 551,
+      "role": "teacher"
+    },
+    {
+      "cell": "GCAACATGTCGTCTCT-L8TX_190627_01_A03-908340375",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 0.00010406679211882874,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.956784197129309e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.656025678035803e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 0.00010076155012939125,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 5660,
+      "role": "teacher"
+    },
+    {
+      "cell": "AGAACCTTCAACTCTT-L8TX_200820_01_F12-1048195991",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.724501483608037e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.423088391078636e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.608277933788486e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.199112976901233e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 14980,
+      "role": "correct_student"
+    },
+    {
+      "cell": "GGCAGTCGTCTTGAAC-L8TX_200820_01_B03-1048195990",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.63278003432788e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.554962940048426e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.694702849723399e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.58492062939331e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 36622,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "TGAACGTTCCGTTGAA-L8TX_190416_01_B06-894704796",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.895049930084497e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.905640424927697e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6417848099954426e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.470013613579795e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 14525,
+      "role": "teacher"
+    },
+    {
+      "cell": "GGAGCAAAGACATCAA-L8TX_190430_01_C07-873459962",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.842362149152905e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.743024565977976e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.656807843479328e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.943041807971895e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 15078,
+      "role": "correct_student"
+    },
+    {
+      "cell": "GTGACGCAGTACTGTC-L8TX_190806_01_H09-960325934",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.805008448893204e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.635786798549816e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.657011934090406e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.819473830750212e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 13295,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "CCATAAGGTTAAGCAA-L8TX_200810_01_A06-1048915721",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.470220927847549e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.867996075423434e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.65523914701771e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.623464287258685e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 3212,
+      "role": "teacher"
+    },
+    {
+      "cell": "TCAGTTTAGGTCGTAG-L8TX_200310_01_E01-1025570029",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.749466021778062e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.326432725880295e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6424691138090566e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.261638918658718e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 13131,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "GAGGCAATCTGGACCG-L8TX_200820_01_H03-1047975604",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.092421532841399e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.396100020036101e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.720539411413483e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.810076931491494e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 27607,
+      "role": "correct_student"
+    },
+    {
+      "cell": "TGGCGTGGTATGTCCA-L8TX_190627_01_E03-908340369",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.930649007903412e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.529152546543628e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6463133660145104e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.372597999870777e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 271,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "CTTCAATAGCTTTCTT-L8TX_190614_01_H05-902409030",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.874699415173382e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.647962775081396e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6605247664265335e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 8.120486018015072e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 9444,
+      "role": "teacher"
+    },
+    {
+      "cell": "ACGTACATCGCAGAGA-L8TX_200310_01_G02-1025570030",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.947908306960016e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.180861914297566e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6305943871848285e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.503199983853847e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 36185,
+      "role": "correct_student"
+    },
+    {
+      "cell": "TCTTGCGGTCGGCCTA-L8TX_200625_01_F10-1035808364",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.68634379003197e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.727424185257405e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.724023503717035e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.547398515976965e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 9674,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "CACGAATTCATGCATG-L8TX_190806_01_B10-960325932",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.728840137133375e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.41018884582445e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.652647450915538e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.19713100604713e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 14980,
+      "role": "teacher"
+    },
+    {
+      "cell": "GTGTGATTCTAGGCAT-L8TX_200723_01_B11-1047397672",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.447213283739984e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.365716348635033e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.637300273519941e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.136645970400423e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 3374,
+      "role": "correct_student"
+    },
+    {
+      "cell": "ATAGAGACATATGGCT-L8TX_190806_01_B10-960325932",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.236317808041349e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.414507465204224e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6264852901222184e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.357889990089461e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 12115,
+      "role": "correct_student"
+    },
+    {
+      "cell": "TATGTTCTCTATCACT-L8TX_190430_01_C07-873459962",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.512326556025073e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.535972690675408e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6291635701199993e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.29880596534349e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 11423,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "GCCTCCATCCCGCAAA-L8XR_231116_02_D08-1315525450",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.692203457234427e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.483419904019684e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.666628567269072e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.688681944273412e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 2857,
+      "role": "teacher"
+    },
+    {
+      "cell": "ATTGCTCGTCATAACG-L8XR_231130_21_B03-1317753170",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.714963041711599e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.283788338303566e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.642697215080261e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.790545012336224e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 4968,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "CAATCGAAGTCTCGTA-L8HX_220526_02_B05-1184843179",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.928337436169386e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.110864291666076e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.706739466404542e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.604615191463381e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 7908,
+      "role": "correct_student"
+    },
+    {
+      "cell": "TCTAACCGTTAGAGGG-L8XR_240411_02_C02-a291f3633c2c4b0d7648cf8c4b1abbe8fca2b935",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.472958481637761e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.295029354281723e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.656416396959685e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.833461131667718e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 33862,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "ACGGTTAGTAATGGAA-L8XR_221006_02_E02-1219250386",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.629016858525574e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 0.00010450304398545995,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.659157977788709e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 8.303025970235467e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 7002,
+      "role": "teacher"
+    },
+    {
+      "cell": "CATGAGTTCCCGGTAG-L8HX_230421_03_C12-1269376192",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.826021803542972e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.08956174296327e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6520824728067964e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.556253694929183e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 16249,
+      "role": "correct_student"
+    },
+    {
+      "cell": "ACTCCTCAGTAAACCC-L8XR_230831_01_G04-1298390359",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.869976591086015e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.469807264395058e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.659386079059914e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.411164551740512e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 9213,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "GAAACTGAGGTTTGCG-L8XR_230803_01_C07-1291281469",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.50999097363092e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.56359295337461e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.662828334607184e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.307213334366679e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 11423,
+      "role": "teacher"
+    },
+    {
+      "cell": "TTGCGTCGTGCCGTAC-L8TX_220310_01_D11-1165241498",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.736810221103951e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.973527681315318e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.64203983230982e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.18762569501996e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 3096,
+      "role": "teacher"
+    },
+    {
+      "cell": "TGTCCACTCTTTGCGC-L8TX_210325_01_A09-1153814172",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.221364987548441e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.870657282182947e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6440901971654966e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.939629383850843e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 24317,
+      "role": "correct_student"
+    },
+    {
+      "cell": "GGGATAATCATTCATC-L8XR_210812_01_D11-1124987482",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.827946294331923e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.358014358440414e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.661952309310436e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.917968858033419e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 1550,
+      "role": "teacher"
+    },
+    {
+      "cell": "TTGATGGTCACTTGGA-L8TX_210610_01_F01-1110733056",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.92399184522219e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.704547846922651e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.674537533195689e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.84751246101223e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 15694,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "TCCCATGGTGCAGTGA-L8HX_230126_02_E07-1244668541",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.469357660738751e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.323021756950766e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.658435475197621e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.166227831272408e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 24271,
+      "role": "teacher"
+    },
+    {
+      "cell": "TCACGGGTCACCATAG-L8HX_220602_03_C09-1184874247",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 0.00011128385085612535,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.911231998354197e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.651965329889208e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 9.936826972989365e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 14855,
+      "role": "correct_student"
+    },
+    {
+      "cell": "873D1_CCGGTGACAGCCGTTG-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.711581904208288e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 9.189842967316508e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.593399691861123e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.940336606930941e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 11662,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "884UU2_CTCCACAGTCGAGTTT-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.04323096619919e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.646363858133554e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.653580228681676e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.598997763125226e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 15407,
+      "role": "teacher"
+    },
+    {
+      "cell": "944L1_TCTTGCGTCGCCATAA-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.856573888100684e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 0.00010142366954823956,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.6458080507582054e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 8.529572369297966e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 7580,
+      "role": "teacher"
+    },
+    {
+      "cell": "873D3_ATGATCGCATACCGTA-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.47034971229732e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 0.00010125857806997374,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.643030453938991e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.952779949642718e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 9084,
+      "role": "teacher"
+    },
+    {
+      "cell": "944L4_CATGAGTAGCCTCAGC-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 9.455036342842504e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 0.00010922356887022033,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.650958337355405e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.709523197263479e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 28309,
+      "role": "correct_student"
+    },
+    {
+      "cell": "1055Z2_TTGCCTGCATTGAGCT-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.147901098709553e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.519262337358668e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.66796661587432e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 7.088065467542037e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 27566,
+      "role": "teacher"
+    },
+    {
+      "cell": "884UU1_AGACTCAGTGGCTCTG-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.109849295578897e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 7.654568616999313e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.666380820912309e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.727955769747496e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 2029,
+      "role": "matched_null_student"
+    },
+    {
+      "cell": "896C2_GTTACAGCACGCTGAC-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 7.164614362409338e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.106487803161144e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.647832222166471e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 5.465428330353461e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 11602,
+      "role": "teacher"
+    },
+    {
+      "cell": "873D4_TTCTGTAGTGAGATTA-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.39614003780298e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.670341776451096e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.618340219371021e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.828679761383682e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 9837,
+      "role": "correct_student"
+    },
+    {
+      "cell": "976B1_TTTCATGAGTAGTCTC-1",
+      "fields": {
+        "contextual_state": {
+          "absolute_tolerance": 8.318270556628704e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "h_query": {
+          "absolute_tolerance": 8.95355042302981e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "mu_context": {
+          "absolute_tolerance": 5.635918569169007e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        },
+        "pre_layer_norm": {
+          "absolute_tolerance": 6.844491872470826e-05,
+          "max_abs": 0.0,
+          "max_rel": 0.0,
+          "pass": true,
+          "relative_tolerance": 6.103515625e-05
+        }
+      },
+      "pass": true,
+      "q": 3397,
+      "role": "matched_null_student"
+    }
+  ],
+  "correct_vs_null_identity_distinct": true,
+  "fixture_membership_root_sha256": "bc953d90a94becb6f4925c731a66f3757176825042a26b5c3ca7e8d23d4e1be9",
+  "forward_batch_chunk_comparisons": {
+    "1055Z2_TTGCCTGCATTGAGCT-1|27566|20|teacher": {
+      "absolute_tolerance": 8.147901098709553e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 0.0006298676409723724,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "873D1_CCGGTGACAGCCGTTG-1|11662|20|matched_null_student": {
+      "absolute_tolerance": 8.711582631804049e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 2.483608185972581e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "873D3_ATGATCGCATACCGTA-1|9084|40|teacher": {
+      "absolute_tolerance": 8.47034971229732e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 2.4777079024522644e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "873D4_TTCTGTAGTGAGATTA-1|9837|20|correct_student": {
+      "absolute_tolerance": 8.396139310207218e-05,
+      "max_abs": 5.960464477539062e-07,
+      "max_rel": 3.5022256644097323e-06,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "884UU1_AGACTCAGTGGCTCTG-1|2029|80|matched_null_student": {
+      "absolute_tolerance": 8.109847840387374e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 1.4817651982415058e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "884UU2_CTCCACAGTCGAGTTT-1|15407|80|teacher": {
+      "absolute_tolerance": 9.04323096619919e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 7.351740691693775e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "896C2_GTTACAGCACGCTGAC-1|11602|100|teacher": {
+      "absolute_tolerance": 7.164614362409338e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 1.697646745769109e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "944L1_TCTTGCGTCGCCATAA-1|7580|40|teacher": {
+      "absolute_tolerance": 9.856572432909161e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 0.00013581178354786467,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "944L4_CATGAGTAGCCTCAGC-1|28309|60|correct_student": {
+      "absolute_tolerance": 9.455035615246743e-05,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 3.447664860535947e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "976B1_TTTCATGAGTAGTCTC-1|3397|40|matched_null_student": {
+      "absolute_tolerance": 8.318270556628704e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 3.761358113961977e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "ACGGTTAGTAATGGAA-L8XR_221006_02_E02-1219250386|7002|60|teacher": {
+      "absolute_tolerance": 9.629016858525574e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 2.3802599177404314e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "ACGTACATCGCAGAGA-L8TX_200310_01_G02-1025570030|36185|100|correct_student": {
+      "absolute_tolerance": 7.947906124172732e-05,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 2.102975661654831e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "ACTCCTCAGTAAACCC-L8XR_230831_01_G04-1298390359|9213|100|matched_null_student": {
+      "absolute_tolerance": 8.869975863490254e-05,
+      "max_abs": 8.940696716308594e-07,
+      "max_rel": 5.911528275254584e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "ACTCTCGGTCAGGAGT-L8TX_200810_01_A06-1048915721|551|80|teacher": {
+      "absolute_tolerance": 8.402830280829221e-05,
+      "max_abs": 5.960464477539062e-07,
+      "max_rel": 4.60498480156096e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "AGAACCTTCAACTCTT-L8TX_200820_01_F12-1048195991|14980|20|correct_student": {
+      "absolute_tolerance": 7.724501483608037e-05,
+      "max_abs": 7.301568984985352e-07,
+      "max_rel": 0.00010863137646862576,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "ATAGAGACATATGGCT-L8TX_190806_01_B10-960325932|12115|60|correct_student": {
+      "absolute_tolerance": 8.23631853563711e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 1.9188685782309097e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "ATTGCTCGTCATAACG-L8XR_231130_21_B03-1317753170|4968|80|matched_null_student": {
+      "absolute_tolerance": 8.714963041711599e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 0.0001639028539943049,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "CAATCGAAGTCTCGTA-L8HX_220526_02_B05-1184843179|7908|20|correct_student": {
+      "absolute_tolerance": 7.928336708573624e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 1.0235029445137258e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "CAATGACGTTCACCGG-L8TX_190430_01_A09-899476115|1239|40|teacher": {
+      "absolute_tolerance": 7.808225200278684e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 2.991120744828114e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "CACGAATTCATGCATG-L8TX_190806_01_B10-960325932|14980|40|teacher": {
+      "absolute_tolerance": 7.728840137133375e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 4.8325094298059537e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "CATGAGTTCCCGGTAG-L8HX_230421_03_C12-1269376192|16249|80|correct_student": {
+      "absolute_tolerance": 8.826020348351449e-05,
+      "max_abs": 1.1920928955078125e-06,
+      "max_rel": 2.1143605807498574e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "CCATAAGGTTAAGCAA-L8TX_200810_01_A06-1048915721|3212|20|teacher": {
+      "absolute_tolerance": 8.470220200251788e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 0.00016111458780041591,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "CCATAAGTCAGACAAA-L8TX_200810_01_C07-1047975599|3397|80|teacher": {
+      "absolute_tolerance": 8.314719889312983e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 1.1577580035241395e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "CTGTAGAGTGCTTATG-L8TX_190207_01_B09-851472396|16593|40|correct_student": {
+      "absolute_tolerance": 9.76697847363539e-05,
+      "max_abs": 0.0,
+      "max_rel": 0.0,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "CTTCAATAGCTTTCTT-L8TX_190614_01_H05-902409030|9444|80|teacher": {
+      "absolute_tolerance": 8.874699415173382e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 4.8458106706103855e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GAAACTGAGGTTTGCG-L8XR_230803_01_C07-1291281469|11423|20|teacher": {
+      "absolute_tolerance": 7.50999097363092e-05,
+      "max_abs": 4.76837158203125e-07,
+      "max_rel": 0.00011198872273562052,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GAGGCAATCTGGACCG-L8TX_200820_01_H03-1047975604|27607|40|correct_student": {
+      "absolute_tolerance": 9.092422260437161e-05,
+      "max_abs": 5.960464477539062e-07,
+      "max_rel": 7.2083019377149464e-06,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GATCACAGTAGTCACT-L8TX_190207_01_C10-894695513|36185|100|correct_student": {
+      "absolute_tolerance": 7.893057045293972e-05,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 2.563672391368615e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GCAACATGTCGTCTCT-L8TX_190627_01_A03-908340375|5660|100|teacher": {
+      "absolute_tolerance": 0.00010406680667074397,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 1.1174045608666363e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GCCTCCATCCCGCAAA-L8XR_231116_02_D08-1315525450|2857|100|teacher": {
+      "absolute_tolerance": 9.69220491242595e-05,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 0.00017781665706366996,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GGAGCAAAGACATCAA-L8TX_190430_01_C07-873459962|15078|80|correct_student": {
+      "absolute_tolerance": 8.842362149152905e-05,
+      "max_abs": 1.043081283569336e-06,
+      "max_rel": 3.9019631184116516e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GGCAGTCGTCTTGAAC-L8TX_200820_01_B03-1048195990|36622|40|matched_null_student": {
+      "absolute_tolerance": 7.632778579136357e-05,
+      "max_abs": 5.960464477539062e-07,
+      "max_rel": 7.688115966609347e-06,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GGGATAATCATTCATC-L8XR_210812_01_D11-1124987482|1550|20|teacher": {
+      "absolute_tolerance": 8.827946294331923e-05,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 5.429645866430712e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GTGACGCAGTACTGTC-L8TX_190806_01_H09-960325934|13295|100|matched_null_student": {
+      "absolute_tolerance": 9.805009176488966e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 4.540217710032873e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "GTGTGATTCTAGGCAT-L8TX_200723_01_B11-1047397672|3374|60|correct_student": {
+      "absolute_tolerance": 7.447212556144223e-05,
+      "max_abs": 9.238719940185547e-07,
+      "max_rel": 2.0142112348804208e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TATGTTCTCGGCTTCT-L8TX_190207_01_H08-851472008|5176|60|correct_student": {
+      "absolute_tolerance": 7.684281445108354e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 2.6605389312861046e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TATGTTCTCTATCACT-L8TX_190430_01_C07-873459962|11423|80|matched_null_student": {
+      "absolute_tolerance": 7.512326556025073e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 3.06938297178998e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TCACGGGTCACCATAG-L8HX_220602_03_C09-1184874247|14855|100|correct_student": {
+      "absolute_tolerance": 0.00011128385813208297,
+      "max_abs": 5.960464477539062e-07,
+      "max_rel": 8.367731494422568e-06,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TCAGTGAGTCCTCAGG-L8TX_200702_01_B02-1037743933|8512|60|matched_null_student": {
+      "absolute_tolerance": 8.572342630941421e-05,
+      "max_abs": 1.430511474609375e-06,
+      "max_rel": 3.787062988108333e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TCAGTTTAGGTCGTAG-L8TX_200310_01_E01-1025570029|13131|80|matched_null_student": {
+      "absolute_tolerance": 7.749466021778062e-05,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 8.544959252242824e-06,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TCCCATGGTGCAGTGA-L8HX_230126_02_E07-1244668541|24271|80|teacher": {
+      "absolute_tolerance": 7.46935693314299e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 3.1040054340877854e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TCTAACCGTTAGAGGG-L8XR_240411_02_C02-a291f3633c2c4b0d7648cf8c4b1abbe8fca2b935|33862|40|matched_null_student": {
+      "absolute_tolerance": 9.472956298850477e-05,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 5.618505828276568e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TCTATCACAGAACCGA-L8TX_190207_01_C09-894704806|9412|20|teacher": {
+      "absolute_tolerance": 0.00011387199629098177,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 2.7008741580658995e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TCTTGCGGTCGGCCTA-L8TX_200625_01_F10-1035808364|9674|20|matched_null_student": {
+      "absolute_tolerance": 8.68634379003197e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 5.971733193014359e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TGAACGTTCCGTTGAA-L8TX_190416_01_B06-894704796|14525|60|teacher": {
+      "absolute_tolerance": 7.895047747297212e-05,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 1.8912917049521896e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TGCAGGCAGGCGATAC-L8TX_190416_01_B06-894704796|1268|20|matched_null_student": {
+      "absolute_tolerance": 0.0001115268241846934,
+      "max_abs": 9.5367431640625e-07,
+      "max_rel": 1.134082280080461e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TGGCGTGGTATGTCCA-L8TX_190627_01_E03-908340369|271|60|matched_null_student": {
+      "absolute_tolerance": 7.930651190690696e-05,
+      "max_abs": 7.152557373046875e-07,
+      "max_rel": 6.124169157614331e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TGTCCACTCTTTGCGC-L8TX_210325_01_A09-1153814172|24317|40|correct_student": {
+      "absolute_tolerance": 8.221363532356918e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 2.3853091951291833e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TTCAATCGTAGCTTTG-L8TX_190614_01_H05-902409030|5482|80|matched_null_student": {
+      "absolute_tolerance": 0.00010821028263308108,
+      "max_abs": 5.811452865600586e-07,
+      "max_rel": 2.764536239388074e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TTGATGGTCACTTGGA-L8TX_210610_01_F01-1110733056|15694|60|matched_null_student": {
+      "absolute_tolerance": 8.923993300413713e-05,
+      "max_abs": 6.556510925292969e-07,
+      "max_rel": 1.4594214106019846e-05,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    },
+    "TTGCGTCGTGCCGTAC-L8TX_220310_01_D11-1165241498|3096|20|teacher": {
+      "absolute_tolerance": 7.736810221103951e-05,
+      "max_abs": 8.344650268554688e-07,
+      "max_rel": 0.0009354630140420279,
+      "pass": true,
+      "relative_tolerance": 6.103515625e-05
+    }
+  },
+  "forward_batch_chunk_parity_within_frozen_authority": true,
+  "metamorphic": [
+    {
+      "lawful_non_q_changes": true,
+      "source": "HVS",
+      "x_q_only_unchanged": true
+    },
+    {
+      "lawful_non_q_changes": true,
+      "source": "NPH52",
+      "x_q_only_unchanged": true
+    },
+    {
+      "lawful_non_q_changes": true,
+      "source": "SEA_AD",
+      "x_q_only_unchanged": true
+    }
+  ],
+  "model_state_unchanged": true,
+  "physical_read_order_restored_exactly": true,
+  "query_permutation_inverse_restoration_exact": true,
+  "reader": {
+    "physical_block_reads": 64,
+    "reader_chunks": 1,
+    "reader_seconds": 7.330776998000033
+  },
+  "schema": "f1-preflight-query-safe-parity-v1",
+  "status": "PASS"
+}

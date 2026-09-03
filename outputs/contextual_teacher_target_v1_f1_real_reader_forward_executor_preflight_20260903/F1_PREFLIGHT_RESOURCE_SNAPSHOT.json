@@ -1,0 +1,23 @@
+{
+  "captured_before_benchmark": true,
+  "cpu": {
+    "logical": 16,
+    "physical": 8
+  },
+  "gpu": {
+    "driver": "610.74",
+    "free_vram_mib": 16175,
+    "name": "NVIDIA GeForce RTX 3080 Laptop GPU",
+    "total_vram_mib": 16384
+  },
+  "ram": {
+    "available": 32354553856,
+    "total": 33416355840
+  },
+  "schema": "f1-preflight-resource-snapshot-v1",
+  "storage_free_bytes": 6717195681792,
+  "swap": {
+    "total": 34359738368,
+    "used": 0
+  }
+}

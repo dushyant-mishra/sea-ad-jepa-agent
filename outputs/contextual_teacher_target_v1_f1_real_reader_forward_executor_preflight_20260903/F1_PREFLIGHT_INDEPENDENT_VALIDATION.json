@@ -1,0 +1,46 @@
+{
+  "checks": {
+    "executed_source_bytes_bound": true,
+    "firewall": true,
+    "forward_batch_chunk_within_frozen_authority": true,
+    "geometry_exact": true,
+    "no_biological_f1_outcome": true,
+    "no_historical_batch_constant": true,
+    "query_permutation_inverse_exact": true,
+    "query_safe_parity": true,
+    "resource_safety_recomputed": true,
+    "resume": true,
+    "selection_independently_reconstructed": true,
+    "sufficient_statistics": true
+  },
+  "production_resource_selection_helper_imported": false,
+  "reconstructed_selections": {
+    "gpu_batch": {
+      "independent": 4,
+      "match": true,
+      "published": 4
+    },
+    "pinning": {
+      "independent": 0,
+      "match": true,
+      "published": 0
+    },
+    "prefetch": {
+      "independent": 4,
+      "match": true,
+      "published": 4
+    },
+    "reader_block": {
+      "independent": 8,
+      "match": true,
+      "published": 8
+    },
+    "workers": {
+      "independent": 4,
+      "match": true,
+      "published": 4
+    }
+  },
+  "schema": "f1-preflight-independent-validation-v1",
+  "status": "PASS"
+}

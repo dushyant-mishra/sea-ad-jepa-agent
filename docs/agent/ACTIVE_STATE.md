@@ -1,6 +1,14 @@
 # ACTIVE_STATE.md — JEPA v4 Current Scientific State
 
-Date: 2026-08-21
+Date: 2026-09-03
+
+## 2026-09-03 F1 real-reader/forward/executor preflight
+- Terminal candidate: `PASS_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_AWAITING_EXTERNAL_REVIEW`; real F1 remains unauthorized pending external review.
+- Real-reader query-safe parity passed on 51 frozen `(cell,q)` identities across 38 donors, all 42 operators, all three sources, five evidence levels, and teacher/correct/null roles. Singleton reference differences were zero; query permutation restored identities exactly; batch-7 outputs stayed within the frozen float32 authority.
+- Prospective WSL resource rule selected batch 4, reader block 8, workers 4, prefetch 4, pinned memory off. Swap remained zero. Projected full F1 engineering runtime is 17.7524 hours.
+- Atomic shard interruption/resume, stale membership/forward/dtype/order attacks, fixed-order sufficient statistics, storage envelope, firewall, and independent validation passed.
+- Five critics passed with no unresolved dissent after exact executed-byte source binding and serialized batch/permutation parity were repaired and rerun.
+- Package: `outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/`; package-manifest SHA-256 `2d9bb25e0fb248251a184d5711ef1be95d4a53b3f41536262f2322f3503b725b`.
 
 ## 2026-09-01 F1 query-design statistics/provenance repair STOP
 - Terminal: `STOP_F1_DESIGN_SAMPLED_STATISTICS_UNRESOLVED`; additional gates `STOP_F1_ADDRESS_NAMESPACE_UNRESOLVED` and `STOP_PROVENANCE_OR_FIREWALL`; synthesis `DO_NOT_RUN_INVALID`. No assignments or 17-output package were created; no expression/model/outcome work ran.

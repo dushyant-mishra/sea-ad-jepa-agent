@@ -1,0 +1,10 @@
+{
+  "delta_independently_recomputed": true,
+  "fixed_order_exact_bytes": true,
+  "fixture_rows": 51,
+  "no_duplicate_writes": true,
+  "no_missing_writes": true,
+  "payload_sha256": "778ea661b70fee2ba4434a69378d3f181316a504acc2b1bf27a7a19610add2dc",
+  "schema": "f1-preflight-sufficient-statistics-parity-v1",
+  "status": "PASS"
+}

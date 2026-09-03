@@ -1,0 +1,19 @@
+{
+  "assignment_membership_root_sha256": "bc953d90a94becb6f4925c731a66f3757176825042a26b5c3ca7e8d23d4e1be9",
+  "delta_recomputed_not_caller_supplied": true,
+  "distinct_role_and_qid_fields": true,
+  "dtype": "float64",
+  "fields": [
+    "teacher",
+    "correct",
+    "null",
+    "direct",
+    "contextual_advantage",
+    "null_advantage",
+    "qid_margin"
+  ],
+  "global_order": "frozen assignment -> evidence -> role identity",
+  "global_order_root_sha256": "60dc22f286720f52a99805670492a475bc3accc9b985a3028d52e9c047fc2162",
+  "hidden_states_persisted": false,
+  "schema": "f1-preflight-sufficient-statistics-schema-v1"
+}
