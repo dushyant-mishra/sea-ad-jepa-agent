@@ -1,0 +1,498 @@
+{
+  "authority": {
+    "assignment_sha256": "12fd5f1549bb600e6bf52605196024f91bae28d7d20cb35a327d67c383f2c617",
+    "dedup_sha256": "3fcd11908723e2cc80db0f5a0f017ad382bd1ed9be522f97081587ae989c2423",
+    "evidence_mask_sha256": "d1eefdab177501a00370d71521ae86932e60540fb9f769dfe2b56c7994ca5c5a",
+    "matched_null_sha256": "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6",
+    "query_safe_target_sha256": "e9112eaf9263edf6840abea92ca56df489cc9e172abd8d5e77c7d0af56122dec",
+    "reader_split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "repository_commit": "4002ed4e1d12a0fc68e36c8d15532432e0bf202c",
+    "row_lineage_sha256": "a6065751667b35a38c5990107c6b3f0177e262f7d145addb24bea24206eeb61b"
+  },
+  "autocast": false,
+  "cache_rule": "teacher only reusable when every identity field matches; correct and null never collide",
+  "checkpoint_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+  "constructor_sha256": "6bd641cd22c160dfbec4e1ae4a0cc31929af436526487383f290397f4f55eeaa",
+  "dtype": "float32",
+  "encoder_sha256": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a",
+  "executor_sha256": "b1879ea12dbaa170be4360f147c3ebaeabd3d192a13f0c3c73396287b70b22dc",
+  "fixture_membership_root_sha256": "bc953d90a94becb6f4925c731a66f3757176825042a26b5c3ca7e8d23d4e1be9",
+  "identity_sidecar_excluded_from_model": true,
+  "mechanics_contract_sha256": "bc72758f89e028c15cfbb6c81aed384cfcd0e6c86da45e7c3b3be895bc390c3b",
+  "model_facing_keys": [
+    "normalized_values",
+    "observation_states"
+  ],
+  "namespace_semantic_root": "595fd8bc860b13ce9ec2a957b0f3d92f850effcb51ae6e2f06b8c5d25d7bd53f",
+  "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+  "physical_read_plan": "FULL104_LEVEL4_SORTED_BLOCK_V1",
+  "reader_core_sha256": "e9112eaf9263edf6840abea92ca56df489cc9e172abd8d5e77c7d0af56122dec",
+  "reader_plan_root_sha256": "14032f83384f6f78b1857d06ef69b0cda581472702031f3815cd1322e122eed7",
+  "real_forward_root_sha256": "d31332c84905f96afc90b38bbec50caa3351093cfff6f137a5a388b277fde592",
+  "records": [
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "172fb58e82640f22e85f544d0456d8c31b7ab97cadc1d14295eeff041121bb10",
+      "logical_index": 0,
+      "null_source": null,
+      "query": 9412,
+      "recipient": "TCTATCACAGAACCGA-L8TX_190207_01_C09-894704806",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "7ea27a8dec9c5dabf12f2ab64e6ec38076fd62094a0668781f6eac2a29700d35",
+      "logical_index": 1,
+      "null_source": null,
+      "query": 16593,
+      "recipient": "CTGTAGAGTGCTTATG-L8TX_190207_01_B09-851472396",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "01184efb0f504b485ca64043f7b8ce75b558459e6f078cfd8d73130d742dadf4",
+      "logical_index": 2,
+      "null_source": "CAGATTGAGATGACAT-L8TX_200723_01_B11-1047397672",
+      "query": 8512,
+      "recipient": "TCAGTGAGTCCTCAGG-L8TX_200702_01_B02-1037743933",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "f0d5c96e3452bfc3f33a1a18ef00f35f4094bd4f54dd6cf641c7f89703f4f3df",
+      "logical_index": 3,
+      "null_source": null,
+      "query": 3397,
+      "recipient": "CCATAAGTCAGACAAA-L8TX_200810_01_C07-1047975599",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 100,
+      "forward_identity_sha256": "358b7922c259a451d1c889216d3dda5f57753940e93b75c315a2684f99145091",
+      "logical_index": 4,
+      "null_source": null,
+      "query": 36185,
+      "recipient": "GATCACAGTAGTCACT-L8TX_190207_01_C10-894695513",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "00b3690e55e3de056a16d87991613f20e777934e71721a866d45adf2153f06c6",
+      "logical_index": 5,
+      "null_source": "TTGGGTAAGATGGCGT-L8TX_200820_01_B03-1048195990",
+      "query": 1268,
+      "recipient": "TGCAGGCAGGCGATAC-L8TX_190416_01_B06-894704796",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "41daf91e6d1b5712e5b2a7efd802e22b0ef85b3526f28bda2e11e99decf567af",
+      "logical_index": 6,
+      "null_source": null,
+      "query": 1239,
+      "recipient": "CAATGACGTTCACCGG-L8TX_190430_01_A09-899476115",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "b5a8ba4b8e228c07ac7c6f5192c54a786a9bbba46bb1ea54f844fd6776732e1b",
+      "logical_index": 7,
+      "null_source": null,
+      "query": 5176,
+      "recipient": "TATGTTCTCGGCTTCT-L8TX_190207_01_H08-851472008",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "dcbe19f8d21294d8a0189c214aca7b636acdcd607819b78126618700fc3f7941",
+      "logical_index": 8,
+      "null_source": "ATCCGTCCAAACTCTG-L8TX_190430_01_C07-873459962",
+      "query": 5482,
+      "recipient": "TTCAATCGTAGCTTTG-L8TX_190614_01_H05-902409030",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "9969decf5f3144a3b7b766113e3992e9cd915e8be35a0a2c6e7b96b500149bf8",
+      "logical_index": 9,
+      "null_source": null,
+      "query": 551,
+      "recipient": "ACTCTCGGTCAGGAGT-L8TX_200810_01_A06-1048915721",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 100,
+      "forward_identity_sha256": "d719f3de31d4d7d8b18d5b5ea5d68da0273f9382ffe9aa10a666fcc4a22bc9a3",
+      "logical_index": 10,
+      "null_source": null,
+      "query": 5660,
+      "recipient": "GCAACATGTCGTCTCT-L8TX_190627_01_A03-908340375",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "1a257f5936c695fd4ed3c74cbdb501c43592eae865b3a9e356163cef19bf8ef2",
+      "logical_index": 11,
+      "null_source": null,
+      "query": 14980,
+      "recipient": "AGAACCTTCAACTCTT-L8TX_200820_01_F12-1048195991",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "9c87f71be3a7be8ad384ed7355e606a4b100adf7daa5c1d4cba92d56a2a6d67f",
+      "logical_index": 12,
+      "null_source": "ATGGAGGGTGGGAGAG-L8TX_190614_01_C05-902409028",
+      "query": 36622,
+      "recipient": "GGCAGTCGTCTTGAAC-L8TX_200820_01_B03-1048195990",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "912f476f7eeea05b24c54b8a6ebcc69947ff912ee82dc7e88db89280c5e99959",
+      "logical_index": 13,
+      "null_source": null,
+      "query": 14525,
+      "recipient": "TGAACGTTCCGTTGAA-L8TX_190416_01_B06-894704796",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "034b1c310119c794ce65d8fa1ad7886f84fd72835164f363c8df3244034a4ede",
+      "logical_index": 14,
+      "null_source": null,
+      "query": 15078,
+      "recipient": "GGAGCAAAGACATCAA-L8TX_190430_01_C07-873459962",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 100,
+      "forward_identity_sha256": "1b7473f0e38b5c304c9556a90d6e977bd699123088efc9c71c8aa84ea3a924c3",
+      "logical_index": 15,
+      "null_source": "CTCCTCCAGTGGTGGT-L8TX_200810_01_C07-1047975599",
+      "query": 13295,
+      "recipient": "GTGACGCAGTACTGTC-L8TX_190806_01_H09-960325934",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "197a32c0831b994ee9886d3248c61bc7f231c81c3f6a90d6a668e6113c7ff07e",
+      "logical_index": 16,
+      "null_source": null,
+      "query": 3212,
+      "recipient": "CCATAAGGTTAAGCAA-L8TX_200810_01_A06-1048915721",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "e5951c6f88c9e8c8b89eb2302bd14c6f2f42d46168982e8230577304fcd02888",
+      "logical_index": 17,
+      "null_source": "CCACCATAGAACCGCA-L8TX_200310_01_G02-1025570030",
+      "query": 13131,
+      "recipient": "TCAGTTTAGGTCGTAG-L8TX_200310_01_E01-1025570029",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "f60cc23c700bf63b63bb9711540559e29695e25bba4a6f0154d5bdc029250416",
+      "logical_index": 18,
+      "null_source": null,
+      "query": 27607,
+      "recipient": "GAGGCAATCTGGACCG-L8TX_200820_01_H03-1047975604",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "7762131cc0e62a0d77c6dba9bc7fedff61f284d52cef03ef20d19f40fbfb6d9a",
+      "logical_index": 19,
+      "null_source": "TCGTAGACAAAGCGTG-L8TX_200723_01_E12-1047273142",
+      "query": 271,
+      "recipient": "TGGCGTGGTATGTCCA-L8TX_190627_01_E03-908340369",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "bba3e0c1e917428391dbf121f4f4d6ff16bc720246d0a19498b05f2c442d17aa",
+      "logical_index": 20,
+      "null_source": null,
+      "query": 9444,
+      "recipient": "CTTCAATAGCTTTCTT-L8TX_190614_01_H05-902409030",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 100,
+      "forward_identity_sha256": "8292976ad938ce685db66858f2dd8a855a7362062663f1af3b70c24c32e4ba16",
+      "logical_index": 21,
+      "null_source": null,
+      "query": 36185,
+      "recipient": "ACGTACATCGCAGAGA-L8TX_200310_01_G02-1025570030",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "bc2b38d7a6d24e64e2d2d59541d7eb01b5528f6eaf0357df9c0eed06a5c9ddac",
+      "logical_index": 22,
+      "null_source": "ATGAGTCTCGAACACT-L8TX_200625_01_H08-1034780098",
+      "query": 9674,
+      "recipient": "TCTTGCGGTCGGCCTA-L8TX_200625_01_F10-1035808364",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "d66d468caa99865acf3d5776082b16e13147f2b697521bccd92cb794a9ce11ed",
+      "logical_index": 23,
+      "null_source": null,
+      "query": 14980,
+      "recipient": "CACGAATTCATGCATG-L8TX_190806_01_B10-960325932",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "e7806ea5fe4aa70d9eaea2dfd5a36bff83195438bd1cba27e56bda92a602f7c5",
+      "logical_index": 24,
+      "null_source": null,
+      "query": 3374,
+      "recipient": "GTGTGATTCTAGGCAT-L8TX_200723_01_B11-1047397672",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "2f45c1487a8c749a9747f056096ab5fa5e2b49da626b1b34c0846ec2b3459703",
+      "logical_index": 25,
+      "null_source": null,
+      "query": 12115,
+      "recipient": "ATAGAGACATATGGCT-L8TX_190806_01_B10-960325932",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "cee287ca3599566ef60ba33fd2bdba22d30d671f203cadfbc351fd4cec560f5f",
+      "logical_index": 26,
+      "null_source": "ATGTCCCCAATGCAGG-L8TX_200709_01_H04-1047273134",
+      "query": 11423,
+      "recipient": "TATGTTCTCTATCACT-L8TX_190430_01_C07-873459962",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 100,
+      "forward_identity_sha256": "40803353766858df90cceeb85e55c110d24fcb82fdf7ab3b06542d3eca7fc3d0",
+      "logical_index": 27,
+      "null_source": null,
+      "query": 2857,
+      "recipient": "GCCTCCATCCCGCAAA-L8XR_231116_02_D08-1315525450",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "470d849839418c60113d5d3efda72a132127881b2da308dc45f3bdd8c162ed81",
+      "logical_index": 28,
+      "null_source": "ATCAGGTTCCTCCTAA-L8XR_231026_05_C04-1312538012",
+      "query": 4968,
+      "recipient": "ATTGCTCGTCATAACG-L8XR_231130_21_B03-1317753170",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "0b785de49fc65dbdc6fd8f4c1716a11fcc3fdc2da82b3773dde49475c416e3a2",
+      "logical_index": 29,
+      "null_source": null,
+      "query": 7908,
+      "recipient": "CAATCGAAGTCTCGTA-L8HX_220526_02_B05-1184843179",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "04290e780b4e1960669357293b3576fc68943092442ea7659d405c951e56e1a9",
+      "logical_index": 30,
+      "null_source": "AACTAGCTCATGCTTT-L8XR_240404_03_F10-0506a719c4d6a4112d4be69803ee013122336964",
+      "query": 33862,
+      "recipient": "TCTAACCGTTAGAGGG-L8XR_240411_02_C02-a291f3633c2c4b0d7648cf8c4b1abbe8fca2b935",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "917de0e42e8adc2b6caf31c7e9e9bb7d39ae7932efd9312edb49972b163c37c6",
+      "logical_index": 31,
+      "null_source": null,
+      "query": 7002,
+      "recipient": "ACGGTTAGTAATGGAA-L8XR_221006_02_E02-1219250386",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "f53a749d49843660c6036b553d35448aa3e6dd9a74af0822ed25521f0439e214",
+      "logical_index": 32,
+      "null_source": null,
+      "query": 16249,
+      "recipient": "CATGAGTTCCCGGTAG-L8HX_230421_03_C12-1269376192",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 100,
+      "forward_identity_sha256": "e751f2cc034adb07c50d4a829e59fa6ac08b84109f6a9eabc6c18299b74a72dc",
+      "logical_index": 33,
+      "null_source": "AATATCCCATCCCGCT-L8XR_230615_22_F08-1284703757",
+      "query": 9213,
+      "recipient": "ACTCCTCAGTAAACCC-L8XR_230831_01_G04-1298390359",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "8bd61ee7e2244865d5d87b3e74321e577052c96b51a9a19fa520a876df29701d",
+      "logical_index": 34,
+      "null_source": null,
+      "query": 11423,
+      "recipient": "GAAACTGAGGTTTGCG-L8XR_230803_01_C07-1291281469",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "ca3fc87cfb40360a1b0cc4195610e7db053b89cb1cb735521ec4a5e0373113c7",
+      "logical_index": 35,
+      "null_source": null,
+      "query": 3096,
+      "recipient": "TTGCGTCGTGCCGTAC-L8TX_220310_01_D11-1165241498",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "d4fe42d1de0b4904b0849f4fba231d05dbd989e271bb725fe2077493b22405c0",
+      "logical_index": 36,
+      "null_source": null,
+      "query": 24317,
+      "recipient": "TGTCCACTCTTTGCGC-L8TX_210325_01_A09-1153814172",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "aa45da6053b7e019f189e85d74e1dc969a6778435d849e560550eb144230a1fc",
+      "logical_index": 37,
+      "null_source": null,
+      "query": 1550,
+      "recipient": "GGGATAATCATTCATC-L8XR_210812_01_D11-1124987482",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "a76032d9475bd10772e25ce4f69a89b276c4360021302e8b517ac22035cfea07",
+      "logical_index": 38,
+      "null_source": "GTTATGGCATGACTTG-L8TX_210909_01_B02-1129994396",
+      "query": 15694,
+      "recipient": "TTGATGGTCACTTGGA-L8TX_210610_01_F01-1110733056",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "d3d9e023bb2f986c1bd315d6262b373e2a586c558ba872dd1f39a5092a160503",
+      "logical_index": 39,
+      "null_source": null,
+      "query": 24271,
+      "recipient": "TCCCATGGTGCAGTGA-L8HX_230126_02_E07-1244668541",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 100,
+      "forward_identity_sha256": "124d9534054277809524bde5ef722123b72852cfc410af941b95f7c11adb71d1",
+      "logical_index": 40,
+      "null_source": null,
+      "query": 14855,
+      "recipient": "TCACGGGTCACCATAG-L8HX_220602_03_C09-1184874247",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "743948058f26ae7b49cc30292e4e2c9668b9164fa58c2945a2da4d8d15856996",
+      "logical_index": 41,
+      "null_source": "910F2_TTGAACGTCACCCATC-1",
+      "query": 11662,
+      "recipient": "873D1_CCGGTGACAGCCGTTG-1",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "dae33cb07220b6403631eda6eaddd3b31072daf5a3301e16d16dc0088e20d2ec",
+      "logical_index": 42,
+      "null_source": null,
+      "query": 15407,
+      "recipient": "884UU2_CTCCACAGTCGAGTTT-1",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "b47306ecf03f15f4f31129805b882d9838cdf48af7e9de63ab0fb9d48c70f0c7",
+      "logical_index": 43,
+      "null_source": null,
+      "query": 7580,
+      "recipient": "944L1_TCTTGCGTCGCCATAA-1",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "798dc9d2166b8e2b9883b7c58e14592c27af8de895b0bcc3984492b76e427b75",
+      "logical_index": 44,
+      "null_source": null,
+      "query": 9084,
+      "recipient": "873D3_ATGATCGCATACCGTA-1",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 60,
+      "forward_identity_sha256": "7c299f1163f1a49654b935809015ec8a210534e581f798fa4773a33e0f28d411",
+      "logical_index": 45,
+      "null_source": null,
+      "query": 28309,
+      "recipient": "944L4_CATGAGTAGCCTCAGC-1",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "cc1497ebc753666ea448e28a46ce87fb51d1116aabe628954fb315ed7c6e7782",
+      "logical_index": 46,
+      "null_source": null,
+      "query": 27566,
+      "recipient": "1055Z2_TTGCCTGCATTGAGCT-1",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 80,
+      "forward_identity_sha256": "43e84f01f88dd2fa42358946b76936c8eec639a83635add186c35edb2ce35818",
+      "logical_index": 47,
+      "null_source": "910F1_GGAAGTGAGAAATTGC-1",
+      "query": 2029,
+      "recipient": "884UU1_AGACTCAGTGGCTCTG-1",
+      "role": "matched_null_student"
+    },
+    {
+      "evidence_level": 100,
+      "forward_identity_sha256": "00e8f195fd8ce06ab196261b6d1a82f6befdccd5c1f24015cc7b958d7d5ae429",
+      "logical_index": 48,
+      "null_source": null,
+      "query": 11602,
+      "recipient": "896C2_GTTACAGCACGCTGAC-1",
+      "role": "teacher"
+    },
+    {
+      "evidence_level": 20,
+      "forward_identity_sha256": "aa63fbd28004aba9fd263e41831ed589c4afb3eb62836a5ce0f80e91ae32c236",
+      "logical_index": 49,
+      "null_source": null,
+      "query": 9837,
+      "recipient": "873D4_TTCTGTAGTGAGATTA-1",
+      "role": "correct_student"
+    },
+    {
+      "evidence_level": 40,
+      "forward_identity_sha256": "0a795bffa01981f75b8058bff27fc95a9e2299973cdf608c0f1ec5fcdb791908",
+      "logical_index": 50,
+      "null_source": "923G2_GGTAATCTCCTTTAGT-1",
+      "query": 3397,
+      "recipient": "976B1_TTTCATGAGTAGTCTC-1",
+      "role": "matched_null_student"
+    }
+  ],
+  "result_state": "FROZEN_PRE_RESULT",
+  "run_id": "F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_20260903",
+  "runner_sha256": "da19aff7f8d1813d5c82b0d32cc3bc09bd50bf0befead6e2d10b0ecd60c56f6f",
+  "schema": "f1-preflight-real-forward-root-v1",
+  "tokenizer_sha256": "2a2ba7f4c2e52364cce471466ebacceefc2a1fccb29f4959860c885f281a89f4"
+}
