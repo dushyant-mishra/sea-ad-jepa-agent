@@ -1,72 +1,35 @@
 {
-  "all_rows_reader_fit_foundation_train": true,
-  "allowed_assets": [
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op00/block-00000.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op01/block-00001.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op02/block-00000.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op03/block-00016.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op04/block-00002.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op05/block-00000.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op06/block-00002.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op07/block-00001.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op08/block-00002.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op08/block-00004.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op08/block-00006.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op09/block-00000.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op10/block-00059.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op11/block-00008.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op11/block-00016.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op12/block-00001.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op13/block-00000.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op14/block-00004.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op14/block-00005.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op15/block-00002.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op15/block-00004.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op15/block-00009.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op16/block-00015.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op17/block-00001.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op17/block-00007.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op18/block-00020.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op19/block-00001.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op20/block-00014.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op20/block-00019.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op21/block-00004.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op21/block-00021.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op22/block-00000.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op23/block-00000.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op24/block-00163.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op24/block-00177.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op24/block-00249.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op25/block-00824.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op26/block-00082.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op26/block-00278.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op27/block-00165.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op28/block-00164.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op29/block-00112.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op29/block-00154.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op29/block-00206.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op30/block-00476.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op31/block-00420.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op31/block-00527.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op32/block-00086.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op32/block-01306.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op33/block-00435.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op34/block-00218.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op35/block-00005.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op35/block-00014.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op35/block-00025.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op36/block-00003.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op36/block-00007.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op37/block-00000.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op37/block-00076.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op38/block-00015.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op38/block-00023.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op39/block-00018.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op40/block-00005.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op41/block-00200.counts.npz",
-    "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/blocks/op41/block-00239.counts.npz"
+  "block_manifest": {
+    "blocks": 8915,
+    "path": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+    "sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+  },
+  "counts_payloads_opened": false,
+  "fixture_membership_root_sha256": "bc953d90a94becb6f4925c731a66f3757176825042a26b5c3ca7e8d23d4e1be9",
+  "identity_sidecar_excluded_from_model_input": true,
+  "materialization_authorities": {
+    "asset_authentication": {
+      "path": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/ASSET_AUTHENTICATION.csv",
+      "sha256": "d8bccf6c315b928ea5fc5f384c6eaa7eb7c4690dc5f35e4eb6b3f7161e5aa9ea"
+    },
+    "audit": {
+      "path": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json",
+      "sha256": "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf"
+    },
+    "manifest": {
+      "path": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_MANIFEST.csv",
+      "sha256": "818ef14ac8c61ea4e93cc0c853a502dfa1cb75c198499b1cdafa6475e5a9eee9"
+    }
+  },
+  "meta_blocks_hash_verified": 5484,
+  "model_facing_return_keys": [
+    "normalized_values",
+    "observation_states"
   ],
-  "allowed_reads": [
+  "normalization": "float32 log1p(raw_count * (10000.0 / source_library)); applied exactly once after CSR row retrieval",
+  "original_mixed_nph_paths_denied": true,
+  "reader_plan_root_sha256": "14032f83384f6f78b1857d06ef69b0cda581472702031f3815cd1322e122eed7",
+  "reader_rows": [
     {
       "block_key": "op00/block-00000",
       "canonical_cell_id": "TCTATCACAGAACCGA-L8TX_190207_01_C09-894704806",
@@ -939,25 +902,8 @@
       "source_library_hex": "0x1.9580000000000p+11"
     }
   ],
-  "allowed_unique_rows": 67,
-  "expression_materialization_reused": true,
-  "expression_opened_during_derivation": false,
-  "forbidden_outputs": [
-    "per_cell_expression",
-    "H",
-    "S",
-    "T",
-    "effects",
-    "program_scores",
-    "candidate_outcomes",
-    "biological_gate_vector"
-  ],
-  "original_mixed_nph_assets_forbidden": true,
-  "output_is_non_conclusion_bearing": true,
-  "protected_partitions_touched": false,
-  "raw_source_expression_assets_opened_by_preflight": false,
-  "reader_plan_root_sha256": "14032f83384f6f78b1857d06ef69b0cda581472702031f3815cd1322e122eed7",
-  "reason": "Frozen summaries cannot establish query-safe current-model parity, real reader latency, CUDA memory, or executor throughput.",
   "result_state": "FROZEN_PRE_RESULT_METADATA_ONLY",
-  "schema": "f1-preflight-expression-justification-v1"
+  "schema": "f1-preflight-materialized-reader-plan-v1",
+  "unique_counts_blocks": 64,
+  "unique_rows": 67
 }
