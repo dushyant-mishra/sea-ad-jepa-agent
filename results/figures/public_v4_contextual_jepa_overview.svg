@@ -1,49 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" style="background:white;color:#1f2328" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+<title id="title">Why Contextual JEPA uses partial RNA</title>
+<desc id="desc">A scientific schematic showing why partial evidence is deliberate and how student and teacher views are constructed.</desc>
 <rect width="100%" height="100%" fill="white"/>
-<title id="title">Contextual JEPA project overview</title>
-<desc id="desc">Partial RNA evidence is represented in a full molecular address ledger and used by a contextual JEPA model to predict biological programs and cell state rather than reconstruct every hidden transcript.</desc>
 <style>
-  text { font-family: Arial, Helvetica, sans-serif; fill: currentColor; }
-  .title { font-size: 34px; font-weight: 700; }
-  .subtitle { font-size: 20px; }
-  .box { fill: none; stroke: currentColor; stroke-width: 2.5; rx: 18; }
-  .arrow { stroke: currentColor; stroke-width: 3; fill: none; }
-  .head { font-size: 24px; font-weight: 700; }
-  .body { font-size: 18px; }
-  .note { font-size: 16px; }
+text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #202A35; }
+.title { font-size: 38px; font-weight: 700; }
+.kicker { font-size: 18px; font-weight: 700; letter-spacing: 1.2px; fill: #2F6BFF; }
+.head { font-size: 23px; font-weight: 700; }
+.body { font-size: 18px; }
+.small { font-size: 15px; fill: #5E6A78; }
+.metric { font-size: 38px; font-weight: 750; fill: #0F2747; }
+.metriclabel { font-size: 16px; fill: #5E6A78; }
+.card { stroke: #D9E0E8; stroke-width: 1.5; rx: 18; }
+.arrow { fill: none; stroke: #0F2747; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 </style>
-<text x="60" y="62" class="title">What this JEPA project is trying to learn</text>
-<text x="60" y="98" class="subtitle">Predict biological state from partial RNA evidence without pretending that every unobserved transcript is known.</text>
-
-<rect x="60" y="165" width="285" height="230" class="box"/>
-<text x="88" y="210" class="head">Partial RNA evidence</text>
-<text x="88" y="255" class="body">Observed expression values</text>
-<text x="88" y="288" class="body">Measured zero is evidence</text>
-<text x="88" y="321" class="body">Structural absence is distinct</text>
-<text x="88" y="354" class="body">Query value can be withheld</text>
-
-<path d="M 365 280 L 475 280" class="arrow"/>
-<path d="M 475 280 L 455 268 M 475 280 L 455 292" class="arrow"/>
-
-<rect x="495" y="165" width="285" height="230" class="box"/>
-<text x="523" y="210" class="head">Contextual JEPA</text>
-<text x="523" y="255" class="body">Keeps molecular address identity</text>
-<text x="523" y="288" class="body">Uses the lawful cell context</text>
-<text x="523" y="321" class="body">Learns a latent biological target</text>
-<text x="523" y="354" class="body">No raw-count reconstruction goal</text>
-
-<path d="M 800 280 L 910 280" class="arrow"/>
-<path d="M 910 280 L 890 268 M 910 280 L 890 292" class="arrow"/>
-
-<rect x="930" y="165" width="210" height="230" class="box"/>
-<text x="958" y="210" class="head">Biology</text>
-<text x="958" y="255" class="body">Cell state</text>
-<text x="958" y="288" class="body">Distributed programs</text>
-<text x="958" y="321" class="body">Local programs</text>
-<text x="958" y="354" class="body">Rare programs</text>
-
-<rect x="60" y="445" width="1080" height="110" class="box"/>
-<text x="88" y="485" class="head">Full Molecular Ledger</text>
-<text x="88" y="522" class="body">41,238 molecular addresses are preserved. Physical measurement state and evidence masking remain separate.</text>
-<text x="88" y="550" class="note">The central question is whether context contains enough biological information to recover meaningful programs—not exact hidden-gene values.</text>
+<text x="60" y="70" class="kicker">THE BIOLOGICAL QUESTION</text>
+<text x="60" y="118" class="title">Can we recover cell state from the biology we can actually observe?</text>
+<text x="60" y="154" class="body">The challenge is not to guess every missing count. It is to learn which biological programs remain identifiable when evidence is incomplete.</text>
+<rect x="60" y="205" width="390" height="390" fill="#EDF3FF" class="card"/>
+<text x="90" y="250" class="head">1. Real assays only show part of the state</text>
+<text x="90" y="286" class="body">Different datasets and measurement operators</text>
+<text x="90" y="316" class="body">expose different subsets of the molecular ledger.</text>
+<text x="90" y="356" class="body">A measured zero is evidence.</text>
+<text x="90" y="386" class="body">A structurally unmeasured address is not zero.</text>
+<text x="90" y="416" class="body">Collision-unresolved is distinct again.</text>
+<circle cx="95" cy="475" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="123" cy="475" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="151" cy="475" r="9" fill="white" stroke="#2F6BFF" stroke-width="2"/><circle cx="179" cy="475" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="207" cy="475" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="235" cy="475" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="263" cy="475" r="9" fill="white" stroke="#2F6BFF" stroke-width="2"/><circle cx="291" cy="475" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="319" cy="475" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="347" cy="475" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="375" cy="475" r="9" fill="white" stroke="#2F6BFF" stroke-width="2"/><circle cx="95" cy="520" r="9" fill="white" stroke="#2F6BFF" stroke-width="2"/><circle cx="123" cy="520" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="151" cy="520" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="179" cy="520" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="207" cy="520" r="9" fill="white" stroke="#2F6BFF" stroke-width="2"/><circle cx="235" cy="520" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="263" cy="520" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="291" cy="520" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="319" cy="520" r="9" fill="white" stroke="#2F6BFF" stroke-width="2"/><circle cx="347" cy="520" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/><circle cx="375" cy="520" r="9" fill="#2F6BFF" stroke="#2F6BFF" stroke-width="2"/>
+<text x="90" y="555" class="small">The model must distinguish “not seen”</text><text x="90" y="578" class="small">from “seen as zero.”</text>
+<path d="M 475 400 L 545 400 M 545 400 L 525 388 M 545 400 L 525 412" class="arrow"/>
+<rect x="570" y="205" width="360" height="390" fill="#ECF8F6" class="card"/>
+<text x="600" y="250" class="head">2. The student gets partial biology</text>
+<text x="600" y="286" class="body">We deliberately expose only a lawful fraction</text>
+<text x="600" y="316" class="body">of measured scalar evidence.</text>
+<text x="600" y="356" class="body">Primary operating point: 60% evidence.</text>
+<text x="600" y="386" class="body">Evaluation ladder: 20 / 40 / 60 / 80 / 100%.</text>
+<text x="600" y="426" class="body">If a representation only works at 100%,</text>
+<text x="600" y="456" class="body">it is not robust to the problem we actually face.</text>
+<rect x="605" y="500" width="270" height="18" rx="9" fill="#D9E0E8"/>
+<rect x="605" y="500" width="162" height="18" rx="9" fill="#1C9A8B"/>
+<text x="605" y="540" class="small">Partial evidence forces the model to use context,</text><text x="605" y="563" class="small">not memorized availability.</text>
+<path d="M 955 400 L 1025 400 M 1025 400 L 1005 388 M 1025 400 L 1005 412" class="arrow"/>
+<rect x="1050" y="205" width="290" height="390" fill="#F3EFFE" class="card"/>
+<text x="1080" y="250" class="head">3. We ask for biology</text>
+<text x="1080" y="292" class="body">Broad state</text>
+<text x="1080" y="326" class="body">Weak distributed programs</text>
+<text x="1080" y="360" class="body">Local / core-halo programs</text>
+<text x="1080" y="394" class="body">Sparse marker-like programs</text>
+<text x="1080" y="428" class="body">Innovation / rare biology</text>
+<line x1="1080" y1="465" x2="1308" y2="465" stroke="#7B61C9" stroke-width="2"/>
+<text x="1080" y="505" class="body">Not the exact hidden transcript</text>
+<text x="1080" y="535" class="body">realization of one cell.</text>
+<rect x="60" y="630" width="1280" height="74" fill="#F6F8FB" class="card"/>
+<text x="88" y="665" class="head">The key test</text>
+<text x="250" y="665" class="body">Does the correct cellular context recover meaningful programs better than carefully matched wrong-cell/null context?</text>
+<text x="250" y="692" class="small">This turns missingness into a scientific stress test rather than a preprocessing nuisance.</text>
 </svg>
