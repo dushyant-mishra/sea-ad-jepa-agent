@@ -66,7 +66,7 @@ def finalize(out: Path, repo: Path) -> str:
 
     historical = {}
     for relative, expected in HISTORICAL_BLOBS.items():
-        data = subprocess.check_output(["git", "-C", str(repo), "show", "HEAD:" + relative])
+        data = subprocess.check_output(["git", "-c", f"safe.directory={repo.resolve().as_posix()}", "-C", str(repo), "show", "HEAD:" + relative])
         actual = sha_bytes(data)
         if actual != expected:
             raise ValueError("STOP_F1_HC3_15C_HISTORICAL_AUTHORITY_CHANGED")

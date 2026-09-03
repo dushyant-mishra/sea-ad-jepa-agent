@@ -87,7 +87,7 @@ def load_frozen_effective_design(authority_root: Path):
 
 
 def _git_blob(repo_root: Path, relative: str, expected: str) -> bytes:
-    data = subprocess.check_output(["git", "-C", str(repo_root), "show", "HEAD:" + relative])
+    data = subprocess.check_output(["git", "-c", f"safe.directory={Path(repo_root).resolve().as_posix()}", "-C", str(repo_root), "show", "HEAD:" + relative])
     if sha256_bytes(data) != expected:
         raise ValueError("STOP_F1_15C_AUTHORITY_MISMATCH")
     return data
