@@ -111,7 +111,7 @@ class VerifierF1RepairTests(unittest.TestCase):
         self.assertEqual(fixture["membership_root_sha256"], EXPECTED_FIXTURE_ROOT)
 
     def test_verifier_j_actual_git_source_authority_is_stage_bound(self):
-        self.assertEqual(runner.actual_git_head(WORKTREE), "0904ced31d129b1c03970302e3953a2a4bb25bb5")
+        self.assertEqual(runner.actual_git_head(WORKTREE), "941738b73957ea535632f53e5abfb1e2757acca2")
         tree = ast.parse(inspect.getsource(finalizer.independent_validation))
         commit_comparisons = []
         for node in ast.walk(tree):
