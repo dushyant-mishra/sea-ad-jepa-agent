@@ -81,3 +81,6 @@ The 2026-09-02 preservation commits contain recovered historical artifacts. Thei
 ## Scientific objective
 
 The current objective is to predict **biologically meaningful programs/state from partial RNA evidence while preserving the full address-resolved Molecular Ledger**. It is not exact hidden-gene reconstruction.
+# Permanent implementation-verifier gate
+
+All conclusion-bearing implementation is subject to [`MANDATORY_IMPLEMENTATION_VERIFIER_V1`](docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md) before expensive execution or scientific promotion. The independent verifier has veto authority and this rule does not expire when a phase closes.

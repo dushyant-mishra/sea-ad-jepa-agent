@@ -117,3 +117,6 @@ Before the full real F1 sweep can be authorized, one prospective reader/forward/
 ## Preservation rule
 
 Recovered historical material backfilled on 2026-09-02 remains classified `RECOVERED_HISTORICAL_BYTES__BACKFILLED_20260902`. Git backfill dates are preservation dates, not reconstructed historical chronology.
+# Permanent implementation governance
+
+`docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md` and its machine-readable policy are mandatory project-wide before expensive compute or scientific promotion for conclusion-bearing code.

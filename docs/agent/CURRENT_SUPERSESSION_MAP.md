@@ -61,3 +61,6 @@ When two artifacts disagree, prefer in order:
 6. selective historical evidence.
 
 Never use Git commit date alone to infer original historical chronology for recovered/backfilled artifacts.
+# Permanent implementation governance
+
+`MANDATORY_IMPLEMENTATION_VERIFIER_V1` is current, project-wide, and not phase-limited. It may be changed only by an explicit prospectively reviewed supersession; no older self-certification or reviewer-majority convention overrides its veto.

@@ -1,5 +1,9 @@
 {
   "schema": "JEPA_NEXT_ALLOWED_ACTION_V2",
+  "implementation_verifier_required": true,
+  "implementation_verifier_veto": true,
+  "implementation_verifier_runs_before_expensive_compute": true,
+  "implementation_verifier_authority": "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
   "last_updated": "2026-09-03",
   "current_gate": "F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT",
   "status": "STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN",
