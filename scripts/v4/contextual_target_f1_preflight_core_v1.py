@@ -33,6 +33,10 @@ FLOAT32_RULE = MappingProxyType({
     "relative_epsilon_multiplier": 512.0,
     "relative_floor": float(np.finfo(np.float32).eps),
 })
+F1_ARCHITECTURE = MappingProxyType({
+    "vocabulary_size": 41238, "width": 160, "heads": 4, "blocks": 6,
+    "identity_dim": 48, "gradient_checkpointing": False, "eval": True,
+})
 
 
 def sha256_file(path: Path) -> str:
@@ -46,6 +50,55 @@ def sha256_file(path: Path) -> str:
 def canonical_json_sha(value: object) -> str:
     body = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     return hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
+def validate_authority_file(path: Path, expected_sha256: str) -> bool:
+    if not path.is_file() or sha256_file(path) != expected_sha256:
+        raise RuntimeError(f"authority hash mismatch: {path}")
+    return True
+
+
+def validate_fixture_binding(fixture: dict) -> bool:
+    if canonical_json_sha(fixture.get("selected")) != fixture.get("membership_root_sha256"):
+        raise RuntimeError("fixture membership root mismatch")
+    return True
+
+
+def validate_semantic_root(record: dict, root_key: str) -> bool:
+    body = dict(record)
+    stored = body.pop(root_key, None)
+    if not isinstance(stored, str) or canonical_json_sha(body) != stored:
+        raise RuntimeError(f"{root_key} semantic root mismatch")
+    return True
+
+
+def validate_runtime_facts(facts: dict) -> bool:
+    required = (
+        facts.get("is_wsl") is True,
+        str(facts.get("canonical_mount", "")).startswith("/mnt/d/"),
+        facts.get("cuda_available") is True,
+        int(facts.get("cuda_device_count", 0)) >= 1,
+        facts.get("nvidia_smi_ok") is True,
+        facts.get("source_hashes_match") is True,
+    )
+    if not all(required):
+        raise RuntimeError("WSL/CUDA/runtime authority mismatch")
+    return True
+
+
+def validate_encoder_architecture(encoder) -> bool:
+    actual = {
+        "vocabulary_size": int(encoder.tokenizer.vocabulary_size),
+        "width": int(encoder.tokenizer.width),
+        "heads": int(encoder.blocks[0].attention.heads),
+        "blocks": len(encoder.blocks),
+        "identity_dim": int(encoder.tokenizer.gene_identity.embedding_dim),
+        "gradient_checkpointing": bool(encoder.gradient_checkpointing),
+        "eval": not bool(encoder.training),
+    }
+    if actual != dict(F1_ARCHITECTURE):
+        raise RuntimeError(f"production architecture mismatch: {actual}")
+    return True
 
 
 def tensor_sha(tensor: torch.Tensor) -> str:
@@ -112,10 +165,8 @@ class MaterializedFixtureReader:
         frozen = worktree_root.resolve() / "docs/agent/f1_real_reader_forward_executor_preflight_20260903"
         self.fixture = json.loads((frozen / "F1_PREFLIGHT_TECHNICAL_FIXTURE_BINDING.json").read_text(encoding="utf-8"))
         self.plan = json.loads((frozen / "F1_PREFLIGHT_READER_PLAN_BINDING.json").read_text(encoding="utf-8"))
-        check = dict(self.plan)
-        stored_root = check.pop("reader_plan_root_sha256")
-        if canonical_json_sha(check) != stored_root:
-            raise RuntimeError("reader plan semantic root mismatch")
+        validate_fixture_binding(self.fixture)
+        validate_semantic_root(self.plan, "reader_plan_root_sha256")
         if self.plan["fixture_membership_root_sha256"] != self.fixture["membership_root_sha256"]:
             raise RuntimeError("reader/fixture membership mismatch")
         if self.plan["block_manifest"]["sha256"] != BLOCK_MANIFEST_SHA:
@@ -124,7 +175,9 @@ class MaterializedFixtureReader:
         block_manifest = self.expression_root / "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"
         if sha256_file(block_manifest) != BLOCK_MANIFEST_SHA:
             raise RuntimeError("live block manifest mismatch")
-        packed = np.load(self.root / "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz", allow_pickle=False)
+        state_path = self.root / "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz"
+        validate_authority_file(state_path, STATE_SHA)
+        packed = np.load(state_path, allow_pickle=False)
         self.states = {int(op): packed["states"][index].astype(np.uint8) for index, op in enumerate(packed["operator_index"].astype(int))}
         self.rows = {
             row["canonical_cell_id"]: ReaderRow(
@@ -185,7 +238,8 @@ class MaterializedFixtureReader:
             {"canonical_cell_id": cell, "row_locator": self.rows[cell].row_locator, "operator": self.rows[cell].operator}
             for cell in ids
         ]
-        return model_input, sidecar, {"reader_seconds": elapsed, "physical_blocks": len(keys)}
+        return model_input, sidecar, {"reader_seconds": elapsed, "physical_blocks": len(keys),
+                                      "physical_read_bytes": sum((self.expression_root / key).stat().st_size for key in keys)}
 
 
 def load_encoder(canonical_root: Path, device: torch.device):
@@ -198,6 +252,7 @@ def load_encoder(canonical_root: Path, device: torch.device):
     encoder = IPBEncoder(vocabulary_size=41238, width=160, heads=4, blocks=6, gradient_checkpointing=False)
     encoder.load_state_dict(payload["online_encoder"])
     encoder.eval().to(device)
+    validate_encoder_architecture(encoder)
     return encoder
 
 

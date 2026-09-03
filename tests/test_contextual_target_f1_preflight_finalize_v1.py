@@ -20,10 +20,13 @@ class IndependentFinalizerTests(unittest.TestCase):
             ])
 
     def test_sufficient_statistic_delta_is_derived(self):
-        row = finalizer.independent_effects(5.0, 3.0, 1.0, 2.0)
-        self.assertEqual(row["contextual_advantage"], 2.0)
-        self.assertEqual(row["null_advantage"], 4.0)
-        self.assertEqual(row["qid_margin"], 2.0)
+        import numpy as np
+        e1=np.asarray([1.,0.]);e2=np.asarray([0.,1.])
+        row = finalizer.independent_effects(e1,e1,e2,e2,e1,-e1,0.25,0.5)
+        self.assertEqual(row["A"], 1.0)
+        self.assertEqual(row["direct_delta"], 0.0)
+        self.assertEqual(row["qid_margin"], -0.25)
+        self.assertEqual(row["qid_win"], 0.0)
 
 
 if __name__ == "__main__":
