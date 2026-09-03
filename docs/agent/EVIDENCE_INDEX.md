@@ -6,21 +6,34 @@ Use this file to retrieve only the evidence needed for the current question. Do 
 
 - Compact state: `docs/agent/memory-os/ACTIVE_STATE.md`
 - Machine-readable next action: `docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`
-- Controlling external review: `docs/agent/reviews/F1_HC3_15C_EXTERNAL_REVIEW_20260902.md`
+- Current authority index: `docs/agent/CURRENT_AUTHORITY_INDEX.md`
+- Current supersession map: `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+- Controlling external review: `docs/agent/reviews/F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW_20260902.md`
 
 Current controlling terminal:
-`STOP_F1_HC3_15C_NUMERICAL_INDEPENDENCE_UNRESOLVED`
+`STOP_F1_EVIDENCE_TREND_NUMERICAL_DEFECT_UNRESOLVED`
 
-## 15C HC3 integration evidence
+## Evidence-trend repair evidence
 
-- Provenance root: `docs/agent/provenance-anchors/F1_HC3_15C_DECISION_INTEGRATION_ROOT_20260902.json`
-- Preserved handoff/manifest/source manifest: `docs/history/exact_bytes/outputs/contextual_teacher_target_v1_f1_hc3_15c_decision_integration_20260902/`
-- Production adapter: `scripts/v4/contextual_target_f1_hc3_15c_adapter_v1.py`
-- Production synthetic runner: `scripts/v4/run_contextual_target_f1_hc3_15c_v1.py`
-- Independent validator candidate: `scripts/v4/validate_contextual_target_f1_hc3_15c_v1.py`
-- Frozen HC3 arithmetic inherited by decision-v4: `scripts/v4/contextual_target_f1_decision_v1.py`
+- Historical frozen decision arithmetic: `scripts/v4/contextual_target_f1_decision_v1.py`
+- Current frozen-base decision: `scripts/v4/contextual_target_f1_decision_v4.py`
+- decision-v4 invokes historical v1 `evidence_slopes()` for the evidence-trend endpoint.
+- Frozen evidence grid: `(0.2,0.4,0.6,0.8,1.0)`.
+- Current prospective stable identity: `(A100-A20)+0.5*(A80-A40)`.
+- Do not edit historical decision-v1/v4 in place; the next work is a superseding synthetic-only decision layer with full gate-vector regression and fresh external review.
 
-Use these when reviewing the current numerical HC3 repair. Do not infer external promotion from the local PASS-awaiting-review terminal.
+## Accepted 15C HC3 numerical repair
+
+- Final reviewed commit: `5e8127d360d1effd0867a73c2bb007ddffb2c901`.
+- External review: `docs/agent/reviews/F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW_20260902.md`.
+- Repair output package: `outputs/contextual_teacher_target_v1_f1_hc3_15c_numerical_robustness_repair_20260902/`.
+- Repair manifest SHA-256: `f7cc3be9340c817f57953d3ef009c568a57dca7ea4fffbc2ccefbe6266e123a5`.
+- Production HC3: `scripts/v4/contextual_target_f1_hc3_stable_qr_v2.py`.
+- Independent SVD validator: `scripts/v4/validate_contextual_target_f1_hc3_svd_v2.py`.
+- Additive adapter: `scripts/v4/contextual_target_f1_hc3_15c_adapter_v2.py`.
+- Frozen effective centered design SHA-256: `37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb`.
+
+The earlier `STOP_F1_HC3_15C_NUMERICAL_INDEPENDENCE_UNRESOLVED` is historical/resolved. Use the supersession map before treating old 15C review text as current.
 
 ## 15A4 / 15B nuisance-design authority
 
@@ -29,7 +42,7 @@ Use these when reviewing the current numerical HC3 repair. Do not infer external
 - Frozen selection: `(5,0,4)`
 - Selected design SHA-256: `5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3`
 
-15A4's conclusion-bearing leverage route is SVD column-space projection with an independent pivoted-QR cross-check. Use this as the numerical-discipline reference for the current 15C repair.
+15A4's conclusion-bearing leverage route used SVD column-space projection with an independent pivoted-QR cross-check. That numerical discipline is now reflected in the accepted 15C QR/SVD repair.
 
 ## Preservation / chronology
 
@@ -43,7 +56,7 @@ Git backfill dates are preservation dates, not reconstructed historical dates. D
 Artifact:
 `V4_COMPLETE_EXPERIMENT_AUDIT_FINAL_20260821.md`
 
-Use when a claim cannot be resolved from the compact ACTIVE_STATE, current source/contracts, or the current gate packet.
+Use when a claim cannot be resolved from the compact ACTIVE_STATE, current authority index, current source/contracts, or the current gate packet.
 
 ## Machine-readable decision/experiment ledgers
 
@@ -51,7 +64,7 @@ Artifacts:
 - `docs/agent/memory-os/DECISION_REGISTRY.csv`
 - `docs/agent/memory-os/EXPERIMENT_LEDGER.csv`
 
-Use to check whether an old question is CLOSED / REJECTED / OPEN / SUPERSEDED. A stale historical row must not override the compact live gate.
+Use to check whether an old question is CLOSED / REJECTED / OPEN / SUPERSEDED. A stale historical row must not override the compact live gate, authority index, or supersession map.
 
 ## Anchor causality
 
