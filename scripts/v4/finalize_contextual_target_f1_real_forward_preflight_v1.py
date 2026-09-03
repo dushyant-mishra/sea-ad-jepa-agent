@@ -191,6 +191,8 @@ def independent_validation() -> dict[str, Any]:
     resume = json.loads((PACKAGE / "F1_PREFLIGHT_SHARD_RESUME_TEST.json").read_text())
     stats = json.loads((PACKAGE / "F1_PREFLIGHT_SUFFICIENT_STATISTICS_PARITY.json").read_text())
     firewall = json.loads((PACKAGE / "F1_PREFLIGHT_FIREWALL_AUDIT.json").read_text())
+    environment = json.loads((PACKAGE / "F1_PREFLIGHT_WSL_ENVIRONMENT_AUTHENTICATION.json").read_text())
+    forward_root = json.loads((PACKAGE / "F1_PREFLIGHT_REAL_FORWARD_ROOT.json").read_text())
     reconstructed = {}
     stage_to_key = {"gpu_batch": "forward_batch", "reader_block": "reader_block", "workers": "workers", "prefetch": "prefetch", "pinning": "pinned_memory"}
     for stage, key in stage_to_key.items():
@@ -211,6 +213,17 @@ def independent_validation() -> dict[str, Any]:
         "resource_safety_recomputed": safety,
         "no_historical_batch_constant": selection["historical_batch_constant_used"] is False,
         "query_safe_parity": parity["status"] == "PASS",
+        "query_permutation_inverse_exact": parity.get("query_permutation_inverse_restoration_exact") is True,
+        "forward_batch_chunk_within_frozen_authority": parity.get("forward_batch_chunk_parity_within_frozen_authority") is True,
+        "executed_source_bytes_bound": all(
+            forward_root["executed_source_byte_identity"][f"{name}_executed_bytes_sha256"]
+            == environment["source_hashes"][path]
+            for name, path in {
+                "constructor": "src/sea_ad_jepa/v4/contextual_query_local.py",
+                "encoder": "src/sea_ad_jepa/v4/ipb_jepa.py",
+                "tokenizer": "src/sea_ad_jepa/v4/gene_tokenizer.py",
+            }.items()
+        ),
         "geometry_exact": geometry == {"recipient_cells": 2781, "statistical_assignments": 44496, "unique_cell_q": 43108, "compute_only_dedups": 1388, "teacher_forwards": 43108, "correct_forwards": 215540, "null_forwards": 215540, "total_expensive_forwards": 474188, "assignment_evidence_effect_rows": 222480, "logical_donor_operator_shards": 1400},
         "resume": resume["status"] == "PASS", "sufficient_statistics": stats["status"] == "PASS",
         "firewall": firewall["status"] == "PASS", "no_biological_f1_outcome": firewall["biological_outcomes_computed"] is False,

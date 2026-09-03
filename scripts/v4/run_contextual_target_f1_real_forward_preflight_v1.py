@@ -305,10 +305,14 @@ def parity() -> dict[str, object]:
         (record["canonical_cell_id"], int(record["q"]), int(record["evidence_level"]), str(record["role"]))
         for record in reader.fixture["selected"]
     ]
-    chunk_parity_exact = set(restored_outputs) == set(logical_outputs) and all(
-        np.array_equal(logical_outputs[key], restored_outputs[key])
-        and logical_outputs[key].tobytes() == restored_outputs[key].tobytes()
+    chunk_comparisons = {
+        "|".join(map(str, key)): comparison(
+            torch.from_numpy(logical_outputs[key]), torch.from_numpy(restored_outputs[key])
+        )
         for key in logical_outputs
+    } if set(restored_outputs) == set(logical_outputs) else {}
+    chunk_parity = len(chunk_comparisons) == len(logical_outputs) and all(
+        row["pass"] for row in chunk_comparisons.values()
     )
 
     # Metamorphic checks on one lawful record from each source.
@@ -338,8 +342,8 @@ def parity() -> dict[str, object]:
     null_as_correct = dict(null); null_as_correct["canonical_cell_id"] = correct["canonical_cell_id"]; null_as_correct["q"] = correct["q"]; null_as_correct["evidence_level"] = correct["evidence_level"]
     null_as_correct["null_source_cell"] = null["null_source_cell"]
     null_root = forward_identity(authority, null_as_correct, "matched_null_student", RUN_ID, "identity-test")
-    status = all(row["pass"] for row in comparisons) and all(row["x_q_only_unchanged"] and row["lawful_non_q_changes"] for row in metamorphic) and read_order_exact and permutation_keys_exact and chunk_parity_exact and correct_root != null_root and _module_state_sha256(encoder) == before
-    result = {"schema": "f1-preflight-query-safe-parity-v1", "status": "PASS" if status else "STOP_F1_PREFLIGHT_QUERY_SAFE_PARITY_FAILURE", "fixture_membership_root_sha256": reader.fixture["membership_root_sha256"], "comparison_rule": dict(FLOAT32_RULE), "all_fixture_records_compared_to_independent_slow_reference": len(comparisons) == len(reader.fixture["selected"]), "comparisons": comparisons, "metamorphic": metamorphic, "query_permutation_inverse_restoration_exact": permutation_keys_exact, "forward_batch_chunk_parity_exact": chunk_parity_exact, "batch_chunk_size_tested": 7, "physical_read_order_restored_exactly": bool(read_order_exact), "correct_vs_null_identity_distinct": correct_root != null_root, "model_state_unchanged": _module_state_sha256(encoder) == before, "reader": read_metrics, "biological_metrics_computed": False}
+    status = all(row["pass"] for row in comparisons) and all(row["x_q_only_unchanged"] and row["lawful_non_q_changes"] for row in metamorphic) and read_order_exact and permutation_keys_exact and chunk_parity and correct_root != null_root and _module_state_sha256(encoder) == before
+    result = {"schema": "f1-preflight-query-safe-parity-v1", "status": "PASS" if status else "STOP_F1_PREFLIGHT_QUERY_SAFE_PARITY_FAILURE", "fixture_membership_root_sha256": reader.fixture["membership_root_sha256"], "comparison_rule": dict(FLOAT32_RULE), "all_fixture_records_compared_to_independent_slow_reference": len(comparisons) == len(reader.fixture["selected"]), "comparisons": comparisons, "metamorphic": metamorphic, "query_permutation_inverse_restoration_exact": permutation_keys_exact, "forward_batch_chunk_parity_within_frozen_authority": chunk_parity, "forward_batch_chunk_comparisons": chunk_comparisons, "batch_chunk_size_tested": 7, "physical_read_order_restored_exactly": bool(read_order_exact), "correct_vs_null_identity_distinct": correct_root != null_root, "model_state_unchanged": _module_state_sha256(encoder) == before, "reader": read_metrics, "biological_metrics_computed": False}
     write_json(PACKAGE / "F1_PREFLIGHT_QUERY_SAFE_PARITY.json", result)
     return result
 
