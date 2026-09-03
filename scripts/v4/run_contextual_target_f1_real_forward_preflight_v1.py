@@ -69,6 +69,19 @@ def authority_fields() -> dict[str, str]:
     repository_commit = os.environ.get("JEPA_PREFLIGHT_COMMIT", "")
     if len(repository_commit) != 40 or any(char not in "0123456789abcdef" for char in repository_commit):
         raise RuntimeError("JEPA_PREFLIGHT_COMMIT must be an exact lowercase Git SHA")
+    source_paths = {
+        "constructor": WORKTREE / "src/sea_ad_jepa/v4/contextual_query_local.py",
+        "encoder": WORKTREE / "src/sea_ad_jepa/v4/ipb_jepa.py",
+        "tokenizer": WORKTREE / "src/sea_ad_jepa/v4/gene_tokenizer.py",
+    }
+    expected_lf = {"constructor": CONSTRUCTOR_SHA, "encoder": ENCODER_SHA, "tokenizer": TOKENIZER_SHA}
+    executed = {}
+    for name, path in source_paths.items():
+        raw = path.read_bytes()
+        normalized = hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
+        if normalized != expected_lf[name]:
+            raise RuntimeError(f"{name} scientific source differs beyond checkout line endings")
+        executed[f"{name}_executed_bytes_sha256"] = hashlib.sha256(raw).hexdigest()
     return {
         "repository_commit": repository_commit,
         "reader_split_sha256": binding["authorities"]["split"]["sha256"],
@@ -78,6 +91,7 @@ def authority_fields() -> dict[str, str]:
         "dedup_sha256": binding["authorities"]["dedup"]["sha256"],
         "matched_null_sha256": binding["authorities"]["null_map"]["sha256"],
         "query_safe_target_sha256": sha256_file(WORKTREE / "scripts/v4/contextual_target_f1_preflight_core_v1.py"),
+        **executed,
     }
 
 
@@ -98,6 +112,7 @@ def freeze_forward_root() -> dict[str, object]:
         "encoder_sha256": ENCODER_SHA,
         "tokenizer_sha256": TOKENIZER_SHA,
         "mechanics_contract_sha256": sha256_file(WORKTREE / "src/sea_ad_jepa/v4/contracts.py"),
+        "executed_source_byte_identity": {key: value for key, value in authority.items() if key.endswith("_executed_bytes_sha256")},
         "constructor_sha256": CONSTRUCTOR_SHA,
         "namespace_semantic_root": NAMESPACE_SEMANTIC_ROOT,
         "observation_state_sha256": STATE_SHA,
@@ -257,7 +272,7 @@ def parity() -> dict[str, object]:
     model_sha = _module_state_sha256(encoder)
     before = model_sha
     comparisons = []
-    logical_outputs = []
+    logical_outputs = {}
     for record in reader.fixture["selected"]:
         role = str(record["role"])
         tensors, provenance, _ = prepare_chunk([record], role, model, by_cell, False)
@@ -269,7 +284,32 @@ def parity() -> dict[str, object]:
             reference = slow_true_singleton_reference(encoder=encoder, gene_ids=gene_ids, normalized_expression=x, physical_state=state, evidence_visible=visible, query_index=query, row_provenance=provenance, role=semantic_role)
         fields = {name: comparison(current[name], reference[name]) for name in ("h_query", "mu_context", "pre_layer_norm", "contextual_state")}
         comparisons.append({"cell": record["canonical_cell_id"], "q": int(record["q"]), "role": role, "fields": fields, "pass": all(item["pass"] for item in fields.values())})
-        logical_outputs.append(tensor_sha(current["contextual_state"]))
+        key = (record["canonical_cell_id"], int(record["q"]), int(record["evidence_level"]), role)
+        logical_outputs[key] = current["contextual_state"][0].detach().cpu().numpy().copy()
+
+    # Reverse query order within each role, execute in multi-query chunks, and
+    # restore frozen logical identities. This jointly checks permutation/inverse
+    # restoration and singleton-versus-batched output parity.
+    restored_outputs = {}
+    for role in ("teacher", "correct_student", "matched_null_student"):
+        reordered = list(reversed(role_records(reader, role)))
+        for offset in range(0, len(reordered), 7):
+            chunk = reordered[offset:offset + 7]
+            tensors, _, _ = prepare_chunk(chunk, role, model, by_cell, False)
+            x, state, visible, query = [tensor.to(device) for tensor in tensors]
+            current, _ = lean_query_local(encoder, x, state, visible, query, "teacher" if role == "teacher" else "student")
+            for position, record in enumerate(chunk):
+                key = (record["canonical_cell_id"], int(record["q"]), int(record["evidence_level"]), role)
+                restored_outputs[key] = current["contextual_state"][position].detach().cpu().numpy().copy()
+    permutation_keys_exact = list(logical_outputs) == [
+        (record["canonical_cell_id"], int(record["q"]), int(record["evidence_level"]), str(record["role"]))
+        for record in reader.fixture["selected"]
+    ]
+    chunk_parity_exact = set(restored_outputs) == set(logical_outputs) and all(
+        np.array_equal(logical_outputs[key], restored_outputs[key])
+        and logical_outputs[key].tobytes() == restored_outputs[key].tobytes()
+        for key in logical_outputs
+    )
 
     # Metamorphic checks on one lawful record from each source.
     metamorphic = []
@@ -298,8 +338,8 @@ def parity() -> dict[str, object]:
     null_as_correct = dict(null); null_as_correct["canonical_cell_id"] = correct["canonical_cell_id"]; null_as_correct["q"] = correct["q"]; null_as_correct["evidence_level"] = correct["evidence_level"]
     null_as_correct["null_source_cell"] = null["null_source_cell"]
     null_root = forward_identity(authority, null_as_correct, "matched_null_student", RUN_ID, "identity-test")
-    status = all(row["pass"] for row in comparisons) and all(row["x_q_only_unchanged"] and row["lawful_non_q_changes"] for row in metamorphic) and read_order_exact and correct_root != null_root and _module_state_sha256(encoder) == before
-    result = {"schema": "f1-preflight-query-safe-parity-v1", "status": "PASS" if status else "STOP_F1_PREFLIGHT_QUERY_SAFE_PARITY_FAILURE", "fixture_membership_root_sha256": reader.fixture["membership_root_sha256"], "comparison_rule": dict(FLOAT32_RULE), "all_fixture_records_compared_to_independent_slow_reference": len(comparisons) == len(reader.fixture["selected"]), "comparisons": comparisons, "metamorphic": metamorphic, "physical_read_order_restored_exactly": bool(read_order_exact), "correct_vs_null_identity_distinct": correct_root != null_root, "model_state_unchanged": _module_state_sha256(encoder) == before, "reader": read_metrics, "biological_metrics_computed": False}
+    status = all(row["pass"] for row in comparisons) and all(row["x_q_only_unchanged"] and row["lawful_non_q_changes"] for row in metamorphic) and read_order_exact and permutation_keys_exact and chunk_parity_exact and correct_root != null_root and _module_state_sha256(encoder) == before
+    result = {"schema": "f1-preflight-query-safe-parity-v1", "status": "PASS" if status else "STOP_F1_PREFLIGHT_QUERY_SAFE_PARITY_FAILURE", "fixture_membership_root_sha256": reader.fixture["membership_root_sha256"], "comparison_rule": dict(FLOAT32_RULE), "all_fixture_records_compared_to_independent_slow_reference": len(comparisons) == len(reader.fixture["selected"]), "comparisons": comparisons, "metamorphic": metamorphic, "query_permutation_inverse_restoration_exact": permutation_keys_exact, "forward_batch_chunk_parity_exact": chunk_parity_exact, "batch_chunk_size_tested": 7, "physical_read_order_restored_exactly": bool(read_order_exact), "correct_vs_null_identity_distinct": correct_root != null_root, "model_state_unchanged": _module_state_sha256(encoder) == before, "reader": read_metrics, "biological_metrics_computed": False}
     write_json(PACKAGE / "F1_PREFLIGHT_QUERY_SAFE_PARITY.json", result)
     return result
 
