@@ -1,21 +1,37 @@
-READ FIRST, COMPLETELY:
-- JEPA_PROJECT_MEMORY_OS.md
-- DECISION_REGISTRY.csv
-- EXPERIMENT_LEDGER.csv
-- ACTIVE_STATE.md
-- ARCHITECTURE_CONTRACT.md
-- NEXT_ALLOWED_ACTION.json
+READ FIRST, IN THIS ORDER:
+1. docs/agent/memory-os/ACTIVE_STATE.md
+2. docs/agent/memory-os/NEXT_ALLOWED_ACTION.json
+3. docs/agent/reviews/F1_HC3_15C_EXTERNAL_REVIEW_20260902.md
+4. docs/history/JEPA_PRESERVATION_LEDGER_20260902.md
 
-Treat them as controlling project state.
+THEN RETRIEVE ONLY AS NEEDED:
+- docs/agent/ACTIVE_STATE.md for dated scientific history
+- docs/agent/EVIDENCE_INDEX.md for selective historical retrieval
+- docs/agent/memory-os/JEPA_PROJECT_MEMORY_OS.md
+- docs/agent/memory-os/DECISION_REGISTRY.csv
+- docs/agent/memory-os/EXPERIMENT_LEDGER.csv
+- architecture/contracts/source/manifests cited by the controlling gate
 
-Before proposing or running any experiment, perform:
-- exact scientific question
-- closest prior experiment IDs
-- closed decision IDs
-- novel delta
-- why prior evidence does not already answer it
-- duplication verdict
+AUTHORITY RULE:
+The compact memory-os ACTIVE_STATE + NEXT_ALLOWED_ACTION + the named controlling external review define the live gate. Older dated passages remain historical evidence and must not silently override the live next action.
+
+CURRENT FAIL-CLOSED RULE:
+15C has a local PASS-awaiting-external-review packet but is NOT externally promoted. The controlling terminal is STOP_F1_HC3_15C_NUMERICAL_INDEPENDENCE_UNRESOLVED. No real F1 execution or training is authorized.
+
+BEFORE PROPOSING OR RUNNING ANY EXPERIMENT:
+- state the exact scientific question
+- identify closest prior experiment/decision authorities
+- identify closed branches
+- state the novel delta
+- explain why prior evidence does not already answer it
+- perform computational scaling/runtime/storage analysis here before issuing Codex execution commands
+- review conclusion-bearing code before scientific promotion
 
 If no genuine novel delta exists, DO NOT RUN THE EXPERIMENT.
 
-At experiment completion, update all controlling files before declaring the work complete.
+AT GATE COMPLETION:
+- preserve exact decision-bearing bytes/hashes
+- update compact ACTIVE_STATE and NEXT_ALLOWED_ACTION
+- update selective evidence/history pointers
+- record truthful chronology class
+- obtain required independent/external review before promotion
