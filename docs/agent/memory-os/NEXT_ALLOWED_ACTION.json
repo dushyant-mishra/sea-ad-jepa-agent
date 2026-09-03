@@ -1,37 +1,45 @@
 {
   "schema": "JEPA_NEXT_ALLOWED_ACTION_V2",
   "last_updated": "2026-09-02",
-  "current_gate": "F1_HC3_15C_EXTERNAL_REVIEW",
-  "status": "STOP_F1_HC3_15C_NUMERICAL_INDEPENDENCE_UNRESOLVED",
-  "current_status": "F0, the frozen F1 query/population design, HC3 15A4, 15B selection, and 15B provenance repair are closed at their accepted scopes. 15C completed a synthetic-only local integration packet, but external review identified that both the inherited production HC3 arithmetic and the claimed independent validator use the same normal-equations inverse on a design with condition number about 5.87e6. 15C is therefore not externally promoted and real F1 remains blocked.",
-  "controlling_review": "docs/agent/reviews/F1_HC3_15C_EXTERNAL_REVIEW_20260902.md",
-  "reviewed_preservation_commit": "2c000eccb0ff8f0c23e19e0e0c27c0c6cbdffafd",
+  "current_gate": "F1_EVIDENCE_TREND_NUMERICAL_REPAIR",
+  "status": "STOP_F1_EVIDENCE_TREND_NUMERICAL_DEFECT_UNRESOLVED",
+  "current_status": "F0, the frozen F1 query/population design, HC3 15A4, 15B selection/provenance, 15C integration, and the 15C HC3 numerical-robustness repair are closed at their accepted scopes. External review of commit 5e8127d360d1effd0867a73c2bb007ddffb2c901 accepted the QR production versus independent SVD HC3 repair. Real F1 remains blocked because current decision-v4 still inherits historical v1 evidence_slopes() float-centered arithmetic, which can generate tiny nonzero slopes for mathematically flat evidence curves at a decision-bearing one-sided gate.",
+  "controlling_review": "docs/agent/reviews/F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW_20260902.md",
+  "reviewed_hc3_repair_commit": "5e8127d360d1effd0867a73c2bb007ddffb2c901",
   "frozen_authority": {
     "selected_triple": [5, 0, 4],
     "selected_design_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+    "effective_centered_design_sha256": "37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb",
     "selected_design_shape": [104, 16],
     "selected_design_rank": 16,
     "selected_design_df": 88,
-    "15c_manifest_sha256": "6b50bc768346c9dcaff6b26ec986f3af21c68b7a5b54eefebbd5ae407fbbe436",
-    "15c_local_terminal": "PASS_F1_HC3_15C_DECISION_INTEGRATION_AWAITING_EXTERNAL_REVIEW"
+    "hc3_repair_manifest_sha256": "f7cc3be9340c817f57953d3ef009c568a57dca7ea4fffbc2ccefbe6266e123a5",
+    "hc3_repair_contract_sha256": "4ece6ea2fb85dad49e91d2087f6ce8d16941deb0e9c3226209add66057c2a3c7",
+    "hc3_repair_tolerance_sha256": "3c504c94ed08c45a1b4ac634ddbe54b3a7fc0cddd9948ce781fa7f49da01c49a",
+    "hc3_external_terminal": "PASS_F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW",
+    "historical_decision_v1_sha256": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34",
+    "historical_decision_v4_sha256": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+    "historical_integration_v4_sha256": "5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a"
   },
-  "primary_next_action": "Prospectively freeze and execute one narrow synthetic-only 15C HC3 numerical-robustness repair: preserve all frozen historical bytes, add a stable QR/SVD conclusion-bearing HC3 route, validate it with a genuinely different stable independent implementation, and prove gate/estimate agreement before any real F1 authority is considered.",
+  "primary_next_action": "Prospectively freeze and execute one narrow synthetic-only evidence-trend numerical repair. Preserve historical decision-v1/v4 and all accepted HC3 authorities unchanged; add a superseding decision layer that replaces only the frozen five-point evidence-slope arithmetic with (A100-A20)+0.5*(A80-A40), then independently reconstruct and regression-test the complete gate vector before any real F1 authority is considered.",
   "required_actions": [
-    "Freeze the numerical-robustness repair contract and tolerances before reading new comparison outputs.",
-    "Do not edit frozen decision-v1, decision-v4, integration-v4, 15A4, or 15B historical bytes in place; add a new repair layer/version.",
-    "Use stable QR/SVD column-space arithmetic for the production HC3 coefficient, leverage, sandwich covariance, standard error, and confidence bound.",
-    "Use a genuinely different stable independent implementation and compare rank, leverage, beta0, standard error, confidence bound, effective design, and final HC3 gate.",
-    "Re-run the frozen synthetic/adversarial/regression suite plus a prospective near-boundary HC3 stress test.",
-    "Publish a hash-bound repair packet and require fresh external review before changing this gate."
+    "Freeze the evidence-slope repair contract and any comparison tolerance before implementing the new conclusion-bearing arithmetic or reading comparison outputs.",
+    "Do not edit frozen decision-v1, decision-v4, integration-v4, 15A4, 15B, historical 15C, or the accepted HC3 numerical-repair bytes in place; add a new superseding repair layer/version.",
+    "For evidence levels 0.2,0.4,0.6,0.8,1.0 use the algebraically identical paired-difference slope (A100-A20)+0.5*(A80-A40).",
+    "Change only evidence-slope arithmetic. Keep alpha, tails, evidence levels, donor population, thresholds, HC3, query design, matched null, QID, protected-program logic, multiplicity, legal provenance, claim scope and all other decision semantics unchanged.",
+    "Add exact-flat, positive-linear, negative-linear, near-zero positive, near-zero negative, nonfinite and zero-donor-variance tests.",
+    "Re-run all frozen decision truth-table cases and accepted 15C/HC3 synthetic and adversarial regressions.",
+    "Independently reconstruct the entire gate vector and prove every non-evidence-trend gate and report remains unchanged.",
+    "Publish a hash-bound synthetic-safe repair packet and require fresh external review before reader/forward/executor preflight."
   ],
   "forbidden_actions": [
     "Do not authorize or run the real F1 model-forward sweep.",
     "Do not set real reader/forward authority.",
-    "Do not access DEV, SEALED, pathology, protected biological outcomes, or any new expression for this repair.",
+    "Do not access DEV, SEALED, pathology, protected biological outcomes, or new expression for this repair.",
     "Do not train, finetune, run optimizer steps, write training checkpoints, or update EMA.",
-    "Do not reselect the frozen (5,0,4) nuisance design or reopen the 15A4 frontier.",
+    "Do not reselect the frozen (5,0,4) nuisance design or reopen the HC3 frontier.",
     "Do not reopen the closed D_shared branch or transplant dataset-dependent values to another cohort.",
-    "Do not overwrite or relabel historical 15C PASS-awaiting-review bytes as externally passed."
+    "Do not overwrite or relabel historical decision or HC3 PASS/STOP artifacts."
   ],
-  "update_only_after": "A new synthetic-only 15C numerical-robustness repair packet passes independent stable-method validation and fresh external review."
+  "update_only_after": "A new synthetic-only evidence-trend numerical-repair packet passes independent reconstruction, complete regression, and fresh external review."
 }
