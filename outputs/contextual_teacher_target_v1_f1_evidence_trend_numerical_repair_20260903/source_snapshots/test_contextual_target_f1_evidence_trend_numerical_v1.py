@@ -142,9 +142,21 @@ def test_synthetic_runner_emits_complete_required_package_evidence():
         assert required <= {path.name for path in out.iterdir()}
         assert result["status"] == "PASS_F1_EVIDENCE_TREND_NUMERICAL_REPAIR"
         comparison = json.loads((out / "F1_EVIDENCE_TREND_NUMERICAL_COMPARISON.json").read_text())
+        gates = json.loads((out / "F1_EVIDENCE_TREND_COMPLETE_GATE_VECTOR_COMPARISON.json").read_text())
         assert comparison["near_boundary"]["positive"]["production_gate"] is True
         assert comparison["near_boundary"]["negative"]["production_gate"] is False
         assert comparison["complete_gate_vector_exact"] is True
+        assert gates["independent_gate_construction"] == "FROM_RAW_FROZEN_ENDPOINTS"
+        assert gates["copied_production_gate_count"] == 0
+        assert len(gates["gate_comparisons"]) == 11
+        assert all(gates["gate_comparisons"].values())
+        assert all(gates["deliberate_flipped_gate_attacks_detected"].values())
+        assert len(gates["truth_table_attack_reconstruction"]) == 14
+        assert gates["accepted_hc3_authority_reused"] is True
+        assert gates["static_independence_audit"] == {
+            "forbidden_construction_hits": [],
+            "pass": True,
+        }
 
 
 def test_finalizer_builds_hash_bound_review_package():
@@ -168,6 +180,10 @@ def test_finalizer_builds_hash_bound_review_package():
         assert (out / "F1_EVIDENCE_TREND_REPAIR_PACKAGE_ROOT_SHA256.txt").read_text().split()[0] == manifest_sha
         handoff = (out / "F1_EVIDENCE_TREND_REPAIR_EXTERNAL_REVIEW_HANDOFF.md").read_text()
         assert "PASS_F1_EVIDENCE_TREND_NUMERICAL_REPAIR_AWAITING_EXTERNAL_REVIEW" in handoff
+        assert "FROM_RAW_FROZEN_ENDPOINTS" in handoff
+        assert "Copied production gates: `0`" in handoff
+        assert "all 11" in handoff
+        assert "flipped-gate attacks" in handoff
 
 
 def test_authority_binding_verification_accepts_only_newline_transport_change():
@@ -183,3 +199,96 @@ def test_authority_binding_verification_accepts_only_newline_transport_change():
             data = (frozen / name).read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
             (out / name).write_bytes(data)
         runner._verify_authorities(out, ROOT)
+
+
+def test_complete_independent_adjudication_is_unchanged_by_flipped_production_gates():
+    """Catches construction of independent gates by copying the accepted decision."""
+    independent = load("scripts/v4/validate_contextual_target_f1_evidence_trend_v1.py", "evidence_complete_independent")
+    hc3 = load("scripts/v4/contextual_target_f1_hc3_15c_adapter_v2.py", "evidence_complete_hc3")
+    item = baseline()
+    schema, _, _ = hc3.load_frozen_effective_design(AUTHORITY)
+    accepted = hc3.qualify_synthetic(item["payload"], authority_root=AUTHORITY, repo_root=ROOT)
+    expected = independent.independent_complete_adjudication(
+        item["payload"],
+        schema["donor_order"],
+        accepted_hc3_report=accepted["reports"]["nuisance"],
+        accepted_hc3_method=accepted["conclusion_bearing_hc3_method"],
+    )
+    assert len(expected["gates"]) == 11
+    for gate in expected["gates"]:
+        if gate == "evidence_trend_one_sided_positive":
+            continue
+        attacked = copy.deepcopy(accepted)
+        attacked["gates"][gate] = not attacked["gates"][gate]
+        repeated = independent.independent_complete_adjudication(
+            item["payload"],
+            schema["donor_order"],
+            accepted_hc3_report=accepted["reports"]["nuisance"],
+            accepted_hc3_method=accepted["conclusion_bearing_hc3_method"],
+        )
+        assert repeated == expected
+        comparison = independent.compare_complete_adjudications(repeated, attacked)
+        assert comparison["all_11_gate_comparisons"] is False
+        assert comparison["gate_comparisons"][gate] is False
+
+
+def _truth_payload_to_raw_synthetic(payload, donor_order):
+    fields = (
+        "overall_A", "program_A", "program_delta", "evidence_A", "qid_margin",
+        "qid_win_minus_half", "program_qid_margin", "draw0", "draw1",
+    )
+    records = {}
+    for index, donor in enumerate(donor_order):
+        record = {}
+        for field in fields:
+            value = payload[field]
+            if field.startswith("program_"):
+                record[field] = {program: value[program][index] for program in value}
+            else:
+                record[field] = value[index]
+        records[donor] = record
+    return {"donor_records": records, "legal": payload["legal"]}
+
+
+def test_independent_reconstruction_covers_all_applicable_frozen_truth_attacks():
+    """Catches a validator that covers baseline but not the frozen attack surface."""
+    independent = load("scripts/v4/validate_contextual_target_f1_evidence_trend_v1.py", "evidence_truth_independent")
+    layer = load("scripts/v4/contextual_target_f1_evidence_trend_decision_v1.py", "evidence_truth_production")
+    hc3 = load("scripts/v4/contextual_target_f1_hc3_15c_adapter_v2.py", "evidence_truth_hc3")
+    truth = load("scripts/v4/test_contextual_target_f1_decision_truth_table_v2.py", "evidence_truth_authority")
+    truth.v4.V1_SHA = truth.v4.sha(truth.v4.V1)
+    truth.component.FROZEN_ASSIGNMENT_PATH = AUTHORITY / "outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERY_ASSIGNMENTS_2DRAW.csv"
+    frozen = truth.attacks()
+    schema, _, _ = hc3.load_frozen_effective_design(AUTHORITY)
+    donor_order = schema["donor_order"]
+    baseline_raw = _truth_payload_to_raw_synthetic(frozen["base_payload"], donor_order)
+    baseline_hc3 = hc3.qualify_synthetic(baseline_raw, authority_root=AUTHORITY, repo_root=ROOT)
+    checked = []
+    for attack in frozen["attacks"]:
+        name = attack["attack"]
+        if name == "G_hc3_nuisance":
+            # Historical free-form nuisance columns were superseded by frozen 15C design.
+            continue
+        raw = _truth_payload_to_raw_synthetic(attack["payload"], donor_order)
+        try:
+            production = layer.qualify_synthetic(raw, authority_root=AUTHORITY, repo_root=ROOT)
+        except (TypeError, ValueError):
+            with pytest.raises((TypeError, ValueError)):
+                independent.independent_complete_adjudication(
+                    raw,
+                    donor_order,
+                    accepted_hc3_report=baseline_hc3["reports"]["nuisance"],
+                    accepted_hc3_method=baseline_hc3["conclusion_bearing_hc3_method"],
+                )
+        else:
+            result = independent.independent_complete_adjudication(
+                raw,
+                donor_order,
+                accepted_hc3_report=production["reports"]["nuisance"],
+                accepted_hc3_method=production["conclusion_bearing_hc3_method"],
+            )
+            comparison = independent.compare_complete_adjudications(result, production)
+            assert comparison["all_11_gate_comparisons"] is True, name
+            assert comparison["qualified_comparison"] is True, name
+        checked.append(name)
+    assert len(checked) == 13

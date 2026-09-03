@@ -88,6 +88,17 @@ def finalize(out: Path, *, repo_root: Path) -> str:
     comparison = json.loads((out / "F1_EVIDENCE_TREND_NUMERICAL_COMPARISON.json").read_text(encoding="utf-8"))
     defect = json.loads((out / "F1_EVIDENCE_TREND_LEGACY_DEFECT_DEMONSTRATION.json").read_text(encoding="utf-8"))
     gate = json.loads((out / "F1_EVIDENCE_TREND_COMPLETE_GATE_VECTOR_COMPARISON.json").read_text(encoding="utf-8"))
+    if not (
+        gate.get("independent_gate_construction") == "FROM_RAW_FROZEN_ENDPOINTS"
+        and gate.get("copied_production_gate_count") == 0
+        and len(gate.get("gate_comparisons", {})) == 11
+        and all(gate["gate_comparisons"].values())
+        and all(gate.get("deliberate_flipped_gate_attacks_detected", {}).values())
+        and len(gate.get("truth_table_attack_reconstruction", [])) == 14
+        and all(item.get("pass") is True for item in gate["truth_table_attack_reconstruction"])
+        and gate.get("accepted_hc3_authority_reused") is True
+    ):
+        raise ValueError("STOP_F1_EVIDENCE_TREND_COMPLETE_INDEPENDENCE_PACKAGE_MISMATCH")
     handoff = f"""# F1 Evidence-Trend Numerical Repair — External Review Handoff
 
 Terminal: `PASS_F1_EVIDENCE_TREND_NUMERICAL_REPAIR_AWAITING_EXTERNAL_REVIEW`
@@ -101,6 +112,12 @@ Terminal: `PASS_F1_EVIDENCE_TREND_NUMERICAL_REPAIR_AWAITING_EXTERNAL_REVIEW`
 - Near-boundary negative gates: `{comparison['near_boundary']['negative']}`.
 - Legacy donor-varying flat fixture produced `{defect['legacy_nonzero_count']}` nonzero historical slopes and a historical PASS; repaired slopes are all exact zero and non-estimable/vetoed.
 - Complete gate-vector agreement: `{gate['complete_gate_vector_exact']}`.
+- Independent gate construction: `{gate['independent_gate_construction']}`.
+- Copied production gates: `{gate['copied_production_gate_count']}`.
+- Independently reconstructed comparison covers all 11 current gates and the qualified decision.
+- All deliberate non-evidence flipped-gate attacks were detected without changing the independent result.
+- All 14 frozen truth-table attacks are accounted for; 13 applicable attacks were reconstructed and the historical free-form nuisance-column attack is explicitly superseded by frozen 15C design authority.
+- Accepted QR-HC3 authority reused: `{gate['accepted_hc3_authority_reused']}`.
 - Every non-evidence gate/report and the accepted QR-HC3 report/gate are unchanged.
 - Historical Git-blob authorities remain byte-for-byte unchanged: `{json.dumps(historical, sort_keys=True)}`.
 - No expression, protected outcomes, model/checkpoint, training, optimizer, EMA, DEV, SEALED, or pathology data were accessed.

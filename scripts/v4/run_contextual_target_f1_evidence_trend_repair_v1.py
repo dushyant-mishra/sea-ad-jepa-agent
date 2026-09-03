@@ -57,6 +57,24 @@ def _array_bytes(array) -> bytes:
     return np.asarray(array, dtype="<f8").tobytes(order="C")
 
 
+def _truth_payload_to_raw_synthetic(payload: dict, donor_order) -> dict:
+    fields = (
+        "overall_A", "program_A", "program_delta", "evidence_A", "qid_margin",
+        "qid_win_minus_half", "program_qid_margin", "draw0", "draw1",
+    )
+    records = {}
+    for index, donor in enumerate(donor_order):
+        record = {}
+        for field in fields:
+            value = payload[field]
+            if field.startswith("program_"):
+                record[field] = {program: value[program][index] for program in value}
+            else:
+                record[field] = value[index]
+        records[donor] = record
+    return {"donor_records": records, "legal": payload["legal"]}
+
+
 def _verify_authorities(out: Path, repo_root: Path) -> None:
     if _canonical_text_sha(out / "F1_EVIDENCE_TREND_REPAIR_AUTHORITY_BINDING.json") != AUTHORITY_BINDING_SHA:
         raise ValueError("STOP_F1_EVIDENCE_TREND_AUTHORITY_BINDING_MISMATCH")
@@ -130,14 +148,39 @@ def run(out: Path, *, authority_root: Path, repo_root: Path) -> dict:
 
     accepted = hc3.qualify_synthetic(baseline["payload"], authority_root=authority_root, repo_root=repo_root)
     repaired = layer.qualify_synthetic(baseline["payload"], authority_root=authority_root, repo_root=repo_root)
-    independent_decision = independent.independent_complete_adjudication(accepted, evidence)
+    independent_decision = independent.independent_complete_adjudication(
+        baseline["payload"],
+        schema["donor_order"],
+        accepted_hc3_report=accepted["reports"]["nuisance"],
+        accepted_hc3_method=accepted["conclusion_bearing_hc3_method"],
+    )
     non_evidence_gates = all(repaired["gates"][key] is accepted["gates"][key] for key in accepted["gates"] if key != "evidence_trend_one_sided_positive")
     non_evidence_reports = all(repaired["reports"][key] == accepted["reports"][key] for key in accepted["reports"] if key != "evidence_slope")
     hc3_unchanged = repaired["reports"]["nuisance"] == accepted["reports"]["nuisance"] and repaired["gates"]["hc3_nuisance_positive"] is accepted["gates"]["hc3_nuisance_positive"]
-    complete_exact = repaired["gates"] == independent_decision["gates"] and repaired["qualified"] is independent_decision["qualified"]
+    independent_comparison = independent.compare_complete_adjudications(independent_decision, repaired)
+    complete_exact = independent_comparison["all_11_gate_comparisons"] and independent_comparison["qualified_comparison"]
     if not (non_evidence_gates and non_evidence_reports and hc3_unchanged and complete_exact):
         raise ValueError("STOP_F1_EVIDENCE_TREND_COMPLETE_ADJUDICATION_MISMATCH")
-    _write(out / "F1_EVIDENCE_TREND_COMPLETE_GATE_VECTOR_COMPARISON.json", {"status": "PASS", "production_gates": repaired["gates"], "independent_gates": independent_decision["gates"], "complete_gate_vector_exact": complete_exact, "qualified_exact": repaired["qualified"] is independent_decision["qualified"], "non_evidence_gates_unchanged": non_evidence_gates, "non_evidence_reports_unchanged": non_evidence_reports, "accepted_hc3_unchanged": hc3_unchanged})
+    flipped_gate_attacks = {}
+    for gate in independent.GATE_ORDER:
+        if gate == "evidence_trend_one_sided_positive":
+            continue
+        attacked = copy.deepcopy(repaired)
+        attacked["gates"][gate] = not attacked["gates"][gate]
+        attacked["qualified"] = bool(all(attacked["gates"].values()))
+        attack_comparison = independent.compare_complete_adjudications(independent_decision, attacked)
+        flipped_gate_attacks[gate] = bool(
+            independent_decision["gates"] == independent.independent_complete_adjudication(
+                baseline["payload"],
+                schema["donor_order"],
+                accepted_hc3_report=accepted["reports"]["nuisance"],
+                accepted_hc3_method=accepted["conclusion_bearing_hc3_method"],
+            )["gates"]
+            and attack_comparison["gate_comparisons"][gate] is False
+            and attack_comparison["all_11_gate_comparisons"] is False
+        )
+    if not all(flipped_gate_attacks.values()):
+        raise ValueError("STOP_F1_EVIDENCE_TREND_INDEPENDENCE_ATTACK_UNDETECTED")
 
     v1 = _load(repo_root / "scripts/v4/contextual_target_f1_decision_v1.py", "f1_historical_v1_defect")
     donor_levels = np.linspace(0.1, 1.1, 104); legacy_rows = np.repeat(donor_levels[:, None], 5, axis=1)
@@ -151,6 +194,68 @@ def run(out: Path, *, authority_root: Path, repo_root: Path) -> dict:
     truth.v4.V1_SHA = truth.v4.sha(truth.v4.V1)
     truth.component.FROZEN_ASSIGNMENT_PATH = authority_root / "outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERY_ASSIGNMENTS_2DRAW.csv"
     truth_results = truth.attacks()
+    truth_reconstruction = []
+    for attack in truth_results["attacks"]:
+        name = attack["attack"]
+        if name == "G_hc3_nuisance":
+            truth_reconstruction.append({
+                "attack": name,
+                "applicability": "NOT_APPLICABLE__FREE_FORM_NUISANCE_SUPERSEDED_BY_FROZEN_15C_DESIGN",
+                "pass": True,
+            })
+            continue
+        raw_attack = _truth_payload_to_raw_synthetic(attack["payload"], schema["donor_order"])
+        production_rejected = independent_rejected = False
+        try:
+            production_attack = layer.qualify_synthetic(raw_attack, authority_root=authority_root, repo_root=repo_root)
+        except (TypeError, ValueError):
+            production_rejected = True
+        try:
+            if production_rejected:
+                attack_hc3_report = accepted["reports"]["nuisance"]
+                attack_hc3_method = accepted["conclusion_bearing_hc3_method"]
+            else:
+                attack_hc3_report = production_attack["reports"]["nuisance"]
+                attack_hc3_method = production_attack["conclusion_bearing_hc3_method"]
+            independent_attack = independent.independent_complete_adjudication(
+                raw_attack,
+                schema["donor_order"],
+                accepted_hc3_report=attack_hc3_report,
+                accepted_hc3_method=attack_hc3_method,
+            )
+        except (TypeError, ValueError):
+            independent_rejected = True
+        if production_rejected or independent_rejected:
+            passed = production_rejected and independent_rejected
+            comparison_attack = None
+        else:
+            comparison_attack = independent.compare_complete_adjudications(independent_attack, production_attack)
+            passed = comparison_attack["all_11_gate_comparisons"] and comparison_attack["qualified_comparison"]
+        truth_reconstruction.append({
+            "attack": name,
+            "applicability": "APPLICABLE",
+            "production_rejected": production_rejected,
+            "independent_rejected": independent_rejected,
+            "all_11_gate_comparisons": None if comparison_attack is None else comparison_attack["all_11_gate_comparisons"],
+            "qualified_comparison": None if comparison_attack is None else comparison_attack["qualified_comparison"],
+            "pass": bool(passed),
+        })
+    if len(truth_reconstruction) != 14 or not all(item["pass"] for item in truth_reconstruction):
+        raise ValueError("STOP_F1_EVIDENCE_TREND_TRUTH_ATTACK_RECONSTRUCTION_MISMATCH")
+    validator_source = (HERE / "validate_contextual_target_f1_evidence_trend_v1.py").read_text(encoding="utf-8")
+    forbidden_independent_construction = (
+        "copy.deepcopy(accepted_hc3_decision)",
+        'accepted_hc3_decision["gates"]',
+        'accepted_hc3_decision["reports"]',
+        "contextual_target_f1_evidence_trend_decision_v1",
+        "contextual_target_f1_decision_v4",
+        "qualify_current",
+        "contextual_target_f1_evidence_slope_v1",
+    )
+    independence_hits = [token for token in forbidden_independent_construction if token in validator_source]
+    if independence_hits:
+        raise ValueError("STOP_F1_EVIDENCE_TREND_INDEPENDENT_CONSTRUCTION_STATIC_FAIL")
+    static_independence_audit = {"forbidden_construction_hits": independence_hits, "pass": True}
     adversarial_path = old_dir / "F1_15C_NUISANCE_ADVERSARIAL.json"
     veto = next(item for item in json.loads(adversarial_path.read_text(encoding="utf-8"))["attacks"] if item["attack"] == "A_nuisance_veto")
     veto_accepted = hc3.qualify_synthetic(veto["payload"], authority_root=authority_root, repo_root=repo_root)
@@ -174,6 +279,25 @@ def run(out: Path, *, authority_root: Path, repo_root: Path) -> dict:
     regression_pass = len(truth_results["attacks"]) == 14 and all(item["isolated_pass"] for item in truth_results["attacks"]) and veto_hc3_unchanged and all(attacks.values()) and permutation_exact
     if not regression_pass: raise ValueError("STOP_F1_EVIDENCE_TREND_REGRESSION_MISMATCH")
     _write(out / "F1_EVIDENCE_TREND_REGRESSION_RESULTS.json", {"status": "PASS", "frozen_14_cases": [{"attack": item["attack"], "isolated_pass": item["isolated_pass"]} for item in truth_results["attacks"]], "accepted_15c_hc3_veto_unchanged": veto_hc3_unchanged, "attacks_rejected": attacks, "donor_insertion_order_exact": permutation_exact, "accepted_hc3_repair_manifest_sha256": "f7cc3be9340c817f57953d3ef009c568a57dca7ea4fffbc2ccefbe6266e123a5"})
+
+    _write(out / "F1_EVIDENCE_TREND_COMPLETE_GATE_VECTOR_COMPARISON.json", {
+        "status": "PASS",
+        "independent_gate_construction": independent_decision["independent_gate_construction"],
+        "copied_production_gate_count": independent_decision["copied_production_gate_count"],
+        "accepted_hc3_authority_reused": independent_decision["accepted_hc3_authority_reused"],
+        "production_gates": repaired["gates"],
+        "independent_gates": independent_decision["gates"],
+        "gate_comparisons": independent_comparison["gate_comparisons"],
+        "all_11_gate_comparisons": independent_comparison["all_11_gate_comparisons"],
+        "complete_gate_vector_exact": complete_exact,
+        "qualified_comparison": independent_comparison["qualified_comparison"],
+        "non_evidence_gates_unchanged": non_evidence_gates,
+        "non_evidence_reports_unchanged": non_evidence_reports,
+        "accepted_hc3_unchanged": hc3_unchanged,
+        "deliberate_flipped_gate_attacks_detected": flipped_gate_attacks,
+        "truth_table_attack_reconstruction": truth_reconstruction,
+        "static_independence_audit": static_independence_audit,
+    })
 
     comparison = {"status": "PASS", "maximum_per_donor_slope_abs_difference": maximum, "cases": comparisons, "near_boundary": {"positive": {"production_gate": production_results["near_positive"]["report"]["gate"], "independent_gate": independent_results["near_positive"]["report"]["gate"]}, "negative": {"production_gate": production_results["near_negative"]["report"]["gate"], "independent_gate": independent_results["near_negative"]["report"]["gate"]}}, "complete_gate_vector_exact": complete_exact}
     if comparison["near_boundary"]["positive"] != {"production_gate": True, "independent_gate": True} or comparison["near_boundary"]["negative"] != {"production_gate": False, "independent_gate": False}:

@@ -1,6 +1,35 @@
 {
+  "accepted_hc3_authority_reused": true,
   "accepted_hc3_unchanged": true,
+  "all_11_gate_comparisons": true,
   "complete_gate_vector_exact": true,
+  "copied_production_gate_count": 0,
+  "deliberate_flipped_gate_attacks_detected": {
+    "cross_source_replication": true,
+    "hc3_nuisance_positive": true,
+    "legal_provenance": true,
+    "no_contextual_minus_direct_degradation": true,
+    "no_qid_v2_program_negative_margin": true,
+    "overall_A_60_one_sided_positive": true,
+    "protected_program_family_estimable": true,
+    "qid_v2_margin_one_sided_positive": true,
+    "qid_v2_win_one_sided_positive": true,
+    "two_draw_sign_stable": true
+  },
+  "gate_comparisons": {
+    "cross_source_replication": true,
+    "evidence_trend_one_sided_positive": true,
+    "hc3_nuisance_positive": true,
+    "legal_provenance": true,
+    "no_contextual_minus_direct_degradation": true,
+    "no_qid_v2_program_negative_margin": true,
+    "overall_A_60_one_sided_positive": true,
+    "protected_program_family_estimable": true,
+    "qid_v2_margin_one_sided_positive": true,
+    "qid_v2_win_one_sided_positive": true,
+    "two_draw_sign_stable": true
+  },
+  "independent_gate_construction": "FROM_RAW_FROZEN_ENDPOINTS",
   "independent_gates": {
     "cross_source_replication": true,
     "evidence_trend_one_sided_positive": true,
@@ -29,6 +58,134 @@
     "qid_v2_win_one_sided_positive": true,
     "two_draw_sign_stable": true
   },
-  "qualified_exact": true,
-  "status": "PASS"
+  "qualified_comparison": true,
+  "static_independence_audit": {
+    "forbidden_construction_hits": [],
+    "pass": true
+  },
+  "status": "PASS",
+  "truth_table_attack_reconstruction": [
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "A_protected_program_finite_negative_report_only",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "B_direct_degradation",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "C_evidence_trend",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "D_qid_margin",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "E_qid_win",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "F_draw_sign",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "applicability": "NOT_APPLICABLE__FREE_FORM_NUISANCE_SUPERSEDED_BY_FROZEN_15C_DESIGN",
+      "attack": "G_hc3_nuisance",
+      "pass": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "H_cross_source",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": null,
+      "applicability": "APPLICABLE",
+      "attack": "I_nonfinite_qid_margin",
+      "independent_rejected": true,
+      "pass": true,
+      "production_rejected": true,
+      "qualified_comparison": null
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "J_zero_variance_qid_win",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "K_overall_primary_failure_with_declared_shared_outcome_coupling",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "L_qid_program_negative_holm",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "M_legal_provenance",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    },
+    {
+      "all_11_gate_comparisons": true,
+      "applicability": "APPLICABLE",
+      "attack": "N_protected_program_unestimable",
+      "independent_rejected": false,
+      "pass": true,
+      "production_rejected": false,
+      "qualified_comparison": true
+    }
+  ]
 }
