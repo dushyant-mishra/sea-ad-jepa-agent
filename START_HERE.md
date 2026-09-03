@@ -6,18 +6,20 @@ This repository preserves several generations of JEPA research history. Do **not
 
 The active project is the **FULL104 Contextual Target V1 / F1 feasibility line**.
 
-Current controlling terminal:
+Current controlling gate:
 
-`STOP_F1_EVIDENCE_TREND_NUMERICAL_DEFECT_UNRESOLVED`
+`STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN`
 
-The 15C HC3 numerical-robustness repair at commit `5e8127d360d1effd0867a73c2bb007ddffb2c901` passed external review. The remaining pre-result blocker is a separate evidence-trend arithmetic defect inherited from historical decision-v1. Real F1 execution and training remain blocked until that narrow repair passes fresh external review.
+The F1 evidence-trend numerical repair at commit `249bc3b37cb6368ad97fde6bfb2a4560e83ff5a4` passed fresh external review. The stable paired-difference evidence slope and complete independent 11-gate reconstruction are accepted at synthetic-only scope.
+
+The next authorized work is the **real F1 reader/forward/executor preflight**. The full real F1 biological sweep and training remain blocked until that preflight is prospectively frozen, executed and externally reviewed.
 
 ## Read in this order
 
 1. [`docs/agent/memory-os/ACTIVE_STATE.md`](docs/agent/memory-os/ACTIVE_STATE.md) — compact current scientific state.
 2. [`docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`](docs/agent/memory-os/NEXT_ALLOWED_ACTION.json) — machine-readable live gate and prohibitions.
 3. [`docs/agent/CURRENT_AUTHORITY_INDEX.md`](docs/agent/CURRENT_AUTHORITY_INDEX.md) — current accepted authority set.
-4. [`docs/agent/reviews/F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW_20260902.md`](docs/agent/reviews/F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW_20260902.md) — controlling external review and transition to the evidence-trend gate.
+4. [`docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md`](docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md) — controlling external review and transition to the real reader/forward/executor preflight.
 5. [`docs/agent/CURRENT_SUPERSESSION_MAP.md`](docs/agent/CURRENT_SUPERSESSION_MAP.md) — current vs historical/superseded state.
 6. [`docs/agent/EVIDENCE_INDEX.md`](docs/agent/EVIDENCE_INDEX.md) — selective map to deeper evidence.
 7. [`docs/history/JEPA_PRESERVATION_LEDGER_20260902.md`](docs/history/JEPA_PRESERVATION_LEDGER_20260902.md) — preservation/backfill scope and chronology rules.
@@ -28,20 +30,32 @@ Use [`docs/agent/ACTIVE_STATE.md`](docs/agent/ACTIVE_STATE.md) as a dated histor
 
 The frozen current-104 nuisance design remains `(5,0,4)`, 104 x 16, rank 16, df 88, selected-design SHA-256 `5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3`. The accepted effective centered design SHA-256 is `37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb`.
 
-HC3 numerical independence is now externally resolved: production uses reduced QR/triangular solves and independent validation uses thin SVD/pseudoinverse.
+HC3 numerical independence is externally resolved: production uses reduced QR/triangular solves and independent validation uses thin SVD/pseudoinverse.
 
-Current decision-v4 still delegates evidence trend to historical v1 `evidence_slopes()`. For the frozen evidence grid `(0.2,0.4,0.6,0.8,1.0)`, the next prospective repair must change only the slope arithmetic to the algebraically identical stable form:
+Evidence-trend numerical stability is also externally resolved. The conclusion-bearing current evidence slope is:
 
-`(A100 - A20) + 0.5 * (A80 - A40)`.
+`(A100 - A20) + 0.5 * (A80 - A40)`
 
-Until that repair passes fresh external review:
+The accepted evidence-trend repair package root SHA-256 is `ce759e1397cba36d3d595603b14472ccbb756826144a4dbb3db31a964da0c607`.
 
-- do not run the real F1 model-forward sweep;
-- do not set real reader/forward authority;
+The next preflight must:
+
+- authenticate and hash-bind the real reader/forward path before any conclusion-capable real sweep;
+- reuse the established WSL/CUDA lineage for heavy GPU/I/O work when authentication succeeds;
+- detect current GPU/VRAM, RAM, CPU and storage/I/O resources at runtime rather than hard-code historical execution values;
+- adapt only mechanical execution geometry such as batching, block size, worker count, prefetch, caching and concurrency;
+- keep query design, evidence masks, nulls, donor order, protected programs, statistics, model architecture and scientific semantics invariant;
+- validate query-safe teacher/student masking, block-major streaming, exact logical-order restoration, atomic shards, resume/restart and sufficient-statistic accumulation;
+- benchmark only a prospectively fixed, non-conclusion-bearing technical fixture;
+- receive fresh external review before the full real F1 biological sweep is authorized.
+
+Until that preflight passes review:
+
+- do not run or adjudicate the full real F1 biological sweep;
 - do not train, finetune, run optimizer steps, write training checkpoints, or update EMA;
-- do not access DEV/SEALED/pathology for this repair;
-- do not reselect `(5,0,4)` or reopen HC3 selection;
-- do not reopen the closed `D_shared` branch.
+- do not access DEV/SEALED/pathology;
+- do not change scientific/statistical identities as part of resource tuning;
+- do not reselect `(5,0,4)`, reopen HC3 selection, or reopen the closed `D_shared` branch.
 
 ## Repository roles
 
