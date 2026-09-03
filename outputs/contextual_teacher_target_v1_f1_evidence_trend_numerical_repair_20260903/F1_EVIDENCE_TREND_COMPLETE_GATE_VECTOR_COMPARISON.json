@@ -1,0 +1,34 @@
+{
+  "accepted_hc3_unchanged": true,
+  "complete_gate_vector_exact": true,
+  "independent_gates": {
+    "cross_source_replication": true,
+    "evidence_trend_one_sided_positive": true,
+    "hc3_nuisance_positive": true,
+    "legal_provenance": true,
+    "no_contextual_minus_direct_degradation": true,
+    "no_qid_v2_program_negative_margin": true,
+    "overall_A_60_one_sided_positive": true,
+    "protected_program_family_estimable": true,
+    "qid_v2_margin_one_sided_positive": true,
+    "qid_v2_win_one_sided_positive": true,
+    "two_draw_sign_stable": true
+  },
+  "non_evidence_gates_unchanged": true,
+  "non_evidence_reports_unchanged": true,
+  "production_gates": {
+    "cross_source_replication": true,
+    "evidence_trend_one_sided_positive": true,
+    "hc3_nuisance_positive": true,
+    "legal_provenance": true,
+    "no_contextual_minus_direct_degradation": true,
+    "no_qid_v2_program_negative_margin": true,
+    "overall_A_60_one_sided_positive": true,
+    "protected_program_family_estimable": true,
+    "qid_v2_margin_one_sided_positive": true,
+    "qid_v2_win_one_sided_positive": true,
+    "two_draw_sign_stable": true
+  },
+  "qualified_exact": true,
+  "status": "PASS"
+}

@@ -1,0 +1,10 @@
+{
+  "expression_opened": false,
+  "forbidden_source_hits": [],
+  "model_or_checkpoint_opened": false,
+  "protected_data_opened": false,
+  "reader_or_forward_authority_set": false,
+  "real_f1_outcomes_opened": false,
+  "status": "PASS_SYNTHETIC_ONLY_FIREWALL",
+  "training_optimizer_or_ema_updated": false
+}

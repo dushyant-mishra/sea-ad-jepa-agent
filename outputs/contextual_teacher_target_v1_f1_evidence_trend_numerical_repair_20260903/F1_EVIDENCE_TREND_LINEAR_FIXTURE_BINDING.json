@@ -1,0 +1,12 @@
+{
+  "expected_slopes": [
+    5.0,
+    -5.0
+  ],
+  "sha256": "34e8098c1ba3de9928ecaea1b4ddab421c42b472b543c32b2f221fa7a07422d2",
+  "shape": [
+    2,
+    5
+  ],
+  "status": "FROZEN_BEFORE_COMPARISON"
+}
