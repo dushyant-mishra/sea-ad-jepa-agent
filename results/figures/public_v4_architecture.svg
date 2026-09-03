@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="840" viewBox="0 0 1400 840" role="img" aria-labelledby="title desc">
+<title id="title">Contextual JEPA architecture</title>
+<desc id="desc">High-level architecture showing the molecular ledger, student backbone, direct and contextual paths, singleton query head, and query-safe teacher.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<style>
+text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #202A35; }
+.title { font-size: 35px; font-weight: 700; }
+.kicker { font-size: 18px; font-weight: 700; letter-spacing: 1.2px; fill: #2F6BFF; }
+.head { font-size: 22px; font-weight: 700; }
+.body { font-size: 17px; }
+.small { font-size: 15px; fill: #5E6A78; }
+.card { stroke: #D9E0E8; stroke-width: 1.5; rx: 18; }
+.arrow { fill: none; stroke: #0F2747; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+<text x="60" y="70" class="kicker">CURRENT ARCHITECTURE FAMILY</text>
+<text x="60" y="115" class="title">Keep the molecular ledger.</text>
+<text x="60" y="153" class="title">Learn global state and query-local context without collapsing them together.</text>
+<text x="60" y="188" class="body">The model keeps address identity and measurement state explicit while learning complementary global and local biological structure.</text>
+<rect x="60" y="235" width="280" height="430" fill="#F6F8FB" class="card"/>
+<text x="88" y="278" class="head">Per-address input</text>
+<text x="88" y="319" class="body">• address / gene identity</text>
+<text x="88" y="352" class="body">• expression scalar, when lawful</text>
+<text x="88" y="385" class="body">• physical observation state</text>
+<text x="88" y="418" class="body">• evidence visibility</text>
+<text x="88" y="451" class="body">• measurement operator</text>
+<line x1="88" y1="480" x2="312" y2="480" stroke="#D9E0E8" stroke-width="2"/>
+<text x="88" y="520" class="head">Critical separation</text>
+<text x="88" y="555" class="small">M_physical = what the assay measured</text>
+<text x="88" y="584" class="small">U_evidence = what this view exposes</text>
+<text x="88" y="625" class="small">Masking evidence never rewrites</text>
+<text x="88" y="648" class="small">physical measurement history.</text>
+<path d="M 360 450 L 410 450 M 410 450 L 392 438 M 410 450 L 392 462" class="arrow"/>
+<rect x="435" y="235" width="390" height="430" fill="#EDF3FF" class="card"/>
+<text x="463" y="278" class="head">Full 41,238-address Molecular Ledger</text>
+<text x="463" y="316" class="body">Token-preserving IPB backbone</text>
+<text x="463" y="346" class="small">Gene/address identity remains accountable.</text>
+<text x="463" y="385" class="small">One backbone supports two complementary routes:</text>
+<rect x="463" y="420" width="334" height="92" rx="14" fill="white" stroke="#2F6BFF" stroke-width="2"/>
+<text x="488" y="455" class="head">Direct biological/state route</text>
+<text x="488" y="485" class="small">Simple path for broad/global state.</text>
+<rect x="463" y="535" width="334" height="92" rx="14" fill="white" stroke="#1C9A8B" stroke-width="2"/>
+<text x="488" y="570" class="head">Contextual residual route</text>
+<text x="488" y="600" class="small">Nonlinear, address-specific cell context.</text>
+<path d="M 845 450 L 895 450 M 895 450 L 877 438 M 895 450 L 877 462" class="arrow"/>
+<rect x="920" y="300" width="250" height="300" fill="#ECF8F6" class="card"/>
+<text x="947" y="343" class="head">Singleton / query head</text>
+<text x="947" y="385" class="body">One molecular address q</text>
+<text x="947" y="414" class="body">is queried at a time.</text>
+<text x="947" y="462" class="small">q identity stays present</text>
+<text x="947" y="491" class="small">q scalar can be withheld</text>
+<text x="947" y="520" class="small">q reads lawful cell context</text>
+<text x="947" y="554" class="small">No unsafe q-containing global</text>
+<text x="947" y="577" class="small">tensor may certify this path.</text>
+<path d="M 1190 450 L 1230 450 M 1230 450 L 1212 438 M 1230 450 L 1212 462" class="arrow"/>
+<rect x="1250" y="320" width="100" height="260" fill="#F3EFFE" class="card"/>
+<text x="1270" y="360" class="head">Biology</text>
+<text x="1270" y="405" class="body">state</text>
+<text x="1270" y="438" class="body">programs</text>
+<text x="1270" y="471" class="body">rare</text>
+<text x="1270" y="504" class="body">local</text>
+<rect x="435" y="700" width="915" height="95" fill="#F3EFFE" class="card"/>
+<text x="463" y="738" class="head">Query-safe teacher target</text>
+<text x="463" y="768" class="body">Richest lawful context, but x_q is removed before contextual mixing. q identity remains; teacher is stop-gradient.</text>
+</svg>
