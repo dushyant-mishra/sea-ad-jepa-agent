@@ -1,6 +1,6 @@
 # CURRENT AUTHORITY INDEX — JEPA v4
 
-Date: 2026-09-02
+Date: 2026-09-03
 
 Purpose: identify the minimum current authority set. Historical artifacts remain preserved but must not override this index when they conflict with a newer externally reviewed state.
 
@@ -16,12 +16,12 @@ Purpose: identify the minimum current authority set. Historical artifacts remain
 ## Live scientific gate
 
 Current gate:
-`STOP_F1_EVIDENCE_TREND_NUMERICAL_DEFECT_UNRESOLVED`
+`STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN`
 
-Only next authorized scientific work:
-prospective synthetic-only evidence-trend numerical repair.
+Only next authorized scientific/engineering work:
+prospectively freeze and execute the real F1 reader/forward/executor preflight.
 
-Real F1 reader/forward execution, biological outcome adjudication and training remain unauthorized.
+The preflight may use a prospectively fixed, non-conclusion-bearing real technical fixture to authenticate the reader/forward path and benchmark the current runtime. The full real F1 biological sweep, biological outcome adjudication and training remain unauthorized.
 
 ## Current accepted authorities
 
@@ -68,6 +68,18 @@ Real F1 reader/forward execution, biological outcome adjudication and training r
 - External terminal: `PASS_F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW`.
 - Current production HC3 numerical route for the repaired layer: reduced QR/triangular solves; independent validator: thin SVD/pseudoinverse.
 
+### Evidence-trend numerical authority
+
+- External-review accepted commit: `249bc3b37cb6368ad97fde6bfb2a4560e83ff5a4`.
+- External terminal: `PASS_F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW`.
+- Repair package root SHA-256: `ce759e1397cba36d3d595603b14472ccbb756826144a4dbb3db31a964da0c607`.
+- Conclusion-bearing slope: `(A100-A20)+0.5*(A80-A40)` in float64; A60 coefficient zero.
+- Production slope source SHA-256: `afa32c5608ed6749e7c61f6ec7183f186377f6bcd29280b330af6a5265be00ce`.
+- Independent slope reference uses a separate `math.fsum` path.
+- Complete independent adjudication constructs all 11 current gates from raw frozen synthetic endpoints with `copied_production_gate_count=0`.
+- Ten deliberate non-evidence production-gate flips are detected by the independent comparison.
+- Controlling review: `docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md`.
+
 ### Historical decision authorities retained as frozen inputs
 
 - decision-v1 SHA-256: `204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34`.
@@ -75,17 +87,32 @@ Real F1 reader/forward execution, biological outcome adjudication and training r
 - integration-v4 SHA-256: `5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a`.
 - These bytes are historical/frozen and must not be edited in place.
 
-## Current open defect
+## Current preflight requirements
 
-`contextual_target_f1_decision_v4.py` inherits historical v1 `evidence_slopes()` float-centered arithmetic. For frozen evidence `(0.2,0.4,0.6,0.8,1.0)`, mathematically equivalent current-repair arithmetic is:
+Before the full real F1 sweep can be authorized, one prospective reader/forward/executor preflight must:
 
-`beta = (A100 - A20) + 0.5 * (A80 - A40)`
+1. authenticate the established WSL/CUDA execution lineage for heavy GPU/I/O work, or fail closed if that lineage no longer matches;
+2. freeze the preflight contract, technical benchmark fixture, bounded candidate ladder, deterministic selection rule and resource headroom rule before reading benchmark-selection outcomes;
+3. detect current GPU/VRAM, RAM, CPU, filesystem/free space, storage read bandwidth and relevant transfer/forward throughput rather than hard-code historical execution values;
+4. adapt only mechanical execution geometry: read block size, query/forward batch, workers, prefetch, pinned-memory/caching strategy, concurrency and equivalent scheduling;
+5. keep model architecture, query design, evidence masks, matched nulls, donor order, protected programs, statistical rules, thresholds and all scientific identities invariant;
+6. hash-bind model/checkpoint, encoder/tokenizer, 41,238-address namespace, observation semantics, evidence mask, role, recipient/null source, query identity, dtype, constructor, run identity and shard identity for conclusion-capable forwards;
+7. validate query-safe teacher/student masking before contextual mixing, including measured-zero semantics and exclusion of unsafe rich-forward-plus-posthoc-q-masking shortcuts;
+8. validate block-major streaming, exact logical-order restoration, dedup/reuse, atomic shards, deterministic resume/restart and sufficient-statistic accumulation;
+9. benchmark only a prospectively fixed non-conclusion-bearing technical fixture and avoid final biological F1 adjudication;
+10. publish a hash-bound preflight package and receive fresh external review.
 
-The current gate is blocked until a superseding synthetic-only decision layer changes only this arithmetic, proves full non-evidence gate/report invariance, passes regression/adversarial tests and receives fresh external review.
+## Still forbidden
+
+- full real F1 biological model-forward sweep or real outcome adjudication;
+- DEV/SEALED/pathology access;
+- training, finetuning, optimizer steps, checkpoint writes or EMA updates;
+- scientific/statistical changes under the guise of resource adaptation;
+- nuisance-design reselection, HC3 reopening, D_shared rescue/re-entry, or overwriting historical PASS/STOP artifacts.
 
 ## Controlling current review
 
-`docs/agent/reviews/F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW_20260902.md`
+`docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md`
 
 ## Preservation rule
 
