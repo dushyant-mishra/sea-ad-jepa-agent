@@ -1,5 +1,6 @@
 import unittest
 import tempfile
+import importlib
 from pathlib import Path
 
 import numpy as np
@@ -8,6 +9,10 @@ from scripts.v4 import contextual_target_f1_preflight_executor_v1 as executor
 
 
 class ExecutorPureTests(unittest.TestCase):
+    def test_authenticated_encoder_package_import_closure_is_available(self):
+        module = importlib.import_module("sea_ad_jepa.v4.contextual_query_local")
+        self.assertTrue(hasattr(module, "construct_query_local_contextual_state"))
+
     def test_power_ladder_has_no_historical_batch_constant(self):
         self.assertEqual(executor.power_ladder(17), [1, 2, 4, 8, 16])
         self.assertEqual(executor.power_ladder(1), [1])
@@ -20,6 +25,20 @@ class ExecutorPureTests(unittest.TestCase):
             {"configuration": 8, "safe": False, "median_throughput": 200.0},
         ]
         self.assertEqual(executor.select_smallest_near_best(rows)["configuration"], 2)
+
+    def test_resource_candidate_runs_one_warmup_and_three_timed_repetitions(self):
+        calls = []
+
+        def operation():
+            calls.append(len(calls))
+            return {"units": 12}
+
+        result = executor.benchmark_repetitions(operation, units=12)
+        self.assertEqual(len(calls), 4)
+        self.assertEqual(result["warmups"], 1)
+        self.assertEqual(result["timed_repetitions"], 3)
+        self.assertEqual(len(result["repetitions"]), 3)
+        self.assertGreater(result["median_throughput"], 0.0)
 
     def test_effect_row_recomputes_delta_and_rejects_caller_delta(self):
         row = executor.build_effect_row(teacher=5.0, correct=3.0, null=1.0, direct=2.0)

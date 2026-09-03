@@ -4,10 +4,34 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import statistics
+import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
+
+
+def benchmark_repetitions(operation: Callable[[], Any], units: int) -> dict[str, Any]:
+    """Run the frozen one-warmup/three-timed-candidate protocol."""
+    if units < 1:
+        raise ValueError("units")
+    operation()
+    repetitions = []
+    for _ in range(3):
+        started = time.perf_counter()
+        operation()
+        elapsed = time.perf_counter() - started
+        repetitions.append({
+            "elapsed_seconds": elapsed,
+            "throughput": units / elapsed,
+        })
+    return {
+        "warmups": 1,
+        "timed_repetitions": 3,
+        "repetitions": repetitions,
+        "median_throughput": statistics.median(row["throughput"] for row in repetitions),
+    }
 
 
 def power_ladder(capacity: int) -> list[int]:

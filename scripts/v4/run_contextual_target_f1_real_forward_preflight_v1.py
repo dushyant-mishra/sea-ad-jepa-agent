@@ -8,6 +8,7 @@ import json
 import math
 import os
 import platform
+import resource
 import shutil
 import statistics
 import subprocess
@@ -49,7 +50,7 @@ from contextual_target_f1_preflight_core_v1 import (
     swap_used,
     tensor_sha,
 )
-from contextual_target_f1_preflight_executor_v1 import AtomicShardStore, full_geometry, power_ladder, select_smallest_near_best
+from contextual_target_f1_preflight_executor_v1 import AtomicShardStore, benchmark_repetitions, full_geometry, power_ladder, select_smallest_near_best
 from contextual_target_v1_f0_slow_reference import slow_true_singleton_reference
 from sea_ad_jepa.v4.contextual_query_local import construct_query_local_contextual_state, _module_state_sha256
 
@@ -184,16 +185,21 @@ def prepare_chunk(record_chunk, role, model, by_cell, pin):
 
 def candidate(batch: int, workers: int, reader_block: int, prefetch: int, pin: bool, reader_only: bool) -> dict[str, object]:
     before = meminfo()
-    process = psutil.Process()
-    faults_before = process.memory_info()
+    faults_before = resource.getrusage(resource.RUSAGE_SELF)
     reader = MaterializedFixtureReader(CANONICAL, WORKTREE)
     try:
-        model, _, by_cell, read_metrics = read_fixture(reader, workers, reader_block, prefetch)
         if reader_only:
+            latest: dict[str, object] = {}
+
+            def read_operation() -> None:
+                model, _, by_cell, metrics = read_fixture(reader, workers, reader_block, prefetch)
+                latest.update({"model": model, "by_cell": by_cell, "metrics": metrics})
+
+            benchmark = benchmark_repetitions(read_operation, units=len(reader.rows))
             after = meminfo()
-            elapsed = float(read_metrics["reader_seconds"])
-            rate = len(by_cell) / elapsed
-            return {"safe": swap_used(after) <= swap_used(before) and peak_rss_bytes() <= 0.8 * before["MemAvailable"], "median_throughput": rate, "throughput_unit": "rows_per_second", "configuration": reader_block, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "timed_repetitions": 1, "reader": read_metrics, "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "cuda_peak_allocated_bytes": 0, "cuda_peak_reserved_bytes": 0, "cuda_total_bytes": torch.cuda.get_device_properties(0).total_memory}
+            faults_after = resource.getrusage(resource.RUSAGE_SELF)
+            return {"safe": swap_used(after) <= swap_used(before) and peak_rss_bytes() <= 0.8 * before["MemAvailable"], "median_throughput": benchmark["median_throughput"], "throughput_unit": "rows_per_second", "configuration": reader_block, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "warmups": benchmark["warmups"], "timed_repetitions": benchmark["timed_repetitions"], "repetitions": benchmark["repetitions"], "reader": latest["metrics"], "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "minor_faults_delta": faults_after.ru_minflt - faults_before.ru_minflt, "major_faults_delta": faults_after.ru_majflt - faults_before.ru_majflt, "cuda_peak_allocated_bytes": 0, "cuda_peak_reserved_bytes": 0, "cuda_total_bytes": torch.cuda.get_device_properties(0).total_memory}
+        model, _, by_cell, read_metrics = read_fixture(reader, workers, reader_block, prefetch)
         device = torch.device("cuda")
         encoder = load_encoder(CANONICAL, device)
         model_state = _module_state_sha256(encoder)
@@ -230,12 +236,13 @@ def candidate(batch: int, workers: int, reader_block: int, prefetch: int, pin: b
             if repetition:
                 repetitions.append({"elapsed_seconds": elapsed, "query_identities": total_count, "throughput": total_count / elapsed, "h2d_seconds": h2d_seconds, "constructor_seconds": constructor_seconds, "model_forward_seconds": model_seconds, "target_context_reduction_seconds": reduction_seconds})
         after = meminfo()
+        faults_after = resource.getrusage(resource.RUSAGE_SELF)
         total_vram = torch.cuda.get_device_properties(0).total_memory
         peak_reserved = torch.cuda.max_memory_reserved()
         peak_allocated = torch.cuda.max_memory_allocated()
         median_rate = statistics.median(row["throughput"] for row in repetitions)
         safe = peak_reserved <= 0.85 * total_vram and swap_used(after) <= swap_used(before) and peak_rss_bytes() <= 0.8 * before["MemAvailable"] and math.isfinite(median_rate)
-        return {"safe": bool(safe), "median_throughput": median_rate, "throughput_unit": "query_identities_per_second", "configuration": batch, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "warmups": 1, "timed_repetitions": 3, "repetitions": repetitions, "role_seconds_median": {role: statistics.median(times) for role, times in role_times.items()}, "role_counts": {role: len(rows) for role, rows in role_samples.items()}, "reader": read_metrics, "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "cuda_peak_allocated_bytes": peak_allocated, "cuda_peak_reserved_bytes": peak_reserved, "cuda_total_bytes": total_vram, "model_state_sha256": model_state, "faults_before": str(faults_before)}
+        return {"safe": bool(safe), "median_throughput": median_rate, "throughput_unit": "query_identities_per_second", "configuration": batch, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "warmups": 1, "timed_repetitions": 3, "repetitions": repetitions, "role_seconds_median": {role: statistics.median(times) for role, times in role_times.items()}, "role_counts": {role: len(rows) for role, rows in role_samples.items()}, "reader": read_metrics, "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "minor_faults_delta": faults_after.ru_minflt - faults_before.ru_minflt, "major_faults_delta": faults_after.ru_majflt - faults_before.ru_majflt, "cuda_peak_allocated_bytes": peak_allocated, "cuda_peak_reserved_bytes": peak_reserved, "cuda_total_bytes": total_vram, "model_state_sha256": model_state}
     except torch.cuda.OutOfMemoryError as error:
         after = meminfo()
         return {"safe": False, "failure": "CUDA_OOM", "error": str(error), "configuration": batch, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "cuda_peak_allocated_bytes": torch.cuda.max_memory_allocated(), "cuda_peak_reserved_bytes": torch.cuda.max_memory_reserved(), "cuda_total_bytes": torch.cuda.get_device_properties(0).total_memory}
