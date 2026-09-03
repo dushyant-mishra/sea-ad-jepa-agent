@@ -6,7 +6,9 @@ import csv
 import hashlib
 import json
 import os
+import platform
 import shutil
+import subprocess
 import tempfile
 import time
 from pathlib import Path
@@ -23,6 +25,12 @@ ROOT = Path(__file__).resolve().parents[2]
 CANONICAL = Path(os.environ.get("JEPA_CANONICAL_ROOT", "/mnt/d/Jepa project")).resolve()
 FROZEN = ROOT / "docs/agent/f1_real_reader_forward_executor_preflight_20260903"
 PACKAGE = ROOT / "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903"
+ROOT_FREEZE_ALLOWED_DIFF = {
+    "docs/agent/f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_REAL_FORWARD_ROOT.json",
+    "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_IMPLEMENTATION_VERIFIER_REPORT.json",
+    "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_IMPLEMENTATION_VERIFIER_SUPPORT.json",
+    "tests/test_verifier_f1_real_reader_forward_preflight_v1.py",
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -42,6 +50,24 @@ def write_json(path: Path, value: object) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     os.replace(temporary, path)
+
+
+def validate_commit_chain(*, actual_head: str, benchmark_commit: str, parent_commit: str,
+                          implementation_commit: str, changed_files: set[str]) -> bool:
+    if actual_head != benchmark_commit or parent_commit != implementation_commit or changed_files != ROOT_FREEZE_ALLOWED_DIFF:
+        raise RuntimeError("Git implementation/root/benchmark provenance mismatch")
+    return True
+
+
+def git_output(*args: str) -> str:
+    command = ["git", "-C", str(ROOT), *args]
+    completed = subprocess.run(command, text=True, capture_output=True)
+    if completed.returncode and "microsoft" in platform.release().lower():
+        windows_root = subprocess.check_output(["wslpath", "-w", str(ROOT)], text=True).strip()
+        completed = subprocess.run(["git.exe", "-c", f"safe.directory={windows_root}", "-C", windows_root, *args], text=True, capture_output=True)
+    if completed.returncode:
+        raise RuntimeError(f"Git provenance query failed: {completed.stderr.strip()}")
+    return completed.stdout.strip()
 
 
 def independent_select(rows: list[dict[str, Any]]) -> int:
@@ -278,6 +304,12 @@ def independent_validation() -> dict[str, Any]:
     forward_root = json.loads((PACKAGE / "F1_PREFLIGHT_REAL_FORWARD_ROOT.json").read_text())
     plan_geometry = json.loads((PACKAGE / "F1_PREFLIGHT_FULL_PLAN_GEOMETRY.json").read_text())
     runtime = json.loads((PACKAGE / "F1_PREFLIGHT_RUNTIME_PROJECTION.json").read_text())
+    actual_head = git_output("rev-parse", "HEAD")
+    parent_commit = git_output("rev-parse", "HEAD^")
+    changed_files = set(filter(None, git_output("diff", "--name-only", f'{forward_root["implementation_source_commit"]}..{actual_head}').splitlines()))
+    git_chain_valid = validate_commit_chain(actual_head=actual_head, benchmark_commit=environment["benchmark_execution_commit"],
+                                            parent_commit=parent_commit, implementation_commit=forward_root["implementation_source_commit"],
+                                            changed_files=changed_files)
     reconstructed = {}
     stage_to_key = {"gpu_batch": "forward_batch", "reader_block": "reader_block", "workers": "workers", "prefetch": "prefetch", "pinning": "pinned_memory"}
     for stage, key in stage_to_key.items():
@@ -316,7 +348,7 @@ def independent_validation() -> dict[str, Any]:
         "observation_state_hash_recomputed": sha256_file(CANONICAL / "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz") == "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
         "fixture_root_recomputed": canonical_sha(json.loads((FROZEN / "F1_PREFLIGHT_TECHNICAL_FIXTURE_BINDING.json").read_text())["selected"]) == forward_root["fixture_membership_root_sha256"],
         "implementation_source_commit_bound": len(forward_root["implementation_source_commit"]) == 40,
-        "benchmark_execution_commit_bound": len(environment["benchmark_execution_commit"]) == 40 and environment["benchmark_execution_commit"] != forward_root["implementation_source_commit"],
+        "benchmark_execution_commit_bound": git_chain_valid,
         "wsl_cuda_authenticated": environment["status"] == "PASS" and environment["is_wsl"] is True and environment["cuda_available"] is True and environment["cuda_device_count"] >= 1,
         "runtime_components_nonoverlapping": set(runtime["nonoverlapping_components"]) == {"physical_reader", "forward_pipeline", "shard_commit", "finalization"} and abs(sum(runtime["nonoverlapping_components"].values()) - runtime["T_total_projected_seconds"]) < 1e-9,
         "resume": resume["status"] == "PASS", "sufficient_statistics": stats["status"] == "PASS",

@@ -28,6 +28,16 @@ class IndependentFinalizerTests(unittest.TestCase):
         self.assertEqual(row["qid_margin"], -0.25)
         self.assertEqual(row["qid_win"], 0.0)
 
+    def test_git_chain_is_exact_not_merely_different(self):
+        allowed = set(finalizer.ROOT_FREEZE_ALLOWED_DIFF)
+        self.assertTrue(finalizer.validate_commit_chain(actual_head="b", benchmark_commit="b", parent_commit="a", implementation_commit="a", changed_files=allowed))
+        for kwargs in (
+            {"actual_head":"x", "benchmark_commit":"b", "parent_commit":"a", "implementation_commit":"a", "changed_files":allowed},
+            {"actual_head":"b", "benchmark_commit":"b", "parent_commit":"x", "implementation_commit":"a", "changed_files":allowed},
+            {"actual_head":"b", "benchmark_commit":"b", "parent_commit":"a", "implementation_commit":"a", "changed_files":allowed | {"scripts/v4/science.py"}},
+        ):
+            with self.assertRaises(RuntimeError): finalizer.validate_commit_chain(**kwargs)
+
 
 if __name__ == "__main__":
     unittest.main()
