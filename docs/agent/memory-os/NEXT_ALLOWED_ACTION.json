@@ -1,33 +1,37 @@
 {
-  "status": "FOUNDATION_CORPUS_DISCOVERY_V1_COMPLETE_FRESH_MATCHED_U0_ARM_REQUIRED",
-  "primary_next_action": "Prospectively specify one matched fresh-u0 arm from new unique fit-104 cells using stable metadata/support constraints only; retain authenticated u205 as a read-only comparator. Do not train until the new contract is frozen and separately authorized.",
-  "active_contract_sha256": "d932b9d3ff4fde7a9b0b292e650450781945a6478a954d715278175809e82271",
-  "completed_gate": "FOUNDATION_CORPUS_DISCOVERY_V1 completed and hash-froze direct 42-operator expression lineage, fit-104 corpus/support atlas, frozen 50K discovery expression, teacher shortcuts, heterogeneous synthetic stress, and multi-agent adjudication. Decision: FRESH_MATCHED_U0_ARM_REQUIRED.",
-  "evidence": {
-    "final_adjudication_sha256": "3aacf1b70af43735c4ea979698926de0487b9457058a26b872810009b29eb184",
-    "inventory_expansion_feasibility_sha256": "8000954a0db16ae1bf5f7535dfd1c01ac054136f6ac0c09efd1708f7d46da1d3",
-    "lawful_fit_cells": 4553407,
-    "current_cached_fit_cells": 3292,
-    "old_cache_source_total_variation": 0.5961013253259284,
-    "expression_lineage_v2_sha256": "223b9deec03767d9bb260f530717803fed20e67d737d99107efbb731886abe48",
-    "final_discovery_json_sha256": "d932b9d3ff4fde7a9b0b292e650450781945a6478a954d715278175809e82271",
-    "hash_manifest_sha256": "a21029603afc7fe4e9ed05ffad4bde7bb685fd0660651a43a35c42ce71d510f4"
+  "schema": "JEPA_NEXT_ALLOWED_ACTION_V2",
+  "last_updated": "2026-09-02",
+  "current_gate": "F1_HC3_15C_EXTERNAL_REVIEW",
+  "status": "STOP_F1_HC3_15C_NUMERICAL_INDEPENDENCE_UNRESOLVED",
+  "current_status": "F0, the frozen F1 query/population design, HC3 15A4, 15B selection, and 15B provenance repair are closed at their accepted scopes. 15C completed a synthetic-only local integration packet, but external review identified that both the inherited production HC3 arithmetic and the claimed independent validator use the same normal-equations inverse on a design with condition number about 5.87e6. 15C is therefore not externally promoted and real F1 remains blocked.",
+  "controlling_review": "docs/agent/reviews/F1_HC3_15C_EXTERNAL_REVIEW_20260902.md",
+  "reviewed_preservation_commit": "2c000eccb0ff8f0c23e19e0e0c27c0c6cbdffafd",
+  "frozen_authority": {
+    "selected_triple": [5, 0, 4],
+    "selected_design_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+    "selected_design_shape": [104, 16],
+    "selected_design_rank": 16,
+    "selected_design_df": 88,
+    "15c_manifest_sha256": "6b50bc768346c9dcaff6b26ec986f3af21c68b7a5b54eefebbd5ae407fbbe436",
+    "15c_local_terminal": "PASS_F1_HC3_15C_DECISION_INTEGRATION_AWAITING_EXTERNAL_REVIEW"
   },
-  "supersedes": [
-    "V6R5B residual address-selective predictor-capacity next-action prescription",
-    "full 2-vs-4-vs-8 view/capacity comparison before the four-view existence test"
+  "primary_next_action": "Prospectively freeze and execute one narrow synthetic-only 15C HC3 numerical-robustness repair: preserve all frozen historical bytes, add a stable QR/SVD conclusion-bearing HC3 route, validate it with a genuinely different stable independent implementation, and prove gate/estimate agreement before any real F1 authority is considered.",
+  "required_actions": [
+    "Freeze the numerical-robustness repair contract and tolerances before reading new comparison outputs.",
+    "Do not edit frozen decision-v1, decision-v4, integration-v4, 15A4, or 15B historical bytes in place; add a new repair layer/version.",
+    "Use stable QR/SVD column-space arithmetic for the production HC3 coefficient, leverage, sandwich covariance, standard error, and confidence bound.",
+    "Use a genuinely different stable independent implementation and compare rank, leverage, beta0, standard error, confidence bound, effective design, and final HC3 gate.",
+    "Re-run the frozen synthetic/adversarial/regression suite plus a prospective near-boundary HC3 stress test.",
+    "Publish a hash-bound repair packet and require fresh external review before changing this gate."
   ],
-  "forbidden": [
-    "hidden-gene anchor",
-    "random-u0 as biological teacher",
-    "tier-hiding cascade",
-    "new address-exposure sweep",
-    "arbitrary FP32 gates",
-    "student production training before teacher qualification",
-    "T1 execution before its exact evaluation contract is frozen and separately authorized",
-    "residual address-selective predictor-capacity diagnostic absent genuinely new explicit reauthorization"
-    ,"teacher-design T2 or all-149 production refit before teacher qualification"
-    ,"replay of the accepted 3292-cell fit cache beyond cap8"
-    ,"any new T1 training before the matched-arm contract is prospectively frozen and separately authorized"
-  ]
+  "forbidden_actions": [
+    "Do not authorize or run the real F1 model-forward sweep.",
+    "Do not set real reader/forward authority.",
+    "Do not access DEV, SEALED, pathology, protected biological outcomes, or any new expression for this repair.",
+    "Do not train, finetune, run optimizer steps, write training checkpoints, or update EMA.",
+    "Do not reselect the frozen (5,0,4) nuisance design or reopen the 15A4 frontier.",
+    "Do not reopen the closed D_shared branch or transplant dataset-dependent values to another cohort.",
+    "Do not overwrite or relabel historical 15C PASS-awaiting-review bytes as externally passed."
+  ],
+  "update_only_after": "A new synthetic-only 15C numerical-robustness repair packet passes independent stable-method validation and fresh external review."
 }
