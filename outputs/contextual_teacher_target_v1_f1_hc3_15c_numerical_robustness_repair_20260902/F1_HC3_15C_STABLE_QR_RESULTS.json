@@ -1,0 +1,50 @@
+{
+  "results": {
+    "baseline": {
+      "beta0": 0.33683495508162214,
+      "df": 88,
+      "estimable": true,
+      "gate": true,
+      "lower": 0.32850170177725824,
+      "max_leverage": 0.8693731662079773,
+      "method": "REDUCED_QR_TRIANGULAR_SOLVE_HC3",
+      "min_one_minus_h": 0.13062683379202267,
+      "p_positive": 1.9984135075984622e-84,
+      "rank": 16,
+      "se": 0.004193275199770554,
+      "stop_reason": null,
+      "upper": 0.34516820838598605
+    },
+    "negative": {
+      "beta0": 0.008323253304274116,
+      "df": 88,
+      "estimable": true,
+      "gate": false,
+      "lower": -1.0000000089768063e-05,
+      "max_leverage": 0.8693731662079773,
+      "method": "REDUCED_QR_TRIANGULAR_SOLVE_HC3",
+      "min_one_minus_h": 0.13062683379202267,
+      "p_positive": 0.025134799586881296,
+      "rank": 16,
+      "se": 0.00419327519977055,
+      "stop_reason": null,
+      "upper": 0.016656506608638
+    },
+    "positive": {
+      "beta0": 0.008343253304274136,
+      "df": 88,
+      "estimable": true,
+      "gate": true,
+      "lower": 9.999999910253674e-06,
+      "max_leverage": 0.8693731662079773,
+      "method": "REDUCED_QR_TRIANGULAR_SOLVE_HC3",
+      "min_one_minus_h": 0.13062683379202267,
+      "p_positive": 0.024865817369957244,
+      "rank": 16,
+      "se": 0.004193275199770549,
+      "stop_reason": null,
+      "upper": 0.016676506608638016
+    }
+  },
+  "status": "PASS"
+}

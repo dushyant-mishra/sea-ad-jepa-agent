@@ -1,0 +1,50 @@
+{
+  "results": {
+    "baseline": {
+      "beta0": 0.3368349550816221,
+      "df": 88,
+      "estimable": true,
+      "gate": true,
+      "lower": 0.32850170177734794,
+      "max_leverage": 0.8693731662079771,
+      "method": "INDEPENDENT_THIN_SVD_PSEUDOINVERSE_HC3",
+      "min_one_minus_h": 0.1306268337920229,
+      "p_positive": 1.9984135057303092e-84,
+      "rank": 16,
+      "se": 0.004193275199725408,
+      "stop_reason": null,
+      "upper": 0.34516820838589624
+    },
+    "negative": {
+      "beta0": 0.008323253304274116,
+      "df": 88,
+      "estimable": true,
+      "gate": false,
+      "lower": -1.000000000002041e-05,
+      "max_leverage": 0.8693731662079771,
+      "method": "INDEPENDENT_THIN_SVD_PSEUDOINVERSE_HC3",
+      "min_one_minus_h": 0.1306268337920229,
+      "p_positive": 0.0251347995856702,
+      "rank": 16,
+      "se": 0.004193275199725389,
+      "stop_reason": null,
+      "upper": 0.01665650660854825
+    },
+    "positive": {
+      "beta0": 0.008343253304274137,
+      "df": 88,
+      "estimable": true,
+      "gate": true,
+      "lower": 9.999999999999593e-06,
+      "max_leverage": 0.8693731662079771,
+      "method": "INDEPENDENT_THIN_SVD_PSEUDOINVERSE_HC3",
+      "min_one_minus_h": 0.1306268337920229,
+      "p_positive": 0.024865817368754334,
+      "rank": 16,
+      "se": 0.00419327519972539,
+      "stop_reason": null,
+      "upper": 0.016676506608548275
+    }
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,12 @@
+{
+  "authority_status": "FROZEN_BEFORE_IMPLEMENTATION_AND_COMPARISON",
+  "condition_number_method": "numpy.linalg.cond(effective_centered_design, p=2)",
+  "effective_centered_design_sha256": "37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb",
+  "eps_float64": 2.220446049250313e-16,
+  "gate_boolean_agreement_required": true,
+  "kappa2_effective_design": 5871549.064470025,
+  "leverage_max_abs_tolerance": 2.3092638912203256e-12,
+  "scalar_absolute_tolerance_formula": "100 * eps_float64 * kappa2_effective_design * max(1, max(abs(y)))",
+  "scalar_multiplier": 100,
+  "schema": "F1_HC3_15C_NUMERICAL_TOLERANCE_AUTHORITY_V1"
+}

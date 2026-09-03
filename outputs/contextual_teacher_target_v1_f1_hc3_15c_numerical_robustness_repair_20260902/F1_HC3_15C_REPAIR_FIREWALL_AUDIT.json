@@ -1,0 +1,8 @@
+{
+  "expression_opened": false,
+  "forbidden_source_hits": [],
+  "model_or_checkpoint_opened": false,
+  "real_reader_forward_authority": null,
+  "status": "PASS_F1_HC3_15C_SYNTHETIC_ONLY_FIREWALL",
+  "training_or_ema_updated": false
+}

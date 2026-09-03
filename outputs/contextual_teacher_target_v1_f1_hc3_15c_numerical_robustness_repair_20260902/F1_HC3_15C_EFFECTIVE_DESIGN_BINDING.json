@@ -1,0 +1,22 @@
+{
+  "condition_number_2": 5871549.064470025,
+  "df": 88,
+  "effective_sha256": "37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb",
+  "effective_shape": [
+    104,
+    16
+  ],
+  "loo_full_rank": 104,
+  "rank": 16,
+  "raw_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
+  "raw_shape": [
+    104,
+    16
+  ],
+  "selected_triple": [
+    5,
+    0,
+    4
+  ],
+  "status": "PASS_F1_HC3_15C_EFFECTIVE_DESIGN_BOUND"
+}

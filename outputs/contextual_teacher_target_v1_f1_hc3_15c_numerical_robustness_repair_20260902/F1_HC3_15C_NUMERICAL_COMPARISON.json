@@ -1,0 +1,64 @@
+{
+  "comparisons": {
+    "baseline": {
+      "gate_agreement": true,
+      "leverage_max_abs_difference": 6.661338147750939e-16,
+      "pass": true,
+      "scalar_abs_differences": {
+        "beta0": 5.551115123125783e-17,
+        "lower": 8.970602038971265e-14,
+        "max_leverage": 2.220446049250313e-16,
+        "min_one_minus_h": 2.220446049250313e-16,
+        "p_positive": 1.8681529985115753e-93,
+        "se": 4.5146178462296405e-14,
+        "upper": 8.981704269217516e-14
+      },
+      "scalar_tolerance": 1.303745792318184e-07
+    },
+    "negative": {
+      "gate_agreement": true,
+      "leverage_max_abs_difference": 6.661338147750939e-16,
+      "pass": true,
+      "scalar_abs_differences": {
+        "beta0": 0.0,
+        "lower": 8.974765375313609e-14,
+        "max_leverage": 2.220446049250313e-16,
+        "min_one_minus_h": 2.220446049250313e-16,
+        "p_positive": 1.2110971947532079e-12,
+        "se": 4.516092361184221e-14,
+        "upper": 8.974765375313609e-14
+      },
+      "scalar_tolerance": 1.303745792318184e-07
+    },
+    "positive": {
+      "gate_agreement": true,
+      "leverage_max_abs_difference": 6.661338147750939e-16,
+      "pass": true,
+      "scalar_abs_differences": {
+        "beta0": 1.734723475976807e-18,
+        "lower": 8.974591902966012e-14,
+        "max_leverage": 2.220446049250313e-16,
+        "min_one_minus_h": 2.220446049250313e-16,
+        "p_positive": 1.2029092999465973e-12,
+        "se": 4.515918888836623e-14,
+        "upper": 8.974071485923218e-14
+      },
+      "scalar_tolerance": 1.303745792318184e-07
+    }
+  },
+  "near_boundary": {
+    "negative": {
+      "qr_gate": false,
+      "qr_lower": -1.0000000089768063e-05,
+      "svd_gate": false,
+      "svd_lower": -1.000000000002041e-05
+    },
+    "positive": {
+      "qr_gate": true,
+      "qr_lower": 9.999999910253674e-06,
+      "svd_gate": true,
+      "svd_lower": 9.999999999999593e-06
+    }
+  },
+  "status": "PASS_F1_HC3_15C_NUMERICAL_COMPARISON"
+}
