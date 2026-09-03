@@ -49,6 +49,7 @@ class PreflightCoreTests(unittest.TestCase):
         for field in ("is_wsl", "cuda_available"):
             with self.assertRaises(RuntimeError): validate_runtime_facts({**base, field: False})
         with self.assertRaises(RuntimeError): validate_runtime_facts({**base, "canonical_mount": "/tmp/copy"})
+        with self.assertRaises(RuntimeError): validate_runtime_facts({**base, "canonical_mount": "/mnt/d/Jepa project-copy"})
 
     def test_architecture_is_explicitly_41238(self):
         from scripts.v4.contextual_target_f1_preflight_core_v1 import F1_ARCHITECTURE

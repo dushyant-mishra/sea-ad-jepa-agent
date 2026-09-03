@@ -75,7 +75,7 @@ def validate_semantic_root(record: dict, root_key: str) -> bool:
 def validate_runtime_facts(facts: dict) -> bool:
     required = (
         facts.get("is_wsl") is True,
-        str(facts.get("canonical_mount", "")).startswith("/mnt/d/"),
+        str(facts.get("canonical_mount", "")) == "/mnt/d/Jepa project",
         facts.get("cuda_available") is True,
         int(facts.get("cuda_device_count", 0)) >= 1,
         facts.get("nvidia_smi_ok") is True,

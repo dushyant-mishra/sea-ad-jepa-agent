@@ -1,0 +1,24 @@
+{
+  "schema": "f1-implementation-verifier-support-v1",
+  "implementation_commit": "0904ced31d129b1c03970302e3953a2a4bb25bb5",
+  "test_command": "PYTHONPATH=src /home/dushyant_mishra/miniconda3/envs/jepa-full104/bin/python -m unittest tests.test_verifier_f1_real_reader_forward_preflight_v1 -v",
+  "execution_environment": "Ubuntu WSL; bounded CPU-only verifier tests; no real F1 and no GPU benchmark",
+  "tests_run": 10,
+  "tests_passed": 9,
+  "tests_failed": 1,
+  "failed_test": "test_verifier_n_wsl_cuda_fail_closed",
+  "observed_behavior": "validate_runtime_facts accepts /mnt/d/copied-jepa-project",
+  "required_behavior": "canonical_mount must resolve exactly to /mnt/d/Jepa project",
+  "production_location": "scripts/v4/contextual_target_f1_preflight_core_v1.py:78",
+  "mutation_attacks": {
+    "MUT01_ENDPOINT_SIGN_OR_SCALAR": true,
+    "MUT02_TEACHER_INCLUDES_EVIDENCE": true,
+    "MUT03_SHARD_DTYPE_COERCED": true,
+    "MUT04_ACTUAL_GIT_ENV_SPOOF": true,
+    "MUT05_SWAP_OCCUPANCY_USED": true,
+    "MUT06_LADDER_SELECTS_FASTEST_NOT_SMALLEST_NEAR_BEST": true,
+    "MUT07_RUNTIME_DOUBLE_COUNTS_READER": true,
+    "MUT08_ARCHITECTURE_4096": true
+  },
+  "verdict": "STOP_IMPLEMENTATION_VERIFIER_PROVENANCE_MISMATCH"
+}
