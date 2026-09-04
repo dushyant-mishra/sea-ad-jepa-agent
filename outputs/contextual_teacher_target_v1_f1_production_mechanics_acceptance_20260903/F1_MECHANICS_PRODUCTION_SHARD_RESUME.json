@@ -1,0 +1,20 @@
+{
+  "attacks_rejected": {
+    "corrupted_payload": true,
+    "duplicate_shard": true,
+    "reordered_payload": true,
+    "stale_membership": true,
+    "wrong_dtype": true,
+    "wrong_forward": true,
+    "wrong_shard": true
+  },
+  "elapsed_seconds": 16.806308833000003,
+  "ordered_bytes_exact": true,
+  "reused_complete_run": true,
+  "reused_shard_count": 466,
+  "semantic_root_resumed": "e2009385f1c2896363f79ec6613fb0603e95fffea22eb20bfe9a532abf306e72",
+  "semantic_root_uninterrupted": "e2009385f1c2896363f79ec6613fb0603e95fffea22eb20bfe9a532abf306e72",
+  "status": "PASS",
+  "total_shards": 1400,
+  "valid_shards_reused": true
+}

@@ -1,0 +1,23 @@
+{
+  "attacks_rejected": {
+    "effects_222479": true,
+    "effects_222481": true,
+    "forward_root_wrong": true,
+    "forwards_474187": true,
+    "forwards_474189": true,
+    "implementation_commit_wrong": true,
+    "membership_root_wrong": true,
+    "shards_1399": true,
+    "shards_1401": true
+  },
+  "expected": {
+    "effects": 222480,
+    "forward_root": "2f9a7529cc86ba4a39949b10818341f26a0ce6930c27159ad478c4d9fc30400f",
+    "forwards": 474188,
+    "implementation_commit": "e4414c6c74e4ebf8b89038771414a5959afb86d4",
+    "membership_root": "b4f375faa257662cf1a298508321d80af6c6a5870cf74ea47c1e8d3afd1b4fa3",
+    "shards": 1400
+  },
+  "schema": "f1-mechanics-finalizer-failclosed-v1",
+  "status": "PASS"
+}

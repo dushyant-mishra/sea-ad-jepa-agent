@@ -1,0 +1,17 @@
+{
+  "checks": {
+    "dedup_counts": true,
+    "effect_rows": true,
+    "finalizer": true,
+    "firewall": true,
+    "forward_counts": true,
+    "forward_root_independent": true,
+    "population": true,
+    "resume": true,
+    "shards": true,
+    "synthetic_oracle": true
+  },
+  "production_pass_booleans_used_as_expected": false,
+  "schema": "f1-mechanics-independent-validation-v1",
+  "status": "PASS"
+}

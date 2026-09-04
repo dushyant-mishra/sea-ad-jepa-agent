@@ -1,0 +1,12 @@
+{
+  "ambiguous": 0,
+  "assignment_membership_root_sha256": "b4f375faa257662cf1a298508321d80af6c6a5870cf74ea47c1e8d3afd1b4fa3",
+  "compute_only_dedups": 1388,
+  "dedup_authority_unique_cell_q": 43108,
+  "extra": 0,
+  "mapped_assignment_evidence_rows": 222480,
+  "missing": 0,
+  "statistical_assignments": 44496,
+  "status": "PASS",
+  "unique_cell_q": 43108
+}
