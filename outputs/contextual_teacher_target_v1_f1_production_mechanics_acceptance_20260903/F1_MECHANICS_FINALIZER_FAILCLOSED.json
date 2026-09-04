@@ -1,23 +1,29 @@
 {
   "attacks_rejected": {
-    "effects_222479": true,
-    "effects_222481": true,
-    "forward_root_wrong": true,
-    "forwards_474187": true,
-    "forwards_474189": true,
-    "implementation_commit_wrong": true,
-    "membership_root_wrong": true,
-    "shards_1399": true,
-    "shards_1401": true
+    "duplicate_replaces_effect": true,
+    "duplicate_replaces_forward": true,
+    "duplicate_replaces_shard": true,
+    "extra_effect": true,
+    "extra_forward": true,
+    "extra_shard": true,
+    "missing_effect": true,
+    "missing_forward": true,
+    "missing_shard": true,
+    "reordered_effect": true,
+    "summary_only": true,
+    "wrong_implementation_commit": true
   },
+  "concrete_memberships_recomputed": true,
   "expected": {
+    "effect_root": "d51e8e86c8f58f98d6cb48e93f7ed8bcf7c45eaec430d99a6224c1de2ab4e344",
     "effects": 222480,
     "forward_root": "2f9a7529cc86ba4a39949b10818341f26a0ce6930c27159ad478c4d9fc30400f",
     "forwards": 474188,
-    "implementation_commit": "e4414c6c74e4ebf8b89038771414a5959afb86d4",
-    "membership_root": "b4f375faa257662cf1a298508321d80af6c6a5870cf74ea47c1e8d3afd1b4fa3",
+    "implementation_commit": "0fd9577b1fb62c4377c8e7858238c42d519563f5",
+    "membership_root": "7d34cc4c148133dfc1971e66a7ea55105f561bc2aa4b68b1b4520ff2dedde3cb",
     "shards": 1400
   },
   "schema": "f1-mechanics-finalizer-failclosed-v1",
-  "status": "PASS"
+  "status": "PASS",
+  "summary_only_rejected": true
 }

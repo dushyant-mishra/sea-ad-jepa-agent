@@ -141,26 +141,86 @@ class IndependentF1MechanicsVerifier(unittest.TestCase):
         self.assertEqual(result["semantic_root_uninterrupted"], result["semantic_root_resumed"])
         self.assertTrue(all(result["attacks_rejected"].values()))
 
+    def test_d_portable_filenames_preserve_logical_shard_reconciliation(self):
+        shard_rows = {
+            "donor:0|00": [("a0|20", np.asarray([1.0, 2.0, 3.0, 4.0], np.float64))],
+            "donor/1|01": [("a1|20", np.asarray([5.0, 6.0, 7.0, 8.0], np.float64))],
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            subject.reuse_or_exercise_shards(root, shard_rows, "membership", "forward")
+            marker = json.loads((root / "COMPLETE.json").read_text(encoding="utf-8"))
+            physical = sorted(path.stem for path in (root / "uninterrupted").glob("*.npz"))
+        expected_physical = sorted(
+            "shard_" + hashlib.sha256(("logical-shard|" + logical).encode("utf-8")).hexdigest()
+            for logical in shard_rows
+        )
+        self.assertEqual(marker["shards"], sorted(shard_rows))
+        self.assertEqual(physical, expected_physical)
+        self.assertEqual(len(set(physical)), len(shard_rows))
+        self.assertTrue(all(name.startswith("shard_") and len(name) == 70 for name in physical))
+
     def test_e_finalizer_rejects_shape_preserving_membership_attack(self):
-        expected = subject.ExpectedFinalization(1400, 474188, 222480, "membership", "forward", "commit")
-        forged_summary = expected.as_dict()
-        # Underlying state has one required shard replaced by a duplicate, while
-        # the caller-supplied scalar count and copied roots remain unchanged.
-        with self.assertRaises(RuntimeError):
-            subject.validate_finalization(expected, forged_summary)
+        shards = ["d0|00", "d1|01", "d2|02"]
+        forwards = ["f0", "f1", "f2", "f3"]
+        effects = ["e0", "e1", "e2", "e3", "e4"]
+        expected = subject.make_expected_finalization(shards, forwards, effects, "commit")
+        actual = {"shard_ids": shards, "forward_ids": forwards, "effect_ids": effects, "implementation_commit": "commit"}
+        subject.validate_finalization(expected, actual)
+        attacks = (
+            {**actual, "shard_ids": shards[:-1] + [shards[0]]},
+            {**actual, "forward_ids": forwards[:-1] + [forwards[0]]},
+            {**actual, "shard_ids": list(reversed(shards))},
+            {**actual, "forward_ids": list(reversed(forwards))},
+        )
+        for attacked in attacks:
+            with self.assertRaises(RuntimeError):
+                subject.validate_finalization(expected, attacked)
 
     def test_e_finalizer_rejects_shape_preserving_effect_attack(self):
-        expected = subject.ExpectedFinalization(1400, 474188, 222480, "membership", "forward", "commit")
-        forged_summary = expected.as_dict()
-        # Underlying effect rows contain one omission plus one duplicate.  The
-        # implementation receives no rows/order and therefore cannot detect it.
-        with self.assertRaises(RuntimeError):
-            subject.validate_finalization(expected, forged_summary)
+        expected = subject.make_expected_finalization(["d0|00"], ["f0"], ["e0", "e1", "e2"], "commit")
+        actual = {"shard_ids": ["d0|00"], "forward_ids": ["f0"], "effect_ids": ["e0", "e1", "e2"], "implementation_commit": "commit"}
+        attacks = (
+            {**actual, "effect_ids": ["e0", "e1", "e0"]},
+            {**actual, "effect_ids": ["e2", "e1", "e0"]},
+            expected.as_dict(),
+        )
+        for attacked in attacks:
+            with self.assertRaises(RuntimeError):
+                subject.validate_finalization(expected, attacked)
 
     def test_e_checked_in_finalizer_is_bound_to_implementation_commit(self):
         artifact = json.loads(ARTIFACT.read_text(encoding="utf-8"))
         head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
         self.assertEqual(artifact["expected"]["implementation_commit"], head)
+
+    def test_e_artifact_roots_are_independently_recomputed_from_exact_memberships(self):
+        first_seen = []
+        seen = set()
+        for row in self.assignments:
+            key = (row["cell"], row["q"])
+            if key not in seen:
+                seen.add(key)
+                first_seen.append(key)
+        authority = {
+            "accepted_real_forward_root": subject.ACCEPTED_FORWARD_ROOT,
+            "assignment_sha256": subject.ASSIGNMENT_SHA,
+            "dedup_sha256": subject.DEDUP_SHA,
+            "matched_null_sha256": subject.NULL_SHA,
+        }
+        forward_ids = []
+        for cell, query in first_seen:
+            forward_ids.append(identity({"authority": authority, "role": "teacher", "recipient": cell, "q": query}))
+            for level in EVIDENCE:
+                forward_ids.append(identity({"authority": authority, "role": "correct_student", "recipient": cell, "q": query, "evidence_level": level}))
+                forward_ids.append(identity({"authority": authority, "role": "matched_null_student", "recipient": cell, "q": query, "evidence_level": level, "null_source": self.nulls[cell]}))
+        shard_ids = sorted({f"{row['donor']}|{row['operator']:02d}" for row in self.assignments})
+        effect_ids = [f"{row['assignment_key']}|{level}" for row in self.assignments for level in EVIDENCE]
+        artifact = json.loads(ARTIFACT.read_text(encoding="utf-8"))["expected"]
+        self.assertEqual((len(shard_ids), len(forward_ids), len(effect_ids)), (1400, 474188, 222480))
+        self.assertEqual(artifact["membership_root"], line_root(shard_ids))
+        self.assertEqual(artifact["forward_root"], line_root(forward_ids))
+        self.assertEqual(artifact["effect_root"], line_root(effect_ids))
 
 
 if __name__ == "__main__":
