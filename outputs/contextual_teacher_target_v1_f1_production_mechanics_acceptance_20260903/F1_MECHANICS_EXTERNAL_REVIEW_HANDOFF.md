@@ -1,8 +1,10 @@
 # F1 Production Mechanics Acceptance — External Review Handoff
 
-Terminal: `PASS_F1_PRODUCTION_MECHANICS_ACCEPTANCE_AWAITING_EXTERNAL_REVIEW`
+Terminal: `PASS_F1_PRODUCTION_MECHANICS_ACCEPTANCE_REPAIR_AWAITING_EXTERNAL_REVIEW`
 
-This package closes only the final cheap production-mechanics gate. It does **not** authorize real F1.
+This repaired package closes only the final cheap production-mechanics gate. It does **not** authorize real F1.
+
+The external-review telemetry blocker is repaired: the independent validator reconstructs soak safety and runtime from raw windows plus authenticated resource/fixed-component authorities. It does not use soak `status`, soak `safety`, runtime PASS/summary, or other production PASS Booleans as expected values. Ten fail-open mutations are rejected. The existing soak bytes remain unchanged.
 
 The package demonstrates exact full-population forward topology, compute-only dedup with inference multiplicity preserved, deterministic synthetic known-answer effects, 1,400-shard interruption/resume equivalence, fail-closed concrete-membership finalization, a 20-minute WSL/CUDA bounded-fixture soak, and an updated engineering runtime projection.
 

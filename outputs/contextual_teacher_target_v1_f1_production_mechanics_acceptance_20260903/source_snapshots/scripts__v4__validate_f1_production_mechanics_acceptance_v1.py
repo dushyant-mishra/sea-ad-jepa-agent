@@ -27,6 +27,9 @@ from scripts.v4 import finalize_contextual_target_f1_real_forward_preflight_v1 a
 WORKTREE = Path(__file__).resolve().parents[2]
 CANONICAL = Path(os.environ.get("JEPA_CANONICAL_ROOT", "/mnt/d/Jepa project" if os.name != "nt" else "D:/Jepa project"))
 PACKAGE = WORKTREE / "outputs/contextual_teacher_target_v1_f1_production_mechanics_acceptance_20260903"
+PREFLIGHT_PACKAGE = WORKTREE / "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903"
+PREFLIGHT_RUNTIME = PREFLIGHT_PACKAGE / "F1_PREFLIGHT_RUNTIME_PROJECTION.json"
+PREFLIGHT_RESOURCE = PREFLIGHT_PACKAGE / "F1_PREFLIGHT_RESOURCE_SELECTION.json"
 ASSIGNMENTS = CANONICAL / "outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERY_ASSIGNMENTS_2DRAW.csv"
 DEDUP = CANONICAL / "outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERY_EXECUTION_DEDUP_MAP.csv"
 NULL_MAP = CANONICAL / "outputs/contextual_teacher_target_v1_f1_prospective_repair_20260901/F1_MATCHED_NULL_PRIMARY_MAP.csv"
@@ -36,6 +39,9 @@ NULL_SHA = "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6"
 ACCEPTED_FORWARD_ROOT = "007bc6f182354a133a2ec49ce0ef5966831d4995a0a2a5f004bb845772469ad3"
 BASE_SHA = "c533fdda40eb23e6a775277e98cbdfcee568ee8b"
 ORIGIN_MAIN_SHA = "76fe7d63efe81451ef0fae3ef3eaf116be14f6be"
+MECHANICS_IMPLEMENTATION_SHA = "0fd9577b1fb62c4377c8e7858238c42d519563f5"
+PREFLIGHT_RUNTIME_SHA = "fbdc2102ede212d3ce26503012b4b31cd5538411c3b4c75aff60cd98d77b5e41"
+PREFLIGHT_RESOURCE_SHA = "ee8801f910ca492952daf4eebee fcf0f893cc5b91caf70eb3cb9147f66b01bc2".replace(" ", "")
 EVIDENCE = (20, 40, 60, 80, 100)
 EVIDENCE_FLOAT = {20: .2, 40: .4, 60: .6, 80: .8, 100: 1.0}
 EXPECTED = executor.full_geometry()
@@ -333,6 +339,97 @@ def validate_soak_windows(windows: list[dict[str, Any]], *, start_mem_available:
             "throughput_finite": finite, "fds_not_continuously_growing": not fds_continuous, "projected_resource_safe": projection_safe}
 
 
+def independently_reconstruct_soak_runtime(soak: dict[str, Any], runtime: dict[str, Any]) -> dict[str, Any]:
+    """Reconstruct every soak/runtime gate from raw telemetry, never PASS labels."""
+    if sha256_file(PREFLIGHT_RUNTIME) != PREFLIGHT_RUNTIME_SHA or sha256_file(PREFLIGHT_RESOURCE) != PREFLIGHT_RESOURCE_SHA:
+        raise RuntimeError("STOP_F1_MECHANICS_BASE_MISMATCH")
+    preflight_runtime = json.loads(PREFLIGHT_RUNTIME.read_text(encoding="utf-8"))
+    resource = json.loads(PREFLIGHT_RESOURCE.read_text(encoding="utf-8"))
+    windows = soak.get("windows")
+    if not isinstance(windows, list) or not windows:
+        return {"status": "STOP_F1_MECHANICS_EXISTING_SOAK_INDEPENDENTLY_FAILS", "checks": {"windows_present": False}}
+
+    roles = ("teacher", "correct_student", "matched_null_student")
+    counts = {"teacher": 43108, "correct_student": 215540, "matched_null_student": 215540}
+    raw_rates = {role: [float(row["role_rates"][role]) for row in windows] for role in roles}
+    role_rates_valid = all(math.isfinite(value) and value > 0.0 for values in raw_rates.values() for value in values)
+    throughput_valid = all(math.isfinite(float(row["throughput"])) and float(row["throughput"]) > 0.0 for row in windows)
+    medians = {role: statistics.median(values) for role, values in raw_rates.items()}
+    minima = {role: min(values) for role, values in raw_rates.items()}
+    maxima = {role: max(values) for role, values in raw_rates.items()}
+    fixed = {
+        "physical_reader_seconds": float(preflight_runtime["T_physical_reader_seconds"]),
+        "shard_commit_seconds": float(preflight_runtime["T_shard_commit_seconds"]),
+        "finalization_seconds": float(preflight_runtime["T_finalization_seconds"]),
+    }
+    fixed_sum = math.fsum(fixed.values())
+
+    def forward_seconds(rates: dict[str, float]) -> float:
+        return math.fsum(counts[role] / rates[role] for role in roles)
+
+    expected_point = fixed_sum + forward_seconds(medians)
+    expected_range = [fixed_sum + forward_seconds(maxima), fixed_sum + forward_seconds(minima)]
+    elapsed = np.asarray([float(row["elapsed"]) for row in windows], dtype=np.float64)
+    start_mem_available = int(windows[0]["mem_available"])
+    cuda_total = int(resource["final_stability"]["cuda_total_bytes"])
+    raw_rss = np.asarray([int(row["rss"]) for row in windows], dtype=np.float64)
+    raw_cuda = np.asarray([max(int(row["cuda_reserved"]), int(row["cuda_peak_reserved"])) for row in windows], dtype=np.float64)
+
+    def projected_safe(values: np.ndarray, ceiling: float) -> bool:
+        slope = float(np.polyfit(elapsed, values, 1)[0]) if np.ptp(elapsed) else 0.0
+        projected = float(values[-1] + max(0.0, slope) * max(0.0, expected_point - elapsed[-1]))
+        return bool(np.isfinite(projected) and projected <= ceiling)
+
+    errors_clear = all(int(row["errors"]) == 0 for row in windows)
+    model_hashes = {str(row["model_hash"]) for row in windows}
+    model_unchanged = len(model_hashes) == 1 and soak.get("model_hash_before") in model_hashes and soak.get("model_hash_after") in model_hashes
+    fd_continuously_growing = len(windows) > 1 and all(int(windows[index]["fds"]) < int(windows[index + 1]["fds"]) for index in range(len(windows) - 1))
+    swap_zero = (
+        int(soak["end"]["pswpin"]) - int(soak["start"]["pswpin"]) == 0
+        and int(soak["end"]["pswpout"]) - int(soak["start"]["pswpout"]) == 0
+        and int(windows[-1]["pswpin"]) - int(windows[0]["pswpin"]) == 0
+        and int(windows[-1]["pswpout"]) - int(windows[0]["pswpout"]) == 0
+    )
+
+    def exact_number(actual: Any, expected: float) -> bool:
+        try:
+            return math.isclose(float(actual), expected, rel_tol=0.0, abs_tol=1e-9)
+        except (TypeError, ValueError):
+            return False
+
+    checks = {
+        "at_least_five_windows": len(windows) >= 5,
+        "elapsed_coverage": 900.0 <= float(soak.get("duration_seconds", 0.0)) <= 1800.0 and elapsed[-1] >= 900.0,
+        "zero_swap_raw": swap_zero,
+        "model_hash_raw_unchanged": model_unchanged,
+        "output_errors_raw_zero": errors_clear,
+        "output_digest_consistent_with_raw_errors": soak.get("output_digest_stable") is errors_clear,
+        "cuda_raw_within_ceiling": float(raw_cuda.max()) <= 0.85 * cuda_total,
+        "rss_raw_within_conservative_first_window_ceiling": float(raw_rss.max()) <= 0.80 * start_mem_available,
+        "fds_not_continuously_growing": not fd_continuously_growing,
+        "projected_rss_safe": projected_safe(raw_rss, 0.80 * start_mem_available),
+        "projected_cuda_safe": projected_safe(raw_cuda, 0.85 * cuda_total),
+        "throughput_raw_finite_positive": throughput_valid,
+        "role_rates_raw_finite_positive": role_rates_valid,
+        "runtime_counts_exact": runtime.get("counts") == counts,
+        "runtime_role_rate_min_exact": runtime.get("role_rates_min") == minima,
+        "runtime_role_rate_median_exact": runtime.get("role_rates_median") == medians,
+        "runtime_role_rate_max_exact": runtime.get("role_rates_max") == maxima,
+        "runtime_fixed_components_exact": all(exact_number(runtime.get(key), value) for key, value in fixed.items()),
+        "runtime_point_exact": exact_number(runtime.get("point_seconds"), expected_point) and exact_number(runtime.get("point_hours"), expected_point / 3600.0),
+        "runtime_range_exact": isinstance(runtime.get("range_seconds"), list) and len(runtime["range_seconds"]) == 2 and all(exact_number(a, b) for a, b in zip(runtime["range_seconds"], expected_range)) and isinstance(runtime.get("range_hours"), list) and len(runtime["range_hours"]) == 2 and all(exact_number(a, b / 3600.0) for a, b in zip(runtime["range_hours"], expected_range)),
+    }
+    checks = {key: bool(value) for key, value in checks.items()}
+    return {
+        "status": "PASS" if all(checks.values()) else "STOP_F1_MECHANICS_EXISTING_SOAK_INDEPENDENTLY_FAILS",
+        "checks": checks,
+        "raw_rate_summary": {"min": minima, "median": medians, "max": maxima},
+        "reconstructed_runtime": {"point_seconds": expected_point, "range_seconds": expected_range},
+        "resource_authority": {"cuda_total_bytes": cuda_total, "start_mem_available_basis": "FIRST_RAW_SOAK_WINDOW_CONSERVATIVE", "start_mem_available_bytes": start_mem_available},
+        "production_status_or_safety_used": False,
+    }
+
+
 def _shard_rows(assignments: list[dict[str, Any]]) -> dict[str, list[tuple[str, np.ndarray]]]:
     grouped: dict[str, list[tuple[str, np.ndarray]]] = defaultdict(list)
     for row in assignments:
@@ -408,10 +505,33 @@ def prepare(output: Path, implementation_commit: str) -> dict[str, Any]:
 def independent_validation(output: Path, assignments: list[dict[str, Any]] | None = None, nulls: dict[str,str] | None = None, authority: dict[str,Any] | None = None) -> dict[str,Any]:
     assignments = assignments or load_assignments(); nulls = nulls or load_nulls(); authority = authority or {"accepted_real_forward_root":ACCEPTED_FORWARD_ROOT,"assignment_sha256":ASSIGNMENT_SHA,"dedup_sha256":DEDUP_SHA,"matched_null_sha256":NULL_SHA}
     topology=json.loads((output/"F1_MECHANICS_FULL_FORWARD_TOPOLOGY.json").read_text());dedup=json.loads((output/"F1_MECHANICS_DEDUP_TO_INFERENCE_RECONCILIATION.json").read_text());synthetic=json.loads((output/"F1_MECHANICS_FULL_SYNTHETIC_TOPOLOGY.json").read_text());shard=json.loads((output/"F1_MECHANICS_PRODUCTION_SHARD_RESUME.json").read_text());finalizer=json.loads((output/"F1_MECHANICS_FINALIZER_FAILCLOSED.json").read_text());firewall=json.loads((output/"F1_MECHANICS_FIREWALL.json").read_text())
-    checks={"forward_root_independent":topology["ordered_identity_root_sha256"]==independent_identity_root(assignments,nulls,authority),"forward_counts":topology["counts"]=={"teacher":43108,"correct":215540,"null":215540,"total":474188},"dedup_counts":(len(assignments),len(unique_cell_queries(assignments)),len(assignments)-len(unique_cell_queries(assignments)))==(44496,43108,1388),"effect_rows":synthetic["record_count"]==222480,"population":(synthetic["cells"],synthetic["donors"],synthetic["operators"],synthetic["programs"],synthetic["draws"])==(2781,104,42,8,[0,1]),"shards":synthetic["logical_shards"]==shard["total_shards"]==1400,"synthetic_oracle":synthetic["values_exact"] is True,"resume":shard["status"]=="PASS" and all(shard["attacks_rejected"].values()),"finalizer":finalizer["status"]=="PASS" and all(finalizer["attacks_rejected"].values()),"firewall":firewall["status"]=="PASS" and not any(firewall[k] for k in ("protected_expression_opened","DEV_opened","SEALED_opened","pathology_opened","training","backward","optimizer","EMA","real_f1_biological_effects_computed"))}
+    expected_forward_root=independent_identity_root(assignments,nulls,authority)
+    effect_ids=[f"{row['assignment_key']}|{level}" for row in assignments for level in EVIDENCE]
+    expected_finalizer=make_expected_finalization(sorted({f"{row['donor']}|{row['operator']:02d}" for row in assignments}),build_identity_topology(assignments,nulls,authority)["ordered_identities"],effect_ids,MECHANICS_IMPLEMENTATION_SHA).as_dict()
+    forbidden_firewall=("protected_expression_opened","DEV_opened","SEALED_opened","pathology_opened","reader_validation_or_oracle_opened","full_real_f1_expression_opened","training","backward","optimizer","EMA","real_f1_biological_effects_computed")
+    expected_shard_attacks={"corrupted_payload","duplicate_shard","reordered_payload","stale_membership","wrong_dtype","wrong_forward","wrong_shard"}
+    expected_finalizer_attacks={"duplicate_replaces_effect","duplicate_replaces_forward","duplicate_replaces_shard","extra_effect","extra_forward","extra_shard","missing_effect","missing_forward","missing_shard","reordered_effect","summary_only","wrong_implementation_commit"}
+    checks={
+        "forward_root_independent":topology["ordered_identity_root_sha256"]==expected_forward_root,
+        "forward_counts":topology["counts"]=={"teacher":43108,"correct":215540,"null":215540,"total":474188},
+        "dedup_counts":(len(assignments),len(unique_cell_queries(assignments)),len(assignments)-len(unique_cell_queries(assignments)))==(44496,43108,1388),
+        "effect_rows":synthetic["record_count"]==len(effect_ids)==222480,
+        "population":(synthetic["cells"],synthetic["donors"],synthetic["operators"],synthetic["programs"],synthetic["draws"])==(2781,104,42,8,[0,1]),
+        "shards":synthetic["logical_shards"]==shard["total_shards"]==1400,
+        "synthetic_oracle_roots":synthetic["production_value_root_sha256"]==synthetic["independent_value_root_sha256"],
+        "resume_raw_fields":shard.get("ordered_bytes_exact") is True and shard.get("valid_shards_reused") is True and shard.get("semantic_root_resumed")==shard.get("semantic_root_uninterrupted") and set(shard.get("attacks_rejected",{}))==expected_shard_attacks and all(value is True for value in shard["attacks_rejected"].values()),
+        "finalizer_raw_fields":finalizer.get("expected")==expected_finalizer and finalizer.get("concrete_memberships_recomputed") is True and finalizer.get("summary_only_rejected") is True and set(finalizer.get("attacks_rejected",{}))==expected_finalizer_attacks and all(value is True for value in finalizer["attacks_rejected"].values()),
+        "firewall_raw_fields":firewall.get("bounded_fixture_only") is True and all(firewall.get(key) is False for key in forbidden_firewall),
+    }
     soak_path=output/"F1_MECHANICS_WSL_GPU_STABILITY_SOAK.json"
-    if soak_path.exists(): checks["soak"]=json.loads(soak_path.read_text())["status"]=="PASS"
-    return {"schema":"f1-mechanics-independent-validation-v1","production_pass_booleans_used_as_expected":False,"checks":checks,"status":"PASS" if all(checks.values()) else "STOP_F1_MECHANICS_INDEPENDENT_VALIDATION"}
+    telemetry=None
+    if soak_path.exists():
+        runtime_path=output/"F1_MECHANICS_RUNTIME_PROJECTION.json"
+        if not runtime_path.exists(): checks["soak_runtime_reconstructed"]=False
+        else:
+            telemetry=independently_reconstruct_soak_runtime(json.loads(soak_path.read_text()),json.loads(runtime_path.read_text()))
+            checks["soak_runtime_reconstructed"]=telemetry["status"]=="PASS"
+    return {"schema":"f1-mechanics-independent-validation-v2","production_pass_booleans_used_as_expected":False,"checks":checks,"telemetry_reconstruction":telemetry,"status":"PASS" if all(checks.values()) else "STOP_F1_MECHANICS_INDEPENDENT_VALIDATION"}
 
 
 def soak(output: Path, duration: float) -> dict[str,Any]:

@@ -5,6 +5,7 @@ contract.  No production helper is used to produce an expected value.
 """
 from __future__ import annotations
 
+import ast
 import csv
 import hashlib
 import json
@@ -195,9 +196,13 @@ class IndependentF1MechanicsVerifier(unittest.TestCase):
         head = subject.git_head()
         subject.preflight_finalizer.git_output("merge-base", "--is-ancestor", implementation, head)
         runner = "scripts/v4/validate_f1_production_mechanics_acceptance_v1.py"
-        implementation_blob = subject.preflight_finalizer.git_output("rev-parse", f"{implementation}:{runner}")
-        current_blob = subject.preflight_finalizer.git_output("hash-object", runner)
-        self.assertEqual(implementation_blob, current_blob)
+        historical = subject.preflight_finalizer.git_output("show", f"{implementation}:{runner}")
+        current = Path(runner).read_text(encoding="utf-8")
+        names = {"_root_lines", "build_identity_topology", "make_expected_finalization", "validate_finalization", "_shard_rows"}
+        def selected(source):
+            return {node.name: ast.dump(node, include_attributes=False) for node in ast.parse(source).body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in names}
+        self.assertEqual(selected(historical), selected(current))
+        self.assertEqual(set(selected(current)), names)
 
     def test_e_artifact_roots_are_independently_recomputed_from_exact_memberships(self):
         first_seen = []

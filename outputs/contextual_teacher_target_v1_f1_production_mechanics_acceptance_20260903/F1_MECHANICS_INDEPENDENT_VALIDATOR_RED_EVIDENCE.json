@@ -1,0 +1,10 @@
+{
+  "schema": "f1-mechanics-independent-validator-red-evidence-v1",
+  "test_file": "tests/test_f1_mechanics_independent_telemetry_repair_v1.py",
+  "tests_run": 10,
+  "expected_failures_observed": 10,
+  "unexpected_errors": 0,
+  "failure_reason": "existing independent_validation accepted every unsafe raw-telemetry/runtime mutation because it trusted the soak top-level PASS and ignored runtime reconstruction",
+  "production_validator_modified_before_red": false,
+  "status": "RED_CONFIRMED"
+}
