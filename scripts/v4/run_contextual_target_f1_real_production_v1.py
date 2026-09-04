@@ -24,6 +24,10 @@ import numpy as np
 
 STOP_UNAUTHORIZED = "STOP_F1_REAL_RUN_NOT_EXTERNALLY_AUTHORIZED"
 LAUNCH_SCHEMA = "f1-real-production-execution-external-authority-v1"
+# Intentionally unset during implementation review.  A later, independently
+# reviewed launch transaction must bind the exact external authority bytes here;
+# public fields alone can never manufacture authorization.
+EXTERNAL_ACCEPTED_LAUNCH_SHA256: str | None = None
 CONTRACT_RELATIVE = Path("docs/agent/F1_REAL_PRODUCTION_EXECUTOR_CONTRACT_20260904.md")
 EVIDENCE_LEVELS = (20, 40, 60, 80, 100)
 PROGRESS_FIELDS = frozenset({"schema", "completed_shards", "completed_forwards", "elapsed_seconds"})
@@ -127,6 +131,8 @@ def validate_launch_authority(path: Path | None, output_root: Path, expected: di
     try:
         if path is None:
             raise ValueError("missing")
+        if EXTERNAL_ACCEPTED_LAUNCH_SHA256 is None or sha256_file(Path(path)) != EXTERNAL_ACCEPTED_LAUNCH_SHA256:
+            raise ValueError("no prospectively embedded external launch root")
         payload = json.loads(Path(path).read_text(encoding="utf-8"))
         if payload.get("schema") != LAUNCH_SCHEMA or type(payload.get("real_f1_execution_authorized")) is not bool or payload["real_f1_execution_authorized"] is not True:
             raise ValueError("schema/boolean")
@@ -511,14 +517,24 @@ def _cosine(left: np.ndarray, right: np.ndarray) -> float:
 
 
 def load_forward_results(store: AtomicForwardStore, index: list[dict[str, Any]]) -> dict[str, np.ndarray]:
+    task_ids_all = [str(row["task_id"]) for row in index]
+    if len(task_ids_all) != len(set(task_ids_all)):
+        raise RuntimeError("STOP_F1_DUPLICATE_FORWARD_ID")
     by_block: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for row in index: by_block[int(row["block_index"])].append(row)
     result = {}
     for block_index, rows in sorted(by_block.items()):
         rows.sort(key=lambda row: int(row["row_index"]))
+        if [int(row["row_index"]) for row in rows] != list(range(len(rows))):
+            raise RuntimeError("STOP_F1_FORWARD_INDEX_ORDER")
         task_ids = [row["task_id"] for row in rows]
         values = store.load(block_index, task_ids)
-        result.update(zip(task_ids, values))
+        for task_id, value in zip(task_ids, values):
+            if task_id in result:
+                raise RuntimeError("STOP_F1_DUPLICATE_FORWARD_ID")
+            result[task_id] = value
+    if set(result) != set(task_ids_all) or len(result) != len(index):
+        raise RuntimeError("STOP_F1_FORWARD_INDEX_RECONCILIATION")
     return result
 
 
@@ -620,7 +636,20 @@ def run_technical_fixture(output_root: Path, canonical_root: Path, worktree_root
                 cache_ids.append(canonical_sha({"bounded_record": record_key, "role": role_name, "cell": record["canonical_cell_id"], "q": int(record["q"]), "evidence": None if role_name == "teacher" else int(record["evidence_level"]), "input": record.get("null_source_cell") if role_name == "matched_null" else record["canonical_cell_id"]}))
     exemplars = {role: next(row for row in reader.fixture["selected"] if row["role"] == role) for role in ("teacher", "correct_student", "matched_null_student")}
     teacher = outputs[exemplars["teacher"]["selection_sha256"]]; correct = outputs[exemplars["correct_student"]["selection_sha256"]]; null = outputs[exemplars["matched_null_student"]["selection_sha256"]]
-    mechanical_effect = build_effect_row(s_correct_contextual=correct[0], t_true_contextual=teacher[0], s_null_contextual=null[0], s_correct_direct=correct[1], t_true_direct=teacher[1], s_null_direct=null[1], own_similarity=_cosine(correct[0], teacher[0]), paired_wrong_similarity=_cosine(null[0], teacher[0]))
+    # QID is deliberately exercised through a cyclic correct-query comparator,
+    # never through the matched-null input.  The bounded fixture has one query
+    # per cell, so its two already-computed correct records serve only as a
+    # mechanics-safe cyclic pair; no extra neural forward is introduced.
+    correct_records = [row for row in reader.fixture["selected"] if row["role"] == "correct_student"]
+    if len(correct_records) < 2:
+        raise RuntimeError("STOP_F1_TECHNICAL_FIXTURE_QID")
+    cyclic = qid_wrong_query_map("BOUNDED_TECHNICAL_QID", [int(row["q"]) for row in correct_records], "TECHNICAL_FIXTURE_ONLY")
+    own_record = correct_records[0]
+    wrong_q = cyclic[int(own_record["q"])]
+    wrong_record = next(row for row in correct_records if int(row["q"]) == wrong_q)
+    qid_own = outputs[own_record["selection_sha256"]][0]
+    qid_wrong = outputs[wrong_record["selection_sha256"]][0]
+    mechanical_effect = build_effect_row(s_correct_contextual=correct[0], t_true_contextual=teacher[0], s_null_contextual=null[0], s_correct_direct=correct[1], t_true_direct=teacher[1], s_null_direct=null[1], own_similarity=_cosine(qid_own, teacher[0]), paired_wrong_similarity=_cosine(qid_wrong, teacher[0]))
     effect_values = np.asarray([[mechanical_effect[name] for name in ("A", "direct_delta", "qid_margin", "qid_win")]], dtype=np.float64)
     fingerprint = canonical_sha({"mode": "technical-fixture", "source": sha256_file(Path(__file__))})
     store = AtomicEffectStore(Path(output_root) / "bounded_shards", fingerprint)
@@ -711,7 +740,19 @@ def execute_complete_population(output_root: Path, canonical_root: Path, worktre
     for row in sorted(population["assignments"], key=lambda item: (item["donor_id"], int(item["operator_index"]), item["canonical_cell_id"], item["program"], int(item["draw_replicate"]), int(item["selected_query_address"]))):
         expected_effect_ids.extend(canonical_sha({"evaluation_row_authority_sha256": row["evaluation_row_authority_sha256"], "evidence_level": level}) for level in EVIDENCE_LEVELS)
     validate_effect_ids(all_effect_ids, expected_effect_ids)
-    observed = dict(FULL_TOPOLOGY)
+    role_counts = {role: sum(task["role"] == role for task in tasks) for role in ("teacher", "correct", "matched_null")}
+    observed = {
+        "recipient_cells": len(population["cell_geometry"]),
+        "statistical_assignments": len(population["assignments"]),
+        "unique_cell_q": len(population["dedup"]),
+        "compute_only_dedups": len(population["assignments"]) - len(population["dedup"]),
+        "teacher_forwards": role_counts["teacher"],
+        "correct_forwards": role_counts["correct"],
+        "matched_null_forwards": role_counts["matched_null"],
+        "total_expensive_forwards": len(forward_index),
+        "effect_rows": len(all_effect_ids),
+        "logical_shards": len(shard_assignments),
+    }
     reconcile_counts(observed, FULL_TOPOLOGY)
     final = {
         "schema": "f1-real-production-executor-final-v1",
