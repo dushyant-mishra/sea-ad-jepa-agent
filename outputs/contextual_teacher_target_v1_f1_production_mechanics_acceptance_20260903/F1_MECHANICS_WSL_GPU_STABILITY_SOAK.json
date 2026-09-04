@@ -1,0 +1,165 @@
+{
+  "cycles": 334,
+  "duration_seconds": 1200.808373249,
+  "end": {
+    "cuda_reserved": 1795162112,
+    "fds": 21,
+    "pswpin": 0,
+    "pswpout": 0,
+    "rss": 1848041472
+  },
+  "firewall": {
+    "EMA": false,
+    "backward": false,
+    "biological_metrics_computed": false,
+    "bounded_fixture_rows": 67,
+    "optimizer": false,
+    "training": false
+  },
+  "model_hash_after": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+  "model_hash_before": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+  "output_digest_stable": true,
+  "peak": {
+    "cuda_reserved": 1795162112,
+    "fds": 21,
+    "rss": 1848041472
+  },
+  "reader": {
+    "physical_block_reads": 64,
+    "physical_read_bytes": 321417587,
+    "reader_chunks": 17,
+    "reader_seconds": 6.596668992000001
+  },
+  "safety": {
+    "fds_not_continuously_growing": true,
+    "model_unchanged": true,
+    "projected_resource_safe": true,
+    "resource_ceilings": true,
+    "safe": true,
+    "throughput_finite": true,
+    "zero_swap": true
+  },
+  "schema": "f1-mechanics-wsl-gpu-stability-soak-v1",
+  "selected": {
+    "batch": 4,
+    "pinned": false,
+    "prefetch": 4,
+    "reader_block": 4,
+    "workers": 4
+  },
+  "start": {
+    "cuda_reserved": 1795162112,
+    "fds": 21,
+    "pswpin": 0,
+    "pswpout": 0,
+    "rss": 1714413568
+  },
+  "status": "PASS",
+  "windows": [
+    {
+      "cuda_allocated": 22646784,
+      "cuda_peak_reserved": 1795162112,
+      "cuda_reserved": 1795162112,
+      "cycles": 70,
+      "elapsed": 242.166137538,
+      "errors": 0,
+      "fds": 21,
+      "gpu_utilization": 91,
+      "mem_available": 31239528448,
+      "model_hash": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+      "pswpin": 0,
+      "pswpout": 0,
+      "role_rates": {
+        "correct_student": 12.693450552693768,
+        "matched_null_student": 12.666930799769652,
+        "teacher": 19.71121651054294
+      },
+      "rss": 1714413568,
+      "throughput": 14.741945493679133
+    },
+    {
+      "cuda_allocated": 22646784,
+      "cuda_peak_reserved": 1795162112,
+      "cuda_reserved": 1795162112,
+      "cycles": 137,
+      "elapsed": 483.294047512,
+      "errors": 0,
+      "fds": 21,
+      "gpu_utilization": 92,
+      "mem_available": 31145709568,
+      "model_hash": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+      "pswpin": 0,
+      "pswpout": 0,
+      "role_rates": {
+        "correct_student": 12.040546759307587,
+        "matched_null_student": 12.011391324670843,
+        "teacher": 19.60759177131388
+      },
+      "rss": 1806172160,
+      "throughput": 14.170902075866882
+    },
+    {
+      "cuda_allocated": 22646784,
+      "cuda_peak_reserved": 1795162112,
+      "cuda_reserved": 1795162112,
+      "cycles": 202,
+      "elapsed": 723.378199895,
+      "errors": 0,
+      "fds": 21,
+      "gpu_utilization": 27,
+      "mem_available": 31114407936,
+      "model_hash": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+      "pswpin": 0,
+      "pswpout": 0,
+      "role_rates": {
+        "correct_student": 11.651974957008749,
+        "matched_null_student": 11.612177961918425,
+        "teacher": 19.46310175515547
+      },
+      "rss": 1834061824,
+      "throughput": 13.807658552621447
+    },
+    {
+      "cuda_allocated": 22646784,
+      "cuda_peak_reserved": 1795162112,
+      "cuda_reserved": 1795162112,
+      "cycles": 267,
+      "elapsed": 964.298957985,
+      "errors": 0,
+      "fds": 21,
+      "gpu_utilization": 30,
+      "mem_available": 31105241088,
+      "model_hash": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+      "pswpin": 0,
+      "pswpout": 0,
+      "role_rates": {
+        "correct_student": 11.645623950284337,
+        "matched_null_student": 11.536443862981987,
+        "teacher": 19.403139127732416
+      },
+      "rss": 1845972992,
+      "throughput": 13.759710978335978
+    },
+    {
+      "cuda_allocated": 22646784,
+      "cuda_peak_reserved": 1795162112,
+      "cuda_reserved": 1795162112,
+      "cycles": 334,
+      "elapsed": 1200.740886676,
+      "errors": 0,
+      "fds": 21,
+      "gpu_utilization": 71,
+      "mem_available": 31103406080,
+      "model_hash": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
+      "pswpin": 0,
+      "pswpout": 0,
+      "role_rates": {
+        "correct_student": 12.438116137224453,
+        "matched_null_student": 12.357020708810907,
+        "teacher": 19.464019814793577
+      },
+      "rss": 1848041472,
+      "throughput": 14.451751510052992
+    }
+  ]
+}

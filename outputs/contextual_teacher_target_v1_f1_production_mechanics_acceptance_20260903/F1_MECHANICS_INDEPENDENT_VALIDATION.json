@@ -9,6 +9,7 @@
     "population": true,
     "resume": true,
     "shards": true,
+    "soak": true,
     "synthetic_oracle": true
   },
   "production_pass_booleans_used_as_expected": false,

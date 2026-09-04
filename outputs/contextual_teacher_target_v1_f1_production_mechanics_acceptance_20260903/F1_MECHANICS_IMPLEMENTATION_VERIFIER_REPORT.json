@@ -19,7 +19,7 @@
     "accepted_real_forward_root": "007bc6f182354a133a2ec49ce0ef5966831d4995a0a2a5f004bb845772469ad3",
     "validator_sha256": "11bd6dc7a3b90f45dcafd7d525fbe3b7491857efc95e3557c95ff8ae3cf3c41f",
     "implementer_test_sha256": "cf0b919f3f2e66a768f1f99381e7e5c64187ae5ae353592f9c39d697a1d41d8a",
-    "round2_verifier_test_sha256": "e3e923a612b0ed010aa9c00df465f61ffe6e914373a238987500482fbbf8a403",
+    "round2_verifier_test_sha256": "6bf029dcd54f7cadf08e805d986ec066e988c4cda4b7bbb281f385a67ab21fc6",
     "finalizer_artifact_sha256": "48a4347cd487dd7646fdc9be755974492c4d6ac44bb5d98349f06a5fa9b4cb09"
   },
   "changed_files": [
@@ -142,7 +142,7 @@
       "mutations_not_detected": [],
       "mutation_detected": true,
       "verdict": "PASS",
-      "notes": "Artifact roots independently match exact populations; implementation_commit is exactly 0fd9577b1fb62c4377c8e7858238c42d519563f5; STOP_ROUND1 is preserved separately."
+      "notes": "Artifact roots independently match exact populations; implementation_commit is exactly 0fd9577b1fb62c4377c8e7858238c42d519563f5, that commit is an ancestor of current HEAD, and the current runner blob equals its implementation-commit blob; STOP_ROUND1 is preserved separately."
     }
   ],
   "independent_reference_summary": "Round-2 verifier directly parsed the frozen assignment, dedup, and matched-null authorities; independently reconstructed identity JSON/SHA-256, logical shard and effect memberships/order, synthetic float values, and portable physical filename hashes. Production helpers were invoked only as subjects under adversarial test, never as expected-value sources.",
@@ -150,8 +150,8 @@
   "verifier_tests": [
     {
       "path": "tests/test_verifier_f1_production_mechanics_acceptance_v1.py",
-      "command": "python -m unittest discover -s tests -p 'test_verifier_f1_production_mechanics_acceptance_v1.py' -v",
-      "result": "PASS: 8 tests, 0 failures, 0 errors"
+      "command": "WSL jepa-full104 python -m unittest discover -s tests -p 'test_verifier_f1_production_mechanics_acceptance_v1.py' -v",
+      "result": "PASS: 8 tests, 0 failures, 0 errors; implementation ancestor and exact runner-blob binding confirmed after verifier/report commit"
     }
   ],
   "mutation_tests": [
@@ -171,5 +171,5 @@
   "independence_confirmed": true,
   "verifier_verdict": "PASS_IMPLEMENTATION_VERIFIER",
   "stop_reason": null,
-  "timestamp": "2026-09-04T07:56:03.2306433-04:00"
+  "timestamp": "2026-09-04T08:26:44.9560315-04:00"
 }
