@@ -6,7 +6,9 @@ import csv
 import hashlib
 import json
 import os
+import platform
 import shutil
+import subprocess
 import tempfile
 import time
 from pathlib import Path
@@ -14,12 +16,21 @@ from typing import Any
 
 import numpy as np
 
-from contextual_target_f1_preflight_executor_v1 import AtomicShardStore, full_geometry
+try:
+    from contextual_target_f1_preflight_executor_v1 import AtomicShardStore, full_geometry
+except ModuleNotFoundError:
+    from scripts.v4.contextual_target_f1_preflight_executor_v1 import AtomicShardStore, full_geometry
 
 ROOT = Path(__file__).resolve().parents[2]
 CANONICAL = Path(os.environ.get("JEPA_CANONICAL_ROOT", "/mnt/d/Jepa project")).resolve()
 FROZEN = ROOT / "docs/agent/f1_real_reader_forward_executor_preflight_20260903"
 PACKAGE = ROOT / "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903"
+ROOT_FREEZE_ALLOWED_DIFF = {
+    "docs/agent/f1_real_reader_forward_executor_preflight_20260903/F1_PREFLIGHT_REAL_FORWARD_ROOT.json",
+    "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_IMPLEMENTATION_VERIFIER_REPORT.json",
+    "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903/F1_IMPLEMENTATION_VERIFIER_SUPPORT.json",
+    "tests/test_verifier_f1_real_reader_forward_preflight_v1.py",
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -41,6 +52,24 @@ def write_json(path: Path, value: object) -> None:
     os.replace(temporary, path)
 
 
+def validate_commit_chain(*, actual_head: str, benchmark_commit: str, parent_commit: str,
+                          implementation_commit: str, changed_files: set[str]) -> bool:
+    if actual_head != benchmark_commit or parent_commit != implementation_commit or changed_files != ROOT_FREEZE_ALLOWED_DIFF:
+        raise RuntimeError("Git implementation/root/benchmark provenance mismatch")
+    return True
+
+
+def git_output(*args: str) -> str:
+    command = ["git", "-C", str(ROOT), *args]
+    completed = subprocess.run(command, text=True, capture_output=True)
+    if completed.returncode and "microsoft" in platform.release().lower():
+        windows_root = subprocess.check_output(["wslpath", "-w", str(ROOT)], text=True).strip()
+        completed = subprocess.run(["git.exe", "-c", f"safe.directory={windows_root}", "-C", windows_root, *args], text=True, capture_output=True)
+    if completed.returncode:
+        raise RuntimeError(f"Git provenance query failed: {completed.stderr.strip()}")
+    return completed.stdout.strip()
+
+
 def independent_select(rows: list[dict[str, Any]]) -> int:
     safe = [row for row in rows if row.get("safe") is True]
     if not safe:
@@ -50,14 +79,21 @@ def independent_select(rows: list[dict[str, Any]]) -> int:
     return int(min(eligible, key=lambda row: int(row["configuration"]))["configuration"])
 
 
-def independent_effects(teacher: float, correct: float, null: float, direct: float) -> dict[str, float]:
-    contextual = float(teacher) - float(correct)
-    null_advantage = float(teacher) - float(null)
-    return {
-        "teacher": float(teacher), "correct": float(correct), "null": float(null),
-        "direct": float(direct), "contextual_advantage": contextual,
-        "null_advantage": null_advantage, "qid_margin": null_advantage - contextual,
-    }
+def independent_effects(s_correct_contextual: np.ndarray, t_true_contextual: np.ndarray,
+                        s_null_contextual: np.ndarray, s_correct_direct: np.ndarray,
+                        t_true_direct: np.ndarray, s_null_direct: np.ndarray,
+                        own_similarity: float, paired_wrong_similarity: float) -> dict[str, float]:
+    def cos(left: np.ndarray, right: np.ndarray) -> float:
+        a = np.asarray(left, dtype=np.float64); b = np.asarray(right, dtype=np.float64)
+        denominator = float(np.sqrt(np.dot(a, a)) * np.sqrt(np.dot(b, b)))
+        if a.shape != b.shape or a.ndim != 1 or denominator == 0.0 or not np.isfinite(denominator):
+            raise ValueError("independent cosine input")
+        return float(np.dot(a, b) / denominator)
+    contextual = cos(s_correct_contextual, t_true_contextual) - cos(s_null_contextual, t_true_contextual)
+    direct = cos(s_correct_direct, t_true_direct) - cos(s_null_direct, t_true_direct)
+    margin = float(own_similarity) - float(paired_wrong_similarity)
+    return {"A": contextual, "direct_delta": contextual - direct, "qid_margin": margin,
+            "qid_win": 1.0 if margin > 0 else 0.0 if margin < 0 else 0.5}
 
 
 def load_ladder() -> list[dict[str, Any]]:
@@ -67,9 +103,64 @@ def load_ladder() -> list[dict[str, Any]]:
         row["safe"] = row["safe"] == "True"
         row["configuration"] = int(row["configuration"])
         row["median_throughput"] = float(row["median_throughput"])
-        for name in ("peak_rss_bytes", "candidate_start_memavailable_bytes", "swap_before_bytes", "swap_after_bytes", "cuda_peak_reserved_bytes", "cuda_total_bytes"):
+        for name in ("peak_rss_bytes", "candidate_start_memavailable_bytes", "swap_before_bytes", "swap_after_bytes", "pswpin_before", "pswpin_after", "pswpout_before", "pswpout_after", "cuda_peak_reserved_bytes", "cuda_total_bytes"):
             row[name] = int(row[name])
     return rows
+
+
+def full_plan_metadata_geometry() -> dict[str, Any]:
+    """Reconcile compute identities and physical blocks from frozen metadata only."""
+    binding = json.loads((FROZEN / "F1_PREFLIGHT_AUTHORITY_BINDING.json").read_text(encoding="utf-8"))
+    authorities = binding["authorities"]
+    assignment_path = CANONICAL / authorities["assignments"]["path"]
+    null_path = CANONICAL / authorities["null_map"]["path"]
+    if sha256_file(assignment_path) != authorities["assignments"]["sha256"] or sha256_file(null_path) != authorities["null_map"]["sha256"]:
+        raise RuntimeError("full-plan metadata authority mismatch")
+    with assignment_path.open(newline="", encoding="utf-8-sig") as handle:
+        assignments = list(csv.DictReader(handle))
+    with null_path.open(newline="", encoding="utf-8-sig") as handle:
+        null_rows = list(csv.DictReader(handle))
+    unique_cell_q = {(row["canonical_cell_id"], int(row["selected_query_address"])) for row in assignments}
+    recipients = {row["canonical_cell_id"] for row in assignments}
+    null_sources = {row["source_canonical_cell_id"] for row in null_rows}
+    physical_cells = recipients | null_sources
+    expression_root = CANONICAL / "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4"
+    manifest_path = expression_root / "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"
+    reader_plan = json.loads((FROZEN / "F1_PREFLIGHT_READER_PLAN_BINDING.json").read_text(encoding="utf-8"))
+    if sha256_file(manifest_path) != reader_plan["block_manifest"]["sha256"]:
+        raise RuntimeError("expression block manifest mismatch")
+    with manifest_path.open(newline="", encoding="utf-8") as handle:
+        blocks = list(csv.DictReader(handle))
+    found: dict[str, str] = {}
+    selected_blocks: dict[str, dict[str, str]] = {}
+    remaining = set(physical_cells)
+    for block in blocks:
+        if not remaining:
+            break
+        meta_path = expression_root / block["meta_path"]
+        if sha256_file(meta_path) != block["meta_sha256"]:
+            raise RuntimeError("expression metadata block mismatch")
+        with meta_path.open(newline="", encoding="utf-8") as handle:
+            for row in csv.DictReader(handle):
+                cell = row["canonical_cell_id"]
+                if cell in remaining:
+                    found[cell] = block["block_key"]
+                    selected_blocks[block["block_key"]] = block
+                    remaining.remove(cell)
+    if remaining:
+        raise RuntimeError(f"physical row membership unresolved: {len(remaining)}")
+    actual = {"statistical_assignments": len(assignments), "unique_cell_q": len(unique_cell_q), "recipient_cells": len(recipients)}
+    expected = {"statistical_assignments": 44496, "unique_cell_q": 43108, "recipient_cells": 2781}
+    if actual != expected:
+        raise RuntimeError(f"full-plan geometry mismatch: {actual}")
+    physical_bytes = sum((expression_root / row["counts_path"]).stat().st_size for row in selected_blocks.values())
+    return {
+        **actual, "teacher_compute_identities": len(unique_cell_q), "correct_student_identities": len(unique_cell_q) * 5,
+        "null_student_identities": len(unique_cell_q) * 5, "total_expensive_forwards": len(unique_cell_q) * 11,
+        "matched_null_source_cells": len(null_sources), "unique_physical_expression_rows": len(physical_cells),
+        "unique_physical_blocks": len(selected_blocks), "unique_physical_block_bytes": physical_bytes,
+        "physical_membership_sha256": canonical_sha(sorted(found.items())),
+    }
 
 
 def shard_resume_test(membership: str, forward: str) -> dict[str, Any]:
@@ -120,37 +211,55 @@ def sufficient_statistics_test(membership: str) -> tuple[dict[str, Any], dict[st
     identities = [f"{row['canonical_cell_id']}|{row['q']}|{row['evidence_level']}|{row['role']}" for row in fixture["selected"]]
     direct = []
     for index, _ in enumerate(identities):
-        direct.append(independent_effects(index + 5.0, index + 3.0, index + 1.0, index + 2.0))
+        angle = (index + 1) / 100.0
+        target = np.zeros(160, dtype=np.float64); target[0] = 1.0
+        correct = target.copy()
+        null = np.zeros(160, dtype=np.float64); null[0] = np.cos(angle); null[1] = np.sin(angle)
+        direct.append(independent_effects(correct, target, null, null, target, -target, 0.75, 0.25))
     order_root = canonical_sha(identities)
-    values = np.asarray([[row[name] for name in ("teacher", "correct", "null", "direct", "contextual_advantage", "null_advantage", "qid_margin")] for row in direct], dtype=np.float64)
+    fields = ("A", "direct_delta", "qid_margin", "qid_win")
+    values = np.asarray([[row[name] for name in fields] for row in direct], dtype=np.float64)
     with tempfile.TemporaryDirectory(dir=PACKAGE) as temporary:
         store = AtomicShardStore(Path(temporary), membership, "technical-forward-root", "float64")
         store.commit("000", identities[:19], values[:19]); store.commit("001", identities[19:], values[19:])
         assembled = np.concatenate([store.load("000", identities[:19]), store.load("001", identities[19:])])
     exact = assembled.tobytes() == values.tobytes()
-    recomputed = all(row[4] == row[0] - row[1] and row[5] == row[0] - row[2] and row[6] == row[5] - row[4] for row in assembled)
+    recomputed = np.array_equal(values, assembled)
     schema = {
         "schema": "f1-preflight-sufficient-statistics-schema-v1", "global_order": "frozen assignment -> evidence -> role identity",
         "global_order_root_sha256": order_root, "assignment_membership_root_sha256": membership,
-        "fields": ["teacher", "correct", "null", "direct", "contextual_advantage", "null_advantage", "qid_margin"],
+        "fields": list(fields),
         "dtype": "float64", "delta_recomputed_not_caller_supplied": True,
+        "qid_v2_authority": "F1_QUERY_IDENTITY_V2_CONTRACT.md", "qid_tie": 0.5,
         "distinct_role_and_qid_fields": True, "hidden_states_persisted": False,
     }
     parity = {
         "schema": "f1-preflight-sufficient-statistics-parity-v1", "status": "PASS" if exact and recomputed else "STOP_F1_PREFLIGHT_SUFFICIENT_STATISTICS_MISMATCH",
         "fixture_rows": len(identities), "no_duplicate_writes": len(identities) == len(set(identities)),
         "no_missing_writes": len(assembled) == len(identities), "fixed_order_exact_bytes": exact,
-        "delta_independently_recomputed": recomputed, "payload_sha256": canonical_sha(assembled.tolist()),
+        "delta_independently_recomputed": recomputed, "old_scalar_placeholder_is_not_conclusion_bearing": True,
+        "payload_sha256": canonical_sha(assembled.tolist()),
     }
     return schema, parity
 
 
-def update_runtime_projection(commit_seconds: float, finalization_seconds: float) -> dict[str, Any]:
+def update_runtime_projection(commit_seconds: float, finalization_seconds: float, plan_geometry: dict[str, Any]) -> dict[str, Any]:
     path = PACKAGE / "F1_PREFLIGHT_RUNTIME_PROJECTION.json"
     value = json.loads(path.read_text())
-    value["T_commit_seconds"] = commit_seconds * full_geometry()["logical_donor_operator_shards"] / 2.0
+    selection = json.loads((PACKAGE / "F1_PREFLIGHT_RESOURCE_SELECTION.json").read_text(encoding="utf-8"))
+    technical = selection["final_stability"]["reader"]
+    if int(technical["physical_read_bytes"]) <= 0:
+        raise RuntimeError("physical reader benchmark bytes missing")
+    value["T_physical_reader_seconds"] = float(technical["reader_seconds"]) * int(plan_geometry["unique_physical_block_bytes"]) / int(technical["physical_read_bytes"])
+    value["physical_io_geometry"] = plan_geometry
+    value["physical_reader_projection_method"] = "exact unique block bytes times bounded technical-fixture seconds-per-byte"
+    value["T_shard_commit_seconds"] = commit_seconds * full_geometry()["logical_donor_operator_shards"] / 2.0
     value["T_finalization_seconds"] = finalization_seconds
-    keys = ("T_forward_seconds", "T_io_seconds", "T_reduce_seconds", "T_commit_seconds", "T_finalization_seconds")
+    keys = ("T_physical_reader_seconds", "T_forward_pipeline_seconds", "T_shard_commit_seconds", "T_finalization_seconds")
+    value["nonoverlapping_components"] = {
+        "physical_reader": value["T_physical_reader_seconds"], "forward_pipeline": value["T_forward_pipeline_seconds"],
+        "shard_commit": value["T_shard_commit_seconds"], "finalization": value["T_finalization_seconds"],
+    }
     value["T_total_projected_seconds"] = sum(float(value[key]) for key in keys)
     value["T_total_projected_hours"] = value["T_total_projected_seconds"] / 3600.0
     value["commit_and_finalization_measured_on_technical_fixture"] = True
@@ -193,6 +302,14 @@ def independent_validation() -> dict[str, Any]:
     firewall = json.loads((PACKAGE / "F1_PREFLIGHT_FIREWALL_AUDIT.json").read_text())
     environment = json.loads((PACKAGE / "F1_PREFLIGHT_WSL_ENVIRONMENT_AUTHENTICATION.json").read_text())
     forward_root = json.loads((PACKAGE / "F1_PREFLIGHT_REAL_FORWARD_ROOT.json").read_text())
+    plan_geometry = json.loads((PACKAGE / "F1_PREFLIGHT_FULL_PLAN_GEOMETRY.json").read_text())
+    runtime = json.loads((PACKAGE / "F1_PREFLIGHT_RUNTIME_PROJECTION.json").read_text())
+    actual_head = git_output("rev-parse", "HEAD")
+    parent_commit = git_output("rev-parse", "HEAD^")
+    changed_files = set(filter(None, git_output("diff", "--name-only", f'{forward_root["implementation_source_commit"]}..{actual_head}').splitlines()))
+    git_chain_valid = validate_commit_chain(actual_head=actual_head, benchmark_commit=environment["benchmark_execution_commit"],
+                                            parent_commit=parent_commit, implementation_commit=forward_root["implementation_source_commit"],
+                                            changed_files=changed_files)
     reconstructed = {}
     stage_to_key = {"gpu_batch": "forward_batch", "reader_block": "reader_block", "workers": "workers", "prefetch": "prefetch", "pinning": "pinned_memory"}
     for stage, key in stage_to_key.items():
@@ -205,6 +322,8 @@ def independent_validation() -> dict[str, Any]:
             row["cuda_peak_reserved_bytes"] <= 0.85 * row["cuda_total_bytes"]
             and row["swap_after_bytes"] <= row["swap_before_bytes"]
             and row["peak_rss_bytes"] <= 0.8 * row["candidate_start_memavailable_bytes"]
+            and row["pswpin_after"] == row["pswpin_before"]
+            and row["pswpout_after"] == row["pswpout_before"]
         ) for row in ladder
     )
     geometry = full_geometry()
@@ -225,6 +344,13 @@ def independent_validation() -> dict[str, Any]:
             }.items()
         ),
         "geometry_exact": geometry == {"recipient_cells": 2781, "statistical_assignments": 44496, "unique_cell_q": 43108, "compute_only_dedups": 1388, "teacher_forwards": 43108, "correct_forwards": 215540, "null_forwards": 215540, "total_expensive_forwards": 474188, "assignment_evidence_effect_rows": 222480, "logical_donor_operator_shards": 1400},
+        "full_plan_compute_identity_counts": plan_geometry["teacher_compute_identities"] == 43108 and plan_geometry["correct_student_identities"] == 215540 and plan_geometry["null_student_identities"] == 215540 and plan_geometry["total_expensive_forwards"] == 474188,
+        "observation_state_hash_recomputed": sha256_file(CANONICAL / "exports/foundation_calibration_bundle_20260824/support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz") == "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+        "fixture_root_recomputed": canonical_sha(json.loads((FROZEN / "F1_PREFLIGHT_TECHNICAL_FIXTURE_BINDING.json").read_text())["selected"]) == forward_root["fixture_membership_root_sha256"],
+        "implementation_source_commit_bound": len(forward_root["implementation_source_commit"]) == 40,
+        "benchmark_execution_commit_bound": git_chain_valid,
+        "wsl_cuda_authenticated": environment["status"] == "PASS" and environment["is_wsl"] is True and environment["cuda_available"] is True and environment["cuda_device_count"] >= 1,
+        "runtime_components_nonoverlapping": set(runtime["nonoverlapping_components"]) == {"physical_reader", "forward_pipeline", "shard_commit", "finalization"} and abs(sum(runtime["nonoverlapping_components"].values()) - runtime["T_total_projected_seconds"]) < 1e-9,
         "resume": resume["status"] == "PASS", "sufficient_statistics": stats["status"] == "PASS",
         "firewall": firewall["status"] == "PASS", "no_biological_f1_outcome": firewall["biological_outcomes_computed"] is False,
     }
@@ -246,7 +372,9 @@ def main() -> None:
     write_json(PACKAGE / "F1_PREFLIGHT_SUFFICIENT_STATISTICS_SCHEMA.json", schema)
     write_json(PACKAGE / "F1_PREFLIGHT_SUFFICIENT_STATISTICS_PARITY.json", parity)
     geometry = full_geometry()
-    bytes_per_row = 7 * 8 + 2 * 8
+    plan_geometry = full_plan_metadata_geometry()
+    write_json(PACKAGE / "F1_PREFLIGHT_FULL_PLAN_GEOMETRY.json", plan_geometry)
+    bytes_per_row = 4 * 8 + 2 * 8
     storage = {
         "schema": "f1-preflight-storage-envelope-v1", "assignment_effect_rows": geometry["assignment_evidence_effect_rows"],
         "durable_bytes_per_row": bytes_per_row, "projected_durable_bytes": geometry["assignment_evidence_effect_rows"] * bytes_per_row,
@@ -263,7 +391,7 @@ def main() -> None:
     }
     write_json(PACKAGE / "F1_PREFLIGHT_EXECUTOR_PLAN.json", executor_plan)
     write_json(PACKAGE / "F1_PREFLIGHT_FIREWALL_AUDIT.json", firewall_audit())
-    update_runtime_projection(commit_elapsed, final_elapsed)
+    update_runtime_projection(commit_elapsed, final_elapsed, plan_geometry)
     reader_graph = """# F1 preflight reader call graph\n\n`reader plan (67 lawful rows)` -> `64 authenticated Level-4 CSR blocks` -> `float32 log1p10k normalization exactly once` -> `normalized_values + observation_states` -> `prospective evidence mask (q withheld)` -> `IPBEncoder student view` -> `query-local H_q - mean(H_context)` -> `LayerNorm`.\n\nIdentity/provenance remains in a sidecar and never enters the model-facing mapping. Physical block sorting is restored to frozen logical cell order before forward execution.\n"""
     (PACKAGE / "F1_PREFLIGHT_READER_CALL_GRAPH.md").write_text(reader_graph, encoding="utf-8")
     validation = independent_validation()

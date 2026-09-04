@@ -1,51 +1,56 @@
 {
   "final_stability": {
     "batch": 4,
-    "candidate_start_memavailable_bytes": 31169773568,
+    "candidate_start_memavailable_bytes": 31119360000,
     "configuration": 4,
-    "cuda_peak_allocated_bytes": 1319809536,
-    "cuda_peak_reserved_bytes": 1828716544,
+    "cuda_peak_allocated_bytes": 1294774784,
+    "cuda_peak_reserved_bytes": 1795162112,
     "cuda_total_bytes": 17179344896,
-    "major_faults_delta": 6,
-    "median_throughput": 13.263907827379366,
-    "minor_faults_delta": 166973,
+    "major_faults_delta": 19,
+    "median_throughput": 14.12004518384578,
+    "minor_faults_delta": 156561,
     "model_state_sha256": "47641f3c670cceb8b0fab0a2b6d5d9ae1c50b79028878ac40cac2b1e32102cdf",
-    "peak_rss_bytes": 1731981312,
+    "peak_rss_bytes": 1714348032,
     "pin": false,
     "prefetch": 4,
+    "pswpin_after": 0,
+    "pswpin_before": 0,
+    "pswpout_after": 0,
+    "pswpout_before": 0,
     "reader": {
       "physical_block_reads": 64,
-      "reader_chunks": 9,
-      "reader_seconds": 2.322255718000065
+      "physical_read_bytes": 321417587,
+      "reader_chunks": 17,
+      "reader_seconds": 2.37579056200002
     },
-    "reader_block": 8,
+    "reader_block": 4,
     "repetitions": [
       {
-        "constructor_seconds": 1.134419259000083,
-        "elapsed_seconds": 3.653903755999977,
-        "h2d_seconds": 0.010608423000121547,
-        "model_forward_seconds": 2.4638893549998784,
+        "constructor_seconds": 1.1001428749998468,
+        "elapsed_seconds": 3.6118864589999475,
+        "h2d_seconds": 0.008923790000039844,
+        "model_forward_seconds": 2.4633592760001193,
         "query_identities": 51,
-        "target_context_reduction_seconds": 0.033045505000131925,
-        "throughput": 13.957674696892132
+        "target_context_reduction_seconds": 0.028140402000076392,
+        "throughput": 14.12004518384578
       },
       {
-        "constructor_seconds": 1.3217368659999238,
-        "elapsed_seconds": 3.8450206880000906,
-        "h2d_seconds": 0.010232241000039721,
-        "model_forward_seconds": 2.4700239959997816,
+        "constructor_seconds": 1.0135331220000126,
+        "elapsed_seconds": 3.524597526999969,
+        "h2d_seconds": 0.008836250000058499,
+        "model_forward_seconds": 2.4642216240000607,
         "query_identities": 51,
-        "target_context_reduction_seconds": 0.03191967399970963,
-        "throughput": 13.263907827379366
+        "target_context_reduction_seconds": 0.02753816400024789,
+        "throughput": 14.469737213771939
       },
       {
-        "constructor_seconds": 1.5156266289998257,
-        "elapsed_seconds": 4.052129745000002,
-        "h2d_seconds": 0.012014254999826335,
-        "model_forward_seconds": 2.473336992999748,
+        "constructor_seconds": 1.1658284949998006,
+        "elapsed_seconds": 3.6814802869999994,
+        "h2d_seconds": 0.00784851199989589,
+        "model_forward_seconds": 2.4715349740001784,
         "query_identities": 51,
-        "target_context_reduction_seconds": 0.037680582000007234,
-        "throughput": 12.585974094963234
+        "target_context_reduction_seconds": 0.026671823000128825,
+        "throughput": 13.853123207012844
       }
     ],
     "role_counts": {
@@ -54,9 +59,9 @@
       "teacher": 20
     },
     "role_seconds_median": {
-      "correct_student": 1.3026930669999501,
-      "matched_null_student": 1.5410221259999162,
-      "teacher": 1.0012839749999785
+      "correct_student": 1.2545305440000902,
+      "matched_null_student": 1.3579070419999653,
+      "teacher": 0.9994379390000176
     },
     "safe": true,
     "stage": "final_stability",
@@ -75,7 +80,7 @@
     "forward_batch": 4,
     "pinned_memory": false,
     "prefetch": 4,
-    "reader_block": 8,
+    "reader_block": 4,
     "workers": 4
   },
   "status": "PASS"

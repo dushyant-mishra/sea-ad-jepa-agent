@@ -1,6 +1,7 @@
 import unittest
 import tempfile
 import importlib
+import os
 from pathlib import Path
 
 import numpy as np
@@ -41,12 +42,69 @@ class ExecutorPureTests(unittest.TestCase):
         self.assertGreater(result["median_throughput"], 0.0)
 
     def test_effect_row_recomputes_delta_and_rejects_caller_delta(self):
-        row = executor.build_effect_row(teacher=5.0, correct=3.0, null=1.0, direct=2.0)
-        self.assertEqual(row["contextual_advantage"], 2.0)
-        self.assertEqual(row["null_advantage"], 4.0)
-        self.assertEqual(row["qid_margin"], 2.0)
+        e1 = np.asarray([1.0, 0.0])
+        e2 = np.asarray([0.0, 1.0])
+        row = executor.build_effect_row(
+            s_correct_contextual=e1, t_true_contextual=e1, s_null_contextual=e2,
+            s_correct_direct=e2, t_true_direct=e1, s_null_direct=-e1,
+            own_similarity=0.25, paired_wrong_similarity=0.5,
+        )
+        self.assertEqual(row["A"], 1.0)
+        self.assertEqual(row["direct_delta"], 0.0)
+        self.assertEqual(row["qid_margin"], -0.25)
+        self.assertEqual(row["qid_win"], 0.0)
         with self.assertRaises(TypeError):
-            executor.build_effect_row(teacher=5.0, correct=3.0, null=1.0, direct=2.0, delta=999.0)
+            executor.build_effect_row(
+                s_correct_contextual=e1, t_true_contextual=e1, s_null_contextual=e2,
+                s_correct_direct=e2, t_true_direct=e1, s_null_direct=-e1,
+                own_similarity=0.25, paired_wrong_similarity=0.5, direct_delta=999.0,
+            )
+
+    def test_old_scalar_subtraction_is_not_the_cosine_endpoint(self):
+        e1 = np.asarray([1.0, 0.0]); e2 = np.asarray([0.0, 1.0])
+        row = executor.build_effect_row(
+            s_correct_contextual=e1, t_true_contextual=e1, s_null_contextual=e2,
+            s_correct_direct=e1, t_true_direct=e1, s_null_direct=e2,
+            own_similarity=1.0, paired_wrong_similarity=0.0,
+        )
+        self.assertEqual(row["A"], 1.0)
+        self.assertNotEqual(row["A"], 5.0 - 3.0)
+
+    def test_qid_tie_is_half_and_not_matched_null_delta(self):
+        self.assertEqual(executor.qid_v2(0.4, 0.4), {"qid_margin": 0.0, "qid_win": 0.5})
+
+    def test_teacher_compute_identity_ignores_only_evidence(self):
+        authority = {"checkpoint": "c", "encoder": "e", "tokenizer": "t", "namespace": "n", "states": "s", "constructor": "q", "dtype": "float32", "autocast": False}
+        record = {"canonical_cell_id": "cell", "q": 9, "evidence_level": 20}
+        teacher = {executor.teacher_compute_identity(authority, {**record, "evidence_level": level}) for level in (20,40,60,80,100)}
+        self.assertEqual(len(teacher), 1)
+        students = {executor.student_forward_identity(authority, {**record, "evidence_level": level}, "correct_student") for level in (20,40,60,80,100)}
+        self.assertEqual(len(students), 5)
+        self.assertNotEqual(executor.student_forward_identity(authority, record, "correct_student"), executor.student_forward_identity({**authority, "null_source": "n2"}, record, "matched_null_student"))
+        self.assertNotEqual(executor.teacher_compute_identity(authority, record), executor.teacher_compute_identity(authority, {**record, "q": 10}))
+        self.assertNotEqual(executor.teacher_compute_identity(authority, record), executor.teacher_compute_identity(authority, {**record, "canonical_cell_id": "other"}))
+
+    def test_swap_activity_not_occupancy_controls_safety(self):
+        self.assertTrue(executor.no_swap_activity({"pswpin": 4, "pswpout": 7}, {"pswpin": 4, "pswpout": 7}))
+        self.assertFalse(executor.no_swap_activity({"pswpin": 4, "pswpout": 7}, {"pswpin": 5, "pswpout": 7}))
+        self.assertFalse(executor.no_swap_activity({"pswpin": 4, "pswpout": 7}, {"pswpin": 4, "pswpout": 8}))
+
+    def test_fail_closed_ladder_stops_after_unsafe_middle(self):
+        seen = []
+        rows = executor.evaluate_until_unsafe([1,2,4,8], lambda value: seen.append(value) or {"configuration": value, "safe": value != 4})
+        self.assertEqual(seen, [1,2,4])
+        self.assertEqual([row["configuration"] for row in rows], [1,2,4])
+
+    def test_runtime_components_count_once(self):
+        result = executor.nonoverlapping_runtime(physical_reader=2.0, forward_pipeline=3.0, shard_commit=5.0, finalization=7.0)
+        self.assertEqual(result["total"], 17.0)
+        self.assertEqual(result["component_count"], 4)
+
+    def test_repository_identity_cannot_be_spoofed_by_environment(self):
+        from unittest.mock import patch
+        from scripts.v4.run_contextual_target_f1_real_forward_preflight_v1 import actual_git_head, WORKTREE
+        with patch.dict(os.environ, {"JEPA_PREFLIGHT_COMMIT": "0" * 40}):
+            self.assertNotEqual(actual_git_head(WORKTREE), "0" * 40)
 
     def test_full_geometry_preserves_statistical_population(self):
         geometry = executor.full_geometry()
@@ -60,7 +118,10 @@ class ExecutorPureTests(unittest.TestCase):
     def test_atomic_shard_resume_rejects_identity_payload_and_duplicate_attacks(self):
         with tempfile.TemporaryDirectory() as directory:
             store = executor.AtomicShardStore(Path(directory), "membership-root", "forward-root", "float32")
-            values = np.asarray([1.0, 2.0, 3.0], dtype=np.float64)
+            with self.assertRaises(TypeError):
+                store.commit("wrong", ["a", "b", "c"], np.asarray([1.0, 2.0, 3.0], dtype=np.float64))
+            self.assertFalse((Path(directory) / "wrong.npz").exists())
+            values = np.asarray([1.0, 2.0, 3.0], dtype=np.float32)
             store.commit("shard-000", ["a", "b", "c"], values)
             loaded = store.load("shard-000", ["a", "b", "c"])
             self.assertTrue(np.array_equal(values, loaded))
@@ -78,6 +139,11 @@ class ExecutorPureTests(unittest.TestCase):
             np.savez(path, values=values + 1.0, identity_json=identity, payload_semantic_sha256=stored)
             with self.assertRaises(RuntimeError):
                 store.load("shard-000", ["a", "b", "c"])
+
+        with tempfile.TemporaryDirectory() as directory:
+            store64 = executor.AtomicShardStore(Path(directory), "m", "f", "float64")
+            store64.commit("ok", ["a"], np.asarray([1.0], dtype=np.float64))
+            self.assertEqual(store64.load("ok", ["a"]).dtype, np.dtype("float64"))
 
 
 if __name__ == "__main__":

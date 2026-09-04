@@ -1,15 +1,15 @@
 {
   "rates_query_identities_per_second": {
-    "correct_student": 11.51460799169247,
-    "matched_null_student": 10.382719190107768,
-    "teacher": 19.974353429555716
+    "correct_student": 11.956663846678667,
+    "matched_null_student": 11.782838961078463,
+    "teacher": 20.01124754180424
   },
   "schema": "f1-preflight-role-throughput-v1",
   "selected_configuration": {
     "forward_batch": 4,
     "pinned_memory": false,
     "prefetch": 4,
-    "reader_block": 8,
+    "reader_block": 4,
     "workers": 4
   }
 }

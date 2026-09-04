@@ -1,11 +1,10 @@
 {
-  "T_commit_seconds": 383.35186540002724,
-  "T_finalization_seconds": 0.16445367999995142,
-  "T_forward_seconds": 41636.49270533594,
-  "T_io_seconds": 21591.878321706172,
-  "T_reduce_seconds": 296.7828700896924,
-  "T_total_projected_hours": 17.752408393392177,
-  "T_total_projected_seconds": 63908.67021621184,
+  "T_finalization_seconds": 0.28830824099998154,
+  "T_forward_pipeline_seconds": 38473.66133684797,
+  "T_physical_reader_seconds": 45.98558610613132,
+  "T_shard_commit_seconds": 372.189739599969,
+  "T_total_projected_hours": 10.803368047443072,
+  "T_total_projected_seconds": 38892.12497079506,
   "commit_and_finalization_measured_on_technical_fixture": true,
   "geometry": {
     "assignment_evidence_effect_rows": 222480,
@@ -19,17 +18,39 @@
     "total_expensive_forwards": 474188,
     "unique_cell_q": 43108
   },
-  "role_rates": {
-    "correct_student": 11.51460799169247,
-    "matched_null_student": 10.382719190107768,
-    "teacher": 19.974353429555716
+  "nonoverlapping_components": {
+    "finalization": 0.28830824099998154,
+    "forward_pipeline": 38473.66133684797,
+    "physical_reader": 45.98558610613132,
+    "shard_commit": 372.189739599969
   },
-  "schema": "f1-preflight-runtime-projection-v1",
+  "physical_io_geometry": {
+    "correct_student_identities": 215540,
+    "matched_null_source_cells": 2781,
+    "null_student_identities": 215540,
+    "physical_membership_sha256": "edc6cf3f3774f23da63f57a55774d5703b89da087bc8efe970a80e316c89a2aa",
+    "recipient_cells": 2781,
+    "statistical_assignments": 44496,
+    "teacher_compute_identities": 43108,
+    "total_expensive_forwards": 474188,
+    "unique_cell_q": 43108,
+    "unique_physical_block_bytes": 6221329590,
+    "unique_physical_blocks": 1148,
+    "unique_physical_expression_rows": 2781
+  },
+  "physical_reader_projection_method": "exact unique block bytes times bounded technical-fixture seconds-per-byte",
+  "physical_reader_scope": "unique technical-fixture rows; never scaled by neural-forward count",
+  "role_rates": {
+    "correct_student": 11.956663846678667,
+    "matched_null_student": 11.782838961078463,
+    "teacher": 20.01124754180424
+  },
+  "schema": "f1-preflight-runtime-projection-v2",
   "selected_configuration": {
     "forward_batch": 4,
     "pinned_memory": false,
     "prefetch": 4,
-    "reader_block": 8,
+    "reader_block": 4,
     "workers": 4
   }
 }

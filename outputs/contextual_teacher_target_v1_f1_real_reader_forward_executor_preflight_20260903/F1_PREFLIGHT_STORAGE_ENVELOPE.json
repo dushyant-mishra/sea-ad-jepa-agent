@@ -1,10 +1,10 @@
 {
   "assignment_effect_rows": 222480,
-  "current_free_storage_bytes": 6717195681792,
-  "durable_bytes_per_row": 72,
+  "current_free_storage_bytes": 6717021618176,
+  "durable_bytes_per_row": 48,
   "full_hidden_state_archive": false,
-  "projected_durable_bytes": 16018560,
-  "projected_temporary_bytes": 32037120,
+  "projected_durable_bytes": 10679040,
+  "projected_temporary_bytes": 21358080,
   "schema": "f1-preflight-storage-envelope-v1",
   "sufficient_statistics_only": true
 }

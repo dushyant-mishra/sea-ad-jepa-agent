@@ -11,11 +11,11 @@
     "total_vram_mib": 16384
   },
   "ram": {
-    "available": 32354553856,
+    "available": 32366419968,
     "total": 33416355840
   },
   "schema": "f1-preflight-resource-snapshot-v1",
-  "storage_free_bytes": 6717195681792,
+  "storage_free_bytes": 6717022666752,
   "swap": {
     "total": 34359738368,
     "used": 0

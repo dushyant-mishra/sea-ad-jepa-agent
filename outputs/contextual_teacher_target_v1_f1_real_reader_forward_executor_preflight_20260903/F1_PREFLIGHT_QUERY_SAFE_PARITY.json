@@ -2230,8 +2230,9 @@
   "query_permutation_inverse_restoration_exact": true,
   "reader": {
     "physical_block_reads": 64,
+    "physical_read_bytes": 321417587,
     "reader_chunks": 1,
-    "reader_seconds": 7.330776998000033
+    "reader_seconds": 9.265558513999999
   },
   "schema": "f1-preflight-query-safe-parity-v1",
   "status": "PASS"

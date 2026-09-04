@@ -4,16 +4,15 @@
   "distinct_role_and_qid_fields": true,
   "dtype": "float64",
   "fields": [
-    "teacher",
-    "correct",
-    "null",
-    "direct",
-    "contextual_advantage",
-    "null_advantage",
-    "qid_margin"
+    "A",
+    "direct_delta",
+    "qid_margin",
+    "qid_win"
   ],
   "global_order": "frozen assignment -> evidence -> role identity",
   "global_order_root_sha256": "60dc22f286720f52a99805670492a475bc3accc9b985a3028d52e9c047fc2162",
   "hidden_states_persisted": false,
+  "qid_tie": 0.5,
+  "qid_v2_authority": "F1_QUERY_IDENTITY_V2_CONTRACT.md",
   "schema": "f1-preflight-sufficient-statistics-schema-v1"
 }
