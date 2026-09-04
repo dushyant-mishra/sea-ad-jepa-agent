@@ -24,8 +24,8 @@ import numpy as np
 
 STOP_UNAUTHORIZED = "STOP_F1_REAL_RUN_NOT_EXTERNALLY_AUTHORIZED"
 LAUNCH_SCHEMA = "f1-real-production-execution-external-authority-v1"
-EXTERNAL_LAUNCH_REMOTE_REF = "refs/remotes/origin/f1-real-production-launch-approved"
-EXTERNAL_LAUNCH_REPO_PATH = "docs/agent/F1_REAL_PRODUCTION_LAUNCH_AUTHORITY.json"
+EXTERNAL_REVIEW_REPOSITORY = "dushyant-mishra/sea-ad-jepa-agent"
+EXTERNAL_REVIEW_OWNER = "dushyant-mishra"
 CONTRACT_RELATIVE = Path("docs/agent/F1_REAL_PRODUCTION_EXECUTOR_CONTRACT_20260904.md")
 EVIDENCE_LEVELS = (20, 40, 60, 80, 100)
 PROGRESS_FIELDS = frozenset({"schema", "completed_shards", "completed_forwards", "elapsed_seconds"})
@@ -146,17 +146,21 @@ def validate_launch_authority(path: Path | None, output_root: Path, expected: di
         for field, value in expected.items():
             if payload.get(field) != value:
                 raise ValueError(field)
-        root = Path(repository_root or Path(__file__).resolve().parents[2]).resolve()
-        external_commit = str(payload.get("external_review_commit", ""))
-        if not re.fullmatch(r"[0-9a-f]{40}", external_commit):
-            raise ValueError("external commit")
-        if _git(root, "rev-parse", EXTERNAL_LAUNCH_REMOTE_REF) != external_commit:
-            raise ValueError("remote review ref")
-        committed_bytes = subprocess.check_output(["git", "-C", str(root), "show", f"{external_commit}:{EXTERNAL_LAUNCH_REPO_PATH}"])
-        if committed_bytes != authority_bytes:
-            raise ValueError("authority bytes not remote committed")
-        if subprocess.run(["git", "-C", str(root), "merge-base", "--is-ancestor", expected["repository_commit"], external_commit]).returncode:
-            raise ValueError("implementation not ancestor of review authority")
+        # The approval subject excludes only the external receipt fields, so a
+        # repository-owner GitHub comment can bind already-final authority bytes
+        # without a file/commit self-reference.
+        subject = {key: value for key, value in payload.items() if key not in {"external_review_comment_api_url", "external_review_subject_sha256"}}
+        subject_sha = canonical_sha(subject)
+        if payload.get("external_review_subject_sha256") != subject_sha:
+            raise ValueError("external review subject")
+        api_url = str(payload.get("external_review_comment_api_url", ""))
+        pattern = rf"^/repos/{re.escape(EXTERNAL_REVIEW_REPOSITORY)}/issues/comments/[1-9][0-9]*$"
+        if not re.fullmatch(pattern, api_url):
+            raise ValueError("external review URL")
+        review = json.loads(subprocess.check_output(["gh", "api", api_url], text=True))
+        expected_body = f"JEPA_F1_REAL_PRODUCTION_AUTHORITY_SHA256={subject_sha}"
+        if review.get("user", {}).get("login") != EXTERNAL_REVIEW_OWNER or review.get("author_association") != "OWNER" or review.get("body", "").strip() != expected_body:
+            raise ValueError("external owner review receipt")
         return payload
     except Exception as error:
         raise RuntimeError(f"{STOP_UNAUTHORIZED}: {type(error).__name__}") from error
