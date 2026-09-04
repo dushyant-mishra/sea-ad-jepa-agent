@@ -24,10 +24,8 @@ import numpy as np
 
 STOP_UNAUTHORIZED = "STOP_F1_REAL_RUN_NOT_EXTERNALLY_AUTHORIZED"
 LAUNCH_SCHEMA = "f1-real-production-execution-external-authority-v1"
-# Intentionally unset during implementation review.  A later, independently
-# reviewed launch transaction must bind the exact external authority bytes here;
-# public fields alone can never manufacture authorization.
-EXTERNAL_ACCEPTED_LAUNCH_SHA256: str | None = None
+EXTERNAL_LAUNCH_REMOTE_REF = "refs/remotes/origin/f1-real-production-launch-approved"
+EXTERNAL_LAUNCH_REPO_PATH = "docs/agent/F1_REAL_PRODUCTION_LAUNCH_AUTHORITY.json"
 CONTRACT_RELATIVE = Path("docs/agent/F1_REAL_PRODUCTION_EXECUTOR_CONTRACT_20260904.md")
 EVIDENCE_LEVELS = (20, 40, 60, 80, 100)
 PROGRESS_FIELDS = frozenset({"schema", "completed_shards", "completed_forwards", "elapsed_seconds"})
@@ -122,18 +120,25 @@ validate_topology(FULL_TOPOLOGY)
 def validate_private_output(path: Path) -> Path:
     resolved = Path(path).resolve()
     lowered = {part.lower() for part in resolved.parts}
-    if "private" not in str(resolved).lower() or lowered & {"public", "docs"}:
+    private_component = any(re.fullmatch(r"_?private(?:[-_].*)?", part.lower()) for part in resolved.parts)
+    if not private_component or lowered & {"public", "docs"}:
         raise RuntimeError("STOP_F1_PRIVATE_OUTPUT_REQUIRED")
     return resolved
 
 
-def validate_launch_authority(path: Path | None, output_root: Path, expected: dict[str, str]) -> dict[str, Any]:
+def _git(root: Path, *args: str) -> str:
+    completed = subprocess.run(["git", "-C", str(root), *args], text=True, capture_output=True)
+    if completed.returncode:
+        raise RuntimeError(completed.stderr.strip())
+    return completed.stdout.strip()
+
+
+def validate_launch_authority(path: Path | None, output_root: Path, expected: dict[str, str], repository_root: Path | None = None) -> dict[str, Any]:
     try:
         if path is None:
             raise ValueError("missing")
-        if EXTERNAL_ACCEPTED_LAUNCH_SHA256 is None or sha256_file(Path(path)) != EXTERNAL_ACCEPTED_LAUNCH_SHA256:
-            raise ValueError("no prospectively embedded external launch root")
-        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+        authority_bytes = Path(path).read_bytes()
+        payload = json.loads(authority_bytes.decode("utf-8"))
         if payload.get("schema") != LAUNCH_SCHEMA or type(payload.get("real_f1_execution_authorized")) is not bool or payload["real_f1_execution_authorized"] is not True:
             raise ValueError("schema/boolean")
         if Path(payload["output_root"]).resolve() != validate_private_output(output_root):
@@ -141,6 +146,17 @@ def validate_launch_authority(path: Path | None, output_root: Path, expected: di
         for field, value in expected.items():
             if payload.get(field) != value:
                 raise ValueError(field)
+        root = Path(repository_root or Path(__file__).resolve().parents[2]).resolve()
+        external_commit = str(payload.get("external_review_commit", ""))
+        if not re.fullmatch(r"[0-9a-f]{40}", external_commit):
+            raise ValueError("external commit")
+        if _git(root, "rev-parse", EXTERNAL_LAUNCH_REMOTE_REF) != external_commit:
+            raise ValueError("remote review ref")
+        committed_bytes = subprocess.check_output(["git", "-C", str(root), "show", f"{external_commit}:{EXTERNAL_LAUNCH_REPO_PATH}"])
+        if committed_bytes != authority_bytes:
+            raise ValueError("authority bytes not remote committed")
+        if subprocess.run(["git", "-C", str(root), "merge-base", "--is-ancestor", expected["repository_commit"], external_commit]).returncode:
+            raise ValueError("implementation not ancestor of review authority")
         return payload
     except Exception as error:
         raise RuntimeError(f"{STOP_UNAUTHORIZED}: {type(error).__name__}") from error
@@ -598,8 +614,13 @@ def _actual_git_head(root: Path) -> str:
 
 def runtime_authority(worktree_root: Path) -> dict[str, str]:
     root = Path(worktree_root).resolve()
+    source_relative = Path(__file__).resolve().relative_to(root).as_posix()
+    contract_relative = CONTRACT_RELATIVE.as_posix()
+    if subprocess.run(["git", "-C", str(root), "diff", "--quiet", "--", source_relative, contract_relative]).returncode:
+        raise RuntimeError("STOP_F1_DIRTY_IMPLEMENTATION_BYTES")
+    implementation_commit = _git(root, "log", "-1", "--format=%H", "--", source_relative)
     return {
-        "repository_commit": _actual_git_head(root),
+        "repository_commit": implementation_commit,
         "executor_contract_sha256": sha256_file(root / CONTRACT_RELATIVE),
         "executor_source_sha256": sha256_file(Path(__file__)),
         **FROZEN_ROOTS,
@@ -636,20 +657,18 @@ def run_technical_fixture(output_root: Path, canonical_root: Path, worktree_root
                 cache_ids.append(canonical_sha({"bounded_record": record_key, "role": role_name, "cell": record["canonical_cell_id"], "q": int(record["q"]), "evidence": None if role_name == "teacher" else int(record["evidence_level"]), "input": record.get("null_source_cell") if role_name == "matched_null" else record["canonical_cell_id"]}))
     exemplars = {role: next(row for row in reader.fixture["selected"] if row["role"] == role) for role in ("teacher", "correct_student", "matched_null_student")}
     teacher = outputs[exemplars["teacher"]["selection_sha256"]]; correct = outputs[exemplars["correct_student"]["selection_sha256"]]; null = outputs[exemplars["matched_null_student"]["selection_sha256"]]
-    # QID is deliberately exercised through a cyclic correct-query comparator,
-    # never through the matched-null input.  The bounded fixture has one query
-    # per cell, so its two already-computed correct records serve only as a
-    # mechanics-safe cyclic pair; no extra neural forward is introduced.
-    correct_records = [row for row in reader.fixture["selected"] if row["role"] == "correct_student"]
-    if len(correct_records) < 2:
+    # The accepted 51-record reader fixture has only one query per recipient,
+    # so it cannot lawfully instantiate QID-v2.  Exercise QID separately with a
+    # bounded synthetic same-recipient, distinct-query, 60%-evidence pair.  No
+    # cross-cell relabelling and no additional neural forward are permitted.
+    qid_queries = (7, 11)
+    cyclic = qid_wrong_query_map("BOUNDED_SYNTHETIC_QID_RECIPIENT", qid_queries, "TECHNICAL_FIXTURE_ONLY")
+    qid_states = {7: np.asarray([1.0, 0.0], np.float32), 11: np.asarray([-1.0, 0.0], np.float32)}
+    qid_teacher = np.asarray([1.0, 0.0], np.float32)
+    own_q = qid_queries[0]; wrong_q = cyclic[own_q]
+    if wrong_q == own_q or wrong_q not in qid_states:
         raise RuntimeError("STOP_F1_TECHNICAL_FIXTURE_QID")
-    cyclic = qid_wrong_query_map("BOUNDED_TECHNICAL_QID", [int(row["q"]) for row in correct_records], "TECHNICAL_FIXTURE_ONLY")
-    own_record = correct_records[0]
-    wrong_q = cyclic[int(own_record["q"])]
-    wrong_record = next(row for row in correct_records if int(row["q"]) == wrong_q)
-    qid_own = outputs[own_record["selection_sha256"]][0]
-    qid_wrong = outputs[wrong_record["selection_sha256"]][0]
-    mechanical_effect = build_effect_row(s_correct_contextual=correct[0], t_true_contextual=teacher[0], s_null_contextual=null[0], s_correct_direct=correct[1], t_true_direct=teacher[1], s_null_direct=null[1], own_similarity=_cosine(qid_own, teacher[0]), paired_wrong_similarity=_cosine(qid_wrong, teacher[0]))
+    mechanical_effect = build_effect_row(s_correct_contextual=correct[0], t_true_contextual=teacher[0], s_null_contextual=null[0], s_correct_direct=correct[1], t_true_direct=teacher[1], s_null_direct=null[1], own_similarity=_cosine(qid_states[own_q], qid_teacher), paired_wrong_similarity=_cosine(qid_states[wrong_q], qid_teacher))
     effect_values = np.asarray([[mechanical_effect[name] for name in ("A", "direct_delta", "qid_margin", "qid_win")]], dtype=np.float64)
     fingerprint = canonical_sha({"mode": "technical-fixture", "source": sha256_file(Path(__file__))})
     store = AtomicEffectStore(Path(output_root) / "bounded_shards", fingerprint)
@@ -658,13 +677,18 @@ def run_technical_fixture(output_root: Path, canonical_root: Path, worktree_root
     if not np.array_equal(effect_values, reloaded):
         raise RuntimeError("STOP_F1_TECHNICAL_FIXTURE_RESUME")
     # Exercise the interruption/resume implementation independently as well.
+    clean_root = Path(output_root) / "clean_mechanics"
+    clean = run_synthetic(clean_root)
     mechanics_root = Path(output_root) / "resume_mechanics"
     try:
         run_synthetic(mechanics_root, interrupt_after_shards=1)
     except InjectedInterruption:
         pass
     resumed = run_synthetic(mechanics_root)
-    result = {"status": "PASS_F1_REAL_PRODUCTION_EXECUTOR_BOUNDED_DRY_RUN", "reader_rows": len(ids), "forward_records": len(outputs), "role_counts": {role: sum(row["role"] == role for row in reader.fixture["selected"]) for role in ("teacher", "correct_student", "matched_null_student")}, "reader_timing": timing, "cache_identity_count": len(cache_ids), "cache_identity_unique": len(set(cache_ids)) == len(cache_ids), "sufficient_statistic_formed": True, "sufficient_statistic_payload_sha256": _payload_sha(["mechanical-effect-0"], effect_values), "shard_reload_exact": True, "resume_root_sha256": resumed["scientific_root_sha256"], "real_f1_run": False, "biological_values_published": False}
+    clean_final_sha = sha256_file(clean_root / "FINAL.json"); resumed_final_sha = sha256_file(mechanics_root / "FINAL.json")
+    if clean["scientific_root_sha256"] != resumed["scientific_root_sha256"] or clean_final_sha != resumed_final_sha:
+        raise RuntimeError("STOP_F1_TECHNICAL_FIXTURE_RESUME_PARITY")
+    result = {"status": "PASS_F1_REAL_PRODUCTION_EXECUTOR_BOUNDED_DRY_RUN", "reader_rows": len(ids), "forward_records": len(outputs), "role_counts": {role: sum(row["role"] == role for row in reader.fixture["selected"]) for role in ("teacher", "correct_student", "matched_null_student")}, "reader_timing": timing, "cache_identity_count": len(cache_ids), "cache_identity_unique": len(set(cache_ids)) == len(cache_ids), "sufficient_statistic_formed": True, "sufficient_statistic_payload_sha256": _payload_sha(["mechanical-effect-0"], effect_values), "shard_reload_exact": True, "uninterrupted_root_sha256": clean["scientific_root_sha256"], "resume_root_sha256": resumed["scientific_root_sha256"], "resume_final_bytes_sha256": resumed_final_sha, "uninterrupted_final_bytes_sha256": clean_final_sha, "resume_byte_and_root_parity": True, "real_f1_run": False, "biological_values_published": False}
     Path(output_root).mkdir(parents=True, exist_ok=True)
     (Path(output_root) / "DRY_RUN.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return result
@@ -779,7 +803,7 @@ def dispatch(mode: str, output_root: Path, launch_authority: Path | None, expect
     if mode != "production":
         raise ValueError("mode")
     expected = expected or runtime_authority(worktree_root or Path(__file__).resolve().parents[2])
-    validate_launch_authority(launch_authority, output_root, expected)
+    validate_launch_authority(launch_authority, output_root, expected, worktree_root or Path(__file__).resolve().parents[2])
     return run_production(output_root, canonical_root or Path("D:/Jepa project"), worktree_root or Path(__file__).resolve().parents[2])
 
 
