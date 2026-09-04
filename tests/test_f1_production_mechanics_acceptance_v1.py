@@ -48,14 +48,22 @@ class ProductionMechanicsAcceptanceTests(unittest.TestCase):
         self.assertGreater(len(set(values)), 2)
 
     def test_finalizer_rejects_every_count_and_root_attack(self):
-        expected = mechanics.ExpectedFinalization(shards=2, forwards=10, effects=6, membership_root="m", forward_root="f", implementation_commit="c")
-        mechanics.validate_finalization(expected, expected.as_dict())
-        for key, value in {
-            "shards": 1, "forwards": 11, "effects": 5, "membership_root": "wrong",
-            "forward_root": "wrong", "implementation_commit": "wrong",
-        }.items():
-            attacked = expected.as_dict(); attacked[key] = value
-            with self.assertRaises(RuntimeError, msg=key):
+        shards = ["d0|0", "d1|1"]
+        forwards = [f"f{i}" for i in range(10)]
+        effects = [f"e{i}" for i in range(6)]
+        expected = mechanics.make_expected_finalization(shards, forwards, effects, "c")
+        actual = {"shard_ids": shards, "forward_ids": forwards, "effect_ids": effects, "implementation_commit": "c"}
+        mechanics.validate_finalization(expected, actual)
+        attacks = [
+            {**actual, "shard_ids": ["d0|0", "d0|0"]},
+            {**actual, "forward_ids": forwards[:-1] + [forwards[0]]},
+            {**actual, "effect_ids": effects[:-1] + [effects[0]]},
+            {**actual, "effect_ids": list(reversed(effects))},
+            {**actual, "implementation_commit": "wrong"},
+            expected.as_dict(),
+        ]
+        for attacked in attacks:
+            with self.assertRaises(RuntimeError):
                 mechanics.validate_finalization(expected, attacked)
 
     def test_all_shard_resume_is_exact_and_attacks_fail_closed(self):

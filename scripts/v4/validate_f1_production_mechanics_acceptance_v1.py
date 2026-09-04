@@ -215,14 +215,31 @@ def build_full_synthetic(assignments: list[dict[str, Any]]) -> tuple[list[dict[s
 @dataclass(frozen=True)
 class ExpectedFinalization:
     shards: int; forwards: int; effects: int; membership_root: str; forward_root: str; implementation_commit: str
+    effect_root: str = ""; shard_ids: tuple[str, ...] = (); forward_ids: tuple[str, ...] = (); effect_ids: tuple[str, ...] = ()
     def as_dict(self) -> dict[str, Any]:
-        return {"shards": self.shards, "forwards": self.forwards, "effects": self.effects, "membership_root": self.membership_root, "forward_root": self.forward_root, "implementation_commit": self.implementation_commit}
+        return {"shards": self.shards, "forwards": self.forwards, "effects": self.effects, "membership_root": self.membership_root, "forward_root": self.forward_root, "effect_root": self.effect_root, "implementation_commit": self.implementation_commit}
+
+
+def make_expected_finalization(shard_ids: list[str], forward_ids: list[str], effect_ids: list[str], implementation_commit: str) -> ExpectedFinalization:
+    return ExpectedFinalization(len(shard_ids), len(forward_ids), len(effect_ids), _root_lines(shard_ids), _root_lines(forward_ids), implementation_commit, _root_lines(effect_ids), tuple(shard_ids), tuple(forward_ids), tuple(effect_ids))
 
 
 def validate_finalization(expected: ExpectedFinalization, actual: dict[str, Any]) -> bool:
-    if actual != expected.as_dict():
+    if set(actual) != {"shard_ids", "forward_ids", "effect_ids", "implementation_commit"} or not expected.shard_ids or not expected.forward_ids or not expected.effect_ids:
         raise RuntimeError("STOP_F1_MECHANICS_FINALIZER")
+    shards = [str(x) for x in actual["shard_ids"]]; forwards = [str(x) for x in actual["forward_ids"]]; effects = [str(x) for x in actual["effect_ids"]]
+    checks = (
+        len(shards) == len(set(shards)) == expected.shards and tuple(shards) == expected.shard_ids and _root_lines(shards) == expected.membership_root,
+        len(forwards) == len(set(forwards)) == expected.forwards and tuple(forwards) == expected.forward_ids and _root_lines(forwards) == expected.forward_root,
+        len(effects) == len(set(effects)) == expected.effects and tuple(effects) == expected.effect_ids and _root_lines(effects) == expected.effect_root,
+        str(actual["implementation_commit"]) == expected.implementation_commit,
+    )
+    if not all(checks): raise RuntimeError("STOP_F1_MECHANICS_FINALIZER")
     return True
+
+
+def physical_shard_id(logical_shard_id: str) -> str:
+    return "shard_" + hashlib.sha256(("logical-shard|" + str(logical_shard_id)).encode("utf-8")).hexdigest()
 
 
 def exercise_shard_resume(root: Path, shard_rows: dict[str, list[tuple[str, np.ndarray]]], membership: str, forward: str) -> dict[str, Any]:
@@ -232,41 +249,41 @@ def exercise_shard_resume(root: Path, shard_rows: dict[str, list[tuple[str, np.n
     normal_values = []; resumed_values = []; reused = 0
     for shard in keys:
         ids = [x[0] for x in shard_rows[shard]]; values = np.stack([x[1] for x in shard_rows[shard]]).astype(np.float64)
-        normal_store.commit(shard, ids, values); normal_values.append(normal_store.load(shard, ids))
+        physical = physical_shard_id(shard); normal_store.commit(physical, ids, values); normal_values.append(normal_store.load(physical, ids))
     split = max(1, len(keys) // 3)
     for shard in keys[:split]:
         ids = [x[0] for x in shard_rows[shard]]; values = np.stack([x[1] for x in shard_rows[shard]]).astype(np.float64)
-        resume_store.commit(shard, ids, values)
+        resume_store.commit(physical_shard_id(shard), ids, values)
     resume_store = executor.AtomicShardStore(root / "resumed", membership, forward, "float64")
     for shard in keys:
         ids = [x[0] for x in shard_rows[shard]]; values = np.stack([x[1] for x in shard_rows[shard]]).astype(np.float64)
-        path = resume_store.root / f"{shard}.npz"
+        physical = physical_shard_id(shard); path = resume_store.root / f"{physical}.npz"
         if path.exists(): reused += 1
-        else: resume_store.commit(shard, ids, values)
-        resumed_values.append(resume_store.load(shard, ids))
+        else: resume_store.commit(physical, ids, values)
+        resumed_values.append(resume_store.load(physical, ids))
     left = np.concatenate(normal_values); right = np.concatenate(resumed_values)
-    first, first_ids = keys[0], [x[0] for x in shard_rows[keys[0]]]
+    first, first_ids = keys[0], [x[0] for x in shard_rows[keys[0]]]; first_physical = physical_shard_id(first)
     reorder_shard = next((key for key in keys if len(shard_rows[key]) > 1), first)
     reorder_ids = [x[0] for x in shard_rows[reorder_shard]]
     attacked_order_ids = list(reversed(reorder_ids)) if len(reorder_ids) > 1 else [reorder_ids[0] + "|altered-order"]
     attacks = {}
     for name, store, shard, ids in (
-        ("stale_membership", executor.AtomicShardStore(root / "resumed", "wrong", forward, "float64"), first, first_ids),
-        ("wrong_forward", executor.AtomicShardStore(root / "resumed", membership, "wrong", "float64"), first, first_ids),
-        ("wrong_dtype", executor.AtomicShardStore(root / "resumed", membership, forward, "float32"), first, first_ids),
-        ("wrong_shard", resume_store, "absent", first_ids), ("reordered_payload", resume_store, reorder_shard, attacked_order_ids),
+        ("stale_membership", executor.AtomicShardStore(root / "resumed", "wrong", forward, "float64"), first_physical, first_ids),
+        ("wrong_forward", executor.AtomicShardStore(root / "resumed", membership, "wrong", "float64"), first_physical, first_ids),
+        ("wrong_dtype", executor.AtomicShardStore(root / "resumed", membership, forward, "float32"), first_physical, first_ids),
+        ("wrong_shard", resume_store, "absent", first_ids), ("reordered_payload", resume_store, physical_shard_id(reorder_shard), attacked_order_ids),
     ):
         try: store.load(shard, ids); attacks[name] = False
         except (RuntimeError, FileNotFoundError): attacks[name] = True
-    try: resume_store.commit(first, first_ids, np.stack([x[1] for x in shard_rows[first]]).astype(np.float64)); attacks["duplicate_shard"] = False
+    try: resume_store.commit(first_physical, first_ids, np.stack([x[1] for x in shard_rows[first]]).astype(np.float64)); attacks["duplicate_shard"] = False
     except RuntimeError: attacks["duplicate_shard"] = True
-    corrupt = resume_store.root / f"{first}.npz"; backup = corrupt.read_bytes()
+    corrupt = resume_store.root / f"{first_physical}.npz"; backup = corrupt.read_bytes()
     with np.load(corrupt, allow_pickle=False) as packed:
         changed = packed["values"].copy(); identity_json = packed["identity_json"].copy(); stored_sha = packed["payload_semantic_sha256"].copy()
     changed.flat[0] += 1.0
     with corrupt.open("wb") as handle:
         np.savez(handle, values=changed, identity_json=identity_json, payload_semantic_sha256=stored_sha)
-    try: resume_store.load(first, first_ids); attacks["corrupted_payload"] = False
+    try: resume_store.load(first_physical, first_ids); attacks["corrupted_payload"] = False
     except Exception: attacks["corrupted_payload"] = True
     corrupt.write_bytes(backup)
     return {"ordered_bytes_exact": left.tobytes() == right.tobytes(), "semantic_root_uninterrupted": canonical_sha(left.tolist()),
@@ -284,7 +301,7 @@ def reuse_or_exercise_shards(root: Path, shard_rows: dict[str, list[tuple[str, n
         for name in ("uninterrupted", "resumed"):
             store = executor.AtomicShardStore(root / name, membership, forward, "float64"); values = []
             for shard in keys:
-                ids = [x[0] for x in shard_rows[shard]]; values.append(store.load(shard, ids))
+                ids = [x[0] for x in shard_rows[shard]]; values.append(store.load(physical_shard_id(shard), ids))
             arrays[name] = np.concatenate(values)
         result = dict(saved["result"])
         if arrays["uninterrupted"].tobytes() != arrays["resumed"].tobytes() or canonical_sha(arrays["resumed"].tolist()) != result["semantic_root_resumed"]:
@@ -325,12 +342,14 @@ def _shard_rows(assignments: list[dict[str, Any]]) -> dict[str, list[tuple[str, 
     return dict(grouped)
 
 
-def prepare(output: Path) -> dict[str, Any]:
+def prepare(output: Path, implementation_commit: str) -> dict[str, Any]:
     validate_authorities(); output.mkdir(parents=True, exist_ok=True)
+    if git_head() != implementation_commit:
+        raise RuntimeError("STOP_F1_MECHANICS_BASE_MISMATCH")
     assignments, nulls = load_assignments(), load_nulls()
     authority = {"accepted_real_forward_root": ACCEPTED_FORWARD_ROOT, "assignment_sha256": ASSIGNMENT_SHA, "dedup_sha256": DEDUP_SHA, "matched_null_sha256": NULL_SHA}
     topology = build_identity_topology(assignments, nulls, authority); independent_root = independent_identity_root(assignments, nulls, authority)
-    del topology["ordered_identities"]
+    forward_ids = topology.pop("ordered_identities")
     topology.update({"schema": "f1-mechanics-full-forward-topology-v1", "status": "PASS" if topology["ordered_identity_root_sha256"] == independent_root else "STOP_F1_MECHANICS_FORWARD_TOPOLOGY", "independent_root_sha256": independent_root})
     expected_counts = {"teacher": 43108, "correct": 215540, "null": 215540, "total": 474188}
     if topology["counts"] != expected_counts or not all(topology[k] for k in ("teacher_evidence_invariant", "students_evidence_sensitive", "correct_null_disjoint", "all_identities_unique")): raise RuntimeError("STOP_F1_MECHANICS_FORWARD_TOPOLOGY")
@@ -357,13 +376,24 @@ def prepare(output: Path) -> dict[str, Any]:
     shard["status"] = "PASS" if shard["ordered_bytes_exact"] and shard["valid_shards_reused"] and all(shard["attacks_rejected"].values()) and shard["total_shards"] == 1400 else "STOP_F1_MECHANICS_SHARD_RESUME"
     if shard["status"] != "PASS": raise RuntimeError(shard["status"])
     write_json(output / "F1_MECHANICS_PRODUCTION_SHARD_RESUME.json", shard)
-    expected = ExpectedFinalization(1400,474188,222480,dedup["assignment_membership_root_sha256"],topology["ordered_identity_root_sha256"],git_head())
-    attacks = {}
-    for key, value in (("shards",1399),("shards",1401),("forwards",474187),("forwards",474189),("effects",222479),("effects",222481),("membership_root","wrong"),("forward_root","wrong"),("implementation_commit","wrong")):
-        actual=expected.as_dict();actual[key]=value
-        try: validate_finalization(expected,actual); attacks[f"{key}_{value}"]=False
-        except RuntimeError: attacks[f"{key}_{value}"]=True
-    finalizer={"schema":"f1-mechanics-finalizer-failclosed-v1","expected":expected.as_dict(),"attacks_rejected":attacks,"status":"PASS" if all(attacks.values()) else "STOP_F1_MECHANICS_FINALIZER"}
+    shard_ids=sorted(shard_rows);effect_ids=[f"{row['assignment_key']}|{level}" for row in assignments for level in EVIDENCE]
+    expected=make_expected_finalization(shard_ids,forward_ids,effect_ids,implementation_commit)
+    actual={"shard_ids":shard_ids,"forward_ids":forward_ids,"effect_ids":effect_ids,"implementation_commit":implementation_commit};validate_finalization(expected,actual)
+    attack_values=(
+        ("missing_shard",{**actual,"shard_ids":shard_ids[:-1]}),("extra_shard",{**actual,"shard_ids":shard_ids+["extra"]}),
+        ("duplicate_replaces_shard",{**actual,"shard_ids":shard_ids[:-1]+[shard_ids[0]]}),
+        ("missing_forward",{**actual,"forward_ids":forward_ids[:-1]}),("extra_forward",{**actual,"forward_ids":forward_ids+["extra"]}),
+        ("duplicate_replaces_forward",{**actual,"forward_ids":forward_ids[:-1]+[forward_ids[0]]}),
+        ("missing_effect",{**actual,"effect_ids":effect_ids[:-1]}),("extra_effect",{**actual,"effect_ids":effect_ids+["extra"]}),
+        ("duplicate_replaces_effect",{**actual,"effect_ids":effect_ids[:-1]+[effect_ids[0]]}),
+        ("reordered_effect",{**actual,"effect_ids":list(reversed(effect_ids))}),
+        ("wrong_implementation_commit",{**actual,"implementation_commit":"wrong"}),("summary_only",expected.as_dict()),
+    )
+    attacks={}
+    for name,attacked in attack_values:
+        try: validate_finalization(expected,attacked);attacks[name]=False
+        except RuntimeError:attacks[name]=True
+    finalizer={"schema":"f1-mechanics-finalizer-failclosed-v1","expected":expected.as_dict(),"concrete_memberships_recomputed":True,"summary_only_rejected":True,"attacks_rejected":attacks,"status":"PASS" if all(attacks.values()) else "STOP_F1_MECHANICS_FINALIZER"}
     if finalizer["status"] != "PASS": raise RuntimeError(finalizer["status"])
     write_json(output / "F1_MECHANICS_FINALIZER_FAILCLOSED.json", finalizer)
     firewall={"schema":"f1-mechanics-firewall-v1","bounded_fixture_only":True,"protected_expression_opened":False,"DEV_opened":False,"SEALED_opened":False,"pathology_opened":False,"reader_validation_or_oracle_opened":False,"full_real_f1_expression_opened":False,"training":False,"backward":False,"optimizer":False,"EMA":False,"real_f1_biological_effects_computed":False,"status":"PASS"}
@@ -433,11 +463,11 @@ def finalize(output: Path) -> dict[str,Any]:
 
 def main() -> None:
     parser=argparse.ArgumentParser();sub=parser.add_subparsers(dest="command",required=True)
-    p=sub.add_parser("prepare");p.add_argument("--output",type=Path,default=PACKAGE)
+    p=sub.add_parser("prepare");p.add_argument("--output",type=Path,default=PACKAGE);p.add_argument("--implementation-commit",required=True)
     s=sub.add_parser("soak");s.add_argument("--output",type=Path,default=PACKAGE);s.add_argument("--duration-seconds",type=float,default=1200)
     f=sub.add_parser("finalize");f.add_argument("--output",type=Path,default=PACKAGE)
     args=parser.parse_args()
-    if args.command=="prepare": result=prepare(args.output)
+    if args.command=="prepare": result=prepare(args.output,args.implementation_commit)
     elif args.command=="soak": result=soak(args.output,args.duration_seconds)
     else: result=finalize(args.output)
     print(json.dumps(result,sort_keys=True))
