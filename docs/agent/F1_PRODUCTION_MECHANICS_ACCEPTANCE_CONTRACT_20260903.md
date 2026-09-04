@@ -39,7 +39,7 @@ All 44,496 assignments remain inferential records. Deduplication is compute-only
 
 ## Synthetic known-answer records
 
-The acceptance run uses no real neural outcome. It constructs 222,480 deterministic float64 sufficient-statistic records from SHA-256 of `(assignment_key,evidence,field)` mapped to stable bounded values. The exact production record schema and downstream organization are exercised; an independent implementation reconstructs each value without calling production endpoint helpers. Synthetic values must vary with donor, program, draw, assignment, evidence, and query. They are never interpreted as biology or passed to a biological PASS/STOP gate.
+The acceptance run uses no real neural outcome. It constructs 222,480 deterministic float64 sufficient-statistic records from SHA-256 of `(cell,query,evidence,field)` mapped to stable bounded values. The exact production record schema and downstream organization are exercised; an independent implementation reconstructs each value without calling production endpoint helpers. Endpoint values vary across compute identities and evidence, while donor/program/draw/assignment provenance varies across inferential records. Records sharing a compute-deduplicated `(cell,query,evidence)` must retain distinct assignment provenance but identical endpoint values, as a real cached forward would. They are never interpreted as biology or passed to a biological PASS/STOP gate.
 
 ## Shards, resume, and finalizer
 
