@@ -8,24 +8,23 @@ This review preserves the existing synthetic observation as descriptive evidence
 
 ## Independently closed historical dependency
 
-The T1 optimizer ID→parameter-name mapping was reconstructed independently from checkpoint ordering. Across u10/u25/u50/u100/u200/u205, all 48 required `{attention_norm,Q,K,V}×6` tensors have both Adam moments exactly zero, while 12/12 attention-output tensors have nonzero moments. Claude's B7 uncertainty can therefore be closed.
+The T1 optimizer ID→parameter-name mapping was reconstructed independently from checkpoint ordering and cross-checked against the published historical component builder at `main@76fe7d63...`: `stage81a3_prod41k_teacher_t1.py` calls `phase_e.build_components`, and `stage81a3_prod41k_engineering_smoke.py::build_components` constructs `parameters = list(online.parameters()) + list(predictor.parameters())` before AdamW. Across u10/u25/u50/u100/u200/u205, the checkpoint gradient/state ordering matches the online/predictor partitions and all 48 required `{attention_norm,Q,K,V}×6` tensors have both Adam moments exactly zero, while 12/12 attention-output tensors have nonzero moments. Claude's B7 uncertainty can therefore be closed, subject to preserving this source binding in the authority record.
 
 ## Verifier findings
 
 1. **G1 nonfinite hole.** `gradient_coverage()` counts only norm==0. A NaN/Inf gradient norm is not zero and can satisfy the current G1 arithmetic.
 2. **G2 contract mismatch.** The contract requires both `exp_avg` and `exp_avg_sq` nonzero. The implementation marks a tensor dead only when both are zero. A zero/missing/nonfinite second moment can therefore be hidden by a nonzero first moment.
-3. **G3 pooled movement.** G3 gates mean relative movement across the family. A decay-only tensor can be hidden by large movement elsewhere. The protected family requires a minimum/per-tensor rule plus explicit zero-baseline handling.
+3. **G3 pooled/incomplete movement.** G3 gates mean relative movement over `pre_attention_tensors`, which includes `attention_norm` although the contract describes Q/K/V movement. A decay-only tensor can be hidden by large movement elsewhere, and tensors with near-zero baseline norm are skipped. The protected family requires a prospectively specified per-tensor/per-role rule plus explicit zero-baseline handling.
 4. **Predictor mechanics are not gated.** The successor's `SingletonQueryPredictor` is critical to the observed conditional computation but its gradients/moments/movement are telemetry-only.
 5. **Backbone routing samples cell 0.** The implementation uses the first cell's query addresses and first cell support; this is not valid for variable-support real data.
 6. **Predictor routing normalizes by cell 0 support.** Real cells/operators have different valid-key counts; normalization must be per cell/query.
-7. **G4 implementation does not match its prose.** The current backbone spread expression compares across heads rather than directly across query addresses.
-8. **Routing metric name collision.** F1-B computes entropy perplexity `exp(H)`; earlier local probes used participation ratio `1/sum(p^2)`. Both are legitimate but must be explicitly named and preferably both reported.
-9. **Predictor-routing telemetry lacks analytic mutation tests.** Uniform, one-hot, masked-key, variable-support and permutation invariance tests are required.
-10. **G5 real biology is not implemented.** Fixed-coordinate projection retention is nonterminal in synthetic mode but would still be the arithmetic used if `biology_evaluable=True`. Real G5 must use checkpoint-specific refit donor-held-out probes.
-11. **Frozen horizon mismatch.** The contract freezes 40 updates; the published descriptive trajectory used 300 via `--updates`. Preserve u0–u300 as descriptive evidence; formal requalification should rerun exactly 40 after repairs.
-12. **Directional claim is too strong.** Query-centering removes additive query-common cell components; it does not prove a query-conditioned transformation of global/CELL state is impossible. Real M3 therefore requires CELL-only and identity-only controls.
-13. **Target semantics differ from F0/F1.** F1-B masks the entire query set Q; F0/F1 masks one q at a time. A TRAIN-only singleton-vs-all-Q target-equivalence audit is required before production training.
-14. **Production AMP smoke remains open.** The published F1-B loop is CUDA but does not qualify the final fp16 autocast+GradScaler production successor path.
+7. **Routing metric name collision.** F1-B computes entropy perplexity `exp(H)`; earlier local probes used participation ratio `1/sum(p^2)`. Both are legitimate but must be explicitly named and preferably both reported.
+8. **Predictor-routing telemetry lacks analytic mutation tests.** Uniform, one-hot, masked-key, variable-support and permutation invariance tests are required.
+9. **G5 real biology is not implemented.** Fixed-coordinate projection retention is nonterminal in synthetic mode but would still be the arithmetic used if `biology_evaluable=True`. Real G5 must use checkpoint-specific refit donor-held-out probes.
+10. **Frozen horizon mismatch.** The contract freezes 40 updates; the published descriptive trajectory used 300 via `--updates`. Preserve u0–u300 as descriptive evidence; formal requalification should rerun exactly 40 after repairs.
+11. **Directional claim is too strong.** Query-centering removes additive query-common cell components; it does not prove a query-conditioned transformation of global/CELL state is impossible. Real M3 therefore requires CELL-only and identity-only controls.
+12. **Target semantics differ from F0/F1.** F1-B masks the entire query set Q; F0/F1 masks one q at a time. A TRAIN-only singleton-vs-all-Q target-equivalence audit is required before production training.
+13. **Production AMP smoke remains open.** The published F1-B loop is CUDA but does not qualify the final fp16 autocast+GradScaler production successor path.
 
 ## Required prospective repair
 
