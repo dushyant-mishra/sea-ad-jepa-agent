@@ -1,3 +1,5 @@
 *.sh text eol=lf
 results/visualization/*.html -text
 docs/history/exact_bytes/** -text
+scripts/v4/contextual_target_f1_decision_v1.py text eol=lf
+scripts/v4/contextual_target_f1_decision_v4.py text eol=lf
