@@ -6,7 +6,7 @@ contract and published synthetic result files from the checked-out branch plus s
 in-memory tensors. It does not read expression, DEV/SEALED/pathology, or F1 outcomes.
 """
 from __future__ import annotations
-import argparse, importlib.util, json, math, sys
+import argparse, importlib.util, json, sys
 from pathlib import Path
 import torch
 
@@ -74,9 +74,10 @@ def static_findings():
       "backbone_cell0_support_literal_present": 'visible[0].sum()' in src,
       "backbone_cell0_query_literal_present": 'pop["queries"][0, :4]' in src,
       "predictor_cell0_support_literal_present": 'valid[0].sum()' in src,
-      "g4_head_dimension_expression_present": 'p.max(dim=1).values - p.min(dim=1).values' in src,
       "entropy_perplexity_used": '(-(p * (p + 1e-30).log()).sum(-1)).exp()' in src or '(-(w * (w + 1e-30).log()).sum(-1)).exp()' in src,
       "participation_ratio_reported": '1.0 /' in src and 'sum(p * p)' in src,
+      "movement_family_includes_attention_norm": 'PRE_ATTENTION_ROLES = ("attention_norm", "attention.query", "attention.key", "attention.value")' in src,
+      "movement_skips_near_zero_baseline": 'if norm <= 1e-8:' in src,
       "update_override_exposed": 'add_argument("--updates"' in src,
       "contract_default_updates":40,
       "published_result_updates":result.get("frozen_parameters",{}).get("updates"),
@@ -95,11 +96,13 @@ def main():
     if attacks["G3_mean_movement_masking"]["vulnerable"]:vulnerabilities.append("G3_MEAN_MASKS_DECAY_ONLY_TENSOR")
     s=attacks["static"]
     for key in ("predictor_mechanics_gate_missing","backbone_cell0_support_literal_present","backbone_cell0_query_literal_present",
-                "predictor_cell0_support_literal_present","g4_head_dimension_expression_present"):
+                "predictor_cell0_support_literal_present","movement_family_includes_attention_norm","movement_skips_near_zero_baseline"):
         if s.get(key):vulnerabilities.append(key.upper())
     if s["published_result_updates"]!=s["contract_default_updates"]:vulnerabilities.append("PUBLISHED_300U_EXCEEDS_FROZEN_40U_HORIZON")
-    doc={"schema":"F1B_INDEPENDENT_VERIFIER_ATTACKS_V1","terminal":"STOP_F1B_INDEPENDENT_VERIFICATION_REPAIR_REQUIRED" if vulnerabilities else "PASS_F1B_INDEPENDENT_VERIFIER",
+    doc={"schema":"F1B_INDEPENDENT_VERIFIER_ATTACKS_V1",
+         "terminal":"STOP_F1B_INDEPENDENT_VERIFICATION_REPAIR_REQUIRED" if vulnerabilities else "PASS_F1B_INDEPENDENT_VERIFIER",
          "vulnerabilities":vulnerabilities,"attacks":attacks,
+         "explicit_correction":"The backbone G4 expression uses dim=1 on [heads,queries,keys], so it does compare query addresses. The remaining routing defect is first-cell-only coverage/normalization, not a head/query-axis error.",
          "firewall":{"expression_read":False,"f1_outcome_read":False,"dev_sealed_pathology":False}}
     a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(doc,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     print(json.dumps({"terminal":doc["terminal"],"vulnerabilities":vulnerabilities},indent=2))
