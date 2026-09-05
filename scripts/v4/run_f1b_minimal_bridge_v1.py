@@ -371,21 +371,28 @@ def endpoint_report(states: torch.Tensor, weights: dict[str, np.ndarray], frozen
 # --------------------------------------------------------------------------------------
 
 def evaluate_gates(coverage, moments, movement, routing, endpoints, baseline_endpoints,
-                   frozen: Frozen, baseline_routing) -> dict[str, Any]:
+                   frozen: Frozen, baseline_routing, biology_evaluable: bool) -> dict[str, Any]:
+    """G1-G4 are always terminal. G5 is terminal only where biology is evaluable.
+
+    A fixed-projection retention confounds coordinate rotation with information loss.
+    Closed v4 finding #4 records that much apparent partial-H loss was rotation, not
+    destruction. Synthetic expression carries no biology and no probe can be refit on it,
+    so G5 is reported but never terminal in synthetic mode. Real mode must measure
+    retention through a refit held-out probe, which is rotation-invariant.
+    """
     g1 = coverage["tensors"] == EXPECTED_PRE_ATTENTION_TENSORS and coverage["zero_norm"] == 0
     g2 = moments["tensors"] == EXPECTED_PRE_ATTENTION_TENSORS and moments["zero_moments"] == 0
     g3 = bool(movement["ratio_over_decay"] is not None and
               movement["ratio_over_decay"] >= frozen.movement_over_decay_margin)
     g4 = bool(routing["min_per_query_routing_spread"] > frozen.routing_diversity_floor)
     degraded = []
-    for name, current in endpoints.items():
-        base = baseline_endpoints.get(name)
-        if base is None or base["saturated"]:
-            continue
-        # Retention is a cosine against the frozen baseline direction, so it is immune to
-        # global rescaling of the representation. Magnitude alone is not decision-bearing.
-        if (1.0 - current["retention"]) > frozen.rare_degradation_tolerance:
-            degraded.append(name)
+    if biology_evaluable:
+        for name, current in endpoints.items():
+            base = baseline_endpoints.get(name)
+            if base is None or base["saturated"]:
+                continue
+            if (1.0 - current["retention"]) > frozen.rare_degradation_tolerance:
+                degraded.append(name)
     g5 = not degraded
     ratio = routing["mean_n_eff_over_n"] / max(baseline_routing["mean_n_eff_over_n"], 1e-12)
     outcome = ("ROUTING_SHARPENED" if ratio < frozen.sharpening_threshold
@@ -396,7 +403,8 @@ def evaluate_gates(coverage, moments, movement, routing, endpoints, baseline_end
         "G2_optimizer_moments": bool(g2),
         "G3_movement_beyond_decay": g3,
         "G4_routing_diversity": g4,
-        "G5_rare_non_degradation": bool(g5),
+        "G5_rare_non_degradation": bool(g5) if biology_evaluable else "NOT_EVALUABLE_SYNTHETIC",
+        "G5_terminal": bool(biology_evaluable),
         "degraded_endpoints": degraded,
         "all_mechanics_pass": bool(g1 and g2 and g3 and g4 and g5),
         "routing_outcome": outcome,
@@ -487,7 +495,8 @@ def run(mode: str, output_root: Path, canonical_root: Path, worktree_root: Path,
                 endpoints, _ = endpoint_report(encode_student(online, pop).gene_states,
                                                programs, frozen, baseline_projection)
             gates = evaluate_gates(coverage, moments, movement, routing, endpoints,
-                                   baseline_endpoints, frozen, baseline_routing)
+                                   baseline_endpoints, frozen, baseline_routing,
+                                   biology_evaluable=(mode != "synthetic"))
             record = {"update": step, "loss": float(loss.detach()),
                       "mean_cosine": stats["mean_cosine"], "valid_fraction": stats["valid_fraction"],
                       "gradient_coverage": {k: v for k, v in coverage.items() if k != "rows"},
@@ -508,7 +517,7 @@ def run(mode: str, output_root: Path, canonical_root: Path, worktree_root: Path,
             if not gates["G1_gradient_coverage"] or not gates["G2_optimizer_moments"]:
                 aborted, abort_reason = True, "STOP_F1B_ATTENTION_PATH_DEAD"
                 break
-            if not gates["G5_rare_non_degradation"]:
+            if gates["G5_terminal"] and not gates["G5_rare_non_degradation"]:
                 aborted, abort_reason = True, "STOP_F1B_ENDPOINT_DEGRADATION"
                 break
         del student, predicted, target, loss

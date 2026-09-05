@@ -196,7 +196,7 @@ def test_gradient_coverage_detects_the_historical_t1_defect():
                                {"ratio_over_decay": 1.017, "pure_decay_prediction": 2e-4,
                                 "mean_relative_movement": 2.08e-4, "min_relative_movement": 2e-4},
                                {"min_per_query_routing_spread": 1e-3, "mean_n_eff_over_n": 0.997},
-                               {}, {}, f1b.Frozen(), {"mean_n_eff_over_n": 0.997})
+                               {}, {}, f1b.Frozen(), {"mean_n_eff_over_n": 0.997}, True)
     assert gates["G1_gradient_coverage"] is False
     assert gates["G2_optimizer_moments"] is False
     assert gates["G3_movement_beyond_decay"] is False, "1.017x decay must not pass"
@@ -241,7 +241,7 @@ def _healthy():
 
 def test_healthy_run_passes_all_mechanics_gates():
     c, m, mv, r, e, b = _healthy()
-    gates = f1b.evaluate_gates(c, m, mv, r, e, b, f1b.Frozen(), {"mean_n_eff_over_n": 0.99})
+    gates = f1b.evaluate_gates(c, m, mv, r, e, b, f1b.Frozen(), {"mean_n_eff_over_n": 0.99}, True)
     assert gates["all_mechanics_pass"] is True
 
 
@@ -270,7 +270,7 @@ def test_retention_detects_a_real_direction_change():
 def test_g5_aborts_on_endpoint_degradation():
     c, m, mv, r, e, b = _healthy()
     e = {"rare": {"retention": 0.90, "magnitude": 1.0, "spread": 0.5, "saturated": False}}
-    gates = f1b.evaluate_gates(c, m, mv, r, e, b, f1b.Frozen(), {"mean_n_eff_over_n": 0.99})
+    gates = f1b.evaluate_gates(c, m, mv, r, e, b, f1b.Frozen(), {"mean_n_eff_over_n": 0.99}, True)
     assert gates["G5_rare_non_degradation"] is False
     assert gates["degraded_endpoints"] == ["rare"]
 
@@ -280,14 +280,14 @@ def test_saturated_endpoints_are_not_decision_bearing():
     c, m, mv, r, _, _ = _healthy()
     base = {"sat": {"retention": 1.0, "magnitude": 0.9999, "spread": 1e-9, "saturated": True}}
     now = {"sat": {"retention": 0.10, "magnitude": 0.5, "spread": 1e-9, "saturated": True}}
-    gates = f1b.evaluate_gates(c, m, mv, r, now, base, f1b.Frozen(), {"mean_n_eff_over_n": 0.99})
+    gates = f1b.evaluate_gates(c, m, mv, r, now, base, f1b.Frozen(), {"mean_n_eff_over_n": 0.99}, True)
     assert gates["G5_rare_non_degradation"] is True, "saturated endpoints must be excluded"
 
 
 def test_g4_rejects_identical_routing_across_queries():
     c, m, mv, _, e, b = _healthy()
     r = {"min_per_query_routing_spread": 0.0, "mean_n_eff_over_n": 0.99}
-    gates = f1b.evaluate_gates(c, m, mv, r, e, b, f1b.Frozen(), {"mean_n_eff_over_n": 0.99})
+    gates = f1b.evaluate_gates(c, m, mv, r, e, b, f1b.Frozen(), {"mean_n_eff_over_n": 0.99}, True)
     assert gates["G4_routing_diversity"] is False
 
 
@@ -296,15 +296,15 @@ def test_routing_outcome_names_all_three_states():
     frozen = f1b.Frozen()
     sharp = f1b.evaluate_gates(c, m, mv, {"min_per_query_routing_spread": 1e-3,
                                           "mean_n_eff_over_n": 0.50}, e, b, frozen,
-                               {"mean_n_eff_over_n": 0.99})
+                               {"mean_n_eff_over_n": 0.99}, True)
     assert sharp["routing_outcome"] == "ROUTING_SHARPENED"
-    diffuse = f1b.evaluate_gates(c, m, mv, r, e, b, frozen, {"mean_n_eff_over_n": 0.99})
+    diffuse = f1b.evaluate_gates(c, m, mv, r, e, b, frozen, {"mean_n_eff_over_n": 0.99}, True)
     assert diffuse["routing_outcome"] == "ROUTING_DIFFUSE_WITH_HEALTHY_GRADIENTS"
     dead = f1b.evaluate_gates(f1b.gradient_coverage(_FakeEncoder(dead=["blocks.0.attention.key.weight"])),
                               {"tensors": 48, "zero_moments": 1, "zero_tensors": []},
                               {"ratio_over_decay": 1.0, "pure_decay_prediction": 2e-4,
                                "mean_relative_movement": 2e-4, "min_relative_movement": 2e-4},
-                              r, e, b, frozen, {"mean_n_eff_over_n": 0.99})
+                              r, e, b, frozen, {"mean_n_eff_over_n": 0.99}, True)
     assert dead["routing_outcome"] == "ROUTING_UNRESOLVED"
 
 
@@ -347,3 +347,24 @@ def test_centering_removes_the_per_cell_mean():
     x = torch.randn(3, 5, 8)
     centred = mod.center_queries(x)
     assert torch.allclose(centred.mean(dim=1), torch.zeros(3, 8), atol=1e-6)
+
+
+def test_g5_is_not_terminal_in_synthetic_mode():
+    """Synthetic expression carries no biology and no probe can be refit on it."""
+    c, m, mv, r, _, b = _healthy()
+    collapsed = {"rare": {"retention": 0.10, "magnitude": 1.0, "spread": 0.5, "saturated": False}}
+    gates = f1b.evaluate_gates(c, m, mv, r, collapsed, b, f1b.Frozen(),
+                               {"mean_n_eff_over_n": 0.99}, biology_evaluable=False)
+    assert gates["G5_rare_non_degradation"] == "NOT_EVALUABLE_SYNTHETIC"
+    assert gates["G5_terminal"] is False
+    assert gates["all_mechanics_pass"] is True, "G1-G4 must still decide in synthetic mode"
+
+
+def test_g5_is_terminal_where_biology_is_evaluable():
+    c, m, mv, r, _, b = _healthy()
+    collapsed = {"rare": {"retention": 0.10, "magnitude": 1.0, "spread": 0.5, "saturated": False}}
+    gates = f1b.evaluate_gates(c, m, mv, r, collapsed, b, f1b.Frozen(),
+                               {"mean_n_eff_over_n": 0.99}, biology_evaluable=True)
+    assert gates["G5_rare_non_degradation"] is False
+    assert gates["G5_terminal"] is True
+    assert gates["all_mechanics_pass"] is False
