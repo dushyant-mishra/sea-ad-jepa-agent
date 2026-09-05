@@ -25,6 +25,8 @@ The T1 optimizer ID→parameter-name mapping was reconstructed independently fro
 11. **Directional claim is too strong.** Query-centering removes additive query-common cell components; it does not prove a query-conditioned transformation of global/CELL state is impossible. Real M3 therefore requires CELL-only and identity-only controls.
 12. **Target semantics differ from F0/F1.** F1-B masks the entire query set Q; F0/F1 masks one q at a time. A TRAIN-only singleton-vs-all-Q target-equivalence audit is required before production training.
 13. **Production AMP smoke remains open.** The published F1-B loop is CUDA but does not qualify the final fp16 autocast+GradScaler production successor path.
+14. **G1 is not enforced before the optimizer step.** The implementation computes gradient coverage after backward, then calls `optimizer.step()`, and only evaluates/aborts on telemetry steps. A mandatory dead/nonfinite path can therefore receive an optimizer update before fail-closed termination. Mandatory gradient validity must be checked before every protected optimizer step.
+15. **Real-G5 endpoint registry is implicit and overbroad.** The executor loads every `l2__*` key from `program_weights.npz`; that authority also contains `recurrent_5pct` and `recurrent_1pct`, which are duplicated rare directions and are not authorized as main-F1 rare-state endpoints. Any future real G5 must bind an explicit prospectively frozen endpoint registry rather than infer biology from all NPZ keys.
 
 ## Required prospective repair
 
@@ -33,10 +35,11 @@ Create a new implementation generation. Do not edit or replace the existing f0fb
 - require both Adam moments independently;
 - gate minimum per-tensor movement beyond exact decay, with zero-baseline handling;
 - gate the authenticated predictor parameter registry;
+- enforce mandatory gradient validity before every protected optimizer step; do not step first and abort later;
 - compute backbone/predictor routing for all cells with per-cell valid-key counts;
 - report `N_eff_entropy` and `N_eff_participation` separately plus top-k mass and query-map cosine;
 - add analytic routing mutation tests;
-- keep real G5 fail-closed until the refit-probe protocol is frozen;
+- keep real G5 fail-closed until the refit-probe protocol and explicit endpoint registry are frozen; never infer gate-bearing endpoints from every `l2__*` NPZ key;
 - formal-run exactly 40 updates;
 - bind both original and verifier-repair contracts.
 
