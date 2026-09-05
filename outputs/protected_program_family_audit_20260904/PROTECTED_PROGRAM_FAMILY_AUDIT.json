@@ -1,0 +1,728 @@
+{
+  "audit_question": "How many independent directions do the eight gated protected-program weight vectors span, which gated families are exact functions of others, and is the registry's rare/recurrent threshold semantics representable in the current program estimand?",
+  "audit_semantic_root_sha256": "efc4f7813d1883bd1190eba53003ca0f2f788d3855811076cce976bffe6b9315",
+  "authority": {
+    "address_count": 41238,
+    "canonical_root": "D:/Jepa project",
+    "decision_v1_matches_declared_frozen_sha256": true,
+    "decision_v1_sha256_lf_normalized": "204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34",
+    "decision_v4_path": "scripts/v4/contextual_target_f1_decision_v4.py",
+    "decision_v4_sha256_lf_normalized": "5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913",
+    "program_registry_path": "exports/contextual_biology_v6r5a_20260822/program_registry.csv",
+    "program_registry_provenance_sha256": "2f9e79c6c9d6b6a5d9738af90f79a286a76a2ef06899c496f49338df05f86391",
+    "program_registry_sha256": "8d29cfe86518882492ab8e878b8a2f79b8425a61b79710d5b74a0cbf654ba729",
+    "program_weights_path": "exports/contextual_biology_v6r5a_20260822/program_weights.npz",
+    "program_weights_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+    "registry_claim_limit": "These are frozen diagnostic programs, not pathway annotations or production-target qualification.",
+    "registry_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+    "source_digest_convention": "lf_normalized_bytes",
+    "upstream_basis_asset": "stage81a3r_global_dimension_range_closure_ordered_basis.npz",
+    "upstream_basis_local_path_published": false,
+    "upstream_basis_source_sha256": "5ddee92a83cd4f54ae61a6c9ed192847ac8f941f725e5a5678512460f5308b84",
+    "upstream_basis_status": "STAGE81A3R_GLOBAL_DIMENSION_RANGE_CLOSURE_COMPLETE_NOT_FROZEN"
+  },
+  "byte_identity_l2": {
+    "distinct_vectors": 8,
+    "duplicate_classes": [
+      {
+        "members": [
+          "innovation_tail",
+          "recurrent_5pct",
+          "recurrent_1pct"
+        ],
+        "sha256": "0f56867459d1e11a057aa9451738f33bf07e84004f3728c2c614f9ec8f6cfdc2"
+      }
+    ],
+    "programs": 10
+  },
+  "byte_identity_raw": {
+    "distinct_vectors": 8,
+    "duplicate_classes": [
+      {
+        "members": [
+          "innovation_tail",
+          "recurrent_5pct",
+          "recurrent_1pct"
+        ],
+        "sha256": "ad4c0c688bcb6432e4d4523730f71201148763e77c4caea504d44da4b9512a1d"
+      }
+    ],
+    "programs": 10
+  },
+  "change_assertions": {
+    "dataset_dependent_parameter_selected": false,
+    "frozen_artifact_written": false,
+    "gate_definition_changed": false,
+    "program_family_added_removed_or_redefined": false,
+    "program_weights_modified": false,
+    "statistical_rule_changed": false
+  },
+  "dependence": {
+    "gated_matrix_shape": [
+      8,
+      41238
+    ],
+    "numerical_rank": 7,
+    "pairwise_cosine_l2": {
+      "broad_common": {
+        "broad_common": 1.000000009994915,
+        "core_halo": 0.13764976941095403,
+        "innovation_tail": 0.6726653182817145,
+        "local": 0.6227553558695461,
+        "local_core": 0.035468447291114924,
+        "local_halo": 0.14350586297223344,
+        "recurrent_1pct": 0.6726653182817145,
+        "recurrent_5pct": 0.6726653182817145,
+        "sparse_marker_like": 0.10386612825637878,
+        "weak_distributed": 0.5821975475882508
+      },
+      "core_halo": {
+        "broad_common": 0.13764976941095403,
+        "core_halo": 1.0000000727835356,
+        "innovation_tail": 0.05751966009811149,
+        "local": 0.4969389997981888,
+        "local_core": 0.577350280319493,
+        "local_halo": 0.8164966106414795,
+        "recurrent_1pct": 0.05751966009811149,
+        "recurrent_5pct": 0.05751966009811149,
+        "sparse_marker_like": 0.09021098129992078,
+        "weak_distributed": 0.06195787694213433
+      },
+      "innovation_tail": {
+        "broad_common": 0.6726653182817145,
+        "core_halo": 0.05751966009811149,
+        "innovation_tail": 0.9999999993432539,
+        "local": 0.49406773226581774,
+        "local_core": 0.01568293244773543,
+        "local_halo": 0.05935739807318896,
+        "recurrent_1pct": 0.9999999993432539,
+        "recurrent_5pct": 0.9999999993432539,
+        "sparse_marker_like": 0.05472360344754433,
+        "weak_distributed": 0.7498595462492804
+      },
+      "local": {
+        "broad_common": 0.6227553558695461,
+        "core_halo": 0.4969389997981888,
+        "innovation_tail": 0.49406773226581774,
+        "local": 0.9999999729753778,
+        "local_core": 0.2360675738235123,
+        "local_halo": 0.44169848412275314,
+        "recurrent_1pct": 0.49406773226581774,
+        "recurrent_5pct": 0.49406773226581774,
+        "sparse_marker_like": 0.11263396650245935,
+        "weak_distributed": 0.4490016684980959
+      },
+      "local_core": {
+        "broad_common": 0.035468447291114924,
+        "core_halo": 0.577350280319493,
+        "innovation_tail": 0.01568293244773543,
+        "local": 0.2360675738235123,
+        "local_core": 0.9999999657714582,
+        "local_halo": 0.0,
+        "recurrent_1pct": 0.01568293244773543,
+        "recurrent_5pct": 0.01568293244773543,
+        "sparse_marker_like": 0.06249999786071614,
+        "weak_distributed": 0.01263992382231396
+      },
+      "local_halo": {
+        "broad_common": 0.14350586297223344,
+        "core_halo": 0.8164966106414795,
+        "innovation_tail": 0.05935739807318896,
+        "local": 0.44169848412275314,
+        "local_core": 0.0,
+        "local_halo": 1.0,
+        "recurrent_1pct": 0.05935739807318896,
+        "recurrent_5pct": 0.05935739807318896,
+        "sparse_marker_like": 0.06629125960171223,
+        "weak_distributed": 0.06694481326428559
+      },
+      "recurrent_1pct": {
+        "broad_common": 0.6726653182817145,
+        "core_halo": 0.05751966009811149,
+        "innovation_tail": 0.9999999993432539,
+        "local": 0.49406773226581774,
+        "local_core": 0.01568293244773543,
+        "local_halo": 0.05935739807318896,
+        "recurrent_1pct": 0.9999999993432539,
+        "recurrent_5pct": 0.9999999993432539,
+        "sparse_marker_like": 0.05472360344754433,
+        "weak_distributed": 0.7498595462492804
+      },
+      "recurrent_5pct": {
+        "broad_common": 0.6726653182817145,
+        "core_halo": 0.05751966009811149,
+        "innovation_tail": 0.9999999993432539,
+        "local": 0.49406773226581774,
+        "local_core": 0.01568293244773543,
+        "local_halo": 0.05935739807318896,
+        "recurrent_1pct": 0.9999999993432539,
+        "recurrent_5pct": 0.9999999993432539,
+        "sparse_marker_like": 0.05472360344754433,
+        "weak_distributed": 0.7498595462492804
+      },
+      "sparse_marker_like": {
+        "broad_common": 0.10386612825637878,
+        "core_halo": 0.09021098129992078,
+        "innovation_tail": 0.05472360344754433,
+        "local": 0.11263396650245935,
+        "local_core": 0.06249999786071614,
+        "local_halo": 0.06629125960171223,
+        "recurrent_1pct": 0.05472360344754433,
+        "recurrent_5pct": 0.05472360344754433,
+        "sparse_marker_like": 0.9999999657714582,
+        "weak_distributed": 0.04091903459693873
+      },
+      "weak_distributed": {
+        "broad_common": 0.5821975475882508,
+        "core_halo": 0.06195787694213433,
+        "innovation_tail": 0.7498595462492804,
+        "local": 0.4490016684980959,
+        "local_core": 0.01263992382231396,
+        "local_halo": 0.06694481326428559,
+        "recurrent_1pct": 0.7498595462492804,
+        "recurrent_5pct": 0.7498595462492804,
+        "sparse_marker_like": 0.04091903459693873,
+        "weak_distributed": 0.9999999823491804
+      }
+    },
+    "rank_deficiency": 1,
+    "rank_tolerance": 1.608112570380391e-11,
+    "reconstructions": [
+      {
+        "exactly_dependent_at_float32_precision": false,
+        "max_abs_residual": 0.03985685667504066,
+        "nonzero_coefficients": {
+          "core_halo": -0.05576190126033977,
+          "innovation_tail": 0.38291532418544366,
+          "local": 0.4369557526559458,
+          "local_core": -0.045286841377502475,
+          "local_halo": -0.03627146691770708,
+          "sparse_marker_like": 0.03971745217765138,
+          "weak_distributed": 0.10370127419208947
+        },
+        "program": "broad_common",
+        "residual_l2_norm": 0.6483029583397195
+      },
+      {
+        "exactly_dependent_at_float32_precision": false,
+        "max_abs_residual": 0.06057666626385612,
+        "nonzero_coefficients": {
+          "broad_common": 0.10450789415843426,
+          "core_halo": -0.014764197304253188,
+          "innovation_tail": 0.64076224752798,
+          "local": 0.08309944909190348,
+          "local_core": -0.011480658849992624,
+          "local_halo": -0.009964322406294418,
+          "sparse_marker_like": -0.01165045447969476
+        },
+        "program": "weak_distributed",
+        "residual_l2_norm": 0.650819422892195
+      },
+      {
+        "exactly_dependent_at_float32_precision": false,
+        "max_abs_residual": 0.04026407782191628,
+        "nonzero_coefficients": {
+          "broad_common": 0.4372550713959971,
+          "core_halo": 0.21170112258206017,
+          "innovation_tail": 0.11188640929913872,
+          "local_core": 0.09428794845896533,
+          "local_halo": 0.19260820583402957,
+          "sparse_marker_like": 0.019959729486367275,
+          "weak_distributed": 0.08251454978729444
+        },
+        "program": "local",
+        "residual_l2_norm": 0.6485249670940175
+      },
+      {
+        "exactly_dependent_at_float32_precision": true,
+        "max_abs_residual": 1.9353485613667431e-16,
+        "nonzero_coefficients": {
+          "core_halo": 1.7320507148937043,
+          "local_halo": -1.414213538169859
+        },
+        "program": "local_core",
+        "residual_l2_norm": 1.822557111592637e-15
+      },
+      {
+        "exactly_dependent_at_float32_precision": true,
+        "max_abs_residual": 3.904678514859699e-16,
+        "nonzero_coefficients": {
+          "core_halo": 1.224744826820964,
+          "local_core": -0.7071067932881675
+        },
+        "program": "local_halo",
+        "residual_l2_norm": 2.764201087446897e-15
+      },
+      {
+        "exactly_dependent_at_float32_precision": true,
+        "max_abs_residual": 3.7470027081099033e-16,
+        "nonzero_coefficients": {
+          "local_core": 0.5773503000813514,
+          "local_halo": 0.8164966106414762
+        },
+        "program": "core_halo",
+        "residual_l2_norm": 2.945607726656586e-15
+      },
+      {
+        "exactly_dependent_at_float32_precision": false,
+        "max_abs_residual": 0.1770778109062468,
+        "nonzero_coefficients": {
+          "broad_common": 0.09275817334749747,
+          "core_halo": 0.028365383360387672,
+          "innovation_tail": -0.013283551832190687,
+          "local": 0.04658306535334771,
+          "local_core": 0.032386088461162046,
+          "local_halo": 0.011839933372509054,
+          "weak_distributed": -0.026999061590635122
+        },
+        "program": "sparse_marker_like",
+        "residual_l2_norm": 0.9907484613931973
+      },
+      {
+        "exactly_dependent_at_float32_precision": false,
+        "max_abs_residual": 0.037197414838670534,
+        "nonzero_coefficients": {
+          "broad_common": 0.31785906223104055,
+          "core_halo": -0.032315648980988834,
+          "local": 0.09281363743818133,
+          "local_core": -0.0052200512263705446,
+          "local_halo": -0.0358872902313492,
+          "sparse_marker_like": -0.004721448523445835,
+          "weak_distributed": 0.5277931660978242
+        },
+        "program": "innovation_tail",
+        "residual_l2_norm": 0.5906686603905714
+      }
+    ],
+    "singular_values": [
+      1.756218820683578,
+      1.3890321725467245,
+      1.0043098873552692,
+      0.9861554828175234,
+      0.698178859364996,
+      0.5362212601865499,
+      0.479746913304516,
+      2.4169759815415806e-15
+    ]
+  },
+  "diagnostic_label": "PROTECTED_PROGRAM_FAMILY_RANK_DEFICIENT_AND_TAIL_NONSPECIFIC",
+  "explicit_non_conclusions": [
+    "This audit does not claim the contextual target fails or succeeds.",
+    "This audit does not select a replacement protected-program set.",
+    "Holm family-wise error control remains valid under the measured dependence.",
+    "No statement is made about any real F1 outcome, which does not exist."
+  ],
+  "firewall": {
+    "dev_sealed_or_pathology_accessed": false,
+    "expression_read": false,
+    "model_forward_executed": false,
+    "model_or_checkpoint_read": false,
+    "outcome_or_endpoint_read": false,
+    "training_or_ema": false
+  },
+  "headline_measurements": {
+    "exact_linear_relations_among_gated_families": 1,
+    "gated_families": 8,
+    "gated_families_byte_identical_to_ungated": [
+      "innovation_tail"
+    ],
+    "gated_families_in_an_exact_relation": [
+      "local_core",
+      "local_halo",
+      "core_halo"
+    ],
+    "independent_directions": 7,
+    "most_diffuse_gated_family": "innovation_tail",
+    "most_diffuse_gated_family_n_eff": 11243.55453269645,
+    "most_diffuse_gated_family_support": 29319,
+    "smallest_singular_value": 2.4169759815415806e-15
+  },
+  "holm_implications": {
+    "affected_gates": [
+      "protected_program_family_estimable",
+      "no_contextual_minus_direct_degradation",
+      "no_qid_v2_program_negative_margin"
+    ],
+    "exact_linear_relations_among_gated_families": 1,
+    "families_gated": 8,
+    "gated_families_participating_in_an_exact_relation": [
+      "local_core",
+      "local_halo",
+      "core_halo"
+    ],
+    "gated_families_sharing_bytes_with_an_ungated_family": [
+      "innovation_tail"
+    ],
+    "holm_family_wise_error_rate_still_controlled": true,
+    "holm_note": "Holm step-down controls FWER under arbitrary dependence, so the measured dependence is not a false-positive-rate defect. It is a power and interpretation issue. With rank deficiency 1, exactly one of the eight gated slots contributes no independent direction, yet it still adds gate-failure surface because no_contextual_minus_direct_degradation and no_qid_v2_program_negative_margin each require all eight families to be estimable, and it still consumes Holm multiplicity. The innovation_tail byte-identity finding is a separate naming/interpretation issue and does not itself reduce the rank of the gated set.",
+    "independent_directions_spanned": 7,
+    "relation_note": "Rank deficiency is a property of the set, not of one family. Each listed family is exactly reconstructible from the others because they jointly satisfy one linear relation; the audit does not assert which family is the redundant one, since that is a modelling choice rather than a measurement."
+  },
+  "not_a_gate_verdict": true,
+  "outcome_blind": true,
+  "program_geometry": [
+    {
+      "concentration_ratio_n_eff_over_support": 0.0871745557940342,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": true,
+      "interpretation": "frozen real-data-derived diagnostic component 1",
+      "l2_norm": 1.0000000049974573,
+      "max_abs_weight": 0.04285340756177902,
+      "n_eff_recomputed": 2555.8708013252885,
+      "n_eff_registry": 2555.8708013252885,
+      "n_eff_relative_difference": 0.0,
+      "negative_weights": 0,
+      "program": "broad_common",
+      "program_type": "continuous",
+      "registry_weighted_address_count": 29319,
+      "support_addresses": 29319,
+      "support_matches_registry": true,
+      "support_role": "broad",
+      "uniform_over_support": false
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 0.09980397392488707,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": true,
+      "interpretation": "frozen real-data-derived diagnostic component 221",
+      "l2_norm": 0.9999999911745902,
+      "max_abs_weight": 0.06898482143878937,
+      "n_eff_recomputed": 2926.1527115037643,
+      "n_eff_registry": 2926.1527115037647,
+      "n_eff_relative_difference": 1.5540793516985213e-16,
+      "negative_weights": 0,
+      "program": "weak_distributed",
+      "program_type": "continuous",
+      "registry_weighted_address_count": 29319,
+      "support_addresses": 29319,
+      "support_matches_registry": true,
+      "support_role": "weak",
+      "uniform_over_support": false
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 0.022339890872747507,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": true,
+      "interpretation": "frozen real-data-derived diagnostic component 4",
+      "l2_norm": 0.9999999864876888,
+      "max_abs_weight": 0.09890624135732651,
+      "n_eff_recomputed": 654.9832604980842,
+      "n_eff_registry": 654.983260498084,
+      "n_eff_relative_difference": 3.471442541452511e-16,
+      "negative_weights": 0,
+      "program": "local",
+      "program_type": "continuous",
+      "registry_weighted_address_count": 29319,
+      "support_addresses": 29319,
+      "support_matches_registry": true,
+      "support_role": "local",
+      "uniform_over_support": false
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 1.000000068457087,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": true,
+      "interpretation": "exact core support subset of frozen core+halo diagnostic; not a separate historical target",
+      "l2_norm": 0.999999982885729,
+      "max_abs_weight": 0.3535533845424652,
+      "n_eff_recomputed": 8.000000547656697,
+      "n_eff_registry": 8.000000547656697,
+      "n_eff_relative_difference": 0.0,
+      "negative_weights": 0,
+      "program": "local_core",
+      "program_type": "sparse",
+      "registry_weighted_address_count": 8,
+      "support_addresses": 8,
+      "support_matches_registry": true,
+      "support_role": "core",
+      "uniform_over_support": true
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 1.0,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": true,
+      "interpretation": "exact half-weight halo support subset of frozen core+halo diagnostic; not a separate historical target",
+      "l2_norm": 1.0,
+      "max_abs_weight": 0.125,
+      "n_eff_recomputed": 64.0,
+      "n_eff_registry": 64.0,
+      "n_eff_relative_difference": 0.0,
+      "negative_weights": 0,
+      "program": "local_halo",
+      "program_type": "sparse",
+      "registry_weighted_address_count": 64,
+      "support_addresses": 64,
+      "support_matches_registry": true,
+      "support_role": "halo",
+      "uniform_over_support": true
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 0.6666665696219632,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": true,
+      "interpretation": "frozen real-data-derived diagnostic; raw core=1 and halo=0.5",
+      "l2_norm": 1.0000000363917672,
+      "max_abs_weight": 0.20412415266036987,
+      "n_eff_recomputed": 47.99999301278135,
+      "n_eff_registry": 47.999993012781346,
+      "n_eff_relative_difference": 1.4802975816494353e-16,
+      "negative_weights": 0,
+      "program": "core_halo",
+      "program_type": "sparse",
+      "registry_weighted_address_count": 72,
+      "support_addresses": 72,
+      "support_matches_registry": true,
+      "support_role": "core+halo",
+      "uniform_over_support": false
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 1.000000068457087,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": true,
+      "interpretation": "frozen real-data-derived donor-recurrent sparse diagnostic",
+      "l2_norm": 0.999999982885729,
+      "max_abs_weight": 0.1767766922712326,
+      "n_eff_recomputed": 32.00000219062679,
+      "n_eff_registry": 32.00000219062679,
+      "n_eff_relative_difference": 0.0,
+      "negative_weights": 0,
+      "program": "sparse_marker_like",
+      "program_type": "sparse",
+      "registry_weighted_address_count": 32,
+      "support_addresses": 32,
+      "support_matches_registry": true,
+      "support_role": "sparse",
+      "uniform_over_support": true
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 0.38349038277896413,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": true,
+      "interpretation": "frozen real-data-derived residual-subspace norm diagnostic",
+      "l2_norm": 0.9999999996716269,
+      "max_abs_weight": 0.0439087338745594,
+      "n_eff_recomputed": 11243.55453269645,
+      "n_eff_registry": 11243.554532696451,
+      "n_eff_relative_difference": 1.6178063603073244e-16,
+      "negative_weights": 0,
+      "program": "innovation_tail",
+      "program_type": "continuous",
+      "registry_weighted_address_count": 29319,
+      "support_addresses": 29319,
+      "support_matches_registry": true,
+      "support_role": "innovation",
+      "uniform_over_support": false
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 0.38349038277896413,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": false,
+      "interpretation": "innovation >= fixed 47.829504776000938",
+      "l2_norm": 0.9999999996716269,
+      "max_abs_weight": 0.0439087338745594,
+      "n_eff_recomputed": 11243.55453269645,
+      "n_eff_registry": 11243.554532696451,
+      "n_eff_relative_difference": 1.6178063603073244e-16,
+      "negative_weights": 0,
+      "program": "recurrent_5pct",
+      "program_type": "rare-state",
+      "registry_weighted_address_count": 29319,
+      "support_addresses": 29319,
+      "support_matches_registry": true,
+      "support_role": "innovation",
+      "uniform_over_support": false
+    },
+    {
+      "concentration_ratio_n_eff_over_support": 0.38349038277896413,
+      "evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+      "gated_by_current_truth_table": false,
+      "interpretation": "innovation >= fixed 67.904151611328118",
+      "l2_norm": 0.9999999996716269,
+      "max_abs_weight": 0.0439087338745594,
+      "n_eff_recomputed": 11243.55453269645,
+      "n_eff_registry": 11243.554532696451,
+      "n_eff_relative_difference": 1.6178063603073244e-16,
+      "negative_weights": 0,
+      "program": "recurrent_1pct",
+      "program_type": "rare-state",
+      "registry_weighted_address_count": 29319,
+      "support_addresses": 29319,
+      "support_matches_registry": true,
+      "support_role": "innovation",
+      "uniform_over_support": false
+    }
+  ],
+  "rare_threshold_representability": {
+    "consequence": "The rare/recurrent distinction recorded in the registry is a cell-level threshold on the innovation score, not a distinct weight vector. The current program estimand aggregates addresses through the L2 weight vector only, so no threshold is applied anywhere in the gated path. The gated innovation_tail slot therefore measures the dense innovation direction, not a rare or tail-restricted subpopulation.",
+    "current_program_estimand": "w2_weighted_address_aggregation_over_the_l2_weight_vector",
+    "recorded_thresholds": {
+      "rare1_threshold": 67.90415161132812,
+      "rare5_threshold": 47.82950477600094
+    },
+    "reference_program": "innovation_tail",
+    "rows": [
+      {
+        "l2_bytes_identical_to_innovation_tail": true,
+        "program": "recurrent_5pct",
+        "raw_bytes_identical_to_innovation_tail": true,
+        "registry_evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+        "registry_program_type": "rare-state"
+      },
+      {
+        "l2_bytes_identical_to_innovation_tail": true,
+        "program": "recurrent_1pct",
+        "raw_bytes_identical_to_innovation_tail": true,
+        "registry_evidence_definition": "E_ik=sum_g m_ig*w_gk^2 using l2__ weights",
+        "registry_program_type": "rare-state"
+      }
+    ],
+    "threshold_applied_by_current_estimand": false
+  },
+  "registry_digest_reverification": {
+    "all_match": true,
+    "checked": 20,
+    "rows": [
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "broad_common",
+        "recomputed_sha256": "f3b3e4c9afb85248731374bdfd387310f13134b938d696a675ab18a0f7906347",
+        "registry_sha256": "f3b3e4c9afb85248731374bdfd387310f13134b938d696a675ab18a0f7906347"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "broad_common",
+        "recomputed_sha256": "13672381baa8c57262f5b68859a21ec985f52f880b599b95f4685ac2067544ec",
+        "registry_sha256": "13672381baa8c57262f5b68859a21ec985f52f880b599b95f4685ac2067544ec"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "weak_distributed",
+        "recomputed_sha256": "f5346dc31be14a1f67c2797de1d99c753d9391315af05adc3a70a07897a7288e",
+        "registry_sha256": "f5346dc31be14a1f67c2797de1d99c753d9391315af05adc3a70a07897a7288e"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "weak_distributed",
+        "recomputed_sha256": "f5346dc31be14a1f67c2797de1d99c753d9391315af05adc3a70a07897a7288e",
+        "registry_sha256": "f5346dc31be14a1f67c2797de1d99c753d9391315af05adc3a70a07897a7288e"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "local",
+        "recomputed_sha256": "34caf5ce5fa308a59c8884e01c7e4370ec12123465bcb72d26b1b03c7b9ba7fe",
+        "registry_sha256": "34caf5ce5fa308a59c8884e01c7e4370ec12123465bcb72d26b1b03c7b9ba7fe"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "local",
+        "recomputed_sha256": "511f67e8582fa03da2c997e6b3f7a4a174c19098b231849e1e67c330903524fa",
+        "registry_sha256": "511f67e8582fa03da2c997e6b3f7a4a174c19098b231849e1e67c330903524fa"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "local_core",
+        "recomputed_sha256": "fe21fdbd828208c5bab02314ec5342ffc5756059343fa5bbcf8a24fe9db6d7e2",
+        "registry_sha256": "fe21fdbd828208c5bab02314ec5342ffc5756059343fa5bbcf8a24fe9db6d7e2"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "local_core",
+        "recomputed_sha256": "29392d5f18aae8b28b5d56a7efedc8f235803ec39a8c52f5fb1b27188848aa7f",
+        "registry_sha256": "29392d5f18aae8b28b5d56a7efedc8f235803ec39a8c52f5fb1b27188848aa7f"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "local_halo",
+        "recomputed_sha256": "18ccbd26729d7c57b6af075478d07759c7d29655ebe3fa758a25817fd9beb780",
+        "registry_sha256": "18ccbd26729d7c57b6af075478d07759c7d29655ebe3fa758a25817fd9beb780"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "local_halo",
+        "recomputed_sha256": "f2cb244bfcf2ba40550c9715f0ac25bcf2e62d9f2b9440f8da4a181c7f8a74ee",
+        "registry_sha256": "f2cb244bfcf2ba40550c9715f0ac25bcf2e62d9f2b9440f8da4a181c7f8a74ee"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "core_halo",
+        "recomputed_sha256": "afaae8af19850ea275f69e74890ebb181cb18392345cc5630c402f7f7293814d",
+        "registry_sha256": "afaae8af19850ea275f69e74890ebb181cb18392345cc5630c402f7f7293814d"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "core_halo",
+        "recomputed_sha256": "5c3c98d6d0d42d0af6cc26213579341b22b835aac0465c13828e47d1f70ee4ec",
+        "registry_sha256": "5c3c98d6d0d42d0af6cc26213579341b22b835aac0465c13828e47d1f70ee4ec"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "sparse_marker_like",
+        "recomputed_sha256": "b2dbcdf591cc64cbcde5a0d1f4d9cae9c8e67bfc515c87c740a6db3707e1fd19",
+        "registry_sha256": "b2dbcdf591cc64cbcde5a0d1f4d9cae9c8e67bfc515c87c740a6db3707e1fd19"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "sparse_marker_like",
+        "recomputed_sha256": "a5a440a0357e59a2bc52c216897a01e8731da99504052e6a6df8edbc0f6d73bf",
+        "registry_sha256": "a5a440a0357e59a2bc52c216897a01e8731da99504052e6a6df8edbc0f6d73bf"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "innovation_tail",
+        "recomputed_sha256": "ad4c0c688bcb6432e4d4523730f71201148763e77c4caea504d44da4b9512a1d",
+        "registry_sha256": "ad4c0c688bcb6432e4d4523730f71201148763e77c4caea504d44da4b9512a1d"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "innovation_tail",
+        "recomputed_sha256": "0f56867459d1e11a057aa9451738f33bf07e84004f3728c2c614f9ec8f6cfdc2",
+        "registry_sha256": "0f56867459d1e11a057aa9451738f33bf07e84004f3728c2c614f9ec8f6cfdc2"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "recurrent_5pct",
+        "recomputed_sha256": "ad4c0c688bcb6432e4d4523730f71201148763e77c4caea504d44da4b9512a1d",
+        "registry_sha256": "ad4c0c688bcb6432e4d4523730f71201148763e77c4caea504d44da4b9512a1d"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "recurrent_5pct",
+        "recomputed_sha256": "0f56867459d1e11a057aa9451738f33bf07e84004f3728c2c614f9ec8f6cfdc2",
+        "registry_sha256": "0f56867459d1e11a057aa9451738f33bf07e84004f3728c2c614f9ec8f6cfdc2"
+      },
+      {
+        "kind": "raw",
+        "match": true,
+        "program": "recurrent_1pct",
+        "recomputed_sha256": "ad4c0c688bcb6432e4d4523730f71201148763e77c4caea504d44da4b9512a1d",
+        "registry_sha256": "ad4c0c688bcb6432e4d4523730f71201148763e77c4caea504d44da4b9512a1d"
+      },
+      {
+        "kind": "l2",
+        "match": true,
+        "program": "recurrent_1pct",
+        "recomputed_sha256": "0f56867459d1e11a057aa9451738f33bf07e84004f3728c2c614f9ec8f6cfdc2",
+        "registry_sha256": "0f56867459d1e11a057aa9451738f33bf07e84004f3728c2c614f9ec8f6cfdc2"
+      }
+    ]
+  },
+  "terminal": "IMPLEMENTATION_COMPLETE_AWAITING_INDEPENDENT_VERIFICATION"
+}
