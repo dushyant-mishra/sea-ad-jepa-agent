@@ -339,6 +339,39 @@ def program_projection(states: torch.Tensor, weights: dict[str, np.ndarray]) -> 
     return out
 
 
+def predictor_routing_report(head, encoder, student, pop: dict[str, torch.Tensor]) -> dict[str, Any]:
+    """Routing inside the predictor's softmax cross-attention.
+
+    A JEPA predictor is *allowed* to perform the conditional computation. Requiring the
+    ELU+1 backbone to sharpen may therefore be the wrong test: selective retrieval can
+    legitimately live in the predictor's softmax router. This is measured independently of
+    the backbone so the two cannot be confused.
+
+    The recovered component bytes are never modified; the diagnostic re-runs the same
+    cross-attention with need_weights=True in a separate no-grad pass.
+    """
+    with torch.no_grad():
+        queries = head.queries(encoder.tokenizer.gene_identity, pop["queries"])
+        memory = torch.cat((student.cell_state[:, None], student.gene_states), dim=1)
+        valid = torch.cat((torch.ones(len(memory), 1, dtype=torch.bool, device=memory.device),
+                           pop["student_visible"]), dim=1)
+        _, weights = head.cross_attention(queries, memory, memory, key_padding_mask=~valid,
+                                          need_weights=True, average_attn_weights=False)
+        # weights: [batch, heads, queries, keys]
+        w = weights.float().clamp_min(0)
+        w = w / w.sum(-1, keepdim=True).clamp_min(1e-30)
+        n_keys = int(valid[0].sum())
+        neff = (-(w * (w + 1e-30).log()).sum(-1)).exp()
+        # Do different query addresses retrieve different evidence?
+        flat = F.normalize(w.mean(dim=1).reshape(len(w), w.shape[2], -1), dim=-1)
+        cos = torch.einsum("bqk,bpk->bqp", flat, flat)
+        off = ~torch.eye(cos.shape[-1], dtype=torch.bool, device=cos.device)
+        return {"keys": n_keys,
+                "mean_n_eff_over_n": float(neff.mean()) / max(n_keys, 1),
+                "max_weight_over_uniform": float(w.max()) * max(n_keys, 1),
+                "query_map_cosine": float(cos[:, off].mean())}
+
+
 def endpoint_report(states: torch.Tensor, weights: dict[str, np.ndarray], frozen: Frozen,
                     baseline_projection: dict[str, torch.Tensor] | None = None) -> dict[str, Any]:
     """Scale-invariant retention of each program direction, plus a dynamic-range check.
@@ -464,6 +497,7 @@ def run(mode: str, output_root: Path, canonical_root: Path, worktree_root: Path,
     baseline_routing = routing_report(online, pop)
     with torch.no_grad():
         base_enc = encode_student(online, pop)
+        baseline_predictor_routing = predictor_routing_report(head, online, base_enc, pop)
         baseline_endpoints, baseline_projection = endpoint_report(
             base_enc.gene_states, programs, frozen)
     del base_enc
@@ -492,8 +526,11 @@ def run(mode: str, output_root: Path, canonical_root: Path, worktree_root: Path,
             movement = movement_report(online, baseline_state, frozen, step)
             routing = routing_report(online, pop)
             with torch.no_grad():
-                endpoints, _ = endpoint_report(encode_student(online, pop).gene_states,
-                                               programs, frozen, baseline_projection)
+                probe = encode_student(online, pop)
+                endpoints, _ = endpoint_report(probe.gene_states, programs, frozen,
+                                               baseline_projection)
+                predictor_routing = predictor_routing_report(head, online, probe, pop)
+                del probe
             gates = evaluate_gates(coverage, moments, movement, routing, endpoints,
                                    baseline_endpoints, frozen, baseline_routing,
                                    biology_evaluable=(mode != "synthetic"))
@@ -501,7 +538,8 @@ def run(mode: str, output_root: Path, canonical_root: Path, worktree_root: Path,
                       "mean_cosine": stats["mean_cosine"], "valid_fraction": stats["valid_fraction"],
                       "gradient_coverage": {k: v for k, v in coverage.items() if k != "rows"},
                       "optimizer_moments": moments, "movement": movement,
-                      "routing": {k: v for k, v in routing.items() if k != "blocks"},
+                      "routing_backbone": {k: v for k, v in routing.items() if k != "blocks"},
+                      "routing_predictor": predictor_routing,
                       "endpoints": endpoints, "gates": gates}
             history.append(record)
             print("u%-4d loss=%.6f cos=%+.4f | G1=%s G2=%s G3=%s G4=%s G5=%s | "
@@ -514,6 +552,11 @@ def run(mode: str, output_root: Path, canonical_root: Path, worktree_root: Path,
                      moments["zero_moments"], moments["tensors"],
                      ("%.2f" % movement["ratio_over_decay"]) if movement["ratio_over_decay"] else "n/a",
                      routing["mean_n_eff_over_n"]), flush=True)
+            print("        backbone N_eff/N=%.5f | PREDICTOR N_eff/N=%.5f max/unif=%.3f "
+                  "query_map_cos=%.5f"
+                  % (routing["mean_n_eff_over_n"], predictor_routing["mean_n_eff_over_n"],
+                     predictor_routing["max_weight_over_uniform"],
+                     predictor_routing["query_map_cosine"]), flush=True)
             if not gates["G1_gradient_coverage"] or not gates["G2_optimizer_moments"]:
                 aborted, abort_reason = True, "STOP_F1B_ATTENTION_PATH_DEAD"
                 break
@@ -542,7 +585,8 @@ def run(mode: str, output_root: Path, canonical_root: Path, worktree_root: Path,
         "components": {"encoder": "IPBEncoder", "head": "SingletonQueryPredictor",
                        "loss": "directional_pair_context_loss",
                        "excluded": ["DirectResidualStateHead", "BlockPredictor", "block_mean_target"]},
-        "baseline_routing": {k: v for k, v in baseline_routing.items() if k != "blocks"},
+        "baseline_routing_backbone": {k: v for k, v in baseline_routing.items() if k != "blocks"},
+        "baseline_routing_predictor": baseline_predictor_routing,
         "baseline_endpoints": baseline_endpoints,
         "endpoint_semantics": ("retention = mean per-cell cosine against the frozen baseline "
                                "program projection; scale-invariant by construction. In "
