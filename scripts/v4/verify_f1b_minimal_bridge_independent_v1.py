@@ -78,6 +78,8 @@ def static_findings():
       "participation_ratio_reported": '1.0 /' in src and 'sum(p * p)' in src,
       "movement_family_includes_attention_norm": 'PRE_ATTENTION_ROLES = ("attention_norm", "attention.query", "attention.key", "attention.value")' in src,
       "movement_skips_near_zero_baseline": 'if norm <= 1e-8:' in src,
+      "optimizer_steps_before_gate_enforcement": 'coverage = gradient_coverage(online)\n        optimizer.step()' in src,
+      "implicit_all_l2_endpoint_registry": 'for k in zdata.keys() if k.startswith("l2__")' in src,
       "update_override_exposed": 'add_argument("--updates"' in src,
       "contract_default_updates":40,
       "published_result_updates":result.get("frozen_parameters",{}).get("updates"),
@@ -96,7 +98,8 @@ def main():
     if attacks["G3_mean_movement_masking"]["vulnerable"]:vulnerabilities.append("G3_MEAN_MASKS_DECAY_ONLY_TENSOR")
     s=attacks["static"]
     for key in ("predictor_mechanics_gate_missing","backbone_cell0_support_literal_present","backbone_cell0_query_literal_present",
-                "predictor_cell0_support_literal_present","movement_family_includes_attention_norm","movement_skips_near_zero_baseline"):
+                "predictor_cell0_support_literal_present","movement_family_includes_attention_norm","movement_skips_near_zero_baseline",
+                "optimizer_steps_before_gate_enforcement","implicit_all_l2_endpoint_registry"):
         if s.get(key):vulnerabilities.append(key.upper())
     if s["published_result_updates"]!=s["contract_default_updates"]:vulnerabilities.append("PUBLISHED_300U_EXCEEDS_FROZEN_40U_HORIZON")
     doc={"schema":"F1B_INDEPENDENT_VERIFIER_ATTACKS_V1",
