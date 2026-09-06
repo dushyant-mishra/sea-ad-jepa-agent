@@ -40,7 +40,7 @@
   "unresolved_blockers": [
     "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED",
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE",
-    "F1_QUALIFY_CURRENT_DOES_NOT_GATE_PROGRAM_SIGN",
+    "F1_PROGRAM_SIGN_LOCALLY_RESOLVED_IN_SUCCESSOR__FINAL_CONTRACT_FREEZE_PENDING",
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE",
     "F1B_10_OF_15_FINDINGS_LACK_EXECUTABLE_ATTACKS",
     "C2_AD_HOC_REPRODUCTION_SUPERSEDED",
@@ -75,7 +75,7 @@
     ],
     "c2_closure_package": {
       "root": "outputs/c2_t1_gradient_forensic_20260906",
-      "package_root_sha256": "d9770baa950bbd21360b079061cb0ac71d8f9c04ef53cb7d91fcf24db2d27559",
+      "package_root_sha256": "0a5ef5cb63163fa4605671bddd546cf413c5888372d882e3bd9d0b475c893a53",
       "manifest": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
       "file_count": 55,
       "bound_sources": 15,
@@ -97,7 +97,7 @@
         },
         {
           "path": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
-          "sha256": "04a6bbe5ec743a1293e92e8413a16f0d8212099394261f4c55da4979fa154cae",
+          "sha256": "d9cbac57d9c6aa29537c8126546ed10856ba84ad719aad07fb3821472ce3925e",
           "authority": "C2_PACKAGE_MANIFEST"
         },
         {
@@ -110,8 +110,8 @@
       "preservation_note": "The package bytes are tracked in git and marked -text so the recorded SHA-256 values, which are over raw bytes, survive checkout on either platform. At commit da7e0b5 the package was untracked and its manifest was stale: the packager had run before the final edit to C2_CAUSAL_CONDITION_ESTABLISHED.md, recording 4725 bytes for a 5854-byte file, which also invalidated the package root. Both defects were found by independent verification from a clean clone and are repaired here.",
       "frozen_for_review": {
         "branch": "jepa-peer-handoff-20260905",
-        "supersedes_commit": "76b9449e61ca4f3561c2c85e0ce9175f82bcd636",
-        "supersession_reason": "External review returned STOP_C2_INDEPENDENT_VERIFICATION__FROZEN_CANDIDATE_AUTHORITY_INCONSISTENT against 76b9449e. The causal evidence passed independent re-derivation; the failure was in stale authority statements inside the manifested closure document: an embedded package-root value, a live-gate description that still said norm, a test count of nine, and an ambiguous count of closure-critical artifacts. All four repaired. 76b9449e is preserved unmodified as the failed review candidate.",
+        "supersedes_commit": "43c2997079b9326d21d9c2c88aa3014167413f5e",
+        "supersession_reason": "External review returned STOP_C2_INDEPENDENT_VERIFICATION__BOUND_GATE_SOURCE_AUTHORITY_STALE against 43c2997. The causal experiment passed substantive external review. The failure was a stale phrase in the gate module docstring, which still described rejecting an exact-zero gradient NORM after the implementation had moved to an elementwise any(grad != 0) test. Docstring only; the implementation body and the K0/K1 evidence are unchanged. 43c2997 is preserved unmodified as the failed review candidate, as is 76b9449e before it.",
         "do_not_mutate": true,
         "platform_split": {
           "continuity_and_governance_suite": "Windows git environment",
@@ -119,7 +119,7 @@
           "note": "The worktree .git indirection is a Windows path, so git commands fail from WSL against that worktree. That is an environment artifact and must not be read as a scientific failure. Clone the remote into the Linux filesystem instead."
         }
       },
-      "manifest_sha256": "04a6bbe5ec743a1293e92e8413a16f0d8212099394261f4c55da4979fa154cae"
+      "manifest_sha256": "d9cbac57d9c6aa29537c8126546ed10856ba84ad719aad07fb3821472ce3925e"
     }
   },
   "firewall": {
@@ -152,7 +152,6 @@
   "blocker_evidence": {
     "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED": "docs/agent/F1B_INDEPENDENT_VERIFICATION_REVIEW_20260905.md on review/f1b-independent-verifier-repair-20260905 enumerates 15 numbered findings against f1b-minimal-bridge-20260905@f0fb23c2.",
     "F1B_10_OF_15_FINDINGS_LACK_EXECUTABLE_ATTACKS": "scripts/v4/verify_f1b_minimal_bridge_independent_v1.py emits only 4 executable attack codes (G1_ACCEPTS_NONFINITE_GRADIENT, G2_ACCEPTS_ZERO_SECOND_MOMENT, G3_MEAN_MASKS_DECAY_ONLY_TENSOR, PUBLISHED_300U_EXCEEDS_FROZEN_40U_HORIZON). The remaining findings are prose-only. A C3 repair cannot be verified against a finding that has no executable attack, so the attacks must be written before the repair.",
-    "F1_QUALIFY_CURRENT_DOES_NOT_GATE_PROGRAM_SIGN": "qualify_current gates per-program estimability and deltas but never per-program sign. holm(p_positive) is computed in contextual_target_f1_decision_v4.py but surfaced only as protected_program_positive_holm_report_only and is absent from the gates dict. A payload with 5 of 8 protected programs having two-sided 95% CIs entirely below zero still returns qualified=True. Reproduced independently twice. Upstream of any real F1.",
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead.",
     "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened.",
@@ -160,7 +159,8 @@
     "C2_DEEP_KERNEL_MECHANISM_OPEN": "Necessity and sufficiency are established at the code-condition level: disabling autocast only around the backward call restores all 48 tensors at 128/8 with all nine frozen criteria met, while the historical arm still gives 48/48 dead. Why the collapse is to EXACT zero rather than merely inaccurate values is unresolved. The autocast weight cache (I1) and allow_fp16_reduced_precision_reduction (J1) were both tested and refuted.",
     "C2_PRODUCTION_SAFE_REWRITE_NOT_RUN": "The production_safe variant currently accumulates every scaled loss and drains the backwards after the autocast block, holding 64 live graphs at 128/8, and will exhaust memory. The autocast region must move inside the view loop to preserve per-view accumulation. Not yet repaired, not yet run, no 128/8 regression.",
     "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION": "The DEC-013 characterisation of T1 as having valid mechanics is not defensible in the parameter-wise sense. The historical biological outcome stands: T1 did not qualify biology at u205. Supersession must follow independent C2 verification, not precede it.",
-    "C2_INDEPENDENT_VERIFICATION_PENDING": "The repaired candidate has NOT been independently certified. The same agent implemented C2 and ran the verification, so the no-self-certification requirement is unmet. The verification found three real defects and returned each for repair - untracked closure outputs, a stale manifest and root, and a gradient gate whose norm-based zero test underflowed a lone fp32 subnormal and misclassified 48 live tensors as dead - and all three are repaired here. Those findings are implementation feedback, not certification. Only a separate reviewer starting from a fresh clone of the exact frozen remote commit may return PASS_C2_INDEPENDENT_VERIFICATION, binding it to the commit SHA, the package root, the verifier source digest and the verifier result root. Until then the project state is not C2_CLOSED."
+    "C2_INDEPENDENT_VERIFICATION_PENDING": "The repaired candidate has NOT been independently certified. The same agent implemented C2 and ran the verification, so the no-self-certification requirement is unmet. The verification found three real defects and returned each for repair - untracked closure outputs, a stale manifest and root, and a gradient gate whose norm-based zero test underflowed a lone fp32 subnormal and misclassified 48 live tensors as dead - and all three are repaired here. Those findings are implementation feedback, not certification. Only a separate reviewer starting from a fresh clone of the exact frozen remote commit may return PASS_C2_INDEPENDENT_VERIFICATION, binding it to the commit SHA, the package root, the verifier source digest and the verifier result root. Until then the project state is not C2_CLOSED.",
+    "F1_PROGRAM_SIGN_LOCALLY_RESOLVED_IN_SUCCESSOR__FINAL_CONTRACT_FREEZE_PENDING": "The historical/public qualify_current had an aggregate-rescue loophole: a strongly negative protected program could qualify through a positive aggregate. That has been prospectively repaired in the ChatGPT/user F1 successor work, which keeps all eight semantic protected programs including core_halo despite molecular rank 7, makes the eight-program one-sided Holm-positive family qualification-bearing, treats protected-program nonestimability as three-valued and fail-closed, and carries adversarial tests on the exact Holm boundary. Do not independently redesign this decision and do not wait on the old decision_v4 implementation. ChatGPT and the user own the final scientific-contract freeze; the remaining family/source/terminal audit is theirs."
   },
   "continuity_defects_repaired_by_claude_code": {
     "DOCUMENTED_TAKEOVER_COMMAND_COULD_NOT_PASS": "CLAUDE.md instructed 'validate --repo . --worktree .' but the checkpoint records the canonical repo path by design, so the first takeover step always raised a spurious REPO_PATH_MISMATCH. Added work_checkpoint.resolve_canonical_repo(), made --repo optional and auto-resolved via 'git rev-parse --git-common-dir', and corrected CLAUDE.md. No agent now hardcodes the canonical path.",

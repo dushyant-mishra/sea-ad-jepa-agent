@@ -11,12 +11,27 @@ This gate rejects, per tensor, before any optimizer step:
 
 - a missing gradient
 - a nonfinite gradient
-- an exact-zero gradient norm
+- a gradient that is exactly empty
+
+Live gradients are tested ELEMENTWISE, never by a gradient norm. `gate_module`
+uses `torch.isfinite(grad).all()` for finiteness and `any(grad != 0)` for
+emptiness. A norm squares before summing, so a tensor whose only nonzero element
+is a small subnormal underflows to a norm of exactly zero and would be
+misclassified as dead: at fp32 the smallest subnormal 1.4e-45 squares to 2e-90.
+That defect was found by external review and is the reason no norm appears on
+the live path.
+
+`gate_from_norms` exists only to replay norms already recorded in preserved
+artifacts. It must never be used to adjudicate live tensors.
 
 No generic "small gradient" threshold is defined. The historical defect is exact
 zero, and a tiny finite nonzero gradient is legitimate: inventing a magnitude
 floor would reject real training signal and would need its own prospective
 justification.
+
+`FROZEN_MANDATORY_REGISTRY` enumerates the 48 protected identities explicitly.
+Discovery alone cannot establish completeness, so adoption must call
+`enforce_registry` alongside the gate.
 """
 
 from __future__ import annotations
