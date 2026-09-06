@@ -88,3 +88,48 @@ u0010..u0205:  states=123  zero_moment=48  moments float32
 Those 48 were stepped every update, so `.grad` was present and exactly zero throughout.
 Saved `online_gradients` remain invalid for this question: the trainer clears gradients
 immediately before capture, and `u0205` holds 0 of 108 nonzero.
+
+---
+
+# C2-v3 single-factor decomposition — FROZEN 2026-09-06, before execution
+
+Baseline is the reproducing condition: `cuda`, fp16 autocast, `GradScaler` on,
+gradient checkpointing on, batch 4, microbatch 2, 16 target blocks,
+mask_fraction 0.40 → **48 / 48 dead**.
+
+Each condition changes exactly one mechanic from that baseline. `run_update` is
+still called unmodified; the outer autocast is intercepted by a context manager
+that leaves the nested `autocast(enabled=False)` inside `KernelLinearAttention`
+untouched, and the sampler's keyword-only defaults are overridden in place.
+
+| id | single change |
+|---|---|
+| `D0_BASELINE_FP16` | none (re-confirm 48/48) |
+| `D1_AUTOCAST_OFF` | outer autocast disabled, still cuda, scaler still on |
+| `D2_AUTOCAST_BF16` | outer autocast dtype bfloat16 |
+| `D3_NO_GRADSCALER` | `GradScaler(enabled=False)` |
+| `D4_NO_CHECKPOINTING` | `online.gradient_checkpointing = False` |
+| `D5_MICROBATCH_1` | microbatch 1 (4 microbatches) |
+| `D6_MICROBATCH_4` | microbatch 4 (1 microbatch) |
+| `D7_TARGET_BLOCKS_4` | `block_count = 4` (larger blocks) |
+| `D8_TARGET_BLOCKS_64` | `block_count = 64` (smaller blocks) |
+| `D9_MASK_FRACTION_005` | `mask_fraction = 0.05` |
+
+Order is frozen. Every condition executes regardless of how persuasive an
+earlier one looks. `D1` is expected to rescue on the standing hypothesis; that
+expectation confers no evidential weight and does not license skipping `D2`
+through `D9`.
+
+Adjudication, fixed in advance:
+
+- A factor **rescues** if dead drops to 0/48.
+- A factor is **graded** if dead changes but is neither 0 nor 48.
+- `attention.output` must stay 0/12 dead in every condition, or the condition is
+  void.
+- The cause is `ISOLATED` only if exactly one factor rescues while the others at
+  most grade. If several rescue, terminal is
+  `STOP_C2_CAUSE_NOT_UNIQUELY_ISOLATED`.
+- bf16 has the same exponent range as fp32 but fewer mantissa bits. If `D2`
+  rescues while `D1` also rescues, the discriminator is exponent range, i.e.
+  underflow. If `D2` fails while `D1` rescues, it is mantissa precision. This
+  distinction is declared now so it cannot be constructed afterwards.

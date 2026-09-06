@@ -120,6 +120,41 @@ def moment_report(
     return {"entries": entries, "zero_both_moments": zero_both, "total": len(names)}
 
 
+class autocast_override:
+    """Override the outer autocast only, leaving nested disabled regions intact.
+
+    `run_update` hardcodes `torch.autocast(..., dtype=float16, enabled=cuda)`.
+    Rather than fork the historical function, intercept the outer context. The
+    nested `torch.autocast(enabled=False)` inside KernelLinearAttention passes
+    `enabled=False` explicitly and is therefore never touched.
+    """
+
+    def __init__(self, mode: str) -> None:
+        self.mode = mode
+        self.real = torch.autocast
+
+    def __enter__(self):
+        if self.mode == "fp16":
+            return self
+        real, mode = self.real, self.mode
+
+        def patched(*args, **kwargs):
+            if kwargs.get("enabled", True):
+                if mode == "off":
+                    kwargs["enabled"] = False
+                elif mode == "bf16":
+                    kwargs["dtype"] = torch.bfloat16
+                else:
+                    raise ValueError("unknown autocast mode: " + mode)
+            return real(*args, **kwargs)
+
+        torch.autocast = patched
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        torch.autocast = self.real
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
@@ -132,6 +167,11 @@ def main() -> int:
     parser.add_argument("--value-law", default="log1p_exponential")
     parser.add_argument("--value-scale", type=float, default=1.0)
     parser.add_argument("--label", default="STEP_A_EXACT_MECHANICS")
+    parser.add_argument("--autocast", choices=("fp16", "off", "bf16"), default="fp16")
+    parser.add_argument("--no-gradscaler", action="store_true")
+    parser.add_argument("--no-checkpointing", action="store_true")
+    parser.add_argument("--target-blocks", type=int, default=None)
+    parser.add_argument("--mask-fraction", type=float, default=None)
     parser.add_argument("--canonical-root", action="append",
                         default=["/mnt/d/Jepa project", "D:/Jepa project"])
     args = parser.parse_args()
@@ -153,6 +193,17 @@ def main() -> int:
     if len(mandatory) != 48 or len(live) != 12:
         raise RuntimeError(f"registry sizes {len(mandatory)}/{len(live)}")
 
+    if args.no_gradscaler:
+        scaler = torch.amp.GradScaler("cuda", enabled=False)
+    if args.no_checkpointing:
+        online.gradient_checkpointing = False
+    # sample_uniform_target_blocks binds these as keyword-only defaults at def time.
+    sampler_defaults = dict(phase_e.sample_uniform_target_blocks.__kwdefaults__ or {})
+    if args.target_blocks is not None:
+        phase_e.sample_uniform_target_blocks.__kwdefaults__["block_count"] = args.target_blocks
+    if args.mask_fraction is not None:
+        phase_e.sample_uniform_target_blocks.__kwdefaults__["mask_fraction"] = args.mask_fraction
+
     loader = SyntheticTrainLoader(
         seed=args.seed,
         measured_fraction=args.measured_fraction,
@@ -168,12 +219,13 @@ def main() -> int:
         online.train()
         predictor.train()
         target.eval()
-        result = phase_e.run_update(
-            loader=loader, cohort=cohort, sampler=sampler, cursor=cursor,
-            seed=args.seed, microbatch=micro, effective_batch=batch,
-            device=device, online=online, target=target, predictor=predictor,
-            optimizer=optimizer, scaler=scaler, controller=controller,
-        )
+        with autocast_override(args.autocast):
+            result = phase_e.run_update(
+                loader=loader, cohort=cohort, sampler=sampler, cursor=cursor,
+                seed=args.seed, microbatch=micro, effective_batch=batch,
+                device=device, online=online, target=target, predictor=predictor,
+                optimizer=optimizer, scaler=scaler, controller=controller,
+            )
         grads = gradient_report(online, mandatory)
         live_grads = gradient_report(online, live)
         moments = moment_report(optimizer, online, mandatory)
@@ -225,6 +277,14 @@ def main() -> int:
             "python": sys.version.split()[0], "platform": platform.platform(),
             "torch": torch.__version__, "device": str(device),
             "device_name": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+        },
+        "factors": {
+            "autocast": args.autocast,
+            "gradscaler_enabled": not args.no_gradscaler,
+            "gradient_checkpointing": online.gradient_checkpointing,
+            "target_blocks": phase_e.sample_uniform_target_blocks.__kwdefaults__["block_count"],
+            "mask_fraction": phase_e.sample_uniform_target_blocks.__kwdefaults__["mask_fraction"],
+            "historical_defaults": sampler_defaults,
         },
         "invocation": {"argv": sys.argv[1:], "seed": args.seed},
         "updates": updates,
