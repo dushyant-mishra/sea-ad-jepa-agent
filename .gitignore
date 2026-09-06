@@ -95,3 +95,7 @@ wget-log
 /checkpoints/
 *.ckpt
 *.pth
+
+# Regenerated local peer-continuity state (source is committed separately)
+/docs/agent/CURRENT_WORK_CHECKPOINT.json
+/docs/agent/CLAUDE_TAKEOVER.md

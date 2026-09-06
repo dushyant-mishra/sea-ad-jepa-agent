@@ -1,0 +1,99 @@
+{
+  "active_agent": "CODEX",
+  "peer_agents": [
+    "CODEX",
+    "CLAUDE_CODE"
+  ],
+  "agent_symmetry": {
+    "equal_implementation_authority": true,
+    "self_promotion_forbidden": true,
+    "mandatory_implementation_verifier_v1": true
+  },
+  "authorities": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "85bdeb5ac1446576a83d3df5561d40f11c47b2aef95796af72196ddb70a36632",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-05-jepa-peer-agent-continuity-design.md",
+      "sha256": "16fedab6c53db58f19af67e1b05b543a6f6270be820987ef29bc8c39c154dba7",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-09-05-jepa-continuity-c2-implementation-plan.md",
+      "sha256": "4d1d4ca03fc49b6605fa2a5aa86d18982d155879df7aa41a367b5bfd80054d5f",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
+      "sha256": "657471215c530c035c33bde7d52d8a6968bdbc6c089d899c1cde828719a0d98b",
+      "status": "FROZEN_AUTHORITY"
+    }
+  ],
+  "gates": {
+    "current": "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY",
+    "c2": "STOP_C2_GRADIENT_SEVERING_CONDITION_UNRESOLVED",
+    "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
+    "real_f1": "FORBIDDEN"
+  },
+  "unresolved_blockers": [
+    "C2_GRADIENT_SEVERING_CONDITION_UNRESOLVED",
+    "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED",
+    "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE"
+  ],
+  "assets": {
+    "local": [
+      {
+        "path": "D:/Jepa project/outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json",
+        "sha256": "9be58bbb6f131fa788f2a6b3b742b4d2a1ada663c7730859b32a17d6afa00e34",
+        "authority": "PROVISIONAL_LEAD_ONLY"
+      },
+      {
+        "path": "D:/Jepa project/outputs/_private_qkv_matrix_20260905/QKV_GRADIENT_MATRIX.json",
+        "sha256": "e6aa97ee6980a16d7c63eca63d3cdfa5ad089966f7a86b26f590619609776c29",
+        "authority": "PROVISIONAL_LEAD_ONLY"
+      }
+    ],
+    "remote_only": [
+      {
+        "ref": "origin/review/f1b-independent-verifier-repair-20260905",
+        "role": "PRESERVED_REVIEW_BRANCH_NOT_MERGED"
+      },
+      {
+        "ref": "origin/review/pre-f1-mechanism-repair-20260905",
+        "role": "PRESERVED_REVIEW_BRANCH_NOT_MERGED"
+      }
+    ]
+  },
+  "firewall": {
+    "real_f1_forbidden": true,
+    "dev_expression_closed": true,
+    "sealed_expression_closed": true,
+    "pathology_closed": true,
+    "production_training_forbidden": true
+  },
+  "next_authorized_actions": [
+    "PRESERVED_C2_CONTRACT_AND_HARNESS",
+    "C2_EXACT_DEFECT_LOCALIZATION",
+    "C2_REGRESSION_TEST",
+    "STOP_FOR_SCIENTIFIC_REVIEW"
+  ],
+  "forbidden_actions": [
+    "RUN_REAL_F1",
+    "OPEN_DEV_SEALED_PATHOLOGY",
+    "RUN_FRESH_PRODUCTION_TRAINING",
+    "REHABILITATE_OR_RETRAIN_T1",
+    "MODIFY_EXISTING_F1B_BRANCH",
+    "INVENT_UNFROZEN_SCIENTIFIC_RULES",
+    "MERGE_REVIEW_BRANCHES_FOR_CONTINUITY"
+  ],
+  "provenance": {
+    "last_agent": "CODEX",
+    "handoff_reason": "INITIAL_PEER_CONTINUITY_BUILD",
+    "canonical_workspace_preserved": "D:/Jepa project",
+    "isolated_worktree": "D:/jepa_peer_handoff_20260905"
+  },
+  "allowed_tracked_modifications": [],
+  "allowed_untracked_files": []
+}

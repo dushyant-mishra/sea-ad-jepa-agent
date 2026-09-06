@@ -1,0 +1,89 @@
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+
+from scripts.agent.update_work_checkpoint import render_takeover_markdown
+
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE = ROOT / "docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json"
+CLAUDE = ROOT / "CLAUDE.md"
+ACTIVE_PLAN = ROOT / "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md"
+
+
+def _sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_claude_entrypoint_points_to_machine_checkpoint_and_active_plan() -> None:
+    text = CLAUDE.read_text(encoding="utf-8")
+    assert "docs/agent/CURRENT_WORK_CHECKPOINT.json" in text
+    assert "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md" in text
+    assert "Codex and Claude Code are equal implementation peers" in text
+    assert "validate" in text.lower()
+    assert "self-promote" in text.lower()
+
+
+def test_active_plan_preserves_exact_scope_and_stop() -> None:
+    text = ACTIVE_PLAN.read_text(encoding="utf-8")
+    assert "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY" in text
+    assert "Continuity -> preserved C2 -> exact defect localization -> regression test -> STOP" in text
+    assert "Do not rehabilitate or retrain T1" in text
+    assert "Real F1 remains forbidden" in text
+    assert "F1-B successor" in text and "downstream" in text
+
+
+def test_state_binds_authorities_firewall_and_exact_next_action() -> None:
+    state = json.loads(STATE.read_text(encoding="utf-8"))
+    assert state["active_agent"] == "CODEX"
+    assert state["peer_agents"] == ["CODEX", "CLAUDE_CODE"]
+    assert state["agent_symmetry"]["equal_implementation_authority"] is True
+    assert state["agent_symmetry"]["self_promotion_forbidden"] is True
+    assert state["gates"]["current"] == "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY"
+    assert state["firewall"] == {
+        "real_f1_forbidden": True,
+        "dev_expression_closed": True,
+        "sealed_expression_closed": True,
+        "pathology_closed": True,
+        "production_training_forbidden": True,
+    }
+    assert state["next_authorized_actions"] == [
+        "PRESERVED_C2_CONTRACT_AND_HARNESS",
+        "C2_EXACT_DEFECT_LOCALIZATION",
+        "C2_REGRESSION_TEST",
+        "STOP_FOR_SCIENTIFIC_REVIEW",
+    ]
+    assert "remote_only" in state["assets"] and "local" in state["assets"]
+
+
+def test_state_authority_hashes_match_bytes() -> None:
+    state = json.loads(STATE.read_text(encoding="utf-8"))
+    by_path = {item["path"]: item["sha256"] for item in state["authorities"]}
+    required = [
+        "AGENTS.md",
+        "docs/superpowers/specs/2026-09-05-jepa-peer-agent-continuity-design.md",
+        "docs/superpowers/plans/2026-09-05-jepa-continuity-c2-implementation-plan.md",
+        "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
+    ]
+    for relative in required:
+        assert by_path[relative] == _sha(ROOT / relative)
+
+
+def test_takeover_render_is_deterministic_and_agent_neutral() -> None:
+    state = json.loads(STATE.read_text(encoding="utf-8"))
+    checkpoint = dict(state)
+    checkpoint["schema"] = "JEPA_WORK_CHECKPOINT_V1"
+    checkpoint["git"] = {
+        "branch": "branch",
+        "head_sha": "a" * 40,
+        "origin_main_sha": "b" * 40,
+    }
+    checkpoint["checkpoint_semantic_sha256"] = "c" * 64
+    first = render_takeover_markdown(checkpoint)
+    second = render_takeover_markdown(checkpoint)
+    assert first == second
+    assert "CODEX" in first and "CLAUDE_CODE" in first
+    assert "PRESERVED_C2_CONTRACT_AND_HARNESS" in first
+    assert "cannot promote" in first.lower()
