@@ -81,6 +81,34 @@ counted only missing and nonfinite.
 The gate is **not yet adopted** by any successor training path. Adoption, not
 existence, is what closes that blocker.
 
+## Defects found by independent verification
+
+Independent verification from a clean native-Linux clone rejected an earlier
+form of this package. Three real defects were found and repaired, and they are
+recorded here because the package would otherwise look as though it had passed
+first time.
+
+1. **The package was not preserved at all.** `.gitignore` excluded `outputs/`
+   wholesale, so all 42 closure files existed only as untracked local files in
+   one Windows worktree. A clean clone contained none of them. Repaired by
+   tracking the package and marking it `-text` so byte-exact digests survive
+   checkout on either platform.
+2. **The manifest was stale.** The packager had run before the final edit to
+   this document, recording 4725 bytes for a 5854-byte file, which also
+   invalidated the package root. Repaired by running the packager as the last
+   mutation and recomputing every row from disk before registering it.
+3. **The gradient gate misclassified live tensors as dead.** `gate_module`
+   used a gradient norm, which squares before summing. At fp32 the smallest
+   subnormal `1.4e-45` squares to `2e-90` and underflows to a norm of exactly
+   zero, so 48 genuinely nonzero tensors were reported as exact zero. The gate
+   would have rejected real training signal. Repaired by testing emptiness
+   exactly with `any(grad != 0)` and finiteness separately, never squaring. A
+   scalar-only test had missed this; the live-tensor test in the real gradient
+   dtype caught it.
+
+None of the three touched the five closure-critical result artifacts, which
+matched their authority digests unchanged throughout.
+
 ## Governance consequence
 
 `component_gradient_report` counts only missing and nonfinite gradients, never

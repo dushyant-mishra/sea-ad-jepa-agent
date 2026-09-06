@@ -74,7 +74,7 @@
     ],
     "c2_closure_package": {
       "root": "outputs/c2_t1_gradient_forensic_20260906",
-      "package_root_sha256": "846a3661dc5c55e604f31d502e72bb73c4380567af8ccc7ddc2258691f437ee8",
+      "package_root_sha256": "3961750328c5a8e82ace2221b2bebf56ff0bd4676f6f2ad53195c7b19f5f6bd4",
       "manifest": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
       "file_count": 55,
       "bound_sources": 15,
@@ -96,7 +96,7 @@
         },
         {
           "path": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
-          "sha256": "a76633db9e6f4ec960c8b1dc7e118c643e12601d63f43a92aae9422442d2d86c",
+          "sha256": "bba15e0481a9fb2f2e1925849fb32ebdfda9f9b5e2ad52e18e06e220d60a7d17",
           "authority": "C2_PACKAGE_MANIFEST"
         },
         {
@@ -145,7 +145,7 @@
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead.",
     "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened.",
-    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "component_gradient_report counts only missing and nonfinite gradients, never zero, so it passed on every historical-condition run while all 48 mandatory tensors were exactly zero; it did catch overflow in D9. A repaired fail-closed gate now exists at scripts/v4/c2_mandatory_gradient_gate_v1.py, rejecting missing, nonfinite and exact-zero per tensor before the optimizer step, with no invented magnitude floor. Nine adversarial tests pass, two of which replay the preserved K0 and K1 bytes: the repaired gate rejects the historical condition 48/48 and accepts the corrected one 48/48. NOT YET ADOPTED by any successor training path, which is what would close this blocker.",
+    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "component_gradient_report counts only missing and nonfinite gradients, never zero, so it passed while all 48 mandatory tensors were exactly zero. A repaired fail-closed gate exists at scripts/v4/c2_mandatory_gradient_gate_v1.py. Independent verification found that its first form used a gradient norm, which squares and so underflowed a lone fp32 subnormal to exactly zero, misclassifying 48 live tensors as dead; it now tests emptiness exactly with any(grad != 0) and finiteness separately. Eleven adversarial tests pass, including a live-tensor test in the real gradient dtype and two replaying preserved K0 and K1 bytes. NOT YET ADOPTED by any successor training path, which is what would close this.",
     "C2_DEEP_KERNEL_MECHANISM_OPEN": "Necessity and sufficiency are established at the code-condition level: disabling autocast only around the backward call restores all 48 tensors at 128/8 with all nine frozen criteria met, while the historical arm still gives 48/48 dead. Why the collapse is to EXACT zero rather than merely inaccurate values is unresolved. The autocast weight cache (I1) and allow_fp16_reduced_precision_reduction (J1) were both tested and refuted.",
     "C2_PRODUCTION_SAFE_REWRITE_NOT_RUN": "The production_safe variant currently accumulates every scaled loss and drains the backwards after the autocast block, holding 64 live graphs at 128/8, and will exhaust memory. The autocast region must move inside the view loop to preserve per-view accumulation. Not yet repaired, not yet run, no 128/8 regression.",
     "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION": "The DEC-013 characterisation of T1 as having valid mechanics is not defensible in the parameter-wise sense. The historical biological outcome stands: T1 did not qualify biology at u205. Supersession must follow independent C2 verification, not precede it."

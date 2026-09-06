@@ -57,8 +57,18 @@ def classify_norm(norm: float | None) -> str:
 
 
 def gate_from_norms(norms: dict[str, float | None]) -> dict[str, Any]:
-    """Adjudicate from a name-to-norm mapping. Pure, so it can read preserved bytes."""
-    statuses = {name: classify_norm(norm) for name, norm in norms.items()}
+    """Adjudicate from a name-to-norm mapping, for reading preserved artifacts.
+
+    Only for recorded norms. Live tensors must go through `gate_module`, which
+    never squares: see `classify_tensor`.
+    """
+    return report_from_statuses(
+        {name: classify_norm(norm) for name, norm in norms.items()}
+    )
+
+
+def report_from_statuses(statuses: dict[str, str]) -> dict[str, Any]:
+    """Build the adjudication report from per-tensor statuses."""
     rejected = sorted(
         name for name, status in statuses.items() if status in REJECTING_STATUSES
     )
@@ -77,15 +87,33 @@ def gate_from_norms(norms: dict[str, float | None]) -> dict[str, Any]:
     }
 
 
+def classify_tensor(grad: Any) -> str:
+    """Classify a live gradient tensor without ever squaring it.
+
+    A norm squares before summing, so a tensor whose only nonzero element is a
+    small subnormal underflows to a norm of exactly 0.0 and would be
+    misclassified as dead. At fp32 the smallest subnormal 1.4e-45 squares to
+    2e-90, far below the representable range. Emptiness is therefore tested
+    exactly, with `any(grad != 0)`, and finiteness separately.
+    """
+    import torch  # local import so the pure helpers stay importable without torch
+
+    if grad is None:
+        return STATUS_MISSING
+    detached = grad.detach()
+    if not bool(torch.isfinite(detached).all()):
+        return STATUS_NONFINITE
+    if not bool((detached != 0).any()):
+        return STATUS_EXACT_ZERO
+    return STATUS_LIVE
+
+
 def gate_module(module: Any, names: Iterable[str] | None = None) -> dict[str, Any]:
     """Adjudicate a live module. Call after unscale and before the optimizer step."""
     protected = list(names) if names is not None else mandatory_names(module)
     by_name = dict(module.named_parameters())
-    norms: dict[str, float | None] = {}
-    for name in protected:
-        grad = by_name[name].grad
-        norms[name] = None if grad is None else float(grad.detach().float().norm())
-    return gate_from_norms(norms)
+    statuses = {name: classify_tensor(by_name[name].grad) for name in protected}
+    return report_from_statuses(statuses)
 
 
 def enforce(module: Any, names: Iterable[str] | None = None) -> dict[str, Any]:

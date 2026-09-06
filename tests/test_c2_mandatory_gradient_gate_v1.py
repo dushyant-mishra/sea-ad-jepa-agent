@@ -144,3 +144,57 @@ def test_historical_gate_blind_spot_is_real_not_assumed() -> None:
     zero = sum(1 for v in entries.values() if v["status"] == "ZERO")
     assert missing == 0 and nonfinite == 0, "historical gate saw nothing to reject"
     assert zero == 48, "yet every mandatory tensor was exactly zero"
+
+
+def test_live_tensor_with_subnormal_element_is_not_called_dead() -> None:
+    """A norm squares, so a lone subnormal underflows to a zero norm.
+
+    This is the defect independent verification found: at fp32 the smallest
+    subnormal 1.4e-45 squares to 2e-90 and vanishes, so a norm-based test
+    reported 48 genuinely nonzero tensors as exact zero and would have rejected
+    real training signal. `gate_module` must test emptiness exactly.
+    """
+    torch = pytest.importorskip("torch")
+    from scripts.v4.c2_mandatory_gradient_gate_v1 import classify_tensor, gate_module
+
+    for dtype in (torch.float32, torch.float16):
+        subnormal = torch.nextafter(
+            torch.tensor(0.0, dtype=dtype), torch.tensor(1.0, dtype=dtype)
+        )
+        grad = torch.zeros(8, 8, dtype=dtype)
+        grad.view(-1)[0] = subnormal
+        if dtype is torch.float32:
+            # The premise holds for fp32, where the square genuinely underflows.
+            # For fp16 torch accumulates the norm in fp32, so it does not.
+            assert float(grad.norm()) == 0.0, "premise: the norm underflows to zero"
+        assert classify_tensor(grad) == STATUS_LIVE, dtype
+        assert classify_tensor(torch.zeros(8, 8, dtype=dtype)) == STATUS_EXACT_ZERO
+
+    class Tiny(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.blocks = torch.nn.ModuleList([torch.nn.Module()])
+            self.blocks[0].attention_norm = torch.nn.LayerNorm(4)
+
+    model = Tiny()
+    names = ["blocks.0.attention_norm.weight", "blocks.0.attention_norm.bias"]
+    params = dict(model.named_parameters())
+    for name in names:
+        grad = torch.zeros_like(params[name])
+        grad.view(-1)[0] = torch.nextafter(
+            torch.tensor(0.0), torch.tensor(1.0)
+        )
+        params[name].grad = grad
+    assert gate_module(model, names)["passed"]
+
+
+def test_nonfinite_is_detected_even_when_other_elements_are_finite() -> None:
+    torch = pytest.importorskip("torch")
+    from scripts.v4.c2_mandatory_gradient_gate_v1 import classify_tensor
+
+    grad = torch.ones(4, 4)
+    grad[2, 2] = float("nan")
+    assert classify_tensor(grad) == STATUS_NONFINITE
+    grad[2, 2] = float("inf")
+    assert classify_tensor(grad) == STATUS_NONFINITE
+    assert classify_tensor(None) == STATUS_MISSING
