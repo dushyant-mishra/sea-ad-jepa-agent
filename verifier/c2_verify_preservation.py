@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Independent C2 preservation verification.
+"""C2 preservation verification, parameterised by candidate.
+
+NOT independent certification: written by the implementing agent. Published so a
+separate reviewer can reuse or critique it. The candidate commit and its expected
+package root are required arguments, so this script can never assert which
+candidate is current.
 
 Written for the verifier. Recomputes every digest from bytes on disk in a clean
 checkout. Does not import, call, or trust any implementing-agent code, and does
@@ -18,7 +23,20 @@ from pathlib import Path
 REPO = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.cwd()
 PKG = REPO / "outputs" / "c2_t1_gradient_forensic_20260906"
 
-EXPECTED_COMMIT = "da7e0b5ce83988da1a8543265dcffd9d6c9c166b"
+# Candidate identity is a REQUIRED input, never a default. Hardcoding it meant
+# this script silently described one candidate while being run against another,
+# which is exactly how a superseded authority gets re-certified by accident.
+if len(sys.argv) < 4:
+    raise SystemExit(
+        "usage: c2_verify_preservation.py <repo> <candidate_commit_sha> "
+        "<expected_package_root_sha256>
+"
+        "Both the candidate commit and its expected package root must be supplied "
+        "by the reviewer from the authority record. This script asserts nothing "
+        "about which candidate is current."
+    )
+
+EXPECTED_COMMIT = sys.argv[2]
 
 EXPECTED_CLOSURE = {
     "v3_exact_path/C2_V3_K0_HISTORICAL.json":
@@ -31,7 +49,7 @@ EXPECTED_CLOSURE = {
         "d0cd70bae1e71e35d4ee02a09c8954360a155215af22998fee17d3314075caf9",
 }
 
-EXPECTED_PACKAGE_ROOT = "3961750328c5a8e82ace2221b2bebf56ff0bd4676f6f2ad53195c7b19f5f6bd4"
+EXPECTED_PACKAGE_ROOT = sys.argv[3]
 
 
 def sha256(path: Path) -> str:
