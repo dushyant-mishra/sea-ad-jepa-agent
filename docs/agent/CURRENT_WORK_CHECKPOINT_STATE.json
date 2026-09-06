@@ -42,7 +42,7 @@
     "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED",
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE",
     "F1_QUALIFY_CURRENT_DOES_NOT_GATE_PROGRAM_SIGN",
-    "SEALED_HOLDOUT_SPLIT_REGISTRY_PUBLIC_ON_MAIN",
+    "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE",
     "F1B_10_OF_15_FINDINGS_LACK_EXECUTABLE_ATTACKS"
   ],
   "assets": {
@@ -104,8 +104,8 @@
     "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED": "docs/agent/F1B_INDEPENDENT_VERIFICATION_REVIEW_20260905.md on review/f1b-independent-verifier-repair-20260905 enumerates 15 numbered findings against f1b-minimal-bridge-20260905@f0fb23c2.",
     "F1B_10_OF_15_FINDINGS_LACK_EXECUTABLE_ATTACKS": "scripts/v4/verify_f1b_minimal_bridge_independent_v1.py emits only 4 executable attack codes (G1_ACCEPTS_NONFINITE_GRADIENT, G2_ACCEPTS_ZERO_SECOND_MOMENT, G3_MEAN_MASKS_DECAY_ONLY_TENSOR, PUBLISHED_300U_EXCEEDS_FROZEN_40U_HORIZON). The remaining findings are prose-only. A C3 repair cannot be verified against a finding that has no executable attack, so the attacks must be written before the repair.",
     "F1_QUALIFY_CURRENT_DOES_NOT_GATE_PROGRAM_SIGN": "qualify_current gates per-program estimability and deltas but never per-program sign. holm(p_positive) is computed in contextual_target_f1_decision_v4.py but surfaced only as protected_program_positive_holm_report_only and is absent from the gates dict. A payload with 5 of 8 protected programs having two-sided 95% CIs entirely below zero still returns qualified=True. Reproduced independently twice. Upstream of any real F1.",
-    "SEALED_HOLDOUT_SPLIT_REGISTRY_PUBLIC_ON_MAIN": "results/v4/stage81a2_split_registry.csv is readable on public main and names the sealed_holdout donors together with cohort labels that disclose amyloid/tau stratification, plus the freeze seed and assignment method. Sealed membership was therefore publicly readable, so future sealed-evaluation claims are contestable regardless of whether anyone looked. Not an agent-actionable repair: deletion does not unpublish, and history rewriting would break every hash-bound provenance reference. OWNER DECISION REQUIRED. Full enumeration held locally, deliberately not published here.",
-    "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them."
+    "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
+    "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead."
   },
   "continuity_defects_repaired_by_claude_code": {
     "DOCUMENTED_TAKEOVER_COMMAND_COULD_NOT_PASS": "CLAUDE.md instructed 'validate --repo . --worktree .' but the checkpoint records the canonical repo path by design, so the first takeover step always raised a spurious REPO_PATH_MISMATCH. Added work_checkpoint.resolve_canonical_repo(), made --repo optional and auto-resolved via 'git rev-parse --git-common-dir', and corrected CLAUDE.md. No agent now hardcodes the canonical path.",
