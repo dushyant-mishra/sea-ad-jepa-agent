@@ -138,3 +138,68 @@ def test_failed_or_malformed_response_cannot_pass(
     assert result["status"] == expected
     assert result["advisory_only"] is True
     assert result["status"] != "CONSULTATION_COMPLETE"
+
+
+def test_published_consultation_carries_no_account_identity_or_username(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Provenance must never publish account identity or the local username.
+
+    `claude auth status --json` returns email, orgId, orgName and a projects
+    directory. A denylist of secret-ish key names does not catch these, so the
+    auth summary is allowlisted and local user paths are redacted. This artifact
+    is committed to a public repository.
+    """
+    home = tmp_path / "Users" / "someuser"
+    home.mkdir(parents=True)
+    monkeypatch.setenv("USERPROFILE", str(home))
+    monkeypatch.setattr("scripts.agent.claude_peer_bridge.Path.home", lambda: home)
+
+    prompt = tmp_path / "prompt.txt"
+    prompt.write_text("Return one JSON object.\n", encoding="utf-8")
+
+    def fake_run(argv, **kwargs):
+        if "--version" in argv:
+            return subprocess.CompletedProcess(argv, 0, "2.1.260\n", "")
+        if "auth" in argv:
+            return subprocess.CompletedProcess(
+                argv,
+                0,
+                json.dumps(
+                    {
+                        "loggedIn": True,
+                        "apiProvider": "firstParty",
+                        "authMethod": "claude.ai",
+                        "subscriptionType": "team",
+                        "email": "someone@example.invalid",
+                        "orgId": "00000000-0000-4000-8000-000000000000",
+                        "orgName": "Some Lab Somewhere",
+                        "projectsDirectory": str(home / ".claude" / "projects"),
+                        "analyticsDisabled": False,
+                    }
+                ),
+                "",
+            )
+        return subprocess.CompletedProcess(
+            argv, 0, json.dumps({"type": "result", "result": '{"verdict":"ADVISORY"}'}), ""
+        )
+
+    monkeypatch.setattr("scripts.agent.claude_peer_bridge.subprocess.run", fake_run)
+    executable = home / "claude.exe"
+    executable.write_bytes(b"fake")
+    result = consult(executable, prompt, tmp_path / "out", {})
+
+    blob = json.dumps(result)
+    for forbidden in (
+        "someone@example.invalid",
+        "00000000-0000-4000-8000-000000000000",
+        "Some Lab Somewhere",
+        "someuser",
+    ):
+        assert forbidden not in blob, f"published provenance leaked {forbidden!r}"
+
+    # The useful, non-identifying provenance must survive.
+    assert result["auth_status"]["loggedIn"] is True
+    assert result["auth_status"]["apiProvider"] == "firstParty"
+    assert "email" not in result["auth_status"]
+    assert "orgId" not in result["auth_status"]

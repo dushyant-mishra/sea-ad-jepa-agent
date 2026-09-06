@@ -99,3 +99,9 @@ wget-log
 # Regenerated local peer-continuity state (source is committed separately)
 /docs/agent/CURRENT_WORK_CHECKPOINT.json
 /docs/agent/CLAUDE_TAKEOVER.md
+
+# peer-continuity test scratch (must never invalidate the work checkpoint)
+.pytest_tmp_peer_handoff/
+
+# peer consultation records may capture account identity; never commit them
+/docs/agent/peer_consultations/**/CLAUDE_PEER_CONSULTATION.json

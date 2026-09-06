@@ -19,7 +19,14 @@ except ModuleNotFoundError:  # Support direct `python scripts/agent/...` executi
     from work_checkpoint import atomic_write_json, sha256_file
 
 
-_SENSITIVE_KEY = re.compile(r"token|secret|password|credential|api.?key", re.I)
+_SENSITIVE_KEY = re.compile(
+    r"token|secret|password|credential|api.?key|e.?mail|org|account|user", re.I
+)
+
+# `claude auth status --json` returns account identity (email, orgId, orgName,
+# projectsDirectory). A denylist of secret-ish key names does not catch those, so
+# the auth summary is allowlisted: only non-identifying provenance is published.
+_AUTH_SUMMARY_KEYS = ("loggedIn", "apiProvider", "authMethod", "subscriptionType")
 
 
 def _version_key(path: Path) -> tuple[int, ...]:
@@ -92,13 +99,29 @@ def _scrub(value: Any) -> Any:
     return value
 
 
+def _redact_user_paths(value: Any) -> Any:
+    """Replace the local user-profile prefix with '~' so no username is published."""
+    roots = {str(Path(os.environ.get("USERPROFILE", "")).resolve()), str(Path.home().resolve())}
+    roots = sorted((root for root in roots if root and root not in (".", os.sep)), key=len, reverse=True)
+    if isinstance(value, str):
+        result = value
+        for root in roots:
+            result = result.replace(root, "~").replace(root.replace("\\", "/"), "~")
+        return result
+    if isinstance(value, dict):
+        return {key: _redact_user_paths(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_redact_user_paths(item) for item in value]
+    return value
+
+
 def _auth_summary(executable: Path) -> dict[str, Any]:
     completed = _run([str(executable), "auth", "status", "--json"], timeout=30)
     try:
         parsed = json.loads(completed.stdout) if completed.returncode == 0 else {}
     except json.JSONDecodeError:
         parsed = {}
-    return _scrub(parsed)
+    return {key: parsed[key] for key in _AUTH_SUMMARY_KEYS if key in parsed}
 
 
 def consult(
@@ -188,6 +211,7 @@ def consult(
         "stderr_sha256": hashlib.sha256(completed.stderr.encode("utf-8")).hexdigest(),
         "response": parsed_response if response_valid else None,
     }
+    record = _redact_user_paths(record)
     output_dir.mkdir(parents=True, exist_ok=True)
     atomic_write_json(output_dir / "CLAUDE_PEER_CONSULTATION.json", record)
     return record
