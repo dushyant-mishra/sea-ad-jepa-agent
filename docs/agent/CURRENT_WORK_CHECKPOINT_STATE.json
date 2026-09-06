@@ -75,7 +75,7 @@
     ],
     "c2_closure_package": {
       "root": "outputs/c2_t1_gradient_forensic_20260906",
-      "package_root_sha256": "0a5ef5cb63163fa4605671bddd546cf413c5888372d882e3bd9d0b475c893a53",
+      "package_root_sha256": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222",
       "manifest": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
       "file_count": 55,
       "bound_sources": 15,
@@ -110,8 +110,8 @@
       "preservation_note": "The package bytes are tracked in git and marked -text so the recorded SHA-256 values, which are over raw bytes, survive checkout on either platform. At commit da7e0b5 the package was untracked and its manifest was stale: the packager had run before the final edit to C2_CAUSAL_CONDITION_ESTABLISHED.md, recording 4725 bytes for a 5854-byte file, which also invalidated the package root. Both defects were found by independent verification from a clean clone and are repaired here.",
       "frozen_for_review": {
         "branch": "jepa-peer-handoff-20260905",
-        "supersedes_commit": "43c2997079b9326d21d9c2c88aa3014167413f5e",
-        "supersession_reason": "External review returned STOP_C2_INDEPENDENT_VERIFICATION__BOUND_GATE_SOURCE_AUTHORITY_STALE against 43c2997. The causal experiment passed substantive external review. The failure was a stale phrase in the gate module docstring, which still described rejecting an exact-zero gradient NORM after the implementation had moved to an elementwise any(grad != 0) test. Docstring only; the implementation body and the K0/K1 evidence are unchanged. 43c2997 is preserved unmodified as the failed review candidate, as is 76b9449e before it.",
+        "supersedes_commit": "d24ff8f72998a1ef5e5e032e99a927f663723a4a",
+        "supersession_reason": "External review returned STOP_C2_INDEPENDENT_VERIFICATION__BOUND_TEST_SOURCE_PLATFORM_BYTES_MISMATCH against d24ff8f7. The causal evidence, K0/K1, gate algorithm, registry and scientific conclusion were not reopened. The packager hashed the Windows working-tree representation of bound sources rather than the immutable git bytes, so tests/test_c2_mandatory_gradient_gate_v1.py was recorded as 10506 bytes / 0255065e when its git bytes are 10259 / b113927c, a 247-byte difference over 247 line breaks. Repaired structurally: the packager now stages each manifested path and hashes the index bytes, so no checkout can change a recorded digest. All 55 rows verified against git bytes. d24ff8f7, 43c2997 and 76b9449e are preserved unmodified as failed review candidates.",
         "do_not_mutate": true,
         "platform_split": {
           "continuity_and_governance_suite": "Windows git environment",
@@ -119,7 +119,8 @@
           "note": "The worktree .git indirection is a Windows path, so git commands fail from WSL against that worktree. That is an environment artifact and must not be read as a scientific failure. Clone the remote into the Linux filesystem instead."
         }
       },
-      "manifest_sha256": "d9cbac57d9c6aa29537c8126546ed10856ba84ad719aad07fb3821472ce3925e"
+      "manifest_sha256": "b4d2fafc0665bd0c135c3ddac0c76b873602034b79f267a808e82636ad11960b",
+      "bytes_authority": "GIT_BLOB_BYTES_PLATFORM_INDEPENDENT. Manifest digests and byte counts are taken from the immutable git blob, never the working tree. Hashing the working tree is platform dependent: on Windows a text-classified source is checked out with CRLF, so its digest and length differ from the git blob by one byte per line."
     }
   },
   "firewall": {
