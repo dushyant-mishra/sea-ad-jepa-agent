@@ -75,7 +75,7 @@
     ],
     "c2_closure_package": {
       "root": "outputs/c2_t1_gradient_forensic_20260906",
-      "package_root_sha256": "3961750328c5a8e82ace2221b2bebf56ff0bd4676f6f2ad53195c7b19f5f6bd4",
+      "package_root_sha256": "d9770baa950bbd21360b079061cb0ac71d8f9c04ef53cb7d91fcf24db2d27559",
       "manifest": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
       "file_count": 55,
       "bound_sources": 15,
@@ -97,7 +97,7 @@
         },
         {
           "path": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
-          "sha256": "bba15e0481a9fb2f2e1925849fb32ebdfda9f9b5e2ad52e18e06e220d60a7d17",
+          "sha256": "04a6bbe5ec743a1293e92e8413a16f0d8212099394261f4c55da4979fa154cae",
           "authority": "C2_PACKAGE_MANIFEST"
         },
         {
@@ -110,15 +110,16 @@
       "preservation_note": "The package bytes are tracked in git and marked -text so the recorded SHA-256 values, which are over raw bytes, survive checkout on either platform. At commit da7e0b5 the package was untracked and its manifest was stale: the packager had run before the final edit to C2_CAUSAL_CONDITION_ESTABLISHED.md, recording 4725 bytes for a 5854-byte file, which also invalidated the package root. Both defects were found by independent verification from a clean clone and are repaired here.",
       "frozen_for_review": {
         "branch": "jepa-peer-handoff-20260905",
-        "supersedes_commit": "da7e0b5ce83988da1a8543265dcffd9d6c9c166b",
-        "supersession_reason": "At da7e0b5 the closure outputs were untracked and absent from a clean clone, the manifest and package root were stale against their own document, and the gradient gate used an underflow-prone norm test. All three are repaired.",
+        "supersedes_commit": "76b9449e61ca4f3561c2c85e0ce9175f82bcd636",
+        "supersession_reason": "External review returned STOP_C2_INDEPENDENT_VERIFICATION__FROZEN_CANDIDATE_AUTHORITY_INCONSISTENT against 76b9449e. The causal evidence passed independent re-derivation; the failure was in stale authority statements inside the manifested closure document: an embedded package-root value, a live-gate description that still said norm, a test count of nine, and an ambiguous count of closure-critical artifacts. All four repaired. 76b9449e is preserved unmodified as the failed review candidate.",
         "do_not_mutate": true,
         "platform_split": {
           "continuity_and_governance_suite": "Windows git environment",
           "cuda_c2_torch_replay": "WSL or native Linux GPU checkout",
           "note": "The worktree .git indirection is a Windows path, so git commands fail from WSL against that worktree. That is an environment artifact and must not be read as a scientific failure. Clone the remote into the Linux filesystem instead."
         }
-      }
+      },
+      "manifest_sha256": "04a6bbe5ec743a1293e92e8413a16f0d8212099394261f4c55da4979fa154cae"
     }
   },
   "firewall": {
@@ -155,7 +156,7 @@
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead.",
     "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened.",
-    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "component_gradient_report counts only missing and nonfinite gradients, never zero, so it passed while all 48 mandatory tensors were exactly zero. A repaired fail-closed gate exists at scripts/v4/c2_mandatory_gradient_gate_v1.py. Independent verification found that its first form used a gradient norm, which squares and so underflowed a lone fp32 subnormal to exactly zero, misclassifying 48 live tensors as dead; it now tests emptiness exactly with any(grad != 0) and finiteness separately. Eleven adversarial tests pass, including a live-tensor test in the real gradient dtype and two replaying preserved K0 and K1 bytes. NOT YET ADOPTED by any successor training path, which is what would close this.",
+    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "component_gradient_report counts only missing and nonfinite gradients, never zero, so it passed while all 48 mandatory tensors were exactly zero. The repaired gate at scripts/v4/c2_mandatory_gradient_gate_v1.py checks live tensors for finiteness and for exact elementwise emptiness with any(grad != 0), never a norm, since a norm squares and underflows a lone fp32 subnormal to zero. gate_from_norms replays preserved recorded norms only. FROZEN_MANDATORY_REGISTRY enumerates the 48 protected identities and validate_registry fails closed unless discovery matches exactly, so dynamic discovery alone cannot define completeness. Thirteen adversarial tests pass. NOT YET ADOPTED by any training path; adoption must place the gate after unscale and before the optimizer step and must call enforce_registry alongside it.",
     "C2_DEEP_KERNEL_MECHANISM_OPEN": "Necessity and sufficiency are established at the code-condition level: disabling autocast only around the backward call restores all 48 tensors at 128/8 with all nine frozen criteria met, while the historical arm still gives 48/48 dead. Why the collapse is to EXACT zero rather than merely inaccurate values is unresolved. The autocast weight cache (I1) and allow_fp16_reduced_precision_reduction (J1) were both tested and refuted.",
     "C2_PRODUCTION_SAFE_REWRITE_NOT_RUN": "The production_safe variant currently accumulates every scaled loss and drains the backwards after the autocast block, holding 64 live graphs at 128/8, and will exhaust memory. The autocast region must move inside the view loop to preserve per-view accumulation. Not yet repaired, not yet run, no 128/8 regression.",
     "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION": "The DEC-013 characterisation of T1 as having valid mechanics is not defensible in the parameter-wise sense. The historical biological outcome stands: T1 did not qualify biology at u205. Supersession must follow independent C2 verification, not precede it.",

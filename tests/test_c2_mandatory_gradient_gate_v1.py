@@ -198,3 +198,50 @@ def test_nonfinite_is_detected_even_when_other_elements_are_finite() -> None:
     grad[2, 2] = float("inf")
     assert classify_tensor(grad) == STATUS_NONFINITE
     assert classify_tensor(None) == STATUS_MISSING
+
+
+def test_frozen_registry_is_exactly_the_48_expected_identities() -> None:
+    """Dynamic discovery alone must not define completeness."""
+    from scripts.v4.c2_mandatory_gradient_gate_v1 import (
+        EXPECTED_MANDATORY_COUNT, FROZEN_MANDATORY_REGISTRY)
+
+    assert len(FROZEN_MANDATORY_REGISTRY) == EXPECTED_MANDATORY_COUNT == 48
+    assert len(set(FROZEN_MANDATORY_REGISTRY)) == 48
+    by_role: dict[str, int] = {}
+    for name in FROZEN_MANDATORY_REGISTRY:
+        role = "attention_norm" if "attention_norm" in name \
+            else name.split("attention.")[1].rsplit(".", 1)[0]
+        by_role[role] = by_role.get(role, 0) + 1
+    assert by_role == {"attention_norm": 12, "query": 12, "key": 12, "value": 12}
+
+
+def test_registry_validation_catches_a_shrunken_or_renamed_protected_set() -> None:
+    torch = pytest.importorskip("torch")
+    from scripts.v4.c2_mandatory_gradient_gate_v1 import (
+        enforce_registry, validate_registry)
+
+    import sys
+    src = str(ROOT / "src")          # the package lives under src/, not the repo root
+    if src not in sys.path:
+        sys.path.insert(0, src)
+    try:
+        from sea_ad_jepa.v4.ipb_jepa import IPBEncoder
+    except Exception:  # noqa: BLE001
+        pytest.skip("production encoder not importable here")
+
+    encoder = IPBEncoder(vocabulary_size=64, width=160, heads=4, blocks=6)
+    report = validate_registry(encoder)
+    assert report["passed"], report
+    assert report["discovered_count"] == 48
+    assert report["by_role"] == {
+        "attention_norm": 12, "attention.query": 12,
+        "attention.key": 12, "attention.value": 12}
+
+    # A model with fewer blocks must be rejected, not silently under-protected.
+    shrunken = IPBEncoder(vocabulary_size=64, width=160, heads=4, blocks=5)
+    shrunken_report = validate_registry(shrunken)
+    assert not shrunken_report["passed"]
+    assert shrunken_report["discovered_count"] == 40
+    assert len(shrunken_report["missing"]) == 8
+    with pytest.raises(RuntimeError):
+        enforce_registry(shrunken)

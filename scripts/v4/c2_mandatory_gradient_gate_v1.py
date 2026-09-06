@@ -34,6 +34,59 @@ STATUS_LIVE = "LIVE"
 REJECTING_STATUSES = (STATUS_MISSING, STATUS_NONFINITE, STATUS_EXACT_ZERO)
 
 
+FROZEN_BLOCK_COUNT = 6
+
+# The protected set, enumerated rather than discovered. Dynamic discovery alone
+# cannot establish completeness: a renamed or removed module would silently
+# shrink the registry and the gate would then protect fewer tensors while still
+# reporting a pass. Adoption must validate discovery against this list.
+FROZEN_MANDATORY_REGISTRY: tuple[str, ...] = tuple(
+    "blocks.%d.%s.%s" % (index, role, suffix)
+    for index in range(FROZEN_BLOCK_COUNT)
+    for role in MANDATORY_ROLES
+    for suffix in ("weight", "bias")
+)
+
+EXPECTED_MANDATORY_COUNT = 48
+
+
+def validate_registry(module: Any) -> dict[str, Any]:
+    """Fail closed unless discovery yields exactly the frozen 48 identities."""
+    discovered = mandatory_names(module)
+    expected = sorted(FROZEN_MANDATORY_REGISTRY)
+    missing = sorted(set(expected) - set(discovered))
+    unexpected = sorted(set(discovered) - set(expected))
+    by_role: dict[str, int] = {}
+    for name in discovered:
+        for role in MANDATORY_ROLES:
+            if "." + role + "." in name:
+                by_role[role] = by_role.get(role, 0) + 1
+                break
+    passed = not missing and not unexpected and len(discovered) == EXPECTED_MANDATORY_COUNT
+    return {
+        "discovered_count": len(discovered),
+        "expected_count": EXPECTED_MANDATORY_COUNT,
+        "missing": missing,
+        "unexpected": unexpected,
+        "by_role": by_role,
+        "passed": passed,
+        "terminal": "PASS_MANDATORY_REGISTRY" if passed
+        else "STOP_MANDATORY_REGISTRY_MISMATCH",
+    }
+
+
+def enforce_registry(module: Any) -> dict[str, Any]:
+    """Raise unless the module presents exactly the frozen protected registry."""
+    report = validate_registry(module)
+    if not report["passed"]:
+        raise RuntimeError(
+            "mandatory registry mismatch: %d discovered, expected %d; missing=%s unexpected=%s"
+            % (report["discovered_count"], report["expected_count"],
+               report["missing"][:4], report["unexpected"][:4])
+        )
+    return report
+
+
 def mandatory_names(module: Any) -> list[str]:
     """Parameter names whose gradients this gate protects."""
     names = []
