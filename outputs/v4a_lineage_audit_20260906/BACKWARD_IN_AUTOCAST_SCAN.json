@@ -1,0 +1,71 @@
+{
+ "root": "D:\\Jepa project",
+ "scanned": 4729,
+ "affected": [
+  {
+   "file": "exports/foundation_calibration_bundle_20260824/code/stage81a3_prod41k_engineering_smoke.py",
+   "line": 518,
+   "verdict": "INSIDE_DYNAMIC_AUTOCAST",
+   "autocast_stack": [
+    "dynamic"
+   ]
+  },
+  {
+   "file": "outputs/.worktrees/f1_evidence_trend_repair/scripts/v4/stage81a3_prod41k_engineering_smoke.py",
+   "line": 518,
+   "verdict": "INSIDE_DYNAMIC_AUTOCAST",
+   "autocast_stack": [
+    "dynamic"
+   ]
+  },
+  {
+   "file": "outputs/.worktrees/f1_real_production_executor/scripts/v4/stage81a3_prod41k_engineering_smoke.py",
+   "line": 518,
+   "verdict": "INSIDE_DYNAMIC_AUTOCAST",
+   "autocast_stack": [
+    "dynamic"
+   ]
+  },
+  {
+   "file": "outputs/.worktrees/f1_real_reader_forward_preflight/scripts/v4/stage81a3_prod41k_engineering_smoke.py",
+   "line": 518,
+   "verdict": "INSIDE_DYNAMIC_AUTOCAST",
+   "autocast_stack": [
+    "dynamic"
+   ]
+  },
+  {
+   "file": "outputs/.worktrees/f1r/scripts/v4/stage81a3_prod41k_engineering_smoke.py",
+   "line": 518,
+   "verdict": "INSIDE_DYNAMIC_AUTOCAST",
+   "autocast_stack": [
+    "dynamic"
+   ]
+  },
+  {
+   "file": "outputs/.worktrees/github-review-mirror-sync-20260902/scripts/v4/stage81a3_prod41k_engineering_smoke.py",
+   "line": 518,
+   "verdict": "INSIDE_DYNAMIC_AUTOCAST",
+   "autocast_stack": [
+    "dynamic"
+   ]
+  },
+  {
+   "file": "scripts/v4/stage81a3_prod41k_engineering_smoke.py",
+   "line": 518,
+   "verdict": "INSIDE_DYNAMIC_AUTOCAST",
+   "autocast_stack": [
+    "dynamic"
+   ]
+  }
+ ],
+ "shielded": [],
+ "unparseable": [
+  {
+   "file": "results/stage75e_container/stage76_runtime_check.py",
+   "line": 0,
+   "verdict": "UNPARSEABLE",
+   "autocast_stack": []
+  }
+ ]
+}

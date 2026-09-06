@@ -21,6 +21,7 @@ logs/
 runs/
 outputs/*
 !outputs/c2_t1_gradient_forensic_20260906/
+!outputs/v4a_lineage_audit_20260906/
 *.log
 
 # Lightweight reproducibility artifacts
