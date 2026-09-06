@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import copy
 from pathlib import Path
 
 from scripts.agent.update_work_checkpoint import render_takeover_markdown, write_takeover
+from scripts.agent.work_checkpoint import build_checkpoint
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,8 +39,12 @@ def test_active_plan_preserves_exact_scope_and_stop() -> None:
 
 def test_state_binds_authorities_firewall_and_exact_next_action() -> None:
     state = json.loads(STATE.read_text(encoding="utf-8"))
-    assert state["active_agent"] == "CODEX"
+    # active_agent is provenance only and rotates on every handoff, so it must be
+    # asserted as peer membership. Pinning it to one agent would make a lawful
+    # Codex->Claude takeover -- the system's primary use case -- fail the suite.
     assert state["peer_agents"] == ["CODEX", "CLAUDE_CODE"]
+    assert state["active_agent"] in state["peer_agents"]
+    assert state["provenance"]["last_agent"] in state["peer_agents"]
     assert state["agent_symmetry"]["equal_implementation_authority"] is True
     assert state["agent_symmetry"]["self_promotion_forbidden"] is True
     assert state["gates"]["current"] == "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY"
@@ -93,3 +99,17 @@ def test_takeover_write_uses_lf_on_installed_python(tmp_path: Path) -> None:
     target = tmp_path / "TAKEOVER.md"
     write_takeover(target, "line one\nline two\n")
     assert target.read_bytes() == b"line one\nline two\n"
+
+
+def test_codex_claude_codex_provenance_handoff_preserves_authority_and_action() -> None:
+    codex_state = json.loads(STATE.read_text(encoding="utf-8"))
+    claude_state = copy.deepcopy(codex_state)
+    claude_state["provenance"]["last_agent"] = "CLAUDE_CODE"
+    returned_state = copy.deepcopy(claude_state)
+    returned_state["provenance"]["last_agent"] = "CODEX"
+    checkpoints = [
+        build_checkpoint(ROOT, ROOT, state)
+        for state in (codex_state, claude_state, returned_state)
+    ]
+    assert checkpoints[0]["authorities"] == checkpoints[1]["authorities"] == checkpoints[2]["authorities"]
+    assert checkpoints[0]["next_authorized_actions"] == checkpoints[1]["next_authorized_actions"] == checkpoints[2]["next_authorized_actions"]
