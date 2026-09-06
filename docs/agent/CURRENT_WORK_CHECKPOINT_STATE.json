@@ -33,7 +33,7 @@
   ],
   "gates": {
     "current": "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY",
-    "c2": "STOP_C2_HISTORICAL_ENDPOINT_NOT_REPRODUCED",
+    "c2": "C2_HISTORICAL_ENDPOINT_REPRODUCED_CAUSE_LOCALIZED_TO_FP16_PATH",
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN"
   },
@@ -44,7 +44,8 @@
     "F1_QUALIFY_CURRENT_DOES_NOT_GATE_PROGRAM_SIGN",
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE",
     "F1B_10_OF_15_FINDINGS_LACK_EXECUTABLE_ATTACKS",
-    "C2_AD_HOC_REPRODUCTION_SUPERSEDED"
+    "C2_AD_HOC_REPRODUCTION_SUPERSEDED",
+    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO"
   ],
   "assets": {
     "local": [
@@ -78,8 +79,9 @@
     "production_training_forbidden": true
   },
   "next_authorized_actions": [
-    "STOP_FOR_SCIENTIFIC_REVIEW",
-    "AWAIT_PROSPECTIVE_C2_V3_INPUT_DISTRIBUTION_CONTRACT"
+    "C2_FROZEN_SINGLE_FACTOR_DECOMPOSITION_ON_CUDA",
+    "C2_REGRESSION_TEST",
+    "STOP_FOR_SCIENTIFIC_REVIEW"
   ],
   "forbidden_actions": [
     "RUN_REAL_F1",
@@ -99,13 +101,14 @@
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
   "blocker_evidence": {
-    "C2_GRADIENT_SEVERING_CONDITION_UNRESOLVED": "Two specified reconstructions fail to reproduce the defective endpoint. v1 (seeded random init) and v2 (authenticated u0 bytes, sha256 19fb0c25 verified, historical geometry views=4 mask_fraction=0.4 target_blocks=16 batch=128 microbatch=8 64 backwards fp16 AMP GradScaler checkpointing) both give 0 of 48 dead mandatory tensors, with Q/K/V gradient norms of order 1e1 to 4.6e4, far above fp16 subnormal. The frozen bisection therefore never started and the fp32-loss-operand hypothesis was never reached: neither confirmed nor refuted. Separately, the saved checkpoint online_gradients are a capture-timing artifact: the trainer zeroes gradients immediately before capture, and u0205 holds 0 of 108 nonzero, not 48. The surviving evidence is the AdamW moment state, which zero_grad does not touch: 48 of 123 entries hold both moments exactly zero after 205 updates. That remains unexplained. Largest untested difference is the input distribution; a new prospective contract is required.",
+    "C2_GRADIENT_SEVERING_CONDITION_UNRESOLVED": "REPRODUCED by C2-v3, which calls the real phase_e.run_update unmodified and substitutes only the loader. cuda+fp16 batch4/micro2: 48/48 mandatory tensors dead. cuda+fp16 batch2/micro1: 40/48 dead, survivors exactly the eight tensors of block 0. cpu, same unmodified function with autocast and GradScaler inactive, batch2/micro1: 0/48 dead. attention.output live in every condition. Zero-both-moment counts track dead counts and match the historical checkpoints. Loss falls normally (2.2177/1.9858/1.7699) while all 48 are dead. Graded with geometry and removed by dropping fp16, so this is a magnitude threshold, not a severed graph; block 5 dies while block 0 survives, so it is per-block and depth-dependent rather than sequential. Consistent mechanism: the fp32-to-fp16 cast at KernelLinearAttention.forward's 'self.output(output.to(tokens.dtype))', which every upstream tensor's gradient must cross while self.output's own gradient is taken before it. NOT yet formally isolated: the CPU control varies device, dtype and scaler together. Terminal is REPRODUCED_AND_LOCALIZED_TO_THE_FP16_PATH, not CAUSE_ESTABLISHED.",
     "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED": "docs/agent/F1B_INDEPENDENT_VERIFICATION_REVIEW_20260905.md on review/f1b-independent-verifier-repair-20260905 enumerates 15 numbered findings against f1b-minimal-bridge-20260905@f0fb23c2.",
     "F1B_10_OF_15_FINDINGS_LACK_EXECUTABLE_ATTACKS": "scripts/v4/verify_f1b_minimal_bridge_independent_v1.py emits only 4 executable attack codes (G1_ACCEPTS_NONFINITE_GRADIENT, G2_ACCEPTS_ZERO_SECOND_MOMENT, G3_MEAN_MASKS_DECAY_ONLY_TENSOR, PUBLISHED_300U_EXCEEDS_FROZEN_40U_HORIZON). The remaining findings are prose-only. A C3 repair cannot be verified against a finding that has no executable attack, so the attacks must be written before the repair.",
     "F1_QUALIFY_CURRENT_DOES_NOT_GATE_PROGRAM_SIGN": "qualify_current gates per-program estimability and deltas but never per-program sign. holm(p_positive) is computed in contextual_target_f1_decision_v4.py but surfaced only as protected_program_positive_holm_report_only and is absent from the gates dict. A payload with 5 of 8 protected programs having two-sided 95% CIs entirely below zero still returns qualified=True. Reproduced independently twice. Upstream of any real F1.",
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead.",
-    "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened."
+    "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened.",
+    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "phase_e.component_gradient_report counts only missing and nonfinite gradients, never zero. It passed on every C2-v3 run while 48 tensors were dead. This is why the historical T1 run raised no mechanics error. Any successor training path must gate zero per tensor."
   },
   "continuity_defects_repaired_by_claude_code": {
     "DOCUMENTED_TAKEOVER_COMMAND_COULD_NOT_PASS": "CLAUDE.md instructed 'validate --repo . --worktree .' but the checkpoint records the canonical repo path by design, so the first takeover step always raised a spurious REPO_PATH_MISMATCH. Added work_checkpoint.resolve_canonical_repo(), made --repo optional and auto-resolved via 'git rev-parse --git-common-dir', and corrected CLAUDE.md. No agent now hardcodes the canonical path.",
