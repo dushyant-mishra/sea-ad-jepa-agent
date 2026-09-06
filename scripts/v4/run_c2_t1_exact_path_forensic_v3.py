@@ -166,11 +166,27 @@ def movement_report(before: dict, online: torch.nn.Module, names: list[str],
         start = before[name]
         end = by_name[name].detach().float()
         base = float(start.norm())
-        rel = None if base == 0.0 else float((end - start).norm()) / base
-        entries[name] = {"relative_movement": rel, "zero_baseline": base == 0.0}
-        exceed.append(rel is not None and rel > decay_only * 1.5)
+        absolute = float((end - start).norm())
+        rel = None if base == 0.0 else absolute / base
+        zero_baseline = base == 0.0
+        # Relative movement is undefined at zero baseline (LayerNorm bias
+        # initialises to zero). Those tensors are judged on absolute movement,
+        # which pure decay cannot produce: decay scales the parameter, so a
+        # zero parameter stays exactly zero under decay alone.
+        if zero_baseline:
+            moved = absolute > 0.0
+        else:
+            moved = rel > decay_only * 1.5
+        entries[name] = {
+            "relative_movement": rel,
+            "absolute_movement": absolute,
+            "zero_baseline": zero_baseline,
+            "moved_beyond_decay": moved,
+        }
+        exceed.append(moved)
     return {"entries": entries, "decay_only_prediction": decay_only,
             "all_exceed_decay": all(exceed), "n_exceeding": sum(exceed),
+            "zero_baseline_count": sum(1 for e in entries.values() if e["zero_baseline"]),
             "total": len(names)}
 
 

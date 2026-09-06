@@ -349,3 +349,33 @@ exhaust memory. The recommended structure keeps per-view accumulation by moving
 the autocast region inside the view loop instead. That is recorded here as a
 known defect, to be repaired before that variant is run; it is not part of this
 paired test.
+
+---
+
+# Movement criterion repair — declared 2026-09-06, after `K0`/`K1`
+
+The frozen criterion "per-tensor movement exceeds the pure AdamW-decay
+prediction" was evaluated as relative movement. `K1` returned 42 of 48. The six
+that did not pass are exactly `blocks.{0..5}.attention_norm.bias`, every one of
+them zero-baseline: `nn.LayerNorm` initialises bias to zero, so relative
+movement is a division by zero and is **undefined**, not small.
+
+Under the frozen rule those six are therefore `INDETERMINATE`, not failing, and
+`K1`'s `ALL_CRITERIA_MET = false` is an artefact of an under-specified measure.
+
+This is the same defect the independent F1-B verifier named as
+`MOVEMENT_SKIPS_NEAR_ZERO_BASELINE`. It was reproduced here in my own criterion.
+
+## The repair
+
+Zero-baseline tensors are judged on **absolute** movement being strictly
+positive. This is a sound decay comparison rather than a weakened one: decoupled
+weight decay multiplies the parameter by `(1 - lr*wd)`, so a parameter that is
+exactly zero remains exactly zero under decay alone. Any nonzero absolute
+movement for such a tensor is therefore necessarily gradient-driven.
+
+Non-zero-baseline tensors keep the original relative test unchanged.
+
+The repair can still fail: if those six biases do not move, the corrected arm
+fails. It is not outcome-favouring. Both arms are re-run under the repaired
+measure and both the original and repaired evaluations are reported.
