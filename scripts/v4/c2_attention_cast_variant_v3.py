@@ -30,6 +30,41 @@ import torch
 import torch.nn.functional as F
 
 
+def _forward_projections_fp32(self, tokens: torch.Tensor, valid_mask: torch.Tensor):
+    """Canonical forward with the q/k/v projections themselves computed in fp32.
+
+    Removes the fp16 boundary on the INPUT side of the attention branch: there is
+    no `projected_q.float()` upcast because the projections never ran in fp16.
+    The output cast stays exactly where the canonical source puts it.
+    """
+    if (
+        tokens.ndim != 3
+        or valid_mask.shape != tokens.shape[:2]
+        or valid_mask.dtype is not torch.bool
+    ):
+        raise ValueError(
+            "tokens and valid_mask must be [batch,tokens,width] and boolean [batch,tokens]"
+        )
+    batch, count, _ = tokens.shape
+    shape = (batch, count, self.heads, self.head_dim)
+    with torch.autocast(device_type=tokens.device.type, enabled=False):
+        tokens32 = tokens.float()
+        q = (F.elu(self.query(tokens32).reshape(shape)) + 1.0).transpose(1, 2)
+        k = (F.elu(self.key(tokens32).reshape(shape)) + 1.0).transpose(1, 2)
+        v = self.value(tokens32).reshape(shape).transpose(1, 2)
+        valid = valid_mask[:, None, :, None]
+        k = k * valid
+        v = v * valid
+        kv = torch.einsum("bhnd,bhne->bhde", k, v)
+        ksum = k.sum(dim=2)
+        denominator = torch.einsum("bhnd,bhd->bhn", q, ksum).clamp_min(self.eps)
+        numerator = torch.einsum("bhnd,bhde->bhne", q, kv)
+        output = (numerator / denominator[..., None]).transpose(1, 2).reshape(
+            batch, count, self.width
+        )
+    return self.output(output.to(tokens.dtype)), denominator.amin()
+
+
 def _forward_after_projection(self, tokens: torch.Tensor, valid_mask: torch.Tensor):
     """Canonical forward with the output cast moved after the output projection."""
     if (
@@ -68,7 +103,7 @@ class attention_cast_variant:
     """Swap `KernelLinearAttention.forward` for the duration of a block."""
 
     def __init__(self, attention_class: type, mode: str) -> None:
-        if mode not in ("historical", "after_projection"):
+        if mode not in ("historical", "after_projection", "projections_fp32"):
             raise ValueError("unknown attention cast mode: " + mode)
         self.attention_class = attention_class
         self.mode = mode
@@ -77,6 +112,8 @@ class attention_cast_variant:
     def __enter__(self) -> "attention_cast_variant":
         if self.mode == "after_projection":
             self.attention_class.forward = _forward_after_projection
+        elif self.mode == "projections_fp32":
+            self.attention_class.forward = _forward_projections_fp32
         return self
 
     def __exit__(self, *exc: object) -> None:

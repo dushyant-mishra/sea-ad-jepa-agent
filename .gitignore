@@ -105,3 +105,6 @@ wget-log
 
 # peer consultation records may capture account identity; never commit them
 /docs/agent/peer_consultations/**/CLAUDE_PEER_CONSULTATION.json
+
+# C2 scratch analysis helpers
+/c2*.py

@@ -205,3 +205,42 @@ mandatory gradients finite and nonzero before the optimizer step; both Adam
 moments nonzero afterwards; per-tensor movement exceeding pure decay;
 `attention.output` healthy; loss finite. The historical path must continue to
 reproduce the dead signature in the same test.
+
+---
+
+# C2-v3 input-boundary experiment — FROZEN 2026-09-06, before execution
+
+`F1` returned 48/48. Per the pre-declared negative branch the terminal is
+`C2_CAST_POSITION_EXCLUDED`: moving the cast after the output projection does
+not rescue, so the attention *output* boundary is not the severing operation.
+
+The remaining fp16 boundary in the attention branch is on the input side. The
+q/k/v projections run under the outer autocast and produce fp16 tensors, which
+are then upcast by `projected_q.float()` inside the nested `enabled=False`
+region. The gradient returning from the fp32 einsums must be cast back down to
+fp16 at those three tensors.
+
+| id | single change |
+|---|---|
+| `G0_HISTORICAL` | none (must reproduce 48/48) |
+| `G1_PROJECTIONS_FP32` | q/k/v projections computed in fp32, so no fp16 tensor exists on the input side; output cast left exactly where canonical puts it |
+
+Historical geometry, cuda, fp16 autocast, `GradScaler` on, checkpointing on,
+batch 128, microbatch 8, seed 8113002, one update.
+
+## Adjudication, fixed in advance
+
+- `G1` → 0/48: the severing operation is **named** as the fp32-to-fp16 gradient
+  cast at the q/k/v projection outputs. Terminal
+  `C2_SEVERING_OPERATION_IDENTIFIED`.
+- `G1` → 48/48: **both** cast boundaries are excluded. The zeroing then occurs
+  inside the fp32 region and is driven by fp16 *forward values* entering it —
+  for example a quantity that becomes exactly zero when computed from fp16
+  inputs — rather than by any gradient cast. Terminal
+  `C2_BOTH_CAST_BOUNDARIES_EXCLUDED`, and the next step measures forward
+  quantities inside the region instead of gradients at its edges.
+- Intermediate: `C2_INPUT_BOUNDARY_PARTIAL`, reported as such.
+- `attention.output` must remain 0/12 dead, or the condition is void.
+
+Declaring the second branch now matters: a null here would otherwise invite
+retrofitting a third boundary after the fact.
