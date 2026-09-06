@@ -33,7 +33,7 @@
   ],
   "gates": {
     "current": "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY",
-    "c2": "C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__INDEPENDENT_VERIFICATION_PENDING",
+    "c2": "C2_CLOSED__HISTORICAL_T1_TRAINING_MECHANICS_DEFECT_CONFIRMED_AND_REPAIRED",
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN"
   },
@@ -44,11 +44,7 @@
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE",
     "F1B_10_OF_15_FINDINGS_LACK_EXECUTABLE_ATTACKS",
     "C2_AD_HOC_REPRODUCTION_SUPERSEDED",
-    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO",
-    "C2_DEEP_KERNEL_MECHANISM_OPEN",
-    "C2_PRODUCTION_SAFE_REWRITE_NOT_RUN",
-    "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION",
-    "C2_INDEPENDENT_VERIFICATION_PENDING"
+    "C2_DEEP_KERNEL_MECHANISM_OPEN"
   ],
   "assets": {
     "local": [
@@ -120,7 +116,12 @@
         }
       },
       "manifest_sha256": "b4d2fafc0665bd0c135c3ddac0c76b873602034b79f267a808e82636ad11960b",
-      "bytes_authority": "GIT_BLOB_BYTES_PLATFORM_INDEPENDENT. Manifest digests and byte counts are taken from the immutable git blob, never the working tree. Hashing the working tree is platform dependent: on Windows a text-classified source is checked out with CRLF, so its digest and length differ from the git blob by one byte per line."
+      "bytes_authority": "GIT_BLOB_BYTES_PLATFORM_INDEPENDENT. Manifest digests and byte counts are taken from the immutable git blob, never the working tree. Hashing the working tree is platform dependent: on Windows a text-classified source is checked out with CRLF, so its digest and length differ from the git blob by one byte per line.",
+      "sealed": {
+        "sealed_at_commit": "712cd07d52371c4cbbfb0760a09399e9c23ec1b4",
+        "sealed_package_root": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222",
+        "rule": "DO NOT REGENERATE. The package root is bound to PASS_C2_INDEPENDENT_VERIFICATION at that commit. Post-PASS work that edits a formerly bound source, such as c2_corrective_run_update_v3.py gaining the successor and gated_historical modes, is tracked by commit history and lives on a branch after the sealed commit. Rebuilding the manifest over the changed tree would produce a different root and silently break the external binding. If a future package generation is genuinely required, it must be a NEW package with its own identity, and the packager must first be repaired to read committed bytes read-only per the recorded tooling follow-up."
+      }
     }
   },
   "firewall": {
@@ -131,7 +132,8 @@
     "production_training_forbidden": true
   },
   "next_authorized_actions": [
-    "AWAIT_INDEPENDENT_C2_VERIFICATION_BY_A_SEPARATE_REVIEWER"
+    "PREPARE_EXECUTABLE_ATTACKS_FOR_ALL_15_F1B_FINDINGS",
+    "STOP_BEFORE_C3_UNTIL_F1_SCIENTIFIC_CONTRACT_INDEPENDENTLY_FROZEN"
   ],
   "forbidden_actions": [
     "RUN_REAL_F1",
@@ -156,11 +158,8 @@
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead.",
     "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened.",
-    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "component_gradient_report counts only missing and nonfinite gradients, never zero, so it passed while all 48 mandatory tensors were exactly zero. The repaired gate at scripts/v4/c2_mandatory_gradient_gate_v1.py checks live tensors for finiteness and for exact elementwise emptiness with any(grad != 0), never a norm, since a norm squares and underflows a lone fp32 subnormal to zero. gate_from_norms replays preserved recorded norms only. FROZEN_MANDATORY_REGISTRY enumerates the 48 protected identities and validate_registry fails closed unless discovery matches exactly, so dynamic discovery alone cannot define completeness. Thirteen adversarial tests pass. NOT YET ADOPTED by any training path; adoption must place the gate after unscale and before the optimizer step and must call enforce_registry alongside it.",
+    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "CLOSED. The mandatory gradient gate is adopted in the successor training path, inserted immediately after scaler.unscale_(optimizer) and before scaler.step(optimizer), together with frozen 48-identity registry enforcement. Five GPU adoption regressions pass: a historical K0-like update raises with EXACT_ZERO=48; the optimizer holds zero state entries and no parameter moves, proving rejection precedes the step rather than merely reporting after it; the corrected update passes the gate with 48/48 live and all 48 protected tensors moved, step_succeeded and EMA exact; an AST check confirms the gate follows unscale, precedes every scaler.step and optimizer.step, and sits unconditionally at function-body depth so no branch can skip it; and the successor differs from canonical by exactly four added and one removed line.",
     "C2_DEEP_KERNEL_MECHANISM_OPEN": "Necessity and sufficiency are established at the code-condition level: disabling autocast only around the backward call restores all 48 tensors at 128/8 with all nine frozen criteria met, while the historical arm still gives 48/48 dead. Why the collapse is to EXACT zero rather than merely inaccurate values is unresolved. The autocast weight cache (I1) and allow_fp16_reduced_precision_reduction (J1) were both tested and refuted.",
-    "C2_PRODUCTION_SAFE_REWRITE_NOT_RUN": "The production_safe variant currently accumulates every scaled loss and drains the backwards after the autocast block, holding 64 live graphs at 128/8, and will exhaust memory. The autocast region must move inside the view loop to preserve per-view accumulation. Not yet repaired, not yet run, no 128/8 regression.",
-    "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION": "The DEC-013 characterisation of T1 as having valid mechanics is not defensible in the parameter-wise sense. The historical biological outcome stands: T1 did not qualify biology at u205. Supersession must follow independent C2 verification, not precede it.",
-    "C2_INDEPENDENT_VERIFICATION_PENDING": "The repaired candidate has NOT been independently certified. The same agent implemented C2 and ran the verification, so the no-self-certification requirement is unmet. The verification found three real defects and returned each for repair - untracked closure outputs, a stale manifest and root, and a gradient gate whose norm-based zero test underflowed a lone fp32 subnormal and misclassified 48 live tensors as dead - and all three are repaired here. Those findings are implementation feedback, not certification. Only a separate reviewer starting from a fresh clone of the exact frozen remote commit may return PASS_C2_INDEPENDENT_VERIFICATION, binding it to the commit SHA, the package root, the verifier source digest and the verifier result root. Until then the project state is not C2_CLOSED.",
     "F1_PROGRAM_SIGN_LOCALLY_RESOLVED_IN_SUCCESSOR__FINAL_CONTRACT_FREEZE_PENDING": "The historical/public qualify_current had an aggregate-rescue loophole: a strongly negative protected program could qualify through a positive aggregate. That has been prospectively repaired in the ChatGPT/user F1 successor work, which keeps all eight semantic protected programs including core_halo despite molecular rank 7, makes the eight-program one-sided Holm-positive family qualification-bearing, treats protected-program nonestimability as three-valued and fail-closed, and carries adversarial tests on the exact Holm boundary. Do not independently redesign this decision and do not wait on the old decision_v4 implementation. ChatGPT and the user own the final scientific-contract freeze; the remaining family/source/terminal audit is theirs."
   },
   "continuity_defects_repaired_by_claude_code": {
@@ -168,5 +167,27 @@
     "TEST_RUN_INVALIDATED_ITS_OWN_CHECKPOINT": "The handoff protocol requires running focused tests, but the pytest basetemp '.pytest_tmp_peer_handoff/' was untracked and not ignored, so running the tests produced UNTRACKED_FILES_MISMATCH and broke checkpoint validation. Added it to .gitignore; _git_snapshot uses --exclude-standard so the loop is now closed.",
     "CODEX_ACCEPTANCE_TEST_LEFT_UNCOMMITTED_AND_UNDECLARED": "test_codex_claude_codex_provenance_handoff_preserves_authority_and_action is the acceptance criterion for round-trip takeover. It passes but was neither committed nor declared in allowed_tracked_modifications. Now declared, pending owner approval to commit.",
     "PEER_CONSULTATION_PUBLISHED_ACCOUNT_IDENTITY": "scripts/agent/claude_peer_bridge.py captured the full 'claude auth status --json' output into a committed provenance artifact. Its _SENSITIVE_KEY denylist did not cover email, orgId, orgName or projectsDirectory, so the committed docs/agent/peer_consultations/claude_smoke_20260905/CLAUDE_PEER_CONSULTATION.json carried account identity and the local username toward a public repository. Replaced the denylist with an allowlist (_AUTH_SUMMARY_KEYS), added _redact_user_paths, widened the denylist, removed the artifact, and purged it from unpushed branch history before first push. Covered by test_published_consultation_carries_no_account_identity_or_username."
+  },
+  "c2_independent_verification": {
+    "terminal": "PASS_C2_INDEPENDENT_VERIFICATION",
+    "verified_commit": "712cd07d52371c4cbbfb0760a09399e9c23ec1b4",
+    "verified_package_root": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222",
+    "verified_manifest_sha256": "b4d2fafc0665bd0c135c3ddac0c76b873602034b79f267a808e82636ad11960b",
+    "manifest_rows": 55,
+    "closure_critical": {
+      "K0": "01908fd62b1a233207092758b3cb27344f8b7ca81140f5e9295039a35987abd8",
+      "K1": "c5b9edf17f57756c201582f130a2bd7e0c7945f40d3412d7ea8742291465d381",
+      "K1_pre_criterion_repair": "260b9aeef913482f1b3bff8ae6edfe7e88359284ceedf1e1562e196e4a7cc97a",
+      "source_diff": "d0cd70bae1e71e35d4ee02a09c8954360a155215af22998fee17d3314075caf9"
+    },
+    "scope": "Historical 128/8 path. Not a claim about universal PyTorch behaviour.",
+    "authorizes": "Nothing further. No real F1, pathology, DEV, SEALED, oracle, fresh T1 or production foundation training becomes authorized by this PASS."
+  },
+  "closed_records": {
+    "C2_PRODUCTION_SAFE_REWRITE": "SUPERSEDED_DO_NOT_RUN. The deferred-backward rewrite accumulated every scaled loss and drained the backwards after the autocast block, holding 64 live graphs at 128/8, and would exhaust memory. It was never run. The minimal K1 correction, wrapping only the backward call in autocast(enabled=False) while preserving per-view interleaving, has already passed the exact real run_update geometry and independent verification, and is the preferred repair. Do not run the deferred variant unless an independent verifier finds a concrete reason the minimal K1 repair is insufficient.",
+    "T1": "CLOSED_AS_DEFECTIVE_HISTORICAL_TRAINING_EVIDENCE per DEC-015. Do not rehabilitate, extend, resume or retrain. The u205 biological nonqualification remains historical fact."
+  },
+  "tooling_followups": {
+    "C2_PACKAGER_GIT_BYTES_READ_ONLY": "git_bytes() currently runs 'git add -- <path>' then 'git show :<path>'. That fixed the CRLF platform dependence but mutates the index, and it stages an untracked file rather than failing loudly. Before the packager is reused for any future package generation, change it to a read-only committed-byte path: verify the path is tracked, then read 'git show HEAD:<path>' or equivalent pinned-commit blob bytes. Raised by external review. Explicitly NOT a reason to create another C2 candidate: the frozen 712cd07d package is unaffected and independently verified."
   }
 }

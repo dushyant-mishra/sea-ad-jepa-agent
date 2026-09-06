@@ -61,3 +61,25 @@ When two artifacts disagree, prefer in order:
 6. selective historical evidence.
 
 Never use Git commit date alone to infer original historical chronology for recovered/backfilled artifacts.
+
+## DEC-013 -> DEC-015 (2026-09-06)
+
+`DEC-013` is superseded **only in its mechanics interpretation**. Its phrase
+"completed 205 cap-safe updates with valid mechanics" is not defensible
+parameter-wise: 48 of 123 optimizer states hold both Adam moments at zero at
+every preserved checkpoint from u0010 to u0205.
+
+Its biological finding is **not** superseded. T1 did not qualify biology at
+cap8, and that remains historical fact.
+
+`DEC-013` is preserved unmodified. Do not read the superseded mechanics clause
+as authority, and do not read the supersession as vacating the biological
+outcome.
+
+T1 is closed as defective historical training evidence. The fresh or larger T1
+continuation is withdrawn.
+
+Causal authority: `PASS_C2_INDEPENDENT_VERIFICATION`, commit
+`712cd07d52371c4cbbfb0760a09399e9c23ec1b4`, package root
+`f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222`.
+
