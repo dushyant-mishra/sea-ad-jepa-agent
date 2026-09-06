@@ -19,7 +19,8 @@ data/external/
 results/
 logs/
 runs/
-outputs/
+outputs/*
+!outputs/c2_t1_gradient_forensic_20260906/
 *.log
 
 # Lightweight reproducibility artifacts
