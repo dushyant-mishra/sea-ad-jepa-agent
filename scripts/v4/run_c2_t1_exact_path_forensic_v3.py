@@ -168,7 +168,7 @@ def main() -> int:
     parser.add_argument("--value-scale", type=float, default=1.0)
     parser.add_argument("--label", default="STEP_A_EXACT_MECHANICS")
     parser.add_argument("--autocast", choices=("fp16", "off", "bf16"), default="fp16")
-    parser.add_argument("--attention-cast", choices=("historical", "after_projection", "projections_fp32"),
+    parser.add_argument("--attention-cast", choices=("historical", "after_projection", "projections_fp32", "branch_fp32"),
                         default="historical")
     parser.add_argument("--no-gradscaler", action="store_true")
     parser.add_argument("--no-checkpointing", action="store_true")

@@ -244,3 +244,47 @@ batch 128, microbatch 8, seed 8113002, one update.
 
 Declaring the second branch now matters: a null here would otherwise invite
 retrofitting a third boundary after the fact.
+
+---
+
+# C2-v3 conjunction experiment — FROZEN 2026-09-06, before execution
+
+`G1` returned 48/48, so the terminal is `C2_BOTH_CAST_BOUNDARIES_EXCLUDED` in
+the declared sense: neither edge alone rescues.
+
+Every run so far left one fp16 edge standing. `F1` moved the output cast but kept
+fp16 projections; `G1` made the projections fp32 but kept the output cast. Only
+`E1`, which disabled the outer autocast entirely, removed both — and rescued.
+The parsimonious reading is a conjunction: the gradient underflows at whichever
+fp16 edge remains, so removing one is never sufficient.
+
+| id | change |
+|---|---|
+| `H0_HISTORICAL` | none (must reproduce 48/48) |
+| `H1_ATTENTION_BRANCH_FP32` | projections in fp32 **and** cast after the output projection — no fp16 tensor anywhere in the attention branch |
+
+`H1` is not equivalent to `E1`: the outer autocast still applies fp16 to the
+tokenizer, FFN and predictor. Only the attention branch is lifted to fp32.
+
+Historical geometry, cuda, fp16 autocast, `GradScaler` on, checkpointing on,
+batch 128, microbatch 8, seed 8113002, one update.
+
+## Adjudication, fixed in advance
+
+- `H1` → 0/48: the severing condition is **named** as the fp16 precision boundary
+  at the attention-branch edges, with neither edge individually sufficient
+  because the gradient underflows at whichever one remains. Terminal
+  `C2_SEVERING_CONDITION_IDENTIFIED_AS_BRANCH_BOUNDARY_CONJUNCTION`. The
+  corrective change is then localized to `KernelLinearAttention` alone, not to
+  the training loop, the optimizer or the architecture.
+- `H1` → 48/48: no arrangement of the attention branch in fp32 rescues while the
+  rest of the model runs fp16, which would place the cause outside the attention
+  branch — in the fp16 residual-stream values reaching it, or in the tokenizer
+  or predictor path. Terminal `C2_ATTENTION_BRANCH_EXCLUDED`, and the next step
+  measures forward quantities rather than continuing to move casts.
+- Intermediate: `C2_BRANCH_CONJUNCTION_PARTIAL`, reported as such.
+- `attention.output` must remain 0/12 dead, or the condition is void.
+
+This is the last cast-position experiment. If `H1` does not resolve it, the
+approach changes from moving boundaries to measuring forward values, rather than
+enumerating further rearrangements.

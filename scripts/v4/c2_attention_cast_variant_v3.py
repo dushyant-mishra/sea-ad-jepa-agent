@@ -65,6 +65,43 @@ def _forward_projections_fp32(self, tokens: torch.Tensor, valid_mask: torch.Tens
     return self.output(output.to(tokens.dtype)), denominator.amin()
 
 
+def _forward_branch_fp32(self, tokens: torch.Tensor, valid_mask: torch.Tensor):
+    """Both attention-branch edges in fp32: projections in fp32 AND cast after projection.
+
+    The outer autocast still applies fp16 to the tokenizer, FFN and predictor, so
+    this is not equivalent to disabling autocast. It removes every fp16 tensor
+    from the attention branch itself, so no gradient entering or leaving that
+    branch crosses a precision boundary.
+    """
+    if (
+        tokens.ndim != 3
+        or valid_mask.shape != tokens.shape[:2]
+        or valid_mask.dtype is not torch.bool
+    ):
+        raise ValueError(
+            "tokens and valid_mask must be [batch,tokens,width] and boolean [batch,tokens]"
+        )
+    batch, count, _ = tokens.shape
+    shape = (batch, count, self.heads, self.head_dim)
+    with torch.autocast(device_type=tokens.device.type, enabled=False):
+        tokens32 = tokens.float()
+        q = (F.elu(self.query(tokens32).reshape(shape)) + 1.0).transpose(1, 2)
+        k = (F.elu(self.key(tokens32).reshape(shape)) + 1.0).transpose(1, 2)
+        v = self.value(tokens32).reshape(shape).transpose(1, 2)
+        valid = valid_mask[:, None, :, None]
+        k = k * valid
+        v = v * valid
+        kv = torch.einsum("bhnd,bhne->bhde", k, v)
+        ksum = k.sum(dim=2)
+        denominator = torch.einsum("bhnd,bhd->bhn", q, ksum).clamp_min(self.eps)
+        numerator = torch.einsum("bhnd,bhde->bhne", q, kv)
+        output = (numerator / denominator[..., None]).transpose(1, 2).reshape(
+            batch, count, self.width
+        )
+        projected = self.output(output)
+    return projected.to(tokens.dtype), denominator.amin()
+
+
 def _forward_after_projection(self, tokens: torch.Tensor, valid_mask: torch.Tensor):
     """Canonical forward with the output cast moved after the output projection."""
     if (
@@ -103,7 +140,7 @@ class attention_cast_variant:
     """Swap `KernelLinearAttention.forward` for the duration of a block."""
 
     def __init__(self, attention_class: type, mode: str) -> None:
-        if mode not in ("historical", "after_projection", "projections_fp32"):
+        if mode not in ("historical", "after_projection", "projections_fp32", "branch_fp32"):
             raise ValueError("unknown attention cast mode: " + mode)
         self.attention_class = attention_class
         self.mode = mode
@@ -114,6 +151,8 @@ class attention_cast_variant:
             self.attention_class.forward = _forward_after_projection
         elif self.mode == "projections_fp32":
             self.attention_class.forward = _forward_projections_fp32
+        elif self.mode == "branch_fp32":
+            self.attention_class.forward = _forward_branch_fp32
         return self
 
     def __exit__(self, *exc: object) -> None:
