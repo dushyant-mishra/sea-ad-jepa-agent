@@ -52,6 +52,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dtype", choices=("fp16", "bf16", "fp32"), default="fp16")
     parser.add_argument("--cells", type=int, default=2)
+    parser.add_argument("--views", type=int, default=1)
+    parser.add_argument("--backward-outside", action="store_true",
+                        help="call backward after leaving the autocast block")
     parser.add_argument("--seed", type=int, default=8113002)
     parser.add_argument("--canonical-root", action="append",
                         default=["/mnt/d/Jepa project", "D:/Jepa project"])
@@ -118,21 +121,51 @@ def main() -> int:
     target.eval()
     predictor.train()
     optimizer.zero_grad(set_to_none=True)
+    divisor = float(args.views)
     with torch.autocast("cuda", dtype=dtype, enabled=enabled):
         with torch.no_grad():
             teacher = target(gene_ids, expression, measured, torch.zeros_like(measured), "target")
-        student = online(gene_ids, expression, measured, blocks.hidden_mask, "student")
-        prediction = predictor(
-            online.tokenizer.gene_identity, blocks, student.gene_states,
-            student.cell_state, measured & ~blocks.hidden_mask,
-        )
-        teacher_blocks = gather_block_states(teacher.gene_states, blocks)
-        loss = block_jepa_loss(prediction, teacher_blocks)
-    print("mode=%s  loss=%.6f  scaler_scale=%.1f" % (args.dtype, float(loss), scaler.get_scale()))
-    scaler.scale(loss).backward()
+        pending = []
+        for _ in range(args.views):
+            student = online(gene_ids, expression, measured, blocks.hidden_mask, "student")
+            prediction = predictor(
+                online.tokenizer.gene_identity, blocks, student.gene_states,
+                student.cell_state, measured & ~blocks.hidden_mask,
+            )
+            teacher_blocks = gather_block_states(teacher.gene_states, blocks)
+            loss = block_jepa_loss(prediction, teacher_blocks)
+            if args.backward_outside:
+                pending.append(loss)
+            else:
+                # Exactly what run_update does: backward INSIDE the autocast block.
+                scaler.scale(loss / divisor).backward()
+    for loss_value in pending:
+        scaler.scale(loss_value / divisor).backward()
+    print("mode=%s views=%d backward_outside=%s loss=%.6f scale=%.1f"
+          % (args.dtype, args.views, args.backward_outside, float(loss), scaler.get_scale()))
 
     for handle in handles:
         handle.remove()
+
+    # Does this probe condition actually reproduce the defect? If not, nothing
+    # measured above is relevant to it.
+    if enabled:
+        scaler.unscale_(optimizer)
+    dead, live_out = [], []
+    for name, param in online.named_parameters():
+        role = None
+        for candidate in ("attention_norm", "attention.query", "attention.key", "attention.value"):
+            if "." + candidate + "." in name:
+                role = candidate
+        if role is not None:
+            g = param.grad
+            if g is None or float(g.detach().float().norm()) == 0.0:
+                dead.append(name)
+        elif ".attention.output." in name:
+            g = param.grad
+            live_out.append(g is not None and float(g.detach().float().norm()) != 0.0)
+    print("PROBE REPRODUCES DEFECT? mandatory dead=%d/48  attention.output live=%d/12"
+          % (len(dead), sum(live_out)))
 
     for key in sorted(captured):
         print("==", key)

@@ -171,6 +171,10 @@ def main() -> int:
     parser.add_argument("--attention-cast", choices=("historical", "after_projection", "projections_fp32", "branch_fp32"),
                         default="historical")
     parser.add_argument("--no-gradscaler", action="store_true")
+    parser.add_argument("--no-autocast-cache", action="store_true",
+                        help="disable the autocast weight cast cache")
+    parser.add_argument("--no-fp16-reduced-reduction", action="store_true",
+                        help="force fp32 accumulation in fp16 matmul reductions")
     parser.add_argument("--no-checkpointing", action="store_true")
     parser.add_argument("--target-blocks", type=int, default=None)
     parser.add_argument("--mask-fraction", type=float, default=None)
@@ -223,6 +227,9 @@ def main() -> int:
         online.train()
         predictor.train()
         target.eval()
+        torch.set_autocast_cache_enabled(not args.no_autocast_cache)
+        if args.no_fp16_reduced_reduction:
+            torch.backends.cuda.matmul.allow_fp16_reduced_precision_reduction = False
         with autocast_override(args.autocast), attention_cast_variant(
             KernelLinearAttention, args.attention_cast
         ):
@@ -288,6 +295,8 @@ def main() -> int:
             "autocast": args.autocast,
             "attention_cast": args.attention_cast,
             "gradscaler_enabled": not args.no_gradscaler,
+            "autocast_cache_enabled": not args.no_autocast_cache,
+            "fp16_reduced_precision_reduction": torch.backends.cuda.matmul.allow_fp16_reduced_precision_reduction,
             "gradient_checkpointing": online.gradient_checkpointing,
             "target_blocks": phase_e.sample_uniform_target_blocks.__kwdefaults__["block_count"],
             "mask_fraction": phase_e.sample_uniform_target_blocks.__kwdefaults__["mask_fraction"],

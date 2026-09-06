@@ -33,7 +33,7 @@
   ],
   "gates": {
     "current": "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY",
-    "c2": "C2_HISTORICAL_ENDPOINT_REPRODUCED_CAUSE_LOCALIZED_TO_FP16_PATH",
+    "c2": "C2_SEVERING_CONDITION_IDENTIFIED__BACKWARD_INSIDE_AUTOCAST__MECHANISM_OPEN",
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN"
   },
@@ -79,8 +79,7 @@
     "production_training_forbidden": true
   },
   "next_authorized_actions": [
-    "C2_FROZEN_SINGLE_FACTOR_DECOMPOSITION_ON_CUDA",
-    "C2_REGRESSION_TEST",
+    "C2_CORRECTIVE_VARIANT_REGRESSION_AT_128x8",
     "STOP_FOR_SCIENTIFIC_REVIEW"
   ],
   "forbidden_actions": [
@@ -101,7 +100,7 @@
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
   "blocker_evidence": {
-    "C2_GRADIENT_SEVERING_CONDITION_UNRESOLVED": "REPRODUCED by C2-v3, which calls the real phase_e.run_update unmodified and substitutes only the loader. cuda+fp16 batch4/micro2: 48/48 mandatory tensors dead. cuda+fp16 batch2/micro1: 40/48 dead, survivors exactly the eight tensors of block 0. cpu, same unmodified function with autocast and GradScaler inactive, batch2/micro1: 0/48 dead. attention.output live in every condition. Zero-both-moment counts track dead counts and match the historical checkpoints. Loss falls normally (2.2177/1.9858/1.7699) while all 48 are dead. Graded with geometry and removed by dropping fp16, so this is a magnitude threshold, not a severed graph; block 5 dies while block 0 survives, so it is per-block and depth-dependent rather than sequential. Consistent mechanism: the fp32-to-fp16 cast at KernelLinearAttention.forward's 'self.output(output.to(tokens.dtype))', which every upstream tensor's gradient must cross while self.output's own gradient is taken before it. NOT yet formally isolated: the CPU control varies device, dtype and scaler together. Terminal is REPRODUCED_AND_LOCALIZED_TO_THE_FP16_PATH, not CAUSE_ESTABLISHED.",
+    "C2_GRADIENT_SEVERING_CONDITION_UNRESOLVED": "IDENTIFIED. run_update calls .backward() inside the torch.autocast fp16 block, which PyTorch documents as unsupported. With real modules, real loader and the real block sampler at 2 cells: 1 view inside autocast 0/48 dead, 2 views 2/48, 4 views 40/48, and 4 views with backward moved OUTSIDE the autocast region 0/48. Identical forward, autocast, scaler, accumulation and loss division; only the backward position differs. At exact historical geometry 128/8 the endpoint reproduces 48/48 with attention.output healthy. Excluded at 128/8: gradient checkpointing (E4), GradScaler (E3, void because attention.output also dies), output cast position (F1), q/k/v projection dtype (G1), the whole attention branch in fp32 (H1), the autocast weight cache (I1), and allow_fp16_reduced_precision_reduction (J1). bf16 rescues (E2), so sensitivity is to dynamic range not mantissa precision. The 48-vs-12 split follows magnitude: in fp32 attention.output gradients are all >=1.74e-1 while mandatory tensors reach 1.71e-4. MECHANISM STILL OPEN: why exactly zero rather than merely inaccurate. Candidate fix is two lines, moving backward outside the autocast block; the corrective regression run at 128/8 through run_update has NOT yet been executed.",
     "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED": "docs/agent/F1B_INDEPENDENT_VERIFICATION_REVIEW_20260905.md on review/f1b-independent-verifier-repair-20260905 enumerates 15 numbered findings against f1b-minimal-bridge-20260905@f0fb23c2.",
     "F1B_10_OF_15_FINDINGS_LACK_EXECUTABLE_ATTACKS": "scripts/v4/verify_f1b_minimal_bridge_independent_v1.py emits only 4 executable attack codes (G1_ACCEPTS_NONFINITE_GRADIENT, G2_ACCEPTS_ZERO_SECOND_MOMENT, G3_MEAN_MASKS_DECAY_ONLY_TENSOR, PUBLISHED_300U_EXCEEDS_FROZEN_40U_HORIZON). The remaining findings are prose-only. A C3 repair cannot be verified against a finding that has no executable attack, so the attacks must be written before the repair.",
     "F1_QUALIFY_CURRENT_DOES_NOT_GATE_PROGRAM_SIGN": "qualify_current gates per-program estimability and deltas but never per-program sign. holm(p_positive) is computed in contextual_target_f1_decision_v4.py but surfaced only as protected_program_positive_holm_report_only and is absent from the gates dict. A payload with 5 of 8 protected programs having two-sided 95% CIs entirely below zero still returns qualified=True. Reproduced independently twice. Upstream of any real F1.",
