@@ -29,8 +29,7 @@ PKG = REPO / "outputs" / "c2_t1_gradient_forensic_20260906"
 if len(sys.argv) < 4:
     raise SystemExit(
         "usage: c2_verify_preservation.py <repo> <candidate_commit_sha> "
-        "<expected_package_root_sha256>
-"
+        "<expected_package_root_sha256>. "
         "Both the candidate commit and its expected package root must be supplied "
         "by the reviewer from the authority record. This script asserts nothing "
         "about which candidate is current."
