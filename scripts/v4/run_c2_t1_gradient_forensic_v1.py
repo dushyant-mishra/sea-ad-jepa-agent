@@ -176,13 +176,14 @@ def make_blocks(
     generator: torch.Generator,
     n_blocks: int = 8,
     block_size: int = 16,
+    mask_fraction: float = 0.40,
 ) -> TargetBlocks:
     """Construct target blocks. random40 mirrors the historical blocks_for semantics."""
     batch, _ = measurement.shape
     device = measurement.device
     if mode == "random40":
         draw = torch.rand(measurement.shape, generator=generator, device=device)
-        hidden = (draw < 0.40) & measurement
+        hidden = (draw < mask_fraction) & measurement
     elif mode == "measured_complement":
         visible = torch.zeros_like(measurement)
         visible[:, ::2] = True
@@ -226,6 +227,35 @@ def synthetic_batch(
     return ids, expression, measurement
 
 
+def load_authenticated_weights(
+    cfg: dict[str, Any], online: nn.Module, target: nn.Module, predictor: nn.Module
+) -> dict[str, Any]:
+    """Load u0 bytes into all three modules, refusing on any digest or key mismatch."""
+    spec = cfg["u0_checkpoint"]
+    # Large authenticated assets live in the canonical repository; a linked worktree
+    # does not carry them, and its .git pointer is a Windows path unusable from WSL.
+    # The candidate roots are declared in the frozen config; the digest is the gate.
+    candidates = [REPO / spec["path"], Path(spec["path"])]
+    for root in spec.get("canonical_repo_candidates", []):
+        candidates.insert(0, Path(root) / spec["path"])
+    path = next((candidate for candidate in candidates if candidate.is_file()), None)
+    if path is None:
+        raise RuntimeError("u0 checkpoint not found in: " + str([str(c) for c in candidates]))
+    digest = sha256_file(path)
+    if digest != spec["sha256"]:
+        raise RuntimeError("u0 checkpoint digest mismatch: " + digest)
+    state = torch.load(path, map_location="cpu", weights_only=False)
+    online.load_state_dict(state[spec["online_key"]], strict=True)
+    prefix = spec["target_key_prefix"]
+    target_state = {
+        (key[len(prefix):] if key.startswith(prefix) else key): value
+        for key, value in state[spec["target_key"]].items()
+    }
+    target.load_state_dict(target_state, strict=True)
+    predictor.load_state_dict(state[spec["predictor_key"]], strict=True)
+    return {"path": str(path), "sha256": digest, "global_update_step": state.get("global_update_step")}
+
+
 def run_condition(
     cfg: dict[str, Any],
     condition_id: str,
@@ -256,6 +286,12 @@ def run_condition(
         width=model_cfg["width"],
         heads=model_cfg["heads"],
     ).to(device)
+    weights_record: dict[str, Any] = {"mode": cfg.get("weights", "SEEDED_RANDOM_INIT")}
+    if cfg.get("weights") == "U0_CHECKPOINT_BYTES":
+        weights_record.update(load_authenticated_weights(cfg, online, target, predictor))
+        for param in target.parameters():
+            param.requires_grad_(False)
+
     online.train()
     target.train()
     predictor.train()
@@ -299,7 +335,13 @@ def run_condition(
             settings["tokens"], vocabulary, micro, generator, device
         )
         for _ in range(views):
-            blocks = make_blocks(measurement, settings["blocks"], generator)
+            blocks = make_blocks(
+                measurement,
+                settings["blocks"],
+                generator,
+                n_blocks=cfg.get("target_blocks", 8),
+                block_size=cfg.get("block_size", 16),
+            )
             if settings["teacher_hidden_mask"] == "blocks_hidden_mask":
                 teacher_mask = blocks.hidden_mask
             else:
@@ -335,6 +377,7 @@ def run_condition(
 
     return {
         "condition_id": condition_id,
+        "weights": weights_record,
         "seed": seed,
         "settings": settings,
         "backwards": backwards,
