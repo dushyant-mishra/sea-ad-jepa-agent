@@ -33,7 +33,7 @@
   ],
   "gates": {
     "current": "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY",
-    "c2": "C2_CAUSAL_CONDITION_ESTABLISHED__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST",
+    "c2": "C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST",
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN"
   },
@@ -71,7 +71,42 @@
         "ref": "origin/review/pre-f1-mechanism-repair-20260905",
         "role": "PRESERVED_REVIEW_BRANCH_NOT_MERGED"
       }
-    ]
+    ],
+    "c2_closure_package": {
+      "root": "outputs/c2_t1_gradient_forensic_20260906",
+      "package_root_sha256": "8b7c4811dbf74d92ecc055d8eb2a0f1ed21539b8fba1ea42fae68d66407a774d",
+      "manifest": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
+      "file_count": 55,
+      "bound_sources": 15,
+      "artifacts": [
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K0_HISTORICAL.json",
+          "sha256": "01908fd62b1a233207092758b3cb27344f8b7ca81140f5e9295039a35987abd8",
+          "authority": "C2_CLOSURE_CRITICAL"
+        },
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K1_BACKWARD_AUTOCAST_DISABLED.json",
+          "sha256": "c5b9edf17f57756c201582f130a2bd7e0c7945f40d3412d7ea8742291465d381",
+          "authority": "C2_CLOSURE_CRITICAL"
+        },
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K1_PRE_CRITERION_REPAIR.json",
+          "sha256": "260b9aeef913482f1b3bff8ae6edfe7e88359284ceedf1e1562e196e4a7cc97a",
+          "authority": "C2_CLOSURE_CRITICAL"
+        },
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
+          "sha256": "95e393ef3da967f3ecc757e578811c7cdc3e017fb4ad79ddb9b58bd535a6b96b",
+          "authority": "C2_PACKAGE_MANIFEST"
+        },
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/C2_K0_K1_SOURCE_DIFF.txt",
+          "sha256": "d0cd70bae1e71e35d4ee02a09c8954360a155215af22998fee17d3314075caf9",
+          "authority": "C2_CLOSURE_CRITICAL"
+        }
+      ],
+      "scope_note": "The causal claim is scoped to the historical 128/8 path as executed here. It is not a claim about universal PyTorch behaviour."
+    }
   },
   "firewall": {
     "real_f1_forbidden": true,
@@ -109,7 +144,7 @@
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
     "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead.",
     "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened.",
-    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "phase_e.component_gradient_report counts only missing and nonfinite gradients, never zero. It passed on every C2-v3 run while 48 tensors were dead. This is why the historical T1 run raised no mechanics error. Any successor training path must gate zero per tensor.",
+    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "component_gradient_report counts only missing and nonfinite gradients, never zero, so it passed on every historical-condition run while all 48 mandatory tensors were exactly zero; it did catch overflow in D9. A repaired fail-closed gate now exists at scripts/v4/c2_mandatory_gradient_gate_v1.py, rejecting missing, nonfinite and exact-zero per tensor before the optimizer step, with no invented magnitude floor. Nine adversarial tests pass, two of which replay the preserved K0 and K1 bytes: the repaired gate rejects the historical condition 48/48 and accepts the corrected one 48/48. NOT YET ADOPTED by any successor training path, which is what would close this blocker.",
     "C2_DEEP_KERNEL_MECHANISM_OPEN": "Necessity and sufficiency are established at the code-condition level: disabling autocast only around the backward call restores all 48 tensors at 128/8 with all nine frozen criteria met, while the historical arm still gives 48/48 dead. Why the collapse is to EXACT zero rather than merely inaccurate values is unresolved. The autocast weight cache (I1) and allow_fp16_reduced_precision_reduction (J1) were both tested and refuted.",
     "C2_PRODUCTION_SAFE_REWRITE_NOT_RUN": "The production_safe variant currently accumulates every scaled loss and drains the backwards after the autocast block, holding 64 live graphs at 128/8, and will exhaust memory. The autocast region must move inside the view loop to preserve per-view accumulation. Not yet repaired, not yet run, no 128/8 regression.",
     "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION": "The DEC-013 characterisation of T1 as having valid mechanics is not defensible in the parameter-wise sense. The historical biological outcome stands: T1 did not qualify biology at u205. Supersession must follow independent C2 verification, not precede it."
