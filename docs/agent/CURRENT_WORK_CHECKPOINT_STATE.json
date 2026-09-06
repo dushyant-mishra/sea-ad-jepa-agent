@@ -33,7 +33,7 @@
   ],
   "gates": {
     "current": "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY",
-    "c2": "C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST",
+    "c2": "C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__INDEPENDENT_VERIFICATION_PENDING",
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN"
   },
@@ -47,7 +47,8 @@
     "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO",
     "C2_DEEP_KERNEL_MECHANISM_OPEN",
     "C2_PRODUCTION_SAFE_REWRITE_NOT_RUN",
-    "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION"
+    "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION",
+    "C2_INDEPENDENT_VERIFICATION_PENDING"
   ],
   "assets": {
     "local": [
@@ -106,7 +107,18 @@
         }
       ],
       "scope_note": "The causal claim is scoped to the historical 128/8 path as executed here. It is not a claim about universal PyTorch behaviour.",
-      "preservation_note": "The package bytes are tracked in git and marked -text so the recorded SHA-256 values, which are over raw bytes, survive checkout on either platform. At commit da7e0b5 the package was untracked and its manifest was stale: the packager had run before the final edit to C2_CAUSAL_CONDITION_ESTABLISHED.md, recording 4725 bytes for a 5854-byte file, which also invalidated the package root. Both defects were found by independent verification from a clean clone and are repaired here."
+      "preservation_note": "The package bytes are tracked in git and marked -text so the recorded SHA-256 values, which are over raw bytes, survive checkout on either platform. At commit da7e0b5 the package was untracked and its manifest was stale: the packager had run before the final edit to C2_CAUSAL_CONDITION_ESTABLISHED.md, recording 4725 bytes for a 5854-byte file, which also invalidated the package root. Both defects were found by independent verification from a clean clone and are repaired here.",
+      "frozen_for_review": {
+        "branch": "jepa-peer-handoff-20260905",
+        "supersedes_commit": "da7e0b5ce83988da1a8543265dcffd9d6c9c166b",
+        "supersession_reason": "At da7e0b5 the closure outputs were untracked and absent from a clean clone, the manifest and package root were stale against their own document, and the gradient gate used an underflow-prone norm test. All three are repaired.",
+        "do_not_mutate": true,
+        "platform_split": {
+          "continuity_and_governance_suite": "Windows git environment",
+          "cuda_c2_torch_replay": "WSL or native Linux GPU checkout",
+          "note": "The worktree .git indirection is a Windows path, so git commands fail from WSL against that worktree. That is an environment artifact and must not be read as a scientific failure. Clone the remote into the Linux filesystem instead."
+        }
+      }
     }
   },
   "firewall": {
@@ -117,9 +129,7 @@
     "production_training_forbidden": true
   },
   "next_authorized_actions": [
-    "STOP_FOR_SCIENTIFIC_REVIEW",
-    "C2_PRODUCTION_SAFE_REWRITE_REPAIR_AND_REGRESSION",
-    "C2_INDEPENDENT_VERIFICATION"
+    "AWAIT_INDEPENDENT_C2_VERIFICATION_BY_A_SEPARATE_REVIEWER"
   ],
   "forbidden_actions": [
     "RUN_REAL_F1",
@@ -148,7 +158,8 @@
     "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "component_gradient_report counts only missing and nonfinite gradients, never zero, so it passed while all 48 mandatory tensors were exactly zero. A repaired fail-closed gate exists at scripts/v4/c2_mandatory_gradient_gate_v1.py. Independent verification found that its first form used a gradient norm, which squares and so underflowed a lone fp32 subnormal to exactly zero, misclassifying 48 live tensors as dead; it now tests emptiness exactly with any(grad != 0) and finiteness separately. Eleven adversarial tests pass, including a live-tensor test in the real gradient dtype and two replaying preserved K0 and K1 bytes. NOT YET ADOPTED by any successor training path, which is what would close this.",
     "C2_DEEP_KERNEL_MECHANISM_OPEN": "Necessity and sufficiency are established at the code-condition level: disabling autocast only around the backward call restores all 48 tensors at 128/8 with all nine frozen criteria met, while the historical arm still gives 48/48 dead. Why the collapse is to EXACT zero rather than merely inaccurate values is unresolved. The autocast weight cache (I1) and allow_fp16_reduced_precision_reduction (J1) were both tested and refuted.",
     "C2_PRODUCTION_SAFE_REWRITE_NOT_RUN": "The production_safe variant currently accumulates every scaled loss and drains the backwards after the autocast block, holding 64 live graphs at 128/8, and will exhaust memory. The autocast region must move inside the view loop to preserve per-view accumulation. Not yet repaired, not yet run, no 128/8 regression.",
-    "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION": "The DEC-013 characterisation of T1 as having valid mechanics is not defensible in the parameter-wise sense. The historical biological outcome stands: T1 did not qualify biology at u205. Supersession must follow independent C2 verification, not precede it."
+    "DEC013_SUPERSESSION_PENDING_INDEPENDENT_C2_VERIFICATION": "The DEC-013 characterisation of T1 as having valid mechanics is not defensible in the parameter-wise sense. The historical biological outcome stands: T1 did not qualify biology at u205. Supersession must follow independent C2 verification, not precede it.",
+    "C2_INDEPENDENT_VERIFICATION_PENDING": "The repaired candidate has NOT been independently certified. The same agent implemented C2 and ran the verification, so the no-self-certification requirement is unmet. The verification found three real defects and returned each for repair - untracked closure outputs, a stale manifest and root, and a gradient gate whose norm-based zero test underflowed a lone fp32 subnormal and misclassified 48 live tensors as dead - and all three are repaired here. Those findings are implementation feedback, not certification. Only a separate reviewer starting from a fresh clone of the exact frozen remote commit may return PASS_C2_INDEPENDENT_VERIFICATION, binding it to the commit SHA, the package root, the verifier source digest and the verifier result root. Until then the project state is not C2_CLOSED."
   },
   "continuity_defects_repaired_by_claude_code": {
     "DOCUMENTED_TAKEOVER_COMMAND_COULD_NOT_PASS": "CLAUDE.md instructed 'validate --repo . --worktree .' but the checkpoint records the canonical repo path by design, so the first takeover step always raised a spurious REPO_PATH_MISMATCH. Added work_checkpoint.resolve_canonical_repo(), made --repo optional and auto-resolved via 'git rev-parse --git-common-dir', and corrected CLAUDE.md. No agent now hardcodes the canonical path.",
