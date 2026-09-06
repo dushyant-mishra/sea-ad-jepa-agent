@@ -155,6 +155,25 @@ class autocast_override:
         torch.autocast = self.real
 
 
+def movement_report(before: dict, online: torch.nn.Module, names: list[str],
+                    phase_e: Any) -> dict[str, Any]:
+    """Per-tensor relative movement against the pure AdamW-decay prediction."""
+    by_name = dict(online.named_parameters())
+    lr, weight_decay = 1e-4, 0.01
+    decay_only = 1.0 - (1.0 - lr * weight_decay)
+    entries, exceed = {}, []
+    for name in names:
+        start = before[name]
+        end = by_name[name].detach().float()
+        base = float(start.norm())
+        rel = None if base == 0.0 else float((end - start).norm()) / base
+        entries[name] = {"relative_movement": rel, "zero_baseline": base == 0.0}
+        exceed.append(rel is not None and rel > decay_only * 1.5)
+    return {"entries": entries, "decay_only_prediction": decay_only,
+            "all_exceed_decay": all(exceed), "n_exceeding": sum(exceed),
+            "total": len(names)}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
@@ -168,6 +187,10 @@ def main() -> int:
     parser.add_argument("--value-scale", type=float, default=1.0)
     parser.add_argument("--label", default="STEP_A_EXACT_MECHANICS")
     parser.add_argument("--autocast", choices=("fp16", "off", "bf16"), default="fp16")
+    parser.add_argument("--variant",
+                        choices=("historical", "backward_autocast_disabled",
+                                 "production_safe"),
+                        default="historical")
     parser.add_argument("--attention-cast", choices=("historical", "after_projection", "projections_fp32", "branch_fp32"),
                         default="historical")
     parser.add_argument("--no-gradscaler", action="store_true")
@@ -186,6 +209,7 @@ def main() -> int:
     phase_e = load_phase_e(root)
     from scripts.v4.c2_synthetic_loader_v3 import SyntheticTrainLoader, synthetic_cohort
     from scripts.v4.c2_attention_cast_variant_v3 import attention_cast_variant
+    from scripts.v4.c2_corrective_run_update_v3 import build_variant, variant_diff
     from sea_ad_jepa.v4.ipb_jepa import KernelLinearAttention
 
     # Historical geometry is declared by the trainer, not the smoke module.
@@ -222,8 +246,13 @@ def main() -> int:
     cohort = synthetic_cohort(batch)
     sampler = torch.Generator().manual_seed(args.seed)
 
+    update_fn = build_variant(phase_e, args.variant)
     updates = []
     for cursor in range(args.updates):
+        before_state = {
+            name: dict(online.named_parameters())[name].detach().float().clone()
+            for name in mandatory
+        }
         online.train()
         predictor.train()
         target.eval()
@@ -233,7 +262,7 @@ def main() -> int:
         with autocast_override(args.autocast), attention_cast_variant(
             KernelLinearAttention, args.attention_cast
         ):
-            result = phase_e.run_update(
+            result = update_fn(
                 loader=loader, cohort=cohort, sampler=sampler, cursor=cursor,
                 seed=args.seed, microbatch=micro, effective_batch=batch,
                 device=device, online=online, target=target, predictor=predictor,
@@ -243,7 +272,25 @@ def main() -> int:
         live_grads = gradient_report(online, live)
         moments = moment_report(optimizer, online, mandatory)
         live_moments = moment_report(optimizer, online, live)
+        criteria = {
+            "all_48_mandatory_live": grads["dead_count"] == 0,
+            "all_48_both_moments_nonzero": moments["zero_both_moments"] == 0,
+            "attention_output_healthy": live_grads["dead_count"] == 0
+            and live_moments["zero_both_moments"] == 0,
+            "loss_finite": result["loss"] == result["loss"]
+            and abs(result["loss"]) != float("inf"),
+            "step_succeeded": bool(result["step_succeeded"]),
+            "online_moved": bool(result.get("online_moved")),
+            "ema_equation_exact": bool((result.get("ema_equation") or {}).get("equal")),
+        }
+        move = movement_report(before_state, online, mandatory, phase_e)
+        criteria["movement_exceeds_pure_decay"] = move["all_exceed_decay"]
+        criteria["ALL_CRITERIA_MET"] = all(
+            value for key, value in criteria.items() if key != "ALL_CRITERIA_MET"
+        )
         updates.append({
+            "criteria": criteria,
+            "movement": move,
             "cursor": cursor,
             "loss": result["loss"],
             "step_succeeded": result["step_succeeded"],
@@ -255,11 +302,11 @@ def main() -> int:
             "live_reference_moments": live_moments,
         })
         print(
-            "u%03d loss=%.4f  mandatory dead=%d/48  zero-both-moments=%d/48  "
-            "live_ref dead=%d/12  zero-both=%d/12  step_ok=%s"
+            "u%03d loss=%.4f  dead=%d/48  zero-moments=%d/48  live_ref dead=%d/12  "
+            "move>decay=%d/48  ALL_CRITERIA=%s"
             % (cursor, result["loss"], grads["dead_count"], moments["zero_both_moments"],
-               live_grads["dead_count"], live_moments["zero_both_moments"],
-               result["step_succeeded"]),
+               live_grads["dead_count"], move["n_exceeding"],
+               criteria["ALL_CRITERIA_MET"]),
             flush=True,
         )
 
@@ -302,6 +349,8 @@ def main() -> int:
             "mask_fraction": phase_e.sample_uniform_target_blocks.__kwdefaults__["mask_fraction"],
             "historical_defaults": sampler_defaults,
         },
+        "variant": args.variant,
+        "variant_diff": variant_diff(phase_e, args.variant),
         "invocation": {"argv": sys.argv[1:], "seed": args.seed},
         "updates": updates,
     }

@@ -288,3 +288,64 @@ batch 128, microbatch 8, seed 8113002, one update.
 This is the last cast-position experiment. If `H1` does not resolve it, the
 approach changes from moving boundaries to measuring forward values, rather than
 enumerating further rearrangements.
+
+---
+
+# C2-v3 paired causal test — FROZEN 2026-09-06, before execution
+
+The earlier inside-versus-outside probe is confounded: its "outside" arm changed
+ambient autocast during backward **and** the forward/backward interleaving
+together. This test removes that confound.
+
+Both arms are produced by textual substitution on `inspect.getsource` of the
+canonical `run_update` and executed in the canonical module's namespace, so
+every line except the substituted one is byte-identical and no transcription
+error is possible. The exact diff is recorded in each artifact.
+
+| id | variant | change |
+|---|---|---|
+| `K0_HISTORICAL` | `historical` | none |
+| `K1_BACKWARD_AUTOCAST_DISABLED` | `backward_autocast_disabled` | the `.backward()` call alone is wrapped in `torch.autocast(device_type=device.type, enabled=False)` |
+
+Preserved identically across both arms: device, fp16 forwards, teacher reuse,
+masks and block construction, four-view sequence, per-view forward-then-backward
+interleaving, `GradScaler`, loss division by 64, gradient checkpointing,
+optimizer, batch 128, microbatch 8, seed 8113002, RNG progression. Ambient
+autocast state during backward is the only changed factor.
+
+## Frozen success criteria for the corrected arm
+
+All must hold simultaneously in one update at 128/8:
+
+- 0 of 48 mandatory gradients dead; all 48 finite and strictly nonzero
+  post-unscale
+- both `exp_avg` and `exp_avg_sq` nonzero for all 48 after the step
+- all 12 `attention.output` tensors healthy in gradients and moments
+- per-tensor movement exceeds the pure AdamW-decay prediction for all 48
+- loss finite
+- optimizer step succeeded
+- `online_moved` true
+- EMA equation exact
+- the production gate reports no missing or nonfinite gradients
+
+The historical arm must simultaneously continue to show 48/48 dead.
+
+## Terminal
+
+If both hold, the engineering causal condition is established as
+`C2_CAUSAL_CONDITION_ESTABLISHED__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST`. The
+deeper CUDA/kernel reason for the collapse to *exact* zero remains an open
+mechanistic question and is explicitly not claimed.
+
+If the corrected arm fails any criterion, terminal is
+`STOP_C2_CORRECTION_DID_NOT_RESTORE_MECHANICS` and the correction is not
+proposed.
+
+## Known defect in the deferred `production_safe` variant
+
+The second variant currently accumulates every scaled loss and drains the
+backwards after the autocast block, which holds 64 live graphs at 128/8 and will
+exhaust memory. The recommended structure keeps per-view accumulation by moving
+the autocast region inside the view loop instead. That is recorded here as a
+known defect, to be repaired before that variant is run; it is not part of this
+paired test.
