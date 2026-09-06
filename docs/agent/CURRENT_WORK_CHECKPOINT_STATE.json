@@ -74,7 +74,7 @@
     ],
     "c2_closure_package": {
       "root": "outputs/c2_t1_gradient_forensic_20260906",
-      "package_root_sha256": "8b7c4811dbf74d92ecc055d8eb2a0f1ed21539b8fba1ea42fae68d66407a774d",
+      "package_root_sha256": "846a3661dc5c55e604f31d502e72bb73c4380567af8ccc7ddc2258691f437ee8",
       "manifest": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
       "file_count": 55,
       "bound_sources": 15,
@@ -96,7 +96,7 @@
         },
         {
           "path": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
-          "sha256": "95e393ef3da967f3ecc757e578811c7cdc3e017fb4ad79ddb9b58bd535a6b96b",
+          "sha256": "a76633db9e6f4ec960c8b1dc7e118c643e12601d63f43a92aae9422442d2d86c",
           "authority": "C2_PACKAGE_MANIFEST"
         },
         {
@@ -105,7 +105,8 @@
           "authority": "C2_CLOSURE_CRITICAL"
         }
       ],
-      "scope_note": "The causal claim is scoped to the historical 128/8 path as executed here. It is not a claim about universal PyTorch behaviour."
+      "scope_note": "The causal claim is scoped to the historical 128/8 path as executed here. It is not a claim about universal PyTorch behaviour.",
+      "preservation_note": "The package bytes are tracked in git and marked -text so the recorded SHA-256 values, which are over raw bytes, survive checkout on either platform. At commit da7e0b5 the package was untracked and its manifest was stale: the packager had run before the final edit to C2_CAUSAL_CONDITION_ESTABLISHED.md, recording 4725 bytes for a 5854-byte file, which also invalidated the package root. Both defects were found by independent verification from a clean clone and are repaired here."
     }
   },
   "firewall": {
