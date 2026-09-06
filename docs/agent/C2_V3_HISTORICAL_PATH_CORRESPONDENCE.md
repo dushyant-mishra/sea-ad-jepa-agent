@@ -85,7 +85,13 @@ u0010..u0205:  states=123  zero_moment=48  moments float32
                roles: attention_norm 12, query 12, key 12, value 12
 ```
 
-Those 48 were stepped every update, so `.grad` was present and exactly zero throughout.
+The same 48 optimizer states advanced with training while both Adam moments remained
+exactly zero at every preserved checkpoint, establishing a persistent zero or
+effectively-zero optimizer signal. The checkpoints do not carry finer temporal
+resolution than that, and no per-step gradient claim is made from them. Runtime C2-v3
+independently demonstrates exact-zero post-unscale gradients under the reproduced
+failure condition.
+
 Saved `online_gradients` remain invalid for this question: the trainer clears gradients
 immediately before capture, and `u0205` holds 0 of 108 nonzero.
 
@@ -133,3 +139,69 @@ Adjudication, fixed in advance:
   rescues while `D1` also rescues, the discriminator is exponent range, i.e.
   underflow. If `D2` fails while `D1` rescues, it is mantissa precision. This
   distinction is declared now so it cannot be constructed afterwards.
+
+---
+
+# C2-v3 decisive cast-position experiment — FROZEN 2026-09-06, before execution
+
+The precision isolation (`E1`/`E2` rescue, `E3`/`E4` do not) identifies the
+mixed-precision path but does not name the operation. Toggling `.float()` on the
+loss would not name it either. The candidate is specific:
+
+```python
+# canonical, KernelLinearAttention.forward
+return self.output(output.to(tokens.dtype)), denominator.amin()
+```
+
+`self.output` takes its gradient on the fp16 side of that cast; every upstream
+tensor must send its gradient back through it.
+
+## The single change
+
+| variant | order |
+|---|---|
+| `historical` | fp32 attention → cast to fp16 → output projection |
+| `after_projection` | fp32 attention → output projection → cast to fp16 |
+
+Implemented by swapping `KernelLinearAttention.forward` under a context manager
+(`scripts/v4/c2_attention_cast_variant_v3.py`). The canonical source is not
+edited. The q/k/v projections still run under the outer autocast in fp16 in both
+variants, so the second precision boundary at `projected_q.float()` is present in
+both and is not confounded with the one under test.
+
+## Conditions
+
+Both at historical geometry, cuda, fp16 autocast, `GradScaler` on, checkpointing
+on, batch 128, microbatch 8, seed 8113002, one update.
+
+| id | attention cast |
+|---|---|
+| `F0_CAST_HISTORICAL` | `historical` (must reproduce 48/48) |
+| `F1_CAST_AFTER_PROJECTION` | `after_projection` |
+
+## Adjudication, fixed in advance
+
+- If `F0` gives 48/48 and `F1` gives 0/48, the severing operation is **named**:
+  the fp32→fp16 cast applied to the attention result before the output
+  projection. Terminal `C2_SEVERING_OPERATION_IDENTIFIED`.
+- If `F1` still gives 48/48, the cast position is **not** the cause and the
+  remaining boundary is `projected_q.float()` on the input side. Terminal
+  `C2_CAST_POSITION_EXCLUDED`, and the next experiment targets that boundary.
+- Any intermediate count is `C2_CAST_POSITION_PARTIAL` and is reported as such,
+  not rounded to either conclusion.
+- `attention.output` must remain 0/12 dead in both, or the condition is void.
+
+## Severity modifiers, explicitly not causal candidates
+
+`D5`–`D9` (microbatch, views, target-block cardinality, mask fraction) change how
+many tensors die, not whether the mechanism exists. They are recorded as
+magnitude modifiers and are excluded from the causal matrix. Characterising the
+threshold is a separate, later exercise.
+
+## Regression requirement after localization
+
+The corrected path must show, in one update at historical geometry: all 48
+mandatory gradients finite and nonzero before the optimizer step; both Adam
+moments nonzero afterwards; per-tensor movement exceeding pure decay;
+`attention.output` healthy; loss finite. The historical path must continue to
+reproduce the dead signature in the same test.

@@ -168,6 +168,8 @@ def main() -> int:
     parser.add_argument("--value-scale", type=float, default=1.0)
     parser.add_argument("--label", default="STEP_A_EXACT_MECHANICS")
     parser.add_argument("--autocast", choices=("fp16", "off", "bf16"), default="fp16")
+    parser.add_argument("--attention-cast", choices=("historical", "after_projection"),
+                        default="historical")
     parser.add_argument("--no-gradscaler", action="store_true")
     parser.add_argument("--no-checkpointing", action="store_true")
     parser.add_argument("--target-blocks", type=int, default=None)
@@ -179,6 +181,8 @@ def main() -> int:
     root = canonical_root(args.canonical_root)
     phase_e = load_phase_e(root)
     from scripts.v4.c2_synthetic_loader_v3 import SyntheticTrainLoader, synthetic_cohort
+    from scripts.v4.c2_attention_cast_variant_v3 import attention_cast_variant
+    from sea_ad_jepa.v4.ipb_jepa import KernelLinearAttention
 
     # Historical geometry is declared by the trainer, not the smoke module.
     HISTORICAL_EFFECTIVE_BATCH, HISTORICAL_MICROBATCH = 128, 8
@@ -219,7 +223,9 @@ def main() -> int:
         online.train()
         predictor.train()
         target.eval()
-        with autocast_override(args.autocast):
+        with autocast_override(args.autocast), attention_cast_variant(
+            KernelLinearAttention, args.attention_cast
+        ):
             result = phase_e.run_update(
                 loader=loader, cohort=cohort, sampler=sampler, cursor=cursor,
                 seed=args.seed, microbatch=micro, effective_batch=batch,
@@ -280,6 +286,7 @@ def main() -> int:
         },
         "factors": {
             "autocast": args.autocast,
+            "attention_cast": args.attention_cast,
             "gradscaler_enabled": not args.no_gradscaler,
             "gradient_checkpointing": online.gradient_checkpointing,
             "target_blocks": phase_e.sample_uniform_target_blocks.__kwdefaults__["block_count"],
