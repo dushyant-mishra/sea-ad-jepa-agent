@@ -67,6 +67,20 @@ def _git(worktree: Path, *args: str, allow_failure: bool = False) -> str | None:
     return completed.stdout.strip()
 
 
+def resolve_canonical_repo(worktree: Path) -> Path:
+    """Return the canonical repository root that owns *worktree*.
+
+    A linked worktree resolves to the repository holding the shared object
+    store, not to itself. This lets an arriving peer validate a checkpoint
+    knowing only its own worktree, without hardcoding the canonical path.
+    """
+    common = _git(Path(worktree), "rev-parse", "--git-common-dir")
+    common_path = Path(common or ".git")
+    if not common_path.is_absolute():
+        common_path = Path(worktree) / common_path
+    return common_path.resolve().parent
+
+
 def _git_snapshot(repo: Path, worktree: Path) -> dict[str, Any]:
     head = _git(worktree, "rev-parse", "HEAD")
     branch = _git(worktree, "branch", "--show-current")
@@ -201,7 +215,7 @@ def _parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
     for command in ("build", "validate"):
         child = subparsers.add_parser(command)
-        child.add_argument("--repo", type=Path, required=True)
+        child.add_argument("--repo", type=Path, default=None)
         child.add_argument("--worktree", type=Path, required=True)
     build = subparsers.choices["build"]
     build.add_argument("--state", type=Path, required=True)
@@ -213,14 +227,15 @@ def _parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = _parser().parse_args()
+    repo = args.repo or resolve_canonical_repo(args.worktree)
     if args.command == "build":
         state = json.loads(args.state.read_text(encoding="utf-8"))
-        checkpoint = build_checkpoint(args.repo, args.worktree, state)
+        checkpoint = build_checkpoint(repo, args.worktree, state)
         atomic_write_json(args.output, checkpoint)
         print(checkpoint["checkpoint_semantic_sha256"])
         return 0
     checkpoint = json.loads(args.checkpoint.read_text(encoding="utf-8"))
-    errors = validate_checkpoint(checkpoint, args.repo, args.worktree)
+    errors = validate_checkpoint(checkpoint, repo, args.worktree)
     if errors:
         print(json.dumps({"status": "STOP", "errors": errors}, indent=2))
         return 1

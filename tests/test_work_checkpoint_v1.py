@@ -164,3 +164,23 @@ def test_serialized_checkpoint_is_valid_json(git_repo: Path, tmp_path: Path) -> 
     target = tmp_path / "checkpoint.json"
     atomic_write_json(target, checkpoint)
     assert json.loads(target.read_text(encoding="utf-8")) == checkpoint
+
+
+def test_resolve_canonical_repo_from_main_worktree(git_repo: Path) -> None:
+    from scripts.agent.work_checkpoint import resolve_canonical_repo
+
+    assert resolve_canonical_repo(git_repo) == git_repo.resolve()
+
+
+def test_resolve_canonical_repo_from_linked_worktree(git_repo: Path, tmp_path: Path) -> None:
+    """A linked worktree must resolve to the canonical repo, not to itself.
+
+    This is the takeover path: an arriving peer knows only its own worktree and
+    must not be required to hardcode the canonical repository path.
+    """
+    from scripts.agent.work_checkpoint import resolve_canonical_repo
+
+    linked = tmp_path / "linked"
+    _git(git_repo, "worktree", "add", str(linked), "-b", "peer-branch")
+    assert resolve_canonical_repo(linked) == git_repo.resolve()
+    assert resolve_canonical_repo(linked) != linked.resolve()

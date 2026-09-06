@@ -12,10 +12,16 @@ try:
     from scripts.agent.work_checkpoint import (
         atomic_write_json,
         build_checkpoint,
+        resolve_canonical_repo,
         validate_checkpoint,
     )
 except ModuleNotFoundError:  # Support direct `python scripts/agent/...` execution.
-    from work_checkpoint import atomic_write_json, build_checkpoint, validate_checkpoint
+    from work_checkpoint import (
+        atomic_write_json,
+        build_checkpoint,
+        resolve_canonical_repo,
+        validate_checkpoint,
+    )
 
 
 def render_takeover_markdown(checkpoint: dict[str, Any]) -> str:
@@ -67,13 +73,14 @@ def update(repo: Path, worktree: Path, state_path: Path, checkpoint_path: Path, 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo", type=Path, required=True)
+    parser.add_argument("--repo", type=Path, default=None)
     parser.add_argument("--worktree", type=Path, required=True)
     parser.add_argument("--state", type=Path, default=Path("docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json"))
     parser.add_argument("--checkpoint", type=Path, default=Path("docs/agent/CURRENT_WORK_CHECKPOINT.json"))
     parser.add_argument("--takeover", type=Path, default=Path("docs/agent/CLAUDE_TAKEOVER.md"))
     args = parser.parse_args()
-    checkpoint = update(args.repo, args.worktree, args.state, args.checkpoint, args.takeover)
+    repo = args.repo or resolve_canonical_repo(args.worktree)
+    checkpoint = update(repo, args.worktree, args.state, args.checkpoint, args.takeover)
     print(checkpoint["checkpoint_semantic_sha256"])
     return 0
 
