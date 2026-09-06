@@ -1,0 +1,1 @@
+Return exactly one JSON object with these fields: role="ADVISORY_PEER", tool_use=false, scientific_promotion_authority=false. Do not use tools. Do not add prose.
