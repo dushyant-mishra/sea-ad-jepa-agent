@@ -4,7 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from scripts.agent.update_work_checkpoint import render_takeover_markdown
+from scripts.agent.update_work_checkpoint import render_takeover_markdown, write_takeover
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -87,3 +87,9 @@ def test_takeover_render_is_deterministic_and_agent_neutral() -> None:
     assert "CODEX" in first and "CLAUDE_CODE" in first
     assert "PRESERVED_C2_CONTRACT_AND_HARNESS" in first
     assert "cannot promote" in first.lower()
+
+
+def test_takeover_write_uses_lf_on_installed_python(tmp_path: Path) -> None:
+    target = tmp_path / "TAKEOVER.md"
+    write_takeover(target, "line one\nline two\n")
+    assert target.read_bytes() == b"line one\nline two\n"

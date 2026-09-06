@@ -47,12 +47,18 @@ def render_takeover_markdown(checkpoint: dict[str, Any]) -> str:
     )
 
 
+def write_takeover(path: Path, text: str) -> None:
+    """Write deterministic LF-only UTF-8 on all supported Python versions."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
+
+
 def update(repo: Path, worktree: Path, state_path: Path, checkpoint_path: Path, takeover_path: Path) -> dict[str, Any]:
     state = json.loads(state_path.read_text(encoding="utf-8"))
     checkpoint = build_checkpoint(repo, worktree, state)
     atomic_write_json(checkpoint_path, checkpoint)
-    takeover_path.parent.mkdir(parents=True, exist_ok=True)
-    takeover_path.write_text(render_takeover_markdown(checkpoint), encoding="utf-8", newline="\n")
+    write_takeover(takeover_path, render_takeover_markdown(checkpoint))
     errors = validate_checkpoint(checkpoint, repo, worktree)
     if errors:
         raise RuntimeError(f"generated checkpoint failed validation: {errors}")
