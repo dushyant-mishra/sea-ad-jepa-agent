@@ -296,98 +296,154 @@ def attack_routing_uses_cell_zero(candidate: Candidate) -> dict:
 
 # ---------------------------------------------------------------- finding 7
 def attack_routing_metric_collision(candidate: Candidate) -> dict:
-    """Entropy perplexity and participation ratio must not substitute for each other.
-
-    For p = (0.5, 0.25, 0.25): exp(H) = 2.8284 while 1/sum(p^2) = 2.6667. A
-    candidate reporting one number under both names, or reporting a value that
-    matches the wrong analytic answer, is substituting metrics.
-    """
+    """N_eff_entropy and N_eff_participation must carry distinct analytic values."""
     if candidate.routing_metrics is None:
         return _na(7, "routing_metrics")
     p = [0.5, 0.25, 0.25]
-    entropy = -sum(x * math.log(x) for x in p)
-    expected_perplexity = math.exp(entropy)              # 2.8284...
-    expected_participation = 1.0 / sum(x * x for x in p)  # 2.6667...
-    if math.isclose(expected_perplexity, expected_participation, abs_tol=1e-3):
+    expected_entropy = math.exp(-sum(x * math.log(x) for x in p))
+    expected_participation = 1.0 / sum(x * x for x in p)
+    if math.isclose(expected_entropy, expected_participation, abs_tol=1e-3):
         return {"finding": 7, "verdict": ATTACK_DEFECTIVE,
-                "note": "attack premise broken: the two metrics do not disagree here"}
-    refused, report = _run(candidate.routing_metrics, p, [True, True, True])
-    if refused:
-        return _verdict(7, True, "candidate refused rather than substitute metrics")
-    got_perp = report.get("entropy_perplexity") if hasattr(report, "get") else None
-    got_part = report.get("participation_ratio") if hasattr(report, "get") else None
-    if got_perp is None or got_part is None:
-        return _verdict(7, False, "both metrics must be reported under distinct names",
-                        reported=sorted(report) if hasattr(report, "__iter__") else None)
-    perp_ok = math.isclose(float(got_perp), expected_perplexity, rel_tol=1e-6)
-    part_ok = math.isclose(float(got_part), expected_participation, rel_tol=1e-6)
-    collided = math.isclose(float(got_perp), float(got_part), rel_tol=1e-9)
-    return _verdict(7, perp_ok and part_ok and not collided,
-                    "each name must carry its own analytic value",
-                    expected={"entropy_perplexity": expected_perplexity,
-                              "participation_ratio": expected_participation},
-                    reported={"entropy_perplexity": got_perp,
-                              "participation_ratio": got_part})
-
+                "note": "attack premise broken: the two metrics do not disagree"}
+    refused, report = _run(candidate.routing_metrics, [p], [[True, True, True]])
+    if refused or not isinstance(report, Mapping):
+        return _verdict(7, False, "valid routing metric fixture must execute")
+    got_e = report.get("N_eff_entropy")
+    got_p = report.get("N_eff_participation")
+    try:
+        e0, p0 = float(got_e[0]), float(got_p[0])
+    except Exception:  # noqa: BLE001
+        return _verdict(7, False, "both named per-query metrics must be present")
+    defended = (math.isclose(e0, expected_entropy, rel_tol=1e-6)
+                and math.isclose(p0, expected_participation, rel_tol=1e-6)
+                and not math.isclose(e0, p0, rel_tol=1e-9))
+    return _verdict(7, defended,
+                    "each metric name must carry its own analytic per-query value",
+                    expected={"N_eff_entropy": expected_entropy,
+                              "N_eff_participation": expected_participation},
+                    reported={"N_eff_entropy": e0, "N_eff_participation": p0})
 
 # ---------------------------------------------------------------- finding 8
 def attack_routing_analytic_mutations(candidate: Candidate) -> dict:
-    """Each independent mutation has a predictable analytic answer.
-
-    Uniform over n -> perplexity n. One-hot -> 1. Mass on a masked key must be
-    ignored. Scaling all weights must not change a normalised statistic.
-    Permuting keys must not change it either.
-    """
+    """Mutate query support, key support, masks, normalization and routing mass independently."""
     if candidate.routing_metrics is None:
         return _na(8, "routing_metrics")
 
-    def perp(weights: Sequence[float], mask: Sequence[bool]) -> float | None:
-        refused, report = _run(candidate.routing_metrics, list(weights), list(mask))
-        if refused or not hasattr(report, "get"):
-            return None
-        value = report.get("entropy_perplexity")
-        return None if value is None else float(value)
+    def snap(weights: Sequence[Sequence[float]],
+             masks: Sequence[Sequence[bool]]) -> Mapping[str, Any] | None:
+        refused, report = _run(candidate.routing_metrics,
+                               [list(row) for row in weights],
+                               [list(row) for row in masks])
+        return None if refused or not isinstance(report, Mapping) else report
 
     failures = []
-    uniform = perp([0.25] * 4, [True] * 4)
-    if uniform is None or not math.isclose(uniform, 4.0, rel_tol=1e-6):
-        failures.append({"mutation": "uniform_over_4", "expected": 4.0, "got": uniform})
-    onehot = perp([1.0, 0.0, 0.0, 0.0], [True] * 4)
-    if onehot is None or not math.isclose(onehot, 1.0, abs_tol=1e-6):
-        failures.append({"mutation": "one_hot", "expected": 1.0, "got": onehot})
-    masked = perp([0.25, 0.25, 0.25, 0.25], [True, True, False, False])
-    if masked is None or not math.isclose(masked, 2.0, rel_tol=1e-6):
-        failures.append({"mutation": "two_keys_masked", "expected": 2.0, "got": masked})
-    scaled = perp([2.5, 2.5, 2.5, 2.5], [True] * 4)
-    if scaled is None or uniform is None or not math.isclose(scaled, uniform, rel_tol=1e-6):
-        failures.append({"mutation": "scale_invariance", "expected": uniform, "got": scaled})
-    permuted = perp([0.25, 0.5, 0.25], [True] * 3)
-    original = perp([0.5, 0.25, 0.25], [True] * 3)
-    if permuted is None or original is None or not math.isclose(permuted, original, rel_tol=1e-6):
-        failures.append({"mutation": "permutation_invariance",
-                         "expected": original, "got": permuted})
-    return _verdict(8, not failures, "every routing mutation has a predictable analytic answer",
-                    failures=failures)
+    baseline_w = [[1.0, 1.0, 0.0, 100.0], [3.0, 1.0, 0.0, 100.0]]
+    baseline_m = [[True, True, False, False], [True, True, False, False]]
+    base = snap(baseline_w, baseline_m)
+    if base is None:
+        return _verdict(8, False, "valid analytic routing fixture was refused")
 
+    expected_second = math.exp(-(.75 * math.log(.75) + .25 * math.log(.25)))
+    expected_cos = 0.8944271909999159
+    checks = {
+        "N_eff_entropy": ([2.0, expected_second], 1e-6),
+        "N_eff_participation": ([2.0, 1.6], 1e-6),
+        "top1_mass": ([0.5, 0.75], 1e-6),
+        "valid_keys": ([2, 2], 0.0),
+    }
+    for key, (expected, tol) in checks.items():
+        got = base.get(key)
+        if got is None or len(got) != len(expected) or any(
+                not math.isclose(float(a), float(b), rel_tol=tol, abs_tol=tol)
+                for a, b in zip(got, expected)):
+            failures.append({"mutation": "baseline_" + key, "expected": expected, "got": got})
+    if not math.isclose(float(base.get("query_map_cosine", float("nan"))),
+                        expected_cos, rel_tol=1e-6):
+        failures.append({"mutation": "baseline_query_map_cosine",
+                         "expected": expected_cos, "got": base.get("query_map_cosine")})
+
+    one_query = snap([baseline_w[0]], [baseline_m[0]])
+    for key in ("N_eff_entropy", "N_eff_participation", "top1_mass", "valid_keys"):
+        got = None if one_query is None else one_query.get(key)
+        if got is None or len(got) != 1:
+            failures.append({"mutation": "query_support", "metric": key, "got": got})
+
+    four = snap([[1.0, 1.0, 1.0, 1.0]], [[True, True, True, True]])
+    if four is None or four.get("valid_keys") != [4] or not math.isclose(
+            float(four.get("N_eff_entropy", [float("nan")])[0]), 4.0, rel_tol=1e-6):
+        failures.append({"mutation": "key_support", "got": four})
+
+    no_masked_mass = snap([[1.0, 1.0, 0.0, 0.0], [3.0, 1.0, 0.0, 0.0]], baseline_m)
+    for key in ("N_eff_entropy", "N_eff_participation", "top1_mass", "valid_keys"):
+        if no_masked_mass is None or list(no_masked_mass.get(key, ())) != list(base.get(key, ())):
+            failures.append({"mutation": "masked_mass", "metric": key})
+
+    scaled = snap([[10.0 * x for x in row] for row in baseline_w], baseline_m)
+    for key in ("N_eff_entropy", "N_eff_participation", "top1_mass", "query_map_cosine"):
+        a, b = base.get(key), None if scaled is None else scaled.get(key)
+        if isinstance(a, Sequence) and not isinstance(a, (str, bytes)):
+            if b is None or len(a) != len(b) or any(
+                    not math.isclose(float(x), float(y), rel_tol=1e-6)
+                    for x, y in zip(a, b)):
+                failures.append({"mutation": "normalization_denominator", "metric": key})
+        elif b is None or not math.isclose(float(a), float(b), rel_tol=1e-6):
+            failures.append({"mutation": "normalization_denominator", "metric": key})
+
+    onehot = snap([[1.0, 0.0, 0.0, 0.0]], [[True, True, True, True]])
+    if onehot is None or not math.isclose(float(onehot.get("N_eff_entropy", [9])[0]), 1.0,
+                                          abs_tol=1e-6) or not math.isclose(
+            float(onehot.get("top1_mass", [0])[0]), 1.0, abs_tol=1e-6):
+        failures.append({"mutation": "routing_mass", "got": onehot})
+
+    perm_w = [[100.0, 1.0, 1.0, 0.0], [100.0, 1.0, 3.0, 0.0]]
+    perm_m = [[False, True, True, False], [False, True, True, False]]
+    perm = snap(perm_w, perm_m)
+    for key in ("N_eff_entropy", "N_eff_participation", "top1_mass", "query_map_cosine"):
+        a, b = base.get(key), None if perm is None else perm.get(key)
+        if isinstance(a, Sequence) and not isinstance(a, (str, bytes)):
+            if b is None or len(a) != len(b) or any(
+                    not math.isclose(float(x), float(y), rel_tol=1e-6)
+                    for x, y in zip(a, b)):
+                failures.append({"mutation": "permutation", "metric": key})
+        elif b is None or not math.isclose(float(a), float(b), rel_tol=1e-6):
+            failures.append({"mutation": "permutation", "metric": key})
+
+    return _verdict(8, not failures,
+                    "all five required analytic mutation families must match known answers",
+                    failures=failures)
 
 # ---------------------------------------------------------------- finding 9
 def attack_g5_refit_is_not_a_refit(candidate: Candidate) -> dict:
-    """A genuine refit depends on its fit split; a cached path returns the same object.
-
-    No real G5 biology is used. Two clearly different synthetic fit sets must
-    produce different fitted objects.
-    """
+    """A donor-held-out synthetic refit must change evaluation predictions with the fit split."""
     if candidate.refit is None:
         return _na(9, "refit")
-    refused_a, fit_a = _run(candidate.refit, [0.0, 0.0, 0.0, 0.0])
-    refused_b, fit_b = _run(candidate.refit, [1.0, 2.0, 3.0, 4.0])
-    if refused_a or refused_b:
-        return _verdict(9, True, "candidate refused rather than reuse a cached fit")
-    same = repr(fit_a) == repr(fit_b)
-    return _verdict(9, not same,
-                    "different fit splits must produce different fitted objects",
-                    fit_a=repr(fit_a)[:80], fit_b=repr(fit_b)[:80])
-
+    eval_donors = ["eval_a", "eval_b"]
+    a = {"fit_donors": ["fit_a1", "fit_a2", "fit_a3", "fit_a4"],
+         "fit_values": [0.0, 0.0, 0.0, 0.0],
+         "eval_donors": eval_donors, "eval_values": [7.0, 9.0]}
+    b = {"fit_donors": ["fit_b1", "fit_b2", "fit_b3", "fit_b4"],
+         "fit_values": [1.0, 2.0, 3.0, 4.0],
+         "eval_donors": eval_donors, "eval_values": [7.0, 9.0]}
+    if set(a["fit_donors"]) & set(eval_donors) or set(b["fit_donors"]) & set(eval_donors):
+        return {"finding": 9, "verdict": ATTACK_DEFECTIVE,
+                "note": "attack fixture is not donor-held-out"}
+    refused_a, fit_a = _run(candidate.refit, a)
+    refused_b, fit_b = _run(candidate.refit, b)
+    refused_repeat, fit_a2 = _run(candidate.refit, a)
+    if refused_a or refused_b or refused_repeat:
+        return _verdict(9, False, "valid synthetic held-out refit fixture was refused")
+    try:
+        pa = [float(x) for x in fit_a["predictions"]]
+        pb = [float(x) for x in fit_b["predictions"]]
+        pa2 = [float(x) for x in fit_a2["predictions"]]
+    except Exception:  # noqa: BLE001
+        return _verdict(9, False, "refit must return held-out predictions")
+    analytic = (pa == [0.0, 0.0] and pb == [2.5, 2.5])
+    deterministic = pa2 == pa
+    changed = pb != pa
+    return _verdict(9, analytic and deterministic and changed,
+                    "held-out predictions must be analytically refit-dependent and deterministic",
+                    predictions_a=pa, predictions_b=pb, repeat_a=pa2)
 
 # --------------------------------------------------------------- finding 10
 def attack_horizon_override(candidate: Candidate) -> dict:
@@ -405,31 +461,30 @@ def attack_horizon_override(candidate: Candidate) -> dict:
 
 # --------------------------------------------------------------- finding 11
 def attack_directional_claim_too_strong(candidate: Candidate) -> dict:
-    """If a control explains the effect, the strong directional claim must be withheld.
-
-    Query-centering removes additive query-common cell components. It does not
-    prove a query-conditioned transformation of global or CELL state is
-    impossible. When the CELL-only control reproduces the effect, asserting the
-    strong claim is unsupported.
-    """
+    """CELL-only and identity-only controls must each independently limit the claim."""
     if candidate.directional_claim is None:
         return _na(11, "directional_claim")
-    explained = {"observed": 1.0, "cell_only_control": 1.0, "identity_only_control": 0.0}
-    refused, claim = _run(candidate.directional_claim, explained)
-    if refused:
-        return _verdict(11, True, "candidate refused to claim under an explaining control")
-    asserted = bool(claim) if not isinstance(claim, Mapping) else bool(claim.get("structural"))
-    if asserted:
-        return _verdict(11, False,
-                        "strong directional claim asserted while the CELL-only control explains it")
-    # Second pole: with controls flat, the claim must remain available.
-    unexplained = {"observed": 1.0, "cell_only_control": 0.0, "identity_only_control": 0.0}
-    refused2, claim2 = _run(candidate.directional_claim, unexplained)
-    available = (not refused2) and (bool(claim2) if not isinstance(claim2, Mapping)
-                                   else bool(claim2.get("structural")))
-    return _verdict(11, available,
-                    "claim withheld when controls explain it, available when they do not")
-
+    cases = [
+        ("cell_only_explains",
+         {"observed": 1.0, "cell_only_control": 1.0, "identity_only_control": 0.0}, False),
+        ("identity_only_explains",
+         {"observed": 1.0, "cell_only_control": 0.0, "identity_only_control": 1.0}, False),
+        ("neither_explains",
+         {"observed": 1.0, "cell_only_control": 0.0, "identity_only_control": 0.0}, True),
+    ]
+    failures = []
+    for label, payload, expected in cases:
+        refused, claim = _run(candidate.directional_claim, payload)
+        if refused:
+            failures.append({"case": label, "reason": "valid control fixture refused"})
+            continue
+        asserted = bool(claim) if not isinstance(claim, Mapping) else bool(claim.get("structural"))
+        if asserted is not expected:
+            failures.append({"case": label, "expected_structural": expected,
+                             "reported_structural": asserted})
+    return _verdict(11, not failures,
+                    "CELL-only and identity-only controls each constrain the structural claim",
+                    failures=failures)
 
 # --------------------------------------------------------------- finding 12
 def attack_target_equivalence_assumed(candidate: Candidate) -> dict:
@@ -460,41 +515,35 @@ def attack_target_equivalence_assumed(candidate: Candidate) -> dict:
 
 # --------------------------------------------------------------- finding 13
 def attack_amp_smoke_is_declarative(candidate: Candidate) -> dict:
-    """The AMP path must be executed and observed, not declared.
-
-    The attack supplies the probe. A candidate that reports AMP semantics
-    without invoking the probe has not executed anything, and a candidate whose
-    observations are internally inconsistent has not observed them either.
-    """
+    """Exercise autocast -> backward -> unscale -> gate -> step -> EMA, not self-report."""
     if candidate.amp_smoke is None:
         return _na(13, "amp_smoke")
-    seen: list[dict] = []
-
-    def probe(**observation: Any) -> None:
-        seen.append(dict(observation))
-
-    refused, _ = _run(candidate.amp_smoke, probe)
-    if refused:
-        return _verdict(13, True, "candidate refused rather than declare AMP semantics")
-    if not seen:
-        return _verdict(13, False, "candidate never invoked the supplied probe")
-    required = {"autocast_enabled", "grad_dtype", "scaler_enabled",
-                "unscaled_before_gate", "gate_before_step"}
-    record = seen[-1]
-    missing = sorted(required - set(record))
-    if missing:
-        return _verdict(13, False, "observation record incomplete", missing=missing,
-                        observed=record)
-    consistent = (bool(record["unscaled_before_gate"]) and bool(record["gate_before_step"])
-                  and str(record["grad_dtype"]) != "")
-    return _verdict(13, consistent,
-                    "observed AMP ordering must show unscale before gate and gate before step",
-                    observed=record)
-
+    expected_healthy = ["autocast_enter", "forward", "autocast_exit",
+                        "scaler_scale_backward", "scaler_unscale",
+                        "gradient_gate", "optimizer_step", "ema_step"]
+    healthy = AmpStepHarness(gradient=1.0)
+    healthy_refused, _ = _run(candidate.amp_smoke, healthy)
+    if healthy_refused:
+        return _verdict(13, False, "healthy production-like AMP fixture was refused",
+                        events=healthy.events)
+    if healthy.events != expected_healthy or not healthy.stepped or not healthy.ema_updated:
+        return _verdict(13, False, "healthy AMP path did not execute the required operation order",
+                        events=healthy.events, stepped=healthy.stepped,
+                        ema_updated=healthy.ema_updated)
+    dead = AmpStepHarness(gradient=0.0)
+    dead_refused, _ = _run(candidate.amp_smoke, dead)
+    expected_dead = ["autocast_enter", "forward", "autocast_exit",
+                     "scaler_scale_backward", "scaler_unscale", "gradient_gate"]
+    defended = (dead_refused and dead.events == expected_dead
+                and not dead.stepped and not dead.ema_updated)
+    return _verdict(13, defended,
+                    "dead gradient must stop after unscale/gate and before optimizer/EMA",
+                    healthy_events=healthy.events, dead_events=dead.events,
+                    dead_refused=dead_refused)
 
 # --------------------------------------------------------------- finding 14
 def attack_optimizer_steps_before_gate(candidate: Candidate) -> dict:
-    """A dead mandatory gradient must stop the update BEFORE any state exists."""
+    """Dead gradient stops pre-step; healthy gradient still reaches optimizer state."""
     if candidate.protected_update is None:
         return _na(14, "protected_update")
     ledger: dict[str, Any] = {"optimizer_state_entries": 0, "stepped": False}
@@ -502,33 +551,46 @@ def attack_optimizer_steps_before_gate(candidate: Candidate) -> dict:
                "ledger": ledger}
     refused, _ = _run(candidate.protected_update, payload)
     stepped = bool(ledger.get("stepped")) or int(ledger.get("optimizer_state_entries", 0)) > 0
-    if not refused:
-        return _verdict(14, False, "dead mandatory gradient did not stop the update",
-                        ledger=dict(ledger))
-    if stepped:
-        return _verdict(14, False, "update refused, but only after the optimizer had stepped",
-                        ledger=dict(ledger))
-    return _verdict(14, True, "refused before any optimizer state existed",
-                    ledger=dict(ledger))
-
+    if not refused or stepped:
+        return _verdict(14, False, "dead mandatory gradient was not rejected before the step",
+                        ledger=dict(ledger), refused=refused)
+    healthy_ledger: dict[str, Any] = {"optimizer_state_entries": 0, "stepped": False}
+    healthy_payload = {"mandatory_gradients": {"blocks.0.attention.query.weight": 1.0},
+                       "ledger": healthy_ledger}
+    healthy_refused, _ = _run(candidate.protected_update, healthy_payload)
+    healthy_stepped = (bool(healthy_ledger.get("stepped"))
+                       and int(healthy_ledger.get("optimizer_state_entries", 0)) > 0)
+    return _verdict(14, not healthy_refused and healthy_stepped,
+                    "gate must precede the step without degenerating into an always-refuse stub",
+                    dead_ledger=dict(ledger), healthy_ledger=dict(healthy_ledger),
+                    healthy_refused=healthy_refused)
 
 # --------------------------------------------------------------- finding 15
 def attack_implicit_endpoint_registry(candidate: Candidate) -> dict:
-    """Unregistered `l2__` keys must not become gate-bearing endpoints."""
+    """Extra l2__ keys cannot become endpoints; registered-only input must still run."""
     if candidate.select_endpoints is None:
         return _na(15, "select_endpoints")
     keys = ["l2__broad_common", "l2__local", "l2__recurrent_5pct",
             "l2__recurrent_1pct", "l2__unregistered_experimental", "raw__local"]
     refused, selected = _run(candidate.select_endpoints, keys)
+    first_ok = False
+    leaked = []
+    chosen = []
     if refused:
-        return _verdict(15, True, "candidate refused an unregistered key set")
-    chosen = set(selected or ())
-    leaked = chosen & {"l2__recurrent_5pct", "l2__recurrent_1pct",
-                       "l2__unregistered_experimental"}
-    return _verdict(15, not leaked,
-                    "only prospectively registered endpoints may be selected",
-                    leaked=sorted(leaked), selected=sorted(chosen))
-
+        first_ok = True
+    else:
+        chosen = sorted(set(selected or ()))
+        leaked = sorted(set(chosen) & {"l2__recurrent_5pct", "l2__recurrent_1pct",
+                                       "l2__unregistered_experimental"})
+        first_ok = not leaked and set(chosen) == {"l2__broad_common", "l2__local"}
+    refused_clean, selected_clean = _run(
+        candidate.select_endpoints, ["l2__broad_common", "l2__local"])
+    clean = sorted(set(selected_clean or ())) if not refused_clean else []
+    defended = first_ok and not refused_clean and set(clean) == {"l2__broad_common", "l2__local"}
+    return _verdict(15, defended,
+                    "registry may reject/filter extras but must accept exactly the registered endpoints",
+                    leaked=leaked, selected=chosen, registered_only=clean,
+                    registered_only_refused=refused_clean)
 
 # Attack name -> (callable, findings covered)
 ATTACKS: tuple[tuple[str, Callable[[Candidate], dict], tuple[int, ...]], ...] = (
@@ -620,6 +682,22 @@ def registry_audit(vulnerable: Candidate, correct: Candidate) -> dict:
           empty_report["terminal"] == "STOP_F1B_ATTACK_SUITE"
           and len(empty_report["not_applicable"]) == len(ATTACKS),
           empty_report["terminal"])
+    def _refuse(*args: Any, **kwargs: Any) -> Any:
+        raise RuntimeError("refusal-only stub")
+    refusal_only = Candidate(
+        name="registry_probe_refusal_only",
+        gate_mandatory_gradients=_refuse, movement_gate=_refuse,
+        routing_report=_refuse, routing_metrics=_refuse, refit=_refuse,
+        frozen_horizon=_refuse, directional_claim=_refuse,
+        target_equivalence=_refuse, amp_smoke=_refuse, protected_update=_refuse,
+        select_endpoints=_refuse,
+    )
+    refusal_report = run_suite(refusal_only)
+    check("refusal_only_cannot_pass_any_attack",
+          refusal_report["terminal"] == "STOP_F1B_ATTACK_SUITE"
+          and not refusal_report["defended"],
+          {"terminal": refusal_report["terminal"],
+           "defended": refusal_report["defended"]})
     # No attack may read source text.
     import inspect as _inspect
     text_readers = []
