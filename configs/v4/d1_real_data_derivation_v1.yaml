@@ -1,0 +1,123 @@
+# D1 real-data derivation — procedure constants only.
+#
+# Every value here is a Class-B prospective procedure constant, fixed before any
+# D1 outcome is observed. Nothing here is a data-adaptive production quantity.
+#
+# It is a hard error for this file to contain a production D, program count K,
+# neighbourhood k or radius, tail score cutpoint, stability cutoff, redundancy
+# cutoff, or any other Class-C value. A test parses this file and fails if a
+# forbidden key appears or if a numeric value collides with a prohibited
+# historical constant. Class-C values are only ever written to derivation
+# artifacts, never hand-entered here.
+schema: d1-real-data-derivation-procedure-constants-v1
+
+# ---------------------------------------------------------------- populations
+population:
+  # Verified against authority by the Phase 0 audit; these are expectations to
+  # falsify, not substitutes for reading the authority. The audit STOPs when the
+  # authority disagrees rather than adopting these numbers.
+  expected_fit_donors: 104
+  expected_fit_cells: 4553407
+  expected_operators: 42
+  expected_molecular_addresses: 41238
+  expected_source_cells:
+    HVS: 198718
+    NPH52: 236476
+    SEA_AD: 4118213
+  lawful_partition: reader_fit
+  forbidden_partitions:
+    - reader_validation
+    - reader_oracle
+    - development
+    - dev
+    - sealed
+    - sealed_holdout
+    - whole_study_external_holdout
+    - pathology
+    - held_out
+  allowed_source_families:
+    - HVS
+    - NPH52
+    - SEA_AD
+
+# ------------------------------------------------------------------ numerics
+numerics:
+  accumulation_dtype: float64
+  # Symmetric-eigenproblem tolerances. Numerical, not biological.
+  eigen_symmetry_atol: 1.0e-10
+  eigen_negative_eigenvalue_atol: 1.0e-09
+  weight_mass_atol: 1.0e-09
+  # log1p(CP10K) round-trip tolerance for the frozen normalization check.
+  expression_roundtrip_atol: 1.0e-06
+
+# ------------------------------------------------------- Monte Carlo control
+# Resampling count is a computational-precision quantity (registry D1-P018),
+# never inherited from history. Deterministic sequential doubling from the
+# minimum until the precision target is met or the ceiling is reached.
+monte_carlo:
+  confidence_level: 0.95
+  minimum_replicates: 64
+  maximum_replicates: 8192
+  doubling_factor: 2
+  # Target half-width of the reported Monte Carlo interval, in the units of the
+  # statistic being summarised. Failure to reach it reports
+  # INSUFFICIENT_MONTE_CARLO_PRECISION rather than freezing a noisy value.
+  precision_target_half_width: 0.01
+  rng_namespace: d1-real-data-derivation-v1
+
+# --------------------------------------------------------------- degeneracy
+degeneracy:
+  # Adjacent axes join one subspace when the bootstrap eigengap interval
+  # includes zero. This is a rule, not a tuned cutoff: the decision is made by
+  # the resampled interval, not by a hand-chosen gap size.
+  gap_interval_includes_zero_joins_block: true
+
+# -------------------------------------------------------------- tail views
+# Predeclared tail PROBABILITIES only. The numeric score cutpoints are weighted
+# empirical quantiles of the full real score distribution and are written to the
+# derivation artifact. Declaring probabilities here is prospective; declaring
+# score values here would be a production parameter and is prohibited.
+tail_views:
+  two_sided_probabilities:
+    - 0.05
+    - 0.01
+    - 0.001
+  descriptive_only: true
+  is_confirmatory_gate: false
+
+# ------------------------------------------------------------------ ranking
+# Deterministic lexicographic catalog order, fixed before outcome inspection.
+# No learned or hand-tuned composite weights are permitted in v1.
+ranking:
+  component_ranks:
+    - magnitude
+    - donor_block_stability
+    - donor_recurrence
+    - source_operator_consistency
+    - measurement_support
+    - molecular_concentration
+    - novelty
+  catalog_order:
+    - donor_block_stability
+    - donor_recurrence
+    - magnitude
+    - source_operator_consistency
+    - measurement_support
+    - molecular_concentration
+  final_tie_breaker: program_id
+  weighted_composite_permitted: false
+
+# ------------------------------------------------------------- output schemas
+schemas:
+  population_audit: d1-full-fit-population-audit-v1
+  teacher_readout_contract: d1-teacher-readout-contract-v1
+  parameter_derivation: d1-parameter-derivation-v1
+
+# --------------------------------------------------------------- gate policy
+gates:
+  # Historical u0010-u0205 are TRAINING_MECHANICS_DEFECT_INHERITED and are
+  # prohibited as D1 production teachers. u0000 is untrained.
+  prohibited_teacher_checkpoint_updates: [10, 25, 50, 100, 200, 205]
+  untrained_checkpoint_updates: [0]
+  teacher_closed_terminal: WAIT_HEALTHY_TRAINED_TEACHER
+  readout_unresolved_terminal: STOP_D1_TEACHER_READOUT_UNRESOLVED
