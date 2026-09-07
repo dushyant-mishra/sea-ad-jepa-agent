@@ -24,6 +24,14 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install --disable-pip-version-check pytest
+      - name: Bind registry authority bytes
+        run: |
+          sha256sum \
+            docs/agent/JEPA_POPULATION_ACCESS_AND_SEALED_HOLDOUT_CONTRACT_20260907.md \
+            docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_V1_20260907.json \
+            docs/agent/POPULATION_ACCESS_REGISTRY_AUTHORITY_VALIDATION_20260907.json \
+            scripts/agent/validate_population_access_registry_v1.py \
+            tests/test_population_access_registry_v1.py
       - name: Compile validator
         run: python -m py_compile scripts/agent/validate_population_access_registry_v1.py
       - name: Run adversarial registry tests
