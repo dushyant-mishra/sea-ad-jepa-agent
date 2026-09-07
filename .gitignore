@@ -19,7 +19,7 @@ data/external/
 results/
 logs/
 runs/
-outputs/
+outputs/*
 *.log
 
 # Lightweight reproducibility artifacts
@@ -95,3 +95,6 @@ wget-log
 /checkpoints/
 *.ckpt
 *.pth
+
+# F1 producer/replay pre-freeze package (hashes are over raw bytes)
+!outputs/f1_real_producer_replay_prefreeze_20260907/

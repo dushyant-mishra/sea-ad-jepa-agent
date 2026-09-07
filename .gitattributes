@@ -1,3 +1,4 @@
 *.sh text eol=lf
 results/visualization/*.html -text
 docs/history/exact_bytes/** -text
+outputs/f1_real_producer_replay_prefreeze_20260907/** -text
