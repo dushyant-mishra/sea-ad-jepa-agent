@@ -1,0 +1,233 @@
+{
+  "schema": "D1A_SYNTHETIC_ESTIMATION_ATLAS_CONTRACT_V1",
+  "status": "PROSPECTIVE_SYNTHETIC_U0_SAFE_ONLY__REAL_D1_UNAUTHORIZED",
+  "date": "2026-09-07",
+  "parent_d1_program": {
+    "path": "docs/agent/D1_BIOLOGICAL_PROGRAM_ESTIMATION_RANKING_ATLAS_20260907.md",
+    "planning_commit": "238d3e1baef714cf52eed95e27de083df5422cb0"
+  },
+  "governance": {
+    "population_registry_freeze_commit": "14c2d586239aa5af15ed7cd70fdfb196d1c99f5f",
+    "population_registry_package_root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
+    "training_base_freeze_commit": "5f89093000fe0460de377eb129890bdb0cf85a90",
+    "training_base_package_root": "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534",
+    "allowed_modes": [
+      "synthetic",
+      "u0_safe"
+    ],
+    "forbidden_modes": [
+      "trained_teacher",
+      "real_discovery"
+    ],
+    "protected_outcomes_forbidden": [
+      "pathology",
+      "reader_oracle",
+      "reader_validation",
+      "development",
+      "sealed",
+      "external_holdout"
+    ],
+    "optimizer_steps": 0,
+    "ema_updates": 0,
+    "claim_status": "DISCOVERY_ONLY"
+  },
+  "inputs": {
+    "states": {
+      "shape": "[cells,160]",
+      "dtype": "finite floating",
+      "semantics": "synthetic latent states or frozen u0-safe states only"
+    },
+    "metadata": {
+      "required": [
+        "canonical_cell_id",
+        "donor",
+        "source",
+        "operator"
+      ],
+      "canonical_cell_id_unique": true,
+      "forbidden_column_tokens": [
+        "pathology",
+        "oracle",
+        "sealed",
+        "development",
+        "diagnosis",
+        "braak",
+        "amyloid",
+        "tau"
+      ]
+    },
+    "molecular_values": {
+      "shape": "[cells,features]",
+      "semantics": "synthetic molecular values or u0-safe Molecular Ledger values"
+    },
+    "measured_mask": {
+      "shape": "same as molecular_values",
+      "dtype": "boolean",
+      "semantics": "physical measurement support; measured zero remains measured"
+    },
+    "feature_ids": {
+      "length": "features",
+      "unique": true
+    },
+    "known_molecular_reference_programs": {
+      "optional": true,
+      "semantics": "prospectively supplied vectors only; annotations never define PCA directions"
+    }
+  },
+  "decomposition": {
+    "family": "deterministic teacher-state PCA/subspace prototype",
+    "fit": "global mean-center states then economy SVD",
+    "metadata_used_in_fit": false,
+    "molecular_values_used_in_fit": false,
+    "measurement_support_used_in_fit": false,
+    "n_components": "explicit positive integer <= min(cells-1,160)",
+    "sign_orientation": "largest-absolute state loading is positive",
+    "scores": "centered states @ state components.T",
+    "explained_variance": "singular_value^2 / total singular_value^2"
+  },
+  "estimation": {
+    "cell_score": {
+      "raw": "PCA program score",
+      "within_donor_centered": "raw score minus donor mean",
+      "percentile": "full-population empirical percentile",
+      "tail_view": "top/bottom 5 percent derived after full ranking; never a replacement for continuous scores"
+    },
+    "magnitude": {
+      "point": "sample SD of program cell scores",
+      "interval": "95 percent donor-bootstrap percentile interval using fixed reference program scores"
+    },
+    "stability": {
+      "axis": "median absolute cosine to donor-bootstrap refitted/aligned axis",
+      "subspace": "rotation-invariant principal-angle/canonical-correlation summary",
+      "split": "mean reference-axis match across deterministic donor half-splits"
+    },
+    "donor_recurrence": "fraction of donors represented in either derived 5 percent extreme tail",
+    "source_operator_heterogeneity": "eta-squared of raw program scores by source/operator",
+    "measurement_support_score": "R^2 between raw program score and per-cell measured-feature fraction",
+    "redundancy": "maximum absolute cosine between molecular-association vectors of different programs",
+    "molecular_effect": "Pearson correlation between donor-centered program score and donor-centered molecular value over physically measured cells",
+    "molecular_interval": "95 percent donor-bootstrap percentile interval for the molecular effect",
+    "molecular_donor_sign_recurrence": "fraction of evaluable donors whose within-donor molecular correlation has the global effect sign",
+    "molecular_operator_sign_support": "fraction of evaluable operators whose molecular correlation has the global effect sign",
+    "novelty": {
+      "formula": "1 - maximum absolute cosine between the program molecular-effect vector and supplied known molecular reference vectors",
+      "when_no_reference": "NaN; never silently set to 1"
+    }
+  },
+  "ranked_hypothesis_catalog": {
+    "description": "deterministic measured-evidence summary from top positive/negative molecular features",
+    "priority_score": "explained_variance_ratio * axis_stability * donor_recurrence * (1-measurement_support_r2) * (1-source_eta_squared)",
+    "purpose": "synthetic prototype ranking only; not frozen as final real-D1 ranking formula",
+    "claim_status": "DISCOVERY_ONLY",
+    "confirmatory_threshold": false
+  },
+  "required_outputs": {
+    "program_table": [
+      "program_id",
+      "explained_variance_ratio",
+      "magnitude",
+      "magnitude_ci_low",
+      "magnitude_ci_high",
+      "axis_stability",
+      "subspace_stability",
+      "split_stability",
+      "donor_recurrence",
+      "source_eta_squared",
+      "operator_eta_squared",
+      "measurement_support_r2",
+      "novelty_score",
+      "redundancy",
+      "representative_cells",
+      "representative_donors",
+      "input_root_sha256"
+    ],
+    "cell_ranking_table": [
+      "program_id",
+      "canonical_cell_id",
+      "donor",
+      "source",
+      "operator",
+      "raw_score",
+      "within_donor_centered_score",
+      "percentile",
+      "measurement_support",
+      "tail_membership",
+      "input_root_sha256"
+    ],
+    "molecular_table": [
+      "program_id",
+      "feature_id",
+      "effect",
+      "ci_low",
+      "ci_high",
+      "fraction_measured",
+      "donor_sign_recurrence",
+      "operator_sign_support",
+      "effect_rank",
+      "input_root_sha256"
+    ],
+    "donor_table": [
+      "program_id",
+      "donor",
+      "mean_score",
+      "median_score",
+      "mean_abs_centered_score",
+      "top_tail_fraction",
+      "bottom_tail_fraction",
+      "n_cells",
+      "input_root_sha256"
+    ],
+    "source_table": [
+      "program_id",
+      "source",
+      "mean_score",
+      "score_sd",
+      "n_cells",
+      "input_root_sha256"
+    ],
+    "hypothesis_catalog": [
+      "rank",
+      "program_id",
+      "priority_score",
+      "magnitude",
+      "magnitude_ci_low",
+      "magnitude_ci_high",
+      "donor_recurrence",
+      "source_eta_squared",
+      "axis_stability",
+      "measurement_support_r2",
+      "novelty_score",
+      "top_positive_features",
+      "top_negative_features",
+      "representative_cells",
+      "claim_status",
+      "input_root_sha256"
+    ]
+  },
+  "known_answer_attacks": {
+    "recovery": [
+      "injected recurrent biological program must be recovered as a high-alignment state direction",
+      "full cell ranking must correlate strongly with injected biological score",
+      "injected molecular module must dominate positive/negative molecular associations",
+      "biological program must rank above a higher-variance measurement-support artifact after continuous artifact penalties"
+    ],
+    "failure_and_falsification": [
+      "measurement-support artifact must retain high measurement_support_r2/source heterogeneity rather than masquerade as clean biology",
+      "metadata permutation must not change fitted PCA directions or scores",
+      "no-signal/measurement-only fixture must not fabricate recovery of the absent injected biological direction",
+      "near-degenerate rotated axes may be axis-unstable while their subspace remains stable",
+      "dropping cells to tails instead of retaining full rankings is forbidden",
+      "real trained-teacher mode or protected-outcome metadata must be rejected"
+    ]
+  },
+  "real_d1_transition": {
+    "this_contract_does_not_freeze_final_real_algorithm": true,
+    "before_real_teacher_states": [
+      "freeze exact real-D1 ranking/stability/selection formulas prospectively",
+      "bind mechanically healthy trained teacher checkpoint",
+      "bind exact discovery population and Molecular Ledger inputs",
+      "independent review of real-D1 execution package"
+    ]
+  },
+  "terminal": "D1A_CONTRACT_FROZEN_PROSPECTIVELY__NO_CONFIRMATORY_PASS_FAIL__REAL_D1_UNAUTHORIZED"
+}
