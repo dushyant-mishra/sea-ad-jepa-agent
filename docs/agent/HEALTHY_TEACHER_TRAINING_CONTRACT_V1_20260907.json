@@ -26,7 +26,10 @@
     "ready": false
   },
   "initialization_policy": {
+    "historical_clean_u0_reference_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+    "historical_u0_role": "clean state reference/source only; never the new execution-authority checkpoint",
     "forbidden": [
+      "directly treating the historical u0 checkpoint as the new contract-bound checkpoint",
       "historical u10",
       "historical u25",
       "historical u50",
@@ -35,11 +38,18 @@
       "historical u205",
       "any defect-inherited checkpoint"
     ],
-    "historical_clean_u0_reference_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
-    "decision_rule": [
-      "If independently reviewed successor proves exact architecture/state-schema compatibility, the historical clean u0 may be adopted byte-for-byte.",
-      "If compatibility is not exact, generate a new successor-u0 from seed 8113002 before opening training outcomes; bind its bytes and prove common online/teacher state equivalence where identities are unchanged.",
-      "The final contract cannot become execution-ready until exactly one u0 checkpoint SHA-256 is populated."
+    "required_new_u0": {
+      "schema": "successor-specific and bound to the final healthy-teacher contract",
+      "schedule_cursor": 0,
+      "global_update_step": 0,
+      "ema_update_count": 0,
+      "must_be_frozen_before_u1": true,
+      "exact_sha256": "BLOCKED_PENDING_REVIEWED_SUCCESSOR"
+    },
+    "state_materialization_rule": [
+      "If the reviewed successor is state-schema compatible, import clean model/optimizer/scaler/RNG state from historical u0, prove exact equality for every unchanged state tensor/value, then save a NEW successor-bound u0 checkpoint.",
+      "If any architecture/state-schema component changed, initialize that component prospectively under seed 8113002; unchanged components must still be equivalence-audited against historical u0.",
+      "No training data outcome or held-out biology may influence u0 construction."
     ]
   },
   "training_population": {
@@ -305,5 +315,11 @@
     "exact reviewed predictor mandatory registry",
     "exact reviewed movement adjudicator source SHA-256/formula/tolerance"
   ],
-  "terminal": "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_UNBOUND"
+  "terminal": "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_UNBOUND",
+  "known_nonfinal_successor_state": {
+    "mechanics_kernel_branch": "f1b-c3-training-successor-v2-20260907",
+    "mechanics_kernel_commit": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+    "ci_result": "21 passed; PASS_F1B_ATTACK_SUITE / PASS_ATTACK_POLARITY / PASS_F1B_ATTACK_REGISTRY",
+    "limitation": "mechanics kernel is not yet the end-to-end production teacher-training runner and is not a valid execution binding for this contract"
+  }
 }
