@@ -32,7 +32,7 @@ jobs:
       - name: Run adversarial contract tests
         run: python -m pytest -q tests/test_healthy_teacher_training_contract_v1.py
 
-      - name: Confirm current draft fails closed only on unbound execution bindings
+      - name: Confirm immutable base is valid and execution-unbound
         run: |
           python - <<'PY'
           import json
@@ -43,24 +43,17 @@ jobs:
           contract = json.loads(contract_path.read_text(encoding="utf-8"))
           report = validate_contract(contract)
 
-          expected_unbound = {
-              "integrated_successor_commit",
-              "integrated_successor_source_manifest_root",
-              "independent_external_review_terminal",
-              "independent_external_review_artifact_sha256",
-              "independent_external_review_reviewed_commit",
-              "initialization_checkpoint_path",
-              "initialization_checkpoint_sha256",
-              "initialization_mode",
-              "initialization_materialization_attestation_sha256",
-              "predictor_mandatory_registry_sha256",
-              "movement_adjudicator_sha256",
-          }
-
-          assert report["terminal"] == "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_UNBOUND", report
+          assert report["terminal"] == "PASS_HEALTHY_TEACHER_BASE_CONTRACT_READY_FOR_FREEZE__EXECUTION_UNAUTHORIZED", report
           assert report["failures"] == [], report
-          assert set(report["unbound_fields"]) == expected_unbound, report
+          assert report["populated_execution_fields"] == [], report
+          assert contract["execution_bindings"]["binding_mode"] == "SEPARATE_IMMUTABLE_OVERLAY_REQUIRED"
           assert contract["execution_bindings"]["ready"] is False
+          assert all(
+              contract["execution_bindings"][key] is None
+              for key in contract["future_binding_overlay"]["required_fields"]
+          )
+          assert contract["future_binding_overlay"]["may_modify_base_contract"] is False
+          assert contract["future_binding_overlay"]["overlay_itself_is_execution_authority"] is False
           assert contract["known_nonfinal_successor_state"]["mechanics_kernel_commit"] == "c0eaf2acc0a5edc837fb2a48f726b9d626772f06"
           assert contract["known_nonfinal_successor_state"]["limitation"]
           assert contract["initialization_policy"]["required_new_u0"]["must_be_frozen_before_u1"] is True
@@ -73,10 +66,10 @@ jobs:
 
           validator_text = Path("scripts/agent/validate_healthy_teacher_training_contract_v1.py").read_text(encoding="utf-8")
           assert "--skip" not in validator_text
-          assert "KNOWN_INCOMPLETE_KERNEL" in validator_text
+          assert "SEPARATE_IMMUTABLE_OVERLAY_REQUIRED" in validator_text
 
           print(json.dumps(report, indent=2, sort_keys=True))
-          print("PASS_HEALTHY_TEACHER_DRAFT_FAIL_CLOSED_AUDIT")
+          print("PASS_HEALTHY_TEACHER_BASE_IMMUTABILITY_AUDIT")
           PY
 
       - name: Bind draft bytes
