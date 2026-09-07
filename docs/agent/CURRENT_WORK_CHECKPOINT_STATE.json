@@ -186,5 +186,33 @@
   },
   "tooling_followups": {
     "C2_PACKAGER_GIT_BYTES_READ_ONLY": "git_bytes() currently runs 'git add -- <path>' then 'git show :<path>'. That fixed the CRLF platform dependence but mutates the index, and it stages an untracked file rather than failing loudly. Before the packager is reused for any future package generation, change it to a read-only committed-byte path: verify the path is tracked, then read 'git show HEAD:<path>' or equivalent pinned-commit blob bytes. Raised by external review. Explicitly NOT a reason to create another C2 candidate: the frozen 712cd07d package is unaffected and independently verified."
+  },
+  "external_review_outcomes": {
+    "T0_V20": {
+      "terminal": "PASS_T0_V20_INDEPENDENT_REVIEW",
+      "package_root": "896dce257b8ed7330cfe9ac9a561e6d87090903485236dbf37f389d6432cb9e7",
+      "zip_sha256": "a069cad258d278bf8d97e20ba1317ccc62b93265e7f93208a2ae1a4848561947",
+      "meaning": "T0_V18_SCIENTIFIC_SPECIFICATION_PRESERVED__V20_EXECUTION_BINDING_AND_INVALID_PRECEDENCE_ACCEPTED__REAL_T0_STILL_UNAUTHORIZED",
+      "authorizes": "Nothing. Real T0 requires a separate pathology authorization that no current document provides.",
+      "ledger_entry": "DEC-016",
+      "scope_note": "Ledger binding only. No T0 code or science was changed by this entry."
+    },
+    "F1_V3": {
+      "terminal": "PASS_F1_SUCCESSOR_INDEPENDENT_REVIEW",
+      "package_root": "3bfb7e905c4cbf449b992105e72ed9f70f1a884932c80604427a84da91e30c20",
+      "meaning": "F1_LOCAL_SCIENTIFIC_SPECIFICATION_FROZEN__REAL_EXECUTION_STILL_UNAUTHORIZED"
+    }
+  },
+  "lanes": {
+    "F1_REAL_PRODUCER_REPLAY_PREFREEZE": {
+      "branch": "f1-real-producer-replay-prefreeze-20260907",
+      "from_reviewed_preflight": "14e41030ffac65b3d58a45ae4159d30b8517e470",
+      "terminal": "PRODUCER_AND_REPLAY_SOURCE_FROZEN__REAL_F1_STILL_UNAUTHORIZED",
+      "prefreeze_root_sha256": "bd7e301cc4d7542e364b8cfd31190b3bc0fc4469c2649b864a8f19ab00834022",
+      "producer_sha256": "3a47805de1cf077d3aa7675a8995fd0fed1451203135ead251ce30f05564f979",
+      "replay_sha256": "22bc7e051f971737740d08384194e26ff11aaeec0dee89126da1fd6d465b4c19",
+      "real_output_roots_populated": false,
+      "awaiting": "external review, then explicit real-execution authorization, then data-only closure"
+    }
   }
 }
