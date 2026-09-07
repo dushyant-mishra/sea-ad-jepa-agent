@@ -1,0 +1,64 @@
+name: F1-B/C3 successor v2 audit
+
+on:
+  push:
+    branches:
+      - f1b-c3-training-successor-v2-20260907
+    paths:
+      - scripts/v4/f1b_c3_training_successor_v2.py
+      - scripts/v4/f1b_c3_training_successor_adapter_v2.py
+      - tests/test_f1b_c3_training_successor_v2.py
+      - .github/workflows/f1b_c3_successor_v2_audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  successor-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Verify frozen attack authority bytes
+        run: |
+          echo "312087ef60ef99402692e7f0d9eb0307271f4a00136375e5ee2a4d5acfdf2275  scripts/v4/f1b_successor_attack_suite_v1.py" | sha256sum -c -
+          echo "29395af73fa643c8fd711627f2b21d3f8248aef6b5efe6f2704f2d246e42a837  scripts/v4/f1b_reference_candidates_v1.py" | sha256sum -c -
+          echo "61c35abf21507231a88f0986781578c8200c1da136afac76761258c5705e0e28  tests/test_f1b_successor_attack_suite_v1.py" | sha256sum -c -
+
+      - name: Compile successor
+        run: |
+          python -m py_compile scripts/v4/f1b_c3_training_successor_v2.py
+          python -m py_compile scripts/v4/f1b_c3_training_successor_adapter_v2.py
+
+      - name: Run frozen authority and successor regressions
+        run: |
+          python -m pytest -q \
+            tests/test_f1b_successor_attack_suite_v1.py \
+            tests/test_f1b_c3_training_successor_v2.py
+
+      - name: Emit successor polarity terminals
+        run: |
+          python - <<'PY'
+          import json
+          from scripts.v4.f1b_c3_training_successor_adapter_v2 import successor_candidate
+          from scripts.v4.f1b_reference_candidates_v1 import reference_vulnerable
+          from scripts.v4.f1b_successor_attack_suite_v1 import prove_polarity, registry_audit, run_suite
+
+          successor = successor_candidate()
+          payload = {
+              "successor": run_suite(successor),
+              "polarity": prove_polarity(reference_vulnerable(), successor),
+              "registry": registry_audit(reference_vulnerable(), successor),
+          }
+          print(json.dumps(payload, indent=2, sort_keys=True))
+          assert payload["successor"]["terminal"] == "PASS_F1B_ATTACK_SUITE"
+          assert payload["successor"]["not_applicable"] == []
+          assert payload["successor"]["attack_defective"] == []
+          assert payload["polarity"]["terminal"] == "PASS_ATTACK_POLARITY"
+          assert payload["registry"]["terminal"] == "PASS_F1B_ATTACK_REGISTRY"
+          PY
