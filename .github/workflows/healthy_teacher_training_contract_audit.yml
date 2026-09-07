@@ -47,9 +47,12 @@ jobs:
               "integrated_successor_commit",
               "integrated_successor_source_manifest_root",
               "independent_external_review_terminal",
+              "independent_external_review_artifact_sha256",
+              "independent_external_review_reviewed_commit",
               "initialization_checkpoint_path",
               "initialization_checkpoint_sha256",
               "initialization_mode",
+              "initialization_materialization_attestation_sha256",
               "predictor_mandatory_registry_sha256",
               "movement_adjudicator_sha256",
           }
