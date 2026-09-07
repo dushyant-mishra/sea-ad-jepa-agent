@@ -5,7 +5,6 @@
   "authority": {
     "calibration_bundle_transport_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
     "foundation_split_registry": {
-      "canonical_path": "splits/foundation_split_registry.csv",
       "sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
       "rows": 215,
       "split_counts": {
@@ -13,7 +12,8 @@
         "development": 24,
         "sealed_holdout": 24,
         "whole_study_external_holdout": 1
-      }
+      },
+      "bundle_relative_path": "splits/foundation_split_registry.csv"
     },
     "reader_donor_split": {
       "canonical_path": "exports/contextual_biology_v6r5a_20260822/reader_donor_split.csv",
@@ -26,8 +26,8 @@
       }
     },
     "t1_biology_evaluation_freeze": {
-      "canonical_path": "splits/T1_BIOLOGY_EVALUATION_FREEZE.json",
-      "sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06"
+      "sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06",
+      "bundle_relative_path": "splits/T1_BIOLOGY_EVALUATION_FREEZE.json"
     }
   },
   "verified_relations": {
@@ -211,7 +211,7 @@
     "Silently adding continuation/train donors to the historical reader-fit teacher-training pool",
     "Opening a protected population because code is mechanically ready"
   ],
-  "terminal": "PASS_POPULATION_REGISTRY_DRAFT_V2__NO_NEW_DATA_ACCESS",
+  "terminal": "PASS_POPULATION_REGISTRY_CANDIDATE__NO_NEW_DATA_ACCESS",
   "historical_exposure": {
     "note": "Historical T1 calibration/evaluation opened reader_validation and reader_oracle under the frozen T1 biology-evaluation plan. That historical exposure does not grant current or future access authority. Because u10-u205 are defect-inherited, those uses remain historical evidence only.",
     "t1_biology_evaluation_freeze_sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06",
