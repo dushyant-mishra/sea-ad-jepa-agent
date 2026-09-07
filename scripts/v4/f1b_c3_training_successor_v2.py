@@ -228,8 +228,8 @@ def target_equivalence(singleton_q: Sequence[float],
     return {"equivalent": worst <= 1e-9, "max_abs_difference": worst}
 
 
-def production_amp_smoke(harness: Any) -> dict[str, str]:
-    """Exercise autocast, scaled backward, unscale, gate, step, then EMA."""
+def _execute_amp_sequence(harness: Any) -> dict[str, str]:
+    """Single orchestration authority shared by smoke and torch production update."""
     with harness.autocast():
         harness.forward()
     harness.scaler_scale_backward()
@@ -238,6 +238,11 @@ def production_amp_smoke(harness: Any) -> dict[str, str]:
     harness.optimizer_step()
     harness.ema_step()
     return {"status": "executed"}
+
+
+def production_amp_smoke(harness: Any) -> dict[str, str]:
+    """The frozen finding-13 attack hits the same sequence used in production."""
+    return _execute_amp_sequence(harness)
 
 
 def protected_update(payload: Mapping[str, Any]) -> dict[str, bool]:
@@ -419,6 +424,78 @@ def ema_update_exact(teacher: Any, online: Any, decay: float) -> None:
             )
 
 
+class _TorchAmpHarness:
+    """Adapter from real torch objects to the frozen production AMP sequence."""
+
+    def __init__(self, *, online: Any, predictor: Any, teacher: Any, optimizer: Any,
+                 scaler: Any, loss_closure: Any, device: Any, ema_decay: float):
+        import torch
+        self.torch = torch
+        self.online = online
+        self.predictor = predictor
+        self.teacher = teacher
+        self.optimizer = optimizer
+        self.scaler = scaler
+        self.loss_closure = loss_closure
+        self.device = device
+        self.device_type = getattr(device, "type", str(device))
+        self.ema_decay = float(ema_decay)
+        self.loss = None
+        self.gradient_report = None
+        self.moment_report = None
+        self.step_before = None
+        self.step_after = None
+        self.ema_updated = False
+        self.optimizer.zero_grad(set_to_none=True)
+
+    def autocast(self):
+        return self.torch.autocast(
+            device_type=self.device_type,
+            dtype=self.torch.float16 if self.device_type == "cuda" else None,
+            enabled=self.device_type == "cuda",
+        )
+
+    def forward(self) -> None:
+        self.loss = self.loss_closure()
+        if not bool(self.torch.isfinite(self.loss.detach())):
+            raise RuntimeError("nonfinite successor loss")
+
+    def scaler_scale_backward(self) -> None:
+        if self.loss is None:
+            raise RuntimeError("backward before forward")
+        # C2 repair: backward explicitly outside fp16 autocast.
+        with self.torch.autocast(device_type=self.device_type, enabled=False):
+            self.scaler.scale(self.loss).backward()
+
+    def scaler_unscale(self) -> None:
+        self.scaler.unscale_(self.optimizer)
+
+    def gradient_gate(self) -> None:
+        self.gradient_report = enforce_unscaled_gradients(self.online, self.predictor)
+
+    def optimizer_step(self) -> None:
+        backbone_names, _ = protected_parameter_names(self.online, self.predictor)
+        sentinel = dict(self.online.named_parameters())[backbone_names[0]]
+        self.step_before = _optimizer_step_value(self.optimizer, sentinel)
+        self.scaler.step(self.optimizer)
+        self.scaler.update()
+        self.step_after = _optimizer_step_value(self.optimizer, sentinel)
+        if self.step_after != self.step_before + 1:
+            raise RuntimeError(
+                "optimizer step not proved: before=%d after=%d"
+                % (self.step_before, self.step_after)
+            )
+        self.moment_report = enforce_adam_moments(
+            self.optimizer, self.online, self.predictor
+        )
+
+    def ema_step(self) -> None:
+        if self.step_after is None:
+            raise RuntimeError("EMA before optimizer step")
+        ema_update_exact(self.teacher, self.online, self.ema_decay)
+        self.ema_updated = True
+
+
 def production_amp_update(*,
                           online: Any,
                           predictor: Any,
@@ -428,45 +505,24 @@ def production_amp_update(*,
                           loss_closure: Any,
                           device: Any,
                           ema_decay: float) -> dict[str, Any]:
-    """One repaired update: forward, disabled-autocast backward, unscale, gate, step, moments, EMA."""
-    import torch
-    optimizer.zero_grad(set_to_none=True)
-    device_type = getattr(device, "type", str(device))
-    autocast_enabled = device_type == "cuda"
-    with torch.autocast(
-            device_type=device_type,
-            dtype=torch.float16 if autocast_enabled else None,
-            enabled=autocast_enabled):
-        loss = loss_closure()
-    if not bool(torch.isfinite(loss.detach())):
-        raise RuntimeError("nonfinite successor loss")
-
-    # C2 repair: backward explicitly outside fp16 autocast.
-    with torch.autocast(device_type=device_type, enabled=False):
-        scaler.scale(loss).backward()
-
-    scaler.unscale_(optimizer)
-    gradient_report = enforce_unscaled_gradients(online, predictor)
-
-    backbone_names, _ = protected_parameter_names(online, predictor)
-    sentinel = dict(online.named_parameters())[backbone_names[0]]
-    step_before = _optimizer_step_value(optimizer, sentinel)
-    scaler.step(optimizer)
-    scaler.update()
-    step_after = _optimizer_step_value(optimizer, sentinel)
-    if step_after != step_before + 1:
-        raise RuntimeError(
-            "optimizer step not proved: before=%d after=%d" % (step_before, step_after)
-        )
-
-    moment_report = enforce_adam_moments(optimizer, online, predictor)
-    ema_update_exact(teacher, online, ema_decay)
+    """One repaired update driven by the exact sequence exercised by finding 13."""
+    harness = _TorchAmpHarness(
+        online=online,
+        predictor=predictor,
+        teacher=teacher,
+        optimizer=optimizer,
+        scaler=scaler,
+        loss_closure=loss_closure,
+        device=device,
+        ema_decay=ema_decay,
+    )
+    _execute_amp_sequence(harness)
     return {
-        "loss": float(loss.detach()),
-        "optimizer_step_before": step_before,
-        "optimizer_step_after": step_after,
-        "gradient_gate": gradient_report,
-        "adam_moments": moment_report,
-        "ema_updated": True,
+        "loss": float(harness.loss.detach()),
+        "optimizer_step_before": harness.step_before,
+        "optimizer_step_after": harness.step_after,
+        "gradient_gate": harness.gradient_report,
+        "adam_moments": harness.moment_report,
+        "ema_updated": harness.ema_updated,
         "backward_autocast_disabled": True,
     }
