@@ -1,8 +1,8 @@
 {
-  "schema": "HEALTHY_TEACHER_TRAINING_CONTRACT_V1_DRAFT",
-  "status": "PROSPECTIVE_DRAFT__BLOCKED_PENDING_REVIEWED_SUCCESSOR_AND_U0_BINDING",
+  "schema": "HEALTHY_TEACHER_TRAINING_BASE_CONTRACT_V1",
+  "status": "PROSPECTIVE_BASE_READY_FOR_FREEZE__EXECUTION_BINDING_OVERLAY_REQUIRED",
   "date": "2026-09-07",
-  "purpose": "Create the first mechanically valid trained JEPA teacher by rerunning the frozen reader-fit training schedule from a clean u0 under repaired F1-B/C3 mechanics. This contract contains no biological success threshold and authorizes no execution in draft state.",
+  "purpose": "Freeze the outcome-independent training population, schedule, optimizer, precision repair, gates, qualification horizon, continuation policy, checkpoint state, and biological firewall for the first mechanically valid trained JEPA teacher. This immutable base never becomes execution authority by editing its null bindings; a separately reviewed execution-binding overlay must bind the final successor and successor-u0.",
   "upstream_authorities": {
     "population_access_registry": {
       "freeze_commit": "14c2d586239aa5af15ed7cd70fdfb196d1c99f5f",
@@ -15,6 +15,7 @@
     "c2_causal_repair": "Backward under fp16 autocast is the closed causal defect; repaired successor must execute scaled backward with autocast disabled."
   },
   "execution_bindings": {
+    "binding_mode": "SEPARATE_IMMUTABLE_OVERLAY_REQUIRED",
     "integrated_successor_commit": null,
     "integrated_successor_source_manifest_root": null,
     "independent_external_review_terminal": null,
@@ -26,7 +27,8 @@
     "initialization_materialization_attestation_sha256": null,
     "predictor_mandatory_registry_sha256": null,
     "movement_adjudicator_sha256": null,
-    "ready": false
+    "ready": false,
+    "immutable_null_policy": "These fields MUST remain null/false in the frozen base. Populating them requires a separate HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1 that hash-binds the frozen base package root."
   },
   "initialization_policy": {
     "historical_clean_u0_reference_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
@@ -312,17 +314,38 @@
     "note": "Training continuation is mechanics-only. Biological estimates are produced only after a trained checkpoint is frozen and separately authorized."
   },
   "draft_blockers": [
+    "These are execution-overlay blockers, not reasons to mutate this base contract.",
     "integrated reviewed successor commit/source manifest root",
     "independent external-review PASS artifact bound to the exact successor commit",
     "exact new successor-bound u0 checkpoint SHA-256 plus materialization attestation",
     "exact reviewed predictor mandatory registry",
     "exact reviewed movement adjudicator source SHA-256/formula/tolerance"
   ],
-  "terminal": "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_UNBOUND",
+  "terminal": "PASS_HEALTHY_TEACHER_BASE_CONTRACT_READY_FOR_FREEZE__EXECUTION_UNAUTHORIZED",
   "known_nonfinal_successor_state": {
     "mechanics_kernel_branch": "f1b-c3-training-successor-v2-20260907",
     "mechanics_kernel_commit": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
     "ci_result": "21 passed; PASS_F1B_ATTACK_SUITE / PASS_ATTACK_POLARITY / PASS_F1B_ATTACK_REGISTRY",
     "limitation": "mechanics kernel is not yet the end-to-end production teacher-training runner and is not a valid execution binding for this contract"
+  },
+  "future_binding_overlay": {
+    "schema": "HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1",
+    "may_modify_base_contract": false,
+    "required_base_binding": "frozen base package root SHA-256",
+    "required_fields": [
+      "integrated_successor_commit",
+      "integrated_successor_source_manifest_root",
+      "independent_external_review_terminal",
+      "independent_external_review_artifact_sha256",
+      "independent_external_review_reviewed_commit",
+      "initialization_checkpoint_path",
+      "initialization_checkpoint_sha256",
+      "initialization_mode",
+      "initialization_materialization_attestation_sha256",
+      "predictor_mandatory_registry_sha256",
+      "movement_adjudicator_sha256"
+    ],
+    "overlay_itself_is_execution_authority": false,
+    "execution_still_requires": "separate explicit u0->u40 qualification authorization after overlay validation"
   }
 }
