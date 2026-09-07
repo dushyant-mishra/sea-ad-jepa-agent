@@ -66,22 +66,31 @@ def _vuln_routing(weights: Sequence[Sequence[float]], valid: Sequence[int]) -> l
     return out
 
 
-def _vuln_routing_metrics(weights: Sequence[float], mask: Sequence[bool]) -> dict:
-    """Historical defect: one number reported under both names; mask ignored."""
-    w = [max(float(x), 0.0) for x in weights]          # mask not applied
-    total = sum(w) or 1.0
-    p = [x / total for x in w]
-    perplexity = math.exp(-sum(x * math.log(x + 1e-30) for x in p))
-    return {"entropy_perplexity": perplexity, "participation_ratio": perplexity}
-
+def _vuln_routing_metrics(weights: Sequence[Sequence[float]],
+                          masks: Sequence[Sequence[bool]]) -> dict:
+    """Historical defect: ignore masks and reuse entropy support under both metric names."""
+    entropy, top1, valid = [], [], []
+    for row in weights:
+        w = [max(float(x), 0.0) for x in row]
+        total = sum(w) or 1.0
+        p = [x / total for x in w]
+        value = math.exp(-sum(x * math.log(x + 1e-30) for x in p))
+        entropy.append(value)
+        top1.append(max(p) if p else 0.0)
+        valid.append(len(p))
+    return {"N_eff_entropy": entropy,
+            "N_eff_participation": list(entropy),
+            "top1_mass": top1,
+            "valid_keys": valid,
+            "query_map_cosine": 1.0}
 
 _VULN_CACHED_FIT = {"coefficients": [0.0, 0.0], "source": "cached"}
 
 
-def _vuln_refit(fit_data: Sequence[float]) -> dict:
-    """Historical defect: a cached fit reused regardless of the split."""
-    return dict(_VULN_CACHED_FIT)
-
+def _vuln_refit(payload: Mapping[str, Any]) -> dict:
+    """Historical defect: cached probe reused regardless of checkpoint-specific fit split."""
+    return {"predictions": [0.0 for _ in payload.get("eval_values", ())],
+            "source": "cached"}
 
 def _vuln_horizon(updates: int) -> dict:
     """Historical defect: the override is accepted."""
@@ -184,31 +193,64 @@ def _ok_routing(weights: Sequence[Sequence[float]], valid: Sequence[int]) -> lis
     return out
 
 
-def _ok_routing_metrics(weights: Sequence[float], mask: Sequence[bool]) -> dict:
-    """Both metrics under distinct names, mask respected, normalised."""
-    if len(weights) != len(mask):
-        raise RuntimeError("weight/mask length mismatch")
-    w = [max(float(x), 0.0) for x, keep in zip(weights, mask) if keep]
-    if not w:
-        raise RuntimeError("no valid keys")
-    total = sum(w) or 1.0
-    p = [x / total for x in w]
-    return {
-        "entropy_perplexity": math.exp(-sum(x * math.log(x + 1e-30) for x in p)),
-        "participation_ratio": 1.0 / sum(x * x for x in p),
-        "valid_keys": len(p),
-    }
+def _ok_routing_metrics(weights: Sequence[Sequence[float]],
+                        masks: Sequence[Sequence[bool]]) -> dict:
+    """Per-query routing telemetry: masks respected and metrics named distinctly."""
+    if len(weights) != len(masks) or not weights:
+        raise RuntimeError("query support mismatch")
+    entropy, participation, top1, valid, full = [], [], [], [], []
+    width = max(len(row) for row in weights)
+    for row, mask in zip(weights, masks):
+        if len(row) != len(mask):
+            raise RuntimeError("weight/mask length mismatch")
+        kept = [max(float(x), 0.0) for x, keep in zip(row, mask) if keep]
+        if not kept:
+            raise RuntimeError("no valid keys")
+        total = sum(kept)
+        if total <= 0.0:
+            raise RuntimeError("zero routing mass")
+        p = [x / total for x in kept]
+        entropy.append(math.exp(-sum(x * math.log(x + 1e-30) for x in p)))
+        participation.append(1.0 / sum(x * x for x in p))
+        top1.append(max(p))
+        valid.append(len(p))
+        vec, j = [0.0] * width, 0
+        for i, keep in enumerate(mask):
+            if keep:
+                vec[i] = p[j]
+                j += 1
+        full.append(vec)
+    if len(full) < 2:
+        qcos = 1.0
+    else:
+        cosines = []
+        for i in range(len(full)):
+            for j in range(i + 1, len(full)):
+                dot = sum(a * b for a, b in zip(full[i], full[j]))
+                ni = math.sqrt(sum(a * a for a in full[i]))
+                nj = math.sqrt(sum(b * b for b in full[j]))
+                cosines.append(dot / max(ni * nj, 1e-30))
+        qcos = sum(cosines) / len(cosines)
+    return {"N_eff_entropy": entropy,
+            "N_eff_participation": participation,
+            "top1_mass": top1,
+            "valid_keys": valid,
+            "query_map_cosine": qcos}
 
-
-def _ok_refit(fit_data: Sequence[float]) -> dict:
-    """A genuine refit: the fitted object depends on the fit split."""
-    values = [float(x) for x in fit_data]
-    if not values:
-        raise RuntimeError("empty fit split")
-    mean = sum(values) / len(values)
-    variance = sum((x - mean) ** 2 for x in values) / len(values)
-    return {"coefficients": [mean, variance], "source": "refit", "n": len(values)}
-
+def _ok_refit(payload: Mapping[str, Any]) -> dict:
+    """Deterministic donor-held-out synthetic refit used only as a mechanics probe."""
+    fit_donors = list(payload.get("fit_donors", ()))
+    eval_donors = list(payload.get("eval_donors", ()))
+    fit_values = [float(x) for x in payload.get("fit_values", ())]
+    eval_values = list(payload.get("eval_values", ()))
+    if not fit_values or len(fit_donors) != len(fit_values):
+        raise RuntimeError("invalid fit split")
+    if set(fit_donors) & set(eval_donors):
+        raise RuntimeError("fit/eval donor overlap")
+    mean = sum(fit_values) / len(fit_values)
+    return {"predictions": [mean for _ in eval_values],
+            "fit_mean": mean,
+            "fit_donors_used": fit_donors}
 
 def _ok_horizon(updates: int) -> dict:
     """The frozen horizon is enforced, not merely defaulted."""
@@ -236,19 +278,16 @@ def _ok_target_equivalence(single_q: Sequence[float], all_q: Sequence[float]) ->
     return {"equivalent": worst <= 1e-9, "max_abs_difference": worst}
 
 
-def _ok_amp(probe: Any) -> dict:
-    """Execute the AMP-like path and report what was actually observed."""
-    # Ordering is the substance: unscale, then gate, then step.
-    unscaled = True
-    gate_ran = True
-    stepped_after_gate = True
-    probe(autocast_enabled=True,
-          grad_dtype="float32",
-          scaler_enabled=True,
-          unscaled_before_gate=unscaled,
-          gate_before_step=gate_ran and stepped_after_gate)
+def _ok_amp(harness: Any) -> dict:
+    """Execute the instrumented production-like AMP step in the required order."""
+    with harness.autocast():
+        harness.forward()
+    harness.scaler_scale_backward()
+    harness.scaler_unscale()
+    harness.gradient_gate()
+    harness.optimizer_step()
+    harness.ema_step()
     return {"status": "executed"}
-
 
 def _ok_update(payload: Mapping[str, Any]) -> dict:
     """Gate before the step. The optimizer is never touched on refusal."""
