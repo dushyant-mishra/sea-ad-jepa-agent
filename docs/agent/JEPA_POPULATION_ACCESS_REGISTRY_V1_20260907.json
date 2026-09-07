@@ -211,5 +211,11 @@
     "Silently adding continuation/train donors to the historical reader-fit teacher-training pool",
     "Opening a protected population because code is mechanically ready"
   ],
-  "terminal": "PASS_POPULATION_REGISTRY_DRAFT__NO_NEW_DATA_ACCESS"
+  "terminal": "PASS_POPULATION_REGISTRY_DRAFT_V2__NO_NEW_DATA_ACCESS",
+  "historical_exposure": {
+    "note": "Historical T1 calibration/evaluation opened reader_validation and reader_oracle under the frozen T1 biology-evaluation plan. That historical exposure does not grant current or future access authority. Because u10-u205 are defect-inherited, those uses remain historical evidence only.",
+    "t1_biology_evaluation_freeze_sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06",
+    "current_reader_validation_state": "CLOSED_READER_SELECTION",
+    "current_reader_oracle_state": "SEALED_INTERNAL_ORACLE"
+  }
 }
