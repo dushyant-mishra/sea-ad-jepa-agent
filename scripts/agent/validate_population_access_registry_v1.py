@@ -59,7 +59,8 @@ def reader_key_from_foundation(canonical_person_id: str) -> str:
     return canonical_person_id
 
 
-def validate(foundation_path: Path, reader_path: Path, *, require_hashes: bool = True) -> dict:
+def _validate(foundation_path: Path, reader_path: Path, *, require_hashes: bool) -> dict:
+    """Internal test seam. Production callers must use validate_authority()."""
     failures: list[str] = []
 
     foundation_hash = sha256(foundation_path)
@@ -188,21 +189,17 @@ def validate(foundation_path: Path, reader_path: Path, *, require_hashes: bool =
     }
 
 
+def validate_authority(foundation_path: Path, reader_path: Path) -> dict:
+    """Fail-closed authority validation: exact hashes are mandatory."""
+    return _validate(foundation_path, reader_path, require_hashes=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--foundation-split", required=True, type=Path)
     parser.add_argument("--reader-split", required=True, type=Path)
-    parser.add_argument(
-        "--skip-hash-check",
-        action="store_true",
-        help="tests only; never use for authority validation",
-    )
     args = parser.parse_args()
-    report = validate(
-        args.foundation_split,
-        args.reader_split,
-        require_hashes=not args.skip_hash_check,
-    )
+    report = validate_authority(args.foundation_split, args.reader_split)
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0 if report["terminal"].startswith("PASS_") else 2
 
