@@ -70,18 +70,18 @@ class Candidate:
     movement_gate: Callable[[Mapping[str, Any]], Any] | None = None
     # findings 5, 6: per-cell routing statistics given per-cell valid supports
     routing_report: Callable[[Sequence[Sequence[float]], Sequence[int]], Any] | None = None
-    # findings 7, 8: named routing metrics and their analytic behaviour
-    routing_metrics: Callable[[Sequence[float], Sequence[bool]], Mapping[str, float]] | None = None
-    # finding 9: G5 refit; must depend on the fit split
-    refit: Callable[[Sequence[float]], Any] | None = None
+    # findings 7, 8: per-query named routing metrics and analytic mutation behaviour
+    routing_metrics: Callable[[Sequence[Sequence[float]], Sequence[Sequence[bool]]], Mapping[str, Any]] | None = None
+    # finding 9: G5 checkpoint-specific refit probe on a donor-held-out synthetic fixture
+    refit: Callable[[Mapping[str, Any]], Mapping[str, Any]] | None = None
     # finding 10: the frozen update horizon actually enforced
     frozen_horizon: Callable[[int], Any] | None = None
     # finding 11: directional conclusion given controls
     directional_claim: Callable[[Mapping[str, float]], Any] | None = None
     # finding 12: singleton-q versus all-Q target equivalence
     target_equivalence: Callable[[Sequence[float], Sequence[float]], Any] | None = None
-    # finding 13: production AMP path; must invoke the supplied probe
-    amp_smoke: Callable[[Callable[..., None]], Any] | None = None
+    # finding 13: production-like AMP path exercised against an instrumented harness
+    amp_smoke: Callable[[Any], Any] | None = None
     # findings 14: a protected update; must refuse before the optimizer records state
     protected_update: Callable[[Mapping[str, Any]], Any] | None = None
     # finding 15: endpoint selection from an NPZ-like key set
@@ -107,37 +107,119 @@ def _verdict(finding: object, defended: bool, note: str, **extra: Any) -> dict:
             "note": note, **extra}
 
 
+@dataclass
+class AmpStepHarness:
+    """Instrumented production-like AMP step. Candidate cannot self-report success."""
+    gradient: float
+    events: list[str] = field(default_factory=list)
+    stepped: bool = False
+    ema_updated: bool = False
+    _autocast_active: bool = False
+    _forward_seen: bool = False
+    _backward_seen: bool = False
+    _unscaled: bool = False
+    _gate_passed: bool = False
+
+    def autocast(self):
+        harness = self
+        class _Ctx:
+            def __enter__(self):
+                harness._autocast_active = True
+                harness.events.append("autocast_enter")
+                return harness
+            def __exit__(self, exc_type, exc, tb):
+                harness.events.append("autocast_exit")
+                harness._autocast_active = False
+                return False
+        return _Ctx()
+
+    def forward(self) -> None:
+        if not self._autocast_active:
+            raise RuntimeError("forward must execute under autocast")
+        self.events.append("forward")
+        self._forward_seen = True
+
+    def scaler_scale_backward(self) -> None:
+        if self._autocast_active or not self._forward_seen:
+            raise RuntimeError("backward must execute after autocast forward")
+        self.events.append("scaler_scale_backward")
+        self._backward_seen = True
+
+    def scaler_unscale(self) -> None:
+        if not self._backward_seen:
+            raise RuntimeError("unscale before backward")
+        self.events.append("scaler_unscale")
+        self._unscaled = True
+
+    def gradient_gate(self) -> None:
+        if not self._unscaled:
+            raise RuntimeError("gradient gate before unscale")
+        self.events.append("gradient_gate")
+        if not math.isfinite(float(self.gradient)) or float(self.gradient) == 0.0:
+            raise RuntimeError("mandatory gradient rejected")
+        self._gate_passed = True
+
+    def optimizer_step(self) -> None:
+        self.events.append("optimizer_step")
+        if not self._gate_passed:
+            raise RuntimeError("optimizer step before live-gradient gate")
+        self.stepped = True
+
+    def ema_step(self) -> None:
+        self.events.append("ema_step")
+        if not self.stepped:
+            raise RuntimeError("EMA before optimizer step")
+        self.ema_updated = True
+
 # ---------------------------------------------------------------- finding 1
 def attack_nonfinite_gradient_accepted(candidate: Candidate) -> dict:
-    """A NaN or Inf gradient norm is not zero, and must still be rejected."""
+    """NaN/Inf must reject, while a healthy finite gradient must still run."""
     if candidate.gate_mandatory_gradients is None:
         return _na(1, "gate_mandatory_gradients")
-    outcomes = []
+    missed = []
     for label, value in (("nan", float("nan")), ("posinf", float("inf")),
                          ("neginf", float("-inf"))):
         refused, _ = _run(candidate.gate_mandatory_gradients,
                           {"backbone": {"blocks.0.attention.query.weight": value},
                            "predictor": {"predictor.output_norm.weight": 1.0}})
-        outcomes.append((label, refused))
-    missed = [label for label, refused in outcomes if not refused]
-    return _verdict(1, not missed,
-                    "nonfinite gradients must be rejected, not treated as nonzero",
-                    accepted=missed)
-
+        if not refused:
+            missed.append(label)
+    healthy_refused, _ = _run(candidate.gate_mandatory_gradients,
+                              {"backbone": {"blocks.0.attention.query.weight": 1.0},
+                               "predictor": {"predictor.output_norm.weight": 1.0}})
+    return _verdict(1, not missed and not healthy_refused,
+                    "reject every nonfinite gradient but accept a healthy finite fixture",
+                    accepted_nonfinite=missed, healthy_refused=healthy_refused)
 
 # ---------------------------------------------------------------- finding 2
 def attack_one_moment_zero_accepted(candidate: Candidate) -> dict:
-    """Both Adam moments are required; a live first moment must not mask a dead second."""
+    """Both Adam moments independently reject zero, missing and nonfinite values."""
     if candidate.gate_mandatory_gradients is None:
         return _na(2, "gate_mandatory_gradients")
-    payload = {"backbone": {"blocks.0.attention.query.weight": 1.0},
-               "predictor": {"predictor.output_norm.weight": 1.0},
-               "moments": {"blocks.0.attention.query.weight": {"exp_avg": 1.0,
-                                                               "exp_avg_sq": 0.0}}}
-    refused, _ = _run(candidate.gate_mandatory_gradients, payload)
-    return _verdict(2, refused,
-                    "zero second moment must reject even with a nonzero first moment")
-
+    base = {"backbone": {"blocks.0.attention.query.weight": 1.0},
+            "predictor": {"predictor.output_norm.weight": 1.0}}
+    accepted_bad = []
+    for which in ("exp_avg", "exp_avg_sq"):
+        for mode in ("zero", "missing", "nan"):
+            moments = {"exp_avg": 1.0, "exp_avg_sq": 1.0}
+            if mode == "zero":
+                moments[which] = 0.0
+            elif mode == "missing":
+                del moments[which]
+            else:
+                moments[which] = float("nan")
+            payload = dict(base)
+            payload["moments"] = {"blocks.0.attention.query.weight": moments}
+            refused, _ = _run(candidate.gate_mandatory_gradients, payload)
+            if not refused:
+                accepted_bad.append(which + ":" + mode)
+    healthy = dict(base)
+    healthy["moments"] = {"blocks.0.attention.query.weight":
+                          {"exp_avg": 1.0, "exp_avg_sq": 1.0}}
+    healthy_refused, _ = _run(candidate.gate_mandatory_gradients, healthy)
+    return _verdict(2, not accepted_bad and not healthy_refused,
+                    "both moments must be independently live",
+                    accepted_bad_moments=accepted_bad, healthy_refused=healthy_refused)
 
 # ---------------------------------------------------------------- finding 3
 def attack_pooled_movement_masks_dead_tensor(candidate: Candidate) -> dict:
@@ -165,16 +247,22 @@ def attack_pooled_movement_masks_dead_tensor(candidate: Candidate) -> dict:
 
 # ---------------------------------------------------------------- finding 4
 def attack_predictor_mechanics_ungated(candidate: Candidate) -> dict:
-    """A dead predictor tensor must be rejected even when the backbone is healthy."""
+    """Dead predictor must reject; healthy predictor/backbone must remain runnable."""
     if candidate.gate_mandatory_gradients is None:
         return _na(4, "gate_mandatory_gradients")
-    payload = {"backbone": {"blocks.0.attention.query.weight": 1.0,
+    dead = {"backbone": {"blocks.0.attention.query.weight": 1.0,
+                         "blocks.0.attention_norm.weight": 1.0},
+            "predictor": {"predictor.cross_attention.in_proj_weight": 0.0,
+                          "predictor.output_norm.weight": 0.0}}
+    dead_refused, _ = _run(candidate.gate_mandatory_gradients, dead)
+    healthy = {"backbone": {"blocks.0.attention.query.weight": 1.0,
                             "blocks.0.attention_norm.weight": 1.0},
-               "predictor": {"predictor.cross_attention.in_proj_weight": 0.0,
-                             "predictor.output_norm.weight": 0.0}}
-    refused, _ = _run(candidate.gate_mandatory_gradients, payload)
-    return _verdict(4, refused, "dead predictor with healthy backbone must be rejected")
-
+               "predictor": {"predictor.cross_attention.in_proj_weight": 1.0,
+                             "predictor.output_norm.weight": 1.0}}
+    healthy_refused, _ = _run(candidate.gate_mandatory_gradients, healthy)
+    return _verdict(4, dead_refused and not healthy_refused,
+                    "predictor is mandatory but valid mechanics cannot be refused",
+                    healthy_refused=healthy_refused)
 
 # ------------------------------------------------------------- findings 5, 6
 def attack_routing_uses_cell_zero(candidate: Candidate) -> dict:
@@ -191,7 +279,7 @@ def attack_routing_uses_cell_zero(candidate: Candidate) -> dict:
     valid = [4, 1]
     refused, report = _run(candidate.routing_report, weights, valid)
     if refused:
-        return _verdict("5+6", True, "candidate refused the variable-support batch")
+        return _verdict("5+6", False, "valid variable-support routing fixture was refused")
     try:
         per_cell = [float(x) for x in report]
     except Exception:  # noqa: BLE001
