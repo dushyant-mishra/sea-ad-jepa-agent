@@ -18,9 +18,12 @@
     "integrated_successor_commit": null,
     "integrated_successor_source_manifest_root": null,
     "independent_external_review_terminal": null,
+    "independent_external_review_artifact_sha256": null,
+    "independent_external_review_reviewed_commit": null,
     "initialization_checkpoint_path": null,
     "initialization_checkpoint_sha256": null,
     "initialization_mode": null,
+    "initialization_materialization_attestation_sha256": null,
     "predictor_mandatory_registry_sha256": null,
     "movement_adjudicator_sha256": null,
     "ready": false
@@ -310,8 +313,8 @@
   },
   "draft_blockers": [
     "integrated reviewed successor commit/source manifest root",
-    "independent external-review PASS for that integrated successor",
-    "exact compatible u0 checkpoint SHA-256",
+    "independent external-review PASS artifact bound to the exact successor commit",
+    "exact new successor-bound u0 checkpoint SHA-256 plus materialization attestation",
     "exact reviewed predictor mandatory registry",
     "exact reviewed movement adjudicator source SHA-256/formula/tolerance"
   ],
