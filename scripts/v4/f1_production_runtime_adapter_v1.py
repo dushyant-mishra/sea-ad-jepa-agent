@@ -218,7 +218,8 @@ def load_matched_null_map(path: Path) -> dict[str, dict[str, str]]:
             "recipient_canonical_donor_id": str(row["recipient_canonical_donor_id"]),
             "operator_index": str(row["operator_index"]),
         }
-    return mapping
+    return {"mapping": mapping, "matched_null_map_sha256": digest,
+            "recipients": len(mapping)}
 
 
 def resolve_matched_null_source(recipient_cell_id: str,
@@ -274,6 +275,186 @@ def module_state_sha256(encoder: Any) -> str:
     return digest.hexdigest()
 
 
+# ---------------------------------------------------------------------------
+# Authenticated matched-null source VALUES
+#
+# An independent re-review found that the adapter authenticated the source
+# IDENTITY and then accepted the source expression vector independently:
+#
+#     matched_null_student_state(row=..., evidence_level=e,
+#                                source_normalized_expression=<anything>,
+#                                source_row={"canonical_cell_id": "..."})
+#
+# It checked the cell id against the frozen map and checked donor distinctness,
+# then forwarded whatever vector it was handed. So the same authenticated
+# identity could carry arbitrary values, and P(c) was only a label.
+#
+# The previous metamorphic test made this worse rather than catching it: it
+# fixed one source identity, supplied two materially different vectors, and
+# required BOTH to be accepted. That test demonstrated the hole while being read
+# as proof of correctness. The discriminator is the other way round -- same
+# authenticated identity with altered values must STOP, and only a different
+# authenticated identity carrying its own authentic values may move S_null.
+#
+# `VerifiedSourceValues` closes it. The object carries the provenance needed to
+# recompute its own content, and verification recomputes rather than trusts:
+#
+#   1. the normalized vector must equal the frozen transform applied exactly
+#      once to the declared raw counts and source library, which catches a
+#      modified vector, a differently-normalized vector and a wrong library;
+#   2. the value digest must recompute over the row locator, canonical source
+#      identity, counts digest, source library and normalized bytes, which
+#      catches values lifted from another row;
+#   3. the adapter separately requires the locator and identity to be the ones
+#      the frozen matched-null map names for this recipient.
+# ---------------------------------------------------------------------------
+STOP_SOURCE_VALUES_UNVERIFIED = "STOP_F1_MATCHED_NULL_SOURCE_VALUES_UNVERIFIED"
+STOP_SOURCE_LOCATOR = "STOP_F1_MATCHED_NULL_SOURCE_LOCATOR_MISMATCH"
+STOP_NORMALIZATION_ONCE = "STOP_F1_MATCHED_NULL_NORMALIZATION_NOT_ONCE_ONLY"
+STOP_MAP_DIGEST_UNVERIFIED = "STOP_F1_MATCHED_NULL_MAP_DIGEST_UNVERIFIED"
+
+# The controlling production loader guards the divisor with np.maximum(L, 1.0)
+# and applies log1p exactly once to the sparse .data array.
+LOADER_SOURCE_SHA256 = (
+    "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a")
+
+
+def normalize_once(raw_counts: Any, source_library: float) -> Any:
+    """The frozen transform: log1p(count * 10000 / max(library, 1.0)).
+
+    Deliberately duplicated from the producer rather than imported, so the
+    adapter has no dependency on the producer. A test requires the two to agree
+    exactly, and the loader source digest is what binds both to the authority.
+    """
+    counts = np.asarray(raw_counts, dtype=np.float64)
+    library = max(float(source_library), 1.0)
+    return np.log1p(counts * (10000.0 / library))
+
+
+def _counts_digest(raw_counts: Any) -> str:
+    array = np.ascontiguousarray(np.asarray(raw_counts, dtype=np.float64))
+    digest = hashlib.sha256()
+    digest.update(b"raw_counts")
+    digest.update(json.dumps(list(array.shape), separators=(",", ":")).encode("ascii"))
+    digest.update(array.tobytes(order="C"))
+    return digest.hexdigest()
+
+
+def source_values_digest(*, row_locator: str, canonical_cell_id: str,
+                         canonical_donor_id: str, counts_sha256: str,
+                         source_library: float, normalized: Any) -> str:
+    """Digest binding the values to the row they claim to come from.
+
+    The locator and identity are inside the digest, so a vector lifted from a
+    different row cannot be presented under this row's provenance.
+    """
+    array = np.ascontiguousarray(np.asarray(normalized, dtype=np.float64))
+    digest = hashlib.sha256()
+    for field in (str(row_locator), str(canonical_cell_id), str(canonical_donor_id),
+                  str(counts_sha256), repr(float(source_library))):
+        digest.update(field.encode("utf-8"))
+        digest.update(b"|")
+    digest.update(json.dumps(list(array.shape), separators=(",", ":")).encode("ascii"))
+    digest.update(array.tobytes(order="C"))
+    return digest.hexdigest()
+
+
+class VerifiedSourceValues:
+    """An immutable, self-verifying matched-null source value object.
+
+    Construction performs the verification, so an unverified instance cannot
+    exist. The adapter accepts only this type for the null arm, which is what
+    removes the free-vector path.
+    """
+
+    __slots__ = ("row_locator", "canonical_cell_id", "canonical_donor_id",
+                 "source_library", "counts_sha256", "values_sha256", "_normalized")
+
+    def __init__(self, *, row_locator: str, canonical_cell_id: str,
+                 canonical_donor_id: str, raw_counts: Any, source_library: float,
+                 normalized: Any, values_sha256: str | None = None) -> None:
+        counts_sha = _counts_digest(raw_counts)
+        recomputed = normalize_once(raw_counts, source_library)
+        supplied = np.asarray(normalized, dtype=np.float64)
+        if supplied.shape != recomputed.shape:
+            raise AssertionError("%s: normalized shape %r does not match counts %r"
+                                 % (STOP_SOURCE_VALUES_UNVERIFIED, supplied.shape,
+                                    recomputed.shape))
+        # Recompute rather than trust. A modified vector, a twice-normalized
+        # vector, or a vector normalized against a different library all fail
+        # here, because none of them equals the frozen transform of the declared
+        # counts and library.
+        if not np.array_equal(supplied, recomputed):
+            worst = float(np.max(np.abs(supplied - recomputed))) if supplied.size else 0.0
+            raise AssertionError(
+                "%s: the supplied values are not log1p(counts*10000/max(library,1)) "
+                "of the declared counts and library; max deviation %.6e"
+                % (STOP_NORMALIZATION_ONCE, worst))
+        expected = source_values_digest(
+            row_locator=row_locator, canonical_cell_id=canonical_cell_id,
+            canonical_donor_id=canonical_donor_id, counts_sha256=counts_sha,
+            source_library=source_library, normalized=recomputed)
+        if values_sha256 is not None and str(values_sha256) != expected:
+            raise AssertionError(
+                "%s: declared values digest %s does not bind this row; recomputed %s"
+                % (STOP_SOURCE_VALUES_UNVERIFIED, values_sha256, expected))
+        object.__setattr__(self, "row_locator", str(row_locator))
+        object.__setattr__(self, "canonical_cell_id", str(canonical_cell_id))
+        object.__setattr__(self, "canonical_donor_id", str(canonical_donor_id))
+        object.__setattr__(self, "source_library", float(source_library))
+        object.__setattr__(self, "counts_sha256", counts_sha)
+        object.__setattr__(self, "values_sha256", expected)
+        object.__setattr__(self, "_normalized", recomputed)
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        raise AttributeError("VerifiedSourceValues is immutable")
+
+    def normalized(self) -> Any:
+        """A copy, so a caller cannot mutate verified values after the fact."""
+        return np.array(self._normalized, dtype=np.float64, copy=True)
+
+    def provenance(self) -> dict[str, Any]:
+        return {
+            "row_locator": self.row_locator,
+            "canonical_cell_id": self.canonical_cell_id,
+            "canonical_donor_id": self.canonical_donor_id,
+            "source_library": self.source_library,
+            "counts_sha256": self.counts_sha256,
+            "values_sha256": self.values_sha256,
+            "normalization": "log1p(raw_count*10000/max(source_library,1.0))",
+            "applied_times": 1,
+            "loader_source_sha256": LOADER_SOURCE_SHA256,
+        }
+
+
+def resolve_authenticated_source_values(*, expected: Mapping[str, str],
+                                        raw_counts: Any, source_library: float,
+                                        row_locator: str, canonical_cell_id: str,
+                                        canonical_donor_id: str) -> VerifiedSourceValues:
+    """Build verified values for the source the frozen map names.
+
+    The locator and identity are checked against the frozen map BEFORE the
+    values object is constructed, so values can never be attached to a source
+    the map did not authorise for this recipient.
+    """
+    if str(row_locator) != str(expected["source_row_locator"]):
+        raise AssertionError("%s: locator %r is not the frozen source locator %r"
+                             % (STOP_SOURCE_LOCATOR, row_locator,
+                                expected["source_row_locator"]))
+    if str(canonical_cell_id) != str(expected["source_canonical_cell_id"]):
+        raise AssertionError("%s: cell %r is not the frozen source cell %r"
+                             % (STOP_NULL_SOURCE, canonical_cell_id,
+                                expected["source_canonical_cell_id"]))
+    if str(canonical_donor_id) != str(expected["source_canonical_donor_id"]):
+        raise AssertionError("%s: donor %r is not the frozen source donor %r"
+                             % (STOP_NULL_SOURCE, canonical_donor_id,
+                                expected["source_canonical_donor_id"]))
+    return VerifiedSourceValues(
+        row_locator=row_locator, canonical_cell_id=canonical_cell_id,
+        canonical_donor_id=canonical_donor_id, raw_counts=raw_counts,
+        source_library=source_library, normalized=normalize_once(raw_counts, source_library))
+
+
 class F1ProductionAdapter:
     """The authorized runtime seam. Three routes, one frozen constructor.
 
@@ -283,12 +464,25 @@ class F1ProductionAdapter:
     inputs each route requires.
     """
 
-    def __init__(self, *, encoder: Any, matched_null_map: Mapping[str, Mapping[str, str]],
+    def __init__(self, *, encoder: Any, matched_null_map: Mapping[str, Any],
                  physical_state_authority_sha256: str = EXPECTED_PHYSICAL_STATE_AUTHORITY_SHA256,
                  encoder_source_sha256: str = EXPECTED_ENCODER_SOURCE_SHA256,
                  tokenizer_source_sha256: str = EXPECTED_TOKENIZER_SOURCE_SHA256) -> None:
+        # `matched_null_map` must be the object `load_matched_null_map` returned,
+        # which carries the digest of the bytes it was loaded from. An arbitrary
+        # in-memory mapping has no verified digest, so it cannot satisfy
+        # production execution binding even though the adapter class is the
+        # authorized one. Constructing from a bare dict is still permitted for
+        # technical fixtures, but `matched_null_map_sha256` is then None and the
+        # runtime binding check refuses it.
         self.encoder = encoder
-        self.matched_null_map = dict(matched_null_map)
+        if isinstance(matched_null_map, Mapping) and "mapping" in matched_null_map:
+            self.matched_null_map = dict(matched_null_map["mapping"])
+            self.matched_null_map_sha256 = str(
+                matched_null_map.get("matched_null_map_sha256") or "") or None
+        else:
+            self.matched_null_map = dict(matched_null_map)
+            self.matched_null_map_sha256 = None
         self.encoder_source_sha256 = str(encoder_source_sha256)
         self.tokenizer_source_sha256 = str(tokenizer_source_sha256)
         self.physical_state_authority_sha256 = str(physical_state_authority_sha256)
@@ -382,8 +576,7 @@ class F1ProductionAdapter:
 
     def matched_null_student_state(self, *, row: Mapping[str, Any],
                                    evidence_level: int,
-                                   source_normalized_expression: Any,
-                                   source_row: Mapping[str, Any]) -> dict[str, Any]:
+                                   source_values: "VerifiedSourceValues") -> dict[str, Any]:
         """`S_null(c,q,e)`: SOURCE normalized values, RECIPIENT state/U/q/operator.
 
         Only the normalized expression is substituted. The recipient's
@@ -395,24 +588,38 @@ class F1ProductionAdapter:
         """
         if int(evidence_level) not in EVIDENCE_LEVELS:
             raise ValueError("STOP_F1_EVIDENCE_LEVEL: %r" % (evidence_level,))
+        if not isinstance(source_values, VerifiedSourceValues):
+            raise AssertionError(
+                "%s: the null arm accepts only a VerifiedSourceValues object; a free "
+                "expression vector cannot be bound to an authenticated source"
+                % STOP_SOURCE_VALUES_UNVERIFIED)
         expected = resolve_matched_null_source(str(row["provenance"]["canonical_cell_id"]),
                                                self.matched_null_map)
-        if str(source_row.get("canonical_cell_id")) != expected["source_canonical_cell_id"]:
+        if source_values.canonical_cell_id != str(expected["source_canonical_cell_id"]):
             raise AssertionError(
                 "%s: supplied source %r is not the frozen source %r for recipient %r"
-                % (STOP_NULL_SOURCE, source_row.get("canonical_cell_id"),
+                % (STOP_NULL_SOURCE, source_values.canonical_cell_id,
                    expected["source_canonical_cell_id"],
                    row["provenance"]["canonical_cell_id"]))
-        if str(source_row.get("canonical_donor_id")) == str(
-                expected["recipient_canonical_donor_id"]):
+        if source_values.row_locator != str(expected["source_row_locator"]):
+            raise AssertionError(
+                "%s: values carry locator %r but the frozen source locator is %r"
+                % (STOP_SOURCE_LOCATOR, source_values.row_locator,
+                   expected["source_row_locator"]))
+        if source_values.canonical_donor_id == str(expected["recipient_canonical_donor_id"]):
             raise AssertionError(STOP_NULL_DONOR)
+        if source_values.canonical_donor_id != str(expected["source_canonical_donor_id"]):
+            raise AssertionError(
+                "%s: values carry donor %r but the frozen source donor is %r"
+                % (STOP_NULL_SOURCE, source_values.canonical_donor_id,
+                   expected["source_canonical_donor_id"]))
 
         masks = build_row_evidence_masks(
             row["physical_state"], int(row["query_index"]),
             row_locator=str(row["row_locator"]),
             query_address=int(row["query_address"]))
         result = self._construct(
-            normalized_expression=source_normalized_expression,   # the ONLY substitution
+            normalized_expression=source_values.normalized(),     # the ONLY substitution
             physical_state=row["physical_state"],                 # recipient M
             evidence_visible=masks["masks"][int(evidence_level)],  # recipient U(e,q)
             query_index=int(row["query_index"]),                  # recipient q
@@ -420,7 +627,9 @@ class F1ProductionAdapter:
         return dict(self._readouts(result), arm=MATCHED_NULL_ARM,
                     evidence_level=int(evidence_level),
                     matched_null_source_cell_id=expected["source_canonical_cell_id"],
-                    matched_null_source_donor_id=expected["source_canonical_donor_id"])
+                    matched_null_source_donor_id=expected["source_canonical_donor_id"],
+                    matched_null_source_values_sha256=source_values.values_sha256,
+                    matched_null_source_provenance=source_values.provenance())
 
 
 def assert_no_nullized_teacher(records: Sequence[Mapping[str, Any]]) -> None:

@@ -1199,10 +1199,13 @@ def execute_authorized_sweep(*, authorization: Mapping[str, Any],
                 for evidence_level in EVIDENCE_LEVELS:
                     correct = adapter.correct_student_state(row=row,
                                                             evidence_level=evidence_level)
+                    # The null arm takes verified, row-bound values. The reader
+                    # supplies the authenticated source's raw counts and library
+                    # and the adapter recomputes the normalization, so a free or
+                    # altered expression vector cannot enter the null path.
                     null = adapter.matched_null_student_state(
                         row=row, evidence_level=evidence_level,
-                        source_normalized_expression=query["source_normalized_expression"],
-                        source_row=query["source_row"])
+                        source_values=query["source_values"])
                     for role, arm, produced in (
                             (CORRECT_STUDENT_ROLE, CORRECT_ARM, correct),
                             (MATCHED_NULL_STUDENT_ROLE, MATCHED_NULL_ARM, null)):
@@ -1336,6 +1339,15 @@ FROZEN_SOURCE_PATHS: dict[str, str] = {
 }
 
 STOP_RUNTIME_BINDING = "STOP_F1_RUNTIME_BINDING_NOT_AUTHORIZED"
+STOP_MATCHED_NULL_MAP_UNVERIFIED = "STOP_F1_MATCHED_NULL_MAP_DIGEST_UNVERIFIED"
+
+# Frozen authority digests the runtime binding is compared against.
+EVIDENCE_MASK_CONTRACT_SHA256 = (
+    "d1eefdab177501a00370d71521ae86932e60540fb9f769dfe2b56c7994ca5c5a")
+LOADER_SOURCE_SHA256 = (
+    "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a")
+MATCHED_NULL_MAP_SHA256 = (
+    "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6")
 
 
 def frozen_source_digests(repo: Path = REPO) -> dict[str, str]:
@@ -1382,11 +1394,40 @@ def assert_runtime_binding(*, authorization: Mapping[str, Any], adapter: Any,
             raise PermissionError(
                 "%s: %s is %s but the authorization binds %s"
                 % (STOP_RUNTIME_BINDING, key, digest, declared or "nothing"))
-    for required in ("evidence_mask_authority_sha256", "matched_null_map_sha256",
-                     "loader_source_sha256"):
-        if len(str(binding.get(required, ""))) != 64:
-            raise PermissionError("%s: runtime_binding lacks %s"
-                                  % (STOP_RUNTIME_BINDING, required))
+    # The three auxiliary digests must be COMPARED, not merely well formed.
+    #
+    # An earlier revision checked only `len(...) == 64`, so a binding declaring
+    # "0" * 64 for the matched-null map satisfied the guard. That made the field
+    # declarative rather than cryptographic: the authorization named a digest
+    # nothing was ever checked against.
+    #
+    # `matched_null_map_sha256` is taken from the adapter's own verified value,
+    # which `load_matched_null_map` sets from the bytes it read. An adapter
+    # built from an arbitrary in-memory mapping has no verified digest, so it
+    # cannot satisfy production binding even though its class is authorized.
+    expected_auxiliary = {
+        "evidence_mask_authority_sha256": EVIDENCE_MASK_CONTRACT_SHA256,
+        "loader_source_sha256": LOADER_SOURCE_SHA256,
+    }
+    adapter_map_digest = getattr(adapter, "matched_null_map_sha256", None)
+    if not adapter_map_digest:
+        raise PermissionError(
+            "%s: the adapter carries no verified matched-null map digest, so its "
+            "map was not loaded from authenticated bytes"
+            % STOP_MATCHED_NULL_MAP_UNVERIFIED)
+    if str(adapter_map_digest) != MATCHED_NULL_MAP_SHA256:
+        raise PermissionError(
+            "%s: the adapter's map digest %s is not the frozen map %s"
+            % (STOP_MATCHED_NULL_MAP_UNVERIFIED, adapter_map_digest,
+               MATCHED_NULL_MAP_SHA256))
+    expected_auxiliary["matched_null_map_sha256"] = str(adapter_map_digest)
+
+    for field, expected in sorted(expected_auxiliary.items()):
+        declared = str(binding.get(field, ""))
+        if declared != expected:
+            raise PermissionError(
+                "%s: %s is declared %s but the verified value is %s"
+                % (STOP_RUNTIME_BINDING, field, declared or "nothing", expected))
     return dict(observed, **{k: str(v) for k, v in binding.items()})
 
 

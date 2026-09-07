@@ -41,8 +41,8 @@ have failed the first authorized call:
   Sorting the names yields a different digest and the authority then refuses to
   bind the encoder.
 
-Evidence: `tests/test_f1_u0_adapter_smoke_v1.py`, 8 tests, run against the real
-u0 checkpoint under the project's torch environment. It loads the actual state
+Evidence: `tests/test_f1_u0_adapter_smoke_v1.py`, run against the real u0
+checkpoint under the project's torch environment. It loads the actual state
 dict and executes one teacher, one correct-student and one matched-null forward
 through the exact adapter, then builds the real effect row.
 
@@ -140,12 +140,8 @@ disagree, so the repair cannot be silently reverted.
 
 ## Test inventory
 
-| suite | no-torch interpreter | project torch environment |
-|---|---|---|
-| producer/replay parity and attacks | 72 passed | 72 passed |
-| evidence-mask authority | 14 passed | 14 passed |
-| real u0 adapter smoke | 8 NOT_MEASURABLE | 8 passed |
-| total | 86 passed, 8 NOT_MEASURABLE | 94 passed, 0 skipped |
+Superseded by the inventory in the dd07862 response section below, which adds
+the residual execution-binding attacks. The counts there are authoritative.
 
 `F1_REQUIRE_TORCH_SMOKE=1` turns the NOT_MEASURABLE smoke results into hard
 errors, so they can never be counted as passes. A production-readiness
@@ -156,3 +152,117 @@ judgement must use the torch environment, where there are no skips.
 No execution authorization is issued by this document or this package. The
 terminal claims mechanics readiness for independent re-review only, and no
 authority branch has been fast-forwarded.
+
+
+# Response to the dd07862 residual re-review
+
+Reviewed candidate: `dd078625c3537f5ff2c3f8c0b382ba2803b24ee2`
+Review terminal:
+`STOP_F1_DD078_RUNTIME_VALUE_BINDING_NOT_CLOSED__REAL_F1_REMAINS_UNAUTHORIZED`
+
+Both residual defects are accepted and neither was disputed. R1, R3, R4, R5 and
+R7 were not reopened, and R6's causal semantics are unchanged: `S_null`
+substitutes source normalized values only and retains the recipient's
+`M_physical`, `U_evidence`, q, operator/source and provenance.
+
+## Residual 1 — the source VALUES are now bound, not just the identity
+
+The adapter authenticated `source_row["canonical_cell_id"]` and donor
+distinctness, then accepted `source_normalized_expression` independently and
+forwarded it. P(c) was a label; the values were free.
+
+The review's sharpest observation is correct and worth recording plainly: the
+previous metamorphic test *demonstrated* this hole while being read as proof of
+correctness. It fixed one source identity, supplied two materially different
+vectors, and required BOTH to be accepted.
+
+The free-vector path is gone. `matched_null_student_state` now accepts only a
+`VerifiedSourceValues` object, and that object cannot exist unverified because
+construction performs the checks:
+
+1. the normalized vector must equal `log1p(counts*10000/max(library,1))` of the
+   declared counts and library, which catches altered values, twice-normalized
+   values and a wrong `source_library`;
+2. the value digest must recompute over the row locator, canonical source
+   identity, counts digest, source library and normalized bytes, which catches
+   values lifted from another row;
+3. `resolve_authenticated_source_values` checks the locator, cell and donor
+   against the frozen map BEFORE any values object is built;
+4. the adapter additionally requires the object's locator, cell and donor to be
+   the ones the frozen map names for this recipient, and the object is
+   immutable with `normalized()` returning a copy.
+
+The discriminator is now the correct way round:
+
+- same authenticated identity plus altered values → STOP, and impossible to
+  construct;
+- a DIFFERENT authenticated identity carrying its own authentic values may move
+  `S_null`, while the recipient's evidence, physical-state and hidden-mask
+  digests stay byte-identical.
+
+Each produced null capture carries `matched_null_source_values_sha256` and the
+full source provenance, so the binding is visible in the artifacts.
+
+## Residual 2 — the three auxiliary digests are compared, not length-checked
+
+`assert_runtime_binding` did `if len(binding[field]) != 64: STOP`, so
+`"0" * 64` was structurally acceptable and the fields named digests nothing was
+compared against.
+
+They are now compared against verified values:
+
+- `evidence_mask_authority_sha256` against the frozen contract digest
+  `d1eefdab…`;
+- `loader_source_sha256` against `267fa42a…`;
+- `matched_null_map_sha256` against the digest the adapter itself carries, which
+  `load_matched_null_map` sets from the bytes it read, and which must also equal
+  the frozen `aba31aea…`.
+
+`load_matched_null_map` now returns the mapping together with that digest. An
+adapter constructed from an arbitrary in-memory mapping has no verified digest
+and is refused with `STOP_F1_MATCHED_NULL_MAP_DIGEST_UNVERIFIED`, even though
+its class is the authorized one.
+
+## Attacks added
+
+Every attack the review named, each paired with a lawful case that must pass so
+none can succeed by refusing everything:
+
+- wrong-but-64-character evidence-mask authority digest → STOP;
+- wrong-but-64-character matched-null-map digest → STOP;
+- wrong-but-64-character loader-source digest → STOP;
+- correct adapter module bytes with an unverified in-memory map → STOP;
+- correct adapter module bytes with a wrong map digest → STOP;
+- same source identity with altered values → STOP;
+- same source identity with twice-normalized values → STOP;
+- same source identity with a different `source_library` → STOP;
+- values carrying another row's digest → STOP;
+- wrong locator, wrong cell or wrong donor at the resolver → STOP;
+- a free expression array passed to the null arm → STOP;
+- adapter and producer normalizations required to agree bit for bit.
+
+## Test inventory after the repair
+
+| suite | no-torch | project torch environment |
+|---|---|---|
+| producer/replay parity and attacks | 78 passed | 78 passed |
+| evidence-mask authority | 14 passed | 14 passed |
+| real u0 adapter smoke | 9 NOT_MEASURABLE | 9 passed |
+| total | 92 passed, 9 NOT_MEASURABLE | 101 passed, 0 skipped |
+
+## One fabricated threshold removed
+
+The smoke test asserted `|A| < 0.05`. Measured across 15 combinations of row
+seed and source-value seed, `|A|` ranged 0.0469 to 0.0681, so that bound sat
+inside the observed range and would have passed or failed by seed. It was a
+number chosen to make the test pass. It is replaced by the mathematically valid
+bound for a difference of two cosines, and the measurement is recorded instead
+of a claim. A came out consistently positive because the correct student shares
+the recipient's expression with the teacher while the null carries a different
+cell's values -- a structural consequence of the construction on an untrained
+encoder, not a biological signal.
+
+## Still not claimed
+
+No execution authorization is issued. Real F1 remains unauthorized and no
+authority branch was altered.

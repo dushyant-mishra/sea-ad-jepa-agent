@@ -21,6 +21,7 @@ SCRIPTS = ROOT / "scripts" / "v4"
 sys.path.insert(0, str(SCRIPTS))
 
 import f1_execution_authorization_v1 as authorization  # noqa: E402
+import f1_production_runtime_adapter_v1 as adapter_module  # noqa: E402
 import f1_real_producer_v1 as producer  # noqa: E402
 import f1_real_replay_v1 as replay  # noqa: E402
 
@@ -1070,6 +1071,19 @@ def test_authority_digests_use_the_right_bytes_for_each_authority_class() -> Non
 # The adapter is a technical fixture here; the real Torch adapter is exercised
 # separately by the u0 smoke test.
 # ============================================================================
+def _verified_source_values(donor: str, width: int):
+    """Verified, row-bound matched-null values for the technical fixture."""
+    rng = np.random.default_rng(abs(hash("src|" + donor)) % (2 ** 32))
+    counts = rng.integers(0, 40, size=width).astype(np.float64)
+    library = 9876.0
+    return adapter_module.VerifiedSourceValues(
+        row_locator="src::%s#1" % donor,
+        canonical_cell_id="src_%s" % donor,
+        canonical_donor_id="donor_src_%s" % donor,
+        raw_counts=counts, source_library=library,
+        normalized=adapter_module.normalize_once(counts, library))
+
+
 class _TechnicalReader:
     """A lawful-shaped reader over a tiny technical fixture."""
 
@@ -1102,9 +1116,7 @@ class _TechnicalReader:
                 "query_address": "addr_%d" % q_index,
                 "q": q_index,
                 "assignment_key": hashlib.sha256(cell_id.encode()).hexdigest(),
-                "source_normalized_expression": rng.normal(size=self._addresses),
-                "source_row": {"canonical_cell_id": "src_%s" % donor,
-                               "canonical_donor_id": "donor_src_%s" % donor},
+                "source_values": _verified_source_values(donor, self._addresses),
             }],
         }
 
@@ -1116,11 +1128,17 @@ class _TechnicalAdapter:
     pipeline under test is the production one.
     """
 
-    def __init__(self, dim: int = 8) -> None:
+    def __init__(self, dim: int = 8, map_digest: str | None = None) -> None:
         self.dim = int(dim)
         self.teacher_calls = 0
         self.correct_calls = 0
         self.null_calls = 0
+        # Defaults to None so the DEFAULT fixture is refused by the runtime
+        # binding, which is what the review requires: an adapter built from an
+        # arbitrary in-memory map must not satisfy production binding. Tests
+        # that need a downstream refusal declare the frozen digest explicitly,
+        # and the binding check itself is attacked separately.
+        self.matched_null_map_sha256 = map_digest
 
     def _state(self, tag: str) -> np.ndarray:
         rng = np.random.default_rng(int(hashlib.sha256(tag.encode()).hexdigest()[:8], 16))
@@ -1143,14 +1161,16 @@ class _TechnicalAdapter:
                                row["query_index"], evidence_level)
         return self._pair(tag, arm="correct", evidence_level=int(evidence_level))
 
-    def matched_null_student_state(self, *, row, evidence_level,
-                                   source_normalized_expression, source_row):
+    def matched_null_student_state(self, *, row, evidence_level, source_values):
         self.null_calls += 1
-        tag = "sn|%s|%d|%d|%.6f" % (row["provenance"]["canonical_cell_id"],
-                                    row["query_index"], evidence_level,
-                                    float(np.sum(source_normalized_expression)))
+        # Mirrors the real adapter: only verified, row-bound values are accepted.
+        assert isinstance(source_values, adapter_module.VerifiedSourceValues)
+        tag = "sn|%s|%d|%d|%s" % (row["provenance"]["canonical_cell_id"],
+                                  row["query_index"], evidence_level,
+                                  source_values.values_sha256)
         return self._pair(tag, arm="matched_null", evidence_level=int(evidence_level),
-                          matched_null_source_cell_id=str(source_row["canonical_cell_id"]))
+                          matched_null_source_cell_id=source_values.canonical_cell_id,
+                          matched_null_source_values_sha256=source_values.values_sha256)
 
 
 def _fixture_geometry(donors: int) -> dict:
@@ -1358,14 +1378,15 @@ def _runtime_binding() -> dict:
     """
     this_module = producer.sha256_file(Path(__file__))
     return {
+        # The adapter and reader fixtures live in this module, so their module
+        # digest is this file. The three auxiliary fields must be the FROZEN
+        # authority values, because those are now compared rather than merely
+        # length-checked.
         "adapter_module_sha256": this_module,
         "reader_module_sha256": this_module,
-        "evidence_mask_authority_sha256": producer.sha256_file(
-            SCRIPTS / "f1_evidence_mask_authority_v1.py"),
-        "matched_null_map_sha256":
-            "aba31aea56190c32a00ac27a0356ea860761143f00f874db9c71c2080eb371a6",
-        "loader_source_sha256":
-            "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a",
+        "evidence_mask_authority_sha256": producer.EVIDENCE_MASK_CONTRACT_SHA256,
+        "matched_null_map_sha256": producer.MATCHED_NULL_MAP_SHA256,
+        "loader_source_sha256": producer.LOADER_SOURCE_SHA256,
     }
 
 
@@ -1394,7 +1415,8 @@ def test_the_authorization_must_bind_the_runtime_adapter_and_reader(
     monkeypatch.setenv(authorization.AUTHORIZATION_ENV, str(artifact))
     with pytest.raises(PermissionError, match="RUNTIME_BINDING_NOT_AUTHORIZED"):
         producer.run_production_sweep(package_root_sha256=package_root,
-                                      forward_engine=_TechnicalAdapter(),
+                                      forward_engine=_TechnicalAdapter(
+                                          map_digest=producer.MATCHED_NULL_MAP_SHA256),
                                       reader=_TechnicalReader(["D_a"]),
                                       output_dir=tmp_path / "out")
 
@@ -1406,7 +1428,8 @@ def test_the_authorization_must_bind_the_runtime_adapter_and_reader(
     monkeypatch.setenv(authorization.AUTHORIZATION_ENV, str(artifact))
     with pytest.raises(PermissionError, match="RUNTIME_BINDING_NOT_AUTHORIZED"):
         producer.run_production_sweep(package_root_sha256=package_root,
-                                      forward_engine=_TechnicalAdapter(),
+                                      forward_engine=_TechnicalAdapter(
+                                          map_digest=producer.MATCHED_NULL_MAP_SHA256),
                                       reader=_TechnicalReader(["D_a"]),
                                       output_dir=tmp_path / "out")
 
@@ -1419,7 +1442,8 @@ def test_the_authorization_must_bind_the_runtime_adapter_and_reader(
     monkeypatch.setenv(authorization.AUTHORIZATION_ENV, str(artifact))
     with pytest.raises(PermissionError, match="RUNTIME_BINDING_NOT_AUTHORIZED"):
         producer.run_production_sweep(package_root_sha256=package_root,
-                                      forward_engine=_TechnicalAdapter(),
+                                      forward_engine=_TechnicalAdapter(
+                                          map_digest=producer.MATCHED_NULL_MAP_SHA256),
                                       reader=_TechnicalReader(["D_a"]),
                                       output_dir=tmp_path / "out")
 
@@ -1431,10 +1455,10 @@ def test_the_authorization_must_bind_the_runtime_adapter_and_reader(
         encoding="utf-8")
     monkeypatch.setenv(authorization.AUTHORIZATION_ENV, str(artifact))
     with pytest.raises(PermissionError, match="POPULATION_FIREWALL"):
-        producer.run_production_sweep(package_root_sha256=package_root,
-                                      forward_engine=_TechnicalAdapter(),
-                                      reader=_TechnicalReader(["D_a"]),
-                                      output_dir=tmp_path / "out")
+        producer.run_production_sweep(
+            package_root_sha256=package_root,
+            forward_engine=_TechnicalAdapter(map_digest=producer.MATCHED_NULL_MAP_SHA256),
+            reader=_TechnicalReader(["D_a"]), output_dir=tmp_path / "out")
 
 
 def test_run_production_sweep_requires_adapter_reader_and_output_dir(
@@ -1459,13 +1483,14 @@ def test_run_production_sweep_requires_adapter_reader_and_output_dir(
         producer.run_production_sweep(package_root_sha256=package_root)
     with pytest.raises(PermissionError, match="EXECUTION_NOT_AUTHORIZED"):
         producer.run_production_sweep(package_root_sha256=package_root,
-                                      forward_engine=_TechnicalAdapter(),
+                                      forward_engine=_TechnicalAdapter(
+                                          map_digest=producer.MATCHED_NULL_MAP_SHA256),
                                       reader=_TechnicalReader(["D_a"]))
     with pytest.raises(PermissionError, match="WRONG_PACKAGE_ROOT"):
-        producer.run_production_sweep(package_root_sha256="0" * 64,
-                                      forward_engine=_TechnicalAdapter(),
-                                      reader=_TechnicalReader(["D_a"]),
-                                      output_dir=tmp_path / "out")
+        producer.run_production_sweep(
+            package_root_sha256="0" * 64,
+            forward_engine=_TechnicalAdapter(map_digest=producer.MATCHED_NULL_MAP_SHA256),
+            reader=_TechnicalReader(["D_a"]), output_dir=tmp_path / "out")
 
 
 def test_run_production_sweep_requires_an_explicit_package_root(monkeypatch,
@@ -1533,6 +1558,187 @@ def test_the_replay_verifies_artifacts_the_producer_actually_wrote(tmp_path: Pat
     assert out["complete"] is True
     assert out["forwards"]["observed"]["teacher_forwards"] == 1
     assert len(shard_captures) == single["total_expensive_forwards"]
+
+
+# ============================================================================
+# Residual execution-binding attacks from the dd07862 independent re-review
+# ============================================================================
+def test_the_auxiliary_runtime_digests_are_compared_not_merely_well_formed(
+        tmp_path: Path, monkeypatch) -> None:
+    """The narrow residual defect the re-review found.
+
+    `assert_runtime_binding` previously checked only `len(...) == 64` for the
+    evidence-mask, matched-null-map and loader digests, so a binding declaring
+    "0" * 64 satisfied it: the field named a digest nothing was compared
+    against. Each is attacked here with a wrong-but-well-formed 64-character
+    value, which the old length check would have accepted.
+    """
+    package_root = "1" * 64
+    sources = producer.frozen_source_digests(ROOT)
+    authorities = producer.verify_authorities(strict=False)
+    common = dict(
+        package_root_sha256=package_root, source_sha256=dict(sources),
+        authority_sha256={k: v for k, v in authorities.items() if not k.startswith("__")},
+        frozen_geometry=producer.assert_frozen_geometry(),
+        reader_population={"partition": "reader_fit", "donor_count": 104,
+                           "donor_roster_root": producer.LAWFUL_READER_FIT_ROSTER_ROOT,
+                           "forbidden_populations_accessed": []})
+    counter = {"n": 0}
+
+    def attempt(binding):
+        counter["n"] += 1
+        artifact = tmp_path / ("auth_%d.json" % counter["n"])
+        artifact.write_text(
+            json.dumps(_authorization_body(runtime_binding=binding, **common)),
+            encoding="utf-8")
+        monkeypatch.setenv(authorization.AUTHORIZATION_ENV, str(artifact))
+        return producer.run_production_sweep(
+            package_root_sha256=package_root,
+            forward_engine=_TechnicalAdapter(map_digest=producer.MATCHED_NULL_MAP_SHA256),
+            reader=_TechnicalReader(["D_a"]), output_dir=tmp_path / "out")
+
+    for field in ("evidence_mask_authority_sha256", "matched_null_map_sha256",
+                  "loader_source_sha256"):
+        wrong = dict(_runtime_binding())
+        wrong[field] = "0" * 64
+        assert len(wrong[field]) == 64, "the attack must be well formed"
+        with pytest.raises(PermissionError, match="RUNTIME_BINDING_NOT_AUTHORIZED"):
+            attempt(wrong)
+
+    # The correct binding gets past the auxiliary comparison, so the attack
+    # discriminates rather than refusing everything.
+    with pytest.raises(PermissionError, match="POPULATION_FIREWALL"):
+        attempt(_runtime_binding())
+
+
+def test_correct_adapter_bytes_with_an_unverified_map_are_refused(
+        tmp_path: Path, monkeypatch) -> None:
+    """The authorized adapter class plus an arbitrary in-memory map must fail."""
+    package_root = "1" * 64
+    sources = producer.frozen_source_digests(ROOT)
+    authorities = producer.verify_authorities(strict=False)
+    body = _authorization_body(
+        package_root_sha256=package_root, source_sha256=dict(sources),
+        authority_sha256={k: v for k, v in authorities.items() if not k.startswith("__")},
+        frozen_geometry=producer.assert_frozen_geometry(),
+        runtime_binding=_runtime_binding(),
+        reader_population={"partition": "reader_fit", "donor_count": 104,
+                           "donor_roster_root": producer.LAWFUL_READER_FIT_ROSTER_ROOT,
+                           "forbidden_populations_accessed": []})
+    artifact = tmp_path / "auth.json"
+    artifact.write_text(json.dumps(body), encoding="utf-8")
+    monkeypatch.setenv(authorization.AUTHORIZATION_ENV, str(artifact))
+
+    for label, engine in (("no verified digest", _TechnicalAdapter()),
+                          ("wrong digest", _TechnicalAdapter(map_digest="0" * 64))):
+        with pytest.raises(PermissionError,
+                           match="MATCHED_NULL_MAP_DIGEST_UNVERIFIED"):
+            producer.run_production_sweep(
+                package_root_sha256=package_root, forward_engine=engine,
+                reader=_TechnicalReader(["D_a"]), output_dir=tmp_path / "out")
+
+
+def test_matched_null_values_must_be_verified_and_row_bound() -> None:
+    """Same authenticated identity plus altered values must STOP.
+
+    This is the corrected discriminator. The previous metamorphic test fixed one
+    source identity, supplied two materially different vectors, and required
+    BOTH to be accepted, so it demonstrated the hole while reading as proof of
+    correctness.
+    """
+    counts = np.arange(12, dtype=np.float64)
+    library = 9876.0
+    good = adapter_module.normalize_once(counts, library)
+    verified = adapter_module.VerifiedSourceValues(
+        row_locator="src::R#1", canonical_cell_id="C1", canonical_donor_id="D1",
+        raw_counts=counts, source_library=library, normalized=good)
+    assert verified.values_sha256
+    assert verified.provenance()["applied_times"] == 1
+
+    for label, normalized in (
+        ("altered values", good * 1.01),
+        ("twice normalized", adapter_module.normalize_once(good, library)),
+        ("different library", adapter_module.normalize_once(counts, 4242.0)),
+    ):
+        with pytest.raises(AssertionError, match="NORMALIZATION_NOT_ONCE_ONLY"):
+            adapter_module.VerifiedSourceValues(
+                row_locator="src::R#1", canonical_cell_id="C1",
+                canonical_donor_id="D1", raw_counts=counts,
+                source_library=library, normalized=normalized)
+
+    # Values belonging to another row cannot be presented under this provenance.
+    other = adapter_module.VerifiedSourceValues(
+        row_locator="src::R#2", canonical_cell_id="C2", canonical_donor_id="D2",
+        raw_counts=counts, source_library=library, normalized=good)
+    assert other.values_sha256 != verified.values_sha256
+    with pytest.raises(AssertionError, match="SOURCE_VALUES_UNVERIFIED"):
+        adapter_module.VerifiedSourceValues(
+            row_locator="src::R#1", canonical_cell_id="C1", canonical_donor_id="D1",
+            raw_counts=counts, source_library=library, normalized=good,
+            values_sha256=other.values_sha256)
+
+    with pytest.raises(AttributeError):
+        verified.source_library = 1.0
+    assert not np.shares_memory(verified.normalized(), verified.normalized())
+
+
+def test_the_resolver_refuses_values_for_an_unauthorised_source() -> None:
+    """Locator and identity are checked before any values object is built."""
+    expected = {"source_row_locator": "src::R#1",
+                "source_canonical_cell_id": "C1",
+                "source_canonical_donor_id": "D1",
+                "recipient_canonical_donor_id": "D9"}
+    counts = np.arange(8, dtype=np.float64)
+    ok = adapter_module.resolve_authenticated_source_values(
+        expected=expected, raw_counts=counts, source_library=1000.0,
+        row_locator="src::R#1", canonical_cell_id="C1", canonical_donor_id="D1")
+    assert ok.canonical_cell_id == "C1"
+    for label, kwargs in (
+        ("wrong locator", dict(row_locator="src::OTHER#9", canonical_cell_id="C1",
+                               canonical_donor_id="D1")),
+        ("wrong cell", dict(row_locator="src::R#1", canonical_cell_id="CX",
+                            canonical_donor_id="D1")),
+        ("wrong donor", dict(row_locator="src::R#1", canonical_cell_id="C1",
+                             canonical_donor_id="DX")),
+    ):
+        with pytest.raises(AssertionError):
+            adapter_module.resolve_authenticated_source_values(
+                expected=expected, raw_counts=counts, source_library=1000.0, **kwargs)
+
+
+def test_the_null_arm_refuses_a_free_expression_vector() -> None:
+    """A bare array is not an authenticated source, whatever its shape."""
+
+    class _Stub:
+        matched_null_map_sha256 = None
+        matched_null_map = {"REC": {"source_row_locator": "src::R#1",
+                                    "source_canonical_cell_id": "C1",
+                                    "source_canonical_donor_id": "D1",
+                                    "recipient_canonical_donor_id": "D9"}}
+
+    engine = adapter_module.F1ProductionAdapter.__new__(
+        adapter_module.F1ProductionAdapter)
+    engine.matched_null_map = _Stub.matched_null_map
+    row = {"provenance": {"canonical_cell_id": "REC"}, "query_index": 0,
+           "query_address": 0, "row_locator": "r", "physical_state": np.array([1, 1]),
+           "normalized_expression": np.array([0.0, 0.0])}
+    with pytest.raises(AssertionError, match="SOURCE_VALUES_UNVERIFIED"):
+        adapter_module.F1ProductionAdapter.matched_null_student_state(
+            engine, row=row, evidence_level=60,
+            source_values=np.array([1.0, 2.0]))
+
+
+def test_the_adapter_and_producer_normalizations_agree_exactly() -> None:
+    """The transform is duplicated to keep the adapter free of the producer.
+
+    Duplication is only safe if it cannot drift, so the two must agree bit for
+    bit on every fixture, including the library guard at zero.
+    """
+    for counts, library in ((np.array([0.0, 1.0, 5.0, 250.0]), 12345.0),
+                            (np.arange(50, dtype=np.float64), 1.0),
+                            (np.zeros(4), 0.0)):
+        assert np.array_equal(adapter_module.normalize_once(counts, library),
+                              producer.normalize_expression(counts, library))
 
 
 def test_authority_dependent_declaration_matches_the_ast() -> None:
