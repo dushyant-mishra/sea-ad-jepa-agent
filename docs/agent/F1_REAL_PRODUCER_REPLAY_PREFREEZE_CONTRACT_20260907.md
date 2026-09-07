@@ -126,6 +126,26 @@ outcomes exist.
 
 ## Repairs made during this work, recorded rather than hidden
 
+Two of these were found by re-auditing this lane *after* it had already been
+committed, pushed and reported as complete, against the restated task
+specification. Both were places where a requirement was satisfied in prose but
+not in code.
+
+`mechanics_capture_record` carried a docstring stating it "covers every one of
+the 44,496 assignments" while nothing enumerated or enforced coverage, and
+neither `role` nor `evidence_level` was validated. The docstring now explicitly
+disclaims the coverage assertion and points at the two functions that enforce
+it.
+
+The geometry-versus-derived-counts checks resolved their input authorities
+through this machine's hardcoded absolute paths and called `pytest.skip` when
+absent. Since those checks are the strongest evidence in the package, an
+external reviewer would have seen the central claim vanish silently while the
+suite still reported green -- and the first revision of the review handoff told
+the reviewer to expect a full pass count from a clean extraction. Both the
+mechanism and the handoff are corrected above.
+
+
 An earlier draft built the shard filename directly from donor and operator with
 a `::` separator, which is an illegal Windows filename character and broke three
 tests. The reviewed acceptance validator had already solved this by hashing the
@@ -141,10 +161,45 @@ It now requires the exact column names `canonical_cell_id`,
 any is absent, because substring matching on an authority column is how a schema
 change silently selects the wrong field.
 
+## Mechanics capture over all 44,496 assignments
+
+`plan_mechanics_capture` enumerates one capture obligation per statistical
+assignment, keyed on the authority's own `assignment_key_sha256` column. It
+asserts 44,496 planned assignments, requires the keys to be distinct, and
+asserts the 222,480 assignment-by-evidence expansion, so a truncated or extended
+authority file cannot quietly shrink the obligation.
+
+`assert_capture_coverage` then separates three failures that have different
+causes: a planned assignment with no capture record (a dropped forward), one
+captured twice (a double count), and a capture record whose key is not in the
+plan (an unauthorised forward). Each raises its own STOP and has its own test.
+
+`mechanics_capture_record` rejects an unrecognised role, an evidence level
+outside `(20, 40, 60, 80, 100)`, a malformed assignment key, and any evidence
+level attached to a teacher record -- the teacher state is evidence-invariant,
+so an evidence level there would imply five teacher forwards per `(cell,q)` and
+inflate the forward count.
+
+The replay derives the same coverage independently in
+`replay_derive_capture_coverage`, counting the key column without consulting the
+producer and reconciling the keys against the
+`(canonical_cell_id, selected_query_address)` pairs, and
+`compare_capture_coverage` compares the two including an assignment-key root.
+
 ## Local verification state
 
-25 of 25 behavioural tests pass. These are local pre-freeze results and do not
-substitute for independent review.
+33 of 33 behavioural tests pass with the authorities reachable. These are local
+pre-freeze results and do not substitute for independent review.
+
+Four of those checks depend on the two external authority files, which are 30 MB
+and 8 MB, untracked, and therefore not package members. On a tree without them
+the suite reports 29 passed and 4 skipped, and those skips are `NOT_MEASURABLE`,
+not `PASS`, under the project precedence `INVALID > FAIL > NOT_MEASURABLE >
+PASS`. `F1_PREFREEZE_AUTHORITY_ROOT` names the tree to resolve them from and is
+the only root consulted when set; `F1_PREFREEZE_REQUIRE_AUTHORITIES=1` converts
+an unreachable authority from a skip into a failure. All four modes were
+exercised. `AUTHORITY_DEPENDENT_TESTS` declares exactly which checks these are,
+and a meta-test derives that list by AST so it cannot drift.
 
 ## Not done here, and not authorized by this freeze
 

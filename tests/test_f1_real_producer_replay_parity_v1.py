@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -21,11 +22,42 @@ sys.path.insert(0, str(SCRIPTS))
 import f1_real_producer_v1 as producer  # noqa: E402
 import f1_real_replay_v1 as replay  # noqa: E402
 
-CANONICAL_ROOTS = (Path("/mnt/d/Jepa project"), Path("D:/Jepa project"), ROOT)
 ASSIGNMENT_REL = ("outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/"
                   "F1_QUERY_ASSIGNMENTS_2DRAW.csv")
 DEDUP_REL = ("outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/"
              "F1_QUERY_EXECUTION_DEDUP_MAP.csv")
+
+# The frozen assignment authority is 30 MB and the dedup map 8 MB, and neither is
+# tracked, so neither can be a package member. They are therefore resolved from
+# an external tree. An external reviewer will not have the hardcoded local paths
+# below, so `F1_PREFREEZE_AUTHORITY_ROOT` is the supported way to point at them.
+# When the variable is set it is the *only* root consulted. The local fallbacks
+# below are this machine's absolute paths and mean nothing on a reviewer's
+# machine; leaving them in the search order would also make the unreachable case
+# impossible to exercise here, so an explicit root replaces them rather than
+# being prepended to them.
+AUTHORITY_ROOT_ENV = "F1_PREFREEZE_AUTHORITY_ROOT"
+_EXPLICIT_ROOT = os.environ.get(AUTHORITY_ROOT_ENV)
+CANONICAL_ROOTS = ((Path(_EXPLICIT_ROOT),) if _EXPLICIT_ROOT
+                   else (Path("/mnt/d/Jepa project"), Path("D:/Jepa project"), ROOT))
+
+# Set F1_PREFREEZE_REQUIRE_AUTHORITIES=1 to turn an unreachable authority into a
+# hard failure. Without it these checks skip, and a skip is NOT a pass: under
+# this project's own precedence INVALID > FAIL > NOT_MEASURABLE > PASS, an
+# authority-dependent check that did not run is NOT_MEASURABLE. It is recorded
+# here because the geometry-and-coverage evidence is the strongest content of
+# this package, and a reviewer reading a silent skip as a pass would be reading
+# the package's central claim as verified when it was never evaluated.
+REQUIRE_AUTHORITIES = os.environ.get("F1_PREFREEZE_REQUIRE_AUTHORITIES") == "1"
+
+# Every check that cannot run without the external authority files. Declared so
+# a reviewer can count NOT_MEASURABLE outcomes instead of inferring them.
+AUTHORITY_DEPENDENT_TESTS = (
+    "test_authorities_verify_against_bytes_on_disk",
+    "test_mechanics_capture_plan_covers_every_statistical_assignment",
+    "test_producer_asserted_geometry_matches_replay_derived_counts",
+    "test_producer_capture_plan_agrees_with_replay_derived_coverage",
+)
 
 
 def _authority(relative: str) -> Path:
@@ -33,7 +65,12 @@ def _authority(relative: str) -> Path:
         candidate = root / relative
         if candidate.is_file():
             return candidate
-    pytest.skip("frozen authority not reachable: " + relative)
+    message = ("NOT_MEASURABLE (not a pass): frozen authority not reachable: %s. "
+               "Set %s to a tree containing it, or %s=1 to make this a failure."
+               % (relative, AUTHORITY_ROOT_ENV, "F1_PREFREEZE_REQUIRE_AUTHORITIES"))
+    if REQUIRE_AUTHORITIES:
+        pytest.fail(message)
+    pytest.skip(message)
 
 
 # ------------------------------------------------------------------ independence
@@ -325,24 +362,32 @@ def test_authorities_verify_against_bytes_on_disk() -> None:
             verified = producer.verify_authorities(root)
             assert len(verified) == len(producer.PREFLIGHT_AUTHORITY_SHA256)
             return
-    pytest.skip("no root carries the full frozen authority set")
+    message = ("NOT_MEASURABLE (not a pass): no root carries the full frozen "
+               "authority set. Set %s, or %s=1 to make this a failure."
+               % (AUTHORITY_ROOT_ENV, "F1_PREFREEZE_REQUIRE_AUTHORITIES"))
+    if REQUIRE_AUTHORITIES:
+        pytest.fail(message)
+    pytest.skip(message)
 
 
 def test_mechanics_capture_schema_is_complete_and_dtype_bound() -> None:
     record = producer.mechanics_capture_record(
         identity="a" * 64, role="correct_student", canonical_cell_id="cellA",
-        q=11, evidence_level=60, state_dim=160, dtype="float32")
-    for field in ("schema", "identity", "role", "canonical_cell_id", "q",
-                  "evidence_level", "state_dim", "dtype", "autocast",
-                  "torch_no_grad", "encoder_eval", "gradient_checkpointing",
-                  "accepted_real_forward_root", "partition"):
+        q=11, evidence_level=60, state_dim=160, dtype="float32",
+        assignment_key="b" * 64)
+    for field in ("schema", "identity", "assignment_key", "role",
+                  "canonical_cell_id", "q", "evidence_level", "state_dim",
+                  "dtype", "autocast", "torch_no_grad", "encoder_eval",
+                  "gradient_checkpointing", "accepted_real_forward_root",
+                  "partition"):
         assert field in record, field
     assert record["partition"] == "reader_fit"
     assert record["autocast"] is False and record["torch_no_grad"] is True
     with pytest.raises(ValueError):
         producer.mechanics_capture_record(
             identity="a" * 64, role="teacher", canonical_cell_id="c", q=1,
-            evidence_level=None, state_dim=160, dtype="float64")
+            evidence_level=None, state_dim=160, dtype="float64",
+            assignment_key="b" * 64)
 
 
 def test_planned_identities_reconcile_with_the_frozen_per_pair_arithmetic() -> None:
@@ -372,3 +417,118 @@ def test_physical_shard_id_agrees_and_is_filesystem_safe() -> None:
     ids = {producer.storage_shard_id(d, o)
            for d, o in (("D1", 7), ("D1", 70), ("D17", 0), ("D7", 1))}
     assert len(ids) == 4
+
+
+# ------------------------------------------------- mechanics capture coverage
+def test_mechanics_capture_plan_covers_every_statistical_assignment() -> None:
+    """The capture obligation is enumerated, not asserted in prose.
+
+    An earlier revision only claimed coverage in a docstring while nothing
+    counted the assignments. This counts them.
+    """
+    plan = producer.plan_mechanics_capture(_authority(ASSIGNMENT_REL))
+    assert plan["planned_assignments"] == 44496
+    assert plan["planned_assignment_evidence_rows"] == 222480
+    assert len(set(plan["assignment_keys"])) == 44496
+    assert list(plan["evidence_levels"]) == [20, 40, 60, 80, 100]
+    assert list(plan["capture_roles"]) == list(producer.LEGAL_CAPTURE_ROLES)
+
+
+def test_producer_capture_plan_agrees_with_replay_derived_coverage() -> None:
+    plan = producer.plan_mechanics_capture(_authority(ASSIGNMENT_REL))
+    derived = replay.replay_derive_capture_coverage(_authority(ASSIGNMENT_REL))
+    comparison = replay.compare_capture_coverage(plan, derived)
+    assert comparison["agree"], comparison["disagreements"]
+    assert derived["derived_assignments"] == 44496
+    assert derived["distinct_assignment_keys"] == 44496
+    assert derived["distinct_cell_q_pairs"] == 43108
+
+
+def _synthetic_plan(n: int) -> dict:
+    keys = [("%064x" % i) for i in range(n)]
+    return {
+        "assignment_keys": keys,
+        "planned_assignments": n,
+        "planned_assignment_evidence_rows": n * len(producer.EVIDENCE_LEVELS),
+    }
+
+
+def _capture_for(keys) -> list:
+    return [{"assignment_key": k} for k in keys]
+
+
+def test_capture_coverage_accepts_exactly_once_per_assignment() -> None:
+    plan = _synthetic_plan(64)
+    result = producer.assert_capture_coverage(_capture_for(plan["assignment_keys"]), plan)
+    assert result["complete"] and result["captured_assignments"] == 64
+
+
+def test_capture_coverage_rejects_a_dropped_assignment() -> None:
+    """A dropped forward must fail closed, not be averaged away."""
+    plan = _synthetic_plan(64)
+    partial = _capture_for(plan["assignment_keys"][:-1])
+    with pytest.raises(AssertionError) as excinfo:
+        producer.assert_capture_coverage(partial, plan)
+    assert "STOP_F1_PRODUCER_CAPTURE_INCOMPLETE" in str(excinfo.value)
+
+
+def test_capture_coverage_rejects_a_double_counted_assignment() -> None:
+    plan = _synthetic_plan(64)
+    doubled = _capture_for(plan["assignment_keys"]) + _capture_for(plan["assignment_keys"][:1])
+    with pytest.raises(AssertionError) as excinfo:
+        producer.assert_capture_coverage(doubled, plan)
+    assert "STOP_F1_PRODUCER_CAPTURE_DUPLICATED" in str(excinfo.value)
+
+
+def test_capture_coverage_rejects_an_unplanned_assignment() -> None:
+    """A forward whose key is not in the plan is unauthorised, not extra credit."""
+    plan = _synthetic_plan(64)
+    smuggled = _capture_for(plan["assignment_keys"]) + [{"assignment_key": "f" * 64}]
+    with pytest.raises(AssertionError) as excinfo:
+        producer.assert_capture_coverage(smuggled, plan)
+    assert "STOP_F1_PRODUCER_CAPTURE_UNPLANNED_ASSIGNMENT" in str(excinfo.value)
+
+
+def test_capture_record_rejects_illegal_role_and_evidence_level() -> None:
+    base = dict(identity="i" * 64, canonical_cell_id="c1", q=7, state_dim=8,
+                dtype="float32", assignment_key="a" * 64)
+    ok = producer.mechanics_capture_record(role="correct_student", evidence_level=60, **base)
+    assert ok["role"] == "correct_student" and ok["assignment_key"] == "a" * 64
+    with pytest.raises(ValueError, match="CAPTURE_ROLE"):
+        producer.mechanics_capture_record(role="student", evidence_level=60, **base)
+    with pytest.raises(ValueError, match="CAPTURE_EVIDENCE_LEVEL"):
+        producer.mechanics_capture_record(role="correct_student", evidence_level=50, **base)
+    with pytest.raises(ValueError, match="CAPTURE_EVIDENCE_LEVEL"):
+        producer.mechanics_capture_record(role="matched_null_student", evidence_level=None, **base)
+    # The teacher state is evidence-invariant; an evidence level on it would
+    # imply five teacher forwards per (cell,q) and inflate the forward count.
+    teacher = producer.mechanics_capture_record(role="teacher", evidence_level=None, **base)
+    assert teacher["evidence_level"] is None
+    with pytest.raises(ValueError, match="TEACHER_EVIDENCE_INVARIANT"):
+        producer.mechanics_capture_record(role="teacher", evidence_level=20, **base)
+    with pytest.raises(ValueError, match="CAPTURE_ASSIGNMENT_KEY"):
+        producer.mechanics_capture_record(
+            role="teacher", evidence_level=None,
+            **{**base, "assignment_key": "short"})
+
+
+def test_authority_dependent_declaration_matches_the_ast() -> None:
+    """The declared NOT_MEASURABLE set must match reality.
+
+    Written because the first draft of that declaration was wrong in both
+    directions: it named a test that does not touch an authority and omitted one
+    that does. A stale declaration would let a reviewer miscount which evidence
+    actually ran.
+    """
+    tree = ast.parse(Path(__file__).read_text(encoding="utf-8"))
+    actual = set()
+    for node in tree.body:
+        if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
+            for inner in ast.walk(node):
+                if (isinstance(inner, ast.Call) and isinstance(inner.func, ast.Name)
+                        and inner.func.id == "_authority"):
+                    actual.add(node.name)
+    assert actual == set(AUTHORITY_DEPENDENT_TESTS), {
+        "undeclared": sorted(actual - set(AUTHORITY_DEPENDENT_TESTS)),
+        "declared_but_not_authority_dependent": sorted(set(AUTHORITY_DEPENDENT_TESTS) - actual),
+    }

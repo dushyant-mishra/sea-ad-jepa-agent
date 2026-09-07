@@ -91,10 +91,54 @@ passes, the tolerance is doing no work.
 3. Confirm the partition gate rejects `reader_validation`, `reader_oracle`,
    `development`, `sealed_holdout` and `whole_study_external_holdout`, and also
    rejects an unrecognised partition rather than ignoring it.
-4. Run the suite from a clean extraction. Expect 25 of 25. Local passes are not
-   certification and are offered only as a reproduction target.
-5. Attack independence, then the comparator, then the freeze ordering.
-6. Read `F1_DATA_ONLY_CLOSURE_DESIGN_20260907.md` and judge whether closure can
+4. Run the suite. What you should expect depends on whether you hold the two
+   external authority files, and this is the part of the package most likely to
+   mislead you if you skip this paragraph.
+
+   The frozen assignment authority is 30 MB and the dedup map 8 MB, and neither
+   is tracked in git, so neither can be a package member. Four checks therefore
+   depend on an external tree, and they are the strongest evidence here — the
+   constants-versus-derived-counts comparison and the capture-coverage
+   reconciliation. They are named explicitly in `AUTHORITY_DEPENDENT_TESTS`, and
+   a meta-test derives that list by AST and fails if it drifts.
+
+   | situation | expected |
+   |---|---|
+   | authorities reachable | 33 passed |
+   | `F1_PREFREEZE_AUTHORITY_ROOT=<tree>` plus `F1_PREFREEZE_REQUIRE_AUTHORITIES=1` | 33 passed |
+   | clean extraction, no authorities | 29 passed, **4 skipped** |
+   | clean extraction plus `F1_PREFREEZE_REQUIRE_AUTHORITIES=1` | 29 passed, **4 failed** |
+
+   Those four skips are `NOT_MEASURABLE`, not `PASS`. Under this project's own
+   precedence `INVALID > FAIL > NOT_MEASURABLE > PASS`, a check that did not run
+   has not been evaluated. Point `F1_PREFREEZE_AUTHORITY_ROOT` at a tree holding
+   the three authorities and set `F1_PREFREEZE_REQUIRE_AUTHORITIES=1`, so an
+   unreachable authority fails loudly instead of skipping. When the variable is
+   set it is the only root consulted, so a stale local path cannot satisfy it
+   silently.
+
+   An earlier revision of this handoff told you to expect a full pass count from
+   a clean extraction. That was wrong, and it was the more dangerous kind of
+   wrong: it would have invited you to read four silent skips as verification of
+   the package's central claim. Local passes are not certification in any case,
+   and are offered only as a reproduction target.
+
+5. Attack the capture-coverage obligation. `plan_mechanics_capture` enumerates
+   one capture record per assignment from `assignment_key_sha256`, asserts
+   44,496 planned assignments and the 222,480 evidence expansion, and requires
+   the keys to be distinct. `assert_capture_coverage` then separates three
+   distinct failures — a planned assignment with no capture record, one captured
+   twice, and a capture record whose key is not in the plan. Each has its own
+   STOP and its own test. `mechanics_capture_record` additionally rejects an
+   unrecognised role, an evidence level outside `(20, 40, 60, 80, 100)`, and any
+   evidence level attached to a teacher record, since the teacher state is
+   evidence-invariant and five teacher forwards per `(cell,q)` would inflate the
+   forward count.
+
+   This existed only as a docstring sentence until it was re-audited. Treat it
+   as newly written code rather than as reviewed code.
+6. Attack independence, then the comparator, then the freeze ordering.
+7. Read `F1_DATA_ONLY_CLOSURE_DESIGN_20260907.md` and judge whether closure can
    bind real roots without editing frozen source. Step 6 of that ordering —
    re-verifying every pre-freeze source digest after the sweep — is stated as
    the reviewer's job, not the producing lane's. If you would not accept it,

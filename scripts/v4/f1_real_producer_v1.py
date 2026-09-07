@@ -104,6 +104,18 @@ ACCEPTED_MECHANICS: dict[str, Any] = {
 }
 
 EVIDENCE_LEVELS: tuple[int, ...] = (20, 40, 60, 80, 100)
+
+# The three forward roles the sweep executes. A capture record carrying any
+# other role is rejected rather than stored, because an unrecognised role is how
+# an uncounted forward enters the capture set.
+LEGAL_CAPTURE_ROLES: tuple[str, ...] = ("teacher", "correct_student",
+                                        "matched_null_student")
+
+# Canonical per-assignment identity column in F1_QUERY_ASSIGNMENTS_2DRAW.csv.
+# Named exactly; substring matching on an authority column is how a schema
+# change silently selects the wrong field.
+ASSIGNMENT_KEY_COLUMN = "assignment_key_sha256"
+
 LAWFUL_PARTITION = "reader_fit"
 FORBIDDEN_PARTITIONS = ("reader_validation", "reader_oracle", "development",
                         "sealed_holdout", "whole_study_external_holdout")
@@ -268,17 +280,41 @@ def storage_shard_id(donor_id: str, operator_index: int) -> str:
 
 def mechanics_capture_record(*, identity: str, role: str, canonical_cell_id: str,
                              q: int, evidence_level: int | None,
-                             state_dim: int, dtype: str) -> dict[str, Any]:
+                             state_dim: int, dtype: str,
+                             assignment_key: str) -> dict[str, Any]:
     """The per-assignment mechanics capture schema.
 
-    Covers every one of the 44,496 assignments at capture time. It records what
-    was executed and under which bound authority, never a biological verdict.
+    Records what was executed and under which bound authority, never a
+    biological verdict.
+
+    Coverage over all 44,496 assignments is deliberately *not* asserted by this
+    function and must not be claimed from it. An earlier revision stated in its
+    docstring that it "covers every one of the 44,496 assignments" while nothing
+    enumerated or enforced that -- the unverified prose claim this project
+    exists to reject. Coverage is enforced by `plan_mechanics_capture` and
+    `assert_capture_coverage`, which fail closed on a missing, duplicated or
+    unplanned assignment key.
     """
     if dtype != ACCEPTED_MECHANICS["dtype"]:
         raise ValueError("STOP_F1_PRODUCER_CAPTURE_DTYPE")
+    if role not in LEGAL_CAPTURE_ROLES:
+        raise ValueError("STOP_F1_PRODUCER_CAPTURE_ROLE: %r not in %r"
+                         % (role, LEGAL_CAPTURE_ROLES))
+    if role == "teacher":
+        # The teacher state is evidence-invariant, so an evidence level on a
+        # teacher record would imply five distinct teacher forwards per (cell,q)
+        # and silently inflate the forward count.
+        if evidence_level is not None:
+            raise ValueError("STOP_F1_PRODUCER_CAPTURE_TEACHER_EVIDENCE_INVARIANT")
+    elif evidence_level not in EVIDENCE_LEVELS:
+        raise ValueError("STOP_F1_PRODUCER_CAPTURE_EVIDENCE_LEVEL: %r not in %r"
+                         % (evidence_level, EVIDENCE_LEVELS))
+    if not (isinstance(assignment_key, str) and len(assignment_key) == 64):
+        raise ValueError("STOP_F1_PRODUCER_CAPTURE_ASSIGNMENT_KEY")
     return {
         "schema": "f1-real-mechanics-capture-v1",
         "identity": str(identity),
+        "assignment_key": str(assignment_key),
         "role": str(role),
         "canonical_cell_id": str(canonical_cell_id),
         "q": int(q),
@@ -292,6 +328,102 @@ def mechanics_capture_record(*, identity: str, role: str, canonical_cell_id: str
         "accepted_real_forward_root": ACCEPTED_REAL_FORWARD_ROOT,
         "partition": LAWFUL_PARTITION,
     }
+
+
+def plan_mechanics_capture(assignment_csv: Path) -> dict[str, Any]:
+    """Enumerate the mechanics-capture plan over every statistical assignment.
+
+    Reads the frozen assignment authority and returns the ordered set of
+    `assignment_key_sha256` values that capture must cover, one per assignment.
+    The count is asserted against the frozen 44,496 and the assignment-by-
+    evidence expansion against the frozen 222,480, so a truncated or extended
+    authority file cannot quietly shrink the capture obligation.
+
+    This is a *plan*, not an execution. It reads a reader-fit design authority
+    and touches no biological state, no checkpoint and no forward pass.
+    """
+    import csv
+
+    keys: list[str] = []
+    with io_open_text(assignment_csv) as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None or ASSIGNMENT_KEY_COLUMN not in reader.fieldnames:
+            raise AssertionError("STOP_F1_PRODUCER_CAPTURE_PLAN_SCHEMA: %s absent"
+                                 % ASSIGNMENT_KEY_COLUMN)
+        for row in reader:
+            key = (row.get(ASSIGNMENT_KEY_COLUMN) or "").strip()
+            if len(key) != 64:
+                raise AssertionError("STOP_F1_PRODUCER_CAPTURE_PLAN_KEY_MALFORMED")
+            keys.append(key)
+
+    geometry = assert_frozen_geometry()
+    expected = geometry["statistical_assignments"]
+    if len(keys) != expected:
+        raise AssertionError("STOP_F1_PRODUCER_CAPTURE_PLAN_ROWS: %d != %d"
+                             % (len(keys), expected))
+    distinct = set(keys)
+    if len(distinct) != expected:
+        raise AssertionError("STOP_F1_PRODUCER_CAPTURE_PLAN_NOT_DISTINCT: %d distinct of %d"
+                             % (len(distinct), expected))
+    rows = len(keys) * len(EVIDENCE_LEVELS)
+    if rows != geometry["assignment_evidence_effect_rows"]:
+        raise AssertionError("STOP_F1_PRODUCER_CAPTURE_PLAN_EVIDENCE_EXPANSION: %d != %d"
+                             % (rows, geometry["assignment_evidence_effect_rows"]))
+    return {
+        "schema": "f1-real-mechanics-capture-plan-v1",
+        "assignment_keys": keys,
+        "planned_assignments": len(keys),
+        "planned_assignment_evidence_rows": rows,
+        "evidence_levels": list(EVIDENCE_LEVELS),
+        "capture_roles": list(LEGAL_CAPTURE_ROLES),
+        "assignment_key_root": identity_root(sorted(keys)),
+    }
+
+
+def assert_capture_coverage(captured: Iterable[Mapping[str, Any]],
+                            plan: Mapping[str, Any]) -> dict[str, Any]:
+    """Fail closed unless capture covers each planned assignment exactly once.
+
+    Three separate failures, kept distinct because they have different causes:
+    a planned assignment with no capture record (a dropped forward), a planned
+    assignment captured twice (a double count), and a capture record whose key
+    is not in the plan at all (an unauthorised forward).
+    """
+    planned: set[str] = set(plan["assignment_keys"])
+    if len(planned) != int(plan["planned_assignments"]):
+        raise AssertionError("STOP_F1_PRODUCER_CAPTURE_PLAN_INTERNALLY_INCONSISTENT")
+
+    seen: dict[str, int] = {}
+    unplanned: set[str] = set()
+    for record in captured:
+        key = str(record.get("assignment_key", ""))
+        if key not in planned:
+            unplanned.add(key)
+            continue
+        seen[key] = seen.get(key, 0) + 1
+
+    missing = sorted(planned - set(seen))
+    duplicated = sorted(k for k, n in seen.items() if n > 1)
+    if unplanned:
+        raise AssertionError("STOP_F1_PRODUCER_CAPTURE_UNPLANNED_ASSIGNMENT: %d, first=%r"
+                             % (len(unplanned), sorted(unplanned)[0]))
+    if missing:
+        raise AssertionError("STOP_F1_PRODUCER_CAPTURE_INCOMPLETE: %d uncaptured of %d, first=%r"
+                             % (len(missing), len(planned), missing[0]))
+    if duplicated:
+        raise AssertionError("STOP_F1_PRODUCER_CAPTURE_DUPLICATED: %d, first=%r"
+                             % (len(duplicated), duplicated[0]))
+    return {
+        "schema": "f1-real-mechanics-capture-coverage-v1",
+        "planned_assignments": len(planned),
+        "captured_assignments": len(seen),
+        "complete": True,
+    }
+
+
+def io_open_text(path: Path):
+    """Open a frozen CSV authority as text with an explicit newline policy."""
+    return open(path, "r", encoding="utf-8", newline="")
 
 
 def _require_real_execution() -> None:

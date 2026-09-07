@@ -154,6 +154,55 @@ def derive_geometry_from_authorities(assignment_csv: Path, dedup_csv: Path | Non
     return geometry
 
 
+def replay_derive_capture_coverage(assignment_csv: Path) -> dict[str, Any]:
+    """Independently derive the capture obligation from the assignment authority.
+
+    The producer plans capture from `assignment_key_sha256` and asserts the
+    count against the frozen 44,496. This counts the same column without
+    consulting the producer, and additionally reconciles the assignment keys
+    against the `(canonical_cell_id, selected_query_address)` pairs, so a file
+    whose key column had been regenerated independently of its design rows would
+    surface here rather than agreeing by construction.
+    """
+    with Path(assignment_csv).open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    if not rows:
+        raise RuntimeError("STOP_F1_REPLAY_EMPTY_ASSIGNMENT_AUTHORITY")
+    for column in ("assignment_key_sha256", "canonical_cell_id", "selected_query_address"):
+        if column not in rows[0]:
+            raise RuntimeError("STOP_F1_REPLAY_CAPTURE_SCHEMA: absent=%r" % column)
+    keys = [(r["assignment_key_sha256"] or "").strip() for r in rows]
+    if any(len(k) != 64 for k in keys):
+        raise RuntimeError("STOP_F1_REPLAY_CAPTURE_KEY_MALFORMED")
+    distinct_keys = set(keys)
+    pairs = {(r["canonical_cell_id"], r["selected_query_address"]) for r in rows}
+    return {
+        "schema": "f1-real-replay-capture-coverage-v1",
+        "derived_assignments": len(rows),
+        "distinct_assignment_keys": len(distinct_keys),
+        "keys_unique_per_assignment": len(distinct_keys) == len(rows),
+        "derived_assignment_evidence_rows": len(rows) * len(EVIDENCE_LEVELS),
+        "distinct_cell_q_pairs": len(pairs),
+        "assignment_key_root": replay_identity_root(sorted(distinct_keys)),
+    }
+
+
+def compare_capture_coverage(producer_plan: Mapping[str, Any],
+                             replay_derived: Mapping[str, Any]) -> dict[str, Any]:
+    """Compare the producer's capture plan against the replay's derived counts."""
+    disagreements: list[str] = []
+    if int(producer_plan["planned_assignments"]) != int(replay_derived["derived_assignments"]):
+        disagreements.append("planned_assignments!=derived_assignments")
+    if (int(producer_plan["planned_assignment_evidence_rows"])
+            != int(replay_derived["derived_assignment_evidence_rows"])):
+        disagreements.append("assignment_evidence_rows")
+    if not replay_derived["keys_unique_per_assignment"]:
+        disagreements.append("assignment_keys_not_unique")
+    if str(producer_plan["assignment_key_root"]) != str(replay_derived["assignment_key_root"]):
+        disagreements.append("assignment_key_root")
+    return {"agree": not disagreements, "disagreements": disagreements}
+
+
 def compare_geometry(producer_asserted: Mapping[str, int],
                      replay_derived: Mapping[str, int]) -> dict[str, Any]:
     """Compare the asserted constants against the derived counts, field by field."""
