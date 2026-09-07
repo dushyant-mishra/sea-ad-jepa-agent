@@ -1,0 +1,49 @@
+name: D1-A V2 estimation atlas audit
+
+on:
+  push:
+    branches:
+      - d1a-synthetic-estimation-atlas-impl-v2-20260907
+    paths:
+      - src/sea_ad_jepa/v4/d1a_estimation_atlas.py
+      - scripts/v4/d1a_synthetic_known_answer_v2.py
+      - tests/test_d1a_estimation_atlas_v2.py
+      - .github/workflows/d1a_estimation_atlas_v2_audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  d1a-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check numpy pandas scipy pytest
+      - name: Verify frozen V2 contract bytes unchanged
+        run: |
+          test "$(sha256sum docs/agent/D1A_SYNTHETIC_ESTIMATION_ATLAS_CONTRACT_V2_20260907.json | cut -d' ' -f1)" = "489a221428f0741fb0aaf120274f10495beb1c4fb5d89a017472e38430152468"
+          test "$(sha256sum scripts/agent/validate_d1a_synthetic_contract_v2.py | cut -d' ' -f1)" = "f3bf68dcf7310f214a170e72cd4a5697604d6441045770a34a01ad9732ddddf4"
+          test "$(sha256sum tests/test_d1a_synthetic_contract_v2.py | cut -d' ' -f1)" = "4d93675ff53ef8dc0826da8180b260ad009ea71b69637cd7c3fe2f27755c7a56"
+          test "$(cat docs/agent/D1A_SYNTHETIC_CONTRACT_V2_PACKAGE_ROOT_20260907.txt)" = "6af28682da4a5c37a212ad1926fbc6acf5a7fea88c46c49f69295cbaae8a3a81"
+          echo D1A_V2_CONTRACT_AUTHORITY_UNCHANGED
+      - name: Compile D1-A implementation
+        run: |
+          python -m py_compile \
+            src/sea_ad_jepa/v4/d1a_estimation_atlas.py \
+            scripts/v4/d1a_synthetic_known_answer_v2.py
+      - name: Run D1-A V2 behavioral suite
+        run: python -m pytest -q tests/test_d1a_estimation_atlas_v2.py
+      - name: Run standalone known-answer diagnostic
+        env:
+          PYTHONPATH: src:.
+        run: python scripts/v4/d1a_synthetic_known_answer_v2.py
+      - name: Bind implementation bytes
+        run: |
+          sha256sum \
+            src/sea_ad_jepa/v4/d1a_estimation_atlas.py \
+            scripts/v4/d1a_synthetic_known_answer_v2.py \
+            tests/test_d1a_estimation_atlas_v2.py
