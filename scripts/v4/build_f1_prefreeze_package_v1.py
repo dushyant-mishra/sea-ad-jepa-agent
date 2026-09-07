@@ -25,12 +25,19 @@ FROZEN_SOURCES = (
     "scripts/v4/f1_real_producer_v1.py",
     "scripts/v4/f1_real_replay_v1.py",
     "scripts/v4/f1_execution_authorization_v1.py",
+    "scripts/v4/f1_production_runtime_adapter_v1.py",
+    "scripts/v4/f1_evidence_mask_authority_v1.py",
     "tests/test_f1_real_producer_replay_parity_v1.py",
+    "tests/test_f1_evidence_mask_authority_v1.py",
+    "tests/test_f1_u0_adapter_smoke_v1.py",
     "scripts/v4/build_f1_prefreeze_package_v1.py",
 )
 
 BOUND_UPSTREAM = (
     "scripts/v4/contextual_target_f1_preflight_executor_v1.py",
+    "src/sea_ad_jepa/v4/contextual_query_local.py",
+    "src/sea_ad_jepa/v4/ipb_jepa.py",
+    "src/sea_ad_jepa/v4/gene_tokenizer.py",
     "scripts/v4/validate_f1_production_mechanics_acceptance_v1.py",
     "docs/agent/F1_PRODUCTION_MECHANICS_ACCEPTANCE_CONTRACT_20260903.md",
     "docs/agent/F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_CONTRACT_20260903.md",
@@ -44,6 +51,7 @@ CONTRACTS = (
     "docs/agent/F1_DATA_ONLY_CLOSURE_DESIGN_20260907.md",
     "docs/agent/F1_REAL_PRODUCER_REPLAY_EXTERNAL_REVIEW_HANDOFF_20260907.md",
     "docs/agent/F1_EXECUTION_AUTHORIZATION_DESIGN_20260907.md",
+    "docs/agent/F1_EA35_REPAIR_RESPONSE_20260907.md",
 )
 
 

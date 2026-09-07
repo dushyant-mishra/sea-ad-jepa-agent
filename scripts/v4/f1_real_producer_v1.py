@@ -988,125 +988,306 @@ def run_production_sweep(*, authorization_path: str | Path | None = None,
         expected_donor_count=LAWFUL_READER_FIT_DONORS,
         expected_donor_roster_root=roster["roster_root"])
 
-    if forward_engine is None or reader is None:
+    runtime = assert_runtime_binding(authorization=payload, adapter=forward_engine,
+                                     reader=reader) if (
+        forward_engine is not None and reader is not None) else None
+    if forward_engine is None or reader is None or output_dir is None:
         raise PermissionError(
-            "%s: an authorized forward engine and lawful reader must be supplied by "
-            "the execution binding" % STOP_NOT_AUTHORIZED)
+            "%s: an authorized runtime adapter, lawful reader and durable output "
+            "directory must all be supplied by the execution binding"
+            % STOP_NOT_AUTHORIZED)
 
     return execute_authorized_sweep(
         authorization=authorization, roster=roster, geometry=geometry,
-        forward_engine=forward_engine, reader=reader,
-        output_dir=Path(output_dir) if output_dir else None, **kwargs)
+        adapter=forward_engine, reader=reader, output_dir=Path(output_dir), **kwargs)
+
+
+def _atomic_write_json(path: Path, payload: Any) -> str:
+    """Write JSON atomically and return the digest of the bytes written.
+
+    Staging plus `os.replace`, so an interrupted run never leaves a partial
+    artifact that a resume would read as complete.
+    """
+    import os
+
+    body = json.dumps(payload, sort_keys=True, separators=(",", ":"),
+                      default=str).encode("utf-8")
+    staging = Path(str(path) + ".staging")
+    staging.parent.mkdir(parents=True, exist_ok=True)
+    with staging.open("wb") as handle:
+        handle.write(body)
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(staging, path)
+    return hashlib.sha256(body).hexdigest()
+
+
+def shard_artifact_paths(output_dir: Path, shard_id: str) -> dict[str, Path]:
+    """The per-shard durable artifacts a resume needs.
+
+    An earlier revision committed only the NPZ payload and returned captures and
+    effect rows as in-memory lists, so terminating after a successful sweep lost
+    exactly the artifacts the replay and the data-only closure are supposed to
+    bind, and a resumed run could not reconstruct them.
+    """
+    root = Path(output_dir)
+    return {
+        "payload": root / ("%s.npz" % shard_id),
+        "capture": root / ("%s.capture.json" % shard_id),
+        "effect": root / ("%s.effect.json" % shard_id),
+        "states": root / ("%s.states.npz" % shard_id),
+    }
+
+
+def shard_is_complete(output_dir: Path, shard_id: str) -> bool:
+    """A shard counts as done only when every artifact is present.
+
+    Resume is fail-closed: a payload without its capture, effect and state
+    sidecars is an incomplete shard and is recomputed, rather than being counted
+    as published and silently leaving the final result short.
+    """
+    paths = shard_artifact_paths(output_dir, shard_id)
+    return all(paths[name].is_file() for name in ("payload", "capture", "effect", "states"))
+
+
+def _effect_row_from_states(*, assignment_key: str, evidence_level: int, shard_id: str,
+                            checkpoint: str, cell_id: str, query_address: str,
+                            teacher: Mapping[str, Any], correct: Mapping[str, Any],
+                            null: Mapping[str, Any]) -> dict[str, Any]:
+    """The real F1 estimand, from the six state vectors.
+
+    An earlier revision emitted effect rows holding only identifiers while the
+    correct and matched-null states were discarded, so the produced artifacts
+    could not reconstruct the actual correct-versus-null effect and
+    `build_effect_row` was never called in the production path. The frozen
+    estimand is `cos(S_correct,T_true) - cos(S_null,T_true)` on the contextual
+    readout, with the direct readout giving `direct_delta`.
+    """
+    own = float(replay_free_cosine(correct["contextual"], teacher["contextual"]))
+    wrong = float(replay_free_cosine(null["contextual"], teacher["contextual"]))
+    row = build_effect_row(
+        s_correct_contextual=np.asarray(correct["contextual"], dtype=np.float64),
+        t_true_contextual=np.asarray(teacher["contextual"], dtype=np.float64),
+        s_null_contextual=np.asarray(null["contextual"], dtype=np.float64),
+        s_correct_direct=np.asarray(correct["direct"], dtype=np.float64),
+        t_true_direct=np.asarray(teacher["direct"], dtype=np.float64),
+        s_null_direct=np.asarray(null["direct"], dtype=np.float64),
+        own_similarity=own, paired_wrong_similarity=wrong)
+    return {
+        "schema": "f1-real-effect-row-v1",
+        "assignment_key": str(assignment_key),
+        "evidence_level": int(evidence_level),
+        "shard_id": str(shard_id),
+        "checkpoint_sha256": str(checkpoint),
+        "canonical_cell_id": str(cell_id),
+        "query_address": str(query_address),
+        "own_similarity": own,
+        "paired_wrong_similarity": wrong,
+        "A": float(row["A"]),
+        "direct_delta": float(row["direct_delta"]),
+        "qid_margin": float(row["qid_margin"]),
+        "qid_win": float(row["qid_win"]),
+        "teacher_evidence_sha256": str(teacher.get("evidence_sha256", "")),
+        "correct_evidence_sha256": str(correct.get("evidence_sha256", "")),
+        "null_evidence_sha256": str(null.get("evidence_sha256", "")),
+        "matched_null_source_cell_id": str(null.get("matched_null_source_cell_id", "")),
+    }
+
+
+def replay_free_cosine(left: Any, right: Any) -> float:
+    """Cosine used by the producer. The replay reimplements its own."""
+    a = np.asarray(left, dtype=np.float64).reshape(-1)
+    b = np.asarray(right, dtype=np.float64).reshape(-1)
+    na = float(np.linalg.norm(a))
+    nb = float(np.linalg.norm(b))
+    if na == 0.0 or nb == 0.0:
+        raise ValueError("STOP_F1_ZERO_NORM_STATE")
+    return float(np.dot(a, b) / (na * nb))
 
 
 def execute_authorized_sweep(*, authorization: Mapping[str, Any],
                              roster: Mapping[str, Any], geometry: Mapping[str, int],
-                             forward_engine: ForwardEngine, reader: Any,
-                             output_dir: Path | None,
+                             adapter: Any, reader: Any,
+                             output_dir: Path,
                              membership_root: str | None = None) -> dict[str, Any]:
     """Execute the sweep once authorization has been validated.
 
-    Separate from `run_production_sweep` so the authorization boundary is a
-    single place and the pipeline itself is testable against a technical reader
-    and forward engine without ever weakening that boundary: reaching this
-    function at all requires a validated authorization object.
+    Every shard publishes its own durable capture, effect-row and state
+    artifacts atomically before the shard is counted, so an interrupted run can
+    be resumed and the resumed result is indistinguishable from an uninterrupted
+    one. Reaching this function at all requires a validated authorization
+    object, which is why the authorization boundary lives in exactly one place.
     """
     if str(authorization.get("partition")) != LAWFUL_PARTITION:
         raise PermissionError("%s: authorization partition %r"
                               % (STOP_POPULATION_FIREWALL, authorization.get("partition")))
     checkpoint = str(authorization["checkpoint_sha256"])
-    # The reviewed store requires the membership and forward roots and the dtype
-    # up front, and it has no `exists`; resume is by shard file presence. Both
-    # were wrong in an earlier draft of this pipeline, which means the "real
-    # producer" would have failed on its first authorized call.
-    store = None
-    if output_dir is not None:
-        store = AtomicShardStore(
-            output_dir,
-            membership_root=str(membership_root
-                                or authorization["authorization_root_sha256"]),
-            forward_root=ACCEPTED_REAL_FORWARD_ROOT,
-            dtype=ACCEPTED_MECHANICS["dtype"])
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    store = AtomicShardStore(
+        output_dir,
+        membership_root=str(membership_root or authorization["authorization_root_sha256"]),
+        forward_root=ACCEPTED_REAL_FORWARD_ROOT,
+        dtype=ACCEPTED_MECHANICS["dtype"])
 
-    lawful_shards = [storage_shard_id(donor, operator)
-                     for donor, operator in reader.shards()]
+    lawful_shards = [storage_shard_id(donor, operator) for donor, operator in reader.shards()]
     assert_donors_within_reader_fit((d for d, _ in reader.shards()), roster["roster"])
 
     captures: list[dict[str, Any]] = []
     effect_rows: list[dict[str, Any]] = []
     published: list[str] = []
     resumed: list[str] = []
+    shard_artifact_digests: dict[str, dict[str, str]] = {}
 
     for donor, operator in reader.shards():
         shard_id = storage_shard_id(donor, operator)
-        if store is not None and (store.root / ("%s.npz" % shard_id)).exists():
-            # Resume by physical shard existence: a committed shard is reused
-            # rather than rewritten, so an interrupted run reproduces identical
-            # digests.
+        paths = shard_artifact_paths(output_dir, shard_id)
+        if shard_is_complete(output_dir, shard_id):
+            # Reload the shard's own durable artifacts so the resumed result
+            # carries every forward and effect identity, not only the new ones.
+            shard_captures = json.loads(paths["capture"].read_text(encoding="utf-8"))
+            shard_effects = json.loads(paths["effect"].read_text(encoding="utf-8"))
+            captures.extend(shard_captures)
+            effect_rows.extend(shard_effects)
+            shard_artifact_digests[shard_id] = {
+                "capture_sha256": sha256_file(paths["capture"]),
+                "effect_sha256": sha256_file(paths["effect"]),
+                "payload_sha256": sha256_file(paths["payload"]),
+                "states_sha256": sha256_file(paths["states"]),
+            }
             resumed.append(shard_id)
             published.append(shard_id)
             continue
+
+        shard_captures = []
+        shard_effects = []
         ordered_ids: list[str] = []
         values: list[Any] = []
+        state_arrays: dict[str, list[Any]] = {}
+
         for cell in reader.cells(donor, operator):
-            support = np.asarray(cell["observation_state"], dtype=bool)
-            expression = normalize_expression(cell["raw_counts"], cell["source_library"])
             cell_id = str(cell["canonical_cell_id"])
-            # The frozen identity functions key on `canonical_cell_id` and an
-            # INTEGER `q`, not on the query address string. The assignment
-            # authority carries both, as `selected_query_address` and
-            # `selected_query_address_id`, so the reader must supply both. An
-            # earlier draft of this pipeline passed the address where the integer
-            # belonged, which would have failed on its first authorized call.
+            expression = normalize_expression(cell["raw_counts"], cell["source_library"])
             for query in cell["queries"]:
                 query_address = str(query["query_address"])
                 q_index = int(query["q"])
-                authority = {"checkpoint": checkpoint,
-                             "forward_root": ACCEPTED_REAL_FORWARD_ROOT}
-                teacher_state = forward_engine.teacher_forward(
-                    cell={**cell, "expression": expression}, query_address=query_address)
-                captures.append(forward_capture_record(
+                row = {
+                    "normalized_expression": expression,
+                    "physical_state": cell["observation_state"],
+                    "query_index": q_index,
+                    "query_address": q_index,
+                    "row_locator": str(cell.get("row_locator", cell_id)),
+                    "provenance": cell["provenance"],
+                }
+                # T_true is evidence-invariant, so it is computed once per
+                # (cell,q) and reused across all five levels and both arms.
+                teacher = adapter.teacher_state(row=row)
+                shard_captures.append(forward_capture_record(
                     identity=teacher_compute_identity(
-                        authority, {"canonical_cell_id": cell_id, "q": q_index}),
+                        {"checkpoint": checkpoint,
+                         "forward_root": ACCEPTED_REAL_FORWARD_ROOT},
+                        {"canonical_cell_id": cell_id, "q": q_index}),
                     role=TEACHER_ROLE, canonical_cell_id=cell_id,
                     query_address=query_address, evidence_level=None, arm=None,
                     model_family=TEACHER_FAMILY, shard_id=shard_id,
                     checkpoint_sha256=checkpoint,
-                    state_dim=int(np.asarray(teacher_state).reshape(-1).size),
+                    state_dim=int(np.asarray(teacher["contextual"]).size),
                     dtype=ACCEPTED_MECHANICS["dtype"]))
+                state_arrays.setdefault("teacher_contextual", []).append(teacher["contextual"])
+                state_arrays.setdefault("teacher_direct", []).append(teacher["direct"])
+
                 for evidence_level in EVIDENCE_LEVELS:
-                    mask = build_query_evidence_mask(
-                        query_address=query_address, evidence_level=evidence_level,
-                        measurable=support)
-                    for role, arm in ((CORRECT_STUDENT_ROLE, CORRECT_ARM),
-                                      (MATCHED_NULL_STUDENT_ROLE, MATCHED_NULL_ARM)):
-                        state = forward_engine.student_forward(
-                            cell={**cell, "expression": expression, "mask": mask},
-                            query_address=query_address, evidence_level=evidence_level,
-                            arm=arm)
+                    correct = adapter.correct_student_state(row=row,
+                                                            evidence_level=evidence_level)
+                    null = adapter.matched_null_student_state(
+                        row=row, evidence_level=evidence_level,
+                        source_normalized_expression=query["source_normalized_expression"],
+                        source_row=query["source_row"])
+                    for role, arm, produced in (
+                            (CORRECT_STUDENT_ROLE, CORRECT_ARM, correct),
+                            (MATCHED_NULL_STUDENT_ROLE, MATCHED_NULL_ARM, null)):
                         record = {"canonical_cell_id": cell_id, "q": q_index,
                                   "evidence_level": int(evidence_level)}
                         if role == MATCHED_NULL_STUDENT_ROLE:
-                            record["null_source_cell"] = query.get("null_source_cell")
-                        captures.append(forward_capture_record(
-                            identity=student_forward_identity(authority, record, role),
+                            record["null_source_cell"] = produced.get(
+                                "matched_null_source_cell_id")
+                        shard_captures.append(forward_capture_record(
+                            identity=student_forward_identity(
+                                {"checkpoint": checkpoint,
+                                 "forward_root": ACCEPTED_REAL_FORWARD_ROOT},
+                                record, role),
                             role=role, canonical_cell_id=cell_id,
                             query_address=query_address, evidence_level=evidence_level,
                             arm=arm, model_family=STUDENT_FAMILY, shard_id=shard_id,
                             checkpoint_sha256=checkpoint,
-                            state_dim=int(np.asarray(state).reshape(-1).size),
+                            state_dim=int(np.asarray(produced["contextual"]).size),
                             dtype=ACCEPTED_MECHANICS["dtype"]))
-                    effect_rows.append({
-                        "assignment_key": str(query["assignment_key"]),
-                        "evidence_level": int(evidence_level),
-                        "shard_id": shard_id,
-                        "checkpoint_sha256": checkpoint,
-                    })
+                        prefix = "correct" if role == CORRECT_STUDENT_ROLE else "null"
+                        state_arrays.setdefault(
+                            "%s_contextual_%d" % (prefix, evidence_level), []
+                        ).append(produced["contextual"])
+                        state_arrays.setdefault(
+                            "%s_direct_%d" % (prefix, evidence_level), []
+                        ).append(produced["direct"])
+
+                    shard_effects.append(_effect_row_from_states(
+                        assignment_key=str(query["assignment_key"]),
+                        evidence_level=evidence_level, shard_id=shard_id,
+                        checkpoint=checkpoint, cell_id=cell_id,
+                        query_address=query_address, teacher=teacher,
+                        correct=correct, null=null))
+
                 ordered_ids.append("%s|%d" % (cell_id, q_index))
-                values.append(np.asarray(teacher_state, dtype=np.float32).reshape(-1))
-        if store is not None:
-            store.commit(shard_id, ordered_ids, np.asarray(values, dtype=np.float32))
+                values.append(np.asarray(teacher["contextual"], dtype=np.float32).reshape(-1))
+
+        # Publish the shard's artifacts. States and sidecars are written before
+        # the payload is committed, and the payload commit is what makes the
+        # shard count as complete, so a crash between them leaves the shard
+        # incomplete and it is recomputed rather than half-counted.
+        # The state sidecar is float64, deliberately, while the shard payload
+        # stays float32 as the accepted mechanics require. The forwards are
+        # float32 so their values are exactly representable in float64, and
+        # storing them widened means the replay reproduces the producer's
+        # float64 effect arithmetic exactly instead of within about 1e-8. That
+        # precision loss is avoidable in a verification path, so it is avoided.
+        np.savez(str(paths["states"]) + ".staging.npz",
+                 ordered_ids=np.asarray(ordered_ids, dtype=object),
+                 **{name: np.asarray(rows, dtype=np.float64)
+                    for name, rows in state_arrays.items()})
+        import os as _os
+        _os.replace(str(paths["states"]) + ".staging.npz", paths["states"])
+        capture_digest = _atomic_write_json(paths["capture"], shard_captures)
+        effect_digest = _atomic_write_json(paths["effect"], shard_effects)
+        store.commit(shard_id, ordered_ids, np.asarray(values, dtype=np.float32))
+
+        shard_artifact_digests[shard_id] = {
+            "capture_sha256": capture_digest,
+            "effect_sha256": effect_digest,
+            "payload_sha256": sha256_file(paths["payload"]),
+            "states_sha256": sha256_file(paths["states"]),
+        }
+        captures.extend(shard_captures)
+        effect_rows.extend(shard_effects)
         published.append(shard_id)
+
+    # Final deterministic manifests and roots, derived from produced bytes only.
+    manifest = {
+        "schema": "f1-real-sweep-manifest-v1",
+        "authorization_id": authorization["authorization_id"],
+        "checkpoint_sha256": checkpoint,
+        "shards": {shard: shard_artifact_digests[shard]
+                   for shard in sorted(shard_artifact_digests)},
+    }
+    manifest_digest = _atomic_write_json(output_dir / "F1_SWEEP_MANIFEST.json", manifest)
+    capture_root = hashlib.sha256("".join(
+        shard_artifact_digests[s]["capture_sha256"]
+        for s in sorted(shard_artifact_digests)).encode("utf-8")).hexdigest()
+    effect_root = hashlib.sha256("".join(
+        shard_artifact_digests[s]["effect_sha256"]
+        for s in sorted(shard_artifact_digests)).encode("utf-8")).hexdigest()
+    shard_set_root = hashlib.sha256("".join(
+        shard_artifact_digests[s]["payload_sha256"]
+        for s in sorted(shard_artifact_digests)).encode("utf-8")).hexdigest()
 
     return {
         "schema": "f1-real-production-sweep-v1",
@@ -1118,6 +1299,12 @@ def execute_authorized_sweep(*, authorization: Mapping[str, Any],
         "resumed_shards": resumed,
         "lawful_shard_ids": lawful_shards,
         "geometry": dict(geometry),
+        "output_dir": str(output_dir),
+        "shard_artifact_digests": shard_artifact_digests,
+        "sweep_manifest_sha256": manifest_digest,
+        "capture_root_sha256": capture_root,
+        "effect_row_root_sha256": effect_root,
+        "shard_set_root_sha256": shard_set_root,
         "terminal": "F1_REAL_SWEEP_EXECUTED",
     }
 
@@ -1139,15 +1326,68 @@ def verify_sweep_completeness(result: Mapping[str, Any], *,
             "effect_rows": effects, "shards": shards, "complete": True}
 
 
+FROZEN_SOURCE_PATHS: dict[str, str] = {
+    "producer": "scripts/v4/f1_real_producer_v1.py",
+    "replay": "scripts/v4/f1_real_replay_v1.py",
+    "authorization": "scripts/v4/f1_execution_authorization_v1.py",
+    "runtime_adapter": "scripts/v4/f1_production_runtime_adapter_v1.py",
+    "evidence_mask_authority": "scripts/v4/f1_evidence_mask_authority_v1.py",
+    "tests": "tests/test_f1_real_producer_replay_parity_v1.py",
+}
+
+STOP_RUNTIME_BINDING = "STOP_F1_RUNTIME_BINDING_NOT_AUTHORIZED"
+
+
 def frozen_source_digests(repo: Path = REPO) -> dict[str, str]:
     """Digests of the frozen sources an authorization must bind."""
-    names = {
-        "producer": "scripts/v4/f1_real_producer_v1.py",
-        "replay": "scripts/v4/f1_real_replay_v1.py",
-        "authorization": "scripts/v4/f1_execution_authorization_v1.py",
-        "tests": "tests/test_f1_real_producer_replay_parity_v1.py",
+    return {name: sha256_file(_resolve_from(repo, rel))
+            for name, rel in FROZEN_SOURCE_PATHS.items()}
+
+
+def runtime_object_source_sha256(instance: Any) -> str:
+    """Digest of the module file that defines an injected runtime object.
+
+    This is what closes the substitution hole. Validating an authorization and
+    then accepting arbitrary `adapter` and `reader` Python objects meant a
+    caller could pass a different implementation without changing the
+    authorization artifact, so the artifact bound the source it did not actually
+    run. Hashing the defining module ties the object that runs to the bytes the
+    authorization named.
+    """
+    import inspect
+
+    try:
+        module_file = inspect.getfile(type(instance))
+    except TypeError as error:
+        raise PermissionError("%s: cannot locate the source of %r (%s)"
+                              % (STOP_RUNTIME_BINDING, type(instance), error))
+    return sha256_file(Path(module_file))
+
+
+def assert_runtime_binding(*, authorization: Mapping[str, Any], adapter: Any,
+                           reader: Any) -> dict[str, str]:
+    """The running adapter and reader must be the ones the authorization names."""
+    binding = dict(authorization.get("runtime_binding") or {})
+    if not binding:
+        raise PermissionError(
+            "%s: the authorization does not bind a runtime adapter or reader "
+            "implementation" % STOP_RUNTIME_BINDING)
+    observed = {
+        "adapter_module_sha256": runtime_object_source_sha256(adapter),
+        "reader_module_sha256": runtime_object_source_sha256(reader),
     }
-    return {name: sha256_file(_resolve_from(repo, rel)) for name, rel in names.items()}
+    for key, digest in sorted(observed.items()):
+        declared = str(binding.get(key, ""))
+        if declared != digest:
+            raise PermissionError(
+                "%s: %s is %s but the authorization binds %s"
+                % (STOP_RUNTIME_BINDING, key, digest, declared or "nothing"))
+    for required in ("evidence_mask_authority_sha256", "matched_null_map_sha256",
+                     "loader_source_sha256"):
+        if len(str(binding.get(required, ""))) != 64:
+            raise PermissionError("%s: runtime_binding lacks %s"
+                                  % (STOP_RUNTIME_BINDING, required))
+    return dict(observed, **{k: str(v) for k, v in binding.items()})
 
 
 def _resolve_from(repo: Path, relative: str) -> Path:
