@@ -72,7 +72,7 @@ jobs:
           print("PASS_HEALTHY_TEACHER_BASE_IMMUTABILITY_AUDIT")
           PY
 
-      - name: Bind draft bytes
+      - name: Bind immutable base bytes
         run: |
           sha256sum \
             docs/agent/HEALTHY_TEACHER_TRAINING_AUTHORITY_RECOVERY_20260907.json \
