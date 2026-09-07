@@ -59,8 +59,8 @@ Let `V_B` be any orthonormal basis spanning the block.
 `score_cB = ||coord_cB||_2`
 
 The coordinates are retained, but no coordinate is named a separate biological
-program. The norm is rotation-invariant and is the scalar used for ranking/tail
-views.
+program. The norm is rotation-invariant and is the scalar used for ranking,
+tail views, and molecular association.
 
 Within-donor centering and weighted percentiles use the frozen donor-primary
 cell weights.
@@ -79,29 +79,19 @@ the corresponding margin to be positive.
 
 Association is computed only where an address is `MEASURED_SCALAR`.
 
-### Isolated axis
-
-Use the existing signed donor/operator-aware weighted regression slope of
-expression on the scalar program score:
+For **both** object types use the donor/operator-aware weighted regression slope
+of expression on the object's scalar score:
 
 `effect_gB = Cov_w(score_B, x_g) / Var_w(score_B)`
 
-The complete signed effect vector is the molecular representation.
+- For an isolated axis, sign means expression increases/decreases along the
+  globally sign-fixed latent direction.
+- For a degenerate subspace, the scalar score is the rotation-invariant
+  subspace norm. Sign therefore means expression increases/decreases with
+  **subspace magnitude**, not with an invented orientation inside the block.
 
-### Degenerate subspace
-
-A signed vector is not identified without an orientation rule. For each
-measurable address, regress expression on all block coordinates with an
-intercept under the same weights and report the rotation-invariant multiple
-correlation strength:
-
-`assoc_strength_gB = sqrt(max(0, R2_gB))`
-
-No positive/negative label is emitted for a degenerate block:
-`SIGN_NOT_IDENTIFIED_DUE_TO_DEGENERACY`.
-
-This is not a failure; it preserves the base authority's prohibition on
-inventing an axis inside an unresolved block.
+This preserves a complete signed molecular table without assigning independent
+biological identities to arbitrary axes inside a degenerate block.
 
 ## 6. Molecular uncertainty
 
@@ -111,21 +101,18 @@ For each discovery object, process one object at a time and retain donor-level
 sufficient statistics so the full 41,238-address table does not require a dense
 4.55M x 41,238 matrix.
 
-Reported per-address uncertainty:
-- isolated axis: bootstrap percentile interval for the signed slope;
-- degenerate subspace: bootstrap percentile interval for
-  `assoc_strength = sqrt(max(0,R2))`.
+Reported per-address uncertainty for both object types is a donor-block
+bootstrap percentile interval for the signed slope.
 
 Monte Carlo replicate counts obey the same independently frozen computational
-precision rule as other D1 resampling quantities. Failure to reach precision
-is `INSUFFICIENT_MONTE_CARLO_PRECISION`, never a silent noisy interval.
+precision rule as other D1 resampling quantities. Failure to reach precision is
+`INSUFFICIENT_MONTE_CARLO_PRECISION`, never a silent noisy interval.
 
 ## 7. Measurement support
 
-For the object's molecular association magnitude `m_gB`:
+For every object:
 
-- isolated axis: `m_gB = |effect_gB|`
-- degenerate block: `m_gB = assoc_strength_gB`
+`m_gB = |effect_gB|`
 
 `support_B = sum_g m_gB * measured_fraction_gB / sum_g m_gB`
 
@@ -133,40 +120,37 @@ Source- and operator-specific support are reported separately.
 
 ## 8. Donor recurrence
 
-Construct one donor-specific molecular association vector per estimable donor
-using the same object type and formula as the global vector.
+Construct one donor-specific signed molecular association vector per estimable
+donor using the same scalar score and slope formula as the global object.
 
-### Isolated axis
+The score orientation is inherited from the frozen global object definition:
+an isolated axis uses its deterministic global eigenvector sign; a degenerate
+subspace uses the nonnegative subspace norm. No donor-specific sign flipping is
+allowed before recurrence is measured.
 
-Orient each donor vector to the global signed effect vector by multiplying the
-entire donor vector by `sign(cosine(donor, global))` only for the purpose of
-magnitude/stability summaries. Also retain the **pre-alignment** cosine.
+For every estimable donor:
+
+`cosine_dB = cosine(effect_dB, effect_global_B)`
 
 Primary recurrence component:
 
-`donor_recurrence_B = median_d pre_alignment_cosine(donor_d, global)`
+`donor_recurrence_B = median_d cosine_dB`
 
 Also report:
 - full cosine distribution;
-- fraction of estimable donors with pre-alignment cosine > 0;
+- fraction of estimable donors with cosine > 0;
 - number/fraction of estimable donors;
 - donor-level score summaries.
 
-The catalog component uses the median pre-alignment cosine; alignment must not
-turn a negative donor into positive evidence.
-
-### Degenerate subspace
-
-Use the nonnegative `assoc_strength` vectors. The primary recurrence component
-is the median donor-to-global cosine. Sign-consistency fraction is
-`NOT_APPLICABLE_DEGENERATE_SUBSPACE`.
+The catalog component uses the median **pre-alignment** cosine. A negative donor
+cannot be turned into positive evidence by post-hoc sign alignment.
 
 No minimum recurrence percentage is an inclusion gate.
 
 ## 9. Source/operator consistency
 
-Compute source-specific and operator-specific molecular association vectors
-using the same formulas as the global object.
+Compute source-specific and operator-specific signed molecular association
+vectors using the same object score and slope formula as the global object.
 
 For every estimable source/operator group, compute cosine to the global
 association vector.
@@ -186,8 +170,7 @@ Also publish the full group distributions and counts.
 
 ## 10. Molecular association concentration
 
-Let `m_gB` be the nonnegative association magnitude defined in section 7 and
-normalize over finite measurable addresses:
+Let `m_gB = |effect_gB|` and normalize over finite measurable addresses:
 
 `p_gB = m_gB / sum_h m_hB`
 
