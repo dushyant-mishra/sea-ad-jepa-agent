@@ -6,6 +6,9 @@ on:
       - d1a-synthetic-estimation-atlas-20260907
     paths:
       - docs/agent/D1A_SYNTHETIC_ESTIMATION_ATLAS_CONTRACT_V2_20260907.json
+      - docs/agent/D1A_SYNTHETIC_CONTRACT_V2_MANIFEST_20260907.csv
+      - docs/agent/D1A_SYNTHETIC_CONTRACT_V2_PACKAGE_ROOT_20260907.txt
+      - docs/agent/D1A_SYNTHETIC_CONTRACT_V2_FREEZE_20260907.json
       - scripts/agent/validate_d1a_synthetic_contract_v2.py
       - tests/test_d1a_synthetic_contract_v2.py
       - .github/workflows/d1a_synthetic_contract_v2_audit.yml
@@ -37,6 +40,17 @@ jobs:
           report = validate_contract(json.loads(path.read_text(encoding="utf-8")))
           assert report["terminal"] == "D1A_CONTRACT_VALID", report
           assert report["failures"] == [], report
+          root_path = Path("docs/agent/D1A_SYNTHETIC_CONTRACT_V2_PACKAGE_ROOT_20260907.txt")
+          freeze_path = Path("docs/agent/D1A_SYNTHETIC_CONTRACT_V2_FREEZE_20260907.json")
+          if root_path.exists():
+              import hashlib
+              manifest = Path("docs/agent/D1A_SYNTHETIC_CONTRACT_V2_MANIFEST_20260907.csv").read_bytes()
+              manifest_sha = hashlib.sha256(manifest).hexdigest()
+              assert root_path.read_text(encoding="ascii").strip() == manifest_sha
+              assert freeze_path.exists()
+              freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
+              assert freeze["package_root_sha256"] == manifest_sha
+              assert freeze["terminal"] == "D1A_SYNTHETIC_CONTRACT_V2_FREEZE__REAL_D1_UNAUTHORIZED"
           print("D1A_CONTRACT_V2_VALID")
           PY
       - name: Bind V2 contract bytes
@@ -44,4 +58,5 @@ jobs:
           sha256sum \
             docs/agent/D1A_SYNTHETIC_ESTIMATION_ATLAS_CONTRACT_V2_20260907.json \
             scripts/agent/validate_d1a_synthetic_contract_v2.py \
-            tests/test_d1a_synthetic_contract_v2.py
+            tests/test_d1a_synthetic_contract_v2.py \
+            docs/agent/D1A_SYNTHETIC_CONTRACT_V2_MANIFEST_20260907.csv
