@@ -108,6 +108,20 @@ def validate(foundation_path: Path, reader_path: Path, *, require_hashes: bool =
             )
         )
 
+    normalized_foundation_ids = [
+        reader_key_from_foundation(row["canonical_person_id"])
+        for row in foundation
+    ]
+    normalized_counts = Counter(normalized_foundation_ids)
+    normalized_collisions = sorted(
+        key for key, count in normalized_counts.items() if count > 1
+    )
+    if normalized_collisions:
+        failures.append(
+            "normalized foundation donor identity collision: "
+            + ",".join(normalized_collisions[:8])
+        )
+
     foundation_by_reader_id = {
         reader_key_from_foundation(row["canonical_person_id"]): row
         for row in foundation
@@ -163,6 +177,7 @@ def validate(foundation_path: Path, reader_path: Path, *, require_hashes: bool =
         "reader_partition_counts": dict(reader_counts),
         "reader_nested_in_foundation_train": not missing_from_foundation and not nontrain_reader,
         "continuation_reader_overlap": continuation_reader_overlap,
+        "normalized_foundation_identity_collisions": normalized_collisions,
         "pathology_used_for_foundation_split_values": sorted(pathology_split_values),
         "failures": failures,
         "terminal": (
