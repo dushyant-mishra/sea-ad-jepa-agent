@@ -1,0 +1,26 @@
+{
+  "schema": "D1A_SYNTHETIC_CONTRACT_FREEZE_V1",
+  "terminal": "D1A_SYNTHETIC_CONTRACT_FREEZE__REAL_D1_UNAUTHORIZED",
+  "status": "FROZEN_PROSPECTIVE_SYNTHETIC_U0_SAFE_SPEC__IMPLEMENTATION_MAY_BEGIN",
+  "source_branch": "d1a-synthetic-estimation-atlas-20260907",
+  "prefreeze_commit": "1fc31c49974e7b2a17516dce914c72108af76172",
+  "manifest_path": "docs/agent/D1A_SYNTHETIC_CONTRACT_MANIFEST_20260907.csv",
+  "package_root_sha256": "f56a283cb13e7745832525b1b6fa9539c16df199cac5ddb20524846e7db2fab4",
+  "package_root_rule": "SHA-256 of exact UTF-8 bytes of D1A_SYNTHETIC_CONTRACT_MANIFEST_20260907.csv",
+  "final_prefreeze_ci": {
+    "run_id": 34115221251,
+    "head_sha": "1fc31c49974e7b2a17516dce914c72108af76172",
+    "adversarial_contract_tests": "14 passed",
+    "terminal": "D1A_CONTRACT_VALID"
+  },
+  "implementation_scope": [
+    "synthetic",
+    "u0_safe"
+  ],
+  "real_trained_teacher_mode_authorized": false,
+  "protected_outcomes_authorized": false,
+  "confirmatory_claim_authorized": false,
+  "final_real_d1_algorithm_frozen": false,
+  "known_answer_rules_immutable": true,
+  "repair_rule": "If implementation exposes a genuine contract defect, create an explicit V2 contract before changing the rule. Do not tune V1 after synthetic outcomes."
+}
