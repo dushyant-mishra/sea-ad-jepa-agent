@@ -1,0 +1,28 @@
+{
+  "schema": "D1A_SYNTHETIC_CONTRACT_V2_FREEZE_V1",
+  "terminal": "D1A_SYNTHETIC_CONTRACT_V2_FREEZE__REAL_D1_UNAUTHORIZED",
+  "status": "FROZEN_PROSPECTIVE_SYNTHETIC_U0_SAFE_SPEC_V2__IMPLEMENTATION_MAY_BEGIN",
+  "source_branch": "d1a-synthetic-estimation-atlas-20260907",
+  "prefreeze_commit": "a7f965d3fc813132525e016839ecb67a868265a6",
+  "superseded_v1_freeze_commit": "73f4fc10c182837c5a70c731f79ed81df80709d1",
+  "superseded_v1_package_root": "f56a283cb13e7745832525b1b6fa9539c16df199cac5ddb20524846e7db2fab4",
+  "v2_reason": "Pre-implementation completeness repair: explicit 160-D state-direction/loading output and full operator summary added before any D1-A implementation or synthetic known-answer result.",
+  "manifest_path": "docs/agent/D1A_SYNTHETIC_CONTRACT_V2_MANIFEST_20260907.csv",
+  "package_root_sha256": "6af28682da4a5c37a212ad1926fbc6acf5a7fea88c46c49f69295cbaae8a3a81",
+  "package_root_rule": "SHA-256 of exact UTF-8 bytes of D1A_SYNTHETIC_CONTRACT_V2_MANIFEST_20260907.csv",
+  "final_prefreeze_ci": {
+    "run_id": 34115544558,
+    "head_sha": "a7f965d3fc813132525e016839ecb67a868265a6",
+    "adversarial_contract_tests": "20 passed",
+    "terminal": "D1A_CONTRACT_V2_VALID"
+  },
+  "implementation_scope": [
+    "synthetic",
+    "u0_safe"
+  ],
+  "real_trained_teacher_mode_authorized": false,
+  "protected_outcomes_authorized": false,
+  "confirmatory_claim_authorized": false,
+  "final_real_d1_algorithm_frozen": false,
+  "known_answer_rules_immutable": true
+}
