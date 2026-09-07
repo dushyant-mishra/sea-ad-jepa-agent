@@ -23,6 +23,13 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install --disable-pip-version-check pytest
+      - name: Bind exact authority bytes
+        run: |
+          sha256sum \
+            scripts/v4/f1b_successor_attack_suite_v1.py \
+            scripts/v4/f1b_reference_candidates_v1.py \
+            tests/test_f1b_successor_attack_suite_v1.py \
+            .github/workflows/f1b_attack_audit.yml
       - name: Run focused attack tests
         run: python -m pytest -q tests/test_f1b_successor_attack_suite_v1.py
       - name: Emit polarity terminals
