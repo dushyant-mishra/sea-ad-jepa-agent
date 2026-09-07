@@ -24,6 +24,7 @@ PACKAGE = ROOT / "outputs" / "f1_real_producer_replay_prefreeze_20260907"
 FROZEN_SOURCES = (
     "scripts/v4/f1_real_producer_v1.py",
     "scripts/v4/f1_real_replay_v1.py",
+    "scripts/v4/f1_execution_authorization_v1.py",
     "tests/test_f1_real_producer_replay_parity_v1.py",
     "scripts/v4/build_f1_prefreeze_package_v1.py",
 )
@@ -42,6 +43,7 @@ CONTRACTS = (
     "docs/agent/F1_REAL_PRODUCER_REPLAY_PREFREEZE_CONTRACT_20260907.md",
     "docs/agent/F1_DATA_ONLY_CLOSURE_DESIGN_20260907.md",
     "docs/agent/F1_REAL_PRODUCER_REPLAY_EXTERNAL_REVIEW_HANDOFF_20260907.md",
+    "docs/agent/F1_EXECUTION_AUTHORIZATION_DESIGN_20260907.md",
 )
 
 
@@ -91,7 +93,8 @@ def main() -> int:
             git_bytes("scripts/v4/f1_real_producer_v1.py")).hexdigest(),
         "replay_sha256": hashlib.sha256(
             git_bytes("scripts/v4/f1_real_replay_v1.py")).hexdigest(),
-        "terminal": "PRODUCER_AND_REPLAY_SOURCE_FROZEN__REAL_F1_STILL_UNAUTHORIZED",
+        "terminal": ("PASS_F1_U0_PRODUCTION_MECHANICS_PREFREEZE_READY_FOR_"
+                     "INDEPENDENT_REVIEW__REAL_F1_STILL_UNAUTHORIZED"),
     }, indent=2, sort_keys=True))
     return 0
 

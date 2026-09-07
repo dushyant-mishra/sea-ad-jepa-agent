@@ -4,12 +4,48 @@ Terminal claimed by this submission, and the only thing it may be read as
 granting:
 
 ```
-PRODUCER_AND_REPLAY_SOURCE_FROZEN__REAL_F1_STILL_UNAUTHORIZED
+PASS_F1_U0_PRODUCTION_MECHANICS_PREFREEZE_READY_FOR_INDEPENDENT_REVIEW__REAL_F1_STILL_UNAUTHORIZED
 ```
 
-It does not claim that F1-A produced a result, that the sweep is runnable, that
-the mechanics are performant at scale, or that any real output root is known.
-There are no real output bytes anywhere in this package.
+The terminal deliberately separates mechanics readiness from execution
+permission. It claims no scientific or biological qualification.
+
+The first real F1 run is a REFERENCE PRODUCTION-MECHANICS BASELINE ON CLEAN u0.
+It is not a healthy trained-teacher result, not a biological qualification of
+u0, not authority to select a future training target, not authority to begin D1
+or production teacher training, and not evidence that a data-defined rare
+biological target exists. u0 is a mechanics fixture; model width 160 is
+architectural, not a biological dimension.
+
+No authorization artifact has been issued, no real sweep has been executed, and
+there are no real output bytes anywhere in this package.
+
+## This submission answers a prior STOP
+
+An external review returned `STOP_F1_REAL_PRODUCER_REPLAY_NOT_YET_EXECUTABLE`.
+Its findings were accepted in full. What changed:
+
+- `run_production_sweep` was a gate followed by an unconditional STOP with no
+  pipeline behind it. It is now a real end-to-end producer: reader_fit row
+  resolution, exact normalization, physical observation-state handling,
+  query/evidence mask construction, teacher forward, correct-student forwards,
+  matched-null student forwards, capture, cache, shard publication, effect-row
+  publication, resumable completion, and final completeness verification. A test
+  drives it end to end under a valid authorization and a second test interrupts
+  and resumes it.
+- There was no way to make the frozen source runnable without editing it.
+  `REAL_EXECUTION_READY` and the three `FROZEN_REAL_*` roots are gone;
+  authorization is an external pre-result artifact.
+- Capture completeness was one count per assignment, which a teacher-only set
+  satisfied. Four identity topologies are now enforced separately.
+- The replay was parity primitives, not a replay of a produced result. It now
+  reads the produced artifacts and re-derives everything independently.
+
+Two defects were found by continuing to self-review after those repairs, and
+both would have broken the first authorized run: the reviewed shard store takes
+four required constructor arguments and has no `exists` method, and the frozen
+identity functions key on `canonical_cell_id` and an integer `q` rather than on
+the query address string.
 
 ## What you are reviewing
 
@@ -80,48 +116,49 @@ passes, the tolerance is doing no work.
 
 ## Suggested order of attack
 
-1. Recompute the root and every member digest from git bytes. Confirm the four
-   frozen sources are exactly the ones the contract names.
-2. Confirm the execution gate. `REAL_EXECUTION_READY` is `False`, all three
-   real output roots are `None`, and `run_production_sweep` raises
-   `STOP_F1_REAL_PRODUCER_EXECUTION_NOT_AUTHORIZED` before inspecting any
-   argument. A test passes `real_execution_ready=True, force=True` and still
-   requires the STOP. Try to find a parameter, environment variable,
-   monkeypatch or import-order path that reaches production work anyway.
+1. Recompute the root and every member digest from git bytes. Confirm the five
+   frozen sources are exactly the ones the contract names: producer, replay,
+   authorization, tests and packager.
+2. Confirm the execution boundary. There is no in-source permission left to
+   inspect: `REAL_EXECUTION_READY` and the three `FROZEN_REAL_*` roots were
+   removed, and a test asserts their absence as attributes and as source text.
+   With `F1_EXECUTION_AUTHORIZATION` unset, `run_production_sweep` raises
+   `STOP_F1_EXECUTION_AUTHORIZATION_ABSENT`; passing
+   `real_execution_ready=True, force=True` still raises it, since those are
+   absorbed as unused keyword arguments and authorization resolves first. Try to
+   find a parameter, environment variable, monkeypatch or import-order path that
+   reaches production work anyway.
 3. Confirm the partition gate rejects `reader_validation`, `reader_oracle`,
    `development`, `sealed_holdout` and `whole_study_external_holdout`, and also
    rejects an unrecognised partition rather than ignoring it.
-4. Run the suite. What you should expect depends on whether you hold the two
-   external authority files, and this is the part of the package most likely to
-   mislead you if you skip this paragraph.
+4. Run the suite. Expectations depend on whether you hold the external
+   authority files, and this is the paragraph most likely to mislead you if
+   skipped.
 
-   The frozen assignment authority is 30 MB and the dedup map 8 MB, and neither
-   is tracked in git, so neither can be a package member. Four checks therefore
-   depend on an external tree, and they are the strongest evidence here — the
-   constants-versus-derived-counts comparison and the capture-coverage
-   reconciliation. They are named explicitly in `AUTHORITY_DEPENDENT_TESTS`, and
-   a meta-test derives that list by AST and fails if it drifts.
+   The assignment authority is 30 MB and the dedup map 8 MB, and neither is
+   tracked, so neither can be a package member. Five checks therefore depend on
+   an external tree; they are named in `AUTHORITY_DEPENDENT_TESTS` and a
+   meta-test derives that list by AST so it cannot drift.
 
    | situation | expected |
    |---|---|
-   | authorities reachable | 33 passed |
-   | `F1_PREFREEZE_AUTHORITY_ROOT=<tree>` plus `F1_PREFREEZE_REQUIRE_AUTHORITIES=1` | 33 passed |
-   | clean extraction, no authorities | 29 passed, **4 skipped** |
-   | clean extraction plus `F1_PREFREEZE_REQUIRE_AUTHORITIES=1` | 29 passed, **4 failed** |
+   | authorities reachable | 66 passed |
+   | `F1_PREFREEZE_AUTHORITY_ROOT=<tree>` plus `F1_PREFREEZE_REQUIRE_AUTHORITIES=1` | 66 passed |
+   | clean extraction, no authorities | 61 passed, **5 skipped** |
+   | clean extraction plus strict | 61 passed, **5 failed** |
 
-   Those four skips are `NOT_MEASURABLE`, not `PASS`. Under this project's own
-   precedence `INVALID > FAIL > NOT_MEASURABLE > PASS`, a check that did not run
-   has not been evaluated. Point `F1_PREFREEZE_AUTHORITY_ROOT` at a tree holding
-   the three authorities and set `F1_PREFREEZE_REQUIRE_AUTHORITIES=1`, so an
-   unreachable authority fails loudly instead of skipping. When the variable is
-   set it is the only root consulted, so a stale local path cannot satisfy it
+   Those five skips are `NOT_MEASURABLE`, not `PASS`, under the project
+   precedence `INVALID > FAIL > NOT_MEASURABLE > PASS`, and they are excluded
+   from any production pass count. For a production-readiness judgement run
+   strict mode with every authority present. When `F1_PREFREEZE_AUTHORITY_ROOT`
+   is set it is the only root consulted, so a stale local path cannot satisfy it
    silently.
 
    An earlier revision of this handoff told you to expect a full pass count from
-   a clean extraction. That was wrong, and it was the more dangerous kind of
-   wrong: it would have invited you to read four silent skips as verification of
-   the package's central claim. Local passes are not certification in any case,
-   and are offered only as a reproduction target.
+   a clean extraction. That was wrong, and the dangerous kind of wrong: it
+   invited reading silent skips as verification of the package's central claim.
+   Local passes are not certification in any case. There is no CI run for this
+   branch, so everything reported here is a reproduction target.
 
 5. Attack the capture-coverage obligation. `plan_mechanics_capture` enumerates
    one capture record per assignment from `assignment_key_sha256`, asserts
@@ -137,8 +174,31 @@ passes, the tolerance is doing no work.
 
    This existed only as a docstring sentence until it was re-audited. Treat it
    as newly written code rather than as reviewed code.
-6. Attack independence, then the comparator, then the freeze ordering.
-7. Read `F1_DATA_ONLY_CLOSURE_DESIGN_20260907.md` and judge whether closure can
+6. Attack the authorization boundary. Confirm the producer cannot run with
+   `F1_EXECUTION_AUTHORIZATION` unset; that a valid artifact unlocks the frozen
+   source without editing it; that each of package root, source digests,
+   checkpoint, partition, donor count, roster root, authority digests,
+   mechanics, geometry and scope raises its own named STOP when wrong; that
+   editing an issued authorization is detected by its body digest; and that a
+   closure artifact is refused as authorization. Try to find any path that
+   reaches production work without a validated authorization.
+
+7. Attack the four identity topologies. A teacher-only capture set, a set with
+   the right grand total but the wrong role distribution, a complete forward set
+   with one missing effect row, and a complete effect-row set with one missing
+   shard must all fail. So must a duplicate capture, a duplicate effect row, a
+   capture bound to another checkpoint, and a capture referencing a shard
+   outside the lawful 1,400.
+
+8. Attack replay independence on outputs. Mutate a produced result -- drop a
+   forward, duplicate one, flip a role, alter an evidence level, alter a
+   recipient, change a checkpoint, drop or duplicate an effect row -- and
+   require the replay to detect it from the artifacts alone. Also confirm the
+   replay refuses to run in a process that has imported the producer, and that
+   its CLI verification works in a clean process.
+
+9. Attack independence, then the comparator, then the freeze ordering.
+10. Read `F1_DATA_ONLY_CLOSURE_DESIGN_20260907.md` and judge whether closure can
    bind real roots without editing frozen source. Step 6 of that ordering —
    re-verifying every pre-freeze source digest after the sweep — is stated as
    the reviewer's job, not the producing lane's. If you would not accept it,

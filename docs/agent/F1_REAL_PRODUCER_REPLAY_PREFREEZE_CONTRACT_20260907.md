@@ -1,6 +1,13 @@
 # F1-A Real Producer / Replay Pre-Freeze Contract — 2026-09-07
 
-Terminal: `PRODUCER_AND_REPLAY_SOURCE_FROZEN__REAL_F1_STILL_UNAUTHORIZED`
+Terminal: `PASS_F1_U0_PRODUCTION_MECHANICS_PREFREEZE_READY_FOR_INDEPENDENT_REVIEW__REAL_F1_STILL_UNAUTHORIZED`
+
+The terminal separates mechanics readiness from execution permission. It claims
+no scientific or biological qualification. The first real F1 run is a
+REFERENCE PRODUCTION-MECHANICS BASELINE ON CLEAN u0: not a healthy
+trained-teacher result, not a biological qualification of u0, not authority to
+select a future training target, and not authority to begin D1 or production
+teacher training.
 
 Branch `f1-real-producer-replay-prefreeze-20260907`, from the reviewed preflight
 state `f1-real-reader-forward-preflight-20260903` at
@@ -111,18 +118,76 @@ after two of three shards, resumed, and required to reproduce identical ordered
 payload digests and an identical identity root, while reusing already-committed
 shards rather than rewriting them.
 
-## Execution gate
+## Execution authorization, external to the frozen source
 
-`REAL_EXECUTION_READY` is `False` and all three real output roots are `None`, so
-`run_production_sweep` raises `STOP_F1_REAL_PRODUCER_EXECUTION_NOT_AUTHORIZED`.
-The gate is checked before any argument is inspected, and there is no parameter
-that relaxes it — a test passes `real_execution_ready=True, force=True` and
-still requires the STOP.
+`run_production_sweep` is a real end-to-end producer. It resolves reader_fit
+rows, applies the exact normalization, handles the physical observation state,
+builds query/evidence masks, runs the teacher forward, the correct-student
+forwards and the matched-null student forwards, captures, caches, publishes
+shards and effect rows, resumes by shard presence, and verifies completeness.
 
-Real output hashes are deliberately **not** populated here. They may only be
-bound by the data-only closure step in
-`F1_DATA_ONLY_CLOSURE_DESIGN_20260907.md`, never by editing this source after
-outcomes exist.
+It cannot run without a valid external authorization artifact, and there is no
+in-source flag to flip. `REAL_EXECUTION_READY` and the three `FROZEN_REAL_*`
+root constants have been removed, and a test asserts their absence as both
+attributes and source text. Authorization lives in
+`scripts/v4/f1_execution_authorization_v1.py`, is read from
+`F1_EXECUTION_AUTHORIZATION`, and binds the package root, the frozen source
+digests, the u0 checkpoint, the reader roster, the authority digests, the
+accepted mechanics, the frozen geometry and the scope. Each drift is a distinct
+STOP, and a post-result closure artifact is rejected as an authorization, so a
+run cannot be authorized retroactively. Details are in
+`F1_EXECUTION_AUTHORIZATION_DESIGN_20260907.md`.
+
+## Every identity set is enforced separately
+
+A single count is not completeness. The capture record and the forward record
+are distinct objects, because an earlier revision blurred them: the record
+carried `role` and `evidence_level` while the validator only proved one record
+per assignment key, so a set holding one teacher record per assignment passed as
+complete while containing no correct-student and no matched-null forward at all.
+
+- `mechanics_capture_record` is ASSIGNMENT level and carries no role or
+  evidence level; `plan_mechanics_capture` and `assert_capture_coverage` enforce
+  coverage of all 44,496 assignments.
+- `forward_capture_record` is FORWARD level and must distinguish role,
+  recipient cell, query, evidence level where applicable, correct versus
+  matched-null arm, teacher versus student family, shard, and
+  model/checkpoint identity.
+- `assert_forward_topology` enforces 43,108 teacher, 215,540 correct, 215,540
+  matched-null and 474,188 total as separate identity sets, requires the
+  correct and matched-null arms to cover identical keys, and requires every
+  student key to have its evidence-invariant teacher forward.
+- `assert_effect_row_topology` enforces exactly one row per
+  (assignment_key, evidence level), 222,480 in total.
+- `assert_shard_topology` enforces all 1,400 donor x operator shards, published
+  once each and nothing outside the lawful set.
+- `verify_sweep_completeness` requires all four; none is sufficient alone.
+
+## Population firewall
+
+Execution is `reader_fit` only, and `foundation` and `train` are not synonyms
+for it. The roster comes from the `reader_partition` column of the frozen
+`reader_donor_split.csv` (`efe43e63...`), whose declared counts are 104
+reader_fit, 22 reader_validation and 23 reader_oracle donors, and the roster
+root must equal `a635ddf3...`. Continuation and train donors outside
+`reader_fit` are absent by construction; a delivered off-roster donor raises
+`STOP_F1_POPULATION_FIREWALL` rather than being filtered away.
+
+## Authority byte classes
+
+Each authority is digested over the bytes that define it, declared per
+authority. The three tracked model sources use git blob bytes; the assignment
+CSVs and the checkpoint use file bytes. Hashing working-tree bytes for the
+tracked sources passed in an LF checkout and failed in a CRLF checkout of the
+same commit -- in this worktree `ipb_jepa.py` is `f5bdfb73...` on disk and the
+frozen `732ea46f...` in the index. Source digests resolve from the package's own
+git, because `contextual_query_local.py` is tracked here and untracked in the
+main working repository.
+
+## Real output roots
+
+Still not populated, and no longer expressible in source. They may only be bound
+by the data-only closure in `F1_DATA_ONLY_CLOSURE_DESIGN_20260907.md`.
 
 ## Repairs made during this work, recorded rather than hidden
 
@@ -188,18 +253,22 @@ producer and reconciling the keys against the
 
 ## Local verification state
 
-33 of 33 behavioural tests pass with the authorities reachable. These are local
-pre-freeze results and do not substitute for independent review.
+66 of 66 tests pass with the authorities reachable. Four authority modes were
+exercised separately, because a skipped check is not a passed one:
 
-Four of those checks depend on the two external authority files, which are 30 MB
-and 8 MB, untracked, and therefore not package members. On a tree without them
-the suite reports 29 passed and 4 skipped, and those skips are `NOT_MEASURABLE`,
-not `PASS`, under the project precedence `INVALID > FAIL > NOT_MEASURABLE >
-PASS`. `F1_PREFREEZE_AUTHORITY_ROOT` names the tree to resolve them from and is
-the only root consulted when set; `F1_PREFREEZE_REQUIRE_AUTHORITIES=1` converts
-an unreachable authority from a skip into a failure. All four modes were
-exercised. `AUTHORITY_DEPENDENT_TESTS` declares exactly which checks these are,
-and a meta-test derives that list by AST so it cannot drift.
+| situation | expected |
+|---|---|
+| authorities reachable | 66 passed |
+| explicit root plus `F1_PREFREEZE_REQUIRE_AUTHORITIES=1` | 66 passed |
+| clean extraction, no authorities | 61 passed, 5 NOT_MEASURABLE |
+| clean extraction plus strict | 61 passed, 5 failed |
+
+Under the project precedence `INVALID > FAIL > NOT_MEASURABLE > PASS`, the five
+skips are NOT_MEASURABLE and are excluded from any production pass count.
+Production review must use strict mode with every authority present.
+
+These are local results. There is no CI run for this branch, so they are a
+reproduction target rather than independent verification.
 
 ## Not done here, and not authorized by this freeze
 
