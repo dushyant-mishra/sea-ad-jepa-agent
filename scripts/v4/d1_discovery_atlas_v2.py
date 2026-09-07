@@ -20,7 +20,6 @@ import numpy as np
 from d1_real_data_derivation_core_v1 import (
     MEASURED_SCALAR,
     descriptive_tail_views,
-    weighted_percentile_of_score,
     weighted_quantile,
     within_donor_centered,
 )
@@ -73,8 +72,11 @@ def build_discovery_objects(derivation: Mapping[str, Any]) -> list[DiscoveryObje
         raise ValueError(
             f"{STOP_OBJECT_INVALID}: leading eigenvectors must be (p,D)")
     blocks = [list(map(int, b)) for b in derivation["degeneracy_blocks"]]
-    if not blocks or sorted(x for b in blocks for x in b) != list(range(len(eigenvalues))):
-        raise ValueError(f"{STOP_OBJECT_INVALID}: degeneracy blocks must partition spectrum")
+    flattened = [x for b in blocks for x in b]
+    if not blocks or flattened != list(range(len(eigenvalues))):
+        raise ValueError(
+            f"{STOP_OBJECT_INVALID}: degeneracy blocks must be ordered and exactly "
+            "partition the spectrum")
     retained = []
     for block_index, block in enumerate(blocks):
         if not block:
@@ -102,8 +104,15 @@ def build_discovery_objects(derivation: Mapping[str, Any]) -> list[DiscoveryObje
         variance = float(np.sum(eigenvalues[block]))
         if not math.isfinite(variance) or variance < 0:
             raise ValueError(f"{STOP_OBJECT_INVALID}: variance")
-        basis = vectors[:, block]
-        q, _ = np.linalg.qr(basis)
+        basis = vectors[:, block].copy()
+        gram = basis.T @ basis
+        if not np.allclose(gram, np.eye(len(block)), atol=1e-10, rtol=1e-10):
+            raise ValueError(
+                f"{STOP_OBJECT_INVALID}: retained eigenvectors are not orthonormal")
+        # Do NOT QR the basis here. For an isolated axis QR is free to flip the
+        # sign, which would destroy the deterministic global eigenvector sign
+        # convention. For a degenerate block the original eigenspace basis is
+        # already orthonormal and the downstream norm is rotation-invariant.
         objects.append(DiscoveryObject(
             program_id=f"D1OBJ-B{block_index}-R{block[0]+1}-{block[-1]+1}",
             block_index=block_index,
@@ -111,7 +120,7 @@ def build_discovery_objects(derivation: Mapping[str, Any]) -> list[DiscoveryObje
             end_rank=end_rank,
             axis_indices=tuple(block),
             object_type="ISOLATED_AXIS" if len(block) == 1 else "DEGENERATE_SUBSPACE",
-            basis=q,
+            basis=basis,
             variance=variance,
             magnitude=math.sqrt(variance),
             stability_margin=float(real_lower[end_rank - 1] - null_upper[end_rank - 1]),
@@ -129,6 +138,44 @@ def score_object(states: np.ndarray, mean: np.ndarray,
     if obj.object_type == "ISOLATED_AXIS":
         return coordinates[:, 0]
     return np.linalg.norm(coordinates, axis=1)
+
+
+def weighted_percentile_midrank(
+    values: Sequence[float], weights: Sequence[float]
+) -> np.ndarray:
+    """Tie-aware weighted empirical percentile.
+
+    Every equal score receives the same midpoint percentile of the tie group's
+    weighted mass. Row order can therefore never change a percentile.
+    """
+    v = np.asarray(values, dtype=np.float64).reshape(-1)
+    w = np.asarray(weights, dtype=np.float64).reshape(-1)
+    if v.size == 0 or v.size != w.size:
+        raise ValueError(f"{STOP_OBJECT_INVALID}: percentile inputs")
+    if not np.all(np.isfinite(v)) or not np.all(np.isfinite(w)):
+        raise ValueError(f"{STOP_OBJECT_INVALID}: nonfinite percentile inputs")
+    if np.any(w < 0):
+        raise ValueError(f"{STOP_OBJECT_INVALID}: negative percentile weight")
+    total = float(w.sum())
+    if total <= 0:
+        raise ValueError(f"{STOP_OBJECT_INVALID}: zero percentile weight mass")
+    order = np.argsort(v, kind="stable")
+    sorted_v, sorted_w = v[order], w[order]
+    out_sorted = np.empty_like(sorted_v)
+    cumulative_before = 0.0
+    start = 0
+    while start < sorted_v.size:
+        stop = start + 1
+        while stop < sorted_v.size and sorted_v[stop] == sorted_v[start]:
+            stop += 1
+        mass = float(sorted_w[start:stop].sum())
+        midpoint = (cumulative_before + 0.5 * mass) / total
+        out_sorted[start:stop] = midpoint
+        cumulative_before += mass
+        start = stop
+    out = np.empty_like(v)
+    out[order] = out_sorted
+    return out
 
 
 def cell_ranking_table(
@@ -154,12 +201,16 @@ def cell_ranking_table(
         raise ValueError(f"{STOP_OBJECT_INVALID}: cell ranking columns")
     if len(set(ids.tolist())) != n:
         raise ValueError(f"{STOP_OBJECT_INVALID}: duplicate cell identity")
+    if not np.all(np.isfinite(s)) or not np.all(np.isfinite(w)):
+        raise ValueError(f"{STOP_OBJECT_INVALID}: nonfinite score/weight")
+    if np.any(w < 0) or float(w.sum()) <= 0:
+        raise ValueError(f"{STOP_OBJECT_INVALID}: invalid score weight")
     centered = within_donor_centered(s, d, w)
-    global_pct = weighted_percentile_of_score(s, w)
+    global_pct = weighted_percentile_midrank(s, w)
     within_pct = np.empty(n, dtype=np.float64)
     for donor in np.unique(d):
         take = d == donor
-        within_pct[take] = weighted_percentile_of_score(s[take], w[take])
+        within_pct[take] = weighted_percentile_midrank(s[take], w[take])
     tails = descriptive_tail_views(s, w, two_sided_tail_probabilities)["views"]
     rows = []
     for i in range(n):
@@ -178,6 +229,7 @@ def cell_ranking_table(
             "source": str(src[i]),
             "operator_index": int(op[i]),
             "raw_score": float(s[i]),
+            "donor_primary_weight": float(w[i]),
             "within_donor_centered_score": float(centered[i]),
             "global_weighted_percentile": float(global_pct[i]),
             "within_donor_weighted_percentile": float(within_pct[i]),
@@ -341,28 +393,34 @@ class GroupedAssociationAccumulator:
         return self.groups[("global", "ALL")].effects()
 
 
-def _finite_cosine(a: np.ndarray, b: np.ndarray) -> float | None:
+def _finite_cosine_diagnostic(a: np.ndarray, b: np.ndarray) -> dict[str, Any]:
     x = np.asarray(a, dtype=np.float64)
     y = np.asarray(b, dtype=np.float64)
     finite = np.isfinite(x) & np.isfinite(y)
-    if not np.any(finite):
-        return None
-    x, y = x[finite], y[finite]
-    nx, ny = float(np.linalg.norm(x)), float(np.linalg.norm(y))
+    common = int(np.sum(finite))
+    if common == 0:
+        return {"cosine": None, "common_finite_addresses": 0}
+    xx, yy = x[finite], y[finite]
+    nx, ny = float(np.linalg.norm(xx)), float(np.linalg.norm(yy))
     if nx <= 0 or ny <= 0:
-        return None
-    return float(np.dot(x, y) / (nx * ny))
+        return {"cosine": None, "common_finite_addresses": common}
+    return {
+        "cosine": float(np.dot(xx, yy) / (nx * ny)),
+        "common_finite_addresses": common,
+    }
 
 
 def donor_recurrence_summary(
     global_effect: np.ndarray,
     donor_effects: Mapping[str, Mapping[str, np.ndarray]],
 ) -> dict[str, Any]:
+    diagnostics = {}
     cosines = {}
     for donor, payload in donor_effects.items():
-        value = _finite_cosine(payload["effect"], global_effect)
-        if value is not None:
-            cosines[str(donor)] = value
+        diag = _finite_cosine_diagnostic(payload["effect"], global_effect)
+        diagnostics[str(donor)] = diag
+        if diag["cosine"] is not None:
+            cosines[str(donor)] = float(diag["cosine"])
     values = list(cosines.values())
     if not values:
         return {
@@ -371,6 +429,7 @@ def donor_recurrence_summary(
             "cosines": {},
             "positive_fraction": None,
             "estimable_donors": 0,
+            "donor_diagnostics": diagnostics,
         }
     return {
         "estimable": True,
@@ -378,6 +437,7 @@ def donor_recurrence_summary(
         "cosines": cosines,
         "positive_fraction": float(np.mean(np.asarray(values) > 0)),
         "estimable_donors": len(values),
+        "donor_diagnostics": diagnostics,
     }
 
 
@@ -387,21 +447,24 @@ def source_operator_consistency_summary(
     operator_effects: Mapping[str, Mapping[str, np.ndarray]],
 ) -> dict[str, Any]:
     def collect(groups):
-        out = {}
+        out, diagnostics = {}, {}
         for key, payload in groups.items():
-            value = _finite_cosine(payload["effect"], global_effect)
-            if value is not None:
-                out[str(key)] = value
-        return out
+            diag = _finite_cosine_diagnostic(payload["effect"], global_effect)
+            diagnostics[str(key)] = diag
+            if diag["cosine"] is not None:
+                out[str(key)] = float(diag["cosine"])
+        return out, diagnostics
 
-    source = collect(source_effects)
-    operator = collect(operator_effects)
+    source, source_diagnostics = collect(source_effects)
+    operator, operator_diagnostics = collect(operator_effects)
     if not source or not operator:
         return {
             "estimable": False,
             "source_operator_consistency": None,
             "source_cosines": source,
             "operator_cosines": operator,
+            "source_diagnostics": source_diagnostics,
+            "operator_diagnostics": operator_diagnostics,
         }
     source_median = float(np.median(list(source.values())))
     operator_median = float(np.median(list(operator.values())))
@@ -412,6 +475,8 @@ def source_operator_consistency_summary(
         "source_operator_consistency": min(source_median, operator_median),
         "source_cosines": source,
         "operator_cosines": operator,
+        "source_diagnostics": source_diagnostics,
+        "operator_diagnostics": operator_diagnostics,
     }
 
 
@@ -554,38 +619,49 @@ def order_catalog(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
 
 
 def representative_cells(
-    rows: Sequence[Mapping[str, Any]], *, each_tail: int = 10
+    rows: Sequence[Mapping[str, Any]], *, each_tail: int
 ) -> dict[str, list[dict[str, Any]]]:
-    """Descriptive exemplars only; never a biological threshold."""
+    """Descriptive exemplars only; count must come from frozen procedure config."""
+    n = int(each_tail)
+    if n < 0:
+        raise ValueError(f"{STOP_OBJECT_INVALID}: negative exemplar count")
     ordered = sorted(
         rows, key=lambda r: (float(r["raw_score"]), str(r["canonical_cell_id"])))
-    n = max(0, int(each_tail))
     return {
         "lowest": [dict(r) for r in ordered[:n]],
-        "highest": [dict(r) for r in ordered[-n:][::-1]],
+        "highest": [dict(r) for r in ordered[-n:][::-1]] if n else [],
         "selection_role": "DESCRIPTIVE_EXEMPLARS_ONLY",
     }
 
 
 def representative_donors(
-    rows: Sequence[Mapping[str, Any]], *, each_tail: int = 5
+    rows: Sequence[Mapping[str, Any]], *, each_tail: int
 ) -> dict[str, list[dict[str, Any]]]:
+    """Donor summaries use the same donor-primary cell weights as D1."""
+    n = int(each_tail)
+    if n < 0:
+        raise ValueError(f"{STOP_OBJECT_INVALID}: negative exemplar count")
     by_donor: dict[str, list[Mapping[str, Any]]] = {}
     for row in rows:
         by_donor.setdefault(str(row["donor_id"]), []).append(row)
     summaries = []
     for donor, donor_rows in by_donor.items():
-        scores = np.asarray([float(r["raw_score"]) for r in donor_rows])
+        scores = np.asarray([float(r["raw_score"]) for r in donor_rows], dtype=np.float64)
+        weights = np.asarray(
+            [float(r["donor_primary_weight"]) for r in donor_rows], dtype=np.float64)
+        if np.any(weights < 0) or float(weights.sum()) <= 0:
+            raise ValueError(f"{STOP_OBJECT_INVALID}: donor exemplar weights")
+        weighted_mean = float(np.sum(scores * weights) / np.sum(weights))
+        weighted_median = float(weighted_quantile(scores, weights, [0.5])[0])
         summaries.append({
             "donor_id": donor,
-            "mean_score": float(np.mean(scores)),
-            "median_score": float(np.median(scores)),
+            "weighted_mean_score": weighted_mean,
+            "weighted_median_score": weighted_median,
             "cells": len(scores),
         })
-    summaries.sort(key=lambda r: (r["mean_score"], r["donor_id"]))
-    n = max(0, int(each_tail))
+    summaries.sort(key=lambda r: (r["weighted_mean_score"], r["donor_id"]))
     return {
         "lowest": summaries[:n],
-        "highest": summaries[-n:][::-1],
+        "highest": summaries[-n:][::-1] if n else [],
         "selection_role": "DESCRIPTIVE_EXEMPLARS_ONLY",
     }
