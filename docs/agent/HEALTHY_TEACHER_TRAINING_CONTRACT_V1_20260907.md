@@ -1,6 +1,6 @@
-# Healthy Teacher Training Contract V1 — Prospective Draft
+# Healthy Teacher Training Base Contract V1 — Prospective Freeze Candidate
 
-Status: **BLOCKED — NOT EXECUTION AUTHORITY**
+Status: **READY TO FREEZE AS IMMUTABLE BASE — NOT EXECUTION AUTHORITY**
 
 Date: 2026-09-07
 
@@ -9,7 +9,7 @@ This contract defines how the project may create its first mechanically valid tr
 1. **mechanical qualification** — exactly 40 repaired updates;
 2. **full training continuation** — from u40 to the historical cap-safe u205 horizon.
 
-Nothing in this draft authorizes either phase. Execution remains blocked until the integrated F1-B/C3 successor has independent external review, the exact successor source/root is frozen, and a new successor-bound u0 checkpoint is created and hash-bound.
+Nothing in this base contract authorizes either phase. This file is intended to freeze the outcome-independent training decisions now. It must never later be edited to insert successor or u0 hashes. Those future facts belong in a separate `HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1` that hash-binds this frozen base package.
 
 ## Upstream frozen governance
 
@@ -272,16 +272,21 @@ Through u205, training continuation is based on mechanics only.
 
 No pathology, DEV/SEALED, reader-oracle, D1 ranking, or biological endpoint may influence continuation.
 
-## Current blockers
+## Future execution-binding overlay
 
-This contract cannot be frozen as executable until all five are populated:
+The frozen base contract intentionally leaves all execution-specific fields null.
 
-1. exact integrated successor commit/source-manifest root;
-2. independent external-review PASS for that successor;
-3. exact new successor-bound u0 SHA-256;
-4. exact predictor mandatory registry;
-5. exact movement adjudicator source/formula/tolerance.
+The base must **not** be edited later to populate them. A separate immutable overlay must bind:
 
-Until then the only legal terminal is:
+1. exact integrated successor commit and source-manifest root;
+2. independent external-review PASS artifact and the exact reviewed successor commit;
+3. exact new successor-bound u0 path/SHA plus materialization attestation;
+4. exact reviewed predictor mandatory registry;
+5. exact reviewed movement adjudicator source/formula/tolerance;
+6. the frozen base-contract package root.
 
-`STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_UNBOUND`
+The overlay itself still does not authorize training. After overlay validation, a separate explicit authorization is required for the u0→u40 mechanical qualification.
+
+The only legal terminal for this base is:
+
+`PASS_HEALTHY_TEACHER_BASE_CONTRACT_READY_FOR_FREEZE__EXECUTION_UNAUTHORIZED`
