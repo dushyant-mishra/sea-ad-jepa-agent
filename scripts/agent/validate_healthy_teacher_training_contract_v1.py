@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Fail-closed validator for HEALTHY_TEACHER_TRAINING_CONTRACT_V1.
+"""Fail-closed validator for HEALTHY_TEACHER_TRAINING_BASE_CONTRACT_V1.
 
-The current draft is expected to STOP until successor/u0 bindings are populated.
-No command-line bypass exists.
+The frozen base must keep all execution-specific bindings null. Future successor/u0
+facts belong in a separate immutable overlay. No command-line bypass exists.
 """
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ def _is_hex(value: Any, length: int) -> bool:
 def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
     failures: list[str] = []
 
-    if contract.get("schema") != "HEALTHY_TEACHER_TRAINING_CONTRACT_V1_DRAFT":
+    if contract.get("schema") != "HEALTHY_TEACHER_TRAINING_BASE_CONTRACT_V1":
         failures.append("schema mismatch")
     upstream = contract.get("upstream_authorities", {})
     if upstream.get("population_access_registry", {}).get("package_root_sha256") != POPULATION_ROOT:
@@ -181,7 +181,12 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
         failures.append("new successor-bound u0 must freeze before u1")
 
     bindings = contract.get("execution_bindings", {})
-    required_binding_fields = (
+    if bindings.get("binding_mode") != "SEPARATE_IMMUTABLE_OVERLAY_REQUIRED":
+        failures.append("execution binding mode must require separate immutable overlay")
+    if bindings.get("ready") is not False:
+        failures.append("frozen base execution ready flag must remain false")
+
+    immutable_null_fields = (
         "integrated_successor_commit",
         "integrated_successor_source_manifest_root",
         "independent_external_review_terminal",
@@ -194,81 +199,41 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
         "predictor_mandatory_registry_sha256",
         "movement_adjudicator_sha256",
     )
-    unbound = [key for key in required_binding_fields if not _nonnull(bindings.get(key))]
-    if bindings.get("ready") is True and unbound:
-        failures.append("execution bindings marked ready while fields are unbound")
-    if not unbound and bindings.get("ready") is not True:
-        failures.append("all execution bindings populated but ready is not true")
+    populated = [key for key in immutable_null_fields if bindings.get(key) is not None]
+    if populated:
+        failures.append(
+            "frozen base execution fields must remain null; use separate overlay: "
+            + ",".join(populated)
+        )
+    if "MUST remain null/false" not in str(bindings.get("immutable_null_policy")):
+        failures.append("immutable null policy missing")
 
-    if _nonnull(bindings.get("integrated_successor_commit")):
-        if not _is_hex(bindings["integrated_successor_commit"], 40):
-            failures.append("integrated successor commit is not a 40-hex SHA")
-        if bindings["integrated_successor_commit"] == KNOWN_INCOMPLETE_KERNEL:
-            failures.append("known incomplete mechanics kernel cannot be final successor binding")
-    for key in (
-        "integrated_successor_source_manifest_root",
-        "independent_external_review_artifact_sha256",
-        "initialization_checkpoint_sha256",
-        "initialization_materialization_attestation_sha256",
-        "predictor_mandatory_registry_sha256",
-        "movement_adjudicator_sha256",
-    ):
-        if _nonnull(bindings.get(key)) and not _is_hex(bindings[key], 64):
-            failures.append(f"{key} is not a 64-hex SHA-256")
+    overlay = contract.get("future_binding_overlay", {})
+    if overlay.get("schema") != "HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1":
+        failures.append("future execution overlay schema missing")
+    if overlay.get("may_modify_base_contract") is not False:
+        failures.append("future overlay must not modify frozen base")
+    if overlay.get("overlay_itself_is_execution_authority") is not False:
+        failures.append("binding overlay must not itself authorize execution")
+    if overlay.get("required_base_binding") != "frozen base package root SHA-256":
+        failures.append("future overlay must bind frozen base package root")
 
-    review = bindings.get("independent_external_review_terminal")
-    if _nonnull(review) and not (isinstance(review, str) and review.startswith("PASS_") and "REVIEW" in review):
-        failures.append("independent external review terminal is not a PASS review terminal")
-    reviewed_commit = bindings.get("independent_external_review_reviewed_commit")
-    if _nonnull(reviewed_commit):
-        if not _is_hex(reviewed_commit, 40):
-            failures.append("independent external review reviewed commit is not a 40-hex SHA")
-        elif _nonnull(bindings.get("integrated_successor_commit")) and reviewed_commit != bindings.get("integrated_successor_commit"):
-            failures.append("external review is not bound to the integrated successor commit")
+    required_overlay_fields = set(immutable_null_fields)
+    if set(overlay.get("required_fields", [])) != required_overlay_fields:
+        failures.append("future overlay required-field set mismatch")
 
-    init_mode = bindings.get("initialization_mode")
-    allowed_init_modes = {
-        "successor-bound import of clean historical u0 state",
-        "successor-bound mixed import plus prospectively seeded changed components",
-    }
-    if _nonnull(init_mode) and init_mode not in allowed_init_modes:
-        failures.append("initialization mode is not prospectively allowed")
-
-    init_sha = bindings.get("initialization_checkpoint_sha256")
-    if _nonnull(init_sha) and init_sha == HISTORICAL_U0:
-        failures.append("historical u0 cannot be used directly as successor execution checkpoint")
-    required_u0_sha = initialization.get("required_new_u0", {}).get("exact_sha256")
-    if not unbound:
-        if required_u0_sha != init_sha:
-            failures.append("successor-bound u0 policy SHA does not match execution binding")
-
-    scaler = precision.get("grad_scaler", {})
-    if scaler != {
-        "initial_scale": 65536.0,
-        "growth_factor": 2.0,
-        "backoff_factor": 0.5,
-        "growth_interval": 2000,
-    }:
-        failures.append("GradScaler contract mismatch")
-
-    if gates.get("optimizer_step_gate", {}).get("before_ema") is not True:
-        failures.append("optimizer step proof must precede EMA")
-    if gates.get("ema_gate", {}).get("equation_check") is not True:
-        failures.append("EMA equation check missing")
+    if contract.get("terminal") != "PASS_HEALTHY_TEACHER_BASE_CONTRACT_READY_FOR_FREEZE__EXECUTION_UNAUTHORIZED":
+        failures.append("base contract terminal mismatch")
 
     terminal = (
-        "PASS_HEALTHY_TEACHER_TRAINING_CONTRACT_BOUND__EXECUTION_STILL_REQUIRES_AUTHORITY"
-        if not failures and not unbound
-        else (
-            "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_UNBOUND"
-            if not failures and unbound
-            else "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_INVALID"
-        )
+        "PASS_HEALTHY_TEACHER_BASE_CONTRACT_READY_FOR_FREEZE__EXECUTION_UNAUTHORIZED"
+        if not failures
+        else "STOP_HEALTHY_TEACHER_BASE_CONTRACT_INVALID"
     )
     return {
         "schema": "healthy-teacher-training-contract-validation-v1",
         "failures": failures,
-        "unbound_fields": unbound,
+        "populated_execution_fields": populated,
         "terminal": terminal,
     }
 
