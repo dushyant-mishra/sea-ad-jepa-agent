@@ -16,14 +16,14 @@ were individually supported. Its candidate was also highly sensitive to
 source/physical-support structure. The historical result is preserved and is
 never relabeled as a PASS.
 
-D0 therefore asks a narrower and more fundamental question:
+D0 asks a narrower and more fundamental question:
 
 > Does the mechanically healthy redesigned teacher contain at least one
-> reproducible state object that is stronger than an outcome-blind matched null,
-> recurs across donors, survives lawful measurement perturbation, and is not
-> explained primarily by source/operator support?
+> reproducible leading state subspace that is stronger than an outcome-blind
+> matched null, recurs across donors, survives lawful measurement perturbation,
+> and is not explained primarily by source/operator support?
 
-D0 does **not** ask whether that object is Alzheimer disease-related, causal,
+D0 does **not** ask whether that subspace is Alzheimer disease-related, causal,
 pathological, rare, spatial, a discrete cluster, or clinically useful.
 
 ## Relationship to D1
@@ -31,13 +31,13 @@ pathological, rare, spatial, a discrete cluster, or clinically useful.
 D0 and D1 have different estimands.
 
 - **D0:** existence/detectability of reproducible representation structure.
-- **D1:** estimate its dimensionality/programs, rank cells/molecules/donors, and
+- **D1:** estimate dimensionality/programs, rank cells/molecules/donors, and
   generate biological hypotheses.
 
-D0 never chooses D, K, a biological program, a tail cutoff, or a pathology
-target. D1 engineering may proceed while D0 is unresolved. A real D0 failure
-blocks **biological interpretation/promotion** of D1 results, not development of
-the D1 software.
+D0 never chooses production D, K, a biological program, a tail cutoff, or a
+pathology target. D1 engineering may proceed while D0 is unresolved. A real D0
+failure blocks **biological interpretation/promotion** of D1 results, not
+development of D1 software.
 
 ## Historical shared-D result is a negative control, not reusable authority
 
@@ -54,6 +54,7 @@ sensitivity, including operator-decodable candidate coordinates and weak
 source-only / leave-source-out overlap.
 
 D0 must not:
+
 - rescue or reinterpret `D_shared`;
 - reuse its selected dimension;
 - reuse its frozen-axis empirical null;
@@ -74,6 +75,7 @@ Population is the complete lawful reader-fit population:
 - 41,238 molecular addresses where molecular evidence is needed.
 
 Forbidden:
+
 - reader-validation;
 - reader-oracle;
 - foundation development/sealed/external holdout;
@@ -82,136 +84,177 @@ Forbidden:
 - using the historical 4,540-cell cohort or 50k archive to set production
   adaptive quantities.
 
-## D0 object is an unidentified subspace/object, not an axis label
+## D0 v1 candidate family: complete leading subspaces, not axes
 
-D0 is an **existence** test. It need not identify an individual axis.
+For teacher-state width p, D0 v1 evaluates the complete family
 
-For each candidate stable block/subspace (B), the conclusion-capable statistic
-must be invariant to rotation within (B). Individual coordinates inside an
-unresolved block cannot receive biological names.
+`S_d = span(v_1, ..., v_d)`, for every `d = 1, ..., p`,
 
-D0 specifically rejects the historical assumption that biological
-detectability is equivalent to a non-empty contiguous leading prefix.
+where the basis is refit under the exact population/weighting rule for each
+observed, resampled and null dataset.
 
-## Three independent requirements
+The object is the **whole d-dimensional subspace**. Every conclusion-capable
+statistic is rotation-invariant within that subspace. No individual axis is
+named or interpreted by D0.
 
-A real D0 object must satisfy all three requirement families.
+Critically, D0 does **not** require support for every smaller rank before a
+larger subspace can be detectable. A failure of `S_1` does not force
+`S_2`, `S_3`, ... to fail. This is the deliberate estimand difference from
+the historical `D_shared` contiguous-prefix rule and from production D1's
+leading-rank dimensionality claim.
 
-### D0-A — structure exceeds a refitted matched null
+The entire search over d is family-wise calibrated. D0 may not inspect ranks
+and then choose an uncalibrated favorable d.
+
+## Three independent requirement families
+
+A real D0 subspace must satisfy all three requirement families.
+
+### D0-A — structure exceeds a fully refitted matched null
 
 Use donor-primary weighted teacher states.
 
 The matched null preserves:
+
 - donor identity;
 - donor x operator cell counts;
 - operator/measurement geometry;
 - per-coordinate marginal distributions within each donor x operator stratum.
 
-It destroys cross-coordinate biological covariance by independently permuting
-coordinates within donor x operator strata.
+It destroys cross-coordinate covariance by independently permuting coordinates
+within donor x operator strata.
 
-**The entire candidate search/decomposition is refit inside every null
-replicate.** Frozen observed axes may not be reused by the null.
+For every null replicate, the complete eigensystem and every `S_d` are refit
+from the permuted states. Frozen observed axes may never be reused by the null.
 
-The existence statistic is a maximum over admissible candidate blocks/subspaces,
-so family-wise selection is calibrated by the same maximum statistic in each
-refitted null replicate.
+For each d, the structure statistic is cumulative weighted state variance in
+`S_d`, compared with the same cumulative-rank statistic from the refitted null.
 
-This is deliberately different from production D1:
-- D1 needs a leading-rank dimensionality claim.
-- D0 only needs evidence that at least one reproducible object exists somewhere
-  in the representation.
-
-A rank-1 failure therefore cannot by itself force D0 negative if another
-properly null-calibrated block is reproducibly detectable.
+The conclusion-bearing statistic searches over all d, and the **same maximum
+search over d** is recomputed in each null replicate.
 
 ### D0-B — donor recurrence / out-of-donor stability
 
-Candidate generation and evaluation are cross-fitted over donors.
+Donor stability is cross-fitted.
 
-For every deterministic donor fold:
-1. fit the candidate object on the training donors only;
-2. map the held donors without using held-donor outcomes or refitting the
-   candidate on those donors;
-3. measure rotation-invariant held-donor subspace agreement / score geometry;
-4. compare against the same foldwise matched-null pipeline.
+A deterministic donor-fold registry is frozen before real states are inspected.
+For each fold and each d:
 
-No donor may evaluate an object it helped select without the cross-fit label
-being explicit.
+1. fit `S_d` on training donors only;
+2. fit the d-dimensional leading subspace on held donors only for evaluation;
+3. compare train-vs-held subspaces with the rotation-invariant projection
+   overlap / principal-angle statistic;
+4. run the identical foldwise calculation inside every matched-null replicate.
 
-The primary donor-recurrence statistic is the lower confidence bound of the
-held-donor object-stability distribution versus the upper confidence bound of
-its matched-null distribution.
+No donor may evaluate a subspace it helped fit without being explicitly marked
+as an in-sample diagnostic.
 
-No minimum percentage of “positive donors” is hard-coded.
+The primary donor-recurrence statistic is the lower uncertainty endpoint of the
+cross-fold overlap distribution relative to the matched-null upper endpoint.
+There is no hard-coded minimum percentage of “positive donors.”
 
 ### D0-C — measurement perturbation and source/operator falsification
 
-A candidate object must survive lawful perturbations that preserve biology while
-altering measurement evidence.
+A candidate must survive lawful perturbations that preserve the underlying
+observed cell while changing available measurement evidence.
 
-At minimum, two perturbation families are required:
+At minimum two perturbation families are required.
 
-1. **count-split remeasurement**
-   - deterministic keyed binomial split of raw counts into two complementary
-     pseudo-replicates;
-   - each pseudo-replicate is normalized independently with the exact frozen
-     CP10K -> log1p semantics;
-   - teacher states are recomputed separately;
-   - subspace/object agreement is rotation-invariant.
+#### 1. Independent keyed count thinning
 
-2. **evidence withholding**
-   - deterministic address-keyed evidence views over physically
-     `MEASURED_SCALAR` addresses only;
-   - measured zero remains measured evidence;
-   - structural unmeasurement is never converted into zero;
-   - the exact evidence-view rule is frozen before real outcomes.
+For a prospectively frozen thinning fraction f, construct two independent
+keyed binomial thinnings of each raw count:
 
-Source/operator are falsification views, not targets to erase.
+`c_A ~ Binomial(c, f)`
 
-Required reports:
-- source-only fit to primary-object overlap;
+`c_B ~ Binomial(c, f)`
+
+The two draws use different frozen RNG namespaces.
+
+Each thinned view uses the exact same address identity and observation state as
+the original cell. The normalization denominator is `f * source_library`,
+guarded by the same positive-library rule as production normalization:
+
+`log1p(10000 * c_view / max(f * source_library, 1))`.
+
+This is a controlled **measurement-noise perturbation**, not a claim that the
+two views are physically independent resequencing experiments.
+
+Teacher states are recomputed independently for A and B. Stability of `S_d`
+is rotation-invariant.
+
+The production thinning fraction is a prospective procedure constant and may
+not be selected from real D0 outcomes.
+
+#### 2. Evidence withholding
+
+Construct deterministic address-keyed evidence views using only physically
+`MEASURED_SCALAR` addresses.
+
+- measured zero remains measured evidence;
+- structurally unmeasured addresses remain unavailable;
+- collision-unresolved addresses are not silently treated as scalar;
+- query/evidence masking occurs before contextual mixing;
+- the exact evidence-view rule is frozen before real D0 execution.
+
+#### Source/operator falsification views
+
+Source/operator are not nuisance labels to erase.
+
+Required reports for every d:
+
+- source-only `S_d` to primary `S_d` overlap;
 - leave-source-out overlap;
-- operator-stratum overlap;
-- conditional operator/source predictability after controlling for the D0
-  object score/subspace;
-- physical-support-stratum stability.
+- operator-stratum overlap where estimable;
+- physical-support-stratum overlap;
+- conditional source/operator predictability after accounting for the
+  candidate subspace;
+- count-thinning and evidence-withholding overlap curves.
 
-A candidate is classified `MEASUREMENT_DOMINATED` if its apparent
-detectability disappears under lawful remeasurement/evidence perturbation or is
-only recoverable within one source/operator regime.
+A candidate is `MEASUREMENT_DOMINATED` if apparent structure survives the
+structure null but fails lawful measurement perturbation/source-support
+falsification.
 
-## Primary real D0 statistic
+## Production D0 decision surface
 
-Let (T_B) be the minimum of three standardized margins for candidate object
-(B):
+D0 v1 does not combine heterogeneous metrics using an arbitrary weighted sum.
 
-1. refitted-null structure margin;
-2. held-donor recurrence margin;
-3. measurement-perturbation stability margin.
+For each d it publishes three margins:
 
-The production existence statistic is:
+1. `M_structure(d)`
+2. `M_donor(d)`
+3. `M_measurement(d)`
 
-[
-T_{max} = max_B T_B.
-]
+Each margin is defined on its own metric scale as the observed lower uncertainty
+endpoint minus the corresponding matched-null upper endpoint.
 
-The matched-null distribution recomputes the **full candidate search and
-maximum** for every replicate.
+A dimension d is **jointly detectable** only when all three margins are
+strictly positive.
 
-D0 is detectable only if the lower uncertainty bound for (T_{max}) exceeds
-the matched-null upper bound under the prospectively frozen confidence rule.
+Family-wise search over d is calibrated by recomputing the complete vector of
+three margins and the same “any jointly detectable d” decision in every null
+replicate. No uncalibrated rank selection is permitted.
 
-This max-statistic construction prevents post-hoc selection of whichever axis,
-block, or candidate happens to look best.
+The primary continuous summary is:
+
+`T_d = min(M_structure(d), M_donor(d), M_measurement(d))`
+
+reported on its native margin vector alongside `T_d`; `T_d` is not treated
+as comparable across metrics unless a separately frozen standardization is
+provided.
+
+The primary categorical result depends on whether at least one d remains
+jointly detectable after family-wise null calibration.
 
 ## Precision / Monte Carlo
 
 Sequential deterministic doubling is allowed only under a prospectively frozen
 rule.
 
-All decision-bearing endpoints must reach the fixed Monte-Carlo precision
-target. Hitting the maximum replicate ceiling without precision emits:
+All decision-bearing null quantiles, uncertainty endpoints and the family-wise
+detectability decision must reach the fixed Monte-Carlo precision target.
+
+Hitting the maximum replicate ceiling without precision emits:
 
 `INSUFFICIENT_MONTE_CARLO_PRECISION`
 
@@ -230,52 +273,51 @@ Allowed real terminals are:
 - `D0_NOT_ESTIMABLE`
 - `INSUFFICIENT_MONTE_CARLO_PRECISION`
 
-Only the first state supports biological interpretation of later D1 discovery
+Only the first supports biological interpretation of later D1 discovery
 objects. It still does not authorize pathology or disease claims.
 
 ## Required continuous outputs
 
-D0 must publish, not hide behind its terminal:
+D0 must publish:
 
-- candidate/block identities with no biological naming;
-- full observed and null statistic distributions;
-- cross-fit donor stability;
-- count-split stability;
+- every evaluated d, never only the favorable one;
+- observed and null cumulative-variance statistics;
+- donor cross-fit overlap distributions;
+- count-thinning overlap distributions;
 - evidence-withholding stability curves;
 - source-only and leave-source-out sensitivity;
 - operator/support-stratum sensitivity;
 - conditional source/operator predictability diagnostics;
+- the three margin vectors for every d;
+- family-wise null decision distribution;
 - Monte-Carlo precision trajectory;
 - exact population/readout/checkpoint/input roots;
-- exact code/package root;
-- all candidate objects including failed ones.
+- exact code/package root.
 
 ## Mandatory synthetic/known-answer attacks before real execution
 
 The implementation must discriminate at least:
 
-1. **true recurrent signal** — common latent object across donors and operators
-   -> DETECTABLE.
+1. **true recurrent latent subspace** across donors/operators -> DETECTABLE.
 2. **measurement-only operator artifact** -> MEASUREMENT_DOMINATED, never
    DETECTABLE.
-3. **single-donor signal** -> not donor-recurrent.
+3. **single-donor signal** -> fails donor recurrence.
 4. **single-source signal** -> fails source falsification.
-5. **rank-1 null, rank-2 stable object** -> D0 may detect the stable object even
-   though a contiguous-prefix D rule would fail.
-6. **frozen-axis null shortcut** -> attack must prove it is anti-conservative or
-   otherwise disagree with the full-refit null on a constructed case.
-7. **candidate-selection leakage** -> selecting on all donors then evaluating on
-   the same donors must be labeled vulnerable.
-8. **measured-zero versus unmeasured mutation** -> must change the measurement
-   semantics and be rejected.
-9. **count-split instability** -> biologically structured-looking but
-   measurement-unstable candidate is not DETECTABLE.
-10. **source/operator swap** -> exact identity/provenance mutation must fail.
-11. **null replicate reuse/caching under a new seed/root** -> must fail.
-12. **MC ceiling without precision** -> hard STOP.
+5. **S1 unstable, S2 stable** -> D0 may detect `S_2`; a contiguous-prefix
+   implementation must be classified defective.
+6. **frozen-axis null shortcut** -> must disagree with full-refit null on a
+   constructed rotating-null case.
+7. **candidate-selection leakage** -> all-donor fit evaluated on the same donors
+   must be classified vulnerable.
+8. **measured-zero versus unmeasured mutation** -> must fail semantics.
+9. **count-thinning instability** -> structured-looking but measurement-unstable
+   candidate is not DETECTABLE.
+10. **source/operator identity swap** -> exact provenance mutation must fail.
+11. **null replicate cache reused under a new seed/root** -> must fail.
+12. **MC ceiling without endpoint precision** -> hard STOP.
 
-Every attack must have a known correct and known defective pole. Refusal-only
-behavior does not count as defense.
+Every attack must have a known correct and known defective pole.
+Refusal-only behavior does not count as defense.
 
 ## Governance
 
