@@ -45,5 +45,8 @@ jobs:
           assert r["lane_rules"]["f1b_c3"]["training_population_authorized"] is False
           assert r["lane_rules"]["d1"]["reader_oracle_or_sealed_use_for_discovery"] is False
           assert r["historical_exposure"]["current_reader_oracle_state"] == "SEALED_INTERNAL_ORACLE"
+          validator = Path("scripts/agent/validate_population_access_registry_v1.py").read_text(encoding="utf-8")
+          assert "--skip-hash-check" not in validator
+          assert "validate_authority" in validator
           print("PASS_POPULATION_REGISTRY_GOVERNANCE_INVARIANTS")
           PY
