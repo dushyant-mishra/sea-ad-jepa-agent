@@ -91,6 +91,16 @@ def test_continuation_train_cannot_silently_enter_reader_split(tmp_path: Path) -
     assert report["continuation_reader_overlap"] == ["C000"]
 
 
+def test_normalized_identity_collision_is_rejected(tmp_path: Path) -> None:
+    foundation_path, reader_path = _fixture(tmp_path)
+    rows = list(csv.DictReader(foundation_path.open(encoding="utf-8")))
+    rows[-2]["canonical_person_id"] = "SEA_AD::F000"
+    _write_csv(foundation_path, list(rows[0]), rows)
+    report = validate(foundation_path, reader_path, require_hashes=False)
+    assert report["terminal"] == "STOP_POPULATION_ACCESS_REGISTRY_INPUTS"
+    assert report["normalized_foundation_identity_collisions"] == ["F000"]
+
+
 def test_pathology_based_split_is_rejected(tmp_path: Path) -> None:
     foundation_path, reader_path = _fixture(tmp_path)
     rows = list(csv.DictReader(foundation_path.open(encoding="utf-8")))
