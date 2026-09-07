@@ -21,9 +21,12 @@ def test_current_draft_fails_closed_only_because_bindings_are_unbound() -> None:
         "integrated_successor_commit",
         "integrated_successor_source_manifest_root",
         "independent_external_review_terminal",
+        "independent_external_review_artifact_sha256",
+        "independent_external_review_reviewed_commit",
         "initialization_checkpoint_path",
         "initialization_checkpoint_sha256",
         "initialization_mode",
+        "initialization_materialization_attestation_sha256",
         "predictor_mandatory_registry_sha256",
         "movement_adjudicator_sha256",
     } == set(result["unbound_fields"])
@@ -36,9 +39,12 @@ def test_synthetic_complete_binding_becomes_bound_not_execution_authority() -> N
         "integrated_successor_commit": "a" * 40,
         "integrated_successor_source_manifest_root": "b" * 64,
         "independent_external_review_terminal": "PASS_INTEGRATED_SUCCESSOR_EXTERNAL_REVIEW",
+        "independent_external_review_artifact_sha256": "f" * 64,
+        "independent_external_review_reviewed_commit": "a" * 40,
         "initialization_checkpoint_path": "outputs/healthy_teacher/u0.pt",
         "initialization_checkpoint_sha256": "c" * 64,
-        "initialization_mode": "successor-bound clean state",
+        "initialization_mode": "successor-bound import of clean historical u0 state",
+        "initialization_materialization_attestation_sha256": "1" * 64,
         "predictor_mandatory_registry_sha256": "d" * 64,
         "movement_adjudicator_sha256": "e" * 64,
         "ready": True,
@@ -78,6 +84,23 @@ def test_external_review_binding_must_be_a_pass_review_terminal() -> None:
     result = validate_contract(contract)
     assert result["terminal"] == "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_INVALID"
     assert "independent external review terminal is not a PASS review terminal" in result["failures"]
+
+
+def test_reviewed_commit_must_equal_integrated_successor() -> None:
+    contract = _draft()
+    contract["execution_bindings"]["integrated_successor_commit"] = "a" * 40
+    contract["execution_bindings"]["independent_external_review_reviewed_commit"] = "b" * 40
+    result = validate_contract(contract)
+    assert result["terminal"] == "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_INVALID"
+    assert "external review is not bound to the integrated successor commit" in result["failures"]
+
+
+def test_initialization_mode_is_constrained() -> None:
+    contract = _draft()
+    contract["execution_bindings"]["initialization_mode"] = "resume historical u205"
+    result = validate_contract(contract)
+    assert result["terminal"] == "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_INVALID"
+    assert "initialization mode is not prospectively allowed" in result["failures"]
 
 
 def test_qualification_horizon_override_is_rejected() -> None:
