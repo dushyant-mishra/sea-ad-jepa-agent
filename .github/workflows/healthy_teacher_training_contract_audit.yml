@@ -8,6 +8,9 @@ on:
       - docs/agent/HEALTHY_TEACHER_TRAINING_AUTHORITY_RECOVERY_20260907.json
       - docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.json
       - docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.md
+      - docs/agent/HEALTHY_TEACHER_TRAINING_BASE_MANIFEST_20260907.csv
+      - docs/agent/HEALTHY_TEACHER_TRAINING_BASE_PACKAGE_ROOT_20260907.txt
+      - docs/agent/HEALTHY_TEACHER_TRAINING_BASE_FREEZE_20260907.json
       - scripts/agent/validate_healthy_teacher_training_contract_v1.py
       - tests/test_healthy_teacher_training_contract_v1.py
       - .github/workflows/healthy_teacher_training_contract_audit.yml
@@ -69,6 +72,17 @@ jobs:
           assert "SEPARATE_IMMUTABLE_OVERLAY_REQUIRED" in validator_text
 
           print(json.dumps(report, indent=2, sort_keys=True))
+          root_path = Path("docs/agent/HEALTHY_TEACHER_TRAINING_BASE_PACKAGE_ROOT_20260907.txt")
+          freeze_path = Path("docs/agent/HEALTHY_TEACHER_TRAINING_BASE_FREEZE_20260907.json")
+          if root_path.exists():
+              import hashlib
+              manifest = Path("docs/agent/HEALTHY_TEACHER_TRAINING_BASE_MANIFEST_20260907.csv").read_bytes()
+              manifest_sha = hashlib.sha256(manifest).hexdigest()
+              assert root_path.read_text(encoding="ascii").strip() == manifest_sha
+              assert freeze_path.exists()
+              freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
+              assert freeze["package_root_sha256"] == manifest_sha
+              assert freeze["terminal"] == "PASS_HEALTHY_TEACHER_TRAINING_BASE_FREEZE__EXECUTION_UNAUTHORIZED"
           print("PASS_HEALTHY_TEACHER_BASE_IMMUTABILITY_AUDIT")
           PY
 
@@ -79,4 +93,5 @@ jobs:
             docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.json \
             docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.md \
             scripts/agent/validate_healthy_teacher_training_contract_v1.py \
-            tests/test_healthy_teacher_training_contract_v1.py
+            tests/test_healthy_teacher_training_contract_v1.py \
+            docs/agent/HEALTHY_TEACHER_TRAINING_BASE_MANIFEST_20260907.csv
