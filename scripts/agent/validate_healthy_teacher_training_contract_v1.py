@@ -185,9 +185,12 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
         "integrated_successor_commit",
         "integrated_successor_source_manifest_root",
         "independent_external_review_terminal",
+        "independent_external_review_artifact_sha256",
+        "independent_external_review_reviewed_commit",
         "initialization_checkpoint_path",
         "initialization_checkpoint_sha256",
         "initialization_mode",
+        "initialization_materialization_attestation_sha256",
         "predictor_mandatory_registry_sha256",
         "movement_adjudicator_sha256",
     )
@@ -204,7 +207,9 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
             failures.append("known incomplete mechanics kernel cannot be final successor binding")
     for key in (
         "integrated_successor_source_manifest_root",
+        "independent_external_review_artifact_sha256",
         "initialization_checkpoint_sha256",
+        "initialization_materialization_attestation_sha256",
         "predictor_mandatory_registry_sha256",
         "movement_adjudicator_sha256",
     ):
@@ -214,6 +219,20 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
     review = bindings.get("independent_external_review_terminal")
     if _nonnull(review) and not (isinstance(review, str) and review.startswith("PASS_") and "REVIEW" in review):
         failures.append("independent external review terminal is not a PASS review terminal")
+    reviewed_commit = bindings.get("independent_external_review_reviewed_commit")
+    if _nonnull(reviewed_commit):
+        if not _is_hex(reviewed_commit, 40):
+            failures.append("independent external review reviewed commit is not a 40-hex SHA")
+        elif _nonnull(bindings.get("integrated_successor_commit")) and reviewed_commit != bindings.get("integrated_successor_commit"):
+            failures.append("external review is not bound to the integrated successor commit")
+
+    init_mode = bindings.get("initialization_mode")
+    allowed_init_modes = {
+        "successor-bound import of clean historical u0 state",
+        "successor-bound mixed import plus prospectively seeded changed components",
+    }
+    if _nonnull(init_mode) and init_mode not in allowed_init_modes:
+        failures.append("initialization mode is not prospectively allowed")
 
     init_sha = bindings.get("initialization_checkpoint_sha256")
     if _nonnull(init_sha) and init_sha == HISTORICAL_U0:
