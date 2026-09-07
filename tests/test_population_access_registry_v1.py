@@ -3,7 +3,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-from scripts.agent.validate_population_access_registry_v1 import validate
+from scripts.agent.validate_population_access_registry_v1 import _validate, validate_authority
 
 
 def _write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str]]) -> None:
@@ -65,7 +65,7 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
 
 def test_valid_geometry_and_nesting_passes_without_hash_check(tmp_path: Path) -> None:
     foundation_path, reader_path = _fixture(tmp_path)
-    report = validate(foundation_path, reader_path, require_hashes=False)
+    report = _validate(foundation_path, reader_path, require_hashes=False)
     assert report["terminal"] == "PASS_POPULATION_ACCESS_REGISTRY_INPUTS"
     assert report["reader_nested_in_foundation_train"] is True
     assert report["continuation_reader_overlap"] == []
@@ -76,7 +76,7 @@ def test_reader_oracle_cannot_be_outside_foundation_train(tmp_path: Path) -> Non
     rows = list(csv.DictReader(reader_path.open(encoding="utf-8")))
     rows[-1]["donor_id"] = "S000"
     _write_csv(reader_path, ["donor_id", "reader_partition"], rows)
-    report = validate(foundation_path, reader_path, require_hashes=False)
+    report = _validate(foundation_path, reader_path, require_hashes=False)
     assert report["terminal"] == "STOP_POPULATION_ACCESS_REGISTRY_INPUTS"
     assert any("not in foundation train" in failure for failure in report["failures"])
 
@@ -86,7 +86,7 @@ def test_continuation_train_cannot_silently_enter_reader_split(tmp_path: Path) -
     rows = list(csv.DictReader(reader_path.open(encoding="utf-8")))
     rows[0]["donor_id"] = "C000"
     _write_csv(reader_path, ["donor_id", "reader_partition"], rows)
-    report = validate(foundation_path, reader_path, require_hashes=False)
+    report = _validate(foundation_path, reader_path, require_hashes=False)
     assert report["terminal"] == "STOP_POPULATION_ACCESS_REGISTRY_INPUTS"
     assert report["continuation_reader_overlap"] == ["C000"]
 
@@ -96,7 +96,7 @@ def test_normalized_identity_collision_is_rejected(tmp_path: Path) -> None:
     rows = list(csv.DictReader(foundation_path.open(encoding="utf-8")))
     rows[-2]["canonical_person_id"] = "SEA_AD::F000"
     _write_csv(foundation_path, list(rows[0]), rows)
-    report = validate(foundation_path, reader_path, require_hashes=False)
+    report = _validate(foundation_path, reader_path, require_hashes=False)
     assert report["terminal"] == "STOP_POPULATION_ACCESS_REGISTRY_INPUTS"
     assert report["normalized_foundation_identity_collisions"] == ["F000"]
 
@@ -106,14 +106,14 @@ def test_pathology_based_split_is_rejected(tmp_path: Path) -> None:
     rows = list(csv.DictReader(foundation_path.open(encoding="utf-8")))
     rows[0]["pathology_used_for_foundation_split"] = "True"
     _write_csv(foundation_path, list(rows[0]), rows)
-    report = validate(foundation_path, reader_path, require_hashes=False)
+    report = _validate(foundation_path, reader_path, require_hashes=False)
     assert report["terminal"] == "STOP_POPULATION_ACCESS_REGISTRY_INPUTS"
     assert any("pathology flag" in failure for failure in report["failures"])
 
 
 def test_hash_mismatch_fails_closed(tmp_path: Path) -> None:
     foundation_path, reader_path = _fixture(tmp_path)
-    report = validate(foundation_path, reader_path, require_hashes=True)
+    report = validate_authority(foundation_path, reader_path)
     assert report["terminal"] == "STOP_POPULATION_ACCESS_REGISTRY_INPUTS"
     assert "foundation split SHA-256 mismatch" in report["failures"]
     assert "reader split SHA-256 mismatch" in report["failures"]
