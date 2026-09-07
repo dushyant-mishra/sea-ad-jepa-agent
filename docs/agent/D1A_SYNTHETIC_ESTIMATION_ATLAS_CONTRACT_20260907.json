@@ -83,7 +83,8 @@
     "n_components": "explicit positive integer <= min(cells-1,160)",
     "sign_orientation": "largest-absolute state loading is positive",
     "scores": "centered states @ state components.T",
-    "explained_variance": "singular_value^2 / total singular_value^2"
+    "explained_variance": "singular_value^2 / total singular_value^2",
+    "program_ids": "D1A_PC001, D1A_PC002, ... in descending singular-value order"
   },
   "estimation": {
     "cell_score": {
@@ -229,5 +230,32 @@
       "independent review of real-D1 execution package"
     ]
   },
-  "terminal": "D1A_CONTRACT_FROZEN_PROSPECTIVELY__NO_CONFIRMATORY_PASS_FAIL__REAL_D1_UNAUTHORIZED"
+  "terminal": "D1A_CONTRACT_FROZEN_PROSPECTIVELY__NO_CONFIRMATORY_PASS_FAIL__REAL_D1_UNAUTHORIZED",
+  "fixed_prototype_parameters": {
+    "bootstrap_resamples": 128,
+    "bootstrap_seed": 9107001,
+    "donor_split_seed": "D1A_SPLIT_V1",
+    "donor_split_rule": "sort unique donor IDs by SHA-256(seed || NUL || donor UTF-8), then alternate into A/B",
+    "tail_fraction": 0.05,
+    "representative_cells_per_program": 5,
+    "representative_donors_per_program": 5,
+    "top_molecular_features_per_sign": 10,
+    "correlation_min_cells": 3,
+    "confidence_interval_quantiles": [
+      0.025,
+      0.975
+    ],
+    "sample_sd_ddof": 1,
+    "zero_variance_measurement_support_r2": 0,
+    "single_group_eta_squared": 0,
+    "effect_nan_rule": "if fewer than 3 finite measured paired values or either paired variable has zero variance, effect and CI are NaN",
+    "ranking_tie_break": "descending priority_score, then ascending program_id",
+    "cell_percentile_tie_break": "ascending raw score, then canonical_cell_id; percentile=(ordinal_rank-1)/(n_cells-1), singleton=0.5"
+  },
+  "provenance": {
+    "algorithm_id": "D1A_SYNTHETIC_ESTIMATION_ATLAS_V1",
+    "input_root_sha256": "SHA-256 over length-prefixed canonical bytes in this order: algorithm_id, mode, float64 C-order states bytes plus shape, UTF-8 canonical metadata rows ordered as input, float64 C-order molecular bytes plus shape, uint8 C-order measured-mask bytes plus shape, ordered UTF-8 feature IDs, ordered known-reference IDs and float64 C-order vectors",
+    "preserve_input_order": true,
+    "output_rows_must_carry_input_root": true
+  }
 }
