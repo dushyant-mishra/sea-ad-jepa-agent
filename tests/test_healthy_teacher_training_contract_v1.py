@@ -35,7 +35,7 @@ def test_synthetic_complete_binding_becomes_bound_not_execution_authority() -> N
     bindings.update({
         "integrated_successor_commit": "a" * 40,
         "integrated_successor_source_manifest_root": "b" * 64,
-        "independent_external_review_terminal": "PASS_EXTERNAL_REVIEW",
+        "independent_external_review_terminal": "PASS_INTEGRATED_SUCCESSOR_EXTERNAL_REVIEW",
         "initialization_checkpoint_path": "outputs/healthy_teacher/u0.pt",
         "initialization_checkpoint_sha256": "c" * 64,
         "initialization_mode": "successor-bound clean state",
@@ -43,12 +43,41 @@ def test_synthetic_complete_binding_becomes_bound_not_execution_authority() -> N
         "movement_adjudicator_sha256": "e" * 64,
         "ready": True,
     })
+    contract["initialization_policy"]["required_new_u0"]["exact_sha256"] = "c" * 64
     result = validate_contract(contract)
     assert result["terminal"] == (
         "PASS_HEALTHY_TEACHER_TRAINING_CONTRACT_BOUND__EXECUTION_STILL_REQUIRES_AUTHORITY"
     )
     assert result["failures"] == []
     assert result["unbound_fields"] == []
+
+
+def test_known_incomplete_kernel_cannot_be_final_binding() -> None:
+    contract = _draft()
+    contract["execution_bindings"]["integrated_successor_commit"] = (
+        "c0eaf2acc0a5edc837fb2a48f726b9d626772f06"
+    )
+    result = validate_contract(contract)
+    assert result["terminal"] == "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_INVALID"
+    assert "known incomplete mechanics kernel cannot be final successor binding" in result["failures"]
+
+
+def test_historical_u0_cannot_be_direct_execution_checkpoint() -> None:
+    contract = _draft()
+    contract["execution_bindings"]["initialization_checkpoint_sha256"] = (
+        "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
+    )
+    result = validate_contract(contract)
+    assert result["terminal"] == "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_INVALID"
+    assert "historical u0 cannot be used directly as successor execution checkpoint" in result["failures"]
+
+
+def test_external_review_binding_must_be_a_pass_review_terminal() -> None:
+    contract = _draft()
+    contract["execution_bindings"]["independent_external_review_terminal"] = "STOP_REVIEW"
+    result = validate_contract(contract)
+    assert result["terminal"] == "STOP_HEALTHY_TEACHER_TRAINING_CONTRACT_INVALID"
+    assert "independent external review terminal is not a PASS review terminal" in result["failures"]
 
 
 def test_qualification_horizon_override_is_rejected() -> None:
