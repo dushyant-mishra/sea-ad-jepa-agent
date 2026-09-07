@@ -208,15 +208,17 @@
       "branch": "f1-real-producer-replay-prefreeze-20260907",
       "from_reviewed_preflight": "14e41030ffac65b3d58a45ae4159d30b8517e470",
       "terminal": "PRODUCER_AND_REPLAY_SOURCE_FROZEN__REAL_F1_STILL_UNAUTHORIZED",
-      "prefreeze_root_sha256": "88cc100d02909fe6da2e5a40ee3fb4ce7de727370df9ad5af2f684d8d98a4a99",
-      "producer_sha256": "3a47805de1cf077d3aa7675a8995fd0fed1451203135ead251ce30f05564f979",
-      "replay_sha256": "22bc7e051f971737740d08384194e26ff11aaeec0dee89126da1fd6d465b4c19",
+      "prefreeze_root_sha256": "b324fdd917d07c41ea3defdc16644ff0cf7e6eb3a401b1331a7feb479c1869c3",
+      "producer_sha256": "8220f80aa1249ea49295489db5d0e19c939abdc1d0fe84bece91107c38b1b0a7",
+      "replay_sha256": "2f804e3c76ffdc6af3b4bf782fbb621f92719d170c5cadc42618137655bc17f7",
       "real_output_roots_populated": false,
       "awaiting": "external review, then explicit real-execution authorization, then data-only closure",
-      "prefreeze_root_superseded": "bd7e301cc4d7542e364b8cfd31190b3bc0fc4469c2649b864a8f19ab00834022 was the 13-member root before the external-review handoff was bound as a member; the producer and replay digests are unchanged, so no science source moved",
+      "prefreeze_root_superseded": "bd7e301c... was the 13-member root before the external-review handoff was bound as a member; 88cc100d... was the 14-member root before the capture-coverage and fail-open repairs. Re-freezing is lawful because no real output exists yet, which is the point of freezing before results",
       "members": 14,
-      "head_commit": "933ef77",
-      "external_review_handoff": "docs/agent/F1_REAL_PRODUCER_REPLAY_EXTERNAL_REVIEW_HANDOFF_20260907.md, bound as a manifest member"
+      "head_commit": "799eb3f",
+      "external_review_handoff": "docs/agent/F1_REAL_PRODUCER_REPLAY_EXTERNAL_REVIEW_HANDOFF_20260907.md, bound as a manifest member",
+      "tests": "33 passed with authorities reachable; 29 passed and 4 NOT_MEASURABLE on a clean extraction; F1_PREFREEZE_REQUIRE_AUTHORITIES=1 turns those 4 into failures rather than skips",
+      "post_report_repairs": "Two requirements were satisfied in prose but not in code and were found by re-auditing this lane after it had been reported complete: mechanics-capture coverage over all 44,496 assignments was a docstring claim with nothing enumerating or enforcing it, and the geometry-versus-derived-counts checks failed open to a silent pytest.skip on any tree without this machine's hardcoded absolute paths. Both are repaired and the review handoff no longer tells a reviewer to expect a full pass count from a clean extraction."
     }
   }
 }
