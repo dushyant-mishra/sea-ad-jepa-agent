@@ -208,11 +208,15 @@
       "branch": "f1-real-producer-replay-prefreeze-20260907",
       "from_reviewed_preflight": "14e41030ffac65b3d58a45ae4159d30b8517e470",
       "terminal": "PRODUCER_AND_REPLAY_SOURCE_FROZEN__REAL_F1_STILL_UNAUTHORIZED",
-      "prefreeze_root_sha256": "bd7e301cc4d7542e364b8cfd31190b3bc0fc4469c2649b864a8f19ab00834022",
+      "prefreeze_root_sha256": "88cc100d02909fe6da2e5a40ee3fb4ce7de727370df9ad5af2f684d8d98a4a99",
       "producer_sha256": "3a47805de1cf077d3aa7675a8995fd0fed1451203135ead251ce30f05564f979",
       "replay_sha256": "22bc7e051f971737740d08384194e26ff11aaeec0dee89126da1fd6d465b4c19",
       "real_output_roots_populated": false,
-      "awaiting": "external review, then explicit real-execution authorization, then data-only closure"
+      "awaiting": "external review, then explicit real-execution authorization, then data-only closure",
+      "prefreeze_root_superseded": "bd7e301cc4d7542e364b8cfd31190b3bc0fc4469c2649b864a8f19ab00834022 was the 13-member root before the external-review handoff was bound as a member; the producer and replay digests are unchanged, so no science source moved",
+      "members": 14,
+      "head_commit": "933ef77",
+      "external_review_handoff": "docs/agent/F1_REAL_PRODUCER_REPLAY_EXTERNAL_REVIEW_HANDOFF_20260907.md, bound as a manifest member"
     }
   }
 }
