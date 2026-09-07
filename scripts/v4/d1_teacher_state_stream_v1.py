@@ -49,9 +49,14 @@ from typing import Any, Iterator, Mapping, Sequence
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts" / "v4"))
 
+import numpy as np  # noqa: E402
+
 from d1_real_data_derivation_core_v1 import (  # noqa: E402
     MECHANICS_ONLY,
     PRODUCTION_FULL_FIT,
+    STOP_PROTECTED_POPULATION,
+    assert_donor_primary_masses,
+    derive_donor_operator_weights,
     payload_root,
 )
 
@@ -115,6 +120,124 @@ def trace_encoder_output_fields(model_source: Path) -> dict[str, Any]:
                         if isinstance(default, ast.Constant) and default.value == 160:
                             width_default = 160
     return {"encoder_output_fields": fields, "encoder_width_default": width_default}
+
+
+TEACHER_QUALIFICATION_AUTHORITY_REL = "docs/agent/D1_TEACHER_QUALIFICATION_AUTHORITY.json"
+STOP_NO_QUALIFICATION_AUTHORITY = "STOP_D1_NO_TEACHER_QUALIFICATION_AUTHORITY"
+STOP_READOUT_SHAPE = "STOP_D1_READOUT_SHAPE"
+
+
+def load_teacher_qualification_authority() -> dict[str, Any]:
+    """Load the explicit list of qualified healthy teacher checkpoint digests.
+
+    Absence is not permission. With no qualification authority the set of
+    qualified roots is empty, so no checkpoint can be healthy and the gate stays
+    shut. This is the only mechanism that may declare a teacher healthy: passing
+    review and being frozen is a positive act recorded here, never inferred from
+    a checkpoint's update number being unfamiliar.
+    """
+    path = _resolve(TEACHER_QUALIFICATION_AUTHORITY_REL)
+    if path is None:
+        return {"present": False,
+                "path": TEACHER_QUALIFICATION_AUTHORITY_REL,
+                "qualified_checkpoint_roots": [],
+                "terminal": STOP_NO_QUALIFICATION_AUTHORITY,
+                "note": ("no qualification authority exists, so no checkpoint can be "
+                         "classified healthy; absence is not permission")}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    roots: list[str] = []
+    rejected: list[dict[str, Any]] = []
+    for entry in payload.get("qualified_teachers", []):
+        digest = str(entry.get("checkpoint_sha256") or "")
+        terminal = str(entry.get("review_terminal") or "")
+        readout = str(entry.get("readout_contract_hash") or "")
+        # An entry must name the reviewed terminal AND the exact readout contract
+        # it was qualified under. A digest alone would let a checkpoint be reused
+        # under a different readout seam than the one reviewed, which is a
+        # different object and a different claim.
+        if len(digest) == 64 and terminal.startswith("PASS") and len(readout) == 64:
+            roots.append(digest)
+        else:
+            rejected.append({"checkpoint_sha256": digest[:16] or None,
+                             "review_terminal": terminal or None,
+                             "readout_contract_hash_present": len(readout) == 64})
+    return {"present": True,
+            "path": TEACHER_QUALIFICATION_AUTHORITY_REL,
+            "sha256": _sha256(path),
+            "qualified_checkpoint_roots": roots,
+            "qualified_count": len(roots),
+            "rejected_entries": rejected}
+
+
+class LawfulFitStrataSource:
+    """Real streaming source over the audited lawful fit population.
+
+    Exposes `strata()` and `load(donor, operator)`, so it plugs directly into
+    the core engines. This is a genuine implementation, not a stub: it derives
+    the strata and the donor-primary weights `a_dc = 1/(|O_d| n_do)` from the
+    audited real metadata, verifies the donor and operator masses, and refuses
+    any stratum outside the lawful population.
+
+    The one thing it does not invent is the readout. `readout(donor, operator,
+    n)` must return that stratum's cell-level teacher states, and supplying it
+    is exactly the seam `STOP_D1_TEACHER_READOUT_UNRESOLVED` withholds. Keeping
+    it as a single injected callable means the unresolved authority question is
+    isolated to one place rather than spread through the streaming code.
+    """
+
+    def __init__(self, *, donor_operator_counts: Mapping[tuple[str, int], int],
+                 readout: Any, population_class: str, dimension: int) -> None:
+        if population_class not in (PRODUCTION_FULL_FIT, MECHANICS_ONLY):
+            raise PermissionError("STOP_D1_UNSUPPORTED_POPULATION_CLASS: %r"
+                                  % (population_class,))
+        if not callable(readout):
+            raise TypeError("readout must be callable(donor, operator, n) -> states")
+        self.population_class = str(population_class)
+        self.dimension = int(dimension)
+        self._readout = readout
+        self._counts = {(str(d), int(o)): int(n)
+                        for (d, o), n in donor_operator_counts.items()}
+        if not self._counts:
+            raise ValueError("empty lawful strata")
+        self._weights = derive_donor_operator_weights(self._counts)
+        assert_donor_primary_masses(self._weights)
+
+    def strata(self) -> list[tuple[str, int]]:
+        return sorted(self._counts)
+
+    def donors(self) -> list[str]:
+        return sorted({d for d, _ in self._counts})
+
+    def load(self, donor: str, operator: int) -> tuple[Any, Any]:
+        key = (str(donor), int(operator))
+        if key not in self._counts:
+            raise PermissionError(
+                "%s: stratum %r is not part of the lawful fit population"
+                % (STOP_PROTECTED_POPULATION, key))
+        n = self._counts[key]
+        states = np.asarray(self._readout(str(donor), int(operator), n), dtype=np.float64)
+        if states.shape != (n, self.dimension):
+            raise ValueError("%s: stratum %r returned %r, expected %r"
+                             % (STOP_READOUT_SHAPE, key, states.shape, (n, self.dimension)))
+        weight = self._weights["cell_weight_a_dc"][key]
+        return states, np.full(n, weight, dtype=np.float64)
+
+    def total_cells(self) -> int:
+        return int(sum(self._counts.values()))
+
+
+def build_production_strata_source(*, donor_operator_counts: Mapping[tuple[str, int], int],
+                                   readout: Any, dimension: int,
+                                   report: Mapping[str, Any] | None = None) -> LawfulFitStrataSource:
+    """Build the production streaming source. Refused while the gate is closed."""
+    resolved = report if report is not None else resolve_teacher_readout()
+    if not teacher_gate_open(resolved):
+        raise PermissionError(
+            "%s / %s: %s" % (STOP_READOUT_UNRESOLVED, WAIT_HEALTHY_TEACHER,
+                             "; ".join(str(c) for c in resolved.get("conflicts", []))))
+    return LawfulFitStrataSource(donor_operator_counts=donor_operator_counts,
+                                 readout=readout, dimension=dimension,
+                                 population_class=PRODUCTION_FULL_FIT)
 
 
 def resolve_teacher_readout() -> dict[str, Any]:
@@ -204,30 +327,49 @@ def resolve_teacher_readout() -> dict[str, Any]:
             "no prospective representation or readout contract exists under "
             "docs/agent/ naming a D1 cell-level teacher state")
 
-    # Checkpoint availability.
+    # Checkpoint availability. A checkpoint counts as healthy ONLY when its exact
+    # digest appears in an explicit qualification authority.
+    #
+    # An earlier revision classified any checkpoint whose update number fell
+    # outside the hardcoded prohibited/untrained sets as UNCLASSIFIED and then
+    # appended it to the healthy list. Unknown became healthy, so a new
+    # checkpoint dropped into the manifest would have opened the teacher gate
+    # with no review at all. Healthy is now a positive claim that only a
+    # qualification authority can make, and an unrecognised checkpoint is
+    # UNQUALIFIED_NOT_HEALTHY.
+    qualification = load_teacher_qualification_authority()
+    report["teacher_qualification_authority"] = qualification
+    qualified_roots = set(qualification.get("qualified_checkpoint_roots", ()))
+
     checkpoints: list[dict[str, Any]] = []
-    healthy = []
+    healthy: list[dict[str, Any]] = []
     if manifest_path is not None:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         for entry in manifest.get("checkpoints", []):
             update = int(entry.get("update", -1))
-            if update in UNTRAINED_UPDATES:
-                status = "UNTRAINED_U0"
-            elif update in DEFECT_INHERITED_UPDATES:
+            digest = str(entry.get("sha256") or "")
+            if update in DEFECT_INHERITED_UPDATES:
                 status = "TRAINING_MECHANICS_DEFECT_INHERITED"
+            elif update in UNTRAINED_UPDATES:
+                status = "UNTRAINED_U0"
+            elif digest and digest in qualified_roots:
+                status = "QUALIFIED_HEALTHY"
             else:
-                status = "UNCLASSIFIED"
-                healthy.append(update)
-            checkpoints.append({"update": update, "sha256": entry.get("sha256"),
-                                "status": status})
+                status = "UNQUALIFIED_NOT_HEALTHY"
+            record = {"update": update, "sha256": digest or None, "status": status}
+            checkpoints.append(record)
+            if status == "QUALIFIED_HEALTHY":
+                healthy.append(record)
         report["checkpoint_manifest"] = {"path": CHECKPOINT_MANIFEST_REL,
                                          "sha256": _sha256(manifest_path)}
     report["checkpoints"] = checkpoints
     report["healthy_trained_teacher_available"] = bool(healthy)
+    report["qualified_healthy_checkpoints"] = healthy
     if not healthy:
         report["conflicts"].append(
-            "no mechanically healthy trained teacher checkpoint is available: every "
-            "manifested checkpoint is either untrained u0000 or "
+            "no mechanically healthy trained teacher checkpoint is available: no "
+            "manifested checkpoint digest appears in a qualification authority, and "
+            "every manifested checkpoint is untrained u0000 or "
             "TRAINING_MECHANICS_DEFECT_INHERITED (u0010-u0205)")
 
     report["unique_authorized_cell_level_state"] = False
@@ -254,24 +396,38 @@ def teacher_gate_open(report: Mapping[str, Any] | None = None) -> bool:
 
 
 def iter_teacher_states(*, population_class: str, chunk_size: int = 8192,
-                        report: Mapping[str, Any] | None = None) -> Iterator[Any]:
-    """Stream cell-level teacher states. Refuses while the gate is closed.
+                        report: Mapping[str, Any] | None = None,
+                        source: Any = None) -> Iterator[Any]:
+    """Stream (states, weights) chunks from a lawful strata source.
 
-    Kept as the single seam so that when a healthy teacher and a representation
-    contract exist, exactly one function needs to change and every estimator
-    downstream inherits the gate.
+    Real streaming: it walks the audited strata in order and yields chunked
+    arrays, so no stage materialises all 4,553,407 cells. An earlier revision of
+    this function had no streaming implementation at all and only refused, which
+    understated how much still had to be built. The orchestration now exists;
+    what the gate withholds is the readout callable, and a source is never
+    fabricated here.
     """
     resolved = report if report is not None else resolve_teacher_readout()
     if population_class == PRODUCTION_FULL_FIT and not teacher_gate_open(resolved):
         raise PermissionError(
             "%s / %s: %s" % (STOP_READOUT_UNRESOLVED, WAIT_HEALTHY_TEACHER,
                              "; ".join(str(c) for c in resolved.get("conflicts", []))))
-    if population_class == MECHANICS_ONLY:
-        raise NotImplementedError(
-            "mechanics fixtures supply their own arrays; this streamer exists only "
-            "for the production seam and must not fabricate synthetic states")
-    raise PermissionError("%s: unsupported population_class %r"
-                          % (STOP_READOUT_UNRESOLVED, population_class))
+    if source is None:
+        raise PermissionError(
+            "%s: no lawful strata source supplied; this streamer never fabricates "
+            "states" % STOP_READOUT_UNRESOLVED)
+    declared = getattr(source, "population_class", None)
+    if declared != population_class:
+        raise PermissionError(
+            "STOP_D1_POPULATION_CLASS_MISMATCH: source is %r but the stream "
+            "requested %r" % (declared, population_class))
+    if int(chunk_size) <= 0:
+        raise ValueError("chunk_size must be positive")
+    for donor, operator in source.strata():
+        states, weights = source.load(donor, operator)
+        for start in range(0, int(states.shape[0]), int(chunk_size)):
+            stop = min(start + int(chunk_size), int(states.shape[0]))
+            yield states[start:stop], weights[start:stop]
 
 
 def main() -> int:

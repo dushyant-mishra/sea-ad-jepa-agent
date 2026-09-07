@@ -21,7 +21,7 @@ import hashlib
 import json
 import math
 from dataclasses import dataclass, field
-from typing import Any, Iterable, Iterator, Mapping, Sequence
+from typing import Any, Iterator, Mapping, Sequence
 
 import numpy as np
 
@@ -73,12 +73,27 @@ STOP_NO_STABLE_RANK = "STOP_D1_NO_STABLE_LEADING_RANK__NO_FALLBACK_D"
 STOP_NOT_PRODUCTION_POPULATION = "STOP_D1_NOT_PRODUCTION_POPULATION"
 STOP_TEACHER_GATE_CLOSED = "STOP_D1_TEACHER_GATE_CLOSED"
 STOP_PROTECTED_POPULATION = "STOP_D1_PROTECTED_POPULATION_ACCESS"
+STOP_VALUE_NOT_DERIVED = "STOP_D1_PRODUCTION_VALUE_NOT_DERIVED"
+STOP_DIAGNOSTICS_MISSING = "STOP_D1_PRODUCTION_DIAGNOSTICS_MISSING"
 INSUFFICIENT_MC = "INSUFFICIENT_MONTE_CARLO_PRECISION"
 
 
 # ---------------------------------------------------------------------------
 # Provenance
 # ---------------------------------------------------------------------------
+REQUIRED_INPUT_ROOT_KEYS = ("population_audit_root", "cell_metadata_authority_root",
+                            "loader_manifest_root", "split_registry_root")
+REQUIRED_FIREWALL_KEYS = ("protected_rows_delivered", "lawful_partition",
+                          "donor_roster_verified")
+
+
+def _is_root(value: Any) -> bool:
+    """A root must be a 64-character hex digest, not a placeholder or a size."""
+    if not isinstance(value, str) or len(value) != 64:
+        return False
+    return all(c in "0123456789abcdef" for c in value.lower())
+
+
 @dataclass(frozen=True)
 class D1Provenance:
     """Where a number came from, in a form that gates its use.
@@ -96,6 +111,7 @@ class D1Provenance:
     operators: int | None = None
     teacher_checkpoint_root: str | None = None
     teacher_readout_contract_hash: str | None = None
+    firewall_evidence: Mapping[str, Any] = field(default_factory=dict)
     rng_namespace: str | None = None
     notes: str = ""
 
@@ -103,13 +119,47 @@ class D1Provenance:
         if self.population_class not in POPULATION_CLASSES:
             raise ValueError("unknown population_class: %r" % (self.population_class,))
 
-    def is_production_eligible(self) -> bool:
-        """True only for the complete lawful fit population at exact counts."""
+    def missing_production_provenance(self) -> list[str]:
+        """Every mandatory provenance element that is absent or wrong.
+
+        Population counts alone are not sufficient. An earlier revision checked
+        only the population class plus 104 / 4,553,407 / 42, which reported a
+        statistic as production-ready while its teacher checkpoint root was null
+        and no frozen readout contract existed. A parameter is not traceable
+        unless the exact teacher bytes, the exact readout seam, the exact reader
+        inputs and the firewall evidence are all named.
+        """
+        missing: list[str] = []
         if self.population_class not in PRODUCTION_ELIGIBLE_CLASSES:
-            return False
-        return (self.donors == EXPECTED_FIT_DONORS
-                and self.cells == EXPECTED_FIT_CELLS
-                and self.operators == EXPECTED_OPERATORS)
+            missing.append("population_class=%s" % self.population_class)
+        if self.donors != EXPECTED_FIT_DONORS:
+            missing.append("donors=%r" % (self.donors,))
+        if self.cells != EXPECTED_FIT_CELLS:
+            missing.append("cells=%r" % (self.cells,))
+        if self.operators != EXPECTED_OPERATORS:
+            missing.append("operators=%r" % (self.operators,))
+        if not _is_root(self.teacher_checkpoint_root):
+            missing.append("teacher_checkpoint_root")
+        if not _is_root(self.teacher_readout_contract_hash):
+            missing.append("teacher_readout_contract_hash")
+        for required in REQUIRED_INPUT_ROOT_KEYS:
+            if not _is_root(self.input_roots.get(required)):
+                missing.append("input_roots[%s]" % required)
+        if not self.firewall_evidence:
+            missing.append("firewall_evidence")
+        else:
+            for key in REQUIRED_FIREWALL_KEYS:
+                if key not in self.firewall_evidence:
+                    missing.append("firewall_evidence[%s]" % key)
+            if self.firewall_evidence.get("protected_rows_delivered") not in (0,):
+                missing.append("firewall_evidence[protected_rows_delivered]!=0")
+        if not self.formula_version:
+            missing.append("formula_version")
+        return missing
+
+    def is_production_eligible(self) -> bool:
+        """True only when every mandatory provenance element is present."""
+        return not self.missing_production_provenance()
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -122,6 +172,7 @@ class D1Provenance:
             "operators": self.operators,
             "teacher_checkpoint_root": self.teacher_checkpoint_root,
             "teacher_readout_contract_hash": self.teacher_readout_contract_hash,
+            "firewall_evidence": dict(self.firewall_evidence),
             "rng_namespace": self.rng_namespace,
             "notes": self.notes,
         }
@@ -139,15 +190,28 @@ def emit_production_parameter(*, parameter_id: str, value: Any,
     """
     if provenance.population_class == FORBIDDEN_PROTECTED:
         raise PermissionError("%s: %s" % (STOP_PROTECTED_POPULATION, parameter_id))
-    if not provenance.is_production_eligible():
+    missing = provenance.missing_production_provenance()
+    if missing:
         raise PermissionError(
-            "%s: %s may not be emitted from population_class=%s with "
-            "donors=%r cells=%r operators=%r"
-            % (STOP_NOT_PRODUCTION_POPULATION, parameter_id,
-               provenance.population_class, provenance.donors,
-               provenance.cells, provenance.operators))
+            "%s: %s may not be emitted; missing or invalid mandatory provenance %r"
+            % (STOP_NOT_PRODUCTION_POPULATION, parameter_id, missing))
     if not teacher_gate_open:
         raise PermissionError("%s: %s" % (STOP_TEACHER_GATE_CLOSED, parameter_id))
+    # A production parameter must carry an actual derived value. An earlier
+    # revision of the driver called this with value=None purely to probe the
+    # gate, which meant that opening the gate would have emitted D=None and
+    # reported the derivation complete. Refusing an absent value here closes
+    # that path at the only place a production parameter can be created.
+    if value is None:
+        raise ValueError("%s: %s has no derived value" % (STOP_VALUE_NOT_DERIVED, parameter_id))
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ValueError("%s: %s is not finite" % (STOP_VALUE_NOT_DERIVED, parameter_id))
+    if isinstance(value, (list, tuple)) and len(value) == 0:
+        raise ValueError("%s: %s is empty" % (STOP_VALUE_NOT_DERIVED, parameter_id))
+    if not diagnostics:
+        raise ValueError(
+            "%s: %s must carry estimator diagnostics and uncertainty"
+            % (STOP_DIAGNOSTICS_MISSING, parameter_id))
     return {
         "schema": "d1-production-parameter-v1",
         "parameter_id": parameter_id,
@@ -567,30 +631,408 @@ def rank_stability_separates(observed_lower: Sequence[float],
     return [bool(o > n) for o, n in zip(obs, null)]
 
 
-def derive_production_D(*, D_PA: int, stability_separated_by_rank: Sequence[bool]) -> dict[str, Any]:
+def population_gap_interval_lower(observed_gaps: Sequence[float],
+                                  bootstrap_gaps: np.ndarray, *,
+                                  confidence_level: float = 0.95) -> np.ndarray:
+    """Lower bound of the interval for the POPULATION eigengap.
+
+    This is a basic-bootstrap interval, `2*gap_hat - upper_quantile(gap*)`, and
+    the choice of estimator is the whole point of the function.
+
+    Ordered sample eigenvalues repel: when two population eigenvalues are
+    exactly equal, the sampled pair is almost surely distinct and ordered, so
+    every bootstrap replicate reports a strictly positive gap. Taking the lower
+    percentile of those sample gaps therefore essentially never includes zero,
+    and a truly degenerate pair would be reported as two resolved axes. That is
+    what an earlier revision of the end-to-end engine did, and it produced a
+    STOP for a stable 2-D subspace by insisting each of its axes separate alone.
+
+    The basic bootstrap reflects the sampling distribution of `gap_hat -
+    gap_population` instead, which corrects the upward bias and can include
+    zero while every observed gap is positive.
+    """
+    gap_hat = np.asarray(observed_gaps, dtype=np.float64)
+    replicas = np.asarray(bootstrap_gaps, dtype=np.float64)
+    if replicas.ndim != 2 or replicas.shape[1] != gap_hat.size:
+        raise ValueError("bootstrap_gaps must be (replicates, len(observed_gaps))")
+    if replicas.shape[0] < 2:
+        raise ValueError("need at least two bootstrap replicates")
+    alpha = 1.0 - float(confidence_level)
+    upper = np.quantile(replicas, 1.0 - alpha / 2.0, axis=0)
+    return 2.0 * gap_hat - upper
+
+
+def block_boundary_ranks(blocks: Sequence[Sequence[int]]) -> list[int]:
+    """Cumulative leading ranks that land on a degeneracy-block boundary.
+
+    Blocks [[0],[1,2],[3]] give boundaries [1, 3, 4]: a leading subspace may end
+    after axis 0, or after the 1-2 block, or after axis 3, but never *inside*
+    the 1-2 block.
+    """
+    boundaries: list[int] = []
+    total = 0
+    for block in blocks:
+        total += len(list(block))
+        boundaries.append(total)
+    return boundaries
+
+
+def derive_production_D(*, D_PA: int, stability_separated_by_rank: Sequence[bool],
+                        degeneracy_blocks: Sequence[Sequence[int]] | None = None) -> dict[str, Any]:
     """D = largest leading d <= D_PA separated from the null for every rank 1..d.
 
-    No fallback. If rank 1 is not separated there is no D, and D1 emits a STOP
-    for program decomposition rather than substituting a default.
+    No fallback. If no admissible leading rank separates there is no D, and D1
+    emits a STOP for program decomposition rather than substituting a default.
+
+    `degeneracy_blocks` makes the rule respect the authority's near-degeneracy
+    clause. When adjacent axes have an eigengap interval including zero they
+    form one subspace and receive no separate identities, so a candidate d that
+    would cut through such a block is not an admissible object, and separation is
+    evaluated at block boundaries rather than at every individual axis.
+
+    This matters in practice and was found by running the end-to-end engine on a
+    fixture with two equal-strength components. There D_PA was 2 while rank 1
+    alone failed to separate, because the leading axis rotates freely inside the
+    degenerate pair and is genuinely unidentified, while the joint 2-D subspace
+    was perfectly stable. Requiring rank 1 to separate on its own forced exactly
+    the individual-PC identity the authority forbids, and returned a STOP for a
+    subspace that is in fact stable.
+
+    It is not a loophole. Blocks come from the resampled eigengap interval, a
+    measured property, and axes merge only when that interval includes zero.
+    With no blocks supplied the behaviour is unchanged and every leading rank
+    must separate on its own.
     """
     if int(D_PA) < 0:
         raise ValueError("D_PA must be non-negative")
     flags = [bool(f) for f in stability_separated_by_rank]
     limit = min(int(D_PA), len(flags))
+    if degeneracy_blocks is None:
+        admissible = list(range(1, limit + 1))
+    else:
+        admissible = [d for d in block_boundary_ranks(degeneracy_blocks) if 1 <= d <= limit]
     d = 0
-    for rank in range(limit):
-        if flags[rank]:
-            d = rank + 1
+    for candidate in admissible:
+        if flags[candidate - 1]:
+            d = candidate
         else:
             break
     if d <= 0:
         raise AssertionError(
-            "%s: D_PA=%d, separation flags=%r; no positive leading rank is stable "
-            "and no fallback D is permitted" % (STOP_NO_STABLE_RANK, int(D_PA), flags))
+            "%s: D_PA=%d, separation flags=%r, admissible block-boundary ranks=%r; "
+            "no admissible leading rank is stable and no fallback D is permitted"
+            % (STOP_NO_STABLE_RANK, int(D_PA), flags, admissible))
     return {"D": int(d), "D_PA": int(D_PA), "K": int(d),
             "separation_flags": flags,
+            "admissible_ranks": admissible,
+            "degeneracy_respected": degeneracy_blocks is not None,
             "statistic_id": "D1-P009:D",
             "K_rule": "K=D for D1 v1; no 320, no 512, no 50-PC, no 2*D expansion"}
+
+
+# ---------------------------------------------------------------------------
+# End-to-end streamed engines
+#
+# The primitives above are not a derivation on their own. An earlier revision
+# shipped them unassembled while the driver called none of them, which
+# overstated how much was built. These engines are what actually consume the
+# full population: they stream donor x operator strata, build the real
+# spectrum, build the donor/operator-preserving null, carry donor blocks
+# through recomputation, and produce the exact intervals the D rule reads.
+#
+# A strata source is any object exposing:
+#     strata()                 -> sequence of (donor_id, operator_index)
+#     load(donor, operator)    -> (states (n,p) float, weights (n,) float)
+# so a real lawful reader and a mechanics fixture are interchangeable without
+# either one being able to masquerade as the other: the population class lives
+# in the provenance, not in the source.
+# ---------------------------------------------------------------------------
+def _strata_by_donor(source: Any) -> dict[str, list[int]]:
+    by_donor: dict[str, list[int]] = {}
+    for donor, operator in source.strata():
+        by_donor.setdefault(str(donor), []).append(int(operator))
+    return {d: sorted(set(v)) for d, v in by_donor.items()}
+
+
+def stream_observed_spectrum(source: Any, dimension: int) -> dict[str, Any]:
+    """Weighted mean, covariance and full spectrum over every lawful stratum."""
+    accumulator = WeightedMomentAccumulator(int(dimension))
+    strata = 0
+    for donor, operator in source.strata():
+        states, weights = source.load(donor, operator)
+        accumulator.update(states, weights)
+        strata += 1
+    if strata == 0:
+        raise ValueError("STOP_D1_NO_STRATA")
+    moments = accumulator.result()
+    eigen = deterministic_eigendecomposition(moments["covariance"])
+    return {"mean": moments["mean"], "covariance": moments["covariance"],
+            "eigenvalues": eigen["eigenvalues"], "eigenvectors": eigen["eigenvectors"],
+            "weight_sum": moments["weight_sum"], "rows": moments["rows"],
+            "strata": strata}
+
+
+def stream_null_spectra(source: Any, dimension: int, *, replicates: int,
+                        rng_namespace: str) -> np.ndarray:
+    """Donor/operator-preserving parallel-analysis null spectra.
+
+    Each replicate permutes every state coordinate independently *within* each
+    donor x operator stratum, so each coordinate keeps its real marginal and the
+    real technical population is preserved while cell-level cross-coordinate
+    covariance is destroyed. Permutation happens per stratum, so no replicate
+    ever materialises the whole population.
+    """
+    if int(replicates) < 2:
+        raise ValueError("need at least two null replicates")
+    spectra = np.empty((int(replicates), int(dimension)), dtype=np.float64)
+    for replicate in range(int(replicates)):
+        accumulator = WeightedMomentAccumulator(int(dimension))
+        for donor, operator in source.strata():
+            states, weights = source.load(donor, operator)
+            rng = stratum_rng(rng_namespace, replicate, str(donor), int(operator))
+            accumulator.update(permute_coordinates_within_stratum(states, rng), weights)
+        eigen = deterministic_eigendecomposition(accumulator.result()["covariance"])
+        spectra[replicate] = eigen["eigenvalues"]
+    return spectra
+
+
+def _resampled_donor_moments(source: Any, dimension: int, donors: Sequence[str], *,
+                             permute_namespace: str | None = None,
+                             replicate: int = 0) -> np.ndarray:
+    """Recompute the weighted covariance over resampled donor blocks.
+
+    Each sampled donor contributes all of its lawful operator/cell rows, and a
+    donor sampled twice contributes twice. That is what makes the donor the
+    independent unit; resampling cells instead would understate uncertainty.
+    """
+    accumulator = WeightedMomentAccumulator(int(dimension))
+    by_donor = _strata_by_donor(source)
+    for occurrence, donor in enumerate(donors):
+        for operator in by_donor[str(donor)]:
+            states, weights = source.load(donor, operator)
+            if permute_namespace is not None:
+                rng = stratum_rng(permute_namespace, replicate * 10000 + occurrence,
+                                  str(donor), int(operator))
+                states = permute_coordinates_within_stratum(states, rng)
+            accumulator.update(states, weights)
+    return accumulator.result()["covariance"]
+
+
+def stream_donor_block_stability(source: Any, dimension: int, *, replicates: int,
+                                 rng_namespace: str, max_rank: int,
+                                 reference_eigenvectors: np.ndarray,
+                                 permute: bool = False) -> dict[str, Any]:
+    """Donor-block subspace stability per leading rank, real or null.
+
+    For each replicate, donors are resampled as whole blocks, the weighted
+    covariance is recomputed from those blocks, and the leading-d subspace is
+    compared with the reference by projection overlap. Projection overlap rather
+    than per-eigenvector agreement is what lets a degenerate block be compared
+    at all, since inside such a block no individual axis is identified.
+
+    With `permute=True` the same statistic is computed under the
+    donor/operator-preserving null, giving the null overlap distribution the D
+    rule must separate against. Without it there is nothing to compare a real
+    overlap to, and any positive overlap would look like stability.
+    """
+    donors = sorted(_strata_by_donor(source))
+    if int(max_rank) < 1 or int(max_rank) > int(dimension):
+        raise ValueError("max_rank must be in [1, dimension]")
+    overlaps = np.empty((int(replicates), int(max_rank)), dtype=np.float64)
+    eigengaps = np.empty((int(replicates), int(dimension) - 1), dtype=np.float64)
+    for replicate in range(int(replicates)):
+        rng = stratum_rng(rng_namespace, replicate, "__donor_block__", 0)
+        sampled = donor_block_resample(donors, rng)
+        covariance = _resampled_donor_moments(
+            source, dimension, sampled,
+            permute_namespace=(rng_namespace + "|null") if permute else None,
+            replicate=replicate)
+        eigen = deterministic_eigendecomposition(covariance)
+        eigengaps[replicate] = eigen["eigenvalues"][:-1] - eigen["eigenvalues"][1:]
+        for rank in range(1, int(max_rank) + 1):
+            overlaps[replicate, rank - 1] = projection_overlap(
+                reference_eigenvectors[:, :rank], eigen["eigenvectors"][:, :rank])
+    return {"overlaps": overlaps, "eigengaps": eigengaps,
+            "replicates": int(replicates), "permuted_null": bool(permute)}
+
+
+def derive_D_end_to_end(source: Any, dimension: int, *, rng_namespace: str,
+                        confidence_level: float = 0.95,
+                        minimum_replicates: int = 64,
+                        maximum_replicates: int = 8192,
+                        precision_target_half_width: float = 0.01,
+                        doubling_factor: int = 2) -> dict[str, Any]:
+    """The full authority rule, executed over the streamed population.
+
+    Order matters and is the authority's: observed spectrum, then the real-data
+    null envelope, then D_PA from the contiguous leading run, then donor-block
+    subspace stability against the null, then D as the longest stable leading
+    prefix. Nothing here falls back to a default D, and neither effective rank
+    participates in the decision.
+    """
+    observed = stream_observed_spectrum(source, dimension)
+    schedule = sequential_doubling_schedule(
+        minimum_replicates=minimum_replicates, maximum_replicates=maximum_replicates,
+        doubling_factor=doubling_factor)
+
+    null_spectra = np.empty((0, int(dimension)), dtype=np.float64)
+    precision: dict[str, Any] = {}
+    replicates_used = 0
+    for target in schedule:
+        null_spectra = stream_null_spectra(source, dimension, replicates=target,
+                                           rng_namespace=rng_namespace)
+        replicates_used = target
+        precision = monte_carlo_precision_met(
+            null_spectra[:, 0], confidence_level=confidence_level,
+            precision_target_half_width=precision_target_half_width)
+        if precision["met"]:
+            break
+
+    envelope = null_eigenvalue_envelope(null_spectra, confidence_level=confidence_level)
+    pa = derive_D_PA(observed["eigenvalues"], envelope["upper_envelope"])
+    if pa["D_PA"] < 1:
+        raise AssertionError(
+            "%s: D_PA=0, no leading eigenvalue exceeds its real-data null envelope"
+            % STOP_NO_STABLE_RANK)
+
+    max_rank = int(pa["D_PA"])
+    real = stream_donor_block_stability(
+        source, dimension, replicates=replicates_used, rng_namespace=rng_namespace,
+        max_rank=max_rank, reference_eigenvectors=observed["eigenvectors"], permute=False)
+    null = stream_donor_block_stability(
+        source, dimension, replicates=replicates_used,
+        rng_namespace=rng_namespace + "|nullstab", max_rank=max_rank,
+        reference_eigenvectors=observed["eigenvectors"], permute=True)
+
+    alpha = 1.0 - float(confidence_level)
+    real_lower = np.quantile(real["overlaps"], alpha / 2.0, axis=0)
+    null_upper = np.quantile(null["overlaps"], 1.0 - alpha / 2.0, axis=0)
+    separated = rank_stability_separates(real_lower, null_upper)
+
+    observed_gaps = observed["eigenvalues"][:-1] - observed["eigenvalues"][1:]
+    gap_lower = population_gap_interval_lower(observed_gaps, real["eigengaps"],
+                                              confidence_level=confidence_level)
+    blocks = degenerate_blocks(observed["eigenvalues"], gap_interval_lower=gap_lower)
+
+    # Transparency diagnostic, never an input to D.
+    #
+    # The production rule walks admissible boundaries upward and stops at the
+    # first failure, so a larger leading subspace can separate from the null
+    # while a smaller admissible boundary inside it does not. That happens when
+    # a leading axis is not individually identified: on a fixture with three
+    # near-equal components, rank 1 alone scored a real overlap of 0.033 against
+    # a null upper bound of 0.067 while the rank-3 subspace scored 1.000 against
+    # 0.779.
+    #
+    # The literal rule returns a STOP there, which is the conservative and
+    # fail-closed outcome and is kept. Choosing the largest separating boundary
+    # instead would be searching candidate ranks for one that passes, which is
+    # the post-hoc selection this project forbids. But the resulting false
+    # negative must be visible rather than silent, so it is reported here and
+    # left for a prospective authority decision.
+    admissible = [d for d in block_boundary_ranks(blocks["blocks"])
+                  if 1 <= d <= int(pa["D_PA"])]
+    larger_separating = [d for d in admissible if separated[d - 1]]
+    rule_prefix = 0
+    for candidate in admissible:
+        if separated[candidate - 1]:
+            rule_prefix = candidate
+        else:
+            break
+    discrepancy = {
+        "admissible_block_boundary_ranks": admissible,
+        "separating_boundaries": larger_separating,
+        "rule_selected_prefix": rule_prefix,
+        "larger_separating_subspace_not_claimed": [
+            d for d in larger_separating if d > rule_prefix],
+        "used_to_set_D": False,
+        "note": ("a boundary listed as not claimed separated from the null but lies "
+                 "beyond the first admissible failure; the literal production rule "
+                 "withholds it, and resolving this requires a prospective authority "
+                 "decision rather than a code change"),
+    }
+
+    try:
+        decision = derive_production_D(D_PA=pa["D_PA"], stability_separated_by_rank=separated,
+                                       degeneracy_blocks=blocks["blocks"])
+    except AssertionError as error:
+        raise AssertionError("%s | degeneracy_discrepancy=%r" % (error, discrepancy)) from None
+    entropy = entropy_effective_rank(observed["eigenvalues"])
+    participation = participation_effective_rank(observed["eigenvalues"])
+    diagnostics = assert_effective_ranks_not_aliased(entropy, participation)
+
+    return {
+        "D": decision["D"], "K": decision["K"], "D_PA": pa["D_PA"],
+        "separation_flags": separated,
+        "real_overlap_lower": real_lower.tolist(),
+        "null_overlap_upper": null_upper.tolist(),
+        "eigenvalues": observed["eigenvalues"].tolist(),
+        "null_upper_envelope": envelope["upper_envelope"].tolist(),
+        "degeneracy_blocks": blocks["blocks"],
+        "multi_axis_blocks": blocks["multi_axis_blocks"],
+        "effective_rank_diagnostics": diagnostics,
+        "monte_carlo": {"replicates": replicates_used, "precision": precision,
+                        "schedule": schedule},
+        "degeneracy_discrepancy": discrepancy,
+        "rows_consumed": observed["rows"], "strata": observed["strata"],
+        "mean": observed["mean"].tolist(),
+        "eigenvectors_leading": observed["eigenvectors"][:, :decision["D"]].tolist(),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Normalization proven from the loader authority, not asserted
+# ---------------------------------------------------------------------------
+LOADER_SOURCE_SHA256 = "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a"
+STOP_NORMALIZATION_UNVERIFIED = "STOP_D1_NORMALIZATION_NOT_PROVEN_FROM_LOADER"
+
+
+def verify_normalization_from_loader_source(source_text: str, *,
+                                            source_sha256: str) -> dict[str, Any]:
+    """Prove the CP10K->log1p semantics from the loader implementation.
+
+    An earlier revision wrote `applied_times: 1` and `recomputed_differently:
+    false` into the audit output without reading the loader at all, which is an
+    assertion rather than a verification. This reads the controlling loader
+    source, requires its exact digest, and requires the transform to appear
+    exactly once and to act on the sparse `.data` array only -- which is what
+    keeps a structural zero structural instead of turning it into a measured
+    zero.
+
+    The divisor is `np.maximum(library, 1.0)`, not `library`. That guard is part
+    of the frozen authority and is bound here rather than smoothed over.
+    """
+    if source_sha256 != LOADER_SOURCE_SHA256:
+        raise AssertionError(
+            "%s: loader source digest %s does not match the bound authority %s"
+            % (STOP_NORMALIZATION_UNVERIFIED, source_sha256, LOADER_SOURCE_SHA256))
+    lines = source_text.splitlines()
+    scale_sites = [line.strip() for line in lines
+                   if "10_000.0" in line or "10000.0" in line]
+    log1p_sites = [line.strip() for line in lines if "log1p" in line]
+    if len(log1p_sites) != 1:
+        raise AssertionError("%s: log1p appears %d times, expected exactly once"
+                             % (STOP_NORMALIZATION_UNVERIFIED, len(log1p_sites)))
+    compact = log1p_sites[0].replace(" ", "")
+    if ".data=np.log1p(" not in compact:
+        raise AssertionError("%s: log1p is not applied to the sparse .data array: %r"
+                             % (STOP_NORMALIZATION_UNVERIFIED, log1p_sites[0]))
+    if len(scale_sites) != 1:
+        raise AssertionError("%s: the 10,000 scale appears %d times, expected once"
+                             % (STOP_NORMALIZATION_UNVERIFIED, len(scale_sites)))
+    if "np.maximum(library, 1.0)" not in scale_sites[0]:
+        raise AssertionError("%s: library divisor guard not found in %r"
+                             % (STOP_NORMALIZATION_UNVERIFIED, scale_sites[0]))
+    return {
+        "transform": "log1p(raw_count * 10000 / max(full_source_library, 1.0))",
+        "applied_times": 1,
+        "proven_from": "loader implementation source",
+        "loader_source_sha256": source_sha256,
+        "acts_on_sparse_data_only": True,
+        "structural_zero_preserved": True,
+        "scale_site": scale_sites[0],
+        "log1p_site": log1p_sites[0],
+    }
 
 
 # ---------------------------------------------------------------------------

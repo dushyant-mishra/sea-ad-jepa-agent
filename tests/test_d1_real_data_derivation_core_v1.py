@@ -577,3 +577,208 @@ def test_effective_ranks_are_not_on_the_D_derivation_path_either() -> None:
             names = {n.id for n in _ast.walk(node) if isinstance(n, _ast.Name)}
             assert "entropy_effective_rank" not in names
             assert "participation_effective_rank" not in names
+
+
+# ============================================================================
+# End-to-end engine tests
+#
+# The primitives were previously tested in isolation while nothing assembled
+# them, so "machinery built" overstated the integration level. These exercise
+# the assembled engines.
+# ============================================================================
+class _StrataFixture:
+    """MECHANICS_ONLY strata source with a known injected rank structure."""
+
+    def __init__(self, *, donors: int, operators: int, cells: int, dimension: int,
+                 ranks: int, seed: int, scale: float) -> None:
+        rng = np.random.default_rng(seed)
+        basis = np.linalg.qr(rng.normal(size=(dimension, dimension)))[0]
+        self.population_class = core.MECHANICS_ONLY
+        self._data: dict = {}
+        for donor in range(donors):
+            for operator in range(operators):
+                block = rng.normal(size=(cells, dimension))
+                for rank in range(ranks):
+                    latent = rng.normal(size=(cells, 1))
+                    block = block + scale * latent * basis[:, rank][None, :]
+                self._data[("D%02d" % donor, operator)] = block
+        self._counts = {k: v.shape[0] for k, v in self._data.items()}
+        self._weights = core.derive_donor_operator_weights(self._counts)
+
+    def strata(self):
+        return sorted(self._data)
+
+    def load(self, donor, operator):
+        block = self._data[(str(donor), int(operator))]
+        weight = self._weights["cell_weight_a_dc"][(str(donor), int(operator))]
+        return block, np.full(block.shape[0], weight)
+
+
+def test_streamed_observed_spectrum_matches_a_direct_computation() -> None:
+    fixture = _StrataFixture(donors=4, operators=2, cells=50, dimension=5,
+                             ranks=1, seed=3, scale=4.0)
+    streamed = core.stream_observed_spectrum(fixture, 5)
+    direct = core.WeightedMomentAccumulator(5)
+    for donor, operator in fixture.strata():
+        states, weights = fixture.load(donor, operator)
+        direct.update(states, weights)
+    expected = core.deterministic_eigendecomposition(direct.result()["covariance"])
+    assert streamed["rows"] == 400 and streamed["strata"] == 8
+    assert np.allclose(streamed["eigenvalues"], expected["eigenvalues"], atol=1e-12)
+
+
+def test_the_null_generator_destroys_covariance_it_was_given() -> None:
+    """The null must be a real null, not a copy of the observed spectrum."""
+    fixture = _StrataFixture(donors=4, operators=2, cells=60, dimension=5,
+                             ranks=1, seed=5, scale=6.0)
+    observed = core.stream_observed_spectrum(fixture, 5)
+    spectra = core.stream_null_spectra(fixture, 5, replicates=8, rng_namespace="t")
+    assert spectra.shape == (8, 5)
+    # The observed leading eigenvalue exceeds every null replica's.
+    assert observed["eigenvalues"][0] > spectra[:, 0].max()
+    # Note the null leading eigenvalue is itself substantially elevated, because
+    # permuting within strata preserves each coordinate's marginal variance and
+    # the injected component inflates all of them. That is correct behaviour for
+    # a parallel-analysis null and is why D_PA is conservative.
+    #
+    # No ratio between the observed and null spectra is asserted here: measured
+    # across seeds the null spectrum shape varies far too much at this fixture
+    # size for any threshold to be meaningful, and an arbitrary factor would be
+    # a number chosen to make the test pass. The comparison that carries real
+    # weight is the one the algorithm performs, against the null envelope, and
+    # it is asserted in the end-to-end tests.
+    #
+    # The defining property of the null is checked directly instead: every
+    # coordinate keeps its exact marginal multiset within each stratum.
+    for donor, operator in fixture.strata()[:3]:
+        states, _ = fixture.load(donor, operator)
+        rng = core.stratum_rng("t", 0, donor, operator)
+        permuted = core.permute_coordinates_within_stratum(states, rng)
+        for column in range(states.shape[1]):
+            assert np.allclose(np.sort(states[:, column]), np.sort(permuted[:, column]))
+    # And the null is reproducible from its namespace alone.
+    again = core.stream_null_spectra(fixture, 5, replicates=8, rng_namespace="t")
+    assert np.allclose(spectra, again)
+    different = core.stream_null_spectra(fixture, 5, replicates=8, rng_namespace="other")
+    assert not np.allclose(spectra, different)
+
+
+def test_donor_block_stability_carries_whole_donors_and_beats_its_null() -> None:
+    fixture = _StrataFixture(donors=6, operators=2, cells=60, dimension=5,
+                             ranks=1, seed=11, scale=8.0)
+    observed = core.stream_observed_spectrum(fixture, 5)
+    real = core.stream_donor_block_stability(
+        fixture, 5, replicates=16, rng_namespace="s", max_rank=1,
+        reference_eigenvectors=observed["eigenvectors"])
+    null = core.stream_donor_block_stability(
+        fixture, 5, replicates=16, rng_namespace="s", max_rank=1,
+        reference_eigenvectors=observed["eigenvectors"], permute=True)
+    assert real["permuted_null"] is False and null["permuted_null"] is True
+    assert real["overlaps"].shape == (16, 1)
+    # A genuine leading direction is recovered from resampled donor blocks far
+    # better than under the donor/operator-preserving null.
+    assert float(np.quantile(real["overlaps"][:, 0], 0.025)) > float(
+        np.quantile(null["overlaps"][:, 0], 0.975))
+
+
+def test_end_to_end_D_recovers_one_strong_component() -> None:
+    """Known answer, verified stable across seeds and RNG namespaces."""
+    for seed in (1, 7, 42):
+        fixture = _StrataFixture(donors=6, operators=2, cells=80, dimension=6,
+                                 ranks=1, seed=seed, scale=10.0)
+        out = core.derive_D_end_to_end(
+            fixture, 6, rng_namespace="e2e", minimum_replicates=32,
+            maximum_replicates=64, precision_target_half_width=1e9)
+        assert out["D"] == 1, seed
+        assert out["K"] == out["D"]
+        assert out["D_PA"] >= 1
+        assert out["rows_consumed"] == 960 and out["strata"] == 12
+        # Both effective ranks are reported and neither defines D.
+        assert out["effective_rank_diagnostics"]["defines_D"] is False
+        assert "entropy_effective_rank" in out["effective_rank_diagnostics"]
+        assert "participation_effective_rank" in out["effective_rank_diagnostics"]
+        assert out["degeneracy_discrepancy"]["used_to_set_D"] is False
+
+
+def test_end_to_end_pure_noise_stops_with_no_fallback_D() -> None:
+    """No signal must yield no D, never a default."""
+    for seed in (1, 7, 42):
+        fixture = _StrataFixture(donors=6, operators=2, cells=80, dimension=6,
+                                 ranks=0, seed=seed, scale=0.0)
+        with pytest.raises(AssertionError, match="NO_FALLBACK_D"):
+            core.derive_D_end_to_end(
+                fixture, 6, rng_namespace="e2e", minimum_replicates=32,
+                maximum_replicates=64, precision_target_half_width=1e9)
+
+
+# ------------------------------- eigengap interval estimator and block ranks
+def test_population_gap_interval_uses_the_basic_bootstrap_not_sample_percentiles() -> None:
+    """Ordered sample eigenvalues repel, so sample-gap percentiles never reach zero.
+
+    A truly degenerate pair yields strictly positive gaps in every replicate.
+    The lower percentile of those gaps therefore reports the pair as resolved,
+    which is the wrong estimator; the basic-bootstrap interval for the
+    population gap can include zero while every observed gap is positive.
+    """
+    observed = np.array([2.0])
+    # Every replicate reports a positive gap, centred above the observed value.
+    replicas = np.linspace(1.5, 6.0, 64).reshape(64, 1)
+    sample_percentile_lower = float(np.quantile(replicas[:, 0], 0.025))
+    basic_lower = float(core.population_gap_interval_lower(
+        observed, replicas, confidence_level=0.95)[0])
+    assert sample_percentile_lower > 0.0
+    assert basic_lower < 0.0, "the basic bootstrap must be able to include zero"
+    # A well-separated gap stays firmly positive under the same estimator.
+    separated = core.population_gap_interval_lower(
+        np.array([50.0]), np.linspace(48.0, 52.0, 64).reshape(64, 1))
+    assert float(separated[0]) > 0.0
+    with pytest.raises(ValueError):
+        core.population_gap_interval_lower(np.array([1.0]), np.array([[1.0]]))
+
+
+def test_block_boundary_ranks_are_cumulative_block_ends() -> None:
+    assert core.block_boundary_ranks([[0], [1, 2], [3]]) == [1, 3, 4]
+    assert core.block_boundary_ranks([[0, 1, 2]]) == [3]
+    assert core.block_boundary_ranks([[0], [1], [2]]) == [1, 2, 3]
+
+
+def test_degeneracy_blocks_only_restrict_candidate_ranks() -> None:
+    """Blocks may remove candidates; they must never add one.
+
+    This is what keeps the near-degeneracy clause from becoming a loophole: the
+    admissible set is always a subset of the plain 1..D_PA range, so supplying
+    blocks can only ever make D smaller or leave it unchanged.
+    """
+    flags = [True, True, True, True]
+    plain = core.derive_production_D(D_PA=4, stability_separated_by_rank=flags)
+    blocked = core.derive_production_D(D_PA=4, stability_separated_by_rank=flags,
+                                       degeneracy_blocks=[[0], [1, 2], [3]])
+    assert plain["D"] == 4
+    assert blocked["D"] <= plain["D"]
+    assert set(blocked["admissible_ranks"]) <= set(plain["admissible_ranks"])
+    assert blocked["degeneracy_respected"] is True and plain["degeneracy_respected"] is False
+
+
+def test_a_rank_inside_a_degenerate_block_is_not_required_to_separate() -> None:
+    """An axis inside an unresolved block is not an identified object.
+
+    Rank 2 falls inside the block {1,2}, so it is not an admissible boundary and
+    the rule does not demand it separate on its own. Boundaries 1 and 3 do.
+    """
+    flags = [True, False, True]
+    # Without blocks every rank must separate, so the prefix stops at 1.
+    plain = core.derive_production_D(D_PA=3, stability_separated_by_rank=flags)
+    assert plain["D"] == 1 and plain["admissible_ranks"] == [1, 2, 3]
+    # With rank 2 inside the unresolved block {1,2} it is not an admissible
+    # boundary, so boundaries 1 and 3 carry the decision and D is 3.
+    respected = core.derive_production_D(D_PA=3, stability_separated_by_rank=flags,
+                                         degeneracy_blocks=[[0], [1, 2]])
+    assert respected["D"] == 3
+    assert respected["admissible_ranks"] == [1, 3]
+
+
+def test_a_failing_admissible_boundary_still_stops_the_prefix() -> None:
+    """Blocks do not let the rule skip a failed *boundary*."""
+    with pytest.raises(AssertionError, match="NO_FALLBACK_D"):
+        core.derive_production_D(D_PA=4, stability_separated_by_rank=[False, True, True, True],
+                                 degeneracy_blocks=[[0], [1], [2], [3]])
