@@ -10,10 +10,12 @@ import argparse
 import json
 from pathlib import Path
 from typing import Any
+import re
 
 POPULATION_ROOT = "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7"
 F1B_ROOT = "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b"
 HISTORICAL_U0 = "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
+KNOWN_INCOMPLETE_KERNEL = "c0eaf2acc0a5edc837fb2a48f726b9d626772f06"
 READER_SPLIT = "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"
 INVENTORY = "7ac13973162a46cafa5baa24c5bea14beb64bd5859e8f58900801eee07083a30"
 SCHEDULE = "4657d669658712234d7ee8ede9496297009b808d4902766a9e43f7591ca640fc"
@@ -23,6 +25,10 @@ OBSERVATION_STATE = "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a
 
 def _nonnull(value: Any) -> bool:
     return value not in (None, "", "BLOCKED_PENDING_REVIEWED_SUCCESSOR")
+
+
+def _is_hex(value: Any, length: int) -> bool:
+    return isinstance(value, str) and bool(re.fullmatch(r"[0-9a-f]{%d}" % length, value))
 
 
 def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
@@ -190,6 +196,46 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
         failures.append("execution bindings marked ready while fields are unbound")
     if not unbound and bindings.get("ready") is not True:
         failures.append("all execution bindings populated but ready is not true")
+
+    if _nonnull(bindings.get("integrated_successor_commit")):
+        if not _is_hex(bindings["integrated_successor_commit"], 40):
+            failures.append("integrated successor commit is not a 40-hex SHA")
+        if bindings["integrated_successor_commit"] == KNOWN_INCOMPLETE_KERNEL:
+            failures.append("known incomplete mechanics kernel cannot be final successor binding")
+    for key in (
+        "integrated_successor_source_manifest_root",
+        "initialization_checkpoint_sha256",
+        "predictor_mandatory_registry_sha256",
+        "movement_adjudicator_sha256",
+    ):
+        if _nonnull(bindings.get(key)) and not _is_hex(bindings[key], 64):
+            failures.append(f"{key} is not a 64-hex SHA-256")
+
+    review = bindings.get("independent_external_review_terminal")
+    if _nonnull(review) and not (isinstance(review, str) and review.startswith("PASS_") and "REVIEW" in review):
+        failures.append("independent external review terminal is not a PASS review terminal")
+
+    init_sha = bindings.get("initialization_checkpoint_sha256")
+    if _nonnull(init_sha) and init_sha == HISTORICAL_U0:
+        failures.append("historical u0 cannot be used directly as successor execution checkpoint")
+    required_u0_sha = initialization.get("required_new_u0", {}).get("exact_sha256")
+    if not unbound:
+        if required_u0_sha != init_sha:
+            failures.append("successor-bound u0 policy SHA does not match execution binding")
+
+    scaler = precision.get("grad_scaler", {})
+    if scaler != {
+        "initial_scale": 65536.0,
+        "growth_factor": 2.0,
+        "backoff_factor": 0.5,
+        "growth_interval": 2000,
+    }:
+        failures.append("GradScaler contract mismatch")
+
+    if gates.get("optimizer_step_gate", {}).get("before_ema") is not True:
+        failures.append("optimizer step proof must precede EMA")
+    if gates.get("ema_gate", {}).get("equation_check") is not True:
+        failures.append("EMA equation check missing")
 
     terminal = (
         "PASS_HEALTHY_TEACHER_TRAINING_CONTRACT_BOUND__EXECUTION_STILL_REQUIRES_AUTHORITY"
