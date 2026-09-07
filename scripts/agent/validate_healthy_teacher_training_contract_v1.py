@@ -10,25 +10,15 @@ import argparse
 import json
 from pathlib import Path
 from typing import Any
-import re
 
 POPULATION_ROOT = "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7"
 F1B_ROOT = "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b"
 HISTORICAL_U0 = "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
-KNOWN_INCOMPLETE_KERNEL = "c0eaf2acc0a5edc837fb2a48f726b9d626772f06"
 READER_SPLIT = "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"
 INVENTORY = "7ac13973162a46cafa5baa24c5bea14beb64bd5859e8f58900801eee07083a30"
 SCHEDULE = "4657d669658712234d7ee8ede9496297009b808d4902766a9e43f7591ca640fc"
 ADDRESS_NAMESPACE = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
 OBSERVATION_STATE = "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
-
-
-def _nonnull(value: Any) -> bool:
-    return value not in (None, "", "BLOCKED_PENDING_REVIEWED_SUCCESSOR")
-
-
-def _is_hex(value: Any, length: int) -> bool:
-    return isinstance(value, str) and bool(re.fullmatch(r"[0-9a-f]{%d}" % length, value))
 
 
 def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
