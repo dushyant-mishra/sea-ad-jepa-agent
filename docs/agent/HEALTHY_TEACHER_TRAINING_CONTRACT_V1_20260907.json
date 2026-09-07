@@ -313,14 +313,6 @@
     "biological_success_thresholds": null,
     "note": "Training continuation is mechanics-only. Biological estimates are produced only after a trained checkpoint is frozen and separately authorized."
   },
-  "draft_blockers": [
-    "These are execution-overlay blockers, not reasons to mutate this base contract.",
-    "integrated reviewed successor commit/source manifest root",
-    "independent external-review PASS artifact bound to the exact successor commit",
-    "exact new successor-bound u0 checkpoint SHA-256 plus materialization attestation",
-    "exact reviewed predictor mandatory registry",
-    "exact reviewed movement adjudicator source SHA-256/formula/tolerance"
-  ],
   "terminal": "PASS_HEALTHY_TEACHER_BASE_CONTRACT_READY_FOR_FREEZE__EXECUTION_UNAUTHORIZED",
   "known_nonfinal_successor_state": {
     "mechanics_kernel_branch": "f1b-c3-training-successor-v2-20260907",
@@ -347,5 +339,13 @@
     ],
     "overlay_itself_is_execution_authority": false,
     "execution_still_requires": "separate explicit u0->u40 qualification authorization after overlay validation"
-  }
+  },
+  "execution_overlay_blockers": [
+    "These are execution-overlay blockers, not reasons to mutate this base contract.",
+    "integrated reviewed successor commit/source manifest root",
+    "independent external-review PASS artifact bound to the exact successor commit",
+    "exact new successor-bound u0 checkpoint SHA-256 plus materialization attestation",
+    "exact reviewed predictor mandatory registry",
+    "exact reviewed movement adjudicator source SHA-256/formula/tolerance"
+  ]
 }
