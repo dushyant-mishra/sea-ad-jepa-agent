@@ -1,0 +1,90 @@
+{
+  "schema": "F1B_ATTACK_AUTHORITY_FREEZE_V1",
+  "terminal": "PASS_F1B_ATTACK_AUTHORITY_FREEZE",
+  "status": "FROZEN__IMPLEMENTATION_REPAIR_MAY_BEGIN__TRAINING_AND_REAL_EXECUTION_UNAUTHORIZED",
+  "source_branch": "f1b-executable-attacks-20260907",
+  "transfer_commit": "af750158ac84d3d1d6066dc7cd30314d6de4ad59",
+  "claude_completion_commit": "4e6c6e92346e4a8f9cdcb3fa56dbfeb27703eb7c",
+  "tested_commit": "70f0d8ccbac7c612f405d04d89f845cc1029b185",
+  "package_root_sha256": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b",
+  "package_root_rule": "SHA256 of exact UTF-8 manifest bytes in docs/agent/F1B_ATTACK_AUTHORITY_MANIFEST_20260907.csv; LF endings; rows lexicographically sorted by path",
+  "manifest_path": "docs/agent/F1B_ATTACK_AUTHORITY_MANIFEST_20260907.csv",
+  "attack_count": 14,
+  "finding_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "focused_pytest": {
+    "passed": 15,
+    "failed": 0,
+    "runner": "GitHub Actions ubuntu-24.04 / CPython 3.12.14 / pytest 9.1.1"
+  },
+  "execution_evidence": {
+    "workflow_run_id": 34076123563,
+    "workflow_run_number": 2,
+    "workflow_head_sha": "70f0d8ccbac7c612f405d04d89f845cc1029b185",
+    "expected_conclusion": "success",
+    "terminals": {
+      "polarity": "PASS_ATTACK_POLARITY",
+      "reference_vulnerable": "STOP_F1B_ATTACK_SUITE",
+      "reference_correct": "PASS_F1B_ATTACK_SUITE",
+      "reference_empty": "STOP_F1B_ATTACK_SUITE",
+      "registry": "PASS_F1B_ATTACK_REGISTRY"
+    }
+  },
+  "polarity_contract": {
+    "allowed_verdicts": [
+      "VULNERABLE",
+      "DEFENDED",
+      "ATTACK_DEFECTIVE",
+      "NOT_APPLICABLE"
+    ],
+    "not_applicable_is_pass": false,
+    "refusal_only_is_pass": false,
+    "required_reference_poles": {
+      "known_defective": "VULNERABLE",
+      "known_correct": "DEFENDED"
+    },
+    "non_discriminating_status": "ATTACK_DEFECTIVE"
+  },
+  "explicitly_hardened_findings": {
+    "7": "distinct N_eff_entropy vs N_eff_participation analytic values",
+    "8": "independent query-support, key-support, mask, normalization-denominator and routing-mass mutations, plus permutation invariant",
+    "9": "donor-held-out synthetic refit must alter held-out predictions, not merely metadata",
+    "11": "CELL-only and identity-only controls attacked independently",
+    "12": "constructed equality and nonequality cases",
+    "13": "instrumented autocast -> scaler backward -> unscale -> mandatory gate -> optimizer step -> EMA trace"
+  },
+  "historical_attacks_under_same_polarity": {
+    "G1_nonfinite": "finding 1",
+    "G2_zero_second_moment": "finding 2",
+    "G3_mean_masks_decay_only": "finding 3",
+    "300u_exceeds_40": "finding 10"
+  },
+  "authority_boundaries": {
+    "f1b_implementation_modified_during_attack_freeze": false,
+    "t0_v19_modified": false,
+    "c2_reopened": false,
+    "f1a_reopened": false,
+    "real_f1_authorized": false,
+    "real_t0_authorized": false,
+    "dev_sealed_pathology_authorized": false,
+    "reader_oracle_authorized": false,
+    "fresh_t1_or_c3_training_authorized": false,
+    "d1_real_execution_authorized": false
+  },
+  "next_authorized_action": "Implement the F1-B successor repair against these frozen attacks, without changing the frozen attack authority; then independently verify before any mechanically healthy qualification run."
+}
