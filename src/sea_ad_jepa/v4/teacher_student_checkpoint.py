@@ -51,6 +51,25 @@ def environment_fingerprint() -> dict[str, Any]:
     }
 
 
+def validate_environment_fingerprint(saved: Mapping[str, Any]) -> None:
+    """Fail closed if the resume runtime differs from the checkpoint runtime.
+
+    The healthy-teacher base requires a fresh u40 mechanics qualification after
+    any materially different software/GPU configuration.  Production resume is
+    therefore intentionally stricter than inspection: every captured runtime
+    fingerprint field must match before state is restored.
+    """
+    current = environment_fingerprint()
+    if dict(saved) != current:
+        keys = sorted(set(saved) | set(current))
+        mismatch = {
+            key: {"checkpoint": saved.get(key), "current": current.get(key)}
+            for key in keys
+            if saved.get(key) != current.get(key)
+        }
+        raise RuntimeError("checkpoint runtime/environment mismatch: " + repr(mismatch))
+
+
 def _gradient_state(module: torch.nn.Module) -> dict[str, torch.Tensor | None]:
     return {
         name: None if p.grad is None else p.grad.detach().clone()
@@ -207,6 +226,10 @@ def restore_checkpoint(
         expected_authorities=expected_authorities,
         expected_schedule_cursor=expected_schedule_cursor,
     )
+    saved_environment = payload.get("environment")
+    if not isinstance(saved_environment, Mapping):
+        raise RuntimeError("checkpoint environment fingerprint absent")
+    validate_environment_fingerprint(saved_environment)
     modules.online.load_state_dict(payload["online_encoder"])
     modules.teacher.load_state_dict(payload["teacher"])
     modules.predictor.load_state_dict(payload["predictor"])
