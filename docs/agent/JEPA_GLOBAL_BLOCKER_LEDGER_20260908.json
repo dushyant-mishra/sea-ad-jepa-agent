@@ -8,6 +8,7 @@
     "T0_EXECUTION_SUBSTRATE_CLOSURE",
     "GLOBAL_AUTHORITY_SUPERSESSION_CONSOLIDATION",
     "TEACHER_STUDENT_V5_PRODUCTION_SCIENCE_FREEZE",
+    "F1B_C3_FINAL_MECHANICS_BINDING_FOR_QUALIFICATION",
     "TEACHER_STUDENT_V5_RUNTIME_INTEGRATION_AND_REVIEW",
     "MECHANICAL_QUALIFICATION_SEPARATE_FROM_BIOLOGICAL_EXPOSURE",
     "LEARNED_TEACHER_RELATIONAL_CONTINUITY_ON_LAWFUL_FULL_READER_CHECKPOINT"
@@ -182,6 +183,35 @@
       "lane": "D1",
       "class": "REVIEW_GATE",
       "summary": "Post-review commits repair R1-R7 classes and add archive/resampling/atlas pieces, but no final independent closure terminal over the complete current head has been identified."
+    },
+    {
+      "id": "F1B_C3_MOVEMENT_RULE_NOT_AUTHORIZED",
+      "priority": "P0_BEFORE_MECHANICS_QUALIFICATION",
+      "lane": "F1B_C3/healthy_teacher",
+      "head": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+      "class": "IMPLEMENTATION_AUTHORITY_STOP",
+      "summary": "Successor hard-codes MOVEMENT_OVER_DECAY_MARGIN=2.0 although the frozen F1-B attack authority does not freeze a 2x movement criterion; healthy-teacher base explicitly requires a reviewed movement formula/tolerance bound before execution.",
+      "evidence": [
+        "scripts/v4/f1b_c3_training_successor_v2.py",
+        "docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.md"
+      ]
+    },
+    {
+      "id": "F1B_C3_PREDICTOR_REGISTRY_NOT_FROZEN",
+      "priority": "P0_BEFORE_MECHANICS_QUALIFICATION",
+      "lane": "F1B_C3/healthy_teacher",
+      "head": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+      "class": "IMPLEMENTATION_AUTHORITY_STOP",
+      "summary": "Current successor derives mandatory predictor names dynamically from requires_grad; the healthy-teacher execution overlay requires an exact reviewed predictor mandatory-parameter registry SHA.",
+      "evidence": "protected_parameter_names() in f1b_c3_training_successor_v2.py"
+    },
+    {
+      "id": "F1B_C3_NOT_END_TO_END_TRAINER",
+      "priority": "P0_BEFORE_MECHANICS_QUALIFICATION",
+      "lane": "F1B_C3/healthy_teacher",
+      "head": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+      "class": "INTEGRATION_STOP",
+      "summary": "The successor implements protected update mechanics and frozen attack seams but is explicitly mechanics-only; no exact integrated data/mask/loss/schedule/checkpoint trainer source is frozen and independently reviewed."
     }
   ],
   "healthy_or_not_blocking": [
