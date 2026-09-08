@@ -1,4 +1,21 @@
 # JEPA Target Discovery — New Chat Handoff — 2026-09-08
+
+## 0A. CURRENT TEACHER/STUDENT SUCCESSOR AUTHORITY — V5 DATA-FIRST OVERRIDE
+
+This section supersedes earlier V4-only next-step language below. The target-discovery science (TD57B/TD57C/TD59/TD60 freeze) is unchanged; only the Teacher/Student successor state advanced.
+
+- V5 branch: `planning/teacher-student-v5-data-first-20260908`
+- decision-bearing materialization commit: `71484ab99d276d7251836c109885d22ab4e7abb1`
+- verification HEAD: `c7b1663cc4390843978b973986edfe58f93320a3`
+- prototype root: `9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad`
+- exact snapshot ZIP SHA-256: `39d70f235b06c1342398e318e665986c9dfa0c6e560878cd62a83ce1dadfc48d`
+- GitHub CI run: `34270840107` SUCCESS — V4 regression 98/98, V5 66/66, governance audit PASS, compile PASS.
+- V5 scientific target V2 is frozen; relational proposal V2 is frozen and proposal=target; base proposal and numerical schedule remain unfrozen.
+- V5 is **not yet an external-review candidate** and authorizes no training/execution/u0/u40/TD60.
+- V4 remains the immutable audited baseline; do not confuse V4 review-package readiness with V5 execution readiness.
+
+Current next work is to close the remaining V5 proposal/horizon/evidence/GPU-kernel/mechanical-qualification gates prospectively, then build a self-contained V5 review candidate. Only after exact external V5 PASS plus separate successor-u0 and u0->u40 authority may TD60 run.
+
 ## 0. CURRENT AUTHORITY — READ THIS FIRST
 
 The handoff below is chronological and intentionally preserves superseded states. **For current action, this section plus Section 21 and CURRENT_STATUS_20260908.json override earlier V3-era blocker/agenda text.**
