@@ -1,0 +1,72 @@
+{
+  "schema": "T0_EXTERNAL_REVIEW_LEDGER_V1",
+  "date": "2026-09-08",
+  "producer_branch": "t0/v20-pathology-blind-materialization-20260908",
+  "reviewed_producer_head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+  "reviewer_branch": "review/t0-external-24b2c9-20260908",
+  "sealed_base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+  "accepted_directionally": [
+    "IMMUNE_FRACTION_ONE_SHOT_PARENT_DERIVATION",
+    "IMMUNE_SUPPORT_COUNT_FROM_AUTHENTICATED_MEMBERSHIP",
+    "B2_COMPLETE_MANIFEST_INTERNAL_OP31_SELECTION",
+    "B2_NPZ_AUTHENTICATE_PARSE_SELECT_COUPLING",
+    "B2_MEMBERSHIP_CLOSURE_LOGICAL_ANTI_SPLICE"
+  ],
+  "blockers": [
+    {
+      "id": "B2_LOGICAL_ROOT_CHAIN",
+      "severity": "STOP",
+      "evidence_tests": [
+        "tests/v4/test_t0_b2_logical_chain_external_red_v2.py"
+      ],
+      "requires": [
+        "logical root binds population_closure_root_sha256",
+        "logical root binds execution-used meta_path/counts_path or deterministic reconstruction identity",
+        "row field type guard covers execution-used path fields",
+        "logical verifier checks stored==recomputed==externally_expected",
+        "logical verifier requires externally expected population closure root"
+      ]
+    },
+    {
+      "id": "B2_RAW_H5AD_NOT_ACTUALLY_AUTHENTICATED",
+      "severity": "STOP",
+      "evidence_tests": [
+        "tests/v4/test_t0_b2_raw_source_external_red_v1.py"
+      ],
+      "requires": [
+        "authenticated exact MTG H5AD source identity",
+        "extract layers/UMIs from authenticated source",
+        "source row equals expression_row",
+        "source cell and donor identity from same source",
+        "full 36601-wide raw row proves source_library"
+      ]
+    },
+    {
+      "id": "AGE_SEX_CANDIDATE_UNIVERSE_DETACHED",
+      "severity": "STOP",
+      "evidence_tests": [
+        "tests/v4/test_t0_age_sex_external_parent_red_v1.py"
+      ],
+      "requires": [
+        "derive candidate donor set from authenticated membership or verify against external candidate-universe root",
+        "bind same candidate parent identity in loader"
+      ]
+    }
+  ],
+  "hardening": [
+    "IMMUNE_FRACTION metadata still carries stale awaiting-owner-freeze prose while formula-spec module is frozen",
+    "age/sex parser is stricter than eligibility semantics, but frozen clean source may make this operationally moot",
+    "B2 production should use one-shot orchestrator so optional geometry/provenance checks cannot be omitted",
+    "package manifest self-consistency checks should be explicit even when external package root pins all bytes"
+  ],
+  "next_required_interfaces": [
+    "T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1",
+    "T0_ELIGIBLE_DONOR_AUTHORITY_V1",
+    "T0_STAGEWISE_ESTIMABILITY_PREFLIGHT_V1",
+    "T0_ROLE_SCOPED_EXPRESSION_AUTHORITY"
+  ],
+  "production_b2_authorized": false,
+  "donor_role_gate_open": false,
+  "numeric_confirmation_at8_accessed": false,
+  "real_execution_ready": false
+}
