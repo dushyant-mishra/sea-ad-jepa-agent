@@ -1,19 +1,22 @@
 {
   "schema": "JEPA_BRANCH_CONSOLIDATION_V1",
   "date": "2026-09-08",
-  "current_branch": "coordination/jepa-current-20260908",
+  "current_branch": "main",
   "integration_commits": {
     "v5_merge": "84b013d85525a1ee41a0f925d7082fd1dea6f54c",
     "target_discovery_merge": "c8f517ccb30e6ff41a416cfee208df6361fa759e",
     "f1_manual_two_parent_merge": "42c2a17ac84b9bc37a5ea5a7c8a3b7a32a33aa05",
     "d1_merge": "ae0b4426fd805eb414d6478d845e0cb35d8bca74",
     "t0_global_review_merge": "baeb2aef188cefeba008241bdbe3ababce35d888",
-    "historical_octopus_absorption": "7dbbc9d7149bc009252b01f3da2d67ee6449a9ef"
+    "historical_octopus_absorption": "7dbbc9d7149bc009252b01f3da2d67ee6449a9ef",
+    "main_promotion_merge": "43f1610db41a0e084c35bf0a2365ce706e49c1fc"
   },
   "historical_divergent_heads_absorbed": 30,
   "stale_tree_reactivated": false,
   "branch_deletion_performed": false,
-  "branch_deletion_reason": "No branch-delete API is exposed by the connected GitHub tool. Deletion is now hygiene-only because histories are absorbed.",
+  "branch_deletion_reason": "Connected GitHub tool exposes merge/repoint but not branch-ref deletion. All 56 non-main branch heads are verified ancestors of main and may be deleted safely.",
   "safe_cleanup_rule": "Delete old branch names only after confirming their heads are ancestors of main/current coordination. Never delete tags or immutable package artifacts.",
-  "execution_authority_changed": false
+  "execution_authority_changed": false,
+  "safe_delete_list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
+  "safe_non_main_branch_count": 56
 }
