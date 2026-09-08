@@ -27,6 +27,7 @@ from sea_ad_jepa.v4.teacher_student_movement import (
     decay_only_counterfactual,
     source_sha256 as movement_source_sha256,
 )
+from sea_ad_jepa.v4.teacher_student_source_authority import verify_source_authority
 from sea_ad_jepa.v4.teacher_student_runtime import (
     BACKBONE_REGISTRY_SHA256,
     FROZEN_BACKBONE_REGISTRY,
@@ -467,3 +468,35 @@ def test_update_chronology_is_bound_to_optimizer_and_ema() -> None:
     controller.ema_update_count = 6
     with pytest.raises(RuntimeError, match="optimizer/EMA counters"):
         validate_update_chronology(controller, 7)
+
+
+def test_executing_source_authority_rejects_tampered_code(tmp_path) -> None:
+    import csv
+    import shutil
+
+    source_root = (
+        ROOT / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V2.txt"
+    ).read_text(encoding="utf-8").strip()
+    assert verify_source_authority(source_root, root=ROOT)["passed"] is True
+
+    for rel in (
+        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V2.csv",
+        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V2.txt",
+    ):
+        target = tmp_path / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / rel, target)
+
+    manifest = tmp_path / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V2.csv"
+    with manifest.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    for row in rows:
+        target = tmp_path / row["path"]
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / row["path"], target)
+
+    assert verify_source_authority(source_root, root=tmp_path)["passed"] is True
+    attacked = tmp_path / rows[0]["path"]
+    attacked.write_bytes(attacked.read_bytes() + b"\n# tamper\n")
+    with pytest.raises(RuntimeError, match="executing source bytes"):
+        verify_source_authority(source_root, root=tmp_path)
