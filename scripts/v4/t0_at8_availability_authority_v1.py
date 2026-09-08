@@ -69,6 +69,7 @@ STOP_MEMBERSHIP = "STOP_T0_AT8_MEMBERSHIP_DONOR_UNRESOLVED"
 STOP_OUTPUT = "STOP_T0_AT8_OUTPUT_NOT_EMPTY"
 STOP_PACKAGE = "STOP_T0_AT8_AVAILABILITY_PACKAGE_INVALID"
 STOP_SOURCE_PATH = "STOP_T0_AT8_SOURCE_PATH_NOT_PORTABLE"
+STOP_CODE_DIGEST = "STOP_T0_AT8_DERIVATION_CODE_DIGEST_MALFORMED"
 STOP_PACKAGE_CONTENTS = "STOP_T0_AT8_AVAILABILITY_PACKAGE_CONTENTS_UNEXPECTED"
 STOP_EXTERNAL_ROOT = "STOP_T0_AT8_AVAILABILITY_EXTERNAL_ROOT_MISMATCH"
 
@@ -222,11 +223,16 @@ def build_availability_authority(
     expected_source_sha256: str,
     membership_donor_ids: Iterable[str],
     source_relative_path: str,
+    derivation_code_sha256: str,
 ) -> dict[str, Any]:
     """Freeze the availability-only authority for the given pathology source."""
     authenticated = read_authenticated_source(source_path, expected_source_sha256)
     source_digest = hashlib.sha256(authenticated).hexdigest()
     source_label = _portable_source_identity(source_relative_path)
+    code_digest = str(derivation_code_sha256).strip().lower()
+    if len(code_digest) != 64 or any(c not in "0123456789abcdef" for c in code_digest):
+        raise AssertionError("%s: %r is not a SHA-256 hex digest"
+                             % (STOP_CODE_DIGEST, derivation_code_sha256))
 
     out = Path(outdir)
     if out.exists() and any(out.iterdir()):
@@ -268,7 +274,12 @@ def build_availability_authority(
         "source_relative_path": source_label,
         "source_bytes": len(authenticated),
         "source_sha256": source_digest,
-        "derivation_code_sha256": sha256_file(__file__),
+        # Supplied by the caller, not computed from __file__. This module is a
+        # tracked file, so its on-disk bytes are platform-transformed: hashing
+        # them recorded a digest that no fresh checkout could reproduce. The
+        # caller passes the Git blob digest, which is the stable identity.
+        "derivation_code_sha256": code_digest,
+        "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
         "total_donor_count": len(rows),
         "available_donor_count": len(available_rows),
         "membership_donor_count": len(membership),
@@ -307,7 +318,7 @@ def build_availability_authority(
     # would make the value-blindness claim uncheckable.
     #
     # `availability_root_sha256` covers the derived predicate alone. It must be
-    # invariant to every numeric AT8 value, and a metamorphic adversarial case asserts
+    # invariant to every numeric AT8 value, and a metamorphic attack asserts
     # exactly that by rebuilding from a source whose values all differ.
     #
     # `package_root_sha256` covers the manifest, so it binds the source digest
@@ -331,8 +342,8 @@ def load_availability_authority(
 
     The previous implementation authenticated each member by path and then
     reopened the metadata and registry to parse them. That interval was
-    reachable and the reproduce was demonstrated: replacing the metadata with a
-    same-length substitution immediately after its authenticated hash read produced a
+    exploitable and the exploit was demonstrated: replacing the metadata with a
+    same-length forgery immediately after its authenticated hash read produced a
     loader result carrying `membership_donor_set_sha256` of all zeros while both
     external roots were still reported correct. Authentication and use must
     therefore act on the same bytes, exactly as the source-side repair does.
