@@ -2,13 +2,16 @@
   "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V1",
   "date": "2026-09-08",
   "repository": "dushyant-mishra/sea-ad-jepa-agent",
-  "handoff_base_main_head": "d8917ea3fedfd4b1de457b25e8e8be4cd0e6ea88",
+  "handoff_base_main_head": "c9f3c5d9616f16b847a9c1bcd51bd86492e58281",
   "canonical_branch": "main",
   "global_gate": "STOP_JEPA_EXECUTION_AUTHORITIES_INCOMPLETE",
   "branch_inventory": {
-    "observed_total": 58,
+    "observed_total": 1,
     "verified_safe_delete_non_main": 57,
-    "branch_refs_deleted": false
+    "branch_refs_deleted": true,
+    "remaining_branches": [
+      "main"
+    ]
   },
   "t0": {
     "source_head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
@@ -24,14 +27,32 @@
     ]
   },
   "v5": {
-    "source_head": "c7b1663cc4390843978b973986edfe58f93320a3",
+    "source_head": "028989a5f1504e4d6403a44e7c90d37172c54150",
     "materialization": "71484ab99d276d7251836c109885d22ab4e7abb1",
     "prototype_root_sha256": "9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad",
     "tests": {
       "v5_active": "66/66 PASS",
       "v4_regression": "98/98 PASS"
     },
-    "training_authorized": false
+    "training_authorized": false,
+    "frozen_authorities": {
+      "scientific_target": "V2",
+      "relational_proposal": "V2",
+      "base_proposal": "V3",
+      "presentation_horizon": "V1__4553407_PRESENTATIONS__NO_AUTOMATIC_EXTENSION"
+    },
+    "still_pending": [
+      "support-aware evidence/view/block policy",
+      "finite relational triplet budget",
+      "update/token/microbatch execution geometry",
+      "EMA half-life in exposure units",
+      "learned-teacher checkpoint milestone",
+      "optimized GPU Philox parity",
+      "hardware packing calibration",
+      "integrated trainer binding",
+      "mechanics qualification",
+      "external V5 review"
+    ]
   },
   "target_discovery": {
     "head": "26c3cfaba77bb8e5935e76473ab1fd5f90a562bf",
@@ -67,7 +88,15 @@
     "docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json"
   ],
   "branch_cleanup": {
-    "list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
-    "script": "scripts/agent/delete_verified_merged_branches_20260908.sh"
+    "status": "PASS_JEPA_BRANCH_CONSOLIDATION_AND_PRUNE__MAIN_ONLY",
+    "workflow_run_id": 34284674854,
+    "safe_delete_list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
+    "result": "docs/agent/JEPA_BRANCH_PRUNE_RESULT_20260908.json",
+    "deleted_non_main_refs": 57,
+    "final_branch_count": 1,
+    "final_branches": [
+      "main"
+    ],
+    "tags_deleted": false
   }
 }
