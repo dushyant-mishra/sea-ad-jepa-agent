@@ -64,6 +64,20 @@ STOP_RESTORE = "STOP_T0_B2_LOGICAL_ORDER_NOT_RESTORABLE"
 STOP_COUNTS_DIGEST = "STOP_T0_B2_COUNTS_PAYLOAD_DIGEST_MISMATCH"
 STOP_FIELD_TYPE = "STOP_T0_B2_AUTHORITY_FIELD_TYPE_NOT_ALLOWED"
 STOP_FIELD_SCHEMA = "STOP_T0_B2_AUTHORITY_FIELD_SCHEMA_VIOLATION"
+STOP_MEMBERSHIP_DIGEST = "STOP_T0_B2_MEMBERSHIP_DIGEST_MISMATCH"
+STOP_MANIFEST_DIGEST = "STOP_T0_B2_BLOCK_MANIFEST_DIGEST_MISMATCH"
+STOP_MEMBERSHIP_OPERATOR = "STOP_T0_B2_MEMBERSHIP_OPERATOR_MISMATCH"
+STOP_MEMBERSHIP_MATRIX = "STOP_T0_B2_MEMBERSHIP_MATRIX_MISMATCH"
+STOP_MEMBERSHIP_UNIQUE = "STOP_T0_B2_MEMBERSHIP_CELL_NOT_UNIQUE"
+STOP_DONOR_DISAGREES = "STOP_T0_B2_DONOR_IDENTITY_DISAGREES_WITH_PHASE2_METADATA"
+STOP_LIBRARY_NOT_PROVEN = "STOP_T0_B2_SOURCE_LIBRARY_NOT_PROVEN_FROM_RAW_ROW"
+STOP_RAW_WIDTH_ADDRESS = "STOP_T0_B2_RAW_ROW_WIDTH_IS_ADDRESS_SPACE"
+STOP_RAW_SEMANTICS = "STOP_T0_B2_RAW_COUNTS_NOT_NONNEGATIVE_INTEGERS"
+STOP_RAW_PROVENANCE = "STOP_T0_B2_RAW_ROW_PROVENANCE_NOT_BOUND"
+STOP_ROW_WIDTH = "STOP_T0_B2_SELECTED_ROW_WIDTH_NOT_ADDRESS_SPACE"
+STOP_ROW_SEMANTICS = "STOP_T0_B2_SELECTED_ROW_COUNTS_NOT_NONNEGATIVE_INTEGERS"
+STOP_ROW_NOT_BOUND = "STOP_T0_B2_SELECTED_ROW_NOT_BOUND"
+STOP_ROW_BOUNDS = "STOP_T0_B2_EXPRESSION_ROW_OUT_OF_BOUNDS"
 
 
 def _rows(payload: bytes) -> tuple[list[str], list[dict[str, str]]]:
@@ -181,19 +195,56 @@ def _closure_root(operator_index: int, matrix_id: str, blocks: Sequence[str],
 def build_population_closure(
     *,
     membership_bytes: bytes,
+    expected_membership_sha256: str,
     block_manifest_bytes: bytes,
+    expected_block_manifest_sha256: str,
     meta_bytes_by_path: Mapping[str, bytes],
     operator_index: int,
     matrix_id: str,
 ) -> dict[str, Any]:
-    """Scan every block of the operator and close the population."""
+    """Scan every block of the operator and close the population.
+
+    Both inputs are authenticated by digest before anything is parsed, so this
+    cannot be run against arbitrary caller-supplied CSV bytes. The accepted
+    membership member and the pinned complete Phase2 block manifest are the two
+    authorities the population is defined by, and they must be named.
+    """
+    actual_membership = hashlib.sha256(bytes(membership_bytes)).hexdigest()
+    if actual_membership != str(expected_membership_sha256):
+        raise AssertionError("%s: membership is %s, expected %s"
+                             % (STOP_MEMBERSHIP_DIGEST, actual_membership,
+                                expected_membership_sha256))
+    actual_manifest = hashlib.sha256(bytes(block_manifest_bytes)).hexdigest()
+    if actual_manifest != str(expected_block_manifest_sha256):
+        raise AssertionError("%s: block manifest is %s, expected %s"
+                             % (STOP_MANIFEST_DIGEST, actual_manifest,
+                                expected_block_manifest_sha256))
+
     membership_columns, membership_rows = _rows(membership_bytes)
     for required in ("cell_id", "donor_id", "operator_index", "matrix_id"):
         if required not in membership_columns:
             raise AssertionError("%s: %r absent" % (STOP_MEMBERSHIP_COLUMNS, required))
-    targets = {}
-    for record in membership_rows:
-        targets[str(record["cell_id"]).strip()] = str(record["donor_id"]).strip()
+
+    # The values, not merely the columns. Requiring the columns and ignoring
+    # what they say let a membership for another operator or another matrix
+    # define this population.
+    targets: dict[str, str] = {}
+    for position, record in enumerate(membership_rows):
+        declared_operator = str(record["operator_index"]).strip()
+        if int(declared_operator) != int(operator_index):
+            raise AssertionError("%s: membership row %d is operator %s, expected %d"
+                                 % (STOP_MEMBERSHIP_OPERATOR, position,
+                                    declared_operator, int(operator_index)))
+        if str(record["matrix_id"]).strip() != str(matrix_id):
+            raise AssertionError("%s: membership row %d is matrix %s, expected %s"
+                                 % (STOP_MEMBERSHIP_MATRIX, position,
+                                    record["matrix_id"], matrix_id))
+        cell = str(record["cell_id"]).strip()
+        # A dict assignment silently redefined the population on a duplicate.
+        if cell in targets:
+            raise AssertionError("%s: %s appears more than once in the membership"
+                                 % (STOP_MEMBERSHIP_UNIQUE, cell))
+        targets[cell] = str(record["donor_id"]).strip()
 
     manifest_columns, manifest_rows = _rows(block_manifest_bytes)
     for required in ("block_key", "operator_index", "matrix_id", "meta_path",
@@ -234,6 +285,16 @@ def build_population_closure(
             cell = str(meta_row.get("canonical_cell_id") or "").strip()
             if cell not in targets:
                 continue
+            # The metadata carries its own donor_id. Emitting the membership
+            # donor while ignoring it meant a metadata row for one donor could
+            # be represented under another.
+            metadata_donor = str(meta_row.get("donor_id") or "").strip()
+            if metadata_donor != targets[cell]:
+                raise AssertionError(
+                    "%s: %s is donor %s in the Phase2 metadata at %s#%d but donor %s "
+                    "in the membership"
+                    % (STOP_DONOR_DISAGREES, cell, metadata_donor, block_key,
+                       row_index, targets[cell]))
             if cell in locations:
                 raise AssertionError(
                     "%s: %s appears in %s#%d and again in %s#%d"
@@ -516,3 +577,97 @@ def assert_row_authority_lawful(
                                 expected_logical_row_authority_root_sha256))
     return {"logical_row_authority_root_sha256": recomputed,
             "rows": len(logical["rows"])}
+
+
+def prove_source_library(
+    *,
+    logical: Mapping[str, Any],
+    logical_index: int,
+    raw_source_row_values: Sequence[Any],
+    raw_source_provenance: Mapping[str, Any],
+) -> bool:
+    """Prove the bound `source_library` against the authenticated full raw row.
+
+    Reading `source_library` from Phase2 metadata and comparing candidates
+    against that stored value proves consistency with the metadata, not that the
+    value is the sum of the full raw source row before projection. That sum was
+    the outstanding requirement, and this is it.
+
+    A row of address-space width is refused outright. Phase2 computes the value
+    before source-to-address projection, so the stored 41,238-address row is by
+    definition not the row that produced it, and it must not be offered as proof
+    even if its total happened to match.
+    """
+    for field in ("source_sha256", "source_row_index", "source_width"):
+        if field not in raw_source_provenance:
+            raise AssertionError("%s: %s is absent" % (STOP_RAW_PROVENANCE, field))
+    declared_width = int(raw_source_provenance["source_width"])
+    if declared_width != len(raw_source_row_values):
+        raise AssertionError("%s: provenance declares width %d but %d values were supplied"
+                             % (STOP_RAW_PROVENANCE, declared_width,
+                                len(raw_source_row_values)))
+    if declared_width == ADDRESS_SPACE_SIZE:
+        raise AssertionError(
+            "%s: a row of %d values is the projected address-space row, not the "
+            "pre-projection raw source row" % (STOP_RAW_WIDTH_ADDRESS, declared_width))
+
+    total = 0
+    for position, value in enumerate(raw_source_row_values):
+        if isinstance(value, bool) or not isinstance(value, int):
+            if not (isinstance(value, float) and value.is_integer()):
+                raise AssertionError("%s: position %d is %r"
+                                     % (STOP_RAW_SEMANTICS, position, value))
+        numeric = int(value)
+        if numeric < 0:
+            raise AssertionError("%s: position %d is %r"
+                                 % (STOP_RAW_SEMANTICS, position, value))
+        total += numeric
+
+    bound = logical["rows"][int(logical_index)]["source_library"]
+    if total != bound:
+        raise AssertionError(
+            "%s: the authenticated raw row sums to %d but the bound source_library is %d"
+            % (STOP_LIBRARY_NOT_PROVEN, total, bound))
+    return True
+
+
+def verify_selected_row(
+    *,
+    logical: Mapping[str, Any],
+    logical_index: int,
+    row_values: Sequence[Any],
+    selected_expression_row: int,
+    address_space_size: int = ADDRESS_SPACE_SIZE,
+    expression_row_upper_bound: int | None = None,
+) -> bool:
+    """Verify the row actually selected, not merely the payload it came from.
+
+    A correct block digest says the bytes are the bound bytes. It says nothing
+    about which row inside them was read, how wide that row is, or whether its
+    values are counts, so all four are checked here.
+    """
+    row = logical["rows"][int(logical_index)]
+    # Bounds before correspondence: a structurally impossible row index is a
+    # more fundamental fault than naming the wrong one, and reporting it as
+    # "not bound" would hide why.
+    if expression_row_upper_bound is not None:
+        if not (0 <= int(selected_expression_row) < int(expression_row_upper_bound)):
+            raise AssertionError("%s: %d is outside 0..%d"
+                                 % (STOP_ROW_BOUNDS, int(selected_expression_row),
+                                    int(expression_row_upper_bound) - 1))
+    if int(selected_expression_row) != int(row["expression_row"]):
+        raise AssertionError("%s: row %d was selected but %d is bound for logical index %d"
+                             % (STOP_ROW_NOT_BOUND, int(selected_expression_row),
+                                int(row["expression_row"]), int(logical_index)))
+    if len(row_values) != int(address_space_size):
+        raise AssertionError("%s: %d values, expected %d"
+                             % (STOP_ROW_WIDTH, len(row_values), int(address_space_size)))
+    for position, value in enumerate(row_values):
+        if isinstance(value, bool) or not isinstance(value, int):
+            if not (isinstance(value, float) and value.is_integer()):
+                raise AssertionError("%s: position %d is %r"
+                                     % (STOP_ROW_SEMANTICS, position, value))
+        if int(value) < 0:
+            raise AssertionError("%s: position %d is %r"
+                                 % (STOP_ROW_SEMANTICS, position, value))
+    return True
