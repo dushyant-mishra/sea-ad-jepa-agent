@@ -16,8 +16,8 @@
   },
   "historical_divergent_heads_absorbed": 30,
   "stale_tree_reactivated": false,
-  "branch_deletion_performed": false,
-  "branch_deletion_reason": "The connected GitHub integration does not expose branch-ref deletion. A fail-closed local cleanup script is provided and branch deletion remains a hygiene action.",
+  "branch_deletion_performed": true,
+  "branch_deletion_reason": null,
   "safe_cleanup_rule": "Delete a non-main branch ref only when its exact head SHA is verified as an ancestor of the current main head. Preserve tags and immutable package artifacts.",
   "execution_authority_changed": false,
   "safe_delete_list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
@@ -25,12 +25,20 @@
   "current_v5_source_head": "028989a5f1504e4d6403a44e7c90d37172c54150",
   "current_v5_tree_reconciled": true,
   "stale_v5_tree_reactivated": false,
-  "note": "All 57 current non-main branch heads are absorbed into main. The safe-delete list was regenerated after the V5 proposal/horizon continuation and latest external-review history absorption.",
+  "note": "All prior branch histories are preserved in main. The guarded cleanup preflight passed, 57 non-main refs were deleted, and the workflow verified that only main remains.",
   "final_governance_merge": "c3f85fbda1e34d87a3d1b489f4f1fcb1c0dd2333",
   "safe_delete_set_finalized_commits": [
     "72cd88c396bbb5bd5e48d3931a59b88e799d7526",
     "369ed418b978c5445b3f4eb438ecf66a10ab0c12"
   ],
   "safe_delete_set_revalidated_main_sha": "0a1b32a889dcecf33775cda02d99462ba28a50f2",
-  "safe_delete_set_revalidated_non_main_branches": 57
+  "safe_delete_set_revalidated_non_main_branches": 57,
+  "branch_prune_workflow_run_id": 34284674854,
+  "branch_prune_result": "docs/agent/JEPA_BRANCH_PRUNE_RESULT_20260908.json",
+  "deleted_non_main_branch_refs": 57,
+  "final_remote_branch_count": 1,
+  "final_remote_branches": [
+    "main"
+  ],
+  "tags_deleted": false
 }
