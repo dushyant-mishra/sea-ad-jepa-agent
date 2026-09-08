@@ -1,0 +1,59 @@
+name: Unified teacher-student production audit
+
+on:
+  push:
+    branches:
+      - production/teacher-student-unified-v1-20260907
+  pull_request:
+    paths:
+      - "src/sea_ad_jepa/v4/teacher_student_*.py"
+      - "src/sea_ad_jepa/v4/__init__.py"
+      - "scripts/v4/healthy_teacher_*"
+      - "scripts/v4/materialize_healthy_teacher_u0_v1.py"
+      - "scripts/agent/validate_healthy_teacher_execution_binding_overlay_v1.py"
+      - "tests/test_teacher_student_unified_runtime_v1.py"
+      - ".github/workflows/teacher_student_unified_v1_audit.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  unified-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install audit dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy pandas scipy torch
+      - name: Verify frozen F1-B attack authority bytes
+        run: |
+          echo "312087ef60ef99402692e7f0d9eb0307271f4a00136375e5ee2a4d5acfdf2275  scripts/v4/f1b_successor_attack_suite_v1.py" | sha256sum -c -
+          echo "29395af73fa643c8fd711627f2b21d3f8248aef6b5efe6f2704f2d246e42a837  scripts/v4/f1b_reference_candidates_v1.py" | sha256sum -c -
+          echo "61c35abf21507231a88f0986781578c8200c1da136afac76761258c5705e0e28  tests/test_f1b_successor_attack_suite_v1.py" | sha256sum -c -
+      - name: Compile canonical runtime
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m py_compile             src/sea_ad_jepa/v4/teacher_student_runtime.py             src/sea_ad_jepa/v4/teacher_student_movement.py             src/sea_ad_jepa/v4/teacher_student_checkpoint.py             scripts/v4/healthy_teacher_loader_adapter_v1.py             scripts/v4/healthy_teacher_batch_source_v1.py             scripts/v4/materialize_healthy_teacher_u0_v1.py             scripts/v4/healthy_teacher_qualification_runner_v1.py             scripts/agent/validate_healthy_teacher_execution_binding_overlay_v1.py
+      - name: Run integrated mechanics/governance suite
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m pytest -q             tests/test_c2_mandatory_gradient_gate_v1.py             tests/test_f1b_successor_attack_suite_v1.py             tests/test_f1b_c3_training_successor_v2.py             tests/test_population_access_registry_v1.py             tests/test_healthy_teacher_training_contract_v1.py             tests/test_teacher_student_unified_runtime_v1.py
+      - name: Confirm execution remains unauthorized
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          forbidden = [
+              Path("docs/agent/HEALTHY_TEACHER_U0_U40_EXECUTION_AUTHORITY_V1.json"),
+              Path("docs/agent/HEALTHY_TEACHER_CONTINUATION_EXECUTION_AUTHORITY_V1.json"),
+          ]
+          assert not any(p.exists() for p in forbidden), forbidden
+          print("PASS_NO_HEALTHY_TEACHER_EXECUTION_AUTHORITY_PRESENT")
+          PY
