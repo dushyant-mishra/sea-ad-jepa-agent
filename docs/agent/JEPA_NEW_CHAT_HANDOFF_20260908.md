@@ -262,19 +262,40 @@ F1 review and D1 readout/qualification design may continue pathology-blind.
 
 ## Local handoff package
 
-A sandbox handoff ZIP was generated separately in this chat containing:
-- this detailed handoff;
-- machine-readable state;
-- current T0 external-review/self-audit packages;
-- T0 positive-path V2;
-- upstream-interface specs;
-- availability V3 review package;
-- artifact SHA manifest.
+The portable chat-local handoff package has now been materialized and verified:
 
-Large immutable inputs were intentionally kept separate from the combined ZIP.
+- filename: `JEPA_COMPLETE_CHAT_HANDOFF_20260908.zip`
+- bytes: `76,699,663`
+- ZIP SHA-256: `50c6d06f55f7c54e4ddd2e52444428e2eaa4a94c225155178db377c54631a692`
+- package-manifest root SHA-256: `9c4be64ba15c58360ab9a1e2fa71ba88637d24467031011389bd539f0b72ccc7`
+- top-level chat artifacts copied: `26`
+- package manifest payload rows: `30`
+- ZIP CRC: PASS
+- manifest mismatches: `0`
+
+It contains:
+- this chat's detailed handoff/state copies;
+- current T0 external-review/self-audit packages;
+- T0 positive-path V2 and upstream-interface specs;
+- availability V1/V2/V3 packages and V6 code-preacceptance note;
+- external B1/B2 attack/spec/oracle files;
+- chat-uploaded pasted context and WSL execution issue;
+- `checkpoints.zip`, `expression.zip`, and the NPZ data artifact.
+
+Large immutable inputs remain separate to avoid duplicating more than 1 GB:
+- Foundation calibration bundle SHA-256
+  `07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444`;
+- 41K discovery-expression combined archive SHA-256
+  `63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7`;
+- T1 u0200 checkpoint ZIP SHA-256
+  `0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c`.
+
+Exact chat-local binding:
+`docs/agent/JEPA_CHAT_LOCAL_ARTIFACT_BINDING_20260908.json`.
 
 Successor instruction:
 Work from main only. Read the current authority index/next-action state first.
 Close T0's three implementation STOPs and V5's pre-execution gaps in parallel.
 Do not run real T0, training, TD60, D1 or protected releases until their exact
 authorities exist and pass independent review.
+
