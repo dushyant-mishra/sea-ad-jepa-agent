@@ -82,12 +82,19 @@ def capture_checkpoint(
         "population_access_root",
         "f1b_attack_authority_root",
         "integrated_successor_source_root",
+        "integrated_successor_commit",
+        "predictor_mandatory_registry_sha256",
+        "movement_adjudicator_source_sha256",
     }
     missing = sorted(required - set(authority_bindings))
     if missing:
         raise RuntimeError("checkpoint authority bindings missing: " + ", ".join(missing))
     for key, value in authority_bindings.items():
-        if len(str(value)) != 64:
+        text = str(value)
+        if key == "integrated_successor_commit":
+            if len(text) != 40 or any(ch not in "0123456789abcdef" for ch in text):
+                raise RuntimeError("checkpoint integrated successor commit is invalid")
+        elif len(text) != 64 or any(ch not in "0123456789abcdef" for ch in text):
             raise RuntimeError(f"checkpoint authority binding is not SHA-256: {key}")
 
     return {
@@ -145,8 +152,21 @@ def validate_checkpoint_header(
         raise RuntimeError("checkpoint schedule cursor mismatch")
     global_step = int(payload.get("global_update_step", -1))
     ema_count = int(payload.get("ema_update_count", -1))
+    schedule_cursor = int(payload.get("schedule_cursor", -1))
+    accumulation_position = int(payload.get("accumulation_position", 0))
     if global_step < 0 or ema_count < 0 or global_step != ema_count:
         raise RuntimeError("checkpoint optimizer/EMA counters invalid")
+    if schedule_cursor < 0 or schedule_cursor != global_step:
+        raise RuntimeError("checkpoint schedule/global-step counters diverged")
+    if accumulation_position != 0:
+        raise RuntimeError("production checkpoints are legal only at update boundaries")
+    phase = payload.get("phase")
+    if phase == "U0" and schedule_cursor != 0:
+        raise RuntimeError("u0 checkpoint must have zero counters")
+    if phase == "QUALIFICATION" and not 1 <= schedule_cursor <= 40:
+        raise RuntimeError("qualification checkpoint cursor outside 1..40")
+    if phase == "CONTINUATION" and not 40 <= schedule_cursor <= 205:
+        raise RuntimeError("continuation checkpoint cursor outside 40..205")
 
 
 def restore_checkpoint(
