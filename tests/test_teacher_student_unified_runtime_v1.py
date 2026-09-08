@@ -116,7 +116,7 @@ def test_movement_pure_decay_fails_but_any_real_deviation_passes() -> None:
         valid_steps=40,
     )
     assert pure["passed"] is False
-    assert pure["status"] == "NOT_ABOVE_DECAY_ONLY"
+    assert pure["status"] == "EXACT_DECAY_ONLY"
 
     changed = decay.clone()
     changed[0] = changed[0] - 1e-3
@@ -128,7 +128,29 @@ def test_movement_pure_decay_fails_but_any_real_deviation_passes() -> None:
         valid_steps=40,
     )
     assert live["passed"] is True
-    assert live["status"] == "EXCEEDS_DECAY_ONLY"
+    assert live["status"] == "DEVIATES_FROM_DECAY_ONLY"
+
+
+def test_movement_opposing_decay_is_not_falsely_called_dead() -> None:
+    baseline = torch.tensor([1.0], dtype=torch.float32)
+    decay = decay_only_counterfactual(
+        baseline, learning_rate=1e-4, weight_decay=0.01, valid_steps=40
+    )
+    # Move back toward the baseline by less than the pure-decay displacement.
+    # Total movement is therefore smaller than decay-only, but this is still
+    # genuine non-decay behavior and must pass.
+    observed = decay.clone()
+    observed[0] = torch.nextafter(observed[0], baseline[0])
+    assert float((observed - baseline).abs()) < float((decay - baseline).abs())
+    report = adjudicate_tensor(
+        baseline,
+        observed,
+        learning_rate=1e-4,
+        weight_decay=0.01,
+        valid_steps=40,
+    )
+    assert report["passed"] is True
+    assert report["status"] == "DEVIATES_FROM_DECAY_ONLY"
 
 
 def test_movement_zero_baseline_cannot_pass_without_real_movement() -> None:
