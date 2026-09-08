@@ -2,8 +2,9 @@
 
 Canonical branch: **main**
 
-All 57 non-main branch heads listed below are already ancestors of
-`main`. Their unique commits were preserved through normal merges, the exact
+All 57 current non-main branch heads listed below are already ancestors of
+`main`. The list was revalidated after the V5 proposal/horizon continuation
+and latest external-review history were absorbed. Their unique commits were preserved through normal merges, the exact
 F1 two-parent merge, or the history-absorption octopus merge.
 
 Deleting these **branch refs** will therefore not delete their commits or remove
@@ -40,7 +41,7 @@ Do **not** delete tags or immutable package artifacts.
 - `planning/healthy-teacher-training-contract-20260907` — 26e1c27d3578b794a1d522061df6d57ff435a688
 - `planning/sealed-holdout-registry-20260907` — 14c2d586239aa5af15ed7cd70fdfb196d1c99f5f
 - `planning/teacher-student-v5-data-contract-refine-20260908` — fc7fe219438579af5617ee1854f253e45d899e22
-- `planning/teacher-student-v5-data-first-20260908` — c7b1663cc4390843978b973986edfe58f93320a3
+- `planning/teacher-student-v5-data-first-20260908` — 028989a5f1504e4d6403a44e7c90d37172c54150
 - `planning/teacher-student-v5-data-first-rng64-integrated-20260908` — 264e63784216b5938531cf48300efbd91fc47a0d
 - `planning/teacher-student-v5-finalize-closure-20260908` — 95251107e80a803d627d1197a64b417a5a16d2c5
 - `planning/teacher-student-v5-latest-closure-20260908` — 617fae2c36eb06faea6822f2220e80aa376262fb
@@ -55,7 +56,7 @@ Do **not** delete tags or immutable package artifacts.
 - `review/f1-ea35-independent-20260907` — b0db8ea07ae0a61b5a5d37c51e419d6b2a1044b4
 - `review/f1-three-valued-report-schema-20260905` — b42907fbc61f2717678109f30961f6e038678abe
 - `review/f1b-independent-verifier-repair-20260905` — a90fdc1339c7c71d8a27db4fdf391ed9d62f9104
-- `review/jepa-global-blockers-20260908` — 557a4344df2fa04526c82146a730413c992b5ad2
+- `review/jepa-global-blockers-20260908` — ddb2ab069b7592e0dfce4482e4b458b95b947546
 - `review/pre-f1-mechanism-repair-20260905` — 02907fb27f3e41fc03e01451d11b014b89b78493
 - `review/protected-program-independent-verifier-20260905` — 60eb96cf5399f84ff3b30e145d751410f380662e
 - `review/t0-external-24b2c9-20260908` — c6c07857193efbc0e3830fc015beca68db19e105
@@ -69,3 +70,5 @@ Do **not** delete tags or immutable package artifacts.
 - `transport/c2-full-repaired-package-20260906` — 43c2997079b9326d21d9c2c88aa3014167413f5e
 
 - `coordination/jepa-governance-finalize-20260908` — d8d998a4f29ad170beb0b9c807495025d0a17a23
+
+Verification main SHA: `0a1b32a889dcecf33775cda02d99462ba28a50f2`.
