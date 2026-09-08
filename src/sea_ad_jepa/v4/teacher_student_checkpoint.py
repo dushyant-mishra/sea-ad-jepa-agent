@@ -45,6 +45,10 @@ def environment_fingerprint() -> dict[str, Any]:
         "cuda_devices": [
             torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())
         ] if torch.cuda.is_available() else [],
+        "cuda_device_capabilities": [
+            list(torch.cuda.get_device_capability(i)) for i in range(torch.cuda.device_count())
+        ] if torch.cuda.is_available() else [],
+        "cublas_workspace_config": os.environ.get("CUBLAS_WORKSPACE_CONFIG"),
         "tf32_matmul": bool(torch.backends.cuda.matmul.allow_tf32),
         "tf32_cudnn": bool(torch.backends.cudnn.allow_tf32),
         "deterministic_algorithms": bool(torch.are_deterministic_algorithms_enabled()),
