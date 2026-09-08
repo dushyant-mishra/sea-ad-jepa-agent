@@ -261,9 +261,12 @@ def _valid_overlay() -> dict:
             "source_manifest_root": "2" * 64,
         },
         "independent_review": {
-            "terminal": "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW",
+            "terminal": "PASS_TEACHER_STUDENT_UNIFIED_V4_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
             "artifact_sha256": "3" * 64,
             "reviewed_commit": "1" * 40,
+            "reviewed_package_sha256": "7" * 64,
+            "reviewed_package_root": "8" * 64,
+            "reviewed_source_manifest_root": "2" * 64,
         },
         "successor_u0": {
             "path": "healthy_teacher_u0000.pt",
@@ -500,19 +503,19 @@ def test_executing_source_authority_rejects_tampered_code(tmp_path) -> None:
     import shutil
 
     source_root = (
-        ROOT / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V3.txt"
+        ROOT / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V4.txt"
     ).read_text(encoding="utf-8").strip()
     assert verify_source_authority(source_root, root=ROOT)["passed"] is True
 
     for rel in (
-        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv",
-        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V3.txt",
+        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V4.csv",
+        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V4.txt",
     ):
         target = tmp_path / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / rel, target)
 
-    manifest = tmp_path / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv"
+    manifest = tmp_path / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V4.csv"
     with manifest.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     for row in rows:
@@ -525,3 +528,27 @@ def test_executing_source_authority_rejects_tampered_code(tmp_path) -> None:
     attacked.write_bytes(attacked.read_bytes() + b"\n# tamper\n")
     with pytest.raises(RuntimeError, match="executing source bytes"):
         verify_source_authority(source_root, root=tmp_path)
+
+
+def test_overlay_rejects_legacy_v3_review_terminal_and_unbound_package() -> None:
+    attacked = _valid_overlay()
+    attacked["independent_review"]["terminal"] = (
+        "PASS_TEACHER_STUDENT_UNIFIED_V3_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED"
+    )
+    result = validate_overlay(attacked)
+    assert result["terminal"].startswith("STOP_")
+    assert any("exact V4 independent-review PASS" in item for item in result["failures"])
+
+    attacked = _valid_overlay()
+    attacked["independent_review"].pop("reviewed_package_root")
+    result = validate_overlay(attacked)
+    assert result["terminal"].startswith("STOP_")
+    assert any("reviewed package root" in item for item in result["failures"])
+
+
+def test_overlay_binds_external_review_to_exact_source_root() -> None:
+    attacked = _valid_overlay()
+    attacked["independent_review"]["reviewed_source_manifest_root"] = "9" * 64
+    result = validate_overlay(attacked)
+    assert result["terminal"].startswith("STOP_")
+    assert any("source root" in item for item in result["failures"])
