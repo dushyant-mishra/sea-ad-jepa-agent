@@ -1,0 +1,30 @@
+{
+  "at8_field": "percent AT8 positive area_Grey matter",
+  "availability_semantics": "present and non-missing after stripping and case-folding against the frozen missingness vocabulary; a measured zero is available",
+  "available_donor_count": 84,
+  "claim": "Availability predicate only. This authority does not qualify any biological association and does not authorize real T0 execution.",
+  "derivation_code_sha256": "1b12f3cb9b45141ce0ec3854eb1c23ac424a1a1e1cd896573be1c9a7776c2c6f",
+  "donor_id_field": "Donor ID",
+  "finalized": true,
+  "membership_donor_count": 46,
+  "membership_donors_available": 46,
+  "membership_fully_available": true,
+  "missingness_tokens": [
+    "",
+    "na",
+    "n/a",
+    "nan",
+    "none",
+    "null",
+    "."
+  ],
+  "namespace": "T0-AT8-AVAILABILITY-V1",
+  "outcome_values_emitted": false,
+  "outcome_values_read": false,
+  "real_execution_ready": false,
+  "schema": "JEPA_T0_AT8_AVAILABILITY_AUTHORITY_V1",
+  "source_bytes": 21982,
+  "source_relative_path": "data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv",
+  "source_sha256": "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a",
+  "total_donor_count": 84
+}

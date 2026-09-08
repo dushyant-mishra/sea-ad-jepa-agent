@@ -71,7 +71,7 @@ def test_a_wrong_source_hash_stops_before_reading_the_field(source, tmp_path: Pa
             outdir=tmp_path / "out",
             source_path=path,
             expected_source_sha256="0" * 64,
-            membership_donor_ids=["D00"],
+            membership_donor_ids=["D00"], source_relative_path="data/pathology.csv",
         )
     assert not (tmp_path / "out").exists(), "nothing may be emitted after a source STOP"
 
@@ -85,7 +85,7 @@ def test_the_frozen_field_must_exist_in_the_header(tmp_path: Path) -> None:
             outdir=tmp_path / "out",
             source_path=path,
             expected_source_sha256=av.sha256_file(path),
-            membership_donor_ids=["D00"],
+            membership_donor_ids=["D00"], source_relative_path="data/pathology.csv",
         )
 
 
@@ -98,7 +98,7 @@ def test_availability_is_derived_per_donor_including_missing_forms(source, tmp_p
         outdir=tmp_path / "out",
         source_path=path,
         expected_source_sha256=digest,
-        membership_donor_ids=["D00", "D02"],
+        membership_donor_ids=["D00", "D02"], source_relative_path="data/pathology.csv",
     )
     registry = {row["donor_id"]: row["AT8_available"] for row in built["registry"]}
     assert registry == {
@@ -126,7 +126,7 @@ def test_the_count_is_not_hardcoded_to_the_expected_production_value(
         outdir=tmp_path / "out",
         source_path=path,
         expected_source_sha256=digest,
-        membership_donor_ids=["D00"],
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv",
     )
     assert built["metadata"]["available_donor_count"] != built["metadata"]["total_donor_count"]
 
@@ -148,10 +148,10 @@ def test_perturbing_numeric_values_cannot_change_the_package(tmp_path: Path) -> 
 
     built_a = av.build_availability_authority(
         outdir=tmp_path / "out_a", source_path=first, expected_source_sha256=d1,
-        membership_donor_ids=["D00"])
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
     built_b = av.build_availability_authority(
         outdir=tmp_path / "out_b", source_path=second, expected_source_sha256=d2,
-        membership_donor_ids=["D00"])
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
 
     assert built_a["registry"] == built_b["registry"]
     assert (tmp_path / "out_a" / av.REGISTRY).read_bytes() == (
@@ -160,6 +160,14 @@ def test_perturbing_numeric_values_cannot_change_the_package(tmp_path: Path) -> 
     assert built_a["availability_root_sha256"] == built_b["availability_root_sha256"], (
         "the availability root must not depend on any numeric AT8 value"
     )
+    assert built_a["metadata"]["available_donor_count"] == (
+        built_b["metadata"]["available_donor_count"]
+    )
+    # The other half of the claim: provenance must still notice that the source
+    # bytes changed, so the package root is expected to differ. If both roots
+    # were invariant the authority would not be bound to its source at all.
+    assert built_a["package_root_sha256"] != built_b["package_root_sha256"]
+    assert built_a["metadata"]["source_sha256"] != built_b["metadata"]["source_sha256"]
 
 
 def test_changing_presence_does_change_the_package(tmp_path: Path) -> None:
@@ -171,10 +179,10 @@ def test_changing_presence_does_change_the_package(tmp_path: Path) -> None:
     d2 = _write_source(second, _rows(blanked))
     built_a = av.build_availability_authority(
         outdir=tmp_path / "out_a", source_path=first, expected_source_sha256=d1,
-        membership_donor_ids=["D00"])
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
     built_b = av.build_availability_authority(
         outdir=tmp_path / "out_b", source_path=second, expected_source_sha256=d2,
-        membership_donor_ids=["D00"])
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
     assert built_a["availability_root_sha256"] != built_b["availability_root_sha256"]
     assert built_a["metadata"]["available_donor_count"] == 3
     assert built_b["metadata"]["available_donor_count"] == 2
@@ -190,7 +198,7 @@ def test_no_emitted_byte_contains_an_outcome_value(tmp_path: Path) -> None:
     outdir = tmp_path / "out"
     av.build_availability_authority(
         outdir=outdir, source_path=path, expected_source_sha256=digest,
-        membership_donor_ids=["D00"])
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
 
     emitted = b"".join(p.read_bytes() for p in sorted(outdir.rglob("*")) if p.is_file())
     for value in distinctive:
@@ -220,7 +228,13 @@ def test_the_module_never_converts_the_field_numerically() -> None:
             if name in forbidden:
                 found.add(name)
     assert not found, f"numeric/bulk-parse calls present: {sorted(found)}"
-    assert "pandas" not in Path(av.__file__).read_text(encoding="utf-8")
+    imported = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            imported.update(alias.name.split(".")[0] for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            imported.add(node.module.split(".")[0])
+    assert not imported & {"pandas", "numpy"}, sorted(imported)
 
 
 # --------------------------------------------------------------------------
@@ -231,7 +245,7 @@ def test_every_membership_donor_must_resolve(source, tmp_path: Path) -> None:
     with pytest.raises(AssertionError, match="MEMBERSHIP_DONOR_UNRESOLVED"):
         av.build_availability_authority(
             outdir=tmp_path / "out", source_path=path, expected_source_sha256=digest,
-            membership_donor_ids=["D00", "NOT_A_DONOR"])
+            membership_donor_ids=["D00", "NOT_A_DONOR"], source_relative_path="data/pathology.csv")
 
 
 def test_a_membership_donor_without_at8_is_reported_not_silently_dropped(
@@ -240,7 +254,7 @@ def test_a_membership_donor_without_at8_is_reported_not_silently_dropped(
     path, digest, _ = source
     built = av.build_availability_authority(
         outdir=tmp_path / "out", source_path=path, expected_source_sha256=digest,
-        membership_donor_ids=["D00", "D01"])
+        membership_donor_ids=["D00", "D01"], source_relative_path="data/pathology.csv")
     assert built["metadata"]["membership_donor_count"] == 2
     assert built["metadata"]["membership_donors_available"] == 1
     assert built["metadata"]["membership_fully_available"] is False
@@ -254,7 +268,7 @@ def test_duplicate_donor_identity_stops(tmp_path: Path) -> None:
     with pytest.raises(AssertionError, match="DONOR_IDENTITY_NOT_UNIQUE"):
         av.build_availability_authority(
             outdir=tmp_path / "out", source_path=path, expected_source_sha256=digest,
-            membership_donor_ids=["D00"])
+            membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
 
 
 def test_the_package_is_tamper_evident(source, tmp_path: Path) -> None:
@@ -262,7 +276,7 @@ def test_the_package_is_tamper_evident(source, tmp_path: Path) -> None:
     outdir = tmp_path / "out"
     built = av.build_availability_authority(
         outdir=outdir, source_path=path, expected_source_sha256=digest,
-        membership_donor_ids=["D00"])
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
     assert av.load_availability_authority(outdir)["availability_root_sha256"] == (
         built["availability_root_sha256"]
     )
@@ -276,7 +290,7 @@ def test_the_authority_does_not_claim_execution_readiness(source, tmp_path: Path
     path, digest, _ = source
     built = av.build_availability_authority(
         outdir=tmp_path / "out", source_path=path, expected_source_sha256=digest,
-        membership_donor_ids=["D00"])
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
     meta = built["metadata"]
     assert meta["real_execution_ready"] is False
     assert meta["outcome_values_read"] is False
@@ -293,4 +307,41 @@ def test_an_existing_nonempty_output_directory_stops(source, tmp_path: Path) -> 
     with pytest.raises(AssertionError, match="OUTPUT_NOT_EMPTY"):
         av.build_availability_authority(
             outdir=outdir, source_path=path, expected_source_sha256=digest,
-            membership_donor_ids=["D00"])
+            membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+
+
+def test_a_non_portable_source_label_stops(source, tmp_path: Path) -> None:
+    """An absolute path is environment noise, not provenance.
+
+    The same bytes on another machine would otherwise produce a different
+    metadata string and therefore a different package root.
+    """
+    path, digest, _ = source
+    for label in (
+        "D:/Jepa project/data/pathology.csv",
+        "/abs/pathology.csv",
+        r"data\pathology.csv",
+        "data/../pathology.csv",
+        "./pathology.csv",
+    ):
+        with pytest.raises(AssertionError, match="SOURCE_PATH_NOT_PORTABLE"):
+            av.build_availability_authority(
+                outdir=tmp_path / ("out_%d" % abs(hash(label))),
+                source_path=path,
+                expected_source_sha256=digest,
+                membership_donor_ids=["D00"],
+                source_relative_path=label,
+            )
+
+
+def test_the_metadata_records_a_portable_relative_source(source, tmp_path: Path) -> None:
+    path, digest, _ = source
+    built = av.build_availability_authority(
+        outdir=tmp_path / "out", source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"],
+        source_relative_path="data/processed/metadata/pathology.csv")
+    meta = built["metadata"]
+    assert meta["source_relative_path"] == "data/processed/metadata/pathology.csv"
+    assert "source_path" not in meta, "no absolute path may be recorded"
+    for value in meta.values():
+        assert ":" not in str(value) or not str(value).startswith(("C:", "D:")), value
