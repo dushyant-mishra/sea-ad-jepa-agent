@@ -120,7 +120,7 @@ Run:
 python -m pytest -q tests/test_teacher_student_relational_v2.py
 ```
 
-The relational V2 adjunct remains prospective, inactive, and training-unauthorized. V1 is superseded and must not be treated as candidate mechanics. Independently attack the exact 8×16 batch contract, per-group no-pooled-rescue collapse gate, zero-norm angle rejection, exact evidence levels, fine-matched null, and V4 runtime non-import/non-call firewall. A relational defect should be reported separately unless it reveals a shared-source contradiction.
+The relational V2 adjunct remains prospective, inactive, and training-unauthorized. V1 is superseded and must not be treated as candidate mechanics. Independently attack the exact 8×16 batch contract, exact non-overridable 0.5/0.5 Smooth-L1 objective (beta=1.0), per-group no-pooled-rescue collapse gate, zero-norm angle rejection, exact evidence levels, fine-matched null, and V4 runtime non-import/non-call firewall. A relational defect should be reported separately unless it reveals a shared-source contradiction.
 
 ## Execution firewall
 
