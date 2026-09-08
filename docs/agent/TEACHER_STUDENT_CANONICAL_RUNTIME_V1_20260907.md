@@ -53,6 +53,7 @@ Canonical modules:
 - `src/sea_ad_jepa/v4/teacher_student_runtime.py`
 - `src/sea_ad_jepa/v4/teacher_student_checkpoint.py`
 - `src/sea_ad_jepa/v4/teacher_student_movement.py`
+- `src/sea_ad_jepa/v4/teacher_student_diagnostics.py`
 
 Production adapters/runners:
 
@@ -64,7 +65,10 @@ Production adapters/runners:
 - `scripts/agent/validate_healthy_teacher_execution_binding_overlay_v1.py`
 
 Historical C2/F1-B/Stage81A3 scripts remain in the repository for frozen tests,
-forensics and chronology. They are not competing production entrypoints.
+forensics and chronology. They are not competing production entrypoints and the
+canonical production/attack-adapter surface has no runtime import dependency on
+them. The surviving data-blind routing/G5/directional/equivalence helpers live
+under `teacher_student_diagnostics.py`.
 
 ## Model roles
 
