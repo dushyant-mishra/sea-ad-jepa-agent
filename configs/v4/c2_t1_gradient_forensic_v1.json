@@ -1,0 +1,60 @@
+{
+  "contract_id": "C2_T1_GRADIENT_FORENSIC_V1",
+  "frozen_utc": "2026-09-06",
+  "synthetic_only": true,
+  "weights": "SEEDED_RANDOM_INIT",
+  "seeds": [20260906, 20260907],
+  "vocabulary_size": 41238,
+  "model": {"width": 160, "heads": 4, "blocks": 6, "ffn_width": 320, "dropout": 0.0},
+  "mandatory_roles": ["attention_norm", "attention.query", "attention.key", "attention.value"],
+  "expected_mandatory_tensors": 48,
+  "live_reference_roles": ["attention.output"],
+  "expected_live_reference_tensors": 12,
+  "optimizer": {"lr": 0.0001, "weight_decay": 0.01, "betas": [0.9, 0.999], "eps": 1e-8},
+  "endpoints": {
+    "HEALTHY_SIMPLIFIED": {
+      "tokens": 512, "batch": 2, "microbatch": 2, "views": 1,
+      "amp": true, "grad_checkpointing": true,
+      "loss_operands_fp32": true, "loss_division": false,
+      "teacher_hidden_mask": "blocks_hidden_mask", "blocks": "measured_complement"
+    },
+    "HISTORICAL_SCALE": {
+      "tokens": 41238, "batch": 128, "microbatch": 8, "views": 4,
+      "amp": true, "grad_checkpointing": true,
+      "loss_operands_fp32": false, "loss_division": true,
+      "teacher_hidden_mask": "zeros_like", "blocks": "random40"
+    }
+  },
+  "frozen_factor_order": [
+    {"id": "F1_LOSS_OPERANDS_FP32", "override": {"loss_operands_fp32": true}},
+    {"id": "F2_TOKENS_512", "override": {"tokens": 512}},
+    {"id": "F2_TOKENS_4096", "override": {"tokens": 4096}},
+    {"id": "F2_TOKENS_16384", "override": {"tokens": 16384}},
+    {"id": "F3_NO_LOSS_DIVISION", "override": {"loss_division": false}},
+    {"id": "F3_SINGLE_BACKWARD", "override": {"microbatch": 128, "views": 1}},
+    {"id": "F4_TEACHER_HIDDEN_MASK", "override": {"teacher_hidden_mask": "blocks_hidden_mask"}},
+    {"id": "F5_BLOCKS_MEASURED_COMPLEMENT", "override": {"blocks": "measured_complement"}},
+    {"id": "F5_BATCH_GEOMETRY_2", "override": {"batch": 2, "microbatch": 2}}
+  ],
+  "reverse_sufficiency_order": [
+    {"id": "R1_LOSS_OPERANDS_FP16", "override": {"loss_operands_fp32": false}},
+    {"id": "R2_TOKENS_41238", "override": {"tokens": 41238}},
+    {"id": "R3_LOSS_DIVISION", "override": {"loss_division": true}},
+    {"id": "R4_TEACHER_ZEROS_LIKE", "override": {"teacher_hidden_mask": "zeros_like"}},
+    {"id": "R5_BLOCKS_RANDOM40", "override": {"blocks": "random40"}}
+  ],
+  "adjudication": {
+    "dead_definition": "grad is None, or grad norm == 0.0, or grad norm nonfinite",
+    "healthy_requires_dead_mandatory": 0,
+    "historical_requires_dead_mandatory": 48,
+    "historical_requires_live_reference": 12,
+    "localized_requires_unique_single_factor_transition": true,
+    "terminal_if_not_unique": "STOP_C2_CAUSE_NOT_LOCALIZED"
+  },
+  "prospective_notes": [
+    "Weights are seeded random init, not u0. The bisection is a question about the gradient graph, not weight values. If HISTORICAL_SCALE does not reproduce 48 dead mandatory tensors under random init, the terminal is STOP_C2_HISTORICAL_ENDPOINT_NOT_REPRODUCED and u0 byte binding becomes mandatory before any causal claim.",
+    "IPBEncoder.forward ignores hidden_target_mask when view=='target'. F4 is therefore expected to be mechanically inert. It is executed anyway; no frozen factor may be skipped because it looks predictable.",
+    "No factor may be added, removed or reordered after any result is inspected.",
+    "Dropout is 0.0 so that a dead gradient cannot be attributed to stochastic masking."
+  ]
+}

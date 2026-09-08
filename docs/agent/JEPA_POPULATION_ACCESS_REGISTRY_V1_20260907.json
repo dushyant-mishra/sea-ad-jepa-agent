@@ -1,0 +1,221 @@
+{
+  "schema": "JEPA_POPULATION_ACCESS_REGISTRY_V1",
+  "status": "PROSPECTIVE_GOVERNANCE__NO_NEW_DATA_ACCESS_AUTHORIZED",
+  "date": "2026-09-07",
+  "authority": {
+    "calibration_bundle_transport_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "foundation_split_registry": {
+      "sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+      "rows": 215,
+      "split_counts": {
+        "train": 166,
+        "development": 24,
+        "sealed_holdout": 24,
+        "whole_study_external_holdout": 1
+      },
+      "bundle_relative_path": "splits/foundation_split_registry.csv"
+    },
+    "reader_donor_split": {
+      "canonical_path": "exports/contextual_biology_v6r5a_20260822/reader_donor_split.csv",
+      "sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+      "rows": 149,
+      "partition_counts": {
+        "reader_fit": 104,
+        "reader_validation": 22,
+        "reader_oracle": 23
+      }
+    },
+    "t1_biology_evaluation_freeze": {
+      "sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06",
+      "bundle_relative_path": "splits/T1_BIOLOGY_EVALUATION_FREEZE.json"
+    }
+  },
+  "verified_relations": {
+    "every_reader_donor_is_foundation_split_train": true,
+    "reader_partitions_are_nested_inside_foundation_train": true,
+    "reader_partition_counts_sum_to_149": true,
+    "foundation_domain_train_count": 149,
+    "continuation_domain_train_count": 17,
+    "foundation_domain_development_count": 19,
+    "continuation_domain_development_count": 5,
+    "foundation_domain_sealed_holdout_count": 19,
+    "continuation_domain_sealed_holdout_count": 5
+  },
+  "cross_cutting_firewalls": {
+    "pathology": {
+      "state": "CLOSED",
+      "rule": "Pathology labels/outcomes are a separate protected information channel. Opening expression or latent states for a donor never authorizes pathology access."
+    },
+    "dev_sealed": {
+      "state": "CLOSED",
+      "rule": "Foundation development, foundation/continuation sealed_holdout, reader_oracle, and whole-study external holdout stay closed unless a named prospective release authority explicitly opens them for a predeclared purpose."
+    }
+  },
+  "populations": {
+    "reader_fit": {
+      "parent": "foundation/train",
+      "count": 104,
+      "current_state": "ELIGIBLE_POOL__NOT_EXECUTION_AUTHORITY",
+      "allowed_now": [
+        "metadata-only planning",
+        "already-authorized bounded technical preflight",
+        "D1-A synthetic/u0-safe development when no real reader-fit expression is consumed"
+      ],
+      "future_eligible_uses": [
+        "healthy-teacher training corpus after separate frozen training contract",
+        "D1 real discovery after mechanically healthy trained teacher and D1 algorithm freeze",
+        "real F1-A producer after producer/replay source freeze and separate execution authority"
+      ],
+      "forbidden_without_new_authority": [
+        "pathology access",
+        "reader_validation/oracle substitution",
+        "real F1 biological sweep",
+        "new teacher training",
+        "real D1 biological interpretation"
+      ]
+    },
+    "reader_validation": {
+      "parent": "foundation/train",
+      "count": 22,
+      "current_state": "CLOSED_READER_SELECTION",
+      "intended_role": "reader/model selection and descriptive validation only after prospective release",
+      "never_allowed": [
+        "encoder/teacher training",
+        "discovery hypothesis generation",
+        "post-outcome tuning folded back into reader_fit training"
+      ],
+      "release_requires": [
+        "exact candidate checkpoint root frozen",
+        "evaluation source frozen",
+        "metrics and decision use frozen",
+        "explicit named reader-validation release authority"
+      ]
+    },
+    "reader_oracle": {
+      "parent": "foundation/train",
+      "count": 23,
+      "current_state": "SEALED_INTERNAL_ORACLE",
+      "intended_role": "primary untouched internal evaluation",
+      "never_allowed": [
+        "training",
+        "hyperparameter/model selection",
+        "D1 hypothesis discovery",
+        "iterative tuning after oracle outcomes"
+      ],
+      "release_requires": [
+        "model/training candidate frozen",
+        "analysis/evaluation source frozen",
+        "reader-validation phase concluded without further tuning",
+        "explicit one-way oracle release authority"
+      ],
+      "consequence_of_opening": "Once opened for a candidate, those outcomes become historical evaluation evidence and cannot be reused as an untouched oracle for a modified candidate."
+    },
+    "foundation_development": {
+      "count": 24,
+      "composition": {
+        "foundation": 19,
+        "continuation": 5
+      },
+      "current_state": "CLOSED_DEVELOPMENT",
+      "intended_role": "separate future development/validation population, not implicitly interchangeable with reader_validation",
+      "release_requires": [
+        "named prospective purpose",
+        "exact donor/source scope",
+        "frozen analysis code and outputs permitted",
+        "explicit statement whether results may influence model selection"
+      ],
+      "forbidden_now": [
+        "teacher training",
+        "D1 real discovery",
+        "F1/T0 execution",
+        "pathology access"
+      ]
+    },
+    "foundation_sealed_holdout": {
+      "count": 24,
+      "composition": {
+        "foundation": 19,
+        "continuation": 5
+      },
+      "current_state": "SEALED_FOUNDATION_HOLDOUT",
+      "intended_role": "late confirmatory/internal generalization holdout",
+      "never_allowed": [
+        "training",
+        "model selection",
+        "D1 discovery",
+        "threshold/ranking-formula tuning"
+      ],
+      "release_requires": [
+        "trained teacher/checkpoint frozen",
+        "hypothesis or estimand frozen prospectively",
+        "confirmatory analysis source and multiplicity plan frozen",
+        "explicit sealed-holdout release authority"
+      ]
+    },
+    "whole_study_external_holdout": {
+      "count": 1,
+      "unit": "study",
+      "study_id": "siletti_human_brain_cell_atlas_v1",
+      "current_state": "SEALED_EXTERNAL_REPLICATION",
+      "intended_role": "whole-study external replication/generalization",
+      "never_allowed": [
+        "training",
+        "model selection",
+        "D1 discovery",
+        "internal threshold tuning"
+      ],
+      "release_requires": [
+        "internal candidate and analysis frozen",
+        "external mapping/normalization authority frozen",
+        "explicit external-holdout release authority"
+      ]
+    },
+    "foundation_train_without_reader_partition": {
+      "count": 17,
+      "split_domain": "continuation",
+      "current_state": "TRAIN_BY_FOUNDATION_ONLY__NOT_CURRENT_TEACHER_TRAINING_ELIGIBLE",
+      "rule": "These donors are train in the foundation registry but are not part of the frozen 149-donor reader split. They must not be silently added to the healthy-teacher corpus; any inclusion needs a new corpus-extension authority."
+    }
+  },
+  "lane_rules": {
+    "f1a": {
+      "current_population": "reader_fit only",
+      "current_status": "producer/replay source layer still unbuilt; real sweep unauthorized",
+      "oracle_or_sealed_access": false
+    },
+    "f1b_c3": {
+      "current_status": "mechanics successor under integration/external-review preparation; no training authority",
+      "training_population_authorized": false
+    },
+    "healthy_teacher_training": {
+      "current_status": "contract not yet frozen",
+      "only_current_candidate_pool": "reader_fit",
+      "exact_corpus_must_be_bound_by_training_contract": true,
+      "continuation_train_auto_include": false
+    },
+    "d1": {
+      "d1a_now": "synthetic/u0-safe only",
+      "real_discovery_default_population_when_authorized": "reader_fit",
+      "reader_validation_use_requires_separate_release": true,
+      "reader_oracle_or_sealed_use_for_discovery": false
+    },
+    "t0": {
+      "current_status": "V20 independently reviewed execution binding; real T0/pathology still unauthorized"
+    }
+  },
+  "forbidden_shortcuts": [
+    "Treating foundation development as equivalent to reader_validation",
+    "Treating reader_oracle as equivalent to foundation sealed_holdout",
+    "Treating a donor's expression access as permission to access pathology",
+    "Using any oracle/sealed result to tune training, D1 ranking rules, or confirmatory thresholds",
+    "Silently adding continuation/train donors to the historical reader-fit teacher-training pool",
+    "Opening a protected population because code is mechanically ready"
+  ],
+  "terminal": "PASS_POPULATION_REGISTRY_CANDIDATE__NO_NEW_DATA_ACCESS",
+  "historical_exposure": {
+    "note": "Historical T1 calibration/evaluation opened reader_validation and reader_oracle under the frozen T1 biology-evaluation plan. That historical exposure does not grant current or future access authority. Because u10-u205 are defect-inherited, those uses remain historical evidence only.",
+    "t1_biology_evaluation_freeze_sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06",
+    "current_reader_validation_state": "CLOSED_READER_SELECTION",
+    "current_reader_oracle_state": "SEALED_INTERNAL_ORACLE"
+  }
+}

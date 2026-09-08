@@ -1,0 +1,23 @@
+{
+  "schema": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V3",
+  "status": "SOURCE_FROZEN__EXTERNAL_REVIEW_REQUIRED__TRAINING_UNAUTHORIZED",
+  "branch": "production/teacher-student-unified-v1-20260907",
+  "supersedes_local_candidate": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V2",
+  "supersession_reason": "V2 was superseded before external review because its movement qualification compared total distance from baseline against the decay-only distance. A genuine gradient opposing weight decay can produce smaller net displacement while still deviating from pure decay. V3 adjudicates exact per-tensor deviation from the exact decay-only counterfactual, retaining no tolerance, no pooled rescue, and preserving frozen F1-B finding-3 discrimination.",
+  "integrated_successor_commit": "8f9c34f18ac7cf43572299901e5e4f5d65cecb24",
+  "integrated_successor_source_manifest": "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv",
+  "integrated_successor_source_manifest_root_sha256": "cd7faf6dd48f58387597b05f2e143ac629e1b74418d9720c4acdc9fcf4dfb584",
+  "upstream_authorities": {
+    "f1b_attack_authority_root": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b",
+    "healthy_teacher_base_root": "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534",
+    "population_access_root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
+    "historical_clean_u0_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
+  },
+  "predictor_registry_sha256": "43922a62a885cbedee22c06363a8355c6561dad43c95f0a43147fc2f4cbe3592",
+  "movement_criterion": "exact elementwise deviation from exact repeated AdamW decay-only counterfactual; zero tolerance; per tensor; no pooled rescue",
+  "execution_authorized": false,
+  "real_f1_authorized": false,
+  "real_t0_authorized": false,
+  "d1_real_execution_authorized": false,
+  "terminal": "TEACHER_STUDENT_UNIFIED_V3_SOURCE_FROZEN__INDEPENDENT_REVIEW_PENDING__TRAINING_UNAUTHORIZED"
+}

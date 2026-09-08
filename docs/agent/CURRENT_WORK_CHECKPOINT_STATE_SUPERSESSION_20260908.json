@@ -1,0 +1,9 @@
+{
+  "schema": "CURRENT_WORK_CHECKPOINT_STATE_SUPERSESSION_20260908",
+  "predecessor": "docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json",
+  "predecessor_status": "SUPERSEDED_HISTORICAL_CONTINUITY_RECORD",
+  "successor": "docs/agent/CURRENT_WORK_CHECKPOINT_STATE_V2_20260908.json",
+  "reason": "The predecessor contains pre-freeze F1/F1-B blocker statements that are no longer current. It is preserved unchanged for chronology but must not be used to decide current legal actions.",
+  "predecessor_must_not_be_deleted": true,
+  "successor_is_routing_state_not_scientific_replacement_authority": true
+}

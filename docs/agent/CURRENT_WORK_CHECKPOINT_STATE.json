@@ -1,0 +1,193 @@
+{
+  "active_agent": "CLAUDE_CODE",
+  "peer_agents": [
+    "CODEX",
+    "CLAUDE_CODE"
+  ],
+  "agent_symmetry": {
+    "equal_implementation_authority": true,
+    "self_promotion_forbidden": true,
+    "mandatory_implementation_verifier_v1": true
+  },
+  "authorities": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "85bdeb5ac1446576a83d3df5561d40f11c47b2aef95796af72196ddb70a36632",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-05-jepa-peer-agent-continuity-design.md",
+      "sha256": "16fedab6c53db58f19af67e1b05b543a6f6270be820987ef29bc8c39c154dba7",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-09-05-jepa-continuity-c2-implementation-plan.md",
+      "sha256": "4d1d4ca03fc49b6605fa2a5aa86d18982d155879df7aa41a367b5bfd80054d5f",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
+      "sha256": "657471215c530c035c33bde7d52d8a6968bdbc6c089d899c1cde828719a0d98b",
+      "status": "FROZEN_AUTHORITY"
+    }
+  ],
+  "gates": {
+    "current": "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY",
+    "c2": "C2_CLOSED__HISTORICAL_T1_TRAINING_MECHANICS_DEFECT_CONFIRMED_AND_REPAIRED",
+    "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
+    "real_f1": "FORBIDDEN"
+  },
+  "unresolved_blockers": [
+    "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED",
+    "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE",
+    "F1_PROGRAM_SIGN_LOCALLY_RESOLVED_IN_SUCCESSOR__FINAL_CONTRACT_FREEZE_PENDING",
+    "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE",
+    "F1B_11_OF_15_LACK_EXECUTABLE_ATTACKS_AND_5_STATIC_PROBES_FAIL_OPEN",
+    "C2_AD_HOC_REPRODUCTION_SUPERSEDED",
+    "C2_DEEP_KERNEL_MECHANISM_OPEN"
+  ],
+  "assets": {
+    "local": [
+      {
+        "path": "D:/Jepa project/outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json",
+        "sha256": "9be58bbb6f131fa788f2a6b3b742b4d2a1ada663c7730859b32a17d6afa00e34",
+        "authority": "SUPERSEDED_NOT_A_LEAD"
+      },
+      {
+        "path": "D:/Jepa project/outputs/_private_qkv_matrix_20260905/QKV_GRADIENT_MATRIX.json",
+        "sha256": "e6aa97ee6980a16d7c63eca63d3cdfa5ad089966f7a86b26f590619609776c29",
+        "authority": "PROVISIONAL_LEAD_ONLY"
+      }
+    ],
+    "remote_only": [
+      {
+        "ref": "origin/review/f1b-independent-verifier-repair-20260905",
+        "role": "PRESERVED_REVIEW_BRANCH_NOT_MERGED"
+      },
+      {
+        "ref": "origin/review/pre-f1-mechanism-repair-20260905",
+        "role": "PRESERVED_REVIEW_BRANCH_NOT_MERGED"
+      }
+    ],
+    "c2_closure_package": {
+      "root": "outputs/c2_t1_gradient_forensic_20260906",
+      "package_root_sha256": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222",
+      "manifest": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
+      "file_count": 55,
+      "bound_sources": 15,
+      "artifacts": [
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K0_HISTORICAL.json",
+          "sha256": "01908fd62b1a233207092758b3cb27344f8b7ca81140f5e9295039a35987abd8",
+          "authority": "C2_CLOSURE_CRITICAL"
+        },
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K1_BACKWARD_AUTOCAST_DISABLED.json",
+          "sha256": "c5b9edf17f57756c201582f130a2bd7e0c7945f40d3412d7ea8742291465d381",
+          "authority": "C2_CLOSURE_CRITICAL"
+        },
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K1_PRE_CRITERION_REPAIR.json",
+          "sha256": "260b9aeef913482f1b3bff8ae6edfe7e88359284ceedf1e1562e196e4a7cc97a",
+          "authority": "C2_CLOSURE_CRITICAL"
+        },
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
+          "sha256": "d9cbac57d9c6aa29537c8126546ed10856ba84ad719aad07fb3821472ce3925e",
+          "authority": "C2_PACKAGE_MANIFEST"
+        },
+        {
+          "path": "outputs/c2_t1_gradient_forensic_20260906/C2_K0_K1_SOURCE_DIFF.txt",
+          "sha256": "d0cd70bae1e71e35d4ee02a09c8954360a155215af22998fee17d3314075caf9",
+          "authority": "C2_CLOSURE_CRITICAL"
+        }
+      ],
+      "scope_note": "The causal claim is scoped to the historical 128/8 path as executed here. It is not a claim about universal PyTorch behaviour.",
+      "preservation_note": "The package bytes are tracked in git and marked -text so the recorded SHA-256 values, which are over raw bytes, survive checkout on either platform. At commit da7e0b5 the package was untracked and its manifest was stale: the packager had run before the final edit to C2_CAUSAL_CONDITION_ESTABLISHED.md, recording 4725 bytes for a 5854-byte file, which also invalidated the package root. Both defects were found by independent verification from a clean clone and are repaired here.",
+      "frozen_for_review": {
+        "branch": "jepa-peer-handoff-20260905",
+        "supersedes_commit": "d24ff8f72998a1ef5e5e032e99a927f663723a4a",
+        "supersession_reason": "External review returned STOP_C2_INDEPENDENT_VERIFICATION__BOUND_TEST_SOURCE_PLATFORM_BYTES_MISMATCH against d24ff8f7. The causal evidence, K0/K1, gate algorithm, registry and scientific conclusion were not reopened. The packager hashed the Windows working-tree representation of bound sources rather than the immutable git bytes, so tests/test_c2_mandatory_gradient_gate_v1.py was recorded as 10506 bytes / 0255065e when its git bytes are 10259 / b113927c, a 247-byte difference over 247 line breaks. Repaired structurally: the packager now stages each manifested path and hashes the index bytes, so no checkout can change a recorded digest. All 55 rows verified against git bytes. d24ff8f7, 43c2997 and 76b9449e are preserved unmodified as failed review candidates.",
+        "do_not_mutate": true,
+        "platform_split": {
+          "continuity_and_governance_suite": "Windows git environment",
+          "cuda_c2_torch_replay": "WSL or native Linux GPU checkout",
+          "note": "The worktree .git indirection is a Windows path, so git commands fail from WSL against that worktree. That is an environment artifact and must not be read as a scientific failure. Clone the remote into the Linux filesystem instead."
+        }
+      },
+      "manifest_sha256": "b4d2fafc0665bd0c135c3ddac0c76b873602034b79f267a808e82636ad11960b",
+      "bytes_authority": "GIT_BLOB_BYTES_PLATFORM_INDEPENDENT. Manifest digests and byte counts are taken from the immutable git blob, never the working tree. Hashing the working tree is platform dependent: on Windows a text-classified source is checked out with CRLF, so its digest and length differ from the git blob by one byte per line.",
+      "sealed": {
+        "sealed_at_commit": "712cd07d52371c4cbbfb0760a09399e9c23ec1b4",
+        "sealed_package_root": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222",
+        "rule": "DO NOT REGENERATE. The package root is bound to PASS_C2_INDEPENDENT_VERIFICATION at that commit. Post-PASS work that edits a formerly bound source, such as c2_corrective_run_update_v3.py gaining the successor and gated_historical modes, is tracked by commit history and lives on a branch after the sealed commit. Rebuilding the manifest over the changed tree would produce a different root and silently break the external binding. If a future package generation is genuinely required, it must be a NEW package with its own identity, and the packager must first be repaired to read committed bytes read-only per the recorded tooling follow-up."
+      }
+    }
+  },
+  "firewall": {
+    "real_f1_forbidden": true,
+    "dev_expression_closed": true,
+    "sealed_expression_closed": true,
+    "pathology_closed": true,
+    "production_training_forbidden": true
+  },
+  "next_authorized_actions": [
+    "PREPARE_EXECUTABLE_ATTACKS_FOR_ALL_15_F1B_FINDINGS",
+    "STOP_BEFORE_C3_UNTIL_F1_SCIENTIFIC_CONTRACT_INDEPENDENTLY_FROZEN"
+  ],
+  "forbidden_actions": [
+    "RUN_REAL_F1",
+    "OPEN_DEV_SEALED_PATHOLOGY",
+    "RUN_FRESH_PRODUCTION_TRAINING",
+    "REHABILITATE_OR_RETRAIN_T1",
+    "MODIFY_EXISTING_F1B_BRANCH",
+    "INVENT_UNFROZEN_SCIENTIFIC_RULES",
+    "MERGE_REVIEW_BRANCHES_FOR_CONTINUITY"
+  ],
+  "provenance": {
+    "last_agent": "CODEX",
+    "handoff_reason": "CODEX_MESSAGE_BUDGET_EXHAUSTED_MID_CONTINUITY_UNIT",
+    "canonical_workspace_preserved": "D:/Jepa project",
+    "isolated_worktree": "D:/jepa_peer_handoff_20260905"
+  },
+  "allowed_tracked_modifications": [],
+  "allowed_untracked_files": [],
+  "blocker_evidence": {
+    "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED": "docs/agent/F1B_INDEPENDENT_VERIFICATION_REVIEW_20260905.md on review/f1b-independent-verifier-repair-20260905 enumerates 15 numbered findings against f1b-minimal-bridge-20260905@f0fb23c2.",
+    "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
+    "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead.",
+    "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened.",
+    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "CLOSED. The mandatory gradient gate is adopted in the successor training path, inserted immediately after scaler.unscale_(optimizer) and before scaler.step(optimizer), together with frozen 48-identity registry enforcement. Five GPU adoption regressions pass: a historical K0-like update raises with EXACT_ZERO=48; the optimizer holds zero state entries and no parameter moves, proving rejection precedes the step rather than merely reporting after it; the corrected update passes the gate with 48/48 live and all 48 protected tensors moved, step_succeeded and EMA exact; an AST check confirms the gate follows unscale, precedes every scaler.step and optimizer.step, and sits unconditionally at function-body depth so no branch can skip it; and the successor differs from canonical by exactly four added and one removed line.",
+    "C2_DEEP_KERNEL_MECHANISM_OPEN": "Necessity and sufficiency are established at the code-condition level: disabling autocast only around the backward call restores all 48 tensors at 128/8 with all nine frozen criteria met, while the historical arm still gives 48/48 dead. Why the collapse is to EXACT zero rather than merely inaccurate values is unresolved. The autocast weight cache (I1) and allow_fp16_reduced_precision_reduction (J1) were both tested and refuted.",
+    "F1_PROGRAM_SIGN_LOCALLY_RESOLVED_IN_SUCCESSOR__FINAL_CONTRACT_FREEZE_PENDING": "The historical/public qualify_current had an aggregate-rescue loophole: a strongly negative protected program could qualify through a positive aggregate. That has been prospectively repaired in the ChatGPT/user F1 successor work, which keeps all eight semantic protected programs including core_halo despite molecular rank 7, makes the eight-program one-sided Holm-positive family qualification-bearing, treats protected-program nonestimability as three-valued and fail-closed, and carries adversarial tests on the exact Holm boundary. Do not independently redesign this decision and do not wait on the old decision_v4 implementation. ChatGPT and the user own the final scientific-contract freeze; the remaining family/source/terminal audit is theirs.",
+    "F1B_11_OF_15_LACK_EXECUTABLE_ATTACKS_AND_5_STATIC_PROBES_FAIL_OPEN": "Corrected scope after reading scripts/v4/verify_f1b_minimal_bridge_independent_v1.py. Only FOUR findings are gated by something executable: 1, 2 and 3 via genuine dynamic attacks against a mock, and 10 via a data comparison of published updates against the contract default. ELEVEN lack a real executable attack, not ten. Worse, five of those eleven (findings 4, 5, 6, 14, 15) are gated by literal substring probes over the executor source, for example \"'visible[0].sum()' in src\" and an exact two-line match on \"coverage = gradient_coverage(online)\n        optimizer.step()\". Those FAIL OPEN: any rename, reformat or whitespace change flips the probe to not-vulnerable without repairing anything, so a cosmetic edit would manufacture a false PASS. This is the same fail-open class as component_gradient_report counting only missing and nonfinite. Findings 7, 11 and 13 are computed but never promoted to the vulnerability list, so they are detected and then discarded. Findings 8, 9 and 12 have nothing at all. C3 must replace the five substring probes with behavioural attacks as well as adding the missing ones."
+  },
+  "continuity_defects_repaired_by_claude_code": {
+    "DOCUMENTED_TAKEOVER_COMMAND_COULD_NOT_PASS": "CLAUDE.md instructed 'validate --repo . --worktree .' but the checkpoint records the canonical repo path by design, so the first takeover step always raised a spurious REPO_PATH_MISMATCH. Added work_checkpoint.resolve_canonical_repo(), made --repo optional and auto-resolved via 'git rev-parse --git-common-dir', and corrected CLAUDE.md. No agent now hardcodes the canonical path.",
+    "TEST_RUN_INVALIDATED_ITS_OWN_CHECKPOINT": "The handoff protocol requires running focused tests, but the pytest basetemp '.pytest_tmp_peer_handoff/' was untracked and not ignored, so running the tests produced UNTRACKED_FILES_MISMATCH and broke checkpoint validation. Added it to .gitignore; _git_snapshot uses --exclude-standard so the loop is now closed.",
+    "CODEX_ACCEPTANCE_TEST_LEFT_UNCOMMITTED_AND_UNDECLARED": "test_codex_claude_codex_provenance_handoff_preserves_authority_and_action is the acceptance criterion for round-trip takeover. It passes but was neither committed nor declared in allowed_tracked_modifications. Now declared, pending owner approval to commit.",
+    "PEER_CONSULTATION_PUBLISHED_ACCOUNT_IDENTITY": "scripts/agent/claude_peer_bridge.py captured the full 'claude auth status --json' output into a committed provenance artifact. Its _SENSITIVE_KEY denylist did not cover email, orgId, orgName or projectsDirectory, so the committed docs/agent/peer_consultations/claude_smoke_20260905/CLAUDE_PEER_CONSULTATION.json carried account identity and the local username toward a public repository. Replaced the denylist with an allowlist (_AUTH_SUMMARY_KEYS), added _redact_user_paths, widened the denylist, removed the artifact, and purged it from unpushed branch history before first push. Covered by test_published_consultation_carries_no_account_identity_or_username."
+  },
+  "c2_independent_verification": {
+    "terminal": "PASS_C2_INDEPENDENT_VERIFICATION",
+    "verified_commit": "712cd07d52371c4cbbfb0760a09399e9c23ec1b4",
+    "verified_package_root": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222",
+    "verified_manifest_sha256": "b4d2fafc0665bd0c135c3ddac0c76b873602034b79f267a808e82636ad11960b",
+    "manifest_rows": 55,
+    "closure_critical": {
+      "K0": "01908fd62b1a233207092758b3cb27344f8b7ca81140f5e9295039a35987abd8",
+      "K1": "c5b9edf17f57756c201582f130a2bd7e0c7945f40d3412d7ea8742291465d381",
+      "K1_pre_criterion_repair": "260b9aeef913482f1b3bff8ae6edfe7e88359284ceedf1e1562e196e4a7cc97a",
+      "source_diff": "d0cd70bae1e71e35d4ee02a09c8954360a155215af22998fee17d3314075caf9"
+    },
+    "scope": "Historical 128/8 path. Not a claim about universal PyTorch behaviour.",
+    "authorizes": "Nothing further. No real F1, pathology, DEV, SEALED, oracle, fresh T1 or production foundation training becomes authorized by this PASS."
+  },
+  "closed_records": {
+    "C2_PRODUCTION_SAFE_REWRITE": "SUPERSEDED_DO_NOT_RUN. The deferred-backward rewrite accumulated every scaled loss and drained the backwards after the autocast block, holding 64 live graphs at 128/8, and would exhaust memory. It was never run. The minimal K1 correction, wrapping only the backward call in autocast(enabled=False) while preserving per-view interleaving, has already passed the exact real run_update geometry and independent verification, and is the preferred repair. Do not run the deferred variant unless an independent verifier finds a concrete reason the minimal K1 repair is insufficient.",
+    "T1": "CLOSED_AS_DEFECTIVE_HISTORICAL_TRAINING_EVIDENCE per DEC-015. Do not rehabilitate, extend, resume or retrain. The u205 biological nonqualification remains historical fact."
+  },
+  "tooling_followups": {
+    "C2_PACKAGER_GIT_BYTES_READ_ONLY": "git_bytes() currently runs 'git add -- <path>' then 'git show :<path>'. That fixed the CRLF platform dependence but mutates the index, and it stages an untracked file rather than failing loudly. Before the packager is reused for any future package generation, change it to a read-only committed-byte path: verify the path is tracked, then read 'git show HEAD:<path>' or equivalent pinned-commit blob bytes. Raised by external review. Explicitly NOT a reason to create another C2 candidate: the frozen 712cd07d package is unaffected and independently verified."
+  }
+}

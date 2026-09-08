@@ -1,3 +1,6 @@
 *.sh text eol=lf
 results/visualization/*.html -text
 docs/history/exact_bytes/** -text
+
+# C2 closure package: hashes are over raw bytes, so never translate line endings.
+outputs/c2_t1_gradient_forensic_20260906/** -text

@@ -1,0 +1,24 @@
+{
+  "packed_execution_active": false,
+  "preserve_v4_as_immutable_audited_baseline": true,
+  "principle": "dataset support and estimability define allowable pipeline geometry; mechanics-sample geometry cannot become production authority by inheritance",
+  "production_schedule_values_frozen_here": false,
+  "reader_fit_geometry_profile": "docs/agent/READER_FIT_DATA_GEOMETRY_PROFILE_V1.json",
+  "reader_fit_geometry_profile_sha256": "1ddf37827d548c84f533add702722e3015ea4abaedf258bf03a9c13e65d36f3a",
+  "relational_training_active": false,
+  "required_next_gates": [
+    "independent profile replay",
+    "qualification-vs-production config split",
+    "packed canonical-token equivalence and training-RNG design",
+    "target-element-weighted accumulation",
+    "ragged relational estimability and finite triplet authority",
+    "full-reader scientific sampling estimand freeze",
+    "GPU token-budget calibration",
+    "V5 clean-room package and external review"
+  ],
+  "schema": "TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE_V1",
+  "status": "PROSPECTIVE_DESIGN_ONLY__NO_TRAINING_AUTHORITY",
+  "successor_u0_materialization_authorized": false,
+  "td60_execution_authorized": false,
+  "training_authorized": false
+}

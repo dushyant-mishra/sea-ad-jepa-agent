@@ -1,0 +1,15 @@
+{
+  "schema": "TEACHER_STUDENT_LOCAL_SUPERSESSION_REGISTER_V2",
+  "active_candidate": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V2",
+  "entries": [
+    {
+      "candidate": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V1",
+      "status": "SUPERSEDED_BEFORE_EXTERNAL_REVIEW",
+      "source_commit": "0ce7fb146415eeaaaf37d67d1f2f816e6bb68b45",
+      "source_root": "b7770b7be0eeb52e3e98d0c8ee4933ca9443f7c01e4d934522ed2c236ac2a955",
+      "active_test_root": "5d554c43ed3a38f57df620842ebc06f194af848314a7fbe035b6440babdbcd25",
+      "reason": "Runtime entrypoints accepted a declared integrated source root without independently rehashing the code bytes actually executing. V2 adds executing-source verification and excludes the retired C3 prototype test from the active suite."
+    }
+  ],
+  "execution_authorized": false
+}
