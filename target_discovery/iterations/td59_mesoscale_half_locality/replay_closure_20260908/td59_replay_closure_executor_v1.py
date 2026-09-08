@@ -113,6 +113,7 @@ def select_pairs(genes: np.ndarray, panel: int, view: str) -> tuple[np.ndarray, 
 
 def distance_matrix(signs: np.ndarray) -> np.ndarray:
     p = signs.shape[1]
+    # Exact integer category counts through float32 GEMM: all counts <= 2048.
     pos = (signs == 1).astype(np.float32)
     neg = (signs == -1).astype(np.float32)
     zero = (signs == 0).astype(np.float32)
