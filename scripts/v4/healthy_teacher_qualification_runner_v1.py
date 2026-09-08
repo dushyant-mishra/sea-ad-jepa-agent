@@ -33,6 +33,7 @@ from sea_ad_jepa.v4.teacher_student_checkpoint import (
     load_checkpoint_verified,
     restore_checkpoint,
     save_checkpoint_atomic,
+    sha256_file,
 )
 from sea_ad_jepa.v4.teacher_student_movement import enforce_module_movement
 from sea_ad_jepa.v4.teacher_student_runtime import (
@@ -93,6 +94,7 @@ def main() -> int:
     parser.add_argument("--overlay", type=Path, required=True)
     parser.add_argument("--execution-authority", type=Path, required=True)
     parser.add_argument("--u0", type=Path, required=True)
+    parser.add_argument("--u0-attestation", type=Path, required=True)
     parser.add_argument("--loader-source", type=Path, required=True)
     parser.add_argument("--project-root", type=Path, required=True)
     parser.add_argument("--authority-root", type=Path, required=True)
@@ -133,8 +135,25 @@ def main() -> int:
         "population_access_root": POPULATION_ACCESS_ROOT,
         "f1b_attack_authority_root": F1B_ATTACK_AUTHORITY_ROOT,
         "integrated_successor_source_root": source_root,
+        "integrated_successor_commit": overlay["integrated_successor"]["commit"],
+        "predictor_mandatory_registry_sha256": PREDICTOR_REGISTRY_SHA256,
+        "movement_adjudicator_source_sha256": overlay["movement_adjudicator_source_sha256"],
     }
     expected_u0_sha = overlay["successor_u0"]["sha256"]
+    expected_attestation_sha = overlay["successor_u0"]["materialization_attestation_sha256"]
+    if sha256_file(args.u0_attestation) != expected_attestation_sha:
+        raise RuntimeError("successor u0 materialization attestation SHA-256 mismatch")
+    attestation = json.loads(args.u0_attestation.read_text(encoding="utf-8"))
+    if attestation.get("schema") != "HEALTHY_TEACHER_U0_MATERIALIZATION_ATTESTATION_V1":
+        raise RuntimeError("successor u0 materialization attestation schema mismatch")
+    if attestation.get("terminal") != "PASS_SUCCESSOR_U0_MATERIALIZATION__TRAINING_STILL_UNAUTHORIZED":
+        raise RuntimeError("successor u0 materialization terminal mismatch")
+    if attestation.get("training_updates_executed") != 0:
+        raise RuntimeError("successor u0 materialization executed training")
+    if attestation.get("new_checkpoint", {}).get("sha256") != expected_u0_sha:
+        raise RuntimeError("u0 attestation does not bind the overlay checkpoint SHA")
+    if attestation.get("authority_bindings") != authorities:
+        raise RuntimeError("u0 attestation authority bindings do not match execution overlay")
     u0_payload = load_checkpoint_verified(args.u0, expected_sha256=expected_u0_sha)
     masking = torch.Generator(device="cpu").manual_seed(PRODUCTION_CONFIG.masking_seed)
     restored = restore_checkpoint(
@@ -258,5 +277,34 @@ def main() -> int:
     return 0
 
 
+def guarded_main() -> int:
+    try:
+        return main()
+    except Exception as error:
+        import sys
+        run_dir = None
+        if "--run-dir" in sys.argv:
+            index = sys.argv.index("--run-dir")
+            if index + 1 < len(sys.argv):
+                run_dir = Path(sys.argv[index + 1])
+        if run_dir is not None:
+            try:
+                run_dir.mkdir(parents=True, exist_ok=True)
+                _write_json_atomic(
+                    run_dir / "U40_MECHANICAL_QUALIFICATION_STOP.json",
+                    {
+                        "schema": "HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION_STOP_V1",
+                        "status": "STOP",
+                        "error_type": type(error).__name__,
+                        "error": str(error),
+                        "time": time.time(),
+                        "automatic_continuation_authorized": False,
+                    },
+                )
+            except Exception:
+                pass
+        raise
+
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(guarded_main())
