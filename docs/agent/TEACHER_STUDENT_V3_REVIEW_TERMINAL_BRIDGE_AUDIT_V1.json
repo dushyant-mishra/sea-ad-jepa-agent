@@ -1,0 +1,18 @@
+{
+  "actual_external_review_supplied": false,
+  "base_reviewed_production_head": "76bf7912cc621756fdbbd82218025d8e4c00a057",
+  "bridge_manifest_root_sha256": "be77d39797ec404dc3a253e2519a466cd5af471379ab52492b0f78509c59a281",
+  "bridge_manifest_rows": 4,
+  "date": "2026-09-08",
+  "exact_package_synthetic_mechanics_validation": "PASS",
+  "execution_authorized": false,
+  "pass_bridge_artifact_present": false,
+  "review_instructions_as_review_attack": "STOP_TEACHER_STUDENT_V3_REVIEW_TERMINAL_BRIDGE_INVALID",
+  "review_package_root_sha256": "0720214288dfe0a4446b418bbd8bc6f21b34c54385cec57195371b687e4a1a71",
+  "review_package_zip_sha256": "8bcec10f60988df9bb34c23f89c8e0918222776be70dca5bce98156f1c223d98",
+  "reviewed_source_commit": "8f9c34f18ac7cf43572299901e5e4f5d65cecb24",
+  "reviewed_source_root_sha256": "cd7faf6dd48f58387597b05f2e143ac629e1b74418d9720c4acdc9fcf4dfb584",
+  "schema": "TEACHER_STUDENT_V3_REVIEW_TERMINAL_BRIDGE_AUDIT_V1",
+  "terminal": "PASS_TEACHER_STUDENT_V3_REVIEW_TERMINAL_BRIDGE_MECHANICS_AUDIT__AWAITING_EXTERNAL_REVIEW__EXECUTION_UNAUTHORIZED",
+  "unit_tests": "4/4 PASS"
+}
