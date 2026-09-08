@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from sea_ad_jepa.v4.teacher_student_movement import source_sha256 as movement_source_sha256
+
 BASE_ROOT = "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534"
 PREDICTOR_REGISTRY_SHA256 = "43922a62a885cbedee22c06363a8355c6561dad43c95f0a43147fc2f4cbe3592"
 
@@ -67,8 +69,11 @@ def validate_overlay(payload: dict[str, Any]) -> dict[str, Any]:
 
     if payload.get("predictor_mandatory_registry_sha256") != PREDICTOR_REGISTRY_SHA256:
         failures.append("predictor registry SHA mismatch")
-    if not _sha(payload.get("movement_adjudicator_source_sha256")):
+    movement_sha = payload.get("movement_adjudicator_source_sha256")
+    if not _sha(movement_sha):
         failures.append("movement adjudicator source SHA invalid")
+    elif movement_sha != movement_source_sha256():
+        failures.append("movement adjudicator source SHA does not match executing source bytes")
 
     if payload.get("execution_authorized") is not False:
         failures.append("binding overlay must keep execution_authorized=false")
