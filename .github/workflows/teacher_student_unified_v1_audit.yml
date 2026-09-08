@@ -1,4 +1,4 @@
-name: Teacher/student unified V3 audit and package
+name: Teacher/student unified V3 self-contained audit and package
 
 on:
   push:
@@ -12,9 +12,10 @@ permissions:
 jobs:
   audit-package:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -24,30 +25,13 @@ jobs:
           python -m pip install --disable-pip-version-check pytest numpy pandas scipy
           python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
 
-      - name: Verify V3 source and review authorities
+      - name: Verify V3 source and review authorities in full checkout
         env:
           PYTHONPATH: src:.
         run: |
           python scripts/agent/audit_teacher_student_integration_freeze_v3.py --root .
 
-      - name: Compile all V3 manifest-bound Python source
-        run: |
-          python - <<'PY'
-          import csv
-          from pathlib import Path
-          rows = list(csv.DictReader(Path(
-              "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv"
-          ).open(newline="", encoding="utf-8")))
-          compiled = 0
-          for row in rows:
-              path = Path(row["path"])
-              if path.suffix == ".py":
-                  compile(path.read_bytes(), str(path), "exec")
-                  compiled += 1
-          print("compiled", compiled)
-          PY
-
-      - name: Run exact V3 active test selection
+      - name: Run exact V3 active test selection in full checkout
         env:
           PYTHONPATH: src:.
         run: |
@@ -63,9 +47,14 @@ jobs:
               if line.strip() and not line.lstrip().startswith("#")
           ]
           assert len(tests) == 6 and len(set(tests)) == 6, tests
-          print("active tests:", len(tests))
           subprocess.run([sys.executable, "-m", "pytest", "-q", *tests], check=True)
           PY
+
+      - name: Run prospective relational mechanics tests in full checkout
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m pytest -q tests/test_teacher_student_relational_v1.py
 
       - name: Confirm training remains unauthorized
         run: |
@@ -79,7 +68,7 @@ jobs:
           print("PASS_NO_HEALTHY_TEACHER_EXECUTION_AUTHORITY_PRESENT")
           PY
 
-      - name: Build deterministic V3 external-review package
+      - name: Build and replay-test self-contained V3 review package
         env:
           PACKAGE_COMMIT: ${{ github.sha }}
         run: |
@@ -89,10 +78,12 @@ jobs:
           import json
           import os
           import shutil
+          import subprocess
+          import sys
           import zipfile
           from pathlib import Path
 
-          root = Path(".")
+          root = Path(".").resolve()
           dist = root / "dist"
           stage = dist / "teacher_student_v3_review"
           shutil.rmtree(dist, ignore_errors=True)
@@ -105,6 +96,10 @@ jobs:
                       h.update(chunk)
               return h.hexdigest()
 
+          def manifest_paths(path: Path) -> list[str]:
+              rows = list(csv.DictReader(path.open(newline="", encoding="utf-8")))
+              return [row["path"] for row in rows]
+
           source_manifest = root / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv"
           source_rows = list(csv.DictReader(source_manifest.open(newline="", encoding="utf-8")))
           source_paths = [row["path"] for row in source_rows]
@@ -114,6 +109,47 @@ jobs:
               line.strip()
               for line in selection_path.read_text(encoding="utf-8").splitlines()
               if line.strip() and not line.lstrip().startswith("#")
+          ]
+          assert len(test_paths) == 6 and len(set(test_paths)) == 6
+
+          # Authority closure: if a packaged freeze points to a manifest, package
+          # every file in that manifest rather than only the root statement.
+          healthy_manifest = root / "docs/agent/HEALTHY_TEACHER_TRAINING_BASE_MANIFEST_20260907.csv"
+          population_manifest = root / "docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_MANIFEST_20260907.csv"
+          authority_closure = [
+              "docs/agent/HEALTHY_TEACHER_TRAINING_BASE_MANIFEST_20260907.csv",
+              *manifest_paths(healthy_manifest),
+              "docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_MANIFEST_20260907.csv",
+              *manifest_paths(population_manifest),
+          ]
+
+          # Python import/replay closure. Importing sea_ad_jepa.v4 executes the
+          # package initializer, so package the complete v4 Python package rather
+          # than relying on the narrower integrated-source manifest.
+          python_closure = [
+              "src/sea_ad_jepa/__init__.py",
+              *[
+                  p.relative_to(root).as_posix()
+                  for p in sorted((root / "src/sea_ad_jepa/v4").glob("*.py"))
+              ],
+              "scripts/agent/__init__.py",
+              "scripts/v4/__init__.py",
+              "scripts/agent/validate_population_access_registry_v1.py",
+              "scripts/agent/validate_healthy_teacher_training_contract_v1.py",
+              "scripts/v4/c2_mandatory_gradient_gate_v1.py",
+          ]
+
+          # Preserved C2 bytes are required so the active C2 test replays K0/K1
+          # instead of silently skipping the historical-condition checks.
+          c2_replay = [
+              "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K0_HISTORICAL.json",
+              "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K1_BACKWARD_AUTOCAST_DISABLED.json",
+          ]
+
+          prospective_relational = [
+              "docs/agent/TEACHER_STUDENT_RELATIONAL_EXTENSION_V1_20260908.md",
+              "src/sea_ad_jepa/v4/prospective_relational_teacher_student.py",
+              "tests/test_teacher_student_relational_v1.py",
           ]
 
           extras = [
@@ -126,9 +162,6 @@ jobs:
               "docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V3.txt",
               "docs/agent/HEALTHY_TEACHER_TRAINING_BASE_FREEZE_20260907.json",
               "docs/agent/HEALTHY_TEACHER_TRAINING_BASE_PACKAGE_ROOT_20260907.txt",
-              "docs/agent/HEALTHY_TEACHER_TRAINING_BASE_MANIFEST_20260907.csv",
-              "docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.md",
-              "docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.json",
               "docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_FREEZE_20260907.json",
               "scripts/agent/audit_teacher_student_integration_freeze_v3.py",
               "tests/test_teacher_student_integration_freeze_v3.py",
@@ -136,7 +169,15 @@ jobs:
 
           ordered = []
           seen = set()
-          for rel in [*source_paths, *test_paths, *extras]:
+          for rel in [
+              *source_paths,
+              *test_paths,
+              *authority_closure,
+              *python_closure,
+              *c2_replay,
+              *prospective_relational,
+              *extras,
+          ]:
               if rel not in seen:
                   seen.add(rel)
                   ordered.append(rel)
@@ -149,6 +190,24 @@ jobs:
               dst.parent.mkdir(parents=True, exist_ok=True)
               shutil.copyfile(src, dst)
 
+          # Record exactly which non-controlling files were added to make the
+          # package independently importable/replayable.
+          controlling = set(source_paths) | set(test_paths) | set(extras)
+          dependency_manifest = stage / "TEACHER_STUDENT_REPLAY_DEPENDENCY_MANIFEST_V1.csv"
+          with dependency_manifest.open("w", newline="", encoding="utf-8") as handle:
+              writer = csv.writer(handle, lineterminator="\n")
+              writer.writerow(["path", "bytes", "sha256", "role"])
+              for rel in ordered:
+                  if rel in controlling:
+                      continue
+                  p = stage / rel
+                  role = (
+                      "PROSPECTIVE_RELATIONAL"
+                      if rel in prospective_relational
+                      else "REPLAY_DEPENDENCY"
+                  )
+                  writer.writerow([rel, p.stat().st_size, sha256(p), role])
+
           active_manifest = stage / "TEACHER_STUDENT_ACTIVE_TEST_MANIFEST_V3.csv"
           with active_manifest.open("w", newline="", encoding="utf-8") as handle:
               writer = csv.writer(handle, lineterminator="\n")
@@ -158,7 +217,7 @@ jobs:
                   writer.writerow([rel, p.stat().st_size, sha256(p)])
 
           metadata = {
-              "schema": "TEACHER_STUDENT_UNIFIED_V3_REVIEW_PACKAGE",
+              "schema": "TEACHER_STUDENT_UNIFIED_V3_REVIEW_PACKAGE_SELF_CONTAINED_V1",
               "package_commit": os.environ["PACKAGE_COMMIT"],
               "integrated_source_commit": "8f9c34f18ac7cf43572299901e5e4f5d65cecb24",
               "integrated_source_root_sha256": "cd7faf6dd48f58387597b05f2e143ac629e1b74418d9720c4acdc9fcf4dfb584",
@@ -167,13 +226,51 @@ jobs:
               "population_access_root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
               "f1b_attack_authority_root": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b",
               "active_test_count": len(test_paths),
+              "prospective_relational_test_count": 1,
+              "self_contained_stage_replay_required": True,
+              "relational_extension_active_in_training": False,
               "execution_authorized": False,
-              "terminal": "TEACHER_STUDENT_UNIFIED_V3_PACKAGE_READY_FOR_INDEPENDENT_REVIEW__TRAINING_UNAUTHORIZED",
+              "terminal": "TEACHER_STUDENT_UNIFIED_V3_SELF_CONTAINED_PACKAGE_READY_FOR_INDEPENDENT_REVIEW__TRAINING_UNAUTHORIZED",
           }
           (stage / "REVIEW_METADATA.json").write_text(
               json.dumps(metadata, indent=2, sort_keys=True) + "\n",
               encoding="utf-8",
           )
+
+          # Crucial packaging regression: compile and execute from the staged
+          # package, not from the full checkout.
+          staged_py = sorted(stage.rglob("*.py"))
+          for p in staged_py:
+              compile(p.read_bytes(), str(p), "exec")
+          print("staged_python_compiled", len(staged_py))
+
+          env = dict(os.environ)
+          env["PYTHONPATH"] = "src:."
+          subprocess.run(
+              [sys.executable, "scripts/agent/audit_teacher_student_integration_freeze_v3.py", "--root", "."],
+              cwd=stage,
+              env=env,
+              check=True,
+          )
+          subprocess.run(
+              [sys.executable, "-m", "pytest", "-q", *test_paths],
+              cwd=stage,
+              env=env,
+              check=True,
+          )
+          subprocess.run(
+              [sys.executable, "-m", "pytest", "-q", "tests/test_teacher_student_relational_v1.py"],
+              cwd=stage,
+              env=env,
+              check=True,
+          )
+
+          forbidden = [
+              stage / "docs/agent/HEALTHY_TEACHER_U0_U40_EXECUTION_AUTHORITY_V1.json",
+              stage / "docs/agent/HEALTHY_TEACHER_CONTINUATION_EXECUTION_AUTHORITY_V1.json",
+          ]
+          if any(path.exists() for path in forbidden):
+              raise SystemExit("execution authority unexpectedly entered review package")
 
           package_manifest = stage / "PACKAGE_MANIFEST.csv"
           members = sorted(
@@ -190,7 +287,7 @@ jobs:
           package_root = sha256(package_manifest)
           (stage / "PACKAGE_ROOT_SHA256.txt").write_text(package_root + "\n", encoding="utf-8")
 
-          zip_path = dist / "TEACHER_STUDENT_UNIFIED_V3_REVIEW_PACKAGE.zip"
+          zip_path = dist / "TEACHER_STUDENT_UNIFIED_V3_SELF_CONTAINED_REVIEW_PACKAGE.zip"
           with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
               for p in sorted(stage.rglob("*")):
                   if not p.is_file():
@@ -202,7 +299,7 @@ jobs:
                   z.writestr(info, p.read_bytes())
 
           zip_sha = sha256(zip_path)
-          (dist / "TEACHER_STUDENT_UNIFIED_V3_REVIEW_PACKAGE_SHA256.txt").write_text(
+          (dist / "TEACHER_STUDENT_UNIFIED_V3_SELF_CONTAINED_REVIEW_PACKAGE_SHA256.txt").write_text(
               zip_sha + "\n", encoding="utf-8"
           )
           validation = {
@@ -211,24 +308,29 @@ jobs:
               "zip_sha256": zip_sha,
               "manifest_rows": len(members),
               "active_test_count": len(test_paths),
+              "prospective_relational_test_count": 1,
               "source_rows": len(source_rows),
-              "audit_terminal": "PASS_TEACHER_STUDENT_INTEGRATION_FREEZE_AUDIT_V3",
+              "staged_python_compiled": len(staged_py),
+              "stage_audit_terminal": "PASS_TEACHER_STUDENT_INTEGRATION_FREEZE_AUDIT_V3",
+              "stage_active_tests": "PASS",
+              "stage_relational_tests": "PASS",
+              "self_contained_replay": True,
               "execution_authorized": False,
           }
-          (dist / "TEACHER_STUDENT_UNIFIED_V3_PACKAGING_VALIDATION.json").write_text(
+          (dist / "TEACHER_STUDENT_UNIFIED_V3_SELF_CONTAINED_PACKAGING_VALIDATION.json").write_text(
               json.dumps(validation, indent=2, sort_keys=True) + "\n",
               encoding="utf-8",
           )
           print(json.dumps(validation, indent=2, sort_keys=True))
           PY
 
-      - name: Upload exact V3 review package
+      - name: Upload exact self-contained V3 review package
         uses: actions/upload-artifact@v4
         with:
-          name: teacher-student-unified-v3-review
+          name: teacher-student-unified-v3-self-contained-review
           path: |
-            dist/TEACHER_STUDENT_UNIFIED_V3_REVIEW_PACKAGE.zip
-            dist/TEACHER_STUDENT_UNIFIED_V3_REVIEW_PACKAGE_SHA256.txt
-            dist/TEACHER_STUDENT_UNIFIED_V3_PACKAGING_VALIDATION.json
+            dist/TEACHER_STUDENT_UNIFIED_V3_SELF_CONTAINED_REVIEW_PACKAGE.zip
+            dist/TEACHER_STUDENT_UNIFIED_V3_SELF_CONTAINED_REVIEW_PACKAGE_SHA256.txt
+            dist/TEACHER_STUDENT_UNIFIED_V3_SELF_CONTAINED_PACKAGING_VALIDATION.json
           if-no-files-found: error
           retention-days: 30
