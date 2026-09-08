@@ -12,7 +12,7 @@ V3 package identity remains immutable evidence. Independent local clean extracti
 
 ## Explicit non-changes
 
-No change to 41,238-address / 160-D / 6-block / 4-head geometry, teacher EMA semantics, predictor 15-tensor registry, 40% hidden masking, loss, AMP ordering, mandatory gradient gates, Adam-state proof, movement adjudication, schedule/population, biology firewall, or prospective relational mechanics.
+No change to the active 41,238-address / 160-D / 6-block / 4-head geometry, teacher EMA semantics, predictor 15-tensor registry, 40% hidden masking, loss, AMP ordering, mandatory gradient gates, Adam-state proof, movement adjudication, schedule/population, or biology firewall. The prospective relational adjunct is outside this active V4 source root; it is reviewed separately, and prospective V2 now supersedes prospective V1.
 
 ## Frozen source identity
 
