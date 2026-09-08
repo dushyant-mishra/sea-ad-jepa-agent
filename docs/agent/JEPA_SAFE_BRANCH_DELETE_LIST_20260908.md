@@ -2,7 +2,7 @@
 
 Canonical branch: **main**
 
-All 56 non-main branch heads listed below are already ancestors of
+All 57 non-main branch heads listed below are already ancestors of
 `main`. Their unique commits were preserved through normal merges, the exact
 F1 two-parent merge, or the history-absorption octopus merge.
 
@@ -67,3 +67,5 @@ Do **not** delete tags or immutable package artifacts.
 - `stage81a3r-real-train-global-state-20260814` — e8b72d0161e6a61ef5d3753fdbab8ae9234ed977
 - `t0/v20-pathology-blind-materialization-20260908` — 24b2c9ffc0ab2d63061c20af8829bcb86114b11a
 - `transport/c2-full-repaired-package-20260906` — 43c2997079b9326d21d9c2c88aa3014167413f5e
+
+- `coordination/jepa-governance-finalize-20260908` — d8d998a4f29ad170beb0b9c807495025d0a17a23
