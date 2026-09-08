@@ -8,6 +8,9 @@ import torch
 from scripts.agent.validate_healthy_teacher_execution_binding_overlay_v1 import (
     validate_overlay,
 )
+from scripts.v4.f1b_reference_candidates_v1 import reference_vulnerable
+from scripts.v4.f1b_successor_attack_suite_v1 import prove_polarity, run_suite
+from scripts.v4.teacher_student_f1b_attack_adapter_v1 import canonical_candidate
 from sea_ad_jepa.v4.ipb_jepa import BlockPredictor, IPBEncoder
 from sea_ad_jepa.v4.teacher_student_checkpoint import (
     CHECKPOINT_SCHEMA,
@@ -262,3 +265,18 @@ def test_overlay_requires_external_review_of_exact_integrated_commit() -> None:
     result = validate_overlay(attacked)
     assert result["terminal"].startswith("STOP_")
     assert any("does not equal" in item for item in result["failures"])
+
+
+def test_canonical_runtime_defends_all_frozen_f1b_attacks() -> None:
+    report = run_suite(canonical_candidate())
+    assert report["terminal"] == "PASS_F1B_ATTACK_SUITE", report
+    assert report["vulnerable"] == []
+    assert report["not_applicable"] == []
+    assert report["attack_defective"] == []
+    assert len(report["defended"]) == 14
+
+
+def test_canonical_runtime_preserves_attack_polarity() -> None:
+    report = prove_polarity(reference_vulnerable(), canonical_candidate())
+    assert report["terminal"] == "PASS_ATTACK_POLARITY", report
+    assert report["defective"] == []
