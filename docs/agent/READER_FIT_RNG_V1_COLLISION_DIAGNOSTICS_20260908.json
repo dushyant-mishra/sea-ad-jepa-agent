@@ -1,0 +1,21 @@
+{
+  "schema": "READER_FIT_RNG_V1_COLLISION_DIAGNOSTICS_V1",
+  "population": "reader_fit",
+  "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+  "legacy_rng_modulus": 2147483647,
+  "reader_fit_cells": 4553407,
+  "reader_fit_stable_key_min": 257865466610,
+  "reader_fit_stable_key_max": 9223371444004343451,
+  "legacy_modulo_collision_buckets": 4949,
+  "legacy_modulo_colliding_extra_cells": 4955,
+  "legacy_modulo_max_bucket_size": 3,
+  "example_collision": {
+    "legacy_residue": 157675334,
+    "stable_keys": [3563565154610006020, 4946309937675127272]
+  },
+  "query": "select count(*) groups, sum(n-1) colliding_extra_cells, max(n) max_bucket from (select ((stable_key % 2147483647)+2147483647)%2147483647 r,count(*) n from cells where partition='reader_fit' group by r having n>1)",
+  "decision": "REJECT_LEGACY_MODULO_CELL_KEY_RNG_AS_PRODUCTION_SCIENTIFIC_IDENTITY_RNG",
+  "repair": "Philox4x32-10 counter=[stable_key_low32,stable_key_high32,canonical_token_id_plus_1,feature_index]; run/update/view/site derive Philox key",
+  "training_authorized": false,
+  "execution_authorized": false
+}
