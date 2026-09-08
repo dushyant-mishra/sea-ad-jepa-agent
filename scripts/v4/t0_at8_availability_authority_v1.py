@@ -222,6 +222,14 @@ def build_availability_authority(
         "membership_donor_count": len(membership),
         "membership_donors_available": len(membership_available),
         "membership_fully_available": len(membership_available) == len(membership),
+        "root_byte_semantics": (
+            "DISK_BYTES_AS_WRITTEN__NEVER_STORE_THIS_PACKAGE_AS_CRLF_FILTERED_TRACKED_TEXT"
+        ),
+        "verification_rule": (
+            "Reproduce by rebuilding from the frozen source digest with the recorded "
+            "derivation code; do not hash a Git-checked-out copy, because a platform "
+            "line-ending transform changes the bytes and therefore the root."
+        ),
         "outcome_values_read": False,
         "outcome_values_emitted": False,
         "real_execution_ready": False,
