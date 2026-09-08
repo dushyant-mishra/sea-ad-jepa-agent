@@ -139,6 +139,28 @@ supersession table that says, for each live line:
 
 Only after that map is reviewed should stale branches be archived/closed.
 
+
+## F1-B/C3 mechanics successor
+
+The frozen F1-B behavioral attack authority is valuable and the
+`c0eaf2acc...` successor defends the frozen attacks, but it is still not the
+execution-bound trainer.
+
+Three concrete gaps remain before even a mechanics-only qualification run:
+
+1. `MOVEMENT_OVER_DECAY_MARGIN = 2.0` is hard-coded in the successor. The
+   healthy-teacher base explicitly records that the F1-B attack authority did
+   **not** freeze a 2x margin. A reviewed analytical movement criterion and
+   tolerance must be source-bound prospectively.
+2. The mandatory predictor registry is currently discovered from all
+   `requires_grad` predictor parameters. The execution overlay requires an
+   exact reviewed predictor-parameter registry identity.
+3. The source is a protected-update mechanics module, not a frozen end-to-end
+   data/masking/loss/schedule/checkpoint trainer.
+
+Therefore a green F1-B attack suite is necessary mechanics evidence, not
+training authority.
+
 ## Target Discovery
 
 The relational biological object remains alive:
