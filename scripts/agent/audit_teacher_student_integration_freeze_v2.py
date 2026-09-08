@@ -142,6 +142,8 @@ def audit(root: Path) -> dict[str, Any]:
         failures.append("duplicate active-test selection path")
     if any("integration_freeze_v1" in path for path in selection):
         failures.append("superseded V1 freeze test remains active")
+    if "tests/test_f1b_c3_training_successor_v2.py" in selection:
+        failures.append("retired C3 prototype test remains active")
     test_rows = _csv(test_manifest)
     manifest_tests = [row["path"] for row in test_rows]
     if manifest_tests != selection:
