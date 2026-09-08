@@ -409,3 +409,44 @@ def test_u40_qualification_self_binds_checkpoint_and_cannot_self_continue() -> N
             overlay_sha256="a" * 64,
             u40_checkpoint_sha256="b" * 64,
         )
+
+
+def test_canonical_adapter_uses_only_canonical_diagnostics() -> None:
+    from scripts.v4 import teacher_student_f1b_attack_adapter_v1 as adapter
+
+    for name in (
+        "routing_report",
+        "routing_metrics",
+        "refit_g5_probe",
+        "enforce_frozen_horizon",
+        "directional_claim",
+        "target_equivalence",
+        "select_g5_endpoints",
+    ):
+        fn = getattr(adapter, name)
+        assert fn.__module__ == "sea_ad_jepa.v4.teacher_student_diagnostics", name
+
+
+def test_production_surface_has_no_retired_training_dependency() -> None:
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    active = [
+        root / "src/sea_ad_jepa/v4/teacher_student_runtime.py",
+        root / "src/sea_ad_jepa/v4/teacher_student_checkpoint.py",
+        root / "src/sea_ad_jepa/v4/teacher_student_movement.py",
+        root / "src/sea_ad_jepa/v4/teacher_student_diagnostics.py",
+        root / "scripts/v4/teacher_student_f1b_attack_adapter_v1.py",
+        root / "scripts/v4/materialize_healthy_teacher_u0_v1.py",
+        root / "scripts/v4/healthy_teacher_qualification_runner_v1.py",
+        root / "scripts/v4/healthy_teacher_continuation_runner_v1.py",
+    ]
+    forbidden = (
+        "f1b_c3_training_successor_v2",
+        "stage81a3_prod41k_teacher_t1",
+        "c2_corrective_run_update_v3",
+    )
+    for path in active:
+        text = path.read_text(encoding="utf-8")
+        for token in forbidden:
+            assert token not in text, (path, token)
