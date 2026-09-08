@@ -6,9 +6,16 @@ They are review tests, not an authority PASS.
 from __future__ import annotations
 
 import inspect
+import sys
+from pathlib import Path
+
 import pytest
 
-import t0_immune_fraction_authority_v1 as ifa
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT / "scripts" / "v4") not in sys.path:
+    sys.path.insert(0, str(ROOT / "scripts" / "v4"))
+
+import t0_immune_fraction_authority_v1 as ifa  # noqa: E402
 
 
 def _forged_production_rows():
