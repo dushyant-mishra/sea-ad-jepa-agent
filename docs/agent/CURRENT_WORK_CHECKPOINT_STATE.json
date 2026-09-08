@@ -179,10 +179,14 @@
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "SUBMIT_EVERYTHING_FOR_FINAL_EXTERNAL_REVIEW_BEFORE_ANY_PRODUCTION_RUN",
-    "DO_NOT_RUN_PRODUCTION_B2_UNTIL_THAT_REVIEW_PASSES",
-    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND",
-    "KEEP_LANE_C_DESIGN_ONLY"
+    "REPAIR_THE_FOUR_R2_B2_DEFECTS_AGAINST_THE_RED_CASES",
+    "BUILD_T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1_ON_THE_FROZEN_DEFINEDNESS_PREDICATE",
+    "BUILD_T0_IMMUNE_SUPPORT_COUNT_AUTHORITY_V1__46_DONORS_SUM_20804",
+    "BUILD_T0_DONOR_AGE_SEX_AUTHORITY_V1",
+    "BUILD_STAGEWISE_PATHOLOGY_BLIND_ESTIMABILITY_PREFLIGHT",
+    "OBTAIN_EXPLICIT_OWNER_FREEZE_OF_THE_IMMUNE_FRACTION_FORMULA",
+    "DO_NOT_RUN_PRODUCTION_B2_UNTIL_THE_R2_REPAIRS_PASS_INDEPENDENT_REVIEW",
+    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
   ],
   "peer_agents": [
     "CODEX",
@@ -334,9 +338,45 @@
       "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json": "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf",
       "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_MANIFEST.csv": "818ef14ac8c61ea4e93cc0c853a502dfa1cb75c198499b1cdafa6475e5a9eee9"
     },
-    "external_review_terminal_received": "STOP_T0_MATERIALIZATION_EXTERNAL_REVIEW__NONINJECTIVE_AUTHORITY_FRAMING__V5_NOT_INDEPENDENTLY_VERIFIED__GOVERNANCE_STATE_DIVERGED",
-    "governance_state": "ALL_KNOWN_BLOCKERS_CLOSED__AWAITING_FINAL_EXTERNAL_REVIEW",
+    "external_review_terminal_received": "STOP_T0_B2_FINAL_EXTERNAL_REVIEW__FULL_MANIFEST_NOT_CONSUMABLE__RAW_SOURCE_ROW_NOT_AUTHENTICATED__BLOCK_ROW_COORDINATE_MISMATCH__THREE_ROOT_EXTERNAL_VERIFICATION_INCOMPLETE",
+    "governance_state": "T0_INPUT_DEPENDENCY_CONTRACT_FROZEN__IMMUNE_FRACTION_BUILT__FOUR_R2_B2_DEFECTS_RED__PRODUCTION_B2_FORBIDDEN",
     "handoff_sha256": "ecd0b0fb5c449e9ff1101dff5b014fdbb79c7538212155b28f0a9beb47f2c01f",
+    "immune_fraction_authority": {
+      "block_metadata_members_authenticated": 1247,
+      "denominator_population_resolved_by_verification": "An external review described the denominator as all reader-fit op31 cells. The partition field is not a Phase2 metadata column, so that appeared possibly uncomputable from the authenticated substrate. The canonical foundation SQLite gives op31 partition composition reader_fit 638150, reader_validation 173736, reader_oracle 121386; the Phase2 op31 store holds exactly 638150 cells by an independent scan of all 1247 block metadata files. The substrate is therefore exactly the reader_fit partition, so the two candidate denominators coincide and no dependency on the large SQLite enters the graph. This also confirms by count that reader_validation and reader_oracle are excluded from the store, which is what its no_validation_oracle_dev_sealed_pathology flag claims.",
+      "derivation_code_sha256": "fd658107a78f21e63a1c743c58ab3da0d6fed8fdca2800e918fa80d910c42196",
+      "donors": 46,
+      "formula_specification_status": "SUCCESSOR_SPECIFICATION__AWAITING_EXPLICIT_OWNER_FREEZE",
+      "immune_cell_total": 20804,
+      "immune_fraction_root_sha256": "831139259fe78c5cede5457cb4cdc6bbb7bedd53831af95508b9bdfb56741653",
+      "manifest_handling": "AUTHENTICATE_COMPLETE_8915_BLOCK_MANIFEST_THEN_SELECT_1247_OP31_INTERNALLY",
+      "module": "scripts/v4/t0_immune_fraction_authority_v1.py",
+      "op31_cell_total": 638150,
+      "package_location_note": "Written under outputs/, which is gitignored, for the same reason as the availability package: committing it as tracked text would let a platform line-ending transform change the bytes and therefore the root.",
+      "package_root_sha256": "0846bb68563fd4e16ce995d719e3ef680088545337fd251d9c100176e7e90b77",
+      "primary_authority": "EXACT_INTEGER_NUMERATOR_AND_DENOMINATOR__FRACTION_DERIVED",
+      "status": "BUILT_AND_SELF_VERIFIED__NOT_INDEPENDENTLY_VERIFIED"
+    },
+    "input_dependency_contract": {
+      "consumer_modules": 10,
+      "contract_root_sha256": "9c492eeb0a134806daaf222f612d41508545604892ba7b10d31570e0e50c718c",
+      "declared_quantities": 24,
+      "module": "scripts/v4/t0_input_dependency_contract_v1.py",
+      "open_specification_slots": [],
+      "pending_authorities": [
+        "IMMUNE_FRACTION",
+        "Q_DEPTH",
+        "Q_DETECT",
+        "age",
+        "cells",
+        "eligible",
+        "sex",
+        "technical_complete"
+      ],
+      "purpose": "Derived from the executable T0 consumers rather than from handoff prose, and checked in both directions. The reverse direction is the point: every donor-level quantity a consumer requires must be declared, so a missing required input becomes an immediate test failure instead of a late discovery. Removing IMMUNE_FRACTION or technical_complete from the contract makes the scan name that exact quantity, which is how the guard was shown to discriminate.",
+      "status": "FROZEN_THIS_CYCLE__NOT_INDEPENDENTLY_VERIFIED",
+      "tests": "tests/v4/test_t0_input_dependency_contract_v1.py"
+    },
     "matrix_semantics": {
       "authority": "results/v4/stage81a2_matrix_semantics_contract.csv",
       "feature_universe_hash_lineage_only": "b034585d654b46da4d26cc0cbcaf1e4ace12fa93ab9b55dd4182dd882ae966c7",
@@ -431,7 +471,8 @@
     },
     "s2_row_count_authority": {
       "adversarial_cases": "50 passed",
-      "blocked_until": "Independent PASS on the successor B1 root a4744638b3816d48d30e0da108dad12b7cde3e29e8967af83a49860807bbee17, and closure of the six open defects below. Building on a root whose framing was found non-injective, or on an authority with these gaps, would propagate the defects deeper into the chain.",
+      "blocked_until": "Independent PASS on the successor B1 root 538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8, and closure of the six open defects below. Building on a root whose framing was found non-injective, or on an authority with these gaps, would propagate the defects deeper into the chain.",
+      "blocked_until_root_correction": "blocked_until named the superseded B1 root a4744638b3816d48d30e0da108dad12b7cde3e29e8967af83a49860807bbee17 while consumes_feature_authority_root correctly named 538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8. Synchronised to the current root.",
       "consumes_feature_authority_root": "538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8",
       "external_verifier_added": "assert_row_authority_lawful did not exist. It now enforces row-field types, checks the named feature authority root and recomputes the logical root against an externally supplied value, so the verifier path is exercised rather than only the constructor.",
       "field_disclosure": {
@@ -451,11 +492,17 @@
       "open_defects_found_by_external_review": {
         "all_closed": "The six defects previously recorded open are closed and each has a regression: the accepted membership and pinned Phase2 manifest digests are required arguments and verified before parsing; the Phase2 metadata donor_id is cross-checked against the membership donor_id; membership operator and matrix VALUES are required, not merely the columns; a duplicate membership cell_id stops instead of silently redefining the population; source_library is proven by summing the authenticated full raw source row, with a row of address-space width refused outright because Phase2 computes the value before projection; and selected-row verification checks expression_row bounds, correspondence with the bound row, address-space width and non-negative integer semantics, so authentic block bytes with the wrong row selected is refused."
       },
+      "r2_red_cases": {
+        "authenticated_raw_source_row_proof": "RED",
+        "complete_manifest_consumable": "RED",
+        "expression_row_vs_block_local_row_index": "RED",
+        "three_root_external_verification": "RED"
+      },
       "real_execution_ready": false,
       "schema": "JEPA_T0_V20_ROW_COUNT_AUTHORITY_V1",
       "self_found_defect": "assert_plan_restores_logical compared logical indices against range(len(entries)), so dropping the last entry left [0, 1], still a valid permutation of range(2), and a truncated plan satisfied restoration. A physical plan could therefore have silently shrunk the population, which is exactly what the three-root separation exists to prevent. Caught by one of my own cases; restoration now compares against the carried logical row count.",
       "source_library_rule": "Bound as an exact positive integer from block metadata and never recomputed. Zero, negative, fractional, exponent-form and NaN refused. Both forbidden substitutions are attempted and refused: a sum over the stored 41,238-address row and a sum over the 35,076-address projection. The bound value is accepted so the check discriminates.",
-      "status": "ALL_SIX_DEFECTS_CLOSED__SYNTHETIC_ONLY__AWAITING_FINAL_EXTERNAL_REVIEW",
+      "status": "FOUR_R2_DEFECTS_REPRODUCED_RED__REPAIR_PENDING__PRODUCTION_RUN_FORBIDDEN",
       "still_not_done": "No production run against the real 1,247 operator-31 blocks, 638,150 metadata rows and 20,804 targets. Everything above is synthetic fixtures. The production run is deliberately withheld pending final external review.",
       "three_roots": {
         "logical_row_authority_root": "rows in frozen membership order with all six Phase2 metadata fields and the metadata and counts digests, bound to the Lane B1 feature authority root, which is a required argument.",
@@ -480,7 +527,56 @@
       "feature_projection": "39 cases",
       "row_count": "50 cases"
     },
+    "technical_completeness_specification": {
+      "authority_status": "T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1 NOT YET BUILT",
+      "conjuncts": [
+        "donor belongs to the accepted op31 candidate donor universe",
+        "donor has at least one authenticated accepted cell",
+        "the donor's accepted cells close correctly through the authenticated B2 substrate",
+        "the required raw-count and source_library information is valid enough to compute the frozen technical summaries",
+        "Q_DEPTH(donor) is computable and finite",
+        "Q_DETECT(donor) is computable, finite, and within its lawful range"
+      ],
+      "fail_closed_rule": "technical_complete is evaluated ONLY on a lawfully authenticated substrate. A wrong source digest, a missing accepted membership cell, a donor/cell identity mismatch, a wrong source row, a wrong materialized row, a counts digest failure or a manifest inconsistency are B2 STOPs. They are never reasons to mark a donor technically incomplete. The predicate answers 'are the required technical summaries defined?', not 'did provenance validation fail?'.",
+      "forbidden_cutoffs": [
+        "Q_DEPTH_MINIMUM",
+        "Q_DETECT_MINIMUM",
+        "CELLS_PER_DONOR_QC_FLOOR",
+        "TAIL_MIN_CELLS_AS_ELIGIBILITY"
+      ],
+      "semantics": "THRESHOLD_FREE_DEFINEDNESS_AND_COMPUTABILITY",
+      "shortfall_rule": "If the frozen eligible universe falls below 18 CONFIRMATION + 18 minimum DISCOVERY donors, raise STOP_T0_DESIGN_NOT_EXECUTABLE_UNDER_FROZEN_ELIGIBILITY. Do not relax eligibility, do not introduce a cutoff, and do not alter the split.",
+      "single_sex_rule": "If the actual deterministic confirmation set is single-sex, nuisance_design refuses it and the role authority must fail loudly. This is a design failure, not a biological NOT_MEASURABLE, and the split must not be altered to rescue it.",
+      "status": "FROZEN_BY_OWNER_DECISION_20260908",
+      "tail_floor_scope": "TAIL_MEASURABILITY_ONLY__NEVER_ELIGIBILITY_OR_PARENT_ROLE",
+      "v18_interpretation": "Technical completeness is pathology-blind pre-outcome eligibility metadata derived deterministically from authenticated expression technical summaries. 'Metadata-only' in V18 SS201 means no pathology magnitude and no discovery/confirmation outcome information is used; it does not mean the flag must originate as a literal column in a source metadata file."
+    },
+    "technical_summary_recovery": {
+      "donor_level": "arithmetic mean over that donor's authenticated cells",
+      "note": "An external ledger listed Q_DEPTH_CELL_LEVEL_FORMULA and Q_DETECT_CELL_LEVEL_FORMULA as unresolved. Both are present verbatim in the accepted V20 package and are recorded here with their exact expressions, so that blocker is closed by recovery rather than by definition.",
+      "q_depth_cell_level": "log1p(source_library)",
+      "q_detect_cell_level": "count_nonzero(X, axis=1) / 35076",
+      "q_detect_universe": "ALL 35,076 scalar-measured addresses, per the module's own comment and its enforced X.shape == (n, 35076); NOT the 28,061 SCORING subset. This makes Q_DETECT depend on the B1 projection, not on raw rows alone.",
+      "source_module": "current/code/t0_confirmation_raw_v1.py",
+      "status": "RECOVERED_EXACTLY_FROM_ACCEPTED_PACKAGE__NOT_PARAPHRASED"
+    },
     "terminal_on_success": "T0_V20_PATHOLOGY_BLIND_FEATURE_SOURCE_ROW_AUTHORITIES_MATERIALIZED_AND_VERIFIED__STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND__REAL_T0_STILL_UNAUTHORIZED",
+    "test_accounting": {
+      "availability": 32,
+      "checkpoint": 33,
+      "correction": "An earlier handoff reported 33 + 32 + 39 + 50, which sums to 154 rather than the 153 actually observed. Static inspection of the feature suite gives 28 test functions with two six-case parametrizations, resolving to 38 cases. The feature count was wrong, not the total.",
+      "feature": 38,
+      "green_total_this_cycle": 256,
+      "new_this_cycle": {
+        "immune_fraction": 47,
+        "input_dependency_contract": 56,
+        "note": "The 13 R2 cases are 12 red against 6c6d841e plus one green regression: a pre-filtered manifest declared with the complete manifest digest is already refused, so that case pins existing correct behaviour rather than reproducing a defect.",
+        "row_count_r2_red": 13
+      },
+      "observed": "Observed 209 passed over checkpoint 33 + availability 32 + feature 38 + row_count 50 + input_dependency_contract 56, plus 47 for the immune_fraction suite, giving 256 green. The 13 R2 row-count cases are excluded from the green total because 12 of them are red by design against 6c6d841e.",
+      "row_count": 50,
+      "total": 153
+    },
     "three_roots_required": [
       "population_closure_root",
       "logical_row_authority_root",
