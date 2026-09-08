@@ -714,3 +714,59 @@ def test_a_registry_swapped_after_capture_is_not_used(source, tmp_path: Path,
     assert len([row for row in loaded["registry"]
                 if row["AT8_available"] == "True"]) == authentic_available
     assert seen["n"] == 1
+
+def test_the_writer_commits_to_in_memory_member_bytes_before_filesystem_write(
+    source, tmp_path: Path, monkeypatch
+) -> None:
+    """A write-time substitution must invalidate the package, not redefine it.
+
+    The previous writer wrote metadata and then reopened that path to hash it.
+    A same-length substitution in that interval became the bytes recorded by
+    the manifest while `build_availability_authority` still returned the
+    original in-memory metadata. The package then loaded successfully against
+    roots returned by the same build.
+
+    The manifest must instead be derived from the exact in-memory payloads
+    before any member is written. If the filesystem changes those bytes while
+    they are being materialized, verification against the returned roots must
+    fail closed.
+    """
+    path, digest, _ = source
+    outdir = tmp_path / "out"
+
+    real_write_bytes = Path.write_bytes
+    changed = {"done": False}
+
+    def substituting_write(self, data):
+        result = real_write_bytes(self, data)
+        if self.name == av.METADATA and not changed["done"]:
+            authentic = json.loads(bytes(data).decode("utf-8"))
+            substituted = dict(authentic)
+            substituted["membership_donor_set_sha256"] = "0" * 64
+            substituted_bytes = (
+                json.dumps(substituted, indent=2, sort_keys=True) + "\n"
+            ).encode("utf-8")
+            assert len(substituted_bytes) == len(bytes(data))
+            real_write_bytes(self, substituted_bytes)
+            changed["done"] = True
+        return result
+
+    monkeypatch.setattr(Path, "write_bytes", substituting_write)
+    built = av.build_availability_authority(
+        outdir=outdir,
+        source_path=path,
+        expected_source_sha256=digest,
+        membership_donor_ids=["D00"],
+        source_relative_path="data/pathology.csv",
+    )
+    monkeypatch.undo()
+
+    assert changed["done"], "the write-time substitution must have run"
+    assert built["metadata"]["membership_donor_set_sha256"] != "0" * 64
+
+    with pytest.raises(AssertionError, match="AVAILABILITY_PACKAGE_INVALID"):
+        av.load_availability_authority(
+            outdir,
+            expected_package_root_sha256=built["package_root_sha256"],
+            expected_availability_root_sha256=built["availability_root_sha256"],
+        )
