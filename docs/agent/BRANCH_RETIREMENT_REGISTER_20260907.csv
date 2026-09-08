@@ -1,5 +1,5 @@
-branch,head_sha,status,successor_or_role,reason
-production/teacher-student-unified-v1-20260907,a06d32daf9ec9eef2b12ab1da4c2c9235cfb6fc6,ACTIVE_CANONICAL,production/teacher-student-unified-v1-20260907,Single current teacher/student production integration line
+branch,reference_sha,status,successor_or_role,reason
+production/teacher-student-unified-v1-20260907,19ff3444eb80770119ccf48c2040522f0ffde8bf,ACTIVE_CANONICAL_SOURCE_FROZEN_V2,production/teacher-student-unified-v1-20260907,V2 production source frozen at exact integrated commit; later commits are review metadata only
 f1b-executable-attacks-20260907,138e176baa10267833f1a2c1e347f8831eb8c269,KEEP_FROZEN_AUTHORITY,F1-B attack authority,Immutable 15-finding behavioral attack authority
 f1b-c3-training-successor-v2-20260907,c0eaf2acc0a5edc837fb2a48f726b9d626772f06,RETIRED_MERGED,production/teacher-student-unified-v1-20260907,Merged as mechanics parent; prototype remains historical/attack evidence
 planning/healthy-teacher-training-contract-20260907,26e1c27d3578b794a1d522061df6d57ff435a688,RETIRED_MERGED,production/teacher-student-unified-v1-20260907,Merged as frozen training-governance parent
@@ -11,7 +11,7 @@ review/d1-independent-closure-20260907,c13c06c103a588fc95bb93174730bf26dd613884,
 planning/d1-biological-estimation-atlas-20260907,d85391c90eb1f767115e0f4d31cfaf6bff980e2b,RETIRED_SUPERSEDED,review/d1-independent-closure-20260907,Initial D1 planning line superseded by implemented/reviewed D1 closure
 planning/d1-biological-estimation-atlas-20260907-work,566079ad2ef4a1e99efff77bfc0bdb79559b77b7,RETIRED_SUPERSEDED,review/d1-independent-closure-20260907,Intermediate D1 work line superseded by D1 closure
 f1-real-producer-replay-prefreeze-20260907,a884f558970479278bc21f3f2274dc24bee89758,KEEP_DOWNSTREAM_ACTIVE,Real F1 producer/replay,Inference consumer of teacher/student states; not training implementation
-repo-organization-20260902,f4c236a3e9e4d2eb464a04659b09a4cb8b376a42,RETIRED_STALE_PR,production/teacher-student-unified-v1-20260907,Old organizational draft superseded by current authority/retirement docs
+repo-organization-20260902,f4c236a3e9e4d2eb464a04659b09a4cb8b376a42,RETIRED_STALE_PR_CLOSED,production/teacher-student-unified-v1-20260907,Old organizational draft superseded by current authority/retirement docs; PR #1 closed 2026-09-08
 "review/c2-independent-verification-20260906","d8ee01a403fc0a817d9c602f2ffd9aa7602ce8d1","KEEP_FROZEN_REVIEW_EVIDENCE","C2 external review evidence","Divergent independent-review line; preserve and do not use as implementation"
 "review/f1-byte-authority-portability-20260905","7715a533ec9b691b3a9b242d490b96c2d326d9ee","RETIRED_REVIEW_EVIDENCE","later F1 authority chain","Historical portability review; no longer an active development surface"
 "review/f1-ea35-independent-20260907","b0db8ea07ae0a61b5a5d37c51e419d6b2a1044b4","KEEP_DOWNSTREAM_REVIEW_EVIDENCE","f1-real-producer-replay-prefreeze-20260907","Independent real-F1 producer/replay review evidence; downstream from training"
