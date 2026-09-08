@@ -80,11 +80,12 @@ The 4,553,407-cell FULL104 move remains a separate scale-up gate requiring its o
 4. a centered zero-norm state is rejected rather than assigned an arbitrary cosine.
 5. cross-group translations do not change relational loss.
 6. within-group geometry changes do change loss.
-7. fine-matched null stays within stratum and has no fixed points.
-8. fractional evidence percentages do not coerce to a supported level.
-9. malformed/non-integer group IDs and empty batch identities fail closed.
-10. current V4 `production_update` remains unchanged and does not import/call V2.
-11. 4.553M execution remains impossible without a separate reviewed full-population schedule/root and explicit authority.
+7. the differentiable loss weights cannot be overridden away from exact 0.5 distance / 0.5 angle, and Smooth-L1 uses frozen beta=1.0.
+8. fine-matched null stays within stratum and has no fixed points.
+9. fractional evidence percentages do not coerce to a supported level.
+10. malformed/non-integer group IDs and empty batch identities fail closed.
+11. current V4 `production_update` remains unchanged and does not import/call V2.
+12. 4.553M execution remains impossible without a separate reviewed full-population schedule/root and explicit authority.
 
 Current terminal:
 
