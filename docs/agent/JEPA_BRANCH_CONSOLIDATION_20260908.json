@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_BRANCH_CONSOLIDATION_V1",
+  "schema": "JEPA_BRANCH_CONSOLIDATION_V2",
   "date": "2026-09-08",
   "current_branch": "main",
   "integration_commits": {
@@ -9,14 +9,19 @@
     "d1_merge": "ae0b4426fd805eb414d6478d845e0cb35d8bca74",
     "t0_global_review_merge": "baeb2aef188cefeba008241bdbe3ababce35d888",
     "historical_octopus_absorption": "7dbbc9d7149bc009252b01f3da2d67ee6449a9ef",
-    "main_promotion_merge": "43f1610db41a0e084c35bf0a2365ce706e49c1fc"
+    "main_promotion_merge": "43f1610db41a0e084c35bf0a2365ce706e49c1fc",
+    "v5_current_tree_reconciliation": "def8919796e4b4a4de122a85f05964f017784b7d"
   },
   "historical_divergent_heads_absorbed": 30,
   "stale_tree_reactivated": false,
   "branch_deletion_performed": false,
-  "branch_deletion_reason": "Connected GitHub tool exposes merge/repoint but not branch-ref deletion. All 56 non-main branch heads are verified ancestors of main and may be deleted safely.",
-  "safe_cleanup_rule": "Delete old branch names only after confirming their heads are ancestors of main/current coordination. Never delete tags or immutable package artifacts.",
+  "branch_deletion_reason": "The connected GitHub tool can merge/repoint refs but does not expose branch-ref deletion. Branch refs are hygiene-only after exact ancestor verification.",
+  "safe_cleanup_rule": "Delete a non-main branch ref only when its exact head SHA is verified as an ancestor of the current main head. Preserve tags and immutable package artifacts.",
   "execution_authority_changed": false,
   "safe_delete_list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
-  "safe_non_main_branch_count": 56
+  "safe_non_main_branch_count": 56,
+  "current_v5_source_head": "c7b1663cc4390843978b973986edfe58f93320a3",
+  "current_v5_tree_reconciled": true,
+  "stale_v5_tree_reactivated": false,
+  "note": "Safe-delete membership must be regenerated after the final governance merge because any newly created governance branch must itself become an ancestor of main before deletion."
 }
