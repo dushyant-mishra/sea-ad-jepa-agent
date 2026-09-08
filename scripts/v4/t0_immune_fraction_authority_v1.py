@@ -117,6 +117,7 @@ STOP_PRODUCTION_GEOMETRY = "STOP_T0_IMMUNE_FRACTION_PRODUCTION_GEOMETRY_MISMATCH
 STOP_FIELD_SCHEMA = "STOP_T0_IMMUNE_FRACTION_FIELD_SCHEMA_VIOLATION"
 STOP_ROOT_MISMATCH = "STOP_T0_IMMUNE_FRACTION_ROOT_MISMATCH"
 STOP_PACKAGE_MEMBER = "STOP_T0_IMMUNE_FRACTION_PACKAGE_MEMBER_INVALID"
+STOP_PARENT_IDENTITY = "STOP_T0_IMMUNE_FRACTION_PARENT_IDENTITY_NOT_EXTERNALLY_BOUND"
 STOP_NOT_INTEGER = "STOP_T0_IMMUNE_FRACTION_COUNT_NOT_EXACT_NONNEGATIVE_INTEGER"
 
 # --- frozen production geometry ---------------------------------------------
@@ -148,6 +149,7 @@ OP31_ALL_PARTITIONS_CELLS = 933272
 # V18 states the covariate in prose only. The formula is a successor
 # specification awaiting explicit owner acceptance; it is NOT recovered
 # executable semantics, and this module must not claim otherwise.
+FORMULA_SPEC_VERSION = "1.0.0"
 FORMULA_SPECIFICATION_STATUS = "SUCCESSOR_SPECIFICATION__AWAITING_EXPLICIT_OWNER_FREEZE"
 FORMULA_PROVENANCE = (
     "V18 SS170 names 'donor IMMUNE_FRACTION within op31 MTG' in prose. No frozen "
@@ -383,7 +385,7 @@ def op31_denominator_from_blocks(
 
 # --- the authority ----------------------------------------------------------
 
-def build_immune_fraction(
+def _build_immune_fraction_rows(
         *,
         numerator_by_donor: Mapping[str, int],
         denominator_by_donor: Mapping[str, int],
@@ -506,7 +508,121 @@ def package_root(members: Mapping[str, bytes]) -> str:
     return hashlib.sha256(b"".join(parts)).hexdigest()
 
 
-def build_authority(
+def parent_contract_root(
+        *,
+        membership_sha256: str,
+        complete_manifest_sha256: str,
+        formula_spec_root_sha256: str,
+        derivation_code_sha256: str,
+) -> str:
+    """One root over every parent identity this authority depends on.
+
+    An external reviewer can accept this single value instead of the four
+    individual digests. Binding the parents is the difference between verifying
+    the authority and merely storing provenance beside it.
+    """
+    parts = [_typed(DOMAIN_TAG), _typed("PARENT_CONTRACT"), _typed(4)]
+    for name, value in (("membership_sha256", membership_sha256),
+                        ("complete_manifest_sha256", complete_manifest_sha256),
+                        ("formula_spec_root_sha256", formula_spec_root_sha256),
+                        ("derivation_code_sha256", derivation_code_sha256)):
+        if not (isinstance(value, str) and len(value) == 64
+                and all(c in "0123456789abcdef" for c in value)):
+            raise AssertionError("%s: %s is not a lowercase hex sha256"
+                                 % (STOP_FIELD_SCHEMA, name))
+        parts.append(_typed([name, str(value)]))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
+
+
+def build_production_authority(
+        outdir: Path | str,
+        *,
+        membership_bytes: bytes,
+        expected_membership_sha256: str,
+        complete_manifest_bytes: bytes,
+        expected_complete_manifest_sha256: str,
+        meta_bytes_by_path: Mapping[str, bytes],
+        expected_formula_spec_root_sha256: str,
+        derivation_code_sha256: str,
+        operator_index: int = OP31_OPERATOR_INDEX,
+        matrix_id: str = MTG_MATRIX_ID,
+        expected_total_blocks: int = COMPLETE_MANIFEST_BLOCKS,
+        expected_operators: int = COMPLETE_MANIFEST_OPERATORS,
+        expected_op31_blocks: int = OP31_BLOCKS,
+        expected_donors: int = PRODUCTION_DONORS,
+        expected_immune_cells: int = PRODUCTION_IMMUNE_CELLS,
+        expected_op31_cells: int = PRODUCTION_OP31_CELLS,
+) -> dict[str, Any]:
+    """The only lawful production path: parent bytes in, package out.
+
+    The earlier entrypoint took results a caller had already assembled -- `rows`
+    it had built, plus `membership_sha256`, `complete_manifest_sha256` and
+    `consumed_meta_sha256` as free-standing strings that nothing tied to the bytes
+    they claimed to describe. That let correct-looking provenance be attached to a
+    population the authority never derived.
+
+    This constructor accepts no assembled result and no detached digest label. It
+    authenticates the parents, selects operator 31 from inside the authenticated
+    complete manifest, derives both counts, builds the exact integer rows itself,
+    asserts the frozen production geometry against the frozen formula
+    specification, and only then writes the package. Every digest it records is
+    computed here from the bytes it authenticated.
+    """
+    import t0_immune_fraction_formula_spec_v1 as formula_spec
+
+    membership_payload = bytes(membership_bytes)
+    manifest_payload = bytes(complete_manifest_bytes)
+
+    # Bind the specification before deriving anything against it.
+    formula_spec.assert_spec_root(expected_formula_spec_root_sha256)
+
+    numerator = immune_numerator_from_membership(
+        membership_bytes=membership_payload,
+        expected_membership_sha256=expected_membership_sha256,
+        operator_index=operator_index, matrix_id=matrix_id)
+
+    selected = select_op31_blocks(
+        complete_manifest_bytes=manifest_payload,
+        expected_complete_manifest_sha256=expected_complete_manifest_sha256,
+        operator_index=operator_index, matrix_id=matrix_id,
+        expected_total_blocks=expected_total_blocks,
+        expected_operators=expected_operators,
+        expected_op31_blocks=expected_op31_blocks)
+
+    denominator, consumed = op31_denominator_from_blocks(
+        selected_blocks=selected, meta_bytes_by_path=meta_bytes_by_path)
+
+    rows = _build_immune_fraction_rows(numerator_by_donor=numerator,
+                                       denominator_by_donor=denominator)
+    assert_production_geometry(rows, expected_donors=expected_donors,
+                               expected_immune_cells=expected_immune_cells,
+                               expected_op31_cells=expected_op31_cells)
+    # The specification carries the frozen production totals, so conformance to
+    # it is exactly the claim "this is the production population". Assert it
+    # whenever that claim is made, which is whenever the caller has not
+    # overridden the frozen geometry. A scaled fixture is a different population
+    # and must not be certified as the production one -- but neither should it
+    # fail a check it never claimed to satisfy.
+    claims_production_geometry = (
+        int(expected_donors) == PRODUCTION_DONORS
+        and int(expected_immune_cells) == PRODUCTION_IMMUNE_CELLS
+        and int(expected_op31_cells) == PRODUCTION_OP31_CELLS)
+    if claims_production_geometry:
+        formula_spec.assert_authority_matches_specification(rows)
+
+    return _build_authority_from_rows(
+        outdir, rows=rows,
+        membership_sha256=hashlib.sha256(membership_payload).hexdigest(),
+        complete_manifest_sha256=hashlib.sha256(manifest_payload).hexdigest(),
+        selected_op31_blocks=len(selected),
+        consumed_meta_sha256=consumed,
+        derivation_code_sha256=derivation_code_sha256,
+        formula_spec_root_sha256=formula_spec.formula_spec_root(),
+        check_production_geometry=False,
+    )
+
+
+def _build_authority_from_rows(
         outdir: Path | str,
         *,
         rows: Sequence[Mapping[str, Any]],
@@ -515,6 +631,7 @@ def build_authority(
         selected_op31_blocks: int,
         consumed_meta_sha256: Mapping[str, str],
         derivation_code_sha256: str,
+        formula_spec_root_sha256: str | None = None,
         check_production_geometry: bool = True,
 ) -> dict[str, Any]:
     """Write the authority package.
@@ -537,6 +654,17 @@ def build_authority(
                                 % (STOP_FIELD_SCHEMA, name))
     if check_production_geometry:
         assert_production_geometry(rows)
+
+    if formula_spec_root_sha256 is None:
+        import t0_immune_fraction_formula_spec_v1 as formula_spec
+        spec_root = formula_spec.formula_spec_root()
+    else:
+        spec_root = str(formula_spec_root_sha256)
+    parent_root = parent_contract_root(
+        membership_sha256=membership_sha256,
+        complete_manifest_sha256=complete_manifest_sha256,
+        formula_spec_root_sha256=spec_root,
+        derivation_code_sha256=derivation_code_sha256)
 
     root = immune_fraction_root(rows)
     registry = io.StringIO()
@@ -567,6 +695,12 @@ def build_authority(
         "consumed_block_metadata_sha256": dict(sorted(consumed_meta_sha256.items())),
         "derivation_code_sha256": str(derivation_code_sha256),
         "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
+        "formula_spec_root_sha256": str(spec_root),
+        "formula_spec_version": FORMULA_SPEC_VERSION,
+        "parent_contract_root_sha256": parent_root,
+        "parent_contract_members": [
+            "membership_sha256", "complete_manifest_sha256",
+            "formula_spec_root_sha256", "derivation_code_sha256"],
         "eligibility_role": (
             "NUISANCE_COVARIATE_FOR_CONFIRMATION_COMPOSITION_SENSITIVITY__"
             "NOT_AN_ELIGIBILITY_INPUT__MUST_NOT_FEED_TECHNICAL_COMPLETE"),
@@ -609,6 +743,9 @@ def build_authority(
     return {
         "immune_fraction_root_sha256": root,
         "package_root_sha256": pkg_root,
+        "parent_contract_root_sha256": parent_root,
+        "formula_spec_root_sha256": spec_root,
+        "selected_op31_blocks": int(selected_op31_blocks),
         "donor_count": len(rows),
         "immune_cell_total": meta["immune_cell_total"],
         "op31_cell_total": meta["op31_cell_total"],
@@ -621,8 +758,21 @@ def load_authority(
         *,
         expected_package_root_sha256: str,
         expected_immune_fraction_root_sha256: str,
+        expected_parent_contract_root_sha256: str | None = None,
+        expected_membership_sha256: str | None = None,
+        expected_complete_manifest_sha256: str | None = None,
+        expected_formula_spec_root_sha256: str | None = None,
+        expected_derivation_code_sha256: str | None = None,
 ) -> dict[str, Any]:
-    """Read the authority back, verifying both roots against expectations.
+    """Read the authority back, binding every root it claims.
+
+    Verifying only the two roots this package computes itself would leave the
+    parents unbound: `stored == recomputed` can hold while both differ from what
+    an external reviewer expects. So the caller must supply either the parent
+    contract root or the individual parent identities, and for each root the
+    verifier establishes
+
+        stored == recomputed == externally expected
 
     Every member is read exactly once and all verification runs against those
     captured bytes. Re-opening a member to hash it and again to parse it would
@@ -636,16 +786,28 @@ def load_authority(
             raise AssertionError("%s: %s absent" % (STOP_PACKAGE_MEMBER, path))
         captured[name] = path.read_bytes()
 
+    individual = {
+        "membership_sha256": expected_membership_sha256,
+        "complete_manifest_sha256": expected_complete_manifest_sha256,
+        "formula_spec_root_sha256": expected_formula_spec_root_sha256,
+        "derivation_code_sha256": expected_derivation_code_sha256,
+    }
+    if expected_parent_contract_root_sha256 is None and not any(individual.values()):
+        raise AssertionError(
+            "%s: supply either expected_parent_contract_root_sha256 or the "
+            "individual parent identities; verifying only this package's own "
+            "roots leaves its parents unbound" % STOP_PARENT_IDENTITY)
+
     pkg_root = package_root(captured)
     if pkg_root != str(expected_package_root_sha256):
         raise AssertionError("%s: package root is %s, expected %s"
-                            % (STOP_ROOT_MISMATCH, pkg_root,
-                               expected_package_root_sha256))
+                             % (STOP_ROOT_MISMATCH, pkg_root,
+                                expected_package_root_sha256))
 
     columns, records = _rows(captured[REGISTRY])
     _require_columns(columns, ("donor_id", "immune_n_donor", "total_op31_n_donor"),
                      REGISTRY)
-    rows = build_immune_fraction(
+    rows = _build_immune_fraction_rows(
         numerator_by_donor={r["donor_id"]: r["immune_n_donor"] for r in records},
         denominator_by_donor={r["donor_id"]: r["total_op31_n_donor"]
                               for r in records},
@@ -653,24 +815,59 @@ def load_authority(
     root = immune_fraction_root(rows)
     if root != str(expected_immune_fraction_root_sha256):
         raise AssertionError("%s: immune fraction root is %s, expected %s"
-                            % (STOP_ROOT_MISMATCH, root,
-                               expected_immune_fraction_root_sha256))
+                             % (STOP_ROOT_MISMATCH, root,
+                                expected_immune_fraction_root_sha256))
 
     meta = json.loads(captured[METADATA].decode("utf-8"))
     if meta.get("schema") != SCHEMA or meta.get("finalized") is not True:
         raise AssertionError("%s: metadata schema or finalized flag invalid"
-                            % STOP_FIELD_SCHEMA)
+                             % STOP_FIELD_SCHEMA)
     if meta.get("immune_fraction_root_sha256") != root:
         raise AssertionError("%s: metadata records root %r but the registry yields %s"
-                            % (STOP_ROOT_MISMATCH,
-                               meta.get("immune_fraction_root_sha256"), root))
+                             % (STOP_ROOT_MISMATCH,
+                                meta.get("immune_fraction_root_sha256"), root))
     if meta.get("fraction_stored") is not False:
         raise AssertionError(
             "%s: the fraction must not be stored; the integers are the authority"
             % STOP_FIELD_SCHEMA)
     if meta.get("real_execution_ready") is not False:
         raise AssertionError("%s: real_execution_ready must be False"
-                            % STOP_FIELD_SCHEMA)
+                             % STOP_FIELD_SCHEMA)
+
+    # Each individual parent identity: stored == externally expected.
+    for name, expected in individual.items():
+        if expected is None:
+            continue
+        stored = meta.get(name)
+        if str(stored) != str(expected):
+            raise AssertionError("%s: %s is stored as %r but externally expected %r"
+                                 % (STOP_PARENT_IDENTITY, name, stored, expected))
+
+    # The parent contract root: stored == recomputed == externally expected.
+    recomputed_parent = parent_contract_root(
+        membership_sha256=str(meta.get("membership_sha256")),
+        complete_manifest_sha256=str(meta.get("complete_manifest_sha256")),
+        formula_spec_root_sha256=str(meta.get("formula_spec_root_sha256")),
+        derivation_code_sha256=str(meta.get("derivation_code_sha256")))
+    stored_parent = meta.get("parent_contract_root_sha256")
+    if str(stored_parent) != recomputed_parent:
+        raise AssertionError(
+            "%s: the stored parent contract root %r does not match the root "
+            "recomputed from the stored parent identities %s"
+            % (STOP_PARENT_IDENTITY, stored_parent, recomputed_parent))
+    if expected_parent_contract_root_sha256 is not None:
+        if recomputed_parent != str(expected_parent_contract_root_sha256):
+            raise AssertionError(
+                "%s: parent contract root is %s, externally expected %s"
+                % (STOP_PARENT_IDENTITY, recomputed_parent,
+                   expected_parent_contract_root_sha256))
+
+    # The formula specification the authority was built against must still be
+    # the lawful frozen one.
+    import t0_immune_fraction_formula_spec_v1 as formula_spec
+    formula_spec.assert_spec_root(str(meta.get("formula_spec_root_sha256")))
+
     return {"rows": rows, "metadata": meta,
             "immune_fraction_root_sha256": root,
-            "package_root_sha256": pkg_root}
+            "package_root_sha256": pkg_root,
+            "parent_contract_root_sha256": recomputed_parent}

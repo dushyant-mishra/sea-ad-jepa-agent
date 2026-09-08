@@ -288,7 +288,7 @@ def test_a_row_count_disagreeing_with_the_manifest_stops(world: World) -> None:
 def test_the_bound_rows_carry_exact_integers_not_a_fraction(world: World) -> None:
     numerator = _numerator(world)
     denominator, _ = _denominator(world)
-    rows = ifa.build_immune_fraction(numerator_by_donor=numerator,
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor=numerator,
                                      denominator_by_donor=denominator)
     assert [r["donor_id"] for r in rows] == ["D1", "D2"]
     for row in rows:
@@ -299,7 +299,7 @@ def test_the_bound_rows_carry_exact_integers_not_a_fraction(world: World) -> Non
 
 
 def test_the_fraction_is_derived_from_the_bound_integers(world: World) -> None:
-    rows = ifa.build_immune_fraction(numerator_by_donor={"D1": 2, "D2": 1},
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 2, "D2": 1},
                                      denominator_by_donor={"D1": 3, "D2": 3})
     assert ifa.immune_fraction_value(rows[0]) == pytest.approx(2 / 3)
     assert ifa.immune_fraction_value(rows[1]) == pytest.approx(1 / 3)
@@ -308,7 +308,7 @@ def test_the_fraction_is_derived_from_the_bound_integers(world: World) -> None:
 def test_a_donor_set_disagreement_stops() -> None:
     """The two counts come from independent authorities, so they must agree."""
     with pytest.raises(AssertionError) as excinfo:
-        ifa.build_immune_fraction(numerator_by_donor={"D1": 1, "D3": 1},
+        ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 1, "D3": 1},
                                   denominator_by_donor={"D1": 2, "D2": 2})
     assert ifa.STOP_DONOR_SETS_DIFFER in str(excinfo.value)
     assert "D3" in str(excinfo.value) and "D2" in str(excinfo.value)
@@ -316,7 +316,7 @@ def test_a_donor_set_disagreement_stops() -> None:
 
 def test_a_numerator_exceeding_its_denominator_stops() -> None:
     with pytest.raises(AssertionError) as excinfo:
-        ifa.build_immune_fraction(numerator_by_donor={"D1": 5},
+        ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 5},
                                   denominator_by_donor={"D1": 3})
     assert ifa.STOP_EXCEEDS_DENOMINATOR in str(excinfo.value)
 
@@ -325,7 +325,7 @@ def test_a_numerator_exceeding_its_denominator_stops() -> None:
 def test_a_nonpositive_count_stops(numerator, denominator) -> None:
     """A donor in the accepted membership has immune cells by construction."""
     with pytest.raises(AssertionError) as excinfo:
-        ifa.build_immune_fraction(numerator_by_donor={"D1": numerator},
+        ifa._build_immune_fraction_rows(numerator_by_donor={"D1": numerator},
                                   denominator_by_donor={"D1": denominator})
     assert ifa.STOP_NOT_POSITIVE in str(excinfo.value)
 
@@ -334,7 +334,7 @@ def test_a_nonpositive_count_stops(numerator, denominator) -> None:
 def test_a_count_that_is_not_an_exact_nonnegative_integer_stops(bad) -> None:
     """A float or a bool must not be coerced into an exact count."""
     with pytest.raises(AssertionError) as excinfo:
-        ifa.build_immune_fraction(numerator_by_donor={"D1": bad},
+        ifa._build_immune_fraction_rows(numerator_by_donor={"D1": bad},
                                   denominator_by_donor={"D1": 10})
     assert ifa.STOP_NOT_INTEGER in str(excinfo.value)
 
@@ -342,35 +342,35 @@ def test_a_count_that_is_not_an_exact_nonnegative_integer_stops(bad) -> None:
 # --- roots ------------------------------------------------------------------
 
 def test_the_root_is_deterministic_and_order_independent_of_input_mapping() -> None:
-    a = ifa.build_immune_fraction(numerator_by_donor={"D1": 1, "D2": 2},
+    a = ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 1, "D2": 2},
                                   denominator_by_donor={"D1": 10, "D2": 20})
-    b = ifa.build_immune_fraction(numerator_by_donor={"D2": 2, "D1": 1},
+    b = ifa._build_immune_fraction_rows(numerator_by_donor={"D2": 2, "D1": 1},
                                   denominator_by_donor={"D2": 20, "D1": 10})
     assert ifa.immune_fraction_root(a) == ifa.immune_fraction_root(b)
 
 
 def test_the_root_moves_when_any_count_moves() -> None:
-    base = ifa.build_immune_fraction(numerator_by_donor={"D1": 1, "D2": 2},
+    base = ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 1, "D2": 2},
                                      denominator_by_donor={"D1": 10, "D2": 20})
-    moved = ifa.build_immune_fraction(numerator_by_donor={"D1": 1, "D2": 3},
+    moved = ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 1, "D2": 3},
                                       denominator_by_donor={"D1": 10, "D2": 20})
     assert ifa.immune_fraction_root(base) != ifa.immune_fraction_root(moved)
 
 
 def test_a_numerator_denominator_swap_changes_the_root() -> None:
     """Framing must distinguish the two positions, not just the multiset."""
-    a = ifa.build_immune_fraction(numerator_by_donor={"D1": 2},
+    a = ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 2},
                                   denominator_by_donor={"D1": 10})
-    b = ifa.build_immune_fraction(numerator_by_donor={"D1": 10},
+    b = ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 10},
                                   denominator_by_donor={"D1": 10})
     assert ifa.immune_fraction_root(a) != ifa.immune_fraction_root(b)
 
 
 def test_donor_identity_collisions_do_not_share_a_root() -> None:
     """The delimiter collision class that broke earlier authority roots."""
-    a = ifa.build_immune_fraction(numerator_by_donor={"a|b": 1},
+    a = ifa._build_immune_fraction_rows(numerator_by_donor={"a|b": 1},
                                   denominator_by_donor={"a|b": 10})
-    b = ifa.build_immune_fraction(numerator_by_donor={"a": 1, "b": 1},
+    b = ifa._build_immune_fraction_rows(numerator_by_donor={"a": 1, "b": 1},
                                   denominator_by_donor={"a": 10, "b": 10})
     assert ifa.immune_fraction_root(a) != ifa.immune_fraction_root(b)
 
@@ -389,7 +389,7 @@ def test_the_typed_framing_refuses_a_float() -> None:
 # --- production invariants --------------------------------------------------
 
 def test_the_production_geometry_is_asserted() -> None:
-    rows = ifa.build_immune_fraction(
+    rows = ifa._build_immune_fraction_rows(
         numerator_by_donor={"D%d" % i: 1 for i in range(46)},
         denominator_by_donor={"D%d" % i: 2 for i in range(46)})
     with pytest.raises(AssertionError) as excinfo:
@@ -398,7 +398,7 @@ def test_the_production_geometry_is_asserted() -> None:
 
 
 def test_the_production_donor_count_is_asserted() -> None:
-    rows = ifa.build_immune_fraction(numerator_by_donor={"D1": 1},
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 1},
                                      denominator_by_donor={"D1": 2})
     with pytest.raises(AssertionError) as excinfo:
         ifa.assert_production_geometry(rows)
@@ -443,10 +443,10 @@ def test_the_formula_is_declared_a_successor_specification() -> None:
 def test_the_package_round_trips_and_binds_both_roots(tmp_path, world: World) -> None:
     numerator = _numerator(world)
     denominator, consumed = _denominator(world)
-    rows = ifa.build_immune_fraction(numerator_by_donor=numerator,
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor=numerator,
                                      denominator_by_donor=denominator)
     out = tmp_path / "pkg"
-    summary = ifa.build_authority(
+    summary = ifa._build_authority_from_rows(
         out, rows=rows, membership_sha256=hashlib.sha256(world.membership).hexdigest(),
         complete_manifest_sha256=hashlib.sha256(world.complete_manifest()).hexdigest(),
         selected_op31_blocks=2, consumed_meta_sha256=consumed,
@@ -454,7 +454,8 @@ def test_the_package_round_trips_and_binds_both_roots(tmp_path, world: World) ->
     loaded = ifa.load_authority(
         out,
         expected_package_root_sha256=summary["package_root_sha256"],
-        expected_immune_fraction_root_sha256=summary["immune_fraction_root_sha256"])
+        expected_immune_fraction_root_sha256=summary["immune_fraction_root_sha256"],
+        expected_parent_contract_root_sha256=summary["parent_contract_root_sha256"])
     assert [r["donor_id"] for r in loaded["rows"]] == ["D1", "D2"]
     assert loaded["metadata"]["fraction_stored"] is False
     assert loaded["metadata"]["real_execution_ready"] is False
@@ -463,10 +464,10 @@ def test_the_package_round_trips_and_binds_both_roots(tmp_path, world: World) ->
 def test_the_loader_refuses_a_wrong_package_root(tmp_path, world: World) -> None:
     numerator = _numerator(world)
     denominator, consumed = _denominator(world)
-    rows = ifa.build_immune_fraction(numerator_by_donor=numerator,
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor=numerator,
                                      denominator_by_donor=denominator)
     out = tmp_path / "pkg"
-    summary = ifa.build_authority(
+    summary = ifa._build_authority_from_rows(
         out, rows=rows, membership_sha256=hashlib.sha256(world.membership).hexdigest(),
         complete_manifest_sha256=hashlib.sha256(world.complete_manifest()).hexdigest(),
         selected_op31_blocks=2, consumed_meta_sha256=consumed,
@@ -475,17 +476,19 @@ def test_the_loader_refuses_a_wrong_package_root(tmp_path, world: World) -> None
         ifa.load_authority(
             out, expected_package_root_sha256="f" * 64,
             expected_immune_fraction_root_sha256=summary[
-                "immune_fraction_root_sha256"])
+                "immune_fraction_root_sha256"],
+            expected_parent_contract_root_sha256=summary[
+                "parent_contract_root_sha256"])
     assert ifa.STOP_ROOT_MISMATCH in str(excinfo.value)
 
 
 def test_a_tampered_registry_is_caught_on_load(tmp_path, world: World) -> None:
     numerator = _numerator(world)
     denominator, consumed = _denominator(world)
-    rows = ifa.build_immune_fraction(numerator_by_donor=numerator,
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor=numerator,
                                      denominator_by_donor=denominator)
     out = tmp_path / "pkg"
-    summary = ifa.build_authority(
+    summary = ifa._build_authority_from_rows(
         out, rows=rows, membership_sha256=hashlib.sha256(world.membership).hexdigest(),
         complete_manifest_sha256=hashlib.sha256(world.complete_manifest()).hexdigest(),
         selected_op31_blocks=2, consumed_meta_sha256=consumed,
@@ -496,17 +499,19 @@ def test_a_tampered_registry_is_caught_on_load(tmp_path, world: World) -> None:
         ifa.load_authority(
             out, expected_package_root_sha256=summary["package_root_sha256"],
             expected_immune_fraction_root_sha256=summary[
-                "immune_fraction_root_sha256"])
+                "immune_fraction_root_sha256"],
+            expected_parent_contract_root_sha256=summary[
+                "parent_contract_root_sha256"])
     assert ifa.STOP_ROOT_MISMATCH in str(excinfo.value)
 
 
 def test_an_absent_package_member_stops(tmp_path, world: World) -> None:
     numerator = _numerator(world)
     denominator, consumed = _denominator(world)
-    rows = ifa.build_immune_fraction(numerator_by_donor=numerator,
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor=numerator,
                                      denominator_by_donor=denominator)
     out = tmp_path / "pkg"
-    summary = ifa.build_authority(
+    summary = ifa._build_authority_from_rows(
         out, rows=rows, membership_sha256=hashlib.sha256(world.membership).hexdigest(),
         complete_manifest_sha256=hashlib.sha256(world.complete_manifest()).hexdigest(),
         selected_op31_blocks=2, consumed_meta_sha256=consumed,
@@ -516,7 +521,9 @@ def test_an_absent_package_member_stops(tmp_path, world: World) -> None:
         ifa.load_authority(
             out, expected_package_root_sha256=summary["package_root_sha256"],
             expected_immune_fraction_root_sha256=summary[
-                "immune_fraction_root_sha256"])
+                "immune_fraction_root_sha256"],
+            expected_parent_contract_root_sha256=summary[
+                "parent_contract_root_sha256"])
     assert ifa.STOP_PACKAGE_MEMBER in str(excinfo.value)
 
 
@@ -524,10 +531,10 @@ def test_writing_into_a_nonempty_directory_is_refused(tmp_path, world: World) ->
     out = tmp_path / "pkg"
     out.mkdir()
     (out / "stray.txt").write_text("x", encoding="utf-8")
-    rows = ifa.build_immune_fraction(numerator_by_donor={"D1": 1},
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor={"D1": 1},
                                      denominator_by_donor={"D1": 2})
     with pytest.raises(AssertionError) as excinfo:
-        ifa.build_authority(
+        ifa._build_authority_from_rows(
             out, rows=rows, membership_sha256="a" * 64,
             complete_manifest_sha256="b" * 64, selected_op31_blocks=1,
             consumed_meta_sha256={}, derivation_code_sha256=CODE_SHA,
@@ -540,10 +547,10 @@ def test_the_metadata_declares_the_covariate_is_not_an_eligibility_input(
     """It must never be mistaken for a technical_complete input."""
     numerator = _numerator(world)
     denominator, consumed = _denominator(world)
-    rows = ifa.build_immune_fraction(numerator_by_donor=numerator,
+    rows = ifa._build_immune_fraction_rows(numerator_by_donor=numerator,
                                      denominator_by_donor=denominator)
     out = tmp_path / "pkg"
-    ifa.build_authority(
+    ifa._build_authority_from_rows(
         out, rows=rows, membership_sha256=hashlib.sha256(world.membership).hexdigest(),
         complete_manifest_sha256=hashlib.sha256(world.complete_manifest()).hexdigest(),
         selected_op31_blocks=2, consumed_meta_sha256=consumed,
