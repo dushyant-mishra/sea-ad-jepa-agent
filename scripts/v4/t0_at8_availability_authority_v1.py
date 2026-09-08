@@ -150,19 +150,36 @@ def derive_availability(authenticated_source_bytes: bytes) -> list[dict[str, str
 
 
 def _write_flat_package(outdir: Path, payloads: Mapping[str, bytes]) -> str:
-    # The caller has already refused a non-empty directory; an existing empty
-    # one is fine and must not raise FileExistsError.
+    """Write a package whose manifest authenticates the caller's exact bytes.
+
+    The manifest is derived from the in-memory payload buffers before any member
+    is written. Hashing paths after writing creates another check/use interval:
+    a same-length substitution between `write_bytes` and `sha256_file` can make
+    the returned package root describe bytes the builder never intended.
+
+    By committing to `payloads` first, any subsequent filesystem substitution
+    makes the frozen directory fail verification against the returned roots
+    instead of silently becoming the authority.
+    """
     outdir.mkdir(parents=True, exist_ok=True)
-    for name, blob in payloads.items():
+
+    captured = {str(name): bytes(blob) for name, blob in payloads.items()}
+    manifest_buffer = io.StringIO()
+    writer = csv.writer(manifest_buffer, lineterminator="\n")
+    writer.writerow(["filename", "bytes", "sha256"])
+    for name in sorted(captured, key=lambda value: value.encode("utf-8")):
+        blob = captured[name]
+        writer.writerow([name, len(blob), hashlib.sha256(blob).hexdigest()])
+    manifest_bytes = manifest_buffer.getvalue().encode("utf-8")
+    root = hashlib.sha256(manifest_bytes).hexdigest()
+
+    frozen = {
+        **captured,
+        MANIFEST: manifest_bytes,
+        ROOT_FILE: (root + "\n").encode("utf-8"),
+    }
+    for name, blob in frozen.items():
         (outdir / name).write_bytes(blob)
-    with io.open(outdir / MANIFEST, "w", encoding="utf-8", newline="") as handle:
-        writer = csv.writer(handle, lineterminator="\n")
-        writer.writerow(["filename", "bytes", "sha256"])
-        for name in sorted(payloads, key=lambda value: value.encode("utf-8")):
-            member = outdir / name
-            writer.writerow([name, member.stat().st_size, sha256_file(member)])
-    root = sha256_file(outdir / MANIFEST)
-    (outdir / ROOT_FILE).write_bytes((root + "\n").encode("utf-8"))
     return root
 
 
