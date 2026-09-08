@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 from dataclasses import asdict, dataclass
 from typing import Any, Mapping, Sequence
 
@@ -105,6 +106,29 @@ class TeacherStudentConfig:
 
 
 PRODUCTION_CONFIG = TeacherStudentConfig()
+CUBLAS_WORKSPACE_CONFIG = ":4096:8"
+
+
+def configure_deterministic_cuda_environment() -> dict[str, Any]:
+    """Apply the one allowed CUDA determinism policy for healthy-teacher runs."""
+    if not torch.cuda.is_available():
+        raise RuntimeError("healthy-teacher production runtime requires CUDA")
+    existing = os.environ.get("CUBLAS_WORKSPACE_CONFIG")
+    if existing not in (None, CUBLAS_WORKSPACE_CONFIG):
+        raise RuntimeError(
+            "CUBLAS_WORKSPACE_CONFIG mismatch: "
+            f"expected {CUBLAS_WORKSPACE_CONFIG!r}, observed {existing!r}"
+        )
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = CUBLAS_WORKSPACE_CONFIG
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
+    torch.use_deterministic_algorithms(True)
+    return {
+        "cublas_workspace_config": CUBLAS_WORKSPACE_CONFIG,
+        "tf32_matmul": False,
+        "tf32_cudnn": False,
+        "deterministic_algorithms": True,
+    }
 
 
 def validate_production_config(config: TeacherStudentConfig) -> dict[str, Any]:
