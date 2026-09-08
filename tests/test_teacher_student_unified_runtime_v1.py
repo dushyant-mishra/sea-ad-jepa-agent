@@ -11,7 +11,10 @@ from scripts.agent.validate_healthy_teacher_execution_binding_overlay_v1 import 
 from scripts.v4.f1b_reference_candidates_v1 import reference_vulnerable
 from scripts.v4.f1b_successor_attack_suite_v1 import prove_polarity, run_suite
 from scripts.v4.teacher_student_f1b_attack_adapter_v1 import canonical_candidate
-from scripts.v4.healthy_teacher_continuation_runner_v1 import validate_continuation_authority
+from scripts.v4.healthy_teacher_continuation_runner_v1 import (
+    validate_continuation_authority,
+    validate_u40_qualification,
+)
 from sea_ad_jepa.v4.ipb_jepa import BlockPredictor, IPBEncoder
 from sea_ad_jepa.v4.teacher_student_checkpoint import (
     CHECKPOINT_SCHEMA,
@@ -338,4 +341,51 @@ def test_continuation_requires_exact_reviewed_u40_and_cannot_change_horizon() ->
             overlay_sha256="a" * 64,
             u40_checkpoint_sha256="b" * 64,
             u40_qualification_sha256="c" * 64,
+        )
+
+
+def _valid_u40_qualification() -> dict:
+    return {
+        "schema": "HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION_V1",
+        "updates": 40,
+        "u40_checkpoint": {"sha256": "b" * 64},
+        "biology_opened": False,
+        "automatic_continuation_authorized": False,
+        "overlay_sha256": "a" * 64,
+        "terminal": (
+            "PASS_HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION__FULL_CONTINUATION_STILL_UNAUTHORIZED"
+        ),
+    }
+
+
+def test_u40_qualification_self_binds_checkpoint_and_cannot_self_continue() -> None:
+    payload = _valid_u40_qualification()
+    validate_u40_qualification(
+        payload,
+        overlay_sha256="a" * 64,
+        u40_checkpoint_sha256="b" * 64,
+    )
+    attacked = copy.deepcopy(payload)
+    attacked["u40_checkpoint"]["sha256"] = "e" * 64
+    with pytest.raises(RuntimeError):
+        validate_u40_qualification(
+            attacked,
+            overlay_sha256="a" * 64,
+            u40_checkpoint_sha256="b" * 64,
+        )
+    attacked = copy.deepcopy(payload)
+    attacked["automatic_continuation_authorized"] = True
+    with pytest.raises(RuntimeError):
+        validate_u40_qualification(
+            attacked,
+            overlay_sha256="a" * 64,
+            u40_checkpoint_sha256="b" * 64,
+        )
+    attacked = copy.deepcopy(payload)
+    attacked["biology_opened"] = True
+    with pytest.raises(RuntimeError):
+        validate_u40_qualification(
+            attacked,
+            overlay_sha256="a" * 64,
+            u40_checkpoint_sha256="b" * 64,
         )
