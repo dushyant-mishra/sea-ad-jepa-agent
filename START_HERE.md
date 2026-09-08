@@ -7,27 +7,29 @@ Date: 2026-09-08
 **Use `main`.**
 
 The project was consolidated on 2026-09-08. T0, Teacher/Student V5, Target
-Discovery, F1/F1-B/C3, D1, sealed-holdout governance, and external-review
-histories are all now reachable from `main`.
+Discovery, F1/F1-B/C3, D1, holdout governance, and external-review histories are
+reachable from main.
 
-Do not infer current authority from an old branch name or old PASS/STOP file.
+Do not infer current authority from an old branch name or historical PASS/STOP
+file.
 
 ## Read in this order
 
 1. [`docs/agent/CURRENT_AUTHORITY_INDEX.md`](docs/agent/CURRENT_AUTHORITY_INDEX.md)
-2. [`docs/agent/CURRENT_SUPERSESSION_MAP.md`](docs/agent/CURRENT_SUPERSESSION_MAP.md)
-3. [`docs/agent/JEPA_GLOBAL_BLOCKER_REVIEW_20260908.md`](docs/agent/JEPA_GLOBAL_BLOCKER_REVIEW_20260908.md)
-4. [`docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json`](docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json)
-5. [`docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json`](docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json)
+2. [`docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`](docs/agent/memory-os/NEXT_ALLOWED_ACTION.json)
+3. [`docs/agent/memory-os/ACTIVE_STATE.md`](docs/agent/memory-os/ACTIVE_STATE.md)
+4. [`docs/agent/CURRENT_SUPERSESSION_MAP.md`](docs/agent/CURRENT_SUPERSESSION_MAP.md)
+5. [`docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json`](docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json)
+6. [`docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json`](docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json)
 
 ## Immediate critical path
 
 ```text
-close remaining T0 execution-substrate STOPs
+T0 three implementation/provenance STOPs
         +
-freeze V5 scientific/exposure authorities
+V5 remaining pre-execution authorities
         +
-finish final trainer mechanics binding
+final trainer mechanics binding
         ↓
 mechanics qualification
         ↓
@@ -35,22 +37,68 @@ full-reader exposure-defined teacher training
         ↓
 TD60 learned-teacher continuity
         ↓
-D1 / partial-evidence student downstream work
+D1 / partial-evidence student downstream
 ```
 
-## Current execution boundary
+## Current V5 reference
 
-Real T0, real F1, full-reader training, TD60 decision-bearing execution, real
-D1, reader_validation/oracle, foundation development/sealed, and unauthorized
-pathology access remain closed unless a newer explicit frozen authority opens
-them.
+Current prospective V5 source head:
+`c7b1663cc4390843978b973986edfe58f93320a3`
+
+The current V5 tree has been reconciled onto main.
+
+Already frozen:
+- scientific target V2;
+- relational proposal V2.
+
+Still open:
+- base proposal;
+- evidence/view/block schedule;
+- horizon/repeat exposure;
+- EMA half-life;
+- GPU RNG kernel parity;
+- hardware calibration;
+- integrated trainer;
+- mechanics qualification;
+- external V5 review.
+
+V5 training is not authorized.
+
+## Current T0 boundary
+
+T0 science is accepted, but production is still closed because:
+
+1. B2 logical root/closure/path chain is incomplete;
+2. source_library is not yet proven from an authenticated H5AD layers/UMIs read;
+3. age/sex candidate donor parent is not bound strongly enough.
+
+Therefore:
+- no production B2;
+- donor-role gate shut;
+- numeric confirmation AT8 closed;
+- `real_execution_ready=False`.
+
+## Protected-data boundary
+
+Real T0 confirmation, real F1 biological sweep, production training, TD60,
+real D1, reader_validation/oracle, foundation development/sealed, external
+holdout and pathology remain closed unless a newer explicit frozen authority
+opens them.
 
 ## Branch hygiene
 
-All old branch histories have been preserved in `main`.
+Historical branch histories are preserved in main. Old branch refs may be
+deleted only when their exact head SHA is verified to be an ancestor of current
+main.
 
-The safe branch-ref deletion list is:
+Use:
 [`docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.md`](docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.md)
 
-Deleting those old branch refs is repository hygiene only; it does not remove
-their commits because those commits are now ancestors of `main`.
+Deleting branch refs is hygiene only; do not delete tags or immutable package
+artifacts.
+
+## Permanent implementation-verifier rule
+
+All conclusion-bearing implementation is subject to
+[`MANDATORY_IMPLEMENTATION_VERIFIER_V1`](docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md)
+before expensive execution or scientific promotion.
