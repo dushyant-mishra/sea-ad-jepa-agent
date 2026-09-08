@@ -38,15 +38,33 @@ def _git(repo: Path, *args: str) -> str:
         capture_output=True, text=True).stdout.strip()
 
 
-def _split_bytes(rows: list[tuple[str, str, str]]) -> bytes:
+# The real split carries a molecular_address_index column, and the projection
+# now STOPs if it disagrees with the frozen registry rather than letting the
+# registry quietly win. So a fixture must declare the index it actually means.
+SPLIT_INDEX = {
+    "ENSG00000000003": 0,
+    "ENSG00000000005": 1,
+    "ENSG00000000419": 2,
+    "ENSG00000000457": 3,
+    "ENSG_NOT_IN_REGISTRY": "",
+}
+
+
+def _split_bytes(rows: list[tuple[str, str, str]],
+                 index_override: dict[str, object] | None = None) -> bytes:
     """`molecular_address_id, symbol, feature_role` in a deliberate order."""
+    lookup = dict(SPLIT_INDEX)
+    lookup.update(index_override or {})
     buffer = io.StringIO()
     writer = csv.writer(buffer, lineterminator="\n")
     writer.writerow(["molecular_address_index", "molecular_address_id", "symbol",
-                     "biotype", "feature_role", "split_namespace", "split_hash"])
-    for index, (address, symbol, role) in enumerate(rows):
-        writer.writerow([index, address, symbol, "protein_coding", role,
-                         "T0-MTG-FEATURE-SPLIT-V2", "deadbeef"])
+                     "biotype", "feature_role", "split_namespace", "split_hash",
+                     "source_feature_index"])
+    for address, symbol, role in rows:
+        # source_feature_index is deliberately bogus: it is provenance for a
+        # different feature universe and must never reach the projection.
+        writer.writerow([lookup.get(address, ""), address, symbol, "protein_coding",
+                         role, "T0-MTG-FEATURE-SPLIT-V2", "deadbeef", 999999])
     return buffer.getvalue().encode("utf-8")
 
 
@@ -170,12 +188,21 @@ def test_a_registry_with_a_duplicate_index_stops(world) -> None:
 
 
 def test_an_out_of_range_index_stops(world) -> None:
-    split, _registry, support = world
+    # Split, registry and support must all AGREE on the index here, otherwise a
+    # disagreement check fires first and the range guard is never exercised.
+    agreeing = _split_bytes(
+        [("ENSG00000000005", "TNMD", "SCORING"),
+         ("ENSG00000000003", "TSPAN6", "SCORING"),
+         ("ENSG00000000419", "DPM1", "COHERENCE_HOLDOUT")],
+        index_override={"ENSG00000000005": 99})
     bad = _registry_bytes([(0, "ENSG00000000003"), (99, "ENSG00000000005"),
                            (2, "ENSG00000000419")])
+    matching_support = _support_bytes([(0, "ENSG00000000003", True),
+                                       (99, "ENSG00000000005", True),
+                                       (2, "ENSG00000000419", True)])
     with pytest.raises(AssertionError, match="ADDRESS_INDEX_OUT_OF_RANGE"):
         fp.build_feature_projection(
-            split_bytes=split, registry_bytes=bad, support_bytes=support,
+            split_bytes=agreeing, registry_bytes=bad, support_bytes=matching_support,
             matrix_id=MATRIX_ID, address_space_size=3)
 
 
@@ -208,15 +235,49 @@ def test_an_unknown_feature_role_stops(world) -> None:
             matrix_id=MATRIX_ID)
 
 
-def test_source_feature_index_is_never_consulted() -> None:
-    """The provenance column is not an h5ad position and must not be used.
+def test_bogus_source_feature_index_values_cannot_reach_the_projection(world) -> None:
+    """Behavioural, replacing an earlier static substring check.
 
-    Four of four spot checks showed it landing on unrelated genes, so a module
-    that read it would silently project the wrong columns.
+    The substring test was the same fail-open class already condemned in F1B: it
+    passed on the text of the module rather than on what the module does, and it
+    broke as soon as an unrelated field name mentioned the token. Here every
+    split row carries `source_feature_index = 999999`, which is out of range for
+    the address space, and the emitted indices must still come exclusively from
+    the Stage81A2R registry.
     """
-    source = Path(fp.__file__).read_text(encoding="utf-8")
-    assert "source_feature_index" not in source.replace(
-        "source_feature_index is never", "")
+    split, registry, support = world
+    assert b"999999" in split, "the fixture must actually carry the bogus provenance"
+    built = _build(world)
+    assert [row["molecular_address_index"] for row in built["projection"]] == [1, 0, 2]
+    assert all(row["molecular_address_index"] != 999999 for row in built["projection"])
+    # And the projection carries no field derived from it.
+    for row in built["projection"]:
+        assert set(row) == {"split_row_index", "molecular_address_id",
+                            "molecular_address_index", "feature_role"}
+    assert built["source_feature_index_used"] is False
+
+
+def test_a_split_index_disagreeing_with_the_registry_stops(world) -> None:
+    """Ignoring the split's own index column let a disagreement pass silently."""
+    split, registry, support = world
+    conflicting = _split_bytes(
+        [("ENSG00000000003", "TSPAN6", "SCORING")],
+        index_override={"ENSG00000000003": 7})
+    with pytest.raises(AssertionError, match="SPLIT_INDEX_DISAGREES_WITH_REGISTRY"):
+        fp.build_feature_projection(
+            split_bytes=conflicting, registry_bytes=registry, support_bytes=support,
+            matrix_id=MATRIX_ID)
+
+
+def test_a_support_index_disagreeing_with_the_registry_stops(world) -> None:
+    split, registry, _support = world
+    conflicting = _support_bytes([(0, "ENSG00000000003", True),
+                                  (5, "ENSG00000000005", True),
+                                  (2, "ENSG00000000419", True)])
+    with pytest.raises(AssertionError, match="SUPPORT_INDEX_DISAGREES_WITH_REGISTRY"):
+        fp.build_feature_projection(
+            split_bytes=split, registry_bytes=registry, support_bytes=conflicting,
+            matrix_id=MATRIX_ID)
 
 
 # --------------------------------------------------------------------------
@@ -279,3 +340,154 @@ def test_the_wrong_pinned_commit_stops(pinned_repo) -> None:
         fp.resolve_pinned_blob(repo, first, "authority.csv", digest)).hexdigest() == digest
     with pytest.raises(AssertionError, match="PINNED_BLOB_DIGEST"):
         fp.resolve_pinned_blob(repo, second, "authority.csv", digest)
+
+
+# --------------------------------------------------------------------------
+# The authority root must bind what the rows MEAN, not only the rows.
+#
+# `projection_root_sha256` binds the ordered rows and nothing else, so the same
+# root still verified after altering the matrix id, the address-space size, the
+# split, registry or support digests, the schema, the role counts, or
+# `real_execution_ready`. Independent review found exactly that.
+# --------------------------------------------------------------------------
+BINDING = {
+    "split_member_path": "current/authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv",
+    "split_sha256": "a" * 64,
+    "registry_sha256": "b" * 64,
+    "support_gzip_sha256": "c" * 64,
+    "support_plain_sha256": "d" * 64,
+    "stage81a2r_pin": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b",
+}
+
+
+def _bound(world, **overrides):
+    binding = dict(BINDING)
+    binding.update(overrides.pop("binding", {}))
+    return _build(world, authority_binding=binding, **overrides)
+
+
+def test_an_unbound_projection_has_no_authority_root(world) -> None:
+    built = _build(world)
+    assert "feature_authority_root_sha256" not in built
+    with pytest.raises(AssertionError, match="FEATURE_AUTHORITY_BINDING_ABSENT"):
+        fp.feature_authority_root(built)
+
+
+def test_a_bound_projection_verifies_against_both_external_roots(world) -> None:
+    built = _bound(world)
+    checked = fp.assert_feature_authority_lawful(
+        built,
+        expected_feature_authority_root_sha256=built["feature_authority_root_sha256"],
+        expected_projection_root_sha256=built["projection_root_sha256"])
+    assert checked["features"] == 3
+
+
+@pytest.mark.parametrize("field,value", [
+    ("matrix_id", "sea_ad_ang_rna_final_2026"),
+    ("address_space_size", 999),
+    ("schema", "FORGED_SCHEMA"),
+    ("namespace", "FORGED_NAMESPACE"),
+    ("ordering", "ADDRESS_INDEX_ORDER"),
+    ("source_feature_index_used", True),
+])
+def test_mutating_authority_metadata_moves_the_authority_root(world, field, value) -> None:
+    """Each of these left the projection root untouched before this repair."""
+    built = _bound(world)
+    original_projection = built["projection_root_sha256"]
+    original_authority = built["feature_authority_root_sha256"]
+    forged = dict(built)
+    forged[field] = value
+    assert fp.projection_root(forged["projection"]) == original_projection, (
+        "the rows are untouched, which is exactly why row-only binding failed"
+    )
+    assert fp.feature_authority_root(forged) != original_authority
+    with pytest.raises(AssertionError, match="FEATURE_AUTHORITY_ROOT_MISMATCH"):
+        fp.assert_feature_authority_lawful(
+            forged,
+            expected_feature_authority_root_sha256=original_authority,
+            expected_projection_root_sha256=original_projection)
+
+
+@pytest.mark.parametrize("field", ["split_sha256", "registry_sha256",
+                                   "support_gzip_sha256", "support_plain_sha256",
+                                   "stage81a2r_pin", "split_member_path"])
+def test_mutating_a_bound_provenance_digest_moves_the_authority_root(world, field) -> None:
+    built = _bound(world)
+    forged = dict(built)
+    forged["authority_binding"] = dict(built["authority_binding"])
+    forged["authority_binding"][field] = "f" * 64
+    assert fp.feature_authority_root(forged) != built["feature_authority_root_sha256"]
+    with pytest.raises(AssertionError, match="FEATURE_AUTHORITY_ROOT_MISMATCH"):
+        fp.assert_feature_authority_lawful(
+            forged,
+            expected_feature_authority_root_sha256=built["feature_authority_root_sha256"],
+            expected_projection_root_sha256=built["projection_root_sha256"])
+
+
+def test_mutated_role_counts_move_the_authority_root(world) -> None:
+    built = _bound(world)
+    forged = dict(built)
+    forged["role_counts"] = {"SCORING": 99, "COHERENCE_HOLDOUT": 1}
+    assert fp.feature_authority_root(forged) != built["feature_authority_root_sha256"]
+
+
+def test_claiming_execution_readiness_is_refused(world) -> None:
+    built = _bound(world)
+    forged = dict(built)
+    forged["real_execution_ready"] = True
+    with pytest.raises(AssertionError, match="FEATURE_AUTHORITY_CLAIMS_READINESS"):
+        fp.assert_feature_authority_lawful(
+            forged,
+            expected_feature_authority_root_sha256=fp.feature_authority_root(forged),
+            expected_projection_root_sha256=built["projection_root_sha256"])
+
+
+def test_an_incomplete_binding_is_refused(world) -> None:
+    """The builder itself refuses a partial binding, which is stricter."""
+    for missing in BINDING:
+        partial = {key: value for key, value in BINDING.items() if key != missing}
+        with pytest.raises(AssertionError, match="FEATURE_AUTHORITY_BINDING_ABSENT"):
+            _build(world, authority_binding=partial)
+
+
+def test_the_production_constructor_enforces_the_frozen_geometry(
+    pinned_repo, world, tmp_path: Path
+) -> None:
+    """A silently different split must not pass as the accepted one."""
+    repo, digest = pinned_repo
+    commit = _git(repo, "rev-parse", "HEAD")
+    split, registry, support = world
+    import gzip
+    gz = gzip.compress(support)
+    (repo / "registry.csv").write_bytes(registry)
+    (repo / "support.csv.gz").write_bytes(gz)
+    _git(repo, "add", "registry.csv", "support.csv.gz")
+    _git(repo, "commit", "-m", "authorities")
+    pin = _git(repo, "rev-parse", "HEAD")
+
+    kwargs = dict(
+        repo=repo, split_bytes=split,
+        split_member_path="current/authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv",
+        expected_split_sha256=hashlib.sha256(split).hexdigest(),
+        stage81a2r_pin=pin,
+        registry_relative_path="registry.csv",
+        expected_registry_sha256=hashlib.sha256(registry).hexdigest(),
+        support_relative_path="support.csv.gz",
+        expected_support_gzip_sha256=hashlib.sha256(gz).hexdigest(),
+        matrix_id=MATRIX_ID,
+    )
+    # The three-feature fixture is not the production geometry.
+    with pytest.raises(AssertionError, match="PRODUCTION_GEOMETRY_UNEXPECTED"):
+        fp.build_production_feature_authority(**kwargs)
+
+    built = fp.build_production_feature_authority(
+        expect_production_geometry=False, **kwargs)
+    assert built["feature_authority_root_sha256"]
+    assert built["authority_binding"]["stage81a2r_pin"] == pin
+    assert built["authority_binding"]["split_sha256"] == hashlib.sha256(split).hexdigest()
+
+    # A wrong declared split digest stops before anything is resolved.
+    with pytest.raises(AssertionError, match="PINNED_BLOB_DIGEST"):
+        fp.build_production_feature_authority(
+            **{**kwargs, "expected_split_sha256": "0" * 64,
+               "expect_production_geometry": False})

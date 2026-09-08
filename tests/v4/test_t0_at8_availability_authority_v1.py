@@ -637,3 +637,73 @@ def test_a_subdirectory_in_the_package_is_refused(source, tmp_path: Path) -> Non
             outdir,
             expected_package_root_sha256=built["package_root_sha256"],
             expected_availability_root_sha256=built["availability_root_sha256"])
+
+
+def test_every_package_member_is_opened_at_most_once(source, tmp_path: Path,
+                                                      monkeypatch) -> None:
+    """The general property, not just the metadata case.
+
+    Any member that is opened twice is an authenticate-then-reuse interval, so
+    the invariant is stated over all four members rather than over the one that
+    happened to be exploited first.
+    """
+    path, digest, _ = source
+    outdir = tmp_path / "out"
+    built = av.build_availability_authority(
+        outdir=outdir, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+
+    counts: dict[str, int] = {}
+    real_open = Path.open
+
+    def counting_open(self, *args, **kwargs):
+        counts[self.name] = counts.get(self.name, 0) + 1
+        return real_open(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", counting_open)
+    av.load_availability_authority(
+        outdir,
+        expected_package_root_sha256=built["package_root_sha256"],
+        expected_availability_root_sha256=built["availability_root_sha256"])
+    monkeypatch.undo()
+
+    for member in (av.REGISTRY, av.METADATA, av.MANIFEST, av.ROOT_FILE):
+        assert counts.get(member, 0) <= 1, (member, counts)
+    assert max(counts.values()) == 1, counts
+
+
+def test_a_registry_swapped_after_capture_is_not_used(source, tmp_path: Path,
+                                                       monkeypatch) -> None:
+    """The registry variant of the same exploit."""
+    path, digest, _ = source
+    outdir = tmp_path / "out"
+    built = av.build_availability_authority(
+        outdir=outdir, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+    authentic_available = len(
+        [row for row in built["registry"] if row["AT8_available"] == "True"])
+
+    registry_path = outdir / av.REGISTRY
+    forged = registry_path.read_bytes().replace(b"True", b"False", 1)
+    assert forged != registry_path.read_bytes()
+
+    real_open = Path.open
+    seen = {"n": 0}
+
+    def swapping_open(self, *args, **kwargs):
+        if self.name == av.REGISTRY:
+            seen["n"] += 1
+            if seen["n"] >= 2:
+                real_open(self, "wb").write(forged)
+        return real_open(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", swapping_open)
+    loaded = av.load_availability_authority(
+        outdir,
+        expected_package_root_sha256=built["package_root_sha256"],
+        expected_availability_root_sha256=built["availability_root_sha256"])
+    monkeypatch.undo()
+
+    assert len([row for row in loaded["registry"]
+                if row["AT8_available"] == "True"]) == authentic_available
+    assert seen["n"] == 1
