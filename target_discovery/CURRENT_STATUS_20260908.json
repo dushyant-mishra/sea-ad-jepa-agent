@@ -6,10 +6,22 @@
   "training_authorized": false,
   "protected_populations_opened": false,
   "latest_decision_bearing_success": {
+    "experiment": "TD59",
+    "terminal": "TD59_NEAREST_HALF_MESOSCALE_RELATIONAL_RECURRENCE_SURVIVES__PILOT_FRONTIER_BRACKETED_BETWEEN_ONE_THIRD_AND_ONE_HALF__NO_TRAINING_AUTHORITY",
+    "cases_passed": 24,
+    "cases_total": 24,
+    "weakest_observed_minus_null_p95": 0.0011566307718604563,
+    "cases_beating_null_max": 22,
+    "cases_total_for_null_max_diagnostic": 24,
+    "commit": "91a782c92b5d0d02358e3481a08395819c77f905"
+  },
+  "foundational_relational_success": {
     "experiment": "TD57B",
     "terminal": "TD57B_INDEPENDENT_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER_SURVIVES__FREEZE_LOCAL_NEIGHBORHOOD_STABILITY_GATE_NEXT",
     "cases_passed": 24,
     "cases_total": 24,
+    "weakest_observed_minus_null_p95": 0.0375178074843,
+    "all_cases_beat_null_max": true,
     "commit": "e50f065bf46446460f900f6c12a94fc364fdfbf6"
   },
   "latest_decision_bearing_failure": {
@@ -30,14 +42,37 @@
     "decision_bearing": false,
     "artifact_sha256": "2b2cd90ec258f7cd0f7e910b51a8cffb4a944aa8f876cff897e0f8e9fc03dd87"
   },
+  "td59": {
+    "prospective_freeze_commit": "864651fbe56b973f6645866624513e827c2c54da",
+    "preoutcome_binding_commit": "f3eb86d26a306fe99ae2848dca89e9f2e9e25207",
+    "panel0_preserved_before_panel1_commit": "4a27575bb2bc37617624a266b888f8ec0d36080c",
+    "result_commit": "91a782c92b5d0d02358e3481a08395819c77f905",
+    "selector_fraction": "1/2",
+    "fresh_gene_ranking_positions": "6144..9215",
+    "panels": 2,
+    "sources": ["HVS", "NPH52", "SEA_AD"],
+    "cases_passed": 24,
+    "cases_total": 24,
+    "all_six_source_panel_replays_byte_identical": true,
+    "distance_kernel_max_abs_diff": 0.0,
+    "weakest_observed_minus_null_p95": 0.0011566307718604563,
+    "cases_beating_null_max": 22,
+    "cases_total_for_null_max_diagnostic": 24,
+    "interpretation": "Fresh nearest-half mesoscale views survive the frozen p95 criterion across both panels/all sources. This supports broad/mesoscale relation matching but is weaker than TD57B because two Panel-0 HVS cases do not beat null max.",
+    "important_non_equivalence": "TD57C and TD59 use different prospectively frozen molecular views. Their results operationally bracket the pilot designs but do not estimate a precise monotone biological transition at exactly one-third versus one-half.",
+    "locality_fraction_tuning_on_50k_closed": true
+  },
   "current_interpretation": [
     "Disjoint-gene concordance geometry is real and cross-source reproducible (TD56).",
-    "Scale-free anchored ordering of that geometry is donor-block recurrent across two new independent panels and all three sources (TD57B).",
+    "Scale-free anchored ordering is donor-block recurrent across two independent panels and all three sources with strong null separation (TD57B).",
     "Nearest-one-third local neighborhoods selected by an independent concordance view are not uniformly recurrent in HVS (TD57C).",
+    "A prospectively fixed nearest-half mesoscale neighborhood survives two completely fresh molecular panels and all three sources under the frozen p95 criterion (TD59).",
+    "TD59 is materially weaker than TD57B in HVS: 22/24, not 24/24, beat null max and the weakest p95 margin is +0.0011566307718604563.",
     "Do not make nearest-third hard/local mining the primary relational loss.",
-    "A broader/mesoscale relational objective remains scientifically alive."
+    "A broad/mesoscale or affinity-weighted relational objective is scientifically alive.",
+    "Do not tune any additional locality fraction on the 50k archive."
   ],
-  "next_question": "Prospectively determine a locality/mesoscale frontier or otherwise qualify a global+mesoscale relational objective without post-hoc choosing a locality on already-seen genes.",
+  "next_question": "Prospectively freeze and run the learned-teacher disjoint-view relational continuity gate: a learned EMA teacher must reproduce donor-recurrent TD56/TD57B-style geometry above matched wrong-cell nulls before its latent geometry can become scientific supervision.",
   "teacher_student_integration": {
     "branch": "production/teacher-student-unified-v1-20260907",
     "live_branch_head": "76bf7912cc621756fdbbd82218025d8e4c00a057",
@@ -46,6 +81,6 @@
     "self_contained_review_zip_sha256": "8bcec10f60988df9bb34c23f89c8e0918222776be70dca5bce98156f1c223d98",
     "self_contained_review_package_root": "0720214288dfe0a4446b418bbd8bc6f21b34c54385cec57195371b687e4a1a71",
     "execution_authorized": false,
-    "note": "V3 mechanics are frozen. Prospective relational extension is non-active and must not be promoted until Target Discovery gates are satisfied."
+    "note": "V3 mechanics remain frozen and untouched. Its prospective relational extension is non-active. No u1 or neural training is authorized by TD59."
   }
 }
