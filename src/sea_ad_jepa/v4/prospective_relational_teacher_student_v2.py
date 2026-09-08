@@ -40,10 +40,8 @@ class RelationalLossWeights:
         values = (float(self.normalized_distance), float(self.angle))
         if not all(torch.isfinite(torch.tensor(v)) for v in values):
             raise ValueError("relational loss weights must be finite")
-        if self.normalized_distance < 0 or self.angle < 0:
-            raise ValueError("relational loss weights must be non-negative")
-        if self.normalized_distance + self.angle != 1.0:
-            raise ValueError("relational loss weights must sum exactly to 1")
+        if values != (0.5, 0.5):
+            raise ValueError("relational loss weights are frozen exactly at 0.5/0.5")
 
 
 @dataclass(frozen=True)
@@ -189,10 +187,16 @@ def relational_geometry_loss(
         student_cell_state, group_ids, pair_mask, distance_scale=scale
     )
     distance_loss = F.smooth_l1_loss(
-        student_distance[pair_mask], teacher_distance[pair_mask], reduction="mean"
+        student_distance[pair_mask],
+        teacher_distance[pair_mask],
+        reduction="mean",
+        beta=1.0,
     )
     angle_loss = F.smooth_l1_loss(
-        student_cosine[pair_mask], teacher_cosine[pair_mask], reduction="mean"
+        student_cosine[pair_mask],
+        teacher_cosine[pair_mask],
+        reduction="mean",
+        beta=1.0,
     )
     total = weights.normalized_distance * distance_loss + weights.angle * angle_loss
     return {
