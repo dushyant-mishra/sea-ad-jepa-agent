@@ -10,7 +10,9 @@
     "t0_global_review_merge": "baeb2aef188cefeba008241bdbe3ababce35d888",
     "historical_octopus_absorption": "7dbbc9d7149bc009252b01f3da2d67ee6449a9ef",
     "main_promotion_merge": "43f1610db41a0e084c35bf0a2365ce706e49c1fc",
-    "v5_current_tree_reconciliation": "def8919796e4b4a4de122a85f05964f017784b7d"
+    "v5_current_tree_reconciliation": "def8919796e4b4a4de122a85f05964f017784b7d",
+    "v5_proposal_horizon_merge": "cf082b763f451bdc288262c8c54d6ca755770abb",
+    "latest_external_review_history_absorption": "0a1b32a889dcecf33775cda02d99462ba28a50f2"
   },
   "historical_divergent_heads_absorbed": 30,
   "stale_tree_reactivated": false,
@@ -20,13 +22,15 @@
   "execution_authority_changed": false,
   "safe_delete_list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
   "safe_non_main_branch_count": 57,
-  "current_v5_source_head": "c7b1663cc4390843978b973986edfe58f93320a3",
+  "current_v5_source_head": "028989a5f1504e4d6403a44e7c90d37172c54150",
   "current_v5_tree_reconciled": true,
   "stale_v5_tree_reactivated": false,
-  "note": "Safe-delete membership must be regenerated after the final governance merge because any newly created governance branch must itself become an ancestor of main before deletion.",
+  "note": "All 57 current non-main branch heads are absorbed into main. The safe-delete list was regenerated after the V5 proposal/horizon continuation and latest external-review history absorption.",
   "final_governance_merge": "c3f85fbda1e34d87a3d1b489f4f1fcb1c0dd2333",
   "safe_delete_set_finalized_commits": [
     "72cd88c396bbb5bd5e48d3931a59b88e799d7526",
     "369ed418b978c5445b3f4eb438ecf66a10ab0c12"
-  ]
+  ],
+  "safe_delete_set_revalidated_main_sha": "0a1b32a889dcecf33775cda02d99462ba28a50f2",
+  "safe_delete_set_revalidated_non_main_branches": 57
 }
