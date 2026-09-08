@@ -408,6 +408,95 @@ def _mask_sha256(mask: torch.Tensor) -> str:
     return hashlib.sha256(mask.detach().cpu().numpy().tobytes()).hexdigest()
 
 
+def execute_scaled_backward(harness: Any) -> None:
+    """Execute the scaled-backward seam used by production and F1-B attack 13."""
+    harness.scaler_scale_backward()
+
+
+def execute_post_backward_protocol(harness: Any) -> None:
+    """One fail-closed post-accumulation protocol shared with the attack harness."""
+    harness.scaler_unscale()
+    harness.gradient_gate()
+    harness.optimizer_step()
+    harness.ema_step()
+
+
+def production_amp_smoke(harness: Any) -> dict[str, str]:
+    """Behavioral F1-B seam: exercise the same backward/post-backward protocol."""
+    with harness.autocast():
+        harness.forward()
+    execute_scaled_backward(harness)
+    execute_post_backward_protocol(harness)
+    return {"status": "executed"}
+
+
+class _ScaledLossBackwardHarness:
+    def __init__(self, *, scaler: Any, loss: torch.Tensor, device_type: str) -> None:
+        self.scaler = scaler
+        self.loss = loss
+        self.device_type = device_type
+
+    def scaler_scale_backward(self) -> None:
+        # C2 repair: scaled backward is explicitly outside fp16 autocast.
+        with torch.autocast(device_type=self.device_type, enabled=False):
+            self.scaler.scale(self.loss).backward()
+
+
+class _ProductionPostBackwardHarness:
+    """Real optimizer/EMA adapter for the shared post-backward protocol."""
+
+    def __init__(
+        self,
+        *,
+        modules: TeacherStudentModules,
+        teacher_before: Mapping[str, torch.Tensor],
+        config: TeacherStudentConfig,
+    ) -> None:
+        self.modules = modules
+        self.teacher_before = teacher_before
+        self.config = config
+        self.gradient_report: dict[str, Any] | None = None
+        self.moment_report: dict[str, Any] | None = None
+        self.ema_report: dict[str, Any] | None = None
+        self.step_before: int | None = None
+        self.step_after: int | None = None
+
+    def scaler_unscale(self) -> None:
+        self.modules.scaler.unscale_(self.modules.optimizer)
+
+    def gradient_gate(self) -> None:
+        self.gradient_report = enforce_unscaled_gradient_gates(self.modules)
+
+    def optimizer_step(self) -> None:
+        sentinel = dict(self.modules.online.named_parameters())[FROZEN_BACKBONE_REGISTRY[0]]
+        self.step_before = _optimizer_step_value(self.modules.optimizer, sentinel)
+        self.modules.scaler.step(self.modules.optimizer)
+        self.modules.scaler.update()
+        self.step_after = _optimizer_step_value(self.modules.optimizer, sentinel)
+        if self.step_after != self.step_before + 1:
+            raise RuntimeError(
+                f"optimizer step not proved: before={self.step_before} after={self.step_after}"
+            )
+        self.moment_report = enforce_adam_moments(self.modules)
+
+    def ema_step(self) -> None:
+        if self.step_after is None:
+            raise RuntimeError("EMA before proved optimizer step")
+        self.modules.ema_controller.after_successful_optimizer_step(
+            momentum=self.config.ema_momentum
+        )
+        if self.modules.ema_controller.global_update_step != self.step_after:
+            raise RuntimeError("EMA/global optimizer step counter mismatch")
+        if self.modules.ema_controller.ema_update_count != self.step_after:
+            raise RuntimeError("EMA update count mismatch")
+        self.ema_report = _verify_ema_equation(
+            before=self.teacher_before,
+            online=self.modules.online,
+            teacher=self.modules.teacher,
+            momentum=self.config.ema_momentum,
+        )
+
+
 def validate_training_batch(
     expression: torch.Tensor,
     measurement_mask: torch.Tensor,
@@ -520,48 +609,38 @@ def production_update(
                     raise RuntimeError("nonfinite JEPA loss")
                 scaled_loss = raw_loss / (config.views * microbatches)
 
-                with torch.autocast(device_type="cuda", enabled=False):
-                    events.append("backward_autocast_disabled")
-                    modules.scaler.scale(scaled_loss).backward()
+                events.append("backward_autocast_disabled")
+                execute_scaled_backward(
+                    _ScaledLossBackwardHarness(
+                        scaler=modules.scaler,
+                        loss=scaled_loss,
+                        device_type=modules.device.type,
+                    )
+                )
 
                 loss_total += float(raw_loss.detach()) / (config.views * microbatches)
                 del block, student_state, prediction, teacher_blocks, raw_loss, scaled_loss
             del teacher_state, values, measured, gene_ids
 
-    modules.scaler.unscale_(modules.optimizer)
-    events.append("optimizer_unscaled")
-    gradient_report = enforce_unscaled_gradient_gates(modules)
-    events.append("mandatory_gradient_gate")
-
-    sentinel = dict(modules.online.named_parameters())[FROZEN_BACKBONE_REGISTRY[0]]
-    step_before = _optimizer_step_value(modules.optimizer, sentinel)
-    modules.scaler.step(modules.optimizer)
-    modules.scaler.update()
-    step_after = _optimizer_step_value(modules.optimizer, sentinel)
-    if step_after != step_before + 1:
-        raise RuntimeError(
-            f"optimizer step not proved: before={step_before} after={step_after}"
-        )
-    events.append("optimizer_step_proved")
-
-    moment_report = enforce_adam_moments(modules)
-    events.append("adam_moments_live")
-
-    modules.ema_controller.after_successful_optimizer_step(
-        momentum=config.ema_momentum
+    post = _ProductionPostBackwardHarness(
+        modules=modules,
+        teacher_before=teacher_before,
+        config=config,
     )
-    events.append("ema_after_valid_step")
-    if modules.ema_controller.global_update_step != step_after:
-        raise RuntimeError("EMA/global optimizer step counter mismatch")
-    if modules.ema_controller.ema_update_count != step_after:
-        raise RuntimeError("EMA update count mismatch")
-    ema_report = _verify_ema_equation(
-        before=teacher_before,
-        online=modules.online,
-        teacher=modules.teacher,
-        momentum=config.ema_momentum,
-    )
-    events.append("ema_equation_verified")
+    execute_post_backward_protocol(post)
+    events.extend([
+        "optimizer_unscaled",
+        "mandatory_gradient_gate",
+        "optimizer_step_proved",
+        "adam_moments_live",
+        "ema_after_valid_step",
+        "ema_equation_verified",
+    ])
+    gradient_report = post.gradient_report
+    moment_report = post.moment_report
+    ema_report = post.ema_report
+    step_before = post.step_before
+    step_after = post.step_after
 
     return {
         "schema": "teacher-student-update-v1",
