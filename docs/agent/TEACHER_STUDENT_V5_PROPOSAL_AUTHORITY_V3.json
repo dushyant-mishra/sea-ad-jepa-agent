@@ -68,9 +68,12 @@
     "sha256": "5969202b44d4c56bd5d3701b1b84eab2a251ea76b5a9e8bb7fa4732a971c1fc7"
   },
   "reader_fit_group_counts": {
-    "path": "docs/agent/READER_FIT_DONOR_OPERATOR_COUNTS_V1.csv",
+    "decoded_csv_sha256": "e79c03765b8c88a8755d37313b76fd384d8a3f1221c2ee79af0a2b7af0a86d28",
+    "decoded_gzip_sha256": "e427b56363b93aa2352f599c58bd0bed9d4f19f193ad20bdf5ab4c0b77bb3aee",
+    "path": "docs/agent/READER_FIT_DONOR_OPERATOR_COUNTS_V1.csv.gz.b64",
     "rows": 1400,
-    "sha256": "e79c03765b8c88a8755d37313b76fd384d8a3f1221c2ee79af0a2b7af0a86d28"
+    "transport_encoding": "BASE64_OF_DETERMINISTIC_GZIP_MTIME0",
+    "transport_sha256": "be7a6ef46a523532a95a364ad8e601f9d764a1fcd7cde55d5ca781e2a8467cb1"
   },
   "relational": {
     "importance_correction_required": false,
