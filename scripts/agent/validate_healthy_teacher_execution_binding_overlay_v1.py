@@ -15,6 +15,12 @@ from sea_ad_jepa.v4.teacher_student_movement import source_sha256 as movement_so
 
 BASE_ROOT = "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534"
 PREDICTOR_REGISTRY_SHA256 = "43922a62a885cbedee22c06363a8355c6561dad43c95f0a43147fc2f4cbe3592"
+INTEGRATED_SUCCESSOR_REVIEW_PASS_TERMINAL = (
+    "PASS_TEACHER_STUDENT_UNIFIED_V4_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED"
+)
+OVERLAY_PASS_TERMINAL = (
+    "PASS_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY__EXECUTION_STILL_UNAUTHORIZED"
+)
 
 
 def _sha(value: Any) -> bool:
@@ -45,10 +51,8 @@ def validate_overlay(payload: dict[str, Any]) -> dict[str, Any]:
         failures.append("integrated successor source root invalid")
 
     review = payload.get("independent_review", {})
-    if not str(review.get("terminal", "")).startswith(
-        "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW"
-    ):
-        failures.append("integrated successor independent PASS absent")
+    if review.get("terminal") != INTEGRATED_SUCCESSOR_REVIEW_PASS_TERMINAL:
+        failures.append("integrated successor independent PASS terminal mismatch")
     if not _sha(review.get("artifact_sha256")):
         failures.append("independent review artifact SHA invalid")
     if review.get("reviewed_commit") != successor.get("commit"):
@@ -77,16 +81,14 @@ def validate_overlay(payload: dict[str, Any]) -> dict[str, Any]:
 
     if payload.get("execution_authorized") is not False:
         failures.append("binding overlay must keep execution_authorized=false")
-    if payload.get("terminal") != (
-        "PASS_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY__EXECUTION_STILL_UNAUTHORIZED"
-    ):
+    if payload.get("terminal") != OVERLAY_PASS_TERMINAL:
         failures.append("overlay terminal mismatch")
 
     return {
         "schema": "healthy-teacher-execution-binding-overlay-validation-v1",
         "failures": failures,
         "terminal": (
-            "PASS_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY__EXECUTION_STILL_UNAUTHORIZED"
+            OVERLAY_PASS_TERMINAL
             if not failures
             else "STOP_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_INVALID"
         ),
@@ -106,7 +108,7 @@ def main() -> int:
     payload = json.loads(args.overlay.read_text(encoding="utf-8"))
     result = validate_overlay(payload)
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0 if result["terminal"].startswith("PASS_") else 2
+    return 0 if result["terminal"] == OVERLAY_PASS_TERMINAL else 2
 
 
 if __name__ == "__main__":
