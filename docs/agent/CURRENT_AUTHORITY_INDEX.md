@@ -18,7 +18,7 @@ Branch names do not confer authority.
 | Lane | Current source/reference head | Current status |
 |---|---|---|
 | T0 V20 implementation | `24b2c9ffc0ab2d63061c20af8829bcb86114b11a` | science accepted; implementation still STOP |
-| Teacher/Student V5 data-first | `c7b1663cc4390843978b973986edfe58f93320a3` | current prospective successor; 66/66 active tests; no training authority |
+| Teacher/Student V5 data-first | `028989a5f1504e4d6403a44e7c90d37172c54150` | current prospective successor; 66/66 active tests on frozen core plus proposal/horizon continuation; no training authority |
 | Target Discovery | `26c3cfaba77bb8e5935e76473ab1fd5f90a562bf` | relational-objective qualification; TD60 waiting |
 | F1 real producer/replay | `a884f558970479278bc21f3f2274dc24bee89758` | prefreeze; real sweep unauthorized |
 | F1-B/C3 mechanics successor | `c0eaf2acc0a5edc837fb2a48f726b9d626772f06` | mechanics evidence only |
@@ -26,10 +26,7 @@ Branch names do not confer authority.
 | population/sealed-holdout registry | `14c2d586239aa5af15ed7cd70fdfb196d1c99f5f` | frozen and healthy |
 | external project review | `557a4344df2fa04526c82146a730413c992b5ad2` plus later main governance | blocker input, not execution authority |
 
-The current V5 tree from `c7b1663...` was restored onto consolidated main by
-the V5 tree-reconciliation merge. Later proof/helper modules preserved from
-other V5 branches remain non-authoritative unless named by the active V5
-selection/authority.
+The frozen 66-pass V5 core remains rooted at `c7b1663...` / materialization `71484ab99d276d7251836c109885d22ab4e7abb1` / prototype root `9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad`. The current continuation head is `028989a5f1504e4d6403a44e7c90d37172c54150`, which adds the outcome-blind base proposal V3 and one-reader-fit-population-equivalent presentation-horizon authority without changing the frozen 66-pass prototype.
 
 ## P0 — T0
 
@@ -71,16 +68,19 @@ Already frozen prospectively:
 
 - V5 scientific target V2;
 - relational proposal V2, with proposal = target for that relational route;
+- base proposal V3: donor-uniform scientific target with explicit p/q correction under the frozen convex proposal family;
+- presentation horizon V1: exactly 4,553,407 presentations, no automatic extension, with prospectively frozen repeat/group-coverage/ESS/weight-ratio constraints;
 - donor-primary scientific objective direction.
 
 Still not frozen / not production-ready:
 
-- base-cell proposal/schedule;
 - support-aware evidence/view/block schedule;
+- finite relational triplet budget;
+- update size / token budget / microbatch execution geometry;
 - GPU Philox production kernel and exact reference parity;
 - hardware cost / memory calibration;
-- total presentation horizon and repeat-exposure policy;
 - EMA half-life in exposure units;
+- biological learned-teacher checkpoint milestone within the frozen one-population-equivalent horizon;
 - integrated mechanically qualified production trainer;
 - external V5 review terminal.
 
