@@ -5,10 +5,7 @@
     "mandatory_implementation_verifier_v1": true,
     "self_promotion_forbidden": true
   },
-  "allowed_tracked_modifications": [
-    "docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json",
-    "docs/agent/memory-os/DECISION_REGISTRY.csv"
-  ],
+  "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
   "assets": {
     "c2_closure_package": {
