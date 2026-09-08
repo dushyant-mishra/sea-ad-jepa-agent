@@ -21,7 +21,9 @@ from sea_ad_jepa.v4.teacher_student_runtime import (
     BACKBONE_REGISTRY_SHA256,
     FROZEN_BACKBONE_REGISTRY,
     FROZEN_PREDICTOR_REGISTRY,
+    F1B_ATTACK_AUTHORITY_ROOT,
     HEALTHY_TEACHER_BASE_ROOT,
+    POPULATION_ACCESS_ROOT,
     PREDICTOR_REGISTRY_SHA256,
     PRODUCTION_CONFIG,
     TeacherStudentConfig,
@@ -139,20 +141,29 @@ def test_movement_zero_baseline_cannot_pass_without_real_movement() -> None:
     assert live["passed"] is True
 
 
-def test_checkpoint_header_binds_config_authorities_and_counters() -> None:
-    authorities = {
-        "healthy_teacher_base_root": "a" * 64,
-        "population_access_root": "b" * 64,
-        "f1b_attack_authority_root": "c" * 64,
+def _checkpoint_authorities() -> dict[str, str]:
+    return {
+        "healthy_teacher_base_root": HEALTHY_TEACHER_BASE_ROOT,
+        "population_access_root": POPULATION_ACCESS_ROOT,
+        "f1b_attack_authority_root": F1B_ATTACK_AUTHORITY_ROOT,
         "integrated_successor_source_root": "d" * 64,
+        "integrated_successor_commit": "1" * 40,
+        "predictor_mandatory_registry_sha256": PREDICTOR_REGISTRY_SHA256,
+        "movement_adjudicator_source_sha256": "6" * 64,
     }
+
+
+def test_checkpoint_header_binds_config_authorities_and_counters() -> None:
+    authorities = _checkpoint_authorities()
     payload = {
         "schema": CHECKPOINT_SCHEMA,
+        "phase": "U0",
         "config_sha256": PRODUCTION_CONFIG.digest(),
         "authority_bindings": authorities,
         "schedule_cursor": 0,
         "global_update_step": 0,
         "ema_update_count": 0,
+        "accumulation_position": 0,
     }
     validate_checkpoint_header(
         payload,
@@ -169,12 +180,36 @@ def test_checkpoint_header_binds_config_authorities_and_counters() -> None:
             expected_authorities=authorities,
         )
     attacked = copy.deepcopy(payload)
+    attacked["authority_bindings"]["healthy_teacher_base_root"] = "a" * 64
+    with pytest.raises(RuntimeError):
+        validate_checkpoint_header(
+            attacked,
+            config=PRODUCTION_CONFIG,
+            expected_authorities=attacked["authority_bindings"],
+        )
+    attacked = copy.deepcopy(payload)
     attacked["ema_update_count"] = 1
     with pytest.raises(RuntimeError):
         validate_checkpoint_header(
             attacked,
             config=PRODUCTION_CONFIG,
             expected_authorities=authorities,
+        )
+    attacked = copy.deepcopy(payload)
+    attacked["schedule_cursor"] = 1
+    with pytest.raises(RuntimeError):
+        validate_checkpoint_header(
+            attacked,
+            config=PRODUCTION_CONFIG,
+            expected_authorities=authorities,
+        )
+    attacked = copy.deepcopy(payload)
+    attacked["authority_bindings"].pop("integrated_successor_commit")
+    with pytest.raises(RuntimeError):
+        validate_checkpoint_header(
+            attacked,
+            config=PRODUCTION_CONFIG,
+            expected_authorities=attacked["authority_bindings"],
         )
 
 
