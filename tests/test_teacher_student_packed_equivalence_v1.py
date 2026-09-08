@@ -4,7 +4,9 @@ from sea_ad_jepa.v4.ipb_jepa import IPBEncoder, BlockPredictor, TargetBlocks, ga
 from sea_ad_jepa.v4.teacher_student_runtime import sample_uniform_target_blocks
 from sea_ad_jepa.v5.data_first_geometry import pack_valid_tokens, mean_loss_weight
 
+
 def _packed_teacher_blocks(blocks: TargetBlocks, measured_ids: torch.Tensor) -> TargetBlocks:
+    # measured_ids is [batch, measured_count], sorted canonical IDs.
     local=torch.empty_like(blocks.indices)
     for row in range(len(measured_ids)):
         safe=blocks.indices[row].clamp_min(0)
@@ -17,10 +19,12 @@ def _packed_teacher_blocks(blocks: TargetBlocks, measured_ids: torch.Tensor) -> 
         fallback_counts=blocks.fallback_counts.clone(),
     )
 
+
 def test_dense_and_packed_valid_outputs_and_block_loss_match_in_eval_mode():
     torch.manual_seed(41)
     vocab=64
     batch=2
+    # One operator-homogeneous teacher support: same measured canonical IDs in both rows.
     measured=torch.zeros((batch,vocab),dtype=torch.bool)
     measured[:, torch.tensor([0,1,2,3,5,7,8,10,12,13,14,17,19,22,24,26,29,31,34,37,40,44,47,51,55,58,60,63])] = True
     expression=torch.randn(batch,vocab)
@@ -62,6 +66,7 @@ def test_dense_and_packed_valid_outputs_and_block_loss_match_in_eval_mode():
     assert torch.allclose(dense_pred,packed_pred,atol=4e-6,rtol=4e-6)
     assert torch.allclose(dense_target,packed_target,atol=4e-6,rtol=4e-6)
     assert abs(float(dense_loss-packed_loss)) < 2e-6
+
 
 def test_target_element_weighting_is_partition_invariant_for_unequal_microbatches():
     torch.manual_seed(9)
