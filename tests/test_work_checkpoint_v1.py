@@ -305,13 +305,28 @@ def test_a_missing_authority_stops_before_any_digest(git_repo: Path) -> None:
     declaration of that constant would validate.
     """
     empty_digest = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    refusals = ("AUTHORITY_MISSING", "AUTHORITY_LOCAL_NOT_DECLARED_UNTRACKED")
+
+    # Absent from the bound tree and never declared as a local authority.
     state = _state(git_repo)
     state["authorities"] = [
         {"path": "no/such/authority.txt", "sha256": empty_digest, "status": "FROZEN_AUTHORITY"}
     ]
     checkpoint = build_checkpoint(git_repo, git_repo, state)
     errors = validate_checkpoint(checkpoint, git_repo, git_repo)
-    assert any(error.startswith("AUTHORITY_MISSING") for error in errors)
+    assert any(error.startswith(refusals) for error in errors), errors
+    assert not any(error.startswith("AUTHORITY_HASH_MISMATCH") for error in errors)
+
+    # Declared as a local authority and listed as untracked, but genuinely
+    # absent: the disk branch must also refuse before hashing.
+    state = _state(git_repo)
+    state["authorities"].append(
+        {"path": "vanished.json", "sha256": empty_digest, "status": "LOCAL_AUTHORITY"}
+    )
+    state["allowed_untracked_files"] = ["vanished.json"]
+    checkpoint = build_checkpoint(git_repo, git_repo, state)
+    errors = validate_checkpoint(checkpoint, git_repo, git_repo)
+    assert any(error.startswith(refusals) for error in errors), errors
     assert not any(error.startswith("AUTHORITY_HASH_MISMATCH") for error in errors)
 
 
@@ -409,3 +424,211 @@ def test_the_bound_head_is_used_not_a_later_commit(tmp_path: Path) -> None:
     assert any(error.startswith("HEAD_MISMATCH") for error in errors)
     assert not any(error.startswith("AUTHORITY_HASH_MISMATCH") for error in errors)
     assert not any(error.startswith("AUTHORITY_DIRTY") for error in errors)
+
+
+# ---------------------------------------------------------------------------
+# Authority path identity
+#
+# An independent review found two fail-closed defects in the blob-authority
+# repair, and both were reproduced before this suite was written.
+#
+# First, the declared path reached Git as a pathspec rather than as an
+# identity, so `:authority.txt`, `:(literal)authority.txt` and
+# `./authority.txt` all resolved to the committed `authority.txt` blob and the
+# returned path was never compared with the declared one. Three spellings named
+# one authority.
+#
+# Second, a miss in the bound tree fell through to `Path(worktree) / relative`
+# with no containment or declaration requirement, so
+# `../outside_authority.txt` validated cleanly with `allowed_untracked_files`
+# empty: a file outside the repository became a checkpoint authority.
+# ---------------------------------------------------------------------------
+
+import os as _os
+import subprocess as _subprocess
+
+from scripts.agent.work_checkpoint import (
+    canonical_authority_path,
+    resolve_local_authority,
+)
+
+
+def test_canonical_authority_path_accepts_only_one_spelling() -> None:
+    assert canonical_authority_path("docs/agent/thing.json") == "docs/agent/thing.json"
+    assert canonical_authority_path("AGENTS.md") == "AGENTS.md"
+    for hostile in (
+        ":authority.txt",                  # pathspec magic
+        ":(literal)authority.txt",         # explicit literal magic
+        ":(glob)authority.txt",
+        "./authority.txt",                 # noncanonical same-directory prefix
+        "../outside_authority.txt",        # parent escape
+        "docs/../AGENTS.md",               # embedded escape
+        "docs//agent.json",                # empty component
+        "/etc/passwd",                     # POSIX absolute
+        "C:/Windows/win.ini",              # Windows absolute
+        "docs\\agent\\thing.json",         # separator ambiguity
+        "docs/agent\x00.json",             # NUL
+        "",
+        None,
+        42,
+    ):
+        assert canonical_authority_path(hostile) is None, hostile
+
+
+def test_pathspec_magic_cannot_alias_a_tracked_authority(git_repo: Path) -> None:
+    """Each alias resolved to the real blob before the repair."""
+    head = _git(git_repo, "rev-parse", "HEAD")
+    genuine = _blob_sha(git_repo, "authority.txt")
+    for alias in (":authority.txt", ":(literal)authority.txt", "./authority.txt"):
+        assert tracked_blob_at(git_repo, head, alias) is None, alias
+        state = _state(git_repo)
+        state["authorities"] = [
+            {"path": alias, "sha256": genuine, "status": "FROZEN_AUTHORITY"}
+        ]
+        checkpoint = build_checkpoint(git_repo, git_repo, state)
+        errors = validate_checkpoint(checkpoint, git_repo, git_repo)
+        assert any(error.startswith("AUTHORITY_PATH_NOT_CANONICAL") for error in errors), (
+            alias,
+            errors,
+        )
+        assert errors, f"{alias} must never validate"
+
+
+def test_an_out_of_root_authority_is_refused(git_repo: Path, tmp_path: Path) -> None:
+    """`../outside` validated cleanly before the repair."""
+    outside = tmp_path / "outside_authority.txt"
+    outside.write_bytes(b'{"external": true}\n')
+    for spelling in ("../outside_authority.txt", str(outside)):
+        state = _state(git_repo)
+        state["authorities"].append(
+            {"path": spelling, "sha256": sha256_file(outside), "status": "FROZEN_AUTHORITY"}
+        )
+        checkpoint = build_checkpoint(git_repo, git_repo, state)
+        errors = validate_checkpoint(checkpoint, git_repo, git_repo)
+        assert any(error.startswith("AUTHORITY_PATH_NOT_CANONICAL") for error in errors), (
+            spelling,
+            errors,
+        )
+
+
+def test_an_undeclared_local_file_is_not_an_authority(git_repo: Path) -> None:
+    """A tree miss must not mean "local authority"."""
+    sneaky = git_repo / "sneaky.json"
+    sneaky.write_bytes(b'{"sneaky": true}\n')
+    state = _state(git_repo)
+    state["authorities"].append(
+        {"path": "sneaky.json", "sha256": sha256_file(sneaky), "status": "LOCAL_AUTHORITY"}
+    )
+    state["allowed_untracked_files"] = []
+    checkpoint = build_checkpoint(git_repo, git_repo, state)
+    errors = validate_checkpoint(checkpoint, git_repo, git_repo)
+    assert any(
+        error.startswith("AUTHORITY_LOCAL_NOT_DECLARED_UNTRACKED") for error in errors
+    ), errors
+
+
+def test_an_ignored_local_file_is_not_an_authority(git_repo: Path) -> None:
+    """Declaring an ignored file must not admit it.
+
+    The untracked inventory honours `--exclude-standard`, so an ignored path is
+    not in it and cannot become an authority even when declared.
+    """
+    (git_repo / ".gitignore").write_text("ignored.json\n", encoding="utf-8")
+    _git(git_repo, "add", ".gitignore")
+    _git(git_repo, "commit", "-m", "ignore rule")
+    ignored = git_repo / "ignored.json"
+    ignored.write_bytes(b'{"ignored": true}\n')
+    assert _git(git_repo, "status", "--porcelain") == "", "ignored file must be invisible"
+
+    state = _state(git_repo)
+    state["authorities"].append(
+        {"path": "ignored.json", "sha256": sha256_file(ignored), "status": "LOCAL_AUTHORITY"}
+    )
+    state["allowed_untracked_files"] = ["ignored.json"]
+    checkpoint = build_checkpoint(git_repo, git_repo, state)
+    errors = validate_checkpoint(checkpoint, git_repo, git_repo)
+    assert any(
+        error.startswith("AUTHORITY_LOCAL_NOT_DECLARED_UNTRACKED") for error in errors
+    ), errors
+
+
+def _link_dir(link: Path, target: Path) -> str:
+    """Create the strongest available directory link, returning its kind.
+
+    Real symlinks need a privilege this checkout does not hold on Windows, so a
+    junction is used instead. A junction is the sharper attack: Python reports
+    `is_symlink()` False for it, so it slips the symlink guard and must be
+    caught by the containment check on the resolved path.
+    """
+    try:
+        _os.symlink(str(target), str(link), target_is_directory=True)
+        return "symlink"
+    except OSError:
+        completed = _subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(link), str(target)],
+            capture_output=True,
+            text=True,
+        )
+        if completed.returncode or not link.exists():
+            raise RuntimeError(
+                "neither symlink nor junction could be created; the escape guard "
+                "is untested on this platform"
+            )
+        return "junction"
+
+
+def test_a_linked_authority_escaping_the_worktree_is_refused(
+    git_repo: Path, tmp_path: Path
+) -> None:
+    """A canonical in-repo path must not reach outside via a reparse point.
+
+    Canonicalisation alone cannot stop this: the declared path is a perfectly
+    ordinary relative path. Only resolving it and requiring containment does.
+    """
+    outside = tmp_path / "outside_tree"
+    outside.mkdir()
+    payload = outside / "authority.json"
+    payload.write_bytes(b'{"external": true}\n')
+    kind = _link_dir(git_repo / "linked", outside)
+
+    relative = "linked/authority.json"
+    state = _state(git_repo)
+    state["authorities"].append(
+        {"path": relative, "sha256": sha256_file(payload), "status": "LOCAL_AUTHORITY"}
+    )
+    state["allowed_untracked_files"] = sorted(
+        set(state["allowed_untracked_files"]) | {relative}
+    )
+    checkpoint = build_checkpoint(git_repo, git_repo, state)
+    errors = validate_checkpoint(checkpoint, git_repo, git_repo)
+    assert errors, f"a {kind} escape must never validate"
+    assert any(
+        error.startswith("AUTHORITY_OUTSIDE_WORKTREE")
+        or error.startswith("AUTHORITY_LOCAL_IS_SYMLINK")
+        or error.startswith("AUTHORITY_LOCAL_NOT_DECLARED_UNTRACKED")
+        for error in errors
+    ), (kind, errors)
+    # And the direct guard reports containment, not merely a declaration miss.
+    resolved, reason = resolve_local_authority(
+        git_repo, relative, {relative}, {relative}
+    )
+    assert resolved is None
+    assert reason in {"AUTHORITY_OUTSIDE_WORKTREE", "AUTHORITY_LOCAL_IS_SYMLINK"}, reason
+
+
+def test_a_legitimately_declared_local_authority_still_validates(git_repo: Path) -> None:
+    """The guards must discriminate rather than refuse every local authority."""
+    local = git_repo / "local_authority.json"
+    local.write_bytes(b'{"local": true}\n')
+    state = _state(git_repo)
+    state["authorities"].append(
+        {"path": "local_authority.json", "sha256": sha256_file(local),
+         "status": "LOCAL_AUTHORITY"}
+    )
+    state["allowed_untracked_files"] = ["local_authority.json"]
+    checkpoint = build_checkpoint(git_repo, git_repo, state)
+    assert validate_checkpoint(checkpoint, git_repo, git_repo) == []
+    resolved, reason = resolve_local_authority(
+        git_repo, "local_authority.json", {"local_authority.json"}, {"local_authority.json"}
+    )
+    assert reason is None and resolved == local.resolve()

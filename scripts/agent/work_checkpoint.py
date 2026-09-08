@@ -84,19 +84,60 @@ def _git_bytes(worktree: Path, *args: str) -> bytes | None:
     return completed.stdout
 
 
+def canonical_authority_path(relative: Any) -> str | None:
+    """Return the canonical repository-relative identity, or None if unusable.
+
+    An authority declaration is an identity, not a query. Passed through as a
+    Git pathspec, ``:authority.txt`` and ``./authority.txt`` both resolved to
+    the committed ``authority.txt`` blob, so three different declarations named
+    the same authority; and a bare join let ``../outside`` address a file
+    outside the repository entirely. Only one spelling of a path is accepted so
+    a declaration cannot be laundered through an alias.
+
+    Rejected: anything non-string or empty, a NUL, a backslash (Windows and Git
+    separator ambiguity), a colon (both pathspec magic ``:(literal)`` and a
+    Windows drive), and any empty, ``.`` or ``..`` component, which also
+    excludes absolute and UNC forms.
+    """
+    if not isinstance(relative, str) or not relative:
+        return None
+    if any(ch in relative for ch in ("\x00", "\\", ":")):
+        return None
+    parts = relative.split("/")
+    if any(part in ("", ".", "..") for part in parts):
+        return None
+    return "/".join(parts)
+
+
 def tracked_blob_at(worktree: Path, commit: str, relative: str) -> dict[str, str] | None:
     """Describe *relative* as recorded in *commit*, or None if it is not there.
 
     Reports the tree mode, object type and object id without reading the
     payload, so a caller can reject a symlink or submodule before hashing
     anything.
+
+    The lookup is literal and the returned path must equal the declared
+    identity exactly, so pathspec magic cannot alias one authority into
+    another.
     """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None
     listing = _git(
-        worktree, "ls-tree", "--full-tree", commit, "--", relative, allow_failure=True
+        worktree,
+        "--literal-pathspecs",
+        "ls-tree",
+        "--full-tree",
+        commit,
+        "--",
+        canonical,
+        allow_failure=True,
     )
     if not listing:
         return None
     head, _, path = listing.partition("\t")
+    if path.strip('"') != canonical:
+        return None
     fields = head.split()
     if len(fields) != 3 or not path:
         return None
@@ -112,8 +153,56 @@ def authority_path_dirty(worktree: Path, relative: str) -> bool:
     listing the path in ``allowed_tracked_modifications`` must not buy an
     exemption.
     """
-    status = _git(worktree, "status", "--porcelain", "--", relative, allow_failure=True)
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return True
+    status = _git(
+        worktree,
+        "--literal-pathspecs",
+        "status",
+        "--porcelain",
+        "--",
+        canonical,
+        allow_failure=True,
+    )
     return bool((status or "").strip())
+
+
+def resolve_local_authority(
+    worktree: Path,
+    relative: str,
+    declared_untracked: set[str],
+    actual_untracked: set[str],
+) -> tuple[Path | None, str | None]:
+    """Resolve a local, untracked authority, or explain why it is not one.
+
+    A miss in the bound tree previously fell straight through to
+    ``Path(worktree) / relative``, so any path the checkpoint named became an
+    authority as long as its digest matched. That accepted a file outside the
+    repository and an undeclared local file. A local authority must therefore
+    be declared in ``allowed_untracked_files``, actually be in the untracked
+    inventory, live inside the worktree, and not be a symlink. Because the
+    inventory honours ``--exclude-standard``, an ignored file is not eligible
+    either.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None, "AUTHORITY_PATH_NOT_CANONICAL"
+    if canonical not in declared_untracked or canonical not in actual_untracked:
+        return None, "AUTHORITY_LOCAL_NOT_DECLARED_UNTRACKED"
+    root = Path(worktree).resolve()
+    raw = Path(worktree) / canonical
+    if raw.is_symlink():
+        return None, "AUTHORITY_LOCAL_IS_SYMLINK"
+    try:
+        target = raw.resolve(strict=True)
+    except OSError:
+        return None, "AUTHORITY_MISSING"
+    if target == root or root not in target.parents:
+        return None, "AUTHORITY_OUTSIDE_WORKTREE"
+    if not target.is_file():
+        return None, "AUTHORITY_MISSING"
+    return target, None
 
 
 def sha256_tracked_blob(worktree: Path, oid: str) -> str | None:
@@ -244,47 +333,58 @@ def validate_checkpoint(
         # this checkpoint is bound to. Genuinely untracked local authorities
         # keep disk-byte hashing, so the two byte semantics stay distinct.
         bound_head = (checkpoint.get("git") or {}).get("head_sha")
+        declared_untracked_set = set(declared_untracked)
+        actual_untracked_set = set(actual["untracked_files"])
         for authority in authorities:
             relative = authority.get("path") if isinstance(authority, dict) else None
             expected_hash = authority.get("sha256") if isinstance(authority, dict) else None
             if not relative or not expected_hash:
                 errors.append(f"AUTHORITY_DECLARATION_INVALID:{authority!r}")
                 continue
+            canonical = canonical_authority_path(relative)
+            if canonical is None:
+                errors.append(f"AUTHORITY_PATH_NOT_CANONICAL:{relative!r}")
+                continue
             entry = (
-                tracked_blob_at(Path(worktree), bound_head, relative)
+                tracked_blob_at(Path(worktree), bound_head, canonical)
                 if bound_head
                 else None
             )
             if entry is None:
                 if not bound_head:
-                    errors.append(f"AUTHORITY_BOUND_HEAD_MISSING:{relative}")
+                    errors.append(f"AUTHORITY_BOUND_HEAD_MISSING:{canonical}")
                     continue
-                target = Path(worktree) / relative
-                if not target.is_file():
-                    errors.append(f"AUTHORITY_MISSING:{relative}")
+                target, reason = resolve_local_authority(
+                    Path(worktree),
+                    canonical,
+                    declared_untracked_set,
+                    actual_untracked_set,
+                )
+                if target is None:
+                    errors.append(f"{reason}:{canonical}")
                     continue
                 actual_hash = sha256_file(target)
                 if actual_hash != expected_hash:
                     errors.append(
-                        f"AUTHORITY_HASH_MISMATCH:{relative}:{actual_hash}!={expected_hash}"
+                        f"AUTHORITY_HASH_MISMATCH:{canonical}:{actual_hash}!={expected_hash}"
                     )
                 continue
             if entry["type"] != "blob" or entry["mode"] not in {"100644", "100755"}:
                 errors.append(
-                    f"AUTHORITY_NOT_REGULAR_FILE:{relative}:"
+                    f"AUTHORITY_NOT_REGULAR_FILE:{canonical}:"
                     f"{entry['mode']}:{entry['type']}"
                 )
                 continue
-            if authority_path_dirty(Path(worktree), relative):
-                errors.append(f"AUTHORITY_DIRTY:{relative}")
+            if authority_path_dirty(Path(worktree), canonical):
+                errors.append(f"AUTHORITY_DIRTY:{canonical}")
                 continue
             actual_hash = sha256_tracked_blob(Path(worktree), entry["oid"])
             if actual_hash is None:
-                errors.append(f"AUTHORITY_OBJECT_UNREADABLE:{relative}:{entry['oid']}")
+                errors.append(f"AUTHORITY_OBJECT_UNREADABLE:{canonical}:{entry['oid']}")
                 continue
             if actual_hash != expected_hash:
                 errors.append(
-                    f"AUTHORITY_HASH_MISMATCH:{relative}:{actual_hash}!={expected_hash}"
+                    f"AUTHORITY_HASH_MISMATCH:{canonical}:{actual_hash}!={expected_hash}"
                 )
     return errors
 
