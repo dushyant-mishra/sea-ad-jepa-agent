@@ -12,8 +12,8 @@ import hashlib
 from pathlib import Path
 from typing import Any
 
-MANIFEST_REL = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv")
-ROOT_REL = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V3.txt")
+MANIFEST_REL = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V4.csv")
+ROOT_REL = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V4.txt")
 
 
 def sha256_file(path: Path) -> str:
@@ -74,7 +74,7 @@ def verify_source_authority(
         )
 
     return {
-        "schema": "TEACHER_STUDENT_SOURCE_AUTHORITY_VERIFICATION_V3",
+        "schema": "TEACHER_STUDENT_SOURCE_AUTHORITY_VERIFICATION_V4",
         "manifest_rows": len(rows),
         "source_root_sha256": expected,
         "passed": True,
