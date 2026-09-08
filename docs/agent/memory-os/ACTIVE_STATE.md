@@ -39,9 +39,7 @@ result.
    implementation/provenance STOPs remain.
 5. Target Discovery has a real relational object: TD57B and TD59 passed across
    their frozen cases. Do not restart fixed-coordinate target search.
-6. V5 data-first at `c7b1663...` is the current prospective Teacher/Student
-   successor. Its scientific target V2 and relational proposal V2 are frozen,
-   but training remains unauthorized.
+6. V5 data-first continuation at `028989a5...` is the current prospective Teacher/Student successor. Scientific target V2, relational proposal V2, base proposal V3, and presentation horizon V1 are frozen, but training remains unauthorized.
 7. Historical 3,292-cell u40/u205 is mechanics evidence only. Full-reader
    biological checkpoints must be defined in exposure/coverage units.
 8. F1-B/C3 successor is mechanics evidence, not the final trainer.
@@ -62,8 +60,8 @@ Until these are externally closed:
 
 ## Current V5 state
 
-Current verified V5 source head:
-`c7b1663cc4390843978b973986edfe58f93320a3`
+Current V5 continuation head:
+`028989a5f1504e4d6403a44e7c90d37172c54150`
 
 Materialization:
 `71484ab99d276d7251836c109885d22ab4e7abb1`
@@ -80,13 +78,16 @@ Evidence:
 Frozen:
 - scientific target V2;
 - relational proposal V2;
+- base proposal V3 with exact p/q correction;
+- exactly one reader-fit-population-equivalent presentation horizon (4,553,407), no automatic extension;
 - donor-primary objective direction.
 
 Still pending:
-- base proposal;
 - evidence/view/block schedule;
-- total presentation horizon / repeat exposure;
+- finite relational triplet budget;
+- update size / token budget;
 - EMA half-life in presentations;
+- biological learned-teacher checkpoint milestone;
 - optimized GPU keyed RNG/dropout parity;
 - hardware packing calibration;
 - end-to-end trainer binding;
