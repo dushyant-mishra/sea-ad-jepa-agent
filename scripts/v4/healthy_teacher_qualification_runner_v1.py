@@ -23,6 +23,7 @@ import numpy as np
 import torch
 
 from scripts.agent.validate_healthy_teacher_execution_binding_overlay_v1 import (
+    OVERLAY_PASS_TERMINAL,
     canonical_overlay_sha256,
     validate_overlay,
 )
@@ -108,7 +109,7 @@ def main() -> int:
 
     overlay = json.loads(args.overlay.read_text(encoding="utf-8"))
     overlay_result = validate_overlay(overlay)
-    if not overlay_result["terminal"].startswith("PASS_"):
+    if overlay_result["terminal"] != OVERLAY_PASS_TERMINAL:
         raise RuntimeError(f"invalid execution-binding overlay: {overlay_result}")
     overlay_sha = canonical_overlay_sha256(overlay)
     verify_source_authority(overlay["integrated_successor"]["source_manifest_root"])
@@ -172,6 +173,7 @@ def main() -> int:
         expected_authorities=authorities,
         masking_generator=masking,
         expected_schedule_cursor=0,
+        expected_phase="U0",
     )
     if restored["global_update_step"] != 0 or restored["ema_update_count"] != 0:
         raise RuntimeError("qualification did not start from successor u0")
