@@ -76,7 +76,7 @@
     "A broad/mesoscale or affinity-weighted relational objective is scientifically alive.",
     "Do not tune any additional locality fraction on the 50k archive."
   ],
-  "next_question": "Resolve the Teacher/Student independent-review terminal binding without weakening authority; after lawful successor u40 exists, execute frozen TD60 learned-teacher global+mesoscale relational continuity. No further 50k locality tuning.",
+  "next_question": "Obtain the exact external V3 review result; if and only if the active V3 PASS terminal is returned, validate it through the frozen review-terminal bridge, then complete successor-u0/execution-overlay authority and produce lawful u40 for frozen TD60. No further 50k locality tuning.",
   "teacher_student_integration": {
     "branch": "production/teacher-student-unified-v1-20260907",
     "live_branch_head": "76bf7912cc621756fdbbd82218025d8e4c00a057",
@@ -100,9 +100,20 @@
     "locality_fraction_tuning_on_50k_closed": true
   },
   "execution_prerequisite_blocker": {
-    "status": "UNRESOLVED_REVIEW_TERMINAL_BINDING_MISMATCH",
-    "claude_requested_terminal": "PASS_TEACHER_STUDENT_UNIFIED_V3_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
-    "overlay_validator_required_prefix": "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW",
-    "rule": "No ad-hoc terminal substitution. Reconcile in Teacher/Student authority before successor-u0/u40 execution."
+    "status": "REVIEW_TERMINAL_BRIDGE_MECHANICS_FROZEN__AWAITING_EXTERNAL_REVIEW_RESULT",
+    "original_claude_requested_terminal": "PASS_TEACHER_STUDENT_UNIFIED_V3_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
+    "legacy_overlay_validator_required_prefix": "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW",
+    "bridge_branch": "authority/teacher-student-v3-review-terminal-bridge-20260908",
+    "bridge_head": "f42c279e3c76bd099a98fb4781ab6dac761e2f76",
+    "bridge_manifest_root_sha256": "be77d39797ec404dc3a253e2519a466cd5af471379ab52492b0f78509c59a281",
+    "bridge_pass_terminal": "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW__V3_SELF_CONTAINED_EXTERNAL_REVIEW_BOUND",
+    "bridge_unit_tests": "4/4 PASS",
+    "exact_review_package_validation": "PASS_MECHANICS_ONLY",
+    "review_instructions_as_review_attack": "STOP_TEACHER_STUDENT_V3_REVIEW_TERMINAL_BRIDGE_INVALID",
+    "actual_external_review_supplied": false,
+    "pass_bridge_artifact_present": false,
+    "production_review_branch_unchanged": "76bf7912cc621756fdbbd82218025d8e4c00a057",
+    "execution_authorized": false,
+    "rule": "No ad-hoc terminal substitution. The bridge may emit PASS only from the exact external review bytes plus the exact self-contained package identity."
   }
 }
