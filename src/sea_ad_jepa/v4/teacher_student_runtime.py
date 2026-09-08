@@ -179,6 +179,8 @@ def build_teacher_student_components(
     config: TeacherStudentConfig = PRODUCTION_CONFIG,
 ) -> TeacherStudentModules:
     validate_production_config(config)
+    if device.type == "cuda":
+        configure_deterministic_cuda_environment()
     torch.manual_seed(config.training_seed)
     if device.type == "cuda":
         torch.cuda.manual_seed_all(config.training_seed)
@@ -570,6 +572,13 @@ def production_update(
         raise RuntimeError("healthy-teacher qualification requires CUDA")
     if schedule_cursor < 0:
         raise ValueError("schedule_cursor must be non-negative")
+    if schedule_cursor != modules.ema_controller.global_update_step:
+        raise RuntimeError(
+            "schedule cursor does not equal current optimizer/EMA step: "
+            f"cursor={schedule_cursor} step={modules.ema_controller.global_update_step}"
+        )
+    if modules.ema_controller.global_update_step != modules.ema_controller.ema_update_count:
+        raise RuntimeError("optimizer/EMA counters diverged before update")
 
     expression = expression.detach().cpu()
     measurement_mask = measurement_mask.detach().cpu()
