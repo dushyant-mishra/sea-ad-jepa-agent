@@ -227,14 +227,14 @@
     },
     "at8_availability_authority": {
       "acceptance_rule_limitation": "The frozen wording lifts the donor-role STOP only after the availability authority passes independent verification, but an external reviewer cannot re-derive from the numeric source without pathology access, which this lane denies it. As written the condition is therefore unsatisfiable by any external party. The owner must either accept package-and-implementation review as sufficient, or perform the source re-derivation locally, which needs no wider pathology access than the owner already has.",
-      "attacks": "29 passed",
+      "attacks": "30 passed",
       "authorization": "Owner-authorized availability-only lane: may determine solely whether the frozen field 'percent AT8 positive area_Grey matter' is present and non-missing. May not parse, retain, emit, log, rank, summarize, compare or model numeric AT8 values.",
       "availability_root_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
-      "availability_root_stability": "e49c4e93... reproduced across six builds, now including the loader rewrite, because it covers the derived predicate alone.",
+      "availability_root_stability": "e49c4e93... reproduced across eight builds, now including the peer's writer-byte-binding fix and the blob-based code digest, because it covers the derived predicate alone.",
       "available_donor_count": 84,
       "derivation_code": "scripts/v4/t0_at8_availability_authority_v1.py",
       "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
-      "derivation_code_sha256": "cd8519aa40600552c383a1a1ec703a7c91bde20a819f85bcf9cf3870542d7081",
+      "derivation_code_sha256": "6a8bfbfae59f66dc89893c72f0634617e2a61795e7e53063aa1f28d4396d3913",
       "derived_not_assumed": true,
       "independent_review_v3": {
         "acceptance_question_open": true,
@@ -258,14 +258,15 @@
         "member_sha256": "d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529"
       },
       "namespace": "T0-AT8-AVAILABILITY-V1",
-      "package_root_sha256": "f8830525a1cb6369b6d9c953a5add3e5d6fb642dcb3ce773b02bc961f4c7321d",
+      "package_root_sha256": "45e32cd4a7fd12d8ebf44f189b8a7dc9389acff6a5a7c032133f490bac485540",
       "review_packages": {
-        "current": "v4",
+        "current": "v5",
         "note": "V1 was the archive independently attacked; V2 already carried the mode, stale-field, TOCTOU-regression and membership-witness repairs; V3 adds the loader TOCTOU closure and the repository-relative layout.",
         "v1_sha256": "4f4cc8cf7b1d07f2fdd8751a89e2ba352d9e2fa2b5663ad33865a98f2d00886e",
         "v2_sha256": "d2f7bb8ef5fd531492f008ec1185f1f8485c0d7ef1a3e8f8d1e60250fd1b3447",
         "v3_sha256": "01ce9b37e592ee694c0cb6edc2b1095908943997216bd70e8f792416a78a70a2",
-        "v4_sha256": "d49eb036a697ab379d44d2c4fabb271038fa545a7404e1c4c9dea6e640e83e65"
+        "v4_sha256": "d49eb036a697ab379d44d2c4fabb271038fa545a7404e1c4c9dea6e640e83e65",
+        "v5_sha256": "323def564f0b2c0fdfbf2e01346fd7647b52447e7285a1080173a099a18e9820"
       },
       "review_repairs_applied": {
         "derivation_code_digest_unreproducible": "derivation_code_sha256 was a disk-byte digest of a tracked file, so no fresh checkout could reproduce it under core.autocrlf; it matched only because the freeze ran against a copy written with LF endings. It is now the Git blob digest, supplied by the caller and validated as 64 hex characters, with the byte semantics recorded, and the archived code member carries those exact blob bytes so it reproduces on any platform.",
@@ -278,7 +279,8 @@
         "review_package_layout": "The V1 archive stored tests at tests/ and code at code/, but the tests resolve the module through parents[2]/scripts/v4, so the archive could not run its own tests as extracted. V3 uses repository-relative paths and carries RUN_REVIEW.md; verified by extracting to a clean directory and running 26 passed from there.",
         "stale_one_root_language": "Module docstring and test names still described a single package root as value-invariant; corrected to the two-root contract.",
         "toctou": "The source was hashed by path and then reopened, so the recorded digest could describe one revision while availability was derived from another, and source_bytes came from a still later stat. The bytes are now read once, those exact bytes are authenticated, parsing happens from memory, and source_bytes is their length.",
-        "toctou_regression_strength": "The first TOCTOU test contained an `assert ... or True`, which proves nothing, and never ran the full builder while the backing file changed. It now wraps read_authenticated_source so it authenticates bytes A, replaces the file with materially different bytes B, and returns A; the registry, source digest and source_bytes must all derive from A."
+        "toctou_regression_strength": "The first TOCTOU test contained an `assert ... or True`, which proves nothing, and never ran the full builder while the backing file changed. It now wraps read_authenticated_source so it authenticates bytes A, replaces the file with materially different bytes B, and returns A; the registry, source digest and source_bytes must all derive from A.",
+        "writer_byte_binding": "Found by the peer, not by me: the writer wrote each member and then reopened the path to hash it, so a same-length substitution in that interval became the bytes the manifest recorded while the builder still returned the original in-memory metadata. The manifest is now derived from the exact in-memory payloads before anything is written, so a write-time substitution makes the directory fail verification instead of redefining the authority. This was the writer-side twin of the reader-side interval I had already closed, and I had not looked for it."
       },
       "schema": "JEPA_T0_AT8_AVAILABILITY_AUTHORITY_V1",
       "source_bytes": 21982,
