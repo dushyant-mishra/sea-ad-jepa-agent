@@ -1,0 +1,33 @@
+name: Prune verified merged JEPA branches
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/prune_verified_merged_branches_20260908.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Dry-run exact safe-delete preflight
+        run: bash scripts/agent/delete_verified_merged_branches_20260908.sh
+      - name: Delete only exact verified merged branch refs
+        env:
+          JEPA_CONFIRM_BRANCH_DELETE: YES_DELETE_VERIFIED_BRANCHES
+        run: bash scripts/agent/delete_verified_merged_branches_20260908.sh --apply
+      - name: Verify only main remains
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t heads < <(git ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sort)
+          printf '%s\n' "${heads[@]}"
+          [[ "${#heads[@]}" -eq 1 ]]
+          [[ "${heads[0]}" == "main" ]]
