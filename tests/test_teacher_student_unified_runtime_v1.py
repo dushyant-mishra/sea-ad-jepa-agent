@@ -512,7 +512,7 @@ def test_executing_source_authority_rejects_tampered_code(tmp_path) -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / rel, target)
 
-    manifest = tmp_path / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V2.csv"
+    manifest = tmp_path / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv"
     with manifest.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     for row in rows:
