@@ -1,0 +1,59 @@
+{
+  "schema": "READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V1",
+  "population": "reader_fit",
+  "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+  "reader_fit_cells": 4553407,
+  "reader_fit_donors": 104,
+  "reader_fit_sources": 3,
+  "selected_estimand": null,
+  "selected_proposal_sampler": null,
+  "candidate_estimands": {
+    "cell_uniform": {
+      "target_source_mass": {
+        "HVS": 0.0436416072624301,
+        "NPH52": 0.05193385963521381,
+        "SEA_AD": 0.9044245331023562
+      },
+      "if_proposed_cell_uniform": {
+        "importance_weight_min": 1.0,
+        "importance_weight_max": 1.0,
+        "importance_weight_max_to_min_ratio": 1.0,
+        "effective_sample_size_fraction": 1.0
+      }
+    },
+    "donor_uniform": {
+      "target_source_mass": {
+        "HVS": 0.39423076923076944,
+        "NPH52": 0.1634615384615384,
+        "SEA_AD": 0.4423076923076926
+      },
+      "if_proposed_cell_uniform": {
+        "importance_weight_min": 0.2514646381640713,
+        "importance_weight_max": 540.5278964862298,
+        "importance_weight_max_to_min_ratio": 2149.5185185185187,
+        "effective_sample_size_fraction": 0.0967746257279575
+      }
+    },
+    "source_donor_uniform": {
+      "target_source_mass": {
+        "HVS": 0.3333333333333331,
+        "NPH52": 0.3333333333333332,
+        "SEA_AD": 0.33333333333333315
+      },
+      "if_proposed_cell_uniform": {
+        "importance_weight_min": 0.18950958238451748,
+        "importance_weight_max": 1102.2529653836843,
+        "importance_weight_max_to_min_ratio": 5816.344226579521,
+        "effective_sample_size_fraction": 0.03668764715972065
+      }
+    }
+  },
+  "interpretation": [
+    "This artifact is descriptive and outcome-blind; it selects neither a scientific estimand nor a proposal sampler.",
+    "Cell-uniform training would place 90.44% of target mass on SEA_AD because the reader-fit cell inventory is highly source-imbalanced.",
+    "Donor-uniform and source-donor-uniform targets substantially increase importance-weight variance if paired with a cell-uniform proposal; target p(cell) and proposal q(cell) therefore require separate prospective authority.",
+    "Compute microbatch packing is downstream of p and q and may not alter scientific weights."
+  ],
+  "training_authorized": false,
+  "execution_authorized": false
+}
