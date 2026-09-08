@@ -654,3 +654,107 @@ Important boundary:
 - use the successor replay implementation for future reproducible reconstruction of the frozen TD59 statistic.
 
 TD59's scientific terminal remains unchanged. No production locality or training authority is created by this replay repair.
+
+
+## 21. Teacher/Student V4 working target repaired and review candidate frozen
+
+The Teacher/Student lane was reopened before external review because the non-active V3 prospective relational extension did not match the completed Target Discovery result class: it regressed normalized absolute Euclidean distance plus angle, whereas TD57B qualified **scale-free anchored distance ordering** and explicitly showed that absolute cross-source distance equality is unnecessary.
+
+A separate V4 successor candidate was built without mutating the frozen V3 production-review history.
+
+Candidate branch:
+`candidate/teacher-student-unified-v4-relational-20260908`
+
+Frozen integrated source commit:
+`24752e33f5f7a9ff0e8caef733223b8c4c6de5b7`
+
+Frozen V4 integrated source root:
+`8aae50696124a259bbd89d4a788d0e1cb0f94ee8b7ed13520a2db73138ae6460`
+
+Review/package-build commit:
+`8d92f15f973de06415650f72e63788d255ac833d`
+
+### V4 relational target
+
+The prospective target is now direct 160-D `cell_state` cosine geometry with teacher supervision only through anchored triplet ordering.
+
+For a frozen triplet `(i,j,k)`:
+
+`y = sign(d_T(i,k) - d_T(i,j))`
+
+and the differentiable student surrogate is:
+
+`softplus(-y * (d_S(i,k)-d_S(i,j))) / log(2)`.
+
+This target:
+- does not regress absolute teacher distances;
+- does not introduce a learned projection, temperature, locality fraction, production k, or loss weight;
+- accepts exact externally frozen global/mesoscale triplets but never selects locality itself;
+- requires canonical comparator orientation `j < k`;
+- rejects duplicate/cross-group triplets;
+- rejects float/string coercion of authority-valued integer inputs;
+- evaluates collapse telemetry per matched group with **no pooled-group rescue**;
+- keeps numerical collapse calibration external;
+- is source-authority bound but is **not imported/called by current `production_update`**.
+
+TD57C remains failed, TD59 remains pilot nearest-half support only, and 50k locality tuning remains closed.
+
+### V4 governance repairs
+
+V4 also eliminates the V3 review-terminal compatibility defect directly:
+- the execution-binding overlay validator requires the exact V4 review PASS terminal;
+- review artifact SHA, reviewed package ZIP SHA, reviewed package root, reviewed commit, and reviewed V4 source root are separately bound;
+- the historical V3 terminal bridge is not needed for V4;
+- no execution authority is present.
+
+Current block-JEPA model architecture, optimizer, EMA, masking, 60%-evidence u0->u40 mechanics, movement adjudication, population firewalls, and checkpoint chronology are unchanged.
+
+### Exact V4 review package
+
+Two independent local clean-room builds from the exact package-build commit were required and are byte-identical.
+
+Both clean-room builds:
+- freeze audit: PASS;
+- active tests: **98/98 PASS**;
+- active test files: 7;
+- source rows: 21;
+- staged Python files compiled: 71;
+- package manifest rows: 97;
+- execution authorized: false.
+
+Final package root:
+`db162fdf5988d2f7b833ad0a24b1edba2fb3fcf7a6bd0c43cfeda3888329d58a`
+
+Final deterministic review ZIP SHA-256:
+`17c16eb02103ea8b2df8949d407a82aa8e65302b855f6f06fed91aba0d671d66`
+
+The ZIP manifest independently rehashes all 97 payload rows. The package contains no superseded V1 relational module/test/design, no execution authority, and no Python/pytest cache artifacts.
+
+GitHub Actions independently reproduced the exact same package identity at run:
+`34248656470`
+
+GitHub CI:
+- conclusion: **success**;
+- active tests: **98/98 PASS**;
+- package root exactly matches local:
+  `db162fdf5988d2f7b833ad0a24b1edba2fb3fcf7a6bd0c43cfeda3888329d58a`;
+- ZIP SHA exactly matches local:
+  `17c16eb02103ea8b2df8949d407a82aa8e65302b855f6f06fed91aba0d671d66`.
+
+### Next legal sequence
+
+The candidate is now ready for independent external review.
+
+Required external PASS terminal:
+`PASS_TEACHER_STUDENT_UNIFIED_V4_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED`
+
+Even that PASS does **not** authorize training.
+
+Only after exact V4 external-review PASS may the Teacher/Student lane:
+1. bind the exact review bytes/package/source identity;
+2. separately materialize a lawful successor-bound u0 under its required authority;
+3. separately freeze/authorize u0->u40 mechanical qualification;
+4. freeze lawful successor u40;
+5. execute the already-frozen TD60 learned-teacher continuity gate.
+
+No neural training, TD60 execution, protected-population access, or additional 50k locality tuning is currently authorized.
