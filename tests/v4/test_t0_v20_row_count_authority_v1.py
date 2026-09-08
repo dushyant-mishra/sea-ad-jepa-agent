@@ -372,7 +372,7 @@ def test_a_counts_payload_must_match_its_bound_digest(world: World) -> None:
     authentic = world.counts["op31/block-00000"]
     assert rc.verify_counts_payload(
         logical=logical, logical_index=0, counts_bytes=authentic) is True
-    with pytest.raises(AssertionError, match="COUNTS_DIGEST"):
+    with pytest.raises(AssertionError, match="COUNTS_PAYLOAD_DIGEST"):
         rc.verify_counts_payload(
             logical=logical, logical_index=0, counts_bytes=authentic + b"x")
     assert row["counts_sha256"] == hashlib.sha256(authentic).hexdigest()
