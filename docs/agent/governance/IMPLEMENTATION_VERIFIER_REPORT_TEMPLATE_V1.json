@@ -1,0 +1,22 @@
+{
+  "schema": "jepa-implementation-verifier-report-v1",
+  "gate": "REQUIRED",
+  "base_commit": "REQUIRED",
+  "implementation_commit": "REQUIRED",
+  "verifier_agent_identity": "REQUIRED",
+  "controlling_contracts": [],
+  "authority_hashes": {},
+  "changed_files": [],
+  "conclusion_bearing_symbols": [],
+  "requirement_matrix": [],
+  "independent_reference_summary": "REQUIRED",
+  "independent_reference_uses_production_helper": false,
+  "verifier_tests": [],
+  "mutation_tests": [],
+  "production_tests_observed": [],
+  "coverage_complete": false,
+  "independence_confirmed": false,
+  "verifier_verdict": "STOP_IMPLEMENTATION_VERIFIER_INCOMPLETE_COVERAGE",
+  "stop_reason": "template is not a completed report",
+  "timestamp": "REQUIRED"
+}

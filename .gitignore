@@ -21,6 +21,7 @@ logs/
 runs/
 outputs/*
 !outputs/c2_t1_gradient_forensic_20260906/
+!outputs/f1_real_producer_replay_prefreeze_20260907/
 *.log
 
 # Lightweight reproducibility artifacts

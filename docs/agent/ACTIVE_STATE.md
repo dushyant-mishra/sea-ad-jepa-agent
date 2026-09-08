@@ -367,3 +367,6 @@ REAL ENCODER/EMA OPTIMIZER UPDATES: NOT YET AUTHORIZED.
 - Additive donor-keyed adapter leaves reviewed decision-v4/integration-v4 byte-identical, rejects positional arrays and all wrong-design/triple/donor/legal/forged-HC3 attacks, and preserves the 14-case/44,496-assignment/222,480-record regressions.
 - Six targeted review lenses PASS after preserving and repairing initial dissent. No expression, checkpoint/model tensor, real outcome, training, optimizer, or EMA was accessed. Real reader/forward authority remains unset; real F1 execution remains unauthorized pending external review.
 - Package manifest SHA `6b50bc768346c9dcaff6b26ec986f3af21c68b7a5b54eefebbd5ae407fbbe436`; external root anchor SHA `777d3ae5bf96544ccf719ea1878e6bd2cbaa7beb6244a11c81db0abc040de111`.
+# Permanent governance overlay — 2026-09-03
+
+`MANDATORY_IMPLEMENTATION_VERIFIER_V1` applies project-wide. Current F1 repair remains the active scientific gate; no expensive benchmark may run until the independent implementation verifier passes.

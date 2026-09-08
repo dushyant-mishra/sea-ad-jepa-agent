@@ -34,6 +34,7 @@ from contextual_target_f1_preflight_core_v1 import (
     CONSTRUCTOR_SHA,
     ENCODER_SHA,
     FLOAT32_RULE,
+    F1_ARCHITECTURE,
     NAMESPACE_SEMANTIC_ROOT,
     STATE_SHA,
     TOKENIZER_SHA,
@@ -49,14 +50,34 @@ from contextual_target_f1_preflight_core_v1 import (
     sha256_file,
     swap_used,
     tensor_sha,
+    validate_runtime_facts,
 )
-from contextual_target_f1_preflight_executor_v1 import AtomicShardStore, benchmark_repetitions, full_geometry, power_ladder, select_smallest_near_best
+from contextual_target_f1_preflight_executor_v1 import (
+    AtomicShardStore, benchmark_repetitions, full_geometry, no_swap_activity,
+    nonoverlapping_runtime, power_ladder, select_smallest_near_best,
+    student_forward_identity, teacher_compute_identity, vmstat_swap,
+)
 from contextual_target_v1_f0_slow_reference import slow_true_singleton_reference
 from sea_ad_jepa.v4.contextual_query_local import construct_query_local_contextual_state, _module_state_sha256
 
 FROZEN = WORKTREE / "docs/agent/f1_real_reader_forward_executor_preflight_20260903"
 PACKAGE = WORKTREE / "outputs/contextual_teacher_target_v1_f1_real_reader_forward_executor_preflight_20260903"
 RUN_ID = "F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_20260903"
+QID_V2_SHA256 = "15d873871787e0820f63aaead8f27a6f1057541e16640d8492053144a9c69423"
+QID_V2_RELATIVE = Path("outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/F1_QUERY_IDENTITY_V2_CONTRACT.md")
+
+
+def actual_git_head(root: Path) -> str:
+    attempt = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], text=True, capture_output=True)
+    if attempt.returncode and "microsoft" in platform.release().lower():
+        windows_root = subprocess.check_output(["wslpath", "-w", str(root)], text=True).strip()
+        attempt = subprocess.run(["git.exe", "-c", f"safe.directory={windows_root}", "-C", windows_root, "rev-parse", "HEAD"], text=True, capture_output=True)
+    if attempt.returncode:
+        raise RuntimeError(f"Git HEAD unavailable: {attempt.stderr.strip()}")
+    value = attempt.stdout.strip()
+    if len(value) != 40 or any(char not in "0123456789abcdef" for char in value):
+        raise RuntimeError("invalid Git HEAD")
+    return value
 
 
 def write_json(path: Path, value: object) -> None:
@@ -66,9 +87,7 @@ def write_json(path: Path, value: object) -> None:
 
 def authority_fields() -> dict[str, str]:
     binding = json.loads((FROZEN / "F1_PREFLIGHT_AUTHORITY_BINDING.json").read_text(encoding="utf-8"))
-    repository_commit = os.environ.get("JEPA_PREFLIGHT_COMMIT", "")
-    if len(repository_commit) != 40 or any(char not in "0123456789abcdef" for char in repository_commit):
-        raise RuntimeError("JEPA_PREFLIGHT_COMMIT must be an exact lowercase Git SHA")
+    repository_commit = actual_git_head(WORKTREE)
     source_paths = {
         "constructor": WORKTREE / "src/sea_ad_jepa/v4/contextual_query_local.py",
         "encoder": WORKTREE / "src/sea_ad_jepa/v4/ipb_jepa.py",
@@ -83,7 +102,7 @@ def authority_fields() -> dict[str, str]:
             raise RuntimeError(f"{name} scientific source differs beyond checkout line endings")
         executed[f"{name}_executed_bytes_sha256"] = hashlib.sha256(raw).hexdigest()
     return {
-        "repository_commit": repository_commit,
+        "implementation_source_commit": repository_commit,
         "reader_split_sha256": binding["authorities"]["split"]["sha256"],
         "row_lineage_sha256": binding["authorities"]["row_lineage"]["sha256"],
         "evidence_mask_sha256": binding["authorities"]["evidence_contract"]["sha256"],
@@ -98,15 +117,22 @@ def authority_fields() -> dict[str, str]:
 def freeze_forward_root() -> dict[str, object]:
     reader = MaterializedFixtureReader(CANONICAL, WORKTREE)
     authority = authority_fields()
+    qid_path = CANONICAL / QID_V2_RELATIVE
+    if sha256_file(qid_path) != QID_V2_SHA256:
+        raise RuntimeError("STOP_F1_PREFLIGHT_SUFFICIENT_STATISTICS_AUTHORITY_UNRESOLVED")
+    compute_authority = {**authority, "checkpoint_sha256": CHECKPOINT_SHA, "encoder_sha256": ENCODER_SHA,
+                         "tokenizer_sha256": TOKENIZER_SHA, "namespace_semantic_root": NAMESPACE_SEMANTIC_ROOT,
+                         "observation_state_sha256": STATE_SHA, "dtype": "float32", "autocast": False}
     records = []
     for index, record in enumerate(reader.fixture["selected"]):
         role = str(record["role"])
-        identity = forward_identity(authority, record, role, RUN_ID, f"technical-{index:04d}")
+        identity = teacher_compute_identity(compute_authority, record) if role == "teacher" else student_forward_identity(compute_authority, record, role)
         records.append({"logical_index": index, "role": role, "recipient": record["canonical_cell_id"], "null_source": record.get("null_source_cell") if role == "matched_null_student" else None, "query": int(record["q"]), "evidence_level": int(record["evidence_level"]), "forward_identity_sha256": identity})
     result = {
         "schema": "f1-preflight-real-forward-root-v1",
         "result_state": "FROZEN_PRE_RESULT",
         "run_id": RUN_ID,
+        "implementation_source_commit": actual_git_head(WORKTREE),
         "authority": authority,
         "checkpoint_sha256": CHECKPOINT_SHA,
         "encoder_sha256": ENCODER_SHA,
@@ -116,6 +142,7 @@ def freeze_forward_root() -> dict[str, object]:
         "constructor_sha256": CONSTRUCTOR_SHA,
         "namespace_semantic_root": NAMESPACE_SEMANTIC_ROOT,
         "observation_state_sha256": STATE_SHA,
+        "qid_v2_contract": {"path": QID_V2_RELATIVE.as_posix(), "sha256": QID_V2_SHA256},
         "reader_core_sha256": sha256_file(WORKTREE / "scripts/v4/contextual_target_f1_preflight_core_v1.py"),
         "executor_sha256": sha256_file(WORKTREE / "scripts/v4/contextual_target_f1_preflight_executor_v1.py"),
         "runner_sha256": sha256_file(HERE),
@@ -123,6 +150,8 @@ def freeze_forward_root() -> dict[str, object]:
         "fixture_membership_root_sha256": reader.fixture["membership_root_sha256"],
         "dtype": "float32",
         "autocast": False,
+        "architecture": dict(F1_ARCHITECTURE),
+        "historical_mechanics_contract_is_dependency_not_vocabulary_authority": True,
         "physical_read_plan": "FULL104_LEVEL4_SORTED_BLOCK_V1",
         "model_facing_keys": ["normalized_values", "observation_states"],
         "identity_sidecar_excluded_from_model": True,
@@ -149,12 +178,14 @@ def read_fixture(reader: MaterializedFixtureReader, workers: int, reader_block: 
     payloads = []
     sidecars = []
     physical_blocks = 0
+    physical_read_bytes = 0
     if prefetch <= 1:
         for chunk in chunks:
             payload, sidecar, timing = reader.read(chunk, workers=workers, reverse_physical=reverse)
             payloads.append(payload)
             sidecars.extend(sidecar)
             physical_blocks += int(timing["physical_blocks"])
+            physical_read_bytes += int(timing["physical_read_bytes"])
     else:
         from concurrent.futures import ThreadPoolExecutor
         with ThreadPoolExecutor(max_workers=prefetch) as pool:
@@ -164,11 +195,13 @@ def read_fixture(reader: MaterializedFixtureReader, workers: int, reader_block: 
                 payloads.append(payload)
                 sidecars.extend(sidecar)
                 physical_blocks += int(timing["physical_blocks"])
+                physical_read_bytes += int(timing["physical_read_bytes"])
     values = np.concatenate([item["normalized_values"] for item in payloads], axis=0)
     states = np.concatenate([item["observation_states"] for item in payloads], axis=0)
     model = {"normalized_values": values, "observation_states": states}
     by_cell = {cell: index for index, cell in enumerate(ids)}
-    return model, sidecars, by_cell, {"reader_seconds": time.perf_counter() - start, "physical_block_reads": physical_blocks, "reader_chunks": len(chunks)}
+    return model, sidecars, by_cell, {"reader_seconds": time.perf_counter() - start, "physical_block_reads": physical_blocks,
+                                      "physical_read_bytes": physical_read_bytes, "reader_chunks": len(chunks)}
 
 
 def prepare_chunk(record_chunk, role, model, by_cell, pin):
@@ -201,6 +234,7 @@ def prepare_chunk(record_chunk, role, model, by_cell, pin):
 
 def candidate(batch: int, workers: int, reader_block: int, prefetch: int, pin: bool, reader_only: bool) -> dict[str, object]:
     before = meminfo()
+    swap_counters_before = vmstat_swap()
     faults_before = resource.getrusage(resource.RUSAGE_SELF)
     reader = MaterializedFixtureReader(CANONICAL, WORKTREE)
     try:
@@ -213,8 +247,9 @@ def candidate(batch: int, workers: int, reader_block: int, prefetch: int, pin: b
 
             benchmark = benchmark_repetitions(read_operation, units=len(reader.rows))
             after = meminfo()
+            swap_counters_after = vmstat_swap()
             faults_after = resource.getrusage(resource.RUSAGE_SELF)
-            return {"safe": swap_used(after) <= swap_used(before) and peak_rss_bytes() <= 0.8 * before["MemAvailable"], "median_throughput": benchmark["median_throughput"], "throughput_unit": "rows_per_second", "configuration": reader_block, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "warmups": benchmark["warmups"], "timed_repetitions": benchmark["timed_repetitions"], "repetitions": benchmark["repetitions"], "reader": latest["metrics"], "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "minor_faults_delta": faults_after.ru_minflt - faults_before.ru_minflt, "major_faults_delta": faults_after.ru_majflt - faults_before.ru_majflt, "cuda_peak_allocated_bytes": 0, "cuda_peak_reserved_bytes": 0, "cuda_total_bytes": torch.cuda.get_device_properties(0).total_memory}
+            return {"safe": no_swap_activity(swap_counters_before, swap_counters_after) and peak_rss_bytes() <= 0.8 * before["MemAvailable"], "median_throughput": benchmark["median_throughput"], "throughput_unit": "rows_per_second", "configuration": reader_block, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "warmups": benchmark["warmups"], "timed_repetitions": benchmark["timed_repetitions"], "repetitions": benchmark["repetitions"], "reader": latest["metrics"], "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "pswpin_before": swap_counters_before["pswpin"], "pswpin_after": swap_counters_after["pswpin"], "pswpout_before": swap_counters_before["pswpout"], "pswpout_after": swap_counters_after["pswpout"], "minor_faults_delta": faults_after.ru_minflt - faults_before.ru_minflt, "major_faults_delta": faults_after.ru_majflt - faults_before.ru_majflt, "cuda_peak_allocated_bytes": 0, "cuda_peak_reserved_bytes": 0, "cuda_total_bytes": torch.cuda.get_device_properties(0).total_memory}
         model, _, by_cell, read_metrics = read_fixture(reader, workers, reader_block, prefetch)
         device = torch.device("cuda")
         encoder = load_encoder(CANONICAL, device)
@@ -252,16 +287,18 @@ def candidate(batch: int, workers: int, reader_block: int, prefetch: int, pin: b
             if repetition:
                 repetitions.append({"elapsed_seconds": elapsed, "query_identities": total_count, "throughput": total_count / elapsed, "h2d_seconds": h2d_seconds, "constructor_seconds": constructor_seconds, "model_forward_seconds": model_seconds, "target_context_reduction_seconds": reduction_seconds})
         after = meminfo()
+        swap_counters_after = vmstat_swap()
         faults_after = resource.getrusage(resource.RUSAGE_SELF)
         total_vram = torch.cuda.get_device_properties(0).total_memory
         peak_reserved = torch.cuda.max_memory_reserved()
         peak_allocated = torch.cuda.max_memory_allocated()
         median_rate = statistics.median(row["throughput"] for row in repetitions)
-        safe = peak_reserved <= 0.85 * total_vram and swap_used(after) <= swap_used(before) and peak_rss_bytes() <= 0.8 * before["MemAvailable"] and math.isfinite(median_rate)
-        return {"safe": bool(safe), "median_throughput": median_rate, "throughput_unit": "query_identities_per_second", "configuration": batch, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "warmups": 1, "timed_repetitions": 3, "repetitions": repetitions, "role_seconds_median": {role: statistics.median(times) for role, times in role_times.items()}, "role_counts": {role: len(rows) for role, rows in role_samples.items()}, "reader": read_metrics, "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "minor_faults_delta": faults_after.ru_minflt - faults_before.ru_minflt, "major_faults_delta": faults_after.ru_majflt - faults_before.ru_majflt, "cuda_peak_allocated_bytes": peak_allocated, "cuda_peak_reserved_bytes": peak_reserved, "cuda_total_bytes": total_vram, "model_state_sha256": model_state}
+        safe = peak_reserved <= 0.85 * total_vram and no_swap_activity(swap_counters_before, swap_counters_after) and peak_rss_bytes() <= 0.8 * before["MemAvailable"] and math.isfinite(median_rate)
+        return {"safe": bool(safe), "median_throughput": median_rate, "throughput_unit": "query_identities_per_second", "configuration": batch, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "warmups": 1, "timed_repetitions": 3, "repetitions": repetitions, "role_seconds_median": {role: statistics.median(times) for role, times in role_times.items()}, "role_counts": {role: len(rows) for role, rows in role_samples.items()}, "reader": read_metrics, "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "pswpin_before": swap_counters_before["pswpin"], "pswpin_after": swap_counters_after["pswpin"], "pswpout_before": swap_counters_before["pswpout"], "pswpout_after": swap_counters_after["pswpout"], "minor_faults_delta": faults_after.ru_minflt - faults_before.ru_minflt, "major_faults_delta": faults_after.ru_majflt - faults_before.ru_majflt, "cuda_peak_allocated_bytes": peak_allocated, "cuda_peak_reserved_bytes": peak_reserved, "cuda_total_bytes": total_vram, "model_state_sha256": model_state}
     except torch.cuda.OutOfMemoryError as error:
         after = meminfo()
-        return {"safe": False, "failure": "CUDA_OOM", "error": str(error), "configuration": batch, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "cuda_peak_allocated_bytes": torch.cuda.max_memory_allocated(), "cuda_peak_reserved_bytes": torch.cuda.max_memory_reserved(), "cuda_total_bytes": torch.cuda.get_device_properties(0).total_memory}
+        swap_counters_after = vmstat_swap()
+        return {"safe": False, "failure": "CUDA_OOM", "error": str(error), "configuration": batch, "batch": batch, "workers": workers, "reader_block": reader_block, "prefetch": prefetch, "pin": pin, "peak_rss_bytes": peak_rss_bytes(), "candidate_start_memavailable_bytes": before["MemAvailable"], "swap_before_bytes": swap_used(before), "swap_after_bytes": swap_used(after), "pswpin_before": swap_counters_before["pswpin"], "pswpin_after": swap_counters_after["pswpin"], "pswpout_before": swap_counters_before["pswpout"], "pswpout_after": swap_counters_after["pswpout"], "cuda_peak_allocated_bytes": torch.cuda.max_memory_allocated(), "cuda_peak_reserved_bytes": torch.cuda.max_memory_reserved(), "cuda_total_bytes": torch.cuda.get_device_properties(0).total_memory}
 
 
 def parity() -> dict[str, object]:
@@ -337,11 +374,13 @@ def parity() -> dict[str, object]:
     roles = reader.fixture["selected"]
     correct = next(row for row in roles if row["role"] == "correct_student")
     null = next(row for row in roles if row["role"] == "matched_null_student")
-    authority = authority_fields()
-    correct_root = forward_identity(authority, correct, "correct_student", RUN_ID, "identity-test")
+    authority = {**authority_fields(), "checkpoint_sha256": CHECKPOINT_SHA, "encoder_sha256": ENCODER_SHA,
+                 "tokenizer_sha256": TOKENIZER_SHA, "namespace_semantic_root": NAMESPACE_SEMANTIC_ROOT,
+                 "observation_state_sha256": STATE_SHA, "dtype": "float32", "autocast": False}
+    correct_root = student_forward_identity(authority, correct, "correct_student")
     null_as_correct = dict(null); null_as_correct["canonical_cell_id"] = correct["canonical_cell_id"]; null_as_correct["q"] = correct["q"]; null_as_correct["evidence_level"] = correct["evidence_level"]
     null_as_correct["null_source_cell"] = null["null_source_cell"]
-    null_root = forward_identity(authority, null_as_correct, "matched_null_student", RUN_ID, "identity-test")
+    null_root = student_forward_identity(authority, null_as_correct, "matched_null_student")
     status = all(row["pass"] for row in comparisons) and all(row["x_q_only_unchanged"] and row["lawful_non_q_changes"] for row in metamorphic) and read_order_exact and permutation_keys_exact and chunk_parity and correct_root != null_root and _module_state_sha256(encoder) == before
     result = {"schema": "f1-preflight-query-safe-parity-v1", "status": "PASS" if status else "STOP_F1_PREFLIGHT_QUERY_SAFE_PARITY_FAILURE", "fixture_membership_root_sha256": reader.fixture["membership_root_sha256"], "comparison_rule": dict(FLOAT32_RULE), "all_fixture_records_compared_to_independent_slow_reference": len(comparisons) == len(reader.fixture["selected"]), "comparisons": comparisons, "metamorphic": metamorphic, "query_permutation_inverse_restoration_exact": permutation_keys_exact, "forward_batch_chunk_parity_within_frozen_authority": chunk_parity, "forward_batch_chunk_comparisons": chunk_comparisons, "batch_chunk_size_tested": 7, "physical_read_order_restored_exactly": bool(read_order_exact), "correct_vs_null_identity_distinct": correct_root != null_root, "model_state_unchanged": _module_state_sha256(encoder) == before, "reader": read_metrics, "biological_metrics_computed": False}
     write_json(PACKAGE / "F1_PREFLIGHT_QUERY_SAFE_PARITY.json", result)
@@ -359,10 +398,16 @@ def run_subprocess(extra: list[str]) -> dict[str, object]:
 
 
 def environment_authentication() -> tuple[dict[str, object], dict[str, object]]:
-    gpu = subprocess.check_output(["nvidia-smi", "--query-gpu=name,driver_version,memory.total,memory.free", "--format=csv,noheader,nounits"], text=True).strip().split(",")
+    gpu_text = subprocess.check_output(["nvidia-smi", "--query-gpu=name,driver_version,memory.total,memory.free", "--format=csv,noheader,nounits"], text=True).strip()
+    gpu = gpu_text.split(",")
     info = meminfo()
     stat = os.statvfs(CANONICAL)
-    env = {"schema": "f1-preflight-wsl-environment-v1", "status": "PASS", "wsl_kernel": platform.release(), "platform": platform.platform(), "python_executable": sys.executable, "python_version": sys.version, "numpy": np.__version__, "scipy": scipy.__version__, "torch": torch.__version__, "torch_cuda_runtime": torch.version.cuda, "cudnn": torch.backends.cudnn.version(), "cuda_available": torch.cuda.is_available(), "gpu": gpu[0].strip(), "driver": gpu[1].strip(), "total_vram_mib": int(gpu[2]), "free_vram_mib": int(gpu[3]), "cpu_physical_cores": psutil.cpu_count(logical=False), "cpu_logical_cores": psutil.cpu_count(logical=True), "memtotal_bytes": info["MemTotal"], "memavailable_bytes": info["MemAvailable"], "swap_total_bytes": info["SwapTotal"], "swap_used_bytes": swap_used(info), "filesystem_type": subprocess.check_output(["stat", "-f", "-c", "%T", str(CANONICAL)], text=True).strip(), "free_storage_bytes": stat.f_bavail * stat.f_frsize, "data_path": str(CANONICAL / "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4"), "worktree_path": str(WORKTREE), "same_canonical_mount": str(CANONICAL).startswith("/mnt/d/"), "source_hashes": {path.relative_to(WORKTREE).as_posix(): sha256_file(path) for path in (WORKTREE / "scripts/v4/contextual_target_f1_preflight_core_v1.py", WORKTREE / "scripts/v4/contextual_target_f1_preflight_executor_v1.py", HERE, WORKTREE / "src/sea_ad_jepa/v4/contextual_query_local.py", WORKTREE / "src/sea_ad_jepa/v4/ipb_jepa.py", WORKTREE / "src/sea_ad_jepa/v4/gene_tokenizer.py", WORKTREE / "src/sea_ad_jepa/v4/contracts.py")}}
+    source_hashes = {path.relative_to(WORKTREE).as_posix(): sha256_file(path) for path in (WORKTREE / "scripts/v4/contextual_target_f1_preflight_core_v1.py", WORKTREE / "scripts/v4/contextual_target_f1_preflight_executor_v1.py", HERE, WORKTREE / "src/sea_ad_jepa/v4/contextual_query_local.py", WORKTREE / "src/sea_ad_jepa/v4/ipb_jepa.py", WORKTREE / "src/sea_ad_jepa/v4/gene_tokenizer.py", WORKTREE / "src/sea_ad_jepa/v4/contracts.py")}
+    expected_normalized = {"src/sea_ad_jepa/v4/contextual_query_local.py": CONSTRUCTOR_SHA, "src/sea_ad_jepa/v4/ipb_jepa.py": ENCODER_SHA, "src/sea_ad_jepa/v4/gene_tokenizer.py": TOKENIZER_SHA}
+    source_hashes_match = all(hashlib.sha256((WORKTREE / path).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == expected for path, expected in expected_normalized.items())
+    facts = {"is_wsl": "microsoft" in platform.release().lower(), "canonical_mount": str(CANONICAL), "cuda_available": torch.cuda.is_available(), "cuda_device_count": torch.cuda.device_count(), "nvidia_smi_ok": bool(gpu_text), "source_hashes_match": source_hashes_match}
+    validate_runtime_facts(facts)
+    env = {"schema": "f1-preflight-wsl-environment-v1", "status": "PASS", "benchmark_execution_commit": actual_git_head(WORKTREE), **facts, "wsl_kernel": platform.release(), "platform": platform.platform(), "python_executable": sys.executable, "python_version": sys.version, "numpy": np.__version__, "scipy": scipy.__version__, "torch": torch.__version__, "torch_cuda_runtime": torch.version.cuda, "cudnn": torch.backends.cudnn.version(), "gpu": gpu[0].strip(), "driver": gpu[1].strip(), "total_vram_mib": int(gpu[2]), "free_vram_mib": int(gpu[3]), "cpu_physical_cores": psutil.cpu_count(logical=False), "cpu_logical_cores": psutil.cpu_count(logical=True), "memtotal_bytes": info["MemTotal"], "memavailable_bytes": info["MemAvailable"], "swap_total_bytes": info["SwapTotal"], "swap_used_bytes": swap_used(info), "filesystem_type": subprocess.check_output(["stat", "-f", "-c", "%T", str(CANONICAL)], text=True).strip(), "free_storage_bytes": stat.f_bavail * stat.f_frsize, "data_path": str(CANONICAL / "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4"), "worktree_path": str(WORKTREE), "same_canonical_mount": str(CANONICAL).startswith("/mnt/d/"), "source_hashes": source_hashes}
     snapshot = {"schema": "f1-preflight-resource-snapshot-v1", "captured_before_benchmark": True, "gpu": {"name": env["gpu"], "driver": env["driver"], "total_vram_mib": env["total_vram_mib"], "free_vram_mib": env["free_vram_mib"]}, "cpu": {"physical": env["cpu_physical_cores"], "logical": env["cpu_logical_cores"]}, "ram": {"total": env["memtotal_bytes"], "available": env["memavailable_bytes"]}, "swap": {"total": env["swap_total_bytes"], "used": env["swap_used_bytes"]}, "storage_free_bytes": env["free_storage_bytes"]}
     write_json(PACKAGE / "F1_PREFLIGHT_WSL_ENVIRONMENT_AUTHENTICATION.json", env)
     write_json(PACKAGE / "F1_PREFLIGHT_RESOURCE_SNAPSHOT.json", snapshot)
@@ -391,6 +436,7 @@ def orchestrate() -> dict[str, object]:
         result = run_subprocess(["--batch", str(selected_batch), "--workers", "0", "--reader-block", str(block), "--prefetch", "1", "--reader-only"])
         result.update({"stage": "reader_block", "configuration": block})
         reader_rows.append(result); rows.append(result)
+        if not result["safe"]: break
     selected_block = int(select_smallest_near_best(reader_rows)["configuration"])
 
     max_workers = max(1, int(env["cpu_physical_cores"]) - 2)
@@ -410,6 +456,7 @@ def orchestrate() -> dict[str, object]:
         result = run_subprocess(["--batch", str(selected_batch), "--workers", str(selected_workers), "--reader-block", str(selected_block), "--prefetch", str(prefetch), "--reader-only"])
         result.update({"stage": "prefetch", "configuration": prefetch})
         prefetch_rows.append(result); rows.append(result)
+        if not result["safe"]: break
     selected_prefetch = int(select_smallest_near_best(prefetch_rows)["configuration"])
 
     pin_rows = []
@@ -419,6 +466,7 @@ def orchestrate() -> dict[str, object]:
         result = run_subprocess(args)
         result.update({"stage": "pinning", "configuration": int(pin)})
         pin_rows.append(result); rows.append(result)
+        if not result["safe"]: break
     selected_pin = bool(select_smallest_near_best(pin_rows)["configuration"])
     final_args = ["--batch", str(selected_batch), "--workers", str(selected_workers), "--reader-block", str(selected_block), "--prefetch", str(selected_prefetch)]
     if selected_pin: final_args.append("--pin")
@@ -431,7 +479,7 @@ def orchestrate() -> dict[str, object]:
     csv_path = PACKAGE / "F1_PREFLIGHT_RESOURCE_LADDER.csv"
     compact = []
     for row in rows:
-        compact.append({key: row.get(key) for key in ("stage", "configuration", "safe", "median_throughput", "throughput_unit", "batch", "workers", "reader_block", "prefetch", "pin", "peak_rss_bytes", "candidate_start_memavailable_bytes", "swap_before_bytes", "swap_after_bytes", "cuda_peak_allocated_bytes", "cuda_peak_reserved_bytes", "cuda_total_bytes")})
+        compact.append({key: row.get(key) for key in ("stage", "configuration", "safe", "median_throughput", "throughput_unit", "batch", "workers", "reader_block", "prefetch", "pin", "peak_rss_bytes", "candidate_start_memavailable_bytes", "swap_before_bytes", "swap_after_bytes", "pswpin_before", "pswpin_after", "pswpout_before", "pswpout_after", "cuda_peak_allocated_bytes", "cuda_peak_reserved_bytes", "cuda_total_bytes")})
     with csv_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(compact[0]), lineterminator="\n")
         writer.writeheader(); writer.writerows(compact)
@@ -441,10 +489,9 @@ def orchestrate() -> dict[str, object]:
     write_json(PACKAGE / "F1_PREFLIGHT_ROLE_THROUGHPUT.json", {"schema": "f1-preflight-role-throughput-v1", "rates_query_identities_per_second": role_rates, "selected_configuration": selection["selected"]})
     geometry = full_geometry()
     forward_seconds = geometry["teacher_forwards"] / role_rates["teacher"] + geometry["correct_forwards"] / role_rates["correct_student"] + geometry["null_forwards"] / role_rates["matched_null_student"]
-    median_rep = sorted(final["repetitions"], key=lambda row: row["throughput"])[1]
-    multiplier = geometry["total_expensive_forwards"] / sum(final["role_counts"].values())
-    projection = {"schema": "f1-preflight-runtime-projection-v1", "geometry": geometry, "selected_configuration": selection["selected"], "role_rates": role_rates, "T_forward_seconds": forward_seconds, "T_io_seconds": final["reader"]["reader_seconds"] * multiplier, "T_reduce_seconds": median_rep["target_context_reduction_seconds"] * multiplier, "T_commit_seconds": 0.0, "T_finalization_seconds": 0.0}
-    projection["T_total_projected_seconds"] = sum(projection[key] for key in ("T_forward_seconds", "T_io_seconds", "T_reduce_seconds", "T_commit_seconds", "T_finalization_seconds"))
+    components = nonoverlapping_runtime(physical_reader=float(final["reader"]["reader_seconds"]), forward_pipeline=forward_seconds, shard_commit=0.0, finalization=0.0)
+    projection = {"schema": "f1-preflight-runtime-projection-v2", "geometry": geometry, "selected_configuration": selection["selected"], "role_rates": role_rates, "T_physical_reader_seconds": float(final["reader"]["reader_seconds"]), "physical_reader_scope": "unique technical-fixture rows; never scaled by neural-forward count", "T_forward_pipeline_seconds": forward_seconds, "T_shard_commit_seconds": 0.0, "T_finalization_seconds": 0.0, "nonoverlapping_components": components["components"]}
+    projection["T_total_projected_seconds"] = components["total"]
     projection["T_total_projected_hours"] = projection["T_total_projected_seconds"] / 3600.0
     write_json(PACKAGE / "F1_PREFLIGHT_RUNTIME_PROJECTION.json", projection)
     return {"status": "PASS_RESOURCE_AND_PARITY", "selection": selection["selected"], "projection_hours": projection["T_total_projected_hours"]}

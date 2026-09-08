@@ -149,3 +149,6 @@ Use for loader, masking, evidence, namespace, or population audits.
 ## Historical Stage81B 4,096 artifacts
 
 Use only as optional mechanism evidence. Never treat as production molecular authority and do not delay production-scope work merely to reproduce the old fixture.
+# Implementation-verifier authority
+
+See `docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md`, policy, report template, mutation catalog, validator, and tests. All conclusion-bearing implementations require independent verifier PASS before expensive compute.

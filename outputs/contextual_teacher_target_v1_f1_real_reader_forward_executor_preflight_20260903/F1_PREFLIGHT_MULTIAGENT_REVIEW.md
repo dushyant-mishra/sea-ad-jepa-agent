@@ -2,30 +2,32 @@
 
 ## Consensus
 
-**REAL F1 EXECUTION MECHANICS ARE AUTHENTICATED AND SCIENTIFIC SEMANTICS ARE UNCHANGED.**
-
-All five required critics returned PASS after two initially valid proof gaps were repaired and the evidence regenerated. No unresolved dissent remains.
+The repaired implementation, bounded WSL/CUDA preflight, executor geometry, resume path, sufficient-statistic mechanics, and rebuilt publication package passed the required specialist reviews. Real F1 remains forbidden.
 
 ## 1. Authority / Historian — PASS
 
-Exact executed checkout-byte hashes for constructor, encoder, and tokenizer match the WSL environment record. Independently normalizing CRLF to LF reproduces the frozen scientific hashes exactly, so the former mismatch was byte-serialization only. No historical batch constant entered selection. Falsification: any executed-byte mismatch or normalized-source mismatch.
+The final review found all published artifacts represented by the regenerated manifest, zero byte/hash mismatches, byte-identical live sources and snapshots, truthful handoff facts, and the exact `C_IMPL` → `C_ROOT` four-file freeze diff. Initial verdict: **STOP — stale publication provenance.** That valid veto and its superseded root remain preserved in history; the package was rebuilt from actual final bytes before PASS.
 
 ## 2. Reader / Observation / Query-Safety — PASS
 
-All 51 records match the independent singleton reference. Query-only scalar changes are invariant, lawful non-query changes alter the contextual route, query permutation restores exact identities, batch-7 results remain within the frozen float32 authority, and physical read reordering restores logical order. Falsification: any q-only effect, identity failure, excess numerical difference, or provenance entering model tensors.
+The exact `/mnt/d/Jepa project` runtime root, source hashes, observation-state authority, measured-zero semantics, query-local metamorphics, logical-order restoration, and reader-fit firewall passed. The 51-record bounded fixture spans 38 donors, all 42 operators, three sources, five evidence levels, and all three roles.
 
 ## 3. WSL / GPU / Resource — PASS
 
-The selected geometry is correctly reconstructed within prospective domains: batch powers of two through role capacity, workers through physical-cores-minus-two, and prefetch through chunk capacity. The smallest-safe-within-5%-of-fastest rule selects batch 4, block 8, four workers, prefetch 4, unpinned memory. Swap remained zero with ample RAM/VRAM headroom. Falsification: an outcome-dependent domain or production resource-envelope breach.
+Prospective ladders selected batch 4, reader block 4, four workers, prefetch 4, and unpinned memory. Final stability throughput was 14.120045 query identities/s. Linux `pswpin` and `pswpout` remained zero; peak RSS was 1,714,348,032 bytes and CUDA peak reserved was 1,795,162,112 of 17,179,344,896 bytes.
 
 ## 4. Executor / Resume / Sufficient Statistics — PASS
 
-Interrupted/resumed and uninterrupted fixture outputs are byte-identical. Membership, forward-root, dtype, order, duplicate-write, and payload attacks are rejected. Sufficient statistics restore fixed logical order, recompute deltas, and omit hidden-state archives. Falsification: any atomic-publication/resume path that changes logical bytes.
+The inference population remains 44,496 assignments. Compute-only deduplication produces 43,108 teacher, 215,540 correct-student, and 215,540 null-student identities (474,188 total) and 222,480 ordered effect rows. Endpoint arithmetic, cache identities, atomic shard persistence, interruption/resume, dtype/order enforcement, physical-I/O accounting, and independent reconstruction passed.
 
 ## 5. Scientific Red-Team — PASS
 
-Only 64 authenticated reader-fit Level-4 materialized blocks were opened. No protected data, biological outcomes, training, backward, optimizer, or EMA activity occurred. Fixture and resource rules were fixed before outcomes and independently reconstructed. Falsification: any path outside the frozen blocks, biological result, or authority/geometry mismatch.
+The bounded check computationally opened 67 reader-fit rows from 64 authenticated Level-4 blocks. It opened no protected data and produced no biological outcome, training, backward, optimizer, or EMA update. The Red-Team confirmed that the permanent implementation-verifier veto ran before the expensive benchmark and that scientific semantics were unchanged.
 
-## Preserved review history
+## Permanent implementation verifier — PASS
 
-The Authority and Reader critics initially returned STOP for missing executed-byte binding and missing serialized permutation/batch proof. Those STOPs were preserved as valid review findings; the narrow engineering repairs were refrozen and all evidence was rerun before their final PASS verdicts.
+`MANDATORY_IMPLEMENTATION_VERIFIER_V1` independently checked requirements A–O and all applicable mutation families. The original verifier STOP for a fail-open WSL-path prefix check is preserved in Git history; the exact canonical-path repair passed the fresh post-root verifier. Implementation commit: `a3c4452d48cedc8650ba9de4a9d6737cc926544c`. Root commit: `2f33a8a1662e98de03cbb28604d8bfbb2d9477bb`.
+
+## Principal falsification at real execution
+
+Any failure to reconcile exactly 1,400 logical shards, 474,188 forward identities, and 222,480 ordered float64 effect rows—or any membership, dtype, order, reader-block, firewall, or semantic-payload mismatch—must stop execution.
