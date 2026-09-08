@@ -96,7 +96,7 @@ jobs:
         run: |
           set -euo pipefail
           cp -a /tmp/v5_extract/. .
-          rm -f             tests/test_teacher_student_v5_support_geometry_v1.py             src/sea_ad_jepa/v5/keyed_rng_reference.py             src/sea_ad_jepa/v5/keyed_dropout_prototype.py             tests/test_teacher_student_v5_keyed_packing_v1.py             tests/test_teacher_student_v5_optimizer_boundary_v1.py             tests/test_teacher_student_v5_rng_and_triplets.py             tests/test_teacher_student_v5_keyed_training_boundary_v1.py             tests/test_teacher_student_v5_rng_triplets_estimand_v1.py
+          rm -f tests/test_teacher_student_v5_support_geometry_v1.py src/sea_ad_jepa/v5/keyed_rng_reference.py src/sea_ad_jepa/v5/keyed_dropout_prototype.py tests/test_teacher_student_v5_keyed_packing_v1.py tests/test_teacher_student_v5_optimizer_boundary_v1.py tests/test_teacher_student_v5_rng_and_triplets.py tests/test_teacher_student_v5_keyed_training_boundary_v1.py tests/test_teacher_student_v5_rng_triplets_estimand_v1.py
           rm -rf .v5_sync66
           rm -f .github/workflows/materialize_teacher_student_v5_data_first_snapshot.yml
 
@@ -111,4 +111,4 @@ jobs:
           git commit -m "teacher-student v5: materialize exact 66-pass data-first snapshot"
           git push origin HEAD:planning/teacher-student-v5-data-first-20260908
 
-# retrigger after exact transfer-part repair
+# retrigger after verified 12000-byte part001 repair
