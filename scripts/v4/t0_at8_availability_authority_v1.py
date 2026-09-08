@@ -310,92 +310,72 @@ def load_availability_authority(
     expected_package_root_sha256: str,
     expected_availability_root_sha256: str,
 ) -> dict[str, Any]:
-    """Re-verify a frozen availability package against EXTERNAL roots.
+    """Re-verify a frozen availability package from bytes captured exactly once.
 
-    Internal consistency is not verification. Comparing the manifest only with
-    the root stored inside the same directory accepted a wholesale replacement:
-    rewrite the registry, the metadata, the manifest and the root file together
-    and the package validated. Both expected roots are therefore required
-    keyword arguments, so a caller cannot accidentally verify a package against
-    itself.
+    The previous implementation authenticated each member by path and then
+    reopened the metadata and registry to parse them. That interval was
+    exploitable and the exploit was demonstrated: replacing the metadata with a
+    same-length forgery immediately after its authenticated hash read produced a
+    loader result carrying `membership_donor_set_sha256` of all zeros while both
+    external roots were still reported correct. Authentication and use must
+    therefore act on the same bytes, exactly as the source-side repair does.
 
-    The directory must also hold exactly the four known files. An unmanifested
-    extra file was previously ignored, which let a package carry content no
-    digest covered.
+    So: enumerate the directory, refuse a symlink or reparse-point member,
+    refuse anything but the four known files, read each member once into memory,
+    verify every length and digest from those captured bytes, compute the
+    manifest and availability roots from those captured bytes, compare both
+    against the externally supplied roots, and parse only from the captured
+    buffers. No package member is reopened after authentication.
     """
     out = Path(outdir)
-    manifest_path = out / MANIFEST
-    root_path = out / ROOT_FILE
-    for required in (manifest_path, root_path):
-        if not required.is_file():
-            raise AssertionError("%s: %s is absent"
-                                 % (STOP_PACKAGE, required.as_posix()))
-
-    present = sorted(item.relative_to(out).as_posix()
-                     for item in out.rglob("*") if item.is_file())
     expected_contents = sorted([*MEMBERS, MANIFEST, ROOT_FILE])
-    if present != expected_contents:
+
+    present: dict[str, Path] = {}
+    for item in sorted(out.rglob("*"), key=lambda value: value.as_posix()):
+        relative = item.relative_to(out).as_posix()
+        if item.is_symlink():
+            raise AssertionError("%s: %s is a symlink or reparse point"
+                                 % (STOP_PACKAGE_CONTENTS, relative))
+        if item.is_dir():
+            raise AssertionError("%s: %s is a directory; the package is flat"
+                                 % (STOP_PACKAGE_CONTENTS, relative))
+        present[relative] = item
+    if sorted(present) != expected_contents:
         raise AssertionError(
             "%s: directory holds %r, expected exactly %r"
-            % (STOP_PACKAGE_CONTENTS, present, expected_contents)
+            % (STOP_PACKAGE_CONTENTS, sorted(present), expected_contents)
         )
 
-    declared = []
-    with manifest_path.open("r", encoding="utf-8", newline="") as handle:
-        for record in csv.DictReader(handle):
-            declared.append(record)
+    # Capture once. Everything below reads only from `captured`.
+    captured = {relative: path.read_bytes() for relative, path in present.items()}
+
+    manifest_text = captured[MANIFEST].decode("utf-8")
+    declared = list(csv.DictReader(io.StringIO(manifest_text)))
     names = [record["filename"] for record in declared]
     if sorted(names) != sorted(MEMBERS):
-        raise AssertionError("%s: members %r are not %r"
+        raise AssertionError("%s: manifest members %r are not %r"
                              % (STOP_PACKAGE, sorted(names), sorted(MEMBERS)))
     for record in declared:
-        member = out / record["filename"]
-        if not member.is_file():
-            raise AssertionError("%s: %s is absent" % (STOP_PACKAGE, record["filename"]))
-        if str(member.stat().st_size) != str(record["bytes"]):
-            raise AssertionError("%s: %s byte count differs"
-                                 % (STOP_PACKAGE, record["filename"]))
-        if sha256_file(member) != record["sha256"]:
-            raise AssertionError("%s: %s digest differs"
-                                 % (STOP_PACKAGE, record["filename"]))
+        name = record["filename"]
+        if name not in captured:
+            raise AssertionError("%s: %s is absent" % (STOP_PACKAGE, name))
+        payload = captured[name]
+        if str(len(payload)) != str(record["bytes"]):
+            raise AssertionError("%s: %s is %d bytes, manifest says %s"
+                                 % (STOP_PACKAGE, name, len(payload), record["bytes"]))
+        actual = hashlib.sha256(payload).hexdigest()
+        if actual != record["sha256"]:
+            raise AssertionError("%s: %s digest %s does not match manifest %s"
+                                 % (STOP_PACKAGE, name, actual, record["sha256"]))
 
-    recorded_root = root_path.read_text(encoding="utf-8").strip()
-    actual_root = sha256_file(manifest_path)
+    recorded_root = captured[ROOT_FILE].decode("utf-8").strip()
+    actual_root = hashlib.sha256(captured[MANIFEST]).hexdigest()
     if recorded_root != actual_root:
         raise AssertionError("%s: recorded root %s is not the manifest digest %s"
                              % (STOP_PACKAGE, recorded_root, actual_root))
+    availability_root = hashlib.sha256(captured[REGISTRY]).hexdigest()
 
-    metadata = json.loads((out / METADATA).read_text(encoding="utf-8"))
-    if metadata.get("schema") != SCHEMA or metadata.get("namespace") != NAMESPACE:
-        raise AssertionError("%s: metadata identity mismatch" % STOP_PACKAGE)
-    if metadata.get("real_execution_ready") is not False:
-        raise AssertionError("%s: availability authority may not claim readiness"
-                             % STOP_PACKAGE)
-
-    rows = []
-    with (out / REGISTRY).open("r", encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        if list(reader.fieldnames or []) != ["donor_id", "AT8_available"]:
-            raise AssertionError("%s: registry columns are not the two authorized "
-                                 "columns" % STOP_PACKAGE)
-        for record in reader:
-            if record["AT8_available"] not in ("True", "False"):
-                raise AssertionError("%s: %s carries a non-boolean availability"
-                                     % (STOP_PACKAGE, record["donor_id"]))
-            rows.append(dict(record))
-    if len(rows) != metadata["total_donor_count"]:
-        raise AssertionError("%s: registry row count disagrees with metadata"
-                             % STOP_PACKAGE)
-    available = [row for row in rows if row["AT8_available"] == "True"]
-    if len(available) != metadata["available_donor_count"]:
-        raise AssertionError("%s: available count disagrees with metadata"
-                             % STOP_PACKAGE)
-
-    availability_root = hashlib.sha256((out / REGISTRY).read_bytes()).hexdigest()
-
-    # The decisive check: both roots must equal values supplied from OUTSIDE
-    # this directory. A self-consistent replacement of every member cannot
-    # satisfy this, which is precisely what internal consistency alone allowed.
+    # The decisive checks, against values supplied from OUTSIDE this directory.
     if actual_root != str(expected_package_root_sha256):
         raise AssertionError(
             "%s: package root %s is not the expected %s"
@@ -407,9 +387,36 @@ def load_availability_authority(
             % (STOP_EXTERNAL_ROOT, availability_root, expected_availability_root_sha256)
         )
 
+    metadata = json.loads(captured[METADATA].decode("utf-8"))
+    if metadata.get("schema") != SCHEMA or metadata.get("namespace") != NAMESPACE:
+        raise AssertionError("%s: metadata identity mismatch" % STOP_PACKAGE)
+    if metadata.get("real_execution_ready") is not False:
+        raise AssertionError("%s: availability authority may not claim readiness"
+                             % STOP_PACKAGE)
+
+    rows = []
+    reader = csv.DictReader(io.StringIO(captured[REGISTRY].decode("utf-8")))
+    if list(reader.fieldnames or []) != ["donor_id", "AT8_available"]:
+        raise AssertionError("%s: registry columns are not the two authorized columns"
+                             % STOP_PACKAGE)
+    for record in reader:
+        if record["AT8_available"] not in ("True", "False"):
+            raise AssertionError("%s: %s carries a non-boolean availability"
+                                 % (STOP_PACKAGE, record["donor_id"]))
+        rows.append(dict(record))
+    if len(rows) != metadata["total_donor_count"]:
+        raise AssertionError("%s: registry row count disagrees with metadata"
+                             % STOP_PACKAGE)
+    available = [row for row in rows if row["AT8_available"] == "True"]
+    if len(available) != metadata["available_donor_count"]:
+        raise AssertionError("%s: available count disagrees with metadata"
+                             % STOP_PACKAGE)
+
     return {
         "availability_root_sha256": availability_root,
         "package_root_sha256": actual_root,
         "registry": rows,
         "metadata": metadata,
+        "authenticated_member_bytes": {name: len(blob)
+                                       for name, blob in sorted(captured.items())},
     }

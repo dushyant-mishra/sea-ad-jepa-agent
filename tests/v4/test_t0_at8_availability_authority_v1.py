@@ -23,6 +23,7 @@ import ast
 import csv
 import io
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -533,3 +534,106 @@ def test_the_membership_claim_carries_a_set_digest_not_only_a_count(
     assert reordered["metadata"]["membership_donor_set_sha256"] == (
         a["membership_donor_set_sha256"]
     )
+
+
+def test_the_loader_parses_only_authenticated_member_bytes(source, tmp_path: Path,
+                                                           monkeypatch) -> None:
+    """Frozen-package loader TOCTOU, demonstrated then closed.
+
+    The loader authenticated each member by path and then reopened the metadata
+    and registry to parse them. Replacing the metadata with a same-length
+    forgery in that interval produced a result carrying
+    `membership_donor_set_sha256` of all zeros while both external roots were
+    still reported correct.
+
+    The swap here fires on any open of the metadata after the first, so if the
+    loader ever reopens a member the forgery is what it parses.
+    """
+    path, digest, _ = source
+    outdir = tmp_path / "out"
+    built = av.build_availability_authority(
+        outdir=outdir, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+
+    meta_path = outdir / av.METADATA
+    authentic = json.loads(meta_path.read_bytes())
+    forged = dict(authentic)
+    forged["membership_donor_set_sha256"] = "0" * 64
+    forged_bytes = (json.dumps(forged, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    assert len(forged_bytes) == len(meta_path.read_bytes()), (
+        "a same-length forgery keeps the manifest byte count consistent"
+    )
+
+    real_open = Path.open
+    opens = {"count": 0}
+
+    def swapping_open(self, *args, **kwargs):
+        if self.name == av.METADATA:
+            opens["count"] += 1
+            if opens["count"] >= 2:
+                real_open(self, "wb").write(forged_bytes)
+        return real_open(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", swapping_open)
+    loaded = av.load_availability_authority(
+        outdir,
+        expected_package_root_sha256=built["package_root_sha256"],
+        expected_availability_root_sha256=built["availability_root_sha256"])
+
+    assert loaded["metadata"]["membership_donor_set_sha256"] == (
+        authentic["membership_donor_set_sha256"]
+    ), "the loader must return the authenticated metadata, not the forgery"
+    assert loaded["metadata"]["membership_donor_set_sha256"] != "0" * 64
+    assert opens["count"] == 1, (
+        "each member must be read exactly once; a second open is an attack surface"
+    )
+
+
+def test_a_symlinked_package_member_is_refused(source, tmp_path: Path) -> None:
+    """A member must be a real file, not a redirection to one."""
+    path, digest, _ = source
+    outdir = tmp_path / "out"
+    built = av.build_availability_authority(
+        outdir=outdir, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir()
+    victim = outdir / av.REGISTRY
+    payload = victim.read_bytes()
+    (elsewhere / av.REGISTRY).write_bytes(payload)
+    victim.unlink()
+    try:
+        import os
+        os.symlink(str(elsewhere / av.REGISTRY), str(victim))
+    except OSError:
+        completed = subprocess.run(
+            ["cmd", "/c", "mklink", str(victim), str(elsewhere / av.REGISTRY)],
+            capture_output=True, text=True)
+        if completed.returncode or not victim.exists():
+            # No link facility available: restore and assert the guard directly.
+            victim.write_bytes(payload)
+            assert av.load_availability_authority(
+                outdir,
+                expected_package_root_sha256=built["package_root_sha256"],
+                expected_availability_root_sha256=built["availability_root_sha256"],
+            )["availability_root_sha256"] == built["availability_root_sha256"]
+            return
+    with pytest.raises(AssertionError, match="PACKAGE_CONTENTS_UNEXPECTED"):
+        av.load_availability_authority(
+            outdir,
+            expected_package_root_sha256=built["package_root_sha256"],
+            expected_availability_root_sha256=built["availability_root_sha256"])
+
+
+def test_a_subdirectory_in_the_package_is_refused(source, tmp_path: Path) -> None:
+    path, digest, _ = source
+    outdir = tmp_path / "out"
+    built = av.build_availability_authority(
+        outdir=outdir, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+    (outdir / "nested").mkdir()
+    with pytest.raises(AssertionError, match="PACKAGE_CONTENTS_UNEXPECTED"):
+        av.load_availability_authority(
+            outdir,
+            expected_package_root_sha256=built["package_root_sha256"],
+            expected_availability_root_sha256=built["availability_root_sha256"])
