@@ -1,6 +1,6 @@
 # Canonical Teacher/Student Runtime V1 — Consolidated Production Integration
 
-Status: **LOCAL INTEGRATION CANDIDATE — EXTERNAL REVIEW REQUIRED — TRAINING UNAUTHORIZED**
+Status: **V2 SOURCE + ACTIVE-TEST AUTHORITY FROZEN — EXTERNAL REVIEW PENDING — TRAINING UNAUTHORIZED**
 
 Date: 2026-09-07
 
@@ -70,6 +70,59 @@ canonical production/attack-adapter surface has no runtime import dependency on
 them. The surviving data-blind routing/G5/directional/equivalence helpers live
 under `teacher_student_diagnostics.py`.
 
+## V2 integrated source authority
+
+The controlling pre-review implementation identity is V2.
+
+- source commit:
+  `19ff3444eb80770119ccf48c2040522f0ffde8bf`
+- source manifest:
+  `docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V2.csv`
+- source manifest rows: **20**
+- source root:
+  `8d6eca3cc7f183161a0d9a72f391709c8c07cf1202a6a62a87c4ef45777e6fb9`
+
+The earlier local V1 source freeze is preserved but explicitly
+`SUPERSEDED_BEFORE_EXTERNAL_REVIEW`. V1 named an integrated source root but the
+production entrypoints did not independently rehash the code bytes actually
+executing. V2 closes that authority gap through
+`teacher_student_source_authority.py`.
+
+Before successor-u0 materialization, u0→u40 qualification, or u40→u205
+continuation, the runtime now:
+
+1. reads the V2 source manifest and recorded root;
+2. requires the overlay/CLI source root to equal that exact manifest root;
+3. rehashes every manifested source file from the code tree actually executing;
+4. refuses execution on any missing, size-mismatched or SHA-mismatched source.
+
+A behavioral regression copies the authority tree, proves the clean bytes pass,
+mutates one executing source file, and requires STOP.
+
+## V2 active-test authority
+
+The declared-active integration suite is selected by:
+
+`docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V2.txt`
+
+and hash-bound by:
+
+`docs/agent/TEACHER_STUDENT_ACTIVE_TEST_MANIFEST_V2.csv`
+
+Active-test manifest root:
+
+`6c06228f504ca1b63b2ed4dcf1259e2f51c402875c76dae46c435db58758fd2e`
+
+There are **6** active test files. The selection deliberately excludes the
+retired C3 prototype test; the frozen F1-B behavioral attack authority remains
+active, and the canonical runtime itself must defend it.
+
+The V2 freeze audit derives the current canonical source path set, requires exact
+selection↔manifest equality, pins both the source and active-test roots, rejects
+superseded V1 verification in the active set, rejects the retired C3 prototype
+test in the active set, and fails if a training execution-authority file is
+already present.
+
 ## Model roles
 
 ### Student / online encoder
@@ -135,7 +188,7 @@ The canonical production update is:
 15. verify exact EMA equation;
 16. emit mechanics/provenance telemetry.
 
-EMA is never advanced after a skipped/invalid optimizer step.
+EMA is never advanced after a skipped/invalid optimizer step. The schedule cursor is required to equal the current proved optimizer/EMA step before every update, so mask chronology cannot drift from resumed optimizer state.
 
 ## Masking
 
@@ -239,7 +292,7 @@ Each checkpoint captures:
 - masking RNG;
 - exact production config digest;
 - authority roots;
-- software/GPU environment fingerprint.
+- software/GPU environment fingerprint, including CUDA device identity, GPU compute capability and CUBLAS workspace configuration.
 
 Checkpoint paths are write-once. Restore fails closed on schema, config,
 authority, schedule or optimizer/EMA-counter mismatch.
@@ -259,6 +312,7 @@ The u0 materializer:
 - requires zero historical schedule/global/EMA counters;
 - loads state into the canonical runtime with strict schemas;
 - proves equality of online, teacher, predictor, optimizer and GradScaler state;
+- imports and attests the exact historical Python/NumPy/Torch CPU/Torch CUDA/masking RNG state;
 - executes zero training updates;
 - writes a new successor-bound immutable u0 checkpoint;
 - writes a materialization attestation.
@@ -422,14 +476,20 @@ than being falsely described as deleted.
 
 ## Current terminal
 
-`TEACHER_STUDENT_UNIFIED_V1_LOCAL_INTEGRATION__EXTERNAL_REVIEW_REQUIRED__TRAINING_UNAUTHORIZED`
+`TEACHER_STUDENT_UNIFIED_V2_SOURCE_AND_TEST_AUTHORITY_FROZEN__EXTERNAL_REVIEW_PENDING__TRAINING_UNAUTHORIZED`
+
+The source/test authority is frozen; GitHub Actions has not produced a recorded
+run for this branch, so CI PASS is **not** claimed. The independent reviewer must
+run the V2 audit and exact selected suite.
 
 Next gate:
 
-1. integrated CI/regression pass;
-2. source manifest freeze;
-3. external review of exact canonical branch candidate;
-4. materialize successor-bound u0;
-5. freeze execution-binding overlay;
-6. separately authorize u0->u40;
-7. run mechanical qualification only.
+1. independent external review of the exact V2 source/test/review authorities;
+2. only after PASS, materialize successor-bound u0 from the clean historical u0;
+3. freeze the separate execution-binding overlay;
+4. separately obtain explicit u0→u40 execution authority;
+5. run mechanics-only u0→u40 qualification;
+6. independently review the exact u40 checkpoint and qualification;
+7. only then issue a separate u40→u205 continuation authority.
+
+No step in this document itself authorizes u1.
