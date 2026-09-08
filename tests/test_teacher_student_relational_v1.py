@@ -30,7 +30,7 @@ def test_relational_representation_is_direct_cell_state_and_identity_geometry_is
     teacher, student, groups = _states()
     report = relational_geometry_loss(teacher, student, groups)
     assert report["pair_count"].item() == 12
-    assert float(report["loss"]) == pytest.approx(0.0, abs=1e-7)
+    assert float(report["loss"].detach()) == pytest.approx(0.0, abs=1e-7)
     report["loss"].backward()
     assert student.grad is not None
     assert torch.isfinite(student.grad).all()
@@ -41,7 +41,7 @@ def test_relational_loss_detects_geometry_change() -> None:
     with torch.no_grad():
         student[0] = student[0] * -4.0
     report = relational_geometry_loss(teacher, student, groups)
-    assert float(report["loss"]) > 0.0
+    assert float(report["loss"].detach()) > 0.0
 
 
 def test_relational_pairs_never_cross_donor_operator_group() -> None:
