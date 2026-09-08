@@ -50,11 +50,15 @@
     "selector_fraction": "1/2",
     "fresh_gene_ranking_positions": "6144..9215",
     "panels": 2,
-    "sources": ["HVS", "NPH52", "SEA_AD"],
+    "sources": [
+      "HVS",
+      "NPH52",
+      "SEA_AD"
+    ],
     "cases_passed": 24,
     "cases_total": 24,
     "all_six_source_panel_replays_byte_identical": true,
-    "distance_kernel_max_abs_diff": 0.0,
+    "distance_kernel_max_abs_diff": 0,
     "weakest_observed_minus_null_p95": 0.0011566307718604563,
     "cases_beating_null_max": 22,
     "cases_total_for_null_max_diagnostic": 24,
@@ -72,7 +76,7 @@
     "A broad/mesoscale or affinity-weighted relational objective is scientifically alive.",
     "Do not tune any additional locality fraction on the 50k archive."
   ],
-  "next_question": "Prospectively freeze and run the learned-teacher disjoint-view relational continuity gate: a learned EMA teacher must reproduce donor-recurrent TD56/TD57B-style geometry above matched wrong-cell nulls before its latent geometry can become scientific supervision.",
+  "next_question": "Resolve the Teacher/Student independent-review terminal binding without weakening authority; after lawful successor u40 exists, execute frozen TD60 learned-teacher global+mesoscale relational continuity. No further 50k locality tuning.",
   "teacher_student_integration": {
     "branch": "production/teacher-student-unified-v1-20260907",
     "live_branch_head": "76bf7912cc621756fdbbd82218025d8e4c00a057",
@@ -82,5 +86,23 @@
     "self_contained_review_package_root": "0720214288dfe0a4446b418bbd8bc6f21b34c54385cec57195371b687e4a1a71",
     "execution_authorized": false,
     "note": "V3 mechanics remain frozen and untouched. Its prospective relational extension is non-active. No u1 or neural training is authorized by TD59."
+  },
+  "next_gate_freeze": {
+    "experiment": "TD60",
+    "status": "PROSPECTIVE_ONLY__WAITING_FOR_LAWFUL_SUCCESSOR_U40__NO_TRAINING_AUTHORITY",
+    "prospective_commit": "79c893ab27f87c1c2c4e57241bfc3af8d855a250",
+    "primary_checkpoint": "lawful successor u40 EMA teacher only",
+    "reference_checkpoint": "successor u0 reference-only",
+    "global_arm": "reuse exact TD57B panels/triplets/null mechanics",
+    "mesoscale_arm": "reuse exact TD59 panels/nearest-half triplets/null mechanics",
+    "required_cases_passed": 48,
+    "required_cases_total": 48,
+    "locality_fraction_tuning_on_50k_closed": true
+  },
+  "execution_prerequisite_blocker": {
+    "status": "UNRESOLVED_REVIEW_TERMINAL_BINDING_MISMATCH",
+    "claude_requested_terminal": "PASS_TEACHER_STUDENT_UNIFIED_V3_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
+    "overlay_validator_required_prefix": "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW",
+    "rule": "No ad-hoc terminal substitution. Reconcile in Teacher/Student authority before successor-u0/u40 execution."
   }
 }
