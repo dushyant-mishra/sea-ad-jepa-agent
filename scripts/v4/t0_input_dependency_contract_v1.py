@@ -482,6 +482,15 @@ NON_DONOR_SELECTORS: frozenset[str] = frozenset({
     "biotype",
 })
 
+# Members of a sparse CSR payload, named in a required-set literal inside the
+# counts parser. They describe a matrix serialization, not a donor. Declared
+# here for the same reason as the selectors above: the reverse scan is a
+# name-based heuristic over column-set literals, so every exclusion belongs in
+# the contract where a reviewer can see it, never in a caller's argument.
+NON_DONOR_PAYLOAD_MEMBERS: frozenset[str] = frozenset({
+    "data", "indices", "indptr", "shape", "format",
+})
+
 # The stage ordering the architecture asserts, as an explicit sequence of gates.
 #
 # Two orderings here are load-bearing and were both learned the hard way.
@@ -705,7 +714,8 @@ def undeclared_donor_quantities(
     """
     sources = _as_sources(code_dirs_or_sources)
     index = contract_index()
-    known = set(index) | set(ALIASES) | set(NON_DONOR_SELECTORS)
+    known = (set(index) | set(ALIASES) | set(NON_DONOR_SELECTORS)
+             | set(NON_DONOR_PAYLOAD_MEMBERS))
     found: set[str] = set()
     for module in CONSUMER_MODULES:
         text = sources[module]
@@ -756,6 +766,7 @@ def contract_root() -> str:
              _typed(list(CONSUMER_MODULES)),
              _typed([[k, ALIASES[k]] for k in sorted(ALIASES)]),
              _typed(sorted(NON_DONOR_SELECTORS)),
+             _typed(sorted(NON_DONOR_PAYLOAD_MEMBERS)),
              _typed(TECHNICAL_COMPLETENESS_SEMANTICS),
              _typed(list(TECHNICAL_COMPLETENESS_CONJUNCTS)),
              _typed(list(TECHNICAL_COMPLETENESS_FORBIDDEN_CUTOFFS)),

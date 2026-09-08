@@ -191,7 +191,9 @@ def test_the_authenticated_complete_manifest_is_accepted_and_filtered_internally
     closure = _closure_from(manifest, world)
     # Only the operator-31 blocks may be scanned, and all of them must be.
     assert closure["blocks_scanned"] == len(world.op31_blocks)
-    assert closure["population_size"] == 3
+    assert closure["target_cells"] == 3
+    assert closure["manifest_operators"] == 4
+    assert closure["manifest_total_blocks"] == len(world.op31_blocks) + 3
 
 
 def test_a_prefiltered_manifest_cannot_stand_in_for_the_complete_one(
@@ -454,3 +456,253 @@ def test_the_population_closure_root_is_externally_verified(
             expected_block_manifest_sha256=hashlib.sha256(
                 world.complete_manifest()).hexdigest(),
         )
+
+
+# ---------------------------------------------------------------------------
+# 4D and 4E — authenticate the payload, then select from THOSE bytes.
+# ---------------------------------------------------------------------------
+
+def _csr_npz(rows: int, width: int, entries) -> bytes:
+    """A CSR `.npz` shaped exactly like a real Phase2 counts block.
+
+    Real blocks are `scipy.sparse.save_npz` output with members data, indices,
+    indptr, shape and format == b"csr". Building the fixture that way aims the
+    parser under test at the real format rather than at a convenient one.
+    """
+    import numpy as np
+
+    per_row: dict[int, list[tuple[int, int]]] = {r: [] for r in range(rows)}
+    for row_index, column, value in entries:
+        per_row[row_index].append((column, value))
+    data, indices, indptr = [], [], [0]
+    for r in range(rows):
+        for column, value in sorted(per_row[r]):
+            indices.append(column)
+            data.append(value)
+        indptr.append(len(data))
+    buffer = io.BytesIO()
+    np.savez(buffer,
+             data=np.asarray(data, dtype=np.int32),
+             indices=np.asarray(indices, dtype=np.int32),
+             indptr=np.asarray(indptr, dtype=np.int32),
+             shape=np.asarray([rows, width], dtype=np.int32),
+             format=np.array(b"csr"))
+    return buffer.getvalue()
+
+
+class PayloadWorld(MultiOperatorWorld):
+    """Same population, with real CSR payloads whose digests the manifest binds."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        width = rc.ADDRESS_SPACE_SIZE
+        self.counts = {
+            "op31/block-00000": _csr_npz(2, width, [(0, 7, 5), (0, 11, 3), (1, 2, 9)]),
+            "op31/block-00001": _csr_npz(1, width, [(0, 4, 8)]),
+            "op31/block-00002": _csr_npz(1, width, [(0, 9, 2)]),
+        }
+
+
+@pytest.fixture()
+def payload_world() -> PayloadWorld:
+    return PayloadWorld()
+
+
+def test_the_bound_row_is_selected_from_the_authenticated_payload(
+        payload_world: PayloadWorld) -> None:
+    """Capture the bytes, authenticate them, parse them, select from them."""
+    closure = _closure_from(payload_world.complete_manifest(), payload_world)
+    logical = _logical(payload_world, closure)
+    dense = rc.verify_block_row_from_authenticated_payload(
+        logical=logical, logical_index=0,
+        counts_payload_bytes=payload_world.counts["op31/block-00000"],
+        declared_rows=2)
+    assert len(dense) == rc.ADDRESS_SPACE_SIZE
+    assert dense[7] == 5 and dense[11] == 3
+    assert sum(dense) == 8
+
+
+def test_a_payload_whose_digest_is_not_the_bound_one_is_refused(
+        payload_world: PayloadWorld) -> None:
+    """Otherwise the digest and the values would describe different things."""
+    closure = _closure_from(payload_world.complete_manifest(), payload_world)
+    logical = _logical(payload_world, closure)
+    other = payload_world.counts["op31/block-00001"]
+    with pytest.raises(AssertionError, match="COUNTS"):
+        rc.verify_block_row_from_authenticated_payload(
+            logical=logical, logical_index=0, counts_payload_bytes=other)
+
+
+def test_a_counts_matrix_of_the_wrong_width_is_refused(
+        payload_world: PayloadWorld) -> None:
+    """Width must be the 41,238 address space."""
+    narrow = _csr_npz(2, 1024, [(0, 7, 5)])
+    payload_world.counts["op31/block-00000"] = narrow
+    closure = _closure_from(payload_world.complete_manifest(), payload_world)
+    logical = _logical(payload_world, closure)
+    with pytest.raises(AssertionError) as excinfo:
+        rc.verify_block_row_from_authenticated_payload(
+            logical=logical, logical_index=0, counts_payload_bytes=narrow)
+    assert rc.STOP_COUNTS_GEOMETRY in str(excinfo.value)
+
+
+def test_a_counts_row_count_disagreeing_with_the_manifest_is_refused(
+        payload_world: PayloadWorld) -> None:
+    closure = _closure_from(payload_world.complete_manifest(), payload_world)
+    logical = _logical(payload_world, closure)
+    with pytest.raises(AssertionError) as excinfo:
+        rc.verify_block_row_from_authenticated_payload(
+            logical=logical, logical_index=0,
+            counts_payload_bytes=payload_world.counts["op31/block-00000"],
+            declared_rows=99)
+    assert rc.STOP_COUNTS_GEOMETRY in str(excinfo.value)
+
+
+def test_a_payload_that_is_not_csr_is_refused(payload_world: PayloadWorld) -> None:
+    import numpy as np
+    buffer = io.BytesIO()
+    np.savez(buffer, data=np.asarray([1], dtype=np.int32),
+             indices=np.asarray([0], dtype=np.int32),
+             indptr=np.asarray([0, 1], dtype=np.int32),
+             shape=np.asarray([1, rc.ADDRESS_SPACE_SIZE], dtype=np.int32),
+             format=np.array(b"csc"))
+    payload = buffer.getvalue()
+    payload_world.counts["op31/block-00000"] = payload
+    closure = _closure_from(payload_world.complete_manifest(), payload_world)
+    logical = _logical(payload_world, closure)
+    with pytest.raises(AssertionError) as excinfo:
+        rc.verify_block_row_from_authenticated_payload(
+            logical=logical, logical_index=0, counts_payload_bytes=payload)
+    assert rc.STOP_COUNTS_FORMAT in str(excinfo.value)
+
+
+def test_declared_metadata_rows_must_match_the_authenticated_metadata(
+        world: MultiOperatorWorld) -> None:
+    """4E: the manifest's declared row count is checked against the bytes."""
+    manifest = world.complete_manifest().decode("utf-8")
+    rows = list(csv.DictReader(io.StringIO(manifest)))
+    for row in rows:
+        if row["block_key"] == "op31/block-00001":
+            row["rows"] = "99"
+    rebuilt = _csv(list(rows[0]), [[r[c] for c in rows[0]] for r in rows])
+    with pytest.raises(AssertionError) as excinfo:
+        _closure_from(rebuilt, world)
+    assert rc.STOP_COUNTS_GEOMETRY in str(excinfo.value)
+
+
+# ---------------------------------------------------------------------------
+# 4F — membership splicing between the closure and the logical authority.
+# ---------------------------------------------------------------------------
+
+def test_a_membership_spliced_after_the_closure_is_refused(
+        world: MultiOperatorWorld) -> None:
+    """The population and its order must come from one authority.
+
+    A closure built over membership A, combined with membership B to order the
+    rows, would take its population from one document and its order from
+    another.
+    """
+    closure = _closure_from(world.complete_manifest(), world)
+    spliced = _membership([("C3", "D2"), ("C2", "D1"), ("C1", "D1")])
+    assert spliced != world.membership
+    with pytest.raises(AssertionError) as excinfo:
+        rc.build_logical_row_authority(
+            closure=closure, membership_bytes=spliced,
+            feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT)
+    assert rc.STOP_MEMBERSHIP_SPLICE in str(excinfo.value)
+
+
+def test_the_closure_binds_the_membership_and_manifest_identities(
+        world: MultiOperatorWorld) -> None:
+    closure = _closure_from(world.complete_manifest(), world)
+    assert closure["membership_sha256"] == hashlib.sha256(world.membership).hexdigest()
+    assert closure["block_manifest_sha256"] == hashlib.sha256(
+        world.complete_manifest()).hexdigest()
+
+
+def test_a_closure_without_a_bound_membership_cannot_order_rows(
+        world: MultiOperatorWorld) -> None:
+    """A closure naming no membership cannot detect a splice at all."""
+    closure = dict(_closure_from(world.complete_manifest(), world))
+    closure.pop("membership_sha256")
+    with pytest.raises(AssertionError) as excinfo:
+        rc.build_logical_row_authority(
+            closure=closure, membership_bytes=world.membership,
+            feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT)
+    assert rc.STOP_MEMBERSHIP_SPLICE in str(excinfo.value)
+
+
+# ---------------------------------------------------------------------------
+# 4I — execution-path fields must be bound, not merely carried.
+# ---------------------------------------------------------------------------
+
+def _reroot(closure, **changes):
+    return rc._closure_root(
+        changes.get("operator_index", closure["operator_index"]),
+        changes.get("matrix_id", closure["matrix_id"]),
+        changes.get("blocks", closure["blocks"]),
+        changes.get("metadata_rows_scanned", closure["metadata_rows_scanned"]),
+        changes.get("row_locations", closure["row_locations"]),
+        changes.get("membership_sha256", closure["membership_sha256"]),
+        changes.get("block_manifest_sha256", closure["block_manifest_sha256"]))
+
+
+def _relocated_locations(closure, cell, field, value):
+    locations = {key: dict(record)
+                 for key, record in closure["row_locations"].items()}
+    locations[cell][field] = value
+    return locations
+
+
+def test_the_closure_root_binds_the_paths_it_will_read(
+        world: MultiOperatorWorld) -> None:
+    """meta_path and counts_path are consumed on the execution path.
+
+    A root omitting them would be identical for two closures that intend to read
+    different files, so relocating a block would go undetected.
+    """
+    closure = _closure_from(world.complete_manifest(), world)
+    moved = _relocated_locations(closure, "C1", "counts_path",
+                                 "op31/block-09999.counts.npz")
+    assert _reroot(closure, row_locations=moved) != \
+        closure["population_closure_root_sha256"]
+
+
+def test_the_closure_root_binds_the_metadata_digest_it_authenticated(
+        world: MultiOperatorWorld) -> None:
+    closure = _closure_from(world.complete_manifest(), world)
+    altered = _relocated_locations(closure, "C1", "meta_sha256", "0" * 64)
+    assert _reroot(closure, row_locations=altered) != \
+        closure["population_closure_root_sha256"]
+
+
+def test_the_closure_root_moves_with_its_parent_identities(
+        world: MultiOperatorWorld) -> None:
+    closure = _closure_from(world.complete_manifest(), world)
+    assert _reroot(closure, membership_sha256="a" * 64) != \
+        closure["population_closure_root_sha256"]
+    assert _reroot(closure, block_manifest_sha256="b" * 64) != \
+        closure["population_closure_root_sha256"]
+
+
+def test_the_closure_external_verifier_recomputes_from_the_closure_itself(
+        world: MultiOperatorWorld) -> None:
+    """stored == recomputed == externally expected, all three."""
+    closure = _closure_from(world.complete_manifest(), world)
+    membership_sha = hashlib.sha256(world.membership).hexdigest()
+    manifest_sha = hashlib.sha256(world.complete_manifest()).hexdigest()
+    assert rc.assert_closure_lawful(
+        closure=closure,
+        expected_closure_root_sha256=closure["population_closure_root_sha256"],
+        expected_membership_sha256=membership_sha,
+        expected_block_manifest_sha256=manifest_sha) is True
+
+    tampered = dict(closure)
+    tampered["population_closure_root_sha256"] = "f" * 64
+    with pytest.raises(AssertionError) as excinfo:
+        rc.assert_closure_lawful(
+            closure=tampered,
+            expected_closure_root_sha256="f" * 64,
+            expected_membership_sha256=membership_sha,
+            expected_block_manifest_sha256=manifest_sha)
+    assert rc.STOP_CLOSURE_ROOT in str(excinfo.value)

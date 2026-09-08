@@ -410,12 +410,12 @@ def test_the_three_roots_are_injective_over_delimiter_bearing_identities(
     }
     # Two closures whose per-cell location strings differ only in where a
     # delimiter would have fallen must not share a root.
-    a = rc._closure_root(31, "M", ["b1"], 1, {"c": {"block_key": "x#1", "row_index": 2}})
-    b = rc._closure_root(31, "M", ["b1"], 1, {"c": {"block_key": "x", "row_index": 12}})
+    a = rc._closure_root(31, "M", ["b1"], 1, {"c": _loc("x#1", 2)}, "a" * 64, "b" * 64)
+    b = rc._closure_root(31, "M", ["b1"], 1, {"c": _loc("x", 12)}, "a" * 64, "b" * 64)
     assert a != b
 
-    left = rc._closure_root(31, "M", ["b1|b=b2"], 1, {"c": {"block_key": "k", "row_index": 0}})
-    right = rc._closure_root(31, "M", ["b1", "b2"], 1, {"c": {"block_key": "k", "row_index": 0}})
+    left = rc._closure_root(31, "M", ["b1|b=b2"], 1, {"c": _loc("k", 0)}, "a" * 64, "b" * 64)
+    right = rc._closure_root(31, "M", ["b1", "b2"], 1, {"c": _loc("k", 0)}, "a" * 64, "b" * 64)
     assert left != right
     assert shifted["matrix_id"] == MATRIX_ID
     # And the three production roots remain mutually distinct after the change.
@@ -442,8 +442,8 @@ def test_the_roots_are_injective_over_types(world: World) -> None:
     rows_text = [dict(rows_typed[0], row_index="1", logical_index="0",
                       source_library="9470")]
     assert rc._logical_root(rows_typed, "f" * 64) != rc._logical_root(rows_text, "f" * 64)
-    assert rc._closure_root(31, "M", ["b"], 1, {"c": {"block_key": "k", "row_index": 0}}) != (
-        rc._closure_root("31", "M", ["b"], "1", {"c": {"block_key": "k", "row_index": "0"}}))
+    assert rc._closure_root(31, "M", ["b"], 1, {"c": _loc("k", 0)}, "a" * 64, "b" * 64) != (
+        rc._closure_root("31", "M", ["b"], "1", {"c": _loc("k", "0")}, "a" * 64, "b" * 64))
 
 
 def test_the_external_verifier_refuses_type_substitutions(world: World) -> None:
@@ -525,8 +525,33 @@ def test_a_duplicate_membership_cell_stops(world: World) -> None:
 # The substantive requirement: source_library proven against the authenticated
 # FULL RAW SOURCE ROW, not against the metadata that declares it.
 # --------------------------------------------------------------------------
-def _raw_provenance(width: int = 36_601) -> dict:
-    return {"source_sha256": "e" * 64, "source_row_index": 4, "source_width": width}
+def _loc(block_key, row_index) -> dict:
+    """A row-location record shaped like the closure's own.
+
+    The closure root now binds meta_path and counts_path too, because both are
+    consumed on the execution path and must not travel unbound.
+    """
+    return {"block_key": block_key, "row_index": row_index,
+            "meta_path": "%s.meta.csv" % block_key,
+            "meta_sha256": "c" * 64,
+            "counts_path": "%s.counts.npz" % block_key,
+            "counts_sha256": "d" * 64}
+
+
+def _raw_provenance(width: int = 36_601, logical=None, logical_index: int = 0) -> dict:
+    """A lawful provenance record for the bound row.
+
+    The proof contract authenticates the source asset, the matrix slot and the
+    row/cell/donor identity, so a placeholder digest and an arbitrary row index
+    no longer constitute provenance.
+    """
+    row = logical["rows"][int(logical_index)] if logical is not None else {}
+    return {"source_sha256": rc.MTG_SOURCE_SHA256,
+            "matrix_slot": rc.MTG_SOURCE_MATRIX_SLOT,
+            "source_row_index": int(row.get("expression_row", 0)),
+            "canonical_cell_id": str(row.get("canonical_cell_id", "")),
+            "donor_id": str(row.get("donor_id", "")),
+            "source_width": width}
 
 
 def test_source_library_is_proven_against_the_authenticated_raw_row(world: World) -> None:
@@ -536,7 +561,7 @@ def test_source_library_is_proven_against_the_authenticated_raw_row(world: World
     assert sum(raw) == bound
     assert rc.prove_source_library(
         logical=logical, logical_index=0, raw_source_row_values=raw,
-        raw_source_provenance=_raw_provenance()) is True
+        raw_source_provenance=_raw_provenance(logical=logical)) is True
 
 
 def test_a_raw_row_summing_to_the_wrong_total_stops(world: World) -> None:
@@ -545,7 +570,7 @@ def test_a_raw_row_summing_to_the_wrong_total_stops(world: World) -> None:
     with pytest.raises(AssertionError, match="SOURCE_LIBRARY_NOT_PROVEN"):
         rc.prove_source_library(
             logical=logical, logical_index=0, raw_source_row_values=raw,
-            raw_source_provenance=_raw_provenance())
+            raw_source_provenance=_raw_provenance(logical=logical))
 
 
 def test_a_row_of_address_space_width_is_refused_as_the_raw_source_row(
@@ -563,16 +588,23 @@ def test_a_row_of_address_space_width_is_refused_as_the_raw_source_row(
     with pytest.raises(AssertionError, match="RAW_ROW_WIDTH_IS_ADDRESS_SPACE"):
         rc.prove_source_library(
             logical=logical, logical_index=0, raw_source_row_values=projected,
-            raw_source_provenance=_raw_provenance(width=rc.ADDRESS_SPACE_SIZE))
+            raw_source_provenance=_raw_provenance(width=rc.ADDRESS_SPACE_SIZE, logical=logical))
 
 
-@pytest.mark.parametrize("bad", [[-1, 2], [1.5, 2], [float("nan")]])
+@pytest.mark.parametrize("bad", [-1, 1.5, float("nan")])
 def test_non_integral_or_negative_raw_counts_stop(world: World, bad) -> None:
+    """The bad value sits inside a row of lawful source width.
+
+    A short row would now be refused on width before its values were examined,
+    which would make this case pass for the wrong reason.
+    """
     logical = _logical(world)
+    raw = [bad] + [0] * 36_600
+    assert len(raw) == rc.SOURCE_FEATURE_COUNT
     with pytest.raises(AssertionError, match="RAW_COUNTS_NOT_NONNEGATIVE_INTEGERS"):
         rc.prove_source_library(
-            logical=logical, logical_index=0, raw_source_row_values=bad,
-            raw_source_provenance=_raw_provenance(width=len(bad)))
+            logical=logical, logical_index=0, raw_source_row_values=raw,
+            raw_source_provenance=_raw_provenance(logical=logical))
 
 
 def test_the_raw_row_provenance_must_be_bound(world: World) -> None:
