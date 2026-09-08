@@ -11,6 +11,7 @@ from scripts.agent.validate_healthy_teacher_execution_binding_overlay_v1 import 
 from scripts.v4.f1b_reference_candidates_v1 import reference_vulnerable
 from scripts.v4.f1b_successor_attack_suite_v1 import prove_polarity, run_suite
 from scripts.v4.teacher_student_f1b_attack_adapter_v1 import canonical_candidate
+from scripts.v4.healthy_teacher_continuation_runner_v1 import validate_continuation_authority
 from sea_ad_jepa.v4.ipb_jepa import BlockPredictor, IPBEncoder
 from sea_ad_jepa.v4.teacher_student_checkpoint import (
     CHECKPOINT_SCHEMA,
@@ -280,3 +281,61 @@ def test_canonical_runtime_preserves_attack_polarity() -> None:
     report = prove_polarity(reference_vulnerable(), canonical_candidate())
     assert report["terminal"] == "PASS_ATTACK_POLARITY", report
     assert report["defective"] == []
+
+
+def _valid_continuation_authority() -> dict:
+    return {
+        "schema": "HEALTHY_TEACHER_U40_U205_CONTINUATION_AUTHORITY_V1",
+        "authorized": True,
+        "phase": "U40_TO_U205",
+        "final_update": 205,
+        "execution_binding_overlay_sha256": "a" * 64,
+        "healthy_teacher_base_root": HEALTHY_TEACHER_BASE_ROOT,
+        "u40_checkpoint_sha256": "b" * 64,
+        "u40_qualification_sha256": "c" * 64,
+        "u40_independent_review": {
+            "terminal": "PASS_HEALTHY_TEACHER_U40_INDEPENDENT_REVIEW",
+            "artifact_sha256": "d" * 64,
+            "reviewed_checkpoint_sha256": "b" * 64,
+            "reviewed_qualification_sha256": "c" * 64,
+        },
+        "authorization_id": "prospective-test-authority",
+        "terminal": "AUTHORIZE_HEALTHY_TEACHER_U40_TO_U205_MECHANICS_CONTINUATION",
+    }
+
+
+def test_continuation_requires_exact_reviewed_u40_and_cannot_change_horizon() -> None:
+    payload = _valid_continuation_authority()
+    validate_continuation_authority(
+        payload,
+        overlay_sha256="a" * 64,
+        u40_checkpoint_sha256="b" * 64,
+        u40_qualification_sha256="c" * 64,
+    )
+    attacked = copy.deepcopy(payload)
+    attacked["final_update"] = 300
+    with pytest.raises(RuntimeError):
+        validate_continuation_authority(
+            attacked,
+            overlay_sha256="a" * 64,
+            u40_checkpoint_sha256="b" * 64,
+            u40_qualification_sha256="c" * 64,
+        )
+    attacked = copy.deepcopy(payload)
+    attacked["u40_independent_review"]["reviewed_checkpoint_sha256"] = "e" * 64
+    with pytest.raises(RuntimeError):
+        validate_continuation_authority(
+            attacked,
+            overlay_sha256="a" * 64,
+            u40_checkpoint_sha256="b" * 64,
+            u40_qualification_sha256="c" * 64,
+        )
+    attacked = copy.deepcopy(payload)
+    attacked["authorized"] = False
+    with pytest.raises(RuntimeError):
+        validate_continuation_authority(
+            attacked,
+            overlay_sha256="a" * 64,
+            u40_checkpoint_sha256="b" * 64,
+            u40_qualification_sha256="c" * 64,
+        )
