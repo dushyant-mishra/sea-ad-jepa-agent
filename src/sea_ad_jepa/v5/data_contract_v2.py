@@ -2,7 +2,7 @@
 
 The dataset defines support; scientific authority defines target/proposal and
 relational weighting; optimization authority defines exposure/update semantics;
-hardware authority only packs the already-defined work.  No production values
+hardware authority only packs the already-defined work. No production values
 are defaulted and this module creates no training authority.
 """
 from __future__ import annotations
@@ -35,9 +35,7 @@ class EvidenceAuthorityV2:
             "target_block_policy_id": self.target_block_policy_id,
         }.items():
             _authority(value, name)
-        if self.comparable_support_role not in {
-            "CALIBRATION_ONLY", "CONSISTENCY_DIAGNOSTIC_ONLY", "DISABLED"
-        }:
+        if self.comparable_support_role not in {"CALIBRATION_ONLY", "CONSISTENCY_DIAGNOSTIC_ONLY", "DISABLED"}:
             raise ValueError("comparable_support_role is not an allowed non-objective role")
 
 
@@ -79,12 +77,14 @@ class OptimizationScheduleAuthorityV2:
 
 @dataclass(frozen=True)
 class ComputePackingAuthorityV2:
-    max_teacher_tokens_per_microbatch: int
+    packing_cost_model_id: str
+    max_packing_cost_per_microbatch: int
     rng_authority_id: str
     relational_compute_budget_id: str
 
     def validate(self) -> None:
-        _positive_int(self.max_teacher_tokens_per_microbatch, "max_teacher_tokens_per_microbatch")
+        _authority(self.packing_cost_model_id, "packing_cost_model_id")
+        _positive_int(self.max_packing_cost_per_microbatch, "max_packing_cost_per_microbatch")
         _authority(self.rng_authority_id, "rng_authority_id")
         _authority(self.relational_compute_budget_id, "relational_compute_budget_id")
 
@@ -97,15 +97,8 @@ class ProductionDataContractV2:
     compute_packing: ComputePackingAuthorityV2
 
     def validate(self) -> None:
-        if not isinstance(self.evidence, EvidenceAuthorityV2):
-            raise ValueError("evidence must be EvidenceAuthorityV2")
-        if not isinstance(self.scientific_sampling, ScientificSamplingAuthorityV2):
-            raise ValueError("scientific_sampling must be ScientificSamplingAuthorityV2")
-        if not isinstance(self.optimization_schedule, OptimizationScheduleAuthorityV2):
-            raise ValueError("optimization_schedule must be OptimizationScheduleAuthorityV2")
-        if not isinstance(self.compute_packing, ComputePackingAuthorityV2):
-            raise ValueError("compute_packing must be ComputePackingAuthorityV2")
-        self.evidence.validate()
-        self.scientific_sampling.validate()
-        self.optimization_schedule.validate()
-        self.compute_packing.validate()
+        if not isinstance(self.evidence, EvidenceAuthorityV2): raise ValueError("evidence must be EvidenceAuthorityV2")
+        if not isinstance(self.scientific_sampling, ScientificSamplingAuthorityV2): raise ValueError("scientific_sampling must be ScientificSamplingAuthorityV2")
+        if not isinstance(self.optimization_schedule, OptimizationScheduleAuthorityV2): raise ValueError("optimization_schedule must be OptimizationScheduleAuthorityV2")
+        if not isinstance(self.compute_packing, ComputePackingAuthorityV2): raise ValueError("compute_packing must be ComputePackingAuthorityV2")
+        self.evidence.validate(); self.scientific_sampling.validate(); self.optimization_schedule.validate(); self.compute_packing.validate()
