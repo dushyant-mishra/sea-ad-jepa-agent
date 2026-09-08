@@ -1,5 +1,5 @@
 branch,reference_sha,status,successor_or_role,reason
-production/teacher-student-unified-v1-20260907,19ff3444eb80770119ccf48c2040522f0ffde8bf,ACTIVE_CANONICAL_SOURCE_FROZEN_V2,production/teacher-student-unified-v1-20260907,V2 production source frozen at exact integrated commit; later commits are review metadata only
+production/teacher-student-unified-v1-20260907,8f9c34f18ac7cf43572299901e5e4f5d65cecb24,ACTIVE_CANONICAL_SOURCE_FROZEN_V3,production/teacher-student-unified-v1-20260907,V3 production source frozen at exact integrated commit; later commits are review/test/package metadata only
 f1b-executable-attacks-20260907,138e176baa10267833f1a2c1e347f8831eb8c269,KEEP_FROZEN_AUTHORITY,F1-B attack authority,Immutable 15-finding behavioral attack authority
 f1b-c3-training-successor-v2-20260907,c0eaf2acc0a5edc837fb2a48f726b9d626772f06,RETIRED_MERGED,production/teacher-student-unified-v1-20260907,Merged as mechanics parent; prototype remains historical/attack evidence
 planning/healthy-teacher-training-contract-20260907,26e1c27d3578b794a1d522061df6d57ff435a688,RETIRED_MERGED,production/teacher-student-unified-v1-20260907,Merged as frozen training-governance parent
