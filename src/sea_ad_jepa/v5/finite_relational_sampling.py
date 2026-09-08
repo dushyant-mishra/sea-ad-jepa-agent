@@ -35,6 +35,7 @@ def _pair_prefix(a: int, m: int) -> int:
 
 
 def _unrank_pair(rank: int, m: int) -> tuple[int, int]:
+    """Lexicographically unrank one unordered pair among m positions."""
     total = m * (m - 1) // 2
     if rank < 0 or rank >= total:
         raise ValueError("pair rank out of range")
@@ -56,6 +57,7 @@ def _unrank_pair(rank: int, m: int) -> tuple[int, int]:
 
 
 def unrank_anchored_triplet(rank: int, group_size: int) -> tuple[int, int, int]:
+    """Map a canonical rank to (anchor,j,k), j<k, without enumeration."""
     n = _exact_nonnegative_int(group_size, "group_size")
     cap = anchored_triplet_capacity(n)
     r = _exact_nonnegative_int(rank, "rank")
@@ -112,6 +114,12 @@ def sample_finite_anchored_triplet_keys(
     update_index: int,
     group_key: str,
 ) -> FiniteTripletKeySample:
+    """Uniformly sample unique anchored relations without full enumeration.
+
+    Cell identities are sorted before ranking, so triplet identity is invariant
+    to incoming batch order.  Floyd's algorithm samples unique integer ranks in
+    O(budget) memory/time.  The budget is explicit and has no default.
+    """
     budget = _exact_nonnegative_int(triplet_budget, "triplet_budget")
     seed = _exact_nonnegative_int(authority_seed, "authority_seed")
     update = _exact_nonnegative_int(update_index, "update_index")
@@ -161,6 +169,7 @@ def map_triplet_keys_to_rows(
     triplet_cell_keys: Sequence[tuple[int, int, int]],
     batch_cell_keys: Sequence[int],
 ) -> tuple[tuple[int, int, int], ...]:
+    """Map frozen canonical triplet identities to local row indices for V4 loss."""
     row_by_key: dict[int, int] = {}
     for row, raw in enumerate(batch_cell_keys):
         key = _exact_nonnegative_int(raw, "batch_cell_key")
@@ -180,9 +189,10 @@ def map_triplet_keys_to_rows(
             raise ValueError("triplet cells must be distinct")
         if j > k:
             j, k = k, j
+        canonical = (i, j, k)
         duplicate_key = (i, min(j, k), max(j, k))
         if duplicate_key in seen:
             raise ValueError("duplicate frozen anchored relation")
         seen.add(duplicate_key)
-        out.append((i, j, k))
+        out.append(canonical)
     return tuple(out)
