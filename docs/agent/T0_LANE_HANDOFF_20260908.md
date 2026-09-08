@@ -159,13 +159,29 @@ Value handling is stated precisely: `raw_at8_token_read_for_missingness=true`,
 `numeric_at8_value_parsed/_retained/_emitted=false`. A measured **zero counts as
 available**.
 
-Review package: `C:\Users\dushy\Downloads\T0_AT8_AVAILABILITY_REVIEW_PACKAGE_V3_20260908.zip`
-sha `01ce9b37e592ee694c0cb6edc2b1095908943997216bd70e8f792416a78a70a2`,
-repository-relative layout, 26 cases pass from the extraction root, includes
-`membership/ACCEPTED_V20_DONOR_SET_WITNESS.csv` and the accepted-V20 member
-digest `d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529`.
+Review package V3: `C:\Users\dushy\Downloads\T0_AT8_AVAILABILITY_REVIEW_PACKAGE_V3_20260908.zip`
+sha `01ce9b37e592ee694c0cb6edc2b1095908943997216bd70e8f792416a78a70a2`.
+Its repository-relative layout works as extracted and its 26 packaged tests
+pass. Independent review reproduced the ZIP, both inner roots, the 84-donor
+registry and the 46-donor witness/set digest, but found a write/freeze binding
+defect in `_write_flat_package`: it wrote payloads and then reopened their
+paths to construct the manifest, so a same-length write-time substitution could
+become the bytes authenticated by the returned package root while the builder
+still returned the original in-memory metadata.
 
-Status: `NOT_YET_INDEPENDENTLY_VERIFIED` — awaiting re-review of V3.
+Status: `STOP_T0_AT8_AVAILABILITY_V3_WRITE_FREEZE_BINDING_NOT_CLOSED`.
+V3 is **not accepted** and must not lift the donor-role STOP.
+
+Repair is on this branch:
+- implementation `8ef9dc19c9f66a94aa7068458eb665ea1e04c2c2`
+- regression/current repair head `0edb56595febaf1f7b9a0ea1760bb934653e63f4`
+- review record `docs/agent/T0_AT8_AVAILABILITY_V3_INDEPENDENT_REVIEW_20260908.md`
+
+The repaired writer derives member hashes, manifest bytes and package root from
+captured in-memory payloads before filesystem materialization. The new
+discriminating regression passes locally. Because that changes the derivation
+code digest, a **fresh V4 review package must be rebuilt from the authenticated
+source**; do not edit or relabel V3 in place.
 
 ### Lane B1 — S2 feature projection authority
 
