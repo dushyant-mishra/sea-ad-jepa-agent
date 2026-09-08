@@ -60,6 +60,7 @@ Production adapters/runners:
 - `scripts/v4/healthy_teacher_batch_source_v1.py`
 - `scripts/v4/materialize_healthy_teacher_u0_v1.py`
 - `scripts/v4/healthy_teacher_qualification_runner_v1.py`
+- `scripts/v4/healthy_teacher_continuation_runner_v1.py`
 - `scripts/agent/validate_healthy_teacher_execution_binding_overlay_v1.py`
 
 Historical C2/F1-B/Stage81A3 scripts remain in the repository for frozen tests,
@@ -324,6 +325,41 @@ Possible success terminal:
 `PASS_HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION__FULL_CONTINUATION_STILL_UNAUTHORIZED`
 
 There is no automatic u40 -> u205 continuation.
+
+## Separately authorized u40 -> u205 continuation
+
+The canonical continuation entrypoint is:
+
+`scripts/v4/healthy_teacher_continuation_runner_v1.py`
+
+It can start only when all of the following are supplied and mutually hash-bound:
+
+- the unchanged execution-binding overlay;
+- the exact u40 checkpoint;
+- the exact u40 mechanical-qualification result;
+- an independent PASS artifact that reviewed those exact two u40 objects;
+- a distinct `HEALTHY_TEACHER_U40_U205_CONTINUATION_AUTHORITY_V1`.
+
+The continuation authority is fail-closed to:
+
+- phase exactly `U40_TO_U205`;
+- final update exactly 205;
+- the exact overlay SHA;
+- the exact u40 checkpoint SHA;
+- the exact u40 qualification SHA;
+- an independent-review PASS bound to both;
+- an explicit authorization identifier.
+
+The continuation runner resumes the same checkpoint/config/RNG/schedule state,
+uses the same canonical `production_update` path, and writes checkpoints only at
+u50, u100, u200 and u205.  It imports no biological evaluator and cannot extend
+to u300.
+
+Its completion terminal is only:
+
+`TRAINING_COMPLETE_U205__CHECKPOINT_MUST_BE_FROZEN_AND_INDEPENDENTLY_QUALIFIED_BEFORE_D1`
+
+So even a mechanically complete u205 run does not automatically authorize D1.
 
 ## Biological firewall
 
