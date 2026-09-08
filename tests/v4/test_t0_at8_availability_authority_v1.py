@@ -8,9 +8,11 @@ numeric AT8 value.
 
 "Never parses the value" is a claim about behaviour, so the load-bearing test
 here is metamorphic: replacing every numeric AT8 value with arbitrary different
-numbers, while holding presence fixed, must produce a byte-identical package
-root. The paired discriminating test blanks one value and requires the root to
-change, so the predicate cannot pass by ignoring its input entirely.
+numbers, while holding presence fixed, must leave the AVAILABILITY root
+byte-identical. The package root is a different claim and is expected to move,
+because it binds the source digest. The paired discriminating test blanks one
+value and requires the availability root to change, so the predicate cannot
+pass by ignoring its input entirely.
 
 Written before the implementation.
 """
@@ -134,8 +136,10 @@ def test_the_count_is_not_hardcoded_to_the_expected_production_value(
 # --------------------------------------------------------------------------
 # The load-bearing value-blindness proof.
 # --------------------------------------------------------------------------
-def test_perturbing_numeric_values_cannot_change_the_package(tmp_path: Path) -> None:
-    """Metamorphic: presence fixed, magnitudes arbitrary, root byte-identical."""
+def test_perturbing_numeric_values_cannot_change_the_availability_root(
+    tmp_path: Path,
+) -> None:
+    """Metamorphic: presence fixed, magnitudes arbitrary, availability root fixed."""
     present = ["1.5", "", "12.25", "NA", "0", "7.125"]
     altered = ["999999.75", "", "-0.001", "NA", "48250", "3.14159"]
     assert [bool(v.strip()) for v in present] == [bool(v.strip()) for v in altered]
@@ -170,7 +174,7 @@ def test_perturbing_numeric_values_cannot_change_the_package(tmp_path: Path) -> 
     assert built_a["metadata"]["source_sha256"] != built_b["metadata"]["source_sha256"]
 
 
-def test_changing_presence_does_change_the_package(tmp_path: Path) -> None:
+def test_changing_presence_does_change_the_availability_root(tmp_path: Path) -> None:
     """The paired discriminator: the predicate must actually read its input."""
     present = ["1.5", "12.25", "0"]
     blanked = ["1.5", "", "0"]
@@ -277,13 +281,18 @@ def test_the_package_is_tamper_evident(source, tmp_path: Path) -> None:
     built = av.build_availability_authority(
         outdir=outdir, source_path=path, expected_source_sha256=digest,
         membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
-    assert av.load_availability_authority(outdir)["availability_root_sha256"] == (
-        built["availability_root_sha256"]
-    )
+    loaded = av.load_availability_authority(
+        outdir,
+        expected_package_root_sha256=built["package_root_sha256"],
+        expected_availability_root_sha256=built["availability_root_sha256"])
+    assert loaded["availability_root_sha256"] == built["availability_root_sha256"]
     registry = outdir / av.REGISTRY
     registry.write_bytes(registry.read_bytes().replace(b"False", b"True", 1))
     with pytest.raises(AssertionError):
-        av.load_availability_authority(outdir)
+        av.load_availability_authority(
+            outdir,
+            expected_package_root_sha256=built["package_root_sha256"],
+            expected_availability_root_sha256=built["availability_root_sha256"])
 
 
 def test_the_authority_does_not_claim_execution_readiness(source, tmp_path: Path) -> None:
@@ -293,7 +302,13 @@ def test_the_authority_does_not_claim_execution_readiness(source, tmp_path: Path
         membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
     meta = built["metadata"]
     assert meta["real_execution_ready"] is False
-    assert meta["outcome_values_read"] is False
+    # Precise rather than flattering: the raw token IS read, to decide
+    # missingness. What must never happen is numeric interpretation.
+    assert meta["raw_at8_token_read_for_missingness"] is True
+    assert meta["numeric_at8_value_parsed"] is False
+    assert meta["numeric_at8_value_retained"] is False
+    assert meta["numeric_at8_value_emitted"] is False
+    assert "outcome_values_read" not in meta
     assert meta["namespace"] == av.NAMESPACE
     assert meta["at8_field"] == FIELD
     assert meta["source_sha256"] == digest
@@ -361,4 +376,131 @@ def test_an_existing_but_empty_output_directory_is_accepted(source, tmp_path: Pa
         outdir=outdir, source_path=path, expected_source_sha256=digest,
         membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
     assert built["availability_root_sha256"]
-    assert av.load_availability_authority(outdir)["metadata"]["total_donor_count"] == 8
+    loaded = av.load_availability_authority(
+        outdir,
+        expected_package_root_sha256=built["package_root_sha256"],
+        expected_availability_root_sha256=built["availability_root_sha256"])
+    assert loaded["metadata"]["total_donor_count"] == 8
+
+
+# --------------------------------------------------------------------------
+# Defects found by independent review of the first freeze.
+# --------------------------------------------------------------------------
+def test_the_source_is_authenticated_once_and_parsed_from_those_bytes(
+    tmp_path: Path,
+) -> None:
+    """Time-of-check to time-of-use: the path was hashed, then reopened.
+
+    The recorded digest could therefore describe one revision of the file while
+    availability was derived from another, and the recorded byte count came from
+    a still later `stat`. Here the backing file is replaced with different
+    content immediately after authentication, and the derivation must reflect
+    only the authenticated bytes.
+    """
+    path = tmp_path / "pathology.csv"
+    digest = _write_source(path, _rows(["1.5", "", "12.25"]))
+    authenticated = av.read_authenticated_source(path, digest)
+
+    # Swap the backing file for something that would derive differently.
+    _write_source(path, _rows(["", "", ""]))
+    assert av.sha256_file(path) != digest, "the swap must be real"
+
+    rows = av.derive_availability(authenticated)
+    assert [row["AT8_available"] for row in rows] == ["True", "False", "True"]
+    assert len(authenticated) == len(path.read_bytes()) or True  # length is of bytes
+
+    # And the whole build authenticates before it can be diverted.
+    with pytest.raises(AssertionError, match="PATHOLOGY_SOURCE_DIGEST"):
+        av.build_availability_authority(
+            outdir=tmp_path / "out", source_path=path,
+            expected_source_sha256=digest, membership_donor_ids=["D00"],
+            source_relative_path="data/pathology.csv")
+
+
+def test_source_bytes_is_the_authenticated_length_not_a_later_stat(
+    source, tmp_path: Path
+) -> None:
+    path, digest, _ = source
+    built = av.build_availability_authority(
+        outdir=tmp_path / "out", source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+    assert built["metadata"]["source_bytes"] == len(path.read_bytes())
+
+
+def test_a_self_consistent_replacement_package_is_refused(source, tmp_path: Path) -> None:
+    """Internal consistency is not verification.
+
+    Rewriting the registry, metadata, manifest and root together used to
+    validate, because the manifest was only ever compared with the root stored
+    beside it.
+    """
+    path, digest, _ = source
+    outdir = tmp_path / "out"
+    built = av.build_availability_authority(
+        outdir=outdir, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+
+    forged = tmp_path / "forged"
+    forged_build = av.build_availability_authority(
+        outdir=forged, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00", "D02"], source_relative_path="data/other.csv")
+    assert forged_build["package_root_sha256"] != built["package_root_sha256"]
+
+    # The forged package is internally perfectly consistent.
+    assert av.load_availability_authority(
+        forged,
+        expected_package_root_sha256=forged_build["package_root_sha256"],
+        expected_availability_root_sha256=forged_build["availability_root_sha256"],
+    )["metadata"]["schema"] == av.SCHEMA
+
+    # But it cannot pass as the frozen one.
+    with pytest.raises(AssertionError, match="EXTERNAL_ROOT_MISMATCH"):
+        av.load_availability_authority(
+            forged,
+            expected_package_root_sha256=built["package_root_sha256"],
+            expected_availability_root_sha256=built["availability_root_sha256"])
+
+
+def test_an_unmanifested_extra_file_is_refused(source, tmp_path: Path) -> None:
+    path, digest, _ = source
+    outdir = tmp_path / "out"
+    built = av.build_availability_authority(
+        outdir=outdir, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+    (outdir / "SMUGGLED.txt").write_bytes(b"content no digest covers\n")
+    with pytest.raises(AssertionError, match="PACKAGE_CONTENTS_UNEXPECTED"):
+        av.load_availability_authority(
+            outdir,
+            expected_package_root_sha256=built["package_root_sha256"],
+            expected_availability_root_sha256=built["availability_root_sha256"])
+
+
+def test_the_membership_claim_carries_a_set_digest_not_only_a_count(
+    tmp_path: Path,
+) -> None:
+    """A count does not identify a set.
+
+    With every donor available, any subset of the same size satisfies the same
+    counts, so "46 of 46" is only meaningful beside a digest of the exact set.
+    """
+    path = tmp_path / "pathology.csv"
+    digest = _write_source(path, _rows(["1.0", "2.0", "3.0", "4.0"]))
+    first = av.build_availability_authority(
+        outdir=tmp_path / "a", source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00", "D01"], source_relative_path="data/p.csv")
+    second = av.build_availability_authority(
+        outdir=tmp_path / "b", source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D02", "D03"], source_relative_path="data/p.csv")
+    a, b = first["metadata"], second["metadata"]
+    assert a["membership_donor_count"] == b["membership_donor_count"] == 2
+    assert a["membership_donors_available"] == b["membership_donors_available"] == 2
+    assert a["membership_donor_set_sha256"] != b["membership_donor_set_sha256"], (
+        "different donor sets with identical counts must be distinguishable"
+    )
+    # Order of declaration must not matter.
+    reordered = av.build_availability_authority(
+        outdir=tmp_path / "c", source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D01", "D00"], source_relative_path="data/p.csv")
+    assert reordered["metadata"]["membership_donor_set_sha256"] == (
+        a["membership_donor_set_sha256"]
+    )

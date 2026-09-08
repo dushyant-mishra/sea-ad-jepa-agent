@@ -172,16 +172,16 @@
   ],
   "gates": {
     "c2": "C2_CLOSED__HISTORICAL_T1_TRAINING_MECHANICS_DEFECT_CONFIRMED_AND_REPAIRED",
-    "current": "PASS_T0_V20_PATHOLOGY_BLIND_S2_MATERIALIZATION_ONLY",
+    "current": "PASS_T0_V20_PARALLEL_S2_AVAILABILITY_AND_PROMOTION_DESIGN",
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN",
     "real_t0": "FORBIDDEN",
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "SUBMIT_AT8_AVAILABILITY_AUTHORITY_FOR_INDEPENDENT_VERIFICATION",
-    "WRITE_FAILING_ADVERSARIAL_ATTACKS_THEN_IMPLEMENT_S2_WITHOUT_INTERMEDIATE_STOP",
-    "DESIGN_PROMOTION_ONLY_SUCCESSOR_WITH_ITS_OWN_SCHEMA_VERIFIER_AND_ENTRYPOINT",
+    "SUBMIT_AVAILABILITY_REVIEW_ZIP_FOR_INDEPENDENT_ATTACK",
+    "RUN_S2_RED_ATTACKS_THEN_IMPLEMENTATION_WITHOUT_INTERMEDIATE_STOP",
+    "DESIGN_PROMOTION_ONLY_SUCCESSOR_SCHEMA_VERIFIER_AND_ENTRYPOINT",
     "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND_UNTIL_VERIFIED"
   ],
   "peer_agents": [
@@ -226,30 +226,45 @@
       "zip_sha256": "a069cad258d278bf8d97e20ba1317ccc62b93265e7f93208a2ae1a4848561947"
     },
     "at8_availability_authority": {
-      "attacks": "17 passed",
+      "attacks": "22 passed",
       "authorization": "Owner-authorized availability-only lane: may determine solely whether the frozen field 'percent AT8 positive area_Grey matter' is present and non-missing. May not parse, retain, emit, log, rank, summarize, compare or model numeric AT8 values.",
       "availability_root_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
-      "availability_root_stability": "e49c4e93... reproduced across four builds, through a portable-label change, added metadata fields, a relocation and a derivation-code fix, because it covers the derived predicate alone. Only package_root moved each time, as designed.",
+      "availability_root_stability": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b reproduced across five builds, through a portable-label change, added metadata, a relocation, a derivation-code fix and the TOCTOU/loader repairs, because it covers the derived predicate alone. Only package_root moved each time.",
       "available_donor_count": 84,
       "derivation_code": "scripts/v4/t0_at8_availability_authority_v1.py",
-      "derivation_code_sha256": "02c4c8d9c328c0337efac2d7a933c0c481c813d45bd541c3389d3c1ebfa7fcc3",
+      "derivation_code_sha256": "87b12d7e149d94f4f828b56bab0975706e98763d89a388a223571abc123cdb35",
       "derived_not_assumed": true,
       "location": "outputs/t0_at8_availability_20260908",
       "location_rationale": "Deliberately NOT stored as tracked text. The declared roots are the bytes as written; a Git checkout under core.autocrlf=true rewrites them, which was observed to change the registry digest from e49c4e93... to a44244824ef4ed252d84fcdfb1e07b807a9a55572bff67bfa9fd0b69079427d6 and would have made the loader fail to verify its own package on a fresh clone.",
       "membership_donor_count": 46,
+      "membership_donor_set_sha256": "f89838342622348f126217686084bf69901b1a50aca97ce94b176b779e294d64",
       "membership_donors_available": 46,
       "membership_fully_available": true,
       "namespace": "T0-AT8-AVAILABILITY-V1",
       "outcome_values_emitted": false,
       "outcome_values_read": false,
-      "package_root_sha256": "40680243ee3c70fc00638cdc64a6c18fccd8be0841c0409c4b7d9368d6af2931",
+      "package_root_sha256": "cda6a2e0f28cfec3a51322e50c34990721e88c6c1300f74ad2cfacf7a0bf645a",
+      "review_repairs_applied": {
+        "exact_package_contents": "An unmanifested extra file was ignored; the directory must now hold exactly the registry, metadata, manifest and root file.",
+        "external_root_verification": "The loader compared the manifest only with the root stored beside it, so a wholesale self-consistent replacement validated. Both expected roots are now required keyword arguments.",
+        "membership_set_digest": "membership_donor_count alone did not identify a set. With every donor available any 46 of 84 satisfied the same counts, so a canonical set digest is now bound.",
+        "stale_one_root_language": "Module docstring and test names still described a single package root as value-invariant; corrected to the two-root contract.",
+        "toctou": "The source was hashed by path and then reopened, so the recorded digest could describe one revision while availability was derived from another, and source_bytes came from a still later stat. The bytes are now read once, those exact bytes are authenticated, parsing happens from memory, and source_bytes is their length."
+      },
       "schema": "JEPA_T0_AT8_AVAILABILITY_AUTHORITY_V1",
       "source_bytes": 21982,
       "source_relative_path": "data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv",
       "source_sha256": "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a",
-      "status": "FROZEN__AWAITING_INDEPENDENT_VERIFICATION",
+      "status": "NOT_YET_INDEPENDENTLY_VERIFIED__REPAIRS_APPLIED_AWAITING_ATTACK",
       "total_donor_count": 84,
       "two_root_design": "availability_root covers the derived predicate alone and is invariant to every numeric AT8 value, proven metamorphically; package_root binds the source digest and derivation code and is expected to change when source bytes change.",
+      "value_handling": {
+        "note": "Replaces the earlier outcome_values_read=false, which was not literally true: the raw token must be read to decide missingness.",
+        "numeric_at8_value_emitted": false,
+        "numeric_at8_value_parsed": false,
+        "numeric_at8_value_retained": false,
+        "raw_at8_token_read_for_missingness": true
+      },
       "verification_rule": "Rebuild from the frozen source digest with the recorded derivation code and compare roots. Do not hash a Git-checked-out copy."
     },
     "crlf_divergence_observed": {
@@ -265,10 +280,9 @@
     },
     "donor_roles": {
       "nullable_substitute_forbidden": true,
-      "reason": "No frozen non-value per-donor AT8 availability authority exists in the recovered V20 package, the storage inventory, or any Git ref. build_role_authority requires a genuine bool AT8_available column; manufacturing it would require opening the pathology CSV.",
+      "reason": "The availability input now EXISTS and is frozen, but it is not yet independently accepted, so the STOP stands. Roles additionally require the technical-completeness predicate, which V18 grounds in Q_DEPTH and Q_DETECT and which is derivable pathology-blind inside S2.",
       "recovered_v18_framing_not_invented": "split_hash = _digest(donor_id) from t0_discovery_confirmation_split_v2; order by (split_hash, donor_id); first N_CONFIRM = CONFIRMATION; namespace T0-DISCOVERY-CONFIRM-V2; completeness = AT8_available & technical_complete & isfinite(age) & non-empty sex.",
-      "status": "STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND",
-      "status_note": "The availability input now exists and is frozen, but the STOP is NOT lifted: per the owner authorization it lifts only after the availability-only authority itself passes independent verification."
+      "status": "STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
     },
     "external_disk_authorities": {
       "byte_semantics": "DISK_BYTES__UNTRACKED_MATERIALIZER_OUTPUT_NOT_UNDER_GIT_CRLF_FILTER",
@@ -300,7 +314,7 @@
       "transformation_contract": "library_size_normalize_to_10000_then_log1p_with_measurement_mask",
       "zero_interpretation": "measured_zero"
     },
-    "owner_authorization": "Pathology-blind T0 V20 external-authority materialization lane only. No AT8/pathology value access, no DEV/SEALED, no real T0 execution, no changes to V18/V20 science, no setting or bypassing real_execution_ready=True.",
+    "owner_authorization": "Three concurrently authorized lanes. (1) Pathology-blind T0 V20 external-authority materialization. (2) AT8 availability-only authority: may access the frozen pathology source solely to decide whether the frozen AT8 field is present and non-missing; may not parse, retain, emit, log, rank, summarize, compare or model numeric AT8 values; output may carry only donor identity, the boolean, provenance and audit metadata. (3) Promotion-only successor design: may design, implement, test and package a minimal prospective successor that makes accepted V20 conditionally promotable, changing no V18/V20 science and producing no real executable T0 authority under present authorization. Still closed: numeric AT8 interpretation, DEV, SEALED, reader-validation, reader-oracle, real T0 execution, biological outcome analysis.",
     "pinned_blob_authorities": {
       "base_pin": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
       "byte_semantics": "GIT_BLOB_ONLY__WORKTREE_BYTES_ARE_NOT_AUTHORITY",
@@ -331,7 +345,7 @@
     },
     "promotion_successor": {
       "blocking_design_finding": "V20 cannot be promoted by flipping a flag. Its verifiers raise unless real_execution_ready is not False, so they accept only False, while its production entrypoints raise unless it is not True, so they proceed only on True. The two are mutually exclusive by construction, which is what makes V20 permanently unready. A promotion successor therefore needs its own authority schema, verifier and entrypoint triple wrapping accepted V20, and may not reuse V20's verifier.",
-      "status": "AUTHORIZED__DESIGN_NOT_STARTED"
+      "status": "AUTHORIZED__DESIGN_IN_PROGRESS"
     },
     "provenance_commits": {
       "base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
@@ -341,11 +355,12 @@
     "real_execution_ready": false,
     "schema": "T0_V20_PATHOLOGY_BLIND_MATERIALIZATION_LANE_V1",
     "self_audit_20260908": {
-      "availability_attacks": "17 passed",
-      "checkpoint_attacks": "31 passed",
+      "availability_attacks": "22 passed",
+      "checkpoint_attacks": "32 passed",
       "finding_1": "authority_path_dirty measured dirtiness with `git status` against current HEAD rather than the checkpoint-bound commit. After a later commit replaced a declared authority the worktree was clean against the new HEAD, so a completely different file could stand in for the authority with no authority-level complaint. Worse, a test had ratified this as expected behaviour. Dirtiness is now the comparison of the bound tree entry object id against `git hash-object --path`, which applies the same clean filter a commit would, so it is exact on a CRLF checkout with no line-ending handling in Python and touches neither the index nor the object store.",
       "finding_2": "The availability builder admitted an existing empty output directory and then called mkdir(exist_ok=False), dying with an unhandled FileExistsError instead of working or stopping cleanly.",
-      "finding_3": "While repairing finding 1 a file rewrite truncated seven authority-identity attack tests. Detected by the suite count falling from 30 to 24 rather than by reading the diff; restored from HEAD and reconciled to 31 passing cases."
+      "finding_3": "While repairing finding 1 a file rewrite truncated seven authority-identity attack tests. Detected by the suite count falling from 30 to 24 rather than by reading the diff; restored from HEAD and reconciled to 31 passing cases.",
+      "finding_4_external": "Independent review then found the TOCTOU and index-protection defects above, plus four lower-level authority/governance defects. Both blocking defects were reproduced locally before repair: a staged replacement of a frozen authority validated with zero errors, and the availability source was authenticated by path rather than by bytes."
     },
     "source_library_rule": "Phase2 constructs source_library as an integer sum of the FULL raw source row, computed BEFORE source-to-address projection. Bind it as an exact positive integer. Never recompute it from the stored 41,238-address row or from the 35,076-address T0 projection; neither sum is required to equal it.",
     "terminal_on_success": "T0_V20_PATHOLOGY_BLIND_FEATURE_SOURCE_ROW_AUTHORITIES_MATERIALIZED_AND_VERIFIED__STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND__REAL_T0_STILL_UNAUTHORIZED",

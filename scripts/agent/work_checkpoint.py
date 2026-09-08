@@ -170,6 +170,41 @@ def authority_worktree_oid(worktree: Path, relative: str) -> str | None:
     return oid or None
 
 
+def authority_index_entry(worktree: Path, relative: str) -> dict[str, str] | None:
+    """Stage-0 index mode and object id for *relative*, or None if absent.
+
+    The index is a third copy of an authority, alongside the bound tree and the
+    worktree, and it has to be checked. Comparing only the worktree let a staged
+    replacement hide: stage different bytes, restore the worktree to the frozen
+    bytes, declare the path in ``allowed_tracked_modifications``, and both the
+    global dirty-list gate and the authority gate reported clean.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None
+    listing = _git(
+        worktree,
+        "--literal-pathspecs",
+        "ls-files",
+        "--stage",
+        "--",
+        canonical,
+        allow_failure=True,
+    )
+    if not listing:
+        return None
+    for line in listing.splitlines():
+        head, _, path = line.partition("\t")
+        fields = head.split()
+        if len(fields) != 3 or path.strip('"') != canonical:
+            continue
+        mode, oid, stage = fields
+        if stage != "0":
+            continue
+        return {"mode": mode, "oid": oid, "stage": stage}
+    return None
+
+
 def authority_path_dirty(worktree: Path, relative: str, bound_oid: str) -> bool:
     """True unless the worktree copy is exactly the authority *bound_oid* names.
 
@@ -180,8 +215,12 @@ def authority_path_dirty(worktree: Path, relative: str, bound_oid: str) -> bool:
     completely different file could sit in place of the authority and raise no
     authority-level complaint at all.
 
-    A missing or unreadable path is dirty, so absence fails closed.
+    Both the index and the worktree must match the bound authority. A missing
+    or unreadable path in either is dirty, so absence fails closed.
     """
+    index_entry = authority_index_entry(worktree, relative)
+    if index_entry is None or index_entry["oid"] != bound_oid:
+        return True
     return authority_worktree_oid(worktree, relative) != bound_oid
 
 

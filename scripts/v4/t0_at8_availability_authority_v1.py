@@ -17,8 +17,15 @@ The value-blindness is structural rather than promised:
   there. It is never bound to a name that outlives that call, never stored on a
   row, and never written to any artifact;
 * the behavioural proof is metamorphic. Replacing every numeric value while
-  holding presence fixed must yield a byte-identical package root, and blanking
-  one value must change it.
+  holding presence fixed must leave `availability_root_sha256` byte-identical,
+  and blanking one value must change it. `package_root_sha256` is a different
+  claim: it binds the source digest and the derivation code, so it is expected
+  to move whenever the source bytes move.
+
+The raw field text is read in order to decide missingness, which is the whole
+point, so the metadata says exactly that rather than the looser claim that no
+outcome value was read: the token is read, and it is never parsed numerically,
+never retained and never emitted.
 
 Availability means present and non-missing, so a measured zero is available. A
 zero is a measurement, not an absence, and treating it as missing would silently
@@ -62,6 +69,8 @@ STOP_MEMBERSHIP = "STOP_T0_AT8_MEMBERSHIP_DONOR_UNRESOLVED"
 STOP_OUTPUT = "STOP_T0_AT8_OUTPUT_NOT_EMPTY"
 STOP_PACKAGE = "STOP_T0_AT8_AVAILABILITY_PACKAGE_INVALID"
 STOP_SOURCE_PATH = "STOP_T0_AT8_SOURCE_PATH_NOT_PORTABLE"
+STOP_PACKAGE_CONTENTS = "STOP_T0_AT8_AVAILABILITY_PACKAGE_CONTENTS_UNEXPECTED"
+STOP_EXTERNAL_ROOT = "STOP_T0_AT8_AVAILABILITY_EXTERNAL_ROOT_MISMATCH"
 
 
 def sha256_file(path: Path | str) -> str:
@@ -83,42 +92,53 @@ def _is_available(raw_field_text: str) -> bool:
     return stripped.lower() not in NA_TOKENS
 
 
-def verify_pathology_source(source_path: Path | str, expected_source_sha256: str) -> str:
-    """Authenticate the source before any field is consulted.
+def read_authenticated_source(
+    source_path: Path | str, expected_source_sha256: str
+) -> bytes:
+    """Read the source once and authenticate those exact bytes.
+
+    Hashing the path and then reopening it later is a time-of-check to
+    time-of-use hole: the recorded digest could describe one revision of the
+    file while availability was derived from another. The authenticated bytes
+    are therefore returned and everything downstream parses them from memory;
+    the path is never reopened, and the recorded byte count is the length of
+    these bytes rather than a later filesystem stat.
 
     Runs before the output directory is created, so a source STOP leaves no
     artifact behind at all.
     """
-    actual = sha256_file(source_path)
+    payload = Path(source_path).read_bytes()
+    actual = hashlib.sha256(payload).hexdigest()
     if actual != str(expected_source_sha256):
         raise AssertionError(
             "%s: %s has digest %s, expected %s"
             % (STOP_SOURCE_DIGEST, Path(source_path).as_posix(), actual,
                expected_source_sha256)
         )
-    return actual
+    return payload
 
 
-def derive_availability(source_path: Path | str) -> list[dict[str, str]]:
+def derive_availability(authenticated_source_bytes: bytes) -> list[dict[str, str]]:
     """Return one `{donor_id, AT8_available}` row per donor, in UTF-8 order.
 
-    The AT8 column is reduced to a boolean inside this function and never
-    leaves it in any other form.
+    Parses the authenticated bytes from memory, so the derivation cannot drift
+    from the digest that was verified. The AT8 column is reduced to a boolean
+    inside this function and never leaves it in any other form.
     """
-    with Path(source_path).open("r", encoding="utf-8-sig", newline="") as handle:
-        reader = csv.DictReader(handle)
-        columns = list(reader.fieldnames or [])
-        if AT8_FIELD not in columns:
-            raise AssertionError("%s: %r is not in the source header"
-                                 % (STOP_FIELD_ABSENT, AT8_FIELD))
-        if DONOR_ID_FIELD not in columns:
-            raise AssertionError("%s: %r is not in the source header"
-                                 % (STOP_ID_FIELD_ABSENT, DONOR_ID_FIELD))
-        rows = []
-        for record in reader:
-            donor = str(record.get(DONOR_ID_FIELD) or "").strip()
-            available = _is_available(record.get(AT8_FIELD) or "")
-            rows.append({"donor_id": donor, "AT8_available": str(bool(available))})
+    handle = io.StringIO(bytes(authenticated_source_bytes).decode("utf-8-sig"))
+    reader = csv.DictReader(handle)
+    columns = list(reader.fieldnames or [])
+    if AT8_FIELD not in columns:
+        raise AssertionError("%s: %r is not in the source header"
+                             % (STOP_FIELD_ABSENT, AT8_FIELD))
+    if DONOR_ID_FIELD not in columns:
+        raise AssertionError("%s: %r is not in the source header"
+                             % (STOP_ID_FIELD_ABSENT, DONOR_ID_FIELD))
+    rows = []
+    for record in reader:
+        donor = str(record.get(DONOR_ID_FIELD) or "").strip()
+        available = _is_available(record.get(AT8_FIELD) or "")
+        rows.append({"donor_id": donor, "AT8_available": str(bool(available))})
 
     identities = [row["donor_id"] for row in rows]
     if any(not identity for identity in identities):
@@ -144,6 +164,18 @@ def _write_flat_package(outdir: Path, payloads: Mapping[str, bytes]) -> str:
     root = sha256_file(outdir / MANIFEST)
     (outdir / ROOT_FILE).write_bytes((root + "\n").encode("utf-8"))
     return root
+
+
+def _donor_set_digest(donor_ids: Iterable[str]) -> str:
+    """Canonical digest over an exact donor-identity set."""
+    ordered = sorted({str(donor).strip() for donor in donor_ids},
+                     key=lambda value: value.encode("utf-8"))
+    digest = hashlib.sha256()
+    digest.update(b"T0_DONOR_IDENTITY_SET_V1")
+    for donor in ordered:
+        digest.update(b"|")
+        digest.update(donor.encode("utf-8"))
+    return digest.hexdigest()
 
 
 def _portable_source_identity(source_relative_path: str) -> str:
@@ -175,7 +207,8 @@ def build_availability_authority(
     source_relative_path: str,
 ) -> dict[str, Any]:
     """Freeze the availability-only authority for the given pathology source."""
-    source_digest = verify_pathology_source(source_path, expected_source_sha256)
+    authenticated = read_authenticated_source(source_path, expected_source_sha256)
+    source_digest = hashlib.sha256(authenticated).hexdigest()
     source_label = _portable_source_identity(source_relative_path)
 
     out = Path(outdir)
@@ -183,7 +216,7 @@ def build_availability_authority(
         raise AssertionError("%s: %s must be absent or empty"
                              % (STOP_OUTPUT, out.as_posix()))
 
-    rows = derive_availability(source_path)
+    rows = derive_availability(authenticated)
     by_donor = {row["donor_id"]: row["AT8_available"] for row in rows}
 
     membership = sorted({str(donor).strip() for donor in membership_donor_ids},
@@ -216,7 +249,7 @@ def build_availability_authority(
             "frozen missingness vocabulary; a measured zero is available"
         ),
         "source_relative_path": source_label,
-        "source_bytes": Path(source_path).stat().st_size,
+        "source_bytes": len(authenticated),
         "source_sha256": source_digest,
         "derivation_code_sha256": sha256_file(__file__),
         "total_donor_count": len(rows),
@@ -224,6 +257,10 @@ def build_availability_authority(
         "membership_donor_count": len(membership),
         "membership_donors_available": len(membership_available),
         "membership_fully_available": len(membership_available) == len(membership),
+        # A count alone does not identify a donor set. With every donor
+        # available, any 46 of the 84 would satisfy "46 of 46", so the claim is
+        # only meaningful alongside a digest of the exact set it refers to.
+        "membership_donor_set_sha256": _donor_set_digest(membership),
         "root_byte_semantics": (
             "DISK_BYTES_AS_WRITTEN__NEVER_STORE_THIS_PACKAGE_AS_CRLF_FILTERED_TRACKED_TEXT"
         ),
@@ -232,8 +269,12 @@ def build_availability_authority(
             "derivation code; do not hash a Git-checked-out copy, because a platform "
             "line-ending transform changes the bytes and therefore the root."
         ),
-        "outcome_values_read": False,
-        "outcome_values_emitted": False,
+        # Precise, because "no outcome value was read" was not literally true:
+        # the raw token must be read to decide missingness.
+        "raw_at8_token_read_for_missingness": True,
+        "numeric_at8_value_parsed": False,
+        "numeric_at8_value_retained": False,
+        "numeric_at8_value_emitted": False,
         "real_execution_ready": False,
         "claim": (
             "Availability predicate only. This authority does not qualify any "
@@ -263,8 +304,25 @@ def build_availability_authority(
     }
 
 
-def load_availability_authority(outdir: Path | str) -> dict[str, Any]:
-    """Re-verify a frozen availability package and return its content."""
+def load_availability_authority(
+    outdir: Path | str,
+    *,
+    expected_package_root_sha256: str,
+    expected_availability_root_sha256: str,
+) -> dict[str, Any]:
+    """Re-verify a frozen availability package against EXTERNAL roots.
+
+    Internal consistency is not verification. Comparing the manifest only with
+    the root stored inside the same directory accepted a wholesale replacement:
+    rewrite the registry, the metadata, the manifest and the root file together
+    and the package validated. Both expected roots are therefore required
+    keyword arguments, so a caller cannot accidentally verify a package against
+    itself.
+
+    The directory must also hold exactly the four known files. An unmanifested
+    extra file was previously ignored, which let a package carry content no
+    digest covered.
+    """
     out = Path(outdir)
     manifest_path = out / MANIFEST
     root_path = out / ROOT_FILE
@@ -272,6 +330,15 @@ def load_availability_authority(outdir: Path | str) -> dict[str, Any]:
         if not required.is_file():
             raise AssertionError("%s: %s is absent"
                                  % (STOP_PACKAGE, required.as_posix()))
+
+    present = sorted(item.relative_to(out).as_posix()
+                     for item in out.rglob("*") if item.is_file())
+    expected_contents = sorted([*MEMBERS, MANIFEST, ROOT_FILE])
+    if present != expected_contents:
+        raise AssertionError(
+            "%s: directory holds %r, expected exactly %r"
+            % (STOP_PACKAGE_CONTENTS, present, expected_contents)
+        )
 
     declared = []
     with manifest_path.open("r", encoding="utf-8", newline="") as handle:
@@ -324,10 +391,24 @@ def load_availability_authority(outdir: Path | str) -> dict[str, Any]:
         raise AssertionError("%s: available count disagrees with metadata"
                              % STOP_PACKAGE)
 
+    availability_root = hashlib.sha256((out / REGISTRY).read_bytes()).hexdigest()
+
+    # The decisive check: both roots must equal values supplied from OUTSIDE
+    # this directory. A self-consistent replacement of every member cannot
+    # satisfy this, which is precisely what internal consistency alone allowed.
+    if actual_root != str(expected_package_root_sha256):
+        raise AssertionError(
+            "%s: package root %s is not the expected %s"
+            % (STOP_EXTERNAL_ROOT, actual_root, expected_package_root_sha256)
+        )
+    if availability_root != str(expected_availability_root_sha256):
+        raise AssertionError(
+            "%s: availability root %s is not the expected %s"
+            % (STOP_EXTERNAL_ROOT, availability_root, expected_availability_root_sha256)
+        )
+
     return {
-        "availability_root_sha256": hashlib.sha256(
-            (out / REGISTRY).read_bytes()
-        ).hexdigest(),
+        "availability_root_sha256": availability_root,
         "package_root_sha256": actual_root,
         "registry": rows,
         "metadata": metadata,

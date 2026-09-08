@@ -8,6 +8,7 @@ import pytest
 
 from scripts.agent.work_checkpoint import (
     atomic_write_json,
+    authority_index_entry,
     authority_path_dirty,
     authority_worktree_oid,
     build_checkpoint,
@@ -660,3 +661,42 @@ def test_a_legitimately_declared_local_authority_still_validates(git_repo: Path)
         git_repo, "local_authority.json", {"local_authority.json"}, {"local_authority.json"}
     )
     assert reason is None and resolved == local.resolve()
+
+
+def test_a_staged_replacement_of_a_frozen_authority_is_refused(tmp_path: Path) -> None:
+    """The index is a third copy of an authority and must also be checked.
+
+    The bound-object-id repair compared only the worktree, so this passed
+    completely clean: stage a replacement, restore the worktree to the frozen
+    bytes, and declare the path in `allowed_tracked_modifications` so the global
+    dirty-list gate is satisfied too. `validate_checkpoint` returned [].
+    """
+    repo, blob_sha, _ = _crlf_repo(tmp_path)
+    head = _git(repo, "rev-parse", "HEAD")
+    bound = tracked_blob_at(repo, head, "authority.txt")
+    frozen_bytes = (repo / "authority.txt").read_bytes()
+
+    (repo / "authority.txt").write_bytes(b"STAGED REPLACEMENT AUTHORITY\n")
+    _git(repo, "add", "authority.txt")
+    (repo / "authority.txt").write_bytes(frozen_bytes)
+
+    index_entry = authority_index_entry(repo, "authority.txt")
+    assert index_entry is not None and index_entry["oid"] != bound["oid"], (
+        "the staged replacement must genuinely differ from the bound authority"
+    )
+    assert authority_worktree_oid(repo, "authority.txt") == bound["oid"], (
+        "the worktree must look pristine, which is what hid the staged change"
+    )
+
+    state = _crlf_state(repo, blob_sha)
+    state["allowed_tracked_modifications"] = ["authority.txt"]
+    checkpoint = build_checkpoint(repo, repo, state)
+    errors = validate_checkpoint(checkpoint, repo, repo)
+    assert any(error.startswith("AUTHORITY_DIRTY") for error in errors), errors
+    assert authority_path_dirty(repo, "authority.txt", bound["oid"]) is True
+
+    # Discriminating: unstage and the same declaration validates again.
+    _git(repo, "reset", "-q", "HEAD", "--", "authority.txt")
+    clean_state = _crlf_state(repo, blob_sha)
+    clean_checkpoint = build_checkpoint(repo, repo, clean_state)
+    assert validate_checkpoint(clean_checkpoint, repo, repo) == []
