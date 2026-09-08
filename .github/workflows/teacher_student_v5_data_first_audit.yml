@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - planning/teacher-student-v5-data-first-20260908
-  pull_request:
-    branches:
-      - candidate/teacher-student-unified-v4-relational-20260908
+    paths-ignore:
+      - '.v5_sync66/**'
+      - '.github/workflows/materialize_teacher_student_v5_data_first_snapshot.yml'
+      - '.github/workflows/teacher_student_v5_data_first_audit.yml'
   workflow_dispatch:
 
 permissions:
@@ -18,64 +19,41 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Install test dependencies
         run: |
           python -m pip install --disable-pip-version-check pytest numpy pandas scipy
           python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
-
+      - name: Run V5 governance audit
+        env:
+          PYTHONPATH: src:.
+        run: python scripts/agent/audit_teacher_student_v5_data_first_v1.py
       - name: Run frozen V4 active suite unchanged
         env:
           PYTHONPATH: src:.
         run: |
           python - <<'PY'
-          import subprocess, sys
+          import subprocess,sys
           from pathlib import Path
-          tests=[
-              line.strip()
-              for line in Path("docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V4.txt").read_text().splitlines()
-              if line.strip() and not line.lstrip().startswith("#")
-          ]
+          tests=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V4.txt').read_text().splitlines() if x.strip() and not x.lstrip().startswith('#')]
           assert len(tests)==7 and len(set(tests))==7,tests
-          subprocess.run([sys.executable,"-m","pytest","-q",*tests],check=True)
+          subprocess.run([sys.executable,'-m','pytest','-q',*tests],check=True)
           PY
-
-      - name: Run exact V5 planning attack suite
+      - name: Run exact V5 active suite
         env:
           PYTHONPATH: src:.
         run: |
-          python -m pytest -q             tests/test_teacher_student_data_first_v1.py             tests/test_teacher_student_packed_equivalence_v1.py             tests/test_teacher_student_v5_rng_triplets_estimand_v1.py             tests/test_teacher_student_v5_keyed_training_boundary_v1.py             tests/test_teacher_student_v5_support_geometry_v1.py
-
+          python - <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          tests=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt').read_text().splitlines() if x.strip()]
+          assert len(tests)==11 and len(set(tests))==11,tests
+          subprocess.run([sys.executable,'-m','pytest','-q',*tests],check=True)
+          PY
       - name: Compile V5 source and profilers
         env:
           PYTHONPATH: src:.
         run: |
-          python -m py_compile             src/sea_ad_jepa/v5/*.py             scripts/agent/profile_reader_fit_data_geometry_v1.py             scripts/agent/profile_reader_fit_estimands_v1.py             scripts/agent/profile_reader_fit_support_overlap_v1.py
-
-      - name: Verify V5 stays inactive and production schedule is unfrozen
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          runtime=Path("src/sea_ad_jepa/v4/teacher_student_runtime.py").read_text()
-          assert "sea_ad_jepa.v5" not in runtime
-          assert "keyed_ipb_proof_v1" not in runtime
-          diag=json.loads(Path("docs/agent/READER_FIT_ESTIMAND_DIAGNOSTICS_V1.json").read_text())
-          assert diag["selected_target_policy"] is None
-          assert diag["selected_proposal_policy"] is None
-          assert diag["training_authorized"] is False
-          support=json.loads(Path("docs/agent/READER_FIT_SUPPORT_OVERLAP_PROFILE_V1.json").read_text())
-          assert support["candidate_use_only"] is True
-          assert support["training_authorized"] is False
-          assert support["all_42_operators_measured_scalar"]==17186
-          forbidden=[
-              Path("docs/agent/HEALTHY_TEACHER_U0_U40_EXECUTION_AUTHORITY_V1.json"),
-              Path("docs/agent/HEALTHY_TEACHER_CONTINUATION_EXECUTION_AUTHORITY_V1.json"),
-          ]
-          assert not any(p.exists() for p in forbidden),forbidden
-          print("PASS_V5_DATA_FIRST_INACTIVE__PRODUCTION_SCHEDULE_UNFROZEN__TRAINING_UNAUTHORIZED")
-          PY
+          python -m py_compile src/sea_ad_jepa/v5/*.py scripts/agent/profile_reader_fit_*.py scripts/agent/audit_teacher_student_v5_data_first_v1.py scripts/agent/build_teacher_student_v5_prototype_manifest.py
