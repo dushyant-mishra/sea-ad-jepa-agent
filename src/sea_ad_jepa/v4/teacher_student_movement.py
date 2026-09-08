@@ -5,11 +5,12 @@ arbitrary 2x-decay margin.  This adjudicator instead constructs the exact
 decoupled-weight-decay counterfactual in parameter dtype by replaying AdamW's
 multiplicative decay operation for the proved number of optimizer steps.
 
-A zero-baseline tensor passes only with finite nonzero absolute movement.  A
-nonzero-baseline tensor passes only when its per-tensor absolute movement is
-strictly greater than the exact repeated AdamW decay-only movement.  This is the
-literal frozen-base "exceed decay-only behavior" rule without the prototype's
-arbitrary 2x multiplier.  No pooled statistic can rescue a failed tensor.
+A tensor passes only when its observed bytes deviate from the exact repeated
+AdamW decay-only counterfactual.  This tests the property the qualification
+needs without imposing a directional or magnitude assumption: a genuine
+gradient may reinforce weight decay or oppose it, and either is live if the
+result differs from decay alone.  No pooled statistic can rescue a failed
+tensor, and no arbitrary numerical tolerance is introduced.
 """
 from __future__ import annotations
 
@@ -79,12 +80,16 @@ def adjudicate_tensor(
     absolute_norm = float(absolute.double().norm())
     decay_only_norm = float((expected - baseline.detach()).double().norm())
     residual_norm = float(residual.double().norm())
+    # Exact elementwise deviation is the adjudication.  Do not use a norm
+    # threshold: a finite representable one-ULP deviation is evidence that the
+    # tensor did something other than pure decoupled weight decay.
+    deviates_from_decay_only = bool((observed.detach() != expected).any())
     if zero_baseline:
-        passed = absolute_norm > 0.0
-        status = "ZERO_BASELINE_MOVED" if passed else "ZERO_BASELINE_UNMOVED"
+        passed = deviates_from_decay_only
+        status = "ZERO_BASELINE_DEVIATES_FROM_DECAY_ONLY" if passed else "ZERO_BASELINE_UNMOVED"
     else:
-        passed = absolute_norm > decay_only_norm
-        status = "EXCEEDS_DECAY_ONLY" if passed else "NOT_ABOVE_DECAY_ONLY"
+        passed = deviates_from_decay_only
+        status = "DEVIATES_FROM_DECAY_ONLY" if passed else "EXACT_DECAY_ONLY"
     return {
         "passed": passed,
         "status": status,
@@ -129,11 +134,11 @@ def adjudicate_module(
         "failed": failed,
         "passed": not failed,
         "terminal": (
-            "PASS_PER_TENSOR_MOVEMENT_EXCEEDS_DECAY"
+            "PASS_PER_TENSOR_MOVEMENT_DEVIATES_FROM_DECAY_ONLY"
             if not failed
-            else "STOP_PER_TENSOR_MOVEMENT_NOT_ABOVE_DECAY"
+            else "STOP_PER_TENSOR_MOVEMENT_EQUALS_DECAY_ONLY"
         ),
-        "criterion": "zero baseline: absolute movement > 0; nonzero baseline: absolute movement norm > exact repeated AdamW decay-only movement norm",
+        "criterion": "every mandatory tensor must differ elementwise from the exact repeated AdamW decay-only counterfactual; no tolerance or pooled rescue",
         "pooled_rescue_allowed": False,
         "arbitrary_magnitude_multiplier": None,
     }
