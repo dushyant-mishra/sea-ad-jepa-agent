@@ -38,14 +38,13 @@ That was insufficient because Target Discovery had already promoted the verified
 V5 data-first materialization at `c7b1663...` as the current prospective
 successor.
 
-The main tree was therefore reconciled by restoring the current V5 file surface
-from `c7b1663...` while retaining later non-conflicting proof/helper artifacts
-as non-authoritative history.
+The main tree was therefore reconciled by restoring the frozen 66-pass V5 core from `c7b1663...`. A later lawful continuation at `028989a5f1504e4d6403a44e7c90d37172c54150` is now also absorbed and current for base proposal V3 and presentation-horizon V1; it does not rewrite the frozen prototype.
 
 Current V5 authority must be read from:
 
 - `TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json`;
-- `TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V2.json`;
+- `TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3.json`;
+- `TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json`;
 - `TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt`;
 - the current V5 authority candidate/status artifacts;
 - `CURRENT_AUTHORITY_INDEX.md`.
