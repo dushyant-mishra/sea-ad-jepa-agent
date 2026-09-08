@@ -523,6 +523,27 @@ class _ProductionPostBackwardHarness:
         )
 
 
+def validate_update_chronology(controller: Any, schedule_cursor: int) -> dict[str, int]:
+    """Bind mask/schedule chronology to proved optimizer and EMA progress."""
+    cursor = int(schedule_cursor)
+    if cursor < 0:
+        raise ValueError("schedule_cursor must be non-negative")
+    global_step = int(controller.global_update_step)
+    ema_count = int(controller.ema_update_count)
+    if global_step != ema_count:
+        raise RuntimeError("optimizer/EMA counters diverged before update")
+    if cursor != global_step:
+        raise RuntimeError(
+            "schedule cursor does not equal current optimizer/EMA step: "
+            f"cursor={cursor} step={global_step}"
+        )
+    return {
+        "schedule_cursor": cursor,
+        "global_update_step": global_step,
+        "ema_update_count": ema_count,
+    }
+
+
 def validate_training_batch(
     expression: torch.Tensor,
     measurement_mask: torch.Tensor,
@@ -570,15 +591,7 @@ def production_update(
     )
     if modules.device.type != "cuda":
         raise RuntimeError("healthy-teacher qualification requires CUDA")
-    if schedule_cursor < 0:
-        raise ValueError("schedule_cursor must be non-negative")
-    if schedule_cursor != modules.ema_controller.global_update_step:
-        raise RuntimeError(
-            "schedule cursor does not equal current optimizer/EMA step: "
-            f"cursor={schedule_cursor} step={modules.ema_controller.global_update_step}"
-        )
-    if modules.ema_controller.global_update_step != modules.ema_controller.ema_update_count:
-        raise RuntimeError("optimizer/EMA counters diverged before update")
+    validate_update_chronology(modules.ema_controller, schedule_cursor)
 
     expression = expression.detach().cpu()
     measurement_mask = measurement_mask.detach().cpu()
