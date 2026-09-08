@@ -68,17 +68,8 @@ correction remains prospective and lawful.
 No historical T0 PASS or earlier branch may bypass the current three external
 implementation STOPs.
 
-## Branch deletion
+## Branch deletion — completed
 
-Once a non-main branch head is proven to be an ancestor of current `main`, its
-branch ref may be deleted without loss of commit history.
+The guarded branch-prune workflow revalidated every listed head, deleted all 57 non-main branch refs, and verified that only `main` remains. This did not delete absorbed commits, tags, hashes, package roots, or immutable artifacts, and it did not change scientific execution authority.
 
-Deleting a branch ref:
-
-- does not delete the absorbed commits;
-- does not invalidate hashes/package roots;
-- does not delete tags;
-- does not change execution authority.
-
-Tags and immutable package artifacts must not be deleted as part of branch
-hygiene.
+Audit terminal: `PASS_JEPA_BRANCH_CONSOLIDATION_AND_PRUNE__MAIN_ONLY`.
