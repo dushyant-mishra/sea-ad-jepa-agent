@@ -87,3 +87,53 @@ def test_profile_binds_portable_bundle_members_and_stays_reader_fit_only():
     assert '/mnt/data/' not in text
     assert 'reader_validation' not in text
     assert 'reader_oracle' not in text
+
+def test_uniform_scientific_weights_reduce_exactly_to_legacy_block_mse():
+    from sea_ad_jepa.v5.data_first_geometry import weighted_block_jepa_loss
+    torch.manual_seed(12)
+    p=torch.randn(5,4,7)
+    t=torch.randn(5,4,7)
+    w=torch.ones(5)
+    assert torch.allclose(weighted_block_jepa_loss(p,t,w),torch.nn.functional.mse_loss(p,t),atol=1e-7,rtol=1e-7)
+
+
+def test_scientific_weighted_loss_is_invariant_to_unequal_compute_partition():
+    from sea_ad_jepa.v5.data_first_geometry import weighted_block_jepa_loss, weighted_loss_partition_weight
+    torch.manual_seed(13)
+    p=torch.randn(7,3,5); t=torch.randn(7,3,5)
+    w=torch.tensor([0.2,2.0,0.5,4.0,1.0,3.0,0.1])
+    full=weighted_block_jepa_loss(p,t,w)
+    idx=[slice(0,2),slice(2,5),slice(5,7)]
+    recon=0.0
+    total=float(w.sum())
+    for s in idx:
+        local=weighted_block_jepa_loss(p[s],t[s],w[s])
+        recon=recon+local*weighted_loss_partition_weight(local_weight_mass=float(w[s].sum()),total_weight_mass=total)
+    assert torch.allclose(full,recon,atol=1e-7,rtol=1e-7)
+
+
+def test_scientific_estimand_probability_has_no_implicit_sampler_or_default():
+    from sea_ad_jepa.v5.data_first_geometry import scientific_target_cell_probability, importance_weight_from_probabilities
+    n=1000; nd=100; d=10; ds=4; s=3
+    assert scientific_target_cell_probability('cell_uniform',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s)==pytest.approx(1/n)
+    assert scientific_target_cell_probability('donor_uniform',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s)==pytest.approx(1/(d*nd))
+    assert scientific_target_cell_probability('source_donor_uniform',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s)==pytest.approx(1/(s*ds*nd))
+    with pytest.raises(ValueError,match='unsupported scientific estimand'):
+        scientific_target_cell_probability('auto',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s)
+    assert importance_weight_from_probabilities(target_probability=.02,proposal_probability=.01)==pytest.approx(2.0)
+
+
+def test_full_reader_estimand_analysis_is_descriptive_and_selects_nothing():
+    p=json.loads((ROOT/'docs/agent/READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V1.json').read_text())
+    assert p['population']=='reader_fit' and p['reader_fit_cells']==4_553_407 and p['reader_fit_donors']==104
+    assert p['selected_estimand'] is None and p['selected_proposal_sampler'] is None
+    cell=p['candidate_estimands']['cell_uniform']
+    donor=p['candidate_estimands']['donor_uniform']
+    sd=p['candidate_estimands']['source_donor_uniform']
+    assert cell['target_source_mass']['SEA_AD'] > .90
+    assert donor['target_source_mass']['SEA_AD']==pytest.approx(46/104)
+    assert sd['target_source_mass']['HVS']==pytest.approx(1/3)
+    assert donor['if_proposed_cell_uniform']['importance_weight_max_to_min_ratio'] > 2000
+    assert donor['if_proposed_cell_uniform']['effective_sample_size_fraction'] < .10
+    assert sd['if_proposed_cell_uniform']['effective_sample_size_fraction'] < .04
+    assert p['training_authorized'] is False and p['execution_authorized'] is False
