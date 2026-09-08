@@ -45,6 +45,7 @@ from sea_ad_jepa.v4.teacher_student_runtime import (
     PRODUCTION_CONFIG,
     PREDICTOR_REGISTRY_SHA256,
     build_teacher_student_components,
+    configure_deterministic_cuda_environment,
     production_update,
 )
 
