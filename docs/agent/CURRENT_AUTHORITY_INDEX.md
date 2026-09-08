@@ -1,122 +1,109 @@
-# CURRENT AUTHORITY INDEX — JEPA v4
+# CURRENT AUTHORITY INDEX — JEPA PROJECT
 
-Date: 2026-09-03
+Date: 2026-09-08
 
-Purpose: identify the minimum current authority set. Historical artifacts remain preserved but must not override this index when they conflict with a newer externally reviewed state.
+## Single current coordination lineage
 
-## Startup order
+**Current project branch**
 
-1. `START_HERE.md`
-2. `docs/agent/memory-os/ACTIVE_STATE.md`
-3. `docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`
-4. Controlling review named by `NEXT_ALLOWED_ACTION.json`
-5. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
-6. `docs/agent/EVIDENCE_INDEX.md`
+`coordination/jepa-current-20260908`
 
-## Live scientific gate
+All new cross-project work must branch from this lineage unless an explicit
+prospective authority says otherwise.
 
-Current gate:
-`STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN`
+Historical branches remain provenance only. A branch name containing
+`production/`, `candidate/`, `planning/`, `review/`, or an older phase name
+does not make that branch current.
 
-Only next authorized scientific/engineering work:
-prospectively freeze and execute the real F1 reader/forward/executor preflight.
+## Current absorbed lineage heads
 
-The preflight may use a prospectively fixed, non-conclusion-bearing real technical fixture to authenticate the reader/forward path and benchmark the current runtime. The full real F1 biological sweep, biological outcome adjudication and training remain unauthorized.
+| Lane | Last independently identified lane head | Current status |
+|---|---|---|
+| T0 V20 pathology-blind materialization | `24b2c9ffc0ab2d63061c20af8829bcb86114b11a` | CURRENT IMPLEMENTATION INPUT; external STOPs remain |
+| Teacher/Student V5 data-first | `95251107e80a803d627d1197a64b417a5a16d2c5` | CURRENT DESIGN/IMPLEMENTATION CANDIDATE; training unauthorized |
+| Target Discovery | `26c3cfaba77bb8e5935e76473ab1fd5f90a562bf` | CURRENT DISCOVERY AUTHORITY LINE; TD60 waits for lawful learned teacher |
+| F1 real producer/replay | `a884f558970479278bc21f3f2274dc24bee89758` | PREFREEZE / execution unauthorized |
+| F1-B/C3 training successor | `c0eaf2acc0a5edc837fb2a48f726b9d626772f06` | MECHANICS EVIDENCE ONLY; not final trainer |
+| D1 V2 | `c13c06c103a588fc95bb93174730bf26dd613884` | WAIT_HEALTHY_TRAINED_TEACHER |
+| Global external review | `557a4344df2fa04526c82146a730413c992b5ad2` | CURRENT blocker/governance review input |
 
-## Current accepted authorities
+All of the above histories are now ancestors of the current coordination branch.
 
-### Objective and dataset semantics
+## T0
 
-- Objective: predict biologically meaningful programs/state from partial RNA while preserving the full address-resolved Molecular Ledger; not exact hidden-gene reconstruction.
-- FULL104 reader-fit authority: 4,553,407 lawful cells / 104 donors / 42 operators / 41,238 molecular addresses.
-- Physical observation states: `MEASURED_SCALAR`, `STRUCTURALLY_UNMEASURED`, `MEASURED_COLLISION_UNRESOLVED`.
-- Measured zero is evidence; `M_physical != U_evidence`.
-- DEV/SEALED/pathology reader firewall remains closed.
+Accepted science remains V18/V20. Real T0 is still unauthorized.
 
-### Closed shared-D branch
+Current hard STOPs:
 
-- Terminal: `TEACHER_BIOLOGY_LIMIT`.
-- `D_shared=null`.
-- This branch is closed against rescue/re-entry unless a future explicit authority reopens it.
+1. B2 logical authority root does not yet close the full parent/path chain.
+2. raw H5AD `layers/UMIs` extraction is not yet cryptographically coupled to the source_library proof.
+3. age/sex authority does not yet bind the candidate-donor parent strongly enough.
 
-### Contextual Target V1 F0
+Therefore:
 
-- F0 is externally closed PASS.
-- Query identity is retained while the query scalar is withheld from student evidence/context.
-- Teacher richest lawful context excludes the current query scalar.
-- Query-self contamination is forbidden.
+- production B2: FORBIDDEN;
+- donor-role gate: SHUT;
+- numeric confirmation AT8: CLOSED;
+- `real_execution_ready=False`.
 
-### F1 frozen design
+## Teacher/Student
 
-- Claim scope: `FINITE_FROZEN_2781_DESIGN_SAMPLED_W2_EXPECTATION`.
-- Program estimand: `DESIGN_SAMPLED_W2_PROGRAM_ESTIMAND`.
-- 2,781 cells / 104 donors / 42 operators.
-- 44,496 assignments; 16 assignments/cell.
-- 43,108 unique `(cell,q)` pairs.
-- 474,188 expensive forwards under the frozen deduplicated plan.
-- 222,480 assignment x evidence effect rows.
-- Frozen evidence ladder: 20/40/60/80/100%; primary evidence 60%.
+V4 and the historical 3,292-cell/u40-u205 line are retained as **mechanics
+qualification evidence**, not the full-reader biological training authority.
 
-### HC3 nuisance authority
+The current production-design direction is V5 data-first over the 4,553,407-cell
+reader-fit population.
 
-- Selected triple: `(5,0,4)`.
-- Raw selected design SHA-256: `5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3`.
-- Effective centered design SHA-256: `37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb`.
-- Shape 104 x 16; rank 16; df 88; 104/104 leave-one-donor rank stable.
-- HC3 numerical-robustness repair final commit: `5e8127d360d1effd0867a73c2bb007ddffb2c901`.
-- Repair manifest SHA-256: `f7cc3be9340c817f57953d3ef009c568a57dca7ea4fffbc2ccefbe6266e123a5`.
-- External terminal: `PASS_F1_HC3_15C_NUMERICAL_ROBUSTNESS_REPAIR_EXTERNAL_REVIEW`.
-- Current production HC3 numerical route for the repaired layer: reduced QR/triangular solves; independent validator: thin SVD/pseudoinverse.
+Training remains unauthorized until explicit freezes exist for:
 
-### Evidence-trend numerical authority
+- scientific estimand and proposal sampler;
+- relational scientific weighting;
+- support-aware evidence/target policy;
+- full-reader exposure schedule/checkpoints;
+- one canonical keyed RNG;
+- hardware cost calibration;
+- integrated reviewed production trainer.
 
-- External-review accepted commit: `249bc3b37cb6368ad97fde6bfb2a4560e83ff5a4`.
-- External terminal: `PASS_F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW`.
-- Repair package root SHA-256: `ce759e1397cba36d3d595603b14472ccbb756826144a4dbb3db31a964da0c607`.
-- Conclusion-bearing slope: `(A100-A20)+0.5*(A80-A40)` in float64; A60 coefficient zero.
-- Production slope source SHA-256: `afa32c5608ed6749e7c61f6ec7183f186377f6bcd29280b330af6a5265be00ce`.
-- Independent slope reference uses a separate `math.fsum` path.
-- Complete independent adjudication constructs all 11 current gates from raw frozen synthetic endpoints with `copied_production_gate_count=0`.
-- Ten deliberate non-evidence production-gate flips are detected by the independent comparison.
-- Controlling review: `docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md`.
+## Target Discovery
 
-### Historical decision authorities retained as frozen inputs
+Do not restart fixed-coordinate target search.
 
-- decision-v1 SHA-256: `204859f48b96d1bb268d9249596b801537f2c911183dc4a20bc30fe5683e2d34`.
-- decision-v4 SHA-256: `5215faffe1e90b6567054fd7fb4d62d501787dbacd704e09ff28af9c65d45913`.
-- integration-v4 SHA-256: `5dfd5858f1e8865f871b633a033e400f2d7fb5e2fb52bebbc613f7efed1bce2a`.
-- These bytes are historical/frozen and must not be edited in place.
+Current relational evidence remains the active scientific object. TD60 must
+consume a lawful full-reader exposure-defined learned-teacher checkpoint, not
+silently reinterpret historical u40 as a biological-learning checkpoint.
 
-## Current preflight requirements
+## F1 / F1-B / C3
 
-Before the full real F1 sweep can be authorized, one prospective reader/forward/executor preflight must:
+F1 real producer/replay remains prefreeze and unauthorized for a real sweep.
 
-1. authenticate the established WSL/CUDA execution lineage for heavy GPU/I/O work, or fail closed if that lineage no longer matches;
-2. freeze the preflight contract, technical benchmark fixture, bounded candidate ladder, deterministic selection rule and resource headroom rule before reading benchmark-selection outcomes;
-3. detect current GPU/VRAM, RAM, CPU, filesystem/free space, storage read bandwidth and relevant transfer/forward throughput rather than hard-code historical execution values;
-4. adapt only mechanical execution geometry: read block size, query/forward batch, workers, prefetch, pinned-memory/caching strategy, concurrency and equivalent scheduling;
-5. keep model architecture, query design, evidence masks, matched nulls, donor order, protected programs, statistical rules, thresholds and all scientific identities invariant;
-6. hash-bind model/checkpoint, encoder/tokenizer, 41,238-address namespace, observation semantics, evidence mask, role, recipient/null source, query identity, dtype, constructor, run identity and shard identity for conclusion-capable forwards;
-7. validate query-safe teacher/student masking before contextual mixing, including measured-zero semantics and exclusion of unsafe rich-forward-plus-posthoc-q-masking shortcuts;
-8. validate block-major streaming, exact logical-order restoration, dedup/reuse, atomic shards, deterministic resume/restart and sufficient-statistic accumulation;
-9. benchmark only a prospectively fixed non-conclusion-bearing technical fixture and avoid final biological F1 adjudication;
-10. publish a hash-bound preflight package and receive fresh external review.
+F1-B/C3 successor is mechanics evidence only. It is not a final trainer binding
+until movement criterion, predictor registry, and end-to-end trainer identity
+are prospectively frozen and reviewed.
 
-## Still forbidden
+## D1
 
-- full real F1 biological model-forward sweep or real outcome adjudication;
-- DEV/SEALED/pathology access;
-- training, finetuning, optimizer steps, checkpoint writes or EMA updates;
-- scientific/statistical changes under the guise of resource adaptation;
-- nuisance-design reselection, HC3 reopening, D_shared rescue/re-entry, or overwriting historical PASS/STOP artifacts.
+D1 V2 infrastructure is preserved. Real D1 remains blocked on:
 
-## Controlling current review
+- a lawful qualified healthy/full-reader teacher;
+- frozen teacher readout/qualification authority;
+- final independent closure over the complete current D1 V2 pipeline.
 
-`docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md`
+## Protected populations
 
-## Preservation rule
+The frozen population-access/sealed-holdout registry remains authoritative.
 
-Recovered historical material backfilled on 2026-09-02 remains classified `RECOVERED_HISTORICAL_BYTES__BACKFILLED_20260902`. Git backfill dates are preservation dates, not reconstructed historical chronology.
-# Permanent implementation governance
+No reader_validation, reader_oracle, foundation development/sealed, or pathology
+access is authorized except through an explicitly frozen lane-specific release
+authority.
 
-`docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md` and its machine-readable policy are mandatory project-wide before expensive compute or scientific promotion for conclusion-bearing code.
+## Conflict rule
+
+When historical artifacts disagree, use this precedence:
+
+1. current project branch + this authority index;
+2. current project-wide supersession map;
+3. lane-specific frozen external-review terminal/contract explicitly cited here;
+4. older branch-local governance;
+5. historical evidence.
+
+Never infer authority from branch name, commit timestamp, or the word PASS alone.
