@@ -2,9 +2,8 @@
 
 This module is deliberately not wired into production_update.  It preserves the
 V4 encoder parameterization while replacing position/shape-dependent nn.Dropout
-sampling with a stateless identity-keyed proof primitive.  The hash/PRNG used by
-the proof is not itself production RNG authority; a production implementation
-must separately bind a reviewed counter-based RNG algorithm and device behavior.
+sampling with the canonical reference Philox scientific-identity address.
+The scalar mask construction here is proof code, not a production GPU kernel.
 """
 from __future__ import annotations
 
@@ -13,7 +12,49 @@ from torch import nn
 
 from sea_ad_jepa.v4.gene_tokenizer import GeneExpressionTokenizer
 from sea_ad_jepa.v4.ipb_jepa import EncoderOutput, KernelLinearAttention
-from .data_first_geometry import keyed_feature_dropout
+from .keyed_rng_reference import keyed_dropout_keep
+
+
+def keyed_feature_dropout_reference(
+    value: torch.Tensor,
+    *,
+    cell_keys: torch.Tensor,
+    token_keys: torch.Tensor,
+    probability: float,
+    run_seed: int,
+    update_index: int,
+    view_index: int,
+    layer_index: int,
+    site_index: int,
+    training: bool,
+) -> torch.Tensor:
+    """Slow proof-only identity-keyed dropout, invariant to packing/order."""
+    if not training or probability == 0.0:
+        return value
+    if not 0.0 <= probability < 1.0:
+        raise ValueError("probability must lie in [0,1)")
+    if value.ndim != 3 or token_keys.shape != value.shape[:2]:
+        raise ValueError("value must be [cells,tokens,width] with aligned token keys")
+    if cell_keys.ndim != 1 or len(cell_keys) != len(value):
+        raise ValueError("cell_keys must contain one stable key per cell")
+    mask = torch.empty_like(value, dtype=torch.bool)
+    for b in range(value.shape[0]):
+        cell = int(cell_keys[b])
+        for t in range(value.shape[1]):
+            token = int(token_keys[b, t])
+            for f in range(value.shape[2]):
+                mask[b, t, f] = keyed_dropout_keep(
+                    probability=probability,
+                    run_seed=run_seed,
+                    update_index=update_index,
+                    view_index=view_index,
+                    layer_index=layer_index,
+                    site_index=site_index,
+                    cell_key=cell,
+                    canonical_token_key=token,
+                    feature_index=f,
+                )
+    return value * mask.to(value.dtype) / (1.0 - probability)
 
 
 class KeyedTokenPreservingBlockPrototype(nn.Module):
@@ -28,14 +69,14 @@ class KeyedTokenPreservingBlockPrototype(nn.Module):
             nn.Linear(ffn_width, width), nn.Dropout(dropout),
         )
 
-    def forward(self,tokens:torch.Tensor,valid_mask:torch.Tensor,*,cell_keys:torch.Tensor,token_keys:torch.Tensor,update_index:int,view_index:int,layer_index:int)->tuple[torch.Tensor,torch.Tensor]:
+    def forward(self,tokens:torch.Tensor,valid_mask:torch.Tensor,*,cell_keys:torch.Tensor,token_keys:torch.Tensor,run_seed:int,update_index:int,view_index:int,layer_index:int)->tuple[torch.Tensor,torch.Tensor]:
         attended, minimum = self.attention(self.attention_norm(tokens), valid_mask)
-        attended = keyed_feature_dropout(attended,cell_keys=cell_keys,token_keys=token_keys,probability=float(self.attention_dropout.p),update_index=update_index,view_index=view_index,layer_index=layer_index,site_index=0,training=self.training)
+        attended = keyed_feature_dropout_reference(attended,cell_keys=cell_keys,token_keys=token_keys,probability=float(self.attention_dropout.p),run_seed=run_seed,update_index=update_index,view_index=view_index,layer_index=layer_index,site_index=0,training=self.training)
         tokens = tokens + attended
         hidden = self.ffn[1](self.ffn[0](self.ffn_norm(tokens)))
-        hidden = keyed_feature_dropout(hidden,cell_keys=cell_keys,token_keys=token_keys,probability=float(self.ffn[2].p),update_index=update_index,view_index=view_index,layer_index=layer_index,site_index=1,training=self.training)
+        hidden = keyed_feature_dropout_reference(hidden,cell_keys=cell_keys,token_keys=token_keys,probability=float(self.ffn[2].p),run_seed=run_seed,update_index=update_index,view_index=view_index,layer_index=layer_index,site_index=1,training=self.training)
         hidden = self.ffn[3](hidden)
-        hidden = keyed_feature_dropout(hidden,cell_keys=cell_keys,token_keys=token_keys,probability=float(self.ffn[4].p),update_index=update_index,view_index=view_index,layer_index=layer_index,site_index=2,training=self.training)
+        hidden = keyed_feature_dropout_reference(hidden,cell_keys=cell_keys,token_keys=token_keys,probability=float(self.ffn[4].p),run_seed=run_seed,update_index=update_index,view_index=view_index,layer_index=layer_index,site_index=2,training=self.training)
         return tokens + hidden, minimum
 
 
@@ -47,7 +88,7 @@ class KeyedIPBEncoderPrototype(nn.Module):
         self.blocks=nn.ModuleList([KeyedTokenPreservingBlockPrototype(width,heads,ffn_width,dropout) for _ in range(blocks)])
         self.final_norm=nn.LayerNorm(width)
 
-    def forward(self,gene_ids:torch.Tensor,expression:torch.Tensor,measurement_mask:torch.Tensor,hidden_target_mask:torch.Tensor,view:str,*,cell_keys:torch.Tensor,update_index:int,view_index:int)->EncoderOutput:
+    def forward(self,gene_ids:torch.Tensor,expression:torch.Tensor,measurement_mask:torch.Tensor,hidden_target_mask:torch.Tensor,view:str,*,cell_keys:torch.Tensor,run_seed:int,update_index:int,view_index:int)->EncoderOutput:
         if view=='student': gene_valid=measurement_mask & ~hidden_target_mask
         elif view=='target': gene_valid=measurement_mask
         else: raise ValueError('view must be student or target')
@@ -63,7 +104,7 @@ class KeyedIPBEncoderPrototype(nn.Module):
         token_keys=torch.cat((torch.full((len(expression),1),-1,dtype=torch.int64,device=expression.device),gene_ids),dim=1)
         minima=[]
         for layer_index,block in enumerate(self.blocks):
-            tokens,minimum=block(tokens,valid,cell_keys=cell_keys,token_keys=token_keys,update_index=update_index,view_index=view_index,layer_index=layer_index)
+            tokens,minimum=block(tokens,valid,cell_keys=cell_keys,token_keys=token_keys,run_seed=run_seed,update_index=update_index,view_index=view_index,layer_index=layer_index)
             minima.append(minimum)
         tokens=self.final_norm(tokens)
         return EncoderOutput(tokens[:,1:],tokens[:,0],torch.stack(minima).amin())
