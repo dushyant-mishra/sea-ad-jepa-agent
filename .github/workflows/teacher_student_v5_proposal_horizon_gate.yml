@@ -1,0 +1,52 @@
+name: Teacher/student V5 proposal-horizon continuation gate
+
+on:
+  push:
+    branches:
+      - planning/teacher-student-v5-data-first-20260908
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proposal-horizon-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy pandas scipy
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Re-audit immutable 66-pass V5 snapshot
+        env:
+          PYTHONPATH: src:.
+        run: python scripts/agent/audit_teacher_student_v5_data_first_v1.py
+      - name: Re-run frozen V4 and V5 suites
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python - <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          v5=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt').read_text().splitlines() if x.strip()]
+          v4=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V4.txt').read_text().splitlines() if x.strip() and not x.lstrip().startswith('#')]
+          assert len(v5)==11 and len(v4)==7
+          subprocess.run([sys.executable,'-m','pytest','-q',*v5,*v4],check=True)
+          PY
+      - name: Audit proposal-horizon continuation gate
+        env:
+          PYTHONPATH: src:.
+        run: python scripts/agent/audit_teacher_student_v5_proposal_horizon_gate_v1.py
+      - name: Run proposal-horizon gate attacks
+        env:
+          PYTHONPATH: src:.
+        run: python -m pytest -q tests/test_teacher_student_v5_proposal_horizon_v1.py
+      - name: Compile continuation scripts
+        env:
+          PYTHONPATH: src:.
+        run: python -m py_compile scripts/agent/derive_teacher_student_v5_proposal_horizon_v1.py scripts/agent/audit_teacher_student_v5_proposal_horizon_gate_v1.py
