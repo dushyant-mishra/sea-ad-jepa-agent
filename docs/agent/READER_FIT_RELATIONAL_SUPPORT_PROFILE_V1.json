@@ -1,0 +1,82 @@
+{
+  "anchored_triplet_capacity_quantiles": {
+    "0": 3,
+    "0.01": 3,
+    "0.05": 105,
+    "0.1": 858,
+    "0.25": 74412,
+    "0.5": 7174332,
+    "0.75": 24134150040,
+    "0.9": 1176849243153,
+    "0.95": 2407839379608,
+    "0.99": 9364144816630,
+    "1": 37597098110352
+  },
+  "anchored_triplet_capacity_total": 691263422758296,
+  "by_source": [
+    {
+      "anchored_triplet_capacity_sum": 85082838732,
+      "donors_with_eligible_group": 41,
+      "eligible_groups_ge_3": 909,
+      "eligible_groups_per_donor_max": 24,
+      "eligible_groups_per_donor_median": 22.0,
+      "eligible_groups_per_donor_min": 19,
+      "groups": 948,
+      "source": "HVS"
+    },
+    {
+      "anchored_triplet_capacity_sum": 5522113482129,
+      "donors_with_eligible_group": 17,
+      "eligible_groups_ge_3": 109,
+      "eligible_groups_per_donor_max": 7,
+      "eligible_groups_per_donor_median": 7.0,
+      "eligible_groups_per_donor_min": 1,
+      "groups": 109,
+      "source": "NPH52"
+    },
+    {
+      "anchored_triplet_capacity_sum": 685656226437435,
+      "donors_with_eligible_group": 46,
+      "eligible_groups_ge_3": 343,
+      "eligible_groups_per_donor_max": 11,
+      "eligible_groups_per_donor_median": 10.0,
+      "eligible_groups_per_donor_min": 2,
+      "groups": 343,
+      "source": "SEA_AD"
+    }
+  ],
+  "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "donors": 104,
+  "donors_with_at_least_one_eligible_group": 104,
+  "eligible_group_cell_fraction": 0.9999870426693682,
+  "eligible_group_fraction": 0.9721428571428572,
+  "eligible_group_size_quantiles": {
+    "0": 3,
+    "0.01": 3,
+    "0.05": 7,
+    "0.1": 13,
+    "0.25": 54,
+    "0.5": 244,
+    "0.75": 3642,
+    "0.9": 13303,
+    "0.95": 16888,
+    "0.99": 26556,
+    "1": 42209
+  },
+  "eligible_groups_ge_3": 1361,
+  "execution_authorized": false,
+  "groups": 1400,
+  "implications": [
+    "Every reader-fit donor has at least one donor-by-operator group with at least three cells, so a donor-primary relational estimand can remain defined without dropping donors.",
+    "Full enumeration is prohibited by scale: the total eligible anchored-triplet space exceeds 6.9e14 relations and the largest single group exceeds 3.75e13.",
+    "Relational scientific sampling, finite triplet draw count, and compute coalescing/packing must remain separate authorities."
+  ],
+  "ineligible_groups_lt_3": 39,
+  "metadata_authority": {
+    "bundle_member": "metadata/foundation_metadata_rows.sqlite",
+    "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+  },
+  "population": "reader_fit",
+  "schema": "READER_FIT_RELATIONAL_SUPPORT_PROFILE_V1",
+  "training_authorized": false
+}

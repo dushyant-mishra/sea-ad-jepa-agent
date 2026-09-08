@@ -1,0 +1,32 @@
+{
+  "schema": "TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V1",
+  "status": "SCIENTIFIC_TARGET_FROZEN__PROPOSAL_AND_EXECUTION_UNFROZEN",
+  "population": "reader_fit",
+  "base_jepa": {
+    "policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "formula": "mean_over_donors(mean_over_cells_within_donor(mean_over_masked_views(block_JEPA_loss)))",
+    "primary_biological_unit": "donor",
+    "raw_cell_count_sets_donor_mass": false
+  },
+  "relational": {
+    "policy_id": "DONOR_UNIFORM__ELIGIBLE_OPERATOR_GROUP_UNIFORM__TRIPLET_UNIFORM_V1",
+    "formula": "mean_over_donors(mean_over_estimable_operator_groups_within_donor(mean_over_uniform_finite_triplets_within_group(scale_free_order_loss)))",
+    "group_capacity_weighting": "NONE",
+    "triplet_budget": null
+  },
+  "source_role": "DOMAIN_STRATUM_AND_ROBUSTNESS_DIAGNOSTIC__NOT_AUTOMATIC_OBJECTIVE_MASS",
+  "basis": {
+    "reader_fit_estimand_profile": "docs/agent/READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V2.json",
+    "reader_fit_relational_support_profile": "docs/agent/READER_FIT_RELATIONAL_SUPPORT_PROFILE_V1.json",
+    "qualified_scientific_object": "DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER"
+  },
+  "proposal": {
+    "base_policy_id": null,
+    "relational_policy_id": null,
+    "importance_correction_required_if_q_differs_from_p": true,
+    "pareto_profile": "docs/agent/READER_FIT_DONOR_PROPOSAL_PARETO_V1.json"
+  },
+  "compute_packing_can_change_scientific_mass": false,
+  "training_authorized": false,
+  "execution_authorized": false
+}

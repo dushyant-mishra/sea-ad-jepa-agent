@@ -1,0 +1,233 @@
+{
+  "cells": 4553407,
+  "donors": 104,
+  "interpretation": [
+    "alpha=1 samples exactly from the donor-uniform target and needs no importance correction, but repeats cells from small donors most strongly.",
+    "alpha=0 avoids donor-target oversampling when the other proposal is cell-like, but requires the largest p/q correction and has the lowest ESS.",
+    "Intermediate alpha values are a proposal/variance/repeat tradeoff only; they do not redefine the donor-primary scientific target.",
+    "No alpha, presentation horizon, or proposal policy is selected by this descriptive profile."
+  ],
+  "population": "reader_fit",
+  "proposal_families": {
+    "donor_plus_cell_uniform": [
+      {
+        "alpha_donor_uniform": 0.0,
+        "alpha_other": 1.0,
+        "effective_sample_size_fraction": 0.09677462572795775,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 1.0,
+          "median_across_donors": 1.0,
+          "min": 1.0
+        },
+        "importance_weight_max": 540.5278964862298,
+        "importance_weight_max_to_min_ratio": 2149.5185185185187,
+        "importance_weight_median_across_donors": 2.9687371806439393,
+        "importance_weight_min": 0.2514646381640713,
+        "other_component": "CELL_UNIFORM_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.25,
+        "alpha_other": 0.75,
+        "effective_sample_size_fraction": 0.5279585308309505,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 135.88197412155748,
+          "median_across_donors": 1.492184295160985,
+          "min": 0.8128661595410178
+        },
+        "importance_weight_max": 3.977922016371971,
+        "importance_weight_max_to_min_ratio": 12.85873916909222,
+        "importance_weight_median_across_donors": 1.9894887521854123,
+        "importance_weight_min": 0.3093555257683011,
+        "other_component": "CELL_UNIFORM_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.5,
+        "alpha_other": 0.5,
+        "effective_sample_size_fraction": 0.7654197913218352,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 270.7639482431149,
+          "median_across_donors": 1.9843685903219697,
+          "min": 0.6257323190820357
+        },
+        "importance_weight_max": 1.996306746128912,
+        "importance_weight_max_to_min_ratio": 4.967512167811567,
+        "importance_weight_median_across_donors": 1.4960411095272605,
+        "importance_weight_min": 0.4018725427719251,
+        "other_component": "CELL_UNIFORM_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.75,
+        "alpha_other": 0.25,
+        "effective_sample_size_fraction": 0.9299898347121365,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 405.64592236467234,
+          "median_across_donors": 2.4765528854829544,
+          "min": 0.43859847862305346
+        },
+        "importance_weight_max": 1.3325115986259062,
+        "importance_weight_max_to_min_ratio": 2.324134177162404,
+        "importance_weight_median_across_donors": 1.1987298329441232,
+        "importance_weight_min": 0.5733367770757558,
+        "other_component": "CELL_UNIFORM_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.9,
+        "alpha_other": 0.09999999999999998,
+        "effective_sample_size_fraction": 0.9869934690074091,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 486.57510683760694,
+          "median_across_donors": 2.771863462579545,
+          "min": 0.32631817434766414
+        },
+        "importance_weight_max": 1.1108827576471756,
+        "importance_weight_max_to_min_ratio": 1.4415594814297765,
+        "importance_weight_median_across_donors": 1.071023087818772,
+        "importance_weight_min": 0.7706118075303927,
+        "other_component": "CELL_UNIFORM_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.95,
+        "alpha_other": 0.050000000000000044,
+        "effective_sample_size_fraction": 0.9965467712763142,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 513.5515016619183,
+          "median_across_donors": 2.870300321611742,
+          "min": 0.2888914062558678
+        },
+        "importance_weight_max": 1.0525290934541374,
+        "importance_weight_max_to_min_ratio": 1.209182381082096,
+        "importance_weight_median_across_donors": 1.0342936967845007,
+        "importance_weight_min": 0.8704469316797605,
+        "other_component": "CELL_UNIFORM_V1"
+      },
+      {
+        "alpha_donor_uniform": 1.0,
+        "alpha_other": 0.0,
+        "effective_sample_size_fraction": 1.0000000000000002,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 540.5278964862298,
+          "median_across_donors": 2.9687371806439393,
+          "min": 0.2514646381640713
+        },
+        "importance_weight_max": 1.0,
+        "importance_weight_max_to_min_ratio": 1.0,
+        "importance_weight_median_across_donors": 1.0,
+        "importance_weight_min": 1.0,
+        "other_component": "CELL_UNIFORM_V1"
+      }
+    ],
+    "donor_plus_source_uniform_cell_within_source": [
+      {
+        "alpha_donor_uniform": 0.0,
+        "alpha_other": 1.0,
+        "effective_sample_size_fraction": 0.40578068954821195,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 7.637971061168758,
+          "median_across_donors": 6.418420192042039,
+          "min": 0.3685584823643977
+        },
+        "importance_weight_max": 84.21509971509971,
+        "importance_weight_max_to_min_ratio": 295.95061728395063,
+        "importance_weight_median_across_donors": 1.154498937028281,
+        "importance_weight_min": 0.2845579458085715,
+        "other_component": "SOURCE_UNIFORM__CELL_UNIFORM_WITHIN_SOURCE_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.25,
+        "alpha_other": 0.75,
+        "effective_sample_size_fraction": 0.7898947457665062,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 139.94578926558899,
+          "median_across_donors": 5.435087189481897,
+          "min": 0.3392850213143161
+        },
+        "importance_weight_max": 3.8624091465904455,
+        "importance_weight_max_to_min_ratio": 11.145626786443449,
+        "importance_weight_median_across_donors": 1.1115455355013328,
+        "importance_weight_min": 0.3465403265869567,
+        "other_component": "SOURCE_UNIFORM__CELL_UNIFORM_WITHIN_SOURCE_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.5,
+        "alpha_other": 0.5,
+        "effective_sample_size_fraction": 0.9066397993925721,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 273.473158339136,
+          "median_across_donors": 4.451754186921754,
+          "min": 0.3100115602642345
+        },
+        "importance_weight_max": 1.9765299811103123,
+        "importance_weight_max_to_min_ratio": 4.461248279589665,
+        "importance_weight_median_across_donors": 1.071686615793018,
+        "importance_weight_min": 0.44304415653192675,
+        "other_component": "SOURCE_UNIFORM__CELL_UNIFORM_WITHIN_SOURCE_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.75,
+        "alpha_other": 0.25,
+        "effective_sample_size_fraction": 0.9745922651568522,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 407.00052741268286,
+          "median_across_donors": 3.60277992628353,
+          "min": 0.2807380992141529
+        },
+        "importance_weight_max": 1.3280766487512567,
+        "importance_weight_max_to_min_ratio": 2.162846771762918,
+        "importance_weight_median_across_donors": 1.0345981558761035,
+        "importance_weight_min": 0.6140410250462416,
+        "other_component": "SOURCE_UNIFORM__CELL_UNIFORM_WITHIN_SOURCE_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.9,
+        "alpha_other": 0.09999999999999998,
+        "effective_sample_size_fraction": 0.99553369009879,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 487.1169488568111,
+          "median_across_donors": 3.201537188532264,
+          "min": 0.2631740225841039
+        },
+        "importance_weight_max": 1.1096470729560244,
+        "importance_weight_max_to_min_ratio": 1.388637061813067,
+        "importance_weight_median_across_donors": 1.013556757185538,
+        "importance_weight_min": 0.7990907800683493,
+        "other_component": "SOURCE_UNIFORM__CELL_UNIFORM_WITHIN_SOURCE_V1"
+      },
+      {
+        "alpha_donor_uniform": 0.95,
+        "alpha_other": 0.050000000000000044,
+        "effective_sample_size_fraction": 0.9988366887551032,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 513.8224226715205,
+          "median_across_donors": 3.104834941546876,
+          "min": 0.2573193303740876
+        },
+        "importance_weight_max": 1.0519741308210324,
+        "importance_weight_max_to_min_ratio": 1.1842189941602468,
+        "importance_weight_median_across_donors": 1.006732571938492,
+        "importance_weight_min": 0.8883273583759802,
+        "other_component": "SOURCE_UNIFORM__CELL_UNIFORM_WITHIN_SOURCE_V1"
+      },
+      {
+        "alpha_donor_uniform": 1.0,
+        "alpha_other": 0.0,
+        "effective_sample_size_fraction": 1.0000000000000002,
+        "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+          "max": 540.5278964862298,
+          "median_across_donors": 2.9687371806439393,
+          "min": 0.2514646381640713
+        },
+        "importance_weight_max": 1.0,
+        "importance_weight_max_to_min_ratio": 1.0,
+        "importance_weight_median_across_donors": 1.0,
+        "importance_weight_min": 1.0,
+        "other_component": "SOURCE_UNIFORM__CELL_UNIFORM_WITHIN_SOURCE_V1"
+      }
+    ]
+  },
+  "schema": "READER_FIT_DONOR_PROPOSAL_PARETO_V1",
+  "scientific_target_policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+  "selected_alpha": null,
+  "selected_proposal_policy": null,
+  "sources": 3,
+  "training_authorized": false
+}
