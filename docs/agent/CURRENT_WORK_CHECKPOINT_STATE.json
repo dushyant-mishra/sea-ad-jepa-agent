@@ -147,6 +147,8 @@
     "dev_expression_closed": true,
     "pathology_closed": true,
     "production_training_forbidden": true,
+    "reader_oracle_closed": true,
+    "reader_validation_closed": true,
     "real_f1_forbidden": true,
     "real_t0_forbidden": true,
     "sealed_expression_closed": true
@@ -170,9 +172,11 @@
   ],
   "gates": {
     "c2": "C2_CLOSED__HISTORICAL_T1_TRAINING_MECHANICS_DEFECT_CONFIRMED_AND_REPAIRED",
-    "current": "PASS_TO_IMPLEMENT_CONTINUITY_AND_C2_ONLY",
+    "current": "PASS_T0_V20_PATHOLOGY_BLIND_S2_MATERIALIZATION_ONLY",
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
-    "real_f1": "FORBIDDEN"
+    "real_f1": "FORBIDDEN",
+    "real_t0": "FORBIDDEN",
+    "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
     "WRITE_FAILING_ADVERSARIAL_ATTACKS_BEFORE_IMPLEMENTATION",
@@ -185,7 +189,7 @@
     "CLAUDE_CODE"
   ],
   "provenance": {
-    "base_commit": "21ec629",
+    "base_commit": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
     "canonical_workspace_preserved": "D:/Jepa project",
     "dec016_ported_not_cherry_picked": true,
     "handoff_reason": "T0_V20_PATHOLOGY_BLIND_MATERIALIZATION_HANDOFF_ecd0b0fb",
@@ -198,10 +202,27 @@
   },
   "t0_v20_materialization_lane": {
     "accepted_package": {
+      "canonical_chain": "5/5 PASS",
+      "execution_binding_attacks": "18/18 PASS",
+      "independent_suite": "224/224 PASS",
       "manifest_rows": 154,
       "package_root_sha256": "896dce257b8ed7330cfe9ac9a561e6d87090903485236dbf37f389d6432cb9e7",
       "recovered_by": "SHA_DRIVEN_SEARCH_NOT_PATH",
       "review_terminal": "PASS_T0_V20_INDEPENDENT_REVIEW",
+      "static_contract_audit": "22/22 PASS",
+      "v18_frozen_constants_sha256": "e255bf4ad878e3277dcdd573dbf17a10b7cd34eb78be64c78435ffa4f38971ec",
+      "v18_inner_zip_sha256": "f25806dd68c576832d51ef998712f56b4add4481388852e4b22636fbc1624fa9",
+      "v18_scientific_contract_sha256": "0851b47d2351ded1be35a772bb9d7c05ed57d4bbbe551d81c7845a87ace85050",
+      "v19_execution_attack_sha256": "c16e6a6a16b6d391f4dd379fa9404ebb089d05150d9b252e1bfa13d8f18d1a88",
+      "v19_failed_zip_sha256": "4ba8d3362ee05efe363e254f11a45db468a3e44d234ddd4dd58091640ba7a52e",
+      "v20_active_test_manifest_sha256": "99b9aeacea525ff06d6ab6d64aaed2fd74167795c2da21c02ef912f867fb0d6b",
+      "v20_constants_sha256": "d15a1773469f67140de199ddcaf784b3c811c92ae7ed3f8bc4d6ab9f90252833",
+      "v20_contract_sha256": "b8e5a38f9a158d0436d38e6846a51692f9a949580c899768c7d7507ab8646f62",
+      "v20_implementation_manifest_sha256": "1f55741e83bf1b504c052975649ec3a8978428b311251c9b0bd5271cf20c6b9d",
+      "v20_inference_safe_sha256": "7404f7d610865c5646c3a7e4e86d980c8858cf0c601e8cd8a67b10aedcc25cb6",
+      "v20_public_api_map_v3_sha256": "4aa3a3d11d7f851b106b8a2f33e1b4b345eddbcdd1f2baaab9f30b0aff1bec2c",
+      "v20_studentized_fl_sha256": "3b04f20f695e392d8193aac53efc7973f1df23dc8fb3e148ab01ab353d6a2fa2",
+      "v20_superseded_registry_sha256": "ef54a8d0cc2f2e9c160e459bd8e239c20c10a0e052a369cc2ec3688096de909c",
       "zip_sha256": "a069cad258d278bf8d97e20ba1317ccc62b93265e7f93208a2ae1a4848561947"
     },
     "crlf_divergence_observed": {
@@ -221,7 +242,22 @@
       "recovered_v18_framing_not_invented": "split_hash = _digest(donor_id) from t0_discovery_confirmation_split_v2; order by (split_hash, donor_id); first N_CONFIRM = CONFIRMATION; namespace T0-DISCOVERY-CONFIRM-V2; completeness = AT8_available & technical_complete & isfinite(age) & non-empty sex.",
       "status": "STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
     },
-    "governance_state": "S2_IN_PROGRESS_REDUCED_SCOPE",
+    "external_disk_authorities": {
+      "byte_semantics": "DISK_BYTES__UNTRACKED_MATERIALIZER_OUTPUT_NOT_UNDER_GIT_CRLF_FILTER",
+      "mtg_h5ad": {
+        "counts_layer": "layers/UMIs",
+        "path": "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "sha256": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79",
+        "shape": "1178694x36601",
+        "size_bytes": 32978570763
+      },
+      "note": "These live under outputs/, which .gitignore excludes, so they are hashed as actual immutable bytes rather than as Git objects. They are recorded here rather than in the checkpoint `authorities` list because that list is validated against the worktree and these are large materializer outputs.",
+      "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/ASSET_AUTHENTICATION.csv": "d8bccf6c315b928ea5fc5f384c6eaa7eb7c4690dc5f35e4eb6b3f7161e5aa9ea",
+      "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json": "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf",
+      "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_MANIFEST.csv": "818ef14ac8c61ea4e93cc0c853a502dfa1cb75c198499b1cdafa6475e5a9eee9"
+    },
+    "governance_state": "S2_PRE_ATTACK_REPAIRED__AWAITING_INDEPENDENT_REVIEW",
     "handoff_sha256": "ecd0b0fb5c449e9ff1101dff5b014fdbb79c7538212155b28f0a9beb47f2c01f",
     "matrix_semantics": {
       "authority": "results/v4/stage81a2_matrix_semantics_contract.csv",
@@ -238,17 +274,20 @@
     },
     "owner_authorization": "Pathology-blind T0 V20 external-authority materialization lane only. No AT8/pathology value access, no DEV/SEALED, no real T0 execution, no changes to V18/V20 science, no setting or bypassing real_execution_ready=True.",
     "pinned_blob_authorities": {
-      "base_pin": "21ec629",
+      "base_pin": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
       "byte_semantics": "GIT_BLOB_ONLY__WORKTREE_BYTES_ARE_NOT_AUTHORITY",
       "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "matrix_semantics_contract_pinned_commit": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+      "phase2_block_manifest_path": "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+      "phase2_block_manifest_pinned_commit": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
       "results/v4/stage81a2_matrix_semantics_contract.csv": "3c34bb063e22cdd4d3c308b47cb6eba67ccaceac5fb1c182cc9f7dd755f5aeba",
       "results/v4/stage81a2r_foundation_address_policy.csv": "6123db620d5e66948474ddb7002f1eb4212f114f169ea1b64f233ce911ad0e40",
       "results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json": "e80ddfe65e1b7edb620c2c976d9c338e2870c3e7489f3350b945754ce272eaed",
       "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
       "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
       "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
-      "stage81a2r_absent_at_base": "21ec629",
-      "stage81a2r_pin": "95d2caf"
+      "stage81a2r_absent_at_base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+      "stage81a2r_pin": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b"
     },
     "population_expectations": {
       "blocks": 1247,
@@ -261,6 +300,11 @@
       "missing": 0,
       "operator_index": 31,
       "target_cells": 20804
+    },
+    "provenance_commits": {
+      "base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+      "secondary_verification": "2faaa6cf276d3782f43b0cf3a0116e9408b51057",
+      "t0_review_binding": "6e247617b3849b86df317c83479cc1497b3f0d1d"
     },
     "real_execution_ready": false,
     "schema": "T0_V20_PATHOLOGY_BLIND_MATERIALIZATION_LANE_V1",
@@ -276,6 +320,7 @@
     "C2_PACKAGER_GIT_BYTES_READ_ONLY": "git_bytes() currently runs 'git add -- <path>' then 'git show :<path>'. That fixed the CRLF platform dependence but mutates the index, and it stages an untracked file rather than failing loudly. Before the packager is reused for any future package generation, change it to a read-only committed-byte path: verify the path is tracked, then read 'git show HEAD:<path>' or equivalent pinned-commit blob bytes. Raised by external review. Explicitly NOT a reason to create another C2 candidate: the frozen 712cd07d package is unaffected and independently verified."
   },
   "unresolved_blockers": [
+    "STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND",
     "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED",
     "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE",
     "F1_PROGRAM_SIGN_LOCALLY_RESOLVED_IN_SUCCESSOR__FINAL_CONTRACT_FREEZE_PENDING",
