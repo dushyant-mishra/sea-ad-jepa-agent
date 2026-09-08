@@ -2,13 +2,13 @@
 
 Date: 2026-09-08
 
-## Single current coordination lineage
+## Single current project lineage
 
 **Current project branch**
 
-`coordination/jepa-current-20260908`
+`main`
 
-All new cross-project work must branch from this lineage unless an explicit
+All new cross-project work must branch from `main` unless an explicit
 prospective authority says otherwise.
 
 Historical branches remain provenance only. A branch name containing
@@ -27,7 +27,7 @@ does not make that branch current.
 | D1 V2 | `c13c06c103a588fc95bb93174730bf26dd613884` | WAIT_HEALTHY_TRAINED_TEACHER |
 | Global external review | `557a4344df2fa04526c82146a730413c992b5ad2` | CURRENT blocker/governance review input |
 
-All of the above histories are now ancestors of the current coordination branch.
+All of the above histories are now ancestors of `main`.
 
 ## T0
 
@@ -100,7 +100,7 @@ authority.
 
 When historical artifacts disagree, use this precedence:
 
-1. current project branch + this authority index;
+1. `main` + this authority index;
 2. current project-wide supersession map;
 3. lane-specific frozen external-review terminal/contract explicitly cited here;
 4. older branch-local governance;
