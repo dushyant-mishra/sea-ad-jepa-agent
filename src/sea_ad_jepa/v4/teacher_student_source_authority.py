@@ -1,9 +1,9 @@
-"""Runtime verification of the exact integrated teacher/student source authority.
+"""Runtime verification of the exact integrated Teacher/Student V4 source authority.
 
-The execution-binding overlay names a SHA-256 root.  That name is not trusted on
-its own: before u0 materialization or any optimizer update, this module rehashes
-the manifest and every source file listed by it from the code tree that is
-actually executing.
+The execution-binding overlay names a SHA-256 source root. That name is not
+trusted on its own: before successor-u0 materialization or any optimizer update,
+this module rehashes the V4 manifest and every listed source file from the code
+tree that is actually executing.
 """
 from __future__ import annotations
 
@@ -12,8 +12,8 @@ import hashlib
 from pathlib import Path
 from typing import Any
 
-MANIFEST_REL = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv")
-ROOT_REL = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V3.txt")
+MANIFEST_REL = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V4.csv")
+ROOT_REL = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V4.txt")
 
 
 def sha256_file(path: Path) -> str:
@@ -40,13 +40,13 @@ def verify_source_authority(
     manifest = root / MANIFEST_REL
     root_file = root / ROOT_REL
     if not manifest.is_file() or not root_file.is_file():
-        raise RuntimeError("integrated source authority manifest/root missing")
+        raise RuntimeError("integrated V4 source authority manifest/root missing")
 
     manifest_sha = sha256_file(manifest)
     recorded = root_file.read_text(encoding="utf-8").strip()
     if manifest_sha != expected or recorded != expected:
         raise RuntimeError(
-            "integrated source manifest root mismatch: "
+            "integrated V4 source manifest root mismatch: "
             f"expected={expected} manifest={manifest_sha} recorded={recorded}"
         )
 
@@ -54,7 +54,9 @@ def verify_source_authority(
         rows = list(csv.DictReader(handle))
     paths = [row["path"] for row in rows]
     if not rows or len(paths) != len(set(paths)):
-        raise RuntimeError("integrated source manifest is empty or has duplicate paths")
+        raise RuntimeError(
+            "integrated V4 source manifest is empty or has duplicate paths"
+        )
 
     mismatches: list[str] = []
     for row in rows:
@@ -69,14 +71,14 @@ def verify_source_authority(
             mismatches.append(row["path"] + ":SHA256")
     if mismatches:
         raise RuntimeError(
-            "executing source bytes do not match integrated authority: "
+            "executing source bytes do not match integrated V4 authority: "
             + ", ".join(mismatches[:12])
         )
 
     return {
-        "schema": "TEACHER_STUDENT_SOURCE_AUTHORITY_VERIFICATION_V3",
+        "schema": "TEACHER_STUDENT_SOURCE_AUTHORITY_VERIFICATION_V4",
         "manifest_rows": len(rows),
         "source_root_sha256": expected,
         "passed": True,
-        "terminal": "PASS_TEACHER_STUDENT_EXECUTING_SOURCE_AUTHORITY",
+        "terminal": "PASS_TEACHER_STUDENT_EXECUTING_SOURCE_AUTHORITY_V4",
     }
