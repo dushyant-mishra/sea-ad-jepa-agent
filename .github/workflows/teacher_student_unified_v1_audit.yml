@@ -156,6 +156,8 @@ jobs:
               ".github/workflows/teacher_student_unified_v1_audit.yml",
               "docs/agent/BRANCH_RETIREMENT_REGISTER_20260907.csv",
               "docs/agent/TEACHER_STUDENT_CANONICAL_STATUS_V3_20260908.md",
+              "docs/agent/TEACHER_STUDENT_V3_SELF_CONTAINMENT_REPAIR_20260908.md",
+              "docs/agent/CLAUDE_TEACHER_STUDENT_V3_SELF_CONTAINED_REVIEW_20260908.md",
               "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv",
               "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V3.txt",
               "docs/agent/TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V3.json",
