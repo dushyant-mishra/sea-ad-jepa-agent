@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - production/teacher-student-unified-v1-20260907
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
