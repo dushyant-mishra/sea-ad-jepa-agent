@@ -14,14 +14,15 @@ arbitrary 2x multiplier.  No pooled statistic can rescue a failed tensor.
 from __future__ import annotations
 
 import hashlib
+from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 import torch
 
 
 def source_sha256() -> str:
-    """Stable semantic label helper; package manifests still bind exact source bytes."""
-    return hashlib.sha256(b"teacher-student-movement-adjudicator-v1").hexdigest()
+    """SHA-256 of the exact adjudicator source bytes currently executing."""
+    return hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
 def decay_only_counterfactual(
