@@ -1,0 +1,39 @@
+"""Prospective V5 data-first mechanics. No training authority."""
+
+from .data_first_support import (
+    CANONICAL_VOCABULARY_SIZE,
+    TRIPLET_MIN_GROUP_SIZE,
+    EvidenceDose,
+    NullEstimability,
+    RaggedGroupPlan,
+    StratifiedEvidenceCounts,
+    TokenBudgetPlan,
+    combined_teacher_student_token_cost,
+    contribution_weighted_mean,
+    evidence_dose,
+    evidence_dose_from_fraction,
+    fine_matched_null_permutation_partial,
+    fine_null_estimability,
+    plan_contiguous_token_budget_microbatches,
+    ragged_donor_operator_groups,
+    support_stratified_evidence_counts,
+)
+
+__all__ = [
+    "CANONICAL_VOCABULARY_SIZE",
+    "TRIPLET_MIN_GROUP_SIZE",
+    "EvidenceDose",
+    "NullEstimability",
+    "RaggedGroupPlan",
+    "StratifiedEvidenceCounts",
+    "TokenBudgetPlan",
+    "combined_teacher_student_token_cost",
+    "contribution_weighted_mean",
+    "evidence_dose",
+    "evidence_dose_from_fraction",
+    "fine_matched_null_permutation_partial",
+    "fine_null_estimability",
+    "plan_contiguous_token_budget_microbatches",
+    "ragged_donor_operator_groups",
+    "support_stratified_evidence_counts",
+]
