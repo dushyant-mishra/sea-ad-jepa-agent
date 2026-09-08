@@ -1,0 +1,188 @@
+{
+  "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "candidate_estimands": {
+    "cell_uniform": {
+      "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+        "max": 1.0,
+        "median_across_donors": 1.0,
+        "min": 1.0
+      },
+      "proposal_diagnostics": {
+        "cell_uniform": {
+          "effective_sample_size_fraction": 1.0,
+          "importance_weight_max": 1.0,
+          "importance_weight_max_to_min_ratio": 1.0,
+          "importance_weight_mean_under_proposal": 1.0,
+          "importance_weight_median_across_donors": 1.0,
+          "importance_weight_min": 1.0
+        },
+        "source_uniform_cell_within_source": {
+          "effective_sample_size_fraction": 0.40522639031465746,
+          "importance_weight_max": 2.7132735993070685,
+          "importance_weight_max_to_min_ratio": 20.723905232540588,
+          "importance_weight_mean_under_proposal": 1.0,
+          "importance_weight_median_across_donors": 0.15580157890564142,
+          "importance_weight_min": 0.13092482178729026
+        }
+      },
+      "target_donor_mass_max": 0.03823752192588978,
+      "target_donor_mass_median": 0.003239113042168205,
+      "target_donor_mass_min": 1.7788877647001467e-05,
+      "target_source_mass": {
+        "HVS": 0.04364160726243009,
+        "NPH52": 0.05193385963521381,
+        "SEA_AD": 0.9044245331023562
+      }
+    },
+    "donor_uniform": {
+      "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+        "max": 540.5278964862298,
+        "median_across_donors": 2.9687371806439393,
+        "min": 0.2514646381640713
+      },
+      "proposal_diagnostics": {
+        "cell_uniform": {
+          "effective_sample_size_fraction": 0.09677462572795768,
+          "importance_weight_max": 540.5278964862298,
+          "importance_weight_max_to_min_ratio": 2149.5185185185187,
+          "importance_weight_mean_under_proposal": 0.9999999999999998,
+          "importance_weight_median_across_donors": 2.9687371806439393,
+          "importance_weight_min": 0.2514646381640713
+        },
+        "source_uniform_cell_within_source": {
+          "effective_sample_size_fraction": 0.4057806895482118,
+          "importance_weight_max": 84.21509971509971,
+          "importance_weight_max_to_min_ratio": 295.95061728395063,
+          "importance_weight_mean_under_proposal": 0.9999999999999998,
+          "importance_weight_median_across_donors": 1.154498937028281,
+          "importance_weight_min": 0.2845579458085715
+        }
+      },
+      "target_donor_mass_max": 0.009615384615384618,
+      "target_donor_mass_median": 0.009615384615384618,
+      "target_donor_mass_min": 0.009615384615384616,
+      "target_source_mass": {
+        "HVS": 0.39423076923076933,
+        "NPH52": 0.1634615384615385,
+        "SEA_AD": 0.44230769230769257
+      }
+    },
+    "source_donor_uniform": {
+      "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+        "max": 1102.2529653836843,
+        "median_across_donors": 4.4755212531954065,
+        "min": 0.18950958238451748
+      },
+      "proposal_diagnostics": {
+        "cell_uniform": {
+          "effective_sample_size_fraction": 0.03668764715972055,
+          "importance_weight_max": 1102.2529653836843,
+          "importance_weight_max_to_min_ratio": 5816.344226579521,
+          "importance_weight_mean_under_proposal": 1.0,
+          "importance_weight_median_across_donors": 4.4755212531954065,
+          "importance_weight_min": 0.18950958238451748
+        },
+        "source_uniform_cell_within_source": {
+          "effective_sample_size_fraction": 0.21201136684440705,
+          "importance_weight_max": 171.73275236020334,
+          "importance_weight_max_to_min_ratio": 443.22308482485295,
+          "importance_weight_mean_under_proposal": 1.0,
+          "importance_weight_median_across_donors": 1.087905163517769,
+          "importance_weight_min": 0.3874634653293531
+        }
+      },
+      "target_donor_mass_max": 0.019607843137254905,
+      "target_donor_mass_median": 0.008130081300813007,
+      "target_donor_mass_min": 0.007246376811594202,
+      "target_source_mass": {
+        "HVS": 0.3333333333333333,
+        "NPH52": 0.3333333333333333,
+        "SEA_AD": 0.33333333333333315
+      }
+    },
+    "source_uniform_cell_within_source": {
+      "expected_per_cell_exposures_at_total_presentations_equal_reader_fit_cells": {
+        "max": 7.637971061168758,
+        "median_across_donors": 6.418420192042039,
+        "min": 0.3685584823643977
+      },
+      "proposal_diagnostics": {
+        "cell_uniform": {
+          "effective_sample_size_fraction": 0.20797299505323888,
+          "importance_weight_max": 7.637971061168758,
+          "importance_weight_max_to_min_ratio": 20.723905232540584,
+          "importance_weight_mean_under_proposal": 1.0,
+          "importance_weight_median_across_donors": 6.418420192042039,
+          "importance_weight_min": 0.3685584823643977
+        },
+        "source_uniform_cell_within_source": {
+          "effective_sample_size_fraction": 0.9999999999999999,
+          "importance_weight_max": 1.0,
+          "importance_weight_max_to_min_ratio": 1.0,
+          "importance_weight_mean_under_proposal": 0.9999999999999999,
+          "importance_weight_median_across_donors": 1.0,
+          "importance_weight_min": 1.0
+        }
+      },
+      "target_donor_mass_max": 0.0337906031337923,
+      "target_donor_mass_median": 0.008329349527149012,
+      "target_donor_mass_min": 0.0001141764914832795,
+      "target_source_mass": {
+        "HVS": 0.3333333333333334,
+        "NPH52": 0.3333333333333334,
+        "SEA_AD": 0.3333333333333333
+      }
+    }
+  },
+  "candidate_proposals": [
+    "cell_uniform",
+    "source_uniform_cell_within_source"
+  ],
+  "donor_capacity_by_source": [
+    {
+      "cells": 198718,
+      "donors": 41,
+      "max_cells_per_donor": 12509,
+      "median_cells_per_donor": 4292.0,
+      "min_cells_per_donor": 1625,
+      "source": "HVS"
+    },
+    {
+      "cells": 236476,
+      "donors": 17,
+      "max_cells_per_donor": 23972,
+      "median_cells_per_donor": 14874.0,
+      "min_cells_per_donor": 81,
+      "source": "NPH52"
+    },
+    {
+      "cells": 4118213,
+      "donors": 46,
+      "max_cells_per_donor": 174111,
+      "median_cells_per_donor": 91242.5,
+      "min_cells_per_donor": 9127,
+      "source": "SEA_AD"
+    }
+  ],
+  "execution_authorized": false,
+  "interpretation": [
+    "Base-JEPA and donor-recurrent relational supervision are different scientific objectives and need not share one estimand.",
+    "A source-uniform/cell-within-source proposal prevents raw SEA_AD cell-count dominance at sampling time and materially improves importance-weight efficiency for donor-balanced targets compared with a raw cell-uniform proposal.",
+    "Donor-uniform target with source-uniform/cell-within-source proposal has ~40.6% importance-sampling ESS in this frozen reader-fit population, versus ~9.7% under raw cell-uniform proposal.",
+    "Source-donor-uniform target with that source-balanced proposal has ~21.2% ESS, versus ~3.7% under raw cell-uniform proposal.",
+    "Scientific target p, proposal q, relational hierarchy, and compute packing remain separate authorities; this profile selects none and creates no training authority."
+  ],
+  "metadata_authority": {
+    "bundle_member": "metadata/foundation_metadata_rows.sqlite",
+    "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+  },
+  "population": "reader_fit",
+  "reader_fit_cells": 4553407,
+  "reader_fit_donors": 104,
+  "reader_fit_sources": 3,
+  "schema": "READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V2",
+  "selected_base_jepa_estimand": null,
+  "selected_base_jepa_proposal_sampler": null,
+  "selected_relational_estimand": null,
+  "training_authorized": false
+}

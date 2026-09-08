@@ -1,0 +1,33 @@
+{
+  "schema": "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V1",
+  "status": "RELATIONAL_PROPOSAL_FROZEN__BASE_DERIVATION_RULE_FROZEN__BASE_NUMERIC_PROPOSAL_UNFROZEN",
+  "scientific_target_authority": "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V1.json",
+  "base": {
+    "scientific_target_policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "derivation_policy_id": "EXPOSURE_CONSTRAINED_DONOR_TARGET_MIXTURE_V1",
+    "proposal_family": "q_alpha = alpha*p_donor + (1-alpha)*q_source_uniform_cell_within_source",
+    "selection_rule": "after total_presentations and max_expected_per_cell_exposure are separately frozen, choose the largest feasible alpha in [0,1]",
+    "rationale": "within this mixture path, larger alpha moves q toward the frozen donor target and reduces importance-correction distortion while the exposure constraint protects the smallest donor cell pools",
+    "total_presentations": null,
+    "max_expected_per_cell_exposure": null,
+    "selected_alpha": null,
+    "selected_policy_id": null,
+    "importance_correction": "exact p/q whenever alpha<1"
+  },
+  "relational": {
+    "proposal_policy_id": "DIRECT_DONOR_GROUP_TRIPLET_TARGET_PROPOSAL_V1",
+    "sampling_hierarchy": [
+      "donor uniform",
+      "eligible donor-by-operator group uniform within donor",
+      "uniform finite anchored triplets within selected group"
+    ],
+    "proposal_equals_target": true,
+    "importance_correction_required": false,
+    "group_capacity_weighting": "NONE",
+    "triplet_budget": null,
+    "triplet_budget_is_scientific_weight": false
+  },
+  "compute_packing_can_change_proposal_mass": false,
+  "training_authorized": false,
+  "execution_authorized": false
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V2",
+  "status": "RELATIONAL_V2_DIRECT_TARGET_PROPOSAL_FROZEN__BASE_DERIVATION_REOPENED__BASE_NUMERIC_PROPOSAL_UNFROZEN",
+  "supersedes": "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V1.json",
+  "scientific_target_authority": "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json",
+  "base": {
+    "scientific_target_policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "final_derivation_policy_id": null,
+    "selected_policy_id": null,
+    "selected_parameters": null,
+    "candidate_subfamilies": [
+      {
+        "policy_id": "DIRECT_DONOR_TARGET_PROPOSAL",
+        "description": "q=p donor-uniform/cell-uniform-within-donor"
+      },
+      {
+        "policy_id": "EXPOSURE_CONSTRAINED_DONOR_TARGET_MIXTURE_V1",
+        "description": "q_alpha = alpha*p_donor + (1-alpha)*q_source_uniform_cell_within_source; retained as an admissible source/exposure subfamily, not the final frozen derivation rule"
+      },
+      {
+        "policy_id": "DONOR_OPERATOR_GROUP_COVERAGE_PROPOSAL_CANDIDATE_V1",
+        "description": "donor uniform -> operator group uniform -> cell uniform within group; proposal/coverage only with exact p/q correction"
+      }
+    ],
+    "descriptive_coverage_profile": {
+      "path": "docs/agent/READER_FIT_BASE_PROPOSAL_COVERAGE_PROFILE_V1.json",
+      "sha256": "9fe11b675f94d5f1d16d3c0a35f00b677b1733c635736134157e3891b7c1358e"
+    },
+    "required_before_final_derivation": [
+      "total presentation horizon",
+      "maximum expected repeated exposure per cell",
+      "acceptable importance-weight/proposal conditioning",
+      "minimum donor-by-operator coverage requirement"
+    ],
+    "importance_correction": "exact p/q whenever q differs from frozen donor-cell target"
+  },
+  "relational": {
+    "proposal_policy_id": "DIRECT_DONOR_ANCHOR_CELL_TRIPLET_TARGET_PROPOSAL_V2",
+    "sampling_hierarchy": [
+      "donor uniform",
+      "eligible donor-by-operator group proportional to eligible cell count within donor",
+      "uniform anchored triplet within selected group"
+    ],
+    "equivalent_anchor_statement": "eligible anchor cell uniform within donor; unordered comparator pair uniform inside anchor operator",
+    "proposal_equals_target": true,
+    "importance_correction_required": false,
+    "operator_role": "ADMISSIBILITY_BOUNDARY_ONLY",
+    "triplet_capacity_weighting": "NONE_BEYOND_LINEAR_ANCHOR_PREVALENCE",
+    "triplet_budget": null,
+    "triplet_budget_is_scientific_weight": false
+  },
+  "compute_packing_can_change_proposal_mass": false,
+  "training_authorized": false,
+  "execution_authorized": false
+}
