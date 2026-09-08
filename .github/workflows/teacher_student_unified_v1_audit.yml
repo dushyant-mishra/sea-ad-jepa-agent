@@ -272,6 +272,18 @@ jobs:
           if any(path.exists() for path in forbidden):
               raise SystemExit("execution authority unexpectedly entered review package")
 
+          # Test execution may create interpreter/test caches. They are never
+          # review authority and must not enter the package manifest or ZIP.
+          for cache_dir in list(stage.rglob("__pycache__")) + list(stage.rglob(".pytest_cache")):
+              if cache_dir.is_dir():
+                  shutil.rmtree(cache_dir)
+          for pyc in stage.rglob("*.pyc"):
+              pyc.unlink()
+          if any(p.name in {"__pycache__", ".pytest_cache"} for p in stage.rglob("*")):
+              raise SystemExit("cache directory survived cleanup")
+          if any(stage.rglob("*.pyc")):
+              raise SystemExit("pyc survived cleanup")
+
           package_manifest = stage / "PACKAGE_MANIFEST.csv"
           members = sorted(
               p for p in stage.rglob("*")
