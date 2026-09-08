@@ -68,6 +68,7 @@ def test_full_group_triplet_capacity_is_computed_without_enumeration():
     assert anchored_triplet_capacity(228)==5_848_428
     assert anchored_triplet_capacity(42_209)==37_597_098_110_352
 
+
 def test_singleton_null_stratum_is_not_estimable_without_killing_other_strata():
     from sea_ad_jepa.v5.data_first_geometry import partial_fine_derangement
     ids=torch.tensor([0,0,1,2,2,2],dtype=torch.int64)
