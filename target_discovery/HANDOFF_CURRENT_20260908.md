@@ -1,4 +1,21 @@
 # JEPA Target Discovery — New Chat Handoff — 2026-09-08
+## 0. CURRENT AUTHORITY — READ THIS FIRST
+
+The handoff below is chronological and intentionally preserves superseded states. **For current action, this section plus Section 21 and CURRENT_STATUS_20260908.json override earlier V3-era blocker/agenda text.**
+
+Current Teacher/Student gate:
+- V4 candidate branch: candidate/teacher-student-unified-v4-relational-20260908
+- frozen integrated source commit: 24752e33f5f7a9ff0e8caef733223b8c4c6de5b7
+- frozen source root: 8aae50696124a259bbd89d4a788d0e1cb0f94ee8b7ed13520a2db73138ae6460
+- decision-bearing package-build commit: 8d92f15f973de06415650f72e63788d255ac833d
+- review ZIP SHA-256: 17c16eb02103ea8b2df8949d407a82aa8e65302b855f6f06fed91aba0d671d66
+- review package root: db162fdf5988d2f7b833ad0a24b1edba2fb3fcf7a6bd0c43cfeda3888329d58a
+- exact active tests: **98/98 PASS** locally and in GitHub CI run 34248656470
+- next legal gate: exact independent V4 review terminal only
+- training, successor-u0 materialization, u0→u40, TD60 execution, protected-population access, and further 50k locality tuning remain unauthorized.
+
+Older V3 terminal-bridge discussion is preserved as history and is **not the current execution blocker**.
+
 
 Status: `HANDOFF_CURRENT__RELATIONAL_OBJECTIVE_QUALIFICATION__NO_TRAINING_AUTHORITY`
 
