@@ -1,0 +1,14 @@
+branch,head_sha,status,successor_or_role,reason
+production/teacher-student-unified-v1-20260907,a06d32daf9ec9eef2b12ab1da4c2c9235cfb6fc6,ACTIVE_CANONICAL,production/teacher-student-unified-v1-20260907,Single current teacher/student production integration line
+f1b-executable-attacks-20260907,138e176baa10267833f1a2c1e347f8831eb8c269,KEEP_FROZEN_AUTHORITY,F1-B attack authority,Immutable 15-finding behavioral attack authority
+f1b-c3-training-successor-v2-20260907,c0eaf2acc0a5edc837fb2a48f726b9d626772f06,RETIRED_MERGED,production/teacher-student-unified-v1-20260907,Merged as mechanics parent; prototype remains historical/attack evidence
+planning/healthy-teacher-training-contract-20260907,26e1c27d3578b794a1d522061df6d57ff435a688,RETIRED_MERGED,production/teacher-student-unified-v1-20260907,Merged as frozen training-governance parent
+planning/sealed-holdout-registry-20260907,14c2d586239aa5af15ed7cd70fdfb196d1c99f5f,RETIRED_MERGED,production/teacher-student-unified-v1-20260907,Already ancestor of healthy-teacher parent; population authority remains immutable
+f1b-minimal-bridge-20260905,f0fb23c2c520028fc4d8c18a32e197f03a1d7cf8,RETIRED_SUPERSEDED,production/teacher-student-unified-v1-20260907,Old bridge superseded by frozen behavioral attacks and C3 successor
+jepa-peer-handoff-20260905,712cd07d52371c4cbbfb0760a09399e9c23ec1b4,KEEP_FROZEN_EVIDENCE,C2 independent closure,Do not delete or repoint reviewed C2 evidence
+audit/v4a-defective-training-lineage-20260906,0ddaac572a3b5dda3a72d17ee7cea59c4bff1d90,KEEP_AUDIT_EVIDENCE,Historical T1 blast-radius audit,Audit line remains useful evidence; not a training implementation
+review/d1-independent-closure-20260907,c13c06c103a588fc95bb93174730bf26dd613884,KEEP_DOWNSTREAM_AUTHORITY,D1 discovery/estimation,D1 consumes frozen teacher states and remains separate from trainer
+planning/d1-biological-estimation-atlas-20260907,d85391c90eb1f767115e0f4d31cfaf6bff980e2b,RETIRED_SUPERSEDED,review/d1-independent-closure-20260907,Initial D1 planning line superseded by implemented/reviewed D1 closure
+planning/d1-biological-estimation-atlas-20260907-work,566079ad2ef4a1e99efff77bfc0bdb79559b77b7,RETIRED_SUPERSEDED,review/d1-independent-closure-20260907,Intermediate D1 work line superseded by D1 closure
+f1-real-producer-replay-prefreeze-20260907,a884f558970479278bc21f3f2274dc24bee89758,KEEP_DOWNSTREAM_ACTIVE,Real F1 producer/replay,Inference consumer of teacher/student states; not training implementation
+repo-organization-20260902,f4c236a3e9e4d2eb464a04659b09a4cb8b376a42,RETIRED_STALE_PR,production/teacher-student-unified-v1-20260907,Old organizational draft superseded by current authority/retirement docs
