@@ -1,0 +1,83 @@
+{
+  "schema": "JEPA_CHAT_LOCAL_ARTIFACT_BINDING_V1",
+  "date": "2026-09-08",
+  "canonical_repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "canonical_branch": "main",
+  "source_main_head_before_binding": "d212001ba3627319d8a91734b4fc8b03f2f79bef",
+  "handoff_zip": {
+    "filename": "JEPA_COMPLETE_CHAT_HANDOFF_20260908.zip",
+    "bytes": 76699663,
+    "sha256": "50c6d06f55f7c54e4ddd2e52444428e2eaa4a94c225155178db377c54631a692",
+    "package_manifest_root_sha256": "9c4be64ba15c58360ab9a1e2fa71ba88637d24467031011389bd539f0b72ccc7",
+    "copied_top_level_chat_artifacts": 26,
+    "package_manifest_payload_rows": 30,
+    "zip_crc": "PASS",
+    "manifest_mismatches": 0
+  },
+  "key_included_artifacts": [
+    {
+      "filename": "T0_EXTERNAL_REVIEW_SELF_AUDIT_R2_20260908.zip",
+      "sha256": "eb1fdbb4b8ebe086707a2bf7b33915fb29cd46982a0915c1211485c18be95da0"
+    },
+    {
+      "filename": "T0_EXTERNAL_REVIEW_SELF_AUDIT_R3_DELTA_20260908.zip",
+      "sha256": "1ae67a7bf299739f31e5c8b04cf011628d1bd7eac9a273a666fc322969bbdf5b"
+    },
+    {
+      "filename": "T0_760C68_EXTERNAL_REVIEW_DELTA_20260908.zip",
+      "sha256": "9cd24cb05f1ac9b3516b0990889a930c858b5706754f5973953c35a660db6c7b"
+    },
+    {
+      "filename": "T0_POSITIVE_PATH_WORK_PACKAGE_V2_20260908.zip",
+      "sha256": "c16b5f815048ed5c3d62ce2d87a34f86397ebea240dca4f35996adabbdf742fa"
+    },
+    {
+      "filename": "T0_UPSTREAM_INTERFACE_SPECS_V1_20260908.zip",
+      "sha256": "7791e8d52027847c3b2d649dc315ec847b529a6e765a50a3962e05f3e1a02e3d"
+    },
+    {
+      "filename": "T0_AT8_AVAILABILITY_REVIEW_PACKAGE_V3_20260908.zip",
+      "sha256": "01ce9b37e592ee694c0cb6edc2b1095908943997216bd70e8f792416a78a70a2"
+    },
+    {
+      "filename": "checkpoints.zip",
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c"
+    },
+    {
+      "filename": "expression.zip",
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4"
+    },
+    {
+      "filename": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"
+    }
+  ],
+  "large_immutable_inputs_kept_separate": [
+    {
+      "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"
+    },
+    {
+      "filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"
+    },
+    {
+      "logical_combined_filename": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip",
+      "bytes": 607959761,
+      "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7"
+    },
+    {
+      "filename": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c"
+    }
+  ],
+  "authority_note": "This file binds chat-local transfer artifacts only. It does not authorize execution and does not supersede CURRENT_AUTHORITY_INDEX.md or lane-specific frozen authorities."
+}
