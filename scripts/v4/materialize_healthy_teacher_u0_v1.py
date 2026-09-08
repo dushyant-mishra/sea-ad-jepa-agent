@@ -31,6 +31,7 @@ from sea_ad_jepa.v4.teacher_student_runtime import (
     PREDICTOR_REGISTRY_SHA256,
     PRODUCTION_CONFIG,
     build_teacher_student_components,
+    configure_deterministic_cuda_environment,
 )
 
 HISTORICAL_U0_SHA256 = "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
@@ -121,10 +122,7 @@ def main() -> int:
     if int(historical.get("ema_update_count", -1)) != 0:
         raise RuntimeError("historical u0 EMA count is not zero")
 
-    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
-    torch.backends.cuda.matmul.allow_tf32 = False
-    torch.backends.cudnn.allow_tf32 = False
-    torch.use_deterministic_algorithms(True)
+    configure_deterministic_cuda_environment()
 
     device = torch.device("cuda")
     modules = build_teacher_student_components(device=device)
