@@ -1,0 +1,50 @@
+{
+  "schema": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V4",
+  "status": "SOURCE_FROZEN__EXTERNAL_REVIEW_REQUIRED__TRAINING_UNAUTHORIZED",
+  "branch": "development/teacher-student-relational-v4-20260908",
+  "supersedes_candidate": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V3",
+  "supersession_reasons": [
+    "The V3 external-review terminal and execution-overlay validator used incompatible terminal namespaces, requiring a separate bridge. V4 removes that ambiguity by requiring one exact review terminal and binding reviewed commit, source root, package SHA-256, and package root.",
+    "The V3 prospective relational adjunct matched normalized distance magnitudes and cosine similarities. Target Discovery supports scale-free anchored distance ordering, not absolute cross-view distance geometry. V4 therefore replaces the adjunct with an inactive scale-free triplet-order target aligned to TD57B/TD59 and the frozen TD60 latent geometry."
+  ],
+  "integrated_successor_commit": "931520bdbe6ac58b93298b38890bbcb054011648",
+  "integrated_successor_source_manifest": "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V4.csv",
+  "integrated_successor_source_manifest_root_sha256": "743347ab176adb8c3b7bd4ec74897d8e223d3ca4de9d78b9e4d398aa90bdedb2",
+  "review_pass_terminal": "PASS_TEACHER_STUDENT_UNIFIED_V4_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
+  "upstream_authorities": {
+    "f1b_attack_authority_root": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b",
+    "healthy_teacher_base_root": "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534",
+    "population_access_root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
+    "historical_clean_u0_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
+  },
+  "predictor_registry_sha256": "43922a62a885cbedee22c06363a8355c6561dad43c95f0a43147fc2f4cbe3592",
+  "movement_criterion": "exact elementwise deviation from exact repeated AdamW decay-only counterfactual; zero tolerance; per tensor; no pooled rescue",
+  "relational_target": {
+    "module": "src/sea_ad_jepa/v4/teacher_student_relational_target_v2.py",
+    "status": "PROSPECTIVE_INACTIVE",
+    "representation": "direct 160-D cell_state",
+    "distance": "cosine distance",
+    "teacher_supervision": "sign(d_teacher(i,k)-d_teacher(i,j)) only",
+    "differentiable_surrogate": "softplus(-y*(d_student(i,k)-d_student(i,j)))/log(2)",
+    "hardcoded_locality_fraction": null,
+    "hardcoded_relational_loss_weight": null,
+    "hardcoded_production_group_geometry": null,
+    "activation_prerequisites": [
+      "lawful successor u40",
+      "TD60 learned-teacher continuity PASS 48/48",
+      "prospectively frozen partial-evidence student relational predictability PASS",
+      "full 4,553,407-cell reader-fit schedule authority",
+      "outcome-blind collapse calibration authority",
+      "separately reviewed relational loss-weight/execution authority"
+    ]
+  },
+  "execution_authorized": false,
+  "u0_materialization_authorized": false,
+  "u0_u40_authorized": false,
+  "u40_u205_authorized": false,
+  "real_f1_authorized": false,
+  "real_t0_authorized": false,
+  "d1_real_execution_authorized": false,
+  "relational_training_authorized": false,
+  "terminal": "TEACHER_STUDENT_UNIFIED_V4_SOURCE_FROZEN__INDEPENDENT_REVIEW_PENDING__TRAINING_UNAUTHORIZED"
+}
