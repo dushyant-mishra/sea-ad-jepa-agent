@@ -119,7 +119,7 @@ def _pair_geometry(
         if positive.numel() == 0:
             raise ValueError("teacher relational geometry has zero pairwise spread")
         distance_scale = positive.median()
-    if not bool(torch.isfinite(distance_scale)) or float(distance_scale) <= 0:
+    if not bool(torch.isfinite(distance_scale)) or float(distance_scale.detach()) <= 0:
         raise ValueError("relational distance scale must be finite and positive")
     return distance / distance_scale, cosine, distance_scale
 
@@ -183,7 +183,7 @@ def effective_rank(states: torch.Tensor) -> torch.Tensor:
     singular = torch.linalg.svdvals(centered.float())
     power = singular.square()
     total = power.sum()
-    if not bool(torch.isfinite(total)) or float(total) <= 0:
+    if not bool(torch.isfinite(total)) or float(total.detach()) <= 0:
         return torch.zeros((), dtype=torch.float32, device=states.device)
     p = power / total
     entropy = -(p[p > 0] * p[p > 0].log()).sum()
@@ -229,8 +229,8 @@ def enforce_collapse_calibration(
         ("effective_rank", calibration.min_effective_rank_ratio),
     )
     for key, threshold in mapping:
-        t = float(teacher_health[key])
-        s = float(student_health[key])
+        t = float(teacher_health[key].detach())
+        s = float(student_health[key].detach())
         if not (torch.isfinite(torch.tensor(t)) and torch.isfinite(torch.tensor(s))):
             raise RuntimeError(f"nonfinite collapse metric: {key}")
         if t <= 0 or s <= 0:
