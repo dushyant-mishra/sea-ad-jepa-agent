@@ -6,6 +6,7 @@ from .data_first_support import (
     EvidenceDose,
     NullEstimability,
     RaggedGroupPlan,
+    RaggedTripletSample,
     StratifiedEvidenceCounts,
     TokenBudgetPlan,
     combined_teacher_student_token_cost,
@@ -16,6 +17,7 @@ from .data_first_support import (
     fine_null_estimability,
     plan_contiguous_token_budget_microbatches,
     ragged_donor_operator_groups,
+    sample_ragged_anchored_triplets,
     support_stratified_evidence_counts,
 )
 
@@ -25,6 +27,7 @@ __all__ = [
     "EvidenceDose",
     "NullEstimability",
     "RaggedGroupPlan",
+    "RaggedTripletSample",
     "StratifiedEvidenceCounts",
     "TokenBudgetPlan",
     "combined_teacher_student_token_cost",
@@ -35,5 +38,6 @@ __all__ = [
     "fine_null_estimability",
     "plan_contiguous_token_budget_microbatches",
     "ragged_donor_operator_groups",
+    "sample_ragged_anchored_triplets",
     "support_stratified_evidence_counts",
 ]
