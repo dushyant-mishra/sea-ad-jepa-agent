@@ -7,21 +7,21 @@ historical commit for audit/reproducibility.
 
 ## Project-level rule
 
-`coordination/jepa-current-20260908` supersedes **branch-level authority** of all
+`main` supersedes **branch-level authority** of all
 older planning/candidate/production/review branches.
 
 This does **not** erase frozen scientific contracts or accepted external-review
-terminals. It only means the current coordination lineage is the place where
+terminals. It only means `main` is the place where
 those authorities are assembled and interpreted.
 
 ## Current lineage map
 
 | Historical line | Status now | Controlled by |
 |---|---|---|
-| September 3 `main` authority index/supersession map | SUPERSEDED as project-current governance | 2026-09-08 coordination lineage |
+| September 3 `main` authority index/supersession map | SUPERSEDED as project-current governance | 2026-09-08 consolidated `main` lineage |
 | Teacher/Student V1/V3/V4 production/candidate branches | HISTORICAL / mechanics evidence | V5 data-first design + explicit future production freeze |
 | 3,292-cell u40/u205 training schedule | MECHANICS CLOCK ONLY | future full-reader exposure authority for biological training |
-| Teacher/Student V5 candidate/design/refine/RNG side branches | HISTORY ABSORBED; not independently current | current coordination lineage and future V5 freeze |
+| Teacher/Student V5 candidate/design/refine/RNG side branches | HISTORY ABSORBED; not independently current | consolidated `main` lineage and future V5 freeze |
 | F1-B/C3 attack/successor branches | MECHANICS EVIDENCE | future integrated trainer binding |
 | F1 real-reader/preflight/replay branches | PREFREEZE EVIDENCE | future execution authorization |
 | D0 / early target-detectability lines | HISTORICAL | current relational Target Discovery line |
@@ -53,8 +53,7 @@ No earlier T0 branch or PASS artifact may bypass the current three external STOP
 
 ## Branch-history preservation
 
-On 2026-09-08 the remaining divergent branch histories were absorbed into the
-coordination lineage using merge parents while keeping the current integrated
+On 2026-09-08 the remaining divergent branch histories were absorbed into `main` using merge parents while keeping the current integrated
 tree unchanged. This preserves unique historical commits without reactivating
 stale code.
 
