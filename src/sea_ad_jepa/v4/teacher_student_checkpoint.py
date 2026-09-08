@@ -167,6 +167,7 @@ def validate_checkpoint_header(
     config: TeacherStudentConfig,
     expected_authorities: Mapping[str, str],
     expected_schedule_cursor: int | None = None,
+    expected_phase: str | None = None,
 ) -> None:
     if payload.get("schema") != CHECKPOINT_SCHEMA:
         raise RuntimeError("checkpoint schema mismatch")
@@ -207,6 +208,16 @@ def validate_checkpoint_header(
     if accumulation_position != 0:
         raise RuntimeError("production checkpoints are legal only at update boundaries")
     phase = payload.get("phase")
+    allowed_phases = {"U0", "QUALIFICATION", "CONTINUATION"}
+    if phase not in allowed_phases:
+        raise RuntimeError("checkpoint phase invalid")
+    if expected_phase is not None:
+        if expected_phase not in allowed_phases:
+            raise ValueError("expected checkpoint phase invalid")
+        if phase != expected_phase:
+            raise RuntimeError(
+                f"checkpoint phase mismatch: expected={expected_phase} observed={phase}"
+            )
     if phase == "U0" and schedule_cursor != 0:
         raise RuntimeError("u0 checkpoint must have zero counters")
     if phase == "QUALIFICATION" and not 1 <= schedule_cursor <= 40:
@@ -223,12 +234,14 @@ def restore_checkpoint(
     expected_authorities: Mapping[str, str],
     masking_generator: torch.Generator | None,
     expected_schedule_cursor: int | None = None,
+    expected_phase: str | None = None,
 ) -> dict[str, int]:
     validate_checkpoint_header(
         payload,
         config=config,
         expected_authorities=expected_authorities,
         expected_schedule_cursor=expected_schedule_cursor,
+        expected_phase=expected_phase,
     )
     saved_environment = payload.get("environment")
     if not isinstance(saved_environment, Mapping):
