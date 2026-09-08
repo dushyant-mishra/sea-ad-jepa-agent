@@ -4,9 +4,16 @@ For a reviewer who has not seen this work. It lists every defect found so far,
 who found it, what was done, and — importantly — exactly which commits and
 artifacts have **not** been independently reviewed yet.
 
-Branch `t0/v20-pathology-blind-materialization-20260908`, head
-`e4187f25127fe9c442d4a22314cfef2db6ad5f30`, 17 commits on sealed base
+Branch `t0/v20-pathology-blind-materialization-20260908`, on sealed base
 `21ec629667eeda5a7d37d3f1d822fbf93b213325`.
+
+**Document identity.** This dossier cannot name its own head SHA, because
+committing it changes the head. The authority for "what is on this branch" is
+therefore the commit list produced by the command in section 1, not a SHA quoted
+here. The state described below begins at `e4187f25` and continues through every
+later commit, each of which is listed in section 2 as it lands. An earlier
+revision of this file did quote a head SHA and a commit count, which were stale
+the moment it was committed; a reviewer flagged that, correctly.
 
 Ten files changed across the whole branch. Nothing else.
 
