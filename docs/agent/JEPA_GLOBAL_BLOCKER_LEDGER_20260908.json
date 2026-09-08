@@ -1,0 +1,216 @@
+{
+  "schema": "JEPA_GLOBAL_BLOCKER_LEDGER_V1",
+  "date": "2026-09-08",
+  "role": "EXTERNAL_REVIEW__NO_EXECUTION_AUTHORITY",
+  "sealed_base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+  "live_branch_inventory_observed": 53,
+  "current_critical_path": [
+    "T0_EXECUTION_SUBSTRATE_CLOSURE",
+    "GLOBAL_AUTHORITY_SUPERSESSION_CONSOLIDATION",
+    "TEACHER_STUDENT_V5_PRODUCTION_SCIENCE_FREEZE",
+    "TEACHER_STUDENT_V5_RUNTIME_INTEGRATION_AND_REVIEW",
+    "MECHANICAL_QUALIFICATION_SEPARATE_FROM_BIOLOGICAL_EXPOSURE",
+    "LEARNED_TEACHER_RELATIONAL_CONTINUITY_ON_LAWFUL_FULL_READER_CHECKPOINT"
+  ],
+  "blockers": [
+    {
+      "id": "T0_B2_LOGICAL_ROOT_CHAIN",
+      "priority": "P0",
+      "lane": "T0",
+      "head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+      "class": "HARD_STOP",
+      "summary": "Logical B2 root does not bind closure root or execution-used paths and stored/recomputed/external equality is incomplete.",
+      "reviewer_evidence": "review/t0-external-24b2c9-20260908"
+    },
+    {
+      "id": "T0_B2_RAW_H5AD_NOT_AUTHENTICATED",
+      "priority": "P0",
+      "lane": "T0",
+      "head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+      "class": "HARD_STOP",
+      "summary": "source_library proof trusts caller row values plus provenance labels instead of extracting the exact row from authenticated H5AD layers/UMIs.",
+      "reviewer_evidence": "tests/v4/test_t0_b2_raw_source_external_red_v1.py"
+    },
+    {
+      "id": "T0_AGE_SEX_CANDIDATE_PARENT_UNBOUND",
+      "priority": "P0",
+      "lane": "T0",
+      "head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+      "class": "HARD_STOP",
+      "summary": "Age/sex authority authenticates source but accepts candidate donor subset as detached caller input.",
+      "reviewer_evidence": "tests/v4/test_t0_age_sex_external_parent_red_v1.py"
+    },
+    {
+      "id": "GLOBAL_AUTHORITY_INDEX_STALE",
+      "priority": "P0",
+      "lane": "governance",
+      "class": "HARD_GOVERNANCE_BLOCKER",
+      "summary": "CURRENT_AUTHORITY_INDEX and CURRENT_SUPERSESSION_MAP are dated 2026-09-03 and contain no T0 V20, V5, or D1 V2 state while 53 branches remain live.",
+      "evidence": {
+        "authority_index_ref": "planning/teacher-student-v5-finalize-closure-20260908@95251107e80a803d627d1197a64b417a5a16d2c5",
+        "authority_index_date": "2026-09-03"
+      }
+    },
+    {
+      "id": "TEACHER_CHECKPOINT_CLOCK_CONTRADICTION",
+      "priority": "P0",
+      "lane": "teacher_student/target_discovery",
+      "class": "CROSS_LANE_CONTRACT_STOP",
+      "summary": "TD60 freezes successor u40 as the decision-bearing learned teacher, but the later data-first audit explicitly says fixed u40/u205 are mechanics clocks and must not serve as learned-biology/full-training clocks on 4,553,407 cells.",
+      "evidence": {
+        "td60_ref": "planning/foundation-target-discovery-v1-20260907@5f45efa2130dcf40daada572070781221be29651",
+        "data_first_ref": "planning/foundation-target-discovery-v1-20260907@5f45efa2130dcf40daada572070781221be29651",
+        "full_reader_cells": 4553407,
+        "u40_presentations": 5120,
+        "u40_fraction_of_reader_fit": 0.001124
+      },
+      "required_resolution": "Prospectively separate a mechanics checkpoint (e.g. Q40) from a full-reader exposure-defined biology checkpoint and amend TD60 before any decision-bearing training outcome exists."
+    },
+    {
+      "id": "V5_SCIENTIFIC_ESTIMAND_UNFROZEN",
+      "priority": "P0",
+      "lane": "teacher_student_v5",
+      "head": "95251107e80a803d627d1197a64b417a5a16d2c5",
+      "class": "DESIGN_STOP",
+      "summary": "Target estimand, proposal sampler, importance-weight policy, relational sampling policy, and relational group-weight policy remain explicit PENDING values.",
+      "evidence": "docs/agent/READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V1.json selected_estimand=null selected_proposal_sampler=null"
+    },
+    {
+      "id": "V5_SUPPORT_AWARE_TARGET_POLICY_UNFROZEN",
+      "priority": "P0",
+      "lane": "teacher_student_v5",
+      "class": "DESIGN_STOP",
+      "summary": "Full-reader evidence/masking target policy is not frozen; a universal historical 40% measured-gene mask is known to imply very different absolute evidence doses across operators/sources.",
+      "evidence": {
+        "HVS_measured": 18736,
+        "SEA_AD_measured": 35076,
+        "common_all_42": 17186
+      }
+    },
+    {
+      "id": "V5_DATA_EXPOSURE_SCHEDULE_UNFROZEN",
+      "priority": "P0",
+      "lane": "teacher_student_v5",
+      "class": "DESIGN_STOP",
+      "summary": "No production full-reader schedule instance, exposure checkpoint, replay policy, or schedule-derived optimizer/EMA timescale is frozen.",
+      "evidence": "src/sea_ad_jepa/v5/schedule_authority_v1.py defines schema only"
+    },
+    {
+      "id": "V5_RUNTIME_NOT_INTEGRATED",
+      "priority": "P1",
+      "lane": "teacher_student_v5",
+      "class": "IMPLEMENTATION_STOP",
+      "summary": "Packing, weighted loss, finite relational sampling, keyed RNG/dropout, and cost model exist as prospective/proof modules but are not integrated into a reviewed end-to-end production training update.",
+      "evidence": "keyed_dropout_prototype.py explicitly says not wired into production_update"
+    },
+    {
+      "id": "V5_TRAINING_MODE_PACKING_EQUIVALENCE_UNPROVEN",
+      "priority": "P1",
+      "lane": "teacher_student_v5",
+      "class": "IMPLEMENTATION_STOP",
+      "summary": "Dense-vs-packed equivalence is demonstrated in eval mode; training-mode gradient/optimizer/EMA equivalence under keyed stochasticity and unequal microbatch partitioning is not yet established."
+    },
+    {
+      "id": "V5_RNG_AUTHORITY_NOT_SINGLE_CANONICAL_RUNTIME",
+      "priority": "P1",
+      "lane": "teacher_student_v5",
+      "class": "AUTHORITY_AMBIGUITY",
+      "summary": "Latest lineage contains a Philox4x32-10 reference and a distinct modular-hash keyed_feature_dropout proof function. Production must select one source-bound RNG contract and remove/retire ambiguity.",
+      "evidence": [
+        "src/sea_ad_jepa/v5/keyed_rng_reference.py",
+        "src/sea_ad_jepa/v5/keyed_dropout_prototype.py",
+        "src/sea_ad_jepa/v5/data_first_geometry.py"
+      ]
+    },
+    {
+      "id": "V5_HARDWARE_COST_CALIBRATION_MISSING",
+      "priority": "P1",
+      "lane": "teacher_student_v5",
+      "class": "EXECUTION_STOP",
+      "summary": "Full-path cost model exists but cost coefficients, GPU memory/headroom calibration, and max microbatch cost are not frozen for target hardware."
+    },
+    {
+      "id": "TEACHER_STUDENT_LINEAGE_NOT_CONSOLIDATED",
+      "priority": "P0",
+      "lane": "teacher_student",
+      "class": "GOVERNANCE_STOP",
+      "summary": "V3 bridge, V4 candidate, V4 governance-repair, V5 candidate, and V5 planning branches coexist without a current supersession authority naming the one lawful successor lineage.",
+      "refs": {
+        "v4_candidate": "candidate/teacher-student-unified-v4-relational-20260908@92b265d910058a4885abcb23b1ae9e5ec04758e7",
+        "v5_latest": "planning/teacher-student-v5-finalize-closure-20260908@95251107e80a803d627d1197a64b417a5a16d2c5"
+      }
+    },
+    {
+      "id": "V4_INDEPENDENT_REVIEW_NOT_RECORDED",
+      "priority": "P1",
+      "lane": "teacher_student",
+      "class": "REVIEW_GATE",
+      "summary": "Target Discovery status still records actual_external_review_supplied=false for the exact V4 package despite 98/98 local+CI tests.",
+      "package_root": "db162fdf5988d2f7b833ad0a24b1edba2fb3fcf7a6bd0c43cfeda3888329d58a",
+      "review_zip_sha256": "17c16eb02103ea8b2df8949d407a82aa8e65302b855f6f06fed91aba0d671d66"
+    },
+    {
+      "id": "TD60_NO_LAWFUL_LEARNED_TEACHER",
+      "priority": "P1",
+      "lane": "target_discovery",
+      "class": "DEPENDENCY_STOP",
+      "summary": "TD60 cannot execute until a lawful full-reader learned-teacher checkpoint exists under the corrected exposure-clock authority.",
+      "terminal": "PROSPECTIVE_ONLY__WAITING_FOR_LAWFUL_SUCCESSOR_U40__NO_TRAINING_AUTHORITY",
+      "note": "The u40 label itself now requires prospective amendment because of the data-first audit."
+    },
+    {
+      "id": "F1_REAL_EXECUTION_UNAUTHORIZED",
+      "priority": "P2_PARALLEL",
+      "lane": "F1",
+      "head": "a884f558970479278bc21f3f2274dc24bee89758",
+      "class": "REVIEW_AND_AUTHORIZATION_GATE",
+      "summary": "Producer/replay mechanics are prefreeze-ready but no strict independent review with all authorities, execution authorization, real sweep, or data-only closure exists.",
+      "local_evidence": "66/66 with authorities reachable; clean extraction has 5 NOT_MEASURABLE skips"
+    },
+    {
+      "id": "D1_HEALTHY_TEACHER_DEPENDENCY",
+      "priority": "P2_AFTER_TEACHER",
+      "lane": "D1",
+      "head": "c13c06c103a588fc95bb93174730bf26dd613884",
+      "class": "DEPENDENCY_STOP",
+      "summary": "D1 V2 execution resolver/resampling/archive/atlas repairs exist, but no frozen canonical production readout contract, qualified healthy teacher checkpoint, or teacher qualification authority exists.",
+      "terminal": "WAIT_HEALTHY_TRAINED_TEACHER"
+    },
+    {
+      "id": "D1_REAL_EXECUTION_AND_ATLAS_NOT_YET_REVIEWED_AS_ONE_CLOSED_PIPELINE",
+      "priority": "P2_AFTER_TEACHER",
+      "lane": "D1",
+      "class": "REVIEW_GATE",
+      "summary": "Post-review commits repair R1-R7 classes and add archive/resampling/atlas pieces, but no final independent closure terminal over the complete current head has been identified."
+    }
+  ],
+  "healthy_or_not_blocking": [
+    {
+      "id": "POPULATION_ACCESS_REGISTRY",
+      "status": "FROZEN_HEALTHY",
+      "root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
+      "note": "Future release authorities are expected gates, not current defects."
+    },
+    {
+      "id": "RELATIONAL_TARGET_DISCOVERY",
+      "status": "SCIENTIFICALLY_ALIVE",
+      "note": "TD57B global recurrence and TD59 mesoscale recurrence survived; do not restart fixed-coordinate target search."
+    },
+    {
+      "id": "HISTORICAL_HEALTHY_TEACHER_BASE",
+      "status": "MECHANICS_BASE_ONLY",
+      "root": "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534",
+      "note": "Preserve as bounded mechanics qualification authority; do not treat its 3292-cell/u205 schedule as full-reader biological training authority."
+    }
+  ],
+  "forbidden_until_resolved": [
+    "production T0",
+    "numeric confirmation AT8 access",
+    "full-reader teacher training",
+    "TD60 decision-bearing execution",
+    "real D1",
+    "reader_validation/oracle opening",
+    "foundation development/sealed opening",
+    "pathology outside explicitly authorized T0 confirmation"
+  ]
+}
