@@ -432,10 +432,19 @@ def test_the_denominator_population_equals_the_reader_fit_partition() -> None:
         + ifa.OP31_READER_ORACLE_CELLS_EXCLUDED)
 
 
-def test_the_formula_is_declared_a_successor_specification() -> None:
-    """V18 states the covariate in prose; the formula is not recovered semantics."""
-    assert ifa.FORMULA_SPECIFICATION_STATUS.startswith("SUCCESSOR_SPECIFICATION")
+def test_the_formula_is_declared_a_frozen_successor_specification() -> None:
+    """V18 states the covariate in prose; the formula is a successor spec.
+
+    The status is imported from the frozen specification module rather than
+    restated here. An earlier revision restated it and went stale, still claiming
+    the formula was awaiting an owner freeze after it had been frozen.
+    """
+    assert ifa.FORMULA_SPECIFICATION_STATUS == (
+        "EXPLICIT_SUCCESSOR_SPECIFICATION__RESOLVES_UNDEFINED_REQUIRED_INPUT")
+    assert "AWAITING" not in ifa.FORMULA_SPECIFICATION_STATUS
+    assert ifa.FORMULA_SPEC_VERSION == "1.0.0"
     assert "prose" in ifa.FORMULA_PROVENANCE
+    assert "never recovered executable semantics" in ifa.__doc__
 
 
 # --- package round trip -----------------------------------------------------

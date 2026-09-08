@@ -706,3 +706,151 @@ def test_the_closure_external_verifier_recomputes_from_the_closure_itself(
             expected_membership_sha256=membership_sha,
             expected_block_manifest_sha256=manifest_sha)
     assert rc.STOP_CLOSURE_ROOT in str(excinfo.value)
+
+
+# ---------------------------------------------------------------------------
+# R3 — the logical root must bind its closure and its execution paths.
+#
+# An external review found the residual hole after the R2 repairs: the logical
+# root bound the feature root and the row fields, but not the population closure
+# root, `meta_path` or `counts_path`. And the external verifier compared its
+# recomputed root against the outside expectation without ever comparing it to
+# the root the object itself stores.
+#
+# Together those let a logical object carry a different closure identity and
+# different paths while still reproducing the externally expected logical root,
+# which is the splice class the three-root separation exists to prevent. The
+# physical verifier's path comparison does not save it, because mutating the
+# logical rows and the plan together keeps them consistent with each other.
+# ---------------------------------------------------------------------------
+
+def test_the_logical_root_binds_the_population_closure_root(
+        world: MultiOperatorWorld) -> None:
+    """Two logical objects over different closures must not share a root."""
+    closure = _closure_from(world.complete_manifest(), world)
+    logical = _logical(world, closure)
+
+    other = dict(closure)
+    other["population_closure_root_sha256"] = "9" * 64
+    relabelled = rc.build_logical_row_authority(
+        closure=other, membership_bytes=world.membership,
+        feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT)
+    assert relabelled["logical_row_authority_root_sha256"] != \
+        logical["logical_row_authority_root_sha256"]
+
+
+@pytest.mark.parametrize("field", ["meta_path", "counts_path"])
+def test_the_logical_root_binds_the_execution_paths(
+        world: MultiOperatorWorld, field) -> None:
+    """Both are consumed on the execution path, so both must move the root."""
+    closure = _closure_from(world.complete_manifest(), world)
+    logical = _logical(world, closure)
+    baseline = rc._logical_root(logical["rows"],
+                                logical["feature_authority_root_sha256"],
+                                closure["population_closure_root_sha256"])
+    mutated = [dict(row) for row in logical["rows"]]
+    mutated[0][field] = "op31/block-09999.relocated"
+    assert rc._logical_root(mutated, logical["feature_authority_root_sha256"],
+                            closure["population_closure_root_sha256"]) != baseline
+
+
+def test_the_logical_rows_carry_their_execution_paths(
+        world: MultiOperatorWorld) -> None:
+    """They cannot be bound if they are not present on the row."""
+    closure = _closure_from(world.complete_manifest(), world)
+    logical = _logical(world, closure)
+    for row in logical["rows"]:
+        assert row["meta_path"]
+        assert row["counts_path"]
+
+
+@pytest.mark.parametrize("field", ["meta_path", "counts_path"])
+def test_the_row_field_types_cover_the_execution_paths(field) -> None:
+    assert field in rc.ROW_FIELD_TYPES
+    assert rc.ROW_FIELD_TYPES[field] is str
+
+
+def test_the_external_verifier_requires_stored_equals_recomputed(
+        world: MultiOperatorWorld) -> None:
+    """stored == recomputed == externally expected, all three.
+
+    Comparing only recomputed against the outside expectation lets an object
+    whose stored root disagrees with its own contents pass verification.
+    """
+    closure = _closure_from(world.complete_manifest(), world)
+    logical = dict(_logical(world, closure))
+    genuine = logical["logical_row_authority_root_sha256"]
+    logical["logical_row_authority_root_sha256"] = "7" * 64
+    with pytest.raises(AssertionError) as excinfo:
+        rc.assert_row_authority_lawful(
+            logical=logical,
+            expected_logical_row_authority_root_sha256=genuine,
+            expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT,
+            expected_population_closure_root_sha256=closure[
+                "population_closure_root_sha256"])
+    assert rc.STOP_STORED_ROOT_DISAGREES in str(excinfo.value)
+
+
+def test_the_external_verifier_binds_the_expected_closure_root(
+        world: MultiOperatorWorld) -> None:
+    closure = _closure_from(world.complete_manifest(), world)
+    logical = _logical(world, closure)
+    assert rc.assert_row_authority_lawful(
+        logical=logical,
+        expected_logical_row_authority_root_sha256=logical[
+            "logical_row_authority_root_sha256"],
+        expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT,
+        expected_population_closure_root_sha256=closure[
+            "population_closure_root_sha256"])["rows"] == 3
+    with pytest.raises(AssertionError) as excinfo:
+        rc.assert_row_authority_lawful(
+            logical=logical,
+            expected_logical_row_authority_root_sha256=logical[
+                "logical_row_authority_root_sha256"],
+            expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT,
+            expected_population_closure_root_sha256="8" * 64)
+    assert rc.STOP_PARENT_IDENTITY in str(excinfo.value)
+
+
+def test_a_joint_logical_and_plan_path_mutation_is_caught(
+        world: MultiOperatorWorld) -> None:
+    """The attack the physical path comparison alone cannot stop.
+
+    Mutating the logical row's paths and the plan entry's paths together keeps
+    the two consistent, so the physical verifier's field comparison passes. Only
+    the logical root binding the paths catches it.
+    """
+    closure = _closure_from(world.complete_manifest(), world)
+    logical = _logical(world, closure)
+    genuine_root = logical["logical_row_authority_root_sha256"]
+
+    spliced = dict(logical)
+    rows = [dict(row) for row in logical["rows"]]
+    rows[0]["counts_path"] = "op31/block-09999.counts.npz"
+    rows[0]["meta_path"] = "op31/block-09999.meta.csv"
+    spliced["rows"] = rows
+
+    plan = rc.build_physical_read_plan(logical=spliced)
+    # The plan and the logical rows agree with each other, so restoration passes.
+    assert rc.assert_plan_restores_logical(
+        plan=plan,
+        expected_logical_root_sha256=spliced["logical_row_authority_root_sha256"],
+        logical=spliced) is True
+
+    # But the logical root must have moved, so external verification refuses it
+    # against the genuine expectation.
+    with pytest.raises(AssertionError):
+        rc.assert_row_authority_lawful(
+            logical=spliced,
+            expected_logical_row_authority_root_sha256=genuine_root,
+            expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT,
+            expected_population_closure_root_sha256=closure[
+                "population_closure_root_sha256"])
+
+
+def test_the_logical_authority_records_the_closure_root_it_was_built_from(
+        world: MultiOperatorWorld) -> None:
+    closure = _closure_from(world.complete_manifest(), world)
+    logical = _logical(world, closure)
+    assert logical["population_closure_root_sha256"] == \
+        closure["population_closure_root_sha256"]

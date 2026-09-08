@@ -89,6 +89,7 @@ STOP_PLAN_ROOT = "STOP_T0_B2_PHYSICAL_READ_PLAN_ROOT_MISMATCH"
 STOP_PLAN_FIELD = "STOP_T0_B2_PHYSICAL_PLAN_ENTRY_DISAGREES_WITH_LOGICAL_ROW"
 STOP_MEMBERSHIP_SPLICE = "STOP_T0_B2_MEMBERSHIP_SPLICED_AFTER_CLOSURE"
 STOP_PARENT_IDENTITY = "STOP_T0_B2_PARENT_IDENTITY_NOT_EXTERNALLY_BOUND"
+STOP_STORED_ROOT_DISAGREES = "STOP_T0_B2_STORED_ROOT_DISAGREES_WITH_RECOMPUTED_ROOT"
 STOP_COUNTS_DIGEST = "STOP_T0_B2_COUNTS_PAYLOAD_DIGEST_MISMATCH"
 STOP_FIELD_TYPE = "STOP_T0_B2_AUTHORITY_FIELD_TYPE_NOT_ALLOWED"
 STOP_FIELD_SCHEMA = "STOP_T0_B2_AUTHORITY_FIELD_SCHEMA_VIOLATION"
@@ -429,14 +430,27 @@ def build_population_closure(
     }
 
 
-def _logical_root(rows: Sequence[Mapping[str, Any]], feature_root: str) -> str:
+def _logical_root(rows: Sequence[Mapping[str, Any]], feature_root: str,
+                  closure_root: str) -> str:
+    """Digest of the logical row authority.
+
+    Binds BOTH parents and every execution-relevant row field. Two omissions
+    were found here by external review after the R2 repairs: the population
+    closure root, and the `meta_path` / `counts_path` the execution path actually
+    reads. Without the closure root a logical object could carry a different
+    population identity and still reproduce the expected root; without the paths
+    it could point at different files. Mutating the logical rows and the physical
+    plan together keeps them consistent with each other, so the physical
+    verifier's field comparison cannot substitute for binding them here.
+    """
     fields = ("logical_index", "canonical_cell_id", "donor_id", "block_key",
               "row_index", "selection_row", "expression_row",
-              "primary_row_weight", "source_library", "meta_sha256",
-              "counts_sha256")
+              "primary_row_weight", "source_library", "meta_path",
+              "meta_sha256", "counts_path", "counts_sha256")
     digest = hashlib.sha256()
-    digest.update(_typed("T0_V20_LOGICAL_ROW_AUTHORITY_V4"))
+    digest.update(_typed("T0_V20_LOGICAL_ROW_AUTHORITY_V5"))
     digest.update(_typed(feature_root))
+    digest.update(_typed(closure_root))
     digest.update(_typed(len(rows)))
     digest.update(_typed(len(fields)))
     for row in rows:
@@ -516,7 +530,8 @@ def build_logical_row_authority(
             "projection"
         ),
         "logical_row_authority_root_sha256": _logical_root(
-            rows, feature_authority_root_sha256),
+            rows, feature_authority_root_sha256,
+            closure["population_closure_root_sha256"]),
         "real_execution_ready": False,
     }
 
@@ -649,7 +664,9 @@ ROW_FIELD_TYPES = {
     "expression_row": int,
     "primary_row_weight": str,
     "source_library": int,
+    "meta_path": str,
     "meta_sha256": str,
+    "counts_path": str,
     "counts_sha256": str,
 }
 
@@ -694,8 +711,15 @@ def assert_row_authority_lawful(
     logical: Mapping[str, Any],
     expected_logical_row_authority_root_sha256: str,
     expected_feature_authority_root_sha256: str,
+    expected_population_closure_root_sha256: str,
 ) -> dict[str, Any]:
-    """External verifier path: enforce types, then recompute against outside roots."""
+    """External verifier: enforce types, then establish all three equalities.
+
+    Comparing only the recomputed root against the outside expectation left an
+    object whose STORED root disagreed with its own contents able to pass. So the
+    check is stored == recomputed == externally expected, and both parents -- the
+    feature root and the population closure root -- are externally bound.
+    """
     if logical.get("real_execution_ready") is not False:
         raise AssertionError("%s: a pathology-blind row authority may not claim readiness"
                              % STOP_FIELD_SCHEMA)
@@ -706,13 +730,33 @@ def assert_row_authority_lawful(
                              % (STOP_FEATURE_ROOT_MALFORMED,
                                 logical.get("feature_authority_root_sha256"),
                                 expected_feature_authority_root_sha256))
+    stored_closure = logical.get("population_closure_root_sha256")
+    if not _is_hex64(stored_closure):
+        raise AssertionError(
+            "%s: the row authority does not carry a population closure root, so "
+            "its population identity cannot be bound"
+            % (STOP_PARENT_IDENTITY,))
+    if str(stored_closure) != str(expected_population_closure_root_sha256):
+        raise AssertionError(
+            "%s: the row authority names closure root %s, externally expected %s"
+            % (STOP_PARENT_IDENTITY, stored_closure,
+               expected_population_closure_root_sha256))
+
     recomputed = _logical_root(logical["rows"],
-                               logical["feature_authority_root_sha256"])
+                               logical["feature_authority_root_sha256"],
+                               stored_closure)
+    stored_root = logical.get("logical_row_authority_root_sha256")
+    if str(stored_root) != recomputed:
+        raise AssertionError(
+            "%s: the object stores logical root %s but its own contents "
+            "recompute to %s"
+            % (STOP_STORED_ROOT_DISAGREES, stored_root, recomputed))
     if recomputed != str(expected_logical_row_authority_root_sha256):
         raise AssertionError("%s: recomputed %s is not the expected %s"
                              % (STOP_RESTORE, recomputed,
                                 expected_logical_row_authority_root_sha256))
     return {"logical_row_authority_root_sha256": recomputed,
+            "population_closure_root_sha256": str(stored_closure),
             "rows": len(logical["rows"])}
 
 

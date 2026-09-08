@@ -69,6 +69,16 @@ def _read(source_bytes: bytes, **overrides):
     return ags.read_demographics(**kwargs)
 
 
+def _membership(donors) -> bytes:
+    buffer = io.StringIO()
+    writer = csv.writer(buffer, lineterminator="\n")
+    writer.writerow(["source", "matrix_id", "operator_index", "donor_id", "cell_id"])
+    for index, donor in enumerate(donors):
+        writer.writerow(["SEA_AD", "sea_ad_mtg_rna_final_2026", 31, donor,
+                         "%s-c%d" % (donor, index)])
+    return buffer.getvalue().encode("utf-8")
+
+
 # --- source authentication and column scope ---------------------------------
 
 def test_the_two_columns_are_read_for_the_candidate_donors(source: bytes) -> None:
@@ -238,10 +248,19 @@ def test_the_typed_framing_refuses_a_float() -> None:
 # --- package round trip -----------------------------------------------------
 
 def _build(tmp_path, source_bytes, **overrides):
+    """Build through the authenticated-membership path.
+
+    A bare `candidate_donors` list is refused by the production constructor,
+    because it would let this correct source be paired with the wrong subset of
+    donors. So the helper supplies the provenance the contract requires.
+    """
+    donors = overrides.pop("donors", ["D1", "D2", "D3"])
+    membership = _membership(donors)
     kwargs = dict(source_bytes=source_bytes,
                   expected_source_sha256=hashlib.sha256(source_bytes).hexdigest(),
-                  candidate_donors=["D1", "D2", "D3"],
-                  derivation_code_sha256=CODE_SHA, expected_donors=3)
+                  membership_bytes=membership,
+                  expected_membership_sha256=hashlib.sha256(membership).hexdigest(),
+                  derivation_code_sha256=CODE_SHA, expected_donors=len(donors))
     kwargs.update(overrides)
     return ags.build_production_authority(tmp_path / "pkg", **kwargs)
 
@@ -321,3 +340,119 @@ def test_the_metadata_declares_no_at8_and_records_the_composition(
     assert "must not be altered to rescue it" in meta["nuisance_design_note"]
     assert meta["ordering"] == "DONOR_ID_ASCENDING_BY_UTF8_BYTES"
     assert meta["real_execution_ready"] is False
+
+
+# ---------------------------------------------------------------------------
+# The candidate donor set must be authenticated, not caller-supplied.
+#
+# External review found the gap: `candidate_donors` arrived as a free list that
+# nothing tied to the accepted membership or to a frozen candidate-universe
+# identity. So the correct 84-donor pathology source could be paired with the
+# wrong subset of 46 donors, and the resulting authority would look perfectly
+# well-formed. This is the same class as the detached digest labels removed from
+# the IMMUNE_FRACTION production path: an input that names a population without
+# being bound to it.
+# ---------------------------------------------------------------------------
+
+def test_the_candidate_set_can_be_derived_from_authenticated_membership(
+        tmp_path, source: bytes) -> None:
+    """Bytes in: the donor universe comes from the membership, not the caller."""
+    membership = _membership(["D1", "D2", "D3"])
+    summary = ags.build_production_authority(
+        tmp_path / "pkg",
+        source_bytes=source,
+        expected_source_sha256=hashlib.sha256(source).hexdigest(),
+        membership_bytes=membership,
+        expected_membership_sha256=hashlib.sha256(membership).hexdigest(),
+        derivation_code_sha256=CODE_SHA, expected_donors=3)
+    assert summary["donor_count"] == 3
+    assert summary["candidate_donor_set_sha256"] == ags.candidate_donor_set_digest(
+        ["D1", "D2", "D3"])
+
+
+def test_a_wrong_membership_expectation_stops_the_derivation(
+        tmp_path, source: bytes) -> None:
+    membership = _membership(["D1", "D2", "D3"])
+    with pytest.raises(AssertionError) as excinfo:
+        ags.build_production_authority(
+            tmp_path / "pkg", source_bytes=source,
+            expected_source_sha256=hashlib.sha256(source).hexdigest(),
+            membership_bytes=membership,
+            expected_membership_sha256="f" * 64,
+            derivation_code_sha256=CODE_SHA, expected_donors=3)
+    assert ags.STOP_MEMBERSHIP_DIGEST in str(excinfo.value)
+
+
+def test_a_caller_supplied_list_must_match_a_frozen_universe_digest(
+        tmp_path, source: bytes) -> None:
+    """The alternative path: bind the list to an externally frozen identity."""
+    digest = ags.candidate_donor_set_digest(["D1", "D2", "D3"])
+    summary = ags.build_production_authority(
+        tmp_path / "pkg", source_bytes=source,
+        expected_source_sha256=hashlib.sha256(source).hexdigest(),
+        candidate_donors=["D1", "D2", "D3"],
+        expected_candidate_donor_set_sha256=digest,
+        derivation_code_sha256=CODE_SHA, expected_donors=3)
+    assert summary["candidate_donor_set_sha256"] == digest
+
+
+def test_a_caller_supplied_list_that_misses_the_frozen_universe_is_refused(
+        tmp_path, source: bytes) -> None:
+    """The exact defect: the right source paired with the wrong subset."""
+    frozen = ags.candidate_donor_set_digest(["D1", "D2", "D3"])
+    with pytest.raises(AssertionError) as excinfo:
+        ags.build_production_authority(
+            tmp_path / "pkg", source_bytes=source,
+            expected_source_sha256=hashlib.sha256(source).hexdigest(),
+            candidate_donors=["D1", "D2"],
+            expected_candidate_donor_set_sha256=frozen,
+            derivation_code_sha256=CODE_SHA, expected_donors=2)
+    assert ags.STOP_CANDIDATE_UNIVERSE in str(excinfo.value)
+
+
+def test_an_unbound_candidate_list_is_refused_outright(tmp_path,
+                                                       source: bytes) -> None:
+    """Neither authenticated membership nor a frozen digest means no provenance."""
+    with pytest.raises(AssertionError) as excinfo:
+        ags.build_production_authority(
+            tmp_path / "pkg", source_bytes=source,
+            expected_source_sha256=hashlib.sha256(source).hexdigest(),
+            candidate_donors=["D1", "D2", "D3"],
+            derivation_code_sha256=CODE_SHA, expected_donors=3)
+    assert ags.STOP_CANDIDATE_UNIVERSE in str(excinfo.value)
+
+
+def test_the_donor_set_digest_is_injective_over_delimiters() -> None:
+    """The collision class that broke an earlier donor-set digest."""
+    assert ags.candidate_donor_set_digest(["a|b"]) != \
+        ags.candidate_donor_set_digest(["a", "b"])
+
+
+def test_the_donor_set_digest_is_order_independent() -> None:
+    assert ags.candidate_donor_set_digest(["D2", "D1"]) == \
+        ags.candidate_donor_set_digest(["D1", "D2"])
+
+
+def test_a_duplicate_in_the_candidate_set_is_refused() -> None:
+    with pytest.raises(AssertionError) as excinfo:
+        ags.candidate_donor_set_digest(["D1", "D1"])
+    assert ags.STOP_DUPLICATE_DONOR in str(excinfo.value)
+
+
+def test_the_loader_binds_the_candidate_universe_digest(tmp_path,
+                                                        source: bytes) -> None:
+    membership = _membership(["D1", "D2", "D3"])
+    summary = ags.build_production_authority(
+        tmp_path / "pkg", source_bytes=source,
+        expected_source_sha256=hashlib.sha256(source).hexdigest(),
+        membership_bytes=membership,
+        expected_membership_sha256=hashlib.sha256(membership).hexdigest(),
+        derivation_code_sha256=CODE_SHA, expected_donors=3)
+    with pytest.raises(AssertionError) as excinfo:
+        ags.load_authority(
+            tmp_path / "pkg",
+            expected_package_root_sha256=summary["package_root_sha256"],
+            expected_age_sex_root_sha256=summary["age_sex_root_sha256"],
+            expected_source_sha256=hashlib.sha256(source).hexdigest(),
+            expected_candidate_donor_set_sha256="f" * 64)
+    assert ags.STOP_CANDIDATE_UNIVERSE in str(excinfo.value)

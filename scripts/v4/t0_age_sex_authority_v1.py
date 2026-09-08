@@ -53,6 +53,10 @@ STOP_PATHOLOGY_LEAK = "STOP_T0_AGE_SEX_PATHOLOGY_FIELD_IN_EMITTED_SCHEMA"
 STOP_ROOT_MISMATCH = "STOP_T0_AGE_SEX_ROOT_MISMATCH"
 STOP_PACKAGE_MEMBER = "STOP_T0_AGE_SEX_PACKAGE_MEMBER_INVALID"
 STOP_FIELD_SCHEMA = "STOP_T0_AGE_SEX_FIELD_SCHEMA_VIOLATION"
+STOP_CANDIDATE_UNIVERSE = "STOP_T0_AGE_SEX_CANDIDATE_UNIVERSE_NOT_AUTHENTICATED"
+STOP_MEMBERSHIP_DIGEST = "STOP_T0_AGE_SEX_MEMBERSHIP_DIGEST_MISMATCH"
+
+MEMBERSHIP_COLUMNS = ("source", "matrix_id", "operator_index", "donor_id", "cell_id")
 
 # Frozen source identity and the two columns this authority is permitted to read.
 SOURCE_RELATIVE_PATH = "data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv"
@@ -197,6 +201,107 @@ def read_demographics(
                  sorted(seen, key=lambda d: d.encode("utf-8")))
 
 
+def candidate_donor_set_digest(donors: Iterable[str]) -> str:
+    """Injective, order-independent digest of a donor set.
+
+    An earlier donor-set digest on this project joined identities with a
+    delimiter, so a one-element set containing "a|b" hashed identically to a
+    two-element set containing "a" and "b". This frames each identity with its
+    own length and states the cardinality, and duplicates are refused rather
+    than silently collapsed.
+    """
+    names = [str(donor) for donor in donors]
+    if len(names) != len(set(names)):
+        duplicates = sorted({n for n in names if names.count(n) > 1})
+        raise AssertionError("%s: %s" % (STOP_DUPLICATE_DONOR, duplicates))
+    ordered = sorted(names, key=lambda d: d.encode("utf-8"))
+    parts = [_typed(DOMAIN_TAG), _typed("CANDIDATE_DONOR_SET"),
+             _typed(len(ordered))]
+    for donor in ordered:
+        parts.append(_typed(donor))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
+
+
+def candidate_donors_from_membership(
+        *,
+        membership_bytes: bytes,
+        expected_membership_sha256: str,
+) -> tuple[str, ...]:
+    """Derive the candidate donor universe from the accepted membership.
+
+    The membership defines which donors are candidates, so deriving the set from
+    its authenticated bytes is what stops a correct 84-donor pathology source
+    from being paired with the wrong subset of 46.
+    """
+    payload = bytes(membership_bytes)
+    actual = hashlib.sha256(payload).hexdigest()
+    if actual != str(expected_membership_sha256):
+        raise AssertionError("%s: membership is %s, expected %s"
+                             % (STOP_MEMBERSHIP_DIGEST, actual,
+                                expected_membership_sha256))
+    columns, records = _rows(payload)
+    for required in MEMBERSHIP_COLUMNS:
+        if required not in columns:
+            raise AssertionError("%s: membership lacks %r"
+                                 % (STOP_COLUMNS, required))
+    donors = {str(record["donor_id"]).strip() for record in records}
+    return tuple(sorted(donors, key=lambda d: d.encode("utf-8")))
+
+
+def resolve_candidate_universe(
+        *,
+        membership_bytes: bytes | None = None,
+        expected_membership_sha256: str | None = None,
+        candidate_donors: Sequence[str] | None = None,
+        expected_candidate_donor_set_sha256: str | None = None,
+) -> tuple[tuple[str, ...], str]:
+    """Return an AUTHENTICATED candidate donor universe and its digest.
+
+    Exactly one kind of provenance is acceptable: derive the set from
+    authenticated membership bytes, or supply a list bound to an externally
+    frozen donor-set digest. A bare list with neither is refused, because it
+    names a population without being tied to it -- the same defect class as a
+    detached digest label.
+    """
+    if membership_bytes is not None:
+        if expected_membership_sha256 is None:
+            raise AssertionError(
+                "%s: membership bytes were supplied without an expected digest"
+                % STOP_CANDIDATE_UNIVERSE)
+        donors = candidate_donors_from_membership(
+            membership_bytes=membership_bytes,
+            expected_membership_sha256=expected_membership_sha256)
+        digest = candidate_donor_set_digest(donors)
+        if expected_candidate_donor_set_sha256 is not None:
+            if digest != str(expected_candidate_donor_set_sha256):
+                raise AssertionError(
+                    "%s: the membership yields donor set %s, externally expected %s"
+                    % (STOP_CANDIDATE_UNIVERSE, digest,
+                       expected_candidate_donor_set_sha256))
+        return donors, digest
+
+    if candidate_donors is None:
+        raise AssertionError(
+            "%s: supply either authenticated membership bytes or a candidate "
+            "donor list bound to a frozen donor-set digest"
+            % STOP_CANDIDATE_UNIVERSE)
+    if expected_candidate_donor_set_sha256 is None:
+        raise AssertionError(
+            "%s: a caller-supplied candidate donor list must be bound to an "
+            "externally frozen donor-set digest; an unbound list would let the "
+            "correct pathology source be paired with the wrong donor subset"
+            % STOP_CANDIDATE_UNIVERSE)
+    donors = tuple(sorted((str(d) for d in candidate_donors),
+                          key=lambda d: d.encode("utf-8")))
+    digest = candidate_donor_set_digest(donors)
+    if digest != str(expected_candidate_donor_set_sha256):
+        raise AssertionError(
+            "%s: the supplied donor set is %s, externally expected %s"
+            % (STOP_CANDIDATE_UNIVERSE, digest,
+               expected_candidate_donor_set_sha256))
+    return donors, digest
+
+
 def sex_composition(rows: Sequence[Mapping[str, Any]]) -> dict[str, int]:
     """Counts per sex, so a degenerate design is visible before the split."""
     return {value: sum(1 for row in rows if row["sex"] == value)
@@ -227,15 +332,20 @@ def build_production_authority(
         *,
         source_bytes: bytes,
         expected_source_sha256: str = SOURCE_SHA256,
-        candidate_donors: Sequence[str],
+        membership_bytes: bytes | None = None,
+        expected_membership_sha256: str | None = None,
+        candidate_donors: Sequence[str] | None = None,
+        expected_candidate_donor_set_sha256: str | None = None,
         derivation_code_sha256: str,
         expected_donors: int = PRODUCTION_DONORS,
 ) -> dict[str, Any]:
-    """Authenticate the source, read the two columns, and package.
+    """Authenticate the source and the donor universe, then package.
 
-    Bytes in, package out. The candidate donor set must be supplied and matched
-    exactly, because a demographics authority covering the wrong donors would
-    silently change the statistical population.
+    Bytes in, package out. The candidate donor universe must arrive with
+    provenance -- derived from authenticated membership bytes, or bound to an
+    externally frozen donor-set digest. Accepting a bare list let the correct
+    84-donor pathology source be paired with the wrong subset of 46 donors, and
+    the resulting authority would have looked perfectly well formed.
     """
     out = Path(outdir)
     if out.exists() and any(out.iterdir()):
@@ -245,10 +355,16 @@ def build_production_authority(
         raise AssertionError("%s: derivation_code_sha256 is not a lowercase hex sha256"
                             % STOP_FIELD_SCHEMA)
 
+    universe, universe_digest = resolve_candidate_universe(
+        membership_bytes=membership_bytes,
+        expected_membership_sha256=expected_membership_sha256,
+        candidate_donors=candidate_donors,
+        expected_candidate_donor_set_sha256=expected_candidate_donor_set_sha256)
+
     payload = bytes(source_bytes)
     rows = read_demographics(source_bytes=payload,
                              expected_source_sha256=expected_source_sha256,
-                             candidate_donors=candidate_donors)
+                             candidate_donors=universe)
     if len(rows) != int(expected_donors):
         raise AssertionError("%s: %d donors, expected %d"
                             % (STOP_DONOR_SET, len(rows), int(expected_donors)))
@@ -274,6 +390,13 @@ def build_production_authority(
         "source_relative_path": SOURCE_RELATIVE_PATH,
         "source_sha256": hashlib.sha256(payload).hexdigest(),
         "source_fields_read": list(PERMITTED_SOURCE_FIELDS),
+        "candidate_donor_set_sha256": universe_digest,
+        "candidate_universe_provenance": (
+            "DERIVED_FROM_AUTHENTICATED_MEMBERSHIP" if membership_bytes is not None
+            else "BOUND_TO_EXTERNALLY_FROZEN_DONOR_SET_DIGEST"),
+        "membership_sha256": (
+            hashlib.sha256(bytes(membership_bytes)).hexdigest()
+            if membership_bytes is not None else None),
         "derivation_code_sha256": str(derivation_code_sha256),
         "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
         "sex_vocabulary": list(SEX_VOCABULARY),
@@ -316,6 +439,7 @@ def build_production_authority(
     return {"age_sex_root_sha256": root, "package_root_sha256": pkg_root,
             "donor_count": len(rows), "sex_composition": composition,
             "source_sha256": meta["source_sha256"],
+            "candidate_donor_set_sha256": universe_digest,
             "real_execution_ready": False}
 
 
@@ -326,8 +450,9 @@ def load_authority(
         expected_age_sex_root_sha256: str,
         expected_source_sha256: str,
         expected_derivation_code_sha256: str | None = None,
+        expected_candidate_donor_set_sha256: str | None = None,
 ) -> dict[str, Any]:
-    """Read the authority back, binding its source identity externally."""
+    """Read the authority back, binding its source and donor universe externally."""
     out = Path(outdir)
     captured: dict[str, bytes] = {}
     for name in MEMBERS:
@@ -374,6 +499,20 @@ def load_authority(
                 "%s: derivation code is stored as %r, externally expected %r"
                 % (STOP_ROOT_MISMATCH, meta.get("derivation_code_sha256"),
                    expected_derivation_code_sha256))
+    recomputed_universe = candidate_donor_set_digest(
+        [row["donor_id"] for row in rows])
+    if str(meta.get("candidate_donor_set_sha256")) != recomputed_universe:
+        raise AssertionError(
+            "%s: the stored donor-set digest %r does not match the set the "
+            "registry actually contains, %s"
+            % (STOP_CANDIDATE_UNIVERSE, meta.get("candidate_donor_set_sha256"),
+               recomputed_universe))
+    if expected_candidate_donor_set_sha256 is not None:
+        if recomputed_universe != str(expected_candidate_donor_set_sha256):
+            raise AssertionError(
+                "%s: donor set is %s, externally expected %s"
+                % (STOP_CANDIDATE_UNIVERSE, recomputed_universe,
+                   expected_candidate_donor_set_sha256))
     if meta.get("numeric_at8_value_emitted") is not False:
         raise AssertionError("%s: this authority must emit no AT8 value"
                             % STOP_PATHOLOGY_LEAK)
@@ -382,4 +521,5 @@ def load_authority(
         raise AssertionError("%s: real_execution_ready must be False"
                             % STOP_FIELD_SCHEMA)
     return {"rows": rows, "metadata": meta, "age_sex_root_sha256": root,
-            "package_root_sha256": pkg_root}
+            "package_root_sha256": pkg_root,
+            "candidate_donor_set_sha256": recomputed_universe}

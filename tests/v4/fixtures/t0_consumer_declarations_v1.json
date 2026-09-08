@@ -345,7 +345,7 @@
         "                \"row_index\": row_index,",
         "    fields = (\"logical_index\", \"canonical_cell_id\", \"donor_id\", \"block_key\",",
         "              \"row_index\", \"selection_row\", \"expression_row\",",
-        "              \"primary_row_weight\", \"source_library\", \"meta_sha256\",",
+        "              \"primary_row_weight\", \"source_library\", \"meta_path\",",
         "        source_library = exact_positive_integer(",
         "            meta_row.get(\"source_library\"), \"source_library for %s\" % cell)",
         "            \"canonical_cell_id\": cell,",
@@ -401,8 +401,8 @@
         "        digest.update(_typed(entry[\"row_index\"]))"
       ],
       "root": "BRANCH_SCRIPTS",
-      "source_lines": 1096,
-      "source_sha256": "7f861264c4c40d0b28ba9f2069bcde42570b517a9e3b5c3d74d1c967afa38455"
+      "source_lines": 1140,
+      "source_sha256": "a0cb21d176c73b62e580baad30bb5e8124313b55176b8e41c9cd449f27ffdd4e"
     }
   },
   "schema": "JEPA_T0_CONSUMER_DECLARATION_FIXTURE_V1"

@@ -57,11 +57,15 @@ not read it and does not bind it.
 
 Specification status
 --------------------
-V18 states this covariate only in prose. The exact formula is therefore a
-SUCCESSOR SPECIFICATION, not recovered executable semantics, and this module says
-so in its metadata rather than presenting the ratio as though it had been
-recovered from frozen code. What verification settled is the denominator
-POPULATION; freezing the formula remains an owner act.
+V18 states this covariate only in prose, so the exact formula is a SUCCESSOR
+SPECIFICATION and never recovered executable semantics. It is now frozen as
+`t0_immune_fraction_formula_spec_v1` (version 1.0.0), and this module binds that
+specification's root into every package it writes and refuses to build against a
+specification root the caller did not expect. The status string is imported from
+that module rather than restated here, because restating it is how the two drifted
+apart: this module went on claiming the formula was "awaiting explicit owner
+freeze" after it had been frozen. What verification settled is the denominator
+POPULATION; the formula itself was settled by the owner freeze.
 
 Manifest handling
 -----------------
@@ -149,11 +153,23 @@ OP31_ALL_PARTITIONS_CELLS = 933272
 # V18 states the covariate in prose only. The formula is a successor
 # specification awaiting explicit owner acceptance; it is NOT recovered
 # executable semantics, and this module must not claim otherwise.
-FORMULA_SPEC_VERSION = "1.0.0"
-FORMULA_SPECIFICATION_STATUS = "SUCCESSOR_SPECIFICATION__AWAITING_EXPLICIT_OWNER_FREEZE"
+# Imported rather than restated. An earlier revision duplicated the status string
+# here and it went stale: this module still said the formula was "awaiting
+# explicit owner freeze" after the specification had been frozen. The frozen
+# specification module is the single source of truth.
+def _formula_spec():
+    import t0_immune_fraction_formula_spec_v1 as module
+    return module
+
+
+FORMULA_SPEC_VERSION = _formula_spec().VERSION
+FORMULA_SPECIFICATION_STATUS = _formula_spec().SPECIFICATION_STATUS
 FORMULA_PROVENANCE = (
     "V18 SS170 names 'donor IMMUNE_FRACTION within op31 MTG' in prose. No frozen "
-    "executable definition of the ratio was recovered from the accepted package. "
+    "executable definition of the ratio was recovered from the accepted package, "
+    "so the formula is an explicit successor specification, frozen as "
+    "T0_IMMUNE_FRACTION_FORMULA_SPEC_V1 and bound by root into every package this "
+    "module writes. "
     "Verification settled the denominator POPULATION (the materialized op31 store "
     "is exactly the reader_fit partition); it did not supply a frozen formula."
 )

@@ -438,10 +438,12 @@ def test_the_roots_are_injective_over_types(world: World) -> None:
     rows_typed = [{"logical_index": 0, "canonical_cell_id": "C", "donor_id": "D",
                    "block_key": "b", "row_index": 1, "selection_row": 2,
                    "expression_row": 3, "primary_row_weight": "w",
-                   "source_library": 9470, "meta_sha256": "m", "counts_sha256": "c"}]
+                   "source_library": 9470, "meta_path": "m.csv",
+                   "meta_sha256": "m", "counts_path": "c.npz",
+                   "counts_sha256": "c"}]
     rows_text = [dict(rows_typed[0], row_index="1", logical_index="0",
                       source_library="9470")]
-    assert rc._logical_root(rows_typed, "f" * 64) != rc._logical_root(rows_text, "f" * 64)
+    assert rc._logical_root(rows_typed, "f" * 64, "e" * 64) !=         rc._logical_root(rows_text, "f" * 64, "e" * 64)
     assert rc._closure_root(31, "M", ["b"], 1, {"c": _loc("k", 0)}, "a" * 64, "b" * 64) != (
         rc._closure_root("31", "M", ["b"], "1", {"c": _loc("k", "0")}, "a" * 64, "b" * 64))
 
@@ -453,7 +455,9 @@ def test_the_external_verifier_refuses_type_substitutions(world: World) -> None:
         logical=logical,
         expected_logical_row_authority_root_sha256=logical[
             "logical_row_authority_root_sha256"],
-        expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT)
+        expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT,
+        expected_population_closure_root_sha256=logical[
+            "population_closure_root_sha256"])
     assert good["rows"] == 3
     for field, replacement in (("row_index", "1"), ("logical_index", "0"),
                                ("source_library", "9470"), ("selection_row", "2")):
@@ -465,7 +469,9 @@ def test_the_external_verifier_refuses_type_substitutions(world: World) -> None:
                 logical=forged,
                 expected_logical_row_authority_root_sha256=logical[
                     "logical_row_authority_root_sha256"],
-                expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT)
+                expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT,
+                expected_population_closure_root_sha256=logical[
+                    "population_closure_root_sha256"])
 
 
 def test_the_membership_and_manifest_digests_are_required(world: World) -> None:
