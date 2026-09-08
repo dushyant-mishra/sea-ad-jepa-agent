@@ -471,3 +471,95 @@ The next chat should begin by reading:
 4. TD57B result;
 5. TD57C result;
 6. the Teacher/Student relational extension only as a **prospective mechanics candidate**, not scientific authority.
+
+## 18. Successor update — TD59 resolved; TD60 prospectively frozen
+
+This section supersedes Sections 13-14 wherever they describe the locality frontier as still unresolved.
+
+### TD59 — nearest-half mesoscale result
+
+Prospective freeze:
+`864651fbe56b973f6645866624513e827c2c54da`
+
+Panel-0 preservation before Panel-1 opening:
+`4a27575bb2bc37617624a266b888f8ec0d36080c`
+
+Final result commit:
+`91a782c92b5d0d02358e3481a08395819c77f905`
+
+Result:
+- 2 completely fresh Z/X/Y panels;
+- HVS, NPH52, SEA_AD;
+- 2 donor splits × 2 halves;
+- **24/24 PASS** under the prospectively frozen observed > 0.5 and observed > matched-null p95 rule;
+- all six source-panel runs replay byte-for-byte identically;
+- optimized vs direct concordance-distance audit max difference 0.0.
+
+Important strength limitation:
+- weakest observed - null p95 margin = **+0.0011566307718604563**;
+- **22/24**, not 24/24, beat the maximum of 64 nulls;
+- both null-max exceptions are Panel-0 HVS.
+
+Therefore TD59 is a real PASS but is materially weaker than TD57B.
+
+Frozen interpretation:
+- nearest-third remains a real TD57C failure;
+- nearest-half survives on fresh views;
+- this is an operational pilot bracket, **not** a precise monotone biological transition, because TD57C and TD59 use different prospectively frozen molecular views;
+- broad/mesoscale or affinity-weighted relation matching remains supported;
+- deep nearest-third hard/local mining should not be the primary loss;
+- **no additional locality fraction may be tuned on the 50k archive**.
+
+Frozen terminal:
+`TD59_NEAREST_HALF_MESOSCALE_RELATIONAL_RECURRENCE_SURVIVES__PILOT_FRONTIER_BRACKETED_BETWEEN_ONE_THIRD_AND_ONE_HALF__NO_TRAINING_AUTHORITY`
+
+### TD60 — learned-teacher continuity gate
+
+Prospective design commit:
+`79c893ab27f87c1c2c4e57241bfc3af8d855a250`
+
+TD60 introduces no new panel or locality search.
+
+It reuses:
+- exact TD57B global relational panels/triplet/null mechanics;
+- exact TD59 nearest-half mesoscale panels/triplet/null mechanics.
+
+Decision-bearing model state:
+- lawful successor **u40 EMA teacher only**.
+
+Reference:
+- successor u0 may be reported reference-only;
+- historical u0 remains clean reference/source only;
+- historical u10-u205 are ineligible.
+
+Teacher representation:
+- direct 160-D `cell_state`;
+- no learned projection;
+- 512-gene X/Y measured-panel views;
+- cosine cell-cell distance;
+- anchored triplet order;
+- matched wrong-cell Y null.
+
+Full TD60 requires:
+- 24/24 global latent cases;
+- 24/24 mesoscale latent cases;
+- **48/48 total**.
+
+No continuation is allowed while the immutable u40 checkpoint is being adjudicated.
+
+### Current cross-lane execution blocker
+
+Do **not** fabricate a review-terminal alias.
+
+The self-contained Claude V3 review instructions request:
+`PASS_TEACHER_STUDENT_UNIFIED_V3_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED`
+
+but the current execution-overlay validator accepts only an independent-review terminal beginning:
+`PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW`
+
+Unless a separately authoritative reconciliation already exists, a successful Claude result cannot directly satisfy the overlay validator.
+
+This must be resolved explicitly in the Teacher/Student authority lane before successor-u0 materialization/u0->u40 execution.
+
+Teacher/Student branch remains untouched and training remains unauthorized.
+
