@@ -2,60 +2,84 @@
 
 Date: 2026-09-08
 
-Purpose: make one current project lineage explicit while preserving every
-historical commit for audit/reproducibility.
-
 ## Project-level rule
 
-`main` supersedes **branch-level authority** of all
-older planning/candidate/production/review branches.
+`main` is the single current project lineage.
 
-This does **not** erase frozen scientific contracts or accepted external-review
-terminals. It only means `main` is the place where
-those authorities are assembled and interpreted.
+All older planning/candidate/production/review branches are provenance once
+their heads are absorbed into `main`. Their commits remain immutable history,
+but their branch-local "current" language no longer controls project execution.
+
+This supersession does not erase frozen scientific contracts or accepted
+external-review terminals. It controls which branch/tree is interpreted as
+current.
 
 ## Current lineage map
 
 | Historical line | Status now | Controlled by |
 |---|---|---|
-| September 3 `main` authority index/supersession map | SUPERSEDED as project-current governance | 2026-09-08 consolidated `main` lineage |
-| Teacher/Student V1/V3/V4 production/candidate branches | HISTORICAL / mechanics evidence | V5 data-first design + explicit future production freeze |
-| 3,292-cell u40/u205 training schedule | MECHANICS CLOCK ONLY | future full-reader exposure authority for biological training |
-| Teacher/Student V5 candidate/design/refine/RNG side branches | HISTORY ABSORBED; not independently current | consolidated `main` lineage and future V5 freeze |
+| September-3 F1-only startup governance | SUPERSEDED as project-current | 2026-09-08 `main` governance |
+| Teacher/Student V1/V3/V4 branches | HISTORICAL / mechanics evidence | V5 data-first current tree + future production freeze |
+| V5 candidate/design/refine/RNG side branches | HISTORY ABSORBED | current V5 tree reconciled from `c7b1663...` plus explicitly retained proof helpers |
+| 3,292-cell u40/u205 schedule | MECHANICS CLOCK ONLY | future full-reader exposure/coverage authority |
+| old Philox V1/prototype helpers | PROOF/HISTORICAL ONLY | active V5 RNG contract V2 / active test manifest |
 | F1-B/C3 attack/successor branches | MECHANICS EVIDENCE | future integrated trainer binding |
-| F1 real-reader/preflight/replay branches | PREFREEZE EVIDENCE | future execution authorization |
-| D0 / early target-detectability lines | HISTORICAL | current relational Target Discovery line |
-| D1 synthetic atlas/ranking lines | HISTORICAL / design evidence | current D1 V2 line |
-| Stage81A2/A3 historical branches | HISTORICAL DATA/AUTHORITY EVIDENCE | current project authority index |
-| T0 V19 / earlier T0 binding lines | HISTORICAL | accepted V20 science + current T0 implementation/review line |
-| old reviewer branches | HISTORICAL EXTERNAL-REVIEW EVIDENCE | current project-wide blocker ledger + any explicit immutable PASS terminal |
+| F1 real-reader/preflight/replay branches | PREFREEZE EVIDENCE | future explicit F1 execution authorization |
+| D0 / early target-detectability lines | HISTORICAL | current relational Target Discovery |
+| D1 synthetic atlas/ranking lines | HISTORICAL / design evidence | current D1 V2 |
+| Stage81A2/A3 branches | HISTORICAL DATA/AUTHORITY EVIDENCE | current project authority index |
+| T0 V19 / earlier binding lines | HISTORICAL | accepted V20 science + current T0 implementation/review |
+| old reviewer branches | HISTORICAL REVIEW EVIDENCE | current main blocker ledger + exact immutable review terminals |
 
-## Cross-lane corrections
+## V5 correction after consolidation
 
-### Mechanics time vs biological time
+The first consolidation preserved all V5 history but retained an older V5 tree.
+That was insufficient because Target Discovery had already promoted the verified
+V5 data-first materialization at `c7b1663...` as the current prospective
+successor.
 
-Historical u40/u205 meanings are retained for mechanics qualification only.
+The main tree was therefore reconciled by restoring the current V5 file surface
+from `c7b1663...` while retaining later non-conflicting proof/helper artifacts
+as non-authoritative history.
 
-A future full-reader teacher must use prospectively frozen exposure/coverage
-milestones derived from the 4,553,407-cell reader-fit schedule.
+Current V5 authority must be read from:
 
-TD60 must be amended prospectively to consume that learned-teacher checkpoint.
+- `TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json`;
+- `TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V2.json`;
+- `TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt`;
+- the current V5 authority candidate/status artifacts;
+- `CURRENT_AUTHORITY_INDEX.md`.
 
-### Teacher/Student scientific weighting
+Do not promote older V5 defaults merely because their files remain preserved.
 
-No historical sampler/weight/masking default is promoted merely because it
-exists in older code. V5 must explicitly freeze its scientific estimand,
-proposal, relational weighting, and evidence/target policy.
+## Cross-lane correction — mechanics vs biological time
 
-### T0
+Historical `u40/u205` may remain mechanics qualification checkpoints.
 
-No earlier T0 branch or PASS artifact may bypass the current three external STOPs.
+A decision-bearing learned teacher must instead be selected under a
+prospectively frozen full-reader exposure/coverage schedule over the
+4,553,407-cell reader-fit population.
 
-## Branch-history preservation
+TD60's old "successor u40 EMA teacher" wording therefore requires prospective
+amendment before TD60 execution. No TD60 outcome has been opened, so this
+correction remains prospective and lawful.
 
-On 2026-09-08 the remaining divergent branch histories were absorbed into `main` using merge parents while keeping the current integrated
-tree unchanged. This preserves unique historical commits without reactivating
-stale code.
+## T0
 
-Branch deletion is repository hygiene only and does not alter authority once
-this map is current.
+No historical T0 PASS or earlier branch may bypass the current three external
+implementation STOPs.
+
+## Branch deletion
+
+Once a non-main branch head is proven to be an ancestor of current `main`, its
+branch ref may be deleted without loss of commit history.
+
+Deleting a branch ref:
+
+- does not delete the absorbed commits;
+- does not invalidate hashes/package roots;
+- does not delete tags;
+- does not change execution authority.
+
+Tags and immutable package artifacts must not be deleted as part of branch
+hygiene.
