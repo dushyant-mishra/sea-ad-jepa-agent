@@ -36,6 +36,7 @@ from sea_ad_jepa.v4.teacher_student_checkpoint import (
     sha256_file,
 )
 from sea_ad_jepa.v4.teacher_student_movement import enforce_module_movement
+from sea_ad_jepa.v4.teacher_student_source_authority import verify_source_authority
 from sea_ad_jepa.v4.teacher_student_runtime import (
     F1B_ATTACK_AUTHORITY_ROOT,
     FROZEN_BACKBONE_REGISTRY,
@@ -110,6 +111,7 @@ def main() -> int:
     if not overlay_result["terminal"].startswith("PASS_"):
         raise RuntimeError(f"invalid execution-binding overlay: {overlay_result}")
     overlay_sha = canonical_overlay_sha256(overlay)
+    verify_source_authority(overlay["integrated_successor"]["source_manifest_root"])
     execution = json.loads(args.execution_authority.read_text(encoding="utf-8"))
     validate_execution_authority(execution, overlay_sha256=overlay_sha)
 
