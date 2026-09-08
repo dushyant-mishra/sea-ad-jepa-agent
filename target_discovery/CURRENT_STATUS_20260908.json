@@ -64,7 +64,25 @@
     "cases_total_for_null_max_diagnostic": 24,
     "interpretation": "Fresh nearest-half mesoscale views survive the frozen p95 criterion across both panels/all sources. This supports broad/mesoscale relation matching but is weaker than TD57B because two Panel-0 HVS cases do not beat null max.",
     "important_non_equivalence": "TD57C and TD59 use different prospectively frozen molecular views. Their results operationally bracket the pilot designs but do not estimate a precise monotone biological transition at exactly one-third versus one-half.",
-    "locality_fraction_tuning_on_50k_closed": true
+    "locality_fraction_tuning_on_50k_closed": true,
+    "replay_closure": {
+      "status": "PASS_TD59_REPLAY_CLOSURE_BY_INDEPENDENT_RECONSTRUCTION__ORIGINAL_EXECUTOR_BYTES_NOT_RECOVERED",
+      "successor_replay_executor_sha256": "870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085",
+      "replay_closure_manifest_root_sha256": "f379301555831bb32fe227ac578b33659e58adac8a71e88a17a3f06a9e332237",
+      "exact_case_rows_reproduced": 24,
+      "exact_case_rows_total": 24,
+      "exact_values_per_case": [
+        "observed",
+        "null_p95",
+        "null_max"
+      ],
+      "pair_hashes_reproduced": 6,
+      "original_executor_sha256_preserved": "3268486b3ccd002fe83d05fea25b16ff88cde85a0511255852ae6fc7dc12d9f0",
+      "original_executor_bytes_recovered": false,
+      "original_result_json_bytes_recovered": false,
+      "scientific_terminal_changed": false,
+      "boundary": "Closes scientific-statistic replay; does not claim recovery of missing original local byte provenance."
+    }
   },
   "current_interpretation": [
     "Disjoint-gene concordance geometry is real and cross-source reproducible (TD56).",
