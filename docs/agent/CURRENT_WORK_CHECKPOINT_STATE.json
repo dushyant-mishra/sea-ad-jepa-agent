@@ -179,10 +179,10 @@
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "BUILD_S2_ROW_AND_COUNT_AUTHORITY_CONSUMING_THE_FEATURE_AUTHORITY_ROOT",
-    "DESIGN_PROMOTION_ONLY_SUCCESSOR_SCHEMA_VERIFIER_AND_ENTRYPOINT",
-    "AWAIT_INDEPENDENT_ATTACK_ON_AVAILABILITY_ZIP_V3_AND_S2_AUTHORITY",
-    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND_UNTIL_VERIFIED"
+    "AWAIT_INDEPENDENT_ATTACK_ON_e5bdd4fa_f6a63ae4_2e48f365_e4187f25_AND_B2",
+    "RUN_B2_AGAINST_THE_REAL_OPERATOR_31_POPULATION_AND_VERIFY_COUNTS_ROW_DIMENSION",
+    "DESIGN_PROMOTION_ONLY_SUCCESSOR_SCHEMA_VERIFIER_AND_ENTRYPOINT_SYNTHETIC_ONLY",
+    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND_UNTIL_RESOLVED"
   ],
   "peer_agents": [
     "CODEX",
@@ -417,6 +417,34 @@
       "status": "AUTHORITY_BOUND__AWAITING_INDEPENDENT_ATTACK",
       "two_root_design": "projection_root binds the ordered rows only, and independent review showed the same root still verified after altering matrix_id, address_space_size, the split/registry/support digests, schema, namespace, role counts or real_execution_ready: the rows were bound but the authority saying what they mean was not. feature_authority_root additionally binds schema, namespace, the accepted split member path and digest, the projection root, the feature count, the role counts, the matrix id, the address-space size, the registry and both support digests, the Stage81A2R pin, the ordering contract, source_feature_index_used and real_execution_ready. Demonstrated on production data: a matrix_id mutation leaves projection_root identical and moves feature_authority_root."
     },
+    "s2_row_count_authority": {
+      "adversarial_cases": "30 passed",
+      "consumes_feature_authority_root": "81b570abb46d4406b746478c48c121ae3e9b524b8736b6548488e264d4bcb1cf",
+      "field_disclosure": {
+        "audit_only": [
+          "selection_row",
+          "primary_row_weight"
+        ],
+        "note": "Declared explicitly rather than implied, and required to be disjoint.",
+        "v20_consumed": [
+          "canonical_cell_id",
+          "donor_id",
+          "expression_row",
+          "source_library"
+        ]
+      },
+      "not_yet_done": "No production run against the real 1,247 blocks and 638,150 metadata rows, and no verification that a loaded counts payload has row dimension 41,238. Both are the next step.",
+      "real_execution_ready": false,
+      "schema": "JEPA_T0_V20_ROW_COUNT_AUTHORITY_V1",
+      "self_found_defect": "assert_plan_restores_logical compared logical indices against range(len(entries)), so dropping the last entry left [0, 1], still a valid permutation of range(2), and a truncated plan satisfied restoration. A physical plan could therefore have silently shrunk the population, which is exactly what the three-root separation exists to prevent. Caught by one of my own cases; restoration now compares against the carried logical row count.",
+      "source_library_rule": "Bound as an exact positive integer from block metadata and never recomputed. Zero, negative, fractional, exponent-form and NaN refused. Both forbidden substitutions are attempted and refused: a sum over the stored 41,238-address row and a sum over the 35,076-address projection. The bound value is accepted so the check discriminates.",
+      "status": "BUILT_ON_SYNTHETIC_FIXTURES__AWAITING_INDEPENDENT_ATTACK_AND_PRODUCTION_RUN",
+      "three_roots": {
+        "logical_row_authority_root": "rows in frozen membership order with all six Phase2 metadata fields and the metadata and counts digests, bound to the Lane B1 feature authority root, which is a required argument.",
+        "physical_read_plan_root": "block-then-row I/O ordering carrying logical_index on every entry, plus the logical root it must restore. Restoration is checked against the carried logical row count, not the plan's own length.",
+        "population_closure_root": "operator, matrix, every block scanned, rows scanned and per-cell block plus row location. The scan covers every block and does not stop once every target has been seen, because a duplicate can appear in a later block."
+      }
+    },
     "schema": "T0_V20_PATHOLOGY_BLIND_MATERIALIZATION_LANE_V1",
     "self_audit_20260908": {
       "availability_attacks": "22 passed",
@@ -427,6 +455,13 @@
       "finding_4_external": "Independent review then found the TOCTOU and index-protection defects above, plus four lower-level authority/governance defects. Both blocking defects were reproduced locally before repair: a staged replacement of a frozen authority validated with zero errors, and the availability source was authenticated by path rather than by bytes."
     },
     "source_library_rule": "Phase2 constructs source_library as an integer sum of the FULL raw source row, computed BEFORE source-to-address projection. Bind it as an exact positive integer. Never recompute it from the stored 41,238-address row or from the 35,076-address T0 projection; neither sum is required to equal it.",
+    "suite_totals": {
+      "aggregate_observed": "130 passed",
+      "availability": "30 cases",
+      "checkpoint": "31 functions",
+      "feature_projection": "37 cases",
+      "row_count": "30 cases"
+    },
     "terminal_on_success": "T0_V20_PATHOLOGY_BLIND_FEATURE_SOURCE_ROW_AUTHORITIES_MATERIALIZED_AND_VERIFIED__STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND__REAL_T0_STILL_UNAUTHORIZED",
     "three_roots_required": [
       "population_closure_root",
