@@ -133,7 +133,6 @@ jobs:
               "docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.md",
               "docs/agent/HEALTHY_TEACHER_TRAINING_CONTRACT_V1_20260907.json",
               "docs/agent/JEPA_POPULATION_ACCESS_REGISTRY_FREEZE_20260907.json",
-              "docs/agent/F1B_ATTACK_AUTHORITY_FREEZE_20260907.json",
               "scripts/agent/audit_teacher_student_integration_freeze_v3.py",
               "tests/test_teacher_student_integration_freeze_v3.py",
           ]
