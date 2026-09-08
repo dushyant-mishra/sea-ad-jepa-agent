@@ -2,8 +2,8 @@
 """Expose the canonical teacher/student runtime to the frozen F1-B attacks.
 
 Training-critical seams are probed through canonical runtime/movement code.
-Non-training diagnostic seams delegate to the already-reviewed C3 successor
-helpers instead of being reimplemented a third time.
+The surviving non-training behavioral seams live in the canonical diagnostics
+module, so no retired C3 implementation remains an active dependency.
 """
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from typing import Any, Mapping
 
 import torch
 
-from scripts.v4.f1b_c3_training_successor_v2 import (
+from sea_ad_jepa.v4.teacher_student_diagnostics import (
     directional_claim,
     enforce_frozen_horizon,
     refit_g5_probe,
