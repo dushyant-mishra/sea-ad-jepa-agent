@@ -1,0 +1,33 @@
+{
+  "schema": "HEALTHY_TEACHER_U0_CPU_COMPATIBILITY_PREFLIGHT_V1",
+  "date": "2026-09-08",
+  "historical_u0_path_in_archive": "checkpoints/t1_checkpoint_u0000.pt",
+  "historical_u0_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+  "historical_schema": "prod41k-teacher-t1-v2",
+  "schedule_cursor": 0,
+  "global_update_step": 0,
+  "ema_update_count": 0,
+  "historical_state_counts": {
+    "online_encoder": 108,
+    "target_encoder": 108,
+    "predictor": 15,
+    "optimizer_state_entries": 0,
+    "cuda_rng_states": 1
+  },
+  "cpu_preflight_against_v4_model_construction": {
+    "online_key_set_equal": true,
+    "online_shape_mismatches": 0,
+    "teacher_key_set_equal": true,
+    "teacher_shape_mismatches": 0,
+    "predictor_key_set_equal": true,
+    "predictor_shape_mismatches": 0,
+    "optimizer_param_group_count_equal": true
+  },
+  "limitations": [
+    "This is a CPU schema/key/shape compatibility preflight only.",
+    "It does not materialize a successor checkpoint.",
+    "It does not validate CUDA runtime fingerprint or historical CUDA RNG restoration on the eventual qualification host.",
+    "It executes zero optimizer updates and grants no execution authority."
+  ],
+  "terminal": "PASS_HISTORICAL_U0_CPU_COMPATIBILITY_PREFLIGHT__SUCCESSOR_MATERIALIZATION_STILL_UNAUTHORIZED"
+}
