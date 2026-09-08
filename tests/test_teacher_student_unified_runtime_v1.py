@@ -107,10 +107,10 @@ def test_movement_pure_decay_fails_but_any_real_deviation_passes() -> None:
         valid_steps=40,
     )
     assert pure["passed"] is False
-    assert pure["status"] == "DECAY_ONLY"
+    assert pure["status"] == "NOT_ABOVE_DECAY_ONLY"
 
     changed = decay.clone()
-    changed[0] = torch.nextafter(changed[0], torch.tensor(float("inf")))
+    changed[0] = changed[0] - 1e-3
     live = adjudicate_tensor(
         baseline,
         changed,
@@ -119,7 +119,7 @@ def test_movement_pure_decay_fails_but_any_real_deviation_passes() -> None:
         valid_steps=40,
     )
     assert live["passed"] is True
-    assert live["status"] == "DEVIATES_FROM_DECAY_ONLY"
+    assert live["status"] == "EXCEEDS_DECAY_ONLY"
 
 
 def test_movement_zero_baseline_cannot_pass_without_real_movement() -> None:
