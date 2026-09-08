@@ -18,6 +18,7 @@ from typing import Any
 import torch
 
 from scripts.agent.validate_healthy_teacher_execution_binding_overlay_v1 import (
+    OVERLAY_PASS_TERMINAL,
     canonical_overlay_sha256,
     validate_overlay,
 )
@@ -44,6 +45,7 @@ from sea_ad_jepa.v4.teacher_student_runtime import (
 
 FINAL_UPDATE = 205
 CHECKPOINT_UPDATES = {50, 100, 200, 205}
+U40_INDEPENDENT_REVIEW_PASS_TERMINAL = "PASS_HEALTHY_TEACHER_U40_INDEPENDENT_REVIEW"
 
 
 def _hex(value: Any, length: int) -> bool:
@@ -74,10 +76,8 @@ def validate_continuation_authority(
         raise RuntimeError("continuation authority u40 qualification mismatch")
 
     review = payload.get("u40_independent_review") or {}
-    if not str(review.get("terminal", "")).startswith(
-        "PASS_HEALTHY_TEACHER_U40_INDEPENDENT_REVIEW"
-    ):
-        raise RuntimeError("independent u40 review PASS absent")
+    if review.get("terminal") != U40_INDEPENDENT_REVIEW_PASS_TERMINAL:
+        raise RuntimeError("independent u40 review PASS terminal mismatch")
     if not _hex(review.get("artifact_sha256"), 64):
         raise RuntimeError("u40 independent-review artifact SHA invalid")
     if review.get("reviewed_checkpoint_sha256") != u40_checkpoint_sha256:
@@ -139,7 +139,7 @@ def main() -> int:
 
     overlay = json.loads(args.overlay.read_text(encoding="utf-8"))
     overlay_result = validate_overlay(overlay)
-    if not overlay_result["terminal"].startswith("PASS_"):
+    if overlay_result["terminal"] != OVERLAY_PASS_TERMINAL:
         raise RuntimeError(f"invalid execution-binding overlay: {overlay_result}")
     overlay_sha = canonical_overlay_sha256(overlay)
     verify_source_authority(overlay["integrated_successor"]["source_manifest_root"])
@@ -188,6 +188,7 @@ def main() -> int:
         expected_authorities=authorities,
         masking_generator=masking,
         expected_schedule_cursor=40,
+        expected_phase="QUALIFICATION",
     )
     if restored["global_update_step"] != 40 or restored["ema_update_count"] != 40:
         raise RuntimeError("continuation did not restore exact u40 state")
