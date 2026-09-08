@@ -24,6 +24,7 @@ from sea_ad_jepa.v4.teacher_student_runtime import (
     F1B_ATTACK_AUTHORITY_ROOT,
     HEALTHY_TEACHER_BASE_ROOT,
     POPULATION_ACCESS_ROOT,
+    PREDICTOR_REGISTRY_SHA256,
     PRODUCTION_CONFIG,
     build_teacher_student_components,
 )
@@ -60,12 +61,21 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--historical-u0", type=Path, required=True)
     parser.add_argument("--integrated-source-root", required=True)
+    parser.add_argument("--integrated-commit", required=True)
+    parser.add_argument("--movement-adjudicator-sha256", required=True)
     parser.add_argument("--output-checkpoint", type=Path, required=True)
     parser.add_argument("--attestation", type=Path, required=True)
     args = parser.parse_args()
 
-    if len(args.integrated_source_root) != 64:
+    def _hex(value: str, length: int) -> bool:
+        return len(value) == length and all(ch in "0123456789abcdef" for ch in value)
+
+    if not _hex(args.integrated_source_root, 64):
         raise RuntimeError("integrated source root must be SHA-256")
+    if not _hex(args.integrated_commit, 40):
+        raise RuntimeError("integrated successor commit must be a full git SHA")
+    if not _hex(args.movement_adjudicator_sha256, 64):
+        raise RuntimeError("movement adjudicator source must be SHA-256")
     if sha256_file(args.historical_u0) != HISTORICAL_U0_SHA256:
         raise RuntimeError("historical clean u0 SHA-256 mismatch")
     if not torch.cuda.is_available():
@@ -112,6 +122,9 @@ def main() -> int:
         "population_access_root": POPULATION_ACCESS_ROOT,
         "f1b_attack_authority_root": F1B_ATTACK_AUTHORITY_ROOT,
         "integrated_successor_source_root": args.integrated_source_root,
+        "integrated_successor_commit": args.integrated_commit,
+        "predictor_mandatory_registry_sha256": PREDICTOR_REGISTRY_SHA256,
+        "movement_adjudicator_source_sha256": args.movement_adjudicator_sha256,
     }
     payload = capture_checkpoint(
         modules,
