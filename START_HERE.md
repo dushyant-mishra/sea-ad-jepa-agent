@@ -22,6 +22,15 @@ file.
 5. [`docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json`](docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json)
 6. [`docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json`](docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json)
 
+## New-chat handoff
+
+For the detailed current transfer package, read:
+[`docs/agent/NEW_CHAT_HANDOFF_20260908.md`](docs/agent/NEW_CHAT_HANDOFF_20260908.md)
+and the machine-readable companion:
+[`docs/agent/NEW_CHAT_HANDOFF_20260908.json`](docs/agent/NEW_CHAT_HANDOFF_20260908.json).
+
+These are handoff summaries, not execution authority; the authority index and newer frozen contracts take precedence if they conflict.
+
 ## Immediate critical path
 
 ```text
