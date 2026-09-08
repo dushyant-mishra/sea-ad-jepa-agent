@@ -1,24 +1,77 @@
 {
-  "packed_execution_active": false,
-  "preserve_v4_as_immutable_audited_baseline": true,
+  "schema": "TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE_V2",
+  "status": "SCIENTIFIC_TARGET_FROZEN__PROPOSAL_SCHEDULE_KERNEL_AND_EXECUTION_UNFROZEN",
   "principle": "dataset support and estimability define allowable pipeline geometry; mechanics-sample geometry cannot become production authority by inheritance",
+  "preserve_v4_as_immutable_audited_baseline": true,
+  "reader_fit_geometry_profile": {
+    "path": "docs/agent/READER_FIT_DATA_GEOMETRY_PROFILE_V1.json",
+    "sha256": "1ddf37827d548c84f533add702722e3015ea4abaedf258bf03a9c13e65d36f3a"
+  },
+  "reader_fit_relational_support_profile": {
+    "path": "docs/agent/READER_FIT_RELATIONAL_SUPPORT_PROFILE_V1.json",
+    "sha256": "8548087e82c5c4998dedcdddf87b966a5df3918e7115937a43e94bf227476b28"
+  },
+  "reader_fit_estimand_profile_v2": {
+    "path": "docs/agent/READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V2.json",
+    "sha256": "19b3204f160f96e76c918f1daa05354dfdc76800c5d15dae8d35b7d7c2c6f6d5"
+  },
+  "reader_fit_donor_proposal_pareto": {
+    "path": "docs/agent/READER_FIT_DONOR_PROPOSAL_PARETO_V1.json",
+    "sha256": "9db0aa56bd9758b8d86eb7ee2f3e3f1820103c2c5cc7c97fee9c4b28d4f77c31"
+  },
+  "common_measured_core": {
+    "addresses": 17186,
+    "csv_sha256": "8aa8dfebb481aa2e60b12ab0f581ba1a36063b6c12dc2d8514d5fe7a20ad07ac",
+    "generator": "scripts/agent/profile_reader_fit_support_overlap_v1.py",
+    "materialization": "DETERMINISTIC_FROM_FROZEN_SUPPORT_AUTHORITY__NOT_DUPLICATED_IN_REPOSITORY",
+    "support_profile": {
+      "path": "docs/agent/READER_FIT_SUPPORT_OVERLAP_PROFILE_V1.json",
+      "sha256": "b78e65af8290245519bac7781f61793150592da9f542593dc0100df5cbdd395a"
+    }
+  },
+  "scientific_target_authority": "docs/agent/TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json",
+  "scientific_target_frozen": true,
+  "base_scientific_target_policy_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+  "relational_scientific_target_policy_id": "DONOR_UNIFORM__ELIGIBLE_ANCHOR_CELL_UNIFORM__SAME_OPERATOR_COMPARATOR_PAIR_UNIFORM_V2",
+  "base_proposal_policy_id": null,
+  "relational_proposal_policy_id": "DIRECT_DONOR_ANCHOR_CELL_TRIPLET_TARGET_PROPOSAL_V2",
+  "proposal_policy_frozen": false,
+  "evidence_schedule_frozen": false,
+  "finite_relational_triplet_budget_frozen": false,
+  "production_compute_kernel_frozen": false,
   "production_schedule_values_frozen_here": false,
-  "reader_fit_geometry_profile": "docs/agent/READER_FIT_DATA_GEOMETRY_PROFILE_V1.json",
-  "reader_fit_geometry_profile_sha256": "1ddf37827d548c84f533add702722e3015ea4abaedf258bf03a9c13e65d36f3a",
+  "finite_relational_triplet_budget": null,
+  "production_token_budget": null,
+  "production_training_presentations": null,
+  "production_ema_half_life_presentations": null,
+  "production_keyed_rng_kernel_authorized": false,
+  "packed_execution_active": false,
   "relational_training_active": false,
   "required_next_gates": [
-    "independent profile replay",
-    "qualification-vs-production config split",
-    "packed canonical-token equivalence and training-RNG design",
-    "target-element-weighted accumulation",
-    "ragged relational estimability and finite triplet authority",
-    "full-reader scientific sampling estimand freeze",
-    "GPU token-budget calibration",
-    "V5 clean-room package and external review"
+    "freeze base proposal q only after explicit presentation horizon and repeat/exposure constraints",
+    "keep relational direct-target proposal donor-anchor-cell based; finite triplet budget remains compute/variance only",
+    "validate optimized GPU Philox keyed-dropout kernel against exact injective V2 reference",
+    "mechanically qualify bounded V5 packed/weighted runtime including gradients optimizer EMA checkpoint and replay",
+    "GPU token-budget calibration on target hardware",
+    "freeze evidence view and block numerical schedule from full reader-fit support",
+    "freeze finite relational triplet budget/presentation policy without reintroducing operator-equal scientific mass",
+    "freeze exposure-based training horizon and EMA half-life",
+    "V5 self-contained package CI clean-room replay and independent external review"
   ],
-  "schema": "TEACHER_STUDENT_V5_DATA_FIRST_AUTHORITY_CANDIDATE_V1",
-  "status": "PROSPECTIVE_DESIGN_ONLY__NO_TRAINING_AUTHORITY",
+  "training_authorized": false,
+  "execution_authorized": false,
   "successor_u0_materialization_authorized": false,
   "td60_execution_authorized": false,
-  "training_authorized": false
+  "proposal_authority": "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V2.json",
+  "base_proposal_derivation_policy_id": null,
+  "base_proposal_frozen": false,
+  "relational_proposal_frozen": true,
+  "operator_semantics_profile": {
+    "path": "docs/agent/READER_FIT_OPERATOR_SEMANTICS_PROFILE_V1.json",
+    "sha256": "ccdc1299c80199394ecd814aa0736b562aa3f306345381a0997256a52b900472"
+  },
+  "base_proposal_coverage_profile": {
+    "path": "docs/agent/READER_FIT_BASE_PROPOSAL_COVERAGE_PROFILE_V1.json",
+    "sha256": "9fe11b675f94d5f1d16d3c0a35f00b677b1733c635736134157e3891b7c1358e"
+  }
 }

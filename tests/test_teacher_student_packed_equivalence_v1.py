@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import pytest
 import torch
 from sea_ad_jepa.v4.ipb_jepa import IPBEncoder, BlockPredictor, TargetBlocks, gather_block_states, block_jepa_loss
 from sea_ad_jepa.v4.teacher_student_runtime import sample_uniform_target_blocks
@@ -80,3 +82,5 @@ def test_target_element_weighting_is_partition_invariant_for_unequal_microbatche
     assert torch.allclose(full,reconstructed,atol=1e-7,rtol=1e-7)
     equal_microbatch_average=sum(p.square().mean() for p in pieces)/len(pieces)
     assert not torch.allclose(full,equal_microbatch_average,atol=1e-4,rtol=1e-4)
+
+

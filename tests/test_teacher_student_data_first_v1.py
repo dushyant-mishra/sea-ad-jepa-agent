@@ -116,6 +116,9 @@ def test_scientific_estimand_probability_has_no_implicit_sampler_or_default():
     from sea_ad_jepa.v5.data_first_geometry import scientific_target_cell_probability, importance_weight_from_probabilities
     n=1000; nd=100; d=10; ds=4; s=3
     assert scientific_target_cell_probability('cell_uniform',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s)==pytest.approx(1/n)
+    assert scientific_target_cell_probability('source_uniform_cell_within_source',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s,source_cells=200)==pytest.approx(1/(s*200))
+    with pytest.raises(ValueError):
+        scientific_target_cell_probability('source_uniform_cell_within_source',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s)
     assert scientific_target_cell_probability('donor_uniform',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s)==pytest.approx(1/(d*nd))
     assert scientific_target_cell_probability('source_donor_uniform',total_cells=n,donor_cells=nd,total_donors=d,donors_in_source=ds,total_sources=s)==pytest.approx(1/(s*ds*nd))
     with pytest.raises(ValueError,match='unsupported scientific estimand'):
