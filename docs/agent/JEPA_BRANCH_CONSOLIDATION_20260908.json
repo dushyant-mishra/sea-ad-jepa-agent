@@ -15,13 +15,18 @@
   "historical_divergent_heads_absorbed": 30,
   "stale_tree_reactivated": false,
   "branch_deletion_performed": false,
-  "branch_deletion_reason": "The connected GitHub tool can merge/repoint refs but does not expose branch-ref deletion. Branch refs are hygiene-only after exact ancestor verification.",
+  "branch_deletion_reason": "The connected GitHub integration does not expose branch-ref deletion. A fail-closed local cleanup script is provided and branch deletion remains a hygiene action.",
   "safe_cleanup_rule": "Delete a non-main branch ref only when its exact head SHA is verified as an ancestor of the current main head. Preserve tags and immutable package artifacts.",
   "execution_authority_changed": false,
   "safe_delete_list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
-  "safe_non_main_branch_count": 56,
+  "safe_non_main_branch_count": 57,
   "current_v5_source_head": "c7b1663cc4390843978b973986edfe58f93320a3",
   "current_v5_tree_reconciled": true,
   "stale_v5_tree_reactivated": false,
-  "note": "Safe-delete membership must be regenerated after the final governance merge because any newly created governance branch must itself become an ancestor of main before deletion."
+  "note": "Safe-delete membership must be regenerated after the final governance merge because any newly created governance branch must itself become an ancestor of main before deletion.",
+  "final_governance_merge": "c3f85fbda1e34d87a3d1b489f4f1fcb1c0dd2333",
+  "safe_delete_set_finalized_commits": [
+    "72cd88c396bbb5bd5e48d3931a59b88e799d7526",
+    "369ed418b978c5445b3f4eb438ecf66a10ab0c12"
+  ]
 }
