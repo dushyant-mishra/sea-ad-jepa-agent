@@ -260,9 +260,13 @@ def main() -> int:
         valid_steps=40,
     )
 
+    u40_checkpoint = next(
+        row for row in checkpoint_manifest if int(row["update"]) == 40
+    )
     terminal = {
         "schema": "HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION_V1",
         "updates": 40,
+        "u40_checkpoint": u40_checkpoint,
         "backbone_movement": backbone_movement,
         "predictor_movement": predictor_movement,
         "predictor_registry_sha256": PREDICTOR_REGISTRY_SHA256,
