@@ -16,11 +16,7 @@ from sea_ad_jepa.v5.keyed_rng_reference import dropout_counter_words, philox4x32
 
 
 def test_all_live_v5_modules_import():
-    for name in (
-        "data_first_geometry", "finite_relational_sampling", "keyed_rng_reference",
-        "keyed_dropout_prototype", "schedule_authority_v1", "support_geometry_v1",
-        "data_contract_v2",
-    ):
+    for name in ("data_first_geometry","finite_relational_sampling","keyed_rng_reference","keyed_dropout_prototype","schedule_authority_v1","support_geometry_v1","data_contract_v2"):
         importlib.import_module(f"sea_ad_jepa.v5.{name}")
 
 
@@ -76,7 +72,8 @@ def _contract() -> ProductionDataContractV2:
             ema_half_life_presentations=1,
         ),
         compute_packing=ComputePackingAuthorityV2(
-            max_teacher_tokens_per_microbatch=100_000,
+            packing_cost_model_id="FULL_TEACHER_STUDENT_PREDICTOR_COST_MODEL_PENDING",
+            max_packing_cost_per_microbatch=100_000,
             rng_authority_id="RNG_PENDING",
             relational_compute_budget_id="RELATIONAL_COMPUTE_BUDGET_PENDING",
         ),
@@ -90,6 +87,8 @@ def test_data_contract_separates_support_science_optimization_and_compute_withou
     compute={f.name for f in dataclasses.fields(ComputePackingAuthorityV2)}
     assert "relational_sampling_policy_id" in science and "relational_weight_policy_id" in science
     assert "effective_cells_per_update" in optim and "effective_cells_per_update" not in compute
+    assert "packing_cost_model_id" in compute and "max_packing_cost_per_microbatch" in compute
+    assert "max_teacher_tokens_per_microbatch" not in compute
     assert "relational_compute_budget_id" in compute
     assert science.isdisjoint(optim) and science.isdisjoint(compute) and optim.isdisjoint(compute)
     for cls in (EvidenceAuthorityV2,ScientificSamplingAuthorityV2,OptimizationScheduleAuthorityV2,ComputePackingAuthorityV2):
@@ -97,8 +96,7 @@ def test_data_contract_separates_support_science_optimization_and_compute_withou
 
 
 def test_common_core_cannot_silently_become_training_objective():
-    c=_contract()
-    bad=dataclasses.replace(c.evidence,comparable_support_role="TRAINING_LOSS")
+    c=_contract(); bad=dataclasses.replace(c.evidence,comparable_support_role="TRAINING_LOSS")
     with pytest.raises(ValueError): dataclasses.replace(c,evidence=bad).validate()
 
 
