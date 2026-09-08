@@ -94,16 +94,22 @@
     "A broad/mesoscale or affinity-weighted relational objective is scientifically alive.",
     "Do not tune any additional locality fraction on the 50k archive."
   ],
-  "next_question": "Obtain the exact external V3 review result; if and only if the active V3 PASS terminal is returned, validate it through the frozen review-terminal bridge, then complete successor-u0/execution-overlay authority and produce lawful u40 for frozen TD60. No further 50k locality tuning.",
+  "next_question": "Obtain an independent review of the exact Teacher/Student V4 self-contained package at package-build commit 8d92f15f973de06415650f72e63788d255ac833d. Only after the exact V4 PASS terminal is returned may the Teacher/Student lane bind that review, materialize lawful successor-u0 under separate authority, separately authorize u0->u40, freeze lawful u40, and execute already-frozen TD60. No further 50k locality tuning.",
   "teacher_student_integration": {
-    "branch": "production/teacher-student-unified-v1-20260907",
-    "live_branch_head": "76bf7912cc621756fdbbd82218025d8e4c00a057",
-    "active_v3_source_commit": "8f9c34f18ac7cf43572299901e5e4f5d65cecb24",
-    "active_v3_source_root": "cd7faf6dd48f58387597b05f2e143ac629e1b74418d9720c4acdc9fcf4dfb584",
-    "self_contained_review_zip_sha256": "8bcec10f60988df9bb34c23f89c8e0918222776be70dca5bce98156f1c223d98",
-    "self_contained_review_package_root": "0720214288dfe0a4446b418bbd8bc6f21b34c54385cec57195371b687e4a1a71",
+    "legacy_v3_production_branch": "production/teacher-student-unified-v1-20260907",
+    "legacy_v3_head": "76bf7912cc621756fdbbd82218025d8e4c00a057",
+    "v4_candidate_branch": "candidate/teacher-student-unified-v4-relational-20260908",
+    "v4_integrated_source_commit": "24752e33f5f7a9ff0e8caef733223b8c4c6de5b7",
+    "v4_integrated_source_root": "8aae50696124a259bbd89d4a788d0e1cb0f94ee8b7ed13520a2db73138ae6460",
+    "v4_package_build_commit": "8d92f15f973de06415650f72e63788d255ac833d",
+    "v4_review_zip_sha256": "17c16eb02103ea8b2df8949d407a82aa8e65302b855f6f06fed91aba0d671d66",
+    "v4_review_package_root": "db162fdf5988d2f7b833ad0a24b1edba2fb3fcf7a6bd0c43cfeda3888329d58a",
+    "v4_active_tests": "98/98 PASS",
+    "v4_github_ci_run_id": 34248656470,
+    "v4_github_ci_conclusion": "success",
+    "relational_target": "scale-free anchored triplet ordering under direct 160-D cosine geometry; non-active in current production_update",
     "execution_authorized": false,
-    "note": "V3 mechanics remain frozen and untouched. Its prospective relational extension is non-active. No u1 or neural training is authorized by TD59."
+    "note": "V4 supersedes the V3 review candidate for the next independent review. V3 remains immutable history. V4 fixes the terminal-binding defect and aligns the prospective relational target with TD57B/TD59 while leaving current block-JEPA u0->u40 production_update unchanged."
   },
   "next_gate_freeze": {
     "experiment": "TD60",
@@ -118,20 +124,23 @@
     "locality_fraction_tuning_on_50k_closed": true
   },
   "execution_prerequisite_blocker": {
-    "status": "REVIEW_TERMINAL_BRIDGE_MECHANICS_FROZEN__AWAITING_EXTERNAL_REVIEW_RESULT",
-    "original_claude_requested_terminal": "PASS_TEACHER_STUDENT_UNIFIED_V3_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
-    "legacy_overlay_validator_required_prefix": "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW",
-    "bridge_branch": "authority/teacher-student-v3-review-terminal-bridge-20260908",
-    "bridge_head": "f42c279e3c76bd099a98fb4781ab6dac761e2f76",
-    "bridge_manifest_root_sha256": "be77d39797ec404dc3a253e2519a466cd5af471379ab52492b0f78509c59a281",
-    "bridge_pass_terminal": "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW__V3_SELF_CONTAINED_EXTERNAL_REVIEW_BOUND",
-    "bridge_unit_tests": "4/4 PASS",
-    "exact_review_package_validation": "PASS_MECHANICS_ONLY",
-    "review_instructions_as_review_attack": "STOP_TEACHER_STUDENT_V3_REVIEW_TERMINAL_BRIDGE_INVALID",
+    "status": "V4_REVIEW_CANDIDATE_CLEAN_ROOM_AND_GITHUB_CI_PASS__AWAITING_EXTERNAL_INDEPENDENT_REVIEW",
+    "candidate_branch": "candidate/teacher-student-unified-v4-relational-20260908",
+    "integrated_source_commit": "24752e33f5f7a9ff0e8caef733223b8c4c6de5b7",
+    "integrated_source_root_sha256": "8aae50696124a259bbd89d4a788d0e1cb0f94ee8b7ed13520a2db73138ae6460",
+    "package_build_commit": "8d92f15f973de06415650f72e63788d255ac833d",
+    "package_root_sha256": "db162fdf5988d2f7b833ad0a24b1edba2fb3fcf7a6bd0c43cfeda3888329d58a",
+    "review_zip_sha256": "17c16eb02103ea8b2df8949d407a82aa8e65302b855f6f06fed91aba0d671d66",
+    "required_external_review_terminal": "PASS_TEACHER_STUDENT_UNIFIED_V4_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
+    "local_double_build_byte_identical": true,
+    "local_clean_room_active_tests": "98/98 PASS in each of two builds",
+    "github_ci_run_id": 34248656470,
+    "github_ci_conclusion": "success",
+    "github_ci_active_tests": "98/98 PASS",
+    "github_ci_package_root_matches_local": true,
+    "github_ci_zip_sha256_matches_local": true,
     "actual_external_review_supplied": false,
-    "pass_bridge_artifact_present": false,
-    "production_review_branch_unchanged": "76bf7912cc621756fdbbd82218025d8e4c00a057",
     "execution_authorized": false,
-    "rule": "No ad-hoc terminal substitution. The bridge may emit PASS only from the exact external review bytes plus the exact self-contained package identity."
+    "rule": "Do not use the historical V3 terminal bridge for V4. V4 requires the exact V4 PASS plus exact reviewed package/source bindings. A review PASS still does not authorize u0 materialization or training."
   }
 }
