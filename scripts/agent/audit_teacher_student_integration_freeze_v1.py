@@ -13,9 +13,11 @@ SOURCE_ROOT = Path("docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V1.txt")
 FREEZE = Path("docs/agent/TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V1.json")
 TEST_SELECTION = Path("docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V1.txt")
 TEST_MANIFEST = Path("docs/agent/TEACHER_STUDENT_ACTIVE_TEST_MANIFEST_V1.csv")
+TEST_ROOT = Path("docs/agent/TEACHER_STUDENT_ACTIVE_TEST_ROOT_V1.txt")
 
 EXPECTED_SOURCE_COMMIT = "0ce7fb146415eeaaaf37d67d1f2f816e6bb68b45"
 EXPECTED_SOURCE_ROOT = "b7770b7be0eeb52e3e98d0c8ee4933ca9443f7c01e4d934522ed2c236ac2a955"
+EXPECTED_TEST_ROOT = "5d554c43ed3a38f57df620842ebc06f194af848314a7fbe035b6440babdbcd25"
 
 CORE_DEPENDENCIES = {
     "src/sea_ad_jepa/v4/__init__.py",
@@ -71,7 +73,8 @@ def audit(root: Path) -> dict[str, Any]:
     freeze_file = root / FREEZE
     test_manifest = root / TEST_MANIFEST
     selection_file = root / TEST_SELECTION
-    for path in (source_manifest, source_root_file, freeze_file, test_manifest, selection_file):
+    test_root_file = root / TEST_ROOT
+    for path in (source_manifest, source_root_file, freeze_file, test_manifest, selection_file, test_root_file):
         if not path.is_file():
             failures.append(f"missing authority file: {path.relative_to(root)}")
 
@@ -112,6 +115,13 @@ def audit(root: Path) -> dict[str, Any]:
         failures.append("freeze integrated source root mismatch")
     if freeze.get("execution_authorized") is not False:
         failures.append("freeze candidate must not authorize execution")
+
+    computed_test_root = sha256(test_manifest)
+    recorded_test_root = test_root_file.read_text(encoding="utf-8").strip()
+    if computed_test_root != recorded_test_root:
+        failures.append("active-test manifest/root mismatch")
+    if recorded_test_root != EXPECTED_TEST_ROOT:
+        failures.append("unexpected active-test manifest root")
 
     selection = selected_tests(root)
     if len(selection) != len(set(selection)):
