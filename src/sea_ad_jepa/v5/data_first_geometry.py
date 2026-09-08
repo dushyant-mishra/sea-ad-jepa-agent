@@ -199,3 +199,140 @@ def mean_loss_weight(*, local_elements: int, total_elements: int) -> float:
     if local > total:
         raise ValueError('local_elements exceeds total_elements')
     return local/total
+
+
+def weighted_block_jepa_loss(
+    predicted: torch.Tensor,
+    target: torch.Tensor,
+    cell_weights: torch.Tensor,
+) -> torch.Tensor:
+    """Per-cell weighted block-JEPA MSE; compute packing cannot choose weights."""
+    if predicted.shape != target.shape or predicted.ndim != 3:
+        raise ValueError('predicted/target must share [cells,blocks,width] shape')
+    if cell_weights.ndim != 1 or len(cell_weights) != len(predicted):
+        raise ValueError('cell_weights must be one-dimensional and match cells')
+    if not cell_weights.is_floating_point() or not bool(torch.isfinite(cell_weights).all()):
+        raise ValueError('cell_weights must be finite floating point')
+    if bool((cell_weights < 0).any()) or not bool((cell_weights > 0).any()):
+        raise ValueError('cell_weights must be nonnegative with positive total mass')
+    per_cell=(predicted.float()-target.detach().float()).square().mean(dim=(1,2))
+    weights=cell_weights.float().to(per_cell.device)
+    return (per_cell*weights).sum()/weights.sum()
+
+
+def weighted_loss_partition_weight(*, local_weight_mass: float, total_weight_mass: float) -> float:
+    """Weight a local weighted-mean loss into the exact update-level weighted mean."""
+    local=float(local_weight_mass); total=float(total_weight_mass)
+    if not (local > 0.0 and total > 0.0 and local <= total):
+        raise ValueError('weight masses must satisfy 0 < local <= total')
+    if not (torch.isfinite(torch.tensor(local)) and torch.isfinite(torch.tensor(total))):
+        raise ValueError('weight masses must be finite')
+    return local/total
+
+_HASH_PRIME = 2_147_483_647
+_HASH_MULTIPLIERS = (48271, 69621, 40699, 65537, 99991, 104729)
+
+
+def _hash_fold_mod_prime(seed: torch.Tensor, value: torch.Tensor, multiplier: int) -> torch.Tensor:
+    """Deterministic modular hash step with products bounded inside signed int64."""
+    prime = _HASH_PRIME
+    return (torch.remainder(seed, prime) * int(multiplier) + torch.remainder(value, prime)) % prime
+
+
+def keyed_feature_dropout(
+    values: torch.Tensor,
+    *,
+    cell_keys: torch.Tensor,
+    token_keys: torch.Tensor,
+    probability: float,
+    update_index: int,
+    view_index: int,
+    layer_index: int,
+    site_index: int,
+    training: bool = True,
+) -> torch.Tensor:
+    """Packing/order-invariant prospective dropout keyed by scientific identity.
+
+    Randomness is a pure function of stable update/view/layer/site, cell key,
+    canonical token key, and feature coordinate.  No tensor position enters the
+    key, so physically removing invalid tokens cannot change masks for retained
+    canonical tokens.  This is a V5 proof primitive only; V4 runtime is unchanged.
+    """
+    if values.ndim != 3 or not values.is_floating_point():
+        raise ValueError('values must be floating [cells,tokens,features]')
+    if not bool(torch.isfinite(values).all()):
+        raise ValueError('values must be finite')
+    if cell_keys.ndim != 1 or len(cell_keys) != len(values) or cell_keys.dtype != torch.int64:
+        raise ValueError('cell_keys must be int64 [cells]')
+    if token_keys.shape != values.shape[:2] or token_keys.dtype != torch.int64:
+        raise ValueError('token_keys must be int64 [cells,tokens]')
+    p=float(probability)
+    if not 0.0 <= p < 1.0:
+        raise ValueError('probability must lie in [0,1)')
+    update=_exact_int(update_index,'update_index',0)
+    view=_exact_int(view_index,'view_index',0)
+    layer=_exact_int(layer_index,'layer_index',0)
+    site=_exact_int(site_index,'site_index',0)
+    if not training or p == 0.0:
+        return values
+    device=values.device
+    cells=cell_keys.to(device=device)[:,None,None].expand(values.shape)
+    tokens=token_keys.to(device=device)[:,:,None].expand(values.shape)
+    features=torch.arange(values.shape[2],device=device,dtype=torch.int64)[None,None,:].expand(values.shape)
+    h=torch.full(values.shape, 1_234_567, dtype=torch.int64, device=device)
+    components=(
+        cells,
+        tokens,
+        features,
+        torch.full_like(h,update),
+        torch.full_like(h,view),
+        torch.full_like(h,layer * 4099 + site),
+    )
+    for component,multiplier in zip(components,_HASH_MULTIPLIERS):
+        h=_hash_fold_mod_prime(h,component,multiplier)
+    # Two extra avalanching steps; still exact integer arithmetic on CPU/GPU.
+    h=_hash_fold_mod_prime(h, h // 127 + 17, 130363)
+    h=_hash_fold_mod_prime(h, h // 8191 + 31, 15485863)
+    uniform=(h.to(torch.float64)+0.5)/float(_HASH_PRIME)
+    keep=uniform.ge(p)
+    return values * keep.to(values.dtype) / (1.0-p)
+
+
+def scientific_target_cell_probability(
+    mode: str,
+    *,
+    total_cells: int,
+    donor_cells: int,
+    total_donors: int,
+    donors_in_source: int,
+    total_sources: int,
+) -> float:
+    """Per-cell target probability for an explicitly named scientific estimand.
+
+    This defines *p(cell)* only.  It says nothing about how cells are proposed
+    or packed for compute.  A sampler with proposal q must separately bind the
+    p/q importance correction unless q==p by construction.
+    """
+    n=_exact_int(total_cells,'total_cells',1)
+    nd=_exact_int(donor_cells,'donor_cells',1)
+    d=_exact_int(total_donors,'total_donors',1)
+    ds=_exact_int(donors_in_source,'donors_in_source',1)
+    s=_exact_int(total_sources,'total_sources',1)
+    if nd > n or d < s or ds > d:
+        raise ValueError('estimand count authority is inconsistent')
+    if mode == 'cell_uniform':
+        return 1.0/n
+    if mode == 'donor_uniform':
+        return 1.0/(d*nd)
+    if mode == 'source_donor_uniform':
+        return 1.0/(s*ds*nd)
+    raise ValueError('unsupported scientific estimand; no default is permitted')
+
+
+def importance_weight_from_probabilities(*, target_probability: float, proposal_probability: float) -> float:
+    """Explicit p/q correction; compute packing is downstream and cannot alter it."""
+    p=float(target_probability); q=float(proposal_probability)
+    vals=torch.tensor([p,q],dtype=torch.float64)
+    if not bool(torch.isfinite(vals).all()) or p <= 0.0 or q <= 0.0:
+        raise ValueError('target/proposal probabilities must be finite positive values')
+    return p/q
