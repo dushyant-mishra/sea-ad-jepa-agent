@@ -2,8 +2,8 @@
   "schema": "JEPA_SAFE_BRANCH_DELETE_LIST_V1",
   "date": "2026-09-08",
   "canonical_branch": "main",
-  "verified_non_main_branches": 56,
-  "verification": "Every listed branch head is an ancestor of main after project consolidation; no unique commit is reachable only from the branch ref.",
+  "verified_non_main_branches": 57,
+  "verification": "Every listed branch head was verified to be an ancestor of main; no listed ref is required to retain unique commit history. The final governance branch was separately verified against main c3f85fbd.",
   "delete_tags": false,
   "preserve_commit_shas": true,
   "branches": [
@@ -34,6 +34,10 @@
     {
       "branch": "coordination/jepa-current-governance-fix-20260908",
       "head_sha": "7dbbc9d7149bc009252b01f3da2d67ee6449a9ef"
+    },
+    {
+      "branch": "coordination/jepa-governance-finalize-20260908",
+      "head_sha": "d8d998a4f29ad170beb0b9c807495025d0a17a23"
     },
     {
       "branch": "coordination/jepa-main-v5-reconcile-20260908",
@@ -231,5 +235,6 @@
       "branch": "transport/c2-full-repaired-package-20260906",
       "head_sha": "43c2997079b9326d21d9c2c88aa3014167413f5e"
     }
-  ]
+  ],
+  "verification_main_sha": "c3f85fbda1e34d87a3d1b489f4f1fcb1c0dd2333"
 }
