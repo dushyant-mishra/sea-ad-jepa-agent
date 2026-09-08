@@ -46,27 +46,19 @@ Current absorbed source heads:
 
 ## Branch consolidation and cleanup
 
-At handoff preparation:
-- 58 branch refs exist;
-- main is canonical;
-- all 57 non-main heads are recorded as verified ancestors of main.
+Branch consolidation and pruning are complete:
+- remote branch refs: **1**;
+- canonical and only branch: **main**;
+- 57 verified non-main refs were deleted by guarded workflow run `34284674854`;
+- dry-run preflight PASS;
+- deletion PASS;
+- final "only main remains" verification PASS;
+- tags, commit objects, package roots and immutable artifacts were preserved.
 
-Authorities:
-- docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json
-- docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.md
-- scripts/agent/delete_verified_merged_branches_20260908.sh
-
-Branch refs have not been deleted.
-
-Dry run:
-bash scripts/agent/delete_verified_merged_branches_20260908.sh
-
-Actual deletion only after successful dry-run:
-JEPA_CONFIRM_BRANCH_DELETE=YES_DELETE_VERIFIED_BRANCHES \
-  bash scripts/agent/delete_verified_merged_branches_20260908.sh --apply
-
-The script re-verifies exact branch heads and ancestry before deletion. Do not
-delete tags or immutable package artifacts.
+Audit:
+- `docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json`
+- `docs/agent/JEPA_BRANCH_PRUNE_RESULT_20260908.json`
+- `docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json`
 
 ## P0 T0
 
@@ -126,8 +118,8 @@ estimability -> discovery fit/qualification -> freeze -> one-shot confirmation.
 
 ## P0 Teacher/Student V5
 
-Current source:
-c7b1663cc4390843978b973986edfe58f93320a3
+Current continuation source:
+028989a5f1504e4d6403a44e7c90d37172c54150
 
 Materialization:
 71484ab99d276d7251836c109885d22ab4e7abb1
@@ -142,14 +134,17 @@ Evidence:
 Frozen prospectively:
 - scientific target V2
 - relational proposal V2
+- base proposal V3 with exact p/q correction
+- presentation horizon V1: exactly 4,553,407 presentations, no automatic extension
+- prospectively frozen repeat/group-coverage/ESS/importance-conditioning constraints
 - donor-primary objective direction
 
 Still pending:
-- base-cell proposal/schedule
 - support-aware evidence/view/block policy
-- total presentation horizon
-- repeat-exposure policy
+- finite relational triplet budget
+- update size / token budget / microbatch execution geometry
 - EMA half-life in exposure units
+- learned-teacher biological checkpoint milestone within the frozen horizon
 - optimized GPU Philox parity
 - hardware packing calibration
 - one integrated trainer binding
@@ -158,9 +153,7 @@ Still pending:
 
 No training, optimizer updates, production checkpoints, EMA advancement or TD60.
 
-Recommended sampling direction for donor recurrence:
-DONOR_UNIFORM_CELL_WITHIN_DONOR, with proposal q=p, rather than cell-uniform
-proposal plus very high-variance importance correction.
+Scientific target remains DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1. The frozen base proposal V3 is a separately derived convex proposal selected under the frozen coverage/conditioning constraints, with exact p/q importance correction mandatory; proposal mass does not redefine scientific mass.
 
 ## Mechanics clock vs biology clock
 
