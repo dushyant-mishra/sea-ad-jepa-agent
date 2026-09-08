@@ -18,11 +18,14 @@ from scripts.v4.healthy_teacher_continuation_runner_v1 import (
 from sea_ad_jepa.v4.ipb_jepa import BlockPredictor, IPBEncoder
 from sea_ad_jepa.v4.teacher_student_checkpoint import (
     CHECKPOINT_SCHEMA,
+    environment_fingerprint,
     validate_checkpoint_header,
+    validate_environment_fingerprint,
 )
 from sea_ad_jepa.v4.teacher_student_movement import (
     adjudicate_tensor,
     decay_only_counterfactual,
+    source_sha256 as movement_source_sha256,
 )
 from sea_ad_jepa.v4.teacher_student_runtime import (
     BACKBONE_REGISTRY_SHA256,
@@ -156,7 +159,7 @@ def _checkpoint_authorities() -> dict[str, str]:
         "integrated_successor_source_root": "d" * 64,
         "integrated_successor_commit": "1" * 40,
         "predictor_mandatory_registry_sha256": PREDICTOR_REGISTRY_SHA256,
-        "movement_adjudicator_source_sha256": "6" * 64,
+        "movement_adjudicator_source_sha256": movement_source_sha256(),
     }
 
 
@@ -261,6 +264,23 @@ def test_overlay_is_binding_only_and_cannot_self_authorize() -> None:
     attacked = _valid_overlay()
     attacked["overlay_itself_is_execution_authority"] = True
     assert validate_overlay(attacked)["terminal"].startswith("STOP_")
+
+
+def test_overlay_rejects_forged_movement_source_hash() -> None:
+    attacked = _valid_overlay()
+    attacked["movement_adjudicator_source_sha256"] = "6" * 64
+    result = validate_overlay(attacked)
+    assert result["terminal"].startswith("STOP_")
+    assert any("executing source bytes" in item for item in result["failures"])
+
+
+def test_checkpoint_runtime_environment_mismatch_is_rejected() -> None:
+    saved = environment_fingerprint()
+    validate_environment_fingerprint(saved)
+    attacked = copy.deepcopy(saved)
+    attacked["torch"] = "forged-runtime"
+    with pytest.raises(RuntimeError, match="runtime/environment mismatch"):
+        validate_environment_fingerprint(attacked)
 
 
 def test_overlay_requires_external_review_of_exact_integrated_commit() -> None:
