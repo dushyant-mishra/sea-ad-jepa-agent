@@ -2,108 +2,151 @@
 
 Date: 2026-09-08
 
-## Single current project lineage
+## Canonical branch
 
-**Current project branch**
+**`main` is the single current project branch.**
 
-`main`
+All conclusion-bearing work must branch from `main` unless a newer explicit
+prospective authority says otherwise. Old `planning/`, `candidate/`,
+`production/`, `review/`, transport, and historical Stage81 branches are
+provenance only after consolidation.
 
-All new cross-project work must branch from `main` unless an explicit
-prospective authority says otherwise.
+Branch names do not confer authority.
 
-Historical branches remain provenance only. A branch name containing
-`production/`, `candidate/`, `planning/`, `review/`, or an older phase name
-does not make that branch current.
+## Current lane heads absorbed into main
 
-## Current absorbed lineage heads
-
-| Lane | Last independently identified lane head | Current status |
+| Lane | Current source/reference head | Current status |
 |---|---|---|
-| T0 V20 pathology-blind materialization | `24b2c9ffc0ab2d63061c20af8829bcb86114b11a` | CURRENT IMPLEMENTATION INPUT; external STOPs remain |
-| Teacher/Student V5 data-first | `95251107e80a803d627d1197a64b417a5a16d2c5` | CURRENT DESIGN/IMPLEMENTATION CANDIDATE; training unauthorized |
-| Target Discovery | `26c3cfaba77bb8e5935e76473ab1fd5f90a562bf` | CURRENT DISCOVERY AUTHORITY LINE; TD60 waits for lawful learned teacher |
-| F1 real producer/replay | `a884f558970479278bc21f3f2274dc24bee89758` | PREFREEZE / execution unauthorized |
-| F1-B/C3 training successor | `c0eaf2acc0a5edc837fb2a48f726b9d626772f06` | MECHANICS EVIDENCE ONLY; not final trainer |
+| T0 V20 implementation | `24b2c9ffc0ab2d63061c20af8829bcb86114b11a` | science accepted; implementation still STOP |
+| Teacher/Student V5 data-first | `c7b1663cc4390843978b973986edfe58f93320a3` | current prospective successor; 66/66 active tests; no training authority |
+| Target Discovery | `26c3cfaba77bb8e5935e76473ab1fd5f90a562bf` | relational-objective qualification; TD60 waiting |
+| F1 real producer/replay | `a884f558970479278bc21f3f2274dc24bee89758` | prefreeze; real sweep unauthorized |
+| F1-B/C3 mechanics successor | `c0eaf2acc0a5edc837fb2a48f726b9d626772f06` | mechanics evidence only |
 | D1 V2 | `c13c06c103a588fc95bb93174730bf26dd613884` | WAIT_HEALTHY_TRAINED_TEACHER |
-| Global external review | `557a4344df2fa04526c82146a730413c992b5ad2` | CURRENT blocker/governance review input |
+| population/sealed-holdout registry | `14c2d586239aa5af15ed7cd70fdfb196d1c99f5f` | frozen and healthy |
+| external project review | `557a4344df2fa04526c82146a730413c992b5ad2` plus later main governance | blocker input, not execution authority |
 
-All of the above histories are now ancestors of `main`.
+The current V5 tree from `c7b1663...` was restored onto consolidated main by
+the V5 tree-reconciliation merge. Later proof/helper modules preserved from
+other V5 branches remain non-authoritative unless named by the active V5
+selection/authority.
 
-## T0
+## P0 — T0
 
-Accepted science remains V18/V20. Real T0 is still unauthorized.
+Accepted scientific specification remains V18/V20. Real T0 is **not authorized**.
 
-Current hard STOPs:
+Current external hard STOPs:
 
-1. B2 logical authority root does not yet close the full parent/path chain.
-2. raw H5AD `layers/UMIs` extraction is not yet cryptographically coupled to the source_library proof.
-3. age/sex authority does not yet bind the candidate-donor parent strongly enough.
+1. **B2 logical-root chain** — logical authority must bind the population
+   closure and all execution-used identities/paths, with
+   `stored == recomputed == externally expected`.
+2. **raw H5AD authenticity** — `source_library` must be proven from the exact
+   authenticated MTG H5AD `layers/UMIs` row, not caller-supplied values plus
+   provenance labels.
+3. **age/sex candidate parent** — the 46-donor candidate universe must be
+   derived from an authenticated parent or checked against an externally frozen
+   donor-set identity.
 
 Therefore:
 
-- production B2: FORBIDDEN;
-- donor-role gate: SHUT;
-- numeric confirmation AT8: CLOSED;
+- production B2: **FORBIDDEN**;
+- donor-role gate: **SHUT**;
+- numeric confirmation AT8: **CLOSED**;
 - `real_execution_ready=False`.
 
-## Teacher/Student
+## P0 — Teacher/Student V5
 
-V4 and the historical 3,292-cell/u40-u205 line are retained as **mechanics
-qualification evidence**, not the full-reader biological training authority.
+Current verified V5 materialization:
 
-The current production-design direction is V5 data-first over the 4,553,407-cell
-reader-fit population.
+- branch/source head: `c7b1663cc4390843978b973986edfe58f93320a3`;
+- decision-bearing materialization commit:
+  `71484ab99d276d7251836c109885d22ab4e7abb1`;
+- prototype root:
+  `9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad`;
+- V5 active suite: **66/66 PASS**;
+- V4 regression in the same CI: **98/98 PASS**;
+- training/execution/u0/u40/TD60: **UNAUTHORIZED**.
 
-Training remains unauthorized until explicit freezes exist for:
+Already frozen prospectively:
 
-- scientific estimand and proposal sampler;
-- relational scientific weighting;
-- support-aware evidence/target policy;
-- full-reader exposure schedule/checkpoints;
-- one canonical keyed RNG;
-- hardware cost calibration;
-- integrated reviewed production trainer.
+- V5 scientific target V2;
+- relational proposal V2, with proposal = target for that relational route;
+- donor-primary scientific objective direction.
+
+Still not frozen / not production-ready:
+
+- base-cell proposal/schedule;
+- support-aware evidence/view/block schedule;
+- GPU Philox production kernel and exact reference parity;
+- hardware cost / memory calibration;
+- total presentation horizon and repeat-exposure policy;
+- EMA half-life in exposure units;
+- integrated mechanically qualified production trainer;
+- external V5 review terminal.
+
+Historical 3,292-cell u40/u205 remains **mechanics-clock evidence only**, not a
+full-reader biological-learning clock.
+
+## P0 — mechanics binding before qualification
+
+F1-B/C3 `c0eaf2...` is attack-hardened mechanics evidence, not the final
+trainer.
+
+Before a mechanics qualification run, prospectively close:
+
+- movement-vs-decay criterion/tolerance (do not inherit an unreviewed hard-coded
+  2x rule);
+- exact mandatory predictor-parameter registry;
+- exact end-to-end data/mask/loss/update/checkpoint trainer binding.
 
 ## Target Discovery
 
 Do not restart fixed-coordinate target search.
 
-Current relational evidence remains the active scientific object. TD60 must
-consume a lawful full-reader exposure-defined learned-teacher checkpoint, not
-silently reinterpret historical u40 as a biological-learning checkpoint.
+Current live biology:
 
-## F1 / F1-B / C3
+- TD57B scale-free donor-recurrent relational order: 24/24 PASS;
+- TD59 nearest-half mesoscale recurrence: 24/24 PASS;
+- nearest-third TD57C failed in HVS and remains closed.
 
-F1 real producer/replay remains prefreeze and unauthorized for a real sweep.
+TD60 must consume a lawful **full-reader exposure-defined learned-teacher
+checkpoint**. Historical `u40` may remain a mechanics checkpoint but must not
+silently become the biological-learning checkpoint.
 
-F1-B/C3 successor is mechanics evidence only. It is not a final trainer binding
-until movement criterion, predictor registry, and end-to-end trainer identity
-are prospectively frozen and reviewed.
+## F1
+
+F1 producer/replay mechanics remain available as a parallel lane, but a real F1
+biological sweep still requires explicit execution authorization and independent
+review. F1 is not allowed to override the current T0/V5 critical path merely
+because older startup documents named it first.
 
 ## D1
 
-D1 V2 infrastructure is preserved. Real D1 remains blocked on:
+D1 V2 has future-safe readout binding, state/archive/resampling, and atlas
+infrastructure, but real D1 remains blocked on:
 
-- a lawful qualified healthy/full-reader teacher;
-- frozen teacher readout/qualification authority;
-- final independent closure over the complete current D1 V2 pipeline.
+- a lawful qualified full-reader teacher;
+- frozen canonical teacher readout contract;
+- exact teacher qualification authority;
+- final independent closure over the complete current D1 V2 head.
 
 ## Protected populations
 
 The frozen population-access/sealed-holdout registry remains authoritative.
 
-No reader_validation, reader_oracle, foundation development/sealed, or pathology
-access is authorized except through an explicitly frozen lane-specific release
-authority.
+No reader_validation, reader_oracle, foundation development/sealed, external
+holdout, or pathology access is allowed except through a separately frozen
+lane-specific release authority.
 
-## Conflict rule
+## Authority precedence
 
-When historical artifacts disagree, use this precedence:
+When artifacts disagree:
 
-1. `main` + this authority index;
-2. current project-wide supersession map;
-3. lane-specific frozen external-review terminal/contract explicitly cited here;
-4. older branch-local governance;
-5. historical evidence.
+1. `main` + this file;
+2. `docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`;
+3. `docs/agent/CURRENT_SUPERSESSION_MAP.md`;
+4. the exact lane-specific frozen contract/external terminal cited by the above;
+5. older branch-local governance;
+6. historical evidence.
 
-Never infer authority from branch name, commit timestamp, or the word PASS alone.
+Never infer authority from a branch name, timestamp, or the word `PASS`.
