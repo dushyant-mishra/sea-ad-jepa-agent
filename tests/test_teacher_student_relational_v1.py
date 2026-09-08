@@ -52,7 +52,7 @@ def test_relational_pairs_never_cross_donor_operator_group() -> None:
     # loss invariant to cross-group location; there are no cross-group pairs.
     changed[4:] += 1000.0
     translated = relational_geometry_loss(teacher, changed, groups)
-    assert float(translated["loss"]) == pytest.approx(float(baseline["loss"]), abs=1e-6)
+    assert float(translated["loss"].detach()) == pytest.approx(float(baseline["loss"].detach()), abs=1e-6)
 
 
 def test_collapsed_teacher_geometry_is_rejected() -> None:
