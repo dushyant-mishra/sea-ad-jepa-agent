@@ -67,6 +67,221 @@ def _git(worktree: Path, *args: str, allow_failure: bool = False) -> str | None:
     return completed.stdout.strip()
 
 
+def _git_bytes(worktree: Path, *args: str) -> bytes | None:
+    """Return raw stdout bytes, or None on failure.
+
+    Object payloads must never round-trip through text mode: universal-newline
+    decoding would rewrite CRLF inside a blob and change its digest, which is
+    the exact defect this module previously exhibited.
+    """
+    completed = subprocess.run(
+        ["git", "-c", "safe.directory=*", "-C", str(worktree), *args],
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode:
+        return None
+    return completed.stdout
+
+
+def canonical_authority_path(relative: Any) -> str | None:
+    """Return the canonical repository-relative identity, or None if unusable.
+
+    An authority declaration is an identity, not a query. Passed through as a
+    Git pathspec, ``:authority.txt`` and ``./authority.txt`` both resolved to
+    the committed ``authority.txt`` blob, so three different declarations named
+    the same authority; and a bare join let ``../outside`` address a file
+    outside the repository entirely. Only one spelling of a path is accepted so
+    a declaration cannot be laundered through an alias.
+
+    Rejected: anything non-string or empty, a NUL, a backslash (Windows and Git
+    separator ambiguity), a colon (both pathspec magic ``:(literal)`` and a
+    Windows drive), and any empty, ``.`` or ``..`` component, which also
+    excludes absolute and UNC forms.
+    """
+    if not isinstance(relative, str) or not relative:
+        return None
+    if any(ch in relative for ch in ("\x00", "\\", ":")):
+        return None
+    parts = relative.split("/")
+    if any(part in ("", ".", "..") for part in parts):
+        return None
+    return "/".join(parts)
+
+
+def tracked_blob_at(worktree: Path, commit: str, relative: str) -> dict[str, str] | None:
+    """Describe *relative* as recorded in *commit*, or None if it is not there.
+
+    Reports the tree mode, object type and object id without reading the
+    payload, so a caller can reject a symlink or submodule before hashing
+    anything.
+
+    The lookup is literal and the returned path must equal the declared
+    identity exactly, so pathspec magic cannot alias one authority into
+    another.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None
+    listing = _git(
+        worktree,
+        "--literal-pathspecs",
+        "ls-tree",
+        "--full-tree",
+        commit,
+        "--",
+        canonical,
+        allow_failure=True,
+    )
+    if not listing:
+        return None
+    head, _, path = listing.partition("\t")
+    if path.strip('"') != canonical:
+        return None
+    fields = head.split()
+    if len(fields) != 3 or not path:
+        return None
+    mode, object_type, oid = fields
+    return {"mode": mode, "type": object_type, "oid": oid}
+
+
+def authority_worktree_oid(worktree: Path, relative: str) -> str | None:
+    """Object id the worktree copy would produce, or None if unreadable.
+
+    ``git hash-object --path`` applies the same clean filter a commit would, so
+    the result is directly comparable with a tree entry's object id without any
+    line-ending handling in Python. It neither writes an object nor touches the
+    index.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None
+    target = Path(worktree) / canonical
+    if not target.is_file():
+        return None
+    oid = _git(
+        worktree,
+        "--literal-pathspecs",
+        "hash-object",
+        "--path=%s" % canonical,
+        str(target),
+        allow_failure=True,
+    )
+    return oid or None
+
+
+def authority_index_entry(worktree: Path, relative: str) -> dict[str, str] | None:
+    """Stage-0 index mode and object id for *relative*, or None if absent.
+
+    The index is a third copy of an authority, alongside the bound tree and the
+    worktree, and it has to be checked. Comparing only the worktree let a staged
+    replacement hide: stage different bytes, restore the worktree to the frozen
+    bytes, declare the path in ``allowed_tracked_modifications``, and both the
+    global dirty-list gate and the authority gate reported clean.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None
+    listing = _git(
+        worktree,
+        "--literal-pathspecs",
+        "ls-files",
+        "--stage",
+        "--",
+        canonical,
+        allow_failure=True,
+    )
+    if not listing:
+        return None
+    for line in listing.splitlines():
+        head, _, path = line.partition("\t")
+        fields = head.split()
+        if len(fields) != 3 or path.strip('"') != canonical:
+            continue
+        mode, oid, stage = fields
+        if stage != "0":
+            continue
+        return {"mode": mode, "oid": oid, "stage": stage}
+    return None
+
+
+def authority_path_dirty(
+    worktree: Path, relative: str, bound_oid: str, bound_mode: str | None = None
+) -> bool:
+    """True unless the worktree copy is exactly the authority *bound_oid* names.
+
+    Dirtiness has to be measured against the commit the checkpoint is bound to,
+    not against whatever HEAD happens to be now. Comparing with ``git status``
+    asked the wrong question: after a later commit replaced a declared
+    authority, the worktree was clean with respect to the new HEAD, so a
+    completely different file could sit in place of the authority and raise no
+    authority-level complaint at all.
+
+    Both the index and the worktree must match the bound authority, and the
+    index mode must match too. A `--chmod` change preserves the blob object id,
+    so comparing object ids alone let a staged 100644 to 100755 flip slip past
+    the authority gate whenever the path was a declared modification. A missing
+    or unreadable path in either place is dirty, so absence fails closed.
+    """
+    index_entry = authority_index_entry(worktree, relative)
+    if index_entry is None or index_entry["oid"] != bound_oid:
+        return True
+    if bound_mode is not None and index_entry["mode"] != str(bound_mode):
+        return True
+    return authority_worktree_oid(worktree, relative) != bound_oid
+
+
+def resolve_local_authority(
+    worktree: Path,
+    relative: str,
+    declared_untracked: set[str],
+    actual_untracked: set[str],
+) -> tuple[Path | None, str | None]:
+    """Resolve a local, untracked authority, or explain why it is not one.
+
+    A miss in the bound tree previously fell straight through to
+    ``Path(worktree) / relative``, so any path the checkpoint named became an
+    authority as long as its digest matched. That accepted a file outside the
+    repository and an undeclared local file. A local authority must therefore
+    be declared in ``allowed_untracked_files``, actually be in the untracked
+    inventory, live inside the worktree, and not be a symlink. Because the
+    inventory honours ``--exclude-standard``, an ignored file is not eligible
+    either.
+    """
+    canonical = canonical_authority_path(relative)
+    if canonical is None:
+        return None, "AUTHORITY_PATH_NOT_CANONICAL"
+    if canonical not in declared_untracked or canonical not in actual_untracked:
+        return None, "AUTHORITY_LOCAL_NOT_DECLARED_UNTRACKED"
+    root = Path(worktree).resolve()
+    raw = Path(worktree) / canonical
+    if raw.is_symlink():
+        return None, "AUTHORITY_LOCAL_IS_SYMLINK"
+    try:
+        target = raw.resolve(strict=True)
+    except OSError:
+        return None, "AUTHORITY_MISSING"
+    if target == root or root not in target.parents:
+        return None, "AUTHORITY_OUTSIDE_WORKTREE"
+    if not target.is_file():
+        return None, "AUTHORITY_MISSING"
+    return target, None
+
+
+def sha256_tracked_blob(worktree: Path, oid: str) -> str | None:
+    """SHA-256 the exact Git object payload for *oid*, or None if unreadable.
+
+    The existence check runs before the digest so a failed lookup can never be
+    mistaken for the digest of empty bytes.
+    """
+    if _git(worktree, "cat-file", "-e", oid, allow_failure=True) is None:
+        return None
+    payload = _git_bytes(worktree, "cat-file", "blob", oid)
+    if payload is None:
+        return None
+    return hashlib.sha256(payload).hexdigest()
+
+
 def resolve_canonical_repo(worktree: Path) -> Path:
     """Return the canonical repository root that owns *worktree*.
 
@@ -173,20 +388,68 @@ def validate_checkpoint(
     if not isinstance(authorities, list) or not authorities:
         errors.append("AUTHORITIES_MISSING")
     else:
+        # A tracked authority is a Git object, not a file on a particular
+        # platform. Hashing its worktree bytes made every declared digest
+        # unverifiable wherever Git rewrites line endings on checkout
+        # (core.autocrlf), because the declared value is the blob digest. The
+        # bytes therefore come from the object database, pinned to the commit
+        # this checkpoint is bound to. Genuinely untracked local authorities
+        # keep disk-byte hashing, so the two byte semantics stay distinct.
+        bound_head = (checkpoint.get("git") or {}).get("head_sha")
+        declared_untracked_set = set(declared_untracked)
+        actual_untracked_set = set(actual["untracked_files"])
         for authority in authorities:
             relative = authority.get("path") if isinstance(authority, dict) else None
             expected_hash = authority.get("sha256") if isinstance(authority, dict) else None
             if not relative or not expected_hash:
                 errors.append(f"AUTHORITY_DECLARATION_INVALID:{authority!r}")
                 continue
-            target = Path(worktree) / relative
-            if not target.is_file():
-                errors.append(f"AUTHORITY_MISSING:{relative}")
+            canonical = canonical_authority_path(relative)
+            if canonical is None:
+                errors.append(f"AUTHORITY_PATH_NOT_CANONICAL:{relative!r}")
                 continue
-            actual_hash = sha256_file(target)
+            entry = (
+                tracked_blob_at(Path(worktree), bound_head, canonical)
+                if bound_head
+                else None
+            )
+            if entry is None:
+                if not bound_head:
+                    errors.append(f"AUTHORITY_BOUND_HEAD_MISSING:{canonical}")
+                    continue
+                target, reason = resolve_local_authority(
+                    Path(worktree),
+                    canonical,
+                    declared_untracked_set,
+                    actual_untracked_set,
+                )
+                if target is None:
+                    errors.append(f"{reason}:{canonical}")
+                    continue
+                actual_hash = sha256_file(target)
+                if actual_hash != expected_hash:
+                    errors.append(
+                        f"AUTHORITY_HASH_MISMATCH:{canonical}:{actual_hash}!={expected_hash}"
+                    )
+                continue
+            if entry["type"] != "blob" or entry["mode"] not in {"100644", "100755"}:
+                errors.append(
+                    f"AUTHORITY_NOT_REGULAR_FILE:{canonical}:"
+                    f"{entry['mode']}:{entry['type']}"
+                )
+                continue
+            if authority_path_dirty(
+                Path(worktree), canonical, entry["oid"], entry["mode"]
+            ):
+                errors.append(f"AUTHORITY_DIRTY:{canonical}")
+                continue
+            actual_hash = sha256_tracked_blob(Path(worktree), entry["oid"])
+            if actual_hash is None:
+                errors.append(f"AUTHORITY_OBJECT_UNREADABLE:{canonical}:{entry['oid']}")
+                continue
             if actual_hash != expected_hash:
                 errors.append(
-                    f"AUTHORITY_HASH_MISMATCH:{relative}:{actual_hash}!={expected_hash}"
+                    f"AUTHORITY_HASH_MISMATCH:{canonical}:{actual_hash}!={expected_hash}"
                 )
     return errors
 
