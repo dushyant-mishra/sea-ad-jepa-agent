@@ -180,12 +180,10 @@ def main() -> int:
         raise RuntimeError("exact active-constraint solution disagrees with LP optimum")
 
     args.counts_out.parent.mkdir(parents=True, exist_ok=True)
-    csv_bytes = g[["source", "donor_id", "operator_index", "cells"]].to_csv(index=False, lineterminator="
-").encode("utf-8")
+    csv_bytes = g[["source", "donor_id", "operator_index", "cells"]].to_csv(index=False, lineterminator="\n").encode("utf-8")
     gz_bytes = gzip.compress(csv_bytes, compresslevel=9, mtime=0)
     if args.counts_out.name.endswith(".csv.gz.b64"):
-        args.counts_out.write_bytes(base64.b64encode(gz_bytes) + b"
-")
+        args.counts_out.write_bytes(base64.b64encode(gz_bytes) + b"\n")
     elif args.counts_out.suffix == ".gz":
         args.counts_out.write_bytes(gz_bytes)
     else:
@@ -229,8 +227,7 @@ def main() -> int:
         "execution_authorized": False,
     }
     args.horizon_authority_out.parent.mkdir(parents=True, exist_ok=True)
-    args.horizon_authority_out.write_text(json.dumps(horizon_payload, indent=2, sort_keys=True) + "
-", encoding="utf-8")
+    args.horizon_authority_out.write_text(json.dumps(horizon_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     horizon_sha = sha256(args.horizon_authority_out)
 
     source_expected: dict[str, float] = {}
@@ -308,8 +305,7 @@ def main() -> int:
     proposal_payload["presentation_horizon_authority"]["path"] = "docs/agent/TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json"
     proposal_payload["reader_fit_group_counts"]["path"] = "docs/agent/READER_FIT_DONOR_OPERATOR_COUNTS_V1.csv.gz.b64"
     args.proposal_authority_out.parent.mkdir(parents=True, exist_ok=True)
-    args.proposal_authority_out.write_text(json.dumps(proposal_payload, indent=2, sort_keys=True) + "
-", encoding="utf-8")
+    args.proposal_authority_out.write_text(json.dumps(proposal_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     print(json.dumps({
         "terminal": "PASS_TEACHER_STUDENT_V5_PROPOSAL_HORIZON_DERIVATION_V1__TRAINING_UNAUTHORIZED",
