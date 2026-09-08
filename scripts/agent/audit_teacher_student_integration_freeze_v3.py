@@ -124,8 +124,10 @@ def audit(root: Path) -> dict[str, Any]:
     authority_text = (root / SOURCE_AUTHORITY).read_text(encoding="utf-8")
     if "TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv" not in authority_text:
         failures.append("executing source authority does not name V3 manifest")
-    if EXPECTED_SOURCE_ROOT not in authority_text:
-        failures.append("executing source authority does not pin V3 source root")
+    if "TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V3.txt" not in authority_text:
+        failures.append("executing source authority does not name V3 root file")
+    if "manifest_sha != expected or recorded != expected" not in authority_text:
+        failures.append("executing source authority does not compare runtime expected root to manifest and recorded root")
 
     selection = selected_tests(root)
     if len(selection) != len(set(selection)):
