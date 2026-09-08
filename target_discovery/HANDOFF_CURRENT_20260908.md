@@ -563,3 +563,53 @@ This must be resolved explicitly in the Teacher/Student authority lane before su
 
 Teacher/Student branch remains untouched and training remains unauthorized.
 
+
+
+## 19. Teacher/Student review-terminal bridge prepared
+
+The review-terminal mismatch described in Section 18 has been resolved at the **governance-mechanics** level without changing the reviewed V3 source bytes.
+
+Production review branch remains unchanged:
+`production/teacher-student-unified-v1-20260907`
+at:
+`76bf7912cc621756fdbbd82218025d8e4c00a057`
+
+Separate authority branch:
+`authority/teacher-student-v3-review-terminal-bridge-20260908`
+
+Authority head:
+`f42c279e3c76bd099a98fb4781ab6dac761e2f76`
+
+Bridge manifest root:
+`be77d39797ec404dc3a253e2519a466cd5af471379ab52492b0f78509c59a281`
+
+The bridge is fail-closed and binds the exact self-contained review package:
+- ZIP SHA-256 `8bcec10f60988df9bb34c23f89c8e0918222776be70dca5bce98156f1c223d98`
+- package root `0720214288dfe0a4446b418bbd8bc6f21b34c54385cec57195371b687e4a1a71`
+- package commit `76bf7912cc621756fdbbd82218025d8e4c00a057`
+- active source commit `8f9c34f18ac7cf43572299901e5e4f5d65cecb24`
+- active source root `cd7faf6dd48f58387597b05f2e143ac629e1b74418d9720c4acdc9fcf4dfb584`
+
+Mechanics audit:
+- bridge unit tests: **4/4 PASS**
+- exact-package synthetic mechanics validation: PASS
+- feeding the review instructions themselves as a fake review: correctly STOP
+- no actual external-review result supplied
+- no PASS bridge artifact exists
+- execution remains unauthorized
+
+If and only if the real external review contains exactly:
+`PASS_TEACHER_STUDENT_UNIFIED_V3_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED`
+with no active V3 STOP terminal, the bridge may emit:
+`PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW__V3_SELF_CONTAINED_EXTERNAL_REVIEW_BOUND`
+
+That bridge output is a compatibility attestation, not execution authority.
+
+Current next sequence:
+1. obtain exact external-review result bytes;
+2. validate them through the frozen bridge;
+3. only on bridge PASS, complete successor-u0 and execution-binding overlay authority;
+4. separately authorize u0->u40 mechanical qualification;
+5. freeze lawful successor u40;
+6. execute already-frozen TD60;
+7. no additional 50k locality-fraction tuning.
