@@ -62,6 +62,8 @@ STOP_SOURCE_LIBRARY_BOUND = "STOP_T0_B2_SOURCE_LIBRARY_NOT_BOUND"
 STOP_NORMALIZATION = "STOP_T0_B2_NORMALIZATION_NOT_ONCE_ONLY"
 STOP_RESTORE = "STOP_T0_B2_LOGICAL_ORDER_NOT_RESTORABLE"
 STOP_COUNTS_DIGEST = "STOP_T0_B2_COUNTS_PAYLOAD_DIGEST_MISMATCH"
+STOP_FIELD_TYPE = "STOP_T0_B2_AUTHORITY_FIELD_TYPE_NOT_ALLOWED"
+STOP_FIELD_SCHEMA = "STOP_T0_B2_AUTHORITY_FIELD_SCHEMA_VIOLATION"
 
 
 def _rows(payload: bytes) -> tuple[list[str], list[dict[str, str]]]:
@@ -115,6 +117,31 @@ def assert_normalised_once(*, values: Sequence[float], raw_counts: Iterable[floa
     return True
 
 
+def _typed(value: Any) -> bytes:
+    """Type-tagged, length-prefixed encoding: `<tag><byte length>:<bytes>`.
+
+    Length prefixing alone closed delimiter ambiguity but not type ambiguity,
+    because every value was funnelled through `str()` first. The integer 41238
+    and the string "41238" therefore produced identical pre-hash bytes, as did
+    the boolean False and the string "False", and a role count of 28061 and
+    "28061". Different typed authorities could share a root.
+
+    `bool` is checked before `int` because `bool` is a subclass of `int` in
+    Python, so the order here is load-bearing rather than stylistic.
+    """
+    if isinstance(value, bool):
+        tag, payload = b"b", (b"1" if value else b"0")
+    elif isinstance(value, int):
+        tag, payload = b"i", str(int(value)).encode("ascii")
+    elif isinstance(value, str):
+        tag, payload = b"s", value.encode("utf-8")
+    else:
+        raise AssertionError(
+            "%s: %r is a %s; only bool, int and str may be hashed into an authority root"
+            % (STOP_FIELD_TYPE, value, type(value).__name__))
+    return b"%s%d:%s" % (tag, len(payload), payload)
+
+
 def _length_prefixed(value: Any) -> bytes:
     """`<byte length>:<utf-8 bytes>` — injective for any content.
 
@@ -130,20 +157,24 @@ def _length_prefixed(value: Any) -> bytes:
 def _closure_root(operator_index: int, matrix_id: str, blocks: Sequence[str],
                   rows_scanned: int, locations: Mapping[str, Mapping[str, Any]]) -> str:
     digest = hashlib.sha256()
-    digest.update(_length_prefixed("T0_V20_POPULATION_CLOSURE_V2"))
-    digest.update(_length_prefixed(int(operator_index)))
-    digest.update(_length_prefixed(matrix_id))
-    digest.update(_length_prefixed(len(blocks)))
-    digest.update(_length_prefixed(int(rows_scanned)))
+    # No coercion here. Wrapping a value in int() or str() before hashing
+    # normalises a type substitution away, so the type tag would bind nothing:
+    # operator 31 and "31" both became int 31. The declared type is required
+    # instead, and a substitution produces a different root.
+    digest.update(_typed("T0_V20_POPULATION_CLOSURE_V4"))
+    digest.update(_typed(operator_index))
+    digest.update(_typed(matrix_id))
+    digest.update(_typed(len(blocks)))
+    digest.update(_typed(rows_scanned))
     for key in blocks:
-        digest.update(_length_prefixed(key))
+        digest.update(_typed(key))
     ordered = sorted(locations, key=lambda value: value.encode("utf-8"))
-    digest.update(_length_prefixed(len(ordered)))
+    digest.update(_typed(len(ordered)))
     for cell in ordered:
         record = locations[cell]
-        digest.update(_length_prefixed(cell))
-        digest.update(_length_prefixed(record["block_key"]))
-        digest.update(_length_prefixed(int(record["row_index"])))
+        digest.update(_typed(cell))
+        digest.update(_typed(record["block_key"]))
+        digest.update(_typed(record["row_index"]))
     return digest.hexdigest()
 
 
@@ -249,13 +280,13 @@ def _logical_root(rows: Sequence[Mapping[str, Any]], feature_root: str) -> str:
               "primary_row_weight", "source_library", "meta_sha256",
               "counts_sha256")
     digest = hashlib.sha256()
-    digest.update(_length_prefixed("T0_V20_LOGICAL_ROW_AUTHORITY_V2"))
-    digest.update(_length_prefixed(feature_root))
-    digest.update(_length_prefixed(len(rows)))
-    digest.update(_length_prefixed(len(fields)))
+    digest.update(_typed("T0_V20_LOGICAL_ROW_AUTHORITY_V4"))
+    digest.update(_typed(feature_root))
+    digest.update(_typed(len(rows)))
+    digest.update(_typed(len(fields)))
     for row in rows:
         for field in fields:
-            digest.update(_length_prefixed(row[field]))
+            digest.update(_typed(row[field]))
     return digest.hexdigest()
 
 
@@ -330,13 +361,13 @@ def build_physical_read_plan(*, logical: Mapping[str, Any]) -> dict[str, Any]:
         key=lambda entry: (entry["block_key"], entry["row_index"]),
     )
     digest = hashlib.sha256()
-    digest.update(_length_prefixed("T0_V20_PHYSICAL_READ_PLAN_V2"))
-    digest.update(_length_prefixed(logical["logical_row_authority_root_sha256"]))
-    digest.update(_length_prefixed(len(plan)))
+    digest.update(_typed("T0_V20_PHYSICAL_READ_PLAN_V4"))
+    digest.update(_typed(logical["logical_row_authority_root_sha256"]))
+    digest.update(_typed(len(plan)))
     for entry in plan:
-        digest.update(_length_prefixed(entry["block_key"]))
-        digest.update(_length_prefixed(int(entry["row_index"])))
-        digest.update(_length_prefixed(int(entry["logical_index"])))
+        digest.update(_typed(entry["block_key"]))
+        digest.update(_typed(entry["row_index"]))
+        digest.update(_typed(entry["logical_index"]))
     return {
         "schema": SCHEMA,
         "namespace": NAMESPACE,
@@ -408,3 +439,80 @@ def verify_counts_payload(*, logical: Mapping[str, Any], logical_index: int,
                              % (STOP_COUNTS_DIGEST, row["counts_path"], actual,
                                 row["counts_sha256"]))
     return True
+
+
+ROW_FIELD_TYPES = {
+    "logical_index": int,
+    "canonical_cell_id": str,
+    "donor_id": str,
+    "block_key": str,
+    "row_index": int,
+    "selection_row": int,
+    "expression_row": int,
+    "primary_row_weight": str,
+    "source_library": int,
+    "meta_sha256": str,
+    "counts_sha256": str,
+}
+
+
+def assert_row_field_types(logical: Mapping[str, Any]) -> bool:
+    """Enforce declared row-field types before any root is recomputed.
+
+    B2 had no external verifier path, so a future verifier recomputing roots
+    from an authority object could have accepted `row_index` as either 1 or
+    "1". Type-tagged framing makes those digests differ; this makes the
+    substitution refusable at the boundary as well, which is the other half.
+    """
+    rows = logical.get("rows")
+    if not isinstance(rows, list) or not rows:
+        raise AssertionError("%s: rows must be a non-empty list" % STOP_FIELD_SCHEMA)
+    for index, row in enumerate(rows):
+        for name, expected in ROW_FIELD_TYPES.items():
+            if name not in row:
+                raise AssertionError("%s: row %d lacks %s"
+                                     % (STOP_FIELD_SCHEMA, index, name))
+            value = row[name]
+            if expected is int:
+                if isinstance(value, bool) or not isinstance(value, int):
+                    raise AssertionError("%s: row %d %s is %s, expected int"
+                                         % (STOP_FIELD_SCHEMA, index, name,
+                                            type(value).__name__))
+            elif not isinstance(value, str):
+                raise AssertionError("%s: row %d %s is %s, expected str"
+                                     % (STOP_FIELD_SCHEMA, index, name,
+                                        type(value).__name__))
+    if not isinstance(logical.get("row_count"), int) or isinstance(
+            logical.get("row_count"), bool):
+        raise AssertionError("%s: row_count must be int" % STOP_FIELD_SCHEMA)
+    if logical["row_count"] != len(rows):
+        raise AssertionError("%s: row_count %r does not match %d rows"
+                             % (STOP_FIELD_SCHEMA, logical["row_count"], len(rows)))
+    return True
+
+
+def assert_row_authority_lawful(
+    *,
+    logical: Mapping[str, Any],
+    expected_logical_row_authority_root_sha256: str,
+    expected_feature_authority_root_sha256: str,
+) -> dict[str, Any]:
+    """External verifier path: enforce types, then recompute against outside roots."""
+    if logical.get("real_execution_ready") is not False:
+        raise AssertionError("%s: a pathology-blind row authority may not claim readiness"
+                             % STOP_FIELD_SCHEMA)
+    assert_row_field_types(logical)
+    if str(logical.get("feature_authority_root_sha256")) != str(
+            expected_feature_authority_root_sha256):
+        raise AssertionError("%s: the row authority names feature root %s, expected %s"
+                             % (STOP_FEATURE_ROOT_MALFORMED,
+                                logical.get("feature_authority_root_sha256"),
+                                expected_feature_authority_root_sha256))
+    recomputed = _logical_root(logical["rows"],
+                               logical["feature_authority_root_sha256"])
+    if recomputed != str(expected_logical_row_authority_root_sha256):
+        raise AssertionError("%s: recomputed %s is not the expected %s"
+                             % (STOP_RESTORE, recomputed,
+                                expected_logical_row_authority_root_sha256))
+    return {"logical_row_authority_root_sha256": recomputed,
+            "rows": len(logical["rows"])}

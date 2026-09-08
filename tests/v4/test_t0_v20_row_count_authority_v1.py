@@ -118,8 +118,12 @@ def world() -> World:
 
 
 def _closure(world: World, **overrides):
-    kwargs = dict(membership_bytes=world.membership,
-                  block_manifest_bytes=world.manifest(),
+    manifest = overrides.pop("block_manifest_bytes", world.manifest())
+    membership = overrides.pop("membership_bytes", world.membership)
+    kwargs = dict(membership_bytes=membership,
+                  expected_membership_sha256=hashlib.sha256(membership).hexdigest(),
+                  block_manifest_bytes=manifest,
+                  expected_block_manifest_sha256=hashlib.sha256(manifest).hexdigest(),
                   meta_bytes_by_path=world.meta_by_path(),
                   operator_index=OPERATOR, matrix_id=MATRIX_ID)
     kwargs.update(overrides)
@@ -418,3 +422,223 @@ def test_the_three_roots_are_injective_over_delimiter_bearing_identities(
     assert len({closure["population_closure_root_sha256"],
                 logical["logical_row_authority_root_sha256"],
                 plan["physical_read_plan_root_sha256"]}) == 3
+
+
+# --------------------------------------------------------------------------
+# Type-substitution ambiguity, and the six substantive defects found by
+# independent review. All of these fail against the pre-repair implementation.
+# --------------------------------------------------------------------------
+def test_the_roots_are_injective_over_types(world: World) -> None:
+    """`str()` before hashing made 1 and "1" identical.
+
+    Length prefixing closed delimiter ambiguity but not type ambiguity, and
+    coercing with int() or str() inside the digest normalised the substitution
+    away so the type tag bound nothing.
+    """
+    rows_typed = [{"logical_index": 0, "canonical_cell_id": "C", "donor_id": "D",
+                   "block_key": "b", "row_index": 1, "selection_row": 2,
+                   "expression_row": 3, "primary_row_weight": "w",
+                   "source_library": 9470, "meta_sha256": "m", "counts_sha256": "c"}]
+    rows_text = [dict(rows_typed[0], row_index="1", logical_index="0",
+                      source_library="9470")]
+    assert rc._logical_root(rows_typed, "f" * 64) != rc._logical_root(rows_text, "f" * 64)
+    assert rc._closure_root(31, "M", ["b"], 1, {"c": {"block_key": "k", "row_index": 0}}) != (
+        rc._closure_root("31", "M", ["b"], "1", {"c": {"block_key": "k", "row_index": "0"}}))
+
+
+def test_the_external_verifier_refuses_type_substitutions(world: World) -> None:
+    """The verifier path, not merely the constructor."""
+    logical = _logical(world)
+    good = rc.assert_row_authority_lawful(
+        logical=logical,
+        expected_logical_row_authority_root_sha256=logical[
+            "logical_row_authority_root_sha256"],
+        expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT)
+    assert good["rows"] == 3
+    for field, replacement in (("row_index", "1"), ("logical_index", "0"),
+                               ("source_library", "9470"), ("selection_row", "2")):
+        forged = dict(logical)
+        forged["rows"] = [dict(row) for row in logical["rows"]]
+        forged["rows"][0][field] = replacement
+        with pytest.raises(AssertionError, match="FIELD_SCHEMA_VIOLATION"):
+            rc.assert_row_authority_lawful(
+                logical=forged,
+                expected_logical_row_authority_root_sha256=logical[
+                    "logical_row_authority_root_sha256"],
+                expected_feature_authority_root_sha256=FEATURE_AUTHORITY_ROOT)
+
+
+def test_the_membership_and_manifest_digests_are_required(world: World) -> None:
+    """Arbitrary caller-supplied CSV bytes were accepted."""
+    good_membership = hashlib.sha256(world.membership).hexdigest()
+    good_manifest = hashlib.sha256(world.manifest()).hexdigest()
+    assert _closure(world, expected_membership_sha256=good_membership,
+                    expected_block_manifest_sha256=good_manifest)["target_cells"] == 3
+    with pytest.raises(AssertionError, match="MEMBERSHIP_DIGEST"):
+        _closure(world, expected_membership_sha256="0" * 64,
+                 expected_block_manifest_sha256=good_manifest)
+    with pytest.raises(AssertionError, match="BLOCK_MANIFEST_DIGEST"):
+        _closure(world, expected_membership_sha256=good_membership,
+                 expected_block_manifest_sha256="0" * 64)
+
+
+def test_a_phase2_donor_disagreeing_with_membership_stops(world: World) -> None:
+    """donor_id was emitted from membership while the metadata's was ignored."""
+    world.blocks["op31/block-00000"] = _meta([(10, "C1", "D9", 100, 9470),
+                                              (11, "X1", "D9", 101, 5000)])
+    world.counts["op31/block-00000"] = b"counts-op31/block-00000"
+    with pytest.raises(AssertionError, match="DONOR_IDENTITY_DISAGREES"):
+        _closure(world)
+
+
+def test_membership_operator_and_matrix_values_are_required(world: World) -> None:
+    """Only the presence of the columns was checked, never their values."""
+    rows = []
+    for index, (cell, donor) in enumerate([("C1", "D1"), ("C2", "D1"), ("C3", "D2")]):
+        rows.append(["SEA_AD", MATRIX_ID, 25, index, donor, "reader_fit", cell,
+                     "Immune", "Non-neuronal and Non-neural", 1000 + index])
+    wrong_operator = _csv(MEMBERSHIP_COLUMNS, rows)
+    with pytest.raises(AssertionError, match="MEMBERSHIP_OPERATOR"):
+        _closure(world, membership_bytes=wrong_operator,
+                 expected_membership_sha256=hashlib.sha256(wrong_operator).hexdigest())
+
+    rows = []
+    for index, (cell, donor) in enumerate([("C1", "D1"), ("C2", "D1"), ("C3", "D2")]):
+        rows.append(["SEA_AD", "sea_ad_ang_rna_final_2026", OPERATOR, index, donor,
+                     "reader_fit", cell, "Immune", "Non-neuronal and Non-neural",
+                     1000 + index])
+    wrong_matrix = _csv(MEMBERSHIP_COLUMNS, rows)
+    with pytest.raises(AssertionError, match="MEMBERSHIP_MATRIX"):
+        _closure(world, membership_bytes=wrong_matrix,
+                 expected_membership_sha256=hashlib.sha256(wrong_matrix).hexdigest())
+
+
+def test_a_duplicate_membership_cell_stops(world: World) -> None:
+    """A dict keyed on cell_id silently redefined the population."""
+    duplicated = _membership([("C1", "D1"), ("C1", "D1"), ("C3", "D2")])
+    with pytest.raises(AssertionError, match="MEMBERSHIP_CELL_NOT_UNIQUE"):
+        _closure(world, membership_bytes=duplicated,
+                 expected_membership_sha256=hashlib.sha256(duplicated).hexdigest())
+
+
+# --------------------------------------------------------------------------
+# The substantive requirement: source_library proven against the authenticated
+# FULL RAW SOURCE ROW, not against the metadata that declares it.
+# --------------------------------------------------------------------------
+def _raw_provenance(width: int = 36_601) -> dict:
+    return {"source_sha256": "e" * 64, "source_row_index": 4, "source_width": width}
+
+
+def test_source_library_is_proven_against_the_authenticated_raw_row(world: World) -> None:
+    logical = _logical(world)
+    bound = logical["rows"][0]["source_library"]
+    raw = [0] * 36_600 + [bound]
+    assert sum(raw) == bound
+    assert rc.prove_source_library(
+        logical=logical, logical_index=0, raw_source_row_values=raw,
+        raw_source_provenance=_raw_provenance()) is True
+
+
+def test_a_raw_row_summing_to_the_wrong_total_stops(world: World) -> None:
+    logical = _logical(world)
+    raw = [0] * 36_600 + [logical["rows"][0]["source_library"] + 1]
+    with pytest.raises(AssertionError, match="SOURCE_LIBRARY_NOT_PROVEN"):
+        rc.prove_source_library(
+            logical=logical, logical_index=0, raw_source_row_values=raw,
+            raw_source_provenance=_raw_provenance())
+
+
+def test_a_row_of_address_space_width_is_refused_as_the_raw_source_row(
+    world: World,
+) -> None:
+    """The stored 41,238-address row is not the full raw source row.
+
+    Phase2 computes source_library before projection, so a row of address-space
+    width cannot be the thing that produced it and must not be offered as proof
+    even if its sum happened to match.
+    """
+    logical = _logical(world)
+    bound = logical["rows"][0]["source_library"]
+    projected = [0] * (rc.ADDRESS_SPACE_SIZE - 1) + [bound]
+    with pytest.raises(AssertionError, match="RAW_ROW_WIDTH_IS_ADDRESS_SPACE"):
+        rc.prove_source_library(
+            logical=logical, logical_index=0, raw_source_row_values=projected,
+            raw_source_provenance=_raw_provenance(width=rc.ADDRESS_SPACE_SIZE))
+
+
+@pytest.mark.parametrize("bad", [[-1, 2], [1.5, 2], [float("nan")]])
+def test_non_integral_or_negative_raw_counts_stop(world: World, bad) -> None:
+    logical = _logical(world)
+    with pytest.raises(AssertionError, match="RAW_COUNTS_NOT_NONNEGATIVE_INTEGERS"):
+        rc.prove_source_library(
+            logical=logical, logical_index=0, raw_source_row_values=bad,
+            raw_source_provenance=_raw_provenance(width=len(bad)))
+
+
+def test_the_raw_row_provenance_must_be_bound(world: World) -> None:
+    logical = _logical(world)
+    raw = [0] * 36_600 + [logical["rows"][0]["source_library"]]
+    for missing in ("source_sha256", "source_row_index", "source_width"):
+        provenance = {k: v for k, v in _raw_provenance().items() if k != missing}
+        with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
+            rc.prove_source_library(
+                logical=logical, logical_index=0, raw_source_row_values=raw,
+                raw_source_provenance=provenance)
+    mismatched = dict(_raw_provenance(), source_width=99)
+    with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
+        rc.prove_source_library(
+            logical=logical, logical_index=0, raw_source_row_values=raw,
+            raw_source_provenance=mismatched)
+
+
+# --------------------------------------------------------------------------
+# Selected-row verification: geometry, semantics, bounds, correspondence.
+# --------------------------------------------------------------------------
+def test_the_selected_row_must_have_address_space_width(world: World) -> None:
+    logical = _logical(world)
+    row = logical["rows"][0]
+    good = [0] * rc.ADDRESS_SPACE_SIZE
+    assert rc.verify_selected_row(
+        logical=logical, logical_index=0, row_values=good,
+        selected_expression_row=row["expression_row"]) is True
+    with pytest.raises(AssertionError, match="ROW_WIDTH"):
+        rc.verify_selected_row(
+            logical=logical, logical_index=0, row_values=[0] * 100,
+            selected_expression_row=row["expression_row"])
+
+
+@pytest.mark.parametrize("bad", [[-1], [0.5], [float("inf")]])
+def test_a_selected_row_with_illegal_count_semantics_stops(world: World, bad) -> None:
+    logical = _logical(world)
+    values = bad + [0] * (rc.ADDRESS_SPACE_SIZE - len(bad))
+    with pytest.raises(AssertionError, match="ROW_COUNTS_NOT_NONNEGATIVE_INTEGERS"):
+        rc.verify_selected_row(
+            logical=logical, logical_index=0, row_values=values,
+            selected_expression_row=logical["rows"][0]["expression_row"])
+
+
+def test_selecting_the_wrong_row_stops_even_with_correct_block_bytes(
+    world: World,
+) -> None:
+    """Authentic payload, wrong row: the correspondence must be checked."""
+    logical = _logical(world)
+    bound = logical["rows"][0]["expression_row"]
+    assert rc.verify_counts_payload(
+        logical=logical, logical_index=0,
+        counts_bytes=world.counts["op31/block-00000"]) is True
+    with pytest.raises(AssertionError, match="SELECTED_ROW_NOT_BOUND"):
+        rc.verify_selected_row(
+            logical=logical, logical_index=0, row_values=[0] * rc.ADDRESS_SPACE_SIZE,
+            selected_expression_row=bound + 1)
+
+
+def test_an_expression_row_outside_the_population_bounds_stops(world: World) -> None:
+    logical = _logical(world)
+    with pytest.raises(AssertionError, match="EXPRESSION_ROW_OUT_OF_BOUNDS"):
+        rc.verify_selected_row(
+            logical=logical, logical_index=0, row_values=[0] * rc.ADDRESS_SPACE_SIZE,
+            selected_expression_row=-1, expression_row_upper_bound=4_553_407)
+    with pytest.raises(AssertionError, match="EXPRESSION_ROW_OUT_OF_BOUNDS"):
+        rc.verify_selected_row(
+            logical=logical, logical_index=0, row_values=[0] * rc.ADDRESS_SPACE_SIZE,
+            selected_expression_row=4_553_407, expression_row_upper_bound=4_553_407)

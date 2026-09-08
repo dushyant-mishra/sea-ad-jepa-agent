@@ -67,6 +67,33 @@ STOP_AUTHORITY_ROOT = "STOP_T0_S2_FEATURE_AUTHORITY_ROOT_MISMATCH"
 STOP_AUTHORITY_UNBOUND = "STOP_T0_S2_FEATURE_AUTHORITY_BINDING_ABSENT"
 STOP_READY_FLAG = "STOP_T0_S2_FEATURE_AUTHORITY_CLAIMS_READINESS"
 STOP_PRODUCTION_GEOMETRY = "STOP_T0_S2_PRODUCTION_GEOMETRY_UNEXPECTED"
+STOP_FIELD_TYPE = "STOP_T0_S2_AUTHORITY_FIELD_TYPE_NOT_ALLOWED"
+STOP_FIELD_SCHEMA = "STOP_T0_S2_AUTHORITY_FIELD_SCHEMA_VIOLATION"
+
+
+def _typed(value: Any) -> bytes:
+    """Type-tagged, length-prefixed encoding: `<tag><byte length>:<bytes>`.
+
+    Length prefixing alone closed delimiter ambiguity but not type ambiguity,
+    because every value was funnelled through `str()` first. The integer 41238
+    and the string "41238" therefore produced identical pre-hash bytes, as did
+    the boolean False and the string "False", and a role count of 28061 and
+    "28061". Different typed authorities could share a root.
+
+    `bool` is checked before `int` because `bool` is a subclass of `int` in
+    Python, so the order here is load-bearing rather than stylistic.
+    """
+    if isinstance(value, bool):
+        tag, payload = b"b", (b"1" if value else b"0")
+    elif isinstance(value, int):
+        tag, payload = b"i", str(int(value)).encode("ascii")
+    elif isinstance(value, str):
+        tag, payload = b"s", value.encode("utf-8")
+    else:
+        raise AssertionError(
+            "%s: %r is a %s; only bool, int and str may be hashed into an authority root"
+            % (STOP_FIELD_TYPE, value, type(value).__name__))
+    return b"%s%d:%s" % (tag, len(payload), payload)
 
 
 def _length_prefixed(value: str) -> bytes:
@@ -360,7 +387,7 @@ def feature_authority_root(built: Mapping[str, Any]) -> str:
                              % (STOP_AUTHORITY_UNBOUND, missing))
 
     digest = hashlib.sha256()
-    digest.update(_length_prefixed("T0_V20_FEATURE_AUTHORITY_V2"))
+    digest.update(_typed("T0_V20_FEATURE_AUTHORITY_V3"))
     fields = [
         ("schema", built["schema"]),
         ("namespace", built["namespace"]),
@@ -384,15 +411,15 @@ def feature_authority_root(built: Mapping[str, Any]) -> str:
     # `{"X:1|role=Y": 2}` and `{"X": 1, "Y": 2}` produced identical pre-hash
     # bytes and therefore the same authority root. That is a serialization
     # collision reachable at the verifier boundary.
-    digest.update(_length_prefixed(str(len(fields))))
+    digest.update(_typed(len(fields)))
     for name, value in fields:
-        digest.update(_length_prefixed(name))
-        digest.update(_length_prefixed(str(value)))
+        digest.update(_typed(name))
+        digest.update(_typed(value))
     roles = sorted(built["role_counts"])
-    digest.update(_length_prefixed(str(len(roles))))
+    digest.update(_typed(len(roles)))
     for role in roles:
-        digest.update(_length_prefixed(role))
-        digest.update(_length_prefixed(str(built["role_counts"][role])))
+        digest.update(_typed(role))
+        digest.update(_typed(built["role_counts"][role]))
     return digest.hexdigest()
 
 
@@ -410,6 +437,7 @@ def assert_feature_authority_lawful(
     if built.get("real_execution_ready") is not False:
         raise AssertionError("%s: a pathology-blind feature authority may not claim readiness"
                              % STOP_READY_FLAG)
+    assert_authority_field_types(built)
     rows = assert_projection_lawful(
         built, expected_projection_root_sha256=expected_projection_root_sha256)
     recomputed = feature_authority_root(built)
@@ -482,3 +510,69 @@ def build_production_feature_authority(
                                  % (STOP_PRODUCTION_GEOMETRY, built["role_counts"],
                                     dict(sorted(PRODUCTION_ROLE_COUNTS.items()))))
     return built
+
+
+AUTHORITY_FIELD_TYPES = {
+    "schema": str,
+    "namespace": str,
+    "projection_root_sha256": str,
+    "projected_feature_count": int,
+    "matrix_id": str,
+    "address_space_size": int,
+    "ordering": str,
+    "source_feature_index_used": bool,
+    "real_execution_ready": bool,
+}
+BINDING_FIELD_TYPES = {
+    "split_member_path": str,
+    "split_sha256": str,
+    "registry_sha256": str,
+    "support_gzip_sha256": str,
+    "support_plain_sha256": str,
+    "stage81a2r_pin": str,
+}
+
+
+def assert_authority_field_types(built: Mapping[str, Any]) -> bool:
+    """Enforce the declared type of every hashed field before recomputing a root.
+
+    Type-tagged framing removes the ambiguity from the digest, but a verifier
+    that accepts either type still lets two different authority objects be
+    presented for the same claim. Both halves are needed: reject the type
+    substitution, then serialize unambiguously.
+    """
+    for name, expected in AUTHORITY_FIELD_TYPES.items():
+        if name not in built:
+            raise AssertionError("%s: %s is absent" % (STOP_FIELD_SCHEMA, name))
+        value = built[name]
+        if expected is bool:
+            if not isinstance(value, bool):
+                raise AssertionError("%s: %s is %s, expected bool"
+                                     % (STOP_FIELD_SCHEMA, name, type(value).__name__))
+        elif expected is int:
+            if isinstance(value, bool) or not isinstance(value, int):
+                raise AssertionError("%s: %s is %s, expected int"
+                                     % (STOP_FIELD_SCHEMA, name, type(value).__name__))
+        elif not isinstance(value, str):
+            raise AssertionError("%s: %s is %s, expected str"
+                                 % (STOP_FIELD_SCHEMA, name, type(value).__name__))
+    counts = built.get("role_counts")
+    if not isinstance(counts, Mapping) or not counts:
+        raise AssertionError("%s: role_counts must be a non-empty mapping"
+                             % STOP_FIELD_SCHEMA)
+    for role, count in counts.items():
+        if not isinstance(role, str):
+            raise AssertionError("%s: role name %r is %s, expected str"
+                                 % (STOP_FIELD_SCHEMA, role, type(role).__name__))
+        if isinstance(count, bool) or not isinstance(count, int):
+            raise AssertionError("%s: role count for %s is %s, expected int"
+                                 % (STOP_FIELD_SCHEMA, role, type(count).__name__))
+    binding = built.get("authority_binding")
+    if not isinstance(binding, Mapping):
+        raise AssertionError("%s: authority_binding must be a mapping" % STOP_FIELD_SCHEMA)
+    for name, expected in BINDING_FIELD_TYPES.items():
+        if not isinstance(binding.get(name), str):
+            raise AssertionError("%s: authority_binding.%s is %s, expected str"
+                                 % (STOP_FIELD_SCHEMA, name,
+                                    type(binding.get(name)).__name__))
+    return True
