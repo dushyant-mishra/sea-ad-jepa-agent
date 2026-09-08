@@ -306,6 +306,7 @@ def scientific_target_cell_probability(
     total_donors: int,
     donors_in_source: int,
     total_sources: int,
+    source_cells: int | None = None,
 ) -> float:
     """Per-cell target probability for an explicitly named scientific estimand.
 
@@ -322,6 +323,13 @@ def scientific_target_cell_probability(
         raise ValueError('estimand count authority is inconsistent')
     if mode == 'cell_uniform':
         return 1.0/n
+    if mode == 'source_uniform_cell_within_source':
+        if source_cells is None:
+            raise ValueError('source_cells is required for source_uniform_cell_within_source')
+        ns=_exact_int(source_cells,'source_cells',1)
+        if ns > n:
+            raise ValueError('source_cells exceeds total_cells')
+        return 1.0/(s*ns)
     if mode == 'donor_uniform':
         return 1.0/(d*nd)
     if mode == 'source_donor_uniform':
