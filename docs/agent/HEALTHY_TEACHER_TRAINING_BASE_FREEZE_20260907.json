@@ -1,0 +1,71 @@
+{
+  "schema": "HEALTHY_TEACHER_TRAINING_BASE_FREEZE_V1",
+  "terminal": "PASS_HEALTHY_TEACHER_TRAINING_BASE_FREEZE__EXECUTION_UNAUTHORIZED",
+  "status": "FROZEN_PROSPECTIVE_BASE__SEPARATE_EXECUTION_BINDING_OVERLAY_REQUIRED",
+  "source_branch": "planning/healthy-teacher-training-contract-20260907",
+  "parent_population_registry_freeze_commit": "14c2d586239aa5af15ed7cd70fdfb196d1c99f5f",
+  "parent_population_registry_package_root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
+  "prefreeze_commit": "33218d536e5c4ea023cb326dffcca96159fdc5f4",
+  "manifest_path": "docs/agent/HEALTHY_TEACHER_TRAINING_BASE_MANIFEST_20260907.csv",
+  "package_root_sha256": "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534",
+  "package_root_rule": "SHA-256 of exact UTF-8 bytes of HEALTHY_TEACHER_TRAINING_BASE_MANIFEST_20260907.csv",
+  "final_prefreeze_ci": {
+    "run_id": 34114608353,
+    "head_sha": "33218d536e5c4ea023cb326dffcca96159fdc5f4",
+    "adversarial_tests": "17 passed",
+    "terminal": "PASS_HEALTHY_TEACHER_BASE_IMMUTABILITY_AUDIT"
+  },
+  "frozen_high_level_decisions": {
+    "training_population": "104 reader_fit donors; 3292 cells; no continuation/train expansion",
+    "address_universe": 41238,
+    "effective_batch": 128,
+    "microbatch": 8,
+    "views": 4,
+    "hidden_fraction": 0.4,
+    "target_blocks": 16,
+    "optimizer": "AdamW lr=1e-4 betas=(0.9,0.999) eps=1e-8 weight_decay=0.01",
+    "ema_momentum": 0.996,
+    "forward_precision": "CUDA fp16 autocast",
+    "backward_precision": "scaled backward with autocast disabled",
+    "mandatory_backbone_gradient_registry_count": 48,
+    "qualification_horizon": "u0->u40 exactly",
+    "continuation_horizon": "u40->u205 only after separate reviewed qualification and explicit authority",
+    "biological_early_stopping": false,
+    "inline_reader_validation": false,
+    "inline_reader_oracle": false,
+    "pathology_access": false
+  },
+  "immutable_binding_policy": {
+    "base_execution_fields_must_remain_null": true,
+    "future_overlay_schema": "HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1",
+    "future_overlay_must_bind_this_package_root": true,
+    "future_overlay_may_modify_base": false,
+    "future_overlay_is_itself_execution_authority": false,
+    "explicit_u0_to_u40_authority_required_after_overlay": true
+  },
+  "unresolved_execution_overlay_fields": [
+    "integrated_successor_commit",
+    "integrated_successor_source_manifest_root",
+    "independent_external_review_terminal",
+    "independent_external_review_artifact_sha256",
+    "independent_external_review_reviewed_commit",
+    "initialization_checkpoint_path",
+    "initialization_checkpoint_sha256",
+    "initialization_mode",
+    "initialization_materialization_attestation_sha256",
+    "predictor_mandatory_registry_sha256",
+    "movement_adjudicator_sha256"
+  ],
+  "explicit_non_authorizations": [
+    "no u1 training step",
+    "no u0->u40 qualification",
+    "no u40->u205 continuation",
+    "no reader_validation opening",
+    "no reader_oracle opening",
+    "no foundation development/sealed opening",
+    "no pathology opening",
+    "no real D1",
+    "no real F1 or T0"
+  ],
+  "base_external_review_required_before_execution_overlay_acceptance": true
+}

@@ -1,0 +1,351 @@
+{
+  "schema": "HEALTHY_TEACHER_TRAINING_BASE_CONTRACT_V1",
+  "status": "PROSPECTIVE_BASE_READY_FOR_FREEZE__EXECUTION_BINDING_OVERLAY_REQUIRED",
+  "date": "2026-09-07",
+  "purpose": "Freeze the outcome-independent training population, schedule, optimizer, precision repair, gates, qualification horizon, continuation policy, checkpoint state, and biological firewall for the first mechanically valid trained JEPA teacher. This immutable base never becomes execution authority by editing its null bindings; a separately reviewed execution-binding overlay must bind the final successor and successor-u0.",
+  "upstream_authorities": {
+    "population_access_registry": {
+      "freeze_commit": "14c2d586239aa5af15ed7cd70fdfb196d1c99f5f",
+      "package_root_sha256": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7"
+    },
+    "f1b_attack_authority": {
+      "freeze_commit": "138e176baa10267833f1a2c1e347f8831eb8c269",
+      "package_root_sha256": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b"
+    },
+    "c2_causal_repair": "Backward under fp16 autocast is the closed causal defect; repaired successor must execute scaled backward with autocast disabled."
+  },
+  "execution_bindings": {
+    "binding_mode": "SEPARATE_IMMUTABLE_OVERLAY_REQUIRED",
+    "integrated_successor_commit": null,
+    "integrated_successor_source_manifest_root": null,
+    "independent_external_review_terminal": null,
+    "independent_external_review_artifact_sha256": null,
+    "independent_external_review_reviewed_commit": null,
+    "initialization_checkpoint_path": null,
+    "initialization_checkpoint_sha256": null,
+    "initialization_mode": null,
+    "initialization_materialization_attestation_sha256": null,
+    "predictor_mandatory_registry_sha256": null,
+    "movement_adjudicator_sha256": null,
+    "ready": false,
+    "immutable_null_policy": "These fields MUST remain null/false in the frozen base. Populating them requires a separate HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1 that hash-binds the frozen base package root."
+  },
+  "initialization_policy": {
+    "historical_clean_u0_reference_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+    "historical_u0_role": "clean state reference/source only; never the new execution-authority checkpoint",
+    "forbidden": [
+      "directly treating the historical u0 checkpoint as the new contract-bound checkpoint",
+      "historical u10",
+      "historical u25",
+      "historical u50",
+      "historical u100",
+      "historical u200",
+      "historical u205",
+      "any defect-inherited checkpoint"
+    ],
+    "required_new_u0": {
+      "schema": "successor-specific and bound to the final healthy-teacher contract",
+      "schedule_cursor": 0,
+      "global_update_step": 0,
+      "ema_update_count": 0,
+      "must_be_frozen_before_u1": true,
+      "exact_sha256": "BLOCKED_PENDING_REVIEWED_SUCCESSOR"
+    },
+    "state_materialization_rule": [
+      "If the reviewed successor is state-schema compatible, import clean model/optimizer/scaler/RNG state from historical u0, prove exact equality for every unchanged state tensor/value, then save a NEW successor-bound u0 checkpoint.",
+      "If any architecture/state-schema component changed, initialize that component prospectively under seed 8113002; unchanged components must still be equivalence-audited against historical u0.",
+      "No training data outcome or held-out biology may influence u0 construction."
+    ]
+  },
+  "training_population": {
+    "foundation_split": "train",
+    "reader_partition": "reader_fit",
+    "donor_count": 104,
+    "cell_count": 3292,
+    "continuation_train_included": false,
+    "reader_validation_included": false,
+    "reader_oracle_included": false,
+    "foundation_development_included": false,
+    "foundation_sealed_holdout_included": false,
+    "pathology_access": false,
+    "reader_split_sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+    "inventory_sha256": "7ac13973162a46cafa5baa24c5bea14beb64bd5859e8f58900801eee07083a30"
+  },
+  "corpus_and_address": {
+    "production_loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "production_loader_semantic_hash": "5fc4c03eeaf4b4aa69a46502df163851613585e0c6c38e65c4a2e87ab4bfc7ff",
+    "foundation_split_registry_sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+    "address_namespace_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "address_count": 41238,
+    "operator_count": 42,
+    "sources": [
+      "HVS",
+      "NPH52",
+      "SEA_AD"
+    ],
+    "normalization": "production loader authority; no new normalization may be introduced by the training runner"
+  },
+  "sampler": {
+    "schedule_sha256": "4657d669658712234d7ee8ede9496297009b808d4902766a9e43f7591ca640fc",
+    "schedule_summary_sha256": "e7b29c33edb5826d3c30874ec18e305eb8bd296c2f43fb0a941f4887e17f2d2f",
+    "sampler_authority_sha256": "d1f0ca59da99cd6b166294527a17d1aca58dcebe15cb7f60d408d0801730542c",
+    "schedule_semantics": "capacity-constrained donor waterfill; q_d=min(8*N_d,lambda); keyed without-replacement donor cycles; deterministic donor tickets; same-update duplicate repair",
+    "replay_cap": 8,
+    "scheduled_presentations": 26240,
+    "same_update_duplicates_required": 0,
+    "maximum_within_donor_exposure_spread": 1,
+    "training_seed": 8113002,
+    "historical_sampler_base_seed": 1756835074,
+    "masking_generator_seed": 8813003
+  },
+  "model_and_masking": {
+    "vocabulary_size": 41238,
+    "width": 160,
+    "transformer_blocks": 6,
+    "attention_heads": 4,
+    "gradient_checkpointing": true,
+    "views_per_cell": 4,
+    "mask_fraction": 0.4,
+    "target_block_count": 16,
+    "target_mask_eligibility": "MEASURED_SCALAR only",
+    "teacher_role": "EMA target; requires_grad=False; no target gradients",
+    "student_role": "online encoder on partial evidence",
+    "predictor_role": "reviewed block predictor; exact registry bound before execution"
+  },
+  "optimizer": {
+    "type": "AdamW",
+    "parameter_scope": "online encoder + reviewed predictor trainable parameters",
+    "lr": 0.0001,
+    "lr_schedule": "constant through u205",
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-8,
+    "weight_decay": 0.01,
+    "amsgrad": false,
+    "maximize": false,
+    "capturable": false,
+    "differentiable": false,
+    "ema_momentum": 0.996,
+    "ema_schedule": "constant; exactly one EMA update after each proved valid optimizer step and never otherwise"
+  },
+  "precision_and_determinism": {
+    "device_class": "CUDA required for qualification/full run",
+    "forward": "fp16 autocast",
+    "backward": "scaler.scale(loss).backward() under autocast(enabled=False)",
+    "unscale_position": "before mandatory gradient gate",
+    "grad_scaler": {
+      "initial_scale": 65536,
+      "growth_factor": 2,
+      "backoff_factor": 0.5,
+      "growth_interval": 2000
+    },
+    "tf32": false,
+    "deterministic_algorithms": true,
+    "environment_rule": "Exact software/GPU fingerprint must be captured before qualification. A materially changed runtime requires a fresh 40-update qualification."
+  },
+  "batch_geometry": {
+    "effective_batch": 128,
+    "microbatch": 8,
+    "accumulation_microbatches": 16,
+    "views": 4,
+    "scaled_loss_denominator": "views * (effective_batch / microbatch) = 64"
+  },
+  "gates": {
+    "pre_step_gradient_gate": {
+      "position": "after unscale, before optimizer/scaler step",
+      "mandatory_backbone_count": 48,
+      "mandatory_backbone_roles": [
+        "attention_norm",
+        "attention.query",
+        "attention.key",
+        "attention.value"
+      ],
+      "predictor_registry": "BLOCKED_PENDING_REVIEWED_SUCCESSOR",
+      "reject": [
+        "missing",
+        "nonfinite",
+        "exact_zero"
+      ],
+      "magnitude_floor": "none; any finite nonzero live gradient is eligible",
+      "target_gradients_required_absent": true
+    },
+    "optimizer_step_gate": {
+      "rule": "optimizer step must be mechanically proved; a GradScaler skip or absent step is a STOP",
+      "before_ema": true
+    },
+    "adam_moment_gate": {
+      "timing": "after proved optimizer step, before EMA",
+      "fields": [
+        "exp_avg",
+        "exp_avg_sq"
+      ],
+      "reject": [
+        "missing",
+        "nonfinite",
+        "exact_zero"
+      ],
+      "scope": "all mandatory backbone and reviewed predictor tensors"
+    },
+    "ema_gate": {
+      "rule": "EMA update occurs only after gradient gate + proved optimizer step + moment gate",
+      "count_invariant": "ema_update_count == successful_valid_optimizer_steps",
+      "equation_check": true
+    },
+    "movement_gate": {
+      "timing": "qualification endpoint u40",
+      "scope": "per mandatory tensor; pooled mean forbidden",
+      "zero_baseline_rule": "finite nonzero absolute movement required",
+      "nonzero_baseline_rule": "must exceed reviewed analytical decay-only behavior",
+      "fixed_2x_decay_margin_authorized": false,
+      "adjudicator_binding": "BLOCKED_PENDING_REVIEWED_SUCCESSOR"
+    },
+    "routing_predictor_gate": {
+      "rule": "F1-B defended routing/predictor/equivalence/AMP mechanics must remain defended under the integrated runner",
+      "biological_claims": false
+    }
+  },
+  "qualification_phase": {
+    "start_update": 0,
+    "stop_update": 40,
+    "horizon_source": "frozen F1-B formal-run horizon",
+    "automatic_continuation": false,
+    "checkpoint_updates": [
+      0,
+      10,
+      25,
+      40
+    ],
+    "telemetry": "every update",
+    "permitted_outputs": "mechanics/resource/provenance only; no reader-validation/oracle or pathology biology",
+    "required_evidence": [
+      "all 40 updates consume the exact frozen schedule rows and have 128 unique cells",
+      "all 48 mandatory backbone gradients are LIVE after unscale on every update",
+      "reviewed predictor mandatory gradients are LIVE after unscale on every update",
+      "no target parameter receives a gradient",
+      "no optimizer step is skipped or executed before the gate",
+      "both Adam moments are finite and nonzero for all mandatory tensors after each step",
+      "EMA count/equation matches every proved valid optimizer step",
+      "u40 per-tensor movement passes the reviewed decay-only adjudicator",
+      "routing/predictor/AMP/equivalence mechanics remain defended",
+      "checkpoint save/restore succeeds in a fresh process with exact state/RNG/cursor binding",
+      "no reader_validation, reader_oracle, foundation development/sealed, external holdout, or pathology path is opened"
+    ],
+    "terminal_on_success": "PASS_HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION__FULL_CONTINUATION_STILL_UNAUTHORIZED",
+    "terminal_on_any_failure": "STOP_HEALTHY_TEACHER_QUALIFICATION"
+  },
+  "continuation_phase": {
+    "start_from_checkpoint": 40,
+    "final_update": 205,
+    "full_horizon_basis": "historical outcome-independent cap-8 schedule; last complete cap-safe update",
+    "checkpoint_updates": [
+      50,
+      100,
+      200,
+      205
+    ],
+    "continuation_requires": [
+      "u40 qualification terminal PASS",
+      "u40 qualification package hash-bound",
+      "independent review of the u40 mechanics package returns PASS",
+      "same successor implementation and contract roots unchanged",
+      "explicit continuation authority"
+    ],
+    "no_early_stopping_on": [
+      "loss improvement",
+      "reader metrics",
+      "D1 rankings",
+      "pathology",
+      "biology"
+    ],
+    "stop_immediately_on": [
+      "authority/hash drift",
+      "nonfinite loss",
+      "mandatory gradient failure",
+      "optimizer-step failure",
+      "Adam moment failure",
+      "EMA failure",
+      "schedule/cursor/RNG/resume mismatch",
+      "forbidden population/pathology access",
+      "resource/integrity failure that compromises state"
+    ],
+    "completion_terminal": "TRAINING_COMPLETE_U205__CHECKPOINT_MUST_BE_FROZEN_AND_INDEPENDENTLY_QUALIFIED_BEFORE_D1"
+  },
+  "checkpoint_and_resume": {
+    "combined_checkpoint_updates": [
+      0,
+      10,
+      25,
+      40,
+      50,
+      100,
+      200,
+      205
+    ],
+    "immutable_checkpoints": true,
+    "required_state": [
+      "online encoder",
+      "EMA target",
+      "predictor",
+      "optimizer",
+      "GradScaler",
+      "global update counter",
+      "EMA counter",
+      "schedule cursor",
+      "Python RNG",
+      "NumPy RNG",
+      "Torch CPU RNG",
+      "Torch CUDA RNG",
+      "masking RNG"
+    ],
+    "resume_rule": "restore latest hash-verified checkpoint only; exact schedule/RNG/cursor agreement required; never resume defect-inherited historical u10-u205"
+  },
+  "biological_firewall": {
+    "inline_reader_validation_evaluation": false,
+    "inline_reader_oracle_evaluation": false,
+    "foundation_development_access": false,
+    "foundation_sealed_holdout_access": false,
+    "external_holdout_access": false,
+    "pathology_access": false,
+    "d1_real_execution": false,
+    "biological_success_thresholds": null,
+    "note": "Training continuation is mechanics-only. Biological estimates are produced only after a trained checkpoint is frozen and separately authorized."
+  },
+  "terminal": "PASS_HEALTHY_TEACHER_BASE_CONTRACT_READY_FOR_FREEZE__EXECUTION_UNAUTHORIZED",
+  "known_nonfinal_successor_state": {
+    "mechanics_kernel_branch": "f1b-c3-training-successor-v2-20260907",
+    "mechanics_kernel_commit": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+    "ci_result": "21 passed; PASS_F1B_ATTACK_SUITE / PASS_ATTACK_POLARITY / PASS_F1B_ATTACK_REGISTRY",
+    "limitation": "mechanics kernel is not yet the end-to-end production teacher-training runner and is not a valid execution binding for this contract"
+  },
+  "future_binding_overlay": {
+    "schema": "HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1",
+    "may_modify_base_contract": false,
+    "required_base_binding": "frozen base package root SHA-256",
+    "required_fields": [
+      "integrated_successor_commit",
+      "integrated_successor_source_manifest_root",
+      "independent_external_review_terminal",
+      "independent_external_review_artifact_sha256",
+      "independent_external_review_reviewed_commit",
+      "initialization_checkpoint_path",
+      "initialization_checkpoint_sha256",
+      "initialization_mode",
+      "initialization_materialization_attestation_sha256",
+      "predictor_mandatory_registry_sha256",
+      "movement_adjudicator_sha256"
+    ],
+    "overlay_itself_is_execution_authority": false,
+    "execution_still_requires": "separate explicit u0->u40 qualification authorization after overlay validation"
+  },
+  "execution_overlay_blockers": [
+    "These are execution-overlay blockers, not reasons to mutate this base contract.",
+    "integrated reviewed successor commit/source manifest root",
+    "independent external-review PASS artifact bound to the exact successor commit",
+    "exact new successor-bound u0 checkpoint SHA-256 plus materialization attestation",
+    "exact reviewed predictor mandatory registry",
+    "exact reviewed movement adjudicator source SHA-256/formula/tolerance"
+  ]
+}

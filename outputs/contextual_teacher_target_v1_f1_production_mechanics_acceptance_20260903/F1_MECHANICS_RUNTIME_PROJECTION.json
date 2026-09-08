@@ -1,0 +1,38 @@
+{
+  "components_counted_once": true,
+  "counts": {
+    "correct_student": 215540,
+    "matched_null_student": 215540,
+    "teacher": 43108
+  },
+  "engineering_only": true,
+  "finalization_seconds": 0.28830824099998154,
+  "physical_reader_seconds": 45.98558610613132,
+  "point_hours": 10.688619303626226,
+  "point_seconds": 38479.02949305441,
+  "range_hours": [
+    10.16717032582073,
+    11.064390595821912
+  ],
+  "range_seconds": [
+    36601.81317295463,
+    39831.806144958886
+  ],
+  "role_rates_max": {
+    "correct_student": 12.693450552693768,
+    "matched_null_student": 12.666930799769652,
+    "teacher": 19.71121651054294
+  },
+  "role_rates_median": {
+    "correct_student": 12.040546759307587,
+    "matched_null_student": 12.011391324670843,
+    "teacher": 19.464019814793577
+  },
+  "role_rates_min": {
+    "correct_student": 11.645623950284337,
+    "matched_null_student": 11.536443862981987,
+    "teacher": 19.403139127732416
+  },
+  "schema": "f1-mechanics-runtime-projection-v1",
+  "shard_commit_seconds": 372.189739599969
+}

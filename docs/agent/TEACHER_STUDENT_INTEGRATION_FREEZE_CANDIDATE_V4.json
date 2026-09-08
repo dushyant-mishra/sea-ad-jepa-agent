@@ -1,0 +1,38 @@
+{
+  "branch": "candidate/teacher-student-unified-v4-relational-20260908",
+  "current_u0_u40_objective_changed": false,
+  "d1_real_execution_authorized": false,
+  "execution_authorized": false,
+  "integrated_successor_commit": "24752e33f5f7a9ff0e8caef733223b8c4c6de5b7",
+  "integrated_successor_source_manifest": "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V4.csv",
+  "integrated_successor_source_manifest_root_sha256": "8aae50696124a259bbd89d4a788d0e1cb0f94ee8b7ed13520a2db73138ae6460",
+  "predictor_registry_sha256": "43922a62a885cbedee22c06363a8355c6561dad43c95f0a43147fc2f4cbe3592",
+  "real_f1_authorized": false,
+  "real_t0_authorized": false,
+  "relational_loss_active": false,
+  "relational_target": {
+    "active_in_production_update": false,
+    "authority": "docs/agent/TEACHER_STUDENT_RELATIONAL_TARGET_AUTHORITY_V2.json",
+    "design": "docs/agent/TEACHER_STUDENT_RELATIONAL_TARGET_V2_20260908.md",
+    "module": "src/sea_ad_jepa/v4/teacher_student_relational_target_v2.py",
+    "objective": "scale-free anchored triplet order under direct 160-D cosine geometry"
+  },
+  "review_binding": {
+    "legacy_v3_terminal_bridge_required": false,
+    "required_terminal": "PASS_TEACHER_STUDENT_UNIFIED_V4_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
+    "review_package_root_required_in_overlay": true,
+    "review_package_sha256_required_in_overlay": true,
+    "reviewed_source_root_required_in_overlay": true
+  },
+  "schema": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V4",
+  "status": "SOURCE_FROZEN__RELATIONAL_TARGET_REPAIRED__EXTERNAL_REVIEW_REQUIRED__TRAINING_UNAUTHORIZED",
+  "supersedes_source_candidate": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V3",
+  "supersession_reason": "V4 repairs the review-terminal binding and replaces the non-active absolute-distance relational candidate with the TD57B/TD59-aligned scale-free triplet-order target. Canonical block-JEPA production_update remains unchanged.",
+  "terminal": "TEACHER_STUDENT_UNIFIED_V4_SOURCE_FROZEN__INDEPENDENT_REVIEW_PENDING__TRAINING_UNAUTHORIZED",
+  "upstream_authorities": {
+    "f1b_attack_authority_root": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b",
+    "healthy_teacher_base_root": "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534",
+    "historical_clean_u0_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+    "population_access_root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7"
+  }
+}

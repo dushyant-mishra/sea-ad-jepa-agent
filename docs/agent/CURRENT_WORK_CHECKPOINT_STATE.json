@@ -1,0 +1,599 @@
+{
+  "active_agent": "CLAUDE_CODE",
+  "agent_symmetry": {
+    "equal_implementation_authority": true,
+    "mandatory_implementation_verifier_v1": true,
+    "self_promotion_forbidden": true
+  },
+  "allowed_tracked_modifications": [],
+  "allowed_untracked_files": [],
+  "assets": {
+    "c2_closure_package": {
+      "artifacts": [
+        {
+          "authority": "C2_CLOSURE_CRITICAL",
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K0_HISTORICAL.json",
+          "sha256": "01908fd62b1a233207092758b3cb27344f8b7ca81140f5e9295039a35987abd8"
+        },
+        {
+          "authority": "C2_CLOSURE_CRITICAL",
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K1_BACKWARD_AUTOCAST_DISABLED.json",
+          "sha256": "c5b9edf17f57756c201582f130a2bd7e0c7945f40d3412d7ea8742291465d381"
+        },
+        {
+          "authority": "C2_CLOSURE_CRITICAL",
+          "path": "outputs/c2_t1_gradient_forensic_20260906/v3_exact_path/C2_V3_K1_PRE_CRITERION_REPAIR.json",
+          "sha256": "260b9aeef913482f1b3bff8ae6edfe7e88359284ceedf1e1562e196e4a7cc97a"
+        },
+        {
+          "authority": "C2_PACKAGE_MANIFEST",
+          "path": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
+          "sha256": "d9cbac57d9c6aa29537c8126546ed10856ba84ad719aad07fb3821472ce3925e"
+        },
+        {
+          "authority": "C2_CLOSURE_CRITICAL",
+          "path": "outputs/c2_t1_gradient_forensic_20260906/C2_K0_K1_SOURCE_DIFF.txt",
+          "sha256": "d0cd70bae1e71e35d4ee02a09c8954360a155215af22998fee17d3314075caf9"
+        }
+      ],
+      "bound_sources": 15,
+      "bytes_authority": "GIT_BLOB_BYTES_PLATFORM_INDEPENDENT. Manifest digests and byte counts are taken from the immutable git blob, never the working tree. Hashing the working tree is platform dependent: on Windows a text-classified source is checked out with CRLF, so its digest and length differ from the git blob by one byte per line.",
+      "file_count": 55,
+      "frozen_for_review": {
+        "branch": "jepa-peer-handoff-20260905",
+        "do_not_mutate": true,
+        "platform_split": {
+          "continuity_and_governance_suite": "Windows git environment",
+          "cuda_c2_torch_replay": "WSL or native Linux GPU checkout",
+          "note": "The worktree .git indirection is a Windows path, so git commands fail from WSL against that worktree. That is an environment artifact and must not be read as a scientific failure. Clone the remote into the Linux filesystem instead."
+        },
+        "supersedes_commit": "d24ff8f72998a1ef5e5e032e99a927f663723a4a",
+        "supersession_reason": "External review returned STOP_C2_INDEPENDENT_VERIFICATION__BOUND_TEST_SOURCE_PLATFORM_BYTES_MISMATCH against d24ff8f7. The causal evidence, K0/K1, gate algorithm, registry and scientific conclusion were not reopened. The packager hashed the Windows working-tree representation of bound sources rather than the immutable git bytes, so tests/test_c2_mandatory_gradient_gate_v1.py was recorded as 10506 bytes / 0255065e when its git bytes are 10259 / b113927c, a 247-byte difference over 247 line breaks. Repaired structurally: the packager now stages each manifested path and hashes the index bytes, so no checkout can change a recorded digest. All 55 rows verified against git bytes. d24ff8f7, 43c2997 and 76b9449e are preserved unmodified as failed review candidates."
+      },
+      "manifest": "outputs/c2_t1_gradient_forensic_20260906/C2_RESULT_MANIFEST.csv",
+      "manifest_sha256": "b4d2fafc0665bd0c135c3ddac0c76b873602034b79f267a808e82636ad11960b",
+      "package_root_sha256": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222",
+      "preservation_note": "The package bytes are tracked in git and marked -text so the recorded SHA-256 values, which are over raw bytes, survive checkout on either platform. At commit da7e0b5 the package was untracked and its manifest was stale: the packager had run before the final edit to C2_CAUSAL_CONDITION_ESTABLISHED.md, recording 4725 bytes for a 5854-byte file, which also invalidated the package root. Both defects were found by independent verification from a clean clone and are repaired here.",
+      "root": "outputs/c2_t1_gradient_forensic_20260906",
+      "scope_note": "The causal claim is scoped to the historical 128/8 path as executed here. It is not a claim about universal PyTorch behaviour.",
+      "sealed": {
+        "rule": "DO NOT REGENERATE. The package root is bound to PASS_C2_INDEPENDENT_VERIFICATION at that commit. Post-PASS work that edits a formerly bound source, such as c2_corrective_run_update_v3.py gaining the successor and gated_historical modes, is tracked by commit history and lives on a branch after the sealed commit. Rebuilding the manifest over the changed tree would produce a different root and silently break the external binding. If a future package generation is genuinely required, it must be a NEW package with its own identity, and the packager must first be repaired to read committed bytes read-only per the recorded tooling follow-up.",
+        "sealed_at_commit": "712cd07d52371c4cbbfb0760a09399e9c23ec1b4",
+        "sealed_package_root": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222"
+      }
+    },
+    "local": [
+      {
+        "authority": "SUPERSEDED_NOT_A_LEAD",
+        "path": "D:/Jepa project/outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json",
+        "sha256": "9be58bbb6f131fa788f2a6b3b742b4d2a1ada663c7730859b32a17d6afa00e34"
+      },
+      {
+        "authority": "PROVISIONAL_LEAD_ONLY",
+        "path": "D:/Jepa project/outputs/_private_qkv_matrix_20260905/QKV_GRADIENT_MATRIX.json",
+        "sha256": "e6aa97ee6980a16d7c63eca63d3cdfa5ad089966f7a86b26f590619609776c29"
+      }
+    ],
+    "remote_only": [
+      {
+        "ref": "origin/review/f1b-independent-verifier-repair-20260905",
+        "role": "PRESERVED_REVIEW_BRANCH_NOT_MERGED"
+      },
+      {
+        "ref": "origin/review/pre-f1-mechanism-repair-20260905",
+        "role": "PRESERVED_REVIEW_BRANCH_NOT_MERGED"
+      }
+    ]
+  },
+  "authorities": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "85bdeb5ac1446576a83d3df5561d40f11c47b2aef95796af72196ddb70a36632",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-05-jepa-peer-agent-continuity-design.md",
+      "sha256": "16fedab6c53db58f19af67e1b05b543a6f6270be820987ef29bc8c39c154dba7",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-09-05-jepa-continuity-c2-implementation-plan.md",
+      "sha256": "4d1d4ca03fc49b6605fa2a5aa86d18982d155879df7aa41a367b5bfd80054d5f",
+      "status": "FROZEN_AUTHORITY"
+    },
+    {
+      "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
+      "sha256": "657471215c530c035c33bde7d52d8a6968bdbc6c089d899c1cde828719a0d98b",
+      "status": "FROZEN_AUTHORITY"
+    }
+  ],
+  "blocker_evidence": {
+    "C2_AD_HOC_REPRODUCTION_SUPERSEDED": "outputs/_private_c2_t1_forensic_20260905/C2_T1_ACCUMULATION_FORENSIC.json has no preserved config or invocation and is contradicted by two specified reconstructions. Superseded, not a lead. The Historian objection that the QKV matrix contradicted the checkpoints is reopened.",
+    "C2_DEEP_KERNEL_MECHANISM_OPEN": "Necessity and sufficiency are established at the code-condition level: disabling autocast only around the backward call restores all 48 tensors at 128/8 with all nine frozen criteria met, while the historical arm still gives 48/48 dead. Why the collapse is to EXACT zero rather than merely inaccurate values is unresolved. The autocast weight cache (I1) and allow_fp16_reduced_precision_reduction (J1) were both tested and refuted.",
+    "F1B_11_OF_15_LACK_EXECUTABLE_ATTACKS_AND_5_STATIC_PROBES_FAIL_OPEN": "Corrected scope after reading scripts/v4/verify_f1b_minimal_bridge_independent_v1.py. Only FOUR findings are gated by something executable: 1, 2 and 3 via genuine dynamic attacks against a mock, and 10 via a data comparison of published updates against the contract default. ELEVEN lack a real executable attack, not ten. Worse, five of those eleven (findings 4, 5, 6, 14, 15) are gated by literal substring probes over the executor source, for example \"'visible[0].sum()' in src\" and an exact two-line match on \"coverage = gradient_coverage(online)\n        optimizer.step()\". Those FAIL OPEN: any rename, reformat or whitespace change flips the probe to not-vulnerable without repairing anything, so a cosmetic edit would manufacture a false PASS. This is the same fail-open class as component_gradient_report counting only missing and nonfinite. Findings 7, 11 and 13 are computed but never promoted to the vulnerability list, so they are detected and then discarded. Findings 8, 9 and 12 have nothing at all. C3 must replace the five substring probes with behavioural attacks as well as adding the missing ones.",
+    "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED": "docs/agent/F1B_INDEPENDENT_VERIFICATION_REVIEW_20260905.md on review/f1b-independent-verifier-repair-20260905 enumerates 15 numbered findings against f1b-minimal-bridge-20260905@f0fb23c2.",
+    "F1_PROGRAM_SIGN_LOCALLY_RESOLVED_IN_SUCCESSOR__FINAL_CONTRACT_FREEZE_PENDING": "The historical/public qualify_current had an aggregate-rescue loophole: a strongly negative protected program could qualify through a positive aggregate. That has been prospectively repaired in the ChatGPT/user F1 successor work, which keeps all eight semantic protected programs including core_halo despite molecular rank 7, makes the eight-program one-sided Holm-positive family qualification-bearing, treats protected-program nonestimability as three-valued and fail-closed, and carries adversarial tests on the exact Holm boundary. Do not independently redesign this decision and do not wait on the old decision_v4 implementation. ChatGPT and the user own the final scientific-contract freeze; the remaining family/source/terminal audit is theirs.",
+    "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE": "Pending prospective scientific contracts remain unfrozen; do not invent them.",
+    "PHASE_E_GRADIENT_CHECK_IS_BLIND_TO_ZERO": "CLOSED. The mandatory gradient gate is adopted in the successor training path, inserted immediately after scaler.unscale_(optimizer) and before scaler.step(optimizer), together with frozen 48-identity registry enforcement. Five GPU adoption regressions pass: a historical K0-like update raises with EXACT_ZERO=48; the optimizer holds zero state entries and no parameter moves, proving rejection precedes the step rather than merely reporting after it; the corrected update passes the gate with 48/48 live and all 48 protected tensors moved, step_succeeded and EMA exact; an AST check confirms the gate follows unscale, precedes every scaler.step and optimizer.step, and sits unconditionally at function-body depth so no branch can skip it; and the successor differs from canonical by exactly four added and one removed line.",
+    "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE": "results/v4/stage81a2_split_registry.csv on public main discloses which donors are in the sealed_holdout split, together with the freeze seed and assignment method. NOT a privacy or PII issue: the owner confirms all donor data was obtained from already-public databases (SEA-AD is published by the Allen Institute), so donor identifiers and pathology are already in the public domain and require no remediation. The remaining issue is narrower and purely one of split concealment: a sealed holdout assumes membership is unknown until the evaluation contract is frozen, so a publicly readable membership list makes a future sealed-evaluation claim contestable regardless of whether anyone looked. Nothing to repair in git; if a sealed-holdout evaluation is proposed later, re-seal with a fresh seed and partition instead."
+  },
+  "c2_independent_verification": {
+    "authorizes": "Nothing further. No real F1, pathology, DEV, SEALED, oracle, fresh T1 or production foundation training becomes authorized by this PASS.",
+    "closure_critical": {
+      "K0": "01908fd62b1a233207092758b3cb27344f8b7ca81140f5e9295039a35987abd8",
+      "K1": "c5b9edf17f57756c201582f130a2bd7e0c7945f40d3412d7ea8742291465d381",
+      "K1_pre_criterion_repair": "260b9aeef913482f1b3bff8ae6edfe7e88359284ceedf1e1562e196e4a7cc97a",
+      "source_diff": "d0cd70bae1e71e35d4ee02a09c8954360a155215af22998fee17d3314075caf9"
+    },
+    "manifest_rows": 55,
+    "scope": "Historical 128/8 path. Not a claim about universal PyTorch behaviour.",
+    "terminal": "PASS_C2_INDEPENDENT_VERIFICATION",
+    "verified_commit": "712cd07d52371c4cbbfb0760a09399e9c23ec1b4",
+    "verified_manifest_sha256": "b4d2fafc0665bd0c135c3ddac0c76b873602034b79f267a808e82636ad11960b",
+    "verified_package_root": "f6463bdc3ca85f29708db6d444b4843087a483cc60ba75a40df35f24bb9c4222"
+  },
+  "closed_records": {
+    "C2_PRODUCTION_SAFE_REWRITE": "SUPERSEDED_DO_NOT_RUN. The deferred-backward rewrite accumulated every scaled loss and drained the backwards after the autocast block, holding 64 live graphs at 128/8, and would exhaust memory. It was never run. The minimal K1 correction, wrapping only the backward call in autocast(enabled=False) while preserving per-view interleaving, has already passed the exact real run_update geometry and independent verification, and is the preferred repair. Do not run the deferred variant unless an independent verifier finds a concrete reason the minimal K1 repair is insufficient.",
+    "T1": "CLOSED_AS_DEFECTIVE_HISTORICAL_TRAINING_EVIDENCE per DEC-015. Do not rehabilitate, extend, resume or retrain. The u205 biological nonqualification remains historical fact."
+  },
+  "continuity_defects_repaired_by_claude_code": {
+    "CODEX_ACCEPTANCE_TEST_LEFT_UNCOMMITTED_AND_UNDECLARED": "test_codex_claude_codex_provenance_handoff_preserves_authority_and_action is the acceptance criterion for round-trip takeover. It passes but was neither committed nor declared in allowed_tracked_modifications. Now declared, pending owner approval to commit.",
+    "DOCUMENTED_TAKEOVER_COMMAND_COULD_NOT_PASS": "CLAUDE.md instructed 'validate --repo . --worktree .' but the checkpoint records the canonical repo path by design, so the first takeover step always raised a spurious REPO_PATH_MISMATCH. Added work_checkpoint.resolve_canonical_repo(), made --repo optional and auto-resolved via 'git rev-parse --git-common-dir', and corrected CLAUDE.md. No agent now hardcodes the canonical path.",
+    "PEER_CONSULTATION_PUBLISHED_ACCOUNT_IDENTITY": "scripts/agent/claude_peer_bridge.py captured the full 'claude auth status --json' output into a committed provenance artifact. Its _SENSITIVE_KEY denylist did not cover email, orgId, orgName or projectsDirectory, so the committed docs/agent/peer_consultations/claude_smoke_20260905/CLAUDE_PEER_CONSULTATION.json carried account identity and the local username toward a public repository. Replaced the denylist with an allowlist (_AUTH_SUMMARY_KEYS), added _redact_user_paths, widened the denylist, removed the artifact, and purged it from unpushed branch history before first push. Covered by test_published_consultation_carries_no_account_identity_or_username.",
+    "TEST_RUN_INVALIDATED_ITS_OWN_CHECKPOINT": "The handoff protocol requires running focused tests, but the pytest basetemp '.pytest_tmp_peer_handoff/' was untracked and not ignored, so running the tests produced UNTRACKED_FILES_MISMATCH and broke checkpoint validation. Added it to .gitignore; _git_snapshot uses --exclude-standard so the loop is now closed."
+  },
+  "firewall": {
+    "at8_values_closed": true,
+    "dev_expression_closed": true,
+    "pathology_closed": true,
+    "production_training_forbidden": true,
+    "reader_oracle_closed": true,
+    "reader_validation_closed": true,
+    "real_f1_forbidden": true,
+    "real_t0_forbidden": true,
+    "sealed_expression_closed": true
+  },
+  "forbidden_actions": [
+    "BIND_PRE_STAGE81A2_MATRIX_SEMANTICS_REGISTRY_AS_T0_AUTHORITY",
+    "BUILD_T0_AGGREGATE_AUTHORITY_WITHOUT_LAWFUL_DONOR_ROLES",
+    "CREATE_NULLABLE_DONOR_ROLE_SUBSTITUTE",
+    "HASH_WORKING_TREE_CRLF_AS_SOURCE_AUTHORITY",
+    "INVENT_UNFROZEN_SCIENTIFIC_RULES",
+    "MERGE_REVIEW_BRANCHES_FOR_CONTINUITY",
+    "MODIFY_EXISTING_F1B_BRANCH",
+    "MODIFY_V18_OR_V20_SCIENCE",
+    "OPEN_AT8_PATHOLOGY_VALUES",
+    "OPEN_DEV_SEALED_PATHOLOGY",
+    "REHABILITATE_OR_RETRAIN_T1",
+    "RUN_FRESH_PRODUCTION_TRAINING",
+    "RUN_REAL_F1",
+    "RUN_REAL_T0",
+    "SET_OR_BYPASS_REAL_EXECUTION_READY_TRUE"
+  ],
+  "gates": {
+    "c2": "C2_CLOSED__HISTORICAL_T1_TRAINING_MECHANICS_DEFECT_CONFIRMED_AND_REPAIRED",
+    "current": "PASS_T0_V20_PARALLEL_S2_AVAILABILITY_AND_PROMOTION_DESIGN",
+    "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
+    "real_f1": "FORBIDDEN",
+    "real_t0": "FORBIDDEN",
+    "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
+  },
+  "next_authorized_actions": [
+    "REPAIR_THE_FOUR_R2_B2_DEFECTS_AGAINST_THE_RED_CASES",
+    "BUILD_T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1_ON_THE_FROZEN_DEFINEDNESS_PREDICATE",
+    "BUILD_T0_IMMUNE_SUPPORT_COUNT_AUTHORITY_V1__46_DONORS_SUM_20804",
+    "BUILD_T0_DONOR_AGE_SEX_AUTHORITY_V1",
+    "BUILD_STAGEWISE_PATHOLOGY_BLIND_ESTIMABILITY_PREFLIGHT",
+    "OBTAIN_EXPLICIT_OWNER_FREEZE_OF_THE_IMMUNE_FRACTION_FORMULA",
+    "DO_NOT_RUN_PRODUCTION_B2_UNTIL_THE_R2_REPAIRS_PASS_INDEPENDENT_REVIEW",
+    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
+  ],
+  "peer_agents": [
+    "CODEX",
+    "CLAUDE_CODE"
+  ],
+  "provenance": {
+    "base_commit": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+    "canonical_workspace_preserved": "D:/Jepa project",
+    "dec016_ported_not_cherry_picked": true,
+    "handoff_reason": "T0_V20_PATHOLOGY_BLIND_MATERIALIZATION_HANDOFF_ecd0b0fb",
+    "isolated_worktree": "D:/jepa_t0_mat_20260908",
+    "last_agent": "CODEX",
+    "t0_review_provenance_commits": [
+      "6e247617b3849b86df317c83479cc1497b3f0d1d",
+      "2faaa6cf276d3782f43b0cf3a0116e9408b51057"
+    ]
+  },
+  "t0_v20_materialization_lane": {
+    "accepted_package": {
+      "canonical_chain": "5/5 PASS",
+      "execution_binding_attacks": "18/18 PASS",
+      "independent_suite": "224/224 PASS",
+      "manifest_rows": 154,
+      "package_root_sha256": "896dce257b8ed7330cfe9ac9a561e6d87090903485236dbf37f389d6432cb9e7",
+      "recovered_by": "SHA_DRIVEN_SEARCH_NOT_PATH",
+      "review_terminal": "PASS_T0_V20_INDEPENDENT_REVIEW",
+      "static_contract_audit": "22/22 PASS",
+      "v18_frozen_constants_sha256": "e255bf4ad878e3277dcdd573dbf17a10b7cd34eb78be64c78435ffa4f38971ec",
+      "v18_inner_zip_sha256": "f25806dd68c576832d51ef998712f56b4add4481388852e4b22636fbc1624fa9",
+      "v18_scientific_contract_sha256": "0851b47d2351ded1be35a772bb9d7c05ed57d4bbbe551d81c7845a87ace85050",
+      "v19_execution_attack_sha256": "c16e6a6a16b6d391f4dd379fa9404ebb089d05150d9b252e1bfa13d8f18d1a88",
+      "v19_failed_zip_sha256": "4ba8d3362ee05efe363e254f11a45db468a3e44d234ddd4dd58091640ba7a52e",
+      "v20_active_test_manifest_sha256": "99b9aeacea525ff06d6ab6d64aaed2fd74167795c2da21c02ef912f867fb0d6b",
+      "v20_constants_sha256": "d15a1773469f67140de199ddcaf784b3c811c92ae7ed3f8bc4d6ab9f90252833",
+      "v20_contract_sha256": "b8e5a38f9a158d0436d38e6846a51692f9a949580c899768c7d7507ab8646f62",
+      "v20_implementation_manifest_sha256": "1f55741e83bf1b504c052975649ec3a8978428b311251c9b0bd5271cf20c6b9d",
+      "v20_inference_safe_sha256": "7404f7d610865c5646c3a7e4e86d980c8858cf0c601e8cd8a67b10aedcc25cb6",
+      "v20_public_api_map_v3_sha256": "4aa3a3d11d7f851b106b8a2f33e1b4b345eddbcdd1f2baaab9f30b0aff1bec2c",
+      "v20_studentized_fl_sha256": "3b04f20f695e392d8193aac53efc7973f1df23dc8fb3e148ab01ab353d6a2fa2",
+      "v20_superseded_registry_sha256": "ef54a8d0cc2f2e9c160e459bd8e239c20c10a0e052a369cc2ec3688096de909c",
+      "zip_sha256": "a069cad258d278bf8d97e20ba1317ccc62b93265e7f93208a2ae1a4848561947"
+    },
+    "at8_availability_authority": {
+      "acceptance_rule_limitation": "The frozen wording lifts the donor-role STOP only after the availability authority passes independent verification, but an external reviewer cannot re-derive from the numeric source without pathology access, which this lane denies it. As written the condition is therefore unsatisfiable by any external party. The owner must either accept package-and-implementation review as sufficient, or perform the source re-derivation locally, which needs no wider pathology access than the owner already has.",
+      "attacks": "30 passed",
+      "authorization": "Owner-authorized availability-only lane: may determine solely whether the frozen field 'percent AT8 positive area_Grey matter' is present and non-missing. May not parse, retain, emit, log, rank, summarize, compare or model numeric AT8 values.",
+      "availability_root_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
+      "availability_root_stability": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b reproduced across nine builds, now including the injective-framing repair, because it covers the derived predicate alone.",
+      "available_donor_count": 84,
+      "derivation_code": "scripts/v4/t0_at8_availability_authority_v1.py",
+      "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
+      "derivation_code_sha256": "9930b7741c8336b1d0313e295e8dffccf188060c6a61d0e49174a7c796258cb3",
+      "derived_not_assumed": true,
+      "independent_review_v3": {
+        "authority_document": "docs/agent/T0_AT8_AVAILABILITY_V3_INDEPENDENT_REVIEW_20260908.md",
+        "correction": "An earlier revision of this state recorded a PASS terminal for the V3 review, taken from a conversational summary, while a contradictory STOP was already committed to the repository by the reviewer. The committed record is the authority; the PASS claim was wrong and is withdrawn.",
+        "terminal": "STOP_T0_AT8_AVAILABILITY_V3_WRITE_FREEZE_BINDING_NOT_CLOSED",
+        "zip_sha256": "01ce9b37e592ee694c0cb6edc2b1095908943997216bd70e8f792416a78a70a2"
+      },
+      "location": "outputs/t0_at8_availability_20260908",
+      "location_rationale": "Deliberately NOT stored as tracked text. The declared roots are the bytes as written; a Git checkout under core.autocrlf=true rewrites them, which was observed to change the registry digest from e49c4e93... to a44244824ef4ed252d84fcdfb1e07b807a9a55572bff67bfa9fd0b69079427d6 and would have made the loader fail to verify its own package on a fresh clone.",
+      "membership_donor_count": 46,
+      "membership_donor_set_sha256": "bde1f1ed50739f44cd64a1a952d7a367dc5c032f8eb84aa38c7db604314297a1",
+      "membership_donors_available": 46,
+      "membership_fully_available": true,
+      "membership_provenance": {
+        "accepted_v20_member": "current/authority/T0_PRIMARY_MTG_READER_FIT_IMMUNE_CELL_MEMBERSHIP_V1.csv",
+        "claim": "The 46 donor identities are exactly the distinct donor_id values of the accepted-V20 membership member named above, so the set digest is a claim about that member rather than about an arbitrary 46-donor input.",
+        "distinct_donors": 46,
+        "donor_set_sha256": "f89838342622348f126217686084bf69901b1a50aca97ce94b176b779e294d64",
+        "donor_set_witness_sha256": "6f8e20d3ec883b6c99a2bb61fcb4b0c9b4af4b1bc4aa0a519844543d1c925eff",
+        "member_sha256": "d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529"
+      },
+      "namespace": "T0-AT8-AVAILABILITY-V1",
+      "package_root_sha256": "3f74fa833bc1838a50d92bf3f6bdb55e6eafdb10b489fbfff142a4240466fc5a",
+      "review_packages": {
+        "current": "v6",
+        "note": "V1 was the archive independently attacked; V2 already carried the mode, stale-field, TOCTOU-regression and membership-witness repairs; V3 adds the loader TOCTOU closure and the repository-relative layout.",
+        "v1_sha256": "4f4cc8cf7b1d07f2fdd8751a89e2ba352d9e2fa2b5663ad33865a98f2d00886e",
+        "v2_sha256": "d2f7bb8ef5fd531492f008ec1185f1f8485c0d7ef1a3e8f8d1e60250fd1b3447",
+        "v3_sha256": "01ce9b37e592ee694c0cb6edc2b1095908943997216bd70e8f792416a78a70a2",
+        "v4_sha256": "d49eb036a697ab379d44d2c4fabb271038fa545a7404e1c4c9dea6e640e83e65",
+        "v5_sha256": "323def564f0b2c0fdfbf2e01346fd7647b52447e7285a1080173a099a18e9820",
+        "v6_sha256": "a421d3afce019b1d39620e7d55cf673a32c1ea8b0e1517fff4d1939f4292f780"
+      },
+      "review_repairs_applied": {
+        "derivation_code_digest_unreproducible": "derivation_code_sha256 was a disk-byte digest of a tracked file, so no fresh checkout could reproduce it under core.autocrlf; it matched only because the freeze ran against a copy written with LF endings. It is now the Git blob digest, supplied by the caller and validated as 64 hex characters, with the byte semantics recorded, and the archived code member carries those exact blob bytes so it reproduces on any platform.",
+        "donor_set_digest_non_injective": "The digest joined identities with a pipe and validated them only for non-blankness and uniqueness, so a one-element set containing 'a|b' and a two-element set containing 'a' and 'b' produced identical pre-hash bytes and the same digest. Reproduced exactly. Now length-prefixed with explicit cardinality and a V2 domain tag. The membership set digest therefore moved from f8983834... to bde1f1ed50739f44cd64a1a952d7a367dc5c032f8eb84aa38c7db604314297a1; the 46-donor set itself is unchanged.",
+        "exact_package_contents": "An unmanifested extra file was ignored; the directory must now hold exactly the registry, metadata, manifest and root file.",
+        "external_root_verification": "The loader compared the manifest only with the root stored beside it, so a wholesale self-consistent replacement validated. Both expected roots are now required keyword arguments.",
+        "frozen_code_drift_undetected": "Nothing checked that the module on the branch was still the code that produced the frozen authority. A cosmetic vocabulary pass moved its blob while the metadata named the old digest, and the suite was silent. A regression now compares the module blob at HEAD against the recorded digest, so any edit here requires a re-freeze.",
+        "index_mode_fail_open": "authority_path_dirty compared only the index object id, so a staged --chmod flip preserved the blob and evaded the authority gate whenever the path was a declared modification. The bound mode is now passed in and compared.",
+        "loader_member_toctou": "The loader authenticated each member by path and then reopened the metadata and registry to parse them. A same-length metadata forgery injected in that interval was returned with membership_donor_set_sha256 of all zeros while both external roots still reported correct. Members are now read once into memory; lengths, digests and both roots are computed from those captured bytes and parsing happens from the same buffers, so no member is reopened after authentication. Symlinks, reparse points, subdirectories and unmanifested extras are refused. The regression asserts the metadata is opened exactly once, because a second open is the attack surface.",
+        "membership_set_digest": "membership_donor_count alone did not identify a set. With every donor available any 46 of 84 satisfied the same counts, so a canonical set digest is now bound.",
+        "review_package_layout": "The V1 archive stored tests at tests/ and code at code/, but the tests resolve the module through parents[2]/scripts/v4, so the archive could not run its own tests as extracted. V3 uses repository-relative paths and carries RUN_REVIEW.md; verified by extracting to a clean directory and running 26 passed from there.",
+        "stale_one_root_language": "Module docstring and test names still described a single package root as value-invariant; corrected to the two-root contract.",
+        "toctou": "The source was hashed by path and then reopened, so the recorded digest could describe one revision while availability was derived from another, and source_bytes came from a still later stat. The bytes are now read once, those exact bytes are authenticated, parsing happens from memory, and source_bytes is their length.",
+        "toctou_regression_strength": "The first TOCTOU test contained an `assert ... or True`, which proves nothing, and never ran the full builder while the backing file changed. It now wraps read_authenticated_source so it authenticates bytes A, replaces the file with materially different bytes B, and returns A; the registry, source digest and source_bytes must all derive from A.",
+        "writer_byte_binding": "Found by the peer, not by me: the writer wrote each member and then reopened the path to hash it, so a same-length substitution in that interval became the bytes the manifest recorded while the builder still returned the original in-memory metadata. The manifest is now derived from the exact in-memory payloads before anything is written, so a write-time substitution makes the directory fail verification instead of redefining the authority. This was the writer-side twin of the reader-side interval I had already closed, and I had not looked for it."
+      },
+      "schema": "JEPA_T0_AT8_AVAILABILITY_AUTHORITY_V1",
+      "source_bytes": 21982,
+      "source_relative_path": "data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv",
+      "source_sha256": "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a",
+      "status": "V6_FROZEN__NOT_INDEPENDENTLY_VERIFIED",
+      "total_donor_count": 84,
+      "two_root_design": "availability_root covers the derived predicate alone and is invariant to every numeric AT8 value, proven metamorphically; package_root binds the source digest and derivation code and is expected to change when source bytes change.",
+      "v7_not_issued": "A V7 archive was built and discarded. The typed-framing repair touched the projection and row modules, not this one, so all four availability identities are byte-identical to V6 and a V7 would have differed only by a version label. Issuing it would have recreated the multi-freeze divergence the external review flagged. V6 a421d3afce019b1d39620e7d55cf673a32c1ea8b0e1517fff4d1939f4292f780 remains current.",
+      "value_handling": {
+        "note": "Replaces the earlier outcome_values_read=false, which was not literally true: the raw token must be read to decide missingness.",
+        "numeric_at8_value_emitted": false,
+        "numeric_at8_value_parsed": false,
+        "numeric_at8_value_retained": false,
+        "raw_at8_token_read_for_missingness": true
+      },
+      "verification_rule": "Rebuild from the frozen source digest with the recorded derivation code and compare roots. Do not hash a Git-checked-out copy."
+    },
+    "checkpoint_artifact_note": "docs/agent/CURRENT_WORK_CHECKPOINT.json is intentionally gitignored, so a local validation PASS is true but not reproducible from the branch alone. Review packages must carry the frozen checkpoint bytes or bind their digest explicitly.",
+    "crlf_divergence_observed": {
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv": {
+        "blob": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+        "worktree": "e482d9da21232bdeb6b3f198f42b9fbcf1530ba1b3e86e104ffbb651ca9df808"
+      },
+      "note": "Declared authority digests are reproducible only from pinned Git blob bytes. The untracked materializer output copy under outputs/ hashes correctly because it was written with LF and is not subject to Git's CRLF filter.",
+      "results/v4/stage81a2_matrix_semantics_contract.csv": {
+        "blob": "3c34bb063e22cdd4d3c308b47cb6eba67ccaceac5fb1c182cc9f7dd755f5aeba",
+        "worktree": "dbf964337ec674772973388264172da6036f33ee20094050d2401e218021c504"
+      }
+    },
+    "donor_role_gate_wording": "The donor-role gate is SHUT, meaning active and blocking. Earlier wording said 'closed', which a reader could take as resolved. It is not resolved and has not been lifted.",
+    "donor_roles": {
+      "nullable_substitute_forbidden": true,
+      "reason": "The availability input now EXISTS and is frozen, but it is not yet independently accepted, so the STOP stands. Roles additionally require the technical-completeness predicate, which V18 grounds in Q_DEPTH and Q_DETECT and which is derivable pathology-blind inside S2.",
+      "recovered_v18_framing_not_invented": "split_hash = _digest(donor_id) from t0_discovery_confirmation_split_v2; order by (split_hash, donor_id); first N_CONFIRM = CONFIRMATION; namespace T0-DISCOVERY-CONFIRM-V2; completeness = AT8_available & technical_complete & isfinite(age) & non-empty sex.",
+      "status": "STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
+    },
+    "external_disk_authorities": {
+      "byte_semantics": "DISK_BYTES__UNTRACKED_MATERIALIZER_OUTPUT_NOT_UNDER_GIT_CRLF_FILTER",
+      "mtg_h5ad": {
+        "counts_layer": "layers/UMIs",
+        "path": "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad",
+        "sha256": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79",
+        "shape": "1178694x36601",
+        "size_bytes": 32978570763
+      },
+      "note": "These live under outputs/, which .gitignore excludes, so they are hashed as actual immutable bytes rather than as Git objects. They are recorded here rather than in the checkpoint `authorities` list because that list is validated against the worktree and these are large materializer outputs.",
+      "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/ASSET_AUTHENTICATION.csv": "d8bccf6c315b928ea5fc5f384c6eaa7eb7c4690dc5f35e4eb6b3f7161e5aa9ea",
+      "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json": "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf",
+      "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_MANIFEST.csv": "818ef14ac8c61ea4e93cc0c853a502dfa1cb75c198499b1cdafa6475e5a9eee9"
+    },
+    "external_review_terminal_received": "STOP_T0_B2_FINAL_EXTERNAL_REVIEW__FULL_MANIFEST_NOT_CONSUMABLE__RAW_SOURCE_ROW_NOT_AUTHENTICATED__BLOCK_ROW_COORDINATE_MISMATCH__THREE_ROOT_EXTERNAL_VERIFICATION_INCOMPLETE",
+    "governance_state": "T0_INPUT_DEPENDENCY_CONTRACT_FROZEN__IMMUNE_FRACTION_BUILT__FOUR_R2_B2_DEFECTS_RED__PRODUCTION_B2_FORBIDDEN",
+    "handoff_sha256": "ecd0b0fb5c449e9ff1101dff5b014fdbb79c7538212155b28f0a9beb47f2c01f",
+    "immune_fraction_authority": {
+      "block_metadata_members_authenticated": 1247,
+      "denominator_population_resolved_by_verification": "An external review described the denominator as all reader-fit op31 cells. The partition field is not a Phase2 metadata column, so that appeared possibly uncomputable from the authenticated substrate. The canonical foundation SQLite gives op31 partition composition reader_fit 638150, reader_validation 173736, reader_oracle 121386; the Phase2 op31 store holds exactly 638150 cells by an independent scan of all 1247 block metadata files. The substrate is therefore exactly the reader_fit partition, so the two candidate denominators coincide and no dependency on the large SQLite enters the graph. This also confirms by count that reader_validation and reader_oracle are excluded from the store, which is what its no_validation_oracle_dev_sealed_pathology flag claims.",
+      "derivation_code_sha256": "fd658107a78f21e63a1c743c58ab3da0d6fed8fdca2800e918fa80d910c42196",
+      "donors": 46,
+      "formula_specification_status": "SUCCESSOR_SPECIFICATION__AWAITING_EXPLICIT_OWNER_FREEZE",
+      "immune_cell_total": 20804,
+      "immune_fraction_root_sha256": "831139259fe78c5cede5457cb4cdc6bbb7bedd53831af95508b9bdfb56741653",
+      "manifest_handling": "AUTHENTICATE_COMPLETE_8915_BLOCK_MANIFEST_THEN_SELECT_1247_OP31_INTERNALLY",
+      "module": "scripts/v4/t0_immune_fraction_authority_v1.py",
+      "op31_cell_total": 638150,
+      "package_location_note": "Written under outputs/, which is gitignored, for the same reason as the availability package: committing it as tracked text would let a platform line-ending transform change the bytes and therefore the root.",
+      "package_root_sha256": "0846bb68563fd4e16ce995d719e3ef680088545337fd251d9c100176e7e90b77",
+      "primary_authority": "EXACT_INTEGER_NUMERATOR_AND_DENOMINATOR__FRACTION_DERIVED",
+      "status": "BUILT_AND_SELF_VERIFIED__NOT_INDEPENDENTLY_VERIFIED"
+    },
+    "input_dependency_contract": {
+      "consumer_modules": 10,
+      "contract_root_sha256": "9c492eeb0a134806daaf222f612d41508545604892ba7b10d31570e0e50c718c",
+      "declared_quantities": 24,
+      "module": "scripts/v4/t0_input_dependency_contract_v1.py",
+      "open_specification_slots": [],
+      "pending_authorities": [
+        "IMMUNE_FRACTION",
+        "Q_DEPTH",
+        "Q_DETECT",
+        "age",
+        "cells",
+        "eligible",
+        "sex",
+        "technical_complete"
+      ],
+      "purpose": "Derived from the executable T0 consumers rather than from handoff prose, and checked in both directions. The reverse direction is the point: every donor-level quantity a consumer requires must be declared, so a missing required input becomes an immediate test failure instead of a late discovery. Removing IMMUNE_FRACTION or technical_complete from the contract makes the scan name that exact quantity, which is how the guard was shown to discriminate.",
+      "status": "FROZEN_THIS_CYCLE__NOT_INDEPENDENTLY_VERIFIED",
+      "tests": "tests/v4/test_t0_input_dependency_contract_v1.py"
+    },
+    "matrix_semantics": {
+      "authority": "results/v4/stage81a2_matrix_semantics_contract.csv",
+      "feature_universe_hash_lineage_only": "b034585d654b46da4d26cc0cbcaf1e4ace12fa93ab9b55dd4182dd882ae966c7",
+      "integer_counts_available": true,
+      "log_transform_already_applied": false,
+      "matrix_semantics": "raw_integer_counts",
+      "matrix_slot": "layers/UMIs",
+      "mtg_h5ad_sha256": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79",
+      "normalization_already_applied": false,
+      "superseded_conflicting_artifact": "results/v4/pre_stage81a2_matrix_semantics_registry.csv declares integer_count_layer_available=False and raw_present=False for the same dataset_id and must never be bound as the T0 matrix-semantics authority.",
+      "transformation_contract": "library_size_normalize_to_10000_then_log1p_with_measurement_mask",
+      "zero_interpretation": "measured_zero"
+    },
+    "owner_authorization": "Three concurrently authorized lanes. (1) Pathology-blind T0 V20 external-authority materialization. (2) AT8 availability-only authority: may access the frozen pathology source solely to decide whether the frozen AT8 field is present and non-missing; may not parse, retain, emit, log, rank, summarize, compare or model numeric AT8 values; output may carry only donor identity, the boolean, provenance and audit metadata. (3) Promotion-only successor design: may design, implement, test and package a minimal prospective successor that makes accepted V20 conditionally promotable, changing no V18/V20 science and producing no real executable T0 authority under present authorization. Still closed: numeric AT8 interpretation, DEV, SEALED, reader-validation, reader-oracle, real T0 execution, biological outcome analysis.",
+    "pinned_blob_authorities": {
+      "base_pin": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+      "byte_semantics": "GIT_BLOB_ONLY__WORKTREE_BYTES_ARE_NOT_AUTHORITY",
+      "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "matrix_semantics_contract_pinned_commit": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+      "phase2_block_manifest_path": "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+      "phase2_block_manifest_pinned_commit": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+      "results/v4/stage81a2_matrix_semantics_contract.csv": "3c34bb063e22cdd4d3c308b47cb6eba67ccaceac5fb1c182cc9f7dd755f5aeba",
+      "results/v4/stage81a2r_foundation_address_policy.csv": "6123db620d5e66948474ddb7002f1eb4212f114f169ea1b64f233ce911ad0e40",
+      "results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json": "e80ddfe65e1b7edb620c2c976d9c338e2870c3e7489f3350b945754ce272eaed",
+      "results/v4/stage81a2r_foundation_molecular_address_measurement_support_candidate.csv.gz": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+      "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "results/v4/stage81a2r_foundation_molecular_address_source_provenance_candidate.csv.gz": "df0cb60f2308c08adaeacb1db5d1099c9cd12e90323af8e3958c428d6869cd51",
+      "stage81a2r_absent_at_base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+      "stage81a2r_pin": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b"
+    },
+    "population_expectations": {
+      "blocks": 1247,
+      "donors": 46,
+      "duplicates": 0,
+      "full_scan_required": true,
+      "manifest_operators": 42,
+      "manifest_total_blocks": 8915,
+      "metadata_rows": 638150,
+      "missing": 0,
+      "operator_index": 31,
+      "target_cells": 20804
+    },
+    "promotion_successor": {
+      "blocking_design_finding": "V20 cannot be promoted by flipping a flag. Its verifiers raise unless real_execution_ready is not False, so they accept only False, while its production entrypoints raise unless it is not True, so they proceed only on True. The two are mutually exclusive by construction, which is what makes V20 permanently unready. A promotion successor therefore needs its own authority schema, verifier and entrypoint triple wrapping accepted V20, and may not reuse V20's verifier.",
+      "status": "AUTHORIZED__DESIGN_IN_PROGRESS"
+    },
+    "provenance_commits": {
+      "base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+      "secondary_verification": "2faaa6cf276d3782f43b0cf3a0116e9408b51057",
+      "t0_review_binding": "6e247617b3849b86df317c83479cc1497b3f0d1d"
+    },
+    "real_execution_ready": false,
+    "s2_feature_projection": {
+      "accepted_split_bytes": 4918541,
+      "accepted_split_member": "current/authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv",
+      "accepted_split_sha256": "29116c16e9002329090a5054b6c4bdae1cbff28917cbee85f03b4633b0b29369",
+      "all_features_measured": true,
+      "attacks": "39 passed",
+      "cross_checks_added": "The split's own molecular_address_index column and the support table's index column are now compared against the frozen registry; a disagreement is a STOP instead of the registry quietly winning. Adding this immediately exposed that my own synthetic fixture had been internally inconsistent.",
+      "feature_authority_root_sha256": "538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8",
+      "independent_contract_crosscheck": "V18 section 3 declares SCORING = 28,061 addresses and the projection observes exactly 28,061, which is an agreement with the frozen contract rather than with my own code.",
+      "injective_framing_repair": "The root used unescaped name=value framing, and role_counts keys come straight from the caller, so one role named 'X:1|role=Y' with count 2 hashed identically to two roles 'X' with count 1 and 'Y' with count 2. Reproduced exactly. The vector reported through the bound provenance fields did NOT reproduce, because every field always emits its own marker in fixed order. Now length-prefixed with cardinality and a V2 domain tag.",
+      "matrix_id": "sea_ad_mtg_rna_final_2026",
+      "ordering": "EXACT_SPLIT_ROW_ORDER__NOT_ADDRESS_INDEX_ORDER",
+      "ordering_caveat": "The accepted split is itself strictly increasing in molecular_address_index, first 0 last 41194, so for THIS split the split-order root and the address-order root are identical and the ordering guarantee is vacuous in practice. It is retained because it is not vacuous for a future split and it forbids a silent re-sort. Synthetic fixtures deliberately make the two orders differ so the guarantee is actually tested.",
+      "pinned_authorities": {
+        "note": "The pinned authority is the gzip blob; the decompressed digest is recorded so a reviewer can reproduce the parse without re-deriving it.",
+        "registry_blob_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+        "stage81a2r_pin": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b",
+        "support_blob_sha256_gzip": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+        "support_sha256_decompressed": "5b641c5a8f2386720c58c4512ec89879a43985a01995e2ada70e941b017dee03"
+      },
+      "production_constructor": "build_production_feature_authority resolves the Stage81A2R authorities itself from the object database at the explicit pin rather than accepting caller-supplied bytes, authenticates the accepted split digest before resolving anything, and asserts the frozen production geometry of 35,076 features with SCORING 28,061 and COHERENCE_HOLDOUT 7,015.",
+      "projected_feature_count": 35076,
+      "projection_root_sha256": "0a0739ec30c758a53070f76989cd4964d7d37224fd20890951b63aacf66e8002",
+      "real_execution_ready": false,
+      "role_counts": {
+        "COHERENCE_HOLDOUT": 7015,
+        "SCORING": 28061
+      },
+      "schema": "JEPA_T0_V20_FEATURE_PROJECTION_AUTHORITY_V1",
+      "source_feature_index_test": "The earlier static substring test was the same fail-open class condemned in F1B, and it broke as soon as an unrelated field name mentioned the token. It is replaced by a behavioural attack: every fixture split row carries source_feature_index = 999999, out of range for the address space, and the emitted indices must still come only from the registry.",
+      "source_feature_index_used": false,
+      "status": "REBUILT_ON_INJECTIVE_FRAMING__NOT_INDEPENDENTLY_VERIFIED",
+      "superseded_feature_authority_root_sha256": "81b570abb46d4406b746478c48c121ae3e9b524b8736b6548488e264d4bcb1cf",
+      "superseded_feature_authority_roots": [
+        "81b570abb46d4406b746478c48c121ae3e9b524b8736b6548488e264d4bcb1cf",
+        "a4744638b3816d48d30e0da108dad12b7cde3e29e8967af83a49860807bbee17"
+      ],
+      "two_root_design": "projection_root binds the ordered rows only, and independent review showed the same root still verified after altering matrix_id, address_space_size, the split/registry/support digests, schema, namespace, role counts or real_execution_ready: the rows were bound but the authority saying what they mean was not. feature_authority_root additionally binds schema, namespace, the accepted split member path and digest, the projection root, the feature count, the role counts, the matrix id, the address-space size, the registry and both support digests, the Stage81A2R pin, the ordering contract, source_feature_index_used and real_execution_ready. Demonstrated on production data: a matrix_id mutation leaves projection_root identical and moves feature_authority_root.",
+      "typed_framing_repair": "Length prefixing closed delimiter ambiguity but not type ambiguity, because every value went through str() first: 41238 and \"41238\" framed identically, as did False and \"False\" and a role count of 28061 and \"28061\". All six reported cases were reproduced. Framing is now type-tagged and length-prefixed, bool checked before int since bool subclasses int, and assert_authority_field_types enforces the declared type of every hashed field at the verifier boundary as the other half."
+    },
+    "s2_row_count_authority": {
+      "adversarial_cases": "50 passed",
+      "blocked_until": "Independent PASS on the successor B1 root 538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8, and closure of the six open defects below. Building on a root whose framing was found non-injective, or on an authority with these gaps, would propagate the defects deeper into the chain.",
+      "blocked_until_root_correction": "blocked_until named the superseded B1 root a4744638b3816d48d30e0da108dad12b7cde3e29e8967af83a49860807bbee17 while consumes_feature_authority_root correctly named 538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8. Synchronised to the current root.",
+      "consumes_feature_authority_root": "538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8",
+      "external_verifier_added": "assert_row_authority_lawful did not exist. It now enforces row-field types, checks the named feature authority root and recomputes the logical root against an externally supplied value, so the verifier path is exercised rather than only the constructor.",
+      "field_disclosure": {
+        "audit_only": [
+          "selection_row",
+          "primary_row_weight"
+        ],
+        "note": "Declared explicitly, required disjoint, and now genuinely complete: the Phase2 metadata donor_id is cross-checked rather than ignored, which is what made the earlier claim false.",
+        "v20_consumed": [
+          "canonical_cell_id",
+          "donor_id",
+          "expression_row",
+          "source_library"
+        ]
+      },
+      "not_yet_done": "No production run against the real 1,247 blocks and 638,150 metadata rows, and no verification that a loaded counts payload has row dimension 41,238. Both are the next step.",
+      "open_defects_found_by_external_review": {
+        "all_closed": "The six defects previously recorded open are closed and each has a regression: the accepted membership and pinned Phase2 manifest digests are required arguments and verified before parsing; the Phase2 metadata donor_id is cross-checked against the membership donor_id; membership operator and matrix VALUES are required, not merely the columns; a duplicate membership cell_id stops instead of silently redefining the population; source_library is proven by summing the authenticated full raw source row, with a row of address-space width refused outright because Phase2 computes the value before projection; and selected-row verification checks expression_row bounds, correspondence with the bound row, address-space width and non-negative integer semantics, so authentic block bytes with the wrong row selected is refused."
+      },
+      "r2_red_cases": {
+        "authenticated_raw_source_row_proof": "RED",
+        "complete_manifest_consumable": "RED",
+        "expression_row_vs_block_local_row_index": "RED",
+        "three_root_external_verification": "RED"
+      },
+      "real_execution_ready": false,
+      "schema": "JEPA_T0_V20_ROW_COUNT_AUTHORITY_V1",
+      "self_found_defect": "assert_plan_restores_logical compared logical indices against range(len(entries)), so dropping the last entry left [0, 1], still a valid permutation of range(2), and a truncated plan satisfied restoration. A physical plan could therefore have silently shrunk the population, which is exactly what the three-root separation exists to prevent. Caught by one of my own cases; restoration now compares against the carried logical row count.",
+      "source_library_rule": "Bound as an exact positive integer from block metadata and never recomputed. Zero, negative, fractional, exponent-form and NaN refused. Both forbidden substitutions are attempted and refused: a sum over the stored 41,238-address row and a sum over the 35,076-address projection. The bound value is accepted so the check discriminates.",
+      "status": "FOUR_R2_DEFECTS_REPRODUCED_RED__REPAIR_PENDING__PRODUCTION_RUN_FORBIDDEN",
+      "still_not_done": "No production run against the real 1,247 operator-31 blocks, 638,150 metadata rows and 20,804 targets. Everything above is synthetic fixtures. The production run is deliberately withheld pending final external review.",
+      "three_roots": {
+        "logical_row_authority_root": "rows in frozen membership order with all six Phase2 metadata fields and the metadata and counts digests, bound to the Lane B1 feature authority root, which is a required argument.",
+        "physical_read_plan_root": "block-then-row I/O ordering carrying logical_index on every entry, plus the logical root it must restore. Restoration is checked against the carried logical row count, not the plan's own length.",
+        "population_closure_root": "operator, matrix, every block scanned, rows scanned and per-cell block plus row location. The scan covers every block and does not stop once every target has been seen, because a duplicate can appear in a later block."
+      }
+    },
+    "schema": "T0_V20_PATHOLOGY_BLIND_MATERIALIZATION_LANE_V1",
+    "self_audit_20260908": {
+      "availability_attacks": "22 passed",
+      "checkpoint_attacks": "32 passed",
+      "finding_1": "authority_path_dirty measured dirtiness with `git status` against current HEAD rather than the checkpoint-bound commit. After a later commit replaced a declared authority the worktree was clean against the new HEAD, so a completely different file could stand in for the authority with no authority-level complaint. Worse, a test had ratified this as expected behaviour. Dirtiness is now the comparison of the bound tree entry object id against `git hash-object --path`, which applies the same clean filter a commit would, so it is exact on a CRLF checkout with no line-ending handling in Python and touches neither the index nor the object store.",
+      "finding_2": "The availability builder admitted an existing empty output directory and then called mkdir(exist_ok=False), dying with an unhandled FileExistsError instead of working or stopping cleanly.",
+      "finding_3": "While repairing finding 1 a file rewrite truncated seven authority-identity attack tests. Detected by the suite count falling from 30 to 24 rather than by reading the diff; restored from HEAD and reconciled to 31 passing cases.",
+      "finding_4_external": "Independent review then found the TOCTOU and index-protection defects above, plus four lower-level authority/governance defects. Both blocking defects were reproduced locally before repair: a staged replacement of a frozen authority validated with zero errors, and the availability source was authenticated by path rather than by bytes."
+    },
+    "source_library_rule": "Phase2 constructs source_library as an integer sum of the FULL raw source row, computed BEFORE source-to-address projection. Bind it as an exact positive integer. Never recompute it from the stored 41,238-address row or from the 35,076-address T0 projection; neither sum is required to equal it.",
+    "suite_totals": {
+      "aggregate_observed": "153 passed",
+      "availability": "32 cases",
+      "checkpoint": "33 cases",
+      "feature_projection": "39 cases",
+      "row_count": "50 cases"
+    },
+    "technical_completeness_specification": {
+      "authority_status": "T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1 NOT YET BUILT",
+      "conjuncts": [
+        "donor belongs to the accepted op31 candidate donor universe",
+        "donor has at least one authenticated accepted cell",
+        "the donor's accepted cells close correctly through the authenticated B2 substrate",
+        "the required raw-count and source_library information is valid enough to compute the frozen technical summaries",
+        "Q_DEPTH(donor) is computable and finite",
+        "Q_DETECT(donor) is computable, finite, and within its lawful range"
+      ],
+      "fail_closed_rule": "technical_complete is evaluated ONLY on a lawfully authenticated substrate. A wrong source digest, a missing accepted membership cell, a donor/cell identity mismatch, a wrong source row, a wrong materialized row, a counts digest failure or a manifest inconsistency are B2 STOPs. They are never reasons to mark a donor technically incomplete. The predicate answers 'are the required technical summaries defined?', not 'did provenance validation fail?'.",
+      "forbidden_cutoffs": [
+        "Q_DEPTH_MINIMUM",
+        "Q_DETECT_MINIMUM",
+        "CELLS_PER_DONOR_QC_FLOOR",
+        "TAIL_MIN_CELLS_AS_ELIGIBILITY"
+      ],
+      "semantics": "THRESHOLD_FREE_DEFINEDNESS_AND_COMPUTABILITY",
+      "shortfall_rule": "If the frozen eligible universe falls below 18 CONFIRMATION + 18 minimum DISCOVERY donors, raise STOP_T0_DESIGN_NOT_EXECUTABLE_UNDER_FROZEN_ELIGIBILITY. Do not relax eligibility, do not introduce a cutoff, and do not alter the split.",
+      "single_sex_rule": "If the actual deterministic confirmation set is single-sex, nuisance_design refuses it and the role authority must fail loudly. This is a design failure, not a biological NOT_MEASURABLE, and the split must not be altered to rescue it.",
+      "status": "FROZEN_BY_OWNER_DECISION_20260908",
+      "tail_floor_scope": "TAIL_MEASURABILITY_ONLY__NEVER_ELIGIBILITY_OR_PARENT_ROLE",
+      "v18_interpretation": "Technical completeness is pathology-blind pre-outcome eligibility metadata derived deterministically from authenticated expression technical summaries. 'Metadata-only' in V18 SS201 means no pathology magnitude and no discovery/confirmation outcome information is used; it does not mean the flag must originate as a literal column in a source metadata file."
+    },
+    "technical_summary_recovery": {
+      "donor_level": "arithmetic mean over that donor's authenticated cells",
+      "note": "An external ledger listed Q_DEPTH_CELL_LEVEL_FORMULA and Q_DETECT_CELL_LEVEL_FORMULA as unresolved. Both are present verbatim in the accepted V20 package and are recorded here with their exact expressions, so that blocker is closed by recovery rather than by definition.",
+      "q_depth_cell_level": "log1p(source_library)",
+      "q_detect_cell_level": "count_nonzero(X, axis=1) / 35076",
+      "q_detect_universe": "ALL 35,076 scalar-measured addresses, per the module's own comment and its enforced X.shape == (n, 35076); NOT the 28,061 SCORING subset. This makes Q_DETECT depend on the B1 projection, not on raw rows alone.",
+      "source_module": "current/code/t0_confirmation_raw_v1.py",
+      "status": "RECOVERED_EXACTLY_FROM_ACCEPTED_PACKAGE__NOT_PARAPHRASED"
+    },
+    "terminal_on_success": "T0_V20_PATHOLOGY_BLIND_FEATURE_SOURCE_ROW_AUTHORITIES_MATERIALIZED_AND_VERIFIED__STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND__REAL_T0_STILL_UNAUTHORIZED",
+    "test_accounting": {
+      "availability": 32,
+      "checkpoint": 33,
+      "correction": "An earlier handoff reported 33 + 32 + 39 + 50, which sums to 154 rather than the 153 actually observed. Static inspection of the feature suite gives 28 test functions with two six-case parametrizations, resolving to 38 cases. The feature count was wrong, not the total.",
+      "feature": 38,
+      "green_total_this_cycle": 256,
+      "new_this_cycle": {
+        "immune_fraction": 47,
+        "input_dependency_contract": 56,
+        "note": "The 13 R2 cases are 12 red against 6c6d841e plus one green regression: a pre-filtered manifest declared with the complete manifest digest is already refused, so that case pins existing correct behaviour rather than reproducing a defect.",
+        "row_count_r2_red": 13
+      },
+      "observed": "Observed 209 passed over checkpoint 33 + availability 32 + feature 38 + row_count 50 + input_dependency_contract 56, plus 47 for the immune_fraction suite, giving 256 green. The 13 R2 row-count cases are excluded from the green total because 12 of them are red by design against 6c6d841e.",
+      "row_count": 50,
+      "total": 153
+    },
+    "three_roots_required": [
+      "population_closure_root",
+      "logical_row_authority_root",
+      "physical_read_plan_root"
+    ]
+  },
+  "tooling_followups": {
+    "C2_PACKAGER_GIT_BYTES_READ_ONLY": "git_bytes() currently runs 'git add -- <path>' then 'git show :<path>'. That fixed the CRLF platform dependence but mutates the index, and it stages an untracked file rather than failing loudly. Before the packager is reused for any future package generation, change it to a read-only committed-byte path: verify the path is tracked, then read 'git show HEAD:<path>' or equivalent pinned-commit blob bytes. Raised by external review. Explicitly NOT a reason to create another C2 candidate: the frozen 712cd07d package is unaffected and independently verified."
+  },
+  "unresolved_blockers": [
+    "STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND",
+    "F1B_15_INDEPENDENT_VERIFIER_FINDINGS_UNRESOLVED",
+    "F1_SCIENTIFIC_CONTRACT_CHOICES_AWAIT_EXTERNAL_FREEZE",
+    "F1_PROGRAM_SIGN_LOCALLY_RESOLVED_IN_SUCCESSOR__FINAL_CONTRACT_FREEZE_PENDING",
+    "SEALED_HOLDOUT_MEMBERSHIP_PUBLICLY_READABLE_BEFORE_FREEZE",
+    "F1B_11_OF_15_LACK_EXECUTABLE_ATTACKS_AND_5_STATIC_PROBES_FAIL_OPEN",
+    "C2_AD_HOC_REPRODUCTION_SUPERSEDED",
+    "C2_DEEP_KERNEL_MECHANISM_OPEN"
+  ]
+}

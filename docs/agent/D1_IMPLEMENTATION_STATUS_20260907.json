@@ -1,0 +1,320 @@
+{
+  "authority_branch_not_modified": "planning/d1-biological-estimation-atlas-20260907",
+  "base_authority_commit": "d85391c90eb1f767115e0f4d31cfaf6bff980e2b",
+  "branch": "planning/d1-biological-estimation-atlas-20260907-work",
+  "bytes_authority": "GIT_BLOB_BYTES_PLATFORM_INDEPENDENT",
+  "confirmations": {
+    "biological_d1_results_executed_or_frozen": false,
+    "c2_untouched": true,
+    "f1a_untouched": true,
+    "frozen_f1b_attack_authority_untouched": true,
+    "no_4540_cohort_derived_production_value_written": true,
+    "no_50k_derived_production_value_written": true,
+    "no_synthetic_derived_production_value_written": true,
+    "population_training_contract_branches_untouched": true,
+    "prohibited_historical_values_not_imported": [
+      15,
+      30,
+      50,
+      60,
+      120,
+      256,
+      320,
+      512
+    ],
+    "t0_v19_untouched": true
+  },
+  "date": "2026-09-07",
+  "evidence_class": {
+    "level": "LOCAL_ONLY_NOT_CI",
+    "note": "every test and audit result here was produced locally; there are no CI runs for this branch, so this is a reproduction target, not independent verification"
+  },
+  "external_review_defects_addressed": {
+    "machinery_not_assembled": "stream_observed_spectrum, stream_null_spectra, stream_donor_block_stability and derive_D_end_to_end added; donor blocks carried through recomputation; the driver calls them",
+    "no_real_streaming": "LawfulFitStrataSource and iter_teacher_states stream audited strata in chunks into the engines",
+    "normalization_declarative": "proven from the loader implementation, requiring log1p exactly once on the sparse .data array and the exact np.maximum(library, 1.0) guard",
+    "phase0_fail_open_on_missing_authority": "11 authorities mandatory and exact-hash checked",
+    "phase0_identity_too_weak": "delivered donor set must equal the frozen reader_fit roster; per-source totals exact; 1400 pairs exact",
+    "protected_partition_census": "protected per-cell rows are never queried, not even for a count",
+    "sqlite_not_cryptographically_bound": "bound by content digest a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "status_artifact_stale": "regenerated as v2 from the actual git state",
+    "unknown_checkpoint_treated_as_healthy": "healthy requires the digest to appear in an explicit qualification authority naming a PASS terminal and the exact readout contract hash; unrecognised is UNQUALIFIED_NOT_HEALTHY",
+    "value_none_fail_open": "emit_production_parameter refuses None/non-finite/empty and demands diagnostics; the driver checks the gate before attempting the derivation and never probes with a placeholder; an AST test forbids a literal value=None",
+    "weak_provenance": "teacher checkpoint root, readout contract hash, four named input roots and firewall evidence are all mandatory; today it correctly reports False, missing teacher_checkpoint_root"
+  },
+  "new_file_sha256": {
+    "configs/v4/d1_real_data_derivation_v1.yaml": "68f0e83650510e4264929c2598a76ea66b125d27cc5751db97323a7c18830c0b",
+    "scripts/v4/d1_full_fit_population_audit_v1.py": "03da4b6b4bc44a8a06c18d6438450c270ed70b9cd2f030d50a4257d3ac4f7f4e",
+    "scripts/v4/d1_parameter_derivation_v1.py": "c19c8674e08ba307453cff32f45ce544f5654878269cc26e715bcc40a61cf7b7",
+    "scripts/v4/d1_real_data_derivation_core_v1.py": "1aa2fd39bf7946669f08ec34137e988a810b48b7c22e7e8a140aa26ef4d5e0b7",
+    "scripts/v4/d1_teacher_state_stream_v1.py": "0965689315a3969f325937c78b6f91b251893ecef3a888083d748ce567da3d07",
+    "tests/test_d1_full_fit_population_firewall_v1.py": "85cf4527269e132d9d3b0dafe79cf324908d21af64f846f7bf24bb41739e5471",
+    "tests/test_d1_real_data_derivation_core_v1.py": "2e07d18e5fae9d7a170d94eaba026a601e45c6de7c4cfd2f6dcc3e4dccdfb6fa"
+  },
+  "open_authority_question_for_the_user": {
+    "degeneracy_clause_reading": "the stable object is the 3-D subspace and D would be 3",
+    "implemented": "the literal fail-closed rule, because taking the largest separating boundary instead would be searching candidate ranks for one that passes",
+    "issue": "On a fixture with three near-equal leading components the blocks were [[0],[1,2],[3,4,5]] with admissible boundaries [1,3,6]. Rank 1 alone scored a real donor-block overlap of 0.033 against a null upper bound of 0.067 and so did not separate, while the rank-3 subspace scored 1.000 against 0.779.",
+    "literal_rule_result": "STOP, because the smallest admissible boundary failed",
+    "reported_as": "derive_D_end_to_end returns degeneracy_discrepancy naming any larger separating boundary the rule withheld, with used_to_set_D false",
+    "requested": "a prospective authority decision; deliberately not resolved in code"
+  },
+  "phase0_population_audit": {
+    "audit_root_sha256": "498a944013bce2d2bd71032dc6435d609e0dafd67a0fe54d529b24fc0954281e",
+    "authority_binding": "every controlling authority is mandatory and exact-hash checked",
+    "authority_sha256": {
+      "cell_metadata_sqlite": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+      "foundation_split_registry": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+      "metadata_donor": "c9cbe47d4727aabec8a0c3fed5474c2dab4f9f2b8848357e08b0cec6ef044508",
+      "metadata_operator": "d5ead72b682c0d8ac81e8c8f700d473b8c0a407b077294e41ec616a604078ac6",
+      "metadata_source": "1e441f1a007c2d50bdce19893738bd0b56300c993a6a49c6188a64f54ddc7bba",
+      "molecular_address_namespace": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "production_loader_manifest": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+      "production_loader_source": "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a",
+      "reader_donor_split": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511",
+      "support_address_recurrence": "8f90c91e333eba6b58c39767069addef72bb4d9d6015ad8de14e7ff383c092da",
+      "support_observation_state": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+    },
+    "donor_primary_weighting": {
+      "formula": "a_dc = 1/(|O_d| * n_do)",
+      "max_donor_mass_deviation": 4.440892098500626e-16,
+      "max_operator_mass_deviation": 5.551115123125783e-17,
+      "operator_count_by_donor_histogram": {
+        "1": 1,
+        "2": 3,
+        "3": 16,
+        "5": 2,
+        "7": 14,
+        "9": 3,
+        "10": 2,
+        "11": 22,
+        "21": 3,
+        "22": 6,
+        "23": 15,
+        "24": 17
+      }
+    },
+    "firewall": {
+      "checkpoint_opened": false,
+      "donor_roster_verified": true,
+      "expression_opened": false,
+      "lawful_partition": "reader_fit",
+      "pathology_opened": false,
+      "protected_partition_metadata_queried": false,
+      "protected_per_cell_rows_queried": false,
+      "protected_rows_delivered": 0,
+      "selection": "single explicit reader_fit selection bounded by the frozen donor roster; protected partitions are never queried, not even for a count"
+    },
+    "molecular": {
+      "addresses": 41238,
+      "codes_agree_with_loader_manifest": true,
+      "measured_zero_distinct_from_unmeasured": true,
+      "observation_state_codes": {
+        "MEASURED_COLLISION_UNRESOLVED": 2,
+        "MEASURED_SCALAR": 1,
+        "STRUCTURALLY_UNMEASURED": 0
+      },
+      "observation_state_names": [
+        "STRUCTURALLY_UNMEASURED",
+        "MEASURED_SCALAR",
+        "MEASURED_COLLISION_UNRESOLVED"
+      ],
+      "observation_state_shape": [
+        42,
+        41238
+      ],
+      "opened": true
+    },
+    "normalization": {
+      "acts_on_sparse_data_only": true,
+      "applied_times": 1,
+      "loader_source_sha256": "267fa42a5fa6f8b5f8199c68add1ffe0c8b49142095b7d980d1af27a8a31154a",
+      "log1p_site": "normalized.data = np.log1p(normalized.data)",
+      "proven_from": "loader implementation source",
+      "scale_site": "normalized = matrix.multiply((10_000.0 / np.maximum(library, 1.0))[:, None]).tocsr()",
+      "structural_zero_preserved": true,
+      "transform": "log1p(raw_count * 10000 / max(full_source_library, 1.0))"
+    },
+    "observed": {
+      "cells": 4553407,
+      "donor_operator_pairs": 1400,
+      "donors": 104,
+      "operators": 42
+    },
+    "population_identity": {
+      "declared_partition_donor_counts": {
+        "reader_fit": 104,
+        "reader_oracle": 23,
+        "reader_validation": 22
+      },
+      "delivered_donor_set_equals_frozen_roster": true,
+      "fit_donor_roster_source": "exports/foundation_calibration_bundle_20260824/splits/reader_donor_split.csv",
+      "fit_roster_sha256": "a635ddf3ddfbf274826fa3bab6fc7d98a655b37caa1411ee0a1fdf9dac1e80d0"
+    },
+    "source_cells": {
+      "HVS": 198718,
+      "NPH52": 236476,
+      "SEA_AD": 4118213
+    },
+    "terminal": "D1_FULL_FIT_POPULATION_AUDIT_PASS"
+  },
+  "phase1_teacher_readout": {
+    "candidates": [
+      {
+        "candidate_id": "encoder_cell_state",
+        "expression": "final_norm(tokens)[:, 0]  # dedicated prepended cell token",
+        "multi_slot": false,
+        "note": "index 0 is the architectural cell token, not an arbitrary slot chosen among interchangeable slots; gene_states is tokens[:, 1:]",
+        "output_shape": [
+          "B",
+          160
+        ],
+        "readout_operation": "select the dedicated cell token; no pooling or averaging",
+        "source_file": "src/sea_ad_jepa/v4/ipb_jepa.py",
+        "source_function": "IPBEncoder.forward"
+      },
+      {
+        "candidate_id": "program_pooled_H",
+        "expression": "einsum(\"kg,bgd->bkd\", weight_tensor, gene_states)",
+        "multi_slot": true,
+        "note": "a genuine multi-slot latent readout; collapsing it to one cell-level vector would require an averaging/pooling rule that no prospective authority defines",
+        "output_shape": [
+          "B",
+          "K",
+          160
+        ],
+        "readout_operation": "weighted pooling of gene states into K program slots",
+        "source_file": "scripts/v4/stage81a3_prod41k_teacher_t1.py",
+        "source_function": "evaluation feature export"
+      }
+    ],
+    "checkpoints": [
+      {
+        "sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4",
+        "status": "UNTRAINED_U0",
+        "update": 0
+      },
+      {
+        "sha256": "9928005c53043a7e7f33e35c3beb31bc200cf88698b8bae087fe2bafd95d0be7",
+        "status": "TRAINING_MECHANICS_DEFECT_INHERITED",
+        "update": 10
+      },
+      {
+        "sha256": "1df5f974cb3249bb9b2d4b56b192e91adefed02229820d9d4973dd4b1f86d194",
+        "status": "TRAINING_MECHANICS_DEFECT_INHERITED",
+        "update": 25
+      },
+      {
+        "sha256": "39f0a7762e288732449c082fd96c38a988bf594674f3e1aae56e0dadf65d7102",
+        "status": "TRAINING_MECHANICS_DEFECT_INHERITED",
+        "update": 50
+      },
+      {
+        "sha256": "b5302fc45d5d79d663879e407aa5cd97757f4789cbdcd884885a58ae20075340",
+        "status": "TRAINING_MECHANICS_DEFECT_INHERITED",
+        "update": 100
+      },
+      {
+        "sha256": "5cbdd3346ca85a824b0066a771e59c231258dc8865efd81eaa54909286eefd41",
+        "status": "TRAINING_MECHANICS_DEFECT_INHERITED",
+        "update": 200
+      },
+      {
+        "sha256": "f8b1ad572391d38db474b4de95c56314bcff89086df6e42e86db259940a504fa",
+        "status": "TRAINING_MECHANICS_DEFECT_INHERITED",
+        "update": 205
+      }
+    ],
+    "conflicts": [
+      "two cell-level readouts are written side by side by scripts/v4/stage81a3_prod41k_teacher_t1.py: encoder_cell_state (B,160) and program_pooled_H (B,K,160); no authority selects between them",
+      "the historical teacher export runs its forward under torch.autocast(\"cuda\", dtype=torch.float16), while the frozen F1 production-mechanics acceptance contract fixes real forwards at dtype=float32 with autocast=False; adopting the historical seam verbatim would contradict that frozen contract",
+      "no prospective representation or readout contract exists under docs/agent/ naming a D1 cell-level teacher state",
+      "no mechanically healthy trained teacher checkpoint is available: no manifested checkpoint digest appears in a qualification authority, and every manifested checkpoint is untrained u0000 or TRAINING_MECHANICS_DEFECT_INHERITED (u0010-u0205)"
+    ],
+    "healthy_trained_teacher_available": false,
+    "model_source": {
+      "encoder_output_fields": [
+        "gene_states",
+        "cell_state",
+        "minimum_denominator"
+      ],
+      "encoder_width_default": 160,
+      "path": "src/sea_ad_jepa/v4/ipb_jepa.py",
+      "sha256": "732ea46f72384f29d503de1e0cc9d853315e2493cace054cced74849aa77485a"
+    },
+    "readout_contract_hash": "9be6f5688058f029ed6712f28a27119d4f500f8ab00cd0d3ddb487de417b0128",
+    "required_to_open": [
+      "a prospective D1 representation contract selecting exactly one cell-level readout and its exact operation",
+      "reconciliation of the readout dtype/autocast with the frozen F1 accepted mechanics (float32, autocast off)",
+      "a mechanically healthy trained teacher checkpoint, byte/root-bound"
+    ],
+    "teacher_qualification_authority": {
+      "note": "no qualification authority exists, so no checkpoint can be classified healthy; absence is not permission",
+      "path": "docs/agent/D1_TEACHER_QUALIFICATION_AUTHORITY.json",
+      "present": false,
+      "qualified_checkpoint_roots": [],
+      "terminal": "STOP_D1_NO_TEACHER_QUALIFICATION_AUTHORITY"
+    },
+    "terminal": "STOP_D1_TEACHER_READOUT_UNRESOLVED",
+    "unique_authorized_cell_level_state": false
+  },
+  "previous_candidate": "7cc576a3f8cd2451f0c3ea48dbbde3e638bde635",
+  "production_gate": {
+    "production_derivation_attempted": false,
+    "production_parameter_emitted": false,
+    "production_provenance_missing": [
+      "teacher_checkpoint_root"
+    ],
+    "production_provenance_ready": false,
+    "production_refusal": "STOP_D1_TEACHER_GATE_CLOSED: teacher gate closed; the production derivation was not attempted and no placeholder was emitted",
+    "teacher_dependent_parameters_withheld": [
+      "D1-P003:weighted_teacher_mean_mu",
+      "D1-P004:weighted_teacher_covariance_C",
+      "D1-P005:observed_eigenspectrum",
+      "D1-P006:null_eigenvalue_envelope",
+      "D1-P007:D_PA",
+      "D1-P008:donor_bootstrap_subspace_stability",
+      "D1-P009:D",
+      "D1-P010:entropy_effective_rank",
+      "D1-P011:participation_effective_rank",
+      "D1-P012:program_count_K",
+      "D1-P013:component_degeneracy_blocks",
+      "D1-P014:raw_cell_program_score",
+      "D1-P015:within_donor_centered_score",
+      "D1-P016:score_percentiles",
+      "D1-P017:tail_numeric_cutpoints",
+      "D1-P020:redundancy_similarity",
+      "D1-P021:gene_program_effects",
+      "D1-P022:gene_program_uncertainty",
+      "D1-P023:program_measurement_support",
+      "D1-P024:donor_recurrence",
+      "D1-P025:source_operator_heterogeneity",
+      "D1-P026:novelty_score"
+    ],
+    "teacher_gate_open": false
+  },
+  "schema": "d1-implementation-status-v2",
+  "self_found_defects_this_pass": [
+    "The degeneracy criterion used the lower percentile of bootstrap sample eigengaps. Ordered sample eigenvalues repel, so a truly degenerate pair reports a strictly positive gap in every replicate and that estimator essentially never includes zero, reporting near-degenerate axes as resolved. Replaced with a basic-bootstrap interval for the population gap, 2*gap_hat - upper_quantile, which included zero for an equal-eigenvalue pair (-0.59) and stayed positive for a separated pair (64.33).",
+    "derive_D_end_to_end computed degeneracy blocks then ignored them, so a candidate rank could cut through an unresolved block. derive_production_D now evaluates separation at block boundaries; the admissible set is always a subset of 1..D_PA so this can only reduce D, and a test asserts that.",
+    "The config validator could fail open if PyYAML were absent and the fallback parser mis-parsed: few keys walked, zero violations reported vacuously. It now requires all eight sections and at least 30 keys.",
+    "run_production_D_derivation ignored its audit argument; it now cross-checks loaded strata against audited cell and pair counts and STOPs on drift.",
+    "Three of my own test expectations were wrong rather than the code: a weighted-quantile median whose exact value is 2 + 50/50.5, an arbitrary 1.5x null-eigenvalue margin, and a no-fallback STOP that is actually D=1. Each was replaced with an analytic or measured assertion rather than a loosened tolerance, and a fabricated spectrum-concentration threshold was removed after measuring that it varied 2.0x to 20.3x across seeds."
+  ],
+  "status_root_sha256": "a97857e035a99d61cb928a2b3d8221afe1438cd4cdf9c340c3ef343d940f4fce",
+  "supersedes": "d1-implementation-status-v1, which was stale: it named the authority branch rather than the work branch, said 7 added files when the delta was 8, and its prose undercounted the authority-dependent tests",
+  "terminal": "WAIT_HEALTHY_TRAINED_TEACHER",
+  "tests": {
+    "authority_dependent_test_count": 5,
+    "authority_dependent_tests": [
+      "test_end_to_end_derivation_terminates_wait_healthy_trained_teacher",
+      "test_real_full_fit_population_audit_passes_against_authority",
+      "test_real_observation_state_authority_declares_measured_as_code_one",
+      "test_real_teacher_readout_is_unresolved_and_gate_is_closed",
+      "test_the_50k_auxiliary_archive_is_present_but_classified_auxiliary"
+    ],
+    "precedence_note": "INVALID > FAIL > NOT_MEASURABLE > PASS; a skip is never a PASS",
+    "strict_mode": "D1_REQUIRE_AUTHORITIES=1 turns NOT_MEASURABLE skips into failures",
+    "with_authorities_reachable": "87 passed"
+  }
+}

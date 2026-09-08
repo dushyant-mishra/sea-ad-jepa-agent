@@ -1,0 +1,14 @@
+{
+  "correct_student_identities": 215540,
+  "matched_null_source_cells": 2781,
+  "null_student_identities": 215540,
+  "physical_membership_sha256": "edc6cf3f3774f23da63f57a55774d5703b89da087bc8efe970a80e316c89a2aa",
+  "recipient_cells": 2781,
+  "statistical_assignments": 44496,
+  "teacher_compute_identities": 43108,
+  "total_expensive_forwards": 474188,
+  "unique_cell_q": 43108,
+  "unique_physical_block_bytes": 6221329590,
+  "unique_physical_blocks": 1148,
+  "unique_physical_expression_rows": 2781
+}

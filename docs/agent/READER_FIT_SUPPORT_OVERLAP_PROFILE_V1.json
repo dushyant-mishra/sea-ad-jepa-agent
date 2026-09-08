@@ -1,0 +1,42 @@
+{
+  "all_42_fraction_of_universe": 0.4167515398418934,
+  "all_42_operators_measured_scalar": 17186,
+  "candidate_use_only": true,
+  "common_core_materialization": {
+    "checked_in": false,
+    "csv_sha256": "8aa8dfebb481aa2e60b12ab0f581ba1a36063b6c12dc2d8514d5fe7a20ad07ac",
+    "generator": "scripts/agent/profile_reader_fit_support_overlap_v1.py",
+    "rows": 17186
+  },
+  "interpretation": [
+    "The all-42 common measured core is outcome-blind support geometry, not a training objective.",
+    "Native-support views may retain all operator-specific measured addresses; a future reviewed common-core view may use this exact support to equalize molecular availability across operators.",
+    "No mask fraction, visible-gene budget, block size, or loss weight is frozen here."
+  ],
+  "operator_observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+  "operators": 42,
+  "schema": "READER_FIT_SUPPORT_OVERLAP_PROFILE_V1",
+  "source_support": {
+    "HVS": {
+      "common_core_fraction_of_source_all_support": 0.9172715627668659,
+      "measured_by_all_source_operators": 18736,
+      "measured_by_any_source_operator": 18736,
+      "operators": 24
+    },
+    "NPH52": {
+      "common_core_fraction_of_source_all_support": 0.5898544755628775,
+      "measured_by_all_source_operators": 29136,
+      "measured_by_any_source_operator": 35098,
+      "operators": 7
+    },
+    "SEA_AD": {
+      "common_core_fraction_of_source_all_support": 0.4899646481924963,
+      "measured_by_all_source_operators": 35076,
+      "measured_by_any_source_operator": 35076,
+      "operators": 11
+    }
+  },
+  "support_recurrence_sha256": "8f90c91e333eba6b58c39767069addef72bb4d9d6015ad8de14e7ff383c092da",
+  "training_authorized": false,
+  "vocabulary_size": 41238
+}

@@ -12,6 +12,74 @@ from typing import Any, Callable
 import numpy as np
 
 
+def cosine(left: np.ndarray, right: np.ndarray) -> float:
+    a = np.asarray(left, dtype=np.float64)
+    b = np.asarray(right, dtype=np.float64)
+    if a.shape != b.shape or a.ndim != 1 or not np.isfinite(a).all() or not np.isfinite(b).all():
+        raise ValueError("cosine input")
+    denominator = float(np.linalg.norm(a) * np.linalg.norm(b))
+    if denominator == 0.0:
+        raise ValueError("zero-norm cosine")
+    return float(np.dot(a, b) / denominator)
+
+
+def qid_v2(own_similarity: float, paired_wrong_similarity: float) -> dict[str, float]:
+    own = float(own_similarity); wrong = float(paired_wrong_similarity)
+    if not np.isfinite([own, wrong]).all():
+        raise ValueError("nonfinite QID")
+    margin = own - wrong
+    return {"qid_margin": margin, "qid_win": 1.0 if margin > 0 else 0.0 if margin < 0 else 0.5}
+
+
+def _identity_sha(value: object) -> str:
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def teacher_compute_identity(authority: dict[str, Any], record: dict[str, Any]) -> str:
+    body = {"authority": authority, "role": "teacher", "recipient": record["canonical_cell_id"], "q": int(record["q"])}
+    return _identity_sha(body)
+
+
+def student_forward_identity(authority: dict[str, Any], record: dict[str, Any], role: str) -> str:
+    if role not in {"correct_student", "matched_null_student"}:
+        raise ValueError("student role")
+    body = {"authority": authority, "role": role, "recipient": record["canonical_cell_id"], "q": int(record["q"]), "evidence_level": int(record["evidence_level"])}
+    if role == "matched_null_student":
+        body["null_source"] = record.get("null_source_cell", authority.get("null_source"))
+    return _identity_sha(body)
+
+
+def vmstat_swap(path: Path = Path("/proc/vmstat")) -> dict[str, int]:
+    values = {}
+    for line in path.read_text(encoding="ascii").splitlines():
+        fields = line.split()
+        if fields and fields[0] in {"pswpin", "pswpout"}:
+            values[fields[0]] = int(fields[1])
+    if set(values) != {"pswpin", "pswpout"}:
+        raise RuntimeError("swap counters unavailable")
+    return values
+
+
+def no_swap_activity(before: dict[str, int], after: dict[str, int]) -> bool:
+    return after["pswpin"] == before["pswpin"] and after["pswpout"] == before["pswpout"]
+
+
+def evaluate_until_unsafe(candidates: list[int], evaluate: Callable[[int], dict[str, Any]]) -> list[dict[str, Any]]:
+    rows = []
+    for candidate in candidates:
+        row = evaluate(candidate); rows.append(row)
+        if row.get("safe") is not True:
+            break
+    return rows
+
+
+def nonoverlapping_runtime(*, physical_reader: float, forward_pipeline: float, shard_commit: float, finalization: float) -> dict[str, Any]:
+    components = {"physical_reader": float(physical_reader), "forward_pipeline": float(forward_pipeline), "shard_commit": float(shard_commit), "finalization": float(finalization)}
+    if any(not np.isfinite(value) or value < 0 for value in components.values()):
+        raise ValueError("runtime component")
+    return {"components": components, "component_count": len(components), "total": sum(components.values())}
+
+
 def benchmark_repetitions(operation: Callable[[], Any], units: int) -> dict[str, Any]:
     """Run the frozen one-warmup/three-timed-candidate protocol."""
     if units < 1:
@@ -54,18 +122,13 @@ def select_smallest_near_best(rows: list[dict[str, Any]]) -> dict[str, Any]:
     return min(eligible, key=lambda row: int(row["configuration"]))
 
 
-def build_effect_row(*, teacher: float, correct: float, null: float, direct: float) -> dict[str, float]:
-    contextual_advantage = float(teacher) - float(correct)
-    null_advantage = float(teacher) - float(null)
-    return {
-        "teacher": float(teacher),
-        "correct": float(correct),
-        "null": float(null),
-        "direct": float(direct),
-        "contextual_advantage": contextual_advantage,
-        "null_advantage": null_advantage,
-        "qid_margin": null_advantage - contextual_advantage,
-    }
+def build_effect_row(*, s_correct_contextual: np.ndarray, t_true_contextual: np.ndarray,
+                     s_null_contextual: np.ndarray, s_correct_direct: np.ndarray,
+                     t_true_direct: np.ndarray, s_null_direct: np.ndarray,
+                     own_similarity: float, paired_wrong_similarity: float) -> dict[str, float]:
+    contextual = cosine(s_correct_contextual, t_true_contextual) - cosine(s_null_contextual, t_true_contextual)
+    direct = cosine(s_correct_direct, t_true_direct) - cosine(s_null_direct, t_true_direct)
+    return {"A": contextual, "direct_delta": contextual - direct, **qid_v2(own_similarity, paired_wrong_similarity)}
 
 
 def full_geometry() -> dict[str, int]:
@@ -120,6 +183,8 @@ class AtomicShardStore:
         if path.exists():
             raise RuntimeError("duplicate shard write")
         array = np.asarray(values)
+        if array.dtype != np.dtype(self.dtype):
+            raise TypeError("shard dtype does not match declared dtype")
         identity = self._identity(shard_id, ordered_ids)
         staging = self.root / f"{shard_id}.staging.npz"
         with staging.open("wb") as handle:
@@ -141,6 +206,8 @@ class AtomicShardStore:
             identity_json = str(packed["identity_json"])
             stored_sha = str(packed["payload_semantic_sha256"])
         expected_identity = json.dumps(self._identity(shard_id, ordered_ids), sort_keys=True, separators=(",", ":"))
+        if values.dtype != np.dtype(self.dtype):
+            raise RuntimeError("persisted shard dtype mismatch")
         if identity_json != expected_identity:
             raise RuntimeError("shard identity mismatch")
         if stored_sha != _payload_sha(ordered_ids, values):

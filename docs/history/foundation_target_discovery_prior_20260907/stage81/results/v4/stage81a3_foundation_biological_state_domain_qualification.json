@@ -1,0 +1,396 @@
+{
+  "adaptive_correlated_evidence": "NOT REOPENED",
+  "all_hard_gates_pass": true,
+  "anchor": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+  "another_neural_architecture_run_before_freeze": "HUMAN REVIEW",
+  "basis_artifacts": {
+    "BALANCED_PCA160": {
+      "path": "results/v4/stage81a3_balanced_pca160_diagnostic.npz",
+      "sha256": "8b0403450e6bbf1a79f459697d8bb253f874465b04d38c7d89df59bc3393fa30",
+      "status": "NOT PRODUCTION FROZEN BASIS"
+    },
+    "BALANCED_REP160": {
+      "path": "results/v4/stage81a3_balanced_rep160_diagnostic.npz",
+      "sha256": "838bc413cda9eafcdf1c965a4783a8e5dcaffd1ba1c1d5540b3d8bcace7f513a",
+      "status": "NOT PRODUCTION FROZEN BASIS"
+    }
+  },
+  "basis_fit": {
+    "BALANCED_PCA160": {
+      "cells": 64057,
+      "equal_matrix_weight": true,
+      "folds": 8,
+      "matrix_count": 36,
+      "positive_eigenvalues": 160,
+      "runtime_seconds": 261.3255223999731
+    },
+    "BALANCED_REP160": {
+      "cells": 64057,
+      "equal_matrix_weight": true,
+      "folds": 8,
+      "matrix_count": 36,
+      "positive_eigenvalues": 160,
+      "runtime_seconds": 204.6903500999324
+    }
+  },
+  "basis_fit_sample": {
+    "cap": 2048,
+    "donor_balanced": true,
+    "per_matrix": {
+      "HVS::19cd530b-622c-4bd8-b738-dbf169412cb0": 2048,
+      "HVS::38374d1b-6549-4429-b59a-ff2706dacd96": 2048,
+      "HVS::42c9001a-3a29-4952-aaa0-b55e73851a5c": 455,
+      "HVS::4afcaa14-e1c1-4b2b-b5af-c5b8936c3ddd": 2048,
+      "HVS::57f3c92b-a07a-41da-b660-88eb9f93c4c9": 2048,
+      "HVS::5e9da577-f665-44af-b9b4-fa0d5ad1964d": 246,
+      "HVS::5fff0955-173e-407d-b160-64f513ca6db6": 2048,
+      "HVS::6201fd7d-f35b-4487-bace-99426881237b": 2048,
+      "HVS::77dc6994-2777-4fad-a445-4ff7d143a682": 2048,
+      "HVS::7958eba0-1d79-42e3-8947-a198f98578f2": 1207,
+      "HVS::7b96819c-598c-47a1-9cea-f410fc0c37fa": 2048,
+      "HVS::7be9f52d-7eef-4bdd-a0ba-c8f2d4986551": 2048,
+      "HVS::8dfadc37-e19c-4d4b-80d8-cee48e732bcf": 2048,
+      "HVS::900faaa3-adec-4fd9-81b0-1e90a2ab256f": 512,
+      "HVS::9adebd17-bc24-47b6-acdb-0db488bc602d": 2048,
+      "HVS::a9b5738d-997d-433f-8d86-12dbfc8f01fb": 2048,
+      "HVS::ab88770a-7a74-4da5-a166-d68f02d644f2": 2048,
+      "HVS::bb3c4200-5c1b-4f8a-a846-e021919b7241": 2048,
+      "HVS::c3b47645-c927-4a0a-868f-eb7640ea3354": 2048,
+      "HVS::c5e9db26-7b51-4290-b721-dd540ac906b1": 2048,
+      "HVS::c9143d44-4c95-4f06-8edc-e03d3491ab97": 2048,
+      "HVS::d1303087-592a-4c3d-aa3e-21de203927dc": 2048,
+      "HVS::e813d04b-7833-4b02-b14f-0247d6128516": 1491,
+      "HVS::f8975a92-8ddb-4dde-adbe-977a4b3e4e96": 508,
+      "NPH52_exact_source_objects": 246,
+      "sea_ad_ang_rna_final_2026": 2048,
+      "sea_ad_caudate_rna_all_2025": 2048,
+      "sea_ad_fi_rna_final_2026": 2048,
+      "sea_ad_hip_rna_final_2026": 2048,
+      "sea_ad_itg_rna_final_2026": 2048,
+      "sea_ad_lec_rna_final_2026": 2048,
+      "sea_ad_mec_rna_final_2026": 2048,
+      "sea_ad_mtg_rna_final_2026": 2048,
+      "sea_ad_pfc_a9_rna_final_2026": 2048,
+      "sea_ad_stg_rna_final_2026": 2048,
+      "sea_ad_v1c_rna_final_2026": 2048
+    },
+    "total_cells": 64057
+  },
+  "basis_summary": {
+    "BALANCED_PCA160": {
+      "countsplit": {
+        "median_coordinate_correlation": 0.9325599670410156,
+        "median_cosine_similarity": 0.9325975179672241,
+        "median_normalized_squared_distance": 0.13539759814739227,
+        "top1_retrieval": 0.9614800347222222,
+        "top5_retrieval": 0.9938151041666666
+      },
+      "top160_retention": 0.42025504574750455,
+      "top32_retention": 0.3444203212161453,
+      "top64_retention": 0.3771866729239647
+    },
+    "BALANCED_REP160": {
+      "countsplit": {
+        "median_coordinate_correlation": 0.9356188178062439,
+        "median_cosine_similarity": 0.9355921149253845,
+        "median_normalized_squared_distance": 0.1294090896844864,
+        "top1_retrieval": 0.9761284722222222,
+        "top5_retrieval": 0.9969618055555556
+      },
+      "top160_retention": 0.6381974687432067,
+      "top32_retention": 0.492866777320199,
+      "top64_retention": 0.5547926391349153
+    }
+  },
+  "classifications": {
+    "balanced_pca160": "QUALIFIED",
+    "balanced_rep160": "PARTIAL",
+    "biological_evidence_response": "DISTINCT",
+    "biology_measurement_separation": "SUPPORTED",
+    "conditional_technology_imprint": "WEAK",
+    "coordinate_uncertainty": "SUBSPACE-ONLY",
+    "countsplit_reproducibility": "STRONG",
+    "cross_dataset_transfer": "STRONG",
+    "cross_donor_transfer": "WEAK",
+    "cross_matrix_transfer": "WEAK",
+    "cross_technology_transfer": "STRONG",
+    "measurement_depth_response": "SUPPORTED",
+    "normalization": "PLAUSIBLE-WITH-QUALITY-CONTEXT",
+    "primary": "B. CORE ARCHITECTURE VALID; SPECIFIC PRE-FREEZE CONTRACT REVISION REQUIRED",
+    "production_basis_proposal": "BALANCED_PCA160",
+    "qc_measurement_context": "PARTIAL",
+    "rep160_extra_complexity": "NOT EARNED",
+    "shared_context_decomposition": "INCONCLUSIVE",
+    "state_axes": "ROTATING-WITHIN-STABLE-SUBSPACE",
+    "state_subspace": "STABLE",
+    "technology_biology": "MIXED",
+    "two_axis_domain_support": "INFORMATIVE"
+  },
+  "conditional_imprint": {
+    "BALANCED_PCA160": {
+      "conditional_balanced_accuracy": 0.4670838973626205,
+      "eligible_cells": 2424,
+      "eligible_strata": 2
+    },
+    "BALANCED_REP160": {
+      "conditional_balanced_accuracy": 0.44944774070953764,
+      "eligible_cells": 2424,
+      "eligible_strata": 2
+    }
+  },
+  "counterfactual_capability": "NOT SUPPORTED",
+  "foundation_datasets": 13,
+  "foundation_matrices": 36,
+  "governance": {
+    "backward_calls_on_real_rna": 0,
+    "development_expression_forbidden": true,
+    "ema_updates": 0,
+    "neural_optimizer_updates": 0,
+    "pathology_blind": true,
+    "production_basis_frozen": false,
+    "sealed_expression_forbidden": true,
+    "stage81b_started": false,
+    "train_expression_only": true
+  },
+  "hard_gates": {
+    "basis_train_only": true,
+    "countsplit_accounting_exact": true,
+    "deterministic_balancing": true,
+    "donor_specimen_leakage_absent": true,
+    "measured_zero_semantics_preserved": true,
+    "neural_optimizer_updates_zero": true,
+    "no_pathology_model_selection": true,
+    "pathology_firewall": true,
+    "provenance_ids_excluded_from_biology_input": true,
+    "scientific_thresholds_unchanged": true,
+    "train_dev_sealed_firewall": true,
+    "vocabulary_4096_preserved": true
+  },
+  "molecular_ledger_contract": "PRESERVED",
+  "outputs": {
+    "basis_comparison": "results/v4/stage81a3_basis_comparison.csv",
+    "basis_stability": "results/v4/stage81a3_basis_stability.csv",
+    "conditional_domain_imprint": "results/v4/stage81a3_conditional_domain_imprint.csv",
+    "coordinate_accountability": "results/v4/stage81a3_coordinate_accountability.csv",
+    "countsplit_reproducibility": "results/v4/stage81a3_countsplit_reproducibility.csv",
+    "dataset_transfer": "results/v4/stage81a3_dataset_transfer.csv",
+    "depth_response": "results/v4/stage81a3_depth_response.csv",
+    "domain_support": "results/v4/stage81a3_domain_support_2axis.csv",
+    "donor_transfer": "results/v4/stage81a3_donor_transfer.csv",
+    "evidence_depth_separation": "results/v4/stage81a3_evidence_depth_separation.csv",
+    "evidence_response": "results/v4/stage81a3_evidence_response.csv",
+    "freeze_readiness": "results/v4/stage81a3_freeze_readiness.csv",
+    "matrix_transfer": "results/v4/stage81a3_matrix_transfer.csv",
+    "measurement_quality_earning": "results/v4/stage81a3_measurement_quality_earning.csv",
+    "observation_input_policy": "results/v4/stage81a3_observation_input_policy.csv",
+    "report": "results/v4/stage81a3_foundation_biological_state_domain_qualification.json",
+    "sampling_analysis": "results/v4/stage81a3_sampling_analysis.csv",
+    "technology_surgery": "results/v4/stage81a3_technology_surgery.csv",
+    "technology_transfer": "results/v4/stage81a3_technology_transfer.csv"
+  },
+  "performance": {
+    "final_cpu_rss_bytes": 1658253312,
+    "peak_cpu_rss_bytes": 6387449856,
+    "peak_gpu_allocated_bytes": 413402624,
+    "peak_gpu_reserved_bytes": 429916160,
+    "temporary_disk_bytes": 5030195626,
+    "wall_seconds": 1887.750009600073
+  },
+  "prior_evidence": {
+    "head": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+    "origin_main": "808ce4f170055c5568cc5c1e0e3a56415b52f908",
+    "prior_hashes": {
+      "results/v4/stage81a3_conditional_predictability_audit.json": "fae778621cbec948c0a238998d2683aae09be680b1c96f7ed4f2b6b8cc7ed6f5",
+      "results/v4/stage81a3_foundation_heterogeneity_reality_audit.json": "d387ab17708e92ccfcf2a1a5a646c46adc1beeeb7bef30c74c8c88806f2b6384",
+      "results/v4/stage81a3_ipb_jepa_feasibility.json": "aa949f23e1e9c6de2daed2bf858b8f822b6cb0dc393e2d7bf62f14267c449308",
+      "results/v4/stage81a3_rbb_adaptive_correlated_probe.json": "c73440b97830f4dc09467797aaefe5d59d99649fa6c98c6ed60cb23e82e083d3",
+      "results/v4/stage81a3_rbb_belief_geometry_audit.json": "9e3986ec12767e8d04acdb9ac921c88a4f288ca20b3c4da4abf24fcdbe444b59",
+      "results/v4/stage81a3_rbb_frozen_encoder_probe.json": "915e76e4123b5fa7dd3b026072b1faef10d98063b349fc26f1d3e5b7e201b71f",
+      "results/v4/stage81a3_rbb_oof_covariance_audit.json": "7a5042125860f2c598a28038f41fa3211074bf21d9e204dc6386b5246982a87f",
+      "results/v4/stage81a3_rbb_structural_panel_audit.json": "4a6fb3e78fc9ccc87b600d5a1ff8f49fecfe4643f3c16657ac9f9293f34ce9ac",
+      "results/v4/stage81a3_rbb_uncertainty_localization_identifiability.json": "9b38a7a335ade2d3148d95c27b3fd4498e815cc4ba6b60925ac31665b00b2c26",
+      "results/v4/stage81a3_rbb_validation_covariance_audit.json": "03d0e36d405150851753be333067ee553d17e847fce50a2d983b83f0b4777239",
+      "results/v4/stage81a3_reproducible_state_basis.pt": "ea07915a043ed8b8c3e38fe56ba2e3b9095bf4f0db3804773ae9394f3fbeab9c",
+      "results/v4/stage81a3_rlc_causal_fast_probe.json": "ac3e8a69964bfa11f5d8211f373e20c6476534095850dc48e8851ea9b42ab8fc",
+      "results\\v4\\stage81a3_rbb_frozen_recovery.json": "49088ce3e2d677c62e5ac346e798f922ad7ff85c71a2abd039ca304ba52f98b7",
+      "results\\v4\\stage81a3_rbb_frozen_recovery_belief_state.pt": "8ef9667e42f6c44be937b94cb54d89152805c3fbe0c254d23891a940d4474b24",
+      "results\\v4\\stage81a3_rbb_panel_exposure.json": "207302fb720924f46a62162fcdc6eb29c6fb7cd796189765fe4bb45e98fbe7f0",
+      "results\\v4\\stage81a3_rbb_panel_exposure_checkpoint.pt": "c78cf055ceb020c2d0e928c021703d1063a24c010e92f6bbef7e572a368e8396"
+    },
+    "stage81a2": {
+      "ambiguous_mapping_count": 106118,
+      "canonical_gene_count": 37346,
+      "canonical_person_count": 385,
+      "claim_boundary": "canonicalization_and_evidence_freeze_only; no model training or biological claim",
+      "cloud_eligibility_unresolved_count": 27,
+      "cloud_eligibility_verified_count": 0,
+      "cloud_upload_performed": false,
+      "continuation_development_donor_count": 5,
+      "continuation_sealed_donor_count": 5,
+      "continuation_training_donor_count": 17,
+      "cross_split_leakage_count": 0,
+      "foundation_dataset_count": 13,
+      "foundation_development_donor_count": 19,
+      "foundation_matrix_count": 36,
+      "foundation_matrix_semantics_unresolved_count": 0,
+      "foundation_sealed_donor_count": 19,
+      "foundation_training_donor_count": 149,
+      "freeze_seed": 8102,
+      "frozen_vocabulary_hash": "f2759db27218c7f9e716974bbdb7c6bcdfc2858a6b3e1acca4d7d97eea2abecb",
+      "frozen_vocabulary_size": 4096,
+      "gse226602_gse226267_exact_shared_donor_count": 45,
+      "hvs_canonical_donor_count": 78,
+      "hvs_exact_source_donor_count": 78,
+      "hvs_partition_count": 24,
+      "hvs_publication_count_discrepancy_status": "78_exact_distinct_source_donors_retained; publication_75_not_reconciled_by_authoritative_alias_table",
+      "hvs_source_cell_count": 379330,
+      "living_foundation_development_donor_count": 11,
+      "living_foundation_sealed_donor_count": 11,
+      "living_foundation_training_donor_count": 81,
+      "measurement_mask_contract_complete": true,
+      "mode": "freeze",
+      "model_trained": false,
+      "nph_amyloid_positive_donor_count": 19,
+      "nph_amyloid_tau_positive_donor_count": 8,
+      "nph_disposition_total_matches_source": true,
+      "nph_excluded_non_nph_cell_count": 0,
+      "nph_final_annotation_cell_count": 892828,
+      "nph_missing_annotation_cell_count": 64831,
+      "nph_pathology_negative_donor_count": 25,
+      "nph_qc_excluded_cell_count": 0,
+      "nph_retained_cell_count": 892828,
+      "nph_source_cell_count": 957659,
+      "nph_total_donor_count": 52,
+      "nph_unresolved_cell_count": 0,
+      "output_hashes": {
+        "stage81a2_canonical_asset_registry.csv": "24af817cbea5ea9da37eea851cb97c1d58bcc91bcd08682c4772fcd9c7e5c59f",
+        "stage81a2_canonical_gene_registry.csv": "f2f74f6ecb087e447c425590f21ecb192347dfb9b77246b0865e24a3c7f3abec",
+        "stage81a2_cloud_eligibility_registry.csv": "56fd26e99004bbe834ae77ce1a0c8b9e34ba2f18b42d1aec7456b1566025ed42",
+        "stage81a2_dataset_role_registry.csv": "8f0a599c11558d67c798aace9409db8498e14ad98490d99fb427af7001a233a4",
+        "stage81a2_donor_overlap_edges.csv": "19f425e888e83a13d85cb0dd5aa3c149c12e96ab0be06a9109133a47ae9bd71d",
+        "stage81a2_foundation_vocabulary.csv": "d8fbe2f0d2208f0034103443b6424169ff66e1b674769eda6b635c8ce84523e4",
+        "stage81a2_gene_measurement_registry.csv": "082facd6b2f3934287d44358e6062f81fc53080bfabad879b8079fb941c37ce4",
+        "stage81a2_global_donor_registry.csv": "a35dbc9d412b42943ead34ff54dd2dba4974f622044af13433c4f5463dd6a58c",
+        "stage81a2_hvs_donor_resolution.csv": "091dcb2486486f4e3cee40da61d6b9502275603c4efceed9c9c2b99ec33d0511",
+        "stage81a2_matrix_semantics_contract.csv": "3c34bb063e22cdd4d3c308b47cb6eba67ccaceac5fb1c182cc9f7dd755f5aeba",
+        "stage81a2_nph_cell_disposition_summary.csv": "d5c5ee07f1d9dd9634d63f8138d816409723c2fcedea02a69d6bca555604bfd3",
+        "stage81a2_pathology_firewall_audit.json": "5fa7fd4412a1c2bf6527a5f4bd30b6c87c69a44b0ce2497b955b38e31388d911",
+        "stage81a2_sampling_contract.json": "284b4fa042c72f26e9e023e17cb5add33cb63f35931b45401f7227bff4cb956e",
+        "stage81a2_split_registry.csv": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433",
+        "stage81a2_split_summary.csv": "b2cb6d885e3241fa776508d9d41faa490b93b3057d2dff070967de1b60defd6e"
+      },
+      "pathology_fields_in_foundation_manifest_count": 0,
+      "pathology_free_vocabulary_reproduction_succeeded": true,
+      "pathology_sidecar_hash": "b1629dbba37273d9716991aa6574b1e85f35632dfaf528ac0aacec5ee08c666b",
+      "physical_matrix_merge_performed": false,
+      "readiness_blockers": [],
+      "ready_for_stage81b": true,
+      "required_prior_stage_reports_hash_verified": true,
+      "required_prior_stage_reports_present": true,
+      "source_commit": "0d3a8088bc626d035a709845e5d32cb61de7fdd2",
+      "split_group_count": 385,
+      "stage81a2_pass": true,
+      "stage81b_started": false,
+      "stage_id": "stage81a2",
+      "training_shards_created": false,
+      "unresolved_duplicate_gene_count": 0,
+      "unresolved_identity_count": 0,
+      "vocabulary_eligible_gene_count": 4096,
+      "whole_study_external_holdout_count": 1
+    }
+  },
+  "qc_earning": {
+    "BALANCED_PCA160": {
+      "classification": "PARTIAL",
+      "evaluable_matrices": 3,
+      "favorable_matrix_fraction": 0.08333333333333333,
+      "median_spearman_improvement": 1.0602678651326602,
+      "minimum_technology_median_improvement": 0.8267147752154803,
+      "undefined_matrices": 33
+    },
+    "BALANCED_REP160": {
+      "classification": "PARTIAL",
+      "evaluable_matrices": 3,
+      "favorable_matrix_fraction": 0.08333333333333333,
+      "median_spearman_improvement": 1.0618799925051026,
+      "minimum_technology_median_improvement": 0.8296484091526977,
+      "undefined_matrices": 33
+    }
+  },
+  "ready_for_human_a3_freeze_review": false,
+  "ready_for_stage81b": false,
+  "rep_complexity_gate": {
+    "dataset_transfer_degradation": 0.0,
+    "earned": false,
+    "favorable_matrix_fraction": 0.9444444444444444,
+    "relative_distance_improvement": 0.044229059782780356,
+    "technology_imprint_worsening": -0.01763615665308288
+  },
+  "response_summary": {
+    "BALANCED_PCA160": {
+      "overall_matrix_spearman": -0.04041184041184042,
+      "structured_curve": "STRUCTURED REAL EVIDENCE CURVE NOT RUN - NO PREQUALIFIED CONSTRUCTOR"
+    },
+    "BALANCED_REP160": {
+      "overall_matrix_spearman": -0.007207207207207207,
+      "structured_curve": "STRUCTURED REAL EVIDENCE CURVE NOT RUN - NO PREQUALIFIED CONSTRUCTOR"
+    }
+  },
+  "stability": {
+    "BALANCED_PCA160": {
+      "state_axes": "ROTATING-WITHIN-STABLE-SUBSPACE",
+      "state_subspace": "STABLE"
+    },
+    "BALANCED_REP160": {
+      "state_axes": "ROTATING-WITHIN-STABLE-SUBSPACE",
+      "state_subspace": "STABLE"
+    }
+  },
+  "stage": "stage81a3_fbsdq",
+  "stage81a3_complete": false,
+  "stage81a3_frozen": false,
+  "structured_evidence_curve": "NOT RUN - NO PREQUALIFIED CONSTRUCTOR",
+  "synthetic_60_40": "MECHANISM TEST ONLY",
+  "technology_surgery": {
+    "BALANCED_PCA160": {
+      "biology_drop": null,
+      "classification": "MIXED",
+      "eligible_cells": 2424,
+      "eligible_strata": 2,
+      "persisted": false,
+      "technology_drop": 0.08415211636300701,
+      "technology_subspace_rank": 2
+    },
+    "BALANCED_REP160": {
+      "biology_drop": null,
+      "classification": "MIXED",
+      "eligible_cells": 2424,
+      "eligible_strata": 2,
+      "persisted": false,
+      "technology_drop": 0.10207747635076836,
+      "technology_subspace_rank": 2
+    }
+  },
+  "three_uncertainty_contract": {
+    "U_BIO": "state change with substantially more relevant biological evidence",
+    "U_DOMAIN": "measurement familiarity and biological support reported separately",
+    "U_MEAS": "state change under remeasurement of same evidence"
+  },
+  "train_donors": 149,
+  "transfer_identifiability": {
+    "dataset": {
+      "identifiable": 11,
+      "total": 13
+    },
+    "matrix": {
+      "identifiable": 10,
+      "total": 36,
+      "unidentifiable_incompatible_labels": 26
+    },
+    "technology": {
+      "identifiable": 4,
+      "total": 4
+    }
+  },
+  "vocabulary": 4096
+}

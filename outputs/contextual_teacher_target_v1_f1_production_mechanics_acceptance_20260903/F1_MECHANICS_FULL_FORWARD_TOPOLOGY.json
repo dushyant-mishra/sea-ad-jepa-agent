@@ -1,0 +1,16 @@
+{
+  "all_identities_unique": true,
+  "correct_null_disjoint": true,
+  "counts": {
+    "correct": 215540,
+    "null": 215540,
+    "teacher": 43108,
+    "total": 474188
+  },
+  "independent_root_sha256": "2f9a7529cc86ba4a39949b10818341f26a0ce6930c27159ad478c4d9fc30400f",
+  "ordered_identity_root_sha256": "2f9a7529cc86ba4a39949b10818341f26a0ce6930c27159ad478c4d9fc30400f",
+  "schema": "f1-mechanics-full-forward-topology-v1",
+  "status": "PASS",
+  "students_evidence_sensitive": true,
+  "teacher_evidence_invariant": true
+}
