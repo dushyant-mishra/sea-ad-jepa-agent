@@ -384,3 +384,37 @@ def test_the_authority_does_not_claim_execution_readiness(world: World) -> None:
     plan = rc.build_physical_read_plan(logical=logical)
     for record in (closure, logical, plan):
         assert record["real_execution_ready"] is False
+
+
+def test_the_three_roots_are_injective_over_delimiter_bearing_identities(
+    world: World,
+) -> None:
+    """The same framing defect was fixed here pre-emptively, so prove it.
+
+    Block keys and cell identities are external strings. Under a
+    delimiter-joined framing a block key could absorb the next entry's marker,
+    so all three roots use length prefixing.
+    """
+    closure = _closure(world)
+    logical = _logical(world, closure=closure)
+    plan = rc.build_physical_read_plan(logical=logical)
+
+    shifted = {
+        "schema": closure["schema"], "namespace": closure["namespace"],
+        "operator_index": closure["operator_index"],
+        "matrix_id": closure["matrix_id"],
+    }
+    # Two closures whose per-cell location strings differ only in where a
+    # delimiter would have fallen must not share a root.
+    a = rc._closure_root(31, "M", ["b1"], 1, {"c": {"block_key": "x#1", "row_index": 2}})
+    b = rc._closure_root(31, "M", ["b1"], 1, {"c": {"block_key": "x", "row_index": 12}})
+    assert a != b
+
+    left = rc._closure_root(31, "M", ["b1|b=b2"], 1, {"c": {"block_key": "k", "row_index": 0}})
+    right = rc._closure_root(31, "M", ["b1", "b2"], 1, {"c": {"block_key": "k", "row_index": 0}})
+    assert left != right
+    assert shifted["matrix_id"] == MATRIX_ID
+    # And the three production roots remain mutually distinct after the change.
+    assert len({closure["population_closure_root_sha256"],
+                logical["logical_row_authority_root_sha256"],
+                plan["physical_read_plan_root_sha256"]}) == 3

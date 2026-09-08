@@ -184,15 +184,37 @@ def _write_flat_package(outdir: Path, payloads: Mapping[str, bytes]) -> str:
     return root
 
 
+def _length_prefixed(value: str) -> bytes:
+    """`<byte length>:<utf-8 bytes>` — injective for any content.
+
+    A delimiter-joined framing is not injective over strings that may contain
+    the delimiter. This primitive previously joined donor identities with `|`
+    and validated them only for non-blankness and uniqueness, so the set
+    `{"a|b"}` and the set `{"a", "b"}` produced identical pre-hash bytes and
+    therefore the same digest. That is a serialization collision, not a hash
+    collision, and it made the set-identity primitive non-injective over the
+    inputs it accepted. Real SEA-AD donor identities do not contain `|`, so the
+    46-donor membership was never wrong, but an authority primitive has to be
+    unambiguous for every input it accepts, not only for the inputs it happens
+    to see.
+
+    Prefixing each field with its exact byte length removes the ambiguity: no
+    value can absorb a following delimiter, because the length states exactly
+    how many bytes belong to it.
+    """
+    payload = str(value).encode("utf-8")
+    return b"%d:%s" % (len(payload), payload)
+
+
 def _donor_set_digest(donor_ids: Iterable[str]) -> str:
-    """Canonical digest over an exact donor-identity set."""
+    """Canonical, injective digest over an exact donor-identity set."""
     ordered = sorted({str(donor).strip() for donor in donor_ids},
                      key=lambda value: value.encode("utf-8"))
     digest = hashlib.sha256()
-    digest.update(b"T0_DONOR_IDENTITY_SET_V1")
+    digest.update(_length_prefixed("T0_DONOR_IDENTITY_SET_V2"))
+    digest.update(_length_prefixed(str(len(ordered))))
     for donor in ordered:
-        digest.update(b"|")
-        digest.update(donor.encode("utf-8"))
+        digest.update(_length_prefixed(donor))
     return digest.hexdigest()
 
 

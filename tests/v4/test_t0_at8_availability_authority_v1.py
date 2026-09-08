@@ -809,3 +809,37 @@ def test_the_live_module_matches_the_frozen_derivation_digest() -> None:
         "the module blob on the branch (%s) is not the code that produced the "
         "frozen authority (%s); re-freeze or revert" % (live, recorded)
     )
+
+
+def test_the_donor_set_digest_is_injective_over_delimiter_bearing_ids() -> None:
+    """Serialization collision found by independent review, now closed.
+
+    The digest joined donor identities with `|` and validated them only for
+    non-blankness and uniqueness, so `{"a|b"}` and `{"a", "b"}` produced
+    identical pre-hash bytes and therefore the same digest. Not a hash
+    collision: a serialization collision, which made the set-identity primitive
+    non-injective over the inputs it accepted.
+
+    Real SEA-AD identities contain no `|`, so the 46-donor membership was never
+    wrong. An authority primitive must nevertheless be unambiguous for every
+    input it accepts.
+    """
+    assert av._donor_set_digest(["a|b"]) != av._donor_set_digest(["a", "b"])
+    # A family of related shapes, all of which the old framing conflated.
+    pairs = [
+        (["x|y|z"], ["x", "y", "z"]),
+        (["", "a"], ["a"]),
+        (["a|"], ["a", ""]),
+        (["1:2"], ["1", "2"]),
+    ]
+    for left, right in pairs:
+        assert av._donor_set_digest(left) != av._donor_set_digest(right), (left, right)
+    # Order of declaration still must not matter, and the digest is stable.
+    assert av._donor_set_digest(["b", "a"]) == av._donor_set_digest(["a", "b"])
+    assert av._donor_set_digest(["a", "a"]) == av._donor_set_digest(["a"])
+
+
+def test_the_donor_set_digest_counts_members(tmp_path: Path) -> None:
+    """Length prefixing plus an explicit cardinality, so size is bound too."""
+    assert av._donor_set_digest([]) != av._donor_set_digest([""])
+    assert av._donor_set_digest(["a"]) != av._donor_set_digest(["a", "b"])

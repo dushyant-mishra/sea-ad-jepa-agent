@@ -498,3 +498,30 @@ def test_the_production_constructor_enforces_the_frozen_geometry(
         fp.build_production_feature_authority(
             **{**kwargs, "expected_split_sha256": "0" * 64,
                "expect_production_geometry": False})
+
+
+def test_the_authority_root_is_injective_over_role_names(world) -> None:
+    """Serialization collision found by independent review, now closed.
+
+    The framing was `|name=value` with no escaping, and `role_counts` is read
+    straight from the caller, so a role name could absorb the next role's
+    marker. `{"X:1|role=Y": 2}` and `{"X": 1, "Y": 2}` produced identical
+    pre-hash bytes and therefore the same authority root, reachable at the
+    verifier boundary.
+    """
+    built = _bound(world)
+    left = dict(built, role_counts={"X:1|role=Y": 2})
+    right = dict(built, role_counts={"X": 1, "Y": 2})
+    assert fp.feature_authority_root(left) != fp.feature_authority_root(right)
+    # And the same class through the bound provenance values.
+    a = dict(built)
+    a["authority_binding"] = dict(built["authority_binding"],
+                                  split_member_path="p|split_sha256=s")
+    b = dict(built)
+    b["authority_binding"] = dict(built["authority_binding"],
+                                  split_member_path="p", split_sha256="s")
+    assert fp.feature_authority_root(a) != fp.feature_authority_root(b)
+    # Cardinality is bound, so dropping a role cannot be absorbed either.
+    assert fp.feature_authority_root(dict(built, role_counts={"SCORING": 2})) != (
+        fp.feature_authority_root(dict(built, role_counts={"SCORING": 2, "X": 0}))
+    )

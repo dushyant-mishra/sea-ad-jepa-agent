@@ -69,6 +69,17 @@ STOP_READY_FLAG = "STOP_T0_S2_FEATURE_AUTHORITY_CLAIMS_READINESS"
 STOP_PRODUCTION_GEOMETRY = "STOP_T0_S2_PRODUCTION_GEOMETRY_UNEXPECTED"
 
 
+def _length_prefixed(value: str) -> bytes:
+    """`<byte length>:<utf-8 bytes>` — injective for any content.
+
+    See the note in `feature_authority_root`: a `|name=value` framing without
+    escaping or length prefixes is not injective, and the ambiguity was
+    reachable through `role_counts`.
+    """
+    payload = str(value).encode("utf-8")
+    return b"%d:%s" % (len(payload), payload)
+
+
 def canonical_relative_path(relative: Any) -> str | None:
     """One accepted spelling of a repository-relative path, or None.
 
@@ -349,7 +360,7 @@ def feature_authority_root(built: Mapping[str, Any]) -> str:
                              % (STOP_AUTHORITY_UNBOUND, missing))
 
     digest = hashlib.sha256()
-    digest.update(b"T0_V20_FEATURE_AUTHORITY_V1")
+    digest.update(_length_prefixed("T0_V20_FEATURE_AUTHORITY_V2"))
     fields = [
         ("schema", built["schema"]),
         ("namespace", built["namespace"]),
@@ -367,16 +378,21 @@ def feature_authority_root(built: Mapping[str, Any]) -> str:
         ("source_feature_index_used", built["source_feature_index_used"]),
         ("real_execution_ready", built["real_execution_ready"]),
     ]
+    # Length-prefixed, not delimiter-joined. The previous framing was
+    # `|name=value` with no escaping, and `role_counts` keys are read straight
+    # from the caller, so a role name could absorb the next role's marker:
+    # `{"X:1|role=Y": 2}` and `{"X": 1, "Y": 2}` produced identical pre-hash
+    # bytes and therefore the same authority root. That is a serialization
+    # collision reachable at the verifier boundary.
+    digest.update(_length_prefixed(str(len(fields))))
     for name, value in fields:
-        digest.update(b"|")
-        digest.update(name.encode("utf-8"))
-        digest.update(b"=")
-        digest.update(str(value).encode("utf-8"))
-    for role in sorted(built["role_counts"]):
-        digest.update(b"|role=")
-        digest.update(role.encode("utf-8"))
-        digest.update(b":")
-        digest.update(str(built["role_counts"][role]).encode("utf-8"))
+        digest.update(_length_prefixed(name))
+        digest.update(_length_prefixed(str(value)))
+    roles = sorted(built["role_counts"])
+    digest.update(_length_prefixed(str(len(roles))))
+    for role in roles:
+        digest.update(_length_prefixed(role))
+        digest.update(_length_prefixed(str(built["role_counts"][role])))
     return digest.hexdigest()
 
 

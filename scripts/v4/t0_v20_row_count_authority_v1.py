@@ -115,25 +115,35 @@ def assert_normalised_once(*, values: Sequence[float], raw_counts: Iterable[floa
     return True
 
 
+def _length_prefixed(value: Any) -> bytes:
+    """`<byte length>:<utf-8 bytes>` — injective for any content.
+
+    Delimiter-joined framings were found non-injective in two sibling
+    authorities in this lane, so all three roots use length prefixing rather
+    than waiting for the same finding a third time. Block keys and cell
+    identities are external strings and must not be able to absorb a delimiter.
+    """
+    payload = str(value).encode("utf-8")
+    return b"%d:%s" % (len(payload), payload)
+
+
 def _closure_root(operator_index: int, matrix_id: str, blocks: Sequence[str],
                   rows_scanned: int, locations: Mapping[str, Mapping[str, Any]]) -> str:
     digest = hashlib.sha256()
-    digest.update(b"T0_V20_POPULATION_CLOSURE_V1")
-    digest.update(b"|operator=%d" % int(operator_index))
-    digest.update(b"|matrix=")
-    digest.update(str(matrix_id).encode("utf-8"))
-    digest.update(b"|blocks=%d" % len(blocks))
-    digest.update(b"|rows=%d" % int(rows_scanned))
+    digest.update(_length_prefixed("T0_V20_POPULATION_CLOSURE_V2"))
+    digest.update(_length_prefixed(int(operator_index)))
+    digest.update(_length_prefixed(matrix_id))
+    digest.update(_length_prefixed(len(blocks)))
+    digest.update(_length_prefixed(int(rows_scanned)))
     for key in blocks:
-        digest.update(b"|b=")
-        digest.update(key.encode("utf-8"))
-    for cell in sorted(locations, key=lambda value: value.encode("utf-8")):
+        digest.update(_length_prefixed(key))
+    ordered = sorted(locations, key=lambda value: value.encode("utf-8"))
+    digest.update(_length_prefixed(len(ordered)))
+    for cell in ordered:
         record = locations[cell]
-        digest.update(b"|c=")
-        digest.update(cell.encode("utf-8"))
-        digest.update(b"@")
-        digest.update(str(record["block_key"]).encode("utf-8"))
-        digest.update(b"#%d" % int(record["row_index"]))
+        digest.update(_length_prefixed(cell))
+        digest.update(_length_prefixed(record["block_key"]))
+        digest.update(_length_prefixed(int(record["row_index"])))
     return digest.hexdigest()
 
 
@@ -234,18 +244,18 @@ def build_population_closure(
 
 
 def _logical_root(rows: Sequence[Mapping[str, Any]], feature_root: str) -> str:
+    fields = ("logical_index", "canonical_cell_id", "donor_id", "block_key",
+              "row_index", "selection_row", "expression_row",
+              "primary_row_weight", "source_library", "meta_sha256",
+              "counts_sha256")
     digest = hashlib.sha256()
-    digest.update(b"T0_V20_LOGICAL_ROW_AUTHORITY_V1")
-    digest.update(b"|feature_authority_root=")
-    digest.update(str(feature_root).encode("utf-8"))
+    digest.update(_length_prefixed("T0_V20_LOGICAL_ROW_AUTHORITY_V2"))
+    digest.update(_length_prefixed(feature_root))
+    digest.update(_length_prefixed(len(rows)))
+    digest.update(_length_prefixed(len(fields)))
     for row in rows:
-        digest.update(b"|")
-        for field in ("logical_index", "canonical_cell_id", "donor_id", "block_key",
-                      "row_index", "selection_row", "expression_row",
-                      "primary_row_weight", "source_library", "meta_sha256",
-                      "counts_sha256"):
-            digest.update(str(row[field]).encode("utf-8"))
-            digest.update(b"\x1f")
+        for field in fields:
+            digest.update(_length_prefixed(row[field]))
     return digest.hexdigest()
 
 
@@ -320,13 +330,13 @@ def build_physical_read_plan(*, logical: Mapping[str, Any]) -> dict[str, Any]:
         key=lambda entry: (entry["block_key"], entry["row_index"]),
     )
     digest = hashlib.sha256()
-    digest.update(b"T0_V20_PHYSICAL_READ_PLAN_V1")
-    digest.update(b"|logical_root=")
-    digest.update(str(logical["logical_row_authority_root_sha256"]).encode("utf-8"))
+    digest.update(_length_prefixed("T0_V20_PHYSICAL_READ_PLAN_V2"))
+    digest.update(_length_prefixed(logical["logical_row_authority_root_sha256"]))
+    digest.update(_length_prefixed(len(plan)))
     for entry in plan:
-        digest.update(b"|")
-        digest.update(("%s#%d@%d" % (entry["block_key"], entry["row_index"],
-                                     entry["logical_index"])).encode("utf-8"))
+        digest.update(_length_prefixed(entry["block_key"]))
+        digest.update(_length_prefixed(int(entry["row_index"])))
+        digest.update(_length_prefixed(int(entry["logical_index"])))
     return {
         "schema": SCHEMA,
         "namespace": NAMESPACE,
