@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
 
 import pytest
 import torch
@@ -28,6 +29,8 @@ from sea_ad_jepa.v4.teacher_student_movement import (
     source_sha256 as movement_source_sha256,
 )
 from sea_ad_jepa.v4.teacher_student_source_authority import verify_source_authority
+ROOT = Path(__file__).resolve().parents[1]
+
 from sea_ad_jepa.v4.teacher_student_runtime import (
     BACKBONE_REGISTRY_SHA256,
     FROZEN_BACKBONE_REGISTRY,
@@ -272,7 +275,7 @@ def _valid_overlay() -> dict:
             "frozen_before_u1": True,
         },
         "predictor_mandatory_registry_sha256": PREDICTOR_REGISTRY_SHA256,
-        "movement_adjudicator_source_sha256": "6" * 64,
+        "movement_adjudicator_source_sha256": movement_source_sha256(),
         "execution_authorized": False,
         "terminal": (
             "PASS_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY__EXECUTION_STILL_UNAUTHORIZED"
@@ -497,13 +500,13 @@ def test_executing_source_authority_rejects_tampered_code(tmp_path) -> None:
     import shutil
 
     source_root = (
-        ROOT / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V2.txt"
+        ROOT / "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V3.txt"
     ).read_text(encoding="utf-8").strip()
     assert verify_source_authority(source_root, root=ROOT)["passed"] is True
 
     for rel in (
-        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V2.csv",
-        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V2.txt",
+        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V3.csv",
+        "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_ROOT_V3.txt",
     ):
         target = tmp_path / rel
         target.parent.mkdir(parents=True, exist_ok=True)
