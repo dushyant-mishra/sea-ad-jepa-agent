@@ -2,7 +2,7 @@
 
 S2 must turn the accepted V20 feature split into an ordered projection over the
 frozen 41,238-address space, and the ordering is the science: the split's own row
-order is the authority, not address order. Every attack below encodes a way that
+order is the authority, not address order. Every adversarial case below encodes a way that
 projection could look correct while silently reading different genes, in a
 different order, or genes the matrix does not measure.
 
@@ -11,6 +11,13 @@ tracked authorities resolve from Git blob bytes at an explicit commit, a missing
 object stops before any digest is taken, and a non-canonical path is refused.
 
 Written before the implementation.
+
+Scope: this module verifies the integrity of this project's own data-provenance
+records, in this repository. No third-party system, no network, no credentials,
+no cryptanalysis, and no security control belonging to any system is
+circumvented. The only check being probed is our own SHA-256 comparison, and
+these cases exist to show it cannot be satisfied by anything but the bytes it
+claims to describe. See docs/agent/T0_LANE_SECURITY_SCOPE.md.
 """
 
 from __future__ import annotations
@@ -322,10 +329,10 @@ def test_a_wrong_pinned_digest_stops(pinned_repo) -> None:
 def test_a_noncanonical_pinned_path_stops(pinned_repo) -> None:
     repo, digest = pinned_repo
     commit = _git(repo, "rev-parse", "HEAD")
-    for hostile in (":authority.csv", "./authority.csv", "../authority.csv",
+    for invalid in (":authority.csv", "./authority.csv", "../authority.csv",
                     "C:/authority.csv"):
         with pytest.raises(AssertionError, match="PINNED_PATH_NOT_CANONICAL"):
-            fp.resolve_pinned_blob(repo, commit, hostile, digest)
+            fp.resolve_pinned_blob(repo, commit, invalid, digest)
 
 
 def test_the_wrong_pinned_commit_stops(pinned_repo) -> None:
@@ -395,15 +402,15 @@ def test_mutating_authority_metadata_moves_the_authority_root(world, field, valu
     built = _bound(world)
     original_projection = built["projection_root_sha256"]
     original_authority = built["feature_authority_root_sha256"]
-    forged = dict(built)
-    forged[field] = value
-    assert fp.projection_root(forged["projection"]) == original_projection, (
+    substituted = dict(built)
+    substituted[field] = value
+    assert fp.projection_root(substituted["projection"]) == original_projection, (
         "the rows are untouched, which is exactly why row-only binding failed"
     )
-    assert fp.feature_authority_root(forged) != original_authority
+    assert fp.feature_authority_root(substituted) != original_authority
     with pytest.raises(AssertionError, match="FEATURE_AUTHORITY_ROOT_MISMATCH"):
         fp.assert_feature_authority_lawful(
-            forged,
+            substituted,
             expected_feature_authority_root_sha256=original_authority,
             expected_projection_root_sha256=original_projection)
 
@@ -413,32 +420,32 @@ def test_mutating_authority_metadata_moves_the_authority_root(world, field, valu
                                    "stage81a2r_pin", "split_member_path"])
 def test_mutating_a_bound_provenance_digest_moves_the_authority_root(world, field) -> None:
     built = _bound(world)
-    forged = dict(built)
-    forged["authority_binding"] = dict(built["authority_binding"])
-    forged["authority_binding"][field] = "f" * 64
-    assert fp.feature_authority_root(forged) != built["feature_authority_root_sha256"]
+    substituted = dict(built)
+    substituted["authority_binding"] = dict(built["authority_binding"])
+    substituted["authority_binding"][field] = "f" * 64
+    assert fp.feature_authority_root(substituted) != built["feature_authority_root_sha256"]
     with pytest.raises(AssertionError, match="FEATURE_AUTHORITY_ROOT_MISMATCH"):
         fp.assert_feature_authority_lawful(
-            forged,
+            substituted,
             expected_feature_authority_root_sha256=built["feature_authority_root_sha256"],
             expected_projection_root_sha256=built["projection_root_sha256"])
 
 
 def test_mutated_role_counts_move_the_authority_root(world) -> None:
     built = _bound(world)
-    forged = dict(built)
-    forged["role_counts"] = {"SCORING": 99, "COHERENCE_HOLDOUT": 1}
-    assert fp.feature_authority_root(forged) != built["feature_authority_root_sha256"]
+    substituted = dict(built)
+    substituted["role_counts"] = {"SCORING": 99, "COHERENCE_HOLDOUT": 1}
+    assert fp.feature_authority_root(substituted) != built["feature_authority_root_sha256"]
 
 
 def test_claiming_execution_readiness_is_refused(world) -> None:
     built = _bound(world)
-    forged = dict(built)
-    forged["real_execution_ready"] = True
+    substituted = dict(built)
+    substituted["real_execution_ready"] = True
     with pytest.raises(AssertionError, match="FEATURE_AUTHORITY_CLAIMS_READINESS"):
         fp.assert_feature_authority_lawful(
-            forged,
-            expected_feature_authority_root_sha256=fp.feature_authority_root(forged),
+            substituted,
+            expected_feature_authority_root_sha256=fp.feature_authority_root(substituted),
             expected_projection_root_sha256=built["projection_root_sha256"])
 
 

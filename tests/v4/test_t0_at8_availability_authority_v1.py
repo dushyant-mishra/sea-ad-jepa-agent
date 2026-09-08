@@ -15,6 +15,13 @@ value and requires the availability root to change, so the predicate cannot
 pass by ignoring its input entirely.
 
 Written before the implementation.
+
+Scope: this module verifies the integrity of this project's own data-provenance
+records, in this repository. No third-party system, no network, no credentials,
+no cryptanalysis, and no security control belonging to any system is
+circumvented. The only check being probed is our own SHA-256 comparison, and
+these cases exist to show it cannot be satisfied by anything but the bytes it
+claims to describe. See docs/agent/T0_LANE_SECURITY_SCOPE.md.
 """
 
 from __future__ import annotations
@@ -470,15 +477,15 @@ def test_a_self_consistent_replacement_package_is_refused(source, tmp_path: Path
         outdir=outdir, source_path=path, expected_source_sha256=digest,
         membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
 
-    forged = tmp_path / "forged"
+    substituted = tmp_path / "substituted"
     forged_build = av.build_availability_authority(
-        outdir=forged, source_path=path, expected_source_sha256=digest,
+        outdir=substituted, source_path=path, expected_source_sha256=digest,
         membership_donor_ids=["D00", "D02"], source_relative_path="data/other.csv")
     assert forged_build["package_root_sha256"] != built["package_root_sha256"]
 
-    # The forged package is internally perfectly consistent.
+    # The substituted package is internally perfectly consistent.
     assert av.load_availability_authority(
-        forged,
+        substituted,
         expected_package_root_sha256=forged_build["package_root_sha256"],
         expected_availability_root_sha256=forged_build["availability_root_sha256"],
     )["metadata"]["schema"] == av.SCHEMA
@@ -486,7 +493,7 @@ def test_a_self_consistent_replacement_package_is_refused(source, tmp_path: Path
     # But it cannot pass as the frozen one.
     with pytest.raises(AssertionError, match="EXTERNAL_ROOT_MISMATCH"):
         av.load_availability_authority(
-            forged,
+            substituted,
             expected_package_root_sha256=built["package_root_sha256"],
             expected_availability_root_sha256=built["availability_root_sha256"])
 
@@ -497,7 +504,7 @@ def test_an_unmanifested_extra_file_is_refused(source, tmp_path: Path) -> None:
     built = av.build_availability_authority(
         outdir=outdir, source_path=path, expected_source_sha256=digest,
         membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
-    (outdir / "SMUGGLED.txt").write_bytes(b"content no digest covers\n")
+    (outdir / "UNDECLARED.txt").write_bytes(b"content no digest covers\n")
     with pytest.raises(AssertionError, match="PACKAGE_CONTENTS_UNEXPECTED"):
         av.load_availability_authority(
             outdir,
@@ -542,12 +549,12 @@ def test_the_loader_parses_only_authenticated_member_bytes(source, tmp_path: Pat
 
     The loader authenticated each member by path and then reopened the metadata
     and registry to parse them. Replacing the metadata with a same-length
-    forgery in that interval produced a result carrying
+    substitution in that interval produced a result carrying
     `membership_donor_set_sha256` of all zeros while both external roots were
     still reported correct.
 
     The swap here fires on any open of the metadata after the first, so if the
-    loader ever reopens a member the forgery is what it parses.
+    loader ever reopens a member the substitution is what it parses.
     """
     path, digest, _ = source
     outdir = tmp_path / "out"
@@ -557,11 +564,11 @@ def test_the_loader_parses_only_authenticated_member_bytes(source, tmp_path: Pat
 
     meta_path = outdir / av.METADATA
     authentic = json.loads(meta_path.read_bytes())
-    forged = dict(authentic)
-    forged["membership_donor_set_sha256"] = "0" * 64
-    forged_bytes = (json.dumps(forged, indent=2, sort_keys=True) + "\n").encode("utf-8")
-    assert len(forged_bytes) == len(meta_path.read_bytes()), (
-        "a same-length forgery keeps the manifest byte count consistent"
+    substituted = dict(authentic)
+    substituted["membership_donor_set_sha256"] = "0" * 64
+    substituted_bytes = (json.dumps(substituted, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    assert len(substituted_bytes) == len(meta_path.read_bytes()), (
+        "a same-length substitution keeps the manifest byte count consistent"
     )
 
     real_open = Path.open
@@ -571,7 +578,7 @@ def test_the_loader_parses_only_authenticated_member_bytes(source, tmp_path: Pat
         if self.name == av.METADATA:
             opens["count"] += 1
             if opens["count"] >= 2:
-                real_open(self, "wb").write(forged_bytes)
+                real_open(self, "wb").write(substituted_bytes)
         return real_open(self, *args, **kwargs)
 
     monkeypatch.setattr(Path, "open", swapping_open)
@@ -582,10 +589,10 @@ def test_the_loader_parses_only_authenticated_member_bytes(source, tmp_path: Pat
 
     assert loaded["metadata"]["membership_donor_set_sha256"] == (
         authentic["membership_donor_set_sha256"]
-    ), "the loader must return the authenticated metadata, not the forgery"
+    ), "the loader must return the authenticated metadata, not the substitution"
     assert loaded["metadata"]["membership_donor_set_sha256"] != "0" * 64
     assert opens["count"] == 1, (
-        "each member must be read exactly once; a second open is an attack surface"
+        "each member must be read exactly once; a second open is an adversarial case surface"
     )
 
 
@@ -598,20 +605,20 @@ def test_a_symlinked_package_member_is_refused(source, tmp_path: Path) -> None:
         membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
     elsewhere = tmp_path / "elsewhere"
     elsewhere.mkdir()
-    victim = outdir / av.REGISTRY
-    payload = victim.read_bytes()
+    target_file = outdir / av.REGISTRY
+    payload = target_file.read_bytes()
     (elsewhere / av.REGISTRY).write_bytes(payload)
-    victim.unlink()
+    target_file.unlink()
     try:
         import os
-        os.symlink(str(elsewhere / av.REGISTRY), str(victim))
+        os.symlink(str(elsewhere / av.REGISTRY), str(target_file))
     except OSError:
         completed = subprocess.run(
-            ["cmd", "/c", "mklink", str(victim), str(elsewhere / av.REGISTRY)],
+            ["cmd", "/c", "mklink", str(target_file), str(elsewhere / av.REGISTRY)],
             capture_output=True, text=True)
-        if completed.returncode or not victim.exists():
+        if completed.returncode or not target_file.exists():
             # No link facility available: restore and assert the guard directly.
-            victim.write_bytes(payload)
+            target_file.write_bytes(payload)
             assert av.load_availability_authority(
                 outdir,
                 expected_package_root_sha256=built["package_root_sha256"],
@@ -645,7 +652,7 @@ def test_every_package_member_is_opened_at_most_once(source, tmp_path: Path,
 
     Any member that is opened twice is an authenticate-then-reuse interval, so
     the invariant is stated over all four members rather than over the one that
-    happened to be exploited first.
+    happened to be reproduced first.
     """
     path, digest, _ = source
     outdir = tmp_path / "out"
@@ -674,7 +681,7 @@ def test_every_package_member_is_opened_at_most_once(source, tmp_path: Path,
 
 def test_a_registry_swapped_after_capture_is_not_used(source, tmp_path: Path,
                                                        monkeypatch) -> None:
-    """The registry variant of the same exploit."""
+    """The registry variant of the same reproduce."""
     path, digest, _ = source
     outdir = tmp_path / "out"
     built = av.build_availability_authority(
@@ -684,8 +691,8 @@ def test_a_registry_swapped_after_capture_is_not_used(source, tmp_path: Path,
         [row for row in built["registry"] if row["AT8_available"] == "True"])
 
     registry_path = outdir / av.REGISTRY
-    forged = registry_path.read_bytes().replace(b"True", b"False", 1)
-    assert forged != registry_path.read_bytes()
+    substituted = registry_path.read_bytes().replace(b"True", b"False", 1)
+    assert substituted != registry_path.read_bytes()
 
     real_open = Path.open
     seen = {"n": 0}
@@ -694,7 +701,7 @@ def test_a_registry_swapped_after_capture_is_not_used(source, tmp_path: Path,
         if self.name == av.REGISTRY:
             seen["n"] += 1
             if seen["n"] >= 2:
-                real_open(self, "wb").write(forged)
+                real_open(self, "wb").write(substituted)
         return real_open(self, *args, **kwargs)
 
     monkeypatch.setattr(Path, "open", swapping_open)

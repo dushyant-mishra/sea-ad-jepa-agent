@@ -1,3 +1,11 @@
+"""Scope: this module verifies the integrity of this project's own data-provenance
+records, in this repository. No third-party system, no network, no credentials,
+no cryptanalysis, and no security control belonging to any system is
+circumvented. The only check being probed is our own SHA-256 comparison, and
+these cases exist to show it cannot be satisfied by anything but the bytes it
+claims to describe. See docs/agent/T0_LANE_SECURITY_SCOPE.md.
+"""
+
 from __future__ import annotations
 
 import json
@@ -485,7 +493,7 @@ from scripts.agent.work_checkpoint import (
 def test_canonical_authority_path_accepts_only_one_spelling() -> None:
     assert canonical_authority_path("docs/agent/thing.json") == "docs/agent/thing.json"
     assert canonical_authority_path("AGENTS.md") == "AGENTS.md"
-    for hostile in (
+    for invalid in (
         ":authority.txt",                  # pathspec magic
         ":(literal)authority.txt",         # explicit literal magic
         ":(glob)authority.txt",
@@ -501,7 +509,7 @@ def test_canonical_authority_path_accepts_only_one_spelling() -> None:
         None,
         42,
     ):
-        assert canonical_authority_path(hostile) is None, hostile
+        assert canonical_authority_path(invalid) is None, invalid
 
 
 def test_pathspec_magic_cannot_alias_a_tracked_authority(git_repo: Path) -> None:
@@ -585,7 +593,7 @@ def _link_dir(link: Path, target: Path) -> str:
     """Create the strongest available directory link, returning its kind.
 
     Real symlinks need a privilege this checkout does not hold on Windows, so a
-    junction is used instead. A junction is the sharper attack: Python reports
+    junction is used instead. A junction is the sharper adversarial case: Python reports
     `is_symlink()` False for it, so it slips the symlink guard and must be
     caught by the containment check on the resolved path.
     """
@@ -707,7 +715,7 @@ def test_a_staged_mode_flip_of_a_frozen_authority_is_refused(tmp_path: Path) -> 
     """`--chmod` preserves the blob object id, so object ids alone are not enough.
 
     Comparing only index oid against bound oid let a staged 100644 to 100755
-    flip evade the authority gate whenever the path was a declared
+    flip go undetected the authority gate whenever the path was a declared
     modification, because the content genuinely had not changed.
     """
     repo, blob_sha, _ = _crlf_repo(tmp_path)

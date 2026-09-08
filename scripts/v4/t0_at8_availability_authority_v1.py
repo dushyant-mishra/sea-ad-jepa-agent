@@ -290,7 +290,7 @@ def build_availability_authority(
     # would make the value-blindness claim uncheckable.
     #
     # `availability_root_sha256` covers the derived predicate alone. It must be
-    # invariant to every numeric AT8 value, and a metamorphic attack asserts
+    # invariant to every numeric AT8 value, and a metamorphic adversarial case asserts
     # exactly that by rebuilding from a source whose values all differ.
     #
     # `package_root_sha256` covers the manifest, so it binds the source digest
@@ -314,8 +314,8 @@ def load_availability_authority(
 
     The previous implementation authenticated each member by path and then
     reopened the metadata and registry to parse them. That interval was
-    exploitable and the exploit was demonstrated: replacing the metadata with a
-    same-length forgery immediately after its authenticated hash read produced a
+    reachable and the reproduce was demonstrated: replacing the metadata with a
+    same-length substitution immediately after its authenticated hash read produced a
     loader result carrying `membership_donor_set_sha256` of all zeros while both
     external roots were still reported correct. Authentication and use must
     therefore act on the same bytes, exactly as the source-side repair does.
