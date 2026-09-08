@@ -150,6 +150,12 @@ def main() -> int:
         raise RuntimeError("successor u0 materialization terminal mismatch")
     if attestation.get("training_updates_executed") != 0:
         raise RuntimeError("successor u0 materialization executed training")
+    state_checks = attestation.get("state_equivalence")
+    if not isinstance(state_checks, dict) or not state_checks or not all(state_checks.values()):
+        raise RuntimeError("u0 materialization state-equivalence checks are incomplete")
+    rng_checks = attestation.get("rng_equivalence")
+    if not isinstance(rng_checks, dict) or not rng_checks or not all(rng_checks.values()):
+        raise RuntimeError("u0 materialization RNG-equivalence checks are incomplete")
     if attestation.get("new_checkpoint", {}).get("sha256") != expected_u0_sha:
         raise RuntimeError("u0 attestation does not bind the overlay checkpoint SHA")
     if attestation.get("authority_bindings") != authorities:
