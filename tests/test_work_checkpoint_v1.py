@@ -9,6 +9,7 @@ import pytest
 from scripts.agent.work_checkpoint import (
     atomic_write_json,
     authority_path_dirty,
+    authority_worktree_oid,
     build_checkpoint,
     canonical_json_bytes,
     semantic_sha256,
@@ -339,7 +340,8 @@ def test_a_dirty_authority_fails_even_when_declared_modifiable(git_repo: Path) -
     errors = validate_checkpoint(checkpoint, git_repo, git_repo)
     assert not any(error.startswith("TRACKED_MODIFICATIONS_MISMATCH") for error in errors)
     assert any(error.startswith("AUTHORITY_DIRTY") for error in errors)
-    assert authority_path_dirty(git_repo, "authority.txt") is True
+    bound = tracked_blob_at(git_repo, checkpoint["git"]["head_sha"], "authority.txt")
+    assert authority_path_dirty(git_repo, "authority.txt", bound["oid"]) is True
 
 
 def test_symlink_and_submodule_authorities_are_refused(git_repo: Path) -> None:
@@ -404,26 +406,52 @@ def test_validation_does_not_mutate_the_index_or_worktree(tmp_path: Path) -> Non
 
 
 def test_the_bound_head_is_used_not_a_later_commit(tmp_path: Path) -> None:
-    """Authority bytes come from the commit the checkpoint is bound to.
+    """Authority bytes come from the bound commit, and divergence is caught.
 
-    After a later commit changes the authority, the checkpoint bound to the
-    earlier HEAD must not silently validate against the new blob.
+    An earlier version of this test ratified a hole. It asserted that after a
+    later commit replaced the declared authority there was no authority-level
+    complaint, which is exactly the wrong expectation: dirtiness was being
+    measured with `git status` against whatever HEAD happened to be current, so
+    the worktree was "clean" with respect to the new commit and a completely
+    different file could stand in for the authority unnoticed. Dirtiness is now
+    measured against the bound object id.
     """
     repo, blob_sha, _ = _crlf_repo(tmp_path)
     checkpoint = build_checkpoint(repo, repo, _crlf_state(repo, blob_sha))
     bound = checkpoint["git"]["head_sha"]
+    bound_entry = tracked_blob_at(repo, bound, "authority.txt")
 
-    (repo / "authority.txt").write_bytes(b"line-one\nline-two\nline-three\n")
+    (repo / "authority.txt").write_bytes(b"COMPLETELY DIFFERENT AUTHORITY\n")
     _git(repo, "add", "authority.txt")
     _git(repo, "commit", "-m", "second authority revision")
     assert _git(repo, "rev-parse", "HEAD") != bound
+    assert _git(repo, "status", "--porcelain") == "", "clean against the NEW head"
 
     errors = validate_checkpoint(checkpoint, repo, repo)
-    # HEAD moved, so the snapshot comparison must complain, but the authority
-    # itself still resolves against the bound commit rather than the new one.
     assert any(error.startswith("HEAD_MISMATCH") for error in errors)
-    assert not any(error.startswith("AUTHORITY_HASH_MISMATCH") for error in errors)
-    assert not any(error.startswith("AUTHORITY_DIRTY") for error in errors)
+    assert any(error.startswith("AUTHORITY_DIRTY") for error in errors), errors
+    # The bytes still resolve from the bound commit, not the later one.
+    assert sha256_tracked_blob(repo, bound_entry["oid"]) == blob_sha
+
+
+def test_the_worktree_oid_is_computed_through_the_clean_filter(tmp_path: Path) -> None:
+    """A CRLF checkout must still match the bound object id.
+
+    This is what lets dirtiness be exact without any line-ending handling in
+    Python: git applies the same clean filter a commit would.
+    """
+    repo, blob_sha, disk_sha = _crlf_repo(tmp_path)
+    head = _git(repo, "rev-parse", "HEAD")
+    entry = tracked_blob_at(repo, head, "authority.txt")
+    assert b"\r\n" in (repo / "authority.txt").read_bytes()
+    assert disk_sha != blob_sha
+    assert authority_worktree_oid(repo, "authority.txt") == entry["oid"]
+    assert authority_path_dirty(repo, "authority.txt", entry["oid"]) is False
+
+    (repo / "authority.txt").unlink()
+    assert authority_worktree_oid(repo, "authority.txt") is None
+    assert authority_path_dirty(repo, "authority.txt", entry["oid"]) is True
+    assert authority_path_dirty(repo, ":authority.txt", entry["oid"]) is True
 
 
 # ---------------------------------------------------------------------------

@@ -130,7 +130,9 @@ def derive_availability(source_path: Path | str) -> list[dict[str, str]]:
 
 
 def _write_flat_package(outdir: Path, payloads: Mapping[str, bytes]) -> str:
-    outdir.mkdir(parents=True, exist_ok=False)
+    # The caller has already refused a non-empty directory; an existing empty
+    # one is fine and must not raise FileExistsError.
+    outdir.mkdir(parents=True, exist_ok=True)
     for name, blob in payloads.items():
         (outdir / name).write_bytes(blob)
     with io.open(outdir / MANIFEST, "w", encoding="utf-8", newline="") as handle:

@@ -345,3 +345,20 @@ def test_the_metadata_records_a_portable_relative_source(source, tmp_path: Path)
     assert "source_path" not in meta, "no absolute path may be recorded"
     for value in meta.values():
         assert ":" not in str(value) or not str(value).startswith(("C:", "D:")), value
+
+
+def test_an_existing_but_empty_output_directory_is_accepted(source, tmp_path: Path) -> None:
+    """An empty directory must not crash the build.
+
+    The emptiness guard admitted an existing empty directory and the writer
+    then called `mkdir(exist_ok=False)`, so the build died with an unhandled
+    FileExistsError instead of either working or stopping cleanly.
+    """
+    path, digest, _ = source
+    outdir = tmp_path / "prepared"
+    outdir.mkdir()
+    built = av.build_availability_authority(
+        outdir=outdir, source_path=path, expected_source_sha256=digest,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+    assert built["availability_root_sha256"]
+    assert av.load_availability_authority(outdir)["metadata"]["total_donor_count"] == 8

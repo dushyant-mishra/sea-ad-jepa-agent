@@ -145,27 +145,44 @@ def tracked_blob_at(worktree: Path, commit: str, relative: str) -> dict[str, str
     return {"mode": mode, "type": object_type, "oid": oid}
 
 
-def authority_path_dirty(worktree: Path, relative: str) -> bool:
-    """True when *relative* differs from HEAD in the worktree or the index.
+def authority_worktree_oid(worktree: Path, relative: str) -> str | None:
+    """Object id the worktree copy would produce, or None if unreadable.
 
-    A dirty authority must fail closed. Validating the committed blob while the
-    working copy carries different bytes would let an edited authority pass, and
-    listing the path in ``allowed_tracked_modifications`` must not buy an
-    exemption.
+    ``git hash-object --path`` applies the same clean filter a commit would, so
+    the result is directly comparable with a tree entry's object id without any
+    line-ending handling in Python. It neither writes an object nor touches the
+    index.
     """
     canonical = canonical_authority_path(relative)
     if canonical is None:
-        return True
-    status = _git(
+        return None
+    target = Path(worktree) / canonical
+    if not target.is_file():
+        return None
+    oid = _git(
         worktree,
         "--literal-pathspecs",
-        "status",
-        "--porcelain",
-        "--",
-        canonical,
+        "hash-object",
+        "--path=%s" % canonical,
+        str(target),
         allow_failure=True,
     )
-    return bool((status or "").strip())
+    return oid or None
+
+
+def authority_path_dirty(worktree: Path, relative: str, bound_oid: str) -> bool:
+    """True unless the worktree copy is exactly the authority *bound_oid* names.
+
+    Dirtiness has to be measured against the commit the checkpoint is bound to,
+    not against whatever HEAD happens to be now. Comparing with ``git status``
+    asked the wrong question: after a later commit replaced a declared
+    authority, the worktree was clean with respect to the new HEAD, so a
+    completely different file could sit in place of the authority and raise no
+    authority-level complaint at all.
+
+    A missing or unreadable path is dirty, so absence fails closed.
+    """
+    return authority_worktree_oid(worktree, relative) != bound_oid
 
 
 def resolve_local_authority(
@@ -375,7 +392,7 @@ def validate_checkpoint(
                     f"{entry['mode']}:{entry['type']}"
                 )
                 continue
-            if authority_path_dirty(Path(worktree), canonical):
+            if authority_path_dirty(Path(worktree), canonical, entry["oid"]):
                 errors.append(f"AUTHORITY_DIRTY:{canonical}")
                 continue
             actual_hash = sha256_tracked_blob(Path(worktree), entry["oid"])
