@@ -134,6 +134,8 @@ def main() -> int:
         raise RuntimeError("u40 result incorrectly self-authorizes continuation")
     if qualification.get("overlay_sha256") != overlay_sha:
         raise RuntimeError("u40 result does not bind supplied execution overlay")
+    if qualification.get("u40_checkpoint", {}).get("sha256") != u40_sha:
+        raise RuntimeError("u40 qualification does not bind supplied checkpoint")
 
     authority = json.loads(args.continuation_authority.read_text(encoding="utf-8"))
     validate_continuation_authority(
