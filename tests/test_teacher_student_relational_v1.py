@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 import torch
 
-from sea_ad_jepa.v4.teacher_student_relational import (
+from sea_ad_jepa.v4.prospective_relational_teacher_student import (
     CURRENT_FROZEN_TRAINING_EVIDENCE_LEVEL,
     EVIDENCE_LEVELS,
     CollapseCalibration,
