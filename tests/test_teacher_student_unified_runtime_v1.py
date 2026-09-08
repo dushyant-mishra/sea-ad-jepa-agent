@@ -39,6 +39,7 @@ from sea_ad_jepa.v4.teacher_student_runtime import (
     TeacherStudentConfig,
     sample_uniform_target_blocks,
     validate_production_config,
+    validate_update_chronology,
 )
 
 
@@ -450,3 +451,19 @@ def test_production_surface_has_no_retired_training_dependency() -> None:
         text = path.read_text(encoding="utf-8")
         for token in forbidden:
             assert token not in text, (path, token)
+
+
+def test_update_chronology_is_bound_to_optimizer_and_ema() -> None:
+    from types import SimpleNamespace
+
+    controller = SimpleNamespace(global_update_step=7, ema_update_count=7)
+    assert validate_update_chronology(controller, 7) == {
+        "schedule_cursor": 7,
+        "global_update_step": 7,
+        "ema_update_count": 7,
+    }
+    with pytest.raises(RuntimeError, match="schedule cursor"):
+        validate_update_chronology(controller, 6)
+    controller.ema_update_count = 6
+    with pytest.raises(RuntimeError, match="optimizer/EMA counters"):
+        validate_update_chronology(controller, 7)
