@@ -1,0 +1,20 @@
+{
+  "schema": "TEACHER_STUDENT_INTEGRATION_FREEZE_CANDIDATE_V1",
+  "status": "SOURCE_FROZEN__EXTERNAL_REVIEW_REQUIRED__TRAINING_UNAUTHORIZED",
+  "branch": "production/teacher-student-unified-v1-20260907",
+  "integrated_successor_commit": "0ce7fb146415eeaaaf37d67d1f2f816e6bb68b45",
+  "integrated_successor_source_manifest": "docs/agent/TEACHER_STUDENT_INTEGRATED_SOURCE_MANIFEST_V1.csv",
+  "integrated_successor_source_manifest_root_sha256": "b7770b7be0eeb52e3e98d0c8ee4933ca9443f7c01e4d934522ed2c236ac2a955",
+  "upstream_authorities": {
+    "f1b_attack_authority_root": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b",
+    "healthy_teacher_base_root": "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534",
+    "population_access_root": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
+    "historical_clean_u0_sha256": "19fb0c25d9f7549c37de39285807d5b6a6e828ced94af63927e83fa3c5c6b7c4"
+  },
+  "predictor_registry_sha256": "43922a62a885cbedee22c06363a8355c6561dad43c95f0a43147fc2f4cbe3592",
+  "execution_authorized": false,
+  "real_f1_authorized": false,
+  "real_t0_authorized": false,
+  "d1_real_execution_authorized": false,
+  "terminal": "TEACHER_STUDENT_UNIFIED_V1_SOURCE_FROZEN__INDEPENDENT_REVIEW_PENDING__TRAINING_UNAUTHORIZED"
+}
