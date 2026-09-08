@@ -110,3 +110,5 @@ jobs:
           git diff --cached --quiet && { echo "STOP_NO_MATERIALIZATION_DIFF"; exit 1; }
           git commit -m "teacher-student v5: materialize exact 66-pass data-first snapshot"
           git push origin HEAD:planning/teacher-student-v5-data-first-20260908
+
+# retrigger after exact transfer-part repair
