@@ -179,14 +179,11 @@
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "REPAIR_THE_FOUR_R2_B2_DEFECTS_AGAINST_THE_RED_CASES",
-    "BUILD_T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1_ON_THE_FROZEN_DEFINEDNESS_PREDICATE",
-    "BUILD_T0_IMMUNE_SUPPORT_COUNT_AUTHORITY_V1__46_DONORS_SUM_20804",
-    "BUILD_T0_DONOR_AGE_SEX_AUTHORITY_V1",
-    "BUILD_STAGEWISE_PATHOLOGY_BLIND_ESTIMABILITY_PREFLIGHT",
-    "OBTAIN_EXPLICIT_OWNER_FREEZE_OF_THE_IMMUNE_FRACTION_FORMULA",
-    "DO_NOT_RUN_PRODUCTION_B2_UNTIL_THE_R2_REPAIRS_PASS_INDEPENDENT_REVIEW",
-    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
+    "SUBMIT_HEAD_FOR_EXTERNAL_REVIEW_AGAINST_THE_R2_AND_R3_SETS",
+    "DO_NOT_RUN_PRODUCTION_B2_UNTIL_EXTERNAL_REVIEW_EXPLICITLY_CLEARS_IT",
+    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND",
+    "RESOLVE_AVAILABILITY_V6_BY_OWNER_WITNESSED_REDERIVATION_OR_EXACT_ZIP",
+    "EVALUATE_EXACT_PARENT_PASS_PROBABILITY_WITH_THE_FROZEN_V20_PERMUTATION_ENGINE"
   ],
   "peer_agents": [
     "CODEX",
@@ -304,6 +301,21 @@
       },
       "verification_rule": "Rebuild from the frozen source digest with the recorded derivation code and compare roots. Do not hash a Git-checked-out copy."
     },
+    "b2_r2_r3_status": {
+      "production_b2": "STOP__NOT_RUN",
+      "r2_defects_closed": [
+        "COMPLETE_MANIFEST_CONSUMABLE",
+        "AUTHENTICATED_RAW_SOURCE_ROW_PROOF",
+        "EXPRESSION_ROW_VS_BLOCK_LOCAL_ROW_INDEX",
+        "AUTHENTICATED_PAYLOAD_TO_SELECTED_ROW_COUPLING",
+        "MATRIX_AND_METADATA_GEOMETRY",
+        "MEMBERSHIP_ANTI_SPLICE",
+        "THREE_ROOT_EXTERNAL_VERIFICATION",
+        "EXECUTION_PATH_PROVENANCE_BOUND"
+      ],
+      "r3_defect_closed": "The logical root bound the feature root and the row fields but not the population closure root, meta_path or counts_path, and the external verifier never compared its recomputed root against the STORED root. Together those allowed a logical object to carry a different population identity and different paths while still reproducing the externally expected logical root; mutating the logical rows and the physical plan together kept them consistent, so the physical verifier could not catch it. _logical_root is now V5 and binds the closure root and both paths, ROW_FIELD_TYPES covers both paths, and assert_row_authority_lawful requires stored == recomputed == externally expected while externally binding the expected closure root.",
+      "red_before_evidence": "25 of 26 R2 cases and 8 of 9 R3 cases were confirmed red against the preceding head by substituting that head's module, running the suite, and restoring the working module with a digest check. The cases that were already green are reported as green regressions rather than as reproduced defects."
+    },
     "checkpoint_artifact_note": "docs/agent/CURRENT_WORK_CHECKPOINT.json is intentionally gitignored, so a local validation PASS is true but not reproducible from the branch alone. Review packages must carry the frozen checkpoint bytes or bind their digest explicitly.",
     "crlf_divergence_observed": {
       "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv": {
@@ -315,6 +327,26 @@
         "blob": "3c34bb063e22cdd4d3c308b47cb6eba67ccaceac5fb1c182cc9f7dd755f5aeba",
         "worktree": "dbf964337ec674772973388264172da6036f33ee20094050d2401e218021c504"
       }
+    },
+    "detectable_effect_correction": {
+      "binding_model": "PRIMARY_AT_ALPHA_0.025",
+      "binding_parent_threshold": 0.514,
+      "corrected_parent_thresholds": {
+        "composition_sensitivity__alpha_0.05__df_12": 0.458,
+        "measurement_plus_one_extra_block__alpha_0.05__df_10": 0.497,
+        "measurement_sensitivity__alpha_0.05__df_11": 0.476,
+        "primary__alpha_0.025__df_13": 0.514
+      },
+      "corrected_tail_thresholds": {
+        "tail_measurement_sensitivity_n17__alpha_0.05__df_9": 0.521,
+        "tail_measurement_sensitivity_n18__alpha_0.05__df_10": 0.497,
+        "tail_primary_n17__alpha_0.02__df_11": 0.575,
+        "tail_primary_n18__alpha_0.02__df_12": 0.554
+      },
+      "power_claim_withdrawn": "The '80 percent power' figures previously recorded are a noncentral-t reference approximation. They are NOT exact power for the parent arm, which is a studentized Freedman-Lane permutation test with 9,999 permutations, nor for the HC3 tail test. They are withdrawn as power claims and are not replaced by another approximation. The exact overall parent PASS probability is to be evaluated separately using the frozen V20 permutation engine.",
+      "status": "CORRECTS_DEC-020",
+      "what_survives": "The residual degrees of freedom and the Student-t-equivalent significance thresholds above. Those are exact given the design.",
+      "what_was_wrong": "DEC-020 recorded the measurement sensitivity as the binding parent threshold. That was derived by applying the primary alpha of 0.025 to all three parent models. The frozen sensitivity_directional_alpha is 0.05, so the sensitivities are tested at a less stringent alpha than the primary despite carrying fewer residual degrees of freedom."
     },
     "donor_role_gate_wording": "The donor-role gate is SHUT, meaning active and blocking. Earlier wording said 'closed', which a reader could take as resolved. It is not resolved and has not been lifted.",
     "donor_roles": {
@@ -339,7 +371,14 @@
       "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_MANIFEST.csv": "818ef14ac8c61ea4e93cc0c853a502dfa1cb75c198499b1cdafa6475e5a9eee9"
     },
     "external_review_terminal_received": "STOP_T0_B2_FINAL_EXTERNAL_REVIEW__FULL_MANIFEST_NOT_CONSUMABLE__RAW_SOURCE_ROW_NOT_AUTHENTICATED__BLOCK_ROW_COORDINATE_MISMATCH__THREE_ROOT_EXTERNAL_VERIFICATION_INCOMPLETE",
-    "governance_state": "T0_INPUT_DEPENDENCY_CONTRACT_FROZEN__IMMUNE_FRACTION_BUILT__FOUR_R2_B2_DEFECTS_RED__PRODUCTION_B2_FORBIDDEN",
+    "frozen_alphas": {
+      "negative_alpha": 0.005,
+      "note": "These are the frozen V18 constants. The parent primary and the directional sensitivities do NOT share an alpha, which is what an earlier analysis of mine got wrong.",
+      "sensitivity_directional_alpha": 0.05,
+      "state_positive_alpha": 0.025,
+      "tail_positive_alpha": 0.02
+    },
+    "governance_state": "ITEMS_1_THROUGH_9_IMPLEMENTED__AWAITING_EXTERNAL_REVIEW__PRODUCTION_B2_FORBIDDEN",
     "handoff_sha256": "ecd0b0fb5c449e9ff1101dff5b014fdbb79c7538212155b28f0a9beb47f2c01f",
     "immune_fraction_authority": {
       "block_metadata_members_authenticated": 1247,
@@ -389,6 +428,68 @@
       "superseded_conflicting_artifact": "results/v4/pre_stage81a2_matrix_semantics_registry.csv declares integer_count_layer_available=False and raw_present=False for the same dataset_id and must never be bound as the T0 matrix-semantics authority.",
       "transformation_contract": "library_size_normalize_to_10000_then_log1p_with_measurement_mask",
       "zero_interpretation": "measured_zero"
+    },
+    "new_authorities": {
+      "age_sex": {
+        "age_distinct": 25,
+        "age_max": 100,
+        "age_min": 65,
+        "age_sex_root_sha256": "95ed8f75a42368f3308cf794dbab3c651a4467756147a49a937c5a881e1cffff",
+        "candidate_donor_set_sha256": "59769cfda71860570eddc005ab7ee844e74d2dda8146245ddb930ade88af6345",
+        "candidate_universe_repair": "candidate_donors was a free caller-supplied list, so the correct 84-donor pathology source could be paired with the wrong subset of 46. The production constructor now requires either authenticated membership bytes, from which the universe is derived, or a list bound to an externally frozen donor-set digest. A bare list is refused.",
+        "donors": 46,
+        "module": "scripts/v4/t0_age_sex_authority_v1.py",
+        "package_root_sha256": "8212191a03f09d669a383be6a541b5ce3493b32c13608a76f197a88fa18ddf9b",
+        "sex_composition": {
+          "Female": 31,
+          "Male": 15
+        },
+        "source_sha256": "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a"
+      },
+      "estimability_preflight": {
+        "module": "scripts/v4/t0_estimability_preflight_v1.py",
+        "note": "Every stage refuses the response outright, because rank is a property of the design matrix and supplying the outcome would be a pathology-access violation as well as unnecessary.",
+        "pathology_blind": true,
+        "stages": [
+          "A_PARENT_NUISANCE",
+          "B_STATE_DESIGNS",
+          "C_TAIL_DESIGNS"
+        ]
+      },
+      "immune_fraction": {
+        "denominator_total": 638150,
+        "donors": 46,
+        "immune_fraction_root_sha256": "831139259fe78c5cede5457cb4cdc6bbb7bedd53831af95508b9bdfb56741653",
+        "note": "package root moves with the parent contract; rebuild to obtain it",
+        "numerator_total": 20804
+      },
+      "immune_fraction_formula_spec": {
+        "formula_spec_root_sha256": "d639f0cd697f3ccd22ce062d89d309ccb2e24445a221c5aa26966ebc567f4c58",
+        "module": "scripts/v4/t0_immune_fraction_formula_spec_v1.py",
+        "status": "EXPLICIT_SUCCESSOR_SPECIFICATION__FROZEN__NOT_RECOVERED_V18_SEMANTICS",
+        "version": "1.0.0"
+      },
+      "immune_support_count": {
+        "below_tail_floor": {
+          "H20.33.037": 67
+        },
+        "cells_total": 20804,
+        "donors": 46,
+        "module": "scripts/v4/t0_immune_support_count_authority_v1.py",
+        "package_root_sha256": "72b0384954acd01a375fe0ef62d80f9cd78946bc4885821ac2ad6e35c1a70a76",
+        "role": "SOLE_LAWFUL_SOURCE_FOR_THE_DONOR_ROLE_CELLS_INPUT_AND_TAIL_FLAG",
+        "support_root_sha256": "e6364ee036bc21058a502ed113047799899dec693510049909a60f7ab20a6d5e",
+        "tail_measurable_donors": 45
+      },
+      "technical_completeness": {
+        "formula_provenance": "Recovered verbatim from t0_confirmation_raw_v1 in the accepted V20 package, not paraphrased. This closes the external ledger's Q_DEPTH_CELL_LEVEL_FORMULA and Q_DETECT_CELL_LEVEL_FORMULA items by recovery rather than by definition.",
+        "module": "scripts/v4/t0_technical_completeness_authority_v1.py",
+        "q_depth_cell_formula": "log1p(source_library)",
+        "q_detect_cell_formula": "count_nonzero(A) / 35076",
+        "q_detect_universe": "ALL 35,076 scalar-measured addresses; NOT the 28,061 SCORING subset",
+        "semantics": "THRESHOLD_FREE_DEFINEDNESS_AND_COMPUTABILITY",
+        "status": "SYNTHETIC_ONLY__PRODUCTION_RUN_REQUIRES_AUTHENTICATED_B2_SUBSTRATE"
+      }
     },
     "owner_authorization": "Three concurrently authorized lanes. (1) Pathology-blind T0 V20 external-authority materialization. (2) AT8 availability-only authority: may access the frozen pathology source solely to decide whether the frozen AT8 field is present and non-missing; may not parse, retain, emit, log, rank, summarize, compare or model numeric AT8 values; output may carry only donor identity, the boolean, provenance and audit metadata. (3) Promotion-only successor design: may design, implement, test and package a minimal prospective successor that makes accepted V20 conditionally promotable, changing no V18/V20 science and producing no real executable T0 authority under present authorization. Still closed: numeric AT8 interpretation, DEV, SEALED, reader-validation, reader-oracle, real T0 execution, biological outcome analysis.",
     "pinned_blob_authorities": {
@@ -562,20 +663,29 @@
     },
     "terminal_on_success": "T0_V20_PATHOLOGY_BLIND_FEATURE_SOURCE_ROW_AUTHORITIES_MATERIALIZED_AND_VERIFIED__STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND__REAL_T0_STILL_UNAUTHORIZED",
     "test_accounting": {
-      "availability": 32,
-      "checkpoint": 33,
-      "correction": "An earlier handoff reported 33 + 32 + 39 + 50, which sums to 154 rather than the 153 actually observed. Static inspection of the feature suite gives 28 test functions with two six-case parametrizations, resolving to 38 cases. The feature count was wrong, not the total.",
-      "feature": 38,
-      "green_total_this_cycle": 256,
-      "new_this_cycle": {
-        "immune_fraction": 47,
-        "input_dependency_contract": 56,
-        "note": "The 13 R2 cases are 12 red against 6c6d841e plus one green regression: a pre-filtered manifest declared with the complete manifest digest is already refused, so that case pins existing correct behaviour rather than reproducing a defect.",
-        "row_count_r2_red": 13
+      "all_suites_aggregate": 482,
+      "original_four_aggregate": 153,
+      "original_four_suites": {
+        "availability": 32,
+        "checkpoint": 33,
+        "feature": 38,
+        "row_count": 50
       },
-      "observed": "Observed 209 passed over checkpoint 33 + availability 32 + feature 38 + row_count 50 + input_dependency_contract 56, plus 47 for the immune_fraction suite, giving 256 green. The 13 R2 row-count cases are excluded from the green total because 12 of them are red by design against 6c6d841e.",
-      "row_count": 50,
-      "total": 153
+      "per_suite": {
+        "age_sex": 50,
+        "availability": 32,
+        "checkpoint": 33,
+        "estimability_preflight": 28,
+        "feature": 38,
+        "immune_fraction": 47,
+        "immune_fraction_r2": 26,
+        "immune_support_count": 35,
+        "input_dependency_contract": 56,
+        "row_count": 50,
+        "row_count_r2": 36,
+        "technical_completeness": 51
+      },
+      "verified": "Collected counts, not estimates. The original four suites are 33 + 32 + 38 + 50 = 153. All twelve T0 suites collect and pass 482. The feature suite is 38 cases; an earlier handoff said 39, which made the four-suite total add to 154 rather than the 153 actually observed. No revision of this record may restore the 39 figure."
     },
     "three_roots_required": [
       "population_closure_root",
