@@ -1,0 +1,73 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V1",
+  "date": "2026-09-08",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "handoff_base_main_head": "d8917ea3fedfd4b1de457b25e8e8be4cd0e6ea88",
+  "canonical_branch": "main",
+  "global_gate": "STOP_JEPA_EXECUTION_AUTHORITIES_INCOMPLETE",
+  "branch_inventory": {
+    "observed_total": 58,
+    "verified_safe_delete_non_main": 57,
+    "branch_refs_deleted": false
+  },
+  "t0": {
+    "source_head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+    "science_accepted": true,
+    "production_b2_authorized": false,
+    "donor_role_gate_open": false,
+    "numeric_confirmation_at8_accessed": false,
+    "real_execution_ready": false,
+    "hard_stops": [
+      "B2_LOGICAL_ROOT_CHAIN",
+      "B2_RAW_H5AD_NOT_ACTUALLY_AUTHENTICATED",
+      "AGE_SEX_CANDIDATE_UNIVERSE_DETACHED"
+    ]
+  },
+  "v5": {
+    "source_head": "c7b1663cc4390843978b973986edfe58f93320a3",
+    "materialization": "71484ab99d276d7251836c109885d22ab4e7abb1",
+    "prototype_root_sha256": "9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad",
+    "tests": {
+      "v5_active": "66/66 PASS",
+      "v4_regression": "98/98 PASS"
+    },
+    "training_authorized": false
+  },
+  "target_discovery": {
+    "head": "26c3cfaba77bb8e5935e76473ab1fd5f90a562bf",
+    "td57b": "24/24 PASS",
+    "td59": "24/24 PASS",
+    "td57c": "FAILED_IN_HVS__CLOSED",
+    "td60_authorized": false
+  },
+  "f1_real": {
+    "head": "a884f558970479278bc21f3f2274dc24bee89758",
+    "real_sweep_authorized": false
+  },
+  "f1b_c3": {
+    "head": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+    "mechanics_evidence_only": true,
+    "training_authorized": false
+  },
+  "d1": {
+    "head": "c13c06c103a588fc95bb93174730bf26dd613884",
+    "real_execution_authorized": false,
+    "terminal": "WAIT_HEALTHY_TRAINED_TEACHER"
+  },
+  "holdout_registry": {
+    "head": "14c2d586239aa5af15ed7cd70fdfb196d1c99f5f",
+    "status": "FROZEN_HEALTHY"
+  },
+  "controlling_files": [
+    "docs/agent/CURRENT_AUTHORITY_INDEX.md",
+    "docs/agent/memory-os/NEXT_ALLOWED_ACTION.json",
+    "docs/agent/memory-os/ACTIVE_STATE.md",
+    "docs/agent/CURRENT_SUPERSESSION_MAP.md",
+    "docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json",
+    "docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json"
+  ],
+  "branch_cleanup": {
+    "list": "docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json",
+    "script": "scripts/agent/delete_verified_merged_branches_20260908.sh"
+  }
+}
