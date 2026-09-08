@@ -91,6 +91,28 @@ def validate_continuation_authority(
         raise RuntimeError("continuation authority terminal mismatch")
 
 
+def validate_u40_qualification(
+    qualification: dict[str, Any],
+    *,
+    overlay_sha256: str,
+    u40_checkpoint_sha256: str,
+) -> None:
+    if qualification.get("schema") != "HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION_V1":
+        raise RuntimeError("u40 qualification schema mismatch")
+    if qualification.get("terminal") != (
+        "PASS_HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION__FULL_CONTINUATION_STILL_UNAUTHORIZED"
+    ):
+        raise RuntimeError("u40 mechanical qualification is not PASS")
+    if qualification.get("updates") != 40 or qualification.get("biology_opened") is not False:
+        raise RuntimeError("u40 qualification scope/biology firewall mismatch")
+    if qualification.get("automatic_continuation_authorized") is not False:
+        raise RuntimeError("u40 result incorrectly self-authorizes continuation")
+    if qualification.get("overlay_sha256") != overlay_sha256:
+        raise RuntimeError("u40 result does not bind supplied execution overlay")
+    if qualification.get("u40_checkpoint", {}).get("sha256") != u40_checkpoint_sha256:
+        raise RuntimeError("u40 qualification does not bind supplied checkpoint")
+
+
 def _write_json_atomic(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_suffix(path.suffix + ".tmp")
@@ -122,20 +144,11 @@ def main() -> int:
     u40_sha = sha256_file(args.u40_checkpoint)
     qualification_sha = sha256_file(args.u40_qualification)
     qualification = json.loads(args.u40_qualification.read_text(encoding="utf-8"))
-    if qualification.get("schema") != "HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION_V1":
-        raise RuntimeError("u40 qualification schema mismatch")
-    if qualification.get("terminal") != (
-        "PASS_HEALTHY_TEACHER_U40_MECHANICAL_QUALIFICATION__FULL_CONTINUATION_STILL_UNAUTHORIZED"
-    ):
-        raise RuntimeError("u40 mechanical qualification is not PASS")
-    if qualification.get("updates") != 40 or qualification.get("biology_opened") is not False:
-        raise RuntimeError("u40 qualification scope/biology firewall mismatch")
-    if qualification.get("automatic_continuation_authorized") is not False:
-        raise RuntimeError("u40 result incorrectly self-authorizes continuation")
-    if qualification.get("overlay_sha256") != overlay_sha:
-        raise RuntimeError("u40 result does not bind supplied execution overlay")
-    if qualification.get("u40_checkpoint", {}).get("sha256") != u40_sha:
-        raise RuntimeError("u40 qualification does not bind supplied checkpoint")
+    validate_u40_qualification(
+        qualification,
+        overlay_sha256=overlay_sha,
+        u40_checkpoint_sha256=u40_sha,
+    )
 
     authority = json.loads(args.continuation_authority.read_text(encoding="utf-8"))
     validate_continuation_authority(
