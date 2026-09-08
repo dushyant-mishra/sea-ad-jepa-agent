@@ -3,7 +3,7 @@
   "date": "2026-09-08",
   "canonical_branch": "main",
   "verified_non_main_branches": 57,
-  "verification": "Every listed branch head was verified to be an ancestor of main; no listed ref is required to retain unique commit history. The final governance branch was separately verified against main c3f85fbd.",
+  "verification": "All 57 current non-main branch heads were revalidated after the V5 proposal/horizon merge and external-review history absorption. The earlier 55 unchanged heads were already ancestors of c3f85fbd, which is an ancestor of 0a1b32a889dcecf33775cda02d99462ba28a50f2; the two moved heads (planning/teacher-student-v5-data-first-20260908 and review/jepa-global-blockers-20260908) were separately absorbed and verified as ancestors of 0a1b32a889dcecf33775cda02d99462ba28a50f2. No listed ref retains unique commit history.",
   "delete_tags": false,
   "preserve_commit_shas": true,
   "branches": [
@@ -129,7 +129,7 @@
     },
     {
       "branch": "planning/teacher-student-v5-data-first-20260908",
-      "head_sha": "c7b1663cc4390843978b973986edfe58f93320a3"
+      "head_sha": "028989a5f1504e4d6403a44e7c90d37172c54150"
     },
     {
       "branch": "planning/teacher-student-v5-data-first-rng64-integrated-20260908",
@@ -189,7 +189,7 @@
     },
     {
       "branch": "review/jepa-global-blockers-20260908",
-      "head_sha": "557a4344df2fa04526c82146a730413c992b5ad2"
+      "head_sha": "ddb2ab069b7592e0dfce4482e4b458b95b947546"
     },
     {
       "branch": "review/pre-f1-mechanism-repair-20260905",
@@ -236,5 +236,5 @@
       "head_sha": "43c2997079b9326d21d9c2c88aa3014167413f5e"
     }
   ],
-  "verification_main_sha": "c3f85fbda1e34d87a3d1b489f4f1fcb1c0dd2333"
+  "verification_main_sha": "0a1b32a889dcecf33775cda02d99462ba28a50f2"
 }
