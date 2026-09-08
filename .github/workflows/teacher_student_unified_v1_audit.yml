@@ -38,7 +38,7 @@ jobs:
         env:
           PYTHONPATH: src:.
         run: |
-          python -m py_compile             src/sea_ad_jepa/v4/teacher_student_runtime.py             src/sea_ad_jepa/v4/teacher_student_movement.py             src/sea_ad_jepa/v4/teacher_student_checkpoint.py             scripts/v4/teacher_student_f1b_attack_adapter_v1.py             scripts/v4/healthy_teacher_loader_adapter_v1.py             scripts/v4/healthy_teacher_batch_source_v1.py             scripts/v4/materialize_healthy_teacher_u0_v1.py             scripts/v4/healthy_teacher_qualification_runner_v1.py             scripts/agent/validate_healthy_teacher_execution_binding_overlay_v1.py
+          python -m py_compile             src/sea_ad_jepa/v4/teacher_student_runtime.py             src/sea_ad_jepa/v4/teacher_student_movement.py             src/sea_ad_jepa/v4/teacher_student_checkpoint.py             scripts/v4/teacher_student_f1b_attack_adapter_v1.py             scripts/v4/healthy_teacher_loader_adapter_v1.py             scripts/v4/healthy_teacher_batch_source_v1.py             scripts/v4/materialize_healthy_teacher_u0_v1.py             scripts/v4/healthy_teacher_qualification_runner_v1.py             scripts/v4/healthy_teacher_continuation_runner_v1.py             scripts/agent/validate_healthy_teacher_execution_binding_overlay_v1.py
       - name: Run integrated mechanics/governance suite
         env:
           PYTHONPATH: src:.
