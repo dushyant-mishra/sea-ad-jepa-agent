@@ -14,7 +14,14 @@ import numpy as np
 import torch
 
 from .ema import EMAOptimizerStepController
-from .teacher_student_runtime import TeacherStudentConfig, TeacherStudentModules
+from .teacher_student_runtime import (
+    F1B_ATTACK_AUTHORITY_ROOT,
+    HEALTHY_TEACHER_BASE_ROOT,
+    POPULATION_ACCESS_ROOT,
+    PREDICTOR_REGISTRY_SHA256,
+    TeacherStudentConfig,
+    TeacherStudentModules,
+)
 
 CHECKPOINT_SCHEMA = "JEPA_HEALTHY_TEACHER_CHECKPOINT_V1"
 
@@ -145,6 +152,22 @@ def validate_checkpoint_header(
     observed = payload.get("authority_bindings")
     if not isinstance(observed, Mapping):
         raise RuntimeError("checkpoint authority bindings absent")
+    invariant_authorities = {
+        "healthy_teacher_base_root": HEALTHY_TEACHER_BASE_ROOT,
+        "population_access_root": POPULATION_ACCESS_ROOT,
+        "f1b_attack_authority_root": F1B_ATTACK_AUTHORITY_ROOT,
+        "predictor_mandatory_registry_sha256": PREDICTOR_REGISTRY_SHA256,
+    }
+    for key, expected in invariant_authorities.items():
+        if observed.get(key) != expected:
+            raise RuntimeError(f"checkpoint frozen authority mismatch: {key}")
+    required_dynamic = {
+        "integrated_successor_source_root",
+        "integrated_successor_commit",
+        "movement_adjudicator_source_sha256",
+    }
+    if not required_dynamic <= set(observed):
+        raise RuntimeError("checkpoint dynamic authority bindings incomplete")
     for key, expected in expected_authorities.items():
         if observed.get(key) != expected:
             raise RuntimeError(f"checkpoint authority mismatch: {key}")
