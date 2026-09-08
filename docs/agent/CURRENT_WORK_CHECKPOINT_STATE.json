@@ -179,10 +179,10 @@
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "WRITE_RED_ADVERSARIAL_CASES_FOR_THE_SIX_OPEN_B2_DEFECTS_THEN_REPAIR",
-    "SUBMIT_AVAILABILITY_V6_AND_SUCCESSOR_B1_FOR_INDEPENDENT_REVIEW",
-    "DO_NOT_RUN_PRODUCTION_B2_UNTIL_SUCCESSOR_B1_PASSES_AND_B2_DEFECTS_CLOSE",
-    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
+    "SUBMIT_EVERYTHING_FOR_FINAL_EXTERNAL_REVIEW_BEFORE_ANY_PRODUCTION_RUN",
+    "DO_NOT_RUN_PRODUCTION_B2_UNTIL_THAT_REVIEW_PASSES",
+    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND",
+    "KEEP_LANE_C_DESIGN_ONLY"
   ],
   "peer_agents": [
     "CODEX",
@@ -290,6 +290,7 @@
       "status": "V6_FROZEN__NOT_INDEPENDENTLY_VERIFIED",
       "total_donor_count": 84,
       "two_root_design": "availability_root covers the derived predicate alone and is invariant to every numeric AT8 value, proven metamorphically; package_root binds the source digest and derivation code and is expected to change when source bytes change.",
+      "v7_not_issued": "A V7 archive was built and discarded. The typed-framing repair touched the projection and row modules, not this one, so all four availability identities are byte-identical to V6 and a V7 would have differed only by a version label. Issuing it would have recreated the multi-freeze divergence the external review flagged. V6 a421d3afce019b1d39620e7d55cf673a32c1ea8b0e1517fff4d1939f4292f780 remains current.",
       "value_handling": {
         "note": "Replaces the earlier outcome_values_read=false, which was not literally true: the raw token must be read to decide missingness.",
         "numeric_at8_value_emitted": false,
@@ -334,7 +335,7 @@
       "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_MATERIALIZATION_MANIFEST.csv": "818ef14ac8c61ea4e93cc0c853a502dfa1cb75c198499b1cdafa6475e5a9eee9"
     },
     "external_review_terminal_received": "STOP_T0_MATERIALIZATION_EXTERNAL_REVIEW__NONINJECTIVE_AUTHORITY_FRAMING__V5_NOT_INDEPENDENTLY_VERIFIED__GOVERNANCE_STATE_DIVERGED",
-    "governance_state": "S2_AUTHORITIES_PARTIALLY_REPAIRED__PRODUCTION_B2_FORBIDDEN",
+    "governance_state": "ALL_KNOWN_BLOCKERS_CLOSED__AWAITING_FINAL_EXTERNAL_REVIEW",
     "handoff_sha256": "ecd0b0fb5c449e9ff1101dff5b014fdbb79c7538212155b28f0a9beb47f2c01f",
     "matrix_semantics": {
       "authority": "results/v4/stage81a2_matrix_semantics_contract.csv",
@@ -393,9 +394,9 @@
       "accepted_split_member": "current/authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv",
       "accepted_split_sha256": "29116c16e9002329090a5054b6c4bdae1cbff28917cbee85f03b4633b0b29369",
       "all_features_measured": true,
-      "attacks": "37 passed",
+      "attacks": "39 passed",
       "cross_checks_added": "The split's own molecular_address_index column and the support table's index column are now compared against the frozen registry; a disagreement is a STOP instead of the registry quietly winning. Adding this immediately exposed that my own synthetic fixture had been internally inconsistent.",
-      "feature_authority_root_sha256": "a4744638b3816d48d30e0da108dad12b7cde3e29e8967af83a49860807bbee17",
+      "feature_authority_root_sha256": "538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8",
       "independent_contract_crosscheck": "V18 section 3 declares SCORING = 28,061 addresses and the projection observes exactly 28,061, which is an agreement with the frozen contract rather than with my own code.",
       "injective_framing_repair": "The root used unescaped name=value framing, and role_counts keys come straight from the caller, so one role named 'X:1|role=Y' with count 2 hashed identically to two roles 'X' with count 1 and 'Y' with count 2. Reproduced exactly. The vector reported through the bound provenance fields did NOT reproduce, because every field always emits its own marker in fixed order. Now length-prefixed with cardinality and a V2 domain tag.",
       "matrix_id": "sea_ad_mtg_rna_final_2026",
@@ -421,18 +422,24 @@
       "source_feature_index_used": false,
       "status": "REBUILT_ON_INJECTIVE_FRAMING__NOT_INDEPENDENTLY_VERIFIED",
       "superseded_feature_authority_root_sha256": "81b570abb46d4406b746478c48c121ae3e9b524b8736b6548488e264d4bcb1cf",
-      "two_root_design": "projection_root binds the ordered rows only, and independent review showed the same root still verified after altering matrix_id, address_space_size, the split/registry/support digests, schema, namespace, role counts or real_execution_ready: the rows were bound but the authority saying what they mean was not. feature_authority_root additionally binds schema, namespace, the accepted split member path and digest, the projection root, the feature count, the role counts, the matrix id, the address-space size, the registry and both support digests, the Stage81A2R pin, the ordering contract, source_feature_index_used and real_execution_ready. Demonstrated on production data: a matrix_id mutation leaves projection_root identical and moves feature_authority_root."
+      "superseded_feature_authority_roots": [
+        "81b570abb46d4406b746478c48c121ae3e9b524b8736b6548488e264d4bcb1cf",
+        "a4744638b3816d48d30e0da108dad12b7cde3e29e8967af83a49860807bbee17"
+      ],
+      "two_root_design": "projection_root binds the ordered rows only, and independent review showed the same root still verified after altering matrix_id, address_space_size, the split/registry/support digests, schema, namespace, role counts or real_execution_ready: the rows were bound but the authority saying what they mean was not. feature_authority_root additionally binds schema, namespace, the accepted split member path and digest, the projection root, the feature count, the role counts, the matrix id, the address-space size, the registry and both support digests, the Stage81A2R pin, the ordering contract, source_feature_index_used and real_execution_ready. Demonstrated on production data: a matrix_id mutation leaves projection_root identical and moves feature_authority_root.",
+      "typed_framing_repair": "Length prefixing closed delimiter ambiguity but not type ambiguity, because every value went through str() first: 41238 and \"41238\" framed identically, as did False and \"False\" and a role count of 28061 and \"28061\". All six reported cases were reproduced. Framing is now type-tagged and length-prefixed, bool checked before int since bool subclasses int, and assert_authority_field_types enforces the declared type of every hashed field at the verifier boundary as the other half."
     },
     "s2_row_count_authority": {
-      "adversarial_cases": "30 passed",
+      "adversarial_cases": "50 passed",
       "blocked_until": "Independent PASS on the successor B1 root a4744638b3816d48d30e0da108dad12b7cde3e29e8967af83a49860807bbee17, and closure of the six open defects below. Building on a root whose framing was found non-injective, or on an authority with these gaps, would propagate the defects deeper into the chain.",
-      "consumes_feature_authority_root": "a4744638b3816d48d30e0da108dad12b7cde3e29e8967af83a49860807bbee17",
+      "consumes_feature_authority_root": "538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8",
+      "external_verifier_added": "assert_row_authority_lawful did not exist. It now enforces row-field types, checks the named feature authority root and recomputes the logical root against an externally supplied value, so the verifier path is exercised rather than only the constructor.",
       "field_disclosure": {
         "audit_only": [
           "selection_row",
           "primary_row_weight"
         ],
-        "note": "Declared explicitly and required disjoint, but the binding is NOT yet complete: the Phase2 metadata donor_id is currently ignored, so this disclosure overstates what is bound until that defect is closed.",
+        "note": "Declared explicitly, required disjoint, and now genuinely complete: the Phase2 metadata donor_id is cross-checked rather than ignored, which is what made the earlier claim false.",
         "v20_consumed": [
           "canonical_cell_id",
           "donor_id",
@@ -442,18 +449,14 @@
       },
       "not_yet_done": "No production run against the real 1,247 blocks and 638,150 metadata rows, and no verification that a loaded counts payload has row dimension 41,238. Both are the next step.",
       "open_defects_found_by_external_review": {
-        "accepted_inputs_not_cryptographically_consumed": "Arbitrary caller-supplied CSV bytes are accepted; the accepted membership member digest and the pinned complete Phase2 manifest digest 66f589e5... are not required.",
-        "counts_verification_incomplete": "Only the block payload digest is checked. Row geometry of 41,238, raw non-negative integer semantics, expression_row bounds, and correspondence between the bound row and the bytes actually consumed are all still missing.",
-        "duplicate_membership_cells_silently_collapsed": "targets is a dict keyed by cell_id, so a duplicate silently redefines the population instead of being refused.",
-        "membership_operator_and_matrix_values_ignored": "Only the presence of the columns is required; their values are never required to equal operator 31 and the frozen MTG matrix.",
-        "phase2_donor_identity_not_cross_checked": "donor_id is emitted from the membership record while the Phase2 metadata row's own donor_id is ignored, so a metadata row for C1/D9 can be represented as C1/D1. The claim that all six Phase2 metadata fields are bound was therefore NOT true and is withdrawn.",
-        "source_library_not_actually_proven": "It is read from Phase2 metadata and candidates are compared against that stored value, which proves consistency with metadata rather than equality with the sum of the authenticated full raw source row before projection. That sum was the outstanding requirement."
+        "all_closed": "The six defects previously recorded open are closed and each has a regression: the accepted membership and pinned Phase2 manifest digests are required arguments and verified before parsing; the Phase2 metadata donor_id is cross-checked against the membership donor_id; membership operator and matrix VALUES are required, not merely the columns; a duplicate membership cell_id stops instead of silently redefining the population; source_library is proven by summing the authenticated full raw source row, with a row of address-space width refused outright because Phase2 computes the value before projection; and selected-row verification checks expression_row bounds, correspondence with the bound row, address-space width and non-negative integer semantics, so authentic block bytes with the wrong row selected is refused."
       },
       "real_execution_ready": false,
       "schema": "JEPA_T0_V20_ROW_COUNT_AUTHORITY_V1",
       "self_found_defect": "assert_plan_restores_logical compared logical indices against range(len(entries)), so dropping the last entry left [0, 1], still a valid permutation of range(2), and a truncated plan satisfied restoration. A physical plan could therefore have silently shrunk the population, which is exactly what the three-root separation exists to prevent. Caught by one of my own cases; restoration now compares against the carried logical row count.",
       "source_library_rule": "Bound as an exact positive integer from block metadata and never recomputed. Zero, negative, fractional, exponent-form and NaN refused. Both forbidden substitutions are attempted and refused: a sum over the stored 41,238-address row and a sum over the 35,076-address projection. The bound value is accepted so the check discriminates.",
-      "status": "SYNTHETIC_ONLY__SIX_OPEN_DEFECTS__PRODUCTION_RUN_FORBIDDEN",
+      "status": "ALL_SIX_DEFECTS_CLOSED__SYNTHETIC_ONLY__AWAITING_FINAL_EXTERNAL_REVIEW",
+      "still_not_done": "No production run against the real 1,247 operator-31 blocks, 638,150 metadata rows and 20,804 targets. Everything above is synthetic fixtures. The production run is deliberately withheld pending final external review.",
       "three_roots": {
         "logical_row_authority_root": "rows in frozen membership order with all six Phase2 metadata fields and the metadata and counts digests, bound to the Lane B1 feature authority root, which is a required argument.",
         "physical_read_plan_root": "block-then-row I/O ordering carrying logical_index on every entry, plus the logical root it must restore. Restoration is checked against the carried logical row count, not the plan's own length.",
@@ -471,11 +474,11 @@
     },
     "source_library_rule": "Phase2 constructs source_library as an integer sum of the FULL raw source row, computed BEFORE source-to-address projection. Bind it as an exact positive integer. Never recompute it from the stored 41,238-address row or from the 35,076-address T0 projection; neither sum is required to equal it.",
     "suite_totals": {
-      "aggregate_observed": "130 passed",
-      "availability": "30 cases",
-      "checkpoint": "31 functions",
-      "feature_projection": "37 cases",
-      "row_count": "30 cases"
+      "aggregate_observed": "153 passed",
+      "availability": "32 cases",
+      "checkpoint": "33 cases",
+      "feature_projection": "39 cases",
+      "row_count": "50 cases"
     },
     "terminal_on_success": "T0_V20_PATHOLOGY_BLIND_FEATURE_SOURCE_ROW_AUTHORITIES_MATERIALIZED_AND_VERIFIED__STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND__REAL_T0_STILL_UNAUTHORIZED",
     "three_roots_required": [
