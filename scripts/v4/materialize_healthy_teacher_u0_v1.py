@@ -24,6 +24,7 @@ from sea_ad_jepa.v4.teacher_student_checkpoint import (
     sha256_file,
 )
 from sea_ad_jepa.v4.teacher_student_movement import source_sha256 as movement_source_sha256
+from sea_ad_jepa.v4.teacher_student_source_authority import verify_source_authority
 from sea_ad_jepa.v4.teacher_student_runtime import (
     F1B_ATTACK_AUTHORITY_ROOT,
     HEALTHY_TEACHER_BASE_ROOT,
@@ -109,6 +110,7 @@ def main() -> int:
         raise RuntimeError("movement adjudicator source must be SHA-256")
     if args.movement_adjudicator_sha256 != movement_source_sha256():
         raise RuntimeError("movement adjudicator SHA does not match executing source bytes")
+    verify_source_authority(args.integrated_source_root)
     if sha256_file(args.historical_u0) != HISTORICAL_U0_SHA256:
         raise RuntimeError("historical clean u0 SHA-256 mismatch")
     if not torch.cuda.is_available():
