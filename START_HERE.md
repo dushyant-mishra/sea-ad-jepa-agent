@@ -100,15 +100,12 @@ opens them.
 
 ## Branch hygiene
 
-Historical branch histories are preserved in main. Old branch refs may be
-deleted only when their exact head SHA is verified to be an ancestor of current
-main.
+Branch consolidation and pruning are complete. The guarded cleanup deleted all 57 verified non-main refs and GitHub verified that only `main` remains. Commit history, tags, hashes, and immutable package artifacts were preserved.
 
-Use:
-[`docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.md`](docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.md)
-
-Deleting branch refs is hygiene only; do not delete tags or immutable package
-artifacts.
+Audit records:
+- [`docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json`](docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json)
+- [`docs/agent/JEPA_BRANCH_PRUNE_RESULT_20260908.json`](docs/agent/JEPA_BRANCH_PRUNE_RESULT_20260908.json)
+- [`docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json`](docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json)
 
 ## Permanent implementation-verifier rule
 
