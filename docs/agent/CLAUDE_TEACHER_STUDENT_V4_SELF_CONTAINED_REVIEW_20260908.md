@@ -27,7 +27,7 @@ Read first:
 
 `docs/agent/TEACHER_STUDENT_V4_GOVERNANCE_REPAIR_20260908.md`
 
-V4 supersedes V3 for future execution binding. V3 independently replayed green but adversarial review found governance fail-open boundaries. V4 changes only governance validation; the production model/loss/masking/optimizer/EMA mechanics and the prospective relational adjunct are otherwise unchanged.
+V4 supersedes V3 for future execution binding. V3 independently replayed green but adversarial review found governance fail-open boundaries. V4 changes only governance validation; the production model/loss/masking/optimizer/EMA mechanics are unchanged. Separately, prospective relational V1 was superseded by prospective V2 after adversarial review found an 8×16 batch-contract override and pooled collapse-health rescue.
 
 ## Required package verification
 
@@ -110,17 +110,17 @@ Reconfirm that V4 still preserves:
 
 Review separately and do not conflate with active V4 training:
 
-- `docs/agent/TEACHER_STUDENT_RELATIONAL_EXTENSION_V1_20260908.md`
-- `src/sea_ad_jepa/v4/prospective_relational_teacher_student.py`
-- `tests/test_teacher_student_relational_v1.py`
+- `docs/agent/TEACHER_STUDENT_RELATIONAL_EXTENSION_V2_20260908.md`
+- `src/sea_ad_jepa/v4/prospective_relational_teacher_student_v2.py`
+- `tests/test_teacher_student_relational_v2.py`
 
 Run:
 
 ```bash
-python -m pytest -q tests/test_teacher_student_relational_v1.py
+python -m pytest -q tests/test_teacher_student_relational_v2.py
 ```
 
-The relational adjunct remains prospective, inactive, and training-unauthorized. A relational defect should be reported separately unless it reveals a shared-source contradiction.
+The relational V2 adjunct remains prospective, inactive, and training-unauthorized. V1 is superseded and must not be treated as candidate mechanics. Independently attack the exact 8×16 batch contract, per-group no-pooled-rescue collapse gate, zero-norm angle rejection, exact evidence levels, fine-matched null, and V4 runtime non-import/non-call firewall. A relational defect should be reported separately unless it reveals a shared-source contradiction.
 
 ## Execution firewall
 
@@ -143,7 +143,7 @@ If V4 active source or package has a defect:
 
 For the relational adjunct, report separately:
 
-- `PASS_RELATIONAL_EXTENSION_V1_PROSPECTIVE_REVIEW`, or
-- `STOP_RELATIONAL_EXTENSION_V1_PROSPECTIVE_REVIEW__<PRECISE_REASON>`
+- `PASS_RELATIONAL_EXTENSION_V2_PROSPECTIVE_REVIEW`, or
+- `STOP_RELATIONAL_EXTENSION_V2_PROSPECTIVE_REVIEW__<PRECISE_REASON>`
 
 Do not authorize u1, real F1/T0/D1, pathology, reader-validation/oracle, DEV, or SEALED as part of this review.
