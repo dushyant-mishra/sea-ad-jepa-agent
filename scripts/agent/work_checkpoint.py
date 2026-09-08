@@ -67,6 +67,69 @@ def _git(worktree: Path, *args: str, allow_failure: bool = False) -> str | None:
     return completed.stdout.strip()
 
 
+def _git_bytes(worktree: Path, *args: str) -> bytes | None:
+    """Return raw stdout bytes, or None on failure.
+
+    Object payloads must never round-trip through text mode: universal-newline
+    decoding would rewrite CRLF inside a blob and change its digest, which is
+    the exact defect this module previously exhibited.
+    """
+    completed = subprocess.run(
+        ["git", "-c", "safe.directory=*", "-C", str(worktree), *args],
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode:
+        return None
+    return completed.stdout
+
+
+def tracked_blob_at(worktree: Path, commit: str, relative: str) -> dict[str, str] | None:
+    """Describe *relative* as recorded in *commit*, or None if it is not there.
+
+    Reports the tree mode, object type and object id without reading the
+    payload, so a caller can reject a symlink or submodule before hashing
+    anything.
+    """
+    listing = _git(
+        worktree, "ls-tree", "--full-tree", commit, "--", relative, allow_failure=True
+    )
+    if not listing:
+        return None
+    head, _, path = listing.partition("\t")
+    fields = head.split()
+    if len(fields) != 3 or not path:
+        return None
+    mode, object_type, oid = fields
+    return {"mode": mode, "type": object_type, "oid": oid}
+
+
+def authority_path_dirty(worktree: Path, relative: str) -> bool:
+    """True when *relative* differs from HEAD in the worktree or the index.
+
+    A dirty authority must fail closed. Validating the committed blob while the
+    working copy carries different bytes would let an edited authority pass, and
+    listing the path in ``allowed_tracked_modifications`` must not buy an
+    exemption.
+    """
+    status = _git(worktree, "status", "--porcelain", "--", relative, allow_failure=True)
+    return bool((status or "").strip())
+
+
+def sha256_tracked_blob(worktree: Path, oid: str) -> str | None:
+    """SHA-256 the exact Git object payload for *oid*, or None if unreadable.
+
+    The existence check runs before the digest so a failed lookup can never be
+    mistaken for the digest of empty bytes.
+    """
+    if _git(worktree, "cat-file", "-e", oid, allow_failure=True) is None:
+        return None
+    payload = _git_bytes(worktree, "cat-file", "blob", oid)
+    if payload is None:
+        return None
+    return hashlib.sha256(payload).hexdigest()
+
+
 def resolve_canonical_repo(worktree: Path) -> Path:
     """Return the canonical repository root that owns *worktree*.
 
@@ -173,17 +236,52 @@ def validate_checkpoint(
     if not isinstance(authorities, list) or not authorities:
         errors.append("AUTHORITIES_MISSING")
     else:
+        # A tracked authority is a Git object, not a file on a particular
+        # platform. Hashing its worktree bytes made every declared digest
+        # unverifiable wherever Git rewrites line endings on checkout
+        # (core.autocrlf), because the declared value is the blob digest. The
+        # bytes therefore come from the object database, pinned to the commit
+        # this checkpoint is bound to. Genuinely untracked local authorities
+        # keep disk-byte hashing, so the two byte semantics stay distinct.
+        bound_head = (checkpoint.get("git") or {}).get("head_sha")
         for authority in authorities:
             relative = authority.get("path") if isinstance(authority, dict) else None
             expected_hash = authority.get("sha256") if isinstance(authority, dict) else None
             if not relative or not expected_hash:
                 errors.append(f"AUTHORITY_DECLARATION_INVALID:{authority!r}")
                 continue
-            target = Path(worktree) / relative
-            if not target.is_file():
-                errors.append(f"AUTHORITY_MISSING:{relative}")
+            entry = (
+                tracked_blob_at(Path(worktree), bound_head, relative)
+                if bound_head
+                else None
+            )
+            if entry is None:
+                if not bound_head:
+                    errors.append(f"AUTHORITY_BOUND_HEAD_MISSING:{relative}")
+                    continue
+                target = Path(worktree) / relative
+                if not target.is_file():
+                    errors.append(f"AUTHORITY_MISSING:{relative}")
+                    continue
+                actual_hash = sha256_file(target)
+                if actual_hash != expected_hash:
+                    errors.append(
+                        f"AUTHORITY_HASH_MISMATCH:{relative}:{actual_hash}!={expected_hash}"
+                    )
                 continue
-            actual_hash = sha256_file(target)
+            if entry["type"] != "blob" or entry["mode"] not in {"100644", "100755"}:
+                errors.append(
+                    f"AUTHORITY_NOT_REGULAR_FILE:{relative}:"
+                    f"{entry['mode']}:{entry['type']}"
+                )
+                continue
+            if authority_path_dirty(Path(worktree), relative):
+                errors.append(f"AUTHORITY_DIRTY:{relative}")
+                continue
+            actual_hash = sha256_tracked_blob(Path(worktree), entry["oid"])
+            if actual_hash is None:
+                errors.append(f"AUTHORITY_OBJECT_UNREADABLE:{relative}:{entry['oid']}")
+                continue
             if actual_hash != expected_hash:
                 errors.append(
                     f"AUTHORITY_HASH_MISMATCH:{relative}:{actual_hash}!={expected_hash}"
