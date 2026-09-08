@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Validate HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1.
+"""Validate HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_V1 for the V4 successor.
 
-The overlay binds a reviewed integrated implementation and successor-bound u0 to
-the immutable healthy-teacher base. It is deliberately NOT permission to run.
+The overlay binds an externally reviewed integrated implementation and a
+successor-bound u0 to the immutable healthy-teacher base.  It remains a binding
+artifact only and can never self-authorize execution.
 """
 from __future__ import annotations
 
@@ -15,6 +16,8 @@ from sea_ad_jepa.v4.teacher_student_movement import source_sha256 as movement_so
 
 BASE_ROOT = "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534"
 PREDICTOR_REGISTRY_SHA256 = "43922a62a885cbedee22c06363a8355c6561dad43c95f0a43147fc2f4cbe3592"
+REVIEW_PASS_TERMINAL = "PASS_TEACHER_STUDENT_UNIFIED_V4_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED"
+OVERLAY_PASS_TERMINAL = "PASS_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY__EXECUTION_STILL_UNAUTHORIZED"
 
 
 def _sha(value: Any) -> bool:
@@ -45,14 +48,18 @@ def validate_overlay(payload: dict[str, Any]) -> dict[str, Any]:
         failures.append("integrated successor source root invalid")
 
     review = payload.get("independent_review", {})
-    if not str(review.get("terminal", "")).startswith(
-        "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW"
-    ):
-        failures.append("integrated successor independent PASS absent")
+    if review.get("terminal") != REVIEW_PASS_TERMINAL:
+        failures.append("exact V4 independent-review PASS absent")
     if not _sha(review.get("artifact_sha256")):
         failures.append("independent review artifact SHA invalid")
+    if not _sha(review.get("reviewed_package_sha256")):
+        failures.append("reviewed package SHA invalid")
+    if not _sha(review.get("reviewed_package_root")):
+        failures.append("reviewed package root invalid")
     if review.get("reviewed_commit") != successor.get("commit"):
         failures.append("external review commit does not equal integrated successor")
+    if review.get("reviewed_source_manifest_root") != successor.get("source_manifest_root"):
+        failures.append("external review source root does not equal integrated successor")
 
     init = payload.get("successor_u0", {})
     if not str(init.get("path", "")):
@@ -77,19 +84,14 @@ def validate_overlay(payload: dict[str, Any]) -> dict[str, Any]:
 
     if payload.get("execution_authorized") is not False:
         failures.append("binding overlay must keep execution_authorized=false")
-    if payload.get("terminal") != (
-        "PASS_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY__EXECUTION_STILL_UNAUTHORIZED"
-    ):
+    if payload.get("terminal") != OVERLAY_PASS_TERMINAL:
         failures.append("overlay terminal mismatch")
 
     return {
         "schema": "healthy-teacher-execution-binding-overlay-validation-v1",
+        "review_pass_terminal_required": REVIEW_PASS_TERMINAL,
         "failures": failures,
-        "terminal": (
-            "PASS_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY__EXECUTION_STILL_UNAUTHORIZED"
-            if not failures
-            else "STOP_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_INVALID"
-        ),
+        "terminal": OVERLAY_PASS_TERMINAL if not failures else "STOP_HEALTHY_TEACHER_EXECUTION_BINDING_OVERLAY_INVALID",
     }
 
 
@@ -100,6 +102,7 @@ def canonical_overlay_sha256(payload: dict[str, Any]) -> str:
 
 def main() -> int:
     import argparse
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--overlay", type=Path, required=True)
     args = parser.parse_args()
