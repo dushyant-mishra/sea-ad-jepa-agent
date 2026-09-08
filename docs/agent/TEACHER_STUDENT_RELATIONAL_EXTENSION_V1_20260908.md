@@ -49,7 +49,7 @@ This prevents rank discontinuities from influencing gradients while still preser
 
 Implementation:
 
-`src/sea_ad_jepa/v4/teacher_student_relational.py`
+`src/sea_ad_jepa/v4/prospective_relational_teacher_student.py`
 
 ## 3. Relational batch construction
 
