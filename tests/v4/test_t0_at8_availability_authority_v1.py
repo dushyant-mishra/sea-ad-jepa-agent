@@ -386,35 +386,64 @@ def test_an_existing_but_empty_output_directory_is_accepted(source, tmp_path: Pa
 # --------------------------------------------------------------------------
 # Defects found by independent review of the first freeze.
 # --------------------------------------------------------------------------
-def test_the_source_is_authenticated_once_and_parsed_from_those_bytes(
-    tmp_path: Path,
+def test_the_full_builder_derives_only_from_the_authenticated_bytes(
+    tmp_path: Path, monkeypatch
 ) -> None:
-    """Time-of-check to time-of-use: the path was hashed, then reopened.
+    """Time-of-check to time-of-use, locked at the builder level.
 
-    The recorded digest could therefore describe one revision of the file while
-    availability was derived from another, and the recorded byte count came from
-    a still later `stat`. Here the backing file is replaced with different
-    content immediately after authentication, and the derivation must reflect
-    only the authenticated bytes.
+    The earlier version of this test was weak in two ways I should not have
+    shipped: it contained an `assert ... or True`, which proves nothing, and it
+    never exercised the full builder while the backing file changed underneath.
+
+    Here `read_authenticated_source` is wrapped so that it authenticates bytes
+    A, then replaces the file on disk with materially different bytes B, then
+    returns A. If any later step reopened the path, the registry, the recorded
+    source digest or the recorded byte count would reflect B.
     """
     path = tmp_path / "pathology.csv"
+    bytes_a_rows = _rows(["1.5", "", "12.25", "0"])
+    digest_a = _write_source(path, bytes_a_rows)
+    expected_a = av.derive_availability(path.read_bytes())
+    length_a = len(path.read_bytes())
+
+    # Bytes B would derive a completely different registry.
+    b_holder: dict[str, bytes] = {}
+    real_reader = av.read_authenticated_source
+
+    def swapping_reader(source_path, expected_source_sha256):
+        authenticated = real_reader(source_path, expected_source_sha256)
+        _write_source(Path(source_path), _rows(["", "", "", ""]))
+        b_holder["bytes"] = Path(source_path).read_bytes()
+        assert b_holder["bytes"] != authenticated, "the swap must be material"
+        return authenticated
+
+    monkeypatch.setattr(av, "read_authenticated_source", swapping_reader)
+    built = av.build_availability_authority(
+        outdir=tmp_path / "out", source_path=path, expected_source_sha256=digest_a,
+        membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
+
+    assert b_holder["bytes"], "the wrapper must have run"
+    assert built["registry"] == expected_a, "registry must derive from bytes A"
+    assert [row["AT8_available"] for row in built["registry"]] == [
+        "True", "False", "True", "True",
+    ]
+    assert built["metadata"]["source_sha256"] == digest_a
+    assert built["metadata"]["source_bytes"] == length_a
+    assert len(b_holder["bytes"]) != length_a, (
+        "the swapped file must differ in length, or this test cannot distinguish "
+        "the authenticated byte count from a later stat"
+    )
+
+
+def test_a_swapped_source_cannot_be_authenticated_at_all(tmp_path: Path) -> None:
+    """And without the wrapper, a swapped file simply fails authentication."""
+    path = tmp_path / "pathology.csv"
     digest = _write_source(path, _rows(["1.5", "", "12.25"]))
-    authenticated = av.read_authenticated_source(path, digest)
-
-    # Swap the backing file for something that would derive differently.
     _write_source(path, _rows(["", "", ""]))
-    assert av.sha256_file(path) != digest, "the swap must be real"
-
-    rows = av.derive_availability(authenticated)
-    assert [row["AT8_available"] for row in rows] == ["True", "False", "True"]
-    assert len(authenticated) == len(path.read_bytes()) or True  # length is of bytes
-
-    # And the whole build authenticates before it can be diverted.
     with pytest.raises(AssertionError, match="PATHOLOGY_SOURCE_DIGEST"):
         av.build_availability_authority(
-            outdir=tmp_path / "out", source_path=path,
-            expected_source_sha256=digest, membership_donor_ids=["D00"],
-            source_relative_path="data/pathology.csv")
+            outdir=tmp_path / "out", source_path=path, expected_source_sha256=digest,
+            membership_donor_ids=["D00"], source_relative_path="data/pathology.csv")
 
 
 def test_source_bytes_is_the_authenticated_length_not_a_later_stat(

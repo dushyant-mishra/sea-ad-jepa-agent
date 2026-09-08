@@ -205,7 +205,9 @@ def authority_index_entry(worktree: Path, relative: str) -> dict[str, str] | Non
     return None
 
 
-def authority_path_dirty(worktree: Path, relative: str, bound_oid: str) -> bool:
+def authority_path_dirty(
+    worktree: Path, relative: str, bound_oid: str, bound_mode: str | None = None
+) -> bool:
     """True unless the worktree copy is exactly the authority *bound_oid* names.
 
     Dirtiness has to be measured against the commit the checkpoint is bound to,
@@ -215,11 +217,16 @@ def authority_path_dirty(worktree: Path, relative: str, bound_oid: str) -> bool:
     completely different file could sit in place of the authority and raise no
     authority-level complaint at all.
 
-    Both the index and the worktree must match the bound authority. A missing
-    or unreadable path in either is dirty, so absence fails closed.
+    Both the index and the worktree must match the bound authority, and the
+    index mode must match too. A `--chmod` change preserves the blob object id,
+    so comparing object ids alone let a staged 100644 to 100755 flip slip past
+    the authority gate whenever the path was a declared modification. A missing
+    or unreadable path in either place is dirty, so absence fails closed.
     """
     index_entry = authority_index_entry(worktree, relative)
     if index_entry is None or index_entry["oid"] != bound_oid:
+        return True
+    if bound_mode is not None and index_entry["mode"] != str(bound_mode):
         return True
     return authority_worktree_oid(worktree, relative) != bound_oid
 
@@ -431,7 +438,9 @@ def validate_checkpoint(
                     f"{entry['mode']}:{entry['type']}"
                 )
                 continue
-            if authority_path_dirty(Path(worktree), canonical, entry["oid"]):
+            if authority_path_dirty(
+                Path(worktree), canonical, entry["oid"], entry["mode"]
+            ):
                 errors.append(f"AUTHORITY_DIRTY:{canonical}")
                 continue
             actual_hash = sha256_tracked_blob(Path(worktree), entry["oid"])

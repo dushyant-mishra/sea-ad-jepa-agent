@@ -700,3 +700,39 @@ def test_a_staged_replacement_of_a_frozen_authority_is_refused(tmp_path: Path) -
     clean_state = _crlf_state(repo, blob_sha)
     clean_checkpoint = build_checkpoint(repo, repo, clean_state)
     assert validate_checkpoint(clean_checkpoint, repo, repo) == []
+
+
+
+def test_a_staged_mode_flip_of_a_frozen_authority_is_refused(tmp_path: Path) -> None:
+    """`--chmod` preserves the blob object id, so object ids alone are not enough.
+
+    Comparing only index oid against bound oid let a staged 100644 to 100755
+    flip evade the authority gate whenever the path was a declared
+    modification, because the content genuinely had not changed.
+    """
+    repo, blob_sha, _ = _crlf_repo(tmp_path)
+    head = _git(repo, "rev-parse", "HEAD")
+    bound = tracked_blob_at(repo, head, "authority.txt")
+    assert bound["mode"] == "100644"
+
+    _git(repo, "update-index", "--chmod=+x", "authority.txt")
+    staged = authority_index_entry(repo, "authority.txt")
+    assert staged["oid"] == bound["oid"], "the blob must be unchanged"
+    assert staged["mode"] != bound["mode"], "only the mode may differ"
+
+    # Object ids alone cannot see this.
+    assert authority_path_dirty(repo, "authority.txt", bound["oid"]) is False
+    # With the bound mode supplied, it is caught.
+    assert authority_path_dirty(
+        repo, "authority.txt", bound["oid"], bound["mode"]) is True
+
+    state = _crlf_state(repo, blob_sha)
+    state["allowed_tracked_modifications"] = ["authority.txt"]
+    checkpoint = build_checkpoint(repo, repo, state)
+    errors = validate_checkpoint(checkpoint, repo, repo)
+    assert any(error.startswith("AUTHORITY_DIRTY") for error in errors), errors
+
+    # Discriminating: restore the mode and the same declaration validates.
+    _git(repo, "update-index", "--chmod=-x", "authority.txt")
+    clean = build_checkpoint(repo, repo, _crlf_state(repo, blob_sha))
+    assert validate_checkpoint(clean, repo, repo) == []
