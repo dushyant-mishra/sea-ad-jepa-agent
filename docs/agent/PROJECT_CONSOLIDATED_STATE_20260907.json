@@ -1,0 +1,172 @@
+{
+  "schema": "JEPA_PROJECT_COORDINATION_SNAPSHOT_V1",
+  "date": "2026-09-07",
+  "status": "CONSOLIDATED_COORDINATION_SNAPSHOT__NO_EXECUTION_AUTHORITY",
+  "coordination_branch": "coordination/project-consolidation-20260907",
+  "source_base_commit": "d85391c90eb1f767115e0f4d31cfaf6bff980e2b",
+  "terminals": {
+    "snapshot": "PASS_PROJECT_COORDINATION_CONSOLIDATION__NO_NEW_EXECUTION_AUTHORITY",
+    "teacher_dependent_d1": "WAIT_HEALTHY_TRAINED_TEACHER"
+  },
+  "population_distinction": {
+    "healthy_teacher_training": {
+      "reader_fit_donors": 104,
+      "training_cells": 3292,
+      "scheduled_presentations": 26240,
+      "note": "Frozen prospective training-base population."
+    },
+    "d1_full_real_derivation": {
+      "fit_donors": 104,
+      "fit_cells": 4553407,
+      "operators": 42,
+      "sources": {
+        "HVS": 198718,
+        "NPH52": 236476,
+        "SEA_AD": 4118213
+      },
+      "molecular_addresses": 41238,
+      "note": "Production data-adaptive D1 quantities must derive from this complete lawful fit population."
+    }
+  },
+  "lanes": {
+    "population_access_registry": {
+      "branch": "planning/sealed-holdout-registry-20260907",
+      "freeze_commit": "14c2d586239aa5af15ed7cd70fdfb196d1c99f5f",
+      "package_root_sha256": "e9903bbb9d56663790f5f5b298c5633d87a71548466089e7cc6aae7c45728ee7",
+      "ci_run": 34078297227,
+      "ci_head": "45107e85e253ca9569fd03245604ae8b4c93f3cc",
+      "tests": "6 passed",
+      "terminal": "PASS_POPULATION_ACCESS_REGISTRY_FREEZE__NO_NEW_DATA_ACCESS",
+      "execution_authorized": false
+    },
+    "f1b_attack_authority": {
+      "branch": "f1b-executable-attacks-20260907",
+      "freeze_commit": "138e176baa10267833f1a2c1e347f8831eb8c269",
+      "package_root_sha256": "daa79afe19ab17f1f7cfa064754d671afd4ac4b284250605979f1d288862544b",
+      "findings": 15,
+      "behavioral_attacks": 14,
+      "frozen": true
+    },
+    "f1b_c3_mechanics_kernel": {
+      "branch": "f1b-c3-training-successor-v2-20260907",
+      "head_commit": "c0eaf2acc0a5edc837fb2a48f726b9d626772f06",
+      "tests": "21 passed",
+      "terminals": [
+        "PASS_F1B_ATTACK_SUITE",
+        "PASS_ATTACK_POLARITY",
+        "PASS_F1B_ATTACK_REGISTRY"
+      ],
+      "final_training_binding_valid": false,
+      "fixed_2x_decay_margin_authorized": false
+    },
+    "healthy_teacher_training_base": {
+      "branch": "planning/healthy-teacher-training-contract-20260907",
+      "current_head": "26e1c27d3578b794a1d522061df6d57ff435a688",
+      "freeze_commit": "5f89093000fe0460de377eb129890bdb0cf85a90",
+      "prefreeze_commit": "33218d536e5c4ea023cb326dffcca96159fdc5f4",
+      "package_root_sha256": "9e1ee362773a8329f783015a04af4f7699135cc0710b1ee1ea66abc0aafd8534",
+      "ci_run": 34114608353,
+      "tests": "17 passed",
+      "ci_terminal": "PASS_HEALTHY_TEACHER_BASE_IMMUTABILITY_AUDIT",
+      "freeze_terminal": "PASS_HEALTHY_TEACHER_TRAINING_BASE_FREEZE__EXECUTION_UNAUTHORIZED",
+      "execution_binding_fields_null": 11,
+      "execution_authorized": false
+    },
+    "t0_v20": {
+      "ledger_branch": "ledger/t0-v20-binding-20260907",
+      "binding_commit": "6e247617b3849b86df317c83479cc1497b3f0d1d",
+      "ledger_head": "03df000d4a618e6ebc17629c5bd70ccc1e663cc6",
+      "review_terminal": "PASS_T0_V20_INDEPENDENT_REVIEW",
+      "zip_sha256": "a069cad258d278bf8d97e20ba1317ccc62b93265e7f93208a2ae1a4848561947",
+      "package_root_sha256": "896dce257b8ed7330cfe9ac9a561e6d87090903485236dbf37f389d6432cb9e7",
+      "contract_sha256": "b8e5a38f9a158d0436d38e6846a51692f9a949580c899768c7d7507ab8646f62",
+      "implementation_manifest_sha256": "1f55741e83bf1b504c052975649ec3a8978428b311251c9b0bd5271cf20c6b9d",
+      "active_test_manifest_sha256": "99b9aeacea525ff06d6ab6d64aaed2fd74167795c2da21c02ef912f867fb0d6b",
+      "full_suite": "224/224 PASS",
+      "real_execution_authorized": false
+    },
+    "f1a_producer_replay": {
+      "branch": "f1-real-producer-replay-prefreeze-20260907",
+      "head_commit": "799eb3fb04839d0ebd18667ec7fa7ddf29843e72",
+      "prefreeze_root_sha256": "b324fdd917d07c41ea3defdc16644ff0cf7e6eb3a401b1331a7feb479c1869c3",
+      "producer_sha256": "8220f80aa1249ea49295489db5d0e19c939abdc1d0fe84bece91107c38b1b0a7",
+      "replay_sha256": "2f804e3c76ffdc6af3b4bf782fbb621f92719d170c5cadc42618137655bc17f7",
+      "geometry": {
+        "assignments": 44496,
+        "unique_teacher_query_forwards": 43108,
+        "assignment_evidence_records": 222480,
+        "total_expensive_forwards": 474188
+      },
+      "tests_with_authorities": "33 passed",
+      "clean_extraction": "29 passed; 4 NOT_MEASURABLE",
+      "fail_closed_authority_env": "F1_PREFREEZE_REQUIRE_AUTHORITIES=1",
+      "post_report_repairs": [
+        "enforced mechanics-capture coverage over all 44,496 assignments",
+        "removed fail-open pytest.skip behavior for unavailable geometry authorities under strict review mode"
+      ],
+      "real_output_roots_populated": false,
+      "real_execution_authorized": false
+    },
+    "d1a_synthetic_v2": {
+      "branch": "d1a-synthetic-estimation-atlas-impl-v2-20260907",
+      "head_commit": "e5f49a12b7e6f2f202a58f5bb1337dbab9b879cc",
+      "contract_root_sha256": "6af28682da4a5c37a212ad1926fbc6acf5a7fea88c46c49f69295cbaae8a3a81",
+      "ci_run": 34116235880,
+      "behavioral_test_count": 18,
+      "ci_conclusion": "success",
+      "role": "REUSABLE_MECHANICS_SCAFFOLD_ONLY",
+      "real_d1_authorized": false
+    },
+    "d1a_false_start": {
+      "branch": "d1a-synthetic-estimation-ranking-20260907",
+      "head_commit": "b2758044c7cad8c80307ed17f0eea1917620daf4",
+      "delta": "one 367-line scripts/v4/d1a_estimation_ranking_v1.py file",
+      "status": "SUPERSEDED_FOR_PRODUCTION"
+    },
+    "d1_real_parameter_authority": {
+      "branch": "planning/d1-biological-estimation-atlas-20260907",
+      "coordination_head_before_claude": "d85391c90eb1f767115e0f4d31cfaf6bff980e2b",
+      "parameter_registry_entries": 30,
+      "production_parameter_source": "full lawful real fit population only",
+      "synthetic_role": "known-answer mechanics tests only",
+      "production_d_rule": "weighted full-real eigenspectrum + donor/operator-preserving parallel-analysis null + donor-block subspace stability; largest contiguous stable leading rank; no fallback",
+      "program_count_rule": "K=D",
+      "real_execution_authorized": false
+    }
+  },
+  "prohibited_production_reuse": [
+    "synthetic n_components or D",
+    "4540-cell cohort-derived geometry or thresholds",
+    "50000-cell sample-derived production geometry or thresholds",
+    "50 SVD components",
+    "candidate rank 320",
+    "sketch dimension 512",
+    "k values 15,30,60,120",
+    "community resolutions 0.25,0.5,1.0,2.0",
+    "historical 128/256 resample counts as automatic production values",
+    "synthetic 5-percent score cutpoint as a production numerical threshold",
+    "synthetic priority-score product/weights",
+    "fixed 2x movement-over-decay threshold",
+    "historical u10-u205 checkpoints"
+  ],
+  "protected_access_still_closed": [
+    "reader_validation",
+    "reader_oracle",
+    "foundation_development",
+    "foundation_sealed_holdout",
+    "external_holdout",
+    "pathology"
+  ],
+  "next_order": [
+    "Claude implements D1 full-real derivation scaffolding and firewall without producing teacher-dependent values.",
+    "Obtain independent review of frozen healthy-teacher base.",
+    "Build and externally review final integrated end-to-end successor trainer.",
+    "Bind predictor registry and analytical movement adjudicator.",
+    "Materialize and freeze new successor-specific u0.",
+    "Create immutable execution-binding overlay and obtain explicit u0-to-u40 authority.",
+    "Qualify u0-to-u40 mechanically; freeze/review qualification; separately authorize continuation.",
+    "After healthy teacher is frozen and qualified, bind exact D1 readout seam and execute full-real D1 derivation.",
+    "F1-A producer/replay remains pending external review and explicit real-execution authorization.",
+    "T0 real execution remains unauthorized."
+  ]
+}

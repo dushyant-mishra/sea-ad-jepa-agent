@@ -1,0 +1,21 @@
+{
+  "schema": "td18-three-source-relational-scaffold-v1",
+  "status": "PILOT_HYPOTHESIS_GENERATION__NOT_CONFIRMATORY__NOT_PRODUCTION_AUTHORITY",
+  "historical_predecessor": "Stage81 target/basis lineage + TD13-17; especially TD16 failure of same-gene cross-source dependency and TD17 HVS/SEA relational geometry",
+  "what_is_materially_new": "Uses a manually declared pathology-blind five-state biological crosswalk only as validation to test whether per-gene-affine-invariant relational state geometry extends to NPH52.",
+  "historical_failure_being_attacked": "No three-way broad-class label anchor and no cross-source recurrence of same-gene loadings/dependency edges.",
+  "result_of_that_attack": {
+    "three_source_coarse5_geometry_replicates": true,
+    "survives_union_top_quartile_discriminative_gene_removal": true
+  },
+  "promotion_status": "FALSIFICATION_ONLY",
+  "coarse5_states": ["EXCITATORY","INHIBITORY","ASTROCYTE","OLIGODENDROCYTE","OPC"],
+  "crosswalk_role": "VALIDATION_ONLY__MUST_NOT_DEFINE_PRODUCTION_TARGET",
+  "gene_panels": "4 disjoint deterministic 2,048-gene panels from 17,186 all-operator scalar addresses",
+  "null": "exact class-identity permutation over all 5! mappings",
+  "marker_attack": "remove union of top quartile between-state-variance genes independently in each source; ~57-58% panel removed",
+  "pathology_accessed": false,
+  "protected_expression_accessed": false,
+  "production_target_selected": false,
+  "confirmatory_requirement": "Relational target family must be prospectively frozen and re-tested on full lawful reader_fit expression, with label-free target derivation; native/coarse labels may be used only after derivation for validation."
+}
