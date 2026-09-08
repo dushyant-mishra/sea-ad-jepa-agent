@@ -68,41 +68,44 @@
       "required_resolution": "Prospectively separate a mechanics checkpoint (e.g. Q40) from a full-reader exposure-defined biology checkpoint and amend TD60 before any decision-bearing training outcome exists."
     },
     {
-      "id": "V5_SCIENTIFIC_ESTIMAND_UNFROZEN",
+      "id": "V5_BASE_PROPOSAL_AND_NUMERICAL_SCHEDULE_UNFROZEN",
       "priority": "P0",
       "lane": "teacher_student_v5",
-      "head": "95251107e80a803d627d1197a64b417a5a16d2c5",
+      "head": "c7b1663cc4390843978b973986edfe58f93320a3",
       "class": "DESIGN_STOP",
-      "summary": "Target estimand, proposal sampler, importance-weight policy, relational sampling policy, and relational group-weight policy remain explicit PENDING values.",
-      "evidence": "docs/agent/READER_FIT_SCIENTIFIC_ESTIMAND_ANALYSIS_V1.json selected_estimand=null selected_proposal_sampler=null"
+      "summary": "V5 scientific target V2 and relational proposal V2 are now frozen, but the base proposal, evidence schedule, token budget, total presentation horizon and EMA half-life remain unfrozen.",
+      "evidence": "target_discovery/CURRENT_STATUS_20260908.json at 26c3cfaba77bb8e5935e76473ab1fd5f90a562bf"
     },
     {
       "id": "V5_SUPPORT_AWARE_TARGET_POLICY_UNFROZEN",
       "priority": "P0",
       "lane": "teacher_student_v5",
       "class": "DESIGN_STOP",
-      "summary": "Full-reader evidence/masking target policy is not frozen; a universal historical 40% measured-gene mask is known to imply very different absolute evidence doses across operators/sources.",
+      "summary": "V5 scientific target is frozen but the numerical evidence/view/block schedule from full reader_fit support remains unfrozen.",
       "evidence": {
         "HVS_measured": 18736,
         "SEA_AD_measured": 35076,
         "common_all_42": 17186
-      }
+      },
+      "head": "c7b1663cc4390843978b973986edfe58f93320a3"
     },
     {
       "id": "V5_DATA_EXPOSURE_SCHEDULE_UNFROZEN",
       "priority": "P0",
       "lane": "teacher_student_v5",
       "class": "DESIGN_STOP",
-      "summary": "No production full-reader schedule instance, exposure checkpoint, replay policy, or schedule-derived optimizer/EMA timescale is frozen.",
-      "evidence": "src/sea_ad_jepa/v5/schedule_authority_v1.py defines schema only"
+      "summary": "No production presentation horizon, repeat-exposure/coverage rule, numerical evidence schedule, or EMA half-life in exposure units is frozen.",
+      "evidence": "src/sea_ad_jepa/v5/schedule_authority_v1.py defines schema only",
+      "head": "c7b1663cc4390843978b973986edfe58f93320a3"
     },
     {
       "id": "V5_RUNTIME_NOT_INTEGRATED",
       "priority": "P1",
       "lane": "teacher_student_v5",
       "class": "IMPLEMENTATION_STOP",
-      "summary": "Packing, weighted loss, finite relational sampling, keyed RNG/dropout, and cost model exist as prospective/proof modules but are not integrated into a reviewed end-to-end production training update.",
-      "evidence": "keyed_dropout_prototype.py explicitly says not wired into production_update"
+      "summary": "The 66-pass V5 prototype is verified, but an optimized GPU Philox kernel and bounded packed/weighted production runtime still require integration and mechanics qualification with gradient/optimizer/EMA/checkpoint attacks.",
+      "evidence": "keyed_dropout_prototype.py explicitly says not wired into production_update",
+      "head": "c7b1663cc4390843978b973986edfe58f93320a3"
     },
     {
       "id": "V5_TRAINING_MODE_PACKING_EQUIVALENCE_UNPROVEN",
@@ -116,26 +119,28 @@
       "priority": "P1",
       "lane": "teacher_student_v5",
       "class": "AUTHORITY_AMBIGUITY",
-      "summary": "Latest lineage contains a Philox4x32-10 reference and a distinct modular-hash keyed_feature_dropout proof function. Production must select one source-bound RNG contract and remove/retire ambiguity.",
+      "summary": "The V5 line now has a V2 CPU Philox reference with uint64 scientific identity, but the optimized GPU Philox kernel is not yet implemented/reviewed as the single production runtime RNG.",
       "evidence": [
         "src/sea_ad_jepa/v5/keyed_rng_reference.py",
         "src/sea_ad_jepa/v5/keyed_dropout_prototype.py",
         "src/sea_ad_jepa/v5/data_first_geometry.py"
-      ]
+      ],
+      "head": "c7b1663cc4390843978b973986edfe58f93320a3"
     },
     {
       "id": "V5_HARDWARE_COST_CALIBRATION_MISSING",
       "priority": "P1",
       "lane": "teacher_student_v5",
       "class": "EXECUTION_STOP",
-      "summary": "Full-path cost model exists but cost coefficients, GPU memory/headroom calibration, and max microbatch cost are not frozen for target hardware."
+      "summary": "Full-path cost model exists but cost coefficients, GPU memory/headroom calibration, and max microbatch cost are not frozen for target hardware.",
+      "head": "c7b1663cc4390843978b973986edfe58f93320a3"
     },
     {
       "id": "TEACHER_STUDENT_LINEAGE_NOT_CONSOLIDATED",
       "priority": "P0",
       "lane": "teacher_student",
       "class": "GOVERNANCE_STOP",
-      "summary": "V3 bridge, V4 candidate, V4 governance-repair, V5 candidate, and V5 planning branches coexist without a current supersession authority naming the one lawful successor lineage.",
+      "summary": "V3/V4 historical lines and multiple divergent V5 planning/candidate branches coexist. Current project status names planning/teacher-student-v5-data-first-20260908 as the prospective V5 successor, but no global supersession map has yet archived the older lines safely.",
       "refs": {
         "v4_candidate": "candidate/teacher-student-unified-v4-relational-20260908@92b265d910058a4885abcb23b1ae9e5ec04758e7",
         "v5_latest": "planning/teacher-student-v5-finalize-closure-20260908@95251107e80a803d627d1197a64b417a5a16d2c5"
@@ -242,5 +247,27 @@
     "reader_validation/oracle opening",
     "foundation development/sealed opening",
     "pathology outside explicitly authorized T0 confirmation"
+  ],
+  "updated_at": "2026-09-08T19:52:30Z",
+  "v5_current": {
+    "branch": "planning/teacher-student-v5-data-first-20260908",
+    "verification_head": "c7b1663cc4390843978b973986edfe58f93320a3",
+    "decision_bearing_materialization_commit": "71484ab99d276d7251836c109885d22ab4e7abb1",
+    "prototype_root_sha256": "9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad",
+    "exact_snapshot_zip_sha256": "39d70f235b06c1342398e318e665986c9dfa0c6e560878cd62a83ce1dadfc48d",
+    "v5_active_tests": "66/66 PASS",
+    "v4_regression": "98/98 PASS",
+    "github_ci_run_id": 34270840107,
+    "github_ci_conclusion": "success",
+    "scientific_target_v2": "base donor-uniform/cell-uniform-within-donor; relational donor-uniform/eligible-anchor-cell-uniform/same-operator-comparator-pair-uniform",
+    "relational_proposal_v2": "DIRECT_DONOR_ANCHOR_CELL_TRIPLET_TARGET_PROPOSAL_V2",
+    "external_review_candidate_built": false,
+    "actual_external_v5_review_supplied": false,
+    "execution_authorized": false,
+    "training_authorized": false
+  },
+  "notes": [
+    "Do not use planning/teacher-student-v5-finalize-closure-20260908@95251107... as the live V5 authority; current project status points to planning/teacher-student-v5-data-first-20260908@c7b1663c...",
+    "TD60 still names a lawful successor u40 EMA teacher; reconcile this label with the data-first audit's mechanics-clock versus biology-exposure-clock distinction before training."
   ]
 }
