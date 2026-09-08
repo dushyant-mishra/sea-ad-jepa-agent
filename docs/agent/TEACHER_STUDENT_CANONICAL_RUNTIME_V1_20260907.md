@@ -198,12 +198,13 @@ For every mandatory tensor independently:
 
 - construct what the tensor would be after the proved number of steps if only
   decoupled weight decay acted;
-- compare the actual tensor with that counterfactual elementwise;
-- exact equality = STOP as indistinguishable from pure decay;
-- any finite elementwise deviation = movement not explainable by decay only;
-- zero-baseline parameters therefore require real nonzero movement;
+- compute movement norms in float64 to avoid a new underflow-derived magnitude floor;
+- zero-baseline tensors require finite nonzero absolute movement;
+- nonzero-baseline tensors require absolute movement strictly greater than the
+  exact repeated AdamW decay-only movement;
+- equality or movement below that analytical decay-only reference = STOP;
 - no pooled mean can rescue a failed tensor;
-- no arbitrary magnitude multiplier exists.
+- no arbitrary 2x (or other) magnitude multiplier exists.
 
 This criterion must itself receive external review before it can be bound into
 the execution overlay.
