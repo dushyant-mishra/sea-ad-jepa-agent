@@ -10,6 +10,7 @@ from sea_ad_jepa.v4.prospective_relational_teacher_student_v2 import (
     RELATIONAL_GROUPS_PER_BATCH,
     RELATIONAL_GROUP_SIZE,
     CollapseCalibration,
+    RelationalLossWeights,
     effective_rank,
     enforce_collapse_calibration,
     fine_matched_null_permutation,
@@ -38,6 +39,17 @@ def test_v2_identity_geometry_is_zero_loss_and_student_is_differentiable() -> No
     assert student.grad is not None and torch.isfinite(student.grad).all()
     assert teacher.grad is None
 
+
+
+def test_v2_loss_weights_are_frozen_exactly_at_half_half() -> None:
+    teacher, student, groups = _states()
+    with pytest.raises(ValueError, match="frozen exactly at 0.5/0.5"):
+        relational_geometry_loss(
+            teacher,
+            student,
+            groups,
+            weights=RelationalLossWeights(normalized_distance=1.0, angle=0.0),
+        )
 
 def test_v2_relational_loss_detects_within_group_geometry_change() -> None:
     teacher, student, groups = _states()
