@@ -236,5 +236,13 @@
       "head_sha": "43c2997079b9326d21d9c2c88aa3014167413f5e"
     }
   ],
-  "verification_main_sha": "0a1b32a889dcecf33775cda02d99462ba28a50f2"
+  "verification_main_sha": "0a1b32a889dcecf33775cda02d99462ba28a50f2",
+  "deletion_completed": true,
+  "deletion_workflow_run_id": 34284674854,
+  "deleted_non_main_branches": 57,
+  "final_branch_count": 1,
+  "final_branches": [
+    "main"
+  ],
+  "status": "CONSUMED_SAFE_DELETE_AUTHORITY__ALL_LISTED_REFS_DELETED"
 }
