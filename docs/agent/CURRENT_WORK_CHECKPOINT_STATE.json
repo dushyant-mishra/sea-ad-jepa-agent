@@ -179,8 +179,8 @@
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "SUBMIT_AVAILABILITY_REVIEW_ZIP_FOR_INDEPENDENT_ATTACK",
-    "RUN_S2_RED_ATTACKS_THEN_IMPLEMENTATION_WITHOUT_INTERMEDIATE_STOP",
+    "UPLOAD_AVAILABILITY_REVIEW_ZIP_WITH_MEMBERSHIP_PROVENANCE",
+    "BUILD_S2_ROW_AND_COUNT_AUTHORITY_WITH_THREE_SEPARATE_ROOTS",
     "DESIGN_PROMOTION_ONLY_SUCCESSOR_SCHEMA_VERIFIER_AND_ENTRYPOINT",
     "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND_UNTIL_VERIFIED"
   ],
@@ -240,16 +240,24 @@
       "membership_donor_set_sha256": "f89838342622348f126217686084bf69901b1a50aca97ce94b176b779e294d64",
       "membership_donors_available": 46,
       "membership_fully_available": true,
+      "membership_provenance": {
+        "accepted_v20_member": "current/authority/T0_PRIMARY_MTG_READER_FIT_IMMUNE_CELL_MEMBERSHIP_V1.csv",
+        "claim": "The 46 donor identities are exactly the distinct donor_id values of the accepted-V20 membership member named above, so the set digest is a claim about that member rather than about an arbitrary 46-donor input.",
+        "distinct_donors": 46,
+        "donor_set_sha256": "f89838342622348f126217686084bf69901b1a50aca97ce94b176b779e294d64",
+        "donor_set_witness_sha256": "6f8e20d3ec883b6c99a2bb61fcb4b0c9b4af4b1bc4aa0a519844543d1c925eff",
+        "member_sha256": "d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529"
+      },
       "namespace": "T0-AT8-AVAILABILITY-V1",
-      "outcome_values_emitted": false,
-      "outcome_values_read": false,
       "package_root_sha256": "cda6a2e0f28cfec3a51322e50c34990721e88c6c1300f74ad2cfacf7a0bf645a",
       "review_repairs_applied": {
         "exact_package_contents": "An unmanifested extra file was ignored; the directory must now hold exactly the registry, metadata, manifest and root file.",
         "external_root_verification": "The loader compared the manifest only with the root stored beside it, so a wholesale self-consistent replacement validated. Both expected roots are now required keyword arguments.",
+        "index_mode_fail_open": "authority_path_dirty compared only the index object id, so a staged --chmod flip preserved the blob and evaded the authority gate whenever the path was a declared modification. The bound mode is now passed in and compared.",
         "membership_set_digest": "membership_donor_count alone did not identify a set. With every donor available any 46 of 84 satisfied the same counts, so a canonical set digest is now bound.",
         "stale_one_root_language": "Module docstring and test names still described a single package root as value-invariant; corrected to the two-root contract.",
-        "toctou": "The source was hashed by path and then reopened, so the recorded digest could describe one revision while availability was derived from another, and source_bytes came from a still later stat. The bytes are now read once, those exact bytes are authenticated, parsing happens from memory, and source_bytes is their length."
+        "toctou": "The source was hashed by path and then reopened, so the recorded digest could describe one revision while availability was derived from another, and source_bytes came from a still later stat. The bytes are now read once, those exact bytes are authenticated, parsing happens from memory, and source_bytes is their length.",
+        "toctou_regression_strength": "The first TOCTOU test contained an `assert ... or True`, which proves nothing, and never ran the full builder while the backing file changed. It now wraps read_authenticated_source so it authenticates bytes A, replaces the file with materially different bytes B, and returns A; the registry, source digest and source_bytes must all derive from A."
       },
       "schema": "JEPA_T0_AT8_AVAILABILITY_AUTHORITY_V1",
       "source_bytes": 21982,
@@ -353,6 +361,30 @@
       "t0_review_binding": "6e247617b3849b86df317c83479cc1497b3f0d1d"
     },
     "real_execution_ready": false,
+    "s2_feature_projection": {
+      "all_features_measured": true,
+      "independent_contract_crosscheck": "V18 section 3 declares SCORING = 28,061 addresses and the projection observes exactly 28,061, which is an agreement with the frozen contract rather than with my own code.",
+      "matrix_id": "sea_ad_mtg_rna_final_2026",
+      "ordering": "EXACT_SPLIT_ROW_ORDER__NOT_ADDRESS_INDEX_ORDER",
+      "ordering_caveat": "The accepted split is itself strictly increasing in molecular_address_index, first 0 last 41194, so for THIS split the split-order root and the address-order root are identical and the ordering guarantee is vacuous in practice. It is retained because it is not vacuous for a future split and it forbids a silent re-sort. Synthetic fixtures deliberately make the two orders differ so the guarantee is actually tested.",
+      "pinned_authorities": {
+        "note": "The pinned authority is the gzip blob; the decompressed digest is recorded so a reviewer can reproduce the parse without re-deriving it.",
+        "registry_blob_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+        "stage81a2r_pin": "95d2cafe5cde68773f81c4aa64afc5788ae1d73b",
+        "support_blob_sha256_gzip": "ee5d12c144536efdacb983f6b9aa2acb46d47d395b2aa9c556ad10b191f3cdaa",
+        "support_sha256_decompressed": "5b641c5a8f2386720c58c4512ec89879a43985a01995e2ada70e941b017dee03"
+      },
+      "projected_feature_count": 35076,
+      "projection_root_sha256": "0a0739ec30c758a53070f76989cd4964d7d37224fd20890951b63aacf66e8002",
+      "real_execution_ready": false,
+      "role_counts": {
+        "COHERENCE_HOLDOUT": 7015,
+        "SCORING": 28061
+      },
+      "schema": "JEPA_T0_V20_FEATURE_PROJECTION_AUTHORITY_V1",
+      "source_feature_index_used": false,
+      "status": "BUILT__AWAITING_INDEPENDENT_ATTACK"
+    },
     "schema": "T0_V20_PATHOLOGY_BLIND_MATERIALIZATION_LANE_V1",
     "self_audit_20260908": {
       "availability_attacks": "22 passed",
