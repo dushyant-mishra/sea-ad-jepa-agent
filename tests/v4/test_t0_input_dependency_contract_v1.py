@@ -466,8 +466,17 @@ def test_expression_row_and_row_index_are_distinct_quantities():
 
 
 def test_pending_authorities_are_reported_rather_than_hidden():
+    """What is still unbuilt must stay visible, and what is built must drop out.
+
+    IMMUNE_FRACTION, cells and the age/sex demographics now have real
+    authorities, so they are no longer pending. Q_DEPTH, Q_DETECT,
+    technical_complete and eligible still are.
+    """
     pending = set(C.pending_authorities())
-    assert {"IMMUNE_FRACTION", "Q_DEPTH", "Q_DETECT", "eligible"} <= pending
+    assert {"Q_DEPTH", "Q_DETECT", "technical_complete", "eligible"} <= pending
+    assert "IMMUNE_FRACTION" not in pending
+    assert "cells" not in pending
+    assert "age" not in pending and "sex" not in pending
 
 
 def test_stage_order_places_eligibility_before_roles_and_matrices():

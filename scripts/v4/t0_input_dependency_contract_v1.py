@@ -192,7 +192,7 @@ CONTRACT: tuple[dict[str, Any], ...] = (
     # ---- frozen source fields
     _entry(
         "age", "FROZEN_SOURCE_FIELD", "PATHOLOGY_BLIND", "ALL_CANDIDATE_DONORS",
-        "T0_DONOR_METADATA_AUTHORITY__PENDING",
+        "T0_AGE_SEX_AUTHORITY_V1",
         (),
         ("t0_donor_role_authority_v2", "t0_adjudicator_v1", "t0_discovery_fit_v2",
          "t0_execution_input_authority_v1"),
@@ -201,7 +201,7 @@ CONTRACT: tuple[dict[str, Any], ...] = (
     ),
     _entry(
         "sex", "FROZEN_SOURCE_FIELD", "PATHOLOGY_BLIND", "ALL_CANDIDATE_DONORS",
-        "T0_DONOR_METADATA_AUTHORITY__PENDING",
+        "T0_AGE_SEX_AUTHORITY_V1",
         (),
         ("t0_donor_role_authority_v2", "t0_adjudicator_v1", "t0_discovery_fit_v2",
          "t0_execution_input_authority_v1"),
@@ -289,7 +289,7 @@ CONTRACT: tuple[dict[str, Any], ...] = (
     # ---- derived, pathology-blind
     _entry(
         "cells", "DERIVED", "PATHOLOGY_BLIND", "ALL_CANDIDATE_DONORS",
-        "T0_IMMUNE_SUPPORT_COUNT_AUTHORITY_V1__PENDING",
+        "T0_IMMUNE_SUPPORT_COUNT_AUTHORITY_V1",
         ("donor_id",),
         ("t0_donor_role_authority_v2", "t0_discovery_confirmation_split_v2",
          "t0_confirmation_raw_v1"),
@@ -321,7 +321,7 @@ CONTRACT: tuple[dict[str, Any], ...] = (
     ),
     _entry(
         "IMMUNE_FRACTION", "DERIVED", "PATHOLOGY_BLIND", "ALL_CANDIDATE_DONORS",
-        "T0_IMMUNE_FRACTION_AUTHORITY_V1__PENDING",
+        "T0_IMMUNE_FRACTION_AUTHORITY_V1",
         ("donor_id",),
         ("t0_adjudicator_v1", "t0_execution_input_authority_v1"),
         "immune_n_donor / total_op31_n_donor, as exact integers over a common "
