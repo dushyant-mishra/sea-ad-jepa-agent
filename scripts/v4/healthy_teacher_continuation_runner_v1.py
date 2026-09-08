@@ -37,6 +37,7 @@ from sea_ad_jepa.v4.teacher_student_runtime import (
     PREDICTOR_REGISTRY_SHA256,
     PRODUCTION_CONFIG,
     build_teacher_student_components,
+    configure_deterministic_cuda_environment,
     production_update,
 )
 
@@ -164,10 +165,7 @@ def main() -> int:
         raise RuntimeError("continuation run directory must be new/empty")
     args.run_dir.mkdir(parents=True, exist_ok=True)
 
-    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
-    torch.backends.cuda.matmul.allow_tf32 = False
-    torch.backends.cudnn.allow_tf32 = False
-    torch.use_deterministic_algorithms(True)
+    configure_deterministic_cuda_environment()
 
     modules = build_teacher_student_components(device=torch.device("cuda"))
     authorities = {
