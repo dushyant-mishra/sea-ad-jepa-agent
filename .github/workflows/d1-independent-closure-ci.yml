@@ -1,0 +1,30 @@
+name: D1 Independent Closure CI
+
+on:
+  push:
+    branches:
+      - review/d1-independent-closure-20260907
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d1-clean-environment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install D1 test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install             numpy==1.26.4             scipy==1.13.1             pandas==2.2.3             PyYAML             pytest
+      - name: Compile D1 implementation
+        run: |
+          python -m compileall -q             scripts/v4/d1_full_fit_population_audit_v1.py             scripts/v4/d1_parameter_derivation_v1.py             scripts/v4/d1_real_data_derivation_core_v1.py             scripts/v4/d1_teacher_state_stream_v1.py             scripts/v4/d1_execution_contract_v2.py             scripts/v4/d1_teacher_state_archive_v2.py             scripts/v4/d1_resampling_engine_v2.py             scripts/v4/d1_discovery_atlas_v2.py             scripts/v4/d1_expression_reader_v2.py             scripts/v4/d1_score_archive_v2.py             scripts/v4/d1_molecular_sufficient_store_v2.py
+      - name: Run all D1 tests in clean extraction
+        run: |
+          pytest -q tests/test_d1_*.py
