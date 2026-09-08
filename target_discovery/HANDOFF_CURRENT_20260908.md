@@ -613,3 +613,44 @@ Current next sequence:
 5. freeze lawful successor u40;
 6. execute already-frozen TD60;
 7. no additional 50k locality-fraction tuning.
+
+
+## 20. TD59 replay closure
+
+A provenance audit found that the frozen TD59 result recorded the original local executor SHA-256 and six original result JSON hashes, but the corresponding local bytes were not preserved in the GitHub TD59 directory. The historical working archive supplied to the successor chat ends at TD58, so it cannot supply those TD59 bytes.
+
+This is a **replay-closure defect**, not evidence that the TD59 statistic was wrong.
+
+Independent reconstruction was therefore performed from:
+- the prospectively frozen TD59 contract;
+- the pre-outcome binding;
+- preserved predecessor mechanics;
+- immutable 50k expression arrays;
+- frozen calibration support and source metadata.
+
+Successor replay implementation:
+`target_discovery/iterations/td59_mesoscale_half_locality/replay_closure_20260908/td59_replay_closure_executor_v1.py`
+
+Successor executor SHA-256:
+`870ddea0f84f0c868cbce772c9f7506b4c1b35b55e4cd09f9f9e62dbf7425085`
+
+Replay-closure manifest root:
+`f379301555831bb32fe227ac578b33659e58adac8a71e88a17a3f06a9e332237`
+
+Independent result:
+- all **24/24** committed case rows reproduce exactly;
+- exact equality holds for observed median donor agreement, null p95, and null max;
+- all six frozen pair-address hashes reproduce;
+- structural/measurable donor counts reproduce: HVS 29/29, NPH52 16/16, SEA_AD 46/46.
+
+Frozen replay-closure terminal:
+`PASS_TD59_REPLAY_CLOSURE_BY_INDEPENDENT_RECONSTRUCTION__ORIGINAL_EXECUTOR_BYTES_NOT_RECOVERED`
+
+Important boundary:
+- the missing original executor bytes were **not** recovered;
+- the six original result JSON bytes were **not** recovered;
+- do not replace the historical original executor SHA `3268486b...`;
+- do not claim the successor JSONs have the historical first-run hashes;
+- use the successor replay implementation for future reproducible reconstruction of the frozen TD59 statistic.
+
+TD59's scientific terminal remains unchanged. No production locality or training authority is created by this replay repair.
