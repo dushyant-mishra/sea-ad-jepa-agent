@@ -1,0 +1,16 @@
+{
+  "schema": "TEACHER_STUDENT_V3_REVIEW_TERMINAL_BRIDGE_FREEZE_V1",
+  "date": "2026-09-08",
+  "status": "PROSPECTIVE_GOVERNANCE_BRIDGE__AWAITING_EXTERNAL_REVIEW__EXECUTION_UNAUTHORIZED",
+  "reviewed_package_zip_sha256": "8bcec10f60988df9bb34c23f89c8e0918222776be70dca5bce98156f1c223d98",
+  "reviewed_package_root_sha256": "0720214288dfe0a4446b418bbd8bc6f21b34c54385cec57195371b687e4a1a71",
+  "reviewed_package_commit": "76bf7912cc621756fdbbd82218025d8e4c00a057",
+  "reviewed_source_commit": "8f9c34f18ac7cf43572299901e5e4f5d65cecb24",
+  "reviewed_source_root_sha256": "cd7faf6dd48f58387597b05f2e143ac629e1b74418d9720c4acdc9fcf4dfb584",
+  "required_external_active_terminal": "PASS_TEACHER_STUDENT_UNIFIED_V3_INDEPENDENT_REVIEW__TRAINING_STILL_UNAUTHORIZED",
+  "bridge_pass_terminal": "PASS_HEALTHY_TEACHER_INTEGRATED_SUCCESSOR_INDEPENDENT_REVIEW__V3_SELF_CONTAINED_EXTERNAL_REVIEW_BOUND",
+  "bridge_is_execution_authority": false,
+  "execution_authorized": false,
+  "pass_bridge_artifact_present": false,
+  "terminal": "TEACHER_STUDENT_V3_REVIEW_TERMINAL_BRIDGE_FROZEN__AWAITING_EXTERNAL_REVIEW__EXECUTION_UNAUTHORIZED"
+}
