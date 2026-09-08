@@ -18,5 +18,11 @@
   "real_f1_authorized": false,
   "real_t0_authorized": false,
   "d1_real_execution_authorized": false,
-  "terminal": "TEACHER_STUDENT_UNIFIED_V2_SOURCE_FROZEN__INDEPENDENT_REVIEW_PENDING__TRAINING_UNAUTHORIZED"
+  "terminal": "TEACHER_STUDENT_UNIFIED_V2_SOURCE_FROZEN__INDEPENDENT_REVIEW_PENDING__TRAINING_UNAUTHORIZED",
+  "active_test_selection": "docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V2.txt",
+  "active_test_manifest": "docs/agent/TEACHER_STUDENT_ACTIVE_TEST_MANIFEST_V2.csv",
+  "active_test_manifest_root_sha256": "6c06228f504ca1b63b2ed4dcf1259e2f51c402875c76dae46c435db58758fd2e",
+  "active_test_bytes_reference_commit": "0744f4347caf391aa5f4876429917cc88fa33f2f",
+  "active_test_count": 6,
+  "retired_prototype_test_active": false
 }
