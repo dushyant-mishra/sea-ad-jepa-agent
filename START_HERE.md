@@ -53,20 +53,22 @@ D1 / partial-evidence student downstream
 
 ## Current V5 reference
 
-Current prospective V5 source head:
-`c7b1663cc4390843978b973986edfe58f93320a3`
+Current prospective V5 continuation head:
+`028989a5f1504e4d6403a44e7c90d37172c54150`
 
 The current V5 tree has been reconciled onto main.
 
 Already frozen:
 - scientific target V2;
-- relational proposal V2.
+- relational proposal V2;
+- base proposal V3 with exact p/q correction;
+- exactly one reader-fit-population-equivalent presentation horizon (4,553,407), no automatic extension.
 
 Still open:
-- base proposal;
 - evidence/view/block schedule;
-- horizon/repeat exposure;
-- EMA half-life;
+- finite relational triplet budget;
+- update/token execution geometry;
+- EMA half-life and learned-teacher checkpoint milestone;
 - GPU RNG kernel parity;
 - hardware calibration;
 - integrated trainer;
