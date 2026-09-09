@@ -1,0 +1,158 @@
+module,function,classification,claim_boundary
+audit_t0_v20_execution_authority_equivalence.py,main,DIAGNOSTIC_OR_REGRESSION_ONLY,V20 contract/code/authority equivalence audit only; not a scientific conclusion entrypoint.
+run_t0_canonical_synthetic_regression_v1.py,build_fixture,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+run_t0_canonical_synthetic_regression_v1.py,main,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+run_t0_canonical_synthetic_regression_v1.py,run,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+run_t0_canonical_synthetic_regression_v1.py,sha256,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+run_t0_canonical_synthetic_regression_v1.py,u01,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+run_t0_tail_hc3_validation_n_v1.py,logistic,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+run_t0_tail_hc3_validation_n_v1.py,nuisance,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+run_t0_tail_hc3_validation_n_v1.py,test_one,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+run_t0_tail_hc3_validation_n_v1.py,world,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_adjudicator_v1.py,adjudicate_donor_table_non_authoritative,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_adjudicator_v1.py,adjudicate_from_raw,SUPERSEDED_NON_AUTHORITATIVE_PRIMITIVE,V18 conclusion entrypoint superseded by V19 V2 authority-binding entrypoint; preserved for regression only.
+t0_adjudicator_v2.py,adjudicate_from_raw_v2,CANONICAL_CONCLUSION_ENTRYPOINT,V19 production adjudication entrypoint; requires externally materialized pretarget and preadjudication authorities and current rare5 status bytes.
+t0_adjudicator_v2.py,adjudicate_from_raw_v2_for_test,DIAGNOSTIC_OR_REGRESSION_ONLY,Synthetic/test authority entrypoint only; explicitly excluded from production scientific authority.
+t0_canonical_freeze_v1.py,freeze_tail_after_discovery_authority,SUPERSEDED_NON_AUTHORITATIVE_PRIMITIVE,V18 conclusion entrypoint superseded by V19 V2 authority-binding entrypoint; preserved for regression only.
+t0_canonical_freeze_v1.py,freeze_target_after_role,SUPERSEDED_NON_AUTHORITATIVE_PRIMITIVE,V18 conclusion entrypoint superseded by V19 V2 authority-binding entrypoint; preserved for regression only.
+t0_canonical_freeze_v2.py,freeze_tail_after_discovery_authority_v2,CANONICAL_CONCLUSION_ENTRYPOINT,V19 production conclusion entrypoint; requires externally materialized execution-input authority and has no caller bypass.
+t0_canonical_freeze_v2.py,freeze_tail_after_discovery_authority_v2_for_test,DIAGNOSTIC_OR_REGRESSION_ONLY,Synthetic/test authority entrypoint only; explicitly excluded from production scientific authority.
+t0_canonical_freeze_v2.py,freeze_target_after_role_v2,CANONICAL_CONCLUSION_ENTRYPOINT,V19 production conclusion entrypoint; requires externally materialized execution-input authority and has no caller bypass.
+t0_canonical_freeze_v2.py,freeze_target_after_role_v2_for_test,DIAGNOSTIC_OR_REGRESSION_ONLY,Synthetic/test authority entrypoint only; explicitly excluded from production scientific authority.
+t0_coherence_exact_v1.py,exact_common_direction_test,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_coherence_statistic_v1.py,loo_coherence,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_confirmation_raw_v1.py,confirmation_summaries_from_raw,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_decision_v1.py,decide_state,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_decision_v1.py,decide_tail,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_discovery_authority_v1.py,build_discovery_authority,AUTHORITY_COMPONENT_BUILDER,Builds a component authority; not sufficient by itself for a T0 conclusion.
+t0_discovery_authority_v1.py,load_discovery_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_discovery_authority_v1.py,sha,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_discovery_confirmation_split_v1.py,generate,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_discovery_confirmation_split_v2.py,generate,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_discovery_fit_v2.py,fit_and_serialize_target_v2,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_discovery_fit_v2.py,fit_discovery_target_v2,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_discovery_fit_v2.py,verify_target_v2_against_raw,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_discovery_provenance_v1.py,canonical_discovery_input_provenance,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_donor_role_authority_v1.py,build_role_authority,AUTHORITY_COMPONENT_BUILDER,Builds a component authority; not sufficient by itself for a T0 conclusion.
+t0_donor_role_authority_v1.py,load_role_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_donor_role_authority_v1.py,sha256_file,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_donor_role_authority_v1.py,verify_role_authority_against_inputs,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_donor_role_authority_v2.py,build_role_authority,AUTHORITY_COMPONENT_BUILDER,Builds the frozen metadata-only donor-role authority; not sufficient by itself for a T0 conclusion.
+t0_donor_role_authority_v2.py,load_role_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies donor-role authority/inputs; not sufficient by itself for a T0 conclusion.
+t0_donor_role_authority_v2.py,sha256_file,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_donor_role_authority_v2.py,verify_role_authority_against_inputs,AUTHORITY_COMPONENT_VERIFIER,Verifies donor-role authority/inputs; not sufficient by itself for a T0 conclusion.
+t0_end_to_end_synthetic_v1.py,make_world,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_end_to_end_synthetic_v1.py,nuisance,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_end_to_end_synthetic_v1.py,perms,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_end_to_end_synthetic_v1.py,run_world,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_execution_input_authority_v1.py,build_preadjudication_execution_authority,AUTHORITY_COMPONENT_BUILDER,Builds data-only execution-input payload authority; current local builder marks real_execution_ready=false.
+t0_execution_input_authority_v1.py,build_pretarget_execution_authority,AUTHORITY_COMPONENT_BUILDER,Builds data-only execution-input payload authority; current local builder marks real_execution_ready=false.
+t0_execution_input_authority_v1.py,canonical_expression_digest,AUTHORITY_COMPONENT_VERIFIER,Verifies hash-bound conclusion input payloads; not sufficient by itself for a T0 conclusion.
+t0_execution_input_authority_v1.py,load_preadjudication_execution_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies hash-bound conclusion input payloads; not sufficient by itself for a T0 conclusion.
+t0_execution_input_authority_v1.py,load_pretarget_execution_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies hash-bound conclusion input payloads; not sufficient by itself for a T0 conclusion.
+t0_execution_input_authority_v1.py,verify_preadjudication_execution_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies hash-bound conclusion input payloads; not sufficient by itself for a T0 conclusion.
+t0_execution_input_authority_v1.py,verify_pretarget_execution_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies hash-bound conclusion input payloads; not sufficient by itself for a T0 conclusion.
+t0_expression_only_score_invariance_v1.py,centered_cell_scores,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_expression_only_score_invariance_v1.py,check_invariance,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_expression_only_score_invariance_v1.py,coefficient,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_expression_only_score_invariance_v1.py,residualize_matrix,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_feature_authority_v1.py,load_feature_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_feature_authority_v1.py,ordered_addresses,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_feature_authority_v1.py,regenerate_feature_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_feature_authority_v1.py,sha256_file,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_feature_authority_v1.py,validate_declared_order,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_fl_permutation_authority_v1.py,confirmation_permutation_matrix,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_fl_permutation_authority_v1.py,permutation,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_fl_permutation_authority_v1.py,permutation_set_digest,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_holdout_preprocess_v1.py,equal_donor_within_scale,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_holdout_preprocess_v1.py,tail_rest_vector,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_identifiability_preflight_reference_v2.py,design,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_identifiability_preflight_reference_v2.py,donor_table,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_identifiability_preflight_reference_v2.py,encode_complete,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_identifiability_preflight_reference_v2.py,evaluate,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_identifiability_preflight_reference_v2.py,main,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_identifiability_preflight_reference_v2.py,matrix_rank,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_identifiability_preflight_reference_v2.py,residual_fraction,DIAGNOSTIC_OR_REGRESSION_ONLY,Not a production scientific authority entrypoint.
+t0_inference_safe_v1.py,safe_studentized_fl,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_metadata_coding_v1.py,encode_binary_utf8,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_mtg_feature_split_v2.py,generate,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_package_integrity_v1.py,is_hex64,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_package_integrity_v1.py,sha256_file,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_package_integrity_v1.py,verify_flat_package,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_primary_membership_v1.py,generate_membership,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_primary_membership_v1.py,load_membership,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_primary_membership_v1.py,sha256_file,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_primary_membership_v1.py,validate_cells_against_membership,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_primary_membership_v1.py,validate_complete_role_cell_set,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_primary_membership_v1.py,validate_membership_frame,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_stable_cell_key_v1.py,parse_stable_key_exact,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_stable_cell_key_v1.py,stable_key_from_parts,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_studentized_fl_v1.py,ols_hc3_last,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_studentized_fl_v1.py,studentized_freedman_lane,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_studentized_fl_v1_reference_before_opt.py,ols_hc3_last,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_studentized_fl_v1_reference_before_opt.py,studentized_freedman_lane,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_tail_authority_v1.py,centered_scores_by_donor,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_tail_authority_v1.py,compute_tail_threshold,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_tail_authority_v1.py,freeze_tail_authority,AUTHORITY_COMPONENT_BUILDER,Builds a component authority; not sufficient by itself for a T0 conclusion.
+t0_tail_authority_v1.py,load_tail_authority,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_tail_authority_v1.py,score_raw_counts,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_tail_authority_v1.py,verify_tail_authority_against_loaded_target,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_tail_authority_v1.py,verify_tail_authority_against_raw,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_tail_fl_permutation_authority_v1.py,tail_permutation_matrix,NON_AUTHORITATIVE_PRIMITIVE,SUPERSEDED tail-inference mechanics retained for provenance/calibration only; canonical T0 tail disease inference must not use it.
+t0_tail_fl_permutation_authority_v1.py,tail_permutation_set_digest,NON_AUTHORITATIVE_PRIMITIVE,SUPERSEDED tail-inference mechanics retained for provenance/calibration only; canonical T0 tail disease inference must not use it.
+t0_tail_hc3_t_v1.py,safe_tail_hc3_t,NON_AUTHORITATIVE_PRIMITIVE,Qualified tail HC3-t statistical primitive; canonical use only through adjudicate_from_raw.
+t0_tail_hc3_t_v1.py,tail_hc3_t,NON_AUTHORITATIVE_PRIMITIVE,Qualified tail HC3-t statistical primitive; canonical use only through adjudicate_from_raw.
+t0_tail_n17_engine_comparison_v2.py,decision,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_engine_comparison_v2.py,generate_world,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_engine_comparison_v2.py,logistic,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_engine_comparison_v2.py,main,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_engine_comparison_v2.py,nuisance,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_engine_comparison_v2.py,pmat,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_engine_comparison_v2.py,run_null,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_engine_comparison_v2.py,run_power,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_engine_comparison_v2.py,wild_hc3_bootstrap_t,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_calibration_v1.py,hc3_t_test,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_calibration_v1.py,main,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_calibration_v1.py,power,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_calibration_v1.py,run,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_independent_validation_v2.py,hc3_t,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_independent_validation_v2.py,main,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_independent_validation_v2.py,power,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_independent_validation_v2.py,validate,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_hc3_t_independent_validation_v2.py,world,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_null_calibration_v1.py,logistic,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_null_calibration_v1.py,main,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_null_calibration_v1.py,nuisance,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_null_calibration_v1.py,one_world,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_null_calibration_v1.py,pmat,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_n17_null_calibration_v1.py,run,DIAGNOSTIC_OR_REGRESSION_ONLY,Pathology-blind calibration/regression utility; never a conclusion-bearing T0 entrypoint.
+t0_tail_preflight_raw_v1.py,confirmation_holdout_vectors,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_tail_preflight_raw_v1.py,discovery_holdout_scale,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_tail_preflight_raw_v1.py,raw_tail_preflight,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_tail_qc_randomization_v1.py,tail_qc_veto_test,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_tail_support_coherence_v1.py,adjudicate_tail_support_coherence,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_target_family_authority_v1.py,build_primary_only_family,AUTHORITY_COMPONENT_BUILDER,SUPERSEDED V1 family package retained for provenance/tests only; canonical T0 adjudication requires V2.
+t0_target_family_authority_v1.py,load_primary_only_family,AUTHORITY_COMPONENT_VERIFIER,SUPERSEDED V1 family package retained for provenance/tests only; canonical T0 adjudication requires V2.
+t0_target_family_authority_v1.py,sha,NON_AUTHORITATIVE_PRIMITIVE,SUPERSEDED V1 family package retained for provenance/tests only; canonical T0 adjudication requires V2.
+t0_target_family_authority_v2.py,build_primary_only_family,AUTHORITY_COMPONENT_BUILDER,Builds V2 pre-outcome family semantics including state/tail engines and alphas; not sufficient alone for a T0 conclusion.
+t0_target_family_authority_v2.py,load_primary_only_family,AUTHORITY_COMPONENT_VERIFIER,Verifies V2 target-family semantics; canonical adjudication requires this authority.
+t0_target_family_authority_v2.py,sha,NON_AUTHORITATIVE_PRIMITIVE,Low-level V2 family package primitive; canonical use occurs through adjudicate_from_raw.
+t0_target_family_authority_v3.py,build_primary_only_family_v3,AUTHORITY_COMPONENT_BUILDER,Builds unchanged PRIMARY_ONLY family semantics from an exact rare5 status-authority file rather than a caller status string.
+t0_target_family_authority_v3.py,load_primary_only_family_v3,AUTHORITY_COMPONENT_VERIFIER,Verifies V3 family package and exact rare5 status authority digest.
+t0_target_learner_v1.py,fit_t0_target,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_target_learner_v1.py,nuisance_design,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_target_learner_v1.py,score_expression,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_target_serializer_v1.py,serialize_target,AUTHORITY_COMPONENT_BUILDER,Builds a component authority; not sufficient by itself for a T0 conclusion.
+t0_target_serializer_v1.py,sha256_file,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_target_serializer_v2.py,load_target_v2,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_target_serializer_v2.py,serialize_target_v2,AUTHORITY_COMPONENT_BUILDER,Builds a component authority; not sufficient by itself for a T0 conclusion.
+t0_target_serializer_v2.py,sha256_file,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_technical_registry_v1.py,build_technical_registry,AUTHORITY_COMPONENT_BUILDER,Builds a component authority; not sufficient by itself for a T0 conclusion.
+t0_technical_registry_v1.py,load_technical_registry,AUTHORITY_COMPONENT_VERIFIER,Verifies a component or raw linkage; not sufficient by itself for a T0 conclusion.
+t0_technical_registry_v1.py,sha,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_technical_registry_v2.py,build_technical_registry,AUTHORITY_COMPONENT_BUILDER,Builds the cumulative technical-sensitivity authority; not sufficient by itself for a T0 conclusion.
+t0_technical_registry_v2.py,load_technical_registry,AUTHORITY_COMPONENT_VERIFIER,Verifies the cumulative technical-sensitivity authority; not sufficient by itself for a T0 conclusion.
+t0_technical_registry_v2.py,sha,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.
+t0_technical_registry_v3.py,build_technical_registry_v3,AUTHORITY_COMPONENT_BUILDER,Builds V18 technical semantics while forbidding outcome/nuisance/state fields from extra technical blocks.
+t0_technical_registry_v3.py,load_technical_registry_v3,AUTHORITY_COMPONENT_VERIFIER,Verifies V3 technical registry reserved-field firewall.
+t0_weighted_quantile_v1.py,equal_donor_cell_quantile,NON_AUTHORITATIVE_PRIMITIVE,Reusable mathematical/mechanics primitive; canonical use must be through the declared conclusion entrypoints.

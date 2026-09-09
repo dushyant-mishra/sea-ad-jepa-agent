@@ -39,6 +39,7 @@ RECORD = ROOT / "docs" / "agent" / "T0_V20_FROZEN_CODE_PUBLICATION.json"
 PUBLISHED_DIRS = (
     "scripts/v4/t0_v20_frozen",
     "configs/v4/t0_v20_frozen_contract",
+    "configs/v4/t0_v20_frozen_authority",
     "docs/agent/t0_v20_frozen_package",
 )
 
@@ -49,6 +50,11 @@ MUST_BE_PRESENT = (
     "scripts/v4/t0_v20_frozen/t0_adjudicator_v1.py",
     "configs/v4/t0_v20_frozen_contract/T0_V18_FROZEN_CONSTANTS.json",
     "configs/v4/t0_v20_frozen_contract/T0_V20_EXECUTION_AUTHORITY_CONSTANTS.json",
+    # The inputs the code runs against. Publishing the modules without these
+    # would leave the run still unreproducible from a clean clone.
+    "configs/v4/t0_v20_frozen_authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv",
+    "configs/v4/t0_v20_frozen_authority/"
+    "T0_PRIMARY_MTG_READER_FIT_IMMUNE_CELL_MEMBERSHIP_V1.csv",
 )
 
 git_available = True
@@ -79,8 +85,8 @@ def _record() -> dict:
 
 def test_the_publication_record_exists() -> None:
     record = _record()
-    assert record["files"] == 74, record["files"]
-    assert len(record["entries"]) == 74
+    assert record["files"] == 79, record["files"]
+    assert len(record["entries"]) == 79
 
 
 def test_the_adjudicator_and_constants_are_present() -> None:

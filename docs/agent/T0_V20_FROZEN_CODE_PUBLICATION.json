@@ -1,6 +1,36 @@
 {
   "entries": [
     {
+      "bytes": 4918541,
+      "published_path": "configs/v4/t0_v20_frozen_authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv",
+      "sha256": "29116c16e9002329090a5054b6c4bdae1cbff28917cbee85f03b4633b0b29369",
+      "source_relative_path": "current/authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv"
+    },
+    {
+      "bytes": 1445979,
+      "published_path": "configs/v4/t0_v20_frozen_authority/T0_MTG_SCALAR_ADDRESS_ANNOTATED_UNIVERSE_V1.csv",
+      "sha256": "3f131b1432d538334953e4c3d4643562161a86a93837565b0a39acd1c9ee08e1",
+      "source_relative_path": "current/authority/T0_MTG_SCALAR_ADDRESS_ANNOTATED_UNIVERSE_V1.csv"
+    },
+    {
+      "bytes": 1062,
+      "published_path": "configs/v4/t0_v20_frozen_authority/T0_PRIMARY_MEMBERSHIP_SOURCE_AUTHORITY_V1.json",
+      "sha256": "eb801fb789554fc06c6967e5af24b6fe945a1deb25c92faf94c318aa30009d18",
+      "source_relative_path": "current/authority/T0_PRIMARY_MEMBERSHIP_SOURCE_AUTHORITY_V1.json"
+    },
+    {
+      "bytes": 3471431,
+      "published_path": "configs/v4/t0_v20_frozen_authority/T0_PRIMARY_MTG_READER_FIT_IMMUNE_CELL_MEMBERSHIP_V1.csv",
+      "sha256": "d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529",
+      "source_relative_path": "current/authority/T0_PRIMARY_MTG_READER_FIT_IMMUNE_CELL_MEMBERSHIP_V1.csv"
+    },
+    {
+      "bytes": 27114,
+      "published_path": "configs/v4/t0_v20_frozen_authority/T0_PUBLIC_API_AUTHORITY_MAP_V3.csv",
+      "sha256": "4aa3a3d11d7f851b106b8a2f33e1b4b345eddbcdd1f2baaab9f30b0aff1bec2c",
+      "source_relative_path": "current/authority/T0_PUBLIC_API_AUTHORITY_MAP_V3.csv"
+    },
+    {
       "bytes": 6881,
       "published_path": "configs/v4/t0_v20_frozen_contract/T0_TARGET_VALIDITY_EXECUTION_AUTHORITY_SUCCESSOR_V19.md",
       "sha256": "dd7028031b5a67d850a7205d44d27f5bceae547a6eec37bb84e937854f982348",
@@ -445,8 +475,8 @@
       "source_relative_path": "current/code/t0_weighted_quantile_v1.py"
     }
   ],
-  "files": 74,
-  "published_root_sha256": "c25c70d5e3741c834e0915472cf5fa89eb2bb9c0298b0fb557fb771d9ba1d49c",
+  "files": 79,
+  "published_root_sha256": "c8fc02487038f062590e9ee7e2bc207e9d59309b91580e35d380c0ddd6041fd5",
   "source_package_root_sha256": "896dce257b8ed7330cfe9ac9a561e6d87090903485236dbf37f389d6432cb9e7",
   "verification": "Every file was digested at the source and checked against PACKAGE_MANIFEST.csv before copying, and digested again at the destination after.",
   "what": "The frozen T0 V20 computation code and contract, published into the repository so a clean clone can reproduce T0.",
