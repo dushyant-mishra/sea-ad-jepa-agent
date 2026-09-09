@@ -2,7 +2,7 @@
   "base_main_at_design_start": "cc8a21bc3c043343c85624651124d2c40bcbd4e4",
   "candidate_branch_parent_at_packaging": "cc8a21bc3c043343c85624651124d2c40bcbd4e4",
   "candidate_mechanics": {
-    "dataset_derivation": "84-row operator×family geometry is regenerated only from exact hashed observation-state NPZ + exact all-42 common-core CSV + exact support-by-operator CSV; derivation script is package-bound",
+    "dataset_derivation": "84-row operator\u00d7family geometry is regenerated only from exact hashed observation-state NPZ + exact all-42 common-core CSV + exact support-by-operator CSV; derivation script is package-bound",
     "initial_end_to_end_runtime": "src/sea_ad_jepa/v5/inactive_dataset_teacher_update_v1.py; bounded mechanics only, base JEPA only, two support-family students, one full-support teacher, exact cell/family weighting, AdamW, presentation-based EMA and exposure checkpoint cursor",
     "mask_reference_identity": "SHA256(masking_seed, base_presentation_index, stable cell key, draw index, family, canonical address); optimizer update/tensor row/device/microbatch/PyTorch RNG stream excluded",
     "microbatch_key": "operator_index only; each frozen base cell appears once and the full-support teacher may be cached across both family student views",
