@@ -6,10 +6,10 @@
   "implementation_verifier_veto": true,
   "implementation_verifier_runs_before_expensive_compute": true,
   "implementation_verifier_authority": "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
-  "current_gate": "T0_R8_ADJUDICATOR_READINESS_REPAIR_AND_V5_PRETRAINING_ANTI_CHEAT",
-  "status": "T0_DISCOVERY_STAGE_DONE__R8_AUTHORIZED__V5_TRAINING_CLOSED",
-  "current_status": "Main is consolidated. Active T0 branch t0/v20-pathology-blind-materialization-20260908 is at 237427c734bfdf7d00f286ceeae63692b3075d49 with DISCOVERY_STAGE_DONE_AND_REPLAYED__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN. Discovery AT8 was opened only for 28 discovery donors and replayed. Confirmation AT8 remains unopened because the adjudicator path still has the readiness contradiction. R8 adjudicator-readiness repair is authorized; confirmation numeric AT8 is not authorized until R8 passes. V5 remains data-first but not cheat-qualified; training, TD60, successor-u0, D1, and protected-population access remain unauthorized.",
-  "primary_next_action": "T0: perform R8 adjudicator-readiness repair only, starting from 237427c734bfdf7d00f286ceeae63692b3075d49, and stop at PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN. V5: continue prospective anti-cheat/trainer-authority design on main without optimizer runs.",
+  "current_gate": "T0_STAGE3_EVIDENCE_BYTE_REVIEW_AND_V5_PRETRAINING_HARDENING",
+  "status": "T0_STAGE3_INTERNAL_SUPPORT_RECORDED__FULL_EVIDENCE_BYTE_REVIEW_PENDING__V5_TRAINING_CLOSED",
+  "current_status": "T0 V20 Stage 3 terminal is recorded at e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9. Broad immune-expression primary is SUPPORTED_INTERNAL (p_upper 0.021 vs frozen alpha 0.025; n=18). Rare tail is RARE_TAIL_UNDERDETERMINED_MEASUREMENT because pathology-blind QC vetoed before any tail disease statistic. Full exact-byte independent review remains pending because Stage 3 evidence bytes are not committed and the frozen decision return omits state-composition/state-measurement sensitivities on the QC-veto path. V5 training, TD60, successor-u0, D1 real and protected populations remain unauthorized.",
+  "primary_next_action": "T0: obtain/commit the exact Stage 3 run-summary, decision, access-manifest and sensitivity-supporting evidence bytes under their recorded hashes, then independently replay/read back them without changing the frozen procedure. V5: continue pathology-blind pre-execution/anti-cheat/trainer hardening; do not start optimizer steps.",
   "t0_stage2_discovery_status": {
     "branch": "t0/v20-pathology-blind-materialization-20260908",
     "head": "237427c734bfdf7d00f286ceeae63692b3075d49",
@@ -21,37 +21,36 @@
     "discovery_target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe",
     "discovery_provenance_root_sha256": "15d13dd3e733e0ea90b199cf981b03ccd94bc67fbd19660ef88861e3ae1a37c2",
     "discovery_authority_package_root_sha256": "9806de382c75f7a7a12bb952631ed0b6c9b458250e8161a876b470c48898f6f7",
-    "confirmation_numeric_at8_accessed": false,
-    "ridge_boundary_caveat": "LOODO selected multiplier exponent 2.0, the maximum and most regularized point of the frozen grid; valid pre-registered discovery run, but weak-signal evidence for confirmation review."
+    "confirmation_numeric_at8_accessed": true,
+    "ridge_boundary_caveat": "LOODO selected multiplier exponent 2.0, the maximum and most regularized point of the frozen grid; valid pre-registered discovery run, but weak-signal evidence for confirmation review.",
+    "superseded_by_stage3_terminal": "e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9"
   },
   "t0_r8_authorization": {
-    "status": "AUTHORIZE_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_STILL_CLOSED",
+    "status": "COMPLETED_HISTORICAL__SUPERSEDED_BY_STAGE3",
     "controlling_file": "docs/agent/T0_R8_ADJUDICATOR_READINESS_REPAIR_AUTHORIZATION_20260909.md",
     "allowed": [
       "Supersede the two execution-input-authority loaders in a repo-side v2 whose only behavioural difference is the readiness value check.",
       "Repair the adjudicator readiness contradiction at t0_adjudicator_v2 lines 34 and 48.",
       "Replay the repaired adjudicator path without opening confirmation numeric AT8."
     ],
-    "required_terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
+    "required_terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN",
+    "completed_terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
   },
   "required_actions": [
-    "T0: continue only under the active T0 lane's current release/review authority; do not import V5 anti-cheat assumptions into T0 numeric access.",
-    "T0: perform R8 adjudicator-readiness repair before opening confirmation numeric AT8.",
-    "V5: use current continuation 028989a5f1504e4d6403a44e7c90d37172c54150; scientific target V2, relational proposal V2, base proposal V3 and presentation horizon V1 are frozen. Do not revive historical defaults.",
-    "V5: treat docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md and docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json as required startup context for all teacher/student work.",
-    "V5: build TEACHER_STUDENT_V5_REAL_DATA_ANTI_CHEAT_QUALIFICATION_AUTHORITY_V1 before training authority. It must use real data where available, not synthetic-only fixtures.",
-    "V5: implement or bind support-only, depth/QC-only, mask-only, operator/source, donor-memorization, held-out donor/matrix/study/technology, evidence-response, depth-response, proposal-weighting, collapse, constant-vector/low-rank, and hardware-invariance probes before any checkpoint can be biologically qualified.",
-    "Mechanics: quarantine historical u10--u205 as TRAINING_MECHANICS_DEFECT_INHERITED. Do not resume or rehabilitate those checkpoints as biological teacher authority or TD60 input.",
-    "Mechanics: future healthy teacher/student training must bind fp16 forward -> backward with autocast disabled -> unscale -> 48-tensor mandatory protected-gradient gate -> optimizer step proved -> both Adam moments checked -> EMA update.",
-    "Mechanics: exact 48 protected registry must be externally checked; dynamic discovery cannot define completeness, and torch-dependent tests must actually execute rather than skip."
+    "T0: obtain or commit the exact Stage 3 evidence bytes named by e7a16eae and perform exact-byte independent replay/readback before treating the result as fully independently closed.",
+    "T0: preserve the post-access role-label repair at f98c1f8 as an explicit procedural caveat; do not rewrite it out of history.",
+    "V5: continue the current prospective anti-cheat and trainer pre-execution hardening without optimizer runs.",
+    "V5: preserve the frozen scientific target V2, base proposal V3 with exact p/q correction, one-population-equivalent presentation horizon, and dataset-defined support geometry; do not revive historical defaults.",
+    "V5: complete prospective anti-cheat threshold authority, live critical-test proof, CUDA Gate-2, science-neutral GPU calibration, design freeze, and independent scientific/implementation review before training authority.",
+    "Mechanics: future healthy teacher/student training must bind fp16 forward -> backward with autocast disabled -> unscale -> 48-tensor mandatory protected-gradient gate -> optimizer step proved -> both Adam moments checked -> EMA update."
   ],
   "parallel_nonblocking_work": [
-    "F1 producer/replay independent review and authorization design may continue without becoming the global current gate.",
-    "D1 review/readout contract design may continue pathology-blind but real D1 waits for a qualified teacher.",
-    "V5 anti-cheat architecture/probe design may continue while T0 runs, but cannot authorize training."
+    "V5 anti-cheat architecture, pre-execution authority, support-schedule integrity repair, technology-mapping authority design and trainer binding may continue pathology-blind.",
+    "F1 producer/replay review may continue without becoming the global current gate.",
+    "D1 readout/contract design may continue pathology-blind, but real D1 still waits for a lawful qualified teacher."
   ],
   "forbidden_actions": [
-    "Do not open confirmation numeric AT8 until R8 terminal is achieved and reviewed.",
+    "Do not reopen, retune, widen or reinterpret the completed T0 V20 confirmation procedure in response to the Stage 3 result.",
     "Do not train, finetune, run production optimizer steps, write production teacher/student checkpoints, or advance EMA under V5.",
     "Do not execute TD60 decision-bearing learned-teacher continuity.",
     "Do not execute real D1.",
@@ -64,6 +63,7 @@
     "Do not infer authority from stale branch names or historical PASS files."
   ],
   "controlling_files": [
+    "docs/agent/T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md",
     "docs/agent/CURRENT_AUTHORITY_INDEX.md",
     "docs/agent/CURRENT_SUPERSESSION_MAP.md",
     "docs/agent/T0_STAGE2_DISCOVERY_STATUS_20260909.md",
@@ -95,5 +95,27 @@
       "HISTORICAL_CHECKPOINT_QUARANTINE"
     ]
   },
-  "update_only_after": "A blocker is actually closed with exact code/test/root evidence or a new prospective authority is frozen. Never advance status based on branch naming, prose-only claims, or loss decrease alone."
+  "update_only_after": "A blocker is actually closed with exact code/test/root evidence or a new prospective authority is frozen. T0 Stage 3 scientific terminal is recorded, but full evidence-byte closure still requires the exact Stage 3 artifacts.",
+  "t0_stage3_result": {
+    "branch": "t0/v20-pathology-blind-materialization-20260908",
+    "head": "e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9",
+    "terminal": "PASS_T0_V20_STAGE3_CONFIRMATION_AND_ADJUDICATION_REPLAYED",
+    "primary_terminal": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
+    "primary_p_upper": 0.021,
+    "state_positive_alpha": 0.025,
+    "t_observed": 1.9078694125102356,
+    "beta": 124.94507515835764,
+    "hc3_se": 65.48932245523241,
+    "confirmation_donors": 18,
+    "residual_df": 13,
+    "permutations": 9999,
+    "tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+    "tail_disease_test_run": false,
+    "tail_qc_ok": false,
+    "tail_qc_p_upper": 0.018,
+    "tail_max_mean_abs_standardized_contrast": 0.2946862124155104,
+    "first_attempt_post_access_repair_commit": "f98c1f8cbc1345b7a8cf0d643addd1a9bd494bc1",
+    "review_status": "INTERNAL_RESULT_RECORDED__FULL_EVIDENCE_BYTE_REVIEW_PENDING",
+    "controlling_review": "docs/agent/T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md"
+  }
 }
