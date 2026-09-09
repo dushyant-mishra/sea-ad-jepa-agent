@@ -51,6 +51,7 @@ STOP_PROOF_COUNT = "STOP_T0_RAW_SOURCE_PROOF_POPULATION_NOT_COMPLETE"
 MTG_SOURCE_SHA256 = "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
 MTG_SOURCE_RELATIVE_PATH = (
     "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad")
+MTG_SOURCE_BYTES = 32_978_570_763
 MTG_SOURCE_CELLS = 1_178_694
 SOURCE_FEATURE_COUNT = 36_601
 PRODUCTION_LOGICAL_ROWS = 20_804
@@ -230,8 +231,13 @@ def _proof_root(authority: Mapping[str, Any]) -> str:
     parts = [
         _typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
         _typed(str(authority["source_sha256"])),
+        _typed(int(authority["digest_bytes_read"])),
         _typed(int(authority["source_cells"])),
         _typed(int(authority["source_features"])),
+        _typed(str(authority["matrix_slot"])),
+        _typed(bool(authority["caller_supplied_values"])),
+        _typed(bool(authority["pathology_values_read"])),
+        _typed(bool(authority["real_execution_ready"])),
         _typed(str(authority["logical_row_authority_root_sha256"])),
         _typed(str(authority["population_closure_root_sha256"])),
         _typed(str(authority["feature_authority_root_sha256"])),
@@ -257,6 +263,7 @@ def _build_population_raw_source_authority(
         expected_population_closure_root_sha256: str,
         expected_feature_authority_root_sha256: str,
         expected_source_sha256: str,
+        expected_source_bytes: int,
         expected_source_cells: int,
         expected_source_features: int,
         expected_logical_rows: int,
@@ -292,6 +299,11 @@ def _build_population_raw_source_authority(
                 "%s: %s is %s, expected %s"
                 % (STOP_SOURCE_DIGEST, asset, actual_sha,
                    expected_source_sha256))
+        if bytes_read != int(expected_source_bytes):
+            raise AssertionError(
+                "%s: %s contains %d bytes, expected %d"
+                % (STOP_SOURCE_SHAPE, asset, bytes_read,
+                   int(expected_source_bytes)))
 
         # Important: h5py consumes the same already-open file object that was
         # hashed above.  No second pathname open exists.
@@ -411,6 +423,7 @@ def build_population_raw_source_authority(
         expected_feature_authority_root_sha256=(
             expected_feature_authority_root_sha256),
         expected_source_sha256=expected_source_sha256,
+        expected_source_bytes=MTG_SOURCE_BYTES,
         expected_source_cells=MTG_SOURCE_CELLS,
         expected_source_features=SOURCE_FEATURE_COUNT,
         expected_logical_rows=PRODUCTION_LOGICAL_ROWS,
@@ -427,6 +440,9 @@ def assert_population_raw_source_authority_lawful(
         expected_population_closure_root_sha256: str,
         expected_feature_authority_root_sha256: str,
         expected_source_sha256: str = MTG_SOURCE_SHA256,
+        expected_source_bytes: int = MTG_SOURCE_BYTES,
+        expected_source_cells: int = MTG_SOURCE_CELLS,
+        expected_source_features: int = SOURCE_FEATURE_COUNT,
         expected_proof_count: int = PRODUCTION_LOGICAL_ROWS,
 ) -> dict[str, Any]:
     """Establish stored == recomputed == externally expected for the proof root."""
@@ -456,6 +472,23 @@ def assert_population_raw_source_authority_lawful(
             raise AssertionError(
                 "%s: %s is %r, externally expected %r"
                 % (STOP_LOGICAL_ROOT, field, authority.get(field), expected))
+
+    if int(authority.get("digest_bytes_read", -1)) != int(expected_source_bytes):
+        raise AssertionError(
+            "%s: digest_bytes_read=%r, expected %d"
+            % (STOP_SOURCE_SHAPE, authority.get("digest_bytes_read"),
+               int(expected_source_bytes)))
+    if int(authority.get("source_cells", -1)) != int(expected_source_cells) or \
+            int(authority.get("source_features", -1)) != int(expected_source_features):
+        raise AssertionError(
+            "%s: authority geometry is %r x %r, expected %d x %d"
+            % (STOP_SOURCE_SHAPE, authority.get("source_cells"),
+               authority.get("source_features"), int(expected_source_cells),
+               int(expected_source_features)))
+    if str(authority.get("matrix_slot")) != UMI_SLOT:
+        raise AssertionError(
+            "%s: matrix_slot=%r, expected %r"
+            % (STOP_SLOT_ABSENT, authority.get("matrix_slot"), UMI_SLOT))
 
     proofs = authority.get("proofs")
     if not isinstance(proofs, (tuple, list)):
