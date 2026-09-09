@@ -1,0 +1,21 @@
+{
+  "schema": "JEPA_V5_CRITICAL_TEST_EXECUTION_MANIFEST_V1",
+  "status": "CRITICAL_TEST_SET_DECLARED__NO_TRAINING_AUTHORITY",
+  "expected_test_ids": [
+    "test_gate_module_reads_live_parameters",
+    "test_live_tensor_with_subnormal_element_is_not_called_dead",
+    "test_nonfinite_is_detected_even_when_other_elements_are_finite",
+    "test_frozen_registry_is_exactly_the_48_expected_identities",
+    "test_registry_validation_catches_a_shrunken_or_renamed_protected_set"
+  ],
+  "requirements": {
+    "torch_import_required": true,
+    "skipped_allowed": false,
+    "missing_allowed": false,
+    "failed_allowed": false,
+    "errored_allowed": false
+  },
+  "source_test_file": "tests/test_c2_mandatory_gradient_gate_v1.py",
+  "training_authorized": false,
+  "execution_authorized": false
+}
