@@ -1,0 +1,43 @@
+{
+  "schema": "JEPA_V5_D_DERIVATION_HISTORICAL_COMPATIBILITY_REVIEW_V1",
+  "status": "HISTORICAL_METHOD_PARTIALLY_REUSABLE__KNOWN_SELECTION_SHORTCUTS_FORBIDDEN",
+  "reusable_historical_elements": [
+    "equal donor influence with equal cell influence within donor",
+    "deterministic disjoint molecular views/sketches",
+    "generalized-eigensystem shared-state geometry",
+    "contiguous-prefix dimension selection",
+    "held-donor cross-view predictability",
+    "donor-resampled principal-subspace stability",
+    "independent-view/sketch agreement",
+    "one-SE dimension selection among jointly supported prefixes",
+    "boundary hit requires search-envelope expansion rather than forced selection"
+  ],
+  "forbidden_historical_elements": [
+    "fixed-observed-axis empirical null used as if it were a refitted principal-subspace null",
+    "up-to-4-cells-per-stratum validation subset as final production dimension authority",
+    "historical temporary D_shared=5",
+    "historical width 96 as authority",
+    "d_gene=160 as biological state ceiling",
+    "search rank 320 as selected biological dimension",
+    "external D_global=224 as active V5 authority"
+  ],
+  "v5_required_repairs": {
+    "population": "FULL_READER_FIT_STREAM__4553407_CELLS__104_DONORS",
+    "expression_binding": "42_OF_42_FROZEN_PHYSICAL_SHARDS_REQUIRED",
+    "null": "FULL_REFIT_EVERY_REPLICATE",
+    "measurement_matching": [
+      "donor",
+      "operator",
+      "Q_DEPTH",
+      "Q_DETECT",
+      "support/measurability"
+    ],
+    "shortcut_increment": "candidate biological rank must add information beyond prospectively frozen measurement shortcut baselines",
+    "private_rank": "must predict common-core biology/relations beyond D_shared rather than explain raw residual variance",
+    "zero_dimension": "lawful for D_shared and D_private if gates fail"
+  },
+  "current_execution_blocker": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
+  "synthetic_data_used_for_production_authority": false,
+  "pathology_used": false,
+  "training_authorized": false
+}
