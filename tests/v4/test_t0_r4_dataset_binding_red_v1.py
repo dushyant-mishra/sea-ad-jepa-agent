@@ -37,35 +37,49 @@ def _csv(columns, rows) -> bytes:
     return out.getvalue().encode("utf-8")
 
 
-def test_r4_raw_source_proof_rejects_a_fabricated_vector_even_when_every_label_matches() -> None:
-    """Correct provenance labels are not authentication of caller-created values."""
-    bound = 9470
+def test_r4_raw_source_proof_uses_authenticated_h5_bytes_not_a_caller_vector(
+        tmp_path: Path) -> None:
+    """The production proof API has no caller-supplied raw-row value argument."""
+    import inspect
+    import h5py
+    import numpy as np
+
+    source = tmp_path / "synthetic_mtg.h5ad"
+    with h5py.File(source, "w") as handle:
+        obs = handle.create_group("obs")
+        obs.create_dataset("exp_component_name",
+                           data=np.asarray([b"C0", b"C1"]))
+        obs.create_dataset("Donor ID", data=np.asarray([b"D0", b"D1"]))
+        layer = handle.create_group("layers/UMIs")
+        layer.attrs["shape"] = np.asarray([2, 4], dtype=np.int64)
+        layer.create_dataset("indptr", data=np.asarray([0, 2, 4], dtype=np.int64))
+        layer.create_dataset("indices", data=np.asarray([0, 3, 1, 2], dtype=np.int64))
+        layer.create_dataset("data", data=np.asarray([1, 2, 3, 4], dtype=np.int32))
+
+    sha = hashlib.sha256(source.read_bytes()).hexdigest()
     logical = {
         "rows": [{
             "canonical_cell_id": "C1",
             "donor_id": "D1",
-            "expression_row": 100,
-            "source_library": bound,
+            "expression_row": 1,
+            "source_library": 7,
         }]
     }
-    fabricated = [0] * (rc.SOURCE_FEATURE_COUNT - 1) + [bound]
+    assert rc.prove_source_library_from_authenticated_h5_path(
+        logical=logical, logical_index=0, source_path=source,
+        expected_source_sha256=sha, expected_shape=(2, 4)) is True
 
-    # On ab61cf55 this returns True: the values were never read from H5 bytes.
-    with pytest.raises(AssertionError, match="AUTHENTICATED_SOURCE"):
-        rc.prove_source_library(
-            logical=logical,
-            logical_index=0,
-            raw_source_row_values=fabricated,
-            raw_source_provenance={
-                "source_sha256": rc.MTG_SOURCE_SHA256,
-                "source_row_index": 100,
-                "source_width": rc.SOURCE_FEATURE_COUNT,
-                "canonical_cell_id": "C1",
-                "donor_id": "D1",
-                "matrix_slot": rc.MTG_SOURCE_MATRIX_SLOT,
-            },
-        )
+    signature = inspect.signature(
+        rc.prove_source_library_from_authenticated_h5_path)
+    assert "raw_source_row_values" not in signature.parameters
+    assert "raw_source_provenance" not in signature.parameters
 
+    wrong = dict(logical)
+    wrong["rows"] = [dict(logical["rows"][0], source_library=8)]
+    with pytest.raises(AssertionError, match="SOURCE_LIBRARY_NOT_PROVEN"):
+        rc.prove_source_library_from_authenticated_h5_path(
+            logical=wrong, logical_index=0, source_path=source,
+            expected_source_sha256=sha, expected_shape=(2, 4))
 
 def test_r4_manifest_rows_and_nnz_are_required_not_optional_audit_labels() -> None:
     """The frozen Phase2 manifest makes rows/nnz authoritative execution geometry."""
