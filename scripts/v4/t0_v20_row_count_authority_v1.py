@@ -1058,7 +1058,7 @@ def assert_row_authority_lawful(
             "rows": len(logical["rows"])}
 
 
-def prove_source_library(
+def verify_source_library_vector_fixture(
     *,
     logical: Mapping[str, Any],
     logical_index: int,
@@ -1068,7 +1068,12 @@ def prove_source_library(
     expected_matrix_slot: str = MTG_SOURCE_MATRIX_SLOT,
     expected_source_width: int = SOURCE_FEATURE_COUNT,
 ) -> bool:
-    """Prove the bound `source_library` against an AUTHENTICATED raw source row.
+    """Synthetic fixture helper: validate a supplied vector and provenance labels.
+
+    This function is deliberately NON-AUTHORITATIVE. It does not read source
+    bytes and must never be used as production proof. Production code must call
+    `prove_source_library_from_authenticated_h5_path`.
+
 
     The earlier version required three provenance keys to be present and checked
     none of them. It never verified `source_sha256` against anything, never
@@ -1167,6 +1172,14 @@ def prove_source_library(
             "%s: the authenticated raw row sums to %d but the bound source_library is %d"
             % (STOP_LIBRARY_NOT_PROVEN, total, bound))
     return True
+
+
+def prove_source_library(*args: Any, **kwargs: Any) -> bool:
+    """Fail closed on the superseded caller-vector production-shaped API."""
+    raise AssertionError(
+        "%s: caller-supplied raw row values cannot prove source_library; use "
+        "prove_source_library_from_authenticated_h5_path"
+        % STOP_AUTHENTICATED_SOURCE_REQUIRED)
 
 
 def verify_selected_row(
