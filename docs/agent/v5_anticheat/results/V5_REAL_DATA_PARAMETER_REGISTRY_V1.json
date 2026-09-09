@@ -1,0 +1,89 @@
+{
+  "schema": "JEPA_V5_REAL_DATA_PARAMETER_REGISTRY_V1",
+  "status": "DERIVED_FROM_AUTHENTICATED_REAL_READER_FIT_AND_CALIBRATION_ASSETS__NO_TRAINING_AUTHORITY",
+  "inputs": {
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "support_member_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "partition": "reader_fit",
+    "synthetic_data_used": false,
+    "pathology_used": false,
+    "checkpoint_outcomes_used": false
+  },
+  "population_geometry": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "sources": 3,
+    "donor_operator_source_groups": 1400,
+    "minimum_donor": {
+      "donor_id": "human_NPH_906",
+      "source": "NPH52",
+      "cells": 81
+    },
+    "maximum_donor": {
+      "donor_id": "H21.33.032",
+      "source": "SEA_AD",
+      "cells": 174111
+    },
+    "minimum_group_cells": 1,
+    "maximum_group_cells": 42209,
+    "groups_below_16": 192,
+    "source_cells": {
+      "HVS": 198718,
+      "NPH52": 236476,
+      "SEA_AD": 4118213
+    },
+    "source_donors": {
+      "HVS": 41,
+      "NPH52": 17,
+      "SEA_AD": 46
+    }
+  },
+  "donor_equal_estimand": {
+    "source_weights_from_fit_donor_composition": {
+      "HVS": {
+        "numerator": 41,
+        "denominator": 104,
+        "float": 0.3942307692307692
+      },
+      "NPH52": {
+        "numerator": 17,
+        "denominator": 104,
+        "float": 0.16346153846153846
+      },
+      "SEA_AD": {
+        "numerator": 46,
+        "denominator": 104,
+        "float": 0.4423076923076923
+      }
+    },
+    "per_cell_target_probability_rule": "p_i = 1 / (n_fit_donors * n_cells_in_donor_i)"
+  },
+  "donor_folds": {
+    "derivation_rule": "largest K <= max_folds with at least min_donors_per_source_per_fold donors from every source in every fold",
+    "max_folds": 8,
+    "min_donors_per_source_per_fold": 3,
+    "derived_outer_folds": 5
+  },
+  "measurement_support_geometry": {
+    "molecular_addresses": 41238,
+    "common_measured_all_operators": 17186,
+    "measured_addresses_per_operator_min": 18736,
+    "measured_addresses_per_operator_median": 18736,
+    "measured_addresses_per_operator_max": 35076,
+    "common_core_index_raw_i4_sha256": "a4095c0e70141cacbcb940a2455480e9666452de4d41875360e9b4573c05a4f4",
+    "canonical_common_core_csv_sha256": "8aa8dfebb481aa2e60b12ab0f581ba1a36063b6c12dc2d8514d5fe7a20ad07ac",
+    "canonical_core_indices_match_rederived_support_intersection": true,
+    "common_core_hash_semantics_note": "The raw int32 index-vector digest is not interchangeable with the canonical CSV byte digest."
+  },
+  "dimension_authority_state": {
+    "D_shared": "UNRESOLVED__MUST_BE_DERIVED_FROM_FULL_REAL_READER_FIT_EXPRESSION",
+    "D_private": "UNRESOLVED__ONLY_AFTER_D_SHARED_FREEZE__ZERO_IS_LAWFUL",
+    "D_total": "UNRESOLVED__D_SHARED_PLUS_D_PRIVATE",
+    "D_obs": "UNRESOLVED__SEPARATE_OBSERVATION_CHANNEL_RANK",
+    "d_gene": "ARCHITECTURE_CAPACITY_PARAMETER__NOT_BIOLOGICAL_DIMENSION_AUTHORITY",
+    "candidate_search_rank": "SEARCH_ENVELOPE_ONLY__BOUNDARY_HIT_REQUIRES_PROSPECTIVE_EXPANSION_NOT_SELECTION"
+  },
+  "training_authorized": false
+}
