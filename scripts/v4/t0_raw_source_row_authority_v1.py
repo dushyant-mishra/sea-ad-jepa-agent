@@ -75,6 +75,7 @@ STOP_CALLER_VALUES = "STOP_T0_RAW_SOURCE_CALLER_SUPPLIED_VALUES_REFUSED"
 MTG_SOURCE_SHA256 = "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
 MTG_SOURCE_RELATIVE_PATH = (
     "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad")
+MTG_SOURCE_BYTES = 32_978_570_763
 MTG_SOURCE_CELLS = 1_178_694
 SOURCE_FEATURE_COUNT = 36_601
 UMI_SLOT = "layers/UMIs"
@@ -764,6 +765,24 @@ def assert_population_raw_source_authority_lawful(
     """Externally bind every population-level raw-source parent."""
     if authority.get("schema") != POPULATION_SCHEMA:
         raise AssertionError("%s: wrong schema" % STOP_FIELD_SCHEMA)
+    if authority.get("namespace") != POPULATION_NAMESPACE:
+        raise AssertionError("%s: wrong namespace" % STOP_FIELD_SCHEMA)
+    if int(authority.get("source_bytes", -1)) != MTG_SOURCE_BYTES:
+        raise AssertionError("%s: source byte count is %r, expected %d"
+                             % (STOP_SOURCE_SHAPE, authority.get("source_bytes"),
+                                MTG_SOURCE_BYTES))
+    if int(authority.get("source_cells", -1)) != MTG_SOURCE_CELLS:
+        raise AssertionError("%s: source cell count is %r, expected %d"
+                             % (STOP_SOURCE_SHAPE, authority.get("source_cells"),
+                                MTG_SOURCE_CELLS))
+    if int(authority.get("source_features", -1)) != SOURCE_FEATURE_COUNT:
+        raise AssertionError("%s: source feature count is %r, expected %d"
+                             % (STOP_SOURCE_SHAPE, authority.get("source_features"),
+                                SOURCE_FEATURE_COUNT))
+    if str(authority.get("matrix_slot")) != UMI_SLOT:
+        raise AssertionError("%s: matrix slot is %r, expected %r"
+                             % (STOP_SLOT_ABSENT, authority.get("matrix_slot"),
+                                UMI_SLOT))
     expected = {
         "source_sha256": str(expected_source_sha256),
         "logical_row_authority_root_sha256": str(
