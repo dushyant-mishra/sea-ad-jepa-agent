@@ -77,34 +77,39 @@ Eligibility turned entirely on `technical_complete`, because AT8 availability,
 age presence and sex presence are all True for every one of the 46 candidates.
 All 46 came out technically complete.
 
-## A scope question I am flagging rather than deciding
+## The scope question, now decided by the owner
 
-The eligible-donor authority emits a `donor_role` column: CONFIRMATION,
-DISCOVERY or INELIGIBLE. I want this visible rather than buried, because the
-lane has been treating role computation as a gated step — the
-technical-completeness run summary records `donor_roles_computed: false` and
-`eligible_donors_computed: false` as explicit markers, and an earlier
-instruction was to keep the donor-role STOP closed.
+I flagged that the eligible-donor authority emits a `donor_role` column, since
+the lane tracks `donor_roles_computed` as a gated marker and an earlier
+instruction was to keep the donor-role STOP closed. The owner ruled on
+2026-09-09 that it is in scope for this package and that it must not be re-cut to
+remove the column; instead its meaning is narrowed in documentation.
 
-My reading is that roles were in scope for step 4: the work order named the
-eligible-donor authority, the required end state is
-`ELIGIBLE_DONOR_AUTHORITY_DONE_AND_REPLAYED`, and under the frozen design the
-role assignment is a deterministic function of the eligible set with no free
-parameter and no pathology input. Emitting eligibility while withholding the
-split it fully determines would be a distinction without content.
+### `donor_role`, scoped by owner decision
 
-What is *not* built, and I am not claiming it is:
+The owner ruled on 2026-09-09 that `donor_role` is in scope for this pre-real-T0
+review package: the work order asked for the eligible-donor authority, the split
+is deterministic over the eligible set, and it consumes no numeric AT8. **The
+package was not re-cut**, so no root moved. The narrowing is documentary:
 
-- the frozen `t0_donor_role_authority_v2` package itself. That module also runs
-  nuisance-design rank checks over the confirmation set, the discovery set and
-  every discovery LOODO fold, and those need age and sex *values*, which this
-  authority deliberately does not carry. That work belongs to the estimability
-  preflight and has not been run on production data.
-- any resolution of `STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND`.
-  Its disposition is the owner's call and I have not treated it as lifted.
+    donor_role  =  a deterministic pre-real-T0 eligible-set split
+    donor_role  != the frozen t0_donor_role_authority_v2 package
+    donor_role  != any real-T0 execution authorization
 
-If roles were meant to stay out of this step, the fix is small: the column comes
-out and the eligibility booleans stay. Say so and I will re-cut the package.
+What it is not, concretely. It is not the frozen `t0_donor_role_authority_v2`
+package, which additionally runs nuisance-design rank checks over the
+confirmation set, the discovery set and every discovery LOODO fold; those need
+age and sex *values* that this authority deliberately does not carry, so they
+have not been run on production data. It does not lift
+`STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND`, which remains in
+`unresolved_blockers`. And it does not authorize real T0.
+
+The owner also ruled against re-stamping the lane for the provenance mislabel in
+finding 2 below, before external review: the digest values are reproducible and
+CRLF-safe, only the method label is false, and re-stamping would move package
+roots already cited including B2 and force cascading replays. That is an
+external-review decision rather than another producer-side churn cycle. The
+finding stays visible and explicit.
 
 ## Findings I am reporting rather than resolving
 

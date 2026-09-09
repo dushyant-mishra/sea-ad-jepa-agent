@@ -1,0 +1,48 @@
+{
+  "cells_consumed": 20804,
+  "completeness_root_sha256": "360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470",
+  "donor_rows": 46,
+  "donor_set_matches_b2": true,
+  "duplicate_donor_rows": false,
+  "independently_rederived": true,
+  "logical_row_authority_root_sha256": "64ea880ff6cf19aca48e0f2e77edfa6d37fc4f5e20022011131c496173896fc3",
+  "member_digests": {
+    "T0_TECHNICAL_COMPLETENESS_MANIFEST.csv": {
+      "bytes": 241,
+      "sha256": "aad840e94053cc6650ccc5e309346eed6e1136033b20a6564e76054281094d61"
+    },
+    "T0_TECHNICAL_COMPLETENESS_METADATA.json": {
+      "bytes": 2144,
+      "sha256": "a6b387be0f4ab6d5af67d8208fa2e973e4b6a90acb5e536748642856d9916954"
+    },
+    "T0_TECHNICAL_COMPLETENESS_REGISTRY.csv": {
+      "bytes": 2350,
+      "sha256": "c898b378e0008ebdeb50f53843aea33fa6dbc8462aa7a32ee5c72564f5e6da11"
+    }
+  },
+  "package_dir": "outputs\\t0_technical_completeness_20260909",
+  "package_root_sha256": "0164bccc76ad7ed9385de01fd0ab885dd80770afad0b94ee189e9084ee3cfe99",
+  "parent_contract_root_sha256": "9d4e818e20077c42c5500b4df35c385dd1a43cb53375da3a7b4d738257ff5ba5",
+  "pathology_fields_in_artifacts": false,
+  "physical_read_plan_root_sha256": "cc75cef0ebb9a05e6699546e18ae45b3555f488dc2e46db4c845370c5be23519",
+  "population_closure_root_sha256": "ec350b8d9a30a8a08573f055b9a0c103d0f6805014998ac9975d94585421d397",
+  "population_raw_source_root_sha256": "0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b",
+  "production_run_status": "DERIVED_OVER_THE_REAL_POPULATION_FROM_AUTHENTICATED_B2_PARENTS",
+  "projection_root_sha256": "ef6ccdde0e0268cce819b4e543d7d542120811fa3762225964f78f9172f370e7",
+  "real_execution_ready": false,
+  "rederivation": {
+    "counts_payload_cache_hits": 17678,
+    "counts_payload_reads": 3126,
+    "donors_compared": 46,
+    "field_comparisons": 184,
+    "largest_raw_float_delta_below_recorded_precision": 4.973799150320701e-13,
+    "largest_raw_float_delta_field": "H21.33.005/Q_DEPTH",
+    "q_value_comparison_is_exact_at_the_recorded_precision": true,
+    "q_value_comparison_places": 12,
+    "rederived_completeness_root_sha256": "360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470"
+  },
+  "retired_terminal_present": false,
+  "schema": "JEPA_T0_TECHNICAL_COMPLETENESS_REPLAY_REPORT_V1",
+  "stored_equals_recomputed_equals_expected": true,
+  "technically_complete_donors": 46
+}

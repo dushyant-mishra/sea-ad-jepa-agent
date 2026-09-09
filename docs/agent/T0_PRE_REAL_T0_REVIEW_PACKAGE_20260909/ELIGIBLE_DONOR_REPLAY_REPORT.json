@@ -1,0 +1,86 @@
+{
+  "candidate_donors": 46,
+  "confirmation_donors": 18,
+  "covariate_values_in_artifacts": false,
+  "discovery_donors": 28,
+  "donor_role_root_sha256": "799261f54de158f4c24c33a51a674611fe4e5e68509fcbbca681216470fe10bd",
+  "donor_set_matches_b2_population": true,
+  "duplicate_donor_rows": false,
+  "eligible_donor_root_sha256": "a5470b9f5389e0fa72b3ca51832c67d7419ed6447a85d6d979884b9fe1444f85",
+  "eligible_donors": 46,
+  "frozen_role_path_agreement": {
+    "binding_rule": "RANK_ELIGIBLE_DONORS_ONLY__NOT_ALL_SUPPORT_DONORS",
+    "confirmation_under_generate": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "confirmation_under_role_authority": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "eligible_donors": 46,
+    "ineligible_donors": [],
+    "ineligible_donors_inside_support_top_18": [],
+    "paths_agree": true,
+    "support_donors": 46
+  },
+  "ineligible_donors": [],
+  "member_digests": {
+    "T0_ELIGIBLE_DONOR_MANIFEST.csv": {
+      "bytes": 225,
+      "sha256": "eab2ab9c68ff106630ef949bf9f844367bf2fc1b555147831399dc6ec2ddcc92"
+    },
+    "T0_ELIGIBLE_DONOR_METADATA.json": {
+      "bytes": 2241,
+      "sha256": "38bb2b46c143d179bfb6242ef71a9e0b6f3ed55dff134e7d8682771d0f116e81"
+    },
+    "T0_ELIGIBLE_DONOR_REGISTRY.csv": {
+      "bytes": 5257,
+      "sha256": "7bad8722f048f4125c5fceb9fd3a1fa00c1249d7853125a7f692a73ce73f650a"
+    }
+  },
+  "package_dir": "outputs\\t0_eligible_donor_20260909",
+  "package_root_sha256": "af4b71413917cde7dd6b35686b3f8410e94ee323d436a2f4e125ff91b06980fd",
+  "parent_contract_root_sha256": "be92b2ac2b347f0da45690e264d1b224584cfb56131ac3df61a01480ad196ae8",
+  "pathology_fields_in_artifacts": false,
+  "population_rows_proven": 20804,
+  "predicate_holds_on_every_row": true,
+  "real_execution_ready": false,
+  "rederived_from_parents": true,
+  "roles_follow_the_frozen_rule": true,
+  "schema": "JEPA_T0_ELIGIBLE_DONOR_REPLAY_REPORT_V1",
+  "stored_equals_recomputed_equals_rederived": true,
+  "technical_completeness_cells_consumed": 20804
+}

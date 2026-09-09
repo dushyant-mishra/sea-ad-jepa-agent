@@ -1,0 +1,27 @@
+{
+  "closure_is_population": true,
+  "member_digests": {
+    "T0_RAW_SOURCE_POPULATION_MANIFEST.csv": {
+      "bytes": 242,
+      "sha256": "85a350220d39c78a87fad77d66709965412171861e01024680f87ec2eb7dedd9"
+    },
+    "T0_RAW_SOURCE_POPULATION_METADATA.json": {
+      "bytes": 1905,
+      "sha256": "7e660e149863348b74f43ba4cc4e5f2345054df1d087efadb1443edba0312fe5"
+    },
+    "T0_RAW_SOURCE_POPULATION_REGISTRY.csv": {
+      "bytes": 1677306,
+      "sha256": "4812f01a9596119d83f3821556c6599a696c79735961d1b1ad756994fda85f4c"
+    }
+  },
+  "package_dir": "outputs\\t0_b2_production_20260909",
+  "package_root_sha256": "98eac4a68df7960e79739d236cf0febacdec52a33de76144b146dc29a5a64436",
+  "partial": false,
+  "pathology_fields_in_artifacts": false,
+  "population_raw_source_root_sha256": "0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b",
+  "real_execution_ready": false,
+  "rows_replayed": 20804,
+  "schema": "JEPA_T0_B2_PRODUCTION_REPLAY_REPORT_V1",
+  "stored_equals_recomputed_equals_expected": true,
+  "substrate_rebuilt": true
+}

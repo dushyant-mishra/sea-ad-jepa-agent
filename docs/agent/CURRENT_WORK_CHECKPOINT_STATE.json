@@ -179,13 +179,16 @@
     "t0_v20": "STOP_BEFORE_REAL_T0_RUN__ALL_PATHOLOGY_BLIND_AUTHORITIES_READY_FOR_EXTERNAL_REVIEW"
   },
   "next_authorized_actions": [
-    "AWAIT_EXTERNAL_REVIEW_OF_THE_PRE_REAL_T0_HANDOFF",
+    "AWAIT_INDEPENDENT_ATTACK_AND_REPLAY_OF_4552851d",
+    "EXTERNAL_REVIEW_OF_THE_ELIGIBLE_ROLE_SCOPE",
+    "EXTERNAL_REVIEW_OF_THE_LF_CONTENT_VERSUS_GIT_BLOB_PROVENANCE_LABEL",
     "DO_NOT_RUN_REAL_T0",
-    "DO_NOT_ACCESS_NUMERIC_CONFIRMATION_AT8_OR_PATHOLOGY_VALUES",
+    "DO_NOT_ACCESS_NUMERIC_AT8_OR_PATHOLOGY_VALUES",
     "DO_NOT_OPEN_DEV_OR_SEALED",
     "DO_NOT_SET_OR_BYPASS_REAL_EXECUTION_READY",
     "DO_NOT_BEGIN_TEACHER_STUDENT_TRAINING",
     "DO_NOT_SELF_PROMOTE_ANY_AUTHORITY_TO_PASS",
+    "DO_NOT_RE_STAMP_THE_LANE_FOR_THE_PROVENANCE_LABEL_BEFORE_REVIEW",
     "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
   ],
   "peer_agents": [
@@ -555,12 +558,48 @@
         "The re-derivation comparison pitted the package's twelve-place rendering against a fresh full-repr float and failed on identical numbers; it now compares at the twelve places the authority defines.",
         "A reported 'largest raw float delta' was presented as bounding re-derivation drift but measured the write's quantization error and lies in [0, 5e-13) by construction once the strings agree; it is relabelled a quantization check and its bound is now asserted."
       ],
+      "owner_decisions_20260909": {
+        "donor_role": {
+          "definition": "a deterministic pre-real-T0 eligible-set split",
+          "does_not_lift_the_at8_availability_stop": true,
+          "is_not_a_real_t0_execution_authorization": true,
+          "is_not_the_frozen_donor_role_authority_v2": true,
+          "package_re_cut": false,
+          "roots_moved": false,
+          "ruling": "IN_SCOPE_FOR_THE_PRE_REAL_T0_REVIEW_PACKAGE__DO_NOT_RE_CUT"
+        },
+        "git_blob_provenance_label": {
+          "modules_corrected": [
+            "t0_eligible_donor_authority_v1.py",
+            "t0_eligible_donor_production_run_v1.py"
+          ],
+          "modules_left_as_reported": 7,
+          "reason": "The digest values are reproducible and CRLF-safe; only the method label is false. Re-stamping would move package roots already cited including B2 and force cascading replays, so it is an external-review decision rather than further producer-side churn.",
+          "ruling": "REPORT_AS_A_KNOWN_DEFECT__DO_NOT_RE_STAMP_BEFORE_EXTERNAL_REVIEW"
+        }
+      },
       "reported_not_resolved": {
         "derivation_ignores_its_own_read_plan": "The walk uses frozen membership order, which is almost fully interleaved at 19953 contiguous runs across 20804 rows. Under the 48-entry cache it loaded 3126 blocks and read 18.35 GB, against 7.35 GB block-major and 114.84 GB uncached. Efficiency only: per-row work is order-independent and the donor reduction uses math.fsum, which is exactly rounded, so a block-major walk would produce identical roots.",
         "frozen_role_modules_not_equivalent": "split_v2.generate ranks every support donor while build_role_authority ranks only the metadata-complete ones, so they disagree whenever an ineligible donor ranks inside the top 18. They agree on today's data because all 46 donors are eligible, so the inconsistency is unexercised rather than absent. The role authority is binding and is recorded as such.",
         "lane_wide_provenance_mislabel": "Every authority package records the plain SHA-256 of its derivation module's LF-normalized content while declaring GIT_BLOB_BYTES__NOT_WORKTREE_BYTES. A Git blob digest frames content as blob-length-NUL plus content and differs: the technical-completeness module measures 6045f84cd1ea7f642f2b91b15756be7e3bb9bdd97fd53224f88f1d04b6f81c4d under blob framing against the recorded 64cea54a67c5ab9e3c81bb7779a52653205c2c36b98645b7a3d7b4b0ec82fb49. Values are correct and CRLF-safe; only the method claim is false. The eligible-donor lane now states it accurately; the other seven are left alone because correcting them moves package roots already cited in DEC-024, including B2. Scoped to derivation_code_byte_semantics in the authority packages; work_checkpoint's git-blob byte authority is accurate."
       },
-      "scope_question_flagged_not_decided": "The eligible-donor authority emits a donor_role column. My reading is that roles were in scope for the ordered step, because the assignment is a deterministic function of the eligible set with no free parameter and no pathology input. But the lane tracks donor_roles_computed as a gated marker. The frozen t0_donor_role_authority_v2 package is NOT built, its nuisance rank checks are NOT run on production data because they need age and sex values this authority deliberately omits, and STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND is NOT treated as lifted. If roles were meant to stay out, the column comes out and the package is re-cut.",
+      "review_package": {
+        "b2_replay_rerun_at_this_head": {
+          "elapsed_seconds": 4.4,
+          "result": "PASS",
+          "rows_replayed": 20804,
+          "substrate_rebuilt": true
+        },
+        "directory": "docs/agent/T0_PRE_REAL_T0_REVIEW_PACKAGE_20260909",
+        "index": "docs/agent/T0_PRE_REAL_T0_REVIEW_PACKAGE_20260909/INDEX.md",
+        "members": [
+          "B2_PRODUCTION_REPLAY_REPORT.json",
+          "TECHNICAL_COMPLETENESS_REPLAY_REPORT.json",
+          "TECHNICAL_COMPLETENESS_INDEPENDENT_REDERIVATION_REPORT.json",
+          "ELIGIBLE_DONOR_REPLAY_REPORT.json"
+        ],
+        "review_candidate_head": "4552851de3a748e621131d3b6db4b07dc5d93527"
+      },
       "state": {
         "b2_real_population_authority": "DONE_AND_REPLAYED",
         "dev_and_sealed": "NOT_OPENED",

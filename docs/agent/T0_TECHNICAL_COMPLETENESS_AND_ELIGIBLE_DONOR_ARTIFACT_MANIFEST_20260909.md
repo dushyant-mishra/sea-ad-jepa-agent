@@ -190,6 +190,25 @@ rather than deleted. The decision roots are identical across all three builds â€
 only the package root moved â€” because the eligibility and role content never
 changed, only the metadata provenance fields.
 
+### `donor_role`, scoped by owner decision
+
+The owner ruled on 2026-09-09 that `donor_role` is in scope for this pre-real-T0
+review package: the work order asked for the eligible-donor authority, the split
+is deterministic over the eligible set, and it consumes no numeric AT8. **The
+package was not re-cut**, so no root moved. The narrowing is documentary:
+
+    donor_role  =  a deterministic pre-real-T0 eligible-set split
+    donor_role  != the frozen t0_donor_role_authority_v2 package
+    donor_role  != any real-T0 execution authorization
+
+What it is not, concretely. It is not the frozen `t0_donor_role_authority_v2`
+package, which additionally runs nuisance-design rank checks over the
+confirmation set, the discovery set and every discovery LOODO fold; those need
+age and sex *values* that this authority deliberately does not carry, so they
+have not been run on production data. It does not lift
+`STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND`, which remains in
+`unresolved_blockers`. And it does not authorize real T0.
+
 ## Tail measurability, which is a separate question from completeness
 
     donors below the frozen 80-cell tail floor:  H20.33.037, 67 cells, DISCOVERY
