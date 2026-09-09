@@ -1,0 +1,48 @@
+{
+  "at8_availability_independently_verified": true,
+  "binding_role_rule": "RANK_ELIGIBLE_DONORS_ONLY__NOT_ALL_SUPPORT_DONORS",
+  "candidate_donors": 46,
+  "confirmation_donors": 18,
+  "derivation_code_byte_semantics": "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES",
+  "derivation_code_sha256": "c32850636206483fcaf3f65bccd8a97edda001b2b382b298a7ac78b5c92d2b8a",
+  "donor_role_root_sha256": "799261f54de158f4c24c33a51a674611fe4e5e68509fcbbca681216470fe10bd",
+  "eligibility_predicate": "AT8_available & technical_complete & age_present & sex_present",
+  "eligible_donor_root_sha256": "a5470b9f5389e0fa72b3ca51832c67d7419ed6447a85d6d979884b9fe1444f85",
+  "eligible_donors": 46,
+  "finalized": true,
+  "minimum_discovery_donors": 18,
+  "namespace": "T0-ELIGIBLE-DONOR-V1",
+  "numeric_at8_value_emitted": false,
+  "numeric_at8_value_read": false,
+  "numeric_covariate_values_emitted": false,
+  "parent_contract_root_sha256": "620ada0b5d6a6d29b7e8303e277b1cb72a153dc4b700757777df1588a54e344e",
+  "parents": {
+    "age_sex_package_root_sha256": "8212191a03f09d669a383be6a541b5ce3493b32c13608a76f197a88fa18ddf9b",
+    "age_sex_root_sha256": "95ed8f75a42368f3308cf794dbab3c651a4467756147a49a937c5a881e1cffff",
+    "at8_availability_package_root_sha256": "3f74fa833bc1838a50d92bf3f6bdb55e6eafdb10b489fbfff142a4240466fc5a",
+    "at8_availability_root_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
+    "b2_authority_package_root_sha256": "98eac4a68df7960e79739d236cf0febacdec52a33de76144b146dc29a5a64436",
+    "population_raw_source_root_sha256": "0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b",
+    "technical_completeness_package_root_sha256": "0164bccc76ad7ed9385de01fd0ab885dd80770afad0b94ee189e9084ee3cfe99",
+    "technical_completeness_root_sha256": "360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470"
+  },
+  "pathology_fields_in_artifact": false,
+  "real_execution_ready": false,
+  "registry_fields": [
+    "donor_id",
+    "at8_available",
+    "technical_complete",
+    "age_present",
+    "sex_present",
+    "eligible",
+    "split_hash",
+    "donor_role"
+  ],
+  "role_counts": {
+    "CONFIRMATION": 18,
+    "DISCOVERY": 28
+  },
+  "role_namespace": "T0-DISCOVERY-CONFIRM-V2",
+  "role_rule": "eligible donors ordered by (split_hash, donor_id); first 18 CONFIRMATION, remainder DISCOVERY",
+  "schema": "JEPA_T0_ELIGIBLE_DONOR_AUTHORITY_V1"
+}

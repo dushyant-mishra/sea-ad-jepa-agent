@@ -1,0 +1,52 @@
+{
+  "adjudication_performed": false,
+  "adjudicator_gate_satisfied": {
+    "preadjudication": true,
+    "pretarget": true
+  },
+  "authority_code_sha256": "df0d85ea132cbdc7ab8b68233539b9d201489cbbf75df55067cb9095d94ac446",
+  "behavioural_difference": "READINESS_VALUE_CHECK_ONLY",
+  "checks": {
+    "adjudicator_gate_satisfiable": true,
+    "all_gates_shut": true,
+    "all_required_roots_unchanged": true,
+    "diff_restricted_to_readiness_value_check": true,
+    "frozen_contradiction_still_reproducible": true,
+    "readiness_false_still_lawful_and_still_not_production": true
+  },
+  "code_byte_semantics": "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES",
+  "confirmation_numeric_at8_read": false,
+  "derived_diff_changed_lines": 4,
+  "derived_diff_file": "T0_R8_READINESS_LOADER_SOURCE_DIFF.txt",
+  "discovery_numeric_at8_reread": false,
+  "discovery_refit": false,
+  "elapsed_seconds": 1.3,
+  "frozen_module_edited": false,
+  "frozen_refusal_messages": {
+    "preadjudication": "preadjudication authority metadata mismatch",
+    "pretarget": "pretarget authority metadata mismatch"
+  },
+  "gates_opened": {
+    "biological_sweeps": false,
+    "confirmation_numeric_at8": false,
+    "dev": false,
+    "protected_populations": false,
+    "sealed": false,
+    "successor_u0": false,
+    "td60": false,
+    "training": false
+  },
+  "justification": "contract/T0_V20_EXECUTION_AUTHORITY_CONSTANTS.json declares production_requires_real_execution_ready True, which the frozen loader's `is not False` contradicts",
+  "roots_consumed_unchanged": {
+    "discovery_authority_package_root_sha256": "9806de382c75f7a7a12bb952631ed0b6c9b458250e8161a876b470c48898f6f7",
+    "discovery_provenance_root_sha256": "15d13dd3e733e0ea90b199cf981b03ccd94bc67fbd19660ef88861e3ae1a37c2",
+    "discovery_target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe",
+    "r7_package_root_sha256": "a7e25e515f8e9cb4ec43e1e3bf09798adca6a573059d4b7ca0b61483c5c96c09",
+    "r7_readiness_root_sha256": "a75581dfc5e7ea88609a9ef62f54765b9a495a7dbdc5c09152ba7fb76d1488ae"
+  },
+  "runner_code_sha256": "8e42128e22bde65771598f7f0d3d260b99044d2710658d1136250981936cce86",
+  "schema": "JEPA_T0_R8_ADJUDICATOR_READINESS_VERIFY_SUMMARY_V1",
+  "scientific_design_unchanged": true,
+  "supersedes": "t0_execution_input_authority_v1",
+  "terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
+}

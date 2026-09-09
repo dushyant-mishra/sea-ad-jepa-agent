@@ -1,0 +1,115 @@
+{
+  "authority_code_sha256": "c32850636206483fcaf3f65bccd8a97edda001b2b382b298a7ac78b5c92d2b8a",
+  "candidate_donors": 46,
+  "candidate_universe_source": "B2_PROVEN_POPULATION_RAW_SOURCE",
+  "code_byte_semantics": "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES",
+  "donor_role_root_sha256": "799261f54de158f4c24c33a51a674611fe4e5e68509fcbbca681216470fe10bd",
+  "elapsed_seconds": 0.2,
+  "eligible_donor_root_sha256": "a5470b9f5389e0fa72b3ca51832c67d7419ed6447a85d6d979884b9fe1444f85",
+  "eligible_donors": 46,
+  "frozen_role_path_agreement": {
+    "binding_rule": "RANK_ELIGIBLE_DONORS_ONLY__NOT_ALL_SUPPORT_DONORS",
+    "confirmation_under_generate": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "confirmation_under_role_authority": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "eligible_donors": 46,
+    "ineligible_donors": [],
+    "ineligible_donors_inside_support_top_18": [],
+    "paths_agree": true,
+    "support_donors": 46
+  },
+  "numeric_at8_value_read": false,
+  "numeric_covariate_values_emitted": false,
+  "package_root_sha256": "7d372603cb4833a2cba02a047f6f3f3e4ef680ab0c730b8693ccbd958ddfafeb",
+  "parent_contract_root_sha256": "620ada0b5d6a6d29b7e8303e277b1cb72a153dc4b700757777df1588a54e344e",
+  "parent_donor_coverage": {
+    "age_present": 46,
+    "at8_available": 84,
+    "sex_present": 46,
+    "technical_complete": 46
+  },
+  "parent_replay": {
+    "age_sex": {
+      "expected_roots_supplied_externally": true,
+      "independently_verified": true,
+      "presence_is_proven_upstream": true,
+      "verified_against": {
+        "age_sex_root_sha256": "95ed8f75a42368f3308cf794dbab3c651a4467756147a49a937c5a881e1cffff",
+        "candidate_donor_set_sha256": "59769cfda71860570eddc005ab7ee844e74d2dda8146245ddb930ade88af6345",
+        "package_root_sha256": "8212191a03f09d669a383be6a541b5ce3493b32c13608a76f197a88fa18ddf9b",
+        "source_sha256": "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a"
+      }
+    },
+    "at8_availability": {
+      "expected_roots_supplied_externally": true,
+      "independently_verified": true,
+      "verified_against": {
+        "availability_root_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
+        "package_root_sha256": "3f74fa833bc1838a50d92bf3f6bdb55e6eafdb10b489fbfff142a4240466fc5a"
+      }
+    },
+    "b2_population": {
+      "registry_row_count_checked_against_rows_proven": true
+    },
+    "technical_completeness": {
+      "production_status_required": "DERIVED_OVER_THE_REAL_POPULATION_FROM_AUTHENTICATED_B2_PARENTS",
+      "replayed_through_its_own_loader": true
+    }
+  },
+  "parents": {
+    "age_sex_package_root_sha256": "8212191a03f09d669a383be6a541b5ce3493b32c13608a76f197a88fa18ddf9b",
+    "age_sex_root_sha256": "95ed8f75a42368f3308cf794dbab3c651a4467756147a49a937c5a881e1cffff",
+    "at8_availability_package_root_sha256": "3f74fa833bc1838a50d92bf3f6bdb55e6eafdb10b489fbfff142a4240466fc5a",
+    "at8_availability_root_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
+    "b2_authority_package_root_sha256": "98eac4a68df7960e79739d236cf0febacdec52a33de76144b146dc29a5a64436",
+    "population_raw_source_root_sha256": "0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b",
+    "technical_completeness_package_root_sha256": "0164bccc76ad7ed9385de01fd0ab885dd80770afad0b94ee189e9084ee3cfe99",
+    "technical_completeness_root_sha256": "360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470"
+  },
+  "population_rows_proven": 20804,
+  "real_execution_ready": false,
+  "role_counts": {
+    "CONFIRMATION": 18,
+    "DISCOVERY": 28
+  },
+  "runner_code_sha256": "f4901a8356a2c4a46da245b4e1023739417483b40fe8c99a61684387767f72ca",
+  "schema": "JEPA_T0_ELIGIBLE_DONOR_RUN_SUMMARY_V1",
+  "technical_completeness_cells_consumed": 20804
+}

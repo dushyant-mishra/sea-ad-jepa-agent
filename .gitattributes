@@ -4,3 +4,22 @@ docs/history/exact_bytes/** -text
 
 # C2 closure package: hashes are over raw bytes, so never translate line endings.
 outputs/c2_t1_gradient_forensic_20260906/** -text
+
+# T0 V20 decision evidence: every published digest is over the raw bytes on
+# disk, so line endings must never be translated. Without this a Windows
+# checkout rewrites LF to CRLF and every recorded SHA-256 breaks -- which
+# already happened once in this lane, where a committed availability package
+# produced a4424482 on a fresh checkout instead of e49c4e93.
+outputs/t0_b2_production_20260909/** -text
+outputs/t0_technical_completeness_20260909/** -text
+outputs/t0_eligible_donor_20260909/** -text
+outputs/t0_estimability_preflight_20260909/** -text
+outputs/t0_execution_input_readiness_20260909/** -text
+outputs/t0_stage2a_pre_at8_20260909/** -text
+outputs/t0_donor_role_20260909/** -text
+outputs/t0_discovery_stage_20260909/** -text
+outputs/t0_stage3_prep_20260909/** -text
+outputs/t0_target_family_20260909/** -text
+outputs/t0_technical_registry_20260909/** -text
+outputs/t0_r8_readiness_verify_20260909/** -text
+outputs/t0_stage3_confirmation_20260909/** -text

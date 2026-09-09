@@ -1,0 +1,38 @@
+{
+  "authority_failure_is_a_global_stop": true,
+  "completeness_root_sha256": "360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470",
+  "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
+  "derivation_code_sha256": "64cea54a67c5ab9e3c81bb7779a52653205c2c36b98645b7a3d7b4b0ec82fb49",
+  "donor_count": 46,
+  "finalized": true,
+  "forbidden_cutoffs": [
+    "Q_DEPTH_MINIMUM",
+    "Q_DETECT_MINIMUM",
+    "CELL_COUNT_QC_FLOOR",
+    "TAIL_MIN_CELLS_AS_ELIGIBILITY",
+    "DATA_ADAPTIVE_THRESHOLD"
+  ],
+  "formula_provenance": "Recovered verbatim from t0_confirmation_raw_v1 in the accepted V20 package, not paraphrased from prose.",
+  "namespace": "T0-TECHNICAL-COMPLETENESS-V1",
+  "parent_contract_root_sha256": "9d4e818e20077c42c5500b4df35c385dd1a43cb53375da3a7b4d738257ff5ba5",
+  "pathology_values_read": false,
+  "production_run_status": "DERIVED_OVER_THE_REAL_POPULATION_FROM_AUTHENTICATED_B2_PARENTS",
+  "q_depth_cell_formula": "log1p(source_library)",
+  "q_detect_cell_formula": "count_nonzero(A) / 35076",
+  "q_detect_universe": "ALL 35,076 scalar-measured addresses of the B1 projection, NOT the 28,061 SCORING subset",
+  "q_donor_reduction": "arithmetic mean over the donor's authenticated cells",
+  "real_execution_ready": false,
+  "scalar_features": 35076,
+  "schema": "JEPA_T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1",
+  "semantics": "THRESHOLD_FREE_DEFINEDNESS_AND_COMPUTABILITY",
+  "substrate": {
+    "feature_authority_root_sha256": "538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8",
+    "logical_row_authority_root_sha256": "64ea880ff6cf19aca48e0f2e77edfa6d37fc4f5e20022011131c496173896fc3",
+    "physical_read_plan_root_sha256": "cc75cef0ebb9a05e6699546e18ae45b3555f488dc2e46db4c845370c5be23519",
+    "population_closure_root_sha256": "ec350b8d9a30a8a08573f055b9a0c103d0f6805014998ac9975d94585421d397",
+    "population_raw_source_root_sha256": "0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b",
+    "projection_root_sha256": "ef6ccdde0e0268cce819b4e543d7d542120811fa3762225964f78f9172f370e7"
+  },
+  "technically_complete_donors": 46,
+  "thresholds_introduced": false
+}

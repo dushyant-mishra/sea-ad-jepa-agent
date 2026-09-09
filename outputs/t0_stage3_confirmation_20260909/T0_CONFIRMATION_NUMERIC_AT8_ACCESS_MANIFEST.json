@@ -1,0 +1,17 @@
+{
+  "confirmation_donor_count": 18,
+  "confirmation_donor_set_sha256": "96514f847ca81a99b8d33316db8fe717a20f0f566fe5851259f7154b7e077b98",
+  "confirmation_numeric_at8_opened": true,
+  "dev_opened": false,
+  "discovery_rows_present_and_skipped": 28,
+  "endpoint_identity": "percent AT8 positive area_Grey matter",
+  "endpoint_identity_sha256": "95870f7dd32101983ff710f7b394fcca4177da1525cc2a87342eb1a285155f89",
+  "endpoint_values_sha256": "3098f7e289d4c14b5c0f57ef98c76004dd92c36d38f0d306881a7779e402a8a7",
+  "non_at8_pathology_endpoint_parsed": false,
+  "other_columns_left_unparsed": 25,
+  "pathology_source_sha256": "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a",
+  "per_donor_at8_values_emitted": false,
+  "protected_populations_opened": false,
+  "schema": "JEPA_T0_CONFIRMATION_NUMERIC_AT8_ACCESS_MANIFEST_V1",
+  "sealed_opened": false
+}

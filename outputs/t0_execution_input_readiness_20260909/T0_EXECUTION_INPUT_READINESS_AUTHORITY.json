@@ -1,0 +1,55 @@
+{
+  "bindings": {
+    "age_sex_package_root_sha256": "8212191a03f09d669a383be6a541b5ce3493b32c13608a76f197a88fa18ddf9b",
+    "age_sex_root_sha256": "95ed8f75a42368f3308cf794dbab3c651a4467756147a49a937c5a881e1cffff",
+    "at8_availability_package_root_sha256": "3f74fa833bc1838a50d92bf3f6bdb55e6eafdb10b489fbfff142a4240466fc5a",
+    "at8_availability_root_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
+    "at8_endpoint_identity": "percent AT8 positive area_Grey matter",
+    "authorization_record_root_sha256": "504bc8ac50781f3df37290e8626c92be1f22a5a7a77a3d92dc8851e89252e623",
+    "b2_authority_package_root_sha256": "98eac4a68df7960e79739d236cf0febacdec52a33de76144b146dc29a5a64436",
+    "b2_population_raw_source_root_sha256": "0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b",
+    "code_byte_semantics_audit": "NO_NEW_FALSE_LABELS",
+    "confirmation_donor_set_sha256": "96514f847ca81a99b8d33316db8fe717a20f0f566fe5851259f7154b7e077b98",
+    "discovery_donor_set_sha256": "4395fec74bcf7abf192d731db3c827fa25cfde1b5297db4203b041984a780d33",
+    "donor_role_root_sha256": "799261f54de158f4c24c33a51a674611fe4e5e68509fcbbca681216470fe10bd",
+    "eligible_donor_package_root_sha256": "7d372603cb4833a2cba02a047f6f3f3e4ef680ab0c730b8693ccbd958ddfafeb",
+    "eligible_donor_root_sha256": "a5470b9f5389e0fa72b3ca51832c67d7419ed6447a85d6d979884b9fe1444f85",
+    "input_dependency_contract_root_sha256": "deb63753212964966f53ecc76b047fcdbcab013c162e045314c86581dbb09969",
+    "pathology_source_sha256": "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a",
+    "stage_a_preflight_root_sha256": "bf9ee518d59053b3fe446c258c2606f318077b2f179ad73c45c4c6346030df27",
+    "technical_completeness_package_root_sha256": "0164bccc76ad7ed9385de01fd0ab885dd80770afad0b94ee189e9084ee3cfe99",
+    "technical_completeness_root_sha256": "360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470"
+  },
+  "candidate_donors": 46,
+  "code_byte_semantics": "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES",
+  "donor_role_counts": {
+    "CONFIRMATION": 18,
+    "DISCOVERY": 28,
+    "INELIGIBLE": 0
+  },
+  "forbidden_gates_opened": {
+    "biological_sweeps_run": false,
+    "dev_opened": false,
+    "protected_populations_opened": false,
+    "sealed_opened": false,
+    "successor_u0_materialized": false,
+    "td60_run": false,
+    "teacher_student_training_begun": false
+  },
+  "namespace": "T0-EXECUTION-INPUT-READINESS-V1",
+  "numeric_at8_value_read": false,
+  "package_kind": "PRODUCTION_EXECUTION_INPUT",
+  "population_rows": 20804,
+  "readiness_derivation": "VERIFIED_FROM_STAGE1_PARENT_CHAIN_AND_AUTHORIZATION",
+  "readiness_derivation_statement": "real_execution_ready = all_required_stage1_bindings_verified AND staged_authorization_present AND no_forbidden_gate_opened",
+  "readiness_root_sha256": "a75581dfc5e7ea88609a9ef62f54765b9a495a7dbdc5c09152ba7fb76d1488ae",
+  "real_execution_ready": true,
+  "schema": "JEPA_T0_EXECUTION_INPUT_READINESS_AUTHORITY_V1",
+  "scientific_design_unchanged": true,
+  "staged_authorization": {
+    "record_path": "docs/agent/T0_REAL_RUN_AUTHORIZATION_RECORD_20260909.md",
+    "record_sha256": "504bc8ac50781f3df37290e8626c92be1f22a5a7a77a3d92dc8851e89252e623",
+    "scope": "REAL_T0_STAGED_EXECUTION_AUTHORIZED__DISCOVERY_FIRST__CONFIRMATION_AFTER_DISCOVERY_REPLAY",
+    "token": "AUTHORIZE_ROLLING_REAL_T0_EXECUTION_WITH_FAIL_CLOSED_STAGE_GATES"
+  }
+}

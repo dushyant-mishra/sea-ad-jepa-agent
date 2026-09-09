@@ -1,0 +1,34 @@
+{
+  "code_byte_semantics": "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES",
+  "confirmation_numeric_at8_accessed": false,
+  "dev_opened": false,
+  "elapsed_seconds": 1.5,
+  "family_mode": "PRIMARY_ONLY",
+  "numeric_at8_value_read": false,
+  "primary_hypothesis": "BROAD_IMMUNE_EXPRESSION_TARGET",
+  "primary_negative_alpha": 0.005,
+  "primary_positive_alpha": 0.025,
+  "r7_readiness_root_sha256": "a75581dfc5e7ea88609a9ef62f54765b9a495a7dbdc5c09152ba7fb76d1488ae",
+  "rare5_decision_capable": false,
+  "rare5_status": "NOT_DECISION_CAPABLE_AUTHORITY_MISSING",
+  "rare5_status_file_sha256": "5c2fcc048e28d82369416faea57fab64e2516dfb4c99f09e53c9f8845cce47c4",
+  "runner_code_sha256": "a2d6f9edcdf2816a7e6868b010bd5fb8c8845b17099db16880bb5c7f86b2484a",
+  "schema": "JEPA_T0_STAGE3_PREP_SUMMARY_V1",
+  "scientific_design_unchanged": true,
+  "sealed_opened": false,
+  "sensitivity_directional_alpha": 0.05,
+  "tail_allowed_n": [
+    17,
+    18
+  ],
+  "tail_engine": "HC3_T_RESIDUAL_DF",
+  "tail_positive_alpha": 0.02,
+  "target_family_package_root_sha256": "1a531e114ffa80dc00ef39881a101a495cc731c9e0aa688ba575a85e2fe5bacb",
+  "technical_additional_blocks": 0,
+  "technical_mandatory_block": [
+    "Q_DEPTH",
+    "Q_DETECT"
+  ],
+  "technical_registry_package_root_sha256": "420b95981652853d888be23abb0b73468891d508693064b35b4e339c96ba33bc",
+  "terminal": "STAGE3_PATHOLOGY_BLIND_AUTHORITIES_BUILT"
+}

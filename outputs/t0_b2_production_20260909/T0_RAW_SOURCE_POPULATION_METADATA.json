@@ -1,0 +1,43 @@
+{
+  "caller_supplied_handle": false,
+  "caller_supplied_values": false,
+  "complete_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
+  "derivation_code_sha256": "25744294ca6eb6ef66786422f70519a6e469b12a0c86dbd11d38b08ff0b4ee5b",
+  "digest_bytes_read": 32978570763,
+  "donor_roles_computed": false,
+  "eligible_donors_computed": false,
+  "feature_authority_root_sha256": "538b73b8414f47c70507cb0c8b46a6d4787e019c49056e07d6b0238382cf99b8",
+  "finalized": true,
+  "logical_row_authority_root_sha256": "64ea880ff6cf19aca48e0f2e77edfa6d37fc4f5e20022011131c496173896fc3",
+  "matrix_slot": "layers/UMIs",
+  "membership_sha256": "d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529",
+  "namespace": "T0-RAW-SOURCE-ROW-V1",
+  "numeric_confirmation_at8_accessed": false,
+  "obs_fields_read": [
+    "exp_component_name",
+    "Donor ID"
+  ],
+  "pathology_fields_read": false,
+  "physical_read_plan_root_sha256": "cc75cef0ebb9a05e6699546e18ae45b3555f488dc2e46db4c845370c5be23519",
+  "population_closure_root_sha256": "ec350b8d9a30a8a08573f055b9a0c103d0f6805014998ac9975d94585421d397",
+  "population_raw_source_root_sha256": "0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b",
+  "proof": "BYTE_TO_ROW_FROM_AUTHENTICATED_H5AD_OVER_THE_WHOLE_POPULATION",
+  "real_execution_ready": false,
+  "registry_fields": [
+    "logical_index",
+    "expression_row",
+    "canonical_cell_id",
+    "donor_id",
+    "source_library",
+    "stored_values_in_row"
+  ],
+  "rows_proven": 20804,
+  "schema": "JEPA_T0_RAW_SOURCE_POPULATION_AUTHORITY_V1",
+  "source_bytes": 32978570763,
+  "source_library_max": 66590,
+  "source_library_median": 5733,
+  "source_library_min": 1221,
+  "source_library_total": 139196165,
+  "source_sha256": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
+}

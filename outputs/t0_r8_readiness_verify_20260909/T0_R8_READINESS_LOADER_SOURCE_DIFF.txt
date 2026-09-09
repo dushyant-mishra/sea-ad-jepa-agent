@@ -1,0 +1,12 @@
+--- frozen/t0_execution_input_authority_v1
++++ r8/t0_execution_input_authority_v2
+@@ -3,3 +3,3 @@
+     keys={'schema','donor_role_package_root_sha256','role_metadata_payload_sha256','discovery_metadata_payload_sha256','discovery_expression_payload','external_source_authority_hashes','chronology','real_execution_ready'}
+-    if set(obj)!=keys or obj.get('schema')!=PRE_SCHEMA or obj.get('chronology')!='BUILT_AFTER_ROLE_FREEZE__BEFORE_TARGET_FIT' or obj.get('real_execution_ready') is not False: raise ValueError('pretarget authority metadata mismatch')
++    if set(obj)!=keys or obj.get('schema')!=PRE_SCHEMA or obj.get('chronology')!='BUILT_AFTER_ROLE_FREEZE__BEFORE_TARGET_FIT' or not isinstance(obj.get('real_execution_ready'), bool): raise ValueError('pretarget authority metadata mismatch')
+     for k in ['donor_role_package_root_sha256','role_metadata_payload_sha256','discovery_metadata_payload_sha256']:
+@@ -13,3 +13,3 @@
+     keys={'schema','upstream_package_roots','confirmation_metadata_columns','confirmation_metadata_payload_sha256','confirmation_expression_payload','technical_blocks','family_status_authority_sha256','family_historical_rare5_status','external_source_authority_hashes','chronology','real_execution_ready'}
+-    if set(obj)!=keys or obj.get('schema')!=ADJ_SCHEMA or obj.get('chronology')!='BUILT_AFTER_TARGET_TAIL_TECHNICAL_FAMILY_FREEZE__BEFORE_CONFIRMATION_INFERENCE' or obj.get('real_execution_ready') is not False: raise ValueError('preadjudication authority metadata mismatch')
++    if set(obj)!=keys or obj.get('schema')!=ADJ_SCHEMA or obj.get('chronology')!='BUILT_AFTER_TARGET_TAIL_TECHNICAL_FAMILY_FREEZE__BEFORE_CONFIRMATION_INFERENCE' or not isinstance(obj.get('real_execution_ready'), bool): raise ValueError('preadjudication authority metadata mismatch')
+     if any(not is_hex64(v) for v in obj.get('upstream_package_roots',{}).values()) or not is_hex64(obj.get('confirmation_metadata_payload_sha256')) or not is_hex64(obj.get('family_status_authority_sha256')): raise ValueError('preadjudication digest invalid')

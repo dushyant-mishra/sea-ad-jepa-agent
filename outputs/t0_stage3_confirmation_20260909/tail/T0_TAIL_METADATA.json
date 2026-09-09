@@ -1,0 +1,1 @@
+{"comparison":"centered_cell_score > frozen_threshold","min_threshold_donors":10,"q":0.95,"schema":"JEPA_T0_RARE_TAIL_EXTENSION_V1","tail_min_cells":80,"target_discovery_provenance_root":"15d13dd3e733e0ea90b199cf981b03ccd94bc67fbd19660ef88861e3ae1a37c2","target_package_root_sha256":"b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe"}
