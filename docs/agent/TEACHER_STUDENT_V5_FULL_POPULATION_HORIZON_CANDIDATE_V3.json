@@ -20,7 +20,9 @@
       "denominator": 2,
       "float": 0.5
     },
-    "exact_p_over_q_correction_required": true
+    "exact_p_over_q_correction_required": true,
+    "minimum_donor_operator_group_presentations_status": "OPEN_FOR_SUPERSESSION__OLD_ZERO_HIT_RATIONALE_OBSOLETE_UNDER_FULL_COVERAGE",
+    "maximum_presentations_per_cell_status": "OPEN_FOR_PROSPECTIVE_REPEAT_CAP_RULE__32_NOT_DATA_REQUIRED"
   },
   "schedule_selection_rule": [
     "MINIMIZE_IMPORTANCE_WEIGHT_MAX_TO_MIN_RATIO",
@@ -63,7 +65,17 @@
     "b": 5029443,
     "gcd_a_H": 1,
     "formula": "canonical_slot_index=(a*scientific_presentation_index+b) mod H",
-    "hardware_packing_can_change_identity_or_weight": false
+    "hardware_packing_can_change_identity_or_weight": false,
+    "authorization": "NOT_AUTHORIZED_FOR_OPTIMIZER_UPDATES__UPDATE_LOCAL_CONDITIONING_FAILED",
+    "role": "deterministic diagnostic permutation only; may reproduce exposure analyses but cannot define final scientific optimizer-update membership",
+    "update_conditioning_diagnostic": "docs/agent/v5_anticheat/results/V5_AFFINE_ORDER_UPDATE_CONDITIONING_DIAGNOSTIC_V1.json",
+    "observed_real_schedule_failures": {
+      "update_32_min_local_ess_fraction": 0.0976990238474382,
+      "update_32_max_single_weight_share": 0.5579621704209601,
+      "update_128_min_local_ess_fraction": 0.1646307609105634,
+      "update_128_max_single_weight_share": 0.17019398415831338
+    },
+    "required_successor_rule": "derive effective scientific update size from production hardware capacity, then freeze deterministic update memberships prospectively with explicit update-local importance-weight conditioning; hardware microbatch packing may only partition within a frozen scientific update"
   },
   "executable_authority": {
     "derive_script": "scripts/v5_anticheat/derive_full_population_schedule_optimum_v3.py",
@@ -79,6 +91,7 @@
   "synthetic_data_used_for_authority": false,
   "target_discovery_outcomes_used_to_choose_schedule": false,
   "still_required_before_training": [
+    "replace affine scientific update order with prospectively frozen update-conditioned memberships after hardware update-size calibration",
     "42/42 physical full-reader expression shard binding for full-data D/relational qualification",
     "prospective resolution of the donor×operator repeat-floor rationale under deterministic full coverage",
     "independent review of this supersession candidate",
