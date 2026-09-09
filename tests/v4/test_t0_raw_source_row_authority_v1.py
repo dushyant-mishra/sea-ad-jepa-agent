@@ -223,6 +223,7 @@ def test_non_csr_umi_layer_stops(tmp_path: Path) -> None:
             expected_feature_authority_root_sha256=logical[
                 "feature_authority_root_sha256"],
             expected_source_sha256=digest,
+            expected_source_bytes=path.stat().st_size,
             expected_source_cells=len(POPULATION),
             expected_source_features=rs.SOURCE_FEATURE_COUNT,
             expected_logical_rows=len(POPULATION))
