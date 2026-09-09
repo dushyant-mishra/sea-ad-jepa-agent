@@ -12,6 +12,10 @@ def test_real_registry_geometry_and_no_synthetic_authority():
     assert REG["population_geometry"]["donor_operator_source_groups"]==1400
     assert REG["measurement_support_geometry"]["common_measured_all_operators"]==17186
     assert REG["donor_folds"]["derived_outer_folds"]==5
+    diag=REG["population_geometry"]["groups_below_diagnostic_floor"]
+    assert diag["floor"]==16
+    assert diag["groups"]==192
+    assert "does not create schedule or training authority" in diag["role"]
 
 def test_D_family_cannot_reuse_historical_widths():
     assert CONTRACT["population_authority"]["sampled_or_synthetic_population_may_close_dimension_authority"] is False
