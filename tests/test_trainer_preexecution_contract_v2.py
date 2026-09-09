@@ -77,13 +77,16 @@ def test_authority_bundle_requires_all_and_no_extras():
 
 def test_preexecution_has_no_internal_training_authority():
     reg = validate_protected_registry(registry())
+    fixture_values = {
+        "presentation_horizon": 10,
+        "ema_half_life_presentations": 3,
+        "singleton_queries_per_base_cell": 2,
+        "effective_base_cells_per_update": 2,
+    }
     authority = TrainerPreexecutionAuthorityV2(
         authorities=authorities(),
         protected_registry_sha256=reg["registry_sha256"],
-        presentation_horizon=5_267_086,
-        ema_half_life_presentations=37_117,
-        singleton_queries_per_base_cell=21,
-        effective_base_cells_per_update=128,
+        **fixture_values,
         relational_training_active=False,
         optimizer_started=False,
     )
@@ -92,10 +95,7 @@ def test_preexecution_has_no_internal_training_authority():
     invalid = TrainerPreexecutionAuthorityV2(
         authorities=authorities(),
         protected_registry_sha256=reg["registry_sha256"],
-        presentation_horizon=5_267_086,
-        ema_half_life_presentations=37_117,
-        singleton_queries_per_base_cell=21,
-        effective_base_cells_per_update=128,
+        **fixture_values,
         relational_training_active=False,
         optimizer_started=False,
         training_authorized=True,
