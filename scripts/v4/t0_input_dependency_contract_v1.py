@@ -501,6 +501,139 @@ NON_DONOR_PAYLOAD_MEMBERS: frozenset[str] = frozenset({
 # materialization machinery was built. And ELIGIBLE_DONOR_AUTHORITY is a stage of
 # its own, separate from B2: B2 establishes technical definedness and holds no
 # authority over AT8 availability, age or sex, so it must not declare eligibility.
+# ---------------------------------------------------------------------------
+# Byte semantics of a recorded code identity.
+#
+# Every authority in this lane records `derivation_code_sha256` as the plain
+# SHA-256 of its derivation module's LF-normalized file content. Seven modules
+# label that `GIT_BLOB_BYTES__NOT_WORKTREE_BYTES`, which is false: a Git blob
+# digest frames content as b"blob <len>\0" + content and is a different value.
+#
+# The external reviewer accepted a limited waiver for those seven on 2026-09-09,
+# with `ALLOWS_NEW_FALSE_LABELS=False`. That condition is enforced here rather
+# than left to convention: the waived set is named and frozen by count, and any
+# other module declaring byte semantics must use the accurate constant. A new
+# real-T0 module is not on the allowlist, so it must use the accurate label.
+#
+# The waiver covers the label text only. It waives no digest value, no package
+# root and no replay obligation.
+# ---------------------------------------------------------------------------
+
+ACCURATE_CODE_BYTE_SEMANTICS = (
+    "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT"
+    "__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES")
+
+WAIVED_FALSE_CODE_BYTE_SEMANTICS = "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES"
+
+# Frozen at the seven modules the waiver covers. This set must never grow.
+PROVENANCE_LABEL_WAIVER_MODULES: tuple[str, ...] = (
+    "t0_age_sex_authority_v1.py",
+    "t0_at8_availability_authority_v1.py",
+    "t0_immune_fraction_authority_v1.py",
+    "t0_immune_support_count_authority_v1.py",
+    "t0_raw_source_row_authority_v1.py",
+    "t0_technical_completeness_authority_v1.py",
+)
+PROVENANCE_LABEL_WAIVER_RECORD = "docs/agent/T0_PROVENANCE_LABEL_WAIVER_20260909.md"
+PROVENANCE_LABEL_WAIVER_ACCEPTED_BY_REVIEW = True
+PROVENANCE_LABEL_WAIVER_ALLOWS_NEW_FALSE_LABELS = False
+
+STOP_FALSE_BYTE_SEMANTICS = (
+    "STOP_T0_NEW_ARTIFACT_CARRIES_THE_WAIVED_FALSE_BYTE_SEMANTICS_LABEL")
+STOP_WAIVER_SET_GREW = "STOP_T0_PROVENANCE_LABEL_WAIVER_SET_GREW"
+
+
+def assert_byte_semantics_label_lawful(
+        module_name: str, declared: str) -> bool:
+    """A module outside the frozen waiver set must declare the accurate label.
+
+    This is the enforceable form of the reviewer's `ALLOWS_NEW_FALSE_LABELS=False`
+    condition. The waived seven may keep the false label because re-stamping them
+    moves package roots already cited; nothing new may inherit it.
+    """
+    name = str(module_name).rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
+    if str(declared) == WAIVED_FALSE_CODE_BYTE_SEMANTICS:
+        if name not in PROVENANCE_LABEL_WAIVER_MODULES:
+            raise AssertionError(
+                "%s: %s declares %r, which is false and is waived only for the "
+                "%d modules named in %s. New artifacts must declare %r."
+                % (STOP_FALSE_BYTE_SEMANTICS, name,
+                   WAIVED_FALSE_CODE_BYTE_SEMANTICS,
+                   len(PROVENANCE_LABEL_WAIVER_MODULES),
+                   PROVENANCE_LABEL_WAIVER_RECORD,
+                   ACCURATE_CODE_BYTE_SEMANTICS))
+        return True
+    if str(declared) != ACCURATE_CODE_BYTE_SEMANTICS:
+        raise AssertionError(
+            "%s: %s declares byte semantics %r, which is neither the accurate "
+            "%r nor the waived legacy label"
+            % (STOP_FALSE_BYTE_SEMANTICS, name, declared,
+               ACCURATE_CODE_BYTE_SEMANTICS))
+    return True
+
+
+def assert_provenance_waiver_set_unchanged(expected_count: int = 6) -> bool:
+    """The waived set is frozen. Growing it would silently widen the waiver."""
+    if len(PROVENANCE_LABEL_WAIVER_MODULES) != int(expected_count):
+        raise AssertionError(
+            "%s: the waiver names %d modules, expected %d. The waiver covers a "
+            "fixed legacy set; a new module may not be added to it."
+            % (STOP_WAIVER_SET_GREW, len(PROVENANCE_LABEL_WAIVER_MODULES),
+               int(expected_count)))
+    if PROVENANCE_LABEL_WAIVER_ALLOWS_NEW_FALSE_LABELS is not False:
+        raise AssertionError(
+            "%s: the waiver may not permit new false labels"
+            % STOP_FALSE_BYTE_SEMANTICS)
+    return True
+
+
+_BYTE_SEMANTICS_DECLARATION = re.compile(
+    r"""["'](?:derivation_)?code_byte_semantics["']\s*:\s*\(?\s*((?:["'][^"']*["']\s*)+)""")
+
+
+def _declared_byte_semantics(text: str) -> tuple[str, ...]:
+    """Every byte-semantics value a module declares for its own artifacts.
+
+    Matches the declaration site rather than the bare label. Substring-scanning
+    for the label itself would flag this very module, which defines the constant
+    without declaring anything about its own artifacts -- the same crude-guard
+    error that once refused an `age_present` header and a report's own
+    `at8_availability_root_sha256`.
+    """
+    found = []
+    for match in _BYTE_SEMANTICS_DECLARATION.finditer(text):
+        pieces = re.findall(r"""["']([^"']*)["']""", match.group(1))
+        found.append("".join(pieces))
+    return tuple(found)
+
+
+def audit_byte_semantics_labels(
+        code_dirs: Path | str | Sequence[Path | str] | None = None,
+) -> dict[str, Any]:
+    """Scan the T0 modules and report which label each declares.
+
+    Diagnostic plus enforcement: every declaration found outside the frozen
+    waiver set must be the accurate constant, or this raises.
+    """
+    roots = _as_roots(code_dirs if code_dirs is not None
+                      else Path(__file__).resolve().parent)
+    accurate, waived = [], []
+    for root in roots:
+        for path in sorted(Path(root).glob("t0_*.py")):
+            text = path.read_text(encoding="utf-8")
+            for declared in _declared_byte_semantics(text):
+                assert_byte_semantics_label_lawful(path.name, declared)
+                if declared == WAIVED_FALSE_CODE_BYTE_SEMANTICS:
+                    waived.append(path.name)
+                else:
+                    accurate.append(path.name)
+    return {"accurate": sorted(set(accurate)),
+            "waived_legacy": sorted(set(waived)),
+            "waiver_record": PROVENANCE_LABEL_WAIVER_RECORD,
+            "allows_new_false_labels": (
+                PROVENANCE_LABEL_WAIVER_ALLOWS_NEW_FALSE_LABELS)}
+
+
 STAGE_ORDER: tuple[str, ...] = (
     "FROZEN_OBSERVATIONAL_SOURCES",
     "ACCEPTED_CANDIDATE_DONOR_UNIVERSE",

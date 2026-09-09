@@ -218,7 +218,7 @@ method claim is false. The practical risk is a reviewer computing a Git blob
 digest, getting a mismatch, and concluding the packages are broken.
 
 The eligible-donor lane and the estimability preflight state the method
-accurately. The other seven modules are untouched by owner decision, and R6 item
+accurately. The other six modules are untouched by owner decision, and R6 item
 5 is closed by an explicit waiver record at
 `docs/agent/T0_PROVENANCE_LABEL_WAIVER_20260909.md`, which carries the scope, the
 re-stamp cascade, five conditions and the recommended correction. That waiver is

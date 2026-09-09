@@ -1,15 +1,26 @@
 # Waiver record — the LF-content versus Git-blob provenance label
 
-    WAIVER_RECORDED_BY_PRODUCER_AT_OWNER_INSTRUCTION__AWAITING_REVIEWER_ACCEPTANCE
+    PROVENANCE_LABEL_WAIVER_ACCEPTED_BY_EXTERNAL_REVIEW__LIMITED_SCOPE
 
 R6 item 5 offered two ways to resolve this: re-stamp the lane, or record an
-explicit owner waiver. The owner chose the waiver on 2026-09-09. This document
-is that record. It is written by the producer at the owner's instruction, and it
-does not itself constitute reviewer acceptance.
+explicit owner waiver. The owner chose the waiver on 2026-09-09, and the external
+reviewer accepted it the same day as a limited review waiver, ruling
+`LINEAGE_RECUT_REQUIRED_BEFORE_REAL_T0=False`.
+
+Accepted on these terms, in the reviewer's own words:
+
+    PROVENANCE_LABEL_WAIVER_ACCEPTED=True
+    WAIVES_DIGEST_VALUES=False
+    WAIVES_PACKAGE_ROOTS=False
+    WAIVES_REPLAY_OBLIGATIONS=False
+    ALLOWS_NEW_FALSE_LABELS=False
+
+The last condition is enforced in code rather than left to convention. See
+"Enforcement" below.
 
 ## The defect, stated exactly
 
-Seven T0 authority modules write
+Six T0 authority modules write
 
     "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES"
 
@@ -107,7 +118,7 @@ belongs to review.
 
 ## Recommended correction, when review rules on it
 
-Replace the seven occurrences with the accurate constant already used in the
+Replace the six occurrences with the accurate constant already used in the
 eligible-donor lane:
 
     "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES"
@@ -117,11 +128,48 @@ rebuild and replay in dependency order: the four small authorities, B2, technica
 completeness, eligible donors, estimability preflight — regenerating every
 manifest and decision record that cites a moved root.
 
+## Enforcement of `ALLOWS_NEW_FALSE_LABELS=False`
+
+`t0_input_dependency_contract_v1` now carries the canonical constant, the frozen
+waiver set and a guard:
+
+    ACCURATE_CODE_BYTE_SEMANTICS          the string new artifacts must declare
+    WAIVED_FALSE_CODE_BYTE_SEMANTICS      the legacy string
+    PROVENANCE_LABEL_WAIVER_MODULES       the six waived modules, frozen by count
+    assert_byte_semantics_label_lawful()  refuses the legacy label outside that set
+    assert_provenance_waiver_set_unchanged()  refuses growth of the waived set
+    audit_byte_semantics_labels()         scans and classifies every T0 module
+
+A new real-T0 module is not on the allowlist, so declaring the legacy label
+raises `STOP_T0_NEW_ARTIFACT_CARRIES_THE_WAIVED_FALSE_BYTE_SEMANTICS_LABEL`.
+
+The audit matches the *declaration site* rather than the bare label. Scanning for
+the label itself flagged the contract module, which defines the constant without
+declaring anything about its own artifacts — the same crude-substring error that
+earlier refused an `age_present` header and a report's own
+`at8_availability_root_sha256`. Third instance of that pattern; it is why the
+guard matches a key/value pair.
+
+Current audit:
+
+    accurate        t0_eligible_donor_authority_v1.py
+                    t0_eligible_donor_production_run_v1.py
+                    t0_estimability_preflight_production_run_v1.py
+    waived legacy   t0_age_sex_authority_v1.py
+                    t0_at8_availability_authority_v1.py
+                    t0_immune_fraction_authority_v1.py
+                    t0_immune_support_count_authority_v1.py
+                    t0_raw_source_row_authority_v1.py
+                    t0_technical_completeness_authority_v1.py
+
 ## Status
 
     defect                      CONFIRMED, measured, reproducible
     digest values               CORRECT, unaffected
     package roots               UNAFFECTED by the label
-    owner decision              WAIVE FOR NOW, do not re-stamp before review
-    reviewer acceptance         NOT GIVEN — this record does not assert it
-    real T0                     STILL STOPPED
+    owner decision              WAIVE, do not re-stamp
+    reviewer acceptance         ACCEPTED as a limited review waiver
+    lineage re-cut required     False, per the reviewer's R6 ruling
+    new false labels            REFUSED IN CODE
+    real T0                     not authorized by this waiver; see the
+                                authorization request

@@ -565,3 +565,75 @@ def test_fixture_matches_the_branch_modules_it_claims(fixture_payload):
             "%s drifted from the digest the contract was verified against" % module)
         checked += 1
     assert checked >= 2
+
+
+# ---------------------------------------------------------------------------
+# The R6 provenance-label condition, enforced rather than conventional.
+#
+# The external reviewer accepted the waiver with ALLOWS_NEW_FALSE_LABELS=False.
+# A convention would not hold that across future modules; these pin it.
+# ---------------------------------------------------------------------------
+
+def test_the_accurate_byte_semantics_constant_is_what_new_artifacts_use() -> None:
+    assert C.ACCURATE_CODE_BYTE_SEMANTICS == (
+        "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT"
+        "__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES")
+    assert "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES" != (
+        C.ACCURATE_CODE_BYTE_SEMANTICS)
+
+
+def test_the_waiver_set_is_frozen_and_cannot_grow() -> None:
+    assert C.assert_provenance_waiver_set_unchanged() is True
+    assert len(C.PROVENANCE_LABEL_WAIVER_MODULES) == 6
+    assert C.PROVENANCE_LABEL_WAIVER_ALLOWS_NEW_FALSE_LABELS is False
+    with pytest.raises(AssertionError) as excinfo:
+        C.assert_provenance_waiver_set_unchanged(expected_count=7)
+    assert C.STOP_WAIVER_SET_GREW in str(excinfo.value)
+
+
+def test_a_waived_legacy_module_may_keep_the_false_label() -> None:
+    for name in C.PROVENANCE_LABEL_WAIVER_MODULES:
+        assert C.assert_byte_semantics_label_lawful(
+            name, C.WAIVED_FALSE_CODE_BYTE_SEMANTICS) is True
+
+
+def test_a_new_module_carrying_the_false_label_is_refused() -> None:
+    """The condition that matters for the real-T0 run."""
+    for name in ("t0_real_run_v1.py", "t0_confirmation_raw_v1.py",
+                 "scripts/v4/t0_anything_new_v1.py"):
+        with pytest.raises(AssertionError) as excinfo:
+            C.assert_byte_semantics_label_lawful(
+                name, C.WAIVED_FALSE_CODE_BYTE_SEMANTICS)
+        assert C.STOP_FALSE_BYTE_SEMANTICS in str(excinfo.value)
+
+
+def test_an_unrecognised_byte_semantics_string_is_refused() -> None:
+    for bad in ("", "WORKTREE_BYTES", "GIT_BLOB", "sha256", None):
+        with pytest.raises(AssertionError):
+            C.assert_byte_semantics_label_lawful("t0_new_v1.py", bad)
+
+
+def test_a_new_module_declaring_the_accurate_label_is_accepted() -> None:
+    assert C.assert_byte_semantics_label_lawful(
+        "t0_real_run_v1.py", C.ACCURATE_CODE_BYTE_SEMANTICS) is True
+
+
+def test_the_audit_classifies_every_t0_module_and_refuses_none_today() -> None:
+    report = C.audit_byte_semantics_labels()
+    assert set(report["waived_legacy"]) == set(
+        C.PROVENANCE_LABEL_WAIVER_MODULES)
+    assert "t0_eligible_donor_authority_v1.py" in report["accurate"]
+    assert "t0_estimability_preflight_production_run_v1.py" in report["accurate"]
+    assert report["allows_new_false_labels"] is False
+
+
+def test_the_audit_matches_declaration_sites_not_the_bare_label() -> None:
+    """The contract module names the legacy constant without declaring it.
+
+    Substring-scanning for the label flagged this very module, which is the same
+    crude-guard error that earlier refused an `age_present` header and a
+    report's own `at8_availability_root_sha256`.
+    """
+    report = C.audit_byte_semantics_labels()
+    assert "t0_input_dependency_contract_v1.py" not in report["waived_legacy"]
+    assert "t0_input_dependency_contract_v1.py" not in report["accurate"]
