@@ -1,0 +1,46 @@
+{
+  "global_importance_geometry": {
+    "ess_fraction": 0.5000000953357714,
+    "weight_max": 19.538988307217473,
+    "weight_mean": 1.0,
+    "weight_min": 0.2908779898588124
+  },
+  "inputs": {
+    "H": 5267086,
+    "a": 2340573,
+    "b": 5029443,
+    "cells": 4553407,
+    "checkpoint_outcomes_used": false,
+    "donors": 104,
+    "ledger_raw_sha256": "e05f4a524748cf427b1c3e899a5b672641566c772aa91da8a2a56dae2b9a3c97",
+    "metadata_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "pathology_used": false,
+    "synthetic_data_used": false
+  },
+  "interpretation": [
+    "Global ESS near 0.50 does not guarantee per-update conditioning.",
+    "The current affine scientific order is a deterministic permutation but was not constructed to control update-local importance-weight geometry.",
+    "Final scientific update membership must be frozen after hardware capacity is known and before optimizer execution; microbatch packing may not change that membership.",
+    "This diagnostic does not select an update size, repeat cap, optimizer hyperparameter, or training outcome."
+  ],
+  "schema": "JEPA_V5_AFFINE_ORDER_UPDATE_CONDITIONING_DIAGNOSTIC_V1",
+  "scientific_order_authorized": false,
+  "status": "REAL_SCHEDULE_DIAGNOSTIC__CURRENT_AFFINE_ORDER_NOT_UPDATE_CONDITIONED",
+  "training_authorized": false,
+  "update_diagnostics": [
+    {"base_cells_per_scientific_update":16,"complete_updates":329192,"local_ess_fraction_median":0.5569365333909462,"local_ess_fraction_min":0.10613165961149708,"local_ess_fraction_p01":0.4088014397824594,"maximum_single_presentation_weight_share":0.7642877282996599,"p99_single_presentation_weight_share":0.3207697854659906,"tail_presentations":14},
+    {"base_cells_per_scientific_update":32,"complete_updates":164596,"local_ess_fraction_median":0.5476503657428979,"local_ess_fraction_min":0.0976990238474382,"local_ess_fraction_p01":0.1931348451700848,"maximum_single_presentation_weight_share":0.5579621704209601,"p99_single_presentation_weight_share":0.37195063706799586,"tail_presentations":14},
+    {"base_cells_per_scientific_update":64,"complete_updates":82298,"local_ess_fraction_median":0.5435278000541003,"local_ess_fraction_min":0.12702158143130074,"local_ess_fraction_p01":0.19899380251854235,"maximum_single_presentation_weight_share":0.3302513252819534,"p99_single_presentation_weight_share":0.24719309683872026,"tail_presentations":14},
+    {"base_cells_per_scientific_update":128,"complete_updates":41149,"local_ess_fraction_median":0.5412952907681986,"local_ess_fraction_min":0.1646307609105634,"local_ess_fraction_p01":0.2440065041314699,"maximum_single_presentation_weight_share":0.17019398415831338,"p99_single_presentation_weight_share":0.14379600069129106,"tail_presentations":14},
+    {"base_cells_per_scientific_update":256,"complete_updates":20574,"local_ess_fraction_median":0.539730086043306,"local_ess_fraction_min":0.22987410578866957,"local_ess_fraction_p01":0.3074948556121465,"maximum_single_presentation_weight_share":0.08704522165098162,"p99_single_presentation_weight_share":0.07712032720251634,"tail_presentations":142},
+    {"base_cells_per_scientific_update":512,"complete_updates":10287,"local_ess_fraction_median":0.5381061605941063,"local_ess_fraction_min":0.27569395610159597,"local_ess_fraction_p01":0.33816074886099384,"maximum_single_presentation_weight_share":0.042611217815838355,"p99_single_presentation_weight_share":0.039723269151368555,"tail_presentations":142},
+    {"base_cells_per_scientific_update":1024,"complete_updates":5143,"local_ess_fraction_median":0.5343550784764414,"local_ess_fraction_min":0.33798680490024163,"local_ess_fraction_p01":0.3927072131600864,"maximum_single_presentation_weight_share":0.02102582050141074,"p99_single_presentation_weight_share":0.019990176924879362,"tail_presentations":654},
+    {"base_cells_per_scientific_update":2048,"complete_updates":2571,"local_ess_fraction_median":0.5014226904833025,"local_ess_fraction_min":0.39398000136345457,"local_ess_fraction_p01":0.41998172598474987,"maximum_single_presentation_weight_share":0.010248894809125329,"p99_single_presentation_weight_share":0.009957488022706339,"tail_presentations":1678},
+    {"base_cells_per_scientific_update":4096,"complete_updates":1285,"local_ess_fraction_median":0.5018353144723253,"local_ess_fraction_min":0.43101858541269233,"local_ess_fraction_p01":0.4418792309489105,"maximum_single_presentation_weight_share":0.005008877403103445,"p99_single_presentation_weight_share":0.00493488262402791,"tail_presentations":3726},
+    {"base_cells_per_scientific_update":8192,"complete_updates":642,"local_ess_fraction_median":0.5011040616128012,"local_ess_fraction_min":0.44165509286624266,"local_ess_fraction_p01":0.4631196635930446,"maximum_single_presentation_weight_share":0.0024538137400469833,"p99_single_presentation_weight_share":0.0024457078111601574,"tail_presentations":7822},
+    {"base_cells_per_scientific_update":16384,"complete_updates":321,"local_ess_fraction_median":0.5003418848037835,"local_ess_fraction_min":0.47068308015307037,"local_ess_fraction_p01":0.4780794950601268,"maximum_single_presentation_weight_share":0.0012185787413007475,"p99_single_presentation_weight_share":0.0012120028860768128,"tail_presentations":7822},
+    {"base_cells_per_scientific_update":32768,"complete_updates":160,"local_ess_fraction_median":0.5001850905398594,"local_ess_fraction_min":0.4812082674376093,"local_ess_fraction_p01":0.48445543544213354,"maximum_single_presentation_weight_share":0.0006028614628818817,"p99_single_presentation_weight_share":0.0006021845066283214,"tail_presentations":24206},
+    {"base_cells_per_scientific_update":65536,"complete_updates":80,"local_ess_fraction_median":0.500046135747569,"local_ess_fraction_min":0.4886021008351128,"local_ess_fraction_p01":0.4891557020610545,"maximum_single_presentation_weight_share":0.0003007307733869765,"p99_single_presentation_weight_share":0.0003004592489786736,"tail_presentations":24206},
+    {"base_cells_per_scientific_update":131072,"complete_updates":40,"local_ess_fraction_median":0.49966390645316616,"local_ess_fraction_min":0.4959732546637593,"local_ess_fraction_p01":0.49619438421054635,"maximum_single_presentation_weight_share":0.0001497059148975048,"p99_single_presentation_weight_share":0.00014970339874069443,"tail_presentations":24206}
+  ]
+}
