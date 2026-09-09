@@ -1,0 +1,34 @@
+{
+  "schema": "JEPA_V5_C2_GPU_CRITICAL_TEST_EXECUTION_MANIFEST_V1",
+  "status": "GPU_EXECUTION_REQUIRED__NO_TRAINING_AUTHORITY",
+  "source_test_file": "tests/test_c2_successor_gate_adoption_v1.py",
+  "expected_test_ids": [
+    "test_gate_stops_a_k0_like_update_before_the_optimizer_steps",
+    "test_gate_stops_before_any_optimizer_state_exists",
+    "test_corrected_update_passes_the_gate_and_moves_parameters",
+    "test_gate_precedes_every_optimizer_step_in_the_successor_source",
+    "test_historical_and_successor_differ_only_as_declared",
+    "test_exact_128x8_corrected_successor_passes_and_48_adam_moments_live"
+  ],
+  "required_production_geometry_test": "test_exact_128x8_corrected_successor_passes_and_48_adam_moments_live",
+  "requirements": {
+    "cuda_required_for_execution_receipt": true,
+    "torch_import_required": true,
+    "skipped_allowed": false,
+    "missing_allowed": false,
+    "failed_allowed": false,
+    "errored_allowed": false,
+    "exact_historical_geometry": {
+      "effective_batch": 128,
+      "microbatch": 8
+    },
+    "protected_tensors_expected": 48,
+    "adam_exp_avg_live_expected": 48,
+    "adam_exp_avg_sq_live_expected": 48,
+    "protected_parameter_motion_expected": 48
+  },
+  "cpu_ci_success_may_satisfy_gpu_receipt": false,
+  "synthetic_loader_role": "MECHANICS_REGRESSION_ONLY__MAY_NOT_SET_SCIENTIFIC_PARAMETERS",
+  "execution_receipt": null,
+  "training_authorized": false
+}
