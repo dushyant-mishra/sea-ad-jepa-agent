@@ -278,6 +278,8 @@ def main(argv: list[str] | None = None) -> int:
         print("[%6.1fs] %s" % (time.time() - started, message))
 
     repo = Path(__file__).resolve().parents[2]
+    out_for_cache = Path(args.outdir)
+    out_for_cache.mkdir(parents=True, exist_ok=True)
     stamp("Stage 2B step 1 - verifying the R7 gate before anything is read")
     assert_worktree_committed(repo)
     gate = stage2a.verify_r7_gate(args.readiness_pkg, log=print)
@@ -296,11 +298,17 @@ def main(argv: list[str] | None = None) -> int:
     stamp("Stage 2B step 2 - materializing the discovery scalar matrix "
           "(no pathology)")
     import t0_discovery_scalar_matrix_v1 as dm
-    materialized = dm.materialize(
-        store=args.store, membership_csv=args.membership,
-        population_pkg=args.population_pkg,
-        feature_split_csv=args.feature_split,
-        discovery_donors=discovery, log=print)
+    materialized = dm.load_cache(out_for_cache, log=print)
+    if materialized is None:
+        materialized = dm.materialize(
+            store=args.store, membership_csv=args.membership,
+            population_pkg=args.population_pkg,
+            feature_split_csv=args.feature_split,
+            discovery_donors=discovery, log=print)
+        cached = dm.save_cache(out_for_cache, materialized)
+        stamp("  cached the matrix at %s" % cached)
+    else:
+        stamp("  matrix reused from cache; materialization skipped")
 
     import t0_eligible_donor_production_run_v1 as ed
     at8_parent = ed.load_at8_availability(args.at8_pkg)

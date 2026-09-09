@@ -72,6 +72,94 @@ STOP_COUNTS = "STOP_T0_DISCOVERY_MATRIX_COUNTS_NOT_NONNEGATIVE_INTEGERS"
 STOP_CELL_IDENTITY = "STOP_T0_DISCOVERY_MATRIX_CELL_IDENTITY_MISMATCH"
 
 
+def _frozen_membership():
+    """The frozen primary-membership module, for its loader and its dtypes."""
+    frozen = (Path("C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project")
+              / "cdf819f6-5db4-4119-9a97-37fef1d27909" / "scratchpad"
+              / "v20_recovery" / "current" / "code")
+    if str(frozen) not in sys.path:
+        sys.path.insert(0, str(frozen))
+    import t0_primary_membership_v1 as membership_mod
+    return membership_mod
+
+
+def cache_path(outdir: Path) -> Path:
+    return Path(outdir) / "T0_DISCOVERY_SCALAR_MATRIX_CACHE.npz"
+
+
+def save_cache(outdir: Path, result: dict[str, Any]) -> Path:
+    """Cache the matrix and its identity arrays, keyed by the matrix digest.
+
+    The materialization is the slowest step and the fit behind it is the part
+    most likely to need another attempt, so a failure downstream should not cost
+    another full pass.
+    """
+    path = cache_path(outdir)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    matrix = result["matrix"]
+    np.savez_compressed(
+        path,
+        indptr=matrix.indptr, indices=matrix.indices, data=matrix.data,
+        shape=np.asarray(matrix.shape, dtype=np.int64),
+        matrix_sha256=np.asarray([result["matrix_sha256"]]),
+        matrix_id=np.asarray(result["matrix_id"], dtype=object),
+        local_row=np.asarray(result["local_row"], dtype=np.int64),
+        cell_id=np.asarray(result["cell_id"], dtype=object),
+        donor_id=np.asarray(result["donor_id"], dtype=object),
+        stable_key=np.asarray([str(k) for k in result["stable_key"]],
+                              dtype=object),
+        source_library=np.asarray(result["source_library"], dtype=np.int64),
+        feature_ids=np.asarray(result["feature_ids"], dtype=object))
+    return path
+
+
+def load_cache(outdir: Path, *, expected_matrix_sha256: str | None = None,
+               log=print) -> dict[str, Any] | None:
+    """Reload a cached matrix, verifying its digest before use."""
+    path = cache_path(outdir)
+    if not path.is_file():
+        return None
+    with np.load(path, allow_pickle=True) as z:
+        shape = tuple(int(v) for v in z["shape"])
+        matrix = sp.csr_matrix((z["data"], z["indices"], z["indptr"]),
+                              shape=shape)
+        stored = str(z["matrix_sha256"][0])
+        result = {
+            "matrix": matrix,
+            "matrix_sha256": stored,
+            "matrix_id": [str(v) for v in z["matrix_id"]],
+            "local_row": [int(v) for v in z["local_row"]],
+            "cell_id": [str(v) for v in z["cell_id"]],
+            "donor_id": [str(v) for v in z["donor_id"]],
+            "stable_key": [int(v) for v in z["stable_key"]],
+            "source_library": [int(v) for v in z["source_library"]],
+            "feature_ids": [str(v) for v in z["feature_ids"]],
+        }
+    digest = hashlib.sha256()
+    digest.update(b"T0-DISCOVERY-SCALAR-MATRIX-V1")
+    digest.update(struct.pack(">QQ", matrix.shape[0], matrix.shape[1]))
+    digest.update(matrix.indptr.astype("<i8").tobytes())
+    digest.update(matrix.indices.astype("<i4").tobytes())
+    digest.update(matrix.data.astype("<i8").tobytes())
+    recomputed = digest.hexdigest()
+    if recomputed != stored:
+        raise AssertionError(
+            "%s: cached matrix digests to %s but the cache records %s"
+            % (STOP_GEOMETRY, recomputed, stored))
+    if expected_matrix_sha256 is not None and recomputed != str(
+            expected_matrix_sha256):
+        raise AssertionError("%s: cached matrix is %s, expected %s"
+                             % (STOP_GEOMETRY, recomputed,
+                                expected_matrix_sha256))
+    result["cells"] = matrix.shape[0]
+    result["declared_addresses"] = matrix.shape[1]
+    result["nnz"] = int(matrix.nnz)
+    result["from_cache"] = True
+    log("    reused cached matrix %s, shape %s, nnz %d"
+        % (recomputed, matrix.shape, matrix.nnz))
+    return result
+
+
 def load_declared_features(feature_split_csv: Path) -> dict[str, Any]:
     """The declared addresses in file order, with the order property asserted."""
     with io.open(feature_split_csv, "r", encoding="utf-8", newline="") as handle:
@@ -132,13 +220,26 @@ def materialize(*, store: Path, membership_csv: Path, population_pkg: Path,
           % (len(positions), features["file_order_is_sorted"],
              features["role_counts"]))
 
-    stamp("reading the membership identity columns")
-    with io.open(membership_csv, "r", encoding="utf-8", newline="") as handle:
-        membership_rows = list(csv.DictReader(handle))
-    if len(membership_rows) != logical["row_count"]:
+    stamp("reading the membership identity columns via the frozen loader")
+    # Taken from `load_membership`, not re-read with a DictReader. A DictReader
+    # returns every column as a string, and
+    # `validate_cells_against_membership` merges on matrix_id/local_row/cell_id
+    # against a frame where read_csv infers local_row as int64, so a string
+    # local_row raises "trying to merge on object and int64 columns" -- after
+    # the whole matrix has already been built. Using the frozen loader makes the
+    # dtypes agree by construction and adds its frame validation and CSV hash
+    # check.
+    membership_mod = _frozen_membership()
+    frame = membership_mod.load_membership(membership_csv)
+    if len(frame) != logical["row_count"]:
         raise AssertionError("%s: membership has %d rows, logical %d"
-                             % (STOP_GEOMETRY, len(membership_rows),
+                             % (STOP_GEOMETRY, len(frame),
                                 logical["row_count"]))
+    col_matrix_id = frame["matrix_id"].tolist()
+    col_local_row = frame["local_row"].tolist()
+    col_cell_id = frame["cell_id"].tolist()
+    col_donor_id = frame["donor_id"].tolist()
+    col_stable_key = frame["stable_key"].tolist()
 
     block_geometry = closure["block_geometry"]
     paths = {row["counts_path"] for row in logical["rows"]}
@@ -191,20 +292,21 @@ def materialize(*, store: Path, membership_csv: Path, population_pkg: Path,
         total_nnz += int(nz.size)
         indptr[out_row + 1] = total_nnz
 
-        member = membership_rows[index]
-        if str(member["cell_id"]).strip() != str(row["canonical_cell_id"]):
+        if str(col_cell_id[index]) != str(row["canonical_cell_id"]):
             raise AssertionError(
                 "%s: membership row %d is %r but the logical row is %r"
-                % (STOP_CELL_IDENTITY, index, member["cell_id"],
+                % (STOP_CELL_IDENTITY, index, col_cell_id[index],
                    row["canonical_cell_id"]))
-        if str(member["donor_id"]).strip() != str(row["donor_id"]):
+        if str(col_donor_id[index]) != str(row["donor_id"]):
             raise AssertionError("%s: donor mismatch at row %d"
                                  % (STOP_CELL_IDENTITY, index))
-        matrix_id.append(str(member["matrix_id"]).strip())
-        local_row.append(str(member["local_row"]).strip())
-        cell_id.append(str(member["cell_id"]).strip())
-        donor_id.append(str(member["donor_id"]).strip())
-        stable_key.append(str(member["stable_key"]).strip())
+        # Native dtypes preserved: local_row stays an int and stable_key stays
+        # whatever the frozen loader produced.
+        matrix_id.append(col_matrix_id[index])
+        local_row.append(col_local_row[index])
+        cell_id.append(col_cell_id[index])
+        donor_id.append(col_donor_id[index])
+        stable_key.append(col_stable_key[index])
 
         if index not in proven_library:
             raise AssertionError("%s: no byte-to-row proof for logical index %d"
