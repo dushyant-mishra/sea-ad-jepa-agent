@@ -54,6 +54,9 @@ STOP_INPUT_SHAPE = "STOP_T0_ESTIMABILITY_INPUT_SHAPE_INVALID"
 STOP_RESPONSE_PRESENT = "STOP_T0_ESTIMABILITY_RESPONSE_SUPPLIED_TO_A_BLIND_CHECK"
 STOP_FIELD_SCHEMA = "STOP_T0_ESTIMABILITY_FIELD_SCHEMA_VIOLATION"
 STOP_REMEDY = "STOP_T0_ESTIMABILITY_FORBIDDEN_REMEDY_ATTEMPTED"
+STOP_DONOR_ALIGNMENT = "STOP_T0_ESTIMABILITY_DONOR_IDENTITY_OR_ORDER_UNBOUND"
+STOP_PARENT_AUTHORITY = "STOP_T0_ESTIMABILITY_PARENT_AUTHORITY_UNBOUND"
+STOP_NUMERICAL_AUTHORITY = "STOP_T0_ESTIMABILITY_NUMERICAL_PRIMITIVE_AUTHORITY_UNBOUND"
 
 STAGES = ("A_PARENT_NUISANCE", "B_STATE_DESIGNS", "C_TAIL_DESIGNS")
 
@@ -219,6 +222,11 @@ def stage_b_state_designs(
     matrix, so supplying the outcome to this check would be both unnecessary and
     a pathology-access violation.
     """
+    if "donor_id" in confirmation:
+        raise AssertionError(
+            "%s: positional Stage B inputs are synthetic-only when donor IDs are "
+            "present; use stage_b_state_designs_bound for production alignment"
+            % STOP_DONOR_ALIGNMENT)
     if response is not None:
         raise AssertionError(
             "%s: estimability is a property of the design matrix; the response "
@@ -263,6 +271,11 @@ def stage_c_tail_designs(
     donors, whose size the frozen contract restricts to 17 or 18, so this stage
     takes its own donor set rather than reusing the full confirmation one.
     """
+    if "donor_id" in tail_donors:
+        raise AssertionError(
+            "%s: positional Stage C inputs are synthetic-only when donor IDs are "
+            "present; use stage_c_tail_designs_bound for production alignment"
+            % STOP_DONOR_ALIGNMENT)
     if response is not None:
         raise AssertionError(
             "%s: estimability is a property of the design matrix; the response "
@@ -293,6 +306,225 @@ def stage_c_tail_designs(
             "tail_inference_n": n,
             "residual_df": {name: n - len(designs[name][0]) for name in designs}}
 
+
+
+def _hex64(value: Any) -> bool:
+    return (isinstance(value, str) and len(value) == 64
+            and all(ch in "0123456789abcdef" for ch in value))
+
+
+def _bound_donor_order(data: Mapping[str, Sequence[Any]], *, what: str,
+                       expected_n: int | None = None) -> tuple[str, ...]:
+    if "donor_id" not in data:
+        raise AssertionError("%s: %s lacks donor_id" % (STOP_DONOR_ALIGNMENT, what))
+    donors = tuple(str(v) for v in data["donor_id"])
+    if not donors or any(not donor for donor in donors):
+        raise AssertionError("%s: %s has blank donor identity"
+                             % (STOP_DONOR_ALIGNMENT, what))
+    if len(set(donors)) != len(donors):
+        raise AssertionError("%s: %s has duplicate donor identity"
+                             % (STOP_DONOR_ALIGNMENT, what))
+    if expected_n is not None and len(donors) != int(expected_n):
+        raise AssertionError("%s: %s has %d donors, expected %d"
+                             % (STOP_DONOR_ALIGNMENT, what, len(donors),
+                                int(expected_n)))
+    if len(data.get("age", ())) != len(donors) or len(data.get("sex", ())) != len(donors):
+        raise AssertionError("%s: %s age/sex lengths do not match donor order"
+                             % (STOP_DONOR_ALIGNMENT, what))
+    return donors
+
+
+def _bound_values(values_by_donor: Mapping[str, Any], donors: Sequence[str],
+                  *, what: str) -> list[float]:
+    keys = {str(key) for key in values_by_donor}
+    expected = set(donors)
+    if keys != expected:
+        raise AssertionError(
+            "%s: %s donor set mismatch; values-only=%r donors-only=%r"
+            % (STOP_DONOR_ALIGNMENT, what, sorted(keys - expected),
+               sorted(expected - keys)))
+    return _column([values_by_donor[donor] for donor in donors],
+                   what=what, n=len(donors))
+
+
+def _bind_authority_roots(authority_roots: Mapping[str, str],
+                          required: Sequence[str]) -> list[list[str]]:
+    missing = [name for name in required if name not in authority_roots]
+    if missing:
+        raise AssertionError("%s: missing %r"
+                             % (STOP_PARENT_AUTHORITY, missing))
+    bound = []
+    for name in required:
+        value = authority_roots[name]
+        if not _hex64(value):
+            raise AssertionError("%s: %s is not a lowercase SHA-256"
+                                 % (STOP_PARENT_AUTHORITY, name))
+        bound.append([str(name), str(value)])
+    return bound
+
+
+def _numerical_authority_root(value: str) -> str:
+    if not _hex64(value):
+        raise AssertionError(
+            "%s: production preflight requires an externally frozen authority "
+            "for the exact accepted V20 nuisance/rank primitives or a separately "
+            "proven equivalent implementation"
+            % STOP_NUMERICAL_AUTHORITY)
+    return str(value)
+
+
+def stage_a_parent_nuisance_bound(
+        *,
+        discovery: Mapping[str, Sequence[Any]],
+        confirmation: Mapping[str, Sequence[Any]],
+        authority_roots: Mapping[str, str],
+        numerical_primitive_authority_root_sha256: str,
+) -> dict[str, Any]:
+    """Donor-bound Stage A; positional Stage A remains a synthetic primitive."""
+    disc_donors = _bound_donor_order(discovery, what="DISCOVERY")
+    conf_donors = _bound_donor_order(confirmation, what="CONFIRMATION",
+                                     expected_n=18)
+    roots = _bind_authority_roots(
+        authority_roots,
+        ("eligible_donor_authority_root_sha256",
+         "donor_role_authority_root_sha256",
+         "donor_metadata_authority_root_sha256"))
+    numerical = _numerical_authority_root(
+        numerical_primitive_authority_root_sha256)
+    result = stage_a_parent_nuisance(
+        discovery={"age": discovery["age"], "sex": discovery["sex"]},
+        confirmation={"age": confirmation["age"], "sex": confirmation["sex"]})
+    result["donor_order"] = {
+        "DISCOVERY": list(disc_donors), "CONFIRMATION": list(conf_donors)}
+    result["authority_roots"] = roots
+    result["numerical_primitive_authority_root_sha256"] = numerical
+    result["design_columns"] = ["INTERCEPT", "AGE_CENTERED",
+                                "AGE_CENTERED_SQUARED", "SEX_BINARY"]
+    return result
+
+
+def stage_b_state_designs_bound(
+        *,
+        confirmation: Mapping[str, Sequence[Any]],
+        state_score_by_donor: Mapping[str, Any],
+        immune_fraction_by_donor: Mapping[str, Any],
+        q_depth_by_donor: Mapping[str, Any],
+        q_detect_by_donor: Mapping[str, Any],
+        authority_roots: Mapping[str, str],
+        numerical_primitive_authority_root_sha256: str,
+        response: Any = None,
+) -> dict[str, Any]:
+    """Join every Stage B covariate by donor identity before rank evaluation."""
+    if response is not None:
+        raise AssertionError("%s: response supplied to blind Stage B"
+                             % STOP_RESPONSE_PRESENT)
+    donors = _bound_donor_order(confirmation, what="CONFIRMATION",
+                                expected_n=18)
+    roots = _bind_authority_roots(
+        authority_roots,
+        ("eligible_donor_authority_root_sha256",
+         "donor_role_authority_root_sha256",
+         "donor_metadata_authority_root_sha256",
+         "immune_fraction_authority_root_sha256",
+         "technical_completeness_authority_root_sha256",
+         "state_score_authority_root_sha256"))
+    numerical = _numerical_authority_root(
+        numerical_primitive_authority_root_sha256)
+    state = _bound_values(state_score_by_donor, donors, what="STATE_SCORE")
+    immune = _bound_values(immune_fraction_by_donor, donors,
+                           what="IMMUNE_FRACTION")
+    depth = _bound_values(q_depth_by_donor, donors, what="Q_DEPTH")
+    detect = _bound_values(q_detect_by_donor, donors, what="Q_DETECT")
+    result = stage_b_state_designs(
+        confirmation={"age": confirmation["age"], "sex": confirmation["sex"]},
+        state_score=state, immune_fraction=immune,
+        q_depth=depth, q_detect=detect)
+    result["donor_order"] = list(donors)
+    result["authority_roots"] = roots
+    result["numerical_primitive_authority_root_sha256"] = numerical
+    result["design_columns"] = {
+        "primary": ["NUISANCE", "STATE_SCORE"],
+        "composition": ["NUISANCE", "IMMUNE_FRACTION", "STATE_SCORE"],
+        "measurement": ["NUISANCE", "Q_DEPTH", "Q_DETECT", "STATE_SCORE"],
+    }
+    return result
+
+
+def stage_c_tail_designs_bound(
+        *,
+        tail_donors: Mapping[str, Sequence[Any]],
+        state_score_by_donor: Mapping[str, Any],
+        tail_prevalence_by_donor: Mapping[str, Any],
+        immune_fraction_by_donor: Mapping[str, Any],
+        q_depth_by_donor: Mapping[str, Any],
+        q_detect_by_donor: Mapping[str, Any],
+        authority_roots: Mapping[str, str],
+        numerical_primitive_authority_root_sha256: str,
+        response: Any = None,
+) -> dict[str, Any]:
+    """Join every Stage C covariate by exact tail-donor identity."""
+    if response is not None:
+        raise AssertionError("%s: response supplied to blind Stage C"
+                             % STOP_RESPONSE_PRESENT)
+    donors = _bound_donor_order(tail_donors, what="TAIL_CONFIRMATION")
+    if len(donors) not in (17, 18):
+        raise AssertionError("%s: tail donor count %d is outside frozen {17,18}"
+                             % (STOP_INPUT_SHAPE, len(donors)))
+    roots = _bind_authority_roots(
+        authority_roots,
+        ("eligible_donor_authority_root_sha256",
+         "donor_role_authority_root_sha256",
+         "donor_metadata_authority_root_sha256",
+         "immune_fraction_authority_root_sha256",
+         "technical_completeness_authority_root_sha256",
+         "state_score_authority_root_sha256",
+         "tail_authority_root_sha256"))
+    numerical = _numerical_authority_root(
+        numerical_primitive_authority_root_sha256)
+    state = _bound_values(state_score_by_donor, donors, what="TAIL STATE_SCORE")
+    tail = _bound_values(tail_prevalence_by_donor, donors,
+                         what="TAIL_PREVALENCE")
+    immune = _bound_values(immune_fraction_by_donor, donors,
+                           what="TAIL IMMUNE_FRACTION")
+    depth = _bound_values(q_depth_by_donor, donors, what="TAIL Q_DEPTH")
+    detect = _bound_values(q_detect_by_donor, donors, what="TAIL Q_DETECT")
+    result = stage_c_tail_designs(
+        tail_donors={"age": tail_donors["age"], "sex": tail_donors["sex"]},
+        state_score=state, tail_prevalence=tail,
+        immune_fraction=immune, q_depth=depth, q_detect=detect)
+    result["donor_order"] = list(donors)
+    result["authority_roots"] = roots
+    result["numerical_primitive_authority_root_sha256"] = numerical
+    result["design_columns"] = {
+        "tail_primary": ["NUISANCE", "STATE_SCORE", "TAIL_PREVALENCE"],
+        "tail_composition": ["NUISANCE", "STATE_SCORE", "IMMUNE_FRACTION",
+                             "TAIL_PREVALENCE"],
+        "tail_measurement": ["NUISANCE", "STATE_SCORE", "Q_DEPTH", "Q_DETECT",
+                             "TAIL_PREVALENCE"],
+    }
+    return result
+
+
+def bound_preflight_root(results: Sequence[Mapping[str, Any]]) -> str:
+    """Root over exact stages, donor order, authority roots and design columns."""
+    parts = [_typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
+             _typed("BOUND_PREFLIGHT_V1"), _typed(len(results))]
+    for result in results:
+        parts.append(_typed(str(result["stage"])))
+        donor_order = result.get("donor_order")
+        if isinstance(donor_order, Mapping):
+            for role in sorted(donor_order):
+                parts.append(_typed([str(role)] + [str(v) for v in donor_order[role]]))
+        else:
+            parts.append(_typed([str(v) for v in donor_order]))
+        for name, value in result.get("authority_roots", []):
+            parts.append(_typed([str(name), str(value)]))
+        parts.append(_typed(str(
+            result["numerical_primitive_authority_root_sha256"])))
+        checks = result["checks"]
+        for name in sorted(checks):
+            parts.append(_typed([str(name), int(checks[name])]))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
 
 def preflight_root(results: Sequence[Mapping[str, Any]]) -> str:
     """Digest over the stages actually run and their outcomes."""
