@@ -270,13 +270,16 @@ CONTRACT: tuple[dict[str, Any], ...] = (
     _entry(
         "source_library", "AUTHENTICATED_EXPRESSION", "PATHOLOGY_BLIND",
         "ALL_CANDIDATE_DONORS",
-        "T0_V20_ROW_COUNT_AUTHORITY_V1",
-        (),
+        "T0_RAW_SOURCE_ROW_AUTHORITY_V2",
+        ("expression_row", "canonical_cell_id", "donor_id"),
         ("t0_confirmation_raw_v1", "t0_v20_row_count_authority_v1",
          "t0_raw_source_row_authority_v1"),
         "Integer sum of the FULL raw source row, computed before source-to-address "
-        "projection. Never recomputable from the 41,238-address row or the 35,076 "
-        "projection. Required strictly positive by the confirmation reader.",
+        "projection. The B2 logical row carries and binds the value, but the "
+        "population-wide raw-source authority is what proves it from the frozen "
+        "H5AD bytes for every accepted logical row. Never recomputable from the "
+        "41,238-address row or the 35,076 projection. Required strictly positive "
+        "by the confirmation reader.",
     ),
     _entry(
         "stable_key", "AUTHENTICATED_EXPRESSION", "PATHOLOGY_BLIND",
@@ -306,7 +309,8 @@ CONTRACT: tuple[dict[str, Any], ...] = (
         "Q_DEPTH", "DERIVED", "PATHOLOGY_BLIND", "ALL_CANDIDATE_DONORS",
         "T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1__PENDING",
         ("source_library", "donor_id"),
-        ("t0_confirmation_raw_v1", "t0_adjudicator_v1"),
+        ("t0_confirmation_raw_v1", "t0_adjudicator_v1",
+         "t0_raw_source_row_authority_v1"),
         "Donor mean of log1p(source_library) over that donor's authenticated "
         "cells. Recovered exactly from t0_confirmation_raw_v1, not inferred.",
     ),
