@@ -1,0 +1,22 @@
+{
+  "schema": "TD60_EXPOSURE_CHECKPOINT_PROSPECTIVE_AMENDMENT_CANDIDATE_V1",
+  "status": "PROSPECTIVE_CANDIDATE_ONLY__NO_TD60_EXECUTION_AUTHORITY",
+  "reason": "Historical u40 is a mechanics update label from the 3,292-cell fixture and cannot define biological learning time for the 4,553,407-cell reader-fit V5 successor.",
+  "existing_td60_contract_preserved_until_review": true,
+  "candidate_checkpoint_requirement": {
+    "milestone_id": "FINAL_ONE_READER_FIT_POPULATION_EQUIVALENT_EMA_TEACHER_V1",
+    "base_presentations_seen": 4553407,
+    "checkpoint_selected_by_outcome": false,
+    "requires_lawful_v5_training_and_checkpoint_authority": true
+  },
+  "unchanged_td60_science": {
+    "distance": "direct 160-D cell_state cosine distance",
+    "global_cases_required": "24/24",
+    "mesoscale_cases_required": "24/24",
+    "total_required": "48/48",
+    "uses_exact_frozen_TD57B_TD59_triplets": true
+  },
+  "training_authorized": false,
+  "td60_execution_authorized": false,
+  "protected_population_access_authorized": false
+}
