@@ -275,7 +275,7 @@
         "                                 % (STOP_COUNTS, int(row_index)))",
         "                                 % (STOP_COUNTS, int(row_index)))",
         "                                 % (STOP_COUNTS, int(row_index)))",
-        "    \"\"\"Prove the bound `source_library` from bytes this function itself read.",
+        "    Prove the bound `source_library` from bytes this function itself read.",
         "    expression_row = int(row[\"expression_row\"])",
         "    identity = read_row_identity(genuine, expression_row)",
         "    if identity[\"canonical_cell_id\"] != str(row[\"canonical_cell_id\"]):",
@@ -309,11 +309,22 @@
         "                   int(row[\"expression_row\"]), int(proof[\"expression_row\"])))",
         "        if int(proof[\"source_library\"]) != int(row[\"source_library\"]):",
         "                \"%s: logical index %s binds source_library %d but the \"",
-        "                   int(row[\"source_library\"]), int(proof[\"source_library\"])))"
+        "                   int(row[\"source_library\"]), int(proof[\"source_library\"])))",
+        "REGISTRY_FIELDS = (\"logical_index\", \"expression_row\", \"canonical_cell_id\",",
+        "                   \"donor_id\", \"source_library\", \"stored_values_in_row\")",
+        "                         int(proof[\"expression_row\"]),",
+        "                         str(proof[\"canonical_cell_id\"]),",
+        "                         str(proof[\"donor_id\"]),",
+        "                         int(proof[\"source_library\"]),",
+        "    libraries = sorted(int(p[\"source_library\"]) for p in proofs)",
+        "            \"expression_row\": int(record[\"expression_row\"]),",
+        "            \"canonical_cell_id\": str(record[\"canonical_cell_id\"]),",
+        "            \"donor_id\": str(record[\"donor_id\"]),",
+        "            \"source_library\": int(record[\"source_library\"]),"
       ],
       "root": "BRANCH_SCRIPTS",
-      "source_lines": 662,
-      "source_sha256": "edd6f827a9e2be35cc445959d1172937e4ed3bf9ff66aba943a290ded0b022d6"
+      "source_lines": 996,
+      "source_sha256": "25744294ca6eb6ef66786422f70519a6e469b12a0c86dbd11d38b08ff0b4ee5b"
     },
     "t0_tail_authority_v1": {
       "declaration_lines": [

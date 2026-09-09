@@ -168,7 +168,7 @@ def test_a_fully_labelled_fabricated_row_cannot_prove_source_library(
     # There is no parameter through which the vector can enter. That is the
     # structural property: not a check that could be skipped, but an absent door.
     with pytest.raises(TypeError):
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_row_from_authenticated_source(
             source=source, logical=_logical([_row(0)]), logical_index=0,
             raw_source_row_values=fabricated,
             raw_source_provenance=provenance)
@@ -181,7 +181,7 @@ def test_a_fully_labelled_fabricated_row_cannot_prove_source_library(
 
 
 def test_the_proof_reports_that_no_caller_values_were_used(source) -> None:
-    proof = rs.prove_source_library_from_authenticated_source(
+    proof = rs._prove_row_from_authenticated_source(
         source=source, logical=_logical([_row(0)]), logical_index=0,
         expected_source_sha256=source.sha256)
     assert proof["caller_supplied_values"] is False
@@ -210,7 +210,7 @@ def test_a_look_alike_source_object_is_refused(source) -> None:
             self.h5 = real.h5
 
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_row_from_authenticated_source(
             source=LookAlike(source), logical=_logical([_row(0)]),
             logical_index=0, expected_source_sha256=rs.MTG_SOURCE_SHA256)
     assert rs.STOP_HANDLE_FORGED in str(excinfo.value)
@@ -227,7 +227,7 @@ def test_a_subclass_without_the_token_is_refused(source) -> None:
             self._h5 = genuine.h5
 
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_row_from_authenticated_source(
             source=Sneaky(), logical=_logical([_row(0)]), logical_index=0,
             expected_source_sha256=rs.MTG_SOURCE_SHA256)
     assert rs.STOP_HANDLE_FORGED in str(excinfo.value)
@@ -256,7 +256,7 @@ def test_the_whole_asset_is_digested(asset: Path, source) -> None:
 def test_a_proof_against_a_different_expected_digest_stops(source) -> None:
     """The handle's identity must equal what the proof expects."""
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_row_from_authenticated_source(
             source=source, logical=_logical([_row(0)]), logical_index=0,
             expected_source_sha256="e" * 64)
     assert rs.STOP_SOURCE_DIGEST in str(excinfo.value)
@@ -307,7 +307,7 @@ def test_the_library_is_computed_from_the_authenticated_row(source, index) -> No
 
 def test_the_source_row_identity_must_match_the_bound_cell(source) -> None:
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_row_from_authenticated_source(
             source=source, logical=_logical([_row(0, cell="SOMEONE-ELSE")]),
             logical_index=0, expected_source_sha256=source.sha256)
     assert rs.STOP_ROW_IDENTITY in str(excinfo.value)
@@ -315,7 +315,7 @@ def test_the_source_row_identity_must_match_the_bound_cell(source) -> None:
 
 def test_the_source_row_identity_must_match_the_bound_donor(source) -> None:
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_row_from_authenticated_source(
             source=source, logical=_logical([_row(0, donor="H20.33.999")]),
             logical_index=0, expected_source_sha256=source.sha256)
     assert rs.STOP_ROW_IDENTITY in str(excinfo.value)
@@ -328,7 +328,7 @@ def test_reading_the_wrong_expression_row_is_caught_by_identity(source) -> None:
     fails on identity before any total is compared.
     """
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_row_from_authenticated_source(
             source=source, logical=_logical([_row(0, expression_row=3)]),
             logical_index=0, expected_source_sha256=source.sha256)
     assert rs.STOP_ROW_IDENTITY in str(excinfo.value)
@@ -391,7 +391,7 @@ def test_a_bound_library_that_disagrees_with_the_authenticated_row_stops(
         source) -> None:
     correct = sum(POPULATION[0][2].values())
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_row_from_authenticated_source(
             source=source, logical=_logical([_row(0, library=correct + 1)]),
             logical_index=0, expected_source_sha256=source.sha256)
     assert rs.STOP_LIBRARY in str(excinfo.value)
@@ -399,7 +399,7 @@ def test_a_bound_library_that_disagrees_with_the_authenticated_row_stops(
 
 @pytest.mark.parametrize("index", [0, 1, 2])
 def test_a_genuine_row_proves_its_bound_library(source, index) -> None:
-    proof = rs.prove_source_library_from_authenticated_source(
+    proof = rs._prove_row_from_authenticated_source(
         source=source, logical=_logical([_row(index)]), logical_index=0,
         expected_source_sha256=source.sha256)
     assert proof["source_library"] == sum(POPULATION[index][2].values())
@@ -412,7 +412,7 @@ def test_a_genuine_row_proves_its_bound_library(source, index) -> None:
 # --- proof root -------------------------------------------------------------
 
 def test_the_proof_root_is_deterministic_and_order_independent(source) -> None:
-    proofs = [rs.prove_source_library_from_authenticated_source(
+    proofs = [rs._prove_row_from_authenticated_source(
         source=source, logical=_logical([_row(i)]), logical_index=0,
         expected_source_sha256=source.sha256) for i in (0, 1, 2)]
     assert rs.raw_source_proof_root(proofs) == rs.raw_source_proof_root(
@@ -420,7 +420,7 @@ def test_the_proof_root_is_deterministic_and_order_independent(source) -> None:
 
 
 def test_the_proof_root_moves_with_any_proven_field(source) -> None:
-    proof = rs.prove_source_library_from_authenticated_source(
+    proof = rs._prove_row_from_authenticated_source(
         source=source, logical=_logical([_row(0)]), logical_index=0,
         expected_source_sha256=source.sha256)
     baseline = rs.raw_source_proof_root([proof])
@@ -669,3 +669,193 @@ def test_the_opener_does_not_reopen_the_pathname_for_hdf5() -> None:
     # The same open file object is what HDF5 consumes.
     assert "h5py.File(stream" in internal
     assert "_digest_fileobj(stream" in internal
+
+
+# ---------------------------------------------------------------------------
+# The public proof surface is path-owned.
+#
+# An external review made the point that has to be conceded: a module-level
+# Python class is not a capability boundary. Any same-process caller can import
+# _ConstructionGuard and instantiate it. So the boundary is not defended, it is
+# removed. No public proof accepts a handle, and identity is re-derived from the
+# bytes, so a forged handle around another file is useless anyway.
+# ---------------------------------------------------------------------------
+
+def test_the_public_proof_surface_is_path_owned_only() -> None:
+    import inspect
+
+    assert rs.public_proof_surface() == ("prove_population_from_source_path",)
+    signature = inspect.signature(rs.prove_population_from_source_path)
+    assert "source_path" in signature.parameters
+    assert "source" not in signature.parameters
+
+
+def test_the_public_handle_proof_is_refused(asset: Path) -> None:
+    """It exists only to name the STOP and point at the path-owned proof."""
+    handle = rs.open_authenticated_source(
+        asset, expected_sha256=hashlib.sha256(asset.read_bytes()).hexdigest())
+    try:
+        with pytest.raises(AssertionError) as excinfo:
+            rs.prove_source_library_from_authenticated_source(
+                source=handle, logical=_logical([_row(0)]), logical_index=0)
+        assert rs.STOP_HANDLE_ON_PUBLIC_PATH in str(excinfo.value)
+        assert "prove_population_from_source_path" in str(excinfo.value)
+    finally:
+        handle.close()
+
+
+def test_the_construction_guard_is_documented_as_not_a_capability() -> None:
+    """Claiming an importable class is a capability would be the real defect."""
+    doc = rs._ConstructionGuard.__doc__ or ""
+    assert "NOT a capability boundary" in doc
+    assert "same-process" in doc
+    # It is indeed instantiable, which is exactly why it is not relied upon.
+    assert rs._ConstructionGuard() is not None
+
+
+def test_a_guard_built_handle_still_cannot_claim_a_false_identity(
+        asset: Path) -> None:
+    """The protection that does hold: identity comes from the bytes.
+
+    A caller who imports the guard and builds a handle around a real file still
+    cannot claim the frozen production digest for it.
+    """
+    import h5py
+
+    handle = h5py.File(asset, "r")
+    try:
+        with pytest.raises(AssertionError) as excinfo:
+            rs.AuthenticatedSource(rs._ConstructionGuard(), path=asset,
+                                   sha256=rs.MTG_SOURCE_SHA256,
+                                   bytes_read=32_978_570_763, handle=handle)
+        assert rs.STOP_SOURCE_DIGEST in str(excinfo.value)
+    finally:
+        handle.close()
+
+
+# ---------------------------------------------------------------------------
+# Immutable artifacts and replay.
+# ---------------------------------------------------------------------------
+
+def _population_and_logical(asset: Path):
+    logical = _logical_for([0, 1, 2])
+    return _prove_population(asset, logical), logical
+
+
+def _write_package(tmp_path, asset: Path, population, **overrides):
+    kwargs = dict(
+        population=population,
+        closure_root_sha256="1" * 64,
+        feature_authority_root_sha256="4" * 64,
+        physical_read_plan_root_sha256="3" * 64,
+        membership_sha256="a" * 64,
+        complete_manifest_sha256="b" * 64,
+        source_bytes=asset.stat().st_size,
+        derivation_code_sha256="c" * 64,
+        expected_row_count=3)
+    kwargs.update(overrides)
+    return rs.build_population_authority_package(tmp_path / "pkg", **kwargs)
+
+
+def test_the_population_package_replays_from_disk(tmp_path, asset: Path) -> None:
+    population, logical = _population_and_logical(asset)
+    written = _write_package(tmp_path, asset, population)
+    replayed = rs.load_population_authority_package(
+        tmp_path / "pkg",
+        expected_package_root_sha256=written["package_root_sha256"],
+        expected_population_root_sha256=population[
+            "population_raw_source_root_sha256"],
+        expected_logical_root_sha256=logical[
+            "logical_row_authority_root_sha256"],
+        expected_source_sha256=population["source_sha256"],
+        expected_row_count=3, logical=logical)
+    assert replayed["rows_replayed"] == 3
+    assert replayed["population_raw_source_root_sha256"] == population[
+        "population_raw_source_root_sha256"]
+
+
+def test_the_replayed_root_is_recomputed_from_the_reloaded_registry(
+        tmp_path, asset: Path) -> None:
+    """A stored root that nothing recomputes is not a verification."""
+    population, logical = _population_and_logical(asset)
+    written = _write_package(tmp_path, asset, population)
+    registry = tmp_path / "pkg" / rs.PKG_REGISTRY
+    text = registry.read_text(encoding="utf-8").replace(
+        str(population["proofs"][0]["source_library"]), "999999", 1)
+    registry.write_text(text, encoding="utf-8")
+    with pytest.raises(AssertionError):
+        rs.load_population_authority_package(
+            tmp_path / "pkg",
+            expected_package_root_sha256=written["package_root_sha256"],
+            expected_population_root_sha256=population[
+                "population_raw_source_root_sha256"],
+            expected_logical_root_sha256=logical[
+                "logical_row_authority_root_sha256"],
+            expected_source_sha256=population["source_sha256"],
+            expected_row_count=3)
+
+
+def test_a_wrong_expected_row_count_is_refused_on_replay(
+        tmp_path, asset: Path) -> None:
+    population, logical = _population_and_logical(asset)
+    written = _write_package(tmp_path, asset, population)
+    with pytest.raises(AssertionError) as excinfo:
+        rs.load_population_authority_package(
+            tmp_path / "pkg",
+            expected_package_root_sha256=written["package_root_sha256"],
+            expected_population_root_sha256=population[
+                "population_raw_source_root_sha256"],
+            expected_logical_root_sha256=logical[
+                "logical_row_authority_root_sha256"],
+            expected_source_sha256=population["source_sha256"],
+            expected_row_count=20_804)
+    assert rs.STOP_POPULATION_CARDINALITY in str(excinfo.value)
+
+
+def test_the_package_refuses_gapped_or_repeated_logical_indices(
+        tmp_path, asset: Path) -> None:
+    population, _unused = _population_and_logical(asset)
+    gapped = dict(population)
+    proofs = [dict(p) for p in population["proofs"]]
+    proofs[1]["logical_index"] = 0
+    gapped["proofs"] = proofs
+    with pytest.raises(AssertionError) as excinfo:
+        _write_package(tmp_path, asset, gapped)
+    assert rs.STOP_POPULATION_CARDINALITY in str(excinfo.value)
+
+
+def test_the_emitted_artifact_schema_carries_no_pathology_field() -> None:
+    assert rs.assert_no_pathology_in_artifact(rs.REGISTRY_FIELDS) is True
+    for leaked in ("percent AT8 positive area_Grey matter", "Braak", "Thal"):
+        with pytest.raises(AssertionError) as excinfo:
+            rs.assert_no_pathology_in_artifact(
+                tuple(rs.REGISTRY_FIELDS) + (leaked,))
+        assert rs.STOP_PATHOLOGY_IN_ARTIFACT in str(excinfo.value)
+
+
+def test_the_package_metadata_records_every_standing_terminal(
+        tmp_path, asset: Path) -> None:
+    import json as _json
+
+    population, _unused = _population_and_logical(asset)
+    _write_package(tmp_path, asset, population)
+    meta = _json.loads(
+        (tmp_path / "pkg" / rs.PKG_METADATA).read_text(encoding="utf-8"))
+    for flag in ("caller_supplied_values", "caller_supplied_handle",
+                 "pathology_fields_read", "numeric_confirmation_at8_accessed",
+                 "donor_roles_computed", "eligible_donors_computed",
+                 "real_execution_ready"):
+        assert meta[flag] is False, flag
+    assert meta["obs_fields_read"] == list(rs.PERMITTED_OBS_FIELDS)
+    assert meta["matrix_slot"] == "layers/UMIs"
+
+
+def test_writing_into_a_nonempty_package_directory_is_refused(
+        tmp_path, asset: Path) -> None:
+    population, _unused = _population_and_logical(asset)
+    out = tmp_path / "pkg"
+    out.mkdir()
+    (out / "stray.txt").write_text("x", encoding="utf-8")
+    with pytest.raises(AssertionError) as excinfo:
+        _write_package(tmp_path, asset, population)
+    assert rs.STOP_PACKAGE_MEMBER in str(excinfo.value)
