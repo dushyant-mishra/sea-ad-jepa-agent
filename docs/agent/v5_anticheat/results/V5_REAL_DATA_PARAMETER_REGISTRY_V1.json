@@ -28,7 +28,6 @@
     },
     "minimum_group_cells": 1,
     "maximum_group_cells": 42209,
-    "groups_below_16": 192,
     "source_cells": {
       "HVS": 198718,
       "NPH52": 236476,
@@ -38,6 +37,11 @@
       "HVS": 41,
       "NPH52": 17,
       "SEA_AD": 46
+    },
+    "groups_below_diagnostic_floor": {
+      "floor": 16,
+      "groups": 192,
+      "role": "diagnostic only; does not create schedule or training authority"
     }
   },
   "donor_equal_estimand": {
