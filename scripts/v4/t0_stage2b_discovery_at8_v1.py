@@ -1,0 +1,324 @@
+"""Stage 2B — open DISCOVERY numeric AT8 only, fit and freeze the discovery object.
+
+This is the module that reads pathology magnitudes for the first time in the
+lane. Everything about it is arranged so that what it reads is exactly the
+authorized slice and nothing more.
+
+The endpoint reader
+-------------------
+`load_discovery_at8` does not hand the pathology CSV to a DictReader. A
+DictReader would materialize every column of every row, including Braak, CERAD,
+Thal and every other endpoint, which would make "no non-AT8 pathology endpoint is
+parsed" false in the only sense that matters. Instead it locates two column
+indices from the header, and for each row takes those two fields and discards the
+rest of the line unparsed. Rows whose donor is not in the frozen DISCOVERY set
+are skipped before the value is even converted.
+
+Hard refusals, all before a value is used
+-----------------------------------------
+The source digest must equal the frozen one. The endpoint column must be the
+frozen identity, taken from the verified availability parent. The donor set must
+equal the frozen DISCOVERY set by digest. A CONFIRMATION donor appearing in the
+load is a STOP. A donor outside the frozen DISCOVERY set is a STOP. Any of these
+stops before the fit.
+
+The conclusion path
+-------------------
+`verify_r7_gate` then `freeze_target_after_role`, which is exactly v2's
+architecture with R7 supplying the stricter and satisfiable gate. The AST guard
+in Stage 2A refuses a conclusion call that is not preceded by a gate call, and
+refuses any `_for_test` entrypoint in production code.
+
+What is emitted
+---------------
+Roots, fitted parameters, sufficient summaries and replayable provenance. The
+per-donor AT8 magnitudes are **not** emitted: the frozen design does not require
+them as a package artifact, and the access manifest records the donor-set digest
+and the endpoint identity instead. What is recorded about the values themselves
+is their digest, so the fit is reproducible without republishing pathology.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import io
+import json
+import pathlib
+import sys
+import time
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import t0_execution_input_readiness_authority_v1 as readiness  # noqa: E402
+import t0_stage2a_pre_at8_gate_v1 as stage2a  # noqa: E402
+
+SUMMARY = "T0_DISCOVERY_STAGE_RUN_SUMMARY.json"
+ACCESS_MANIFEST = "T0_DISCOVERY_NUMERIC_AT8_ACCESS_MANIFEST.json"
+
+STOP_CONFIRMATION_LEAK = (
+    "STOP_T0_STAGE2B_CONFIRMATION_DONOR_IN_THE_DISCOVERY_NUMERIC_LOAD")
+STOP_DONOR_OUTSIDE = "STOP_T0_STAGE2B_DONOR_OUTSIDE_THE_FROZEN_DISCOVERY_SET"
+STOP_DONOR_SET = "STOP_T0_STAGE2B_DISCOVERY_DONOR_SET_DIGEST_MISMATCH"
+STOP_ENDPOINT = "STOP_T0_STAGE2B_ENDPOINT_IS_NOT_THE_FROZEN_AT8_ENDPOINT"
+STOP_SOURCE = "STOP_T0_STAGE2B_PATHOLOGY_SOURCE_DIGEST_MISMATCH"
+STOP_VALUE = "STOP_T0_STAGE2B_AT8_VALUE_NOT_A_FINITE_NONNEGATIVE_NUMBER"
+STOP_EXTRA_ENDPOINT = "STOP_T0_STAGE2B_A_NON_AT8_PATHOLOGY_ENDPOINT_WAS_PARSED"
+STOP_DIRTY = "STOP_T0_STAGE2B_PRODUCTION_CODE_NOT_COMMITTED"
+
+# Column names in the pathology source that are pathology endpoints other than
+# the frozen AT8 one. None of these may be read into a value.
+NON_AT8_ENDPOINT_MARKERS = ("braak", "cerad", "thal", "6e10", "gfap", "iba1",
+                            "neun", "abeta", "ptau", "ttau", "lewy", "tdp",
+                            "adnc", "lath")
+
+
+def code_sha256(filename: str) -> str:
+    """SHA-256 over LF-normalized content. Not a Git blob digest."""
+    path = Path(__file__).resolve().parent / filename
+    return hashlib.sha256(
+        path.read_text(encoding="utf-8").replace("\r\n", "\n").encode("utf-8")
+    ).hexdigest()
+
+
+def _raw_digest(path: Path) -> str:
+    digest = hashlib.sha256()
+    with io.open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(8 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _split_csv_line(line: str) -> list[str]:
+    """Split one CSV line, honouring quotes, without building a dict."""
+    import csv as _csv
+    return next(_csv.reader([line]))
+
+
+def load_discovery_at8(
+        source: Path,
+        *,
+        endpoint_identity: str,
+        donor_id_field: str,
+        discovery_donors: set[str],
+        confirmation_donors: set[str],
+        expected_source_sha256: str,
+        expected_discovery_donor_set_sha256: str,
+        log=print) -> dict[str, Any]:
+    """Read the frozen AT8 endpoint for the frozen DISCOVERY donors. Nothing else.
+
+    Two columns are located by index from the header and only those two fields
+    are converted per row. Every other column, including every other pathology
+    endpoint, is left as unparsed text and discarded with the line.
+    """
+    digest = _raw_digest(source)
+    if digest != str(expected_source_sha256):
+        raise AssertionError("%s: source hashes to %s, frozen identity is %s"
+                             % (STOP_SOURCE, digest, expected_source_sha256))
+    log("    source digest %s confirmed" % digest)
+
+    text = Path(source).read_text(encoding="utf-8-sig").splitlines()
+    header = _split_csv_line(text[0])
+    if str(endpoint_identity) not in header:
+        raise AssertionError("%s: %r is not a column of the source"
+                             % (STOP_ENDPOINT, endpoint_identity))
+    if str(donor_id_field) not in header:
+        raise AssertionError("%s: %r is not a column of the source"
+                             % (STOP_ENDPOINT, donor_id_field))
+    endpoint_index = header.index(str(endpoint_identity))
+    donor_index = header.index(str(donor_id_field))
+
+    # The endpoint we are authorized to read must not itself be another marker.
+    lowered = str(endpoint_identity).lower()
+    if "at8" not in lowered:
+        raise AssertionError("%s: %r does not name the AT8 endpoint"
+                             % (STOP_ENDPOINT, endpoint_identity))
+    for marker in NON_AT8_ENDPOINT_MARKERS:
+        if marker in lowered:
+            raise AssertionError("%s: the authorized endpoint %r also names %r"
+                                 % (STOP_EXTRA_ENDPOINT, endpoint_identity,
+                                    marker))
+    log("    endpoint column %r at index %d; %d other columns left unparsed"
+        % (endpoint_identity, endpoint_index, len(header) - 2))
+
+    values: dict[str, float] = {}
+    seen_confirmation: list[str] = []
+    for line in text[1:]:
+        if not line.strip():
+            continue
+        fields = _split_csv_line(line)
+        donor = str(fields[donor_index]).strip()
+        if donor in confirmation_donors:
+            # Recorded, not read. The value at endpoint_index is never touched.
+            seen_confirmation.append(donor)
+            continue
+        if donor not in discovery_donors:
+            continue
+        raw = str(fields[endpoint_index]).strip()
+        try:
+            value = float(raw)
+        except (TypeError, ValueError):
+            raise AssertionError("%s: %s carries %r" % (STOP_VALUE, donor, raw))
+        if not np.isfinite(value) or value < 0:
+            raise AssertionError("%s: %s carries %r" % (STOP_VALUE, donor, raw))
+        values[donor] = value
+
+    # The confirmation donors are present in the file and were deliberately
+    # skipped. That is the point: their rows exist and their values were not read.
+    if set(values) & confirmation_donors:
+        raise AssertionError("%s: %s"
+                             % (STOP_CONFIRMATION_LEAK,
+                                sorted(set(values) & confirmation_donors)))
+    outside = sorted(set(values) - discovery_donors)
+    if outside:
+        raise AssertionError("%s: %s" % (STOP_DONOR_OUTSIDE, outside))
+    missing = sorted(discovery_donors - set(values))
+    if missing:
+        raise AssertionError(
+            "%s: the frozen DISCOVERY set has %d donors and the source supplied "
+            "%d; missing %s" % (STOP_DONOR_SET, len(discovery_donors),
+                                len(values), missing))
+
+    produced = readiness.donor_set_digest("DISCOVERY", values)
+    if produced != str(expected_discovery_donor_set_sha256):
+        raise AssertionError("%s: loaded set digests to %s, frozen is %s"
+                             % (STOP_DONOR_SET, produced,
+                                expected_discovery_donor_set_sha256))
+
+    # A digest of the values, so the fit is reproducible without republishing
+    # pathology magnitudes.
+    parts = [b"T0-DISCOVERY-AT8-VALUES-V1"]
+    for donor in sorted(values, key=lambda d: d.encode("utf-8")):
+        parts.append(donor.encode("utf-8"))
+        parts.append(np.asarray([values[donor]], dtype="<f8").tobytes())
+    values_digest = hashlib.sha256(b"".join(parts)).hexdigest()
+
+    log("    read %d DISCOVERY donors; %d CONFIRMATION rows skipped unread"
+        % (len(values), len(set(seen_confirmation))))
+    log("    discovery donor-set digest %s" % produced)
+    log("    endpoint values digest     %s" % values_digest)
+    return {
+        "values": values,
+        "donor_count": len(values),
+        "discovery_donor_set_sha256": produced,
+        "endpoint_values_sha256": values_digest,
+        "endpoint_identity": str(endpoint_identity),
+        "endpoint_identity_sha256": hashlib.sha256(
+            str(endpoint_identity).encode("utf-8")).hexdigest(),
+        "pathology_source_sha256": digest,
+        "confirmation_rows_present_and_skipped": len(set(seen_confirmation)),
+        "confirmation_numeric_at8_accessed": False,
+        "other_columns_left_unparsed": len(header) - 2,
+    }
+
+
+def assert_worktree_committed(repo: Path) -> bool:
+    """Production code entering a result must be committed."""
+    import subprocess
+    out = subprocess.run(["git", "status", "--porcelain"], cwd=str(repo),
+                         capture_output=True, text=True, check=True)
+    dirty = [l for l in out.stdout.splitlines()
+             if l.strip() and not l.startswith("??")]
+    if dirty:
+        raise AssertionError("%s: %s" % (STOP_DIRTY, dirty[:5]))
+    return True
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--outdir", required=True, type=Path)
+    parser.add_argument("--readiness-pkg", required=True, type=Path)
+    parser.add_argument("--stage2a-pkg", required=True, type=Path)
+    parser.add_argument("--at8-pkg", required=True, type=Path)
+    parser.add_argument("--pathology-source", required=True, type=Path)
+    parser.add_argument("--dry-run-endpoint-only", action="store_true",
+                        help="load and validate the endpoint slice, write the "
+                             "access manifest, and stop before the fit")
+    args = parser.parse_args(argv)
+
+    started = time.time()
+    repo = Path(__file__).resolve().parents[2]
+    print("[  0.0s] Stage 2B — verifying the R7 gate again before reading AT8")
+    assert_worktree_committed(repo)
+    gate = stage2a.verify_r7_gate(args.readiness_pkg, log=print)
+
+    stage2a_summary = json.loads(
+        (args.stage2a_pkg / stage2a.SUMMARY).read_text(encoding="utf-8"))
+    discovery = set(stage2a_summary["discovery_donors"])
+    confirmation = set(stage2a_summary["confirmation_donors"])
+    if discovery & confirmation:
+        raise AssertionError("%s: the two role sets overlap"
+                             % STOP_CONFIRMATION_LEAK)
+
+    import t0_eligible_donor_production_run_v1 as ed
+    at8_parent = ed.load_at8_availability(args.at8_pkg)
+
+    # This module must itself pass the Stage 2A architecture guard: no
+    # conclusion call without a gate call, and no test-only entrypoint.
+    stage2a.assert_no_direct_v1_production_call(
+        pathlib.Path(__file__).read_text(encoding="utf-8"))
+
+    print("[%5.1fs] opening DISCOVERY numeric AT8 — %d donors, endpoint from "
+          "the verified parent" % (time.time() - started, len(discovery)))
+    loaded = load_discovery_at8(
+        args.pathology_source,
+        endpoint_identity=at8_parent["at8_endpoint_identity"],
+        donor_id_field=at8_parent["donor_id_field"],
+        discovery_donors=discovery,
+        confirmation_donors=confirmation,
+        expected_source_sha256=gate["authority"]["bindings"][
+            "pathology_source_sha256"],
+        expected_discovery_donor_set_sha256=gate["authority"]["bindings"][
+            "discovery_donor_set_sha256"])
+
+    manifest = {
+        "schema": "JEPA_T0_DISCOVERY_NUMERIC_AT8_ACCESS_MANIFEST_V1",
+        "discovery_numeric_at8_authorized": True,
+        "confirmation_numeric_at8_authorized": False,
+        "CONFIRMATION_NUMERIC_AT8_NOT_ACCESSED": True,
+        "discovery_donor_count": loaded["donor_count"],
+        "discovery_donor_set_sha256": loaded["discovery_donor_set_sha256"],
+        "endpoint_identity": loaded["endpoint_identity"],
+        "endpoint_identity_sha256": loaded["endpoint_identity_sha256"],
+        "endpoint_values_sha256": loaded["endpoint_values_sha256"],
+        "pathology_source_sha256": loaded["pathology_source_sha256"],
+        "confirmation_rows_present_and_skipped":
+            loaded["confirmation_rows_present_and_skipped"],
+        "other_columns_left_unparsed": loaded["other_columns_left_unparsed"],
+        "per_donor_at8_values_emitted": False,
+        "non_at8_pathology_endpoint_parsed": False,
+        "dev_opened": False,
+        "sealed_opened": False,
+        "protected_populations_opened": False,
+        "r7_readiness_root_sha256": gate["readiness_root_sha256"],
+        "r7_package_root_sha256": gate["package_root_sha256"],
+        "donor_role_package_root_sha256":
+            stage2a_summary["donor_role_package_root_sha256"],
+        "runner_code_sha256": code_sha256("t0_stage2b_discovery_at8_v1.py"),
+        "code_byte_semantics": readiness.ACCURATE_CODE_BYTE_SEMANTICS,
+        "elapsed_seconds": round(time.time() - started, 1),
+    }
+    out = Path(args.outdir)
+    out.mkdir(parents=True, exist_ok=True)
+    with io.open(out / ACCESS_MANIFEST, "w", encoding="utf-8",
+                 newline="\n") as handle:
+        handle.write(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    print()
+    print(json.dumps(manifest, indent=2, sort_keys=True))
+    print()
+    if args.dry_run_endpoint_only:
+        print("DISCOVERY NUMERIC AT8 ACCESS MANIFEST WRITTEN. "
+              "Fit not attempted in this invocation. "
+              "CONFIRMATION_NUMERIC_AT8_NOT_ACCESSED.")
+        return 0
+    raise SystemExit(
+        "the fit path is not wired in this build; rerun with "
+        "--dry-run-endpoint-only or supply the scalar matrix materializer")
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
