@@ -1,0 +1,96 @@
+{
+  "schema": "TD57B_EXPLICIT_MEASUREMENT_SHORTCUT_ATTACK_V1",
+  "status": "DIAGNOSTIC_COMPLETE__TD57B_NOT_INVALIDATED__V5_INCREMENTAL_SIGNAL_GATE_REQUIRED",
+  "inputs": {
+    "expression_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "sample_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "operator_support_npz_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "attack_design": {
+    "target": "TD57B same deterministic within-donor within-operator triplets and frozen X/Y panels",
+    "depth_only": "order comparators by absolute log1p(source_library) distance from anchor",
+    "detect_only": "order comparators by absolute detected-address-count distance from anchor",
+    "qc_2d": "order comparators by within-donor-operator standardized 2D depth/detection Euclidean distance",
+    "donor_primary": true
+  },
+  "structural_shortcuts": {
+    "donor_only": "CONSTANT_WITHIN_TRIPLET__NO_COMPARATOR_ORDER_INFORMATION",
+    "operator_only": "CONSTANT_WITHIN_TRIPLET__NO_COMPARATOR_ORDER_INFORMATION",
+    "source_only": "CONSTANT_WITHIN_TRIPLET__NO_COMPARATOR_ORDER_INFORMATION",
+    "support_fingerprint_only": "CONSTANT_WITHIN_OPERATOR_IN_FROZEN_50K__NO_COMPARATOR_ORDER_INFORMATION",
+    "operator_measurement_mask_only": "CONSTANT_WITHIN_OPERATOR__NO_COMPARATOR_ORDER_INFORMATION"
+  },
+  "measurable_donors": {
+    "HVS": 36,
+    "NPH52": 16,
+    "SEA_AD": 46
+  },
+  "median_donor_agreement": {
+    "HVS": {
+      "panel0": {
+        "X_DEPTH_ONLY": 0.596944,
+        "X_DETECT_ONLY": 0.584524,
+        "X_QC_2D": 0.588542,
+        "Y_DEPTH_ONLY": 0.556008,
+        "Y_DETECT_ONLY": 0.554542,
+        "Y_QC_2D": 0.552344
+      },
+      "panel1": {
+        "X_DEPTH_ONLY": 0.578947,
+        "X_DETECT_ONLY": 0.568442,
+        "X_QC_2D": 0.580005,
+        "Y_DEPTH_ONLY": 0.594973,
+        "Y_DETECT_ONLY": 0.588542,
+        "Y_QC_2D": 0.610243
+      }
+    },
+    "NPH52": {
+      "panel0": {
+        "X_DEPTH_ONLY": 0.619922,
+        "X_DETECT_ONLY": 0.602646,
+        "X_QC_2D": 0.629952,
+        "Y_DEPTH_ONLY": 0.58455,
+        "Y_DETECT_ONLY": 0.577653,
+        "Y_QC_2D": 0.577369
+      },
+      "panel1": {
+        "X_DEPTH_ONLY": 0.605289,
+        "X_DETECT_ONLY": 0.612815,
+        "X_QC_2D": 0.616386,
+        "Y_DEPTH_ONLY": 0.613052,
+        "Y_DETECT_ONLY": 0.614203,
+        "Y_QC_2D": 0.611831
+      }
+    },
+    "SEA_AD": {
+      "panel0": {
+        "X_DEPTH_ONLY": 0.636291,
+        "X_DETECT_ONLY": 0.621731,
+        "X_QC_2D": 0.634217,
+        "Y_DEPTH_ONLY": 0.656497,
+        "Y_DETECT_ONLY": 0.645933,
+        "Y_QC_2D": 0.65625
+      },
+      "panel1": {
+        "X_DEPTH_ONLY": 0.65609,
+        "X_DETECT_ONLY": 0.645833,
+        "X_QC_2D": 0.65625,
+        "Y_DEPTH_ONLY": 0.636305,
+        "Y_DETECT_ONLY": 0.630933,
+        "Y_QC_2D": 0.633237
+      }
+    }
+  },
+  "summary": {
+    "minimum": 0.55234375,
+    "maximum": 0.6564968785030993
+  },
+  "interpretation": [
+    "Depth/detection alone contains nontrivial TD57B-like comparator geometry; >0.5 alone cannot qualify learned biology.",
+    "TD57B remains supported because its frozen Y-null preserved donor/operator/depth/detection matching and still passed 24/24.",
+    "Future learned z_bio must beat a prospectively frozen shortcut baseline by a prospectively frozen increment on held-out units."
+  ],
+  "pathology_used": false,
+  "training_authorized": false,
+  "target_redesign_authorized": false
+}
