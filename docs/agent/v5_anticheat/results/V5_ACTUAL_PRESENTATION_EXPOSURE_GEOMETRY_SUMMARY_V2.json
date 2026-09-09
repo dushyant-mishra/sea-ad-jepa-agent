@@ -1,0 +1,53 @@
+{
+  "schema": "JEPA_V5_ACTUAL_PRESENTATION_EXPOSURE_GEOMETRY_SUMMARY_V2",
+  "status": "REAL_SCHEDULE_REPLAYED__NO_EMA_HALF_LIFE_SELECTED",
+  "schedule": {
+    "H": 5267086,
+    "a": 2340573,
+    "b": 5029443,
+    "metadata_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "ledger_raw_sha256": "e05f4a524748cf427b1c3e899a5b672641566c772aa91da8a2a56dae2b9a3c97"
+  },
+  "worst_exposure_gaps": {
+    "donor": {
+      "id": "human_NPH_906",
+      "presentations": 2592,
+      "max_gap": 11384,
+      "max_absence_run": 11383,
+      "p99_gap": 7872,
+      "median_gap": 1414
+    },
+    "operator": {
+      "id": "5",
+      "presentations": 836,
+      "max_gap": 37117,
+      "max_absence_run": 37116,
+      "p99_gap": 30734.199999999986,
+      "median_gap": 4014
+    },
+    "source": {
+      "id": "NPH52",
+      "presentations": 318106,
+      "max_gap": 218,
+      "max_absence_run": 217,
+      "p99_gap": 74,
+      "median_gap": 12
+    }
+  },
+  "historical_comparison": {
+    "old_one_percent_independent_draw_donor_candidate": 16249,
+    "old_candidate_minus_exact_donor_gap": 4865,
+    "old_candidate_is_production_authority": false
+  },
+  "interpretation": {
+    "donor_gap": "data-derived lower bound if the EMA coverage criterion is every donor",
+    "operator_gap": "data-derived lower bound if the EMA coverage criterion is every operator",
+    "selected_ema_half_life": null,
+    "rule": "The coverage criterion and any extra smoothing multiple must be frozen prospectively before training; these values are not selected from loss/checkpoint outcomes."
+  },
+  "full_result_local_sha256": "96f93854cdd767d7f146124d6858f87a33518f43fb73db3491d557f85bffceef",
+  "synthetic_data_used": false,
+  "pathology_used": false,
+  "checkpoint_outcomes_used": false,
+  "training_authorized": false
+}
