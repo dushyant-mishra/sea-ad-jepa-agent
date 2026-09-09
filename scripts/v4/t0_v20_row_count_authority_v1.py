@@ -1361,7 +1361,8 @@ def assert_closure_lawful(
     recomputed = _closure_root(
         closure["operator_index"], closure["matrix_id"], closure["blocks"],
         closure["metadata_rows_scanned"], closure["row_locations"],
-        closure["membership_sha256"], closure["block_manifest_sha256"])
+        closure["membership_sha256"], closure["block_manifest_sha256"],
+        closure.get("block_geometry"))
     if recomputed != str(stored_root):
         raise AssertionError(
             "%s: the stored closure root %s does not match the root recomputed "
