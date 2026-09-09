@@ -565,3 +565,13 @@ def test_fixture_matches_the_branch_modules_it_claims(fixture_payload):
             "%s drifted from the digest the contract was verified against" % module)
         checked += 1
     assert checked >= 2
+
+
+
+def test_source_library_authority_is_population_raw_h5_proof_not_metadata_carrier():
+    entry = C.contract_index()["source_library"]
+    assert entry["authority"] == "T0_RAW_SOURCE_ROW_AUTHORITY_V2"
+    assert set(entry["depends_on"]) == {
+        "expression_row", "canonical_cell_id", "donor_id"}
+    assert "H5AD bytes" in entry["definition"]
+    assert "t0_raw_source_row_authority_v1" in entry["provenance"]
