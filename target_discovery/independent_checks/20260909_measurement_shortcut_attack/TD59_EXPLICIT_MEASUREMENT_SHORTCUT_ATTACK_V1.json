@@ -1,0 +1,96 @@
+{
+  "schema": "TD59_EXPLICIT_MEASUREMENT_SHORTCUT_ATTACK_V1",
+  "status": "DIAGNOSTIC_COMPLETE__MESOSCALE_QC_SHORTCUT_SMALLER_THAN_TD57B__V5_INCREMENTAL_SIGNAL_GATE_REQUIRED",
+  "inputs": {
+    "expression_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "sample_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "operator_support_npz_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "attack_design": {
+    "target": "TD59 frozen independent-Z nearest-half local triplets and fresh X/Y panels",
+    "depth_only": "order comparators by absolute log1p(source_library) distance from anchor",
+    "detect_only": "order comparators by absolute detected-address-count distance from anchor",
+    "qc_2d": "order comparators by within-donor-operator standardized 2D depth/detection Euclidean distance",
+    "donor_primary": true
+  },
+  "structural_shortcuts": {
+    "donor_only": "CONSTANT_WITHIN_TRIPLET__NO_COMPARATOR_ORDER_INFORMATION",
+    "operator_only": "CONSTANT_WITHIN_TRIPLET__NO_COMPARATOR_ORDER_INFORMATION",
+    "source_only": "CONSTANT_WITHIN_TRIPLET__NO_COMPARATOR_ORDER_INFORMATION",
+    "support_fingerprint_only": "CONSTANT_WITHIN_OPERATOR_IN_FROZEN_50K__NO_COMPARATOR_ORDER_INFORMATION",
+    "operator_measurement_mask_only": "CONSTANT_WITHIN_OPERATOR__NO_COMPARATOR_ORDER_INFORMATION"
+  },
+  "measurable_donors": {
+    "HVS": 29,
+    "NPH52": 16,
+    "SEA_AD": 46
+  },
+  "median_donor_agreement": {
+    "HVS": {
+      "panel0": {
+        "X_DEPTH_ONLY": 0.5221,
+        "X_DETECT_ONLY": 0.5446,
+        "X_QC_2D": 0.5205,
+        "Y_DEPTH_ONLY": 0.5172,
+        "Y_DETECT_ONLY": 0.5238,
+        "Y_QC_2D": 0.5192
+      },
+      "panel1": {
+        "X_DEPTH_ONLY": 0.5122,
+        "X_DETECT_ONLY": 0.5128,
+        "X_QC_2D": 0.5054,
+        "Y_DEPTH_ONLY": 0.5269,
+        "Y_DETECT_ONLY": 0.5397,
+        "Y_QC_2D": 0.5376
+      }
+    },
+    "NPH52": {
+      "panel0": {
+        "X_DEPTH_ONLY": 0.4804257516370549,
+        "X_DETECT_ONLY": 0.5312,
+        "X_QC_2D": 0.5235,
+        "Y_DEPTH_ONLY": 0.498,
+        "Y_DETECT_ONLY": 0.517,
+        "Y_QC_2D": 0.5187
+      },
+      "panel1": {
+        "X_DEPTH_ONLY": 0.5156,
+        "X_DETECT_ONLY": 0.5338,
+        "X_QC_2D": 0.5467,
+        "Y_DEPTH_ONLY": 0.5249,
+        "Y_DETECT_ONLY": 0.5377,
+        "Y_QC_2D": 0.5434
+      }
+    },
+    "SEA_AD": {
+      "panel0": {
+        "X_DEPTH_ONLY": 0.5443,
+        "X_DETECT_ONLY": 0.5436,
+        "X_QC_2D": 0.5505575631027328,
+        "Y_DEPTH_ONLY": 0.5358,
+        "Y_DETECT_ONLY": 0.5444,
+        "Y_QC_2D": 0.5391
+      },
+      "panel1": {
+        "X_DEPTH_ONLY": 0.5541,
+        "X_DETECT_ONLY": 0.551,
+        "X_QC_2D": 0.5566964285714286,
+        "Y_DEPTH_ONLY": 0.546875,
+        "Y_DETECT_ONLY": 0.5513,
+        "Y_QC_2D": 0.554
+      }
+    }
+  },
+  "summary": {
+    "minimum": 0.4804257516370549,
+    "maximum": 0.5566964285714286
+  },
+  "interpretation": [
+    "QC-only comparator ordering is substantially closer to chance for TD59 than TD57B.",
+    "The independent Z nearest-half selector appears to reduce simple depth/detection relational leakage, but this diagnostic is not a new target-selection result.",
+    "Future learned z_bio still must beat the frozen shortcut baseline by a prospectively frozen increment on held-out units."
+  ],
+  "pathology_used": false,
+  "training_authorized": false,
+  "target_redesign_authorized": false
+}
