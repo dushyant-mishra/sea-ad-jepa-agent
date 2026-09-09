@@ -1,0 +1,75 @@
+{
+  "checkpoint_outcomes_used": false,
+  "derivation_script": "scripts/v5_anticheat/derive_support_family_mass_v1.py",
+  "donor_equal_estimand": {
+    "expected_measured_scalar_addresses_per_base_cell": {
+      "denominator": 61470042005628031615631317820975602857557850391651488,
+      "float": 28310.43116419925,
+      "numerator": 1740243392860768857200502584590245776576183116185852999209
+    },
+    "expected_operator_native_addresses_per_base_cell": {
+      "denominator": 61470042005628031615631317820975602857557850391651488,
+      "float": 11124.431164199252,
+      "numerator": 683819250952045505854262756518959065866193899354930526441
+    },
+    "family_mass_weights": {
+      "COMMON_CORE": {
+        "denominator": 1740243392860768857200502584590245776576183116185852999209,
+        "float": 0.607055395953596,
+        "numerator": 1056424141908723351346239828071286710709989216830922472768
+      },
+      "OPERATOR_NATIVE": {
+        "denominator": 1740243392860768857200502584590245776576183116185852999209,
+        "float": 0.392944604046404,
+        "numerator": 683819250952045505854262756518959065866193899354930526441
+      }
+    }
+  },
+  "inputs": {
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "partition": "reader_fit",
+    "support_npz_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "pathology_used": false,
+  "population": {
+    "cells": 4553407,
+    "common_core_addresses": 17186,
+    "donors": 104,
+    "matrices": 42,
+    "molecular_addresses": 41238,
+    "operators": 42,
+    "sources": 3
+  },
+  "raw_cell_weighting_non_authority_contrast": {
+    "COMMON_CORE_fraction_of_measured_scalar": {
+      "denominator": 78021922408,
+      "float": 0.5014927233706312,
+      "numerator": 39127426351
+    },
+    "expected_measured_scalar_addresses_per_cell": {
+      "denominator": 4553407,
+      "float": 34269.68966666059,
+      "numerator": 156043844816
+    },
+    "expected_operator_native_addresses_per_cell": {
+      "denominator": 4553407,
+      "float": 17083.68966666059,
+      "numerator": 77788992114
+    },
+    "selection_role": "DIAGNOSTIC_ONLY__RAW_CELL_MASS_IS_NOT_THE_DONOR_EQUAL_ESTIMAND"
+  },
+  "rederive_on_population_or_support_change": true,
+  "rule": "weight family losses by expected eligible address mass under p_i = 1/(D*n_donor), not raw cell frequency",
+  "schema": "JEPA_V5_SUPPORT_FAMILY_MASS_AUTHORITY_CANDIDATE_V1",
+  "status": "REAL_104_DONOR_SUPPORT_FAMILY_MASS_DERIVED__NO_TRAINING_AUTHORITY",
+  "support_geometry": {
+    "measured_scalar_per_operator_max": 35076,
+    "measured_scalar_per_operator_median": 18736.0,
+    "measured_scalar_per_operator_min": 18736,
+    "operator_native_per_operator_max": 17890,
+    "operator_native_per_operator_median": 1550.0,
+    "operator_native_per_operator_min": 1550
+  },
+  "synthetic_data_used_for_numeric_authority": false,
+  "training_authorized": false
+}
