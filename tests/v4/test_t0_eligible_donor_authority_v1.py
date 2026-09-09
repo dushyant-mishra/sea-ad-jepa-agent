@@ -839,3 +839,26 @@ def test_a_package_naming_no_parent_authorities_is_refused(tmp_path) -> None:
             expected_parent_contract_root_sha256=summary[
                 "parent_contract_root_sha256"])
     assert eld.STOP_PARENT_IDENTITY in str(excinfo.value)
+
+
+def test_a_forty_character_git_sha1_is_refused_as_a_code_identity(
+        tmp_path) -> None:
+    """A field named `_sha256` must carry one.
+
+    The first real run of this authority recorded
+    ee1253309c7e23f48f63f2a1b35f55b6263f5207 as `derivation_code_sha256`,
+    because the runner shelled out to `git hash-object`, which returns a
+    40-character SHA-1 in a SHA-1 repository. The package was internally
+    consistent and the mislabelling was invisible. This is the width check that
+    turns it into a refusal.
+    """
+    rows = eld.derive_eligible_donors(**_lawful())
+    for bad in ("ee1253309c7e23f48f63f2a1b35f55b6263f5207", "e" * 63,
+                "E" * 64, "", "not-a-digest", None):
+        with pytest.raises(AssertionError) as excinfo:
+            eld.build_authority(
+                tmp_path / str(abs(hash(str(bad)))), rows=rows,
+                parents=PARENTS, derivation_code_sha256=bad,
+                at8_availability_independently_verified=True)
+        assert eld.STOP_PARENT_IDENTITY in str(excinfo.value)
+        assert "SHA-256" in str(excinfo.value)

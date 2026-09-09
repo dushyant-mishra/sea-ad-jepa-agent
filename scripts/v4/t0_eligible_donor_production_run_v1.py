@@ -43,7 +43,6 @@ import hashlib
 import io
 import json
 import math
-import subprocess
 import sys
 import time
 from pathlib import Path
@@ -68,11 +67,25 @@ AT8_PERMITTED_FIELDS = ("donor_id", "AT8_available")
 
 
 def code_sha256(filename: str) -> str:
-    """The Git blob digest of tracked code, which is the citable identity."""
-    out = subprocess.run(["git", "hash-object", "scripts/v4/%s" % filename],
-                         capture_output=True, text=True, check=True,
-                         cwd=str(Path(__file__).resolve().parents[2]))
-    return out.stdout.strip()
+    """SHA-256 over the LF-normalized file content.
+
+    This is the convention the rest of the lane uses, and the normalization is
+    what makes it reproducible: the repository checks out CRLF on this platform,
+    so hashing the worktree bytes would give a different digest than hashing the
+    same content elsewhere. An earlier version of this function shelled out to
+    `git hash-object`, which returns a 40-character SHA-1 in a SHA-1 repository
+    and would have recorded that under a field named `_sha256`. The width is
+    asserted so a wrong algorithm cannot be mislabelled again.
+    """
+    path = Path(__file__).resolve().parent / filename
+    digest = hashlib.sha256(
+        path.read_text(encoding="utf-8").replace("\r\n", "\n").encode("utf-8")
+    ).hexdigest()
+    if len(digest) != 64:
+        raise AssertionError("%s: %s yielded a %d-character digest, not SHA-256"
+                             % (eld.STOP_PARENT_IDENTITY, filename,
+                                len(digest)))
+    return digest
 
 
 def _read_registry(path: Path) -> list[dict[str, str]]:

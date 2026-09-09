@@ -334,6 +334,15 @@ def build_authority(
     assert_predicate_holds_on_every_row(rows)
     assert_roles_agree_with_frozen_rule(rows)
 
+    # The code identity is a digest, and a field named `_sha256` must carry one.
+    # A 40-character Git SHA-1 was recorded here once; the width check is what
+    # turns that class of mislabelling into a refusal.
+    if not _is_hex64(derivation_code_sha256):
+        raise AssertionError(
+            "%s: derivation_code_sha256 is %r, which is not a lowercase "
+            "64-character hex SHA-256"
+            % (STOP_PARENT_IDENTITY, derivation_code_sha256))
+
     root = eligible_donor_root(rows)
     role_root = donor_role_root(rows)
     parent_root = parent_contract_root(parents)
