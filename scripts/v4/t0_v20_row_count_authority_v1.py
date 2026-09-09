@@ -147,6 +147,239 @@ def exact_positive_integer(raw: Any, context: str) -> int:
     return value
 
 
+
+def exact_nonnegative_integer(raw: Any, context: str, *,
+                              stop: str = STOP_COUNTS_GEOMETRY) -> int:
+    """Parse a finite exact non-negative integer for authenticated geometry."""
+    if isinstance(raw, bool):
+        raise AssertionError("%s: %s is bool, not a count" % (stop, context))
+    if isinstance(raw, int):
+        value = int(raw)
+    else:
+        text = str(raw).strip()
+        if not text or not text.isdigit():
+            raise AssertionError("%s: %s is %r, not an exact non-negative integer"
+                                 % (stop, context, raw))
+        value = int(text)
+    if value < 0:
+        raise AssertionError("%s: %s is %d, which is negative"
+                             % (stop, context, value))
+    return value
+
+
+def sha256_file(path: Path | str, *, chunk_bytes: int = 8 << 20) -> str:
+    """Stream SHA-256 over the exact on-disk bytes without loading the H5AD."""
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for block in iter(lambda: handle.read(int(chunk_bytes)), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _decode_h5_text(value: Any) -> str:
+    if isinstance(value, bytes):
+        return value.decode("utf-8")
+    try:
+        item = value.item()
+    except Exception:
+        item = value
+    if isinstance(item, bytes):
+        return item.decode("utf-8")
+    return str(item)
+
+
+def _h5_obs_value(obs: Any, key: str, row_index: int) -> str:
+    """Read one AnnData obs value, including categorical code/category storage."""
+    import h5py
+
+    if key not in obs:
+        raise AssertionError("%s: obs/%s absent"
+                             % (STOP_SOURCE_ROW_IDENTITY, key))
+    node = obs[key]
+    if isinstance(node, h5py.Group):
+        if "codes" not in node or "categories" not in node:
+            raise AssertionError("%s: obs/%s categorical representation is incomplete"
+                                 % (STOP_SOURCE_ROW_IDENTITY, key))
+        code = int(node["codes"][int(row_index)])
+        if code < 0 or code >= len(node["categories"]):
+            raise AssertionError("%s: obs/%s row %d has invalid category code %d"
+                                 % (STOP_SOURCE_ROW_IDENTITY, key,
+                                    int(row_index), code))
+        return _decode_h5_text(node["categories"][code])
+    return _decode_h5_text(node[int(row_index)])
+
+
+def _h5_sparse_shape(handle: Any, node: Any) -> tuple[int, int]:
+    """Recover the actual CSR shape; the MTG layer normally stores it as an attr."""
+    if "shape" in node.attrs:
+        raw = node.attrs["shape"]
+        shape = tuple(int(v) for v in raw)
+        if len(shape) == 2:
+            return shape[0], shape[1]
+
+    rows = len(node["indptr"]) - 1
+    var = handle.get("var")
+    if var is None:
+        raise AssertionError("%s: raw sparse layer has no shape attr and var is absent"
+                             % STOP_SOURCE_WIDTH)
+    index_key = var.attrs.get("_index", "_index")
+    index_key = _decode_h5_text(index_key)
+    if index_key not in var:
+        if "_index" in var:
+            index_key = "_index"
+        else:
+            raise AssertionError("%s: cannot recover var width from H5AD"
+                                 % STOP_SOURCE_WIDTH)
+    return int(rows), int(len(var[index_key]))
+
+
+def _source_library_from_open_h5(*, handle: Any, logical_row: Mapping[str, Any],
+                                 expected_matrix_slot: str,
+                                 expected_shape: tuple[int, int],
+                                 cell_key: str, donor_key: str) -> int:
+    import numpy as np
+
+    if expected_matrix_slot not in handle:
+        raise AssertionError("%s: %r absent from authenticated H5AD"
+                             % (STOP_SOURCE_SLOT, expected_matrix_slot))
+    node = handle[expected_matrix_slot]
+    for member in ("indptr", "indices", "data"):
+        if member not in node:
+            raise AssertionError("%s: raw CSR slot lacks %s"
+                                 % (STOP_SOURCE_SLOT, member))
+
+    shape = _h5_sparse_shape(handle, node)
+    if tuple(shape) != tuple(int(v) for v in expected_shape):
+        raise AssertionError("%s: raw source shape is %r, expected %r"
+                             % (STOP_SOURCE_WIDTH, shape, tuple(expected_shape)))
+
+    source_row = int(logical_row["expression_row"])
+    if not (0 <= source_row < shape[0]):
+        raise AssertionError("%s: expression_row %d is outside 0..%d"
+                             % (STOP_ROW_BOUNDS, source_row, shape[0] - 1))
+
+    obs = handle.get("obs")
+    if obs is None:
+        raise AssertionError("%s: obs group absent" % STOP_SOURCE_ROW_IDENTITY)
+    cell = _h5_obs_value(obs, cell_key, source_row)
+    donor = _h5_obs_value(obs, donor_key, source_row)
+    if cell != str(logical_row["canonical_cell_id"]):
+        raise AssertionError(
+            "%s: authenticated H5 row %d is cell %r, logical row binds %r"
+            % (STOP_SOURCE_ROW_IDENTITY, source_row, cell,
+               logical_row["canonical_cell_id"]))
+    if donor != str(logical_row["donor_id"]):
+        raise AssertionError(
+            "%s: authenticated H5 row %d is donor %r, logical row binds %r"
+            % (STOP_SOURCE_ROW_IDENTITY, source_row, donor,
+               logical_row["donor_id"]))
+
+    indptr = node["indptr"]
+    start, end = int(indptr[source_row]), int(indptr[source_row + 1])
+    if not (0 <= start <= end <= len(node["data"])):
+        raise AssertionError("%s: invalid CSR indptr interval %d:%d at source row %d"
+                             % (STOP_RAW_SEMANTICS, start, end, source_row))
+    indices = np.asarray(node["indices"][start:end])
+    values = np.asarray(node["data"][start:end])
+    if len(indices) != len(values):
+        raise AssertionError("%s: CSR index/data lengths disagree"
+                             % STOP_RAW_SEMANTICS)
+
+    total = 0
+    for offset, (column, value) in enumerate(zip(indices, values)):
+        col = int(column)
+        if not (0 <= col < int(expected_shape[1])):
+            raise AssertionError("%s: source column %d outside 0..%d"
+                                 % (STOP_RAW_SEMANTICS, col,
+                                    int(expected_shape[1]) - 1))
+        numeric = float(value)
+        if not math.isfinite(numeric) or numeric < 0 or not numeric.is_integer():
+            raise AssertionError("%s: source row %d offset %d is %r"
+                                 % (STOP_RAW_SEMANTICS, source_row, offset, value))
+        total += int(numeric)
+
+    bound = exact_positive_integer(logical_row["source_library"],
+                                   "bound source_library")
+    if total != bound:
+        raise AssertionError(
+            "%s: authenticated H5 row %d sums to %d but logical row binds %d"
+            % (STOP_LIBRARY_NOT_PROVEN, source_row, total, bound))
+    return total
+
+
+def prove_source_libraries_from_authenticated_h5_path(
+    *,
+    logical: Mapping[str, Any],
+    source_path: Path | str,
+    logical_indices: Sequence[int] | None = None,
+    expected_source_sha256: str = MTG_SOURCE_SHA256,
+    source_relative_path: str = MTG_SOURCE_RELATIVE_PATH,
+    expected_matrix_slot: str = MTG_SOURCE_MATRIX_SLOT,
+    expected_shape: tuple[int, int] = MTG_SOURCE_SHAPE,
+    cell_key: str = MTG_SOURCE_CELL_KEY,
+    donor_key: str = MTG_SOURCE_DONOR_KEY,
+) -> dict[int, int]:
+    """Hash/open the exact MTG H5AD once, then prove every requested source row.
+
+    Production defaults are the frozen SEA-AD MTG asset:
+    sea_ad_mtg_rna_final_2026, 1,178,694 x 36,601, raw CSR counts in layers/UMIs.
+    The caller never supplies row values or provenance labels.  Values, cell
+    identity, donor identity and the full-row sum are read from the authenticated
+    H5AD while the same handle remains open.
+    """
+    import h5py
+
+    if str(source_relative_path) != MTG_SOURCE_RELATIVE_PATH:
+        raise AssertionError("%s: source label %r is not frozen MTG path %r"
+                             % (STOP_SOURCE_PATH, source_relative_path,
+                                MTG_SOURCE_RELATIVE_PATH))
+    path = Path(source_path)
+    if not path.is_file():
+        raise AssertionError("%s: source file absent: %s"
+                             % (STOP_SOURCE_IDENTITY, path))
+    actual = sha256_file(path)
+    if actual != str(expected_source_sha256):
+        raise AssertionError("%s: source bytes hash to %s, expected %s"
+                             % (STOP_SOURCE_IDENTITY, actual,
+                                expected_source_sha256))
+
+    rows = logical.get("rows")
+    if not isinstance(rows, list) or not rows:
+        raise AssertionError("%s: logical rows absent" % STOP_FIELD_SCHEMA)
+    if logical_indices is None:
+        indices = list(range(len(rows)))
+    else:
+        indices = [int(v) for v in logical_indices]
+    if len(indices) != len(set(indices)):
+        raise AssertionError("%s: logical_indices contain duplicates"
+                             % STOP_FIELD_SCHEMA)
+    for index in indices:
+        if not (0 <= index < len(rows)):
+            raise AssertionError("%s: logical index %d out of range"
+                                 % (STOP_FIELD_SCHEMA, index))
+
+    proven: dict[int, int] = {}
+    with h5py.File(path, "r") as handle:
+        for index in indices:
+            proven[index] = _source_library_from_open_h5(
+                handle=handle, logical_row=rows[index],
+                expected_matrix_slot=expected_matrix_slot,
+                expected_shape=expected_shape, cell_key=cell_key,
+                donor_key=donor_key)
+    return proven
+
+
+def prove_source_library_from_authenticated_h5_path(
+    *, logical: Mapping[str, Any], logical_index: int,
+    source_path: Path | str, **kwargs: Any
+) -> bool:
+    """Single-row wrapper around the batched authenticated MTG H5 proof."""
+    proven = prove_source_libraries_from_authenticated_h5_path(
+        logical=logical, source_path=source_path,
+        logical_indices=[int(logical_index)], **kwargs)
+    return int(logical_index) in proven
+
+
 def normalise_once(*, raw_counts: Iterable[float], source_library: int) -> list[float]:
     """The frozen transform: `log1p(raw * 10000 / max(library, 1))`."""
     library = max(float(source_library), 1.0)
