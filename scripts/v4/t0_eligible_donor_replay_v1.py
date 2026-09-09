@@ -127,6 +127,12 @@ def replay(*, pkgdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
     for field, produced in (
             ("at8_availability_package_root_sha256",
              at8["package_root_sha256"]),
+            # Added in R6: the two parent identities the runner now verifies
+            # against frozen external expectations must also be bound into the
+            # package and re-checked here, or the strengthening would not be
+            # observable from the artifact.
+            ("at8_availability_root_sha256", at8["availability_root_sha256"]),
+            ("age_sex_root_sha256", presence["age_sex_root_sha256"]),
             ("technical_completeness_root_sha256",
              complete["completeness_root_sha256"]),
             ("technical_completeness_package_root_sha256",
@@ -141,7 +147,20 @@ def replay(*, pkgdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
                 "%s: the package records %r but the parent on disk is %r"
                 % (eld.STOP_PARENT_IDENTITY, meta["parents"].get(field),
                    produced))
+    for name, parent in (("AT8 availability", at8), ("age/sex", presence)):
+        if not parent.get("independently_verified"):
+            raise AssertionError(
+                "%s: the %s parent was not independently verified"
+                % (eld.STOP_PARENT_IDENTITY, name))
+        if not parent.get("expected_roots_supplied_externally"):
+            raise AssertionError(
+                "%s: the %s parent's expected roots did not come from outside "
+                "its own directory" % (eld.STOP_PARENT_IDENTITY, name))
+    if presence.get("covariate_values_emitted") is not False:
+        raise AssertionError("%s: the age/sex parent emitted covariate values"
+                             % eld.STOP_FIELD_SCHEMA)
     log("  every parent identity matches the authority on disk")
+    log("  both replayed parents verified against frozen external roots")
 
     donor_ids = [r["donor_id"] for r in rows]
     if len(donor_ids) != len(set(donor_ids)):
@@ -225,6 +244,20 @@ def replay(*, pkgdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
         "parent_contract_root_sha256": recomputed_parents,
         "package_root_sha256": replayed["package_root_sha256"],
         "rederived_from_parents": True,
+        "parents_independently_replayed": {
+            "at8_availability": {
+                "package_root_sha256": at8["package_root_sha256"],
+                "availability_root_sha256": at8["availability_root_sha256"],
+                "verified_against": at8["verified_against"],
+            },
+            "age_sex": {
+                "package_root_sha256": presence["package_root_sha256"],
+                "age_sex_root_sha256": presence["age_sex_root_sha256"],
+                "verified_against": presence["verified_against"],
+                "presence_proven_upstream": presence[
+                    "presence_is_proven_upstream_by_exact_age_and_exact_sex"],
+            },
+        },
         "stored_equals_recomputed_equals_rederived": True,
         "donor_set_matches_b2_population": True,
         "duplicate_donor_rows": False,
