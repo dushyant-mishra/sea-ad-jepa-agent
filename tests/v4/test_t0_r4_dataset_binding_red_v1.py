@@ -164,3 +164,78 @@ def test_r4_estimability_refuses_unbound_positional_covariates_even_with_donor_i
             q_depth=[2.0 + v for v in _generic_values(n, 3)],
             q_detect=_generic_values(n, 4),
         )
+
+
+def _bound_stage_b_inputs():
+    n = 18
+    donors = ["D%02d" % i for i in range(n)]
+    confirmation = {
+        "donor_id": donors,
+        "age": [70 + ((i * 7) % 27) for i in range(n)],
+        "sex": [i % 2 for i in range(n)],
+    }
+    roots = {
+        "eligible_donor_authority_root_sha256": "1" * 64,
+        "donor_role_authority_root_sha256": "2" * 64,
+        "donor_metadata_authority_root_sha256": "3" * 64,
+        "immune_fraction_authority_root_sha256": "4" * 64,
+        "technical_completeness_authority_root_sha256": "5" * 64,
+        "state_score_authority_root_sha256": "6" * 64,
+    }
+    return (
+        confirmation,
+        {d: v for d, v in zip(donors, _generic_values(n, 11))},
+        {d: v for d, v in zip(donors, _generic_values(n, 12))},
+        {d: 2.0 + v for d, v in zip(donors, _generic_values(n, 13))},
+        {d: v for d, v in zip(donors, _generic_values(n, 14))},
+        roots,
+    )
+
+
+def test_r4_bound_estimability_joins_every_covariate_by_donor_identity() -> None:
+    confirmation, state, immune, depth, detect, roots = _bound_stage_b_inputs()
+    result = pf.stage_b_state_designs_bound(
+        confirmation=confirmation,
+        state_score_by_donor=state,
+        immune_fraction_by_donor=immune,
+        q_depth_by_donor=depth,
+        q_detect_by_donor=detect,
+        authority_roots=roots,
+        numerical_primitive_authority_root_sha256="a" * 64,
+    )
+    assert result["stage"] == "B_STATE_DESIGNS"
+    assert result["donor_order"] == confirmation["donor_id"]
+    assert result["checks"]["primary"] == 5
+    assert result["checks"]["composition"] == 6
+    assert result["checks"]["measurement"] == 7
+
+
+def test_r4_bound_estimability_rejects_one_covariate_with_a_wrong_donor() -> None:
+    confirmation, state, immune, depth, detect, roots = _bound_stage_b_inputs()
+    wrong = dict(state)
+    wrong.pop(confirmation["donor_id"][-1])
+    wrong["NOT_A_CONFIRMATION_DONOR"] = 0.5
+    with pytest.raises(AssertionError, match="DONOR_IDENTITY_OR_ORDER_UNBOUND"):
+        pf.stage_b_state_designs_bound(
+            confirmation=confirmation,
+            state_score_by_donor=wrong,
+            immune_fraction_by_donor=immune,
+            q_depth_by_donor=depth,
+            q_detect_by_donor=detect,
+            authority_roots=roots,
+            numerical_primitive_authority_root_sha256="a" * 64,
+        )
+
+
+def test_r4_bound_estimability_refuses_unbound_numerical_primitives() -> None:
+    confirmation, state, immune, depth, detect, roots = _bound_stage_b_inputs()
+    with pytest.raises(AssertionError, match="NUMERICAL_PRIMITIVE_AUTHORITY_UNBOUND"):
+        pf.stage_b_state_designs_bound(
+            confirmation=confirmation,
+            state_score_by_donor=state,
+            immune_fraction_by_donor=immune,
+            q_depth_by_donor=depth,
+            q_detect_by_donor=detect,
+            authority_roots=roots,
+            numerical_primitive_authority_root_sha256="not-an-authority-root",
+        )
