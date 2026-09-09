@@ -34,6 +34,7 @@ import csv
 import hashlib
 import io
 import math
+from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 SCHEMA = "JEPA_T0_V20_ROW_COUNT_AUTHORITY_V1"
@@ -50,6 +51,10 @@ SOURCE_FEATURE_COUNT = 36_601
 # in. Proving `source_library` means reading a row out of these exact bytes.
 MTG_SOURCE_SHA256 = "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
 MTG_SOURCE_MATRIX_SLOT = "layers/UMIs"
+MTG_SOURCE_RELATIVE_PATH = "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad"
+MTG_SOURCE_SHAPE = (1_178_694, 36_601)
+MTG_SOURCE_CELL_KEY = "exp_component_name"
+MTG_SOURCE_DONOR_KEY = "Donor ID"
 
 # Frozen production geometry of the complete Phase2 manifest.
 COMPLETE_MANIFEST_BLOCKS = 8_915
@@ -61,6 +66,8 @@ OP31_BLOCK_COUNT = 1_247
 V20_CONSUMED_FIELDS = ("canonical_cell_id", "donor_id", "expression_row",
                        "source_library")
 AUDIT_ONLY_FIELDS = ("selection_row", "primary_row_weight")
+PHASE2_META_COLUMNS = ("selection_row", "canonical_cell_id", "donor_id", "expression_row",
+                       "primary_row_weight", "source_library")
 
 STOP_MEMBERSHIP_COLUMNS = "STOP_T0_B2_MEMBERSHIP_COLUMNS_UNEXPECTED"
 STOP_MANIFEST_COLUMNS = "STOP_T0_B2_BLOCK_MANIFEST_COLUMNS_UNEXPECTED"
@@ -107,6 +114,8 @@ STOP_ROW_WIDTH = "STOP_T0_B2_SELECTED_ROW_WIDTH_NOT_ADDRESS_SPACE"
 STOP_ROW_SEMANTICS = "STOP_T0_B2_SELECTED_ROW_COUNTS_NOT_NONNEGATIVE_INTEGERS"
 STOP_ROW_NOT_BOUND = "STOP_T0_B2_SELECTED_ROW_NOT_BOUND"
 STOP_ROW_BOUNDS = "STOP_T0_B2_EXPRESSION_ROW_OUT_OF_BOUNDS"
+STOP_AUTHENTICATED_SOURCE_REQUIRED = "STOP_T0_B2_AUTHENTICATED_SOURCE_READ_REQUIRED"
+STOP_SOURCE_PATH = "STOP_T0_B2_RAW_SOURCE_PATH_NOT_FROZEN_MTG"
 
 
 def _rows(payload: bytes) -> tuple[list[str], list[dict[str, str]]]:
