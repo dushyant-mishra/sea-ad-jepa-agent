@@ -565,7 +565,7 @@ def test_source_library_is_proven_against_the_authenticated_raw_row(world: World
     bound = logical["rows"][0]["source_library"]
     raw = [0] * 36_600 + [bound]
     assert sum(raw) == bound
-    assert rc._fixture_source_library_semantics_fixture_values(
+    assert rc._prove_source_library_fixture_values(
         logical=logical, logical_index=0, raw_source_row_values=raw,
         raw_source_provenance=_raw_provenance(logical=logical)) is True
 
@@ -574,7 +574,7 @@ def test_a_raw_row_summing_to_the_wrong_total_stops(world: World) -> None:
     logical = _logical(world)
     raw = [0] * 36_600 + [logical["rows"][0]["source_library"] + 1]
     with pytest.raises(AssertionError, match="SOURCE_LIBRARY_NOT_PROVEN"):
-        rc._fixture_source_library_semantics_fixture_values(
+        rc._prove_source_library_fixture_values(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=_raw_provenance(logical=logical))
 
@@ -592,7 +592,7 @@ def test_a_row_of_address_space_width_is_refused_as_the_raw_source_row(
     bound = logical["rows"][0]["source_library"]
     projected = [0] * (rc.ADDRESS_SPACE_SIZE - 1) + [bound]
     with pytest.raises(AssertionError, match="RAW_ROW_WIDTH_IS_ADDRESS_SPACE"):
-        rc._fixture_source_library_semantics_fixture_values(
+        rc._prove_source_library_fixture_values(
             logical=logical, logical_index=0, raw_source_row_values=projected,
             raw_source_provenance=_raw_provenance(width=rc.ADDRESS_SPACE_SIZE, logical=logical))
 
@@ -608,7 +608,7 @@ def test_non_integral_or_negative_raw_counts_stop(world: World, bad) -> None:
     raw = [bad] + [0] * 36_600
     assert len(raw) == rc.SOURCE_FEATURE_COUNT
     with pytest.raises(AssertionError, match="RAW_COUNTS_NOT_NONNEGATIVE_INTEGERS"):
-        rc._fixture_source_library_semantics_fixture_values(
+        rc._prove_source_library_fixture_values(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=_raw_provenance(logical=logical))
 
@@ -619,12 +619,12 @@ def test_the_raw_row_provenance_must_be_bound(world: World) -> None:
     for missing in ("source_sha256", "source_row_index", "source_width"):
         provenance = {k: v for k, v in _raw_provenance().items() if k != missing}
         with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
-            rc._fixture_source_library_semantics_fixture_values(
+            rc._prove_source_library_fixture_values(
                 logical=logical, logical_index=0, raw_source_row_values=raw,
                 raw_source_provenance=provenance)
     mismatched = dict(_raw_provenance(), source_width=99)
     with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
-        rc._fixture_source_library_semantics_fixture_values(
+        rc._prove_source_library_fixture_values(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=mismatched)
 
