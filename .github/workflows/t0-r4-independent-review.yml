@@ -1,0 +1,29 @@
+name: T0 R4 independent review
+
+on:
+  push:
+    branches:
+      - review/t0-r4-independent-review-20260909
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install review dependencies
+        run: python -m pip install --upgrade pip pytest numpy scipy h5py
+      - name: Compile candidate modules
+        run: |
+          python -m py_compile             scripts/v4/t0_raw_source_row_authority_v1.py             scripts/v4/t0_v20_row_count_authority_v1.py             scripts/v4/t0_technical_completeness_authority_v1.py             scripts/v4/t0_estimability_preflight_v1.py
+      - name: Run producer suites
+        run: |
+          pytest -q             tests/v4/test_t0_raw_source_row_authority_v1.py             tests/v4/test_t0_v20_row_count_authority_v1.py             tests/v4/test_t0_v20_row_count_authority_r2_red_v1.py             tests/v4/test_t0_technical_completeness_authority_v1.py             tests/v4/test_t0_estimability_preflight_v1.py
+      - name: Run independent R4 red review
+        run: pytest -q tests/v4/test_t0_r4_independent_review_red_v1.py
