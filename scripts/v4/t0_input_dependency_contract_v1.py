@@ -39,6 +39,7 @@ filter with no frozen threshold to appeal to.
 from __future__ import annotations
 
 import hashlib
+import ast
 import re
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -587,23 +588,60 @@ def assert_provenance_waiver_set_unchanged(expected_count: int = 6) -> bool:
     return True
 
 
-_BYTE_SEMANTICS_DECLARATION = re.compile(
-    r"""["'](?:derivation_)?code_byte_semantics["']\s*:\s*\(?\s*((?:["'][^"']*["']\s*)+)""")
+_BYTE_SEMANTICS_KEYS = ("code_byte_semantics", "derivation_code_byte_semantics")
 
 
 def _declared_byte_semantics(text: str) -> tuple[str, ...]:
     """Every byte-semantics value a module declares for its own artifacts.
 
-    Matches the declaration site rather than the bare label. Substring-scanning
-    for the label itself would flag this very module, which defines the constant
-    without declaring anything about its own artifacts -- the same crude-guard
-    error that once refused an `age_present` header and a report's own
-    `at8_availability_root_sha256`.
+    Parsed from the AST, not matched in the source text, and the reason is worth
+    recording. Three successive text-based versions of this check were wrong in
+    the same way:
+
+      * scanning for the bare label flagged this module, which defines the
+        constant without declaring anything about its own artifacts;
+      * matching only a string-literal declaration silently classified neither
+        of the two R7 readiness modules, which declare through a constant;
+      * matching a constant reference then flagged this module again, because a
+        *comment* here quotes the declaration in order to explain it.
+
+    A regex over source text cannot distinguish a declaration from prose about a
+    declaration. The AST can: only a real dict key in a real expression counts,
+    and comments and docstrings are not part of it. Same lesson as the
+    `age_present` header and the report's own `at8_availability_root_sha256`,
+    finally fixed at the level of the class rather than the instance.
     """
-    found = []
-    for match in _BYTE_SEMANTICS_DECLARATION.finditer(text):
-        pieces = re.findall(r"""["']([^"']*)["']""", match.group(1))
-        found.append("".join(pieces))
+    resolved = {"ACCURATE_CODE_BYTE_SEMANTICS": ACCURATE_CODE_BYTE_SEMANTICS,
+                "WAIVED_FALSE_CODE_BYTE_SEMANTICS":
+                    WAIVED_FALSE_CODE_BYTE_SEMANTICS}
+
+    def _value(node: Any) -> str | None:
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            return node.value
+        if isinstance(node, ast.Name):
+            return resolved.get(node.id)
+        if isinstance(node, ast.Attribute):
+            return resolved.get(node.attr)
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+            left, right = _value(node.left), _value(node.right)
+            if left is not None and right is not None:
+                return left + right
+        return None
+
+    found: list[str] = []
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        return ()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Dict):
+            continue
+        for key, value in zip(node.keys, node.values):
+            if (isinstance(key, ast.Constant)
+                    and key.value in _BYTE_SEMANTICS_KEYS):
+                declared = _value(value)
+                if declared is not None:
+                    found.append(declared)
     return tuple(found)
 
 

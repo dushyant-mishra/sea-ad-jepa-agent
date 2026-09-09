@@ -176,19 +176,17 @@
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN",
     "real_t0": "FORBIDDEN",
-    "t0_v20": "STOP_BEFORE_REAL_T0_RUN__ALL_PATHOLOGY_BLIND_AUTHORITIES_READY_FOR_EXTERNAL_REVIEW"
+    "t0_v20": "PASS_R7_READINESS_SEMANTICS_REPAIR__DISCOVERY_NUMERIC_AT8_READY_TO_OPEN"
   },
   "next_authorized_actions": [
-    "AWAIT_REVIEWER_ACCEPTANCE_OF_R6_CLOSURE",
-    "AWAIT_REVIEWER_RULING_ON_THE_PROVENANCE_LABEL_WAIVER",
-    "DO_NOT_RUN_REAL_T0",
-    "DO_NOT_ACCESS_NUMERIC_AT8_OR_PATHOLOGY_VALUES",
+    "AWAIT_REVIEW_OF_THE_R7_CLOSURE_BEFORE_STAGE_2",
+    "DO_NOT_OPEN_DISCOVERY_NUMERIC_AT8_UNTIL_R7_IS_REVIEWED",
+    "DO_NOT_OPEN_CONFIRMATION_NUMERIC_AT8",
     "DO_NOT_OPEN_DEV_OR_SEALED",
-    "DO_NOT_SET_OR_BYPASS_REAL_EXECUTION_READY",
     "DO_NOT_BEGIN_TEACHER_STUDENT_TRAINING",
-    "DO_NOT_SELF_PROMOTE_ANY_AUTHORITY_TO_PASS",
-    "DO_NOT_RE_STAMP_THE_LANE_FOR_THE_PROVENANCE_LABEL_BEFORE_REVIEW",
-    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
+    "DO_NOT_MATERIALIZE_SUCCESSOR_U0",
+    "DO_NOT_RUN_TD60",
+    "DO_NOT_SELF_PROMOTE_ANY_AUTHORITY_TO_PASS"
   ],
   "peer_agents": [
     "CODEX",
@@ -875,6 +873,44 @@
       "6_no_fabricated_physical_parent": "The fallback that recorded the logical root under the name physical_read_plan_root_sha256 is gone. A physical read plan is required and verified stored == recomputed == externally expected, because it is what determines which counts payloads are read.",
       "7_preflight_root_binds_decisions": "preflight_root binds every records root present on the stage, the donor-bound flag, the residual degrees of freedom, the tail inference n and the LOODO fold ranks. Previously it hashed only stage names and rank results, so different donor-bound designs with identical ranks collided.",
       "8_geometry_mandatory": "Technical completeness requires the authenticated closure and passes its bound rows and nnz into the payload verifier on the production path, so the declaration and the payload are obligatorily reconciled rather than through optional arguments a caller could omit."
+    },
+    "r7_closure_20260909": {
+      "at8_endpoint_column_parsed": false,
+      "authority_code_sha256": "902adf6144305725f502e38af1a1c7b86ece758dd61a5107ff4bde4d11a5f452",
+      "authorization": "AUTHORIZE_R7_EXECUTION_INPUT_READINESS_SEMANTICS_REPAIR__NUMERIC_AT8_STILL_CLOSED",
+      "byte_semantics_audit_now_ast_based": true,
+      "canonical_consumption_decided": "t0_canonical_freeze_v2._freeze_target is a gate plus v1's conclusion function, so an R7 freeze applying a stricter satisfiable gate before that same function is architecturally identical to v2 and is not the forbidden fallback to v1. The freeze wrapper itself is Stage 2 work and was not written.",
+      "document": "docs/agent/T0_R7_CLOSURE_20260909.md",
+      "frozen_contradiction_still_demonstrable": true,
+      "frozen_v20_package_modified": false,
+      "frozen_v2_gate_weakened": false,
+      "materialize_has_no_readiness_parameter": true,
+      "numeric_at8_value_read": false,
+      "own_defects_found_during_r7": [
+        "an unreachable derivation-disagrees branch, removed",
+        "a hand-written AT8 endpoint fallback that would have made the endpoint self-supplied; now taken from the verified parent or the runner stops",
+        "a byte-semantics audit matching only string literals, which covered neither R7 module",
+        "the same crude-substring bug inside that fix, where a comment quoting the declaration was matched as one; the audit is now AST-based"
+      ],
+      "package_dir": "outputs/t0_execution_input_readiness_20260909",
+      "package_root_sha256": "a7e25e515f8e9cb4ec43e1e3bf09798adca6a573059d4b7ca0b61483c5c96c09",
+      "readiness_derivation": "VERIFIED_FROM_STAGE1_PARENT_CHAIN_AND_AUTHORIZATION",
+      "readiness_is_derived_not_assigned": true,
+      "readiness_root_sha256": "a75581dfc5e7ea88609a9ef62f54765b9a495a7dbdc5c09152ba7fb76d1488ae",
+      "real_execution_ready": true,
+      "red_before_commit": "b982fa95",
+      "red_before_result": "14 failed by absence, 4 passed pinning the frozen contradiction",
+      "required_bindings": 19,
+      "resolution": "RE_FREEZE_READINESS_SEMANTICS_WITH_REPAIRED_EXECUTION_INPUT_AUTHORITY",
+      "runner_code_sha256": "0d55e5bd58a90d5a92e82d80296c07e5f5b134f63309cfdf8c3e888f905e10e9",
+      "scientific_design_unchanged": true,
+      "stage1_parents_reverified_live": true,
+      "suite_accounting": {
+        "before_r7": 696,
+        "producer_suites": 717,
+        "r4_independent_reviewer_suite": "6 passed, 1 failed"
+      },
+      "terminal": "PASS_R7_READINESS_SEMANTICS_REPAIR__DISCOVERY_NUMERIC_AT8_READY_TO_OPEN"
     },
     "real_execution_ready": false,
     "s2_feature_projection": {

@@ -637,3 +637,48 @@ def test_the_audit_matches_declaration_sites_not_the_bare_label() -> None:
     report = C.audit_byte_semantics_labels()
     assert "t0_input_dependency_contract_v1.py" not in report["waived_legacy"]
     assert "t0_input_dependency_contract_v1.py" not in report["accurate"]
+
+
+def test_the_audit_covers_declarations_made_through_a_constant() -> None:
+    """The R7 readiness modules declare via ACCURATE_CODE_BYTE_SEMANTICS.
+
+    A literal-only check classified neither of them, so the guard silently did
+    not cover the modules R7 had just added. Both forms must count.
+    """
+    report = C.audit_byte_semantics_labels()
+    for name in ("t0_execution_input_readiness_authority_v1.py",
+                 "t0_execution_input_readiness_run_v1.py",
+                 "t0_estimability_preflight_production_run_v1.py"):
+        assert name in report["accurate"], name
+
+
+def test_the_audit_ignores_comments_and_docstrings() -> None:
+    """Prose about a declaration is not a declaration.
+
+    Three text-based versions of this check were wrong in the same way. The AST
+    fixes the class: only a real dict key in a real expression counts.
+    """
+    assert C._declared_byte_semantics(
+        '# "code_byte_semantics": WAIVED_FALSE_CODE_BYTE_SEMANTICS\n') == ()
+    assert C._declared_byte_semantics(
+        '"""Explains "code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES"'
+        '"""\n') == ()
+    # A real declaration, as a literal and as a constant reference.
+    assert C._declared_byte_semantics(
+        'x = {"code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES"}'
+    ) == (C.WAIVED_FALSE_CODE_BYTE_SEMANTICS,)
+    assert C._declared_byte_semantics(
+        'x = {"derivation_code_byte_semantics": ACCURATE_CODE_BYTE_SEMANTICS}'
+    ) == (C.ACCURATE_CODE_BYTE_SEMANTICS,)
+    # Implicit and explicit concatenation of the accurate constant's two halves.
+    assert C._declared_byte_semantics(
+        'x = {"code_byte_semantics": ("SHA256_OVER_LF_NORMALIZED_FILE_CONTENT"'
+        ' + "__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES")}'
+    ) == (C.ACCURATE_CODE_BYTE_SEMANTICS,)
+
+
+def test_the_audit_does_not_classify_the_module_that_defines_the_constants(
+) -> None:
+    report = C.audit_byte_semantics_labels()
+    for bucket in ("accurate", "waived_legacy"):
+        assert "t0_input_dependency_contract_v1.py" not in report[bucket]
