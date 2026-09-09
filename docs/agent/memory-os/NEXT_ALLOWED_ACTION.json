@@ -1,29 +1,49 @@
 {
-  "schema": "JEPA_NEXT_ALLOWED_ACTION_V4",
+  "schema": "JEPA_NEXT_ALLOWED_ACTION_V5",
   "last_updated": "2026-09-09",
   "canonical_branch": "main",
   "implementation_verifier_required": true,
   "implementation_verifier_veto": true,
   "implementation_verifier_runs_before_expensive_compute": true,
   "implementation_verifier_authority": "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
-  "current_gate": "JEPA_P0_PREEXECUTION_CLOSURE",
-  "status": "STOP_JEPA_EXECUTION_AUTHORITIES_INCOMPLETE",
-  "current_status": "Main is consolidated. T0 and V5 remain separated lanes. V5 has data-first target/proposal/horizon authorities but is not cheat-qualified. 2026-09-09 anti-cheat consolidation records real-data support/operator/source shortcut risk and quarantines historical u10--u205 as TRAINING_MECHANICS_DEFECT_INHERITED from the historical 128x8 fp16-backward autocast defect. Training, TD60, successor-u0, D1, and protected-population access remain unauthorized.",
-  "primary_next_action": "Continue the active T0 lane only under its current staged authority. In parallel, finish V5 prospective pre-execution authorities and build the anti-cheat qualification layer on main before any teacher/student optimizer run.",
+  "current_gate": "T0_R8_ADJUDICATOR_READINESS_REPAIR_AND_V5_PRETRAINING_ANTI_CHEAT",
+  "status": "T0_DISCOVERY_STAGE_DONE__R8_AUTHORIZED__V5_TRAINING_CLOSED",
+  "current_status": "Main is consolidated. Active T0 branch t0/v20-pathology-blind-materialization-20260908 is at 237427c734bfdf7d00f286ceeae63692b3075d49 with DISCOVERY_STAGE_DONE_AND_REPLAYED__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN. Discovery AT8 was opened only for 28 discovery donors and replayed. Confirmation AT8 remains unopened because the adjudicator path still has the readiness contradiction. R8 adjudicator-readiness repair is authorized; confirmation numeric AT8 is not authorized until R8 passes. V5 remains data-first but not cheat-qualified; training, TD60, successor-u0, D1, and protected-population access remain unauthorized.",
+  "primary_next_action": "T0: perform R8 adjudicator-readiness repair only, starting from 237427c734bfdf7d00f286ceeae63692b3075d49, and stop at PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN. V5: continue prospective anti-cheat/trainer-authority design on main without optimizer runs.",
+  "t0_stage2_discovery_status": {
+    "branch": "t0/v20-pathology-blind-materialization-20260908",
+    "head": "237427c734bfdf7d00f286ceeae63692b3075d49",
+    "terminal": "DISCOVERY_STAGE_DONE_AND_REPLAYED__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN",
+    "discovery_donor_count": 28,
+    "discovery_cells": 13767,
+    "declared_addresses": 35076,
+    "matrix_nnz": 37085014,
+    "discovery_target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe",
+    "discovery_provenance_root_sha256": "15d13dd3e733e0ea90b199cf981b03ccd94bc67fbd19660ef88861e3ae1a37c2",
+    "discovery_authority_package_root_sha256": "9806de382c75f7a7a12bb952631ed0b6c9b458250e8161a876b470c48898f6f7",
+    "confirmation_numeric_at8_accessed": false,
+    "ridge_boundary_caveat": "LOODO selected multiplier exponent 2.0, the maximum and most regularized point of the frozen grid; valid pre-registered discovery run, but weak-signal evidence for confirmation review."
+  },
+  "t0_r8_authorization": {
+    "status": "AUTHORIZE_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_STILL_CLOSED",
+    "controlling_file": "docs/agent/T0_R8_ADJUDICATOR_READINESS_REPAIR_AUTHORIZATION_20260909.md",
+    "allowed": [
+      "Supersede the two execution-input-authority loaders in a repo-side v2 whose only behavioural difference is the readiness value check.",
+      "Repair the adjudicator readiness contradiction at t0_adjudicator_v2 lines 34 and 48.",
+      "Replay the repaired adjudicator path without opening confirmation numeric AT8."
+    ],
+    "required_terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
+  },
   "required_actions": [
     "T0: continue only under the active T0 lane's current release/review authority; do not import V5 anti-cheat assumptions into T0 numeric access.",
+    "T0: perform R8 adjudicator-readiness repair before opening confirmation numeric AT8.",
     "V5: use current continuation 028989a5f1504e4d6403a44e7c90d37172c54150; scientific target V2, relational proposal V2, base proposal V3 and presentation horizon V1 are frozen. Do not revive historical defaults.",
     "V5: treat docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md and docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json as required startup context for all teacher/student work.",
     "V5: build TEACHER_STUDENT_V5_REAL_DATA_ANTI_CHEAT_QUALIFICATION_AUTHORITY_V1 before training authority. It must use real data where available, not synthetic-only fixtures.",
     "V5: implement or bind support-only, depth/QC-only, mask-only, operator/source, donor-memorization, held-out donor/matrix/study/technology, evidence-response, depth-response, proposal-weighting, collapse, constant-vector/low-rank, and hardware-invariance probes before any checkpoint can be biologically qualified.",
     "Mechanics: quarantine historical u10--u205 as TRAINING_MECHANICS_DEFECT_INHERITED. Do not resume or rehabilitate those checkpoints as biological teacher authority or TD60 input.",
-    "Mechanics: preserve clean u0 as unaffected by the fp16-backward defect, but do not treat u0 as training authority.",
     "Mechanics: future healthy teacher/student training must bind fp16 forward -> backward with autocast disabled -> unscale -> 48-tensor mandatory protected-gradient gate -> optimizer step proved -> both Adam moments checked -> EMA update.",
-    "Mechanics: exact 48 protected registry must be externally checked; dynamic discovery cannot define completeness.",
-    "V5: freeze remaining support-aware evidence/view/block policy, finite relational triplet budget, update/token geometry, EMA half-life in exposure units, biological checkpoint milestone, and hardware packing calibration.",
-    "V5: implement/verify optimized GPU keyed-RNG/dropout path against the frozen reference and prove dense/packed training-mode gradient/optimizer/EMA equivalence under final packing.",
-    "Target Discovery: TD60 must consume a lawful full-reader exposure-defined learned-teacher checkpoint, never the historical u40/u205 mechanics-clock checkpoint.",
-    "Governance: work only from main unless a newer explicit lane authority says otherwise; update current authority/memory files whenever a blocker is actually closed with code/test/root evidence."
+    "Mechanics: exact 48 protected registry must be externally checked; dynamic discovery cannot define completeness, and torch-dependent tests must actually execute rather than skip."
   ],
   "parallel_nonblocking_work": [
     "F1 producer/replay independent review and authorization design may continue without becoming the global current gate.",
@@ -31,6 +51,7 @@
     "V5 anti-cheat architecture/probe design may continue while T0 runs, but cannot authorize training."
   ],
   "forbidden_actions": [
+    "Do not open confirmation numeric AT8 until R8 terminal is achieved and reviewed.",
     "Do not train, finetune, run production optimizer steps, write production teacher/student checkpoints, or advance EMA under V5.",
     "Do not execute TD60 decision-bearing learned-teacher continuity.",
     "Do not execute real D1.",
@@ -45,8 +66,8 @@
   "controlling_files": [
     "docs/agent/CURRENT_AUTHORITY_INDEX.md",
     "docs/agent/CURRENT_SUPERSESSION_MAP.md",
-    "docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json",
-    "docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json",
+    "docs/agent/T0_STAGE2_DISCOVERY_STATUS_20260909.md",
+    "docs/agent/T0_R8_ADJUDICATOR_READINESS_REPAIR_AUTHORIZATION_20260909.md",
     "docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md",
     "docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json"
   ],
