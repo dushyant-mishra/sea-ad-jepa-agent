@@ -1,28 +1,31 @@
-# JEPA new-chat handoff pointer — 2026-09-09
+# JEPA new-chat handoff pointer — 2026-09-09 R2
 
-Status: `HANDOFF_POINTER__LOCAL_EXPORT_CREATED__NO_EXECUTION_AUTHORITY`
+Status: `HANDOFF_POINTER_R2__LOCAL_EXPORT_CREATED__NO_EXECUTION_AUTHORITY`
 
-This file points to the detailed local handoff/export produced at the end of the 2026-09-09 chat. The full Markdown handoff, state JSON, local file manifest, and compact artifact ZIP were created in the runtime and surfaced as downloadable sandbox artifacts. Large immutable binaries are intentionally not committed to GitHub.
+This file points to the detailed R2 local handoff/export produced at the end of the 2026-09-09 chat. The full Markdown handoff, state JSON, local file manifest, and compact artifact ZIP were created in the runtime and surfaced as downloadable sandbox artifacts. Large immutable binaries are intentionally not committed to GitHub.
 
-## Runtime export
+R2 fixes a handoff integrity issue: the ZIP SHA is no longer embedded inside files that are themselves inside the ZIP. Use `SHA256SUMS_FINAL_R2.txt` and the final chat response for final ZIP integrity.
+
+## Runtime export R2
 
 ```text
 export directory: /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL
-handoff markdown: /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL.md
-state JSON:       /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL.json
+handoff markdown: /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R2.md
+state JSON:       /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R2.json
 manifest CSV:     /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_LOCAL_FILE_MANIFEST_20260909_FINAL.csv
 manifest JSON:    /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_LOCAL_FILE_MANIFEST_20260909_FINAL.json
-small ZIP:        /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_HANDOFF_SMALL_ARTIFACTS_20260909_FINAL.zip
+small ZIP:        /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_HANDOFF_SMALL_ARTIFACTS_20260909_FINAL_R2.zip
+checksums:        /mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/SHA256SUMS_FINAL_R2.txt
 ```
 
 SHA-256 values:
 
 ```text
-0388d991f621bf5777be7f3b2b7fe6a3e5750444a21ad9311237b7f0c3d97d11  JEPA_NEW_CHAT_HANDOFF_20260909_FINAL.md
-40cd677186d3e8654704203e75da8879dd841b685f58bbf67a473e20b7137e02  JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL.json
+3a07d8cc4eeb166bc9cecb43de6119436f36ecf36f406f89321b48426e4d189e  JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R2.md
+73bbfa671332276791dfb4842ddca8f9000fd550a08036eb5bed8c50ad79fc7b  JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R2.json
 19c4e1ed41af812782ed9cb3ff8e321883c36cbd8e14c213ab7c55c34b9eec62  JEPA_LOCAL_FILE_MANIFEST_20260909_FINAL.csv
 1d0a68cbd112312e3e3ea817235d5ed1ed4256e11eea470ea6081d78f46fc04e  JEPA_LOCAL_FILE_MANIFEST_20260909_FINAL.json
-1835883ab3a0fca8bdeb76ec69369637201d30fe729cdcaf7801acceacede8f8  JEPA_HANDOFF_SMALL_ARTIFACTS_20260909_FINAL.zip
+62fa8d97c5713b001afa290afd1b493db07e7f58f6bc76187d2311e4474401dc  JEPA_HANDOFF_SMALL_ARTIFACTS_20260909_FINAL_R2.zip
 ```
 
 The compact ZIP contains generated docs/scripts/results/tests from:
@@ -69,8 +72,8 @@ bytes 2,709,786,624
 
 ```text
 repo: dushyant-mishra/sea-ad-jepa-agent
-main verified: c0e1f4adb3b14339738bda5bf23ea7d9e3bd18cc
-main message: docs: refresh startup with future full-run flexibility policy
+main after pointer push: 8fd48c1f98dbe4f9bbf96b41b6c62ba0f5266989
+main before pointer: c0e1f4adb3b14339738bda5bf23ea7d9e3bd18cc
 active T0 branch: t0/v20-pathology-blind-materialization-20260908
 active T0 head verified: 55796d208be4508743438e3f514b79bdf2f814c1
 R8 closure commit: 52f5c3830848e4f03c5581f883cfde212b2dee4c
