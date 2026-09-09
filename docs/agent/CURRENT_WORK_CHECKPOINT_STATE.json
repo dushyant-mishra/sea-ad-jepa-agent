@@ -176,17 +176,18 @@
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN",
     "real_t0": "FORBIDDEN",
-    "t0_v20": "PASS_R7_READINESS_SEMANTICS_REPAIR__DISCOVERY_NUMERIC_AT8_READY_TO_OPEN"
+    "t0_v20": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
   },
   "next_authorized_actions": [
-    "AWAIT_REVIEW_OF_THE_R7_CLOSURE_BEFORE_STAGE_2",
-    "DO_NOT_OPEN_DISCOVERY_NUMERIC_AT8_UNTIL_R7_IS_REVIEWED",
+    "AWAIT_REVIEW_OF_THE_R8_CLOSURE_BEFORE_STAGE_3",
     "DO_NOT_OPEN_CONFIRMATION_NUMERIC_AT8",
+    "DO_NOT_REFIT_DISCOVERY",
     "DO_NOT_OPEN_DEV_OR_SEALED",
+    "DO_NOT_OPEN_PROTECTED_POPULATIONS",
     "DO_NOT_BEGIN_TEACHER_STUDENT_TRAINING",
     "DO_NOT_MATERIALIZE_SUCCESSOR_U0",
     "DO_NOT_RUN_TD60",
-    "DO_NOT_SELF_PROMOTE_ANY_AUTHORITY_TO_PASS"
+    "DO_NOT_RUN_BIOLOGICAL_SWEEPS"
   ],
   "peer_agents": [
     "CODEX",
@@ -912,6 +913,48 @@
       },
       "terminal": "PASS_R7_READINESS_SEMANTICS_REPAIR__DISCOVERY_NUMERIC_AT8_READY_TO_OPEN"
     },
+    "r8_closure_20260909": {
+      "adjudication_performed": false,
+      "adjudicator_gate_satisfiable": true,
+      "authorization": "AUTHORIZE_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_STILL_CLOSED",
+      "behavioural_difference": "READINESS_VALUE_CHECK_ONLY",
+      "confirmation_numeric_at8_read": false,
+      "derivation_method": "TEXTUAL_SUBSTITUTION_ON_INSPECT_GETSOURCE",
+      "derived_diff_changed_lines": 4,
+      "discovery_numeric_at8_reread": false,
+      "discovery_refit": false,
+      "document": "docs/agent/T0_R8_CLOSURE_20260909.md",
+      "frozen_contradiction_still_reproducible": true,
+      "frozen_module_edited": false,
+      "justification": "T0_V20_EXECUTION_AUTHORITY_CONSTANTS.json declares production_requires_real_execution_ready True, which the frozen loader's `is not False` contradicts",
+      "own_defect_found_during_r8": "The first verify_* wrappers rebound names on the frozen module at runtime and restored them in a finally. It worked and the tests passed, but it mutates a module other code may hold, is not re-entrant, and reaches into the thing the repair claims not to touch. Replaced by exec'ing the verbatim verifiers into the namespace holding the derived loaders, so normal global resolution does the work. Zero rebindings remain.",
+      "readiness_false_still_fails_production_gate": true,
+      "readiness_false_still_lawful": true,
+      "red_before_commit": "5bdc6896",
+      "red_before_result": "9 failed by absence, 5 passed pinning the frozen contradiction",
+      "repaired_module": "scripts/v4/t0_execution_input_authority_v2.py",
+      "roots_consumed_unchanged": {
+        "discovery_authority_package_root_sha256": "9806de382c75f7a7a12bb952631ed0b6c9b458250e8161a876b470c48898f6f7",
+        "discovery_provenance_root_sha256": "15d13dd3e733e0ea90b199cf981b03ccd94bc67fbd19660ef88861e3ae1a37c2",
+        "discovery_target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe",
+        "r7_package_root_sha256": "a7e25e515f8e9cb4ec43e1e3bf09798adca6a573059d4b7ca0b61483c5c96c09",
+        "r7_readiness_root_sha256": "a75581dfc5e7ea88609a9ef62f54765b9a495a7dbdc5c09152ba7fb76d1488ae"
+      },
+      "stage3_still_needs": [
+        "tail authority package, needs the frozen discovery object",
+        "confirmation scalar matrix, 7,037 cells",
+        "production pretarget authority over discovery metadata",
+        "production preadjudication authority",
+        "confirmation metadata, which requires confirmation numeric AT8"
+      ],
+      "suite_accounting": {
+        "before_r8": 717,
+        "producer_suites": 731,
+        "r4_independent_reviewer_suite": "6 passed, 1 failed"
+      },
+      "superseded_module": "t0_execution_input_authority_v1",
+      "terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
+    },
     "real_execution_ready": false,
     "s2_feature_projection": {
       "accepted_split_bytes": 4918541,
@@ -1004,6 +1047,30 @@
       "finding_4_external": "Independent review then found the TOCTOU and index-protection defects above, plus four lower-level authority/governance defects. Both blocking defects were reproduced locally before repair: a staged replacement of a frozen authority validated with zero errors, and the availability source was authenticated by path rather than by bytes."
     },
     "source_library_rule": "Phase2 constructs source_library as an integer sum of the FULL raw source row, computed BEFORE source-to-address projection. Bind it as an exact positive integer. Never recompute it from the stored 41,238-address row or from the 35,076-address T0 projection; neither sum is required to equal it.",
+    "stage2_discovery_20260909": {
+      "confirmation_numeric_at8_accessed": false,
+      "decision_genes": 24482,
+      "discovery_authority_package_root_sha256": "9806de382c75f7a7a12bb952631ed0b6c9b458250e8161a876b470c48898f6f7",
+      "discovery_cells": 13767,
+      "discovery_donors": 28,
+      "discovery_provenance_root_sha256": "15d13dd3e733e0ea90b199cf981b03ccd94bc67fbd19660ef88861e3ae1a37c2",
+      "discovery_scalar_matrix_sha256": "456377fb5bd37a57aadf03a7a641bafc8d3b6e556b85dc9cfa827dccf02dd2b7",
+      "discovery_target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe",
+      "elapsed_seconds": 1736.9,
+      "endpoint_identity": "percent AT8 positive area_Grey matter",
+      "endpoint_values_sha256": "4cfb572798ab3f48c08aaa74a841e4cb92c01cfc69303f0f3a45c006a81c671a",
+      "final_lambda": 2360764.285714286,
+      "grid": [
+        -6.0,
+        2.0
+      ],
+      "matrix_nnz": 37085014,
+      "response_residual_sd": 1.2245513389820333,
+      "scoring_addresses": 28061,
+      "selected_at_grid_boundary": true,
+      "selected_multiplier_exponent": 2.0,
+      "terminal": "DISCOVERY_STAGE_DONE_AND_REPLAYED__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
+    },
     "suite_totals": {
       "aggregate_observed": "153 passed",
       "availability": "32 cases",
