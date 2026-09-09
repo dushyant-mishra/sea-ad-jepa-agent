@@ -179,10 +179,9 @@
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "SUBMIT_THE_R5_SUCCESSOR_FOR_INDEPENDENT_IMPLEMENTATION_REVIEW",
-    "RESOLVE_THE_CONTRADICTION_BETWEEN_THE_TWO_INDEPENDENT_RED_CASES",
-    "DO_NOT_BUILD_THE_ELIGIBLE_DONOR_AUTHORITY",
-    "DO_NOT_RUN_PRODUCTION_B2",
+    "RUN_TECHNICAL_COMPLETENESS_PRODUCTION_ON_THE_POPULATION_AUTHORITY",
+    "REPLAY_TECHNICAL_COMPLETENESS_BEFORE_CLAIMING_IT",
+    "DO_NOT_BUILD_THE_ELIGIBLE_DONOR_AUTHORITY_UNTIL_THAT_REPLAYS_CLEANLY",
     "DO_NOT_ACCESS_NUMERIC_CONFIRMATION_AT8",
     "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
   ],
@@ -379,7 +378,7 @@
       "state_positive_alpha": 0.025,
       "tail_positive_alpha": 0.02
     },
-    "governance_state": "R5_SUCCESSOR_CANDIDATE__AWAITING_INDEPENDENT_IMPLEMENTATION_REVIEW__PRODUCTION_B2_FORBIDDEN",
+    "governance_state": "PRODUCTION_B2_EXECUTED_AND_REPLAYED__TECHNICAL_COMPLETENESS_PRODUCTION_NEXT__ELIGIBLE_DONOR_CONSTRUCTION_STILL_CLOSED",
     "handoff_sha256": "ecd0b0fb5c449e9ff1101dff5b014fdbb79c7538212155b28f0a9beb47f2c01f",
     "immune_fraction_authority": {
       "block_metadata_members_authenticated": 1247,
@@ -521,6 +520,44 @@
       "operator_index": 31,
       "target_cells": 20804
     },
+    "production_b2_run": {
+      "artifact_manifest": "docs/agent/T0_B2_PRODUCTION_ARTIFACT_MANIFEST_20260909.md",
+      "artifacts_referenced_not_committed": "outputs/ is gitignored deliberately. Committing a package member as tracked text lets the line-ending filter rewrite its bytes on checkout, changing its SHA-256 and breaking the package root it is bound by. That already happened once in this lane with the availability package, which produced a4424482 on a fresh checkout instead of e49c4e93. The artifacts are therefore named by exact path, size and SHA-256 in the manifest.",
+      "authorized_by": "PROJECT_OWNER_20260909",
+      "earlier_unclaimable_attempt": "A first attempt ran from a temporary script with an unpushed local edit to the raw-source module. Its numbers were real but not reproducible from committed code, so they were not claimable, and an external review said so correctly. The committed runner reproduced the same four roots, which is a useful independent check, but the claim rests only on the committed run.",
+      "executed_from": "COMMITTED_CODE_AT_fb75b024ee3c2247e73fccf9f8a1a1ce6dcf6e58",
+      "geometry": {
+        "complete_manifest_blocks": 8915,
+        "digest_bytes_read": 32978570763,
+        "donors": 46,
+        "elapsed_seconds": 536.8,
+        "logical_rows": 20804,
+        "op31_blocks": 1247,
+        "op31_metadata_rows": 638150,
+        "operators": 42,
+        "rows_proven": 20804,
+        "source_bytes": 32978570763
+      },
+      "pathology_blind": true,
+      "replay": {
+        "all_three_substrate_roots_reproduced": true,
+        "pathology_fields_in_artifacts": false,
+        "population_root_recomputed_from_reloaded_registry": true,
+        "result": "REPLAY_PASS",
+        "rows_replayed": 20804,
+        "stored_equals_recomputed_equals_expected": true,
+        "substrate_rebuilt_from_frozen_inputs": true
+      },
+      "roots": {
+        "authority_package": "98eac4a68df7960e79739d236cf0febacdec52a33de76144b146dc29a5a64436",
+        "logical_row_authority": "64ea880ff6cf19aca48e0f2e77edfa6d37fc4f5e20022011131c496173896fc3",
+        "physical_read_plan": "cc75cef0ebb9a05e6699546e18ae45b3555f488dc2e46db4c845370c5be23519",
+        "population_closure": "ec350b8d9a30a8a08573f055b9a0c103d0f6805014998ac9975d94585421d397",
+        "population_raw_source": "0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b"
+      },
+      "runner": "scripts/v4/t0_b2_production_run_v1.py",
+      "status": "EXECUTED_AND_REPLAYED"
+    },
     "promotion_successor": {
       "blocking_design_finding": "V20 cannot be promoted by flipping a flag. Its verifiers raise unless real_execution_ready is not False, so they accept only False, while its production entrypoints raise unless it is not True, so they proceed only on True. The two are mutually exclusive by construction, which is what makes V20 permanently unready. A promotion successor therefore needs its own authority schema, verifier and entrypoint triple wrapping accepted V20, and may not reuse V20's verifier.",
       "status": "AUTHORIZED__DESIGN_IN_PROGRESS"
@@ -586,6 +623,10 @@
         "attack": "Genuine parent-root strings accompanying the forged pair (9470, 3000) cannot produce an authority.",
         "property": "source_library is read off the authenticated B2 logical row and the projected non-zero count is computed from the counts payload that row's own digest authenticates, through the externally bound B1 projection. cells_by_donor and the bare substrate mapping are gone from the production path."
       }
+    },
+    "r5_boundary_repair": {
+      "finding": "_ConstructionGuard being a module-level Python class is not a security or capability boundary; any same-process caller can import and instantiate it. The R5 fix had replaced one importable sentinel with another and called it closed.",
+      "repair": "The boundary is removed rather than defended. The only public proof is prove_population_from_source_path, which takes a filesystem path and owns opening, hashing, consumption and closing. The handle-accepting row proof is private and fixture-only, and the old public name raises STOP_T0_RAW_SOURCE_PUBLIC_PROOF_DOES_NOT_ACCEPT_A_HANDLE. The guard is retained as defence in depth and documented as not a capability. The protection that does hold is that AuthenticatedSource re-derives its digest from the bytes, so a handle built around another file cannot claim the frozen identity even by a caller who imports the guard."
     },
     "r5_contradiction_reported": {
       "finding": "Two of the seven independent red cases cannot both hold. test_technical_completeness_must_require_raw_source_proof_for_q_depth requires build_production_authority to RAISE, and test_technical_completeness_must_not_invent_a_physical_plan_parent requires the same call to SUCCEED. Their inputs were verified identical: the same eight kwargs, the same one-position projection and the same source_library of 9999, with neither supplying a raw-source proof.",
