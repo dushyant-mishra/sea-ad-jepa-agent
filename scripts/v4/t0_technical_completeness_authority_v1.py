@@ -83,6 +83,8 @@ STOP_PROJECTION_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_PROJECTION_ROOT_MISMATCH"
 STOP_LOGICAL_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_LOGICAL_ROOT_MISMATCH"
 STOP_CLOSURE_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_CLOSURE_ROOT_MISMATCH"
 STOP_PROJECTION_POSITIONS = "STOP_T0_TECHNICAL_COMPLETENESS_PROJECTION_POSITIONS_INVALID"
+STOP_RAW_SOURCE_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_RAW_SOURCE_PROOF_ROOT_MISMATCH"
+STOP_COUNTS_GEOMETRY = "STOP_T0_TECHNICAL_COMPLETENESS_COUNTS_GEOMETRY_MISMATCH"
 
 SCALAR_FEATURES = 35_076
 SEMANTICS = "THRESHOLD_FREE_DEFINEDNESS_AND_COMPUTABILITY"
@@ -291,9 +293,9 @@ def assert_substrate_lawful(*, substrate: Mapping[str, Any]) -> bool:
     """
     required = ("population_closure_root_sha256",
                 "logical_row_authority_root_sha256",
-                "physical_read_plan_root_sha256",
                 "feature_authority_root_sha256",
-                "projection_root_sha256")
+                "projection_root_sha256",
+                "raw_source_proof_root_sha256")
     for field in required:
         value = substrate.get(field)
         if not _is_hex64(value):
@@ -377,9 +379,9 @@ def parent_contract_root(*, substrate: Mapping[str, Any],
     """One root over the B2 and B1 parents plus the deriving code identity."""
     fields = ("population_closure_root_sha256",
               "logical_row_authority_root_sha256",
-              "physical_read_plan_root_sha256",
               "feature_authority_root_sha256",
-              "projection_root_sha256")
+              "projection_root_sha256",
+              "raw_source_proof_root_sha256")
     parts = [_typed(DOMAIN_TAG), _typed("PARENT_CONTRACT"),
              _typed(len(fields) + 1)]
     for field in fields:
@@ -431,13 +433,20 @@ def _write_package(
 
     registry = io.StringIO()
     writer = csv.writer(registry, lineterminator="\n")
-    writer.writerow(["donor_id", "cells", "Q_DEPTH", "Q_DETECT",
+    writer.writerow(["donor_id", "cells", "cell_ids_json",
+                     "Q_DEPTH", "Q_DETECT", "Q_DEPTH_HEX", "Q_DETECT_HEX",
                      "technical_complete"])
     for row in rows:
-        writer.writerow([row["donor_id"], int(row["cells"]),
-                         "%.12f" % float(row["Q_DEPTH"]),
-                         "%.12f" % float(row["Q_DETECT"]),
-                         bool(row["technical_complete"])])
+        writer.writerow([
+            row["donor_id"], int(row["cells"]),
+            json.dumps(list(row.get("cell_ids", ())),
+                       separators=(",", ":"), ensure_ascii=False),
+            "%.12f" % float(row["Q_DEPTH"]),
+            "%.12f" % float(row["Q_DETECT"]),
+            float(row["Q_DEPTH"]).hex(),
+            float(row["Q_DETECT"]).hex(),
+            bool(row["technical_complete"]),
+        ])
     registry_bytes = registry.getvalue().encode("utf-8")
 
     meta = {
@@ -557,15 +566,56 @@ def load_authority(
                              % STOP_FIELD_SCHEMA)
 
     columns, records = _rows(captured[REGISTRY])
-    for required in ("donor_id", "cells", "Q_DEPTH", "Q_DETECT",
+    for required in ("donor_id", "cells", "cell_ids_json",
+                     "Q_DEPTH", "Q_DETECT", "Q_DEPTH_HEX", "Q_DETECT_HEX",
                      "technical_complete"):
         if required not in columns:
             raise AssertionError("%s: registry lacks %r"
                                  % (STOP_FIELD_SCHEMA, required))
-    return {"metadata": meta, "records": records,
-            "completeness_root_sha256": meta["completeness_root_sha256"],
+    semantic_rows = []
+    for record in records:
+        try:
+            cell_ids = tuple(str(x) for x in json.loads(record["cell_ids_json"]))
+            q_depth = float.fromhex(str(record["Q_DEPTH_HEX"]))
+            q_detect = float.fromhex(str(record["Q_DETECT_HEX"]))
+        except Exception as exc:
+            raise AssertionError("%s: registry semantic field invalid: %s"
+                                 % (STOP_FIELD_SCHEMA, exc)) from exc
+        if float(record["Q_DEPTH"]) != pytest_approx_roundtrip(q_depth, 12) or \
+                float(record["Q_DETECT"]) != pytest_approx_roundtrip(q_detect, 12):
+            raise AssertionError(
+                "%s: human-readable and exact float columns disagree"
+                % STOP_FIELD_SCHEMA)
+        semantic_rows.append({
+            "donor_id": str(record["donor_id"]),
+            "cells": int(record["cells"]),
+            "cell_ids": cell_ids,
+            "Q_DEPTH": q_depth,
+            "Q_DETECT": q_detect,
+            "technical_complete": str(record["technical_complete"]).strip().lower()
+                                  == "true",
+        })
+    recomputed_completeness = completeness_root(semantic_rows)
+    stored_completeness = str(meta.get("completeness_root_sha256"))
+    if stored_completeness != recomputed_completeness:
+        raise AssertionError(
+            "%s: stored completeness root %s recomputes to %s"
+            % (STOP_ROOT_MISMATCH, stored_completeness,
+               recomputed_completeness))
+    if recomputed_completeness != str(expected_completeness_root_sha256):
+        raise AssertionError(
+            "%s: recomputed completeness root %s, externally expected %s"
+            % (STOP_ROOT_MISMATCH, recomputed_completeness,
+               expected_completeness_root_sha256))
+    return {"metadata": meta, "records": records, "rows": tuple(semantic_rows),
+            "completeness_root_sha256": recomputed_completeness,
             "package_root_sha256": pkg_root,
             "parent_contract_root_sha256": recomputed_parent}
+
+
+def pytest_approx_roundtrip(value: float, places: int) -> float:
+    """Round exactly as the human-readable registry column is written."""
+    return float(("%.*f" % (int(places), float(value))))
 
 
 def _rows(raw: bytes) -> tuple[tuple[str, ...], list[dict[str, str]]]:
