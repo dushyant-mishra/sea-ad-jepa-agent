@@ -54,6 +54,7 @@ STOP_INPUT_SHAPE = "STOP_T0_ESTIMABILITY_INPUT_SHAPE_INVALID"
 STOP_RESPONSE_PRESENT = "STOP_T0_ESTIMABILITY_RESPONSE_SUPPLIED_TO_A_BLIND_CHECK"
 STOP_FIELD_SCHEMA = "STOP_T0_ESTIMABILITY_FIELD_SCHEMA_VIOLATION"
 STOP_REMEDY = "STOP_T0_ESTIMABILITY_FORBIDDEN_REMEDY_ATTEMPTED"
+STOP_DONOR_ALIGNMENT = "STOP_T0_ESTIMABILITY_DONOR_ALIGNMENT_MISMATCH"
 
 STAGES = ("A_PARENT_NUISANCE", "B_STATE_DESIGNS", "C_TAIL_DESIGNS")
 
@@ -164,7 +165,77 @@ def assert_full_rank(matrix: Sequence[Sequence[float]], *, what: str) -> int:
 
 def _augment(base: Sequence[Sequence[float]],
              extra: Sequence[Sequence[float]]) -> list[list[float]]:
+    if len(base) != len(extra):
+        raise AssertionError(
+            "%s: cannot augment %d design rows with %d covariate rows"
+            % (STOP_INPUT_SHAPE, len(base), len(extra)))
     return [list(row) + [float(v) for v in more] for row, more in zip(base, extra)]
+
+
+def _donor_ids(data: Mapping[str, Sequence[Any]], *, what: str) -> list[str]:
+    """Require an explicit, unique donor identity for every design row."""
+    if "donor_id" not in data:
+        raise AssertionError(
+            "%s: %s lacks donor_id; positional covariate alignment is forbidden"
+            % (STOP_DONOR_ALIGNMENT, what))
+    donor_ids = [str(value) for value in data["donor_id"]]
+    if not donor_ids:
+        raise AssertionError("%s: %s donor_id is empty"
+                             % (STOP_DONOR_ALIGNMENT, what))
+    if len(set(donor_ids)) != len(donor_ids):
+        raise AssertionError("%s: %s donor_id contains duplicates"
+                             % (STOP_DONOR_ALIGNMENT, what))
+    for field in ("age", "sex"):
+        if field not in data:
+            raise AssertionError("%s: %s lacks %s"
+                                 % (STOP_INPUT_SHAPE, what, field))
+        if len(data[field]) != len(donor_ids):
+            raise AssertionError(
+                "%s: %s %s has %d values for %d donors"
+                % (STOP_INPUT_SHAPE, what, field, len(data[field]),
+                   len(donor_ids)))
+    return donor_ids
+
+
+def _bind_by_donor(values: Mapping[str, Any], donor_ids: Sequence[str], *,
+                   what: str) -> list[float]:
+    """Join one covariate to an authority-defined donor order by donor ID."""
+    if not isinstance(values, Mapping):
+        raise AssertionError(
+            "%s: %s must be donor-keyed; positional arrays are forbidden"
+            % (STOP_DONOR_ALIGNMENT, what))
+    normalised: dict[str, Any] = {}
+    for key, value in values.items():
+        donor = str(key)
+        if donor in normalised:
+            raise AssertionError(
+                "%s: %s has duplicate donor key after string normalisation: %r"
+                % (STOP_DONOR_ALIGNMENT, what, donor))
+        normalised[donor] = value
+    expected = set(map(str, donor_ids))
+    actual = set(normalised)
+    if actual != expected:
+        raise AssertionError(
+            "%s: %s donor set differs; extra=%s missing=%s"
+            % (STOP_DONOR_ALIGNMENT, what,
+               sorted(actual - expected), sorted(expected - actual)))
+    return _column([normalised[str(donor)] for donor in donor_ids],
+                   what=what, n=len(donor_ids))
+
+
+def _design_root(name: str, donor_ids: Sequence[str],
+                 matrix: Sequence[Sequence[float]]) -> str:
+    """Bind donor order and every numeric design entry, not only the rank."""
+    if len(donor_ids) != len(matrix):
+        raise AssertionError(
+            "%s: %s has %d donor IDs for %d matrix rows"
+            % (STOP_DONOR_ALIGNMENT, name, len(donor_ids), len(matrix)))
+    parts = [_typed(DOMAIN_TAG), _typed("DESIGN"), _typed(str(name)),
+             _typed(len(donor_ids))]
+    for donor, row in zip(donor_ids, matrix):
+        parts.append(_typed(str(donor)))
+        parts.append(_typed([float(value).hex() for value in row]))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
 
 
 # --- Stage A ---------------------------------------------------------------
@@ -174,31 +245,43 @@ def stage_a_parent_nuisance(
         discovery: Mapping[str, Sequence[Any]],
         confirmation: Mapping[str, Sequence[Any]],
 ) -> dict[str, Any]:
-    """Rank of the parent nuisance design on both roles and every LOODO fold.
-
-    The LOODO folds matter because the frozen discovery fit refits with each
-    donor held out. A design that is full rank on all 28 discovery donors can
-    still be deficient in one fold, and that fold would fail during fitting
-    rather than at preflight.
-    """
+    """Rank parent nuisance designs with donor identity bound at every row."""
     assert_no_forbidden_remedy_declared()
-    results: dict[str, Any] = {"stage": STAGES[0], "checks": {}}
+    results: dict[str, Any] = {
+        "stage": STAGES[0], "checks": {}, "donor_order": {},
+        "design_roots": {},
+    }
 
+    role_cache: dict[str, tuple[list[str], list[Any], list[Any]]] = {}
     for role, data in (("DISCOVERY", discovery), ("CONFIRMATION", confirmation)):
-        design = nuisance_design(data["age"], data["sex"])
-        results["checks"][role] = assert_full_rank(design, what="%s nuisance" % role)
+        donor_ids = _donor_ids(data, what=role)
+        ages = list(data["age"])
+        sexes = list(data["sex"])
+        design = nuisance_design(ages, sexes)
+        results["checks"][role] = assert_full_rank(
+            design, what="%s nuisance" % role)
+        results["donor_order"][role] = donor_ids
+        results["design_roots"][role] = _design_root(
+            "%s nuisance" % role, donor_ids, design)
+        role_cache[role] = (donor_ids, ages, sexes)
 
-    ages = list(discovery["age"])
-    sexes = list(discovery["sex"])
+    donor_ids, ages, sexes = role_cache["DISCOVERY"]
     folds = {}
-    for held_out in range(len(ages)):
+    fold_roots = {}
+    for held_out, held_out_donor in enumerate(donor_ids):
+        fold_ids = donor_ids[:held_out] + donor_ids[held_out + 1:]
         fold_ages = ages[:held_out] + ages[held_out + 1:]
         fold_sexes = sexes[:held_out] + sexes[held_out + 1:]
         design = nuisance_design(fold_ages, fold_sexes)
-        folds[held_out] = assert_full_rank(
-            design, what="DISCOVERY LOODO fold holding out donor index %d" % held_out)
+        folds[str(held_out_donor)] = assert_full_rank(
+            design, what="DISCOVERY LOODO fold holding out donor %s"
+            % held_out_donor)
+        fold_roots[str(held_out_donor)] = _design_root(
+            "DISCOVERY LOODO holdout %s" % held_out_donor,
+            fold_ids, design)
     results["checks"]["DISCOVERY_LOODO_FOLDS"] = len(folds)
     results["loodo_ranks"] = folds
+    results["design_roots"]["DISCOVERY_LOODO_FOLDS"] = fold_roots
     return results
 
 
@@ -207,17 +290,17 @@ def stage_a_parent_nuisance(
 def stage_b_state_designs(
         *,
         confirmation: Mapping[str, Sequence[Any]],
-        state_score: Sequence[Any],
-        immune_fraction: Sequence[Any],
-        q_depth: Sequence[Any],
-        q_detect: Sequence[Any],
+        state_score: Mapping[str, Any],
+        immune_fraction: Mapping[str, Any],
+        q_depth: Mapping[str, Any],
+        q_detect: Mapping[str, Any],
         response: Any = None,
 ) -> dict[str, Any]:
-    """The three confirmation designs, checked before any AT8 access.
+    """Check confirmation designs after donor-keyed covariate joins.
 
-    `response` exists only to be refused. Rank is a property of the design
-    matrix, so supplying the outcome to this check would be both unnecessary and
-    a pathology-access violation.
+    A covariate array with the right length is insufficient: a permutation can
+    change rank while preserving shape.  Every covariate is therefore joined by
+    donor_id to the confirmation authority's exact donor order.
     """
     if response is not None:
         raise AssertionError(
@@ -226,23 +309,36 @@ def stage_b_state_designs(
             % STOP_RESPONSE_PRESENT)
     assert_no_forbidden_remedy_declared()
 
-    n = len(list(confirmation["age"]))
+    donor_ids = _donor_ids(confirmation, what="CONFIRMATION")
+    n = len(donor_ids)
     nuisance = nuisance_design(confirmation["age"], confirmation["sex"])
-    state = [[v] for v in _column(state_score, what="STATE_SCORE", n=n)]
-    immune = [[v] for v in _column(immune_fraction, what="IMMUNE_FRACTION", n=n)]
-    depth = _column(q_depth, what="Q_DEPTH", n=n)
-    detect = _column(q_detect, what="Q_DETECT", n=n)
+    state_values = _bind_by_donor(state_score, donor_ids, what="STATE_SCORE")
+    immune_values = _bind_by_donor(
+        immune_fraction, donor_ids, what="IMMUNE_FRACTION")
+    depth_values = _bind_by_donor(q_depth, donor_ids, what="Q_DEPTH")
+    detect_values = _bind_by_donor(q_detect, donor_ids, what="Q_DETECT")
 
+    state = [[v] for v in state_values]
+    immune = [[v] for v in immune_values]
     designs = {
         "primary": _augment(nuisance, state),
         "composition": _augment(_augment(nuisance, immune), state),
         "measurement": _augment(
-            _augment(nuisance, [[d, t] for d, t in zip(depth, detect)]), state),
+            _augment(nuisance, [[d, t] for d, t in
+                                zip(depth_values, detect_values)]), state),
     }
     checks = {name: assert_full_rank(matrix, what="confirmation %s design" % name)
               for name, matrix in designs.items()}
-    return {"stage": STAGES[1], "checks": checks,
-            "residual_df": {name: n - len(designs[name][0]) for name in designs}}
+    roots = {name: _design_root("confirmation %s design" % name,
+                                donor_ids, matrix)
+             for name, matrix in designs.items()}
+    return {
+        "stage": STAGES[1],
+        "checks": checks,
+        "residual_df": {name: n - len(designs[name][0]) for name in designs},
+        "donor_order": list(donor_ids),
+        "design_roots": roots,
+    }
 
 
 # --- Stage C ---------------------------------------------------------------
@@ -250,19 +346,14 @@ def stage_b_state_designs(
 def stage_c_tail_designs(
         *,
         tail_donors: Mapping[str, Sequence[Any]],
-        state_score: Sequence[Any],
-        tail_prevalence: Sequence[Any],
-        immune_fraction: Sequence[Any],
-        q_depth: Sequence[Any],
-        q_detect: Sequence[Any],
+        state_score: Mapping[str, Any],
+        tail_prevalence: Mapping[str, Any],
+        immune_fraction: Mapping[str, Any],
+        q_depth: Mapping[str, Any],
+        q_detect: Mapping[str, Any],
         response: Any = None,
 ) -> dict[str, Any]:
-    """The tail designs, carrying frozen STATE_SCORE and TAIL_PREVALENCE.
-
-    The tail arm is evaluated on the tail-measurable subset of the confirmation
-    donors, whose size the frozen contract restricts to 17 or 18, so this stage
-    takes its own donor set rather than reusing the full confirmation one.
-    """
+    """Check tail designs after exact donor-keyed joins."""
     if response is not None:
         raise AssertionError(
             "%s: estimability is a property of the design matrix; the response "
@@ -270,13 +361,16 @@ def stage_c_tail_designs(
             % STOP_RESPONSE_PRESENT)
     assert_no_forbidden_remedy_declared()
 
-    n = len(list(tail_donors["age"]))
+    donor_ids = _donor_ids(tail_donors, what="TAIL")
+    n = len(donor_ids)
     nuisance = nuisance_design(tail_donors["age"], tail_donors["sex"])
-    state = _column(state_score, what="tail STATE_SCORE", n=n)
-    tail = _column(tail_prevalence, what="TAIL_PREVALENCE", n=n)
-    immune = _column(immune_fraction, what="tail IMMUNE_FRACTION", n=n)
-    depth = _column(q_depth, what="tail Q_DEPTH", n=n)
-    detect = _column(q_detect, what="tail Q_DETECT", n=n)
+    state = _bind_by_donor(state_score, donor_ids, what="tail STATE_SCORE")
+    tail = _bind_by_donor(
+        tail_prevalence, donor_ids, what="TAIL_PREVALENCE")
+    immune = _bind_by_donor(
+        immune_fraction, donor_ids, what="tail IMMUNE_FRACTION")
+    depth = _bind_by_donor(q_depth, donor_ids, what="tail Q_DEPTH")
+    detect = _bind_by_donor(q_detect, donor_ids, what="tail Q_DETECT")
 
     with_state = _augment(nuisance, [[s] for s in state])
     designs = {
@@ -289,19 +383,45 @@ def stage_c_tail_designs(
     }
     checks = {name: assert_full_rank(matrix, what="%s design" % name)
               for name, matrix in designs.items()}
-    return {"stage": STAGES[2], "checks": checks,
-            "tail_inference_n": n,
-            "residual_df": {name: n - len(designs[name][0]) for name in designs}}
+    roots = {name: _design_root("%s design" % name, donor_ids, matrix)
+             for name, matrix in designs.items()}
+    return {
+        "stage": STAGES[2],
+        "checks": checks,
+        "tail_inference_n": n,
+        "residual_df": {name: n - len(designs[name][0]) for name in designs},
+        "donor_order": list(donor_ids),
+        "design_roots": roots,
+    }
 
 
 def preflight_root(results: Sequence[Mapping[str, Any]]) -> str:
-    """Digest over the stages actually run and their outcomes."""
+    """Digest stages, ranks, donor order and exact design identities."""
     parts = [_typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
              _typed(list(FORBIDDEN_REMEDIES)), _typed(len(results))]
     for result in results:
         checks = result["checks"]
         parts.append(_typed([str(result["stage"]),
                              [[str(k), int(checks[k])] for k in sorted(checks)]]))
+        donor_order = result.get("donor_order", [])
+        if isinstance(donor_order, Mapping):
+            serial_donors = [[str(k), [str(x) for x in donor_order[k]]]
+                             for k in sorted(donor_order)]
+        else:
+            serial_donors = [str(x) for x in donor_order]
+        parts.append(_typed(["donor_order", serial_donors]))
+        design_roots = result.get("design_roots", {})
+        serial_roots = []
+        for key in sorted(design_roots):
+            value = design_roots[key]
+            if isinstance(value, Mapping):
+                serial_roots.append([
+                    str(key),
+                    [[str(k), str(value[k])] for k in sorted(value)],
+                ])
+            else:
+                serial_roots.append([str(key), str(value)])
+        parts.append(_typed(["design_roots", serial_roots]))
     return hashlib.sha256(b"".join(parts)).hexdigest()
 
 
