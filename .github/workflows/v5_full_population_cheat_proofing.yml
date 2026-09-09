@@ -4,21 +4,6 @@ on:
   push:
     branches:
       - planning/v5-full-population-cheat-proofing-20260909
-    paths:
-      - 'src/sea_ad_jepa/v5/full_population_coverage_schedule_v1.py'
-      - 'src/sea_ad_jepa/v5/full_population_conditioning_authority_v1.py'
-      - 'src/sea_ad_jepa/v5/representation_firewall_v1.py'
-      - 'src/sea_ad_jepa/v5/same_cell_technical_intervention_probe_v1.py'
-      - 'scripts/v5_anticheat/audit_full_population_coverage_conditioning_v1.py'
-      - 'docs/agent/v5_anticheat/results/FULL_POPULATION_COVERAGE_CONDITIONING_AUDIT_V1.json'
-      - 'docs/agent/TEACHER_STUDENT_V5_FULL_POPULATION_HORIZON_CANDIDATE_V2.json'
-      - 'tests/test_teacher_student_v5_full_population_coverage_v1.py'
-      - 'tests/test_teacher_student_v5_representation_firewall_v1.py'
-      - 'tests/test_full_population_conditioning_authority_v1.py'
-      - 'tests/test_same_cell_technical_intervention_probe_v1.py'
-      - 'tests/test_teacher_student_v5_full_population_horizon_candidate_v2.py'
-      - 'tests/v5_anticheat/test_full_population_coverage_conditioning_audit_v1.py'
-      - '.github/workflows/v5_full_population_cheat_proofing.yml'
   workflow_dispatch:
 
 permissions:
@@ -27,20 +12,21 @@ permissions:
 jobs:
   prospective-qualification:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: python -m pip install --disable-pip-version-check pytest numpy
-      - name: Run full-population and anti-cheat candidate tests
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Run candidate tests
         env:
           PYTHONPATH: src:.
         run: |
-          python -m pytest -q             tests/test_teacher_student_v5_full_population_coverage_v1.py             tests/test_teacher_student_v5_representation_firewall_v1.py             tests/v5_anticheat/test_full_population_coverage_conditioning_audit_v1.py             tests/test_full_population_conditioning_authority_v1.py             tests/test_same_cell_technical_intervention_probe_v1.py \
-            tests/test_teacher_student_v5_full_population_horizon_candidate_v2.py
+          python -m pytest -q             tests/test_teacher_student_v5_full_population_coverage_v1.py             tests/test_teacher_student_v5_representation_firewall_v1.py             tests/v5_anticheat/test_full_population_coverage_conditioning_audit_v1.py             tests/test_full_population_conditioning_authority_v1.py             tests/test_same_cell_technical_intervention_probe_v1.py             tests/test_teacher_student_v5_full_population_horizon_candidate_v2.py             tests/test_biology_observation_adapter_v1.py
       - name: Compile candidate sources
         run: |
-          python -m py_compile             src/sea_ad_jepa/v5/full_population_coverage_schedule_v1.py             src/sea_ad_jepa/v5/full_population_conditioning_authority_v1.py             src/sea_ad_jepa/v5/representation_firewall_v1.py             src/sea_ad_jepa/v5/same_cell_technical_intervention_probe_v1.py             scripts/v5_anticheat/audit_full_population_coverage_conditioning_v1.py
+          python -m py_compile             src/sea_ad_jepa/v5/full_population_coverage_schedule_v1.py             src/sea_ad_jepa/v5/full_population_conditioning_authority_v1.py             src/sea_ad_jepa/v5/representation_firewall_v1.py             src/sea_ad_jepa/v5/same_cell_technical_intervention_probe_v1.py             src/sea_ad_jepa/v5/biology_observation_adapter_v1.py             scripts/v5_anticheat/audit_full_population_coverage_conditioning_v1.py
