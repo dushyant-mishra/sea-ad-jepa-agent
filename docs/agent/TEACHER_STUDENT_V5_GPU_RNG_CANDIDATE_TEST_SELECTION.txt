@@ -1,0 +1,6 @@
+tests/test_teacher_student_v5_rng_device_v1.py
+tests/test_teacher_student_v5_device_mechanics_candidate_v1.py
+tests/test_teacher_student_v5_gpu_rng_candidate_governance_v1.py
+tests/test_teacher_student_v5_rng_contract_v2.py
+tests/test_teacher_student_v5_rng_dense_packed_v2.py
+tests/test_teacher_student_v5_inactive_update_reference.py

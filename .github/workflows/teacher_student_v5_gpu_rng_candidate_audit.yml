@@ -1,0 +1,74 @@
+name: Teacher/student V5 GPU RNG candidate audit
+
+on:
+  push:
+    branches:
+      - planning/teacher-student-v5-gpu-rng-mechanics-20260908
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  candidate-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy pandas scipy
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Re-audit immutable V5 core
+        env:
+          PYTHONPATH: src:.
+        run: python scripts/agent/audit_teacher_student_v5_data_first_v1.py
+      - name: Run unchanged frozen V4 plus V5 suite
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python - <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          v5=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt').read_text().splitlines() if x.strip()]
+          v4=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V4.txt').read_text().splitlines() if x.strip() and not x.lstrip().startswith('#')]
+          assert len(v5)==11 and len(v4)==7
+          subprocess.run([sys.executable,'-m','pytest','-q',*v5,*v4],check=True)
+          PY
+      - name: Run GPU-RNG candidate CPU/reference attacks
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python - <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          tests=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_V5_GPU_RNG_CANDIDATE_TEST_SELECTION.txt').read_text().splitlines() if x.strip()]
+          assert len(tests)==6 and len(set(tests))==6
+          subprocess.run([sys.executable,'-m','pytest','-q',*tests],check=True)
+          PY
+      - name: Audit candidate package
+        env:
+          PYTHONPATH: src:.
+        run: python scripts/agent/audit_teacher_student_v5_gpu_rng_candidate_v1.py
+      - name: Compile candidate source and qualification harness
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python -m py_compile \
+            src/sea_ad_jepa/v5/keyed_rng_device_v1.py \
+            src/sea_ad_jepa/v5/keyed_dropout_device_candidate_v1.py \
+            src/sea_ad_jepa/v5/inactive_update_device_candidate_v1.py \
+            scripts/agent/qualify_teacher_student_v5_gpu_rng_v1.py \
+            scripts/agent/audit_teacher_student_v5_gpu_rng_candidate_v1.py
+      - name: Assert CPU runner does not masquerade as CUDA qualification
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set +e
+          python scripts/agent/qualify_teacher_student_v5_gpu_rng_v1.py
+          rc=$?
+          set -e
+          test "$rc" -eq 2

@@ -1,0 +1,61 @@
+{
+  "authority_effect": {
+    "authorizes_execution": false,
+    "authorizes_successor_u0": false,
+    "authorizes_td60": false,
+    "authorizes_training": false,
+    "changes_base_proposal_v3": false,
+    "changes_evidence_schedule": false,
+    "changes_frozen_rng_contract": false,
+    "changes_presentation_horizon_v1": false,
+    "changes_scientific_target": false
+  },
+  "base_main_commit": "b26ddcd587c7b63c8a2f327d74a86620eef66868",
+  "candidate": {
+    "current_reader_fit_signed_int64_convenience_supported": true,
+    "device_encoder_path": "src/sea_ad_jepa/v5/keyed_dropout_device_candidate_v1.py",
+    "device_encoder_sha256": "0361f58df5b874cc15faecaf7ea2d65437d682b4dbfeb3a75ad004c4e2387d99",
+    "device_ordinal_in_random_address": false,
+    "device_rng_path": "src/sea_ad_jepa/v5/keyed_rng_device_v1.py",
+    "device_rng_sha256": "fe78f3d8ce7d3885e1825d63b9afa0a9245c7d9201e61a0f39d760d70636634c",
+    "dropout_threshold_rule": "EXACT_BINARY64_TO_UINT32_OPEN_UNIT_THRESHOLD",
+    "full_uint64_contract_supported": true,
+    "inactive_update_builder_path": "src/sea_ad_jepa/v5/inactive_update_device_candidate_v1.py",
+    "inactive_update_builder_sha256": "eb1be5f640dd16009720399882656655926741452cdf521711e04571e79e9bf0",
+    "microbatch_ordinal_in_random_address": false,
+    "packing_shape_in_random_address": false,
+    "tensor_position_in_random_address": false
+  },
+  "cuda_qualification": {
+    "evidence": null,
+    "qualification_script": "scripts/agent/qualify_teacher_student_v5_gpu_rng_v1.py",
+    "qualified": false,
+    "required": true,
+    "required_terminal": "PASS_V5_GPU_RNG_BOUNDED_CUDA_QUALIFICATION"
+  },
+  "execution_authorized": false,
+  "frozen_v5_prototype": {
+    "materialization_commit": "71484ab99d276d7251836c109885d22ab4e7abb1",
+    "prototype_root": "9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad",
+    "rng_contract_v2_path": "src/sea_ad_jepa/v5/keyed_rng_contract_v2.py",
+    "rng_contract_v2_sha256": "7e8dcf488c80b4fd9b31f2dce23c6395eeebff244016d78066f4da81e91b06f1"
+  },
+  "implementation_verifier": {
+    "handoff": "docs/agent/TEACHER_STUDENT_V5_GPU_RNG_IMPLEMENTATION_VERIFIER_HANDOFF_20260908.md",
+    "required": true,
+    "status": "PENDING_INDEPENDENT_IMPLEMENTATION_VERIFIER",
+    "terminal": null,
+    "veto": true
+  },
+  "local_cpu_replay": {
+    "candidate_and_rng_mechanics_tests": "35 PASS / 2 CUDA-only SKIP",
+    "compile": "PASS",
+    "cuda_available": false,
+    "cuda_qualification_attempt_terminal": "STOP_V5_GPU_RNG_QUALIFICATION__CUDA_NOT_AVAILABLE",
+    "frozen_v4_v5_tests": "164/164 PASS",
+    "v5_governance_audit": "PASS"
+  },
+  "schema": "TEACHER_STUDENT_V5_GPU_RNG_CANDIDATE_V1",
+  "status": "IMPLEMENTATION_COMPLETE_AWAITING_INDEPENDENT_VERIFICATION_AND_CUDA_QUALIFICATION",
+  "training_authorized": false
+}
