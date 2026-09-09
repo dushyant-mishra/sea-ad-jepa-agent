@@ -383,7 +383,14 @@ def build_authority(
         "parent_contract_root_sha256": parent_root,
         "parents": {name: str(parents[name]) for name in sorted(parents)},
         "derivation_code_sha256": str(derivation_code_sha256),
-        "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
+        # Deliberately not "GIT_BLOB_BYTES". A Git blob digest frames the
+        # content as b"blob <len>\0" + content and would be a different value;
+        # every package in this lane in fact records the plain SHA-256 of the
+        # LF-normalized content, and the older ones label that as Git blob
+        # bytes. That mislabelling is reported for external review rather than
+        # silently re-stamped, because correcting it there means re-running and
+        # re-rooting artifacts already cited. It is not propagated here.
+        "derivation_code_byte_semantics": "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES",
         "at8_availability_independently_verified": bool(
             at8_availability_independently_verified),
         "numeric_at8_value_read": False,

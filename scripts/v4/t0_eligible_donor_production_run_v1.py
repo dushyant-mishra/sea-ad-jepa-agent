@@ -309,7 +309,7 @@ def run(*, outdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
             "t0_eligible_donor_production_run_v1.py"),
         "authority_code_sha256": code_sha256(
             "t0_eligible_donor_authority_v1.py"),
-        "code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
+        "code_byte_semantics": "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT__NOT_GIT_BLOB_FRAMED_AND_NOT_WORKTREE_BYTES",
         "parents": parents,
         "parent_donor_coverage": {name: int(covered)
                                   for name, (_m, covered)
