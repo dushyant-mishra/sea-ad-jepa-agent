@@ -190,6 +190,84 @@ def movement_report(before: dict, online: torch.nn.Module, names: list[str],
             "total": len(names)}
 
 
+GATE_BEARING_VARIANTS = ("successor", "gated_historical")
+
+
+def attribute_gate_stop(error: BaseException, online: torch.nn.Module,
+                        gate: Any, variant: str) -> dict[str, Any] | None:
+    """Decide whether `error` is the gate refusing, without reading its prose.
+
+    `run_update` raises RuntimeError for causes of its own, so the question is
+    not "did a RuntimeError happen" but "is this module state one the gate
+    rejects". That is answerable directly: the unscaled gradients are still on
+    the parameters when the exception unwinds, so the gate can simply be asked
+    again. Returns the adjudication when the gate objects, and None when it does
+    not -- in which case the caller must re-raise, because the failure was
+    something else wearing the same exception type.
+
+    Two failures are ruled out before the gate is consulted, because both would
+    otherwise be recorded as the gate working.
+
+    An out-of-memory error is never a gate stop. `torch.cuda.OutOfMemoryError`
+    subclasses RuntimeError, and at this geometry running out of memory is a
+    real documented failure of this path rather than a hypothetical, so an OOM
+    raised while the protected gradients happened to be dead would satisfy the
+    re-adjudication and be written down as adoption evidence.
+
+    A variant without the gate in its source cannot have been stopped by it. In
+    `historical` mode every protected gradient is dead by construction, so the
+    gate would object to the module state on every single run while no gate had
+    in fact been consulted.
+    """
+    if not isinstance(error, RuntimeError):
+        return None
+    oom = getattr(torch.cuda, "OutOfMemoryError", ())
+    if oom and isinstance(error, oom):
+        return None
+    if "out of memory" in str(error).lower():
+        return None
+    if variant not in GATE_BEARING_VARIANTS:
+        return None
+    registry = gate.validate_registry(online)
+    tensors = gate.gate_module(online) if registry["passed"] else None
+    if registry["passed"] and tensors["passed"]:
+        return None
+    return {
+        "registry": registry,
+        "tensors": tensors,
+        "error_type": type(error).__name__,
+        "error_message": str(error),
+    }
+
+
+def stop_state_evidence(before: dict, online: torch.nn.Module,
+                        optimizer: torch.optim.Optimizer,
+                        names: list[str]) -> dict[str, Any]:
+    """Evidence that the stop preceded every state change it was meant to stop.
+
+    Two things must be true for "the old failure cannot recur" to mean anything.
+    No protected tensor may have Adam moments, because moments exist only once
+    `optimizer.step` has run on that tensor. And every protected tensor must be
+    bit-identical to its pre-update value, compared exactly rather than within a
+    tolerance, since a stop that let a step land is not a stop.
+    """
+    parameters = dict(online.named_parameters())
+    with_moments = []
+    for name in names:
+        state = optimizer.state.get(parameters[name], {})
+        if "exp_avg" in state or "exp_avg_sq" in state:
+            with_moments.append(name)
+    moved = [name for name in names
+             if not torch.equal(parameters[name].detach().float(), before[name])]
+    return {
+        "protected_tensors": len(names),
+        "tensors_with_adam_moments": with_moments,
+        "tensors_moved": moved,
+        "no_optimizer_state_created": not with_moments,
+        "no_parameter_moved": not moved,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
@@ -205,7 +283,8 @@ def main() -> int:
     parser.add_argument("--autocast", choices=("fp16", "off", "bf16"), default="fp16")
     parser.add_argument("--variant",
                         choices=("historical", "backward_autocast_disabled",
-                                 "production_safe"),
+                                 "production_safe", "successor",
+                                 "gated_historical"),
                         default="historical")
     parser.add_argument("--attention-cast", choices=("historical", "after_projection", "projections_fp32", "branch_fp32"),
                         default="historical")
@@ -226,6 +305,7 @@ def main() -> int:
     from scripts.v4.c2_synthetic_loader_v3 import SyntheticTrainLoader, synthetic_cohort
     from scripts.v4.c2_attention_cast_variant_v3 import attention_cast_variant
     from scripts.v4.c2_corrective_run_update_v3 import build_variant, variant_diff
+    from scripts.v4 import c2_mandatory_gradient_gate_v1 as mandatory_gate
     from sea_ad_jepa.v4.ipb_jepa import KernelLinearAttention
 
     # Historical geometry is declared by the trainer, not the smoke module.
@@ -275,15 +355,47 @@ def main() -> int:
         torch.set_autocast_cache_enabled(not args.no_autocast_cache)
         if args.no_fp16_reduced_reduction:
             torch.backends.cuda.matmul.allow_fp16_reduced_precision_reduction = False
-        with autocast_override(args.autocast), attention_cast_variant(
-            KernelLinearAttention, args.attention_cast
-        ):
-            result = update_fn(
-                loader=loader, cohort=cohort, sampler=sampler, cursor=cursor,
-                seed=args.seed, microbatch=micro, effective_batch=batch,
-                device=device, online=online, target=target, predictor=predictor,
-                optimizer=optimizer, scaler=scaler, controller=controller,
+        try:
+            with autocast_override(args.autocast), attention_cast_variant(
+                KernelLinearAttention, args.attention_cast
+            ):
+                result = update_fn(
+                    loader=loader, cohort=cohort, sampler=sampler, cursor=cursor,
+                    seed=args.seed, microbatch=micro, effective_batch=batch,
+                    device=device, online=online, target=target, predictor=predictor,
+                    optimizer=optimizer, scaler=scaler, controller=controller,
+                )
+        except RuntimeError as error:
+            adjudication = attribute_gate_stop(
+                error, online, mandatory_gate, args.variant)
+            if adjudication is None:
+                raise
+            evidence = stop_state_evidence(
+                before_state, online, optimizer, mandatory)
+            updates.append({
+                "cursor": cursor,
+                "gate_stopped": True,
+                "gate_adjudication": adjudication,
+                "stop_state_evidence": evidence,
+                "criteria": {
+                    "gate_stopped_the_update": True,
+                    "stop_preceded_optimizer_state":
+                        evidence["no_optimizer_state_created"],
+                    "stop_preceded_parameter_movement":
+                        evidence["no_parameter_moved"],
+                    "ALL_CRITERIA_MET": evidence["no_optimizer_state_created"]
+                    and evidence["no_parameter_moved"],
+                },
+            })
+            rejected = (adjudication["tensors"] or {}).get("rejected_count")
+            print(
+                "u%03d GATE STOPPED the update  rejected=%s/48  "
+                "adam-moments-created=%d  params-moved=%d"
+                % (cursor, rejected, len(evidence["tensors_with_adam_moments"]),
+                   len(evidence["tensors_moved"])),
+                flush=True,
             )
+            break
         grads = gradient_report(online, mandatory)
         live_grads = gradient_report(online, live)
         moments = moment_report(optimizer, online, mandatory)
