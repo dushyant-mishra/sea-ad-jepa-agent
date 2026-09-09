@@ -167,8 +167,15 @@ def test_a_duplicate_candidate_donor_stops() -> None:
 # ---------------------------------------------------------------------------
 
 @pytest.mark.parametrize("bad", [1, 0, "yes", "true", "TRUE", "", None, 1.0,
-                                 0.0, [], "1"])
+                                 0.0, [], "1", "True", "False"])
 def test_a_non_boolean_flag_stops(bad) -> None:
+    """The strings True and False are refused here, though the loader parses them.
+
+    CSV has no booleans, so the loader has to parse the textual form back. A
+    derivation gets no such latitude: a parent handing over the string "True"
+    has not been validated as boolean by anything, and accepting it would let an
+    unparsed CSV column decide eligibility.
+    """
     inputs = _lawful()
     target = inputs["candidate_donors"][3]
     inputs["at8_available"] = dict(inputs["at8_available"])
@@ -785,3 +792,50 @@ def test_a_metadata_binding_rule_naming_the_wrong_path_is_refused(
             expected_parent_contract_root_sha256=summary[
                 "parent_contract_root_sha256"])
     assert eld.STOP_ROLE_RULE in str(excinfo.value)
+
+
+def test_the_textual_boolean_is_accepted_on_reload_but_not_on_derivation(
+        tmp_path) -> None:
+    """The two directions differ deliberately, so both are pinned."""
+    donors = _universe(40)
+    text_flags = {d: "True" for d in donors}
+    with pytest.raises(AssertionError) as excinfo:
+        eld.derive_eligible_donors(
+            candidate_donors=donors, at8_available=text_flags,
+            technical_complete=text_flags, age_present=text_flags,
+            sex_present=text_flags)
+    assert eld.STOP_NOT_BOOLEAN in str(excinfo.value)
+
+    # The same spelling round-trips through a written package, because that is
+    # how a boolean survives a CSV.
+    rows, summary = _build(tmp_path)
+    assert "True" in (tmp_path / "pkg" / eld.REGISTRY).read_text(
+        encoding="utf-8")
+    replayed = eld.load_authority(
+        tmp_path / "pkg",
+        expected_package_root_sha256=summary["package_root_sha256"],
+        expected_eligible_donor_root_sha256=summary[
+            "eligible_donor_root_sha256"],
+        expected_donor_role_root_sha256=summary["donor_role_root_sha256"],
+        expected_parent_contract_root_sha256=summary[
+            "parent_contract_root_sha256"])
+    assert all(r["at8_available"] is True for r in replayed["rows"])
+
+
+def test_a_package_naming_no_parent_authorities_is_refused(tmp_path) -> None:
+    rows, summary = _build(tmp_path)
+    path = tmp_path / "pkg" / eld.METADATA
+    meta = json.loads(path.read_text(encoding="utf-8"))
+    meta["parents"] = {}
+    path.write_text(json.dumps(meta, sort_keys=True, indent=2) + "\n",
+                    encoding="utf-8")
+    with pytest.raises(AssertionError) as excinfo:
+        eld.load_authority(
+            tmp_path / "pkg",
+            expected_package_root_sha256=_restamp(tmp_path / "pkg"),
+            expected_eligible_donor_root_sha256=summary[
+                "eligible_donor_root_sha256"],
+            expected_donor_role_root_sha256=summary["donor_role_root_sha256"],
+            expected_parent_contract_root_sha256=summary[
+                "parent_contract_root_sha256"])
+    assert eld.STOP_PARENT_IDENTITY in str(excinfo.value)

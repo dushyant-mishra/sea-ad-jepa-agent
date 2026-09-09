@@ -139,11 +139,19 @@ def assert_role_rule_unaltered() -> bool:
     return True
 
 
-def _boolean(value: Any, *, what: str) -> bool:
-    """Accept only a real boolean, or its exact textual form on reload."""
+def _boolean(value: Any, *, what: str, allow_text: bool = False) -> bool:
+    """Accept a real boolean; accept its exact textual form only on reload.
+
+    The textual form exists because CSV has no booleans, so the loader has to
+    parse one back. A derivation must not enjoy that latitude: a parent authority
+    handing over the string "True" has not been validated as boolean by anything,
+    and accepting it here would let an unparsed CSV column decide eligibility.
+    So `allow_text` is opened by the loader alone.
+    """
     if isinstance(value, bool):
         return value
-    if isinstance(value, str) and value.strip() in ("True", "False"):
+    if allow_text and isinstance(value, str) and value.strip() in ("True",
+                                                                   "False"):
         return value.strip() == "True"
     raise AssertionError("%s: %s is %r" % (STOP_NOT_BOOLEAN, what, value))
 
@@ -462,12 +470,16 @@ def load_authority(
         row = {
             "donor_id": str(record["donor_id"]),
             "at8_available": _boolean(record["at8_available"],
-                                      what="at8_available"),
+                                      what="at8_available", allow_text=True),
             "technical_complete": _boolean(record["technical_complete"],
-                                           what="technical_complete"),
-            "age_present": _boolean(record["age_present"], what="age_present"),
-            "sex_present": _boolean(record["sex_present"], what="sex_present"),
-            "eligible": _boolean(record["eligible"], what="eligible"),
+                                           what="technical_complete",
+                                           allow_text=True),
+            "age_present": _boolean(record["age_present"], what="age_present",
+                                    allow_text=True),
+            "sex_present": _boolean(record["sex_present"], what="sex_present",
+                                    allow_text=True),
+            "eligible": _boolean(record["eligible"], what="eligible",
+                                 allow_text=True),
             "split_hash": str(record["split_hash"]),
             "donor_role": str(record["donor_role"]),
         }
@@ -519,6 +531,9 @@ def load_authority(
         raise AssertionError("%s: metadata records role root %r, recomputed %s"
                              % (STOP_ROOT_MISMATCH,
                                 meta.get("donor_role_root_sha256"), role_root))
+    if not isinstance(meta.get("parents"), dict) or not meta["parents"]:
+        raise AssertionError("%s: the package names no parent authorities"
+                             % STOP_PARENT_IDENTITY)
     recomputed_parent = parent_contract_root(meta["parents"])
     if str(meta.get("parent_contract_root_sha256")) != recomputed_parent:
         raise AssertionError(
@@ -568,7 +583,8 @@ def load_authority(
         for field, value in record.items():
             if field in ("donor_id", "split_hash", "donor_role"):
                 continue
-            _boolean(value, what="%s for %s" % (field, record["donor_id"]))
+            _boolean(value, what="%s for %s" % (field, record["donor_id"]),
+                     allow_text=True)
 
     return {"rows": tuple(rows), "metadata": meta,
             "eligible_donor_root_sha256": root,
