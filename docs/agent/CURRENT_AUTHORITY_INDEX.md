@@ -14,7 +14,7 @@ Branch names do not confer authority.
 
 | Lane | Current source/reference head | Current status |
 |---|---|---|
-| T0 V20 implementation | `24b2c9ffc0ab2d63061c20af8829bcb86114b11a` plus active T0 work branch | science accepted; implementation/execution authority controlled by current T0 branch-specific review, not V5 |
+| T0 V20 Stage 3 | `e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9` on the active T0 branch | Stage 3 terminal observed; broad immune-expression primary `SUPPORTED_INTERNAL`; rare tail measurement-underdetermined; exact Stage 3 evidence-byte review still pending; no downstream execution authority |
 | Teacher/Student V5 data-first | `028989a5f1504e4d6403a44e7c90d37172c54150` | current prospective successor; data-first schedule/root history retained; **not yet cheat-qualified**; no training authority |
 | Target Discovery | `26c3cfaba77bb8e5935e76473ab1fd5f90a562bf` | relational-objective qualification; TD60 waiting |
 | F1 real producer/replay | `a884f558970479278bc21f3f2274dc24bee89758` | prefreeze; real sweep unauthorized |
@@ -75,11 +75,37 @@ A teacher/student checkpoint is not biologically qualified because loss decrease
 It is biologically qualified only if mechanics health is proven and the checkpoint survives mask-only, support-only, depth-only, donor-holdout, matrix-holdout, study-holdout, technology-holdout, proposal-weighting, collapse, and hardware-invariance attacks.
 ```
 
+## 2026-09-09 T0 V20 Stage 3 result
+
+Controlling review:
+
+- `docs/agent/T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md`
+
+Observed terminal commit:
+
+`e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9`
+
+Recorded primary:
+
+`BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL`
+
+with permutation `p_upper = 0.021` against frozen `alpha = 0.025`, `t = 1.9078694125102356`, `n = 18` confirmation donors.
+
+Recorded rare-tail terminal:
+
+`RARE_TAIL_UNDERDETERMINED_MEASUREMENT`
+
+The pathology-blind QC gate vetoed the tail before any tail disease statistic was run; this is neither a positive nor negative tail result.
+
+Two review caveats remain explicit. First, the initial Stage 3 process read confirmation AT8 into memory and then stopped on a role-tag donor-set digest mismatch; the subsequent repair at `f98c1f8...` was provenance-only and does not appear outcome-responsive, but it is a post-access code repair and remains disclosed. Second, the terminal commit records Stage 3 artifact hashes but does not commit those evidence bytes, and the frozen adjudicator return omits the state-composition/state-measurement sensitivity fields on the QC-veto path. Full exact-byte independent review therefore remains pending.
+
+Authority effect: the internal T0 primary result is recorded, but V5 training, successor-u0, TD60, D1 real execution, DEV/SEALED, reader_validation/oracle, protected populations and biological sweeps remain closed.
+
 ## P0 — T0
 
-Accepted scientific specification remains V18/V20. T0 execution authority is controlled by the active T0 lane and its newer branch-specific review artifacts. V5/anti-cheat findings here do not authorize or block the already separated T0 path.
+Accepted scientific specification remains V18/V20. Stage 3 has now produced the internally supported broad immune-expression terminal recorded above. The rare tail remains measurement-underdetermined. Exact Stage 3 evidence-byte review is still pending, and no downstream execution authority follows automatically from the primary support result.
 
-Protected populations/pathology remain closed except through explicit staged T0 release authority.
+Protected populations/pathology remain closed except through explicit lane-specific release authority.
 
 ## P0 — Teacher/Student V5
 
