@@ -48,6 +48,7 @@ jobs:
           tests/test_v5_parameter_provenance_classification_v1.py
           tests/test_v5_ema_exposure_and_query_precision_v1.py
           tests/test_v5_repeat_cap_conditioning_pareto_v1.py
+          tests/test_v5_affine_order_update_conditioning_v1.py
       - name: Compile candidate sources
         run: >
           python -m py_compile
@@ -70,3 +71,4 @@ jobs:
           scripts/v5_anticheat/derive_actual_presentation_exposure_geometry_v2.py
           scripts/v5_anticheat/derive_singleton_query_floor_v3.py
           scripts/v5_anticheat/derive_repeat_cap_conditioning_pareto_v1.py
+          scripts/v5_anticheat/audit_affine_order_update_conditioning_v1.py
