@@ -1,0 +1,93 @@
+{
+  "base_main_at_design_start": "cc8a21bc3c043343c85624651124d2c40bcbd4e4",
+  "candidate_branch_parent_at_packaging": "cc8a21bc3c043343c85624651124d2c40bcbd4e4",
+  "candidate_mechanics": {
+    "dataset_derivation": "84-row operator×family geometry is regenerated only from exact hashed observation-state NPZ + exact all-42 common-core CSV + exact support-by-operator CSV; derivation script is package-bound",
+    "initial_end_to_end_runtime": "src/sea_ad_jepa/v5/inactive_dataset_teacher_update_v1.py; bounded mechanics only, base JEPA only, two support-family students, one full-support teacher, exact cell/family weighting, AdamW, presentation-based EMA and exposure checkpoint cursor",
+    "mask_reference_identity": "SHA256(masking_seed, base_presentation_index, stable cell key, draw index, family, canonical address); optimizer update/tensor row/device/microbatch/PyTorch RNG stream excluded",
+    "microbatch_key": "operator_index only; each frozen base cell appears once and the full-support teacher may be cached across both family student views",
+    "production_mask_kernel": "UNQUALIFIED__SEPARATE_IMPLEMENTATION_VERIFIER_AND_HARDWARE_PROOF_REQUIRED",
+    "relational_sampling": "direct atomic target draw = selected eligible anchor plus one uniform same-operator comparator pair",
+    "schedule_schema": "ProductionTeacherScheduleAuthorityV4 has no defaults and firewalls all relational activation; RelationalExtensionScheduleAuthorityV1 is separate and downstream of learned-teacher qualification",
+    "target_query_chunking": "compute-only after target identities are frozen",
+    "target_query_sampling": "uniform without replacement from the complete already-hidden family half; unqueried targets stay hidden"
+  },
+  "candidate_science": {
+    "evidence_policy_id": "SUPPORT_FAMILY_BALANCED_PRESENTATION_KEYED_HALF_MASK_V3",
+    "evidence_view_schedule_policy_id": "STRATIFIED_BOTH_SUPPORT_FAMILIES_ONCE_PER_BASE_PRESENTATION_V1",
+    "initial_teacher_relational_training_active": false,
+    "masked_family_views_per_base_presentation": 2,
+    "operator_role": "support/admissibility and compute geometry only; never equal biological mass",
+    "relational_extension": "FUTURE_ONLY_AFTER_LAWFUL_LEARNED_TEACHER__TD60_PASS__PARTIAL_EVIDENCE_RELATIONAL_PREDICTABILITY_PASS__SEPARATE_INTEGRATION_REVIEW",
+    "support_family_rule": "both dataset-defined families are evaluated once; family loss mass follows measured-address prevalence, never equal family mass",
+    "target_block_policy_id": "HIDDEN_SET_PRESERVING_SINGLETON_TARGET_QUERY_V3",
+    "teacher_view": "full operator measured-scalar support for both evidence families"
+  },
+  "candidate_values_requiring_independent_scientific_review": {
+    "balanced_half_mask_within_family": "floor(family_support/2) targets",
+    "presentation_identity_keyed_evidence_rng": "base presentation identity, never optimizer-update identity",
+    "singleton_gene_resolved_target_blocks": 1,
+    "stratified_both_families_once_per_base_presentation": 2,
+    "support_family_definition": "COMMON_CORE + OPERATOR_NATIVE"
+  },
+  "dataset_bindings": {
+    "common_core_csv_sha256": "8aa8dfebb481aa2e60b12ab0f581ba1a36063b6c12dc2d8514d5fe7a20ad07ac",
+    "common_measured_core": 17186,
+    "donor_operator_groups": 1400,
+    "donors": 104,
+    "foundation_metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "gate1_decoded_donor_operator_counts_csv_sha256": "e79c03765b8c88a8755d37313b76fd384d8a3f1221c2ee79af0a2b7af0a86d28",
+    "operator_address_state_npz_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "operator_family_derivation_script_sha256": "6e6643214916ca655c38254d50d9d666c7a0bedbb3bdc51ea428324ba7e345df",
+    "operator_family_geometry_sha256": "f889304d2c073f1ec9270a66e53aefd04d170b55cb753dfdd867f2c4fb53e680",
+    "operators": 42,
+    "reader_fit_cells": 4553407,
+    "support_by_operator_csv_sha256": "1814a22c8ae01ee94a6fe132546a029af01a7d762384d53c152f37cb545787c1"
+  },
+  "execution_authorized": false,
+  "exposure_clock_candidate": {
+    "both_family_views_count_as_one_presentation": true,
+    "ema_momentum": "2^(-presentations_this_update / half_life_presentations)",
+    "final_checkpoint_milestone": "FINAL_ONE_READER_FIT_POPULATION_EQUIVALENT_EMA_TEACHER_V1",
+    "historical_u40_u205_biological_clock": false,
+    "numeric_half_life_frozen": false,
+    "policy": "successful selected base-cell presentations"
+  },
+  "frozen_existing_authorities": {
+    "base_proposal": "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3",
+    "base_scientific_target": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "presentation_horizon": 4553407,
+    "relational_proposal": "DIRECT_DONOR_ANCHOR_CELL_TRIPLET_TARGET_PROPOSAL_V2",
+    "relational_scientific_target": "DONOR_UNIFORM__ELIGIBLE_ANCHOR_CELL_UNIFORM__SAME_OPERATOR_COMPARATOR_PAIR_UNIFORM_V2"
+  },
+  "frozen_v5_prototype_root": "9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad",
+  "future_relational_extension": {
+    "analysis": "docs/agent/TEACHER_STUDENT_V5_RELATIONAL_FINITE_SAMPLING_ANALYSIS_V3.json",
+    "initial_teacher_dependency": false,
+    "training_active": false
+  },
+  "implementation_verifier_required": true,
+  "implementation_verifier_terminal": null,
+  "implementation_verifier_veto": true,
+  "schema": "TEACHER_STUDENT_V5_DATASET_FIRST_SCHEDULE_CANDIDATE_V3",
+  "self_checks": {
+    "compile": "PASS",
+    "frozen_v4_v5_regression": "164/164 PASS",
+    "new_candidate_tests": "39/39 PASS",
+    "operator_family_geometry_rederivation": "PASS exact SHA f889304d2c073f1ec9270a66e53aefd04d170b55cb753dfdd867f2c4fb53e680",
+    "v5_frozen_governance_audit": "PASS"
+  },
+  "status": "INITIAL_BASE_TEACHER_DATASET_SCHEDULE_IMPLEMENTED_FOR_BOUNDED_MECHANICS__AWAITING_INDEPENDENT_SCIENTIFIC_AND_IMPLEMENTATION_VERIFICATION__NO_EXECUTION_AUTHORITY",
+  "successor_u0_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "unresolved_before_freeze": {
+    "biological_checkpoint_milestone": "CANDIDATE_FINAL_HORIZON_MILESTONE_DEFINED__INDEPENDENT_REVIEW_PENDING",
+    "effective_base_cells_per_update": "HARDWARE_CALIBRATION_REQUIRED",
+    "ema_half_life_presentations": "UNFROZEN__coverage diagnostic exists; criterion still requires prospective review",
+    "initial_teacher_relational_loss": "NOT_APPLICABLE__FIREWALLED_FUTURE_EXTENSION",
+    "max_teacher_tokens_per_microbatch": "HARDWARE_CALIBRATION_REQUIRED",
+    "singleton_target_queries_per_family_view": "UNFROZEN__variance/compute calibration required",
+    "target_query_chunk_size": "HARDWARE_CALIBRATION_REQUIRED_AFTER_QUERY_IDENTITIES_ARE_FROZEN"
+  }
+}
