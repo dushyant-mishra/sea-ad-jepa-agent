@@ -1,0 +1,64 @@
+{
+  "artifact_kind": "PATHOLOGY_BLIND_READER_FIT_INPUT_SHORTCUT_ATLAS",
+  "calibration_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "cheat_qualified": false,
+  "checkpoint_gates_status": "BLOCKED_PENDING_FUTURE_Z_BIO_AND_TRAINER_EVIDENCE",
+  "expression_archive_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+  "expression_member_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+  "geometry": {
+    "addresses": 41238,
+    "donors": 104,
+    "mask_signatures": 9,
+    "nnz": 246702069,
+    "operators": 42,
+    "rows": 50000,
+    "sources": 3,
+    "support_count_signatures": 9
+  },
+  "input_shortcut_findings": {
+    "depth_only_operator_chance": 0.023809523809523808,
+    "depth_only_operator_max_descriptive_balanced_accuracy": 0.07580090446533372,
+    "depth_only_source_chance": 0.3333333333333333,
+    "depth_only_source_max_descriptive_balanced_accuracy": 0.4748610435364231,
+    "mask_only_operator_chance": 0.023809523809523808,
+    "mask_only_operator_donor_holdout_balanced_accuracy": 0.21428571428571427,
+    "mask_only_source_chance": 0.3333333333333333,
+    "mask_only_source_donor_holdout_balanced_accuracy": 1.0,
+    "mask_to_source_weighted_purity": 1.0,
+    "support_only_operator_donor_holdout_balanced_accuracy": 0.21428571428571427,
+    "support_only_source_donor_holdout_balanced_accuracy": 1.0,
+    "support_to_source_weighted_purity": 1.0
+  },
+  "interpretation": "Strong input-side support/mask/depth predictability proves shortcut channels exist. It is not a z_bio failure because no model embedding is evaluated by this input-only atlas.",
+  "metadata_freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+  "metadata_zip_sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+  "optimizer_executed": false,
+  "protected_or_confirmation_data_opened": false,
+  "schema": "TEACHER_STUDENT_V5_REAL_READERFIT_SHORTCUT_ATLAS_SUMMARY_V1",
+  "terminal": "V5_NOT_CHEAT_QUALIFIED__CHECKPOINT_GATES_PENDING",
+  "training_authorized": false,
+  "transfer_split_status": {
+    "donor": {
+      "fold_count": 5,
+      "levels": 104,
+      "mode": "deterministic_hash_group_fold",
+      "status": "PASS"
+    },
+    "matrix": {
+      "fold_count": 5,
+      "levels": 42,
+      "mode": "deterministic_hash_group_fold",
+      "status": "PASS"
+    },
+    "source_or_study": {
+      "fold_count": 3,
+      "levels": 3,
+      "mode": "leave_one_entity_out",
+      "status": "PASS"
+    },
+    "technology": {
+      "reason": "no independently declared technology column exists in the supplied pathology-blind 50k freeze; source is not silently relabeled as technology",
+      "status": "NOT_ESTIMABLE"
+    }
+  }
+}
