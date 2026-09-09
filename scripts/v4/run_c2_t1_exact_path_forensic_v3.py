@@ -355,6 +355,8 @@ def main() -> int:
         torch.set_autocast_cache_enabled(not args.no_autocast_cache)
         if args.no_fp16_reduced_reduction:
             torch.backends.cuda.matmul.allow_fp16_reduced_precision_reduction = False
+        if device.type == "cuda":
+            torch.cuda.reset_peak_memory_stats(device)
         try:
             with autocast_override(args.autocast), attention_cast_variant(
                 KernelLinearAttention, args.attention_cast
@@ -396,6 +398,14 @@ def main() -> int:
                 flush=True,
             )
             break
+        peak = {
+            "peak_cuda_allocated_bytes":
+                int(torch.cuda.max_memory_allocated(device))
+                if device.type == "cuda" else None,
+            "peak_cuda_reserved_bytes":
+                int(torch.cuda.max_memory_reserved(device))
+                if device.type == "cuda" else None,
+        }
         grads = gradient_report(online, mandatory)
         live_grads = gradient_report(online, live)
         moments = moment_report(optimizer, online, mandatory)
@@ -419,6 +429,7 @@ def main() -> int:
         updates.append({
             "criteria": criteria,
             "movement": move,
+            **peak,
             "cursor": cursor,
             "loss": result["loss"],
             "step_succeeded": result["step_succeeded"],
@@ -429,11 +440,12 @@ def main() -> int:
             "mandatory_moments": moments,
             "live_reference_moments": live_moments,
         })
+        gib = (peak["peak_cuda_reserved_bytes"] or 0) / (1024 ** 3)
         print(
             "u%03d loss=%.4f  dead=%d/48  zero-moments=%d/48  live_ref dead=%d/12  "
-            "move>decay=%d/48  ALL_CRITERIA=%s"
+            "move>decay=%d/48  peak_reserved=%.2fGiB  ALL_CRITERIA=%s"
             % (cursor, result["loss"], grads["dead_count"], moments["zero_both_moments"],
-               live_grads["dead_count"], move["n_exceeding"],
+               live_grads["dead_count"], move["n_exceeding"], gib,
                criteria["ALL_CRITERIA_MET"]),
             flush=True,
         )

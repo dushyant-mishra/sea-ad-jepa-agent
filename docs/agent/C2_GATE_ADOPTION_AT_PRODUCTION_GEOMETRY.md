@@ -169,3 +169,50 @@ gated step    : run_update_successor
 No training was started. `TRAINING_AUTHORIZED` remains false, and the production
 memory behaviour of this entrypoint against the real loader is the next item,
 not something established here.
+
+## Production 128×8 memory: the premise checked
+
+The next item was to fix the production 128×8 OOM path before teacher training.
+Checking it before building a fix, the OOM does not belong to the production
+path.
+
+**The real T1 run did not run out of memory.** It completed all 205 updates at
+128×8 and recorded both peak counters every update. Worst case across the whole
+run: **5.54 GiB allocated, 5.75 GiB reserved**, on a 16 GiB RTX 3080 Laptop —
+about 10.25 GiB of headroom. The two recorded T1 run failures were a frozen
+address-reader identity mismatch and a pandas attribute error. Neither was a
+memory failure, and no artifact in either root records an out-of-memory event.
+
+**The OOM is a property of one superseded corrective variant.**
+`production_safe` accumulates every scaled loss and drains the backwards after
+the autocast block, holding 64 live graphs at 128/8. It is marked
+`SUPERSEDED_DO_NOT_RUN` and has never been executed. It is not the production
+path and is not what training would use — the minimal `backward_autocast_disabled`
+correction supersedes it, and that is what the successor step is built from.
+
+**The corrected path costs nothing at production shape.** The forensic runner now
+records peak memory the same way the teacher script does — reset the counters
+immediately before the update, read both peaks immediately after — so the
+numbers are directly comparable. At exact 128×8 geometry:
+
+| variant | peak allocated | peak reserved |
+| --- | --- | --- |
+| `historical` | 5.4186 GiB | 5.7031 GiB |
+| `successor` (gated, corrected) | 5.4186 GiB | 5.7031 GiB |
+| real T1 run, worst of 205 updates | 5.54 GiB | 5.75 GiB |
+
+Identical to four decimal places. Wrapping the backward in
+`autocast(enabled=False)` and enforcing the gate changes peak memory not at all,
+and the harness reproduces the real run's memory to within 0.05 GiB, which is
+also a check on the harness rather than only on the correction.
+
+So there is no OOM to fix, and the condition the item existed to protect — the
+corrected path actually running at production shape — is met.
+
+**What is still not proven.** These runs use the synthetic loader. The real T1
+peaks quoted above do include the real loader and they match, so the model step
+is covered, but the *gated entrypoint* has never executed against the real
+loader. Doing that needs one update written to an isolated output directory:
+`RUN` is hardcoded to `exports/prod41k_teacher_t1_20260823/t1_run`, and a run
+there would overwrite preserved T1 records. That is not something to do without
+authorization, and it is not done here.
