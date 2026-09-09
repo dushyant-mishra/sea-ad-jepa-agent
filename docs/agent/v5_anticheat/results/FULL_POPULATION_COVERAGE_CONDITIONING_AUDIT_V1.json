@@ -1,0 +1,88 @@
+{
+  "all_cells_guaranteed_at_least_once": true,
+  "constraints": {
+    "max_presentations_per_cell": 32,
+    "maximum_importance_weight_max_to_min_ratio": 64.0,
+    "minimum_group_presentations": 16,
+    "minimum_importance_ess_fraction": 0.5
+  },
+  "coverage_plus_group_topup_only": {
+    "extra_presentations": 1811,
+    "group_topup_presentations": 1811,
+    "importance_ess_fraction": 0.09689111347244539,
+    "importance_weight_max_to_min_ratio": 2149.5185185185187,
+    "max_cell_multiplicity": 16,
+    "minimum_group_presentations": 16,
+    "population_equivalents": 1.0003977241656632,
+    "source_presentation_fraction": {
+      "HVS": 0.04402182288531526,
+      "NPH52": 0.05191321249608691,
+      "SEA_AD": 0.9040649646185979
+    },
+    "source_presentations": {
+      "HVS": 200529,
+      "NPH52": 236476,
+      "SEA_AD": 4118213
+    },
+    "total_presentations": 4555218
+  },
+  "donor_multiplicity_histogram": {
+    "1": 53,
+    "10": 1,
+    "12": 1,
+    "2": 11,
+    "3": 7,
+    "32": 1,
+    "4": 10,
+    "5": 11,
+    "6": 6,
+    "7": 3
+  },
+  "donor_size_extrema": {
+    "maximum": 174111,
+    "minimum": 81,
+    "target_per_cell_probability_ratio": 2149.5185185185187
+  },
+  "donors": 104,
+  "full_coverage_feasibility": {
+    "importance_weight_ratio_lower_bound_under_cell_cap": 67.17245370370371,
+    "minimum_integer_cell_cap_for_requested_ratio_ceiling": 34,
+    "requested_ratio_ceiling_is_feasible_under_full_coverage_and_cell_cap": false,
+    "requested_weight_ratio_ceiling": 64.0
+  },
+  "greedy_donor_balanced_full_coverage_candidate": {
+    "extra_presentations": 717751,
+    "group_topup_presentations": 410,
+    "importance_ess_fraction": 0.5009275089162246,
+    "importance_weight_max_to_min_ratio": 67.17245370370371,
+    "max_cell_multiplicity": 32,
+    "minimum_group_presentations": 16,
+    "population_equivalents": 1.1576294409878143,
+    "source_presentation_fraction": {
+      "HVS": 0.1542348000192747,
+      "NPH52": 0.060348409211031045,
+      "SEA_AD": 0.7854167907696943
+    },
+    "source_presentations": {
+      "HVS": 812996,
+      "NPH52": 318106,
+      "SEA_AD": 4140056
+    },
+    "total_presentations": 5271158
+  },
+  "greedy_steps": 198,
+  "groups": 1400,
+  "interpretation": [
+    "A population-equivalent with-replacement horizon is not proof of unique-cell coverage.",
+    "Coverage plus rare-group top-up alone preserves target mass but fails the requested ESS conditioning floor.",
+    "Any weight-ratio ceiling below the reported mathematical lower bound is incompatible with both guaranteed full coverage and the supplied cell cap.",
+    "The greedy donor-balanced schedule is a deterministic dataset-only calibration candidate, not a proof of global optimality and not execution authority."
+  ],
+  "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+  "partition": "reader_fit",
+  "population_cells": 4553407,
+  "schema": "JEPA_V5_FULL_POPULATION_COVERAGE_CONDITIONING_AUDIT_V1",
+  "sources": 3,
+  "status": "DATASET_GEOMETRY_AUDIT__NO_TRAINING_AUTHORITY",
+  "training_authorized": false
+}
