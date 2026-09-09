@@ -191,7 +191,14 @@ def load_at8_availability(
                     expected_availability_root_sha256)},
             "numeric_at8_value_parsed": False,
             "membership_donor_set_sha256": meta.get(
-                "membership_donor_set_sha256")}
+                "membership_donor_set_sha256"),
+            # The endpoint identity, surfaced from the verified parent so a
+            # consumer need not hand-write it. The availability authority
+            # recorded which column it tested for missingness without ever
+            # parsing a magnitude from it.
+            "at8_endpoint_identity": meta.get("at8_field"),
+            "donor_id_field": meta.get("donor_id_field"),
+            "metadata": meta}
 
 
 def load_technical_completeness(pkgdir: Path) -> dict:
