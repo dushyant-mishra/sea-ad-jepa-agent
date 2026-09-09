@@ -395,6 +395,68 @@ def stage_c_tail_designs(
     }
 
 
+
+def _fixture_key_by_donor(donor_ids: Sequence[str], values: Sequence[Any], *,
+                          what: str) -> dict[str, Any]:
+    """Fixture-only bridge for legacy positional tests."""
+    if len(values) != len(donor_ids):
+        raise AssertionError(
+            "%s: %s has %d values for %d donors"
+            % (STOP_INPUT_SHAPE, what, len(values), len(donor_ids)))
+    return {str(donor): value for donor, value in zip(donor_ids, values)}
+
+
+def _stage_b_state_designs_positional_fixture(
+        *,
+        confirmation: Mapping[str, Sequence[Any]],
+        state_score: Sequence[Any],
+        immune_fraction: Sequence[Any],
+        q_depth: Sequence[Any],
+        q_detect: Sequence[Any],
+        response: Any = None,
+) -> dict[str, Any]:
+    """Fixture-only adapter; production stage_b_state_designs forbids arrays."""
+    donor_ids = _donor_ids(confirmation, what="CONFIRMATION")
+    return stage_b_state_designs(
+        confirmation=confirmation,
+        state_score=_fixture_key_by_donor(
+            donor_ids, state_score, what="STATE_SCORE"),
+        immune_fraction=_fixture_key_by_donor(
+            donor_ids, immune_fraction, what="IMMUNE_FRACTION"),
+        q_depth=_fixture_key_by_donor(donor_ids, q_depth, what="Q_DEPTH"),
+        q_detect=_fixture_key_by_donor(donor_ids, q_detect, what="Q_DETECT"),
+        response=response,
+    )
+
+
+def _stage_c_tail_designs_positional_fixture(
+        *,
+        tail_donors: Mapping[str, Sequence[Any]],
+        state_score: Sequence[Any],
+        tail_prevalence: Sequence[Any],
+        immune_fraction: Sequence[Any],
+        q_depth: Sequence[Any],
+        q_detect: Sequence[Any],
+        response: Any = None,
+) -> dict[str, Any]:
+    """Fixture-only adapter; production stage_c_tail_designs forbids arrays."""
+    donor_ids = _donor_ids(tail_donors, what="TAIL")
+    return stage_c_tail_designs(
+        tail_donors=tail_donors,
+        state_score=_fixture_key_by_donor(
+            donor_ids, state_score, what="tail STATE_SCORE"),
+        tail_prevalence=_fixture_key_by_donor(
+            donor_ids, tail_prevalence, what="TAIL_PREVALENCE"),
+        immune_fraction=_fixture_key_by_donor(
+            donor_ids, immune_fraction, what="tail IMMUNE_FRACTION"),
+        q_depth=_fixture_key_by_donor(
+            donor_ids, q_depth, what="tail Q_DEPTH"),
+        q_detect=_fixture_key_by_donor(
+            donor_ids, q_detect, what="tail Q_DETECT"),
+        response=response,
+    )
+
+
 def preflight_root(results: Sequence[Mapping[str, Any]]) -> str:
     """Digest stages, ranks, donor order and exact design identities."""
     parts = [_typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
