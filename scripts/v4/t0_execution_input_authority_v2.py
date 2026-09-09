@@ -38,6 +38,14 @@ globals. Every line except the substituted one is byte-identical, and
 rather than trusting a claim. This is the method the C2 lane used to attribute
 the T1 gradient defect to a single line.
 
+The two builders are derived the same way, with one further substitution each:
+`'real_execution_ready':False` becomes `'real_execution_ready':_r8_derived_readiness()`.
+That call refuses unless a derivation has been recorded through
+`record_readiness_derivation`, whose value must come from R7's `derive_readiness`.
+So readiness remains derived rather than assigned, and there is no parameter
+through which a caller could simply assert True. Eight changed lines in total,
+every one touching `real_execution_ready`.
+
 The two `verify_*` functions are copied into that same namespace **verbatim**,
 with no substitution, and a guard refuses to copy them if they contain the
 readiness condition. Because they live in the namespace holding the derived
@@ -99,7 +107,60 @@ STOP_SUBSTITUTION = "STOP_T0_R8_READINESS_SUBSTITUTION_DID_NOT_APPLY_EXACTLY"
 _ORIGINAL = "obj.get('real_execution_ready') is not False"
 _REPAIRED = "not isinstance(obj.get('real_execution_ready'), bool)"
 
+# The builders hardcode False. Stage 3 needs True, and the adjudicator gates on
+# True, so the builders must be derived too. The substituted value is a call, not
+# a literal, and the call refuses unless a derivation has been recorded -- so
+# readiness stays derived and there is no parameter through which a caller could
+# simply assert it.
+_BUILDER_ORIGINAL = "'real_execution_ready':False}"
+_BUILDER_REPAIRED = "'real_execution_ready':_r8_derived_readiness()}"
+
+STOP_READINESS_NOT_DERIVED = (
+    "STOP_T0_R8_BUILDER_CALLED_WITHOUT_A_RECORDED_READINESS_DERIVATION")
+
 _DERIVED: dict[str, Any] = {}
+_READINESS: dict[str, Any] = {}
+
+
+def record_readiness_derivation(*, value: bool, derivation: str,
+                                evidence: dict[str, Any]) -> None:
+    """Record a derived readiness value for the derived builders to emit.
+
+    `value` must come from R7's `derive_readiness`, not from a caller's opinion.
+    `derivation` and `evidence` are stored so the emitted package can be traced
+    back to what established it.
+    """
+    if not isinstance(value, bool):
+        raise AssertionError("%s: readiness must be a bool, got %r"
+                             % (STOP_READINESS_NOT_DERIVED, value))
+    if not isinstance(derivation, str) or not derivation.strip():
+        raise AssertionError("%s: a derivation marker is required"
+                             % STOP_READINESS_NOT_DERIVED)
+    _READINESS.clear()
+    _READINESS.update({"value": value, "derivation": derivation,
+                       "evidence": dict(evidence)})
+
+
+def clear_readiness_derivation() -> None:
+    _READINESS.clear()
+
+
+def readiness_derivation() -> dict[str, Any]:
+    if not _READINESS:
+        raise AssertionError("%s: no derivation recorded"
+                             % STOP_READINESS_NOT_DERIVED)
+    return dict(_READINESS)
+
+
+def _r8_derived_readiness() -> bool:
+    """Injected into the derivation namespace as the substituted value."""
+    if not _READINESS:
+        raise AssertionError(
+            "%s: the derived builder was called before any readiness "
+            "derivation was recorded. Establish it with R7's derive_readiness "
+            "and pass it through record_readiness_derivation."
+            % STOP_READINESS_NOT_DERIVED)
+    return bool(_READINESS["value"])
 
 
 def _frozen_module():
@@ -134,6 +195,13 @@ def _derive() -> dict[str, Any]:
         "verify_preadjudication_execution_authority":
             frozen.verify_preadjudication_execution_authority,
     }
+    # The builders, whose hardcoded False becomes a derived call.
+    builders = {
+        "build_pretarget_execution_authority":
+            frozen.build_pretarget_execution_authority,
+        "build_preadjudication_execution_authority":
+            frozen.build_preadjudication_execution_authority,
+    }
     before_lines: list[str] = []
     after_lines: list[str] = []
     namespace = dict(frozen.__dict__)
@@ -144,6 +212,18 @@ def _derive() -> dict[str, Any]:
                 "%s: %s contains the readiness condition %d times, expected 1"
                 % (STOP_SUBSTITUTION, name, source.count(_ORIGINAL)))
         repaired = source.replace(_ORIGINAL, _REPAIRED, 1)
+        before_lines.extend(source.splitlines(keepends=True))
+        after_lines.extend(repaired.splitlines(keepends=True))
+        exec(compile(repaired, "<r8-derived:%s>" % name, "exec"), namespace)
+
+    namespace["_r8_derived_readiness"] = _r8_derived_readiness
+    for name, func in builders.items():
+        source = inspect.getsource(func)
+        if source.count(_BUILDER_ORIGINAL) != 1:
+            raise AssertionError(
+                "%s: %s writes the readiness literal %d times, expected 1"
+                % (STOP_SUBSTITUTION, name, source.count(_BUILDER_ORIGINAL)))
+        repaired = source.replace(_BUILDER_ORIGINAL, _BUILDER_REPAIRED, 1)
         before_lines.extend(source.splitlines(keepends=True))
         after_lines.extend(repaired.splitlines(keepends=True))
         exec(compile(repaired, "<r8-derived:%s>" % name, "exec"), namespace)
@@ -164,8 +244,8 @@ def _derive() -> dict[str, Any]:
     changed = [line for line in diff.splitlines()
                if (line.startswith("+") or line.startswith("-"))
                and not line.startswith(("+++", "---"))]
-    if len(changed) != 4:
-        raise AssertionError("%s: %d changed lines, expected 4: %r"
+    if len(changed) != 8:
+        raise AssertionError("%s: %d changed lines, expected 8: %r"
                              % (STOP_SUBSTITUTION, len(changed), changed))
     for line in changed:
         if "real_execution_ready" not in line:
@@ -184,6 +264,10 @@ def _derive() -> dict[str, Any]:
             namespace["verify_pretarget_execution_authority"],
         "verify_preadjudication_execution_authority":
             namespace["verify_preadjudication_execution_authority"],
+        "build_pretarget_execution_authority":
+            namespace["build_pretarget_execution_authority"],
+        "build_preadjudication_execution_authority":
+            namespace["build_preadjudication_execution_authority"],
     })
     return _DERIVED
 
@@ -218,6 +302,18 @@ def verify_preadjudication_execution_authority(outdir,
                                                **kwargs) -> dict[str, Any]:
     """The frozen verifier, byte-identical, resolving the repaired loader."""
     return _derive()["verify_preadjudication_execution_authority"](
+        outdir, **kwargs)
+
+
+def build_pretarget_execution_authority(outdir, **kwargs) -> dict[str, Any]:
+    """The frozen builder, emitting the derived readiness instead of False."""
+    return _derive()["build_pretarget_execution_authority"](outdir, **kwargs)
+
+
+def build_preadjudication_execution_authority(outdir,
+                                              **kwargs) -> dict[str, Any]:
+    """The frozen builder, emitting the derived readiness instead of False."""
+    return _derive()["build_preadjudication_execution_authority"](
         outdir, **kwargs)
 
 

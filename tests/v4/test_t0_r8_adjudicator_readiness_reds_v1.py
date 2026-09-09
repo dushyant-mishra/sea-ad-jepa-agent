@@ -155,9 +155,16 @@ def test_the_repaired_module_exists_and_names_its_single_change() -> None:
 def test_the_repaired_loaders_are_derived_by_textual_substitution() -> None:
     """Everything but the readiness condition must be byte-identical.
 
-    Derived from `inspect.getsource` of the frozen loaders, exactly as the C2
+    Derived from `inspect.getsource` of the frozen functions, exactly as the C2
     lane attributed the T1 defect to one line. That makes "only the readiness
     check differs" a verifiable property rather than a claim.
+
+    Four functions are derived, not two, and the count here says so rather than
+    hiding it. The two loaders have their readiness value check corrected. The
+    two builders have their hardcoded `False` replaced by a derived call,
+    because Stage 3 needs packages carrying True and the frozen builders can
+    only write False. One removed and one added line each, so eight in total,
+    and every one of them must touch the readiness field.
     """
     v2 = _v2()
     diff = v2.source_diff()
@@ -165,10 +172,31 @@ def test_the_repaired_loaders_are_derived_by_textual_substitution() -> None:
     changed = [l for l in diff.splitlines()
                if (l.startswith("+") or l.startswith("-"))
                and not l.startswith(("+++", "---"))]
-    # One removed and one added line per loader, and nothing else.
-    assert len(changed) == 4, changed
+    assert len(changed) == 8, changed
     for line in changed:
         assert "real_execution_ready" in line, line
+
+
+def test_the_derived_builder_refuses_an_undeclared_readiness() -> None:
+    """True cannot be asserted by a caller; it must be a recorded derivation."""
+    v2 = _v2()
+    v2.clear_readiness_derivation()
+    try:
+        with pytest.raises(AssertionError) as excinfo:
+            v2._r8_derived_readiness()
+        assert v2.STOP_READINESS_NOT_DERIVED in str(excinfo.value)
+        for bad in ("True", 1, None):
+            with pytest.raises(AssertionError):
+                v2.record_readiness_derivation(value=bad, derivation="x",
+                                               evidence={})
+        with pytest.raises(AssertionError):
+            v2.record_readiness_derivation(value=True, derivation="",
+                                           evidence={})
+        v2.record_readiness_derivation(value=True, derivation="R7",
+                                       evidence={"root": "a" * 64})
+        assert v2._r8_derived_readiness() is True
+    finally:
+        v2.clear_readiness_derivation()
 
 
 @pytest.mark.skipif(not frozen_available, reason="frozen V20 package absent")
