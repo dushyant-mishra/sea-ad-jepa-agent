@@ -1,0 +1,55 @@
+{
+  "schema": "JEPA_V5_SCHEDULE_GOVERNANCE_RESOLUTION_CANDIDATE_V1",
+  "status": "NO_ACTIVE_PRODUCTION_SCHEDULE_AUTHORITY__V3_FULL_COVERAGE_CANDIDATE_PENDING_INDEPENDENT_REVIEW",
+  "reason": "The older one-population-equivalent with-replacement horizon and its bound base proposal are incompatible with the later prospectively required full unique-cell coverage under the frozen cap32 geometry. Historical files remain preserved but may not be used as V5 execution authority.",
+  "historical_quarantine": [
+    {
+      "path": "docs/agent/TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json",
+      "schema": "TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1",
+      "quarantine_scope": "ENTIRE_PRESENTATION_HORIZON_AND_BOUND_SCHEDULE_CONSTRAINT_AUTHORITY",
+      "reason": "4,553,407 with-replacement presentations do not guarantee all 4,553,407 reader-fit stable cell keys are seen; the bound 64x weight-ratio ceiling is also infeasible with full coverage plus cap32 because the exact lower bound is 58037/864 > 64.",
+      "may_authorize_training": false
+    },
+    {
+      "path": "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3.json",
+      "schema": "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3",
+      "quarantine_scope": "BASE_PROPOSAL_AND_BASE_SCHEDULE_ONLY",
+      "preserved_scope": "RELATIONAL_DIRECT_DONOR_ANCHOR_CELL_TRIPLET_TARGET_PROPOSAL_V2_AS_HISTORICAL_INPUT_PENDING_CURRENT_INTEGRATION_REVIEW",
+      "reason": "The frozen base proposal is selected against the quarantined V1 horizon/constraint authority and therefore cannot define the full-coverage V5 base presentation schedule.",
+      "may_authorize_training": false
+    },
+    {
+      "path": "docs/agent/TEACHER_STUDENT_V5_PROPOSAL_HORIZON_GATE_20260908.md",
+      "quarantine_scope": "BASE_HORIZON_AND_BASE_PROPOSAL_CONTINUATION_GATE",
+      "reason": "Narrative gate binds the same obsolete one-population-equivalent with-replacement horizon and 64x rule.",
+      "may_authorize_training": false
+    }
+  ],
+  "current_schedule_candidate": {
+    "path": "docs/agent/TEACHER_STUDENT_V5_FULL_POPULATION_HORIZON_CANDIDATE_V3.json",
+    "schema": "TEACHER_STUDENT_V5_FULL_POPULATION_HORIZON_CANDIDATE_V3",
+    "role": "PROSPECTIVE_SUPERSESSION_CANDIDATE_ONLY",
+    "authenticated_reader_fit_cells": 4553407,
+    "candidate_total_presentations": 5267086,
+    "full_unique_cell_coverage": true,
+    "replayed_byte_identically_twice": true,
+    "independent_review_required_before_promotion": true,
+    "training_authorized": false
+  },
+  "unresolved_schedule_controls": [
+    "final cell anti-concentration/repeat-cap policy",
+    "final donor-by-operator repeat-floor policy; old floor16 zero-hit rationale is obsolete under deterministic full coverage",
+    "update membership and effective base cells per update after hardware calibration",
+    "EMA half-life in successful scientific presentations"
+  ],
+  "selection_firewall": {
+    "checkpoint_outcomes_used": false,
+    "pathology_used": false,
+    "synthetic_data_used_for_numeric_schedule_authority": false,
+    "stale_branch_or_filename_may_imply_authority": false
+  },
+  "training_authorized": false,
+  "execution_authorized": false,
+  "successor_u0_authorized": false,
+  "td60_authorized": false
+}
