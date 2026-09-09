@@ -34,6 +34,7 @@ import csv
 import hashlib
 import io
 import math
+import os
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
@@ -169,11 +170,21 @@ def exact_nonnegative_integer(raw: Any, context: str, *,
 
 
 def sha256_file(path: Path | str, *, chunk_bytes: int = 8 << 20) -> str:
-    """Stream SHA-256 over the exact on-disk bytes without loading the H5AD."""
+    """Stream SHA-256 over a path; production H5 proof uses one open handle."""
     digest = hashlib.sha256()
     with Path(path).open("rb") as handle:
         for block in iter(lambda: handle.read(int(chunk_bytes)), b""):
             digest.update(block)
+    return digest.hexdigest()
+
+
+def _sha256_open_file(handle: Any, *, chunk_bytes: int = 8 << 20) -> str:
+    """Hash the already-open source handle, then restore position to byte zero."""
+    digest = hashlib.sha256()
+    handle.seek(0)
+    for block in iter(lambda: handle.read(int(chunk_bytes)), b""):
+        digest.update(block)
+    handle.seek(0)
     return digest.hexdigest()
 
 
@@ -338,11 +349,6 @@ def prove_source_libraries_from_authenticated_h5_path(
     if not path.is_file():
         raise AssertionError("%s: source file absent: %s"
                              % (STOP_SOURCE_IDENTITY, path))
-    actual = sha256_file(path)
-    if actual != str(expected_source_sha256):
-        raise AssertionError("%s: source bytes hash to %s, expected %s"
-                             % (STOP_SOURCE_IDENTITY, actual,
-                                expected_source_sha256))
 
     rows = logical.get("rows")
     if not isinstance(rows, list) or not rows:
@@ -360,13 +366,29 @@ def prove_source_libraries_from_authenticated_h5_path(
                                  % (STOP_FIELD_SCHEMA, index))
 
     proven: dict[int, int] = {}
-    with h5py.File(path, "r") as handle:
-        for index in indices:
-            proven[index] = _source_library_from_open_h5(
-                handle=handle, logical_row=rows[index],
-                expected_matrix_slot=expected_matrix_slot,
-                expected_shape=expected_shape, cell_key=cell_key,
-                donor_key=donor_key)
+    # One file descriptor is used for authentication and HDF5 parsing.  A
+    # replacement of the path after hashing cannot redirect the parsed bytes.
+    with path.open("rb") as source_handle:
+        before = os.fstat(source_handle.fileno())
+        actual = _sha256_open_file(source_handle)
+        if actual != str(expected_source_sha256):
+            raise AssertionError("%s: source bytes hash to %s, expected %s"
+                                 % (STOP_SOURCE_IDENTITY, actual,
+                                    expected_source_sha256))
+        with h5py.File(source_handle, "r") as handle:
+            for index in indices:
+                proven[index] = _source_library_from_open_h5(
+                    handle=handle, logical_row=rows[index],
+                    expected_matrix_slot=expected_matrix_slot,
+                    expected_shape=expected_shape, cell_key=cell_key,
+                    donor_key=donor_key)
+        after = os.fstat(source_handle.fileno())
+        stable = (before.st_size == after.st_size
+                  and before.st_mtime_ns == after.st_mtime_ns)
+        if not stable:
+            raise AssertionError(
+                "%s: source file metadata changed during authenticated H5 read"
+                % STOP_SOURCE_IDENTITY)
     return proven
 
 
