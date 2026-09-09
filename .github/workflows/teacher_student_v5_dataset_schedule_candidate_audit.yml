@@ -1,0 +1,50 @@
+name: Teacher/student V5 dataset schedule candidate audit
+on:
+  push:
+    branches:
+      - planning/teacher-student-v5-dataset-schedule-20260909
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  candidate-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pytest numpy pandas scipy
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Frozen V5 audit
+        env: {PYTHONPATH: "src:."}
+        run: python scripts/agent/audit_teacher_student_v5_data_first_v1.py
+      - name: Frozen V4 plus V5 regression
+        env: {PYTHONPATH: "src:."}
+        run: |
+          python - <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          v5=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt').read_text().splitlines() if x.strip()]
+          v4=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_ACTIVE_TEST_SELECTION_V4.txt').read_text().splitlines() if x.strip() and not x.startswith('#')]
+          assert len(v5)==11 and len(v4)==7
+          subprocess.run([sys.executable,'-m','pytest','-q',*v5,*v4],check=True)
+          PY
+      - name: Dataset-first candidate attacks
+        env: {PYTHONPATH: "src:."}
+        run: |
+          python - <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          tests=[x.strip() for x in Path('docs/agent/TEACHER_STUDENT_V5_DATASET_SCHEDULE_CANDIDATE_TEST_SELECTION.txt').read_text().splitlines() if x.strip()]
+          assert len(tests)==6 and len(set(tests))==6
+          subprocess.run([sys.executable,'-m','pytest','-q',*tests],check=True)
+          PY
+      - name: Candidate manifest audit
+        env: {PYTHONPATH: "src:."}
+        run: python scripts/agent/audit_teacher_student_v5_dataset_schedule_candidate_v3.py
+      - name: Compile candidate source
+        run: python -m py_compile src/sea_ad_jepa/v5/support_family_policy_v3.py src/sea_ad_jepa/v5/singleton_target_query_sampling_v2.py src/sea_ad_jepa/v5/singleton_target_blocks_v1.py src/sea_ad_jepa/v5/relational_anchor_sampling_v1.py src/sea_ad_jepa/v5/schedule_authority_v4.py src/sea_ad_jepa/v5/exposure_clock_v2.py src/sea_ad_jepa/v5/inactive_dataset_teacher_update_v1.py
