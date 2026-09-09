@@ -1,6 +1,6 @@
 {
-  "schema": "JEPA_NEXT_ALLOWED_ACTION_V3",
-  "last_updated": "2026-09-08",
+  "schema": "JEPA_NEXT_ALLOWED_ACTION_V4",
+  "last_updated": "2026-09-09",
   "canonical_branch": "main",
   "implementation_verifier_required": true,
   "implementation_verifier_veto": true,
@@ -8,39 +8,71 @@
   "implementation_verifier_authority": "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
   "current_gate": "JEPA_P0_PREEXECUTION_CLOSURE",
   "status": "STOP_JEPA_EXECUTION_AUTHORITIES_INCOMPLETE",
-  "current_status": "Main is consolidated. T0 science is accepted but three implementation STOPs block production B2 and donor roles. Teacher/Student V5 continuation 028989a5 has scientific target V2, relational proposal V2, base proposal V3 and one-population-equivalent presentation horizon V1 frozen; evidence schedule, EMA/checkpoint milestone, GPU runtime, hardware calibration, integrated trainer, mechanics qualification and external review remain incomplete. Training and protected-population access remain unauthorized.",
-  "primary_next_action": "Close the remaining pathology-blind T0 implementation STOPs and, in parallel, finish the prospective V5 pre-execution authorities/mechanics on main. Do not execute real T0, training, TD60, D1, or protected-population releases yet.",
+  "current_status": "Main is consolidated. T0 and V5 remain separated lanes. V5 has data-first target/proposal/horizon authorities but is not cheat-qualified. 2026-09-09 anti-cheat consolidation records real-data support/operator/source shortcut risk and quarantines historical u10--u205 as TRAINING_MECHANICS_DEFECT_INHERITED from the historical 128x8 fp16-backward autocast defect. Training, TD60, successor-u0, D1, and protected-population access remain unauthorized.",
+  "primary_next_action": "Continue the active T0 lane only under its current staged authority. In parallel, finish V5 prospective pre-execution authorities and build the anti-cheat qualification layer on main before any teacher/student optimizer run.",
   "required_actions": [
-    "T0: bind logical root to population closure and all execution-used identities/paths with stored == recomputed == externally expected verification.",
-    "T0: replace caller-declared raw-source provenance with authenticated extraction from the exact frozen MTG H5AD layers/UMIs source row.",
-    "T0: bind the age/sex candidate donor universe to authenticated membership or an externally frozen candidate donor-set authority.",
-    "T0: after those repairs, run external red regressions and full T0 suites before any production B2 execution.",
+    "T0: continue only under the active T0 lane's current release/review authority; do not import V5 anti-cheat assumptions into T0 numeric access.",
     "V5: use current continuation 028989a5f1504e4d6403a44e7c90d37172c54150; scientific target V2, relational proposal V2, base proposal V3 and presentation horizon V1 are frozen. Do not revive historical defaults.",
-    "V5: freeze the remaining support-aware evidence/view/block policy, finite relational triplet budget, update/token geometry, EMA half-life in exposure units, biological checkpoint milestone, and hardware packing calibration.",
-    "V5: implement/verify an optimized GPU keyed-RNG/dropout path against the frozen V2 reference and prove dense/packed training-mode gradient/optimizer/EMA equivalence.",
-    "Mechanics: freeze the movement-vs-decay rule and exact mandatory predictor registry, then bind one end-to-end trainer before Q40-style mechanics qualification.",
-    "Target Discovery: prospectively amend TD60 to consume a full-reader exposure-defined learned-teacher checkpoint rather than historical u40 as a biology clock.",
-    "Governance: work only from main; historical branch refs may be deleted only after exact ancestor verification."
+    "V5: treat docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md and docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json as required startup context for all teacher/student work.",
+    "V5: build TEACHER_STUDENT_V5_REAL_DATA_ANTI_CHEAT_QUALIFICATION_AUTHORITY_V1 before training authority. It must use real data where available, not synthetic-only fixtures.",
+    "V5: implement or bind support-only, depth/QC-only, mask-only, operator/source, donor-memorization, held-out donor/matrix/study/technology, evidence-response, depth-response, proposal-weighting, collapse, constant-vector/low-rank, and hardware-invariance probes before any checkpoint can be biologically qualified.",
+    "Mechanics: quarantine historical u10--u205 as TRAINING_MECHANICS_DEFECT_INHERITED. Do not resume or rehabilitate those checkpoints as biological teacher authority or TD60 input.",
+    "Mechanics: preserve clean u0 as unaffected by the fp16-backward defect, but do not treat u0 as training authority.",
+    "Mechanics: future healthy teacher/student training must bind fp16 forward -> backward with autocast disabled -> unscale -> 48-tensor mandatory protected-gradient gate -> optimizer step proved -> both Adam moments checked -> EMA update.",
+    "Mechanics: exact 48 protected registry must be externally checked; dynamic discovery cannot define completeness.",
+    "V5: freeze remaining support-aware evidence/view/block policy, finite relational triplet budget, update/token geometry, EMA half-life in exposure units, biological checkpoint milestone, and hardware packing calibration.",
+    "V5: implement/verify optimized GPU keyed-RNG/dropout path against the frozen reference and prove dense/packed training-mode gradient/optimizer/EMA equivalence under final packing.",
+    "Target Discovery: TD60 must consume a lawful full-reader exposure-defined learned-teacher checkpoint, never the historical u40/u205 mechanics-clock checkpoint.",
+    "Governance: work only from main unless a newer explicit lane authority says otherwise; update current authority/memory files whenever a blocker is actually closed with code/test/root evidence."
   ],
   "parallel_nonblocking_work": [
     "F1 producer/replay independent review and authorization design may continue without becoming the global current gate.",
-    "D1 review/readout contract design may continue pathology-blind but real D1 waits for a qualified teacher."
+    "D1 review/readout contract design may continue pathology-blind but real D1 waits for a qualified teacher.",
+    "V5 anti-cheat architecture/probe design may continue while T0 runs, but cannot authorize training."
   ],
   "forbidden_actions": [
-    "Do not run production B2 or real T0 confirmation.",
-    "Do not access numeric confirmation AT8 before the lawful confirmation unlock.",
-    "Do not train, finetune, run production optimizer steps, write production checkpoints, or advance EMA under V5.",
+    "Do not train, finetune, run production optimizer steps, write production teacher/student checkpoints, or advance EMA under V5.",
     "Do not execute TD60 decision-bearing learned-teacher continuity.",
     "Do not execute real D1.",
     "Do not open reader_validation, reader_oracle, foundation development/sealed, external holdout, or pathology except through an explicit frozen release authority.",
     "Do not reinterpret 3,292-cell u40/u205 as full-reader biological training authority.",
+    "Do not resume historical u10--u205 checkpoints as lawful V5/V4 production points.",
+    "Do not accept loss decrease as biological checkpoint qualification.",
+    "Do not let attention.output or other live tensors rescue dead protected attention-routing tensors.",
+    "Do not add global SIGReg/VICReg or variance regularization as a blind default without donor/source/operator-balanced calibration and external review.",
     "Do not infer authority from stale branch names or historical PASS files."
   ],
   "controlling_files": [
     "docs/agent/CURRENT_AUTHORITY_INDEX.md",
     "docs/agent/CURRENT_SUPERSESSION_MAP.md",
     "docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json",
-    "docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json"
+    "docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json",
+    "docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md",
+    "docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json"
   ],
-  "update_only_after": "A blocker is actually closed with exact code/test/root evidence or a new prospective authority is frozen. Never advance status based on branch naming or prose-only claims."
+  "v5_anticheat_required_before_training": {
+    "status": "REQUIRED_NOT_COMPLETE",
+    "safe_to_train": false,
+    "minimum_required_gates": [
+      "HISTORICAL_T1_MECHANICS_DEFECT_QUARANTINE",
+      "BACKWARD_AUTOCAST_DISABLED_GATE",
+      "MANDATORY_48_GRADIENT_AND_MOMENT_GATE",
+      "STOP_GRADIENT_TARGET_BRANCH_AUDIT",
+      "EMA_EXPOSURE_CLOCK_BINDING",
+      "LATENT_COLLAPSE_VARIANCE_EFFECTIVE_RANK",
+      "CONSTANT_VECTOR_NEGATIVE_CONTROL",
+      "SUPPORT_ONLY_SOURCE_ATTACK",
+      "DEPTH_QC_ONLY_ATTACK",
+      "MASK_ONLY_ATTACK",
+      "OPERATOR_SOURCE_CONDITIONAL_PROBE",
+      "DONOR_MEMORIZATION_PROBE",
+      "HELD_OUT_DONOR_MATRIX_STUDY_TECHNOLOGY_TRANSFER",
+      "EVIDENCE_RESPONSE_CURVE",
+      "DEPTH_RESPONSE_CURVE",
+      "PROPOSAL_WEIGHTING_P_OVER_Q_AUDIT",
+      "HARDWARE_INVARIANCE_REPLAY",
+      "HISTORICAL_CHECKPOINT_QUARANTINE"
+    ]
+  },
+  "update_only_after": "A blocker is actually closed with exact code/test/root evidence or a new prospective authority is frozen. Never advance status based on branch naming, prose-only claims, or loss decrease alone."
 }
