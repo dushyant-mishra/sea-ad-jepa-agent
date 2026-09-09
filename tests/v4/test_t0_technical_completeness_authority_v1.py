@@ -34,7 +34,7 @@ CODE_SHA = "c" * 64
 SUBSTRATE = {
     "population_closure_root_sha256": "1" * 64,
     "logical_row_authority_root_sha256": "2" * 64,
-    "physical_read_plan_root_sha256": "3" * 64,
+    "raw_source_population_root_sha256": "6" * 64,
     "feature_authority_root_sha256": "4" * 64,
     "projection_root_sha256": "5" * 64,
 }
@@ -190,7 +190,7 @@ def test_downgrading_the_global_stop_rule_is_refused() -> None:
 @pytest.mark.parametrize("missing", [
     "population_closure_root_sha256",
     "logical_row_authority_root_sha256",
-    "physical_read_plan_root_sha256",
+    "raw_source_population_root_sha256",
     "feature_authority_root_sha256",
     "projection_root_sha256",
 ])
@@ -481,7 +481,7 @@ def test_the_production_path_derives_summaries_from_authenticated_parents(
     """Objects and bytes in, summaries out. No caller-supplied value tuples."""
     logical, payloads = _authentic_logical()
     projection = _projection()
-    summary = tc.build_production_authority(
+    summary = tc._build_production_authority_fixture(
         tmp_path / "pkg",
         logical=logical,
         expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
@@ -539,7 +539,7 @@ def test_a_wrong_logical_root_expectation_stops(tmp_path) -> None:
     logical, payloads = _authentic_logical()
     projection = _projection()
     with pytest.raises(AssertionError):
-        tc.build_production_authority(
+        tc._build_production_authority_fixture(
             tmp_path / "pkg", logical=logical,
             expected_logical_root_sha256="f" * 64,
             expected_closure_root_sha256=logical[
@@ -553,7 +553,7 @@ def test_a_wrong_closure_root_expectation_stops(tmp_path) -> None:
     logical, payloads = _authentic_logical()
     projection = _projection()
     with pytest.raises(AssertionError):
-        tc.build_production_authority(
+        tc._build_production_authority_fixture(
             tmp_path / "pkg", logical=logical,
             expected_logical_root_sha256=logical[
                 "logical_row_authority_root_sha256"],
@@ -568,7 +568,7 @@ def test_a_wrong_projection_root_expectation_stops(tmp_path) -> None:
     logical, payloads = _authentic_logical()
     projection = _projection()
     with pytest.raises(AssertionError) as excinfo:
-        tc.build_production_authority(
+        tc._build_production_authority_fixture(
             tmp_path / "pkg", logical=logical,
             expected_logical_root_sha256=logical[
                 "logical_row_authority_root_sha256"],
@@ -588,7 +588,7 @@ def test_a_tampered_counts_payload_stops(tmp_path) -> None:
     victim = sorted(tampered)[0]
     tampered[victim] = _csr_npz(2, ADDRESS_SPACE, [(0, 0, 99)])
     with pytest.raises(AssertionError):
-        tc.build_production_authority(
+        tc._build_production_authority_fixture(
             tmp_path / "pkg", logical=logical,
             expected_logical_root_sha256=logical[
                 "logical_row_authority_root_sha256"],
@@ -605,7 +605,7 @@ def test_an_absent_counts_payload_stops(tmp_path) -> None:
     partial = dict(payloads)
     partial.pop(sorted(partial)[0])
     with pytest.raises(AssertionError):
-        tc.build_production_authority(
+        tc._build_production_authority_fixture(
             tmp_path / "pkg", logical=logical,
             expected_logical_root_sha256=logical[
                 "logical_row_authority_root_sha256"],
@@ -625,7 +625,7 @@ def test_q_detect_counts_only_projected_addresses(tmp_path) -> None:
     """
     logical, payloads = _authentic_logical()
     projection = _projection()
-    rows = tc.derive_rows_from_authenticated_parents(
+    rows = tc._derive_rows_from_authenticated_parents_fixture(
         logical=logical,
         expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
         expected_closure_root_sha256=logical["population_closure_root_sha256"],
@@ -645,7 +645,7 @@ def test_q_depth_uses_the_bound_source_library(tmp_path) -> None:
 
     logical, payloads = _authentic_logical()
     projection = _projection()
-    rows = tc.derive_rows_from_authenticated_parents(
+    rows = tc._derive_rows_from_authenticated_parents_fixture(
         logical=logical,
         expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
         expected_closure_root_sha256=logical["population_closure_root_sha256"],
@@ -661,7 +661,7 @@ def test_the_derived_rows_carry_the_cell_identities_they_consumed(
     """Binding cell identity is what ties a summary to a population."""
     logical, payloads = _authentic_logical()
     projection = _projection()
-    rows = tc.derive_rows_from_authenticated_parents(
+    rows = tc._derive_rows_from_authenticated_parents_fixture(
         logical=logical,
         expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
         expected_closure_root_sha256=logical["population_closure_root_sha256"],
@@ -675,7 +675,7 @@ def test_the_derived_rows_carry_the_cell_identities_they_consumed(
 def test_the_completeness_root_binds_the_consumed_cell_identities() -> None:
     logical, payloads = _authentic_logical()
     projection = _projection()
-    rows = tc.derive_rows_from_authenticated_parents(
+    rows = tc._derive_rows_from_authenticated_parents_fixture(
         logical=logical,
         expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
         expected_closure_root_sha256=logical["population_closure_root_sha256"],
@@ -693,3 +693,35 @@ def test_the_projection_root_is_injective_over_position_sets() -> None:
     b = tc.projection_root({"positions": [12], "feature_authority_root_sha256": "4" * 64})
     c = tc.projection_root({"positions": [1, 2], "feature_authority_root_sha256": "5" * 64})
     assert len({a, b, c}) == 3
+
+
+
+# --- R5 production-boundary checks -----------------------------------------
+
+def test_physical_plan_is_not_a_technical_completeness_parent() -> None:
+    substrate = dict(SUBSTRATE)
+    substrate["physical_read_plan_root_sha256"] = "3" * 64
+    with pytest.raises(AssertionError) as excinfo:
+        tc.assert_substrate_lawful(substrate=substrate)
+    assert tc.STOP_SUBSTRATE in str(excinfo.value)
+
+
+def test_r5_production_signature_requires_closure_and_raw_source_authority() -> None:
+    import inspect
+
+    params = inspect.signature(tc.build_production_authority).parameters
+    for required in (
+            "closure",
+            "raw_source_authority",
+            "expected_raw_source_population_root_sha256"):
+        assert required in params
+    assert "expected_projection_positions" not in params
+
+
+def test_r5_public_derivation_has_no_permissive_projection_count_parameter() -> None:
+    import inspect
+
+    params = inspect.signature(tc.derive_rows_from_authenticated_parents).parameters
+    assert "expected_projection_positions" not in params
+    assert "raw_source_authority" in params
+    assert "closure" in params
