@@ -1,0 +1,72 @@
+{
+  "schema": "JEPA_V5_REPEAT_CAP_MINIMAL_REPAIR_DIAGNOSTIC_V1",
+  "status": "REAL_104_DONOR_CONDITIONAL_DIAGNOSTIC__NO_REPEAT_CAP_AUTHORITY",
+  "question": "If the historical 64x importance-weight conditioning ceiling were independently re-adopted as the prospective risk control after adding full unique-cell coverage, what is the smallest compatible repeat cap?",
+  "inputs": {
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "partition": "reader_fit",
+    "cells": 4553407,
+    "donors": 104,
+    "minimum_donor_cells": 81,
+    "maximum_donor_cells": 174111,
+    "conditional_weight_ratio_ceiling": {
+      "numerator": 64,
+      "denominator": 1,
+      "role": "HISTORICAL_PROSPECTIVE_RISK_CONTROL_UNDER_RECONSIDERATION__NOT_REACTIVATED_BY_THIS_DIAGNOSTIC"
+    }
+  },
+  "derived_cap_boundary": {
+    "minimum_compatible_repeat_cap": 34,
+    "cap_33_ratio": {
+      "numerator": 58037,
+      "denominator": 891,
+      "float": 65.13692480359147,
+      "passes_64x": false
+    },
+    "cap_34_ratio": {
+      "numerator": 58037,
+      "denominator": 918,
+      "float": 63.22113289760349,
+      "passes_64x": true
+    },
+    "derivation": "ceil(max_donor_cells / (conditioning_ceiling * min_donor_cells))"
+  },
+  "exact_schedule_diagnostics_at_cap34": {
+    "full_coverage_group_floor_1": {
+      "total_presentations": 5255116,
+      "population_equivalents": 1.1541063647506142,
+      "importance_ess_fraction": 0.500000153433392,
+      "previous_total_presentations": 5255115,
+      "previous_importance_ess_fraction": 0.49999991794055365,
+      "previous_passed": false,
+      "max_cell_multiplicity": 34,
+      "minimum_group_presentations": 1,
+      "source_presentations": {
+        "HVS": 796792,
+        "NPH52": 318268,
+        "SEA_AD": 4140056
+      },
+      "full_result_sha256": "ab13cc2166be362dd1abd061d1b5ba09fcc18418f92db1d8e32f86392670b1ab"
+    },
+    "historical_group_floor_16_sensitivity": {
+      "total_presentations": 5255454,
+      "importance_ess_fraction": 0.500000190544252,
+      "previous_total_presentations": 5255453,
+      "previous_importance_ess_fraction": 0.499999955023986,
+      "max_cell_multiplicity": 34,
+      "minimum_group_presentations": 16,
+      "extra_presentations_vs_floor1": 338,
+      "full_result_sha256": "982f5aeb20cf13cd4cbe46f464119b01ed21b9469e2b5c5b7bce422186fc8f0a"
+    }
+  },
+  "interpretation": [
+    "The real donor geometry derives cap34 only conditional on a 64x conditioning ceiling; it does not justify the 64x ceiling.",
+    "Cap33 is mathematically incompatible with that ceiling under full unique-cell coverage, while cap34 is the smallest integer that can satisfy it.",
+    "The old group-floor16 zero-hit rationale is obsolete under deterministic full-cell coverage; retaining it repeats tiny groups without creating new independent biological observations.",
+    "This diagnostic is a prospective design comparison and does not supersede the current schedule candidate or authorize training."
+  ],
+  "synthetic_data_used_for_numeric_authority": false,
+  "checkpoint_outcomes_used": false,
+  "pathology_used": false,
+  "training_authorized": false
+}
