@@ -382,7 +382,7 @@ def parent_contract_root(*, substrate: Mapping[str, Any],
     return hashlib.sha256(b"".join(parts)).hexdigest()
 
 
-def build_authority(
+def _build_authority_from_precomputed_cells_fixture(
         outdir: Path | str,
         *,
         cells_by_donor: Mapping[str, Sequence[tuple[Any, Any]]],
@@ -390,8 +390,14 @@ def build_authority(
         derivation_code_sha256: str,
         candidate_donors: Sequence[str],
         scalar_features: int = SCALAR_FEATURES,
+        production_run_status: str = "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN",
 ) -> dict[str, Any]:
-    """Evaluate technical completeness over a lawful substrate and package it."""
+    """Fixture-only packager for already-derived cell summaries.
+
+    Decision-bearing production code must call build_authority, which derives
+    every source_library and Q_DETECT contribution from authenticated dataset
+    files and bound B2/B1 authorities instead of accepting cells_by_donor.
+    """
     out = Path(outdir)
     if out.exists() and any(out.iterdir()):
         raise AssertionError("%s: output directory must be absent or empty: %s"
@@ -440,7 +446,7 @@ def build_authority(
         "derivation_code_sha256": str(derivation_code_sha256),
         "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
         "pathology_values_read": False,
-        "production_run_status": "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN",
+        "production_run_status": str(production_run_status),
         "real_execution_ready": False,
     }
     meta_bytes = (json.dumps(meta, sort_keys=True, indent=2) + "\n").encode("utf-8")
@@ -468,6 +474,215 @@ def build_authority(
             "donor_count": len(rows),
             "technically_complete_donors": meta["technically_complete_donors"],
             "real_execution_ready": False}
+
+
+def _projected_nonzero_counts_from_authenticated_blocks(
+        *,
+        logical: Mapping[str, Any],
+        feature_authority: Mapping[str, Any],
+        phase2_expression_root: Path | str,
+) -> dict[int, int]:
+    """Derive Q_DETECT numerators from the actual authenticated Phase2 NPZ blocks.
+
+    The production Phase2 materializer stores 41,238-address scipy CSR blocks and
+    the B1 authority selects exactly 35,076 address indices.  Blocks are grouped
+    by counts_path so each real NPZ is hashed and parsed once, matching the
+    dataset's block-major storage instead of reparsing a block once per cell.
+    """
+    import numpy as np
+    import t0_v20_row_count_authority_v1 as row_authority
+
+    rows = logical["rows"]
+    projection = feature_authority["projection"]
+    projection_indices = [int(row["molecular_address_index"]) for row in projection]
+    if len(projection_indices) != SCALAR_FEATURES:
+        raise AssertionError(
+            "%s: feature authority projects %d addresses, expected %d"
+            % (STOP_PROJECTION_WIDTH, len(projection_indices), SCALAR_FEATURES))
+    if len(set(projection_indices)) != len(projection_indices):
+        raise AssertionError("%s: B1 projection indices are not unique"
+                             % STOP_SUBSTRATE)
+    projection_set = set(projection_indices)
+
+    by_path: dict[str, list[int]] = {}
+    for logical_index, row in enumerate(rows):
+        path_text = str(row["counts_path"])
+        relative = Path(path_text)
+        if relative.is_absolute() or ".." in relative.parts:
+            raise AssertionError(
+                "%s: counts_path %r is not a canonical Phase2-relative path"
+                % (STOP_SUBSTRATE, path_text))
+        by_path.setdefault(path_text, []).append(logical_index)
+
+    root = Path(phase2_expression_root)
+    result: dict[int, int] = {}
+    for path_text in sorted(by_path, key=lambda value: value.encode("utf-8")):
+        logical_indices = by_path[path_text]
+        shas = {str(rows[index]["counts_sha256"]) for index in logical_indices}
+        if len(shas) != 1:
+            raise AssertionError(
+                "%s: rows sharing %s bind multiple counts digests %r"
+                % (STOP_SUBSTRATE, path_text, sorted(shas)))
+        expected_sha = next(iter(shas))
+        path = root / Path(path_text)
+        if not path.is_file():
+            raise AssertionError("%s: Phase2 counts file absent: %s"
+                                 % (STOP_SUBSTRATE, path))
+        actual_sha = row_authority._sha256_file(path)
+        if actual_sha != expected_sha:
+            raise AssertionError(
+                "%s: %s is %s, logical authority binds %s"
+                % (STOP_SUBSTRATE, path_text, actual_sha, expected_sha))
+
+        payload = path.read_bytes()
+        parsed = row_authority._parse_csr_counts(payload)
+        n_rows, width = int(parsed["shape"][0]), int(parsed["shape"][1])
+        if width != row_authority.ADDRESS_SPACE_SIZE:
+            raise AssertionError(
+                "%s: authenticated Phase2 block width is %d, expected %d"
+                % (STOP_SUBSTRATE, width,
+                   row_authority.ADDRESS_SPACE_SIZE))
+        indptr = parsed["indptr"]
+        cols = parsed["indices"]
+        values = parsed["data"]
+
+        for logical_index in logical_indices:
+            block_row = int(rows[logical_index]["row_index"])
+            if not (0 <= block_row < n_rows):
+                raise AssertionError(
+                    "%s: bound block row %d is outside 0..%d in %s"
+                    % (STOP_SUBSTRATE, block_row, n_rows - 1, path_text))
+            start, end = int(indptr[block_row]), int(indptr[block_row + 1])
+            nonzero_columns: set[int] = set()
+            for offset in range(start, end):
+                column = int(cols[offset])
+                value = values[offset]
+                numeric = float(value)
+                if (not math.isfinite(numeric) or numeric < 0
+                        or numeric != int(numeric)):
+                    raise AssertionError(
+                        "%s: %s row %d column %d is %r"
+                        % (STOP_COUNTS, path_text, block_row, column, value))
+                if not (0 <= column < width):
+                    raise AssertionError(
+                        "%s: %s row %d column %d is outside 0..%d"
+                        % (STOP_COUNTS, path_text, block_row, column,
+                           width - 1))
+                if numeric != 0 and column in projection_set:
+                    nonzero_columns.add(column)
+            result[logical_index] = len(nonzero_columns)
+
+    if set(result) != set(range(len(rows))):
+        raise AssertionError(
+            "%s: derived Q_DETECT counts cover %d/%d logical rows"
+            % (STOP_SUBSTRATE, len(result), len(rows)))
+    return result
+
+
+def build_authority(
+        outdir: Path | str,
+        *,
+        logical: Mapping[str, Any],
+        physical_plan: Mapping[str, Any],
+        feature_authority: Mapping[str, Any],
+        source_h5ad_path: Path | str,
+        phase2_expression_root: Path | str,
+        expected_logical_row_authority_root_sha256: str,
+        expected_population_closure_root_sha256: str,
+        expected_physical_read_plan_root_sha256: str,
+        expected_feature_authority_root_sha256: str,
+        expected_projection_root_sha256: str,
+        derivation_code_sha256: str,
+) -> dict[str, Any]:
+    """Dataset-bound production constructor for technical completeness.
+
+    No preassembled cells_by_donor values are accepted.  The function verifies
+    the B2 logical and physical authorities, verifies B1, re-proves every bound
+    source_library from the frozen MTG H5AD, derives every Q_DETECT numerator
+    from the authenticated Phase2 NPZ block using the exact 35,076 B1 addresses,
+    derives the candidate donor universe from the logical rows, and only then
+    packages the donor summaries.
+
+    This constructs an authority but does not authorize production B2 or AT8.
+    """
+    import t0_v20_feature_projection_authority_v1 as feature_module
+    import t0_v20_row_count_authority_v1 as row_authority
+
+    assert_predicate_is_threshold_free()
+
+    logical_verified = row_authority.assert_row_authority_lawful(
+        logical=logical,
+        expected_logical_row_authority_root_sha256=(
+            expected_logical_row_authority_root_sha256),
+        expected_feature_authority_root_sha256=(
+            expected_feature_authority_root_sha256),
+        expected_population_closure_root_sha256=(
+            expected_population_closure_root_sha256),
+    )
+    row_authority.assert_physical_plan_lawful(
+        plan=physical_plan,
+        expected_physical_root_sha256=(
+            expected_physical_read_plan_root_sha256),
+        expected_logical_root_sha256=(
+            expected_logical_row_authority_root_sha256),
+        logical=logical,
+    )
+    feature_verified = feature_module.assert_feature_authority_lawful(
+        feature_authority,
+        expected_feature_authority_root_sha256=(
+            expected_feature_authority_root_sha256),
+        expected_projection_root_sha256=expected_projection_root_sha256,
+    )
+    if feature_authority.get("projected_feature_count") != SCALAR_FEATURES:
+        raise AssertionError(
+            "%s: production B1 has %r projected features, expected %d"
+            % (STOP_PROJECTION_WIDTH,
+               feature_authority.get("projected_feature_count"),
+               SCALAR_FEATURES))
+
+    source_libraries = row_authority.source_libraries_from_authenticated_h5ad(
+        logical=logical,
+        source_path=source_h5ad_path,
+    )
+    projected_nonzero = _projected_nonzero_counts_from_authenticated_blocks(
+        logical=logical,
+        feature_authority=feature_authority,
+        phase2_expression_root=phase2_expression_root,
+    )
+
+    cells_by_donor: dict[str, list[tuple[int, int]]] = {}
+    for logical_index, row in enumerate(logical["rows"]):
+        donor = str(row["donor_id"])
+        cells_by_donor.setdefault(donor, []).append(
+            (source_libraries[logical_index],
+             projected_nonzero[logical_index]))
+    candidate_donors = tuple(sorted(cells_by_donor,
+                                    key=lambda d: d.encode("utf-8")))
+
+    substrate = {
+        "population_closure_root_sha256": str(
+            logical_verified["population_closure_root_sha256"]),
+        "logical_row_authority_root_sha256": str(
+            logical_verified["logical_row_authority_root_sha256"]),
+        "physical_read_plan_root_sha256": str(
+            physical_plan["physical_read_plan_root_sha256"]),
+        "feature_authority_root_sha256": str(
+            feature_verified["feature_authority_root_sha256"]),
+        "projection_root_sha256": str(
+            feature_verified["projection_root_sha256"]),
+    }
+    assert_substrate_lawful(substrate=substrate)
+
+    return _build_authority_from_precomputed_cells_fixture(
+        outdir,
+        cells_by_donor=cells_by_donor,
+        substrate=substrate,
+        derivation_code_sha256=derivation_code_sha256,
+        candidate_donors=candidate_donors,
+        scalar_features=SCALAR_FEATURES,
+        production_run_status=(
+            "DATASET_BOUND_DERIVATION__PRODUCTION_B2_EXECUTION_AUTHORITY_REQUIRED"),
+    )
 
 
 def load_authority(
