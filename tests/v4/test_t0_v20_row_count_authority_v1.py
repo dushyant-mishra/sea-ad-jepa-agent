@@ -565,7 +565,7 @@ def test_source_library_is_proven_against_the_authenticated_raw_row(world: World
     bound = logical["rows"][0]["source_library"]
     raw = [0] * 36_600 + [bound]
     assert sum(raw) == bound
-    assert rc.prove_source_library(
+    assert rc._prove_source_library_fixture_row(
         logical=logical, logical_index=0, raw_source_row_values=raw,
         raw_source_provenance=_raw_provenance(logical=logical)) is True
 
@@ -574,7 +574,7 @@ def test_a_raw_row_summing_to_the_wrong_total_stops(world: World) -> None:
     logical = _logical(world)
     raw = [0] * 36_600 + [logical["rows"][0]["source_library"] + 1]
     with pytest.raises(AssertionError, match="SOURCE_LIBRARY_NOT_PROVEN"):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_row(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=_raw_provenance(logical=logical))
 
@@ -592,7 +592,7 @@ def test_a_row_of_address_space_width_is_refused_as_the_raw_source_row(
     bound = logical["rows"][0]["source_library"]
     projected = [0] * (rc.ADDRESS_SPACE_SIZE - 1) + [bound]
     with pytest.raises(AssertionError, match="RAW_ROW_WIDTH_IS_ADDRESS_SPACE"):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_row(
             logical=logical, logical_index=0, raw_source_row_values=projected,
             raw_source_provenance=_raw_provenance(width=rc.ADDRESS_SPACE_SIZE, logical=logical))
 
@@ -608,7 +608,7 @@ def test_non_integral_or_negative_raw_counts_stop(world: World, bad) -> None:
     raw = [bad] + [0] * 36_600
     assert len(raw) == rc.SOURCE_FEATURE_COUNT
     with pytest.raises(AssertionError, match="RAW_COUNTS_NOT_NONNEGATIVE_INTEGERS"):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_row(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=_raw_provenance(logical=logical))
 
@@ -619,12 +619,12 @@ def test_the_raw_row_provenance_must_be_bound(world: World) -> None:
     for missing in ("source_sha256", "source_row_index", "source_width"):
         provenance = {k: v for k, v in _raw_provenance().items() if k != missing}
         with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
-            rc.prove_source_library(
+            rc._prove_source_library_fixture_row(
                 logical=logical, logical_index=0, raw_source_row_values=raw,
                 raw_source_provenance=provenance)
     mismatched = dict(_raw_provenance(), source_width=99)
     with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_row(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=mismatched)
 
@@ -680,3 +680,90 @@ def test_an_expression_row_outside_the_population_bounds_stops(world: World) -> 
         rc.verify_selected_row(
             logical=logical, logical_index=0, row_values=[0] * rc.ADDRESS_SPACE_SIZE,
             selected_expression_row=4_553_407, expression_row_upper_bound=4_553_407)
+
+
+
+# R4 dataset-bound source authentication -----------------------------------
+
+def _write_tiny_raw_h5ad(path: Path, *, row1_values=(3, 4)) -> str:
+    """Write the minimum CSR/obs shape needed to exercise the production H5 path."""
+    import h5py
+    import numpy as np
+
+    with h5py.File(path, "w") as handle:
+        obs = handle.create_group("obs")
+        obs.create_dataset("exp_component_name", data=np.asarray([b"C0", b"C1"]))
+        obs.create_dataset("Donor ID", data=np.asarray([b"D0", b"D1"]))
+        layers = handle.create_group("layers")
+        umi = layers.create_group("UMIs")
+        umi.attrs["shape"] = np.asarray([2, 4], dtype=np.int64)
+        umi.create_dataset("indptr", data=np.asarray([0, 1, 3], dtype=np.int64))
+        umi.create_dataset("indices", data=np.asarray([0, 1, 3], dtype=np.int32))
+        umi.create_dataset(
+            "data",
+            data=np.asarray([2, int(row1_values[0]), int(row1_values[1])],
+                            dtype=np.int32))
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _tiny_source_logical() -> dict:
+    return {"rows": [{
+        "expression_row": 1,
+        "canonical_cell_id": "C1",
+        "donor_id": "D1",
+        "source_library": 7,
+    }]}
+
+
+def test_production_source_library_is_extracted_from_authenticated_h5_bytes(
+        tmp_path: Path) -> None:
+    source = tmp_path / "mtg-mini.h5ad"
+    digest = _write_tiny_raw_h5ad(source)
+    assert rc.prove_source_library(
+        logical=_tiny_source_logical(),
+        logical_index=0,
+        source_path=source,
+        expected_source_sha256=digest,
+        expected_source_width=4,
+    ) is True
+
+
+def test_production_source_proof_refuses_detached_row_values_even_if_labels_match(
+        tmp_path: Path) -> None:
+    """The old R20-B attack is no longer expressible through the production API."""
+    source = tmp_path / "mtg-mini.h5ad"
+    digest = _write_tiny_raw_h5ad(source)
+    with pytest.raises(TypeError):
+        rc.prove_source_library(
+            logical=_tiny_source_logical(),
+            logical_index=0,
+            source_path=source,
+            expected_source_sha256=digest,
+            expected_source_width=4,
+            raw_source_row_values=[0, 0, 0, 7],
+            raw_source_provenance={
+                "source_sha256": digest,
+                "source_row_index": 1,
+                "source_width": 4,
+                "canonical_cell_id": "C1",
+                "donor_id": "D1",
+                "matrix_slot": "layers/UMIs",
+            },
+        )
+
+
+def test_same_identity_and_same_sum_from_different_h5_bytes_are_not_authentication(
+        tmp_path: Path) -> None:
+    """Correct labels and total cannot substitute for the frozen H5 byte identity."""
+    genuine = tmp_path / "genuine.h5ad"
+    forged = tmp_path / "forged.h5ad"
+    genuine_digest = _write_tiny_raw_h5ad(genuine, row1_values=(3, 4))
+    _write_tiny_raw_h5ad(forged, row1_values=(2, 5))
+    with pytest.raises(AssertionError, match="RAW_SOURCE_ASSET_NOT_AUTHENTICATED"):
+        rc.prove_source_library(
+            logical=_tiny_source_logical(),
+            logical_index=0,
+            source_path=forged,
+            expected_source_sha256=genuine_digest,
+            expected_source_width=4,
+        )
