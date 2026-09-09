@@ -79,6 +79,8 @@
   "synthetic_data_used_for_authority": false,
   "target_discovery_outcomes_used_to_choose_schedule": false,
   "still_required_before_training": [
+    "42/42 physical full-reader expression shard binding for full-data D/relational qualification",
+    "prospective resolution of the donor×operator repeat-floor rationale under deterministic full coverage",
     "independent review of this supersession candidate",
     "z_bio/z_obs routing integration",
     "shortcut-baseline increment calibration frozen before learned checkpoint outcomes",
@@ -88,5 +90,34 @@
   ],
   "training_authorized": false,
   "successor_u0_authorized": false,
-  "td60_authorized": false
+  "td60_authorized": false,
+  "control_classification": {
+    "data_derived": [
+      "reader_fit population geometry",
+      "minimum achievable importance-weight ratio conditional on the prospectively supplied repeat cap",
+      "cell multiplicities",
+      "total presentation horizon",
+      "source presentation composition",
+      "exact p/q weights",
+      "realized ESS"
+    ],
+    "design_or_risk_controls_not_discovered_from_data": [
+      "full unique-cell coverage",
+      "cell repeat cap",
+      "ESS floor",
+      "any donor×operator repeat floor"
+    ],
+    "rule": "Training/checkpoint outcomes may not tune either class. Design/risk controls require prospective justification; dataset-derived quantities must be recomputed from authenticated reader_fit."
+  },
+  "group_floor_review": {
+    "status": "OPEN__OLD_ZERO_HIT_RATIONALE_OBSOLETE_UNDER_DETERMINISTIC_FULL_COVERAGE",
+    "diagnostic_path": "docs/agent/v5_anticheat/results/V5_GROUP_PRESENTATION_FLOOR_RELEVANCE_DIAGNOSTIC_V1.json",
+    "groups_with_fewer_than_16_unique_cells": 192,
+    "minimum_unique_cells_in_a_group": 1,
+    "key_point": "Repeating a one-cell group to 16 presentations does not create 16 independent biological observations.",
+    "floor16_schedule_total_presentations": 5267086,
+    "full_coverage_floor1_diagnostic_total_presentations": 5266752,
+    "floor16_extra_presentations_at_final_optimum": 334,
+    "training_authority_from_floor16": false
+  }
 }
