@@ -228,23 +228,61 @@ def assert_worktree_committed(repo: Path) -> bool:
     return True
 
 
+def build_discovery_metadata(*, discovery_donors, at8_values, age_sex_pkg):
+    """The frozen discovery metadata frame: exactly ['donor_id','AT8','age','sex'].
+
+    Age and sex come from the replayed age/sex authority. AT8 comes from the
+    endpoint slice this module just read. Column order is exactly what
+    `fit_discovery_target_v2` demands, and it refuses anything else.
+    """
+    import pandas as pd
+
+    ages_mod = stage2a._frozen("t0_age_sex_authority_v1")
+    import t0_eligible_donor_production_run_v1 as ed
+    replayed = ages_mod.load_authority(
+        age_sex_pkg,
+        expected_package_root_sha256=ed.AGE_SEX_EXPECTED_PACKAGE_ROOT,
+        expected_age_sex_root_sha256=ed.AGE_SEX_EXPECTED_ROOT,
+        expected_source_sha256=ed.AGE_SEX_EXPECTED_SOURCE_SHA256,
+        expected_candidate_donor_set_sha256=(
+            ed.AGE_SEX_EXPECTED_CANDIDATE_DONOR_SET))
+    by_donor = {str(r["donor_id"]): r for r in replayed["rows"]}
+    order = sorted(discovery_donors, key=lambda d: d.encode("utf-8"))
+    frame = pd.DataFrame({
+        "donor_id": order,
+        "AT8": [float(at8_values[d]) for d in order],
+        "age": [int(by_donor[d]["age"]) for d in order],
+        "sex": [str(by_donor[d]["sex"]) for d in order],
+    })
+    return frame[["donor_id", "AT8", "age", "sex"]]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--outdir", required=True, type=Path)
     parser.add_argument("--readiness-pkg", required=True, type=Path)
     parser.add_argument("--stage2a-pkg", required=True, type=Path)
+    parser.add_argument("--role-pkg", required=True, type=Path)
     parser.add_argument("--at8-pkg", required=True, type=Path)
+    parser.add_argument("--age-sex-pkg", required=True, type=Path)
+    parser.add_argument("--population-pkg", required=True, type=Path)
     parser.add_argument("--pathology-source", required=True, type=Path)
-    parser.add_argument("--dry-run-endpoint-only", action="store_true",
-                        help="load and validate the endpoint slice, write the "
-                             "access manifest, and stop before the fit")
+    parser.add_argument("--store", required=True, type=Path)
+    parser.add_argument("--membership", required=True, type=Path)
+    parser.add_argument("--feature-split", required=True, type=Path)
     args = parser.parse_args(argv)
 
     started = time.time()
+
+    def stamp(message):
+        print("[%6.1fs] %s" % (time.time() - started, message))
+
     repo = Path(__file__).resolve().parents[2]
-    print("[  0.0s] Stage 2B — verifying the R7 gate again before reading AT8")
+    stamp("Stage 2B step 1 - verifying the R7 gate before anything is read")
     assert_worktree_committed(repo)
     gate = stage2a.verify_r7_gate(args.readiness_pkg, log=print)
+    stage2a.assert_no_direct_v1_production_call(
+        pathlib.Path(__file__).read_text(encoding="utf-8"))
 
     stage2a_summary = json.loads(
         (args.stage2a_pkg / stage2a.SUMMARY).read_text(encoding="utf-8"))
@@ -253,26 +291,28 @@ def main(argv: list[str] | None = None) -> int:
     if discovery & confirmation:
         raise AssertionError("%s: the two role sets overlap"
                              % STOP_CONFIRMATION_LEAK)
+    bindings = gate["authority"]["bindings"]
+
+    stamp("Stage 2B step 2 - materializing the discovery scalar matrix "
+          "(no pathology)")
+    import t0_discovery_scalar_matrix_v1 as dm
+    materialized = dm.materialize(
+        store=args.store, membership_csv=args.membership,
+        population_pkg=args.population_pkg,
+        feature_split_csv=args.feature_split,
+        discovery_donors=discovery, log=print)
 
     import t0_eligible_donor_production_run_v1 as ed
     at8_parent = ed.load_at8_availability(args.at8_pkg)
 
-    # This module must itself pass the Stage 2A architecture guard: no
-    # conclusion call without a gate call, and no test-only entrypoint.
-    stage2a.assert_no_direct_v1_production_call(
-        pathlib.Path(__file__).read_text(encoding="utf-8"))
-
-    print("[%5.1fs] opening DISCOVERY numeric AT8 — %d donors, endpoint from "
-          "the verified parent" % (time.time() - started, len(discovery)))
+    stamp("Stage 2B step 3 - opening DISCOVERY numeric AT8 only")
     loaded = load_discovery_at8(
         args.pathology_source,
         endpoint_identity=at8_parent["at8_endpoint_identity"],
         donor_id_field=at8_parent["donor_id_field"],
-        discovery_donors=discovery,
-        confirmation_donors=confirmation,
-        expected_source_sha256=gate["authority"]["bindings"][
-            "pathology_source_sha256"],
-        expected_discovery_donor_set_sha256=gate["authority"]["bindings"][
+        discovery_donors=discovery, confirmation_donors=confirmation,
+        expected_source_sha256=bindings["pathology_source_sha256"],
+        expected_discovery_donor_set_sha256=bindings[
             "discovery_donor_set_sha256"])
 
     manifest = {
@@ -291,8 +331,7 @@ def main(argv: list[str] | None = None) -> int:
         "other_columns_left_unparsed": loaded["other_columns_left_unparsed"],
         "per_donor_at8_values_emitted": False,
         "non_at8_pathology_endpoint_parsed": False,
-        "dev_opened": False,
-        "sealed_opened": False,
+        "dev_opened": False, "sealed_opened": False,
         "protected_populations_opened": False,
         "r7_readiness_root_sha256": gate["readiness_root_sha256"],
         "r7_package_root_sha256": gate["package_root_sha256"],
@@ -300,24 +339,114 @@ def main(argv: list[str] | None = None) -> int:
             stage2a_summary["donor_role_package_root_sha256"],
         "runner_code_sha256": code_sha256("t0_stage2b_discovery_at8_v1.py"),
         "code_byte_semantics": readiness.ACCURATE_CODE_BYTE_SEMANTICS,
-        "elapsed_seconds": round(time.time() - started, 1),
     }
     out = Path(args.outdir)
     out.mkdir(parents=True, exist_ok=True)
     with io.open(out / ACCESS_MANIFEST, "w", encoding="utf-8",
                  newline="\n") as handle:
         handle.write(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    stamp("  access manifest written")
+
+    stamp("Stage 2B step 4 - the frozen conclusion: gated freeze")
+    metadata = build_discovery_metadata(
+        discovery_donors=discovery, at8_values=loaded["values"],
+        age_sex_pkg=args.age_sex_pkg)
+    freeze_mod = stage2a._frozen("t0_canonical_freeze_v1")
+    result = freeze_mod.freeze_target_after_role(
+        target_dir=str(out / "target"),
+        discovery_authority_dir=str(out / "discovery_authority"),
+        role_dir=str(args.role_pkg),
+        feature_split_csv=str(args.feature_split),
+        membership_csv=str(args.membership),
+        scalar_raw_counts=materialized["matrix"],
+        scalar_feature_ids=materialized["feature_ids"],
+        matrix_id=materialized["matrix_id"],
+        local_row=materialized["local_row"],
+        cell_id=materialized["cell_id"],
+        donor_id=materialized["donor_id"],
+        stable_key=materialized["stable_key"],
+        source_library=materialized["source_library"],
+        donor_metadata=metadata)
+    target = result["target"]
+    provenance_root = target["provenance"]["root_sha256"]
+    stamp("  target package root      %s" % target["package_root_sha256"])
+    stamp("  discovery provenance root %s" % provenance_root)
+    stamp("  discovery authority root  %s"
+          % result["discovery_authority"]["package_root_sha256"])
+
+    fit = target["fit"]
+    record = {
+        "schema": "JEPA_T0_DISCOVERY_STAGE_RUN_SUMMARY_V1",
+        "terminal": ("DISCOVERY_STAGE_DONE_AND_REPLAYED"
+                     "__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"),
+        "CONFIRMATION_NUMERIC_AT8_NOT_ACCESSED": True,
+        "discovery_donor_count": len(discovery),
+        "discovery_cells": materialized["cells"],
+        "declared_addresses": materialized["declared_addresses"],
+        "matrix_nnz": materialized["nnz"],
+        "discovery_scalar_matrix_sha256": materialized["matrix_sha256"],
+        "discovery_donor_set_sha256": loaded["discovery_donor_set_sha256"],
+        "endpoint_identity": loaded["endpoint_identity"],
+        "endpoint_identity_sha256": loaded["endpoint_identity_sha256"],
+        "endpoint_values_sha256": loaded["endpoint_values_sha256"],
+        "pathology_source_sha256": loaded["pathology_source_sha256"],
+        "discovery_target_package_root_sha256": target["package_root_sha256"],
+        "discovery_provenance_root_sha256": provenance_root,
+        "discovery_authority_package_root_sha256":
+            result["discovery_authority"]["package_root_sha256"],
+        "donor_role_package_root_sha256":
+            result["donor_role_package_root_sha256"],
+        "r7_readiness_root_sha256": gate["readiness_root_sha256"],
+        "r7_package_root_sha256": gate["package_root_sha256"],
+        "population_closure_root_sha256":
+            materialized["population_closure_root_sha256"],
+        "logical_row_authority_root_sha256":
+            materialized["logical_row_authority_root_sha256"],
+        "population_raw_source_root_sha256":
+            materialized["population_raw_source_root_sha256"],
+        "selected_multiplier_exponent": fit["selected_multiplier_exponent"],
+        "final_lambda": fit["final_lambda"],
+        "response_residual_sd": fit["response_residual_sd"],
+        "discovery_age_center": fit["discovery_age_center"],
+        "decision_gene_count": int(sum(1 for v in fit["decision_gene_mask"]
+                                       if v)),
+        "per_donor_at8_values_emitted": False,
+        "non_at8_pathology_endpoint_parsed": False,
+        "dev_opened": False, "sealed_opened": False,
+        "protected_populations_opened": False,
+        "training_begun": False, "successor_u0_materialized": False,
+        "td60_run": False, "biological_sweeps_run": False,
+        "scientific_design_unchanged": True,
+        "counts_payload_reads": materialized["counts_payload_reads"],
+        "counts_payload_cache_hits": materialized["counts_payload_cache_hits"],
+        "runner_code_sha256": code_sha256("t0_stage2b_discovery_at8_v1.py"),
+        "matrix_code_sha256": code_sha256("t0_discovery_scalar_matrix_v1.py"),
+        "code_byte_semantics": readiness.ACCURATE_CODE_BYTE_SEMANTICS,
+        "elapsed_seconds": round(time.time() - started, 1),
+    }
+    with io.open(out / SUMMARY, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(record, indent=2, sort_keys=True) + "\n")
+
+    stamp("Stage 2B step 5 - replaying the discovery target from disk")
+    reloaded = freeze_mod.load_target_v2(
+        str(out / "target"), str(args.feature_split)) if hasattr(
+            freeze_mod, "load_target_v2") else None
+    if reloaded is None:
+        serializer = stage2a._frozen("t0_target_serializer_v2")
+        reloaded = serializer.load_target_v2(str(out / "target"),
+                                             str(args.feature_split))
+    if reloaded["package_root_sha256"] != target["package_root_sha256"]:
+        raise AssertionError("the reloaded target root does not match")
+    if reloaded["provenance"]["root_sha256"] != provenance_root:
+        raise AssertionError("the reloaded provenance root does not match")
+    stamp("  target replays: root %s" % reloaded["package_root_sha256"])
+
     print()
-    print(json.dumps(manifest, indent=2, sort_keys=True))
+    print(json.dumps(record, indent=2, sort_keys=True))
     print()
-    if args.dry_run_endpoint_only:
-        print("DISCOVERY NUMERIC AT8 ACCESS MANIFEST WRITTEN. "
-              "Fit not attempted in this invocation. "
-              "CONFIRMATION_NUMERIC_AT8_NOT_ACCESSED.")
-        return 0
-    raise SystemExit(
-        "the fit path is not wired in this build; rerun with "
-        "--dry-run-endpoint-only or supply the scalar matrix materializer")
+    print("DISCOVERY_STAGE_DONE_AND_REPLAYED"
+          "__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN")
+    return 0
 
 
 if __name__ == "__main__":
