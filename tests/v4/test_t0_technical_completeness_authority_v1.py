@@ -216,7 +216,7 @@ def test_an_unlawful_substrate_prevents_the_authority_being_built(tmp_path) -> N
     substrate = dict(SUBSTRATE)
     substrate.pop("projection_root_sha256")
     with pytest.raises(AssertionError) as excinfo:
-        tc.build_authority(tmp_path / "pkg",
+        tc._build_authority_from_precomputed_cells_fixture(tmp_path / "pkg",
                            cells_by_donor={"D1": [(9470, 3000)]},
                            substrate=substrate,
                            derivation_code_sha256=CODE_SHA,
@@ -264,7 +264,7 @@ def test_the_typed_float_framing_refuses_a_nonfinite_value() -> None:
 
 
 def test_the_package_round_trips_with_external_parent_binding(tmp_path) -> None:
-    summary = tc.build_authority(
+    summary = tc._build_authority_from_precomputed_cells_fixture(
         tmp_path / "pkg",
         cells_by_donor={"D1": [(9470, 3000), (8123, 2500)],
                         "D2": [(7777, 1000)]},
@@ -282,7 +282,7 @@ def test_the_package_round_trips_with_external_parent_binding(tmp_path) -> None:
 
 
 def test_the_loader_refuses_a_wrong_parent_contract_root(tmp_path) -> None:
-    summary = tc.build_authority(
+    summary = tc._build_authority_from_precomputed_cells_fixture(
         tmp_path / "pkg", cells_by_donor={"D1": [(9470, 3000)]},
         substrate=SUBSTRATE, derivation_code_sha256=CODE_SHA,
         candidate_donors=["D1"])
@@ -307,7 +307,7 @@ def test_the_parent_contract_root_moves_with_any_parent(tmp_path) -> None:
 
 
 def test_the_metadata_declares_its_synthetic_status_and_formulas(tmp_path) -> None:
-    tc.build_authority(tmp_path / "pkg", cells_by_donor={"D1": [(9470, 3000)]},
+    tc._build_authority_from_precomputed_cells_fixture(tmp_path / "pkg", cells_by_donor={"D1": [(9470, 3000)]},
                        substrate=SUBSTRATE, derivation_code_sha256=CODE_SHA,
                        candidate_donors=["D1"])
     meta = json.loads((tmp_path / "pkg" / tc.METADATA).read_text(encoding="utf-8"))
@@ -324,7 +324,7 @@ def test_the_metadata_declares_its_synthetic_status_and_formulas(tmp_path) -> No
 
 def test_a_stored_authority_declaring_a_threshold_is_refused(tmp_path) -> None:
     """Guards against a later package asserting a cutoff was applied."""
-    summary = tc.build_authority(
+    summary = tc._build_authority_from_precomputed_cells_fixture(
         tmp_path / "pkg", cells_by_donor={"D1": [(9470, 3000)]},
         substrate=SUBSTRATE, derivation_code_sha256=CODE_SHA,
         candidate_donors=["D1"])
@@ -347,7 +347,103 @@ def test_writing_into_a_nonempty_directory_is_refused(tmp_path) -> None:
     out.mkdir()
     (out / "stray.txt").write_text("x", encoding="utf-8")
     with pytest.raises(AssertionError) as excinfo:
-        tc.build_authority(out, cells_by_donor={"D1": [(9470, 3000)]},
+        tc._build_authority_from_precomputed_cells_fixture(out, cells_by_donor={"D1": [(9470, 3000)]},
                            substrate=SUBSTRATE, derivation_code_sha256=CODE_SHA,
                            candidate_donors=["D1"])
     assert tc.STOP_PACKAGE_MEMBER in str(excinfo.value)
+
+
+
+# R4 dataset-bound production-input attacks ---------------------------------
+
+def _tiny_csr_npz(rows: int, width: int, entries) -> bytes:
+    import numpy as np
+
+    by_row = [[] for _ in range(rows)]
+    for row, column, value in entries:
+        by_row[int(row)].append((int(column), int(value)))
+    data, indices, indptr = [], [], [0]
+    for record in by_row:
+        for column, value in sorted(record):
+            indices.append(column)
+            data.append(value)
+        indptr.append(len(data))
+    buffer = io.BytesIO()
+    np.savez(
+        buffer,
+        data=np.asarray(data, dtype=np.int32),
+        indices=np.asarray(indices, dtype=np.int32),
+        indptr=np.asarray(indptr, dtype=np.int32),
+        shape=np.asarray([rows, width], dtype=np.int32),
+        format=np.array(b"csr"),
+    )
+    return buffer.getvalue()
+
+
+def test_dataset_bound_builder_does_not_accept_detached_cells_by_donor(
+        tmp_path: Path) -> None:
+    """Genuine-looking parent roots cannot carry arbitrary technical values."""
+    with pytest.raises(TypeError):
+        tc.build_authority(
+            tmp_path / "pkg",
+            cells_by_donor={"D1": [(9470, 3000)]},
+            substrate=SUBSTRATE,
+            derivation_code_sha256=CODE_SHA,
+            candidate_donors=["D1"],
+        )
+
+
+def test_q_detect_numerator_is_derived_from_authenticated_phase2_block(
+        tmp_path: Path) -> None:
+    """The production helper reads the bound NPZ and the exact 35,076 B1 indices."""
+    relative = Path("op31") / "block-00000.counts.npz"
+    path = tmp_path / relative
+    path.parent.mkdir(parents=True)
+    payload = _tiny_csr_npz(
+        1, 41_238,
+        [(0, 0, 5), (0, 35_075, 3), (0, 40_000, 9)],
+    )
+    path.write_bytes(payload)
+    digest = hashlib.sha256(payload).hexdigest()
+    logical = {"rows": [{
+        "counts_path": relative.as_posix(),
+        "counts_sha256": digest,
+        "row_index": 0,
+    }]}
+    feature_authority = {
+        "projection": [
+            {"molecular_address_index": index}
+            for index in range(tc.SCALAR_FEATURES)
+        ]
+    }
+    result = tc._projected_nonzero_counts_from_authenticated_blocks(
+        logical=logical,
+        feature_authority=feature_authority,
+        phase2_expression_root=tmp_path,
+    )
+    assert result == {0: 2}
+
+
+def test_q_detect_helper_refuses_same_path_with_wrong_bound_digest(
+        tmp_path: Path) -> None:
+    relative = Path("op31") / "block-00000.counts.npz"
+    path = tmp_path / relative
+    path.parent.mkdir(parents=True)
+    path.write_bytes(_tiny_csr_npz(1, 41_238, [(0, 0, 5)]))
+    logical = {"rows": [{
+        "counts_path": relative.as_posix(),
+        "counts_sha256": "0" * 64,
+        "row_index": 0,
+    }]}
+    feature_authority = {
+        "projection": [
+            {"molecular_address_index": index}
+            for index in range(tc.SCALAR_FEATURES)
+        ]
+    }
+    with pytest.raises(AssertionError, match="SUBSTRATE_NOT_LAWFUL"):
+        tc._projected_nonzero_counts_from_authenticated_blocks(
+            logical=logical,
+            feature_authority=feature_authority,
+            phase2_expression_root=tmp_path,
+        )
