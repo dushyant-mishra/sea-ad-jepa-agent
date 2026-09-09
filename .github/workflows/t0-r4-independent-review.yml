@@ -20,10 +20,8 @@ jobs:
       - name: Install review dependencies
         run: python -m pip install --upgrade pip pytest numpy scipy h5py pandas
       - name: Compile candidate modules
-        run: |
-          python -m py_compile             scripts/v4/t0_raw_source_row_authority_v1.py             scripts/v4/t0_v20_row_count_authority_v1.py             scripts/v4/t0_technical_completeness_authority_v1.py             scripts/v4/t0_estimability_preflight_v1.py
-      - name: Run producer suites
-        run: |
-          pytest -q             tests/v4/test_t0_raw_source_row_authority_v1.py             tests/v4/test_t0_v20_row_count_authority_v1.py             tests/v4/test_t0_v20_row_count_authority_r2_red_v1.py             tests/v4/test_t0_technical_completeness_authority_v1.py             tests/v4/test_t0_estimability_preflight_v1.py
+        run: python -m py_compile scripts/v4/t0_raw_source_row_authority_v1.py scripts/v4/t0_v20_row_count_authority_v1.py scripts/v4/t0_technical_completeness_authority_v1.py scripts/v4/t0_estimability_preflight_v1.py
+      - name: Run all thirteen producer suites
+        run: pytest -q tests/test_work_checkpoint_v1.py tests/v4/test_t0_at8_availability_authority_v1.py tests/v4/test_t0_age_sex_authority_v1.py tests/v4/test_t0_estimability_preflight_v1.py tests/v4/test_t0_immune_fraction_authority_v1.py tests/v4/test_t0_immune_fraction_authority_r2_v1.py tests/v4/test_t0_immune_support_count_authority_v1.py tests/v4/test_t0_input_dependency_contract_v1.py tests/v4/test_t0_raw_source_row_authority_v1.py tests/v4/test_t0_technical_completeness_authority_v1.py tests/v4/test_t0_v20_feature_projection_authority_v1.py tests/v4/test_t0_v20_row_count_authority_v1.py tests/v4/test_t0_v20_row_count_authority_r2_red_v1.py
       - name: Run independent R4 red review
         run: pytest -q tests/v4/test_t0_r4_independent_review_red_v1.py
