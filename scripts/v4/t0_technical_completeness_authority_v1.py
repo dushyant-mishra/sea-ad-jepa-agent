@@ -423,6 +423,7 @@ def _write_package(
         substrate,
         derivation_code_sha256: str,
         scalar_features: int = SCALAR_FEATURES,
+        production_run_status: str = "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN",
 ):
     """Write the package members and both roots. Shared by both entrypoints."""
     root = completeness_root(rows)
@@ -463,7 +464,7 @@ def _write_package(
         "derivation_code_sha256": str(derivation_code_sha256),
         "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
         "pathology_values_read": False,
-        "production_run_status": "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN",
+        "production_run_status": str(production_run_status),
         "real_execution_ready": False,
     }
     meta_bytes = (json.dumps(meta, sort_keys=True, indent=2) + "\n").encode("utf-8")
@@ -792,4 +793,379 @@ def build_production_authority(
                              scalar_features=scalar_features)
     summary["cells_consumed"] = sum(int(row["cells"]) for row in rows)
     summary["derivation"] = "FROM_AUTHENTICATED_B2_LOGICAL_AND_B1_PROJECTION"
+    return summary
+
+
+# ---------------------------------------------------------------------------
+# R5 production closure.
+#
+# The R4 production builder authenticated the logical and projection roots but
+# still read Q_DEPTH from the logical metadata value without requiring the new
+# H5 population proof. It also invented a physical-plan parent root and made
+# 35,076 projection positions optional. The R5 path below closes those gaps and
+# consumes Phase2 counts in their native block-major layout.
+# ---------------------------------------------------------------------------
+
+STOP_RAW_SOURCE_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_RAW_SOURCE_ROOT_MISMATCH"
+STOP_CLOSURE_GEOMETRY = "STOP_T0_TECHNICAL_COMPLETENESS_CLOSURE_GEOMETRY_MISMATCH"
+
+# Preserve the permissive R4 derivation only for synthetic fixture tests.
+_derive_rows_from_authenticated_parents_fixture = derive_rows_from_authenticated_parents
+
+
+def assert_substrate_lawful(*, substrate: Mapping[str, Any]) -> bool:
+    """Require only semantic parents actually consumed by this authority."""
+    required = (
+        "population_closure_root_sha256",
+        "logical_row_authority_root_sha256",
+        "raw_source_population_root_sha256",
+        "feature_authority_root_sha256",
+        "projection_root_sha256",
+    )
+    for field in required:
+        value = substrate.get(field)
+        if not _is_hex64(value):
+            raise AssertionError(
+                "%s: %s is %r; missing provenance is a global STOP"
+                % (STOP_SUBSTRATE, field, value))
+    extra_physical = substrate.get("physical_read_plan_root_sha256")
+    if extra_physical is not None:
+        raise AssertionError(
+            "%s: physical_read_plan_root_sha256 is not a semantic parent of "
+            "technical completeness and may not be relabelled into this contract"
+            % STOP_SUBSTRATE)
+    return True
+
+
+def parent_contract_root(*, substrate: Mapping[str, Any],
+                         derivation_code_sha256: str) -> str:
+    """Bind the exact semantic parents consumed by the R5 derivation."""
+    assert_substrate_lawful(substrate=substrate)
+    fields = (
+        "population_closure_root_sha256",
+        "logical_row_authority_root_sha256",
+        "raw_source_population_root_sha256",
+        "feature_authority_root_sha256",
+        "projection_root_sha256",
+    )
+    parts = [_typed(DOMAIN_TAG), _typed("PARENT_CONTRACT_R5"),
+             _typed(len(fields) + 1)]
+    for field in fields:
+        parts.append(_typed([field, str(substrate[field])]))
+    if not _is_hex64(derivation_code_sha256):
+        raise AssertionError("%s: derivation_code_sha256 is not a hex sha256"
+                             % STOP_FIELD_SCHEMA)
+    parts.append(_typed(["derivation_code_sha256", str(derivation_code_sha256)]))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
+
+
+def _assert_closure_object_lawful(
+        closure: Mapping[str, Any], *,
+        expected_closure_root_sha256: str,
+) -> Mapping[str, Mapping[str, int]]:
+    """Recompute the closure root so rows/nnz geometry cannot be detached."""
+    import t0_v20_row_count_authority_v1 as rc
+
+    stored = str(closure.get("population_closure_root_sha256"))
+    recomputed = rc._closure_root(
+        closure["operator_index"],
+        closure["matrix_id"],
+        closure["blocks"],
+        closure["metadata_rows_scanned"],
+        closure["row_locations"],
+        closure["membership_sha256"],
+        closure["block_manifest_sha256"],
+        closure["block_geometry"],
+    )
+    if stored != recomputed or recomputed != str(expected_closure_root_sha256):
+        raise AssertionError(
+            "%s: stored=%s recomputed=%s expected=%s"
+            % (STOP_CLOSURE_ROOT, stored, recomputed,
+               expected_closure_root_sha256))
+    geometry = closure.get("block_geometry")
+    if not isinstance(geometry, Mapping) or not geometry:
+        raise AssertionError("%s: closure carries no block geometry"
+                             % STOP_CLOSURE_GEOMETRY)
+    return geometry
+
+
+def derive_rows_from_authenticated_parents(
+        *,
+        logical: Mapping[str, Any],
+        closure: Mapping[str, Any],
+        expected_logical_root_sha256: str,
+        expected_closure_root_sha256: str,
+        raw_source_authority: Mapping[str, Any],
+        expected_raw_source_population_root_sha256: str,
+        counts_payload_bytes_by_path: Mapping[str, bytes],
+        projection: Mapping[str, Any],
+        expected_projection_root_sha256: str,
+        address_space_size: int = 41_238,
+        scalar_features: int = SCALAR_FEATURES,
+) -> tuple[dict[str, Any], ...]:
+    """Dataset-bound R5 derivation.
+
+    Q_DEPTH comes from the population raw-H5 proof, never directly from an
+    unproven metadata value. Q_DETECT is derived block-major from authenticated
+    Phase2 CSR payloads and the exact 35,076-position B1 projection. The closure's
+    rows and nnz declarations are mandatory checks on every consumed block.
+    """
+    import math as _math
+    import t0_raw_source_row_authority_v1 as raw
+    import t0_v20_row_count_authority_v1 as rc
+
+    # Bind B2 logical authority.
+    verified = rc.assert_row_authority_lawful(
+        logical=logical,
+        expected_logical_row_authority_root_sha256=expected_logical_root_sha256,
+        expected_feature_authority_root_sha256=(
+            logical["feature_authority_root_sha256"]),
+        expected_population_closure_root_sha256=expected_closure_root_sha256,
+    )
+    if verified["rows"] != len(logical["rows"]):
+        raise AssertionError("%s: logical row cardinality moved" % STOP_SUBSTRATE)
+
+    geometry = _assert_closure_object_lawful(
+        closure, expected_closure_root_sha256=expected_closure_root_sha256)
+
+    # Bind the population-level raw H5 proof and use its proven totals.
+    raw.assert_population_raw_source_authority_lawful(
+        raw_source_authority,
+        expected_raw_source_population_root_sha256=(
+            expected_raw_source_population_root_sha256),
+        expected_logical_row_authority_root_sha256=expected_logical_root_sha256,
+        expected_population_closure_root_sha256=expected_closure_root_sha256,
+        expected_feature_authority_root_sha256=(
+            logical["feature_authority_root_sha256"]),
+    )
+    proofs = list(raw_source_authority["proofs"])
+    if len(proofs) != len(logical["rows"]):
+        raise AssertionError(
+            "%s: raw proof has %d rows, logical authority has %d"
+            % (STOP_RAW_SOURCE_ROOT, len(proofs), len(logical["rows"])))
+
+    # Bind B1 and enforce the real production geometry unconditionally.
+    actual_projection = projection_root(projection)
+    if actual_projection != str(expected_projection_root_sha256):
+        raise AssertionError("%s: projection root is %s, expected %s"
+                             % (STOP_PROJECTION_ROOT, actual_projection,
+                                expected_projection_root_sha256))
+    if str(projection["feature_authority_root_sha256"]) != str(
+            logical["feature_authority_root_sha256"]):
+        raise AssertionError("%s: feature authority root mismatch"
+                             % STOP_PROJECTION_ROOT)
+    positions = [int(p) for p in projection["positions"]]
+    if len(positions) != SCALAR_FEATURES or len(set(positions)) != SCALAR_FEATURES:
+        raise AssertionError(
+            "%s: production B1 projection must contain exactly %d unique positions; "
+            "got %d rows / %d unique"
+            % (STOP_PROJECTION_POSITIONS, SCALAR_FEATURES,
+               len(positions), len(set(positions))))
+    for position in positions:
+        if not (0 <= position < int(address_space_size)):
+            raise AssertionError(
+                "%s: position %d outside 0..%d"
+                % (STOP_PROJECTION_POSITIONS, position,
+                   int(address_space_size) - 1))
+    projected = set(positions)
+
+    # Cross-close every raw-source proof against its logical row before use.
+    library_by_index: dict[int, int] = {}
+    for logical_index, (row, proof) in enumerate(zip(logical["rows"], proofs)):
+        expected_tuple = (
+            logical_index,
+            int(row["expression_row"]),
+            str(row["canonical_cell_id"]),
+            str(row["donor_id"]),
+            int(row["source_library"]),
+        )
+        actual_tuple = (
+            int(proof["logical_index"]),
+            int(proof["expression_row"]),
+            str(proof["canonical_cell_id"]),
+            str(proof["donor_id"]),
+            int(proof["source_library"]),
+        )
+        if actual_tuple != expected_tuple:
+            raise AssertionError(
+                "%s: logical/proof row mismatch at %d: %r != %r"
+                % (STOP_RAW_SOURCE_ROOT, logical_index,
+                   actual_tuple, expected_tuple))
+        library_by_index[logical_index] = int(proof["source_library"])
+
+    # Native block-major consumption: authenticate and parse each NPZ once.
+    indices_by_path: dict[str, list[int]] = {}
+    for logical_index, row in enumerate(logical["rows"]):
+        indices_by_path.setdefault(str(row["counts_path"]), []).append(logical_index)
+
+    detect_nonzero: dict[int, int] = {}
+    for path in sorted(indices_by_path, key=lambda x: x.encode("utf-8")):
+        logical_indices = indices_by_path[path]
+        first = logical["rows"][logical_indices[0]]
+        block_key = str(first["block_key"])
+        if block_key not in geometry:
+            raise AssertionError(
+                "%s: block %s has no closure geometry"
+                % (STOP_CLOSURE_GEOMETRY, block_key))
+        bound_digests = {str(logical["rows"][i]["counts_sha256"])
+                         for i in logical_indices}
+        bound_blocks = {str(logical["rows"][i]["block_key"])
+                        for i in logical_indices}
+        if len(bound_digests) != 1 or bound_blocks != {block_key}:
+            raise AssertionError(
+                "%s: rows sharing %s disagree on block/digest"
+                % (STOP_SUBSTRATE, path))
+        if path not in counts_payload_bytes_by_path:
+            raise AssertionError("%s: missing payload %s" % (STOP_SUBSTRATE, path))
+        payload = bytes(counts_payload_bytes_by_path[path])
+        actual_digest = hashlib.sha256(payload).hexdigest()
+        expected_digest = next(iter(bound_digests))
+        if actual_digest != expected_digest:
+            raise AssertionError(
+                "%s: %s digest %s, expected %s"
+                % (STOP_SUBSTRATE, path, actual_digest, expected_digest))
+
+        parsed = rc._parse_csr_counts(payload)
+        n_rows, width = int(parsed["shape"][0]), int(parsed["shape"][1])
+        declared_rows = int(geometry[block_key]["rows"])
+        declared_nnz = int(geometry[block_key]["nnz"])
+        stored_nnz = int(parsed["indptr"][n_rows]) - int(parsed["indptr"][0])
+        if n_rows != declared_rows or stored_nnz != declared_nnz:
+            raise AssertionError(
+                "%s: %s payload rows/nnz=(%d,%d), closure declares (%d,%d)"
+                % (STOP_CLOSURE_GEOMETRY, block_key, n_rows, stored_nnz,
+                   declared_rows, declared_nnz))
+        if width != int(address_space_size):
+            raise AssertionError(
+                "%s: %s width=%d expected=%d"
+                % (STOP_CLOSURE_GEOMETRY, block_key, width,
+                   int(address_space_size)))
+
+        indptr, cols, vals = parsed["indptr"], parsed["indices"], parsed["data"]
+        for logical_index in logical_indices:
+            row = logical["rows"][logical_index]
+            block_row = int(row["row_index"])
+            if not (0 <= block_row < n_rows):
+                raise AssertionError(
+                    "%s: row_index %d outside %s rows=%d"
+                    % (STOP_CLOSURE_GEOMETRY, block_row, block_key, n_rows))
+            start, end = int(indptr[block_row]), int(indptr[block_row + 1])
+            seen = set()
+            for offset in range(start, end):
+                column = int(cols[offset])
+                numeric = float(vals[offset])
+                if (not _math.isfinite(numeric) or numeric < 0
+                        or numeric != int(numeric)):
+                    raise AssertionError(
+                        "%s: %s row %d has invalid value %r"
+                        % (STOP_COUNTS, block_key, block_row, vals[offset]))
+                if not (0 <= column < width):
+                    raise AssertionError(
+                        "%s: %s row %d column %d out of range"
+                        % (STOP_COUNTS, block_key, block_row, column))
+                if numeric != 0 and column in projected:
+                    seen.add(column)
+            detect_nonzero[logical_index] = len(seen)
+
+    if set(detect_nonzero) != set(range(len(logical["rows"]))):
+        raise AssertionError("%s: not every logical row was consumed"
+                             % STOP_SUBSTRATE)
+
+    per_donor: dict[str, list[tuple[float, float]]] = {}
+    cells_per_donor: dict[str, list[str]] = {}
+    for logical_index, row in enumerate(logical["rows"]):
+        donor = str(row["donor_id"])
+        depth = cell_q_depth(
+            library_by_index[logical_index],
+            what="raw-H5-proven source_library for logical index %d"
+                 % logical_index)
+        detect = cell_q_detect_from_nonzero_count(
+            detect_nonzero[logical_index], scalar_features=SCALAR_FEATURES)
+        per_donor.setdefault(donor, []).append((depth, detect))
+        cells_per_donor.setdefault(donor, []).append(
+            str(row["canonical_cell_id"]))
+
+    rows = []
+    for donor in sorted(per_donor, key=lambda d: d.encode("utf-8")):
+        summary = donor_summaries(per_donor[donor], donor_id=donor)
+        rows.append({
+            "donor_id": donor,
+            "cells": len(per_donor[donor]),
+            "cell_ids": tuple(cells_per_donor[donor]),
+            "Q_DEPTH": summary["Q_DEPTH"],
+            "Q_DETECT": summary["Q_DETECT"],
+            "technical_complete": technical_complete(summary, donor_id=donor),
+        })
+    return tuple(rows)
+
+
+def build_production_authority(
+        outdir: Path | str,
+        *,
+        logical: Mapping[str, Any],
+        closure: Mapping[str, Any],
+        expected_logical_root_sha256: str,
+        expected_closure_root_sha256: str,
+        raw_source_authority: Mapping[str, Any],
+        expected_raw_source_population_root_sha256: str,
+        counts_payload_bytes_by_path: Mapping[str, bytes],
+        projection: Mapping[str, Any],
+        expected_projection_root_sha256: str,
+        derivation_code_sha256: str,
+        candidate_donors: Sequence[str],
+        address_space_size: int = 41_238,
+) -> dict[str, Any]:
+    """R5 production constructor over exact dataset-derived parent authorities."""
+    out = Path(outdir)
+    if out.exists() and any(out.iterdir()):
+        raise AssertionError("%s: output directory must be absent or empty: %s"
+                             % (STOP_PACKAGE_MEMBER, out))
+    assert_predicate_is_threshold_free()
+
+    rows = derive_rows_from_authenticated_parents(
+        logical=logical,
+        closure=closure,
+        expected_logical_root_sha256=expected_logical_root_sha256,
+        expected_closure_root_sha256=expected_closure_root_sha256,
+        raw_source_authority=raw_source_authority,
+        expected_raw_source_population_root_sha256=(
+            expected_raw_source_population_root_sha256),
+        counts_payload_bytes_by_path=counts_payload_bytes_by_path,
+        projection=projection,
+        expected_projection_root_sha256=expected_projection_root_sha256,
+        address_space_size=address_space_size,
+        scalar_features=SCALAR_FEATURES,
+    )
+
+    donors = {str(row["donor_id"]) for row in rows}
+    expected = {str(d) for d in candidate_donors}
+    if donors != expected:
+        raise AssertionError(
+            "%s: derived-only %s, candidate-only %s"
+            % (STOP_DONOR_SET, sorted(donors - expected),
+               sorted(expected - donors)))
+
+    substrate = {
+        "population_closure_root_sha256": str(expected_closure_root_sha256),
+        "logical_row_authority_root_sha256": str(expected_logical_root_sha256),
+        "raw_source_population_root_sha256": str(
+            expected_raw_source_population_root_sha256),
+        "feature_authority_root_sha256": str(
+            logical["feature_authority_root_sha256"]),
+        "projection_root_sha256": str(expected_projection_root_sha256),
+    }
+    assert_substrate_lawful(substrate=substrate)
+
+    summary = _write_package(
+        out,
+        rows=rows,
+        substrate=substrate,
+        derivation_code_sha256=derivation_code_sha256,
+        scalar_features=SCALAR_FEATURES,
+        production_run_status=(
+            "DATASET_BOUND_AUTHORITY__PRODUCTION_B2_EXECUTION_GATE_STILL_REQUIRED"),
+    )
+    summary["cells_consumed"] = sum(int(row["cells"]) for row in rows)
+    summary["derivation"] = (
+        "RAW_H5_POPULATION_PROOF_PLUS_AUTHENTICATED_BLOCK_MAJOR_B2_PLUS_EXACT_B1")
     return summary
