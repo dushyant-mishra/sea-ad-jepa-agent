@@ -35,6 +35,8 @@ jobs:
           python -m pip install "numpy==1.26.4" "pandas>=2.2,<2.3" pytest
 
       - name: Prove torch-dependent package import executed
+        env:
+          PYTHONPATH: src:.
         run: |
           python - <<'PY'
           import torch
@@ -42,18 +44,16 @@ jobs:
           print("torch", torch.__version__)
           print("PASS_REAL_V5_PACKAGE_IMPORT_WITH_TORCH")
           PY
-        env:
-          PYTHONPATH: src:.
 
       - name: Compile V5 qualification code
         run: |
-          python -m py_compile             src/sea_ad_jepa/v5/anticheat_qualification_v1.py             src/sea_ad_jepa/v5/trainer_preexecution_contract_v1.py             scripts/v5_anticheat/real_readerfit_shortcut_probe_v1.py             scripts/v5_anticheat/atomic_checkpoint_telemetry_guard_v1.py
+          python -m py_compile             src/sea_ad_jepa/v5/anticheat_qualification_v1.py             src/sea_ad_jepa/v5/trainer_preexecution_contract_v1.py             src/sea_ad_jepa/v5/atomic_checkpoint_guard_v2.py             scripts/v5_anticheat/real_readerfit_shortcut_probe_v1.py             scripts/v5_anticheat/atomic_checkpoint_telemetry_guard_v1.py
 
       - name: Run V5 qualification tests
         env:
           PYTHONPATH: src:.
         run: |
-          pytest -q             tests/v5_anticheat/test_anticheat_qualification_v1.py             tests/v5_anticheat/test_trainer_preexecution_contract_v1.py             tests/v5_anticheat/test_atomic_checkpoint_telemetry_guard_v1.py
+          pytest -q             tests/v5_anticheat/test_anticheat_qualification_v1.py             tests/v5_anticheat/test_trainer_preexecution_contract_v1.py             tests/v5_anticheat/test_atomic_checkpoint_guard_v2.py             tests/v5_anticheat/test_atomic_checkpoint_telemetry_guard_v1.py
 
       - name: Critical-test skip policy note
         run: |
