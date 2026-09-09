@@ -1,0 +1,58 @@
+{
+  "biological_clock": {
+    "failed_or_nonfinite_update_behavior": "STOP__DO_NOT_SILENTLY_ADVANCE_EXPOSURE_OR_EMA",
+    "family_views_multiply_biological_presentation_count": false,
+    "family_views_per_base_presentation": 2,
+    "hardware_microbatch_count_is_biological_time": false,
+    "optimizer_update_count_is_biological_time": false,
+    "unit": "successful selected base-cell presentations"
+  },
+  "decision_bearing_checkpoint": {
+    "base_presentations_seen": 4553407,
+    "checkpoint_selection_by_model_outcome": false,
+    "historical_u205_is_biological_checkpoint": false,
+    "historical_u40_is_biological_checkpoint": false,
+    "intermediate_checkpoints": "resume/mechanics/telemetry only unless a newer prospective authority explicitly promotes one",
+    "last_update_policy": "truncate the final successful update to land exactly on the frozen presentation horizon; never overrun and never imply a second epoch",
+    "milestone_id": "FINAL_ONE_READER_FIT_POPULATION_EQUIVALENT_EMA_TEACHER_V1"
+  },
+  "ema": {
+    "coverage_profile": {
+      "interpretation": "Maps one-half-life windows to expected donor×operator coverage under frozen proposal V3; diagnostic only and does not select a half-life.",
+      "path": "docs/agent/READER_FIT_EMA_HALF_LIFE_COVERAGE_PROFILE_V1.csv",
+      "selection_authority": false,
+      "sha256": "ad602462ede30f8724e7d0c8a16e09f281d8f329a18794d7a8a0d1d53824887a"
+    },
+    "data_derived_boundary": "The frozen minimum group expectation is 16 over the full horizon; one-half-life coverage scales linearly with half_life_presentations / 4,553,407. No new coverage threshold is silently introduced.",
+    "half_life_unit": "base presentations",
+    "historical_fixed_momentum_0_996_promoted": false,
+    "numeric_half_life_presentations": null,
+    "partition_invariant": true,
+    "per_successful_update_momentum": "2 ** (-base_presentations_this_update / ema_half_life_presentations)"
+  },
+  "execution_authorized": false,
+  "implementation_verifier_required": true,
+  "implementation_verifier_terminal": null,
+  "presentation_horizon_authority": {
+    "definition": "EXACTLY_ONE_READER_FIT_POPULATION_EQUIVALENT__NO_AUTOMATIC_EXTENSION",
+    "path": "docs/agent/TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json",
+    "sha256": "5969202b44d4c56bd5d3701b1b84eab2a251ea76b5a9e8bb7fa4732a971c1fc7",
+    "total_base_presentations": 4553407
+  },
+  "schema": "TEACHER_STUDENT_V5_EXPOSURE_CLOCK_AND_FINAL_CHECKPOINT_CANDIDATE_V1",
+  "status": "CANDIDATE__EXPOSURE_CLOCK_SEMANTICS_AND_FINAL_MILESTONE_DEFINED__EMA_HALF_LIFE_NUMERIC_VALUE_UNFROZEN__NO_EXECUTION_AUTHORITY",
+  "still_unfrozen": {
+    "effective_base_cells_per_update": null,
+    "ema_half_life_presentations": null,
+    "hardware_microbatch_geometry": null
+  },
+  "successor_u0_authorized": false,
+  "td60_authorized": false,
+  "td60_prospective_correction": {
+    "candidate_replacement": "FINAL_ONE_READER_FIT_POPULATION_EQUIVALENT_EMA_TEACHER_V1",
+    "old_wording": "lawful successor u40 EMA teacher only",
+    "required": true,
+    "td60_execution_authorized": false
+  },
+  "training_authorized": false
+}
