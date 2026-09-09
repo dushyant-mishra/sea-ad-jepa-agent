@@ -32,6 +32,26 @@
     "support_fingerprints": 9,
     "support_fingerprint_source_purity": 1.0
   },
+  "t1_trajectory_json_evidence": {
+    "file": "04265c6d-285c-45b6-8e17-184d6e8bdd7b.json",
+    "sha256": "64c996b053d35722c7c18eeadf5e9b2dbab97b063c59101881f8a4b578125a49",
+    "schema": "prod41k-t1-trajectory-v2",
+    "updates": 205,
+    "loss_u1": 2.344030126929283,
+    "loss_u205": 0.006142306883702986,
+    "loss_u1_to_u205_pct_reduction": 0.9973795955891789,
+    "minimum_loss": 0.006054659781511873,
+    "minimum_loss_update": 203,
+    "strict_loss_decrease_steps": 141,
+    "strict_loss_increase_steps": 63,
+    "aggregate_missing_parameter_tensors_total": 0,
+    "aggregate_nonfinite_parameter_tensors_total": 0,
+    "ema_updates_match_update_count": true,
+    "aggregate_component_telemetry_limitation": "aggregate component l2_norms cannot prove the 48 protected attention-routing tensors were live elementwise",
+    "loss_decrease_is_biological_qualification": false,
+    "historical_u10_to_u205_resume_authority": false,
+    "historical_u10_to_u205_biological_teacher_authority": false
+  },
   "required_update_chain_before_training": [
     "fp16 forward",
     "backward with autocast disabled",
@@ -57,7 +77,9 @@
     "hardware_invariance_replay"
   ],
   "chat_local_verification": {
-    "pytest_tests": "20 passed",
+    "pytest_tests": "23 passed",
+    "t1_trajectory_analysis": "PASS_T1_TRAJECTORY_JSON_REVIEW_V1",
+    "t1_trajectory_output_review": "PASS_T1_TRAJECTORY_JSON_OUTPUT_REVIEW_V1",
     "mechanics_defect_review": "PASS_HISTORICAL_T1_MECHANICS_DEFECT_INTEGRATION_REVIEW_V1",
     "biology_sentinel_review": "PASS_BIOLOGY_DESTRUCTION_SENTINEL_REVIEW_V1",
     "anti_collapse_review": "PASS_ANTI_COLLAPSE_OUTPUT_REVIEW_V1",
@@ -65,6 +87,5 @@
     "doc_review": "PASS_ANTI_CHEAT_DOC_REVIEW_V1",
     "ci_status": "NOT_CI_REPRODUCED"
   },
-  "trajectory_file_bound": false,
-  "trajectory_file_note": "No separate T1 trajectory JSON was visible in /mnt/data by filename search at consolidation time; bind exact SHA and trajectory values when provided."
+  "no_zip_created": true
 }
