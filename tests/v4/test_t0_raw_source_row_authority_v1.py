@@ -117,6 +117,7 @@ def _build_fixture(path: Path, logical=None):
         expected_feature_authority_root_sha256=logical[
             "feature_authority_root_sha256"],
         expected_source_sha256=digest,
+        expected_source_bytes=path.stat().st_size,
         expected_source_cells=len(POPULATION),
         expected_source_features=rs.SOURCE_FEATURE_COUNT,
         expected_logical_rows=len(POPULATION),
@@ -179,6 +180,7 @@ def test_wrong_source_digest_stops(tmp_path: Path) -> None:
             expected_feature_authority_root_sha256=logical[
                 "feature_authority_root_sha256"],
             expected_source_sha256="f" * 64,
+            expected_source_bytes=path.stat().st_size,
             expected_source_cells=len(POPULATION),
             expected_source_features=rs.SOURCE_FEATURE_COUNT,
             expected_logical_rows=len(POPULATION))
@@ -200,6 +202,7 @@ def test_wrong_source_geometry_stops(tmp_path: Path) -> None:
             expected_feature_authority_root_sha256=logical[
                 "feature_authority_root_sha256"],
             expected_source_sha256=digest,
+            expected_source_bytes=path.stat().st_size,
             expected_source_cells=len(POPULATION),
             expected_source_features=rs.SOURCE_FEATURE_COUNT,
             expected_logical_rows=len(POPULATION))
@@ -258,6 +261,9 @@ def test_proof_verifier_establishes_stored_recomputed_expected(
         expected_feature_authority_root_sha256=logical[
             "feature_authority_root_sha256"],
         expected_source_sha256=digest,
+        expected_source_bytes=path.stat().st_size,
+        expected_source_cells=len(POPULATION),
+        expected_source_features=rs.SOURCE_FEATURE_COUNT,
         expected_proof_count=len(POPULATION))
     assert result["proof_count"] == len(POPULATION)
 
@@ -281,6 +287,9 @@ def test_mutating_any_proven_library_moves_or_invalidates_root(
             expected_feature_authority_root_sha256=logical[
                 "feature_authority_root_sha256"],
             expected_source_sha256=digest,
+            expected_source_bytes=path.stat().st_size,
+            expected_source_cells=len(POPULATION),
+            expected_source_features=rs.SOURCE_FEATURE_COUNT,
             expected_proof_count=len(POPULATION))
 
 
@@ -339,6 +348,7 @@ def test_caller_supplied_values_are_explicitly_refused() -> None:
 def test_frozen_real_asset_identity_and_geometry_are_unchanged() -> None:
     assert rs.MTG_SOURCE_SHA256 == (
         "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79")
+    assert rs.MTG_SOURCE_BYTES == 32_978_570_763
     assert rs.MTG_SOURCE_CELLS == 1_178_694
     assert rs.SOURCE_FEATURE_COUNT == 36_601
     assert rs.PRODUCTION_LOGICAL_ROWS == 20_804
