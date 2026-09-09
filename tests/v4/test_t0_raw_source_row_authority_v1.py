@@ -168,7 +168,7 @@ def test_a_fully_labelled_fabricated_row_cannot_prove_source_library(
     # There is no parameter through which the vector can enter. That is the
     # structural property: not a check that could be skipped, but an absent door.
     with pytest.raises(TypeError):
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_source_library_from_authenticated_source_fixture(
             source=source, logical=_logical([_row(0)]), logical_index=0,
             raw_source_row_values=fabricated,
             raw_source_provenance=provenance)
@@ -181,7 +181,7 @@ def test_a_fully_labelled_fabricated_row_cannot_prove_source_library(
 
 
 def test_the_proof_reports_that_no_caller_values_were_used(source) -> None:
-    proof = rs.prove_source_library_from_authenticated_source(
+    proof = rs._prove_source_library_from_authenticated_source_fixture(
         source=source, logical=_logical([_row(0)]), logical_index=0,
         expected_source_sha256=source.sha256)
     assert proof["caller_supplied_values"] is False
@@ -210,7 +210,7 @@ def test_a_look_alike_source_object_is_refused(source) -> None:
             self.h5 = real.h5
 
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_source_library_from_authenticated_source_fixture(
             source=LookAlike(source), logical=_logical([_row(0)]),
             logical_index=0, expected_source_sha256=rs.MTG_SOURCE_SHA256)
     assert rs.STOP_HANDLE_FORGED in str(excinfo.value)
@@ -227,7 +227,7 @@ def test_a_subclass_without_the_token_is_refused(source) -> None:
             self._h5 = genuine.h5
 
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_source_library_from_authenticated_source_fixture(
             source=Sneaky(), logical=_logical([_row(0)]), logical_index=0,
             expected_source_sha256=rs.MTG_SOURCE_SHA256)
     assert rs.STOP_HANDLE_FORGED in str(excinfo.value)
@@ -256,7 +256,7 @@ def test_the_whole_asset_is_digested(asset: Path, source) -> None:
 def test_a_proof_against_a_different_expected_digest_stops(source) -> None:
     """The handle's identity must equal what the proof expects."""
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_source_library_from_authenticated_source_fixture(
             source=source, logical=_logical([_row(0)]), logical_index=0,
             expected_source_sha256="e" * 64)
     assert rs.STOP_SOURCE_DIGEST in str(excinfo.value)
@@ -307,7 +307,7 @@ def test_the_library_is_computed_from_the_authenticated_row(source, index) -> No
 
 def test_the_source_row_identity_must_match_the_bound_cell(source) -> None:
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_source_library_from_authenticated_source_fixture(
             source=source, logical=_logical([_row(0, cell="SOMEONE-ELSE")]),
             logical_index=0, expected_source_sha256=source.sha256)
     assert rs.STOP_ROW_IDENTITY in str(excinfo.value)
@@ -315,7 +315,7 @@ def test_the_source_row_identity_must_match_the_bound_cell(source) -> None:
 
 def test_the_source_row_identity_must_match_the_bound_donor(source) -> None:
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_source_library_from_authenticated_source_fixture(
             source=source, logical=_logical([_row(0, donor="H20.33.999")]),
             logical_index=0, expected_source_sha256=source.sha256)
     assert rs.STOP_ROW_IDENTITY in str(excinfo.value)
@@ -328,7 +328,7 @@ def test_reading_the_wrong_expression_row_is_caught_by_identity(source) -> None:
     fails on identity before any total is compared.
     """
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_source_library_from_authenticated_source_fixture(
             source=source, logical=_logical([_row(0, expression_row=3)]),
             logical_index=0, expected_source_sha256=source.sha256)
     assert rs.STOP_ROW_IDENTITY in str(excinfo.value)
@@ -391,7 +391,7 @@ def test_a_bound_library_that_disagrees_with_the_authenticated_row_stops(
         source) -> None:
     correct = sum(POPULATION[0][2].values())
     with pytest.raises(AssertionError) as excinfo:
-        rs.prove_source_library_from_authenticated_source(
+        rs._prove_source_library_from_authenticated_source_fixture(
             source=source, logical=_logical([_row(0, library=correct + 1)]),
             logical_index=0, expected_source_sha256=source.sha256)
     assert rs.STOP_LIBRARY in str(excinfo.value)
@@ -399,7 +399,7 @@ def test_a_bound_library_that_disagrees_with_the_authenticated_row_stops(
 
 @pytest.mark.parametrize("index", [0, 1, 2])
 def test_a_genuine_row_proves_its_bound_library(source, index) -> None:
-    proof = rs.prove_source_library_from_authenticated_source(
+    proof = rs._prove_source_library_from_authenticated_source_fixture(
         source=source, logical=_logical([_row(index)]), logical_index=0,
         expected_source_sha256=source.sha256)
     assert proof["source_library"] == sum(POPULATION[index][2].values())
@@ -412,7 +412,7 @@ def test_a_genuine_row_proves_its_bound_library(source, index) -> None:
 # --- proof root -------------------------------------------------------------
 
 def test_the_proof_root_is_deterministic_and_order_independent(source) -> None:
-    proofs = [rs.prove_source_library_from_authenticated_source(
+    proofs = [rs._prove_source_library_from_authenticated_source_fixture(
         source=source, logical=_logical([_row(i)]), logical_index=0,
         expected_source_sha256=source.sha256) for i in (0, 1, 2)]
     assert rs.raw_source_proof_root(proofs) == rs.raw_source_proof_root(
@@ -420,7 +420,7 @@ def test_the_proof_root_is_deterministic_and_order_independent(source) -> None:
 
 
 def test_the_proof_root_moves_with_any_proven_field(source) -> None:
-    proof = rs.prove_source_library_from_authenticated_source(
+    proof = rs._prove_source_library_from_authenticated_source_fixture(
         source=source, logical=_logical([_row(0)]), logical_index=0,
         expected_source_sha256=source.sha256)
     baseline = rs.raw_source_proof_root([proof])
@@ -443,3 +443,44 @@ def test_the_frozen_asset_identity_is_the_verified_one() -> None:
     assert rs.MTG_SOURCE_CELLS == 1_178_694
     assert rs.SOURCE_FEATURE_COUNT == 36_601
     assert rs.UMI_SLOT == "layers/UMIs"
+
+
+
+# --- R5 public production boundary -----------------------------------------
+
+def test_public_object_handle_prover_is_retired(source) -> None:
+    with pytest.raises(AssertionError) as excinfo:
+        rs.prove_source_library_from_authenticated_source(
+            source=source, logical=_logical([_row(0)]), logical_index=0,
+            expected_source_sha256=source.sha256)
+    assert rs.STOP_HANDLE_FORGED in str(excinfo.value)
+
+
+def test_direct_construction_with_the_module_token_is_also_refused(
+        asset: Path) -> None:
+    """An underscore name is not a Python security boundary."""
+    import h5py
+
+    handle = h5py.File(asset, "r")
+    try:
+        with pytest.raises(AssertionError) as excinfo:
+            rs.AuthenticatedSource(
+                rs._HANDLE_TOKEN, path=asset, sha256=rs.MTG_SOURCE_SHA256,
+                bytes_read=rs.MTG_SOURCE_BYTES, handle=handle)
+        assert rs.STOP_HANDLE_FORGED in str(excinfo.value)
+    finally:
+        handle.close()
+
+
+def test_fixture_factory_hashes_and_reads_the_same_open_file_object() -> None:
+    import inspect
+
+    source = inspect.getsource(rs.open_authenticated_source)
+    assert 'h5py.File(str(asset), "r")' not in source
+    assert 'h5py.File(stream, "r")' in source
+
+
+def test_population_verifier_freezes_real_source_geometry() -> None:
+    assert rs.MTG_SOURCE_BYTES == 32_978_570_763
+    assert rs.MTG_SOURCE_CELLS == 1_178_694
+    assert rs.SOURCE_FEATURE_COUNT == 36_601
