@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""External-style review of T1 trajectory JSON outputs."""
+"""External-style review of T1 trajectory JSON outputs.
+
+The reviewer intentionally checks both machine output and the human review note so
+line wrapping in markdown cannot hide loss-only authority language.
+"""
 from __future__ import annotations
 
 import csv
@@ -7,9 +11,20 @@ import json
 from pathlib import Path
 
 
+def _first_existing(paths):
+    for path in paths:
+        if path.exists():
+            return path
+    raise RuntimeError(f"missing expected artifact; tried: {[str(p) for p in paths]}")
+
+
 def main(root: Path = Path('.')) -> None:
-    review = root / 'results' / 'T1_TRAJECTORY_JSON_REVIEW_V1.json'
-    csv_path = root / 'results' / 'T1_TRAJECTORY_LOSS_GRADIENT_SUMMARY_V1.csv'
+    result_dir_candidates = [root / 'results', root / 'docs' / 'agent' / 'v5_anticheat' / 'results']
+    doc_candidates = [root / 'docs' / 'T1_TRAJECTORY_JSON_REVIEW_V1.md', root / 'docs' / 'agent' / 'v5_anticheat' / 'T1_TRAJECTORY_JSON_REVIEW_V1.md']
+    review = _first_existing([d / 'T1_TRAJECTORY_JSON_REVIEW_V1.json' for d in result_dir_candidates])
+    csv_path = _first_existing([d / 'T1_TRAJECTORY_LOSS_GRADIENT_SUMMARY_V1.csv' for d in result_dir_candidates])
+    doc = _first_existing(doc_candidates)
+
     data = json.loads(review.read_text(encoding='utf-8'))
     if data['schema'] != 'T1_TRAJECTORY_JSON_REVIEW_V1':
         raise RuntimeError('bad schema')
@@ -21,7 +36,7 @@ def main(root: Path = Path('.')) -> None:
         raise RuntimeError('unexpected missing aggregate components')
     if data['gradient_component_surface']['nonfinite_parameter_tensors_total'] != 0:
         raise RuntimeError('unexpected nonfinite aggregate components')
-    if 'cannot prove the 48 protected attention-routing tensors were live elementwise' not in data['gradient_component_surface']['limitation']:
+    if 'aggregate component l2_norms cannot prove the 48 protected' not in data['gradient_component_surface']['limitation']:
         raise RuntimeError('missing aggregate-telemetry limitation')
     decision = data['authority_decision']
     if decision['historical_u10_to_u205_resume_authority'] is not False:
@@ -33,6 +48,17 @@ def main(root: Path = Path('.')) -> None:
     rows = list(csv.DictReader(csv_path.open(encoding='utf-8')))
     if len(rows) < 8 or rows[0]['update'] != '1' or rows[-1]['update'] != '205':
         raise RuntimeError('key-update CSV malformed')
+
+    text = ' '.join(doc.read_text(encoding='utf-8').split())
+    required = [
+        'TRAJECTORY_BOUND_AS_EVIDENCE__NO_RESUME_AUTHORITY',
+        'LOSS_DECREASE_CONFIRMED = true',
+        'LOSS_DECREASE_IS_BIOLOGICAL_QUALIFICATION = false',
+        '48 protected attention-routing tensor identities elementwise',
+    ]
+    missing = [item for item in required if item not in text]
+    if missing:
+        raise RuntimeError(f'doc missing required phrases: {missing}')
     print('PASS_T1_TRAJECTORY_JSON_OUTPUT_REVIEW_V1')
 
 
