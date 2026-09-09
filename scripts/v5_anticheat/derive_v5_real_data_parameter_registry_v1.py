@@ -36,6 +36,7 @@ def derive(
     partition: str,
     max_folds: int,
     min_donors_per_source_per_fold: int,
+    diagnostic_group_floor: int,
 ) -> dict:
     meta_sha = sha256_file(metadata_sqlite)
     cal_sha = sha256_file(calibration_zip)
@@ -89,6 +90,8 @@ def derive(
 
     if max_folds < 1 or min_donors_per_source_per_fold < 1:
         raise ValueError("fold controls must be positive")
+    if diagnostic_group_floor < 1:
+        raise ValueError("diagnostic_group_floor must be positive")
     outer_folds = min(
         max_folds,
         min(n // min_donors_per_source_per_fold for n in source_donors.values()),
@@ -142,7 +145,11 @@ def derive(
             },
             "minimum_group_cells": min(group_sizes),
             "maximum_group_cells": max(group_sizes),
-            "groups_below_16": sum(x < 16 for x in group_sizes),
+            "groups_below_diagnostic_floor": {
+                "floor": diagnostic_group_floor,
+                "groups": sum(x < diagnostic_group_floor for x in group_sizes),
+                "role": "diagnostic only; does not create schedule or training authority",
+            },
             "source_cells": dict(sorted(source_cells.items())),
             "source_donors": dict(sorted(source_donors.items())),
         },
@@ -213,6 +220,7 @@ def main() -> int:
     p.add_argument("--partition", required=True)
     p.add_argument("--max-folds", type=int, required=True)
     p.add_argument("--min-donors-per-source-per-fold", type=int, required=True)
+    p.add_argument("--diagnostic-group-floor", type=int, required=True)
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
     result = derive(
@@ -224,6 +232,7 @@ def main() -> int:
         partition=a.partition,
         max_folds=a.max_folds,
         min_donors_per_source_per_fold=a.min_donors_per_source_per_fold,
+        diagnostic_group_floor=a.diagnostic_group_floor,
     )
     a.output.parent.mkdir(parents=True, exist_ok=True)
     a.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
