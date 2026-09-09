@@ -50,6 +50,7 @@ jobs:
           tests/test_v5_repeat_cap_conditioning_pareto_v1.py
           tests/test_v5_affine_order_update_conditioning_v1.py
           tests/test_critical_test_execution_guard_v1.py
+          tests/test_dimension_execution_firewall_v1.py
       - name: Prove C2 critical tests executed
         env:
           PYTHONPATH: src:.
@@ -72,6 +73,7 @@ jobs:
           src/sea_ad_jepa/v5/dimension_authority_guard_v2.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v3.py
           src/sea_ad_jepa/v5/critical_test_execution_guard_v1.py
+          src/sea_ad_jepa/v5/dimension_execution_firewall_v1.py
           scripts/v5_anticheat/audit_full_population_coverage_conditioning_v1.py
           scripts/v5_anticheat/derive_full_population_schedule_optimum_v3.py
           scripts/v5_anticheat/materialize_full_population_schedule_v4.py
