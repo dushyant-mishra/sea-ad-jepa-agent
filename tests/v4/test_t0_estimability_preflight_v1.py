@@ -320,8 +320,8 @@ def test_stages_must_run_in_order() -> None:
 def test_the_preflight_root_is_deterministic_and_moves_with_the_stages() -> None:
     a = [{"stage": "A_PARENT_NUISANCE", "checks": {"DISCOVERY": 4}}]
     b = [{"stage": "A_PARENT_NUISANCE", "checks": {"DISCOVERY": 3}}]
-    assert pf.preflight_root(a) == pf.preflight_root(a)
-    assert pf.preflight_root(a) != pf.preflight_root(b)
+    assert pf._preflight_root_from_rank_only_fixture(a) == pf._preflight_root_from_rank_only_fixture(a)
+    assert pf._preflight_root_from_rank_only_fixture(a) != pf._preflight_root_from_rank_only_fixture(b)
 
 
 def test_all_three_stages_run_in_order_end_to_end() -> None:
@@ -342,7 +342,7 @@ def test_all_three_stages_run_in_order_end_to_end() -> None:
             q_detect=_covariate(n_tail, 0.2, 0.01, shape=3)),
     ]
     assert pf.assert_stage_order(results) is True
-    assert len(pf.preflight_root(results)) == 64
+    assert len(pf._preflight_root_from_rank_only_fixture(results)) == 64
 
 
 # ---------------------------------------------------------------------------
@@ -558,3 +558,85 @@ def test_the_donor_keyed_stages_still_refuse_the_response() -> None:
         with pytest.raises(AssertionError) as excinfo:
             stage(response=[1.0] * 18, **kwargs)
         assert pf.STOP_RESPONSE_PRESENT in str(excinfo.value)
+
+
+
+# --- R5 authority-root binding ---------------------------------------------
+
+def test_records_root_binds_float_bits_not_12_decimal_rounding() -> None:
+    donors = _donors(6)
+    records = _records(donors)
+    baseline = pf.records_root(donors, records, pf.STAGE_B_FIELDS)
+    moved = {donor: dict(row) for donor, row in records.items()}
+    moved[donors[0]]["STATE_SCORE"] = (
+        float(moved[donors[0]]["STATE_SCORE"]) + 1e-13)
+    assert moved[donors[0]]["STATE_SCORE"] != records[donors[0]]["STATE_SCORE"]
+    assert pf.records_root(donors, moved, pf.STAGE_B_FIELDS) != baseline
+
+
+def test_production_preflight_root_refuses_rank_only_array_stage_results() -> None:
+    result = pf._stage_b_from_arrays(
+        confirmation=_roles(18), state_score=_covariate(18),
+        immune_fraction=_covariate(18, 0.01, 0.002, shape=1),
+        q_depth=_covariate(18, 9.0, 0.05, shape=2),
+        q_detect=_covariate(18, 0.2, 0.01, shape=3))
+    with pytest.raises(AssertionError) as excinfo:
+        pf.preflight_root([result])
+    assert pf.STOP_STAGE_ORDER in str(excinfo.value) or         pf.STOP_POSITIONAL in str(excinfo.value)
+
+
+def test_preflight_root_moves_when_only_the_bound_records_root_moves() -> None:
+    donors = _donors(18)
+    records = _records(donors)
+    result = pf.stage_b_state_designs(
+        confirmation_order=donors, records=records,
+        expected_records_root_sha256=pf.records_root(
+            donors, records, pf.STAGE_B_FIELDS))
+    # Stage B alone is not a lawful prefix, so use a minimal donor-bound Stage A.
+    discovery = _donors(28)
+    confirmation = ["C%02d" % i for i in range(18)]
+    dr = _records(discovery)
+    cr = _records(confirmation)
+    stage_a = pf.stage_a_parent_nuisance(
+        discovery_order=discovery, discovery_records=dr,
+        expected_discovery_records_root_sha256=pf.records_root(
+            discovery, dr, ("age", "sex")),
+        confirmation_order=confirmation, confirmation_records=cr,
+        expected_confirmation_records_root_sha256=pf.records_root(
+            confirmation, cr, ("age", "sex")))
+    result_for_confirmation = pf.stage_b_state_designs(
+        confirmation_order=confirmation, records=cr,
+        expected_records_root_sha256=pf.records_root(
+            confirmation, cr, pf.STAGE_B_FIELDS))
+    baseline = pf.preflight_root([stage_a, result_for_confirmation])
+    moved = dict(result_for_confirmation)
+    moved["records_root_sha256"] = "f" * 64
+    assert pf.preflight_root([stage_a, moved]) != baseline
+
+
+def test_preflight_root_binds_residual_df_and_donor_order() -> None:
+    discovery = _donors(28)
+    confirmation = ["C%02d" % i for i in range(18)]
+    dr = _records(discovery)
+    cr = _records(confirmation)
+    a = pf.stage_a_parent_nuisance(
+        discovery_order=discovery, discovery_records=dr,
+        expected_discovery_records_root_sha256=pf.records_root(
+            discovery, dr, ("age", "sex")),
+        confirmation_order=confirmation, confirmation_records=cr,
+        expected_confirmation_records_root_sha256=pf.records_root(
+            confirmation, cr, ("age", "sex")))
+    b = pf.stage_b_state_designs(
+        confirmation_order=confirmation, records=cr,
+        expected_records_root_sha256=pf.records_root(
+            confirmation, cr, pf.STAGE_B_FIELDS))
+    baseline = pf.preflight_root([a, b])
+
+    moved_df = dict(b)
+    moved_df["residual_df"] = dict(b["residual_df"])
+    moved_df["residual_df"]["measurement"] += 1
+    assert pf.preflight_root([a, moved_df]) != baseline
+
+    moved_order = dict(b)
+    moved_order["confirmation_order"] = list(reversed(b["confirmation_order"]))
+    assert pf.preflight_root([a, moved_order]) != baseline
