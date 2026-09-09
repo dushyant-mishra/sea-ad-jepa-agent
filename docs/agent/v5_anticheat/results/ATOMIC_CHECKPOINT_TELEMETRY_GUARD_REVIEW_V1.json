@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2023,
+      "path": "/mnt/data/jepa_v5_anticheat_work/docs/ATOMIC_CHECKPOINT_TELEMETRY_GUARD_V1.md",
+      "sha256": "a3598a47a9629f61c75672e97ec5a85985fb89a24c90695a9a812deac0c7998e"
+    },
+    {
+      "bytes": 8614,
+      "path": "/mnt/data/jepa_v5_anticheat_work/scripts/atomic_checkpoint_telemetry_guard_v1.py",
+      "sha256": "83bda2e44218762af6b0e5ed8b7f04c86b24d94c859b961a63e54c6216b2de30"
+    },
+    {
+      "bytes": 4466,
+      "path": "/mnt/data/jepa_v5_anticheat_work/tests/test_atomic_checkpoint_telemetry_guard_v1.py",
+      "sha256": "acd7bebc3727c01bea4e1ff2c344f26009ee94d2b3f8fdc70a2b745132b6ffdc"
+    }
+  ],
+  "date": "2026-09-09",
+  "purpose": "Prevent loss-only checkpoint qualification by requiring atomic mechanics, biology, shortcut, collapse, transfer, EMA, and forbidden-gate telemetry.",
+  "schema": "ATOMIC_CHECKPOINT_TELEMETRY_GUARD_REVIEW_V1",
+  "status": "LOCAL_GUARD_TESTED__NO_TRAINING_AUTHORITY",
+  "stops": [
+    "STOP_CHECKPOINT_TELEMETRY_MISSING",
+    "STOP_CHECKPOINT_MECHANICS_UNHEALTHY",
+    "STOP_LOSS_IMPROVED_BUT_BIOLOGY_DEGRADED",
+    "STOP_LOSS_IMPROVED_BUT_SHORTCUT_ASCENDED",
+    "STOP_LOSS_IMPROVED_BUT_TRANSFER_DEGRADED",
+    "STOP_Z_BIO_VARIANCE_COLLAPSE",
+    "STOP_Z_BIO_EFFECTIVE_RANK_COLLAPSE",
+    "STOP_FORBIDDEN_GATE_OPENED"
+  ],
+  "training_authorized": false
+}
