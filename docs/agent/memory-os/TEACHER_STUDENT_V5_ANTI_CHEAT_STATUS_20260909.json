@@ -1,0 +1,70 @@
+{
+  "schema": "TEACHER_STUDENT_V5_ANTI_CHEAT_CONSOLIDATED_STATUS_20260909",
+  "date": "2026-09-09",
+  "canonical_branch_target": "main",
+  "status": "CONSOLIDATED_FINDINGS__NO_TRAINING_AUTHORITY",
+  "controlling_summary": "docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md",
+  "safe_to_train": false,
+  "teacher_student_training_authorized": false,
+  "successor_u0_authorized": false,
+  "td60_authorized": false,
+  "d1_real_authorized": false,
+  "historical_t1_causal_condition": "C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST",
+  "historical_u10_to_u205_classification": "TRAINING_MECHANICS_DEFECT_INHERITED",
+  "historical_u10_to_u205_resume_authority": false,
+  "historical_u10_to_u205_biological_teacher_authority": false,
+  "historical_u10_to_u205_td60_input_authority": false,
+  "clean_u0_unaffected_by_fp16_backward_defect": true,
+  "real_data_confirms_shortcut_risk": true,
+  "v5_status": "PARTIALLY_HARDENED__NOT_YET_CHEAT_QUALIFIED",
+  "real_sample": {
+    "cells": 50000,
+    "addresses": 41238,
+    "nnz": 246702069,
+    "density": 0.119647931,
+    "sources": {
+      "SEA_AD": 33821,
+      "HVS": 10958,
+      "NPH52": 5221
+    },
+    "operators": 42,
+    "donors": 104,
+    "support_fingerprints": 9,
+    "support_fingerprint_source_purity": 1.0
+  },
+  "required_update_chain_before_training": [
+    "fp16 forward",
+    "backward with autocast disabled",
+    "unscale",
+    "48-tensor mandatory protected-gradient gate",
+    "optimizer step proved",
+    "both Adam moments checked",
+    "EMA update"
+  ],
+  "required_before_training": [
+    "historical_t1_mechanics_defect_quarantine",
+    "backward_autocast_disabled_gate",
+    "mandatory_48_gradient_and_moment_gate",
+    "observation_operator_routing",
+    "anti_collapse_telemetry",
+    "constant_vector_negative_control",
+    "support_only_source_attack",
+    "depth_qc_only_attack",
+    "mask_only_attack",
+    "held_out_donor_matrix_study_technology_transfer",
+    "evidence_and_depth_response_curves",
+    "proposal_weighting_p_over_q_audit",
+    "hardware_invariance_replay"
+  ],
+  "chat_local_verification": {
+    "pytest_tests": "20 passed",
+    "mechanics_defect_review": "PASS_HISTORICAL_T1_MECHANICS_DEFECT_INTEGRATION_REVIEW_V1",
+    "biology_sentinel_review": "PASS_BIOLOGY_DESTRUCTION_SENTINEL_REVIEW_V1",
+    "anti_collapse_review": "PASS_ANTI_COLLAPSE_OUTPUT_REVIEW_V1",
+    "real_data_anticheat_review": "PASS_REAL_DATA_ANTI_CHEAT_OUTPUT_REVIEW_V1",
+    "doc_review": "PASS_ANTI_CHEAT_DOC_REVIEW_V1",
+    "ci_status": "NOT_CI_REPRODUCED"
+  },
+  "trajectory_file_bound": false,
+  "trajectory_file_note": "No separate T1 trajectory JSON was visible in /mnt/data by filename search at consolidation time; bind exact SHA and trajectory values when provided."
+}
