@@ -1,16 +1,17 @@
 {
-  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_POINTER",
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_POINTER_R2",
   "date": "2026-09-09",
-  "status": "HANDOFF_POINTER__LOCAL_EXPORT_CREATED__NO_EXECUTION_AUTHORITY",
+  "status": "HANDOFF_POINTER_R2__LOCAL_EXPORT_CREATED__NO_EXECUTION_AUTHORITY",
+  "r2_note": "ZIP SHA is not embedded inside files included in the ZIP. Use SHA256SUMS_FINAL_R2.txt and the final chat response for final ZIP integrity.",
   "runtime_export_directory": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL",
   "artifacts": {
     "handoff_markdown": {
-      "path": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL.md",
-      "sha256": "0388d991f621bf5777be7f3b2b7fe6a3e5750444a21ad9311237b7f0c3d97d11"
+      "path": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R2.md",
+      "sha256": "3a07d8cc4eeb166bc9cecb43de6119436f36ecf36f406f89321b48426e4d189e"
     },
     "handoff_state_json": {
-      "path": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL.json",
-      "sha256": "40cd677186d3e8654704203e75da8879dd841b685f58bbf67a473e20b7137e02"
+      "path": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R2.json",
+      "sha256": "73bbfa671332276791dfb4842ddca8f9000fd550a08036eb5bed8c50ad79fc7b"
     },
     "local_file_manifest_csv": {
       "path": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_LOCAL_FILE_MANIFEST_20260909_FINAL.csv",
@@ -22,14 +23,18 @@
       "sha256": "1d0a68cbd112312e3e3ea817235d5ed1ed4256e11eea470ea6081d78f46fc04e"
     },
     "small_artifacts_zip": {
-      "path": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_HANDOFF_SMALL_ARTIFACTS_20260909_FINAL.zip",
-      "sha256": "1835883ab3a0fca8bdeb76ec69369637201d30fe729cdcaf7801acceacede8f8",
-      "bytes": 4848810
+      "path": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/JEPA_HANDOFF_SMALL_ARTIFACTS_20260909_FINAL_R2.zip",
+      "sha256": "62fa8d97c5713b001afa290afd1b493db07e7f58f6bc76187d2311e4474401dc",
+      "bytes": 4848073
+    },
+    "checksums": {
+      "path": "/mnt/data/JEPA_PROJECT_LIBRARY_EXPORT_20260909_FINAL/SHA256SUMS_FINAL_R2.txt"
     }
   },
   "github_state_captured": {
     "repo": "dushyant-mishra/sea-ad-jepa-agent",
-    "main_verified": "c0e1f4adb3b14339738bda5bf23ea7d9e3bd18cc",
+    "main_after_pointer_push": "8fd48c1f98dbe4f9bbf96b41b6c62ba0f5266989",
+    "main_before_pointer": "c0e1f4adb3b14339738bda5bf23ea7d9e3bd18cc",
     "active_t0_branch": "t0/v20-pathology-blind-materialization-20260908",
     "active_t0_head_verified": "55796d208be4508743438e3f514b79bdf2f814c1",
     "r8_closure_commit": "52f5c3830848e4f03c5581f883cfde212b2dee4c",
@@ -77,5 +82,5 @@
     "d1_real_authorized": false,
     "protected_populations_authorized": false
   },
-  "new_chat_first_instruction": "Read START_HERE.md on main, then verify the active T0 branch head before acting. Use the runtime handoff markdown and compact ZIP for generated local artifacts; attach or add large binaries to Project Library only if the new chat cannot see mounted /mnt/data files."
+  "new_chat_first_instruction": "Read START_HERE.md on main, then verify the active T0 branch head before acting. Use the R2 runtime handoff markdown and compact ZIP for generated local artifacts; attach or add large binaries to Project Library only if the new chat cannot see mounted /mnt/data files."
 }
