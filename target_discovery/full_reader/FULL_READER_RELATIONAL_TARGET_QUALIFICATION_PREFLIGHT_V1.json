@@ -1,0 +1,33 @@
+{
+  "schema": "JEPA_FULL_READER_RELATIONAL_TARGET_QUALIFICATION_PREFLIGHT_V1",
+  "terminal": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
+  "authenticated_real_population": {
+    "cells": 4553407,
+    "unique_stable_keys": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "donor_operator_groups": 1400,
+    "matrices": 42,
+    "addresses": 41238
+  },
+  "frozen_inputs_sha256": {
+    "loader": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "metadata": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "observation": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "physical_expression_location_binding": "MISSING",
+  "target_framework": "TD57B_TD59_SCALE_FREE_RELATIONAL_GEOMETRY__NO_LOCALITY_FRACTION_RETUNING",
+  "full_reader_action_if_pass": "Run fixed relational qualification/shortcut attacks over reader_fit using d1_expression_reader_v2; do not perform outcome-responsive target search.",
+  "substitutions_forbidden": [
+    "50K discovery archive as if it were the 4,553,407-cell population",
+    "synthetic expression",
+    "reader_validation",
+    "reader_oracle",
+    "DEV",
+    "SEALED",
+    "pathology"
+  ],
+  "pathology_used": false,
+  "synthetic_data_used": false,
+  "training_authorized": false
+}
