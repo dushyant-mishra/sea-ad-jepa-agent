@@ -1,5 +1,5 @@
 {
-  "schema": "TEACHER_STUDENT_V5_ANTI_CHEAT_CONSOLIDATED_STATUS_20260909",
+  "schema": "TEACHER_STUDENT_V5_ANTI_CHEAT_CONSOLIDATED_STATUS_20260909_R2",
   "date": "2026-09-09",
   "canonical_branch_target": "main",
   "status": "CONSOLIDATED_FINDINGS__NO_TRAINING_AUTHORITY",
@@ -52,6 +52,30 @@
     "historical_u10_to_u205_resume_authority": false,
     "historical_u10_to_u205_biological_teacher_authority": false
   },
+  "torch_test_skip_caveat": {
+    "status": "ADOPTION_RISK_RECORDED",
+    "claim_to_avoid": "13 adversarial tests pass",
+    "observed_without_torch": "9 passed, 4 skipped due to inability to import torch",
+    "risk": "The four skipped tests include the live-tensor subnormal/norm-defect case; an environment without torch can look green while not exercising the most important check.",
+    "requirement": "Any adopter must verify that the four torch-dependent tests execute, not skip."
+  },
+  "atomic_checkpoint_telemetry_guard": {
+    "status": "LOCAL_GUARD_TESTED__NO_TRAINING_AUTHORITY",
+    "controlling_doc": "docs/agent/v5_anticheat/ATOMIC_CHECKPOINT_TELEMETRY_GUARD_V1.md",
+    "review_json": "docs/agent/v5_anticheat/results/ATOMIC_CHECKPOINT_TELEMETRY_GUARD_REVIEW_V1.json",
+    "script": "scripts/v5_anticheat/atomic_checkpoint_telemetry_guard_v1.py",
+    "test": "tests/v5_anticheat/test_atomic_checkpoint_telemetry_guard_v1.py",
+    "stops": [
+      "STOP_CHECKPOINT_TELEMETRY_MISSING",
+      "STOP_CHECKPOINT_MECHANICS_UNHEALTHY",
+      "STOP_LOSS_IMPROVED_BUT_BIOLOGY_DEGRADED",
+      "STOP_LOSS_IMPROVED_BUT_SHORTCUT_ASCENDED",
+      "STOP_LOSS_IMPROVED_BUT_TRANSFER_DEGRADED",
+      "STOP_Z_BIO_VARIANCE_COLLAPSE",
+      "STOP_Z_BIO_EFFECTIVE_RANK_COLLAPSE",
+      "STOP_FORBIDDEN_GATE_OPENED"
+    ]
+  },
   "required_update_chain_before_training": [
     "fp16 forward",
     "backward with autocast disabled",
@@ -74,10 +98,11 @@
     "held_out_donor_matrix_study_technology_transfer",
     "evidence_and_depth_response_curves",
     "proposal_weighting_p_over_q_audit",
-    "hardware_invariance_replay"
+    "hardware_invariance_replay",
+    "atomic_checkpoint_telemetry_guard"
   ],
   "chat_local_verification": {
-    "pytest_tests": "23 passed",
+    "pytest_tests": "32 passed",
     "t1_trajectory_analysis": "PASS_T1_TRAJECTORY_JSON_REVIEW_V1",
     "t1_trajectory_output_review": "PASS_T1_TRAJECTORY_JSON_OUTPUT_REVIEW_V1",
     "mechanics_defect_review": "PASS_HISTORICAL_T1_MECHANICS_DEFECT_INTEGRATION_REVIEW_V1",
@@ -85,6 +110,7 @@
     "anti_collapse_review": "PASS_ANTI_COLLAPSE_OUTPUT_REVIEW_V1",
     "real_data_anticheat_review": "PASS_REAL_DATA_ANTI_CHEAT_OUTPUT_REVIEW_V1",
     "doc_review": "PASS_ANTI_CHEAT_DOC_REVIEW_V1",
+    "py_compile": "PASS",
     "ci_status": "NOT_CI_REPRODUCED"
   },
   "no_zip_created": true
