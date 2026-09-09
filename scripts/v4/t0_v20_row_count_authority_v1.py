@@ -107,6 +107,7 @@ STOP_ROW_WIDTH = "STOP_T0_B2_SELECTED_ROW_WIDTH_NOT_ADDRESS_SPACE"
 STOP_ROW_SEMANTICS = "STOP_T0_B2_SELECTED_ROW_COUNTS_NOT_NONNEGATIVE_INTEGERS"
 STOP_ROW_NOT_BOUND = "STOP_T0_B2_SELECTED_ROW_NOT_BOUND"
 STOP_ROW_BOUNDS = "STOP_T0_B2_EXPRESSION_ROW_OUT_OF_BOUNDS"
+STOP_CALLER_VALUES = "STOP_T0_B2_CALLER_SUPPLIED_RAW_SOURCE_VALUES_REFUSED"
 
 
 def _rows(payload: bytes) -> tuple[list[str], list[dict[str, str]]]:
@@ -776,7 +777,7 @@ def assert_row_authority_lawful(
             "rows": len(logical["rows"])}
 
 
-def prove_source_library(
+def _prove_source_library_fixture_only(
     *,
     logical: Mapping[str, Any],
     logical_index: int,
@@ -786,7 +787,12 @@ def prove_source_library(
     expected_matrix_slot: str = MTG_SOURCE_MATRIX_SLOT,
     expected_source_width: int = SOURCE_FEATURE_COUNT,
 ) -> bool:
-    """Prove the bound `source_library` against an AUTHENTICATED raw source row.
+    """Fixture-only checker for already-supplied values.
+
+    This is deliberately private and may be used only by synthetic tests. It is
+    not an authentication path: production source-library proof lives in
+    t0_raw_source_row_authority_v1 and reads the source bytes itself.
+
 
     The earlier version required three provenance keys to be present and checked
     none of them. It never verified `source_sha256` against anything, never
@@ -885,6 +891,23 @@ def prove_source_library(
             "%s: the authenticated raw row sums to %d but the bound source_library is %d"
             % (STOP_LIBRARY_NOT_PROVEN, total, bound))
     return True
+
+
+
+def prove_source_library(**kwargs: Any) -> bool:
+    """Refuse the retired caller-vector API.
+
+    R4 added a byte-reading prover but accidentally left this public name wired
+    to the old raw_source_row_values/raw_source_provenance interface. The exact
+    fabricated-vector attack therefore remained callable. This compatibility
+    name now fails closed unconditionally; synthetic tests that need the old
+    value semantics must call the private fixture helper above.
+    """
+    offending = sorted(str(key) for key in kwargs)
+    raise AssertionError(
+        "%s: the caller-vector source-library prover is retired; supplied keys=%s. "
+        "Production proof must be derived from authenticated H5AD bytes."
+        % (STOP_CALLER_VALUES, offending))
 
 
 def verify_selected_row(
