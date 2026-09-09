@@ -6,6 +6,19 @@ cell counts consumed. It also rebuilds the B2 substrate from the frozen inputs
 and replays the B2 population authority, so the package's parent identities are
 checked against freshly derived roots rather than against themselves.
 
+Two strengths of check
+----------------------
+By default this verifies that the package agrees with itself and with the
+parents on disk: the roots recompute over the stored records, the substrate
+rebuilds to the same three roots, the donor set matches B2 and the cell count is
+20,804.
+
+`--rederive` adds the stronger form. It walks the substrate again and recomputes
+every donor's Q_DEPTH and Q_DETECT from authenticated bytes, then compares those
+values against the stored records one by one. Only that mode shows the numbers
+reproduce rather than merely that the digests are consistent. It costs a second
+full pass over the counts store.
+
 Requires, per the review checklist:
 
     stored == recomputed == expected for every root it claims
@@ -26,6 +39,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import sys
 from pathlib import Path
@@ -40,8 +54,69 @@ EXPECTED_CELLS = 20_804
 EXPECTED_DONORS = 46
 
 
+def rederive_and_compare(*, records, closure, logical, plan, population,
+                         projection, store: Path, log=print) -> dict:
+    """Recompute every donor summary from the substrate and compare, value by value.
+
+    A stored summary that cannot be reproduced from authenticated bytes is a
+    STOP. Comparison is exact on the string forms the package carries, because
+    the package is the artifact under test and a tolerance here would be a
+    tolerance on the thing being verified.
+    """
+    paths = {row["counts_path"] for row in logical["rows"]}
+    payloads = runner.LazyCountsPayloads(store, paths)
+    log("  re-deriving over %d counts blocks" % len(paths))
+    rederived = tc.derive_rows_from_authenticated_parents(
+        logical=logical,
+        expected_logical_root_sha256=logical[
+            "logical_row_authority_root_sha256"],
+        expected_closure_root_sha256=closure[
+            "population_closure_root_sha256"],
+        counts_payload_bytes_by_path=payloads,
+        projection=projection,
+        expected_projection_root_sha256=tc.projection_root(projection),
+        population_raw_source=population,
+        expected_population_raw_source_root_sha256=population[
+            "population_raw_source_root_sha256"],
+        block_geometry=closure["block_geometry"],
+        expected_source_sha256=rs.MTG_SOURCE_SHA256)
+    log("  re-derived %d donor rows over %d payload reads (%d cache hits)"
+        % (len(rederived), payloads.reads, payloads.hits))
+
+    stored_by_donor = {str(r["donor_id"]): r for r in records}
+    rederived_by_donor = {str(r["donor_id"]): r for r in rederived}
+    if set(stored_by_donor) != set(rederived_by_donor):
+        raise AssertionError(
+            "the re-derivation covers a different donor set: only-stored %s, "
+            "only-rederived %s"
+            % (sorted(set(stored_by_donor) - set(rederived_by_donor)),
+               sorted(set(rederived_by_donor) - set(stored_by_donor))))
+
+    compared = 0
+    for donor in sorted(stored_by_donor):
+        stored, fresh = stored_by_donor[donor], rederived_by_donor[donor]
+        for field in ("cells", "Q_DEPTH", "Q_DETECT", "technical_complete"):
+            want = str(fresh[field])
+            got = str(stored[field])
+            if got != want:
+                raise AssertionError(
+                    "donor %s: the package records %s=%r but the substrate "
+                    "yields %r" % (donor, field, got, want))
+            compared += 1
+    log("  every stored donor summary reproduces (%d field comparisons)"
+        % compared)
+
+    fresh_root = tc.completeness_root(rederived)
+    return {"donors_compared": len(stored_by_donor),
+            "field_comparisons": compared,
+            "rederived_completeness_root_sha256": fresh_root,
+            "counts_payload_reads": payloads.reads,
+            "counts_payload_cache_hits": payloads.hits}
+
+
 def replay(*, pkgdir: Path, store: Path, membership_path: Path,
-           population_pkg: Path, log=print) -> dict:
+           population_pkg: Path, feature_split: Path | None = None,
+           rederive: bool = False, log=print) -> dict:
     summary_path = Path(pkgdir) / "T0_TECHNICAL_COMPLETENESS_RUN_SUMMARY.json"
     if not summary_path.is_file():
         raise AssertionError("no run summary at %s" % summary_path)
@@ -133,8 +208,35 @@ def replay(*, pkgdir: Path, store: Path, membership_path: Path,
             raise AssertionError("%s must be False in the package" % flag)
     log("  no pathology field in the artifacts; no thresholds; not ready")
 
+    rederivation = None
+    if rederive:
+        if feature_split is None:
+            raise AssertionError("re-derivation needs the frozen B1 feature "
+                                 "split to rebuild the 35,076-position "
+                                 "projection")
+        log("independently re-deriving every donor summary from the substrate")
+        projection = runner.load_projection(Path(feature_split))
+        if tc.projection_root(projection) != summary["projection_root_sha256"]:
+            raise AssertionError(
+                "the supplied feature split yields projection root %s but the "
+                "run recorded %s" % (tc.projection_root(projection),
+                                     summary["projection_root_sha256"]))
+        rederivation = rederive_and_compare(
+            records=records, closure=closure, logical=logical, plan=plan,
+            population=population, projection=projection,
+            store=store, log=log)
+        if rederivation["rederived_completeness_root_sha256"] != summary[
+                "completeness_root_sha256"]:
+            raise AssertionError(
+                "the re-derived completeness root is %s but the package records "
+                "%s" % (rederivation["rederived_completeness_root_sha256"],
+                        summary["completeness_root_sha256"]))
+        log("  the re-derived completeness root equals the stored one")
+
     report = {
         "schema": "JEPA_T0_TECHNICAL_COMPLETENESS_REPLAY_REPORT_V1",
+        "independently_rederived": bool(rederive),
+        "rederivation": rederivation,
         "package_dir": str(pkgdir),
         "donor_rows": len(records),
         "cells_consumed": cells,
@@ -172,15 +274,32 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--store", required=True, type=Path)
     parser.add_argument("--membership", required=True, type=Path)
     parser.add_argument("--population-pkg", required=True, type=Path)
+    parser.add_argument(
+        "--feature-split", type=Path, default=None,
+        help="the frozen B1 feature role split; required with --rederive")
+    parser.add_argument(
+        "--rederive", action="store_true",
+        help="recompute every donor summary from the substrate and compare "
+             "value by value; costs a second full pass over the counts store")
+    parser.add_argument("--report", type=Path, default=None)
     args = parser.parse_args(argv)
+
+    if args.rederive and args.feature_split is None:
+        raise SystemExit("--rederive requires --feature-split")
 
     report = replay(pkgdir=args.pkgdir, store=args.store,
                     membership_path=args.membership,
-                    population_pkg=args.population_pkg)
+                    population_pkg=args.population_pkg,
+                    feature_split=args.feature_split,
+                    rederive=args.rederive)
     print()
     print(json.dumps(report, indent=2, sort_keys=True))
+    if args.report is not None:
+        with io.open(args.report, "w", encoding="utf-8", newline="\n") as h:
+            h.write(json.dumps(report, indent=2, sort_keys=True) + "\n")
     print()
-    print("TECHNICAL COMPLETENESS REPLAY PASS")
+    print("TECHNICAL COMPLETENESS REPLAY PASS"
+          + (" (INDEPENDENTLY RE-DERIVED)" if args.rederive else ""))
     return 0
 
 
