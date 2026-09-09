@@ -1,0 +1,45 @@
+name: V5 pretraining qualification candidate
+
+on:
+  push:
+    branches:
+      - planning/v5-pretraining-qualification-20260909
+  pull_request:
+    paths:
+      - "src/sea_ad_jepa/v5/**"
+      - "scripts/v5_anticheat/**"
+      - "tests/v5_anticheat/**"
+      - "docs/agent/*V5*"
+      - "docs/agent/v5_anticheat/**"
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install bounded test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "numpy==1.26.4" "pandas>=2.2,<2.3" pytest
+      - name: Compile V5 qualification code
+        run: |
+          python -m py_compile             src/sea_ad_jepa/v5/anticheat_qualification_v1.py             src/sea_ad_jepa/v5/trainer_preexecution_contract_v1.py             scripts/v5_anticheat/real_readerfit_shortcut_probe_v1.py             scripts/v5_anticheat/atomic_checkpoint_telemetry_guard_v1.py
+      - name: Run V5 qualification tests
+        env:
+          PYTHONPATH: src:.
+        run: |
+          pytest -q             tests/v5_anticheat/test_anticheat_qualification_v1.py             tests/v5_anticheat/test_trainer_preexecution_contract_v1.py             tests/v5_anticheat/test_atomic_checkpoint_telemetry_guard_v1.py
+      - name: Critical-test skip policy note
+        run: |
+          echo "This CI does not claim GPU/torch mechanics qualification."
+          echo "Future trainer adoption must provide EXECUTED_PASS for every critical torch/hardware test; skipped critical tests are not PASS."
