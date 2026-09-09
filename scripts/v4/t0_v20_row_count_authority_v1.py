@@ -1012,6 +1012,78 @@ def _parse_csr_counts(payload: bytes) -> dict[str, Any]:
                 "indptr": handle["indptr"][:], "shape": shape}
 
 
+def parse_authenticated_counts_block(
+    *,
+    counts_payload_bytes: bytes,
+    expected_counts_sha256: str,
+    declared_rows: int,
+    declared_nnz: int,
+    address_space_size: int = ADDRESS_SPACE_SIZE,
+) -> dict[str, Any]:
+    """Authenticate and validate one complete Phase2 CSR block.
+
+    This is the block-major production interface.  Manifest rows/nnz are
+    mandatory, not optional, so a payload cannot be consumed without closing the
+    geometry the population closure already bound.
+    """
+    import numpy as np
+
+    payload = bytes(counts_payload_bytes)
+    actual = hashlib.sha256(payload).hexdigest()
+    if actual != str(expected_counts_sha256):
+        raise AssertionError(
+            "%s: counts payload is %s, externally expected %s"
+            % (STOP_COUNTS_DIGEST, actual, expected_counts_sha256))
+
+    parsed = _parse_csr_counts(payload)
+    rows, width = int(parsed["shape"][0]), int(parsed["shape"][1])
+    if rows != int(declared_rows):
+        raise AssertionError(
+            "%s: authenticated counts matrix holds %d rows but manifest binds %d"
+            % (STOP_COUNTS_GEOMETRY, rows, int(declared_rows)))
+    if width != int(address_space_size):
+        raise AssertionError(
+            "%s: authenticated counts width is %d, expected %d"
+            % (STOP_COUNTS_GEOMETRY, width, int(address_space_size)))
+
+    data = parsed["data"]
+    indices = parsed["indices"]
+    indptr = parsed["indptr"]
+    if len(data) != len(indices):
+        raise AssertionError(
+            "%s: CSR data length %d differs from indices length %d"
+            % (STOP_COUNTS_GEOMETRY, len(data), len(indices)))
+    if len(indptr) != rows + 1:
+        raise AssertionError(
+            "%s: CSR indptr length %d, expected rows+1=%d"
+            % (STOP_COUNTS_GEOMETRY, len(indptr), rows + 1))
+    pointer = np.asarray(indptr, dtype=np.int64)
+    if pointer[0] != 0 or np.any(pointer[1:] < pointer[:-1]) or \
+            int(pointer[-1]) != len(data):
+        raise AssertionError(
+            "%s: CSR indptr is not canonical for %d stored values"
+            % (STOP_COUNTS_GEOMETRY, len(data)))
+    if len(data) != int(declared_nnz):
+        raise AssertionError(
+            "%s: authenticated counts matrix stores %d values but manifest binds nnz %d"
+            % (STOP_COUNTS_GEOMETRY, len(data), int(declared_nnz)))
+
+    cols = np.asarray(indices, dtype=np.int64)
+    if cols.size and (np.any(cols < 0) or np.any(cols >= width)):
+        raise AssertionError(
+            "%s: CSR contains an address outside 0..%d"
+            % (STOP_COUNTS_GEOMETRY, width - 1))
+    values = np.asarray(data)
+    if values.size:
+        numeric = values.astype(np.float64, copy=False)
+        if not np.isfinite(numeric).all() or np.any(numeric < 0) or \
+                np.any(np.floor(numeric) != numeric):
+            raise AssertionError(
+                "%s: CSR contains a non-finite, negative or non-integral count"
+                % STOP_ROW_SEMANTICS)
+    return parsed
+
+
 def verify_block_row_from_authenticated_payload(
     *,
     logical: Mapping[str, Any],
