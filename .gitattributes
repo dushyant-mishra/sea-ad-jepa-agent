@@ -24,3 +24,6 @@ outputs/t0_technical_registry_20260909/** -text
 outputs/t0_r8_readiness_verify_20260909/** -text
 outputs/t0_stage3_confirmation_20260909/** -text
 outputs/c2_successor_adoption_20260909/** -text
+scripts/v4/t0_v20_frozen/** -text
+configs/v4/t0_v20_frozen_contract/** -text
+docs/agent/t0_v20_frozen_package/** -text
