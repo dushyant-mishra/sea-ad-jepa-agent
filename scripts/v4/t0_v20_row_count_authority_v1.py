@@ -199,7 +199,9 @@ def _length_prefixed(value: Any) -> bytes:
 
 def _closure_root(operator_index: int, matrix_id: str, blocks: Sequence[str],
                   rows_scanned: int, locations: Mapping[str, Mapping[str, Any]],
-                  membership_sha256: str, block_manifest_sha256: str) -> str:
+                  membership_sha256: str, block_manifest_sha256: str,
+                  block_geometry: Mapping[str, Mapping[str, int]] | None = None
+                  ) -> str:
     digest = hashlib.sha256()
     # 4F/4G: the closure binds the identities of the two authorities that define
     # the population. Without them the root described a population without
@@ -218,6 +220,13 @@ def _closure_root(operator_index: int, matrix_id: str, blocks: Sequence[str],
     digest.update(_typed(rows_scanned))
     for key in blocks:
         digest.update(_typed(key))
+        # Declared rows and nnz are decision-bearing: they gate the metadata and
+        # counts geometry checks. Binding them means a mutated manifest geometry
+        # moves the root instead of passing unnoticed.
+        if block_geometry is not None:
+            declared = block_geometry.get(key) or {}
+            digest.update(_typed(int(declared.get("rows", 0))))
+            digest.update(_typed(int(declared.get("nnz", 0))))
     ordered = sorted(locations, key=lambda value: value.encode("utf-8"))
     digest.update(_typed(len(ordered)))
     for cell in ordered:
@@ -298,11 +307,13 @@ def build_population_closure(
 
     manifest_columns, manifest_rows = _rows(block_manifest_bytes)
     for required in ("block_key", "operator_index", "matrix_id", "meta_path",
-                     "meta_sha256", "counts_path", "counts_sha256"):
+                     "meta_sha256", "counts_path", "counts_sha256",
+                     "rows", "nnz"):
         if required not in manifest_columns:
             raise AssertionError("%s: %r absent" % (STOP_MANIFEST_COLUMNS, required))
 
     blocks = []
+    geometry: dict[str, dict[str, int]] = {}
     locations: dict[str, dict[str, Any]] = {}
     rows_scanned = 0
     donors: set[str] = set()
@@ -353,16 +364,20 @@ def build_population_closure(
         # Every row of every block is examined. Stopping once all targets have
         # been seen would hide a duplicate in a later block.
         _meta_columns, meta_rows = _rows(meta_blob)
-        # 4E: the manifest's declared row count must match what the
-        # authenticated metadata actually contains.
-        if "rows" in manifest_columns:
-            declared_rows = exact_positive_integer(
-                record["rows"], "manifest rows for %s" % block_key)
-            if declared_rows != len(meta_rows):
-                raise AssertionError(
-                    "%s: %s declares %d rows but its authenticated metadata holds %d"
-                    % (STOP_COUNTS_GEOMETRY, block_key, declared_rows,
-                       len(meta_rows)))
+        # The manifest's declared geometry is checked against what the
+        # authenticated metadata actually contains. It was previously guarded by
+        # a presence test, which made it skippable by omitting the column; the
+        # column is now required above, so this check always runs.
+        declared_rows = exact_positive_integer(
+            record["rows"], "manifest rows for %s" % block_key)
+        if declared_rows != len(meta_rows):
+            raise AssertionError(
+                "%s: %s declares %d rows but its authenticated metadata holds %d"
+                % (STOP_COUNTS_GEOMETRY, block_key, declared_rows,
+                   len(meta_rows)))
+        declared_nnz = exact_positive_integer(
+            record["nnz"], "manifest nnz for %s" % block_key)
+        geometry[block_key] = {"rows": declared_rows, "nnz": declared_nnz}
         for row_index, meta_row in enumerate(meta_rows):
             rows_scanned += 1
             cell = str(meta_row.get("canonical_cell_id") or "").strip()
@@ -423,9 +438,10 @@ def build_population_closure(
         "donors": sorted(donors),
         "row_locations": locations,
         "full_scan": True,
+        "block_geometry": geometry,
         "population_closure_root_sha256": _closure_root(
             operator_index, matrix_id, blocks, rows_scanned, locations,
-            bound_membership_sha256, bound_manifest_sha256),
+            bound_membership_sha256, bound_manifest_sha256, geometry),
         "real_execution_ready": False,
     }
 
@@ -998,6 +1014,7 @@ def verify_block_row_from_authenticated_payload(
     logical_index: int,
     counts_payload_bytes: bytes,
     declared_rows: int | None = None,
+    declared_nnz: int | None = None,
     address_space_size: int = ADDRESS_SPACE_SIZE,
 ) -> list[int]:
     """Authenticate the counts payload, then select and validate the bound row.
@@ -1028,6 +1045,13 @@ def verify_block_row_from_authenticated_payload(
         raise AssertionError(
             "%s: the authenticated counts matrix holds %d rows but the manifest "
             "declares %d" % (STOP_COUNTS_GEOMETRY, rows, int(declared_rows)))
+    if declared_nnz is not None:
+        stored = int(parsed["indptr"][rows]) - int(parsed["indptr"][0])
+        if stored != int(declared_nnz):
+            raise AssertionError(
+                "%s: the authenticated counts matrix stores %d values but the "
+                "manifest declares nnz %d"
+                % (STOP_COUNTS_GEOMETRY, stored, int(declared_nnz)))
 
     block_row = int(row["row_index"])
     if not (0 <= block_row < rows):
@@ -1085,7 +1109,8 @@ def assert_closure_lawful(
     recomputed = _closure_root(
         closure["operator_index"], closure["matrix_id"], closure["blocks"],
         closure["metadata_rows_scanned"], closure["row_locations"],
-        closure["membership_sha256"], closure["block_manifest_sha256"])
+        closure["membership_sha256"], closure["block_manifest_sha256"],
+        closure.get("block_geometry"))
     if recomputed != str(stored_root):
         raise AssertionError(
             "%s: the stored closure root %s does not match the root recomputed "

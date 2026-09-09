@@ -256,6 +256,52 @@
       "source_lines": 217,
       "source_sha256": "f429d3a45657cc26b222ee42a645fa320cb90ec5af14349b2fb0e62d7df794a5"
     },
+    "t0_raw_source_row_authority_v1": {
+      "declaration_lines": [
+        "\"\"\"Byte-to-row authentication of the raw MTG H5AD source for `source_library`.",
+        "`expression_row`, the correct width and the correct cell and donor identities,",
+        "proved `source_library` even though none of its values had ever been read from",
+        "  4. the bound `expression_row` selects the row;",
+        "  7. `source_library` is COMPUTED from that row and compared to the bound value.",
+        "def read_row_identity(source: AuthenticatedSource, row_index: int) -> dict[str, str]:",
+        "    cell = _decode(obs[index_name][int(row_index)])",
+        "        code = int(node[\"codes\"][int(row_index)])",
+        "        donor = _decode(node[int(row_index)])",
+        "    return {\"canonical_cell_id\": cell, \"donor_id\": donor}",
+        "def read_raw_row(source: AuthenticatedSource, row_index: int) -> tuple[int, int]:",
+        "    if not (0 <= int(row_index) < rows):",
+        "                             % (STOP_ROW_RANGE, int(row_index), rows - 1))",
+        "    start, end = int(indptr[int(row_index)]), int(indptr[int(row_index) + 1])",
+        "                                 % (STOP_COUNTS, int(row_index)))",
+        "                                 % (STOP_COUNTS, int(row_index)))",
+        "                                 % (STOP_COUNTS, int(row_index)))",
+        "    \"\"\"Prove the bound `source_library` from bytes this function itself read.",
+        "    expression_row = int(row[\"expression_row\"])",
+        "    identity = read_row_identity(genuine, expression_row)",
+        "    if identity[\"canonical_cell_id\"] != str(row[\"canonical_cell_id\"]):",
+        "            % (STOP_ROW_IDENTITY, expression_row, identity[\"canonical_cell_id\"],",
+        "               int(logical_index), row[\"canonical_cell_id\"]))",
+        "    if identity[\"donor_id\"] != str(row[\"donor_id\"]):",
+        "            % (STOP_ROW_IDENTITY, expression_row, identity[\"donor_id\"],",
+        "               int(logical_index), row[\"donor_id\"]))",
+        "    total, stored = read_raw_row(genuine, expression_row)",
+        "    bound = int(row[\"source_library\"])",
+        "            \"binds source_library %d\"",
+        "            % (STOP_LIBRARY, UMI_SLOT, expression_row, total,",
+        "        \"expression_row\": expression_row,",
+        "        \"canonical_cell_id\": identity[\"canonical_cell_id\"],",
+        "        \"donor_id\": identity[\"donor_id\"],",
+        "        \"source_library\": total,",
+        "    for proof in sorted(proofs, key=lambda p: int(p[\"expression_row\"])):",
+        "            str(proof[\"source_sha256\"]), int(proof[\"expression_row\"]),",
+        "            str(proof[\"canonical_cell_id\"]), str(proof[\"donor_id\"]),",
+        "            int(proof[\"source_library\"]), int(proof[\"stored_values_in_row\"]),",
+        "            \"%s: %s may not be supplied; source_library is proven only from \""
+      ],
+      "root": "BRANCH_SCRIPTS",
+      "source_lines": 389,
+      "source_sha256": "b576fbbb8b9887374abb9e4741118585c784c626f341618e4b3ad755927f717d"
+    },
     "t0_tail_authority_v1": {
       "declaration_lines": [
         "def score_raw_counts(raw_counts,source_library,fit) -> np.ndarray:",
@@ -401,8 +447,8 @@
         "        digest.update(_typed(entry[\"row_index\"]))"
       ],
       "root": "BRANCH_SCRIPTS",
-      "source_lines": 1140,
-      "source_sha256": "a0cb21d176c73b62e580baad30bb5e8124313b55176b8e41c9cd449f27ffdd4e"
+      "source_lines": 1165,
+      "source_sha256": "1278c386a83bb129b0970b411a781442a96549743b9c11c59f7f3e250d1686ba"
     }
   },
   "schema": "JEPA_T0_CONSUMER_DECLARATION_FIXTURE_V1"

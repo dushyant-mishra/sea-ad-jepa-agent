@@ -54,6 +54,11 @@ STOP_INPUT_SHAPE = "STOP_T0_ESTIMABILITY_INPUT_SHAPE_INVALID"
 STOP_RESPONSE_PRESENT = "STOP_T0_ESTIMABILITY_RESPONSE_SUPPLIED_TO_A_BLIND_CHECK"
 STOP_FIELD_SCHEMA = "STOP_T0_ESTIMABILITY_FIELD_SCHEMA_VIOLATION"
 STOP_REMEDY = "STOP_T0_ESTIMABILITY_FORBIDDEN_REMEDY_ATTEMPTED"
+STOP_POSITIONAL = "STOP_T0_ESTIMABILITY_POSITIONAL_ARRAYS_REFUSED"
+STOP_DONOR_SET = "STOP_T0_ESTIMABILITY_DONOR_SET_MISMATCH"
+STOP_DONOR_ORDER = "STOP_T0_ESTIMABILITY_DONOR_ORDER_NOT_AUTHORITATIVE"
+STOP_RECORDS_ROOT = "STOP_T0_ESTIMABILITY_RECORDS_ROOT_MISMATCH"
+STOP_FIELD_ABSENT = "STOP_T0_ESTIMABILITY_DONOR_RECORD_FIELD_ABSENT"
 
 STAGES = ("A_PARENT_NUISANCE", "B_STATE_DESIGNS", "C_TAIL_DESIGNS")
 
@@ -169,7 +174,7 @@ def _augment(base: Sequence[Sequence[float]],
 
 # --- Stage A ---------------------------------------------------------------
 
-def stage_a_parent_nuisance(
+def _stage_a_from_arrays(
         *,
         discovery: Mapping[str, Sequence[Any]],
         confirmation: Mapping[str, Sequence[Any]],
@@ -204,7 +209,7 @@ def stage_a_parent_nuisance(
 
 # --- Stage B ---------------------------------------------------------------
 
-def stage_b_state_designs(
+def _stage_b_from_arrays(
         *,
         confirmation: Mapping[str, Sequence[Any]],
         state_score: Sequence[Any],
@@ -247,7 +252,7 @@ def stage_b_state_designs(
 
 # --- Stage C ---------------------------------------------------------------
 
-def stage_c_tail_designs(
+def _stage_c_from_arrays(
         *,
         tail_donors: Mapping[str, Sequence[Any]],
         state_score: Sequence[Any],
@@ -317,3 +322,188 @@ def assert_stage_order(results: Sequence[Mapping[str, Any]]) -> bool:
                              % (STOP_STAGE_ORDER, seen,
                                 list(STAGES[:len(seen)])))
     return True
+
+
+# ---------------------------------------------------------------------------
+# Donor-keyed stages.
+#
+# The array-based primitives above take independent sequences for age, sex,
+# STATE_SCORE, IMMUNE_FRACTION, Q_DEPTH, Q_DETECT and TAIL_PREVALENCE, aligned
+# only by position. An external review pointed out the consequence: permuting one
+# covariate is structurally valid and changes matrix rank, so a design that is
+# genuinely NOT_ESTIMABLE can be made full rank by shuffling a column, and
+# nothing in the preflight would notice.
+#
+# Values are therefore keyed by donor here, the donor order comes from the role
+# authority rather than from the caller's array indices, and the whole record set
+# is bound by a digest. A permutation reassigns values across donors, which moves
+# that digest, so it is refused rather than silently accepted.
+# ---------------------------------------------------------------------------
+
+STAGE_B_FIELDS = ("age", "sex", "STATE_SCORE", "IMMUNE_FRACTION",
+                  "Q_DEPTH", "Q_DETECT")
+STAGE_C_FIELDS = ("age", "sex", "STATE_SCORE", "TAIL_PREVALENCE",
+                  "IMMUNE_FRACTION", "Q_DEPTH", "Q_DETECT")
+
+
+def refuse_positional_arrays(**kwargs: Any) -> None:
+    """Explicit refusal so the positional parameters cannot quietly return."""
+    offending = sorted(k for k in kwargs
+                       if k in ("state_score", "immune_fraction", "q_depth",
+                                "q_detect", "tail_prevalence", "confirmation",
+                                "discovery", "tail_donors"))
+    if offending:
+        raise AssertionError(
+            "%s: %s may not be supplied as positional arrays; estimability "
+            "inputs are keyed by donor so a permutation cannot change rank while "
+            "staying structurally valid" % (STOP_POSITIONAL, ", ".join(offending)))
+
+
+def _fixed(value: float, places: int = 12) -> str:
+    import math
+
+    number = float(value)
+    if not math.isfinite(number):
+        raise AssertionError("%s: %r is not finite" % (STOP_INPUT_SHAPE, value))
+    return "%.*f" % (places, number)
+
+
+def records_root(donor_order: Sequence[str],
+                 records: Mapping[str, Mapping[str, Any]],
+                 fields: Sequence[str]) -> str:
+    """Digest binding every (donor, field, value) triple in authoritative order.
+
+    This is what makes a permutation detectable. Reassigning values across
+    donors changes the triples, so it changes the root; positional arrays had no
+    such property because the donor was never part of the datum.
+    """
+    parts = [_typed(DOMAIN_TAG), _typed("DONOR_RECORDS"),
+             _typed(list(fields)), _typed(len(donor_order))]
+    for donor in donor_order:
+        row = records[str(donor)]
+        parts.append(_typed(str(donor)))
+        for field in fields:
+            if field not in row:
+                raise AssertionError("%s: %s lacks %r"
+                                     % (STOP_FIELD_ABSENT, donor, field))
+            parts.append(_typed([field, _fixed(row[field])]))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
+
+
+def _bind_records(donor_order: Sequence[str],
+                  records: Mapping[str, Mapping[str, Any]],
+                  fields: Sequence[str],
+                  expected_records_root_sha256: str) -> tuple[str, ...]:
+    """Check the donor set, the order and the record digest before use."""
+    order = [str(d) for d in donor_order]
+    if len(order) != len(set(order)):
+        duplicates = sorted({d for d in order if order.count(d) > 1})
+        raise AssertionError("%s: the donor order repeats %s"
+                             % (STOP_DONOR_ORDER, duplicates))
+    supplied = {str(d) for d in records}
+    if supplied != set(order):
+        raise AssertionError(
+            "%s: records-only %s, order-only %s"
+            % (STOP_DONOR_SET, sorted(supplied - set(order)),
+               sorted(set(order) - supplied)))
+    actual = records_root(order, records, fields)
+    if actual != str(expected_records_root_sha256):
+        raise AssertionError(
+            "%s: the donor records digest is %s, externally expected %s; a "
+            "reassignment of values across donors moves this digest"
+            % (STOP_RECORDS_ROOT, actual, expected_records_root_sha256))
+    return tuple(order)
+
+
+def _donor_column(order: Sequence[str],
+                  records: Mapping[str, Mapping[str, Any]],
+                  field: str) -> list[float]:
+    """Build a column by walking the authoritative donor order.
+
+    Named distinctly from the positional `_column` above: an earlier revision of
+    this patch reused that name and shadowed it, which broke `nuisance_design`.
+    """
+    return [float(records[str(donor)][field]) for donor in order]
+
+
+def stage_a_parent_nuisance(
+        *,
+        discovery_order: Sequence[str],
+        discovery_records: Mapping[str, Mapping[str, Any]],
+        expected_discovery_records_root_sha256: str,
+        confirmation_order: Sequence[str],
+        confirmation_records: Mapping[str, Mapping[str, Any]],
+        expected_confirmation_records_root_sha256: str,
+) -> dict[str, Any]:
+    """Stage A over donor-keyed records."""
+    fields = ("age", "sex")
+    discovery = _bind_records(discovery_order, discovery_records, fields,
+                              expected_discovery_records_root_sha256)
+    confirmation = _bind_records(confirmation_order, confirmation_records, fields,
+                                 expected_confirmation_records_root_sha256)
+    result = _stage_a_from_arrays(
+        discovery={"age": _donor_column(discovery, discovery_records, "age"),
+                   "sex": _donor_column(discovery, discovery_records, "sex")},
+        confirmation={"age": _donor_column(confirmation, confirmation_records, "age"),
+                      "sex": _donor_column(confirmation, confirmation_records, "sex")})
+    result["donor_bound"] = True
+    result["discovery_records_root_sha256"] = str(
+        expected_discovery_records_root_sha256)
+    result["confirmation_records_root_sha256"] = str(
+        expected_confirmation_records_root_sha256)
+    return result
+
+
+def stage_b_state_designs(
+        *,
+        confirmation_order: Sequence[str],
+        records: Mapping[str, Mapping[str, Any]],
+        expected_records_root_sha256: str,
+        response: Any = None,
+) -> dict[str, Any]:
+    """Stage B over donor-keyed records."""
+    if response is not None:
+        raise AssertionError(
+            "%s: estimability is a property of the design matrix; the response "
+            "must not be supplied to a pathology-blind check"
+            % STOP_RESPONSE_PRESENT)
+    order = _bind_records(confirmation_order, records, STAGE_B_FIELDS,
+                          expected_records_root_sha256)
+    result = _stage_b_from_arrays(
+        confirmation={"age": _donor_column(order, records, "age"),
+                      "sex": _donor_column(order, records, "sex")},
+        state_score=_donor_column(order, records, "STATE_SCORE"),
+        immune_fraction=_donor_column(order, records, "IMMUNE_FRACTION"),
+        q_depth=_donor_column(order, records, "Q_DEPTH"),
+        q_detect=_donor_column(order, records, "Q_DETECT"))
+    result["donor_bound"] = True
+    result["records_root_sha256"] = str(expected_records_root_sha256)
+    return result
+
+
+def stage_c_tail_designs(
+        *,
+        tail_order: Sequence[str],
+        records: Mapping[str, Mapping[str, Any]],
+        expected_records_root_sha256: str,
+        response: Any = None,
+) -> dict[str, Any]:
+    """Stage C over donor-keyed records."""
+    if response is not None:
+        raise AssertionError(
+            "%s: estimability is a property of the design matrix; the response "
+            "must not be supplied to a pathology-blind check"
+            % STOP_RESPONSE_PRESENT)
+    order = _bind_records(tail_order, records, STAGE_C_FIELDS,
+                          expected_records_root_sha256)
+    result = _stage_c_from_arrays(
+        tail_donors={"age": _donor_column(order, records, "age"),
+                     "sex": _donor_column(order, records, "sex")},
+        state_score=_donor_column(order, records, "STATE_SCORE"),
+        tail_prevalence=_donor_column(order, records, "TAIL_PREVALENCE"),
+        immune_fraction=_donor_column(order, records, "IMMUNE_FRACTION"),
+        q_depth=_donor_column(order, records, "Q_DEPTH"),
+        q_detect=_donor_column(order, records, "Q_DETECT"))
+    result["donor_bound"] = True
+    result["records_root_sha256"] = str(expected_records_root_sha256)
+    return result

@@ -272,7 +272,8 @@ CONTRACT: tuple[dict[str, Any], ...] = (
         "ALL_CANDIDATE_DONORS",
         "T0_V20_ROW_COUNT_AUTHORITY_V1",
         (),
-        ("t0_confirmation_raw_v1", "t0_v20_row_count_authority_v1"),
+        ("t0_confirmation_raw_v1", "t0_v20_row_count_authority_v1",
+         "t0_raw_source_row_authority_v1"),
         "Integer sum of the FULL raw source row, computed before source-to-address "
         "projection. Never recomputable from the 41,238-address row or the 35,076 "
         "projection. Required strictly positive by the confirmation reader.",
@@ -466,6 +467,7 @@ CONSUMER_MODULES: tuple[str, ...] = (
     "t0_tail_authority_v1",
     "t0_v20_row_count_authority_v1",
     "t0_v20_feature_projection_authority_v1",
+    "t0_raw_source_row_authority_v1",
 )
 
 # Names that appear inside consumer column-set literals but select a SOURCE or an

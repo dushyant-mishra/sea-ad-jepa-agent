@@ -78,6 +78,11 @@ STOP_PARENT_IDENTITY = "STOP_T0_TECHNICAL_COMPLETENESS_PARENT_IDENTITY_NOT_BOUND
 STOP_ROOT_MISMATCH = "STOP_T0_TECHNICAL_COMPLETENESS_ROOT_MISMATCH"
 STOP_PACKAGE_MEMBER = "STOP_T0_TECHNICAL_COMPLETENESS_PACKAGE_MEMBER_INVALID"
 STOP_FIELD_SCHEMA = "STOP_T0_TECHNICAL_COMPLETENESS_FIELD_SCHEMA_VIOLATION"
+STOP_DETACHED_VALUES = "STOP_T0_TECHNICAL_COMPLETENESS_DETACHED_VALUES_REFUSED"
+STOP_PROJECTION_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_PROJECTION_ROOT_MISMATCH"
+STOP_LOGICAL_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_LOGICAL_ROOT_MISMATCH"
+STOP_CLOSURE_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_CLOSURE_ROOT_MISMATCH"
+STOP_PROJECTION_POSITIONS = "STOP_T0_TECHNICAL_COMPLETENESS_PROJECTION_POSITIONS_INVALID"
 
 SCALAR_FEATURES = 35_076
 SEMANTICS = "THRESHOLD_FREE_DEFINEDNESS_AND_COMPUTABILITY"
@@ -300,7 +305,7 @@ def assert_substrate_lawful(*, substrate: Mapping[str, Any]) -> bool:
     return True
 
 
-def build_rows(
+def _build_rows_from_values(
         *,
         cells_by_donor: Mapping[str, Sequence[tuple[Any, Any]]],
         candidate_donors: Sequence[str] | None = None,
@@ -348,6 +353,10 @@ def completeness_root(rows: Sequence[Mapping[str, Any]]) -> str:
              _typed(int(SCALAR_FEATURES)), _typed(len(rows))]
     for row in rows:
         parts.append(_typed([str(row["donor_id"]), int(row["cells"])]))
+        # Binding the consumed cell identities is what ties a summary to a
+        # population. Without them two different populations of the same size
+        # could share a root.
+        parts.append(_typed([str(cell) for cell in row.get("cell_ids", ())]))
         parts.append(_typed_float(float(row["Q_DEPTH"])))
         parts.append(_typed_float(float(row["Q_DETECT"])))
         parts.append(_typed(bool(row["technical_complete"])))
@@ -382,7 +391,7 @@ def parent_contract_root(*, substrate: Mapping[str, Any],
     return hashlib.sha256(b"".join(parts)).hexdigest()
 
 
-def build_authority(
+def _build_authority_from_values(
         outdir: Path | str,
         *,
         cells_by_donor: Mapping[str, Sequence[tuple[Any, Any]]],
@@ -399,9 +408,23 @@ def build_authority(
     assert_predicate_is_threshold_free()
     assert_substrate_lawful(substrate=substrate)
 
-    rows = build_rows(cells_by_donor=cells_by_donor,
+    rows = _build_rows_from_values(cells_by_donor=cells_by_donor,
                       candidate_donors=candidate_donors,
                       scalar_features=scalar_features)
+    return _write_package(out, rows=rows, substrate=substrate,
+                          derivation_code_sha256=derivation_code_sha256,
+                          scalar_features=scalar_features)
+
+
+def _write_package(
+        out: Path,
+        *,
+        rows,
+        substrate,
+        derivation_code_sha256: str,
+        scalar_features: int = SCALAR_FEATURES,
+):
+    """Write the package members and both roots. Shared by both entrypoints."""
     root = completeness_root(rows)
     parent_root = parent_contract_root(
         substrate=substrate, derivation_code_sha256=derivation_code_sha256)
@@ -549,3 +572,224 @@ def _rows(raw: bytes) -> tuple[tuple[str, ...], list[dict[str, str]]]:
     text = bytes(raw).decode("utf-8")
     reader = csv.DictReader(io.StringIO(text))
     return tuple(reader.fieldnames or ()), [dict(row) for row in reader]
+
+
+# ---------------------------------------------------------------------------
+# Derivation from AUTHENTICATED parents.
+#
+# The earlier entrypoint took `cells_by_donor` as a sequence of
+# `(source_library, projected_nonzero_count)` tuples while `substrate` was only
+# a collection of parent-root STRINGS. Genuine roots could therefore accompany
+# entirely invented values: the roots named the parents without binding the
+# numbers. An external review classified that as a hard STOP, correctly.
+#
+# The production path below derives both summaries from authenticated objects.
+# `source_library` comes out of the B2 logical row authority, whose root is
+# externally bound, and the projected non-zero count comes out of the counts
+# payload bytes that the logical row's own `counts_sha256` authenticates, mapped
+# through the B1 projection whose root is also externally bound.
+# ---------------------------------------------------------------------------
+
+def refuse_detached_values(**kwargs: Any) -> None:
+    """Explicit refusal so the removed parameters cannot quietly return."""
+    offending = sorted(k for k in kwargs
+                       if k in ("cells_by_donor", "substrate",
+                                "projected_nonzero_count", "values"))
+    if offending:
+        raise AssertionError(
+            "%s: %s may not be supplied to the production path; Q_DEPTH and "
+            "Q_DETECT are derived from authenticated parents, and parent-root "
+            "strings name the parents without binding the values"
+            % (STOP_DETACHED_VALUES, ", ".join(offending)))
+
+
+def projection_root(projection: Mapping[str, Any]) -> str:
+    """Digest of the B1 projection actually used to compute Q_DETECT.
+
+    Q_DETECT is a rate over the projected address set, so which addresses are in
+    that set is decision-bearing and must be bound rather than passed as a free
+    list.
+    """
+    positions = list(projection["positions"])
+    if len(positions) != len(set(positions)):
+        raise AssertionError("%s: the projection repeats a position"
+                             % STOP_PROJECTION_POSITIONS)
+    feature_root = str(projection["feature_authority_root_sha256"])
+    if not _is_hex64(feature_root):
+        raise AssertionError("%s: the projection names feature root %r"
+                             % (STOP_PROJECTION_POSITIONS, feature_root))
+    parts = [_typed(DOMAIN_TAG), _typed("B1_PROJECTION"), _typed(feature_root),
+             _typed(len(positions))]
+    for position in sorted(int(p) for p in positions):
+        parts.append(_typed(int(position)))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
+
+
+def derive_rows_from_authenticated_parents(
+        *,
+        logical: Mapping[str, Any],
+        expected_logical_root_sha256: str,
+        expected_closure_root_sha256: str,
+        counts_payload_bytes_by_path: Mapping[str, bytes],
+        projection: Mapping[str, Any],
+        expected_projection_root_sha256: str,
+        address_space_size: int = 41_238,
+        expected_projection_positions: int | None = None,
+        scalar_features: int = SCALAR_FEATURES,
+) -> tuple[dict[str, Any], ...]:
+    """Compute the donor summaries from authenticated bytes and objects.
+
+    Nothing decision-bearing arrives as a caller value. Every `source_library`
+    is read off the authenticated logical row, and every non-zero count is
+    computed from the counts payload that row's own digest authenticates.
+    """
+    import t0_v20_row_count_authority_v1 as rc
+
+    # Bind the B2 parents before reading anything through them.
+    stored_logical = logical.get("logical_row_authority_root_sha256")
+    stored_closure = logical.get("population_closure_root_sha256")
+    if not _is_hex64(stored_closure):
+        raise AssertionError("%s: the logical authority carries no closure root"
+                             % STOP_CLOSURE_ROOT)
+    if str(stored_closure) != str(expected_closure_root_sha256):
+        raise AssertionError("%s: closure root is %s, externally expected %s"
+                             % (STOP_CLOSURE_ROOT, stored_closure,
+                                expected_closure_root_sha256))
+    recomputed_logical = rc._logical_root(
+        logical["rows"], logical["feature_authority_root_sha256"], stored_closure)
+    if str(stored_logical) != recomputed_logical:
+        raise AssertionError(
+            "%s: the logical authority stores %s but its contents recompute to %s"
+            % (STOP_LOGICAL_ROOT, stored_logical, recomputed_logical))
+    if recomputed_logical != str(expected_logical_root_sha256):
+        raise AssertionError("%s: logical root is %s, externally expected %s"
+                             % (STOP_LOGICAL_ROOT, recomputed_logical,
+                                expected_logical_root_sha256))
+
+    # Bind the B1 projection.
+    actual_projection = projection_root(projection)
+    if actual_projection != str(expected_projection_root_sha256):
+        raise AssertionError("%s: projection root is %s, externally expected %s"
+                             % (STOP_PROJECTION_ROOT, actual_projection,
+                                expected_projection_root_sha256))
+    if str(projection["feature_authority_root_sha256"]) != str(
+            logical["feature_authority_root_sha256"]):
+        raise AssertionError(
+            "%s: the projection names feature root %s but the logical authority "
+            "names %s" % (STOP_PROJECTION_ROOT,
+                          projection["feature_authority_root_sha256"],
+                          logical["feature_authority_root_sha256"]))
+    positions = sorted(int(p) for p in projection["positions"])
+    for position in positions:
+        if not (0 <= position < int(address_space_size)):
+            raise AssertionError(
+                "%s: position %d is outside the %d-address space"
+                % (STOP_PROJECTION_POSITIONS, position, int(address_space_size)))
+    if expected_projection_positions is not None:
+        if len(positions) != int(expected_projection_positions):
+            raise AssertionError(
+                "%s: the projection holds %d positions, expected %d"
+                % (STOP_PROJECTION_POSITIONS, len(positions),
+                   int(expected_projection_positions)))
+    projected = set(positions)
+
+    per_donor: dict[str, list[tuple[float, float]]] = {}
+    cells_per_donor: dict[str, list[str]] = {}
+    for index, row in enumerate(logical["rows"]):
+        path = str(row["counts_path"])
+        if path not in counts_payload_bytes_by_path:
+            raise AssertionError(
+                "%s: no counts payload supplied for %s, which logical index %d "
+                "binds" % (STOP_SUBSTRATE, path, index))
+        # Authenticate the payload against the digest the logical row binds,
+        # parse only those bytes, and select the block-local row.
+        dense = rc.verify_block_row_from_authenticated_payload(
+            logical=logical, logical_index=index,
+            counts_payload_bytes=counts_payload_bytes_by_path[path],
+            address_space_size=int(address_space_size))
+
+        nonzero = sum(1 for position in projected if dense[position] != 0)
+        depth = cell_q_depth(row["source_library"],
+                             what="source_library for logical index %d" % index)
+        detect = cell_q_detect_from_nonzero_count(
+            nonzero, scalar_features=scalar_features)
+        donor = str(row["donor_id"])
+        per_donor.setdefault(donor, []).append((depth, detect))
+        cells_per_donor.setdefault(donor, []).append(str(row["canonical_cell_id"]))
+
+    rows = []
+    for donor in sorted(per_donor, key=lambda d: d.encode("utf-8")):
+        summary = donor_summaries(per_donor[donor], donor_id=donor)
+        rows.append({
+            "donor_id": donor,
+            "cells": len(per_donor[donor]),
+            "cell_ids": tuple(cells_per_donor[donor]),
+            "Q_DEPTH": summary["Q_DEPTH"],
+            "Q_DETECT": summary["Q_DETECT"],
+            "technical_complete": technical_complete(summary, donor_id=donor),
+        })
+    return tuple(rows)
+
+
+def build_production_authority(
+        outdir: Path | str,
+        *,
+        logical: Mapping[str, Any],
+        expected_logical_root_sha256: str,
+        expected_closure_root_sha256: str,
+        counts_payload_bytes_by_path: Mapping[str, bytes],
+        projection: Mapping[str, Any],
+        expected_projection_root_sha256: str,
+        derivation_code_sha256: str,
+        candidate_donors: Sequence[str],
+        address_space_size: int = 41_238,
+        expected_projection_positions: int | None = None,
+        scalar_features: int = SCALAR_FEATURES,
+) -> dict[str, Any]:
+    """The only lawful production path: authenticated parents in, package out.
+
+    There is no `cells_by_donor` and no bare `substrate` mapping, so a forged
+    value pair cannot enter however genuine the accompanying root strings are.
+    """
+    out = Path(outdir)
+    if out.exists() and any(out.iterdir()):
+        raise AssertionError("%s: output directory must be absent or empty: %s"
+                             % (STOP_PACKAGE_MEMBER, out))
+    assert_predicate_is_threshold_free()
+
+    rows = derive_rows_from_authenticated_parents(
+        logical=logical,
+        expected_logical_root_sha256=expected_logical_root_sha256,
+        expected_closure_root_sha256=expected_closure_root_sha256,
+        counts_payload_bytes_by_path=counts_payload_bytes_by_path,
+        projection=projection,
+        expected_projection_root_sha256=expected_projection_root_sha256,
+        address_space_size=address_space_size,
+        expected_projection_positions=expected_projection_positions,
+        scalar_features=scalar_features)
+
+    donors = {str(row["donor_id"]) for row in rows}
+    expected = {str(d) for d in candidate_donors}
+    if donors != expected:
+        raise AssertionError("%s: derived-only %s, candidate-only %s"
+                             % (STOP_DONOR_SET, sorted(donors - expected),
+                                sorted(expected - donors)))
+
+    substrate = {
+        "population_closure_root_sha256": str(expected_closure_root_sha256),
+        "logical_row_authority_root_sha256": str(expected_logical_root_sha256),
+        "physical_read_plan_root_sha256": str(
+            logical.get("physical_read_plan_root_sha256")
+            or expected_logical_root_sha256),
+        "feature_authority_root_sha256": str(
+            logical["feature_authority_root_sha256"]),
+        "projection_root_sha256": str(expected_projection_root_sha256),
+    }
+    assert_substrate_lawful(substrate=substrate)
+
+    summary = _write_package(out, rows=rows, substrate=substrate,
+                             derivation_code_sha256=derivation_code_sha256,
+                             scalar_features=scalar_features)
+    summary["cells_consumed"] = sum(int(row["cells"]) for row in rows)
+    summary["derivation"] = "FROM_AUTHENTICATED_B2_LOGICAL_AND_B1_PROJECTION"
+    return summary

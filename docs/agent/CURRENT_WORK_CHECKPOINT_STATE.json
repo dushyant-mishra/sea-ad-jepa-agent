@@ -179,11 +179,11 @@
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "SUBMIT_HEAD_FOR_EXTERNAL_REVIEW_AGAINST_THE_R2_AND_R3_SETS",
-    "DO_NOT_RUN_PRODUCTION_B2_UNTIL_EXTERNAL_REVIEW_EXPLICITLY_CLEARS_IT",
-    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND",
-    "RESOLVE_AVAILABILITY_V6_BY_OWNER_WITNESSED_REDERIVATION_OR_EXACT_ZIP",
-    "EVALUATE_EXACT_PARENT_PASS_PROBABILITY_WITH_THE_FROZEN_V20_PERMUTATION_ENGINE"
+    "SUBMIT_THE_R4_SUCCESSOR_FOR_INDEPENDENT_IMPLEMENTATION_REVIEW",
+    "DO_NOT_BUILD_THE_ELIGIBLE_DONOR_AUTHORITY_UNTIL_R4_PASSES_REVIEW",
+    "DO_NOT_RUN_PRODUCTION_B2",
+    "DO_NOT_ACCESS_NUMERIC_CONFIRMATION_AT8",
+    "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
   ],
   "peer_agents": [
     "CODEX",
@@ -378,7 +378,7 @@
       "state_positive_alpha": 0.025,
       "tail_positive_alpha": 0.02
     },
-    "governance_state": "ITEMS_1_THROUGH_9_IMPLEMENTED__AWAITING_EXTERNAL_REVIEW__PRODUCTION_B2_FORBIDDEN",
+    "governance_state": "R4_SUCCESSOR_CANDIDATE__AWAITING_INDEPENDENT_IMPLEMENTATION_REVIEW__PRODUCTION_B2_FORBIDDEN",
     "handoff_sha256": "ecd0b0fb5c449e9ff1101dff5b014fdbb79c7538212155b28f0a9beb47f2c01f",
     "immune_fraction_authority": {
       "block_metadata_members_authenticated": 1247,
@@ -528,6 +528,54 @@
       "base": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
       "secondary_verification": "2faaa6cf276d3782f43b0cf3a0116e9408b51057",
       "t0_review_binding": "6e247617b3849b86df317c83479cc1497b3f0d1d"
+    },
+    "r3_claim_withdrawn": {
+      "claim": "B2 defects A through I closed",
+      "status": "WITHDRAWN__TOO_STRONG",
+      "why": "The authenticated-NPZ path was materially repaired, but the raw-H5 path was label authentication rather than byte-to-row authentication: prove_source_library accepted caller-supplied row values plus provenance labels, so a fabricated vector with the correct sum and every correct label proved source_library. Technical completeness had the same detached-value shape, with parent-root strings naming the parents without binding the values. An external review classified both as hard STOPs, correctly."
+    },
+    "r4_red_before": {
+      "base": "ab61cf5599663c417d2b2c5ef95ca7e5a37a312c",
+      "honest_reading": "Those failure counts are not all defect reproductions. The genuinely new attack cases are 13, 14 and 12; the remainder fail at the base because this candidate made three previously public helpers private and changed two signatures, so retargeted existing cases cannot resolve those names there. The raw-source suite is wholly red at base because the module is absent.",
+      "method": "Each changed module was replaced by its base version, the affected suite run, and every module restored with a digest check. All four restored exact.",
+      "results": {
+        "estimability_preflight": "28 failed / 14 passed",
+        "raw_source_row": "1 collection error; the module does not exist at base",
+        "row_count_r2": "14 failed / 34 passed",
+        "technical_completeness": "24 failed / 40 passed"
+      }
+    },
+    "r4_repairs": {
+      "estimability_donor_keyed": {
+        "attack": "With STATE_SCORE equal to Q_DEPTH the aligned measurement design is rank deficient. Rotating STATE_SCORE across donors would make it full rank at rank 7 of 7; the permutation is refused on the records digest rather than reported as estimable.",
+        "property": "Values are keyed by donor, the order comes from the role authority, and records_root binds every (donor, field, value) triple. A permutation reassigns values across donors, which moves the digest."
+      },
+      "manifest_geometry": {
+        "property": "rows and nnz are required manifest columns, the declared row count is checked unconditionally rather than behind a presence test, the counts payload verifier compares the stored value count against nnz, and both are bound into the population closure root."
+      },
+      "raw_h5_byte_to_row": {
+        "module": "scripts/v4/t0_raw_source_row_authority_v1.py",
+        "obs_fields_read": [
+          "exp_component_name",
+          "Donor ID"
+        ],
+        "pathology_note": "The asset's obs also carries Braak, Thal, CERAD score and other pathology columns. None is read, and assert_no_pathology_read refuses a widened field set.",
+        "property": "The production proof takes NO values parameter, so a caller-created vector has no door to enter through. The source handle carries a module-private token, so a look-alike object claiming the right digest is refused.",
+        "verified_against_real_asset": {
+          "bytes_hashed": 32978570763,
+          "geometry": "1178694 x 36601 from layers/UMIs",
+          "negative_control": "a bound library off by one is refused on real bytes",
+          "raw_source_proof_root": "4d450d6c650c2e0b0122c8f799329b8b21d2fe7496d0082b56f25f88157f2d5d",
+          "rows_proven": 3,
+          "scope": "READ_ONLY_THREE_ROW_SPOT_CHECK__MATERIALIZED_NOTHING__NOT_A_PRODUCTION_B2_RUN",
+          "seconds": 222.6,
+          "sha256": "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
+        }
+      },
+      "technical_completeness_authenticated_parents": {
+        "attack": "Genuine parent-root strings accompanying the forged pair (9470, 3000) cannot produce an authority.",
+        "property": "source_library is read off the authenticated B2 logical row and the projected non-zero count is computed from the counts payload that row's own digest authenticates, through the externally bound B1 projection. cells_by_donor and the bare substrate mapping are gone from the production path."
+      }
     },
     "real_execution_ready": false,
     "s2_feature_projection": {
@@ -686,6 +734,37 @@
         "technical_completeness": 51
       },
       "verified": "Collected counts, not estimates. The original four suites are 33 + 32 + 38 + 50 = 153. All twelve T0 suites collect and pass 482. The feature suite is 38 cases; an earlier handoff said 39, which made the four-suite total add to 154 rather than the 153 actually observed. No revision of this record may restore the 39 figure."
+    },
+    "test_accounting_r4": {
+      "aggregate": 556,
+      "new_case_breakdown": {
+        "estimability_preflight": 14,
+        "raw_source_row": 35,
+        "row_count_r2": 12,
+        "technical_completeness": 13
+      },
+      "new_cases": 74,
+      "note": "The R3 accounting of 482 across twelve suites is kept separate. This candidate is 556 across thirteen, and must not be described as 482.",
+      "per_suite": {
+        "age_sex": 50,
+        "availability": 32,
+        "checkpoint": 33,
+        "estimability_preflight": 42,
+        "feature": 38,
+        "immune_fraction": 47,
+        "immune_fraction_r2": 26,
+        "immune_support_count": 35,
+        "input_dependency_contract": 56,
+        "raw_source_row": 35,
+        "row_count": 50,
+        "row_count_r2": 48,
+        "technical_completeness": 64
+      },
+      "previous_candidate": {
+        "aggregate": 482,
+        "suites": 12
+      },
+      "suites": 13
     },
     "three_roots_required": [
       "population_closure_root",

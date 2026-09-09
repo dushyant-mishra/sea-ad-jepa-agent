@@ -644,7 +644,8 @@ def _reroot(closure, **changes):
         changes.get("metadata_rows_scanned", closure["metadata_rows_scanned"]),
         changes.get("row_locations", closure["row_locations"]),
         changes.get("membership_sha256", closure["membership_sha256"]),
-        changes.get("block_manifest_sha256", closure["block_manifest_sha256"]))
+        changes.get("block_manifest_sha256", closure["block_manifest_sha256"]),
+        changes.get("block_geometry", closure.get("block_geometry")))
 
 
 def _relocated_locations(closure, cell, field, value):
@@ -854,3 +855,89 @@ def test_the_logical_authority_records_the_closure_root_it_was_built_from(
     logical = _logical(world, closure)
     assert logical["population_closure_root_sha256"] == \
         closure["population_closure_root_sha256"]
+
+
+# ---------------------------------------------------------------------------
+# Manifest geometry: `rows` and `nnz` are decision-bearing, not trivia.
+#
+# `rows` gated the metadata row-count check behind a presence test, so omitting
+# the column skipped the check. `nnz` was carried and never used at all. Neither
+# was bound into any root, so a mutated manifest geometry left every root
+# unchanged.
+# ---------------------------------------------------------------------------
+
+def _manifest_without(world: MultiOperatorWorld, column: str) -> bytes:
+    text = world.complete_manifest().decode("utf-8")
+    rows = list(csv.DictReader(io.StringIO(text)))
+    columns = [c for c in rows[0] if c != column]
+    return _csv(columns, [[r[c] for c in columns] for r in rows])
+
+
+def _manifest_with(world: MultiOperatorWorld, block_key: str, column: str,
+                   value) -> bytes:
+    text = world.complete_manifest().decode("utf-8")
+    rows = list(csv.DictReader(io.StringIO(text)))
+    for row in rows:
+        if row["block_key"] == block_key:
+            row[column] = str(value)
+    columns = list(rows[0])
+    return _csv(columns, [[r[c] for c in columns] for r in rows])
+
+
+@pytest.mark.parametrize("column", ["rows", "nnz"])
+def test_a_manifest_missing_a_geometry_column_stops(world: MultiOperatorWorld,
+                                                    column) -> None:
+    """Omitting the column used to skip the check that consumed it."""
+    with pytest.raises(AssertionError) as excinfo:
+        _closure_from(_manifest_without(world, column), world)
+    assert rc.STOP_MANIFEST_COLUMNS in str(excinfo.value)
+
+
+def test_a_declared_row_count_that_disagrees_stops(world: MultiOperatorWorld) -> None:
+    with pytest.raises(AssertionError) as excinfo:
+        _closure_from(_manifest_with(world, "op31/block-00001", "rows", 99), world)
+    assert rc.STOP_COUNTS_GEOMETRY in str(excinfo.value)
+
+
+@pytest.mark.parametrize("bad", ["0", "-1", "", "abc", "1.5"])
+def test_a_non_positive_integer_geometry_value_stops(world: MultiOperatorWorld,
+                                                     bad) -> None:
+    with pytest.raises(AssertionError):
+        _closure_from(_manifest_with(world, "op31/block-00001", "nnz", bad), world)
+
+
+def test_the_closure_reports_the_geometry_it_authenticated(
+        world: MultiOperatorWorld) -> None:
+    closure = _closure_from(world.complete_manifest(), world)
+    geometry = closure["block_geometry"]
+    assert set(geometry) == set(world.op31_blocks)
+    assert geometry["op31/block-00001"]["rows"] == 1
+    assert geometry["op31/block-00001"]["nnz"] == 999
+
+
+@pytest.mark.parametrize("field", ["rows", "nnz"])
+def test_the_closure_root_binds_the_declared_geometry(
+        world: MultiOperatorWorld, field) -> None:
+    """A mutated geometry must move the root, not pass unnoticed."""
+    closure = _closure_from(world.complete_manifest(), world)
+    baseline = closure["population_closure_root_sha256"]
+    mutated = {key: dict(value) for key, value in closure["block_geometry"].items()}
+    mutated["op31/block-00001"][field] += 1
+    assert _reroot(closure, block_geometry=mutated) != baseline
+
+
+def test_the_counts_payload_nnz_is_checked_against_the_manifest(
+        payload_world: PayloadWorld) -> None:
+    """The stored value count must match what the manifest declares."""
+    closure = _closure_from(payload_world.complete_manifest(), payload_world)
+    logical = _logical(payload_world, closure)
+    payload = payload_world.counts["op31/block-00000"]
+    # block-00000 stores three values across its two rows.
+    assert rc.verify_block_row_from_authenticated_payload(
+        logical=logical, logical_index=0, counts_payload_bytes=payload,
+        declared_rows=2, declared_nnz=3)
+    with pytest.raises(AssertionError) as excinfo:
+        rc.verify_block_row_from_authenticated_payload(
+            logical=logical, logical_index=0, counts_payload_bytes=payload,
+            declared_rows=2, declared_nnz=99)
+    assert rc.STOP_COUNTS_GEOMETRY in str(excinfo.value)

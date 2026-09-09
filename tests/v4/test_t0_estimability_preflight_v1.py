@@ -135,7 +135,7 @@ def test_a_ragged_design_is_refused() -> None:
 # --- Stage A ----------------------------------------------------------------
 
 def test_stage_a_checks_both_roles_and_every_loodo_fold() -> None:
-    result = pf.stage_a_parent_nuisance(discovery=_roles(28),
+    result = pf._stage_a_from_arrays(discovery=_roles(28),
                                         confirmation=_roles(18))
     assert result["stage"] == "A_PARENT_NUISANCE"
     assert result["checks"]["DISCOVERY"] == 4
@@ -147,7 +147,7 @@ def test_stage_a_checks_both_roles_and_every_loodo_fold() -> None:
 
 def test_stage_a_refuses_a_single_sex_confirmation_set() -> None:
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_a_parent_nuisance(discovery=_roles(28),
+        pf._stage_a_from_arrays(discovery=_roles(28),
                                    confirmation=_roles(18, single_sex=True))
     assert pf.STOP_SEX_NOT_BINARY in str(excinfo.value)
 
@@ -165,7 +165,7 @@ def test_stage_a_catches_a_fold_that_becomes_single_sex() -> None:
         pf.nuisance_design(discovery["age"], discovery["sex"]),
         what="whole discovery set") == 4
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_a_parent_nuisance(discovery=discovery, confirmation=_roles(18))
+        pf._stage_a_from_arrays(discovery=discovery, confirmation=_roles(18))
     assert pf.STOP_SEX_NOT_BINARY in str(excinfo.value)
 
 
@@ -173,7 +173,7 @@ def test_stage_a_catches_a_fold_that_becomes_single_sex() -> None:
 
 def test_stage_b_checks_the_three_confirmation_designs() -> None:
     n = 18
-    result = pf.stage_b_state_designs(
+    result = pf._stage_b_from_arrays(
         confirmation=_roles(n), state_score=_covariate(n),
         immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
         q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -188,7 +188,7 @@ def test_stage_b_refuses_the_response() -> None:
     """Rank is a property of the design, so the outcome must not be supplied."""
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_b_state_designs(
+        pf._stage_b_from_arrays(
             confirmation=_roles(n), state_score=_covariate(n),
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3),
@@ -200,7 +200,7 @@ def test_stage_b_catches_a_state_score_collinear_with_a_covariate() -> None:
     n = 18
     depth = _covariate(n, 9.0, 0.05)
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_b_state_designs(
+        pf._stage_b_from_arrays(
             confirmation=_roles(n), state_score=depth,
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=depth, q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -212,7 +212,7 @@ def test_stage_b_catches_a_constant_state_score() -> None:
     """A constant predictor is collinear with the intercept."""
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_b_state_designs(
+        pf._stage_b_from_arrays(
             confirmation=_roles(n), state_score=[0.5] * n,
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -222,7 +222,7 @@ def test_stage_b_catches_a_constant_state_score() -> None:
 def test_stage_b_refuses_a_covariate_of_the_wrong_length() -> None:
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_b_state_designs(
+        pf._stage_b_from_arrays(
             confirmation=_roles(n), state_score=_covariate(n - 1),
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -234,7 +234,7 @@ def test_stage_b_refuses_a_covariate_of_the_wrong_length() -> None:
 @pytest.mark.parametrize("n", [17, 18])
 def test_stage_c_checks_the_tail_designs_at_both_allowed_n(n) -> None:
     """The frozen contract allows a tail inference n of 17 or 18."""
-    result = pf.stage_c_tail_designs(
+    result = pf._stage_c_from_arrays(
         tail_donors=_roles(n), state_score=_covariate(n),
         tail_prevalence=_covariate(n, 0.05, 0.011, shape=4),
         immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
@@ -252,7 +252,7 @@ def test_stage_c_checks_the_tail_designs_at_both_allowed_n(n) -> None:
 def test_stage_c_refuses_the_response() -> None:
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_c_tail_designs(
+        pf._stage_c_from_arrays(
             tail_donors=_roles(n), state_score=_covariate(n),
             tail_prevalence=_covariate(n, 0.05, 0.011, shape=4),
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
@@ -265,7 +265,7 @@ def test_stage_c_catches_a_tail_prevalence_collinear_with_the_state_score() -> N
     n = 18
     state = _covariate(n)
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_c_tail_designs(
+        pf._stage_c_from_arrays(
             tail_donors=_roles(n), state_score=state, tail_prevalence=state,
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -276,7 +276,7 @@ def test_stage_c_catches_a_constant_tail_prevalence() -> None:
     """Every tail donor sharing one prevalence carries no information."""
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_c_tail_designs(
+        pf._stage_c_from_arrays(
             tail_donors=_roles(n), state_score=_covariate(n),
             tail_prevalence=[0.1] * n,
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
@@ -327,14 +327,14 @@ def test_the_preflight_root_is_deterministic_and_moves_with_the_stages() -> None
 def test_all_three_stages_run_in_order_end_to_end() -> None:
     n_conf, n_tail = 18, 17
     results = [
-        pf.stage_a_parent_nuisance(discovery=_roles(28),
+        pf._stage_a_from_arrays(discovery=_roles(28),
                                    confirmation=_roles(n_conf)),
-        pf.stage_b_state_designs(
+        pf._stage_b_from_arrays(
             confirmation=_roles(n_conf), state_score=_covariate(n_conf),
             immune_fraction=_covariate(n_conf, 0.01, 0.002, shape=1),
             q_depth=_covariate(n_conf, 9.0, 0.05, shape=2),
             q_detect=_covariate(n_conf, 0.2, 0.01, shape=3)),
-        pf.stage_c_tail_designs(
+        pf._stage_c_from_arrays(
             tail_donors=_roles(n_tail), state_score=_covariate(n_tail),
             tail_prevalence=_covariate(n_tail, 0.05, 0.011, shape=4),
             immune_fraction=_covariate(n_tail, 0.01, 0.002, shape=1),
@@ -343,3 +343,218 @@ def test_all_three_stages_run_in_order_end_to_end() -> None:
     ]
     assert pf.assert_stage_order(results) is True
     assert len(pf.preflight_root(results)) == 64
+
+
+# ---------------------------------------------------------------------------
+# Donor-keyed inputs.
+#
+# The array primitives align covariates only by position, so permuting one is
+# structurally valid and changes matrix rank. A design that is genuinely
+# NOT_ESTIMABLE can therefore be made full rank by shuffling a column, and
+# nothing in a positional preflight would notice. The production stages key
+# values by donor and bind the whole record set with a digest, so a reassignment
+# across donors moves the digest and is refused.
+# ---------------------------------------------------------------------------
+
+def _records(donors, *, collinear: bool = False):
+    """Donor-keyed records in generic position, or deliberately collinear."""
+    out = {}
+    for index, donor in enumerate(donors):
+        depth = _covariate(len(donors), 9.0, 0.05, shape=2)[index]
+        out[donor] = {
+            "age": float(70 + (index * 3) % 27),
+            "sex": float(index % 2),
+            # When collinear, STATE_SCORE is exactly Q_DEPTH, which makes the
+            # measurement design rank deficient for the correctly aligned data.
+            "STATE_SCORE": depth if collinear else _covariate(len(donors))[index],
+            "IMMUNE_FRACTION": _covariate(len(donors), 0.01, 0.002, shape=1)[index],
+            "Q_DEPTH": depth,
+            "Q_DETECT": _covariate(len(donors), 0.2, 0.01, shape=3)[index],
+            "TAIL_PREVALENCE": _covariate(len(donors), 0.05, 0.011, shape=4)[index],
+        }
+    return out
+
+
+def _donors(n: int):
+    return ["D%02d" % i for i in range(n)]
+
+
+def test_the_donor_keyed_stage_b_accepts_bound_records() -> None:
+    donors = _donors(18)
+    records = _records(donors)
+    root = pf.records_root(donors, records, pf.STAGE_B_FIELDS)
+    result = pf.stage_b_state_designs(
+        confirmation_order=donors, records=records,
+        expected_records_root_sha256=root)
+    assert result["donor_bound"] is True
+    assert result["residual_df"] == {"primary": 13, "composition": 12,
+                                     "measurement": 11}
+
+
+def test_permuting_a_covariate_cannot_rescue_a_non_estimable_design() -> None:
+    """The exact attack. Aligned data is NOT_ESTIMABLE; a permutation is refused.
+
+    With STATE_SCORE exactly equal to Q_DEPTH the measurement design is rank
+    deficient, which is the truth about this design. Reassigning STATE_SCORE
+    across donors breaks that collinearity and would make the design full rank,
+    so a positional preflight would report PASS. Here the reassignment moves the
+    bound records digest and is refused instead.
+    """
+    donors = _donors(18)
+    aligned = _records(donors, collinear=True)
+    aligned_root = pf.records_root(donors, aligned, pf.STAGE_B_FIELDS)
+
+    # The truth about the correctly aligned design.
+    with pytest.raises(AssertionError) as excinfo:
+        pf.stage_b_state_designs(confirmation_order=donors, records=aligned,
+                                 expected_records_root_sha256=aligned_root)
+    assert pf.STOP_NOT_ESTIMABLE in str(excinfo.value)
+    assert "measurement" in str(excinfo.value)
+
+    # Reassign STATE_SCORE across donors by one position.
+    permuted = {donor: dict(row) for donor, row in aligned.items()}
+    rotated = [aligned[d]["STATE_SCORE"] for d in donors]
+    rotated = rotated[1:] + rotated[:1]
+    for donor, value in zip(donors, rotated):
+        permuted[donor]["STATE_SCORE"] = value
+
+    # It would now be full rank, which is precisely why it must be refused.
+    assert pf.assert_full_rank(
+        [row + [permuted[d]["Q_DEPTH"], permuted[d]["Q_DETECT"],
+                permuted[d]["STATE_SCORE"]]
+         for row, d in zip(pf.nuisance_design(
+             [permuted[d]["age"] for d in donors],
+             [permuted[d]["sex"] for d in donors]), donors)],
+        what="permuted measurement design") == 7
+
+    with pytest.raises(AssertionError) as excinfo:
+        pf.stage_b_state_designs(confirmation_order=donors, records=permuted,
+                                 expected_records_root_sha256=aligned_root)
+    assert pf.STOP_RECORDS_ROOT in str(excinfo.value)
+
+
+def test_the_records_root_moves_when_two_donors_swap_a_value() -> None:
+    donors = _donors(6)
+    records = _records(donors)
+    baseline = pf.records_root(donors, records, pf.STAGE_B_FIELDS)
+    swapped = {donor: dict(row) for donor, row in records.items()}
+    swapped["D00"]["STATE_SCORE"], swapped["D01"]["STATE_SCORE"] = (
+        records["D01"]["STATE_SCORE"], records["D00"]["STATE_SCORE"])
+    assert pf.records_root(donors, swapped, pf.STAGE_B_FIELDS) != baseline
+
+
+def test_the_records_root_depends_on_the_donor_order() -> None:
+    """The order is the role authority's, not the caller's array indices."""
+    donors = _donors(6)
+    records = _records(donors)
+    assert pf.records_root(donors, records, pf.STAGE_B_FIELDS) != \
+        pf.records_root(list(reversed(donors)), records, pf.STAGE_B_FIELDS)
+
+
+def test_a_donor_set_mismatch_is_refused() -> None:
+    donors = _donors(6)
+    records = _records(donors)
+    root = pf.records_root(donors, records, pf.STAGE_B_FIELDS)
+    with pytest.raises(AssertionError) as excinfo:
+        pf.stage_b_state_designs(confirmation_order=donors + ["D99"],
+                                 records=records,
+                                 expected_records_root_sha256=root)
+    assert pf.STOP_DONOR_SET in str(excinfo.value)
+    assert "D99" in str(excinfo.value)
+
+
+def test_a_repeated_donor_in_the_order_is_refused() -> None:
+    donors = _donors(6)
+    records = _records(donors)
+    root = pf.records_root(donors, records, pf.STAGE_B_FIELDS)
+    with pytest.raises(AssertionError) as excinfo:
+        pf.stage_b_state_designs(confirmation_order=donors + [donors[0]],
+                                 records=records,
+                                 expected_records_root_sha256=root)
+    assert pf.STOP_DONOR_ORDER in str(excinfo.value)
+
+
+def test_a_missing_record_field_is_refused() -> None:
+    donors = _donors(6)
+    records = _records(donors)
+    stripped = {donor: dict(row) for donor, row in records.items()}
+    stripped["D00"].pop("Q_DETECT")
+    with pytest.raises(AssertionError) as excinfo:
+        pf.records_root(donors, stripped, pf.STAGE_B_FIELDS)
+    assert pf.STOP_FIELD_ABSENT in str(excinfo.value)
+
+
+def test_positional_arrays_are_explicitly_refused() -> None:
+    with pytest.raises(AssertionError) as excinfo:
+        pf.refuse_positional_arrays(state_score=[1.0], q_depth=[2.0])
+    assert pf.STOP_POSITIONAL in str(excinfo.value)
+
+
+def test_the_array_primitives_are_private() -> None:
+    """They may remain for unit testing, but production must not reach them."""
+    for name in ("_stage_a_from_arrays", "_stage_b_from_arrays",
+                 "_stage_c_from_arrays"):
+        assert hasattr(pf, name)
+    for name in ("stage_a_parent_nuisance", "stage_b_state_designs",
+                 "stage_c_tail_designs"):
+        assert hasattr(pf, name)
+
+
+def test_the_donor_keyed_stage_a_binds_both_role_record_sets() -> None:
+    discovery = _donors(28)
+    confirmation = ["C%02d" % i for i in range(18)]
+    dr = _records(discovery)
+    cr = _records(confirmation)
+    result = pf.stage_a_parent_nuisance(
+        discovery_order=discovery, discovery_records=dr,
+        expected_discovery_records_root_sha256=pf.records_root(
+            discovery, dr, ("age", "sex")),
+        confirmation_order=confirmation, confirmation_records=cr,
+        expected_confirmation_records_root_sha256=pf.records_root(
+            confirmation, cr, ("age", "sex")))
+    assert result["donor_bound"] is True
+    assert result["checks"]["DISCOVERY_LOODO_FOLDS"] == 28
+
+
+def test_the_donor_keyed_stage_a_refuses_a_wrong_records_root() -> None:
+    discovery = _donors(28)
+    confirmation = ["C%02d" % i for i in range(18)]
+    dr = _records(discovery)
+    cr = _records(confirmation)
+    with pytest.raises(AssertionError) as excinfo:
+        pf.stage_a_parent_nuisance(
+            discovery_order=discovery, discovery_records=dr,
+            expected_discovery_records_root_sha256="f" * 64,
+            confirmation_order=confirmation, confirmation_records=cr,
+            expected_confirmation_records_root_sha256=pf.records_root(
+                confirmation, cr, ("age", "sex")))
+    assert pf.STOP_RECORDS_ROOT in str(excinfo.value)
+
+
+@pytest.mark.parametrize("n", [17, 18])
+def test_the_donor_keyed_stage_c_accepts_bound_records(n) -> None:
+    donors = _donors(n)
+    records = _records(donors)
+    root = pf.records_root(donors, records, pf.STAGE_C_FIELDS)
+    result = pf.stage_c_tail_designs(
+        tail_order=donors, records=records,
+        expected_records_root_sha256=root)
+    assert result["donor_bound"] is True
+    assert result["tail_inference_n"] == n
+
+
+def test_the_donor_keyed_stages_still_refuse_the_response() -> None:
+    donors = _donors(18)
+    records = _records(donors)
+    for stage, kwargs in (
+            (pf.stage_b_state_designs,
+             {"confirmation_order": donors, "records": records,
+              "expected_records_root_sha256": pf.records_root(
+                  donors, records, pf.STAGE_B_FIELDS)}),
+            (pf.stage_c_tail_designs,
+             {"tail_order": donors, "records": records,
+              "expected_records_root_sha256": pf.records_root(
+                  donors, records, pf.STAGE_C_FIELDS)})):
+        with pytest.raises(AssertionError) as excinfo:
+            stage(response=[1.0] * 18, **kwargs)
+        assert pf.STOP_RESPONSE_PRESENT in str(excinfo.value)
