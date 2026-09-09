@@ -45,7 +45,9 @@
     "V5: evaluate guaranteed full-cell coverage against the actual 4,553,407-row reader-fit geometry and do not equate population-equivalent with-replacement presentations with full-dataset coverage.",
     "V5: preserve donor-uniform target mass through exact p/q weighting and freeze only a jointly feasible set of coverage, ESS, group-floor, repeat-cap and weight-conditioning constraints.",
     "V5: route biological objectives through a common-core-anchored z_bio and acquisition/measurement state through z_obs; retain same-cell support/mask/evidence/depth interventions and shortcut probes.",
-    "V5: complete live protected-gradient tests, CUDA Gate-2, hardware invariance, anti-cheat threshold calibration and independent review before training authority."
+    "V5: complete live protected-gradient tests, CUDA Gate-2, hardware invariance, anti-cheat threshold calibration and independent review before training authority.",
+    "V5 relational anti-cheat: freeze the shortcut-baseline calibration procedure and required incremental margin before any learned checkpoint outcome is inspected. Learned relational performance must beat QC/support/mask/operator/donor baselines on held-out units; chance alone is not the comparator.",
+    "V5 relational target: retain TD57B/TD59 as the leading target framework; do not reopen locality-fraction tuning or redesign the target from these shortcut diagnostics."
   ],
   "parallel_nonblocking_work": [
     "Develop and test a coverage-first full-population V5 schedule candidate without optimizer execution.",
@@ -171,5 +173,35 @@
       "training_authority": false
     },
     "required_decision": "Prospectively choose a jointly feasible coverage/ESS/group-floor/repeat-cap/weight-ratio authority. Do not silently retain the impossible 64x+cap32+full-coverage combination and do not choose from checkpoint outcomes."
+  },
+  "v5_relational_shortcut_review": {
+    "status": "TD57B_AND_TD59_EXPLICIT_MEASUREMENT_SHORTCUT_DIAGNOSTICS_COMPLETE__NO_TARGET_REDESIGN",
+    "candidate_branch": "planning/v5-full-population-cheat-proofing-20260909",
+    "candidate_head": "39803a08f6378bc6435d35bff4cdc85bf9ab3246",
+    "td57b": {
+      "measurement_shortcut_median_donor_agreement_range": [
+        0.55234375,
+        0.6564968785030993
+      ],
+      "interpretation": "DEPTH/DETECT carry nontrivial comparator-order information; above-chance alone is insufficient. Frozen TD57B remains supported because its matched Y-null preserved donor/operator/depth/detection and passed 24/24."
+    },
+    "td59": {
+      "measurement_shortcut_median_donor_agreement_range": [
+        0.4804257516370549,
+        0.5566964285714286
+      ],
+      "interpretation": "Nearest-half independent-Z locality shows smaller simple QC leakage than TD57B; TD59 remains pilot-only and does not become a production locality."
+    },
+    "structural_shortcuts": {
+      "donor_operator_source": "constant within each TD57B/TD59 triplet",
+      "support_fingerprint": "constant within operator in the frozen 50k sample",
+      "operator_measurement_mask": "constant within operator"
+    },
+    "required_future_gate": "Learned z_bio relational continuity must beat the strongest prospectively frozen shortcut baseline by a prospectively frozen increment on held-out units; >0.5 alone cannot qualify biology.",
+    "increment_margin_frozen": false,
+    "pathology_used": false,
+    "target_redesign_authorized": false,
+    "training_authorized": false,
+    "remote_ci_receipt": "PENDING__NO_WORKFLOW_RUN_ATTACHED_YET"
   }
 }
