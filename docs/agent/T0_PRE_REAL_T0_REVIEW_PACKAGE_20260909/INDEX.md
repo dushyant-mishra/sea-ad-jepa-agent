@@ -13,8 +13,9 @@ Head history for this package, so a reviewer can tell the revisions apart:
 
     4552851d   the head the reviewer first inspected
     9ba6fd44   this package assembled; docs and reports only, no artifact rewritten
-    R6 closure the current head, recorded in CURRENT_WORK_CHECKPOINT_STATE.json
-               under t0_v20_materialization_lane.pre_real_t0_review_20260909
+    82e0d75f   R6 closure: parent replay, Stage A preflight, provenance waiver
+               (this line added in the immediately following commit, since a
+               document cannot contain the digest of the commit that adds it)
 
 The owner's two decisions of 2026-09-09 re-cut nothing and moved no root. The
 subsequent R6 repairs, made at the external reviewer's direction, did move the

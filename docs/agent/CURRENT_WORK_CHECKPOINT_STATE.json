@@ -578,6 +578,7 @@
         }
       },
       "r6_closure_20260909": {
+        "closure_commit": "82e0d75f56028d570554cb6265b2121816049438",
         "document": "docs/agent/T0_R6_CLOSURE_20260909.md",
         "eligible_donor_roots_after_r6": {
           "decision_roots_unchanged": true,
@@ -643,6 +644,32 @@
           "substrate_rebuilt": true
         },
         "directory": "docs/agent/T0_PRE_REAL_T0_REVIEW_PACKAGE_20260909",
+        "head_history": [
+          {
+            "head": "4552851de3a748e621131d3b6db4b07dc5d93527",
+            "note": "the head the external reviewer first inspected"
+          },
+          {
+            "head": "9ba6fd44a1563f5538b2ff197709112619ebbd85",
+            "note": "review package assembled; docs and reports only"
+          },
+          {
+            "head": "49311a82",
+            "note": "R6 reds committed red, all seven failing"
+          },
+          {
+            "head": "c0b84b12",
+            "note": "R6 items 1, 2 and 4 repaired"
+          },
+          {
+            "head": "7e8f215d",
+            "note": "Stage A preflight runner committed before use"
+          },
+          {
+            "head": "82e0d75f56028d570554cb6265b2121816049438",
+            "note": "R6 closure"
+          }
+        ],
         "index": "docs/agent/T0_PRE_REAL_T0_REVIEW_PACKAGE_20260909/INDEX.md",
         "members": [
           "B2_PRODUCTION_REPLAY_REPORT.json",
@@ -650,7 +677,7 @@
           "TECHNICAL_COMPLETENESS_INDEPENDENT_REDERIVATION_REPORT.json",
           "ELIGIBLE_DONOR_REPLAY_REPORT.json"
         ],
-        "review_candidate_head": "4552851de3a748e621131d3b6db4b07dc5d93527"
+        "review_candidate_head": "82e0d75f56028d570554cb6265b2121816049438"
       },
       "state": {
         "b2_real_population_authority": "DONE_AND_REPLAYED",
