@@ -40,6 +40,8 @@
     "T0: publish the exact frozen V20 conclusion/adjudication/target/role modules used by Stage 3 without changing their bytes, bind their identities/root, and make the replay harness import only that committed bundle.",
     "T0: execute the 84-file evidence-byte standing tests and the end-to-end Stage 3 replay from a clean independent checkout; require exact decision/root reproduction.",
     "T0: preserve the post-access role-label repair and frozen sensitivity-reporting omission as explicit caveats; do not rerun or retune the V20 scientific design.",
+    "V5 full population: the current 64x weight-ratio ceiling and 32x cell-repeat cap cannot both coexist with guaranteed coverage of every reader-fit cell; the exact dataset lower bound is 67.1724537x. Freeze a new jointly feasible conditioning authority prospectively before training.",
+    "V5 update composition: audit and control source/donor/operator composition per optimizer update independently of scientific target weights; repeated-source frequency is an observation/optimization property and must not be allowed to become z_bio identity.",
     "V5: evaluate guaranteed full-cell coverage against the actual 4,553,407-row reader-fit geometry and do not equate population-equivalent with-replacement presentations with full-dataset coverage.",
     "V5: preserve donor-uniform target mass through exact p/q weighting and freeze only a jointly feasible set of coverage, ESS, group-floor, repeat-cap and weight-conditioning constraints.",
     "V5: route biological objectives through a common-core-anchored z_bio and acquisition/measurement state through z_obs; retain same-cell support/mask/evidence/depth interventions and shortcut probes.",
@@ -127,5 +129,47 @@
     "sensitivity_reporting_gap": "NUMERICAL_STATE_COMPOSITION_AND_STATE_MEASUREMENTS_NOT_EMITTED_IN_FROZEN_DECISION_RETURN",
     "evidence_clean_clone_verification": "AVAILABLE_PENDING_REMOTE_OR_INDEPENDENT_EXECUTION",
     "computation_clean_clone_replay": "BLOCKED__FROZEN_V20_CONCLUSION_MODULES_EXTERNAL_TO_REPO"
+  },
+  "v5_full_population_geometry_review": {
+    "status": "DATASET_GEOMETRY_CONFLICT_FOUND__NO_SCHEDULE_SUPERSESSION_YET",
+    "candidate_branch": "planning/v5-full-population-cheat-proofing-20260909",
+    "candidate_head": "82528e0a948b314a834f9805402b96882744b64b",
+    "input_metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "reader_fit_cells": 4553407,
+    "donors": 104,
+    "donor_operator_groups": 1400,
+    "full_coverage_required_by_project_goal": true,
+    "existing_with_replacement_population_equivalent_is_full_coverage_proof": false,
+    "donor_size_min": 81,
+    "donor_size_max": 174111,
+    "donor_uniform_per_cell_target_ratio": 2149.5185185185187,
+    "existing_cell_repeat_cap": 32,
+    "existing_weight_ratio_ceiling": 64,
+    "full_coverage_weight_ratio_lower_bound_under_cap32": 67.17245370370371,
+    "old_64x_ratio_rule_feasible_with_full_coverage_and_cap32": false,
+    "minimum_integer_cell_cap_for_64x_feasibility": 34,
+    "naive_full_coverage_plus_group_topup": {
+      "total_presentations": 4555218,
+      "extra_presentations": 1811,
+      "ess_fraction": 0.09689111347244539,
+      "weight_ratio": 2149.5185185185187,
+      "rejected_as_production_candidate": true
+    },
+    "donor_balanced_dataset_only_candidate": {
+      "total_presentations": 5271158,
+      "population_equivalents": 1.1576294409878143,
+      "ess_fraction": 0.5009275089162246,
+      "weight_ratio": 67.17245370370371,
+      "max_cell_multiplicity": 32,
+      "minimum_group_presentations": 16,
+      "source_presentation_fractions": {
+        "HVS": 0.1542348000192747,
+        "NPH52": 0.060348409211031045,
+        "SEA_AD": 0.7854167907696943
+      },
+      "globally_optimal_claim": false,
+      "training_authority": false
+    },
+    "required_decision": "Prospectively choose a jointly feasible coverage/ESS/group-floor/repeat-cap/weight-ratio authority. Do not silently retain the impossible 64x+cap32+full-coverage combination and do not choose from checkpoint outcomes."
   }
 }
