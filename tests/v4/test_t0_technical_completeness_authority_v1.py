@@ -216,7 +216,7 @@ def test_an_unlawful_substrate_prevents_the_authority_being_built(tmp_path) -> N
     substrate = dict(SUBSTRATE)
     substrate.pop("projection_root_sha256")
     with pytest.raises(AssertionError) as excinfo:
-        tc.build_authority(tmp_path / "pkg",
+        tc.build_synthetic_authority(tmp_path / "pkg",
                            cells_by_donor={"D1": [(9470, 3000)]},
                            substrate=substrate,
                            derivation_code_sha256=CODE_SHA,
@@ -264,7 +264,7 @@ def test_the_typed_float_framing_refuses_a_nonfinite_value() -> None:
 
 
 def test_the_package_round_trips_with_external_parent_binding(tmp_path) -> None:
-    summary = tc.build_authority(
+    summary = tc.build_synthetic_authority(
         tmp_path / "pkg",
         cells_by_donor={"D1": [(9470, 3000), (8123, 2500)],
                         "D2": [(7777, 1000)]},
@@ -282,7 +282,7 @@ def test_the_package_round_trips_with_external_parent_binding(tmp_path) -> None:
 
 
 def test_the_loader_refuses_a_wrong_parent_contract_root(tmp_path) -> None:
-    summary = tc.build_authority(
+    summary = tc.build_synthetic_authority(
         tmp_path / "pkg", cells_by_donor={"D1": [(9470, 3000)]},
         substrate=SUBSTRATE, derivation_code_sha256=CODE_SHA,
         candidate_donors=["D1"])
@@ -307,7 +307,7 @@ def test_the_parent_contract_root_moves_with_any_parent(tmp_path) -> None:
 
 
 def test_the_metadata_declares_its_synthetic_status_and_formulas(tmp_path) -> None:
-    tc.build_authority(tmp_path / "pkg", cells_by_donor={"D1": [(9470, 3000)]},
+    tc.build_synthetic_authority(tmp_path / "pkg", cells_by_donor={"D1": [(9470, 3000)]},
                        substrate=SUBSTRATE, derivation_code_sha256=CODE_SHA,
                        candidate_donors=["D1"])
     meta = json.loads((tmp_path / "pkg" / tc.METADATA).read_text(encoding="utf-8"))
@@ -324,7 +324,7 @@ def test_the_metadata_declares_its_synthetic_status_and_formulas(tmp_path) -> No
 
 def test_a_stored_authority_declaring_a_threshold_is_refused(tmp_path) -> None:
     """Guards against a later package asserting a cutoff was applied."""
-    summary = tc.build_authority(
+    summary = tc.build_synthetic_authority(
         tmp_path / "pkg", cells_by_donor={"D1": [(9470, 3000)]},
         substrate=SUBSTRATE, derivation_code_sha256=CODE_SHA,
         candidate_donors=["D1"])
@@ -347,7 +347,7 @@ def test_writing_into_a_nonempty_directory_is_refused(tmp_path) -> None:
     out.mkdir()
     (out / "stray.txt").write_text("x", encoding="utf-8")
     with pytest.raises(AssertionError) as excinfo:
-        tc.build_authority(out, cells_by_donor={"D1": [(9470, 3000)]},
+        tc.build_synthetic_authority(out, cells_by_donor={"D1": [(9470, 3000)]},
                            substrate=SUBSTRATE, derivation_code_sha256=CODE_SHA,
                            candidate_donors=["D1"])
     assert tc.STOP_PACKAGE_MEMBER in str(excinfo.value)
