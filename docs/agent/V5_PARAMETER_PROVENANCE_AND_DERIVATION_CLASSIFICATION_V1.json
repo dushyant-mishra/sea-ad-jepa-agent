@@ -1,0 +1,93 @@
+{
+  "schema": "JEPA_V5_PARAMETER_PROVENANCE_AND_DERIVATION_CLASSIFICATION_V1",
+  "status": "PROSPECTIVE_CLASSIFICATION__NO_HISTORICAL_PILOT_CONSTANT_AUTOMATICALLY_PROMOTED",
+  "classes": {
+    "REAL_DATA_DERIVED": {
+      "rule": "derive from authenticated reader_fit/calibration/full-expression assets; never type the observed value as authority",
+      "variables": [
+        "reader_fit cell/donor/source/operator/group counts and donor-size geometry",
+        "source donor weights for equal-donor estimand",
+        "outer donor fold count from source donor geometry",
+        "common measured core and support-family prevalence",
+        "per-cell scientific target p and proposal/schedule q",
+        "multiplicity ledger, total presentation horizon H, exact p/q weights and realized ESS",
+        "D_shared, D_private, D_total, D_obs",
+        "Q_DEPTH/Q_DETECT distributions and same-cell measurement perturbation baselines",
+        "QC/support/mask shortcut baselines",
+        "source/operator presentation and update-composition diagnostics",
+        "production relational triplet population and admissible finite-sampling geometry"
+      ]
+    },
+    "SCALE_FROM_REAL_HORIZON_OR_ERROR_BUDGET": {
+      "rule": "freeze a dimensionless/risk rule prospectively; compute the absolute number from H, population geometry, or requested Monte-Carlo precision",
+      "variables": [
+        "EMA half-life in presentations as a fraction/multiple of real H rather than fixed optimizer steps",
+        "warmup/checkpoint/qualification exposure positions as fractions of H",
+        "relational triplet sample budget from stratum population plus Monte-Carlo error target",
+        "null/permutation replicate count from required p-value resolution/error budget",
+        "donor bootstrap replicate count from Monte-Carlo uncertainty target",
+        "sketch width from active search-rank/error guarantee rather than a historical 512",
+        "search-rank expansion envelope from boundary status rather than a historical 320"
+      ]
+    },
+    "HARDWARE_DERIVED_BEFORE_TRAINING": {
+      "rule": "derive from production GPU memory/throughput under scientific-identity invariance; hardware may change packing only",
+      "variables": [
+        "maximum tokens per microbatch",
+        "effective base cells per optimizer update",
+        "gradient accumulation factor",
+        "target query chunk size",
+        "memory-safe teacher query budget",
+        "operator-homogeneous packing plan"
+      ]
+    },
+    "PROSPECTIVE_DESIGN_OR_RISK_CONTROL": {
+      "rule": "may be fixed, but must be justified before optimizer start and must not be selected from checkpoint/pathology outcomes",
+      "variables": [
+        "full unique-cell coverage requirement",
+        "ESS efficiency floor",
+        "cell anti-concentration/repeat policy",
+        "statistical alpha/risk budgets",
+        "view-family definitions and hash domains",
+        "same-cell intervention families",
+        "critical 48-tensor gradient registry semantics",
+        "no-flex-after-optimizer-start rule",
+        "mask/evidence intervention fractions unless replaced by a predeclared real-data derivation rule"
+      ]
+    }
+  },
+  "historical_values_not_production_authority": {
+    "D_shared_5": "rejected historical candidate",
+    "latent_width_96": "not authority",
+    "d_gene_160": "token capacity only; not biological D ceiling",
+    "D_global_224": "not active V5 authority",
+    "search_rank_320": "old search envelope only",
+    "feature_sketch_dimension_512": "old derivation implementation constant; production must scale from active rank/error rule",
+    "donor_resamples_256": "old Monte-Carlo resolution; production replicate count must follow a frozen precision rule",
+    "matched_null_replicates_256": "old Monte-Carlo resolution; production replicate count must follow a frozen p-value/error rule",
+    "visible_fraction_0_6": "historical four-view derivation design; not automatically V5 mask authority",
+    "triplets_per_stratum_64": "50k falsification budget only; not production relational sample authority",
+    "group_presentation_floor_16": "old zero-hit rationale is obsolete under deterministic full-cell coverage; requires new optimization-only justification if retained",
+    "importance_weight_ratio_64": "proven incompatible with full coverage + cap32 on real donor geometry; superseded as a fixed ceiling candidate"
+  },
+  "forbidden_selection_sources": [
+    "training loss trajectory",
+    "checkpoint qualification outcome",
+    "pathology",
+    "DEV",
+    "SEALED",
+    "reader_validation",
+    "reader_oracle",
+    "protected labels",
+    "post-hoc target-discovery wins"
+  ],
+  "current_blockers": [
+    "42/42 full reader-fit expression shard physical binding",
+    "numeric D family derivation on full reader_fit expression",
+    "prospective resolution of repeat-cap/group-repeat/ESS risk controls",
+    "hardware calibration after D_total is known",
+    "C2 protected-gradient gate adoption and zero-skip critical execution"
+  ],
+  "synthetic_data_may_set_production_values": false,
+  "training_authorized": false
+}
