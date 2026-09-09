@@ -1,0 +1,75 @@
+{
+  "schema": "JEPA_V5_REPEAT_CAP_CONDITIONING_PARETO_SUMMARY_V1",
+  "status": "REAL_104_DONOR_GEOMETRY_DIAGNOSTIC__NO_REPEAT_CAP_AUTHORITY",
+  "population": {
+    "cells": 4553407,
+    "donors": 104,
+    "minimum_donor_cells": 81,
+    "maximum_donor_cells": 174111
+  },
+  "ess_risk_floor": {
+    "numerator": 1,
+    "denominator": 2,
+    "float": 0.5,
+    "role": "prospectively declared efficiency/risk control, not data-discovered"
+  },
+  "data_derived_findings": {
+    "minimum_cap_that_can_achieve_ess_0_5_at_all": 11,
+    "cap_10_can_achieve_ess_0_5": false,
+    "selected_frontier_points": [
+      {
+        "cap": 11,
+        "total_presentations": 6203244,
+        "population_equivalents": 1.362330228771555,
+        "weight_ratio_lower_bound": 195.41077441077442
+      },
+      {
+        "cap": 16,
+        "total_presentations": 5542457,
+        "population_equivalents": 1.2172109807008247,
+        "weight_ratio_lower_bound": 134.34490740740742
+      },
+      {
+        "cap": 24,
+        "total_presentations": 5341118,
+        "population_equivalents": 1.1729937604962615,
+        "weight_ratio_lower_bound": 89.56327160493827
+      },
+      {
+        "cap": 32,
+        "total_presentations": 5266752,
+        "population_equivalents": 1.1566618138901266,
+        "weight_ratio_lower_bound": 67.17245370370371
+      },
+      {
+        "cap": 34,
+        "total_presentations": 5255116,
+        "population_equivalents": 1.1541063647506142,
+        "weight_ratio_lower_bound": 63.22113289760349
+      },
+      {
+        "cap": 40,
+        "total_presentations": 5228711,
+        "population_equivalents": 1.1483074102534652,
+        "weight_ratio_lower_bound": 53.73796296296296
+      },
+      {
+        "cap": 64,
+        "total_presentations": 5179126,
+        "population_equivalents": 1.1374177621284458,
+        "weight_ratio_lower_bound": 33.586226851851855
+      }
+    ]
+  },
+  "interpretation": [
+    "Cap 32 is not forced by the real dataset; it is one point on a conditioning/anti-concentration frontier.",
+    "Cap 11 is the smallest cap capable of ESS>=0.5, but it permits much worse importance-weight imbalance.",
+    "If the old 64x weight-ratio risk ceiling were independently retained, cap 34 is the smallest integer cap compatible with it; this does not by itself justify retaining 64x.",
+    "Final repeat-cap choice must be frozen prospectively from a declared conditioning/anti-concentration rule, never from model training outcomes."
+  ],
+  "group_repeat_floor_applied": false,
+  "synthetic_data_used": false,
+  "pathology_used": false,
+  "checkpoint_outcomes_used": false,
+  "training_authorized": false
+}
