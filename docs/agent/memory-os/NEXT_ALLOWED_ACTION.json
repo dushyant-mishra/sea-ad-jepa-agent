@@ -6,10 +6,10 @@
   "implementation_verifier_veto": true,
   "implementation_verifier_runs_before_expensive_compute": true,
   "implementation_verifier_authority": "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
-  "current_gate": "T0_STAGE3_EVIDENCE_BYTE_REVIEW_AND_V5_PRETRAINING_HARDENING",
-  "status": "T0_STAGE3_INTERNAL_SUPPORT_RECORDED__FULL_EVIDENCE_BYTE_REVIEW_PENDING__V5_TRAINING_CLOSED",
-  "current_status": "T0 V20 Stage 3 terminal is recorded at e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9. Broad immune-expression primary is SUPPORTED_INTERNAL (p_upper 0.021 vs frozen alpha 0.025; n=18). Rare tail is RARE_TAIL_UNDERDETERMINED_MEASUREMENT because pathology-blind QC vetoed before any tail disease statistic. Full exact-byte independent review remains pending because Stage 3 evidence bytes are not committed and the frozen decision return omits state-composition/state-measurement sensitivities on the QC-veto path. V5 training, TD60, successor-u0, D1 real and protected populations remain unauthorized.",
-  "primary_next_action": "T0: obtain/commit the exact Stage 3 run-summary, decision, access-manifest and sensitivity-supporting evidence bytes under their recorded hashes, then independently replay/read back them without changing the frozen procedure. V5: continue pathology-blind pre-execution/anti-cheat/trainer hardening; do not start optimizer steps.",
+  "current_gate": "T0_STAGE3_INDEPENDENT_CLEAN_CHECKOUT_REPLAY_AND_V5_FULL_POPULATION_ANTI_CHEAT_HARDENING",
+  "status": "T0_STAGE3_EVIDENCE_BYTES_PUBLISHED__PRIMARY_INTERNAL_SUPPORT_RETAINED__V5_TRAINING_CLOSED",
+  "current_status": "T0 V20 Stage 3 evidence publication at 2e6d8d1e33867fa90032492894c92ea4849e3e4a now commits 84 byte-bound evidence files, including the exact decision, Stage 3 summary, confirmation access manifest, tail and execution-input packages. The prior missing-byte limitation is closed. The decision preserves BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL (p_upper 0.021 vs alpha 0.025) and RARE_TAIL_UNDERDETERMINED_MEASUREMENT. Remaining review gaps are a clean independent checkout/CI replay and the frozen adjudicator's omission of the numerical state-composition/state-measurement result objects. V5 training and all downstream protected gates remain closed.",
+  "primary_next_action": "T0: run the committed evidence-byte standing tests on a clean independent checkout/CI; do not alter or rerun the scientific procedure. V5: prospectively harden full-population coverage and observation-vs-biology shortcut separation before any optimizer run.",
   "t0_stage2_discovery_status": {
     "branch": "t0/v20-pathology-blind-materialization-20260908",
     "head": "237427c734bfdf7d00f286ceeae63692b3075d49",
@@ -37,19 +37,20 @@
     "completed_terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
   },
   "required_actions": [
-    "T0: obtain or commit the exact Stage 3 evidence bytes named by e7a16eae and perform exact-byte independent replay/readback before treating the result as fully independently closed.",
-    "T0: preserve the post-access role-label repair at f98c1f8 as an explicit procedural caveat; do not rewrite it out of history.",
-    "V5: continue the current prospective anti-cheat and trainer pre-execution hardening without optimizer runs.",
-    "V5: preserve the frozen scientific target V2, base proposal V3 with exact p/q correction, one-population-equivalent presentation horizon, and dataset-defined support geometry; do not revive historical defaults.",
-    "V5: complete prospective anti-cheat threshold authority, live critical-test proof, CUDA Gate-2, science-neutral GPU calibration, design freeze, and independent scientific/implementation review before training authority.",
-    "Mechanics: future healthy teacher/student training must bind fp16 forward -> backward with autocast disabled -> unscale -> 48-tensor mandatory protected-gradient gate -> optimizer step proved -> both Adam moments checked -> EMA update."
+    "T0: execute tests/v4/test_t0_v20_evidence_bytes_committed_v1.py from a clean independent checkout/CI and require zero skips/failures.",
+    "T0: preserve the post-access role-label repair at f98c1f8 and the frozen sensitivity-reporting omission as explicit caveats; do not rerun or retune V20.",
+    "V5: replace the misleading assumption that 4,553,407 with-replacement presentations equals full-cell coverage; prospectively evaluate a coverage-first schedule over every reader-fit stable cell key.",
+    "V5: separate biological representation authority from observation/operator state so support/mask/depth identity can be modeled without becoming the biological embedding.",
+    "V5: preserve donor-uniform scientific mass and exact weighting under any coverage/sampling change; hardware packing must not alter inclusion, weighting, view identity or RNG identity.",
+    "V5: complete anti-cheat threshold calibration, live protected-gradient tests, CUDA Gate-2, hardware invariance and independent review before training authority."
   ],
   "parallel_nonblocking_work": [
-    "V5 anti-cheat architecture, pre-execution authority, support-schedule integrity repair, technology-mapping authority design and trainer binding may continue pathology-blind.",
-    "F1 producer/replay review may continue without becoming the global current gate.",
-    "D1 readout/contract design may continue pathology-blind, but real D1 still waits for a lawful qualified teacher."
+    "Develop and test a coverage-first full-population V5 schedule candidate without optimizer execution.",
+    "Develop an observation/biology representation-firewall contract and same-cell technical-perturbation invariance qualification.",
+    "Continue F1/D1 design work pathology-blind without opening real execution."
   ],
   "forbidden_actions": [
+    "Do not interpret a population-equivalent with-replacement presentation count as proof that every reader-fit cell was seen.",
     "Do not reopen, retune, widen or reinterpret the completed T0 V20 confirmation procedure in response to the Stage 3 result.",
     "Do not train, finetune, run production optimizer steps, write production teacher/student checkpoints, or advance EMA under V5.",
     "Do not execute TD60 decision-bearing learned-teacher continuity.",
@@ -95,7 +96,7 @@
       "HISTORICAL_CHECKPOINT_QUARANTINE"
     ]
   },
-  "update_only_after": "A blocker is actually closed with exact code/test/root evidence or a new prospective authority is frozen. T0 Stage 3 scientific terminal is recorded, but full evidence-byte closure still requires the exact Stage 3 artifacts.",
+  "update_only_after": "A blocker is actually closed with exact code/test/root evidence or a new prospective authority is frozen. T0 evidence bytes are now present; clean independent replay and the frozen sensitivity-reporting omission remain review caveats.",
   "t0_stage3_result": {
     "branch": "t0/v20-pathology-blind-materialization-20260908",
     "head": "e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9",
@@ -115,7 +116,13 @@
     "tail_qc_p_upper": 0.018,
     "tail_max_mean_abs_standardized_contrast": 0.2946862124155104,
     "first_attempt_post_access_repair_commit": "f98c1f8cbc1345b7a8cf0d643addd1a9bd494bc1",
-    "review_status": "INTERNAL_RESULT_RECORDED__FULL_EVIDENCE_BYTE_REVIEW_PENDING",
-    "controlling_review": "docs/agent/T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md"
+    "review_status": "EVIDENCE_BYTES_PUBLISHED__PRIMARY_INTERNAL_SUPPORT_RETAINED__CLEAN_REPLAY_AND_SENSITIVITY_REPORTING_GAP_PENDING",
+    "controlling_review": "docs/agent/T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md",
+    "evidence_publication_head": "2e6d8d1e33867fa90032492894c92ea4849e3e4a",
+    "evidence_files_committed": 84,
+    "evidence_bytes": 3621018,
+    "missing_evidence_byte_limitation": "CLOSED",
+    "clean_independent_checkout_replay": "PENDING",
+    "sensitivity_reporting_gap": "NUMERICAL_STATE_COMPOSITION_AND_STATE_MEASUREMENTS_NOT_EMITTED_IN_FROZEN_DECISION_RETURN"
   }
 }
