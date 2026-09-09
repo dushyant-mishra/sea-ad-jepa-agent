@@ -323,7 +323,7 @@ def test_the_metadata_declares_its_synthetic_status_and_formulas(tmp_path) -> No
     assert meta["q_depth_cell_formula"] == "log1p(source_library)"
     assert meta["q_detect_cell_formula"] == "count_nonzero(A) / 35076"
     assert "Recovered verbatim" in meta["formula_provenance"]
-    assert meta["production_run_status"] == "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN"
+    assert meta["production_run_status"] == tc.PRODUCTION_RUN_STATUS_FIXTURE
     assert meta["pathology_values_read"] is False
     assert meta["real_execution_ready"] is False
 
@@ -928,3 +928,84 @@ def test_omitting_the_block_geometry_is_refused_by_name(tmp_path) -> None:
             expected_population_raw_source_root_sha256=inputs[
                 "expected_population_raw_source_root_sha256"])
     assert tc.STOP_GEOMETRY_NOT_CLOSED in str(excinfo.value)
+
+
+# ---------------------------------------------------------------------------
+# The retired production terminal.
+#
+# `SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN` was true until the production B2 run
+# executed and replayed. Leaving it in the writer would have stamped a false
+# terminal into the first real package, so it is retired and refused. A stale
+# status string that contradicts the artifact carrying it is the same class of
+# error as any other unverified claim.
+# ---------------------------------------------------------------------------
+
+def test_the_retired_production_terminal_is_refused() -> None:
+    with pytest.raises(AssertionError) as excinfo:
+        tc.assert_production_run_status_not_retired(
+            tc.RETIRED_PRODUCTION_RUN_STATUS)
+    assert tc.STOP_FIELD_SCHEMA in str(excinfo.value)
+    assert "retired" in str(excinfo.value)
+
+
+def test_only_the_two_lawful_production_statuses_are_accepted() -> None:
+    for status in (tc.PRODUCTION_RUN_STATUS_POPULATION,
+                   tc.PRODUCTION_RUN_STATUS_FIXTURE):
+        assert tc.assert_production_run_status_not_retired(status) is True
+    for status in ("", None, "SOMETHING_ELSE",
+                   tc.RETIRED_PRODUCTION_RUN_STATUS):
+        with pytest.raises(AssertionError):
+            tc.assert_production_run_status_not_retired(status)
+
+
+def test_a_package_recording_the_retired_terminal_is_refused_on_load(
+        tmp_path) -> None:
+    """The regression the external review asked for."""
+    import json as _json
+
+    inputs = _lawful_inputs(tmp_path)
+    summary = tc.build_production_authority(tmp_path / "pkg", **inputs)
+    path = tmp_path / "pkg" / tc.METADATA
+    meta = _json.loads(path.read_text(encoding="utf-8"))
+    meta["production_run_status"] = tc.RETIRED_PRODUCTION_RUN_STATUS
+    path.write_text(_json.dumps(meta, sort_keys=True, indent=2) + "\n",
+                    encoding="utf-8")
+    # Mutating a member moves the package root, so the root check would fire
+    # first. Recompute it so the load actually reaches the status guard and the
+    # test exercises what it claims to.
+    members = {name: (tmp_path / "pkg" / name).read_bytes()
+               for name in tc.MEMBERS}
+    with pytest.raises(AssertionError) as excinfo:
+        tc.load_authority(
+            tmp_path / "pkg",
+            expected_package_root_sha256=tc.package_root(members),
+            expected_completeness_root_sha256=summary[
+                "completeness_root_sha256"],
+            expected_parent_contract_root_sha256=summary[
+                "parent_contract_root_sha256"])
+    assert tc.STOP_FIELD_SCHEMA in str(excinfo.value)
+    assert "retired" in str(excinfo.value)
+
+
+def test_the_module_docstring_no_longer_says_production_b2_is_unauthorized() -> None:
+    doc = tc.__doc__ or ""
+    assert "the production B2 run is not authorized" not in doc
+    assert "synthetic fixtures only" not in doc
+    assert "executed and replayed" in doc
+
+
+def test_a_fixture_sized_run_does_not_claim_the_real_population(
+        tmp_path) -> None:
+    """The status is decided by what was covered, not by a caller flag."""
+    inputs = _lawful_inputs(tmp_path)
+    summary = tc.build_production_authority(tmp_path / "pkg", **inputs)
+    # The lawful fixture covers three cells and two donors, not 20,804 and 46.
+    assert summary["derived_over_the_real_population"] is False
+    assert summary["production_run_status"] == tc.PRODUCTION_RUN_STATUS_FIXTURE
+
+
+def test_the_population_claim_requires_the_frozen_geometry() -> None:
+    """All three of donors, rows and projection size must be the real ones."""
+    assert tc.PRODUCTION_DONOR_COUNT == 46
+    assert tc.PRODUCTION_POPULATION_ROWS == 20_804
+    assert tc.SCALAR_FEATURES == 35_076

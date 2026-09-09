@@ -42,9 +42,22 @@ them instead of recording a False.
 
 Production status
 -----------------
-A production run of this authority requires the authenticated B2 substrate and the
-B1 projection, and the production B2 run is not authorized. So this module is
-exercised on synthetic fixtures only, and nothing here sets or implies readiness.
+The production B2 substrate run has been executed and replayed, so this module is
+no longer synthetic-only. Its parent authorities exist for real:
+
+    population closure     ec350b8d9a30a8a08573f055b9a0c103d0f6805014998ac9975d94585421d397
+    logical row authority  64ea880ff6cf19aca48e0f2e77edfa6d37fc4f5e20022011131c496173896fc3
+    physical read plan     cc75cef0ebb9a05e6699546e18ae45b3555f488dc2e46db4c845370c5be23519
+    population raw-source  0b3e44897f0a5af1951677af95110e16d46f9a285fe227c31e34f45137b98f1b
+    B2 authority package   98eac4a68df7960e79739d236cf0febacdec52a33de76144b146dc29a5a64436
+
+A package now records whether it was derived over the real population or over a
+fixture, and `PRODUCTION_RUN_STATUS_*` are the only two values it may carry. The
+former terminal `SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN` is retired and a
+regression refuses any package that still records it.
+
+Nothing here sets or implies execution readiness. Donor roles, eligible donors
+and numeric AT8 all remain closed.
 """
 
 from __future__ import annotations
@@ -105,6 +118,16 @@ FORBIDDEN_CUTOFFS = ("Q_DEPTH_MINIMUM", "Q_DETECT_MINIMUM",
                      "CELL_COUNT_QC_FLOOR", "TAIL_MIN_CELLS_AS_ELIGIBILITY",
                      "DATA_ADAPTIVE_THRESHOLD")
 AUTHORITY_FAILURE_IS_A_GLOBAL_STOP = True
+
+# A package says which population it was derived over. These are the only two
+# values it may carry; the previous single value said production B2 had not run,
+# which is now false and must never be recorded again.
+PRODUCTION_RUN_STATUS_POPULATION = (
+    "DERIVED_OVER_THE_REAL_POPULATION_FROM_AUTHENTICATED_B2_PARENTS")
+PRODUCTION_RUN_STATUS_FIXTURE = "DERIVED_OVER_A_FIXTURE__NOT_THE_REAL_POPULATION"
+RETIRED_PRODUCTION_RUN_STATUS = "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN"
+PRODUCTION_POPULATION_ROWS = 20_804
+PRODUCTION_DONOR_COUNT = 46
 
 
 def _typed(value: Any) -> bytes:
@@ -420,6 +443,27 @@ def _build_authority_from_values(
                           scalar_features=scalar_features)
 
 
+def assert_production_run_status_not_retired(status: Any) -> bool:
+    """A package may never record the retired production terminal.
+
+    `SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN` was true until the production B2 run
+    executed and replayed. Recording it now would make a real authority claim to
+    be a fixture, which is the same class of error as the reverse: a stale status
+    string that contradicts the artifact carrying it.
+    """
+    if str(status) == RETIRED_PRODUCTION_RUN_STATUS:
+        raise AssertionError(
+            "%s: %r is retired; production B2 has been executed and replayed"
+            % (STOP_FIELD_SCHEMA, RETIRED_PRODUCTION_RUN_STATUS))
+    if str(status) not in (PRODUCTION_RUN_STATUS_POPULATION,
+                           PRODUCTION_RUN_STATUS_FIXTURE):
+        raise AssertionError("%s: production_run_status is %r, expected one of %r"
+                             % (STOP_FIELD_SCHEMA, status,
+                                (PRODUCTION_RUN_STATUS_POPULATION,
+                                 PRODUCTION_RUN_STATUS_FIXTURE)))
+    return True
+
+
 def _write_package(
         out: Path,
         *,
@@ -427,8 +471,10 @@ def _write_package(
         substrate,
         derivation_code_sha256: str,
         scalar_features: int = SCALAR_FEATURES,
+        production_run_status: str = PRODUCTION_RUN_STATUS_FIXTURE,
 ):
     """Write the package members and both roots. Shared by both entrypoints."""
+    assert_production_run_status_not_retired(production_run_status)
     root = completeness_root(rows)
     parent_root = parent_contract_root(
         substrate=substrate, derivation_code_sha256=derivation_code_sha256)
@@ -467,7 +513,7 @@ def _write_package(
         "derivation_code_sha256": str(derivation_code_sha256),
         "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
         "pathology_values_read": False,
-        "production_run_status": "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN",
+        "production_run_status": production_run_status,
         "real_execution_ready": False,
     }
     meta_bytes = (json.dumps(meta, sort_keys=True, indent=2) + "\n").encode("utf-8")
@@ -529,6 +575,7 @@ def load_authority(
     if meta.get("thresholds_introduced") is not False:
         raise AssertionError("%s: the stored authority declares a threshold"
                              % STOP_THRESHOLD)
+    assert_production_run_status_not_retired(meta.get("production_run_status"))
     if meta.get("q_detect_cell_formula") != Q_DETECT_CELL_FORMULA:
         raise AssertionError("%s: stored Q_DETECT formula is %r"
                              % (STOP_FIELD_SCHEMA,
@@ -894,10 +941,23 @@ def build_production_authority(
     }
     assert_substrate_lawful(substrate=substrate)
 
-    summary = _write_package(out, rows=rows, substrate=substrate,
-                             derivation_code_sha256=derivation_code_sha256,
-                             scalar_features=scalar_features)
-    summary["cells_consumed"] = sum(int(row["cells"]) for row in rows)
+    # A package claims the real population only when it actually covered it:
+    # the frozen donor count, the frozen row total, and the real projection.
+    covered_cells = sum(int(row["cells"]) for row in rows)
+    is_population = (len(rows) == PRODUCTION_DONOR_COUNT
+                     and covered_cells == PRODUCTION_POPULATION_ROWS
+                     and int(expected_projection_positions) == SCALAR_FEATURES)
+    summary = _write_package(
+        out, rows=rows, substrate=substrate,
+        derivation_code_sha256=derivation_code_sha256,
+        scalar_features=scalar_features,
+        production_run_status=(PRODUCTION_RUN_STATUS_POPULATION if is_population
+                               else PRODUCTION_RUN_STATUS_FIXTURE))
+    summary["production_run_status"] = (
+        PRODUCTION_RUN_STATUS_POPULATION if is_population
+        else PRODUCTION_RUN_STATUS_FIXTURE)
+    summary["derived_over_the_real_population"] = is_population
+    summary["cells_consumed"] = covered_cells
     summary["derivation"] = (
         "FROM_AUTHENTICATED_B2_CLOSURE_LOGICAL_PHYSICAL_PLAN_B1_PROJECTION_AND_"
         "POPULATION_RAW_SOURCE_PROOF")
