@@ -1,0 +1,15 @@
+{
+  "block_rule": "each queried target is one singleton block; no arithmetic multi-gene target mean",
+  "compute_separation": "unqueried hidden genes remain hidden; a smaller query budget changes estimator variance/compute, never student evidence",
+  "execution_authorized": false,
+  "mass_rule": "uniform query sampling is an unbiased Monte Carlo estimator of the mean singleton loss over the complete hidden target set",
+  "policy_id": "HIDDEN_SET_PRESERVING_SINGLETON_TARGET_QUERY_V3",
+  "query_budget_frozen": false,
+  "query_chunk_size_frozen": false,
+  "query_identity": "authority_seed + frozen base_presentation_index + stable_cell_key + family + draw; optimizer update/microbatch position excluded",
+  "query_rule": "uniform finite sample of singleton canonical molecular addresses from the already-hidden set",
+  "schema": "TEACHER_STUDENT_V5_SINGLETON_TARGET_BLOCK_POLICY_CANDIDATE_V3",
+  "scientific_hidden_rule": "the complete family half-mask is hidden from the student irrespective of query budget",
+  "status": "CANDIDATE__NOT_EXECUTION_AUTHORITY",
+  "training_authorized": false
+}
