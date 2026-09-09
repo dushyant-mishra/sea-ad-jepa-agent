@@ -1,0 +1,51 @@
+{
+  "activation_firewall": {
+    "reason": "TD60 consumes the learned teacher; activating relational training in the initial teacher would create a circular dependency.",
+    "requires_lawful_learned_teacher_checkpoint": true,
+    "requires_prospective_partial_evidence_relational_predictability_pass": true,
+    "requires_separate_relational_integration_review": true,
+    "requires_td60_pass": true
+  },
+  "atomic_target_draw": {
+    "anchor_selection": "donor uniform -> eligible anchor cell uniform within donor (equivalently group proportional to eligible cells)",
+    "comparator_selection": "one unordered comparator pair uniform inside the selected anchor operator, excluding anchor",
+    "importance_correction_required": false,
+    "proposal_equals_target": true
+  },
+  "candidate": {
+    "extra_pairs_if_future_authorized": "variance reduction only; must be averaged within anchor and may never increase anchor/group scientific mass",
+    "group_capacity_weighting": "NONE",
+    "pairs_per_selected_anchor": 1,
+    "policy_id": "ONE_COMPARATOR_PAIR_PER_SELECTED_ANCHOR_V1",
+    "reason": "one conditional pair is the minimal positive unbiased Monte Carlo draw from the frozen comparator-pair mean; no group-level triplet budget is needed to define the target"
+  },
+  "execution_authorized": false,
+  "frozen_proposal": "DIRECT_DONOR_ANCHOR_CELL_TRIPLET_TARGET_PROPOSAL_V2",
+  "frozen_target": "DONOR_UNIFORM__ELIGIBLE_ANCHOR_CELL_UNIFORM__SAME_OPERATOR_COMPARATOR_PAIR_UNIFORM_V2",
+  "historical_64_boundary": {
+    "important_correction": "a fixed B conditional sample is not intrinsically target-distorting if its mean is taken within the already-selected anchor/group; distortion occurs if raw realized triplets are pooled so count/capacity changes scientific mass. The direct anchor+pair sampler avoids that ambiguity entirely.",
+    "promoted_to_production": false,
+    "reason": "TD57B/TD59 cap 64 was qualification mechanics and has no prospective production precision authority"
+  },
+  "initial_teacher_training_active": false,
+  "reader_fit": {
+    "eligible_cell_fraction": 0.9999870426693682,
+    "eligible_cells": 4553348,
+    "estimable_groups": 1361,
+    "group_size_max": 42209,
+    "group_size_median": 244,
+    "group_size_min": 3,
+    "groups_total": 1400
+  },
+  "schema": "TEACHER_STUDENT_V5_RELATIONAL_FINITE_SAMPLING_ANALYSIS_V3",
+  "status": "INACTIVE_FUTURE_EXTENSION_CANDIDATE__NOT_PART_OF_INITIAL_FULL_READER_TEACHER__NO_EXECUTION_AUTHORITY",
+  "still_unfrozen": {
+    "initial_teacher_dependency": "NONE__FUTURE_EXTENSION_ONLY",
+    "relational_anchor_presentations_per_update": null,
+    "relational_loss_coefficient_if_not_already_frozen": null,
+    "total_relational_anchor_presentations": null
+  },
+  "supersedes_local_analysis": "TEACHER_STUDENT_V5_RELATIONAL_FINITE_SAMPLING_ANALYSIS_V1.json",
+  "td60_authorized": false,
+  "training_authorized": false
+}
