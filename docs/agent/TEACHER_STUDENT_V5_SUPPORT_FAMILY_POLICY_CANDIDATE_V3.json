@@ -1,0 +1,62 @@
+{
+  "execution_authorized": false,
+  "inputs": {
+    "common_core_csv_sha256": "8aa8dfebb481aa2e60b12ab0f581ba1a36063b6c12dc2d8514d5fe7a20ad07ac",
+    "derived_operator_family_geometry_csv": "docs/agent/READER_FIT_OPERATOR_FAMILY_GEOMETRY_V2.csv",
+    "derived_operator_family_geometry_sha256": "f889304d2c073f1ec9270a66e53aefd04d170b55cb753dfdd867f2c4fb53e680",
+    "state_npz_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "support_by_operator_csv_sha256": "1814a22c8ae01ee94a6fe132546a029af01a7d762384d53c152f37cb545787c1"
+  },
+  "masking": {
+    "COMMON_CORE": "uniform scientific-identity-keyed subset of exactly 8,593 common-core addresses is target; complementary 8,593 are student-visible",
+    "OPERATOR_NATIVE": "scientific-identity-keyed subset of floor(native_only/2) native addresses is target; all common core plus complementary native addresses are student-visible",
+    "base_presentation_index_is_scientific_view_identity": true,
+    "fixed_gene_partition": false,
+    "optimizer_update_index_is_scientific_view_identity": false,
+    "reference_rng": "SHA256 rank over masking_seed/base_presentation_index/stable_cell_key/draw/family/canonical_address; optimizer update index, tensor row, device and microbatch are excluded; reference-only until a production mask kernel independently qualifies",
+    "why_half": "maximum-symmetry split inside each selected support family; no inherited V4 40% mechanics constant"
+  },
+  "mass_proof": "For either family f, weight |f|/M times uniform exact-half inclusion k/|f| times singleton mean 1/k = 1/M for every measured address. Summing the two stratified family contributions preserves one unit of base-view mass per cell.",
+  "observed": {
+    "common_target": 8593,
+    "common_visible": 8593,
+    "native_student_visible_max": 26131,
+    "native_student_visible_min": 17961,
+    "native_target_max": 8945,
+    "native_target_min": 775,
+    "teacher_support_max": 35076,
+    "teacher_support_min": 18736
+  },
+  "policy_id": "SUPPORT_FAMILY_BALANCED_PRESENTATION_KEYED_HALF_MASK_V3",
+  "schema": "TEACHER_STUDENT_V5_DATASET_FIRST_VIEW_POLICY_CANDIDATE_V3",
+  "status": "CANDIDATE__INDEPENDENT_SCIENTIFIC_AND_IMPLEMENTATION_REVIEW_REQUIRED",
+  "stratified_view_schedule": {
+    "family_loss_weights": "family_support_count / operator_measured_count",
+    "importance_correction_required": false,
+    "rule": "evaluate each of the two dataset-defined support families exactly once per base presentation",
+    "views_per_base_presentation": 2,
+    "why_not_equal_family_mass": "common/native support sizes differ by operator; equal family mass would redefine measured-address prevalence",
+    "why_not_sample_one_family": "stratification removes avoidable family-selection variance/coverage failure while preserving exact measured-address target mass"
+  },
+  "student_views": {
+    "COMMON_CORE": "student sees the complementary common-core half only; operator-native addresses are excluded from this anchor view",
+    "OPERATOR_NATIVE": "student sees all common core plus the complementary operator-native half"
+  },
+  "successor_u0_authorized": false,
+  "support_families": {
+    "COMMON_CORE": "exact 17,186 addresses measured scalar in all 42 reader-fit operators",
+    "OPERATOR_NATIVE": "operator measured-scalar support minus the exact common core",
+    "count_per_operator": 2
+  },
+  "target_block_policy": "HIDDEN_SET_PRESERVING_SINGLETON_TARGET_QUERY_V3",
+  "td60_authorized": false,
+  "teacher_view": "ALL_NATIVE_MEASURED_SCALAR_ADDRESSES for BOTH families; teacher support is never reduced to common-core-only",
+  "training_authorized": false,
+  "unfrozen": {
+    "effective_cells_per_update": null,
+    "ema_half_life_presentations": null,
+    "max_teacher_tokens_per_microbatch": null,
+    "singleton_target_queries_per_family_view": null,
+    "target_query_chunk_size": null
+  }
+}
