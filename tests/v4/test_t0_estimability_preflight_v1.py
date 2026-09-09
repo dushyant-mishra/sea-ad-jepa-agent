@@ -30,7 +30,7 @@ def _roles(n: int, *, single_sex: bool = False):
     """A donor set with varied ages and, by default, both sexes present."""
     ages = [70 + (i * 3) % 27 for i in range(n)]
     sexes = [0] * n if single_sex else [i % 2 for i in range(n)]
-    return {"age": ages, "sex": sexes}
+    return {"donor_id": ["D%03d" % i for i in range(n)], "age": ages, "sex": sexes}
 
 
 def _covariate(n: int, start: float = 0.1, step: float = 0.017, *, shape: int = 0):
@@ -158,7 +158,8 @@ def test_stage_a_catches_a_fold_that_becomes_single_sex() -> None:
     Removing the only male donor leaves a single-sex training set, and that fold
     would otherwise fail during discovery fitting rather than at preflight.
     """
-    discovery = {"age": [80, 84, 88, 92, 96, 100],
+    discovery = {"donor_id": ["D0", "D1", "D2", "D3", "D4", "D5"],
+                 "age": [80, 84, 88, 92, 96, 100],
                  "sex": [0, 0, 0, 0, 0, 1]}
     # Full rank on the whole set, because both sexes are present.
     assert pf.assert_full_rank(
@@ -173,7 +174,7 @@ def test_stage_a_catches_a_fold_that_becomes_single_sex() -> None:
 
 def test_stage_b_checks_the_three_confirmation_designs() -> None:
     n = 18
-    result = pf.stage_b_state_designs(
+    result = pf._stage_b_state_designs_positional_fixture(
         confirmation=_roles(n), state_score=_covariate(n),
         immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
         q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -188,7 +189,7 @@ def test_stage_b_refuses_the_response() -> None:
     """Rank is a property of the design, so the outcome must not be supplied."""
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_b_state_designs(
+        pf._stage_b_state_designs_positional_fixture(
             confirmation=_roles(n), state_score=_covariate(n),
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3),
@@ -200,7 +201,7 @@ def test_stage_b_catches_a_state_score_collinear_with_a_covariate() -> None:
     n = 18
     depth = _covariate(n, 9.0, 0.05)
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_b_state_designs(
+        pf._stage_b_state_designs_positional_fixture(
             confirmation=_roles(n), state_score=depth,
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=depth, q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -212,7 +213,7 @@ def test_stage_b_catches_a_constant_state_score() -> None:
     """A constant predictor is collinear with the intercept."""
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_b_state_designs(
+        pf._stage_b_state_designs_positional_fixture(
             confirmation=_roles(n), state_score=[0.5] * n,
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -222,7 +223,7 @@ def test_stage_b_catches_a_constant_state_score() -> None:
 def test_stage_b_refuses_a_covariate_of_the_wrong_length() -> None:
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_b_state_designs(
+        pf._stage_b_state_designs_positional_fixture(
             confirmation=_roles(n), state_score=_covariate(n - 1),
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -234,7 +235,7 @@ def test_stage_b_refuses_a_covariate_of_the_wrong_length() -> None:
 @pytest.mark.parametrize("n", [17, 18])
 def test_stage_c_checks_the_tail_designs_at_both_allowed_n(n) -> None:
     """The frozen contract allows a tail inference n of 17 or 18."""
-    result = pf.stage_c_tail_designs(
+    result = pf._stage_c_tail_designs_positional_fixture(
         tail_donors=_roles(n), state_score=_covariate(n),
         tail_prevalence=_covariate(n, 0.05, 0.011, shape=4),
         immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
@@ -252,7 +253,7 @@ def test_stage_c_checks_the_tail_designs_at_both_allowed_n(n) -> None:
 def test_stage_c_refuses_the_response() -> None:
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_c_tail_designs(
+        pf._stage_c_tail_designs_positional_fixture(
             tail_donors=_roles(n), state_score=_covariate(n),
             tail_prevalence=_covariate(n, 0.05, 0.011, shape=4),
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
@@ -265,7 +266,7 @@ def test_stage_c_catches_a_tail_prevalence_collinear_with_the_state_score() -> N
     n = 18
     state = _covariate(n)
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_c_tail_designs(
+        pf._stage_c_tail_designs_positional_fixture(
             tail_donors=_roles(n), state_score=state, tail_prevalence=state,
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
             q_depth=_covariate(n, 9.0, 0.05, shape=2), q_detect=_covariate(n, 0.2, 0.01, shape=3))
@@ -276,7 +277,7 @@ def test_stage_c_catches_a_constant_tail_prevalence() -> None:
     """Every tail donor sharing one prevalence carries no information."""
     n = 18
     with pytest.raises(AssertionError) as excinfo:
-        pf.stage_c_tail_designs(
+        pf._stage_c_tail_designs_positional_fixture(
             tail_donors=_roles(n), state_score=_covariate(n),
             tail_prevalence=[0.1] * n,
             immune_fraction=_covariate(n, 0.01, 0.002, shape=1),
@@ -329,12 +330,12 @@ def test_all_three_stages_run_in_order_end_to_end() -> None:
     results = [
         pf.stage_a_parent_nuisance(discovery=_roles(28),
                                    confirmation=_roles(n_conf)),
-        pf.stage_b_state_designs(
+        pf._stage_b_state_designs_positional_fixture(
             confirmation=_roles(n_conf), state_score=_covariate(n_conf),
             immune_fraction=_covariate(n_conf, 0.01, 0.002, shape=1),
             q_depth=_covariate(n_conf, 9.0, 0.05, shape=2),
             q_detect=_covariate(n_conf, 0.2, 0.01, shape=3)),
-        pf.stage_c_tail_designs(
+        pf._stage_c_tail_designs_positional_fixture(
             tail_donors=_roles(n_tail), state_score=_covariate(n_tail),
             tail_prevalence=_covariate(n_tail, 0.05, 0.011, shape=4),
             immune_fraction=_covariate(n_tail, 0.01, 0.002, shape=1),
@@ -343,3 +344,93 @@ def test_all_three_stages_run_in_order_end_to_end() -> None:
     ]
     assert pf.assert_stage_order(results) is True
     assert len(pf.preflight_root(results)) == 64
+
+
+
+# R4 donor-identity alignment attacks ---------------------------------------
+
+def _keyed(role_data, values):
+    return {donor: value for donor, value in zip(role_data["donor_id"], values)}
+
+
+def test_production_stage_b_refuses_positional_covariate_arrays() -> None:
+    confirmation = _roles(18)
+    with pytest.raises(AssertionError) as excinfo:
+        pf.stage_b_state_designs(
+            confirmation=confirmation,
+            state_score=_covariate(18),
+            immune_fraction=_keyed(
+                confirmation, _covariate(18, 0.01, 0.002, shape=1)),
+            q_depth=_keyed(
+                confirmation, _covariate(18, 9.0, 0.05, shape=2)),
+            q_detect=_keyed(
+                confirmation, _covariate(18, 0.2, 0.01, shape=3)),
+        )
+    assert pf.STOP_DONOR_ALIGNMENT in str(excinfo.value)
+
+
+def test_mapping_insertion_order_cannot_change_stage_b_design() -> None:
+    """The same donor->value mapping must yield the same design regardless of order."""
+    confirmation = _roles(18)
+    state = _keyed(confirmation, _covariate(18, shape=7))
+    immune = _keyed(confirmation, _covariate(18, 0.01, 0.002, shape=1))
+    depth = _keyed(confirmation, _covariate(18, 9.0, 0.05, shape=2))
+    detect = _keyed(confirmation, _covariate(18, 0.2, 0.01, shape=3))
+    reversed_state = dict(reversed(list(state.items())))
+
+    a = pf.stage_b_state_designs(
+        confirmation=confirmation,
+        state_score=state,
+        immune_fraction=immune,
+        q_depth=depth,
+        q_detect=detect,
+    )
+    b = pf.stage_b_state_designs(
+        confirmation=confirmation,
+        state_score=reversed_state,
+        immune_fraction=immune,
+        q_depth=depth,
+        q_detect=detect,
+    )
+    assert a["checks"] == b["checks"]
+    assert a["design_roots"] == b["design_roots"]
+    assert pf.preflight_root([a]) == pf.preflight_root([b])
+
+
+def test_stage_b_design_root_moves_when_a_value_moves_between_donors() -> None:
+    confirmation = _roles(18)
+    state = _keyed(confirmation, _covariate(18, shape=7))
+    immune = _keyed(confirmation, _covariate(18, 0.01, 0.002, shape=1))
+    depth = _keyed(confirmation, _covariate(18, 9.0, 0.05, shape=2))
+    detect = _keyed(confirmation, _covariate(18, 0.2, 0.01, shape=3))
+    swapped = dict(state)
+    d0, d1 = confirmation["donor_id"][:2]
+    swapped[d0], swapped[d1] = swapped[d1], swapped[d0]
+
+    a = pf.stage_b_state_designs(
+        confirmation=confirmation,
+        state_score=state,
+        immune_fraction=immune,
+        q_depth=depth,
+        q_detect=detect,
+    )
+    b = pf.stage_b_state_designs(
+        confirmation=confirmation,
+        state_score=swapped,
+        immune_fraction=immune,
+        q_depth=depth,
+        q_detect=detect,
+    )
+    assert a["design_roots"]["primary"] != b["design_roots"]["primary"]
+    assert pf.preflight_root([a]) != pf.preflight_root([b])
+
+
+def test_stage_a_requires_explicit_unique_donor_ids() -> None:
+    discovery = _roles(28)
+    discovery.pop("donor_id")
+    with pytest.raises(AssertionError) as excinfo:
+        pf.stage_a_parent_nuisance(
+            discovery=discovery,
+            confirmation=_roles(18),
+        )
+    assert pf.STOP_DONOR_ALIGNMENT in str(excinfo.value)
