@@ -60,6 +60,7 @@ MTG_SOURCE_DONOR_KEY = "Donor ID"
 COMPLETE_MANIFEST_BLOCKS = 8_915
 COMPLETE_MANIFEST_OPERATORS = 42
 OP31_BLOCK_COUNT = 1_247
+OP31_METADATA_ROWS = 638_150
 
 # Declared rather than implied: which bound fields the frozen V20 reader
 # consumes, and which exist only so an auditor can reconstruct provenance.
@@ -441,7 +442,8 @@ def _length_prefixed(value: Any) -> bytes:
 
 def _closure_root(operator_index: int, matrix_id: str, blocks: Sequence[str],
                   rows_scanned: int, locations: Mapping[str, Mapping[str, Any]],
-                  membership_sha256: str, block_manifest_sha256: str) -> str:
+                  membership_sha256: str, block_manifest_sha256: str,
+                  block_geometry: Mapping[str, Mapping[str, Any]] | None = None) -> str:
     digest = hashlib.sha256()
     # 4F/4G: the closure binds the identities of the two authorities that define
     # the population. Without them the root described a population without
@@ -453,13 +455,19 @@ def _closure_root(operator_index: int, matrix_id: str, blocks: Sequence[str],
     # normalises a type substitution away, so the type tag would bind nothing:
     # operator 31 and "31" both became int 31. The declared type is required
     # instead, and a substitution produces a different root.
-    digest.update(_typed("T0_V20_POPULATION_CLOSURE_V4"))
+    digest.update(_typed("T0_V20_POPULATION_CLOSURE_V5"))
     digest.update(_typed(operator_index))
     digest.update(_typed(matrix_id))
     digest.update(_typed(len(blocks)))
     digest.update(_typed(rows_scanned))
+    geometry = block_geometry or {}
     for key in blocks:
         digest.update(_typed(key))
+        if key in geometry:
+            record = geometry[key]
+            for field in ("source", "rows", "nnz", "meta_path", "meta_sha256",
+                          "counts_path", "counts_sha256"):
+                digest.update(_typed(record[field]))
     ordered = sorted(locations, key=lambda value: value.encode("utf-8"))
     digest.update(_typed(len(ordered)))
     for cell in ordered:
@@ -488,6 +496,7 @@ def build_population_closure(
     expected_total_blocks: int | None = None,
     expected_operators: int | None = None,
     expected_op31_block_count: int | None = None,
+    expected_op31_rows: int | None = None,
 ) -> dict[str, Any]:
     """Scan every block of the operator and close the population.
 
@@ -539,12 +548,14 @@ def build_population_closure(
         targets[cell] = str(record["donor_id"]).strip()
 
     manifest_columns, manifest_rows = _rows(block_manifest_bytes)
-    for required in ("block_key", "operator_index", "matrix_id", "meta_path",
-                     "meta_sha256", "counts_path", "counts_sha256"):
+    for required in ("block_key", "source", "operator_index", "matrix_id",
+                     "rows", "nnz", "meta_path", "meta_sha256",
+                     "counts_path", "counts_sha256"):
         if required not in manifest_columns:
             raise AssertionError("%s: %r absent" % (STOP_MANIFEST_COLUMNS, required))
 
     blocks = []
+    block_geometry: dict[str, dict[str, Any]] = {}
     locations: dict[str, dict[str, Any]] = {}
     rows_scanned = 0
     donors: set[str] = set()
@@ -581,6 +592,10 @@ def build_population_closure(
         if str(record["matrix_id"]).strip() != str(matrix_id):
             raise AssertionError("%s: %s is matrix %s, expected %s"
                                  % (STOP_MATRIX, block_key, record["matrix_id"], matrix_id))
+        declared_rows = exact_positive_integer(
+            record["rows"], "manifest rows for %s" % block_key)
+        declared_nnz = exact_nonnegative_integer(
+            record["nnz"], "manifest nnz for %s" % block_key)
         meta_path = str(record["meta_path"]).strip()
         if meta_path not in meta_bytes_by_path:
             raise AssertionError("%s: %s" % (STOP_META_ABSENT, meta_path))
@@ -591,20 +606,30 @@ def build_population_closure(
                                  % (STOP_META_DIGEST, meta_path, actual,
                                     record["meta_sha256"]))
         blocks.append(block_key)
+        block_geometry[block_key] = {
+            "source": str(record["source"]).strip(),
+            "rows": declared_rows,
+            "nnz": declared_nnz,
+            "meta_path": meta_path,
+            "meta_sha256": actual,
+            "counts_path": str(record["counts_path"]).strip(),
+            "counts_sha256": str(record["counts_sha256"]).strip(),
+        }
 
         # Every row of every block is examined. Stopping once all targets have
         # been seen would hide a duplicate in a later block.
         _meta_columns, meta_rows = _rows(meta_blob)
-        # 4E: the manifest's declared row count must match what the
-        # authenticated metadata actually contains.
-        if "rows" in manifest_columns:
-            declared_rows = exact_positive_integer(
-                record["rows"], "manifest rows for %s" % block_key)
-            if declared_rows != len(meta_rows):
-                raise AssertionError(
-                    "%s: %s declares %d rows but its authenticated metadata holds %d"
-                    % (STOP_COUNTS_GEOMETRY, block_key, declared_rows,
-                       len(meta_rows)))
+        if tuple(_meta_columns) != PHASE2_META_COLUMNS:
+            raise AssertionError(
+                "%s: %s metadata columns are %r, expected exact Phase2 schema %r"
+                % (STOP_MANIFEST_COLUMNS, block_key, tuple(_meta_columns),
+                   PHASE2_META_COLUMNS))
+        # 4E: manifest rows is authoritative, not optional audit metadata.
+        if declared_rows != len(meta_rows):
+            raise AssertionError(
+                "%s: %s declares %d rows but its authenticated metadata holds %d"
+                % (STOP_COUNTS_GEOMETRY, block_key, declared_rows,
+                   len(meta_rows)))
         for row_index, meta_row in enumerate(meta_rows):
             rows_scanned += 1
             cell = str(meta_row.get("canonical_cell_id") or "").strip()
@@ -646,6 +671,12 @@ def build_population_closure(
             "%s: selected %d operator-%d blocks, expected %d"
             % (STOP_MANIFEST_GEOMETRY, len(blocks), int(operator_index),
                int(expected_op31_block_count)))
+    target_declared_rows = sum(int(block_geometry[key]["rows"]) for key in blocks)
+    if expected_op31_rows is not None and target_declared_rows != int(expected_op31_rows):
+        raise AssertionError(
+            "%s: selected operator-%d blocks declare %d rows, expected %d"
+            % (STOP_MANIFEST_GEOMETRY, int(operator_index), target_declared_rows,
+               int(expected_op31_rows)))
 
     return {
         "schema": SCHEMA,
@@ -655,6 +686,9 @@ def build_population_closure(
         "membership_sha256": bound_membership_sha256,
         "block_manifest_sha256": bound_manifest_sha256,
         "blocks": list(blocks),
+        "block_geometry": block_geometry,
+        "manifest_target_rows": target_declared_rows,
+        "manifest_target_nnz": sum(int(block_geometry[key]["nnz"]) for key in blocks),
         "manifest_total_blocks": len(manifest_rows),
         "manifest_operators": len(all_operators),
         "blocks_scanned": len(blocks),
@@ -667,7 +701,7 @@ def build_population_closure(
         "full_scan": True,
         "population_closure_root_sha256": _closure_root(
             operator_index, matrix_id, blocks, rows_scanned, locations,
-            bound_membership_sha256, bound_manifest_sha256),
+            bound_membership_sha256, bound_manifest_sha256, block_geometry),
         "real_execution_ready": False,
     }
 
