@@ -1,0 +1,43 @@
+{
+  "schema": "JEPA_V5_FULL_READER_EXPRESSION_LOCATION_RECOVERY_CONTRACT_V1",
+  "status": "REAL_EXPRESSION_LOCATION_BINDING_REQUIRED__CURRENT_ENVIRONMENT_STOPPED__NO_SUBSTITUTION",
+  "frozen_loader": {
+    "production_loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "shard_count": 42,
+    "original_cache_root_from_frozen_loader_source": "D:\\\\Jepa project\\\\data\\\\cache\\\\stage81a3r_corrected_real_train",
+    "filename_rule": "SHA256('corrected|<matrix_id>')[:16] + .counts.npz/.meta.npz"
+  },
+  "current_preflight_terminal": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
+  "recovery_rule": [
+    "Locate or restore the exact 42 corrected TRAIN counts/meta shard pairs.",
+    "Run build_full_reader_expression_location_manifest_v2.py against the physical cache root.",
+    "Require 42/42 declared hashes to match the frozen production loader manifest.",
+    "Run d1_expression_reader_v2 location validation and the full-reader target-qualification preflight.",
+    "Only a PASS_42_OF_42 physical binding may open full reader_fit expression."
+  ],
+  "forbidden_substitutions": [
+    "50K discovery expression archive",
+    "synthetic expression",
+    "recomputed shards with different bytes unless separately re-authorized",
+    "reader_validation",
+    "reader_oracle",
+    "DEV",
+    "SEALED",
+    "pathology"
+  ],
+  "parallel_work_not_blocked_by_missing_expression": [
+    "metadata-derived schedule authority",
+    "support geometry",
+    "parameter derivation registry",
+    "D derivation procedure/code preflight",
+    "trainer mechanics hardening"
+  ],
+  "full_expression_dependent_work_blocked": [
+    "numeric D_shared/D_private/D_total derivation",
+    "full-reader TD57B/TD59 qualification",
+    "full-reader expression shortcut attacks"
+  ],
+  "synthetic_data_used_for_production_authority": false,
+  "training_authorized": false
+}
