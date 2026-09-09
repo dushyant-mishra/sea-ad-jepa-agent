@@ -59,9 +59,20 @@ def rederive_and_compare(*, records, closure, logical, plan, population,
     """Recompute every donor summary from the substrate and compare, value by value.
 
     A stored summary that cannot be reproduced from authenticated bytes is a
-    STOP. Comparison is exact on the string forms the package carries, because
-    the package is the artifact under test and a tolerance here would be a
-    tolerance on the thing being verified.
+    STOP.
+
+    The Q values are compared at twelve decimal places, which is not a
+    tolerance: the writer renders them through "%.12f" and the completeness root
+    frames them through `_typed_float(places=12)`, so twelve places is the
+    precision at which this authority defines the quantity. Two runs that differ
+    below 1e-12 produce an identical root, and comparing the package's rendering
+    against a fresh full-repr float -- which is what an earlier version of this
+    function did -- fails on identical numbers.
+
+    The raw float delta is measured and reported regardless, so drift finer than
+    the artifact's own precision is visible rather than absorbed. Cell counts and
+    the completeness flag are integers and booleans and are compared as exact
+    strings.
     """
     paths = {row["counts_path"] for row in logical["rows"]}
     payloads = runner.LazyCountsPayloads(store, paths)
@@ -93,22 +104,46 @@ def rederive_and_compare(*, records, closure, logical, plan, population,
                sorted(set(rederived_by_donor) - set(stored_by_donor))))
 
     compared = 0
+    worst_delta = 0.0
+    worst_field = None
     for donor in sorted(stored_by_donor):
         stored, fresh = stored_by_donor[donor], rederived_by_donor[donor]
-        for field in ("cells", "Q_DEPTH", "Q_DETECT", "technical_complete"):
-            want = str(fresh[field])
-            got = str(stored[field])
+
+        # Integers and booleans: exact string equality, no rendering involved.
+        for field in ("cells", "technical_complete"):
+            got, want = str(stored[field]).strip(), str(fresh[field]).strip()
             if got != want:
                 raise AssertionError(
                     "donor %s: the package records %s=%r but the substrate "
                     "yields %r" % (donor, field, got, want))
             compared += 1
+
+        # The Q values: compared at the twelve places the authority defines.
+        for field in ("Q_DEPTH", "Q_DETECT"):
+            got = str(stored[field]).strip()
+            want = "%.12f" % float(fresh[field])
+            if got != want:
+                raise AssertionError(
+                    "donor %s: the package records %s=%r but the substrate "
+                    "yields %r at the authority's own twelve-place precision "
+                    "(raw %r)" % (donor, field, got, want, fresh[field]))
+            delta = abs(float(got) - float(fresh[field]))
+            if delta > worst_delta:
+                worst_delta, worst_field = delta, "%s/%s" % (donor, field)
+            compared += 1
+
     log("  every stored donor summary reproduces (%d field comparisons)"
         % compared)
+    log("  largest raw float delta below the recorded precision: %.3e (%s)"
+        % (worst_delta, worst_field))
 
     fresh_root = tc.completeness_root(rederived)
     return {"donors_compared": len(stored_by_donor),
             "field_comparisons": compared,
+            "q_value_comparison_places": 12,
+            "q_value_comparison_is_exact_at_the_recorded_precision": True,
+            "largest_raw_float_delta_below_recorded_precision": worst_delta,
+            "largest_raw_float_delta_field": worst_field,
             "rederived_completeness_root_sha256": fresh_root,
             "counts_payload_reads": payloads.reads,
             "counts_payload_cache_hits": payloads.hits}
