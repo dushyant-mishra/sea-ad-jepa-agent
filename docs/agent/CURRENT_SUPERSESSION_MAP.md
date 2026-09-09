@@ -26,7 +26,7 @@ This supersession does not erase frozen scientific contracts or accepted externa
 | D0 / early target-detectability lines | HISTORICAL | current relational Target Discovery |
 | D1 synthetic atlas/ranking lines | HISTORICAL / design evidence | current D1 V2 |
 | Stage81A2/A3 branches | HISTORICAL DATA/AUTHORITY EVIDENCE | current project authority index |
-| T0 V19 / earlier binding lines | HISTORICAL | accepted V20 science + current T0 implementation/review |
+| T0 V19 / earlier binding lines | HISTORICAL | accepted V20 science + Stage 3 result/review at `e7a16eae...` / `T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md` |
 | old reviewer branches | HISTORICAL REVIEW EVIDENCE | current main blocker ledger + exact immutable review terminals |
 
 ## V5 correction after consolidation
@@ -83,7 +83,11 @@ Future healthy teacher/student training must bind fp16 forward, backward with au
 
 ## T0
 
-No historical T0 PASS or earlier branch may bypass current T0 lane-specific authority/review. V5 anti-cheat findings do not authorize or block staged T0 numeric access.
+T0 V20 Stage 3 has completed at `e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9`. The broad immune-expression primary is recorded as `BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL`; the rare tail is `RARE_TAIL_UNDERDETERMINED_MEASUREMENT` because pathology-blind QC vetoed before the tail disease statistic.
+
+The prior Stage 2/R8 “confirmation still closed” startup state is superseded. Historical T0 PASS files still cannot bypass the Stage 3 review. The post-access role-label repair at `f98c1f8...` remains a disclosed procedural caveat, and full exact-byte Stage 3 evidence review is pending because the final evidence files are not committed on the T0 branch.
+
+V5 anti-cheat findings do not convert the T0 result into training authority, TD60 authority, D1 authority, or protected-population release.
 
 ## Branch deletion — completed
 
