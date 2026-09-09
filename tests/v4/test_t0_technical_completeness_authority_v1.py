@@ -530,3 +530,54 @@ def test_detached_value_entrypoint_is_private_only() -> None:
     assert hasattr(tc, "_build_authority_from_values")
     assert not hasattr(tc, "build_rows")
     assert not hasattr(tc, "build_authority")
+
+
+
+def test_substrate_schema_refuses_unhashed_extra_parent_field() -> None:
+    logical, closure, raw_authority, feature, _payloads, _rows = _derive()
+    substrate = {
+        "population_closure_root_sha256": closure[
+            "population_closure_root_sha256"],
+        "logical_row_authority_root_sha256": logical[
+            "logical_row_authority_root_sha256"],
+        "feature_authority_root_sha256": feature[
+            "feature_authority_root_sha256"],
+        "projection_root_sha256": feature["projection_root_sha256"],
+        "raw_source_proof_root_sha256": raw_authority[
+            "raw_source_proof_root_sha256"],
+        "physical_read_plan_root_sha256": "f" * 64,
+    }
+    with pytest.raises(AssertionError) as excinfo:
+        tc.assert_substrate_lawful(substrate=substrate)
+    assert tc.STOP_SUBSTRATE in str(excinfo.value)
+
+
+def test_loader_refuses_cells_count_that_disagrees_with_bound_cell_ids(
+        tmp_path: Path) -> None:
+    logical, closure, raw_authority, feature, _payloads, rows = _derive()
+    substrate = {
+        "population_closure_root_sha256": closure[
+            "population_closure_root_sha256"],
+        "logical_row_authority_root_sha256": logical[
+            "logical_row_authority_root_sha256"],
+        "feature_authority_root_sha256": feature[
+            "feature_authority_root_sha256"],
+        "projection_root_sha256": feature["projection_root_sha256"],
+        "raw_source_proof_root_sha256": raw_authority[
+            "raw_source_proof_root_sha256"],
+    }
+    invalid = [dict(row) for row in rows]
+    invalid[0]["cells"] = int(invalid[0]["cells"]) + 1
+    out = tmp_path / "invalid-pkg"
+    summary = tc._write_package(
+        out, rows=invalid, substrate=substrate,
+        derivation_code_sha256=CODE_SHA)
+    with pytest.raises(AssertionError) as excinfo:
+        tc.load_authority(
+            out,
+            expected_package_root_sha256=summary["package_root_sha256"],
+            expected_completeness_root_sha256=summary[
+                "completeness_root_sha256"],
+            expected_parent_contract_root_sha256=summary[
+                "parent_contract_root_sha256"])
+    assert tc.STOP_FIELD_SCHEMA in str(excinfo.value)
