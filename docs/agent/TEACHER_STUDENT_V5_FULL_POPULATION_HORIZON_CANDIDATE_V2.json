@@ -1,0 +1,64 @@
+{
+  "schema": "TEACHER_STUDENT_V5_FULL_POPULATION_HORIZON_CANDIDATE_V2",
+  "status": "PROSPECTIVE_SUPERSESSION_CANDIDATE__NO_TRAINING_AUTHORITY",
+  "supersedes_only_if_independently_accepted": [
+    "TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1",
+    "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3_BASE_SCHEDULE_ONLY"
+  ],
+  "immutable_scientific_target": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+  "reader_fit_geometry": {
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "donor_operator_groups": 1400,
+    "minimum_donor_cells": 81,
+    "maximum_donor_cells": 174111
+  },
+  "v1_constraints_preserved": {
+    "minimum_donor_operator_group_presentations": 16,
+    "maximum_presentations_per_cell": 32,
+    "minimum_importance_ess_fraction": 0.5,
+    "exact_p_over_q_correction_required": true
+  },
+  "v1_constraint_proven_incompatible_with_full_unique_cell_coverage": {
+    "old_max_importance_weight_max_to_min_ratio": 64.0,
+    "dataset_and_cap_lower_bound_numerator": 58037,
+    "dataset_and_cap_lower_bound_denominator": 864,
+    "dataset_and_cap_lower_bound_float": 67.17245370370371,
+    "old_64x_rule_feasible": false,
+    "minimum_integer_cell_cap_if_64x_were_retained": 34,
+    "resolution_policy": "DO_NOT_SILENTLY_RELAX__REQUIRES_PROSPECTIVE_SUPERSESSION"
+  },
+  "candidate_horizon_semantics": {
+    "unique_cell_coverage": "EVERY_READER_FIT_STABLE_CELL_KEY_AT_LEAST_ONCE",
+    "topup": "DETERMINISTIC_DATASET_ONLY_DONOR_BALANCING_UNTIL_FROZEN_ESS_AND_GROUP_FLOOR_PASS",
+    "repeat_cap": 32,
+    "scientific_mass": "EXACT_DONOR_UNIFORM_TARGET_VIA_P_OVER_Q",
+    "automatic_extension": false,
+    "checkpoint_outcomes_used_to_choose_schedule": false,
+    "pathology_used_to_choose_schedule": false
+  },
+  "current_dataset_only_calibration_candidate": {
+    "algorithm": "GREEDY_DONOR_BALANCED_FULL_COVERAGE_V1__NOT_CLAIMED_GLOBALLY_OPTIMAL",
+    "total_presentations": 5271158,
+    "population_equivalents": 1.1576294409878143,
+    "importance_ess_fraction": 0.5009275089162246,
+    "max_cell_multiplicity": 32,
+    "minimum_group_presentations": 16,
+    "importance_weight_max_to_min_ratio": 67.17245370370371,
+    "audit_path": "docs/agent/v5_anticheat/results/FULL_POPULATION_COVERAGE_CONDITIONING_AUDIT_V1.json"
+  },
+  "still_unfrozen": {
+    "production_schedule_selection_algorithm": true,
+    "final_importance_weight_ratio_acceptance_rule": true,
+    "ema_half_life_presentations": true,
+    "effective_base_cells_per_update": true,
+    "max_teacher_tokens_per_microbatch": true,
+    "target_query_budget": true,
+    "target_query_chunk_size": true
+  },
+  "training_authorized": false,
+  "successor_u0_authorized": false,
+  "td60_authorized": false
+}
