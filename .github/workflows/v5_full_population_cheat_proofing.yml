@@ -41,6 +41,8 @@ jobs:
           tests/test_v5_real_data_parameter_and_dimension_contract_v1.py
           tests/test_full_reader_expression_location_builder_v2.py
           tests/test_dimension_authority_guard_v1.py
+          tests/test_dimension_authority_guard_v2.py
+          tests/test_full_reader_expression_identity_closure_v3.py
           tests/test_v5_parameter_provenance_classification_v1.py
           tests/test_v5_ema_exposure_and_query_precision_v1.py
           tests/test_v5_repeat_cap_conditioning_pareto_v1.py
@@ -54,11 +56,13 @@ jobs:
           src/sea_ad_jepa/v5/biology_observation_adapter_v1.py
           src/sea_ad_jepa/v5/relational_shortcut_increment_guard_v1.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v1.py
+          src/sea_ad_jepa/v5/dimension_authority_guard_v2.py
           scripts/v5_anticheat/audit_full_population_coverage_conditioning_v1.py
           scripts/v5_anticheat/derive_full_population_schedule_optimum_v3.py
           scripts/v5_anticheat/materialize_full_population_schedule_v4.py
           scripts/v5_anticheat/derive_v5_real_data_parameter_registry_v1.py
           scripts/v5_anticheat/build_full_reader_expression_location_manifest_v2.py
+          scripts/v5_anticheat/build_full_reader_expression_identity_closure_v3.py
           scripts/v5_anticheat/derive_actual_presentation_exposure_geometry_v2.py
           scripts/v5_anticheat/derive_singleton_query_floor_v3.py
           scripts/v5_anticheat/derive_repeat_cap_conditioning_pareto_v1.py
