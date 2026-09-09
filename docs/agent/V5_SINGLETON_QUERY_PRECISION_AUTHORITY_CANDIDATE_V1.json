@@ -1,0 +1,32 @@
+{
+  "schema": "JEPA_V5_SINGLETON_QUERY_PRECISION_AUTHORITY_CANDIDATE_V1",
+  "status": "REAL_SUPPORT_GEOMETRY_DERIVED_QUERY_FLOOR__NO_EXECUTION_AUTHORITY",
+  "geometry": {
+    "operator_family_geometry_sha256": "ccb94270405034f17e26e0c260aeacc8331d87a55a12083930343f774488671b",
+    "common_core_addresses": 17186,
+    "operators": 42,
+    "source": "authenticated real reader-fit support/calibration geometry"
+  },
+  "risk_control": {
+    "maximum_query_monte_carlo_variance_fraction": 0.05,
+    "role": "prospectively fixed precision/error budget; not discovered from the data or a checkpoint outcome",
+    "loss_range_assumption": "singleton LayerNorm MSE bounded in [0,4]"
+  },
+  "derived_result": {
+    "policy": "positive integer q_common + q_native = Q; for each Q and operator choose allocation minimizing exact two-family finite-population variance bound; then choose smallest Q whose worst operator passes",
+    "minimum_total_queries_per_base_cell": 21,
+    "worst_ratio_at_minimum": 0.0476703666914567,
+    "worst_operator_at_minimum": 37,
+    "worst_operator_minimum_allocation": {
+      "common_queries": 10,
+      "native_queries": 11
+    },
+    "immediately_previous_total_queries": 20,
+    "worst_ratio_at_previous": 0.05006881843151968,
+    "previous_passed": false
+  },
+  "hardware_rule": "hardware calibration may increase Q but may not lower it; query count does not change scientific family mass or hidden-set identity",
+  "synthetic_data_used_for_numeric_authority": false,
+  "checkpoint_outcomes_used": false,
+  "training_authorized": false
+}
