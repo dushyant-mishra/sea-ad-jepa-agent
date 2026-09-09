@@ -299,10 +299,11 @@ def _stage_c_from_arrays(
             "residual_df": {name: n - len(designs[name][0]) for name in designs}}
 
 
-def preflight_root(results: Sequence[Mapping[str, Any]]) -> str:
-    """Digest over the stages actually run and their outcomes."""
-    parts = [_typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
-             _typed(list(FORBIDDEN_REMEDIES)), _typed(len(results))]
+def _preflight_root_from_rank_only_fixture(
+        results: Sequence[Mapping[str, Any]]) -> str:
+    """Fixture-only legacy root; production must bind donor-record identities."""
+    parts = [_typed(DOMAIN_TAG), _typed("RANK_ONLY_FIXTURE"),
+             _typed(len(results))]
     for result in results:
         checks = result["checks"]
         parts.append(_typed([str(result["stage"]),
@@ -360,12 +361,18 @@ def refuse_positional_arrays(**kwargs: Any) -> None:
 
 
 def _fixed(value: float, places: int = 12) -> str:
+    """Exact IEEE-754 text for the value the design matrix actually consumes.
+
+    The previous 12-decimal rounding let distinct design matrices share a
+    records root. `places` remains only for backward call compatibility and is
+    deliberately ignored.
+    """
     import math
 
     number = float(value)
     if not math.isfinite(number):
         raise AssertionError("%s: %r is not finite" % (STOP_INPUT_SHAPE, value))
-    return "%.*f" % (places, number)
+    return number.hex()
 
 
 def records_root(donor_order: Sequence[str],
@@ -451,6 +458,8 @@ def stage_a_parent_nuisance(
         expected_discovery_records_root_sha256)
     result["confirmation_records_root_sha256"] = str(
         expected_confirmation_records_root_sha256)
+    result["discovery_order"] = list(discovery)
+    result["confirmation_order"] = list(confirmation)
     return result
 
 
@@ -478,6 +487,7 @@ def stage_b_state_designs(
         q_detect=_donor_column(order, records, "Q_DETECT"))
     result["donor_bound"] = True
     result["records_root_sha256"] = str(expected_records_root_sha256)
+    result["confirmation_order"] = list(order)
     return result
 
 
@@ -506,4 +516,76 @@ def stage_c_tail_designs(
         q_detect=_donor_column(order, records, "Q_DETECT"))
     result["donor_bound"] = True
     result["records_root_sha256"] = str(expected_records_root_sha256)
+    result["tail_order"] = list(order)
     return result
+
+def preflight_root(results: Sequence[Mapping[str, Any]]) -> str:
+    """Bind the exact donor-bound designs that were checked, not ranks alone."""
+    assert_stage_order(results)
+    parts = [_typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
+             _typed(list(FORBIDDEN_REMEDIES)), _typed(len(results))]
+    for result in results:
+        if result.get("donor_bound") is not True:
+            raise AssertionError(
+                "%s: stage %r is not a donor-bound production result"
+                % (STOP_POSITIONAL, result.get("stage")))
+        stage = str(result["stage"])
+        checks = result["checks"]
+        parts.append(_typed(stage))
+        parts.append(_typed(
+            [[str(k), int(checks[k])] for k in sorted(checks)]))
+
+        if stage == STAGES[0]:
+            for field in ("discovery_records_root_sha256",
+                          "confirmation_records_root_sha256"):
+                value = str(result.get(field, ""))
+                if len(value) != 64:
+                    raise AssertionError(
+                        "%s: Stage A lacks %s" % (STOP_RECORDS_ROOT, field))
+                parts.append(_typed([field, value]))
+            discovery_order = [str(x) for x in result.get("discovery_order", ())]
+            confirmation_order = [str(x) for x in result.get("confirmation_order", ())]
+            if not discovery_order or not confirmation_order:
+                raise AssertionError(
+                    "%s: Stage A donor orders are absent" % STOP_DONOR_ORDER)
+            parts.append(_typed(["discovery_order", discovery_order]))
+            parts.append(_typed(["confirmation_order", confirmation_order]))
+            loodo = result.get("loodo_ranks", {})
+            parts.append(_typed([
+                "loodo_ranks",
+                [[str(k), int(loodo[k])] for k in sorted(
+                    loodo, key=lambda value: int(value))],
+            ]))
+        elif stage == STAGES[1]:
+            root = str(result.get("records_root_sha256", ""))
+            order = [str(x) for x in result.get("confirmation_order", ())]
+            if len(root) != 64 or not order:
+                raise AssertionError(
+                    "%s: Stage B records root/order absent" % STOP_RECORDS_ROOT)
+            parts.append(_typed(["records_root_sha256", root]))
+            parts.append(_typed(["confirmation_order", order]))
+            residual = result.get("residual_df", {})
+            parts.append(_typed([
+                "residual_df",
+                [[str(k), int(residual[k])] for k in sorted(residual)],
+            ]))
+        elif stage == STAGES[2]:
+            root = str(result.get("records_root_sha256", ""))
+            order = [str(x) for x in result.get("tail_order", ())]
+            if len(root) != 64 or not order:
+                raise AssertionError(
+                    "%s: Stage C records root/order absent" % STOP_RECORDS_ROOT)
+            parts.append(_typed(["records_root_sha256", root]))
+            parts.append(_typed(["tail_order", order]))
+            parts.append(_typed(["tail_inference_n",
+                                 int(result["tail_inference_n"])]))
+            residual = result.get("residual_df", {})
+            parts.append(_typed([
+                "residual_df",
+                [[str(k), int(residual[k])] for k in sorted(residual)],
+            ]))
+        else:
+            raise AssertionError(
+                "%s: unknown stage %r" % (STOP_STAGE_ORDER, stage))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
+
