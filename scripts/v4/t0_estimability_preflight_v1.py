@@ -451,6 +451,8 @@ def stage_a_parent_nuisance(
         expected_discovery_records_root_sha256)
     result["confirmation_records_root_sha256"] = str(
         expected_confirmation_records_root_sha256)
+    result["discovery_order"] = list(discovery)
+    result["confirmation_order"] = list(confirmation)
     return result
 
 
@@ -478,6 +480,7 @@ def stage_b_state_designs(
         q_detect=_donor_column(order, records, "Q_DETECT"))
     result["donor_bound"] = True
     result["records_root_sha256"] = str(expected_records_root_sha256)
+    result["confirmation_order"] = list(order)
     return result
 
 
@@ -506,4 +509,60 @@ def stage_c_tail_designs(
         q_detect=_donor_column(order, records, "Q_DETECT"))
     result["donor_bound"] = True
     result["records_root_sha256"] = str(expected_records_root_sha256)
+    result["tail_order"] = list(order)
     return result
+
+
+# R5 authority root: bind the donor-keyed records and all decision-bearing
+# outputs, not only the resulting ranks.
+def preflight_root(results: Sequence[Mapping[str, Any]]) -> str:
+    """Digest the exact donor-bound designs that were preflighted."""
+    assert_stage_order(results)
+    parts = [_typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
+             _typed(list(FORBIDDEN_REMEDIES)), _typed(len(results))]
+    for result in results:
+        stage = str(result["stage"])
+        checks = result["checks"]
+        parts.append(_typed(["stage", stage]))
+        parts.append(_typed([
+            "checks",
+            [[str(k), int(checks[k])] for k in sorted(checks)],
+        ]))
+        parts.append(_typed(["donor_bound", bool(result.get("donor_bound", False))]))
+
+        for root_field in (
+                "discovery_records_root_sha256",
+                "confirmation_records_root_sha256",
+                "records_root_sha256"):
+            if root_field in result:
+                root = str(result[root_field])
+                if len(root) != 64 or any(ch not in "0123456789abcdef" for ch in root.lower()):
+                    raise AssertionError(
+                        "%s: %s is not a sha256" % (STOP_RECORDS_ROOT, root_field))
+                parts.append(_typed([root_field, root]))
+
+        for order_field in ("discovery_order", "confirmation_order", "tail_order"):
+            if order_field in result:
+                order = [str(d) for d in result[order_field]]
+                if len(order) != len(set(order)):
+                    raise AssertionError(
+                        "%s: %s contains duplicates"
+                        % (STOP_DONOR_ORDER, order_field))
+                parts.append(_typed([order_field, order]))
+
+        residual = result.get("residual_df")
+        if residual is not None:
+            parts.append(_typed([
+                "residual_df",
+                [[str(k), int(residual[k])] for k in sorted(residual)],
+            ]))
+        if "tail_inference_n" in result:
+            parts.append(_typed(
+                ["tail_inference_n", int(result["tail_inference_n"])]))
+        if "loodo_ranks" in result:
+            loodo = result["loodo_ranks"]
+            parts.append(_typed([
+                "loodo_ranks",
+                [[str(k), int(loodo[k])] for k in sorted(loodo, key=str)],
+            ]))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
