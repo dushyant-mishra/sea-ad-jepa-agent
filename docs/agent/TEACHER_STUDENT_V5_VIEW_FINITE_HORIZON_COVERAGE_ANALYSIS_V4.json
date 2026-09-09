@@ -1,0 +1,21 @@
+{
+  "base_proposal": "V3",
+  "biological_presentation_count_rule": "both family views together count as one selected base-cell presentation",
+  "candidate_schedule": "STRATIFIED_BOTH_SUPPORT_FAMILIES_ONCE_PER_BASE_PRESENTATION_V1",
+  "compute_boundary": "hardware may reduce microbatch size or singleton query count but may not delete one support family from the scientific schedule",
+  "coverage_logic": {
+    "base_group_expected_presentations_floor": 16,
+    "common_family_expected_activations_floor": 16,
+    "native_family_expected_activations_floor": 16,
+    "reason": "both families are evaluated for every selected base presentation, so family coverage equals base-presentation coverage instead of multiplying by a small family-selection probability"
+  },
+  "decision": "CANDIDATE_FREEZE_TWO_DATASET_DEFINED_FAMILY_VIEWS__INDEPENDENT_REVIEW_REQUIRED",
+  "execution_authorized": false,
+  "family_target_policy": "SUPPORT_FAMILY_BALANCED_PRESENTATION_KEYED_HALF_MASK_V3",
+  "masked_family_views_per_base_presentation": 2,
+  "presentation_horizon": 4553407,
+  "schema": "TEACHER_STUDENT_V5_VIEW_FINITE_HORIZON_COVERAGE_ANALYSIS_V4",
+  "status": "CANDIDATE_ANALYSIS__NO_EXECUTION_AUTHORITY",
+  "supersedes_local_analysis": "TEACHER_STUDENT_V5_VIEW_FINITE_HORIZON_COVERAGE_ANALYSIS_V2.json",
+  "training_authorized": false
+}
