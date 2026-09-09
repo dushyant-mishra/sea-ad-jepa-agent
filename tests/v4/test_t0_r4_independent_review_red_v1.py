@@ -299,9 +299,6 @@ def test_r4_records_root_must_not_round_away_rank_changing_values() -> None:
 
     root = pf.records_root(donors, base, pf.STAGE_B_FIELDS)
     changed_root = pf.records_root(donors, changed, pf.STAGE_B_FIELDS)
-    assert root != changed_root, (
-        "records_root rounded distinct rank-relevant values to the same authority"
-    )
 
     # Discriminator: the correctly aligned design is rank deficient.
     with pytest.raises(AssertionError) as excinfo:
@@ -310,9 +307,14 @@ def test_r4_records_root_must_not_round_away_rank_changing_values() -> None:
             expected_records_root_sha256=root)
     assert pf.STOP_NOT_ESTIMABLE in str(excinfo.value)
 
-    # The changed full-precision design is full rank. A root collision would let
-    # it pass under the authority for the non-estimable design.
+    # The changed full-precision design is full rank AND, on the R4 candidate,
+    # is accepted under the baseline authority root because the root rounded the
+    # decision-bearing values to twelve decimal places.
     result = pf.stage_b_state_designs(
         confirmation_order=donors, records=changed,
-        expected_records_root_sha256=changed_root)
+        expected_records_root_sha256=root)
     assert result["checks"]["measurement"] == 7
+
+    assert root != changed_root, (
+        "records_root rounded a rank-6/7 design and a rank-7/7 design to the same authority"
+    )
