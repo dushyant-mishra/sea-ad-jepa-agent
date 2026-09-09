@@ -1,0 +1,46 @@
+{
+  "schema": "JEPA_V5_GROUP_PRESENTATION_FLOOR_RELEVANCE_DIAGNOSTIC_V1",
+  "status": "REAL_READER_FIT_DATASET_ONLY_DIAGNOSTIC__GROUP_FLOOR_16_RATIONALE_REQUIRES_SUPERSESSION_REVIEW",
+  "population": {
+    "cells": 4553407,
+    "donors": 104,
+    "groups": 1400,
+    "minimum_unique_cells_per_group": 1,
+    "groups_with_fewer_than_16_unique_cells": 192
+  },
+  "historical_floor16_rationale": "Under independent with-replacement draws, expected >=16 presentations/group bounded the chance that any group received zero draws.",
+  "new_full_coverage_fact": "Every reader-fit stable cell key is deterministically presented at least once, so every donor×operator group has zero probability of receiving zero presentations before any repeat top-up.",
+  "independence_warning": "Repeating a one-cell group 16 times still provides one unique biological cell; presentation count must not be interpreted as independent biological support.",
+  "real_schedule_comparison": {
+    "group_floor_16": {
+      "total_presentations": 5267086,
+      "ess": 0.5000000953357726,
+      "weight_ratio": 67.17245370370371,
+      "source_presentations": {
+        "HVS": 808924,
+        "NPH52": 318106,
+        "SEA_AD": 4140056
+      }
+    },
+    "group_floor_1_full_coverage_only": {
+      "total_presentations": 5266752,
+      "ess": 0.5000001283866508,
+      "weight_ratio": 67.17245370370371,
+      "source_presentations": {
+        "HVS": 808590,
+        "NPH52": 318106,
+        "SEA_AD": 4140056
+      }
+    },
+    "extra_presentations_due_to_retaining_floor16_at_final_optimum": 334
+  },
+  "decision_boundary": {
+    "floor16_remains_training_authority": false,
+    "recommended_next_rule": "Separate unique group support from optimization repeat allocation. If a minimum repeat floor is retained, justify it prospectively as an optimization-variance control, not as independent biological coverage.",
+    "no_outcome_tuning": true
+  },
+  "pathology_used": false,
+  "checkpoint_outcomes_used": false,
+  "synthetic_data_used": false,
+  "training_authorized": false
+}
