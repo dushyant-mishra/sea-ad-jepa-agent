@@ -49,11 +49,39 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import t0_age_sex_authority_v1 as ages  # noqa: E402
+import t0_at8_availability_authority_v1 as at8  # noqa: E402
 import t0_eligible_donor_authority_v1 as eld  # noqa: E402
 import t0_technical_completeness_authority_v1 as tc  # noqa: E402
 
 EXPECTED_CANDIDATE_DONORS = 46
 EXPECTED_POPULATION_ROWS = 20_804
+
+# ---------------------------------------------------------------------------
+# Expected parent identities, supplied from OUTSIDE the package directories.
+#
+# This is the R6 repair for the external reviewer's findings 1 and 2. Reading a
+# package's own *_PACKAGE_ROOT_SHA256.txt and passing it back as the expected
+# root lets the package attest to itself: a substituted package whose manifest
+# and root file are rewritten to agree with its own altered bytes then passes.
+# The committed red case demonstrates that the previous loaders accepted exactly
+# that.
+#
+# Freezing the roots here puts them on the branch, where a reviewer reads them
+# independently of any directory. A substituted parent is refused by identity.
+# ---------------------------------------------------------------------------
+AT8_EXPECTED_PACKAGE_ROOT = (
+    "3f74fa833bc1838a50d92bf3f6bdb55e6eafdb10b489fbfff142a4240466fc5a")
+AT8_EXPECTED_AVAILABILITY_ROOT = (
+    "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b")
+AGE_SEX_EXPECTED_PACKAGE_ROOT = (
+    "8212191a03f09d669a383be6a541b5ce3493b32c13608a76f197a88fa18ddf9b")
+AGE_SEX_EXPECTED_ROOT = (
+    "95ed8f75a42368f3308cf794dbab3c651a4467756147a49a937c5a881e1cffff")
+AGE_SEX_EXPECTED_SOURCE_SHA256 = (
+    "ebbe9bc0c623c663331425794bd8fb1b4c4f3657455cf55d806cc383ea6d8e3a")
+AGE_SEX_EXPECTED_CANDIDATE_DONOR_SET = (
+    "59769cfda71860570eddc005ab7ee844e74d2dda8146245ddb930ade88af6345")
 
 AT8_REGISTRY = "T0_AT8_AVAILABILITY_REGISTRY.csv"
 AT8_ROOT_FILE = "T0_AT8_AVAILABILITY_PACKAGE_ROOT_SHA256.txt"
@@ -97,9 +125,33 @@ def _root_of(pkgdir: Path, root_file: str) -> str:
     return (pkgdir / root_file).read_text(encoding="utf-8").strip()
 
 
-def load_at8_availability(pkgdir: Path) -> dict:
-    """The boolean availability flag, with a refusal of any numeric column."""
-    records = _read_registry(pkgdir / AT8_REGISTRY)
+def load_at8_availability(
+        pkgdir: Path,
+        *,
+        expected_package_root_sha256: str = AT8_EXPECTED_PACKAGE_ROOT,
+        expected_availability_root_sha256: str = AT8_EXPECTED_AVAILABILITY_ROOT,
+) -> dict:
+    """Replay the AT8 availability authority as a verified parent.
+
+    The package is put through its own loader, which enumerates the directory,
+    refuses a symlink or an unexpected member, captures every member's bytes
+    exactly once, and checks both roots against values supplied from outside the
+    directory. Nothing here re-reads a member after authentication.
+
+    The verification outcome is *returned*, not asserted by the caller. The
+    previous version of this runner set the availability authority's
+    independent-verification flag to a hardcoded true, which the external
+    reviewer correctly refused: a flag a caller sets is not evidence. A guard
+    test now fails if that literal reappears anywhere in this module, prose
+    included, so this docstring names the flag without spelling the assignment.
+    """
+    replayed = at8.load_availability_authority(
+        Path(pkgdir),
+        expected_package_root_sha256=str(expected_package_root_sha256),
+        expected_availability_root_sha256=str(
+            expected_availability_root_sha256))
+
+    records = replayed["registry"]
     fields = tuple(records[0].keys()) if records else ()
     if fields != AT8_PERMITTED_FIELDS:
         raise AssertionError(
@@ -107,6 +159,16 @@ def load_at8_availability(pkgdir: Path) -> dict:
             "registry fields are %r but the availability lane permits exactly "
             "%r" % (list(fields), list(AT8_PERMITTED_FIELDS)))
     eld.assert_no_pathology_in_artifact(fields)
+
+    meta = replayed["metadata"]
+    # The availability lane must still be a lane that never parsed a magnitude.
+    for flag in ("numeric_at8_value_parsed", "numeric_at8_value_retained",
+                 "numeric_at8_value_emitted", "real_execution_ready"):
+        if meta.get(flag) is not False:
+            raise AssertionError(
+                "STOP_T0_AT8_AVAILABILITY_LANE_CLAIMS_A_NUMERIC_VALUE: %s is %r"
+                % (flag, meta.get(flag)))
+
     flags = {}
     for record in records:
         value = str(record["AT8_available"]).strip()
@@ -116,9 +178,20 @@ def load_at8_availability(pkgdir: Path) -> dict:
                 "carries booleans only"
                 % (eld.STOP_NOT_BOOLEAN, record["donor_id"], value))
         flags[str(record["donor_id"])] = (value == "True")
+
     return {"flags": flags,
-            "package_root_sha256": _root_of(pkgdir, AT8_ROOT_FILE),
-            "donors_covered": len(flags)}
+            "package_root_sha256": replayed["package_root_sha256"],
+            "availability_root_sha256": replayed["availability_root_sha256"],
+            "donors_covered": len(flags),
+            "independently_verified": True,
+            "expected_roots_supplied_externally": True,
+            "verified_against": {
+                "package_root_sha256": str(expected_package_root_sha256),
+                "availability_root_sha256": str(
+                    expected_availability_root_sha256)},
+            "numeric_at8_value_parsed": False,
+            "membership_donor_set_sha256": meta.get(
+                "membership_donor_set_sha256")}
 
 
 def load_technical_completeness(pkgdir: Path) -> dict:
@@ -160,30 +233,75 @@ def load_technical_completeness(pkgdir: Path) -> dict:
             "donors_covered": len(flags)}
 
 
-def load_age_sex_presence(pkgdir: Path) -> dict:
-    """Definedness of age and sex. Values are read here and emitted nowhere.
+def load_age_sex_presence(
+        pkgdir: Path,
+        *,
+        expected_package_root_sha256: str = AGE_SEX_EXPECTED_PACKAGE_ROOT,
+        expected_age_sex_root_sha256: str = AGE_SEX_EXPECTED_ROOT,
+        expected_source_sha256: str = AGE_SEX_EXPECTED_SOURCE_SHA256,
+        expected_candidate_donor_set_sha256: str = (
+            AGE_SEX_EXPECTED_CANDIDATE_DONOR_SET),
+) -> dict:
+    """Replay the age/sex authority as a verified parent, then emit presence only.
 
-    The frozen predicate is `isfinite(age)` and `sex` non-null and non-empty,
-    and that is what is evaluated: a blank, a non-numeric age, a NaN and an
-    infinity are all absent, and no value is retained beyond this function.
+    The package goes through its own loader, bound to an expected package root,
+    age/sex root, source digest and candidate donor set -- all supplied from
+    outside the directory. Only after that are the presence booleans derived.
+
+    One consequence is worth stating rather than leaving implicit. The age/sex
+    authority parses through `exact_age` and `exact_sex`, which *refuse* a
+    non-finite age or a sex outside the frozen vocabulary. So a successful replay
+    already proves every donor it carries has a defined age and sex, and
+    `age_present` and `sex_present` come back True for every donor by
+    construction. That is not the predicate becoming vacuous: it is the predicate
+    being enforced upstream, where a missing covariate makes the parent refuse to
+    load rather than quietly producing an ineligible donor. It is the same
+    fail-closed rule the eligible-donor authority applies to coverage gaps.
+
+    Values are read inside this function and emitted nowhere.
     """
-    records = _read_registry(pkgdir / AGE_SEX_REGISTRY)
+    replayed = ages.load_authority(
+        Path(pkgdir),
+        expected_package_root_sha256=str(expected_package_root_sha256),
+        expected_age_sex_root_sha256=str(expected_age_sex_root_sha256),
+        expected_source_sha256=str(expected_source_sha256),
+        expected_candidate_donor_set_sha256=str(
+            expected_candidate_donor_set_sha256))
+
+    meta = replayed["metadata"]
+    for flag in ("pathology_fields_in_emitted_schema",
+                 "numeric_at8_value_read", "numeric_at8_value_emitted",
+                 "real_execution_ready"):
+        if meta.get(flag) is not False:
+            raise AssertionError(
+                "STOP_T0_AGE_SEX_PARENT_CLAIMS_A_FORBIDDEN_FIELD: %s is %r"
+                % (flag, meta.get(flag)))
+
     age_present, sex_present = {}, {}
-    for record in records:
-        donor = str(record["donor_id"])
-        raw_age = str(record.get("age", "")).strip()
-        try:
-            age = float(raw_age)
-        except (TypeError, ValueError):
-            age = float("nan")
-        age_present[donor] = bool(math.isfinite(age))
-        raw_sex = record.get("sex")
-        sex_present[donor] = bool(raw_sex is not None
-                                  and str(raw_sex).strip() != ""
-                                  and str(raw_sex).strip().lower() != "nan")
+    for row in replayed["rows"]:
+        donor = str(row["donor_id"])
+        # The parent already refused anything non-finite or out-of-vocabulary,
+        # so this re-evaluates the frozen predicate on values it has proven.
+        age_present[donor] = bool(math.isfinite(float(row["age"])))
+        sex = row["sex"]
+        sex_present[donor] = bool(sex is not None
+                                  and str(sex).strip() != ""
+                                  and str(sex).strip().lower() != "nan")
+
     return {"age_present": age_present, "sex_present": sex_present,
-            "package_root_sha256": _root_of(pkgdir, AGE_SEX_ROOT_FILE),
-            "donors_covered": len(age_present)}
+            "package_root_sha256": replayed["package_root_sha256"],
+            "age_sex_root_sha256": replayed["age_sex_root_sha256"],
+            "donors_covered": len(age_present),
+            "independently_verified": True,
+            "expected_roots_supplied_externally": True,
+            "verified_against": {
+                "package_root_sha256": str(expected_package_root_sha256),
+                "age_sex_root_sha256": str(expected_age_sex_root_sha256),
+                "source_sha256": str(expected_source_sha256),
+                "candidate_donor_set_sha256": str(
+                    expected_candidate_donor_set_sha256)},
+            "presence_is_proven_upstream_by_exact_age_and_exact_sex": True,
+            "covariate_values_emitted": False}
 
 
 def load_candidate_universe(population_pkg: Path) -> dict:
@@ -238,10 +356,13 @@ def run(*, outdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
     stamp("  %d donors over %d proven rows"
           % (len(universe["donors"]), universe["rows_proven"]))
 
-    stamp("loading the AT8 availability authority (boolean only)")
-    at8 = load_at8_availability(at8_pkg)
-    stamp("  %d donors covered, root %s"
-          % (at8["donors_covered"], at8["package_root_sha256"]))
+    stamp("replaying the AT8 availability authority (boolean only)")
+    at8_parent = load_at8_availability(at8_pkg)
+    stamp("  %d donors covered" % at8_parent["donors_covered"])
+    stamp("    package root      %s (verified against a frozen expectation)"
+          % at8_parent["package_root_sha256"])
+    stamp("    availability root %s (verified against a frozen expectation)"
+          % at8_parent["availability_root_sha256"])
 
     stamp("replaying the technical-completeness authority")
     complete = load_technical_completeness(tc_pkg)
@@ -249,14 +370,19 @@ def run(*, outdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
           % (complete["donors_covered"], complete["cells_consumed"],
              complete["completeness_root_sha256"]))
 
-    stamp("deriving age/sex definedness (values read, none emitted)")
+    stamp("replaying the age/sex authority, then deriving definedness only")
     presence = load_age_sex_presence(age_sex_pkg)
-    stamp("  %d donors covered, root %s"
-          % (presence["donors_covered"], presence["package_root_sha256"]))
+    stamp("  %d donors covered" % presence["donors_covered"])
+    stamp("    package root %s (verified against a frozen expectation)"
+          % presence["package_root_sha256"])
+    stamp("    age/sex root %s (verified against a frozen expectation)"
+          % presence["age_sex_root_sha256"])
+    stamp("    presence is proven upstream by exact_age and exact_sex")
 
     donors = universe["donors"]
     projections = {
-        "at8_available": (at8["flags"], at8["donors_covered"]),
+        "at8_available": (at8_parent["flags"],
+                          at8_parent["donors_covered"]),
         "technical_complete": (complete["flags"], complete["donors_covered"]),
         "age_present": (presence["age_present"], presence["donors_covered"]),
         "sex_present": (presence["sex_present"], presence["donors_covered"]),
@@ -285,7 +411,10 @@ def run(*, outdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
               % divergence["ineligible_donors_inside_support_top_18"])
 
     parents = {
-        "at8_availability_package_root_sha256": at8["package_root_sha256"],
+        "at8_availability_package_root_sha256": at8_parent[
+            "package_root_sha256"],
+        "at8_availability_root_sha256": at8_parent["availability_root_sha256"],
+        "age_sex_root_sha256": presence["age_sex_root_sha256"],
         "technical_completeness_root_sha256": complete[
             "completeness_root_sha256"],
         "technical_completeness_package_root_sha256": complete[
@@ -300,7 +429,9 @@ def run(*, outdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
     summary = eld.build_authority(
         outdir, rows=rows, parents=parents,
         derivation_code_sha256=code_sha256("t0_eligible_donor_authority_v1.py"),
-        at8_availability_independently_verified=True,
+        # Not a literal: this is what the replay above actually established.
+        at8_availability_independently_verified=bool(
+            at8_parent["independently_verified"]),
         expected_candidate_donors=EXPECTED_CANDIDATE_DONORS)
 
     summary.update({
@@ -321,6 +452,30 @@ def run(*, outdir: Path, at8_pkg: Path, tc_pkg: Path, age_sex_pkg: Path,
         "numeric_at8_value_read": False,
         "numeric_covariate_values_emitted": False,
         "real_execution_ready": False,
+        "parent_replay": {
+            "at8_availability": {
+                "independently_verified": at8_parent["independently_verified"],
+                "expected_roots_supplied_externally": at8_parent[
+                    "expected_roots_supplied_externally"],
+                "verified_against": at8_parent["verified_against"],
+            },
+            "age_sex": {
+                "independently_verified": presence["independently_verified"],
+                "expected_roots_supplied_externally": presence[
+                    "expected_roots_supplied_externally"],
+                "verified_against": presence["verified_against"],
+                "presence_is_proven_upstream": presence[
+                    "presence_is_proven_upstream_by_exact_age_and_exact_sex"],
+            },
+            "technical_completeness": {
+                "replayed_through_its_own_loader": True,
+                "production_status_required":
+                    tc.PRODUCTION_RUN_STATUS_POPULATION,
+            },
+            "b2_population": {
+                "registry_row_count_checked_against_rows_proven": True,
+            },
+        },
         "elapsed_seconds": round(time.time() - started, 1),
     })
     path = Path(outdir) / "T0_ELIGIBLE_DONOR_RUN_SUMMARY.json"

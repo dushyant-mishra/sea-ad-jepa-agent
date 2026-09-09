@@ -53,6 +53,38 @@ import t0_technical_completeness_production_run_v1 as runner  # noqa: E402
 EXPECTED_CELLS = 20_804
 EXPECTED_DONORS = 46
 
+# The frozen B1 projection identity, held here so a run summary cannot simply
+# assert its own. Recomputing it needs the feature split; without that file the
+# most this verifier can honestly do is refuse a summary that disagrees with the
+# frozen value, which is what it now does.
+FROZEN_PROJECTION_ROOT = (
+    "ef6ccdde0e0268cce819b4e543d7d542120811fa3762225964f78f9172f370e7")
+
+STOP_PROJECTION = "STOP_T0_TECHNICAL_COMPLETENESS_PROJECTION_IDENTITY_MISMATCH"
+
+
+def assert_projection_root_is_frozen(summary, *,
+                                     expected=FROZEN_PROJECTION_ROOT) -> bool:
+    """Refuse a run summary whose recorded projection identity is not the frozen one.
+
+    This is a constant check, not a recomputation, and the distinction is the
+    point: the previous default path logged that it was recomputing the B1
+    projection root and then read the recorded value without comparing it to
+    anything, so a tampered summary flowed straight into the replay's own
+    report.
+    """
+    recorded = str(summary.get("projection_root_sha256"))
+    if recorded != str(expected):
+        raise AssertionError(
+            "%s: the run summary records projection root %s but the frozen B1 "
+            "projection is %s" % (STOP_PROJECTION, recorded, expected))
+    positions = int(summary.get("projection_positions", -1))
+    if positions != tc.SCALAR_FEATURES:
+        raise AssertionError(
+            "%s: the run used %d projection positions, expected %d"
+            % (STOP_PROJECTION, positions, tc.SCALAR_FEATURES))
+    return True
+
 
 def rederive_and_compare(*, records, closure, logical, plan, population,
                          projection, store: Path, log=print) -> dict:
@@ -207,13 +239,28 @@ def replay(*, pkgdir: Path, store: Path, membership_path: Path,
     log("  population root reproduces: %s"
         % population["population_raw_source_root_sha256"])
 
-    log("recomputing the B1 projection root")
+    # Two honest strengths, and the report says which one ran.
     projection_root = summary["projection_root_sha256"]
-    if int(summary["projection_positions"]) != tc.SCALAR_FEATURES:
-        raise AssertionError("the run used %s projection positions, expected %d"
-                             % (summary["projection_positions"],
-                                tc.SCALAR_FEATURES))
-    log("  positions %d" % summary["projection_positions"])
+    recomputed_from_split = False
+    if feature_split is not None:
+        supplied = runner.load_projection(Path(feature_split))
+        recomputed = tc.projection_root(supplied)
+        if recomputed != projection_root:
+            raise AssertionError(
+                "%s: the supplied feature split yields projection root %s but "
+                "the run recorded %s"
+                % (STOP_PROJECTION, recomputed, projection_root))
+        assert_projection_root_is_frozen(summary)
+        recomputed_from_split = True
+        log("recomputed the B1 projection root from the supplied feature split")
+        log("  positions %d   root %s" % (len(supplied["positions"]),
+                                          recomputed))
+    else:
+        assert_projection_root_is_frozen(summary)
+        log("checked the recorded B1 projection identity against the frozen "
+            "value; NOT recomputed, because no feature split was supplied")
+        log("  positions %d   root %s" % (summary["projection_positions"],
+                                          projection_root))
 
     log("replaying the technical-completeness package from disk")
     replayed = tc.load_authority(
@@ -273,11 +320,6 @@ def replay(*, pkgdir: Path, store: Path, membership_path: Path,
                                  "projection")
         log("independently re-deriving every donor summary from the substrate")
         projection = runner.load_projection(Path(feature_split))
-        if tc.projection_root(projection) != summary["projection_root_sha256"]:
-            raise AssertionError(
-                "the supplied feature split yields projection root %s but the "
-                "run recorded %s" % (tc.projection_root(projection),
-                                     summary["projection_root_sha256"]))
         rederivation = rederive_and_compare(
             records=records, closure=closure, logical=logical, plan=plan,
             population=population, projection=projection,
@@ -294,6 +336,11 @@ def replay(*, pkgdir: Path, store: Path, membership_path: Path,
         "schema": "JEPA_T0_TECHNICAL_COMPLETENESS_REPLAY_REPORT_V1",
         "independently_rederived": bool(rederive),
         "rederivation": rederivation,
+        "projection_root_recomputed_from_feature_split": recomputed_from_split,
+        "projection_root_checked_against_frozen_constant": True,
+        "projection_identity_claim": (
+            "RECOMPUTED_FROM_THE_SUPPLIED_FEATURE_SPLIT" if recomputed_from_split
+            else "CHECKED_AGAINST_THE_FROZEN_CONSTANT__NOT_RECOMPUTED"),
         "package_dir": str(pkgdir),
         "donor_rows": len(records),
         "cells_consumed": cells,
