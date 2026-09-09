@@ -57,6 +57,8 @@ import math
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
+import t0_dataset_bound_technical_inputs_v1 as te
+
 SCHEMA = "JEPA_T0_TECHNICAL_COMPLETENESS_AUTHORITY_V1"
 NAMESPACE = "T0-TECHNICAL-COMPLETENESS-V1"
 DOMAIN_TAG = "T0-TECHNICAL-COMPLETENESS-V1-TYPED-LENGTH-PREFIXED"
@@ -78,6 +80,7 @@ STOP_PARENT_IDENTITY = "STOP_T0_TECHNICAL_COMPLETENESS_PARENT_IDENTITY_NOT_BOUND
 STOP_ROOT_MISMATCH = "STOP_T0_TECHNICAL_COMPLETENESS_ROOT_MISMATCH"
 STOP_PACKAGE_MEMBER = "STOP_T0_TECHNICAL_COMPLETENESS_PACKAGE_MEMBER_INVALID"
 STOP_FIELD_SCHEMA = "STOP_T0_TECHNICAL_COMPLETENESS_FIELD_SCHEMA_VIOLATION"
+STOP_DETACHED_INPUT = "STOP_T0_TECHNICAL_COMPLETENESS_DETACHED_INPUT_FORBIDDEN"
 
 SCALAR_FEATURES = 35_076
 SEMANTICS = "THRESHOLD_FREE_DEFINEDNESS_AND_COMPUTABILITY"
@@ -365,12 +368,14 @@ def package_root(members: Mapping[str, bytes]) -> str:
 
 def parent_contract_root(*, substrate: Mapping[str, Any],
                          derivation_code_sha256: str) -> str:
-    """One root over the B2 and B1 parents plus the deriving code identity."""
-    fields = ("population_closure_root_sha256",
+    """One root over B2/B1 parents, optional dataset evidence, and deriving code."""
+    fields = ["population_closure_root_sha256",
               "logical_row_authority_root_sha256",
               "physical_read_plan_root_sha256",
               "feature_authority_root_sha256",
-              "projection_root_sha256")
+              "projection_root_sha256"]
+    if "dataset_evidence_root_sha256" in substrate:
+        fields.append("dataset_evidence_root_sha256")
     parts = [_typed(DOMAIN_TAG), _typed("PARENT_CONTRACT"),
              _typed(len(fields) + 1)]
     for field in fields:
@@ -382,7 +387,7 @@ def parent_contract_root(*, substrate: Mapping[str, Any],
     return hashlib.sha256(b"".join(parts)).hexdigest()
 
 
-def build_authority(
+def _write_authority_from_cells(
         outdir: Path | str,
         *,
         cells_by_donor: Mapping[str, Sequence[tuple[Any, Any]]],
@@ -390,8 +395,9 @@ def build_authority(
         derivation_code_sha256: str,
         candidate_donors: Sequence[str],
         scalar_features: int = SCALAR_FEATURES,
+        production_run_status: str,
 ) -> dict[str, Any]:
-    """Evaluate technical completeness over a lawful substrate and package it."""
+    """Common package writer after the cell-level inputs have been authenticated."""
     out = Path(outdir)
     if out.exists() and any(out.iterdir()):
         raise AssertionError("%s: output directory must be absent or empty: %s"
@@ -440,7 +446,7 @@ def build_authority(
         "derivation_code_sha256": str(derivation_code_sha256),
         "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
         "pathology_values_read": False,
-        "production_run_status": "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN",
+        "production_run_status": str(production_run_status),
         "real_execution_ready": False,
     }
     meta_bytes = (json.dumps(meta, sort_keys=True, indent=2) + "\n").encode("utf-8")
@@ -469,6 +475,79 @@ def build_authority(
             "technically_complete_donors": meta["technically_complete_donors"],
             "real_execution_ready": False}
 
+
+def build_synthetic_authority(
+        outdir: Path | str,
+        *,
+        cells_by_donor: Mapping[str, Sequence[tuple[Any, Any]]],
+        substrate: Mapping[str, Any],
+        derivation_code_sha256: str,
+        candidate_donors: Sequence[str],
+        scalar_features: int = SCALAR_FEATURES,
+) -> dict[str, Any]:
+    """Synthetic-only constructor retained for unit tests; never a production proof."""
+    return _write_authority_from_cells(
+        outdir, cells_by_donor=cells_by_donor, substrate=substrate,
+        derivation_code_sha256=derivation_code_sha256,
+        candidate_donors=candidate_donors, scalar_features=scalar_features,
+        production_run_status="SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN")
+
+
+def build_authority(*args: Any, **kwargs: Any) -> dict[str, Any]:
+    """Refuse the former detached-value production-shaped API.
+
+    The prior signature accepted caller-created (source_library,
+    projected_nonzero_count) tuples beside parent-root strings.  That path is
+    intentionally closed.  Tests must use build_synthetic_authority; real
+    construction must use build_production_authority with dataset evidence.
+    """
+    raise AssertionError(
+        "%s: detached cells_by_donor values are synthetic fixtures only; use "
+        "build_production_authority with authenticated dataset evidence"
+        % STOP_DETACHED_INPUT)
+
+
+def build_production_authority(
+        outdir: Path | str,
+        *,
+        dataset_evidence: Mapping[str, Any],
+        expected_dataset_evidence_root_sha256: str,
+        expected_parent_roots: Mapping[str, str],
+        derivation_code_sha256: str,
+        candidate_donors: Sequence[str],
+) -> dict[str, Any]:
+    """Aggregate only values already derived from authenticated dataset bytes."""
+    te.assert_evidence_lawful(
+        dataset_evidence,
+        expected_evidence_root_sha256=expected_dataset_evidence_root_sha256,
+        expected_parent_roots=expected_parent_roots)
+
+    cells_by_donor: dict[str, list[tuple[int, int]]] = {}
+    for row in dataset_evidence["rows"]:
+        donor = str(row["donor_id"])
+        cells_by_donor.setdefault(donor, []).append(
+            (int(row["source_library"]), int(row["projected_nonzero_count"])))
+
+    substrate = {
+        "population_closure_root_sha256": str(
+            expected_parent_roots["population_closure_root_sha256"]),
+        "logical_row_authority_root_sha256": str(
+            expected_parent_roots["logical_row_authority_root_sha256"]),
+        "physical_read_plan_root_sha256": str(
+            expected_parent_roots["physical_read_plan_root_sha256"]),
+        "feature_authority_root_sha256": str(
+            expected_parent_roots["feature_authority_root_sha256"]),
+        "projection_root_sha256": str(
+            expected_parent_roots["projection_root_sha256"]),
+        "dataset_evidence_root_sha256": str(
+            expected_dataset_evidence_root_sha256),
+    }
+    return _write_authority_from_cells(
+        outdir, cells_by_donor=cells_by_donor, substrate=substrate,
+        derivation_code_sha256=derivation_code_sha256,
+        candidate_donors=candidate_donors, scalar_features=SCALAR_FEATURES,
+        production_run_status=(
+            "DATASET_BOUND_CONSTRUCTOR__REAL_EXECUTION_READY_FALSE"))
 
 def load_authority(
         outdir: Path | str,
