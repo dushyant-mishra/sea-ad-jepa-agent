@@ -174,5 +174,21 @@
     "v3_loader_shard_presence_path": "SUPERSEDED_FOR_NUMERIC_D_AUTHORITY__FAIL_CLOSED_ONLY",
     "historical_4726_cell_cache_is_full_reader_authority": false,
     "physical_full104_blocks_currently_bound_in_this_runtime": false
+  },
+  "dimension_execution_firewall": {
+    "status": "REQUIRED_BEFORE_NUMERIC_D_AUTHORITY",
+    "module": "src/sea_ad_jepa/v5/dimension_execution_firewall_v1.py",
+    "final_authority_requires_full_reader_fit_rows": 4553407,
+    "forbidden_final_authority_shortcuts": [
+      "per-stratum cell caps, including the historical cap-4 refit-null validation subset",
+      "historical fixed rank-32 validation envelope as a final search boundary",
+      "historical fixed 256 null/bootstrap replicates without a prospective error-budget derivation",
+      "promotion of scripts/v4/validate_full104_phase2_empirical_null_refit.py",
+      "promotion of scripts/v4/correct_full104_phase2_shared_selection_with_refit_null.py",
+      "promotion of scripts/v4/independent_validate_full104_phase2_shared_level.py"
+    ],
+    "search_boundary_rule": "a supported search boundary returns EXPAND_SEARCH_ENVELOPE and cannot be selected as D_shared",
+    "null_rule": "every selecting null replicate must refit the full geometry and preserve donor/operator/Q_DEPTH/Q_DETECT/support-measurability",
+    "synthetic_data_used_for_numeric_authority": false
   }
 }
