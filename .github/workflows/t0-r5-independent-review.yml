@@ -30,7 +30,7 @@ jobs:
       - name: Run complete declared T0 suite plus R5 acceptance
         run: >-
           pytest -q
-          tests/v4/test_work_checkpoint_v1.py
+          tests/test_work_checkpoint_v1.py
           tests/v4/test_t0_at8_availability_authority_v1.py
           tests/v4/test_t0_v20_feature_projection_authority_v1.py
           tests/v4/test_t0_v20_row_count_authority_v1.py
