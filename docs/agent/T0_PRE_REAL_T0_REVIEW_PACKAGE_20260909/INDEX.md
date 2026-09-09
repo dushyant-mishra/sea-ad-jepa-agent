@@ -6,13 +6,21 @@
 and SEALED have not been opened. `real_execution_ready` is False.
 Teacher-student training has not begun. No authority is self-promoted to PASS.
 
-Review candidate head: `4552851de3a748e621131d3b6db4b07dc5d93527`
 Branch: `t0/v20-pathology-blind-materialization-20260908`
 Sealed base `21ec629667eeda5a7d37d3f1d822fbf93b213325` untouched and ancestral.
 
-This package is assembled to the owner's specification of 2026-09-09 and makes no
-new claims. Two open questions were decided by the owner and are recorded in
-"Owner decisions" below; nothing was re-cut and no package root moved as a result.
+Head history for this package, so a reviewer can tell the revisions apart:
+
+    4552851d   the head the reviewer first inspected
+    9ba6fd44   this package assembled; docs and reports only, no artifact rewritten
+    R6 closure the current head, recorded in CURRENT_WORK_CHECKPOINT_STATE.json
+               under t0_v20_materialization_lane.pre_real_t0_review_20260909
+
+The owner's two decisions of 2026-09-09 re-cut nothing and moved no root. The
+subsequent R6 repairs, made at the external reviewer's direction, did move the
+eligible-donor parent contract root and package root while leaving its decision
+roots unchanged; that is set out under "Roots" and in
+`docs/agent/T0_R6_CLOSURE_20260909.md`.
 
 ## What is in this package
 
@@ -21,15 +29,18 @@ Replay evidence, in this directory:
     B2_PRODUCTION_REPLAY_REPORT.json                             1,050 B
     TECHNICAL_COMPLETENESS_REPLAY_REPORT.json                    1,909 B
     TECHNICAL_COMPLETENESS_INDEPENDENT_REDERIVATION_REPORT.json  2,391 B
-    ELIGIBLE_DONOR_REPLAY_REPORT.json                            2,642 B
+    ELIGIBLE_DONOR_REPLAY_REPORT.json                            3,844 B   (R6)
+    ESTIMABILITY_PREFLIGHT_STAGE_A_REPORT.json                   3,779 B   (R6)
 
 Manifests and state, elsewhere on the branch:
 
+    docs/agent/T0_R6_CLOSURE_20260909.md
+    docs/agent/T0_PROVENANCE_LABEL_WAIVER_20260909.md
     docs/agent/T0_B2_PRODUCTION_ARTIFACT_MANIFEST_20260909.md
     docs/agent/T0_TECHNICAL_COMPLETENESS_AND_ELIGIBLE_DONOR_ARTIFACT_MANIFEST_20260909.md
     docs/agent/T0_EXTERNAL_REVIEW_HANDOFF_PRE_REAL_T0_20260909.md
     docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json
-    docs/agent/memory-os/DECISION_REGISTRY.csv        (DEC-025)
+    docs/agent/memory-os/DECISION_REGISTRY.csv        (DEC-025, DEC-026, DEC-027)
 
 The data artifacts themselves are **not** committed. `outputs/` is gitignored
 because committing a package member as tracked text lets the line-ending filter
@@ -43,13 +54,15 @@ two manifests, with the commands to reproduce it.
 
     B2 real population authority      DONE + REPLAYED
     technical completeness            DONE + REPLAYED + INDEPENDENTLY RE-DERIVED
-    eligible donor authority          DONE + REPLAYED
+    eligible donor authority          DONE + REPLAYED + PARENTS REPLAYED (R6)
+    Stage A estimability preflight    DONE (R6)
     real T0                           NOT RUN
     numeric AT8 / pathology           NOT ACCESSED
     DEV / SEALED                      NOT OPENED
     teacher-student training          NOT BEGUN
     real_execution_ready              False
-    estimability preflight            NO PRODUCTION RUN
+    Stage A preflight                 RUN, all designs full rank
+    Stages B and C preflight          NOT RUN, inputs do not exist pre-real-T0
     frozen donor-role authority v2    NOT BUILT
 
 ## Roots
@@ -78,12 +91,20 @@ Technical completeness:
     parent contract root    9d4e818e20077c42c5500b4df35c385dd1a43cb53375da3a7b4d738257ff5ba5
     package root            0164bccc76ad7ed9385de01fd0ab885dd80770afad0b94ee189e9084ee3cfe99
 
-Eligible donors:
+Eligible donors, after the R6 parent replay. The decision is unchanged and only
+the parent binding is stronger, which is the expected signature of R6 items 1
+and 2:
 
-    eligible donor root     a5470b9f5389e0fa72b3ca51832c67d7419ed6447a85d6d979884b9fe1444f85
-    donor role root         799261f54de158f4c24c33a51a674611fe4e5e68509fcbbca681216470fe10bd
-    parent contract root    be92b2ac2b347f0da45690e264d1b224584cfb56131ac3df61a01480ad196ae8
-    package root            af4b71413917cde7dd6b35686b3f8410e94ee323d436a2f4e125ff91b06980fd
+    eligible donor root     a5470b9f5389e0fa72b3ca51832c67d7419ed6447a85d6d979884b9fe1444f85   unchanged
+    donor role root         799261f54de158f4c24c33a51a674611fe4e5e68509fcbbca681216470fe10bd   unchanged
+    parent contract root    620ada0b5d6a6d29b7e8303e277b1cb72a153dc4b700757777df1588a54e344e   moved
+    package root            7d372603cb4833a2cba02a047f6f3f3e4ef680ab0c730b8693ccbd958ddfafeb   moved
+
+Stage A estimability preflight:
+
+    preflight root          bf9ee518d59053b3fe446c258c2606f318077b2f179ad73c45c4c6346030df27
+    report digest           17a759e9a9e837e37f5a573deae0c4f898c55b69d50f49562ed301e38070071f
+    CONFIRMATION rank 4, DISCOVERY rank 4, all 28 DISCOVERY LOODO folds rank 4
 
 ## The design as it came out
 
@@ -133,9 +154,11 @@ Concretely, what `donor_role` is *not*:
 - It is not the frozen `t0_donor_role_authority_v2` package. That module also
   runs nuisance-design rank checks over the confirmation set, the discovery set
   and every discovery LOODO fold. Those need age and sex **values**, which this
-  authority deliberately does not carry, so they have not been run on production
-  data. That work belongs to the estimability preflight, which has no production
-  run.
+  authority deliberately does not carry. That work belongs to the estimability
+  preflight, whose Stage A has since been run at the external reviewer's
+  direction: CONFIRMATION rank 4, DISCOVERY rank 4, and all 28 DISCOVERY LOODO
+  folds rank 4. Running it does not build the frozen v2 package, and Stages B
+  and C remain unrun because their inputs do not exist before real T0.
 - It does not lift `STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND`. That
   STOP remains in `unresolved_blockers` and its disposition is not treated as
   settled here.
@@ -193,8 +216,13 @@ The digest **values** are correct, reproducible and CRLF-safe. Only the one-word
 method claim is false. The practical risk is a reviewer computing a Git blob
 digest, getting a mismatch, and concluding the packages are broken.
 
-The eligible-donor lane states the method accurately. The other seven modules are
-untouched by owner decision.
+The eligible-donor lane and the estimability preflight state the method
+accurately. The other seven modules are untouched by owner decision, and R6 item
+5 is closed by an explicit waiver record at
+`docs/agent/T0_PROVENANCE_LABEL_WAIVER_20260909.md`, which carries the scope, the
+re-stamp cascade, five conditions and the recommended correction. That waiver is
+recorded by the producer at the owner's instruction and does not assert reviewer
+acceptance.
 
 Scope note so this is not read too widely: the finding concerns
 `derivation_code_byte_semantics` in the T0 authority packages only. It does *not*
@@ -226,7 +254,8 @@ block-major walk would produce identical roots. Unchanged.
 ### F4. Standing items from earlier reviews
 
     STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND      unresolved
-    estimability preflight                                     no production run
+    frozen donor-role authority v2 package                     not built
+    Stages B and C of the preflight                            not run, inputs absent
     R4 independent reviewer suite tests 3 and 5                mutually contradictory
     no CI attached                                             suite counts must be reproduced
 
@@ -315,6 +344,8 @@ reproduction.
         tests/v4/test_t0_eligible_donor_authority_v1.py \
         tests/v4/test_t0_eligible_donor_production_run_v1.py \
         tests/v4/test_t0_estimability_preflight_v1.py \
+        tests/v4/test_t0_estimability_preflight_production_run_v1.py \
+        tests/v4/test_t0_r6_parent_replay_reds_v1.py \
         tests/v4/test_t0_immune_fraction_authority_r2_v1.py \
         tests/v4/test_t0_immune_fraction_authority_v1.py \
         tests/v4/test_t0_immune_support_count_authority_v1.py \
@@ -324,7 +355,7 @@ reproduction.
         tests/v4/test_t0_v20_feature_projection_authority_v1.py \
         tests/v4/test_t0_v20_row_count_authority_r2_red_v1.py \
         tests/v4/test_t0_v20_row_count_authority_v1.py -q
-    # expect 652 passed
+    # expect 688 passed
 
     python -m pytest tests/v4/test_t0_r4_independent_external_reds_v1.py -q
     # expect 6 passed, 1 failed (F4)

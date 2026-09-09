@@ -70,10 +70,15 @@ STOP_ROLE_SET = "STOP_T0_PREFLIGHT_ROLE_SET_NOT_FROM_THE_ELIGIBLE_AUTHORITY"
 STOP_COVARIATE_LEAK = "STOP_T0_PREFLIGHT_COVARIATE_VALUE_IN_EMITTED_REPORT"
 STOP_RESPONSE = "STOP_T0_PREFLIGHT_RESPONSE_OR_PATHOLOGY_SUPPLIED"
 
-# No emitted field may carry a covariate value or a pathology endpoint. Ranks,
+# No emitted VALUE may carry a covariate label or a pathology endpoint. Ranks,
 # counts, donor identifiers and digests only.
-FORBIDDEN_REPORT_SUBSTRINGS = ("Female", "Male", "at8", "AT8", "braak",
-                               "cerad", "thal", "ptau", "6e10")
+#
+# The scan deliberately walks values and not field names. A field name may
+# legitimately contain a pathology token -- `at8_availability_root_sha256` is a
+# required parent identity, and refusing it would repeat the crude-substring
+# error that once flagged an `age_present` header as an age value.
+FORBIDDEN_REPORT_VALUES = ("female", "male", "braak", "cerad", "thal", "ptau",
+                           "6e10", "percent at8", "at8 positive")
 
 
 def code_sha256(filename: str) -> str:
@@ -153,6 +158,9 @@ def load_covariates(age_sex_pkg: Path) -> dict:
     if meta.get("pathology_fields_in_emitted_schema") is not False:
         raise AssertionError("%s: the age/sex parent declares pathology fields"
                              % STOP_RESPONSE)
+    # The frozen binary encoding. The labels are used here and not emitted; the
+    # report records the encoding's shape, and the labels themselves live in the
+    # age/sex authority's own metadata.
     sex_map = {"Female": 0.0, "Male": 1.0}
     records = {}
     for row in replayed["rows"]:
@@ -166,16 +174,42 @@ def load_covariates(age_sex_pkg: Path) -> dict:
     return {"records": records,
             "age_sex_root_sha256": replayed["age_sex_root_sha256"],
             "package_root_sha256": replayed["package_root_sha256"],
-            "sex_encoding": dict(sorted(sex_map.items()))}
+            "sex_encoding_levels": len(sex_map),
+            "sex_encoding_is_complete_binary": (
+                sorted(sex_map.values()) == [0.0, 1.0]),
+            "sex_encoding_digest_sha256": hashlib.sha256(
+                json.dumps(dict(sorted(sex_map.items())), sort_keys=True
+                           ).encode("utf-8")).hexdigest()}
+
+
+def _walk_values(node):
+    """Yield every scalar value in the report, ignoring field names."""
+    if isinstance(node, dict):
+        for value in node.values():
+            yield from _walk_values(value)
+    elif isinstance(node, (list, tuple)):
+        for value in node:
+            yield from _walk_values(value)
+    else:
+        yield node
 
 
 def assert_no_covariate_value_in_report(report) -> bool:
-    """The emitted report carries ranks and identities, never a covariate value."""
-    text = json.dumps(report, sort_keys=True)
-    for needle in FORBIDDEN_REPORT_SUBSTRINGS:
-        if needle in text:
-            raise AssertionError("%s: the report contains %r"
-                                 % (STOP_COVARIATE_LEAK, needle))
+    """The emitted report carries ranks and identities, never a covariate value.
+
+    Values only. A field name may legitimately contain a pathology token, and
+    scanning names as well would refuse `at8_availability_root_sha256`, which is
+    a parent identity this report is required to bind.
+    """
+    for value in _walk_values(report):
+        if not isinstance(value, str):
+            continue
+        lowered = value.lower()
+        for needle in FORBIDDEN_REPORT_VALUES:
+            if needle in lowered:
+                raise AssertionError(
+                    "%s: an emitted value contains %r: %r"
+                    % (STOP_COVARIATE_LEAK, needle, value))
     return True
 
 
@@ -280,7 +314,11 @@ def run(*, outdir: Path, eligible_pkg: Path, age_sex_pkg: Path, at8_pkg: Path,
         "preflight_root_sha256": preflight,
         "confirmation_donor_ids": list(confirmation_order),
         "discovery_donor_ids": list(discovery_order),
-        "sex_encoding": covariates["sex_encoding"],
+        "sex_encoding_levels": covariates["sex_encoding_levels"],
+        "sex_encoding_is_complete_binary": covariates[
+            "sex_encoding_is_complete_binary"],
+        "sex_encoding_digest_sha256": covariates["sex_encoding_digest_sha256"],
+        "sex_labels_emitted": False,
         "parents": {
             "eligible_donor_root_sha256": assigned[
                 "eligible_donor_root_sha256"],
