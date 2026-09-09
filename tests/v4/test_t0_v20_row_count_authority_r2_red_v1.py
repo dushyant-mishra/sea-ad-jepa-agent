@@ -244,7 +244,7 @@ def test_a_fabricated_raw_row_with_a_matching_sum_does_not_prove_source_library(
     logical = _logical(world, _closure_from(world.complete_manifest(), world))
     fabricated = [0] * 1999 + [9470]
     with pytest.raises(AssertionError):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_only(
             logical=logical, logical_index=0,
             raw_source_row_values=fabricated,
             raw_source_provenance={
@@ -264,7 +264,7 @@ def test_the_proving_row_index_must_equal_the_bound_expression_row(
     bound = logical["rows"][0]["expression_row"]
     values = [0] * 1999 + [logical["rows"][0]["source_library"]]
     with pytest.raises(AssertionError):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_only(
             logical=logical, logical_index=0,
             raw_source_row_values=values,
             raw_source_provenance={
@@ -288,7 +288,7 @@ def test_the_proving_row_identity_must_match_the_bound_cell_and_donor(
     row = logical["rows"][0]
     values = [0] * 1999 + [row["source_library"]]
     with pytest.raises(AssertionError):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_only(
             logical=logical, logical_index=0,
             raw_source_row_values=values,
             raw_source_provenance={
@@ -312,7 +312,7 @@ def test_the_matrix_slot_must_be_the_raw_umi_layer(
     row = logical["rows"][0]
     values = [0] * 1999 + [row["source_library"]]
     with pytest.raises(AssertionError):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_only(
             logical=logical, logical_index=0,
             raw_source_row_values=values,
             raw_source_provenance={
