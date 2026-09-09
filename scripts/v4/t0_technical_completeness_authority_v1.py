@@ -1169,3 +1169,58 @@ def build_production_authority(
     summary["derivation"] = (
         "RAW_H5_POPULATION_PROOF_PLUS_AUTHENTICATED_BLOCK_MAJOR_B2_PLUS_EXACT_B1")
     return summary
+
+
+def _build_production_authority_fixture(
+        outdir: Path | str,
+        *,
+        logical: Mapping[str, Any],
+        expected_logical_root_sha256: str,
+        expected_closure_root_sha256: str,
+        counts_payload_bytes_by_path: Mapping[str, bytes],
+        projection: Mapping[str, Any],
+        expected_projection_root_sha256: str,
+        derivation_code_sha256: str,
+        candidate_donors: Sequence[str],
+        address_space_size: int = 41_238,
+        expected_projection_positions: int | None = None,
+        scalar_features: int = SCALAR_FEATURES,
+) -> dict[str, Any]:
+    """Synthetic fixture adapter for the pre-R5 small-projection tests."""
+    out = Path(outdir)
+    if out.exists() and any(out.iterdir()):
+        raise AssertionError("%s: output directory must be absent or empty: %s"
+                             % (STOP_PACKAGE_MEMBER, out))
+    rows = _derive_rows_from_authenticated_parents_fixture(
+        logical=logical,
+        expected_logical_root_sha256=expected_logical_root_sha256,
+        expected_closure_root_sha256=expected_closure_root_sha256,
+        counts_payload_bytes_by_path=counts_payload_bytes_by_path,
+        projection=projection,
+        expected_projection_root_sha256=expected_projection_root_sha256,
+        address_space_size=address_space_size,
+        expected_projection_positions=expected_projection_positions,
+        scalar_features=scalar_features,
+    )
+    donors = {str(row["donor_id"]) for row in rows}
+    expected = {str(d) for d in candidate_donors}
+    if donors != expected:
+        raise AssertionError("%s: derived-only %s, candidate-only %s"
+                             % (STOP_DONOR_SET, sorted(donors - expected),
+                                sorted(expected - donors)))
+    substrate = {
+        "population_closure_root_sha256": str(expected_closure_root_sha256),
+        "logical_row_authority_root_sha256": str(expected_logical_root_sha256),
+        "raw_source_population_root_sha256": "6" * 64,
+        "feature_authority_root_sha256": str(
+            logical["feature_authority_root_sha256"]),
+        "projection_root_sha256": str(expected_projection_root_sha256),
+    }
+    summary = _write_package(
+        out, rows=rows, substrate=substrate,
+        derivation_code_sha256=derivation_code_sha256,
+        scalar_features=scalar_features,
+        production_run_status="SYNTHETIC_FIXTURE_ONLY__PRODUCTION_B2_NOT_RUN")
+    summary["cells_consumed"] = sum(int(row["cells"]) for row in rows)
+    summary["derivation"] = "SYNTHETIC_FIXTURE_ONLY"
+    return summary
