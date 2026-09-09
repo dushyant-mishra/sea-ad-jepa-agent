@@ -425,6 +425,7 @@ def _write_package(
         substrate,
         derivation_code_sha256: str,
         scalar_features: int = SCALAR_FEATURES,
+        production_run_status: str = "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN",
 ):
     """Write the package members and both roots. Shared by both entrypoints."""
     root = completeness_root(rows)
@@ -472,7 +473,7 @@ def _write_package(
         "derivation_code_sha256": str(derivation_code_sha256),
         "derivation_code_byte_semantics": "GIT_BLOB_BYTES__NOT_WORKTREE_BYTES",
         "pathology_values_read": False,
-        "production_run_status": "SYNTHETIC_ONLY__PRODUCTION_B2_NOT_RUN",
+        "production_run_status": str(production_run_status),
         "real_execution_ready": False,
     }
     meta_bytes = (json.dumps(meta, sort_keys=True, indent=2) + "\n").encode("utf-8")
@@ -978,7 +979,9 @@ def build_production_authority(
     summary = _write_package(
         out, rows=rows, substrate=substrate,
         derivation_code_sha256=derivation_code_sha256,
-        scalar_features=SCALAR_FEATURES)
+        scalar_features=SCALAR_FEATURES,
+        production_run_status=(
+            "DATASET_BOUND_TECHNICAL_COMPLETENESS_DERIVATION__NO_PASS_CLAIM"))
     summary["cells_consumed"] = sum(int(row["cells"]) for row in rows)
     summary["derivation"] = (
         "POPULATION_RAW_H5_PROOF_PLUS_BLOCK_MAJOR_PHASE2_PLUS_BOUND_B1")
