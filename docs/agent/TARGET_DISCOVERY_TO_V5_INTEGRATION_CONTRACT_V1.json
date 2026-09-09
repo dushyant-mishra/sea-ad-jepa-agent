@@ -1,0 +1,75 @@
+{
+  "schema": "TARGET_DISCOVERY_TO_V5_INTEGRATION_CONTRACT_V1",
+  "date": "2026-09-09",
+  "status": "PROSPECTIVE_INTEGRATION__NO_RELATIONAL_TRAINING_AUTHORITY",
+  "scientific_target_family": {
+    "relation": "ANCHORED_TRIPLET_ORDERING_SIGN_D_IJ_MINUS_D_IK",
+    "distance": "DIRECT_160D_CELL_STATE_COSINE_DISTANCE",
+    "scale_free": true,
+    "absolute_distance_equality_required": false,
+    "fixed_coordinate_regression": false
+  },
+  "evidence_state": {
+    "td57b": "PASS_GLOBAL_DONOR_RECURRENT_RELATIONAL_ORDER",
+    "td59": "PASS_NEAREST_HALF_MESOSCALE_PILOT",
+    "td57c_nearest_third": "FAILED_CLOSED",
+    "td60": "WAIT_LAWFUL_FULL_READER_LEARNED_TEACHER"
+  },
+  "initial_base_teacher": {
+    "relational_training_active": false,
+    "reason": "base teacher must first become lawful learned-teacher evidence under the full-reader exposure clock and mechanics/anti-cheat gates"
+  },
+  "relational_activation_requires_all": [
+    "LAWFUL_FULL_READER_EXPOSURE_DEFINED_LEARNED_TEACHER_CHECKPOINT",
+    "TD60_PASS",
+    "PARTIAL_EVIDENCE_RELATIONAL_PREDICTABILITY_PASS",
+    "FINITE_RELATIONAL_TRIPLET_BUDGET_FROZEN",
+    "COMMON_CORE_VS_NATIVE_SUPPORT_RELATION_VIEW_POLICY_FROZEN",
+    "RELATIONAL_INTEGRATION_INDEPENDENT_REVIEW_PASS"
+  ],
+  "triplet_sampling": {
+    "status": "OPEN_PREFREEZE",
+    "target_estimand": "DONOR_UNIFORM__ELIGIBLE_ANCHOR_CELL_UNIFORM__SAME_OPERATOR_COMPARATOR_PAIR_UNIFORM_V2",
+    "proposal": "DIRECT_DONOR_ANCHOR_CELL_TRIPLET_TARGET_PROPOSAL_V2",
+    "required_outputs_before_freeze": [
+      "ELIGIBLE_ANCHOR_SUPPORT_TABLE",
+      "COMPARATOR_PAIR_SUPPORT_TABLE",
+      "TRIPLET_BUDGET_GRID",
+      "MONTE_CARLO_PRECISION_ANALYSIS",
+      "P_OVER_Q_AUDIT_IF_PROPOSAL_DIFFERS_FROM_TARGET"
+    ]
+  },
+  "locality_policy": {
+    "td59_nearest_half": "PILOT_EVIDENCE_ONLY",
+    "production_locality_fraction": "UNFROZEN",
+    "nearest_third": "FORBIDDEN_AS_PRIMARY_DEFAULT_AFTER_TD57C_FAILURE",
+    "boundary_rule": "LOCALITY_GRID_MUST_BE_PREFROZEN_AND_WIDE_ENOUGH_BEFORE_DECISION_BEARING_EVIDENCE"
+  },
+  "support_relation_views": {
+    "common_core": "REQUIRED_CANDIDATE_VIEW_FAMILY",
+    "operator_native": "REQUIRED_CANDIDATE_VIEW_FAMILY",
+    "rule": "DO_NOT_COLLAPSE_COMMON_CORE_AND_NATIVE_SUPPORT_INTO_ONE_UNLABELED_RELATION_VIEW",
+    "operator_role": "SUPPORT_AND_ROBUSTNESS_STRUCTURE_NOT_EQUAL_BIOLOGICAL_MASS"
+  },
+  "separate_qualification_gates": {
+    "collapse": [
+      "VARIANCE",
+      "EFFECTIVE_RANK",
+      "CONSTANT_VECTOR_CONTROL",
+      "LOW_RANK_CONTROL"
+    ],
+    "fine_structure": [
+      "GLOBAL_RELATIONAL_RECURRENCE",
+      "MESOSCALE_RELATIONAL_RECURRENCE",
+      "FINE_LOCALITY_IF_LATER_REAUTHORIZED"
+    ],
+    "rule": "PASSING_COLLAPSE_DOES_NOT_IMPLY_FINE_STRUCTURE_PASS_AND_VICE_VERSA"
+  },
+  "historical_checkpoint_quarantine": {
+    "u10_to_u205": "TRAINING_MECHANICS_DEFECT_INHERITED__NOT_TD60_INPUT",
+    "u0": "MECHANICS_CLEAN_BUT_NOT_BIOLOGICAL_TEACHER_AUTHORITY"
+  },
+  "training_authorized": false,
+  "td60_authorized": false,
+  "protected_data_authorized": false
+}
