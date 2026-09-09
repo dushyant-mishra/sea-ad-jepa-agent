@@ -24,7 +24,7 @@ import pytest
 torch = pytest.importorskip("torch")
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL_ROOTS = (Path("/mnt/d/Jepa project"), Path("D:/Jepa project"))
+CANONICAL_ROOTS = (ROOT, Path("/mnt/d/Jepa project"), Path("D:/Jepa project"))
 
 
 def _canonical() -> Path:
@@ -201,3 +201,36 @@ def test_historical_and_successor_differ_only_as_declared() -> None:
     assert any("enforce_registry" in line for line in substantive_added)
     assert any("enabled=False" in line for line in substantive_added)
     build_variant(phase_e, "successor")
+
+
+def test_exact_128x8_corrected_successor_passes_and_48_adam_moments_live() -> None:
+    """Exact historical production geometry regression for the adopted repair."""
+    _requires_cuda()
+    from scripts.v4.c2_mandatory_gradient_gate_v1 import FROZEN_MANDATORY_REGISTRY
+
+    online, optimizer, before, result = _run("successor", batch=128, micro=8)
+    assert result["step_succeeded"] is True
+    assert result["online_moved"] is True
+    assert result["ema_equation"]["equal"] is True
+
+    by_name = dict(online.named_parameters())
+    moved = 0
+    exp_avg_live = 0
+    exp_avg_sq_live = 0
+    for name in FROZEN_MANDATORY_REGISTRY:
+        param = by_name[name]
+        if not torch.equal(param.detach().float(), before[name]):
+            moved += 1
+        state = optimizer.state[param]
+        exp_avg = state["exp_avg"].detach()
+        exp_avg_sq = state["exp_avg_sq"].detach()
+        assert bool(torch.isfinite(exp_avg).all()), name
+        assert bool(torch.isfinite(exp_avg_sq).all()), name
+        if bool((exp_avg != 0).any()):
+            exp_avg_live += 1
+        if bool((exp_avg_sq != 0).any()):
+            exp_avg_sq_live += 1
+
+    assert moved == 48
+    assert exp_avg_live == 48
+    assert exp_avg_sq_live == 48
