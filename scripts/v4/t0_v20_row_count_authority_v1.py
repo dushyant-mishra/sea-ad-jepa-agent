@@ -90,6 +90,7 @@ STOP_PLAN_FIELD = "STOP_T0_B2_PHYSICAL_PLAN_ENTRY_DISAGREES_WITH_LOGICAL_ROW"
 STOP_MEMBERSHIP_SPLICE = "STOP_T0_B2_MEMBERSHIP_SPLICED_AFTER_CLOSURE"
 STOP_PARENT_IDENTITY = "STOP_T0_B2_PARENT_IDENTITY_NOT_EXTERNALLY_BOUND"
 STOP_STORED_ROOT_DISAGREES = "STOP_T0_B2_STORED_ROOT_DISAGREES_WITH_RECOMPUTED_ROOT"
+STOP_CALLER_VECTOR_PROOF_REMOVED = "STOP_T0_B2_CALLER_VECTOR_SOURCE_LIBRARY_PROOF_REMOVED"
 STOP_COUNTS_DIGEST = "STOP_T0_B2_COUNTS_PAYLOAD_DIGEST_MISMATCH"
 STOP_FIELD_TYPE = "STOP_T0_B2_AUTHORITY_FIELD_TYPE_NOT_ALLOWED"
 STOP_FIELD_SCHEMA = "STOP_T0_B2_AUTHORITY_FIELD_SCHEMA_VIOLATION"
@@ -776,115 +777,35 @@ def assert_row_authority_lawful(
             "rows": len(logical["rows"])}
 
 
-def prove_source_library(
-    *,
-    logical: Mapping[str, Any],
-    logical_index: int,
-    raw_source_row_values: Sequence[Any],
-    raw_source_provenance: Mapping[str, Any],
-    expected_source_sha256: str = MTG_SOURCE_SHA256,
-    expected_matrix_slot: str = MTG_SOURCE_MATRIX_SLOT,
-    expected_source_width: int = SOURCE_FEATURE_COUNT,
-) -> bool:
-    """Prove the bound `source_library` against an AUTHENTICATED raw source row.
+def prove_source_library(*args: Any, **kwargs: Any) -> bool:
+    """REMOVED. Caller-supplied row values can never prove `source_library`.
 
-    The earlier version required three provenance keys to be present and checked
-    none of them. It never verified `source_sha256` against anything, never
-    required `source_row_index` to equal the bound `expression_row`, and never
-    checked the row's cell or donor identity. A vector of zeros with a single
-    correct total and an arbitrary digest string proved the value, which is
-    exactly the distinction this function exists to make.
+    This entrypoint used to accept `raw_source_row_values` plus a provenance
+    mapping and compare the caller's labels against the bound row. That is label
+    authentication, and it was reachable in production: a fabricated vector of
+    the correct width whose sum matched, carrying the frozen source digest
+    string, the correct `layers/UMIs` slot name, the correct `expression_row` and
+    the correct cell and donor identity, proved the value without a single byte
+    having been read from the source asset. An external review found that the R4
+    candidate had added a safe prover beside this one and left this one public
+    and green, which made the claim that the unsafe API was "structurally
+    eliminated" false.
 
-    Proof now requires all of:
+    It now always raises. `source_library` is proven only from bytes the prover
+    itself reads out of the authenticated MTG asset:
 
-      * the source asset digest equals the frozen MTG H5AD identity;
-      * the matrix slot is the raw UMI layer, not a normalised one;
-      * the row width is the source feature space, not the projected address
-        space -- `source_library` is the sum of a pre-projection row, so an
-        address-space row can never prove it even if its total happens to match;
-      * the source row index equals the bound `expression_row`;
-      * the source cell and donor identities equal the bound ones;
-      * every value is an exact non-negative integer count;
-      * the total equals the bound `source_library`.
+        t0_raw_source_row_authority_v1.prove_population_from_source_path(...)
 
-    This mirrors the historical Phase2 materializer, which checked
-    `cells[source_row] == canonical_cell_id` and `donors[source_row] ==
-    donor_id` before summing the row it had sliced out of `indptr`.
+    which owns opening, hashing and consumption, accepts no caller-built handle
+    and no caller-supplied values, and proves every accepted logical row rather
+    than a sample of them.
     """
-    row = logical["rows"][int(logical_index)]
-
-    for field in ("source_sha256", "source_row_index", "source_width",
-                  "canonical_cell_id", "donor_id", "matrix_slot"):
-        if field not in raw_source_provenance:
-            raise AssertionError("%s: %s is absent" % (STOP_RAW_PROVENANCE, field))
-
-    declared_digest = str(raw_source_provenance["source_sha256"])
-    if declared_digest != str(expected_source_sha256):
-        raise AssertionError(
-            "%s: the row is declared to come from source %s, but the frozen MTG "
-            "source asset is %s"
-            % (STOP_SOURCE_IDENTITY, declared_digest, expected_source_sha256))
-
-    declared_slot = str(raw_source_provenance["matrix_slot"])
-    if declared_slot != str(expected_matrix_slot):
-        raise AssertionError(
-            "%s: the row is declared to come from slot %r, but raw counts live in %r"
-            % (STOP_SOURCE_SLOT, declared_slot, expected_matrix_slot))
-
-    declared_width = int(raw_source_provenance["source_width"])
-    if declared_width != len(raw_source_row_values):
-        raise AssertionError("%s: provenance declares width %d but %d values were supplied"
-                             % (STOP_RAW_PROVENANCE, declared_width,
-                                len(raw_source_row_values)))
-    if declared_width == ADDRESS_SPACE_SIZE:
-        raise AssertionError(
-            "%s: a row of %d values is the projected address-space row, not the "
-            "pre-projection raw source row" % (STOP_RAW_WIDTH_ADDRESS, declared_width))
-    if declared_width != int(expected_source_width):
-        raise AssertionError(
-            "%s: the raw source row is %d wide but the source feature space is %d"
-            % (STOP_SOURCE_WIDTH, declared_width, int(expected_source_width)))
-
-    declared_row = int(raw_source_provenance["source_row_index"])
-    if declared_row != int(row["expression_row"]):
-        raise AssertionError(
-            "%s: the row was read at source row %d but logical index %d binds "
-            "expression_row %d"
-            % (STOP_SOURCE_ROW_IDENTITY, declared_row, int(logical_index),
-               int(row["expression_row"])))
-
-    declared_cell = str(raw_source_provenance["canonical_cell_id"])
-    if declared_cell != str(row["canonical_cell_id"]):
-        raise AssertionError(
-            "%s: the source row identifies cell %r but logical index %d binds %r"
-            % (STOP_SOURCE_ROW_IDENTITY, declared_cell, int(logical_index),
-               row["canonical_cell_id"]))
-
-    declared_donor = str(raw_source_provenance["donor_id"])
-    if declared_donor != str(row["donor_id"]):
-        raise AssertionError(
-            "%s: the source row identifies donor %r but logical index %d binds %r"
-            % (STOP_SOURCE_ROW_IDENTITY, declared_donor, int(logical_index),
-               row["donor_id"]))
-
-    total = 0
-    for position, value in enumerate(raw_source_row_values):
-        if isinstance(value, bool) or not isinstance(value, int):
-            if not (isinstance(value, float) and float(value).is_integer()):
-                raise AssertionError("%s: position %d is %r"
-                                     % (STOP_RAW_SEMANTICS, position, value))
-        numeric = int(value)
-        if numeric < 0:
-            raise AssertionError("%s: position %d is %r"
-                                 % (STOP_RAW_SEMANTICS, position, value))
-        total += numeric
-
-    bound = row["source_library"]
-    if total != bound:
-        raise AssertionError(
-            "%s: the authenticated raw row sums to %d but the bound source_library is %d"
-            % (STOP_LIBRARY_NOT_PROVEN, total, bound))
-    return True
+    raise AssertionError(
+        "%s: caller-supplied row values and provenance labels cannot prove "
+        "source_library. Use "
+        "t0_raw_source_row_authority_v1.prove_population_from_source_path, "
+        "which reads the bytes itself over the whole population."
+        % STOP_CALLER_VECTOR_PROOF_REMOVED)
 
 
 def verify_selected_row(

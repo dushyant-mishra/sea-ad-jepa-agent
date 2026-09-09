@@ -443,3 +443,229 @@ def test_the_frozen_asset_identity_is_the_verified_one() -> None:
     assert rs.MTG_SOURCE_CELLS == 1_178_694
     assert rs.SOURCE_FEATURE_COUNT == 36_601
     assert rs.UMI_SLOT == "layers/UMIs"
+
+
+# ---------------------------------------------------------------------------
+# Population-level closure.
+#
+# A three-row spot check establishes mechanics, not closure over 20,804 cells.
+# The population authority proves EVERY accepted logical row and binds the exact
+# cardinality, so a proof set covering fewer rows, or covering different rows,
+# is refused rather than accepted as coverage.
+# ---------------------------------------------------------------------------
+
+def _logical_for(indices, *, libraries=None):
+    rows = []
+    for position, index in enumerate(indices):
+        cell, donor, entries = POPULATION[index]
+        rows.append({
+            "logical_index": position,
+            "canonical_cell_id": cell,
+            "donor_id": donor,
+            "expression_row": index,
+            "source_library": (libraries[position] if libraries
+                               else sum(entries.values())),
+            "block_key": "op31/block-00000",
+            "row_index": position,
+            "meta_path": "op31/block-00000.meta.csv",
+            "meta_sha256": "a" * 64,
+            "counts_path": "op31/block-00000.counts.npz",
+            "counts_sha256": "b" * 64,
+            "selection_row": 10 + position,
+            "primary_row_weight": "8.06e-08",
+        })
+    import t0_v20_row_count_authority_v1 as rc
+
+    logical = {
+        "rows": rows, "row_count": len(rows),
+        "feature_authority_root_sha256": "4" * 64,
+        "population_closure_root_sha256": "1" * 64,
+        "logical_row_authority_root_sha256": None,
+        "real_execution_ready": False,
+    }
+    logical["logical_row_authority_root_sha256"] = rc._logical_root(
+        rows, logical["feature_authority_root_sha256"],
+        logical["population_closure_root_sha256"])
+    return logical
+
+
+def _prove_population(asset: Path, logical, **overrides):
+    digest = hashlib.sha256(asset.read_bytes()).hexdigest()
+    kwargs = dict(
+        source_path=asset, logical=logical,
+        expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
+        expected_source_sha256=digest)
+    kwargs.update(overrides)
+    return rs.prove_population_from_source_path(**kwargs)
+
+
+def test_the_population_authority_proves_every_accepted_row(asset: Path) -> None:
+    logical = _logical_for([0, 1, 2])
+    population = _prove_population(asset, logical)
+    assert population["rows_proven"] == 3
+    assert population["caller_supplied_values"] is False
+    assert population["caller_supplied_handle"] is False
+    assert population["real_execution_ready"] is False
+    assert len(population["population_raw_source_root_sha256"]) == 64
+
+
+def test_the_population_authority_accepts_no_caller_handle(asset: Path) -> None:
+    """The production operation owns opening, hashing and consumption."""
+    import inspect
+
+    signature = inspect.signature(rs.prove_population_from_source_path)
+    assert "source" not in signature.parameters
+    assert "source_path" in signature.parameters
+
+
+def test_a_population_proof_covering_fewer_rows_is_refused(asset: Path) -> None:
+    """This is what makes a spot check insufficient."""
+    logical = _logical_for([0, 1, 2])
+    population = _prove_population(asset, logical)
+    short = dict(population)
+    short["proofs"] = population["proofs"][:1]
+    with pytest.raises(AssertionError) as excinfo:
+        rs.assert_population_authority_covers_logical(
+            population=short, logical=logical,
+            expected_population_root_sha256=population[
+                "population_raw_source_root_sha256"],
+            expected_logical_root_sha256=logical[
+                "logical_row_authority_root_sha256"],
+            expected_source_sha256=population["source_sha256"])
+    assert rs.STOP_POPULATION_CARDINALITY in str(excinfo.value)
+    assert "spot check does not" in str(excinfo.value)
+
+
+def test_a_population_proof_for_other_rows_is_refused(asset: Path) -> None:
+    logical = _logical_for([0, 1, 2])
+    other = _logical_for([3, 4, 5])
+    population = _prove_population(asset, other)
+    with pytest.raises(AssertionError):
+        rs.assert_population_authority_covers_logical(
+            population=population, logical=logical,
+            expected_population_root_sha256=population[
+                "population_raw_source_root_sha256"],
+            expected_logical_root_sha256=logical[
+                "logical_row_authority_root_sha256"],
+            expected_source_sha256=population["source_sha256"])
+
+
+def test_a_wrong_bound_library_anywhere_in_the_population_stops(
+        asset: Path) -> None:
+    """Every row is proven, so a single wrong library is caught."""
+    libraries = [sum(POPULATION[i][2].values()) for i in (0, 1, 2)]
+    libraries[2] += 1
+    logical = _logical_for([0, 1, 2], libraries=libraries)
+    with pytest.raises(AssertionError) as excinfo:
+        _prove_population(asset, logical)
+    assert rs.STOP_LIBRARY in str(excinfo.value)
+
+
+def test_the_population_root_is_verified_three_ways(asset: Path) -> None:
+    logical = _logical_for([0, 1, 2])
+    population = _prove_population(asset, logical)
+    assert rs.assert_population_authority_covers_logical(
+        population=population, logical=logical,
+        expected_population_root_sha256=population[
+            "population_raw_source_root_sha256"],
+        expected_logical_root_sha256=logical[
+            "logical_row_authority_root_sha256"],
+        expected_source_sha256=population["source_sha256"]) is True
+
+    tampered = dict(population)
+    tampered["population_raw_source_root_sha256"] = "f" * 64
+    with pytest.raises(AssertionError) as excinfo:
+        rs.assert_population_authority_covers_logical(
+            population=tampered, logical=logical,
+            expected_population_root_sha256="f" * 64,
+            expected_logical_root_sha256=logical[
+                "logical_row_authority_root_sha256"],
+            expected_source_sha256=population["source_sha256"])
+    assert rs.STOP_POPULATION_ROOT in str(excinfo.value)
+
+
+def test_the_population_root_moves_with_any_proven_field(asset: Path) -> None:
+    logical = _logical_for([0, 1, 2])
+    population = _prove_population(asset, logical)
+    baseline = population["population_raw_source_root_sha256"]
+    for field, value in (("expression_row", 99), ("source_library", 999),
+                         ("canonical_cell_id", "OTHER"), ("donor_id", "OTHER")):
+        proofs = [dict(p) for p in population["proofs"]]
+        proofs[0][field] = value
+        assert rs.population_raw_source_root(
+            logical_root_sha256=population["logical_row_authority_root_sha256"],
+            source_sha256=population["source_sha256"],
+            proofs=proofs) != baseline
+
+
+def test_an_expected_row_cardinality_mismatch_stops(asset: Path) -> None:
+    logical = _logical_for([0, 1, 2])
+    with pytest.raises(AssertionError) as excinfo:
+        _prove_population(asset, logical, expected_row_count=99)
+    assert rs.STOP_POPULATION_CARDINALITY in str(excinfo.value)
+
+
+def test_a_wrong_logical_root_expectation_stops(asset: Path) -> None:
+    logical = _logical_for([0, 1, 2])
+    with pytest.raises(AssertionError) as excinfo:
+        _prove_population(asset, logical,
+                          expected_logical_root_sha256="f" * 64)
+    assert rs.STOP_LOGICAL_ROOT in str(excinfo.value)
+
+
+# ---------------------------------------------------------------------------
+# The module sentinel is not a capability, and identity comes from the bytes.
+# ---------------------------------------------------------------------------
+
+def test_the_module_sentinel_is_refused(asset: Path) -> None:
+    """An importable module attribute cannot be an authentication capability."""
+    import h5py
+
+    handle = h5py.File(asset, "r")
+    try:
+        with pytest.raises(AssertionError) as excinfo:
+            rs.AuthenticatedSource(rs._HANDLE_TOKEN, path=asset,
+                                   sha256=rs.MTG_SOURCE_SHA256,
+                                   bytes_read=32_978_570_763, handle=handle)
+        assert rs.STOP_LEGACY_TOKEN in str(excinfo.value)
+    finally:
+        handle.close()
+
+
+def test_a_claimed_digest_the_file_does_not_have_is_refused(asset: Path) -> None:
+    """Identity is re-derived from the bytes on the way in.
+
+    Even a caller who reaches the constructor cannot claim a digest the file
+    does not actually hash to.
+    """
+    import h5py
+
+    guard = rs._ConstructionGuard()
+    handle = h5py.File(asset, "r")
+    try:
+        with pytest.raises(AssertionError) as excinfo:
+            rs.AuthenticatedSource(guard, path=asset,
+                                   sha256=rs.MTG_SOURCE_SHA256,
+                                   bytes_read=1, handle=handle)
+        assert rs.STOP_SOURCE_DIGEST in str(excinfo.value)
+    finally:
+        handle.close()
+
+
+def test_the_construction_guard_is_not_a_module_attribute() -> None:
+    """It is created inside the opener, so it cannot be imported and reused."""
+    assert not hasattr(rs, "_ACTIVE_GUARD")
+    assert not hasattr(rs, "_GUARD")
+
+
+def test_the_opener_does_not_reopen_the_pathname_for_hdf5() -> None:
+    """Hashing one open and reopening the path leaves a substitution window."""
+    import inspect
+
+    source = inspect.getsource(rs.open_authenticated_source)
+    assert 'h5py.File(str(asset), "r")' not in source
+    internal = inspect.getsource(rs._open_authenticated)
+    assert 'h5py.File(str(asset), "r")' not in internal
+    # The same open file object is what HDF5 consumes.
+    assert "h5py.File(stream" in internal
+    assert "_digest_fileobj(stream" in internal

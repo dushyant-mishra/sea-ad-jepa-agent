@@ -83,6 +83,9 @@ STOP_PROJECTION_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_PROJECTION_ROOT_MISMATCH"
 STOP_LOGICAL_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_LOGICAL_ROOT_MISMATCH"
 STOP_CLOSURE_ROOT = "STOP_T0_TECHNICAL_COMPLETENESS_CLOSURE_ROOT_MISMATCH"
 STOP_PROJECTION_POSITIONS = "STOP_T0_TECHNICAL_COMPLETENESS_PROJECTION_POSITIONS_INVALID"
+STOP_RAW_SOURCE_PROOF = "STOP_T0_TECHNICAL_COMPLETENESS_RAW_SOURCE_PROOF_ABSENT"
+STOP_PHYSICAL_PLAN = "STOP_T0_TECHNICAL_COMPLETENESS_PHYSICAL_PLAN_PARENT_INVALID"
+STOP_GEOMETRY_NOT_CLOSED = "STOP_T0_TECHNICAL_COMPLETENESS_COUNTS_GEOMETRY_NOT_RECONCILED"
 
 SCALAR_FEATURES = 35_076
 SEMANTICS = "THRESHOLD_FREE_DEFINEDNESS_AND_COMPUTABILITY"
@@ -293,7 +296,8 @@ def assert_substrate_lawful(*, substrate: Mapping[str, Any]) -> bool:
                 "logical_row_authority_root_sha256",
                 "physical_read_plan_root_sha256",
                 "feature_authority_root_sha256",
-                "projection_root_sha256")
+                "projection_root_sha256",
+                "population_raw_source_root_sha256")
     for field in required:
         value = substrate.get(field)
         if not _is_hex64(value):
@@ -633,15 +637,31 @@ def derive_rows_from_authenticated_parents(
         counts_payload_bytes_by_path: Mapping[str, bytes],
         projection: Mapping[str, Any],
         expected_projection_root_sha256: str,
+        population_raw_source: Mapping[str, Any] | None = None,
+        expected_population_raw_source_root_sha256: str | None = None,
+        block_geometry: Mapping[str, Mapping[str, int]] | None = None,
+        expected_source_sha256: str | None = None,
         address_space_size: int = 41_238,
-        expected_projection_positions: int | None = None,
+        expected_projection_positions: int = SCALAR_FEATURES,
         scalar_features: int = SCALAR_FEATURES,
 ) -> tuple[dict[str, Any], ...]:
     """Compute the donor summaries from authenticated bytes and objects.
 
-    Nothing decision-bearing arrives as a caller value. Every `source_library`
-    is read off the authenticated logical row, and every non-zero count is
-    computed from the counts payload that row's own digest authenticates.
+    Nothing decision-bearing arrives as a caller value.
+
+    `Q_DEPTH` is NOT taken from the logical row's stored `source_library`.
+    Recomputing the logical root proves that value is bound; it does not prove it
+    came out of the H5 row. So a population raw-source authority is required, it
+    must cover this exact logical set row for row, and the library used here is
+    the one its byte-to-row proof computed.
+
+    `Q_DETECT` is computed from the counts payload the logical row's own digest
+    authenticates, and that payload is reconciled against the closure-bound
+    `rows` and `nnz` -- mandatorily, not through optional arguments a production
+    caller could omit.
+
+    The projection size defaults to the real 35,076. A smaller projection is a
+    fixture, and a fixture has to say so explicitly.
     """
     import t0_v20_row_count_authority_v1 as rc
 
@@ -685,13 +705,37 @@ def derive_rows_from_authenticated_parents(
             raise AssertionError(
                 "%s: position %d is outside the %d-address space"
                 % (STOP_PROJECTION_POSITIONS, position, int(address_space_size)))
-    if expected_projection_positions is not None:
-        if len(positions) != int(expected_projection_positions):
-            raise AssertionError(
-                "%s: the projection holds %d positions, expected %d"
-                % (STOP_PROJECTION_POSITIONS, len(positions),
-                   int(expected_projection_positions)))
+    if len(positions) != int(expected_projection_positions):
+        raise AssertionError(
+            "%s: the projection holds %d unique in-range positions, expected %d"
+            % (STOP_PROJECTION_POSITIONS, len(positions),
+               int(expected_projection_positions)))
     projected = set(positions)
+
+    # The population raw-source authority must cover this exact logical set.
+    import t0_raw_source_row_authority_v1 as rs
+
+    if not population_raw_source or not expected_population_raw_source_root_sha256:
+        raise AssertionError(
+            "%s: Q_DEPTH may not be taken from the logical row's stored "
+            "source_library. Recomputing the logical root proves the value is "
+            "bound, not that it came out of the H5 row, so a population "
+            "byte-to-row proof covering every accepted row is required."
+            % STOP_RAW_SOURCE_PROOF)
+    if block_geometry is None:
+        raise AssertionError(
+            "%s: the closure-bound rows and nnz are required so the "
+            "authenticated payload can be reconciled against them"
+            % STOP_GEOMETRY_NOT_CLOSED)
+    rs.assert_population_authority_covers_logical(
+        population=population_raw_source, logical=logical,
+        expected_population_root_sha256=expected_population_raw_source_root_sha256,
+        expected_logical_root_sha256=recomputed_logical,
+        expected_source_sha256=(expected_source_sha256
+                                if expected_source_sha256 is not None
+                                else rs.MTG_SOURCE_SHA256))
+    proven_library = {int(p["logical_index"]): int(p["source_library"])
+                      for p in population_raw_source["proofs"]}
 
     per_donor: dict[str, list[tuple[float, float]]] = {}
     cells_per_donor: dict[str, list[str]] = {}
@@ -703,14 +747,25 @@ def derive_rows_from_authenticated_parents(
                 "binds" % (STOP_SUBSTRATE, path, index))
         # Authenticate the payload against the digest the logical row binds,
         # parse only those bytes, and select the block-local row.
+        # Item 8: the declared geometry is reconciled here, on the production
+        # path, rather than through optional arguments a caller could omit.
+        declared = block_geometry.get(str(row["block_key"]))
+        if not declared or "rows" not in declared or "nnz" not in declared:
+            raise AssertionError(
+                "%s: the closure declares no rows/nnz for %s, so the payload "
+                "cannot be reconciled against it"
+                % (STOP_GEOMETRY_NOT_CLOSED, row["block_key"]))
         dense = rc.verify_block_row_from_authenticated_payload(
             logical=logical, logical_index=index,
             counts_payload_bytes=counts_payload_bytes_by_path[path],
+            declared_rows=int(declared["rows"]),
+            declared_nnz=int(declared["nnz"]),
             address_space_size=int(address_space_size))
 
         nonzero = sum(1 for position in projected if dense[position] != 0)
-        depth = cell_q_depth(row["source_library"],
-                             what="source_library for logical index %d" % index)
+        # The proven library, not the stored one.
+        depth = cell_q_depth(proven_library[int(row["logical_index"])],
+                             what="proven source_library for logical index %d" % index)
         detect = cell_q_detect_from_nonzero_count(
             nonzero, scalar_features=scalar_features)
         donor = str(row["donor_id"])
@@ -736,26 +791,73 @@ def build_production_authority(
         *,
         logical: Mapping[str, Any],
         expected_logical_root_sha256: str,
-        expected_closure_root_sha256: str,
         counts_payload_bytes_by_path: Mapping[str, bytes],
         projection: Mapping[str, Any],
         expected_projection_root_sha256: str,
         derivation_code_sha256: str,
         candidate_donors: Sequence[str],
+        expected_closure_root_sha256: str,
+        closure: Mapping[str, Any] | None = None,
+        expected_membership_sha256: str | None = None,
+        expected_block_manifest_sha256: str | None = None,
+        physical_plan: Mapping[str, Any] | None = None,
+        expected_physical_plan_root_sha256: str | None = None,
+        population_raw_source: Mapping[str, Any] | None = None,
+        expected_population_raw_source_root_sha256: str | None = None,
+        expected_source_sha256: str | None = None,
         address_space_size: int = 41_238,
-        expected_projection_positions: int | None = None,
+        expected_projection_positions: int = SCALAR_FEATURES,
         scalar_features: int = SCALAR_FEATURES,
 ) -> dict[str, Any]:
     """The only lawful production path: authenticated parents in, package out.
 
-    There is no `cells_by_donor` and no bare `substrate` mapping, so a forged
-    value pair cannot enter however genuine the accompanying root strings are.
+    Every parent in the recorded contract is one this call actually verified.
+    An earlier revision fabricated `physical_read_plan_root_sha256` by falling
+    back to the logical root when no plan was supplied, which recorded the
+    logical root under another parent's name -- a false parent identity. The
+    physical plan is a genuine dependency here, because it is what says which
+    counts payloads are read, so it is required and verified rather than
+    invented.
     """
+    import t0_v20_row_count_authority_v1 as rc
+
     out = Path(outdir)
     if out.exists() and any(out.iterdir()):
         raise AssertionError("%s: output directory must be absent or empty: %s"
                              % (STOP_PACKAGE_MEMBER, out))
     assert_predicate_is_threshold_free()
+
+    # Every new parent is refused by name rather than by signature error, so a
+    # legacy-shaped call says which authority is missing.
+    if closure is None or expected_membership_sha256 is None or             expected_block_manifest_sha256 is None:
+        raise AssertionError(
+            "%s: the authenticated B2 closure and its membership and manifest "
+            "identities are required; the closure carries the rows and nnz the "
+            "payload must be reconciled against"
+            % STOP_GEOMETRY_NOT_CLOSED)
+    if population_raw_source is None or             expected_population_raw_source_root_sha256 is None:
+        raise AssertionError(
+            "%s: a population byte-to-row raw-source proof is required; a stored "
+            "source_library is bound but not proven to come from the H5 row"
+            % STOP_RAW_SOURCE_PROOF)
+    if physical_plan is None or expected_physical_plan_root_sha256 is None:
+        raise AssertionError(
+            "%s: a physical read plan is required and its root may not be "
+            "fabricated from another parent" % STOP_PHYSICAL_PLAN)
+
+    # The B2 closure, externally bound, so its geometry can be trusted.
+    rc.assert_closure_lawful(
+        closure=closure,
+        expected_closure_root_sha256=expected_closure_root_sha256,
+        expected_membership_sha256=expected_membership_sha256,
+        expected_block_manifest_sha256=expected_block_manifest_sha256)
+
+    # The physical plan, verified three ways against the logical authority.
+    rc.assert_physical_plan_lawful(
+        plan=physical_plan,
+        expected_physical_root_sha256=expected_physical_plan_root_sha256,
+        expected_logical_root_sha256=expected_logical_root_sha256,
+        logical=logical)
 
     rows = derive_rows_from_authenticated_parents(
         logical=logical,
@@ -764,6 +866,11 @@ def build_production_authority(
         counts_payload_bytes_by_path=counts_payload_bytes_by_path,
         projection=projection,
         expected_projection_root_sha256=expected_projection_root_sha256,
+        population_raw_source=population_raw_source,
+        expected_population_raw_source_root_sha256=(
+            expected_population_raw_source_root_sha256),
+        block_geometry=closure["block_geometry"],
+        expected_source_sha256=expected_source_sha256,
         address_space_size=address_space_size,
         expected_projection_positions=expected_projection_positions,
         scalar_features=scalar_features)
@@ -778,12 +885,12 @@ def build_production_authority(
     substrate = {
         "population_closure_root_sha256": str(expected_closure_root_sha256),
         "logical_row_authority_root_sha256": str(expected_logical_root_sha256),
-        "physical_read_plan_root_sha256": str(
-            logical.get("physical_read_plan_root_sha256")
-            or expected_logical_root_sha256),
+        "physical_read_plan_root_sha256": str(expected_physical_plan_root_sha256),
         "feature_authority_root_sha256": str(
             logical["feature_authority_root_sha256"]),
         "projection_root_sha256": str(expected_projection_root_sha256),
+        "population_raw_source_root_sha256": str(
+            expected_population_raw_source_root_sha256),
     }
     assert_substrate_lawful(substrate=substrate)
 
@@ -791,5 +898,8 @@ def build_production_authority(
                              derivation_code_sha256=derivation_code_sha256,
                              scalar_features=scalar_features)
     summary["cells_consumed"] = sum(int(row["cells"]) for row in rows)
-    summary["derivation"] = "FROM_AUTHENTICATED_B2_LOGICAL_AND_B1_PROJECTION"
+    summary["derivation"] = (
+        "FROM_AUTHENTICATED_B2_CLOSURE_LOGICAL_PHYSICAL_PLAN_B1_PROJECTION_AND_"
+        "POPULATION_RAW_SOURCE_PROOF")
+    summary["projection_positions"] = int(expected_projection_positions)
     return summary

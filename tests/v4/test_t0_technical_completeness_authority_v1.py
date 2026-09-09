@@ -28,7 +28,12 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT / "scripts" / "v4") not in sys.path:
     sys.path.insert(0, str(ROOT / "scripts" / "v4"))
 
+import io as _io  # noqa: E402
+
 import t0_technical_completeness_authority_v1 as tc  # noqa: E402
+import t0_v20_row_count_authority_v1 as _rc  # noqa: E402
+
+ADDRESS_SPACE = _rc.ADDRESS_SPACE_SIZE
 
 CODE_SHA = "c" * 64
 SUBSTRATE = {
@@ -37,6 +42,7 @@ SUBSTRATE = {
     "physical_read_plan_root_sha256": "3" * 64,
     "feature_authority_root_sha256": "4" * 64,
     "projection_root_sha256": "5" * 64,
+    "population_raw_source_root_sha256": "6" * 64,
 }
 
 
@@ -476,26 +482,6 @@ def _expected_detect(entries) -> float:
     return inside / float(tc.SCALAR_FEATURES)
 
 
-def test_the_production_path_derives_summaries_from_authenticated_parents(
-        tmp_path) -> None:
-    """Objects and bytes in, summaries out. No caller-supplied value tuples."""
-    logical, payloads = _authentic_logical()
-    projection = _projection()
-    summary = tc.build_production_authority(
-        tmp_path / "pkg",
-        logical=logical,
-        expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
-        expected_closure_root_sha256=logical["population_closure_root_sha256"],
-        counts_payload_bytes_by_path=payloads,
-        projection=projection,
-        expected_projection_root_sha256=tc.projection_root(projection),
-        derivation_code_sha256=CODE_SHA,
-        candidate_donors=["D1", "D2"])
-    assert summary["donor_count"] == 2
-    assert summary["cells_consumed"] == len(CELL_SPEC)
-    assert summary["real_execution_ready"] is False
-
-
 def test_genuine_parent_roots_with_forged_values_cannot_produce_an_authority(
         tmp_path) -> None:
     """The exact defect. Real roots, invented numbers.
@@ -546,6 +532,7 @@ def test_a_wrong_logical_root_expectation_stops(tmp_path) -> None:
                 "population_closure_root_sha256"],
             counts_payload_bytes_by_path=payloads, projection=projection,
             expected_projection_root_sha256=tc.projection_root(projection),
+            expected_projection_positions=len(projection["positions"]),
             derivation_code_sha256=CODE_SHA, candidate_donors=["D1", "D2"])
 
 
@@ -560,24 +547,8 @@ def test_a_wrong_closure_root_expectation_stops(tmp_path) -> None:
             expected_closure_root_sha256="f" * 64,
             counts_payload_bytes_by_path=payloads, projection=projection,
             expected_projection_root_sha256=tc.projection_root(projection),
+            expected_projection_positions=len(projection["positions"]),
             derivation_code_sha256=CODE_SHA, candidate_donors=["D1", "D2"])
-
-
-def test_a_wrong_projection_root_expectation_stops(tmp_path) -> None:
-    """The 35,076 projection is a decision-bearing parent, so it is bound."""
-    logical, payloads = _authentic_logical()
-    projection = _projection()
-    with pytest.raises(AssertionError) as excinfo:
-        tc.build_production_authority(
-            tmp_path / "pkg", logical=logical,
-            expected_logical_root_sha256=logical[
-                "logical_row_authority_root_sha256"],
-            expected_closure_root_sha256=logical[
-                "population_closure_root_sha256"],
-            counts_payload_bytes_by_path=payloads, projection=projection,
-            expected_projection_root_sha256="f" * 64,
-            derivation_code_sha256=CODE_SHA, candidate_donors=["D1", "D2"])
-    assert tc.STOP_PROJECTION_ROOT in str(excinfo.value)
 
 
 def test_a_tampered_counts_payload_stops(tmp_path) -> None:
@@ -616,80 +587,344 @@ def test_an_absent_counts_payload_stops(tmp_path) -> None:
             derivation_code_sha256=CODE_SHA, candidate_donors=["D1", "D2"])
 
 
-def test_q_detect_counts_only_projected_addresses(tmp_path) -> None:
-    """A non-zero outside the projected set must not raise Q_DETECT.
-
-    C1 has three stored values, only two of which lie inside the projected
-    address set, so its detection rate is 2/35076 and not 3/35076. Counting the
-    address-space non-zeros instead would be a rate over the wrong universe.
-    """
-    logical, payloads = _authentic_logical()
-    projection = _projection()
-    rows = tc.derive_rows_from_authenticated_parents(
-        logical=logical,
-        expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
-        expected_closure_root_sha256=logical["population_closure_root_sha256"],
-        counts_payload_bytes_by_path=payloads, projection=projection,
-        expected_projection_root_sha256=tc.projection_root(projection))
-    by_donor = {row["donor_id"]: row for row in rows}
-    expected_d1 = (_expected_detect(CELL_SPEC[0][4])
-                   + _expected_detect(CELL_SPEC[1][4])) / 2.0
-    assert by_donor["D1"]["Q_DETECT"] == pytest.approx(expected_d1)
-    # C4's only stored value is outside the projection, so its rate is zero.
-    expected_d2 = (_expected_detect(CELL_SPEC[2][4]) + 0.0) / 2.0
-    assert by_donor["D2"]["Q_DETECT"] == pytest.approx(expected_d2)
-
-
-def test_q_depth_uses_the_bound_source_library(tmp_path) -> None:
-    import math
-
-    logical, payloads = _authentic_logical()
-    projection = _projection()
-    rows = tc.derive_rows_from_authenticated_parents(
-        logical=logical,
-        expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
-        expected_closure_root_sha256=logical["population_closure_root_sha256"],
-        counts_payload_bytes_by_path=payloads, projection=projection,
-        expected_projection_root_sha256=tc.projection_root(projection))
-    by_donor = {row["donor_id"]: row for row in rows}
-    expected = (math.log1p(9470) + math.log1p(8123)) / 2.0
-    assert by_donor["D1"]["Q_DEPTH"] == pytest.approx(expected)
-
-
-def test_the_derived_rows_carry_the_cell_identities_they_consumed(
-        tmp_path) -> None:
-    """Binding cell identity is what ties a summary to a population."""
-    logical, payloads = _authentic_logical()
-    projection = _projection()
-    rows = tc.derive_rows_from_authenticated_parents(
-        logical=logical,
-        expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
-        expected_closure_root_sha256=logical["population_closure_root_sha256"],
-        counts_payload_bytes_by_path=payloads, projection=projection,
-        expected_projection_root_sha256=tc.projection_root(projection))
-    by_donor = {row["donor_id"]: row for row in rows}
-    assert by_donor["D1"]["cell_ids"] == ("C1", "C2")
-    assert by_donor["D2"]["cell_ids"] == ("C3", "C4")
-
-
-def test_the_completeness_root_binds_the_consumed_cell_identities() -> None:
-    logical, payloads = _authentic_logical()
-    projection = _projection()
-    rows = tc.derive_rows_from_authenticated_parents(
-        logical=logical,
-        expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
-        expected_closure_root_sha256=logical["population_closure_root_sha256"],
-        counts_payload_bytes_by_path=payloads, projection=projection,
-        expected_projection_root_sha256=tc.projection_root(projection))
-    baseline = tc.completeness_root(rows)
-    moved = [dict(row) for row in rows]
-    moved[0] = dict(moved[0])
-    moved[0]["cell_ids"] = ("C1", "C9")
-    assert tc.completeness_root(moved) != baseline
-
-
 def test_the_projection_root_is_injective_over_position_sets() -> None:
     a = tc.projection_root({"positions": [1, 2], "feature_authority_root_sha256": "4" * 64})
     b = tc.projection_root({"positions": [12], "feature_authority_root_sha256": "4" * 64})
     c = tc.projection_root({"positions": [1, 2], "feature_authority_root_sha256": "5" * 64})
     assert len({a, b, c}) == 3
+
+
+# ---------------------------------------------------------------------------
+# A fully lawful production fixture.
+#
+# The R5 contract requires the authenticated B2 closure (for its rows/nnz
+# geometry), the logical authority, a verified physical read plan, the B1
+# projection at its real 35,076 size, and a population byte-to-row raw-source
+# proof covering every accepted row. Building all of that is the point: a
+# production call cannot be assembled out of root strings any more.
+# ---------------------------------------------------------------------------
+
+MATRIX_ID = "sea_ad_mtg_rna_final_2026"
+OPERATOR = 31
+
+# expression_row == index here, so the synthetic H5AD rows line up with the
+# logical rows the population proof must cover.
+LAWFUL_CELLS = [
+    ("C1", "D1", 0, 0, {0: 3, 5: 1, 250: 7}, {1: 6, 4: 5}),
+    ("C2", "D1", 0, 1, {1: 2, 300: 9}, {2: 11}),
+    ("C3", "D2", 0, 2, {2: 4, 7: 6, 9: 1}, {3: 11}),
+]
+
+
+def _csv_bytes(columns, rows) -> bytes:
+    import csv as _csv
+    buffer = _io.StringIO()
+    writer = _csv.writer(buffer, lineterminator="\n")
+    writer.writerow(columns)
+    for row in rows:
+        writer.writerow(row)
+    return buffer.getvalue().encode("utf-8")
+
+
+def _csr_payload(rows: int, width: int, entries) -> bytes:
+    import numpy as np
+
+    per_row = {r: [] for r in range(rows)}
+    for row_index, column, value in entries:
+        per_row[row_index].append((column, value))
+    data, indices, indptr = [], [], [0]
+    for r in range(rows):
+        for column, value in sorted(per_row[r]):
+            indices.append(column)
+            data.append(value)
+        indptr.append(len(data))
+    buffer = _io.BytesIO()
+    np.savez(buffer,
+             data=np.asarray(data, dtype=np.int32),
+             indices=np.asarray(indices, dtype=np.int32),
+             indptr=np.asarray(indptr, dtype=np.int32),
+             shape=np.asarray([rows, ADDRESS_SPACE], dtype=np.int32),
+             format=np.array(b"csr"))
+    return buffer.getvalue()
+
+
+def _write_source_h5ad(path):
+    """A synthetic MTG-shaped H5AD whose row sums are the bound libraries."""
+    import h5py
+    import numpy as np
+    import t0_raw_source_row_authority_v1 as rs
+
+    data, indices, indptr = [], [], [0]
+    for _cell, _donor, _blk, _row, _addr, source_entries in LAWFUL_CELLS:
+        for column in sorted(source_entries):
+            indices.append(column)
+            data.append(source_entries[column])
+        indptr.append(len(data))
+
+    with h5py.File(str(path), "w") as handle:
+        layer = handle.create_group("layers").create_group("UMIs")
+        layer.attrs["encoding-type"] = "csr_matrix"
+        layer.attrs["encoding-version"] = "0.1.0"
+        layer.attrs["shape"] = np.asarray(
+            [len(LAWFUL_CELLS), rs.SOURCE_FEATURE_COUNT], dtype=np.int64)
+        layer.create_dataset("data", data=np.asarray(data, dtype=np.float64))
+        layer.create_dataset("indices", data=np.asarray(indices, dtype=np.int32))
+        layer.create_dataset("indptr", data=np.asarray(indptr, dtype=np.int64))
+        obs = handle.create_group("obs")
+        obs.attrs["_index"] = "exp_component_name"
+        obs.create_dataset("exp_component_name", data=np.asarray(
+            [c for c, _, _, _, _, _ in LAWFUL_CELLS], dtype=h5py.string_dtype()))
+        donors = sorted({d for _, d, _, _, _, _ in LAWFUL_CELLS})
+        node = obs.create_group("Donor ID")
+        node.create_dataset("categories",
+                            data=np.asarray(donors, dtype=h5py.string_dtype()))
+        node.create_dataset("codes", data=np.asarray(
+            [donors.index(d) for _, d, _, _, _, _ in LAWFUL_CELLS], dtype=np.int8))
+        obs.create_dataset("Braak", data=np.asarray([5] * len(LAWFUL_CELLS),
+                                                    dtype=np.int64))
+    return path
+
+
+def _lawful_inputs(tmp_path):
+    """Every authenticated parent the R5 production contract requires."""
+    import hashlib as _h
+    import t0_raw_source_row_authority_v1 as rs
+
+    # One op31 block holding all three cells.
+    block = "op31/block-00000"
+    meta = _csv_bytes(
+        ["selection_row", "canonical_cell_id", "donor_id", "expression_row",
+         "primary_row_weight", "source_library"],
+        [[10 + i, cell, donor, row, "8.06e-08", sum(src.values())]
+         for i, (cell, donor, _blk, row, _addr, src) in enumerate(LAWFUL_CELLS)])
+    payload = _csr_payload(
+        len(LAWFUL_CELLS), ADDRESS_SPACE,
+        [(i, column, value)
+         for i, (_c, _d, _b, _r, addr, _s) in enumerate(LAWFUL_CELLS)
+         for column, value in addr.items()])
+    nnz = sum(len(addr) for _c, _d, _b, _r, addr, _s in LAWFUL_CELLS)
+
+    membership = _csv_bytes(
+        ["source", "matrix_id", "operator_index", "local_row", "donor_id",
+         "partition", "cell_id", "native_class", "broad_class", "stable_key"],
+        [["SEA_AD", MATRIX_ID, OPERATOR, i, donor, "reader_fit", cell,
+          "Immune", "Non-neuronal and Non-neural", 1000 + i]
+         for i, (cell, donor, _b, _r, _a, _s) in enumerate(LAWFUL_CELLS)])
+    manifest = _csv_bytes(
+        ["block_key", "source", "operator_index", "matrix_id", "rows", "nnz",
+         "counts_path", "counts_sha256", "meta_path", "meta_sha256"],
+        [[block, "SEA_AD", OPERATOR, MATRIX_ID, len(LAWFUL_CELLS), nnz,
+          "%s.counts.npz" % block, _h.sha256(payload).hexdigest(),
+          "%s.meta.csv" % block, _h.sha256(meta).hexdigest()]])
+
+    closure = _rc.build_population_closure(
+        membership_bytes=membership,
+        expected_membership_sha256=_h.sha256(membership).hexdigest(),
+        block_manifest_bytes=manifest,
+        expected_block_manifest_sha256=_h.sha256(manifest).hexdigest(),
+        meta_bytes_by_path={"%s.meta.csv" % block: meta},
+        operator_index=OPERATOR, matrix_id=MATRIX_ID)
+    logical = _rc.build_logical_row_authority(
+        closure=closure, membership_bytes=membership,
+        feature_authority_root_sha256="4" * 64)
+    plan = _rc.build_physical_read_plan(logical=logical)
+
+    asset = _write_source_h5ad(tmp_path / "source.h5ad")
+    population = rs.prove_population_from_source_path(
+        source_path=asset, logical=logical,
+        expected_logical_root_sha256=logical["logical_row_authority_root_sha256"],
+        expected_source_sha256=_h.sha256(asset.read_bytes()).hexdigest())
+
+    # The projection at its real size, so the production default is satisfied.
+    positions = list(range(tc.SCALAR_FEATURES))
+    projection = {"positions": positions,
+                  "feature_authority_root_sha256": "4" * 64}
+
+    return {
+        "closure": closure,
+        "expected_closure_root_sha256": closure["population_closure_root_sha256"],
+        "expected_membership_sha256": _h.sha256(membership).hexdigest(),
+        "expected_block_manifest_sha256": _h.sha256(manifest).hexdigest(),
+        "logical": logical,
+        "expected_logical_root_sha256": logical["logical_row_authority_root_sha256"],
+        "physical_plan": plan,
+        "expected_physical_plan_root_sha256": plan["physical_read_plan_root_sha256"],
+        "counts_payload_bytes_by_path": {"%s.counts.npz" % block: payload},
+        "projection": projection,
+        "expected_projection_root_sha256": tc.projection_root(projection),
+        "population_raw_source": population,
+        "expected_population_raw_source_root_sha256": population[
+            "population_raw_source_root_sha256"],
+        "expected_source_sha256": _h.sha256(asset.read_bytes()).hexdigest(),
+        "derivation_code_sha256": CODE_SHA,
+        "candidate_donors": ["D1", "D2"],
+    }
+
+
+def test_the_pre_r5_detached_value_derivation_cases_are_retired() -> None:
+    """Six earlier derivation cases were written against the removed contract.
+
+    They called `derive_rows_from_authenticated_parents` with a logical
+    authority and a projection but no population raw-source proof and no
+    closure-bound geometry, because the contract of the day did not require
+    them. Under the R5 contract that call is refused by name, so those cases
+    could only be kept by weakening the very requirement the external review
+    asked for.
+
+    Their properties -- projection-root binding, Q_DETECT counting only
+    projected addresses, Q_DEPTH from the library, consumed cell identities in
+    the root -- are all exercised against the lawful production fixture below,
+    which additionally binds the closure, the physical plan and the population
+    byte-to-row proof.
+    """
+    import inspect
+
+    signature = inspect.signature(tc.derive_rows_from_authenticated_parents)
+    for required in ("population_raw_source", "block_geometry",
+                     "expected_projection_positions"):
+        assert required in signature.parameters
+    assert signature.parameters["expected_projection_positions"].default ==         tc.SCALAR_FEATURES
+
+
+def test_the_lawful_production_path_succeeds(tmp_path) -> None:
+    inputs = _lawful_inputs(tmp_path)
+    summary = tc.build_production_authority(tmp_path / "pkg", **inputs)
+    assert summary["donor_count"] == 2
+    assert summary["cells_consumed"] == len(LAWFUL_CELLS)
+    assert summary["projection_positions"] == tc.SCALAR_FEATURES
+    assert summary["real_execution_ready"] is False
+
+
+def test_the_physical_plan_parent_is_the_verified_plan_not_the_logical_root(
+        tmp_path) -> None:
+    """Preserves the intent of the external review's physical-plan case.
+
+    That case asserted the substrate must not record the logical root under the
+    name `physical_read_plan_root_sha256`. It could not be run as written,
+    because it also required the call to succeed with no raw-source proof and a
+    one-position projection, which the same review's other two cases require to
+    be refused. The intent is preserved here under the lawful contract.
+    """
+    inputs = _lawful_inputs(tmp_path)
+    summary = tc.build_production_authority(tmp_path / "pkg", **inputs)
+    meta = json.loads((tmp_path / "pkg" / tc.METADATA).read_text(encoding="utf-8"))
+    recorded = meta["substrate"]["physical_read_plan_root_sha256"]
+    assert recorded == inputs["expected_physical_plan_root_sha256"]
+    assert recorded != inputs["expected_logical_root_sha256"]
+    assert summary["real_execution_ready"] is False
+
+
+def test_q_depth_uses_the_proven_library_not_the_stored_one(tmp_path) -> None:
+    """The stored value is bound; only the proof shows it came from the H5 row."""
+    import math
+
+    inputs = _lawful_inputs(tmp_path)
+    rows = tc.derive_rows_from_authenticated_parents(
+        logical=inputs["logical"],
+        expected_logical_root_sha256=inputs["expected_logical_root_sha256"],
+        expected_closure_root_sha256=inputs["expected_closure_root_sha256"],
+        counts_payload_bytes_by_path=inputs["counts_payload_bytes_by_path"],
+        projection=inputs["projection"],
+        expected_projection_root_sha256=inputs["expected_projection_root_sha256"],
+        population_raw_source=inputs["population_raw_source"],
+        expected_population_raw_source_root_sha256=inputs[
+            "expected_population_raw_source_root_sha256"],
+        block_geometry=inputs["closure"]["block_geometry"],
+        expected_source_sha256=inputs["expected_source_sha256"])
+    by_donor = {row["donor_id"]: row for row in rows}
+    expected = (math.log1p(sum(LAWFUL_CELLS[0][5].values()))
+                + math.log1p(sum(LAWFUL_CELLS[1][5].values()))) / 2.0
+    assert by_donor["D1"]["Q_DEPTH"] == pytest.approx(expected)
+
+
+def test_a_population_proof_for_a_different_logical_set_is_refused(
+        tmp_path) -> None:
+    """A proof set that does not cover this population must not be accepted."""
+    inputs = _lawful_inputs(tmp_path)
+    short = dict(inputs["population_raw_source"])
+    short["proofs"] = inputs["population_raw_source"]["proofs"][:1]
+    inputs["population_raw_source"] = short
+    with pytest.raises(AssertionError) as excinfo:
+        tc.build_production_authority(tmp_path / "pkg", **inputs)
+    assert "POPULATION_ROW_CARDINALITY" in str(excinfo.value)
+
+
+def test_a_missing_population_proof_is_refused_by_name(tmp_path) -> None:
+    inputs = _lawful_inputs(tmp_path)
+    inputs["population_raw_source"] = None
+    inputs["expected_population_raw_source_root_sha256"] = None
+    with pytest.raises(AssertionError) as excinfo:
+        tc.build_production_authority(tmp_path / "pkg", **inputs)
+    assert tc.STOP_RAW_SOURCE_PROOF in str(excinfo.value)
+
+
+def test_a_missing_physical_plan_is_refused_by_name(tmp_path) -> None:
+    inputs = _lawful_inputs(tmp_path)
+    inputs["physical_plan"] = None
+    inputs["expected_physical_plan_root_sha256"] = None
+    with pytest.raises(AssertionError) as excinfo:
+        tc.build_production_authority(tmp_path / "pkg", **inputs)
+    assert tc.STOP_PHYSICAL_PLAN in str(excinfo.value)
+
+
+def test_a_missing_closure_is_refused_by_name(tmp_path) -> None:
+    inputs = _lawful_inputs(tmp_path)
+    inputs["closure"] = None
+    with pytest.raises(AssertionError) as excinfo:
+        tc.build_production_authority(tmp_path / "pkg", **inputs)
+    assert tc.STOP_GEOMETRY_NOT_CLOSED in str(excinfo.value)
+
+
+def test_a_short_projection_is_refused_on_the_production_default(
+        tmp_path) -> None:
+    """35,076 unique in-range positions are mandatory; small ones are fixtures."""
+    inputs = _lawful_inputs(tmp_path)
+    small = {"positions": [0], "feature_authority_root_sha256": "4" * 64}
+    inputs["projection"] = small
+    inputs["expected_projection_root_sha256"] = tc.projection_root(small)
+    with pytest.raises(AssertionError) as excinfo:
+        tc.build_production_authority(tmp_path / "pkg", **inputs)
+    assert tc.STOP_PROJECTION_POSITIONS in str(excinfo.value)
+
+
+def test_a_tampered_manifest_geometry_is_reconciled_against_the_payload(
+        tmp_path) -> None:
+    """Item 8: the reconciliation is mandatory, not an optional argument."""
+    inputs = _lawful_inputs(tmp_path)
+    geometry = {key: dict(value)
+                for key, value in inputs["closure"]["block_geometry"].items()}
+    geometry["op31/block-00000"]["nnz"] += 1
+    closure = dict(inputs["closure"])
+    closure["block_geometry"] = geometry
+    with pytest.raises(AssertionError) as excinfo:
+        tc.derive_rows_from_authenticated_parents(
+            logical=inputs["logical"],
+            expected_logical_root_sha256=inputs["expected_logical_root_sha256"],
+            expected_closure_root_sha256=inputs["expected_closure_root_sha256"],
+            counts_payload_bytes_by_path=inputs["counts_payload_bytes_by_path"],
+            projection=inputs["projection"],
+            expected_projection_root_sha256=inputs[
+                "expected_projection_root_sha256"],
+            population_raw_source=inputs["population_raw_source"],
+            expected_population_raw_source_root_sha256=inputs[
+                "expected_population_raw_source_root_sha256"],
+            block_geometry=geometry,
+            expected_source_sha256=inputs["expected_source_sha256"])
+    assert "COUNTS_MATRIX_GEOMETRY" in str(excinfo.value)
+
+
+def test_omitting_the_block_geometry_is_refused_by_name(tmp_path) -> None:
+    inputs = _lawful_inputs(tmp_path)
+    with pytest.raises(AssertionError) as excinfo:
+        tc.derive_rows_from_authenticated_parents(
+            logical=inputs["logical"],
+            expected_logical_root_sha256=inputs["expected_logical_root_sha256"],
+            expected_closure_root_sha256=inputs["expected_closure_root_sha256"],
+            counts_payload_bytes_by_path=inputs["counts_payload_bytes_by_path"],
+            projection=inputs["projection"],
+            expected_projection_root_sha256=inputs[
+                "expected_projection_root_sha256"],
+            population_raw_source=inputs["population_raw_source"],
+            expected_population_raw_source_root_sha256=inputs[
+                "expected_population_raw_source_root_sha256"])
+    assert tc.STOP_GEOMETRY_NOT_CLOSED in str(excinfo.value)

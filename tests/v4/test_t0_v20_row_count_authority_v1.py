@@ -560,78 +560,52 @@ def _raw_provenance(width: int = 36_601, logical=None, logical_index: int = 0) -
             "source_width": width}
 
 
-def test_source_library_is_proven_against_the_authenticated_raw_row(world: World) -> None:
-    logical = _logical(world)
-    bound = logical["rows"][0]["source_library"]
-    raw = [0] * 36_600 + [bound]
-    assert sum(raw) == bound
-    assert rc.prove_source_library(
-        logical=logical, logical_index=0, raw_source_row_values=raw,
-        raw_source_provenance=_raw_provenance(logical=logical)) is True
+def test_the_caller_vector_source_library_prover_is_removed(world: World) -> None:
+    """The unsafe prover must have no production-callable path.
 
+    This block previously asserted the opposite. Its positive case built
+    `[0] * 36_600 + [bound]` and asserted that the fabricated vector PROVED
+    `source_library`, which made the R4 claim that the unsafe API had been
+    structurally eliminated false: a safe prover had been added beside this one
+    while this one stayed public and green.
 
-def test_a_raw_row_summing_to_the_wrong_total_stops(world: World) -> None:
-    logical = _logical(world)
-    raw = [0] * 36_600 + [logical["rows"][0]["source_library"] + 1]
-    with pytest.raises(AssertionError, match="SOURCE_LIBRARY_NOT_PROVEN"):
-        rc.prove_source_library(
-            logical=logical, logical_index=0, raw_source_row_values=raw,
-            raw_source_provenance=_raw_provenance(logical=logical))
-
-
-def test_a_row_of_address_space_width_is_refused_as_the_raw_source_row(
-    world: World,
-) -> None:
-    """The stored 41,238-address row is not the full raw source row.
-
-    Phase2 computes source_library before projection, so a row of address-space
-    width cannot be the thing that produced it and must not be offered as proof
-    even if its sum happened to match.
+    The behaviours the removed block covered -- wrong total, address-space width,
+    non-integral or negative counts, missing provenance -- are all exercised
+    against real authenticated bytes in
+    tests/v4/test_t0_raw_source_row_authority_v1.py.
     """
     logical = _logical(world)
     bound = logical["rows"][0]["source_library"]
-    projected = [0] * (rc.ADDRESS_SPACE_SIZE - 1) + [bound]
-    with pytest.raises(AssertionError, match="RAW_ROW_WIDTH_IS_ADDRESS_SPACE"):
+    fabricated = [0] * (rc.SOURCE_FEATURE_COUNT - 1) + [bound]
+    assert sum(fabricated) == bound
+
+    with pytest.raises(AssertionError) as excinfo:
         rc.prove_source_library(
-            logical=logical, logical_index=0, raw_source_row_values=projected,
-            raw_source_provenance=_raw_provenance(width=rc.ADDRESS_SPACE_SIZE, logical=logical))
-
-
-@pytest.mark.parametrize("bad", [-1, 1.5, float("nan")])
-def test_non_integral_or_negative_raw_counts_stop(world: World, bad) -> None:
-    """The bad value sits inside a row of lawful source width.
-
-    A short row would now be refused on width before its values were examined,
-    which would make this case pass for the wrong reason.
-    """
-    logical = _logical(world)
-    raw = [bad] + [0] * 36_600
-    assert len(raw) == rc.SOURCE_FEATURE_COUNT
-    with pytest.raises(AssertionError, match="RAW_COUNTS_NOT_NONNEGATIVE_INTEGERS"):
-        rc.prove_source_library(
-            logical=logical, logical_index=0, raw_source_row_values=raw,
+            logical=logical, logical_index=0,
+            raw_source_row_values=fabricated,
             raw_source_provenance=_raw_provenance(logical=logical))
+    assert rc.STOP_CALLER_VECTOR_PROOF_REMOVED in str(excinfo.value)
+    assert "prove_population_from_source_path" in str(excinfo.value)
 
 
-def test_the_raw_row_provenance_must_be_bound(world: World) -> None:
-    logical = _logical(world)
-    raw = [0] * 36_600 + [logical["rows"][0]["source_library"]]
-    for missing in ("source_sha256", "source_row_index", "source_width"):
-        provenance = {k: v for k, v in _raw_provenance().items() if k != missing}
-        with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
-            rc.prove_source_library(
-                logical=logical, logical_index=0, raw_source_row_values=raw,
-                raw_source_provenance=provenance)
-    mismatched = dict(_raw_provenance(), source_width=99)
-    with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
-        rc.prove_source_library(
-            logical=logical, logical_index=0, raw_source_row_values=raw,
-            raw_source_provenance=mismatched)
+def test_the_removed_prover_refuses_every_call_shape(world: World) -> None:
+    """No argument shape may reach a permissive path."""
+    for args, kwargs in (((), {}),
+                         ((), {"logical": _logical(world), "logical_index": 0}),
+                         ((_logical(world), 0), {})):
+        with pytest.raises(AssertionError) as excinfo:
+            rc.prove_source_library(*args, **kwargs)
+        assert rc.STOP_CALLER_VECTOR_PROOF_REMOVED in str(excinfo.value)
 
 
-# --------------------------------------------------------------------------
-# Selected-row verification: geometry, semantics, bounds, correspondence.
-# --------------------------------------------------------------------------
+def test_the_safe_population_prover_is_the_named_replacement() -> None:
+    """A reader of the STOP must be told where the real proof lives."""
+    import t0_raw_source_row_authority_v1 as rs
+
+    assert hasattr(rs, "prove_population_from_source_path")
+    assert hasattr(rs, "assert_population_authority_covers_logical")
+
+
 def test_the_selected_row_must_have_address_space_width(world: World) -> None:
     logical = _logical(world)
     row = logical["rows"][0]

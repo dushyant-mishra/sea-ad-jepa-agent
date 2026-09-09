@@ -300,13 +300,35 @@ def _stage_c_from_arrays(
 
 
 def preflight_root(results: Sequence[Mapping[str, Any]]) -> str:
-    """Digest over the stages actually run and their outcomes."""
+    """Digest over every decision-bearing stage output, not just the ranks.
+
+    An external review found this bound only stage names and rank results, so two
+    stages over different donor-bound record sets with the same ranks produced
+    the same preflight root. Ranks are the least distinguishing thing a stage
+    produces: the records root, the donor order, the residual degrees of freedom
+    and the tail inference size are all decision-bearing, and changing any of
+    them must move this root.
+    """
     parts = [_typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
              _typed(list(FORBIDDEN_REMEDIES)), _typed(len(results))]
     for result in results:
         checks = result["checks"]
-        parts.append(_typed([str(result["stage"]),
-                             [[str(k), int(checks[k])] for k in sorted(checks)]]))
+        parts.append(_typed(str(result["stage"])))
+        parts.append(_typed([[str(k), int(checks[k])] for k in sorted(checks)]))
+        # The records identity that the stage actually verified. Stage A binds
+        # two, one per role, so every present key is folded in by name.
+        bound = []
+        for key in sorted(result):
+            if key.endswith("records_root_sha256"):
+                bound.append([key, str(result[key])])
+        parts.append(_typed(bound))
+        parts.append(_typed(bool(result.get("donor_bound", False))))
+        residual = result.get("residual_df") or {}
+        parts.append(_typed([[str(k), int(residual[k])]
+                             for k in sorted(residual)]))
+        parts.append(_typed(int(result.get("tail_inference_n") or 0)))
+        loodo = result.get("loodo_ranks") or {}
+        parts.append(_typed([[int(k), int(loodo[k])] for k in sorted(loodo)]))
     return hashlib.sha256(b"".join(parts)).hexdigest()
 
 

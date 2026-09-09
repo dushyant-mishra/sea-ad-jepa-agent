@@ -179,8 +179,9 @@
     "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
   },
   "next_authorized_actions": [
-    "SUBMIT_THE_R4_SUCCESSOR_FOR_INDEPENDENT_IMPLEMENTATION_REVIEW",
-    "DO_NOT_BUILD_THE_ELIGIBLE_DONOR_AUTHORITY_UNTIL_R4_PASSES_REVIEW",
+    "SUBMIT_THE_R5_SUCCESSOR_FOR_INDEPENDENT_IMPLEMENTATION_REVIEW",
+    "RESOLVE_THE_CONTRADICTION_BETWEEN_THE_TWO_INDEPENDENT_RED_CASES",
+    "DO_NOT_BUILD_THE_ELIGIBLE_DONOR_AUTHORITY",
     "DO_NOT_RUN_PRODUCTION_B2",
     "DO_NOT_ACCESS_NUMERIC_CONFIRMATION_AT8",
     "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
@@ -378,7 +379,7 @@
       "state_positive_alpha": 0.025,
       "tail_positive_alpha": 0.02
     },
-    "governance_state": "R4_SUCCESSOR_CANDIDATE__AWAITING_INDEPENDENT_IMPLEMENTATION_REVIEW__PRODUCTION_B2_FORBIDDEN",
+    "governance_state": "R5_SUCCESSOR_CANDIDATE__AWAITING_INDEPENDENT_IMPLEMENTATION_REVIEW__PRODUCTION_B2_FORBIDDEN",
     "handoff_sha256": "ecd0b0fb5c449e9ff1101dff5b014fdbb79c7538212155b28f0a9beb47f2c01f",
     "immune_fraction_authority": {
       "block_metadata_members_authenticated": 1247,
@@ -534,6 +535,15 @@
       "status": "WITHDRAWN__TOO_STRONG",
       "why": "The authenticated-NPZ path was materially repaired, but the raw-H5 path was label authentication rather than byte-to-row authentication: prove_source_library accepted caller-supplied row values plus provenance labels, so a fabricated vector with the correct sum and every correct label proved source_library. Technical completeness had the same detached-value shape, with parent-root strings naming the parents without binding the values. An external review classified both as hard STOPs, correctly."
     },
+    "r4_claim_withdrawn": {
+      "claim": "The fabricated-vector source_library API was structurally eliminated and B2 defects A through I were closed.",
+      "external_disposition": "STOP_T0_R4_INDEPENDENT_REVIEW__SAFE_RAW_SOURCE_MODULE_NOT_CLOSED_INTO_EXECUTION_CHAIN",
+      "review_branch": "review/t0-r4-independent-reds-20260909",
+      "review_head": "f7d8dfb537c1052c656c8bb194f6e154b200086a",
+      "review_red_commit": "ceaef0565ea1e9ab935cd7346eaf8c57b5bca4e1",
+      "status": "WITHDRAWN__FALSE_AS_STATED",
+      "why": "R4 added a safe byte-to-row prover beside the unsafe one and left the unsafe one public. Worse, its own positive test built [0] * 36600 + [bound] and asserted that the fabricated vector PROVED source_library, so the API said to be eliminated was still reachable and still green. An external review found this and was right to treat it as a hard STOP rather than a documentation cleanup."
+    },
     "r4_red_before": {
       "base": "ab61cf5599663c417d2b2c5ef95ca7e5a37a312c",
       "honest_reading": "Those failure counts are not all defect reproductions. The genuinely new attack cases are 13, 14 and 12; the remainder fail at the base because this candidate made three previously public helpers private and changed two signatures, so retargeted existing cases cannot resolve those names there. The raw-source suite is wholly red at base because the module is absent.",
@@ -576,6 +586,25 @@
         "attack": "Genuine parent-root strings accompanying the forged pair (9470, 3000) cannot produce an authority.",
         "property": "source_library is read off the authenticated B2 logical row and the projected non-zero count is computed from the counts payload that row's own digest authenticates, through the externally bound B1 projection. cells_by_donor and the bare substrate mapping are gone from the production path."
       }
+    },
+    "r5_contradiction_reported": {
+      "finding": "Two of the seven independent red cases cannot both hold. test_technical_completeness_must_require_raw_source_proof_for_q_depth requires build_production_authority to RAISE, and test_technical_completeness_must_not_invent_a_physical_plan_parent requires the same call to SUCCEED. Their inputs were verified identical: the same eight kwargs, the same one-position projection and the same source_library of 9999, with neither supplying a raw-source proof.",
+      "resolution": "Implemented to the work order, which sides with the raise: item 2 requires a population raw-source proof and item 5 requires the full projection. Six of seven independent reds are green. The physical-plan case's INTENT is preserved by test_the_physical_plan_parent_is_the_verified_plan_not_the_logical_root, which asserts the substrate records the verified plan root and not the logical root, under the lawful contract."
+    },
+    "r5_red_before": {
+      "artifact": "preserved in the review branch, run unmodified",
+      "base": "b08d02f721636eeba43c8612f934e816deec5f05",
+      "evidence": "7 of 7 independent red cases failed against the base"
+    },
+    "r5_repairs": {
+      "1_unsafe_prover_removed": "t0_v20_row_count_authority_v1.prove_source_library now always raises STOP_T0_B2_CALLER_VECTOR_SOURCE_LIBRARY_PROOF_REMOVED and names the safe replacement. Its seven old cases, including the positive one that asserted a fabricated vector passes, are replaced by cases asserting the removal across every call shape.",
+      "2_population_raw_source_authority": "prove_population_from_source_path proves EVERY accepted logical row from real bytes and binds the exact row cardinality, the logical root and the source digest. assert_population_authority_covers_logical refuses a proof set that is short, that covers other rows, or whose root does not verify three ways. Technical completeness consumes it and takes Q_DEPTH from the PROVEN library rather than the stored one, because recomputing the logical root shows the value is bound, not that it came out of the H5 row.",
+      "3_token_demoted": "The module-level sentinel was an importable attribute, so it was never a capability. It is now explicitly refused, the real construction guard is created inside the private opener and is unreachable as a module attribute, and AuthenticatedSource re-derives the digest from the bytes on the way in, so even a caller reaching the constructor cannot claim a digest the file does not have. prove_population_from_source_path accepts a path and no caller-built handle at all.",
+      "4_one_descriptor": "The opener hashes and consumes ONE open file object: _digest_fileobj hashes the stream and rewinds it, and that same object is handed to h5py.File. The previous version hashed one open of the pathname and then reopened the pathname, which left a window in which the two opens could describe different bytes.",
+      "5_projection_mandatory": "expected_projection_positions defaults to 35,076 in both the derivation and the production entrypoint. A smaller projection is a fixture and must say so explicitly.",
+      "6_no_fabricated_physical_parent": "The fallback that recorded the logical root under the name physical_read_plan_root_sha256 is gone. A physical read plan is required and verified stored == recomputed == externally expected, because it is what determines which counts payloads are read.",
+      "7_preflight_root_binds_decisions": "preflight_root binds every records root present on the stage, the donor-bound flag, the residual degrees of freedom, the tail inference n and the LOODO fold ranks. Previously it hashed only stage names and rank results, so different donor-bound designs with identical ranks collided.",
+      "8_geometry_mandatory": "Technical completeness requires the authenticated closure and passes its bound rows and nnz into the payload verifier on the production path, so the declaration and the payload are obligatorily reconciled rather than through optional arguments a caller could omit."
     },
     "real_execution_ready": false,
     "s2_feature_projection": {
@@ -763,6 +792,42 @@
       "previous_candidate": {
         "aggregate": 482,
         "suites": 12
+      },
+      "suites": 13
+    },
+    "test_accounting_r5": {
+      "aggregate": 577,
+      "independent_review_suite": {
+        "cases": 7,
+        "failing": "test_technical_completeness_must_not_invent_a_physical_plan_parent, which contradicts its own suite's raw-source case",
+        "file": "tests/v4/test_t0_r4_independent_external_reds_v1.py",
+        "green": 6
+      },
+      "note": "Kept separate from the 482 and 556 accountings. The producer suites are 577 across thirteen files. row_count fell from 50 to 46 because seven cases exercising the removed prover were replaced by three asserting the removal; technical completeness rose from 64 to 69 after retiring six pre-R5 detached-value derivation cases and adding eleven lawful-contract ones.",
+      "per_suite": {
+        "age_sex": 50,
+        "availability": 32,
+        "checkpoint": 33,
+        "estimability_preflight": 49,
+        "feature": 38,
+        "immune_fraction": 47,
+        "immune_fraction_r2": 26,
+        "immune_support_count": 35,
+        "input_dependency_contract": 56,
+        "raw_source_row": 48,
+        "row_count": 46,
+        "row_count_r2": 48,
+        "technical_completeness": 69
+      },
+      "previous_candidates": {
+        "r3": {
+          "aggregate": 482,
+          "suites": 12
+        },
+        "r4": {
+          "aggregate": 556,
+          "suites": 13
+        }
       },
       "suites": 13
     },

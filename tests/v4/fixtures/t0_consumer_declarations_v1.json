@@ -296,11 +296,24 @@
         "            str(proof[\"source_sha256\"]), int(proof[\"expression_row\"]),",
         "            str(proof[\"canonical_cell_id\"]), str(proof[\"donor_id\"]),",
         "            int(proof[\"source_library\"]), int(proof[\"stored_values_in_row\"]),",
-        "            \"%s: %s may not be supplied; source_library is proven only from \""
+        "            \"%s: %s may not be supplied; source_library is proven only from \"",
+        "# 20,801, and that technical completeness reading `source_library` off the",
+        "            int(proof[\"logical_index\"]), int(proof[\"expression_row\"]),",
+        "            str(proof[\"canonical_cell_id\"]), str(proof[\"donor_id\"]),",
+        "            int(proof[\"source_library\"]), int(proof[\"stored_values_in_row\"]),",
+        "    \"\"\"Prove `source_library` for EVERY accepted logical row, from real bytes.",
+        "    donor, expression_row and source_library match it. A proof set that covered",
+        "        for field in (\"canonical_cell_id\", \"donor_id\"):",
+        "        if int(proof[\"expression_row\"]) != int(row[\"expression_row\"]):",
+        "                \"%s: logical index %s binds expression_row %d but its proof read %d\"",
+        "                   int(row[\"expression_row\"]), int(proof[\"expression_row\"])))",
+        "        if int(proof[\"source_library\"]) != int(row[\"source_library\"]):",
+        "                \"%s: logical index %s binds source_library %d but the \"",
+        "                   int(row[\"source_library\"]), int(proof[\"source_library\"])))"
       ],
       "root": "BRANCH_SCRIPTS",
-      "source_lines": 389,
-      "source_sha256": "b576fbbb8b9887374abb9e4741118585c784c626f341618e4b3ad755927f717d"
+      "source_lines": 662,
+      "source_sha256": "edd6f827a9e2be35cc445959d1172937e4ed3bf9ff66aba943a290ded0b022d6"
     },
     "t0_tail_authority_v1": {
       "declaration_lines": [
@@ -413,25 +426,10 @@
         "    \"expression_row\": int,",
         "    \"source_library\": int,",
         "    from an authority object could have accepted `row_index` as either 1 or",
-        "    \"\"\"Prove the bound `source_library` against an AUTHENTICATED raw source row.",
-        "    required `source_row_index` to equal the bound `expression_row`, and never",
-        "        space -- `source_library` is the sum of a pre-projection row, so an",
-        "      * the source row index equals the bound `expression_row`;",
-        "      * the total equals the bound `source_library`.",
-        "    `cells[source_row] == canonical_cell_id` and `donors[source_row] ==",
-        "    donor_id` before summing the row it had sliced out of `indptr`.",
-        "                  \"canonical_cell_id\", \"donor_id\", \"matrix_slot\"):",
-        "    if declared_row != int(row[\"expression_row\"]):",
-        "            \"expression_row %d\"",
-        "               int(row[\"expression_row\"])))",
-        "    declared_cell = str(raw_source_provenance[\"canonical_cell_id\"])",
-        "    if declared_cell != str(row[\"canonical_cell_id\"]):",
-        "               row[\"canonical_cell_id\"]))",
-        "    declared_donor = str(raw_source_provenance[\"donor_id\"])",
-        "    if declared_donor != str(row[\"donor_id\"]):",
-        "               row[\"donor_id\"]))",
-        "    bound = row[\"source_library\"]",
-        "            \"%s: the authenticated raw row sums to %d but the bound source_library is %d\"",
+        "    \"\"\"REMOVED. Caller-supplied row values can never prove `source_library`.",
+        "    string, the correct `layers/UMIs` slot name, the correct `expression_row` and",
+        "    It now always raises. `source_library` is proven only from bytes the prover",
+        "        \"source_library. Use \"",
         "    if int(selected_expression_row) != int(row[\"expression_row\"]):",
         "                                int(row[\"expression_row\"]), int(logical_index)))",
         "# `expression_row` addresses the ORIGINAL H5 source matrix. `row_index`",
@@ -447,8 +445,8 @@
         "        digest.update(_typed(entry[\"row_index\"]))"
       ],
       "root": "BRANCH_SCRIPTS",
-      "source_lines": 1165,
-      "source_sha256": "1278c386a83bb129b0970b411a781442a96549743b9c11c59f7f3e250d1686ba"
+      "source_lines": 1086,
+      "source_sha256": "253bf3d747f877790294e2046dfb66596fcd2cc9910f33193779728b3806ca5f"
     }
   },
   "schema": "JEPA_T0_CONSUMER_DECLARATION_FIXTURE_V1"

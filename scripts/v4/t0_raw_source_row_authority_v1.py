@@ -70,6 +70,11 @@ STOP_LIBRARY = "STOP_T0_RAW_SOURCE_LIBRARY_NOT_PROVEN_FROM_AUTHENTICATED_ROW"
 STOP_OBS_FIELD = "STOP_T0_RAW_SOURCE_OBS_FIELD_NOT_PERMITTED"
 STOP_FIELD_SCHEMA = "STOP_T0_RAW_SOURCE_FIELD_SCHEMA_VIOLATION"
 STOP_CALLER_VALUES = "STOP_T0_RAW_SOURCE_CALLER_SUPPLIED_VALUES_REFUSED"
+STOP_LEGACY_TOKEN = "STOP_T0_RAW_SOURCE_LEGACY_TOKEN_IS_NOT_AN_AUTHENTICATION_CAPABILITY"
+STOP_IDENTITY_CONTINUITY = "STOP_T0_RAW_SOURCE_HASHED_BYTES_ARE_NOT_THE_CONSUMED_BYTES"
+STOP_POPULATION_CARDINALITY = "STOP_T0_RAW_SOURCE_POPULATION_ROW_CARDINALITY_MISMATCH"
+STOP_POPULATION_ROOT = "STOP_T0_RAW_SOURCE_POPULATION_ROOT_MISMATCH"
+STOP_LOGICAL_ROOT = "STOP_T0_RAW_SOURCE_LOGICAL_ROOT_MISMATCH"
 
 # Frozen identity and geometry of the MTG source asset.
 MTG_SOURCE_SHA256 = "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
@@ -83,7 +88,16 @@ UMI_SLOT = "layers/UMIs"
 # carries Braak, Thal, CERAD and other pathology columns; none is touched.
 PERMITTED_OBS_FIELDS = ("exp_component_name", "Donor ID")
 
+# Retained ONLY as a rejected decoy. An external review pointed out that a
+# module-level sentinel is an ordinary importable attribute, so any same-process
+# caller could pass it and claim any identity. It is therefore no longer a
+# capability: `AuthenticatedSource` refuses it explicitly, and identity is
+# established by re-deriving the digest from the bytes instead of by holding a
+# token. A capability that anyone can import is not a capability.
 _HANDLE_TOKEN = object()
+
+# The genuine construction guard is created per call inside
+# `_open_authenticated`, so it is never reachable as a module attribute.
 
 
 def _typed(value: Any) -> bytes:
@@ -114,6 +128,10 @@ def assert_no_pathology_read() -> bool:
     return True
 
 
+class _ConstructionGuard:
+    """Created only inside `_open_authenticated`, so it cannot be imported."""
+
+
 class AuthenticatedSource:
     """An H5AD whose bytes have been digested and matched to a frozen identity.
 
@@ -125,11 +143,24 @@ class AuthenticatedSource:
 
     def __init__(self, token: object, *, path: Path, sha256: str,
                  bytes_read: int, handle: Any) -> None:
-        if token is not _HANDLE_TOKEN:
+        if token is _HANDLE_TOKEN:
             raise AssertionError(
-                "%s: an AuthenticatedSource may only be produced by "
-                "open_authenticated_source, which digests the asset first"
+                "%s: the module-level sentinel is importable by any caller and "
+                "is not accepted; identity comes from the bytes, not from a "
+                "token" % STOP_LEGACY_TOKEN)
+        if not isinstance(token, _ConstructionGuard):
+            raise AssertionError(
+                "%s: an AuthenticatedSource may only be produced by the "
+                "production entrypoint, which hashes and consumes one descriptor"
                 % STOP_HANDLE_FORGED)
+        # Identity is re-derived from the bytes on the way in. A caller who
+        # somehow reaches this constructor still cannot claim a digest the file
+        # does not have.
+        actual = _digest_path(Path(path))[0]
+        if actual != str(sha256):
+            raise AssertionError(
+                "%s: %s hashes to %s but the handle claims %s"
+                % (STOP_SOURCE_DIGEST, path, actual, sha256))
         self._token = token
         self.path = Path(path)
         self.sha256 = str(sha256)
@@ -145,6 +176,12 @@ class AuthenticatedSource:
             self._h5.close()
         except Exception:
             pass
+        stream = getattr(self, "_stream", None)
+        if stream is not None:
+            try:
+                stream.close()
+            except Exception:
+                pass
 
     def __enter__(self) -> "AuthenticatedSource":
         return self
@@ -158,23 +195,58 @@ def _assert_genuine(source: Any) -> AuthenticatedSource:
         raise AssertionError(
             "%s: the supplied source is a %s, not an AuthenticatedSource"
             % (STOP_HANDLE_FORGED, type(source).__name__))
-    if getattr(source, "_token", None) is not _HANDLE_TOKEN:
-        raise AssertionError("%s: the handle carries no authentication token"
-                             % STOP_HANDLE_FORGED)
+    if not isinstance(getattr(source, "_token", None), _ConstructionGuard):
+        raise AssertionError("%s: the handle was not produced by the production "
+                             "entrypoint" % STOP_HANDLE_FORGED)
     return source
 
 
-def open_authenticated_source(
+def _digest_path(path: Path, *, chunk_bytes: int = 64 << 20) -> tuple[str, int]:
+    """Digest a path's bytes. Returns `(sha256, bytes_read)`."""
+    digest = hashlib.sha256()
+    read = 0
+    with open(path, "rb") as stream:
+        while True:
+            chunk = stream.read(int(chunk_bytes))
+            if not chunk:
+                break
+            digest.update(chunk)
+            read += len(chunk)
+    return digest.hexdigest(), read
+
+
+def _digest_fileobj(stream: Any, *, chunk_bytes: int = 64 << 20) -> tuple[str, int]:
+    """Digest an OPEN file object from its start, then rewind it.
+
+    Hashing one open of a pathname and then reopening that pathname leaves a
+    window in which the two opens can describe different bytes. Hashing the same
+    descriptor that will be consumed closes it: there is only ever one open.
+    """
+    digest = hashlib.sha256()
+    read = 0
+    stream.seek(0)
+    while True:
+        chunk = stream.read(int(chunk_bytes))
+        if not chunk:
+            break
+        digest.update(chunk)
+        read += len(chunk)
+    stream.seek(0)
+    return digest.hexdigest(), read
+
+
+def _open_authenticated(
         path: Path | str,
         *,
-        expected_sha256: str = MTG_SOURCE_SHA256,
+        expected_sha256: str,
         chunk_bytes: int = 64 << 20,
 ) -> AuthenticatedSource:
-    """Digest the asset, then open it. Never the other way round.
+    """Open ONE descriptor, hash it, and hand that same object to h5py.
 
-    Opening first and digesting later would leave an interval in which the bytes
-    read differ from the bytes hashed, which is the same check-then-use gap
-    closed elsewhere in this lane.
+    The construction guard is created here, in a local, so it is not reachable
+    as a module attribute. This is the only place an AuthenticatedSource comes
+    from, and it is private: the public production operations own opening,
+    hashing and consumption together and never accept a caller-built handle.
     """
     import h5py
 
@@ -182,23 +254,24 @@ def open_authenticated_source(
     if not asset.is_file():
         raise AssertionError("%s: %s" % (STOP_SOURCE_ABSENT, asset))
 
-    digest = hashlib.sha256()
-    read = 0
-    with open(asset, "rb") as stream:
-        while True:
-            chunk = stream.read(int(chunk_bytes))
-            if not chunk:
-                break
-            digest.update(chunk)
-            read += len(chunk)
-    actual = digest.hexdigest()
-    if actual != str(expected_sha256):
-        raise AssertionError("%s: %s is %s, expected %s"
-                             % (STOP_SOURCE_DIGEST, asset, actual, expected_sha256))
+    stream = open(asset, "rb")
+    try:
+        actual, read = _digest_fileobj(stream, chunk_bytes=chunk_bytes)
+        if actual != str(expected_sha256):
+            raise AssertionError("%s: %s is %s, expected %s"
+                                 % (STOP_SOURCE_DIGEST, asset, actual,
+                                    expected_sha256))
+        # The same open file object is consumed, so the bytes hashed and the
+        # bytes read by HDF5 are the same bytes.
+        handle = h5py.File(stream, "r")
+    except BaseException:
+        stream.close()
+        raise
 
-    handle = h5py.File(str(asset), "r")
-    return AuthenticatedSource(_HANDLE_TOKEN, path=asset, sha256=actual,
-                               bytes_read=read, handle=handle)
+    source = AuthenticatedSource(_ConstructionGuard(), path=asset,
+                                 sha256=actual, bytes_read=read, handle=handle)
+    source._stream = stream
+    return source
 
 
 def _umi_layer(source: AuthenticatedSource) -> Any:
@@ -387,3 +460,203 @@ def refuse_caller_supplied_values(**kwargs: Any) -> None:
             "%s: %s may not be supplied; source_library is proven only from "
             "bytes read out of the authenticated asset"
             % (STOP_CALLER_VALUES, ", ".join(offending)))
+
+
+def open_authenticated_source(
+        path: Path | str,
+        *,
+        expected_sha256: str = MTG_SOURCE_SHA256,
+        chunk_bytes: int = 64 << 20,
+) -> AuthenticatedSource:
+    """Hash and consume ONE descriptor, then return the authenticated handle.
+
+    The digest is taken from the same open file object that HDF5 then reads, so
+    there is no second open of the pathname and no window in which the hashed
+    bytes and the consumed bytes could differ.
+
+    Production callers should prefer `prove_population_from_source_path`, which
+    owns opening, hashing, consumption and closing together and accepts no
+    caller-built handle at all.
+    """
+    return _open_authenticated(path, expected_sha256=expected_sha256,
+                               chunk_bytes=chunk_bytes)
+
+
+# ---------------------------------------------------------------------------
+# Population-level authority.
+#
+# A three-row spot check establishes mechanics, not closure. An external review
+# was right that proving three of 20,804 rows says nothing about the other
+# 20,801, and that technical completeness reading `source_library` off the
+# logical row proves only that the metadata value is bound -- not that it came
+# out of the H5 row. So the population authority below proves EVERY accepted
+# logical row and binds the exact row cardinality, and technical completeness
+# must consume it.
+# ---------------------------------------------------------------------------
+
+POPULATION_SCHEMA = "JEPA_T0_RAW_SOURCE_POPULATION_AUTHORITY_V1"
+
+
+def population_raw_source_root(
+        *,
+        logical_root_sha256: str,
+        source_sha256: str,
+        proofs: Sequence[Mapping[str, Any]],
+) -> str:
+    """Digest over every proven row, its parents and the exact cardinality."""
+    parts = [_typed(DOMAIN_TAG), _typed(POPULATION_SCHEMA),
+             _typed(str(logical_root_sha256)), _typed(str(source_sha256)),
+             _typed(UMI_SLOT), _typed(len(proofs))]
+    for proof in proofs:
+        parts.append(_typed([
+            int(proof["logical_index"]), int(proof["expression_row"]),
+            str(proof["canonical_cell_id"]), str(proof["donor_id"]),
+            int(proof["source_library"]), int(proof["stored_values_in_row"]),
+        ]))
+    return hashlib.sha256(b"".join(parts)).hexdigest()
+
+
+def prove_population_from_source_path(
+        *,
+        source_path: Path | str,
+        logical: Mapping[str, Any],
+        expected_logical_root_sha256: str,
+        expected_source_sha256: str = MTG_SOURCE_SHA256,
+        expected_row_count: int | None = None,
+        chunk_bytes: int = 64 << 20,
+) -> dict[str, Any]:
+    """Prove `source_library` for EVERY accepted logical row, from real bytes.
+
+    This is the production operation. It owns opening, hashing, consumption and
+    closing, and it accepts no caller-constructed handle and no caller-supplied
+    row values. Every row of the logical authority is proven, so the result is a
+    statement about the whole population rather than about a sample of it.
+    """
+    import t0_v20_row_count_authority_v1 as rc
+
+    rows = list(logical["rows"])
+    stored_logical = logical.get("logical_row_authority_root_sha256")
+    stored_closure = logical.get("population_closure_root_sha256")
+    recomputed = rc._logical_root(rows, logical["feature_authority_root_sha256"],
+                                  stored_closure)
+    if str(stored_logical) != recomputed:
+        raise AssertionError(
+            "%s: the logical authority stores %s but its contents recompute to %s"
+            % (STOP_LOGICAL_ROOT, stored_logical, recomputed))
+    if recomputed != str(expected_logical_root_sha256):
+        raise AssertionError("%s: logical root is %s, externally expected %s"
+                             % (STOP_LOGICAL_ROOT, recomputed,
+                                expected_logical_root_sha256))
+    if expected_row_count is not None and len(rows) != int(expected_row_count):
+        raise AssertionError("%s: the logical authority holds %d rows, expected %d"
+                             % (STOP_POPULATION_CARDINALITY, len(rows),
+                                int(expected_row_count)))
+
+    source = _open_authenticated(source_path,
+                                 expected_sha256=expected_source_sha256,
+                                 chunk_bytes=chunk_bytes)
+    try:
+        proofs = []
+        for index in range(len(rows)):
+            proof = prove_source_library_from_authenticated_source(
+                source=source, logical=logical, logical_index=index,
+                expected_source_sha256=expected_source_sha256)
+            proof["logical_index"] = int(rows[index]["logical_index"])
+            proofs.append(proof)
+        digest_bytes_read = source.digest_bytes_read
+        source_sha = source.sha256
+    finally:
+        source.close()
+
+    root = population_raw_source_root(
+        logical_root_sha256=recomputed, source_sha256=source_sha, proofs=proofs)
+    return {
+        "schema": POPULATION_SCHEMA,
+        "proof": "BYTE_TO_ROW_FROM_AUTHENTICATED_H5AD_OVER_THE_WHOLE_POPULATION",
+        "population_raw_source_root_sha256": root,
+        "logical_row_authority_root_sha256": recomputed,
+        "source_sha256": source_sha,
+        "digest_bytes_read": digest_bytes_read,
+        "rows_proven": len(proofs),
+        "proofs": tuple(proofs),
+        "caller_supplied_values": False,
+        "caller_supplied_handle": False,
+        "real_execution_ready": False,
+    }
+
+
+def assert_population_authority_covers_logical(
+        *,
+        population: Mapping[str, Any],
+        logical: Mapping[str, Any],
+        expected_population_root_sha256: str,
+        expected_logical_root_sha256: str,
+        expected_source_sha256: str = MTG_SOURCE_SHA256,
+) -> bool:
+    """External verification that a population proof covers this exact logical set.
+
+    Checks the root three ways (stored, recomputed, externally expected), the
+    exact row cardinality, and that every logical row has a proof whose cell,
+    donor, expression_row and source_library match it. A proof set that covered
+    a different or smaller population is refused.
+    """
+    if str(population.get("logical_row_authority_root_sha256")) != str(
+            expected_logical_root_sha256):
+        raise AssertionError(
+            "%s: the population authority names logical root %s, externally "
+            "expected %s" % (STOP_LOGICAL_ROOT,
+                             population.get("logical_row_authority_root_sha256"),
+                             expected_logical_root_sha256))
+    if str(population.get("source_sha256")) != str(expected_source_sha256):
+        raise AssertionError("%s: the population authority names source %s, "
+                             "externally expected %s"
+                             % (STOP_SOURCE_DIGEST,
+                                population.get("source_sha256"),
+                                expected_source_sha256))
+
+    rows = list(logical["rows"])
+    proofs = list(population["proofs"])
+    if len(proofs) != len(rows):
+        raise AssertionError(
+            "%s: %d rows proven for a population of %d; a spot check does not "
+            "close the population"
+            % (STOP_POPULATION_CARDINALITY, len(proofs), len(rows)))
+
+    by_index = {int(p["logical_index"]): p for p in proofs}
+    if sorted(by_index) != sorted(int(r["logical_index"]) for r in rows):
+        raise AssertionError("%s: the proven logical indices are not the "
+                             "population's own" % STOP_POPULATION_CARDINALITY)
+    for row in rows:
+        proof = by_index[int(row["logical_index"])]
+        for field in ("canonical_cell_id", "donor_id"):
+            if str(proof[field]) != str(row[field]):
+                raise AssertionError(
+                    "%s: logical index %s is %s=%r but its proof says %r"
+                    % (STOP_ROW_IDENTITY, row["logical_index"], field,
+                       row[field], proof[field]))
+        if int(proof["expression_row"]) != int(row["expression_row"]):
+            raise AssertionError(
+                "%s: logical index %s binds expression_row %d but its proof read %d"
+                % (STOP_ROW_IDENTITY, row["logical_index"],
+                   int(row["expression_row"]), int(proof["expression_row"])))
+        if int(proof["source_library"]) != int(row["source_library"]):
+            raise AssertionError(
+                "%s: logical index %s binds source_library %d but the "
+                "authenticated row sums to %d"
+                % (STOP_LIBRARY, row["logical_index"],
+                   int(row["source_library"]), int(proof["source_library"])))
+
+    recomputed = population_raw_source_root(
+        logical_root_sha256=str(population["logical_row_authority_root_sha256"]),
+        source_sha256=str(population["source_sha256"]), proofs=proofs)
+    stored = population.get("population_raw_source_root_sha256")
+    if str(stored) != recomputed:
+        raise AssertionError(
+            "%s: the stored population root %s does not match the root "
+            "recomputed from its own proofs %s"
+            % (STOP_POPULATION_ROOT, stored, recomputed))
+    if recomputed != str(expected_population_root_sha256):
+        raise AssertionError("%s: population root is %s, externally expected %s"
+                             % (STOP_POPULATION_ROOT, recomputed,
+                                expected_population_root_sha256))
+    return True

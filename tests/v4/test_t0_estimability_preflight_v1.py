@@ -558,3 +558,80 @@ def test_the_donor_keyed_stages_still_refuse_the_response() -> None:
         with pytest.raises(AssertionError) as excinfo:
             stage(response=[1.0] * 18, **kwargs)
         assert pf.STOP_RESPONSE_PRESENT in str(excinfo.value)
+
+
+# ---------------------------------------------------------------------------
+# The preflight root must bind every decision-bearing stage output.
+#
+# External review found it hashed only stage names and rank results, so two
+# stages over different donor-bound record sets with identical ranks produced
+# the same root. Ranks are the least distinguishing thing a stage produces.
+# ---------------------------------------------------------------------------
+
+def _stage_result(**overrides):
+    result = {
+        "stage": "B_STATE_DESIGNS",
+        "checks": {"primary": 5, "composition": 6, "measurement": 7},
+        "records_root_sha256": "a" * 64,
+        "donor_bound": True,
+        "residual_df": {"primary": 13, "composition": 12, "measurement": 11},
+    }
+    result.update(overrides)
+    return result
+
+
+def test_the_preflight_root_binds_the_records_root() -> None:
+    """Identical ranks over different records must be different authorities."""
+    a = _stage_result()
+    b = _stage_result(records_root_sha256="b" * 64)
+    assert a["checks"] == b["checks"]
+    assert pf.preflight_root([a]) != pf.preflight_root([b])
+
+
+def test_the_preflight_root_binds_the_residual_degrees_of_freedom() -> None:
+    a = _stage_result()
+    b = _stage_result(residual_df={"primary": 12, "composition": 12,
+                                   "measurement": 11})
+    assert pf.preflight_root([a]) != pf.preflight_root([b])
+
+
+def test_the_preflight_root_binds_the_tail_inference_size() -> None:
+    """n=17 and n=18 are different studies even at the same ranks."""
+    a = _stage_result(stage="C_TAIL_DESIGNS", tail_inference_n=17)
+    b = _stage_result(stage="C_TAIL_DESIGNS", tail_inference_n=18)
+    assert pf.preflight_root([a]) != pf.preflight_root([b])
+
+
+def test_the_preflight_root_binds_the_donor_bound_flag() -> None:
+    """A positional run and a donor-bound run must not share a root."""
+    a = _stage_result()
+    b = _stage_result(donor_bound=False)
+    assert pf.preflight_root([a]) != pf.preflight_root([b])
+
+
+def test_the_preflight_root_binds_both_stage_a_records_roots() -> None:
+    """Stage A binds one record set per role, and both must count."""
+    base = {
+        "stage": "A_PARENT_NUISANCE",
+        "checks": {"DISCOVERY": 4, "CONFIRMATION": 4,
+                   "DISCOVERY_LOODO_FOLDS": 28},
+        "donor_bound": True,
+        "discovery_records_root_sha256": "c" * 64,
+        "confirmation_records_root_sha256": "d" * 64,
+    }
+    moved_discovery = dict(base, discovery_records_root_sha256="e" * 64)
+    moved_confirmation = dict(base, confirmation_records_root_sha256="e" * 64)
+    roots = {pf.preflight_root([base]), pf.preflight_root([moved_discovery]),
+             pf.preflight_root([moved_confirmation])}
+    assert len(roots) == 3
+
+
+def test_the_preflight_root_binds_the_loodo_fold_ranks() -> None:
+    a = _stage_result(stage="A_PARENT_NUISANCE", loodo_ranks={0: 4, 1: 4})
+    b = _stage_result(stage="A_PARENT_NUISANCE", loodo_ranks={0: 4, 1: 3})
+    assert pf.preflight_root([a]) != pf.preflight_root([b])
+
+
+def test_the_preflight_root_is_deterministic() -> None:
+    a = _stage_result()
+    assert pf.preflight_root([a]) == pf.preflight_root([_stage_result()])
