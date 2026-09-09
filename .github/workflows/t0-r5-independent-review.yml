@@ -11,6 +11,8 @@ permissions:
 jobs:
   full-t0:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
