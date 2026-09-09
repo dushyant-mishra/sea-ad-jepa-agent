@@ -54,6 +54,7 @@ jobs:
           tests/test_v5_support_family_mass_derivation_v1.py
           tests/test_trainer_preexecution_contract_v2.py
           tests/test_v5_c2_gpu_critical_manifest_v1.py
+          tests/test_v5_c2_gpu_qualification_harness_v1.py
       - name: Prove C2 critical tests executed
         env:
           PYTHONPATH: src:.
@@ -90,3 +91,4 @@ jobs:
           scripts/v5_anticheat/derive_repeat_cap_conditioning_pareto_v1.py
           scripts/v5_anticheat/audit_affine_order_update_conditioning_v1.py
           scripts/v5_anticheat/derive_support_family_mass_v1.py
+          scripts/v5_anticheat/run_v5_c2_gpu_qualification_v1.py
