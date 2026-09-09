@@ -34,6 +34,7 @@ import csv
 import hashlib
 import io
 import math
+from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 SCHEMA = "JEPA_T0_V20_ROW_COUNT_AUTHORITY_V1"
@@ -50,6 +51,8 @@ SOURCE_FEATURE_COUNT = 36_601
 # in. Proving `source_library` means reading a row out of these exact bytes.
 MTG_SOURCE_SHA256 = "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
 MTG_SOURCE_MATRIX_SLOT = "layers/UMIs"
+MTG_SOURCE_CELL_OBS_KEY = "exp_component_name"
+MTG_SOURCE_DONOR_OBS_KEY = "Donor ID"
 
 # Frozen production geometry of the complete Phase2 manifest.
 COMPLETE_MANIFEST_BLOCKS = 8_915
@@ -81,6 +84,7 @@ STOP_SOURCE_IDENTITY = "STOP_T0_B2_RAW_SOURCE_ASSET_NOT_AUTHENTICATED"
 STOP_SOURCE_SLOT = "STOP_T0_B2_RAW_SOURCE_MATRIX_SLOT_NOT_RAW_UMI"
 STOP_SOURCE_ROW_IDENTITY = "STOP_T0_B2_RAW_SOURCE_ROW_IDENTITY_MISMATCH"
 STOP_SOURCE_WIDTH = "STOP_T0_B2_RAW_SOURCE_ROW_WIDTH_NOT_SOURCE_FEATURE_SPACE"
+STOP_SOURCE_STRUCTURE = "STOP_T0_B2_RAW_SOURCE_STRUCTURE_UNEXPECTED"
 STOP_BLOCK_ROW_NOT_BOUND = "STOP_T0_B2_SELECTED_BLOCK_ROW_NOT_BOUND"
 STOP_COUNTS_GEOMETRY = "STOP_T0_B2_COUNTS_MATRIX_GEOMETRY_MISMATCH"
 STOP_COUNTS_FORMAT = "STOP_T0_B2_COUNTS_PAYLOAD_FORMAT_UNEXPECTED"
@@ -760,7 +764,7 @@ def assert_row_authority_lawful(
             "rows": len(logical["rows"])}
 
 
-def prove_source_library(
+def _prove_source_library_fixture_row(
     *,
     logical: Mapping[str, Any],
     logical_index: int,
@@ -770,7 +774,14 @@ def prove_source_library(
     expected_matrix_slot: str = MTG_SOURCE_MATRIX_SLOT,
     expected_source_width: int = SOURCE_FEATURE_COUNT,
 ) -> bool:
-    """Prove the bound `source_library` against an AUTHENTICATED raw source row.
+    """Fixture-only semantic checker for a supplied raw-source row.
+
+    This helper does not constitute production authentication. Synthetic tests
+    may use it to exercise width, count, row-identity and total semantics.
+    Production code must call prove_source_library or
+    source_libraries_from_authenticated_h5ad, which hash and open the actual H5AD
+    and extract the bound row themselves.
+
 
     The earlier version required three provenance keys to be present and checked
     none of them. It never verified `source_sha256` against anything, never
@@ -868,6 +879,237 @@ def prove_source_library(
         raise AssertionError(
             "%s: the authenticated raw row sums to %d but the bound source_library is %d"
             % (STOP_LIBRARY_NOT_PROVEN, total, bound))
+    return True
+
+
+def _sha256_file(path: Path, *, chunk_bytes: int = 8 * 1024 * 1024) -> str:
+    """Stream a file digest; the production MTG H5AD is too large to read whole."""
+    digest = hashlib.sha256()
+    with io.open(path, "rb") as handle:
+        while True:
+            chunk = handle.read(int(chunk_bytes))
+            if not chunk:
+                break
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _decode_h5_values(values: Any) -> list[str]:
+    """Decode H5 string-like values for frozen row identities."""
+    import numpy as np
+
+    out: list[str] = []
+    for value in np.asarray(values):
+        if isinstance(value, (bytes, np.bytes_)):
+            out.append(value.decode("utf-8"))
+        else:
+            out.append(str(value))
+    return out
+
+
+def _h5_obs_vector(obs_group: Any, key: str) -> list[str]:
+    """Read an AnnData obs column in categorical or direct-array form."""
+    import h5py
+    import numpy as np
+
+    if key not in obs_group:
+        raise AssertionError("%s: obs key %r is absent"
+                             % (STOP_SOURCE_STRUCTURE, key))
+    node = obs_group[key]
+    if isinstance(node, h5py.Group):
+        if "codes" not in node or "categories" not in node:
+            raise AssertionError(
+                "%s: obs key %r is a group without categorical codes/categories"
+                % (STOP_SOURCE_STRUCTURE, key))
+        codes = np.asarray(node["codes"])
+        categories = _decode_h5_values(np.asarray(node["categories"]))
+        result = []
+        for raw in codes:
+            code = int(raw)
+            result.append(categories[code] if code >= 0 else "")
+        return result
+    return _decode_h5_values(np.asarray(node))
+
+
+def source_libraries_from_authenticated_h5ad(
+    *,
+    logical: Mapping[str, Any],
+    source_path: Path | str,
+    logical_indices: Sequence[int] | None = None,
+    expected_source_sha256: str = MTG_SOURCE_SHA256,
+    expected_matrix_slot: str = MTG_SOURCE_MATRIX_SLOT,
+    expected_source_width: int = SOURCE_FEATURE_COUNT,
+    expected_cell_obs_key: str = MTG_SOURCE_CELL_OBS_KEY,
+    expected_donor_obs_key: str = MTG_SOURCE_DONOR_OBS_KEY,
+) -> dict[int, int]:
+    """Authenticate the actual MTG H5AD and derive bound source libraries.
+
+    This is the production proof path. It takes no caller-supplied row values and
+    no caller-supplied provenance labels. The source file itself is streamed into
+    SHA-256, opened with h5py, and the exact raw UMI CSR slice at expression_row
+    is selected from those authenticated bytes. Cell and donor identities are
+    read from the same H5AD obs group and must equal the logical authority.
+
+    The function is batched because the real candidate population contains 20,804
+    cells: hashing and opening the source once follows the actual dataset geometry.
+    """
+    import h5py
+    import numpy as np
+
+    path = Path(source_path)
+    if not path.is_file():
+        raise AssertionError("%s: source path is not a file: %s"
+                             % (STOP_SOURCE_IDENTITY, path))
+    actual = _sha256_file(path)
+    if actual != str(expected_source_sha256):
+        raise AssertionError("%s: source file is %s, expected %s"
+                             % (STOP_SOURCE_IDENTITY, actual,
+                                expected_source_sha256))
+
+    rows = logical.get("rows")
+    if not isinstance(rows, list) or not rows:
+        raise AssertionError("%s: logical rows are absent"
+                             % STOP_FIELD_SCHEMA)
+    if logical_indices is None:
+        indices_to_prove = list(range(len(rows)))
+    else:
+        indices_to_prove = [int(value) for value in logical_indices]
+    if len(set(indices_to_prove)) != len(indices_to_prove):
+        raise AssertionError("%s: logical indices contain duplicates"
+                             % STOP_FIELD_SCHEMA)
+    for logical_index in indices_to_prove:
+        if not (0 <= logical_index < len(rows)):
+            raise AssertionError("%s: logical index %d is out of range"
+                                 % (STOP_FIELD_SCHEMA, logical_index))
+
+    proven: dict[int, int] = {}
+    with h5py.File(path, "r") as handle:
+        if "obs" not in handle:
+            raise AssertionError("%s: H5AD lacks obs"
+                                 % STOP_SOURCE_STRUCTURE)
+        if expected_matrix_slot not in handle:
+            raise AssertionError("%s: H5AD lacks %r"
+                                 % (STOP_SOURCE_SLOT, expected_matrix_slot))
+        node = handle[expected_matrix_slot]
+        for member in ("indptr", "indices", "data"):
+            if member not in node:
+                raise AssertionError("%s: %s lacks %r"
+                                     % (STOP_SOURCE_STRUCTURE,
+                                        expected_matrix_slot, member))
+
+        shape_raw = node.attrs.get("shape")
+        if shape_raw is None:
+            raise AssertionError("%s: %s has no shape attribute"
+                                 % (STOP_SOURCE_STRUCTURE,
+                                    expected_matrix_slot))
+        shape = [int(value) for value in np.asarray(shape_raw).tolist()]
+        if len(shape) != 2:
+            raise AssertionError("%s: raw matrix shape is %r"
+                                 % (STOP_SOURCE_STRUCTURE, shape))
+        source_rows, source_width = shape
+        if source_width != int(expected_source_width):
+            raise AssertionError(
+                "%s: authenticated raw source width is %d, expected %d"
+                % (STOP_SOURCE_WIDTH, source_width,
+                   int(expected_source_width)))
+
+        cells = _h5_obs_vector(handle["obs"], expected_cell_obs_key)
+        donors = _h5_obs_vector(handle["obs"], expected_donor_obs_key)
+        if len(cells) != source_rows or len(donors) != source_rows:
+            raise AssertionError(
+                "%s: obs lengths cell=%d donor=%d do not match raw rows=%d"
+                % (STOP_SOURCE_STRUCTURE, len(cells), len(donors),
+                   source_rows))
+
+        indptr = node["indptr"]
+        raw_indices = node["indices"]
+        raw_data = node["data"]
+        if len(indptr) != source_rows + 1:
+            raise AssertionError(
+                "%s: indptr length %d does not equal rows+1=%d"
+                % (STOP_SOURCE_STRUCTURE, len(indptr), source_rows + 1))
+
+        for logical_index in indices_to_prove:
+            row = rows[logical_index]
+            source_row = int(row["expression_row"])
+            if not (0 <= source_row < source_rows):
+                raise AssertionError(
+                    "%s: expression_row %d is outside 0..%d"
+                    % (STOP_ROW_BOUNDS, source_row, source_rows - 1))
+            if str(cells[source_row]) != str(row["canonical_cell_id"]):
+                raise AssertionError(
+                    "%s: H5 row %d cell is %r, logical index %d binds %r"
+                    % (STOP_SOURCE_ROW_IDENTITY, source_row,
+                       cells[source_row], logical_index,
+                       row["canonical_cell_id"]))
+            if str(donors[source_row]) != str(row["donor_id"]):
+                raise AssertionError(
+                    "%s: H5 row %d donor is %r, logical index %d binds %r"
+                    % (STOP_SOURCE_ROW_IDENTITY, source_row,
+                       donors[source_row], logical_index,
+                       row["donor_id"]))
+
+            start = int(indptr[source_row])
+            end = int(indptr[source_row + 1])
+            if not (0 <= start <= end <= len(raw_data)):
+                raise AssertionError(
+                    "%s: invalid CSR slice %d:%d for data length %d"
+                    % (STOP_SOURCE_STRUCTURE, start, end, len(raw_data)))
+            cols = np.asarray(raw_indices[start:end])
+            values = np.asarray(raw_data[start:end])
+            if len(cols) != len(values):
+                raise AssertionError(
+                    "%s: indices/data length mismatch at H5 row %d"
+                    % (STOP_SOURCE_STRUCTURE, source_row))
+            total = 0
+            for offset, (column, value) in enumerate(zip(cols, values)):
+                col = int(column)
+                if not (0 <= col < source_width):
+                    raise AssertionError(
+                        "%s: source column %d is outside 0..%d"
+                        % (STOP_SOURCE_STRUCTURE, col,
+                           source_width - 1))
+                numeric = float(value)
+                if not math.isfinite(numeric) or numeric < 0 or numeric != int(numeric):
+                    raise AssertionError(
+                        "%s: H5 row %d value %d is %r"
+                        % (STOP_RAW_SEMANTICS, source_row, offset,
+                           value))
+                total += int(numeric)
+
+            bound = int(row["source_library"])
+            if total != bound:
+                raise AssertionError(
+                    "%s: authenticated H5 row %d sums to %d but logical index %d "
+                    "binds source_library %d"
+                    % (STOP_LIBRARY_NOT_PROVEN, source_row, total,
+                       logical_index, bound))
+            proven[logical_index] = total
+    return proven
+
+
+def prove_source_library(
+    *,
+    logical: Mapping[str, Any],
+    logical_index: int,
+    source_path: Path | str,
+    expected_source_sha256: str = MTG_SOURCE_SHA256,
+    expected_matrix_slot: str = MTG_SOURCE_MATRIX_SLOT,
+    expected_source_width: int = SOURCE_FEATURE_COUNT,
+    expected_cell_obs_key: str = MTG_SOURCE_CELL_OBS_KEY,
+    expected_donor_obs_key: str = MTG_SOURCE_DONOR_OBS_KEY,
+) -> bool:
+    """Production one-row wrapper over the authenticated H5AD batch prover."""
+    source_libraries_from_authenticated_h5ad(
+        logical=logical,
+        source_path=source_path,
+        logical_indices=[int(logical_index)],
+        expected_source_sha256=expected_source_sha256,
+        expected_matrix_slot=expected_matrix_slot,
+        expected_source_width=expected_source_width,
+        expected_cell_obs_key=expected_cell_obs_key,
+        expected_donor_obs_key=expected_donor_obs_key,
+    )
     return True
 
 
