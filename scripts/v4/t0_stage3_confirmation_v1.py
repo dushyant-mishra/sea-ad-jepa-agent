@@ -202,15 +202,14 @@ def run(*, outdir: Path, readiness_pkg: Path, stage2a_pkg: Path,
     # --- 3. discovery metadata ----------------------------------------------
     stamp("3/10 rebuilding discovery metadata (discovery AT8 already open)")
     at8_parent = ed.load_at8_availability(at8_pkg)
-    disc_at8 = stage2b.load_discovery_at8(
-        pathology_source,
+    disc_at8 = stage2b.load_role_numeric_at8(
+        pathology_source, role="DISCOVERY",
         endpoint_identity=at8_parent["at8_endpoint_identity"],
         donor_id_field=at8_parent["donor_id_field"],
-        discovery_donors=discovery_donors,
-        confirmation_donors=confirmation_donors,
+        included_donors=discovery_donors,
+        excluded_donors=confirmation_donors,
         expected_source_sha256=bindings["pathology_source_sha256"],
-        expected_discovery_donor_set_sha256=bindings[
-            "discovery_donor_set_sha256"],
+        expected_donor_set_sha256=bindings["discovery_donor_set_sha256"],
         log=lambda m: None)
     if disc_at8["endpoint_values_sha256"] != s2b["endpoint_values_sha256"]:
         raise AssertionError(
@@ -314,15 +313,14 @@ def run(*, outdir: Path, readiness_pkg: Path, stage2a_pkg: Path,
 
     # --- 7. CONFIRMATION NUMERIC AT8 -----------------------------------------
     stamp("7/10 OPENING CONFIRMATION NUMERIC AT8")
-    conf_at8 = stage2b.load_discovery_at8(
-        pathology_source,
+    conf_at8 = stage2b.load_role_numeric_at8(
+        pathology_source, role="CONFIRMATION",
         endpoint_identity=at8_parent["at8_endpoint_identity"],
         donor_id_field=at8_parent["donor_id_field"],
-        discovery_donors=confirmation_donors,
-        confirmation_donors=discovery_donors,   # the roles swap here
+        included_donors=confirmation_donors,
+        excluded_donors=discovery_donors,
         expected_source_sha256=bindings["pathology_source_sha256"],
-        expected_discovery_donor_set_sha256=bindings[
-            "confirmation_donor_set_sha256"],
+        expected_donor_set_sha256=bindings["confirmation_donor_set_sha256"],
         log=log)
     if set(conf_at8["values"]) & discovery_donors:
         raise AssertionError("%s: %s" % (STOP_DISCOVERY_LEAK,
@@ -350,7 +348,7 @@ def run(*, outdir: Path, readiness_pkg: Path, stage2a_pkg: Path,
         "confirmation_numeric_at8_opened": True,
         "confirmation_donor_count": conf_at8["donor_count"],
         "confirmation_donor_set_sha256":
-            conf_at8["discovery_donor_set_sha256"],
+            conf_at8["donor_set_sha256"],
         "endpoint_identity": conf_at8["endpoint_identity"],
         "endpoint_identity_sha256": conf_at8["endpoint_identity_sha256"],
         "endpoint_values_sha256": conf_at8["endpoint_values_sha256"],
@@ -470,7 +468,7 @@ def run(*, outdir: Path, readiness_pkg: Path, stage2a_pkg: Path,
         "confirmation_matrix_nnz": conf["nnz"],
         "confirmation_matrix_sha256": conf["matrix_sha256"],
         "confirmation_donor_set_sha256":
-            conf_at8["discovery_donor_set_sha256"],
+            conf_at8["donor_set_sha256"],
         "confirmation_endpoint_values_sha256":
             conf_at8["endpoint_values_sha256"],
         "discovery_endpoint_values_sha256":

@@ -99,22 +99,40 @@ def _split_csv_line(line: str) -> list[str]:
     return next(_csv.reader([line]))
 
 
-def load_discovery_at8(
+def load_role_numeric_at8(
         source: Path,
         *,
+        role: str,
         endpoint_identity: str,
         donor_id_field: str,
-        discovery_donors: set[str],
-        confirmation_donors: set[str],
+        included_donors: set[str],
+        excluded_donors: set[str],
         expected_source_sha256: str,
-        expected_discovery_donor_set_sha256: str,
+        expected_donor_set_sha256: str,
         log=print) -> dict[str, Any]:
-    """Read the frozen AT8 endpoint for the frozen DISCOVERY donors. Nothing else.
+    """Read the frozen AT8 endpoint for one role's donors. Nothing else.
 
     Two columns are located by index from the header and only those two fields
     are converted per row. Every other column, including every other pathology
-    endpoint, is left as unparsed text and discarded with the line.
+    endpoint, is left as unparsed text and discarded with the line. Donors in
+    `excluded_donors` are skipped before their value is ever touched.
+
+    `role` is required, and required for a reason. An earlier version hardcoded
+    "DISCOVERY" when digesting the loaded donor set, so reusing it for the
+    confirmation read produced the right eighteen donors under the wrong role
+    label and the frozen-expectation check refused the package. Making the role
+    explicit at every call site is what stops that recurring; the parameters are
+    also role-neutral now, because the confirmation call previously had to pass
+    its own donors as `discovery_donors`, which is precisely the inversion that
+    made the mistake easy to make and hard to see.
     """
+    if not isinstance(role, str) or role not in ("DISCOVERY", "CONFIRMATION"):
+        raise AssertionError(
+            "%s: role must be DISCOVERY or CONFIRMATION, got %r"
+            % (STOP_DONOR_SET, role))
+    discovery_donors = included_donors
+    confirmation_donors = excluded_donors
+    expected_discovery_donor_set_sha256 = expected_donor_set_sha256
     digest = _raw_digest(source)
     if digest != str(expected_source_sha256):
         raise AssertionError("%s: source hashes to %s, frozen identity is %s"
@@ -183,7 +201,7 @@ def load_discovery_at8(
             "%d; missing %s" % (STOP_DONOR_SET, len(discovery_donors),
                                 len(values), missing))
 
-    produced = readiness.donor_set_digest("DISCOVERY", values)
+    produced = readiness.donor_set_digest(role, values)
     if produced != str(expected_discovery_donor_set_sha256):
         raise AssertionError("%s: loaded set digests to %s, frozen is %s"
                              % (STOP_DONOR_SET, produced,
@@ -197,13 +215,18 @@ def load_discovery_at8(
         parts.append(np.asarray([values[donor]], dtype="<f8").tobytes())
     values_digest = hashlib.sha256(b"".join(parts)).hexdigest()
 
-    log("    read %d DISCOVERY donors; %d CONFIRMATION rows skipped unread"
-        % (len(values), len(set(seen_confirmation))))
-    log("    discovery donor-set digest %s" % produced)
+    other = "CONFIRMATION" if role == "DISCOVERY" else "DISCOVERY"
+    log("    read %d %s donors; %d %s rows skipped unread"
+        % (len(values), role, len(set(seen_confirmation)), other))
+    log("    %s donor-set digest %s" % (role.lower(), produced))
     log("    endpoint values digest     %s" % values_digest)
     return {
         "values": values,
+        "role": role,
         "donor_count": len(values),
+        "donor_set_sha256": produced,
+        # Retained under the old name so existing readers keep working; both
+        # carry the digest computed under the role actually supplied.
         "discovery_donor_set_sha256": produced,
         "endpoint_values_sha256": values_digest,
         "endpoint_identity": str(endpoint_identity),
@@ -314,14 +337,13 @@ def main(argv: list[str] | None = None) -> int:
     at8_parent = ed.load_at8_availability(args.at8_pkg)
 
     stamp("Stage 2B step 3 - opening DISCOVERY numeric AT8 only")
-    loaded = load_discovery_at8(
-        args.pathology_source,
+    loaded = load_role_numeric_at8(
+        args.pathology_source, role="DISCOVERY",
         endpoint_identity=at8_parent["at8_endpoint_identity"],
         donor_id_field=at8_parent["donor_id_field"],
-        discovery_donors=discovery, confirmation_donors=confirmation,
+        included_donors=discovery, excluded_donors=confirmation,
         expected_source_sha256=bindings["pathology_source_sha256"],
-        expected_discovery_donor_set_sha256=bindings[
-            "discovery_donor_set_sha256"])
+        expected_donor_set_sha256=bindings["discovery_donor_set_sha256"])
 
     manifest = {
         "schema": "JEPA_T0_DISCOVERY_NUMERIC_AT8_ACCESS_MANIFEST_V1",

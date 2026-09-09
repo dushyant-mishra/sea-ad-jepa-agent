@@ -281,3 +281,58 @@ def test_the_repaired_module_declares_the_accurate_byte_semantics() -> None:
     v2 = _v2()
     assert v2.CODE_BYTE_SEMANTICS.startswith(
         "SHA256_OVER_LF_NORMALIZED_FILE_CONTENT")
+
+
+# ---------------------------------------------------------------------------
+# The Stage 3 role-label defect, pinned.
+#
+# Stage 3 reused the discovery endpoint reader for the confirmation read. The
+# reader digested the loaded donor set with the role hardcoded to "DISCOVERY",
+# so it produced the right eighteen donors under the wrong role label and the
+# frozen-expectation check refused it. The guard worked; the caller was wrong.
+# ---------------------------------------------------------------------------
+
+def test_the_endpoint_reader_requires_an_explicit_role() -> None:
+    """No default, so a caller cannot silently inherit the wrong one."""
+    import inspect
+    import t0_stage2b_discovery_at8_v1 as s2b
+
+    assert not hasattr(s2b, "load_discovery_at8"), (
+        "the old name kept the trap alive; it must be gone")
+    sig = inspect.signature(s2b.load_role_numeric_at8)
+    assert sig.parameters["role"].default is inspect.Parameter.empty
+    assert sig.parameters["role"].kind is inspect.Parameter.KEYWORD_ONLY
+
+
+@pytest.mark.parametrize("bad", ["discovery", "Discovery", "", None, "BOTH",
+                                 "DISCOVERY ", 1])
+def test_an_unrecognised_role_is_refused(bad) -> None:
+    import t0_stage2b_discovery_at8_v1 as s2b
+
+    with pytest.raises(AssertionError) as excinfo:
+        s2b.load_role_numeric_at8(
+            Path("unused"), role=bad, endpoint_identity="a",
+            donor_id_field="b", included_donors=set(), excluded_donors=set(),
+            expected_source_sha256="0" * 64, expected_donor_set_sha256="0" * 64)
+    assert s2b.STOP_DONOR_SET in str(excinfo.value)
+
+
+def test_the_two_role_digests_differ_over_the_same_donors() -> None:
+    """Why the wrong label was caught rather than silently accepted."""
+    import t0_execution_input_readiness_authority_v1 as r
+
+    donors = ["H20.33.%03d" % i for i in range(18)]
+    as_confirmation = r.donor_set_digest("CONFIRMATION", donors)
+    as_discovery = r.donor_set_digest("DISCOVERY", donors)
+    assert as_confirmation != as_discovery
+    # Order-independent within a role, so the difference is the label alone.
+    assert as_confirmation == r.donor_set_digest("CONFIRMATION",
+                                                 list(reversed(donors)))
+
+
+def test_the_stage3_call_sites_state_their_role() -> None:
+    source = (ROOT / "scripts" / "v4"
+              / "t0_stage3_confirmation_v1.py").read_text(encoding="utf-8")
+    assert 'role="DISCOVERY"' in source
+    assert 'role="CONFIRMATION"' in source
+    assert "load_discovery_at8" not in source
