@@ -27,12 +27,17 @@ def exact_product(counts, donor_n):
 
 def main(argv=None):
     p=argparse.ArgumentParser()
-    for flag in ('expected-metadata-sha256','partition'):
-        p.add_argument('--'+flag,required=True)
+    p.add_argument('--expected-metadata-sha256',required=True)
+    p.add_argument('--partition',required=True)
     p.add_argument('--metadata-sqlite',type=Path,required=True)
     p.add_argument('--out-json',type=Path,required=True)
-    for flag in ('expected-cells','expected-donors','expected-groups','group-floor','cell-cap','ess-floor-numerator','ess-floor-denominator'):
-        p.add_argument('--'+flag,type=int,required=True)
+    p.add_argument('--expected-cells',type=int,required=True)
+    p.add_argument('--expected-donors',type=int,required=True)
+    p.add_argument('--expected-groups',type=int,required=True)
+    p.add_argument('--group-floor',type=int,required=True)
+    p.add_argument('--cell-cap',type=int,required=True)
+    p.add_argument('--ess-floor-numerator',type=int,required=True)
+    p.add_argument('--ess-floor-denominator',type=int,required=True)
     a=p.parse_args(argv)
     ints=(a.expected_cells,a.expected_donors,a.expected_groups,a.group_floor,a.cell_cap,a.ess_floor_numerator,a.ess_floor_denominator)
     if min(ints)<1: raise SystemExit('all integer authorities must be positive')
