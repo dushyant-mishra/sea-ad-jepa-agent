@@ -565,7 +565,7 @@ def test_source_library_is_proven_against_the_authenticated_raw_row(world: World
     bound = logical["rows"][0]["source_library"]
     raw = [0] * 36_600 + [bound]
     assert sum(raw) == bound
-    assert rc.prove_source_library(
+    assert rc._prove_source_library_fixture_only(
         logical=logical, logical_index=0, raw_source_row_values=raw,
         raw_source_provenance=_raw_provenance(logical=logical)) is True
 
@@ -574,7 +574,7 @@ def test_a_raw_row_summing_to_the_wrong_total_stops(world: World) -> None:
     logical = _logical(world)
     raw = [0] * 36_600 + [logical["rows"][0]["source_library"] + 1]
     with pytest.raises(AssertionError, match="SOURCE_LIBRARY_NOT_PROVEN"):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_only(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=_raw_provenance(logical=logical))
 
@@ -592,7 +592,7 @@ def test_a_row_of_address_space_width_is_refused_as_the_raw_source_row(
     bound = logical["rows"][0]["source_library"]
     projected = [0] * (rc.ADDRESS_SPACE_SIZE - 1) + [bound]
     with pytest.raises(AssertionError, match="RAW_ROW_WIDTH_IS_ADDRESS_SPACE"):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_only(
             logical=logical, logical_index=0, raw_source_row_values=projected,
             raw_source_provenance=_raw_provenance(width=rc.ADDRESS_SPACE_SIZE, logical=logical))
 
@@ -608,7 +608,7 @@ def test_non_integral_or_negative_raw_counts_stop(world: World, bad) -> None:
     raw = [bad] + [0] * 36_600
     assert len(raw) == rc.SOURCE_FEATURE_COUNT
     with pytest.raises(AssertionError, match="RAW_COUNTS_NOT_NONNEGATIVE_INTEGERS"):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_only(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=_raw_provenance(logical=logical))
 
@@ -619,12 +619,12 @@ def test_the_raw_row_provenance_must_be_bound(world: World) -> None:
     for missing in ("source_sha256", "source_row_index", "source_width"):
         provenance = {k: v for k, v in _raw_provenance().items() if k != missing}
         with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
-            rc.prove_source_library(
+            rc._prove_source_library_fixture_only(
                 logical=logical, logical_index=0, raw_source_row_values=raw,
                 raw_source_provenance=provenance)
     mismatched = dict(_raw_provenance(), source_width=99)
     with pytest.raises(AssertionError, match="RAW_ROW_PROVENANCE"):
-        rc.prove_source_library(
+        rc._prove_source_library_fixture_only(
             logical=logical, logical_index=0, raw_source_row_values=raw,
             raw_source_provenance=mismatched)
 
@@ -680,3 +680,17 @@ def test_an_expression_row_outside_the_population_bounds_stops(world: World) -> 
         rc.verify_selected_row(
             logical=logical, logical_index=0, row_values=[0] * rc.ADDRESS_SPACE_SIZE,
             selected_expression_row=4_553_407, expression_row_upper_bound=4_553_407)
+
+
+
+def test_public_legacy_source_library_api_is_fail_closed(world: World) -> None:
+    logical = _logical(world)
+    bound = logical["rows"][0]["source_library"]
+    fabricated = [0] * 36_600 + [bound]
+    with pytest.raises(AssertionError) as excinfo:
+        rc.prove_source_library(
+            logical=logical,
+            logical_index=0,
+            raw_source_row_values=fabricated,
+            raw_source_provenance=_raw_provenance(logical=logical))
+    assert rc.STOP_CALLER_VALUES in str(excinfo.value)
