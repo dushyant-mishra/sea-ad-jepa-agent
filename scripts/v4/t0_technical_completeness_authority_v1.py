@@ -296,6 +296,10 @@ def assert_substrate_lawful(*, substrate: Mapping[str, Any]) -> bool:
                 "feature_authority_root_sha256",
                 "projection_root_sha256",
                 "raw_source_proof_root_sha256")
+    if set(substrate) != set(required):
+        raise AssertionError(
+            "%s: substrate fields are %s, expected exactly %s"
+            % (STOP_SUBSTRATE, sorted(substrate), sorted(required)))
     for field in required:
         value = substrate.get(field)
         if not _is_hex64(value):
@@ -587,15 +591,45 @@ def load_authority(
             raise AssertionError(
                 "%s: human-readable and exact float columns disagree"
                 % STOP_FIELD_SCHEMA)
+        donor_id = str(record["donor_id"])
+        cells = int(record["cells"])
+        if cells <= 0 or cells != len(cell_ids):
+            raise AssertionError(
+                "%s: donor %s records cells=%d but %d cell identities"
+                % (STOP_FIELD_SCHEMA, donor_id, cells, len(cell_ids)))
+        raw_bool = str(record["technical_complete"]).strip()
+        if raw_bool not in ("True", "False"):
+            raise AssertionError(
+                "%s: donor %s technical_complete is %r"
+                % (STOP_FIELD_SCHEMA, donor_id, raw_bool))
+        stored_complete = raw_bool == "True"
+        recomputed_complete = technical_complete(
+            {"Q_DEPTH": q_depth, "Q_DETECT": q_detect}, donor_id=donor_id)
+        if stored_complete is not recomputed_complete:
+            raise AssertionError(
+                "%s: donor %s stores technical_complete=%r but predicate gives %r"
+                % (STOP_FIELD_SCHEMA, donor_id, stored_complete,
+                   recomputed_complete))
         semantic_rows.append({
-            "donor_id": str(record["donor_id"]),
-            "cells": int(record["cells"]),
+            "donor_id": donor_id,
+            "cells": cells,
             "cell_ids": cell_ids,
             "Q_DEPTH": q_depth,
             "Q_DETECT": q_detect,
-            "technical_complete": str(record["technical_complete"]).strip().lower()
-                                  == "true",
+            "technical_complete": stored_complete,
         })
+    donor_ids = [row["donor_id"] for row in semantic_rows]
+    if len(donor_ids) != len(set(donor_ids)):
+        raise AssertionError("%s: registry repeats a donor" % STOP_FIELD_SCHEMA)
+    if int(meta.get("donor_count", -1)) != len(semantic_rows):
+        raise AssertionError(
+            "%s: metadata donor_count=%r but registry holds %d"
+            % (STOP_FIELD_SCHEMA, meta.get("donor_count"), len(semantic_rows)))
+    if int(meta.get("technically_complete_donors", -1)) != sum(
+            1 for row in semantic_rows if row["technical_complete"]):
+        raise AssertionError(
+            "%s: metadata technically_complete_donors disagrees with registry"
+            % STOP_FIELD_SCHEMA)
     recomputed_completeness = completeness_root(semantic_rows)
     stored_completeness = str(meta.get("completeness_root_sha256"))
     if stored_completeness != recomputed_completeness:
