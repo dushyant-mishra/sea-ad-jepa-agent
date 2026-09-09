@@ -21,7 +21,39 @@ Candidate repair: `full_population_coverage_schedule_v1.py`.
 - exact p/q makes repeats incapable of redefining donor-uniform scientific mass;
 - hardware packing may reorder the frozen multiset but may not change identity, multiplicity or weight.
 
-This candidate does **not** yet supersede `TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3` or `PRESENTATION_HORIZON_AUTHORITY_V1`. Before supersession it must run over the actual 4,553,407-row reader-fit ledger and report total top-up, source/donor/operator presentation geometry, p/q conditioning, ESS, repeat extrema and compute cost.
+This candidate does **not** yet supersede `TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3` or `PRESENTATION_HORIZON_AUTHORITY_V1`.
+
+### Full 4,553,407-cell audit completed
+
+Executable audit:
+
+- `scripts/v5_anticheat/audit_full_population_coverage_conditioning_v1.py`
+- `docs/agent/v5_anticheat/results/FULL_POPULATION_COVERAGE_CONDITIONING_AUDIT_V1.json`
+- input metadata SHA-256 `a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913`
+
+The exact reader-fit geometry is 4,553,407 unique stable cell keys, 104 donors, 42 operators and 1,400 donor×operator groups.
+
+A naive full pass plus only the minimum group top-up is **rejected** as a production schedule. It needs just 1,811 extra presentations and keeps max cell multiplicity at 16, but its importance ESS fraction is only `0.0968911` and its max/min importance-weight ratio is `2149.52x`.
+
+More importantly, the full dataset proves a feasibility constraint. The smallest reader-fit donor has 81 cells and the largest has 174,111, so donor-uniform target per-cell probability varies by `2149.5185x`. Guaranteed full coverage gives every cell multiplicity at least 1. Under the currently frozen max multiplicity 32, **any** schedule has max/min p/q importance-weight ratio at least:
+
+`2149.5185 / 32 = 67.1724537x`.
+
+Therefore the existing `<=64x` ratio limit, max repeat cap 32, and guaranteed full-cell coverage are mathematically incompatible. No sampler, optimizer or GPU implementation can satisfy all three simultaneously. To make a 64x ratio ceiling even theoretically feasible while preserving full coverage requires cell cap at least 34.
+
+A deterministic donor-balanced dataset-only calibration under group floor 16, cap 32 and ESS floor 0.50 found a candidate with:
+
+- total presentations `5,271,158` = `1.15762944` reader-fit population equivalents;
+- 717,751 extra presentations;
+- ESS fraction `0.50092751`;
+- max cell multiplicity 32;
+- minimum donor×operator presentations 16;
+- importance-weight ratio `67.1724537x`, exactly the dataset/cap lower bound;
+- no pathology or outcome input.
+
+This greedy candidate is not claimed globally optimal and is not training authority. Its value is that it proves a well-conditioned full-coverage schedule exists close to one population pass **if** the internally inconsistent 64x constraint is prospectively superseded.
+
+Reviewer recommendation: preserve full unique-cell coverage, donor-uniform target mass, ESS >=0.50, group floor 16 and repeat cap 32; prospectively replace the old 64x ceiling with a dataset-feasibility rule whose floor is derived from donor-size geometry and the frozen repeat cap. Do not set the new ceiling from checkpoint behavior or from post-training outcomes.
 
 ## External-review finding 2: a single cell state can still learn acquisition identity
 
@@ -70,11 +102,11 @@ The rare tail remains measurement-underdetermined and must not be promoted into 
 
 ## Next required executable audits
 
-1. Run the coverage-first candidate over all 4,553,407 reader-fit rows and compare it to proposal V3 on coverage, donor/source/operator mass, ESS, weight ratio and repeat extrema.
+1. **Completed:** full 4,553,407-cell coverage/conditioning audit. Next: external review and prospective supersession decision for the mathematically incompatible 64x conditioning ceiling versus repeat cap/full-coverage requirements.
 2. Bind the common-core/native support candidate to the corrected operator-family geometry digest; do not use the stale V3 overlay digest.
 3. Build the actual `z_bio`/`z_obs` model adapter and prove routing with source/mask/depth negative controls before optimizer authority.
 4. Execute the real-data anti-cheat probes on held-out donor/matrix/source splits; technology remains not estimable until a lawful mapping exists.
 5. Run the protected-gradient torch tests with zero skips and CUDA Gate-2/hardware-invariance qualification.
 6. Only then freeze update geometry, EMA half-life, target-query budget and final trainer authority.
 
-Local candidate self-check before publication: 10/10 new tests PASS; py_compile PASS.
+Local candidate self-check: initial coverage/firewall surface 10/10 PASS; full-population feasibility audit tests 6/6 PASS; py_compile PASS. No optimizer or pathology access.
