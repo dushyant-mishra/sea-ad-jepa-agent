@@ -6,10 +6,10 @@
   "implementation_verifier_veto": true,
   "implementation_verifier_runs_before_expensive_compute": true,
   "implementation_verifier_authority": "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
-  "current_gate": "T0_STAGE3_INDEPENDENT_CLEAN_CHECKOUT_REPLAY_AND_V5_FULL_POPULATION_ANTI_CHEAT_HARDENING",
+  "current_gate": "T0_STAGE3_EVIDENCE_REPLAY_PLUS_FROZEN_CODE_PUBLICATION_AND_V5_FULL_POPULATION_ANTI_CHEAT_HARDENING",
   "status": "T0_STAGE3_EVIDENCE_BYTES_PUBLISHED__PRIMARY_INTERNAL_SUPPORT_RETAINED__V5_TRAINING_CLOSED",
-  "current_status": "T0 V20 Stage 3 evidence publication at 2e6d8d1e33867fa90032492894c92ea4849e3e4a now commits 84 byte-bound evidence files, including the exact decision, Stage 3 summary, confirmation access manifest, tail and execution-input packages. The prior missing-byte limitation is closed. The decision preserves BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL (p_upper 0.021 vs alpha 0.025) and RARE_TAIL_UNDERDETERMINED_MEASUREMENT. Remaining review gaps are a clean independent checkout/CI replay and the frozen adjudicator's omission of the numerical state-composition/state-measurement result objects. V5 training and all downstream protected gates remain closed.",
-  "primary_next_action": "T0: run the committed evidence-byte standing tests on a clean independent checkout/CI; do not alter or rerun the scientific procedure. V5: prospectively harden full-population coverage and observation-vs-biology shortcut separation before any optimizer run.",
+  "current_status": "T0 V20 emitted evidence is byte-published at 2e6d8d1e33867fa90032492894c92ea4849e3e4a and the primary internal-support/tail-underdetermined terminals are retained. Evidence-byte verification is now possible from a clean clone. Full scientific computation replay is not yet self-contained because Stage 3 imports frozen V20 conclusion modules from an external scratch authority path and key frozen modules are not in the branch tree. V5 training and all downstream protected gates remain closed.",
+  "primary_next_action": "T0: publish the exact frozen V20 computation-code bundle used by Stage 3, byte-bound and unchanged, then run clean-clone evidence tests plus end-to-end adjudication replay. V5: continue full-population conditioning and representation-firewall hardening without optimizer execution.",
   "t0_stage2_discovery_status": {
     "branch": "t0/v20-pathology-blind-materialization-20260908",
     "head": "237427c734bfdf7d00f286ceeae63692b3075d49",
@@ -37,12 +37,13 @@
     "completed_terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
   },
   "required_actions": [
-    "T0: execute tests/v4/test_t0_v20_evidence_bytes_committed_v1.py from a clean independent checkout/CI and require zero skips/failures.",
-    "T0: preserve the post-access role-label repair at f98c1f8 and the frozen sensitivity-reporting omission as explicit caveats; do not rerun or retune V20.",
-    "V5: replace the misleading assumption that 4,553,407 with-replacement presentations equals full-cell coverage; prospectively evaluate a coverage-first schedule over every reader-fit stable cell key.",
-    "V5: separate biological representation authority from observation/operator state so support/mask/depth identity can be modeled without becoming the biological embedding.",
-    "V5: preserve donor-uniform scientific mass and exact weighting under any coverage/sampling change; hardware packing must not alter inclusion, weighting, view identity or RNG identity.",
-    "V5: complete anti-cheat threshold calibration, live protected-gradient tests, CUDA Gate-2, hardware invariance and independent review before training authority."
+    "T0: publish the exact frozen V20 conclusion/adjudication/target/role modules used by Stage 3 without changing their bytes, bind their identities/root, and make the replay harness import only that committed bundle.",
+    "T0: execute the 84-file evidence-byte standing tests and the end-to-end Stage 3 replay from a clean independent checkout; require exact decision/root reproduction.",
+    "T0: preserve the post-access role-label repair and frozen sensitivity-reporting omission as explicit caveats; do not rerun or retune the V20 scientific design.",
+    "V5: evaluate guaranteed full-cell coverage against the actual 4,553,407-row reader-fit geometry and do not equate population-equivalent with-replacement presentations with full-dataset coverage.",
+    "V5: preserve donor-uniform target mass through exact p/q weighting and freeze only a jointly feasible set of coverage, ESS, group-floor, repeat-cap and weight-conditioning constraints.",
+    "V5: route biological objectives through a common-core-anchored z_bio and acquisition/measurement state through z_obs; retain same-cell support/mask/evidence/depth interventions and shortcut probes.",
+    "V5: complete live protected-gradient tests, CUDA Gate-2, hardware invariance, anti-cheat threshold calibration and independent review before training authority."
   ],
   "parallel_nonblocking_work": [
     "Develop and test a coverage-first full-population V5 schedule candidate without optimizer execution.",
@@ -123,6 +124,8 @@
     "evidence_bytes": 3621018,
     "missing_evidence_byte_limitation": "CLOSED",
     "clean_independent_checkout_replay": "PENDING",
-    "sensitivity_reporting_gap": "NUMERICAL_STATE_COMPOSITION_AND_STATE_MEASUREMENTS_NOT_EMITTED_IN_FROZEN_DECISION_RETURN"
+    "sensitivity_reporting_gap": "NUMERICAL_STATE_COMPOSITION_AND_STATE_MEASUREMENTS_NOT_EMITTED_IN_FROZEN_DECISION_RETURN",
+    "evidence_clean_clone_verification": "AVAILABLE_PENDING_REMOTE_OR_INDEPENDENT_EXECUTION",
+    "computation_clean_clone_replay": "BLOCKED__FROZEN_V20_CONCLUSION_MODULES_EXTERNAL_TO_REPO"
   }
 }
