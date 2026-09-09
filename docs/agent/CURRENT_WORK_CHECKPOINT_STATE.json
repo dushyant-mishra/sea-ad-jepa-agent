@@ -176,13 +176,16 @@
     "f1b_successor": "BLOCKED_DOWNSTREAM_OF_C2_AND_SCIENTIFIC_CONTRACTS",
     "real_f1": "FORBIDDEN",
     "real_t0": "FORBIDDEN",
-    "t0_v20": "PASS_T0_V20_INDEPENDENT_REVIEW__REAL_T0_STILL_UNAUTHORIZED"
+    "t0_v20": "STOP_BEFORE_REAL_T0_RUN__ALL_PATHOLOGY_BLIND_AUTHORITIES_READY_FOR_EXTERNAL_REVIEW"
   },
   "next_authorized_actions": [
-    "RUN_TECHNICAL_COMPLETENESS_PRODUCTION_ON_THE_POPULATION_AUTHORITY",
-    "REPLAY_TECHNICAL_COMPLETENESS_BEFORE_CLAIMING_IT",
-    "DO_NOT_BUILD_THE_ELIGIBLE_DONOR_AUTHORITY_UNTIL_THAT_REPLAYS_CLEANLY",
-    "DO_NOT_ACCESS_NUMERIC_CONFIRMATION_AT8",
+    "AWAIT_EXTERNAL_REVIEW_OF_THE_PRE_REAL_T0_HANDOFF",
+    "DO_NOT_RUN_REAL_T0",
+    "DO_NOT_ACCESS_NUMERIC_CONFIRMATION_AT8_OR_PATHOLOGY_VALUES",
+    "DO_NOT_OPEN_DEV_OR_SEALED",
+    "DO_NOT_SET_OR_BYPASS_REAL_EXECUTION_READY",
+    "DO_NOT_BEGIN_TEACHER_STUDENT_TRAINING",
+    "DO_NOT_SELF_PROMOTE_ANY_AUTHORITY_TO_PASS",
     "PRESERVE_STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND"
   ],
   "peer_agents": [
@@ -519,6 +522,100 @@
       "missing": 0,
       "operator_index": 31,
       "target_cells": 20804
+    },
+    "pre_real_t0_review_20260909": {
+      "artifact_manifest": "docs/agent/T0_TECHNICAL_COMPLETENESS_AND_ELIGIBLE_DONOR_ARTIFACT_MANIFEST_20260909.md",
+      "decision_record": "DEC-025",
+      "eligible_donors": {
+        "binding_role_rule": "RANK_ELIGIBLE_DONORS_ONLY__NOT_ALL_SUPPORT_DONORS",
+        "candidate_donors": 46,
+        "confirmation_donors": 18,
+        "discovery_donors": 28,
+        "donor_role_root_sha256": "799261f54de158f4c24c33a51a674611fe4e5e68509fcbbca681216470fe10bd",
+        "eligible_donor_root_sha256": "a5470b9f5389e0fa72b3ca51832c67d7419ed6447a85d6d979884b9fe1444f85",
+        "eligible_donors": 46,
+        "ineligible_donors": 0,
+        "package_dir": "outputs/t0_eligible_donor_20260909",
+        "package_root_sha256": "af4b71413917cde7dd6b35686b3f8410e94ee323d436a2f4e125ff91b06980fd",
+        "parent_contract_root_sha256": "be92b2ac2b347f0da45690e264d1b224584cfb56131ac3df61a01480ad196ae8",
+        "rederived_from_parents": true,
+        "replay": "PASS",
+        "replay_verifier": "scripts/v4/t0_eligible_donor_replay_v1.py",
+        "runner": "scripts/v4/t0_eligible_donor_production_run_v1.py"
+      },
+      "handoff": "docs/agent/T0_EXTERNAL_REVIEW_HANDOFF_PRE_REAL_T0_20260909.md",
+      "own_defects_found_and_fixed_today": [
+        "A 40-character Git SHA-1 recorded under derivation_code_sha256; the field now requires a lowercase 64-character hex digest.",
+        "eligible was never checked against the conjunction of its own row's flags; the predicate is now re-evaluated on write and on load.",
+        "The manifest was never reconciled against the member bytes on disk.",
+        "Metadata counts, role counts and the confirmation floor were never checked against the registry they summarise.",
+        "Mutation tests stopped at the manifest check instead of reaching the checks their names claimed; they now restamp first.",
+        "_boolean accepted the string True in derivations, which would let an unparsed CSV column decide eligibility.",
+        "donor_role was read off the row on load rather than re-derived, so a role-swapped registry with recomputed digests would have passed."
+      ],
+      "reported_not_resolved": {
+        "derivation_ignores_its_own_read_plan": "The walk uses frozen membership order, which is almost fully interleaved at 19953 contiguous runs across 20804 rows. Under the 48-entry cache it loaded 3126 blocks and read 18.35 GB, against 7.35 GB block-major and 114.84 GB uncached. Efficiency only: per-row work is order-independent and the donor reduction uses math.fsum, which is exactly rounded, so a block-major walk would produce identical roots.",
+        "frozen_role_modules_not_equivalent": "split_v2.generate ranks every support donor while build_role_authority ranks only the metadata-complete ones, so they disagree whenever an ineligible donor ranks inside the top 18. They agree on today's data because all 46 donors are eligible, so the inconsistency is unexercised rather than absent. The role authority is binding and is recorded as such.",
+        "lane_wide_provenance_mislabel": "Every authority package records the plain SHA-256 of its derivation module's LF-normalized content while declaring GIT_BLOB_BYTES__NOT_WORKTREE_BYTES. A Git blob digest frames content as blob-length-NUL plus content and differs: the technical-completeness module measures 6045f84cd1ea7f642f2b91b15756be7e3bb9bdd97fd53224f88f1d04b6f81c4d under blob framing against the recorded 64cea54a67c5ab9e3c81bb7779a52653205c2c36b98645b7a3d7b4b0ec82fb49. Values are correct and CRLF-safe; only the method claim is false. The eligible-donor lane now states it accurately; the other seven are left alone because correcting them moves package roots already cited in DEC-024, including B2. Scoped to derivation_code_byte_semantics in the authority packages; work_checkpoint's git-blob byte authority is accurate."
+      },
+      "scope_question_flagged_not_decided": "The eligible-donor authority emits a donor_role column. My reading is that roles were in scope for the ordered step, because the assignment is a deterministic function of the eligible set with no free parameter and no pathology input. But the lane tracks donor_roles_computed as a gated marker. The frozen t0_donor_role_authority_v2 package is NOT built, its nuisance rank checks are NOT run on production data because they need age and sex values this authority deliberately omits, and STOP_T0_DONOR_ROLE_AT8_AVAILABILITY_AUTHORITY_UNBOUND is NOT treated as lifted. If roles were meant to stay out, the column comes out and the package is re-cut.",
+      "state": {
+        "b2_real_population_authority": "DONE_AND_REPLAYED",
+        "dev_and_sealed": "NOT_OPENED",
+        "eligible_donor_authority": "DONE_AND_REPLAYED",
+        "estimability_preflight_production_run": "NOT_RUN",
+        "frozen_donor_role_authority_v2_package": "NOT_BUILT",
+        "numeric_confirmation_at8": "NOT_ACCESSED",
+        "real_execution_ready": false,
+        "real_t0_execution": "NOT_RUN",
+        "teacher_student_training": "NOT_BEGUN",
+        "technical_completeness": "DONE_AND_REPLAYED"
+      },
+      "suite_accounting": {
+        "correction": "The 577 figure previously carried forward was wrong; the producer baseline measures 561.",
+        "no_ci_attached": true,
+        "producer_baseline_before_today": 561,
+        "producer_suites": 652,
+        "r4_failure_reason": "The previously reported mutual contradiction between its tests 3 and 5, reported rather than worked around.",
+        "r4_independent_reviewer_suite": "6 passed, 1 failed"
+      },
+      "tail_measurability_is_separate_from_completeness": {
+        "H20.33.037": {
+          "cells": 67,
+          "role": "DISCOVERY",
+          "technical_complete": true
+        },
+        "confirmation_tail_measurable": 18,
+        "discovery_tail_measurable": 27,
+        "donors_below_the_floor": [
+          "H20.33.037"
+        ],
+        "frozen_tail_allowed_n": [
+          17,
+          18
+        ],
+        "frozen_tail_min_cells_per_donor": 80,
+        "reading": "Completeness is threshold-free definedness, so a 67-cell donor is complete. The 80-cell floor is tail measurability only. The confirmation tail analysis is executable at n=18."
+      },
+      "technical_completeness": {
+        "cells_consumed": 20804,
+        "completeness_root_sha256": "360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470",
+        "counts_payload_cache_hits": 17678,
+        "counts_payload_reads": 3126,
+        "donors": 46,
+        "elapsed_seconds": 2374.9,
+        "package_dir": "outputs/t0_technical_completeness_20260909",
+        "package_root_sha256": "0164bccc76ad7ed9385de01fd0ab885dd80770afad0b94ee189e9084ee3cfe99",
+        "parent_contract_root_sha256": "9d4e818e20077c42c5500b4df35c385dd1a43cb53375da3a7b4d738257ff5ba5",
+        "production_run_status": "DERIVED_OVER_THE_REAL_POPULATION_FROM_AUTHENTICATED_B2_PARENTS",
+        "projection_positions": 35076,
+        "projection_root_sha256": "ef6ccdde0e0268cce819b4e543d7d542120811fa3762225964f78f9172f370e7",
+        "replay": "PASS",
+        "retired_terminal_absent": true,
+        "runner": "scripts/v4/t0_technical_completeness_production_run_v1.py",
+        "technically_complete_donors": 46
+      },
+      "terminal": "STOP_BEFORE_REAL_T0_RUN__ALL_PATHOLOGY_BLIND_AUTHORITIES_READY_FOR_EXTERNAL_REVIEW"
     },
     "production_b2_run": {
       "artifact_manifest": "docs/agent/T0_B2_PRODUCTION_ARTIFACT_MANIFEST_20260909.md",
