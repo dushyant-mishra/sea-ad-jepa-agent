@@ -1,6 +1,6 @@
 # T0 V20 Stage 3 independent review — 2026-09-09
 
-Status: `T0_STAGE3_TERMINAL_OBSERVED__INTERNAL_SUPPORT_RECORDED__FULL_EVIDENCE_BYTE_REVIEW_PENDING`
+Status: `T0_STAGE3_EVIDENCE_BYTES_PUBLISHED_AND_HASH_BOUND__PRIMARY_INTERNAL_SUPPORT_RETAINED__SENSITIVITY_REPORTING_GAP_AND_REMOTE_CI_REPLAY_PENDING`
 
 ## Reviewed live branch state
 
@@ -63,9 +63,13 @@ made the role an explicit required keyword and changed the digest label accordin
 
 Review judgment: this is a post-access implementation/provenance repair and must remain disclosed. I do not see evidence that the repair was outcome-responsive: the fix is structurally forced by the wrong role label and does not alter endpoint, donor membership, nuisance design, ridge grid, thresholds, permutation rule, or adjudication logic. It therefore does not by itself invalidate the internal result, but it is a procedural caveat for any stronger confirmatory interpretation.
 
-## Review caveat 2 — final evidence bytes are not committed on the T0 branch
+## Evidence-byte publication review — limitation closed at 2e6d8d1e
 
-The terminal commit records the following artifact identities:
+The evidence publication head is:
+
+`2e6d8d1e33867fa90032492894c92ea4849e3e4a`
+
+It adds 84 tracked evidence files (3,621,018 bytes) across the decision chain plus standing tests and raw-byte Git attributes. The previously published identities now resolve to committed bytes, including:
 
 - adjudication decision SHA-256: `a36081705ed17f3f4656f742ea1e65d8e955a05eaf13cb7a607af01938a36a03`;
 - Stage 3 run summary SHA-256: `9aa4abbf0e213464d207533e2412d74177b3cc1712a77e6a0aad71bbce1b9ed4`;
@@ -73,12 +77,15 @@ The terminal commit records the following artifact identities:
 - tail package root: `c84a76b02d2a29cfc070b04161800d2b7c9b503321b9258bc5c256b55a1597bc`;
 - pretarget authority root: `3b0b16a364ff1430e28d496ea5586ff1aaf1b2fce58bbe5367c26678b6c6e618`;
 - preadjudication authority root: `ba87764fa7419eda1119744f206242d0440dc8f41772e3259b87f75f61611f8c`;
-- confirmation matrix SHA-256: `4246b93be338ca935f13666f1be490b541c7f410f7301bf4a1536399af81ba10`;
-- confirmation endpoint-values SHA-256: `3098f7e289d4c14b5c0f57ef98c76004dd92c36d38f0d306881a7779e402a8a7`.
+- discovery target root: `b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe`;
+- discovery authority root: `9806de382c75f7a7a12bb952631ed0b6c9b458250e8161a876b470c48898f6f7`;
+- donor-role root: `db8680e6cef3e0d26ee117a2acbd10ba1f681a53401008128a9bb7a2e6c478e0`.
 
-However, the result commit itself is empty and the Stage 3 decision/run-summary/access-manifest bytes are not present in the current Git tree. Their exact-byte replay therefore cannot yet be independently repeated from GitHub alone.
+The committed decision bytes reproduce the primary statistics and the tail QC veto exactly. The evidence manifest records 84/84 blob-to-disk byte equality and excludes only the two reproducible matrix NPZ caches, whose matrix identities remain digest-bound in the run summaries. The branch also applies `-text` to all thirteen evidence directories and tests committed blob bytes rather than merely re-hashing the producer worktree. That is the correct defense against the earlier CRLF digest failure.
 
-## Review caveat 3 — frozen adjudicator reporting omission
+This closes the prior missing-evidence-byte limitation. There is no GitHub Actions run attached to the publication head, however, so the producer-suite claim remains local until an independent checkout/CI replay executes the standing tests.
+
+## Remaining review caveat — frozen adjudicator sensitivity-reporting omission
 
 The `qc_ok=False` return path of the frozen adjudicator omits `state_composition` and `state_measurements` from the emitted decision object even though those sensitivities are computed and are required for `SUPPORTED_INTERNAL`.
 
@@ -107,4 +114,6 @@ The T0 primary result may inform future evaluation priorities after governance r
 
 ## Next T0 review action
 
-Obtain or commit the exact Stage 3 run-summary, decision, access-manifest, and sensitivity-supporting evidence bytes under their recorded SHA-256 identities, then perform exact-byte independent replay/readback. Until then, the scientific terminal is recorded as internally supported with the caveats above.
+Run the committed evidence-byte standing tests from a clean independent checkout/CI environment. Separately preserve the frozen reporting defect: the committed decision still omits the numerical `state_composition` and `state_measurements` result objects even though `SUPPORTED_INTERNAL` depends on them. The terminal and primary/tail statistics are now byte-verifiable; the omitted sensitivity numerics are not recoverable as standalone result objects from the committed decision.
+
+Do not rerun, retune, or widen the T0 V20 scientific procedure. The remaining work is evidence/replay hygiene only.
