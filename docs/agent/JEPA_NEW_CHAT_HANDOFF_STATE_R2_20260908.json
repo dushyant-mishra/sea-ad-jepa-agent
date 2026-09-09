@@ -1,0 +1,33 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_R2",
+  "date": "2026-09-08",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "canonical_branch": "main",
+  "observed_main_head": "b26ddcd587c7b63c8a2f327d74a86620eef66868",
+  "observed_live_branches": [
+    "main",
+    "planning/teacher-student-v5-gpu-rng-mechanics-20260908",
+    "t0/v20-pathology-blind-materialization-20260908"
+  ],
+  "observed_branch_count": 3,
+  "global_gate": "STOP_JEPA_EXECUTION_AUTHORITIES_INCOMPLETE",
+  "t0": {
+    "active_candidate_head": "ab61cf5599663c417d2b2c5ef95ca7e5a37a312c",
+    "implementation_parent": "3b5ff3a1788d25176fd476fff4acf9f227e5c1ba",
+    "prior_external_stop_head": "24b2c9ffc0ab2d63061c20af8829bcb86114b11a",
+    "producer_reported_tests": "482/482 PASS",
+    "external_review_status": "PENDING_INDEPENDENT_R3_REVIEW",
+    "production_b2_run": false,
+    "donor_role_gate_open": false,
+    "numeric_confirmation_at8_accessed": false,
+    "real_execution_ready": false
+  },
+  "v5": {
+    "current_continuation": "028989a5f1504e4d6403a44e7c90d37172c54150",
+    "materialization": "71484ab99d276d7251836c109885d22ab4e7abb1",
+    "prototype_root_sha256": "9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad",
+    "v5_active_tests": "66/66 PASS",
+    "v4_regression": "98/98 PASS",
+    "training_authorized": false
+  }
+}
