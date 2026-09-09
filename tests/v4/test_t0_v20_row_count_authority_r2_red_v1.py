@@ -17,7 +17,7 @@ discriminate rather than merely to look plausible. The defects:
    carry the frozen complete-manifest digest. The contract as written is
    internally impossible.
 
-2. `prove_source_library` does not authenticate anything. It requires three
+2. `fixture_source_library_semantics` does not authenticate anything. It requires three
    provenance keys to be present, never verifies `source_sha256`, and never
    requires `source_row_index` to equal the bound `expression_row`. A fabricated
    vector with an arbitrary digest string proves the value as long as its sum
@@ -232,7 +232,7 @@ def test_the_complete_manifest_subset_geometry_is_asserted(
 # RED 2 — source_library must be proven from an AUTHENTICATED raw source row.
 # ---------------------------------------------------------------------------
 
-def test_a_fabricated_raw_row_with_a_matching_sum_does_not_prove_source_library(
+def test_a_fabricated_raw_row_with_a_matching_sum_does_not_fixture_source_library_semantics(
         world: MultiOperatorWorld) -> None:
     """Carrying a `source_sha256` string is not authentication.
 
@@ -244,7 +244,7 @@ def test_a_fabricated_raw_row_with_a_matching_sum_does_not_prove_source_library(
     logical = _logical(world, _closure_from(world.complete_manifest(), world))
     fabricated = [0] * 1999 + [9470]
     with pytest.raises(AssertionError):
-        rc.prove_source_library(
+        rc._fixture_source_library_semantics_fixture_values(
             logical=logical, logical_index=0,
             raw_source_row_values=fabricated,
             raw_source_provenance={
@@ -264,7 +264,7 @@ def test_the_proving_row_index_must_equal_the_bound_expression_row(
     bound = logical["rows"][0]["expression_row"]
     values = [0] * 1999 + [logical["rows"][0]["source_library"]]
     with pytest.raises(AssertionError):
-        rc.prove_source_library(
+        rc._fixture_source_library_semantics_fixture_values(
             logical=logical, logical_index=0,
             raw_source_row_values=values,
             raw_source_provenance={
@@ -288,7 +288,7 @@ def test_the_proving_row_identity_must_match_the_bound_cell_and_donor(
     row = logical["rows"][0]
     values = [0] * 1999 + [row["source_library"]]
     with pytest.raises(AssertionError):
-        rc.prove_source_library(
+        rc._fixture_source_library_semantics_fixture_values(
             logical=logical, logical_index=0,
             raw_source_row_values=values,
             raw_source_provenance={
@@ -312,7 +312,7 @@ def test_the_matrix_slot_must_be_the_raw_umi_layer(
     row = logical["rows"][0]
     values = [0] * 1999 + [row["source_library"]]
     with pytest.raises(AssertionError):
-        rc.prove_source_library(
+        rc._fixture_source_library_semantics_fixture_values(
             logical=logical, logical_index=0,
             raw_source_row_values=values,
             raw_source_provenance={
