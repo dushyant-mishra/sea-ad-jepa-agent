@@ -1,0 +1,149 @@
+{
+  "schema": "JEPA_V5_DIMENSION_AND_PARAMETER_DERIVATION_CONTRACT_CANDIDATE_V1",
+  "status": "PROSPECTIVE_REAL_DATA_DERIVATION_CONTRACT__NO_TRAINING_AUTHORITY",
+  "population_authority": {
+    "partition": "reader_fit",
+    "cells": 4553407,
+    "donors": 104,
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "support_member_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "common_core_addresses": 17186,
+    "production_dimension_authority_must_use_full_reader_fit": true,
+    "sampled_or_synthetic_population_may_close_dimension_authority": false
+  },
+  "dimension_family": {
+    "D_shared": {
+      "meaning": "reproducible biology shared across lawful disjoint molecular views and donors",
+      "selection_substrate": "full reader_fit common-core expression with equal donor influence",
+      "selection_rule": "smallest jointly-supported contiguous prefix within one donor-level SE of best held-donor cross-view predictability",
+      "joint_support_required": [
+        "signal_above_full_refit_matched_null",
+        "donor_resampled_subspace_stability",
+        "held_donor_cross_view_predictability",
+        "independent_view_or_sketch_agreement",
+        "increment_beyond_frozen_measurement_shortcut_baselines"
+      ],
+      "null_must_preserve": [
+        "donor",
+        "operator",
+        "Q_DEPTH",
+        "Q_DETECT",
+        "support/measurability marginals"
+      ],
+      "full_null_geometry_refit_required": true,
+      "zero_is_lawful": true,
+      "boundary_rule": "if support remains unsaturated at search boundary, expand prospectively; boundary cannot be selected merely because it is the maximum tested"
+    },
+    "D_private": {
+      "meaning": "additional lawful biological rank in operator-native evidence after D_shared is frozen",
+      "starts_only_after_D_shared_freeze": true,
+      "target": "incremental prediction of common-core biological state/relations from native evidence, not residual variance and not measurement identity",
+      "required_checks": [
+        "held_donor_increment",
+        "held_operator_increment",
+        "measurement_shortcut_increment",
+        "same_cell_technical_intervention_stability"
+      ],
+      "zero_is_lawful": true
+    },
+    "D_total": {
+      "definition": "D_shared + D_private",
+      "must_be_derived_before_neural_output_width_freeze": true
+    },
+    "D_obs": {
+      "meaning": "separate observation/measurement state rank for z_obs",
+      "allowed_information": [
+        "measurement support",
+        "mask state",
+        "Q_DEPTH",
+        "Q_DETECT",
+        "measurement uncertainty",
+        "lawfully documented assay/platform/chemistry descriptors"
+      ],
+      "forbidden_as_free_inputs": [
+        "donor identity",
+        "pathology",
+        "protected/sealed labels",
+        "arbitrary source/matrix identity"
+      ],
+      "selection_rule": "smallest rank within one SE of best held-operator/held-source reconstruction of lawful observation descriptors, with no biology qualification claim",
+      "may_differ_from_D_total": true
+    },
+    "d_gene": {
+      "meaning": "neural token/attention capacity parameter, not biological dimensionality",
+      "selection": "capacity/hardware preflight after D_total is known; interfaces must be parameterized and cannot impose an inward biological bottleneck",
+      "historical_160_is_authority": false
+    },
+    "candidate_search_rank": {
+      "meaning": "search envelope only",
+      "historical_320_is_authority": false,
+      "selection": "prospectively expandable envelope; every positive integer dimension inside the current envelope is eligible"
+    }
+  },
+  "historical_non_authority_guard": {
+    "historical_96": "NOT_AUTHORITY",
+    "historical_d_gene_160": "TOKEN_WIDTH_NOT_BIOLOGY_CEILING",
+    "historical_external_D_global_224": "NOT_ACTIVE_FORWARD_AUTHORITY",
+    "historical_search_rank_320": "SEARCH_ENVELOPE_ONLY",
+    "historical_temporary_D_shared_5": "REJECTED_BY_FINAL_FULL104_ADJUDICATION",
+    "historical_final_D_shared": "NONE_QUALIFIED__TEACHER_BIOLOGY_LIMIT"
+  },
+  "real_data_derived_parameters": [
+    "reader_fit cell count",
+    "eligible donor count",
+    "source donor composition",
+    "operator count",
+    "donor×operator group geometry",
+    "outer donor fold count",
+    "common measured core",
+    "support prevalence by operator/family",
+    "sampling proposal q",
+    "exact p/q weights",
+    "schedule multiplicities/horizon",
+    "ESS and realized conditioning",
+    "D_shared",
+    "D_private",
+    "D_total",
+    "D_obs",
+    "measurement/QC null distributions",
+    "shortcut baselines",
+    "source/operator update-composition diagnostics"
+  ],
+  "prospectively_fixed_design_or_risk_controls_not_selected_from_checkpoint_outcomes": [
+    "family definitions",
+    "statistical error/risk budgets",
+    "ESS floor",
+    "anti-concentration policy/cell-repeat cap unless separately superseded by a predeclared derivation rule",
+    "view construction/hash domains",
+    "critical gradient registry semantics",
+    "same-cell intervention families",
+    "no-flex-after-optimizer-start rule"
+  ],
+  "hardware_derived_before_training": [
+    "effective base cells per optimizer update",
+    "maximum tokens per microbatch",
+    "gradient accumulation/packing plan",
+    "target query chunk size",
+    "memory-safe teacher query budget"
+  ],
+  "explicitly_unresolved": [
+    "D_shared",
+    "D_private",
+    "D_total",
+    "D_obs",
+    "EMA half-life in presentations",
+    "effective base cells per update",
+    "maximum teacher tokens per microbatch",
+    "target query budget",
+    "target query chunk size",
+    "anti-cheat numeric thresholds/increment margins",
+    "lawful technology mapping"
+  ],
+  "firewall": {
+    "pathology_used": false,
+    "checkpoint_outcomes_used": false,
+    "synthetic_data_may_be_used_for_unit_mechanics_only": true,
+    "synthetic_data_may_set_production_values": false
+  },
+  "training_authorized": false
+}
