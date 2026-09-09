@@ -1,0 +1,92 @@
+{
+  "schema": "TEACHER_STUDENT_V5_FULL_POPULATION_HORIZON_CANDIDATE_V3",
+  "status": "REAL_4553407_CELL_LEXICOGRAPHIC_SCHEDULE_REPLAYED__PROSPECTIVE_SUPERSESSION_CANDIDATE__NO_TRAINING_AUTHORITY",
+  "supersedes_candidate": "TEACHER_STUDENT_V5_FULL_POPULATION_HORIZON_CANDIDATE_V2",
+  "scientific_target": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+  "authenticated_population": {
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "partition": "reader_fit",
+    "cells": 4553407,
+    "unique_stable_keys": 4553407,
+    "donors": 104,
+    "donor_operator_groups": 1400
+  },
+  "frozen_candidate_constraints": {
+    "full_unique_cell_coverage": true,
+    "minimum_donor_operator_group_presentations": 16,
+    "maximum_presentations_per_cell": 32,
+    "minimum_importance_ess_fraction": {
+      "numerator": 1,
+      "denominator": 2,
+      "float": 0.5
+    },
+    "exact_p_over_q_correction_required": true
+  },
+  "schedule_selection_rule": [
+    "MINIMIZE_IMPORTANCE_WEIGHT_MAX_TO_MIN_RATIO",
+    "THEN_MINIMIZE_TOTAL_PRESENTATIONS_SUBJECT_TO_FULL_COVERAGE_GROUP_FLOOR_CELL_CAP_AND_ESS"
+  ],
+  "exact_dataset_result": {
+    "total_presentations": 5267086,
+    "extra_presentations": 713679,
+    "population_equivalents": 1.1567351655584488,
+    "importance_ess_fraction": 0.5000000953357726,
+    "importance_weight_ratio": {
+      "numerator": 58037,
+      "denominator": 864,
+      "float": 67.17245370370371
+    },
+    "maximum_cell_multiplicity": 32,
+    "minimum_group_presentations": 16,
+    "previous_total_presentations": 5267085,
+    "previous_importance_ess_fraction": 0.49999986825272125,
+    "previous_schedule_passed_ess_floor": false,
+    "source_presentations": {
+      "HVS": 808924,
+      "NPH52": 318106,
+      "SEA_AD": 4140056
+    }
+  },
+  "canonical_cell_ledger": {
+    "records": 4553407,
+    "bytes": 40980663,
+    "raw_sha256": "e05f4a524748cf427b1c3e899a5b672641566c772aa91da8a2a56dae2b9a3c97",
+    "domain_bound_sha256": "23a5c52e2b472604a9e32c71e114b4752094950180c8d155c7ee45dd95ce8c23",
+    "encoding": "packed stable_key int64-le + multiplicity uint8, stable_key ascending",
+    "committed_as_large_binary": false,
+    "replayed_byte_identically_twice": true
+  },
+  "scientific_order": {
+    "family": "AFFINE_BIJECTION_MOD_H",
+    "H": 5267086,
+    "a": 2340573,
+    "b": 5029443,
+    "gcd_a_H": 1,
+    "formula": "canonical_slot_index=(a*scientific_presentation_index+b) mod H",
+    "hardware_packing_can_change_identity_or_weight": false
+  },
+  "executable_authority": {
+    "derive_script": "scripts/v5_anticheat/derive_full_population_schedule_optimum_v3.py",
+    "materialize_script": "scripts/v5_anticheat/materialize_full_population_schedule_v4.py"
+  },
+  "provenance_corrections": {
+    "prior_23a5_digest_was_mislabeled_raw_sha256": true,
+    "corrected_semantics": "e05f4a52... is raw ledger SHA-256; 23a5c52e... is domain-bound SHA-256",
+    "schedule_bytes_changed_by_correction": false
+  },
+  "pathology_used": false,
+  "checkpoint_outcomes_used": false,
+  "synthetic_data_used_for_authority": false,
+  "target_discovery_outcomes_used_to_choose_schedule": false,
+  "still_required_before_training": [
+    "independent review of this supersession candidate",
+    "z_bio/z_obs routing integration",
+    "shortcut-baseline increment calibration frozen before learned checkpoint outcomes",
+    "critical protected-gradient zero-skip execution",
+    "CUDA Gate-2 and hardware-invariance proof",
+    "EMA/update/query-budget freeze"
+  ],
+  "training_authorized": false,
+  "successor_u0_authorized": false,
+  "td60_authorized": false
+}
