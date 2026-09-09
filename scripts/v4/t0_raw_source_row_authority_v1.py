@@ -1,65 +1,39 @@
-"""Byte-to-row authentication of the raw MTG H5AD source for `source_library`.
+"""Population-wide byte-to-row authority for MTG raw `source_library`.
 
-Why this module replaces the previous proof
--------------------------------------------
-The previous `prove_source_library` accepted `raw_source_row_values` plus a
-provenance mapping, both supplied by the caller. It compared the caller's labels
-against the bound row and summed the caller's vector. That is LABEL
-authentication: a fabricated vector whose sum matched, carrying the correct frozen
-source digest string, the correct `layers/UMIs` slot name, the correct
-`expression_row`, the correct width and the correct cell and donor identities,
-proved `source_library` even though none of its values had ever been read from
-the source asset.
+Production semantics
+--------------------
+The production operation owns the source path, opens it once, hashes that exact
+open file object, rewinds the same object, and gives that same object to h5py.
+There is no caller-created authenticated handle and no caller-supplied row-value
+parameter.  The 33 GB asset is therefore hashed once per run and all accepted
+logical rows are proved through the same authenticated source.
 
-An external review classified that as a hard STOP rather than a documentation
-gap, and it was right. This module does byte-to-row authentication instead:
-
-  1. the H5AD bytes are digested and compared against the frozen asset identity;
-  2. the file is opened only after that comparison succeeds;
-  3. `layers/UMIs` is located and its declared shape checked;
-  4. the bound `expression_row` selects the row;
-  5. `obs` at that row must carry the bound cell and donor identity;
-  6. the row's values must be raw non-negative integral counts;
-  7. `source_library` is COMPUTED from that row and compared to the bound value.
-
-The production entrypoint takes no values argument, so there is no parameter
-through which a caller-created vector could enter. That is the structural
-property, not a check that could be forgotten.
-
-The source handle cannot be forged
-----------------------------------
-`AuthenticatedSource` carries a module-private token that only
-`open_authenticated_source` can supply, and the verifier refuses any object
-lacking it. Without that, a caller could hand over a look-alike object whose
-`sha256` attribute said the right thing, and label authentication would be back.
-
-Cost note
----------
-The frozen MTG asset is roughly 33 GB, so digesting it is minutes of I/O. The
-handle is therefore opened once and reused across every row proof of a run;
-`digest_bytes_read` records what was actually hashed so a reviewer can tell a
-real authentication from a skipped one.
+The proof is population-wide: every B2 logical row is checked against
+`layers/UMIs[expression_row]`, the H5 `obs` cell and donor identities, and the
+full raw-row integer sum.  The resulting root binds the B2 logical root, closure
+root, feature root, source digest, source geometry, exact proof cardinality and
+each proof in logical-population order.
 
 Pathology
 ---------
-Only `obs` cell identity and `obs['Donor ID']` are read, plus raw counts. No
-pathology column is read, parsed, retained or emitted, and `assert_no_pathology_read`
-states the permitted `obs` field set.
+Only the cell identity field and `Donor ID` are read from `obs`, plus raw UMI
+counts.  No pathology field is read, parsed, retained or emitted.
 """
 
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-SCHEMA = "JEPA_T0_RAW_SOURCE_ROW_AUTHORITY_V1"
-NAMESPACE = "T0-RAW-SOURCE-ROW-V1"
-DOMAIN_TAG = "T0-RAW-SOURCE-ROW-V1-TYPED-LENGTH-PREFIXED"
+SCHEMA = "JEPA_T0_RAW_SOURCE_ROW_AUTHORITY_V2"
+NAMESPACE = "T0-RAW-SOURCE-ROW-V2"
+DOMAIN_TAG = "T0-RAW-SOURCE-ROW-V2-TYPED-LENGTH-PREFIXED"
 
 STOP_SOURCE_DIGEST = "STOP_T0_RAW_SOURCE_ASSET_DIGEST_MISMATCH"
 STOP_SOURCE_ABSENT = "STOP_T0_RAW_SOURCE_ASSET_ABSENT"
-STOP_HANDLE_FORGED = "STOP_T0_RAW_SOURCE_HANDLE_NOT_PRODUCED_BY_AUTHENTICATION"
+STOP_SOURCE_CHANGED = "STOP_T0_RAW_SOURCE_ASSET_CHANGED_DURING_PROOF"
 STOP_SLOT_ABSENT = "STOP_T0_RAW_SOURCE_UMI_LAYER_ABSENT"
 STOP_SLOT_ENCODING = "STOP_T0_RAW_SOURCE_UMI_LAYER_NOT_CSR"
 STOP_SOURCE_SHAPE = "STOP_T0_RAW_SOURCE_SHAPE_MISMATCH"
@@ -70,20 +44,18 @@ STOP_LIBRARY = "STOP_T0_RAW_SOURCE_LIBRARY_NOT_PROVEN_FROM_AUTHENTICATED_ROW"
 STOP_OBS_FIELD = "STOP_T0_RAW_SOURCE_OBS_FIELD_NOT_PERMITTED"
 STOP_FIELD_SCHEMA = "STOP_T0_RAW_SOURCE_FIELD_SCHEMA_VIOLATION"
 STOP_CALLER_VALUES = "STOP_T0_RAW_SOURCE_CALLER_SUPPLIED_VALUES_REFUSED"
+STOP_LOGICAL_ROOT = "STOP_T0_RAW_SOURCE_LOGICAL_ROOT_NOT_EXTERNALLY_BOUND"
+STOP_PROOF_ROOT = "STOP_T0_RAW_SOURCE_PROOF_ROOT_MISMATCH"
+STOP_PROOF_COUNT = "STOP_T0_RAW_SOURCE_PROOF_POPULATION_NOT_COMPLETE"
 
-# Frozen identity and geometry of the MTG source asset.
 MTG_SOURCE_SHA256 = "e06000cb8fc83ebad88a52a0a7c772747c38fa92c97debcfe4f59de7cea60c79"
 MTG_SOURCE_RELATIVE_PATH = (
     "data/external/v4/sea_ad/mtg/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad")
 MTG_SOURCE_CELLS = 1_178_694
 SOURCE_FEATURE_COUNT = 36_601
+PRODUCTION_LOGICAL_ROWS = 20_804
 UMI_SLOT = "layers/UMIs"
-
-# The only `obs` fields this module is permitted to read. The asset's `obs`
-# carries Braak, Thal, CERAD and other pathology columns; none is touched.
 PERMITTED_OBS_FIELDS = ("exp_component_name", "Donor ID")
-
-_HANDLE_TOKEN = object()
 
 
 def _typed(value: Any) -> bytes:
@@ -102,111 +74,48 @@ def _typed(value: Any) -> bytes:
 
 
 def assert_no_pathology_read() -> bool:
-    """State the permitted `obs` field set.
-
-    The asset's `obs` holds Braak, Thal, CERAD score, Overall AD
-    neuropathological Change and more. This module reads exactly two fields, and
-    the guarantee is worth asserting rather than merely intending.
-    """
     if tuple(PERMITTED_OBS_FIELDS) != ("exp_component_name", "Donor ID"):
         raise AssertionError("%s: permitted obs fields are %r"
                              % (STOP_OBS_FIELD, PERMITTED_OBS_FIELDS))
     return True
 
 
-class AuthenticatedSource:
-    """An H5AD whose bytes have been digested and matched to a frozen identity.
-
-    Constructed only by `open_authenticated_source`. The private token makes a
-    look-alike object useless: without it the verifier refuses, so a caller
-    cannot reintroduce label authentication by supplying an object that merely
-    claims the right digest.
-    """
-
-    def __init__(self, token: object, *, path: Path, sha256: str,
-                 bytes_read: int, handle: Any) -> None:
-        if token is not _HANDLE_TOKEN:
-            raise AssertionError(
-                "%s: an AuthenticatedSource may only be produced by "
-                "open_authenticated_source, which digests the asset first"
-                % STOP_HANDLE_FORGED)
-        self._token = token
-        self.path = Path(path)
-        self.sha256 = str(sha256)
-        self.digest_bytes_read = int(bytes_read)
-        self._h5 = handle
-
-    @property
-    def h5(self) -> Any:
-        return self._h5
-
-    def close(self) -> None:
-        try:
-            self._h5.close()
-        except Exception:
-            pass
-
-    def __enter__(self) -> "AuthenticatedSource":
-        return self
-
-    def __exit__(self, *exc: object) -> None:
-        self.close()
-
-
-def _assert_genuine(source: Any) -> AuthenticatedSource:
-    if not isinstance(source, AuthenticatedSource):
+def refuse_caller_supplied_values(**kwargs: Any) -> None:
+    offending = sorted(k for k in kwargs
+                       if k in ("raw_source_row_values", "raw_source_provenance",
+                                "row_values", "values", "provenance", "source"))
+    if offending:
         raise AssertionError(
-            "%s: the supplied source is a %s, not an AuthenticatedSource"
-            % (STOP_HANDLE_FORGED, type(source).__name__))
-    if getattr(source, "_token", None) is not _HANDLE_TOKEN:
-        raise AssertionError("%s: the handle carries no authentication token"
-                             % STOP_HANDLE_FORGED)
-    return source
+            "%s: %s may not be supplied; production source_library proof owns "
+            "the source path and reads the authenticated H5 bytes itself"
+            % (STOP_CALLER_VALUES, ", ".join(offending)))
 
 
-def open_authenticated_source(
-        path: Path | str,
-        *,
-        expected_sha256: str = MTG_SOURCE_SHA256,
-        chunk_bytes: int = 64 << 20,
-) -> AuthenticatedSource:
-    """Digest the asset, then open it. Never the other way round.
-
-    Opening first and digesting later would leave an interval in which the bytes
-    read differ from the bytes hashed, which is the same check-then-use gap
-    closed elsewhere in this lane.
-    """
-    import h5py
-
-    asset = Path(path)
-    if not asset.is_file():
-        raise AssertionError("%s: %s" % (STOP_SOURCE_ABSENT, asset))
-
-    digest = hashlib.sha256()
-    read = 0
-    with open(asset, "rb") as stream:
-        while True:
-            chunk = stream.read(int(chunk_bytes))
-            if not chunk:
-                break
-            digest.update(chunk)
-            read += len(chunk)
-    actual = digest.hexdigest()
-    if actual != str(expected_sha256):
-        raise AssertionError("%s: %s is %s, expected %s"
-                             % (STOP_SOURCE_DIGEST, asset, actual, expected_sha256))
-
-    handle = h5py.File(str(asset), "r")
-    return AuthenticatedSource(_HANDLE_TOKEN, path=asset, sha256=actual,
-                               bytes_read=read, handle=handle)
+def _decode(value: Any) -> str:
+    if isinstance(value, bytes):
+        return value.decode("utf-8")
+    return str(value)
 
 
-def _umi_layer(source: AuthenticatedSource) -> Any:
-    handle = source.h5
+def _obs_value(node: Any, row_index: int) -> str:
+    """Read one AnnData obs value in categorical or direct-array form."""
+    if hasattr(node, "keys") and "codes" in node and "categories" in node:
+        code = int(node["codes"][int(row_index)])
+        if code < 0:
+            return ""
+        categories = node["categories"]
+        if code >= len(categories):
+            raise AssertionError(
+                "%s: categorical code %d is outside 0..%d"
+                % (STOP_FIELD_SCHEMA, code, len(categories) - 1))
+        return _decode(categories[code])
+    return _decode(node[int(row_index)])
+
+
+def _umi_layer(handle: Any) -> Any:
     group, name = UMI_SLOT.split("/", 1)
     if group not in handle or name not in handle[group]:
-        raise AssertionError("%s: %s is absent from %s"
-                             % (STOP_SLOT_ABSENT, UMI_SLOT, source.path))
+        raise AssertionError("%s: %s is absent" % (STOP_SLOT_ABSENT, UMI_SLOT))
     layer = handle[group][name]
     encoding = layer.attrs.get("encoding-type")
     encoding = (encoding.decode() if isinstance(encoding, bytes)
@@ -218,74 +127,77 @@ def _umi_layer(source: AuthenticatedSource) -> Any:
         if member not in layer:
             raise AssertionError("%s: %s lacks %r"
                                  % (STOP_SLOT_ENCODING, UMI_SLOT, member))
+    if "shape" not in layer.attrs:
+        raise AssertionError("%s: %s has no shape attribute"
+                             % (STOP_SOURCE_SHAPE, UMI_SLOT))
     return layer
 
 
-def source_geometry(source: AuthenticatedSource) -> tuple[int, int]:
-    layer = _umi_layer(_assert_genuine(source))
+def _source_geometry(handle: Any) -> tuple[int, int]:
+    layer = _umi_layer(handle)
     shape = [int(v) for v in layer.attrs["shape"]]
     if len(shape) != 2:
         raise AssertionError("%s: %s declares shape %r"
                              % (STOP_SOURCE_SHAPE, UMI_SLOT, shape))
-    return shape[0], shape[1]
+    rows, width = shape
+    if len(layer["indptr"]) != rows + 1:
+        raise AssertionError(
+            "%s: indptr length %d does not equal source rows+1=%d"
+            % (STOP_SOURCE_SHAPE, len(layer["indptr"]), rows + 1))
+    return rows, width
 
 
-def _decode(value: Any) -> str:
-    if isinstance(value, bytes):
-        return value.decode("utf-8")
-    return str(value)
-
-
-def read_row_identity(source: AuthenticatedSource, row_index: int) -> dict[str, str]:
-    """Read ONLY the two permitted `obs` fields at one row."""
+def _read_row_identity(handle: Any, row_index: int) -> dict[str, str]:
     assert_no_pathology_read()
-    genuine = _assert_genuine(source)
-    obs = genuine.h5["obs"]
-
+    if "obs" not in handle:
+        raise AssertionError("%s: H5AD has no obs group" % STOP_FIELD_SCHEMA)
+    obs = handle["obs"]
     index_name = obs.attrs.get("_index")
-    index_name = _decode(index_name) if index_name is not None else "exp_component_name"
-    if index_name not in PERMITTED_OBS_FIELDS:
-        raise AssertionError("%s: the obs index is %r, which is not permitted"
-                             % (STOP_OBS_FIELD, index_name))
-    cell = _decode(obs[index_name][int(row_index)])
+    index_name = (_decode(index_name) if index_name is not None
+                  else "exp_component_name")
+    if index_name != "exp_component_name":
+        raise AssertionError(
+            "%s: the cell identity index is %r, expected exp_component_name"
+            % (STOP_OBS_FIELD, index_name))
+    if index_name not in obs or "Donor ID" not in obs:
+        raise AssertionError(
+            "%s: required obs identity fields are absent" % STOP_FIELD_SCHEMA)
+    return {
+        "canonical_cell_id": _obs_value(obs[index_name], row_index),
+        "donor_id": _obs_value(obs["Donor ID"], row_index),
+    }
 
-    node = obs["Donor ID"]
-    if hasattr(node, "keys") and "categories" in node:
-        code = int(node["codes"][int(row_index)])
-        donor = _decode(node["categories"][code])
-    else:
-        donor = _decode(node[int(row_index)])
-    return {"canonical_cell_id": cell, "donor_id": donor}
 
-
-def read_raw_row(source: AuthenticatedSource, row_index: int) -> tuple[int, int]:
-    """Return `(library_total, stored_value_count)` for one authenticated row.
-
-    The row's values are summed here rather than returned, because returning them
-    would recreate a path by which a caller could substitute a vector. Only the
-    total and the number of stored values leave this function.
-
-    The asset stores `layers/UMIs` data as float64 whose values are integral, so
-    integrality is required rather than assumed, and a non-integral or negative
-    stored value is a STOP.
-    """
+def _read_raw_row(handle: Any, row_index: int,
+                  *, source_rows: int, source_width: int) -> tuple[int, int]:
     import numpy as np
 
-    genuine = _assert_genuine(source)
-    layer = _umi_layer(genuine)
-    rows, width = source_geometry(genuine)
-    if width != SOURCE_FEATURE_COUNT:
-        raise AssertionError("%s: %s is %d wide, expected the %d-feature source space"
-                             % (STOP_SOURCE_SHAPE, UMI_SLOT, width,
-                                SOURCE_FEATURE_COUNT))
-    if not (0 <= int(row_index) < rows):
+    if source_width != SOURCE_FEATURE_COUNT:
+        raise AssertionError(
+            "%s: %s is %d wide, expected %d"
+            % (STOP_SOURCE_SHAPE, UMI_SLOT, source_width, SOURCE_FEATURE_COUNT))
+    if not (0 <= int(row_index) < int(source_rows)):
         raise AssertionError("%s: row %d is outside 0..%d"
-                             % (STOP_ROW_RANGE, int(row_index), rows - 1))
-
+                             % (STOP_ROW_RANGE, int(row_index),
+                                int(source_rows) - 1))
+    layer = _umi_layer(handle)
     indptr = layer["indptr"]
     start, end = int(indptr[int(row_index)]), int(indptr[int(row_index) + 1])
+    if not (0 <= start <= end <= len(layer["data"])):
+        raise AssertionError(
+            "%s: invalid CSR slice %d:%d for row %d"
+            % (STOP_SOURCE_SHAPE, start, end, int(row_index)))
+    cols = np.asarray(layer["indices"][start:end])
     values = np.asarray(layer["data"][start:end])
-
+    if len(cols) != len(values):
+        raise AssertionError(
+            "%s: CSR indices/data lengths differ at row %d"
+            % (STOP_SOURCE_SHAPE, int(row_index)))
+    if cols.size:
+        if np.any(cols < 0) or np.any(cols >= int(source_width)):
+            raise AssertionError(
+                "%s: row %d contains an out-of-range source column"
+                % (STOP_SOURCE_SHAPE, int(row_index)))
     if values.size:
         if not np.isfinite(values).all():
             raise AssertionError("%s: row %d holds a non-finite value"
@@ -300,90 +212,298 @@ def read_raw_row(source: AuthenticatedSource, row_index: int) -> tuple[int, int]
     return total, int(end - start)
 
 
-def prove_source_library_from_authenticated_source(
-        *,
-        source: Any,
-        logical: Mapping[str, Any],
-        logical_index: int,
-        expected_source_sha256: str = MTG_SOURCE_SHA256,
-) -> dict[str, Any]:
-    """Prove the bound `source_library` from bytes this function itself read.
-
-    There is deliberately NO parameter for row values. A caller-created vector
-    cannot enter, whatever its sum and whatever labels accompany it, because
-    there is nowhere to put it. Everything compared here is either read from the
-    authenticated asset or read from the bound logical row.
-    """
-    genuine = _assert_genuine(source)
-    if genuine.sha256 != str(expected_source_sha256):
-        raise AssertionError(
-            "%s: the authenticated asset is %s, but this proof expects %s"
-            % (STOP_SOURCE_DIGEST, genuine.sha256, expected_source_sha256))
-
-    row = logical["rows"][int(logical_index)]
-    expression_row = int(row["expression_row"])
-
-    identity = read_row_identity(genuine, expression_row)
-    if identity["canonical_cell_id"] != str(row["canonical_cell_id"]):
-        raise AssertionError(
-            "%s: source row %d is cell %r but logical index %d binds %r"
-            % (STOP_ROW_IDENTITY, expression_row, identity["canonical_cell_id"],
-               int(logical_index), row["canonical_cell_id"]))
-    if identity["donor_id"] != str(row["donor_id"]):
-        raise AssertionError(
-            "%s: source row %d is donor %r but logical index %d binds %r"
-            % (STOP_ROW_IDENTITY, expression_row, identity["donor_id"],
-               int(logical_index), row["donor_id"]))
-
-    total, stored = read_raw_row(genuine, expression_row)
-    bound = int(row["source_library"])
-    if total != bound:
-        raise AssertionError(
-            "%s: the authenticated %s row %d sums to %d but logical index %d "
-            "binds source_library %d"
-            % (STOP_LIBRARY, UMI_SLOT, expression_row, total,
-               int(logical_index), bound))
-
-    return {
-        "schema": SCHEMA,
-        "proof": "BYTE_TO_ROW_FROM_AUTHENTICATED_H5AD",
-        "source_sha256": genuine.sha256,
-        "digest_bytes_read": genuine.digest_bytes_read,
-        "matrix_slot": UMI_SLOT,
-        "expression_row": expression_row,
-        "canonical_cell_id": identity["canonical_cell_id"],
-        "donor_id": identity["donor_id"],
-        "stored_values_in_row": stored,
-        "source_library": total,
-        "caller_supplied_values": False,
-        "real_execution_ready": False,
-    }
+def _stream_sha256(stream: Any, *, chunk_bytes: int) -> tuple[str, int]:
+    stream.seek(0)
+    digest = hashlib.sha256()
+    read = 0
+    while True:
+        chunk = stream.read(int(chunk_bytes))
+        if not chunk:
+            break
+        digest.update(chunk)
+        read += len(chunk)
+    return digest.hexdigest(), read
 
 
-def raw_source_proof_root(proofs: Sequence[Mapping[str, Any]]) -> str:
-    """Digest over a set of byte-to-row proofs, with explicit cardinality."""
-    parts = [_typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
-             _typed(UMI_SLOT), _typed(len(proofs))]
-    for proof in sorted(proofs, key=lambda p: int(p["expression_row"])):
+def _proof_root(authority: Mapping[str, Any]) -> str:
+    proofs = authority["proofs"]
+    parts = [
+        _typed(DOMAIN_TAG), _typed(SCHEMA), _typed(NAMESPACE),
+        _typed(str(authority["source_sha256"])),
+        _typed(int(authority["source_cells"])),
+        _typed(int(authority["source_features"])),
+        _typed(str(authority["logical_row_authority_root_sha256"])),
+        _typed(str(authority["population_closure_root_sha256"])),
+        _typed(str(authority["feature_authority_root_sha256"])),
+        _typed(int(authority["proof_count"])),
+    ]
+    for proof in proofs:
         parts.append(_typed([
-            str(proof["source_sha256"]), int(proof["expression_row"]),
-            str(proof["canonical_cell_id"]), str(proof["donor_id"]),
-            int(proof["source_library"]), int(proof["stored_values_in_row"]),
+            int(proof["logical_index"]),
+            int(proof["expression_row"]),
+            str(proof["canonical_cell_id"]),
+            str(proof["donor_id"]),
+            int(proof["source_library"]),
+            int(proof["stored_values_in_row"]),
         ]))
     return hashlib.sha256(b"".join(parts)).hexdigest()
 
 
-def refuse_caller_supplied_values(**kwargs: Any) -> None:
-    """Explicit refusal, so the removed parameter cannot quietly return.
+def _build_population_raw_source_authority(
+        *,
+        source_path: Path | str,
+        logical: Mapping[str, Any],
+        expected_logical_root_sha256: str,
+        expected_population_closure_root_sha256: str,
+        expected_feature_authority_root_sha256: str,
+        expected_source_sha256: str,
+        expected_source_cells: int,
+        expected_source_features: int,
+        expected_logical_rows: int,
+        chunk_bytes: int = 64 << 20,
+) -> dict[str, Any]:
+    """Fixture-capable implementation; public production wrapper freezes geometry."""
+    import h5py
+    import t0_v20_row_count_authority_v1 as rc
 
-    Any future call site that tries to hand values or provenance labels to a
-    proof gets a named STOP rather than silently reaching a permissive overload.
-    """
-    offending = sorted(k for k in kwargs
-                       if k in ("raw_source_row_values", "raw_source_provenance",
-                                "row_values", "values", "provenance"))
-    if offending:
+    rc.assert_row_authority_lawful(
+        logical=logical,
+        expected_logical_row_authority_root_sha256=expected_logical_root_sha256,
+        expected_feature_authority_root_sha256=expected_feature_authority_root_sha256,
+        expected_population_closure_root_sha256=(
+            expected_population_closure_root_sha256),
+    )
+    if len(logical["rows"]) != int(expected_logical_rows):
         raise AssertionError(
-            "%s: %s may not be supplied; source_library is proven only from "
-            "bytes read out of the authenticated asset"
-            % (STOP_CALLER_VALUES, ", ".join(offending)))
+            "%s: logical authority holds %d rows, expected %d"
+            % (STOP_PROOF_COUNT, len(logical["rows"]), int(expected_logical_rows)))
+
+    asset = Path(source_path)
+    if not asset.is_file():
+        raise AssertionError("%s: %s" % (STOP_SOURCE_ABSENT, asset))
+
+    proofs_by_index: dict[int, dict[str, Any]] = {}
+    with open(asset, "rb") as stream:
+        before = os.fstat(stream.fileno())
+        actual_sha, bytes_read = _stream_sha256(
+            stream, chunk_bytes=int(chunk_bytes))
+        if actual_sha != str(expected_source_sha256):
+            raise AssertionError(
+                "%s: %s is %s, expected %s"
+                % (STOP_SOURCE_DIGEST, asset, actual_sha,
+                   expected_source_sha256))
+
+        # Important: h5py consumes the same already-open file object that was
+        # hashed above.  No second pathname open exists.
+        stream.seek(0)
+        with h5py.File(stream, "r") as handle:
+            source_rows, source_width = _source_geometry(handle)
+            if source_rows != int(expected_source_cells) or                     source_width != int(expected_source_features):
+                raise AssertionError(
+                    "%s: source geometry is %d x %d, expected %d x %d"
+                    % (STOP_SOURCE_SHAPE, source_rows, source_width,
+                       int(expected_source_cells), int(expected_source_features)))
+
+            # Physical H5 row order is the cheapest traversal order.  Each proof
+            # still carries logical_index and the final authority is restored to
+            # logical-population order before hashing.
+            schedule = sorted(
+                range(len(logical["rows"])),
+                key=lambda i: int(logical["rows"][i]["expression_row"]))
+            for logical_index in schedule:
+                row = logical["rows"][logical_index]
+                if int(row["logical_index"]) != int(logical_index):
+                    raise AssertionError(
+                        "%s: row %d declares logical_index %r"
+                        % (STOP_FIELD_SCHEMA, logical_index,
+                           row["logical_index"]))
+                expression_row = int(row["expression_row"])
+                identity = _read_row_identity(handle, expression_row)
+                if identity["canonical_cell_id"] != str(row["canonical_cell_id"]):
+                    raise AssertionError(
+                        "%s: source row %d is cell %r but logical index %d binds %r"
+                        % (STOP_ROW_IDENTITY, expression_row,
+                           identity["canonical_cell_id"], logical_index,
+                           row["canonical_cell_id"]))
+                if identity["donor_id"] != str(row["donor_id"]):
+                    raise AssertionError(
+                        "%s: source row %d is donor %r but logical index %d binds %r"
+                        % (STOP_ROW_IDENTITY, expression_row,
+                           identity["donor_id"], logical_index,
+                           row["donor_id"]))
+
+                total, stored = _read_raw_row(
+                    handle, expression_row,
+                    source_rows=source_rows, source_width=source_width)
+                bound = int(row["source_library"])
+                if total != bound:
+                    raise AssertionError(
+                        "%s: authenticated %s row %d sums to %d but logical "
+                        "index %d binds source_library %d"
+                        % (STOP_LIBRARY, UMI_SLOT, expression_row, total,
+                           logical_index, bound))
+                proofs_by_index[logical_index] = {
+                    "logical_index": int(logical_index),
+                    "expression_row": expression_row,
+                    "canonical_cell_id": identity["canonical_cell_id"],
+                    "donor_id": identity["donor_id"],
+                    "source_library": total,
+                    "stored_values_in_row": stored,
+                }
+
+        after = os.fstat(stream.fileno())
+        identity_before = (before.st_dev, before.st_ino, before.st_size,
+                           getattr(before, "st_mtime_ns", None),
+                           getattr(before, "st_ctime_ns", None))
+        identity_after = (after.st_dev, after.st_ino, after.st_size,
+                          getattr(after, "st_mtime_ns", None),
+                          getattr(after, "st_ctime_ns", None))
+        if identity_before != identity_after:
+            raise AssertionError(
+                "%s: source file identity/metadata changed while it was being "
+                "proved" % STOP_SOURCE_CHANGED)
+
+    if set(proofs_by_index) != set(range(len(logical["rows"]))):
+        raise AssertionError(
+            "%s: proved %d/%d logical rows"
+            % (STOP_PROOF_COUNT, len(proofs_by_index), len(logical["rows"])))
+    proofs = tuple(proofs_by_index[i] for i in range(len(logical["rows"])))
+    authority = {
+        "schema": SCHEMA,
+        "namespace": NAMESPACE,
+        "source_sha256": actual_sha,
+        "digest_bytes_read": int(bytes_read),
+        "source_cells": int(expected_source_cells),
+        "source_features": int(expected_source_features),
+        "matrix_slot": UMI_SLOT,
+        "logical_row_authority_root_sha256": str(expected_logical_root_sha256),
+        "population_closure_root_sha256": str(
+            expected_population_closure_root_sha256),
+        "feature_authority_root_sha256": str(
+            expected_feature_authority_root_sha256),
+        "proof_count": len(proofs),
+        "proofs": proofs,
+        "caller_supplied_values": False,
+        "pathology_values_read": False,
+        "real_execution_ready": False,
+    }
+    authority["raw_source_proof_root_sha256"] = _proof_root(authority)
+    return authority
+
+
+def build_population_raw_source_authority(
+        *,
+        source_path: Path | str,
+        logical: Mapping[str, Any],
+        expected_logical_root_sha256: str,
+        expected_population_closure_root_sha256: str,
+        expected_feature_authority_root_sha256: str,
+        expected_source_sha256: str = MTG_SOURCE_SHA256,
+        chunk_bytes: int = 64 << 20,
+) -> dict[str, Any]:
+    """Production population proof: fixed real-asset and 20,804-row geometry."""
+    return _build_population_raw_source_authority(
+        source_path=source_path,
+        logical=logical,
+        expected_logical_root_sha256=expected_logical_root_sha256,
+        expected_population_closure_root_sha256=(
+            expected_population_closure_root_sha256),
+        expected_feature_authority_root_sha256=(
+            expected_feature_authority_root_sha256),
+        expected_source_sha256=expected_source_sha256,
+        expected_source_cells=MTG_SOURCE_CELLS,
+        expected_source_features=SOURCE_FEATURE_COUNT,
+        expected_logical_rows=PRODUCTION_LOGICAL_ROWS,
+        chunk_bytes=chunk_bytes,
+    )
+
+
+def assert_population_raw_source_authority_lawful(
+        *,
+        authority: Mapping[str, Any],
+        logical: Mapping[str, Any],
+        expected_raw_source_proof_root_sha256: str,
+        expected_logical_root_sha256: str,
+        expected_population_closure_root_sha256: str,
+        expected_feature_authority_root_sha256: str,
+        expected_source_sha256: str = MTG_SOURCE_SHA256,
+        expected_proof_count: int = PRODUCTION_LOGICAL_ROWS,
+) -> dict[str, Any]:
+    """Establish stored == recomputed == externally expected for the proof root."""
+    import t0_v20_row_count_authority_v1 as rc
+
+    rc.assert_row_authority_lawful(
+        logical=logical,
+        expected_logical_row_authority_root_sha256=expected_logical_root_sha256,
+        expected_feature_authority_root_sha256=expected_feature_authority_root_sha256,
+        expected_population_closure_root_sha256=(
+            expected_population_closure_root_sha256),
+    )
+    if authority.get("schema") != SCHEMA:
+        raise AssertionError("%s: schema is %r"
+                             % (STOP_FIELD_SCHEMA, authority.get("schema")))
+    if authority.get("real_execution_ready") is not False or             authority.get("pathology_values_read") is not False or             authority.get("caller_supplied_values") is not False:
+        raise AssertionError("%s: authority flags are unlawful"
+                             % STOP_FIELD_SCHEMA)
+    for field, expected in (
+            ("source_sha256", expected_source_sha256),
+            ("logical_row_authority_root_sha256", expected_logical_root_sha256),
+            ("population_closure_root_sha256",
+             expected_population_closure_root_sha256),
+            ("feature_authority_root_sha256",
+             expected_feature_authority_root_sha256)):
+        if str(authority.get(field)) != str(expected):
+            raise AssertionError(
+                "%s: %s is %r, externally expected %r"
+                % (STOP_LOGICAL_ROOT, field, authority.get(field), expected))
+
+    proofs = authority.get("proofs")
+    if not isinstance(proofs, (tuple, list)):
+        raise AssertionError("%s: proofs are absent" % STOP_FIELD_SCHEMA)
+    if int(authority.get("proof_count", -1)) != len(proofs) or             len(proofs) != int(expected_proof_count) or             len(proofs) != len(logical["rows"]):
+        raise AssertionError(
+            "%s: proof_count=%r proofs=%d expected=%d logical_rows=%d"
+            % (STOP_PROOF_COUNT, authority.get("proof_count"), len(proofs),
+               int(expected_proof_count), len(logical["rows"])))
+
+    for index, proof in enumerate(proofs):
+        row = logical["rows"][index]
+        expected = {
+            "logical_index": int(index),
+            "expression_row": int(row["expression_row"]),
+            "canonical_cell_id": str(row["canonical_cell_id"]),
+            "donor_id": str(row["donor_id"]),
+            "source_library": int(row["source_library"]),
+        }
+        for field, value in expected.items():
+            if proof.get(field) != value:
+                raise AssertionError(
+                    "%s: proof %d %s=%r, logical authority binds %r"
+                    % (STOP_ROW_IDENTITY, index, field, proof.get(field), value))
+        if int(proof.get("stored_values_in_row", -1)) < 0:
+            raise AssertionError(
+                "%s: proof %d has invalid stored-value count"
+                % (STOP_FIELD_SCHEMA, index))
+
+    recomputed = _proof_root(authority)
+    stored = authority.get("raw_source_proof_root_sha256")
+    if str(stored) != recomputed:
+        raise AssertionError(
+            "%s: stored root %r recomputes to %s"
+            % (STOP_PROOF_ROOT, stored, recomputed))
+    if recomputed != str(expected_raw_source_proof_root_sha256):
+        raise AssertionError(
+            "%s: recomputed root %s, externally expected %s"
+            % (STOP_PROOF_ROOT, recomputed,
+               expected_raw_source_proof_root_sha256))
+    return {
+        "raw_source_proof_root_sha256": recomputed,
+        "proof_count": len(proofs),
+        "source_sha256": str(authority["source_sha256"]),
+    }
+
+
+# Synthetic tests may exercise row semantics without the 33 GB production
+# geometry through this private helper only.
+def _build_population_raw_source_authority_fixture(**kwargs: Any) -> dict[str, Any]:
+    return _build_population_raw_source_authority(**kwargs)
