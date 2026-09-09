@@ -1,0 +1,21 @@
+{
+  "changes_no_t0_result": true,
+  "donors": 28,
+  "note": "Diagnostic only. The T0 V20 design, thresholds, nuisance columns and adjudication rule are frozen and unchanged by this. Computed on discovery donors from the frozen scalar matrix; no AT8 value is read.",
+  "nuisance_condition_number": 310.5638849680389,
+  "nuisance_plus_qc_condition_number": 37670.99954610805,
+  "pathology_blind": true,
+  "pearson_r": 0.9232196675065917,
+  "pearson_r_squared": 0.8523345544709817,
+  "q_depth_mean": 8.606182158964558,
+  "q_depth_residual_variance_fraction_given_nuisance_and_q_detect": 0.08714209067465058,
+  "q_depth_residual_variance_fraction_given_nuisance_only": 0.6858404633567899,
+  "q_depth_sd": 0.2279051854430538,
+  "q_detect_mean": 0.07599789961339602,
+  "q_detect_residual_variance_fraction_given_nuisance_and_q_depth": 0.09587559165271778,
+  "q_detect_residual_variance_fraction_given_nuisance_only": 0.7545763441596463,
+  "q_detect_sd": 0.010719669515697272,
+  "role": "DISCOVERY",
+  "schema": "JEPA_T0_QC_METRIC_DIAGNOSTIC_V1",
+  "spearman_r": 0.9146141215106732
+}

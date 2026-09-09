@@ -94,3 +94,62 @@ counts as a verified replay in this lane, so it is not mine to make quietly.
 The alternative is to locate or rebuild the exact original numeric stack. That
 is worth doing regardless, and recording it in every future summary is the
 durable fix.
+
+## 4. Q_DEPTH against Q_DETECT — diagnostic only
+
+Requested as a diagnostic, and reported as one. Nothing here changes the T0 V20
+design, thresholds, nuisance columns, adjudication rule or result.
+
+The two QC metrics enter T0 as a single reduced model — `measurements` is one
+fit with both appended at once, named `Q_DEPTH+Q_DETECT` — so how much
+independent information they carry decides how much purchase that sensitivity
+actually has on measurement confounding.
+
+Computed on the 28 discovery donors from the frozen scalar matrix (35,076
+addresses). Pathology-blind: no AT8 value is read, since both metrics are
+properties of the expression data alone.
+
+| quantity | value |
+| --- | --- |
+| Pearson r | **0.9232** (r² = 0.8523) |
+| Spearman r | 0.9146 |
+| Q_DEPTH | mean 8.6062, sd 0.2279 |
+| Q_DETECT | mean 0.0760, sd 0.0107 |
+| condition number, frozen nuisance `[1, age_c, age_c², sex]` | 310.6 |
+| condition number, nuisance + both QC columns | **37,671** |
+| Q_DEPTH variance left after nuisance alone | 0.686 |
+| Q_DETECT variance left after nuisance alone | 0.755 |
+| Q_DEPTH variance left after nuisance **and Q_DETECT** | **0.087** |
+| Q_DETECT variance left after nuisance **and Q_DEPTH** | **0.096** |
+
+### Reading
+
+The two are strongly associated but not redundant. The last two rows are the
+ones that matter: each metric retains only about nine percent of its variance
+once the other and the frozen nuisance columns are projected out. So the pair
+does add a real second dimension, but a thin one — the `Q_DEPTH+Q_DETECT`
+sensitivity is close to a single depth-of-sequencing adjustment wearing two
+columns, and appending both multiplies the design's condition number by about
+121.
+
+This is expected from what they measure. Depth is log library size; detection is
+the fraction of the address space seen at all, and deeper libraries detect more
+addresses, with the relation flattening as detection rises. At a mean detection
+of 0.076 the pair is far from that saturation, which is why nine percent
+survives rather than nothing.
+
+### What follows, and what does not
+
+It does not follow that the sensitivity was uninformative or that the T0
+terminal should be re-read. The sensitivity is a directional test at α = 0.05
+and it is unaffected by the columns being correlated; collinearity inflates
+standard errors, which makes such a test harder to pass, not easier.
+
+What does follow is a design note for any successor: two nearly-parallel columns
+buy one direction of protection at the cost of a much worse-conditioned design.
+A successor that wants genuine measurement-confounding coverage should choose
+metrics that are close to orthogonal after the nuisance design, and should
+derive that choice from the data before freezing — not adopt this pair because
+T0 used it.
+
+Record: `outputs/t0_qc_diagnostic_20260909/T0_QC_METRIC_DIAGNOSTIC.json`.
