@@ -34,7 +34,8 @@ All four gate suites now run with torch and CUDA present:
 | `test_c2_successor_gate_adoption_v1` | 5 passed, 0 skipped |
 | `test_c2_gate_stop_attribution_v1` | 8 passed, 0 skipped |
 | `test_v5_successor_training_step_v1` | 10 passed, 0 skipped |
-| total | **36 passed, 0 skipped** |
+| `test_v5_successor_teacher_entrypoint_v1` | 8 passed, 0 skipped |
+| total | **44 passed, 0 skipped** |
 
 ## The 128×8 regression
 
@@ -119,3 +120,52 @@ path trains well.
 Production-shape memory behaviour is a separate item. Both runs here complete at
 128×8 on 16 GB, as K0 and K1 did; the known OOM belongs to the superseded
 `production_safe` variant, which holds 64 live graphs and remains unexecuted.
+
+## The real teacher entrypoint
+
+The section above adopted the gate into the *step*. That left the actual
+production entrypoint untouched: `stage81a3_prod41k_teacher_t1.py` is the script
+that ran T1, and its loop calls `phase_e.run_update` directly and accepts the
+update when `step_succeeded`, `online_moved` and `ema_equation["equal"]` all
+hold — all three of which held for 205 consecutive updates while every protected
+tensor was dead. Adopting anywhere short of that call site changes nothing about
+the path that failed.
+
+The historical file is not edited. Its digest is bound in the preservation
+manifests and the T1 evaluation freeze, and it is the only faithful record of
+what was run, so editing it would break that provenance and remove the ability
+to reproduce the failure.
+
+`scripts/v4/v5_successor_teacher_entrypoint_v1.py` derives the successor
+entrypoint from that source instead, by the same substitution technique the
+corrective variants use, with exactly one declared change:
+
+    result = phase_e.run_update(   ->   result = _v5_successor_step(phase_e)(
+
+Verified, not asserted: the diff is one added and one removed line, the changed
+line is the update call, and no ungated `phase_e.run_update(` call survives.
+
+The repository root is an explicit input rather than an inference. The teacher
+script computes `ROOT = Path(__file__).resolve().parents[2]` and reads its
+loader, exports and data from underneath it, and the gate stack lives in the T0
+lane, which has neither `exports/contextual_biology_v6r5a_20260822` nor
+`exports/static_context_decomposition_v4_20260821`. The derived module's
+`__file__` is set to the historical script under the chosen root so the script's
+own path arithmetic stays internally consistent, and a root that cannot supply
+what training reads is refused up front rather than failing inside the loader.
+
+Built against the real root, without calling `main()`:
+
+```
+module built  : v5_successor_teacher
+root resolved : D:\Jepa project
+geometry      : EFFECTIVE_BATCH=128 MICROBATCH=8 MAX_UPDATES=205
+ungated call in derived source: False
+[v5] gated successor step verified: gate at lines [100, 101], optimizer steps at
+[111], ordering unscale -> gate -> optimizer step -> Adam moments -> EMA
+gated step    : run_update_successor
+```
+
+No training was started. `TRAINING_AUTHORIZED` remains false, and the production
+memory behaviour of this entrypoint against the real loader is the next item,
+not something established here.
