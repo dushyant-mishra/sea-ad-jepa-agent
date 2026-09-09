@@ -66,8 +66,9 @@
         "protected/sealed labels",
         "arbitrary source/matrix identity"
       ],
-      "selection_rule": "smallest rank within one SE of best held-operator/held-source reconstruction of lawful observation descriptors, with no biology qualification claim",
-      "may_differ_from_D_total": true
+      "selection_rule": "smallest rank within one SE of best held-operator reconstruction of lawful observation descriptors; source/matrix identity are never reconstruction targets or free inputs; no biology qualification claim",
+      "may_differ_from_D_total": true,
+      "held_source_role": "diagnostic generalization stratum only when lawful technology/measurement descriptors are independently mapped; source identity itself is never a target"
     },
     "d_gene": {
       "meaning": "neural token/attention capacity parameter, not biological dimensionality",
@@ -145,5 +146,24 @@
     "synthetic_data_may_be_used_for_unit_mechanics_only": true,
     "synthetic_data_may_set_production_values": false
   },
-  "training_authorized": false
+  "training_authorized": false,
+  "full_reader_expression_binding": {
+    "required_terminal": "PASS_FULL_READER_4553407_ROW_IDENTITY_CLOSURE",
+    "minimum_closure": {
+      "reader_fit_rows_matched": 4553407,
+      "unique_stable_keys": 4553407,
+      "donors": 104,
+      "physical_shards": 42,
+      "addresses": 41238
+    },
+    "required_identity_checks": [
+      "matrix_id",
+      "local_row",
+      "donor_id",
+      "cell_id"
+    ],
+    "shard_presence_only_is_sufficient": false,
+    "historical_4726_cell_cache_is_full_reader_authority": false,
+    "reason": "The historical accepted ProductionTrainLoader qualification inventory cannot be treated as full reader_fit authority merely because all 42 shard names are present. Numeric D authority requires row-level closure against the authenticated 4,553,407-row reader_fit metadata ledger."
+  }
 }
