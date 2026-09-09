@@ -30,7 +30,7 @@ READY_TO_BUILD_ANTI_CHEAT_QUALIFICATION_LAYER
 
 ## Corrected historical diagnosis
 
-The historical T1 failure should not be described merely as “the run crashed” or as proof that the architecture itself cannot learn biology. The scoped causal diagnosis is a specific training-mechanics defect in the historical 128 effective batch / 8 microbatch mixed-precision path:
+The historical T1 failure should not be described merely as "the run crashed" or as proof that the architecture itself cannot learn biology. The scoped causal diagnosis is a specific training-mechanics defect in the historical 128 effective batch / 8 microbatch mixed-precision path:
 
 ```text
 C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST
@@ -85,6 +85,38 @@ x weight+bias
 ```
 
 Dynamic discovery may not define completeness. It must be checked against the frozen 48-tensor registry.
+
+## T1 trajectory JSON evidence bound
+
+Uploaded trajectory file bound in the 2026-09-09 review lane:
+
+```text
+file: 04265c6d-285c-45b6-8e17-184d6e8bdd7b.json
+schema: prod41k-t1-trajectory-v2
+sha256: 64c996b053d35722c7c18eeadf5e9b2dbab97b063c59101881f8a4b578125a49
+updates: 205
+loss_u1: 2.34403012693
+loss_u205: 0.0061423068837
+minimum_loss: 0.00605465978151 at update 203
+loss_reduction_u1_to_u205: 99.737960%
+strict_loss_decrease_steps: 141
+strict_loss_increase_steps: 63
+aggregate_missing_parameter_tensors_total: 0
+aggregate_nonfinite_parameter_tensors_total: 0
+ema_updates_match_update_count: True
+```
+
+This strengthens, rather than weakens, the guard: the loss trajectory shows a large mechanical loss decrease, but its gradient telemetry is only aggregate over coarse components. It does not expose the frozen 48 protected attention-routing tensors elementwise, nor their Adam moments. Therefore it cannot rehabilitate historical u10--u205 as resume authority or biological teacher authority.
+
+Controlling interpretation:
+
+```text
+LOSS_DECREASE_CONFIRMED = true
+LOSS_DECREASE_IS_BIOLOGICAL_QUALIFICATION = false
+AGGREGATE_COMPONENT_GRADIENT_TELEMETRY_IS_INSUFFICIENT_FOR_48_TENSOR_GATE = true
+HISTORICAL_U10_TO_U205_RESUME_AUTHORITY = false
+HISTORICAL_U10_TO_U205_BIOLOGICAL_TEACHER_AUTHORITY = false
+```
 
 ## Real-data anti-cheat findings
 
@@ -241,11 +273,21 @@ HARDWARE_INVARIANCE_REPLAY
 HISTORICAL_CHECKPOINT_QUARANTINE
 ```
 
-## Local review lane verification
+## Local review artifacts pushed or summarized
+
+Detailed chat-local review artifacts are mirrored under `docs/agent/v5_anticheat/`, `scripts/v5_anticheat/`, and `tests/v5_anticheat/` as available. Large binary inputs such as `.pt`, `.npz`, and full checkpoint archives are intentionally not copied into GitHub by this note; they remain external artifacts and are referenced by SHA/provenance.
+
+## Verification run in local review lane
 
 ```text
+python scripts/analyze_t1_trajectory_json_v1.py
+# PASS_T1_TRAJECTORY_JSON_REVIEW_V1
+
+python scripts/review_t1_trajectory_json_outputs_v1.py
+# PASS_T1_TRAJECTORY_JSON_OUTPUT_REVIEW_V1
+
 PYTHONPATH=. python -m pytest tests -q
-# 20 passed
+# 23 passed
 
 python scripts/review_mechanics_defect_integration_v1.py
 # PASS_HISTORICAL_T1_MECHANICS_DEFECT_INTEGRATION_REVIEW_V1
@@ -271,7 +313,3 @@ These are chat-local checks; they are not CI and must be reproduced before promo
 A teacher/student checkpoint is not biologically qualified because loss decreases.
 It is biologically qualified only if mechanics health is proven and the checkpoint survives mask-only, support-only, depth-only, donor-holdout, matrix-holdout, study-holdout, technology-holdout, proposal-weighting, collapse, and hardware-invariance attacks.
 ```
-
-## Trajectory file status
-
-A T1 trajectory JSON may be supplied as an additional evidence artifact. At the time this consolidation file was prepared, no separate T1 trajectory JSON was visible in `/mnt/data` by filename search. If it is later provided, bind it by SHA-256 and update this file with exact loss/biology/shortcut trajectory values rather than summary language.
