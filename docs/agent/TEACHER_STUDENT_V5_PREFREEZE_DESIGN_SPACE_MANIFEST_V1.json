@@ -1,0 +1,138 @@
+{
+  "schema": "TEACHER_STUDENT_V5_PREFREEZE_DESIGN_SPACE_MANIFEST_V1",
+  "date": "2026-09-09",
+  "status": "PREFREEZE_FLEXIBLE__NO_TRAINING_AUTHORITY",
+  "canonical_authority_baseline": {
+    "branch": "main",
+    "head_at_integration_start": "c0e1f4adb3b14339738bda5bf23ea7d9e3bd18cc",
+    "v5_current_continuation": "028989a5f1504e4d6403a44e7c90d37172c54150"
+  },
+  "candidate_evidence_not_adopted_by_branch_name": {
+    "dataset_schedule_branch": {
+      "branch": "planning/teacher-student-v5-dataset-schedule-20260909",
+      "head": "78981dcbeb3f8f5dd9a4ad2f72a2792d029c6d69",
+      "status": "DESIGN_EVIDENCE_ONLY__DIVERGED_FROM_CURRENT_MAIN"
+    },
+    "gpu_rng_branch": {
+      "branch": "planning/teacher-student-v5-gpu-rng-mechanics-20260908",
+      "head": "19671b507da2b841b6323a0798bb4e8a014cb45c",
+      "status": "MECHANICS_CANDIDATE_ONLY__DIVERGED_FROM_CURRENT_MAIN"
+    }
+  },
+  "already_frozen_inputs": {
+    "scientific_target": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "base_proposal": "TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3",
+    "importance_weighting": "EXACT_P_OVER_Q_WHEN_PROPOSAL_DIFFERS_FROM_TARGET",
+    "presentation_horizon": 4553407,
+    "presentation_horizon_policy": "EXACTLY_ONE_READER_FIT_POPULATION_EQUIVALENT__NO_AUTOMATIC_EXTENSION",
+    "relational_target_family": "SCALE_FREE_ANCHORED_TRIPLET_ORDERING",
+    "relational_initial_training_active": false
+  },
+  "design_axes": {
+    "support_view_block_schedule": {
+      "status": "OPEN_PREFREEZE",
+      "must_preserve": [
+        "dataset_defined_support_and_estimability",
+        "common_core_and_operator_native_are_distinct_view_families",
+        "operator_is_admissibility_or_robustness_structure_not_equal_biological_mass",
+        "support_operator_depth_are_observation_facts_not_free_biology_identity"
+      ],
+      "candidate_evidence": [
+        "SUPPORT_FAMILY_BALANCED_PRESENTATION_KEYED_HALF_MASK_V3",
+        "STRATIFIED_BOTH_SUPPORT_FAMILIES_ONCE_PER_BASE_PRESENTATION_V1",
+        "HIDDEN_SET_PRESERVING_SINGLETON_TARGET_QUERY_V3"
+      ],
+      "freeze_required_before_optimizer_start": true
+    },
+    "finite_relational_triplet_budget": {
+      "status": "OPEN_PREFREEZE",
+      "must_define_before_freeze": [
+        "eligible_anchor_sampling_budget",
+        "same_operator_comparator_pair_budget",
+        "common_core_vs_native_support_relation_view_policy",
+        "monte_carlo_precision_target",
+        "finite_sampling_error_report"
+      ],
+      "td59_nearest_half_role": "PILOT_MESOSCALE_EVIDENCE_ONLY__NOT_AUTOMATIC_PRODUCTION_LOCALITY",
+      "td57c_nearest_third": "CLOSED_FAILED",
+      "freeze_required_before_relational_training_activation": true
+    },
+    "update_token_microbatch_geometry": {
+      "status": "OPEN_HARDWARE_CALIBRATION",
+      "scientific_firewall": "PACKING_MAY_NOT_CHANGE_TARGET_P_PROPOSAL_Q_SELECTED_CELLS_MASK_IDENTITIES_TRIPLET_IDENTITIES_OR_EMA_EXPOSURE_UNIT",
+      "must_define_before_freeze": [
+        "effective_base_cells_per_update",
+        "max_teacher_tokens_per_microbatch",
+        "target_query_chunk_size",
+        "gradient_accumulation_geometry",
+        "memory_and_runtime_envelope"
+      ]
+    },
+    "ema_half_life_presentations": {
+      "status": "OPEN_PREFREEZE",
+      "clock_unit": "successful_base_cell_presentations",
+      "optimizer_update_count_is_biological_clock": false,
+      "must_define_before_freeze": [
+        "candidate_half_life_grid",
+        "coverage_or_response_criterion",
+        "boundary_width_audit",
+        "final_numeric_half_life"
+      ]
+    },
+    "gpu_philox_kernel": {
+      "status": "REFERENCE_EXISTS__PRODUCTION_PARITY_UNQUALIFIED",
+      "reference": "src/sea_ad_jepa/v5/keyed_rng_contract_v2.py",
+      "candidate_branch": "planning/teacher-student-v5-gpu-rng-mechanics-20260908",
+      "required_before_adoption": [
+        "exact_cpu_reference_parity",
+        "cuda_parity",
+        "packing_invariance",
+        "full_stable_key_range_policy",
+        "implementation_verifier",
+        "critical_test_executed_not_skipped"
+      ]
+    },
+    "anti_collapse": {
+      "status": "OPEN_PREFREEZE",
+      "required_telemetry": [
+        "z_bio_variance",
+        "z_bio_effective_rank",
+        "donor_source_operator_support_stratified_spread",
+        "constant_vector_negative_control",
+        "low_rank_negative_control"
+      ],
+      "forbidden_default": "NO_BLIND_GLOBAL_SIGREG_OR_VICREG_WITHOUT_BALANCED_CALIBRATION_AND_REVIEW"
+    },
+    "checkpoint_qualification_thresholds": {
+      "status": "OPEN_PREFREEZE",
+      "rule": "NO_HARDCODED_PRODUCTION_THRESHOLDS_IN_GENERIC_GUARD",
+      "must_be_frozen_before_optimizer_start": true
+    }
+  },
+  "grid_width_and_boundary_audit": {
+    "required": true,
+    "rule": "CRITICAL_GRID_MUST_BE_WIDE_ENOUGH_THAT_EDGE_SELECTION_HAS_PREDECLARED_INTERPRETATION",
+    "allowed_boundary_actions": [
+      "CONTINUE_WITH_PREDECLARED_CAVEAT",
+      "STOP_AND_MARK_DISCOVERY_ONLY",
+      "TRIGGER_SEPARATELY_FROZEN_VNEXT"
+    ],
+    "forbidden_boundary_action": "SILENTLY_EXPAND_GRID_AND_CONTINUE_SAME_DECISION_BEARING_RUN"
+  },
+  "exploration_confirmation_separation": {
+    "rule": "OUTCOME_ADAPTIVE_REDESIGN_DEMOTES_CURRENT_RUN_TO_DESIGN_EVIDENCE",
+    "new_freeze_required_after_outcome_adaptation": true
+  },
+  "freeze_trigger": {
+    "design_must_be_immutable_before": [
+      "production_optimizer_start",
+      "decision_bearing_checkpoint_selection",
+      "protected_or_confirmation_evidence_access"
+    ],
+    "no_flex_after_optimizer_start": true
+  },
+  "training_authorized": false,
+  "td60_authorized": false,
+  "d1_real_authorized": false,
+  "protected_data_authorized": false
+}
