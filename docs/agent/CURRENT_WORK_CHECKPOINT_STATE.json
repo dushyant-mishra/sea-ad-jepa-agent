@@ -551,7 +551,9 @@
         "Metadata counts, role counts and the confirmation floor were never checked against the registry they summarise.",
         "Mutation tests stopped at the manifest check instead of reaching the checks their names claimed; they now restamp first.",
         "_boolean accepted the string True in derivations, which would let an unparsed CSV column decide eligibility.",
-        "donor_role was read off the row on load rather than re-derived, so a role-swapped registry with recomputed digests would have passed."
+        "donor_role was read off the row on load rather than re-derived, so a role-swapped registry with recomputed digests would have passed.",
+        "The re-derivation comparison pitted the package's twelve-place rendering against a fresh full-repr float and failed on identical numbers; it now compares at the twelve places the authority defines.",
+        "A reported 'largest raw float delta' was presented as bounding re-derivation drift but measured the write's quantization error and lies in [0, 5e-13) by construction once the strings agree; it is relabelled a quantization check and its bound is now asserted."
       ],
       "reported_not_resolved": {
         "derivation_ignores_its_own_read_plan": "The walk uses frozen membership order, which is almost fully interleaved at 19953 contiguous runs across 20804 rows. Under the 48-entry cache it loaded 3126 blocks and read 18.35 GB, against 7.35 GB block-major and 114.84 GB uncached. Efficiency only: per-row work is order-independent and the donor reduction uses math.fsum, which is exactly rounded, so a block-major walk would produce identical roots.",
@@ -604,6 +606,18 @@
         "counts_payload_reads": 3126,
         "donors": 46,
         "elapsed_seconds": 2374.9,
+        "independent_rederivation": {
+          "counts_payload_cache_hits": 17678,
+          "counts_payload_reads": 3126,
+          "donors_compared": 46,
+          "equals_stored_completeness_root": true,
+          "field_comparisons": 184,
+          "limit": "Re-derivation drift below 1e-12 is not observable from this artifact, which retains twelve places and nothing finer. Root equality is the statement about reproduction.",
+          "meaning": "The numbers reproduce from authenticated bytes, not only the digests from themselves.",
+          "q_value_comparison_places": 12,
+          "rederived_completeness_root_sha256": "360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470",
+          "result": "PASS"
+        },
         "package_dir": "outputs/t0_technical_completeness_20260909",
         "package_root_sha256": "0164bccc76ad7ed9385de01fd0ab885dd80770afad0b94ee189e9084ee3cfe99",
         "parent_contract_root_sha256": "9d4e818e20077c42c5500b4df35c385dd1a43cb53375da3a7b4d738257ff5ba5",

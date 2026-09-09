@@ -244,6 +244,46 @@ completeness flag from authenticated bytes, comparing field by field — the onl
 mode that shows the numbers reproduce rather than that the digests are
 consistent. It costs a second full pass over the counts store.
 
+## The independent re-derivation
+
+Ran to completion under a corrected comparison. It walks the substrate again and
+recomputes every donor's Q_DEPTH, Q_DETECT, cell count and completeness flag
+from authenticated bytes.
+
+    donors compared                46
+    field comparisons             184
+    payload reads / cache hits    3,126 / 17,678   (identical to the production run)
+    re-derived completeness root  360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470
+    stored completeness root      360381dc7625386a58c1aa0b262de3e55e9835bc32808f86b663d944ec453470
+
+    TECHNICAL COMPLETENESS REPLAY PASS (INDEPENDENTLY RE-DERIVED)
+
+So the numbers reproduce from authenticated bytes, not merely the digests from
+themselves.
+
+Two corrections to my own verifier, both found by reading its output rather than
+by review, and both of the same shape as the provenance defects above -- a check
+that reported the wrong thing while appearing to work.
+
+The first run failed on identical numbers. It compared the package's twelve-place
+rendering `8.388476413096` against the fresh value's full repr
+`8.388476413095692` and called them different. The writer renders through
+`"%.12f"` and the root frames through `_typed_float(places=12)`, so twelve places
+is the precision at which this authority defines the quantity; comparing there is
+exact rather than tolerant.
+
+The second is a metric that could not do what its name said. I had reported a
+"largest raw float delta below the recorded precision" of 4.973799150320701e-13
+as though it bounded re-derivation drift. It does not: it compares the stored
+twelve-place string against the fresh float, so it measures the *write's*
+quantization error, and once the strings agree it lies in [0, 5e-13) by
+construction. It can never detect drift. It is now labelled a quantization check
+and its half-last-place bound is asserted rather than merely printed.
+
+What follows from that, stated plainly: **re-derivation drift below 1e-12 is not
+observable from this artifact**, because the artifact retains twelve places and
+nothing finer. Root equality is the statement about reproduction, and it holds.
+
 ## What must not happen next without explicit authorization
 
 Do not run real T0. Do not access numeric AT8 or pathology values. Do not open

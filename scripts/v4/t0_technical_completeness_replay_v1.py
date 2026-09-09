@@ -69,10 +69,18 @@ def rederive_and_compare(*, records, closure, logical, plan, population,
     against a fresh full-repr float -- which is what an earlier version of this
     function did -- fails on identical numbers.
 
-    The raw float delta is measured and reported regardless, so drift finer than
-    the artifact's own precision is visible rather than absorbed. Cell counts and
-    the completeness flag are integers and booleans and are compared as exact
-    strings.
+    One thing this cannot do, stated so the report is not read as claiming it.
+    The package retains twelve places and nothing finer, so re-derivation drift
+    below 1e-12 is not observable from the artifact at all. The delta measured
+    below is the *write's* quantization error -- stored twelve-place string
+    against fresh float -- and once the strings match it lies in [0, 5e-13) by
+    construction, so it can never detect drift. It is reported as a
+    quantization check, not as a drift bound. The meaningful statement about
+    reproduction is that the re-derived completeness root equals the stored one,
+    because the root is itself computed over the twelve-place rendering.
+
+    Cell counts and the completeness flag are integers and booleans and are
+    compared as exact strings.
     """
     paths = {row["counts_path"] for row in logical["rows"]}
     payloads = runner.LazyCountsPayloads(store, paths)
@@ -127,6 +135,8 @@ def rederive_and_compare(*, records, closure, logical, plan, population,
                     "donor %s: the package records %s=%r but the substrate "
                     "yields %r at the authority's own twelve-place precision "
                     "(raw %r)" % (donor, field, got, want, fresh[field]))
+            # Quantization error of the write, not a drift measurement: see
+            # the docstring. Bounded by 5e-13 whenever the strings agree.
             delta = abs(float(got) - float(fresh[field]))
             if delta > worst_delta:
                 worst_delta, worst_field = delta, "%s/%s" % (donor, field)
@@ -134,16 +144,28 @@ def rederive_and_compare(*, records, closure, logical, plan, population,
 
     log("  every stored donor summary reproduces (%d field comparisons)"
         % compared)
-    log("  largest raw float delta below the recorded precision: %.3e (%s)"
+    log("  largest twelve-place quantization error: %.3e (%s), bound 5.0e-13"
         % (worst_delta, worst_field))
+    if worst_delta >= 5e-13:
+        raise AssertionError(
+            "a quantization error of %.6e exceeds the 5e-13 half-last-place "
+            "bound, so the stored rendering is not a correct rounding of the "
+            "re-derived value" % worst_delta)
 
     fresh_root = tc.completeness_root(rederived)
     return {"donors_compared": len(stored_by_donor),
             "field_comparisons": compared,
             "q_value_comparison_places": 12,
             "q_value_comparison_is_exact_at_the_recorded_precision": True,
-            "largest_raw_float_delta_below_recorded_precision": worst_delta,
-            "largest_raw_float_delta_field": worst_field,
+            "largest_twelve_place_quantization_error": worst_delta,
+            "largest_twelve_place_quantization_error_field": worst_field,
+            "quantization_error_half_last_place_bound": 5e-13,
+            "quantization_error_is_not_a_drift_bound": (
+                "The package retains twelve places and nothing finer, so "
+                "re-derivation drift below 1e-12 is not observable from the "
+                "artifact. Once the twelve-place strings agree this quantity "
+                "lies in [0, 5e-13) by construction. Root equality is the "
+                "statement about reproduction."),
             "rederived_completeness_root_sha256": fresh_root,
             "counts_payload_reads": payloads.reads,
             "counts_payload_cache_hits": payloads.hits}
