@@ -776,7 +776,7 @@ def assert_row_authority_lawful(
             "rows": len(logical["rows"])}
 
 
-def prove_source_library(
+def _prove_source_library_fixture_values(
     *,
     logical: Mapping[str, Any],
     logical_index: int,
@@ -786,7 +786,11 @@ def prove_source_library(
     expected_matrix_slot: str = MTG_SOURCE_MATRIX_SLOT,
     expected_source_width: int = SOURCE_FEATURE_COUNT,
 ) -> bool:
-    """Prove the bound `source_library` against an AUTHENTICATED raw source row.
+    """Fixture-only semantic checker for a caller-supplied raw row.
+
+    This function is deliberately private. Production source-library proof lives
+    in t0_raw_source_row_authority_v1 and reads the authenticated H5 bytes itself.
+
 
     The earlier version required three provenance keys to be present and checked
     none of them. It never verified `source_sha256` against anything, never
