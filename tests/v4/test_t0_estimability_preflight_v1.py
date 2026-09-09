@@ -558,3 +558,86 @@ def test_the_donor_keyed_stages_still_refuse_the_response() -> None:
         with pytest.raises(AssertionError) as excinfo:
             stage(response=[1.0] * 18, **kwargs)
         assert pf.STOP_RESPONSE_PRESENT in str(excinfo.value)
+
+
+
+# --- R5 preflight-authority identity ---------------------------------------
+
+def test_preflight_root_binds_stage_b_records_root_and_donor_order() -> None:
+    donors = _donors(18)
+    records = _records(donors)
+    root = pf.records_root(donors, records, pf.STAGE_B_FIELDS)
+    result = pf.stage_b_state_designs(
+        confirmation_order=donors, records=records,
+        expected_records_root_sha256=root)
+    baseline = pf.preflight_root([
+        {"stage": "A_PARENT_NUISANCE", "checks": {},
+         "donor_bound": True,
+         "discovery_records_root_sha256": "a" * 64,
+         "confirmation_records_root_sha256": "b" * 64,
+         "discovery_order": ["X"],
+         "confirmation_order": ["Y"]},
+        result,
+    ])
+
+    moved_root = dict(result)
+    moved_root["records_root_sha256"] = "c" * 64
+    assert pf.preflight_root([
+        {"stage": "A_PARENT_NUISANCE", "checks": {},
+         "donor_bound": True,
+         "discovery_records_root_sha256": "a" * 64,
+         "confirmation_records_root_sha256": "b" * 64,
+         "discovery_order": ["X"],
+         "confirmation_order": ["Y"]},
+        moved_root,
+    ]) != baseline
+
+    moved_order = dict(result)
+    moved_order["confirmation_order"] = list(reversed(donors))
+    assert pf.preflight_root([
+        {"stage": "A_PARENT_NUISANCE", "checks": {},
+         "donor_bound": True,
+         "discovery_records_root_sha256": "a" * 64,
+         "confirmation_records_root_sha256": "b" * 64,
+         "discovery_order": ["X"],
+         "confirmation_order": ["Y"]},
+        moved_order,
+    ]) != baseline
+
+
+def test_preflight_root_binds_residual_df_and_tail_inference_n() -> None:
+    a = {
+        "stage": "A_PARENT_NUISANCE", "checks": {},
+        "donor_bound": True,
+        "discovery_records_root_sha256": "a" * 64,
+        "confirmation_records_root_sha256": "b" * 64,
+        "discovery_order": ["D"],
+        "confirmation_order": ["C"],
+    }
+    b = {
+        "stage": "B_STATE_DESIGNS",
+        "checks": {"primary": 5, "composition": 6, "measurement": 7},
+        "donor_bound": True,
+        "records_root_sha256": "c" * 64,
+        "confirmation_order": ["C"],
+        "residual_df": {"primary": 13, "composition": 12, "measurement": 11},
+    }
+    c_stage = {
+        "stage": "C_TAIL_DESIGNS",
+        "checks": {"tail_primary": 6, "tail_composition": 7,
+                   "tail_measurement": 8},
+        "donor_bound": True,
+        "records_root_sha256": "d" * 64,
+        "tail_order": ["C"],
+        "residual_df": {"tail_primary": 11, "tail_composition": 10,
+                        "tail_measurement": 9},
+        "tail_inference_n": 17,
+    }
+    baseline = pf.preflight_root([a, b, c_stage])
+    moved = dict(c_stage)
+    moved["tail_inference_n"] = 18
+    assert pf.preflight_root([a, b, moved]) != baseline
+    moved_b = dict(b)
+    moved_b["residual_df"] = dict(b["residual_df"])
+    moved_b["residual_df"]["measurement"] = 10
+    assert pf.preflight_root([a, moved_b, c_stage]) != baseline
