@@ -1,0 +1,43 @@
+{
+  "schema": "JEPA_V5_EMA_EXPOSURE_DERIVATION_CANDIDATE_V1",
+  "status": "PROSPECTIVE_RULE_CANDIDATE__NUMERIC_HALF_LIFE_UNFROZEN",
+  "time_unit": "successful_scientific_base_presentations",
+  "momentum_formula": "m_update = 2^(-presentations_this_successful_update / ema_half_life_presentations)",
+  "exact_schedule_exposure_authority": "JEPA_V5_ACTUAL_PRESENTATION_EXPOSURE_GEOMETRY_SUMMARY_V2",
+  "candidate_coverage_lower_bounds": {
+    "every_donor_present_within_half_life": {
+      "presentations": 11384,
+      "scientific_role": "biology population coverage"
+    },
+    "every_operator_present_within_half_life": {
+      "presentations": 37117,
+      "scientific_role": "measurement/operator coverage"
+    },
+    "every_source_present_within_half_life": {
+      "presentations": 218,
+      "scientific_role": "source-family coverage"
+    }
+  },
+  "scope_resolution_required_before_numeric_freeze": {
+    "biology_only_teacher_target": "may use donor coverage as the minimum coverage basis if observation-specific parameters are excluded from the EMA target path",
+    "whole_encoder_or_observation_sensitive_teacher": "must prospectively decide whether operator coverage is required; if yes, lower bound is at least 37117 presentations",
+    "selected_scope": null
+  },
+  "smoothing_rule": {
+    "form": "ema_half_life_presentations = ceil(coverage_lower_bound * smoothing_multiple)",
+    "smoothing_multiple": null,
+    "constraints": [
+      "must be > 0",
+      "must be frozen before optimizer start",
+      "must not be selected from training/checkpoint outcomes"
+    ],
+    "historical_16249_not_authority": true
+  },
+  "failure_rules": [
+    "optimizer update does not advance EMA if protected-gradient/optimizer-step gate fails",
+    "hardware microbatching cannot change presentation-time semantics",
+    "EMA half-life cannot be expressed only in optimizer-step count"
+  ],
+  "synthetic_data_used_for_numeric_authority": false,
+  "training_authorized": false
+}
