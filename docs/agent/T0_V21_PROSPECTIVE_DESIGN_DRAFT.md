@@ -14,35 +14,74 @@ development and can no longer silently be used to choose V21 machinery.
 
 These must be resolved before freezing, because the design branches on them.
 
-### 0.1 Is a fresh confirmation set available? — the decisive one
+### 0.1 Is a fresh confirmation set available? — **AUDITED, answer below**
 
-Read from the frozen authorities:
+Resolved by `scripts/v4/t0_v21_fresh_donor_audit_v1.py`, pathology-blind
+(availability flag only; the pathology CSV is never opened). Record:
+`outputs/t0_v21_fresh_donor_audit_20260910/`.
 
-| quantity | value | source |
-| --- | ---: | --- |
-| donors with AT8 available | **84** | `T0_AT8_AVAILABILITY_METADATA.available_donor_count` |
-| donors in the primary MTG immune membership | **46** | `…membership_donor_count` |
-| membership donors with AT8 available | 46 of 46 | `…membership_donors_available` |
-| eligible donors after the frozen predicate | 46 of 46 candidates | `T0_ELIGIBLE_DONOR_METADATA` |
-| already allocated | 28 discovery + 18 confirmation | frozen donor-role authority |
+Verdict: **`FRESH_DONORS_EXIST_BUT_ONLY_IN_FIREWALL_CLOSED_PARTITIONS__OWNER_GATE_NEW_POPULATION_AUTHORITY_AND_STORE_BUILD_REQUIRED`**
 
-**Every eligible donor in the T0 population is spent.** But the binding
-constraint is the *membership*, not pathology availability: up to **38
-AT8-available donors sit outside the current MTG immune membership.**
+| quantity | value |
+| --- | ---: |
+| donors with AT8 available | 84 |
+| in the frozen V20 membership | 46 (20,804 cells) |
+| unused AT8-available donors | 38 |
+| …with any cells anywhere in the atlas | 22 |
+| …with MTG immune cells at operator 31 | **22** |
+| …satisfying the **full** V20 predicate | **0** |
 
-What must be established, pathology-blind (availability only, never values):
+**Fresh donors do exist.** All 22 fail on exactly one predicate — `partition`.
+They are not in another region, not a different operator, and not missing immune
+cells. Operator-31 immune donors by partition:
 
-- how many of those 38 have MTG immune cells in the authenticated population at
-  all, versus being absent from this region or cohort;
-- how many would pass the frozen eligibility predicate unchanged;
-- whether the membership can be extended without altering the frozen population
-  closure, or whether extension constitutes a new population requiring its own
-  freeze.
+| partition | immune donors | op31 cells (all classes) |
+| --- | ---: | ---: |
+| `reader_fit` (V20's population) | 46 | 638,150 |
+| `reader_validation` | **12** | 173,736 |
+| `reader_oracle` | **10** | 121,386 |
 
-**If ≥ 12–15 fresh eligible donors are materialisable**, V21 should be designed
-around a genuinely fresh confirmation set and the contamination question
-disappears. **If not**, V21 must adopt §1.3's degraded status honestly rather
-than describing a re-test of spent donors as confirmation.
+The remaining 16 of the 38 have no cells anywhere in the atlas — they are in the
+pathology table but not this sequencing cohort.
+
+The frozen predicate reproduced all 46 membership donors' cell counts exactly,
+so the audit is querying the authority it references.
+
+#### Three things gate using them, none of which is mine to open
+
+1. **Both partitions are firewall-closed.** `docs/agent/CURRENT_WORK_CHECKPOINT.json`
+   declares `reader_validation_closed: true` and `reader_oracle_closed: true`,
+   in the same gate class as `pathology_closed` and `sealed_expression_closed`.
+   Opening either is an owner decision.
+2. **A new V21 population authority is required, not a V20 amendment.** V20's
+   closure is defined by a predicate that fixes `partition='reader_fit'`.
+   Admitting other partitions changes that predicate, which would mutate a
+   frozen authority. V20 must stay immutable, so this is a separate authority by
+   construction.
+3. **A new expression store build is required.** The materialised Phase2 op31
+   store holds exactly 638,150 cells — the `reader_fit` count, confirmed by
+   query. The other partitions' cells exist in the canonical metadata source but
+   their counts are not materialised anywhere the T0 machinery can read. The
+   frozen age/sex authority also covers only the 46 donors and would need
+   extension from source.
+
+#### What I would recommend, for review
+
+**Open `reader_validation` only, and leave `reader_oracle` closed.** That yields
+**12 fresh donors** — at the bottom of the 12–15 range this draft set for a
+viable independent confirmation set, so it is feasible but not comfortable. And
+it preserves `reader_oracle` as a genuinely untouched final oracle, which is
+worth more than ten extra confirmation donors: once both are spent there is
+nothing left to confirm anything against.
+
+The cost is real and should be weighed openly: a new population authority, a new
+op31 store build for the validation partition, an extended age/sex authority,
+and a fresh technical-completeness pass. That is a data-engineering project, not
+a configuration change.
+
+If that cost is not worth paying now, §1.3's degraded status applies and V21
+must describe itself accordingly. Either way the design below is unchanged; only
+the confirmatory status of T1 and T2 depends on this choice.
 
 ### 0.2 Does the rare-biology estimand have any power at this cohort size?
 
@@ -172,23 +211,89 @@ it, with the first as a pre-registered secondary.
 
 ---
 
-## 3. Ridge search
+## 3. Ridge search — a frozen deterministic bracketing procedure
 
-**Widen the grid prospectively and require an interior optimum.** V20's
-`ridge_multiplier_exponents` ran −6.0 to +2.0 and the LOODO optimum landed on the
-`+2.0` endpoint. V21 widens the range and **STOPs if the optimum lands on either
-boundary**, since a boundary optimum means the grid is misspecified and the fit is
-not well-posed.
+**Not a wider fixed grid.** A wider grid is the same mistake at a larger scale:
+it can still terminate on an endpoint, and its width would be chosen by
+guesswork. V21 freezes a *procedure* that searches until the optimum is interior
+or refuses.
 
-One thing this fix should not be oversold as. The HC3 t-statistic is invariant to
-positive rescaling of the predictor, so a boundary λ barely moves the state
-p-value — V20's inference was not materially fragile to it. Ridge does change
-beta's *direction*, so it is not irrelevant, but the requirement is about
-well-posedness, not about repairing an inferential threat.
+Everything below is evaluated by LOODO cross-validation on **discovery donors
+only**, exactly as V20 did. Confirmation never sees the search.
 
-The widened range and the STOP rule must be frozen before the grid is run.
+### 3.1 The procedure
 
----
+Let `e` be the multiplier exponent, `λ = 10^e · trace_scale`.
+
+**Stage A — bracket.** Evaluate a frozen coarse anchor set
+`e ∈ {−8, −4, 0, +4, +8}`. Chosen for span rather than resolution; the anchor is
+frozen so it cannot be retuned.
+
+**Stage B — expand.** While the minimum CV MSE sits at either end of the current
+bracket, extend that end by a frozen step of `4` in exponent and re-evaluate. At
+most **3** expansions per side, bounding the search at `e ∈ [−20, +20]`.
+
+**Stage C — refine.** Once the minimum is strictly interior, halve the step
+around it — `4 → 2 → 1 → 0.5 → 0.25` — for a frozen **4** refinement rounds,
+requiring the minimum to remain interior at each round.
+
+**Stage D — accept or STOP.** Accept only if the final minimum is strictly
+interior to its refinement interval. The frozen V20 tie rule is reused verbatim
+for equal-loss exponents; it is not redefined here.
+
+### 3.2 STOP conditions, frozen in advance
+
+- the minimum is still at a bracket endpoint after the maximum expansions —
+  the design is misspecified, not merely under-searched;
+- the refined minimum lands on a refinement-interval endpoint;
+- the search does not terminate within the frozen expansion and refinement
+  budgets;
+- **the CV surface is not decisive** (see §3.3).
+
+### 3.3 Interiority is necessary but not sufficient — the plateau check
+
+This is the part a wider grid would have missed. Ridge on 28 donors can produce
+a CV surface that is nearly flat across many decades, in which case an interior
+minimum is weakly identified and the interiority requirement is close to
+vacuous — it would certify a coin flip between λ values differing by orders of
+magnitude.
+
+So V21 must additionally report the **near-optimal plateau width**: the range of
+exponents whose CV MSE lies within the frozen tie tolerance of the minimum, and
+the relative CV improvement of the minimum over the anchor endpoints. If the
+plateau spans more than a frozen number of decades, the result is
+`STOP_RIDGE_CV_SURFACE_NOT_DECISIVE`, and the correct response is to report the
+fit as regularisation-insensitive rather than to quote a selected λ as if it
+were identified.
+
+**The plateau bound is not set here.** It is a number that must be chosen in
+review and frozen before the search runs, and I will not pick it silently. My
+recommendation is 2 decades, on the reasoning that a minimum indistinguishable
+across a 100-fold change in λ is not a selection. It should be set from the
+discovery CV surface's own shape if a principled derivation is available, in
+keeping with the standing rule that dataset geometry sets scale-sensitive
+parameters.
+
+### 3.4 What must be published
+
+The complete search trace: every exponent visited, in order, its CV MSE, which
+stage requested it, and the decision taken at each step — so the search is
+replayable and its determinism checkable. Plus the plateau width, the relative
+improvement over the anchors, and the selected exponent with its interiority
+margin.
+
+### 3.5 What this fix is and is not
+
+It is a **well-posedness** requirement. V20's optimum landed on the `+2.0`
+endpoint, which says the grid was misspecified.
+
+It is **not** a repair of an inferential threat, and V21 should not claim
+otherwise. The HC3 t-statistic is invariant to positive rescaling of the
+predictor, so a boundary λ barely moves the state p-value — V20's inference was
+not materially fragile to it. Ridge does change beta's *direction*, so the
+choice is not irrelevant, but the honest framing is that V21 makes the fit
+well-posed and its regularisation identified, not that it rescues a result that
+was in doubt.
 
 ## 4. QC methodology — the arc's conclusions, as design
 
@@ -323,8 +428,11 @@ Each of these fixes something that actually cost time in V20:
 
 ## 10. Open items for review
 
-1. §0.1 — the fresh-donor question. Highest value, resolvable pathology-blind,
-   and it changes the design. I can scope it on request.
+1. §0.1 — **answered.** The decision it leaves you is whether to open
+   `reader_validation` for 12 fresh donors, at the cost of a new population
+   authority, an op31 store build and an extended age/sex authority — and
+   whether to keep `reader_oracle` closed as a final untouched oracle, which I
+   recommend.
 2. §0.2 — whether T2 has any power at 18-donor scale before it is designed.
 3. §2.4 — which continuous formulation. I lean to the shape/interaction form
    because it needs no threshold.
@@ -332,3 +440,6 @@ Each of these fixes something that actually cost time in V20:
    you would rather hold T1 until fresh donors exist.
 5. Whether the estimator family should include a candidate that models dropout
    explicitly, which I left out as too assumption-heavy for a frozen design.
+6. §3.3 — the ridge plateau bound in decades. I recommend 2 and deliberately did
+   not set it, since choosing it silently is exactly the class of mistake this
+   contract exists to prevent.

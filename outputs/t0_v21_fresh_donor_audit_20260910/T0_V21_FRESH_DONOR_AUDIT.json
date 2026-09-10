@@ -1,0 +1,664 @@
+{
+  "age_sex_authority_covers_them": false,
+  "answers": "section 0.1 of docs/agent/T0_V21_PROSPECTIVE_DESIGN_DRAFT.md",
+  "at8_available_donors": 84,
+  "at8_input": "the frozen availability registry's donor_id and AT8_available columns only; the pathology source CSV is never opened by this module",
+  "audit_only": true,
+  "estimator_fitted": false,
+  "fresh_donors_with_immune_cells_outside_reader_fit": 22,
+  "frozen_membership_cells": 20804,
+  "frozen_membership_donors": 46,
+  "frozen_predicate_reproduces_membership": true,
+  "frozen_v20_predicate": {
+    "matrix_id": "sea_ad_mtg_rna_final_2026",
+    "native_class": "Immune",
+    "operator_index": 31,
+    "partition": "reader_fit",
+    "source": "SEA_AD"
+  },
+  "membership_modified": false,
+  "numeric_environment": {
+    "environment_sha256": "ac4070b2c518a29000f855e436cf3dd64589b9e36e4a8e025dbc12e3d467f202",
+    "numpy_build": {
+      "blas": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "build_host_cpu": {
+        "cpu": "x86_64",
+        "endian": "little",
+        "family": "x86_64"
+      },
+      "lapack": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "simd": {
+        "baseline": [
+          "X86_V2"
+        ],
+        "found": [
+          "X86_V3"
+        ]
+      }
+    },
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "2.2.3",
+      "scipy": "1.15.3",
+      "sklearn": "1.5.2"
+    },
+    "platform": {
+      "machine": "AMD64",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
+    },
+    "python": {
+      "executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa-v3\\python.exe",
+      "implementation": "CPython",
+      "version": "3.11.15"
+    },
+    "schema": "JEPA_T0_NUMERIC_ENVIRONMENT_V1",
+    "threading": {
+      "pools": [
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.31.188.0"
+        },
+        {
+          "internal_api": "openmp",
+          "num_threads": 16,
+          "prefix": "vcomp",
+          "user_api": "openmp",
+          "version": null
+        },
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.28"
+        }
+      ],
+      "threadpoolctl": "3.6.0"
+    },
+    "threading_environment_variables": {
+      "KMP_DUPLICATE_LIB_OK": "True",
+      "MKL_NUM_THREADS": null,
+      "MKL_THREADING_LAYER": null,
+      "NUMEXPR_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null
+    },
+    "why": "The frozen T0 target verifier compares float arrays bit-exactly, so a replay is only interpretable alongside the arithmetic that produced it. No earlier T0 summary recorded this."
+  },
+  "op31_immune_donors_by_partition": {
+    "reader_fit": 46,
+    "reader_oracle": 10,
+    "reader_validation": 12
+  },
+  "op31_immune_partition_composition": {
+    "reader_fit": 20804,
+    "reader_oracle": 3142,
+    "reader_validation": 4423
+  },
+  "op31_partition_composition_all_cells": {
+    "reader_fit": 638150,
+    "reader_oracle": 121386,
+    "reader_validation": 173736
+  },
+  "partition_firewall": {
+    "reader_oracle": {
+      "declared_closed": true,
+      "firewall_key": "reader_oracle_closed"
+    },
+    "reader_validation": {
+      "declared_closed": true,
+      "firewall_key": "reader_validation_closed"
+    }
+  },
+  "partitions_declared_closed_by_the_firewall": [
+    "reader_oracle",
+    "reader_validation"
+  ],
+  "partitions_holding_them": [
+    "reader_oracle",
+    "reader_validation"
+  ],
+  "pathology_blind": true,
+  "per_donor": [
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.002",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 112994,
+      "cells_immune_any_partition": 807,
+      "cells_mtg_matrix": 25872,
+      "cells_mtg_operator31": 25872,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.005",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 52442,
+      "cells_immune_any_partition": 262,
+      "cells_mtg_matrix": 21138,
+      "cells_mtg_operator31": 21138,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.014",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 140878,
+      "cells_immune_any_partition": 348,
+      "cells_mtg_matrix": 16206,
+      "cells_mtg_operator31": 16206,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.015",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 153418,
+      "cells_immune_any_partition": 264,
+      "cells_mtg_matrix": 17704,
+      "cells_mtg_operator31": 17704,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.016",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 157795,
+      "cells_immune_any_partition": 339,
+      "cells_mtg_matrix": 17877,
+      "cells_mtg_operator31": 17877,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.019",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.025",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 55553,
+      "cells_immune_any_partition": 1015,
+      "cells_mtg_matrix": 7804,
+      "cells_mtg_operator31": 7804,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.028",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 41471,
+      "cells_immune_any_partition": 210,
+      "cells_mtg_matrix": 13634,
+      "cells_mtg_operator31": 13634,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.032",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 81642,
+      "cells_immune_any_partition": 168,
+      "cells_mtg_matrix": 4225,
+      "cells_mtg_operator31": 4225,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.033",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 42530,
+      "cells_immune_any_partition": 345,
+      "cells_mtg_matrix": 16532,
+      "cells_mtg_operator31": 16532,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.034",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 28901,
+      "cells_immune_any_partition": 243,
+      "cells_mtg_matrix": 7520,
+      "cells_mtg_operator31": 7520,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.045",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H20.33.046",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.003",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 150372,
+      "cells_immune_any_partition": 322,
+      "cells_mtg_matrix": 15157,
+      "cells_mtg_operator31": 15157,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.004",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.006",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 44161,
+      "cells_immune_any_partition": 352,
+      "cells_mtg_matrix": 16326,
+      "cells_mtg_operator31": 16326,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.007",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.008",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.011",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 80685,
+      "cells_immune_any_partition": 474,
+      "cells_mtg_matrix": 11712,
+      "cells_mtg_operator31": 11712,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.013",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 50642,
+      "cells_immune_any_partition": 434,
+      "cells_mtg_matrix": 17327,
+      "cells_mtg_operator31": 17327,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.015",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.016",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 153653,
+      "cells_immune_any_partition": 268,
+      "cells_mtg_matrix": 23533,
+      "cells_mtg_operator31": 23533,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.019",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 7074,
+      "cells_immune_any_partition": 94,
+      "cells_mtg_matrix": 1409,
+      "cells_mtg_operator31": 1409,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.020",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 30919,
+      "cells_immune_any_partition": 245,
+      "cells_mtg_matrix": 11524,
+      "cells_mtg_operator31": 11524,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.021",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.022",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.023",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 124957,
+      "cells_immune_any_partition": 294,
+      "cells_mtg_matrix": 10563,
+      "cells_mtg_operator31": 10563,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.026",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.027",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 40977,
+      "cells_immune_any_partition": 184,
+      "cells_mtg_matrix": 8364,
+      "cells_mtg_operator31": 8364,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.029",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 40527,
+      "cells_immune_any_partition": 246,
+      "cells_mtg_matrix": 10543,
+      "cells_mtg_operator31": 10543,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.030",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 44374,
+      "cells_immune_any_partition": 403,
+      "cells_mtg_matrix": 14705,
+      "cells_mtg_operator31": 14705,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.031",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.037",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.038",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.041",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.044",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 0,
+      "cells_immune_any_partition": 0,
+      "cells_mtg_matrix": 0,
+      "cells_mtg_operator31": 0,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.045",
+      "sex": ""
+    },
+    {
+      "age": "",
+      "age_sex_in_frozen_authority": false,
+      "at8_available": true,
+      "cells_any": 23675,
+      "cells_immune_any_partition": 248,
+      "cells_mtg_matrix": 5447,
+      "cells_mtg_operator31": 5447,
+      "cells_v20_predicate": 0,
+      "donor_id": "H21.33.046",
+      "sex": ""
+    }
+  ],
+  "provenance": {
+    "age_sex_registry_sha256": "2cec839323daf26f8b64054838bfef975ed2989e4ffc19e7fc03da4045eb1a05",
+    "availability_registry_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
+    "canonical_sqlite_bytes": 2709786624,
+    "canonical_sqlite_path": "D:/Jepa project/exports/foundation_corpus_discovery_v1/foundation_metadata_rows.sqlite",
+    "membership_sha256": "d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529"
+  },
+  "reads_at8_values": false,
+  "requires_new_expression_store_build": true,
+  "requires_new_v21_population_authority": true,
+  "schema": "JEPA_T0_V21_FRESH_DONOR_AUDIT_V1",
+  "tail_diagnostic_run": false,
+  "training_authorized": false,
+  "unused_at8_available_donors": 38,
+  "unused_matrix_distribution": {
+    "sea_ad_ang_rna_final_2026": 63142,
+    "sea_ad_caudate_rna_all_2025": 194624,
+    "sea_ad_fi_rna_final_2026": 47962,
+    "sea_ad_hip_rna_final_2026": 40836,
+    "sea_ad_itg_rna_final_2026": 86011,
+    "sea_ad_lec_rna_final_2026": 36154,
+    "sea_ad_mec_rna_final_2026": 256071,
+    "sea_ad_mtg_rna_final_2026": 295122,
+    "sea_ad_pfc_a9_rna_final_2026": 367252,
+    "sea_ad_stg_rna_final_2026": 127294,
+    "sea_ad_v1c_rna_final_2026": 145172
+  },
+  "unused_native_class_distribution_at_operator_31": {
+    "Astrocyte": 16128,
+    "Chandelier": 2309,
+    "Endothelial": 432,
+    "Immune": 7565,
+    "L2/3 IT": 70847,
+    "L4 IT": 39530,
+    "L5 ET": 468,
+    "L5 IT": 26967,
+    "L5/6 NP": 4535,
+    "L6 CT": 3629,
+    "L6 IT": 10254,
+    "L6 IT Car3": 5090,
+    "L6b": 3362,
+    "Lamp5": 9940,
+    "Lamp5 Lhx6": 4627,
+    "OPC": 6609,
+    "Oligodendrocyte": 21557,
+    "Pax6": 1892,
+    "Pvalb": 19747,
+    "Sncg": 4149,
+    "Sst": 11407,
+    "Sst Chodl": 223,
+    "VLMC & Perivascular": 934,
+    "Vip": 22921
+  },
+  "unused_partition_distribution_at_operator_31": {
+    "reader_oracle": 121386,
+    "reader_validation": 173736
+  },
+  "unused_satisfying_full_v20_predicate": 0,
+  "unused_usable_cells_under_v20_predicate": 0,
+  "unused_with_any_cells": 22,
+  "unused_with_cells_at_operator_31": 22,
+  "unused_with_cells_in_mtg_matrix": 22,
+  "unused_with_immune_cells_any_partition": 22,
+  "v20_modified": false,
+  "verdict": "FRESH_DONORS_EXIST_BUT_ONLY_IN_FIREWALL_CLOSED_PARTITIONS__OWNER_GATE_NEW_POPULATION_AUTHORITY_AND_STORE_BUILD_REQUIRED",
+  "weighting_or_power_analysis_run": false,
+  "what": "Whether AT8-available donors outside the frozen V20 MTG immune membership could supply a fresh V21 confirmation set.",
+  "why_new_authority": "The frozen V20 population closure is defined by the predicate below, which fixes partition='reader_fit'. Admitting donors from another partition changes that predicate, so it cannot be done by extending V20 without mutating a frozen authority. It requires a separate V21 population authority.",
+  "why_new_store": "The materialised Phase2 op31 expression store covers the reader_fit partition only. Cells in the other partitions exist in the canonical metadata source but their counts are not materialised anywhere the T0 machinery reads, so a fresh confirmation set would need a new store build, not only a new authority."
+}
