@@ -1,0 +1,75 @@
+{
+  "schema": "JEPA_T0_TAIL_MATCHED_QC_CONTRACT_V1",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "purpose": "Step 4 of the QC methodology investigation: ask whether the independent COHERENCE_HOLDOUT program remains donor-consistent after tail and rest cells are compared only within overlapping Q_DEPTH/Q_DETECT support and are deterministically matched on those two QC axes.",
+  "authority": "DIAGNOSTIC_ONLY. Not T0 science authority. Not training authority. Does not modify T0 V20, the frozen tail mask, the frozen QC veto, QC_ALPHA, the frozen target, the tail threshold, or either T0 terminal.",
+  "frozen_tail_terminal_unchanged": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+  "training_authorized": false,
+  "pathology_blind": true,
+  "reads_at8": false,
+  "tail_grouping": "Use the exact frozen confirmation tail/rest labels from T0 V20. Never recompute membership from QC-adjusted, thinned, residualised, or otherwise modified scoring data.",
+  "qc_metrics": ["Q_DEPTH", "Q_DETECT"],
+  "qc_source": "Exact per-cell Q_DEPTH and Q_DETECT already used by the frozen tail QC preflight.",
+  "common_support": {
+    "rule": "Within each donor and each QC metric separately, compute the observed tail range and rest range. The metric-specific overlap is [max(min_tail,min_rest), min(max_tail,max_rest)]. Retain only cells whose Q_DEPTH and Q_DETECT both lie inside both metric overlap intervals. No cell outside this observed rectangular intersection may enter matching or validation.",
+    "no_extrapolation": true,
+    "empty_or_invalid_overlap": "Exclude that donor from the matched diagnostic and report the reason."
+  },
+  "matching": {
+    "transform": "Within donor, transform each QC metric to pooled empirical midranks over the common-support cells and scale ranks to [0,1]. This uses no pathology and no holdout expression.",
+    "distance": "Squared Euclidean distance in the two-dimensional pooled-rank QC space.",
+    "algorithm": "Deterministic minimum-total-distance 1:1 bipartite matching without replacement between tail and rest cells in common support. Match exactly min(n_tail,n_rest) pairs; because rest is expected larger this normally matches every eligible tail cell once. Ties break by canonical stable-cell-key byte order.",
+    "no_caliper": true,
+    "why_no_caliper": "No distance threshold is introduced after seeing the data; empirical common support provides the no-extrapolation boundary and all pair distances are published."
+  },
+  "donor_eligibility_for_holdout_test": {
+    "minimum_matched_pairs": 5,
+    "minimum_decision_donors": 10,
+    "rationale": "Five tail cells and ten decision donors reuse the frozen tail-coherence support minima rather than choosing new support numbers from this result."
+  },
+  "balance_reporting": {
+    "required": [
+      "pre-match and post-match tail/rest means for Q_DEPTH and Q_DETECT",
+      "pre-match and post-match standardized mean differences for both metrics",
+      "number and fraction of tail/rest cells retained by common support",
+      "matched pair count",
+      "matching-distance distribution per donor"
+    ],
+    "gate": "None. These are diagnostic balance measurements; no post-hoc rescue threshold is defined."
+  },
+  "heldout_validation": {
+    "features": "Use only the exact COHERENCE_HOLDOUT addresses and the exact frozen discovery-derived scale and decision mask used in T0 V20/step 3. SCORING features entering validation must equal zero.",
+    "decision_feature_count_expected": 6146,
+    "vector": "For each eligible donor, compute the matched-tail minus matched-rest mean log1p(CP10K) holdout vector, divide by the frozen discovery scale on decision-capable features, zero non-decision features, and L2-normalize exactly as the frozen coherence vector builder does.",
+    "test": "Apply the existing exact_common_direction_test to the eligible donor vectors. Report mean pairwise cosine, exact p, null maximum, leave-one-donor-out agreement, donor vectors/norms, and donor count.",
+    "interpretation": "Persistence of a donor-consistent held-out program after QC matching is evidence that the independent program is not explained solely by the observed tail/rest Q_DEPTH/Q_DETECT difference. Loss of coherence does not prove the tail artefactual. Neither result changes frozen T0 authority."
+  },
+  "acceptance_checks": [
+    "FROZEN_TAIL_MASK_EXACT: every input tail/rest label must equal the frozen T0 V20 grouping",
+    "NO_PATHOLOGY_READ: AT8 or other pathology values must not be loaded",
+    "SCORING_FEATURES_ENTERING_VALIDATION_ZERO",
+    "HOLDOUT_DECISION_FEATURES_EXACTLY_6146",
+    "MATCHED_CELLS_INSIDE_COMMON_SUPPORT",
+    "ONE_TO_ONE_NO_REPLACEMENT: no cell may appear in more than one pair within a donor",
+    "PAIR_COUNT_EXACTLY_MIN_OF_COMMON_SUPPORT_GROUP_COUNTS",
+    "DETERMINISTIC_TIE_BREAK_BY_STABLE_KEY",
+    "MINIMUM_10_DECISION_DONORS_OR_STOP_DIAGNOSTIC",
+    "NO_T0_TERMINAL_OR_THRESHOLD_CHANGE"
+  ],
+  "interpretation_limits": [
+    "This is a diagnostic of whether the held-out program survives observed-QC equalisation. It is not a new T0 adjudication rule and cannot rescue the frozen rare-tail terminal.",
+    "Matching controls only the two observed QC metrics Q_DEPTH and Q_DETECT. Unmeasured technical confounding can remain.",
+    "Common-support restriction changes the cell subset and therefore the estimand; report retention explicitly.",
+    "Do not choose a balance threshold, alternative matching method, caliper, donor subset, or holdout feature subset after seeing this result.",
+    "Do not residualise the scoring tail score or redefine the tail in this step."
+  ],
+  "required_outputs": [
+    "machine-readable contract binding and provenance hashes",
+    "per-donor common-support counts and intervals",
+    "per-pair stable keys and QC distances",
+    "pre/post-match QC balance table",
+    "per-donor heldout vector/norm summary",
+    "exact common-direction test result",
+    "concise findings document with frozen authority unchanged"
+  ]
+}
