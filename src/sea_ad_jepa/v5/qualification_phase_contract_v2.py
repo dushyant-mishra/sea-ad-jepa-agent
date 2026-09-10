@@ -93,7 +93,7 @@ def _validate_dependency_row(
         raise RuntimeError("STOP_V5_DEPENDENCY_REPORT_ARTIFACT_GRAPH_MISMATCH")
     if report.get("post_evidence_authority_ids") != expected_authorities:
         raise RuntimeError("STOP_V5_DEPENDENCY_REPORT_AUTHORITY_GRAPH_MISMATCH")
-    if report.get("qc_parent_child_bound") is not True or report.get("power_parent_child_bound") is not True:
+    if report.get("qc_parent_child_bound") is not True or report.get("two_sided_power_parent_child_bound") is not True:
         raise RuntimeError("STOP_V5_DEPENDENCY_GRAPH_NOT_CLOSED")
 
     return {
@@ -144,6 +144,7 @@ def build_postqualification_bundle_v2(
         "qualification_run_manifest_sha256": base["qualification_run_manifest_sha256"],
         "required_evidence": {**base["required_evidence"], DEPENDENCY_EVIDENCE_ID: dependency},
         "dependency_closure_required": True,
+        "two_sided_power_calibration_required": True,
         "production_training_eligible": True,
         "production_training_authorized": False,
     }
@@ -161,6 +162,8 @@ def validate_postqualification_bundle_v2(
         raise ValueError("unexpected postqualification V2 bundle schema")
     if bundle.get("dependency_closure_required") is not True:
         raise RuntimeError("STOP_V5_DEPENDENCY_CLOSURE_NOT_REQUIRED")
+    if bundle.get("two_sided_power_calibration_required") is not True:
+        raise RuntimeError("STOP_V5_TWO_SIDED_POWER_CALIBRATION_NOT_REQUIRED")
     if bundle.get("production_training_eligible") is not True:
         raise RuntimeError("STOP_V5_POSTQUALIFICATION_V2_NOT_ELIGIBLE")
     if bundle.get("production_training_authorized") is not False:
