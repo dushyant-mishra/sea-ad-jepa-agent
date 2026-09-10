@@ -1,0 +1,85 @@
+{
+  "schema": "JEPA_RUNTIME_ASSET_STATUS_20260910_V1",
+  "date": "2026-09-10",
+  "status": "RUNTIME_ASSETS_HASH_VERIFIED_NON_AUTHORITY",
+  "runtime_root": "/mnt/data",
+  "verification_scope": "presence_size_sha256_only",
+  "assets": {
+    "foundation_calibration_bundle": {
+      "path": "/mnt/data/FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "size_bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "hash_verified": true
+    },
+    "discovery_expression_part001": {
+      "path": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "size_bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "hash_verified": true
+    },
+    "discovery_expression_part002": {
+      "path": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "size_bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "hash_verified": true
+    },
+    "discovery_expression_assembled_stream": {
+      "construction": "part001 || part002",
+      "size_bytes": 607959761,
+      "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+      "hash_verified": true
+    },
+    "parts_sha256_csv": {
+      "path": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "size_bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "hash_verified": true
+    },
+    "checkpoints_zip": {
+      "path": "/mnt/data/checkpoints.zip",
+      "size_bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "hash_verified": true
+    },
+    "t1_checkpoint_u0200_zip": {
+      "path": "/mnt/data/t1_checkpoint_u0200.zip",
+      "size_bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "hash_verified": true
+    },
+    "expression_zip": {
+      "path": "/mnt/data/expression.zip",
+      "size_bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "hash_verified": true
+    },
+    "operator_address_state_npz": {
+      "path": "/mnt/data/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "size_bytes": 1488934,
+      "expected_sha256": "1473430393179ce8242c9b5ce24d7b84c39d9289492b5a96332eb81436ae68a6",
+      "hash_verified": false,
+      "note": "presence and size observed; hash not recomputed in this handoff pass"
+    }
+  },
+  "v5_smoke_policy": {
+    "allowed": true,
+    "label": "REAL_DATA_SMOKE_NON_AUTHORITY",
+    "may_test": [
+      "real expression identity and data path",
+      "V5 reader compatibility",
+      "query masking and representation firewall mechanics",
+      "forward mechanics",
+      "bounded protected-gradient mechanics if runtime supports torch/CUDA",
+      "same-cell perturbation mechanics",
+      "packing/order identity preservation"
+    ],
+    "may_not_set": [
+      "production dimensions",
+      "biology thresholds",
+      "schedule thresholds",
+      "scientific conclusions",
+      "training authority"
+    ]
+  },
+  "training_authorized": false
+}
