@@ -32,11 +32,24 @@ jobs:
           tests/v5_anticheat/test_full_population_coverage_conditioning_audit_v1.py
           tests/test_full_population_conditioning_authority_v1.py
           tests/test_same_cell_technical_intervention_probe_v1.py
+          tests/test_same_cell_qc_bridge_v2.py
+          tests/test_same_cell_qc_bridge_v3.py
+          tests/test_qc_qualification_authority_v1.py
+          tests/test_qc_qualification_authority_v2.py
+          tests/test_qc_qualification_authority_v3.py
           tests/test_teacher_student_v5_full_population_horizon_candidate_v2.py
           tests/test_teacher_student_v5_full_population_horizon_candidate_v3.py
           tests/test_biology_observation_adapter_v1.py
           tests/test_relational_shortcut_increment_guard_v1.py
+          tests/test_relational_shortcut_superiority_guard_v2.py
           tests/test_relational_measurement_shortcut_results_v1.py
+          tests/test_representation_collapse_guard_v1.py
+          tests/test_pretraining_qualification_bundle_v1.py
+          tests/test_qualification_phase_contract_v1.py
+          tests/test_qualification_phase_contract_v2.py
+          tests/test_rejection_gate_power_calibration_v1.py
+          tests/test_rejection_gate_power_calibration_v2.py
+          tests/test_postqualification_dependency_guard_v1.py
           tests/test_v5_group_presentation_floor_relevance_v1.py
           tests/test_v5_real_data_parameter_and_dimension_contract_v1.py
           tests/test_full_reader_expression_location_builder_v2.py
@@ -53,6 +66,7 @@ jobs:
           tests/test_dimension_execution_firewall_v1.py
           tests/test_v5_support_family_mass_derivation_v1.py
           tests/test_trainer_preexecution_contract_v2.py
+          tests/test_trainer_preexecution_contract_v3.py
           tests/test_v5_c2_gpu_critical_manifest_v1.py
           tests/test_v5_c2_gpu_qualification_harness_v1.py
           tests/test_v5_schedule_governance_resolution_v1.py
@@ -72,14 +86,28 @@ jobs:
           src/sea_ad_jepa/v5/full_population_conditioning_authority_v1.py
           src/sea_ad_jepa/v5/representation_firewall_v1.py
           src/sea_ad_jepa/v5/same_cell_technical_intervention_probe_v1.py
+          src/sea_ad_jepa/v5/same_cell_qc_bridge_v2.py
+          src/sea_ad_jepa/v5/same_cell_qc_bridge_v3.py
+          src/sea_ad_jepa/v5/qc_qualification_authority_v1.py
+          src/sea_ad_jepa/v5/qc_qualification_authority_v2.py
+          src/sea_ad_jepa/v5/qc_qualification_authority_v3.py
           src/sea_ad_jepa/v5/biology_observation_adapter_v1.py
           src/sea_ad_jepa/v5/relational_shortcut_increment_guard_v1.py
+          src/sea_ad_jepa/v5/relational_shortcut_superiority_guard_v2.py
+          src/sea_ad_jepa/v5/representation_collapse_guard_v1.py
+          src/sea_ad_jepa/v5/pretraining_qualification_bundle_v1.py
+          src/sea_ad_jepa/v5/qualification_phase_contract_v1.py
+          src/sea_ad_jepa/v5/qualification_phase_contract_v2.py
+          src/sea_ad_jepa/v5/rejection_gate_power_calibration_v1.py
+          src/sea_ad_jepa/v5/rejection_gate_power_calibration_v2.py
+          src/sea_ad_jepa/v5/postqualification_dependency_guard_v1.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v1.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v2.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v3.py
           src/sea_ad_jepa/v5/critical_test_execution_guard_v1.py
           src/sea_ad_jepa/v5/dimension_execution_firewall_v1.py
           src/sea_ad_jepa/v5/trainer_preexecution_contract_v2.py
+          src/sea_ad_jepa/v5/trainer_preexecution_contract_v3.py
           scripts/v5_anticheat/audit_full_population_coverage_conditioning_v1.py
           scripts/v5_anticheat/derive_full_population_schedule_optimum_v3.py
           scripts/v5_anticheat/materialize_full_population_schedule_v4.py
