@@ -1,12 +1,12 @@
 {
-  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT_V2",
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT_V3",
   "date": "2026-09-10",
   "status": "HANDOFF_ONLY_NO_TRAINING_AUTHORITY",
   "canonical_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md",
-  "latest_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL2.md",
+  "latest_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL3.md",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "observed_heads_before_final2_governance_commits": {
-    "main": "d0dbf7d5b3fa942ad747af81844ea7bf5488b81f",
+  "observed_heads_before_final3_governance_commits": {
+    "main": "7591a2e8b925ceb20ab364dd373fcac02f6c4a25",
     "v5_live": "495e88971909ad5aeb8c93639af85000481a8f41",
     "v5_engineering_state": "5668e3d71c720219ec823d5ff089f246091f2be2",
     "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
@@ -27,6 +27,7 @@
     "next_action": "PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY",
     "confirmation_design_rule": "IF_LOOKING_AT_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
     "weighting_probe_authorized_now": false,
+    "claude_lane": "T0_ONLY_UNTIL_USER_EXPLICITLY_MOVES_TO_V5",
     "training_authorized": false
   },
   "v5": {
@@ -39,7 +40,9 @@
     "addresses": 41238,
     "common_core_addresses": 17186,
     "dominant_real_data_blocker": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
+    "required_full_reader_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
     "small_real_data_smoke_allowed": true,
+    "small_real_data_smoke_executed_in_this_chat": false,
     "small_real_data_smoke_label": "REAL_DATA_SMOKE_NON_AUTHORITY",
     "small_real_data_smoke_precondition": "ALL_REQUIRED_INPUT_HASH_MANIFEST_AND_PROVENANCE_CHECKS_PASS",
     "next_action": "TINY_DETERMINISTIC_REAL_LOCKED_SUBSET_SMOKE_ONLY_IF_REQUIRED_AUTHORITIES_PASS",
