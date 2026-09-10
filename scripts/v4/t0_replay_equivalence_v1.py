@@ -196,6 +196,130 @@ def compare_fit_equivalence(frozen_fit: dict[str, Any], recomputed_fit: dict[str
     }
 
 
+def _observe(field: str, av: Any, bv: Any) -> dict[str, Any]:
+    """The observed relationship between two values, applying no policy."""
+    entry: dict[str, Any] = {}
+    try:
+        entry["frozen_dtype"] = str(_declared_dtype(av, field, "frozen"))
+        entry["recomputed_dtype"] = str(_declared_dtype(bv, field, "recomputed"))
+        entry["dtypes_match"] = (entry["frozen_dtype"]
+                                 == entry["recomputed_dtype"])
+    except ReplayEquivalenceError as error:
+        entry["dtype_error"] = str(error)
+        return entry
+    a = np.asarray(av)
+    b = np.asarray(bv)
+    entry["shape"] = list(a.shape)
+    entry["shapes_match"] = a.shape == b.shape
+    entry["exactly_equal"] = bool(a.shape == b.shape and np.array_equal(a, b))
+    if (a.dtype.kind in "fiu" and b.dtype.kind in "fiu"
+            and a.shape == b.shape and a.size):
+        fa = a.astype(np.float64)
+        fb = b.astype(np.float64)
+        if np.isfinite(fa).all() and np.isfinite(fb).all():
+            max_abs, max_rel = _float_metrics(fa, fb)
+            entry["max_abs"] = max_abs
+            entry["max_rel"] = max_rel
+            entry["differing_elements"] = int((fa != fb).sum())
+            entry["elements"] = int(fa.size)
+            if fa.size == 1:
+                entry["frozen_value"] = repr(float(fa.reshape(-1)[0]))
+                entry["recomputed_value"] = repr(float(fb.reshape(-1)[0]))
+                entry["ulp_distance"] = _ulp_distance(float(fa.reshape(-1)[0]),
+                                                      float(fb.reshape(-1)[0]))
+    return entry
+
+
+def _ulp_distance(a: float, b: float) -> Any:
+    """How many float64 steps apart two finite values are, for the record."""
+    if not (math.isfinite(a) and math.isfinite(b)):
+        return None
+    if a == b:
+        return 0
+    step = a
+    for count in range(1, 65):
+        step = float(np.nextafter(np.float64(step),
+                                  np.float64(np.inf if b > a else -np.inf)))
+        if step == b:
+            return count
+    return "more than 64"
+
+
+def full_fit_equivalence_report(frozen_fit: dict[str, Any],
+                                recomputed_fit: dict[str, Any]) -> dict[str, Any]:
+    """Every field, its frozen rule, its observed drift, and its verdict.
+
+    Applies the same frozen policy as the gate and raises nothing, so a STOP can
+    be published with all of its evidence rather than only the first field that
+    tripped. Choosing a budget is not this function's business; every rule it
+    reports comes from the policy constants.
+    """
+    fields: dict[str, Any] = {}
+    shared = sorted(set(frozen_fit) & set(recomputed_fit))
+    for field in shared:
+        rule: dict[str, Any]
+        if field in FLOAT_POLICY:
+            rule = {"rule": "tolerant_array", **FLOAT_POLICY[field],
+                    "required_dtype": str(REQUIRED_FLOAT_DTYPE)}
+        elif field in ULP_POLICY:
+            rule = {"rule": "at_most_n_ulp", "max_ulp": ULP_POLICY[field],
+                    "required_dtype": str(REQUIRED_FLOAT_DTYPE)}
+        elif field in EXACT_ARRAY_FIELDS:
+            rule = {"rule": "exact_array"}
+        elif field in EXACT_SCALAR_FIELDS:
+            rule = {"rule": "exact_scalar"}
+        else:
+            rule = {"rule": "not_compared_by_policy"}
+        entry = {"policy": rule, "observed": _observe(field,
+                                                      frozen_fit[field],
+                                                      recomputed_fit[field])}
+        if rule["rule"] == "not_compared_by_policy":
+            entry["verdict"] = "NOT_COMPARED"
+        else:
+            try:
+                if rule["rule"] == "tolerant_array":
+                    _check_tolerant_array(field, frozen_fit[field],
+                                          recomputed_fit[field],
+                                          FLOAT_POLICY[field])
+                elif rule["rule"] == "at_most_n_ulp":
+                    distance = _check_one_ulp(field, frozen_fit[field],
+                                              recomputed_fit[field])
+                    if distance > ULP_POLICY[field]:
+                        _fail(field, f"ULP distance {distance} > "
+                                     f"{ULP_POLICY[field]}")
+                elif rule["rule"] == "exact_array":
+                    _require_same_dtype(field, frozen_fit[field],
+                                        recomputed_fit[field])
+                    if not np.array_equal(np.asarray(frozen_fit[field]),
+                                          np.asarray(recomputed_fit[field])):
+                        _fail(field, "exact array equality required")
+                else:
+                    _require_same_dtype(field, frozen_fit[field],
+                                        recomputed_fit[field])
+                    if frozen_fit[field] != recomputed_fit[field]:
+                        _fail(field, "exact scalar equality required")
+                entry["verdict"] = "PASS"
+            except ReplayEquivalenceError as error:
+                entry["verdict"] = "STOP"
+                entry["reason"] = str(error)
+        fields[field] = entry
+
+    stopped = sorted(f for f, e in fields.items() if e["verdict"] == "STOP")
+    return {
+        "schema": "JEPA_T0_V20_TARGET_REPLAY_EQUIVALENCE_FULL_REPORT_V1",
+        "note": "Applies the frozen policy exhaustively and raises nothing, so "
+                "a STOP is publishable with all its evidence. It selects no "
+                "tolerances; every rule shown is a policy constant.",
+        "key_sets_match": set(frozen_fit) == set(recomputed_fit),
+        "frozen_only_keys": sorted(set(frozen_fit) - set(recomputed_fit)),
+        "recomputed_only_keys": sorted(set(recomputed_fit) - set(frozen_fit)),
+        "fields_compared": len(shared),
+        "stopped_fields": stopped,
+        "equivalent_under_frozen_policy": not stopped,
+        "fields": fields,
+    }
+
+
 def compare_decision_equivalence(committed: dict[str, Any], recomputed: dict[str, Any]) -> dict[str, Any]:
     for terminal in ("state_terminal", "tail_terminal"):
         if committed.get(terminal) != recomputed.get(terminal):
@@ -243,7 +367,8 @@ def compare_decision_equivalence(committed: dict[str, Any], recomputed: dict[str
     }
 
 
-def verify_target_v2_replay_equivalent(target_dir, **kwargs: Any) -> dict[str, Any]:
+def verify_target_v2_replay_equivalent(target_dir, *, report_sink: Any = None,
+                                       **kwargs: Any) -> dict[str, Any]:
     """Recompute the frozen target with exact provenance, then apply V1 equivalence.
 
     The historical `verify_target_v2_against_raw` remains untouched and retains
@@ -254,6 +379,20 @@ def verify_target_v2_replay_equivalent(target_dir, **kwargs: Any) -> dict[str, A
     frozen_mod = stage2a._frozen("t0_discovery_fit_v2")
     frozen = frozen_mod.load_target_v2(target_dir, kwargs["feature_split_csv"])
     recomputed = frozen_mod.fit_discovery_target_v2(**kwargs)
+
+    # Recorded before either gate is applied, so a STOP can be published with
+    # all of its evidence rather than only the field that tripped first. The
+    # gates below still decide; this only describes.
+    if report_sink is not None:
+        report_sink.append({
+            "target_dir": str(target_dir),
+            "provenance_exact": frozen["provenance"] == recomputed["provenance"],
+            "discovery_provenance_root": frozen["provenance"]["root_sha256"],
+            "package_root_sha256": frozen["package_root_sha256"],
+            "full_report": full_fit_equivalence_report(frozen["fit"],
+                                                       recomputed["fit"]),
+        })
+
     if frozen["provenance"] != recomputed["provenance"]:
         _fail("provenance", "exact canonical raw discovery provenance mismatch")
     report = compare_fit_equivalence(frozen["fit"], recomputed["fit"])

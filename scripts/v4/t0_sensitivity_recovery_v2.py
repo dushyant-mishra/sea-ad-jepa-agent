@@ -30,6 +30,7 @@ import t0_replay_equivalence_v1 as replay
 STOP = "STOP_T0_SENSITIVITY_RECOVERY_V2_REFUSED"
 DECISION_FILE = "T0_V20_ADJUDICATION_DECISION.json"
 RECOVERY_FILE = "T0_V20_RECOVERED_SENSITIVITY_STATISTICS_V2.json"
+EQUIVALENCE_REPORT_FILE = "T0_V20_REPLAY_EQUIVALENCE_REPORT.json"
 ROUTER_ANCHOR = "    namespace = dict(frozen.__dict__)"
 # Stage 3 resolves the tail-freeze module inside `run`; the derived chain has to
 # be substituted in there or step 4 reaches the frozen bit-exact verifier first.
@@ -45,8 +46,51 @@ R8_PRETARGET_MARKER = 'namespace["verify_pretarget_execution_authority"]'
 R8_PREADJUDICATION_MARKER = 'namespace["verify_preadjudication_execution_authority"]'
 
 
+class ReplayStopped(RuntimeError):
+    """The frozen equivalence policy refused. Carries the evidence to publish."""
+
+    def __init__(self, reason: str, full_reports: list[dict[str, Any]],
+                 repair_report: dict[str, Any] | None):
+        super().__init__(reason)
+        self.reason = reason
+        self.full_reports = full_reports
+        self.repair_report = repair_report
+
+
 def _fail(message: str) -> None:
     raise RuntimeError(f"{STOP}: {message}")
+
+
+def build_stop_report(reason: str, full_reports: list[dict[str, Any]],
+                      repair_report: dict[str, Any] | None) -> dict[str, Any]:
+    """The complete equivalence report for a run the policy refused.
+
+    Published rather than discarded. The budgets are not revisited here: a
+    refused replay is a finding about this numeric stack, and re-choosing the
+    tolerance that would have admitted it is a different act from reporting it.
+    """
+    stopped: list[str] = []
+    for entry in full_reports:
+        stopped.extend(entry.get("full_report", {}).get("stopped_fields", []))
+    return {
+        "schema": "JEPA_T0_V20_REPLAY_EQUIVALENCE_STOP_REPORT_V1",
+        "terminal": "STOP_T0_V20_REPLAY_NOT_EQUIVALENT_UNDER_FROZEN_POLICY",
+        "reason": reason,
+        "stopped_fields": sorted(set(stopped)),
+        "sensitivity_statistics_recovered": False,
+        "why_not_recovered":
+            "The frozen equivalence policy refused the target replay at Stage 3 "
+            "step 4, which precedes the adjudicator, so the omitted sensitivity "
+            "surfaces were never reached.",
+        "tolerances_revisited_after_seeing_the_discrepancy": False,
+        "historical_bit_exact_verifier_modified": False,
+        "frozen_v20_files_modified": 0,
+        "training_authorized": False,
+        "t0_conclusion_changed": False,
+        "numeric_environment": numeric_environment.numeric_environment(),
+        "reporting_repair": repair_report,
+        "target_replay_reports": full_reports,
+    }
 
 
 def _deps():
@@ -189,9 +233,12 @@ def _repaired_router_with_replay() -> tuple[Callable[..., Any], list[dict[str, A
     repaired_function = v1_namespace["adjudicate_donor_table_non_authoritative"]
 
     target_reports: list[dict[str, Any]] = []
+    # Filled before the gates are applied, so it survives a STOP.
+    full_reports: list[dict[str, Any]] = []
 
     def target_verifier(target_dir, **kwargs: Any):
-        report = replay.verify_target_v2_replay_equivalent(target_dir, **kwargs)
+        report = replay.verify_target_v2_replay_equivalent(
+            target_dir, report_sink=full_reports, **kwargs)
         target_reports.append(report)
         return report
 
@@ -205,7 +252,7 @@ def _repaired_router_with_replay() -> tuple[Callable[..., Any], list[dict[str, A
     exec(compile(routed_source, "<recovery-v2:_adjudicator_through_r8>", "exec"),
          router_namespace)
     return (router_namespace["_adjudicator_through_r8"], target_reports,
-            repair_report, freeze_module)
+            repair_report, freeze_module, full_reports)
 
 
 def _run_with_repair(**kwargs: Any) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
@@ -216,14 +263,19 @@ def _run_with_repair(**kwargs: Any) -> tuple[dict[str, Any], list[dict[str, Any]
     run would have stopped there, so the count is what proves the routing held.
     """
     _, _, stage3 = _deps()
-    router, target_reports, repair_report, freeze_module = (
+    router, target_reports, repair_report, freeze_module, full_reports = (
         _repaired_router_with_replay())
     namespace = dict(stage3.__dict__)
     namespace["_adjudicator_through_r8"] = router
     namespace["_recovery_freeze_module"] = freeze_module
     routed_run = derive_stage3_run_source(inspect.getsource(stage3.run))
     exec(compile(routed_run, "<recovery-v2:run>", "exec"), namespace)
-    record = namespace["run"](**kwargs)
+    try:
+        record = namespace["run"](**kwargs)
+    except replay.ReplayEquivalenceError as error:
+        # A STOP is a publishable outcome, so the evidence gathered before the
+        # gate refused is carried out rather than lost with the traceback.
+        raise ReplayStopped(str(error), full_reports, repair_report) from error
     if len(target_reports) != EXPECTED_TARGET_REPLAYS:
         _fail("expected %d target replay-equivalence verifications, observed %d"
               % (EXPECTED_TARGET_REPLAYS, len(target_reports)))
@@ -244,8 +296,21 @@ def recover(*, outdir: Path, committed_decision: Path,
 
     committed = json.loads(Path(committed_decision).read_text(encoding="utf-8"))
     stamp("replaying Stage 3 with scoped reporting repair + replay-equivalence target verifier")
-    record, target_reports, repair_report = _run_with_repair(
-        outdir=Path(outdir), log=lambda m: None, **stage3_kwargs)
+    try:
+        record, target_reports, repair_report = _run_with_repair(
+            outdir=Path(outdir), log=lambda m: None, **stage3_kwargs)
+    except ReplayStopped as stopped:
+        report = build_stop_report(stopped.reason, stopped.full_reports,
+                                   stopped.repair_report)
+        out = Path(outdir)
+        out.mkdir(parents=True, exist_ok=True)
+        path = out / EQUIVALENCE_REPORT_FILE
+        with io.open(path, "w", encoding="utf-8", newline=chr(10)) as handle:
+            handle.write(json.dumps(report, indent=2, sort_keys=True,
+                                    default=str) + chr(10))
+        stamp("STOP: %s" % stopped.reason)
+        stamp("published the complete equivalence report to %s" % path)
+        raise
     target_report = {
         "verified": all(r.get("verified") is True for r in target_reports),
         "call_sites": len(target_reports),
