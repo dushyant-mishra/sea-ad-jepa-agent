@@ -1,0 +1,58 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT_V1",
+  "date": "2026-09-10",
+  "status": "HANDOFF_ONLY_NO_TRAINING_AUTHORITY",
+  "canonical_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md",
+  "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
+  "observed_heads_before_final_governance_commits": {
+    "main": "ff24e12d55200cfcaf64b536a506383b8100f69c",
+    "v5": "5668e3d71c720219ec823d5ff089f246091f2be2",
+    "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+    "t0_v21_draft": "e770f6dc83c44a36232d15541d3529e71c7611c9",
+    "t0_step4": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f"
+  },
+  "branches": {
+    "v5": "planning/v5-full-population-cheat-proofing-20260909",
+    "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
+    "t0_v21_draft": "t0/v21-prospective-design-20260910",
+    "handoff": "handoff/jepa-new-chat-20260910-t0-v21-v5"
+  },
+  "t0": {
+    "v20_status": "IMMUTABLE",
+    "broad_state": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
+    "rare_tail": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+    "v21_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
+    "next_action": "PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY",
+    "confirmation_design_rule": "IF_LOOKING_AT_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+    "training_authorized": false
+  },
+  "v5": {
+    "branch_head": "5668e3d71c720219ec823d5ff089f246091f2be2",
+    "full_reader_cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "matrices": 42,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "dominant_real_data_blocker": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
+    "small_real_data_smoke_allowed": true,
+    "small_real_data_smoke_label": "REAL_DATA_SMOKE_NON_AUTHORITY",
+    "next_action": "VERIFY_HASHED_RUNTIME_INPUTS_AND_RUN_NON_AUTHORITY_REAL_DATA_SMOKE_IF_RUNTIME_SUPPORTS_IT_THEN_CONTINUE_STRUCTURAL_SELF_AUDIT",
+    "training_authorized": false
+  },
+  "runtime_assets": {
+    "foundation_calibration": "PASS_HASH_VERIFIED",
+    "discovery_part001": "PASS_HASH_VERIFIED",
+    "discovery_part002": "PASS_HASH_VERIFIED",
+    "discovery_assembled_stream": "PASS_HASH_VERIFIED",
+    "checkpoints_zip": "PASS_HASH_VERIFIED",
+    "t1_checkpoint_u0200": "PASS_HASH_VERIFIED",
+    "expression_zip": "PASS_HASH_VERIFIED",
+    "operator_address_state_npz": "PROVENANCE_MISMATCH_DO_NOT_USE"
+  },
+  "production_dimensions_resolved": false,
+  "full104_expression_binding_closed": false,
+  "production_gpu_qualification_closed": false,
+  "postqualification_closed": false,
+  "training_authorized": false
+}
