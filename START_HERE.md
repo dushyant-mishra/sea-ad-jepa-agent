@@ -1,7 +1,7 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-09-10
-Status: `FINAL2_CURRENT_T0_V21_DRAFT_V5_HARDENING__NO_TRAINING_AUTHORITY`
+Status: `FINAL3_CURRENT_T0_V21_DRAFT_V5_HARDENING__NO_TRAINING_AUTHORITY`
 
 ## Read first
 
@@ -9,7 +9,7 @@ Use `main` for project-current governance/startup context. Read in this order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
 2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md`
-3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL2.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL3.md`
 4. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT.json`
 5. `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json`
 6. `docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md`
@@ -64,9 +64,11 @@ Next T0 action:
 
 Do not read AT8 values or use confirmation outcomes to choose V21 methods. Do not run the weighting probe now. If looking at confirmation data could change a design choice, do not look.
 
+Claude remains on T0 unless the user explicitly moves Claude to V5.
+
 ## V5
 
-Current live engineering branch at FINAL2 handoff:
+Current live engineering branch at FINAL3 handoff:
 `planning/v5-full-population-cheat-proofing-20260909 @ 495e88971909ad5aeb8c93639af85000481a8f41`
 
 The engineering-content state is `5668e3d71c720219ec823d5ff089f246091f2be2`; the only later V5 commit is its branch-local current-state pointer.
