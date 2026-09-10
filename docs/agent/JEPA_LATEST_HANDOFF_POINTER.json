@@ -1,15 +1,15 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V8",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V9",
   "date": "2026-09-10",
-  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF_WITH_FINAL3_ADDENDUM",
+  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF_WITH_FINAL4_ADDENDUM",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md",
-  "latest_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL3.md",
+  "latest_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL4.md",
   "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT.json",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
   "prior_formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "prior_heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "observed_lane_heads_before_final3_governance_commits": {
-    "main": "7591a2e8b925ceb20ab364dd373fcac02f6c4a25",
+  "observed_lane_heads_before_final4_governance_commits": {
+    "main": "ab95ad91c9bc5584172de042744a30da7acc2ad6",
     "v5_live": "495e88971909ad5aeb8c93639af85000481a8f41",
     "v5_engineering_state": "5668e3d71c720219ec823d5ff089f246091f2be2",
     "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
@@ -19,7 +19,8 @@
   "branches": {
     "v5": "planning/v5-full-population-cheat-proofing-20260909",
     "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
-    "t0_v21_draft": "t0/v21-prospective-design-20260910"
+    "t0_v21_draft": "t0/v21-prospective-design-20260910",
+    "handoff": "handoff/jepa-new-chat-20260910-t0-v21-v5"
   },
   "runtime_asset_verification": {
     "discovery_parts_and_assembled_stream": "PASS_HASH_VERIFIED",
@@ -31,6 +32,7 @@
   },
   "t0_next_action": "PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY",
   "v5_next_action": "TINY_DETERMINISTIC_REAL_LOCKED_SUBSET_SMOKE_ONLY_IF_REQUIRED_AUTHORITIES_PASS",
+  "small_real_data_smoke_executed_in_this_chat": false,
   "training_authorized": false,
-  "instruction": "Read the canonical handoff, FINAL3 addendum, machine-readable state, and runtime asset status first. Re-fetch live heads before acting. Keep V20 immutable. Do not inspect AT8 values while making V21 design choices. A small V5 real-data smoke is mechanics/data-path validation only and cannot set production dimensions, thresholds, biology conclusions, postqualification, or training authority. Exclude the runtime operator-address NPZ until its provenance mismatch is reconciled."
+  "instruction": "Open START_HERE.md first, then read the canonical handoff and FINAL4 addendum. Re-fetch live heads before acting. Keep V20 immutable. Do not inspect AT8 values while making V21 design choices. A small V5 real-data smoke is mechanics/data-path validation only and cannot set production dimensions, thresholds, biology conclusions, postqualification, or training authority. Exclude the runtime operator-address NPZ until its provenance mismatch is reconciled."
 }
