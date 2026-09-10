@@ -1,0 +1,50 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_T0_V21_V5_CURRENT_V1",
+  "date": "2026-09-10",
+  "status": "HANDOFF_ONLY_NO_TRAINING_AUTHORITY",
+  "observed_heads_before_main_handoff_updates": {
+    "main": "7e08e89a1d9a46a4a681cbc7fda1755a336373a3",
+    "v5": "5668e3d71c720219ec823d5ff089f246091f2be2",
+    "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+    "t0_v21_draft": "e770f6dc83c44a36232d15541d3529e71c7611c9"
+  },
+  "branches": {
+    "v5": "planning/v5-full-population-cheat-proofing-20260909",
+    "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
+    "t0_v21_draft": "t0/v21-prospective-design-20260910",
+    "handoff": "handoff/jepa-new-chat-20260910-t0-v21-v5"
+  },
+  "t0": {
+    "v20_broad_state": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
+    "v20_rare_tail": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+    "step4_commit": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f",
+    "v21_draft_commit": "e770f6dc83c44a36232d15541d3529e71c7611c9",
+    "v21_draft_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
+    "next_action": "PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY",
+    "training_authorized": false
+  },
+  "v5": {
+    "current_branch_head": "5668e3d71c720219ec823d5ff089f246091f2be2",
+    "full_reader_cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "dominant_real_data_blocker": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
+    "small_real_data_smoke_allowed": true,
+    "small_real_data_smoke_status": "NON_AUTHORITY_ONLY",
+    "training_authorized": false
+  },
+  "heavy_assets": {
+    "foundation_calibration_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "discovery_expression_assembled_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "discovery_part001_sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+    "discovery_part002_sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+    "checkpoints_sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+    "t1_checkpoint_u0200_sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+    "expression_zip_sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4"
+  },
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_T0_V21_V5_CURRENT.md",
+  "instruction": "Re-fetch live heads before acting. Keep V20 immutable. Do not read AT8 values while deciding V21 design. Real-data V5 smoke tests are mechanics/data-path checks only and cannot set production dimensions, thresholds, biology conclusions, or training authority.",
+  "training_authorized": false
+}
