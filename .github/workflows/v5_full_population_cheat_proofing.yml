@@ -49,6 +49,7 @@ jobs:
           tests/test_qualification_phase_contract_v2.py
           tests/test_rejection_gate_power_calibration_v1.py
           tests/test_rejection_gate_power_calibration_v2.py
+          tests/test_rejection_gate_power_calibration_v3.py
           tests/test_postqualification_dependency_guard_v1.py
           tests/test_v5_group_presentation_floor_relevance_v1.py
           tests/test_v5_real_data_parameter_and_dimension_contract_v1.py
@@ -100,6 +101,7 @@ jobs:
           src/sea_ad_jepa/v5/qualification_phase_contract_v2.py
           src/sea_ad_jepa/v5/rejection_gate_power_calibration_v1.py
           src/sea_ad_jepa/v5/rejection_gate_power_calibration_v2.py
+          src/sea_ad_jepa/v5/rejection_gate_power_calibration_v3.py
           src/sea_ad_jepa/v5/postqualification_dependency_guard_v1.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v1.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v2.py
