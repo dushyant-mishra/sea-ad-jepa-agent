@@ -1,7 +1,7 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-09-10
-Status: `FINAL_CURRENT_T0_V21_DRAFT_V5_HARDENING__NO_TRAINING_AUTHORITY`
+Status: `FINAL2_CURRENT_T0_V21_DRAFT_V5_HARDENING__NO_TRAINING_AUTHORITY`
 
 ## Read first
 
@@ -9,12 +9,13 @@ Use `main` for project-current governance/startup context. Read in this order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
 2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md`
-3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT.json`
-4. `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json`
-5. `docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md`
-6. `docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md`
-7. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
-8. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL2.md`
+4. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT.json`
+5. `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json`
+6. `docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md`
+7. `docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md`
+8. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
+9. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
 
 Before writing, re-fetch live heads for:
 
@@ -51,7 +52,7 @@ V20 remains immutable:
 Step 4:
 `4d95355e9f3b176bd4e0166185e4fcc95eab4b2f`
 
-It established that 1:1 matching removed Q_DEPTH/Q_DETECT imbalance but also destroyed held-out-statistic power; a size-matched confound-retaining control collapsed too. Therefore the matched null is not evidence that biology was only a confound.
+It established that 1:1 matching removed Q_DEPTH/Q_DETECT imbalance but also destroyed held-out-statistic power; a size-matched confound-retaining control collapsed too. Therefore the matched null is not evidence that biology was only a confound, and rejection-capable QC gates must prove power/detectability at the exact geometry they create.
 
 V21 draft:
 `t0/v21-prospective-design-20260910 @ e770f6dc83c44a36232d15541d3529e71c7611c9`
@@ -61,14 +62,16 @@ Status: `DRAFT_FOR_REVIEW_NOT_FROZEN`; nothing executed.
 Next T0 action:
 `PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY`
 
-Do not read AT8 values or use confirmation outcomes to choose V21 methods. If looking at confirmation data could change a design choice, do not look.
+Do not read AT8 values or use confirmation outcomes to choose V21 methods. Do not run the weighting probe now. If looking at confirmation data could change a design choice, do not look.
 
 ## V5
 
-Current engineering branch observed at final handoff:
-`planning/v5-full-population-cheat-proofing-20260909 @ 5668e3d71c720219ec823d5ff089f246091f2be2`
+Current live engineering branch at FINAL2 handoff:
+`planning/v5-full-population-cheat-proofing-20260909 @ 495e88971909ad5aeb8c93639af85000481a8f41`
 
-V5 now includes representation-firewall, same-cell QC, two-sided gate-power calibration, exact checkpoint/design-context binding, pre/post qualification phase separation, dependency-closed evidence, packing/restart gates and production-GPU authority separation.
+The engineering-content state is `5668e3d71c720219ec823d5ff089f246091f2be2`; the only later V5 commit is its branch-local current-state pointer.
+
+V5 now includes representation-firewall, complete same-cell QC qualification, warning-only cross-cell QC association, two-sided gate-power calibration, exact checkpoint/design-context binding, pre/post qualification phase separation, dependency-closed evidence, shortcut/collapse gates, packing/restart gates and production-GPU authority separation.
 
 Current real-data blocker:
 `STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING`
@@ -90,10 +93,10 @@ The major discovery/calibration/checkpoint assets currently present under `/mnt/
 
 `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json`
 
-A tiny real-data smoke is allowed only as:
+A tiny deterministic real-data smoke is allowed only as:
 `REAL_DATA_SMOKE_NON_AUTHORITY`
 
-It may validate real data paths, reader compatibility, firewall/masking mechanics, forward/update mechanics, same-cell perturbation and packing identity. It may not set production dimensions, thresholds, biology conclusions or training authority.
+It may run only if every required input passes the recorded hash, manifest and provenance checks. It may validate real data paths, reader compatibility, firewall/masking mechanics, forward/update mechanics, same-cell perturbation and packing identity. It may not set production dimensions, thresholds, biology conclusions, shortcut-superiority authority, postqualification or training authority.
 
 Important: `/mnt/data/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz` has a recorded provenance mismatch and is `PROVENANCE_MISMATCH_DO_NOT_USE` until reconciled.
 
