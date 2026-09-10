@@ -1,207 +1,101 @@
 {
-  "schema": "JEPA_NEXT_ALLOWED_ACTION_V5",
+  "schema": "JEPA_NEXT_ALLOWED_ACTION_V6",
   "last_updated": "2026-09-09",
   "canonical_branch": "main",
-  "implementation_verifier_required": true,
-  "implementation_verifier_veto": true,
-  "implementation_verifier_runs_before_expensive_compute": true,
-  "implementation_verifier_authority": "docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md",
-  "current_gate": "T0_STAGE3_EVIDENCE_REPLAY_PLUS_FROZEN_CODE_PUBLICATION_AND_V5_FULL_POPULATION_ANTI_CHEAT_HARDENING",
-  "status": "T0_STAGE3_EVIDENCE_BYTES_PUBLISHED__PRIMARY_INTERNAL_SUPPORT_RETAINED__V5_TRAINING_CLOSED",
-  "current_status": "T0 V20 emitted evidence is byte-published at 2e6d8d1e33867fa90032492894c92ea4849e3e4a and the primary internal-support/tail-underdetermined terminals are retained. Evidence-byte verification is now possible from a clean clone. Full scientific computation replay is not yet self-contained because Stage 3 imports frozen V20 conclusion modules from an external scratch authority path and key frozen modules are not in the branch tree. V5 training and all downstream protected gates remain closed.",
-  "primary_next_action": "T0: publish the exact frozen V20 computation-code bundle used by Stage 3, byte-bound and unchanged, then run clean-clone evidence tests plus end-to-end adjudication replay. V5: continue full-population conditioning and representation-firewall hardening without optimizer execution.",
-  "t0_stage2_discovery_status": {
+  "status": "T0_V20_SCIENCE_COMPLETE__C2_PRODUCTION_GEOMETRY_GATE_PROVED__V5_TRAINING_CLOSED",
+  "current_status": "T0 V20 science is complete and evidence/frozen code/input authorities are published. C2 gate adoption is proved at exact 128x8 production geometry with zero skipped critical tests. Remaining T0 issue is replay-equivalence governance for bit-exact float reproduction and reporting-only sensitivity recovery. V5 remains blocked by missing physical binding of the exact full-reader corrected expression substrate, unresolved numeric D family, schedule risk-control freeze, relational shortcut increment freeze, hardware/CUDA packing invariance and independent review.",
+  "primary_next_action": "Recover and bind the exact 42 full-reader corrected TRAIN counts/meta shard pairs; require 42/42 hash and identity closure. Then derive D_shared, D_private, D_total and D_obs on the full 4,553,407-cell / 104-donor reader_fit population. In parallel, resolve T0 replay-equivalence governance without changing V20 and freeze V5 schedule/relational/hardware risk rules prospectively.",
+  "c2": {
+    "status": "CLOSED_MECHANICS_GATE__NO_TRAINING_AUTHORITY",
+    "exact_geometry": "effective_batch=128,microbatch=8",
+    "protected_tensors": 48,
+    "gate_suites": "44 passed, 0 skipped",
+    "full_task_report": "57 passed, 0 skipped",
+    "historical_negative_control": "48/48 exact-zero rejected before Adam state or parameter motion",
+    "successor": "0/48 dead; both Adam moments live for 48/48; 48/48 moved beyond decay",
+    "oom_blocker": false,
+    "real_t1_peak_gib": {
+      "allocated": 5.54,
+      "reserved": 5.75
+    },
+    "corrected_peak_gib": {
+      "allocated": 5.4186,
+      "reserved": 5.7031
+    }
+  },
+  "t0": {
     "branch": "t0/v20-pathology-blind-materialization-20260908",
-    "head": "237427c734bfdf7d00f286ceeae63692b3075d49",
-    "terminal": "DISCOVERY_STAGE_DONE_AND_REPLAYED__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN",
-    "discovery_donor_count": 28,
-    "discovery_cells": 13767,
-    "declared_addresses": 35076,
-    "matrix_nnz": 37085014,
-    "discovery_target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe",
-    "discovery_provenance_root_sha256": "15d13dd3e733e0ea90b199cf981b03ccd94bc67fbd19660ef88861e3ae1a37c2",
-    "discovery_authority_package_root_sha256": "9806de382c75f7a7a12bb952631ed0b6c9b458250e8161a876b470c48898f6f7",
-    "confirmation_numeric_at8_accessed": true,
-    "ridge_boundary_caveat": "LOODO selected multiplier exponent 2.0, the maximum and most regularized point of the frozen grid; valid pre-registered discovery run, but weak-signal evidence for confirmation review.",
-    "superseded_by_stage3_terminal": "e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9"
-  },
-  "t0_r8_authorization": {
-    "status": "COMPLETED_HISTORICAL__SUPERSEDED_BY_STAGE3",
-    "controlling_file": "docs/agent/T0_R8_ADJUDICATOR_READINESS_REPAIR_AUTHORIZATION_20260909.md",
-    "allowed": [
-      "Supersede the two execution-input-authority loaders in a repo-side v2 whose only behavioural difference is the readiness value check.",
-      "Repair the adjudicator readiness contradiction at t0_adjudicator_v2 lines 34 and 48.",
-      "Replay the repaired adjudicator path without opening confirmation numeric AT8."
-    ],
-    "required_terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN",
-    "completed_terminal": "PASS_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN"
-  },
-  "required_actions": [
-    "T0: publish the exact frozen V20 conclusion/adjudication/target/role modules used by Stage 3 without changing their bytes, bind their identities/root, and make the replay harness import only that committed bundle.",
-    "T0: execute the 84-file evidence-byte standing tests and the end-to-end Stage 3 replay from a clean independent checkout; require exact decision/root reproduction.",
-    "T0: preserve the post-access role-label repair and frozen sensitivity-reporting omission as explicit caveats; do not rerun or retune the V20 scientific design.",
-    "V5 full population: the current 64x weight-ratio ceiling and 32x cell-repeat cap cannot both coexist with guaranteed coverage of every reader-fit cell; the exact dataset lower bound is 67.1724537x. Freeze a new jointly feasible conditioning authority prospectively before training.",
-    "V5 update composition: audit and control source/donor/operator composition per optimizer update independently of scientific target weights; repeated-source frequency is an observation/optimization property and must not be allowed to become z_bio identity.",
-    "V5: evaluate guaranteed full-cell coverage against the actual 4,553,407-row reader-fit geometry and do not equate population-equivalent with-replacement presentations with full-dataset coverage.",
-    "V5: preserve donor-uniform target mass through exact p/q weighting and freeze only a jointly feasible set of coverage, ESS, group-floor, repeat-cap and weight-conditioning constraints.",
-    "V5: route biological objectives through a common-core-anchored z_bio and acquisition/measurement state through z_obs; retain same-cell support/mask/evidence/depth interventions and shortcut probes.",
-    "V5: complete live protected-gradient tests, CUDA Gate-2, hardware invariance, anti-cheat threshold calibration and independent review before training authority.",
-    "V5 relational anti-cheat: freeze the shortcut-baseline calibration procedure and required incremental margin before any learned checkpoint outcome is inspected. Learned relational performance must beat QC/support/mask/operator/donor baselines on held-out units; chance alone is not the comparator.",
-    "V5 relational target: retain TD57B/TD59 as the leading target framework; do not reopen locality-fraction tuning or redesign the target from these shortcut diagnostics."
-  ],
-  "parallel_nonblocking_work": [
-    "Develop and test a coverage-first full-population V5 schedule candidate without optimizer execution.",
-    "Develop an observation/biology representation-firewall contract and same-cell technical-perturbation invariance qualification.",
-    "Continue F1/D1 design work pathology-blind without opening real execution."
-  ],
-  "forbidden_actions": [
-    "Do not interpret a population-equivalent with-replacement presentation count as proof that every reader-fit cell was seen.",
-    "Do not reopen, retune, widen or reinterpret the completed T0 V20 confirmation procedure in response to the Stage 3 result.",
-    "Do not train, finetune, run production optimizer steps, write production teacher/student checkpoints, or advance EMA under V5.",
-    "Do not execute TD60 decision-bearing learned-teacher continuity.",
-    "Do not execute real D1.",
-    "Do not open reader_validation, reader_oracle, foundation development/sealed, external holdout, or pathology except through an explicit frozen release authority.",
-    "Do not reinterpret 3,292-cell u40/u205 as full-reader biological training authority.",
-    "Do not resume historical u10--u205 checkpoints as lawful V5/V4 production points.",
-    "Do not accept loss decrease as biological checkpoint qualification.",
-    "Do not let attention.output or other live tensors rescue dead protected attention-routing tensors.",
-    "Do not add global SIGReg/VICReg or variance regularization as a blind default without donor/source/operator-balanced calibration and external review.",
-    "Do not infer authority from stale branch names or historical PASS files."
-  ],
-  "controlling_files": [
-    "docs/agent/T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md",
-    "docs/agent/CURRENT_AUTHORITY_INDEX.md",
-    "docs/agent/CURRENT_SUPERSESSION_MAP.md",
-    "docs/agent/T0_STAGE2_DISCOVERY_STATUS_20260909.md",
-    "docs/agent/T0_R8_ADJUDICATOR_READINESS_REPAIR_AUTHORIZATION_20260909.md",
-    "docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md",
-    "docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json"
-  ],
-  "v5_anticheat_required_before_training": {
-    "status": "REQUIRED_NOT_COMPLETE",
-    "safe_to_train": false,
-    "minimum_required_gates": [
-      "HISTORICAL_T1_MECHANICS_DEFECT_QUARANTINE",
-      "BACKWARD_AUTOCAST_DISABLED_GATE",
-      "MANDATORY_48_GRADIENT_AND_MOMENT_GATE",
-      "STOP_GRADIENT_TARGET_BRANCH_AUDIT",
-      "EMA_EXPOSURE_CLOCK_BINDING",
-      "LATENT_COLLAPSE_VARIANCE_EFFECTIVE_RANK",
-      "CONSTANT_VECTOR_NEGATIVE_CONTROL",
-      "SUPPORT_ONLY_SOURCE_ATTACK",
-      "DEPTH_QC_ONLY_ATTACK",
-      "MASK_ONLY_ATTACK",
-      "OPERATOR_SOURCE_CONDITIONAL_PROBE",
-      "DONOR_MEMORIZATION_PROBE",
-      "HELD_OUT_DONOR_MATRIX_STUDY_TECHNOLOGY_TRANSFER",
-      "EVIDENCE_RESPONSE_CURVE",
-      "DEPTH_RESPONSE_CURVE",
-      "PROPOSAL_WEIGHTING_P_OVER_Q_AUDIT",
-      "HARDWARE_INVARIANCE_REPLAY",
-      "HISTORICAL_CHECKPOINT_QUARANTINE"
-    ]
-  },
-  "update_only_after": "A blocker is actually closed with exact code/test/root evidence or a new prospective authority is frozen. T0 evidence bytes are now present; clean independent replay and the frozen sensitivity-reporting omission remain review caveats.",
-  "t0_stage3_result": {
-    "branch": "t0/v20-pathology-blind-materialization-20260908",
-    "head": "e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9",
-    "terminal": "PASS_T0_V20_STAGE3_CONFIRMATION_AND_ADJUDICATION_REPLAYED",
+    "head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
     "primary_terminal": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
     "primary_p_upper": 0.021,
-    "state_positive_alpha": 0.025,
-    "t_observed": 1.9078694125102356,
-    "beta": 124.94507515835764,
-    "hc3_se": 65.48932245523241,
-    "confirmation_donors": 18,
-    "residual_df": 13,
-    "permutations": 9999,
+    "alpha": 0.025,
     "tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
-    "tail_disease_test_run": false,
-    "tail_qc_ok": false,
-    "tail_qc_p_upper": 0.018,
-    "tail_max_mean_abs_standardized_contrast": 0.2946862124155104,
-    "first_attempt_post_access_repair_commit": "f98c1f8cbc1345b7a8cf0d643addd1a9bd494bc1",
-    "review_status": "EVIDENCE_BYTES_PUBLISHED__PRIMARY_INTERNAL_SUPPORT_RETAINED__CLEAN_REPLAY_AND_SENSITIVITY_REPORTING_GAP_PENDING",
-    "controlling_review": "docs/agent/T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md",
-    "evidence_publication_head": "2e6d8d1e33867fa90032492894c92ea4849e3e4a",
-    "evidence_files_committed": 84,
-    "evidence_bytes": 3621018,
-    "missing_evidence_byte_limitation": "CLOSED",
-    "clean_independent_checkout_replay": "PENDING",
-    "sensitivity_reporting_gap": "NUMERICAL_STATE_COMPOSITION_AND_STATE_MEASUREMENTS_NOT_EMITTED_IN_FROZEN_DECISION_RETURN",
-    "evidence_clean_clone_verification": "AVAILABLE_PENDING_REMOTE_OR_INDEPENDENT_EXECUTION",
-    "computation_clean_clone_replay": "BLOCKED__FROZEN_V20_CONCLUSION_MODULES_EXTERNAL_TO_REPO"
+    "frozen_code_published": true,
+    "input_authorities_published": true,
+    "remaining_issue": "BIT_EXACT_FLOAT_REPLAY_EQUIVALENCE_GOVERNANCE_PLUS_REPORTING_ONLY_SENSITIVITY_RECOVERY",
+    "beta_max_abs_replay_diff": 5.9e-21,
+    "beta_max_rel_replay_diff": 2.8e-12
   },
-  "v5_full_population_geometry_review": {
-    "status": "DATASET_GEOMETRY_CONFLICT_FOUND__NO_SCHEDULE_SUPERSESSION_YET",
-    "candidate_branch": "planning/v5-full-population-cheat-proofing-20260909",
-    "candidate_head": "82528e0a948b314a834f9805402b96882744b64b",
-    "input_metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
-    "reader_fit_cells": 4553407,
-    "donors": 104,
-    "donor_operator_groups": 1400,
-    "full_coverage_required_by_project_goal": true,
-    "existing_with_replacement_population_equivalent_is_full_coverage_proof": false,
-    "donor_size_min": 81,
-    "donor_size_max": 174111,
-    "donor_uniform_per_cell_target_ratio": 2149.5185185185187,
-    "existing_cell_repeat_cap": 32,
-    "existing_weight_ratio_ceiling": 64,
-    "full_coverage_weight_ratio_lower_bound_under_cap32": 67.17245370370371,
-    "old_64x_ratio_rule_feasible_with_full_coverage_and_cap32": false,
-    "minimum_integer_cell_cap_for_64x_feasibility": 34,
-    "naive_full_coverage_plus_group_topup": {
-      "total_presentations": 4555218,
-      "extra_presentations": 1811,
-      "ess_fraction": 0.09689111347244539,
-      "weight_ratio": 2149.5185185185187,
-      "rejected_as_production_candidate": true
-    },
-    "donor_balanced_dataset_only_candidate": {
-      "total_presentations": 5271158,
-      "population_equivalents": 1.1576294409878143,
-      "ess_fraction": 0.5009275089162246,
-      "weight_ratio": 67.17245370370371,
-      "max_cell_multiplicity": 32,
-      "minimum_group_presentations": 16,
-      "source_presentation_fractions": {
-        "HVS": 0.1542348000192747,
-        "NPH52": 0.060348409211031045,
-        "SEA_AD": 0.7854167907696943
-      },
-      "globally_optimal_claim": false,
-      "training_authority": false
-    },
-    "required_decision": "Prospectively choose a jointly feasible coverage/ESS/group-floor/repeat-cap/weight-ratio authority. Do not silently retain the impossible 64x+cap32+full-coverage combination and do not choose from checkpoint outcomes."
-  },
-  "v5_relational_shortcut_review": {
-    "status": "TD57B_AND_TD59_EXPLICIT_MEASUREMENT_SHORTCUT_DIAGNOSTICS_COMPLETE__NO_TARGET_REDESIGN",
-    "candidate_branch": "planning/v5-full-population-cheat-proofing-20260909",
-    "candidate_head": "39803a08f6378bc6435d35bff4cdc85bf9ab3246",
-    "td57b": {
-      "measurement_shortcut_median_donor_agreement_range": [
-        0.55234375,
-        0.6564968785030993
-      ],
-      "interpretation": "DEPTH/DETECT carry nontrivial comparator-order information; above-chance alone is insufficient. Frozen TD57B remains supported because its matched Y-null preserved donor/operator/depth/detection and passed 24/24."
-    },
-    "td59": {
-      "measurement_shortcut_median_donor_agreement_range": [
-        0.4804257516370549,
-        0.5566964285714286
-      ],
-      "interpretation": "Nearest-half independent-Z locality shows smaller simple QC leakage than TD57B; TD59 remains pilot-only and does not become a production locality."
-    },
-    "structural_shortcuts": {
-      "donor_operator_source": "constant within each TD57B/TD59 triplet",
-      "support_fingerprint": "constant within operator in the frozen 50k sample",
-      "operator_measurement_mask": "constant within operator"
-    },
-    "required_future_gate": "Learned z_bio relational continuity must beat the strongest prospectively frozen shortcut baseline by a prospectively frozen increment on held-out units; >0.5 alone cannot qualify biology.",
-    "increment_margin_frozen": false,
-    "pathology_used": false,
-    "target_redesign_authorized": false,
+  "v5": {
+    "branch": "planning/v5-full-population-cheat-proofing-20260909",
+    "head": "e17c61643c30d219a4434566f828cdf3171381ae",
     "training_authorized": false,
-    "remote_ci_receipt": "PENDING__NO_WORKFLOW_RUN_ATTACHED_YET"
-  }
+    "population": {
+      "cells": 4553407,
+      "donors": 104,
+      "operators": 42,
+      "matrices": 42,
+      "addresses": 41238,
+      "common_core": 17186
+    },
+    "full_reader_expression_status": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
+    "required_expression_shard_pairs": 42,
+    "historical_expression_blocks": 8915,
+    "schedule_v3": {
+      "authority": false,
+      "H": 5267086,
+      "ess": 0.5000000953357726,
+      "repeat_cap": 32,
+      "weight_ratio": 67.17245370370371
+    },
+    "cap34_diagnostic": {
+      "authority": false,
+      "conditional_on_64x": true,
+      "minimum_compatible_cap": 34
+    },
+    "dimensions": {
+      "D_shared": null,
+      "D_private": null,
+      "D_total": null,
+      "D_obs": null
+    },
+    "query_precision_candidate": {
+      "authority": false,
+      "Q": 21
+    },
+    "ema_half_life_frozen": false,
+    "relational_increment_margin_frozen": false,
+    "remote_ci_receipt_observed": false
+  },
+  "required_actions": [
+    "T0: preserve V20 science unchanged. Attempt original numeric-stack reconstruction; if unavailable, create a separately versioned replay-equivalence verifier with exact discrete/terminal agreement and frozen tight float tolerances before reporting-only sensitivity recovery.",
+    "V5: bind exact full-reader corrected expression substrate; no 50K/synthetic substitution.",
+    "V5: derive D_shared -> D_private -> D_total and D_obs on full reader_fit only; historical 5/96/160/224/320/512 are not production authority.",
+    "V5: prospectively freeze jointly feasible repeat-cap/conditioning/group-floor/ESS risk controls; do not choose them from checkpoints.",
+    "V5: freeze relational learned-minus-shortcut superiority procedure and required increment before learned checkpoint outcomes.",
+    "V5: complete actual architecture hardware/CUDA Gate-2, microbatch/packing invariance and query/chunk calibration after D_total is known.",
+    "V5: independent review before any training authority."
+  ],
+  "forbidden_actions": [
+    "Do not reopen or retune T0 V20.",
+    "Do not use rare tail as a training target.",
+    "Do not train, finetune, run production optimizer steps, write production checkpoints, or advance production EMA.",
+    "Do not execute TD60, D1 real, reader_validation/oracle, DEV/SEALED, protected populations, or pathology-guided tuning.",
+    "Do not promote synthetic fixtures or historical pilot constants into numeric production authority.",
+    "Do not accept decreasing loss or above-chance relational accuracy as biological qualification."
+  ],
+  "controlling_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md",
+  "controlling_state": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4.json",
+  "formulas": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
+  "heavy_assets": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md"
 }
