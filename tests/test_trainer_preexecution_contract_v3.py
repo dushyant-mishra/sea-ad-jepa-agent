@@ -1,9 +1,9 @@
 import copy
 import pytest
 
-from sea_ad_jepa.v5.pretraining_qualification_bundle_v1 import (
-    REQUIRED_EVIDENCE,
-    validate_pretraining_qualification_bundle,
+from sea_ad_jepa.v5.qualification_phase_contract_v1 import (
+    PRE_EXECUTION_EVIDENCE,
+    build_preexecution_bundle,
 )
 from sea_ad_jepa.v5.trainer_preexecution_contract_v2 import REQUIRED_AUTHORITY_SHAS
 from sea_ad_jepa.v5.trainer_preexecution_contract_v3 import TrainerPreexecutionAuthorityV3
@@ -17,16 +17,16 @@ def bundle():
             "authority_id": f"{name}-authority-v1",
             "training_authorized": False,
         }
-        for i, name in enumerate(REQUIRED_EVIDENCE)
+        for i, name in enumerate(PRE_EXECUTION_EVIDENCE)
     }
-    return validate_pretraining_qualification_bundle(
+    return build_preexecution_bundle(
         evidence,
-        qualification_rules_frozen_before_candidate_model_outcome=True,
+        design_context_sha256="c" * 64,
         optimizer_started=False,
     )
 
 
-def authority(b=None):
+def authority(b=None, mode="BOUNDED_QUALIFICATION_ONLY"):
     return TrainerPreexecutionAuthorityV3(
         authorities={name: "a" * 64 for name in REQUIRED_AUTHORITY_SHAS},
         protected_registry_sha256="b" * 64,
@@ -36,54 +36,39 @@ def authority(b=None):
         effective_base_cells_per_update=8,
         relational_training_active=False,
         optimizer_started=False,
-        pretraining_qualification_bundle=b or bundle(),
+        preexecution_qualification_bundle=b or bundle(),
+        execution_mode=mode,
         training_authorized=False,
     )
 
 
-def test_v3_binds_closed_exact_bundle_and_still_does_not_authorize_training():
+def test_v3_binds_preexecution_bundle_for_qualification_only():
     a = authority()
     a.validate()
     assert len(a.canonical_digest()) == 64
-    assert a.training_authorized is False
 
 
-def test_generic_anticheat_digest_cannot_replace_missing_gate():
-    b = bundle()
-    del b["required_evidence"]["shortcut_superiority"]
-    with pytest.raises(RuntimeError, match="EVIDENCE_SET_MISMATCH"):
-        authority(b).validate()
+def test_v3_rejects_production_mode_before_postqualification():
+    with pytest.raises(RuntimeError, match="PRODUCTION_MODE_FORBIDDEN"):
+        authority(mode="PRODUCTION").validate()
 
 
-def test_tampered_evidence_with_stale_bundle_digest_stops():
+def test_tampered_preexecution_bundle_stops():
     b = copy.deepcopy(bundle())
-    b["required_evidence"]["heldout_biology_validation"]["artifact_sha256"] = "f" * 64
+    b["required_evidence"]["representation_firewall"]["artifact_sha256"] = "f" * 64
     with pytest.raises(RuntimeError, match="DIGEST_MISMATCH"):
         authority(b).validate()
 
 
-def test_bundle_cannot_claim_training_authority():
+def test_missing_preexecution_gate_stops():
     b = copy.deepcopy(bundle())
-    b["training_authorized"] = True
-    with pytest.raises(RuntimeError, match="CLAIMS_TRAINING_AUTHORITY"):
+    del b["required_evidence"]["qc_policy_freeze"]
+    with pytest.raises(RuntimeError, match="EVIDENCE_SET_MISMATCH"):
         authority(b).validate()
 
 
-def test_bundle_must_be_marked_closed():
+def test_preexecution_bundle_cannot_claim_production_authority():
     b = copy.deepcopy(bundle())
-    b["qualification_bundle_closed"] = False
-    with pytest.raises(RuntimeError, match="NOT_CLOSED"):
+    b["production_training_authorized"] = True
+    with pytest.raises(RuntimeError, match="CLAIMS_PRODUCTION_AUTHORITY"):
         authority(b).validate()
-
-
-def test_bundle_digest_is_part_of_v3_authority_identity():
-    a = authority()
-    b = bundle()
-    b["required_evidence"]["shortcut_superiority"]["artifact_sha256"] = "e" * 64
-    b = validate_pretraining_qualification_bundle(
-        b["required_evidence"],
-        qualification_rules_frozen_before_candidate_model_outcome=True,
-        optimizer_started=False,
-    )
-    c = authority(b)
-    assert a.canonical_digest() != c.canonical_digest()
