@@ -220,8 +220,13 @@ def probe(*, summaries: dict[str, Any], matrix, feature_positions: np.ndarray,
                             "retention": level, "draw": draw,
                             "donor_id": str(donor),
                             "stable_key": str(keys[donor][position]),
-                            "baseline_centered": base["centered"][position],
-                            "thinned_centered": centered[position],
+                            # Cast before storing: numpy 2.x reprs a float64
+                            # as "np.float64(...)", which is not parseable as a
+                            # CSV float, so an uncast value would publish a
+                            # machine-readable file that no reader can read.
+                            "baseline_centered":
+                                float(base["centered"][position]),
+                            "thinned_centered": float(centered[position]),
                             "signed_displacement": float(delta[position]),
                             "baseline_tail": bool(base["tail"][position]),
                             "thinned_tail": bool(tail[position]),
