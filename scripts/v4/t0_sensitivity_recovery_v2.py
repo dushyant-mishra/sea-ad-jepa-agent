@@ -27,6 +27,13 @@ if str(HERE) not in sys.path:
 import t0_numeric_environment_v1 as numeric_environment
 import t0_replay_equivalence_v1 as replay
 
+# Frozen policy identities, selected by name. Not a tolerance knob: neither
+# module exposes a configurable budget, and V2 refuses to load unless it is the
+# single authorized change from V1.
+POLICY_VERSIONS = ("v1", "v2")
+DEFAULT_POLICY_VERSION = "v1"
+_ACTIVE_POLICY: Any = replay
+
 STOP = "STOP_T0_SENSITIVITY_RECOVERY_V2_REFUSED"
 DECISION_FILE = "T0_V20_ADJUDICATION_DECISION.json"
 RECOVERY_FILE = "T0_V20_RECOVERED_SENSITIVITY_STATISTICS_V2.json"
@@ -74,6 +81,7 @@ def build_stop_report(reason: str, full_reports: list[dict[str, Any]],
         stopped.extend(entry.get("full_report", {}).get("stopped_fields", []))
     return {
         "schema": "JEPA_T0_V20_REPLAY_EQUIVALENCE_STOP_REPORT_V1",
+        "replay_equivalence_policy": policy_identity(),
         "terminal": "STOP_T0_V20_REPLAY_NOT_EQUIVALENT_UNDER_FROZEN_POLICY",
         "reason": reason,
         "stopped_fields": sorted(set(stopped)),
@@ -99,6 +107,49 @@ def _deps():
     import t0_stage2a_pre_at8_gate_v1 as stage2a
     import t0_stage3_confirmation_v1 as stage3
     return v1, stage2a, stage3
+
+
+def select_policy(version: str) -> Any:
+    """Bind the frozen policy this run applies. V1 unless asked otherwise."""
+    global _ACTIVE_POLICY
+    if version not in POLICY_VERSIONS:
+        _fail("unknown policy version %r; expected one of %r"
+              % (version, list(POLICY_VERSIONS)))
+    if version == "v1":
+        _ACTIVE_POLICY = replay
+    else:
+        import t0_replay_equivalence_v2 as replay_v2
+        # Raises unless V2 is exactly the authorized single change from V1.
+        replay_v2.verify_single_policy_change()
+        _ACTIVE_POLICY = replay_v2
+    return _ACTIVE_POLICY
+
+
+def active_policy() -> Any:
+    return _ACTIVE_POLICY
+
+
+def policy_identity() -> dict[str, Any]:
+    """What a reviewer needs to check the tolerances this run actually used."""
+    policy = _ACTIVE_POLICY
+    identity: dict[str, Any] = {
+        "module": policy.__name__,
+        "identity": getattr(policy, "POLICY_IDENTITY",
+                            "JEPA_T0_V20_TARGET_REPLAY_EQUIVALENCE_V1"),
+        "float_policy": policy.FLOAT_POLICY,
+        "ulp_policy": policy.ULP_POLICY,
+        "exact_array_fields": list(policy.EXACT_ARRAY_FIELDS),
+        "exact_scalar_fields": list(policy.EXACT_SCALAR_FIELDS),
+        "required_float_dtype": str(policy.REQUIRED_FLOAT_DTYPE),
+        "state_primary_float_rtol": policy.STATE_PRIMARY_FLOAT_RTOL,
+        "state_primary_float_fields": list(policy.STATE_PRIMARY_FLOAT_FIELDS),
+        "state_primary_exact_fields": list(policy.STATE_PRIMARY_EXACT_FIELDS),
+    }
+    if hasattr(policy, "policy_digest"):
+        identity["policy_sha256"] = policy.policy_digest()
+        identity["policy_document"] = policy.POLICY_DOCUMENT
+        identity["single_authorized_change"] = policy.verify_single_policy_change()
+    return identity
 
 
 def derive_r8_router_source(router_source: str) -> str:
@@ -170,8 +221,12 @@ def derive_freeze_module(target_verifier: Callable[..., Any]) -> types.SimpleNam
 
 def verify_replay_decision(committed: dict[str, Any],
                            recomputed: dict[str, Any]) -> dict[str, Any]:
-    """Exact terminals/discrete statistics; tight tolerance only for 3 floats."""
-    return replay.compare_decision_equivalence(committed, recomputed)
+    """Exact terminals/discrete statistics; tight tolerance only for 3 floats.
+
+    Inherited unchanged by V2, so this is identical under either policy; routed
+    through the active one so the report cannot claim an identity it did not use.
+    """
+    return active_policy().compare_decision_equivalence(committed, recomputed)
 
 
 def build_payload(decision: dict[str, Any], target_report: dict[str, Any],
@@ -187,6 +242,13 @@ def build_payload(decision: dict[str, Any], target_report: dict[str, Any],
         _fail("decision replay-equivalence was not verified")
     return {
         "schema": "JEPA_T0_V20_RECOVERED_SENSITIVITY_STATISTICS_V2",
+        "replay_equivalence_policy": policy_identity(),
+        # The committed null_t is a truncated serialized representation, not the
+        # full 9,999-value array, so no full-null equality is claimed here.
+        "null_representation_scope": (
+            "Only the stored truncated representation of state_primary.null_t "
+            "is checked. The permutation count and every decision-relevant "
+            "p-value are compared exactly."),
         # Recorded because the whole reason a tolerant replay was needed is
         # that no earlier T0 summary said which arithmetic produced the frozen
         # bytes. A replay report without its own stack would repeat the hole.
@@ -237,7 +299,7 @@ def _repaired_router_with_replay() -> tuple[Callable[..., Any], list[dict[str, A
     full_reports: list[dict[str, Any]] = []
 
     def target_verifier(target_dir, **kwargs: Any):
-        report = replay.verify_target_v2_replay_equivalent(
+        report = active_policy().verify_target_v2_replay_equivalent(
             target_dir, report_sink=full_reports, **kwargs)
         target_reports.append(report)
         return report
@@ -333,6 +395,9 @@ def recover(*, outdir: Path, committed_decision: Path,
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--policy-version", choices=POLICY_VERSIONS,
+                   default=DEFAULT_POLICY_VERSION,
+                   help="frozen replay-equivalence policy identity to apply")
     for name in ("outdir", "readiness-pkg", "stage2a-pkg", "discovery-pkg",
                  "role-pkg", "at8-pkg", "age-sex-pkg", "immune-pkg",
                  "family-pkg", "technical-pkg", "tc-pkg", "stage3-prep-pkg",
@@ -340,6 +405,7 @@ def main(argv: list[str] | None = None) -> int:
                  "feature-split", "committed-decision"):
         p.add_argument("--%s" % name, required=True, type=Path)
     a = p.parse_args(argv)
+    select_policy(a.policy_version)
     payload = recover(
         outdir=a.outdir, committed_decision=a.committed_decision,
         readiness_pkg=a.readiness_pkg, stage2a_pkg=a.stage2a_pkg,
