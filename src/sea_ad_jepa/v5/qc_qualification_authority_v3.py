@@ -60,6 +60,7 @@ def _bind(report: Mapping[str, object], expected_id: str, name: str) -> None:
 
 @dataclass(frozen=True)
 class QCQualificationAuthorityV3:
+    qc_closure_authority_id: str
     valid_observation_authority_id: str
     association_diagnostic_authority_id: str
     same_cell_intervention_authority_id: str
@@ -73,6 +74,7 @@ class QCQualificationAuthorityV3:
 
     def validate(self) -> None:
         for field in (
+            "qc_closure_authority_id",
             "valid_observation_authority_id",
             "association_diagnostic_authority_id",
             "same_cell_intervention_authority_id",
@@ -140,7 +142,10 @@ def qualify_v5_qc_pretraining_v3(
 
     if not isinstance(component_artifact_sha256, Mapping) or set(component_artifact_sha256) != set(COMPONENT_ROLES):
         raise RuntimeError("STOP_V5_QC_COMPONENT_ARTIFACT_SET_MISMATCH")
-    artifacts = {role: _sha(component_artifact_sha256[role], f"component_artifact_sha256[{role}]") for role in COMPONENT_ROLES}
+    artifacts = {
+        role: _sha(component_artifact_sha256[role], f"component_artifact_sha256[{role}]")
+        for role in COMPONENT_ROLES
+    }
 
     if valid.get("exclusions_only_from_frozen_invalidity_rules") is not True or valid.get("passed") is not True:
         raise RuntimeError("STOP_V5_QC_INVALID_OBSERVATION_FAILURE")
@@ -167,7 +172,7 @@ def qualify_v5_qc_pretraining_v3(
 
     return {
         "schema": "JEPA_V5_QC_PRETRAINING_CLOSURE_V3",
-        "authority_id": "QC_CLOSURE_V3",
+        "authority_id": authority.qc_closure_authority_id,
         "component_artifact_sha256": artifacts,
         "component_authority_ids": expected_ids,
         "association_warning_only": True,
