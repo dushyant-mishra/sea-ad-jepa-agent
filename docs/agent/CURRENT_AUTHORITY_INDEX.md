@@ -1,200 +1,170 @@
 # CURRENT AUTHORITY INDEX — JEPA PROJECT
 
 Date: 2026-09-09
+Status: `R4_HANDOFF_CURRENT__NO_TRAINING_AUTHORITY`
 
-## Canonical branch
+## Canonical project authority
 
-**`main` is the single current project branch.**
+`main` is the canonical governance/startup branch. Active lane branches may carry staged evidence and candidate implementations, but branch names do not confer authority.
 
-All conclusion-bearing work must branch from `main` unless a newer explicit prospective authority says otherwise. Old `planning/`, `candidate/`, `production/`, `review/`, transport, and historical Stage81 branches are provenance only after consolidation.
+Before acting, read in this order:
 
-Branch names do not confer authority.
+1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4.json`
+4. `docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md`
+5. `docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md`
+6. `docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`
+7. this file and `docs/agent/CURRENT_SUPERSESSION_MAP.md`
 
-## Current lane heads absorbed into main
+Always re-fetch live heads before writing.
 
-| Lane | Current source/reference head | Current status |
+## Live lane heads captured by FINAL R4
+
+| Lane | Branch/head | Current status |
 |---|---|---|
-| T0 V20 Stage 3 | `e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9` on the active T0 branch | Stage 3 terminal observed; broad immune-expression primary `SUPPORTED_INTERNAL`; rare tail measurement-underdetermined; exact Stage 3 evidence-byte review still pending; no downstream execution authority |
-| Teacher/Student V5 data-first | `028989a5f1504e4d6403a44e7c90d37172c54150` | current prospective successor; data-first schedule/root history retained; **not yet cheat-qualified**; no training authority |
-| Target Discovery | `26c3cfaba77bb8e5935e76473ab1fd5f90a562bf` | relational-objective qualification; TD60 waiting |
-| F1 real producer/replay | `a884f558970479278bc21f3f2274dc24bee89758` | prefreeze; real sweep unauthorized |
-| F1-B/C3 mechanics successor | `c0eaf2acc0a5edc837fb2a48f726b9d626772f06` | mechanics evidence only |
-| D1 V2 | `c13c06c103a588fc95bb93174730bf26dd613884` | WAIT_HEALTHY_TRAINED_TEACHER |
-| population/sealed-holdout registry | `14c2d586239aa5af15ed7cd70fdfb196d1c99f5f` | frozen and healthy |
-| external project review | `557a4344df2fa04526c82146a730413c992b5ad2` plus later main governance | blocker input, not execution authority |
+| Project governance | `main` through R4 handoff commits | canonical startup/governance |
+| T0 V20 | `t0/v20-pathology-blind-materialization-20260908` @ `d5d67e21398da92e39095afd864b4fb9ebe3da02` | science complete; frozen code/input authorities published; replay-equivalence governance + reporting-only sensitivity recovery remain |
+| Teacher/Student V5 | `planning/v5-full-population-cheat-proofing-20260909` @ `e17c61643c30d219a4434566f828cdf3171381ae` | prospective full-population/anti-cheat candidate; training closed |
 
-The frozen 66-pass V5 core remains rooted at `c7b1663...` / materialization `71484ab99d276d7251836c109885d22ab4e7abb1` / prototype root `9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad`. The current continuation head is `028989a5f1504e4d6403a44e7c90d37172c54150`, which adds the outcome-blind base proposal V3 and one-reader-fit-population-equivalent presentation-horizon authority without changing the frozen 66-pass prototype.
+These heads are snapshots, not permanent truth. Re-fetch before acting.
 
-## 2026-09-09 V5 anti-cheat / T1 mechanics consolidation
+## T0 V20 current authority
 
-New controlling references:
-
-- `docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md`
-- `docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json`
-
-Consolidated decision:
-
-```text
-SAFE_TO_TRAIN = false
-TEACHER_STUDENT_TRAINING_AUTHORIZED = false
-SUCCESSOR_U0_AUTHORIZED = false
-TD60_AUTHORIZED = false
-D1_REAL_AUTHORIZED = false
-V5_STATUS = PARTIALLY_HARDENED__NOT_YET_CHEAT_QUALIFIED
-REAL_DATA_CONFIRMS_SHORTCUT_RISK = true
-```
-
-Corrected historical T1 diagnosis:
-
-```text
-C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST
-```
-
-Historical u10--u205 checkpoints are classified as `TRAINING_MECHANICS_DEFECT_INHERITED`. They are not lawful resume points, not biological teacher authority, and not TD60 input. The clean u0 checkpoint is unaffected by the fp16-backward defect because it predates optimizer updates, but u0 alone does not authorize training.
-
-Future healthy teacher/student training must bind:
-
-```text
-fp16 forward
-  -> backward with autocast disabled
-  -> unscale
-  -> 48-tensor mandatory protected-gradient gate
-  -> optimizer step proved
-  -> both Adam moments checked
-  -> EMA update
-```
-
-Real-data anti-cheat review found that support/source/operator geometry is an actual shortcut channel in the mounted 50k x 41,238 expression sample, including 42 operators, 104 donors, 9 support fingerprints, and support-fingerprint-to-source purity of 1.000. Therefore synthetic fixtures are insufficient for V5 anti-cheat qualification.
-
-Before V5 training, a real anti-cheat qualification authority must cover at least: support-only attack, depth/QC-only attack, mask-only attack, observation-operator routing, donor memorization, held-out donor/matrix/study/technology transfer, evidence/depth response curves, proposal `p_i/q_i` audit, collapse telemetry, constant-vector/low-rank negative controls, and hardware-invariance replay.
-
-Permanent phrase:
-
-```text
-A teacher/student checkpoint is not biologically qualified because loss decreases.
-It is biologically qualified only if mechanics health is proven and the checkpoint survives mask-only, support-only, depth-only, donor-holdout, matrix-holdout, study-holdout, technology-holdout, proposal-weighting, collapse, and hardware-invariance attacks.
-```
-
-## 2026-09-09 T0 V20 Stage 3 result
-
-Controlling review:
-
-- `docs/agent/T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md`
-
-Observed terminal commit:
-
-`e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9`
-
-Recorded primary:
+Primary terminal:
 
 `BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL`
 
-with permutation `p_upper = 0.021` against frozen `alpha = 0.025`, `t = 1.9078694125102356`, `n = 18` confirmation donors.
+Key numbers:
+- `p_upper = 0.021`
+- frozen `alpha = 0.025`
+- `beta = 124.94507515835764`
+- `HC3 SE = 65.48932245523241`
+- `t = 1.9078694125102356`
+- 18 confirmation donors
+- 9,999 permutations
 
-Recorded rare-tail terminal:
+Rare-tail terminal:
 
 `RARE_TAIL_UNDERDETERMINED_MEASUREMENT`
 
-The pathology-blind QC gate vetoed the tail before any tail disease statistic was run; this is neither a positive nor negative tail result.
+The tail QC veto occurred before any tail disease test. The rare tail is neither a positive nor negative biological result and is not a training target.
 
-Two review caveats remain explicit. First, the initial Stage 3 process read confirmation AT8 into memory and then stopped on a role-tag donor-set digest mismatch; the subsequent repair at `f98c1f8...` was provenance-only and does not appear outcome-responsive, but it is a post-access code repair and remains disclosed. Second, the terminal commit records Stage 3 artifact hashes but does not commit those evidence bytes, and the frozen adjudicator return omits the state-composition/state-measurement sensitivity fields on the QC-veto path. Full exact-byte independent review therefore remains pending.
+Evidence/frozen-computation closure:
+- Stage-3 evidence bytes are committed.
+- frozen V20 computation and input authorities are published.
+- exact historical bitwise replay is blocked only by tiny cross-stack floating-point differences while decision-relevant outputs/terminals agree.
+- do not weaken the historical verifier silently; use a separately versioned replay-equivalence rule if numeric-stack reconstruction fails.
 
-Authority effect: the internal T0 primary result is recorded, but V5 training, successor-u0, TD60, D1 real execution, DEV/SEALED, reader_validation/oracle, protected populations and biological sweeps remain closed.
+## C2 / historical T1 mechanics
 
-## P0 — T0
+Historical causal diagnosis remains:
 
-Accepted scientific specification remains V18/V20. Stage 3 has now produced the internally supported broad immune-expression terminal recorded above. The rare tail remains measurement-underdetermined. Exact Stage 3 evidence-byte review is still pending, and no downstream execution authority follows automatically from the primary support result.
+`C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST`
 
-Protected populations/pathology remain closed except through explicit lane-specific release authority.
+Historical u10–u205 remain `TRAINING_MECHANICS_DEFECT_INHERITED`.
 
-## P0 — Teacher/Student V5
+The corrected successor gate has now been proved at exact historical 128×8 geometry:
+- 44 gate tests passed, 0 skipped
+- complete task report: 57 passed, 0 skipped
+- historical negative control: 48/48 protected tensors exact-zero and rejected before Adam state/motion
+- corrected successor: 0/48 dead, both Adam moments live 48/48, 48/48 move beyond decay
+- the real historical 128×8 path was not OOM-limited
 
-Current verified V5 materialization:
+Required successful-update chain:
 
-- branch/source head: `c7b1663cc4390843978b973986edfe58f93320a3`;
-- decision-bearing materialization commit: `71484ab99d276d7251836c109885d22ab4e7abb1`;
-- prototype root: `9684f4c2b7eff1da863ae50124c6aad49d25f137a84898e05e98d2ae1f0c67ad`;
-- V5 active suite: **66/66 PASS**;
-- V4 regression in the same CI: **98/98 PASS**;
-- training/execution/u0/u40/TD60: **UNAUTHORIZED**.
+`FP16_FORWARD → BACKWARD_AUTOCAST_DISABLED → UNSCALE → PROTECTED_48_GRADIENT_GATE → OPTIMIZER_STEP_PROVED_BEYOND_DECAY → ADAM_EXP_AVG_PROVED → ADAM_EXP_AVG_SQ_PROVED → EMA_UPDATE → SUCCESSFUL_PRESENTATION_CURSOR_ADVANCE → ATOMIC_CHECKPOINT_TELEMETRY_COMMIT`
 
-Already frozen prospectively:
+This closes the mechanics defect class; it does not authorize production training.
 
-- V5 scientific target V2;
-- relational proposal V2, with proposal = target for that relational route;
-- base proposal V3: donor-uniform scientific target with explicit p/q correction under the frozen convex proposal family;
-- presentation horizon V1: exactly 4,553,407 presentations, no automatic extension, with prospectively frozen repeat/group-coverage/ESS/weight-ratio constraints;
-- donor-primary scientific objective direction.
+## Production population
 
-Still not frozen / not production-ready:
+Authenticated `reader_fit` population:
+- 4,553,407 cells / unique stable keys
+- 104 donors
+- 42 operators
+- 42 matrices
+- 1,400 donor×operator×source groups
+- 41,238 molecular addresses
+- 17,186 common measured-core addresses
+- metadata SQLite SHA-256 `a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913`
 
-- support-aware evidence/view/block schedule;
-- finite relational triplet budget;
-- update size / token budget / microbatch execution geometry;
-- GPU Philox production kernel and exact reference parity;
-- hardware cost / memory calibration;
-- EMA half-life in exposure units;
-- biological learned-teacher checkpoint milestone within the frozen one-population-equivalent horizon;
-- integrated mechanically qualified production trainer;
-- anti-cheat qualification authority;
-- external V5 review terminal.
+Production values must be derived from this authenticated population or from a prospectively frozen risk/error rule. Synthetic fixtures may test mechanics only.
 
-Historical 3,292-cell u40/u205 remains **mechanics-clock evidence only** and, after the 2026-09-09 consolidation, historical u10--u205 is additionally quarantined as **training-mechanics-defect inherited**.
+## V5 current prospective state
 
-## P0 — mechanics binding before qualification
+Current full-population V3 schedule candidate:
+- full coverage 4,553,407/4,553,407
+- `H = 5,267,086`
+- ESS fraction `0.5000000953357726`
+- `H-1` fails the 0.5 ESS floor
+- current candidate repeat cap 32
+- resulting weight-ratio lower bound `67.17245370370371`
+- multiplicity ledger replayed byte-identically twice
 
-F1-B/C3 `c0eaf2...` is attack-hardened mechanics evidence, not the final trainer.
+Conditional diagnostic only:
+- if a 64× conditioning ceiling were prospectively re-adopted, cap34 is the smallest compatible repeat cap
+- this does not itself justify 64×
 
-Before a mechanics qualification run, prospectively close:
+Dimension hierarchy must be derived on the full real reader-fit expression stream:
+- `D_shared`
+- `D_private`
+- `D_total = D_shared + D_private`
+- separate `D_obs`
+- `d_gene` is neural/token capacity, not biological rank
 
-- movement-vs-decay criterion/tolerance;
-- exact mandatory predictor-parameter registry;
-- exact end-to-end data/mask/loss/update/checkpoint trainer binding;
-- backward-autocast-disabled proof;
-- 48 protected gradient/moment live gate;
-- loss/biology/shortcut/collapse/transfer telemetry as one atomic checkpoint record.
+Historical 5/96/160/224/320/512 are not production dimension authority.
 
-## Target Discovery
+## Current dominant blocker
 
-Do not restart fixed-coordinate target search.
+Numeric D and full-reader relational qualification are blocked by:
 
-Current live biology:
+`STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING`
 
-- TD57B scale-free donor-recurrent relational order: 24/24 PASS;
-- TD59 nearest-half mesoscale recurrence: 24/24 PASS;
-- nearest-third TD57C failed in HVS and remains closed.
+Required physical substrate:
+- exact 42 corrected TRAIN counts/meta shard pairs
+- historical corrected cache root: `D:\Jepa project\data\cache\stage81a3r_corrected_real_train`
+- frozen production-loader manifest SHA-256 `2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328`
+- historical full104 Level-4 representation: 8,915 blocks over 4,553,407 cells × 41,238 addresses
 
-TD60 must consume a lawful **full-reader exposure-defined learned-teacher checkpoint**. Historical u40/u205 may remain mechanics evidence but must not silently become the biological-learning checkpoint.
+Do not substitute the 50K discovery archive, synthetic expression, validation/oracle, DEV/SEALED, pathology, or differently recomputed shards.
 
-## F1
+## Relational target / anti-cheat
 
-F1 producer/replay mechanics remain available as a parallel lane, but a real F1 biological sweep still requires explicit execution authorization and independent review. F1 is not allowed to override the current T0/V5 critical path merely because older startup documents named it first.
+Current biological target framework:
+- TD57B: 24/24 PASS
+- TD59 nearest-half: 24/24 PASS pilot
+- TD57C nearest-third: failed/closed
+- TD60: unauthorized
 
-## D1
+Simple measurement-shortcut donor-agreement ranges:
+- TD57B: 0.55234375–0.6564968785030993
+- TD59: 0.4804257516370549–0.5566964285714286
 
-D1 V2 has future-safe readout binding, state/archive/resampling, and atlas infrastructure, but real D1 remains blocked on:
+Future learned `z_bio` must beat a prospectively frozen strongest shortcut baseline by a prospectively frozen increment on held-out units. Above-chance performance alone is insufficient.
 
-- a lawful qualified full-reader teacher;
-- frozen canonical teacher readout contract;
-- exact teacher qualification authority;
-- final independent closure over the complete current D1 V2 head.
+## Training authority
 
-## Protected populations
+All remain false:
+- V5 training
+- successor-u0
+- TD60
+- D1 real
+- reader_validation/oracle
+- DEV/SEALED
+- protected populations
+- pathology-guided tuning
 
-The frozen population-access/sealed-holdout registry remains authoritative.
-
-No reader_validation, reader_oracle, foundation development/sealed, external holdout, or pathology access is allowed except through a separately frozen lane-specific release authority.
-
-## Authority precedence
+## Precedence
 
 When artifacts disagree:
 
-1. `main` + this file;
-2. `docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`;
-3. `docs/agent/CURRENT_SUPERSESSION_MAP.md`;
-4. `docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md` for V5 anti-cheat / historical T1 mechanics-defect interpretation;
-5. the exact lane-specific frozen contract/external terminal cited by the above;
-6. older branch-local governance;
-7. historical evidence.
+1. live `main` + `JEPA_LATEST_HANDOFF_POINTER.json`
+2. FINAL R4 handoff/state/formulas/heavy-asset ledger
+3. `NEXT_ALLOWED_ACTION.json`
+4. this index
+5. `CURRENT_SUPERSESSION_MAP.md`
+6. exact lane-specific frozen contract/review
+7. older historical governance
 
-Never infer authority from a branch name, timestamp, or the word `PASS`.
+Never infer authority from a branch name, timestamp, or the word PASS.
