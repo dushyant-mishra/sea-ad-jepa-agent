@@ -1,0 +1,80 @@
+{
+  "schema": "JEPA_T0_TAIL_COMMON_SUPPORT_CONTRACT_V1",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "purpose": "Step 4 of the QC methodology investigation. Restrict each donor to the region of Q_DEPTH/Q_DETECT where its frozen tail and rest cells overlap, with no extrapolation beyond common support, and then ask two frozen questions on that restricted set: does the held-out expression program still cohere, and does the frozen QC association still fire. Step 3 deliberately preserved the tail/rest depth difference; this is the step that removes it.",
+  "authority": "DIAGNOSTIC_ONLY. Not T0 science authority. Not training authority. Does not modify T0 V20, the frozen target, the frozen tail threshold, the frozen tail mask, QC_ALPHA, COHERENCE_ALPHA, the frozen support minima, any T0 terminal, or any training gate.",
+  "frozen_tail_terminal_unchanged": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+  "training_authorized": false,
+  "pathology_blind": true,
+  "reads_at8": false,
+
+  "restriction_rule": {
+    "name": "PER_DONOR_COMMON_SUPPORT",
+    "definition": "Within each donor, take the two frozen QC columns Q_DEPTH and Q_DETECT. Compute low = elementwise maximum of the tail minimum and the rest minimum, and high = elementwise minimum of the tail maximum and the rest maximum. Keep a cell if both of its QC values lie within [low, high] inclusive. Drop every other cell.",
+    "parameter_free": "There is no tolerance, caliper, bin count, quantile or ratio to choose. The rule is determined entirely by the observed ranges, so nothing in it can be fitted to make an answer come out.",
+    "no_extrapolation": "Cells outside the overlap are removed rather than reweighted or imputed, which is the no-extrapolation requirement.",
+    "labels_fixed": "The frozen unthinned tail mask assigns tail and rest. Membership is never recomputed, so the depth-sensitive SCORING estimator cannot re-select the comparison groups.",
+    "no_thinning": "This step runs at full observed depth. The intervention under study here is the removal of the tail/rest QC difference, not a reduction of depth."
+  },
+
+  "support_minima_are_inherited_not_chosen": {
+    "values": "MIN_TAIL_CELLS 5, MIN_REST_CELLS 20, MIN_DECISION_DONORS 10, exactly as frozen in t0_tail_support_coherence_v1",
+    "why": "Relaxing a support minimum to keep donors after restriction would be choosing a threshold for its result. If restriction drops the cohort below the frozen minima, the correct outcome is a not-decision-capable report."
+  },
+
+  "feasibility_already_measured": {
+    "what_was_counted": "How many tail and rest cells survive the restriction per donor, and whether the frozen minima would still be met. A count of measurability, not a value of any statistic.",
+    "result": "All 18 donors remain decision-capable: 513 of 516 tail cells and 5736 of 6521 rest cells retained, with per-donor retention between 25.5% and 97.2%. The exact sign-flip reference stays at 18 donors and 131072 configurations.",
+    "why_recording_it_is_not_fitting": "The restriction rule has no free parameter, so knowing the retained counts cannot change the rule. The count was taken to avoid freezing a contract for an analysis the data could not answer."
+  },
+
+  "two_frozen_questions": {
+    "HOLDOUT_COHERENCE": {
+      "features": "COHERENCE_HOLDOUT only. No SCORING feature may enter.",
+      "scale": "the frozen t0_tail_preflight_raw_v1.discovery_holdout_scale from the unthinned discovery holdout counts, never refit",
+      "vectors": "the frozen confirmation_holdout_vectors, applied to the restricted cells",
+      "test": "the frozen adjudicate_tail_support_coherence and exact_common_direction_test, unchanged",
+      "question": "Among technically comparable cells, do the donors still share a held-out direction?"
+    },
+    "QC_ASSOCIATION": {
+      "test": "the frozen t0_tail_qc_randomization_v1.tail_qc_veto_test, unchanged, applied to the restricted cells and their restricted frozen labels",
+      "question": "Among technically comparable cells, does the association that produced the veto still fire?",
+      "why_this_is_the_validity_check": "Common support equalises the range the two groups occupy but does not by itself equalise their distributions within that range. Recomputing the frozen QC statistic on the restricted set is what shows whether the restriction actually reduced the contrast. Without it, a surviving coherence could be reported as confound-free when the confound is still present."
+    }
+  },
+
+  "joint_outcomes_declared_in_advance": [
+    "QC association no longer fires AND holdout coherence survives: among technically comparable cells the confound is not detectable and the independent program still coheres. This is the strongest evidence available from existing data that the grouping carries biology, and it would mean the cross-cell veto rejected a case it should have been able to keep. It would still not license a tail claim, because the frozen terminal was adjudicated under a frozen rule and this is a diagnostic.",
+    "QC association no longer fires AND holdout coherence collapses: the held-out program was carried by the tail/rest QC difference. This would be the clearest evidence for a measurement explanation.",
+    "QC association still fires: the restriction did not remove the confound, so neither coherence outcome is interpretable as confound-free, and the honest report is that common-support restriction alone is insufficient. Any balancing design beyond restriction requires a new owner decision, since 1:1 matching would push rest counts below the frozen MIN_REST_CELLS for most donors and is therefore not available under inherited minima.",
+    "Not decision-capable after restriction: reported as such, with no statistic quoted."
+  ],
+
+  "required_outputs": [
+    "Per donor: original and retained tail and rest counts, the common-support box on both QC columns, and the retained fraction.",
+    "Unrestricted control: the frozen coherence object and the frozen QC veto object, both of which must reproduce the committed values exactly.",
+    "Restricted: the full frozen coherence object, the full frozen QC veto object, and every scalar each emits.",
+    "Per donor and per metric: the frozen standardized tail-versus-rest QC contrast before and after restriction, so the change in the confound is visible rather than asserted.",
+    "Per donor: cosine of the restricted holdout vector to the unrestricted one.",
+    "A machine-readable record binding input roots and hashes, the frozen authorities used, the donor and cell sets, and the restriction rule identity.",
+    "A findings document that states which of the declared joint outcomes occurred and does not claim more than that outcome supports."
+  ],
+
+  "acceptance_checks": [
+    "UNRESTRICTED_CONTROL_EXACT: with no restriction applied, the coherence object must reproduce the committed frozen coherence and the QC veto object must reproduce the committed max_mean_abs_standardized_qc_contrast, p_upper and veto exactly; mismatch is STOP.",
+    "SCORING_FEATURE_EXCLUSION: no SCORING feature may enter any holdout vector; overlap is STOP.",
+    "LABELS_NEVER_RECOMPUTED: the tail/rest assignment of every retained cell must equal the frozen mask for that cell; mismatch is STOP.",
+    "RESTRICTION_ONLY_REMOVES: the retained cell set must be a subset of the original, and no cell may change donor; violation is STOP.",
+    "RESTRICTION_IS_WITHIN_DONOR: the common-support box must be computed per donor and never pooled across donors; violation is STOP.",
+    "SUPPORT_MINIMA_UNCHANGED: the frozen MIN_TAIL_CELLS, MIN_REST_CELLS and MIN_DECISION_DONORS must be used as frozen; any override is STOP.",
+    "FROZEN_SCALE_NOT_REFIT: the holdout scale and decision mask must come from unthinned discovery counts; recomputation from confirmation is STOP."
+  ],
+
+  "interpretation_limits": [
+    "This is a diagnostic. It cannot change or rescue the frozen T0 tail terminal, and no p-value here is a gate.",
+    "Common support removes cells outside the overlap; it does not guarantee balanced QC distributions within the overlap. The recomputed frozen QC statistic is the only evidence about whether balance was achieved, and it must be read before any coherence result is interpreted.",
+    "Restriction reduces sample size, and the largest reductions fall on the rest group of the donors with the fewest tail cells. Loss of coherence after restriction is therefore partly a power question and cannot be read as absence of biology.",
+    "Q_DEPTH and Q_DETECT are highly correlated, so restricting on both does not separate them, and no causal attribution to either is available from this design.",
+    "No successor tail estimator, QC gate, threshold or training authority may be chosen from these results. Any such design requires separate prospective freezing and owner authorisation."
+  ]
+}
