@@ -45,6 +45,7 @@ def test_router_patch_injects_only_reporting_and_replay_hooks_before_r8_authorit
     assert patched.count('namespace["verify_pretarget_execution_authority"]') == 1
     assert patched.count('namespace["verify_preadjudication_execution_authority"]') == 1
     assert patched.index("_recovery_target_verifier") < patched.index("verify_pretarget_execution_authority")
+    # No substitution of the R8 authority routing itself.
     assert 'v2.verify_pretarget_execution_authority' in patched
     assert 'v2.verify_preadjudication_execution_authority' in patched
 
