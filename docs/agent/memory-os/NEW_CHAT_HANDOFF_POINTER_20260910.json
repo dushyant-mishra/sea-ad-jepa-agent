@@ -1,0 +1,25 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_POINTER_V1",
+  "date": "2026-09-10",
+  "status": "HANDOFF_ONLY_NOT_SCIENTIFIC_AUTHORITY",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "primary_live_branch": "planning/v5-full-population-cheat-proofing-20260909",
+  "handoff_document": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_T0_V21_V5.md",
+  "handoff_commit": "5668e3d71c720219ec823d5ff089f246091f2be2",
+  "v5_work_head_before_handoff_commit": "97e3d1a0dd9e6e8bbe453de2bdad1f2cf59023a9",
+  "t0_v20_frozen_branch": "t0/v20-pathology-blind-materialization-20260908",
+  "t0_v20_frozen_head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+  "t0_step4_commit": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f",
+  "t0_v21_draft_commit": "e770f6dc83c44a36232d15541d3529e71c7611c9",
+  "t0_v21_draft_file": "docs/agent/T0_V21_PROSPECTIVE_DESIGN_DRAFT.md",
+  "t0_v21_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
+  "training_authorized": false,
+  "next_t0_action": "Perform only the pathology-blind fresh-donor feasibility audit from V21 section 0.1; do not read AT8 values or run weighting/estimator diagnostics before the design decision.",
+  "next_v5_action": "Run a tiny deterministic REAL_DATA_SMOKE_NON_AUTHORITY subset through the current V5 data path/firewall and mechanics checks if heavy assets are present; do not derive production dimensions or thresholds from the subset.",
+  "standing_rule": "If looking at confirmation data could change a design choice, do not look.",
+  "notes": [
+    "Read the handoff document before older authority/startup files because several September 9 startup sections are stale relative to T0 Step 4 and V5 hardening.",
+    "V20 remains immutable.",
+    "The handoff and pointer do not grant scientific or training authority."
+  ]
+}
