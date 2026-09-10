@@ -9,6 +9,7 @@ cross-stack discrepancies recorded in T0_V20_REPRODUCIBILITY_FINDINGS.md.
 """
 
 from typing import Any
+import json
 import math
 import numpy as np
 
@@ -40,6 +41,11 @@ STATE_PRIMARY_EXACT_FIELDS = (
     "permutations", "residual_df",
 )
 
+# Every budget in this policy was measured at float64. A pair of float32 arrays
+# agreeing inside a float64 budget would say nothing, so the tolerant and ULP
+# comparisons require this dtype rather than merely a matching one.
+REQUIRED_FLOAT_DTYPE = np.dtype(np.float64)
+
 
 def _fail(field: str, detail: str) -> None:
     raise ReplayEquivalenceError(f"T0 replay-equivalence mismatch: {field}: {detail}")
@@ -52,11 +58,59 @@ def _require_same_keys(a: dict[str, Any], b: dict[str, Any], where: str) -> None
         _fail(where, f"key set differs; missing={missing}, extra={extra}")
 
 
+def _declared_dtype(x: Any, field: str, side: str) -> np.dtype:
+    """The dtype the value carries, before any comparison coercion.
+
+    `np.asarray` is deliberately called without a `dtype` argument. Passing one
+    is what hid the problem this guards against: it upcasts silently, so the
+    precision a value actually arrived with becomes unobservable exactly when it
+    matters.
+    """
+    try:
+        return np.asarray(x).dtype
+    except Exception as error:                       # pragma: no cover
+        _fail(field, f"{side} value has no array representation: {error!r}")
+        raise AssertionError("unreachable")
+
+
+def _require_same_dtype(field: str, av: Any, bv: Any,
+                        required: np.dtype | None = None) -> str:
+    """Both sides must declare the same dtype before any values are compared.
+
+    Without this a float32 recomputation could pass a float64 budget merely
+    because its values happened to fall inside the tolerance, which would report
+    an acceptable replay of a computation that was never done at the same
+    precision.
+    """
+    frozen_dtype = _declared_dtype(av, field, "frozen")
+    recomputed_dtype = _declared_dtype(bv, field, "recomputed")
+    if frozen_dtype != recomputed_dtype:
+        _fail(field, "declared dtype differs: frozen=%s, recomputed=%s"
+                     % (frozen_dtype, recomputed_dtype))
+    if required is not None and frozen_dtype != required:
+        _fail(field, "declared dtype must be %s for a budgeted comparison, "
+                     "got %s" % (required, frozen_dtype))
+    return str(frozen_dtype)
+
+
 def _as_finite_float_array(x: Any, field: str) -> np.ndarray:
     arr = np.asarray(x, dtype=np.float64)
     if not np.isfinite(arr).all():
         _fail(field, "all compared floating values must be finite")
     return arr
+
+
+def _canonical_record_form(value: Any) -> Any:
+    """The value as the decision record stores it.
+
+    The decision writer serialises with `default=str`, so a field holding an
+    ndarray is a string in the committed artifact while a live replay holds the
+    array. Normalising both sides through that same serialisation makes an exact
+    comparison well defined -- "would this replay have written what the record
+    holds" -- instead of comparing a string to an array, which raises rather
+    than answering.
+    """
+    return json.loads(json.dumps(value, default=str, sort_keys=True))
 
 
 def _float_metrics(a: np.ndarray, b: np.ndarray) -> tuple[float, float]:
@@ -71,6 +125,7 @@ def _float_metrics(a: np.ndarray, b: np.ndarray) -> tuple[float, float]:
 
 
 def _check_tolerant_array(field: str, av: Any, bv: Any, policy: dict[str, float]) -> dict[str, float]:
+    dtype = _require_same_dtype(field, av, bv, REQUIRED_FLOAT_DTYPE)
     a = _as_finite_float_array(av, field)
     b = _as_finite_float_array(bv, field)
     if a.shape != b.shape:
@@ -82,10 +137,11 @@ def _check_tolerant_array(field: str, av: Any, bv: Any, policy: dict[str, float]
         max_abs, max_rel = _float_metrics(a, b)
         _fail(field, f"outside frozen budget; max_abs={max_abs:.17g}, max_rel={max_rel:.17g}")
     max_abs, max_rel = _float_metrics(a, b)
-    return {"max_abs": max_abs, "max_rel": max_rel}
+    return {"max_abs": max_abs, "max_rel": max_rel, "dtype": dtype}
 
 
 def _check_one_ulp(field: str, av: Any, bv: Any) -> int:
+    _require_same_dtype(field, av, bv, REQUIRED_FLOAT_DTYPE)
     a = float(av); b = float(bv)
     if not math.isfinite(a) or not math.isfinite(b):
         _fail(field, "both values must be finite")
@@ -102,7 +158,12 @@ def compare_fit_equivalence(frozen_fit: dict[str, Any], recomputed_fit: dict[str
     observed = {}
     for field, policy in FLOAT_POLICY.items():
         observed[field] = _check_tolerant_array(field, frozen_fit[field], recomputed_fit[field], policy)
+    exact_array_dtypes = {}
     for field in EXACT_ARRAY_FIELDS:
+        # Value equality alone would let a bool mask and a float mask of the
+        # same content, or two different string widths, pass as identical.
+        exact_array_dtypes[field] = _require_same_dtype(
+            field, frozen_fit[field], recomputed_fit[field])
         if not np.array_equal(np.asarray(frozen_fit[field]), np.asarray(recomputed_fit[field])):
             _fail(field, "exact array equality required")
     ulps = {}
@@ -111,7 +172,10 @@ def compare_fit_equivalence(frozen_fit: dict[str, Any], recomputed_fit: dict[str
         if distance > max_ulp:
             _fail(field, f"ULP distance {distance} > {max_ulp}")
         ulps[field] = distance
+    exact_scalar_dtypes = {}
     for field in EXACT_SCALAR_FIELDS:
+        exact_scalar_dtypes[field] = _require_same_dtype(
+            field, frozen_fit[field], recomputed_fit[field])
         if frozen_fit[field] != recomputed_fit[field]:
             _fail(field, "exact scalar equality required")
     return {
@@ -123,6 +187,12 @@ def compare_fit_equivalence(frozen_fit: dict[str, Any], recomputed_fit: dict[str
         "exact_scalar_fields": list(EXACT_SCALAR_FIELDS),
         "observed": observed,
         "observed_ulp_distance": ulps,
+        "dtype_guard": {
+            "required_float_dtype": str(REQUIRED_FLOAT_DTYPE),
+            "declared_dtypes_matched": True,
+            "exact_array_dtypes": exact_array_dtypes,
+            "exact_scalar_dtypes": exact_scalar_dtypes,
+        },
     }
 
 
@@ -146,8 +216,12 @@ def compare_decision_equivalence(committed: dict[str, Any], recomputed: dict[str
         rel = abs(av-bv) / max(abs(av), abs(bv)) if max(abs(av), abs(bv)) else 0.0
         observed[field] = {"abs": abs(av-bv), "rel": rel}
     for field in STATE_PRIMARY_EXACT_FIELDS:
-        if a[field] != b[field]:
-            _fail(f"state_primary.{field}", "exact equality required")
+        # Compared in the form the decision record stores. `null_t` is an
+        # ndarray live and a string once written, so a direct `!=` evaluates
+        # elementwise and raises instead of returning a verdict.
+        if _canonical_record_form(a[field]) != _canonical_record_form(b[field]):
+            _fail(f"state_primary.{field}",
+                  "exact equality required in the committed record form")
     return {
         "equivalent": True,
         "schema": "JEPA_T0_V20_DECISION_REPLAY_EQUIVALENCE_V1",
@@ -157,6 +231,15 @@ def compare_decision_equivalence(committed: dict[str, Any], recomputed: dict[str
         "state_primary_exact_fields": list(STATE_PRIMARY_EXACT_FIELDS),
         "observed": observed,
         "terminals_exact": True,
+        "exact_fields_compared_in_record_form": True,
+        "null_representation_limitation": (
+            "state_primary.null_t is stored by the decision writer as NumPy's "
+            "truncated repr -- five of the permutation statistics with an "
+            "elided middle -- so comparing it exactly checks the "
+            "representation, its visible head and tail, and its formatting, "
+            "not the values the artifact never recorded. The null's "
+            "decision-relevant effect is pinned exactly by p_upper, p_lower "
+            "and permutations, which are compared as exact values."),
     }
 
 

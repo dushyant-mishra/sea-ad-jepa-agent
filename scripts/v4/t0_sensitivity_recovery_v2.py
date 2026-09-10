@@ -16,6 +16,7 @@ import io
 import json
 import sys
 import time
+import types
 from pathlib import Path
 from typing import Any, Callable
 
@@ -23,12 +24,22 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
+import t0_numeric_environment_v1 as numeric_environment
 import t0_replay_equivalence_v1 as replay
 
 STOP = "STOP_T0_SENSITIVITY_RECOVERY_V2_REFUSED"
 DECISION_FILE = "T0_V20_ADJUDICATION_DECISION.json"
 RECOVERY_FILE = "T0_V20_RECOVERED_SENSITIVITY_STATISTICS_V2.json"
 ROUTER_ANCHOR = "    namespace = dict(frozen.__dict__)"
+# Stage 3 resolves the tail-freeze module inside `run`; the derived chain has to
+# be substituted in there or step 4 reaches the frozen bit-exact verifier first.
+FREEZE_ANCHOR = '    freeze_mod = stage2a._frozen("t0_canonical_freeze_v1")'
+FREEZE_REPLACEMENT = "    freeze_mod = _recovery_freeze_module"
+# The frozen path reaches the target verifier twice: once at the tail freeze
+# (step 4) and once in the adjudicator (step 9). Counted from the frozen call
+# sites, not from what a run happened to produce.
+TAIL_CHAIN_FUNCTIONS = ("compute_tail_threshold", "freeze_tail_authority")
+EXPECTED_TARGET_REPLAYS = 2
 ROUTED_SOURCE_MARKER = 'source = inspect.getsource(frozen._adjudicate_from_raw_v2)'
 R8_PRETARGET_MARKER = 'namespace["verify_pretarget_execution_authority"]'
 R8_PREADJUDICATION_MARKER = 'namespace["verify_preadjudication_execution_authority"]'
@@ -75,6 +86,44 @@ def derive_r8_router_source(router_source: str) -> str:
     return router_source.replace(ROUTER_ANCHOR, injected, 1)
 
 
+def derive_stage3_run_source(run_source: str) -> str:
+    """Point Stage 3's tail freeze at the derived chain. One declared change."""
+    if run_source.count(FREEZE_ANCHOR) != 1:
+        _fail("expected exactly one Stage-3 tail-freeze module resolution, "
+              "found %d" % run_source.count(FREEZE_ANCHOR))
+    return run_source.replace(FREEZE_ANCHOR, FREEZE_REPLACEMENT, 1)
+
+
+def derive_freeze_module(target_verifier: Callable[..., Any]) -> types.SimpleNamespace:
+    """The frozen tail-freeze chain, resolving the equivalence verifier.
+
+    Each function is exec'd verbatim from its own source into a namespace where
+    only `verify_target_v2_against_raw` differs, so no frozen module is edited
+    and no call site is rewritten. The chain wires itself because each function
+    calls the next through module globals.
+    """
+    _, stage2a, _ = _deps()
+    tail_mod = stage2a._frozen("t0_tail_authority_v1")
+    freeze_mod = stage2a._frozen("t0_canonical_freeze_v1")
+
+    tail_namespace = dict(tail_mod.__dict__)
+    tail_namespace["verify_target_v2_against_raw"] = target_verifier
+    for name in TAIL_CHAIN_FUNCTIONS:
+        source = inspect.getsource(getattr(tail_mod, name))
+        exec(compile(source, "<recovery-v2:%s>" % name, "exec"), tail_namespace)
+
+    freeze_namespace = dict(freeze_mod.__dict__)
+    freeze_namespace["freeze_tail_authority"] = tail_namespace[
+        "freeze_tail_authority"]
+    entry = "freeze_tail_after_discovery_authority"
+    exec(compile(inspect.getsource(getattr(freeze_mod, entry)),
+                 "<recovery-v2:%s>" % entry, "exec"), freeze_namespace)
+
+    # `run` uses this module for exactly one call, so the shim carries exactly
+    # that one function rather than impersonating the module.
+    return types.SimpleNamespace(**{entry: freeze_namespace[entry]})
+
+
 def verify_replay_decision(committed: dict[str, Any],
                            recomputed: dict[str, Any]) -> dict[str, Any]:
     """Exact terminals/discrete statistics; tight tolerance only for 3 floats."""
@@ -94,6 +143,10 @@ def build_payload(decision: dict[str, Any], target_report: dict[str, Any],
         _fail("decision replay-equivalence was not verified")
     return {
         "schema": "JEPA_T0_V20_RECOVERED_SENSITIVITY_STATISTICS_V2",
+        # Recorded because the whole reason a tolerant replay was needed is
+        # that no earlier T0 summary said which arithmetic produced the frozen
+        # bytes. A replay report without its own stack would repeat the hole.
+        "numeric_environment": numeric_environment.numeric_environment(),
         "what": (
             "Reporting-only recovery of state composition and measurement "
             "sensitivity statistics omitted from the committed V20 decision."
@@ -142,6 +195,8 @@ def _repaired_router_with_replay() -> tuple[Callable[..., Any], list[dict[str, A
         target_reports.append(report)
         return report
 
+    freeze_module = derive_freeze_module(target_verifier)
+
     original_router = inspect.getsource(stage3._adjudicator_through_r8)
     routed_source = derive_r8_router_source(original_router)
     router_namespace = dict(stage3.__dict__)
@@ -149,20 +204,35 @@ def _repaired_router_with_replay() -> tuple[Callable[..., Any], list[dict[str, A
     router_namespace["_recovery_target_verifier"] = target_verifier
     exec(compile(routed_source, "<recovery-v2:_adjudicator_through_r8>", "exec"),
          router_namespace)
-    return router_namespace["_adjudicator_through_r8"], target_reports, repair_report
+    return (router_namespace["_adjudicator_through_r8"], target_reports,
+            repair_report, freeze_module)
 
 
-def _run_with_repair(**kwargs: Any) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
-    """Run Stage-3 source with the scoped recovery router; require one target replay."""
+def _run_with_repair(**kwargs: Any) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+    """Run Stage-3 source with the scoped recovery routing.
+
+    Both target-verifier call sites must have gone through the equivalence
+    verifier. If either had fallen through to the frozen bit-exact verifier the
+    run would have stopped there, so the count is what proves the routing held.
+    """
     _, _, stage3 = _deps()
-    router, target_reports, repair_report = _repaired_router_with_replay()
+    router, target_reports, repair_report, freeze_module = (
+        _repaired_router_with_replay())
     namespace = dict(stage3.__dict__)
     namespace["_adjudicator_through_r8"] = router
-    exec(compile(inspect.getsource(stage3.run), "<recovery-v2:run>", "exec"), namespace)
+    namespace["_recovery_freeze_module"] = freeze_module
+    routed_run = derive_stage3_run_source(inspect.getsource(stage3.run))
+    exec(compile(routed_run, "<recovery-v2:run>", "exec"), namespace)
     record = namespace["run"](**kwargs)
-    if len(target_reports) != 1:
-        _fail(f"expected exactly one target replay-equivalence verification, observed {len(target_reports)}")
-    return record, target_reports[0], repair_report
+    if len(target_reports) != EXPECTED_TARGET_REPLAYS:
+        _fail("expected %d target replay-equivalence verifications, observed %d"
+              % (EXPECTED_TARGET_REPLAYS, len(target_reports)))
+    unverified = [i for i, r in enumerate(target_reports)
+                  if r.get("verified") is not True]
+    if unverified:
+        _fail("target replay-equivalence not verified at call sites %r"
+              % unverified)
+    return record, target_reports, repair_report
 
 
 def recover(*, outdir: Path, committed_decision: Path,
@@ -174,8 +244,15 @@ def recover(*, outdir: Path, committed_decision: Path,
 
     committed = json.loads(Path(committed_decision).read_text(encoding="utf-8"))
     stamp("replaying Stage 3 with scoped reporting repair + replay-equivalence target verifier")
-    record, target_report, repair_report = _run_with_repair(
+    record, target_reports, repair_report = _run_with_repair(
         outdir=Path(outdir), log=lambda m: None, **stage3_kwargs)
+    target_report = {
+        "verified": all(r.get("verified") is True for r in target_reports),
+        "call_sites": len(target_reports),
+        "expected_call_sites": EXPECTED_TARGET_REPLAYS,
+        "reports": target_reports,
+        "equivalence_schema": target_reports[0]["equivalence_schema"],
+    }
     decision = record["decision"]
 
     decision_report = verify_replay_decision(committed, decision)

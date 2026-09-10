@@ -2,6 +2,18 @@ import copy
 import numpy as np
 import pytest
 
+import sys
+from pathlib import Path
+
+# The lane's modules import one another by bare name, the way the frozen V20
+# package does, so `scripts/v4` has to be importable. Resolved here rather than
+# left to an ambient PYTHONPATH: without it a clean clone reports collection
+# errors instead of running these tests, which is the failure mode where a
+# suite looks absent rather than red.
+_SCRIPTS = Path(__file__).resolve().parents[2] / "scripts" / "v4"
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+
 from t0_replay_equivalence_v1 import (
     compare_fit_equivalence,
     compare_decision_equivalence,
@@ -193,3 +205,108 @@ def test_target_wrapper_emits_provenance_roots_when_equivalent(monkeypatch):
     assert result["verified"] is True
     assert result["package_root_sha256"] == "P"
     assert result["discovery_provenance_root"] == "A"
+
+
+# --- the dtype guard -------------------------------------------------------
+# A tolerance is only meaningful between arrays of the same precision. Before
+# the guard, `_as_finite_float_array` coerced with `np.asarray(x, dtype=float64)`,
+# so a lower-precision recomputation was upcast before anything looked at it.
+
+def test_a_float32_recomputation_inside_the_budget_is_refused():
+    """The masquerade the guard exists to stop.
+
+    These float32 values fall well inside the frozen beta budget, so without a
+    dtype check this would be reported as an acceptable float64 replay of a
+    computation that was never done at float64.
+    """
+    a = _fit(); b = copy.deepcopy(a)
+    b["beta"] = a["beta"].astype(np.float32)
+    with pytest.raises(ReplayEquivalenceError) as caught:
+        compare_fit_equivalence(a, b)
+    assert "declared dtype differs" in str(caught.value)
+    assert "float32" in str(caught.value)
+
+
+def test_matching_but_lower_precision_dtypes_are_still_refused():
+    """Equal dtypes are not enough when the budget was measured at float64.
+
+    Two float32 arrays agreeing within 1e-11 relative say nothing about a
+    float64 replay, so the budgeted fields require float64 rather than merely
+    agreement.
+    """
+    a = _fit(); b = copy.deepcopy(a)
+    a["sigma"] = a["sigma"].astype(np.float32)
+    b["sigma"] = b["sigma"].astype(np.float32)
+    with pytest.raises(ReplayEquivalenceError) as caught:
+        compare_fit_equivalence(a, b)
+    assert "must be float64" in str(caught.value)
+
+
+def test_an_exact_array_of_a_different_dtype_with_equal_values_is_refused():
+    """`np.array_equal` compares values, so the mask needs its own dtype check."""
+    a = _fit(); b = copy.deepcopy(a)
+    b["decision_gene_mask"] = a["decision_gene_mask"].astype(np.float64)
+    assert np.array_equal(np.asarray(a["decision_gene_mask"]),
+                          np.asarray(b["decision_gene_mask"]))
+    with pytest.raises(ReplayEquivalenceError) as caught:
+        compare_fit_equivalence(a, b)
+    assert "declared dtype differs" in str(caught.value)
+
+
+def test_an_exact_scalar_of_a_different_dtype_is_refused():
+    a = _fit(); b = copy.deepcopy(a)
+    b["selected_multiplier_index"] = np.int32(a["selected_multiplier_index"])
+    assert a["selected_multiplier_index"] == b["selected_multiplier_index"]
+    with pytest.raises(ReplayEquivalenceError):
+        compare_fit_equivalence(a, b)
+
+
+def test_a_one_ulp_scalar_of_a_different_dtype_is_refused():
+    a = _fit(); b = copy.deepcopy(a)
+    b["final_lambda"] = np.float32(a["final_lambda"])
+    with pytest.raises(ReplayEquivalenceError):
+        compare_fit_equivalence(a, b)
+
+
+def test_the_report_records_the_declared_dtypes():
+    """The guard must be visible in the record, not merely enforced."""
+    a = _fit(); b = copy.deepcopy(a)
+    report = compare_fit_equivalence(a, b)
+    guard = report["dtype_guard"]
+    assert guard["required_float_dtype"] == "float64"
+    assert guard["declared_dtypes_matched"] is True
+    assert guard["exact_array_dtypes"]["decision_gene_mask"] == "bool"
+    assert guard["exact_scalar_dtypes"]["selected_multiplier_index"] == "int64"
+    assert report["observed"]["beta"]["dtype"] == "float64"
+
+
+# --- null_t: a verdict rather than a traceback -----------------------------
+# The committed record stores `null_t` as NumPy's truncated repr, because the
+# decision writer serialises with `default=str`. A live replay holds the array.
+# Comparing those directly evaluates elementwise and raises.
+
+def test_a_live_array_null_t_returns_a_verdict_instead_of_raising():
+    committed = _decision()
+    live = copy.deepcopy(committed)
+    null = np.array([-0.96497236, -0.08234167, -0.93844393])
+    committed["state_primary"]["null_t"] = str(null)
+    live["state_primary"]["null_t"] = null
+    report = compare_decision_equivalence(committed, live)
+    assert report["equivalent"] is True
+    assert report["exact_fields_compared_in_record_form"] is True
+
+
+def test_a_null_t_that_differs_in_record_form_is_refused():
+    committed = _decision()
+    live = copy.deepcopy(committed)
+    committed["state_primary"]["null_t"] = str(np.array([-0.96, -0.08]))
+    live["state_primary"]["null_t"] = np.array([-0.96, 0.42])
+    with pytest.raises(ReplayEquivalenceError) as caught:
+        compare_decision_equivalence(committed, live)
+    assert "null_t" in str(caught.value)
+
+
+def test_the_null_representation_limitation_is_stated_in_the_report():
+    """The check cannot see values the artifact never recorded; say so."""
+    report = compare_decision_equivalence(_decision(), _decision())
+    assert "truncated repr" in report["null_representation_limitation"]

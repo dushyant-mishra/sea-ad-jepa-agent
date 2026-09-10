@@ -1,6 +1,18 @@
 import copy
 import pytest
 
+import sys
+from pathlib import Path
+
+# The lane's modules import one another by bare name, the way the frozen V20
+# package does, so `scripts/v4` has to be importable. Resolved here rather than
+# left to an ambient PYTHONPATH: without it a clean clone reports collection
+# errors instead of running these tests, which is the failure mode where a
+# suite looks absent rather than red.
+_SCRIPTS = Path(__file__).resolve().parents[2] / "scripts" / "v4"
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+
 from t0_replay_equivalence_v1 import ReplayEquivalenceError
 from t0_sensitivity_recovery_v2 import (
     STOP,
@@ -114,3 +126,48 @@ def test_payload_fails_if_sensitivities_are_not_surfaced():
     decision = _decision(); decision.pop("state_composition")
     with pytest.raises(RuntimeError, match=STOP):
         build_payload(decision, {"verified": True}, {"equivalent": True}, {"changed_lines": 5, "added_keys": []})
+
+
+# --- Stage-3 tail-freeze routing -------------------------------------------
+# Without this substitution the tail freeze at step 4 resolves
+# `verify_target_v2_against_raw` through `t0_tail_authority_v1`'s own globals and
+# reaches the frozen bit-exact verifier, stopping the replay before the
+# adjudicator is ever called.
+
+from t0_sensitivity_recovery_v2 import (  # noqa: E402
+    EXPECTED_TARGET_REPLAYS,
+    FREEZE_ANCHOR,
+    derive_stage3_run_source,
+)
+
+
+def test_the_tail_freeze_module_resolution_is_redirected():
+    source = "    x = 1\n" + FREEZE_ANCHOR + "\n    y = 2\n"
+    derived = derive_stage3_run_source(source)
+    assert FREEZE_ANCHOR not in derived
+    assert "_recovery_freeze_module" in derived
+    # Nothing else moved.
+    assert derived.count("x = 1") == 1 and derived.count("y = 2") == 1
+
+
+def test_a_missing_tail_freeze_anchor_is_refused():
+    with pytest.raises(RuntimeError) as caught:
+        derive_stage3_run_source("    freeze_mod = something_else()\n")
+    assert STOP in str(caught.value)
+
+
+def test_a_duplicated_tail_freeze_anchor_is_refused():
+    """Two resolutions would leave one of them on the bit-exact verifier."""
+    with pytest.raises(RuntimeError) as caught:
+        derive_stage3_run_source(FREEZE_ANCHOR + "\n" + FREEZE_ANCHOR + "\n")
+    assert STOP in str(caught.value)
+
+
+def test_both_frozen_call_sites_are_expected():
+    """One at the tail freeze, one in the adjudicator.
+
+    Counted from the frozen call sites rather than from whatever a run
+    produced, so the check cannot be satisfied by a routing that silently
+    covered only one of them.
+    """
+    assert EXPECTED_TARGET_REPLAYS == 2
