@@ -1,12 +1,12 @@
 {
-  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT_V3",
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT_V4",
   "date": "2026-09-10",
   "status": "HANDOFF_ONLY_NO_TRAINING_AUTHORITY",
   "canonical_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md",
-  "latest_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL3.md",
+  "latest_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL4.md",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "observed_heads_before_final3_governance_commits": {
-    "main": "7591a2e8b925ceb20ab364dd373fcac02f6c4a25",
+  "observed_heads_before_final4_governance_commits": {
+    "main": "ab95ad91c9bc5584172de042744a30da7acc2ad6",
     "v5_live": "495e88971909ad5aeb8c93639af85000481a8f41",
     "v5_engineering_state": "5668e3d71c720219ec823d5ff089f246091f2be2",
     "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
@@ -16,7 +16,8 @@
   "branches": {
     "v5": "planning/v5-full-population-cheat-proofing-20260909",
     "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
-    "t0_v21_draft": "t0/v21-prospective-design-20260910"
+    "t0_v21_draft": "t0/v21-prospective-design-20260910",
+    "handoff": "handoff/jepa-new-chat-20260910-t0-v21-v5"
   },
   "t0": {
     "v20_status": "IMMUTABLE",
