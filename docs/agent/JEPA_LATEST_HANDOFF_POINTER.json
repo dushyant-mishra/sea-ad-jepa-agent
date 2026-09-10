@@ -1,14 +1,15 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V1",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R3.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R3.json",
-  "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R3.md",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V2",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4.json",
+  "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
+  "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
   "observed_heads": {
-    "main": "90c47b0266a825df7c0aa9bd1da969cf0d3f162f",
+    "main_before_r4": "c107c47903e976fe512254d2a7ae1efb78985619",
+    "r4_files_through": "3fb272f7213981058b718325d3251c258035dd27",
     "v5": "e17c61643c30d219a4434566f828cdf3171381ae",
     "t0": "d5d67e21398da92e39095afd864b4fb9ebe3da02"
   },
-  "compact_zip_sha256": "8733724de97e5c81672584777fadb682e166af220bd3cd5230e81636e406dc37",
   "training_authorized": false,
-  "instruction": "Re-fetch live heads before acting; candidate branches may have advanced."
+  "instruction": "Start from FINAL R4, then re-fetch live heads before acting. Heavy assets are referenced by exact path/hash and must not be silently substituted."
 }
