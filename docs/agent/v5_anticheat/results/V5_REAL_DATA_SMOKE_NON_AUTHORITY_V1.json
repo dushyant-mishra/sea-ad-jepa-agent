@@ -1,0 +1,189 @@
+{
+  "adapter_forward": {
+    "biology_interpretation_permitted": false,
+    "mask_identity_perturbation_executed": true,
+    "observation_feature_width_non_authority": 3,
+    "smoke_summary_state_width_non_authority": 4,
+    "thresholds_applied": false,
+    "z_bio_shape": [
+      4,
+      4
+    ],
+    "z_obs_shape": [
+      4,
+      3
+    ]
+  },
+  "biology_conclusions_created": false,
+  "expression": {
+    "all_smoke_nonzeros_within_measured_scalar_support": true,
+    "chosen_matrix_id": "sea_ad_mtg_rna_final_2026",
+    "chosen_operator": 31,
+    "chosen_rows": [
+      {
+        "global_freeze_row": 0,
+        "nnz": 7027,
+        "sample": "A_NATURAL_MIXTURE",
+        "sample_row": 0,
+        "stable_key": 6600882243245811828
+      },
+      {
+        "global_freeze_row": 3,
+        "nnz": 6672,
+        "sample": "A_NATURAL_MIXTURE",
+        "sample_row": 3,
+        "stable_key": 2396564232240254815
+      },
+      {
+        "global_freeze_row": 17,
+        "nnz": 6773,
+        "sample": "A_NATURAL_MIXTURE",
+        "sample_row": 17,
+        "stable_key": 2004779086315410315
+      },
+      {
+        "global_freeze_row": 19,
+        "nnz": 4266,
+        "sample": "A_NATURAL_MIXTURE",
+        "sample_row": 19,
+        "stable_key": 5959432183807012190
+      }
+    ],
+    "common_measured_core_addresses": 17186,
+    "format": "csr",
+    "measured_scalar_addresses_chosen_operator": 35076,
+    "nnz": 246702069,
+    "shape": [
+      50000,
+      41238
+    ]
+  },
+  "full104_expression_binding_closed": false,
+  "identity": {
+    "freeze_rows_verified_against_full_reader_metadata": 50000,
+    "sample_counts": {
+      "A_NATURAL_MIXTURE": 25000,
+      "B_COVERAGE_DISCOVERY": 25000
+    },
+    "sample_plus_sample_row_unique": true,
+    "sample_row_alias_trap_detected": true,
+    "sample_row_globally_unique": false,
+    "stable_key_torch_int64_compatible": true,
+    "stable_key_unique": true
+  },
+  "implementation": {
+    "note": "Fingerprints describe the exact local code used for this non-authority smoke; branch publication is a separate provenance event.",
+    "sha256": {
+      "biology_observation_adapter_v2": "653becf38e1f0f5303b1ebfbbd138a662972d17adeec55ef33141faa33bf40e3",
+      "representation_firewall_v2": "c6113ad544ab54a633c7f2e10c73dbe4198a25c572a7cda1e484423b8dacd7cd",
+      "smoke_script": "e5d6cff09adf33d0683dd8e9ab9ee8e6f3e615bdd0b94deaec4c16064b9b1650"
+    }
+  },
+  "inputs": {
+    "assembled_discovery_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "assembled_discovery_size_bytes": 607959761,
+    "calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "discovery_parts": [
+      {
+        "path": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+        "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"
+      },
+      {
+        "path": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+        "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"
+      }
+    ],
+    "expression_meta_zip_sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+    "freeze_sha256": "79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6",
+    "inner_expression_npz_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "support_member_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "mask_and_packing": {
+    "evidence_telemetry": {
+      "hidden_count": 1,
+      "hidden_fraction_within_measured": 2.8509522180408255e-05,
+      "measured_count": 35076,
+      "measured_fraction_of_universe": 0.8505747126436781,
+      "visible_count": 35075,
+      "visible_fraction_of_universe": 0.8505504631650419,
+      "visible_fraction_within_measured": 0.9999714904778196
+    },
+    "hidden_gene_ids": [
+      26316,
+      33375,
+      1242,
+      7658
+    ],
+    "hidden_targets_per_cell": 1,
+    "microbatch_plan": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "packed_valid_tokens_per_cell": 35075,
+    "reverse_order_replay_exact": true,
+    "smoke_cells": 4
+  },
+  "postqualification_created": false,
+  "production_dimensions_set": false,
+  "production_thresholds_set": false,
+  "representation_firewall": {
+    "categorical_identity_embeddings_allowed": false,
+    "objective_gradient_targets": {
+      "BASE_JEPA_CELL_STATE": [
+        "z_bio"
+      ],
+      "BIOLOGICAL_CHECKPOINT_SELECTION": [],
+      "DOWNSTREAM_BIOLOGY_READOUT": [],
+      "GENE_LEDGER_RECONSTRUCTION": [
+        "z_obs"
+      ],
+      "RELATIONAL_GEOMETRY": [
+        "z_bio"
+      ]
+    },
+    "observation_gradient_into_biology_allowed": false,
+    "passed": true,
+    "registered_objectives": [
+      "BASE_JEPA_CELL_STATE",
+      "BIOLOGICAL_CHECKPOINT_SELECTION",
+      "DOWNSTREAM_BIOLOGY_READOUT",
+      "GENE_LEDGER_RECONSTRUCTION",
+      "RELATIONAL_GEOMETRY"
+    ],
+    "required_same_cell_interventions": [
+      "EVIDENCE_FRACTION",
+      "MASK_IDENTITY",
+      "MEASUREMENT_DEPTH",
+      "SUPPORT_FAMILY"
+    ],
+    "schema": "JEPA_V5_REPRESENTATION_FIREWALL_V2",
+    "training_authorized": false,
+    "z_bio_direct_fields": [
+      "common_core_expression",
+      "common_core_detection"
+    ],
+    "z_obs_direct_fields": [
+      "measurement_mask",
+      "depth",
+      "detected_genes",
+      "operator_support_state"
+    ]
+  },
+  "runtime": {
+    "cuda_available": false,
+    "protected_gradient_gpu_step": "NOT_RUN_CPU_RUNTIME",
+    "torch_version": "2.10.0+cpu"
+  },
+  "schema": "JEPA_V5_REAL_DATA_SMOKE_NON_AUTHORITY_V1",
+  "scope": "tiny deterministic hash-locked discovery subset; NOT FULL104 closure",
+  "shortcut_superiority_authority_created": false,
+  "status": "PASS_REAL_DATA_SMOKE_NON_AUTHORITY_MECHANICS_ONLY",
+  "training_authorized": false
+}
