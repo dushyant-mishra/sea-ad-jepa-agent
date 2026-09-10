@@ -10,6 +10,11 @@
     "v5": "e17c61643c30d219a4434566f828cdf3171381ae",
     "t0": "d5d67e21398da92e39095afd864b4fb9ebe3da02"
   },
+  "compact_bundle": {
+    "filename": "JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4_SMALL.zip",
+    "sha256": "ca5cf8907bfc79f7f379b0379133edeb397d84233f00e35aa13f4668dc54eb77",
+    "role": "optional lightweight backup; GitHub R4 files are the primary cross-chat authority"
+  },
   "training_authorized": false,
   "instruction": "Start from FINAL R4, then re-fetch live heads before acting. Heavy assets are referenced by exact path/hash and must not be silently substituted."
 }
