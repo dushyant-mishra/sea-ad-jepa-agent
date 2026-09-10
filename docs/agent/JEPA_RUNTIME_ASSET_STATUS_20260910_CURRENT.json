@@ -1,7 +1,7 @@
 {
-  "schema": "JEPA_RUNTIME_ASSET_STATUS_20260910_V1",
+  "schema": "JEPA_RUNTIME_ASSET_STATUS_20260910_V2",
   "date": "2026-09-10",
-  "status": "RUNTIME_ASSETS_HASH_VERIFIED_NON_AUTHORITY",
+  "status": "RUNTIME_ASSETS_HASH_VERIFIED_WITH_ONE_PROVENANCE_MISMATCH",
   "runtime_root": "/mnt/data",
   "verification_scope": "presence_size_sha256_only",
   "assets": {
@@ -55,15 +55,19 @@
     },
     "operator_address_state_npz": {
       "path": "/mnt/data/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
-      "size_bytes": 1488934,
-      "expected_sha256": "1473430393179ce8242c9b5ce24d7b84c39d9289492b5a96332eb81436ae68a6",
+      "observed_size_bytes": 1531109,
+      "observed_sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "historical_expected_size_bytes": 4985,
+      "historical_expected_sha256": "1473430393179ce8242c9b5ce24d7b84c39d9289492b5a96332eb81436ae68a6",
       "hash_verified": false,
-      "note": "presence and size observed; hash not recomputed in this handoff pass"
+      "status": "PROVENANCE_MISMATCH_DO_NOT_USE",
+      "note": "Do not use this runtime NPZ as the historical operator-address authority unless its provenance is separately reconciled."
     }
   },
   "v5_smoke_policy": {
     "allowed": true,
     "label": "REAL_DATA_SMOKE_NON_AUTHORITY",
+    "required_inputs": "use only assets whose expected identity is hash-verified; exclude operator_address_state_npz while mismatch remains",
     "may_test": [
       "real expression identity and data path",
       "V5 reader compatibility",
