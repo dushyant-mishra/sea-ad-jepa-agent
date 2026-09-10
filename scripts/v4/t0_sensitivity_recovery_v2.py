@@ -1,0 +1,219 @@
+#!/usr/bin/env python3
+"""Reporting-only T0 V20 sensitivity recovery using explicit replay equivalence.
+
+This successor does not edit or weaken the frozen V20 bit-exact verifier. It
+routes a separately versioned target replay-equivalence verifier only inside a
+derived Stage-3 execution namespace, while preserving the existing R8 execution
+input authority routing. The state adjudicator repair remains the V1 reporting-
+only repair: it surfaces sensitivity values the frozen adjudicator already
+computed but omitted from five return paths.
+"""
+from __future__ import annotations
+
+import argparse
+import inspect
+import io
+import json
+import sys
+import time
+from pathlib import Path
+from typing import Any, Callable
+
+HERE = Path(__file__).resolve().parent
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
+
+import t0_replay_equivalence_v1 as replay
+
+STOP = "STOP_T0_SENSITIVITY_RECOVERY_V2_REFUSED"
+DECISION_FILE = "T0_V20_ADJUDICATION_DECISION.json"
+RECOVERY_FILE = "T0_V20_RECOVERED_SENSITIVITY_STATISTICS_V2.json"
+ROUTER_ANCHOR = "    namespace = dict(frozen.__dict__)"
+ROUTED_SOURCE_MARKER = 'source = inspect.getsource(frozen._adjudicate_from_raw_v2)'
+R8_PRETARGET_MARKER = 'namespace["verify_pretarget_execution_authority"]'
+R8_PREADJUDICATION_MARKER = 'namespace["verify_preadjudication_execution_authority"]'
+
+
+def _fail(message: str) -> None:
+    raise RuntimeError(f"{STOP}: {message}")
+
+
+def _deps():
+    """Load project modules lazily so pure governance helpers are testable."""
+    import t0_sensitivity_recovery_v1 as v1
+    import t0_stage2a_pre_at8_gate_v1 as stage2a
+    import t0_stage3_confirmation_v1 as stage3
+    return v1, stage2a, stage3
+
+
+def derive_r8_router_source(router_source: str) -> str:
+    """Inject exactly two recovery hooks; preserve the R8 authority bindings.
+
+    The two hooks are (1) the V1 reporting-only state-adjudicator repair and
+    (2) the separately versioned replay-equivalence target verifier. No R8
+    execution-input authority assignment is replaced or removed.
+    """
+    required = {
+        "namespace anchor": ROUTER_ANCHOR,
+        "routed adjudicator source": ROUTED_SOURCE_MARKER,
+        "R8 pretarget authority binding": R8_PRETARGET_MARKER,
+        "R8 preadjudication authority binding": R8_PREADJUDICATION_MARKER,
+    }
+    for label, marker in required.items():
+        if router_source.count(marker) != 1:
+            _fail(f"expected exactly one {label}")
+    if not (router_source.index(ROUTED_SOURCE_MARKER)
+            < router_source.index(ROUTER_ANCHOR)
+            < router_source.index(R8_PRETARGET_MARKER)
+            < router_source.index(R8_PREADJUDICATION_MARKER)):
+        _fail("Stage-3 R8 router ordering changed")
+    injected = (
+        ROUTER_ANCHOR
+        + "\n    namespace['adjudicate_donor_table_non_authoritative'] = _recovery_state_adjudicator"
+        + "\n    namespace['verify_target_v2_against_raw'] = _recovery_target_verifier"
+    )
+    return router_source.replace(ROUTER_ANCHOR, injected, 1)
+
+
+def verify_replay_decision(committed: dict[str, Any],
+                           recomputed: dict[str, Any]) -> dict[str, Any]:
+    """Exact terminals/discrete statistics; tight tolerance only for 3 floats."""
+    return replay.compare_decision_equivalence(committed, recomputed)
+
+
+def build_payload(decision: dict[str, Any], target_report: dict[str, Any],
+                  decision_report: dict[str, Any],
+                  repair_report: dict[str, Any]) -> dict[str, Any]:
+    composition = decision.get("state_composition")
+    measurements = decision.get("state_measurements")
+    if composition is None or not measurements:
+        _fail("the reporting repair did not surface both sensitivity families")
+    if target_report.get("verified") is not True:
+        _fail("target replay-equivalence was not verified")
+    if decision_report.get("equivalent") is not True:
+        _fail("decision replay-equivalence was not verified")
+    return {
+        "schema": "JEPA_T0_V20_RECOVERED_SENSITIVITY_STATISTICS_V2",
+        "what": (
+            "Reporting-only recovery of state composition and measurement "
+            "sensitivity statistics omitted from the committed V20 decision."
+        ),
+        "training_authorized": False,
+        "historical_bit_exact_verifier_modified": False,
+        "model_changed": False,
+        "decision_procedure_changed": False,
+        "reporting_surface_changed": True,
+        "endpoint_altered": False,
+        "nuisance_design_altered": False,
+        "donor_roles_altered": False,
+        "discovery_fit_recomputed_for_replay": True,
+        "discovery_target_changed": False,
+        "ridge_grid_widened": False,
+        "adjudication_rule_altered": False,
+        "reporting_repair": repair_report,
+        "target_replay_equivalence": target_report,
+        "decision_replay_equivalence": decision_report,
+        "replay_reproduces_committed_decision_under_frozen_equivalence_policy": True,
+        "state_terminal": decision["state_terminal"],
+        "tail_terminal": decision["tail_terminal"],
+        "state_primary": decision["state_primary"],
+        "state_composition": composition,
+        "state_measurements": measurements,
+        "sensitivity_directional_alpha": 0.05,
+    }
+
+
+def _repaired_router_with_replay() -> tuple[Callable[..., Any], list[dict[str, Any]], dict[str, Any]]:
+    """Build Stage-3's R8 router with two scoped recovery namespace bindings."""
+    v1, stage2a, stage3 = _deps()
+
+    original, repaired_source = v1.repaired_state_adjudicator_source()
+    repair_report = v1.verify_repair(original, repaired_source)
+    frozen_v1 = stage2a._frozen("t0_adjudicator_v1")
+    v1_namespace = dict(frozen_v1.__dict__)
+    exec(compile(repaired_source, "<recovery-v2:adjudicate_donor_table>", "exec"),
+         v1_namespace)
+    repaired_function = v1_namespace["adjudicate_donor_table_non_authoritative"]
+
+    target_reports: list[dict[str, Any]] = []
+
+    def target_verifier(target_dir, **kwargs: Any):
+        report = replay.verify_target_v2_replay_equivalent(target_dir, **kwargs)
+        target_reports.append(report)
+        return report
+
+    original_router = inspect.getsource(stage3._adjudicator_through_r8)
+    routed_source = derive_r8_router_source(original_router)
+    router_namespace = dict(stage3.__dict__)
+    router_namespace["_recovery_state_adjudicator"] = repaired_function
+    router_namespace["_recovery_target_verifier"] = target_verifier
+    exec(compile(routed_source, "<recovery-v2:_adjudicator_through_r8>", "exec"),
+         router_namespace)
+    return router_namespace["_adjudicator_through_r8"], target_reports, repair_report
+
+
+def _run_with_repair(**kwargs: Any) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    """Run Stage-3 source with the scoped recovery router; require one target replay."""
+    _, _, stage3 = _deps()
+    router, target_reports, repair_report = _repaired_router_with_replay()
+    namespace = dict(stage3.__dict__)
+    namespace["_adjudicator_through_r8"] = router
+    exec(compile(inspect.getsource(stage3.run), "<recovery-v2:run>", "exec"), namespace)
+    record = namespace["run"](**kwargs)
+    if len(target_reports) != 1:
+        _fail(f"expected exactly one target replay-equivalence verification, observed {len(target_reports)}")
+    return record, target_reports[0], repair_report
+
+
+def recover(*, outdir: Path, committed_decision: Path,
+            log=print, **stage3_kwargs: Any) -> dict[str, Any]:
+    started = time.time()
+
+    def stamp(message: str) -> None:
+        log("[%6.1fs] %s" % (time.time() - started, message))
+
+    committed = json.loads(Path(committed_decision).read_text(encoding="utf-8"))
+    stamp("replaying Stage 3 with scoped reporting repair + replay-equivalence target verifier")
+    record, target_report, repair_report = _run_with_repair(
+        outdir=Path(outdir), log=lambda m: None, **stage3_kwargs)
+    decision = record["decision"]
+
+    decision_report = verify_replay_decision(committed, decision)
+    stamp("target and decision replay-equivalence verified")
+    payload = build_payload(decision, target_report, decision_report, repair_report)
+
+    out = Path(outdir) / RECOVERY_FILE
+    with io.open(out, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n")
+    stamp("wrote %s" % out)
+    return payload
+
+
+def main(argv: list[str] | None = None) -> int:
+    p = argparse.ArgumentParser(description=__doc__)
+    for name in ("outdir", "readiness-pkg", "stage2a-pkg", "discovery-pkg",
+                 "role-pkg", "at8-pkg", "age-sex-pkg", "immune-pkg",
+                 "family-pkg", "technical-pkg", "tc-pkg", "stage3-prep-pkg",
+                 "population-pkg", "pathology-source", "store", "membership",
+                 "feature-split", "committed-decision"):
+        p.add_argument("--%s" % name, required=True, type=Path)
+    a = p.parse_args(argv)
+    payload = recover(
+        outdir=a.outdir, committed_decision=a.committed_decision,
+        readiness_pkg=a.readiness_pkg, stage2a_pkg=a.stage2a_pkg,
+        discovery_pkg=a.discovery_pkg, role_pkg=a.role_pkg, at8_pkg=a.at8_pkg,
+        age_sex_pkg=a.age_sex_pkg, immune_pkg=a.immune_pkg,
+        family_pkg=a.family_pkg, technical_pkg=a.technical_pkg,
+        tc_pkg=a.tc_pkg, stage3_prep_pkg=a.stage3_prep_pkg,
+        population_pkg=a.population_pkg, pathology_source=a.pathology_source,
+        store=a.store, membership=a.membership,
+        feature_split=a.feature_split)
+    print(json.dumps({
+        "state_composition": payload["state_composition"],
+        "state_measurements": payload["state_measurements"],
+    }, indent=2, sort_keys=True, default=str))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
