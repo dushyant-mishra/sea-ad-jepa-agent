@@ -153,3 +153,52 @@ derive that choice from the data before freezing — not adopt this pair because
 T0 used it.
 
 Record: `outputs/t0_qc_diagnostic_20260909/T0_QC_METRIC_DIAGNOSTIC.json`.
+
+## 5. The block store is now identified, and the missing-path gap bit
+
+Finding 2 said the T0 summaries bind every input by digest and record no path.
+Running the V2 replay produced a concrete instance of what that costs.
+
+The store argument I reconstructed for the V1 run was
+`outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level0`.
+It is the wrong store. The V1 replay never revealed that, because it stopped at
+step 4 on the equivalence policy and the store is not read until step 5.
+
+Once V2 passed step 4, the frozen population authority rejected it immediately:
+
+```
+STOP_T0_B2_BLOCK_MANIFEST_DIGEST_MISMATCH
+  block manifest is 2928167527609a5e...  expected 66f589e56badb148...
+```
+
+The correct store is **`expression_level4`**, not `expression_level0`. Verified
+against the two digests the authority pins, both of which now match exactly:
+
+| authority | value |
+| --- | --- |
+| `PHASE2_EXPRESSION_BLOCK_MANIFEST.csv` | `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29` |
+| membership (`MEMBERSHIP_SHA`) | `d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529` |
+| op31 count blocks present | 1,247 |
+
+Two things worth taking from this.
+
+The fail-closed design worked exactly as intended. A wrong store did not produce
+a plausible-looking confirmation matrix from the wrong expression level; it
+produced a refusal naming the digest that disagreed. That is the difference
+between an authority and a comment.
+
+And it is the missing-path gap, not bad luck. Nothing in any T0 record said
+which expression level the run read, so the store had to be guessed from a
+directory listing, and the guess survived undetected through an entire replay
+because the first four steps do not touch it. Recording the resolved input paths
+alongside their digests — which costs nothing — would have made this a
+non-event.
+
+Resolved inputs for the T0 V20 Stage 3 replay, for whoever runs it next:
+
+| argument | path |
+| --- | --- |
+| `--store` | `D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4` |
+| `--pathology-source` | `D:/Jepa project/data/processed/metadata/sea_ad_mtg_donor_pathology_targets.csv` (`ebbe9bc0…`) |
+| `--membership` | `configs/v4/t0_v20_frozen_authority/T0_PRIMARY_MTG_READER_FIT_IMMUNE_CELL_MEMBERSHIP_V1.csv` (`d4714998…`) |
+| `--feature-split` | `configs/v4/t0_v20_frozen_authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv` (`29116c16…`) |

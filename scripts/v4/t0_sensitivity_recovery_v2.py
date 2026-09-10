@@ -346,7 +346,7 @@ def _run_with_repair(**kwargs: Any) -> tuple[dict[str, Any], list[dict[str, Any]
     if unverified:
         _fail("target replay-equivalence not verified at call sites %r"
               % unverified)
-    return record, target_reports, repair_report
+    return record, target_reports, repair_report, full_reports
 
 
 def recover(*, outdir: Path, committed_decision: Path,
@@ -359,8 +359,9 @@ def recover(*, outdir: Path, committed_decision: Path,
     committed = json.loads(Path(committed_decision).read_text(encoding="utf-8"))
     stamp("replaying Stage 3 with scoped reporting repair + replay-equivalence target verifier")
     try:
-        record, target_reports, repair_report = _run_with_repair(
-            outdir=Path(outdir), log=lambda m: None, **stage3_kwargs)
+        record, target_reports, repair_report, full_reports = (
+            _run_with_repair(outdir=Path(outdir), log=lambda m: None,
+                             **stage3_kwargs))
     except ReplayStopped as stopped:
         report = build_stop_report(stopped.reason, stopped.full_reports,
                                    stopped.repair_report)
@@ -378,6 +379,14 @@ def recover(*, outdir: Path, committed_decision: Path,
         "call_sites": len(target_reports),
         "expected_call_sites": EXPECTED_TARGET_REPLAYS,
         "reports": target_reports,
+        # The exhaustive per-field results, carried into a passing run too. The
+        # publication rule asks for complete target-fit equivalence results
+        # including observed absolute, relative and ULP differences, and the
+        # gate reports alone do not carry the per-field detail for fields that
+        # simply passed.
+        "complete_field_reports": full_reports,
+        "provenance_exact": all(r.get("provenance_exact") is True
+                                for r in full_reports),
         "equivalence_schema": target_reports[0]["equivalence_schema"],
     }
     decision = record["decision"]
