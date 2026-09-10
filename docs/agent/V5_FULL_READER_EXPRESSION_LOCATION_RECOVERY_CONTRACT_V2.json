@@ -1,0 +1,65 @@
+{
+  "schema": "JEPA_V5_FULL_READER_EXPRESSION_LOCATION_RECOVERY_CONTRACT_V2",
+  "status": "TRAIN_CACHE_BOUND__FULL104_PHASE2_BLOCK_STORE_STILL_REQUIRED__NO_SUBSTITUTION",
+  "supersedes_for_production_recovery_semantics": "docs/agent/V5_FULL_READER_EXPRESSION_LOCATION_RECOVERY_CONTRACT_V1.json",
+  "training_authorized": false,
+  "pathology_used": false,
+  "corrected_train_cache": {
+    "status": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
+    "uploaded_archive_sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48",
+    "uploaded_archive_size_bytes": 50647044,
+    "production_loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+    "loader_schema": "foundation-train-loader-v1",
+    "shards_bound": 42,
+    "physical_train_rows": 4726,
+    "addresses": 41238,
+    "binder": "scripts/v5_anticheat/bind_corrected_train_cache_v1.py",
+    "evidence": "docs/agent/v5_anticheat/results/V5_CORRECTED_TRAIN_CACHE_BYTE_BINDING_V1.json",
+    "semantic_boundary": "The 42 corrected TRAIN shards are exact frozen TRAIN-cache evidence only. They are not the 4,553,407-cell reader_fit expression store and cannot satisfy FULL104 closure."
+  },
+  "full104_reader_fit_expression": {
+    "status": "STOP_FULL104_PHASE2_BLOCK_STORE_LOCATION_BINDING_MISSING",
+    "expected_cells": 4553407,
+    "expected_donors": 104,
+    "expected_operators": 42,
+    "expected_matrices": 42,
+    "expected_addresses": 41238,
+    "expected_blocks": 8915,
+    "expected_block_rows": 512,
+    "expected_sample_level": 4,
+    "historical_block_root": "outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/",
+    "historical_block_manifest_repo_path": "docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+    "historical_block_manifest_pin_commit": "21ec629667eeda5a7d37d3f1d822fbf93b213325",
+    "historical_block_manifest_git_blob_sha1": "c780e07f0cf811a75c7ce9c41425f1dba2ba8335",
+    "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "materialization_contract_sha256": "612b45742ad80498cbe2f061a75af08c0a10692dc731e0ac8e649417b7e62f17",
+    "materialization_audit_sha256": "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf",
+    "selection_sha256": "edec0fe29d1425ecbe9fa889a610c4ce18621ae060c8144866315db57c3fc62b",
+    "selection_manifest_sha256": "3db3614bf544b183143f39b27bad516b3a7a75284df4b2410d9f3e99f0b0842e",
+    "binder": "scripts/v5_anticheat/bind_full104_expression_blocks_v4.py",
+    "required_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE"
+  },
+  "superseded_production_path": {
+    "script": "scripts/v5_anticheat/build_full_reader_expression_identity_closure_v3.py",
+    "status": "DO_NOT_USE_FOR_PRODUCTION_FULL104_CLOSURE",
+    "reason": "It maps full reader_fit metadata local_row values directly into TRAIN-only corrected shards. The first real invocation failed at operator 0 because the row spaces are different (128 physical TRAIN rows versus 2,441 reader_fit rows for that matrix; reader_fit local_row reached 8,703). Preserve the script for historical/test provenance but do not use it to certify FULL104."
+  },
+  "recovery_rule": [
+    "Treat the recovered stage81a3r_corrected_real_train cache as closed TRAIN-cache byte identity only.",
+    "Locate or restore the exact historical 8,915-block Phase2/FULL104 reader_fit materialization and its contract/audit parents.",
+    "Verify all parent digests and block-file digests before reading the block store as FULL104 authority.",
+    "Run scripts/v5_anticheat/bind_full104_expression_blocks_v4.py against the physical block root and full metadata authority.",
+    "Only PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE may close the FULL104 expression blocker."
+  ],
+  "forbidden_substitutions": [
+    "42-shard corrected TRAIN cache",
+    "50K discovery expression archive",
+    "synthetic expression",
+    "recomputed shards with different bytes unless separately re-authorized",
+    "reader_validation",
+    "reader_oracle",
+    "DEV",
+    "SEALED",
+    "pathology"
+  ]
+}
