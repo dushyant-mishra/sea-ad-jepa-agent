@@ -1,9 +1,10 @@
 """Cross-artifact dependency closure for V5 post-qualification evidence.
 
 Top-level evidence rows already bind to one checkpoint and design context. This
-guard additionally proves that aggregate QC and power PASS artifacts consumed
-the exact child artifacts that appear beside them in the final qualification
-bundle. Compatible PASS artifacts from different sub-runs cannot be mixed.
+guard additionally proves that aggregate QC and two-sided power PASS artifacts
+consumed the exact child artifacts that appear beside them in the final
+qualification bundle. Compatible PASS artifacts from different sub-runs cannot
+be mixed.
 
 This module never grants production training authority.
 """
@@ -104,8 +105,8 @@ def validate_postqualification_dependencies(
         if qc_authorities.get(child) != rows[child]["authority_id"]:
             raise RuntimeError(f"STOP_V5_DEPENDENCY_QC_CHILD_AUTHORITY_SUBSTITUTION: {child}")
 
-    if not isinstance(power_qualification_report, Mapping) or power_qualification_report.get("schema") != "JEPA_V5_REJECTION_GATE_POWER_QUALIFICATION_V2":
-        raise ValueError("unexpected power qualification schema")
+    if not isinstance(power_qualification_report, Mapping) or power_qualification_report.get("schema") != "JEPA_V5_REJECTION_GATE_POWER_QUALIFICATION_V3":
+        raise ValueError("unexpected two-sided power qualification schema")
     if power_qualification_report.get("passed") is not True or power_qualification_report.get("training_authorized") is not False:
         raise RuntimeError("STOP_V5_DEPENDENCY_POWER_QUALIFICATION_INVALID")
     power_row = rows["rejection_gate_power_calibration"]
@@ -134,6 +135,10 @@ def validate_postqualification_dependencies(
             raise RuntimeError(f"STOP_V5_DEPENDENCY_POWER_CHILD_ARTIFACT_SUBSTITUTION: {gate}")
         if control.get("gate_authority_id") != rows[gate]["authority_id"]:
             raise RuntimeError(f"STOP_V5_DEPENDENCY_POWER_CHILD_AUTHORITY_SUBSTITUTION: {gate}")
+        if control.get("gate_accepts_valid_control") is not True:
+            raise RuntimeError(f"STOP_V5_DEPENDENCY_POWER_VALID_CONTROL_NOT_ACCEPTED: {gate}")
+        if control.get("gate_rejects_invalid_control") is not True:
+            raise RuntimeError(f"STOP_V5_DEPENDENCY_POWER_INVALID_CONTROL_NOT_REJECTED: {gate}")
 
     return {
         "schema": "JEPA_V5_POSTQUALIFICATION_DEPENDENCY_CLOSURE_V1",
@@ -143,7 +148,7 @@ def validate_postqualification_dependencies(
         "design_context_sha256": context,
         "qualification_checkpoint_sha256": checkpoint,
         "qc_parent_child_bound": True,
-        "power_parent_child_bound": True,
+        "two_sided_power_parent_child_bound": True,
         "passed": True,
         "training_authorized": False,
     }
