@@ -1,44 +1,26 @@
 {
-  "schema": "JEPA_NEXT_ALLOWED_ACTION_V6",
-  "last_updated": "2026-09-09",
+  "schema": "JEPA_NEXT_ALLOWED_ACTION_V7",
+  "last_updated": "2026-09-10",
   "canonical_branch": "main",
-  "status": "T0_V20_SCIENCE_COMPLETE__C2_PRODUCTION_GEOMETRY_GATE_PROVED__V5_TRAINING_CLOSED",
-  "current_status": "T0 V20 science is complete and evidence/frozen code/input authorities are published. C2 gate adoption is proved at exact 128x8 production geometry with zero skipped critical tests. Remaining T0 issue is replay-equivalence governance for bit-exact float reproduction and reporting-only sensitivity recovery. V5 remains blocked by missing physical binding of the exact full-reader corrected expression substrate, unresolved numeric D family, schedule risk-control freeze, relational shortcut increment freeze, hardware/CUDA packing invariance and independent review.",
-  "primary_next_action": "Recover and bind the exact 42 full-reader corrected TRAIN counts/meta shard pairs; require 42/42 hash and identity closure. Then derive D_shared, D_private, D_total and D_obs on the full 4,553,407-cell / 104-donor reader_fit population. In parallel, resolve T0 replay-equivalence governance without changing V20 and freeze V5 schedule/relational/hardware risk rules prospectively.",
-  "c2": {
-    "status": "CLOSED_MECHANICS_GATE__NO_TRAINING_AUTHORITY",
-    "exact_geometry": "effective_batch=128,microbatch=8",
-    "protected_tensors": 48,
-    "gate_suites": "44 passed, 0 skipped",
-    "full_task_report": "57 passed, 0 skipped",
-    "historical_negative_control": "48/48 exact-zero rejected before Adam state or parameter motion",
-    "successor": "0/48 dead; both Adam moments live for 48/48; 48/48 moved beyond decay",
-    "oom_blocker": false,
-    "real_t1_peak_gib": {
-      "allocated": 5.54,
-      "reserved": 5.75
-    },
-    "corrected_peak_gib": {
-      "allocated": 5.4186,
-      "reserved": 5.7031
-    }
-  },
+  "status": "T0_V20_IMMUTABLE__V21_DRAFT_NOT_FROZEN__V5_HARDENING__NO_TRAINING_AUTHORITY",
+  "current_status": "T0 V20 remains immutable with broad state supported internally and rare tail underdetermined by measurement. Steps 1-4 diagnosed the tail/QC problem; Step 4 showed 1:1 QC matching removes imbalance but destroys held-out-statistic power, so balancing cannot carry rejection authority without exact-geometry discrimination controls. V21 is draft-only and unexecuted. V5 anti-cheat/qualification wiring has advanced substantially, but real full-reader shard binding, data-derived dimensions, real invariance evidence, prospective numeric thresholds, production-geometry GPU evidence and independent review remain open.",
+  "primary_next_action": "T0: perform only the pathology-blind fresh-donor feasibility audit for AT8-available donors outside the frozen V20 membership, without reading AT8 values or fitting any estimator. V5 in parallel: verify the real discovery-expression asset and run only a tiny REAL_DATA_SMOKE_NON_AUTHORITY mechanics/data-path test if feasible; continue structural hardening but do not infer production dimensions or thresholds from the subset.",
   "t0": {
-    "branch": "t0/v20-pathology-blind-materialization-20260908",
-    "head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+    "v20_branch": "t0/v20-pathology-blind-materialization-20260908",
+    "v20_head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
     "primary_terminal": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
-    "primary_p_upper": 0.021,
-    "alpha": 0.025,
     "tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
-    "frozen_code_published": true,
-    "input_authorities_published": true,
-    "remaining_issue": "BIT_EXACT_FLOAT_REPLAY_EQUIVALENCE_GOVERNANCE_PLUS_REPORTING_ONLY_SENSITIVITY_RECOVERY",
-    "beta_max_abs_replay_diff": 5.9e-21,
-    "beta_max_rel_replay_diff": 2.8e-12
+    "step4_commit": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f",
+    "v21_branch": "t0/v21-prospective-design-20260910",
+    "v21_draft_head": "e770f6dc83c44a36232d15541d3529e71c7611c9",
+    "v21_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
+    "next_action": "PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY",
+    "standing_rule": "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+    "training_authorized": false
   },
   "v5": {
     "branch": "planning/v5-full-population-cheat-proofing-20260909",
-    "head": "e17c61643c30d219a4434566f828cdf3171381ae",
+    "observed_head_at_handoff": "5668e3d71c720219ec823d5ff089f246091f2be2",
     "training_authorized": false,
     "population": {
       "cells": 4553407,
@@ -51,51 +33,52 @@
     "full_reader_expression_status": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
     "required_expression_shard_pairs": 42,
     "historical_expression_blocks": 8915,
-    "schedule_v3": {
-      "authority": false,
-      "H": 5267086,
-      "ess": 0.5000000953357726,
-      "repeat_cap": 32,
-      "weight_ratio": 67.17245370370371
-    },
-    "cap34_diagnostic": {
-      "authority": false,
-      "conditional_on_64x": true,
-      "minimum_compatible_cap": 34
-    },
-    "dimensions": {
+    "dimension_authority": {
       "D_shared": null,
       "D_private": null,
       "D_total": null,
-      "D_obs": null
+      "D_obs": null,
+      "d_gene": null
     },
-    "query_precision_candidate": {
-      "authority": false,
-      "Q": 21
-    },
-    "ema_half_life_frozen": false,
-    "relational_increment_margin_frozen": false,
-    "remote_ci_receipt_observed": false
+    "structural_hardening": [
+      "Z_BIO_ONLY_FOR_BIOLOGY_OBJECTIVES_AND_CHECKPOINT_SELECTION",
+      "CROSS_CELL_QC_ASSOCIATION_WARNING_ONLY",
+      "COMPLETE_SAME_CELL_TECHNICAL_INTERVENTION_FAMILY_REQUIRED",
+      "PREEXECUTION_AND_POSTQUALIFICATION_PHASES_SEPARATED",
+      "EXACT_CHECKPOINT_AND_DESIGN_CONTEXT_BINDING",
+      "QC_AND_POWER_PARENT_CHILD_DEPENDENCY_CLOSURE",
+      "TWO_SIDED_EXACT_GEOMETRY_REJECTION_GATE_CALIBRATION",
+      "BOUNDED_QUALIFICATION_ENTRY_ONLY",
+      "PRODUCTION_GEOMETRY_GPU_EVIDENCE_REQUIRED"
+    ],
+    "real_data_smoke_allowed": true,
+    "real_data_smoke_status": "REAL_DATA_SMOKE_NON_AUTHORITY_ONLY"
   },
   "required_actions": [
-    "T0: preserve V20 science unchanged. Attempt original numeric-stack reconstruction; if unavailable, create a separately versioned replay-equivalence verifier with exact discrete/terminal agreement and frozen tight float tolerances before reporting-only sensitivity recovery.",
-    "V5: bind exact full-reader corrected expression substrate; no 50K/synthetic substitution.",
-    "V5: derive D_shared -> D_private -> D_total and D_obs on full reader_fit only; historical 5/96/160/224/320/512 are not production authority.",
-    "V5: prospectively freeze jointly feasible repeat-cap/conditioning/group-floor/ESS risk controls; do not choose them from checkpoints.",
-    "V5: freeze relational learned-minus-shortcut superiority procedure and required increment before learned checkpoint outcomes.",
-    "V5: complete actual architecture hardware/CUDA Gate-2, microbatch/packing invariance and query/chunk calibration after D_total is known.",
-    "V5: independent review before any training authority."
+    "T0: keep V20 immutable.",
+    "T0: resolve fresh-donor feasibility pathology-blind before freezing V21.",
+    "T0: if V21 proceeds, freeze estimator selection, ridge bracketing, QC/discrimination rules and target definitions prospectively before any new confirmation outcome is read.",
+    "V5: bind exact 42 full-reader corrected TRAIN counts/meta shard pairs; no 50K/synthetic substitution for production authority.",
+    "V5: derive D_shared, D_private, D_total, D_obs and d_gene from the full real reader-fit corpus under prospective rules.",
+    "V5: run/verify proposal-weight and packing/order/restart invariance on real production geometry.",
+    "V5: freeze numeric collapse, shortcut-superiority, same-cell and power-control thresholds prospectively.",
+    "V5: complete actual production-geometry CUDA Gate-2 and bounded qualification.",
+    "V5: independent review before any production training authority."
   ],
   "forbidden_actions": [
-    "Do not reopen or retune T0 V20.",
-    "Do not use rare tail as a training target.",
-    "Do not train, finetune, run production optimizer steps, write production checkpoints, or advance production EMA.",
-    "Do not execute TD60, D1 real, reader_validation/oracle, DEV/SEALED, protected populations, or pathology-guided tuning.",
-    "Do not promote synthetic fixtures or historical pilot constants into numeric production authority.",
-    "Do not accept decreasing loss or above-chance relational accuracy as biological qualification."
+    "Do not modify or reinterpret frozen V20 retrospectively.",
+    "Do not inspect AT8 values while choosing V21 design machinery.",
+    "Do not use the V20 binary rare tail as a production training target.",
+    "Do not treat cross-cell QC association alone as causal rejection authority.",
+    "Do not let a rejection gate operate without exact-geometry valid and invalid discrimination controls.",
+    "Do not train, finetune, write production checkpoints or advance production EMA.",
+    "Do not execute reader_validation/oracle, DEV/SEALED, protected populations or pathology-guided tuning.",
+    "Do not infer production dimensions or thresholds from a small smoke subset or synthetic fixture.",
+    "Do not accept decreasing loss or above-chance performance as biological qualification."
   ],
-  "controlling_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md",
-  "controlling_state": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4.json",
+  "controlling_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_T0_V21_V5_CURRENT.md",
+  "controlling_state": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_T0_V21_V5_CURRENT.json",
   "formulas": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
-  "heavy_assets": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md"
+  "heavy_assets": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
+  "training_authorized": false
 }
