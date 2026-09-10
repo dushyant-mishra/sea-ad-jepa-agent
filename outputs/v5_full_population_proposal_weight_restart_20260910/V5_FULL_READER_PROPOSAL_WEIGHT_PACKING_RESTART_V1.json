@@ -1,0 +1,54 @@
+{
+  "affine_order": {
+    "H": 5267086,
+    "a": 2340573,
+    "b": 5029443,
+    "gcd_a_H": 1
+  },
+  "checkpoint_outcomes_used": false,
+  "donor_presentation_max": 174111,
+  "donor_presentation_min": 2592,
+  "donors": 104,
+  "exact_donor_target_mass": "1/D for every donor",
+  "exact_weight_definition": "w_i=H/(D*n_d*m_i)",
+  "full104_expression_binding_closed": false,
+  "full104_expression_binding_required": true,
+  "full_horizon_restart_replay": {
+    "digest_sha256": "08a1df725b3803d049cf6a0a75811c1863b4bd0b537ed2ecaf70445380f02f74",
+    "exact": true,
+    "restart_boundaries": [0,1,128,576,2633543,5266957,5267085,5267086]
+  },
+  "gpu_authority_created": false,
+  "ledger_domain_bound_sha256": "23a5c52e2b472604a9e32c71e114b4752094950180c8d155c7ee45dd95ce8c23",
+  "ledger_raw_sha256": "e05f4a524748cf427b1c3e899a5b672641566c772aa91da8a2a56dae2b9a3c97",
+  "packing_replays": [
+    {"digest_sha256":"08a1df725b3803d049cf6a0a75811c1863b4bd0b537ed2ecaf70445380f02f74","exact":true,"physical_batch_size":128},
+    {"digest_sha256":"08a1df725b3803d049cf6a0a75811c1863b4bd0b537ed2ecaf70445380f02f74","exact":true,"physical_batch_size":576}
+  ],
+  "partition": "reader_fit",
+  "pathology_used": false,
+  "presentation_stream_digest_sha256": "08a1df725b3803d049cf6a0a75811c1863b4bd0b537ed2ecaf70445380f02f74",
+  "production_dimensions_created": false,
+  "proposal_definition": "q_i=m_i/H",
+  "restart_probes": [
+    {"cursor":0,"replay_exact":true,"window_end":17,"window_start":0},
+    {"cursor":1,"replay_exact":true,"window_end":18,"window_start":0},
+    {"cursor":127,"replay_exact":true,"window_end":144,"window_start":110},
+    {"cursor":128,"replay_exact":true,"window_end":145,"window_start":111},
+    {"cursor":575,"replay_exact":true,"window_end":592,"window_start":558},
+    {"cursor":576,"replay_exact":true,"window_end":593,"window_start":559},
+    {"cursor":2633543,"replay_exact":true,"window_end":2633560,"window_start":2633526},
+    {"cursor":5266509,"replay_exact":true,"window_end":5266526,"window_start":5266492},
+    {"cursor":5266957,"replay_exact":true,"window_end":5266974,"window_start":5266940},
+    {"cursor":5267085,"replay_exact":true,"window_end":5267086,"window_start":5267068},
+    {"cursor":5267086,"replay_exact":true,"window_end":5267086,"window_start":5267069}
+  ],
+  "schema": "JEPA_V5_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_V1",
+  "source_metadata_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+  "status": "PASS_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_REPLAY",
+  "target_definition": "p_i=1/(D*n_d)",
+  "total_presentations": 5267086,
+  "training_authorized": false,
+  "unique_cells": 4553407,
+  "update_local_conditioning_authority_created": false
+}
