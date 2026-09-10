@@ -3,6 +3,10 @@
 Pre-execution evidence can be known before any optimizer step. Learned-representation
 evidence cannot. This module prevents those phases from being conflated while
 keeping production training unauthorized at both stages.
+
+Post-qualification closure also requires an explicit rejection-gate power
+calibration artifact. A gate that removes a confound but destroys its own
+sensitivity cannot earn rejection authority.
 """
 from __future__ import annotations
 
@@ -28,6 +32,7 @@ POST_QUALIFICATION_EVIDENCE = (
     "shortcut_superiority",
     "student_representation_collapse",
     "teacher_representation_collapse",
+    "rejection_gate_power_calibration",
 )
 
 
