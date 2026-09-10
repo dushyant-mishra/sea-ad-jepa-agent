@@ -30,3 +30,5 @@ docs/agent/t0_v20_frozen_package/** -text
 configs/v4/t0_v20_frozen_authority/** -text
 outputs/t0_qc_diagnostic_20260909/** -text
 outputs/t0_sensitivity_recovery_v2_20260910/** -text
+outputs/t0_sensitivity_recovery_v2policy_20260910/** -text
+outputs/t0_sensitivity_recovery_v2final_20260910/** -text
