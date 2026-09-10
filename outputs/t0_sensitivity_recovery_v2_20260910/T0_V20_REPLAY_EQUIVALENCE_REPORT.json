@@ -1,0 +1,405 @@
+{
+  "frozen_v20_files_modified": 0,
+  "historical_bit_exact_verifier_modified": false,
+  "numeric_environment": {
+    "environment_sha256": "cc7a70c22a03b0238452a8062864d4aff9e239250cd1a65166ac0ad74ff9da33",
+    "numpy_build": {
+      "blas": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "build_host_cpu": {
+        "cpu": "x86_64",
+        "endian": "little",
+        "family": "x86_64"
+      },
+      "lapack": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "simd": {
+        "baseline": [
+          "X86_V2"
+        ],
+        "found": [
+          "X86_V3"
+        ]
+      }
+    },
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "2.2.3",
+      "scipy": "1.15.3",
+      "sklearn": "1.5.2"
+    },
+    "platform": {
+      "machine": "AMD64",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
+    },
+    "python": {
+      "executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa-v3\\python.exe",
+      "implementation": "CPython",
+      "version": "3.11.15"
+    },
+    "schema": "JEPA_T0_NUMERIC_ENVIRONMENT_V1",
+    "threading": {
+      "pools": [
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.31.188.0"
+        },
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.28"
+        },
+        {
+          "internal_api": "openmp",
+          "num_threads": 16,
+          "prefix": "vcomp",
+          "user_api": "openmp",
+          "version": null
+        }
+      ],
+      "threadpoolctl": "3.6.0"
+    },
+    "threading_environment_variables": {
+      "KMP_DUPLICATE_LIB_OK": "True",
+      "MKL_NUM_THREADS": null,
+      "MKL_THREADING_LAYER": null,
+      "NUMEXPR_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null
+    },
+    "why": "The frozen T0 target verifier compares float arrays bit-exactly, so a replay is only interpretable alongside the arithmetic that produced it. No earlier T0 summary recorded this."
+  },
+  "reason": "T0 replay-equivalence mismatch: final_trace_scale: exact scalar equality required",
+  "reporting_repair": {
+    "added_keys": [
+      "state_composition",
+      "state_measurements"
+    ],
+    "changed_lines": 5,
+    "repaired_function": "adjudicate_donor_table_non_authoritative"
+  },
+  "schema": "JEPA_T0_V20_REPLAY_EQUIVALENCE_STOP_REPORT_V1",
+  "sensitivity_statistics_recovered": false,
+  "stopped_fields": [
+    "final_trace_scale"
+  ],
+  "t0_conclusion_changed": false,
+  "target_replay_reports": [
+    {
+      "discovery_provenance_root": "15d13dd3e733e0ea90b199cf981b03ccd94bc67fbd19660ef88861e3ae1a37c2",
+      "full_report": {
+        "equivalent_under_frozen_policy": false,
+        "fields": {
+          "beta": {
+            "observed": {
+              "differing_elements": 22286,
+              "dtypes_match": true,
+              "elements": 28061,
+              "exactly_equal": false,
+              "frozen_dtype": "float64",
+              "max_abs": 5.929230630780102e-21,
+              "max_rel": 2.8065236757076616e-12,
+              "recomputed_dtype": "float64",
+              "shape": [
+                28061
+              ],
+              "shapes_match": true
+            },
+            "policy": {
+              "atol": 1e-20,
+              "documented_max_atol": 5.9e-21,
+              "documented_max_rtol": 2.8e-12,
+              "required_dtype": "float64",
+              "rtol": 1e-11,
+              "rule": "tolerant_array"
+            },
+            "verdict": "PASS"
+          },
+          "canonical_donor_order": {
+            "observed": {
+              "dtypes_match": true,
+              "exactly_equal": true,
+              "frozen_dtype": "<U10",
+              "recomputed_dtype": "<U10",
+              "shape": [
+                28
+              ],
+              "shapes_match": true
+            },
+            "policy": {
+              "rule": "exact_array"
+            },
+            "verdict": "PASS"
+          },
+          "cv_mse_by_multiplier": {
+            "observed": {
+              "differing_elements": 17,
+              "dtypes_match": true,
+              "elements": 17,
+              "exactly_equal": false,
+              "frozen_dtype": "float64",
+              "max_abs": 6.217248937900877e-15,
+              "max_rel": 2.5847912891097907e-15,
+              "recomputed_dtype": "float64",
+              "shape": [
+                17
+              ],
+              "shapes_match": true
+            },
+            "policy": {
+              "atol": 0.0,
+              "documented_max_rtol": 2.6e-15,
+              "required_dtype": "float64",
+              "rtol": 1e-14,
+              "rule": "tolerant_array"
+            },
+            "verdict": "PASS"
+          },
+          "decision_gene_mask": {
+            "observed": {
+              "dtypes_match": true,
+              "exactly_equal": true,
+              "frozen_dtype": "bool",
+              "recomputed_dtype": "bool",
+              "shape": [
+                28061
+              ],
+              "shapes_match": true
+            },
+            "policy": {
+              "rule": "exact_array"
+            },
+            "verdict": "PASS"
+          },
+          "discovery_age_center": {
+            "observed": {
+              "differing_elements": 0,
+              "dtypes_match": true,
+              "elements": 1,
+              "exactly_equal": true,
+              "frozen_dtype": "float64",
+              "frozen_value": "88.53571428571429",
+              "max_abs": 0.0,
+              "max_rel": 0.0,
+              "recomputed_dtype": "float64",
+              "recomputed_value": "88.53571428571429",
+              "shape": [],
+              "shapes_match": true,
+              "ulp_distance": 0
+            },
+            "policy": {
+              "rule": "exact_scalar"
+            },
+            "verdict": "PASS"
+          },
+          "final_lambda": {
+            "observed": {
+              "differing_elements": 1,
+              "dtypes_match": true,
+              "elements": 1,
+              "exactly_equal": false,
+              "frozen_dtype": "float64",
+              "frozen_value": "2360764.285714286",
+              "max_abs": 4.656612873077393e-10,
+              "max_rel": 1.97250225329822e-16,
+              "recomputed_dtype": "float64",
+              "recomputed_value": "2360764.2857142864",
+              "shape": [],
+              "shapes_match": true,
+              "ulp_distance": 1
+            },
+            "policy": {
+              "max_ulp": 1,
+              "required_dtype": "float64",
+              "rule": "at_most_n_ulp"
+            },
+            "verdict": "PASS"
+          },
+          "final_trace_scale": {
+            "observed": {
+              "differing_elements": 1,
+              "dtypes_match": true,
+              "elements": 1,
+              "exactly_equal": false,
+              "frozen_dtype": "float64",
+              "frozen_value": "23607.64285714286",
+              "max_abs": 3.637978807091713e-12,
+              "max_rel": 1.5410173853892344e-16,
+              "recomputed_dtype": "float64",
+              "recomputed_value": "23607.642857142862",
+              "shape": [],
+              "shapes_match": true,
+              "ulp_distance": 1
+            },
+            "policy": {
+              "rule": "exact_scalar"
+            },
+            "reason": "T0 replay-equivalence mismatch: final_trace_scale: exact scalar equality required",
+            "verdict": "STOP"
+          },
+          "mu": {
+            "observed": {
+              "differing_elements": 0,
+              "dtypes_match": true,
+              "elements": 28061,
+              "exactly_equal": true,
+              "frozen_dtype": "float64",
+              "max_abs": 0.0,
+              "max_rel": 0.0,
+              "recomputed_dtype": "float64",
+              "shape": [
+                28061
+              ],
+              "shapes_match": true
+            },
+            "policy": {
+              "rule": "exact_array"
+            },
+            "verdict": "PASS"
+          },
+          "multiplier_exponents": {
+            "observed": {
+              "differing_elements": 0,
+              "dtypes_match": true,
+              "elements": 17,
+              "exactly_equal": true,
+              "frozen_dtype": "float64",
+              "max_abs": 0.0,
+              "max_rel": 0.0,
+              "recomputed_dtype": "float64",
+              "shape": [
+                17
+              ],
+              "shapes_match": true
+            },
+            "policy": {
+              "rule": "exact_array"
+            },
+            "verdict": "PASS"
+          },
+          "response_residual_sd": {
+            "observed": {
+              "differing_elements": 1,
+              "dtypes_match": true,
+              "elements": 1,
+              "exactly_equal": false,
+              "frozen_dtype": "float64",
+              "frozen_value": "1.2245513389820333",
+              "max_abs": 2.220446049250313e-16,
+              "max_rel": 1.8132731381406716e-16,
+              "recomputed_dtype": "float64",
+              "recomputed_value": "1.2245513389820335",
+              "shape": [],
+              "shapes_match": true,
+              "ulp_distance": 1
+            },
+            "policy": {
+              "max_ulp": 1,
+              "required_dtype": "float64",
+              "rule": "at_most_n_ulp"
+            },
+            "verdict": "PASS"
+          },
+          "selected_multiplier_exponent": {
+            "observed": {
+              "differing_elements": 0,
+              "dtypes_match": true,
+              "elements": 1,
+              "exactly_equal": true,
+              "frozen_dtype": "float64",
+              "frozen_value": "2.0",
+              "max_abs": 0.0,
+              "max_rel": 0.0,
+              "recomputed_dtype": "float64",
+              "recomputed_value": "2.0",
+              "shape": [],
+              "shapes_match": true,
+              "ulp_distance": 0
+            },
+            "policy": {
+              "rule": "exact_scalar"
+            },
+            "verdict": "PASS"
+          },
+          "selected_multiplier_index": {
+            "observed": {
+              "differing_elements": 0,
+              "dtypes_match": true,
+              "elements": 1,
+              "exactly_equal": true,
+              "frozen_dtype": "int64",
+              "frozen_value": "16.0",
+              "max_abs": 0.0,
+              "max_rel": 0.0,
+              "recomputed_dtype": "int64",
+              "recomputed_value": "16.0",
+              "shape": [],
+              "shapes_match": true,
+              "ulp_distance": 0
+            },
+            "policy": {
+              "rule": "exact_scalar"
+            },
+            "verdict": "PASS"
+          },
+          "sigma": {
+            "observed": {
+              "differing_elements": 10447,
+              "dtypes_match": true,
+              "elements": 28061,
+              "exactly_equal": false,
+              "frozen_dtype": "float64",
+              "max_abs": 2.220446049250313e-16,
+              "max_rel": 8.220706515303307e-16,
+              "recomputed_dtype": "float64",
+              "shape": [
+                28061
+              ],
+              "shapes_match": true
+            },
+            "policy": {
+              "atol": 1e-15,
+              "documented_max_atol": 2.2e-16,
+              "documented_max_rtol": 8.2e-16,
+              "required_dtype": "float64",
+              "rtol": 1e-14,
+              "rule": "tolerant_array"
+            },
+            "verdict": "PASS"
+          }
+        },
+        "fields_compared": 13,
+        "frozen_only_keys": [],
+        "key_sets_match": true,
+        "note": "Applies the frozen policy exhaustively and raises nothing, so a STOP is publishable with all its evidence. It selects no tolerances; every rule shown is a policy constant.",
+        "recomputed_only_keys": [],
+        "schema": "JEPA_T0_V20_TARGET_REPLAY_EQUIVALENCE_FULL_REPORT_V1",
+        "stopped_fields": [
+          "final_trace_scale"
+        ]
+      },
+      "package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe",
+      "provenance_exact": true,
+      "target_dir": "outputs\\t0_discovery_stage_20260909\\target"
+    }
+  ],
+  "terminal": "STOP_T0_V20_REPLAY_NOT_EQUIVALENT_UNDER_FROZEN_POLICY",
+  "tolerances_revisited_after_seeing_the_discrepancy": false,
+  "training_authorized": false,
+  "why_not_recovered": "The frozen equivalence policy refused the target replay at Stage 3 step 4, which precedes the adjudicator, so the omitted sensitivity surfaces were never reached."
+}
