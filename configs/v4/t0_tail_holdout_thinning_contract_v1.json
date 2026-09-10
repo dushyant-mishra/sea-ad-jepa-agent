@@ -1,0 +1,55 @@
+{
+  "schema": "JEPA_T0_TAIL_HOLDOUT_THINNING_CONTRACT_V1",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "authority": "DIAGNOSTIC_ONLY. Not T0 science authority. Not training authority. Does not modify T0 V20, the frozen target, frozen tail threshold, frozen tail mask, QC_ALPHA, any T0 terminal, or any training gate.",
+  "purpose": "Step 3 of the QC methodology investigation. Test whether the expression program on the prospectively separated COHERENCE_HOLDOUT genes remains directionally coherent when the same confirmation cells undergo the already-frozen same-cell depth intervention. This deliberately validates the frozen tail grouping on genes that did not define the grouping.",
+  "frozen_tail_terminal_unchanged": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+  "training_authorized": false,
+  "pathology_blind": true,
+  "reads_at8": false,
+  "selection_rule": {
+    "tail_labels": "Use the original unthinned frozen confirmation tail mask, reproduced exactly from the frozen scorer and frozen threshold before any intervention. The mask is held fixed at every retention level and draw.",
+    "why_fixed": "Recomputing the tail label after thinning would select cells again with the depth-sensitive SCORING estimator and would reintroduce the selection/measurement entanglement this diagnostic is meant to avoid.",
+    "validation_features": "Use only feature_role == COHERENCE_HOLDOUT. No SCORING feature may contribute to the validation vectors or statistic.",
+    "discovery_scale": "Use the frozen t0_tail_preflight_raw_v1.discovery_holdout_scale computed from the exact unthinned discovery holdout raw counts. Do not recompute or refit the scale from confirmation or from thinned data.",
+    "decision_feature_mask": "Use exactly the decision-capable holdout feature mask produced by the frozen discovery_holdout_scale. Do not select features using confirmation results."
+  },
+  "measurement_intervention": {
+    "parent_contract": "configs/v4/t0_tail_depth_thinning_contract_v1.json",
+    "retention_levels": [1.0, 0.9, 0.75, 0.5, 0.25],
+    "draws_per_level": 3,
+    "seed_rule": "Reuse the exact T0-TAIL-DEPTH-THINNING-V1 per-cell hash seed derivation and the same binomial molecule-retention model. Regenerate the full scalar-count intervention deterministically if the thinned counts were not persisted; do not create an independent thinning realization for the holdout subset.",
+    "library_handling": "Thin scalar counts and the library remainder exactly as the parent contract specifies so the CP10K denominator remains physically consistent with the thinned counts.",
+    "control": "Retention 1.0 must reproduce the unthinned holdout vectors and all baseline coherence statistics exactly; otherwise STOP."
+  },
+  "holdout_vector_rule": {
+    "implementation_reference": "scripts/v4/t0_v20_frozen/t0_tail_preflight_raw_v1.py::confirmation_holdout_vectors",
+    "per_donor_vector": "For each frozen decision donor, compute the mean log1p(CP10K) holdout expression in the fixed frozen tail cells minus the mean in the fixed frozen rest cells, divide featurewise by the frozen discovery holdout scale, zero non-decision features, and normalize the resulting decision-feature vector to unit L2 norm exactly as the frozen preflight does.",
+    "coherence_test": "Apply the frozen t0_tail_support_coherence_v1.adjudicate_tail_support_coherence / exact_common_direction_test to the thinned holdout vectors without changing MIN_DECISION_DONORS, MIN_TAIL_CELLS, MIN_REST_CELLS, COHERENCE_ALPHA, or any exact-test logic.",
+    "support_counts": "Tail/rest support counts are the counts in the original frozen mask. They do not change with thinning because the grouping is fixed."
+  },
+  "required_outputs": [
+    "For baseline and every retention x draw: decision donors, decision-capable holdout feature count, support_ok, coherence_ok, exact coherence p_upper, and every scalar emitted by the frozen coherence test.",
+    "Per donor x retention x draw: cosine similarity of the thinned holdout vector to that donor's unthinned holdout vector, and the unnormalised pre-vector L2 norm before unit normalisation.",
+    "Across decision donors x retention x draw: mean pairwise cosine using the same definition as the frozen coherence report, plus a direct equality check against the baseline frozen preflight at retention 1.0.",
+    "A machine-readable record binding the exact input roots/hashes, parent thinning-contract identity, frozen target/tail roots, discovery holdout scale/mask identity, donor set, cell set, and feature-role authority.",
+    "A concise findings document that distinguishes robustness of independent held-out biology from proof that the rare tail is real."
+  ],
+  "acceptance_checks": [
+    "BASELINE_FROZEN_TAIL_MASK_EXACT: the fixed tail/rest grouping must reproduce the frozen confirmation tail masks for all donors before any thinning; mismatch is STOP.",
+    "SCORING_FEATURE_EXCLUSION: no SCORING feature may enter any holdout validation vector; overlap is STOP.",
+    "HOLDOUT_FEATURE_AUTHORITY_EXACT: the holdout feature identities/order and decision-feature mask must match frozen feature/discovery authority; mismatch is STOP.",
+    "LEVEL_1_COUNTS_AND_LIBRARY_EXACT: retention 1.0 must leave counts and source_library unchanged; mismatch is STOP.",
+    "LEVEL_1_HOLDOUT_VECTOR_EXACT: retention 1.0 must reproduce the frozen unthinned holdout vectors exactly before and after normalisation; mismatch is STOP.",
+    "LEVEL_1_COHERENCE_EXACT: retention 1.0 must reproduce the frozen support/coherence object, including exact-test result, exactly; mismatch is STOP.",
+    "DONOR_CELL_AND_LABEL_IDENTITY_FIXED: donor identities, cell identities, and frozen tail labels must be invariant across every retention/draw; mismatch is STOP.",
+    "PARENT_INTERVENTION_IDENTITY_EXACT: retention levels, draws and seed derivation must equal the pre-frozen parent thinning contract; mismatch is STOP."
+  ],
+  "interpretation_limits": [
+    "This diagnostic asks whether an independently held-out expression program associated with the already-frozen tail grouping is robust to lower measurement depth. It does not change or rescue the frozen T0 tail terminal.",
+    "Persistence of holdout coherence under thinning would be evidence that the tail grouping carries biology outside the SCORING genes and that this independent signal is measurement-robust over the tested range. It is not proof that the observed tail prevalence or original tail score is free of measurement confounding.",
+    "Loss of holdout coherence under thinning would not prove the tail is artefactual; genuine biological signal can become unmeasurable as molecules are removed.",
+    "Because all cells at a given retention lose the same expected fraction of molecules, this is a robustness intervention, not yet a common-support or matched-QC analysis. Baseline tail/rest depth differences are not removed by this step.",
+    "No new p-value threshold, rescue criterion, tail rule, estimator or training gate may be chosen from these results. The next common-support/matched-QC design must be prospectively frozen separately."
+  ]
+}
