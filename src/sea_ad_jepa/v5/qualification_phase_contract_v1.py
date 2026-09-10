@@ -162,3 +162,28 @@ def build_postqualification_bundle(
         "production_training_authorized": False,
     }
     return {**payload, "bundle_sha256": _digest(payload)}
+
+
+def validate_postqualification_bundle(
+    bundle: Mapping[str, object],
+    *,
+    preexecution_bundle: Mapping[str, object],
+) -> dict[str, object]:
+    if not isinstance(bundle, Mapping) or bundle.get("schema") != "JEPA_V5_POSTQUALIFICATION_BUNDLE_V1":
+        raise ValueError("unexpected postqualification bundle schema")
+    pre = validate_preexecution_bundle(preexecution_bundle)
+    if bundle.get("preexecution_bundle_sha256") != pre["bundle_sha256"]:
+        raise RuntimeError("STOP_V5_PREEXECUTION_BUNDLE_SUBSTITUTION")
+    if bundle.get("production_training_eligible") is not True:
+        raise RuntimeError("STOP_V5_POSTQUALIFICATION_NOT_ELIGIBLE")
+    if bundle.get("production_training_authorized") is not False:
+        raise RuntimeError("STOP_V5_POSTQUALIFICATION_CLAIMS_PRODUCTION_AUTHORITY")
+    rebuilt = build_postqualification_bundle(
+        bundle.get("required_evidence"),
+        preexecution_bundle=pre,
+        qualification_checkpoint_sha256=bundle.get("qualification_checkpoint_sha256"),
+        qualification_run_manifest_sha256=bundle.get("qualification_run_manifest_sha256"),
+    )
+    if rebuilt["bundle_sha256"] != bundle.get("bundle_sha256"):
+        raise RuntimeError("STOP_V5_POSTQUALIFICATION_BUNDLE_DIGEST_MISMATCH")
+    return rebuilt
