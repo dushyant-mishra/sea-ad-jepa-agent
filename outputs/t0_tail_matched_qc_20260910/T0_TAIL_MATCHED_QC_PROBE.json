@@ -1,0 +1,1024 @@
+{
+  "balance_gate_defined": false,
+  "caliper_used": false,
+  "committed_coherence": {
+    "donors": 18,
+    "mean_pairwise_cosine": 0.1042159853231405,
+    "null_max": 0.1042159853231405,
+    "null_min": -0.016630003103297156,
+    "p_upper_exact": 7.62939453125e-06,
+    "sign_configurations": 131072
+  },
+  "committed_qc": {
+    "decision_qc_metrics": 2,
+    "donors": 18,
+    "max_mean_abs_standardized_qc_contrast": 0.2946862124155104,
+    "p_upper": 0.018,
+    "replicates": 999,
+    "veto": true
+  },
+  "contract_corrections_applied": [
+    {
+      "contract_quantity_still_reported": true,
+      "id": "FIXED_DENOMINATOR_BALANCE",
+      "what": "Post-match standardized mean differences are additionally reported against the pre-match denominator, not only against the matched subset's own standard deviation.",
+      "why": "The frozen _donor_delta divides by the SD of whatever subset it is handed, so a pre-match and a post-match SMD computed that way have different denominators and are not comparable. The common-support precursor demonstrated the artefact: the frozen contrast rose from 0.2947 to 0.3228 because restriction shrank the standardiser. A pre/post pair on shifting denominators would make the balance claim uninterpretable."
+    },
+    {
+      "contract_quantity_still_reported": true,
+      "id": "SIZE_MATCHED_UNMATCHED_CONTROL",
+      "what": "Coherence is additionally computed with the same matched tail cells against an equal number of rest cells drawn at random from common support instead of matched on QC, over 20 deterministic replicates.",
+      "why": "1:1 matching shrinks each donor's comparison group from hundreds of cells to the pair count, which adds noise to every donor vector and lowers a cross-donor coherence statistic for reasons of power alone. Without this control a drop in matched coherence cannot be attributed to removing the confound rather than to the smaller comparison group."
+    }
+  ],
+  "contract_prescribed_quantities_all_reported": true,
+  "contract_sha256": "96c1c2473d9245ef95dcdbec1da25c9b0d21425eaa7bd73f478e35535d12faab",
+  "decision_capable": true,
+  "diagnostic_only": true,
+  "eligible_donors": [
+    "H19.33.004",
+    "H20.33.004",
+    "H20.33.012",
+    "H20.33.017",
+    "H20.33.020",
+    "H20.33.024",
+    "H20.33.027",
+    "H20.33.035",
+    "H20.33.036",
+    "H20.33.038",
+    "H20.33.040",
+    "H21.33.002",
+    "H21.33.012",
+    "H21.33.014",
+    "H21.33.028",
+    "H21.33.039",
+    "H21.33.040",
+    "H21.33.047"
+  ],
+  "excluded_donors": {},
+  "frozen_qc_veto_modified": false,
+  "frozen_tail_mask_modified": false,
+  "frozen_tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+  "frozen_target_modified": false,
+  "holdout_decision_features": 6146,
+  "implements_contract": "configs/v4/t0_tail_matched_qc_contract_v1.json",
+  "interpretation_limits": [
+    "This is a diagnostic of whether the held-out program survives observed-QC equalisation. It is not a new T0 adjudication rule and cannot rescue the frozen rare-tail terminal.",
+    "Matching controls only the two observed QC metrics Q_DEPTH and Q_DETECT. Unmeasured technical confounding can remain.",
+    "Common-support restriction changes the cell subset and therefore the estimand; report retention explicitly.",
+    "Do not choose a balance threshold, alternative matching method, caliper, donor subset, or holdout feature subset after seeing this result.",
+    "Do not residualise the scoring tail score or redefine the tail in this step."
+  ],
+  "leave_one_donor_out": {
+    "loo_mean_cosine": -0.0039515366551205544,
+    "loo_median_cosine": -0.008340508549126177,
+    "loo_positive_fraction": 0.4444444444444444
+  },
+  "machine_readable": {
+    "donor_csv": "T0_TAIL_MATCHED_QC_DONORS.csv",
+    "pair_csv": "T0_TAIL_MATCHED_QC_PAIRS.csv"
+  },
+  "matched_coherence": {
+    "donors": 18,
+    "mean_pairwise_cosine": -0.0009614346107382097,
+    "null_max": 0.010713616885739437,
+    "null_min": -0.00505270552290718,
+    "p_upper_exact": 0.6956405639648438,
+    "sign_configurations": 131072
+  },
+  "minimum_decision_donors": 10,
+  "minimum_matched_pairs": 5,
+  "numeric_environment": {
+    "environment_sha256": "cc7a70c22a03b0238452a8062864d4aff9e239250cd1a65166ac0ad74ff9da33",
+    "numpy_build": {
+      "blas": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "build_host_cpu": {
+        "cpu": "x86_64",
+        "endian": "little",
+        "family": "x86_64"
+      },
+      "lapack": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "simd": {
+        "baseline": [
+          "X86_V2"
+        ],
+        "found": [
+          "X86_V3"
+        ]
+      }
+    },
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "2.2.3",
+      "scipy": "1.15.3",
+      "sklearn": "1.5.2"
+    },
+    "platform": {
+      "machine": "AMD64",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
+    },
+    "python": {
+      "executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa-v3\\python.exe",
+      "implementation": "CPython",
+      "version": "3.11.15"
+    },
+    "schema": "JEPA_T0_NUMERIC_ENVIRONMENT_V1",
+    "threading": {
+      "pools": [
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.31.188.0"
+        },
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.28"
+        },
+        {
+          "internal_api": "openmp",
+          "num_threads": 16,
+          "prefix": "vcomp",
+          "user_api": "openmp",
+          "version": null
+        }
+      ],
+      "threadpoolctl": "3.6.0"
+    },
+    "threading_environment_variables": {
+      "KMP_DUPLICATE_LIB_OK": "True",
+      "MKL_NUM_THREADS": null,
+      "MKL_THREADING_LAYER": null,
+      "NUMEXPR_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null
+    },
+    "why": "The frozen T0 target verifier compares float arrays bit-exactly, so a replay is only interpretable alongside the arithmetic that produced it. No earlier T0 summary recorded this."
+  },
+  "pathology_blind": true,
+  "per_donor": [
+    {
+      "donor_id": "H19.33.004",
+      "eligible": true,
+      "match_distance_max": 0.003769337431922218,
+      "match_distance_mean": 0.0003831648880845962,
+      "match_distance_median": 5.220688963881232e-05,
+      "matched_pairs": 31,
+      "q_depth_interval": [
+        7.390798521735676,
+        10.283463897877127
+      ],
+      "q_depth_mean_rest_post": 8.494234963413055,
+      "q_depth_mean_rest_pre": 8.383120125519149,
+      "q_depth_mean_tail_post": 8.507697007541307,
+      "q_depth_mean_tail_pre": 8.507697007541307,
+      "q_depth_smd_post": 0.02500834584879337,
+      "q_depth_smd_post_fixed_denominator": 0.023094499623964107,
+      "q_depth_smd_pre": 0.2137149995651271,
+      "q_depth_smd_pre_fixed_denominator": 0.2137149995651271,
+      "q_detect_interval": [
+        0.03406887900558787,
+        0.19169802714106512
+      ],
+      "q_detect_mean_rest_post": 0.07114781175622337,
+      "q_detect_mean_rest_pre": 0.06654990158017125,
+      "q_detect_mean_tail_post": 0.07324464112949208,
+      "q_detect_mean_tail_pre": 0.07324464112949208,
+      "q_detect_smd_post": 0.08195953626168247,
+      "q_detect_smd_post_fixed_denominator": 0.09098007545920474,
+      "q_detect_smd_pre": 0.29048043543353846,
+      "q_detect_smd_pre_fixed_denominator": 0.29048043543353846,
+      "rest_common_support": 662,
+      "rest_retained_fraction": 0.9594202898550724,
+      "rest_total": 690,
+      "tail_common_support": 31,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 31
+    },
+    {
+      "donor_id": "H20.33.004",
+      "eligible": true,
+      "match_distance_max": 0.00430432322544464,
+      "match_distance_mean": 0.00022974459190226168,
+      "match_distance_median": 0.00011266223361640777,
+      "matched_pairs": 129,
+      "q_depth_interval": [
+        7.759614150696903,
+        9.618069581737414
+      ],
+      "q_depth_mean_rest_post": 8.506285692155302,
+      "q_depth_mean_rest_pre": 8.628538286504405,
+      "q_depth_mean_tail_post": 8.50597095595842,
+      "q_depth_mean_tail_pre": 8.50597095595842,
+      "q_depth_smd_post": -0.0008258891415716292,
+      "q_depth_smd_post_fixed_denominator": -0.0006257262738264968,
+      "q_depth_smd_pre": -0.24367581420862647,
+      "q_depth_smd_pre_fixed_denominator": -0.24367581420862647,
+      "q_detect_interval": [
+        0.04119625955068993,
+        0.14026684912760862
+      ],
+      "q_detect_mean_rest_post": 0.07175758331189594,
+      "q_detect_mean_rest_pre": 0.07867140216073043,
+      "q_detect_mean_tail_post": 0.07180929825910692,
+      "q_detect_mean_tail_pre": 0.07180929825910691,
+      "q_detect_smd_post": 0.002865220940841186,
+      "q_detect_smd_post_fixed_denominator": 0.002224660620712398,
+      "q_detect_smd_pre": -0.29519226352307937,
+      "q_detect_smd_pre_fixed_denominator": -0.29519226352307937,
+      "rest_common_support": 504,
+      "rest_retained_fraction": 0.9197080291970803,
+      "rest_total": 548,
+      "tail_common_support": 129,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 129
+    },
+    {
+      "donor_id": "H20.33.012",
+      "eligible": true,
+      "match_distance_max": 0.00159402567909861,
+      "match_distance_mean": 0.0003524299273382164,
+      "match_distance_median": 0.00025930212245610937,
+      "matched_pairs": 42,
+      "q_depth_interval": [
+        7.650168700845001,
+        10.058266606323683
+      ],
+      "q_depth_mean_rest_post": 9.026979137739293,
+      "q_depth_mean_rest_pre": 8.785313005581957,
+      "q_depth_mean_tail_post": 9.015403122377126,
+      "q_depth_mean_tail_pre": 9.015403122377126,
+      "q_depth_smd_post": -0.01730755713906383,
+      "q_depth_smd_post_fixed_denominator": -0.016295964615528652,
+      "q_depth_smd_pre": 0.32390596283514855,
+      "q_depth_smd_pre_fixed_denominator": 0.32390596283514855,
+      "q_detect_interval": [
+        0.04054054054054054,
+        0.16706579997719237
+      ],
+      "q_detect_mean_rest_post": 0.10058295184877464,
+      "q_detect_mean_rest_pre": 0.08503388076823139,
+      "q_detect_mean_tail_post": 0.10182854644879963,
+      "q_detect_mean_tail_pre": 0.10182854644879963,
+      "q_detect_smd_post": 0.03569459838847402,
+      "q_detect_smd_post_fixed_denominator": 0.03823431126620059,
+      "q_detect_smd_pre": 0.5155228476662685,
+      "q_detect_smd_pre_fixed_denominator": 0.5155228476662685,
+      "rest_common_support": 387,
+      "rest_retained_fraction": 0.8835616438356164,
+      "rest_total": 438,
+      "tail_common_support": 42,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 42
+    },
+    {
+      "donor_id": "H20.33.017",
+      "eligible": true,
+      "match_distance_max": 0.004393491560870097,
+      "match_distance_mean": 0.0004363976742322991,
+      "match_distance_median": 0.00010962646888927311,
+      "matched_pairs": 26,
+      "q_depth_interval": [
+        7.4673710669175595,
+        9.73554216168668
+      ],
+      "q_depth_mean_rest_post": 8.696992464103484,
+      "q_depth_mean_rest_pre": 8.725908524300639,
+      "q_depth_mean_tail_post": 8.699288748127477,
+      "q_depth_mean_tail_pre": 8.699288748127477,
+      "q_depth_smd_post": 0.004008557563587965,
+      "q_depth_smd_post_fixed_denominator": 0.004058864770565871,
+      "q_depth_smd_pre": -0.04705257301832799,
+      "q_depth_smd_pre_fixed_denominator": -0.04705257301832799,
+      "q_detect_interval": [
+        0.035180750370623785,
+        0.13416581138100125
+      ],
+      "q_detect_mean_rest_post": 0.07990999763151661,
+      "q_detect_mean_rest_pre": 0.07927332084744526,
+      "q_detect_mean_tail_post": 0.08052733843873083,
+      "q_detect_mean_tail_pre": 0.08052733843873083,
+      "q_detect_smd_post": 0.02457372579796491,
+      "q_detect_smd_post_fixed_denominator": 0.02543078773374176,
+      "q_detect_smd_pre": 0.05165810328053577,
+      "q_detect_smd_pre_fixed_denominator": 0.05165810328053577,
+      "rest_common_support": 462,
+      "rest_retained_fraction": 0.9447852760736196,
+      "rest_total": 489,
+      "tail_common_support": 26,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 26
+    },
+    {
+      "donor_id": "H20.33.020",
+      "eligible": true,
+      "match_distance_max": 0.010372355923314482,
+      "match_distance_mean": 0.0004236283645263306,
+      "match_distance_median": 0.0001456791562263272,
+      "matched_pairs": 44,
+      "q_depth_interval": [
+        7.655864017616056,
+        10.298868654190272
+      ],
+      "q_depth_mean_rest_post": 8.867290521717882,
+      "q_depth_mean_rest_pre": 8.701632769201423,
+      "q_depth_mean_tail_post": 8.857643728462351,
+      "q_depth_mean_tail_pre": 8.857643728462351,
+      "q_depth_smd_post": -0.016049067308492617,
+      "q_depth_smd_post_fixed_denominator": -0.015618795818817272,
+      "q_depth_smd_pre": 0.25259205350922753,
+      "q_depth_smd_pre_fixed_denominator": 0.25259205350922753,
+      "q_detect_interval": [
+        0.04079712624016422,
+        0.1695461284068879
+      ],
+      "q_detect_mean_rest_post": 0.08656722026975192,
+      "q_detect_mean_rest_pre": 0.07690355681601392,
+      "q_detect_mean_tail_post": 0.08823502731730581,
+      "q_detect_mean_tail_pre": 0.0882350273173058,
+      "q_detect_smd_post": 0.05695124012536943,
+      "q_detect_smd_post_fixed_denominator": 0.06394119368389597,
+      "q_detect_smd_pre": 0.43443139966886946,
+      "q_detect_smd_pre_fixed_denominator": 0.43443139966886946,
+      "rest_common_support": 481,
+      "rest_retained_fraction": 0.8990654205607477,
+      "rest_total": 535,
+      "tail_common_support": 44,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 44
+    },
+    {
+      "donor_id": "H20.33.024",
+      "eligible": true,
+      "match_distance_max": 0.00439453125,
+      "match_distance_mean": 0.001953125,
+      "match_distance_median": 0.001953125,
+      "matched_pairs": 5,
+      "q_depth_interval": [
+        8.40178233990491,
+        9.14782646658694
+      ],
+      "q_depth_mean_rest_post": 8.50662258584281,
+      "q_depth_mean_rest_pre": 8.479545724443557,
+      "q_depth_mean_tail_post": 8.507043217645599,
+      "q_depth_mean_tail_pre": 8.646506308596443,
+      "q_depth_smd_post": 0.003249203691017269,
+      "q_depth_smd_post_fixed_denominator": 0.0011920283566532771,
+      "q_depth_smd_pre": 0.4731495560595361,
+      "q_depth_smd_pre_fixed_denominator": 0.4731495560595361,
+      "q_detect_interval": [
+        0.06922111985403125,
+        0.11036036036036036
+      ],
+      "q_detect_mean_rest_post": 0.0739879119625955,
+      "q_detect_mean_rest_pre": 0.07241829581891164,
+      "q_detect_mean_tail_post": 0.07350325008552858,
+      "q_detect_mean_tail_pre": 0.08030657239517999,
+      "q_detect_smd_post": -0.11412563570628813,
+      "q_detect_smd_post_fixed_denominator": -0.03040612452188754,
+      "q_detect_smd_pre": 0.4948850553145145,
+      "q_detect_smd_pre_fixed_denominator": 0.4948850553145145,
+      "rest_common_support": 60,
+      "rest_retained_fraction": 0.5405405405405406,
+      "rest_total": 111,
+      "tail_common_support": 5,
+      "tail_retained_fraction": 0.8333333333333334,
+      "tail_total": 6
+    },
+    {
+      "donor_id": "H20.33.027",
+      "eligible": true,
+      "match_distance_max": 0.0016917233234383475,
+      "match_distance_mean": 0.0008330939385234127,
+      "match_distance_median": 0.0008139423537297702,
+      "matched_pairs": 10,
+      "q_depth_interval": [
+        7.7488913372555315,
+        9.205126804923296
+      ],
+      "q_depth_mean_rest_post": 8.27686814755145,
+      "q_depth_mean_rest_pre": 8.268302593909333,
+      "q_depth_mean_tail_post": 8.282121128736524,
+      "q_depth_mean_tail_pre": 8.282121128736524,
+      "q_depth_smd_post": 0.012293212441216207,
+      "q_depth_smd_post_fixed_denominator": 0.01066233701138859,
+      "q_depth_smd_pre": 0.02804843005144517,
+      "q_depth_smd_pre_fixed_denominator": 0.02804843005144517,
+      "q_detect_interval": [
+        0.037233435967613186,
+        0.09881400387729501
+      ],
+      "q_detect_mean_rest_post": 0.058618428555137415,
+      "q_detect_mean_rest_pre": 0.05899067347317533,
+      "q_detect_mean_tail_post": 0.05884080282814459,
+      "q_detect_mean_tail_pre": 0.05884080282814459,
+      "q_detect_smd_post": 0.013707514747472825,
+      "q_detect_smd_post_fixed_denominator": 0.011812752183225006,
+      "q_detect_smd_pre": -0.007961284213983818,
+      "q_detect_smd_pre_fixed_denominator": -0.007961284213983818,
+      "rest_common_support": 168,
+      "rest_retained_fraction": 0.8235294117647058,
+      "rest_total": 204,
+      "tail_common_support": 10,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 10
+    },
+    {
+      "donor_id": "H20.33.035",
+      "eligible": true,
+      "match_distance_max": 0.023003472222222224,
+      "match_distance_mean": 0.009223090277777778,
+      "match_distance_median": 0.00434027777777778,
+      "matched_pairs": 5,
+      "q_depth_interval": [
+        8.765146421639022,
+        9.300820725104558
+      ],
+      "q_depth_mean_rest_post": 9.127770600600442,
+      "q_depth_mean_rest_pre": 8.82878288680114,
+      "q_depth_mean_tail_post": 9.098476691146328,
+      "q_depth_mean_tail_pre": 9.098476691146328,
+      "q_depth_smd_post": -0.1469988463436851,
+      "q_depth_smd_post_fixed_denominator": -0.05803622908043983,
+      "q_depth_smd_pre": 0.5343094077309651,
+      "q_depth_smd_pre_fixed_denominator": 0.5343094077309651,
+      "q_detect_interval": [
+        0.09251339947542479,
+        0.11517846960884935
+      ],
+      "q_detect_mean_rest_post": 0.10611814345991562,
+      "q_detect_mean_rest_pre": 0.08778783183101874,
+      "q_detect_mean_tail_post": 0.10667693009465162,
+      "q_detect_mean_tail_pre": 0.10667693009465162,
+      "q_detect_smd_post": 0.07010848580334428,
+      "q_detect_smd_post_fixed_denominator": 0.023404008454433193,
+      "q_detect_smd_pre": 0.7911438606035082,
+      "q_detect_smd_pre_fixed_denominator": 0.7911438606035082,
+      "rest_common_support": 44,
+      "rest_retained_fraction": 0.23529411764705882,
+      "rest_total": 187,
+      "tail_common_support": 5,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 5
+    },
+    {
+      "donor_id": "H20.33.036",
+      "eligible": true,
+      "match_distance_max": 0.0007061648188687246,
+      "match_distance_mean": 0.000403522753639271,
+      "match_distance_median": 0.0003530824094343632,
+      "matched_pairs": 7,
+      "q_depth_interval": [
+        7.2875606403097235,
+        9.375430991841775
+      ],
+      "q_depth_mean_rest_post": 8.465962264546613,
+      "q_depth_mean_rest_pre": 8.635846586768736,
+      "q_depth_mean_tail_post": 8.46492419853717,
+      "q_depth_mean_tail_pre": 8.46492419853717,
+      "q_depth_smd_post": -0.0014970671477101958,
+      "q_depth_smd_post_fixed_denominator": -0.0015939083862804616,
+      "q_depth_smd_pre": -0.2624444163735224,
+      "q_depth_smd_pre_fixed_denominator": -0.2624444163735224,
+      "q_detect_interval": [
+        0.029478845934542138,
+        0.10696772722089178
+      ],
+      "q_detect_mean_rest_post": 0.06835768861085316,
+      "q_detect_mean_rest_pre": 0.07371485409460092,
+      "q_detect_mean_tail_post": 0.0688912239545151,
+      "q_detect_mean_tail_pre": 0.0688912239545151,
+      "q_detect_smd_post": 0.020089251756799133,
+      "q_detect_smd_post_fixed_denominator": 0.020366066091547584,
+      "q_detect_smd_pre": -0.18412720244530778,
+      "q_detect_smd_pre_fixed_denominator": -0.18412720244530778,
+      "rest_common_support": 113,
+      "rest_retained_fraction": 0.837037037037037,
+      "rest_total": 135,
+      "tail_common_support": 7,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 7
+    },
+    {
+      "donor_id": "H20.33.038",
+      "eligible": true,
+      "match_distance_max": 0.0019034866624658717,
+      "match_distance_mean": 0.0003828852481971575,
+      "match_distance_median": 0.0002395767695862203,
+      "matched_pairs": 15,
+      "q_depth_interval": [
+        7.4109518755836366,
+        9.577480365762678
+      ],
+      "q_depth_mean_rest_post": 8.517134699817158,
+      "q_depth_mean_rest_pre": 8.760010885945256,
+      "q_depth_mean_tail_post": 8.515952443163142,
+      "q_depth_mean_tail_pre": 8.515952443163142,
+      "q_depth_smd_post": -0.0022196888564873455,
+      "q_depth_smd_post_fixed_denominator": -0.0019635290358324727,
+      "q_depth_smd_pre": -0.4053399380034137,
+      "q_depth_smd_pre_fixed_denominator": -0.4053399380034137,
+      "q_detect_interval": [
+        0.03059071729957806,
+        0.11281217926787547
+      ],
+      "q_detect_mean_rest_post": 0.0674516288440339,
+      "q_detect_mean_rest_pre": 0.07615134299926599,
+      "q_detect_mean_tail_post": 0.06748203900102633,
+      "q_detect_mean_tail_pre": 0.06748203900102633,
+      "q_detect_smd_post": 0.001398774281816768,
+      "q_detect_smd_post_fixed_denominator": 0.001301723195673486,
+      "q_detect_smd_pre": -0.3710942402453988,
+      "q_detect_smd_pre_fixed_denominator": -0.3710942402453988,
+      "rest_common_support": 262,
+      "rest_retained_fraction": 0.9225352112676056,
+      "rest_total": 284,
+      "tail_common_support": 15,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 15
+    },
+    {
+      "donor_id": "H20.33.040",
+      "eligible": true,
+      "match_distance_max": 0.00435554393702382,
+      "match_distance_mean": 0.000420149984711906,
+      "match_distance_median": 0.00013176258279960708,
+      "matched_pairs": 29,
+      "q_depth_interval": [
+        7.776535028185241,
+        9.924612834151077
+      ],
+      "q_depth_mean_rest_post": 8.900545720519787,
+      "q_depth_mean_rest_pre": 8.894842170969921,
+      "q_depth_mean_tail_post": 8.897548437967158,
+      "q_depth_mean_tail_pre": 8.89754843796716,
+      "q_depth_smd_post": -0.005737186721647736,
+      "q_depth_smd_post_fixed_denominator": -0.0056104563140208005,
+      "q_depth_smd_pre": 0.005065719529426658,
+      "q_depth_smd_pre_fixed_denominator": 0.005065719529426658,
+      "q_detect_interval": [
+        0.04028395484091687,
+        0.1471091344509066
+      ],
+      "q_detect_mean_rest_post": 0.08596800641759174,
+      "q_detect_mean_rest_pre": 0.08782964208197488,
+      "q_detect_mean_tail_post": 0.08569864058733548,
+      "q_detect_mean_tail_pre": 0.08569864058733546,
+      "q_detect_smd_post": -0.011068201822900739,
+      "q_detect_smd_post_fixed_denominator": -0.011261572838166865,
+      "q_detect_smd_pre": -0.08909232669672926,
+      "q_detect_smd_pre_fixed_denominator": -0.08909232669672926,
+      "rest_common_support": 459,
+      "rest_retained_fraction": 0.9425051334702259,
+      "rest_total": 487,
+      "tail_common_support": 29,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 29
+    },
+    {
+      "donor_id": "H21.33.002",
+      "eligible": true,
+      "match_distance_max": 0.001395526341271697,
+      "match_distance_mean": 0.0002706342554030821,
+      "match_distance_median": 0.00011392051765483166,
+      "matched_pairs": 39,
+      "q_depth_interval": [
+        7.596392304064196,
+        10.220667745776721
+      ],
+      "q_depth_mean_rest_post": 9.00575534025539,
+      "q_depth_mean_rest_pre": 8.86551649961756,
+      "q_depth_mean_tail_post": 8.992308291582932,
+      "q_depth_mean_tail_pre": 9.025285991545413,
+      "q_depth_smd_post": -0.02225417563494847,
+      "q_depth_smd_post_fixed_denominator": -0.02397576826414579,
+      "q_depth_smd_pre": 0.28486520778248814,
+      "q_depth_smd_pre_fixed_denominator": 0.28486520778248814,
+      "q_detect_interval": [
+        0.04002736914129319,
+        0.16735089519899646
+      ],
+      "q_detect_mean_rest_post": 0.10002675509004623,
+      "q_detect_mean_rest_pre": 0.08910825705581582,
+      "q_detect_mean_tail_post": 0.10073218301066401,
+      "q_detect_mean_tail_pre": 0.10239765081537233,
+      "q_detect_smd_post": 0.022785879640613058,
+      "q_detect_smd_post_fixed_denominator": 0.02637304377928225,
+      "q_detect_smd_pre": 0.49683568395473415,
+      "q_detect_smd_pre_fixed_denominator": 0.49683568395473415,
+      "rest_common_support": 381,
+      "rest_retained_fraction": 0.9719387755102041,
+      "rest_total": 392,
+      "tail_common_support": 39,
+      "tail_retained_fraction": 0.975,
+      "tail_total": 40
+    },
+    {
+      "donor_id": "H21.33.012",
+      "eligible": true,
+      "match_distance_max": 0.0003678134902670891,
+      "match_distance_mean": 0.0002320054323223175,
+      "match_distance_median": 0.00022634676324128513,
+      "matched_pairs": 5,
+      "q_depth_interval": [
+        7.807916628926408,
+        9.908723819331374
+      ],
+      "q_depth_mean_rest_post": 8.543894723118708,
+      "q_depth_mean_rest_pre": 8.691260877294997,
+      "q_depth_mean_tail_post": 8.525147618229841,
+      "q_depth_mean_tail_pre": 8.761823872839534,
+      "q_depth_smd_post": -0.03668763363887052,
+      "q_depth_smd_post_fixed_denominator": -0.030473644788562394,
+      "q_depth_smd_pre": 0.11470099912430237,
+      "q_depth_smd_pre_fixed_denominator": 0.11470099912430237,
+      "q_detect_interval": [
+        0.043362983236400955,
+        0.14086554909339719
+      ],
+      "q_detect_mean_rest_post": 0.06944919603147451,
+      "q_detect_mean_rest_pre": 0.07850834247604216,
+      "q_detect_mean_tail_post": 0.06930664842057246,
+      "q_detect_mean_tail_pre": 0.08252556353822176,
+      "q_detect_smd_post": -0.0070936406168666775,
+      "q_detect_smd_post_fixed_denominator": -0.005642661257351361,
+      "q_detect_smd_pre": 0.1590192743767098,
+      "q_detect_smd_pre_fixed_denominator": 0.1590192743767098,
+      "rest_common_support": 184,
+      "rest_retained_fraction": 0.9064039408866995,
+      "rest_total": 203,
+      "tail_common_support": 5,
+      "tail_retained_fraction": 0.8333333333333334,
+      "tail_total": 6
+    },
+    {
+      "donor_id": "H21.33.014",
+      "eligible": true,
+      "match_distance_max": 0.009481250000000002,
+      "match_distance_mean": 0.001298863636363637,
+      "match_distance_median": 0.0004999999999999999,
+      "matched_pairs": 11,
+      "q_depth_interval": [
+        7.3031700512368,
+        8.892473968347087
+      ],
+      "q_depth_mean_rest_post": 8.210891506880175,
+      "q_depth_mean_rest_pre": 8.307198974541537,
+      "q_depth_mean_tail_post": 8.200756553048059,
+      "q_depth_mean_tail_pre": 8.200756553048059,
+      "q_depth_smd_post": -0.02100761063023791,
+      "q_depth_smd_post_fixed_denominator": -0.021694588731003127,
+      "q_depth_smd_pre": -0.22784756557203373,
+      "q_depth_smd_pre_fixed_denominator": -0.22784756557203373,
+      "q_detect_interval": [
+        0.028680579313490707,
+        0.07823012886304026
+      ],
+      "q_detect_mean_rest_post": 0.05498190941228916,
+      "q_detect_mean_rest_pre": 0.057924573264869564,
+      "q_detect_mean_tail_post": 0.0554665712893561,
+      "q_detect_mean_tail_pre": 0.0554665712893561,
+      "q_detect_smd_post": 0.03194486231262342,
+      "q_detect_smd_post_fixed_denominator": 0.029534703554947393,
+      "q_detect_smd_pre": -0.14978764189913368,
+      "q_detect_smd_pre_fixed_denominator": -0.14978764189913368,
+      "rest_common_support": 190,
+      "rest_retained_fraction": 0.852017937219731,
+      "rest_total": 223,
+      "tail_common_support": 11,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 11
+    },
+    {
+      "donor_id": "H21.33.028",
+      "eligible": true,
+      "match_distance_max": 0.0011172138436836795,
+      "match_distance_mean": 0.00013821451319797926,
+      "match_distance_median": 7.860179364714413e-05,
+      "matched_pairs": 40,
+      "q_depth_interval": [
+        7.354362330421477,
+        9.76428295481558
+      ],
+      "q_depth_mean_rest_post": 8.664264553626577,
+      "q_depth_mean_rest_pre": 8.750082402842988,
+      "q_depth_mean_tail_post": 8.661852005377403,
+      "q_depth_mean_tail_pre": 8.661852005377403,
+      "q_depth_smd_post": -0.004686073517127641,
+      "q_depth_smd_post_fixed_denominator": -0.004027909794033299,
+      "q_depth_smd_pre": -0.1473065179959973,
+      "q_depth_smd_pre_fixed_denominator": -0.1473065179959973,
+      "q_detect_interval": [
+        0.032130231497320104,
+        0.13416581138100125
+      ],
+      "q_detect_mean_rest_post": 0.08448084160109476,
+      "q_detect_mean_rest_pre": 0.08736926031743121,
+      "q_detect_mean_tail_post": 0.08441812065229787,
+      "q_detect_mean_tail_pre": 0.08441812065229787,
+      "q_detect_smd_post": -0.002446262055133197,
+      "q_detect_smd_post_fixed_denominator": -0.0022267048354563767,
+      "q_detect_smd_pre": -0.10477068807966444,
+      "q_detect_smd_pre_fixed_denominator": -0.10477068807966444,
+      "rest_common_support": 662,
+      "rest_retained_fraction": 0.9337094499294781,
+      "rest_total": 709,
+      "tail_common_support": 40,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 40
+    },
+    {
+      "donor_id": "H21.33.039",
+      "eligible": true,
+      "match_distance_max": 0.0024112654320987636,
+      "match_distance_mean": 0.0008409288194444438,
+      "match_distance_median": 0.0004340277777777747,
+      "matched_pairs": 8,
+      "q_depth_interval": [
+        8.061802274538348,
+        9.445017159104065
+      ],
+      "q_depth_mean_rest_post": 8.719569833369105,
+      "q_depth_mean_rest_pre": 8.79923651559879,
+      "q_depth_mean_tail_post": 8.73030301574384,
+      "q_depth_mean_tail_pre": 8.73030301574384,
+      "q_depth_smd_post": 0.021488803727460003,
+      "q_depth_smd_post_fixed_denominator": 0.018319324024201854,
+      "q_depth_smd_pre": -0.11765523736349913,
+      "q_depth_smd_pre_fixed_denominator": -0.11765523736349913,
+      "q_detect_interval": [
+        0.05374044931006956,
+        0.11831451704869426
+      ],
+      "q_detect_mean_rest_post": 0.08221789827802486,
+      "q_detect_mean_rest_pre": 0.08597417631238835,
+      "q_detect_mean_tail_post": 0.08180807389668149,
+      "q_detect_mean_tail_pre": 0.08180807389668149,
+      "q_detect_smd_post": -0.017925235682866678,
+      "q_detect_smd_post_fixed_denominator": -0.015589038181384459,
+      "q_detect_smd_pre": -0.15847161023735135,
+      "q_detect_smd_pre_fixed_denominator": -0.15847161023735135,
+      "rest_common_support": 137,
+      "rest_retained_fraction": 0.7135416666666666,
+      "rest_total": 192,
+      "tail_common_support": 8,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 8
+    },
+    {
+      "donor_id": "H21.33.040",
+      "eligible": true,
+      "match_distance_max": 0.0011284286871648462,
+      "match_distance_mean": 0.0002798229031937119,
+      "match_distance_median": 0.00017360441340997712,
+      "matched_pairs": 19,
+      "q_depth_interval": [
+        7.633853559681768,
+        9.21612361673191
+      ],
+      "q_depth_mean_rest_post": 8.443101068970401,
+      "q_depth_mean_rest_pre": 8.325553876781289,
+      "q_depth_mean_tail_post": 8.445770869504665,
+      "q_depth_mean_tail_pre": 8.445770869504665,
+      "q_depth_smd_post": 0.005871103137554452,
+      "q_depth_smd_post_fixed_denominator": 0.005052225137748588,
+      "q_depth_smd_pre": 0.22749389133262413,
+      "q_depth_smd_pre_fixed_denominator": 0.22749389133262413,
+      "q_detect_interval": [
+        0.04119625955068993,
+        0.11700307902839549
+      ],
+      "q_detect_mean_rest_post": 0.07027147067120419,
+      "q_detect_mean_rest_pre": 0.06686955943285058,
+      "q_detect_mean_tail_post": 0.07058207441285388,
+      "q_detect_mean_tail_pre": 0.0705820744128539,
+      "q_detect_smd_post": 0.01581661092950615,
+      "q_detect_smd_post_fixed_denominator": 0.014206862333526447,
+      "q_detect_smd_pre": 0.16980860871775133,
+      "q_detect_smd_pre_fixed_denominator": 0.16980860871775133,
+      "rest_common_support": 304,
+      "rest_retained_fraction": 0.8444444444444444,
+      "rest_total": 360,
+      "tail_common_support": 19,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 19
+    },
+    {
+      "donor_id": "H21.33.047",
+      "eligible": true,
+      "match_distance_max": 0.0013898340825657287,
+      "match_distance_mean": 0.0003610373593791437,
+      "match_distance_median": 0.0002396265659596079,
+      "matched_pairs": 48,
+      "q_depth_interval": [
+        7.794411205726601,
+        9.810823867672708
+      ],
+      "q_depth_mean_rest_post": 8.639927138050316,
+      "q_depth_mean_rest_pre": 8.383772886253613,
+      "q_depth_mean_tail_post": 8.636794312011096,
+      "q_depth_mean_tail_pre": 8.636794312011096,
+      "q_depth_smd_post": -0.006456089127824244,
+      "q_depth_smd_post_fixed_denominator": -0.005902440076913596,
+      "q_depth_smd_pre": 0.4767081813708839,
+      "q_depth_smd_pre_fixed_denominator": 0.4767081813708839,
+      "q_detect_interval": [
+        0.04019842627437564,
+        0.16829170943094993
+      ],
+      "q_detect_mean_rest_post": 0.08121174972440796,
+      "q_detect_mean_rest_pre": 0.06765284006055627,
+      "q_detect_mean_tail_post": 0.08214543657581633,
+      "q_detect_mean_tail_pre": 0.08214543657581631,
+      "q_detect_smd_post": 0.03417139322612942,
+      "q_detect_smd_post_fixed_denominator": 0.034794013691148776,
+      "q_detect_smd_pre": 0.5400692971221088,
+      "q_detect_smd_pre_fixed_denominator": 0.5400692971221088,
+      "rest_common_support": 276,
+      "rest_retained_fraction": 0.8263473053892215,
+      "rest_total": 334,
+      "tail_common_support": 48,
+      "tail_retained_fraction": 1.0,
+      "tail_total": 48
+    }
+  ],
+  "per_donor_vector_summary": {
+    "H19.33.004": {
+      "l2_norm_after_normalisation": 0.9999999999999997,
+      "rest_cells": 31,
+      "tail_cells": 31,
+      "usable": true
+    },
+    "H20.33.004": {
+      "l2_norm_after_normalisation": 0.9999999999999999,
+      "rest_cells": 129,
+      "tail_cells": 129,
+      "usable": true
+    },
+    "H20.33.012": {
+      "l2_norm_after_normalisation": 0.9999999999999999,
+      "rest_cells": 42,
+      "tail_cells": 42,
+      "usable": true
+    },
+    "H20.33.017": {
+      "l2_norm_after_normalisation": 0.9999999999999999,
+      "rest_cells": 26,
+      "tail_cells": 26,
+      "usable": true
+    },
+    "H20.33.020": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 44,
+      "tail_cells": 44,
+      "usable": true
+    },
+    "H20.33.024": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 5,
+      "tail_cells": 5,
+      "usable": true
+    },
+    "H20.33.027": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 10,
+      "tail_cells": 10,
+      "usable": true
+    },
+    "H20.33.035": {
+      "l2_norm_after_normalisation": 0.9999999999999999,
+      "rest_cells": 5,
+      "tail_cells": 5,
+      "usable": true
+    },
+    "H20.33.036": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 7,
+      "tail_cells": 7,
+      "usable": true
+    },
+    "H20.33.038": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 15,
+      "tail_cells": 15,
+      "usable": true
+    },
+    "H20.33.040": {
+      "l2_norm_after_normalisation": 0.9999999999999999,
+      "rest_cells": 29,
+      "tail_cells": 29,
+      "usable": true
+    },
+    "H21.33.002": {
+      "l2_norm_after_normalisation": 0.9999999999999999,
+      "rest_cells": 39,
+      "tail_cells": 39,
+      "usable": true
+    },
+    "H21.33.012": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 5,
+      "tail_cells": 5,
+      "usable": true
+    },
+    "H21.33.014": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 11,
+      "tail_cells": 11,
+      "usable": true
+    },
+    "H21.33.028": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 40,
+      "tail_cells": 40,
+      "usable": true
+    },
+    "H21.33.039": {
+      "l2_norm_after_normalisation": 0.9999999999999999,
+      "rest_cells": 8,
+      "tail_cells": 8,
+      "usable": true
+    },
+    "H21.33.040": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 19,
+      "tail_cells": 19,
+      "usable": true
+    },
+    "H21.33.047": {
+      "l2_norm_after_normalisation": 1.0,
+      "rest_cells": 48,
+      "tail_cells": 48,
+      "usable": true
+    }
+  },
+  "provenance": {
+    "confirmation_matrix_sha256": "4246b93be338ca935f13666f1be490b541c7f410f7301bf4a1536399af81ba10",
+    "discovery_matrix_sha256": "456377fb5bd37a57aadf03a7a641bafc8d3b6e556b85dc9cfa827dccf02dd2b7",
+    "donor_set": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "feature_role_authority_sha256": "29116c16e9002329090a5054b6c4bdae1cbff28917cbee85f03b4633b0b29369",
+    "holdout_address_ids_sha256": "10048a2e9439daf3d815d256100f199add5da1e7c76e0dfcd1bdc2863cc15660",
+    "holdout_decision_mask_sha256": "939a4fff2fd632c7d568201d4875c443d47a88572804c9f8a457b7c85168a4f8",
+    "holdout_scale_sha256": "d1427d761ca56b39260630ddc544d5cf0923099e15d8222bba4b60f91b11dde2",
+    "tail_package_root_sha256": "c84a76b02d2a29cfc070b04161800d2b7c9b503321b9258bc5c256b55a1597bc",
+    "tail_threshold": 0.015010831747346631,
+    "target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe"
+  },
+  "qc_alpha_modified": false,
+  "reads_at8": false,
+  "schema": "JEPA_T0_TAIL_MATCHED_QC_PROBE_V1",
+  "scoring_features_entering_validation": 0,
+  "size_matched_control": {
+    "control_replicates_at_or_above_matched": 7,
+    "matched_inside_control_range": true,
+    "matched_observed": -0.0009614346107382097,
+    "max": 0.000933516774743818,
+    "mean": -0.0014664259452931683,
+    "median_exact_p": 0.7880859375,
+    "min": -0.003959499708460951,
+    "replicates": 20,
+    "sd": 0.0012956789111146394,
+    "what_it_isolates": "The same matched tail cells against an equal number of rest cells drawn at random from common support rather than matched on QC. A matched value inside this range means matching changed nothing beyond the reduction in comparison-group size."
+  },
+  "step": "4 of the QC methodology investigation",
+  "successor_estimator_designed": false,
+  "t0_v20_modified": false,
+  "tail_labels_recomputed": false,
+  "tail_threshold_modified": false,
+  "training_authorized": false
+}
