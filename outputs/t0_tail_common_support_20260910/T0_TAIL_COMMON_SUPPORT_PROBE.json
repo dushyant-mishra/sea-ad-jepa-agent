@@ -1,0 +1,690 @@
+{
+  "coherence_alpha_modified": false,
+  "committed_coherence": {
+    "donors": 18,
+    "mean_pairwise_cosine": 0.1042159853231405,
+    "null_max": 0.1042159853231405,
+    "null_min": -0.016630003103297156,
+    "p_upper_exact": 7.62939453125e-06,
+    "sign_configurations": 131072
+  },
+  "committed_qc": {
+    "decision_qc_metrics": 2,
+    "donors": 18,
+    "max_mean_abs_standardized_qc_contrast": 0.2946862124155104,
+    "p_upper": 0.018,
+    "replicates": 999,
+    "veto": true
+  },
+  "contract_sha256": "e5835e730e576fdd017e25eb7f98d5e82fa4d2f1c147a17fcc1840c42c0632a7",
+  "control_reproduces_committed_coherence_and_veto": true,
+  "declared_outcome": "QC_ASSOCIATION_STILL_FIRES__RESTRICTION_INSUFFICIENT",
+  "diagnostic_only": true,
+  "frozen_support_minima": {
+    "MIN_DECISION_DONORS": 10,
+    "MIN_REST_CELLS": 20,
+    "MIN_TAIL_CELLS": 5
+  },
+  "frozen_tail_mask_modified": false,
+  "frozen_tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+  "frozen_target_modified": false,
+  "holdout_decision_features": 6146,
+  "holdout_scale_refit": false,
+  "implements_contract": "configs/v4/t0_tail_common_support_contract_v1.json",
+  "interpretation_limits": [
+    "This is a diagnostic. It cannot change or rescue the frozen T0 tail terminal, and no p-value here is a gate.",
+    "Common support removes cells outside the overlap; it does not guarantee balanced QC distributions within the overlap. The recomputed frozen QC statistic is the only evidence about whether balance was achieved, and it must be read before any coherence result is interpreted.",
+    "Restriction reduces sample size, and the largest reductions fall on the rest group of the donors with the fewest tail cells. Loss of coherence after restriction is therefore partly a power question and cannot be read as absence of biology.",
+    "Q_DEPTH and Q_DETECT are highly correlated, so restricting on both does not separate them, and no causal attribution to either is available from this design.",
+    "No successor tail estimator, QC gate, threshold or training authority may be chosen from these results. Any such design requires separate prospective freezing and owner authorisation."
+  ],
+  "machine_readable": {
+    "donor_csv": "T0_TAIL_COMMON_SUPPORT_DONORS.csv"
+  },
+  "numeric_environment": {
+    "environment_sha256": "cc7a70c22a03b0238452a8062864d4aff9e239250cd1a65166ac0ad74ff9da33",
+    "numpy_build": {
+      "blas": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "build_host_cpu": {
+        "cpu": "x86_64",
+        "endian": "little",
+        "family": "x86_64"
+      },
+      "lapack": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "simd": {
+        "baseline": [
+          "X86_V2"
+        ],
+        "found": [
+          "X86_V3"
+        ]
+      }
+    },
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "2.2.3",
+      "scipy": "1.15.3",
+      "sklearn": "1.5.2"
+    },
+    "platform": {
+      "machine": "AMD64",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
+    },
+    "python": {
+      "executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa-v3\\python.exe",
+      "implementation": "CPython",
+      "version": "3.11.15"
+    },
+    "schema": "JEPA_T0_NUMERIC_ENVIRONMENT_V1",
+    "threading": {
+      "pools": [
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.31.188.0"
+        },
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.28"
+        },
+        {
+          "internal_api": "openmp",
+          "num_threads": 16,
+          "prefix": "vcomp",
+          "user_api": "openmp",
+          "version": null
+        }
+      ],
+      "threadpoolctl": "3.6.0"
+    },
+    "threading_environment_variables": {
+      "KMP_DUPLICATE_LIB_OK": "True",
+      "MKL_NUM_THREADS": null,
+      "MKL_THREADING_LAYER": null,
+      "NUMEXPR_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null
+    },
+    "why": "The frozen T0 target verifier compares float arrays bit-exactly, so a replay is only interpretable alongside the arithmetic that produced it. No earlier T0 summary recorded this."
+  },
+  "pathology_blind": true,
+  "per_donor_common_support_box": {
+    "H19.33.004": {
+      "high": [
+        10.283463897877127,
+        0.19169802714106512
+      ],
+      "low": [
+        7.390798521735676,
+        0.03406887900558787
+      ]
+    },
+    "H20.33.004": {
+      "high": [
+        9.618069581737414,
+        0.14026684912760862
+      ],
+      "low": [
+        7.759614150696903,
+        0.04119625955068993
+      ]
+    },
+    "H20.33.012": {
+      "high": [
+        10.058266606323683,
+        0.16706579997719237
+      ],
+      "low": [
+        7.650168700845001,
+        0.04054054054054054
+      ]
+    },
+    "H20.33.017": {
+      "high": [
+        9.73554216168668,
+        0.13416581138100125
+      ],
+      "low": [
+        7.4673710669175595,
+        0.035180750370623785
+      ]
+    },
+    "H20.33.020": {
+      "high": [
+        10.298868654190272,
+        0.1695461284068879
+      ],
+      "low": [
+        7.655864017616056,
+        0.04079712624016422
+      ]
+    },
+    "H20.33.024": {
+      "high": [
+        9.14782646658694,
+        0.11036036036036036
+      ],
+      "low": [
+        8.40178233990491,
+        0.06922111985403125
+      ]
+    },
+    "H20.33.027": {
+      "high": [
+        9.205126804923296,
+        0.09881400387729501
+      ],
+      "low": [
+        7.7488913372555315,
+        0.037233435967613186
+      ]
+    },
+    "H20.33.035": {
+      "high": [
+        9.300820725104558,
+        0.11517846960884935
+      ],
+      "low": [
+        8.765146421639022,
+        0.09251339947542479
+      ]
+    },
+    "H20.33.036": {
+      "high": [
+        9.375430991841775,
+        0.10696772722089178
+      ],
+      "low": [
+        7.2875606403097235,
+        0.029478845934542138
+      ]
+    },
+    "H20.33.038": {
+      "high": [
+        9.577480365762678,
+        0.11281217926787547
+      ],
+      "low": [
+        7.4109518755836366,
+        0.03059071729957806
+      ]
+    },
+    "H20.33.040": {
+      "high": [
+        9.924612834151077,
+        0.1471091344509066
+      ],
+      "low": [
+        7.776535028185241,
+        0.04028395484091687
+      ]
+    },
+    "H21.33.002": {
+      "high": [
+        10.220667745776721,
+        0.16735089519899646
+      ],
+      "low": [
+        7.596392304064196,
+        0.04002736914129319
+      ]
+    },
+    "H21.33.012": {
+      "high": [
+        9.908723819331374,
+        0.14086554909339719
+      ],
+      "low": [
+        7.807916628926408,
+        0.043362983236400955
+      ]
+    },
+    "H21.33.014": {
+      "high": [
+        8.892473968347087,
+        0.07823012886304026
+      ],
+      "low": [
+        7.3031700512368,
+        0.028680579313490707
+      ]
+    },
+    "H21.33.028": {
+      "high": [
+        9.76428295481558,
+        0.13416581138100125
+      ],
+      "low": [
+        7.354362330421477,
+        0.032130231497320104
+      ]
+    },
+    "H21.33.039": {
+      "high": [
+        9.445017159104065,
+        0.11831451704869426
+      ],
+      "low": [
+        8.061802274538348,
+        0.05374044931006956
+      ]
+    },
+    "H21.33.040": {
+      "high": [
+        9.21612361673191,
+        0.11700307902839549
+      ],
+      "low": [
+        7.633853559681768,
+        0.04119625955068993
+      ]
+    },
+    "H21.33.047": {
+      "high": [
+        9.810823867672708,
+        0.16829170943094993
+      ],
+      "low": [
+        7.794411205726601,
+        0.04019842627437564
+      ]
+    }
+  },
+  "provenance": {
+    "confirmation_matrix_sha256": "4246b93be338ca935f13666f1be490b541c7f410f7301bf4a1536399af81ba10",
+    "discovery_matrix_sha256": "456377fb5bd37a57aadf03a7a641bafc8d3b6e556b85dc9cfa827dccf02dd2b7",
+    "donor_set": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "feature_role_authority_sha256": "29116c16e9002329090a5054b6c4bdae1cbff28917cbee85f03b4633b0b29369",
+    "holdout_address_ids_sha256": "10048a2e9439daf3d815d256100f199add5da1e7c76e0dfcd1bdc2863cc15660",
+    "holdout_decision_mask_sha256": "939a4fff2fd632c7d568201d4875c443d47a88572804c9f8a457b7c85168a4f8",
+    "tail_package_root_sha256": "c84a76b02d2a29cfc070b04161800d2b7c9b503321b9258bc5c256b55a1597bc",
+    "tail_threshold": 0.015010831747346631,
+    "target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe"
+  },
+  "qc_alpha_modified": false,
+  "reads_at8": false,
+  "restricted": {
+    "coherence": {
+      "donors": 18,
+      "mean_pairwise_cosine": 0.10371438030382718,
+      "null_max": 0.10371438030382718,
+      "null_min": -0.01671552462783615,
+      "p_upper_exact": 7.62939453125e-06,
+      "sign_configurations": 131072
+    },
+    "coherence_ok": true,
+    "decision_donors": 18,
+    "donor_cosine_to_unrestricted": [
+      0.9990579415061959,
+      0.9992283231283292,
+      0.9973699433226492,
+      0.9988569513464295,
+      0.9945096367987095,
+      0.9334216649121876,
+      0.9921087154860855,
+      0.963712702898597,
+      0.9972898960166524,
+      0.9974529660226593,
+      0.9979759313645205,
+      0.9970464912513267,
+      0.9698642592220393,
+      0.9982537817167402,
+      0.999645348923171,
+      0.9935221015542188,
+      0.9946057617687664,
+      0.9916006822247341
+    ],
+    "donors": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "label": "COMMON_SUPPORT",
+    "loo_mean_cosine": 0.2651694372755961,
+    "loo_positive_fraction": 1.0,
+    "mean_donor_cosine_to_unrestricted": 0.9897512833035562,
+    "per_donor_qc_contrast": {
+      "H19.33.004": [
+        0.16633620734501436,
+        0.265320267828657
+      ],
+      "H20.33.004": [
+        -0.34443633492782655,
+        -0.36883393218205124
+      ],
+      "H20.33.012": [
+        0.15439733922186008,
+        0.40330490229858107
+      ],
+      "H20.33.017": [
+        -0.11982662079590863,
+        0.014784710196156825
+      ],
+      "H20.33.020": [
+        0.06250365346090295,
+        0.30281246417438773
+      ],
+      "H20.33.024": [
+        -1.082494918366261,
+        -1.0530485193565693
+      ],
+      "H20.33.027": [
+        -0.252050137990185,
+        -0.2279018705466029
+      ],
+      "H20.33.035": [
+        -0.3605000056756987,
+        0.7313619451442371
+      ],
+      "H20.33.036": [
+        -0.08081505473266234,
+        0.06065549398005213
+      ],
+      "H20.33.038": [
+        -0.38926298461640335,
+        -0.3317162931441988
+      ],
+      "H20.33.040": [
+        -0.06895715521619242,
+        -0.14811863444213125
+      ],
+      "H21.33.002": [
+        0.1819821457884665,
+        0.41559154745244126
+      ],
+      "H21.33.012": [
+        -0.5523549159182579,
+        -0.6133176384322965
+      ],
+      "H21.33.014": [
+        0.007390988481186564,
+        0.12744358137782533
+      ],
+      "H21.33.028": [
+        -0.08886738957042578,
+        -0.021727375105167018
+      ],
+      "H21.33.039": [
+        -0.263382284417221,
+        -0.24306049062614601
+      ],
+      "H21.33.040": [
+        0.11481602827840888,
+        0.07940635480682459
+      ],
+      "H21.33.047": [
+        0.25340169062818513,
+        0.4020862569999968
+      ]
+    },
+    "qc_veto": {
+      "decision_qc_metrics": 2,
+      "donors": 18,
+      "max_mean_abs_standardized_qc_contrast": 0.3228051265607957,
+      "p_upper": 0.011,
+      "replicates": 999,
+      "veto": true
+    },
+    "rest_counts": [
+      662,
+      504,
+      387,
+      462,
+      481,
+      60,
+      168,
+      44,
+      113,
+      262,
+      459,
+      381,
+      184,
+      190,
+      662,
+      137,
+      304,
+      276
+    ],
+    "support_ok": true,
+    "tail_counts": [
+      31,
+      129,
+      42,
+      26,
+      44,
+      5,
+      10,
+      5,
+      7,
+      15,
+      29,
+      39,
+      5,
+      11,
+      40,
+      8,
+      19,
+      48
+    ]
+  },
+  "restriction_parameter_free": true,
+  "restriction_rule": "PER_DONOR_COMMON_SUPPORT",
+  "schema": "JEPA_T0_TAIL_COMMON_SUPPORT_PROBE_V1",
+  "scoring_features_entering_validation": 0,
+  "step": "4 of the QC methodology investigation",
+  "successor_estimator_designed": false,
+  "support_minima_modified": false,
+  "t0_v20_modified": false,
+  "tail_labels_recomputed": false,
+  "thinning_applied": false,
+  "training_authorized": false,
+  "unrestricted": {
+    "coherence": {
+      "donors": 18,
+      "mean_pairwise_cosine": 0.1042159853231405,
+      "null_max": 0.1042159853231405,
+      "null_min": -0.016630003103297156,
+      "p_upper_exact": 7.62939453125e-06,
+      "sign_configurations": 131072
+    },
+    "coherence_ok": true,
+    "decision_donors": 18,
+    "donors": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "label": "UNRESTRICTED",
+    "loo_mean_cosine": 0.2659881527661096,
+    "loo_positive_fraction": 1.0,
+    "per_donor_qc_contrast": {
+      "H19.33.004": [
+        0.2137149995651271,
+        0.29048043543353846
+      ],
+      "H20.33.004": [
+        -0.24367581420862647,
+        -0.29519226352307937
+      ],
+      "H20.33.012": [
+        0.32390596283514855,
+        0.5155228476662685
+      ],
+      "H20.33.017": [
+        -0.04705257301832799,
+        0.05165810328053577
+      ],
+      "H20.33.020": [
+        0.25259205350922753,
+        0.43443139966886946
+      ],
+      "H20.33.024": [
+        0.4731495560595361,
+        0.4948850553145145
+      ],
+      "H20.33.027": [
+        0.02804843005144517,
+        -0.007961284213983818
+      ],
+      "H20.33.035": [
+        0.5343094077309651,
+        0.7911438606035082
+      ],
+      "H20.33.036": [
+        -0.2624444163735224,
+        -0.18412720244530778
+      ],
+      "H20.33.038": [
+        -0.4053399380034137,
+        -0.3710942402453988
+      ],
+      "H20.33.040": [
+        0.005065719529426658,
+        -0.08909232669672926
+      ],
+      "H21.33.002": [
+        0.28486520778248814,
+        0.49683568395473415
+      ],
+      "H21.33.012": [
+        0.11470099912430237,
+        0.1590192743767098
+      ],
+      "H21.33.014": [
+        -0.22784756557203373,
+        -0.14978764189913368
+      ],
+      "H21.33.028": [
+        -0.1473065179959973,
+        -0.10477068807966444
+      ],
+      "H21.33.039": [
+        -0.11765523736349913,
+        -0.15847161023735135
+      ],
+      "H21.33.040": [
+        0.22749389133262413,
+        0.16980860871775133
+      ],
+      "H21.33.047": [
+        0.4767081813708839,
+        0.5400692971221088
+      ]
+    },
+    "qc_veto": {
+      "decision_qc_metrics": 2,
+      "donors": 18,
+      "max_mean_abs_standardized_qc_contrast": 0.2946862124155104,
+      "p_upper": 0.018,
+      "replicates": 999,
+      "veto": true
+    },
+    "rest_counts": [
+      690,
+      548,
+      438,
+      489,
+      535,
+      111,
+      204,
+      187,
+      135,
+      284,
+      487,
+      392,
+      203,
+      223,
+      709,
+      192,
+      360,
+      334
+    ],
+    "support_ok": true,
+    "tail_counts": [
+      31,
+      129,
+      42,
+      26,
+      44,
+      6,
+      10,
+      5,
+      7,
+      15,
+      29,
+      40,
+      6,
+      11,
+      40,
+      8,
+      19,
+      48
+    ]
+  }
+}

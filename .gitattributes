@@ -35,3 +35,4 @@ outputs/t0_sensitivity_recovery_v2final_20260910/** -text
 outputs/t0_tail_qc_decomposition_20260910/** -text
 outputs/t0_tail_depth_thinning_20260910/** -text
 outputs/t0_tail_holdout_thinning_20260910/** -text
+outputs/t0_tail_common_support_20260910/** -text
