@@ -71,6 +71,7 @@ jobs:
           tests/test_v5_c2_gpu_critical_manifest_v1.py
           tests/test_v5_c2_gpu_qualification_harness_v1.py
           tests/test_v5_schedule_governance_resolution_v1.py
+          tests/test_materialize_full_population_schedule_v4.py
       - name: Prove C2 critical tests executed
         env:
           PYTHONPATH: src:.
