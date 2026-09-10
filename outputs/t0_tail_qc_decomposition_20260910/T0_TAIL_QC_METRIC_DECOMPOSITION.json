@@ -1,12 +1,177 @@
 {
-  "changes_no_t0_result": true,
-  "frozen_decision_untouched": true,
-  "frozen_max_statistic": 0.2946862124155104,
-  "frozen_max_statistic_p_upper": 0.018,
-  "frozen_qc_alpha": 0.05,
-  "frozen_replicates": 999,
-  "frozen_statistic_reproduced": true,
+  "correlated_components_caveat": "Q_DEPTH and Q_DETECT are highly correlated (Pearson r = 0.9232 across discovery donors). The larger component is not evidence of a unique causal mechanism and no physical cause is attributed here. The available claim is only which recorded QC axis carries more of the frozen contrast, and how donor-distributed and stable that observation is.",
+  "diagnostic_only": true,
+  "frozen_max_statistic_regression": {
+    "ge": 17,
+    "observed_max_statistic": 0.2946862124155104,
+    "observed_max_statistic_repr": "0.2946862124155104",
+    "p_upper": 0.018,
+    "qc_alpha": 0.05,
+    "recorded_ge": null,
+    "recorded_p_upper": 0.018,
+    "recorded_statistic": 0.2946862124155104,
+    "replicates": 999,
+    "reproduces_frozen_record_exactly": true,
+    "veto": true
+  },
+  "frozen_qc_gate_modified": false,
   "frozen_tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+  "larger_component": "Q_DETECT",
+  "leave_one_donor_out": {
+    "caveat": "Descriptive. The frozen null is not recomputed for these subsets, so no p-value attaches to any of them.",
+    "donors_whose_removal_flips_the_larger_component": [],
+    "full_cohort_larger_component": "Q_DETECT",
+    "larger_component_is_stable_to_single_donor_removal": true,
+    "per_held_out_donor": [
+      {
+        "held_out_donor": "H19.33.004",
+        "larger_component": "Q_DETECT",
+        "margin": 0.04951234801083418,
+        "q_depth_component": 0.2454212630506746,
+        "q_detect_component": 0.2949336110615088
+      },
+      {
+        "held_out_donor": "H20.33.004",
+        "larger_component": "Q_DETECT",
+        "margin": 0.05099758251400821,
+        "q_depth_component": 0.24365886218929228,
+        "q_detect_component": 0.2946564447033005
+      },
+      {
+        "held_out_donor": "H20.33.012",
+        "larger_component": "Q_DETECT",
+        "margin": 0.04275638042479249,
+        "q_depth_component": 0.2389394416818498,
+        "q_detect_component": 0.2816958221066423
+      },
+      {
+        "held_out_donor": "H20.33.017",
+        "larger_component": "Q_DETECT",
+        "margin": 0.0537570483406109,
+        "q_depth_component": 0.2552249352004863,
+        "q_detect_component": 0.3089819835410972
+      },
+      {
+        "held_out_donor": "H20.33.020",
+        "larger_component": "Q_DETECT",
+        "margin": 0.0433315297584089,
+        "q_depth_component": 0.24313437752455105,
+        "q_detect_component": 0.28646590728295995
+      },
+      {
+        "held_out_donor": "H20.33.024",
+        "larger_component": "Q_DETECT",
+        "margin": 0.052749403105742,
+        "q_depth_component": 0.23016040678629762,
+        "q_detect_component": 0.2829098098920396
+      },
+      {
+        "held_out_donor": "H20.33.027",
+        "larger_component": "Q_DETECT",
+        "margin": 0.05520955869941496,
+        "q_depth_component": 0.2563428259632441,
+        "q_detect_component": 0.31155238466265905
+      },
+      {
+        "held_out_donor": "H20.33.035",
+        "larger_component": "Q_DETECT",
+        "margin": 0.03892005289294401,
+        "q_depth_component": 0.22656276845268417,
+        "q_detect_component": 0.2654828213456282
+      },
+      {
+        "held_out_donor": "H20.33.036",
+        "larger_component": "Q_DETECT",
+        "margin": 0.05863485682240033,
+        "q_depth_component": 0.24255482676782786,
+        "q_detect_component": 0.3011896835902282
+      },
+      {
+        "held_out_donor": "H20.33.038",
+        "larger_component": "Q_DETECT",
+        "margin": 0.05604241469474153,
+        "q_depth_component": 0.23414920784842247,
+        "q_detect_component": 0.290191622543164
+      },
+      {
+        "held_out_donor": "H20.33.040",
+        "larger_component": "Q_DETECT",
+        "margin": 0.04908522028737,
+        "q_depth_component": 0.25769475011159815,
+        "q_detect_component": 0.30677997039896815
+      },
+      {
+        "held_out_donor": "H21.33.002",
+        "larger_component": "Q_DETECT",
+        "margin": 0.04155911034590273,
+        "q_depth_component": 0.2412359566849475,
+        "q_detect_component": 0.2827950670308502
+      },
+      {
+        "held_out_donor": "H21.33.012",
+        "larger_component": "Q_DETECT",
+        "margin": 0.051421004517657964,
+        "q_depth_component": 0.25124561601778195,
+        "q_detect_component": 0.3026666205354399
+      },
+      {
+        "held_out_donor": "H21.33.014",
+        "larger_component": "Q_DETECT",
+        "margin": 0.058619722101499544,
+        "q_depth_component": 0.24458993563850365,
+        "q_detect_component": 0.3032096577400032
+      },
+      {
+        "held_out_donor": "H21.33.028",
+        "larger_component": "Q_DETECT",
+        "margin": 0.05653006952758377,
+        "q_depth_component": 0.24932764431944698,
+        "q_detect_component": 0.30585771384703075
+      },
+      {
+        "held_out_donor": "H21.33.039",
+        "larger_component": "Q_DETECT",
+        "margin": 0.05162699877521998,
+        "q_depth_component": 0.2510718372978292,
+        "q_detect_component": 0.3026988360730492
+      },
+      {
+        "held_out_donor": "H21.33.040",
+        "larger_component": "Q_DETECT",
+        "margin": 0.057421213803968474,
+        "q_depth_component": 0.24461074000552774,
+        "q_detect_component": 0.3020319538094962
+      },
+      {
+        "held_out_donor": "H21.33.047",
+        "larger_component": "Q_DETECT",
+        "margin": 0.05030083742949218,
+        "q_depth_component": 0.2299510758856301,
+        "q_detect_component": 0.2802519133151223
+      }
+    ]
+  },
+  "machine_readable": {
+    "donor_components_csv": "T0_TAIL_QC_DONOR_COMPONENTS.csv",
+    "replicate_components_csv": "T0_TAIL_QC_REPLICATE_COMPONENTS.csv"
+  },
+  "null_argmax_stability": {
+    "caveat": "Diagnostic, non-authoritative. Not a p-value gate. The frozen veto applies the maximum across metrics precisely to control multiplicity, so a single component's position in its own null is descriptive and cannot license a different tail terminal.",
+    "exact_ties": 0,
+    "interpretation_note": "A near-even split indicates the two axes largely substitute for each other in the maximum; a lopsided split indicates one axis dominates the statistic. Descriptive either way.",
+    "modal_null_winner": "Q_DETECT",
+    "null_argmax_counts": {
+      "Q_DEPTH": 476,
+      "Q_DETECT": 523
+    },
+    "null_argmax_fractions": {
+      "Q_DEPTH": 0.47647647647647645,
+      "Q_DETECT": 0.5235235235235235
+    },
+    "observed_winner": "Q_DETECT",
+    "observed_winner_is_modal_null_winner": true,
+    "replicates": 999
+  },
   "numeric_environment": {
     "environment_sha256": "cc7a70c22a03b0238452a8062864d4aff9e239250cd1a65166ac0ad74ff9da33",
     "numpy_build": {
@@ -95,158 +260,293 @@
     {
       "cells": 721,
       "donor_id": "H19.33.004",
+      "q_depth_abs_contrast": 0.2137149995651271,
       "q_depth_signed_contrast": 0.2137149995651271,
+      "q_detect_abs_contrast": 0.29048043543353846,
       "q_detect_signed_contrast": 0.29048043543353846,
+      "rest_cells": 690,
       "tail_cells": 31
     },
     {
       "cells": 677,
       "donor_id": "H20.33.004",
+      "q_depth_abs_contrast": 0.24367581420862647,
       "q_depth_signed_contrast": -0.24367581420862647,
+      "q_detect_abs_contrast": 0.29519226352307937,
       "q_detect_signed_contrast": -0.29519226352307937,
+      "rest_cells": 548,
       "tail_cells": 129
     },
     {
       "cells": 480,
       "donor_id": "H20.33.012",
+      "q_depth_abs_contrast": 0.32390596283514855,
       "q_depth_signed_contrast": 0.32390596283514855,
+      "q_detect_abs_contrast": 0.5155228476662685,
       "q_detect_signed_contrast": 0.5155228476662685,
+      "rest_cells": 438,
       "tail_cells": 42
     },
     {
       "cells": 515,
       "donor_id": "H20.33.017",
+      "q_depth_abs_contrast": 0.04705257301832799,
       "q_depth_signed_contrast": -0.04705257301832799,
+      "q_detect_abs_contrast": 0.05165810328053577,
       "q_detect_signed_contrast": 0.05165810328053577,
+      "rest_cells": 489,
       "tail_cells": 26
     },
     {
       "cells": 579,
       "donor_id": "H20.33.020",
+      "q_depth_abs_contrast": 0.25259205350922753,
       "q_depth_signed_contrast": 0.25259205350922753,
+      "q_detect_abs_contrast": 0.43443139966886946,
       "q_detect_signed_contrast": 0.43443139966886946,
+      "rest_cells": 535,
       "tail_cells": 44
     },
     {
       "cells": 117,
       "donor_id": "H20.33.024",
+      "q_depth_abs_contrast": 0.4731495560595361,
       "q_depth_signed_contrast": 0.4731495560595361,
+      "q_detect_abs_contrast": 0.4948850553145145,
       "q_detect_signed_contrast": 0.4948850553145145,
+      "rest_cells": 111,
       "tail_cells": 6
     },
     {
       "cells": 214,
       "donor_id": "H20.33.027",
+      "q_depth_abs_contrast": 0.02804843005144517,
       "q_depth_signed_contrast": 0.02804843005144517,
+      "q_detect_abs_contrast": 0.007961284213983818,
       "q_detect_signed_contrast": -0.007961284213983818,
+      "rest_cells": 204,
       "tail_cells": 10
     },
     {
       "cells": 192,
       "donor_id": "H20.33.035",
+      "q_depth_abs_contrast": 0.5343094077309651,
       "q_depth_signed_contrast": 0.5343094077309651,
+      "q_detect_abs_contrast": 0.7911438606035082,
       "q_detect_signed_contrast": 0.7911438606035082,
+      "rest_cells": 187,
       "tail_cells": 5
     },
     {
       "cells": 142,
       "donor_id": "H20.33.036",
+      "q_depth_abs_contrast": 0.2624444163735224,
       "q_depth_signed_contrast": -0.2624444163735224,
+      "q_detect_abs_contrast": 0.18412720244530778,
       "q_detect_signed_contrast": -0.18412720244530778,
+      "rest_cells": 135,
       "tail_cells": 7
     },
     {
       "cells": 299,
       "donor_id": "H20.33.038",
+      "q_depth_abs_contrast": 0.4053399380034137,
       "q_depth_signed_contrast": -0.4053399380034137,
+      "q_detect_abs_contrast": 0.3710942402453988,
       "q_detect_signed_contrast": -0.3710942402453988,
+      "rest_cells": 284,
       "tail_cells": 15
     },
     {
       "cells": 516,
       "donor_id": "H20.33.040",
+      "q_depth_abs_contrast": 0.005065719529426658,
       "q_depth_signed_contrast": 0.005065719529426658,
+      "q_detect_abs_contrast": 0.08909232669672926,
       "q_detect_signed_contrast": -0.08909232669672926,
+      "rest_cells": 487,
       "tail_cells": 29
     },
     {
       "cells": 432,
       "donor_id": "H21.33.002",
+      "q_depth_abs_contrast": 0.28486520778248814,
       "q_depth_signed_contrast": 0.28486520778248814,
+      "q_detect_abs_contrast": 0.49683568395473415,
       "q_detect_signed_contrast": 0.49683568395473415,
+      "rest_cells": 392,
       "tail_cells": 40
     },
     {
       "cells": 209,
       "donor_id": "H21.33.012",
+      "q_depth_abs_contrast": 0.11470099912430237,
       "q_depth_signed_contrast": 0.11470099912430237,
+      "q_detect_abs_contrast": 0.1590192743767098,
       "q_detect_signed_contrast": 0.1590192743767098,
+      "rest_cells": 203,
       "tail_cells": 6
     },
     {
       "cells": 234,
       "donor_id": "H21.33.014",
+      "q_depth_abs_contrast": 0.22784756557203373,
       "q_depth_signed_contrast": -0.22784756557203373,
+      "q_detect_abs_contrast": 0.14978764189913368,
       "q_detect_signed_contrast": -0.14978764189913368,
+      "rest_cells": 223,
       "tail_cells": 11
     },
     {
       "cells": 749,
       "donor_id": "H21.33.028",
+      "q_depth_abs_contrast": 0.1473065179959973,
       "q_depth_signed_contrast": -0.1473065179959973,
+      "q_detect_abs_contrast": 0.10477068807966444,
       "q_detect_signed_contrast": -0.10477068807966444,
+      "rest_cells": 709,
       "tail_cells": 40
     },
     {
       "cells": 200,
       "donor_id": "H21.33.039",
+      "q_depth_abs_contrast": 0.11765523736349913,
       "q_depth_signed_contrast": -0.11765523736349913,
+      "q_detect_abs_contrast": 0.15847161023735135,
       "q_detect_signed_contrast": -0.15847161023735135,
+      "rest_cells": 192,
       "tail_cells": 8
     },
     {
       "cells": 379,
       "donor_id": "H21.33.040",
+      "q_depth_abs_contrast": 0.22749389133262413,
       "q_depth_signed_contrast": 0.22749389133262413,
+      "q_detect_abs_contrast": 0.16980860871775133,
       "q_detect_signed_contrast": 0.16980860871775133,
+      "rest_cells": 360,
       "tail_cells": 19
     },
     {
       "cells": 382,
       "donor_id": "H21.33.047",
+      "q_depth_abs_contrast": 0.4767081813708839,
       "q_depth_signed_contrast": 0.4767081813708839,
+      "q_detect_abs_contrast": 0.5400692971221088,
       "q_detect_signed_contrast": 0.5400692971221088,
+      "rest_cells": 334,
       "tail_cells": 48
     }
   ],
   "per_metric": [
     {
-      "attained_the_frozen_maximum": false,
+      "attains_frozen_maximum": false,
+      "caveat": "Diagnostic, non-authoritative. Not a p-value gate. The frozen veto applies the maximum across metrics precisely to control multiplicity, so a single component's position in its own null is descriptive and cannot license a different tail terminal.",
       "column": 0,
-      "descriptive_p_upper": 0.171,
-      "descriptive_p_upper_is_not_a_test": "No multiplicity control. The frozen veto applies the maximum across metrics precisely to control it. This number describes where one metric sits in its own null and cannot license a different tail terminal.",
-      "mean_abs_standardized_contrast": 0.24365980396814418,
+      "component_descriptive_p_upper": 0.171,
+      "component_exceedance_count": 170,
       "metric": "Q_DEPTH",
       "null_max": 0.34285967342390383,
       "null_mean": 0.20576023457162493,
+      "null_median": 0.20212541268943754,
       "null_p95": 0.27396819496747543,
-      "share_of_the_frozen_maximum": 0.8268449411694277
+      "null_sd": 0.038391737141599054,
+      "observed_mean_abs_standardized_contrast": 0.24365980396814418,
+      "observed_percentile_in_own_null": 82.98298298298297,
+      "observed_repr": "0.24365980396814418",
+      "share_of_frozen_maximum": 0.8268449411694277
     },
     {
-      "attained_the_frozen_maximum": true,
+      "attains_frozen_maximum": true,
+      "caveat": "Diagnostic, non-authoritative. Not a p-value gate. The frozen veto applies the maximum across metrics precisely to control multiplicity, so a single component's position in its own null is descriptive and cannot license a different tail terminal.",
       "column": 1,
-      "descriptive_p_upper": 0.015,
-      "descriptive_p_upper_is_not_a_test": "No multiplicity control. The frozen veto applies the maximum across metrics precisely to control it. This number describes where one metric sits in its own null and cannot license a different tail terminal.",
-      "mean_abs_standardized_contrast": 0.2946862124155104,
+      "component_descriptive_p_upper": 0.015,
+      "component_exceedance_count": 14,
       "metric": "Q_DETECT",
       "null_max": 0.32879060039220714,
       "null_mean": 0.20635974447492128,
+      "null_median": 0.20381220907023423,
       "null_p95": 0.27281374269787334,
-      "share_of_the_frozen_maximum": 1.0
+      "null_sd": 0.03806996424619198,
+      "observed_mean_abs_standardized_contrast": 0.2946862124155104,
+      "observed_percentile_in_own_null": 98.5985985985986,
+      "observed_repr": "0.2946862124155104",
+      "share_of_frozen_maximum": 1.0
     }
   ],
+  "provenance": {
+    "canonical_confirmation_donors": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "confirmation_matrix_sha256": "4246b93be338ca935f13666f1be490b541c7f410f7301bf4a1536399af81ba10",
+    "decomposition_module": {
+      "path": "D:/jepa_t0_mat_20260908/scripts/v4/t0_tail_qc_metric_decomposition_v1.py",
+      "sha256_lf_normalized": "f5f2c6e88766d72529fe0a01be9056bb673f5e56ab21a2bf5f1a655df9c76732",
+      "sha256_raw_bytes": "f5f2c6e88766d72529fe0a01be9056bb673f5e56ab21a2bf5f1a655df9c76732"
+    },
+    "feature_split": {
+      "path": "configs/v4/t0_v20_frozen_authority/T0_MTG_FEATURE_ROLE_SPLIT_V2.csv",
+      "sha256_lf_normalized": "29116c16e9002329090a5054b6c4bdae1cbff28917cbee85f03b4633b0b29369",
+      "sha256_raw_bytes": "29116c16e9002329090a5054b6c4bdae1cbff28917cbee85f03b4633b0b29369"
+    },
+    "frozen_qc_randomization_module": {
+      "path": "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/v20_recovery/current/code/t0_tail_qc_randomization_v1.py",
+      "sha256_lf_normalized": "1d4625cb4dcf2f3017ee512528091b192bd0c3681ef2f058aa4d7e03d0665d93",
+      "sha256_raw_bytes": "1d4625cb4dcf2f3017ee512528091b192bd0c3681ef2f058aa4d7e03d0665d93"
+    },
+    "membership": {
+      "path": "configs/v4/t0_v20_frozen_authority/T0_PRIMARY_MTG_READER_FIT_IMMUNE_CELL_MEMBERSHIP_V1.csv",
+      "sha256_lf_normalized": "d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529",
+      "sha256_raw_bytes": "d471499836118ddaf963ae9241f612d2e9a78bff4add62834347fc0ca06a3529"
+    },
+    "tail_measurable_donors": [
+      "H19.33.004",
+      "H20.33.004",
+      "H20.33.012",
+      "H20.33.017",
+      "H20.33.020",
+      "H20.33.024",
+      "H20.33.027",
+      "H20.33.035",
+      "H20.33.036",
+      "H20.33.038",
+      "H20.33.040",
+      "H21.33.002",
+      "H21.33.012",
+      "H21.33.014",
+      "H21.33.028",
+      "H21.33.039",
+      "H21.33.040",
+      "H21.33.047"
+    ],
+    "tail_package_root_sha256": "c84a76b02d2a29cfc070b04161800d2b7c9b503321b9258bc5c256b55a1597bc",
+    "tail_threshold": 0.015010831747346631,
+    "target_package_root_sha256": "b29429021b551f3b26dadbc5ee20f57cec4e84cccc483943b73602f5bcfad8fe"
+  },
+  "qc_alpha_modified": false,
   "reads_at8": false,
+  "remediation_designed_or_tested": false,
   "schema": "JEPA_T0_TAIL_QC_METRIC_DECOMPOSITION_V1",
-  "veto": true,
-  "what": "Decomposition of the frozen rare-tail QC veto statistic across its two metrics. Diagnostic only."
+  "t0_v20_modified": false,
+  "tail_definition_modified": false,
+  "tail_mask_recalculated": false,
+  "training_authorized": false,
+  "what": "Decomposition of the frozen rare-tail QC veto statistic into its two recorded QC components, with donor-level and replicate-level detail."
 }

@@ -1,124 +1,154 @@
-# Which QC metric drives the rare-tail veto: detection, not depth
+# Rare-tail QC veto, decomposed: step 1 of the QC methodology investigation
 
-Diagnostic only. The frozen rare-tail terminal remains
-`RARE_TAIL_UNDERDETERMINED_MEASUREMENT` on the authority of the max statistic at
-p = 0.018, and nothing here re-adjudicates it.
+**Diagnostic only, and non-authoritative.** The frozen tail terminal remains
+`RARE_TAIL_UNDERDETERMINED_MEASUREMENT`. Nothing here modifies T0 V20, the
+frozen QC gate, `QC_ALPHA`, the tail definition, the terminal, or training
+authority, and no remediation is designed or tested. `training_authorized:
+false`.
 
-Record: `outputs/t0_tail_qc_decomposition_20260910/T0_TAIL_QC_METRIC_DECOMPOSITION.json`.
-Pathology-blind: no AT8 value is read.
+Records:
 
-## Why this needed doing
+- `outputs/t0_tail_qc_decomposition_20260910/T0_TAIL_QC_METRIC_DECOMPOSITION.json`
+- `…/T0_TAIL_QC_DONOR_COMPONENTS.csv` — 18 decision donors x 2 metrics, signed and absolute
+- `…/T0_TAIL_QC_REPLICATE_COMPONENTS.csv` — 999 replicates x `T_depth`, `T_detect`, `T_max`, argmax
 
-The frozen veto statistic is a maximum across the two QC metrics, and the
-committed record stores only that maximum — 0.2947, p = 0.018 — without saying
-which metric attained it. Depth-matched tail calling and
-detection-residualised tail calling are different designs, and the two metrics
-are strongly associated (Pearson r = 0.9232 on discovery donors), so which one
-carries the signal was not guessable from the correlation.
+Pathology-blind: no AT8 value is read. The already-materialised confirmation
+cells, masks and decision donors are reused; the tail mask is not recalculated
+under any different rule.
 
-## Faithfulness first
+## Regression check first
 
-The decomposition would describe nothing if it could not reproduce the statistic
-it decomposes, so that is a precondition rather than an assumption. Using the
-frozen per-donor contrast function and the frozen hash-seeded permutation keys
-directly:
+A decomposition of a statistic it cannot reproduce would describe something
+else, so reproduction is a precondition and any mismatch is a STOP. Using the
+frozen per-donor contrast function, the frozen hash-seeded permutation key and
+the frozen constants directly:
 
-```
-observed max statistic   0.2946862124155104   (recorded: 0.2946862124155104)
-max-statistic p_upper    0.018  (ge = 17)     (recorded: 0.018)
-```
+| quantity | reproduced | recorded |
+| --- | --- | --- |
+| observed max statistic | `0.2946862124155104` | `0.2946862124155104` |
+| exceedance count `ge` | 17 | 17 |
+| `p_upper` | 0.018 | 0.018 |
+| `veto` | true | true |
 
-Bit-exact on the statistic and exact on p. The module refuses to report a
-decomposition otherwise.
+Bit-exact on the statistic, exact on `ge` and `p_upper`. Fourteen tests
+reconstruct all of this from the published CSVs rather than from anything the
+report asserts about itself.
 
-## The answer
+## The two components
 
-| metric | mean \|standardized contrast\| | attains max | null mean | null p95 | descriptive p |
-| --- | ---: | :---: | ---: | ---: | ---: |
-| Q_DEPTH | 0.243660 | no | 0.2058 | 0.2740 | 0.1710 |
-| **Q_DETECT** | **0.294686** | **yes** | 0.2064 | 0.2728 | **0.0150** |
+| metric | observed mean absolute standardized contrast | share of max | percentile in own null | exceedances | descriptive p |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Q_DEPTH | `0.24365980396814418` | 0.8268 | 82.98% | 170 | 0.1710 |
+| **Q_DETECT** | `0.2946862124155104` | **1.0000** | 98.60% | 14 | 0.0150 |
 
-**Q_DETECT is the frozen statistic.** Its observed contrast exceeds the 95th
-percentile of its own null; Q_DEPTH's does not — 0.2437 against a null p95 of
-0.2740, sitting unremarkably inside its own null at a descriptive p of 0.171.
+`Q_DETECT` attains the frozen maximum; its value *is* the frozen statistic.
+`Q_DEPTH` is smaller and sits unremarkably inside its own null.
 
-So the cells being called rare-tail differ from their donor's other cells in the
-*fraction of the address space detected*, not in library size, beyond what a
-within-donor reassignment of the same size produces.
+The component p-values and percentiles are **diagnostic, non-authoritative
+quantities, not new p-value gates**. The frozen test takes the maximum across
+metrics precisely to control multiplicity, so a single component's position in
+its own null cannot license a different tail terminal.
 
-The per-metric p-values are descriptive. The frozen test takes the maximum
-across metrics precisely to control multiplicity, so a single metric's position
-in its own null is not a test and cannot license a different terminal. They are
-here to identify the driver, not to re-decide anything.
+## The finding that most constrains interpretation
 
-## Two things about the shape of it
+**Across the frozen null the two axes very nearly split the maximum: Q_DEPTH
+wins 476 replicates, Q_DETECT 523, no exact ties.**
 
-**The direction is mixed, so this is a magnitude effect rather than a systematic
-bias.** Signed Q_DETECT contrasts run from −0.3711 to +0.7911, positive in 10 of
-18 donors, mean +0.1435. The statistic averages the *absolute* within-donor
-contrast, and what it is detecting is that tail cells differ in detection in
-either direction more than chance allows — not that tail cells uniformly detect
-more. A remediation aimed at a single global detection offset would be aimed at
-something that is not there.
+That is a 47.6 / 52.3 split. Under random within-donor label reassignment,
+either axis attains the maximum about half the time. So the statistic does not
+structurally favour one dimension; the two components largely **substitute for
+each other** in it.
 
-**It is not a small-n artifact, which is what I first suspected.** Sorting
-donors by contrast puts two donors with only 5 and 6 tail cells at the top, at
-+0.79 and +0.49, and a standardized mean difference on 5 cells is unstable — so
-the obvious hypothesis is that a few thin-tailed donors carry the whole
-statistic. Tested, and it does not hold:
+Read together with their correlation — Pearson r = 0.9232 across discovery
+donors, each retaining roughly nine percent independent residual variance once
+the other is included, and the nuisance design's condition number rising from
+about 310.6 to 37,671 when both are appended — the honest reading is that the
+gate is built around two highly redundant readouts of substantially the same
+measurement process.
+
+**So "Q_DETECT carries more of the contrast" is the whole claim available here.**
+It is not evidence of a unique causal mechanism, and nothing in this
+decomposition attributes the contrast to detection rather than depth as a
+physical cause. With components that substitute in the null and correlate at
+0.92 in the data, which one attains the observed maximum is a weak
+discriminator.
+
+## How donor-distributed and how stable
+
+**Broad, not driven by a few donors.** Signed `Q_DETECT` contrasts run from
+−0.3711 to +0.7911, positive in 10 of 18 donors, mean +0.1435. The statistic
+averages the *absolute* contrast, so what it detects is that tail cells differ
+in detection in either direction more than chance allows — not that tail cells
+uniformly detect more.
+
+**Not a thin-tail artifact.** Sorting donors by contrast puts two donors with
+only 5 and 6 tail cells at the top, so the obvious suspicion is that a few
+thinly-tailed donors carry the statistic. Tested, and it does not hold:
 
 | | value |
 | --- | ---: |
-| correlation, tail-cell count vs \|Q_DETECT contrast\| | **+0.101** |
-| correlation, 1/sqrt(tail count) vs \|contrast\| | +0.053 |
-| 6 donors with ≤10 tail cells, mean \|contrast\| | 0.2993 |
-| 12 donors with >10 tail cells, mean \|contrast\| | 0.2924 |
+| correlation, tail-cell count vs abs Q_DETECT contrast | **+0.101** |
+| correlation, 1/sqrt(tail count) vs abs contrast | +0.053 |
+| 6 donors with ≤10 tail cells, mean abs contrast | 0.2993 |
+| 12 donors with >10 tail cells, mean abs contrast | 0.2924 |
 | tail cells per donor | min 5, median 22, max 129 |
 
-The two groups are indistinguishable, and the correlation is negligible and if
-anything slightly *positive* — the opposite direction from a noise-inflation
-story. The detection contrast is distributed across the cohort rather than
-concentrated in the donors where it would be least trustworthy. That makes the
-veto more credible, not less: it is not an artifact of six thin tails.
+The two groups are indistinguishable and the correlation is negligible and if
+anything the opposite sign from a noise-inflation story.
 
-For scale: a random within-donor split of the same size already yields a mean
+**Stable to single-donor removal.** Leave-one-donor-out over all 18 donors: the
+larger component remains `Q_DETECT` in every case. No donor's removal flips the
+identity of the larger axis.
+
+For scale, a random within-donor split of the same size already yields a mean
 absolute contrast of about 0.206, so the observed 0.295 is roughly 43% above the
-null mean, and ranks 15th of 1,000 in detection's own null. A real effect, and a
-modest one.
+null mean.
 
-## What this implies for remediation
+## What step 1 establishes, and what it does not
 
-Stated as implications for design, not as conclusions about biology.
+Established: the frozen statistic is reproducible exactly; `Q_DETECT` attains
+it; the effect is broad across donors, mixed in direction, and stable to
+single-donor removal; and the two components substitute for each other under the
+null, so the gate discriminates poorly between them.
 
-**Depth matching is the wrong instrument.** Q_DEPTH is not the driver and is
-unremarkable in its own null, so matching or residualising on library size would
-leave the confound the veto found essentially untouched.
+Not established, and not addressable by this test at all: whether the
+tail/QC dependence is **technical in origin**. The frozen test asks whether
+tail-labelled cells differ from their donor's other cells in these metrics
+against randomly reassigned labels. That is a valid association test, and
+association is weaker than demonstrating a technical artifact. The test is
+better understood as an **identifiability veto** than as a production QC design.
 
-**Detection breadth is the thing to address**, and because the effect is mixed in
-direction and spread across donors, a per-donor or per-cell treatment is more
-plausible than a global one — for instance residualising the per-cell tail score
-on per-cell Q_DETECT before thresholding, or matching tail and comparison cells
-on detection within each donor. Either is a change to the estimand and needs its
-own prospective freeze.
+There is also a near-circularity worth stating plainly, because it bounds what
+any cross-cell version of this test could ever show. Tail membership is derived
+from an expression score computed from the raw counts, and `Q_DETECT` is the
+fraction of nonzero genes in those same raw counts. The score normalizes for
+library size first, which helps, but normalization cannot make detection and
+dropout behaviour disappear: a score built from observed nonzero counts can
+correlate with detection even when the underlying biological state is genuine.
 
-**A mechanistic hypothesis, labelled as one.** Q_DETECT is the fraction of the
-35,076 scalar-measured addresses observed nonzero in a cell. At a given library
-size, detection breadth reflects how evenly expression is spread across the
-transcriptome. A cell called rare-tail has an unusual expression profile by
-construction, so the tail score may be partly reading detection breadth rather
-than the biological program it is meant to capture. That is exactly the confound
-the veto exists to catch. It is consistent with what is measured here and is not
-established by it; distinguishing "the tail score partly reads detection" from
-"tail biology genuinely co-occurs with broader detection" needs a design that can
-separate them, which is new work.
+The frozen T0 decision therefore stands as the correct conservative call —
+technical and biologically induced dependence were not distinguishable, so the
+tail claim was refused — and it remains untouched.
 
-## Scope
+## Next, in order
 
-- The frozen decision is untouched and was not recomputed as an alternative.
-  `RARE_TAIL_UNDERDETERMINED_MEASUREMENT` stands.
-- No V20 estimator, target, threshold, nuisance model, donor role, feature role
-  or adjudication rule changes. No training authority. No gate opened.
-- Pathology-blind throughout: the QC metrics and the tail mask are properties of
-  the expression data and the frozen target.
-- 516 tail cells of 7,037 confirmation cells (7.33%), 18 tail-measurable donors,
-  999 frozen replicates.
+This is step 1 of five. Steps 2 to 4 are the diagnostics that can address the
+causal question this one cannot, and step 5 is deliberately last:
+
+2. **Same-cell depth perturbation.** Thin molecules from the exact confirmation
+   cells to prospectively fixed lower depths with fixed seeds, recompute the
+   frozen target score and tail classification, and measure score displacement,
+   rank stability and tail-label flip rates. This asks whether changing
+   measurement depth *alone* manufactures or destroys the tail.
+3. **Separate biology from the genes used to call the tail**, by testing the
+   already-separated coherence/holdout genes rather than the scoring genes after
+   perturbation or matching.
+4. **Matched-QC tail analysis** within each donor, restricted to overlapping
+   Q_DEPTH/Q_DETECT support, with no extrapolation beyond common support.
+5. **Only then**, design a successor tail estimator, frozen before it touches
+   confirmation. Not chosen because it rescues this tail.
+
+Note on step 5, recorded now so it is not forgotten later: QC residualisation
+should not be the first candidate. If biological state genuinely affects
+transcript complexity, regressing QC out can subtract biology, which is the same
+error as demanding independence from observed QC in the first place.
