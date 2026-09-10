@@ -1,45 +1,21 @@
-"""Trainer pre-execution V3: bind the exact closed V5 qualification bundle.
+"""Trainer pre-execution V3: qualification-run authority only.
 
-V2 bound only a generic anti-cheat authority digest. V3 retains every V2
-mechanics constraint and additionally embeds and revalidates the exact
-pretraining qualification bundle, closing that substitution path.
+V3 binds the exact pre-execution qualification bundle. It cannot authorize a
+production training run; it only proves that a bounded qualification run is
+eligible to be launched under separately explicit owner/run authority.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Any, Mapping
 
-from .pretraining_qualification_bundle_v1 import (
-    validate_pretraining_qualification_bundle,
-)
+from .qualification_phase_contract_v1 import validate_preexecution_bundle
 from .trainer_preexecution_contract_v2 import (
     TrainerPreexecutionAuthorityV2,
     canonical_json_sha256,
 )
 
-
-def _validate_bound_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
-    if not isinstance(bundle, Mapping):
-        raise ValueError("pretraining qualification bundle must be a mapping")
-    if bundle.get("schema") != "JEPA_V5_PRETRAINING_QUALIFICATION_BUNDLE_V1":
-        raise ValueError("unexpected pretraining qualification bundle schema")
-    if bundle.get("qualification_bundle_closed") is not True:
-        raise RuntimeError("STOP_V5_PRETRAINING_BUNDLE_NOT_CLOSED")
-    if bundle.get("training_authorized") is not False:
-        raise RuntimeError("STOP_V5_PRETRAINING_BUNDLE_CLAIMS_TRAINING_AUTHORITY")
-
-    regenerated = validate_pretraining_qualification_bundle(
-        bundle.get("required_evidence"),
-        qualification_rules_frozen_before_candidate_model_outcome=bundle.get(
-            "qualification_rules_frozen_before_candidate_model_outcome"
-        ),
-        optimizer_started=bundle.get("optimizer_started"),
-    )
-    if regenerated.get("bundle_sha256") != bundle.get("bundle_sha256"):
-        raise RuntimeError("STOP_V5_PRETRAINING_BUNDLE_DIGEST_MISMATCH")
-    if regenerated.get("required_evidence") != bundle.get("required_evidence"):
-        raise RuntimeError("STOP_V5_PRETRAINING_BUNDLE_EVIDENCE_MISMATCH")
-    return regenerated
+QUALIFICATION_EXECUTION_MODE = "BOUNDED_QUALIFICATION_ONLY"
 
 
 @dataclass(frozen=True)
@@ -52,7 +28,8 @@ class TrainerPreexecutionAuthorityV3:
     effective_base_cells_per_update: int
     relational_training_active: bool
     optimizer_started: bool
-    pretraining_qualification_bundle: Mapping[str, Any]
+    preexecution_qualification_bundle: Mapping[str, Any]
+    execution_mode: str = QUALIFICATION_EXECUTION_MODE
     training_authorized: bool = False
 
     def _v2(self) -> TrainerPreexecutionAuthorityV2:
@@ -70,14 +47,21 @@ class TrainerPreexecutionAuthorityV3:
 
     def validate(self) -> None:
         self._v2().validate()
-        _validate_bound_bundle(self.pretraining_qualification_bundle)
+        if self.execution_mode != QUALIFICATION_EXECUTION_MODE:
+            raise RuntimeError("STOP_V5_PREEXECUTION_PRODUCTION_MODE_FORBIDDEN")
+        pre = validate_preexecution_bundle(self.preexecution_qualification_bundle)
+        if pre.get("qualification_run_eligible") is not True:
+            raise RuntimeError("STOP_V5_QUALIFICATION_RUN_NOT_ELIGIBLE")
+        if pre.get("production_training_authorized") is not False:
+            raise RuntimeError("STOP_V5_PREEXECUTION_CLAIMS_PRODUCTION_AUTHORITY")
 
     def canonical_digest(self) -> str:
         self.validate()
+        pre = validate_preexecution_bundle(self.preexecution_qualification_bundle)
         return canonical_json_sha256({
             "schema": "TRAINER_PREEXECUTION_AUTHORITY_V3",
-            "v2_authority_sha256": self._v2().canonical_digest(),
-            "pretraining_qualification_bundle_sha256":
-                self.pretraining_qualification_bundle["bundle_sha256"],
-            "training_authorized": False,
+            "execution_mode": QUALIFICATION_EXECUTION_MODE,
+            "v2_mechanics_authority_sha256": self._v2().canonical_digest(),
+            "preexecution_qualification_bundle_sha256": pre["bundle_sha256"],
+            "production_training_authorized": False,
         })
