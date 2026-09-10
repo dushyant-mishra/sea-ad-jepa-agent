@@ -1,0 +1,1016 @@
+{
+  "cohorts": [
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 490,
+      "cells_per_donor_median": 226,
+      "cells_per_donor_min": 45,
+      "donors_with_at_least_min_cells": 25,
+      "immune_cells_total": 6244,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_ang_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 24,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 25,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.6863342490054778,
+        "expected_t_at_v20_effect": 2.248445665340637,
+        "power_at_illustrative_shrunk_effect": 0.3615098054386891,
+        "power_at_v20_effect": 0.5713496942850755,
+        "residual_df": 20,
+        "snr_improvement_needed_for_80_percent": 1.310238466248944,
+        "t_critical_alpha_0025": 2.085963447265837,
+        "t_needed_for_80_percent_power": 2.9460000000000024
+      }
+    },
+    {
+      "at8_available_donors": 5,
+      "cells_per_donor_max": 299,
+      "cells_per_donor_median": 255,
+      "cells_per_donor_min": 129,
+      "donors_with_at_least_min_cells": 5,
+      "immune_cells_total": 1175,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_ang_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 24,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 5,
+        "estimable": false,
+        "residual_df": 0
+      }
+    },
+    {
+      "at8_available_donors": 5,
+      "cells_per_donor_max": 381,
+      "cells_per_donor_median": 236,
+      "cells_per_donor_min": 104,
+      "donors_with_at_least_min_cells": 5,
+      "immune_cells_total": 1190,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_ang_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 24,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 5,
+        "estimable": false,
+        "residual_df": 0
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 741,
+      "cells_per_donor_median": 386,
+      "cells_per_donor_min": 169,
+      "donors_with_at_least_min_cells": 27,
+      "immune_cells_total": 11226,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_fi_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 26,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 27,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.752489958692596,
+        "expected_t_at_v20_effect": 2.3366532782567946,
+        "power_at_illustrative_shrunk_effect": 0.3882404539227881,
+        "power_at_v20_effect": 0.6079318005964736,
+        "residual_df": 22,
+        "snr_improvement_needed_for_80_percent": 1.2547860768574757,
+        "t_critical_alpha_0025": 2.073873067904015,
+        "t_needed_for_80_percent_power": 2.9320000000000026
+      }
+    },
+    {
+      "at8_available_donors": 4,
+      "cells_per_donor_max": 479,
+      "cells_per_donor_median": 316,
+      "cells_per_donor_min": 230,
+      "donors_with_at_least_min_cells": 4,
+      "immune_cells_total": 1341,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_fi_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 26,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 4,
+        "estimable": false,
+        "residual_df": -1
+      }
+    },
+    {
+      "at8_available_donors": 4,
+      "cells_per_donor_max": 823,
+      "cells_per_donor_median": 493,
+      "cells_per_donor_min": 219,
+      "donors_with_at_least_min_cells": 4,
+      "immune_cells_total": 2028,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_fi_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 26,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 4,
+        "estimable": false,
+        "residual_df": -1
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 655,
+      "cells_per_donor_median": 382,
+      "cells_per_donor_min": 36,
+      "donors_with_at_least_min_cells": 26,
+      "immune_cells_total": 9128,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_hip_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 27,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 26,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.7197302484237529,
+        "expected_t_at_v20_effect": 2.292973664565004,
+        "power_at_illustrative_shrunk_effect": 0.37495363165012013,
+        "power_at_v20_effect": 0.58994950606065,
+        "residual_df": 21,
+        "snr_improvement_needed_for_80_percent": 1.281741716190864,
+        "t_critical_alpha_0025": 2.0796138447276626,
+        "t_needed_for_80_percent_power": 2.9390000000000027
+      }
+    },
+    {
+      "at8_available_donors": 4,
+      "cells_per_donor_max": 546,
+      "cells_per_donor_median": 331,
+      "cells_per_donor_min": 276,
+      "donors_with_at_least_min_cells": 4,
+      "immune_cells_total": 1485,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_hip_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 27,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 4,
+        "estimable": false,
+        "residual_df": -1
+      }
+    },
+    {
+      "at8_available_donors": 4,
+      "cells_per_donor_max": 537,
+      "cells_per_donor_median": 319,
+      "cells_per_donor_min": 45,
+      "donors_with_at_least_min_cells": 3,
+      "immune_cells_total": 1220,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_hip_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 27,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 3,
+        "estimable": false,
+        "residual_df": -2
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 921,
+      "cells_per_donor_median": 307,
+      "cells_per_donor_min": 44,
+      "donors_with_at_least_min_cells": 25,
+      "immune_cells_total": 10375,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_itg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 28,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 25,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.6863342490054778,
+        "expected_t_at_v20_effect": 2.248445665340637,
+        "power_at_illustrative_shrunk_effect": 0.3615098054386891,
+        "power_at_v20_effect": 0.5713496942850755,
+        "residual_df": 20,
+        "snr_improvement_needed_for_80_percent": 1.310238466248944,
+        "t_critical_alpha_0025": 2.085963447265837,
+        "t_needed_for_80_percent_power": 2.9460000000000024
+      }
+    },
+    {
+      "at8_available_donors": 5,
+      "cells_per_donor_max": 413,
+      "cells_per_donor_median": 265,
+      "cells_per_donor_min": 120,
+      "donors_with_at_least_min_cells": 5,
+      "immune_cells_total": 1320,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_itg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 28,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 5,
+        "estimable": false,
+        "residual_df": 0
+      }
+    },
+    {
+      "at8_available_donors": 5,
+      "cells_per_donor_max": 649,
+      "cells_per_donor_median": 466,
+      "cells_per_donor_min": 166,
+      "donors_with_at_least_min_cells": 5,
+      "immune_cells_total": 2062,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_itg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 28,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 5,
+        "estimable": false,
+        "residual_df": 0
+      }
+    },
+    {
+      "at8_available_donors": 22,
+      "cells_per_donor_max": 755,
+      "cells_per_donor_median": 363,
+      "cells_per_donor_min": 37,
+      "donors_with_at_least_min_cells": 21,
+      "immune_cells_total": 8255,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_lec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 29,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 21,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.5455508686128223,
+        "expected_t_at_v20_effect": 2.060734491483763,
+        "power_at_illustrative_shrunk_effect": 0.3062138009026418,
+        "power_at_v20_effect": 0.4906736737119289,
+        "residual_df": 16,
+        "snr_improvement_needed_for_80_percent": 1.4485126600907976,
+        "t_critical_alpha_0025": 2.1199052992210112,
+        "t_needed_for_80_percent_power": 2.9850000000000025
+      }
+    },
+    {
+      "at8_available_donors": 4,
+      "cells_per_donor_max": 342,
+      "cells_per_donor_median": 276,
+      "cells_per_donor_min": 193,
+      "donors_with_at_least_min_cells": 4,
+      "immune_cells_total": 1088,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_lec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 29,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 4,
+        "estimable": false,
+        "residual_df": -1
+      }
+    },
+    {
+      "at8_available_donors": 3,
+      "cells_per_donor_max": 316,
+      "cells_per_donor_median": 191,
+      "cells_per_donor_min": 142,
+      "donors_with_at_least_min_cells": 3,
+      "immune_cells_total": 649,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_lec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 29,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 3,
+        "estimable": false,
+        "residual_df": -2
+      }
+    },
+    {
+      "at8_available_donors": 44,
+      "cells_per_donor_max": 2423,
+      "cells_per_donor_median": 647,
+      "cells_per_donor_min": 33,
+      "donors_with_at_least_min_cells": 43,
+      "immune_cells_total": 31619,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_mec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 30,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 43,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 2.2116066338556806,
+        "expected_t_at_v20_effect": 2.948808845140907,
+        "power_at_illustrative_shrunk_effect": 0.5775137160245654,
+        "power_at_v20_effect": 0.8195305026362281,
+        "residual_df": 38,
+        "snr_improvement_needed_for_80_percent": 0.974969945826591,
+        "t_critical_alpha_0025": 2.0243941639119694,
+        "t_needed_for_80_percent_power": 2.8750000000000027
+      }
+    },
+    {
+      "at8_available_donors": 9,
+      "cells_per_donor_max": 1746,
+      "cells_per_donor_median": 807,
+      "cells_per_donor_min": 69,
+      "donors_with_at_least_min_cells": 8,
+      "immune_cells_total": 7851,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_mec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 30,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 8,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 0.9539347062551177,
+        "expected_t_at_v20_effect": 1.2719129416734902,
+        "power_at_illustrative_shrunk_effect": 0.10220054582764186,
+        "power_at_v20_effect": 0.14734593710707564,
+        "residual_df": 3,
+        "snr_improvement_needed_for_80_percent": 3.346140966535233,
+        "t_critical_alpha_0025": 3.1824463052842638,
+        "t_needed_for_80_percent_power": 4.256000000000004
+      }
+    },
+    {
+      "at8_available_donors": 12,
+      "cells_per_donor_max": 1772,
+      "cells_per_donor_median": 797,
+      "cells_per_donor_min": 101,
+      "donors_with_at_least_min_cells": 12,
+      "immune_cells_total": 10928,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_mec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 30,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 12,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.1683266391283975,
+        "expected_t_at_v20_effect": 1.5577688521711968,
+        "power_at_illustrative_shrunk_effect": 0.1721326518567757,
+        "power_at_v20_effect": 0.2705955558899492,
+        "residual_df": 7,
+        "snr_improvement_needed_for_80_percent": 2.0991561074303946,
+        "t_critical_alpha_0025": 2.3646242515927844,
+        "t_needed_for_80_percent_power": 3.270000000000003
+      }
+    },
+    {
+      "at8_available_donors": 46,
+      "cells_per_donor_max": 964,
+      "cells_per_donor_median": 386,
+      "cells_per_donor_min": 67,
+      "donors_with_at_least_min_cells": 45,
+      "immune_cells_total": 20804,
+      "is_the_v20_population": true,
+      "matrix_id": "sea_ad_mtg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 31,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 45,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 2.262454808137383,
+        "expected_t_at_v20_effect": 3.0166064108498443,
+        "power_at_illustrative_shrunk_effect": 0.5979139988951836,
+        "power_at_v20_effect": 0.8373163736407945,
+        "residual_df": 40,
+        "snr_improvement_needed_for_80_percent": 0.9520632156950489,
+        "t_critical_alpha_0025": 2.0210753903062737,
+        "t_needed_for_80_percent_power": 2.8720000000000026
+      }
+    },
+    {
+      "at8_available_donors": 10,
+      "cells_per_donor_max": 807,
+      "cells_per_donor_median": 256,
+      "cells_per_donor_min": 94,
+      "donors_with_at_least_min_cells": 10,
+      "immune_cells_total": 3142,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_mtg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 31,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 10,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.0665314246413686,
+        "expected_t_at_v20_effect": 1.4220418995218247,
+        "power_at_illustrative_shrunk_effect": 0.1390152835896431,
+        "power_at_v20_effect": 0.21243090989696747,
+        "residual_df": 5,
+        "snr_improvement_needed_for_80_percent": 2.471094558593259,
+        "t_critical_alpha_0025": 2.5705818356363146,
+        "t_needed_for_80_percent_power": 3.514000000000003
+      }
+    },
+    {
+      "at8_available_donors": 12,
+      "cells_per_donor_max": 1015,
+      "cells_per_donor_median": 342,
+      "cells_per_donor_min": 168,
+      "donors_with_at_least_min_cells": 12,
+      "immune_cells_total": 4423,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_mtg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 31,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 12,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.1683266391283975,
+        "expected_t_at_v20_effect": 1.5577688521711968,
+        "power_at_illustrative_shrunk_effect": 0.1721326518567757,
+        "power_at_v20_effect": 0.2705955558899492,
+        "residual_df": 7,
+        "snr_improvement_needed_for_80_percent": 2.0991561074303946,
+        "t_critical_alpha_0025": 2.3646242515927844,
+        "t_needed_for_80_percent_power": 3.270000000000003
+      }
+    },
+    {
+      "at8_available_donors": 42,
+      "cells_per_donor_max": 1089,
+      "cells_per_donor_median": 499,
+      "cells_per_donor_min": 135,
+      "donors_with_at_least_min_cells": 42,
+      "immune_cells_total": 22197,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_pfc_a9_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 32,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 42,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 2.1857389997297707,
+        "expected_t_at_v20_effect": 2.914318666306361,
+        "power_at_illustrative_shrunk_effect": 0.5670367574200998,
+        "power_at_v20_effect": 0.8100175468898478,
+        "residual_df": 37,
+        "snr_improvement_needed_for_80_percent": 0.9871947200771779,
+        "t_critical_alpha_0025": 2.0261924630291097,
+        "t_needed_for_80_percent_power": 2.8770000000000024
+      }
+    },
+    {
+      "at8_available_donors": 10,
+      "cells_per_donor_max": 1060,
+      "cells_per_donor_median": 444,
+      "cells_per_donor_min": 289,
+      "donors_with_at_least_min_cells": 10,
+      "immune_cells_total": 5181,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_pfc_a9_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 32,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 10,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.0665314246413686,
+        "expected_t_at_v20_effect": 1.4220418995218247,
+        "power_at_illustrative_shrunk_effect": 0.1390152835896431,
+        "power_at_v20_effect": 0.21243090989696747,
+        "residual_df": 5,
+        "snr_improvement_needed_for_80_percent": 2.471094558593259,
+        "t_critical_alpha_0025": 2.5705818356363146,
+        "t_needed_for_80_percent_power": 3.514000000000003
+      }
+    },
+    {
+      "at8_available_donors": 12,
+      "cells_per_donor_max": 1190,
+      "cells_per_donor_median": 414,
+      "cells_per_donor_min": 154,
+      "donors_with_at_least_min_cells": 12,
+      "immune_cells_total": 6217,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_pfc_a9_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 32,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 12,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.1683266391283975,
+        "expected_t_at_v20_effect": 1.5577688521711968,
+        "power_at_illustrative_shrunk_effect": 0.1721326518567757,
+        "power_at_v20_effect": 0.2705955558899492,
+        "residual_df": 7,
+        "snr_improvement_needed_for_80_percent": 2.0991561074303946,
+        "t_critical_alpha_0025": 2.3646242515927844,
+        "t_needed_for_80_percent_power": 3.270000000000003
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 769,
+      "cells_per_donor_median": 310,
+      "cells_per_donor_min": 96,
+      "donors_with_at_least_min_cells": 27,
+      "immune_cells_total": 9270,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_stg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 33,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 27,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.752489958692596,
+        "expected_t_at_v20_effect": 2.3366532782567946,
+        "power_at_illustrative_shrunk_effect": 0.3882404539227881,
+        "power_at_v20_effect": 0.6079318005964736,
+        "residual_df": 22,
+        "snr_improvement_needed_for_80_percent": 1.2547860768574757,
+        "t_critical_alpha_0025": 2.073873067904015,
+        "t_needed_for_80_percent_power": 2.9320000000000026
+      }
+    },
+    {
+      "at8_available_donors": 5,
+      "cells_per_donor_max": 446,
+      "cells_per_donor_median": 260,
+      "cells_per_donor_min": 229,
+      "donors_with_at_least_min_cells": 5,
+      "immune_cells_total": 1527,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_stg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 33,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 5,
+        "estimable": false,
+        "residual_df": 0
+      }
+    },
+    {
+      "at8_available_donors": 5,
+      "cells_per_donor_max": 1088,
+      "cells_per_donor_median": 308,
+      "cells_per_donor_min": 271,
+      "donors_with_at_least_min_cells": 5,
+      "immune_cells_total": 2422,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_stg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 33,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 5,
+        "estimable": false,
+        "residual_df": 0
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 935,
+      "cells_per_donor_median": 335,
+      "cells_per_donor_min": 37,
+      "donors_with_at_least_min_cells": 25,
+      "immune_cells_total": 9124,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_v1c_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 34,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 25,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.6863342490054778,
+        "expected_t_at_v20_effect": 2.248445665340637,
+        "power_at_illustrative_shrunk_effect": 0.3615098054386891,
+        "power_at_v20_effect": 0.5713496942850755,
+        "residual_df": 20,
+        "snr_improvement_needed_for_80_percent": 1.310238466248944,
+        "t_critical_alpha_0025": 2.085963447265837,
+        "t_needed_for_80_percent_power": 2.9460000000000024
+      }
+    },
+    {
+      "at8_available_donors": 5,
+      "cells_per_donor_max": 404,
+      "cells_per_donor_median": 295,
+      "cells_per_donor_min": 145,
+      "donors_with_at_least_min_cells": 5,
+      "immune_cells_total": 1394,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_v1c_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 34,
+      "partition": "reader_oracle",
+      "power": {
+        "donors": 5,
+        "estimable": false,
+        "residual_df": 0
+      }
+    },
+    {
+      "at8_available_donors": 5,
+      "cells_per_donor_max": 427,
+      "cells_per_donor_median": 339,
+      "cells_per_donor_min": 231,
+      "donors_with_at_least_min_cells": 5,
+      "immune_cells_total": 1628,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_v1c_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 34,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 5,
+        "estimable": false,
+        "residual_df": 0
+      }
+    }
+  ],
+  "estimator_fitted": false,
+  "min_cells_per_donor_threshold": 80,
+  "min_cells_threshold_source": "the frozen tail support minimum, reused rather than chosen here",
+  "numeric_environment": {
+    "environment_sha256": "cc7a70c22a03b0238452a8062864d4aff9e239250cd1a65166ac0ad74ff9da33",
+    "numpy_build": {
+      "blas": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "build_host_cpu": {
+        "cpu": "x86_64",
+        "endian": "little",
+        "family": "x86_64"
+      },
+      "lapack": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "simd": {
+        "baseline": [
+          "X86_V2"
+        ],
+        "found": [
+          "X86_V3"
+        ]
+      }
+    },
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "2.2.3",
+      "scipy": "1.15.3",
+      "sklearn": "1.5.2"
+    },
+    "platform": {
+      "machine": "AMD64",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
+    },
+    "python": {
+      "executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa-v3\\python.exe",
+      "implementation": "CPython",
+      "version": "3.11.15"
+    },
+    "schema": "JEPA_T0_NUMERIC_ENVIRONMENT_V1",
+    "threading": {
+      "pools": [
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.31.188.0"
+        },
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.28"
+        },
+        {
+          "internal_api": "openmp",
+          "num_threads": 16,
+          "prefix": "vcomp",
+          "user_api": "openmp",
+          "version": null
+        }
+      ],
+      "threadpoolctl": "3.6.0"
+    },
+    "threading_environment_variables": {
+      "KMP_DUPLICATE_LIB_OK": "True",
+      "MKL_NUM_THREADS": null,
+      "MKL_THREADING_LAYER": null,
+      "NUMEXPR_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null
+    },
+    "why": "The frozen T0 target verifier compares float arrays bit-exactly, so a replay is only interpretable alongside the arithmetic that produced it. No earlier T0 summary recorded this."
+  },
+  "partition_opened": false,
+  "pathology_blind": true,
+  "power_projection_basis": {
+    "alpha": 0.025,
+    "illustrative_shrinkage": 0.75,
+    "nuisance_rank": 5,
+    "shrinkage_note": "Illustrative only. The winner's-curse-adjusted lower bound that V21's power gate requires must be derived, not taken from this column.",
+    "v20_donors": 18,
+    "v20_observed_t": 1.9078694125102356
+  },
+  "provenance": {
+    "availability_registry_sha256": "e49c4e9365513d88d3afb687e452bc126dc3d39722384bc262557f84ee43523b",
+    "canonical_sqlite_bytes": 2709786624
+  },
+  "ranking_criterion": "achievable donor-level power at the frozen alpha; cell totals are reported but never ranked on, because T0 inference is donor-level",
+  "reads_at8_values": false,
+  "region_selected": null,
+  "schema": "JEPA_T0_V21_SECOND_REGION_SCOPING_V1",
+  "scoping_only": true,
+  "top_candidates_by_power": [
+    {
+      "at8_available_donors": 44,
+      "cells_per_donor_max": 2423,
+      "cells_per_donor_median": 647,
+      "cells_per_donor_min": 33,
+      "donors_with_at_least_min_cells": 43,
+      "immune_cells_total": 31619,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_mec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 30,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 43,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 2.2116066338556806,
+        "expected_t_at_v20_effect": 2.948808845140907,
+        "power_at_illustrative_shrunk_effect": 0.5775137160245654,
+        "power_at_v20_effect": 0.8195305026362281,
+        "residual_df": 38,
+        "snr_improvement_needed_for_80_percent": 0.974969945826591,
+        "t_critical_alpha_0025": 2.0243941639119694,
+        "t_needed_for_80_percent_power": 2.8750000000000027
+      }
+    },
+    {
+      "at8_available_donors": 42,
+      "cells_per_donor_max": 1089,
+      "cells_per_donor_median": 499,
+      "cells_per_donor_min": 135,
+      "donors_with_at_least_min_cells": 42,
+      "immune_cells_total": 22197,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_pfc_a9_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 32,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 42,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 2.1857389997297707,
+        "expected_t_at_v20_effect": 2.914318666306361,
+        "power_at_illustrative_shrunk_effect": 0.5670367574200998,
+        "power_at_v20_effect": 0.8100175468898478,
+        "residual_df": 37,
+        "snr_improvement_needed_for_80_percent": 0.9871947200771779,
+        "t_critical_alpha_0025": 2.0261924630291097,
+        "t_needed_for_80_percent_power": 2.8770000000000024
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 741,
+      "cells_per_donor_median": 386,
+      "cells_per_donor_min": 169,
+      "donors_with_at_least_min_cells": 27,
+      "immune_cells_total": 11226,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_fi_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 26,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 27,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.752489958692596,
+        "expected_t_at_v20_effect": 2.3366532782567946,
+        "power_at_illustrative_shrunk_effect": 0.3882404539227881,
+        "power_at_v20_effect": 0.6079318005964736,
+        "residual_df": 22,
+        "snr_improvement_needed_for_80_percent": 1.2547860768574757,
+        "t_critical_alpha_0025": 2.073873067904015,
+        "t_needed_for_80_percent_power": 2.9320000000000026
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 769,
+      "cells_per_donor_median": 310,
+      "cells_per_donor_min": 96,
+      "donors_with_at_least_min_cells": 27,
+      "immune_cells_total": 9270,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_stg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 33,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 27,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.752489958692596,
+        "expected_t_at_v20_effect": 2.3366532782567946,
+        "power_at_illustrative_shrunk_effect": 0.3882404539227881,
+        "power_at_v20_effect": 0.6079318005964736,
+        "residual_df": 22,
+        "snr_improvement_needed_for_80_percent": 1.2547860768574757,
+        "t_critical_alpha_0025": 2.073873067904015,
+        "t_needed_for_80_percent_power": 2.9320000000000026
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 655,
+      "cells_per_donor_median": 382,
+      "cells_per_donor_min": 36,
+      "donors_with_at_least_min_cells": 26,
+      "immune_cells_total": 9128,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_hip_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 27,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 26,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.7197302484237529,
+        "expected_t_at_v20_effect": 2.292973664565004,
+        "power_at_illustrative_shrunk_effect": 0.37495363165012013,
+        "power_at_v20_effect": 0.58994950606065,
+        "residual_df": 21,
+        "snr_improvement_needed_for_80_percent": 1.281741716190864,
+        "t_critical_alpha_0025": 2.0796138447276626,
+        "t_needed_for_80_percent_power": 2.9390000000000027
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 490,
+      "cells_per_donor_median": 226,
+      "cells_per_donor_min": 45,
+      "donors_with_at_least_min_cells": 25,
+      "immune_cells_total": 6244,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_ang_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 24,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 25,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.6863342490054778,
+        "expected_t_at_v20_effect": 2.248445665340637,
+        "power_at_illustrative_shrunk_effect": 0.3615098054386891,
+        "power_at_v20_effect": 0.5713496942850755,
+        "residual_df": 20,
+        "snr_improvement_needed_for_80_percent": 1.310238466248944,
+        "t_critical_alpha_0025": 2.085963447265837,
+        "t_needed_for_80_percent_power": 2.9460000000000024
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 921,
+      "cells_per_donor_median": 307,
+      "cells_per_donor_min": 44,
+      "donors_with_at_least_min_cells": 25,
+      "immune_cells_total": 10375,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_itg_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 28,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 25,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.6863342490054778,
+        "expected_t_at_v20_effect": 2.248445665340637,
+        "power_at_illustrative_shrunk_effect": 0.3615098054386891,
+        "power_at_v20_effect": 0.5713496942850755,
+        "residual_df": 20,
+        "snr_improvement_needed_for_80_percent": 1.310238466248944,
+        "t_critical_alpha_0025": 2.085963447265837,
+        "t_needed_for_80_percent_power": 2.9460000000000024
+      }
+    },
+    {
+      "at8_available_donors": 27,
+      "cells_per_donor_max": 935,
+      "cells_per_donor_median": 335,
+      "cells_per_donor_min": 37,
+      "donors_with_at_least_min_cells": 25,
+      "immune_cells_total": 9124,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_v1c_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 34,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 25,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.6863342490054778,
+        "expected_t_at_v20_effect": 2.248445665340637,
+        "power_at_illustrative_shrunk_effect": 0.3615098054386891,
+        "power_at_v20_effect": 0.5713496942850755,
+        "residual_df": 20,
+        "snr_improvement_needed_for_80_percent": 1.310238466248944,
+        "t_critical_alpha_0025": 2.085963447265837,
+        "t_needed_for_80_percent_power": 2.9460000000000024
+      }
+    },
+    {
+      "at8_available_donors": 22,
+      "cells_per_donor_max": 755,
+      "cells_per_donor_median": 363,
+      "cells_per_donor_min": 37,
+      "donors_with_at_least_min_cells": 21,
+      "immune_cells_total": 8255,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_lec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 29,
+      "partition": "reader_fit",
+      "power": {
+        "donors": 21,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.5455508686128223,
+        "expected_t_at_v20_effect": 2.060734491483763,
+        "power_at_illustrative_shrunk_effect": 0.3062138009026418,
+        "power_at_v20_effect": 0.4906736737119289,
+        "residual_df": 16,
+        "snr_improvement_needed_for_80_percent": 1.4485126600907976,
+        "t_critical_alpha_0025": 2.1199052992210112,
+        "t_needed_for_80_percent_power": 2.9850000000000025
+      }
+    },
+    {
+      "at8_available_donors": 12,
+      "cells_per_donor_max": 1772,
+      "cells_per_donor_median": 797,
+      "cells_per_donor_min": 101,
+      "donors_with_at_least_min_cells": 12,
+      "immune_cells_total": 10928,
+      "is_the_v20_population": false,
+      "matrix_id": "sea_ad_mec_rna_final_2026",
+      "min_cells_per_donor_threshold": 80,
+      "operator_index": 30,
+      "partition": "reader_validation",
+      "power": {
+        "donors": 12,
+        "estimable": true,
+        "expected_t_at_illustrative_shrunk_effect": 1.1683266391283975,
+        "expected_t_at_v20_effect": 1.5577688521711968,
+        "power_at_illustrative_shrunk_effect": 0.1721326518567757,
+        "power_at_v20_effect": 0.2705955558899492,
+        "residual_df": 7,
+        "snr_improvement_needed_for_80_percent": 2.0991561074303946,
+        "t_critical_alpha_0025": 2.3646242515927844,
+        "t_needed_for_80_percent_power": 3.270000000000003
+      }
+    }
+  ],
+  "training_authorized": false,
+  "v20_modified": false,
+  "what": "Pathology-blind scoping of which region could supply a properly powered generalisation cohort for V21."
+}

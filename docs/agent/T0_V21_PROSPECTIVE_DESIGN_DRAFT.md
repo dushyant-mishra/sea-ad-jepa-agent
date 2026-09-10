@@ -138,10 +138,19 @@ could not have detected the effect, but that would permanently consume the only
 fresh cohort. Spending an irreplaceable resource on a test that is more likely
 than not to answer nothing is the single irreversible move available here.
 
-**Therefore, frozen as a gate:** `reader_validation` is opened only when a
-frozen V21 design demonstrates **≥ 80% power at α = 0.025 on 12 donors**,
-computed discovery-only and pathology-blind, against a pre-declared effect size
-that is *not* V20's point estimate but a winner's-curse-adjusted lower bound.
+**Owner decision: HOLD `reader_validation`. The 12 fresh donors are not to be
+spent at ~27% power.** The power gate is required first.
+
+**Frozen as a gate:** `reader_validation` is opened only when a frozen V21
+design demonstrates **≥ 80% power at α = 0.025 on 12 donors**, computed
+discovery-only and pathology-blind, against a pre-declared effect size that is
+*not* V20's point estimate but a winner's-curse-adjusted lower bound.
+
+Note the interaction with §1.3: the power gate must be evaluated for the
+estimator that will actually be tested, i.e. **after** the 46-donor refit, not
+for the 28-donor fit. A better-fit target may raise the achievable effect, and
+that is the legitimate route to passing this gate. Improving the instrument
+raises power; loosening the threshold does not.
 
 If the gate fails, the correct action is not to open the partition and hope.
 Options, in the order I would consider them:
@@ -150,20 +159,24 @@ Options, in the order I would consider them:
    methodology — detection-invariant estimator, power-calibrated gates,
    provenance closure — validated on discovery with the spent 18 as internal
    sensitivity. Costs nothing irreversible.
-2. **A second brain region as the replication cohort.** The audit incidentally
-   showed the unused donors carry substantial cells outside MTG — PFC A9
-   367,252, MEC 256,071, caudate 194,624, V1C 145,172, STG 127,294. A second
-   region would be a *generalization* test rather than a replication, since the
-   biology differs, but it could be adequately sized, which 12 MTG donors are
-   not. This is likely the higher-value engineering investment.
+2. **A second brain region — scoped, and it does not solve the power problem.**
+   See §11. Other regions have large, well-powered `reader_fit` cohorts, but
+   every one of them is a strict subset of the same 46 MTG donors: **zero fresh
+   donors.** A second region is a within-donor cross-region generalisation test,
+   not an independent confirmation cohort. Worth doing on its own merits;
+   useless for this gate.
 3. **Reduce the nuisance cost.** At n = 12, `p_full = 5` spends 42% of the data
    on nuisance. A leaner design would recover df — but it must be justified
    prospectively on design grounds, never chosen for power, and the gain is
    small: dropping age² raises 12-donor power only to about 0.30.
 
-My recommendation is 1, with 2 scoped in parallel. The owner's hierarchy is the
-right structure; I would simply not spend its third tier until there is a test
-it can power.
+**Recommendation, revised after scoping: option 1.** Option 2 was my
+suggestion and the scoping refuted it — it adds predictors, not donors. Since
+donor count is what drives power for donor-level inference, no combination of
+regions raises 12-donor power. The routes that remain are a materially better
+estimator (§2) or a different claim type. The owner's hierarchy is the right
+structure; its third tier simply must not be spent until there is a test it can
+power.
 
 ---
 
@@ -217,14 +230,30 @@ Consequences, stated so they cannot drift:
   fresh tiers are spent there is nothing left to confirm anything against, which
   is why the oracle is worth more than ten extra confirmation donors.
 
-One design question the hierarchy raises, flagged rather than decided: **should
-V21's discovery target fit use 28 donors or 28 + 18 = 46?** Using 46 nearly
-doubles the fitting cohort and is legitimate, since the fresh 12 remain
-untouched and a better-fit target is a better instrument rather than a biased
-one. Against it: V20's frozen target was fit on 28, so refitting on 46 makes
-V21 a different object and muddies the comparison, and it blurs the 18's
-internal-sensitivity role. I lean to **fit on 28** and keep the three-way
-separation clean, but the power cost is real and it is the owner's call.
+#### Owner decision: select on 28, refit the frozen estimator on 46
+
+Better than either option I offered, and it resolves the tension rather than
+trading one side against the other:
+
+1. **All method and ridge selection on the 28 discovery donors.** Estimator
+   family, selection criteria, ridge bracketing, QC thresholds and power
+   calibration — everything that involves a choice.
+2. **Then freeze the estimator completely.**
+3. **Then refit that frozen estimator on all 46 development donors** — the 28
+   plus the 18 spent ones.
+4. **Then the single test on the fresh 12.**
+
+Why this is right. Selection on 28 keeps every choice clean. The refit on 46
+uses the 18's data as what it now is — development data — without pretending
+they are validation. And the fresh 12 stay disjoint from all 46 by construction,
+since they are in a different partition entirely, so the test set is untouched
+no matter how the instrument was fitted.
+
+Two consequences to record. V21's target is a **different object** from V20's,
+which was fit on 28, so V21's T1 is not a replication of V20's exact target and
+must not be described as one. And nearly doubling the fitting cohort should
+sharpen β, which is the legitimate way to move §0.3's power gate — improve the
+instrument, never the threshold.
 
 ---
 
@@ -365,29 +394,44 @@ and it is far tighter than an unpaired comparison. The near-optimal set is every
 **Step 2 — publish its width in decades.** If it spans more than 2 decades,
 flag `RIDGE_CV_SURFACE_FLAT`. **This is a flag, not a rejection.**
 
-**Step 3 — test functional stability across the near-optimal set**, all
-pathology-blind on discovery:
+**Step 3 — build the reference envelope from donor resampling, not from a
+chosen number.** Owner decision, and it removes the last arbitrary constant from
+this section. Fix λ at the near-optimal minimum and refit under
+leave-one-discovery-donor-out — 28 refits, deterministic, no RNG, and the
+machinery already exists because LOODO is what computes the CV surface. For each
+refit measure the displacement of
 
-- β **direction** agreement — cosine between the β vectors of the extreme
-  members of the near-optimal set;
+- β **direction** — cosine against the full-discovery-set β;
 - **cell-score geometry** — rank correlation of per-cell scores;
 - **donor summaries** — correlation and maximum absolute difference of the
   per-donor score used downstream.
 
-**Step 4 — decide.**
+The spread of those 28 displacements is the **normal variability of the
+estimator under donor resampling** — the uncertainty the analysis already
+accepts as unavoidable.
 
-- If the near-optimal solutions are **functionally equivalent**, choose a
-  deterministic conservative λ — the **strongest regularisation in the
-  near-optimal set** — and report explicitly that λ itself is weakly identified
-  while the estimator is not.
-- If they **materially disagree**, `STOP_RIDGE_SELECTION_NOT_IDENTIFIED`.
+**Step 4 — compare λ-induced displacement against that envelope, and decide.**
+On the full discovery set, measure the same three displacements between the
+extreme members of the near-optimal λ set.
 
-The agreement bounds for step 3 are numbers, and they must be frozen in review
-rather than chosen by me here. They should be expressed as consequences where
-possible — for instance, whether the donor summaries agree closely enough that
-any downstream terminal would be unchanged across the near-optimal set — because
-a consequence-based bound is much harder to game than a bare correlation
-threshold.
+- If λ-induced displacement lies **within** the donor-resampling envelope, then
+  choosing λ inside the near-optimal set matters less than which donors happened
+  to be sampled. λ is functionally irrelevant at this precision: choose the
+  **strongest regularisation in the near-optimal set**, deterministically, and
+  report that λ is weakly identified while the estimator is not.
+- If λ-induced displacement **exceeds** the envelope,
+  `STOP_RIDGE_SELECTION_NOT_IDENTIFIED` — the regularisation choice is doing
+  more to the answer than the sampling uncertainty does, which is exactly when
+  it must not be made silently.
+
+**No effect-size or correlation constant is chosen anywhere.** The rule is a
+comparison between two sources of variation in the same units. What remains to
+be frozen is structural, not numerical: the resampling scheme
+(leave-one-donor-out recommended, since it is deterministic and already
+computed) and which order statistic of the 28 defines the envelope (the maximum
+is the conservative choice; a 95th percentile is defensible). Those should be
+set in review, and they are choices about procedure rather than about how big an
+effect has to be.
 
 ### 3.4 What must be published
 
@@ -588,14 +632,73 @@ section**; only the availability flag, exactly as the audit did.
 completeness and provenance closure → freeze the complete V21 contract → and
 only then, the single AT8-opening confirmatory run.
 
-## 11. Open items for review
+## 11. Second-region scoping — done, and it refutes my own suggestion
+
+Owner-approved and run, pathology-blind: `scripts/v4/t0_v21_second_region_scoping_v1.py`,
+record `outputs/t0_v21_second_region_scoping_20260910/`. No region selected, no
+partition opened, no AT8 value read, nothing fitted.
+
+Ranked by **achievable donor-level power**, never by cell count, because T0
+inference is donor-level and a region with millions of cells across eight donors
+is worse than one with modest cells across thirty. Donors counted are
+AT8-available with at least 80 immune cells, that threshold reused from the
+frozen tail support minimum rather than chosen here.
+
+| region (`reader_fit`) | AT8-available donors | usable | median cells/donor | projected power |
+| --- | ---: | ---: | ---: | ---: |
+| MTG — *V20's population* | 46 | 45 | 386 | 0.837 |
+| MEC | 44 | 43 | 647 | 0.820 |
+| PFC A9 | 42 | 42 | 499 | 0.810 |
+| FI | 27 | 27 | 386 | 0.608 |
+| STG | 27 | 27 | 310 | 0.608 |
+| HIP | 27 | 26 | 382 | 0.590 |
+| ANG / ITG / V1C | 27 | 25 | 226–335 | 0.571 |
+| LEC | 22 | 21 | 363 | 0.491 |
+
+At first reading MEC and PFC A9 look like well-powered replication cohorts of
+42–44 donors. **They are not, and this refutes the suggestion I made in §0.3.**
+
+| region `reader_fit` cohort | donors | already in the MTG 46 | **new donors** |
+| --- | ---: | ---: | ---: |
+| MEC | 44 | 44 | **0** |
+| PFC A9 | 42 | 42 | **0** |
+| FI | 27 | 27 | **0** |
+| STG | 27 | 27 | **0** |
+| HIP | 27 | 27 | **0** |
+
+**Every other region's cohort is a strict subset of the same 46 donors.** These
+are the same people, sampled in different tissue. So:
+
+1. **A second region cannot be an independent confirmation cohort.** All 46 have
+   had their AT8 used already — 28 in the discovery fit, 18 in the V20
+   adjudication. A second region supplies a new *predictor* against an outcome
+   we have already seen.
+2. **Adding regions cannot fix the power problem.** Power for donor-level
+   inference scales with donors, and no combination of regions adds a donor.
+3. **The only fresh donors in the entire atlas remain the 12 `reader_validation`
+   and the 10 `reader_oracle`** — and they too are the same 12 and 10 people
+   across regions.
+
+What a second region *is* worth, on its own merits: a well-powered **within-donor
+cross-region generalisation** test at 42–44 donors — does the immune-state
+association hold when the expression comes from different tissue? That is real
+science and it is properly sized. It is a generalisation claim, not a
+confirmation, and it must be labelled as one because the outcome values are
+reused.
+
+One non-obvious finding worth keeping. The 12 fresh donors have **more immune
+cells in MEC (median 797) than in MTG (342)**, with PFC A9 at 414. Per-donor
+summary precision does not change the donor count, so the power gain is
+second-order — but if the 12 are ever spent, MEC may be the better tissue to
+spend them in than MTG. That should be settled before the partition is opened,
+not after.
+
+## 12. Open items for review
 
 1. §0.1 — **answered and decided.** `reader_validation` approved,
    `reader_oracle` sealed.
-2. **§0.3 — the one I would most like a decision on.** 12-donor T1 power is
-   about 0.27 at α = 0.025, and lower after winner's curse. I recommend holding
-   `reader_validation` sealed until a design can power it, and scoping a second
-   brain region in parallel as the adequately-sized replication cohort.
+2. §0.3 — **decided: hold `reader_validation`.** The power gate stands, to be
+   evaluated after the 46-donor refit.
 2. §0.2 — whether T2 has any power at 18-donor scale before it is designed.
 3. §2.4 — which continuous formulation. I lean to the shape/interaction form
    because it needs no threshold.
@@ -603,8 +706,14 @@ only then, the single AT8-opening confirmatory run.
    you would rather hold T1 until fresh donors exist.
 5. Whether the estimator family should include a candidate that models dropout
    explicitly, which I left out as too assumption-heavy for a frozen design.
-6. §3.3 — the functional-agreement bounds for β direction, cell-score geometry
-   and donor summaries. Expressed as consequences where possible. The 2-decade
-   figure survives only as a *flag*, per the owner's correction.
-7. §1.3 — whether V21's discovery target fit uses 28 donors or 28 + 18 = 46. I
-   lean to 28 for a clean separation; 46 is defensible and more powerful.
+6. §3.3 — **decided: no fixed cutoffs.** What remains is structural: the
+   resampling scheme and which order statistic of the 28 leave-one-out refits
+   defines the envelope. I recommend leave-one-donor-out with the maximum as the
+   conservative envelope.
+7. §1.3 — **decided: select on 28, refit the frozen estimator on 46, test once
+   on the fresh 12.**
+8. §11 — whether to scope the cross-region generalisation study as a separate
+   prospectively frozen analysis, given it is properly powered at 42–44 donors
+   but is a generalisation rather than a confirmation.
+9. §11 — whether MEC rather than MTG should be the tissue in which the 12 fresh
+   donors are eventually spent, given 797 versus 342 median immune cells.
