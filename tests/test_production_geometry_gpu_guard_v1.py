@@ -16,6 +16,7 @@ def authority(**kw):
         proposal_weight_invariance_artifact_sha256="d" * 64,
         packing_restart_invariance_artifact_sha256="e" * 64,
         representation_firewall_artifact_sha256="f" * 64,
+        historical_c2_gpu_receipt_sha256="2" * 64,
         protected_registry_sha256="1" * 64,
         production_geometry_frozen_before_gpu_run=True,
     )
@@ -58,6 +59,7 @@ def test_true_production_receipt_is_bound_and_never_authorizes_training():
     out = qualify_production_geometry_gpu_receipt(receipt(), authority=authority())
     assert out["real_production_geometry_qualified"] is True
     assert out["historical_regression_is_supporting_only"] is True
+    assert out["bindings"]["historical_c2_gpu_receipt_sha256"] == "2" * 64
     assert out["training_authorized"] is False
 
 
@@ -77,6 +79,12 @@ def test_dimension_artifact_substitution_stops():
 
 def test_packing_artifact_substitution_stops():
     r = receipt(); r["bindings"]["packing_restart_invariance_artifact_sha256"] = "9" * 64
+    with pytest.raises(RuntimeError, match="BINDING_SUBSTITUTION"):
+        qualify_production_geometry_gpu_receipt(r, authority=authority())
+
+
+def test_historical_receipt_substitution_stops():
+    r = receipt(); r["bindings"]["historical_c2_gpu_receipt_sha256"] = "9" * 64
     with pytest.raises(RuntimeError, match="BINDING_SUBSTITUTION"):
         qualify_production_geometry_gpu_receipt(r, authority=authority())
 
