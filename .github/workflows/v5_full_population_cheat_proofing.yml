@@ -41,6 +41,7 @@ jobs:
           tests/test_teacher_student_v5_full_population_horizon_candidate_v2.py
           tests/test_teacher_student_v5_full_population_horizon_candidate_v3.py
           tests/test_materialize_full_population_schedule_v4.py
+          tests/test_v5_full_population_proposal_weight_restart_v1.py
           tests/test_biology_observation_adapter_v1.py
           tests/test_biology_observation_adapter_v2.py
           tests/test_relational_shortcut_increment_guard_v1.py
@@ -119,6 +120,7 @@ jobs:
           scripts/v5_anticheat/audit_full_population_coverage_conditioning_v1.py
           scripts/v5_anticheat/derive_full_population_schedule_optimum_v3.py
           scripts/v5_anticheat/materialize_full_population_schedule_v4.py
+          scripts/v5_anticheat/audit_full_population_proposal_weight_restart_v1.py
           scripts/v5_anticheat/derive_v5_real_data_parameter_registry_v1.py
           scripts/v5_anticheat/build_full_reader_expression_location_manifest_v2.py
           scripts/v5_anticheat/bind_corrected_train_cache_v1.py
