@@ -1,0 +1,63 @@
+{
+  "schema": "JEPA_T0_TAIL_DEPTH_THINNING_CONTRACT_V1",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "purpose": "Step 2 of the QC methodology investigation: a same-cell measurement intervention. Thin molecules from the exact confirmation cells to fixed lower depths, recompute the frozen target score and tail classification, and measure score displacement, rank stability and tail-label flip rates. This asks whether changing measurement depth alone manufactures or destroys the tail, which the cross-cell QC association test cannot address.",
+  "why_frozen_first": "The levels, the number of draws, the seed derivation and the acceptance checks are fixed here before any result exists, so that no level or seed can be chosen because of the answer it produces. A tolerance or level selected after seeing the outcome would make this a description rather than a test.",
+  "authority": "DIAGNOSTIC_ONLY. Not T0 science authority. Not training authority. Does not modify T0 V20, the frozen QC gate, QC_ALPHA, the tail definition, the frozen target, or the tail terminal. Designs and tests no remediation.",
+  "frozen_tail_terminal_unchanged": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+  "training_authorized": false,
+  "pathology_blind": true,
+  "reads_at8": false,
+
+  "retention_levels": [1.0, 0.9, 0.75, 0.5, 0.25],
+  "retention_level_rationale": "1.0 is a control that must reproduce the unthinned scores exactly and is the harness self-check. 0.9 mild, 0.75 moderate, 0.5 a halving of depth as a conventional reference point, 0.25 severe. Chosen as a descending ladder spanning mild to severe before any result was computed, not tuned to a threshold.",
+  "draws_per_level": 3,
+  "draws_rationale": "Three independent thinning draws per level separate draw-to-draw sampling noise from the effect of the level itself. Kept small deliberately: this is a displacement measurement, not a null distribution, and no p-value is computed from the draws.",
+
+  "thinning_model": {
+    "description": "Binomial molecule retention at rate p, applied independently to every observed molecule. The cell's library is partitioned into the molecules counted at the 35,076 scalar-measured addresses and the remainder, and both parts are thinned at the same rate, so the recomputed CP10K normalisation sees a library consistent with the thinned counts.",
+    "scalar_counts": "thinned[g] ~ Binomial(count[g], p) for each nonzero scalar address g",
+    "library_remainder": "remainder = source_library - sum(scalar counts); thinned_remainder ~ Binomial(remainder, p)",
+    "thinned_source_library": "sum(thinned scalar counts) + thinned_remainder",
+    "why_both_parts": "Thinning the scalar counts while holding source_library fixed would model a cell whose library stayed the same size while its measured genes lost molecules, which is not a depth reduction. Thinning both keeps the normalisation denominator physically consistent with the numerator."
+  },
+
+  "seed_derivation": {
+    "namespace": "T0-TAIL-DEPTH-THINNING-V1",
+    "rule": "sha256(namespace || 0x00 || uint32(draw) || uint16(len(level_text)) || level_text || uint16(len(donor)) || donor || uint16(len(stable_key)) || stable_key), the first 8 bytes taken as a little-endian unsigned integer seed for a per-cell numpy default_rng",
+    "level_text": "repr of the retention level as a Python float",
+    "why_per_cell_hash": "Deterministic and independent of iteration order, cell count and array layout, so the same cell receives the same thinning in any re-run and on any machine. This mirrors the frozen QC randomization, which seeds per donor and stable key rather than from a global generator."
+  },
+
+  "recomputation": {
+    "scorer": "the frozen t0_tail_authority_v1.score_raw_counts, unmodified, with the frozen target fit",
+    "centering": "per donor, subtract the donor mean of the thinned cell scores, exactly as the frozen confirmation builder centres the unthinned scores",
+    "tail_rule": "centered score > the frozen tail threshold, the same comparison and the same threshold value as the frozen builder; the threshold is not recomputed or rescaled",
+    "tail_mask_not_redefined": "the rule and the threshold are frozen; only the counts entering the score change"
+  },
+
+  "reported_metrics": [
+    "per-cell signed and absolute displacement of the centered score",
+    "displacement standardised by the donor's unthinned centered-score standard deviation",
+    "within-donor Spearman rank correlation between unthinned and thinned centered scores",
+    "tail-label flip rates in both directions: originally tail becoming rest, and originally rest becoming tail",
+    "net change in tail-cell count, per donor and overall",
+    "realised mean Q_DETECT and Q_DEPTH before and after thinning, to confirm the intervention did what it claims"
+  ],
+
+  "acceptance_checks": [
+    "AT_LEVEL_1.0_SCORES_REPRODUCE_EXACTLY: with retention 1.0 every thinned count must equal its original count and every recomputed centered score must equal the unthinned centered score bit for bit; any deviation is STOP, because it would mean the harness perturbs the cell even when asked not to",
+    "AT_LEVEL_1.0_TAIL_LABELS_REPRODUCE_EXACTLY: the recomputed tail mask must equal the frozen tail mask for every cell; any deviation is STOP",
+    "THINNED_COUNTS_NEVER_EXCEED_ORIGINALS: binomial retention cannot increase a count; any violation is STOP",
+    "THINNED_LIBRARY_NEVER_EXCEEDS_ORIGINAL: any violation is STOP",
+    "SCALAR_SUM_NEVER_EXCEEDS_THINNED_LIBRARY: the frozen scorer refuses counts exceeding the library, so this must hold by construction; any violation is STOP",
+    "DONOR_SET_AND_CELL_COUNT_UNCHANGED: 18 decision donors and the same cells throughout; any change is STOP"
+  ],
+
+  "interpretation_limits": [
+    "This measures whether a depth reduction alone moves the score and the tail label. It does not by itself establish that the observed tail is technical, and it cannot: a genuine biological state may also be depth-sensitive to measure.",
+    "Q_DEPTH and Q_DETECT are highly correlated (r = 0.9232), so thinning moves both together and this design does not separate them as causes.",
+    "No p-value or gate is defined here. Displacement and flip rates are descriptive quantities that inform the successor design, which remains unfrozen and unauthorised.",
+    "A high flip rate would say the tail label is fragile to measurement depth. A low flip rate would say the label is robust to it. Neither outcome changes the frozen T0 terminal."
+  ]
+}
