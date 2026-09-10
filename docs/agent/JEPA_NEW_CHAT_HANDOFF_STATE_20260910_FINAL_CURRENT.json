@@ -1,12 +1,14 @@
 {
-  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT_V1",
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT_V2",
   "date": "2026-09-10",
   "status": "HANDOFF_ONLY_NO_TRAINING_AUTHORITY",
   "canonical_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md",
+  "latest_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL2.md",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "observed_heads_before_final_governance_commits": {
-    "main": "ff24e12d55200cfcaf64b536a506383b8100f69c",
-    "v5": "5668e3d71c720219ec823d5ff089f246091f2be2",
+  "observed_heads_before_final2_governance_commits": {
+    "main": "d0dbf7d5b3fa942ad747af81844ea7bf5488b81f",
+    "v5_live": "495e88971909ad5aeb8c93639af85000481a8f41",
+    "v5_engineering_state": "5668e3d71c720219ec823d5ff089f246091f2be2",
     "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
     "t0_v21_draft": "e770f6dc83c44a36232d15541d3529e71c7611c9",
     "t0_step4": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f"
@@ -14,20 +16,22 @@
   "branches": {
     "v5": "planning/v5-full-population-cheat-proofing-20260909",
     "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
-    "t0_v21_draft": "t0/v21-prospective-design-20260910",
-    "handoff": "handoff/jepa-new-chat-20260910-t0-v21-v5"
+    "t0_v21_draft": "t0/v21-prospective-design-20260910"
   },
   "t0": {
     "v20_status": "IMMUTABLE",
     "broad_state": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
     "rare_tail": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+    "step4_interpretation": "QC_BALANCE_SUCCEEDED_BUT_MATCHED_GEOMETRY_LOST_POWER_SO_CONFOUNDING_REMAINS_UNRESOLVED",
     "v21_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
     "next_action": "PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY",
     "confirmation_design_rule": "IF_LOOKING_AT_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+    "weighting_probe_authorized_now": false,
     "training_authorized": false
   },
   "v5": {
-    "branch_head": "5668e3d71c720219ec823d5ff089f246091f2be2",
+    "live_branch_head": "495e88971909ad5aeb8c93639af85000481a8f41",
+    "engineering_state_head": "5668e3d71c720219ec823d5ff089f246091f2be2",
     "full_reader_cells": 4553407,
     "donors": 104,
     "operators": 42,
@@ -37,7 +41,16 @@
     "dominant_real_data_blocker": "STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING",
     "small_real_data_smoke_allowed": true,
     "small_real_data_smoke_label": "REAL_DATA_SMOKE_NON_AUTHORITY",
-    "next_action": "VERIFY_HASHED_RUNTIME_INPUTS_AND_RUN_NON_AUTHORITY_REAL_DATA_SMOKE_IF_RUNTIME_SUPPORTS_IT_THEN_CONTINUE_STRUCTURAL_SELF_AUDIT",
+    "small_real_data_smoke_precondition": "ALL_REQUIRED_INPUT_HASH_MANIFEST_AND_PROVENANCE_CHECKS_PASS",
+    "next_action": "TINY_DETERMINISTIC_REAL_LOCKED_SUBSET_SMOKE_ONLY_IF_REQUIRED_AUTHORITIES_PASS",
+    "smoke_may_not_set": [
+      "production_dimensions",
+      "production_thresholds",
+      "biology_conclusions",
+      "shortcut_superiority_authority",
+      "postqualification",
+      "training_authority"
+    ],
     "training_authorized": false
   },
   "runtime_assets": {
