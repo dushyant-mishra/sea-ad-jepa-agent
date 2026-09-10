@@ -1,4 +1,3 @@
-import copy
 import pytest
 
 from sea_ad_jepa.v5.postqualification_dependency_guard_v1 import (
@@ -47,7 +46,7 @@ def qc_report(r):
 
 def power_report(r):
     return {
-        "schema": "JEPA_V5_REJECTION_GATE_POWER_QUALIFICATION_V2",
+        "schema": "JEPA_V5_REJECTION_GATE_POWER_QUALIFICATION_V3",
         "authority_id": r["rejection_gate_power_calibration"]["authority_id"],
         "canonical_rejection_gate_set": REJECTION_CAPABLE_POST_GATES,
         "design_context_sha256": "a" * 64,
@@ -56,6 +55,8 @@ def power_report(r):
             gate: {
                 "gate_artifact_sha256": r[gate]["artifact_sha256"],
                 "gate_authority_id": r[gate]["authority_id"],
+                "gate_accepts_valid_control": True,
+                "gate_rejects_invalid_control": True,
             }
             for gate in REJECTION_CAPABLE_POST_GATES
         },
@@ -81,7 +82,7 @@ def run(r=None, q=None, p=None):
 def test_consistent_dependency_graph_passes_without_training_authority():
     out = run()
     assert out["qc_parent_child_bound"] is True
-    assert out["power_parent_child_bound"] is True
+    assert out["two_sided_power_parent_child_bound"] is True
     assert out["training_authorized"] is False
 
 
@@ -122,6 +123,20 @@ def test_power_child_authority_from_easier_gate_stops():
     r = rows(); p = power_report(r)
     p["gate_controls"]["shortcut_superiority"]["gate_authority_id"] = "easier-old-gate"
     with pytest.raises(RuntimeError, match="POWER_CHILD_AUTHORITY_SUBSTITUTION"):
+        run(r=r, p=p)
+
+
+def test_valid_control_acceptance_must_survive_dependency_closure():
+    r = rows(); p = power_report(r)
+    p["gate_controls"]["heldout_biology_validation"]["gate_accepts_valid_control"] = False
+    with pytest.raises(RuntimeError, match="VALID_CONTROL_NOT_ACCEPTED"):
+        run(r=r, p=p)
+
+
+def test_invalid_control_rejection_must_survive_dependency_closure():
+    r = rows(); p = power_report(r)
+    p["gate_controls"]["teacher_representation_collapse"]["gate_rejects_invalid_control"] = False
+    with pytest.raises(RuntimeError, match="INVALID_CONTROL_NOT_REJECTED"):
         run(r=r, p=p)
 
 
