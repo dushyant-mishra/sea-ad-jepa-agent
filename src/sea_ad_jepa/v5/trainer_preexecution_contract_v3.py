@@ -18,6 +18,18 @@ from .trainer_preexecution_contract_v2 import (
 QUALIFICATION_EXECUTION_MODE = "BOUNDED_QUALIFICATION_ONLY"
 
 
+def _nonempty(value: object, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{name} must be nonempty")
+    return value
+
+
+def _positive_int(value: object, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ValueError(f"{name} must be a positive integer")
+    return value
+
+
 @dataclass(frozen=True)
 class TrainerPreexecutionAuthorityV3:
     authorities: Mapping[str, str]
@@ -29,6 +41,8 @@ class TrainerPreexecutionAuthorityV3:
     relational_training_active: bool
     optimizer_started: bool
     preexecution_qualification_bundle: Mapping[str, Any]
+    qualification_horizon_authority_id: str
+    qualification_horizon_presentations: int
     execution_mode: str = QUALIFICATION_EXECUTION_MODE
     training_authorized: bool = False
 
@@ -49,6 +63,10 @@ class TrainerPreexecutionAuthorityV3:
         self._v2().validate()
         if self.execution_mode != QUALIFICATION_EXECUTION_MODE:
             raise RuntimeError("STOP_V5_PREEXECUTION_PRODUCTION_MODE_FORBIDDEN")
+        _nonempty(self.qualification_horizon_authority_id, "qualification_horizon_authority_id")
+        qh = _positive_int(self.qualification_horizon_presentations, "qualification_horizon_presentations")
+        if self.presentation_horizon != qh:
+            raise RuntimeError("STOP_V5_QUALIFICATION_HORIZON_NOT_EXACTLY_FROZEN")
         pre = validate_preexecution_bundle(self.preexecution_qualification_bundle)
         if pre.get("qualification_run_eligible") is not True:
             raise RuntimeError("STOP_V5_QUALIFICATION_RUN_NOT_ELIGIBLE")
@@ -61,6 +79,8 @@ class TrainerPreexecutionAuthorityV3:
         return canonical_json_sha256({
             "schema": "TRAINER_PREEXECUTION_AUTHORITY_V3",
             "execution_mode": QUALIFICATION_EXECUTION_MODE,
+            "qualification_horizon_authority_id": self.qualification_horizon_authority_id,
+            "qualification_horizon_presentations": self.qualification_horizon_presentations,
             "v2_mechanics_authority_sha256": self._v2().canonical_digest(),
             "preexecution_qualification_bundle_sha256": pre["bundle_sha256"],
             "production_training_authorized": False,
