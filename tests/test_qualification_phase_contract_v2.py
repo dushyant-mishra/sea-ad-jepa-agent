@@ -50,7 +50,7 @@ def dep_report(base):
         "design_context_sha256": "a" * 64,
         "qualification_checkpoint_sha256": "b" * 64,
         "qc_parent_child_bound": True,
-        "power_parent_child_bound": True,
+        "two_sided_power_parent_child_bound": True,
         "passed": True,
         "training_authorized": False,
     }
@@ -83,10 +83,11 @@ def build(e=None, d=None):
     )
 
 
-def test_v2_requires_dependency_closure_and_still_does_not_authorize_training():
+def test_v2_requires_dependency_closure_and_two_sided_power_without_authorizing_training():
     out = build()
     assert set(out["required_evidence"]) == set(POST_QUALIFICATION_EVIDENCE_V2)
     assert out["dependency_closure_required"] is True
+    assert out["two_sided_power_calibration_required"] is True
     assert out["production_training_eligible"] is True
     assert out["production_training_authorized"] is False
 
@@ -123,10 +124,31 @@ def test_stale_dependency_graph_stops_after_child_artifact_changes():
         build(e=e, d=d)
 
 
+def test_dependency_graph_must_prove_two_sided_power():
+    e = all_rows(); d = dep_report({name: e[name] for name in POST_QUALIFICATION_EVIDENCE})
+    d["two_sided_power_parent_child_bound"] = False
+    with pytest.raises(RuntimeError, match="DEPENDENCY_GRAPH_NOT_CLOSED"):
+        build(e=e, d=d)
+
+
 def test_dependency_row_cannot_claim_training_authority():
     e = all_rows(); e[DEPENDENCY_EVIDENCE_ID]["training_authorized"] = True
     with pytest.raises(RuntimeError, match="CLAIMS_TRAINING_AUTHORITY"):
         build(e=e)
+
+
+def test_bundle_requires_two_sided_power_on_revalidation():
+    out = build()
+    tampered = copy.deepcopy(out)
+    tampered["two_sided_power_calibration_required"] = False
+    base = {name: out["required_evidence"][name] for name in POST_QUALIFICATION_EVIDENCE}
+    with pytest.raises(RuntimeError, match="TWO_SIDED_POWER_CALIBRATION_NOT_REQUIRED"):
+        validate_postqualification_bundle_v2(
+            tampered,
+            preexecution_bundle=pre_bundle(),
+            dependency_closure_report=dep_report(base),
+            dependency_closure_artifact_sha256="f" * 64,
+        )
 
 
 def test_bundle_tamper_is_detected_on_revalidation():
