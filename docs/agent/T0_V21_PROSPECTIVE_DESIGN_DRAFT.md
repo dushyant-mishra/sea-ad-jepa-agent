@@ -10,7 +10,7 @@ development and can no longer silently be used to choose V21 machinery.
 
 ---
 
-## 0. Two blocking questions the contract cannot answer by itself
+## 0. Blocking questions, and the gate that must precede opening the partition
 
 These must be resolved before freezing, because the design branches on them.
 
@@ -65,7 +65,23 @@ so the audit is querying the authority it references.
    frozen age/sex authority also covers only the 46 donors and would need
    extension from source.
 
-#### What I would recommend, for review
+#### Owner decision, recorded
+
+**Approved: open `reader_validation` only. `reader_oracle` stays sealed.** The
+12 validation donors are genuinely fresh for V21 and the engineering cost is
+accepted, because it restores a clean confirmatory test instead of arguing about
+partially spent donors. Conditions attached by the owner:
+
+- a **new V21 population authority**, never an amendment to V20;
+- before any AT8 value is opened: build the validation expression store, extend
+  the age/sex authority, rerun identity, completeness and provenance closure,
+  and freeze the complete V21 contract;
+- the 12 donors take **no part** in estimator selection, ridge selection, QC
+  thresholding, power calibration, or any other method choice.
+
+`reader_oracle`'s 10 donors are preserved as the eventual truly final check.
+
+#### Why I originally recommended this, retained for the record
 
 **Open `reader_validation` only, and leave `reader_oracle` closed.** That yields
 **12 fresh donors** — at the bottom of the 12–15 range this draft set for a
@@ -91,6 +107,64 @@ only** should establish what effect size the proposed continuous statistic can
 detect at 18-donor scale. If the answer is "nothing smaller than the effect we
 already failed to establish", the arm should be dropped rather than reformulated.
 
+### 0.3 A power gate must precede opening the partition — **new, and I would not skip it**
+
+The owner's structural calls are right and are adopted below. But the
+arithmetic says the *sequencing* matters more than the structure, and this is
+the one place I would push back on doing it now.
+
+**A 12-donor T1 test has about 27% power at the frozen α = 0.025.** Projecting
+V20's observed effect, with `p_full = 5` so residual df = n − 5:
+
+| n | residual df | expected t | one-sided p | power at α = 0.025 |
+| ---: | ---: | ---: | ---: | ---: |
+| **12** | 7 | 1.558 | 0.082 | **0.271** |
+| 18 (V20) | 13 | 1.908 | 0.039 | 0.423 |
+| 24 | 19 | 2.203 | 0.020 | 0.552 |
+| 30 | 25 | 2.463 | 0.011 | 0.658 |
+| 46 | 41 | 3.050 | 0.002 | 0.846 |
+
+For 80% power at n = 12 the test would need t = 3.27, a **2.1× improvement in
+standardized effect**. Removing detection noise is unlikely to deliver that.
+
+And it is worse than the table suggests. V20 itself ran at 42% power, so
+conditional on having observed p = 0.021 there, the effect estimate is likely
+**inflated by winner's curse**. The true effect is probably smaller, which
+pushes 12-donor power below 27%.
+
+So the expected outcome of opening `reader_validation` for T1 now is an
+**uninformative null** — one that would not disconfirm V20, because the design
+could not have detected the effect, but that would permanently consume the only
+fresh cohort. Spending an irreplaceable resource on a test that is more likely
+than not to answer nothing is the single irreversible move available here.
+
+**Therefore, frozen as a gate:** `reader_validation` is opened only when a
+frozen V21 design demonstrates **≥ 80% power at α = 0.025 on 12 donors**,
+computed discovery-only and pathology-blind, against a pre-declared effect size
+that is *not* V20's point estimate but a winner's-curse-adjusted lower bound.
+
+If the gate fails, the correct action is not to open the partition and hope.
+Options, in the order I would consider them:
+
+1. **Hold `reader_validation` sealed** and let V21's contribution be the
+   methodology — detection-invariant estimator, power-calibrated gates,
+   provenance closure — validated on discovery with the spent 18 as internal
+   sensitivity. Costs nothing irreversible.
+2. **A second brain region as the replication cohort.** The audit incidentally
+   showed the unused donors carry substantial cells outside MTG — PFC A9
+   367,252, MEC 256,071, caudate 194,624, V1C 145,172, STG 127,294. A second
+   region would be a *generalization* test rather than a replication, since the
+   biology differs, but it could be adequately sized, which 12 MTG donors are
+   not. This is likely the higher-value engineering investment.
+3. **Reduce the nuisance cost.** At n = 12, `p_full = 5` spends 42% of the data
+   on nuisance. A leaner design would recover df — but it must be justified
+   prospectively on design grounds, never chosen for power, and the gain is
+   small: dropping age² raises 12-donor power only to about 0.30.
+
+My recommendation is 1, with 2 scoped in parallel. The owner's hierarchy is the
+right structure; I would simply not spend its third tier until there is a test
+it can power.
+
 ---
 
 ## 1. Targets and their status
@@ -114,26 +188,43 @@ the confound and put all inference on an extreme region of a noisy
 distribution. V21 replaces it with a continuous formulation, of which the
 specific form is an open design choice (§2.4).
 
-**Status: exploratory and non-qualifying**, for a reason independent of its
-formulation: the held-out coherence statistic on the confirmation donors is part
-of the tail adjudication chain and its value is now known to us. Any V21 rare
-result on those same donors is a second look. If §0.1 yields fresh donors, T2's
-status can be revisited *in the frozen contract*, not afterwards.
+**Status: exploratory and non-qualifying in V21, even with the fresh 12.** Owner
+decision, and the reasoning is sound on two independent grounds: the estimand is
+being reformulated, and its power is unresolved (§0.2). Reserving the fresh
+cohort for a target that is still being defined would spend it badly.
 
-### 1.3 Confirmatory status if no fresh donors are available
+### 1.3 The donor hierarchy — four tiers, owner-approved
 
-Stated in advance so it cannot be softened later:
+This replaces the earlier "degraded confirmatory status" fallback entirely. T1
+no longer leans on it, because fresh donors are demonstrably available.
 
-- **T1 remains confirmatory**, conditional on §3 estimator selection being
-  strictly discovery-only and single-shot. Confirmation AT8 has never been read,
-  and the HC3 t-statistic depends on the score–AT8 relationship, so a
-  discovery-selected estimator cannot have been tuned toward it. The residual
-  exposure is optimism about generalisation, not a false-positive route, and it
-  must be stated in the result.
-- **T2 is exploratory** regardless.
-- V21 may **not** describe itself as an independent confirmation of V20. It is a
-  revised-method analysis on a partially spent cohort, and the report must say so
-  in those words.
+| tier | donors | role | may inform method choices? |
+| --- | ---: | --- | :---: |
+| discovery | 28 | target fit, estimator selection, ridge selection, QC thresholds, power calibration | **yes** |
+| spent historical validation | 18 | internal sensitivity and the published steps 1–4 diagnostics | **no** — already spent |
+| **fresh V21 confirmation** | **12** | one single-shot confirmatory test of T1 | **no** — must stay untouched |
+| final oracle | 10 | reserved, sealed | **no** |
+
+Consequences, stated so they cannot drift:
+
+- **T1's confirmatory evaluation is held** until the 12 are materialised, the
+  V21 procedure is completely frozen, and §0.3's power gate passes. It is then
+  run **once** on those 12.
+- **The previous 18 are no longer V21 confirmation.** They become
+  spent/internal-sensitivity donors. Any V21 number computed on them is labelled
+  internal sensitivity, never confirmation.
+- **`reader_oracle`'s 10 stay sealed** for the eventual final check. Once both
+  fresh tiers are spent there is nothing left to confirm anything against, which
+  is why the oracle is worth more than ten extra confirmation donors.
+
+One design question the hierarchy raises, flagged rather than decided: **should
+V21's discovery target fit use 28 donors or 28 + 18 = 46?** Using 46 nearly
+doubles the fitting cohort and is legitimate, since the fresh 12 remain
+untouched and a better-fit target is a better instrument rather than a biased
+one. Against it: V20's frozen target was fit on 28, so refitting on 46 makes
+V21 a different object and muddies the comparison, and it blurs the 18's
+internal-sensitivity role. I lean to **fit on 28** and keep the three-way
+separation clean, but the power cost is real and it is the owner's call.
 
 ---
 
@@ -250,29 +341,53 @@ for equal-loss exponents; it is not redefined here.
   budgets;
 - **the CV surface is not decisive** (see §3.3).
 
-### 3.3 Interiority is necessary but not sufficient — the plateau check
+### 3.3 Interiority is necessary but not sufficient — near-optimal set and functional stability
 
-This is the part a wider grid would have missed. Ridge on 28 donors can produce
-a CV surface that is nearly flat across many decades, in which case an interior
-minimum is weakly identified and the interiority requirement is close to
-vacuous — it would certify a coin flip between λ values differing by orders of
-magnitude.
+**The owner's formulation replaces mine, and it is strictly better.** I had
+proposed rejecting when the near-optimal plateau spans more than a frozen number
+of decades. That measures the wrong thing. A flat CV surface means **λ** is
+poorly identified; it does not follow that the **estimator** is poorly
+identified. λ can move a hundredfold while β's direction, the per-cell score
+geometry and the donor summaries barely change — in which case the fit is fine
+and only the λ label is uncertain. Conversely a narrow λ range can produce
+materially different β directions, which a width test would pass. A horizontal
+width cutoff is also easy to game by rescaling the grid.
 
-So V21 must additionally report the **near-optimal plateau width**: the range of
-exponents whose CV MSE lies within the frozen tie tolerance of the minimum, and
-the relative CV improvement of the minimum over the anchor endpoints. If the
-plateau spans more than a frozen number of decades, the result is
-`STOP_RIDGE_CV_SURFACE_NOT_DECISIVE`, and the correct response is to report the
-fit as regularisation-insensitive rather than to quote a selected λ as if it
-were identified.
+So rejection authority moves to functional consequence:
 
-**The plateau bound is not set here.** It is a number that must be chosen in
-review and frozen before the search runs, and I will not pick it silently. My
-recommendation is 2 decades, on the reasoning that a minimum indistinguishable
-across a 100-fold change in λ is not a selection. It should be set from the
-discovery CV surface's own shape if a principled derivation is available, in
-keeping with the standing rule that dataset geometry sets scale-sensitive
-parameters.
+**Step 1 — define the near-optimal set prospectively, by uncertainty not by
+equality.** Use a one-standard-error-type rule on **paired donor-level LOODO
+differences**: because the same donors are held out at every λ, the standard
+error of the *difference* in CV loss between two λ values is the correct scale,
+and it is far tighter than an unpaired comparison. The near-optimal set is every
+λ whose paired difference from the minimum is within one standard error of zero.
+
+**Step 2 — publish its width in decades.** If it spans more than 2 decades,
+flag `RIDGE_CV_SURFACE_FLAT`. **This is a flag, not a rejection.**
+
+**Step 3 — test functional stability across the near-optimal set**, all
+pathology-blind on discovery:
+
+- β **direction** agreement — cosine between the β vectors of the extreme
+  members of the near-optimal set;
+- **cell-score geometry** — rank correlation of per-cell scores;
+- **donor summaries** — correlation and maximum absolute difference of the
+  per-donor score used downstream.
+
+**Step 4 — decide.**
+
+- If the near-optimal solutions are **functionally equivalent**, choose a
+  deterministic conservative λ — the **strongest regularisation in the
+  near-optimal set** — and report explicitly that λ itself is weakly identified
+  while the estimator is not.
+- If they **materially disagree**, `STOP_RIDGE_SELECTION_NOT_IDENTIFIED`.
+
+The agreement bounds for step 3 are numbers, and they must be frozen in review
+rather than chosen by me here. They should be expressed as consequences where
+possible — for instance, whether the donor summaries agree closely enough that
+any downstream terminal would be unchanged across the near-optimal set — because
+a consequence-based bound is much harder to game than a bare correlation
+threshold.
 
 ### 3.4 What must be published
 
@@ -285,7 +400,8 @@ margin.
 ### 3.5 What this fix is and is not
 
 It is a **well-posedness** requirement. V20's optimum landed on the `+2.0`
-endpoint, which says the grid was misspecified.
+endpoint, which says the grid was misspecified. Note the split §3.3 introduces:
+a flat surface is *flagged*, only functional disagreement *rejects*.
 
 It is **not** a repair of an inferential threat, and V21 should not claim
 otherwise. The HC3 t-statistic is invariant to positive rescaling of the
@@ -426,13 +542,60 @@ Each of these fixes something that actually cost time in V20:
 
 ---
 
-## 10. Open items for review
+## 10. The V21 validation-population and store authority — requirements
 
-1. §0.1 — **answered.** The decision it leaves you is whether to open
-   `reader_validation` for 12 fresh donors, at the cost of a new population
-   authority, an op31 store build and an extended age/sex authority — and
-   whether to keep `reader_oracle` closed as a final untouched oracle, which I
-   recommend.
+Sequenced **after** §0.3's power gate, because building it is the expensive step
+and the gate decides whether it is worth building. The requirements are recorded
+now because they are needed either way, and because they are the same
+requirements whichever cohort is eventually used.
+
+All of it is pathology-blind. **No AT8 value is opened at any point in this
+section**; only the availability flag, exactly as the audit did.
+
+1. **A new authority, not an amendment.** `T0_V21_VALIDATION_POPULATION_AUTHORITY`
+   with its own predicate, fixing `partition='reader_validation'` and otherwise
+   identical to V20's — same source, matrix, operator 31, native class Immune.
+   V20's authority is not read-modify-written; it is referenced as the sibling it
+   differs from in exactly one field, and that difference is asserted in the
+   authority itself.
+2. **Population closure, independently derived.** Row-count authority, block
+   manifest digest and membership bytes for the validation partition, with the
+   three-root separation V20 used — population closure, logical row authority,
+   physical read plan — each digest-bound.
+3. **An op31 expression store for the validation partition.** V20's store holds
+   exactly the 638,150 `reader_fit` cells, so this is a new build. It must carry
+   its own manifest digest, and the completeness pass must be rerun rather than
+   inherited.
+4. **Age/sex authority extension**, from the same source, covering the 12
+   donors, with the frozen loader's expectation checks applied to the extended
+   package rather than bypassed.
+5. **Eligibility applied unchanged.** The frozen predicate
+   `AT8_available & technical_complete & isfinite(age) & sex.notna() & sex != ''`
+   is applied verbatim. The count that survives is a result, not a target — if
+   fewer than 12 pass, that is the answer.
+6. **No role split.** These 12 are confirmation donors in their entirety. There
+   is no discovery/confirmation hash split within them, because they exist to be
+   the confirmation tier.
+7. **Provenance from the start**, per §7: numeric environment recorded, resolved
+   input paths recorded beside digests, per-field replay-equivalence policy
+   frozen prospectively, and the computation published with the evidence.
+8. **A firewall entry.** Opening `reader_validation` must be recorded as an
+   explicit owner-authorised gate change with its scope stated —
+   `reader_validation` only, `reader_oracle` untouched — so the checkpoint
+   reflects reality rather than the pre-approval state.
+
+**Ordering, frozen:** power gate → population authority → store build →
+completeness and provenance closure → freeze the complete V21 contract → and
+only then, the single AT8-opening confirmatory run.
+
+## 11. Open items for review
+
+1. §0.1 — **answered and decided.** `reader_validation` approved,
+   `reader_oracle` sealed.
+2. **§0.3 — the one I would most like a decision on.** 12-donor T1 power is
+   about 0.27 at α = 0.025, and lower after winner's curse. I recommend holding
+   `reader_validation` sealed until a design can power it, and scoping a second
+   brain region in parallel as the adequately-sized replication cohort.
 2. §0.2 — whether T2 has any power at 18-donor scale before it is designed.
 3. §2.4 — which continuous formulation. I lean to the shape/interaction form
    because it needs no threshold.
@@ -440,6 +603,8 @@ Each of these fixes something that actually cost time in V20:
    you would rather hold T1 until fresh donors exist.
 5. Whether the estimator family should include a candidate that models dropout
    explicitly, which I left out as too assumption-heavy for a frozen design.
-6. §3.3 — the ridge plateau bound in decades. I recommend 2 and deliberately did
-   not set it, since choosing it silently is exactly the class of mistake this
-   contract exists to prevent.
+6. §3.3 — the functional-agreement bounds for β direction, cell-score geometry
+   and donor summaries. Expressed as consequences where possible. The 2-decade
+   figure survives only as a *flag*, per the owner's correction.
+7. §1.3 — whether V21's discovery target fit uses 28 donors or 28 + 18 = 46. I
+   lean to 28 for a clean separation; 46 is defensible and more powerful.
