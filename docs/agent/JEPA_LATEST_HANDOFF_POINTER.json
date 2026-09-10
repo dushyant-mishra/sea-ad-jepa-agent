@@ -1,16 +1,17 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V5",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V6",
   "date": "2026-09-10",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_T0_V21_V5_CURRENT.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_T0_V21_V5_CURRENT.json",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260910_FINAL_CURRENT.json",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
   "prior_formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "prior_heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "observed_lane_heads": {
-    "main_before_handoff_updates": "7e08e89a1d9a46a4a681cbc7fda1755a336373a3",
+  "observed_lane_heads_before_final_governance_commits": {
+    "main": "ff24e12d55200cfcaf64b536a506383b8100f69c",
     "v5": "5668e3d71c720219ec823d5ff089f246091f2be2",
     "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
-    "t0_v21_draft": "e770f6dc83c44a36232d15541d3529e71c7611c9"
+    "t0_v21_draft": "e770f6dc83c44a36232d15541d3529e71c7611c9",
+    "t0_step4": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f"
   },
   "branches": {
     "v5": "planning/v5-full-population-cheat-proofing-20260909",
@@ -29,5 +30,5 @@
   "t0_next_action": "PATHOLOGY_BLIND_FRESH_DONOR_FEASIBILITY_AUDIT_ONLY",
   "v5_next_action": "REAL_DATA_SMOKE_NON_AUTHORITY_USING_HASH_VERIFIED_INPUTS_THEN_CONTINUE_STRUCTURAL_HARDENING",
   "training_authorized": false,
-  "instruction": "Read the current handoff, state, and runtime asset status first, then re-fetch live heads before acting. Keep V20 immutable. Do not inspect AT8 values while making V21 design choices. A small V5 real-data smoke is mechanics/data-path validation only and cannot set production dimensions, thresholds, biology conclusions, or training authority. Exclude the runtime operator-address NPZ until its provenance mismatch is reconciled."
+  "instruction": "Read the final canonical handoff, final state, and runtime asset status first. Then re-fetch live heads before acting. Keep V20 immutable. Do not inspect AT8 values while making V21 design choices. A small V5 real-data smoke is mechanics/data-path validation only and cannot set production dimensions, thresholds, biology conclusions, or training authority. Exclude the runtime operator-address NPZ until its provenance mismatch is reconciled."
 }
