@@ -10,12 +10,20 @@ GROUP_DOMAIN=b'SEA_AD_JEPA_V5_GROUP_FLOOR_ASSIGNMENT_V1\0'; ASSIGN_DOMAIN=b'SEA_
 
 def rank(domain,donor,op,key): return hashlib.sha256(domain+donor.encode()+b'\0'+str(op).encode()+b'\0'+int(key).to_bytes(8,'little')).digest()
 
+def sha256_file(path, chunk_size=1024*1024):
+    h=hashlib.sha256()
+    with path.open('rb') as f:
+        for chunk in iter(lambda: f.read(chunk_size), b''): h.update(chunk)
+    return h.hexdigest()
+
 def main(argv=None):
     p=argparse.ArgumentParser(); p.add_argument('--metadata-sqlite',type=Path,required=True); p.add_argument('--expected-metadata-sha256',required=True); p.add_argument('--partition',required=True); p.add_argument('--optimum-json',type=Path,required=True); p.add_argument('--outdir',type=Path,required=True); a=p.parse_args(argv)
     opt=json.loads(a.optimum_json.read_text()); observed=str(opt.get('metadata_sqlite_sha256',''))
     if observed.lower()!=a.expected_metadata_sha256.lower() or opt.get('partition')!=a.partition: raise SystemExit('metadata/partition binding mismatch')
     st=a.metadata_sqlite.stat(); receipt=opt.get('metadata_file_receipt',{}); fp=(st.st_size,st.st_mtime_ns,st.st_ino,st.st_dev); expected=(int(receipt.get('bytes',-1)),int(receipt.get('mtime_ns',-1)),int(receipt.get('inode',-1)),int(receipt.get('device',-1)))
     if fp!=expected: raise SystemExit('metadata file fingerprint changed since optimizer authentication; rerun optimizer')
+    actual_metadata_sha256=sha256_file(a.metadata_sqlite)
+    if actual_metadata_sha256.lower()!=observed.lower() or actual_metadata_sha256.lower()!=a.expected_metadata_sha256.lower(): raise SystemExit('metadata cryptographic digest changed since optimizer authentication; rerun optimizer')
     final=opt['final_optimum']; counts=final['donor_multiplicity_counts']; bounds=final['donor_ratio_bounds']; group_floor=int(opt['constraints']['minimum_group_presentations']); N=int(opt['population_cells']); H=int(final['total_presentations'])
     keys=np.empty(N,dtype=np.int64); mult=np.empty(N,dtype=np.uint8); off=0; source_pres=Counter(); group_pres=[]; donor_check={}
     con=sqlite3.connect(f'file:{a.metadata_sqlite}?mode=ro',uri=True); c=con.cursor(); donors=[str(x[0]) for x in c.execute('select distinct donor_id from cells where partition=? order by donor_id',(a.partition,))]
@@ -39,6 +47,7 @@ def main(argv=None):
         if {str(k):v for k,v in sorted(dcnt.items())}!={str(k):int(v) for k,v in counts[d].items()}: raise RuntimeError('donor multiplicity histogram changed')
         group_pres.extend(bygroup.values()); sl=slice(off,off+len(assigned)); keys[sl]=[x[0] for x in assigned]; mult[sl]=[x[1] for x in assigned]; off+=len(assigned); donor_check[d]=dcnt
     con.close()
+    if sha256_file(a.metadata_sqlite).lower()!=actual_metadata_sha256.lower(): raise SystemExit('metadata cryptographic digest changed during materialization; rerun optimizer')
     if off!=N or int(mult.sum())!=H or min(group_pres)<group_floor: raise RuntimeError('materialized schedule invariant failed')
     order=np.argsort(keys,kind='stable'); sk=keys[order]; sm=mult[order]
     if not np.all(sk[1:]>sk[:-1]): raise RuntimeError('stable keys are not globally unique')
@@ -51,6 +60,6 @@ def main(argv=None):
     P=Fraction(H)*A; seed=hashlib.sha256(DOMAIN+b'ORDER\0'+bytes.fromhex(bound)+H.to_bytes(8,'little')).digest(); aa=int.from_bytes(seed[:8],'little')%H or 1
     while math.gcd(aa,H)!=1: aa=(aa+1)%H or 1
     bb=int.from_bytes(seed[8:16],'little')%H
-    out={'schema':'JEPA_V5_FULL_POPULATION_SCHEDULE_MATERIALIZATION_V4','status':'REAL_READER_FIT_CELL_MULTIPLICITY_LEDGER_REPLAYED__NO_TRAINING_AUTHORITY','parent_optimum_sha256':hashlib.sha256(a.optimum_json.read_bytes()).hexdigest(),'source_metadata_sha256':observed,'partition':a.partition,'unique_cells':N,'total_presentations':H,'minimum_group_presentations':min(group_pres),'maximum_cell_multiplicity':int(mult.max()),'importance_ess_fraction':float(Fraction(1,1)/P),'importance_weight_max_to_min_ratio':float(Fraction(hi,lo)),'source_presentations':dict(sorted(source_pres.items())),'source_presentation_fraction':{s:source_pres[s]/H for s in sorted(source_pres)},'canonical_multiplicity_ledger':{'records':N,'bytes':len(data),'encoding':'packed stable_key int64-le + multiplicity uint8, stable_key ascending','raw_sha256':raw,'domain_bound_sha256':bound,'digest_semantics':'raw_sha256 hashes exact ledger bytes; domain_bound_sha256 = SHA256(domain || LEDGER\\0 || raw bytes)','committed_as_large_binary':False,'reproducible_from_authority':True},'scientific_order_permutation':{'family':'AFFINE_BIJECTION_MOD_H','H':H,'a':aa,'b':bb,'gcd_a_H':math.gcd(aa,H),'formula':'canonical_slot_index=(a*scientific_presentation_index+b) mod H','seed_binding':'SHA256(domain || ORDER || domain_bound_ledger_sha256 || H)'},'pathology_used':False,'checkpoint_outcomes_used':False,'synthetic_data_used_for_authority':False,'training_authorized':False}
+    out={'schema':'JEPA_V5_FULL_POPULATION_SCHEDULE_MATERIALIZATION_V4','status':'REAL_READER_FIT_CELL_MULTIPLICITY_LEDGER_REPLAYED__NO_TRAINING_AUTHORITY','parent_optimum_sha256':hashlib.sha256(a.optimum_json.read_bytes()).hexdigest(),'source_metadata_sha256':actual_metadata_sha256,'partition':a.partition,'unique_cells':N,'total_presentations':H,'minimum_group_presentations':min(group_pres),'maximum_cell_multiplicity':int(mult.max()),'importance_ess_fraction':float(Fraction(1,1)/P),'importance_weight_max_to_min_ratio':float(Fraction(hi,lo)),'source_presentations':dict(sorted(source_pres.items())),'source_presentation_fraction':{s:source_pres[s]/H for s in sorted(source_pres)},'canonical_multiplicity_ledger':{'records':N,'bytes':len(data),'encoding':'packed stable_key int64-le + multiplicity uint8, stable_key ascending','raw_sha256':raw,'domain_bound_sha256':bound,'digest_semantics':'raw_sha256 hashes exact ledger bytes; domain_bound_sha256 = SHA256(domain || LEDGER\\0 || raw bytes)','committed_as_large_binary':False,'reproducible_from_authority':True},'scientific_order_permutation':{'family':'AFFINE_BIJECTION_MOD_H','H':H,'a':aa,'b':bb,'gcd_a_H':math.gcd(aa,H),'formula':'canonical_slot_index=(a*scientific_presentation_index+b) mod H','seed_binding':'SHA256(domain || ORDER || domain_bound_ledger_sha256 || H)'},'pathology_used':False,'checkpoint_outcomes_used':False,'synthetic_data_used_for_authority':False,'training_authorized':False}
     report=a.outdir/'FULL_POPULATION_SCHEDULE_MATERIALIZATION_V4.json'; report.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n',encoding='utf-8'); print(json.dumps(out,sort_keys=True)); return 0
 if __name__=='__main__': raise SystemExit(main())
