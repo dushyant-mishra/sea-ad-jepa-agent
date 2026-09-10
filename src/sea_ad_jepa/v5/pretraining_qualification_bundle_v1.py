@@ -1,8 +1,12 @@
-"""Explicit V5 pretraining qualification evidence bundle.
+"""Legacy consolidated V5 qualification evidence record.
 
-This prevents a generic "anti-cheat passed" marker from standing in for missing
-production evidence. Every required gate must bind an immutable artifact digest
-and report EXECUTED_PASS. Bundle closure still does not authorize training.
+Historical/non-controlling on the V5 planning branch. This module usefully
+proved that a generic "anti-cheat passed" marker could not stand in for missing
+evidence, but it incorrectly required learned-representation gates to be marked
+EXECUTED_PASS before optimizer start. The active path is now
+`qualification_phase_contract_v1.py`, which separates pre-execution evidence
+from post-qualification learned-model evidence. Do not use this module to launch
+a trainer. Bundle closure here still never authorizes training.
 """
 from __future__ import annotations
 
