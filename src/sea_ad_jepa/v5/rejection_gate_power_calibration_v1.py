@@ -1,9 +1,10 @@
 """Fail-closed power admission for V5 rejection-capable gates.
 
 A gate may only receive rejection authority if a prospectively frozen positive
-control proves that the gate can still detect a minimum-relevant effect under
-the exact sampling geometry created by the gate. This prevents a successful
-confound-removal step from silently blinding the statistic it is meant to use.
+control proves that the exact gate artifact can still detect a minimum-relevant
+effect under the exact sampling geometry created by that gate. This prevents a
+successful confound-removal step from silently blinding the statistic it is
+meant to use, and prevents an easier/older gate from standing in as calibration.
 
 No numerical threshold is selected here and this module never authorizes
 production training.
@@ -64,9 +65,42 @@ class RejectionGatePowerAuthorityV1:
             raise ValueError("power threshold provenance must be prospective or independently calibrated")
 
 
+def _validate_gate_evidence(
+    gate_evidence_by_id: Mapping[str, Mapping[str, object]],
+    *,
+    context: str,
+    checkpoint: str,
+) -> dict[str, dict[str, str]]:
+    if not isinstance(gate_evidence_by_id, Mapping) or set(gate_evidence_by_id) != set(REJECTION_CAPABLE_POST_GATES):
+        raise RuntimeError("STOP_V5_REJECTION_GATE_EVIDENCE_SET_MISMATCH")
+    expected = {
+        "status", "artifact_sha256", "authority_id", "training_authorized",
+        "design_context_sha256", "qualification_checkpoint_sha256",
+    }
+    normalized: dict[str, dict[str, str]] = {}
+    for gate_id in REJECTION_CAPABLE_POST_GATES:
+        row = gate_evidence_by_id[gate_id]
+        if not isinstance(row, Mapping) or set(row) != expected:
+            raise ValueError(f"{gate_id} gate evidence schema mismatch")
+        if row.get("status") != "EXECUTED_PASS":
+            raise RuntimeError(f"STOP_V5_REJECTION_GATE_NOT_EXECUTED_PASS: {gate_id}")
+        if row.get("training_authorized") is not False:
+            raise RuntimeError(f"STOP_V5_COMPONENT_CLAIMS_TRAINING_AUTHORITY: {gate_id}")
+        if _sha(row.get("design_context_sha256"), f"{gate_id}.design_context_sha256") != context:
+            raise RuntimeError(f"STOP_V5_REJECTION_GATE_CONTEXT_SUBSTITUTION: {gate_id}")
+        if _sha(row.get("qualification_checkpoint_sha256"), f"{gate_id}.qualification_checkpoint_sha256") != checkpoint:
+            raise RuntimeError(f"STOP_V5_REJECTION_GATE_CHECKPOINT_SUBSTITUTION: {gate_id}")
+        normalized[gate_id] = {
+            "artifact_sha256": _sha(row.get("artifact_sha256"), f"{gate_id}.artifact_sha256"),
+            "authority_id": _id(row.get("authority_id"), f"{gate_id}.authority_id"),
+        }
+    return normalized
+
+
 def qualify_rejection_gate_power(
     reports_by_gate: Mapping[str, Mapping[str, object]],
     *,
+    gate_evidence_by_id: Mapping[str, Mapping[str, object]],
     authority: RejectionGatePowerAuthorityV1,
     design_context_sha256: str,
     qualification_checkpoint_sha256: str,
@@ -74,6 +108,9 @@ def qualify_rejection_gate_power(
     authority.validate()
     context = _sha(design_context_sha256, "design_context_sha256")
     checkpoint = _sha(qualification_checkpoint_sha256, "qualification_checkpoint_sha256")
+    gate_evidence = _validate_gate_evidence(
+        gate_evidence_by_id, context=context, checkpoint=checkpoint
+    )
     if not isinstance(reports_by_gate, Mapping):
         raise ValueError("reports_by_gate must be a mapping")
     if set(reports_by_gate) != set(REJECTION_CAPABLE_POST_GATES):
@@ -83,6 +120,8 @@ def qualify_rejection_gate_power(
     expected_fields = {
         "schema",
         "gate_id",
+        "gate_artifact_sha256",
+        "gate_authority_id",
         "control_design_authority_id",
         "minimum_relevant_effect_authority_id",
         "design_context_sha256",
@@ -101,6 +140,10 @@ def qualify_rejection_gate_power(
             raise ValueError(f"{gate_id} power-control schema mismatch")
         if row.get("gate_id") != gate_id:
             raise RuntimeError(f"STOP_V5_REJECTION_GATE_POWER_GATE_SUBSTITUTION: {gate_id}")
+        if _sha(row.get("gate_artifact_sha256"), f"{gate_id}.gate_artifact_sha256") != gate_evidence[gate_id]["artifact_sha256"]:
+            raise RuntimeError(f"STOP_V5_REJECTION_GATE_POWER_ARTIFACT_SUBSTITUTION: {gate_id}")
+        if row.get("gate_authority_id") != gate_evidence[gate_id]["authority_id"]:
+            raise RuntimeError(f"STOP_V5_REJECTION_GATE_POWER_AUTHORITY_SUBSTITUTION: {gate_id}")
         if row.get("control_design_authority_id") != authority.control_design_authority_id:
             raise RuntimeError(f"STOP_V5_REJECTION_GATE_POWER_DESIGN_SUBSTITUTION: {gate_id}")
         if row.get("minimum_relevant_effect_authority_id") != authority.minimum_relevant_effect_authority_id:
@@ -119,6 +162,8 @@ def qualify_rejection_gate_power(
         if row.get("training_authorized") is not False:
             raise RuntimeError(f"STOP_V5_COMPONENT_CLAIMS_TRAINING_AUTHORITY: {gate_id}")
         normalized[gate_id] = {
+            "gate_artifact_sha256": gate_evidence[gate_id]["artifact_sha256"],
+            "gate_authority_id": gate_evidence[gate_id]["authority_id"],
             "control_type": row["control_type"],
             "same_sampling_geometry": True,
             "minimum_relevant_effect_present": True,
