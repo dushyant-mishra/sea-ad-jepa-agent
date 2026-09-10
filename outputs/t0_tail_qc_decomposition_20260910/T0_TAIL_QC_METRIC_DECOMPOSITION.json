@@ -1,0 +1,252 @@
+{
+  "changes_no_t0_result": true,
+  "frozen_decision_untouched": true,
+  "frozen_max_statistic": 0.2946862124155104,
+  "frozen_max_statistic_p_upper": 0.018,
+  "frozen_qc_alpha": 0.05,
+  "frozen_replicates": 999,
+  "frozen_statistic_reproduced": true,
+  "frozen_tail_terminal": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+  "numeric_environment": {
+    "environment_sha256": "cc7a70c22a03b0238452a8062864d4aff9e239250cd1a65166ac0ad74ff9da33",
+    "numpy_build": {
+      "blas": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "build_host_cpu": {
+        "cpu": "x86_64",
+        "endian": "little",
+        "family": "x86_64"
+      },
+      "lapack": {
+        "detection method": "pkgconfig",
+        "name": "scipy-openblas",
+        "version": "0.3.31.188.0"
+      },
+      "simd": {
+        "baseline": [
+          "X86_V2"
+        ],
+        "found": [
+          "X86_V3"
+        ]
+      }
+    },
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "2.2.3",
+      "scipy": "1.15.3",
+      "sklearn": "1.5.2"
+    },
+    "platform": {
+      "machine": "AMD64",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
+    },
+    "python": {
+      "executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa-v3\\python.exe",
+      "implementation": "CPython",
+      "version": "3.11.15"
+    },
+    "schema": "JEPA_T0_NUMERIC_ENVIRONMENT_V1",
+    "threading": {
+      "pools": [
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.31.188.0"
+        },
+        {
+          "internal_api": "openblas",
+          "num_threads": 16,
+          "prefix": "libscipy_openblas",
+          "threading_layer": "pthreads",
+          "user_api": "blas",
+          "version": "0.3.28"
+        },
+        {
+          "internal_api": "openmp",
+          "num_threads": 16,
+          "prefix": "vcomp",
+          "user_api": "openmp",
+          "version": null
+        }
+      ],
+      "threadpoolctl": "3.6.0"
+    },
+    "threading_environment_variables": {
+      "KMP_DUPLICATE_LIB_OK": "True",
+      "MKL_NUM_THREADS": null,
+      "MKL_THREADING_LAYER": null,
+      "NUMEXPR_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null
+    },
+    "why": "The frozen T0 target verifier compares float arrays bit-exactly, so a replay is only interpretable alongside the arithmetic that produced it. No earlier T0 summary recorded this."
+  },
+  "pathology_blind": true,
+  "per_donor": [
+    {
+      "cells": 721,
+      "donor_id": "H19.33.004",
+      "q_depth_signed_contrast": 0.2137149995651271,
+      "q_detect_signed_contrast": 0.29048043543353846,
+      "tail_cells": 31
+    },
+    {
+      "cells": 677,
+      "donor_id": "H20.33.004",
+      "q_depth_signed_contrast": -0.24367581420862647,
+      "q_detect_signed_contrast": -0.29519226352307937,
+      "tail_cells": 129
+    },
+    {
+      "cells": 480,
+      "donor_id": "H20.33.012",
+      "q_depth_signed_contrast": 0.32390596283514855,
+      "q_detect_signed_contrast": 0.5155228476662685,
+      "tail_cells": 42
+    },
+    {
+      "cells": 515,
+      "donor_id": "H20.33.017",
+      "q_depth_signed_contrast": -0.04705257301832799,
+      "q_detect_signed_contrast": 0.05165810328053577,
+      "tail_cells": 26
+    },
+    {
+      "cells": 579,
+      "donor_id": "H20.33.020",
+      "q_depth_signed_contrast": 0.25259205350922753,
+      "q_detect_signed_contrast": 0.43443139966886946,
+      "tail_cells": 44
+    },
+    {
+      "cells": 117,
+      "donor_id": "H20.33.024",
+      "q_depth_signed_contrast": 0.4731495560595361,
+      "q_detect_signed_contrast": 0.4948850553145145,
+      "tail_cells": 6
+    },
+    {
+      "cells": 214,
+      "donor_id": "H20.33.027",
+      "q_depth_signed_contrast": 0.02804843005144517,
+      "q_detect_signed_contrast": -0.007961284213983818,
+      "tail_cells": 10
+    },
+    {
+      "cells": 192,
+      "donor_id": "H20.33.035",
+      "q_depth_signed_contrast": 0.5343094077309651,
+      "q_detect_signed_contrast": 0.7911438606035082,
+      "tail_cells": 5
+    },
+    {
+      "cells": 142,
+      "donor_id": "H20.33.036",
+      "q_depth_signed_contrast": -0.2624444163735224,
+      "q_detect_signed_contrast": -0.18412720244530778,
+      "tail_cells": 7
+    },
+    {
+      "cells": 299,
+      "donor_id": "H20.33.038",
+      "q_depth_signed_contrast": -0.4053399380034137,
+      "q_detect_signed_contrast": -0.3710942402453988,
+      "tail_cells": 15
+    },
+    {
+      "cells": 516,
+      "donor_id": "H20.33.040",
+      "q_depth_signed_contrast": 0.005065719529426658,
+      "q_detect_signed_contrast": -0.08909232669672926,
+      "tail_cells": 29
+    },
+    {
+      "cells": 432,
+      "donor_id": "H21.33.002",
+      "q_depth_signed_contrast": 0.28486520778248814,
+      "q_detect_signed_contrast": 0.49683568395473415,
+      "tail_cells": 40
+    },
+    {
+      "cells": 209,
+      "donor_id": "H21.33.012",
+      "q_depth_signed_contrast": 0.11470099912430237,
+      "q_detect_signed_contrast": 0.1590192743767098,
+      "tail_cells": 6
+    },
+    {
+      "cells": 234,
+      "donor_id": "H21.33.014",
+      "q_depth_signed_contrast": -0.22784756557203373,
+      "q_detect_signed_contrast": -0.14978764189913368,
+      "tail_cells": 11
+    },
+    {
+      "cells": 749,
+      "donor_id": "H21.33.028",
+      "q_depth_signed_contrast": -0.1473065179959973,
+      "q_detect_signed_contrast": -0.10477068807966444,
+      "tail_cells": 40
+    },
+    {
+      "cells": 200,
+      "donor_id": "H21.33.039",
+      "q_depth_signed_contrast": -0.11765523736349913,
+      "q_detect_signed_contrast": -0.15847161023735135,
+      "tail_cells": 8
+    },
+    {
+      "cells": 379,
+      "donor_id": "H21.33.040",
+      "q_depth_signed_contrast": 0.22749389133262413,
+      "q_detect_signed_contrast": 0.16980860871775133,
+      "tail_cells": 19
+    },
+    {
+      "cells": 382,
+      "donor_id": "H21.33.047",
+      "q_depth_signed_contrast": 0.4767081813708839,
+      "q_detect_signed_contrast": 0.5400692971221088,
+      "tail_cells": 48
+    }
+  ],
+  "per_metric": [
+    {
+      "attained_the_frozen_maximum": false,
+      "column": 0,
+      "descriptive_p_upper": 0.171,
+      "descriptive_p_upper_is_not_a_test": "No multiplicity control. The frozen veto applies the maximum across metrics precisely to control it. This number describes where one metric sits in its own null and cannot license a different tail terminal.",
+      "mean_abs_standardized_contrast": 0.24365980396814418,
+      "metric": "Q_DEPTH",
+      "null_max": 0.34285967342390383,
+      "null_mean": 0.20576023457162493,
+      "null_p95": 0.27396819496747543,
+      "share_of_the_frozen_maximum": 0.8268449411694277
+    },
+    {
+      "attained_the_frozen_maximum": true,
+      "column": 1,
+      "descriptive_p_upper": 0.015,
+      "descriptive_p_upper_is_not_a_test": "No multiplicity control. The frozen veto applies the maximum across metrics precisely to control it. This number describes where one metric sits in its own null and cannot license a different tail terminal.",
+      "mean_abs_standardized_contrast": 0.2946862124155104,
+      "metric": "Q_DETECT",
+      "null_max": 0.32879060039220714,
+      "null_mean": 0.20635974447492128,
+      "null_p95": 0.27281374269787334,
+      "share_of_the_frozen_maximum": 1.0
+    }
+  ],
+  "reads_at8": false,
+  "schema": "JEPA_T0_TAIL_QC_METRIC_DECOMPOSITION_V1",
+  "veto": true,
+  "what": "Decomposition of the frozen rare-tail QC veto statistic across its two metrics. Diagnostic only."
+}
