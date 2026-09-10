@@ -1,8 +1,16 @@
 # T0 V20: the recovered sensitivity statistics
 
-Terminal: **PASS** under the frozen V2 replay-equivalence policy. Every gate
-cleared, the sensitivity surfaces the committed decision omitted are recovered,
-and the T0 V20 conclusion is unchanged by any of it.
+Terminal: **PASS of the frozen V2 replay-equivalence gates** — a statement about
+the replay, not a scientific verdict. Every gate cleared and the sensitivity
+surfaces the committed decision omitted are recovered. No T0 V20 terminal
+changes: the state terminal is the one already published, and the rare tail
+remains `RARE_TAIL_UNDERDETERMINED_MEASUREMENT`.
+
+**Scope, stated up front because the word PASS invites the wrong reading.** What
+was recovered is the *state* composition and measurement sensitivities. Nothing
+here bears on the rare-tail QC veto, which is a different test on different data
+at a different level, and which this replay reproduced rather than challenged.
+See "What this says about the rare tail" below.
 
 Policy identity `JEPA_T0_V20_REPLAY_EQUIVALENCE_POLICY_V2`, digest
 `0d08efd0b683f2565d2463aaba82d94bc2fd3ff3f39837c0199249827c076934`.
@@ -105,3 +113,106 @@ across the two.
 
 Independent review is still required before this review policy is promoted into
 project governance authority.
+
+
+## What this says about the rare tail: nothing, and it could not have
+
+The recovered state sensitivities do not bear on the rare-tail QC veto. That is
+settled by the frozen control flow, not by interpretation.
+
+### The tail evidence was never computed
+
+In `t0_adjudicator_v1.adjudicate_donor_table_non_authoritative`, `comp` and
+`measurements` -- the state sensitivities -- are built at line 63, before any
+tail logic. The QC gate sits at line 77:
+
+```python
+if not tail_preflight['qc_ok']:
+    return {... 'tail_terminal':'RARE_TAIL_UNDERDETERMINED_MEASUREMENT',
+            'tail_primary':None, 'tail_disease_test_run':False, ...}
+```
+
+Everything tail-specific -- `tail_donors`, `tail_primary`, `tail_comp`,
+`tail_meas`, and the `decide_tail` call itself -- lives at lines 79-103,
+downstream of that return. The run exits at 78 and never reaches any of it.
+
+The replayed decision confirms this rather than leaving it to be inferred:
+`tail_disease_test_run: false`, `tail_primary: null`, and no `tail_composition`,
+`tail_measurements` or `tail_inference_donors` keys exist at all. There is no
+tail measurement evidence in this run because none was produced.
+
+### The veto is a different test from the state measurement sensitivity
+
+The two share the names Q_DEPTH and Q_DETECT and nothing else.
+
+| | state measurement sensitivity | tail QC veto |
+| --- | --- | --- |
+| level | donor (n = 18) | cell, within donor |
+| data | donor-level pseudobulk summaries | every confirmation cell |
+| question | is the AT8-state association explained by donor sequencing effort? | are the cells called "rare tail" selected in a QC-dependent way inside each donor? |
+| statistic | HC3 t on AT8 ~ nuisance + state, with QC appended | max over the 2 metrics of the mean across donors of the absolute standardized tail-vs-rest contrast |
+| null | 9,999 permutations | 999 within-donor reassignments of the tail label, hash-seeded per cell |
+| result | p_upper = 0.030, clears alpha 0.05 | p_upper = 0.018, **vetoes** at alpha 0.05 |
+| reads pathology | yes, AT8 | no, pathology-blind |
+
+Clearing the first says nothing about the second. One asks whether a donor-level
+association survives adjusting for donor-level QC; the other asks whether a
+cell-level label is confounded with cell-level QC. A design can pass either and
+fail the other.
+
+### The veto reproduced exactly, and is not marginal
+
+The entire `tail_preflight` object is **bit-identical** between the committed run
+and this replay. The replay confirms the veto; it does not contest it.
+
+```
+max_mean_abs_standardized_qc_contrast : 0.2947
+p_upper                               : 0.018   (999 replicates)
+veto                                  : true    ->  qc_ok: false
+```
+
+With 999 replicates the test computes `p = (1 + ge)/1000`, so p = 0.018 means the
+observed contrast was matched or exceeded by 17 of 1,000 null reassignments. For
+the veto not to fire it would need 50 or more. It sits at rank 18 of 1,000 --
+inside the veto region by a factor of about 2.8, not on a knife edge.
+
+Worth reading alongside it: support and coherence both **passed**, and coherence
+passed decisively -- `support_ok: true`, `coherence_ok: true`, mean pairwise
+cosine 0.1042 with an exact sign-test p of 7.63e-06 over 131,072 configurations.
+So the tail is not being called absent. It is coherent and supported, and blocked
+specifically because the cells carrying it differ from their donor's other cells
+in sequencing depth or detection more than chance allows. That is precisely what
+`RARE_TAIL_UNDERDETERMINED_MEASUREMENT` is meant to say.
+
+### So T0 stands where it stood
+
+**Broad state supported, rare tail underdetermined.** The state arm is now fully
+evidenced rather than partly asserted; the tail arm is unchanged, and cannot be
+moved by any reporting or replay action.
+
+### What would actually move the tail
+
+None of these is a reporting or replay step, and each needs a new prospective
+freeze and owner authorization:
+
+1. **A tail definition that is not QC-confounded.** The veto is a property of the
+   tail mask relative to the QC metrics. Changing how tail cells are called --
+   depth-matched selection, or residualising the per-cell tail score on per-cell
+   QC before thresholding -- attacks the cause. It is a change to the estimand.
+2. **A QC-adjusted tail estimand** that carries the confound explicitly rather
+   than attempting to be free of it.
+3. **Deeper or more uniform data** for the confirmation donors, which would
+   shrink the within-donor QC contrast on its own.
+
+What would not be legitimate is relaxing `QC_ALPHA`, or reading the passing state
+measurement sensitivity as evidence that the tail QC concern is unfounded. They
+are different tests, and the frozen rule reaches `decide_tail` only through
+`qc_ok`.
+
+### One cheap diagnostic that is missing
+
+The record stores the **max** across the two QC metrics but not which metric
+attained it, nor the per-metric values. Knowing whether depth or detection drives
+the 0.2947 would directly inform any remediation design, and it is computable
+pathology-blind from confirmation cells already materialised. Not run here: it is
+new analysis rather than part of this recovery.
