@@ -57,6 +57,7 @@ jobs:
           tests/test_v5_group_presentation_floor_relevance_v1.py
           tests/test_v5_real_data_parameter_and_dimension_contract_v1.py
           tests/test_full_reader_expression_location_builder_v2.py
+          tests/test_bind_corrected_train_cache_v1.py
           tests/test_dimension_authority_guard_v1.py
           tests/test_dimension_authority_guard_v2.py
           tests/test_full_reader_expression_identity_closure_v3.py
@@ -120,6 +121,7 @@ jobs:
           scripts/v5_anticheat/materialize_full_population_schedule_v4.py
           scripts/v5_anticheat/derive_v5_real_data_parameter_registry_v1.py
           scripts/v5_anticheat/build_full_reader_expression_location_manifest_v2.py
+          scripts/v5_anticheat/bind_corrected_train_cache_v1.py
           scripts/v5_anticheat/build_full_reader_expression_identity_closure_v3.py
           scripts/v5_anticheat/bind_full104_expression_blocks_v4.py
           scripts/v5_anticheat/derive_actual_presentation_exposure_geometry_v2.py
