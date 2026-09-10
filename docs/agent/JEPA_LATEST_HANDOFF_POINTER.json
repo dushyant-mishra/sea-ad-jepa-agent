@@ -1,20 +1,27 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V2",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V3",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md",
   "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4.json",
   "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
   "observed_heads": {
-    "main_before_r4": "c107c47903e976fe512254d2a7ae1efb78985619",
-    "r4_files_through": "3fb272f7213981058b718325d3251c258035dd27",
+    "main_r4_original": "847c1e4287ef006b1696853f8057794db291426d",
+    "main_governance_refresh_through": "409dd2b7ac6a7680e11000a5cd6db62fdc814d17",
     "v5": "e17c61643c30d219a4434566f828cdf3171381ae",
     "t0": "d5d67e21398da92e39095afd864b4fb9ebe3da02"
   },
+  "governance_repairs": {
+    "current_authority_index": "54a86ff114bacac9fd603c8eda989209977e0c98",
+    "current_supersession_map": "a90b67eb2248288b9e2e14176af8ee4289aeee1c",
+    "start_here": "7433d193c381060e26b172dd27baa4d113e10263",
+    "heavy_asset_runtime_correction": "409dd2b7ac6a7680e11000a5cd6db62fdc814d17"
+  },
   "compact_bundle": {
-    "filename": "JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4_SMALL.zip",
-    "sha256": "ca5cf8907bfc79f7f379b0379133edeb397d84233f00e35aa13f4668dc54eb77",
-    "role": "optional lightweight backup; GitHub R4 files are the primary cross-chat authority"
+    "filename": "JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4_REFRESHED_SMALL.zip",
+    "sha256": "4449bab9669b34215209cedfc429b3620aa46c36479774df693f50f5d0af6ed6",
+    "size_bytes": 15986,
+    "role": "optional lightweight downloadable backup containing detailed handoff, state, formulas, heavy-asset manifest, GitHub path index and checksums; heavy immutable inputs are referenced, not duplicated"
   },
   "training_authorized": false,
-  "instruction": "Start from FINAL R4, then re-fetch live heads before acting. Heavy assets are referenced by exact path/hash and must not be silently substituted."
+  "instruction": "Start from FINAL R4 on main, then re-fetch live heads before acting. Synthetic data may test mechanics only. Heavy assets must be recovered by exact path/hash and must not be silently substituted."
 }
