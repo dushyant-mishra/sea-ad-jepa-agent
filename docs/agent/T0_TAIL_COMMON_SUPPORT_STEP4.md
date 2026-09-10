@@ -1,4 +1,10 @@
-# Within-donor common support: step 4, and the close of the diagnostic arc
+# Common-support restriction alone: the step-4 precursor
+
+*Superseded as "step 4" by the owner-frozen matched-QC contract
+(`configs/v4/t0_tail_matched_qc_contract_v1.json`, commit `bc60a921`). Retained
+because it establishes why restriction alone is not enough and why matching is
+required — which is the finding that motivates that contract's matching stage.*
+
 
 Declared outcome: **`QC_ASSOCIATION_STILL_FIRES__RESTRICTION_INSUFFICIENT`** —
 the third of the four outcomes frozen in advance.
@@ -84,14 +90,20 @@ confound look worse, through the denominator rather than through the data. A gat
 with that property cannot be used to certify that a confound has been addressed,
 because the natural corrective action moves it the wrong way.
 
-**Balancing beyond restriction is not available under the inherited minima.**
-1:1 nearest-neighbour matching would set each donor's rest count equal to its
-tail count, and with a median of 22 tail cells that pushes most donors below the
-frozen `MIN_REST_CELLS` of 20, leaving fewer than the required 10 decision
-donors. The contract recorded this in advance so that the absence of a balancing
-variant is a consequence of the frozen minima rather than a choice made here.
-Any weighting or matching design that relaxes them is new science and needs
-owner authorisation.
+**Balancing beyond restriction was not available under this contract's
+inherited minima.** 1:1 matching sets each donor's rest count equal to its tail
+count, and with a median of 22 tail cells that pushes most donors below the
+frozen `MIN_REST_CELLS` of 20 when the adjudicator is used. This contract
+recorded that in advance so the absence of a balancing variant would be a
+consequence of the frozen minima rather than a choice made here.
+
+The owner's matched-QC contract resolves this properly rather than by relaxing a
+threshold: eligibility is stated as a minimum of **five matched pairs** and ten
+decision donors — the same frozen numbers, applied to the matched design where
+the rest group is the same size as the tail group by construction — and the
+exact common-direction test is applied directly to the eligible donor vectors
+rather than through the adjudicator that enforces the rest minimum. That is the
+step that actually equalises the comparison.
 
 ## Where the four steps leave the tail
 
@@ -135,5 +147,6 @@ The transferable findings, which is why this arc was worth running:
 
 ## Stopping here
 
-No successor tail estimator, matched-QC design, weighting scheme, QC gate or
-threshold is proposed. The next design decision is the owner's.
+No successor tail estimator, weighting scheme, QC gate or threshold is proposed
+in this document. The matched-QC analysis proper is the owner-frozen contract,
+reported separately.
