@@ -26,17 +26,19 @@ def bundle():
     )
 
 
-def authority(b=None, mode="BOUNDED_QUALIFICATION_ONLY"):
+def authority(b=None, mode="BOUNDED_QUALIFICATION_ONLY", horizon=100, frozen_horizon=100):
     return TrainerPreexecutionAuthorityV3(
         authorities={name: "a" * 64 for name in REQUIRED_AUTHORITY_SHAS},
         protected_registry_sha256="b" * 64,
-        presentation_horizon=100,
+        presentation_horizon=horizon,
         ema_half_life_presentations=50,
         singleton_queries_per_base_cell=1,
         effective_base_cells_per_update=8,
         relational_training_active=False,
         optimizer_started=False,
         preexecution_qualification_bundle=b or bundle(),
+        qualification_horizon_authority_id="qualification-horizon-v1",
+        qualification_horizon_presentations=frozen_horizon,
         execution_mode=mode,
         training_authorized=False,
     )
@@ -51,6 +53,11 @@ def test_v3_binds_preexecution_bundle_for_qualification_only():
 def test_v3_rejects_production_mode_before_postqualification():
     with pytest.raises(RuntimeError, match="PRODUCTION_MODE_FORBIDDEN"):
         authority(mode="PRODUCTION").validate()
+
+
+def test_qualification_horizon_must_equal_frozen_authority():
+    with pytest.raises(RuntimeError, match="HORIZON_NOT_EXACTLY_FROZEN"):
+        authority(horizon=101, frozen_horizon=100).validate()
 
 
 def test_tampered_preexecution_bundle_stops():
