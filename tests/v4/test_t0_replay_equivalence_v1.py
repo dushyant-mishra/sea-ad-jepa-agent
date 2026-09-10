@@ -132,6 +132,8 @@ def test_fit_rejects_key_set_drift():
 
 def test_beta_near_zero_uses_tiny_absolute_budget_only():
     a = _fit(); b = copy.deepcopy(a)
+    # At exactly zero relative tolerance cannot help. A perturbation below the
+    # frozen 1e-20 absolute budget is allowed; a larger one is not.
     a["beta"][2] = 0.0
     b["beta"][2] = 0.5e-20
     assert compare_fit_equivalence(a, b)["equivalent"] is True
