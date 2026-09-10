@@ -23,6 +23,7 @@ _BINDING_FIELDS = (
     "proposal_weight_invariance_artifact_sha256",
     "packing_restart_invariance_artifact_sha256",
     "representation_firewall_artifact_sha256",
+    "historical_c2_gpu_receipt_sha256",
     "protected_registry_sha256",
 )
 
@@ -52,6 +53,7 @@ class ProductionGeometryGPUAuthorityV1:
     proposal_weight_invariance_artifact_sha256: str
     packing_restart_invariance_artifact_sha256: str
     representation_firewall_artifact_sha256: str
+    historical_c2_gpu_receipt_sha256: str
     protected_registry_sha256: str
     production_geometry_frozen_before_gpu_run: bool
 
