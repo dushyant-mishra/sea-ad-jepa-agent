@@ -1,96 +1,129 @@
 # CURRENT SUPERSESSION MAP — JEPA PROJECT
 
 Date: 2026-09-09
+Status: `FINAL_R4_CURRENT__NO_TRAINING_AUTHORITY`
 
 ## Project-level rule
 
-`main` is the single current project lineage.
+`main` is the canonical governance lineage. Active lane branches may still exist for staged evidence and candidate implementation. Their branch names do not confer execution authority.
 
-All older planning/candidate/production/review branches are provenance once their heads are absorbed into `main`. Their commits remain immutable history, but their branch-local "current" language no longer controls project execution.
+FINAL R4 is the current startup/handoff layer:
+- `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+- `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260909_FINAL_R4.md`
+- `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260909_FINAL_R4.json`
+- `docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md`
+- `docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md`
 
-This supersession does not erase frozen scientific contracts or accepted external-review terminals. It controls which branch/tree is interpreted as current.
+Always re-fetch live heads before acting.
 
-## Current lineage map
+## Current live evidence branches captured by R4
 
-| Historical line | Status now | Controlled by |
+| Lane | Snapshot head | Role |
 |---|---|---|
-| September-3 F1-only startup governance | SUPERSEDED as project-current | 2026-09-08+ `main` governance |
-| Teacher/Student V1/V3/V4 branches | HISTORICAL / mechanics evidence | V5 data-first current tree + future production freeze |
-| V5 candidate/design/refine/RNG side branches | HISTORY ABSORBED | current V5 tree reconciled from `c7b1663...` plus explicitly retained proof helpers |
-| 3,292-cell u40/u205 schedule | MECHANICS CLOCK ONLY; not full-reader biology clock | future full-reader exposure/coverage authority |
-| historical T1 u10--u205 checkpoint lineage | `TRAINING_MECHANICS_DEFECT_INHERITED`; no resume/teacher/TD60 authority | 2026-09-09 anti-cheat + T1 mechanics consolidation |
-| clean T1 u0 checkpoint | unaffected by fp16-backward defect, but not training authority | future successor-u0 materialization authority |
-| old Philox V1/prototype helpers | PROOF/HISTORICAL ONLY | active V5 RNG contract V2 / active test manifest |
-| F1-B/C3 attack/successor branches | MECHANICS EVIDENCE | future integrated trainer binding |
-| F1 real-reader/preflight/replay branches | PREFREEZE EVIDENCE | future explicit F1 execution authorization |
-| D0 / early target-detectability lines | HISTORICAL | current relational Target Discovery |
-| D1 synthetic atlas/ranking lines | HISTORICAL / design evidence | current D1 V2 |
-| Stage81A2/A3 branches | HISTORICAL DATA/AUTHORITY EVIDENCE | current project authority index |
-| T0 V19 / earlier binding lines | HISTORICAL | accepted V20 science + Stage 3 result/review at `e7a16eae...` / `T0_V20_STAGE3_INDEPENDENT_REVIEW_20260909.md` |
-| old reviewer branches | HISTORICAL REVIEW EVIDENCE | current main blocker ledger + exact immutable review terminals |
+| T0 V20 | `d5d67e21398da92e39095afd864b4fb9ebe3da02` on `t0/v20-pathology-blind-materialization-20260908` | completed T0 science + frozen-code/provenance evidence |
+| V5 | `e17c61643c30d219a4434566f828cdf3171381ae` on `planning/v5-full-population-cheat-proofing-20260909` | prospective full-population/anti-cheat candidate |
 
-## V5 correction after consolidation
+The prior statement that only `main` remains as a Git ref is superseded by this live-branch observation. Governance remains on `main`.
 
-The first consolidation preserved all V5 history but retained an older V5 tree. That was insufficient because Target Discovery had already promoted the verified V5 data-first materialization at `c7b1663...` as the current prospective successor.
+## Superseded startup states
 
-The main tree was therefore reconciled by restoring the frozen 66-pass V5 core from `c7b1663...`. A later lawful continuation at `028989a5f1504e4d6403a44e7c90d37172c54150` is now also absorbed and current for base proposal V3 and presentation-horizon V1; it does not rewrite the frozen prototype.
+| Historical state | Current status | Controlled by |
+|---|---|---|
+| T0 Stage-2 / confirmation-closed startup | SUPERSEDED | completed V20 Stage-3 result and FINAL R4 |
+| T0 evidence-bytes-missing caveat | SUPERSEDED | evidence bytes + frozen code/input authorities published |
+| T0 exact replay assumed fully closed | NOT TRUE | only cross-stack bit-exact float equivalence remains open; science/terminal agrees |
+| historical T1 u10–u205 biological authority | QUARANTINED | C2 diagnosis + corrected 128×8 gate proof |
+| 128×8 OOM as production blocker | SUPERSEDED | real path measured ~5.5 GiB; OOM belonged to superseded draft |
+| V5 one-population-equivalent with-replacement horizon | SUPERSEDED AS FULL-COVERAGE CLAIM | exact 4.553M-cell coverage schedule candidate V3 |
+| fixed weight-ratio 64 + cap32 + full coverage | MATHEMATICALLY INCOMPATIBLE | real donor geometry; cap34 is only a conditional minimal-repair diagnostic if 64× is independently re-adopted |
+| historical group floor16 zero-hit rationale | OBSOLETE UNDER FULL COVERAGE | current diagnostic treats it as sensitivity only |
+| historical D_shared=5 | REJECTED / NON-AUTHORITY | full-reader D re-derivation contract |
+| latent width 96 | NON-AUTHORITY | full-reader D derivation |
+| d_gene=160 as biology ceiling | NON-AUTHORITY | token capacity only |
+| D_global=224 | NON-AUTHORITY | not active V5 forward authority |
+| search rank320 as selected D | NON-AUTHORITY | search envelope only |
+| sketch width512 / null-bootstrap256 as permanent constants | NON-AUTHORITY | derive from prospective error/precision rules |
+| fixed-coordinate / absolute-distance target search | SUPERSEDED | relational TD57B/TD59 framework |
+| TD57C nearest-third locality | FAILED/CLOSED | TD57B + TD59 pilot |
+| decreasing loss as teacher qualification | FORBIDDEN | mechanics + anti-cheat + held-out biological qualification required |
 
-Current V5 authority must be read from:
+## T0 V20
 
-- `TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2.json`;
-- `TEACHER_STUDENT_V5_PROPOSAL_AUTHORITY_V3.json`;
-- `TEACHER_STUDENT_V5_PRESENTATION_HORIZON_AUTHORITY_V1.json`;
-- `TEACHER_STUDENT_V5_ACTIVE_TEST_SELECTION.txt`;
-- the current V5 authority candidate/status artifacts;
-- `docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md`;
-- `docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json`;
-- `CURRENT_AUTHORITY_INDEX.md`.
+Current primary terminal:
+`BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL`
 
-Do not promote older V5 defaults merely because their files remain preserved.
+Rare tail:
+`RARE_TAIL_UNDERDETERMINED_MEASUREMENT`
 
-## Cross-lane correction — mechanics vs biological time
+Do not reopen or retune V20. The remaining issue is replay-equivalence governance for tiny cross-stack float differences plus reporting-only sensitivity recovery.
 
-Historical `u40/u205` may remain mechanics qualification checkpoints only where the exact context says so.
+If the original numeric stack cannot be reconstructed, any relaxed replay rule must be a separately versioned verifier requiring exact digests/discrete decisions/terminal agreement plus explicitly frozen tight numerical tolerances. The historical bit-exact verifier remains untouched.
 
-A decision-bearing learned teacher must instead be selected under a prospectively frozen full-reader exposure/coverage schedule over the 4,553,407-cell reader-fit population.
+## Historical T1 / C2
 
-TD60's old "successor u40 EMA teacher" wording therefore requires prospective amendment before TD60 execution. No TD60 outcome has been opened, so this correction remains prospective and lawful.
+The historical u10–u205 lineage remains:
+`TRAINING_MECHANICS_DEFECT_INHERITED`
 
-## 2026-09-09 correction — historical T1 mechanics defect
+The corrected successor has now passed exact 128×8 mechanics proof with all 48 protected gradients and both Adam moments live and parameter motion beyond decay. This supersedes the prior "C2 adoption unproven" blocker.
 
-The historical u10--u205 lineage carries the scoped C2 causal diagnosis:
+It does not authorize training.
 
-```text
-C2_CAUSAL_CONDITION_ESTABLISHED_FOR_HISTORICAL_128x8_PATH__BACKWARD_EXECUTED_UNDER_FP16_AUTOCAST
-```
+## V5 full-reader schedule
 
-It is therefore classified as:
+Current V3 full-coverage candidate:
+- 4,553,407 unique cells covered
+- H=5,267,086
+- ESS=0.5000000953357726
+- cap32
+- conditioning ratio=67.17245370370371
+- deterministic ledger replay exact
 
-```text
-TRAINING_MECHANICS_DEFECT_INHERITED
-```
+Conditional cap34 diagnostic does not supersede V3 automatically. It only shows the smallest cap compatible with a separately re-adopted 64× conditioning ceiling.
 
-Meaning:
+Final schedule authority still requires a prospective joint decision on:
+- repeat cap / anti-concentration
+- conditioning ceiling, if any
+- ESS floor
+- group-repeat semantics
 
-- historical u10--u205 checkpoints are not lawful resume points;
-- they are not biological teacher authority;
-- they are not TD60 input;
-- loss decrease from that lineage is not biological qualification;
-- live attention output or other trainable modules cannot rescue dead protected attention-routing gradients/moments;
-- the clean u0 checkpoint is unaffected by this defect because it predates optimizer updates, but u0 alone is not training authority.
+No checkpoint outcome may choose these.
 
-Future healthy teacher/student training must bind fp16 forward, backward with autocast disabled, unscale, 48 protected-gradient gate, optimizer-step proof, Adam-moment proof, and EMA as one exact update chain.
+## V5 D hierarchy
 
-## T0
+Numeric `D_shared`, `D_private`, `D_total`, and `D_obs` remain unresolved and may only be derived from the exact full reader-fit expression stream.
 
-T0 V20 Stage 3 has completed at `e7a16eae2d60faf9a5aa82d8a966f9b8c676ccc9`. The broad immune-expression primary is recorded as `BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL`; the rare tail is `RARE_TAIL_UNDERDETERMINED_MEASUREMENT` because pathology-blind QC vetoed before the tail disease statistic.
+The physical full-reader corrected expression binding is the current gating substrate. Until 42/42 corrected TRAIN shard pairs pass exact hash/identity closure, no sampled/synthetic/50K substitute may close numeric D authority.
 
-The prior Stage 2/R8 “confirmation still closed” startup state is superseded. Historical T0 PASS files still cannot bypass the Stage 3 review. The post-access role-label repair at `f98c1f8...` remains a disclosed procedural caveat, and full exact-byte Stage 3 evidence review is pending because the final evidence files are not committed on the T0 branch.
+## Relational anti-cheat
 
-V5 anti-cheat findings do not convert the T0 result into training authority, TD60 authority, D1 authority, or protected-population release.
+TD57B/TD59 remain the leading target framework. Explicit measurement shortcut diagnostics require future learned biology to beat the strongest prospectively frozen shortcut baseline by a prospectively frozen increment on held-out units.
 
-## Branch deletion — completed
+Chance/0.5 is not the qualification comparator.
 
-The guarded branch-prune workflow revalidated every listed head, deleted all 57 non-main branch refs, and verified that only `main` remains. This did not delete absorbed commits, tags, hashes, package roots, or immutable artifacts, and it did not change scientific execution authority.
+## Protected-data and execution closure
 
-Audit terminal: `PASS_JEPA_BRANCH_CONSOLIDATION_AND_PRUNE__MAIN_ONLY`.
+Still closed:
+- V5 production training
+- successor-u0 materialization as training authority
+- TD60
+- D1 real
+- reader_validation/oracle
+- DEV/SEALED
+- protected populations
+- pathology-guided tuning
+
+## Branch/governance correction
+
+Historical branch-pruning records remain provenance, but they do not describe the current live-ref set after later active T0/V5 branches were created or restored.
+
+Do not delete or merge active evidence branches merely to make the branch count small. Consolidate only after exact ancestry/evidence preservation is verified.
+
+## Precedence
+
+1. live `main` + FINAL R4 handoff pointer
+2. FINAL R4 handoff/state/formulas/heavy-assets
+3. `NEXT_ALLOWED_ACTION.json`
+4. `CURRENT_AUTHORITY_INDEX.md`
+5. this supersession map
+6. exact lane-specific frozen contracts/reviews
+7. historical artifacts
