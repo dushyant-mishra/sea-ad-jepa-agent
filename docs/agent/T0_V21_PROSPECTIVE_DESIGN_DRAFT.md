@@ -143,8 +143,9 @@ spent at ~27% power.** The power gate is required first.
 
 **Frozen as a gate:** `reader_validation` is opened only when a frozen V21
 design demonstrates **≥ 80% power at α = 0.025 on 12 donors**, computed
-discovery-only and pathology-blind, against a pre-declared effect size that is
-*not* V20's point estimate but a winner's-curse-adjusted lower bound.
+discovery-only and pathology-blind, against the **jackknife-minimum out-of-fold
+effect** defined below — a genuine worst case over the 28 discovery donors, not
+V20's point estimate and not a cross-fitted point estimate either.
 
 #### The gate's evidence base — corrected, because the target fit is AT8-supervised
 
@@ -168,10 +169,24 @@ the fresh 12 — which is the thing the gate exists to protect.
 **Redesign, frozen:**
 
 1. **The power gate's effect evidence comes from the 28 discovery donors only,
-   by cross-fitting within them.** Outer folds over the 28; in each fold β is fit
-   on the training donors with its own inner LOODO ridge selection, and the
-   donor-level HC3 statistic is evaluated on the held-out donors. The aggregate
-   out-of-fold statistic is the effect estimate.
+   by cross-fitting within them.** The construction, corrected — an earlier draft
+   said the HC3 statistic is "evaluated on the held-out donors", which is not
+   estimable: under outer leave-one-donor-out each fold holds out a **single**
+   donor, and a donor-level regression cannot be fit on one observation.
+
+   The correct procedure:
+
+   1. Train **28 nested models**, each on the 27 remaining discovery donors,
+      each with its own inner LOODO ridge selection so no fold sees its held-out
+      donor at any stage.
+   2. From each, generate **exactly one out-of-fold predictor** — the score of
+      that fold's held-out donor, computed from a β that never saw it.
+   3. **Assemble the 28 out-of-fold donor scores** into a single vector.
+   4. Run **one** HC3 donor-level regression across those 28 out-of-fold
+      predictions, with the frozen nuisance design `[1, age_c, age_c², sex]`.
+
+   That single regression yields the out-of-fold effect estimate, at
+   residual df = 28 − 5 = 23.
 2. **The 18 spent donors' AT8 outcomes do not enter the power calculation at
    all.** They may be used later to refit the frozen estimator; they may not be
    used to decide whether the fresh 12 are worth spending.
@@ -181,13 +196,39 @@ the fresh 12 — which is the thing the gate exists to protect.
    banked. The projection stands on the 28-fit evidence and the actual test
    should, if anything, be better powered than projected.
 
-This also supplies the winner's-curse adjustment the gate requires, rather than
-leaving it to a chosen shrinkage constant. A cross-fitted out-of-fold estimate is
-not conditioned on having reached significance, so it is not inflated the way a
-single realised `t` selected for publication is. **That derivation replaces the
-illustrative 0.75 shrinkage entirely.** Note it is conservative twice over: each
-fold trains on fewer than 28 donors, so the cross-fitted effect understates what a
-28-donor fit achieves, and understates a 46-donor fit by more.
+#### The conservative bound — corrected, because cross-fitting is not a lower bound
+
+An earlier draft called the cross-fitted estimate a "winner's-curse-adjusted
+lower bound". **That was too strong.** Cross-fitting removes in-sample optimism;
+it does not turn a point estimate into a lower confidence bound. A gate that
+promises ≥ 80% power *against a lower bound* must be given one.
+
+**Frozen:** the effect used in the power projection is the **minimum across the
+28 leave-one-donor-out influence refits** of the out-of-fold effect — recompute
+the single HC3 regression 28 times, each omitting one donor from the assembled
+out-of-fold vector, and take the smallest resulting standardized effect.
+
+- **Directional-consistency precondition.** The bound is only defined if all 28
+  influence refits agree in sign. If any refit reverses direction, the effect is
+  not stable enough for a power projection to mean anything and the result is
+  `STOP_EFFECT_DIRECTION_NOT_CONSISTENT`.
+- It is deterministic, needs no seed, introduces no constant, and is a genuine
+  worst-case over the donors actually observed rather than a distributional
+  assumption.
+
+**Projection.** The out-of-fold statistic is a `t` at n = 28, so the
+standardized effect is `δ = t₂₈ / √28` and the projected statistic at n = 12 is
+`δ_min × √12`, where `δ_min` is the jackknife-minimum above. Power follows from
+the noncentral `t` at residual df = 12 − 5 = 7 against the frozen α = 0.025.
+
+Conservative in three separate ways, and stacking is intentional: each fold
+trains on 27 rather than 28 donors; the jackknife minimum is a worst case rather
+than a centre; and the 46-donor refit's expected sharpening is not credited.
+**This replaces the illustrative 0.75 shrinkage entirely** — no chosen constant
+survives anywhere in the gate.
+
+**The gate's verdict is not yet computable.** It requires the frozen estimator,
+which requires §2.3's selection to have been run. That ordering is deliberate.
 
 If the gate fails, the correct action is not to open the partition and hope.
 Options, in the order I would consider them:
@@ -242,6 +283,24 @@ specific form is an open design choice (§2.4).
 decision, and the reasoning is sound on two independent grounds: the estimand is
 being reformulated, and its power is unresolved (§0.2). Reserving the fresh
 cohort for a target that is still being defined would spend it badly.
+
+#### T2 is decoupled from the T1 freeze — external review, adopted
+
+**V21-T1 freezes independently of T2.** An unresolved exploratory statistic must
+not block a clean confirmatory contract, and coupling them would leave room to
+revisit T1 while nominally waiting on T2 — a researcher degree of freedom with no
+upside.
+
+So there are two separate tracks and two separate freezes:
+
+| track | contents | freeze | status |
+| --- | --- | --- | --- |
+| **V21-T1** | broad immune state, estimator family, ridge procedure, QC gate hierarchy, donor hierarchy, power gate, provenance | freezable on its own | the subject of this document |
+| **V21-T2** | the continuous / neighbourhood rare-biology statistic and its power question | separate, later | not drafted here |
+
+T2 inherits T1's frozen estimator and infrastructure when it is eventually
+designed; it contributes nothing to them. Nothing in the T2 track may alter a
+T1 quantity after the T1 freeze.
 
 ### 1.3 The donor hierarchy — four tiers, owner-approved
 
@@ -321,6 +380,11 @@ reduction churns 9–11% of the tail label.
 | `S3` | `S1` ∩ `S2` | both fixes |
 | `S4` | weighted within-cell ranks over the core | invariant to monotone count transforms |
 
+**The family is closed at five.** A dropout-modelling candidate was considered
+and is **not** added, on external review: it is assumption-heavy, and expanding
+the search space immediately before selection is exactly when an extra candidate
+is least defensible. Adding one later would require its own prospective freeze.
+
 The core threshold for `S2`/`S3`/`S4` is **derived from the discovery detection
 profile, not typed** — consistent with the standing rule that dataset geometry
 sets scale-sensitive parameters. It is also the "common measured gene core"
@@ -344,10 +408,44 @@ and it is the reason not to select on binary-label stability, which would merely
 optimise an arbitrary threshold.
 
 Selection must be **single-shot**: one pass, frozen result, no iteration after
-seeing any confirmation quantity. A leave-one-discovery-donor-out variant of the
-selection is recommended, because the discovery donors also fit `beta`/`mu`/
-`sigma` and the criterion could otherwise overfit discovery's particular depth
-profile.
+seeing any confirmation quantity.
+
+#### The ranking and tie-breaking rule, frozen before S0–S4 are run
+
+External review required this closed before selection, and rightly: two criteria
+with no stated combination rule is a researcher degree of freedom wearing a
+contract's clothes.
+
+**Step 1 — admissibility on held-out biology.** A candidate is admissible only
+if its held-out-biology preservation is not materially worse than `S0`'s, judged
+by the same envelope logic §3.3 uses for ridge: the degradation relative to `S0`
+must lie within the leave-one-donor-out envelope of `S0`'s own held-out
+statistic across the 28 discovery donors. This uses no new constant, and it is
+what prevents a candidate from winning on robustness by flattening the score
+into noise.
+
+- If **no** candidate is admissible, `STOP_NO_ADMISSIBLE_ESTIMATOR`.
+- If `S0` itself is inadmissible against its own envelope, that is reported as a
+  finding, and ranking proceeds among the admissible candidates.
+
+**Step 2 — rank the admissible candidates by worst-case measurement
+robustness.** The ranking scalar is the **maximum** standardized score
+displacement over the frozen thinning ladder — across every retention level and
+every draw. Lower is better. The maximum rather than an average, for the reason
+the owner gave for the ridge metrics: averaging lets a bad level be masked by
+good ones.
+
+**Step 3 — tie-breaking, deterministic.** Two candidates are indistinguishable
+if their worst-case displacements differ by less than the leave-one-donor-out
+envelope of that same quantity. Among indistinguishable candidates, take the
+**earliest in the declared order `S0 < S1 < S2 < S3 < S4`**, which is ordered by
+fewest modifications to the frozen estimator. This biases toward the baseline,
+which is the conservative direction, and it is fixed here rather than decided on
+the day.
+
+**Step 4 — publish the whole table.** Every candidate, both criteria, its
+admissibility, its ranking scalar, and the applied tie-break — so the selection
+is checkable rather than announced.
 
 ### 2.4 The continuous rare-biology statistic — open design choice
 
@@ -454,9 +552,9 @@ extreme members of the near-optimal λ set.
 **Owner decision: leave-one-donor-out with the maximum displacement, applied
 per metric, with no averaging.**
 
-- The envelope is the **maximum** displacement observed across the 28
-  leave-one-donor-out refits — not a percentile, which would reintroduce an
-  arbitrary constant.
+- The envelope is the **maximum** displacement observed across **all 28**
+  leave-one-donor-out refits — every one of them, and not a percentile, which
+  would reintroduce an arbitrary constant. External review confirmed all 28.
 - It is computed and applied **separately for each of the three metrics**. β
   direction, cell-score geometry and donor summaries each get their own envelope
   and their own comparison.
@@ -625,7 +723,13 @@ Each of these fixes something that actually cost time in V20:
   cross-fitted effect estimate — in which case `reader_validation` stays sealed
   and V21 ships as a methodology contribution (§0.3);
 - any AT8 outcome from the 18 spent donors entering the power calculation;
-- the cross-region generalisation study altering T1 after T1 is frozen (§11).
+- the cross-region generalisation study altering T1 after T1 is frozen (§11);
+- `STOP_EFFECT_DIRECTION_NOT_CONSISTENT` — any of the 28 leave-one-donor-out
+  influence refits reversing the sign of the out-of-fold effect, which leaves the
+  conservative bound undefined (§0.3);
+- `STOP_NO_ADMISSIBLE_ESTIMATOR` — no candidate preserving held-out biology
+  within `S0`'s envelope (§2.3);
+- any T2 quantity altering a T1 quantity after the T1 freeze (§1.2).
 
 ---
 
@@ -774,41 +878,76 @@ reason to move the confirmation.
 | 1 | §0.1 fresh donors | **decided** — `reader_validation` approved in principle, `reader_oracle` sealed |
 | 2 | §0.3 spend the 12 now? | **decided** — hold; power gate first |
 | 3 | §0.3 gate evidence base | **decided** — within-28 cross-fit; the 18's AT8 excluded; no power credit for the 46-refit |
-| 4 | §1.3 donor hierarchy | **decided** — 28 select → freeze → refit on 46 → single test on 12 |
-| 5 | §2.3 estimator selection criteria | **decided** — thinning robustness **and** held-out biology preservation, jointly, discovery-only, single-shot |
-| 6 | §3.1–3.2 ridge search | **decided** — frozen deterministic bracketing with endpoint STOP |
-| 7 | §3.3 functional stability | **decided** — LODO maximum displacement, per metric, no averaging, all three must pass |
-| 8 | §4 QC gate authority | **decided** — association warns, same-cell intervention qualifies, every rejection-capable gate power-calibrated |
-| 9 | §11 cross-region study | **decided** — frozen separately, secondary, never called confirmation, must not change T1 after freeze |
-| 10 | §11 confirmation tissue | **decided** — MTG; precision is not a reason to change the question |
-| 11 | §2.4 continuous rare-biology statistic | **open** — I lean to the shape/interaction form, which needs no threshold |
-| 12 | §2.2 dropout-modelling candidate | **open** — left out as too assumption-heavy; owner's call |
-| 13 | §3.3 which LODO refits define the envelope | **open, structural only** — recommend all 28 |
+| 4 | §0.3 cross-fit construction | **decided** — 28 nested models → one OOF predictor per donor → **one** HC3 regression across the 28 OOF scores |
+| 5 | §0.3 conservative effect bound | **decided** — jackknife minimum across the 28 LODO influence refits, with a directional-consistency precondition |
+| 6 | §1.2 T2 coupling | **decided** — T2 decoupled; V21-T1 freezes independently |
+| 7 | §1.3 donor hierarchy | **decided** — 28 select → freeze → refit on 46 → single test on 12 |
+| 8 | §2.2 estimator family | **decided** — `S0`–`S4`, closed; no dropout-model candidate |
+| 9 | §2.3 selection criteria | **decided** — thinning robustness **and** held-out biology, jointly, discovery-only, single-shot |
+| 10 | §2.3 ranking and tie-breaking | **decided** — admissibility on held-out biology, rank by worst-case displacement, ties to the earliest declared candidate |
+| 11 | §3.1–3.2 ridge search | **decided** — frozen deterministic bracketing with endpoint STOP |
+| 12 | §3.3 functional stability | **decided** — all 28 LODO refits, maximum displacement, per metric, no averaging, all three must pass |
+| 13 | §4 QC gate authority | **decided** — association warns, same-cell intervention qualifies, every rejection-capable gate power-calibrated |
+| 14 | §11 cross-region study | **decided** — frozen separately, secondary, never called confirmation, must not change T1 after freeze |
+| 15 | §11 confirmation tissue | **decided** — MTG; precision is not a reason to change the question |
+| 16 | §2.4 continuous rare-biology statistic | **moved to the V21-T2 track** — no longer blocks the T1 freeze |
 
-## 13. Freeze readiness
+## 13. Freeze readiness — V21-T1
 
-**Not ready to freeze.** Three items must close first, in this order.
+**Two steps remain before the T1 contract can be frozen.** Both are
+discovery-only, pathology-blind with respect to the fresh 12, and neither opens
+a partition or touches V20.
 
-1. **Resolve §2.4** — the continuous rare-biology statistic. T2 is exploratory
-   either way, but the contract cannot be frozen with an undefined estimand in
-   it.
-2. **Run the estimator selection** on the 28 discovery donors: the `S0`–`S4`
-   family under joint thinning-robustness and held-out-biology criteria,
-   single-shot, pathology-blind. This produces the frozen estimator.
-3. **Run the power gate** on that frozen estimator, by within-28 cross-fitting.
-   This is the decision point. If it clears 80% at α = 0.025 for 12 donors, the
-   §10 build sequence begins. If it does not, `reader_validation` stays sealed
-   and V21 ships as a methodology contribution validated on development donors.
+1. **Run estimator selection on the 28 discovery donors.** The `S0`–`S4` family
+   under the joint criteria, with §2.3's ranking and tie-breaking now frozen
+   ahead of it. Single-shot. Output: the frozen estimator, plus the full
+   published ranking table.
+2. **Run the power gate on that frozen estimator.** Build the 28 out-of-fold
+   donor scores, fit the single HC3 regression, take the jackknife minimum
+   across the 28 influence refits, check directional consistency, and project to
+   n = 12 at α = 0.025.
 
-Only after item 3 returns does the question of opening the partition arise at
-all, and §10's ordering applies from there: authority → store build → closure →
-freeze → single AT8-opening run.
+**The gate's verdict is the decision point.**
 
-**What is already frozen-ready:** the donor hierarchy, the ridge procedure and
-its stability rule, the QC gate hierarchy and its power-calibration requirement,
-the data-hygiene rules, the provenance requirements, the STOP conditions, and
-the cross-region study's subordinate status.
+- **Clears 80%** → freeze the V21-T1 contract, then §10's build sequence:
+  population authority → store build → closure → freeze → the single
+  AT8-opening run on the 12.
+- **Does not clear** → `reader_validation` stays sealed and V21-T1 ships as a
+  methodology contribution validated on development donors. Nothing
+  irreversible is spent.
 
-**What must not happen before freeze:** no AT8 value opened, no partition
-opened, no estimator fitted on anything but the 28, no threshold chosen from a
-result, and no V21 execution.
+**Already frozen-ready:** the donor hierarchy, the estimator family and its
+selection rule, the ridge procedure and its stability rule, the QC gate
+hierarchy and its power-calibration requirement, the data-hygiene rules, the
+provenance requirements, the STOP conditions, and the cross-region study's
+subordinate status.
+
+**Must not happen before freeze:** no AT8 value opened, no partition opened, no
+estimator fitted on anything but the 28, no threshold chosen from a result, and
+no V21 execution.
+
+**Separately:** the V21-T2 track — the continuous rare-biology estimand and its
+power question — is developed and frozen on its own schedule, inherits T1's
+frozen estimator and infrastructure, and may not alter any T1 quantity after the
+T1 freeze.
+
+## 14. External review status
+
+`5bad4ebb` was reviewed as **CONDITIONAL NO-GO — very close**, with four
+blockers. All four are addressed in this revision:
+
+| blocker | resolution |
+| --- | --- |
+| "winner's-curse-adjusted lower bound" overstated cross-fitting | replaced by the jackknife-minimum out-of-fold effect across 28 LODO influence refits, with a directional-consistency precondition (§0.3) |
+| "HC3 evaluated on the held-out donors" is not estimable under outer LODO | replaced by the correct construction: 28 nested models, one OOF predictor per donor, one HC3 regression across the assembled 28 (§0.3) |
+| exploratory T2 coupled to the T1 freeze | decoupled; two tracks, two freezes, T2 may not alter T1 afterwards (§1.2) |
+| estimator-selection ranking and tie-breaking not frozen before `S0`–`S4` run | frozen: admissibility, worst-case ranking scalar, deterministic tie-break, published table (§2.3) |
+
+Plus both remaining open calls as directed: no dropout-model candidate, and all
+28 LODO refits for the ridge-stability envelope.
+
+The correction I would flag most for the re-review is the second. It was my
+error, and it was not cosmetic: under outer leave-one-donor-out each fold holds
+out a single donor, so the procedure as written could not have been executed at
+all — a contract that specified an inestimable quantity would have failed at run
+time rather than at review.
