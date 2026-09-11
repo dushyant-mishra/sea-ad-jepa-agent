@@ -34,6 +34,14 @@ class QualifiedOptimizerStepGuard:
         self._pre_handle = self.optimizer.register_step_pre_hook(self._pre_step)
         self._post_handle = self.optimizer.register_step_post_hook(self._post_step)
 
+    @property
+    def receipt_digest(self) -> str:
+        return self._verified["receipt_digest"]
+
+    @property
+    def target_package_root(self) -> str:
+        return self._verified["target_package_root"]
+
     def arm_for_step(self, *, schedule_cursor: int) -> dict[str, Any]:
         cursor = int(schedule_cursor)
         if cursor < 0:
