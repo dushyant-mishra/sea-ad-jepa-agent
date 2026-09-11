@@ -3,7 +3,29 @@ name: V21 authority restoration guard
 on:
   push:
     branches:
-      - repair/t0-v21-authority-restoration-20260911
+      - 'repair/t0-v21-*'
+      - 'review/t0-v21-*'
+    paths:
+      - 'scripts/v4/t0_v21_authority_v1.py'
+      - 'scripts/v4/t0_v21_authority_legacy_v1.py.txt'
+      - 'scripts/v4/t0_v21_selection_and_power_v1.py'
+      - 'scripts/v4/test_t0_v21_authority_v1.py'
+      - 'scripts/v4/test_t0_v21_authority_restoration_v2.py'
+      - 'scripts/v4/test_t0_v21_authority_api_surface_v1.py'
+      - 'scripts/v4/test_t0_v21_selection_and_power_v1.py'
+      - 'scripts/v4/test_t0_v21_measurement_and_freeze_v1.py'
+      - '.github/workflows/v21-authority-restoration-tests.yml'
+  pull_request:
+    paths:
+      - 'scripts/v4/t0_v21_authority_v1.py'
+      - 'scripts/v4/t0_v21_authority_legacy_v1.py.txt'
+      - 'scripts/v4/t0_v21_selection_and_power_v1.py'
+      - 'scripts/v4/test_t0_v21_authority_v1.py'
+      - 'scripts/v4/test_t0_v21_authority_restoration_v2.py'
+      - 'scripts/v4/test_t0_v21_authority_api_surface_v1.py'
+      - 'scripts/v4/test_t0_v21_selection_and_power_v1.py'
+      - 'scripts/v4/test_t0_v21_measurement_and_freeze_v1.py'
+      - '.github/workflows/v21-authority-restoration-tests.yml'
   workflow_dispatch:
 
 jobs:
