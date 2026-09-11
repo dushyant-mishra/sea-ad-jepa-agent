@@ -196,34 +196,116 @@ the fresh 12 — which is the thing the gate exists to protect.
    banked. The projection stands on the 28-fit evidence and the actual test
    should, if anything, be better powered than projected.
 
-#### The conservative bound — corrected, because cross-fitting is not a lower bound
+#### The planning effect — an empirical influence minimum, not a lower bound
 
-An earlier draft called the cross-fitted estimate a "winner's-curse-adjusted
-lower bound". **That was too strong.** Cross-fitting removes in-sample optimism;
-it does not turn a point estimate into a lower confidence bound. A gate that
-promises ≥ 80% power *against a lower bound* must be given one.
+*Amended after external review of `a89f4c3f`; requires owner approval before
+freeze.*
 
-**Frozen:** the effect used in the power projection is the **minimum across the
-28 leave-one-donor-out influence refits** of the out-of-fold effect — recompute
-the single HC3 regression 28 times, each omitting one donor from the assembled
-out-of-fold vector, and take the smallest resulting standardized effect.
+Two earlier descriptions were both too strong. The first called the cross-fitted
+estimate a "winner's-curse-adjusted lower bound"; cross-fitting removes in-sample
+optimism but yields a point estimate. The second replaced it with the jackknife
+minimum and kept the phrase "lower bound". **That is also wrong.** The minimum
+across 28 leave-one-donor-out influence refits is a deterministic *sensitivity
+minimum over the donors actually observed*. It is not a lower confidence bound on
+the underlying effect, and it carries no coverage guarantee for the fresh 12.
 
-- **Directional-consistency precondition.** The bound is only defined if all 28
-  influence refits agree in sign. If any refit reverses direction, the effect is
-  not stable enough for a power projection to mean anything and the result is
-  `STOP_EFFECT_DIRECTION_NOT_CONSISTENT`.
-- It is deterministic, needs no seed, introduces no constant, and is a genuine
-  worst-case over the donors actually observed rather than a distributional
-  assumption.
+**Frozen, with its name corrected:** the quantity is the
+**empirical influence minimum** `δ_infl` — recompute the single HC3 regression 28
+times, each omitting one donor from the assembled out-of-fold vector, and take the
+smallest resulting standardized effect, where a 27-donor refit standardizes by
+`√27` and the full fit by `√28`.
 
-**Projection.** The out-of-fold statistic is a `t` at n = 28, so the
-standardized effect is `δ = t₂₈ / √28` and the projected statistic at n = 12 is
-`δ_min × √12`, where `δ_min` is the jackknife-minimum above. Power follows from
-the noncentral `t` at residual df = 12 − 5 = 7 against the frozen α = 0.025.
+- **Directional-consistency precondition.** It is only defined if all 28 influence
+  refits agree in sign; otherwise `STOP_EFFECT_DIRECTION_NOT_CONSISTENT`.
+- **Bounding requirement, now enforced rather than merely reported.** The planning
+  effect is `min(|δ_full|, |δ_infl|)` carrying the common sign. An influence refit
+  set can sit entirely further from zero than the full fit, in which case `δ_infl`
+  is *less* conservative than the estimate it was meant to guard, and using it
+  would be anti-conservative. The executor previously computed this check and did
+  not act on it.
+- It is deterministic, needs no seed, and introduces no constant.
 
-Conservative in three separate ways, and stacking is intentional: each fold
-trains on 27 rather than 28 donors; the jackknife minimum is a worst case rather
-than a centre; and the 46-donor refit's expected sharpening is not credited.
+#### The confirmatory test must be frozen before power means anything
+
+*New requirement after external review; requires owner approval before freeze.*
+
+The gate previously projected `δ √12` into a **noncentral t** at df = 7. That is
+the wrong reference distribution for two independent reasons.
+
+**First, it is not the test that will be run.** V20's broad-state inference is
+HC3-studentized **Freedman–Lane permutation** (`t0_inference_safe_v1.safe_studentized_fl`
+over `t0_studentized_fl_v1.studentized_freedman_lane`), not a parametric Student
+`t`. Power calibrated to a different procedure than the one that decides is not
+power.
+
+**Second, the discovery-side `t` may not have a parametric null at all.** The 28
+out-of-fold predictions are mutually dependent: folds `i` and `j` share 26 of
+their 27 training donors, so `score_i` is a function of `y_j` for every `j ≠ i`.
+Per-donor honesty — donor `i`'s prediction never sees donor `i`'s outcome — holds
+and is tested, but it is a weaker property than joint independence across donors,
+and the single HC3 regression treats the 28 pairs as independent. This is very
+likely why V20 used permutation inference in the first place.
+
+**Frozen confirmatory test for the fresh 12.** The same frozen machinery V20 uses,
+at n = 12:
+
+`safe_studentized_fl(y, x_reduced = [1, age_c, age_c², sex], predictor = the frozen
+score, permutations = B frozen permutations)`, one-sided on `p_upper`, at
+α = 0.025.
+
+- **Feasibility, measured not assumed.** At n = 12 with `p_full = 5` the residual
+  df is 7 and mean HC3 leverage is 5/12 ≈ 0.417 (max ≈ 0.68 on a representative
+  design), inside the frozen engine's `h ≥ 1 − 1e−12` guard. The procedure is
+  estimable at this size.
+- **B is constrained by α, not chosen for taste.** `p_upper = (1 + #{null ≥ t_obs}) /
+  (B + 1)`, so the smallest attainable p-value is `1/(B+1)` and rejecting at
+  α = 0.025 requires **B ≥ 39**. B is frozen at **9999**, giving a p-value grid of
+  1/10000 and a smallest attainable p of 1e−4.
+
+**Power is calibrated to that exact test, by simulation.** No closed form. Under
+the planning effect, simulate donor-level data at n = 12 on the frozen nuisance
+design, run the frozen Freedman–Lane procedure, and count rejections at α = 0.025.
+The gate clears only if the estimated rejection rate is ≥ 80% with its own Monte
+Carlo uncertainty reported.
+
+**The discovery-side effect is likewise established by permutation**, over the
+whole nested procedure: permute donor labels, re-run all 28 nested folds, and
+recompute. That needs no independence assumption and so is not exposed to the
+cross-fit dependence above.
+
+#### The projection must go through the underlying effect, not through `δ`
+
+*Measured while implementing the calibration; requires owner approval before
+freeze.*
+
+`δ = t / √n` is **not** portable across cohort sizes, because `t` here is an HC3
+statistic and HC3 divides squared residuals by `(1 − h)²`. Mean leverage is
+`p_full / n`, which is **0.179** at n = 28 and **0.417** at n = 12, so the same
+underlying effect produces a systematically smaller statistic at the smaller
+cohort. Simulation on the frozen engine measures the shortfall at roughly
+**0.83** of the naive `δ √12` at the confirmation size — that is, the earlier
+projection overstated the attainable statistic by about a fifth.
+
+So the projection is routed through the underlying signal-to-noise instead, with
+both scalings measured on the designs in question rather than assumed:
+
+1. measure the **discovery** design's HC3 scaling by simulation, and divide it
+   out of the observed `δ` to recover the underlying effect;
+2. simulate at the **confirmation** design, which applies that design's own
+   scaling;
+3. read power off the frozen Freedman–Lane test at α = 0.025.
+
+This is the concrete form of the external reviewer's objection that power depends
+on the residualized predictor geometry and error structure and not on `n` alone.
+It is measured, not assumed, and the executor reports the achieved statistic
+against the naive projection so the discrepancy stays visible.
+
+**Power clears on the lower Monte Carlo limit, never the point estimate**, so
+simulation noise cannot be what passes the gate.
+
+Conservative in three separate ways, and stacking is intentional: each fold trains
+on 27 rather than 28 donors; the planning effect is a worst case rather than a
+centre; and the 46-donor refit's expected sharpening is not credited.
 **This replaces the illustrative 0.75 shrinkage entirely** — no chosen constant
 survives anywhere in the gate.
 
@@ -488,19 +570,46 @@ frozen so it cannot be retuned.
 bracket, extend that end by a frozen step of `4` in exponent and re-evaluate. At
 most **3** expansions per side, bounding the search at `e ∈ [−20, +20]`.
 
-**Stage C — refine.** Once the minimum is strictly interior, halve the step
-around it — `4 → 2 → 1 → 0.5 → 0.25` — for a frozen **4** refinement rounds,
-requiring the minimum to remain interior at each round.
+**Stage C — refine.** *Amended after external review of `a89f4c3f`; requires
+owner approval before freeze.*
 
-**Stage D — accept or STOP.** Accept only if the final minimum is strictly
-interior to its refinement interval. The frozen V20 tie rule is reused verbatim
-for equal-loss exponents; it is not redefined here.
+The previous wording required the minimum to remain interior at every round.
+Writing the executor showed what that means operationally: a round evaluates only
+`{c − step, c, c + step}` and requires the centre to win, so the accepted exponent
+could never move away from the coarse-stage minimum. Across the ladder
+`2, 1, 0.5, 0.25` it confined an acceptable optimum to within **0.125** of an
+anchor spaced **4** apart. That is confirmation of a coarse guess, not refinement,
+and it would have refused almost every real surface. The defect was in the
+contract, not in the code.
+
+**Amended procedure.** For each of the frozen **4** rounds, with step
+`s ∈ {2, 1, 0.5, 0.25}` in order:
+
+1. evaluate `c − s` and `c + s`;
+2. select the minimum of `{c − s, c, c + s}` under the frozen V20 tie rule;
+3. **recentre** `c` on that selection.
+
+Deterministic, seedless, and bounded: a round moves the centre by at most `s`, so
+total movement is at most `2 + 1 + 0.5 + 0.25 = 3.75`, strictly less than the
+anchor spacing of 4. The refined optimum therefore cannot migrate out of the
+basin the coarse stage identified, which is the property the original interiority
+rule was reaching for. After the final round the centre beats `c ± 0.25`, so for a
+unimodal surface the optimum is localised to within **0.125** — now a resolution
+guarantee rather than an admission constraint.
+
+**Stage D — accept or STOP.** Accept only if the final selection is strictly
+interior to the **full evaluated grid** — that is, not the smallest or largest
+exponent ever evaluated. Interiority is a statement about the bracket, which is
+what well-posedness requires (§3.5); it is not a statement about a three-point
+window, which is what made the previous wording degenerate. The frozen V20 tie
+rule is reused verbatim for equal-loss exponents; it is not redefined here.
 
 ### 3.2 STOP conditions, frozen in advance
 
 - the minimum is still at a bracket endpoint after the maximum expansions —
   the design is misspecified, not merely under-searched;
-- the refined minimum lands on a refinement-interval endpoint;
+- the refined minimum lands on an endpoint of the full evaluated grid, meaning
+  refinement walked out of the bracket rather than settling inside it;
 - the search does not terminate within the frozen expansion and refinement
   budgets;
 - **the CV surface is not decisive** (see §3.3).
@@ -894,18 +1003,37 @@ reason to move the confirmation.
 
 ## 13. Freeze readiness — V21-T1
 
-**Two steps remain before the T1 contract can be frozen.** Both are
-discovery-only, pathology-blind with respect to the fresh 12, and neither opens
-a partition or touches V20.
+*Corrected after external review of `a89f4c3f`, which found this section
+overstated what is executable.*
 
-1. **Run estimator selection on the 28 discovery donors.** The `S0`–`S4` family
-   under the joint criteria, with §2.3's ranking and tie-breaking now frozen
-   ahead of it. Single-shot. Output: the frozen estimator, plus the full
-   published ranking table.
-2. **Run the power gate on that frozen estimator.** Build the 28 out-of-fold
-   donor scores, fit the single HC3 regression, take the jackknife minimum
-   across the 28 influence refits, check directional consistency, and project to
-   n = 12 at α = 0.025.
+An earlier version of this section said only two steps remained — run selection,
+then run the gate. That was wrong, and wrong in the direction that matters: it
+described a decision layer as though it were a whole pipeline. `select_estimator`
+consumes **precomputed scalars**. Nothing yet computes them.
+
+**What is implemented and adversarially qualified** (`t0_v21_selection_and_power_v1.py`,
+`test_t0_v21_selection_and_power_v1.py`): the outer 28-fold leave-one-donor-out
+construction, the single assembled HC3 regression, the influence minimum and its
+directional precondition, the ridge bracketing search, the paired-LOODO
+near-optimal set and flat-surface flag, the per-metric stability verdict, and
+estimator admissibility, ranking and tie-breaking.
+
+**What is not implemented, and therefore blocks freeze:**
+
+1. the `S0`–`S4` score constructions themselves, and the discovery-derived common
+   measured gene core `S2`–`S4` depend on;
+2. the thinning ladder, and the worst-case standardized displacement it produces —
+   the ranking scalar `select_estimator` currently receives ready-made;
+3. the held-out-biology preservation statistic that decides admissibility;
+4. the three §3.3 displacement measurements — β direction cosine, cell-score rank
+   correlation, and donor-summary correlation and maximum absolute difference;
+5. the QC gate's power calibration inputs (§4.3);
+6. the §7 provenance emitter;
+7. the power calibration against the newly frozen Freedman–Lane confirmatory test.
+
+**So the next step is not "run `S0`–`S4`".** It is to implement and independently
+qualify the measurement and provenance layer above. Only then can selection run,
+and only after selection can the gate run.
 
 **The gate's verdict is the decision point.**
 

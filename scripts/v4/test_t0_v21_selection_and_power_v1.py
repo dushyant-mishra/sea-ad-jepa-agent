@@ -132,6 +132,24 @@ def leaky_pipeline(cohort):
     return train_fold, predict
 
 
+# A representative 12-donor confirmation design. Real ages are not used: the
+# fresh cohort is sealed, and power calibration only needs a design of the right
+# shape to measure the frozen test's behaviour at n = 12.
+CONFIRMATION_AGE = np.linspace(68.0, 92.0, v21.V21_CONFIRMATION_DONORS)
+CONFIRMATION_SEX = np.array(
+    [float(i % 2) for i in range(v21.V21_CONFIRMATION_DONORS)])
+
+DONOR_IDS = tuple("D%02d" % i for i in range(N))
+
+
+def seal(cohort, pipeline=None):
+    """A sealed cross-fit artifact built from an honest nested run."""
+    result = run_oof(cohort, pipeline or honest_pipeline)
+    return v21.seal_cross_fit(oof_result=result, donor_ids=DONOR_IDS,
+                              y=cohort["y"], age=cohort["age"],
+                              sex=cohort["sex"])
+
+
 def run_oof(cohort, pipeline):
     train_fold, predict = pipeline(cohort)
     return v21.outer_lodo_oof(n_donors=len(cohort["y"]), train_fold=train_fold,
@@ -195,7 +213,7 @@ def test_the_fold_callable_never_receives_its_held_out_donor():
 
 def test_ridge_exponent_is_selected_inside_each_fold():
     result = run_oof(make_cohort(), honest_pipeline)
-    assert result["ridge_selected_inside_each_fold"]
+    assert result["fold_ridge_exponents_recorded"]
     assert len(result["fold_ridge_exponents"]) == 28
     assert all(e is not None for e in result["fold_ridge_exponents"])
 
@@ -376,20 +394,72 @@ def test_a_refit_reproduces_the_frozen_engine_on_its_own_27_donors():
 # 7. Jackknife behaviour and sign consistency
 # --------------------------------------------------------------------------
 
-def test_the_conservative_bound_is_bounded_by_the_full_estimate():
+def test_the_influence_minimum_is_the_extreme_refit_in_the_observed_direction():
     cohort = make_cohort()
     scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
     bound = v21.jackknife_minimum_effect(
         y=cohort["y"], age=cohort["age"], sex=cohort["sex"], oof_scores=scores)
     assert bound["direction_consistent"]
-    assert bound["conservative_is_bounded_by_full"]
     values = [r["standardized_effect"] for r in bound["influence_refits"]]
     if bound["direction"] == "positive":
-        assert bound["conservative_standardized_effect"] == min(values)
+        assert bound["empirical_influence_minimum"] == min(values)
     else:
-        assert bound["conservative_standardized_effect"] == max(values)
-    assert abs(bound["conservative_standardized_effect"]) <= abs(
+        assert bound["empirical_influence_minimum"] == max(values)
+
+
+def test_the_planning_effect_takes_the_influence_minimum_when_it_bounds():
+    chosen = v21.choose_planning_effect(full_standardized_effect=0.50,
+                                        empirical_influence_minimum=0.30)
+    assert chosen["planning_standardized_effect"] == 0.30
+    assert chosen["influence_minimum_is_bounded_by_full"]
+    assert chosen["planning_effect_source"] == "empirical_influence_minimum"
+
+
+def test_the_planning_effect_falls_back_when_the_influence_set_is_not_bounding():
+    """The anti-conservative case, asserted directly rather than hunted for.
+
+    Every influence refit can land further from zero than the full fit. Using the
+    influence minimum then would make the gate easier to pass, not harder.
+    """
+    chosen = v21.choose_planning_effect(full_standardized_effect=0.30,
+                                        empirical_influence_minimum=0.50)
+    assert chosen["planning_standardized_effect"] == 0.30
+    assert not chosen["influence_minimum_is_bounded_by_full"]
+    assert "less_conservative" in chosen["planning_effect_source"]
+
+
+def test_the_planning_effect_handles_the_negative_direction_the_same_way():
+    near = v21.choose_planning_effect(full_standardized_effect=-0.50,
+                                      empirical_influence_minimum=-0.30)
+    far = v21.choose_planning_effect(full_standardized_effect=-0.30,
+                                     empirical_influence_minimum=-0.50)
+    assert near["planning_standardized_effect"] == -0.30
+    assert far["planning_standardized_effect"] == -0.30
+
+
+def test_the_planning_effect_is_never_further_from_zero_than_the_full_estimate():
+    """The bounding requirement, now enforced instead of merely reported."""
+    cohort = make_cohort()
+    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
+    bound = v21.jackknife_minimum_effect(
+        y=cohort["y"], age=cohort["age"], sex=cohort["sex"], oof_scores=scores)
+    assert abs(bound["planning_standardized_effect"]) <= abs(
         bound["full_standardized_effect"]) + 1e-12
+    if bound["influence_minimum_is_bounded_by_full"]:
+        assert (bound["planning_standardized_effect"]
+                == bound["empirical_influence_minimum"])
+    else:
+        assert (bound["planning_standardized_effect"]
+                == bound["full_standardized_effect"])
+
+
+def test_the_bound_does_not_claim_to_be_a_confidence_bound():
+    cohort = make_cohort()
+    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
+    bound = v21.jackknife_minimum_effect(
+        y=cohort["y"], age=cohort["age"], sex=cohort["sex"], oof_scores=scores)
+    assert bound["is_a_statistical_lower_confidence_bound"] is False
+    assert "conservative_standardized_effect" not in bound
 
 
 def test_sign_inconsistency_stops():
@@ -443,16 +513,26 @@ def test_a_cohort_with_no_residual_degrees_of_freedom_is_not_estimable():
                                  n_target=5)["estimable"]
 
 
-def test_the_gate_verdict_follows_the_conservative_bound_not_the_full_effect():
+def test_the_gate_uses_the_planning_effect_and_the_frozen_permutation_test():
     cohort = make_cohort(effect=2.0)
-    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
-    gate = v21.power_gate(y=cohort["y"], age=cohort["age"], sex=cohort["sex"],
-                          oof_scores=scores)
-    used = gate["projection"]["standardized_effect"]
-    assert used == gate["conservative_bound"]["conservative_standardized_effect"]
+    gate = v21.power_gate(artifact=seal(cohort),
+                          confirmation_age=CONFIRMATION_AGE,
+                          confirmation_sex=CONFIRMATION_SEX,
+                          n_simulations=40, n_permutations=99, seed=5)
+    used = gate["planning_effect"]["planning_standardized_effect"]
+    assert gate["underlying_effect"]["observed_standardized_effect"] == used
     assert abs(used) <= abs(
-        gate["conservative_bound"]["full_standardized_effect"]) + 1e-12
-    assert gate["clears_gate"] == gate["projection"]["meets_target"]
+        gate["planning_effect"]["full_standardized_effect"]) + 1e-12
+    assert "Freedman-Lane" in gate["calibration"]["test"]
+    assert gate["clears_gate"] == gate["calibration"]["meets_target"]
+    assert gate["artifact"]["verified"]
+    # The projection goes through the underlying effect, not through delta --
+    # and the calibration must actually consume it, not merely report it.
+    assert gate["underlying_effect"]["signal_to_noise"] == pytest.approx(
+        used / gate["underlying_effect"]["discovery_hc3_scaling"])
+    assert gate["calibration"]["signal_to_noise"] == (
+        gate["underlying_effect"]["signal_to_noise"])
+    assert gate["calibration"]["signal_to_noise"] != used
 
 
 # --------------------------------------------------------------------------
@@ -465,13 +545,15 @@ def test_rerunning_the_whole_construction_is_bitwise_identical():
     second = run_oof(cohort, honest_pipeline)["oof_predictions"]
     assert np.array_equal(first, second)
 
-    a = v21.power_gate(y=cohort["y"], age=cohort["age"], sex=cohort["sex"],
-                       oof_scores=first)
-    b = v21.power_gate(y=cohort["y"], age=cohort["age"], sex=cohort["sex"],
-                       oof_scores=second)
-    assert a["projection"]["power"] == b["projection"]["power"]
-    assert (a["conservative_bound"]["conservative_standardized_effect"]
-            == b["conservative_bound"]["conservative_standardized_effect"])
+    kwargs = dict(confirmation_age=CONFIRMATION_AGE,
+                  confirmation_sex=CONFIRMATION_SEX,
+                  n_simulations=30, n_permutations=99, seed=3)
+    a = v21.power_gate(artifact=seal(cohort), **kwargs)
+    b = v21.power_gate(artifact=seal(cohort), **kwargs)
+    assert a["artifact"]["artifact_digest"] == b["artifact"]["artifact_digest"]
+    assert a["calibration"]["power"] == b["calibration"]["power"]
+    assert (a["planning_effect"]["planning_standardized_effect"]
+            == b["planning_effect"]["planning_standardized_effect"])
 
 
 def test_permuting_donor_order_does_not_change_the_effect_or_the_verdict():
@@ -480,26 +562,23 @@ def test_permuting_donor_order_does_not_change_the_effect_or_the_verdict():
     perm = np.random.default_rng(2).permutation(N)
     assert not np.array_equal(perm, np.arange(N))
 
-    straight = v21.power_gate(y=cohort["y"], age=cohort["age"],
-                              sex=cohort["sex"], oof_scores=scores)
-    shuffled = v21.power_gate(y=cohort["y"][perm], age=cohort["age"][perm],
-                              sex=cohort["sex"][perm],
-                              oof_scores=scores[perm])
+    straight = v21.jackknife_minimum_effect(
+        y=cohort["y"], age=cohort["age"], sex=cohort["sex"], oof_scores=scores)
+    shuffled = v21.jackknife_minimum_effect(
+        y=cohort["y"][perm], age=cohort["age"][perm], sex=cohort["sex"][perm],
+        oof_scores=scores[perm])
 
-    assert shuffled["conservative_bound"]["full_t"] == pytest.approx(
-        straight["conservative_bound"]["full_t"], rel=1e-10, abs=1e-10)
-    assert shuffled["clears_gate"] == straight["clears_gate"]
+    assert shuffled["full_t"] == pytest.approx(straight["full_t"],
+                                               rel=1e-10, abs=1e-10)
 
     # The set of influence refits is the same; only the labelling moves.
-    straight_values = sorted(r["standardized_effect"] for r
-                             in straight["conservative_bound"]["influence_refits"])
-    shuffled_values = sorted(r["standardized_effect"] for r
-                             in shuffled["conservative_bound"]["influence_refits"])
+    straight_values = sorted(r["standardized_effect"]
+                             for r in straight["influence_refits"])
+    shuffled_values = sorted(r["standardized_effect"]
+                             for r in shuffled["influence_refits"])
     assert np.allclose(straight_values, shuffled_values, rtol=1e-10, atol=1e-12)
-    assert shuffled["conservative_bound"][
-        "conservative_standardized_effect"] == pytest.approx(
-        straight["conservative_bound"]["conservative_standardized_effect"],
-        rel=1e-10, abs=1e-12)
+    assert shuffled["planning_standardized_effect"] == pytest.approx(
+        straight["planning_standardized_effect"], rel=1e-10, abs=1e-12)
 
 
 def test_permuting_donor_order_permutes_the_out_of_fold_predictions_with_it():
@@ -758,13 +837,12 @@ def test_mismatched_metric_sets_stop():
 # Ridge bracketing search
 # --------------------------------------------------------------------------
 
-def test_the_search_recovers_an_optimum_near_the_coarse_minimum():
-    """0.05 is inside the 0.125 the frozen refinement ladder can tolerate."""
+def test_the_search_recovers_an_optimum_at_an_anchor():
     result = v21.ridge_bracket_search(lambda e: (e - 0.05) ** 2)
     assert result["interior"]
     assert result["selected_exponent"] == 0.0
     assert result["n_refinement_rounds"] == v21.RIDGE_REFINEMENT_ROUNDS
-    assert all(r["interior"] for r in result["refinement_rounds"])
+    assert result["refinement_movement"] == 0.0
 
 
 def test_the_search_stops_when_the_optimum_sits_on_a_boundary():
@@ -796,43 +874,41 @@ def test_the_search_finds_an_optimum_reached_by_expansion():
     result = v21.ridge_bracket_search(lambda e: (e + 12.0) ** 2)
     assert result["expansions"]["low"] >= 1
     assert result["selected_exponent"] == -12.0
-    assert all(r["interior"] for r in result["refinement_rounds"])
+    assert not any(r["moved"] for r in result["refinement_rounds"])
 
 
-def test_stage_c_refuses_an_optimum_between_the_anchors():
-    """The literal contract STOPs at 1.25, and that is the finding, not a bug.
+def test_stage_c_now_resolves_an_optimum_between_the_anchors():
+    """The amendment's whole point, measured on a case the old rule refused.
 
-    A refinement round evaluates only the centre and the two points a step
-    away, and section 3.1 requires the centre to win. An optimum at 1.25 is
-    nearer to 2 than to 0 at the first round, so the round's minimum lands on
-    an endpoint and the search refuses.
+    1.25 sits between anchors. Under the previous wording the first refinement
+    round's minimum landed on an interval endpoint and the search STOPped. With
+    recentring the ladder walks 0 -> 2 -> 1 -> 1.5 -> 1.25 and lands exactly on
+    the optimum.
     """
-    with pytest.raises(RuntimeError) as excinfo:
-        v21.ridge_bracket_search(lambda e: (e - 1.25) ** 2)
-    assert v21.STOP_RIDGE_BOUNDARY in str(excinfo.value)
-    assert "stage c" in str(excinfo.value).lower()
+    result = v21.ridge_bracket_search(lambda e: (e - 1.25) ** 2)
+    assert result["selected_exponent"] == pytest.approx(1.25, abs=1e-12)
+    assert result["coarse_minimum"] == 0.0
+    assert result["refinement_movement"] == pytest.approx(1.25, abs=1e-12)
+    assert any(r["moved"] for r in result["refinement_rounds"])
 
 
-def test_refinement_cannot_move_the_selected_exponent():
-    """The consequence of the literal reading, asserted rather than described."""
-    for target in (0.0, -0.05, 0.1, -4.0, 4.05):
-        try:
-            result = v21.ridge_bracket_search(lambda e: (e - target) ** 2)
-        except RuntimeError:
-            continue
-        centres = {r["centre"] for r in result["refinement_rounds"]}
-        assert len(centres) == 1, "refinement moved the centre"
-        assert result["selected_exponent"] in centres
-        assert result["selected_exponent"] % v21.RIDGE_EXPANSION_STEP == 0.0
+def test_refinement_movement_is_bounded_by_the_ladder():
+    """It can move, but never out of the basin the coarse stage identified."""
+    for target in (1.25, -1.75, 2.5, 5.5, -5.25):
+        result = v21.ridge_bracket_search(lambda e: (e - target) ** 2)
+        assert result["refinement_movement"] <= v21.MAX_REFINEMENT_MOVEMENT
+        assert result["refinement_movement"] < v21.RIDGE_EXPANSION_STEP
+        assert result["selected_exponent"] == pytest.approx(target, abs=0.125)
 
 
-def test_the_refinement_reach_is_an_eighth_of_an_anchor_spacing():
+def test_the_refinement_ladder_reaches_less_than_one_anchor_spacing():
     reach = v21.characterize_refinement_reach()
     assert reach["n_rounds"] == 4
-    assert reach["binding_tolerance"] == 0.125
+    assert reach["maximum_reach"] == 3.75
     assert reach["anchor_spacing"] == 4.0
-    assert reach["fraction_of_anchor_spacing"] == 0.03125
-    assert not reach["selected_exponent_can_move_during_refinement"]
+    assert reach["reach_stays_within_one_anchor_spacing"]
+    assert reach["resolution"] == 0.125
+    assert reach["selected_exponent_can_move_during_refinement"]
 
 
 def test_the_search_is_deterministic_and_evaluates_each_exponent_once():
@@ -1008,3 +1084,459 @@ def test_the_module_has_no_entry_point_that_could_run_against_real_data():
                 name = node.func.attr
             assert name not in io_calls, (
                 "the executor calls %r; it must not read data itself" % name)
+
+
+# --------------------------------------------------------------------------
+# The cross-fit artifact: the gate must not accept a bare score vector
+# --------------------------------------------------------------------------
+
+def test_a_sealed_artifact_carries_every_fold_and_recomputes_its_digest():
+    artifact = seal(make_cohort())
+    assert artifact["kind"] == "t0_v21_cross_fit_artifact_v1"
+    assert artifact["n_donors"] == 28
+    assert len(artifact["folds"]) == 28
+    assert len(artifact["donor_ids"]) == 28
+    for fold in artifact["folds"]:
+        assert len(fold["train_indices"]) == 27
+        assert fold["held_out_index"] not in fold["train_indices"]
+    assert v21.verify_cross_fit_artifact(artifact)["verified"]
+
+
+def test_the_gate_refuses_a_bare_score_vector():
+    """The defect: an in-sample predictor could previously be handed straight in."""
+    cohort = make_cohort()
+    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.power_gate(artifact=scores, confirmation_age=CONFIRMATION_AGE,
+                       confirmation_sex=CONFIRMATION_SEX,
+                       n_simulations=5, n_permutations=99, seed=1)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+    assert "bare score vector" in str(excinfo.value)
+
+
+def test_the_gate_refuses_an_artifact_shaped_dictionary_without_a_digest():
+    cohort = make_cohort()
+    artifact = dict(seal(cohort))
+    artifact.pop("artifact_digest")
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_cross_fit_artifact(artifact)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+
+
+def test_altering_a_sealed_artifact_breaks_its_digest():
+    artifact = dict(seal(make_cohort()))
+    tampered = np.array(artifact["oof_scores"], copy=True)
+    tampered[3] += 1e-9
+    artifact["oof_scores"] = tampered
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_cross_fit_artifact(artifact)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+    assert "does not recompute" in str(excinfo.value)
+
+
+def test_sealing_refuses_a_fold_set_that_is_not_a_clean_partition():
+    cohort = make_cohort()
+    result = run_oof(cohort, honest_pipeline)
+    folds = [dict(f) for f in result["folds"]]
+    folds[7]["train_indices"] = tuple(i for i in folds[7]["train_indices"]
+                                      if i != 11) + (7,)
+    broken = dict(result, folds=folds)
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.seal_cross_fit(oof_result=broken, donor_ids=DONOR_IDS,
+                           y=cohort["y"], age=cohort["age"], sex=cohort["sex"])
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+    assert "complement" in str(excinfo.value)
+
+
+def test_sealing_refuses_duplicate_donor_identifiers():
+    cohort = make_cohort()
+    result = run_oof(cohort, honest_pipeline)
+    ids = ("D00",) * 28
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.seal_cross_fit(oof_result=result, donor_ids=ids, y=cohort["y"],
+                           age=cohort["age"], sex=cohort["sex"])
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+
+
+def test_sealing_refuses_a_score_vector_that_disagrees_with_the_folds():
+    cohort = make_cohort()
+    result = dict(run_oof(cohort, honest_pipeline))
+    scores = np.array(result["oof_predictions"], copy=True)
+    scores[0] += 0.5
+    result["oof_predictions"] = scores
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.seal_cross_fit(oof_result=result, donor_ids=DONOR_IDS,
+                           y=cohort["y"], age=cohort["age"], sex=cohort["sex"])
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+
+
+# --------------------------------------------------------------------------
+# INVALID is not NOT_ESTIMABLE
+# --------------------------------------------------------------------------
+
+def test_a_nonfinite_covariate_is_invalid_not_inestimable():
+    cohort = make_cohort()
+    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
+    age = np.array(cohort["age"], copy=True)
+    age[4] = np.nan
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.oof_effect(y=cohort["y"], age=age, sex=cohort["sex"],
+                       oof_scores=scores)
+    assert v21.STOP_INVALID_INPUT in str(excinfo.value)
+
+
+def test_a_length_mismatch_is_invalid_not_inestimable():
+    cohort = make_cohort()
+    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.oof_effect(y=cohort["y"], age=cohort["age"][:-1],
+                       sex=cohort["sex"], oof_scores=scores)
+    assert v21.STOP_INVALID_INPUT in str(excinfo.value)
+
+
+def test_a_sex_coding_that_is_not_complete_binary_is_invalid():
+    cohort = make_cohort()
+    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
+    sex = np.full(N, 1.0)
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.oof_effect(y=cohort["y"], age=cohort["age"], sex=sex,
+                       oof_scores=scores)
+    assert v21.STOP_INVALID_INPUT in str(excinfo.value)
+    assert "complete binary" in str(excinfo.value)
+
+
+def test_genuine_rank_deficiency_is_still_reported_as_not_estimable():
+    """The distinction is only meaningful if the other branch still works."""
+    cohort = make_cohort()
+    _, learner = v21._frozen()
+    z, _ = learner.nuisance_design(cohort["age"], cohort["sex"])
+    aliased = z[:, 3].copy()          # the sex column, aliased with the design
+    effect = v21.oof_effect(y=cohort["y"], age=cohort["age"],
+                            sex=cohort["sex"], oof_scores=aliased)
+    assert effect["estimable"] is False
+    assert "reason" in effect
+
+
+# --------------------------------------------------------------------------
+# Power calibrated to the frozen Freedman-Lane test
+# --------------------------------------------------------------------------
+
+def test_the_permutation_count_is_constrained_by_alpha_not_by_taste():
+    assert v21.MIN_PERMUTATIONS_FOR_ALPHA == 39      # 1/(39+1) = 0.025
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.frozen_permutations(12, 38, seed=1)
+    assert "1/(B+1)" in str(excinfo.value)
+    block = v21.frozen_permutations(12, 39, seed=1)
+    assert block.shape == (39, 12)
+    for row in block:
+        assert sorted(row.tolist()) == list(range(12))
+
+
+def test_the_frozen_permutation_block_is_deterministic():
+    a = v21.frozen_permutations(12, 50, seed=7)
+    b = v21.frozen_permutations(12, 50, seed=7)
+    c = v21.frozen_permutations(12, 50, seed=8)
+    assert np.array_equal(a, b)
+    assert not np.array_equal(a, c)
+
+
+def test_calibrated_power_uses_the_frozen_freedman_lane_engine():
+    result = v21.simulate_power_freedman_lane(
+        signal_to_noise=0.6, age=CONFIRMATION_AGE,
+        sex=CONFIRMATION_SEX, n_simulations=60, n_permutations=99, seed=2)
+    assert "Freedman-Lane" in result["test"]
+    assert result["n_target"] == 12
+    assert result["alpha"] == 0.025
+    assert 0.0 <= result["power"] <= 1.0
+    assert result["smallest_attainable_p_value"] == pytest.approx(1.0 / 100)
+    assert result["usable_replicates"] > 0
+
+
+def test_calibrated_power_increases_with_the_effect():
+    powers = [v21.simulate_power_freedman_lane(
+        signal_to_noise=d, age=CONFIRMATION_AGE,
+        sex=CONFIRMATION_SEX, n_simulations=80, n_permutations=99,
+        seed=4)["power"] for d in (0.05, 0.9)]
+    assert powers[1] > powers[0]
+
+
+def test_a_null_effect_rejects_at_about_the_nominal_rate():
+    """The permutation test must not be anti-conservative at n = 12."""
+    result = v21.simulate_power_freedman_lane(
+        signal_to_noise=0.0, age=CONFIRMATION_AGE,
+        sex=CONFIRMATION_SEX, n_simulations=400, n_permutations=99, seed=9)
+    assert result["power"] <= 0.10, (
+        "rejection rate %.3f under no effect" % result["power"])
+
+
+def test_the_gate_verdict_uses_the_lower_monte_carlo_limit():
+    """Simulation noise must not be what passes the gate."""
+    result = v21.simulate_power_freedman_lane(
+        signal_to_noise=0.9, age=CONFIRMATION_AGE,
+        sex=CONFIRMATION_SEX, n_simulations=60, n_permutations=99, seed=6)
+    expected = result["power"] - 1.96 * result["monte_carlo_standard_error"]
+    assert result["power_lower_95"] == pytest.approx(max(0.0, expected))
+    assert result["meets_target"] == bool(expected >= v21.TARGET_POWER)
+
+
+def test_the_noncentral_t_projection_is_marked_as_not_decision_capable():
+    projection = v21.project_power(standardized_effect_value=0.5, n_target=12)
+    assert projection["is_planning_approximation_only"]
+    assert projection["not_decision_capable"]
+
+
+# --------------------------------------------------------------------------
+# The nested permutation null: no independence assumption
+# --------------------------------------------------------------------------
+
+def light_pipeline_factory(cohort):
+    """A fixed-exponent pipeline, so the permutation null stays affordable.
+
+    Nesting is qualified by the leakage tests; what is under test here is the
+    permutation construction itself.
+    """
+    x = cohort["features"]
+
+    def factory(y_used):
+        def train_fold(train_idx):
+            coef = _ridge_fit(x[train_idx], y_used[train_idx], 0.0)
+            return FoldModel(coef, 0.0, train_idx)
+
+        def predict(model, held_out):
+            return float(x[held_out] @ model.coef)
+
+        return train_fold, predict, (lambda m: m.exponent)
+
+    return factory
+
+
+def test_the_nested_permutation_null_refits_every_fold_under_each_permutation():
+    cohort = make_cohort(effect=2.5)
+    result = v21.nested_permutation_null(
+        n_donors=N, pipeline_factory=light_pipeline_factory(cohort),
+        y=cohort["y"], age=cohort["age"], sex=cohort["sex"],
+        n_permutations=49, seed=1)
+    assert result["null_t"].shape == (49,)
+    assert result["assumes_independent_out_of_fold_observations"] is False
+    assert result["smallest_attainable_p_value"] == pytest.approx(1.0 / 50)
+    assert 0.0 < result["p_upper"] <= 1.0
+    assert result["p_upper"] == pytest.approx(
+        (1 + int(np.sum(result["null_t"] >= result["t_observed"]))) / 50.0)
+
+
+def test_a_strong_effect_gives_a_small_permutation_p_value():
+    cohort = make_cohort(effect=3.0)
+    result = v21.nested_permutation_null(
+        n_donors=N, pipeline_factory=light_pipeline_factory(cohort),
+        y=cohort["y"], age=cohort["age"], sex=cohort["sex"],
+        n_permutations=49, seed=2)
+    assert result["p_upper"] <= 0.05
+
+
+def test_no_effect_does_not_give_a_small_permutation_p_value():
+    cohort = make_cohort(effect=0.0, seed=21)
+    result = v21.nested_permutation_null(
+        n_donors=N, pipeline_factory=light_pipeline_factory(cohort),
+        y=cohort["y"], age=cohort["age"], sex=cohort["sex"],
+        n_permutations=49, seed=3)
+    assert result["p_upper"] > 0.05
+
+
+def test_the_permutation_null_also_enforces_the_alpha_constraint_on_B():
+    cohort = make_cohort()
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.nested_permutation_null(
+            n_donors=N, pipeline_factory=light_pipeline_factory(cohort),
+            y=cohort["y"], age=cohort["age"], sex=cohort["sex"],
+            n_permutations=10, seed=1)
+    assert "1/(B+1)" in str(excinfo.value)
+
+
+def test_the_gate_clears_on_the_lower_limit_not_the_point_estimate():
+    """Both branches, without manufacturing a boundary-straddling simulation."""
+    noisy = v21.power_meets_target(power=0.83, monte_carlo_standard_error=0.05)
+    assert noisy["power"] >= v21.TARGET_POWER          # the point estimate passes
+    assert noisy["power_lower_95"] < v21.TARGET_POWER  # its lower limit does not
+    assert not noisy["meets_target"]
+
+    tight = v21.power_meets_target(power=0.90, monte_carlo_standard_error=0.02)
+    assert tight["power_lower_95"] >= v21.TARGET_POWER
+    assert tight["meets_target"]
+
+
+def test_a_power_estimate_exactly_at_the_target_does_not_clear_when_noisy():
+    edge = v21.power_meets_target(power=0.80, monte_carlo_standard_error=0.01)
+    assert not edge["meets_target"]
+
+
+def test_hc3_deflates_the_statistic_more_at_12_donors_than_at_28():
+    """The measurement that forced the projection to go through the effect.
+
+    HC3 divides residuals by `1 - h`, and mean leverage is 5/12 = 0.417 at the
+    confirmation size against 5/28 = 0.179 at discovery. The same underlying
+    effect therefore yields a systematically smaller statistic at n = 12, so
+    carrying `delta = t / sqrt(n)` across cohort sizes unchanged would overstate
+    what the confirmatory test can attain.
+    """
+    small = v21.measure_hc3_statistic_scaling(
+        age=CONFIRMATION_AGE, sex=CONFIRMATION_SEX,
+        n_simulations=300, n_permutations=39, seed=13)
+    large = v21.measure_hc3_statistic_scaling(
+        age=make_cohort()["age"], sex=make_cohort()["sex"],
+        n_simulations=300, n_permutations=39, seed=13)
+
+    assert small["mean_leverage"] == pytest.approx(5 / 12)
+    assert large["mean_leverage"] == pytest.approx(5 / 28)
+    assert small["hc3_scaling"] < 1.0
+    assert small["hc3_scaling"] < large["hc3_scaling"], (
+        "HC3 scaling at n=12 (%.3f) should be worse than at n=28 (%.3f)"
+        % (small["hc3_scaling"], large["hc3_scaling"]))
+    assert 0.70 < small["hc3_scaling"] < 0.95
+
+
+def test_the_underlying_effect_is_recovered_by_dividing_out_the_scaling():
+    recovered = v21.signal_to_noise_from_observed_effect(
+        observed_standardized_effect=0.5, age=make_cohort()["age"],
+        sex=make_cohort()["sex"], n_simulations=200, n_permutations=39,
+        seed=17)
+    assert recovered["signal_to_noise"] == pytest.approx(
+        0.5 / recovered["discovery_hc3_scaling"])
+    # The observed statistic understates the effect, so the recovered effect is
+    # larger than the raw standardized statistic.
+    assert recovered["signal_to_noise"] > 0.5
+
+
+def test_the_simulation_reports_what_the_statistic_actually_reached():
+    result = v21.simulate_power_freedman_lane(
+        signal_to_noise=0.9, age=CONFIRMATION_AGE, sex=CONFIRMATION_SEX,
+        n_simulations=300, n_permutations=39, seed=13)
+    assert result["naive_noncentrality"] == pytest.approx(0.9 * math.sqrt(12))
+    assert result["hc3_scaling"] == pytest.approx(
+        result["mean_observed_t"] / result["naive_noncentrality"])
+    assert result["hc3_scaling"] < 1.0
+
+
+def test_the_ridge_search_invariant_that_makes_two_stop_paths_unreachable():
+    """Refinement stays strictly inside the stage-B bracket. Proved, then checked.
+
+    At stage-B exit every evaluated exponent is an anchor or an expansion, so the
+    grid is spaced exactly 4 apart and an interior minimum is at least 4 from
+    either end. Refinement travels at most 2 + 1 + 0.5 + 0.25 = 3.75. So the
+    refined optimum can never reach a grid endpoint, and movement can never
+    exceed the ladder -- which is why the stage-D endpoint STOP and the movement
+    bound are assertions that should never fire rather than reachable branches.
+    """
+    for target in (0.3, 1.25, -1.75, 2.5, 5.5, -5.25, -11.5, 7.25):
+        result = v21.ridge_bracket_search(lambda e: (e - target) ** 2)
+        visited = sorted(step["exponent"] for step in result["trace"])
+        assert result["selected_exponent"] > visited[0]
+        assert result["selected_exponent"] < visited[-1]
+        assert result["refinement_movement"] <= v21.MAX_REFINEMENT_MOVEMENT
+        assert v21.MAX_REFINEMENT_MOVEMENT < v21.RIDGE_EXPANSION_STEP
+
+
+# --------------------------------------------------------------------------
+# Integration: the REAL frozen target learner through the nested procedure
+# --------------------------------------------------------------------------
+#
+# Every leakage test above runs a synthetic pipeline written in this file. That
+# proves the executor's contract but not that the estimator the study will
+# actually use satisfies it. This section runs `fit_t0_target` -- the frozen V20
+# learner, with its own internal LOODO ridge selection and its own donor-order
+# canonicalisation -- through all 28 outer folds, on synthetic expression and a
+# synthetic outcome. No AT8 value is involved.
+
+N_GENES = 24
+
+
+def make_expression_cohort(n=N, seed=5, effect=1.2):
+    rng = np.random.default_rng(seed)
+    age = np.linspace(67.0, 93.0, n) + rng.normal(scale=0.5, size=n)
+    sex = np.array([float(i % 2) for i in range(n)])
+    pseudobulk = rng.normal(loc=3.0, scale=1.0, size=(n, N_GENES))
+    signal = pseudobulk[:, :4].mean(axis=1)
+    y = effect * signal + 0.01 * (age - age.mean()) + rng.normal(scale=0.4,
+                                                                 size=n)
+    return {"age": age, "sex": sex, "pseudobulk": pseudobulk, "y": y}
+
+
+def frozen_learner_pipeline(cohort):
+    """The frozen learner itself, confined to each fold's training donors."""
+    _, learner = v21._frozen()
+    x, y = cohort["pseudobulk"], cohort["y"]
+    age, sex = cohort["age"], cohort["sex"]
+
+    def train_fold(train_idx):
+        return learner.fit_t0_target(
+            x[train_idx], y[train_idx], age[train_idx], sex[train_idx],
+            [DONOR_IDS[i] for i in train_idx])
+
+    def predict(fit, held_out):
+        return float(learner.score_expression(x[held_out:held_out + 1], fit)[0])
+
+    return train_fold, predict
+
+
+def run_frozen_oof(cohort):
+    train_fold, predict = frozen_learner_pipeline(cohort)
+    return v21.outer_lodo_oof(
+        n_donors=len(cohort["y"]), train_fold=train_fold,
+        predict_held_out=predict,
+        fold_ridge_exponent=lambda fit: fit["selected_multiplier_exponent"])
+
+
+def test_the_frozen_learner_runs_through_all_28_nested_folds():
+    result = run_frozen_oof(make_expression_cohort())
+    assert result["n_folds"] == 28
+    assert result["every_donor_held_out_exactly_once"]
+    assert all(f["n_train"] == 27 for f in result["folds"])
+    assert np.isfinite(result["oof_predictions"]).all()
+    # Each fold selected its ridge multiplier from its own 27 donors, using the
+    # learner's internal LOODO -- not a value supplied from outside.
+    assert result["fold_ridge_exponents_recorded"]
+    assert all(e is not None for e in result["fold_ridge_exponents"])
+
+
+def test_the_frozen_learner_cannot_see_its_own_held_out_donor():
+    """The decisive property, on the estimator the study will actually use."""
+    donor = 9
+    base = make_expression_cohort()
+    perturbed = make_expression_cohort()
+    perturbed["y"] = perturbed["y"].copy()
+    perturbed["y"][donor] += 30.0
+
+    before = run_frozen_oof(base)["oof_predictions"]
+    after = run_frozen_oof(perturbed)["oof_predictions"]
+
+    assert before[donor] == after[donor], (
+        "the frozen learner's out-of-fold prediction for donor %d moved when "
+        "only that donor's own outcome changed" % donor)
+    others = [i for i in range(len(before)) if i != donor]
+    assert any(before[i] != after[i] for i in others), (
+        "no other prediction moved, so the perturbation did nothing and this "
+        "test would have passed vacuously")
+
+
+def test_the_frozen_learner_pipeline_seals_and_gates():
+    cohort = make_expression_cohort()
+    artifact = v21.seal_cross_fit(
+        oof_result=run_frozen_oof(cohort), donor_ids=DONOR_IDS,
+        y=cohort["y"], age=cohort["age"], sex=cohort["sex"])
+    assert v21.verify_cross_fit_artifact(artifact)["verified"]
+    gate = v21.power_gate(artifact=artifact,
+                          confirmation_age=CONFIRMATION_AGE,
+                          confirmation_sex=CONFIRMATION_SEX,
+                          n_simulations=40, n_permutations=99, seed=11)
+    assert gate["artifact"]["verified"]
+    assert "Freedman-Lane" in gate["calibration"]["test"]
+    assert isinstance(gate["clears_gate"], bool)
+
+
+def test_the_frozen_learner_is_invariant_to_the_order_donors_arrive_in():
+    """`fit_t0_target` canonicalises donor order; confirm that end to end."""
+    cohort = make_expression_cohort()
+    perm = np.random.default_rng(3).permutation(N)
+    reordered = {k: v[perm] for k, v in cohort.items()}
+    straight = run_frozen_oof(cohort)["oof_predictions"]
+    shuffled = run_frozen_oof(reordered)["oof_predictions"]
+    assert np.allclose(shuffled, straight[perm], rtol=1e-10, atol=1e-12)

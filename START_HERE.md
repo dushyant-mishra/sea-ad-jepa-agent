@@ -4,9 +4,39 @@ This repository preserves several generations of JEPA research history. Do **not
 
 ## Current work
 
-The active project is the **FULL104 Contextual Target V1 / F1 feasibility line**.
+**Two lines are open. The T0/V21 line is the one being worked.**
+
+### T0 V21-T1 — active
 
 Current controlling gate:
+
+`STOP_T0_V21_T1_CONTRACT_UNFROZEN`
+
+The V21-T1 prospective design is **not frozen**. External review of `a89f4c3f`
+returned **NO-GO** with six blockers; the design has since been amended
+prospectively and the executor repaired, and both await owner approval and fresh
+external review.
+
+Implemented and adversarially qualified: the 28-fold outer leave-one-donor-out
+construction, the single assembled HC3 regression, the empirical influence
+minimum, the sealed cross-fit artifact, power calibrated by simulation against
+the frozen Freedman-Lane test, the ridge procedure, and estimator selection.
+**Not implemented**, and therefore blocking freeze: the measurement layer —
+`S0`–`S4`, the thinning ladder, held-out-biology preservation, the three
+ridge-stability displacements, QC power-calibration inputs, and the provenance
+emitter.
+
+Unauthorized until that is done and reviewed: running `S0`–`S4` selection,
+running the power gate, opening AT8 values, opening any partition, opening
+`reader_validation`, freezing V21-T1, and training.
+
+Read: [`docs/agent/T0_V21_PROSPECTIVE_DESIGN_DRAFT.md`](docs/agent/T0_V21_PROSPECTIVE_DESIGN_DRAFT.md),
+then `scripts/v4/t0_v21_selection_and_power_v1.py` and its test suite and
+mutation audit.
+
+### FULL104 Contextual Target V1 / F1 feasibility line — open, not advanced
+
+Its gate is unchanged and its preflight has not been started:
 
 `STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN`
 

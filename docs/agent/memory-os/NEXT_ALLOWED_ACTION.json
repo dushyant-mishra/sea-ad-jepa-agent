@@ -1,16 +1,23 @@
 {
   "schema": "JEPA_NEXT_ALLOWED_ACTION_V2",
-  "last_updated": "2026-09-03",
+  "last_updated": "2026-09-11",
   "current_gate": "F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT",
   "status": "STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN",
   "current_status": "F0, the frozen F1 query/population design, HC3 15A4/15B/15C, the QR-HC3 numerical-robustness repair, and the evidence-trend numerical repair are closed at their accepted scopes. External review of commit 249bc3b37cb6368ad97fde6bfb2a4560e83ff5a4 accepted the stable paired-difference evidence slope and the complete independent 11-gate reconstruction from raw frozen synthetic endpoints. The next work is to prospectively freeze and execute the real F1 reader/forward/executor preflight. Real F1 biological outcome adjudication remains forbidden until that preflight passes review.",
   "controlling_review": "docs/agent/reviews/F1_EVIDENCE_TREND_NUMERICAL_REPAIR_EXTERNAL_REVIEW_20260903.md",
   "reviewed_evidence_trend_repair_commit": "249bc3b37cb6368ad97fde6bfb2a4560e83ff5a4",
   "frozen_authority": {
-    "selected_triple": [5, 0, 4],
+    "selected_triple": [
+      5,
+      0,
+      4
+    ],
     "selected_design_sha256": "5d2fda2e81a6edd63241ccf996fe0e5086275233e765daae19509be24cd518e3",
     "effective_centered_design_sha256": "37653ed4a21f513a7389630bffa7447f9022323e8240bb80f53394138f1917eb",
-    "selected_design_shape": [104, 16],
+    "selected_design_shape": [
+      104,
+      16
+    ],
     "selected_design_rank": 16,
     "selected_design_df": 88,
     "hc3_repair_manifest_sha256": "f7cc3be9340c817f57953d3ef009c568a57dca7ea4fffbc2ccefbe6266e123a5",
@@ -47,5 +54,40 @@
     "Do not reselect the frozen (5,0,4) nuisance design, reopen HC3 selection, reopen D_shared, or overwrite historical PASS/STOP artifacts.",
     "Do not treat a Windows-native benchmark as production authority if the authenticated WSL lineage is available and intended for the heavy run."
   ],
-  "update_only_after": "A prospective WSL-first adaptive reader/forward/executor preflight package passes identity binding, resource benchmarking, execution-equivalence, shard/resume, firewall and fresh external review."
+  "update_only_after": "A prospective WSL-first adaptive reader/forward/executor preflight package passes identity binding, resource benchmarking, execution-equivalence, shard/resume, firewall and fresh external review.",
+  "active_line": "T0_V21_T1",
+  "concurrent_active_lines": [
+    {
+      "line": "T0_V21_T1",
+      "status": "STOP_T0_V21_T1_CONTRACT_UNFROZEN",
+      "is_the_line_currently_being_worked": true,
+      "current_status": "The V21-T1 prospective design is not frozen. External review of a89f4c3f returned NO-GO with six blockers. The design has been amended prospectively -- ridge stage C can now recentre, the confirmatory test is specified as the frozen HC3-studentized Freedman-Lane permutation procedure, and the jackknife quantity is named an empirical influence minimum rather than a lower bound -- and the executor has been repaired and adversarially qualified. Both await owner approval and fresh external review.",
+      "implemented_and_qualified": "scripts/v4/t0_v21_selection_and_power_v1.py with test_t0_v21_selection_and_power_v1.py and mutation_audit_t0_v21_selection_and_power_v1.py: the 28-fold outer LODO construction, the single assembled HC3 regression, the empirical influence minimum, the sealed cross-fit artifact, simulation-calibrated power against the frozen Freedman-Lane test, the ridge procedure, and estimator selection.",
+      "not_implemented_and_blocking_freeze": [
+        "the S0-S4 score constructions and the discovery-derived common measured gene core",
+        "the thinning ladder and the worst-case standardized displacement",
+        "the held-out-biology preservation statistic",
+        "the three ridge-stability displacements (beta direction, cell-score geometry, donor summaries)",
+        "the QC gate's power-calibration inputs",
+        "the provenance emitter"
+      ],
+      "primary_next_action": "Implement and independently qualify the V21 measurement and provenance layer. Do not run S0-S4 selection or the power gate before it exists and has been reviewed.",
+      "forbidden_actions": [
+        "Do not run S0-S4 estimator selection.",
+        "Do not run the V21 power gate on real data.",
+        "Do not open AT8 values or any partition.",
+        "Do not open reader_validation or reader_oracle.",
+        "Do not freeze the V21-T1 contract before owner approval and fresh external review.",
+        "Do not modify frozen V20 code or artifacts.",
+        "Do not train, finetune, run optimizer steps or update EMA."
+      ],
+      "update_only_after": "The measurement and provenance layer is implemented and qualified, the prospective amendments are owner-approved, and a fresh external review passes."
+    },
+    {
+      "line": "FULL104_F1",
+      "status": "STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN",
+      "is_the_line_currently_being_worked": false,
+      "current_status": "Unchanged from 2026-09-03. The real F1 reader/forward/executor preflight has not been started. Every F1 field elsewhere in this document remains the authority for that line."
+    }
+  ]
 }

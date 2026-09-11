@@ -13,12 +13,35 @@ Purpose: identify the minimum current authority set. Historical artifacts remain
 5. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
 6. `docs/agent/EVIDENCE_INDEX.md`
 
-## Live scientific gate
+## Live scientific gates
+
+**Two lines are open.** The F1 entry below is unchanged; the T0/V21 entry is
+added because it, not F1, is the line currently being worked.
+
+### T0 V21-T1 — the active line
+
+Current gate:
+`STOP_T0_V21_T1_CONTRACT_UNFROZEN`
+
+Next authorized work: implement and independently qualify the V21 measurement and
+provenance layer (`S0`–`S4`, the thinning ladder, held-out-biology preservation,
+the three ridge-stability displacements, QC power-calibration inputs, the
+provenance emitter), then obtain owner approval of the prospective amendments and
+fresh external review.
+
+Forbidden until then: running `S0`–`S4` selection, running the power gate,
+opening AT8 values, opening any partition, opening `reader_validation`, freezing
+the V21-T1 contract, and training.
+
+The V20 terminal `RARE_TAIL_UNDERDETERMINED_MEASUREMENT` stands, V20 remains
+immutable, and `training_authorized` remains `false`.
+
+### FULL104 / F1 feasibility — open, not advanced
 
 Current gate:
 `STOP_F1_REAL_READER_FORWARD_EXECUTOR_PREFLIGHT_UNFROZEN`
 
-Only next authorized scientific/engineering work:
+Next authorized work on that line:
 prospectively freeze and execute the real F1 reader/forward/executor preflight.
 
 The preflight may use a prospectively fixed, non-conclusion-bearing real technical fixture to authenticate the reader/forward path and benchmark the current runtime. The full real F1 biological sweep, biological outcome adjudication and training remain unauthorized.
