@@ -1,0 +1,1 @@
+Source/executable audit phase starts here. Subsequent repair commits require corresponding failing tests/evidence before production-code changes.
