@@ -2,7 +2,7 @@
 
 The preserved green authority source is evidence, not an importable production path.
 This test parses that source without executing it and requires every historical
-public symbol to remain present on the active fail-closed successor.  Intentional
+public symbol to remain present on the active fail-closed successor. Intentional
 semantic hardening is tested separately; this guard exists specifically to stop a
 partial rewrite from silently deleting reviewed authority entry points again.
 """
@@ -12,6 +12,8 @@ import ast
 import importlib.util
 import sys
 from pathlib import Path
+
+import pytest
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -50,7 +52,7 @@ def test_active_successor_preserves_complete_historical_public_surface():
     assert not missing, f"authority API truncation: missing historical public symbols {missing}"
 
 
-def test_active_successor_keeps_transport_fail_closed():
+def test_active_successor_keeps_transport_fail_closed_behaviorally():
     assert authority.EFFECT_TRANSPORT_STATUS == "OPEN"
-    assert authority.POWER_GATE_PRODUCTION_VERDICT_CAPABILITY == "DISABLED"
-    assert authority.TRANSPORT_AUTHORIZED_EFFECT_ESTIMANDS == frozenset()
+    with pytest.raises(RuntimeError, match="STOP_T0_V21_EFFECT_TRANSPORT_NOT_AUTHORITY_BOUND"):
+        authority.decision_capable_power_gate()
