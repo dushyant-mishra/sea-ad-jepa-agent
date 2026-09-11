@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 """Build the F1 producer/replay pre-freeze manifest and root.
 
-Runs as the LAST mutation. Digests are taken from the bytes git holds, never the
-working tree, because a text-classified source is checked out with CRLF on
-Windows and its digest would then differ from the immutable blob by one byte per
-line. This project has already had a package rejected for exactly that.
-
-Every manifested path must be tracked. An untracked member fails loudly rather
-than being hashed from disk.
+Runs as the LAST mutation. Digests are taken from the bytes committed at HEAD,
+never the working tree or mutable index, because a text-classified source can be
+checked out with platform-specific line endings. Every manifested path must
+already be tracked and clean relative to HEAD. Dirty, staged, or untracked input
+is a hard STOP; the builder never stages anything on the caller's behalf.
 """
 
 from __future__ import annotations
@@ -55,16 +53,39 @@ CONTRACTS = (
 )
 
 
+def _git(*args: str) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True)
+
+
 def git_bytes(relative: str) -> bytes:
-    """Exact bytes git holds for a tracked path. Platform-independent."""
-    subprocess.run(["git", "-C", str(ROOT), "add", "--", relative],
-                   capture_output=True, check=True)
-    result = subprocess.run(["git", "-C", str(ROOT), "show", ":" + relative],
-                            capture_output=True)
+    """Return exact ``HEAD:<path>`` bytes without mutating git state.
+
+    Package creation is intentionally stricter than an ordinary source read:
+    the requested member must already be tracked at HEAD and both the index and
+    working tree must agree with HEAD. This prevents a dirty or staged repair
+    from being silently absorbed into a supposedly immutable package.
+    """
+    tracked = _git("ls-files", "--error-unmatch", "--", relative)
+    if tracked.returncode != 0:
+        raise RuntimeError(
+            "STOP_F1_PREFREEZE_UNTRACKED_MEMBER: %s must already be tracked at HEAD"
+            % relative)
+
+    dirty = _git("diff", "--quiet", "HEAD", "--", relative)
+    if dirty.returncode == 1:
+        raise RuntimeError(
+            "STOP_F1_PREFREEZE_DIRTY_MEMBER: %s differs from HEAD; commit or discard "
+            "the change before building the immutable package" % relative)
+    if dirty.returncode != 0:
+        raise RuntimeError(
+            "STOP_F1_PREFREEZE_GIT_DIFF_ERROR: unable to verify %s is clean: %s"
+            % (relative, dirty.stderr.decode("utf-8", errors="replace")))
+
+    result = _git("show", "HEAD:" + relative)
     if result.returncode != 0:
         raise RuntimeError(
-            "STOP_F1_PREFREEZE_UNTRACKED_MEMBER: %s must be tracked so its digest "
-            "is platform-independent" % relative)
+            "STOP_F1_PREFREEZE_HEAD_MEMBER_MISSING: HEAD:%s is not readable: %s"
+            % (relative, result.stderr.decode("utf-8", errors="replace")))
     return result.stdout
 
 
@@ -93,7 +114,7 @@ def main() -> int:
 
     print(json.dumps({
         "schema": "F1_REAL_PRODUCER_REPLAY_PREFREEZE_PACKAGE_V1",
-        "bytes_authority": "GIT_BLOB_BYTES_PLATFORM_INDEPENDENT",
+        "bytes_authority": "GIT_HEAD_BLOB_BYTES_PLATFORM_INDEPENDENT",
         "members": len(rows) - 1,
         "frozen_sources": len(FROZEN_SOURCES),
         "prefreeze_root_sha256": root,
