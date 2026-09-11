@@ -58,7 +58,8 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-import t0_stage2a_pre_at8_gate_v1 as stage2a  # noqa: E402
+# The committed frozen V20 code, resolved relative to this file.
+FROZEN_V20 = HERE / "t0_v20_frozen"
 
 STOP = "STOP_T0_V21_SELECTION_OR_POWER_REFUSED"
 STOP_DIRECTION = "STOP_EFFECT_DIRECTION_NOT_CONSISTENT"
@@ -93,9 +94,32 @@ def _fail(marker: str, message: str) -> None:
 
 
 def _frozen():
-    """The frozen numerics: the HC3 engine and the nuisance design."""
-    return (stage2a._frozen("t0_studentized_fl_v1"),
-            stage2a._frozen("t0_target_learner_v1"))
+    """The frozen numerics: the HC3 engine and the nuisance design.
+
+    Loaded from the committed `scripts/v4/t0_v20_frozen/` directory, resolved
+    relative to this file. Deliberately **not** routed through
+    `t0_stage2a_pre_at8_gate_v1._frozen`, whose `FROZEN_V20` is an absolute path
+    into a session temp directory: that resolves on one machine and nowhere
+    else, so a reviewer's clone would fail at import while the suite looked green
+    locally. The committed copies are byte-identical to the ones that path
+    reaches, so nothing numeric changes.
+
+    V20 is imported and read. It is never written.
+    """
+    if not FROZEN_V20.is_dir():
+        _fail(STOP, "the committed frozen V20 directory is missing at %s"
+              % FROZEN_V20)
+    if str(FROZEN_V20) not in sys.path:
+        sys.path.insert(0, str(FROZEN_V20))
+    modules = (__import__("t0_studentized_fl_v1"),
+               __import__("t0_target_learner_v1"))
+    for module in modules:
+        resolved = Path(module.__file__).resolve()
+        if resolved.parent != FROZEN_V20.resolve():
+            _fail(STOP,
+                  "%s resolved to %s, outside the committed frozen V20 "
+                  "directory %s" % (module.__name__, resolved, FROZEN_V20))
+    return modules
 
 
 # --------------------------------------------------------------------------

@@ -40,7 +40,10 @@ ever conflated.
 from __future__ import annotations
 
 import ast
+import importlib.util
 import math
+import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -891,6 +894,75 @@ def test_a_nonfinite_cv_loss_stops():
 # --------------------------------------------------------------------------
 # The executor opens nothing
 # --------------------------------------------------------------------------
+
+def test_the_frozen_numerics_resolve_inside_this_checkout():
+    """The executor must run from a clone, not only from this machine.
+
+    An earlier version reached the frozen numerics through
+    `t0_stage2a_pre_at8_gate_v1._frozen`, whose FROZEN_V20 is an absolute path
+    into a session temp directory. Every test here passed locally while the
+    module would have failed at import on a reviewer's clone. This pins the
+    resolution to the committed directory so that cannot recur silently.
+    """
+    fl, learner = v21._frozen()
+    for module in (fl, learner):
+        resolved = Path(module.__file__).resolve()
+        assert resolved.parent == (HERE / "t0_v20_frozen").resolve(), (
+            "%s resolved to %s, outside the committed frozen V20 directory"
+            % (module.__name__, resolved))
+        assert resolved.is_file()
+
+
+def test_frozen_import_refuses_a_module_already_cached_from_elsewhere(tmp_path):
+    """The realistic way the wrong frozen source gets used.
+
+    `__import__` returns whatever is in `sys.modules`, so inserting the frozen
+    directory on `sys.path` does nothing if some other lane script — one whose
+    own frozen path points at a session temp directory — imported the same
+    module name earlier in the same process. Running the whole scripts/v4 suite
+    in one pytest process is enough to arrange that. The executor must refuse
+    rather than silently compute on a different copy.
+    """
+    decoy = tmp_path / "decoy"
+    decoy.mkdir()
+    name = "t0_studentized_fl_v1"
+    shutil.copy(HERE / "t0_v20_frozen" / (name + ".py"), decoy / (name + ".py"))
+
+    spec = importlib.util.spec_from_file_location(name, decoy / (name + ".py"))
+    planted = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(planted)
+
+    saved = sys.modules.get(name)
+    sys.modules[name] = planted
+    try:
+        with pytest.raises(RuntimeError) as excinfo:
+            v21._frozen()
+        assert v21.STOP in str(excinfo.value)
+        assert "outside the committed frozen V20 directory" in str(excinfo.value)
+    finally:
+        if saved is None:
+            sys.modules.pop(name, None)
+        else:
+            sys.modules[name] = saved
+
+    # And the executor still works once the planted module is gone.
+    fl, _ = v21._frozen()
+    assert Path(fl.__file__).resolve().parent == (HERE / "t0_v20_frozen").resolve()
+
+
+def test_the_executor_does_not_depend_on_any_absolute_path():
+    """No drive-letter or temp-directory literal anywhere in the module."""
+    source = (HERE / "t0_v21_selection_and_power_v1.py").read_text(
+        encoding="utf-8")
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            text = node.value
+            assert not re.match(r"^[A-Za-z]:[\\/]", text), (
+                "absolute path literal %r" % text)
+            assert "AppData" not in text and "/tmp/" not in text, (
+                "temp-directory literal %r" % text)
+
 
 def test_the_module_has_no_entry_point_that_could_run_against_real_data():
     """Checked on the parse tree, not by searching the text.
