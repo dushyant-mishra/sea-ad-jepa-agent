@@ -1,0 +1,85 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V10",
+  "date": "2026-09-11",
+  "status": "CURRENT_HANDOFF__T0_V21_DRAFT_EXTERNAL_REVIEW_PENDING_EXECUTABLE_REVIEW__V5_HARDENING__NO_TRAINING_AUTHORITY",
+  "training_authorized": false,
+  "canonical_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
+  "observed_heads_before_governance_update": {
+    "main": "6f0209c1bcd950ef056f0ae96a35aa5b3ee079b9",
+    "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+    "t0_v21_draft": "11e76d36ace556ac48cdd2992995e63c1e35df18",
+    "v5": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
+    "t0_step4": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f"
+  },
+  "t0": {
+    "v20_immutable": true,
+    "v21_status": "DRAFT_FOR_REVIEW_NOT_FROZEN",
+    "v21_executed": false,
+    "fresh_at8_opened": false,
+    "reader_validation_opened": false,
+    "reader_oracle_opened": false,
+    "estimator_selection_run": false,
+    "power_gate_run": false,
+    "external_review_of_11e76d36": "DESIGN_PROSE_BLOCKERS_ADDRESSED__EXECUTABLE_IMPLEMENTATION_REVIEW_STILL_REQUIRED",
+    "v21_commit_scope": "DOCUMENTATION_ONLY_FOR_LATEST_REVIEW_FIXES",
+    "v21_next_action": "IMPLEMENT_AND_EXTERNALLY_REVIEW_EXECUTABLE_S0_S4_SELECTION_AND_NESTED_OOF_POWER_GATE_BEFORE_ANY SINGLE_SHOT_SELECTION_RUN",
+    "donor_hierarchy": {
+      "discovery": 28,
+      "spent_development": 18,
+      "fresh_validation": 12,
+      "sealed_oracle": 10
+    },
+    "power_gate": {
+      "alpha": 0.025,
+      "minimum_power": 0.8,
+      "fresh_test_n": 12,
+      "fresh_test_residual_df": 7,
+      "outer_crossfit_donors": 28,
+      "oof_regression_residual_df": 23,
+      "effect_bound": "MINIMUM_STANDARDIZED_EFFECT_ACROSS_28_LEAVE_ONE_DONOR_OUT_INFLUENCE_REFITS_WITH_DIRECTIONAL_CONSISTENCY",
+      "spent_18_at8_forbidden": true,
+      "46_refit_power_credit": false
+    }
+  },
+  "v5": {
+    "status": "ACTIVE_PROSPECTIVE_HARDENING_NO_TRAINING_AUTHORITY",
+    "corrected_train_cache_binding": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
+    "corrected_train_rows": 4726,
+    "corrected_train_shard_pairs": 42,
+    "full104_expression_binding": "STOP_FULL104_PHASE2_BLOCK_STORE_LOCATION_BINDING_MISSING",
+    "required_full104_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+    "full104_cells": 4553407,
+    "full104_donors": 104,
+    "full104_operators": 42,
+    "full104_addresses": 41238,
+    "historical_phase2_blocks": 8915,
+    "historical_phase2_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "proposal_packing_restart": "PASS_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_REPLAY",
+    "total_presentations": 5267086,
+    "presentation_stream_sha256": "08a1df725b3803d049cf6a0a75811c1863b4bd0b537ed2ecaf70445380f02f74",
+    "production_dimensions_resolved": false,
+    "production_gpu_qualified": false,
+    "bounded_qualification_closed": false,
+    "postqualification_closed": false,
+    "independent_review_closed": false
+  },
+  "runtime": {
+    "stage81a3r_corrected_real_train_zip_present": true,
+    "foundation_calibration_present": true,
+    "foundation_discovery_parts_present": true,
+    "checkpoints_present": true,
+    "t1_checkpoint_u0200_present": true,
+    "expression_zip_present": true,
+    "operator_address_state_npz": "PROVENANCE_MISMATCH_DO_NOT_USE"
+  },
+  "permanent_rules": [
+    "V20_IMMUTABLE",
+    "NO_FRESH_AT8_BEFORE_FROZEN_T1_AND_POWER_GATE_PASS",
+    "READER_ORACLE_STAYS_SEALED",
+    "NO_RESULT_DRIVEN_RETUNING_AFTER_CONFIRMATION_OPEN",
+    "TRAIN_CACHE_PASS_IS_NOT_FULL104_PASS",
+    "SMOKE_OR_CI_PASS_IS_NOT_TRAINING_AUTHORITY",
+    "PROSE_DESIGN_CLOSURE_IS_NOT_EXECUTABLE_CLOSURE",
+    "HISTORICAL_OR_SYNTHETIC_DIMENSIONS_ARE_NOT_PRODUCTION_AUTHORITY"
+  ]
+}
