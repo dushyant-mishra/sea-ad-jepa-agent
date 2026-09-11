@@ -1,0 +1,27 @@
+name: V21 integrated authority repair
+
+on:
+  push:
+    branches:
+      - repair/t0-v21-integrated-authority-regression-20260911
+  workflow_dispatch:
+
+jobs:
+  test-v21-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused test dependencies
+        run: python -m pip install --upgrade pip pytest numpy scipy
+      - name: Compile repaired authority modules
+        run: python -m py_compile scripts/v4/t0_v21_authority_v1.py scripts/v4/t0_v21_authority_pre_hardening_v1.py scripts/v4/t0_v21_selection_and_power_v1.py
+      - name: Run authority regression suite
+        run: python -m pytest -q scripts/v4/test_t0_v21_authority_v1.py
+      - name: Run executor successor suite
+        run: python -m pytest -q scripts/v4/test_t0_v21_selection_and_power_v1.py
+      - name: Run measurement and freeze suite
+        run: python -m pytest -q scripts/v4/test_t0_v21_measurement_and_freeze_v1.py
