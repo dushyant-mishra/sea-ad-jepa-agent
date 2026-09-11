@@ -1,0 +1,13 @@
+Final note before Claude continuation
+
+Current branch:
+  repair/t0-v21-authority-restoration-20260911
+
+Current latest commit at this note:
+  c85dfa69741321855895000bcb245f37d78ca1bb
+
+Use this branch or a child branch created from this head for Claude continuation.
+
+Do not infer training authority from these documentation commits.
+
+NO_PRODUCTION_TRAINING_AUTHORITY.
