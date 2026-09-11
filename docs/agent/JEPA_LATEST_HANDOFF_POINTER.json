@@ -1,7 +1,7 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_T0_V2_CLAUDE_READY_V2",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_T0_V2_CLAUDE_READY_V3",
   "date": "2026-09-11",
-  "status": "CLAUDE_READY_T0_V2_CONTINUATION__NO_TRAINING_AUTHORITY",
+  "status": "CLAUDE_READY_T0_V2_CONTINUATION__FULL104_REMOTE_RUNBOOK_BOUND__NO_TRAINING_AUTHORITY",
   "branch": "handoff/jepa-t0-v2-claude-ready-20260911",
   "branch_created_from": "repair/t0-v21-authority-restoration-20260911",
   "handoff_branch_head_at_creation": "b27978af0a53ffd9aaa28a3538604429aaefd27a",
@@ -10,6 +10,17 @@
   "branch_record_path": "docs/agent/T0_V2_CLAUDE_READY_BRANCH_RECORD_20260911.md",
   "latest_head_note_path": "docs/agent/T0_V2_CLAUDE_READY_LATEST_HEAD.txt",
   "stale_head_warning_path": "docs/agent/T0_V2_CLAUDE_READY_DO_NOT_USE_STALE_HEAD_93AB.txt",
+  "environment_red_team_path": "docs/agent/JEPA_ENVIRONMENT_RED_TEAM_AUDIT_20260911.md",
+  "corrected_train_receipt_path": "docs/agent/STAGE81A3R_CORRECTED_REAL_TRAIN_RECEIPT_20260911.md",
+  "full104_remote_access_addendum_path": "docs/agent/FULL104_REMOTE_HARD_DRIVE_ACCESS_ADDENDUM_20260911.md",
+  "full104_verifier_runbook_path": "docs/agent/FULL104_B2_VERIFIER_RUNBOOK_20260911.md",
+  "full104_gpu_pointer_path": "docs/agent/FULL104_B2_GPU_RUN_POINTER.txt",
+  "future_architecture_queue_path": "docs/agent/JEPA_FUTURE_ARCHITECTURE_QUEUE_20260911.md",
+  "full104_production_verifier_branch": "planning/v5-full-population-cheat-proofing-20260909",
+  "full104_production_verifier_commit": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
+  "full104_production_verifier_path": "scripts/v5_anticheat/bind_full104_expression_blocks_v4.py",
+  "full104_required_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+  "full104_data_location_rule": "FULL104_GT_30GB_STAYS_ON_GPU_LAPTOP_ATTACHED_HARD_DRIVE__DO_NOT_UPLOAD_TO_CHATGPT",
   "historical_asap_handoff_branch": "handoff/jepa-new-chat-20260911-asap-repair-status",
   "historical_asap_handoff_head": "5ee85fc84bdcf3fd3c5222bbf3c8c2ba27a3b8d9",
   "canonical_repair_branch": "repair/t0-v21-authority-restoration-20260911",
@@ -26,5 +37,5 @@
   "fresh_reader_validation_open_authorized": false,
   "reader_oracle_open_authorized": false,
   "protected_partitions_opened": false,
-  "instruction": "Open START_HERE.md first, then docs/agent/CLAUDE_T0_V2_WORK_ORDER_20260911.md. Re-fetch live heads before acting. Verify exact-head tests from a clean checkout. Do not run S0-S4, open AT8, open reader_validation/oracle, claim freeze, or train. Finish only the review-ready repaired T0 V2/V21-T1 candidate with authority API restored and effect transport still fail-closed."
+  "instruction": "Open START_HERE.md first, then docs/agent/CLAUDE_T0_V2_WORK_ORDER_20260911.md. For FULL104, read docs/agent/FULL104_B2_GPU_RUN_POINTER.txt and the exact verifier runbook; do not upload the >30GB substrate here. Re-fetch live heads before acting. Verify exact-head tests from a clean checkout. Do not run S0-S4, open AT8, open reader_validation/oracle, claim freeze, or train."
 }
