@@ -1,0 +1,13 @@
+Do not use stale 93abcf50 as the active continuation head.
+
+`93abcf50e89778585bda1e20f2eab824cc6bae77` remains a useful restoration-regression ancestor, but the live repair branch has advanced beyond it.
+
+Use:
+  repair/t0-v21-authority-restoration-20260911
+
+Latest known at this note:
+  d4533de10d633b489abbcf4f93cbe8ada44e2cb0
+
+Always re-fetch before acting.
+
+NO_PRODUCTION_TRAINING_AUTHORITY.
