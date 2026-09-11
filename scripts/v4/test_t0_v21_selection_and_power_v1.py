@@ -141,6 +141,25 @@ CONFIRMATION_SEX = np.array(
 
 DONOR_IDS = tuple("D%02d" % i for i in range(N))
 
+# The development cohort's age range stands in for the authority the production
+# gate will be handed. It is a fixture, and it says so.
+AGE_RANGE = (66.0, 94.0)
+AGE_RANGE_AUTHORITY = "test_fixture_not_a_production_authority"
+GATE_KW = dict(age_range=AGE_RANGE, age_range_authority=AGE_RANGE_AUTHORITY,
+               n_simulations=8, n_permutations=39, seed=5)
+
+
+def permutation_receipt(artifact, *, p_upper=0.005, n_permutations=199,
+                        foreign=False):
+    """A whole-pipeline permutation receipt, sealed against this artifact."""
+    result = {"t_observed": 3.2, "p_upper": p_upper,
+              "n_permutations": n_permutations,
+              "null_t": np.linspace(-2.0, 2.0, n_permutations)}
+    target = dict(artifact)
+    if foreign:
+        target["artifact_digest"] = "0" * 64
+    return v21.seal_permutation_receipt(result=result, artifact=target)
+
 
 def seal(cohort, pipeline=None):
     """A sealed cross-fit artifact built from an honest nested run."""
@@ -515,17 +534,18 @@ def test_a_cohort_with_no_residual_degrees_of_freedom_is_not_estimable():
 
 def test_the_gate_uses_the_planning_effect_and_the_frozen_permutation_test():
     cohort = make_cohort(effect=2.0)
-    gate = v21.power_gate(artifact=seal(cohort),
-                          confirmation_age=CONFIRMATION_AGE,
-                          confirmation_sex=CONFIRMATION_SEX,
-                          n_simulations=40, n_permutations=99, seed=5)
+    artifact = seal(cohort)
+    gate = v21.power_gate(artifact=artifact,
+                          permutation_receipt=permutation_receipt(artifact),
+                          **GATE_KW)
     used = gate["planning_effect"]["planning_standardized_effect"]
     assert gate["underlying_effect"]["observed_standardized_effect"] == used
     assert abs(used) <= abs(
         gate["planning_effect"]["full_standardized_effect"]) + 1e-12
     assert "Freedman-Lane" in gate["calibration"]["test"]
-    assert gate["clears_gate"] == gate["calibration"]["meets_target"]
+    assert gate["clears_gate"] == gate["worst_case_design"]["meets_target"]
     assert gate["artifact"]["verified"]
+    assert gate["permutation_evidence"]["verified"]
     # The projection goes through the underlying effect, not through delta --
     # and the calibration must actually consume it, not merely report it.
     assert gate["underlying_effect"]["signal_to_noise"] == pytest.approx(
@@ -533,6 +553,67 @@ def test_the_gate_uses_the_planning_effect_and_the_frozen_permutation_test():
     assert gate["calibration"]["signal_to_noise"] == (
         gate["underlying_effect"]["signal_to_noise"])
     assert gate["calibration"]["signal_to_noise"] != used
+
+
+def test_the_gate_reports_the_worst_design_in_the_envelope_not_the_best():
+    cohort = make_cohort(effect=2.0)
+    artifact = seal(cohort)
+    gate = v21.power_gate(artifact=artifact,
+                          permutation_receipt=permutation_receipt(artifact),
+                          **GATE_KW)
+    lowers = [d["power_lower_95"] for d in
+              gate["confirmation_envelope"]["per_design"]]
+    assert gate["worst_case_design"]["power_lower_95"] == min(lowers)
+    assert gate["confirmation_envelope"]["n_designs"] == len(lowers) >= 6
+    assert gate["confirmation_envelope"]["age_range_authority"] == (
+        AGE_RANGE_AUTHORITY)
+
+
+def test_the_gate_refuses_to_run_without_permutation_evidence():
+    cohort = make_cohort(effect=2.0)
+    artifact = seal(cohort)
+    for bad, marker in (
+            (None, "requires whole-pipeline permutation evidence"),
+            (permutation_receipt(artifact, foreign=True),
+             "produced for a different cross-fit artifact"),
+            (permutation_receipt(artifact, p_upper=0.40),
+             "does not reject at the frozen alpha"),
+            (permutation_receipt(artifact, n_permutations=10),
+             "needs B >=")):
+        with pytest.raises(RuntimeError) as excinfo:
+            v21.power_gate(artifact=artifact, permutation_receipt=bad,
+                           **GATE_KW)
+        assert v21.STOP_PERMUTATION in str(excinfo.value)
+        assert marker in str(excinfo.value)
+
+
+def test_the_confirmation_design_cannot_be_supplied_by_the_caller():
+    """The 12 donors' covariates are not an input the gate will accept."""
+    import inspect
+    params = set(inspect.signature(v21.power_gate).parameters)
+    assert "confirmation_age" not in params
+    assert "confirmation_sex" not in params
+    assert {"age_range", "age_range_authority"} <= params
+
+
+def test_the_design_envelope_is_deterministic_and_demands_an_authority():
+    a = v21.confirmation_design_envelope(age_range=AGE_RANGE,
+                                         age_range_authority=AGE_RANGE_AUTHORITY)
+    b = v21.confirmation_design_envelope(age_range=AGE_RANGE,
+                                         age_range_authority=AGE_RANGE_AUTHORITY)
+    assert a["envelope_digest"] == b["envelope_digest"]
+    c = v21.confirmation_design_envelope(age_range=(60.0, 100.0),
+                                         age_range_authority=AGE_RANGE_AUTHORITY)
+    assert c["envelope_digest"] != a["envelope_digest"]
+    for design in a["designs"]:
+        assert design["age"].shape == (12,)
+        assert set(np.unique(design["sex"])) == {0.0, 1.0}
+    with pytest.raises(RuntimeError):
+        v21.confirmation_design_envelope(age_range=AGE_RANGE,
+                                         age_range_authority="")
+    with pytest.raises(RuntimeError):
+        v21.confirmation_design_envelope(age_range=(94.0, 66.0),
+                                         age_range_authority=AGE_RANGE_AUTHORITY)
 
 
 # --------------------------------------------------------------------------
@@ -545,13 +626,15 @@ def test_rerunning_the_whole_construction_is_bitwise_identical():
     second = run_oof(cohort, honest_pipeline)["oof_predictions"]
     assert np.array_equal(first, second)
 
-    kwargs = dict(confirmation_age=CONFIRMATION_AGE,
-                  confirmation_sex=CONFIRMATION_SEX,
-                  n_simulations=30, n_permutations=99, seed=3)
-    a = v21.power_gate(artifact=seal(cohort), **kwargs)
-    b = v21.power_gate(artifact=seal(cohort), **kwargs)
+    art = seal(cohort)
+    a = v21.power_gate(artifact=art,
+                       permutation_receipt=permutation_receipt(art), **GATE_KW)
+    b = v21.power_gate(artifact=art,
+                       permutation_receipt=permutation_receipt(art), **GATE_KW)
     assert a["artifact"]["artifact_digest"] == b["artifact"]["artifact_digest"]
     assert a["calibration"]["power"] == b["calibration"]["power"]
+    assert (a["confirmation_envelope"]["envelope_digest"]
+            == b["confirmation_envelope"]["envelope_digest"])
     assert (a["planning_effect"]["planning_standardized_effect"]
             == b["planning_effect"]["planning_standardized_effect"])
 
@@ -1099,7 +1182,10 @@ def test_a_sealed_artifact_carries_every_fold_and_recomputes_its_digest():
     for fold in artifact["folds"]:
         assert len(fold["train_indices"]) == 27
         assert fold["held_out_index"] not in fold["train_indices"]
-    assert v21.verify_cross_fit_artifact(artifact)["verified"]
+    verified = v21.verify_cross_fit_artifact(artifact)
+    assert verified["verified"]
+    assert verified["structure_revalidated"]
+    assert set(verified["digest_binds"]) == set(v21.ARTIFACT_DECISION_FIELDS)
 
 
 def test_the_gate_refuses_a_bare_score_vector():
@@ -1107,9 +1193,7 @@ def test_the_gate_refuses_a_bare_score_vector():
     cohort = make_cohort()
     scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
     with pytest.raises(RuntimeError) as excinfo:
-        v21.power_gate(artifact=scores, confirmation_age=CONFIRMATION_AGE,
-                       confirmation_sex=CONFIRMATION_SEX,
-                       n_simulations=5, n_permutations=99, seed=1)
+        v21.power_gate(artifact=scores, permutation_receipt={}, **GATE_KW)
     assert v21.STOP_ARTIFACT in str(excinfo.value)
     assert "bare score vector" in str(excinfo.value)
 
@@ -1123,7 +1207,8 @@ def test_the_gate_refuses_an_artifact_shaped_dictionary_without_a_digest():
     assert v21.STOP_ARTIFACT in str(excinfo.value)
 
 
-def test_altering_a_sealed_artifact_breaks_its_digest():
+def test_altering_the_score_vector_is_caught_structurally():
+    """Structure is checked before the digest, so this is caught as disagreement."""
     artifact = dict(seal(make_cohort()))
     tampered = np.array(artifact["oof_scores"], copy=True)
     tampered[3] += 1e-9
@@ -1131,7 +1216,154 @@ def test_altering_a_sealed_artifact_breaks_its_digest():
     with pytest.raises(RuntimeError) as excinfo:
         v21.verify_cross_fit_artifact(artifact)
     assert v21.STOP_ARTIFACT in str(excinfo.value)
+    assert "does not agree" in str(excinfo.value)
+
+
+def test_a_structurally_consistent_alteration_still_breaks_the_digest():
+    """Isolates the digest check from the structural checks.
+
+    Changing an outcome leaves every structural invariant intact -- the folds,
+    the partition and the score vector are all still consistent -- so only the
+    digest can catch it.
+    """
+    artifact = dict(seal(make_cohort()))
+    altered = np.array(artifact["y"], copy=True)
+    altered[3] += 1e-9
+    artifact["y"] = altered
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_cross_fit_artifact(artifact)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
     assert "does not recompute" in str(excinfo.value)
+
+
+def _canonical_from(cohort, mutate_folds=None, **overrides):
+    """Build an artifact directly and digest it, bypassing `seal_cross_fit`."""
+    result = run_oof(cohort, honest_pipeline)
+    folds = [dict(f) for f in result["folds"]]
+    folds.sort(key=lambda f: f["held_out_index"])
+    for f in folds:
+        f["train_indices"] = tuple(int(i) for i in f["train_indices"])
+        f["out_of_fold_prediction"] = float(f["out_of_fold_prediction"])
+    if mutate_folds is not None:
+        mutate_folds(folds)
+    scores = np.array([f["out_of_fold_prediction"] for f in folds],
+                      dtype=np.float64)
+    exponents = tuple(f["fold_ridge_exponent"] for f in folds)
+    distinct = sorted({e for e in exponents if e is not None})
+    canonical = {
+        "kind": v21.ARTIFACT_KIND, "n_donors": N,
+        "donor_ids": tuple(DONOR_IDS),
+        "y": np.asarray(cohort["y"], dtype=np.float64),
+        "age": np.asarray(cohort["age"], dtype=np.float64),
+        "sex": np.asarray(cohort["sex"], dtype=np.float64),
+        "oof_scores": scores, "folds": tuple(folds),
+        "fold_ridge_exponents": exponents,
+        "fold_ridge_exponents_recorded": all(e is not None for e in exponents),
+        "fold_ridge_exponents_vary": len(distinct) > 1,
+    }
+    canonical.update(overrides)
+    artifact = dict(canonical)
+    artifact["artifact_digest"] = v21._digest_cross_fit(canonical)
+    return artifact
+
+
+def test_a_self_consistent_but_invalid_artifact_is_refused():
+    """The bypass the external review found, reproduced and then closed.
+
+    This artifact is built by hand and digested correctly, so the digest
+    recomputes perfectly. It is nonetheless invalid: fold 5 trains on its own
+    held-out donor. Verification that only recomputed a digest -- which is what
+    the previous implementation did -- would have accepted it.
+    """
+    def leak(folds):
+        bad = folds[5]
+        train = [i for i in bad["train_indices"] if i != 11] + [5]
+        bad["train_indices"] = tuple(sorted(train))
+
+    artifact = _canonical_from(make_cohort(), mutate_folds=leak)
+    # The digest genuinely recomputes: the artifact is internally consistent.
+    assert v21._digest_cross_fit(
+        {k: v for k, v in artifact.items() if k != "artifact_digest"}
+    ) == artifact["artifact_digest"]
+
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_cross_fit_artifact(artifact)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+    assert "complement" in str(excinfo.value)
+
+
+def test_a_self_consistent_artifact_with_the_wrong_donor_count_is_refused():
+    artifact = _canonical_from(make_cohort(), n_donors=27)
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_cross_fit_artifact(artifact)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+    assert "28 discovery donors" in str(excinfo.value)
+
+
+def test_a_self_consistent_artifact_with_duplicate_donors_is_refused():
+    artifact = _canonical_from(make_cohort(),
+                               donor_ids=tuple(["D00"] * N))
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_cross_fit_artifact(artifact)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+    assert "unique" in str(excinfo.value)
+
+
+def test_a_self_consistent_artifact_holding_one_donor_out_twice_is_refused():
+    def twice(folds):
+        folds[6]["held_out_index"] = 5
+        folds[6]["train_indices"] = tuple(i for i in range(N) if i != 5)
+
+    artifact = _canonical_from(make_cohort(), mutate_folds=twice)
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_cross_fit_artifact(artifact)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+
+
+def test_an_artifact_that_overstates_its_nested_selection_is_refused():
+    """Declared metadata must match what the folds actually show."""
+    artifact = dict(seal(make_cohort()))
+    artifact["fold_ridge_exponents_vary"] = not artifact[
+        "fold_ridge_exponents_vary"]
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_cross_fit_artifact(artifact)
+    assert v21.STOP_ARTIFACT in str(excinfo.value)
+    assert "but its folds show" in str(excinfo.value)
+
+
+def test_an_invalid_sex_coding_in_the_artifact_is_refused():
+    cohort = make_cohort()
+    cohort = dict(cohort, sex=np.full(N, 1.0))
+    with pytest.raises(RuntimeError) as excinfo:
+        _canonical_from(cohort)
+        v21.verify_cross_fit_artifact(_canonical_from(cohort))
+    assert v21.STOP_ARTIFACT in str(excinfo.value) or \
+        v21.STOP_INVALID_INPUT in str(excinfo.value)
+
+
+def test_sealing_and_verification_share_one_validator():
+    """Both paths must reject the same artifact for the same reason."""
+    def leak(folds):
+        bad = folds[2]
+        bad["train_indices"] = tuple(
+            sorted([i for i in bad["train_indices"] if i != 9] + [2]))
+
+    cohort = make_cohort()
+    result = run_oof(cohort, honest_pipeline)
+    folds = [dict(f) for f in result["folds"]]
+    for f in folds:
+        f["train_indices"] = tuple(int(i) for i in f["train_indices"])
+    leak(folds)
+
+    with pytest.raises(RuntimeError) as sealing:
+        v21.seal_cross_fit(oof_result=dict(result, folds=folds),
+                           donor_ids=DONOR_IDS, y=cohort["y"],
+                           age=cohort["age"], sex=cohort["sex"])
+    artifact = _canonical_from(cohort, mutate_folds=leak)
+    with pytest.raises(RuntimeError) as verification:
+        v21.verify_cross_fit_artifact(artifact)
+    assert "complement" in str(sealing.value)
+    assert "complement" in str(verification.value)
 
 
 def test_sealing_refuses_a_fold_set_that_is_not_a_clean_partition():
@@ -1394,16 +1626,78 @@ def test_hc3_deflates_the_statistic_more_at_12_donors_than_at_28():
     assert 0.70 < small["hc3_scaling"] < 0.95
 
 
-def test_the_underlying_effect_is_recovered_by_dividing_out_the_scaling():
+def test_the_underlying_effect_uses_the_real_score_geometry_not_a_surrogate():
+    """Blocker 3, discovery side: the actual out-of-fold vector, held fixed."""
+    cohort = make_cohort()
+    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
+    _, learner = v21._frozen()
+    z, _ = learner.nuisance_design(cohort["age"], cohort["sex"])
     recovered = v21.signal_to_noise_from_observed_effect(
-        observed_standardized_effect=0.5, age=make_cohort()["age"],
-        sex=make_cohort()["sex"], n_simulations=200, n_permutations=39,
-        seed=17)
+        observed_standardized_effect=0.5, z=z, predictor=scores,
+        n_simulations=150, n_permutations=39, seed=17)
     assert recovered["signal_to_noise"] == pytest.approx(
         0.5 / recovered["discovery_hc3_scaling"])
-    # The observed statistic understates the effect, so the recovered effect is
-    # larger than the raw standardized statistic.
     assert recovered["signal_to_noise"] > 0.5
+    geometry = recovered["discovery_geometry"]
+    assert geometry["geometry_source"] == "the actual out-of-fold score vector"
+    assert 0.0 <= geometry["collinearity_with_nuisance"] <= 1.0
+
+
+def test_the_measured_scaling_depends_on_the_predictor_that_is_measured():
+    """Two different real vectors, same n, different scaling."""
+    cohort = make_cohort()
+    _, learner = v21._frozen()
+    z, _ = learner.nuisance_design(cohort["age"], cohort["sex"])
+    scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
+
+    rng = np.random.default_rng(11)
+    spiky = rng.normal(scale=0.3, size=N)
+    spiky[0] += 2.5                     # one high-leverage, still estimable
+    a = v21.measure_hc3_scaling_for_predictor(
+        z=z, predictor=scores, n_simulations=150, n_permutations=39, seed=2)
+    b = v21.measure_hc3_scaling_for_predictor(
+        z=z, predictor=spiky, n_simulations=150, n_permutations=39, seed=2)
+    assert a["hc3_scaling"] != pytest.approx(b["hc3_scaling"], rel=0.05), (
+        "scaling %.3f vs %.3f -- geometry made no difference, so measuring it "
+        "on the real vector would be pointless"
+        % (a["hc3_scaling"], b["hc3_scaling"]))
+
+
+def test_geometry_changes_the_scaling_at_fixed_n():
+    """Blocker 3's adversarial fixture, stated as a measurement.
+
+    If collinearity and leverage shape did not move the HC3 scaling, an
+    iid-normal surrogate would be harmless. They do move it, which is why the
+    confirmation side is bounded over a class rather than assumed.
+    """
+    kw = dict(age=CONFIRMATION_AGE, sex=CONFIRMATION_SEX, n_simulations=120,
+              n_permutations=39, seed=3)
+    low = v21.measure_hc3_statistic_scaling(collinearity=0.0,
+                                            shape="gaussian", **kw)
+    high = v21.measure_hc3_statistic_scaling(collinearity=0.75,
+                                             shape="gaussian", **kw)
+    spiky = v21.measure_hc3_statistic_scaling(collinearity=0.0,
+                                              shape="single_leverage", **kw)
+    assert low["is_a_modelling_assumption_not_a_measurement_of_the_real_score"]
+    scalings = {"low": low["hc3_scaling"], "high": high["hc3_scaling"],
+                "spiky": spiky["hc3_scaling"]}
+    assert max(scalings.values()) - min(scalings.values()) > 0.05, (
+        "geometry barely moved the scaling: %r" % scalings)
+
+
+def test_the_worst_case_over_the_geometry_class_is_the_one_used():
+    result = v21.worst_case_hc3_scaling(
+        age=CONFIRMATION_AGE, sex=CONFIRMATION_SEX, n_simulations=60,
+        n_permutations=39, seed=4)
+    assert result["n_geometries"] == (
+        len(v21.CONFIRMATION_COLLINEARITY_GRID)
+        * len(v21.CONFIRMATION_RESIDUAL_SHAPES))
+    assert v21.CONFIRMATION_COLLINEARITY_GRID == (0.0,), (
+        "collinearity is measured to be inert; sweeping it would imply a "
+        "risk axis that does not exist")
+    assert result["worst_case_hc3_scaling"] == min(
+        m["hc3_scaling"] for m in result["all"])
+    assert result["worst_case_hc3_scaling"] <= result["best_case_hc3_scaling"]
 
 
 def test_the_simulation_reports_what_the_statistic_actually_reached():
@@ -1433,6 +1727,101 @@ def test_the_ridge_search_invariant_that_makes_two_stop_paths_unreachable():
         assert result["selected_exponent"] < visited[-1]
         assert result["refinement_movement"] <= v21.MAX_REFINEMENT_MOVEMENT
         assert v21.MAX_REFINEMENT_MOVEMENT < v21.RIDGE_EXPANSION_STEP
+
+
+def test_collinearity_does_not_move_the_statistic():
+    """A true invariance, asserted on both code paths that implement it.
+
+    HC3's `t` does not see the component of the predictor lying in the nuisance
+    column space: residualization removes it and the noncentrality is scaled by
+    the residualized norm, so the two cancel exactly. Without the
+    residualization the achieved noncentrality would instead fall by
+    sqrt(1 - rho) -- a factor of two at rho = 0.75.
+
+    Both paths are checked because they are separate implementations:
+    `measure_hc3_statistic_scaling` runs its own loop, while
+    `simulate_power_freedman_lane` goes through `_simulate_statistics`. A test on
+    only the first leaves the second unguarded, which is exactly what the
+    mutation audit found.
+    """
+    kw = dict(age=CONFIRMATION_AGE, sex=CONFIRMATION_SEX, n_simulations=150,
+              n_permutations=39, seed=3, shape="gaussian")
+    flat = v21.measure_hc3_statistic_scaling(collinearity=0.0, **kw)
+    steep = v21.measure_hc3_statistic_scaling(collinearity=0.75, **kw)
+    assert steep["hc3_scaling"] == pytest.approx(flat["hc3_scaling"], rel=1e-9)
+    assert steep["mean_observed_t"] == pytest.approx(flat["mean_observed_t"],
+                                                     rel=1e-9)
+
+    sim = dict(signal_to_noise=0.9, age=CONFIRMATION_AGE,
+               sex=CONFIRMATION_SEX, n_simulations=150, n_permutations=39,
+               seed=3, geometry_shape="gaussian")
+    flat_sim = v21.simulate_power_freedman_lane(geometry_collinearity=0.0,
+                                                **sim)
+    steep_sim = v21.simulate_power_freedman_lane(geometry_collinearity=0.75,
+                                                 **sim)
+    assert steep_sim["mean_observed_t"] == pytest.approx(
+        flat_sim["mean_observed_t"], rel=1e-9), (
+        "the simulated noncentrality changed with collinearity (%.4f vs %.4f), "
+        "which means the predictor was not residualized before scaling"
+        % (steep_sim["mean_observed_t"], flat_sim["mean_observed_t"]))
+    assert steep_sim["power"] == pytest.approx(flat_sim["power"], rel=1e-9)
+
+
+def test_the_leverage_profile_does_move_the_statistic():
+    """The axis the frozen class actually sweeps."""
+    kw = dict(age=CONFIRMATION_AGE, sex=CONFIRMATION_SEX, n_simulations=150,
+              n_permutations=39, seed=3, collinearity=0.0)
+    scalings = {s: v21.measure_hc3_statistic_scaling(shape=s,
+                                                     **kw)["hc3_scaling"]
+                for s in v21.CONFIRMATION_RESIDUAL_SHAPES}
+    assert scalings["single_leverage"] < 0.75 * scalings["gaussian"], scalings
+
+
+def test_the_simulation_result_depends_on_the_geometry_it_was_given():
+    """Not merely echoed back in the payload -- the numbers must change."""
+    kw = dict(signal_to_noise=0.9, age=CONFIRMATION_AGE, sex=CONFIRMATION_SEX,
+              n_simulations=150, n_permutations=39, seed=3)
+    mild = v21.simulate_power_freedman_lane(geometry_shape="gaussian", **kw)
+    harsh = v21.simulate_power_freedman_lane(geometry_shape="single_leverage",
+                                             **kw)
+    assert harsh["mean_observed_t"] < 0.8 * mild["mean_observed_t"]
+    assert harsh["power"] < mild["power"]
+
+
+def test_the_gate_measures_discovery_geometry_on_the_artifacts_own_scores():
+    """The gate must not substitute any other vector for the real score."""
+    cohort = make_cohort(effect=2.0)
+    artifact = seal(cohort)
+    gate = v21.power_gate(artifact=artifact,
+                          permutation_receipt=permutation_receipt(artifact),
+                          **GATE_KW)
+    _, learner = v21._frozen()
+    z, _ = learner.nuisance_design(cohort["age"], cohort["sex"])
+    direct = v21.measure_hc3_scaling_for_predictor(
+        z=z, predictor=artifact["oof_scores"],
+        n_simulations=GATE_KW["n_simulations"],
+        n_permutations=GATE_KW["n_permutations"], seed=GATE_KW["seed"])
+    measured = gate["underlying_effect"]["discovery_geometry"]
+    assert measured["collinearity_with_nuisance"] == pytest.approx(
+        direct["collinearity_with_nuisance"], rel=1e-12)
+    assert measured["hc3_scaling"] == pytest.approx(direct["hc3_scaling"],
+                                                    rel=1e-12)
+
+
+def test_the_envelope_guard_refuses_a_degenerate_frozen_class(monkeypatch):
+    """A frozen class with an inestimable design must STOP, and say which one.
+
+    At n = 12 a 1/11 sex split gives that donor HC3 leverage exactly 1.0, which
+    the frozen engine refuses. The guard exists so that arrives as a named
+    design rather than as a later "no replicate was estimable".
+    """
+    monkeypatch.setattr(v21, "CONFIRMATION_SEX_MINORITY_COUNTS", (1, 3))
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.confirmation_design_envelope(
+            age_range=AGE_RANGE, age_range_authority=AGE_RANGE_AUTHORITY)
+    message = str(excinfo.value)
+    assert "minority=1" in message
+    assert "leverage" in message
 
 
 # --------------------------------------------------------------------------
@@ -1524,12 +1913,14 @@ def test_the_frozen_learner_pipeline_seals_and_gates():
         y=cohort["y"], age=cohort["age"], sex=cohort["sex"])
     assert v21.verify_cross_fit_artifact(artifact)["verified"]
     gate = v21.power_gate(artifact=artifact,
-                          confirmation_age=CONFIRMATION_AGE,
-                          confirmation_sex=CONFIRMATION_SEX,
-                          n_simulations=40, n_permutations=99, seed=11)
+                          permutation_receipt=permutation_receipt(artifact),
+                          **GATE_KW)
     assert gate["artifact"]["verified"]
+    assert gate["permutation_evidence"]["verified"]
     assert "Freedman-Lane" in gate["calibration"]["test"]
     assert isinstance(gate["clears_gate"], bool)
+    # The frozen learner's real out-of-fold geometry drives the discovery side.
+    assert gate["underlying_effect"]["discovery_geometry"]["geometry_source"]         == "the actual out-of-fold score vector"
 
 
 def test_the_frozen_learner_is_invariant_to_the_order_donors_arrive_in():
