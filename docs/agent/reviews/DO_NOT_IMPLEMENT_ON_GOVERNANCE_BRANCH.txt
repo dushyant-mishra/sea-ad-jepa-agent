@@ -1,0 +1,1 @@
+Code implementation belongs on review/integrated-target-v5-repairs-20260911, forked from this governance state. This file exists to make accidental in-place implementation visibly incorrect.
