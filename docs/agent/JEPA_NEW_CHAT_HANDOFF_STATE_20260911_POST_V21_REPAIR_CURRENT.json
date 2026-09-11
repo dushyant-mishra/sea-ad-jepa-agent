@@ -1,0 +1,95 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V12",
+  "date": "2026-09-11",
+  "status": "CURRENT_HANDOFF_CANDIDATE__POST_V21_AUTHORITY_REPAIR__NO_TRAINING_AUTHORITY",
+  "training_authorized": false,
+  "canonical_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_POST_V21_REPAIR_CURRENT.md",
+  "integrated_review_scope": "RAW_SEA_AD_TO_TARGET_DISCOVERY_TO_TARGET_FREEZE_TO_V5_TEACHER_TARGET_TO_TRAINING",
+  "observed_heads": {
+    "main": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f",
+    "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+    "t0_v21_design": "11e76d36ace556ac48cdd2992995e63c1e35df18",
+    "v21_integrated_broken_candidate": "c8a1947ea109e11f20277917410ebc1992ae400f",
+    "v21_integrated_authority_repair_candidate": "9a861b41607b16cb40a8240ecda025c9447514ae",
+    "v21_authority_restoration": "93abcf50e89778585bda1e20f2eab824cc6bae77",
+    "v5_qualified_target_guard": "da8bd7dfe138fc4b36c11007d0a0165cd2365bcc",
+    "v5_executable_power_authority": "52fca8ab7f23f2235ff37be0521ca9444165b2ef"
+  },
+  "t0": {
+    "v20_immutable": true,
+    "v21_executed": false,
+    "s0_s4_authorized": false,
+    "fresh_at8_opened": false,
+    "reader_validation_opened": false,
+    "reader_oracle_opened": false,
+    "effect_transport_status": "OPEN",
+    "power_gate_production_verdict_capability": "DISABLED",
+    "effect_transport_stop": "STOP_T0_V21_EFFECT_TRANSPORT_NOT_AUTHORITY_BOUND",
+    "integrated_authority_repair_present": true,
+    "integrated_authority_repair_exact_head_independently_requalified": false,
+    "integrated_authority_repair_note": "Repair commits restore the complete authority surface and add fail-closed regressions/clean-runner CI support, but no completed GitHub status checks were recorded at handoff creation. Re-fetch and independently rerun exact-head complete suites before promotion.",
+    "donor_hierarchy": {
+      "discovery": 28,
+      "spent_development": 18,
+      "fresh_validation": 12,
+      "sealed_oracle": 10
+    }
+  },
+  "v5": {
+    "training_authorized": false,
+    "same_cell_cosine_edge_case_repaired": true,
+    "same_cell_repair_head": "da8bd7dfe138fc4b36c11007d0a0165cd2365bcc",
+    "executable_power_successor_present": true,
+    "executable_power_successor_head": "52fca8ab7f23f2235ff37be0521ca9444165b2ef",
+    "legacy_report_only_eligibility_reachability_audit_complete": false,
+    "optimizer_guard_focused_local_tests": "12_PASS_AFTER_RECONSTRUCTING_MISSING_HANDOFF_DEPENDENCIES",
+    "executable_power_focused_local_tests": "5_PASS",
+    "production_dimensions_resolved": false,
+    "production_gpu_qualified": false,
+    "postqualification_closed": false,
+    "integrated_independent_review_closed": false
+  },
+  "full104": {
+    "reader_fit_cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_measured_core_addresses": 17186,
+    "historical_phase2_blocks": 8915,
+    "historical_phase2_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "dataset_rediscovery_required": false,
+    "population_manifest_and_verifier_authority_previously_built": true,
+    "final_one_shot_b2_real_execution_receipt_recovered_in_this_chat": false,
+    "action": "SEARCH_FOR_LATER_REAL_EXECUTION_RECEIPT_FIRST__IF_ABSENT_RUN_EXISTING_ONE_SHOT_B2_VERIFIER_ON_KNOWN_HARD_DRIVE_SUBSTRATE__DO_NOT_REBUILD_FULL104"
+  },
+  "proposal_packing_restart": {
+    "status": "PASS_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_REPLAY",
+    "presentations": 5267086,
+    "presentation_stream_sha256": "08a1df725b3803d049cf6a0a75811c1863b4bd0b537ed2ecaf70445380f02f74"
+  },
+  "historical_qid": {
+    "commit": "dd078625c3537f5ff2c3f8c0b382ba2803b24ee2",
+    "status": "HISTORICAL_LINEAGE_AUTHORITY_DEBT_NOT_CURRENT_V5_BLOCKER_UNLESS_RESURRECTED",
+    "stop": "STOP_F1_QID_WRONG_ARM_SEMANTICS_NOT_AUTHORITY_BOUND"
+  },
+  "runtime": {
+    "operator_address_state_npz": "PROVENANCE_MISMATCH_DO_NOT_USE",
+    "foundation_expression_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "foundation_calibration_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+  },
+  "permanent_rules": [
+    "TARGET_DISCOVERY_AND_V5_ARE_ONE_PRODUCTION_REVIEW_CHAIN",
+    "V20_IMMUTABLE",
+    "NO_S0_S4_BEFORE_EXECUTABLE_EXTERNAL_REVIEW",
+    "NO_FRESH_CONFIRMATION_OR_ORACLE_OPENING_WHILE_RESULTS_COULD_CHANGE_DESIGN",
+    "EFFECT_TRANSPORT_OPEN_MEANS_PRODUCTION_POWER_VERDICT_DISABLED",
+    "PERMUTATION_SIGNIFICANCE_IS_NOT_EFFECT_TRANSPORT",
+    "FOCUSED_GREEN_TESTS_DO_NOT_PROVE_FULL_AUTHORITY_API_REGRESSION_COVERAGE",
+    "REQUIRE_API_SURFACE_DIFF_AND_FULL_COMBINED_SUITE_BEFORE_AUTHORITY_FILE_PROMOTION",
+    "TRAIN_CACHE_PASS_IS_NOT_FULL104_PASS",
+    "FULL104_IS_NOT_A_REDISCOVERY_TASK",
+    "HISTORICAL_OR_SYNTHETIC_DIMENSIONS_ARE_NOT_PRODUCTION_AUTHORITY",
+    "NO_V5_TRAINING_AUTHORITY_WITHOUT_FROZEN_PROVENANCE_BOUND_TARGET",
+    "TRAINING_REMAINS_OFF"
+  ]
+}
