@@ -1,0 +1,36 @@
+name: F1 Review Closeout CI
+
+on:
+  push:
+    branches:
+      - fix/f1-review-closeout-20260911
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install focused test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy==1.26.4 scipy==1.13.1 pandas==2.2.3 PyYAML pytest
+      - name: Compile F1 modules
+        run: |
+          python -m compileall -q scripts/v4 tests/test_f1_review_closeout_regressions_v1.py
+      - name: Run closeout regression tests
+        run: |
+          pytest -q tests/test_f1_review_closeout_regressions_v1.py
+      - name: Run existing F1 producer/replay parity tests
+        run: |
+          pytest -q tests/test_f1_real_producer_replay_parity_v1.py
