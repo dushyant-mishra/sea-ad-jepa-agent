@@ -1,9 +1,9 @@
 {
-  "schema": "JEPA_RUNTIME_ASSET_STATUS_20260910_V2",
-  "date": "2026-09-10",
-  "status": "RUNTIME_ASSETS_HASH_VERIFIED_WITH_ONE_PROVENANCE_MISMATCH",
+  "schema": "JEPA_RUNTIME_ASSET_STATUS_CURRENT_V3",
+  "date": "2026-09-11",
+  "status": "RUNTIME_ASSETS_HASH_VERIFIED_WITH_CORRECTED_TRAIN_CACHE_AND_ONE_PROVENANCE_MISMATCH",
   "runtime_root": "/mnt/data",
-  "verification_scope": "presence_size_sha256_only",
+  "verification_scope": "presence_size_sha256_plus_recorded_semantic_binding_where_available",
   "assets": {
     "foundation_calibration_bundle": {
       "path": "/mnt/data/FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
@@ -53,6 +53,18 @@
       "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
       "hash_verified": true
     },
+    "corrected_train_cache_zip": {
+      "path": "/mnt/data/stage81a3r_corrected_real_train.zip",
+      "size_bytes": 50647044,
+      "sha256": "3b86097d514f1cc2d84b19fd289344e0634356359462173a9b2b0f7541dd7e48",
+      "hash_verified": true,
+      "semantic_binding": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
+      "counts_meta_pairs": 42,
+      "physical_train_rows": 4726,
+      "addresses": 41238,
+      "loader_manifest_sha256": "2413390355a42365f6575800ae5f83ab373d05490e8e4567d419366e4ed5b328",
+      "note": "Authentic corrected TRAIN cache only. It is not the 4,553,407-cell FULL104 reader-fit expression store and cannot satisfy production FULL104 closure."
+    },
     "operator_address_state_npz": {
       "path": "/mnt/data/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
       "observed_size_bytes": 1531109,
@@ -67,6 +79,7 @@
   "v5_smoke_policy": {
     "allowed": true,
     "label": "REAL_DATA_SMOKE_NON_AUTHORITY",
+    "executed_in_prior_v5_work": true,
     "required_inputs": "use only assets whose expected identity is hash-verified; exclude operator_address_state_npz while mismatch remains",
     "may_test": [
       "real expression identity and data path",
@@ -78,12 +91,16 @@
       "packing/order identity preservation"
     ],
     "may_not_set": [
+      "FULL104 expression closure",
       "production dimensions",
       "biology thresholds",
       "schedule thresholds",
       "scientific conclusions",
+      "postqualification",
       "training authority"
     ]
   },
+  "full104_expression_status": "STOP_FULL104_PHASE2_BLOCK_STORE_LOCATION_BINDING_MISSING",
+  "required_full104_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
   "training_authorized": false
 }
