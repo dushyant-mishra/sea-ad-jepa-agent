@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
+from .postqualification_dependency_guard_v1 import QC_TOP_LEVEL_CHILDREN, _evidence_rows
 from .rejection_gate_power_calibration_v1 import REJECTION_CAPABLE_POST_GATES
 
 SCHEMA = "JEPA_V5_REJECTION_GATE_POWER_EXECUTABLE_QUALIFICATION_V4"
@@ -121,6 +122,77 @@ def validate_executable_power_receipt_v4(
         "qualification_checkpoint_sha256": checkpoint,
         "execution_mode": EXECUTION_MODE,
         "independent_recomputation": True,
+        "passed": True,
+        "training_authorized": False,
+    }
+
+
+def validate_postqualification_dependencies_v2(
+    post_evidence_by_id: Mapping[str, Mapping[str, object]],
+    *,
+    qc_closure_report: Mapping[str, object],
+    qc_closure_artifact_sha256: str,
+    power_qualification_report: Mapping[str, object],
+    power_qualification_artifact_sha256: str,
+    dependency_authority_id: str,
+) -> dict[str, object]:
+    """Bind the final postqualification graph to executable V4 power evidence."""
+    rows = _evidence_rows(post_evidence_by_id)
+    dep_authority = _id(dependency_authority_id, "dependency_authority_id")
+
+    if not isinstance(qc_closure_report, Mapping) or qc_closure_report.get("schema") != "JEPA_V5_QC_PRETRAINING_CLOSURE_V3":
+        raise ValueError("unexpected QC closure schema")
+    if qc_closure_report.get("passed") is not True or qc_closure_report.get("training_authorized") is not False:
+        raise RuntimeError("STOP_V5_DEPENDENCY_QC_CLOSURE_INVALID")
+    qc_row = rows["qc_measurement_confounding_closure"]
+    if _sha(qc_closure_artifact_sha256, "qc_closure_artifact_sha256") != qc_row["artifact_sha256"]:
+        raise RuntimeError("STOP_V5_DEPENDENCY_QC_PARENT_ARTIFACT_SUBSTITUTION")
+    if qc_closure_report.get("authority_id") != qc_row["authority_id"]:
+        raise RuntimeError("STOP_V5_DEPENDENCY_QC_PARENT_AUTHORITY_SUBSTITUTION")
+
+    qc_artifacts = qc_closure_report.get("component_artifact_sha256")
+    qc_authorities = qc_closure_report.get("component_authority_ids")
+    if not isinstance(qc_artifacts, Mapping) or not isinstance(qc_authorities, Mapping):
+        raise ValueError("QC closure child bindings missing")
+    for child in QC_TOP_LEVEL_CHILDREN:
+        if _sha(qc_artifacts.get(child), f"qc.{child}.artifact") != rows[child]["artifact_sha256"]:
+            raise RuntimeError(f"STOP_V5_DEPENDENCY_QC_CHILD_ARTIFACT_SUBSTITUTION: {child}")
+        if qc_authorities.get(child) != rows[child]["authority_id"]:
+            raise RuntimeError(f"STOP_V5_DEPENDENCY_QC_CHILD_AUTHORITY_SUBSTITUTION: {child}")
+
+    power_row = rows["rejection_gate_power_calibration"]
+    if _sha(power_qualification_artifact_sha256, "power_qualification_artifact_sha256") != power_row["artifact_sha256"]:
+        raise RuntimeError("STOP_V5_DEPENDENCY_POWER_PARENT_ARTIFACT_SUBSTITUTION")
+    if power_qualification_report.get("authority_id") != power_row["authority_id"]:
+        raise RuntimeError("STOP_V5_DEPENDENCY_POWER_PARENT_AUTHORITY_SUBSTITUTION")
+
+    context = rows[next(iter(rows))]["design_context_sha256"]
+    checkpoint = rows[next(iter(rows))]["qualification_checkpoint_sha256"]
+    gate_evidence = {
+        gate: {
+            "artifact_sha256": rows[gate]["artifact_sha256"],
+            "authority_id": rows[gate]["authority_id"],
+        }
+        for gate in REJECTION_CAPABLE_POST_GATES
+    }
+    executable = validate_executable_power_receipt_v4(
+        power_qualification_report,
+        evidence_by_gate=gate_evidence,
+        context=context,
+        checkpoint=checkpoint,
+    )
+
+    return {
+        "schema": "JEPA_V5_POSTQUALIFICATION_DEPENDENCY_CLOSURE_V2",
+        "authority_id": dep_authority,
+        "post_evidence_artifact_sha256": {name: rows[name]["artifact_sha256"] for name in rows},
+        "post_evidence_authority_ids": {name: rows[name]["authority_id"] for name in rows},
+        "design_context_sha256": context,
+        "qualification_checkpoint_sha256": checkpoint,
+        "qc_parent_child_bound": True,
+        "executable_power_parent_child_bound": True,
+        "power_execution_mode": executable["execution_mode"],
+        "independent_power_recomputation": True,
         "passed": True,
         "training_authorized": False,
     }
