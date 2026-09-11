@@ -3,6 +3,7 @@ import pytest
 
 from sea_ad_jepa.v5.same_cell_technical_intervention_probe_v1 import (
     SameCellInterventionThresholdAuthorityV1,
+    _cosine_rows,
     qualify_same_cell_intervention,
     summarize_same_cell_intervention,
 )
@@ -68,3 +69,19 @@ def test_threshold_authority_has_no_defaults():
     import inspect
     sig=inspect.signature(SameCellInterventionThresholdAuthorityV1)
     assert all(p.default is inspect._empty for p in sig.parameters.values())
+
+
+def test_cosine_rows_distinguishes_asymmetric_zero_from_both_zero():
+    nonzero=np.array([[1.0,0.0],[0.0,2.0]],dtype=np.float64)
+    zeros=np.zeros_like(nonzero)
+    assert np.array_equal(_cosine_rows(nonzero,zeros),np.array([0.0,0.0]))
+    assert np.array_equal(_cosine_rows(zeros,nonzero),np.array([0.0,0.0]))
+    assert np.array_equal(_cosine_rows(zeros,zeros),np.array([1.0,1.0]))
+
+
+def test_cosine_rows_is_stable_for_finite_extreme_and_near_zero_scales():
+    a=np.array([[1e308,1e308],[1e-308,0.0]],dtype=np.float64)
+    b=a.copy()
+    result=_cosine_rows(a,b)
+    assert np.isfinite(result).all()
+    assert np.allclose(result,np.ones(2),rtol=0.0,atol=1e-15)
