@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import copy
+from types import SimpleNamespace
 
 import pytest
 import torch
 
 from sea_ad_jepa.v5.qualified_optimizer_guard_v1 import QualifiedOptimizerStepGuard
+from sea_ad_jepa.v5.qualified_teacher_student_runtime_v1 import qualified_production_update
 from sea_ad_jepa.v5.qualified_teacher_target_receipt_v1 import (
     REQUIRED_V5_ROOTS,
     seal_qualified_teacher_target_receipt,
@@ -37,6 +39,20 @@ def _roots() -> dict[str, str]:
     return {key: _h(digits[i]) for i, key in enumerate(REQUIRED_V5_ROOTS)}
 
 
+def _receipt() -> dict:
+    return seal_qualified_teacher_target_receipt(
+        target_freeze_receipt=_target(),
+        v5_authority_roots=_roots(),
+    )
+
+
+def _module_with_sgd(momentum: float = 0.0):
+    parameter = torch.nn.Parameter(torch.tensor([1.0]))
+    optimizer = torch.optim.SGD([parameter], lr=0.1, momentum=momentum)
+    parameter.grad = torch.tensor([1.0])
+    return SimpleNamespace(optimizer=optimizer, parameter=parameter)
+
+
 def test_receipt_rejects_28_donor_target() -> None:
     target = _target()
     target["n_development_donors"] = 28
@@ -48,10 +64,7 @@ def test_receipt_rejects_28_donor_target() -> None:
 
 
 def test_receipt_tamper_and_stale_runtime_fail() -> None:
-    receipt = seal_qualified_teacher_target_receipt(
-        target_freeze_receipt=_target(),
-        v5_authority_roots=_roots(),
-    )
+    receipt = _receipt()
     tampered = copy.deepcopy(receipt)
     tampered["target_estimator_id"] = "S4"
     with pytest.raises(RuntimeError, match="digest"):
@@ -72,49 +85,109 @@ def test_receipt_tamper_and_stale_runtime_fail() -> None:
 
 
 def test_optimizer_step_without_arm_fails_before_parameter_or_state_change() -> None:
-    parameter = torch.nn.Parameter(torch.tensor([1.0]))
-    optimizer = torch.optim.SGD([parameter], lr=0.1, momentum=0.9)
-    parameter.grad = torch.tensor([1.0])
-    receipt = seal_qualified_teacher_target_receipt(
-        target_freeze_receipt=_target(),
-        v5_authority_roots=_roots(),
-    )
-    guard = QualifiedOptimizerStepGuard(
-        optimizer,
-        receipt,
-        _h("a"),
-        _roots(),
-    )
-    before = parameter.detach().clone()
-    state_before = copy.deepcopy(optimizer.state_dict())
+    modules = _module_with_sgd(momentum=0.9)
+    guard = QualifiedOptimizerStepGuard(modules.optimizer, _receipt(), _h("a"), _roots())
+    before = modules.parameter.detach().clone()
+    state_before = copy.deepcopy(modules.optimizer.state_dict())
     with pytest.raises(RuntimeError, match="not armed"):
-        optimizer.step()
-    assert torch.equal(parameter, before)
-    assert optimizer.state_dict() == state_before
+        modules.optimizer.step()
+    assert torch.equal(modules.parameter, before)
+    assert modules.optimizer.state_dict() == state_before
     guard.close()
 
 
 def test_one_arm_allows_exactly_one_step_then_fails_closed() -> None:
-    parameter = torch.nn.Parameter(torch.tensor([1.0]))
-    optimizer = torch.optim.SGD([parameter], lr=0.1)
-    parameter.grad = torch.tensor([1.0])
-    receipt = seal_qualified_teacher_target_receipt(
-        target_freeze_receipt=_target(),
-        v5_authority_roots=_roots(),
-    )
-    guard = QualifiedOptimizerStepGuard(
-        optimizer,
-        receipt,
-        _h("a"),
-        _roots(),
-    )
+    modules = _module_with_sgd()
+    guard = QualifiedOptimizerStepGuard(modules.optimizer, _receipt(), _h("a"), _roots())
     guard.arm_for_step(schedule_cursor=7)
-    optimizer.step()
+    modules.optimizer.step()
     assert guard.assert_step_completed(schedule_cursor=7)["guarded_optimizer_step"]
 
-    parameter.grad = torch.tensor([1.0])
-    before = parameter.detach().clone()
+    modules.parameter.grad = torch.tensor([1.0])
+    before = modules.parameter.detach().clone()
     with pytest.raises(RuntimeError, match="not armed"):
-        optimizer.step()
-    assert torch.equal(parameter, before)
+        modules.optimizer.step()
+    assert torch.equal(modules.parameter, before)
     guard.close()
+
+
+def test_amp_scaler_step_hits_the_same_optimizer_hook_on_cpu_disabled_scaler() -> None:
+    modules = _module_with_sgd()
+    guard = QualifiedOptimizerStepGuard(modules.optimizer, _receipt(), _h("a"), _roots())
+    scaler = torch.amp.GradScaler("cuda", enabled=False)
+    with pytest.raises(RuntimeError, match="not armed"):
+        scaler.step(modules.optimizer)
+    guard.arm_for_step(schedule_cursor=3)
+    scaler.step(modules.optimizer)
+    scaler.update()
+    assert guard.assert_step_completed(schedule_cursor=3)["guarded_optimizer_step"]
+    guard.close()
+
+
+def test_qualified_update_entrypoint_arms_guard_at_the_update_boundary() -> None:
+    modules = _module_with_sgd()
+
+    def update_fn(mods, **kwargs):
+        mods.optimizer.step()
+        return {"schema": "teacher-student-update-v1", "schedule_cursor": kwargs["schedule_cursor"]}
+
+    result = qualified_production_update(
+        modules,
+        expression=None,
+        measurement_mask=None,
+        stable_mask_keys=None,
+        schedule_cursor=5,
+        target_receipt=_receipt(),
+        expected_target_package_root=_h("a"),
+        expected_v5_authority_roots=_roots(),
+        _update_fn=update_fn,
+    )
+    assert result["qualified_optimizer_guard"]["completed"]["guarded_optimizer_step"]
+    assert result["qualified_target_authority"]["target_package_root"] == _h("a")
+    assert result["production_training_authorized"] is False
+
+
+def test_qualified_update_entrypoint_fails_if_update_does_not_step_optimizer() -> None:
+    modules = _module_with_sgd()
+
+    def no_step_fn(mods, **kwargs):
+        return {"schema": "teacher-student-update-v1", "schedule_cursor": kwargs["schedule_cursor"]}
+
+    before = modules.parameter.detach().clone()
+    with pytest.raises(RuntimeError, match="expected guarded optimizer step did not complete"):
+        qualified_production_update(
+            modules,
+            expression=None,
+            measurement_mask=None,
+            stable_mask_keys=None,
+            schedule_cursor=9,
+            target_receipt=_receipt(),
+            expected_target_package_root=_h("a"),
+            expected_v5_authority_roots=_roots(),
+            _update_fn=no_step_fn,
+        )
+    assert torch.equal(modules.parameter, before)
+
+
+def test_qualified_update_entrypoint_refuses_stale_target_receipt_before_step() -> None:
+    modules = _module_with_sgd()
+    receipt = _receipt()
+    before = modules.parameter.detach().clone()
+
+    def update_fn(mods, **kwargs):  # pragma: no cover - must never be reached
+        mods.optimizer.step()
+        return {"schedule_cursor": kwargs["schedule_cursor"]}
+
+    with pytest.raises(RuntimeError, match="target package root mismatch"):
+        qualified_production_update(
+            modules,
+            expression=None,
+            measurement_mask=None,
+            stable_mask_keys=None,
+            schedule_cursor=1,
+            target_receipt=receipt,
+            expected_target_package_root=_h("f"),
+            expected_v5_authority_roots=_roots(),
+            _update_fn=update_fn,
+        )
+    assert torch.equal(modules.parameter, before)
