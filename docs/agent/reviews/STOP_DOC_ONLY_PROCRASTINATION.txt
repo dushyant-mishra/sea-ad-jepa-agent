@@ -1,0 +1,1 @@
+Reviewer note: proceed to executable/source inspection and TDD; do not treat documentation activity as evidence of repair.
