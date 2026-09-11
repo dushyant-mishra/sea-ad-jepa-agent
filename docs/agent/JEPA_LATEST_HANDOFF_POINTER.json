@@ -1,5 +1,5 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V12",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V13",
   "date": "2026-09-11",
   "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF__POST_CLAUDE_REVIEW_REPAIRS__NO_TRAINING_AUTHORITY",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_POST_CLAUDE_REPAIR_CURRENT.md",
@@ -15,9 +15,12 @@
     "repair_v5_qualified_target_guard": "7a2bdfb051e0173c2a6d6bfa50cf57fd110278e0",
     "review_integrated_target_v5_repairs": "f493e531402e8a1148e9abb7011641a7bbbdcda3"
   },
-  "observed_lane_heads_after_this_update": {
-    "repair_v5_qualified_target_guard": "a3427815b803382c939cd9741ab7332513ad4a9d",
-    "review_integrated_target_v5_repairs": "cf39f8379779c2b30abc3f55671d5ab5e1e4abb4"
+  "commits_created_by_this_update": {
+    "v5_guard_resident_cursor_bound": "a6b052c84b39db6e85f2bded23fcc8713af225a9",
+    "v5_runtime_resident_guard_target_binding": "4846f7f88247245eee8bdc0a8559785eac664e61",
+    "v5_guard_regression_tests": "a3427815b803382c939cd9741ab7332513ad4a9d",
+    "integrated_handoff_file": "cf39f8379779c2b30abc3f55671d5ab5e1e4abb4",
+    "integrated_start_here_update": "8cd5bda6295122108b9e25aae38528c03faa1730"
   },
   "branches": {
     "v5_repair": "repair/v5-qualified-target-guard-20260911",
@@ -30,7 +33,7 @@
   "post_claude_review_status": {
     "v5_optimizer_guard_repair": "PUSHED_TO_REPAIR_BRANCH_AT_a3427815b803382c939cd9741ab7332513ad4a9d__LOCAL_FOCUSED_TESTS_12_PASS",
     "t0_v21_wrapper_notes": "LOCAL_PATCH_VERIFIED_23_PASS_IN_/mnt/data/v21_patch__NEEDS_SOURCE_BRANCH_PUSH_OR_REIMPLEMENTATION_IF_NOT_ALREADY_PRESENT",
-    "integrated_handoff": "PUSHED_TO_REVIEW_BRANCH_AT_cf39f8379779c2b30abc3f55671d5ab5e1e4abb4"
+    "integrated_handoff": "PUSHED_TO_REVIEW_BRANCH"
   },
   "target_discovery_external_review_complete": false,
   "s0_s4_authorized": false,
