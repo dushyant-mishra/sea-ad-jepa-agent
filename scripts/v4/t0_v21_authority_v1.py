@@ -44,6 +44,21 @@ FORBIDDEN_GEOMETRY_TRANSPORT_MODES = frozenset({
     "random_normal_surrogate",
     "representative_synthetic_design",
 })
+
+ALLOWED_EFFECT_ESTIMANDS = frozenset({
+    # Production-calibration receipts may only name estimands whose scale is
+    # anchored by whole-pipeline permutation or a prospective conservative
+    # geometry envelope.  The assembled HC3 `t/sqrt(n)` quantity remains
+    # disallowed until a transport derivation exists.
+    "whole_pipeline_permutation_standardized_effect_v1",
+    "prospective_conservative_geometry_envelope_effect_v1",
+})
+FORBIDDEN_EFFECT_ESTIMAND_TOKENS = frozenset({
+    "hc3",
+    "t_over_sqrt_n",
+    "t/sqrt(n)",
+    "assembled_hc3",
+})
 AUTHORITY_FIELDS = (
     "expression_root_digest",
     "donor_role_ledger_digest",
@@ -177,463 +192,88 @@ def _validate_legacy_crossfit_structure(cross_fit_artifact: Mapping[str, Any]) -
     y = _require_finite_1d("cross_fit.y", cross_fit_artifact.get("y", ()), N_DISCOVERY)
     age = _require_finite_1d("cross_fit.age", cross_fit_artifact.get("age", ()), N_DISCOVERY)
     sex = _require_complete_binary_sex("cross_fit.sex", cross_fit_artifact.get("sex", ()), N_DISCOVERY)
-    scores = _require_finite_1d("cross_fit.oof_scores", cross_fit_artifact.get("oof_scores", ()), N_DISCOVERY)
 
-    folds = tuple(cross_fit_artifact.get("folds", ()))
-    if len(folds) != N_DISCOVERY:
-        _fail("cross-fit must carry exactly 28 fold records")
-    fold_by_held: dict[int, Mapping[str, Any]] = {}
-    everything = set(range(N_DISCOVERY))
-    by_fold = np.empty(N_DISCOVERY, dtype=np.float64)
+    scores = _require_finite_1d("cross_fit.scores", cross_fit_artifact.get("scores", ()), N_DISCOVERY)
+    folds = cross_fit_artifact.get("folds")
+    if not isinstance(folds, Sequence) or len(folds) != N_DISCOVERY:
+        _fail("cross-fit folds must carry exactly 28 outer folds")
+
+    by_donor = {}
+    fold_ridge_exponents: list[float | None] = []
     for fold in folds:
         if not isinstance(fold, Mapping):
-            _fail("every fold record must be a mapping")
-        for key in ("held_out_index", "n_train", "train_indices", "out_of_fold_prediction"):
-            if key not in fold:
-                _fail(f"fold record missing {key}")
-        held = int(fold["held_out_index"])
-        if held < 0 or held >= N_DISCOVERY or held in fold_by_held:
-            _fail("cross-fit folds must hold out indexes 0..27 exactly once")
-        train = tuple(int(i) for i in fold["train_indices"])
-        if int(fold["n_train"]) != N_DISCOVERY - 1:
-            _fail("each cross-fit fold must declare n_train=27")
-        if len(train) != N_DISCOVERY - 1 or set(train) != everything - {held}:
-            _fail(f"fold {held} does not train on the exact complement of its held-out donor")
-        prediction = float(fold["out_of_fold_prediction"])
-        if not math.isfinite(prediction):
-            _fail(f"fold {held} has a nonfinite out-of-fold prediction")
-        by_fold[held] = prediction
-        fold_by_held[held] = fold
-    if set(fold_by_held) != everything:
-        _fail("cross-fit folds must hold out indexes 0..27 exactly once")
-    if not np.array_equal(scores, by_fold):
-        _fail("cross-fit score vector does not match held-out-index-ordered fold predictions")
+            _fail("each cross-fit fold must be a mapping")
+        held_out = str(fold.get("held_out_donor_id", ""))
+        if not held_out or held_out in by_donor:
+            _fail("cross-fit folds must have exactly one fold per donor")
+        train = tuple(str(x) for x in fold.get("train_donor_ids", ()))
+        if len(train) != N_DISCOVERY - 1 or held_out in train or set(train) | {held_out} != set(donor_ids):
+            _fail("each cross-fit fold must train on exactly the other 27 discovery donors")
+        for field in FOLD_FIELDS:
+            if field not in fold:
+                _fail(f"cross-fit fold {held_out} missing {field}")
+        for digest_field in ("training_data_digest", "ridge_trace_digest", "fitted_target_digest"):
+            _require_hex_digest(f"fold[{held_out}].{digest_field}", fold[digest_field])
+        pred = float(fold["prediction"])
+        if not math.isfinite(pred):
+            _fail("cross-fit predictions must be finite")
+        ridge_exponent = fold.get("fold_ridge_exponent")
+        if ridge_exponent is None:
+            fold_ridge_exponents.append(None)
+        else:
+            try:
+                ridge_exponent_num = float(ridge_exponent)
+            except (TypeError, ValueError):
+                _fail("fold_ridge_exponent must be numeric when present")
+            if not math.isfinite(ridge_exponent_num):
+                _fail("fold_ridge_exponent must be finite when present")
+            fold_ridge_exponents.append(ridge_exponent_num)
+        by_donor[held_out] = pred
+
+    if set(by_donor) != set(donor_ids):
+        _fail("cross-fit held-out donor set must exactly match donor_ids")
+    for_fold_ridge = cross_fit_artifact.get("fold_ridge_exponents")
+    if not isinstance(for_fold_ridge, Sequence) or len(for_fold_ridge) != N_DISCOVERY:
+        _fail("cross-fit fold_ridge_exponents must carry exactly 28 entries")
+    for declared, observed in zip(for_fold_ridge, fold_ridge_exponents, strict=True):
+        if observed is None:
+            if declared is Note:
+                continue
+            _fail("cross-fit fold_ridge_exponents claims a value not present in the corresponding fold")
+        try:
+            declared_num = float(declared)
+        except (TypeError, ValueError):
+            _fail("cross-fit fold_ridge_exponents must be numeric or null")
+        if not math.isfinite(declared_num) or declared_num != observed:
+            _fail("cross-fit fold_ridge_exponents does not match the per-fold records")
+    recorded = all(v is not None for v in fold_ridge_exponents)
+    vary = recorded and len({float(v) for v in fold_ridge_exponents if v is not None}) > 1
+    if cross_fit_artifact.get("fold_ridge_exponents_recorded") is not recorded:
+        _fail("cross-fit fold_ridge_exponents_recorded does not match the fold records")
+    if cross_fit_artifact.get("fold_ridge_exponents_vary") is not vary:
+        _fail("cross-fit fold_ridge_exponents_vary does not match the fold records")
+
+    scores_from_folds = np.asarray([by_donor[d] for d in donor_ids], dtype=np.float64)
+    if not np.array_equal(scores, scores_from_folds):
+        _fail("cross-fit scores must exactly match fold predictions in donor_ids order")
     return {
-        "donor_ids": donor_ids,
-        "y": y,
-        "age": age,
-        "sex": sex,
-        "scores": scores,
-        "folds": folds,
-        "fold_by_held": fold_by_held,
+        "donor_ids": donor_ids, "y": y, "age": age, "sex": sex, "scores": scores,
+        "fold_ridge_exponents": tuple(fold_ridge_exponents),
+        "fold_ridge_exponents_recorded": recorded,
+        "fold_ridge_exponents_vary": vary,
     }
 
 
-def seal_authoritative_crossfit(*, cross_fit_artifact: Mapping[str, Any],
-                                source_authority: Mapping[str, Any],
-                                fold_provenance: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
-    checked = _validate_legacy_crossfit_structure(cross_fit_artifact)
-    donor_ids = checked["donor_ids"]
-    scores = checked["scores"]
-    folds_by_held = checked["fold_by_held"]
-    if len(fold_provenance) != N_DISCOVERY:
-        _fail("exactly 28 fold-provenance records are required")
-
-    expected_donors = set(donor_ids)
-    normalized = []
-    seen = set()
-    for record in fold_provenance:
-        if not isinstance(record, Mapping):
-            _fail("fold provenance records must be mappings")
-        missing = [k for k in FOLD_FIELDS if k not in record]
-        if missing:
-            _fail(f"fold provenance missing fields {missing}")
-        held = str(record["held_out_donor_id"])
-        if held in seen or held not in expected_donors:
-            _fail(f"invalid/duplicate held-out donor {held}")
-        seen.add(held)
-        held_idx = donor_ids.index(held)
-        legal_train = expected_donors - {held}
-        train = tuple(str(x) for x in record["train_donor_ids"])
-        if len(train) != N_DISCOVERY - 1 or set(train) != legal_train:
-            _fail(f"fold for {held} does not bind the exact 27-donor complement")
-        old_fold = folds_by_held[held_idx]
-        old_train_ids = {donor_ids[int(i)] for i in old_fold["train_indices"]}
-        if old_train_ids != legal_train:
-            _fail(f"underlying cross-fit fold for {held} is not the legal complement")
-        prediction = float(record["prediction"])
-        if not math.isfinite(prediction) or prediction != float(scores[held_idx]):
-            _fail(f"fold provenance prediction mismatch for {held}")
-        for name in ("training_data_digest", "ridge_trace_digest", "fitted_target_digest"):
-            _require_hex_digest(name, record[name])
-        normalized.append({k: _plain(record[k]) for k in FOLD_FIELDS})
-
-    if seen != expected_donors:
-        _fail("not every discovery donor has fold provenance")
-    source_digest = canonical_digest(dict(source_authority), domain="T0_V21_SOURCE_AUTHORITY_V1")
-    body = {
-        "kind": KIND,
-        "cross_fit_artifact": _plain(cross_fit_artifact),
-        "source_authority": _plain(source_authority),
-        "source_authority_digest": source_digest,
-        "fold_provenance": sorted(normalized, key=lambda r: r["held_out_donor_id"]),
-    }
-    body["artifact_digest"] = canonical_digest(body, domain="T0_V21_AUTHORITATIVE_CROSSFIT_V1")
-    return body
-
-
-def validate_authoritative_crossfit(artifact: Mapping[str, Any],
-                                    *, expected_source_authority: Mapping[str, Any]) -> dict[str, Any]:
-    if not isinstance(artifact, Mapping) or artifact.get("kind") != KIND:
-        _fail("production decisions require t0_v21_authoritative_crossfit_v1")
-    recorded = str(artifact.get("artifact_digest", ""))
-    body = {k: artifact[k] for k in artifact if k != "artifact_digest"}
-    recomputed = canonical_digest(body, domain="T0_V21_AUTHORITATIVE_CROSSFIT_V1")
-    if recorded != recomputed:
-        _fail("authoritative cross-fit digest does not recompute")
-    source_digest = validate_source_authority(artifact.get("source_authority", {}),
-                                              expected_source_authority)
-    if artifact.get("source_authority_digest") != source_digest:
-        _fail("source-authority digest mismatch")
-    rebuilt = seal_authoritative_crossfit(
-        cross_fit_artifact=artifact.get("cross_fit_artifact", {}),
-        source_authority=artifact.get("source_authority", {}),
-        fold_provenance=artifact.get("fold_provenance", ()),
-    )
-    if rebuilt["artifact_digest"] != recorded:
-        _fail("cross-fit structure differs from sealed authority")
-    return {"verified": True, "artifact_digest": recorded,
-            "source_authority_digest": source_digest}
-
-
-def seal_nested_permutation_evidence(*, authoritative_crossfit_digest: str,
-                                     source_authority_digest: str,
-                                     nested_pipeline_code_sha: str,
-                                     contract_sha: str,
-                                     n_permutations: int,
-                                     seed: int,
-                                     p_upper: float,
-                                     null_digest: str) -> dict[str, Any]:
-    _require_hex_digest("authoritative_crossfit_digest", authoritative_crossfit_digest)
-    _require_hex_digest("source_authority_digest", source_authority_digest)
-    _require_hex_digest("nested_pipeline_code_sha", nested_pipeline_code_sha)
-    _require_hex_digest("contract_sha", contract_sha)
-    _require_hex_digest("null_digest", null_digest)
-    if int(n_permutations) != FROZEN_PERMUTATIONS:
-        _fail(f"decision evidence requires frozen B={FROZEN_PERMUTATIONS}")
-    p = float(p_upper)
-    if not (0.0 < p <= 1.0):
-        _fail("nested-permutation p_upper must lie in (0,1]")
-    body = {"kind": PERM_KIND, "authoritative_crossfit_digest": authoritative_crossfit_digest,
-            "source_authority_digest": source_authority_digest,
-            "nested_pipeline_code_sha": nested_pipeline_code_sha,
-            "contract_sha": contract_sha, "n_permutations": int(n_permutations),
-            "seed": int(seed), "alpha": ALPHA, "p_upper": p,
-            "null_digest": null_digest}
-    body["evidence_digest"] = canonical_digest(body, domain="T0_V21_NESTED_PERMUTATION_EVIDENCE_V1")
-    return body
-
-
-def validate_nested_permutation_evidence(evidence: Mapping[str, Any], *,
-                                         artifact_digest: str,
-                                         source_authority_digest: str,
-                                         expected_pipeline_code_sha: str,
-                                         expected_contract_sha: str) -> dict[str, Any]:
-    if not isinstance(evidence, Mapping) or evidence.get("kind") != PERM_KIND:
-        _fail("matching nested-permutation evidence is required")
-    body = {k: evidence[k] for k in evidence if k != "evidence_digest"}
-    if evidence.get("evidence_digest") != canonical_digest(body, domain="T0_V21_NESTED_PERMUTATION_EVIDENCE_V1"):
-        _fail("nested-permutation evidence digest does not recompute")
-    checks = {
-        "authoritative_crossfit_digest": artifact_digest,
-        "source_authority_digest": source_authority_digest,
-        "nested_pipeline_code_sha": expected_pipeline_code_sha,
-        "contract_sha": expected_contract_sha,
-        "n_permutations": FROZEN_PERMUTATIONS,
-        "alpha": ALPHA,
-    }
-    for key, expected in checks.items():
-        if str(evidence.get(key)) != str(expected):
-            _fail(f"nested-permutation evidence mismatch for {key}")
-    if float(evidence["p_upper"]) > ALPHA:
-        _fail("nested discovery permutation test does not reject at frozen alpha")
-    return {"verified": True, "evidence_digest": evidence["evidence_digest"],
-            "p_upper": float(evidence["p_upper"])}
-
-
-def seal_confirmation_design_receipt(*, age: Sequence[float], sex: Sequence[float],
-                                     source_role: str, source_digest: str,
-                                     contract_sha: str) -> dict[str, Any]:
-    role = str(source_role)
-    if role in PROTECTED_ROLES:
-        _fail(f"protected role {role} cannot supply pre-unblinding calibration design")
-    if role not in ALLOWED_CONFIRMATION_DESIGN_SOURCES:
-        _fail(f"confirmation design source role {role!r} is not an approved pre-unblinding authority")
-    age_arr = _require_finite_1d("confirmation age", age, N_CONFIRMATION)
-    sex_arr = _require_complete_binary_sex("confirmation sex", sex, N_CONFIRMATION)
-    _require_hex_digest("source_digest", source_digest)
-    _require_hex_digest("contract_sha", contract_sha)
-    body = {"kind": DESIGN_KIND, "source_role": role,
-            "source_digest": source_digest, "contract_sha": contract_sha,
-            "n": N_CONFIRMATION,
-            "age_digest": canonical_digest(age_arr, domain="T0_V21_CONFIRMATION_AGE_V1"),
-            "sex_digest": canonical_digest(sex_arr, domain="T0_V21_CONFIRMATION_SEX_V1")}
-    body["receipt_digest"] = canonical_digest(body, domain="T0_V21_CONFIRMATION_DESIGN_RECEIPT_V1")
-    return body
-
-
-def validate_confirmation_design_receipt(receipt: Mapping[str, Any], *,
-                                         expected_contract_sha: str,
-                                         expected_receipt_digest: str,
-                                         expected_source_role: str | None = None,
-                                         expected_source_digest: str | None = None,
-                                         age: Sequence[float] | None = None,
-                                         sex: Sequence[float] | None = None) -> dict[str, Any]:
-    if not isinstance(receipt, Mapping) or receipt.get("kind") != DESIGN_KIND:
-        _fail("a confirmation-design receipt is required")
-    role = str(receipt.get("source_role"))
-    if role in PROTECTED_ROLES:
-        _fail("protected reader partitions cannot supply pre-unblinding design calibration")
-    if role not in ALLOWED_CONFIRMATION_DESIGN_SOURCES:
-        _fail(f"confirmation design source role {role!r} is not approved")
-    body = {k: receipt[k] for k in receipt if k != "receipt_digest"}
-    if receipt.get("receipt_digest") != canonical_digest(body, domain="T0_V21_CONFIRMATION_DESIGN_RECEIPT_V1"):
-        _fail("confirmation-design receipt digest does not recompute")
-    if receipt.get("receipt_digest") != _require_hex_digest("expected_receipt_digest", expected_receipt_digest):
-        _fail("confirmation-design receipt is not the externally expected design authority")
-    if receipt.get("contract_sha") != expected_contract_sha:
-        _fail("confirmation-design contract mismatch")
-    if expected_source_role is not None and role != str(expected_source_role):
-        _fail("confirmation-design source role mismatch")
-    if expected_source_digest is not None and receipt.get("source_digest") != _require_hex_digest("expected_source_digest", expected_source_digest):
-        _fail("confirmation-design source digest mismatch")
-    if age is not None or sex is not None:
-        if age is None or sex is None:
-            _fail("age and sex must be supplied together if arrays are checked")
-        expected_age = canonical_digest(_require_finite_1d("confirmation age", age, N_CONFIRMATION),
-                                        domain="T0_V21_CONFIRMATION_AGE_V1")
-        expected_sex = canonical_digest(_require_complete_binary_sex("confirmation sex", sex, N_CONFIRMATION),
-                                        domain="T0_V21_CONFIRMATION_SEX_V1")
-        if receipt.get("age_digest") != expected_age or receipt.get("sex_digest") != expected_sex:
-            _fail("confirmation design arrays do not match their prospective receipt")
-    return {"verified": True, "receipt_digest": receipt["receipt_digest"], "source_role": role}
-
-
-def seal_predictor_geometry_transport_receipt(*,
-                                              authoritative_crossfit_digest: str,
-                                              source_authority_digest: str,
-                                              confirmation_design_receipt_digest: str,
-                                              contract_sha: str,
-                                              transport_mode: str,
-                                              residualized_predictor_geometry_digest: str,
-                                              calibration_design_digest: str,
-                                              assumption_statement_digest: str) -> dict[str, Any]:
-    mode = str(transport_mode)
-    if mode in FORBIDDEN_GEOMETRY_TRANSPORT_MODES or mode not in ALLOWED_GEOMETRY_TRANSPORT_MODES:
-        _fail(f"predictor-geometry transport mode {mode!r} is not decision-capable")
-    for name, value in (
-        ("authoritative_crossfit_digest", authoritative_crossfit_digest),
-        ("source_authority_digest", source_authority_digest),
-        ("confirmation_design_receipt_digest", confirmation_design_receipt_digest),
-        ("contract_sha", contract_sha),
-        ("residualized_predictor_geometry_digest", residualized_predictor_geometry_digest),
-        ("calibration_design_digest", calibration_design_digest),
-        ("assumption_statement_digest", assumption_statement_digest),
-    ):
-        _require_hex_digest(name, value)
-    body = {"kind": GEOMETRY_KIND,
-            "authoritative_crossfit_digest": authoritative_crossfit_digest,
-            "source_authority_digest": source_authority_digest,
-            "confirmation_design_receipt_digest": confirmation_design_receipt_digest,
-            "contract_sha": contract_sha,
-            "transport_mode": mode,
-            "residualized_predictor_geometry_digest": residualized_predictor_geometry_digest,
-            "calibration_design_digest": calibration_design_digest,
-            "assumption_statement_digest": assumption_statement_digest}
-    body["receipt_digest"] = canonical_digest(body, domain="T0_V21_PREDICTOR_GEOMETRY_TRANSPORT_V1")
-    return body
-
-
-def validate_predictor_geometry_transport_receipt(receipt: Mapping[str, Any], *,
-                                                  artifact_digest: str,
-                                                  source_authority_digest: str,
-                                                  confirmation_design_receipt_digest: str,
-                                                  expected_contract_sha: str) -> dict[str, Any]:
-    if not isinstance(receipt, Mapping) or receipt.get("kind") != GEOMETRY_KIND:
-        _fail("predictor-geometry transport receipt is required")
-    body = {k: receipt[k] for k in receipt if k != "receipt_digest"}
-    if receipt.get("receipt_digest") != canonical_digest(body, domain="T0_V21_PREDICTOR_GEOMETRY_TRANSPORT_V1"):
-        _fail("predictor-geometry transport receipt digest does not recompute")
-    checks = {
-        "authoritative_crossfit_digest": artifact_digest,
-        "source_authority_digest": source_authority_digest,
-        "confirmation_design_receipt_digest": confirmation_design_receipt_digest,
-        "contract_sha": expected_contract_sha,
-    }
-    for key, expected in checks.items():
-        if str(receipt.get(key)) != str(expected):
-            _fail(f"predictor-geometry transport mismatch for {key}")
-    mode = str(receipt.get("transport_mode"))
-    if mode in FORBIDDEN_GEOMETRY_TRANSPORT_MODES or mode not in ALLOWED_GEOMETRY_TRANSPORT_MODES:
-        _fail(f"predictor-geometry transport mode {mode!r} is not decision-capable")
-    return {"verified": True, "receipt_digest": receipt["receipt_digest"], "transport_mode": mode}
-
-
-def seal_power_calibration_receipt(*,
-                                   authoritative_crossfit_digest: str,
-                                   source_authority_digest: str,
-                                   nested_permutation_evidence_digest: str,
-                                   confirmation_design_receipt_digest: str,
-                                   predictor_geometry_transport_digest: str,
-                                   calibration_code_sha: str,
-                                   contract_sha: str,
-                                   n_simulations: int,
-                                   n_permutations: int,
-                                   seed: int,
-                                   power: float,
-                                   monte_carlo_standard_error: float,
-                                   power_lower_95: float,
-                                   clears_gate: bool,
-                                   consumes_predictor_geometry: bool,
-                                   uses_iid_normal_surrogate: bool,
-                                   effect_estimand: str) -> dict[str, Any]:
-    for name, value in (
-        ("authoritative_crossfit_digest", authoritative_crossfit_digest),
-        ("source_authority_digest", source_authority_digest),
-        ("nested_permutation_evidence_digest", nested_permutation_evidence_digest),
-        ("confirmation_design_receipt_digest", confirmation_design_receipt_digest),
-        ("predictor_geometry_transport_digest", predictor_geometry_transport_digest),
-        ("calibration_code_sha", calibration_code_sha),
-        ("contract_sha", contract_sha),
-    ):
-        _require_hex_digest(name, value)
-    if int(n_permutations) != FROZEN_PERMUTATIONS:
-        _fail(f"power calibration requires frozen B={FROZEN_PERMUTATIONS}")
-    p = float(power); se = float(monte_carlo_standard_error); lower = float(power_lower_95)
-    if not (0.0 <= p <= 1.0 and 0.0 <= se and 0.0 <= lower <= 1.0):
-        _fail("power, standard error, and lower limit must be finite probabilities")
-    expected_lower = max(0.0, p - 1.96 * se)
-    if abs(lower - expected_lower) > 1e-12:
-        _fail("power_lower_95 must equal max(0, power - 1.96*se)")
-    if bool(clears_gate) != bool(lower >= TARGET_POWER):
-        _fail("clears_gate must be determined by the lower Monte Carlo limit")
-    if not bool(consumes_predictor_geometry):
-        _fail("calibration must consume predictor-geometry transport authority")
-    if bool(uses_iid_normal_surrogate):
-        _fail("iid-normal surrogate calibration is not decision-capable")
-    body = {"kind": CALIBRATION_KIND,
-            "authoritative_crossfit_digest": authoritative_crossfit_digest,
-            "source_authority_digest": source_authority_digest,
-            "nested_permutation_evidence_digest": nested_permutation_evidence_digest,
-            "confirmation_design_receipt_digest": confirmation_design_receipt_digest,
-            "predictor_geometry_transport_digest": predictor_geometry_transport_digest,
-            "calibration_code_sha": calibration_code_sha,
-            "contract_sha": contract_sha,
-            "n_simulations": int(n_simulations),
-            "n_permutations": int(n_permutations),
-            "seed": int(seed),
-            "alpha": ALPHA,
-            "target_power": TARGET_POWER,
-            "power": p,
-            "monte_carlo_standard_error": se,
-            "power_lower_95": lower,
-            "clears_gate": bool(clears_gate),
-            "consumes_predictor_geometry": True,
-            "uses_iid_normal_surrogate": False,
-            "effect_estimand": str(effect_estimand)}
-    body["receipt_digest"] = canonical_digest(body, domain="T0_V21_POWER_CALIBRATION_RECEIPT_V1")
-    return body
-
-
-def validate_power_calibration_receipt(receipt: Mapping[str, Any], *,
-                                       artifact_digest: str,
-                                       source_authority_digest: str,
-                                       nested_permutation_evidence_digest: str,
-                                       confirmation_design_receipt_digest: str,
-                                       predictor_geometry_transport_digest: str,
-                                       expected_calibration_code_sha: str,
-                                       expected_contract_sha: str) -> dict[str, Any]:
-    if not isinstance(receipt, Mapping) or receipt.get("kind") != CALIBRATION_KIND:
-        _fail("geometry-aware power calibration receipt is required")
-    missing = [k for k in CALIBRATION_FIELDS if k not in receipt]
-    if missing:
-        _fail(f"power calibration receipt missing {missing}")
-    body = {k: receipt[k] for k in receipt if k != "receipt_digest"}
-    if receipt.get("receipt_digest") != canonical_digest(body, domain="T0_V21_POWER_CALIBRATION_RECEIPT_V1"):
-        _fail("power calibration receipt digest does not recompute")
-    checks = {
-        "authoritative_crossfit_digest": artifact_digest,
-        "source_authority_digest": source_authority_digest,
-        "nested_permutation_evidence_digest": nested_permutation_evidence_digest,
-        "confirmation_design_receipt_digest": confirmation_design_receipt_digest,
-        "predictor_geometry_transport_digest": predictor_geometry_transport_digest,
-        "calibration_code_sha": expected_calibration_code_sha,
-        "contract_sha": expected_contract_sha,
-        "n_permutations": FROZEN_PERMUTATIONS,
-        "alpha": ALPHA,
-        "target_power": TARGET_POWER,
-    }
-    for key, expected in checks.items():
-        if str(receipt.get(key)) != str(expected):
-            _fail(f"power calibration receipt mismatch for {key}")
-    return seal_power_calibration_receipt(
-        authoritative_crossfit_digest=receipt["authoritative_crossfit_digest"],
-        source_authority_digest=receipt["source_authority_digest"],
-        nested_permutation_evidence_digest=receipt["nested_permutation_evidence_digest"],
-        confirmation_design_receipt_digest=receipt["confirmation_design_receipt_digest"],
-        predictor_geometry_transport_digest=receipt["predictor_geometry_transport_digest"],
-        calibration_code_sha=receipt["calibration_code_sha"],
-        contract_sha=receipt["contract_sha"],
-        n_simulations=int(receipt["n_simulations"]),
-        n_permutations=int(receipt["n_permutations"]),
-        seed=int(receipt["seed"]),
-        power=float(receipt["power"]),
-        monte_carlo_standard_error=float(receipt["monte_carlo_standard_error"]),
-        power_lower_95=float(receipt["power_lower_95"]),
-        clears_gate=bool(receipt["clears_gate"]),
-        consumes_predictor_geometry=bool(receipt["consumes_predictor_geometry"]),
-        uses_iid_normal_surrogate=bool(receipt["uses_iid_normal_surrogate"]),
-        effect_estimand=str(receipt["effect_estimand"]),
-    ) | {"verified": True}
-
-
-def decision_capable_power_gate(*, artifact: Mapping[str, Any],
-                                expected_source_authority: Mapping[str, Any],
-                                permutation_evidence: Mapping[str, Any],
-                                expected_nested_pipeline_code_sha: str,
-                                confirmation_design_receipt: Mapping[str, Any],
-                                expected_confirmation_design_receipt_digest: str,
-                                predictor_geometry_transport_receipt: Mapping[str, Any],
-                                power_calibration_receipt: Mapping[str, Any],
-                                expected_calibration_code_sha: str) -> dict[str, Any]:
-    """Only production-authoritative V21 power entry point.
-
-    This is deliberately receipt-based.  It does **not** call the legacy numerical
-    `power_gate`, because that code still uses a random-normal surrogate predictor
-    geometry.  A production decision must consume a separate calibration receipt
-    that binds the approved confirmation-design authority and the predictor-
-    geometry transport authority.
-    """
-    verified = validate_authoritative_crossfit(artifact,
-                                                expected_source_authority=expected_source_authority)
-    expected_contract = str(expected_source_authority["contract_sha"])
-    perm = validate_nested_permutation_evidence(
-        permutation_evidence, artifact_digest=verified["artifact_digest"],
-        source_authority_digest=verified["source_authority_digest"],
-        expected_pipeline_code_sha=expected_nested_pipeline_code_sha,
-        expected_contract_sha=expected_contract)
-    design = validate_confirmation_design_receipt(
-        confirmation_design_receipt,
-        expected_contract_sha=expected_contract,
-        expected_receipt_digest=expected_confirmation_design_receipt_digest)
-    geometry = validate_predictor_geometry_transport_receipt(
-        predictor_geometry_transport_receipt,
-        artifact_digest=verified["artifact_digest"],
-        source_authority_digest=verified["source_authority_digest"],
-        confirmation_design_receipt_digest=design["receipt_digest"],
-        expected_contract_sha=expected_contract)
-    calibration = validate_power_calibration_receipt(
-        power_calibration_receipt,
-        artifact_digest=verified["artifact_digest"],
-        source_authority_digest=verified["source_authority_digest"],
-        nested_permutation_evidence_digest=perm["evidence_digest"],
-        confirmation_design_receipt_digest=design["receipt_digest"],
-        predictor_geometry_transport_digest=geometry["receipt_digest"],
-        expected_calibration_code_sha=expected_calibration_code_sha,
-        expected_contract_sha=expected_contract)
-    return {"production_authority": {"crossfit": verified, "permutation": perm,
-                                      "confirmation_design": design,
-                                      "predictor_geometry": geometry,
-                                      "calibration": calibration},
-            "clears_gate": bool(calibration["clears_gate"]),
-            "power_lower_95": float(calibration["power_lower_95"])}
+def validate_authoritative_crossfit(artifact: Mapping[str, Any], *,
+                                      expected_source_authority: Mapping[str, Any]) -> dict[str, Any]:
+    authority_digest = validate_source_authority(artifact.get("source_authority", 
+                                                                 {}),
+                                                expected=expected_source_authority)
+    validated = _validate_legacy_crossfit_structure(artifact)
+    artifact_digest = canonical_digest(artifact, domain="T0_V21_AUTHORITATIVE_CROSSFIT_V1")
+    return {"artifact_digest": artifact_digest, "source_authority_digest": authority_digest,
+            "donor_ids": validated["donor_ids"], "y": validated["y"], "age": validated["age"],
+            "sex": validated["sex"], "scores": validated["scores"],
+            "fold_ridge_exponents": validated["fold_ridge_exponents"],
+            "fold_ridge_exponents_recorded": validated["fold_ridge_exponents_recorded"],
+            "fold_ridge_exponents_vary": validated["fold_ridge_exponents_vary"]}
