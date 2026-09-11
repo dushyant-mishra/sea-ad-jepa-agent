@@ -1,0 +1,1 @@
+Fetch targets: V21 executor/tests/design; V5 branch tree; exact trainer/preexecution/anti-cheat files; current authority/governance; relevant frozen V20 primitives for comparison.
