@@ -35,12 +35,30 @@ def _keys(value: Sequence[object], n: int) -> tuple[str, ...]:
 
 
 def _cosine_rows(a: np.ndarray, b: np.ndarray) -> np.ndarray:
-    denom = np.linalg.norm(a, axis=1) * np.linalg.norm(b, axis=1)
-    both_zero = denom == 0
-    out = np.empty(len(a), dtype=np.float64)
+    """Return row-wise cosine similarity with explicit zero-vector semantics.
+
+    Two exact zero vectors are identical and therefore score 1.0.  If exactly
+    one side is zero there is no shared direction, so the score is 0.0 rather
+    than being silently promoted to perfect similarity.  Nonzero rows are
+    rescaled by their maximum absolute component before computing norms; this
+    keeps the calculation stable for finite extreme and subnormal magnitudes
+    without changing direction.
+    """
+    a_scale = np.max(np.abs(a), axis=1)
+    b_scale = np.max(np.abs(b), axis=1)
+    a_zero = a_scale == 0
+    b_zero = b_scale == 0
+
+    out = np.zeros(len(a), dtype=np.float64)
+    both_zero = a_zero & b_zero
     out[both_zero] = 1.0
-    nz = ~both_zero
-    out[nz] = np.sum(a[nz] * b[nz], axis=1) / denom[nz]
+
+    nonzero = ~(a_zero | b_zero)
+    if np.any(nonzero):
+        aa = a[nonzero] / a_scale[nonzero, None]
+        bb = b[nonzero] / b_scale[nonzero, None]
+        denom = np.linalg.norm(aa, axis=1) * np.linalg.norm(bb, axis=1)
+        out[nonzero] = np.sum(aa * bb, axis=1) / denom
     return np.clip(out, -1.0, 1.0)
 
 
