@@ -1,32 +1,68 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-09-11
-Status: `CURRENT_TARGET_DISCOVERY_TO_V5_INTEGRATED_EXTERNAL_REVIEW__NO_TRAINING_AUTHORITY`
+Status: `CURRENT_POST_CLAUDE_REVIEW_REPAIR_HANDOFF__NO_TRAINING_AUTHORITY`
 
 ## Read first
 
-Use `main` for project-current governance/startup context. Read in this order:
+Use `main` for project-current governance/startup context unless a later pointer supersedes this. Read in this order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md`
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_POST_CLAUDE_REPAIR_CURRENT.md`
 3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json`
-4. `docs/agent/T0_V21_PROSPECTIVE_DESIGN_DRAFT.md` on the live V21 branch
-5. `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json`
-6. `docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md`
-7. `docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md`
-8. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
-9. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+4. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md`
+5. `docs/agent/T0_V21_PROSPECTIVE_DESIGN_DRAFT.md` on the live V21 branch
+6. `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json`
+7. `docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md`
+8. `docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md`
+9. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
+10. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
 
-The earlier `JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md` remains useful historical context, but it is superseded for startup by the integrated target-discovery→V5 handoff because the preceding V5 review did not independently re-audit upstream target discovery end-to-end.
+The earlier `JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md` and `JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md` remain useful historical context, but startup is now superseded by the post-Claude repair handoff.
 
 Before writing or executing, re-fetch live heads for:
 
 - `main`
+- `review/integrated-target-v5-repairs-20260911`
+- `repair/v5-qualified-target-guard-20260911`
+- `repair/t0-v21-authority-hardening-20260911`
 - `t0/v20-pathology-blind-materialization-20260908`
 - `t0/v21-prospective-design-20260910`
 - `planning/v5-full-population-cheat-proofing-20260909`
 
 Branch names do not confer scientific authority.
+
+## Current post-Claude review update
+
+Claude reviewed these heads:
+
+- `repair/t0-v21-authority-hardening-20260911 @ a36fd209b40aa9c28cd3d6790bda1fe5054a1923` — `PASS_WITH_MINOR_NOTES`
+- `repair/v5-qualified-target-guard-20260911 @ 7a2bdfb051e0173c2a6d6bfa50cf57fd110278e0` — `MAJOR_REVISION`
+- `review/integrated-target-v5-repairs-20260911 @ f493e531402e8a1148e9abb7011641a7bbbdcda3` — `PASS`
+
+After that review, this chat pushed V5 guard repairs to:
+
+- `repair/v5-qualified-target-guard-20260911 @ a3427815b803382c939cd9741ab7332513ad4a9d`
+
+V5 local focused verification before push:
+
+```bash
+cd /mnt/data/v5_patch
+PYTHONPATH=src pytest -q tests/test_v5_qualified_target_optimizer_guard_v1.py
+# 12 passed in 1.96s
+```
+
+The V5 repair keeps the optimizer guard resident, requires the schedule cursor at `optimizer.step` time, burns stale authorization after skipped steps, blocks post-entrypoint direct optimizer mutation, and binds the observed installed target root before mutation. `production_training_authorized` remains false.
+
+T0 V21 wrapper note fixes were verified locally in `/mnt/data/v21_patch` but still require live branch recheck/push if the live branch does not already contain them:
+
+```bash
+cd /mnt/data/v21_patch
+PYTHONPATH=scripts/v4 pytest -q scripts/v4/test_t0_v21_authority_v1.py scripts/v4/test_t0_v21_measurement_and_freeze_v1.py
+# 23 passed in 0.15s
+```
+
+Those V21 local fixes cross-check declared ridge metadata against all fold records and enumerate allowed `effect_estimand` values, excluding HC3/t-over-sqrt-n transport until a derivation exists.
 
 ## Integrated production-review boundary
 
@@ -39,10 +75,6 @@ A V5 anti-cheat review by itself is not a complete production-pipeline review. A
 Current target-discovery external-review status:
 
 `IN_PROGRESS_NOT_YET_END_TO_END_EXTERNAL_CODE_EVIDENCE_REVIEW_COMPLETE`
-
-Current V5 external-review verdict at `1de20b1c222c7fb27fcef5ec1a4b798d5b26a534`:
-
-`MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING`
 
 Training remains OFF.
 
@@ -69,7 +101,7 @@ V20 remains immutable:
 - rare tail: `RARE_TAIL_UNDERDETERMINED_MEASUREMENT`
 - training unauthorized
 
-V21 live draft observed for this governance update:
+V21 live draft observed before this handoff:
 `t0/v21-prospective-design-20260910 @ 11e76d36ace556ac48cdd2992995e63c1e35df18`
 
 Status: `DRAFT_FOR_REVIEW_NOT_FROZEN`.
@@ -85,12 +117,12 @@ The design records:
 - T2 decoupled from the T1 freeze;
 - MTG retained as the T1 confirmation tissue;
 - cross-region work is secondary generalisation, not independent confirmation;
-- S0–S4 estimator family closed and ranking/tie-break rules written prospectively;
+- S0-S4 estimator family closed and ranking/tie-break rules written prospectively;
 - nested outer-LODO/inner-LODO OOF power design and conservative jackknife influence envelope written into the draft.
 
-**Critical boundary:** `11e76d36` is a design-document update, not executable discovery authority. The S0–S4 implementation, nested OOF/HC3 construction, jackknife power implementation, raw discovery lineage and frozen target→V5 lineage have not yet closed external code/evidence review.
+**Critical boundary:** V21 is a design/document/wrapper-hardening lane, not executable discovery authority. The S0-S4 implementation, nested OOF/HC3 construction, jackknife power implementation, raw discovery lineage and frozen target→V5 lineage have not yet closed external code/evidence review.
 
-Do **not** run S0–S4 selection until that external/adversarial executable review closes.
+Do **not** run S0-S4 selection until that external/adversarial executable review closes.
 
 Do **not** open fresh `reader_validation` or `reader_oracle` while any confirmation result could change a design choice.
 
@@ -99,18 +131,13 @@ Standing rule:
 
 ## V5
 
-Current live engineering branch observed for this governance update:
-`planning/v5-full-population-cheat-proofing-20260909 @ 1de20b1c222c7fb27fcef5ec1a4b798d5b26a534`
+Current V5 guard-repair branch after this handoff:
+`repair/v5-qualified-target-guard-20260911 @ a3427815b803382c939cd9741ab7332513ad4a9d`
 
-The V5 external review found a credible anti-shortcut design but did not authorize production training. Confirmed/open items include:
+The prior V5 planning branch remains:
+`planning/v5-full-population-cheat-proofing-20260909`
 
-- fix the asymmetric-zero cosine edge case in the same-cell technical intervention probe and add numerical edge-case tests;
-- replace/self-close report-level rejection-power assertions with execution of the actual frozen gate over deterministic controls and hash-bound raw outputs;
-- prove the real optimizer path cannot execute even one update without a valid pre-execution receipt;
-- run donor-held-out nuisance-recovery attacks for donor/batch/library/depth/source/specimen structure;
-- run deliberate identity, same-cell, shared-view, lookup, duplicate, technical-only and corrupted-biology attacks;
-- close the exact target-discovery/freeze→V5 teacher-target lineage;
-- obtain clean exact-head qualification evidence on the final candidate.
+V5 remains unauthorized for production training. Next review must test exact live post-repair heads and cover unguarded post-entrypoint step, stale AMP-skip authorization, target-root mismatch, forged ridge metadata, and HC3/free-text effect-estimand acceptance.
 
 The uploaded corrected TRAIN cache exactly closes only:
 
