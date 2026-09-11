@@ -771,9 +771,18 @@ def _validate(body: dict, **kwargs):
         lawful_partition="reader_fit",
         expected_donor_count=104,
         expected_donor_roster_root="6" * 64)
+    defaults["trusted_authorizations"] = {
+        str(body["issued_by"]): str(body["authorization_root_sha256"])}
     defaults.update(kwargs)
     return authorization.validate_execution_authorization(body, **defaults)
 
+
+
+
+def test_self_consistent_authorization_from_untrusted_issuer_fails() -> None:
+    body = _authorization_body(issued_by="attacker")
+    with pytest.raises(PermissionError, match="AUTHORIZATION_ISSUER_UNTRUSTED"):
+        _validate(body, trusted_authorizations={})
 
 def test_a_valid_authorization_unlocks_the_frozen_source_without_editing_it() -> None:
     """The positive half: authorization is external and sufficient."""
@@ -1689,9 +1698,11 @@ def test_the_resolver_refuses_values_for_an_unauthorised_source() -> None:
                 "source_canonical_donor_id": "D1",
                 "recipient_canonical_donor_id": "D9"}
     counts = np.arange(8, dtype=np.float64)
+    expected_counts_sha256 = adapter_module._counts_digest(counts)
     ok = adapter_module.resolve_authenticated_source_values(
         expected=expected, raw_counts=counts, source_library=1000.0,
-        row_locator="src::R#1", canonical_cell_id="C1", canonical_donor_id="D1")
+        row_locator="src::R#1", canonical_cell_id="C1", canonical_donor_id="D1",
+        expected_counts_sha256=expected_counts_sha256)
     assert ok.canonical_cell_id == "C1"
     for label, kwargs in (
         ("wrong locator", dict(row_locator="src::OTHER#9", canonical_cell_id="C1",
@@ -1703,7 +1714,14 @@ def test_the_resolver_refuses_values_for_an_unauthorised_source() -> None:
     ):
         with pytest.raises(AssertionError):
             adapter_module.resolve_authenticated_source_values(
-                expected=expected, raw_counts=counts, source_library=1000.0, **kwargs)
+                expected=expected, raw_counts=counts, source_library=1000.0,
+                expected_counts_sha256=expected_counts_sha256, **kwargs)
+
+    with pytest.raises(AssertionError, match="SOURCE_COUNTS_UNAUTHENTICATED"):
+        adapter_module.resolve_authenticated_source_values(
+            expected=expected, raw_counts=counts + 1.0, source_library=1000.0,
+            row_locator="src::R#1", canonical_cell_id="C1", canonical_donor_id="D1",
+            expected_counts_sha256=expected_counts_sha256)
 
 
 def test_the_null_arm_refuses_a_free_expression_vector() -> None:

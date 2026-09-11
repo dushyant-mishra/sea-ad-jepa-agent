@@ -947,6 +947,7 @@ def run_production_sweep(*, authorization_path: str | Path | None = None,
                          package_root_sha256: str | None = None,
                          output_dir: Path | None = None,
                          repo: Path = REPO,
+                         trusted_authorizations: Mapping[str, str] | None = None,
                          **kwargs: Any) -> dict[str, Any]:
     """The real end-to-end producer. Fail-closed without external authorization.
 
@@ -986,7 +987,8 @@ def run_production_sweep(*, authorization_path: str | Path | None = None,
         accepted_real_forward_root=ACCEPTED_REAL_FORWARD_ROOT,
         lawful_partition=LAWFUL_PARTITION,
         expected_donor_count=LAWFUL_READER_FIT_DONORS,
-        expected_donor_roster_root=roster["roster_root"])
+        expected_donor_roster_root=roster["roster_root"],
+        trusted_authorizations=trusted_authorizations)
 
     runtime = assert_runtime_binding(authorization=payload, adapter=forward_engine,
                                      reader=reader) if (
@@ -997,9 +999,17 @@ def run_production_sweep(*, authorization_path: str | Path | None = None,
             "directory must all be supplied by the execution binding"
             % STOP_NOT_AUTHORIZED)
 
-    return execute_authorized_sweep(
+    result = execute_authorized_sweep(
         authorization=authorization, roster=roster, geometry=geometry,
         adapter=forward_engine, reader=reader, output_dir=Path(output_dir), **kwargs)
+    assignment_path = _resolve_from(
+        repo,
+        "outputs/contextual_teacher_target_v1_f1_querydesign_repair_20260901/"
+        "F1_QUERY_ASSIGNMENTS_2DRAW.csv")
+    capture_plan = plan_mechanics_capture(assignment_path)
+    result["completeness"] = verify_sweep_completeness(
+        result, planned_assignment_keys=capture_plan["assignment_keys"])
+    return result
 
 
 def _atomic_write_json(path: Path, payload: Any) -> str:
@@ -1335,6 +1345,8 @@ FROZEN_SOURCE_PATHS: dict[str, str] = {
     "authorization": "scripts/v4/f1_execution_authorization_v1.py",
     "runtime_adapter": "scripts/v4/f1_production_runtime_adapter_v1.py",
     "evidence_mask_authority": "scripts/v4/f1_evidence_mask_authority_v1.py",
+    "preflight_executor": "scripts/v4/contextual_target_f1_preflight_executor_v1.py",
+    "mechanics_validator": "scripts/v4/validate_f1_production_mechanics_acceptance_v1.py",
     "tests": "tests/test_f1_real_producer_replay_parity_v1.py",
 }
 

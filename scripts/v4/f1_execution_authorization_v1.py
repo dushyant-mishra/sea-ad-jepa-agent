@@ -47,6 +47,7 @@ STOP_MECHANICS = "STOP_F1_EXECUTION_AUTHORIZATION_WRONG_MECHANICS"
 STOP_GEOMETRY = "STOP_F1_EXECUTION_AUTHORIZATION_WRONG_GEOMETRY"
 STOP_RETROACTIVE = "STOP_F1_EXECUTION_AUTHORIZATION_IS_A_CLOSURE_ARTIFACT"
 STOP_SCOPE = "STOP_F1_EXECUTION_AUTHORIZATION_WRONG_SCOPE"
+STOP_AUTHORIZATION_ISSUER_UNTRUSTED = "STOP_F1_AUTHORIZATION_ISSUER_UNTRUSTED"
 
 # The only lawful scope this lane may be authorized for. The first real F1 run
 # is a reference production-mechanics baseline on the clean u0 fixture; it is not
@@ -120,6 +121,7 @@ def validate_execution_authorization(
     lawful_partition: str,
     expected_donor_count: int,
     expected_donor_roster_root: str,
+    trusted_authorizations: Mapping[str, str] | None = None,
 ) -> dict[str, Any]:
     """Validate an authorization against everything it claims to bind.
 
@@ -146,6 +148,19 @@ def validate_execution_authorization(
         {k: v for k, v in payload.items() if not k.startswith("_")})
     _require(stated_root == recomputed, STOP_AUTHORIZATION_SELF_ROOT,
              "stated %s but the body digests to %s" % (stated_root, recomputed))
+
+    # Self-consistency is not issuer authenticity. The caller must supply an
+    # independently trusted issuer->authorization-root mapping. There is no
+    # default and no self-trust path; until governance issues such a trust
+    # anchor, real execution remains unauthorized.
+    issuer = str(payload["issued_by"])
+    trusted = dict(trusted_authorizations or {})
+    trusted_root = trusted.get(issuer)
+    _require(trusted_root is not None, STOP_AUTHORIZATION_ISSUER_UNTRUSTED,
+             "issuer %r has no independent trusted authorization root" % issuer)
+    _require(str(trusted_root) == stated_root, STOP_AUTHORIZATION_ISSUER_UNTRUSTED,
+             "issuer %r is trusted for root %s, not supplied root %s"
+             % (issuer, trusted_root, stated_root))
 
     _require(str(payload["package_root_sha256"]) == str(package_root_sha256),
              STOP_PACKAGE_ROOT,

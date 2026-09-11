@@ -312,6 +312,7 @@ STOP_SOURCE_VALUES_UNVERIFIED = "STOP_F1_MATCHED_NULL_SOURCE_VALUES_UNVERIFIED"
 STOP_SOURCE_LOCATOR = "STOP_F1_MATCHED_NULL_SOURCE_LOCATOR_MISMATCH"
 STOP_NORMALIZATION_ONCE = "STOP_F1_MATCHED_NULL_NORMALIZATION_NOT_ONCE_ONLY"
 STOP_MAP_DIGEST_UNVERIFIED = "STOP_F1_MATCHED_NULL_MAP_DIGEST_UNVERIFIED"
+STOP_SOURCE_COUNTS_UNAUTHENTICATED = "STOP_F1_MATCHED_NULL_SOURCE_COUNTS_UNAUTHENTICATED"
 
 # The controlling production loader guards the divisor with np.maximum(L, 1.0)
 # and applies log1p exactly once to the sparse .data array.
@@ -430,7 +431,8 @@ class VerifiedSourceValues:
 def resolve_authenticated_source_values(*, expected: Mapping[str, str],
                                         raw_counts: Any, source_library: float,
                                         row_locator: str, canonical_cell_id: str,
-                                        canonical_donor_id: str) -> VerifiedSourceValues:
+                                        canonical_donor_id: str,
+                                        expected_counts_sha256: str) -> VerifiedSourceValues:
     """Build verified values for the source the frozen map names.
 
     The locator and identity are checked against the frozen map BEFORE the
@@ -449,6 +451,12 @@ def resolve_authenticated_source_values(*, expected: Mapping[str, str],
         raise AssertionError("%s: donor %r is not the frozen source donor %r"
                              % (STOP_NULL_SOURCE, canonical_donor_id,
                                 expected["source_canonical_donor_id"]))
+    observed_counts_sha256 = _counts_digest(raw_counts)
+    if str(expected_counts_sha256) != observed_counts_sha256:
+        raise AssertionError(
+            "%s: source %r raw counts digest %s, expected independently bound %s"
+            % (STOP_SOURCE_COUNTS_UNAUTHENTICATED, canonical_cell_id,
+               observed_counts_sha256, expected_counts_sha256))
     return VerifiedSourceValues(
         row_locator=row_locator, canonical_cell_id=canonical_cell_id,
         canonical_donor_id=canonical_donor_id, raw_counts=raw_counts,
@@ -504,23 +512,36 @@ class F1ProductionAdapter:
         )
 
         width = int(np.asarray(physical_state).size)
-        gene_ids = torch.arange(width, dtype=torch.long).unsqueeze(0)
-        return construct_query_local_contextual_state(
-            encoder=self.encoder,
-            gene_ids=gene_ids,
-            normalized_expression=torch.as_tensor(
-                np.asarray(normalized_expression, dtype=np.float32)).reshape(1, width),
-            physical_state=torch.as_tensor(
-                np.asarray(physical_state, dtype=np.uint8)).reshape(1, width),
-            evidence_visible=torch.as_tensor(
-                np.asarray(evidence_visible, dtype=bool)).reshape(1, width),
-            query_index=torch.as_tensor([int(query_index)], dtype=torch.long),
-            row_provenance=list(row_provenance),
-            encoder_source_sha256=self.encoder_source_sha256,
-            tokenizer_source_sha256=self.tokenizer_source_sha256,
-            model_state_sha256=self.model_state_sha256(),
-            physical_state_authority_sha256=self.physical_state_authority_sha256,
-            role=role)
+        try:
+            encoder_device = next(self.encoder.parameters()).device
+        except (AttributeError, StopIteration):
+            encoder_device = torch.device("cpu")
+
+        # All tensors that participate in the encoder forward are constructed on
+        # the encoder's actual device. This closes the CPU-tensor/GPU-module
+        # mismatch while preserving the frozen dtypes and shapes.
+        gene_ids = torch.arange(width, dtype=torch.long, device=encoder_device).unsqueeze(0)
+        with torch.no_grad():
+            return construct_query_local_contextual_state(
+                encoder=self.encoder,
+                gene_ids=gene_ids,
+                normalized_expression=torch.as_tensor(
+                    np.asarray(normalized_expression, dtype=np.float32),
+                    device=encoder_device).reshape(1, width),
+                physical_state=torch.as_tensor(
+                    np.asarray(physical_state, dtype=np.uint8),
+                    device=encoder_device).reshape(1, width),
+                evidence_visible=torch.as_tensor(
+                    np.asarray(evidence_visible, dtype=bool),
+                    device=encoder_device).reshape(1, width),
+                query_index=torch.as_tensor([int(query_index)], dtype=torch.long,
+                                            device=encoder_device),
+                row_provenance=list(row_provenance),
+                encoder_source_sha256=self.encoder_source_sha256,
+                tokenizer_source_sha256=self.tokenizer_source_sha256,
+                model_state_sha256=self.model_state_sha256(),
+                physical_state_authority_sha256=self.physical_state_authority_sha256,
+                role=role)
 
     @staticmethod
     def _readouts(result: Any) -> dict[str, Any]:
