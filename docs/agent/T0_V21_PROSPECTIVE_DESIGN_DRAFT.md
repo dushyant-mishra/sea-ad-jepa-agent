@@ -346,9 +346,23 @@ differently:
 | **discovery** | the out-of-fold score vector is in the sealed artifact and is discovery-only evidence | **derived** — the actual vector is held fixed and only the noise is resampled |
 | **confirmation** | nothing, without opening the cohort | **bounded** — worst case over a frozen geometry class |
 
-The frozen class varies collinearity with the nuisance column space
-(0, 0.25, 0.5, 0.75) and the residualized leverage profile (gaussian,
-heavy-tailed, single-leverage). The conservative direction differs on the two
+The frozen class varies the residualized **leverage profile** only —
+gaussian, heavy-tailed, single-leverage.
+
+**Collinearity is not swept, and that is a measurement rather than a
+simplification.** An earlier version of this section swept collinearity with the
+nuisance column space over (0, 0.25, 0.5, 0.75). The mutation audit showed the
+axis to be inert: HC3's `t` is invariant to the in-span component, because
+residualization removes it and the noncentrality is scaled by the residualized
+norm, so the two cancel exactly. Measured **0.8582 at ρ = 0 and 0.8582 at
+ρ = 0.75**, with identical mean statistics. Sweeping it quadrupled the cost for
+no coverage and implied a risk axis that does not exist.
+
+The invariance is now an explicit test rather than a swept parameter, and it
+doubles as the detector for a dropped residualization: without it the achieved
+noncentrality would scale by `√(1−ρ)`, a factor of two at ρ = 0.75. The axis that
+does matter is leverage: gaussian 0.8582, heavy-tailed 0.8136, single-leverage
+0.5402. The conservative direction differs on the two
 sides and the executor makes that explicit: a **larger** discovery scaling
 implies a **smaller** underlying effect, while a **smaller** confirmation scaling
 implies **lower** power, so the worst case of each is taken rather than the same
@@ -383,6 +397,44 @@ different and weaker claim, that the association survives a null built from the
 whole procedure. **The transport question remains open**, and the planning effect
 should be read as a planning quantity rather than an estimate with a coverage
 guarantee until it is closed.
+
+#### Effect transport is OPEN, and the production gate is therefore disabled
+
+*Amended after external review of `4e60caea`; requires owner approval before
+freeze.*
+
+The previous revision stated the transport question was open and then shipped a
+gate that transported the quantity anyway: `power_gate` built
+`planning_standardized_effect` from `t / √n`, converted it to an underlying
+signal-to-noise value, simulated confirmation power from it, and could return
+`clears_gate: true`. Both statements were in the same commit. Writing the defect
+down is not closing it.
+
+**Frozen:**
+
+- `EFFECT_TRANSPORT_STATUS = "OPEN"` in the executor. While it is open,
+  `power_gate` refuses with `STOP_T0_V21_EFFECT_TRANSPORT_NOT_AUTHORITY_BOUND`,
+  unconditionally on its arguments. No caller input re-enables it, including a
+  well-formed transport receipt: the status is where owner approval is recorded,
+  and a caller argument is how a disabled gate gets re-enabled by accident.
+- The arithmetic survives as `planning_power_projection`, which returns no
+  `clears_gate` key at all — code reaching for one raises `KeyError` rather than
+  silently reading a planning number as an authorization.
+- A transport receipt schema exists for when a derivation is produced, and
+  refuses three substitutions: the suspect quantity itself, **whole-pipeline
+  permutation significance** (association under the procedure's own null is not
+  a magnitude mapping), and any factor read off the measured null spread. The
+  1.304/1.477 measurements demonstrate that the current assumption fails; they do
+  not identify its replacement, and a constant taken from them would be chosen
+  after seeing the data.
+
+**The architectural rule this establishes:**
+
+| quantity | what it can support |
+| --- | --- |
+| whole-pipeline permutation | evidence of **association** under the procedure-specific null |
+| cross-fitted HC3 `t` | a **descriptive / studentized** statistic |
+| an effect transported to a fresh n = 12 design | **not authorized** until separately derived and calibrated |
 
 Conservative in three separate ways, and stacking is intentional: each fold trains
 on 27 rather than 28 donors; the planning effect is a worst case rather than a

@@ -1,0 +1,19 @@
+{
+  "kind": "t0_v21_evidence_manifest_v1",
+  "claim": "The assembled HC3 statistic's null spread under the whole 28-fold nested procedure is materially wider than nominal, so t/sqrt(n) is not an established effect-transport coordinate.",
+  "producing_script": "scripts/v4/t0_v21_crossfit_null_calibration_v1.py",
+  "producing_script_sha256": "e8a16692f8981fa5db245ac389a1a15045addca4226c8259b6135365d4a75ccd",
+  "producing_script_git_blob": "11958e5f35e424912258cc41de952405fd0abdff",
+  "exact_invocation": "python scripts/v4/t0_v21_crossfit_null_calibration_v1.py --replicates 400 --seed 20260911 --out outputs/t0_v21_successor_20260911/crossfit_null_calibration.json",
+  "replicates": 400,
+  "seed": 20260911,
+  "committed_copy": "docs/agent/evidence/t0_v21_crossfit_null_calibration_20260911.json",
+  "committed_copy_sha256": "178811771bc12d6622876fcd13035db72e8f5f2719e7e82614335c333d4fa22e",
+  "results": {
+    "null_fixed_ridge_sd_ratio": 1.304,
+    "null_inner_selection_sd_ratio": 1.477,
+    "null_fixed_ridge_rejection_at_alpha": 0.0325,
+    "null_inner_selection_rejection_at_alpha": 0.0175
+  },
+  "note": "The report is committed here rather than referenced under outputs/, which is gitignored, so the claim is verifiable from the repository alone. Re-running the exact invocation reproduces it: the script is seeded and uses no external data."
+}

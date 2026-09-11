@@ -287,8 +287,21 @@ MUTATIONS: list[tuple[str, str, str]] = [
      "    if False:"),
 
     ("accept permutation evidence from a different artifact",
-     "    if receipt.get(\"artifact_digest\") != artifact.get(\"artifact_digest\"):",
-     "    if False:"),
+     '    if receipt.get("artifact_digest") != artifact.get("artifact_digest"):\n        _fail(STOP_PERMUTATION,',
+     '    if False:\n        _fail(STOP_PERMUTATION,'),
+
+    # ---- effect transport ------------------------------------------------
+    ("re-open the production gate while transport is unvalidated",
+     'EFFECT_TRANSPORT_STATUS = "OPEN"',
+     'EFFECT_TRANSPORT_STATUS = "CLOSED"'),
+
+    ("let permutation significance close effect transport",
+     '    "whole_pipeline_permutation_significance",',
+     '    "harmless_placeholder_basis",'),
+
+    ("let a factor read off the observed null spread close transport",
+     '    "observed_null_sd_correction",',
+     '    "another_placeholder_basis",'),
 
     ("accept permutation evidence with too few permutations",
      "    if int(receipt.get(\"n_permutations\", 0)) < MIN_PERMUTATIONS_FOR_ALPHA:",

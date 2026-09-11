@@ -84,6 +84,7 @@ STOP_LEAKAGE = "STOP_HELD_OUT_DONOR_VISIBLE_TO_ITS_OWN_FOLD"
 STOP_INVALID_INPUT = "STOP_INPUT_STRUCTURALLY_INVALID"
 STOP_ARTIFACT = "STOP_CROSS_FIT_ARTIFACT_NOT_VALID"
 STOP_PERMUTATION = "STOP_NESTED_PERMUTATION_EVIDENCE_NOT_VALID"
+STOP_TRANSPORT = "STOP_T0_V21_EFFECT_TRANSPORT_NOT_AUTHORITY_BOUND"
 
 # Frozen by the contract. Geometry is asserted, never inferred from what arrives.
 V21_DISCOVERY_DONORS = 28
@@ -113,6 +114,42 @@ MAX_REFINEMENT_MOVEMENT = float(sum(RIDGE_REFINEMENT_STEPS))
 # The frozen V20 near-tie tolerance, read from `t0_target_learner_v1.fit_t0_target`
 # rather than restated: `tol = 1e-12 * max(1.0, abs(minloss))`.
 V20_TIE_RELATIVE_TOLERANCE = 1e-12
+
+# --------------------------------------------------------------------------
+# Effect transport: OPEN, and therefore production-disabled.
+#
+# `t0_v21_crossfit_null_calibration_v1.py` measures the assembled HC3 statistic's
+# null spread at 1.304x nominal with a fixed ridge and 1.477x with inner LOODO
+# selection, under a strict null with the whole 28-fold nested procedure re-run.
+# The standard error therefore understates the procedure's own variability, and
+# `t / sqrt(n)` is not established as a coordinate that transports an effect from
+# the discovery procedure to a fresh 12-donor design.
+#
+# Those measurements establish a failure, not a replacement. A correction factor
+# read off the observed null spreads would be a constant chosen after seeing the
+# data, which is the thing this contract exists to forbid. So transport stays
+# OPEN and the production gate stays closed until a derivation is supplied and
+# owner-approved.
+#
+# Flipping this to "CLOSED" is a deliberate code change requiring approval; it is
+# not a caller argument, because a caller argument is exactly how a disabled gate
+# gets re-enabled by accident.
+EFFECT_TRANSPORT_STATUS = "OPEN"
+
+# A transport receipt must name a basis that could in principle carry a scale.
+# Significance does not: a permutation test establishes that an association
+# survives the procedure's own null, which is a statement about association, not
+# a mapping from discovery magnitude to confirmation magnitude. And a factor read
+# off the observed null spread is a chosen constant wearing a derivation's name.
+FORBIDDEN_TRANSPORT_BASES = frozenset({
+    "assembled_hc3_t_over_sqrt_n",
+    "whole_pipeline_permutation_significance",
+    "observed_null_sd_correction",
+    "measured_null_spread_rescaling",
+})
+ALLOWED_TRANSPORT_BASES = frozenset({
+    "externally_derived_and_validated_transport_v1",
+})
 
 DECLARED_ESTIMATOR_ORDER = ("S0", "S1", "S2", "S3", "S4")
 
@@ -1302,14 +1339,23 @@ def verify_permutation_receipt(receipt: dict[str, Any], *,
             "null_sd": float(receipt.get("null_sd", 0.0))}
 
 
-def power_gate(*, artifact: dict[str, Any],
+def planning_power_projection(*, artifact: dict[str, Any],
                permutation_receipt: dict[str, Any],
                age_range: tuple[float, float],
                age_range_authority: str,
                n_simulations: int = POWER_SIMULATIONS_FROZEN,
                n_permutations: int = FL_PERMUTATIONS_FROZEN,
                seed: int = POWER_SIMULATION_SEED) -> dict[str, Any]:
-    """The whole gate: sealed artifact plus permutation evidence to a verdict.
+    """The projection arithmetic, retained for sizing. **Not a verdict.**
+
+    This is the computation the production gate used to perform. It is kept
+    because knowing roughly what cohort size an effect would need is useful, and
+    it is renamed and stripped of `clears_gate` because the quantity it
+    transports -- `t / sqrt(n)` from the assembled HC3 regression -- is not an
+    established transport coordinate under overlapping cross-fitting. See
+    `EFFECT_TRANSPORT_STATUS`.
+
+    Everything below is a planning number. Nothing here authorizes anything.
 
     Three things this signature deliberately does not accept.
 
@@ -1390,10 +1436,98 @@ def power_gate(*, artifact: dict[str, Any],
                                "worst_case_hc3_scaling", "power",
                                "power_lower_95", "meets_target")},
         "calibration": worst["calibration"],
-        # The verdict is the worst admissible design, never the best or a
-        # convenient one, and it clears on the lower Monte Carlo limit.
-        "clears_gate": bool(worst["meets_target"]),
+        # Deliberately NOT `clears_gate`. This function cannot produce a
+        # production verdict, and the key name is part of that guarantee: code
+        # that reaches for `clears_gate` will raise a KeyError rather than
+        # silently read a planning number as an authorization.
+        "planning_meets_target_at_worst_design": bool(worst["meets_target"]),
+        "is_planning_only": True,
+        "production_verdict_capability": "DISABLED",
+        "effect_transport_status": EFFECT_TRANSPORT_STATUS,
+        "transported_quantity": "assembled_hc3_t_over_sqrt_n",
     }
+
+
+def verify_effect_transport_receipt(receipt: Any, *,
+                                    artifact: dict[str, Any]) -> dict[str, Any]:
+    """An effect-transport derivation, bound to this artifact.
+
+    The schema exists so that a derivation, once it is produced and approved, has
+    somewhere to bind. It refuses the three substitutions that would otherwise be
+    tempting: the quantity under suspicion itself, permutation significance
+    standing in for magnitude, and a factor read off the measured null spread.
+    """
+    if not isinstance(receipt, dict) or \
+            receipt.get("kind") != "t0_v21_effect_transport_receipt_v1":
+        _fail(STOP_TRANSPORT,
+              "a production verdict requires an effect-transport derivation "
+              "bound to this cross-fit; none was supplied")
+    basis = str(receipt.get("basis"))
+    if basis in FORBIDDEN_TRANSPORT_BASES:
+        _fail(STOP_TRANSPORT,
+              "transport basis %r cannot establish a scale mapping: "
+              "significance is not magnitude, and a factor read off the observed "
+              "null spread is a constant chosen after seeing the data" % basis)
+    if basis not in ALLOWED_TRANSPORT_BASES:
+        _fail(STOP_TRANSPORT, "transport basis %r is not an approved basis"
+              % basis)
+    if receipt.get("artifact_digest") != artifact.get("artifact_digest"):
+        _fail(STOP_TRANSPORT,
+              "the transport derivation was produced for a different cross-fit")
+    for field in ("derivation_digest", "derivation_reference",
+                  "transported_estimand"):
+        if not receipt.get(field):
+            _fail(STOP_TRANSPORT, "transport receipt is missing %r" % field)
+    return {"verified": True, "basis": basis,
+            "transported_estimand": str(receipt["transported_estimand"]),
+            "derivation_digest": str(receipt["derivation_digest"])}
+
+
+def power_gate(*, artifact: dict[str, Any],
+               permutation_receipt: dict[str, Any],
+               age_range: tuple[float, float],
+               age_range_authority: str,
+               effect_transport_receipt: Any = None,
+               n_simulations: int = POWER_SIMULATIONS_FROZEN,
+               n_permutations: int = FL_PERMUTATIONS_FROZEN,
+               seed: int = POWER_SIMULATION_SEED) -> dict[str, Any]:
+    """The production gate. Fails closed while effect transport is open.
+
+    The previous version computed a confirmation-power verdict by transporting
+    `t / sqrt(n)` from the assembled HC3 regression, while the design document
+    said in as many words that this transport is not validated. Both statements
+    were in the same commit. This is the half that was missing.
+
+    The refusal is unconditional on the caller: no argument re-enables it, and
+    supplying a transport receipt is not sufficient while
+    `EFFECT_TRANSPORT_STATUS` is open, because the module-level status is what
+    records owner approval.
+
+    `planning_power_projection` remains available for sizing and returns the same
+    arithmetic without a verdict.
+    """
+    if EFFECT_TRANSPORT_STATUS != "CLOSED":
+        _fail(STOP_TRANSPORT,
+              "effect transport is %s: the assembled HC3 statistic is not an "
+              "established coordinate for carrying an effect from this nested "
+              "cross-fitted discovery procedure to a fresh 12-donor design "
+              "(measured null spread 1.304x to 1.477x nominal). No production "
+              "power verdict is available. Use planning_power_projection for "
+              "sizing, which cannot authorize anything."
+              % EFFECT_TRANSPORT_STATUS)
+
+    # Reached only once transport is closed by an approved code change.
+    transport = verify_effect_transport_receipt(effect_transport_receipt,
+                                                artifact=artifact)
+    projection = planning_power_projection(
+        artifact=artifact, permutation_receipt=permutation_receipt,
+        age_range=age_range, age_range_authority=age_range_authority,
+        n_simulations=n_simulations, n_permutations=n_permutations, seed=seed)
+    return {**projection,
+            "effect_transport": transport,
+            "production_verdict_capability": "ENABLED",
+            "clears_gate": bool(
+                projection["planning_meets_target_at_worst_design"])}
 
 
 # --------------------------------------------------------------------------

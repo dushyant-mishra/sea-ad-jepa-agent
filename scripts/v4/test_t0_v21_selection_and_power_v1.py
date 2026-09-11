@@ -535,7 +535,7 @@ def test_a_cohort_with_no_residual_degrees_of_freedom_is_not_estimable():
 def test_the_gate_uses_the_planning_effect_and_the_frozen_permutation_test():
     cohort = make_cohort(effect=2.0)
     artifact = seal(cohort)
-    gate = v21.power_gate(artifact=artifact,
+    gate = v21.planning_power_projection(artifact=artifact,
                           permutation_receipt=permutation_receipt(artifact),
                           **GATE_KW)
     used = gate["planning_effect"]["planning_standardized_effect"]
@@ -543,7 +543,7 @@ def test_the_gate_uses_the_planning_effect_and_the_frozen_permutation_test():
     assert abs(used) <= abs(
         gate["planning_effect"]["full_standardized_effect"]) + 1e-12
     assert "Freedman-Lane" in gate["calibration"]["test"]
-    assert gate["clears_gate"] == gate["worst_case_design"]["meets_target"]
+    assert gate["planning_meets_target_at_worst_design"] == gate["worst_case_design"]["meets_target"]
     assert gate["artifact"]["verified"]
     assert gate["permutation_evidence"]["verified"]
     # The projection goes through the underlying effect, not through delta --
@@ -558,7 +558,7 @@ def test_the_gate_uses_the_planning_effect_and_the_frozen_permutation_test():
 def test_the_gate_reports_the_worst_design_in_the_envelope_not_the_best():
     cohort = make_cohort(effect=2.0)
     artifact = seal(cohort)
-    gate = v21.power_gate(artifact=artifact,
+    gate = v21.planning_power_projection(artifact=artifact,
                           permutation_receipt=permutation_receipt(artifact),
                           **GATE_KW)
     lowers = [d["power_lower_95"] for d in
@@ -581,7 +581,7 @@ def test_the_gate_refuses_to_run_without_permutation_evidence():
             (permutation_receipt(artifact, n_permutations=10),
              "needs B >=")):
         with pytest.raises(RuntimeError) as excinfo:
-            v21.power_gate(artifact=artifact, permutation_receipt=bad,
+            v21.planning_power_projection(artifact=artifact, permutation_receipt=bad,
                            **GATE_KW)
         assert v21.STOP_PERMUTATION in str(excinfo.value)
         assert marker in str(excinfo.value)
@@ -590,7 +590,7 @@ def test_the_gate_refuses_to_run_without_permutation_evidence():
 def test_the_confirmation_design_cannot_be_supplied_by_the_caller():
     """The 12 donors' covariates are not an input the gate will accept."""
     import inspect
-    params = set(inspect.signature(v21.power_gate).parameters)
+    params = set(inspect.signature(v21.planning_power_projection).parameters)
     assert "confirmation_age" not in params
     assert "confirmation_sex" not in params
     assert {"age_range", "age_range_authority"} <= params
@@ -627,9 +627,9 @@ def test_rerunning_the_whole_construction_is_bitwise_identical():
     assert np.array_equal(first, second)
 
     art = seal(cohort)
-    a = v21.power_gate(artifact=art,
+    a = v21.planning_power_projection(artifact=art,
                        permutation_receipt=permutation_receipt(art), **GATE_KW)
-    b = v21.power_gate(artifact=art,
+    b = v21.planning_power_projection(artifact=art,
                        permutation_receipt=permutation_receipt(art), **GATE_KW)
     assert a["artifact"]["artifact_digest"] == b["artifact"]["artifact_digest"]
     assert a["calibration"]["power"] == b["calibration"]["power"]
@@ -1193,7 +1193,8 @@ def test_the_gate_refuses_a_bare_score_vector():
     cohort = make_cohort()
     scores = run_oof(cohort, honest_pipeline)["oof_predictions"]
     with pytest.raises(RuntimeError) as excinfo:
-        v21.power_gate(artifact=scores, permutation_receipt={}, **GATE_KW)
+        v21.planning_power_projection(artifact=scores, permutation_receipt={},
+                                      **GATE_KW)
     assert v21.STOP_ARTIFACT in str(excinfo.value)
     assert "bare score vector" in str(excinfo.value)
 
@@ -1792,7 +1793,7 @@ def test_the_gate_measures_discovery_geometry_on_the_artifacts_own_scores():
     """The gate must not substitute any other vector for the real score."""
     cohort = make_cohort(effect=2.0)
     artifact = seal(cohort)
-    gate = v21.power_gate(artifact=artifact,
+    gate = v21.planning_power_projection(artifact=artifact,
                           permutation_receipt=permutation_receipt(artifact),
                           **GATE_KW)
     _, learner = v21._frozen()
@@ -1822,6 +1823,147 @@ def test_the_envelope_guard_refuses_a_degenerate_frozen_class(monkeypatch):
     message = str(excinfo.value)
     assert "minority=1" in message
     assert "leverage" in message
+
+
+# --------------------------------------------------------------------------
+# Effect transport is OPEN, so no production verdict is reachable
+# --------------------------------------------------------------------------
+#
+# The previous commit measured that the assembled HC3 statistic is not a
+# validated transport coordinate, said so in the design, and then shipped a gate
+# that transported it anyway. These tests pin both halves: that the arithmetic
+# really is the suspect mapping, and that it can no longer authorize anything.
+
+def test_effect_transport_is_open():
+    assert v21.EFFECT_TRANSPORT_STATUS == "OPEN"
+
+
+def test_the_planning_projection_really_does_transport_t_over_sqrt_n():
+    """The contradiction, demonstrated rather than asserted.
+
+    This is the adversarial test the external review asked for: it shows the
+    projection's confirmation power is reached *through* the quantity the design
+    declares unvalidated, by reproducing that quantity independently from the
+    assembled HC3 regression and showing the projection consumed exactly it.
+    """
+    cohort = make_cohort(effect=2.0)
+    artifact = seal(cohort)
+    projection = v21.planning_power_projection(
+        artifact=artifact, permutation_receipt=permutation_receipt(artifact),
+        **GATE_KW)
+
+    # Independently: delta = t / sqrt(n) from the single assembled regression.
+    effect = v21.oof_effect(y=cohort["y"], age=cohort["age"],
+                            sex=cohort["sex"],
+                            oof_scores=artifact["oof_scores"])
+    independent_delta = effect["t_observed"] / math.sqrt(28)
+    assert effect["standardized_effect"] == pytest.approx(independent_delta)
+
+    # That quantity is what the planning effect is built from, and what the
+    # projection carried into the confirmation simulation.
+    planning = projection["planning_effect"]
+    assert planning["full_standardized_effect"] == pytest.approx(
+        independent_delta)
+    assert projection["underlying_effect"]["observed_standardized_effect"] == (
+        planning["planning_standardized_effect"])
+    assert projection["transported_quantity"] == "assembled_hc3_t_over_sqrt_n"
+
+    # And it is explicitly incapable of authorizing anything.
+    assert projection["is_planning_only"]
+    assert projection["production_verdict_capability"] == "DISABLED"
+    assert "clears_gate" not in projection
+
+
+def test_the_production_gate_refuses_while_transport_is_open():
+    cohort = make_cohort(effect=2.0)
+    artifact = seal(cohort)
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.power_gate(artifact=artifact,
+                       permutation_receipt=permutation_receipt(artifact),
+                       **GATE_KW)
+    message = str(excinfo.value)
+    assert v21.STOP_TRANSPORT in message
+    assert "not an established coordinate" in message
+
+
+def test_no_caller_argument_re_enables_the_production_gate():
+    """Including a well-formed transport receipt, while the status is open."""
+    cohort = make_cohort(effect=2.0)
+    artifact = seal(cohort)
+    receipt = {"kind": "t0_v21_effect_transport_receipt_v1",
+               "basis": "externally_derived_and_validated_transport_v1",
+               "artifact_digest": artifact["artifact_digest"],
+               "derivation_digest": "a" * 64,
+               "derivation_reference": "docs/agent/nonexistent.md",
+               "transported_estimand": "whatever_v1"}
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.power_gate(artifact=artifact,
+                       permutation_receipt=permutation_receipt(artifact),
+                       effect_transport_receipt=receipt, **GATE_KW)
+    assert v21.STOP_TRANSPORT in str(excinfo.value)
+
+
+def test_permutation_significance_cannot_stand_in_for_transport():
+    """Association under the procedure's null is not a scale mapping."""
+    cohort = make_cohort()
+    artifact = seal(cohort)
+    receipt = {"kind": "t0_v21_effect_transport_receipt_v1",
+               "basis": "whole_pipeline_permutation_significance",
+               "artifact_digest": artifact["artifact_digest"],
+               "derivation_digest": "a" * 64,
+               "derivation_reference": "x", "transported_estimand": "y"}
+    with pytest.raises(RuntimeError) as excinfo:
+        v21.verify_effect_transport_receipt(receipt, artifact=artifact)
+    assert v21.STOP_TRANSPORT in str(excinfo.value)
+    assert "significance is not magnitude" in str(excinfo.value)
+
+
+def test_a_factor_read_off_the_observed_null_spread_cannot_close_transport():
+    """The 1.304/1.477 measurements show a failure; they are not a fix.
+
+    The refusal must be the *named prohibition*, not the default "unapproved
+    basis" fallback. Asserting only the STOP marker cannot tell the two apart, so
+    removing a basis from the forbidden set would leave this green -- which is
+    exactly what the mutation audit found.
+    """
+    cohort = make_cohort()
+    artifact = seal(cohort)
+    for basis in sorted(v21.FORBIDDEN_TRANSPORT_BASES):
+        receipt = {"kind": "t0_v21_effect_transport_receipt_v1",
+                   "basis": basis,
+                   "artifact_digest": artifact["artifact_digest"],
+                   "derivation_digest": "a" * 64,
+                   "derivation_reference": "x", "transported_estimand": "y"}
+        with pytest.raises(RuntimeError) as excinfo:
+            v21.verify_effect_transport_receipt(receipt, artifact=artifact)
+        message = str(excinfo.value)
+        assert v21.STOP_TRANSPORT in message
+        assert "cannot establish a scale mapping" in message, (
+            "basis %r was refused as merely unapproved rather than as a named "
+            "prohibition: %s" % (basis, message))
+    assert {"observed_null_sd_correction", "measured_null_spread_rescaling",
+            "assembled_hc3_t_over_sqrt_n",
+            "whole_pipeline_permutation_significance"} <= (
+        v21.FORBIDDEN_TRANSPORT_BASES)
+
+
+def test_no_module_entry_point_can_return_a_production_verdict_today():
+    """A sweep, not a spot check: nothing reachable emits clears_gate."""
+    cohort = make_cohort(effect=2.0)
+    artifact = seal(cohort)
+    projection = v21.planning_power_projection(
+        artifact=artifact, permutation_receipt=permutation_receipt(artifact),
+        **GATE_KW)
+    assert "clears_gate" not in projection
+    for value in projection.values():
+        if isinstance(value, dict):
+            assert "clears_gate" not in value
+    planning = v21.project_power(standardized_effect_value=0.9, n_target=12)
+    assert planning["not_decision_capable"]
+    with pytest.raises(RuntimeError):
+        v21.power_gate(artifact=artifact,
+                       permutation_receipt=permutation_receipt(artifact),
+                       **GATE_KW)
 
 
 # --------------------------------------------------------------------------
@@ -1912,13 +2054,13 @@ def test_the_frozen_learner_pipeline_seals_and_gates():
         oof_result=run_frozen_oof(cohort), donor_ids=DONOR_IDS,
         y=cohort["y"], age=cohort["age"], sex=cohort["sex"])
     assert v21.verify_cross_fit_artifact(artifact)["verified"]
-    gate = v21.power_gate(artifact=artifact,
+    gate = v21.planning_power_projection(artifact=artifact,
                           permutation_receipt=permutation_receipt(artifact),
                           **GATE_KW)
     assert gate["artifact"]["verified"]
     assert gate["permutation_evidence"]["verified"]
     assert "Freedman-Lane" in gate["calibration"]["test"]
-    assert isinstance(gate["clears_gate"], bool)
+    assert isinstance(gate["planning_meets_target_at_worst_design"], bool)
     # The frozen learner's real out-of-fold geometry drives the discovery side.
     assert gate["underlying_effect"]["discovery_geometry"]["geometry_source"]         == "the actual out-of-fold score vector"
 
