@@ -1,30 +1,31 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V10",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V11",
   "date": "2026-09-11",
-  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF__T0_V21_EXTERNAL_REVIEW_PENDING_EXECUTABLE_REVIEW__V5_HARDENING",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
+  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF__TARGET_DISCOVERY_TO_V5_INTEGRATED_EXTERNAL_REVIEW__NO_TRAINING_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
   "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260910_FINAL_CURRENT.md",
+  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
   "prior_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL4.md",
   "prior_formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "prior_heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "observed_lane_heads_before_20260911_governance_commits": {
-    "main": "6f0209c1bcd950ef056f0ae96a35aa5b3ee079b9",
+  "observed_lane_heads_before_20260911_integrated_governance_update": {
+    "main": "04d91537358f5adc8973c091d4bfae4e2390bd22",
     "v5": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
     "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
-    "t0_v21_draft": "11e76d36ace556ac48cdd2992995e63c1e35df18",
-    "t0_step4": "4d95355e9f3b176bd4e0166185e4fcc95eab4b2f"
+    "t0_v21_draft": "11e76d36ace556ac48cdd2992995e63c1e35df18"
   },
   "branches": {
     "v5": "planning/v5-full-population-cheat-proofing-20260909",
     "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
     "t0_v21_draft": "t0/v21-prospective-design-20260910"
   },
-  "t0_status": "V21_DESIGN_PROSE_BLOCKERS_ADDRESSED_AT_11e76d36__EXECUTABLE_IMPLEMENTATION_REVIEW_STILL_REQUIRED__NO_SELECTION_OR_POWER_GATE_RUN",
-  "t0_next_action": "EXTERNALLY_REVIEW_EXECUTABLE_S0_S4_SELECTION_AND_NESTED_OOF_POWER_GATE__THEN_SINGLE_SHOT_ESTIMATOR_SELECTION_IF_REVIEW_PASSES",
-  "v5_status": "TRAIN_CACHE_EXACT_BOUND__FULL104_8915_BLOCK_STORE_STILL_MISSING__REAL_PROPOSAL_PACKING_RESTART_CLOSED",
-  "v5_next_action": "RECOVER_OR_PROSPECTIVELY_REBUILD_AND_BIND_FULL104_PHASE2_LEVEL4_8915_BLOCK_STORE__CONTINUE_ONLY_NON_SUBSTITUTIVE_PREQUALIFICATION_IN_PARALLEL",
+  "integrated_review_scope": "RAW_SEA_AD_TO_TARGET_DISCOVERY_TO_TARGET_FREEZE_TO_V5_TEACHER_TARGET_TO_TRAINING",
+  "target_discovery_review_status": "IN_PROGRESS_NOT_YET_END_TO_END_EXTERNAL_CODE_EVIDENCE_REVIEW_COMPLETE",
+  "t0_status": "V21_DESIGN_PROSE_BLOCKERS_ADDRESSED_AT_11e76d36__EXECUTABLE_TARGET_DISCOVERY_SELECTION_AND_POWER_REVIEW_STILL_REQUIRED__NO_SELECTION_OR_POWER_GATE_RUN",
+  "t0_next_action": "EXTERNALLY_REVIEW_EXECUTABLE_TARGET_DISCOVERY_S0_S4_SELECTION_NESTED_OOF_HC3_AND_POWER_GATE_BEFORE_ANY SINGLE_SHOT_SELECTION_RUN",
+  "v5_review_status": "MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING_AT_1de20b1c__UPSTREAM_TARGET_DISCOVERY_REVIEW_MUST_ALSO_CLOSE",
+  "v5_next_action": "REPAIR_CONFIRMED_V5_DEFECTS_AND_PROVE_NON_BYPASSABILITY_IN_PARALLEL_WITH_TARGET_DISCOVERY_EXTERNAL_AUDIT_AND_FULL104_RECOVERY",
   "runtime_asset_verification": {
     "discovery_parts_and_assembled_stream": "PASS_HASH_VERIFIED",
     "foundation_calibration": "PASS_HASH_VERIFIED",
@@ -34,7 +35,12 @@
     "corrected_train_cache_zip": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
     "operator_address_state_npz": "PROVENANCE_MISMATCH_DO_NOT_USE"
   },
-  "small_real_data_smoke_executed": true,
+  "target_discovery_external_review_complete": false,
+  "s0_s4_authorized": false,
+  "fresh_reader_validation_open_authorized": false,
+  "reader_oracle_open_authorized": false,
+  "v5_full104_expression_closed": false,
+  "v5_integrated_review_closed": false,
   "training_authorized": false,
-  "instruction": "Open START_HERE.md first, then this pointer, then the 20260911 canonical handoff/state. Re-fetch live heads before acting. Keep V20 immutable. Do not open fresh AT8 or reader_validation before a frozen T1 design and passing power gate. Treat 11e76d36 as design-document closure only until executable selection/power code is externally reviewed and adversarially tested. TRAIN-cache PASS is not FULL104 PASS. Exclude the provenance-mismatched operator-address NPZ. Training remains OFF."
+  "instruction": "Open START_HERE.md first, then this pointer, then the integrated 20260911 handoff/state. Re-fetch live heads before acting. Treat target discovery and V5 as one production-review chain. Keep V20 immutable. Do not run S0-S4 or open fresh validation/oracle before the executable discovery/selection/power implementation passes external/adversarial review and the target is frozen under the prospective contract. TRAIN-cache PASS is not FULL104 PASS. Repair V5 confirmed defects and prove optimizer-path non-bypassability, but do not claim training authority. Exclude the provenance-mismatched operator-address NPZ. Training remains OFF."
 }
