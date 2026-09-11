@@ -146,11 +146,48 @@ design demonstrates **≥ 80% power at α = 0.025 on 12 donors**, computed
 discovery-only and pathology-blind, against a pre-declared effect size that is
 *not* V20's point estimate but a winner's-curse-adjusted lower bound.
 
-Note the interaction with §1.3: the power gate must be evaluated for the
-estimator that will actually be tested, i.e. **after** the 46-donor refit, not
-for the 28-donor fit. A better-fit target may raise the achievable effect, and
-that is the legitimate route to passing this gate. Improving the instrument
-raises power; loosening the threshold does not.
+#### The gate's evidence base — corrected, because the target fit is AT8-supervised
+
+An earlier draft said the gate should be evaluated *after* the 46-donor refit
+while also being discovery-only. Those are incompatible, and checking the frozen
+code shows why. `fit_discovery_target_v2` requires donor metadata whose schema is
+exactly `['donor_id','AT8','age','sex']` and sets `y = pd.to_numeric(dm.AT8)`;
+the LOODO ridge grid then selects λ by predictive loss on that `y`. **The target
+β is fit by supervised regression on AT8.** A 46-donor refit therefore consumes
+all 46 donors' AT8, including the 18 whose outcomes V20 already adjudicated.
+
+The consequence runs deeper than the wording. An effect estimate used to project
+power must come from donors that were **not** in the fit, or it is in-sample and
+optimistic — which is the wrong direction for a gate whose purpose is to prevent
+an underpowered test. V20's `t = 1.908` is usable precisely because it was
+out-of-fit: β was fit on 28 and evaluated on a disjoint 18. **Once the estimator
+is refit on all 46, no donor with known AT8 remains out-of-fit at all**, so no
+honest out-of-sample effect estimate exists for that estimator without spending
+the fresh 12 — which is the thing the gate exists to protect.
+
+**Redesign, frozen:**
+
+1. **The power gate's effect evidence comes from the 28 discovery donors only,
+   by cross-fitting within them.** Outer folds over the 28; in each fold β is fit
+   on the training donors with its own inner LOODO ridge selection, and the
+   donor-level HC3 statistic is evaluated on the held-out donors. The aggregate
+   out-of-fold statistic is the effect estimate.
+2. **The 18 spent donors' AT8 outcomes do not enter the power calculation at
+   all.** They may be used later to refit the frozen estimator; they may not be
+   used to decide whether the fresh 12 are worth spending.
+3. **The 46-donor refit is adopted as the final instrument but is credited with
+   no additional power in the gate.** More fitting donors should sharpen β, but
+   that expectation cannot be verified without spending outcomes, so it is not
+   banked. The projection stands on the 28-fit evidence and the actual test
+   should, if anything, be better powered than projected.
+
+This also supplies the winner's-curse adjustment the gate requires, rather than
+leaving it to a chosen shrinkage constant. A cross-fitted out-of-fold estimate is
+not conditioned on having reached significance, so it is not inflated the way a
+single realised `t` selected for publication is. **That derivation replaces the
+illustrative 0.75 shrinkage entirely.** Note it is conservative twice over: each
+fold trains on fewer than 28 donors, so the cross-fitted effect understates what a
+28-donor fit achieves, and understates a 46-donor fit by more.
 
 If the gate fails, the correct action is not to open the partition and hope.
 Options, in the order I would consider them:
@@ -414,24 +451,33 @@ accepts as unavoidable.
 On the full discovery set, measure the same three displacements between the
 extreme members of the near-optimal λ set.
 
-- If λ-induced displacement lies **within** the donor-resampling envelope, then
-  choosing λ inside the near-optimal set matters less than which donors happened
-  to be sampled. λ is functionally irrelevant at this precision: choose the
-  **strongest regularisation in the near-optimal set**, deterministically, and
-  report that λ is weakly identified while the estimator is not.
-- If λ-induced displacement **exceeds** the envelope,
-  `STOP_RIDGE_SELECTION_NOT_IDENTIFIED` — the regularisation choice is doing
-  more to the answer than the sampling uncertainty does, which is exactly when
-  it must not be made silently.
+**Owner decision: leave-one-donor-out with the maximum displacement, applied
+per metric, with no averaging.**
 
-**No effect-size or correlation constant is chosen anywhere.** The rule is a
-comparison between two sources of variation in the same units. What remains to
-be frozen is structural, not numerical: the resampling scheme
-(leave-one-donor-out recommended, since it is deterministic and already
-computed) and which order statistic of the 28 defines the envelope (the maximum
-is the conservative choice; a 95th percentile is defensible). Those should be
-set in review, and they are choices about procedure rather than about how big an
-effect has to be.
+- The envelope is the **maximum** displacement observed across the 28
+  leave-one-donor-out refits — not a percentile, which would reintroduce an
+  arbitrary constant.
+- It is computed and applied **separately for each of the three metrics**. β
+  direction, cell-score geometry and donor summaries each get their own envelope
+  and their own comparison.
+- The λ-induced change must stay inside its own metric's maximum LODO change
+  **for all three**. They are never averaged or combined into a single score,
+  because averaging would let a large failure on one metric be masked by
+  agreement on the others.
+
+- If every metric's λ-induced displacement lies **within** that metric's
+  envelope, then choosing λ inside the near-optimal set matters less than which
+  donors happened to be sampled. λ is functionally irrelevant at this precision:
+  choose the **strongest regularisation in the near-optimal set**,
+  deterministically, and report that λ is weakly identified while the estimator
+  is not.
+- If **any** metric's λ-induced displacement exceeds its envelope,
+  `STOP_RIDGE_SELECTION_NOT_IDENTIFIED`.
+
+**No constant is chosen anywhere in this rule.** It is a comparison between two
+sources of variation, in the same units, per metric. Leave-one-donor-out is
+deterministic and needs no seed, and the refits already exist because LOODO is
+what computes the CV surface — so the envelope costs nothing extra to obtain.
 
 ### 3.4 What must be published
 
@@ -572,7 +618,14 @@ Each of these fixes something that actually cost time in V20:
   is used;
 - confirmation quantities consulted before the design is frozen;
 - a replay that fails the frozen per-field equivalence policy;
-- for T2 only: failure of donor-level recurrence.
+- for T2 only: failure of donor-level recurrence;
+- `STOP_RIDGE_SELECTION_NOT_IDENTIFIED` — any one of the three metrics' λ-induced
+  displacement exceeding its own LODO maximum envelope (§3.3);
+- the power gate not clearing 80% at α = 0.025 for 12 donors on the within-28
+  cross-fitted effect estimate — in which case `reader_validation` stays sealed
+  and V21 ships as a methodology contribution (§0.3);
+- any AT8 outcome from the 18 spent donors entering the power calculation;
+- the cross-region generalisation study altering T1 after T1 is frozen (§11).
 
 ---
 
@@ -682,38 +735,80 @@ are the same people, sampled in different tissue. So:
 What a second region *is* worth, on its own merits: a well-powered **within-donor
 cross-region generalisation** test at 42–44 donors — does the immune-state
 association hold when the expression comes from different tissue? That is real
-science and it is properly sized. It is a generalisation claim, not a
-confirmation, and it must be labelled as one because the outcome values are
-reused.
+science and it is properly sized.
 
-One non-obvious finding worth keeping. The 12 fresh donors have **more immune
-cells in MEC (median 797) than in MTG (342)**, with PFC A9 at 414. Per-donor
-summary precision does not change the donor count, so the power gain is
-second-order — but if the 12 are ever spent, MEC may be the better tissue to
-spend them in than MTG. That should be settled before the partition is opened,
-not after.
+**Owner decision: freeze it as a separate generalisation analysis, kept
+secondary.** Conditions, recorded so they cannot drift:
 
-## 12. Open items for review
+- it is **secondary** to T1 and does not gate it;
+- it **must not change T1 after T1 is frozen** — not its estimator, its λ, its
+  thresholds, or its interpretation;
+- it may **never** be described as independent confirmation, because the outcome
+  values are reused for every donor in it;
+- it needs its own prospective freeze, with its own population authority per
+  region and its own power statement.
 
-1. §0.1 — **answered and decided.** `reader_validation` approved,
-   `reader_oracle` sealed.
-2. §0.3 — **decided: hold `reader_validation`.** The power gate stands, to be
-   evaluated after the 46-donor refit.
-2. §0.2 — whether T2 has any power at 18-donor scale before it is designed.
-3. §2.4 — which continuous formulation. I lean to the shape/interaction form
-   because it needs no threshold.
-4. Whether T1's confirmatory status under §1.3 is acceptable to you, or whether
-   you would rather hold T1 until fresh donors exist.
-5. Whether the estimator family should include a candidate that models dropout
-   explicitly, which I left out as too assumption-heavy for a frozen design.
-6. §3.3 — **decided: no fixed cutoffs.** What remains is structural: the
-   resampling scheme and which order statistic of the 28 leave-one-out refits
-   defines the envelope. I recommend leave-one-donor-out with the maximum as the
-   conservative envelope.
-7. §1.3 — **decided: select on 28, refit the frozen estimator on 46, test once
-   on the fresh 12.**
-8. §11 — whether to scope the cross-region generalisation study as a separate
-   prospectively frozen analysis, given it is properly powered at 42–44 donors
-   but is a generalisation rather than a confirmation.
-9. §11 — whether MEC rather than MTG should be the tissue in which the 12 fresh
-   donors are eventually spent, given 797 versus 342 median immune cells.
+#### Owner decision on tissue: MTG remains the primary confirmation tissue
+
+MEC's larger per-donor yield — 797 median immune cells against MTG's 342 — buys
+precision, and that is not a sufficient reason to move. **Changing tissue changes
+the biological question.** "Does broad immune state in MTG track AT8 pathology"
+and "does it in MEC" are different claims, and V20's finding, the frozen target
+and the entire diagnostic arc are all MTG. Switching to gain precision would
+quietly substitute a different estimand for the one under test.
+
+The MEC cell counts are retained as a fact about the cohort, useful for the
+cross-region generalisation study above, and explicitly **not** as a reason to
+relocate the confirmation.
+
+One non-obvious finding, retained but now settled. The 12 fresh donors have more
+immune cells in MEC (median 797) than in MTG (342), with PFC A9 at 414.
+Per-donor precision does not change the donor count, so the power gain would
+have been second-order in any case — and per the decision above, it is not a
+reason to move the confirmation.
+
+## 12. Decision record
+
+| # | item | status |
+| --- | --- | --- |
+| 1 | §0.1 fresh donors | **decided** — `reader_validation` approved in principle, `reader_oracle` sealed |
+| 2 | §0.3 spend the 12 now? | **decided** — hold; power gate first |
+| 3 | §0.3 gate evidence base | **decided** — within-28 cross-fit; the 18's AT8 excluded; no power credit for the 46-refit |
+| 4 | §1.3 donor hierarchy | **decided** — 28 select → freeze → refit on 46 → single test on 12 |
+| 5 | §2.3 estimator selection criteria | **decided** — thinning robustness **and** held-out biology preservation, jointly, discovery-only, single-shot |
+| 6 | §3.1–3.2 ridge search | **decided** — frozen deterministic bracketing with endpoint STOP |
+| 7 | §3.3 functional stability | **decided** — LODO maximum displacement, per metric, no averaging, all three must pass |
+| 8 | §4 QC gate authority | **decided** — association warns, same-cell intervention qualifies, every rejection-capable gate power-calibrated |
+| 9 | §11 cross-region study | **decided** — frozen separately, secondary, never called confirmation, must not change T1 after freeze |
+| 10 | §11 confirmation tissue | **decided** — MTG; precision is not a reason to change the question |
+| 11 | §2.4 continuous rare-biology statistic | **open** — I lean to the shape/interaction form, which needs no threshold |
+| 12 | §2.2 dropout-modelling candidate | **open** — left out as too assumption-heavy; owner's call |
+| 13 | §3.3 which LODO refits define the envelope | **open, structural only** — recommend all 28 |
+
+## 13. Freeze readiness
+
+**Not ready to freeze.** Three items must close first, in this order.
+
+1. **Resolve §2.4** — the continuous rare-biology statistic. T2 is exploratory
+   either way, but the contract cannot be frozen with an undefined estimand in
+   it.
+2. **Run the estimator selection** on the 28 discovery donors: the `S0`–`S4`
+   family under joint thinning-robustness and held-out-biology criteria,
+   single-shot, pathology-blind. This produces the frozen estimator.
+3. **Run the power gate** on that frozen estimator, by within-28 cross-fitting.
+   This is the decision point. If it clears 80% at α = 0.025 for 12 donors, the
+   §10 build sequence begins. If it does not, `reader_validation` stays sealed
+   and V21 ships as a methodology contribution validated on development donors.
+
+Only after item 3 returns does the question of opening the partition arise at
+all, and §10's ordering applies from there: authority → store build → closure →
+freeze → single AT8-opening run.
+
+**What is already frozen-ready:** the donor hierarchy, the ridge procedure and
+its stability rule, the QC gate hierarchy and its power-calibration requirement,
+the data-hygiene rules, the provenance requirements, the STOP conditions, and
+the cross-region study's subordinate status.
+
+**What must not happen before freeze:** no AT8 value opened, no partition
+opened, no estimator fitted on anything but the 28, no threshold chosen from a
+result, and no V21 execution.
