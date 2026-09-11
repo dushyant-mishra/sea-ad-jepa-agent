@@ -1,31 +1,76 @@
 #!/usr/bin/env python3
 """Fail-closed V21 authority successor.
 
-The last green V1 authority implementation is preserved byte-for-byte in
-`t0_v21_authority_legacy_v1.py`.  This module is the active compatibility
-surface.  It restores that implementation, adds executor-level cross-fit
-revalidation (including ridge metadata), requires externally expected receipt
-digests, and disables every production power verdict while effect transport is
-not authority-bound.
+The last green V1 authority source is preserved byte-for-byte beside this module
+as `t0_v21_authority_legacy_v1.py.txt`.  It is evidence, not an importable
+production authority path.  This module loads that historical implementation
+into a private namespace only to reuse already-reviewed sealing/validation
+mechanics, then selectively exposes the safe surface.
 
-Design repair is not implementation qualification: documenting an open
-transport problem is insufficient if another authority entry point can still
-return `clears_gate=True`.  Therefore the production gate and production power
-calibration receipts fail closed at module level while transport is OPEN.
+The active surface additionally revalidates the nested cross-fit with the
+current executor (which derives and binds ridge metadata), requires externally
+expected receipt digests, and disables production power calibration and verdicts
+while effect transport is not authority-bound.
 """
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from t0_v21_authority_legacy_v1 import *  # noqa: F401,F403
-import t0_v21_authority_legacy_v1 as _legacy
 import t0_v21_selection_and_power_v1 as _executor
+
+_LEGACY_PATH = Path(__file__).with_name("t0_v21_authority_legacy_v1.py.txt")
+if not _LEGACY_PATH.is_file():
+    raise RuntimeError("STOP_T0_V21_AUTHORITY_NOT_VALID: preserved green authority source is missing")
+_legacy_ns: dict[str, Any] = {
+    "__name__": "_t0_v21_authority_preserved_green_v1",
+    "__file__": str(_LEGACY_PATH),
+}
+exec(compile(_LEGACY_PATH.read_text(encoding="utf-8"), str(_LEGACY_PATH), "exec"), _legacy_ns)
+
+# Explicitly export the reviewed non-power primitives.  Do not export the old
+# decision_capable_power_gate or old power receipt constructors/validators.
+STOP = _legacy_ns["STOP"]
+KIND = _legacy_ns["KIND"]
+PERM_KIND = _legacy_ns["PERM_KIND"]
+DESIGN_KIND = _legacy_ns["DESIGN_KIND"]
+GEOMETRY_KIND = _legacy_ns["GEOMETRY_KIND"]
+CALIBRATION_KIND = _legacy_ns["CALIBRATION_KIND"]
+N_DISCOVERY = _legacy_ns["N_DISCOVERY"]
+N_CONFIRMATION = _legacy_ns["N_CONFIRMATION"]
+ALPHA = _legacy_ns["ALPHA"]
+TARGET_POWER = _legacy_ns["TARGET_POWER"]
+FROZEN_PERMUTATIONS = _legacy_ns["FROZEN_PERMUTATIONS"]
+PROTECTED_ROLES = _legacy_ns["PROTECTED_ROLES"]
+ALLOWED_CONFIRMATION_DESIGN_SOURCES = _legacy_ns["ALLOWED_CONFIRMATION_DESIGN_SOURCES"]
+ALLOWED_GEOMETRY_TRANSPORT_MODES = _legacy_ns["ALLOWED_GEOMETRY_TRANSPORT_MODES"]
+FORBIDDEN_GEOMETRY_TRANSPORT_MODES = _legacy_ns["FORBIDDEN_GEOMETRY_TRANSPORT_MODES"]
+AUTHORITY_FIELDS = _legacy_ns["AUTHORITY_FIELDS"]
+FOLD_FIELDS = _legacy_ns["FOLD_FIELDS"]
+CALIBRATION_FIELDS = _legacy_ns["CALIBRATION_FIELDS"]
+canonical_digest = _legacy_ns["canonical_digest"]
+validate_source_authority = _legacy_ns["validate_source_authority"]
+seal_nested_permutation_evidence = _legacy_ns["seal_nested_permutation_evidence"]
+seal_confirmation_design_receipt = _legacy_ns["seal_confirmation_design_receipt"]
+validate_confirmation_design_receipt = _legacy_ns["validate_confirmation_design_receipt"]
+seal_predictor_geometry_transport_receipt = _legacy_ns["seal_predictor_geometry_transport_receipt"]
+
+_legacy_seal_authoritative_crossfit = _legacy_ns["seal_authoritative_crossfit"]
+_legacy_validate_authoritative_crossfit = _legacy_ns["validate_authoritative_crossfit"]
+_legacy_validate_nested_permutation_evidence = _legacy_ns["validate_nested_permutation_evidence"]
+_legacy_validate_predictor_geometry_transport_receipt = _legacy_ns["validate_predictor_geometry_transport_receipt"]
+_legacy_seal_power_calibration_receipt = _legacy_ns["seal_power_calibration_receipt"]
+_legacy_validate_power_calibration_receipt = _legacy_ns["validate_power_calibration_receipt"]
+_legacy_require_hex_digest = _legacy_ns["_require_hex_digest"]
+# The historical decision gate is intentionally discarded rather than retained
+# under a private alias: there must be one normal authority path, and it is the
+# fail-closed function defined below.
+_legacy_ns.pop("decision_capable_power_gate", None)
+del _legacy_ns
 
 STOP_TRANSPORT = "STOP_T0_V21_EFFECT_TRANSPORT_NOT_AUTHORITY_BOUND"
 EFFECT_TRANSPORT_STATUS = "OPEN"
 
-# These names are deliberately *not* authority today.  They are recorded so a
-# future change cannot quietly promote one by string convention alone.
 UNVALIDATED_EFFECT_ESTIMANDS = frozenset({
     "assembled_hc3_t_over_sqrt_n",
     "whole_pipeline_permutation_standardized_effect_v1",
@@ -40,26 +85,19 @@ def _transport_fail(message: str) -> None:
 
 
 def _require_expected_digest(label: str, recorded: Any, expected: Any) -> str:
-    expected_hex = _legacy._require_hex_digest(f"expected_{label}", expected)
+    expected_hex = _legacy_require_hex_digest(f"expected_{label}", expected)
     if str(recorded) != expected_hex:
-        raise RuntimeError(
-            f"{_legacy.STOP}: {label} is not the externally expected receipt")
+        raise RuntimeError(f"{STOP}: {label} is not the externally expected receipt")
     return expected_hex
 
 
 def seal_authoritative_crossfit(*, cross_fit_artifact: Mapping[str, Any],
                                 source_authority: Mapping[str, Any],
                                 fold_provenance: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
-    """Seal only an executor-verified cross-fit artifact.
-
-    The executor's canonical verifier derives ridge metadata from all 28 folds
-    and compares it with the artifact's declared metadata before recomputing the
-    artifact digest.  This closes the self-consistent-metadata substitution that
-    the truncated 9f98320f implementation attempted to address.
-    """
+    """Seal only a cross-fit that passes the executor's canonical verifier."""
     _executor.verify_cross_fit_artifact(dict(cross_fit_artifact))
-    _legacy.validate_source_authority(source_authority, source_authority)
-    return _legacy.seal_authoritative_crossfit(
+    validate_source_authority(source_authority, source_authority)
+    return _legacy_seal_authoritative_crossfit(
         cross_fit_artifact=cross_fit_artifact,
         source_authority=source_authority,
         fold_provenance=fold_provenance,
@@ -68,7 +106,7 @@ def seal_authoritative_crossfit(*, cross_fit_artifact: Mapping[str, Any],
 
 def validate_authoritative_crossfit(artifact: Mapping[str, Any], *,
                                     expected_source_authority: Mapping[str, Any]) -> dict[str, Any]:
-    checked = _legacy.validate_authoritative_crossfit(
+    checked = _legacy_validate_authoritative_crossfit(
         artifact, expected_source_authority=expected_source_authority)
     executor_checked = _executor.verify_cross_fit_artifact(
         dict(artifact.get("cross_fit_artifact", {})))
@@ -89,7 +127,7 @@ def validate_nested_permutation_evidence(evidence: Mapping[str, Any], *,
         evidence.get("evidence_digest"),
         expected_evidence_digest,
     )
-    return _legacy.validate_nested_permutation_evidence(
+    return _legacy_validate_nested_permutation_evidence(
         evidence,
         artifact_digest=artifact_digest,
         source_authority_digest=source_authority_digest,
@@ -109,7 +147,7 @@ def validate_predictor_geometry_transport_receipt(receipt: Mapping[str, Any], *,
         receipt.get("receipt_digest"),
         expected_receipt_digest,
     )
-    return _legacy.validate_predictor_geometry_transport_receipt(
+    return _legacy_validate_predictor_geometry_transport_receipt(
         receipt,
         artifact_digest=artifact_digest,
         source_authority_digest=source_authority_digest,
@@ -125,7 +163,7 @@ def seal_power_calibration_receipt(*args: Any, **kwargs: Any) -> dict[str, Any]:
             f"effect estimand {estimand!r} is not authority-bound while transport is OPEN")
     if estimand in UNVALIDATED_EFFECT_ESTIMANDS or not estimand:
         _transport_fail(f"effect estimand {estimand!r} is not authority-bound")
-    return _legacy.seal_power_calibration_receipt(*args, **kwargs)
+    return _legacy_seal_power_calibration_receipt(*args, **kwargs)
 
 
 def validate_power_calibration_receipt(receipt: Mapping[str, Any], *,
@@ -147,7 +185,7 @@ def validate_power_calibration_receipt(receipt: Mapping[str, Any], *,
     estimand = str(receipt.get("effect_estimand", ""))
     if estimand in UNVALIDATED_EFFECT_ESTIMANDS or not estimand:
         _transport_fail(f"effect estimand {estimand!r} is not authority-bound")
-    return _legacy.validate_power_calibration_receipt(
+    return _legacy_validate_power_calibration_receipt(
         receipt,
         artifact_digest=artifact_digest,
         source_authority_digest=source_authority_digest,
@@ -160,11 +198,6 @@ def validate_power_calibration_receipt(receipt: Mapping[str, Any], *,
 
 
 def decision_capable_power_gate(*args: Any, **kwargs: Any) -> dict[str, Any]:
-    """Production verdict capability is disabled until transport is closed.
-
-    This refusal is intentionally independent of caller-supplied receipts.  A
-    well-formed receipt cannot re-enable a module whose owner-approved transport
-    status is OPEN.
-    """
+    """No production power verdict exists while effect transport is OPEN."""
     _transport_fail(
         "effect transport remains OPEN; no V21 production power verdict may be emitted")
