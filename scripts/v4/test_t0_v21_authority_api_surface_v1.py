@@ -1,14 +1,16 @@
 """Regression guard for V21 authority API truncation.
 
 The preserved green authority source is evidence, not an importable production path.
-This test parses that source without executing it and requires every historical
-public symbol to remain present on the active fail-closed successor. Intentional
-semantic hardening is tested separately; this guard exists specifically to stop a
-partial rewrite from silently deleting reviewed authority entry points again.
+This test pins that source to the exact last-known-green Git blob, parses it without
+executing it, and requires every historical public symbol to remain present on the
+active fail-closed successor. Intentional semantic hardening is tested separately;
+this guard exists specifically to stop a partial rewrite from silently deleting
+reviewed authority entry points again.
 """
 from __future__ import annotations
 
 import ast
+import hashlib
 import importlib.util
 import sys
 from pathlib import Path
@@ -22,6 +24,13 @@ import t0_v21_authority_v1 as authority
 
 PRESERVED = HERE / "t0_v21_authority_legacy_v1.py.txt"
 LEGACY_IMPORT_NAME = "t0_v21_authority_legacy_v1"
+EXPECTED_GREEN_GIT_BLOB_SHA = "26425774fa76024e35124bd23ee51649c9a77dad"
+
+
+def _git_blob_sha(path: Path) -> str:
+    payload = path.read_bytes()
+    framed = f"blob {len(payload)}\0".encode("ascii") + payload
+    return hashlib.sha1(framed).hexdigest()
 
 
 def _public_top_level_symbols(path: Path) -> set[str]:
@@ -39,8 +48,9 @@ def _public_top_level_symbols(path: Path) -> set[str]:
     return names
 
 
-def test_preserved_green_source_is_evidence_not_importable_authority_module():
+def test_preserved_green_source_is_exact_known_good_evidence_not_importable_authority_module():
     assert PRESERVED.is_file()
+    assert _git_blob_sha(PRESERVED) == EXPECTED_GREEN_GIT_BLOB_SHA
     assert not (HERE / f"{LEGACY_IMPORT_NAME}.py").exists()
     assert importlib.util.find_spec(LEGACY_IMPORT_NAME) is None
 
