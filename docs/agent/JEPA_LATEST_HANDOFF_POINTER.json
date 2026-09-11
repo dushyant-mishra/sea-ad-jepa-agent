@@ -1,39 +1,36 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V11",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V12",
   "date": "2026-09-11",
-  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF__TARGET_DISCOVERY_TO_V5_INTEGRATED_EXTERNAL_REVIEW__NO_TRAINING_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
+  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF__POST_CLAUDE_REVIEW_REPAIRS__NO_TRAINING_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_POST_CLAUDE_REPAIR_CURRENT.md",
   "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
+  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
+  "prior_t0_v21_external_review_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
   "prior_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL4.md",
   "prior_formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "prior_heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "observed_lane_heads_before_20260911_integrated_governance_update": {
-    "main": "04d91537358f5adc8973c091d4bfae4e2390bd22",
-    "v5": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
-    "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
-    "t0_v21_draft": "11e76d36ace556ac48cdd2992995e63c1e35df18"
+  "observed_lane_heads_before_post_claude_repair_update": {
+    "repair_t0_v21_authority_hardening": "a36fd209b40aa9c28cd3d6790bda1fe5054a1923",
+    "repair_v5_qualified_target_guard": "7a2bdfb051e0173c2a6d6bfa50cf57fd110278e0",
+    "review_integrated_target_v5_repairs": "f493e531402e8a1148e9abb7011641a7bbbdcda3"
+  },
+  "observed_lane_heads_after_this_update": {
+    "repair_v5_qualified_target_guard": "a3427815b803382c939cd9741ab7332513ad4a9d",
+    "review_integrated_target_v5_repairs": "cf39f8379779c2b30abc3f55671d5ab5e1e4abb4"
   },
   "branches": {
-    "v5": "planning/v5-full-population-cheat-proofing-20260909",
+    "v5_repair": "repair/v5-qualified-target-guard-20260911",
+    "t0_v21_repair": "repair/t0-v21-authority-hardening-20260911",
+    "integrated_review_handoff": "review/integrated-target-v5-repairs-20260911",
+    "v5_planning": "planning/v5-full-population-cheat-proofing-20260909",
     "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
     "t0_v21_draft": "t0/v21-prospective-design-20260910"
   },
-  "integrated_review_scope": "RAW_SEA_AD_TO_TARGET_DISCOVERY_TO_TARGET_FREEZE_TO_V5_TEACHER_TARGET_TO_TRAINING",
-  "target_discovery_review_status": "IN_PROGRESS_NOT_YET_END_TO_END_EXTERNAL_CODE_EVIDENCE_REVIEW_COMPLETE",
-  "t0_status": "V21_DESIGN_PROSE_BLOCKERS_ADDRESSED_AT_11e76d36__EXECUTABLE_TARGET_DISCOVERY_SELECTION_AND_POWER_REVIEW_STILL_REQUIRED__NO_SELECTION_OR_POWER_GATE_RUN",
-  "t0_next_action": "EXTERNALLY_REVIEW_EXECUTABLE_TARGET_DISCOVERY_S0_S4_SELECTION_NESTED_OOF_HC3_AND_POWER_GATE_BEFORE_ANY SINGLE_SHOT_SELECTION_RUN",
-  "v5_review_status": "MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING_AT_1de20b1c__UPSTREAM_TARGET_DISCOVERY_REVIEW_MUST_ALSO_CLOSE",
-  "v5_next_action": "REPAIR_CONFIRMED_V5_DEFECTS_AND_PROVE_NON_BYPASSABILITY_IN_PARALLEL_WITH_TARGET_DISCOVERY_EXTERNAL_AUDIT_AND_FULL104_RECOVERY",
-  "runtime_asset_verification": {
-    "discovery_parts_and_assembled_stream": "PASS_HASH_VERIFIED",
-    "foundation_calibration": "PASS_HASH_VERIFIED",
-    "checkpoints": "PASS_HASH_VERIFIED",
-    "t1_checkpoint_u0200": "PASS_HASH_VERIFIED",
-    "expression_zip": "PASS_HASH_VERIFIED",
-    "corrected_train_cache_zip": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
-    "operator_address_state_npz": "PROVENANCE_MISMATCH_DO_NOT_USE"
+  "post_claude_review_status": {
+    "v5_optimizer_guard_repair": "PUSHED_TO_REPAIR_BRANCH_AT_a3427815b803382c939cd9741ab7332513ad4a9d__LOCAL_FOCUSED_TESTS_12_PASS",
+    "t0_v21_wrapper_notes": "LOCAL_PATCH_VERIFIED_23_PASS_IN_/mnt/data/v21_patch__NEEDS_SOURCE_BRANCH_PUSH_OR_REIMPLEMENTATION_IF_NOT_ALREADY_PRESENT",
+    "integrated_handoff": "PUSHED_TO_REVIEW_BRANCH_AT_cf39f8379779c2b30abc3f55671d5ab5e1e4abb4"
   },
   "target_discovery_external_review_complete": false,
   "s0_s4_authorized": false,
@@ -42,5 +39,5 @@
   "v5_full104_expression_closed": false,
   "v5_integrated_review_closed": false,
   "training_authorized": false,
-  "instruction": "Open START_HERE.md first, then this pointer, then the integrated 20260911 handoff/state. Re-fetch live heads before acting. Treat target discovery and V5 as one production-review chain. Keep V20 immutable. Do not run S0-S4 or open fresh validation/oracle before the executable discovery/selection/power implementation passes external/adversarial review and the target is frozen under the prospective contract. TRAIN-cache PASS is not FULL104 PASS. Repair V5 confirmed defects and prove optimizer-path non-bypassability, but do not claim training authority. Exclude the provenance-mismatched operator-address NPZ. Training remains OFF."
+  "instruction": "Open START_HERE.md first, then this pointer, then docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_POST_CLAUDE_REPAIR_CURRENT.md. Re-fetch live heads before acting. V5 guard repair is pushed on repair/v5-qualified-target-guard-20260911. V21 note fixes were verified locally in /mnt/data/v21_patch and must be pushed/reverified if the branch does not already contain them. Do not run S0-S4, open AT8, open reader_validation/oracle, or authorize training. Training remains OFF."
 }
