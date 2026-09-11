@@ -1,0 +1,42 @@
+name: F1 Review Closeout Autofix
+
+on:
+  push:
+    branches:
+      - fix/f1-review-closeout-20260911
+    paths:
+      - scripts/dev/apply_f1_review_closeout_batch1.py
+      - .github/workflows/f1-review-closeout-autofix.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/f1-review-closeout-20260911
+          fetch-depth: 0
+      - name: Assert expected head lineage
+        run: |
+          git merge-base --is-ancestor 3958f1ae384388423eef49fda87946743534b39d HEAD
+      - name: Apply asserted patch
+        run: |
+          python scripts/dev/apply_f1_review_closeout_batch1.py
+          python -m compileall -q scripts/v4 tests/test_f1_review_closeout_regressions_v1.py tests/test_f1_real_producer_replay_parity_v1.py
+      - name: Commit materialized repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/v4/f1_real_producer_v1.py \
+                  scripts/v4/f1_execution_authorization_v1.py \
+                  scripts/v4/f1_production_runtime_adapter_v1.py \
+                  tests/test_f1_real_producer_replay_parity_v1.py
+          git diff --cached --check
+          git commit -m "fix: close first F1 external-review batch"
+          git push origin HEAD:fix/f1-review-closeout-20260911
