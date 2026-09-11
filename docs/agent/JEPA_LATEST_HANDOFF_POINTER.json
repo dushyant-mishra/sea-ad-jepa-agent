@@ -1,7 +1,7 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_T0_V2_CLAUDE_READY_V3",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_T0_V2_CLAUDE_READY_V4",
   "date": "2026-09-11",
-  "status": "CLAUDE_READY_T0_V2_CONTINUATION__FULL104_REMOTE_RUNBOOK_BOUND__NO_TRAINING_AUTHORITY",
+  "status": "CLAUDE_READY_T0_V2_CONTINUATION__ENVIRONMENT_RED_TEAM_CLOSED__FULL104_REMOTE_RUNBOOK_BOUND__NO_TRAINING_AUTHORITY",
   "branch": "handoff/jepa-t0-v2-claude-ready-20260911",
   "branch_created_from": "repair/t0-v21-authority-restoration-20260911",
   "handoff_branch_head_at_creation": "b27978af0a53ffd9aaa28a3538604429aaefd27a",
@@ -10,6 +10,7 @@
   "branch_record_path": "docs/agent/T0_V2_CLAUDE_READY_BRANCH_RECORD_20260911.md",
   "latest_head_note_path": "docs/agent/T0_V2_CLAUDE_READY_LATEST_HEAD.txt",
   "stale_head_warning_path": "docs/agent/T0_V2_CLAUDE_READY_DO_NOT_USE_STALE_HEAD_93AB.txt",
+  "environment_completion_path": "docs/agent/JEPA_ENVIRONMENT_WORK_COMPLETION_20260911.md",
   "environment_red_team_path": "docs/agent/JEPA_ENVIRONMENT_RED_TEAM_AUDIT_20260911.md",
   "corrected_train_receipt_path": "docs/agent/STAGE81A3R_CORRECTED_REAL_TRAIN_RECEIPT_20260911.md",
   "full104_remote_access_addendum_path": "docs/agent/FULL104_REMOTE_HARD_DRIVE_ACCESS_ADDENDUM_20260911.md",
@@ -25,6 +26,7 @@
   "historical_asap_handoff_head": "5ee85fc84bdcf3fd3c5222bbf3c8c2ba27a3b8d9",
   "canonical_repair_branch": "repair/t0-v21-authority-restoration-20260911",
   "canonical_repair_head_before_claude_ready_docs": "42efc55f0aae7770c485855be873cccba4abd732",
+  "integrated_restored_v2_alias_observed": "review/t0-v21-integrated-restored-v2-20260911 @ 42efc55f0aae7770c485855be873cccba4abd732",
   "contains_executor_successor_ancestor": "3a8c8e3e5ca84d38eb363e9791e1c86c854a55af",
   "contains_restoration_regression_ancestor": "93abcf50e89778585bda1e20f2eab824cc6bae77",
   "stale_handoff_source_head": "93abcf50e89778585bda1e20f2eab824cc6bae77",
@@ -37,5 +39,5 @@
   "fresh_reader_validation_open_authorized": false,
   "reader_oracle_open_authorized": false,
   "protected_partitions_opened": false,
-  "instruction": "Open START_HERE.md first, then docs/agent/CLAUDE_T0_V2_WORK_ORDER_20260911.md. For FULL104, read docs/agent/FULL104_B2_GPU_RUN_POINTER.txt and the exact verifier runbook; do not upload the >30GB substrate here. Re-fetch live heads before acting. Verify exact-head tests from a clean checkout. Do not run S0-S4, open AT8, open reader_validation/oracle, claim freeze, or train."
+  "instruction": "Open START_HERE.md first, then docs/agent/JEPA_ENVIRONMENT_WORK_COMPLETION_20260911.md and docs/agent/CLAUDE_T0_V2_WORK_ORDER_20260911.md. For FULL104, read docs/agent/FULL104_B2_GPU_RUN_POINTER.txt and the exact verifier runbook; do not upload the >30GB substrate here. Re-fetch live heads before acting. Do not run S0-S4, open AT8, open reader_validation/oracle, claim freeze, or train."
 }
