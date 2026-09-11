@@ -1,0 +1,28 @@
+CURRENT HANDOFF POINTER
+
+Branch: handoff/jepa-new-chat-20260911-asap-repair-status
+Head after handoff creation: ac23d2a943fa5eaead3801e9720d2a6cf4c78061
+Primary handoff: docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_ASAP_REPAIR_STATUS.md
+JSON pointer: docs/agent/JEPA_LATEST_HANDOFF_POINTER.json
+
+Status: CURRENT_POST_ASAP_REPAIR_HANDOFF__NO_TRAINING_AUTHORITY
+
+Read order for new chat:
+1. START_HERE.md
+2. docs/agent/JEPA_LATEST_HANDOFF_POINTER.json
+3. docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_ASAP_REPAIR_STATUS.md
+
+Training/protected-data status:
+- no S0-S4 production run
+- no real power gate verdict
+- no AT8
+- no protected partitions
+- no reader_validation
+- no oracle
+- no training
+
+Critical repair focus:
+1. Verify integrated V21 authority restoration + executor successor.
+2. Keep effect transport OPEN and production verdict disabled.
+3. Finish V5 legacy eligibility reachability closure.
+4. Recover/audit B2/FULL104 one-shot receipt status.
