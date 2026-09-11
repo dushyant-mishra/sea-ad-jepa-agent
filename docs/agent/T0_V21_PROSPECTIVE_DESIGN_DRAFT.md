@@ -303,6 +303,139 @@ against the naive projection so the discrepancy stays visible.
 **Power clears on the lower Monte Carlo limit, never the point estimate**, so
 simulation noise cannot be what passes the gate.
 
+#### The confirmation design is an envelope, not a cohort
+
+*Amended after the second external review; requires owner approval before freeze.*
+
+The gate previously took `confirmation_age` and `confirmation_sex` as arguments.
+That is not lawful here. §10.4 records that the frozen age/sex authority covers
+only the 46 development donors and **would need extension from source** to cover
+the fresh 12, and §0.1 records the owner's condition that those 12 take **no
+part** in power calibration. Their covariates are therefore not merely sealed —
+using them would violate the gate's own discovery-only requirement.
+
+**Frozen:** the gate takes an **age range carrying an authority string**, and
+derives from it a deterministic envelope of admissible 12-donor designs — sex
+minority counts × age shapes, hash-bound. The verdict is the **worst case over
+the envelope**, never a chosen design.
+
+- **A singleton sex level is not estimable, measured not assumed.** At n = 12 a
+  1/11 sex split gives that donor HC3 leverage exactly **1.0000**, which the
+  frozen engine refuses outright. Measured maxima: 1 → 1.0000, 2 → 0.6579,
+  3 → 0.6965, 6 → 0.6978. The envelope therefore begins at 2, and **the fresh
+  cohort must contain at least two donors of each sex or the confirmatory test
+  is not estimable at all.** That is a constraint on cohort admissibility, not a
+  tuning choice, and it should be checked when the validation population is
+  built (§10.5).
+- The envelope is validated at construction: any member with a rank-deficient
+  nuisance design or leverage ≥ 1 − 1e−12 is a `STOP`, naming the design.
+
+#### Predictor geometry is derived on one side and bounded on the other
+
+*Amended after the second external review; requires owner approval before freeze.*
+
+The earlier calibration drew a fresh iid normal predictor and called the result
+"measured". It is not: the HC3 scaling depends on the predictor's leverage
+profile and its collinearity with the nuisance design, and a random surrogate has
+neither the geometry of the real out-of-fold score nor any stated relationship to
+it. What is lawfully knowable differs between the two sides, so they are treated
+differently:
+
+| side | what is knowable | how geometry is obtained |
+| --- | --- | --- |
+| **discovery** | the out-of-fold score vector is in the sealed artifact and is discovery-only evidence | **derived** — the actual vector is held fixed and only the noise is resampled |
+| **confirmation** | nothing, without opening the cohort | **bounded** — worst case over a frozen geometry class |
+
+The frozen class varies the residualized **leverage profile** only —
+gaussian, heavy-tailed, single-leverage.
+
+**Collinearity is not swept, and that is a measurement rather than a
+simplification.** An earlier version of this section swept collinearity with the
+nuisance column space over (0, 0.25, 0.5, 0.75). The mutation audit showed the
+axis to be inert: HC3's `t` is invariant to the in-span component, because
+residualization removes it and the noncentrality is scaled by the residualized
+norm, so the two cancel exactly. Measured **0.8582 at ρ = 0 and 0.8582 at
+ρ = 0.75**, with identical mean statistics. Sweeping it quadrupled the cost for
+no coverage and implied a risk axis that does not exist.
+
+The invariance is now an explicit test rather than a swept parameter, and it
+doubles as the detector for a dropped residualization: without it the achieved
+noncentrality would scale by `√(1−ρ)`, a factor of two at ρ = 0.75. The axis that
+does matter is leverage: gaussian 0.8582, heavy-tailed 0.8136, single-leverage
+0.5402. The conservative direction differs on the two
+sides and the executor makes that explicit: a **larger** discovery scaling
+implies a **smaller** underlying effect, while a **smaller** confirmation scaling
+implies **lower** power, so the worst case of each is taken rather than the same
+extreme of both.
+
+#### Whole-pipeline permutation evidence is a required gate input
+
+*Amended after the second external review; requires owner approval before freeze.*
+
+This section already said the discovery-side effect is established by
+whole-pipeline permutation. It was not, in fact, wired into the decision: the
+routine existed beside the gate and nothing called it. **Frozen:** a permutation
+receipt is a required argument, is bound to the artifact digest it was produced
+from, must carry `B ≥ 39`, and must reject at α = 0.025. A gate run without it is
+`STOP_NESTED_PERMUTATION_EVIDENCE_NOT_VALID`.
+
+**Why this matters more than a significance check.** The assembled HC3 `t` is not
+a trustworthy scale under cross-fit dependence, and that is now measured rather
+than argued. Under a strict null — expression generated independently of the
+outcome, the full 28-fold nested procedure re-run 400 times
+(`t0_v21_crossfit_null_calibration_v1.py`) — the statistic's null spread is
+
+| inner selection | null SD ÷ nominal | rejection at α = 0.025 |
+| --- | --- | --- |
+| fixed ridge | **1.304** | 0.0325 |
+| LOODO ridge selection | **1.477** | 0.0175 |
+
+A null spread 30–48% wider than nominal means the HC3 standard error understates
+the procedure's own variability, so `t / √n` overstates the effect it is meant to
+transport. The permutation receipt does not repair that — it establishes a
+different and weaker claim, that the association survives a null built from the
+whole procedure. **The transport question remains open**, and the planning effect
+should be read as a planning quantity rather than an estimate with a coverage
+guarantee until it is closed.
+
+#### Effect transport is OPEN, and the production gate is therefore disabled
+
+*Amended after external review of `4e60caea`; requires owner approval before
+freeze.*
+
+The previous revision stated the transport question was open and then shipped a
+gate that transported the quantity anyway: `power_gate` built
+`planning_standardized_effect` from `t / √n`, converted it to an underlying
+signal-to-noise value, simulated confirmation power from it, and could return
+`clears_gate: true`. Both statements were in the same commit. Writing the defect
+down is not closing it.
+
+**Frozen:**
+
+- `EFFECT_TRANSPORT_STATUS = "OPEN"` in the executor. While it is open,
+  `power_gate` refuses with `STOP_T0_V21_EFFECT_TRANSPORT_NOT_AUTHORITY_BOUND`,
+  unconditionally on its arguments. No caller input re-enables it, including a
+  well-formed transport receipt: the status is where owner approval is recorded,
+  and a caller argument is how a disabled gate gets re-enabled by accident.
+- The arithmetic survives as `planning_power_projection`, which returns no
+  `clears_gate` key at all — code reaching for one raises `KeyError` rather than
+  silently reading a planning number as an authorization.
+- A transport receipt schema exists for when a derivation is produced, and
+  refuses three substitutions: the suspect quantity itself, **whole-pipeline
+  permutation significance** (association under the procedure's own null is not
+  a magnitude mapping), and any factor read off the measured null spread. The
+  1.304/1.477 measurements demonstrate that the current assumption fails; they do
+  not identify its replacement, and a constant taken from them would be chosen
+  after seeing the data.
+
+**The architectural rule this establishes:**
+
+| quantity | what it can support |
+| --- | --- |
+| whole-pipeline permutation | evidence of **association** under the procedure-specific null |
+| cross-fitted HC3 `t` | a **descriptive / studentized** statistic |
+| an effect transported to a fresh n = 12 design | **not authorized** until separately derived and calibrated |
+
 Conservative in three separate ways, and stacking is intentional: each fold trains
 on 27 rather than 28 donors; the planning effect is a worst case rather than a
 centre; and the 46-donor refit's expected sharpening is not credited.
@@ -1012,11 +1145,16 @@ described a decision layer as though it were a whole pipeline. `select_estimator
 consumes **precomputed scalars**. Nothing yet computes them.
 
 **What is implemented and adversarially qualified** (`t0_v21_selection_and_power_v1.py`,
-`test_t0_v21_selection_and_power_v1.py`): the outer 28-fold leave-one-donor-out
-construction, the single assembled HC3 regression, the influence minimum and its
-directional precondition, the ridge bracketing search, the paired-LOODO
-near-optimal set and flat-surface flag, the per-metric stability verdict, and
-estimator admissibility, ranking and tie-breaking.
+`test_t0_v21_selection_and_power_v1.py`, `mutation_audit_t0_v21_selection_and_power_v1.py`):
+the outer 28-fold leave-one-donor-out construction, the single assembled HC3
+regression, the influence minimum and its directional precondition, the ridge
+bracketing search, the paired-LOODO near-optimal set and flat-surface flag, the
+per-metric stability verdict, and estimator admissibility, ranking and
+tie-breaking — plus, from the second review round: one canonical cross-fit
+structural validator called by both sealing and verification, the frozen
+confirmation-design envelope with its estimability guard, the split
+derived/bounded predictor-geometry transport, and the required whole-pipeline
+permutation receipt.
 
 **What is not implemented, and therefore blocks freeze:**
 
@@ -1029,7 +1167,13 @@ estimator admissibility, ranking and tie-breaking.
    correlation, and donor-summary correlation and maximum absolute difference;
 5. the QC gate's power calibration inputs (§4.3);
 6. the §7 provenance emitter;
-7. the power calibration against the newly frozen Freedman–Lane confirmatory test.
+7. a producer for the power calibration — the executor now validates and bounds,
+   but the numbers still have to be produced against the frozen Freedman–Lane
+   test by a run that does not yet exist;
+8. **the effect-transport derivation.** The assembled HC3 `t` has a measured null
+   spread of 1.30–1.48× nominal under cross-fit dependence, so `t / √n` is not
+   established as a valid transport quantity. Until that is closed, no gate
+   verdict should be read as a coverage guarantee.
 
 **So the next step is not "run `S0`–`S4`".** It is to implement and independently
 qualify the measurement and provenance layer above. Only then can selection run,

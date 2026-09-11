@@ -1,0 +1,55 @@
+{
+  "question": "Is the assembled HC3 t a valid scale for effect transport when the predictor is produced by overlapping outcome-trained folds?",
+  "arms": {
+    "null_fixed_ridge": {
+      "n_replicates": 400,
+      "usable": 400,
+      "signal_to_noise": 0.0,
+      "inner_ridge_selection": false,
+      "residual_df": 23,
+      "observed_mean_t": -0.24250268130244557,
+      "observed_sd_t": 1.364314491146411,
+      "nominal_sd_t": 1.0465362369445672,
+      "sd_ratio_observed_over_nominal": 1.30364763587128,
+      "one_sided_critical_t": 2.068657610419041,
+      "rejection_rate_at_alpha": 0.0325,
+      "nominal_alpha": 0.025,
+      "rejection_rate_over_nominal": 1.3,
+      "implied_delta": -0.04582869907090171
+    },
+    "null_inner_selection": {
+      "n_replicates": 400,
+      "usable": 400,
+      "signal_to_noise": 0.0,
+      "inner_ridge_selection": true,
+      "residual_df": 23,
+      "observed_mean_t": -1.0221556122381417,
+      "observed_sd_t": 1.5459768945481538,
+      "nominal_sd_t": 1.0465362369445672,
+      "sd_ratio_observed_over_nominal": 1.4772320727868316,
+      "one_sided_critical_t": 2.068657610419041,
+      "rejection_rate_at_alpha": 0.0175,
+      "nominal_alpha": 0.025,
+      "rejection_rate_over_nominal": 0.7000000000000001,
+      "implied_delta": -0.1931692536565066
+    },
+    "effect_fixed_ridge": {
+      "n_replicates": 400,
+      "usable": 400,
+      "signal_to_noise": 0.6,
+      "inner_ridge_selection": false,
+      "residual_df": 23,
+      "observed_mean_t": 0.39167574990043436,
+      "observed_sd_t": 1.401098852733062,
+      "nominal_sd_t": 1.0465362369445672,
+      "sd_ratio_observed_over_nominal": 1.3387963104112515,
+      "one_sided_critical_t": 2.068657610419041,
+      "rejection_rate_at_alpha": 0.105,
+      "nominal_alpha": 0.025,
+      "rejection_rate_over_nominal": 4.199999999999999,
+      "implied_delta": 0.07401975920080578
+    }
+  },
+  "verdict": "HC3_T_NULL_APPROXIMATELY_NOMINAL",
+  "worst_null_rejection_over_nominal": 1.3
+}

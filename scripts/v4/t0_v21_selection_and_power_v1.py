@@ -83,6 +83,8 @@ STOP_FOLD_COVERAGE = "STOP_OUTER_FOLD_COVERAGE_INVALID"
 STOP_LEAKAGE = "STOP_HELD_OUT_DONOR_VISIBLE_TO_ITS_OWN_FOLD"
 STOP_INVALID_INPUT = "STOP_INPUT_STRUCTURALLY_INVALID"
 STOP_ARTIFACT = "STOP_CROSS_FIT_ARTIFACT_NOT_VALID"
+STOP_PERMUTATION = "STOP_NESTED_PERMUTATION_EVIDENCE_NOT_VALID"
+STOP_TRANSPORT = "STOP_T0_V21_EFFECT_TRANSPORT_NOT_AUTHORITY_BOUND"
 
 # Frozen by the contract. Geometry is asserted, never inferred from what arrives.
 V21_DISCOVERY_DONORS = 28
@@ -112,6 +114,42 @@ MAX_REFINEMENT_MOVEMENT = float(sum(RIDGE_REFINEMENT_STEPS))
 # The frozen V20 near-tie tolerance, read from `t0_target_learner_v1.fit_t0_target`
 # rather than restated: `tol = 1e-12 * max(1.0, abs(minloss))`.
 V20_TIE_RELATIVE_TOLERANCE = 1e-12
+
+# --------------------------------------------------------------------------
+# Effect transport: OPEN, and therefore production-disabled.
+#
+# `t0_v21_crossfit_null_calibration_v1.py` measures the assembled HC3 statistic's
+# null spread at 1.304x nominal with a fixed ridge and 1.477x with inner LOODO
+# selection, under a strict null with the whole 28-fold nested procedure re-run.
+# The standard error therefore understates the procedure's own variability, and
+# `t / sqrt(n)` is not established as a coordinate that transports an effect from
+# the discovery procedure to a fresh 12-donor design.
+#
+# Those measurements establish a failure, not a replacement. A correction factor
+# read off the observed null spreads would be a constant chosen after seeing the
+# data, which is the thing this contract exists to forbid. So transport stays
+# OPEN and the production gate stays closed until a derivation is supplied and
+# owner-approved.
+#
+# Flipping this to "CLOSED" is a deliberate code change requiring approval; it is
+# not a caller argument, because a caller argument is exactly how a disabled gate
+# gets re-enabled by accident.
+EFFECT_TRANSPORT_STATUS = "OPEN"
+
+# A transport receipt must name a basis that could in principle carry a scale.
+# Significance does not: a permutation test establishes that an association
+# survives the procedure's own null, which is a statement about association, not
+# a mapping from discovery magnitude to confirmation magnitude. And a factor read
+# off the observed null spread is a chosen constant wearing a derivation's name.
+FORBIDDEN_TRANSPORT_BASES = frozenset({
+    "assembled_hc3_t_over_sqrt_n",
+    "whole_pipeline_permutation_significance",
+    "observed_null_sd_correction",
+    "measured_null_spread_rescaling",
+})
+ALLOWED_TRANSPORT_BASES = frozenset({
+    "externally_derived_and_validated_transport_v1",
+})
 
 DECLARED_ESTIMATOR_ORDER = ("S0", "S1", "S2", "S3", "S4")
 
@@ -526,23 +564,159 @@ def project_power(*, standardized_effect_value: float, n_target: int,
 # 4b. The cross-fit artifact -- what the gate is allowed to consume
 # --------------------------------------------------------------------------
 
-def _digest_cross_fit(donor_ids: Sequence[Any], y: np.ndarray, age: np.ndarray,
-                      sex: np.ndarray, scores: np.ndarray,
-                      folds: Sequence[dict[str, Any]]) -> str:
+ARTIFACT_KIND = "t0_v21_cross_fit_artifact_v1"
+
+# Every field the gate's verdict can depend on. The digest binds all of them, and
+# the canonical validator checks all of them, on both the sealing and the
+# verification path.
+ARTIFACT_DECISION_FIELDS = (
+    "kind", "n_donors", "donor_ids", "y", "age", "sex", "oof_scores", "folds",
+    "fold_ridge_exponents", "fold_ridge_exponents_recorded",
+    "fold_ridge_exponents_vary",
+)
+FOLD_DECISION_FIELDS = ("held_out_index", "n_train", "train_indices",
+                        "out_of_fold_prediction", "fold_ridge_exponent")
+
+
+def validate_cross_fit_structure(*, n_donors: Any, donor_ids: Sequence[Any],
+                                 y: Any, age: Any, sex: Any, oof_scores: Any,
+                                 folds: Sequence[dict[str, Any]],
+                                 ) -> dict[str, Any]:
+    """The one structural validator. Sealing and verification both call it.
+
+    Verification used to recompute the digest and stop there, which proves only
+    that bytes have not changed since sealing -- not that what was sealed was
+    ever valid. An artifact assembled directly, with a correctly recomputed
+    digest, would have passed. So the structure is re-derived from the artifact's
+    own contents every time it is verified, and the two paths cannot drift
+    because there is only one implementation.
+
+    Returns the canonical, normalized fields. Raises on anything invalid.
+    """
+    if not isinstance(n_donors, int) or n_donors != V21_DISCOVERY_DONORS:
+        _fail(STOP_ARTIFACT,
+              "the contract fixes %d discovery donors; the artifact declares %r"
+              % (V21_DISCOVERY_DONORS, n_donors))
+    n = int(n_donors)
+
+    ids = tuple(str(d) for d in donor_ids)
+    if len(ids) != n:
+        _fail(STOP_ARTIFACT, "%d donor identifiers for %d donors"
+              % (len(ids), n))
+    if len(set(ids)) != n:
+        _fail(STOP_ARTIFACT, "donor identifiers are not unique")
+
+    y_arr = _require_structural_validity("y", y, n=n)
+    age_arr = _require_structural_validity("age", age, n=n)
+    sex_arr = _require_structural_validity("sex", sex, n=n)
+    unique_sex = np.unique(sex_arr)
+    if unique_sex.size != 2 or not np.array_equal(unique_sex,
+                                                  np.array([0.0, 1.0])):
+        _fail(STOP_ARTIFACT,
+              "sex must be complete binary 0/1 under the frozen V1 authority; "
+              "got %r" % (unique_sex.tolist(),))
+    scores = _require_structural_validity("oof_scores", oof_scores, n=n)
+
+    fold_list = list(folds)
+    if len(fold_list) != n:
+        _fail(STOP_ARTIFACT, "%d fold records for %d donors"
+              % (len(fold_list), n))
+
+    everything = set(range(n))
+    held_seen: set[int] = set()
+    canonical_folds = []
+    for fold in fold_list:
+        missing = [k for k in FOLD_DECISION_FIELDS if k not in fold]
+        if missing:
+            _fail(STOP_ARTIFACT, "a fold record is missing %r" % (missing,))
+        held = int(fold["held_out_index"])
+        if not 0 <= held < n:
+            _fail(STOP_ARTIFACT, "held-out index %d is out of range" % held)
+        if held in held_seen:
+            _fail(STOP_ARTIFACT, "donor %d held out more than once" % held)
+        held_seen.add(held)
+
+        train = tuple(int(i) for i in fold["train_indices"])
+        if len(set(train)) != len(train):
+            _fail(STOP_ARTIFACT, "fold %d repeats a training donor" % held)
+        if set(train) != everything - {held}:
+            _fail(STOP_ARTIFACT,
+                  "fold %d does not train on the exact complement of its "
+                  "held-out donor" % held)
+        if int(fold["n_train"]) != n - 1 or len(train) != n - 1:
+            _fail(STOP_ARTIFACT,
+                  "fold %d declares %r training donors but the contract "
+                  "requires %d" % (held, fold["n_train"], n - 1))
+
+        prediction = float(fold["out_of_fold_prediction"])
+        if not math.isfinite(prediction):
+            _fail(STOP_ARTIFACT, "fold %d has a nonfinite prediction" % held)
+
+        exponent = fold["fold_ridge_exponent"]
+        if exponent is not None and not math.isfinite(float(exponent)):
+            _fail(STOP_ARTIFACT, "fold %d has a nonfinite ridge exponent" % held)
+
+        canonical_folds.append({
+            "held_out_index": held, "n_train": n - 1, "train_indices": train,
+            "out_of_fold_prediction": prediction,
+            "fold_ridge_exponent": (None if exponent is None
+                                    else float(exponent)),
+        })
+
+    if held_seen != everything:
+        _fail(STOP_ARTIFACT, "not every donor was held out exactly once")
+
+    canonical_folds.sort(key=lambda f: f["held_out_index"])
+    by_fold = np.array([f["out_of_fold_prediction"] for f in canonical_folds],
+                       dtype=np.float64)
+    if not np.array_equal(scores, by_fold):
+        _fail(STOP_ARTIFACT,
+              "the score vector does not agree with the held-out-index-ordered "
+              "fold predictions")
+
+    exponents = tuple(f["fold_ridge_exponent"] for f in canonical_folds)
+    distinct = sorted({e for e in exponents if e is not None})
+    return {
+        "kind": ARTIFACT_KIND,
+        "n_donors": n,
+        "donor_ids": ids,
+        "y": y_arr, "age": age_arr, "sex": sex_arr, "oof_scores": scores,
+        "folds": tuple(canonical_folds),
+        "fold_ridge_exponents": exponents,
+        "fold_ridge_exponents_recorded": all(e is not None for e in exponents),
+        "fold_ridge_exponents_vary": len(distinct) > 1,
+    }
+
+
+def _digest_cross_fit(canonical: dict[str, Any]) -> str:
+    """Bind every decision-relevant field, computed from the canonical form.
+
+    Digesting the canonical form rather than the caller's dictionary means two
+    artifacts that validate to the same structure digest the same, and any
+    decision-relevant difference changes the digest.
+    """
+    missing = [k for k in ARTIFACT_DECISION_FIELDS if k not in canonical]
+    if missing:
+        _fail(STOP_ARTIFACT, "canonical form is missing %r" % (missing,))
     h = hashlib.sha256()
-    h.update(b"T0_V21_CROSS_FIT_ARTIFACT_V1")
-    for donor in donor_ids:
-        h.update(("|id:%s" % (donor,)).encode("utf-8"))
-    for name, array in (("y", y), ("age", age), ("sex", sex),
-                        ("scores", scores)):
+    h.update(b"T0_V21_CROSS_FIT_ARTIFACT_V2")
+    h.update(("|kind:%s" % canonical["kind"]).encode("utf-8"))
+    h.update(("|n:%d" % canonical["n_donors"]).encode("utf-8"))
+    for donor in canonical["donor_ids"]:
+        h.update(("|id:%s" % donor).encode("utf-8"))
+    for name in ("y", "age", "sex", "oof_scores"):
         h.update(("|%s:" % name).encode("utf-8"))
-        h.update(np.ascontiguousarray(array, dtype=np.float64).tobytes())
-    for fold in folds:
+        h.update(np.ascontiguousarray(canonical[name],
+                                      dtype=np.float64).tobytes())
+    for fold in canonical["folds"]:
         h.update(("|fold:%d:%d:%s:%s"
                   % (fold["held_out_index"], fold["n_train"],
                      ",".join(str(i) for i in fold["train_indices"]),
                      repr(fold["fold_ridge_exponent"]))).encode("utf-8"))
         h.update(np.float64(fold["out_of_fold_prediction"]).tobytes())
+    h.update(("|ridge_recorded:%s|ridge_vary:%s"
+              % (canonical["fold_ridge_exponents_recorded"],
+                 canonical["fold_ridge_exponents_vary"])).encode("utf-8"))
     return h.hexdigest()
 
 
@@ -554,99 +728,60 @@ def seal_cross_fit(*, oof_result: dict[str, Any], donor_ids: Sequence[Any],
     The gate previously accepted a bare score vector, so an in-sample predictor
     could have been handed to it and a verdict computed. No code can prove a
     caller's closure did not leak -- closures are opaque -- but a decision can be
-    made to require *evidence of structure*: 28 donors, each held out exactly
-    once, each training set the complement of its held-out donor, donor identity
-    recorded, and a digest over all of it. A naked array cannot satisfy that, and
-    tampering afterwards breaks the digest.
+    made to require *evidence of structure*, and to re-derive that evidence on
+    every verification rather than trusting that sealing once checked it.
     """
-    n = int(oof_result.get("n_donors", -1))
-    if n != V21_DISCOVERY_DONORS:
-        _fail(STOP_ARTIFACT, "the contract fixes %d discovery donors; the "
-              "cross-fit reports %d" % (V21_DISCOVERY_DONORS, n))
-
-    ids = list(donor_ids)
-    if len(ids) != n:
-        _fail(STOP_ARTIFACT, "%d donor identifiers for %d donors"
-              % (len(ids), n))
-    if len(set(map(str, ids))) != n:
-        _fail(STOP_ARTIFACT, "donor identifiers are not unique")
-
-    y = _require_structural_validity("y", y, n=n)
-    age = _require_structural_validity("age", age, n=n)
-    sex = _require_structural_validity("sex", sex, n=n)
-
-    folds = list(oof_result.get("folds", []))
-    if len(folds) != n:
-        _fail(STOP_ARTIFACT, "%d fold records for %d donors" % (len(folds), n))
-
-    everything = set(range(n))
-    held_seen: set[int] = set()
-    for fold in folds:
-        held = int(fold["held_out_index"])
-        train = tuple(int(i) for i in fold["train_indices"])
-        if held in held_seen:
-            _fail(STOP_ARTIFACT, "donor %d held out more than once" % held)
-        held_seen.add(held)
-        if len(train) != n - 1 or set(train) != everything - {held}:
-            _fail(STOP_ARTIFACT,
-                  "fold %d does not train on the exact complement of its "
-                  "held-out donor" % held)
-        if not math.isfinite(float(fold["out_of_fold_prediction"])):
-            _fail(STOP_ARTIFACT, "fold %d has a nonfinite prediction" % held)
-    if held_seen != everything:
-        _fail(STOP_ARTIFACT, "not every donor was held out exactly once")
-
-    scores = np.asarray(oof_result["oof_predictions"], dtype=np.float64)
-    if scores.shape != (n,):
-        _fail(STOP_ARTIFACT, "the score vector has shape %r, expected (%d,)"
-              % (scores.shape, n))
-    by_fold = np.array([f["out_of_fold_prediction"]
-                        for f in sorted(folds,
-                                        key=lambda f: f["held_out_index"])],
-                       dtype=np.float64)
-    if not np.array_equal(scores, by_fold):
-        _fail(STOP_ARTIFACT,
-              "the score vector does not match the per-fold predictions")
-
-    artifact = {
-        "kind": "t0_v21_cross_fit_artifact_v1",
-        "n_donors": n,
-        "donor_ids": tuple(str(d) for d in ids),
-        "y": y, "age": age, "sex": sex, "oof_scores": scores,
-        "folds": tuple(dict(f) for f in folds),
-        "fold_ridge_exponents": tuple(oof_result.get("fold_ridge_exponents",
-                                                     ())),
-        "fold_ridge_exponents_recorded":
-            bool(oof_result.get("fold_ridge_exponents_recorded", False)),
-        "fold_ridge_exponents_vary":
-            bool(oof_result.get("fold_ridge_exponents_vary", False)),
-    }
-    artifact["artifact_digest"] = _digest_cross_fit(
-        artifact["donor_ids"], y, age, sex, scores, artifact["folds"])
+    canonical = validate_cross_fit_structure(
+        n_donors=oof_result.get("n_donors"), donor_ids=donor_ids, y=y, age=age,
+        sex=sex, oof_scores=oof_result.get("oof_predictions"),
+        folds=oof_result.get("folds", ()))
+    artifact = dict(canonical)
+    artifact["artifact_digest"] = _digest_cross_fit(canonical)
     return artifact
 
 
 def verify_cross_fit_artifact(artifact: dict[str, Any]) -> dict[str, Any]:
-    """Recompute the digest and re-check the structure before any inference."""
-    if not isinstance(artifact, dict) or \
-            artifact.get("kind") != "t0_v21_cross_fit_artifact_v1":
+    """Revalidate the structure independently, then recompute the digest.
+
+    Order matters. Structure first, because a digest that recomputes only tells
+    you the bytes are the ones that were digested -- it says nothing about
+    whether they describe a valid cross-fit.
+    """
+    if not isinstance(artifact, dict) or artifact.get("kind") != ARTIFACT_KIND:
         _fail(STOP_ARTIFACT,
               "the power gate requires a sealed cross-fit artifact, not a bare "
               "score vector")
-    for key in ("donor_ids", "y", "age", "sex", "oof_scores", "folds",
-                "artifact_digest"):
+    for key in ARTIFACT_DECISION_FIELDS + ("artifact_digest",):
         if key not in artifact:
             _fail(STOP_ARTIFACT, "the artifact is missing %r" % key)
-    recomputed = _digest_cross_fit(
-        artifact["donor_ids"], artifact["y"], artifact["age"],
-        artifact["sex"], artifact["oof_scores"], artifact["folds"])
+
+    canonical = validate_cross_fit_structure(
+        n_donors=artifact["n_donors"], donor_ids=artifact["donor_ids"],
+        y=artifact["y"], age=artifact["age"], sex=artifact["sex"],
+        oof_scores=artifact["oof_scores"], folds=artifact["folds"])
+
+    # The declared metadata must match what the structure actually shows, so a
+    # sealed artifact cannot advertise nested ridge selection it does not have.
+    for field in ("fold_ridge_exponents", "fold_ridge_exponents_recorded",
+                  "fold_ridge_exponents_vary"):
+        declared, derived = artifact[field], canonical[field]
+        if tuple(declared) != tuple(derived) if isinstance(derived, tuple) \
+                else declared != derived:
+            _fail(STOP_ARTIFACT,
+                  "the artifact declares %s = %r but its folds show %r"
+                  % (field, declared, derived))
+
+    recomputed = _digest_cross_fit(canonical)
     if recomputed != artifact["artifact_digest"]:
         _fail(STOP_ARTIFACT,
               "the artifact digest does not recompute; it was altered after "
-              "sealing (recorded %s, recomputed %s)"
-              % (artifact["artifact_digest"][:16], recomputed[:16]))
+              "sealing, or was never sealed by this code (recorded %s, "
+              "recomputed %s)"
+              % (str(artifact["artifact_digest"])[:16], recomputed[:16]))
     return {"verified": True, "artifact_digest": artifact["artifact_digest"],
-            "n_donors": int(artifact["n_donors"])}
+            "n_donors": int(artifact["n_donors"]),
+            "structure_revalidated": True,
+            "digest_binds": list(ARTIFACT_DECISION_FIELDS)}
 
 
 # --------------------------------------------------------------------------
@@ -700,7 +835,8 @@ def power_meets_target(*, power: float, monte_carlo_standard_error: float,
 
 
 def _simulate_statistics(*, z, signal_to_noise, n_simulations, n_permutations,
-                         seed, alpha, inference):
+                         seed, alpha, inference, collinearity=0.0,
+                         shape="gaussian"):
     """Shared simulation core: returns the observed statistics and rejections."""
     n = z.shape[0]
     permutations = frozen_permutations(n, n_permutations, seed)
@@ -710,7 +846,8 @@ def _simulate_statistics(*, z, signal_to_noise, n_simulations, n_permutations,
     statistics: list[float] = []
     rejections = 0
     for _ in range(int(n_simulations)):
-        x = rng.normal(size=n)
+        x = _geometry_predictor(z=z, collinearity=collinearity, shape=shape,
+                                rng=rng)
         x_resid = x - q @ (q.T @ x)
         norm = float(np.linalg.norm(x_resid))
         if norm <= 0.0:
@@ -728,19 +865,193 @@ def _simulate_statistics(*, z, signal_to_noise, n_simulations, n_permutations,
     return statistics, rejections
 
 
+# The prospectively frozen confirmation-design envelope (blocker 2).
+#
+# Section 10.4 records that the frozen age/sex authority covers only the 46
+# development donors and would need extension from source for the fresh 12, and
+# the owner's condition is that those 12 take no part in power calibration. Their
+# covariates are therefore not available to this gate, and would not be usable
+# even if they were. The gate evaluates a frozen envelope at its worst case.
+# A singleton sex level gives that donor HC3 leverage exactly 1.0, which the
+# frozen engine refuses outright, so a 12-donor cohort split 1/11 is not
+# estimable at all. Measured, not assumed: 1 -> 1.0000, 2 -> 0.6579, 3 -> 0.6965,
+# 6 -> 0.6978. The envelope therefore starts at 2, and that is a real constraint
+# on the fresh cohort rather than a tuning choice.
+CONFIRMATION_SEX_MINORITY_COUNTS = (2, 3, 6)
+CONFIRMATION_AGE_SHAPES = ("even", "clustered", "bimodal")
+
+# The prospectively frozen confirmation predictor-geometry class (blocker 3).
+#
+# Only the leverage profile is swept. Collinearity with the nuisance column
+# space was swept in an earlier version and measured to change nothing at all:
+# HC3's `t` is invariant to the in-span component, because residualization
+# removes it and the noncentrality is scaled by the residualized norm, so the
+# two cancel exactly. Measured 0.8582 at rho = 0 and 0.8582 at rho = 0.75.
+# Sweeping it would have quadrupled the cost for no coverage, and would have
+# implied a risk axis that does not exist.
+#
+# The axis that does matter is leverage: gaussian 0.8582, heavy-tailed
+# 0.8136, single-leverage 0.5402.
+CONFIRMATION_COLLINEARITY_GRID = (0.0,)
+CONFIRMATION_RESIDUAL_SHAPES = ("gaussian", "heavy_tailed", "single_leverage")
+
+
+def _geometry_predictor(*, z: np.ndarray, collinearity: float, shape: str,
+                        rng) -> np.ndarray:
+    """A predictor with a prescribed relationship to the nuisance design."""
+    n = z.shape[0]
+    q, _ = np.linalg.qr(z)
+    if shape == "gaussian":
+        base = rng.normal(size=n)
+    elif shape == "heavy_tailed":
+        base = rng.standard_t(3, size=n)
+    elif shape == "single_leverage":
+        base = rng.normal(scale=0.25, size=n)
+        base[int(rng.integers(n))] += 3.0
+    else:
+        _fail(STOP, "unknown residual shape %r" % shape)
+
+    perpendicular = base - q @ (q.T @ base)
+    norm = float(np.linalg.norm(perpendicular))
+    if norm <= 0.0:
+        return base
+    perpendicular = perpendicular / norm
+    inside = q @ rng.normal(size=q.shape[1])
+    inside_norm = float(np.linalg.norm(inside))
+    if inside_norm > 0.0:
+        inside = inside / inside_norm
+    rho = float(collinearity)
+    return math.sqrt(rho) * inside + math.sqrt(max(0.0, 1.0 - rho)) * perpendicular
+
+
+def confirmation_design_envelope(*, age_range: tuple[float, float],
+                                 age_range_authority: str,
+                                 n_target: int = V21_CONFIRMATION_DONORS,
+                                 ) -> dict[str, Any]:
+    """Every 12-donor design the frozen envelope admits, deterministically.
+
+    The age range is an input carrying its own authority string, never a literal
+    typed here: a scale-sensitive parameter must be derived from the data's own
+    geometry, and the development cohort's age range is the lawful source.
+    """
+    low, high = float(age_range[0]), float(age_range[1])
+    if not (math.isfinite(low) and math.isfinite(high)) or high <= low:
+        _fail(STOP, "the age range %r is not a usable interval" % (age_range,))
+    if not age_range_authority:
+        _fail(STOP, "the age range must carry an authority; an unattributed "
+                    "range is a hard-coded constant wearing a parameter's name")
+
+    designs = []
+    for minority in CONFIRMATION_SEX_MINORITY_COUNTS:
+        if not 1 <= minority <= n_target // 2:
+            continue
+        sex = np.array([1.0] * minority + [0.0] * (n_target - minority))
+        for shape in CONFIRMATION_AGE_SHAPES:
+            if shape == "even":
+                age = np.linspace(low, high, n_target)
+            elif shape == "clustered":
+                mid = 0.5 * (low + high)
+                age = np.linspace(mid - 0.1 * (high - low),
+                                  mid + 0.1 * (high - low), n_target)
+            else:
+                half = n_target // 2
+                age = np.concatenate([
+                    np.linspace(low, low + 0.1 * (high - low), half),
+                    np.linspace(high - 0.1 * (high - low), high,
+                                n_target - half)])
+            designs.append({"sex_minority_count": minority, "age_shape": shape,
+                            "age": age, "sex": sex})
+    if not designs:
+        _fail(STOP, "the confirmation design envelope is empty")
+
+    # Every member must be estimable under the frozen engine. A frozen class
+    # containing a degenerate design is misspecified, and saying which design is
+    # degenerate is far more useful than a later "no replicate was estimable".
+    _, learner = _frozen()
+    for design in designs:
+        try:
+            z, _ = learner.nuisance_design(design["age"], design["sex"])
+        except ValueError as error:
+            _fail(STOP, "envelope design (minority=%d, %s) has a rank-deficient "
+                        "nuisance design: %s"
+                  % (design["sex_minority_count"], design["age_shape"], error))
+        probe = np.linspace(-1.0, 1.0, n_target)
+        full = np.c_[z, probe]
+        leverage = np.einsum("ij,jk,ik->i", full,
+                             np.linalg.pinv(full.T @ full), full)
+        if float(leverage.max()) >= 1.0 - 1e-12:
+            _fail(STOP, "envelope design (minority=%d, %s) reaches HC3 leverage "
+                        "%.6f, which the frozen engine refuses"
+                  % (design["sex_minority_count"], design["age_shape"],
+                     float(leverage.max())))
+
+    h = hashlib.sha256()
+    h.update(b"T0_V21_CONFIRMATION_DESIGN_ENVELOPE_V1")
+    h.update(("|authority:%s|low:%r|high:%r|n:%d"
+              % (age_range_authority, low, high, n_target)).encode("utf-8"))
+    for d in designs:
+        h.update(("|%d:%s" % (d["sex_minority_count"],
+                              d["age_shape"])).encode("utf-8"))
+        h.update(np.ascontiguousarray(d["age"], dtype=np.float64).tobytes())
+        h.update(np.ascontiguousarray(d["sex"], dtype=np.float64).tobytes())
+    return {"designs": designs, "n_designs": len(designs),
+            "n_target": int(n_target),
+            "age_range": (low, high),
+            "age_range_authority": str(age_range_authority),
+            "envelope_digest": h.hexdigest()}
+
+
+def measure_hc3_scaling_for_predictor(*, z: np.ndarray, predictor: np.ndarray,
+                                      n_simulations: int, n_permutations: int,
+                                      seed: int) -> dict[str, Any]:
+    """The HC3 scaling of one actual predictor, holding its geometry fixed.
+
+    The predictor vector is not redrawn. Only the noise is resampled, so what is
+    measured is this vector's own leverage and collinearity structure rather than
+    that of a random surrogate.
+    """
+    inference = _frozen_inference()
+    n = z.shape[0]
+    predictor = _require_structural_validity("predictor", predictor, n=n)
+    permutations = frozen_permutations(n, n_permutations, seed)
+    rng = np.random.default_rng(seed + 1)
+
+    q, _ = np.linalg.qr(z)
+    residualized = predictor - q @ (q.T @ predictor)
+    norm = float(np.linalg.norm(residualized))
+    if norm <= 0.0:
+        _fail(STOP, "the predictor lies entirely in the nuisance column space")
+    total = float(np.linalg.norm(predictor))
+    collinearity = (1.0 - (norm / total) ** 2) if total > 0 else 1.0
+
+    theta = math.sqrt(n) / norm          # unit signal-to-noise
+    statistics = []
+    for _ in range(int(n_simulations)):
+        y = theta * predictor + rng.normal(size=n)
+        result = inference.safe_studentized_fl(y, z, predictor, permutations)
+        if result.get("estimable"):
+            statistics.append(float(result["t_observed"]))
+    if not statistics:
+        _fail(STOP, "no replicate was estimable while measuring predictor scaling")
+    mean_t = float(np.mean(statistics))
+    return {"n": n, "mean_observed_t": mean_t, "hc3_scaling": mean_t / math.sqrt(n),
+            "collinearity_with_nuisance": float(collinearity),
+            "mean_leverage": float(z.shape[1] + 1) / n,
+            "geometry_source": "the actual out-of-fold score vector",
+            "n_simulations": int(n_simulations)}
+
+
 def measure_hc3_statistic_scaling(*, age: np.ndarray, sex: np.ndarray,
                                   n_simulations: int, n_permutations: int,
-                                  seed: int) -> dict[str, Any]:
-    """How much of `snr * sqrt(n)` the HC3 statistic actually reaches, measured.
+                                  seed: int, collinearity: float = 0.0,
+                                  shape: str = "gaussian") -> dict[str, Any]:
+    """HC3 scaling for a synthetic predictor of prescribed geometry.
 
-    HC3 divides squared residuals by `(1 - h)^2`, so its standard error grows with
-    leverage. Mean leverage is `p / n`, which is 0.179 at n = 28 and 0.417 at
-    n = 12, and the statistic shrinks accordingly. The shrinkage is a property of
-    the design, so it is measured on the design rather than assumed away.
-
-    This is what makes `delta = t / sqrt(n)` safe to carry between cohort sizes:
-    divide it out at the discovery design to recover the underlying effect, and
-    apply it again at the confirmation design.
+    Kept explicit about what it assumes. The default gaussian, zero-collinearity
+    predictor is a *modelling choice*, not a measurement of the real score, and
+    calling it "measured" without saying so is what external review objected to.
+    Production paths use `measure_hc3_scaling_for_predictor` on the real vector at
+    discovery, and `worst_case_hc3_scaling` over the frozen class at confirmation.
     """
     inference = _frozen_inference()
     _, learner = _frozen()
@@ -749,60 +1060,78 @@ def measure_hc3_statistic_scaling(*, age: np.ndarray, sex: np.ndarray,
     sex = _require_structural_validity("sex", sex, n=n)
     z, _ = learner.nuisance_design(age, sex)
 
-    statistics, _ = _simulate_statistics(
-        z=z, signal_to_noise=1.0, n_simulations=n_simulations,
-        n_permutations=n_permutations, seed=seed, alpha=ALPHA,
-        inference=inference)
+    permutations = frozen_permutations(n, n_permutations, seed)
+    rng = np.random.default_rng(seed + 1)
+    q, _ = np.linalg.qr(z)
+
+    statistics = []
+    for _ in range(int(n_simulations)):
+        x = _geometry_predictor(z=z, collinearity=collinearity, shape=shape,
+                                rng=rng)
+        residualized = x - q @ (q.T @ x)
+        norm = float(np.linalg.norm(residualized))
+        if norm <= 0.0:
+            continue
+        y = (math.sqrt(n) / norm) * x + rng.normal(size=n)
+        result = inference.safe_studentized_fl(y, z, x, permutations)
+        if result.get("estimable"):
+            statistics.append(float(result["t_observed"]))
     if not statistics:
         _fail(STOP, "no replicate was estimable while measuring HC3 scaling")
     mean_t = float(np.mean(statistics))
-    naive = math.sqrt(n)
     return {"n": n, "mean_observed_t": mean_t,
-            "naive_noncentrality_at_unit_snr": naive,
-            "hc3_scaling": mean_t / naive,
+            "naive_noncentrality_at_unit_snr": math.sqrt(n),
+            "hc3_scaling": mean_t / math.sqrt(n),
+            "collinearity": float(collinearity), "shape": str(shape),
             "mean_leverage": float(z.shape[1] + 1) / n,
+            "is_a_modelling_assumption_not_a_measurement_of_the_real_score": True,
             "n_simulations": int(n_simulations)}
 
 
-def signal_to_noise_from_observed_effect(
-        *, observed_standardized_effect: float, age: np.ndarray,
-        sex: np.ndarray, n_simulations: int, n_permutations: int,
-        seed: int) -> dict[str, Any]:
-    """Invert the discovery design's HC3 scaling to recover the underlying effect."""
-    scaling = measure_hc3_statistic_scaling(
-        age=age, sex=sex, n_simulations=n_simulations,
-        n_permutations=n_permutations, seed=seed)
-    factor = scaling["hc3_scaling"]
-    if factor <= 0.0:
-        _fail(STOP, "the measured HC3 scaling is not positive")
-    return {"observed_standardized_effect": float(observed_standardized_effect),
-            "discovery_hc3_scaling": factor,
-            "signal_to_noise": float(observed_standardized_effect) / factor,
-            "discovery_design": scaling}
+def worst_case_hc3_scaling(*, age: np.ndarray, sex: np.ndarray,
+                           n_simulations: int, n_permutations: int, seed: int,
+                           collinearity_grid: Sequence[float] =
+                           CONFIRMATION_COLLINEARITY_GRID,
+                           shapes: Sequence[str] = CONFIRMATION_RESIDUAL_SHAPES,
+                           ) -> dict[str, Any]:
+    """The smallest HC3 scaling over the frozen geometry class.
+
+    Smallest, because a smaller scaling means the statistic reaches less of its
+    naive noncentrality, which means lower power. Taking the worst case is what
+    makes an unknown confirmation geometry safe to project into.
+    """
+    measured = []
+    for rho in collinearity_grid:
+        for shape in shapes:
+            measured.append(measure_hc3_statistic_scaling(
+                age=age, sex=sex, n_simulations=n_simulations,
+                n_permutations=n_permutations, seed=seed, collinearity=rho,
+                shape=shape))
+    worst = min(measured, key=lambda m: m["hc3_scaling"])
+    return {"worst_case": worst,
+            "worst_case_hc3_scaling": worst["hc3_scaling"],
+            "best_case_hc3_scaling": max(m["hc3_scaling"] for m in measured),
+            "n_geometries": len(measured),
+            "collinearity_grid": [float(r) for r in collinearity_grid],
+            "shapes": list(shapes),
+            "all": measured}
 
 
 def simulate_power_freedman_lane(
-        *, signal_to_noise: float, age: np.ndarray,
-        sex: np.ndarray, n_simulations: int, n_permutations: int, seed: int,
-        alpha: float = ALPHA) -> dict[str, Any]:
-    """Power of the **actual** confirmatory test, estimated by simulation.
+        *, signal_to_noise: float, age: np.ndarray, sex: np.ndarray,
+        n_simulations: int, n_permutations: int, seed: int,
+        alpha: float = ALPHA, geometry_collinearity: float = 0.0,
+        geometry_shape: str = "gaussian") -> dict[str, Any]:
+    """Power of the actual confirmatory test, measured at a *stated* geometry.
 
-    The gate previously projected the effect into a noncentral `t`. That is not
-    the test that will be run: V20's broad-state inference, and therefore V21's,
-    is HC3-studentized Freedman-Lane permutation. Power calibrated against a
-    different procedure than the one that decides is not power.
-
-    There is no closed form for the permutation test's power, so it is measured:
-    simulate donor-level data at the target cohort size on the frozen nuisance
-    design, with the predictor scaled so the per-observation standardized effect
-    equals the planning effect, run the frozen procedure, and count rejections.
-
-    The Monte Carlo uncertainty is reported. A point estimate of power carries
-    its own error and should not be compared to 80% as if it were exact.
+    The predictor's relationship to the nuisance design is an explicit argument
+    rather than an iid-normal assumption buried in the body. External review was
+    right that a calibration which does not say which geometry it assumed is not
+    a measurement of anything the real out-of-fold score will do; making it an
+    argument is what lets the gate bound it over a frozen class.
     """
     inference = _frozen_inference()
     _, learner = _frozen()
-
     n = int(len(np.asarray(age)))
     age = _require_structural_validity("age", age, n=n)
     sex = _require_structural_validity("sex", sex, n=n)
@@ -814,7 +1143,8 @@ def simulate_power_freedman_lane(
     statistics, rejections = _simulate_statistics(
         z=z, signal_to_noise=snr, n_simulations=n_simulations,
         n_permutations=n_permutations, seed=seed, alpha=alpha,
-        inference=inference)
+        inference=inference, collinearity=geometry_collinearity,
+        shape=geometry_shape)
     usable = len(statistics)
     if usable == 0:
         _fail(STOP, "no simulation replicate was estimable")
@@ -827,24 +1157,42 @@ def simulate_power_freedman_lane(
     naive = snr * math.sqrt(n)
     return {
         "test": "HC3-studentized Freedman-Lane permutation (frozen V20 engine)",
-        "n_target": n, "alpha": float(alpha),
-        "signal_to_noise": snr,
-        # What the statistic actually reaches, against what a naive
-        # `snr * sqrt(n)` projection would assume. Below 1 at small n because
-        # HC3 inflates the standard error as leverage rises.
-        "mean_observed_t": mean_t,
-        "naive_noncentrality": naive,
+        "n_target": n, "alpha": float(alpha), "signal_to_noise": snr,
+        "geometry_collinearity": float(geometry_collinearity),
+        "geometry_shape": str(geometry_shape),
+        "mean_observed_t": mean_t, "naive_noncentrality": naive,
         "hc3_scaling": (mean_t / naive) if naive != 0.0 else None,
         "mean_leverage": float(z.shape[1] + 1) / n,
         "n_simulations": int(n_simulations), "usable_replicates": usable,
         "n_permutations": int(n_permutations),
         "smallest_attainable_p_value": 1.0 / (n_permutations + 1),
-        "power": float(power),
-        "monte_carlo_standard_error": float(se),
+        "power": float(power), "monte_carlo_standard_error": float(se),
         "power_lower_95": verdict["power_lower_95"],
         "target_power": TARGET_POWER,
         "meets_target": verdict["meets_target"],
     }
+
+
+def signal_to_noise_from_observed_effect(
+        *, observed_standardized_effect: float, z: np.ndarray,
+        predictor: np.ndarray, n_simulations: int, n_permutations: int,
+        seed: int) -> dict[str, Any]:
+    """Recover the underlying effect using the real discovery score's geometry.
+
+    Conservative direction: a larger discovery scaling implies a smaller
+    underlying effect, so using the actual vector's scaling -- rather than an
+    optimistic surrogate -- is what keeps the recovered effect honest.
+    """
+    scaling = measure_hc3_scaling_for_predictor(
+        z=z, predictor=predictor, n_simulations=n_simulations,
+        n_permutations=n_permutations, seed=seed)
+    factor = scaling["hc3_scaling"]
+    if factor <= 0.0:
+        _fail(STOP, "the measured discovery HC3 scaling is not positive")
+    return {"observed_standardized_effect": float(observed_standardized_effect),
+            "discovery_hc3_scaling": factor,
+            "signal_to_noise": float(observed_standardized_effect) / factor,
+            "discovery_geometry": scaling}
 
 
 def nested_permutation_null(
@@ -926,39 +1274,260 @@ def nested_permutation_null(
     }
 
 
-def power_gate(*, artifact: dict[str, Any],
-               confirmation_age: np.ndarray, confirmation_sex: np.ndarray,
+def seal_permutation_receipt(*, result: dict[str, Any],
+                             artifact: dict[str, Any]) -> dict[str, Any]:
+    """Bind a whole-pipeline permutation result to the artifact it was run on."""
+    digest = artifact.get("artifact_digest")
+    if not digest:
+        _fail(STOP_ARTIFACT, "a permutation receipt needs a sealed artifact")
+    for key in ("t_observed", "p_upper", "n_permutations", "null_t"):
+        if key not in result:
+            _fail(STOP_PERMUTATION, "permutation result is missing %r" % key)
+    null = np.asarray(result["null_t"], dtype=np.float64)
+    h = hashlib.sha256()
+    h.update(b"T0_V21_NESTED_PERMUTATION_RECEIPT_V1")
+    h.update(("|artifact:%s|B:%d|t:%r|p:%r"
+              % (digest, int(result["n_permutations"]),
+                 float(result["t_observed"]),
+                 float(result["p_upper"]))).encode("utf-8"))
+    h.update(np.ascontiguousarray(null, dtype=np.float64).tobytes())
+    return {
+        "kind": "t0_v21_nested_permutation_receipt_v1",
+        "artifact_digest": str(digest),
+        "t_observed": float(result["t_observed"]),
+        "p_upper": float(result["p_upper"]),
+        "n_permutations": int(result["n_permutations"]),
+        "null_sd": float(null.std(ddof=1)) if null.size > 1 else 0.0,
+        "receipt_digest": h.hexdigest(),
+    }
+
+
+def verify_permutation_receipt(receipt: dict[str, Any], *,
+                               artifact: dict[str, Any]) -> dict[str, Any]:
+    """The permutation evidence must belong to this artifact and must reject.
+
+    A permutation-valid p-value does not by itself make the HC3 standard error a
+    valid effect scale -- `t0_v21_crossfit_null_calibration_v1.py` measures the
+    assembled statistic's null spread at 1.30 to 1.48 times nominal, which is
+    precisely why the parametric null is not trusted here. What this receipt
+    establishes is narrower and is the claim the contract actually makes: that
+    the discovery-side association survives a null built from the whole nested
+    procedure.
+    """
+    if not isinstance(receipt, dict) or \
+            receipt.get("kind") != "t0_v21_nested_permutation_receipt_v1":
+        _fail(STOP_PERMUTATION,
+              "the gate requires whole-pipeline permutation evidence; the "
+              "contract states this is what establishes the discovery effect")
+    if receipt.get("artifact_digest") != artifact.get("artifact_digest"):
+        _fail(STOP_PERMUTATION,
+              "the permutation evidence was produced for a different cross-fit "
+              "artifact")
+    if int(receipt.get("n_permutations", 0)) < MIN_PERMUTATIONS_FOR_ALPHA:
+        _fail(STOP_PERMUTATION,
+              "permutation evidence needs B >= %d to reject at alpha = %r"
+              % (MIN_PERMUTATIONS_FOR_ALPHA, ALPHA))
+    p_upper = float(receipt.get("p_upper", 1.0))
+    if p_upper > ALPHA:
+        _fail(STOP_PERMUTATION,
+              "the whole-pipeline permutation test does not reject at the "
+              "frozen alpha (p_upper = %r > %r); there is no discovery effect "
+              "to project" % (p_upper, ALPHA))
+    return {"verified": True, "p_upper": p_upper,
+            "n_permutations": int(receipt["n_permutations"]),
+            "receipt_digest": receipt["receipt_digest"],
+            "null_sd": float(receipt.get("null_sd", 0.0))}
+
+
+def planning_power_projection(*, artifact: dict[str, Any],
+               permutation_receipt: dict[str, Any],
+               age_range: tuple[float, float],
+               age_range_authority: str,
                n_simulations: int = POWER_SIMULATIONS_FROZEN,
                n_permutations: int = FL_PERMUTATIONS_FROZEN,
                seed: int = POWER_SIMULATION_SEED) -> dict[str, Any]:
-    """The whole gate, from a sealed cross-fit artifact to a verdict.
+    """The projection arithmetic, retained for sizing. **Not a verdict.**
 
-    Takes an artifact, never a bare score vector: the previous signature would
-    have computed a verdict from an in-sample predictor handed to it directly.
+    This is the computation the production gate used to perform. It is kept
+    because knowing roughly what cohort size an effect would need is useful, and
+    it is renamed and stripped of `clears_gate` because the quantity it
+    transports -- `t / sqrt(n)` from the assembled HC3 regression -- is not an
+    established transport coordinate under overlapping cross-fitting. See
+    `EFFECT_TRANSPORT_STATUS`.
+
+    Everything below is a planning number. Nothing here authorizes anything.
+
+    Three things this signature deliberately does not accept.
+
+    **No bare score vector.** Only a sealed artifact, revalidated structurally.
+
+    **No caller-supplied confirmation design.** Section 10.4 of the contract
+    records that the frozen age/sex authority covers only the 46 development
+    donors and would need extension from source to cover the fresh 12, and the
+    owner's condition is that those 12 take no part in power calibration. Their
+    covariates are therefore not available to this gate, and would not be lawful
+    to use if they were. What the gate takes instead is an **age range carrying
+    an authority string**, from which a frozen envelope of admissible 12-donor
+    designs is derived; the verdict is the worst case over that envelope.
+
+    **No optional permutation evidence.** The contract says the discovery-side
+    effect is established by whole-pipeline permutation. A receipt is required,
+    is checked against this artifact, and must reject at the frozen alpha.
+    Evidence the contract calls decisive cannot sit beside the decision path as
+    an unused helper.
     """
     verification = verify_cross_fit_artifact(artifact)
+    receipt = verify_permutation_receipt(permutation_receipt, artifact=artifact)
     bound = jackknife_minimum_effect(
         y=artifact["y"], age=artifact["age"], sex=artifact["sex"],
         oof_scores=artifact["oof_scores"])
-    # The discovery statistic is HC3-deflated by its own design's leverage, and
-    # the confirmation design deflates differently. Carrying `delta` across
-    # cohort sizes unchanged would silently assume the two are the same. So the
-    # projection is routed through the underlying effect instead.
+
+    # Discovery side: measured on the actual out-of-fold score vector, holding
+    # its geometry fixed and resampling only the noise. Not a surrogate.
+    _, learner = _frozen()
+    z_discovery, _ = learner.nuisance_design(artifact["age"], artifact["sex"])
     underlying = signal_to_noise_from_observed_effect(
         observed_standardized_effect=bound["planning_standardized_effect"],
-        age=artifact["age"], sex=artifact["sex"],
+        z=z_discovery, predictor=artifact["oof_scores"],
         n_simulations=n_simulations, n_permutations=n_permutations, seed=seed)
-    calibration = simulate_power_freedman_lane(
-        signal_to_noise=underlying["signal_to_noise"],
-        age=confirmation_age, sex=confirmation_sex,
-        n_simulations=n_simulations, n_permutations=n_permutations, seed=seed)
+
+    # Confirmation side: worst case over the frozen design envelope and the
+    # frozen predictor-geometry class, because neither is knowable in advance.
+    envelope = confirmation_design_envelope(
+        age_range=age_range, age_range_authority=age_range_authority)
+    per_design = []
+    for design in envelope["designs"]:
+        geometry = worst_case_hc3_scaling(
+            age=design["age"], sex=design["sex"],
+            n_simulations=n_simulations, n_permutations=n_permutations,
+            seed=seed)
+        calibration = simulate_power_freedman_lane(
+            signal_to_noise=underlying["signal_to_noise"],
+            age=design["age"], sex=design["sex"],
+            n_simulations=n_simulations, n_permutations=n_permutations,
+            seed=seed,
+            geometry_collinearity=geometry["worst_case"]["collinearity"],
+            geometry_shape=geometry["worst_case"]["shape"])
+        per_design.append({
+            "sex_minority_count": design["sex_minority_count"],
+            "age_shape": design["age_shape"],
+            "worst_case_hc3_scaling": geometry["worst_case_hc3_scaling"],
+            "power": calibration["power"],
+            "power_lower_95": calibration["power_lower_95"],
+            "meets_target": calibration["meets_target"],
+            "calibration": calibration})
+
+    worst = min(per_design, key=lambda d: (d["power_lower_95"],
+                                           d["sex_minority_count"],
+                                           d["age_shape"]))
     return {
         "artifact": verification,
+        "permutation_evidence": receipt,
         "planning_effect": bound,
         "underlying_effect": underlying,
-        "calibration": calibration,
-        "clears_gate": bool(calibration["meets_target"]),
+        "confirmation_envelope": {
+            "envelope_digest": envelope["envelope_digest"],
+            "n_designs": envelope["n_designs"],
+            "age_range": envelope["age_range"],
+            "age_range_authority": envelope["age_range_authority"],
+            "per_design": per_design},
+        "worst_case_design": {k: worst[k] for k in
+                              ("sex_minority_count", "age_shape",
+                               "worst_case_hc3_scaling", "power",
+                               "power_lower_95", "meets_target")},
+        "calibration": worst["calibration"],
+        # Deliberately NOT `clears_gate`. This function cannot produce a
+        # production verdict, and the key name is part of that guarantee: code
+        # that reaches for `clears_gate` will raise a KeyError rather than
+        # silently read a planning number as an authorization.
+        "planning_meets_target_at_worst_design": bool(worst["meets_target"]),
+        "is_planning_only": True,
+        "production_verdict_capability": "DISABLED",
+        "effect_transport_status": EFFECT_TRANSPORT_STATUS,
+        "transported_quantity": "assembled_hc3_t_over_sqrt_n",
     }
+
+
+def verify_effect_transport_receipt(receipt: Any, *,
+                                    artifact: dict[str, Any]) -> dict[str, Any]:
+    """An effect-transport derivation, bound to this artifact.
+
+    The schema exists so that a derivation, once it is produced and approved, has
+    somewhere to bind. It refuses the three substitutions that would otherwise be
+    tempting: the quantity under suspicion itself, permutation significance
+    standing in for magnitude, and a factor read off the measured null spread.
+    """
+    if not isinstance(receipt, dict) or \
+            receipt.get("kind") != "t0_v21_effect_transport_receipt_v1":
+        _fail(STOP_TRANSPORT,
+              "a production verdict requires an effect-transport derivation "
+              "bound to this cross-fit; none was supplied")
+    basis = str(receipt.get("basis"))
+    if basis in FORBIDDEN_TRANSPORT_BASES:
+        _fail(STOP_TRANSPORT,
+              "transport basis %r cannot establish a scale mapping: "
+              "significance is not magnitude, and a factor read off the observed "
+              "null spread is a constant chosen after seeing the data" % basis)
+    if basis not in ALLOWED_TRANSPORT_BASES:
+        _fail(STOP_TRANSPORT, "transport basis %r is not an approved basis"
+              % basis)
+    if receipt.get("artifact_digest") != artifact.get("artifact_digest"):
+        _fail(STOP_TRANSPORT,
+              "the transport derivation was produced for a different cross-fit")
+    for field in ("derivation_digest", "derivation_reference",
+                  "transported_estimand"):
+        if not receipt.get(field):
+            _fail(STOP_TRANSPORT, "transport receipt is missing %r" % field)
+    return {"verified": True, "basis": basis,
+            "transported_estimand": str(receipt["transported_estimand"]),
+            "derivation_digest": str(receipt["derivation_digest"])}
+
+
+def power_gate(*, artifact: dict[str, Any],
+               permutation_receipt: dict[str, Any],
+               age_range: tuple[float, float],
+               age_range_authority: str,
+               effect_transport_receipt: Any = None,
+               n_simulations: int = POWER_SIMULATIONS_FROZEN,
+               n_permutations: int = FL_PERMUTATIONS_FROZEN,
+               seed: int = POWER_SIMULATION_SEED) -> dict[str, Any]:
+    """The production gate. Fails closed while effect transport is open.
+
+    The previous version computed a confirmation-power verdict by transporting
+    `t / sqrt(n)` from the assembled HC3 regression, while the design document
+    said in as many words that this transport is not validated. Both statements
+    were in the same commit. This is the half that was missing.
+
+    The refusal is unconditional on the caller: no argument re-enables it, and
+    supplying a transport receipt is not sufficient while
+    `EFFECT_TRANSPORT_STATUS` is open, because the module-level status is what
+    records owner approval.
+
+    `planning_power_projection` remains available for sizing and returns the same
+    arithmetic without a verdict.
+    """
+    if EFFECT_TRANSPORT_STATUS != "CLOSED":
+        _fail(STOP_TRANSPORT,
+              "effect transport is %s: the assembled HC3 statistic is not an "
+              "established coordinate for carrying an effect from this nested "
+              "cross-fitted discovery procedure to a fresh 12-donor design "
+              "(measured null spread 1.304x to 1.477x nominal). No production "
+              "power verdict is available. Use planning_power_projection for "
+              "sizing, which cannot authorize anything."
+              % EFFECT_TRANSPORT_STATUS)
+
+    # Reached only once transport is closed by an approved code change.
+    transport = verify_effect_transport_receipt(effect_transport_receipt,
+                                                artifact=artifact)
+    projection = planning_power_projection(
+        artifact=artifact, permutation_receipt=permutation_receipt,
+        age_range=age_range, age_range_authority=age_range_authority,
+        n_simulations=n_simulations, n_permutations=n_permutations, seed=seed)
+    return {**projection,
+            "effect_transport": transport,
+            "production_verdict_capability": "ENABLED",
+            "clears_gate": bool(
+                projection["planning_meets_target_at_worst_design"])}
 
 
 # --------------------------------------------------------------------------

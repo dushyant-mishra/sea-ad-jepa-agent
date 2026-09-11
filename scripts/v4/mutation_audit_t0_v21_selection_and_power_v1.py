@@ -107,32 +107,30 @@ MUTATIONS: list[tuple[str, str, str]] = [
      "    if array.size != n:",
      "    if False:"),
 
-    ("accept a sex coding that is not complete binary",
-     "    if unique_sex.size != 2 or not np.array_equal(unique_sex,\n"
-     "                                                  np.array([0.0, 1.0])):",
-     "    if False:"),
+    ('accept a sex coding that is not complete binary',
+     '    sex_arr = _require_structural_validity("sex", sex, n=n)\n    unique_sex = np.unique(sex_arr)',
+     '    sex_arr = _require_structural_validity("sex", sex, n=n)\n    unique_sex = np.array([0.0, 1.0])'),
 
     # ---- the cross-fit artifact -----------------------------------------
-    ("accept any object as a cross-fit artifact",
-     '    if not isinstance(artifact, dict) or \\\n'
-     '            artifact.get("kind") != "t0_v21_cross_fit_artifact_v1":',
-     "    if False:"),
+    ('accept any object as a cross-fit artifact',
+     '    if not isinstance(artifact, dict) or artifact.get("kind") != ARTIFACT_KIND:',
+     '    if False:'),
 
     ("stop checking that the artifact digest recomputes",
      '    if recomputed != artifact["artifact_digest"]:',
      "    if False:"),
 
-    ("stop checking that each fold trains on the exact complement",
-     "        if len(train) != n - 1 or set(train) != everything - {held}:",
-     "        if False:"),
+    ('stop checking that each fold trains on the exact complement',
+     '        if set(train) != everything - {held}:',
+     '        if False:'),
 
     ("stop checking the score vector against the per-fold predictions",
      "    if not np.array_equal(scores, by_fold):",
      "    if False:"),
 
-    ("allow duplicate donor identifiers",
-     "    if len(set(map(str, ids))) != n:",
-     "    if False:"),
+    ('allow duplicate donor identifiers',
+     '    if len(set(ids)) != n:',
+     '    if False:'),
 
     # ---- power calibration ----------------------------------------------
     ("drop the alpha constraint on the permutation count",
@@ -251,6 +249,63 @@ MUTATIONS: list[tuple[str, str, str]] = [
     ("stop checking where the frozen modules resolved",
      "        if resolved.parent != FROZEN_V20.resolve():",
      "        if False:"),
+
+    # ---- the confirmation-design envelope --------------------------------
+    ("admit a singleton sex level into the confirmation envelope",
+     "CONFIRMATION_SEX_MINORITY_COUNTS = (2, 3, 6)",
+     "CONFIRMATION_SEX_MINORITY_COUNTS = (1, 3, 6)"),
+
+    ("drop the envelope estimability guard",
+     "        if float(leverage.max()) >= 1.0 - 1e-12:",
+     "        if False:"),
+
+    ("let the envelope be built without an authority",
+     "    if not age_range_authority:",
+     "    if False:"),
+
+    ("report the best design in the envelope instead of the worst",
+     "    worst = min(per_design, key=lambda d: (d[\"power_lower_95\"],",
+     "    worst = max(per_design, key=lambda d: (d[\"power_lower_95\"],"),
+
+    # ---- predictor-geometry transport ------------------------------------
+    ("take the best case over the geometry class instead of the worst",
+     "    worst = min(measured, key=lambda m: m[\"hc3_scaling\"])",
+     "    worst = max(measured, key=lambda m: m[\"hc3_scaling\"])"),
+
+    ("measure the discovery side on a surrogate instead of the real score",
+     "        z=z_discovery, predictor=artifact[\"oof_scores\"],",
+     "        z=z_discovery, predictor=np.linspace(-1.0, 1.0, "
+     "len(artifact[\"oof_scores\"])),"),
+
+    ("ignore the stated geometry when simulating",
+     "        shape=geometry_shape)",
+     "        shape=\"gaussian\")"),
+
+    # ---- nested-permutation evidence -------------------------------------
+    ("accept permutation evidence that does not reject",
+     "    if p_upper > ALPHA:",
+     "    if False:"),
+
+    ("accept permutation evidence from a different artifact",
+     '    if receipt.get("artifact_digest") != artifact.get("artifact_digest"):\n        _fail(STOP_PERMUTATION,',
+     '    if False:\n        _fail(STOP_PERMUTATION,'),
+
+    # ---- effect transport ------------------------------------------------
+    ("re-open the production gate while transport is unvalidated",
+     'EFFECT_TRANSPORT_STATUS = "OPEN"',
+     'EFFECT_TRANSPORT_STATUS = "CLOSED"'),
+
+    ("let permutation significance close effect transport",
+     '    "whole_pipeline_permutation_significance",',
+     '    "harmless_placeholder_basis",'),
+
+    ("let a factor read off the observed null spread close transport",
+     '    "observed_null_sd_correction",',
+     '    "another_placeholder_basis",'),
+
+    ("accept permutation evidence with too few permutations",
+     "    if int(receipt.get(\"n_permutations\", 0)) < MIN_PERMUTATIONS_FOR_ALPHA:",
+     "    if False:"),
 ]
 
 
