@@ -1,0 +1,11 @@
+{
+  "status": "CURRENT_POST_ASAP_REPAIR_HANDOFF__NO_TRAINING_AUTHORITY",
+  "latest_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_ASAP_REPAIR_STATUS.md",
+  "created_at": "2026-09-11T17:58:00-04:00",
+  "branch": "handoff/jepa-new-chat-20260911-asap-repair-status",
+  "source_branch": "repair/t0-v21-authority-restoration-20260911",
+  "source_head": "93abcf50e89778585bda1e20f2eab824cc6bae77",
+  "training_authority": false,
+  "protected_partitions_opened": false,
+  "summary": "V21 authority truncation repaired on restoration branch; Claude executor has effect transport fail-closed, but combined integrated candidate still needs clean verification/review. V5 legacy eligibility reachability remains open. No S0-S4, AT8, reader_validation, oracle, partition opening, or training authorized."
+}
