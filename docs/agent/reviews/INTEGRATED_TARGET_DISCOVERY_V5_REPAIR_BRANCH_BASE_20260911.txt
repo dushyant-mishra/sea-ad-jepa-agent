@@ -1,0 +1,3 @@
+Base branch: governance/integrated-target-discovery-v5-handoff-20260911
+Base commit for repair isolation: afd508008d8124e099d3e91f2e25f3f5b6974b9e
+Purpose: integrated target-discovery → V5 external-review repairs. No protected data opening; no V20 modification; training off.
