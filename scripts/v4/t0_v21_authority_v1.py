@@ -1,279 +1,322 @@
 #!/usr/bin/env python3
-"""Fail-closed production authority for the V21 decision path.
+"""V21 production-authority hardening wrapper.
 
-This module intentionally wraps, rather than rewrites, the numerical V21 executor.
-A self-consistent score artifact is not sufficient production evidence: callers must
-also present externally expected source/model authority, fold-level provenance,
-whole-pipeline nested-permutation evidence, a prospectively approved confirmation-
-design receipt, predictor-geometry transport authority, and a geometry-aware power
-calibration receipt.  Protected reader partitions are never valid calibration-
-design sources, and the historical iid-normal surrogate calibration is not a
-production decision path.
+This module restores the complete pre-hardening authority surface and adds the
+post-review bindings that were accidentally lost in 9f98320f.  The historical
+implementation is kept byte-exact in t0_v21_authority_pre_hardening_v1.py so the
+repair is auditable.  Effect transport remains OPEN: receipts can be sealed and
+validated for review, but no production power verdict can be returned.
 """
 from __future__ import annotations
 
-import hashlib
-import json
 import math
 from typing import Any, Mapping, Sequence
 
 import numpy as np
 
-STOP = "STOP_T0_V21_AUTHORITY_NOT_VALID"
-KIND = "t0_v21_authoritative_crossfit_v1"
-PERM_KIND = "t0_v21_nested_permutation_evidence_v1"
-DESIGN_KIND = "t0_v21_confirmation_design_receipt_v1"
-GEOMETRY_KIND = "t0_v21_predictor_geometry_transport_receipt_v1"
-CALIBRATION_KIND = "t0_v21_power_calibration_receipt_v1"
-N_DISCOVERY = 28
-N_CONFIRMATION = 12
-ALPHA = 0.025
-TARGET_POWER = 0.80
-FROZEN_PERMUTATIONS = 9999
-PROTECTED_ROLES = frozenset({"reader_validation", "reader_oracle", "protected_partition"})
-ALLOWED_CONFIRMATION_DESIGN_SOURCES = frozenset({
-    "discovery_only_design_envelope",
-    "pre_unblinding_demographics_authority",
-})
-ALLOWED_GEOMETRY_TRANSPORT_MODES = frozenset({
-    "actual_discovery_residualized_score_geometry",
-    "prospective_conservative_geometry_envelope",
-})
-FORBIDDEN_GEOMETRY_TRANSPORT_MODES = frozenset({
-    "iid_normal_surrogate",
-    "random_normal_surrogate",
-    "representative_synthetic_design",
-})
+import t0_v21_authority_pre_hardening_v1 as _core
 
+STOP = _core.STOP
+TRANSPORT_STOP = "STOP_T0_V21_EFFECT_TRANSPORT_NOT_AUTHORITY_BOUND"
+EFFECT_TRANSPORT_STATUS = "OPEN"
+POWER_GATE_PRODUCTION_VERDICT_CAPABILITY = "DISABLED"
+
+KIND = _core.KIND
+PERM_KIND = _core.PERM_KIND
+DESIGN_KIND = _core.DESIGN_KIND
+GEOMETRY_KIND = _core.GEOMETRY_KIND
+CALIBRATION_KIND = _core.CALIBRATION_KIND
+N_DISCOVERY = _core.N_DISCOVERY
+N_CONFIRMATION = _core.N_CONFIRMATION
+ALPHA = _core.ALPHA
+TARGET_POWER = _core.TARGET_POWER
+FROZEN_PERMUTATIONS = _core.FROZEN_PERMUTATIONS
+PROTECTED_ROLES = _core.PROTECTED_ROLES
+ALLOWED_CONFIRMATION_DESIGN_SOURCES = _core.ALLOWED_CONFIRMATION_DESIGN_SOURCES
+ALLOWED_GEOMETRY_TRANSPORT_MODES = _core.ALLOWED_GEOMETRY_TRANSPORT_MODES
+FORBIDDEN_GEOMETRY_TRANSPORT_MODES = _core.FORBIDDEN_GEOMETRY_TRANSPORT_MODES
+AUTHORITY_FIELDS = _core.AUTHORITY_FIELDS
+FOLD_FIELDS = _core.FOLD_FIELDS
+CALIBRATION_FIELDS = _core.CALIBRATION_FIELDS
+
+# These names are permitted only as receipt labels while transport is OPEN.
+# They are not transport authority.  Production verdict capability remains
+# disabled independently of the label supplied by a caller.
 ALLOWED_EFFECT_ESTIMANDS = frozenset({
-    # Production-calibration receipts may only name estimands whose scale is
-    # anchored by whole-pipeline permutation or a prospective conservative
-    # geometry envelope.  The assembled HC3 `t/sqrt(n)` quantity remains
-    # disallowed until a transport derivation exists.
     "whole_pipeline_permutation_standardized_effect_v1",
     "prospective_conservative_geometry_envelope_effect_v1",
 })
+TRANSPORT_AUTHORIZED_EFFECT_ESTIMANDS = frozenset()
 FORBIDDEN_EFFECT_ESTIMAND_TOKENS = frozenset({
-    "hc3",
-    "t_over_sqrt_n",
-    "t/sqrt(n)",
-    "assembled_hc3",
+    "hc3", "t_over_sqrt_n", "t/sqrt(n)", "assembled_hc3",
 })
-AUTHORITY_FIELDS = (
-    "expression_root_digest",
-    "donor_role_ledger_digest",
-    "donor_order_digest",
-    "molecular_address_digest",
-    "transformation_digest",
-    "nuisance_spec_digest",
-    "estimator_id",
-    "target_code_sha",
-    "contract_sha",
-)
-FOLD_FIELDS = (
-    "held_out_donor_id",
-    "train_donor_ids",
-    "training_data_digest",
-    "ridge_trace_digest",
-    "fitted_target_digest",
-    "prediction",
-)
-CALIBRATION_FIELDS = (
-    "kind",
-    "authoritative_crossfit_digest",
-    "source_authority_digest",
-    "nested_permutation_evidence_digest",
-    "confirmation_design_receipt_digest",
-    "predictor_geometry_transport_digest",
-    "calibration_code_sha",
-    "contract_sha",
-    "n_simulations",
-    "n_permutations",
-    "seed",
-    "alpha",
-    "target_power",
-    "power",
-    "monte_carlo_standard_error",
-    "power_lower_95",
-    "clears_gate",
-    "consumes_predictor_geometry",
-    "uses_iid_normal_surrogate",
-    "effect_estimand",
-)
+
+canonical_digest = _core.canonical_digest
+validate_source_authority = _core.validate_source_authority
+seal_confirmation_design_receipt = _core.seal_confirmation_design_receipt
+validate_confirmation_design_receipt = _core.validate_confirmation_design_receipt
+seal_predictor_geometry_transport_receipt = _core.seal_predictor_geometry_transport_receipt
 
 
 def _fail(message: str) -> None:
     raise RuntimeError(f"{STOP}: {message}")
 
 
-def _plain(value: Any) -> Any:
-    if isinstance(value, np.ndarray):
-        return value.tolist()
-    if isinstance(value, np.generic):
-        return value.item()
-    if isinstance(value, Mapping):
-        return {str(k): _plain(value[k]) for k in sorted(value, key=str)}
-    if isinstance(value, (tuple, list)):
-        return [_plain(v) for v in value]
-    if isinstance(value, (str, int, bool)) or value is None:
-        return value
-    if isinstance(value, float):
-        if not math.isfinite(value):
-            _fail("nonfinite value cannot be hashed")
-        return value
-    _fail(f"unsupported canonical value type {type(value).__name__}")
-
-
-def canonical_digest(value: Any, *, domain: str) -> str:
-    payload = json.dumps(_plain(value), sort_keys=True, separators=(",", ":"),
-                         ensure_ascii=True, allow_nan=False).encode("utf-8")
-    return hashlib.sha256(domain.encode("ascii") + b"\0" + payload).hexdigest()
-
-
 def _require_hex_digest(name: str, value: Any) -> str:
-    text = str(value)
-    if len(text) != 64 or any(c not in "0123456789abcdef" for c in text):
-        _fail(f"{name} must be a lowercase SHA-256 digest")
-    return text
+    return _core._require_hex_digest(name, value)
 
 
-def _require_finite_1d(name: str, value: Any, n: int) -> np.ndarray:
-    arr = np.asarray(value, dtype=np.float64)
-    if arr.shape != (n,) or not np.isfinite(arr).all():
-        _fail(f"{name} must be finite 1-D length {n}")
-    return arr
-
-
-def _require_complete_binary_sex(name: str, value: Any, n: int) -> np.ndarray:
-    arr = _require_finite_1d(name, value, n)
-    uniq = np.unique(arr)
-    if uniq.size != 2 or not np.array_equal(uniq, np.array([0.0, 1.0])):
-        _fail(f"{name} must contain complete binary 0/1 coding")
-    return arr
-
-
-def validate_source_authority(authority: Mapping[str, Any],
-                              expected: Mapping[str, Any]) -> str:
-    if not isinstance(authority, Mapping) or not isinstance(expected, Mapping):
-        _fail("source authority and expected authority must be mappings")
-    missing = [k for k in AUTHORITY_FIELDS if k not in authority]
-    expected_missing = [k for k in AUTHORITY_FIELDS if k not in expected]
-    if missing or expected_missing:
-        _fail(f"source authority fields missing: artifact={missing}, expected={expected_missing}")
-    extra = sorted(set(authority) - set(AUTHORITY_FIELDS))
-    if extra:
-        _fail(f"unexpected source-authority fields {extra}")
-    for field in AUTHORITY_FIELDS:
-        if str(authority[field]) != str(expected[field]):
-            _fail(f"source authority mismatch for {field}")
-    for field in AUTHORITY_FIELDS:
-        if field.endswith("_digest") or field.endswith("_sha"):
-            _require_hex_digest(field, authority[field])
-    return canonical_digest(dict(authority), domain="T0_V21_SOURCE_AUTHORITY_V1")
-
-
-def _validate_legacy_crossfit_structure(cross_fit_artifact: Mapping[str, Any]) -> dict[str, Any]:
-    """Revalidate the legacy/sealed cross-fit structure before any production use.
-
-    A matching digest alone only proves byte stability.  Production authority must
-    also prove the bytes encode exactly the 28-fold leave-one-donor-out structure
-    with valid donor-level arrays and score/fold agreement.
-    """
-    if not isinstance(cross_fit_artifact, Mapping):
-        _fail("cross-fit artifact must be a mapping")
-    if cross_fit_artifact.get("kind") != "t0_v21_cross_fit_artifact_v1":
-        _fail("cross-fit artifact kind is not t0_v21_cross_fit_artifact_v1")
-    if int(cross_fit_artifact.get("n_donors", -1)) != N_DISCOVERY:
-        _fail("cross-fit artifact must declare exactly 28 discovery donors")
-
-    donor_ids = tuple(str(x) for x in cross_fit_artifact.get("donor_ids", ()))
-    if len(donor_ids) != N_DISCOVERY or len(set(donor_ids)) != N_DISCOVERY:
-        _fail("cross-fit must carry exactly 28 unique donor identifiers")
-    y = _require_finite_1d("cross_fit.y", cross_fit_artifact.get("y", ()), N_DISCOVERY)
-    age = _require_finite_1d("cross_fit.age", cross_fit_artifact.get("age", ()), N_DISCOVERY)
-    sex = _require_complete_binary_sex("cross_fit.sex", cross_fit_artifact.get("sex", ()), N_DISCOVERY)
-
-    scores = _require_finite_1d("cross_fit.scores", cross_fit_artifact.get("scores", ()), N_DISCOVERY)
-    folds = cross_fit_artifact.get("folds")
-    if not isinstance(folds, Sequence) or len(folds) != N_DISCOVERY:
+def _validate_ridge_metadata(cross_fit_artifact: Mapping[str, Any]) -> None:
+    folds = tuple(cross_fit_artifact.get("folds", ()))
+    if len(folds) != N_DISCOVERY:
         _fail("cross-fit folds must carry exactly 28 outer folds")
-
-    by_donor = {}
-    fold_ridge_exponents: list[float | None] = []
+    observed: list[float | None] = []
     for fold in folds:
-        if not isinstance(fold, Mapping):
-            _fail("each cross-fit fold must be a mapping")
-        held_out = str(fold.get("held_out_donor_id", ""))
-        if not held_out or held_out in by_donor:
-            _fail("cross-fit folds must have exactly one fold per donor")
-        train = tuple(str(x) for x in fold.get("train_donor_ids", ()))
-        if len(train) != N_DISCOVERY - 1 or held_out in train or set(train) | {held_out} != set(donor_ids):
-            _fail("each cross-fit fold must train on exactly the other 27 discovery donors")
-        for field in FOLD_FIELDS:
-            if field not in fold:
-                _fail(f"cross-fit fold {held_out} missing {field}")
-        for digest_field in ("training_data_digest", "ridge_trace_digest", "fitted_target_digest"):
-            _require_hex_digest(f"fold[{held_out}].{digest_field}", fold[digest_field])
-        pred = float(fold["prediction"])
-        if not math.isfinite(pred):
-            _fail("cross-fit predictions must be finite")
-        ridge_exponent = fold.get("fold_ridge_exponent")
-        if ridge_exponent is None:
-            fold_ridge_exponents.append(None)
-        else:
-            try:
-                ridge_exponent_num = float(ridge_exponent)
-            except (TypeError, ValueError):
-                _fail("fold_ridge_exponent must be numeric when present")
-            if not math.isfinite(ridge_exponent_num):
-                _fail("fold_ridge_exponent must be finite when present")
-            fold_ridge_exponents.append(ridge_exponent_num)
-        by_donor[held_out] = pred
-
-    if set(by_donor) != set(donor_ids):
-        _fail("cross-fit held-out donor set must exactly match donor_ids")
-    for_fold_ridge = cross_fit_artifact.get("fold_ridge_exponents")
-    if not isinstance(for_fold_ridge, Sequence) or len(for_fold_ridge) != N_DISCOVERY:
-        _fail("cross-fit fold_ridge_exponents must carry exactly 28 entries")
-    for declared, observed in zip(for_fold_ridge, fold_ridge_exponents, strict=True):
-        if observed is None:
-            if declared is Note:
-                continue
-            _fail("cross-fit fold_ridge_exponents claims a value not present in the corresponding fold")
+        value = fold.get("fold_ridge_exponent") if isinstance(fold, Mapping) else None
+        if value is None:
+            observed.append(None)
+            continue
         try:
-            declared_num = float(declared)
+            number = float(value)
+        except (TypeError, ValueError):
+            _fail("fold_ridge_exponent must be numeric when present")
+        if not math.isfinite(number):
+            _fail("fold_ridge_exponent must be finite when present")
+        observed.append(number)
+
+    declared = cross_fit_artifact.get("fold_ridge_exponents")
+    if not isinstance(declared, Sequence) or isinstance(declared, (str, bytes)) or len(declared) != N_DISCOVERY:
+        _fail("cross-fit fold_ridge_exponents must carry exactly 28 entries")
+    for got, want in zip(declared, observed, strict=True):
+        if want is None:
+            if got is None:
+                continue
+            _fail("fold_ridge_exponents claims a value not present in the corresponding fold")
+        try:
+            got_num = float(got)
         except (TypeError, ValueError):
             _fail("cross-fit fold_ridge_exponents must be numeric or null")
-        if not math.isfinite(declared_num) or declared_num != observed:
+        if not math.isfinite(got_num) or got_num != want:
             _fail("cross-fit fold_ridge_exponents does not match the per-fold records")
-    recorded = all(v is not None for v in fold_ridge_exponents)
-    vary = recorded and len({float(v) for v in fold_ridge_exponents if v is not None}) > 1
+
+    recorded = all(v is not None for v in observed)
+    vary = recorded and len({float(v) for v in observed if v is not None}) > 1
     if cross_fit_artifact.get("fold_ridge_exponents_recorded") is not recorded:
         _fail("cross-fit fold_ridge_exponents_recorded does not match the fold records")
     if cross_fit_artifact.get("fold_ridge_exponents_vary") is not vary:
         _fail("cross-fit fold_ridge_exponents_vary does not match the fold records")
 
-    scores_from_folds = np.asarray([by_donor[d] for d in donor_ids], dtype=np.float64)
-    if not np.array_equal(scores, scores_from_folds):
-        _fail("cross-fit scores must exactly match fold predictions in donor_ids order")
-    return {
-        "donor_ids": donor_ids, "y": y, "age": age, "sex": sex, "scores": scores,
-        "fold_ridge_exponents": tuple(fold_ridge_exponents),
-        "fold_ridge_exponents_recorded": recorded,
-        "fold_ridge_exponents_vary": vary,
-    }
+
+def seal_authoritative_crossfit(*, cross_fit_artifact: Mapping[str, Any],
+                                source_authority: Mapping[str, Any],
+                                fold_provenance: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    _validate_ridge_metadata(cross_fit_artifact)
+    return _core.seal_authoritative_crossfit(
+        cross_fit_artifact=cross_fit_artifact,
+        source_authority=source_authority,
+        fold_provenance=fold_provenance,
+    )
 
 
 def validate_authoritative_crossfit(artifact: Mapping[str, Any], *,
-                                      expected_source_authority: Mapping[str, Any]) -> dict[str, Any]:
-    authority_digest = validate_source_authority(artifact.get("source_authority", 
-                                                                 {}),
-                                                expected=expected_source_authority)
-    validated = _validate_legacy_crossfit_structure(artifact)
-    artifact_digest = canonical_digest(artifact, domain="T0_V21_AUTHORITATIVE_CROSSFIT_V1")
-    return {"artifact_digest": artifact_digest, "source_authority_digest": authority_digest,
-            "donor_ids": validated["donor_ids"], "y": validated["y"], "age": validated["age"],
-            "sex": validated["sex"], "scores": validated["scores"],
-            "fold_ridge_exponents": validated["fold_ridge_exponents"],
-            "fold_ridge_exponents_recorded": validated["fold_ridge_exponents_recorded"],
-            "fold_ridge_exponents_vary": validated["fold_ridge_exponents_vary"]}
+                                    expected_source_authority: Mapping[str, Any]) -> dict[str, Any]:
+    result = _core.validate_authoritative_crossfit(
+        artifact, expected_source_authority=expected_source_authority)
+    _validate_ridge_metadata(artifact.get("cross_fit_artifact", {}))
+    return result
+
+
+def _permutation_behavior() -> dict[str, Any]:
+    return {
+        "permutation_scope": "at8_across_donors",
+        "donor_ordering": "frozen",
+        "observation_table_row_order": "frozen",
+        "nuisance_design_rebuilt_each_shuffle": True,
+        "standardization_recomputed_each_shuffle": True,
+        "complete_fit_repeated_each_shuffle": True,
+        "nuisance_signature_included_each_shuffle": True,
+        "preserves_nans": True,
+        "preserves_iteration_cap_stopping": True,
+        "shuffled_full_residualized_refit": True,
+        "shuffled_noise_sampling": True,
+        "permutations": FROZEN_PERMUTATIONS,
+    }
+
+
+def nested_permutation_null_digest() -> str:
+    return canonical_digest(_permutation_behavior(), domain="T0_V21_NESTED_PERMUTATION_NULL_V1")
+
+
+def seal_nested_permutation_evidence(*, authoritative_crossfit_digest: str,
+                                     source_authority_digest: str,
+                                     nested_pipeline_code_sha: str,
+                                     contract_sha: str,
+                                     n_permutations: int,
+                                     seed: int,
+                                     p_upper: float,
+                                     null_digest: str | None = None) -> dict[str, Any]:
+    # null_digest is retained for API compatibility but is not trusted; the seal
+    # derives the behavioral-null digest from the frozen procedure itself.
+    base = _core.seal_nested_permutation_evidence(
+        authoritative_crossfit_digest=authoritative_crossfit_digest,
+        source_authority_digest=source_authority_digest,
+        nested_pipeline_code_sha=nested_pipeline_code_sha,
+        contract_sha=contract_sha,
+        n_permutations=n_permutations,
+        seed=seed,
+        p_upper=p_upper,
+        null_digest=nested_permutation_null_digest(),
+    )
+    body = {k: v for k, v in base.items() if k != "evidence_digest"}
+    body.update(_permutation_behavior())
+    body["null_digest"] = nested_permutation_null_digest()
+    body["evidence_digest"] = canonical_digest(body, domain="T0_V21_NESTED_PERMUTATION_EVIDENCE_V1")
+    return body
+
+
+def validate_nested_permutation_evidence(evidence: Mapping[str, Any], *,
+                                         artifact_digest: str,
+                                         source_authority_digest: str,
+                                         expected_pipeline_code_sha: str,
+                                         expected_contract_sha: str,
+                                         expected_evidence_digest: str) -> dict[str, Any]:
+    if not isinstance(evidence, Mapping) or evidence.get("kind") != PERM_KIND:
+        _fail("matching nested-permutation evidence is required")
+    expected_evidence_digest = _require_hex_digest("expected_evidence_digest", expected_evidence_digest)
+    if evidence.get("evidence_digest") != expected_evidence_digest:
+        _fail("nested-permutation evidence is not the externally expected receipt")
+    body = {k: evidence[k] for k in evidence if k != "evidence_digest"}
+    if evidence.get("evidence_digest") != canonical_digest(body, domain="T0_V21_NESTED_PERMUTATION_EVIDENCE_V1"):
+        _fail("nested-permutation evidence digest does not recompute")
+    checks = {
+        "authoritative_crossfit_digest": artifact_digest,
+        "source_authority_digest": source_authority_digest,
+        "nested_pipeline_code_sha": expected_pipeline_code_sha,
+        "contract_sha": expected_contract_sha,
+        "n_permutations": FROZEN_PERMUTATIONS,
+        "alpha": ALPHA,
+        **_permutation_behavior(),
+    }
+    for key, expected in checks.items():
+        if evidence.get(key) != expected:
+            if key == "shuffled_full_residualized_refit":
+                _fail("nested permutation must repeat the shuffled complete residualized refit")
+            _fail(f"nested-permutation evidence mismatch for {key}")
+    if evidence.get("null_digest") != nested_permutation_null_digest():
+        _fail("nested-permutation null digest does not bind the frozen behavioral procedure")
+    p = float(evidence.get("p_upper", float("nan")))
+    if not math.isfinite(p) or not (0.0 < p <= ALPHA):
+        _fail("nested discovery permutation test does not reject at frozen alpha")
+    return {"verified": True, "evidence_digest": evidence["evidence_digest"], "p_upper": p}
+
+
+def validate_predictor_geometry_transport_receipt(receipt: Mapping[str, Any], *,
+                                                  artifact_digest: str,
+                                                  source_authority_digest: str,
+                                                  confirmation_design_receipt_digest: str,
+                                                  expected_contract_sha: str,
+                                                  expected_receipt_digest: str) -> dict[str, Any]:
+    expected_receipt_digest = _require_hex_digest("expected_receipt_digest", expected_receipt_digest)
+    if receipt.get("receipt_digest") != expected_receipt_digest:
+        _fail("predictor-geometry transport receipt is not the externally expected receipt")
+    return _core.validate_predictor_geometry_transport_receipt(
+        receipt,
+        artifact_digest=artifact_digest,
+        source_authority_digest=source_authority_digest,
+        confirmation_design_receipt_digest=confirmation_design_receipt_digest,
+        expected_contract_sha=expected_contract_sha,
+    )
+
+
+def _validate_effect_estimand(effect_estimand: str) -> str:
+    value = str(effect_estimand)
+    lower = value.lower()
+    if value not in ALLOWED_EFFECT_ESTIMANDS or any(token in lower for token in FORBIDDEN_EFFECT_ESTIMAND_TOKENS):
+        _fail("effect_estimand is not an enumerated non-HC3 calibration label")
+    return value
+
+
+def seal_power_calibration_receipt(**kwargs: Any) -> dict[str, Any]:
+    kwargs = dict(kwargs)
+    kwargs["effect_estimand"] = _validate_effect_estimand(kwargs.get("effect_estimand", ""))
+    return _core.seal_power_calibration_receipt(**kwargs)
+
+
+def validate_power_calibration_receipt(receipt: Mapping[str, Any], *,
+                                       artifact_digest: str,
+                                       source_authority_digest: str,
+                                       nested_permutation_evidence_digest: str,
+                                       confirmation_design_receipt_digest: str,
+                                       predictor_geometry_transport_digest: str,
+                                       expected_calibration_code_sha: str,
+                                       expected_contract_sha: str,
+                                       expected_calibration_receipt_digest: str) -> dict[str, Any]:
+    expected_calibration_receipt_digest = _require_hex_digest(
+        "expected_calibration_receipt_digest", expected_calibration_receipt_digest)
+    if receipt.get("receipt_digest") != expected_calibration_receipt_digest:
+        _fail("power calibration receipt is not the externally expected receipt")
+    _validate_effect_estimand(str(receipt.get("effect_estimand", "")))
+    return _core.validate_power_calibration_receipt(
+        receipt,
+        artifact_digest=artifact_digest,
+        source_authority_digest=source_authority_digest,
+        nested_permutation_evidence_digest=nested_permutation_evidence_digest,
+        confirmation_design_receipt_digest=confirmation_design_receipt_digest,
+        predictor_geometry_transport_digest=predictor_geometry_transport_digest,
+        expected_calibration_code_sha=expected_calibration_code_sha,
+        expected_contract_sha=expected_contract_sha,
+    )
+
+
+def decision_capable_power_gate(*, artifact: Mapping[str, Any],
+                                expected_source_authority: Mapping[str, Any],
+                                permutation_evidence: Mapping[str, Any],
+                                expected_nested_pipeline_code_sha: str,
+                                expected_nested_permutation_evidence_digest: str,
+                                confirmation_design_receipt: Mapping[str, Any],
+                                expected_confirmation_design_receipt_digest: str,
+                                predictor_geometry_transport_receipt: Mapping[str, Any],
+                                expected_predictor_geometry_transport_digest: str,
+                                power_calibration_receipt: Mapping[str, Any],
+                                expected_power_calibration_receipt_digest: str,
+                                expected_calibration_code_sha: str) -> dict[str, Any]:
+    verified = validate_authoritative_crossfit(
+        artifact, expected_source_authority=expected_source_authority)
+    expected_contract = str(expected_source_authority["contract_sha"])
+    perm = validate_nested_permutation_evidence(
+        permutation_evidence,
+        artifact_digest=verified["artifact_digest"],
+        source_authority_digest=verified["source_authority_digest"],
+        expected_pipeline_code_sha=expected_nested_pipeline_code_sha,
+        expected_contract_sha=expected_contract,
+        expected_evidence_digest=expected_nested_permutation_evidence_digest,
+    )
+    design = validate_confirmation_design_receipt(
+        confirmation_design_receipt,
+        expected_contract_sha=expected_contract,
+        expected_receipt_digest=expected_confirmation_design_receipt_digest,
+    )
+    geometry = validate_predictor_geometry_transport_receipt(
+        predictor_geometry_transport_receipt,
+        artifact_digest=verified["artifact_digest"],
+        source_authority_digest=verified["source_authority_digest"],
+        confirmation_design_receipt_digest=design["receipt_digest"],
+        expected_contract_sha=expected_contract,
+        expected_receipt_digest=expected_predictor_geometry_transport_digest,
+    )
+    validate_power_calibration_receipt(
+        power_calibration_receipt,
+        artifact_digest=verified["artifact_digest"],
+        source_authority_digest=verified["source_authority_digest"],
+        nested_permutation_evidence_digest=perm["evidence_digest"],
+        confirmation_design_receipt_digest=design["receipt_digest"],
+        predictor_geometry_transport_digest=geometry["receipt_digest"],
+        expected_calibration_code_sha=expected_calibration_code_sha,
+        expected_contract_sha=expected_contract,
+        expected_calibration_receipt_digest=expected_power_calibration_receipt_digest,
+    )
+    # Receipt validity is necessary but not sufficient.  The owner-controlled
+    # module status is the only re-enable point; caller arguments cannot override it.
+    if EFFECT_TRANSPORT_STATUS != "CLOSED":
+        raise RuntimeError(f"{TRANSPORT_STOP}: effect transport is {EFFECT_TRANSPORT_STATUS}")
+    raise RuntimeError(f"{TRANSPORT_STOP}: no transport-authorized effect estimand is frozen")
