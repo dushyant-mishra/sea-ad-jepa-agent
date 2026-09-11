@@ -1,14 +1,14 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-09-11
-Status: `CURRENT_T0_V21_DRAFT_EXTERNAL_REVIEW_PENDING_EXECUTABLE_REVIEW__V5_HARDENING__NO_TRAINING_AUTHORITY`
+Status: `CURRENT_TARGET_DISCOVERY_TO_V5_INTEGRATED_EXTERNAL_REVIEW__NO_TRAINING_AUTHORITY`
 
 ## Read first
 
 Use `main` for project-current governance/startup context. Read in this order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md`
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md`
 3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json`
 4. `docs/agent/T0_V21_PROSPECTIVE_DESIGN_DRAFT.md` on the live V21 branch
 5. `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json`
@@ -17,9 +17,9 @@ Use `main` for project-current governance/startup context. Read in this order:
 8. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
 9. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
 
-The prior 2026-09-10 FINAL/F4 handoff remains historical context, not the startup authority.
+The earlier `JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md` remains useful historical context, but it is superseded for startup by the integrated target-discovery→V5 handoff because the preceding V5 review did not independently re-audit upstream target discovery end-to-end.
 
-Before writing, re-fetch live heads for:
+Before writing or executing, re-fetch live heads for:
 
 - `main`
 - `t0/v20-pathology-blind-materialization-20260908`
@@ -27,6 +27,24 @@ Before writing, re-fetch live heads for:
 - `planning/v5-full-population-cheat-proofing-20260909`
 
 Branch names do not confer scientific authority.
+
+## Integrated production-review boundary
+
+For production authority, target discovery and V5 are one scientific chain:
+
+`raw SEA-AD substrate → discovery population/masks → target discovery → target statistical qualification/freeze → teacher target → V5 student/teacher training → downstream evaluation`
+
+A V5 anti-cheat review by itself is not a complete production-pipeline review. A technically strong V5 model can still learn a circular, confounded or leakage-derived target. Conversely, a valid biological target can still fail if V5 finds identity, technical or same-cell shortcuts.
+
+Current target-discovery external-review status:
+
+`IN_PROGRESS_NOT_YET_END_TO_END_EXTERNAL_CODE_EVIDENCE_REVIEW_COMPLETE`
+
+Current V5 external-review verdict at `1de20b1c222c7fb27fcef5ec1a4b798d5b26a534`:
+
+`MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING`
+
+Training remains OFF.
 
 ## Current project boundary
 
@@ -40,7 +58,7 @@ Authenticated production population:
 
 Synthetic data may be used for unit/mechanics tests only. It may not set production biology, dimensions, schedules, thresholds or training authority.
 
-## T0
+## T0 / target discovery
 
 Frozen V20:
 `t0/v20-pathology-blind-materialization-20260908 @ d5d67e21398da92e39095afd864b4fb9ebe3da02`
@@ -51,14 +69,14 @@ V20 remains immutable:
 - rare tail: `RARE_TAIL_UNDERDETERMINED_MEASUREMENT`
 - training unauthorized
 
-V21 live draft observed before this governance update:
+V21 live draft observed for this governance update:
 `t0/v21-prospective-design-20260910 @ 11e76d36ace556ac48cdd2992995e63c1e35df18`
 
 Status: `DRAFT_FOR_REVIEW_NOT_FROZEN`.
 
 No fresh AT8 value has been opened, no protected partition has been opened, estimator selection has not run, the power gate has not run, and V21 has not executed.
 
-The design now records:
+The design records:
 
 - 28 discovery donors for all method/estimator/ridge/power choices;
 - 18 spent historical-validation donors for development/internal sensitivity only;
@@ -68,21 +86,33 @@ The design now records:
 - MTG retained as the T1 confirmation tissue;
 - cross-region work is secondary generalisation, not independent confirmation;
 - S0–S4 estimator family closed and ranking/tie-break rules written prospectively;
-- nested outer-LODO/inner-LOODO OOF power design and a conservative jackknife influence bound written into the draft.
+- nested outer-LODO/inner-LODO OOF power design and conservative jackknife influence envelope written into the draft.
 
-**Critical boundary:** `11e76d36` is a design-document update only. The new estimator-selection and nested OOF power-gate implementation has not yet been externally reviewed as executable code. Do **not** run S0–S4 selection until that code review/adversarial test pass closes.
+**Critical boundary:** `11e76d36` is a design-document update, not executable discovery authority. The S0–S4 implementation, nested OOF/HC3 construction, jackknife power implementation, raw discovery lineage and frozen target→V5 lineage have not yet closed external code/evidence review.
+
+Do **not** run S0–S4 selection until that external/adversarial executable review closes.
+
+Do **not** open fresh `reader_validation` or `reader_oracle` while any confirmation result could change a design choice.
 
 Standing rule:
 `IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK`
 
-Claude remains on T0 unless the owner explicitly changes scope.
-
 ## V5
 
-Current live engineering branch observed before this governance update:
+Current live engineering branch observed for this governance update:
 `planning/v5-full-population-cheat-proofing-20260909 @ 1de20b1c222c7fb27fcef5ec1a4b798d5b26a534`
 
-The uploaded `stage81a3r_corrected_real_train.zip` exactly closes the corrected TRAIN cache only:
+The V5 external review found a credible anti-shortcut design but did not authorize production training. Confirmed/open items include:
+
+- fix the asymmetric-zero cosine edge case in the same-cell technical intervention probe and add numerical edge-case tests;
+- replace/self-close report-level rejection-power assertions with execution of the actual frozen gate over deterministic controls and hash-bound raw outputs;
+- prove the real optimizer path cannot execute even one update without a valid pre-execution receipt;
+- run donor-held-out nuisance-recovery attacks for donor/batch/library/depth/source/specimen structure;
+- run deliberate identity, same-cell, shared-view, lookup, duplicate, technical-only and corrupted-biology attacks;
+- close the exact target-discovery/freeze→V5 teacher-target lineage;
+- obtain clean exact-head qualification evidence on the final candidate.
+
+The uploaded corrected TRAIN cache exactly closes only:
 
 - 42/42 corrected TRAIN counts/meta shard pairs;
 - 4,726 physical TRAIN rows;
@@ -118,12 +148,14 @@ Production dimensions remain unresolved; historical 5/96/160/224/320/512 are not
 
 ## Runtime boundary
 
-Major discovery/calibration/checkpoint assets under `/mnt/data` are documented in `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json` and the 2026-09-11 handoff.
+Major discovery/calibration/checkpoint assets under `/mnt/data` are documented in `docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json` and the canonical integrated handoff.
 
 `/mnt/data/66e64913-959f-4a7c-bbfe-6ff906fb281d.npz` remains `PROVENANCE_MISMATCH_DO_NOT_USE`.
 
-## Permanent rule
+## Permanent rules
 
 A decreasing loss, passing unit test/CI, branch name, smoke test, design-document closure or mechanically healthy checkpoint is not biological/training authority.
 
-**Training remains OFF** until exact production expression identity, prospective anti-cheat/QC/power gates, donor-level evidence, production dimensions, production-geometry GPU qualification, bounded qualification, postqualification and independent review all close.
+Target discovery must be independently qualified and frozen before V5 can claim a production teacher target. V5 must then be shown unable to bypass that frozen target lineage or its anti-cheat gates.
+
+**Training remains OFF** until exact production expression identity, target-discovery qualification, prospective anti-cheat/QC/power gates, donor-level evidence, production dimensions, production-geometry GPU qualification, bounded qualification, postqualification and a fresh integrated independent review all close.
