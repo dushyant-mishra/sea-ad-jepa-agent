@@ -1,16 +1,34 @@
-T0 V2 / V21-T1 Claude-ready latest head
+T0 V2 / V21-T1 Claude-ready live-ref rule
 
 Branch:
-  repair/t0-v21-authority-restoration-20260911
+  handoff/jepa-t0-v2-claude-ready-20260911
 
-Latest commit after branch-record update:
-  71a0773d74f6cfb345ad9be51ff782129f6f7e95
+DO NOT use this file as a permanent exact HEAD pin.
+Updating a head-note file creates a new commit and therefore makes any embedded
+"latest HEAD" SHA stale by construction.
+
+Required procedure before acting:
+  git fetch origin --prune
+  git rev-parse origin/handoff/jepa-t0-v2-claude-ready-20260911
+
+Then record that observed SHA in the execution/verification receipt you produce.
+Do not infer authority from the branch name or from an older SHA recorded in a handoff.
 
 Read first:
   START_HERE.md
   docs/agent/CLAUDE_T0_V2_WORK_ORDER_20260911.md
   docs/agent/JEPA_LATEST_HANDOFF_POINTER.json
-  docs/agent/T0_V2_CLAUDE_READY_BRANCH_RECORD_20260911.md
+  docs/agent/JEPA_ENVIRONMENT_RED_TEAM_AUDIT_20260911.md
+
+For FULL104/B2 on the GPU laptop:
+  docs/agent/FULL104_B2_GPU_RUN_POINTER.txt
+  docs/agent/FULL104_B2_VERIFIER_RUNBOOK_20260911.md
 
 Authority boundary:
-  NO_PRODUCTION_TRAINING_AUTHORITY
+  EFFECT_TRANSPORT_STATUS = OPEN
+  POWER_GATE_PRODUCTION_VERDICT_CAPABILITY = DISABLED
+  NO S0-S4
+  NO AT8
+  NO reader_validation
+  NO oracle
+  NO PRODUCTION TRAINING AUTHORITY
