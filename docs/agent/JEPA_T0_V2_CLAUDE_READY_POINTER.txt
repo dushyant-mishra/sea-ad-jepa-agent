@@ -1,0 +1,21 @@
+Immediate Claude continuation pointer — 2026-09-11
+
+Start branch:
+  repair/t0-v21-authority-restoration-20260911
+
+Latest work-order commit when this pointer was written:
+  e7658d0a5da96dee482ac426273c88dba2f31e3d
+
+Read first:
+  START_HERE.md
+  docs/agent/CLAUDE_T0_V2_WORK_ORDER_20260911.md
+  docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_ASAP_REPAIR_STATUS.md if present on the handoff branch for historical context
+
+Core status:
+  NO_PRODUCTION_TRAINING_AUTHORITY
+  V21_AUTHORITY_API_RESTORED pending exact-head verification
+  EFFECT_TRANSPORT_STATUS remains OPEN
+  POWER_GATE_PRODUCTION_VERDICT_CAPABILITY remains DISABLED
+  S0-S4 / AT8 / reader_validation / oracle / training remain unauthorized
+
+Do not start from stale 93abcf50 if the live repair branch is ahead. Re-fetch live heads first.
