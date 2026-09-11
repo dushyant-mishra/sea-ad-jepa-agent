@@ -1,3 +1,40 @@
+# START HERE — JEPA T0 V2 Claude-Ready Repair Branch
+
+Date: 2026-09-11
+Status: `CLAUDE_READY_T0_V2_CONTINUATION__NO_TRAINING_AUTHORITY`
+
+## Immediate instruction for Claude / next agent
+
+This branch carries the repaired T0 V2 / V21-T1 continuation work order. Read these first:
+
+1. `docs/agent/CLAUDE_T0_V2_WORK_ORDER_20260911.md`
+2. `docs/agent/JEPA_T0_V2_CLAUDE_READY_POINTER.txt`
+3. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+4. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
+5. `docs/agent/CURRENT_SUPERSESSION_MAP.md`
+
+Re-fetch live heads before acting. Branch names do not confer authority.
+
+Current intended continuation head when this START file was written:
+
+`repair/t0-v21-authority-restoration-20260911`
+
+This branch now includes the V21 authority restoration/API-surface guard and the fail-closed executor successor lineage. The previous ASAP handoff branch `handoff/jepa-new-chat-20260911-asap-repair-status` is useful historical context, but it was created from stale `93abcf50...`; the live restoration branch advanced afterward.
+
+## Hard boundary
+
+Training remains OFF. No S0-S4 production run, no real power-gate verdict, no AT8 opening, no protected partition opening, no `reader_validation`, no oracle, no V21 freeze claim, and no V5 training is authorized here.
+
+Required work now: verify or finish the clean exact-head T0 V2 repaired candidate, preserving:
+
+- `V21_AUTHORITY_API_RESTORED = TRUE` only after exact-head tests pass;
+- `EFFECT_TRANSPORT_STATUS = OPEN`;
+- `POWER_GATE_PRODUCTION_VERDICT_CAPABILITY = DISABLED`;
+- `S0_S4_EXECUTION_AUTHORITY = FALSE`;
+- `TRAINING_AUTHORITY = FALSE`.
+
+---
+
 # Start Here — JEPA v4
 
 This repository preserves several generations of JEPA research history. Do **not** infer the current execution state from old v1-v3 dashboards, dated Stage81 documents, historical `scripts/`, or archived outputs.
