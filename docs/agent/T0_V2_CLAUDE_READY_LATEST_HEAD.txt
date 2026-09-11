@@ -1,0 +1,16 @@
+T0 V2 / V21-T1 Claude-ready latest head
+
+Branch:
+  repair/t0-v21-authority-restoration-20260911
+
+Latest commit after branch-record update:
+  71a0773d74f6cfb345ad9be51ff782129f6f7e95
+
+Read first:
+  START_HERE.md
+  docs/agent/CLAUDE_T0_V2_WORK_ORDER_20260911.md
+  docs/agent/JEPA_LATEST_HANDOFF_POINTER.json
+  docs/agent/T0_V2_CLAUDE_READY_BRANCH_RECORD_20260911.md
+
+Authority boundary:
+  NO_PRODUCTION_TRAINING_AUTHORITY
