@@ -1,20 +1,19 @@
 """Regression guards for the September 2026 F1 review closeout.
 
 These tests encode the concrete invariants raised by the unresolved PR #6
-review threads.  They are intentionally self-contained: no protected external
+review threads. They are intentionally self-contained: no protected external
 artifacts are required to exercise them.
+
+Static source guards are only the first layer. A scientific blocker is not
+closed merely because these tests pass; behavioral/adversarial, surrounding,
+provenance, and independent-reread evidence are required as well.
 """
 from __future__ import annotations
 
 import ast
-import inspect
-import json
 import sys
-import tempfile
 import unittest
 from pathlib import Path
-
-import numpy as np
 
 REPO = Path(__file__).resolve().parents[1]
 V4 = REPO / "scripts" / "v4"
@@ -27,13 +26,18 @@ def source(path: str) -> str:
 
 
 def function_source(path: str, name: str) -> str:
+    """Return source for a top-level function or class method named ``name``."""
     text = source(path)
     tree = ast.parse(text)
     lines = text.splitlines()
-    for node in tree.body:
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == name:
-            return "\n".join(lines[node.lineno - 1: node.end_lineno])
-    raise AssertionError(f"missing function {name} in {path}")
+    matches = [node for node in ast.walk(tree)
+               if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+               and node.name == name]
+    if len(matches) != 1:
+        raise AssertionError(
+            f"expected exactly one function/method {name!r} in {path}; found {len(matches)}")
+    node = matches[0]
+    return "\n".join(lines[node.lineno - 1: node.end_lineno])
 
 
 class ReviewCloseoutRegressionTests(unittest.TestCase):
