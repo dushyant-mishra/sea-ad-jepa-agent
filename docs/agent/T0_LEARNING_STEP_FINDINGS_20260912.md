@@ -1,7 +1,10 @@
 # T0 — the learning step, and what it means for future designs
 
 Date: 2026-09-12
-Status: `T0_DISCOVERY_LEARNING_STEP_NOT_ESTABLISHED__COMPARISON_UNRESOLVED_AT_N28`
+Status: `V20_DID_NOT_DEMONSTRATE_INCREMENTAL_EXPRESSION_PREDICTION__SUCCESSOR_QUESTION_OPEN`
+
+Revised 2026-09-12 after external review corrected two overreaches in the first
+version. See §4 and §9.
 Supersedes the framing in `T0_CLOSEOUT_HANDOFF_20260911.md`, which named effect
 transport as the blocker. It is not the first blocker. This document says why.
 
@@ -9,6 +12,23 @@ Nothing here changes an authority. Training remains off, the protected partition
 remain closed, V20 remains immutable.
 
 ---
+
+## 0. The interpretation to carry forward
+
+> **V20 is not evidence that the biological target is absent.** It is evidence
+> that the frozen V20 high-dimensional donor-level ridge formulation failed to
+> demonstrate incremental expression-based prediction over its nuisance-only
+> limit. Its extreme shrinkage, monotone boundary-seeking CV trajectory, and near
+> identity with the λ→∞ comparator show that the fitted expression contribution
+> effectively collapsed. Therefore transport and confirmation of the V20 effect
+> should not proceed as though a qualified expression target had been
+> established.
+
+The successor question is open and worth pursuing:
+
+> Can the existing cellular dataset support a better-qualified,
+> low-effective-dimensional biological representation of AT8 while preserving
+> donor-level independence and confirmation discipline?
 
 ## 1. Bottom line
 
@@ -94,25 +114,61 @@ of interest, and the reverse is equally possible.
 
 ---
 
-## 4. The structural diagnosis
+## 4. What is and is not a structural limit
 
-T0 collapses 638,150 cells (20,804 immune) into **46 donor-level numbers**. After
-that collapse the cells buy nothing statistically: it is an n = 46 regression with
-p ≈ 24,000, split 28 discovery / 18 confirmation, with 12 more sealed.
+**Corrected after review.** The first version of this section said donor-level
+pseudobulk regression on this cohort was structurally dead because p ≫ n. That
+does not follow and is withdrawn.
 
-Both ends are short, and the shortfall is arithmetic rather than a tuning problem:
+**p ≫ n does not preclude learning.** If the biology lives on a low-dimensional
+manifold, a sparse programme, a small number of pathways, or a pretrained
+representation, a 24,482-dimensional starting matrix can still contain a learnable
+low-dimensional signal. What V20 showed is that *its particular representation,
+ridge objective and endpoint formulation* did not establish that signal. Likewise
+`edf ≤ 0.28` describes the fitted V20 solution at its selected λ; it says nothing
+about the intrinsic dimensionality of the true biological signal.
 
-| | available | needed |
+**The cells do not change the sample size of the outcome, and the first version of
+this document was dangerously wrong about that.** It claimed the design "throws
+away four orders of magnitude of sample size" and recommended moving the
+statistics to where the dataset is large. AT8 is measured **once per donor**, so
+every cell of a donor inherits the same outcome value. Those cells are not
+independent pathology observations, and treating them as such is pseudoreplication.
+
+For any relationship of the form `cell biology → donor-level pathology`:
+
+```
+n_independent_pathology_units = 46,   not 638,150
+```
+
+**What the cells are genuinely for** is measuring the predictor well, and that is
+worth a great deal: cell-state proportions, rare-state abundance, neighbourhood
+structure, expression programmes, conditional cell-state distributions,
+within-donor heterogeneity, cell-state-specific pathway scores, learned
+representations. The correct shape is
+
+```
+638,150 cells → a well-measured, low-dimensional representation of 46 donors
+              → donor-level pathology inference at n = 46
+```
+
+There is a quantitative reason this helps. Attenuation bounds an observed
+correlation by the reliability of its measurements, roughly
+`ρ_observed ≈ ρ_true √reliability`. Reducing noise in the donor representation
+raises the achievable ρ toward its ceiling without touching the outcome. The cells
+buy real power — through the predictor, which is exactly where they legitimately
+can.
+
+**The one constraint no representation can relax.** Confirmation power depends
+only on ρ and the confirmation cohort size:
+
+| | available | needed at ρ ≈ 0.48 |
 | --- | --- | --- |
-| donors to learn a 24,482-dim predictor | 28 | far more |
-| donors to confirm ρ ≈ 0.48 at 80% power | 12 | 22 (α=0.05, frozen nuisance) to 33 (current design) |
+| confirmation donors | 12 | 22 (α = 0.05, frozen nuisance) to 33 (current design) |
 
-No estimator choice fixes either end. This is a property of a design that discards
-the dimension the dataset is actually large in.
-
-**What this does not say.** It does not say immune-state programs are unrelated to
-tau pathology. It rules out *donor-level pseudobulk regression on this cohort*,
-which is a much narrower claim.
+A better representation helps only by raising ρ past the bar. At n = 12 with the
+nuisance frozen and α = 0.05 that bar is **ρ ≥ 0.61**. Any successor should be
+checked against it at the design stage rather than after the work.
 
 ---
 
@@ -144,10 +200,11 @@ and it produced confident, wrong answers. Anchor to the project's own measured
 results — V20's `t = 1.9002, df = 12` implies ρ ≈ 0.48 and was available the whole
 time.
 
-**Do not let n at the analysis level be set by an aggregation choice made
-upstream.** If a question needs donor-level inference, the donor count is the
-sample size no matter how many cells were collected. Where the dataset is large is
-where the statistics should live.
+**Separate the sample size of the outcome from the quality of the predictor.**
+If a question needs donor-level inference, the donor count is the sample size no
+matter how many cells were collected. Use the cells to measure the donor
+representation better and to keep its effective dimensionality low — never as
+replicate observations of a donor-level outcome.
 
 **Keep the confirmation-design levers explicit.** Freezing the nuisance
 coefficients from development donors rather than re-estimating four columns on
@@ -157,6 +214,30 @@ that donor HC3 leverage exactly 1.0 and is inestimable outright — with the rea
 31F/15M cohort ratio, a fresh 12 has a **6.0%** chance of landing there.
 
 ---
+
+## 5b. The successor shape, and what a permutation test would and would not settle
+
+Not a rerun of V20, and not an abandonment of donor-level target discovery. The
+dataset-first shape is:
+
+```
+raw cells → qualified biological representation (no protected AT8)
+          → small, structured donor representation
+          → AT8 association at n = 46, with confirmation discipline intact
+```
+
+The point is to stop asking ridge to discover biology from 24,482 essentially raw
+molecular features and 28 donors, and instead to arrive at the donor-level step
+with a deliberately low-dimensional, independently qualified representation.
+
+**On the whole-procedure permutation test.** Permuting AT8 and re-running the
+complete V20 discovery machinery, including tuning and selection, would answer:
+*does the V20 pipeline extract more donor-level predictive structure than
+exchangeability would produce?* That is a legitimate closure test for V20 as
+history. It would **not** answer whether AT8 is biologically predictable from this
+dataset, and it would say nothing about whether another representation works.
+Given the exact `L_∞` result, it is worth running only if a rigorous postmortem of
+V20 is wanted. **The successor architecture should not be made to depend on it.**
 
 ## 6. What is preserved and remains correct
 
@@ -180,7 +261,9 @@ that donor HC3 leverage exactly 1.0 and is inestimable outright — with the rea
 | achievable ρ is 0.07–0.40 | **void** — an artifact of a 12-gene simulation |
 | "the learner selects +2.0 even on pure noise" | **wrong as stated** — 40% of seeds select +2.0, the rest select −6.0; that instability is a property of the toy, not the real data |
 | "every grid point is worse than predicting nothing" | **not established** — the null asymptote spans 1.51–2.51 across outcome distributions |
-| effect transport is the first blocker | **superseded** — the learning step is upstream of it |
+| effect transport is the first blocker | **superseded** — incremental expression prediction was never established |
+| "donor-level regression on this cohort is structurally dead" | **withdrawn** — p ≫ n does not preclude learning; V20's representation and objective failed, which is narrower |
+| "the design throws away four orders of magnitude of sample size" | **withdrawn, and it was the most damaging claim** — AT8 is one value per donor, so cells are not independent outcome observations; the recommendation would have invited pseudoreplication |
 
 ---
 
