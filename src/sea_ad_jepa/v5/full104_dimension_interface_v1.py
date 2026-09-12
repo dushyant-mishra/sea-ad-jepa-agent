@@ -10,6 +10,7 @@ FULL104_DIMENSION_INPUT_ARTIFACT_SCHEMA = "JEPA_V5_FULL104_DIMENSION_INPUT_ARTIF
 EXPECTED_BLOCK_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 EXPECTED_CONTRACT_SHA256 = "612b45742ad80498cbe2f061a75af08c0a10692dc731e0ac8e649417b7e62f17"
 EXPECTED_AUDIT_SHA256 = "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf"
+EXPECTED_METADATA_SQLITE_SHA256 = "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
 EXPECTED_SELECTION_SHA256 = "edec0fe29d1425ecbe9fa889a610c4ce18621ae060c8144866315db57c3fc62b"
 EXPECTED_SELECTION_MANIFEST_SHA256 = "3db3614bf544b183143f39b27bad516b3a7a75284df4b2410d9f3e99f0b0842e"
 
@@ -56,13 +57,13 @@ def project_full104_receipt_for_dimension_authority(receipt: Mapping[str, object
         "block_manifest_sha256": EXPECTED_BLOCK_MANIFEST_SHA256,
         "materialization_contract_sha256": EXPECTED_CONTRACT_SHA256,
         "materialization_audit_sha256": EXPECTED_AUDIT_SHA256,
+        "metadata_sqlite_sha256": EXPECTED_METADATA_SQLITE_SHA256,
         "selection_sha256": EXPECTED_SELECTION_SHA256,
         "selection_manifest_sha256": EXPECTED_SELECTION_MANIFEST_SHA256,
     }
     for name, expected in expected_hashes.items():
         if _sha(receipt.get(name), name) != expected:
             raise RuntimeError(f"STOP_FULL104_DIMENSION_INTERFACE_{name.upper()}_MISMATCH")
-    _sha(receipt.get("metadata_sqlite_sha256"), "metadata_sqlite_sha256")
 
     for name, expected in _EXPECTED_GEOMETRY.items():
         value = receipt.get(name)
