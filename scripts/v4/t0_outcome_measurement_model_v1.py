@@ -501,7 +501,9 @@ def _standardize_with(train: np.ndarray, target: np.ndarray
 def run_steps_1_to_5(values: dict[int, np.ndarray], R: np.ndarray,
                      order: Sequence[int], *,
                      reliability_intervals: dict[str, tuple[float, float]] | None
-                     = None) -> StepsResult:
+                     = None,
+                     theta12_interval: tuple[float, float] | None = None
+                     ) -> StepsResult:
     """Steps 1-5 only. Never step 0 -- see section 5.2.1 termination note."""
     cont = [c for c in order if c != ORDINAL_IDX]
 
@@ -525,10 +527,14 @@ def run_steps_1_to_5(values: dict[int, np.ndarray], R: np.ndarray,
                            detail={"reason": "interval_too_wide",
                                    "widths": widths})
 
-    # STEP 3 -- parsimony of the scoring map, one declared exception
-    theta12 = _theta_edge(fit, (12, 13))
-    method_established = bool(theta12 is not None
-                              and theta12["excludes_zero"])
+    # STEP 3 -- parsimony of the scoring map, one declared exception.
+    # Method dependence counts as ESTABLISHED only when the bootstrap interval
+    # for theta_12 excludes zero. The caller supplies that interval; absent it
+    # the exception cannot fire, which is the conservative direction.
+    method_established = bool(
+        theta12_interval is not None
+        and np.isfinite(theta12_interval[0]) and np.isfinite(theta12_interval[1])
+        and (theta12_interval[0] > 0.0 or theta12_interval[1] < 0.0))
     if method_established and "M2a" in admissible:
         chosen = "M2a"
     elif "M1a" in admissible:
@@ -540,12 +546,14 @@ def run_steps_1_to_5(values: dict[int, np.ndarray], R: np.ndarray,
                                "method_established": method_established})
 
 
-def _theta_edge(fit: FactorFit, edge: tuple[int, int]) -> dict | None:
+def theta_edge_value(fit: FactorFit, edge: tuple[int, int]) -> float | None:
+    """The fitted residual covariance on a declared edge, or None if the edge
+    did not survive."""
     if edge not in fit.edges:
         return None
     i = fit.order.index(edge[0])
     j = fit.order.index(edge[1])
-    return {"value": float(fit.theta[i, j]), "excludes_zero": False}
+    return float(fit.theta[i, j])
 
 
 # ===========================================================================

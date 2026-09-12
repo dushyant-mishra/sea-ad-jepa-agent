@@ -690,3 +690,56 @@ def test_specification_gaps_are_declared_not_hidden():
     assert len(M.SPECIFICATION_GAPS) >= 2
     joined = " ".join(M.SPECIFICATION_GAPS)
     assert "ULS" in joined and "polyserial" in joined
+
+
+# ===========================================================================
+# section 11 step 3 -- the declared method-dependence exception
+# ===========================================================================
+
+def _steps(seed, rel, theta12=None):
+    v = make_cohort(seed=seed, missing_biochem=0)
+    R = M.latent_gaussian_matrix(v, CONT)
+    return M.run_steps_1_to_5(v, R, CONT, reliability_intervals=rel,
+                              theta12_interval=theta12)
+
+
+REL_BOTH = {"M1a": (0.62, 0.80), "M2a": (0.64, 0.82)}
+
+
+def test_method_exception_does_not_fire_without_an_interval():
+    """Absent evidence, the conservative branch must be taken."""
+    res = _steps(9, REL_BOTH, theta12=None)
+    assert res.terminal == M.T_PASS and res.candidate == "M1a"
+    assert res.detail["method_established"] is False
+
+
+def test_method_exception_does_not_fire_when_the_interval_spans_zero():
+    res = _steps(9, REL_BOTH, theta12=(-0.08, 0.31))
+    assert res.candidate == "M1a", "an interval containing 0 is not evidence"
+
+
+def test_method_exception_fires_when_the_interval_excludes_zero():
+    res = _steps(9, REL_BOTH, theta12=(0.12, 0.44))
+    assert res.terminal == M.T_PASS
+    assert res.candidate == "M2a", (
+        "established method dependence must admit the model-implied weights")
+    assert res.detail["method_established"] is True
+
+
+def test_method_exception_fires_for_a_negative_interval_too():
+    res = _steps(9, REL_BOTH, theta12=(-0.51, -0.09))
+    assert res.candidate == "M2a"
+
+
+def test_method_exception_cannot_rescue_an_inadmissible_candidate():
+    """M2a may only be chosen if it passed step 2 on its own."""
+    res = _steps(9, {"M1a": (0.62, 0.80)}, theta12=(0.12, 0.44))
+    assert res.candidate == "M1a", "M2a had no admissible reliability interval"
+
+
+def test_theta_edge_value_reports_the_fitted_covariance():
+    v = make_cohort(seed=9, missing_biochem=0)
+    R = M.latent_gaussian_matrix(v, CONT)
+    fit = M.fit_congeneric(R, CONT)
+    assert M.theta_edge_value(fit, (12, 13)) is not None
+    assert M.theta_edge_value(fit, (12, 25)) is None, "not a declared edge"
