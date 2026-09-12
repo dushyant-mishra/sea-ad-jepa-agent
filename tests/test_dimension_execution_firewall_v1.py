@@ -44,6 +44,13 @@ def test_full_stream_receipt_passes():
     assert out["passed"] and out["D_total"] == 7
 
 
+def test_row_identity_only_terminal_cannot_replace_physical_full104_expression_closure():
+    x = good()
+    x["expression_binding_terminal"] = "PASS_FULL_READER_4553407_ROW_IDENTITY_CLOSURE"
+    with pytest.raises(DimensionExecutionStop, match="EXPRESSION_BINDING_NOT_CLOSED"):
+        DimensionExecutionFirewallV1().validate(x)
+
+
 def test_one_se_selection_may_be_smaller_than_supported_prefix():
     x = good()
     x["D_shared"] = 5
