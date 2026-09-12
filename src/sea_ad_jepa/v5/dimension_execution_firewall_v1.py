@@ -43,10 +43,7 @@ class DimensionExecutionFirewallV1:
             if int(receipt.get(key, -1)) != expected:
                 raise DimensionExecutionStop(f"STOP_D_EXECUTION_{key.upper()}_MISMATCH")
 
-        if receipt.get("expression_binding_terminal") not in {
-            "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
-            "PASS_FULL_READER_4553407_ROW_IDENTITY_CLOSURE",
-        }:
+        if receipt.get("expression_binding_terminal") != "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE":
             raise DimensionExecutionStop("STOP_D_EXECUTION_EXPRESSION_BINDING_NOT_CLOSED")
 
         for key in ("sampled_stratum_cap", "cells_per_stratum_cap", "row_cap"):
