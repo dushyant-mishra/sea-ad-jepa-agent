@@ -31,6 +31,7 @@ jobs:
           tests/test_artifact_binding_v1.py
           tests/test_bind_corrected_train_cache_v1.py
           tests/test_bind_full104_expression_blocks_v4.py
+          tests/test_full104_binding_dimension_interface_v1.py
           tests/test_dimension_execution_firewall_v1.py
           tests/test_dimension_authority_guard_v3.py
           tests/test_dimension_authority_guard_v4.py
