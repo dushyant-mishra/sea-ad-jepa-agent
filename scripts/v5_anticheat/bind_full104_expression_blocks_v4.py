@@ -15,6 +15,10 @@ EXPECTED_CONTRACT_SHA256 = "612b45742ad80498cbe2f061a75af08c0a10692dc731e0ac8e64
 EXPECTED_AUDIT_SHA256 = "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf"
 EXPECTED_SELECTION_SHA256 = "edec0fe29d1425ecbe9fa889a610c4ce18621ae060c8144866315db57c3fc62b"
 EXPECTED_SELECTION_MANIFEST_SHA256 = "3db3614bf544b183143f39b27bad516b3a7a75284df4b2410d9f3e99f0b0842e"
+# Frozen by FOUNDATION_CALIBRATION_BUNDLE_20260824/BUNDLE_SHA256_MANIFEST.csv.
+# The immutable bundle ZIP is independently bound at
+# 07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444.
+EXPECTED_METADATA_SQLITE_SHA256 = "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
 EXPECTED_CELLS = 4_553_407
 EXPECTED_DONORS = 104
 EXPECTED_OPERATORS = 42
@@ -77,8 +81,8 @@ def bind_full104_blocks(
     materialization_audit: Path,
     block_root: Path,
     metadata_sqlite: Path,
-    expected_metadata_sha256: str,
     scratch_dir: Path | None = None,
+    _expected_metadata_sha256: str = EXPECTED_METADATA_SQLITE_SHA256,
     _expected_block_manifest_sha256: str = EXPECTED_BLOCK_MANIFEST_SHA256,
     _expected_contract_sha256: str = EXPECTED_CONTRACT_SHA256,
     _expected_audit_sha256: str = EXPECTED_AUDIT_SHA256,
@@ -95,6 +99,7 @@ def bind_full104_blocks(
     _expected_selection_manifest_sha256: str = EXPECTED_SELECTION_MANIFEST_SHA256,
 ) -> dict:
     test_fixture_mode = any([
+        _expected_metadata_sha256 != EXPECTED_METADATA_SQLITE_SHA256,
         _expected_cells != EXPECTED_CELLS,
         _expected_donors != EXPECTED_DONORS,
         _expected_operators != EXPECTED_OPERATORS,
@@ -114,7 +119,7 @@ def bind_full104_blocks(
         raise RuntimeError("STOP_FULL104_MATERIALIZATION_CONTRACT_SHA_MISMATCH")
     if sha256_file(materialization_audit) != _expected_audit_sha256:
         raise RuntimeError("STOP_FULL104_MATERIALIZATION_AUDIT_SHA_MISMATCH")
-    if sha256_file(metadata_sqlite) != expected_metadata_sha256:
+    if sha256_file(metadata_sqlite) != _expected_metadata_sha256:
         raise RuntimeError("STOP_FULL104_METADATA_SQLITE_SHA_MISMATCH")
 
     contract = json.loads(materialization_contract.read_text())
@@ -250,7 +255,7 @@ def bind_full104_blocks(
         "block_manifest_sha256": _expected_block_manifest_sha256,
         "materialization_contract_sha256": _expected_contract_sha256,
         "materialization_audit_sha256": _expected_audit_sha256,
-        "metadata_sqlite_sha256": expected_metadata_sha256,
+        "metadata_sqlite_sha256": _expected_metadata_sha256,
         "selection_sha256": _expected_selection_sha256,
         "selection_manifest_sha256": _expected_selection_manifest_sha256,
         "cells": _expected_cells,
@@ -276,7 +281,6 @@ def main() -> int:
     p.add_argument("--materialization-audit", type=Path, required=True)
     p.add_argument("--block-root", type=Path, required=True)
     p.add_argument("--metadata-sqlite", type=Path, required=True)
-    p.add_argument("--expected-metadata-sha256", required=True)
     p.add_argument("--scratch-dir", type=Path)
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
@@ -286,7 +290,6 @@ def main() -> int:
         materialization_audit=a.materialization_audit,
         block_root=a.block_root,
         metadata_sqlite=a.metadata_sqlite,
-        expected_metadata_sha256=a.expected_metadata_sha256,
         scratch_dir=a.scratch_dir,
     )
     a.output.parent.mkdir(parents=True, exist_ok=True)
