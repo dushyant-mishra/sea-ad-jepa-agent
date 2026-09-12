@@ -1,0 +1,31 @@
+{
+  "schema": "JEPA_V5_D_OBS_SELECTION_RULE_CANDIDATE_V1",
+  "status": "PROSPECTIVE_CANDIDATE_FROZEN_BEFORE_FULL104_D_OBS_OUTCOMES__NO_NUMERIC_AUTHORITY",
+  "date": "2026-09-12",
+  "meaning": "separate observation/measurement state rank for z_obs; no biology qualification claim",
+  "allowed_reconstruction_targets": [
+    "measurement support",
+    "mask state",
+    "Q_DEPTH",
+    "Q_DETECT",
+    "measurement uncertainty",
+    "lawfully documented assay/platform/chemistry descriptors"
+  ],
+  "forbidden_reconstruction_targets_or_free_inputs": [
+    "donor identity",
+    "pathology",
+    "protected/sealed labels",
+    "source identity",
+    "matrix identity",
+    "arbitrary operator identity"
+  ],
+  "selection_metric": "held-operator reconstruction score for lawful observation descriptors; larger is better",
+  "selection_rule": "Choose the smallest positive rank whose held-operator reconstruction mean is within one held-operator SE of the best tested rank, provided the best tested rank is not the search boundary.",
+  "boundary_rule": "If the best held-operator reconstruction rank equals the highest tested rank, return EXPAND_OBSERVATION_SEARCH_ENVELOPE and do not select numeric D_obs.",
+  "held_source_role": "diagnostic only when lawful technology descriptors are independently mapped; source identity itself is never a target",
+  "checkpoint_outcomes_used": false,
+  "pathology_used": false,
+  "protected_data_used": false,
+  "independent_review_required_before_real_numeric_authority": true,
+  "training_authorized": false
+}
