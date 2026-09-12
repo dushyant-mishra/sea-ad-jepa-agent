@@ -1,0 +1,91 @@
+{
+  "schema": "JEPA_LIVE_BRANCH_AUTHORITY_MAP_V1",
+  "date": "2026-09-12",
+  "status": "ALL_PREEXISTING_LIVE_BRANCHES_REVIEWED_FOR_HISTORY_AND_AUTHORITY__NO_TRAINING_AUTHORITY",
+  "canonical_main_head": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f",
+  "preexisting_branch_count": 40,
+  "audit_document": "docs/agent/JEPA_ALL_LIVE_BRANCHES_HISTORY_AND_AUTHORITY_AUDIT_20260912.md",
+  "core_findings": {
+    "foundation_target_discovery_is_t0": false,
+    "t0_methodology_informs_target_discovery_and_v5": true,
+    "explicit_target_discovery_to_v5_integration_contract_recovered": true,
+    "td60_full_reader_exposure_amendment_recovered": true,
+    "main_contains_t0_target_discovery_label_drift": true,
+    "training_authorized": false
+  },
+  "design_feedback_edges": [
+    {
+      "from": "T0_V18_V20_V21_METHOD_DEVELOPMENT",
+      "to": "FOUNDATION_TARGET_DISCOVERY",
+      "type": "METHODOLOGY_ONLY",
+      "allowed": ["dataset_first_authority_DAG", "provenance_closure", "fail_closed_gates", "measurement_interventions", "donor_primary_inference", "estimability", "power_before_holdout_spend", "NOT_MEASURABLE_not_PASS"],
+      "forbidden": ["AT8_values", "pathology_guided_target_selection", "T0_broad_IMMUNE_score_as_JEPA_target", "T0_numeric_threshold_inheritance"]
+    },
+    {
+      "from": "T0_AND_HISTORICAL_T1_FAILURE_ANALYSIS",
+      "to": "TEACHER_STUDENT_V5",
+      "type": "ANTI_CHEAT_AND_MECHANICS_SAFEGUARDS",
+      "allowed": ["per_tensor_gradient_gates", "optimizer_moment_proof", "EMA_proof", "support_depth_mask_attacks", "heldout_transfer_attacks", "collapse_controls", "hardware_invariance"]
+    },
+    {
+      "from": "FOUNDATION_TARGET_DISCOVERY_TD57B_TD59_TD60",
+      "to": "TEACHER_STUDENT_V4_V5",
+      "type": "SCIENTIFIC_OBJECT_INTEGRATION",
+      "object": "SCALE_FREE_ANCHORED_TRIPLET_ORDERING_IN_DIRECT_CELL_STATE_GEOMETRY"
+    }
+  ],
+  "branches": {
+    "main": {"class": "CANONICAL_CURRENT_GOVERNANCE", "head": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f", "authority_note": "current governance; contains Sep-11 lane-label drift corrected by PR16"},
+    "fix/f1-review-closeout-20260911": {"class": "UNIQUE_F1_CLOSEOUT", "head": "06012a11199eefc18eb72d243d1cb4e9c5e5961d"},
+    "fix/v5-schedule-metadata-hash-revalidation-20260910": {"class": "DIVERGENT_V5_HISTORY", "head": "bede5a1b3b361cb650651058e3566b0112c5f3a9"},
+    "governance/integrated-target-discovery-v5-handoff-20260911": {"class": "DIVERGENT_INTEGRATED_GOVERNANCE_HISTORY", "head": "dac11696ecb31ed6e417e6f7b34611d0f44c36e4"},
+    "governance/project-lineage-reconstruction-20260911": {"class": "CURRENT_GOVERNANCE_REPAIR_BRANCH", "head": "EVOLVING_PR16_HEAD"},
+    "handoff/jepa-new-chat-20260910-t0-v21-v5": {"class": "ANCESTRAL_NO_UNIQUE_DELTA", "head": "0dc40fae"},
+    "handoff/jepa-new-chat-20260911-asap-repair-status": {"class": "DIVERGENT_T0_V21_EVIDENCE_HANDOFF", "head": "5ee85fc84"},
+    "handoff/jepa-new-chat-20260911-post-v21-repair-current": {"class": "SMALL_UNIQUE_HANDOFF_DELTA", "head": "a47e9a167"},
+    "handoff/jepa-new-chat-r2-20260908": {"class": "ANCESTRAL_NO_UNIQUE_DELTA", "head": "2f7aeaf011"},
+    "handoff/jepa-t0-v2-claude-ready-20260911": {"class": "DIVERGENT_T0_V21_ENVIRONMENT_HANDOFF", "head": "f727a820"},
+    "planning/teacher-student-v5-dataset-schedule-20260909": {"class": "DIVERGENT_V5_SCHEDULE_AND_TD60_EXPOSURE_DESIGN", "head": "78981dcb"},
+    "planning/teacher-student-v5-gpu-rng-mechanics-20260908": {"class": "DIVERGENT_GPU_RNG_MECHANICS", "head": "19671b50"},
+    "planning/v5-full-population-cheat-proofing-20260909": {"class": "MAJOR_DIVERGENT_V5_ANTICHEAT_FULL104_LINEAGE", "head": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534"},
+    "planning/v5-preexecution-hardening-20260909": {"class": "ANCESTRAL_NO_UNIQUE_DELTA", "head": "782f2c52"},
+    "planning/v5-pretraining-qualification-20260909": {"class": "DIVERGENT_V5_QUALIFICATION_AND_TARGET_DISCOVERY_INTEGRATION", "head": "ae1709e2"},
+    "repair/t0-v21-authority-hardening-20260911": {"class": "SUPERSEDED_INTERMEDIATE_T0_V21_REPAIR", "head": "9f98320f"},
+    "repair/t0-v21-authority-restoration-20260911": {"class": "DIVERGENT_T0_V21_RESTORATION_HISTORY", "head": "b27978af"},
+    "repair/t0-v21-integrated-authority-regression-20260911": {"class": "DIVERGENT_T0_V21_REGRESSION_REPAIR_HISTORY", "head": "9a861b41"},
+    "repair/v5-executable-power-authority-20260911": {"class": "DIVERGENT_V5_EXECUTABLE_POWER_REPAIR", "head": "52fca8ab"},
+    "repair/v5-qualified-target-guard-20260911": {"class": "DIVERGENT_V5_QUALIFIED_TARGET_GUARD_HISTORY", "head": "da8bd7df"},
+    "review/integrated-target-v5-repairs-20260911": {"class": "DIVERGENT_INTEGRATED_EXTERNAL_REVIEW", "head": "01192bbe"},
+    "review/integrated-target-v5-repairs-code-20260911": {"class": "DUPLICATE_GROUP_CANONICAL_TIP", "head": "2ccf942e"},
+    "review/integrated-target-v5-repairs-exec-20260911": {"class": "DUPLICATE_TIP", "head": "2ccf942e"},
+    "review/integrated-target-v5-repairs-finalwork-20260911": {"class": "DUPLICATE_TIP", "head": "2ccf942e"},
+    "review/integrated-target-v5-repairs-work-20260911": {"class": "DUPLICATE_TIP", "head": "2ccf942e"},
+    "review/t0-r4-dataset-bound-hardening-20260909": {"class": "DIVERGENT_T0_DATASET_HARDENING_HISTORY", "head": "fedad5ed"},
+    "review/t0-r4-dataset-bound-inputs-20260908": {"class": "DIVERGENT_T0_DATASET_INPUT_HISTORY", "head": "68d6206e"},
+    "review/t0-r4-independent-reds-20260909": {"class": "DIVERGENT_T0_EXTERNAL_RED_HISTORY", "head": "f7d8dfb5"},
+    "review/t0-r4-independent-review-20260909": {"class": "DIVERGENT_T0_INDEPENDENT_REVIEW_HISTORY", "head": "37da1b61"},
+    "review/t0-r5-dataset-chain-hardening-20260909": {"class": "DIVERGENT_T0_DATASET_CHAIN_SUCCESSOR", "head": "1f4b47db"},
+    "review/t0-r5-dataset-first-framework-20260909": {"class": "HIGH_VALUE_T0_METHOD_TO_FRAMEWORK_DESIGN_HISTORY", "head": "5038642c"},
+    "review/t0-r5-external-hardening-20260909": {"class": "DIVERGENT_T0_EXTERNAL_HARDENING_HISTORY", "head": "61797f35"},
+    "review/t0-v2-api-surface-portability-20260911": {"class": "T0_V21_PORTABILITY_REPAIR_CANDIDATE", "head": "2797c4d715770c9481b53b75a8bd2cac5cfeda74"},
+    "review/t0-v20-replay-equivalence-20260910": {"class": "DIVERGENT_T0_V20_REPLAY_HISTORY", "head": "3b5933f6"},
+    "review/t0-v21-integrated-candidate-20260911": {"class": "DIVERGENT_T0_V21_CANDIDATE_HISTORY", "head": "c8a1947e"},
+    "review/t0-v21-integrated-restored-20260911": {"class": "DIVERGENT_T0_V21_RESTORED_HISTORY", "head": "93abcf50"},
+    "review/t0-v21-integrated-restored-v2-20260911": {"class": "DIVERGENT_T0_V21_RESTORED_V2_HISTORY", "head": "42efc55f"},
+    "review/t0-v21-successor-20260911": {"class": "DIVERGENT_T0_V21_SUCCESSOR_HISTORY", "head": "3a8c8e3e"},
+    "t0/v20-pathology-blind-materialization-20260908": {"class": "IMMUTABLE_T0_V20_HISTORICAL_AUTHORITY", "head": "d5d67e21398da92e39095afd864b4fb9ebe3da02"},
+    "t0/v21-prospective-design-20260910": {"class": "T0_V21_PROSPECTIVE_DRAFT_LINEAGE", "head": "11e76d36ace556ac48cdd2992995e63c1e35df18"}
+  },
+  "audit_only_accidental_refs": {
+    "tmp-audit-test": {"unique_commits": false, "safe_to_delete": true},
+    "governance/project-lineage-reconstruction-20260911-audit": {"unique_commits": false, "safe_to_delete": true}
+  },
+  "cleanup_rule": "DO_NOT_DELETE_DIVERGENT_BRANCHES_UNTIL_UNIQUE_HISTORY_IS_DURABLY_INDEXED_AND_EXACT_HEADS_ARE_PRESERVED",
+  "protected_boundaries": {
+    "training_authorized": false,
+    "td60_execution_authorized": false,
+    "reader_validation_design_use_authorized": false,
+    "reader_oracle_open_authorized": false,
+    "pathology_guided_target_tuning_authorized": false
+  }
+}
