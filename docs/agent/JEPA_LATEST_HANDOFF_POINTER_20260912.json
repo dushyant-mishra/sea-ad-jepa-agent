@@ -1,0 +1,18 @@
+{
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_20260912_V3",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "branch": "planning/v5-dataset-first-production-closure-20260912",
+  "live_head_before_v3_handoff": "57cad11160615518f326a4b882c2d2bc4e4c3a3d",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260912_CURRENT_V3.md",
+  "handoff_commit": "9153b78cc7e345e65eb82a7318dc95ddd0bb9153",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_STATE_20260912_CURRENT_V3.json",
+  "state_commit": "eeed7d52a39c113b2b72bea835a86d7ff8ac07fa",
+  "last_verified_code_head": "2c278364a5717e4248ac65ae8107754fbc625d1d",
+  "last_verified_ci_run": 34699776996,
+  "last_verified_ci": "SUCCESS",
+  "last_verified_test_count": "103 passed",
+  "handoff_local_sha256": "ad5f3427e02f79feadbaf118213dd727573a8e7ccb1577965635ca99264b14be",
+  "state_local_sha256": "3044209394956520e6c79e20ccc19a81d967b42a3cb9fb3e81db58e785d92cdf",
+  "zip_local_sha256": "b867fbe43965cc445c063823503e26744f2e9d7eb6759798e9ec6ac48dabd152",
+  "status": "CURRENT_V3_HANDOFF__FULL104_HISTORICALLY_PREPARED__CURRENT_V5_REBIND_AND_QUALIFICATION_IN_PROGRESS__NO_TRAINING_AUTHORITY"
+}
