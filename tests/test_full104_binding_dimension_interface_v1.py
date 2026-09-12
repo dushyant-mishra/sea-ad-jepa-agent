@@ -1,12 +1,6 @@
-import importlib.util
-from pathlib import Path
-
 import pytest
 
-P = Path(__file__).resolve().parents[1] / "scripts" / "v5_anticheat" / "bind_full104_expression_blocks_v4.py"
-spec = importlib.util.spec_from_file_location("full104_bind_v4", P)
-m = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(m)
+from sea_ad_jepa.v5 import full104_dimension_interface_v1 as m
 
 
 def receipt(*, fixture=False):
