@@ -11,7 +11,7 @@ def receipt(*, fixture=False):
         "block_manifest_sha256": m.EXPECTED_BLOCK_MANIFEST_SHA256,
         "materialization_contract_sha256": m.EXPECTED_CONTRACT_SHA256,
         "materialization_audit_sha256": m.EXPECTED_AUDIT_SHA256,
-        "metadata_sqlite_sha256": "a" * 64,
+        "metadata_sqlite_sha256": m.EXPECTED_METADATA_SQLITE_SHA256,
         "selection_sha256": m.EXPECTED_SELECTION_SHA256,
         "selection_manifest_sha256": m.EXPECTED_SELECTION_MANIFEST_SHA256,
         "cells": 4_553_407,
@@ -39,6 +39,13 @@ def test_real_full104_receipt_projects_exact_dimension_authority_fields():
     assert out["sampled_stratum_cap"] is None
     assert out["test_fixture_mode"] is False
     assert out["synthetic_data_used"] is False
+
+
+def test_wrong_metadata_sqlite_digest_cannot_enter_dimension_authority():
+    r = receipt()
+    r["metadata_sqlite_sha256"] = "b" * 64
+    with pytest.raises(RuntimeError, match="METADATA_SQLITE_SHA256_MISMATCH"):
+        m.project_full104_receipt_for_dimension_authority(r)
 
 
 def test_fixture_receipt_cannot_project_to_production_dimension_authority():
