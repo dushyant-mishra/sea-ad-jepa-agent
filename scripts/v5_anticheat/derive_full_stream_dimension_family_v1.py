@@ -15,6 +15,7 @@ from typing import Mapping, Sequence
 _SHARED_FLAGS = (
     "signal_above_full_refit_matched_null",
     "donor_resampled_subspace_stability",
+    "held_donor_cross_view_predictability",
     "independent_view_agreement",
     "measurement_shortcut_increment_pass",
 )
