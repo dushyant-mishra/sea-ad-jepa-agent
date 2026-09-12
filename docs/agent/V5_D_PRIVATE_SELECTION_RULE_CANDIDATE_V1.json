@@ -1,0 +1,40 @@
+{
+  "schema": "JEPA_V5_D_PRIVATE_SELECTION_RULE_CANDIDATE_V1",
+  "status": "PROSPECTIVE_CANDIDATE_FROZEN_BEFORE_FULL104_DIMENSION_OUTCOMES__NO_NUMERIC_AUTHORITY",
+  "date": "2026-09-12",
+  "purpose": "Resolve the previously unspecified D_private selection rule without using checkpoint, pathology, protected, or FULL104 dimension outcomes.",
+  "starts_only_after_D_shared_freeze": true,
+  "candidate_rank_semantics": "cumulative operator-native biological rank added beyond frozen D_shared",
+  "target": "incremental prediction of common-core biological state/relations from lawful operator-native evidence beyond D_shared; raw residual variance and technical identity are not targets",
+  "joint_support_required_for_each_positive_prefix": [
+    "HELD_DONOR_INCREMENT_PASS",
+    "HELD_OPERATOR_INCREMENT_PASS",
+    "MEASUREMENT_SHORTCUT_INCREMENT_PASS",
+    "SAME_CELL_TECHNICAL_INTERVENTION_STABILITY_PASS"
+  ],
+  "selection_rule": "Among contiguous jointly-supported positive prefixes, choose the smallest D_private whose held-donor incremental predictability is within one donor-level SE of the best jointly-supported prefix.",
+  "zero_rule": "If no positive prefix is jointly supported, D_private = 0.",
+  "boundary_rule": "If the highest tested positive prefix is jointly supported, do not select a numeric D_private; return EXPAND_PRIVATE_SEARCH_ENVELOPE prospectively.",
+  "matching_required_for_selecting_nulls": [
+    "donor",
+    "operator",
+    "Q_DEPTH",
+    "Q_DETECT",
+    "support_measurability"
+  ],
+  "full_refit_every_selecting_null_replicate": true,
+  "replicate_counts": "DERIVE_FROM_PROSPECTIVELY_FROZEN_MONTE_CARLO_ERROR_BUDGET",
+  "forbidden_selection_sources": [
+    "training loss trajectory",
+    "checkpoint outcome",
+    "pathology",
+    "DEV",
+    "SEALED",
+    "reader_validation",
+    "reader_oracle",
+    "post-hoc target-discovery wins",
+    "raw residual variance without common-core biological prediction"
+  ],
+  "independent_review_required_before_real_numeric_authority": true,
+  "training_authorized": false
+}
