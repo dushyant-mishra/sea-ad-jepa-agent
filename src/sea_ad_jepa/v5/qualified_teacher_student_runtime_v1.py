@@ -27,12 +27,19 @@ def _fail(message: str) -> None:
 
 
 def _resolve_observed_target_root(modules: Any, explicit: str | None) -> str:
-    observed = explicit
-    if observed is None:
-        observed = getattr(modules, "qualified_target_package_root", None)
-    if not observed:
+    """Return the target root actually installed on ``modules``.
+
+    The module-bound value is authoritative. ``explicit`` is retained only as a
+    compatibility witness: when supplied it must agree with the installed value
+    and can never substitute for a missing or different installed root.
+    """
+    installed = getattr(modules, "qualified_target_package_root", None)
+    if not installed:
         _fail("the target package root actually installed on the modules must be bound")
-    return str(observed)
+    installed = str(installed)
+    if explicit is not None and str(explicit) != installed:
+        _fail("caller-observed target package root does not match the installed target package root")
+    return installed
 
 
 class _CursorInjectingScaler:
