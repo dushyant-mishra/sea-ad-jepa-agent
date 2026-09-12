@@ -1,9 +1,11 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V12_LINEAGE_RECONSTRUCTED",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V13_LINEAGE_AND_FEEDBACK_RECONSTRUCTED",
   "date": "2026-09-11",
-  "status": "CURRENT_CANONICAL_PROJECT_LINEAGE_RECONSTRUCTED__FOUNDATION_TARGET_DISCOVERY_T0_V5_FULL104_SEPARATED__NO_TRAINING_AUTHORITY",
+  "status": "CURRENT_CANONICAL_PROJECT_LINEAGE_RECONSTRUCTED__T0_METHOD_FEEDBACK_TO_TARGET_DISCOVERY_V5_PRESERVED__NO_TRAINING_AUTHORITY",
   "lineage_reconstruction_path": "docs/agent/JEPA_PROJECT_LINEAGE_AND_DATASET_AUTHORITY_RECONSTRUCTION_20260911.md",
   "lane_map_path": "docs/agent/JEPA_PROJECT_LANE_MAP_20260911.json",
+  "t0_method_feedback_path": "docs/agent/T0_METHOD_TO_TARGET_DISCOVERY_AND_V5_DESIGN_FEEDBACK_20260911.md",
+  "legacy_handoff_corroboration_path": "docs/agent/JEPA_LEGACY_HANDOFF_CORROBORATION_ADDENDUM_20260908.md",
   "target_discovery_handoff_path": "target_discovery/HANDOFF_CURRENT_20260908.md",
   "target_discovery_theory_path": "target_discovery/RELATIONAL_FORMULAS_AND_THEORY_20260908.md",
   "target_discovery_relational_amendment_path": "target_discovery/FOUNDATION_TARGET_DISCOVERY_RELATIONAL_AMENDMENT_20260908.md",
@@ -14,11 +16,38 @@
   "prior_formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "prior_heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
   "critical_lane_rule": "FOUNDATION_TARGET_DISCOVERY_TD13_TD60_IS_NOT_T0_V18_V20_V21",
+  "critical_feedback_rule": "T0_METHOD_DEVELOPMENT_INFORMS_FOUNDATION_TARGET_DISCOVERY_AND_V5_CHEAT_PROOFING_WITHOUT_SUPPLYING_THE_BIOLOGICAL_TARGET",
   "semantic_drift_correction": {
     "source_commit": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f",
     "retain": "UPSTREAM_FOUNDATION_TARGET_DISCOVERY_RELATIONAL_PROTOCOL_AND_DOWNSTREAM_V5_REVIEW_MUST_BOTH_CLOSE_FOR_PRODUCTION_AUTHORITY",
     "do_not_retain": "T0_V20_V21_AS_SYNONYM_FOR_FOUNDATION_TARGET_DISCOVERY",
     "explicit_scientific_supersession_recovered": false
+  },
+  "cross_lane_design_feedback": {
+    "source": "T0_V18_V20_V21_AND_SUCCESSOR_REVIEW_LESSONS",
+    "destinations": [
+      "FOUNDATION_TARGET_DISCOVERY",
+      "TEACHER_STUDENT_V4_V5",
+      "FULL_READER_ANTI_CHEAT_QUALIFICATION"
+    ],
+    "allowed_transfer": [
+      "fail_closed_gate_design",
+      "measurement_and_confound_intervention_principles",
+      "exact_geometry_sensitivity_specificity_for_rejection_gates",
+      "donor_primary_generalization",
+      "discovery_confirmation_firewalls",
+      "power_and_estimability_before_irreversible_holdout_opening",
+      "cross_fitting_not_automatically_a_lower_bound",
+      "provenance_and_byte_identity_closure",
+      "NOT_MEASURABLE_not_PASS",
+      "association_warning_vs_intervention_rejection_authority"
+    ],
+    "forbidden_transfer": [
+      "AT8_or_pathology_values_for_target_selection",
+      "T0_broad_IMMUNE_score_as_automatic_JEPA_target",
+      "T0_operator31_population_as_FULL104",
+      "T0_numeric_thresholds_as_production_Target_Discovery_thresholds_by_inheritance"
+    ]
   },
   "foundation_target_discovery": {
     "historical_branch": "planning/foundation-target-discovery-v1-20260907",
@@ -32,14 +61,14 @@
     "fifty_k_role": "FALSIFICATION_AND_CANDIDATE_QUALIFICATION_ONLY"
   },
   "t0": {
-    "role": "SEPARATE_MTG_BROAD_IMMUNE_VS_AT8_DONOR_LEVEL_BIOLOGICAL_CLAIM",
+    "role": "SEPARATE_MTG_BROAD_IMMUNE_VS_AT8_DONOR_LEVEL_BIOLOGICAL_CLAIM_AND_METHOD_PROVING_GROUND",
     "uses_JEPA": false,
     "v20_branch": "t0/v20-pathology-blind-materialization-20260908",
     "v20_frozen_head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
     "v20_population": "20804_CELLS__46_DONORS__OPERATOR31",
     "broad_state": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
     "rare_tail": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
-    "v21_role": "T0_SPECIFIC_PROSPECTIVE_ESTIMATOR_POWER_AND_CONFIRMATION_SUCCESSOR",
+    "v21_role": "T0_SPECIFIC_PROSPECTIVE_ESTIMATOR_POWER_CONFIRMATION_SUCCESSOR_AND_TRANSFERABLE_METHOD_DEVELOPMENT",
     "effect_transport_status": "OPEN",
     "power_gate_production_verdict_capability": "DISABLED",
     "s0_s4_authorized": false,
@@ -76,11 +105,11 @@
     "terminal": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
     "is_FULL104": false
   },
-  "integrated_review_scope": "FOUNDATION_TARGET_DISCOVERY_RELATIONAL_PROTOCOL_TO_TEACHER_STUDENT_V4_V5_TO_FULL_READER_PRODUCTION_QUALIFICATION",
-  "parallel_t0_scope": "MTG_BROAD_IMMUNE_CLAIM_TO_T0_SPECIFIC_PROSPECTIVE_CONFIRMATION",
+  "integrated_review_scope": "FOUNDATION_TARGET_DISCOVERY_RELATIONAL_PROTOCOL_TO_TEACHER_STUDENT_V4_V5_TO_FULL_READER_PRODUCTION_QUALIFICATION_WITH_T0_METHOD_FEEDBACK",
+  "parallel_t0_scope": "MTG_BROAD_IMMUNE_CLAIM_TO_T0_SPECIFIC_PROSPECTIVE_CONFIRMATION_PLUS_TRANSFERABLE_METHOD_LESSONS",
   "target_discovery_production_authority_complete": false,
   "v5_full104_expression_closed": false,
   "v5_integrated_review_closed": false,
   "training_authorized": false,
-  "instruction": "Open START_HERE.md first, then the lineage reconstruction and machine-readable lane map. Never use T0/V21 and Foundation Target Discovery as synonyms. Preserve the Sep-11 requirement that upstream Foundation relational-protocol qualification and downstream V5 anti-shortcut qualification must both close, but do not interpret that integration as scientific supersession of TD13-TD60 by T0. Re-fetch live heads before acting. Keep V20 immutable. Do not run T0 S0-S4, open fresh reader_validation/oracle, use pathology for design, or train. The 50k archive is falsification/candidate qualification only; the corrected TRAIN cache is not FULL104; the >30GB FULL104 substrate remains on the remote GPU laptop/attached drive."
+  "instruction": "Open START_HERE.md first, then the lineage reconstruction, lane map, T0 method-feedback addendum, and legacy corroboration addendum. Never use T0/V21 and Foundation Target Discovery as synonyms, but also never isolate them methodologically: T0's fail-closed, power, estimability, intervention, provenance, and anti-cheat lessons are intended to inform Foundation Target Discovery and V5. Transfer methodology, not AT8/pathology outcomes or the T0 target. Re-fetch live heads before acting. Keep V20 immutable. Do not run T0 S0-S4, open fresh reader_validation/oracle, use pathology for design, or train. The 50k archive is falsification/candidate qualification only; the corrected TRAIN cache is not FULL104; the >30GB FULL104 substrate remains on the remote GPU laptop/attached drive."
 }
