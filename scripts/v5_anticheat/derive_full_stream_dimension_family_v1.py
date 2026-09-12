@@ -71,6 +71,26 @@ def _normalize_rows(
     return out
 
 
+def _normalize_score_rows(
+    rows: Sequence[Mapping[str, object]], *, mean_key: str, se_key: str
+) -> list[dict[str, float | int]]:
+    if not isinstance(rows, Sequence) or isinstance(rows, (str, bytes)) or not rows:
+        raise ValueError("dimension rows must be a nonempty sequence")
+    out: list[dict[str, float | int]] = []
+    for expected_rank, row in enumerate(rows, start=1):
+        if not isinstance(row, Mapping):
+            raise ValueError("dimension rows must be mappings")
+        rank = row.get("rank")
+        if isinstance(rank, bool) or not isinstance(rank, int) or rank != expected_rank:
+            raise ValueError("rank rows must be consecutive positive integers starting at 1")
+        out.append({
+            "rank": rank,
+            "mean": _finite_float(row.get(mean_key), mean_key),
+            "se": _finite_float(row.get(se_key), se_key, nonnegative=True),
+        })
+    return out
+
+
 def _select_contiguous_one_se(
     rows: Sequence[Mapping[str, object]],
     *,
@@ -151,3 +171,36 @@ def select_private_dimension(rows: Sequence[Mapping[str, object]]) -> dict[str, 
         pass_terminal="PASS_D_PRIVATE_SELECTED",
         expand_terminal="EXPAND_PRIVATE_SEARCH_ENVELOPE",
     )
+
+
+def select_observation_dimension(rows: Sequence[Mapping[str, object]]) -> dict[str, object]:
+    """Apply prospective D_obs candidate V1 using held-operator reconstruction."""
+    normalized = _normalize_score_rows(
+        rows,
+        mean_key="held_operator_reconstruction_mean",
+        se_key="held_operator_reconstruction_se",
+    )
+    best_mean = max(float(row["mean"]) for row in normalized)
+    boundary = normalized[-1]
+    if float(boundary["mean"]) == best_mean:
+        return {
+            "terminal": "EXPAND_OBSERVATION_SEARCH_ENVELOPE",
+            "D_obs": None,
+            "best_rank": int(boundary["rank"]),
+            "search_boundary_best": True,
+            "one_se_threshold": None,
+            "training_authorized": False,
+        }
+    best = next(row for row in normalized if float(row["mean"]) == best_mean)
+    threshold = float(best["mean"]) - float(best["se"])
+    selected = next(int(row["rank"]) for row in normalized if float(row["mean"]) >= threshold)
+    return {
+        "terminal": "PASS_D_OBS_SELECTED",
+        "D_obs": selected,
+        "best_rank": int(best["rank"]),
+        "best_mean": float(best["mean"]),
+        "best_se": float(best["se"]),
+        "one_se_threshold": threshold,
+        "search_boundary_best": False,
+        "training_authorized": False,
+    }
