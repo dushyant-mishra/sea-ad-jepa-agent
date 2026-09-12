@@ -56,6 +56,18 @@ def classify_learning_step_authority(receipt: Mapping[str, Any]) -> dict[str, An
     if bool(access.get('training_authorized', False)):
         return _fail('receipt_must_not_claim_training_authority')
 
+    run_authority = receipt.get('qualification_run_authority', {})
+    if not isinstance(run_authority, Mapping):
+        return _fail('qualification_run_authority_missing')
+    if run_authority.get('scope') != 'BOUNDED_READER_FIT_LEARNING_STEP_QUALIFICATION_ONLY':
+        return _fail('qualification_run_scope_not_bounded')
+    if not bool(run_authority.get('explicitly_authorized', False)):
+        return _fail('qualification_run_not_explicitly_authorized')
+    if not _is_sha256(run_authority.get('authority_sha256')):
+        return _fail('qualification_run_authority_digest_missing')
+    if bool(run_authority.get('production_training_authorized', False)):
+        return _fail('qualification_run_cannot_claim_production_training_authority')
+
     analysis = receipt.get('analysis_level', {})
     if not isinstance(analysis, Mapping):
         return _fail('analysis_level_missing')
