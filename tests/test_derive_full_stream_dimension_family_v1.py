@@ -34,6 +34,14 @@ def private(rank, score, se, *, supported=True):
     }
 
 
+def obs(rank, score, se):
+    return {
+        "rank": rank,
+        "held_operator_reconstruction_mean": score,
+        "held_operator_reconstruction_se": se,
+    }
+
+
 def test_shared_selects_smallest_jointly_supported_prefix_within_one_se_of_best():
     rows = [
         shared(1, 0.70, 0.02),
@@ -102,6 +110,22 @@ def test_private_zero_is_lawful_and_supported_boundary_forces_expansion():
     assert expand["D_private"] is None
     assert expand["terminal"] == "EXPAND_PRIVATE_SEARCH_ENVELOPE"
     assert expand["search_boundary_supported"] is True
+
+
+def test_observation_rank_uses_smallest_rank_within_one_se_of_best_held_operator_score():
+    rows = [obs(1, 0.70, 0.02), obs(2, 0.77, 0.03), obs(3, 0.76, 0.02), obs(4, 0.74, 0.02)]
+    out = m.select_observation_dimension(rows)
+    assert out["terminal"] == "PASS_D_OBS_SELECTED"
+    assert out["D_obs"] == 2
+    assert out["best_rank"] == 2
+    assert out["one_se_threshold"] == 0.74
+
+
+def test_observation_best_rank_at_search_boundary_requires_expansion():
+    out = m.select_observation_dimension([obs(1, 0.70, 0.02), obs(2, 0.76, 0.02), obs(3, 0.80, 0.02)])
+    assert out["terminal"] == "EXPAND_OBSERVATION_SEARCH_ENVELOPE"
+    assert out["D_obs"] is None
+    assert out["search_boundary_best"] is True
 
 
 def test_nonconsecutive_rank_rows_are_rejected():
