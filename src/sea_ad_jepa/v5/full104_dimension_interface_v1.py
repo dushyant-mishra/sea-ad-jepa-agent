@@ -3,7 +3,10 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Mapping
 
+from .artifact_binding_v1 import seal_artifact, validate_artifact
+
 PASS_FULL104_TERMINAL = "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE"
+FULL104_DIMENSION_INPUT_ARTIFACT_SCHEMA = "JEPA_V5_FULL104_DIMENSION_INPUT_ARTIFACT_V1"
 EXPECTED_BLOCK_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 EXPECTED_CONTRACT_SHA256 = "612b45742ad80498cbe2f061a75af08c0a10692dc731e0ac8e649417b7e62f17"
 EXPECTED_AUDIT_SHA256 = "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf"
@@ -28,6 +31,17 @@ def _sha(value: object, name: str) -> str:
     except ValueError as exc:
         raise ValueError(f"{name} must be hexadecimal") from exc
     return value.lower()
+
+
+def _parent_hashes(receipt: Mapping[str, object]) -> dict[str, str]:
+    return {
+        "block_manifest": _sha(receipt.get("block_manifest_sha256"), "block_manifest_sha256"),
+        "materialization_contract": _sha(receipt.get("materialization_contract_sha256"), "materialization_contract_sha256"),
+        "materialization_audit": _sha(receipt.get("materialization_audit_sha256"), "materialization_audit_sha256"),
+        "metadata_sqlite": _sha(receipt.get("metadata_sqlite_sha256"), "metadata_sqlite_sha256"),
+        "selection": _sha(receipt.get("selection_sha256"), "selection_sha256"),
+        "selection_manifest": _sha(receipt.get("selection_manifest_sha256"), "selection_manifest_sha256"),
+    }
 
 
 def project_full104_receipt_for_dimension_authority(receipt: Mapping[str, object]) -> dict[str, object]:
@@ -76,3 +90,26 @@ def project_full104_receipt_for_dimension_authority(receipt: Mapping[str, object
         "training_authorized": False,
     })
     return out
+
+
+def seal_full104_dimension_input(receipt: Mapping[str, object]) -> dict[str, object]:
+    projected = project_full104_receipt_for_dimension_authority(receipt)
+    return seal_artifact(
+        FULL104_DIMENSION_INPUT_ARTIFACT_SCHEMA,
+        projected,
+        _parent_hashes(projected),
+    )
+
+
+def validate_full104_dimension_input(envelope: Mapping[str, object]) -> dict[str, object]:
+    if not isinstance(envelope, Mapping):
+        raise ValueError("FULL104 dimension artifact must be a mapping")
+    raw_payload = envelope.get("payload")
+    if not isinstance(raw_payload, Mapping):
+        raise ValueError("FULL104 dimension artifact payload must be a mapping")
+    payload = validate_artifact(
+        envelope,
+        expected_schema=FULL104_DIMENSION_INPUT_ARTIFACT_SCHEMA,
+        expected_parents=_parent_hashes(raw_payload),
+    )
+    return project_full104_receipt_for_dimension_authority(payload)
