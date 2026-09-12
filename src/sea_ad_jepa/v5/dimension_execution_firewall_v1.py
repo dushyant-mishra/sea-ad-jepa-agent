@@ -113,13 +113,21 @@ class DimensionExecutionFirewallV1:
                 raise DimensionExecutionStop(f"STOP_D_EXECUTION_INVALID_{key.upper()}")
         if int(receipt["D_total"]) != int(receipt["D_shared"]) + int(receipt["D_private"]):
             raise DimensionExecutionStop("STOP_D_EXECUTION_DIMENSION_ARITHMETIC")
-        if int(receipt.get("contiguous_prefix_supported_through", -1)) != int(receipt["D_shared"]):
+
+        supported_through = receipt.get("contiguous_prefix_supported_through")
+        if isinstance(supported_through, bool) or not isinstance(supported_through, int) or supported_through < 0:
+            raise DimensionExecutionStop("STOP_D_EXECUTION_INVALID_SUPPORTED_PREFIX")
+        selected_shared = int(receipt["D_shared"])
+        if selected_shared == 0:
+            if supported_through != 0:
+                raise DimensionExecutionStop("STOP_D_EXECUTION_ZERO_SELECTED_WITH_SUPPORTED_POSITIVE_PREFIX")
+        elif supported_through < selected_shared:
             raise DimensionExecutionStop("STOP_D_EXECUTION_NONCONTIGUOUS_SHARED_SELECTION")
 
         return {
             "passed": True,
             "terminal": "PASS_V5_FULL_STREAM_DIMENSION_EXECUTION_FIREWALL_V1",
-            "D_shared": int(receipt["D_shared"]),
+            "D_shared": selected_shared,
             "D_private": int(receipt["D_private"]),
             "D_total": int(receipt["D_total"]),
             "D_obs": int(receipt["D_obs"]),
