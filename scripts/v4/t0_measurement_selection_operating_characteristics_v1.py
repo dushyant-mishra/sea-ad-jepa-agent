@@ -38,8 +38,27 @@ Stated simplifications, declared rather than discovered:
     the jackknife acceleration, so the simulated rule is the real rule.
 
 Cost, from the measured ~25 ms per matrix+fit:
-  4 cells x 40 reps x 3 estimators x (150 bootstrap + 28 jackknife + 1 point)
-  = 85,920 fits, ~36 min.
+  5 cells x 40 reps x 3 estimators x (150 bootstrap + 28 jackknife + 1 point)
+  = 107,400 fits, ~45 min.
+
+REPORTING CONTRACT. Every terminal and qualification rate is UNCONDITIONAL over
+all simulated cohorts, with improper fits carried as their own outcome rather
+than dropped. Quantities suffixed `_given_proper` are conditional DIAGNOSTICS
+about the estimator and are never operating characteristics of the procedure.
+The improper-fit rate is reported separately from every biological and
+model-failure terminal, so the four terminals stay distinct:
+  MEASUREMENT_ESTIMATOR_NOT_QUALIFIED   the numerics cannot support inference
+  MEASUREMENT_MODEL_NOT_ESTIMABLE_AT_N28 no qualified estimator identifies it
+  COMMON_FACTOR_NOT_ESTABLISHED         estimator fine, data lack the construct
+  NO_SUCCESSOR_ENDPOINT_QUALIFIED       structure may exist, no candidate wins
+
+REVISION NOTE. The MODERATE cell and the extra reporting fields (M1a/M2a
+selection frequency, width-gate satisfaction rate, omega distributions,
+conditional vs unconditional split) were added at reviewer request. The
+original run was stopped having produced ZERO output bytes and no evidence
+file, so no nested result had been observed when the design was extended. The
+estimator family, the measurement model, the DGP definitions and the selection
+rule are unchanged.
 """
 
 from __future__ import annotations
@@ -66,6 +85,8 @@ CELLS = (
     dict(profile="STRONG", method_rho=0.75, comp_rho=0.55, missing=4,
          braak_ceiling=True, arm="nested", truth="TRUE_COMMON_CONSTRUCT"),
     dict(profile="STRONG", method_rho=0.25, comp_rho=0.15, missing=4,
+         braak_ceiling=True, arm="nested", truth="TRUE_COMMON_CONSTRUCT"),
+    dict(profile="MODERATE", method_rho=0.75, comp_rho=0.55, missing=4,
          braak_ceiling=True, arm="nested", truth="TRUE_COMMON_CONSTRUCT"),
     dict(profile="WEAK", method_rho=0.75, comp_rho=0.55, missing=4,
          braak_ceiling=True, arm="nested", truth="TRUE_COMMON_CONSTRUCT"),
@@ -145,6 +166,12 @@ def run_rep(kind, cell, seed):
                    dtype=np.float64)
     t12 = M.bca_interval(d12, pq["theta12"], j12)[:2] if len(d12) else None
 
+    widths = {k: (float(v[1] - v[0]) if np.isfinite(v[0]) and np.isfinite(v[1])
+                  else float("nan")) for k, v in intervals.items()}
+    # The width-only gate of section 11 step 2, recorded separately so its
+    # behaviour under NULL is visible rather than folded into the terminal.
+    width_gate = bool(any(np.isfinite(w) and w <= M.RELIABILITY_WIDTH_MAX
+                          for w in widths.values()))
     rel = {k: v for k, v in intervals.items()
            if np.isfinite(v[0]) and np.isfinite(v[1])}
     R = M.latent_gaussian_matrix(values, CONT)
@@ -154,6 +181,7 @@ def run_rep(kind, cell, seed):
     return {"point_improper": False, "nonconvergence": nonconv,
             "terminal_steps": res.terminal, "candidate": res.candidate,
             "omega_point": pq["omega_equal"],
+            "widths": widths, "width_gate_satisfied": width_gate,
             "interval_M1a": intervals["M1a"], "theta12_interval": t12,
             "adjusted_tails": adjusted}
 
@@ -174,14 +202,44 @@ def main(out_path: Path) -> int:
     for cell in CELLS:
         for kind in Q.ESTIMATORS:
             reps = [run_rep(kind, cell, SEED0 + r) for r in range(REPS)]
+            proper = [r for r in reps if not r["point_improper"]]
+            om_all = [r.get("omega_point", float("nan")) for r in reps]
+            om_proper = [r["omega_point"] for r in proper]
             row = {"cell": Q.cell_key(cell), "truth": cell["truth"],
                    "estimator": kind, "reps": REPS, "bootstrap_B": B,
+                   # --- improper fits, reported SEPARATELY from any
+                   #     biological or model-failure terminal ---
                    "point_improper_rate":
                        float(np.mean([r["point_improper"] for r in reps])),
                    "mean_bootstrap_nonconvergence":
-                       float(np.mean([r["nonconvergence"] for r in reps
-                                      if not r["point_improper"]] or [np.nan])),
-                   "omega_true": Q.cell_truth(cell)["omega"]}
+                       float(np.mean([r["nonconvergence"] for r in proper])
+                             if proper else np.nan),
+                   "median_bootstrap_nonconvergence":
+                       float(np.median([r["nonconvergence"] for r in proper])
+                             if proper else np.nan),
+                   # --- the width-only gate, unconditional and conditional ---
+                   "width_gate_rate_unconditional":
+                       float(np.mean([bool(r.get("width_gate_satisfied"))
+                                      for r in reps])),
+                   "width_gate_rate_given_proper":
+                       float(np.mean([bool(r["width_gate_satisfied"])
+                                      for r in proper]) if proper else np.nan),
+                   # --- omega distribution, both ways ---
+                   "omega_true": Q.cell_truth(cell)["omega"],
+                   "omega_mean_given_proper":
+                       float(np.nanmean(om_proper)) if om_proper else float("nan"),
+                   "omega_sd_given_proper":
+                       float(np.nanstd(om_proper)) if om_proper else float("nan"),
+                   "omega_quantiles_given_proper":
+                       [float(q) for q in np.nanquantile(
+                           om_proper, [0.05, 0.25, 0.5, 0.75, 0.95])]
+                       if len(om_proper) >= 5 else None,
+                   "omega_all_cohorts": [float(x) for x in om_all],
+                   # --- M1a vs M2a selection frequency ---
+                   "candidate_freq_unconditional": {
+                       c: float(np.mean([r.get("candidate") == c for r in reps]))
+                       for c in ("M1a", "M2a")},
+                   }
             for regime in (REGIME_AS_FROZEN, REGIME_RECLASSIFIED):
                 terms = [terminal_for(r, regime) for r in reps]
                 counts = {t: terms.count(t) / float(REPS) for t in set(terms)}
@@ -192,6 +250,11 @@ def main(out_path: Path) -> int:
                 else:
                     row["correct_qualification_" + regime] = passed
                     row["false_rejection_" + regime] = 1.0 - passed
+                # candidate frequency among cohorts that actually qualified
+                q = [r for r in reps if terminal_for(r, regime) == M.T_PASS]
+                row["candidate_freq_given_pass_" + regime] = {
+                    c: (float(np.mean([r.get("candidate") == c for r in q]))
+                        if q else float("nan")) for c in ("M1a", "M2a")}
             rows.append(row)
             print("%-20s %-10s improper=%.2f  pass[frozen]=%.2f "
                   "pass[reclass]=%.2f"
@@ -206,7 +269,16 @@ def main(out_path: Path) -> int:
         "reps": REPS, "bootstrap_B": B, "seed0": SEED0,
         "interval_method": "BCa_with_jackknife_acceleration",
         "regimes": [REGIME_AS_FROZEN, REGIME_RECLASSIFIED],
-        "rows": rows,
+        "reporting_note":
+            "all terminal and qualification rates are UNCONDITIONAL over every "
+            "simulated cohort, improper fits included as their own outcome; "
+            "quantities suffixed _given_proper are conditional diagnostics and "
+            "are not operating characteristics of the procedure",
+        "rows": [{k: v for k, v in r.items() if k != "omega_all_cohorts"}
+                 for r in rows],
+        "omega_distributions": {
+            "%s|%s" % (r["cell"], r["estimator"]): r["omega_all_cohorts"]
+            for r in rows},
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")

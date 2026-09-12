@@ -237,6 +237,7 @@ def run_cell(cell: dict, kind: str, reps: int, seed0: int) -> dict:
     w = np.ones(6) / 6.0
     proper = 0
     lam_s, th_s, om_s, sc_s = [], [], [], []
+    om_all = [float("nan")] * reps          # every cohort, NaN when improper
     for r in range(reps):
         seed = seed0 + r
         v = make_cohort(seed=seed,
@@ -258,6 +259,7 @@ def run_cell(cell: dict, kind: str, reps: int, seed0: int) -> dict:
         th_s.append([f.theta[f.order.index(a), f.order.index(b)]
                      for a, b in f.edges])
         om_s.append(M.omega_w(f, w))
+        om_all[r] = om_s[-1]
         try:
             bw = M.bartlett_weights(f)
             sc_s.append(float(np.sum(np.abs(bw))))
@@ -282,12 +284,17 @@ def run_cell(cell: dict, kind: str, reps: int, seed0: int) -> dict:
             "omega_sd": float(np.nanstd(O)),
             "omega_draws": [float(x) for x in O],
         })
+    out["omega_all"] = [float(x) for x in om_all]
     return out
 
 
 def auc(pos: Sequence[float], neg: Sequence[float]) -> float:
-    """Probability a TRUE-construct draw exceeds a NULL draw. 0.5 = no
-    discrimination, and no downstream rule can beat it."""
+    """CONDITIONAL on proper fits: P(a TRUE draw exceeds a NULL draw).
+
+    0.5 = no discrimination. This is a diagnostic about the estimator, NOT the
+    operating characteristic of the procedure -- it silently drops every cohort
+    that produced an improper fit. Use `auc_unconditional` for the procedure.
+    """
     p = np.asarray([x for x in pos if np.isfinite(x)])
     q = np.asarray([x for x in neg if np.isfinite(x)])
     if len(p) == 0 or len(q) == 0:
@@ -295,6 +302,25 @@ def auc(pos: Sequence[float], neg: Sequence[float]) -> float:
     gt = float(np.sum(p[:, None] > q[None, :]))
     eq = float(np.sum(p[:, None] == q[None, :]))
     return (gt + 0.5 * eq) / (len(p) * len(q))
+
+
+def auc_unconditional(pos: Sequence[float], neg: Sequence[float]) -> float:
+    """UNCONDITIONAL over every simulated cohort, improper fits included.
+
+    An improper fit yields no omega, so it cannot favour either hypothesis.
+    Counting every comparison involving one as a tie (0.5) is the neutral
+    convention and is declared here rather than chosen later. Both arms must be
+    padded to their full replicate count by the caller, with NaN marking an
+    improper or refused fit."""
+    p = np.asarray(pos, dtype=np.float64)
+    q = np.asarray(neg, dtype=np.float64)
+    if len(p) == 0 or len(q) == 0:
+        return float("nan")
+    ok = np.isfinite(p)[:, None] & np.isfinite(q)[None, :]
+    gt = float(np.sum((p[:, None] > q[None, :]) & ok))
+    eq = float(np.sum((p[:, None] == q[None, :]) & ok))
+    ties = float(np.sum(~ok))
+    return (gt + 0.5 * eq + 0.5 * ties) / (len(p) * len(q))
 
 
 def main(out_path: Path) -> int:
@@ -316,8 +342,14 @@ def main(out_path: Path) -> int:
             n = next((r for r in results if r["cell"] == "NULL/0.75/0.55"
                       and r["estimator"] == kind and r["arm"] == "core"), None)
             if p and n and "omega_draws" in p and "omega_draws" in n:
-                disc["%s|%s_vs_NULL" % (kind, pos_key)] = auc(
-                    p["omega_draws"], n["omega_draws"])
+                disc["%s|%s_vs_NULL" % (kind, pos_key)] = {
+                    "auc_conditional_on_proper_fits": auc(
+                        p["omega_draws"], n["omega_draws"]),
+                    "auc_unconditional_all_cohorts": auc_unconditional(
+                        p["omega_all"], n["omega_all"]),
+                    "proper_rate_true": p["proper_rate"],
+                    "proper_rate_null": n["proper_rate"],
+                }
     payload = {
         "schema": "T0_MEASUREMENT_ESTIMATOR_QUALIFICATION_V1",
         "frozen_before_running": True,
@@ -328,7 +360,12 @@ def main(out_path: Path) -> int:
         "seed0": SEED0,
         "nonconvergence_allowance_unchanged": M.NONCONVERGENCE_ALLOWANCE,
         "omega_auc_true_vs_null": disc,
-        "cells": [{k: v for k, v in r.items() if k != "omega_draws"}
+        "discrimination_note":
+            "conditional AUC drops improper-fit cohorts and is a DIAGNOSTIC; "
+            "unconditional AUC counts them as uninformative ties and is the "
+            "procedure's operating characteristic",
+        "cells": [{k: v for k, v in r.items()
+                   if k not in ("omega_draws", "omega_all")}
                   for r in results],
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
