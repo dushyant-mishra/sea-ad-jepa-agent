@@ -44,6 +44,16 @@ def test_full_stream_receipt_passes():
     assert out["passed"] and out["D_total"] == 7
 
 
+def test_one_se_selection_may_be_smaller_than_supported_prefix():
+    x = good()
+    x["D_shared"] = 5
+    x["D_total"] = 5
+    x["contiguous_prefix_supported_through"] = 7
+    out = DimensionExecutionFirewallV1().validate(x)
+    assert out["passed"] is True
+    assert out["D_shared"] == 5
+
+
 def test_historical_cap4_refit_null_cannot_be_final_authority():
     x = good()
     x["cells_per_stratum_cap"] = 4
@@ -87,7 +97,7 @@ def test_boundary_hit_expands_and_cannot_select_boundary():
         DimensionExecutionFirewallV1().validate(y)
 
 
-def test_noncontiguous_claim_fails():
+def test_selected_dimension_cannot_exceed_supported_prefix():
     x = good()
     x["contiguous_prefix_supported_through"] = 5
     with pytest.raises(DimensionExecutionStop, match="NONCONTIGUOUS"):
