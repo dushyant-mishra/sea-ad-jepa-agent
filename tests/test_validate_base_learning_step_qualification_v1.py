@@ -20,6 +20,12 @@ def valid_receipt():
             'confirmation_endpoint_used': False,
             'training_authorized': False,
         },
+        'qualification_run_authority': {
+            'scope': 'BOUNDED_READER_FIT_LEARNING_STEP_QUALIFICATION_ONLY',
+            'explicitly_authorized': True,
+            'authority_sha256': H,
+            'production_training_authorized': False,
+        },
         'analysis_level': {
             'representation_observation_unit': 'CELL_WITH_NATIVE_MEASUREMENT_SUPPORT',
             'statistical_generalization_unit': 'DONOR_HELD_OUT_WHERE_BIOLOGICAL_GENERALIZATION_IS_CLAIMED',
@@ -118,3 +124,13 @@ def test_missing_evidence_digest_is_rejected():
     r = valid_receipt(); del r['evidence_sha256']['negative_controls']
     out = m.classify_learning_step_authority(r)
     assert out['reason'] == 'missing_or_invalid_evidence_sha256:negative_controls'
+
+
+def test_unapproved_learning_run_cannot_generate_authority():
+    r = valid_receipt(); r['qualification_run_authority']['explicitly_authorized'] = False
+    assert m.classify_learning_step_authority(r)['reason'] == 'qualification_run_not_explicitly_authorized'
+
+
+def test_bounded_qualification_run_cannot_claim_production_training_authority():
+    r = valid_receipt(); r['qualification_run_authority']['production_training_authorized'] = True
+    assert m.classify_learning_step_authority(r)['reason'] == 'qualification_run_cannot_claim_production_training_authority'
