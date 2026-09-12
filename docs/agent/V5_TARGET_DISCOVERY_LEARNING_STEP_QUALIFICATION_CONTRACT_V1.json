@@ -1,0 +1,73 @@
+{
+  "schema": "JEPA_V5_TARGET_DISCOVERY_LEARNING_STEP_QUALIFICATION_CONTRACT_V1",
+  "status": "PROSPECTIVE_CONTRACT__NO_TRAINING_AUTHORITY__NO_PROTECTED_ACCESS",
+  "methodological_source": {
+    "branch": "t0/v21-closeout-candidate-20260911",
+    "commit": "a61eff05",
+    "document": "docs/agent/T0_LEARNING_STEP_FINDINGS_20260912.md",
+    "role": "METHODOLOGICAL_EVIDENCE_ONLY__NOT_BIOLOGICAL_TARGET"
+  },
+  "lane_separation": [
+    "FOUNDATION_TARGET_DISCOVERY_TD13_TD60_IS_NOT_T0_V18_V20_V21",
+    "T0_METHOD_DEVELOPMENT_INFORMS_FOUNDATION_TARGET_DISCOVERY_AND_V5_CHEAT_PROOFING_WITHOUT_SUPPLYING_THE_BIOLOGICAL_TARGET"
+  ],
+  "prerequisite_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+  "protocol_freeze_precedes_run": true,
+  "qualification_run_authority": {
+    "required": true,
+    "scope_exact": "BOUNDED_READER_FIT_LEARNING_STEP_QUALIFICATION_ONLY",
+    "content_addressed": true,
+    "production_training_authority": false
+  },
+  "required_comparator_classes": [
+    "NO_LEARNED_SIGNAL_OR_LIMITING_OBJECT",
+    "TECHNICAL_ONLY_OR_IDENTITY_ONLY",
+    "RANDOMIZED_OR_MATCHED_NULL"
+  ],
+  "reporting_requirements": {
+    "full_curve_required": true,
+    "limiting_object_required": true,
+    "boundary_limiting_object_diagnosis_before_grid_expansion": true,
+    "effective_capacity_diagnostic_required": true,
+    "effective_capacity_threshold_authority": "PRODUCTION_DERIVED_OR_MODEL_DEFINED",
+    "t0_numeric_threshold_import_forbidden": true
+  },
+  "analysis_level_requirements": {
+    "representation_observation_unit_declared": true,
+    "statistical_generalization_unit_declared": true,
+    "aggregation_that_sets_effective_n_requires_estimand_justification": true,
+    "donor_held_out_generalization_where_claimed": true,
+    "cell_native_support_retained_when_estimand_permits": true
+  },
+  "production_geometry": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "ragged_native_support_required": true,
+    "production_matched_simulation_or_adversarial_geometry_required": true,
+    "toy_geometry_is_production_authority": false
+  },
+  "required_evidence_sha256": [
+    "full_curve",
+    "comparators",
+    "capacity",
+    "geometry",
+    "negative_controls"
+  ],
+  "pass_terminal": "PASS_BASE_LEARNING_STEP_QUALIFICATION__NO_TRAINING_AUTHORITY",
+  "fail_terminal": "STOP_BASE_LEARNING_STEP_NOT_ESTABLISHED__DOWNSTREAM_SCIENTIFIC_INTERPRETATION_BLOCKED",
+  "failure_semantics": "LEARNING_DESIGN_NOT_ESTABLISHED__NOT_BIOLOGY_ABSENT",
+  "pass_does_not_authorize": [
+    "TD60",
+    "RELATIONAL_TARGET_ACTIVATION",
+    "PRODUCTION_TRAINING",
+    "READER_VALIDATION",
+    "READER_ORACLE",
+    "PATHOLOGY_ACCESS"
+  ],
+  "next_stage_after_pass": "LAWFUL_EXPOSURE_DEFINED_BASE_EMA_TEACHER_THEN_TD60",
+  "validator": "scripts/v5_anticheat/validate_base_learning_step_qualification_v1.py",
+  "training_authorized": false,
+  "protected_data_authorized": false
+}
