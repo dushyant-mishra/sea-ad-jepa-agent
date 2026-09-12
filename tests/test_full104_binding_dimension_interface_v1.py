@@ -1,3 +1,4 @@
+import copy
 import pytest
 
 from sea_ad_jepa.v5 import full104_dimension_interface_v1 as m
@@ -50,3 +51,25 @@ def test_wrong_full104_terminal_cannot_project():
     r["status"] = "PASS_SOMETHING_ELSE"
     with pytest.raises(RuntimeError, match="TERMINAL"):
         m.project_full104_receipt_for_dimension_authority(r)
+
+
+def test_sealed_dimension_input_binds_exact_full104_parent_bytes():
+    envelope = m.seal_full104_dimension_input(receipt())
+    assert envelope["schema"] == "JEPA_V5_FULL104_DIMENSION_INPUT_ARTIFACT_V1"
+    assert len(envelope["artifact_sha256"]) == 64
+    out = m.validate_full104_dimension_input(envelope)
+    assert out["population_mode"] == "FULL_READER_FIT_STREAM"
+    assert out["training_authorized"] is False
+
+
+def test_sealed_dimension_input_rejects_parent_and_payload_tamper():
+    envelope = m.seal_full104_dimension_input(receipt())
+    bad_parent = copy.deepcopy(envelope)
+    bad_parent["parent_sha256"]["metadata_sqlite"] = "b" * 64
+    with pytest.raises(RuntimeError, match="PARENT_MISMATCH|DIGEST_MISMATCH"):
+        m.validate_full104_dimension_input(bad_parent)
+
+    bad_payload = copy.deepcopy(envelope)
+    bad_payload["payload"]["cells"] = 4_553_406
+    with pytest.raises(RuntimeError, match="DIGEST_MISMATCH"):
+        m.validate_full104_dimension_input(bad_payload)
