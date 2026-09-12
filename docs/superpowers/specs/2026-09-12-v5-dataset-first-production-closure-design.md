@@ -1,6 +1,6 @@
 # V5 Dataset-First Production Closure Design
 
-Status: `DESIGN_APPROVED_IN_CHAT__IMPLEMENTATION_NOT_STARTED__NO_TRAINING_AUTHORITY`
+Status: `DESIGN_APPROVED__IMPLEMENTATION_IN_PROGRESS__HISTORICAL_FULL104_MATERIALIZATION_RECOVERED__NO_TRAINING_AUTHORITY`
 
 Base branch at design creation: `repair/v5-qualified-target-guard-20260911 @ da8bd7dfe138fc4b36c11007d0a0165cd2365bcc`
 
@@ -12,9 +12,69 @@ Close the V5 pre-execution production-qualification chain around the real FULL10
 
 Core ordering:
 
-`FULL104 data -> support/estimability -> scientific estimand -> production dimensions/schedule/packing -> runtime/anti-cheat qualification -> lawful base EMA teacher -> TD60 -> partial-evidence relational student qualification`
+`historical FULL104 production bytes -> current-byte recovery/rebinding -> support/estimability -> scientific estimand -> production dimensions/schedule/packing -> runtime/anti-cheat qualification -> lawful base EMA teacher -> TD60 -> partial-evidence relational student qualification`
 
 Training remains unauthorized throughout this design.
+
+## Historical FULL104 production-materialization recovery — 2026-09-12 correction
+
+A later code/history audit recovered that FULL104 was **not merely planned** and does **not need to be rematerialized from source by default**.
+
+The historical lineage under:
+
+`docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/`
+
+contains a completed Level-4 production materialization package with frozen provenance for:
+
+- `MATERIALIZATION_CONTRACT.json` SHA-256 `612b45742ad80498cbe2f061a75af08c0a10692dc731e0ac8e649417b7e62f17`;
+- `PHASE2_EXPRESSION_BLOCK_MANIFEST.csv` SHA-256 `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`;
+- `PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json` SHA-256 `9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf`;
+- exact historical materialization scripts;
+- distinct Level-4 feature-matrix and multiview-feature package manifests.
+
+The expected historical physical block root is:
+
+`outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/`
+
+with the production geometry already recorded as:
+
+- 4,553,407 reader-fit cells;
+- 104 donors;
+- 42 operators / 42 matrices;
+- 8,915 Level-4 blocks;
+- 41,238 molecular addresses.
+
+The historical production substrate was subsequently consumed by the FULL104 `ALL` executor. Repository state records the `ALL` execution as completed under implementation fingerprint:
+
+`a0fe5bc7be0769c9880763b3831ea330a251dfa710a8635b05f678c5d6e94202`
+
+with terminal run-manifest SHA-256:
+
+`8f292673c84447ee88f3a78936aa88920b96f0ffd681237e2b5af3e7dfe4d60c`.
+
+The independent terminal adjudication package records:
+
+- 4,108 fits;
+- 640 production/independent support rows agreeing exactly;
+- all fits numerically valid;
+- terminal `TEACHER_BIOLOGY_LIMIT` for the **specific historical shared-state estimand**;
+- `D_shared = null`, no downstream/private-state authority.
+
+This historical negative shared-state result is **not** evidence that FULL104 lacks biology and is **not** current V5 numeric-dimension authority. It proves, however, that the production dataset was materially constructed and exercised at full-population scale.
+
+### Correct present interpretation
+
+The current V5 FULL104 task is therefore primarily:
+
+`LOCATE_EXISTING_HISTORICAL_FULL104_BYTES -> VERIFY_FROZEN_PARENT_HASHES -> RUN_CURRENT_V5_BINDER -> SEAL_CURRENT_DIMENSION_INPUT_ARTIFACT`
+
+not:
+
+`REBUILD_FULL104_FROM_SCRATCH`.
+
+Rematerialization is permitted only if the historical physical store is genuinely missing/corrupt and a separately reviewed recovery/reconstruction path proves byte/semantic equivalence or explicitly creates a lawful successor authority. A new differently materialized store must never silently inherit the historical block identity.
+
+The old FULL104 ALL executor, sufficient-statistic, restart/checkpoint, storage, and independent-reconstruction machinery should be audited for **implementation reuse** before new full-stream dimension executors are written. Its historical numeric conclusion and historical sampled/cap-4 shortcuts remain non-promotable under current V5 authority.
 
 ## Non-negotiable scientific rules
 
@@ -47,6 +107,8 @@ Expected production geometry:
 - 8,915 Level-4 expression blocks
 - 41,238 molecular addresses
 - block manifest SHA-256 `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`
+
+The binder is a **current-authority byte/identity re-certification of the already-materialized historical production store**, not evidence that the dataset was never prepared.
 
 ### Dataset-derived registry and support mass
 
@@ -122,19 +184,17 @@ Design requirement:
 - no current gate may consume its PASS terminal as FULL104 expression closure;
 - tests must prove that authentic corrected TRAIN shards cannot satisfy any FULL104 production preflight.
 
-### Finding B — intended full-stream dimension producer is missing
+### Finding B — intended full-stream dimension producer was missing at audit start
 
-`DimensionExecutionFirewallV1` tests explicitly list:
+`DimensionExecutionFirewallV1` tests explicitly listed:
 
 `scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py`
 
-as the final-authority script, but that file does not exist on the live V5 branch.
+as the final-authority script, but that file did not exist on the live V5 base branch.
 
-The current code contains validators/firewalls for the desired receipt but no production implementation that derives the dimension family from FULL104.
+The successor branch now implements selection mechanics and provenance binding for this path, but **real full-stream metric execution remains outstanding**.
 
-Design requirement:
-
-Implement a real FULL104-stream producer that derives:
+Current design requirement remains:
 
 - `D_shared` from held-donor, disjoint-view/common-core predictability with full-refit matched nulls and donor-resampled stability;
 - `D_private` only after `D_shared` is frozen, as lawful incremental biological rank from operator-native evidence;
@@ -146,27 +206,17 @@ Implement a real FULL104-stream producer that derives:
 
 Zero must remain a lawful dimension result.
 
-### Finding C — artifact SHA binding is currently caller-shaped at some boundaries
+### Finding C — artifact SHA binding was caller-shaped at some boundaries
 
-`DimensionAuthorityV4` validates a FULL104-derived receipt while receiving `expression_closure_artifact_sha256` separately in its authority constructor. Unit tests demonstrate shape validation with arbitrary 64-hex digests rather than proving the digest corresponds to the exact validated receipt bytes.
+`DimensionAuthorityV4` validates a FULL104-derived receipt while receiving `expression_closure_artifact_sha256` separately in its authority constructor. Unit tests demonstrated shape validation with arbitrary 64-hex digests rather than proving the digest corresponds to the exact validated receipt bytes.
 
-Design requirement:
-
-Production producer functions must:
-
-1. canonicalize/serialize the validated receipt;
-2. compute the SHA-256 from those exact bytes;
-3. emit the receipt and artifact digest together;
-4. bind parent artifact SHA values into the child artifact;
-5. provide replay validators that recompute hashes from bytes rather than trusting caller-provided digest strings.
-
-The same principle applies to dimension, proposal-weight, packing/restart, production-GPU, and gate-evidence artifacts.
+The successor branch now adds canonical artifact serialization and exact parent binding for the FULL104→dimension path. The same principle still needs to remain true downstream for proposal-weight, packing/restart, production-GPU, and gate-evidence artifacts.
 
 ### Finding D — production-geometry GPU validator exists; production runner is missing
 
 `production_geometry_gpu_guard_v1.py` and its tests define the exact required receipt and correctly refuse historical 128x8 evidence as production geometry.
 
-No `scripts/v5_anticheat/run_v5_production_geometry_gpu_qualification_v1.py` exists on the live branch.
+No `scripts/v5_anticheat/run_v5_production_geometry_gpu_qualification_v1.py` existed on the live base branch.
 
 Design requirement:
 
@@ -203,32 +253,40 @@ Design requirement:
 
 Build executable control producers/harnesses for each gate. Every report must be generated from the actual frozen gate implementation and exact sampling geometry, with raw outputs hashed before summary qualification. Caller-supplied booleans cannot be the only evidence of gate acceptance/rejection.
 
-### Finding F — production FULL104 physical store is still the first substrate blocker
+### Finding F — historical FULL104 store exists; present blocker is location/rebinding, not preparation
 
-Current authoritative terminal remains:
+Earlier wording described the FULL104 physical store as though it were an unbuilt substrate. Historical audit corrects that interpretation.
 
-`STOP_FULL104_PHASE2_BLOCK_STORE_LOCATION_BINDING_MISSING`
+The store was historically materialized and subsequently used by full-population `ALL` execution. The present blocker is:
 
-Historical expected root:
+`HISTORICAL_FULL104_PHYSICAL_BYTES_NOT_YET_RELOCATED_AND_REBOUND_UNDER_CURRENT_V5_AUTHORITY`
+
+Expected historical root:
 
 `outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/`
 
-The >30GB store is expected on the GPU laptop/attached drive. It should not be copied into ChatGPT. The only accepted closure is the V4 binder over the exact 8,915-block store plus metadata authority.
+The >30GB store is expected on the GPU laptop/attached drive. It should not be copied into ChatGPT. The first action is to locate and hash-check the existing store. Only if those bytes are unavailable or fail integrity should reconstruction/rematerialization be considered.
+
+The accepted current closure remains the V4 binder over the exact 8,915-block store plus metadata authority.
 
 ## Work-unit architecture
 
-### Unit A — FULL104 data authority
+### Unit A — FULL104 data authority recovery/rebinding
 
-Purpose: prove the exact production expression substrate and emit a canonical hash-bound closure artifact.
+Purpose: recover the already-materialized production expression substrate, prove its exact current byte/identity state, and emit a canonical hash-bound closure artifact.
 
 Deliverables:
 
-- exact V4 binder replay on real 8,915-block store;
+- locate historical 8,915-block store on GPU laptop/attached drive;
+- verify frozen block-manifest/materialization/metadata parent hashes;
+- exact V4 binder replay on those existing bytes;
 - canonical serialized closure artifact and SHA-256;
 - negative-control tests proving TRAIN/50K/synthetic stores cannot close FULL104;
 - deprecation/fail-closed repair for stale 42-shard full-reader preflight.
 
-No dimensions are derived until Unit A closes.
+Do **not** rematerialize FULL104 merely to satisfy current code if the historical store is intact.
+
+No new dimensions are derived until Unit A closes under current V5 authority.
 
 ### Unit B — dataset-derived production geometry
 
@@ -236,11 +294,12 @@ Purpose: derive scientific/representation geometry from Unit A rather than histo
 
 Deliverables:
 
-- `derive_full_stream_dimension_family_v1.py` plus tests;
-- exact dimension artifact bound to Unit A bytes;
+- current `derive_full_stream_dimension_family_v1.py` selection/provenance path plus real FULL104 metric executors;
+- exact dimension artifacts bound to Unit A bytes;
 - support-family and proposal/schedule artifacts bound to the same FULL104 closure;
 - finite relation-support tables and estimability summaries needed later for triplet-budget/locality qualification;
-- explicit search expansion terminal when the supported dimension lies on a tested boundary.
+- explicit search expansion terminal when the supported dimension lies on a tested boundary;
+- audit and reuse historical ALL streaming/sufficient-statistic/restart machinery where scientifically compatible.
 
 ### Unit C — runtime and anti-cheat qualification
 
@@ -290,7 +349,7 @@ For each work unit:
 4. rerun targeted tests;
 5. run the relevant existing V5 suites;
 6. replay from clean tracked bytes / clean archive where practical;
-7. mutation-test or explicit adversarially mutate authority-critical validation logic where the risk justifies it;
+7. mutation-test or explicitly adversarially mutate authority-critical validation logic where the risk justifies it;
 8. commit one auditable unit at a time.
 
 Do not report a PASS based only on a schema validator or hand-authored receipt.
@@ -305,17 +364,18 @@ Do not report a PASS based only on a schema validator or hand-authored receipt.
 
 ## Current intended order of implementation
 
-1. Fail-close/deprecate the stale 42-shard full-reader preflight.
-2. Add canonical artifact serialization/hash-binding utility used by new production producers.
-3. Close FULL104 physical binding on the remote substrate and emit canonical closure artifact.
-4. Implement `derive_full_stream_dimension_family_v1.py` against the canonical FULL104 reader.
-5. Bind dimension -> proposal/schedule -> packing/restart artifacts to one design context and FULL104 root.
-6. Build executable two-sided anti-cheat control producers.
-7. Implement true production-geometry GPU runner and receipt producer.
-8. Close dependency bundle for bounded qualification.
-9. Obtain lawful base EMA teacher only after explicit bounded-qualification authority.
-10. Run TD60, then partial-evidence student relational qualification.
-11. Seek integrated independent review before any relational activation or production-training authority.
+1. Preserve the fail-closed repair for the stale 42-shard full-reader preflight.
+2. Preserve canonical artifact serialization/hash-binding for new production producers.
+3. **Recover/locate and rebind the existing historical FULL104 physical store**; do not rebuild by default.
+4. Audit historical FULL104 ALL executor machinery for reusable full-stream implementation patterns.
+5. Complete real FULL104 metric executors and current dimension-family authority path.
+6. Bind dimension -> proposal/schedule -> packing/restart artifacts to one design context and FULL104 root.
+7. Build executable two-sided anti-cheat control producers.
+8. Implement true production-geometry GPU runner and receipt producer.
+9. Close dependency bundle for bounded qualification.
+10. Obtain lawful base EMA teacher only after explicit bounded-qualification authority.
+11. Run TD60, then partial-evidence student relational qualification.
+12. Seek integrated independent review before any relational activation or production-training authority.
 
 ## Explicit non-goals
 
