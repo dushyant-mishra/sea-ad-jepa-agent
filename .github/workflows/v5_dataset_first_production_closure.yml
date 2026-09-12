@@ -32,6 +32,7 @@ jobs:
           tests/test_bind_corrected_train_cache_v1.py
           tests/test_bind_full104_expression_blocks_v4.py
           tests/test_full104_binding_dimension_interface_v1.py
+          tests/test_derive_full_stream_dimension_family_v1.py
           tests/test_dimension_execution_firewall_v1.py
           tests/test_dimension_authority_guard_v3.py
           tests/test_dimension_authority_guard_v4.py
@@ -46,6 +47,7 @@ jobs:
           python -m py_compile
           scripts/v5_anticheat/full_reader_relational_target_preflight_v1.py
           scripts/v5_anticheat/bind_full104_expression_blocks_v4.py
+          scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py
           src/sea_ad_jepa/v5/artifact_binding_v1.py
           src/sea_ad_jepa/v5/full104_dimension_interface_v1.py
           src/sea_ad_jepa/v5/dimension_execution_firewall_v1.py
