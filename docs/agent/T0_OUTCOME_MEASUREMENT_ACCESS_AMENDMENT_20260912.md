@@ -1,8 +1,10 @@
 # T0 PROSPECTIVE OUTCOME-MEASUREMENT ACCESS AMENDMENT
 
 Date: 2026-09-12
-Revision: **R3** (narrow repair after review of R2 at `29d15919`)
-Status: `PROSPECTIVE_ACCESS_CONTRACT__DESIGN_APPROVED__NUMERIC_ACCESS_PENDING`
+Revision: **R4** (final narrow repair after review of R3 at `b9e1dd43`)
+Status: `MEASUREMENT_DESIGN_APPROVED__DISCOVERY_ONLY_NUMERIC_ACCESS_AUTHORIZED_AFTER_R4_COMMIT`
+Authorization scope: **exactly the six declared columns × the 28 DISCOVERY
+donors**, against the already-authenticated source, under this contract
 Requested authority: read numeric values of six additional pathology columns,
 **28 DISCOVERY donors only**
 Terminal if approved: `PASS_T0_OUTCOME_MEASUREMENT_MODEL_ACCESS_GRANTED`
@@ -52,6 +54,17 @@ Caught by auditing R3 against itself rather than shipping it for review:
 
 Defect 9 was the substantive one: it would have admitted exactly the kind of
 result-driven rescue this contract exists to prevent.
+
+### R4 — projection stability, and one more self-caught non-termination
+
+| # | defect | correction | § |
+| --- | --- | --- | --- |
+| 11 | §5.2 could still permit a **large** nearest-PD repair whenever the interval on `λ_min` reached zero, and a large repair can move loadings, `ω_w`, Bartlett weights and the M1a/M2a terminal. Reporting distance does not prevent it. | conclusion-stability rule: §11 Steps 1–5 run inside every resample, terminals stratified NATIVE / REPAIRED; empty NATIVE stratum, or modal disagreement between strata, gives `ASSOCIATION_STRUCTURE_UNRESOLVED`. No distance, no percentage, nothing chosen after the matrix is seen. | §5.2.1 |
+| 12 | my own §5.2.1 draft said "run the ENTIRE §11 rule" inside each resample, while §11 Step 0 invokes §5.2.1 — **non-terminating** | resamples run Steps 1–5 only; Step 0 is evaluated once at the top level and is what makes the procedure terminate | §5.2.1, §11 |
+
+After R4 the contract is final. Numeric access is authorized for the six declared
+columns on the 28 discovery donors, and no further design approval is required
+before executing the measurement study.
 
 ---
 
@@ -235,6 +248,74 @@ bootstrap, whose tail level is fixed at `α* = 0.025` and therefore needs only
 
 This asks whether the matrix is *significantly* indefinite rather than how far
 the repair moved it. No other smoothing is admissible.
+
+### 5.2.1 Projection-stability requirement  *(R4)*
+
+The rule above is necessary and not sufficient. At n = 28 the interval on
+`λ_min` can be wide enough to reach zero even when the observed matrix requires a
+**substantial** repair, and a substantial repair can move loadings, residual
+correlations, `ω_w`, Bartlett weights and therefore the M1a-versus-M2a terminal.
+Reporting the projection distance does not prevent that. The governing principle:
+
+> **A nearest-PD projection may repair numerics. It may not manufacture
+> scientific qualification.**
+
+No Frobenius-distance threshold is introduced, now or after seeing the matrix.
+The requirement is conclusion-stability, propagated through the same resampling
+distribution the rest of the contract already uses.
+
+**Rule, frozen now.** It engages only when the full-sample matrix required
+projection; if the full-sample matrix is natively PD, the projection question
+does not arise and this subsection is vacuous.
+
+```
+For every bootstrap resample b (§10, donor-level):
+    construct the resample's latent-Gaussian matrix R_b;
+    project R_b by the same frozen Higham procedure iff R_b is non-PD;
+    run §11 STEPS 1-5 on it  -- never Step 0, which invokes this subsection
+      and would not terminate; the projection-stability check is evaluated
+      exactly once, at the top level, from the terminals collected here;
+    record the terminal T_b and the stratum
+        NATIVE   (R_b was already PD)   or   REPAIRED (R_b needed projection).
+
+STRATUM-EMPTY CHECK
+  If the NATIVE stratum is empty -- no lawful resample yields a coherent
+  matrix without repair -- then there is no evidence the construct exists
+  unrepaired, and the terminal is ASSOCIATION_STRUCTURE_UNRESOLVED.
+
+CROSS-STRATUM AGREEMENT
+  If both strata are non-empty, the full-sample qualifying terminal must be
+  the modal terminal WITHIN EACH stratum. If the NATIVE and REPAIRED strata
+  disagree on the modal terminal, the projection is doing scientific work
+  rather than numerical repair, and the terminal is
+  ASSOCIATION_STRUCTURE_UNRESOLVED.
+```
+
+Both checks are comparisons of conclusions between resamples that needed repair
+and resamples that did not. Neither involves a distance, a percentage, or any
+quantity chosen after the matrix is seen.
+
+**The safeguard is deliberately asymmetric.** It gates only a *qualifying*
+terminal. A projection cannot manufacture authority by producing
+`NO_SUCCESSOR_ENDPOINT_QUALIFIED` or `COMMON_FACTOR_NOT_ESTABLISHED`, because
+those grant nothing and leave M0a standing; the risk being guarded against is a
+repaired matrix qualifying a successor endpoint that the unrepaired data do not
+support.
+
+**Stability evidence reported regardless**, stratified NATIVE / REPAIRED, whether
+or not the terminal is qualifying — this is the reviewer's minimum list and it
+goes in `COMMON_FACTOR_SUPPORT`:
+
+- MM-C admissibility rate;
+- loading signs and support (interval-excludes-zero status per indicator);
+- residual-covariance interpretation, in particular the sign and support of
+  `θ₁₂`;
+- the `ω_w` / score-reliability conclusion;
+- the M1a-versus-M2a selection terminal.
+
+Running the full §11 rule inside every resample is the expensive part of this
+contract and is accepted deliberately. Resample indices are digested per §10 so
+the stratification and every terminal replay exactly.
 
 ### 5.3 What scale the results live on
 
@@ -543,9 +624,16 @@ Estimand-B models are excluded at every step. All steps run **before any
 expression association is computed**.
 
 ```
-STEP 0 — ASSOCIATION STRUCTURE
-  If §5.2 returns ASSOCIATION_STRUCTURE_UNRESOLVED, stop there.
-  No model is fitted and M0a stands.
+STEP 0 — ASSOCIATION STRUCTURE  (top level only; never inside a resample)
+  (a) If §5.2's inferential rule returns ASSOCIATION_STRUCTURE_UNRESOLVED --
+      the bootstrap upper bound on lambda_min is below zero -- stop there.
+      No model is fitted and M0a stands.
+  (b) If the full-sample matrix required projection, evaluate §5.2.1's
+      projection-stability rule using the terminals that Steps 1-5 produce
+      inside each resample. If it returns ASSOCIATION_STRUCTURE_UNRESOLVED,
+      stop; M0a stands.
+  Steps 1-5 below are what runs inside a resample. Step 0 runs once, on the
+  full sample, and is what makes the procedure terminate.
 
 STEP 1 — MEASUREMENT-MODEL ADMISSIBILITY
   Selection uses MM-C only. MM-CB is fitted for validity and can never be
@@ -620,7 +708,7 @@ computation that produced it.
 | --- | --- | --- |
 | `CONVERGENT_VALIDITY` | the §5.1 latent-Gaussian association matrix with bootstrap intervals, plus the minimum-eigenvalue bootstrap of §5.2 | not reliability, not factor support |
 | `METHOD_VARIANCE` | fitted `θ₁₂` with interval; share of idx12/idx13 association explained | not a construct claim |
-| `COMMON_FACTOR_SUPPORT` | convergence rates, loadings with intervals, `m`, `r`, **computed df**, PD-projection distance | not reliability |
+| `COMMON_FACTOR_SUPPORT` | convergence rates, loadings with intervals, `m`, `r`, **computed df**, the named Gaussian-copula assumption (§5.1), PD-projection distance, and the §5.2.1 NATIVE/REPAIRED stratified stability evidence | not reliability |
 | `FACTOR_SCORE_STABILITY` | agreement between donor-held-out scores (training-fold-only maps, §8) and full-fit scores | not reliability |
 | `MEASUREMENT_RELIABILITY_OR_SENSITIVITY_ENVELOPE` | `ω_w` / determinacy with intervals, **explicitly labelled latent-Gaussian scale**; otherwise an envelope over hypothesized `R_y` | never an inter-assay correlation relabelled; never a Pearson-scale reliability |
 | `ENDPOINT_SELECTION_STATUS` | the §11 terminal and the path through the rule | not a summary of the others |
@@ -713,7 +801,7 @@ work.
 ## 15. Execution order and authority state  *(repair 6)*
 
 ```
-measurement-access contract (this document — DESIGN APPROVED, NUMERIC ACCESS PENDING)
+measurement-access contract (this document — R4 FINAL, NUMERIC ACCESS AUTHORIZED)
   → discovery-only measurement characterization
   → measurement-model qualification
   → planning-only feasibility / power envelope
@@ -721,9 +809,13 @@ measurement-access contract (this document — DESIGN APPROVED, NUMERIC ACCESS P
   → only then: transport qualification and biological-representation work
 ```
 
-Nothing here grants access; it requests it. Until approval:
+**Authorized at R4**, strictly limited to the six declared columns (idx 5, 13,
+21, 22, 25, 26) × the 28 DISCOVERY donors, against the source authenticated at
+`ebbe9bc0…`, under this contract. Everything else is unchanged and still closed:
 
 - fresh-12 sealed; reader-oracle sealed; V20 immutable at `d5d67e21`;
+- the 18 spent donors excluded from endpoint selection;
+- every undeclared pathology column unread;
 - `S0_S4_SELECTION_AUTHORIZED = FALSE`;
 - `FRESH_READER_VALIDATION_OPEN_AUTHORIZED = FALSE`;
 - `READER_ORACLE_OPEN_AUTHORIZED = FALSE`;
