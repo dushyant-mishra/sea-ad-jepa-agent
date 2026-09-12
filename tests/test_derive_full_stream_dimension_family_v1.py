@@ -7,13 +7,16 @@ m = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)
 
 
-def shared(rank, score, se, *, supported=True):
+def shared(rank, score, se, *, supported=True, heldout_supported=None):
+    if heldout_supported is None:
+        heldout_supported = supported
     return {
         "rank": rank,
         "held_donor_cross_view_mean": score,
         "held_donor_cross_view_se": se,
         "signal_above_full_refit_matched_null": supported,
         "donor_resampled_subspace_stability": supported,
+        "held_donor_cross_view_predictability": heldout_supported,
         "independent_view_agreement": supported,
         "measurement_shortcut_increment_pass": supported,
     }
@@ -43,6 +46,19 @@ def test_shared_selects_smallest_jointly_supported_prefix_within_one_se_of_best(
     assert out["D_shared"] == 2
     assert out["contiguous_prefix_supported_through"] == 3
     assert out["one_se_threshold"] == 0.76
+    assert out["search_boundary_supported"] is False
+
+
+def test_shared_held_donor_predictability_is_a_required_joint_gate():
+    rows = [
+        shared(1, 0.70, 0.02),
+        shared(2, 0.78, 0.02, supported=True, heldout_supported=False),
+        shared(3, 0.79, 0.03),
+    ]
+    out = m.select_shared_dimension(rows)
+    assert out["terminal"] == "PASS_D_SHARED_SELECTED"
+    assert out["D_shared"] == 1
+    assert out["contiguous_prefix_supported_through"] == 1
     assert out["search_boundary_supported"] is False
 
 
