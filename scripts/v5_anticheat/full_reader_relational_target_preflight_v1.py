@@ -10,6 +10,28 @@ def sha(path):
         for b in iter(lambda:f.read(8<<20),b''): h.update(b)
     return h.hexdigest()
 
+PRODUCTION_FULL104_BINDER = 'scripts/v5_anticheat/bind_full104_expression_blocks_v4.py'
+PRODUCTION_FULL104_TERMINAL = 'PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE'
+
+
+def classify_expression_authority(*, loader_schema: str, location_status: str) -> dict:
+    if not isinstance(loader_schema, str) or not loader_schema:
+        raise ValueError('loader_schema must be nonempty')
+    if not isinstance(location_status, str) or not location_status:
+        raise ValueError('location_status must be nonempty')
+    if location_status == 'MISSING':
+        terminal = 'STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING'
+    elif loader_schema == 'foundation-train-loader-v1' and location_status == 'PASS_42_OF_42_PHYSICAL_SHARDS_BOUND':
+        terminal = 'STOP_TRAIN_CACHE_IS_NOT_FULL104_EXPRESSION_AUTHORITY'
+    else:
+        terminal = 'STOP_UNRECOGNIZED_EXPRESSION_AUTHORITY_PATH'
+    return {
+        'terminal': terminal,
+        'full104_expression_binding_closed': False,
+        'required_production_binder': PRODUCTION_FULL104_BINDER,
+        'required_production_terminal': PRODUCTION_FULL104_TERMINAL,
+    }
+
 def main(argv=None):
     p=argparse.ArgumentParser()
     p.add_argument('--metadata-sqlite',type=Path,required=True)
@@ -46,7 +68,8 @@ def main(argv=None):
             if not cp.is_file() or not mp.is_file(): raise SystemExit(f'physical expression shard missing at operator {i}')
             if sha(cp)!=frozen['counts_sha256'] or sha(mp)!=frozen['meta_sha256']: raise SystemExit(f'physical shard hash drift at operator {i}')
         location_status='PASS_42_OF_42_PHYSICAL_SHARDS_BOUND'
-    terminal='PASS_FULL_READER_TARGET_QUALIFICATION_EXPRESSION_PREFLIGHT' if location_status.startswith('PASS_') else 'STOP_FULL_READER_EXPRESSION_LOCATION_BINDING_MISSING'
-    out={'schema':'JEPA_FULL_READER_RELATIONAL_TARGET_QUALIFICATION_PREFLIGHT_V1','terminal':terminal,'authenticated_real_population':{'cells':cells,'unique_stable_keys':unique,'donors':donors,'operators':operators,'donor_operator_groups':groups,'matrices':matrices,'addresses':41238},'frozen_inputs_sha256':observed,'physical_expression_location_binding':location_status,'target_framework':'TD57B_TD59_SCALE_FREE_RELATIONAL_GEOMETRY__NO_LOCALITY_FRACTION_RETUNING','full_reader_action_if_pass':'Run fixed relational qualification/shortcut attacks over reader_fit using d1_expression_reader_v2; do not perform outcome-responsive target search.','substitutions_forbidden':['50K discovery archive as if it were the 4,553,407-cell population','synthetic expression','reader_validation','reader_oracle','DEV','SEALED','pathology'],'pathology_used':False,'synthetic_data_used':False,'training_authorized':False}
+    authority = classify_expression_authority(loader_schema=loader.get('schema'), location_status=location_status)
+    terminal=authority['terminal']
+    out={'schema':'JEPA_FULL_READER_RELATIONAL_TARGET_QUALIFICATION_PREFLIGHT_V1','terminal':terminal,'authenticated_real_population':{'cells':cells,'unique_stable_keys':unique,'donors':donors,'operators':operators,'donor_operator_groups':groups,'matrices':matrices,'addresses':41238},'frozen_inputs_sha256':observed,'physical_expression_location_binding':location_status,'train_cache_binding_only':location_status == 'PASS_42_OF_42_PHYSICAL_SHARDS_BOUND','full104_expression_binding_closed':authority['full104_expression_binding_closed'],'required_production_binder':authority['required_production_binder'],'required_production_terminal':authority['required_production_terminal'],'target_framework':'TD57B_TD59_SCALE_FREE_RELATIONAL_GEOMETRY__NO_LOCALITY_FRACTION_RETUNING','full_reader_action_if_pass':'Run fixed relational qualification/shortcut attacks only after the separate FULL104 V4 binder closes the exact 8,915-block store; do not perform outcome-responsive target search.','substitutions_forbidden':['42-shard corrected TRAIN cache as FULL104','50K discovery archive as if it were the 4,553,407-cell population','synthetic expression','reader_validation','reader_oracle','DEV','SEALED','pathology'],'pathology_used':False,'synthetic_data_used':False,'training_authorized':False}
     a.out_json.parent.mkdir(parents=True,exist_ok=True); a.out_json.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n'); print(json.dumps(out,indent=2,sort_keys=True)); return 0 if terminal.startswith('PASS_') else 3
 if __name__=='__main__': raise SystemExit(main())
