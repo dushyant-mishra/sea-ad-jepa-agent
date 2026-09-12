@@ -1,109 +1,134 @@
 # CURRENT SUPERSESSION MAP — JEPA PROJECT
 
 Date: 2026-09-11
-Status: `CURRENT_T0_V21_DRAFT_EXTERNAL_REVIEW_PENDING_EXECUTABLE_REVIEW__V5_HARDENING__NO_TRAINING_AUTHORITY`
+Status: `PROJECT_LINEAGE_RECONSTRUCTED__FOUNDATION_TARGET_DISCOVERY_T0_V5_FULL104_SEPARATED__NO_TRAINING_AUTHORITY`
 
 ## Project-level rule
 
-`main` is the canonical governance/startup lineage. Active T0/V5 branches carry staged evidence, drafts and implementations. Branch names do not confer scientific or training authority.
+`main` is the canonical governance/startup lineage after a governance repair is merged. Active scientific/engineering branches carry staged evidence, drafts and implementations. Branch names do not confer scientific or training authority.
 
-Current startup layer:
+Before using older 2026-09-11 integrated handoffs, read:
 
-- `START_HERE.md`
-- `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-- `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md`
-- `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json`
-- `docs/agent/CURRENT_AUTHORITY_INDEX.md`
-- this file
-
-The 2026-09-10 FINAL/FINAL4 handoff remains historical context only. FINAL R4 formulas/heavy-asset ledgers remain valid historical references where not explicitly superseded.
+1. `START_HERE.md`
+2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+3. `docs/agent/JEPA_PROJECT_LINEAGE_AND_DATASET_AUTHORITY_RECONSTRUCTION_20260911.md`
+4. `docs/agent/JEPA_PROJECT_LANE_MAP_20260911.json`
+5. `target_discovery/HANDOFF_CURRENT_20260908.md`
+6. `target_discovery/RELATIONAL_FORMULAS_AND_THEORY_20260908.md`
+7. `target_discovery/FOUNDATION_TARGET_DISCOVERY_RELATIONAL_AMENDMENT_20260908.md`
+8. lane-specific current handoffs/reviews.
 
 Always re-fetch live heads before acting.
 
-## Current lane snapshots
+## Critical semantic-drift correction
 
-| Lane | Snapshot observed before 2026-09-11 governance commits | Role |
+Commit `ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f` correctly required upstream biological-object qualification and downstream V5 anti-shortcut qualification to close as one production dependency chain. However, its `T0 / target discovery` heading and its description of V21 S0–S4 as Target Discovery are **not supported by the older scientific lineage**.
+
+No explicit scientific supersession was recovered that replaces Foundation Target Discovery TD13–TD60 with T0 V18/V20/V21.
+
+Controlling interpretation:
+
+- retain the integrated-review requirement;
+- restore Foundation Target Discovery and T0 as separate lanes;
+- Foundation Target Discovery supplies the relational-object/protocol lineage into Teacher/Student V4/V5;
+- T0 remains a parallel MTG broad-IMMUNE/AT8 donor-level biological-claim and prospective qualification lane.
+
+Do not use `T0`, `T0/V21` and `Foundation Target Discovery` as synonyms.
+
+## Current lane snapshots / historical anchors
+
+| Lane | Anchor / observed snapshot | Role |
 |---|---|---|
-| T0 V20 | `d5d67e21398da92e39095afd864b4fb9ebe3da02` | immutable historical science authority |
-| T0 V21 | `11e76d36ace556ac48cdd2992995e63c1e35df18` | live draft-only successor design; prose blockers addressed, executable re-review pending |
-| V5 | `1de20b1c222c7fb27fcef5ec1a4b798d5b26a534` | active anti-cheat/qualification engineering; training closed |
+| Foundation Target Discovery | historical branch `planning/foundation-target-discovery-v1-20260907`; current durable handoff at `2c73a4398bd6a3256db2e13727097a4668724924` | scientific target/object discovery and relational-protocol qualification; TD56/TD57B/TD57C/TD59/TD60 |
+| T0 V20 | `d5d67e21398da92e39095afd864b4fb9ebe3da02` | immutable T0 broad-IMMUNE/AT8 biological-claim authority; 20,804 cells / 46 donors / operator31 |
+| T0 V21 | historical draft `11e76d36ace556ac48cdd2992995e63c1e35df18`, followed by repair lineage | T0-specific prospective estimator/power/confirmation successor; effect transport remains OPEN |
+| Teacher/Student V4 | relational bridge commit `69da3e14d1e071133a88caae8363decfe79f6113` | converts surviving Target Discovery anchored ordering into prospective differentiable teacher→student target |
+| V5 | `planning/v5-full-population-cheat-proofing-20260909`; observed `1de20b1c222c7fb27fcef5ec1a4b798d5b26a534` before this reconstruction | data-first/full-reader anti-shortcut successor; training closed |
+| FULL104/B2 | V5 production substrate lineage | 4,553,407 cells / 104 donors / 42 operators / 41,238 addresses / 8,915 Level-4 blocks; full-reader support/production-value authority when closed |
+| F1 | separate contextual-target line | query-local/contextual teacher/student feasibility and evidence trends; not Foundation Target Discovery |
 
-These are observed snapshots, not permanent pins.
+Snapshots are evidence anchors, not permanent live-head pins.
 
-## Superseded / corrected states
+## Foundation Target Discovery supersession state
 
-| Historical state | Current status | Controlled by |
-|---|---|---|
-| 2026-09-10 FINAL/FINAL4 as startup authority | **SUPERSEDED FOR STARTUP** | 2026-09-11 pointer/handoff/state |
-| V21 fresh-donor feasibility audit as next action | **SUPERSEDED** | audit complete; 12 validation + 10 oracle identified |
-| open `reader_validation` because 12 fresh donors exist | **FORBIDDEN NOW** | V21 power gate + complete freeze required first |
-| use V20 observed t directly for n=12 power | **SUPERSEDED** | nested OOF discovery-only power construction |
-| use 46-donor supervised refit to estimate its own power | **FORBIDDEN** | no out-of-fit known-outcome donors remain after 46 supervised fit |
-| call cross-fitting itself a lower bound | **SUPERSEDED** | jackknife/worst-case standardized OOF influence bound in V21 draft |
-| fit HC3 separately inside one-donor outer LODO folds | **INVALID / INESTIMABLE** | one HC3 regression across assembled 28 OOF donor predictions |
-| let unresolved exploratory T2 block T1 freeze | **SUPERSEDED** | T1 and T2 are separate tracks/freezes |
-| choose among S0–S4 using two qualitative criteria after seeing results | **FORBIDDEN** | prospective admissibility + worst-case rank + deterministic tie-break |
-| treat `11e76d36` as executable closure | **FORBIDDEN** | commit changes only V21 design document; implementation review/tests still required |
-| other brain regions as fresh confirmation cohorts | **REFUTED** | same donors recur; cross-region = generalisation only |
-| move confirmation from MTG to MEC for more cells | **REJECTED** | changes estimand; MTG remains primary confirmation tissue |
-| cross-cell QC association as causal rejection evidence | **SUPERSEDED** | warning only; same-cell intervention carries qualification authority |
-| 1:1 matched-QC null as proof confound removed | **REJECTED** | size-matched confound-retaining control also collapsed |
-| rejection gate without exact-geometry power/discrimination | **FORBIDDEN** | V21/V5 prospective calibration rules |
-| V20 ridge endpoint proves state inference invalid | **NOT SUPPORTED** | well-posedness issue, not retrospective invalidation |
-| exact 42 corrected TRAIN shards imply FULL104 expression availability | **FALSE / SUPERSEDED** | corrected TRAIN cache = 4,726 rows only |
-| TRAIN-cache byte binding closes production expression | **FORBIDDEN** | FULL104 requires separate 8,915-block Level-4 store closure |
-| `build_full_reader_expression_identity_closure_v3.py` can certify FULL104 from TRAIN row space | **FORBIDDEN FOR PRODUCTION** | row spaces differ; real invocation failed closed |
-| real proposal-weight invariance unresolved | **CLOSED** | `PASS_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_REPLAY` |
-| real packing/order/restart invariance unresolved | **CLOSED** | same terminal |
-| historical D_shared=5 / latent 96 / d_gene=160 / D_global=224 / rank320 / width512 as production constants | **NON-AUTHORITY** | full-reader prospective derivation required |
-| decreasing loss or smoke/CI PASS as qualification | **FORBIDDEN** | mechanics + anti-cheat + biology + postqualification + independent review |
-| historical 128x8 OOM as main failure | **SUPERSEDED** | historical defects were primarily protected-gradient/identity mechanics |
+The historical fixed-coordinate target search is superseded by the prospective relational route, not by T0.
 
-## T0 V20
+Binding scientific arc:
 
-Frozen terminals remain:
+- corrected row-addressing guard invalidated reset-row alias positives;
+- repeated fixed-coordinate/module/subspace/query-target candidates failed or were invalidated;
+- TD56 established disjoint-gene relational geometry across HVS/NPH52/SEA_AD;
+- TD57B established donor-recurrent scale-free anchored ordering, 24/24;
+- TD57C nearest-third hard locality failed and remains failed;
+- TD59 nearest-half mesoscale recurrence passed on fresh panels but is weaker and not production locality authority;
+- TD60 prospectively tests learned-teacher continuity using exact TD57B/TD59 semantics.
+
+The future authority object is `FOUNDATION_RELATIONAL_PROTOCOL_AUTHORITY_V1`. The 50k archive remains falsification/candidate-qualification only; it cannot set production D/K/locality/threshold/loss/schedule/training authority.
+
+## T0 V20/V21 supersession state
+
+T0 is separate from Foundation Target Discovery.
+
+The T0 lane handoff explicitly states T0 does not use JEPA. Its core learner is donor-pseudobulk nuisance-partialled dual ridge.
+
+Frozen V20 terminals:
 
 - `BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL`
 - `RARE_TAIL_UNDERDETERMINED_MEASUREMENT`
 
 V20 is immutable.
 
-## T0 V21 current boundary
+V21 is a T0-specific successor. Current fail-closed semantics after the repair lineage remain:
 
-`reader_validation` is HOLD. `reader_oracle` is sealed.
+- `EFFECT_TRANSPORT_STATUS = OPEN`;
+- production power-gate verdict capability disabled;
+- S0–S4 execution unauthorized;
+- `reader_validation` HOLD;
+- `reader_oracle` sealed;
+- training unauthorized.
 
-Current hierarchy:
-28 discovery -> 18 spent/development -> 12 fresh single-shot validation -> 10 sealed oracle.
+Historical T0 corrections retained:
 
-The V21-T1 draft now specifies:
+| Historical state | Current status | Controlled by |
+|---|---|---|
+| V21 fresh-donor feasibility audit as next action | **SUPERSEDED** | audit complete; 12 validation + 10 oracle identified |
+| open `reader_validation` because 12 fresh donors exist | **FORBIDDEN NOW** | T0 V21 power gate + complete freeze required first |
+| use V20 observed t directly for n=12 power | **SUPERSEDED** | nested OOF discovery-only T0 power construction |
+| use 46-donor supervised refit to estimate its own power | **FORBIDDEN** | no out-of-fit known-outcome donors remain after 46 supervised fit |
+| call cross-fitting itself a lower bound | **SUPERSEDED** | conservative influence/jackknife construction; effect transport still OPEN |
+| fit HC3 separately inside one-donor outer LODO folds | **INVALID / INESTIMABLE** | one HC3 regression across assembled OOF donor scores |
+| let unresolved exploratory T2 block T1 freeze | **SUPERSEDED** | T1 and T2 separate tracks/freezes |
+| choose among S0–S4 after outcomes | **FORBIDDEN** | prospective admissibility/ranking/tie-break |
+| treat V21 design prose as execution authority | **FORBIDDEN** | exact-head executable tests/review required |
+| other brain regions as fresh confirmation cohorts | **REFUTED** | same donors recur; cross-region = generalisation only |
+| move confirmation from MTG to MEC for more cells | **REJECTED** | changes estimand; MTG remains primary confirmation tissue |
+| 1:1 matched-QC null alone proves confound removed | **REJECTED** | size-matched confound-retaining control also lost discrimination |
+| rejection gate without exact-geometry power/discrimination | **FORBIDDEN** | T0/V5 prospective calibration rule |
+| V20 ridge endpoint proves state inference invalid | **NOT SUPPORTED** | well-posedness issue, not retrospective invalidation |
 
-- closed S0–S4 estimator family;
-- prospective ranking/tie-break;
-- nested outer-LODO/inner-LODO OOF predictions;
-- one HC3 regression across assembled OOF donor scores;
-- jackknife-minimum standardized influence effect with directional-consistency STOP;
-- >=80% projected power at alpha=0.025 for n=12 before validation may open;
-- no spent-18 AT8 in the power gate;
-- no power credit for 46-donor refit;
-- T2 decoupled;
-- cross-region work secondary only;
-- MTG retained as confirmation tissue.
+## Target Discovery -> Teacher/Student -> V5 state
 
-**But:** latest fixes at `11e76d36` are design-document changes only. Executable implementation and adversarial tests must be externally reviewed before the single-shot estimator-selection run.
+Teacher/Student V4 commit `69da3e14d1e071133a88caae8363decfe79f6113` is the explicit historical bridge: it turns the surviving Target Discovery anchored-distance ordering into an auditable, differentiable teacher→student target and accepts externally frozen triplets rather than choosing locality itself.
 
-## V5 expression state
+V5 data-first design `9fde8c709d057d79bee8c80ba205a43c3b9717b1` preserves the scale-free anchored triplet object and direct 160-D learned-geometry qualification while refusing to inherit TD59's nearest-half fraction or mechanics-corpus geometry as production authority.
 
-Closed:
+The correct production dependency chain is:
+
+`Foundation TD relational candidate -> learned-teacher continuity -> partial-evidence student qualification -> FULL104 relational-protocol/production-value qualification -> V5 anti-shortcut/data-first qualification -> explicit production authority`.
+
+T0 runs in parallel and is not an upstream teacher-target generator by default.
+
+## FULL104 / V5 expression state
+
+Closed only:
 
 `PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY`
 
-- 42/42 shard pairs
-- 4,726 rows
+- 42/42 corrected TRAIN shard pairs
+- 4,726 physical rows
 - 41,238 addresses
 
-Still open:
-
-`STOP_FULL104_PHASE2_BLOCK_STORE_LOCATION_BINDING_MISSING`
+This is not FULL104.
 
 Required production expression substrate:
 
@@ -115,55 +140,77 @@ Required production expression substrate:
 - historical manifest SHA-256 `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`
 
 Required terminal:
-`PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE`
+`PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE`.
 
-No TRAIN cache, 50K subset, synthetic fixture, validation/oracle source, DEV/SEALED source or different-byte substitute may satisfy it without prospective re-authorization.
+Production binder:
+`scripts/v5_anticheat/bind_full104_expression_blocks_v4.py` on the V5 lineage.
 
-## V5 schedule/proposal/restart state
+The >30GB substrate belongs on the separate GPU laptop/attached hard drive. Do not treat absence from a ChatGPT runtime as evidence of absence and do not substitute 50k, corrected TRAIN or synthetic data.
 
-Real full-reader closure:
+Historical expression/schedule corrections retained:
 
-`PASS_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_REPLAY`
+| Historical state | Current status | Controlled by |
+|---|---|---|
+| exact 42 corrected TRAIN shards imply FULL104 expression availability | **FALSE / SUPERSEDED** | corrected TRAIN cache = 4,726 rows only |
+| TRAIN-cache byte binding closes production expression | **FORBIDDEN** | FULL104 requires separate 8,915-block Level-4 closure |
+| `build_full_reader_expression_identity_closure_v3.py` can certify FULL104 from TRAIN row space | **FORBIDDEN FOR PRODUCTION** | row spaces differ; use V4 production binder |
+| real proposal-weight invariance unresolved | **CLOSED** | `PASS_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_REPLAY` |
+| real packing/order/restart invariance unresolved | **CLOSED** | same terminal |
+| historical 5/96/160/224/320/512 as production constants | **NON-AUTHORITY** | full-reader prospective derivation required |
+| decreasing loss or smoke/CI PASS as qualification | **FORBIDDEN** | mechanics + biology + anti-cheat + postqualification + independent review |
+| historical 128x8 OOM as main failure | **SUPERSEDED** | primary historical defects included protected-gradient and identity mechanics |
 
-- 4,553,407 unique cells
-- 104 donors
-- H = 5,267,086
-- `q_i = m_i/H`
-- `p_i = 1/(D n_d)`
-- `w_i = H/(D n_d m_i)`
-- exact affine order
-- exact packing at 128 and 576
-- exact full-horizon restart replay
-- stream SHA-256 `08a1df725b3803d049cf6a0a75811c1863b4bd0b537ed2ecaf70445380f02f74`
+## Dataset-role supersession rules
 
-This creates no expression, dimensions, GPU, biology, postqualification or training authority.
+| Dataset / asset | Current lawful role | Forbidden substitution |
+|---|---|---|
+| Foundation 50k archive | falsification and relational candidate qualification | production dimensions/locality/thresholds/loss/schedule/training |
+| 3,292-cell mechanics corpus | mechanics replay/qualification | production relational geometry/schedule |
+| T0 20,804 / 46 / operator31 | T0 biological claim | Foundation TD or FULL104 |
+| corrected TRAIN 4,726 | corrected cache evidence | FULL104 |
+| FULL104 4,553,407 / 104 / 42 | full-reader support, V5 substrate, production-value/protocol qualification | replacement by bounded/synthetic assets |
+| reader_validation | protected single-shot confirmation | design/tuning/discovery |
+| reader_oracle | sealed reserve | design/tuning/discovery |
+| synthetic | unit/mechanics/adversarial testing | production biology or numeric authority |
 
-## Remaining V5 closure
+## Remaining closure by lane
 
-Still unresolved:
+Foundation Target Discovery / relational protocol:
+- preserve TD56/TD57B/TD57C/TD59 exactly;
+- lawfully continue/resolve TD60 learned-teacher continuity;
+- qualify partial-evidence student geometry beyond matched wrong-cell alternatives;
+- bind full-reader production values/protocol roots from FULL104;
+- integrated independent review of the Target Discovery→Teacher/Student/V5 scientific lineage.
 
-- FULL104 8,915-block physical binding/identity closure;
-- production dimensions `D_shared`, `D_private`, `D_total`, `D_obs`, `d_gene`;
-- remaining prospective numeric gate authorities;
-- production-geometry CUDA Gate-2 evidence;
-- bounded qualification;
-- learned-checkpoint shortcut/collapse/same-cell qualification;
-- dependency-closed postqualification bundle;
-- independent review;
-- V5 production training authorization.
+T0 V21:
+- exact-head portability/repaired-candidate verification;
+- effect transport OPEN;
+- no production power verdict, S0–S4 run, fresh validation, oracle or training.
+
+V5/FULL104:
+- remote FULL104 expression/block identity closure;
+- production dimensions and numeric gate authorities;
+- optimizer-path non-bypassability and deliberate shortcut/nuisance attacks;
+- production-geometry CUDA evidence;
+- bounded qualification/postqualification;
+- exact-head independent review;
+- explicit training authority.
 
 ## Governance rule
 
 Do not delete/merge active evidence branches merely to reduce branch count. Consolidate only after exact ancestry and evidence preservation are verified.
 
+A later governance document may supersede an earlier scientific lane definition only if it cites an explicit scientific supersession decision and evidence. A heading change is not enough.
+
 ## Precedence
 
-1. live `main` + `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. 2026-09-11 canonical handoff/state
-3. `docs/agent/CURRENT_AUTHORITY_INDEX.md`
-4. this map
-5. exact lane-specific frozen contracts/reviews and prospective drafts
-6. FINAL R4 formula/heavy-asset ledgers where not superseded
-7. older historical artifacts
+1. live `main` after this governance reconstruction is merged
+2. `START_HERE.md`
+3. lineage reconstruction + machine-readable lane map
+4. exact historical Target Discovery scientific handoff/theory/amendment
+5. current lane-specific exact-head contracts/reviews/receipts
+6. current handoff/state documents, interpreted under the lane map
+7. historical formula/heavy-asset ledgers where not superseded
+8. older historical artifacts.
 
 **Training remains OFF.**

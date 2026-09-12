@@ -1,46 +1,139 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V11",
-  "date": "2026-09-11",
-  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF__TARGET_DISCOVERY_TO_V5_INTEGRATED_EXTERNAL_REVIEW__NO_TRAINING_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V14_ALL_LIVE_BRANCHES_AUDITED",
+  "date": "2026-09-12",
+  "status": "CURRENT_CANONICAL_PROJECT_LINEAGE_RECONSTRUCTED__ALL_LIVE_BRANCH_HISTORY_AUDITED__T0_METHOD_FEEDBACK_TO_TARGET_DISCOVERY_V5_PRESERVED__NO_TRAINING_AUTHORITY",
+  "lineage_reconstruction_path": "docs/agent/JEPA_PROJECT_LINEAGE_AND_DATASET_AUTHORITY_RECONSTRUCTION_20260911.md",
+  "lane_map_path": "docs/agent/JEPA_PROJECT_LANE_MAP_20260911.json",
+  "all_live_branches_audit_path": "docs/agent/JEPA_ALL_LIVE_BRANCHES_HISTORY_AND_AUTHORITY_AUDIT_20260912.md",
+  "live_branch_authority_map_path": "docs/agent/JEPA_LIVE_BRANCH_AUTHORITY_MAP_20260912.json",
+  "t0_method_feedback_path": "docs/agent/T0_METHOD_TO_TARGET_DISCOVERY_AND_V5_DESIGN_FEEDBACK_20260911.md",
+  "legacy_handoff_corroboration_path": "docs/agent/JEPA_LEGACY_HANDOFF_CORROBORATION_ADDENDUM_20260908.md",
+  "target_discovery_handoff_path": "target_discovery/HANDOFF_CURRENT_20260908.md",
+  "target_discovery_theory_path": "target_discovery/RELATIONAL_FORMULAS_AND_THEORY_20260908.md",
+  "target_discovery_relational_amendment_path": "target_discovery/FOUNDATION_TARGET_DISCOVERY_RELATIONAL_AMENDMENT_20260908.md",
+  "integrated_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
   "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
-  "prior_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL4.md",
+  "prior_t0_v21_v5_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
   "prior_formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "prior_heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "observed_lane_heads_before_20260911_integrated_governance_update": {
-    "main": "04d91537358f5adc8973c091d4bfae4e2390bd22",
-    "v5": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
-    "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
-    "t0_v21_draft": "11e76d36ace556ac48cdd2992995e63c1e35df18"
+  "critical_lane_rule": "FOUNDATION_TARGET_DISCOVERY_TD13_TD60_IS_NOT_T0_V18_V20_V21",
+  "critical_feedback_rule": "T0_METHOD_DEVELOPMENT_INFORMS_FOUNDATION_TARGET_DISCOVERY_AND_V5_CHEAT_PROOFING_WITHOUT_SUPPLYING_THE_BIOLOGICAL_TARGET",
+  "branch_audit_rule": "MAIN_IS_CURRENT_GOVERNANCE_BUT_DIVERGENT_HISTORICAL_BRANCHES_MAY_CONTAIN_UNIQUE_SCIENTIFIC_OR_METHOD_EVIDENCE_AND_MUST_BE_INDEXED_BEFORE_CLEANUP",
+  "semantic_drift_correction": {
+    "source_commit": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f",
+    "retain": "UPSTREAM_FOUNDATION_TARGET_DISCOVERY_RELATIONAL_PROTOCOL_AND_DOWNSTREAM_V5_REVIEW_MUST_BOTH_CLOSE_FOR_PRODUCTION_AUTHORITY",
+    "do_not_retain": "T0_V20_V21_AS_SYNONYM_FOR_FOUNDATION_TARGET_DISCOVERY",
+    "explicit_scientific_supersession_recovered": false
   },
-  "branches": {
-    "v5": "planning/v5-full-population-cheat-proofing-20260909",
-    "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
-    "t0_v21_draft": "t0/v21-prospective-design-20260910"
+  "branch_wide_recovery": {
+    "preexisting_live_branches_reviewed": 40,
+    "dataset_first_t0_framework_master_list_recovered": true,
+    "teacher_student_hold_until_real_t0_replay_recovered": true,
+    "t1_failure_future_framework_design_guide_recovered": true,
+    "target_discovery_to_v5_integration_contract_recovered": true,
+    "td60_full_reader_exposure_checkpoint_amendment_recovered": true,
+    "duplicate_or_ancestral_refs_identified": true,
+    "divergent_unique_history_requires_preservation_before_cleanup": true
   },
-  "integrated_review_scope": "RAW_SEA_AD_TO_TARGET_DISCOVERY_TO_TARGET_FREEZE_TO_V5_TEACHER_TARGET_TO_TRAINING",
-  "target_discovery_review_status": "IN_PROGRESS_NOT_YET_END_TO_END_EXTERNAL_CODE_EVIDENCE_REVIEW_COMPLETE",
-  "t0_status": "V21_DESIGN_PROSE_BLOCKERS_ADDRESSED_AT_11e76d36__EXECUTABLE_TARGET_DISCOVERY_SELECTION_AND_POWER_REVIEW_STILL_REQUIRED__NO_SELECTION_OR_POWER_GATE_RUN",
-  "t0_next_action": "EXTERNALLY_REVIEW_EXECUTABLE_TARGET_DISCOVERY_S0_S4_SELECTION_NESTED_OOF_HC3_AND_POWER_GATE_BEFORE_ANY SINGLE_SHOT_SELECTION_RUN",
-  "v5_review_status": "MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING_AT_1de20b1c__UPSTREAM_TARGET_DISCOVERY_REVIEW_MUST_ALSO_CLOSE",
-  "v5_next_action": "REPAIR_CONFIRMED_V5_DEFECTS_AND_PROVE_NON_BYPASSABILITY_IN_PARALLEL_WITH_TARGET_DISCOVERY_EXTERNAL_AUDIT_AND_FULL104_RECOVERY",
-  "runtime_asset_verification": {
-    "discovery_parts_and_assembled_stream": "PASS_HASH_VERIFIED",
-    "foundation_calibration": "PASS_HASH_VERIFIED",
-    "checkpoints": "PASS_HASH_VERIFIED",
-    "t1_checkpoint_u0200": "PASS_HASH_VERIFIED",
-    "expression_zip": "PASS_HASH_VERIFIED",
-    "corrected_train_cache_zip": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
-    "operator_address_state_npz": "PROVENANCE_MISMATCH_DO_NOT_USE"
+  "cross_lane_design_feedback": {
+    "source": "T0_V18_V20_V21_AND_HISTORICAL_T1_FAILURE_METHOD_LESSONS",
+    "destinations": [
+      "FOUNDATION_TARGET_DISCOVERY",
+      "TEACHER_STUDENT_V4_V5",
+      "FULL_READER_ANTI_CHEAT_QUALIFICATION"
+    ],
+    "allowed_transfer": [
+      "dataset_first_authority_DAG",
+      "fail_closed_gate_design",
+      "measurement_and_confound_intervention_principles",
+      "exact_geometry_sensitivity_specificity_for_rejection_gates",
+      "donor_primary_generalization",
+      "discovery_confirmation_firewalls",
+      "power_and_estimability_before_irreversible_holdout_opening",
+      "cross_fitting_not_automatically_a_lower_bound",
+      "provenance_and_byte_identity_closure",
+      "per_tensor_gradient_optimizer_EMA_health_proof",
+      "NOT_MEASURABLE_not_PASS",
+      "association_warning_vs_intervention_rejection_authority"
+    ],
+    "forbidden_transfer": [
+      "AT8_or_pathology_values_for_target_selection",
+      "T0_broad_IMMUNE_score_as_automatic_JEPA_target",
+      "T0_operator31_population_as_FULL104",
+      "T0_numeric_thresholds_as_production_Target_Discovery_thresholds_by_inheritance"
+    ]
   },
-  "target_discovery_external_review_complete": false,
-  "s0_s4_authorized": false,
-  "fresh_reader_validation_open_authorized": false,
-  "reader_oracle_open_authorized": false,
+  "foundation_target_discovery": {
+    "historical_branch": "planning/foundation-target-discovery-v1-20260907",
+    "surviving_object": "SCALE_FREE_DONOR_RECURRENT_RELATIONAL_GEOMETRY__ANCHORED_DISTANCE_ORDERING",
+    "TD56": "PASS_THREE_SOURCE_DISJOINT_GENE_RELATIONAL_GEOMETRY",
+    "TD57B": "PASS_24_OF_24_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER",
+    "TD57C": "FAIL_NEAREST_THIRD_HVS_2_OF_4__FAIL_STANDS",
+    "TD59": "PASS_24_OF_24_NEAREST_HALF_MESOSCALE_ON_FRESH_VIEWS__NOT_PRODUCTION_LOCALITY_AUTHORITY",
+    "TD60": "PROSPECTIVE_LEARNED_TEACHER_CONTINUITY_GATE__NO_TRAINING_AUTHORITY",
+    "future_authority_object": "FOUNDATION_RELATIONAL_PROTOCOL_AUTHORITY_V1",
+    "fifty_k_role": "FALSIFICATION_AND_CANDIDATE_QUALIFICATION_ONLY"
+  },
+  "target_discovery_to_v5_integration": {
+    "historical_contract": "docs/agent/TARGET_DISCOVERY_TO_V5_INTEGRATION_CONTRACT_V1.json",
+    "historical_contract_branch": "planning/v5-pretraining-qualification-20260909",
+    "relation": "ANCHORED_TRIPLET_ORDERING_SIGN_D_IJ_MINUS_D_IK",
+    "distance": "DIRECT_160D_CELL_STATE_COSINE_DISTANCE",
+    "relational_training_initially_active": false,
+    "activation_requires_lawful_teacher_td60_partial_evidence_budget_view_policy_review": true
+  },
+  "t0": {
+    "role": "SEPARATE_MTG_BROAD_IMMUNE_VS_AT8_DONOR_LEVEL_BIOLOGICAL_CLAIM_AND_METHOD_PROVING_GROUND",
+    "uses_JEPA": false,
+    "v20_branch": "t0/v20-pathology-blind-materialization-20260908",
+    "v20_frozen_head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+    "v20_population": "20804_CELLS__46_DONORS__OPERATOR31",
+    "broad_state": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
+    "rare_tail": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+    "v21_role": "T0_SPECIFIC_PROSPECTIVE_ESTIMATOR_POWER_CONFIRMATION_SUCCESSOR_AND_TRANSFERABLE_METHOD_DEVELOPMENT",
+    "effect_transport_status": "OPEN",
+    "power_gate_production_verdict_capability": "DISABLED",
+    "s0_s4_authorized": false,
+    "fresh_reader_validation_open_authorized": false,
+    "reader_oracle_open_authorized": false
+  },
+  "teacher_student_v4": {
+    "relational_bridge_commit": "69da3e14d1e071133a88caae8363decfe79f6113",
+    "bridge_semantics": "CONSUME_SURVIVING_TARGET_DISCOVERY_ANCHORED_ORDERING_AS_DIFFERENTIABLE_TEACHER_STUDENT_TARGET",
+    "chooses_locality": false
+  },
+  "v5": {
+    "design_commit": "9fde8c709d057d79bee8c80ba205a43c3b9717b1",
+    "branch": "planning/v5-full-population-cheat-proofing-20260909",
+    "reviewed_head": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
+    "review_status": "MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING",
+    "training_authorized": false
+  },
+  "td60_exposure_amendment": {
+    "historical_branch": "planning/teacher-student-v5-dataset-schedule-20260909",
+    "milestone_candidate": "FINAL_ONE_READER_FIT_POPULATION_EQUIVALENT_EMA_TEACHER_V1",
+    "base_presentations_seen": 4553407,
+    "historical_u40_is_biological_time_authority": false,
+    "training_authorized": false,
+    "td60_execution_authorized": false
+  },
+  "FULL104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "matrices": 42,
+    "addresses": 41238,
+    "level4_blocks": 8915,
+    "role": "FULL_READER_SUPPORT_ESTIMABILITY_PRODUCTION_V5_SUBSTRATE_AND_PRODUCTION_VALUE_RELATIONAL_PROTOCOL_QUALIFICATION",
+    "production_verifier_path": "scripts/v5_anticheat/bind_full104_expression_blocks_v4.py",
+    "required_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+    "remote_location_rule": "GT_30GB_SUBSTRATE_STAYS_ON_GPU_LAPTOP_ATTACHED_HARD_DRIVE__DO_NOT_UPLOAD_TO_CHATGPT"
+  },
+  "integrated_review_scope": "FOUNDATION_TARGET_DISCOVERY_RELATIONAL_PROTOCOL_TO_TEACHER_STUDENT_V4_V5_TO_FULL_READER_PRODUCTION_QUALIFICATION_WITH_T0_METHOD_AND_T1_FAILURE_FEEDBACK",
+  "target_discovery_production_authority_complete": false,
   "v5_full104_expression_closed": false,
   "v5_integrated_review_closed": false,
   "training_authorized": false,
-  "instruction": "Open START_HERE.md first, then this pointer, then the integrated 20260911 handoff/state. Re-fetch live heads before acting. Treat target discovery and V5 as one production-review chain. Keep V20 immutable. Do not run S0-S4 or open fresh validation/oracle before the executable discovery/selection/power implementation passes external/adversarial review and the target is frozen under the prospective contract. TRAIN-cache PASS is not FULL104 PASS. Repair V5 confirmed defects and prove optimizer-path non-bypassability, but do not claim training authority. Exclude the provenance-mismatched operator-address NPZ. Training remains OFF."
+  "instruction": "Open START_HERE.md first, then the lineage reconstruction, all-live-branches audit, machine-readable branch map, lane map, T0 method-feedback addendum, and legacy corroboration addendum. Never use T0/V21 and Foundation Target Discovery as synonyms, but never isolate them methodologically: T0 and historical T1 failure lessons intentionally inform dataset-first, fail-closed and anti-cheat design. Preserve the explicit historical Target Discovery-to-V5 relational integration contract. Re-fetch live heads before acting. Do not delete divergent branches until their unique history is indexed and exact heads preserved. Keep V20 immutable. Do not run T0 S0-S4, open fresh reader_validation/oracle for design, use pathology for Target Discovery/V5 tuning, execute TD60, or train."
 }

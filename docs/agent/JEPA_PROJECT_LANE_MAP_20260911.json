@@ -1,0 +1,159 @@
+{
+  "schema": "JEPA_PROJECT_LANE_MAP_V1",
+  "date": "2026-09-11",
+  "status": "PROJECT_LINEAGE_RECONSTRUCTED__LANES_SEPARATED__NO_TRAINING_AUTHORITY",
+  "terminal": "PASS_PROJECT_LINEAGE_RECONSTRUCTED__FOUNDATION_TARGET_DISCOVERY_T0_V5_FULL104_ROLES_SEPARATED__NO_TRAINING_AUTHORITY",
+  "critical_rule": "FOUNDATION_TARGET_DISCOVERY_TD13_TD60_IS_NOT_T0_V18_V20_V21",
+  "integration_rule": "UPSTREAM_FOUNDATION_RELATIONAL_PROTOCOL_QUALIFICATION_AND_DOWNSTREAM_V5_ANTISHORTCUT_QUALIFICATION_MUST_BOTH_CLOSE_FOR_PRODUCTION_AUTHORITY",
+  "reconstruction_path": "docs/agent/JEPA_PROJECT_LINEAGE_AND_DATASET_AUTHORITY_RECONSTRUCTION_20260911.md",
+  "lanes": {
+    "foundation_target_discovery": {
+      "role": "discover_and_qualify_label_free_biological_object_or_protocol_for_JEPA",
+      "historical_branch": "planning/foundation-target-discovery-v1-20260907",
+      "primary_handoff": "target_discovery/HANDOFF_CURRENT_20260908.md",
+      "theory": "target_discovery/RELATIONAL_FORMULAS_AND_THEORY_20260908.md",
+      "relational_amendment": "target_discovery/FOUNDATION_TARGET_DISCOVERY_RELATIONAL_AMENDMENT_20260908.md",
+      "surviving_object": "scale_free_donor_recurrent_relational_geometry__anchored_distance_ordering",
+      "key_results": {
+        "TD56": "THREE_SOURCE_DISJOINT_GENE_RELATIONAL_GEOMETRY_SURVIVES",
+        "TD57B": "24_OF_24_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER_PASS",
+        "TD57C": "NEAREST_THIRD_LOCALITY_FAILS_HVS_2_OF_4__FAIL_STANDS",
+        "TD59": "24_OF_24_NEAREST_HALF_MESOSCALE_PASS_ON_FRESH_VIEWS__WEAKER_THAN_TD57B",
+        "TD60": "PROSPECTIVE_LEARNED_TEACHER_CONTINUITY_GATE__NOT_TRAINING_AUTHORITY"
+      },
+      "future_authority_object": "FOUNDATION_RELATIONAL_PROTOCOL_AUTHORITY_V1",
+      "training_authorized": false
+    },
+    "t0": {
+      "role": "separate_MTG_expression_only_broad_IMMUNE_vs_AT8_donor_level_biological_claim_and_successor_qualification",
+      "v20_branch": "t0/v20-pathology-blind-materialization-20260908",
+      "v20_frozen_head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+      "historical_scope_path": "docs/agent/T0_LANE_HANDOFF_20260908.md",
+      "uses_JEPA": false,
+      "core_learner": "donor_pseudobulk_nuisance_partialled_dual_ridge",
+      "v20_population": {
+        "cells": 20804,
+        "donors": 46,
+        "operator": 31
+      },
+      "frozen_terminals": [
+        "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
+        "RARE_TAIL_UNDERDETERMINED_MEASUREMENT"
+      ],
+      "v21_role": "prospective_successor_with_T0_specific_estimator_power_confirmation_authority",
+      "effect_transport_status": "OPEN",
+      "power_gate_production_verdict_capability": "DISABLED",
+      "s0_s4_execution_authorized": false,
+      "fresh_confirmation_authorized": false,
+      "training_authorized": false
+    },
+    "teacher_student_v3_v4": {
+      "role": "model_and_training_mechanics_consuming_qualified_scientific_structure",
+      "v4_relational_bridge_commit": "69da3e14d1e071133a88caae8363decfe79f6113",
+      "v4_bridge_semantics": "turn_surviving_Target_Discovery_anchored_distance_ordering_into_differentiable_teacher_student_target",
+      "neighborhood_choice_inside_target_module": false,
+      "training_authorized": false
+    },
+    "v5": {
+      "role": "data_first_full_reader_anti_shortcut_production_successor",
+      "design_commit": "9fde8c709d057d79bee8c80ba205a43c3b9717b1",
+      "live_engineering_branch": "planning/v5-full-population-cheat-proofing-20260909",
+      "observed_head_20260911": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
+      "preserves_relational_target_object": true,
+      "production_locality_must_not_be_inherited_from_TD59": true,
+      "training_authorized": false
+    },
+    "f1": {
+      "role": "separate_contextual_query_local_teacher_student_feasibility_and_evidence_trend_lane",
+      "foundation_target_discovery_authority": false,
+      "training_authorized": false
+    }
+  },
+  "datasets": {
+    "foundation_50k_discovery_archive": {
+      "role": "bounded_falsification_and_relational_candidate_discovery_qualification",
+      "production_authority": false,
+      "may_set_production_D_K_locality_threshold_loss_schedule": false
+    },
+    "historical_3292_mechanics_corpus": {
+      "role": "mechanics_replay_and_qualification_geometry_only",
+      "production_data_geometry_authority": false
+    },
+    "t0_v20_population": {
+      "cells": 20804,
+      "donors": 46,
+      "operator": 31,
+      "role": "T0_claim_materialization_and_inference",
+      "is_FULL104": false,
+      "is_Foundation_Target_Discovery": false
+    },
+    "corrected_train_cache": {
+      "rows": 4726,
+      "addresses": 41238,
+      "role": "corrected_cache_byte_path_mechanics_evidence",
+      "is_FULL104": false
+    },
+    "FULL104_reader_fit": {
+      "cells": 4553407,
+      "donors": 104,
+      "operators": 42,
+      "matrices": 42,
+      "addresses": 41238,
+      "level4_blocks": 8915,
+      "role": "full_reader_support_estimability_production_V5_substrate_and_production_value_relational_protocol_qualification",
+      "required_expression_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+      "remote_location_rule": "GT_30GB_SUBSTRATE_REMAINS_ON_GPU_LAPTOP_ATTACHED_HARD_DRIVE"
+    },
+    "reader_validation": {
+      "role": "protected_single_shot_confirmation_only_when_prospectively_authorized",
+      "design_or_tuning_use": false
+    },
+    "reader_oracle": {
+      "role": "sealed_final_reserve",
+      "design_or_tuning_use": false
+    },
+    "synthetic": {
+      "role": "unit_mechanics_adversarial_tests_only",
+      "production_biology_or_threshold_authority": false
+    }
+  },
+  "prohibited_conflations": [
+    "T0_IS_FOUNDATION_TARGET_DISCOVERY",
+    "V21_S0_S4_IS_TD56_TD60_TARGET_DISCOVERY",
+    "T0_20804_OPERATOR31_POPULATION_IS_FULL104",
+    "T0_TARGET_AUTOMATICALLY_IS_V5_TEACHER_TARGET",
+    "CORRECTED_TRAIN_CACHE_IS_FULL104",
+    "50K_RELATIONAL_PASS_SETS_PRODUCTION_D_K_LOCALITY_OR_THRESHOLDS",
+    "TD59_NEAREST_HALF_IS_PRODUCTION_LOCALITY_AUTHORITY",
+    "PASSING_MECHANICS_OR_DECREASING_LOSS_IS_BIOLOGICAL_AUTHORITY"
+  ],
+  "semantic_drift": {
+    "commit": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f",
+    "valid_intent": "integrate_upstream_biological_object_review_and_downstream_V5_review_for_production_authority",
+    "invalid_label_substitution": "T0_V20_V21_was_labelled_T0_target_discovery_and_V21_S0_S4_was_called_target_discovery",
+    "explicit_scientific_supersession_recovered": false,
+    "governance_resolution": "retain_integrated_review_requirement_but_restore_lane_names_and_historical_scientific_roles"
+  },
+  "correct_production_chain": [
+    "lawful_molecular_ledger_and_reader_fit_substrate",
+    "Foundation_Target_Discovery_TD56_TD57B_TD57C_TD59_candidate_relational_biology",
+    "TD60_or_lawful_successor_learned_teacher_continuity",
+    "partial_evidence_student_relational_predictability_and_matched_null_qualification",
+    "FULL104_relational_protocol_and_production_value_qualification",
+    "V5_data_first_antishortcut_production_qualification",
+    "independent_review_and_explicit_training_authority",
+    "downstream_biological_evaluation"
+  ],
+  "parallel_T0_chain": [
+    "MTG_expression_only_broad_IMMUNE_claim",
+    "T0_specific_measurement_nuisance_power_and_confirmation_rules",
+    "donor_disjoint_pathology_confirmation_only_when_authorized"
+  ],
+  "protected_boundaries": {
+    "training_authorized": false,
+    "s0_s4_authorized": false,
+    "reader_validation_open_authorized": false,
+    "reader_oracle_open_authorized": false,
+    "pathology_design_tuning_authorized": false
+  }
+}
