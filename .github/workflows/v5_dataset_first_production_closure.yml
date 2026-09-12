@@ -43,12 +43,16 @@ jobs:
           tests/test_v5_qualified_target_optimizer_guard_v1.py
           tests/test_same_cell_technical_intervention_probe_v1.py
           tests/test_rejection_gate_power_calibration_v3.py
+          tests/test_validate_base_learning_step_qualification_v1.py
+          tests/test_validate_full104_execution_plan_v1.py
       - name: Compile changed authority sources
         run: >
           python -m py_compile
           scripts/v5_anticheat/full_reader_relational_target_preflight_v1.py
           scripts/v5_anticheat/bind_full104_expression_blocks_v4.py
           scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py
+          scripts/v5_anticheat/validate_base_learning_step_qualification_v1.py
+          scripts/v5_anticheat/validate_full104_execution_plan_v1.py
           src/sea_ad_jepa/v5/artifact_binding_v1.py
           src/sea_ad_jepa/v5/full104_dimension_interface_v1.py
           src/sea_ad_jepa/v5/dimension_metric_artifact_v1.py
