@@ -1,46 +1,86 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V11",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V12_LINEAGE_RECONSTRUCTED",
   "date": "2026-09-11",
-  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF__TARGET_DISCOVERY_TO_V5_INTEGRATED_EXTERNAL_REVIEW__NO_TRAINING_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
+  "status": "CURRENT_CANONICAL_PROJECT_LINEAGE_RECONSTRUCTED__FOUNDATION_TARGET_DISCOVERY_T0_V5_FULL104_SEPARATED__NO_TRAINING_AUTHORITY",
+  "lineage_reconstruction_path": "docs/agent/JEPA_PROJECT_LINEAGE_AND_DATASET_AUTHORITY_RECONSTRUCTION_20260911.md",
+  "lane_map_path": "docs/agent/JEPA_PROJECT_LANE_MAP_20260911.json",
+  "target_discovery_handoff_path": "target_discovery/HANDOFF_CURRENT_20260908.md",
+  "target_discovery_theory_path": "target_discovery/RELATIONAL_FORMULAS_AND_THEORY_20260908.md",
+  "target_discovery_relational_amendment_path": "target_discovery/FOUNDATION_TARGET_DISCOVERY_RELATIONAL_AMENDMENT_20260908.md",
+  "integrated_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
   "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
-  "prior_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL4.md",
+  "prior_t0_v21_v5_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
   "prior_formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "prior_heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "observed_lane_heads_before_20260911_integrated_governance_update": {
-    "main": "04d91537358f5adc8973c091d4bfae4e2390bd22",
-    "v5": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
-    "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
-    "t0_v21_draft": "11e76d36ace556ac48cdd2992995e63c1e35df18"
+  "critical_lane_rule": "FOUNDATION_TARGET_DISCOVERY_TD13_TD60_IS_NOT_T0_V18_V20_V21",
+  "semantic_drift_correction": {
+    "source_commit": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f",
+    "retain": "UPSTREAM_FOUNDATION_TARGET_DISCOVERY_RELATIONAL_PROTOCOL_AND_DOWNSTREAM_V5_REVIEW_MUST_BOTH_CLOSE_FOR_PRODUCTION_AUTHORITY",
+    "do_not_retain": "T0_V20_V21_AS_SYNONYM_FOR_FOUNDATION_TARGET_DISCOVERY",
+    "explicit_scientific_supersession_recovered": false
   },
-  "branches": {
-    "v5": "planning/v5-full-population-cheat-proofing-20260909",
-    "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
-    "t0_v21_draft": "t0/v21-prospective-design-20260910"
+  "foundation_target_discovery": {
+    "historical_branch": "planning/foundation-target-discovery-v1-20260907",
+    "surviving_object": "SCALE_FREE_DONOR_RECURRENT_RELATIONAL_GEOMETRY__ANCHORED_DISTANCE_ORDERING",
+    "TD56": "PASS_THREE_SOURCE_DISJOINT_GENE_RELATIONAL_GEOMETRY",
+    "TD57B": "PASS_24_OF_24_DONOR_RECURRENT_SCALE_FREE_RELATIONAL_ORDER",
+    "TD57C": "FAIL_NEAREST_THIRD_HVS_2_OF_4__FAIL_STANDS",
+    "TD59": "PASS_24_OF_24_NEAREST_HALF_MESOSCALE_ON_FRESH_VIEWS__NOT_PRODUCTION_LOCALITY_AUTHORITY",
+    "TD60": "PROSPECTIVE_LEARNED_TEACHER_CONTINUITY_GATE__NO_TRAINING_AUTHORITY",
+    "future_authority_object": "FOUNDATION_RELATIONAL_PROTOCOL_AUTHORITY_V1",
+    "fifty_k_role": "FALSIFICATION_AND_CANDIDATE_QUALIFICATION_ONLY"
   },
-  "integrated_review_scope": "RAW_SEA_AD_TO_TARGET_DISCOVERY_TO_TARGET_FREEZE_TO_V5_TEACHER_TARGET_TO_TRAINING",
-  "target_discovery_review_status": "IN_PROGRESS_NOT_YET_END_TO_END_EXTERNAL_CODE_EVIDENCE_REVIEW_COMPLETE",
-  "t0_status": "V21_DESIGN_PROSE_BLOCKERS_ADDRESSED_AT_11e76d36__EXECUTABLE_TARGET_DISCOVERY_SELECTION_AND_POWER_REVIEW_STILL_REQUIRED__NO_SELECTION_OR_POWER_GATE_RUN",
-  "t0_next_action": "EXTERNALLY_REVIEW_EXECUTABLE_TARGET_DISCOVERY_S0_S4_SELECTION_NESTED_OOF_HC3_AND_POWER_GATE_BEFORE_ANY SINGLE_SHOT_SELECTION_RUN",
-  "v5_review_status": "MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING_AT_1de20b1c__UPSTREAM_TARGET_DISCOVERY_REVIEW_MUST_ALSO_CLOSE",
-  "v5_next_action": "REPAIR_CONFIRMED_V5_DEFECTS_AND_PROVE_NON_BYPASSABILITY_IN_PARALLEL_WITH_TARGET_DISCOVERY_EXTERNAL_AUDIT_AND_FULL104_RECOVERY",
-  "runtime_asset_verification": {
-    "discovery_parts_and_assembled_stream": "PASS_HASH_VERIFIED",
-    "foundation_calibration": "PASS_HASH_VERIFIED",
-    "checkpoints": "PASS_HASH_VERIFIED",
-    "t1_checkpoint_u0200": "PASS_HASH_VERIFIED",
-    "expression_zip": "PASS_HASH_VERIFIED",
-    "corrected_train_cache_zip": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
-    "operator_address_state_npz": "PROVENANCE_MISMATCH_DO_NOT_USE"
+  "t0": {
+    "role": "SEPARATE_MTG_BROAD_IMMUNE_VS_AT8_DONOR_LEVEL_BIOLOGICAL_CLAIM",
+    "uses_JEPA": false,
+    "v20_branch": "t0/v20-pathology-blind-materialization-20260908",
+    "v20_frozen_head": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
+    "v20_population": "20804_CELLS__46_DONORS__OPERATOR31",
+    "broad_state": "BROAD_IMMUNE_EXPRESSION_TARGET_SUPPORTED_INTERNAL",
+    "rare_tail": "RARE_TAIL_UNDERDETERMINED_MEASUREMENT",
+    "v21_role": "T0_SPECIFIC_PROSPECTIVE_ESTIMATOR_POWER_AND_CONFIRMATION_SUCCESSOR",
+    "effect_transport_status": "OPEN",
+    "power_gate_production_verdict_capability": "DISABLED",
+    "s0_s4_authorized": false,
+    "fresh_reader_validation_open_authorized": false,
+    "reader_oracle_open_authorized": false
   },
-  "target_discovery_external_review_complete": false,
-  "s0_s4_authorized": false,
-  "fresh_reader_validation_open_authorized": false,
-  "reader_oracle_open_authorized": false,
+  "teacher_student_v4": {
+    "relational_bridge_commit": "69da3e14d1e071133a88caae8363decfe79f6113",
+    "bridge_semantics": "CONSUME_SURVIVING_TARGET_DISCOVERY_ANCHORED_ORDERING_AS_DIFFERENTIABLE_TEACHER_STUDENT_TARGET",
+    "chooses_locality": false
+  },
+  "v5": {
+    "design_commit": "9fde8c709d057d79bee8c80ba205a43c3b9717b1",
+    "branch": "planning/v5-full-population-cheat-proofing-20260909",
+    "observed_head_before_lineage_reconstruction": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
+    "review_status": "MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING",
+    "training_authorized": false
+  },
+  "FULL104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "matrices": 42,
+    "addresses": 41238,
+    "level4_blocks": 8915,
+    "role": "FULL_READER_SUPPORT_ESTIMABILITY_PRODUCTION_V5_SUBSTRATE_AND_PRODUCTION_VALUE_RELATIONAL_PROTOCOL_QUALIFICATION",
+    "production_verifier_path": "scripts/v5_anticheat/bind_full104_expression_blocks_v4.py",
+    "required_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+    "remote_location_rule": "GT_30GB_SUBSTRATE_STAYS_ON_GPU_LAPTOP_ATTACHED_HARD_DRIVE__DO_NOT_UPLOAD_TO_CHATGPT"
+  },
+  "corrected_train_cache": {
+    "rows": 4726,
+    "addresses": 41238,
+    "terminal": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
+    "is_FULL104": false
+  },
+  "integrated_review_scope": "FOUNDATION_TARGET_DISCOVERY_RELATIONAL_PROTOCOL_TO_TEACHER_STUDENT_V4_V5_TO_FULL_READER_PRODUCTION_QUALIFICATION",
+  "parallel_t0_scope": "MTG_BROAD_IMMUNE_CLAIM_TO_T0_SPECIFIC_PROSPECTIVE_CONFIRMATION",
+  "target_discovery_production_authority_complete": false,
   "v5_full104_expression_closed": false,
   "v5_integrated_review_closed": false,
   "training_authorized": false,
-  "instruction": "Open START_HERE.md first, then this pointer, then the integrated 20260911 handoff/state. Re-fetch live heads before acting. Treat target discovery and V5 as one production-review chain. Keep V20 immutable. Do not run S0-S4 or open fresh validation/oracle before the executable discovery/selection/power implementation passes external/adversarial review and the target is frozen under the prospective contract. TRAIN-cache PASS is not FULL104 PASS. Repair V5 confirmed defects and prove optimizer-path non-bypassability, but do not claim training authority. Exclude the provenance-mismatched operator-address NPZ. Training remains OFF."
+  "instruction": "Open START_HERE.md first, then the lineage reconstruction and machine-readable lane map. Never use T0/V21 and Foundation Target Discovery as synonyms. Preserve the Sep-11 requirement that upstream Foundation relational-protocol qualification and downstream V5 anti-shortcut qualification must both close, but do not interpret that integration as scientific supersession of TD13-TD60 by T0. Re-fetch live heads before acting. Keep V20 immutable. Do not run T0 S0-S4, open fresh reader_validation/oracle, use pathology for design, or train. The 50k archive is falsification/candidate qualification only; the corrected TRAIN cache is not FULL104; the >30GB FULL104 substrate remains on the remote GPU laptop/attached drive."
 }
