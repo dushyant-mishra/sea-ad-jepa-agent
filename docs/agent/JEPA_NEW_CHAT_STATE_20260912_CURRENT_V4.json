@@ -1,0 +1,54 @@
+{
+  "schema": "JEPA_NEW_CHAT_STATE_20260912_CURRENT_V4",
+  "date": "2026-09-12",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "status": "DATASET_FIRST_V5_PRODUCTION_QUALIFICATION_IN_PROGRESS__FULL104_HISTORICALLY_PREPARED__CURRENT_REBIND_REQUIRED__NO_TRAINING_AUTHORITY",
+  "main_v5": {
+    "branch": "planning/v5-dataset-first-production-closure-20260912",
+    "live_head_before_v4_handoff": "08e3b02b1e86139a82c7555b7de350da806ba7c4",
+    "last_verified_code_head": "2c278364a5717e4248ac65ae8107754fbc625d1d",
+    "last_verified_ci_run": 34699776996,
+    "last_verified_ci": "SUCCESS",
+    "last_verified_test_count": "103 passed",
+    "last_verified_compile": "PASS",
+    "commits_after_verified_code_head": "6 documentation-only commits"
+  },
+  "full104": {
+    "historically_materialized": true,
+    "historically_exercised_full_population": true,
+    "current_task": "RECOVER_LOCATE_VERIFY_AND_CURRENT_V5_REBIND",
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "matrices": 42,
+    "blocks": 8915,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "donor_operator_groups": 1400,
+    "required_current_terminal": "PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE",
+    "historical_shared_state_terminal": "TEACHER_BIOLOGY_LIMIT",
+    "historical_result_is_current_v5_numeric_authority": false
+  },
+  "open_main_blockers": [
+    "recover/rebind historical FULL104 heavy bytes",
+    "prospective Monte-Carlo/resample precision authority",
+    "measurement-model / target-distribution qualification",
+    "influence-concentration diagnostics",
+    "real current-V5 full-stream dimension metric executors",
+    "independent review of D_private/D_obs candidate rules",
+    "two-sided anti-cheat evidence producers",
+    "bounded base-learning-step evidence under explicit authority",
+    "production-geometry CUDA qualification",
+    "lawful base EMA teacher before TD60",
+    "TD60 and partial-evidence student qualification"
+  ],
+  "hard_boundaries": {
+    "training_authorized": false,
+    "protected_data_authorized": false,
+    "reader_validation_closed": true,
+    "reader_oracle_closed": true,
+    "pathology_closed": true,
+    "td60_authorized": false,
+    "relational_target_activation_authorized": false
+  }
+}
