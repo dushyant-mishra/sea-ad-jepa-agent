@@ -1,6 +1,7 @@
 import csv
 import hashlib
 import importlib.util
+import inspect
 import json
 import sqlite3
 from pathlib import Path
@@ -107,8 +108,8 @@ def invoke(root, db, bm, c, a, tmp_path, **overrides):
         materialization_audit=a,
         block_root=root,
         metadata_sqlite=db,
-        expected_metadata_sha256=sh(db),
         scratch_dir=tmp_path,
+        _expected_metadata_sha256=sh(db),
         _expected_block_manifest_sha256=sh(bm),
         _expected_contract_sha256=sh(c),
         _expected_audit_sha256=sh(a),
@@ -137,12 +138,20 @@ def rewrite_manifest_and_audit(bm, a, rows):
     a.write_text(json.dumps(audit))
 
 
+def test_production_metadata_authority_is_frozen_and_not_publicly_overridable():
+    assert m.EXPECTED_METADATA_SQLITE_SHA256 == "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+    signature = inspect.signature(m.bind_full104_blocks)
+    assert "expected_metadata_sha256" not in signature.parameters
+    assert signature.parameters["_expected_metadata_sha256"].default == m.EXPECTED_METADATA_SQLITE_SHA256
+
+
 def test_cross_ledger_identity_closure(tmp_path):
     root, db, bm, c, a = fixture(tmp_path)
     out = invoke(root, db, bm, c, a, tmp_path)
     assert out["cross_ledger_identity_mismatches"] == 0
     assert out["test_fixture_mode"] is True
     assert out["synthetic_data_used"] is True
+    assert out["metadata_sqlite_sha256"] == sh(db)
 
 
 def test_wrong_block_cell_fails(tmp_path):
