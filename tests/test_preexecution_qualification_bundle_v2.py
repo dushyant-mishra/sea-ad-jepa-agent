@@ -67,12 +67,16 @@ def test_v2_requires_true_production_gpu_and_dependency_closure():
 
 
 def test_old_single_cuda_gate_evidence_cannot_satisfy_v2():
-    e = rows(); del e["cuda_production_geometry_qualification"]; e["cuda_gate2_mechanics"] = {
+    valid = rows()
+    d = dep_report(valid)
+    e = copy.deepcopy(valid)
+    del e["cuda_production_geometry_qualification"]
+    e["cuda_gate2_mechanics"] = {
         "status": "EXECUTED_PASS", "artifact_sha256": "9" * 64,
         "authority_id": "old", "training_authorized": False,
     }
     with pytest.raises(RuntimeError, match="EVIDENCE_SET_MISMATCH"):
-        build(e=e)
+        build(e=e, d=d)
 
 
 def test_missing_dependency_closure_stops():
