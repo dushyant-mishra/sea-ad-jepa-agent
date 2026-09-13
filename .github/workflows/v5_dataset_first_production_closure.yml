@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - planning/v5-dataset-first-production-closure-20260912
+      - "repair/v5-*"
   workflow_dispatch:
 
 permissions:
@@ -26,7 +27,7 @@ jobs:
         env:
           PYTHONPATH: src:.
         run: >
-          python -m pytest -q
+          python -m pytest -q --junitxml=v5-junit.xml
           tests/test_full_reader_relational_target_preflight_v1.py
           tests/test_artifact_binding_v1.py
           tests/test_bind_corrected_train_cache_v1.py
@@ -50,10 +51,19 @@ jobs:
           tests/test_v5_external_review_preexecution_geometry_binding_v1.py
           tests/test_same_cell_technical_intervention_probe_v1.py
           tests/test_rejection_gate_power_calibration_v3.py
+          tests/test_critical_test_execution_guard_v1.py
+          tests/test_executable_evidence_v1.py
           tests/test_validate_base_learning_step_qualification_v1.py
           tests/test_validate_full104_execution_plan_v1.py
           tests/test_v5_reconcile_atomic_checkpoint_guard_v3.py
           tests/test_v5_reconcile_schedule_metadata_authority_v1.py
+      - name: Verify frozen critical tests executed
+        env:
+          PYTHONPATH: src:.
+        run: >
+          python scripts/v5_anticheat/verify_critical_test_execution_v1.py
+          --junit v5-junit.xml
+          --manifest tests/v5_critical_test_manifest_v1.json
       - name: Compile changed authority sources
         env:
           PYTHONPATH: src:.
@@ -67,7 +77,10 @@ jobs:
           scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py
           scripts/v5_anticheat/validate_base_learning_step_qualification_v1.py
           scripts/v5_anticheat/validate_full104_execution_plan_v1.py
+          scripts/v5_anticheat/verify_critical_test_execution_v1.py
           src/sea_ad_jepa/v5/artifact_binding_v1.py
+          src/sea_ad_jepa/v5/critical_test_execution_guard_v1.py
+          src/sea_ad_jepa/v5/executable_evidence_v1.py
           src/sea_ad_jepa/v5/full104_metadata_authority_v1.py
           src/sea_ad_jepa/v5/full104_dimension_interface_v1.py
           src/sea_ad_jepa/v5/dimension_metric_artifact_v1.py
