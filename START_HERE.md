@@ -1,141 +1,109 @@
 # START HERE — JEPA PROJECT
 
-Date: 2026-09-09
+Date: 2026-09-13
 
-## One current branch
+## Current project entrypoint
 
-**Use `main` for project-current governance and startup context.**
+For current V5 implementation and execution work, use the canonical successor branch:
 
-The project was consolidated on 2026-09-08. T0, Teacher/Student V5, Target Discovery, F1/F1-B/C3, D1, holdout governance, and external-review histories are reachable from main.
+`planning/v5-dataset-first-production-closure-20260912`
 
-Do not infer current authority from an old branch name or historical PASS/STOP file. Active lane branches can carry staged execution evidence, but branch names themselves do not confer authority.
+Re-fetch the live head before every current-state claim. `main` remains useful for historical/governance ancestry, but it is **not** the current V5 implementation ledger.
+
+Branch names do not confer authority. Historical PASS/STOP artifacts and older handoffs remain provenance only unless explicitly carried into the current authority chain.
 
 ## Read in this order
 
-1. [`docs/agent/CURRENT_AUTHORITY_INDEX.md`](docs/agent/CURRENT_AUTHORITY_INDEX.md)
-2. [`docs/agent/memory-os/NEXT_ALLOWED_ACTION.json`](docs/agent/memory-os/NEXT_ALLOWED_ACTION.json)
-3. [`docs/agent/memory-os/ACTIVE_STATE.md`](docs/agent/memory-os/ACTIVE_STATE.md)
-4. [`docs/agent/CURRENT_SUPERSESSION_MAP.md`](docs/agent/CURRENT_SUPERSESSION_MAP.md)
-5. [`docs/agent/T0_STAGE2_DISCOVERY_STATUS_20260909.md`](docs/agent/T0_STAGE2_DISCOVERY_STATUS_20260909.md)
-6. [`docs/agent/T0_R8_ADJUDICATOR_READINESS_REPAIR_AUTHORIZATION_20260909.md`](docs/agent/T0_R8_ADJUDICATOR_READINESS_REPAIR_AUTHORIZATION_20260909.md)
-7. [`docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md`](docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md)
-8. [`docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json`](docs/agent/memory-os/TEACHER_STUDENT_V5_ANTI_CHEAT_STATUS_20260909.json)
-9. [`docs/agent/FUTURE_FULL_RUN_FLEXIBILITY_POLICY_REVIEW_20260909.md`](docs/agent/FUTURE_FULL_RUN_FLEXIBILITY_POLICY_REVIEW_20260909.md)
-10. [`docs/agent/memory-os/FUTURE_FULL_RUN_FLEXIBILITY_POLICY_20260909.json`](docs/agent/memory-os/FUTURE_FULL_RUN_FLEXIBILITY_POLICY_20260909.json)
-11. [`docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json`](docs/agent/JEPA_GLOBAL_BLOCKER_LEDGER_20260908.json)
-12. [`docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json`](docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json)
+1. `START_HERE.md`
+2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260913.json`
+3. the handoff named by that pointer
+4. `docs/agent/JEPA_LIVE_BRANCH_INVENTORY_20260913.md`
+5. `docs/superpowers/specs/2026-09-12-v5-dataset-first-production-closure-design.md`
+6. `docs/agent/V5_EXTERNAL_REVIEW_FINAL_VERDICT_20260913.md`
+7. `docs/agent/V5_FULL104_HISTORICAL_PRODUCTION_RECOVERY_20260912.md`
+8. `docs/agent/V5_FULL104_HISTORICAL_EXECUTOR_REUSE_MATRIX_20260912.md`
+9. `docs/agent/V5_FULL104_REMOTE_BINDING_EXECUTION_20260912.md`
+10. `docs/agent/V5_DIMENSION_NUMERIC_AUTHORITY_BLOCKERS_20260912.md`
+11. `docs/agent/V5_TARGET_DISCOVERY_LEARNING_STEP_QUALIFICATION_AMENDMENT_20260912.md`
+12. `docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md`
 
-## Current T0 boundary
+For T0 specifically, follow its own latest closeout branch/artifacts. T0 is a separate methodology/test-rig lane and does not supply V5 biological targets or numeric production constants.
 
-Active T0 branch:
-` t0/v20-pathology-blind-materialization-20260908 `
+## Governing scientific order
 
-Verified Stage 2 discovery head:
-`237427c734bfdf7d00f286ceeae63692b3075d49`
+`DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> PRODUCTION GEOMETRY -> MODEL`
 
-Current T0 terminal:
+Do not invert this into model-first geometry.
 
-```text
-DISCOVERY_STAGE_DONE_AND_REPLAYED__CONFIRMATION_NUMERIC_AT8_READY_TO_OPEN
-```
+Decision-bearing metrics must be unconditional over the declared evaluation population. Keep measurement failure, estimator failure, representation failure, unresolved technical confounding, biology-not-demonstrated, and a qualified biological negative as distinct outcomes.
 
-Discovery AT8 was opened only for 28 discovery donors, the discovery object was fitted through the R7-gated frozen conclusion path, and the target was replayed from disk. Confirmation numeric AT8 remains closed.
+Standing protected-data rule:
 
-Current T0 next step:
+`IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK`
 
-```text
-AUTHORIZE_R8_ADJUDICATOR_READINESS_REPAIR__CONFIRMATION_NUMERIC_AT8_STILL_CLOSED
-```
+## Current V5 status
 
-R8 may repair only the adjudicator readiness contradiction and must stop before confirmation numeric AT8 unless it reaches its required terminal and is reviewed.
+Repository-side engineering/review is green through the last verified code-bearing head recorded in the latest handoff pointer. Later documentation commits do not create new numeric/scientific authority.
 
-## Current V5 reference
+The next real blocker is the authenticated heavy-data execution path:
 
-Current prospective V5 continuation head:
-`028989a5f1504e4d6403a44e7c90d37172c54150`
+`existing historical FULL104 bytes -> verify frozen hashes -> current V5 rebind -> seal V5 dimension input -> prospective precision authority -> real full-stream D_shared -> freeze D_shared -> D_private -> D_obs -> dataset-derived runtime geometry -> production CUDA + executable anti-cheat qualification -> bounded base-learning qualification -> lawful EMA teacher -> TD60 -> relational student qualification -> integrated review`
 
-The current V5 tree has been reconciled onto main.
+FULL104 was historically materialized and exercised. Do **not** rematerialize it by default.
 
-Already frozen:
-- scientific target V2;
-- relational proposal V2;
-- base proposal V3 with exact p/q correction;
-- exactly one reader-fit-population-equivalent presentation horizon (4,553,407), no automatic extension.
+Expected historical Level-4 root:
 
-Still open:
-- evidence/view/block schedule;
-- finite relational triplet budget;
-- update/token execution geometry;
-- EMA half-life and learned-teacher checkpoint milestone;
-- GPU RNG kernel parity;
-- hardware calibration;
-- integrated trainer;
-- anti-cheat qualification authority;
-- mechanics qualification;
-- external V5 review.
+`outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/`
 
-V5 training is not authorized.
+Current binder:
 
-## Future full-run flexibility rule
+`scripts/v5_anticheat/bind_full104_expression_blocks_v4.py`
 
-Future full-reader runs should be flexible during outcome-blind design/calibration, but immutable after decision-bearing evidence is opened or after production training starts.
+Required physical-closure terminal:
 
-```text
-FLEXIBLE_BEFORE_FREEZE = true
-FLEXIBLE_AFTER_OUTCOME_OR_DECISION_EVIDENCE = false
-FLEXIBLE_AFTER_PRODUCTION_TRAINING_START = false
-```
+`PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE`
 
-If an outcome-bearing discovery result is used to redesign a grid, schedule, target, or threshold, that run must be demoted to design evidence and a new frozen version must be created before confirmation/protected evidence.
+If a frozen historical parent hash differs, STOP. Do not substitute TRAIN, 50K, synthetic, reconstructed, validation/oracle, pathology, or newly materialized bytes without a separately reviewed authority decision.
+
+## Current hard boundaries
+
+`training_authorized = false`
+
+`protected_data_authorized = false`
+
+`numeric_dimensions_authorized = false`
+
+`td60_authorized = false`
+
+`relational_target_activation_authorized = false`
+
+Passing tests or mechanics checks does not create biological or training authority.
 
 ## Target Discovery state
 
-The current target is not fixed-coordinate prediction or absolute distance matching. The supported object is scale-free anchored triplet ordering from direct 160-D `cell_state` cosine geometry.
+Foundation Target Discovery is separate from T0.
 
-- TD57B: global donor-recurrent scale-free relational order passed.
-- TD59: nearest-half mesoscale relational recurrence passed under frozen pilot criteria.
-- TD57C: aggressive nearest-third fine-locality failed and remains closed.
-- TD60: still prospective and must wait for a lawful full-reader exposure-defined learned teacher checkpoint.
+- TD57B global donor-recurrent relational ordering: historical PASS 24/24.
+- TD57C nearest-third locality: FAIL; failure stands.
+- TD59 nearest-half mesoscale: historical PASS 24/24 pilot evidence only; it is not production locality authority.
+- TD60: prospective; waits for a lawful dataset-derived learned EMA teacher.
 
-Do not convert TD59's pilot nearest-half setting into an unfrozen production locality fraction.
+Historical fixed model widths, batch/microbatch geometry, views, mask fractions, target blocks, EMA constants and replicate counts are not current V5 authority by inheritance.
 
-## Historical T1 mechanics quarantine
+## Historical T1 mechanics lesson
 
-Historical u10--u205 checkpoints are classified as:
+Historical fp16-autocast backward caused exact-zero protected gradients. Current mechanics must preserve the order:
 
-```text
-TRAINING_MECHANICS_DEFECT_INHERITED
-```
+`fp16 forward -> backward with autocast disabled -> unscale -> protected-gradient gate -> optimizer step/motion proved -> both Adam moments -> EMA -> presentation cursor -> atomic checkpoint/telemetry`
 
-They are not lawful resume points, biological teacher authority, or TD60 input. The clean u0 checkpoint is unaffected by the fp16-backward defect because it predates optimizer updates, but u0 alone does not authorize training.
-
-Future healthy teacher/student training must bind:
-
-```text
-fp16 forward
-  -> backward with autocast disabled
-  -> unscale
-  -> 48-tensor mandatory protected-gradient gate
-  -> optimizer step proved
-  -> both Adam moments checked
-  -> EMA update
-```
-
-A teacher/student checkpoint is not biologically qualified because loss decreases.
-
-## Protected-data boundary
-
-Real T0 confirmation, real F1 biological sweep, production training, TD60, real D1, reader_validation/oracle, foundation development/sealed, external holdout and pathology remain closed unless a newer explicit frozen authority opens them.
+The active production protected-registry authority derives registry size from the prospectively selected model depth. Legacy helpers that encode the historical six-block/48-tensor geometry are supporting/history APIs only and must not be promoted into current production authority.
 
 ## Branch hygiene
 
-Branch consolidation and pruning are complete. The guarded cleanup deleted all 57 verified non-main refs and GitHub verified that only `main` remains. Commit history, tags, hashes, and immutable package artifacts were preserved.
+There are multiple live historical and review branches. Do **not** assume only `main` remains and do not blindly delete or merge divergent branches.
 
-Audit records:
-- [`docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json`](docs/agent/JEPA_BRANCH_CONSOLIDATION_20260908.json)
-- [`docs/agent/JEPA_BRANCH_PRUNE_RESULT_20260908.json`](docs/agent/JEPA_BRANCH_PRUNE_RESULT_20260908.json)
-- [`docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json`](docs/agent/JEPA_SAFE_BRANCH_DELETE_LIST_20260908.json)
+Use `docs/agent/JEPA_LIVE_BRANCH_INVENTORY_20260913.md` for the current branch inventory. Preserve historical branches until a branch-to-unique-content/ancestry audit proves their scientifically or operationally unique material has been retained.
 
 ## Permanent implementation-verifier rule
 
-All conclusion-bearing implementation is subject to [`MANDATORY_IMPLEMENTATION_VERIFIER_V1`](docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md) before expensive execution or scientific promotion.
+All conclusion-bearing implementation remains subject to `docs/agent/governance/MANDATORY_IMPLEMENTATION_VERIFIER_V1.md` before expensive execution or scientific promotion.
