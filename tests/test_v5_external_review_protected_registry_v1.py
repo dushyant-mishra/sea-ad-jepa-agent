@@ -119,3 +119,15 @@ def test_registry_depth_must_equal_data_derived_gpu_depth():
             authority=_gpu_authority(registry),
             protected_registry_authority=registry,
         )
+
+
+def test_gpu_receipt_cannot_self_assert_a_different_positive_model_width():
+    registry = _registry(8)
+    receipt = _receipt(registry)
+    receipt["geometry"]["model_width"] = 384
+    with pytest.raises(RuntimeError, match="GEOMETRY_AUTHORITY_MISMATCH"):
+        qualify_production_geometry_gpu_receipt(
+            receipt,
+            authority=_gpu_authority(registry),
+            protected_registry_authority=registry,
+        )
