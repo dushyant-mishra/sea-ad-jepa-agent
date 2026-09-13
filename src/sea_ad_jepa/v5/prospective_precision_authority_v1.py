@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import re
@@ -10,6 +11,7 @@ class PrecisionAuthorityStop(RuntimeError):
     pass
 
 
+FROZEN_PRECISION_AUTHORITY_SHA256 = "cc4ac4d5116fa81990f1c3bd0497fc578eda86bb2d7d3cd2747abcf7ffcf9428"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _REQUIRED_PARENT_KEYS = {
     "block_manifest_sha256",
@@ -47,11 +49,7 @@ def _finite_number(value: object, field: str) -> float:
 
 
 def derive_hoeffding_fixed_n(range_width: float, tolerance: float, alpha: float) -> int:
-    """Worst-case fixed N for a bounded-mean absolute-error guarantee.
-
-    Hoeffding: P(|mean-E mean| >= eps) <= 2 exp(-2 n eps^2 / R^2).
-    Solving for n gives ceil(R^2 log(2/alpha) / (2 eps^2)).
-    """
+    """Worst-case fixed N for a bounded-mean absolute-error guarantee."""
     r = _finite_number(range_width, "range_width")
     eps = _finite_number(tolerance, "tolerance")
     a = _finite_number(alpha, "alpha")
@@ -160,5 +158,32 @@ def validate_precision_authority_v1(authority: Mapping[str, object]) -> dict[str
         "full_refit_null_replicates": maxima["null"],
         "donor_resamples": maxima["donor"],
         "operator_resamples": maxima["operator"],
+        "training_authorized": False,
+    }
+
+
+def bind_precision_execution_plan_v1(
+    authority: Mapping[str, object],
+    *,
+    authority_sha256: str,
+) -> dict[str, object]:
+    """Fail-closed pre-outcome execution plan for any future dimension metric producer."""
+    if authority_sha256 != FROZEN_PRECISION_AUTHORITY_SHA256:
+        raise PrecisionAuthorityStop("STOP_PRECISION_EXECUTION_PLAN_UNFROZEN_AUTHORITY_SHA")
+    actual = hashlib.sha256(canonical_precision_authority_bytes(authority)).hexdigest()
+    if actual != authority_sha256:
+        raise PrecisionAuthorityStop("STOP_PRECISION_EXECUTION_PLAN_AUTHORITY_BYTES_MISMATCH")
+    validated = validate_precision_authority_v1(authority)
+    return {
+        "schema": "JEPA_V5_DIMENSION_PRECISION_EXECUTION_PLAN_V1",
+        "precision_authority_sha256": authority_sha256,
+        "precision_authority_terminal": validated["terminal"],
+        "precision_authority_frozen_before_dimension_outcomes": True,
+        "null_replicates": validated["full_refit_null_replicates"],
+        "donor_resamples": validated["donor_resamples"],
+        "operator_resamples": validated["operator_resamples"],
+        "rng_replay_policy": authority["rng_replay_policy"],
+        "decision_metric_population": authority["decision_metric_population"],
+        "estimator_failure_policy": authority["estimator_failure_policy"],
         "training_authorized": False,
     }
