@@ -1,13 +1,22 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V1",
   "date": "2026-09-13",
+  "status": "CURRENT__V5_EXTERNAL_REVIEW_ENGINEERING_REPAIRS_GREEN__REAL_FULL104_EXECUTION_NEXT__NO_TRAINING_AUTHORITY",
   "branch": "planning/v5-dataset-first-production-closure-20260912",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260913_V5_EXTERNAL_REVIEW_CURRENT.md",
-  "handoff_commit": "449d85ca7292d4f82fea75782f62853fa51eaf12",
-  "code_under_review_sha": "0536dcb5795e5f7f6a64172bde87bf9c8f1bcde0",
-  "code_under_review_ci_run": 34739274544,
-  "code_under_review_ci_conclusion": "failure",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260913_V5_EXTERNAL_REVIEW_FINAL_CURRENT.md",
+  "handoff_commit": "580ce1927654a9864cb374479dcb005f5a6385dd",
+  "verified_code_head": "a388c773feb48ebf3fc6ce20b8782182abc1891b",
+  "verified_code_ci_run": 34739456264,
+  "verified_code_ci_conclusion": "success",
+  "verified_code_test_result": "177 passed; authority-source compilation PASS",
+  "verified_repository_head_before_final_handoff": "629249ffa54d0906bc0f0733a925d8cdb52ed66c",
+  "verified_repository_ci_run": 34739477755,
+  "verified_repository_ci_conclusion": "success",
+  "full104_physical_execution_required": true,
+  "numeric_dimensions_authorized": false,
   "training_authorized": false,
   "protected_data_authorized": false,
-  "next_action": "Re-fetch live head, read START_HERE.md and the current handoff, diagnose the first failing traceback from CI run 34739274544, preserve geometry/protected-registry anti-splice identity, restore exact-head green CI, then resume the three-lens external V5 review."
+  "td60_authorized": false,
+  "relational_target_activation_authorized": false,
+  "next_action": "Re-fetch live head, read START_HERE.md and the FINAL_CURRENT handoff, continue the remaining three-lens V5 external review only for demonstrated gaps, then on the GPU/heavy-data machine locate/hash/rebind the existing FULL104 store before current-V5 full-stream dimension execution."
 }
