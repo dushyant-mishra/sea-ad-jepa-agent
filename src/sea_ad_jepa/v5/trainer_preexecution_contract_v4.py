@@ -94,6 +94,32 @@ class TrainerPreexecutionAuthorityV4:
         if pre.get("production_training_authorized") is not False:
             raise RuntimeError("STOP_V5_PREEXECUTION_V4_CLAIMS_PRODUCTION_AUTHORITY")
 
+        # End-to-end anti-splice checks.  The dependency closure may be valid on
+        # its own and the trainer mechanics authority may be valid on its own,
+        # but a bounded run is lawful only when both name the exact same
+        # production geometry and protected-parameter registry authorities.
+        closure = self.preexecution_dependency_closure_report
+        if not isinstance(closure, Mapping):
+            raise ValueError("preexecution_dependency_closure_report must be a mapping")
+        trainer_geometry = _sha(
+            self.authorities.get("update_geometry_authority_sha256"),
+            "authorities[update_geometry_authority_sha256]",
+        )
+        closure_geometry = _sha(
+            closure.get("update_geometry_authority_sha256"),
+            "preexecution_dependency_closure_report.update_geometry_authority_sha256",
+        )
+        if trainer_geometry != closure_geometry:
+            raise RuntimeError("STOP_V5_PREEXECUTION_V4_UPDATE_GEOMETRY_AUTHORITY_MISMATCH")
+
+        trainer_registry = _sha(self.protected_registry_sha256, "protected_registry_sha256")
+        closure_registry = _sha(
+            closure.get("protected_registry_sha256"),
+            "preexecution_dependency_closure_report.protected_registry_sha256",
+        )
+        if trainer_registry != closure_registry:
+            raise RuntimeError("STOP_V5_PREEXECUTION_V4_PROTECTED_REGISTRY_AUTHORITY_MISMATCH")
+
     def canonical_digest(self) -> str:
         self.validate()
         pre = validate_preexecution_bundle_v2(
