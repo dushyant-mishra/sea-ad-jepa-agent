@@ -32,6 +32,7 @@ jobs:
           tests/test_artifact_binding_v1.py
           tests/test_bind_corrected_train_cache_v1.py
           tests/test_bind_full104_expression_blocks_v4.py
+          tests/test_full104_source_library_parse_v1.py
           tests/test_materialize_full_population_schedule_v4.py
           tests/test_v5_full_population_proposal_weight_restart_v1.py
           tests/test_full104_binding_dimension_interface_v1.py
