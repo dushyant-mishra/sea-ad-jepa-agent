@@ -6,6 +6,7 @@ import pytest
 
 from sea_ad_jepa.v5.prospective_precision_authority_v1 import (
     PrecisionAuthorityStop,
+    bind_precision_execution_plan_v1,
     canonical_precision_authority_bytes,
     derive_hoeffding_fixed_n,
     validate_precision_authority_v1,
@@ -96,6 +97,27 @@ def test_frozen_file_is_exact_canonical_authority():
     assert raw == canonical_precision_authority_bytes(obj)
     out = validate_precision_authority_v1(obj)
     assert out["terminal"] == "PASS_V5_PROSPECTIVE_PRECISION_AUTHORITY_V1"
+
+
+def test_pre_outcome_execution_plan_binds_exact_frozen_bytes():
+    obj = json.loads(FROZEN_AUTHORITY_PATH.read_bytes())
+    plan = bind_precision_execution_plan_v1(obj, authority_sha256=FROZEN_AUTHORITY_SHA256)
+    assert plan["precision_authority_sha256"] == FROZEN_AUTHORITY_SHA256
+    assert plan["null_replicates"] == 4794
+    assert plan["donor_resamples"] == 4794
+    assert plan["operator_resamples"] == 4794
+    assert plan["precision_authority_frozen_before_dimension_outcomes"] is True
+    assert plan["training_authorized"] is False
+
+
+def test_mutated_or_substitute_precision_authority_cannot_bind_execution_plan():
+    obj = json.loads(FROZEN_AUTHORITY_PATH.read_bytes())
+    obj["quantities"][0]["absolute_precision_tolerance"] = 0.03
+    with pytest.raises(PrecisionAuthorityStop, match="AUTHORITY_BYTES_MISMATCH"):
+        bind_precision_execution_plan_v1(obj, authority_sha256=FROZEN_AUTHORITY_SHA256)
+
+    with pytest.raises(PrecisionAuthorityStop, match="UNFROZEN_AUTHORITY_SHA"):
+        bind_precision_execution_plan_v1(authority(), authority_sha256="0" * 64)
 
 
 def test_hand_entered_historical_count_cannot_masquerade_as_precision_derived():
