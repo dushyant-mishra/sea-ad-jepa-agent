@@ -15,6 +15,8 @@
     "test_frozen_file_is_exact_canonical_authority",
     "test_pre_outcome_execution_plan_binds_exact_frozen_bytes",
     "test_mutated_or_substitute_precision_authority_cannot_bind_execution_plan",
-    "test_precision_authority_is_mandatory_and_exact"
+    "test_precision_authority_is_mandatory_and_exact",
+    "test_preoutcome_bridge_binds_exact_full104_artifact_to_frozen_precision_parent",
+    "test_preoutcome_bridge_rejects_artifact_or_interface_substitution"
   ]
 }
