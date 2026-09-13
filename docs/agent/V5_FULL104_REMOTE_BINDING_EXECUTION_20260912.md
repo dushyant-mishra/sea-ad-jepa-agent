@@ -72,6 +72,8 @@ sha256sum "$FULL104_METADATA_SQLITE"
 
 If the file is absent or the digest differs, STOP. Do not rebuild, substitute, or use a smaller cache under this contract.
 
+The production binder itself freezes this SHA in code. There is intentionally no public `--expected-metadata-sha256` override on the production CLI. Unit fixtures use only a private underscored override through the Python function API.
+
 ## Exact preflight
 
 ```bash
@@ -109,7 +111,6 @@ PYTHONPATH=src:. python scripts/v5_anticheat/bind_full104_expression_blocks_v4.p
   --materialization-audit "$STAGING/PHASE2_EXPRESSION_MATERIALIZATION_AUDIT.json" \
   --block-root "$BLOCK_ROOT" \
   --metadata-sqlite "$FULL104_METADATA_SQLITE" \
-  --expected-metadata-sha256 a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913 \
   --scratch-dir "$OUT_DIR/scratch" \
   --output "$OUT_DIR/V5_FULL104_EXPRESSION_BLOCK_BINDING_V4.json"
 ```
