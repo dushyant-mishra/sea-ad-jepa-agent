@@ -1,4 +1,6 @@
+import hashlib
 import json
+from pathlib import Path
 
 import pytest
 
@@ -8,6 +10,9 @@ from sea_ad_jepa.v5.prospective_precision_authority_v1 import (
     derive_hoeffding_fixed_n,
     validate_precision_authority_v1,
 )
+
+FROZEN_AUTHORITY_SHA256 = "cc4ac4d5116fa81990f1c3bd0497fc578eda86bb2d7d3cd2747abcf7ffcf9428"
+FROZEN_AUTHORITY_PATH = Path(__file__).resolve().parents[1] / "docs" / "agent" / "V5_PROSPECTIVE_DIMENSION_PRECISION_AUTHORITY_V1.json"
 
 
 def authority():
@@ -63,6 +68,7 @@ def authority():
             "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
         },
         "dimension_interface_sha256": "dcc8c95ef8ed4b8106ee3b8f1536aa6fac6b338cafd3057b9f567a5336c673df",
+        "code_lineage_base_commit_sha": "9001b0cc7bb9b2b548adef86bb3b423e80668b35",
         "quantities": quantities,
     }
 
@@ -81,6 +87,15 @@ def test_frozen_authority_passes_and_reports_execution_counts():
     assert out["donor_resamples"] == 4794
     assert out["operator_resamples"] == 4794
     assert out["quantity_count"] == 10
+
+
+def test_frozen_file_is_exact_canonical_authority():
+    raw = FROZEN_AUTHORITY_PATH.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == FROZEN_AUTHORITY_SHA256
+    obj = json.loads(raw)
+    assert raw == canonical_precision_authority_bytes(obj)
+    out = validate_precision_authority_v1(obj)
+    assert out["terminal"] == "PASS_V5_PROSPECTIVE_PRECISION_AUTHORITY_V1"
 
 
 def test_hand_entered_historical_count_cannot_masquerade_as_precision_derived():
