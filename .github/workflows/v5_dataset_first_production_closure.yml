@@ -47,6 +47,7 @@ jobs:
           tests/test_v5_qualified_target_optimizer_guard_v1.py
           tests/test_v5_external_review_runtime_quarantine_v1.py
           tests/test_v5_external_review_protected_registry_v1.py
+          tests/test_v5_external_review_preexecution_geometry_binding_v1.py
           tests/test_same_cell_technical_intervention_probe_v1.py
           tests/test_rejection_gate_power_calibration_v3.py
           tests/test_validate_base_learning_step_qualification_v1.py
@@ -75,6 +76,7 @@ jobs:
           src/sea_ad_jepa/v5/dimension_authority_guard_v4.py
           src/sea_ad_jepa/v5/preexecution_dependency_guard_v1.py
           src/sea_ad_jepa/v5/preexecution_qualification_bundle_v2.py
+          src/sea_ad_jepa/v5/trainer_preexecution_contract_v4.py
           src/sea_ad_jepa/v5/postqualification_dependency_guard_v2.py
           src/sea_ad_jepa/v5/qualification_phase_contract_v3.py
           src/sea_ad_jepa/v5/atomic_checkpoint_guard_v3.py
