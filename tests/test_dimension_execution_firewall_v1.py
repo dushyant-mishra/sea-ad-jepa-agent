@@ -5,6 +5,8 @@ from sea_ad_jepa.v5.dimension_execution_firewall_v1 import (
     DimensionExecutionStop,
 )
 
+PRECISION_SHA = "cc4ac4d5116fa81990f1c3bd0497fc578eda86bb2d7d3cd2747abcf7ffcf9428"
+
 
 def good():
     return {
@@ -21,10 +23,15 @@ def good():
         "full_null_geometry_refit": True,
         "null_geometry": "FULL_REFIT_EVERY_REPLICATE",
         "matched_null_preserves": ["donor", "operator", "Q_DEPTH", "Q_DETECT", "support_measurability"],
+        "precision_authority_sha256": PRECISION_SHA,
+        "precision_authority_terminal": "PASS_V5_PROSPECTIVE_PRECISION_AUTHORITY_V1",
+        "precision_authority_frozen_before_dimension_outcomes": True,
         "null_replicates_derived_from_error_budget": True,
         "donor_resamples_derived_from_error_budget": True,
-        "null_replicates": 999,
-        "donor_resamples": 1000,
+        "operator_resamples_derived_from_error_budget": True,
+        "null_replicates": 4794,
+        "donor_resamples": 4794,
+        "operator_resamples": 4794,
         "final_authority_scripts": ["scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py"],
         "synthetic_data_used": False,
         "pathology_used": False,
@@ -42,6 +49,38 @@ def good():
 def test_full_stream_receipt_passes():
     out = DimensionExecutionFirewallV1().validate(good())
     assert out["passed"] and out["D_total"] == 7
+
+
+def test_precision_authority_is_mandatory_and_exact():
+    x = good()
+    del x["precision_authority_sha256"]
+    with pytest.raises(DimensionExecutionStop, match="PRECISION_AUTHORITY_SHA"):
+        DimensionExecutionFirewallV1().validate(x)
+
+    y = good()
+    y["precision_authority_sha256"] = "0" * 64
+    with pytest.raises(DimensionExecutionStop, match="PRECISION_AUTHORITY_SHA"):
+        DimensionExecutionFirewallV1().validate(y)
+
+
+def test_precision_authority_terminal_and_freeze_order_are_mandatory():
+    x = good()
+    x["precision_authority_terminal"] = "PASS_SOMETHING_ELSE"
+    with pytest.raises(DimensionExecutionStop, match="PRECISION_AUTHORITY_TERMINAL"):
+        DimensionExecutionFirewallV1().validate(x)
+
+    y = good()
+    y["precision_authority_frozen_before_dimension_outcomes"] = False
+    with pytest.raises(DimensionExecutionStop, match="PRECISION_AUTHORITY_NOT_PROSPECTIVE"):
+        DimensionExecutionFirewallV1().validate(y)
+
+
+@pytest.mark.parametrize("field", ["null_replicates", "donor_resamples", "operator_resamples"])
+def test_replication_counts_must_equal_frozen_precision_authority(field):
+    x = good()
+    x[field] -= 1
+    with pytest.raises(DimensionExecutionStop, match="PRECISION_COUNT_MISMATCH"):
+        DimensionExecutionFirewallV1().validate(x)
 
 
 def test_row_identity_only_terminal_cannot_replace_physical_full104_expression_closure():
@@ -71,9 +110,9 @@ def test_historical_cap4_refit_null_cannot_be_final_authority():
 
 def test_fixed_historical_replication_without_precision_rule_fails():
     x = good()
-    x["null_replicates"] = 256
+    x["null_replicates"] = 999
     x["null_replicates_derived_from_error_budget"] = False
-    with pytest.raises(DimensionExecutionStop, match="NULL_REPLICATES_NOT_PRECISION_DERIVED"):
+    with pytest.raises(DimensionExecutionStop, match="NULL_REPLICATES_NOT_PRECISION_DERIVED|PRECISION_COUNT_MISMATCH"):
         DimensionExecutionFirewallV1().validate(x)
 
 
