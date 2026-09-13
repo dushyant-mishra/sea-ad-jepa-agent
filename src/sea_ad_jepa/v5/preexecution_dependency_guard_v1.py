@@ -4,7 +4,8 @@ This guard proves the exact chain
 
 FULL104 data -> dimensions -> proposal weights -> packing/restart -> production GPU
 
-while also binding the representation firewall and the exact historical C2 GPU
+while also binding the representation firewall, exact production protected
+registry, exact update-geometry authority, and the exact historical C2 GPU
 receipt used as supporting regression evidence. Individually valid PASS
 artifacts from different configurations cannot be mixed into one qualification
 run. This guard never authorizes training.
@@ -22,6 +23,18 @@ PRE_EXECUTION_BASE_EVIDENCE_V2 = (
     "packing_order_restart_invariance",
     "cuda_historical_mechanics_regression",
     "cuda_production_geometry_qualification",
+)
+
+_GPU_BINDING_FIELDS = (
+    "design_context_sha256",
+    "full_reader_expression_artifact_sha256",
+    "production_dimension_artifact_sha256",
+    "proposal_weight_invariance_artifact_sha256",
+    "packing_restart_invariance_artifact_sha256",
+    "representation_firewall_artifact_sha256",
+    "historical_c2_gpu_receipt_sha256",
+    "protected_registry_sha256",
+    "update_geometry_authority_sha256",
 )
 
 
@@ -118,8 +131,8 @@ def validate_preexecution_dependencies(
     if production_gpu_report.get("authority_id") != rows["cuda_production_geometry_qualification"]["authority_id"]:
         raise RuntimeError("STOP_V5_PREEXECUTION_PRODUCTION_GPU_AUTHORITY_SUBSTITUTION")
     bindings = production_gpu_report.get("bindings")
-    if not isinstance(bindings, Mapping):
-        raise ValueError("production GPU bindings missing")
+    if not isinstance(bindings, Mapping) or set(bindings) != set(_GPU_BINDING_FIELDS):
+        raise RuntimeError("STOP_V5_PREEXECUTION_GPU_BINDING_SET_MISMATCH")
     expected_gpu_bindings = {
         "design_context_sha256": context,
         "full_reader_expression_artifact_sha256": rows["full_reader_expression_closure"]["artifact_sha256"],
@@ -132,7 +145,11 @@ def validate_preexecution_dependencies(
     for name, expected in expected_gpu_bindings.items():
         if _sha(bindings.get(name), f"gpu.bindings[{name}]") != expected:
             raise RuntimeError(f"STOP_V5_PREEXECUTION_GPU_DEPENDENCY_SUBSTITUTION: {name}")
-    _sha(bindings.get("protected_registry_sha256"), "gpu.bindings[protected_registry_sha256]")
+    protected_registry_sha256 = _sha(bindings.get("protected_registry_sha256"), "gpu.bindings[protected_registry_sha256]")
+    update_geometry_authority_sha256 = _sha(
+        bindings.get("update_geometry_authority_sha256"),
+        "gpu.bindings[update_geometry_authority_sha256]",
+    )
 
     if production_gpu_report.get("real_production_geometry_qualified") is not True:
         raise RuntimeError("STOP_V5_PREEXECUTION_REAL_PRODUCTION_GPU_NOT_QUALIFIED")
@@ -145,6 +162,9 @@ def validate_preexecution_dependencies(
         "design_context_sha256": context,
         "evidence_artifact_sha256": {name: rows[name]["artifact_sha256"] for name in PRE_EXECUTION_BASE_EVIDENCE_V2},
         "evidence_authority_ids": {name: rows[name]["authority_id"] for name in PRE_EXECUTION_BASE_EVIDENCE_V2},
+        "protected_registry_sha256": protected_registry_sha256,
+        "update_geometry_authority_sha256": update_geometry_authority_sha256,
+        "production_gpu_geometry": dict(production_gpu_report.get("geometry", {})),
         "data_to_dimension_bound": True,
         "data_to_proposal_bound": True,
         "proposal_and_dimension_to_packing_bound": True,
