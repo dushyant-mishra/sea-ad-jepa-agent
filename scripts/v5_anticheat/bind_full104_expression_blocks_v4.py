@@ -47,6 +47,16 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def _parse_positive_integral_source_library(value: object) -> int:
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError) as exc:
+        raise RuntimeError("STOP_FULL104_BLOCK_META_VALUE_SEMANTICS:source_library") from exc
+    if not math.isfinite(numeric) or numeric <= 0 or not numeric.is_integer():
+        raise RuntimeError("STOP_FULL104_BLOCK_META_VALUE_SEMANTICS:source_library")
+    return int(numeric)
+
+
 def _insert_metadata_identity(con_out: sqlite3.Connection, metadata_sqlite: Path) -> tuple[int, int, int, int, int]:
     con_in = sqlite3.connect(f"file:{metadata_sqlite}?mode=ro&immutable=1", uri=True)
     cur = con_in.cursor()
@@ -219,9 +229,9 @@ def bind_full104_blocks(
                     selection_min = sel if selection_min is None else min(selection_min, sel)
                     selection_max = sel if selection_max is None else max(selection_max, sel)
                     weight = float(x["primary_row_weight"])
-                    library = int(x["source_library"])
+                    library = _parse_positive_integral_source_library(x["source_library"])
                     expression_row = int(x["expression_row"])
-                    if not math.isfinite(weight) or weight <= 0 or library <= 0 or expression_row < 0:
+                    if not math.isfinite(weight) or weight <= 0 or expression_row < 0:
                         raise RuntimeError(f"STOP_FULL104_BLOCK_META_VALUE_SEMANTICS:{r['block_key']}")
                     batch.append((sel, str(x["canonical_cell_id"]), source, str(x["donor_id"]), matrix_id, op))
                 if n != int(r["rows"]):
