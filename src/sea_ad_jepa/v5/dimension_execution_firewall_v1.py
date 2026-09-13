@@ -22,6 +22,11 @@ REQUIRED_MATCHING = {
     "support_measurability",
 }
 
+FROZEN_PRECISION_AUTHORITY_SHA256 = "cc4ac4d5116fa81990f1c3bd0497fc578eda86bb2d7d3cd2747abcf7ffcf9428"
+FROZEN_NULL_REPLICATES = 4_794
+FROZEN_DONOR_RESAMPLES = 4_794
+FROZEN_OPERATOR_RESAMPLES = 4_794
+
 
 @dataclass(frozen=True)
 class DimensionExecutionFirewallV1:
@@ -29,6 +34,10 @@ class DimensionExecutionFirewallV1:
     donors: int = 104
     operators: int = 42
     addresses: int = 41_238
+    precision_authority_sha256: str = FROZEN_PRECISION_AUTHORITY_SHA256
+    null_replicates: int = FROZEN_NULL_REPLICATES
+    donor_resamples: int = FROZEN_DONOR_RESAMPLES
+    operator_resamples: int = FROZEN_OPERATOR_RESAMPLES
 
     def validate(self, receipt: Mapping[str, object]) -> dict[str, object]:
         if receipt.get("population_mode") != "FULL_READER_FIT_STREAM":
@@ -62,14 +71,30 @@ class DimensionExecutionFirewallV1:
         if not REQUIRED_MATCHING.issubset(set(map(str, matching))):
             raise DimensionExecutionStop("STOP_D_EXECUTION_MATCHING_INCOMPLETE")
 
-        if receipt.get("null_replicates_derived_from_error_budget") is not True:
-            raise DimensionExecutionStop("STOP_D_EXECUTION_NULL_REPLICATES_NOT_PRECISION_DERIVED")
-        if receipt.get("donor_resamples_derived_from_error_budget") is not True:
-            raise DimensionExecutionStop("STOP_D_EXECUTION_BOOTSTRAP_REPLICATES_NOT_PRECISION_DERIVED")
-        for key in ("null_replicates", "donor_resamples"):
+        if receipt.get("precision_authority_sha256") != self.precision_authority_sha256:
+            raise DimensionExecutionStop("STOP_D_EXECUTION_PRECISION_AUTHORITY_SHA_MISMATCH")
+        if receipt.get("precision_authority_terminal") != "PASS_V5_PROSPECTIVE_PRECISION_AUTHORITY_V1":
+            raise DimensionExecutionStop("STOP_D_EXECUTION_PRECISION_AUTHORITY_TERMINAL_MISMATCH")
+        if receipt.get("precision_authority_frozen_before_dimension_outcomes") is not True:
+            raise DimensionExecutionStop("STOP_D_EXECUTION_PRECISION_AUTHORITY_NOT_PROSPECTIVE")
+
+        for flag, terminal in (
+            ("null_replicates_derived_from_error_budget", "STOP_D_EXECUTION_NULL_REPLICATES_NOT_PRECISION_DERIVED"),
+            ("donor_resamples_derived_from_error_budget", "STOP_D_EXECUTION_BOOTSTRAP_REPLICATES_NOT_PRECISION_DERIVED"),
+            ("operator_resamples_derived_from_error_budget", "STOP_D_EXECUTION_OPERATOR_REPLICATES_NOT_PRECISION_DERIVED"),
+        ):
+            if receipt.get(flag) is not True:
+                raise DimensionExecutionStop(terminal)
+
+        expected_counts = {
+            "null_replicates": self.null_replicates,
+            "donor_resamples": self.donor_resamples,
+            "operator_resamples": self.operator_resamples,
+        }
+        for key, expected in expected_counts.items():
             value = receipt.get(key)
-            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
-                raise DimensionExecutionStop(f"STOP_D_EXECUTION_INVALID_{key.upper()}")
+            if isinstance(value, bool) or not isinstance(value, int) or value != expected:
+                raise DimensionExecutionStop(f"STOP_D_EXECUTION_PRECISION_COUNT_MISMATCH:{key}")
 
         scripts = receipt.get("final_authority_scripts")
         if not isinstance(scripts, Sequence) or isinstance(scripts, (str, bytes)):
