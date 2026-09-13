@@ -1,20 +1,19 @@
 """Fail-closed admission guard for true V5 production-geometry GPU evidence.
 
-The historical 128x8 C2 regression proves that the corrected update mechanics
-work on the hardware. It does *not* prove that the eventual V5 model, dimensions,
-scientific update membership, proposal weights and packing policy work together
-at their data-derived production geometry.
-
-This guard therefore rejects the historical C2 receipt as production evidence
-and accepts only a dedicated receipt bound to the exact V5 pre-execution
-artifacts. It does not itself run CUDA and never authorizes training.
+Historical 128x8 C2 mechanics are supporting regression only.  Current V5 GPU
+evidence must bind the exact data-derived geometry and the exact production
+protected-tensor registry.  The protected tensor count is derived from that
+registry; the historical value 48 is not itself production authority.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Mapping
 
-from .trainer_preexecution_contract_v2 import MECHANICS_CHAIN_V2
+from .production_protected_registry_authority_v1 import (
+    PRODUCTION_MECHANICS_CHAIN_V1,
+    ProductionProtectedRegistryAuthorityV1,
+)
 
 _BINDING_FIELDS = (
     "design_context_sha256",
@@ -73,8 +72,14 @@ def qualify_production_geometry_gpu_receipt(
     receipt: Mapping[str, object],
     *,
     authority: ProductionGeometryGPUAuthorityV1,
+    protected_registry_authority: ProductionProtectedRegistryAuthorityV1,
 ) -> dict[str, object]:
     authority.validate()
+    protected_registry_authority.validate()
+    registry_sha = protected_registry_authority.registry_sha256()
+    if _sha(authority.protected_registry_sha256, "authority.protected_registry_sha256") != registry_sha:
+        raise RuntimeError("STOP_V5_PRODUCTION_GPU_PROTECTED_REGISTRY_AUTHORITY_MISMATCH")
+
     if not isinstance(receipt, Mapping):
         raise ValueError("receipt must be a mapping")
     if receipt.get("schema") == "JEPA_V5_C2_GPU_CRITICAL_EXECUTION_RECEIPT_V1":
@@ -107,8 +112,10 @@ def qualify_production_geometry_gpu_receipt(
             raise RuntimeError(f"STOP_V5_PRODUCTION_GPU_GEOMETRY_INVALID: {name}")
     if geometry.get("source") != "DATA_DERIVED_PRODUCTION_AUTHORITY":
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_GEOMETRY_NOT_DATA_DERIVED")
+    if geometry.get("model_depth") != protected_registry_authority.model_depth:
+        raise RuntimeError("STOP_V5_PRODUCTION_GPU_PROTECTED_REGISTRY_DEPTH_MISMATCH")
 
-    if tuple(receipt.get("mechanics_chain", ())) != MECHANICS_CHAIN_V2:
+    if tuple(receipt.get("mechanics_chain", ())) != PRODUCTION_MECHANICS_CHAIN_V1:
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_MECHANICS_CHAIN_MISMATCH")
     if receipt.get("historical_128x8_regression_passed") is not True:
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_HISTORICAL_REGRESSION_MISSING")
@@ -119,11 +126,16 @@ def qualify_production_geometry_gpu_receipt(
     if receipt.get("synthetic_loader_used") is not False:
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_SYNTHETIC_LOADER_MASQUERADE")
 
-    protected = receipt.get("protected_48")
+    protected = receipt.get("protected_registry")
     if not isinstance(protected, Mapping):
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_PROTECTED_REPORT_MISSING")
+    expected_count = protected_registry_authority.expected_tensors
+    if protected.get("expected_tensors") != expected_count:
+        raise RuntimeError("STOP_V5_PRODUCTION_GPU_PROTECTED_EXPECTED_COUNT_MISMATCH")
+    if _sha(protected.get("registry_sha256"), "protected_registry.registry_sha256") != registry_sha:
+        raise RuntimeError("STOP_V5_PRODUCTION_GPU_PROTECTED_REGISTRY_RECEIPT_MISMATCH")
     for name in ("gradients_live", "parameters_moved", "adam_exp_avg_live", "adam_exp_avg_sq_live"):
-        if protected.get(name) != 48:
+        if protected.get(name) != expected_count:
             raise RuntimeError(f"STOP_V5_PRODUCTION_GPU_PROTECTED_COUNT: {name}")
     if receipt.get("ema_update_proved") is not True:
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_EMA_NOT_PROVED")
@@ -137,6 +149,8 @@ def qualify_production_geometry_gpu_receipt(
         "authority_id": authority.authority_id,
         "bindings": expected,
         "geometry": dict(geometry),
+        "protected_registry_authority_sha256": protected_registry_authority.canonical_digest(),
+        "protected_tensors": expected_count,
         "cuda_device_name": environment["device_name"],
         "historical_regression_is_supporting_only": True,
         "real_production_geometry_qualified": True,
