@@ -31,6 +31,8 @@ jobs:
           tests/test_artifact_binding_v1.py
           tests/test_bind_corrected_train_cache_v1.py
           tests/test_bind_full104_expression_blocks_v4.py
+          tests/test_materialize_full_population_schedule_v4.py
+          tests/test_v5_full_population_proposal_weight_restart_v1.py
           tests/test_full104_binding_dimension_interface_v1.py
           tests/test_derive_full_stream_dimension_family_v1.py
           tests/test_dimension_metric_artifact_v1.py
@@ -39,21 +41,31 @@ jobs:
           tests/test_dimension_authority_guard_v4.py
           tests/test_preexecution_dependency_guard_v1.py
           tests/test_preexecution_qualification_bundle_v2.py
+          tests/test_postqualification_dependency_guard_v2.py
+          tests/test_qualification_phase_contract_v3.py
           tests/test_production_geometry_gpu_guard_v1.py
           tests/test_v5_qualified_target_optimizer_guard_v1.py
           tests/test_same_cell_technical_intervention_probe_v1.py
           tests/test_rejection_gate_power_calibration_v3.py
           tests/test_validate_base_learning_step_qualification_v1.py
           tests/test_validate_full104_execution_plan_v1.py
+          tests/test_v5_reconcile_atomic_checkpoint_guard_v3.py
+          tests/test_v5_reconcile_schedule_metadata_authority_v1.py
       - name: Compile changed authority sources
+        env:
+          PYTHONPATH: src:.
         run: >
           python -m py_compile
           scripts/v5_anticheat/full_reader_relational_target_preflight_v1.py
           scripts/v5_anticheat/bind_full104_expression_blocks_v4.py
+          scripts/v5_anticheat/derive_full_population_schedule_optimum_v3.py
+          scripts/v5_anticheat/materialize_full_population_schedule_v4.py
+          scripts/v5_anticheat/audit_full_population_proposal_weight_restart_v1.py
           scripts/v5_anticheat/derive_full_stream_dimension_family_v1.py
           scripts/v5_anticheat/validate_base_learning_step_qualification_v1.py
           scripts/v5_anticheat/validate_full104_execution_plan_v1.py
           src/sea_ad_jepa/v5/artifact_binding_v1.py
+          src/sea_ad_jepa/v5/full104_metadata_authority_v1.py
           src/sea_ad_jepa/v5/full104_dimension_interface_v1.py
           src/sea_ad_jepa/v5/dimension_metric_artifact_v1.py
           src/sea_ad_jepa/v5/dimension_execution_firewall_v1.py
@@ -61,4 +73,7 @@ jobs:
           src/sea_ad_jepa/v5/dimension_authority_guard_v4.py
           src/sea_ad_jepa/v5/preexecution_dependency_guard_v1.py
           src/sea_ad_jepa/v5/preexecution_qualification_bundle_v2.py
+          src/sea_ad_jepa/v5/postqualification_dependency_guard_v2.py
+          src/sea_ad_jepa/v5/qualification_phase_contract_v3.py
+          src/sea_ad_jepa/v5/atomic_checkpoint_guard_v3.py
           src/sea_ad_jepa/v5/production_geometry_gpu_guard_v1.py
