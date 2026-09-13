@@ -12,7 +12,7 @@ from sea_ad_jepa.v5.prospective_precision_authority_v1 import (
 
 def authority():
     quantities = []
-    for i, (qid, lo, hi, tol, kind) in enumerate([
+    for qid, lo, hi, tol, kind in [
         ("shared_matched_null_exceedance", 0.0, 1.0, 0.025, "null"),
         ("shared_subspace_stability", 0.0, 1.0, 0.05, "donor"),
         ("shared_held_donor_cross_view_predictability", -1.0, 1.0, 0.05, "donor"),
@@ -23,7 +23,7 @@ def authority():
         ("private_measurement_shortcut_increment", -1.0, 1.0, 0.05, "donor"),
         ("private_same_cell_technical_intervention_stability", 0.0, 1.0, 0.05, "donor"),
         ("observation_held_operator_reconstruction", 0.0, 1.0, 0.05, "operator"),
-    ]):
+    ]:
         alpha = 0.005
         quantities.append({
             "quantity_id": qid,
@@ -54,6 +54,15 @@ def authority():
         "protected_data_used": False,
         "training_authorized": False,
         "dimension_outcomes_used": False,
+        "full104_parent_bindings": {
+            "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+            "materialization_contract_sha256": "612b45742ad80498cbe2f061a75af08c0a10692dc731e0ac8e649417b7e62f17",
+            "materialization_audit_sha256": "9fa0ede3135a606bb1fe4cd4cc11881c439b7726b6dec62147c1892967eba7cf",
+            "selection_sha256": "edec0fe29d1425ecbe9fa889a610c4ce18621ae060c8144866315db57c3fc62b",
+            "selection_manifest_sha256": "3db3614bf544b183143f39b27bad516b3a7a75284df4b2410d9f3e99f0b0842e",
+            "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+        },
+        "dimension_interface_sha256": "dcc8c95ef8ed4b8106ee3b8f1536aa6fac6b338cafd3057b9f567a5336c673df",
         "quantities": quantities,
     }
 
@@ -122,6 +131,13 @@ def test_precision_cannot_be_relabelled_as_effect_threshold():
     x = authority()
     x["precision_is_not_effect_criterion"] = False
     with pytest.raises(PrecisionAuthorityStop, match="PRECISION_EFFECT_CONFLATION"):
+        validate_precision_authority_v1(x)
+
+
+def test_parent_bindings_are_mandatory():
+    x = authority()
+    del x["full104_parent_bindings"]["metadata_sqlite_sha256"]
+    with pytest.raises(PrecisionAuthorityStop, match="PARENT_BINDINGS_INCOMPLETE"):
         validate_precision_authority_v1(x)
 
 
