@@ -1,9 +1,9 @@
 """Fail-closed admission guard for true V5 production-geometry GPU evidence.
 
-Historical 128x8 C2 mechanics are supporting regression only.  Current V5 GPU
-evidence must bind the exact data-derived geometry and the exact production
-protected-tensor registry.  The protected tensor count is derived from that
-registry; the historical value 48 is not itself production authority.
+Historical 128x8 C2 mechanics are supporting regression only. Current V5 GPU
+evidence must bind the exact prospectively frozen data-derived geometry and the
+exact production protected-tensor registry. A receipt may not self-assert its
+batch/microbatch/width/depth merely by labeling them data-derived.
 """
 from __future__ import annotations
 
@@ -24,7 +24,9 @@ _BINDING_FIELDS = (
     "representation_firewall_artifact_sha256",
     "historical_c2_gpu_receipt_sha256",
     "protected_registry_sha256",
+    "update_geometry_authority_sha256",
 )
+_GEOMETRY_FIELDS = ("effective_batch", "microbatch", "model_width", "model_depth")
 
 
 def _id(value: object, name: str) -> str:
@@ -43,6 +45,12 @@ def _sha(value: object, name: str) -> str:
     return value.lower()
 
 
+def _positive_int(value: object, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ValueError(f"{name} must be a positive integer")
+    return value
+
+
 @dataclass(frozen=True)
 class ProductionGeometryGPUAuthorityV1:
     authority_id: str
@@ -54,18 +62,35 @@ class ProductionGeometryGPUAuthorityV1:
     representation_firewall_artifact_sha256: str
     historical_c2_gpu_receipt_sha256: str
     protected_registry_sha256: str
+    update_geometry_authority_sha256: str
+    effective_batch: int
+    microbatch: int
+    model_width: int
+    model_depth: int
     production_geometry_frozen_before_gpu_run: bool
 
     def validate(self) -> None:
         _id(self.authority_id, "authority_id")
         for name in _BINDING_FIELDS:
             _sha(getattr(self, name), name)
+        for name in _GEOMETRY_FIELDS:
+            _positive_int(getattr(self, name), name)
         if self.production_geometry_frozen_before_gpu_run is not True:
             raise ValueError("production geometry must be frozen before GPU execution")
 
     def bindings(self) -> dict[str, str]:
         self.validate()
         return {name: _sha(getattr(self, name), name) for name in _BINDING_FIELDS}
+
+    def geometry(self) -> dict[str, object]:
+        self.validate()
+        return {
+            "effective_batch": self.effective_batch,
+            "microbatch": self.microbatch,
+            "model_width": self.model_width,
+            "model_depth": self.model_depth,
+            "source": "DATA_DERIVED_PRODUCTION_AUTHORITY",
+        }
 
 
 def qualify_production_geometry_gpu_receipt(
@@ -79,6 +104,8 @@ def qualify_production_geometry_gpu_receipt(
     registry_sha = protected_registry_authority.registry_sha256()
     if _sha(authority.protected_registry_sha256, "authority.protected_registry_sha256") != registry_sha:
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_PROTECTED_REGISTRY_AUTHORITY_MISMATCH")
+    if authority.model_depth != protected_registry_authority.model_depth:
+        raise RuntimeError("STOP_V5_PRODUCTION_GPU_PROTECTED_REGISTRY_DEPTH_MISMATCH")
 
     if not isinstance(receipt, Mapping):
         raise ValueError("receipt must be a mapping")
@@ -106,12 +133,15 @@ def qualify_production_geometry_gpu_receipt(
     geometry = receipt.get("geometry")
     if not isinstance(geometry, Mapping):
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_GEOMETRY_MISSING")
-    for name in ("effective_batch", "microbatch", "model_width", "model_depth"):
+    if geometry.get("source") != "DATA_DERIVED_PRODUCTION_AUTHORITY":
+        raise RuntimeError("STOP_V5_PRODUCTION_GPU_GEOMETRY_NOT_DATA_DERIVED")
+    expected_geometry = authority.geometry()
+    for name in _GEOMETRY_FIELDS:
         value = geometry.get(name)
         if isinstance(value, bool) or not isinstance(value, int) or value < 1:
             raise RuntimeError(f"STOP_V5_PRODUCTION_GPU_GEOMETRY_INVALID: {name}")
-    if geometry.get("source") != "DATA_DERIVED_PRODUCTION_AUTHORITY":
-        raise RuntimeError("STOP_V5_PRODUCTION_GPU_GEOMETRY_NOT_DATA_DERIVED")
+        if value != expected_geometry[name]:
+            raise RuntimeError(f"STOP_V5_PRODUCTION_GPU_GEOMETRY_AUTHORITY_MISMATCH: {name}")
     if geometry.get("model_depth") != protected_registry_authority.model_depth:
         raise RuntimeError("STOP_V5_PRODUCTION_GPU_PROTECTED_REGISTRY_DEPTH_MISMATCH")
 
@@ -148,7 +178,7 @@ def qualify_production_geometry_gpu_receipt(
         "schema": "JEPA_V5_PRODUCTION_GEOMETRY_GPU_QUALIFICATION_V1",
         "authority_id": authority.authority_id,
         "bindings": expected,
-        "geometry": dict(geometry),
+        "geometry": expected_geometry,
         "protected_registry_authority_sha256": protected_registry_authority.canonical_digest(),
         "protected_tensors": expected_count,
         "cuda_device_name": environment["device_name"],
