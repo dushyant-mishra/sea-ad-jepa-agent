@@ -43,6 +43,7 @@ jobs:
           tests/test_dimension_authority_guard_v3.py
           tests/test_dimension_authority_guard_v4.py
           tests/test_prospective_precision_authority_v1.py
+          tests/test_precision_full104_preoutcome_binding_v1.py
           tests/test_preexecution_dependency_guard_v1.py
           tests/test_preexecution_qualification_bundle_v2.py
           tests/test_postqualification_dependency_guard_v2.py
