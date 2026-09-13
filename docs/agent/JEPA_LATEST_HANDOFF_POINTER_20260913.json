@@ -1,11 +1,13 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V1",
   "date": "2026-09-13",
-  "status": "CURRENT__V5_FULL_LINEAGE_HANDOFF__ENGINEERING_REPAIRS_GREEN__REAL_FULL104_EXECUTION_NEXT__NO_TRAINING_AUTHORITY",
+  "status": "CURRENT__V5_FULL_LINEAGE_HANDOFF__ALL_LIVE_BRANCHES_INVENTORIED__ENGINEERING_REPAIRS_GREEN__REAL_FULL104_EXECUTION_NEXT__NO_TRAINING_AUTHORITY",
   "branch": "planning/v5-dataset-first-production-closure-20260912",
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260913_V5_FULL_LINEAGE_CURRENT.md",
   "handoff_commit": "42fa1e5e2948188e77497f04f525af032e5b98fe",
+  "branch_inventory_path": "docs/agent/JEPA_LIVE_BRANCH_INVENTORY_20260913.md",
   "prior_external_review_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260913_V5_EXTERNAL_REVIEW_FINAL_CURRENT.md",
+  "final_external_review_verdict": "docs/agent/V5_EXTERNAL_REVIEW_FINAL_VERDICT_20260913.md",
   "verified_code_head": "a388c773feb48ebf3fc6ce20b8782182abc1891b",
   "verified_code_ci_run": 34739456264,
   "verified_code_ci_conclusion": "success",
@@ -18,5 +20,5 @@
   "td60_authorized": false,
   "relational_target_activation_authorized": false,
   "governance_note": "START_HERE.md still contains September-9-era V5/branch-hygiene statements; the full-lineage handoff records this as a documentation defect and supersedes those specific stale statements until START_HERE is refreshed.",
-  "next_action": "Re-fetch live head; read START_HERE.md, this pointer, and the full-lineage handoff; then on the GPU/heavy-data machine locate/hash/rebind the existing FULL104 store before current-V5 full-stream dimension execution. Do not rebuild FULL104 or import historical/T0 numeric authority."
+  "next_action": "Re-fetch live head; read START_HERE.md, this pointer, the full-lineage handoff, and the complete live branch inventory; then on the GPU/heavy-data machine locate/hash/rebind the existing FULL104 store before current-V5 full-stream dimension execution. Do not rebuild FULL104 or import historical/T0 numeric authority."
 }
