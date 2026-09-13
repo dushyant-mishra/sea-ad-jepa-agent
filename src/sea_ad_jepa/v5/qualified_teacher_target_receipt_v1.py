@@ -1,8 +1,10 @@
-"""Hash-bound V21 target receipt required by V5 bounded qualification.
+"""Hash-bound legacy T0/V21 target receipt retained for mechanics replay.
 
-This module does not authorize production training.  It only binds a future
-46-development-donor V21 target package to the exact V5 qualification/runtime
-authorities that are expected to consume it.
+This receipt predates the dataset-first V5 target-discovery/teacher-authority
+chain.  It remains useful for reproducing bounded optimizer-guard mechanics,
+but it is *not* a current V5 biological teacher authority and may not authorize
+a current V5 base-learning update.  The production-facing runtime enforces that
+separation explicitly.
 """
 from __future__ import annotations
 
@@ -14,6 +16,7 @@ STOP = "STOP_V5_QUALIFIED_TARGET_RECEIPT_INVALID"
 KIND = "v5_qualified_teacher_target_receipt_v1"
 TARGET_KIND = "t0_v21_target_freeze_receipt_v1"
 MODE = "BOUNDED_QUALIFICATION_ONLY"
+LEGACY_T0_AUTHORITY_SCOPE = "LEGACY_T0_V21_BOUNDED_QUALIFICATION_MECHANICS_ONLY"
 REQUIRED_V5_ROOTS = (
     "trainer_preexecution_authority_sha256",
     "preexecution_bundle_sha256",
@@ -52,6 +55,7 @@ def seal_qualified_teacher_target_receipt(
     target_freeze_receipt: Mapping[str, Any],
     v5_authority_roots: Mapping[str, str],
 ) -> dict[str, Any]:
+    """Seal the historical V21 receipt without promoting its scientific scope."""
     if target_freeze_receipt.get("kind") != TARGET_KIND:
         _fail("target must be the V21 46-donor freeze receipt")
     if int(target_freeze_receipt.get("n_development_donors", -1)) != 46:
@@ -75,6 +79,9 @@ def seal_qualified_teacher_target_receipt(
         _fail(f"V5 authority roots mismatch missing={missing} extra={extra}")
     roots = {key: _sha(key, v5_authority_roots[key]) for key in REQUIRED_V5_ROOTS}
 
+    # Preserve the historical serialized body/digest exactly.  Scope is returned
+    # by validation as metadata rather than inserted here, so existing forensic
+    # receipts remain byte/hash reproducible.
     body = {
         "kind": KIND,
         "execution_mode": MODE,
@@ -101,6 +108,7 @@ def validate_qualified_teacher_target_receipt(
     expected_target_package_root: str,
     expected_v5_authority_roots: Mapping[str, str],
 ) -> dict[str, Any]:
+    """Validate a historical receipt and return its non-production scope."""
     if not isinstance(receipt, Mapping) or receipt.get("kind") != KIND:
         _fail("qualified teacher-target receipt is required")
     if receipt.get("execution_mode") != MODE:
@@ -133,5 +141,7 @@ def validate_qualified_teacher_target_receipt(
         "receipt_digest": receipt["receipt_digest"],
         "target_package_root": receipt["target_package_root"],
         "execution_mode": MODE,
+        "authority_scope": LEGACY_T0_AUTHORITY_SCOPE,
+        "current_v5_teacher_authority": False,
         "production_training_authorized": False,
     }
