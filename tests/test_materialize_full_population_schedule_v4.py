@@ -74,6 +74,10 @@ def _argv(metadata, optimum_json, expected_sha, outdir):
     ]
 
 
+def _main(argv, expected_sha):
+    return mod.main(argv, _expected_metadata_sha256_for_test=expected_sha)
+
+
 def test_rejects_same_size_same_mtime_metadata_content_change(tmp_path):
     metadata = tmp_path / "metadata.sqlite"
     metadata.write_bytes(b"A" * 4096)
@@ -111,13 +115,13 @@ def test_rejects_same_size_same_mtime_metadata_content_change(tmp_path):
     assert hashlib.sha256(metadata.read_bytes()).hexdigest() != expected_sha
 
     with pytest.raises(SystemExit, match="metadata cryptographic digest changed"):
-        mod.main(_argv(metadata, optimum_json, expected_sha, tmp_path / "out"))
+        _main(_argv(metadata, optimum_json, expected_sha, tmp_path / "out"), expected_sha)
 
 
 def test_replays_authenticated_minimal_schedule_and_records_actual_digest(tmp_path):
     metadata, optimum_json, expected_sha, outdir = _one_cell_case(tmp_path)
 
-    assert mod.main(_argv(metadata, optimum_json, expected_sha, outdir)) == 0
+    assert _main(_argv(metadata, optimum_json, expected_sha, outdir), expected_sha) == 0
 
     report = json.loads(
         (outdir / "FULL_POPULATION_SCHEDULE_MATERIALIZATION_V4.json").read_text()
@@ -138,4 +142,18 @@ def test_rejects_metadata_change_during_materialization(tmp_path, monkeypatch):
         SystemExit,
         match="metadata cryptographic digest changed during materialization",
     ):
-        mod.main(_argv(metadata, optimum_json, expected_sha, outdir))
+        _main(_argv(metadata, optimum_json, expected_sha, outdir), expected_sha)
+
+
+def test_public_alternate_metadata_authority_is_rejected_before_file_use(tmp_path):
+    wrong_sha = "1" * 64
+    with pytest.raises(SystemExit, match="metadata authority SHA mismatch"):
+        mod.main(
+            [
+                "--metadata-sqlite", str(tmp_path / "does-not-need-to-exist.sqlite"),
+                "--expected-metadata-sha256", wrong_sha,
+                "--partition", "reader_fit",
+                "--optimum-json", str(tmp_path / "does-not-need-to-exist.json"),
+                "--outdir", str(tmp_path / "out"),
+            ]
+        )
