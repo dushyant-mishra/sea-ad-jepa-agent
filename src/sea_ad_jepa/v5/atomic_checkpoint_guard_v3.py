@@ -1,21 +1,14 @@
 """Current-authority atomic checkpoint guard for prospective Teacher/Student V5.
 
-V3 restores invariants that existed in the historical checkpoint V2 guard but
-binds them to the current trainer-preexecution V2 and postqualification gate
-vocabulary.  It deliberately does not grant optimizer or production-training
-authority.
+V3 restores historical checkpoint invariants while binding them to current V5
+preexecution and postqualification authority.  The decision-bearing protected
+mechanics are now bound to the exact production protected registry: the tensor
+count is derived from the frozen model depth instead of inheriting the
+historical six-block/48-tensor constant.
 
-Decision-bearing checkpoint validation requires:
-- exact TrainerPreexecutionAuthorityV2 authority bindings;
-- separately frozen, authority-bound scientific thresholds (no defaults);
-- exact MECHANICS_CHAIN_V2 chronology;
-- exact protected 48-tensor registry binding for gradients, parameter motion,
-  and both Adam moments;
-- successful-presentation EMA cursor chronology;
-- all current critical tests EXECUTED_PASS;
-- all current rejection-capable postqualification gates EXECUTED_PASS;
-- proposal/evidence/depth/hardware telemetry explicitly PASS;
-- all protected/forbidden gates closed.
+Historical 48-tensor critical regressions remain supporting mechanics evidence;
+they are not current production-registry authority.  This guard never grants
+optimizer or production-training authority.
 """
 from __future__ import annotations
 
@@ -23,9 +16,12 @@ from dataclasses import dataclass
 import math
 from typing import Any, Mapping
 
+from .production_protected_registry_authority_v1 import (
+    PRODUCTION_MECHANICS_CHAIN_V1,
+    ProductionProtectedRegistryAuthorityV1,
+)
 from .rejection_gate_power_calibration_v1 import REJECTION_CAPABLE_POST_GATES
 from .trainer_preexecution_contract_v2 import (
-    MECHANICS_CHAIN_V2,
     REQUIRED_AUTHORITY_SHAS,
     TrainerPreexecutionAuthorityV2,
     TrainerPreexecutionError,
@@ -166,6 +162,7 @@ class CheckpointQualificationThresholdsV3:
 def _validate_preexecution_authority(
     authority: TrainerPreexecutionAuthorityV2,
     thresholds: CheckpointQualificationThresholdsV3,
+    protected_registry_authority: ProductionProtectedRegistryAuthorityV1,
 ) -> dict[str, str]:
     if not isinstance(authority, TrainerPreexecutionAuthorityV2):
         raise AtomicCheckpointGuardV3Error(
@@ -173,10 +170,16 @@ def _validate_preexecution_authority(
         )
     try:
         authority.validate()
+        protected_registry_authority.validate()
     except (TrainerPreexecutionError, ValueError) as exc:
         raise AtomicCheckpointGuardV3Error(
             f"{STOP_PREEXECUTION_AUTHORITY_INVALID}: {exc}"
         ) from exc
+    expected_registry = protected_registry_authority.registry_sha256()
+    if _sha(authority.protected_registry_sha256, "protected_registry_sha256") != expected_registry:
+        raise AtomicCheckpointGuardV3Error(
+            f"{STOP_PREEXECUTION_AUTHORITY_INVALID}: protected registry authority mismatch"
+        )
     thresholds.validate()
     normalized = {name: _sha(authority.authorities[name], name) for name in REQUIRED_AUTHORITY_SHAS}
     expected_threshold = normalized["checkpoint_threshold_authority_sha256"]
@@ -210,11 +213,12 @@ def _validate_exact_protected_gate(
     *,
     label: str,
     expected_registry_sha256: str,
+    expected_tensors: int,
     zero_fields: tuple[str, ...],
 ) -> None:
-    if _integer(gate, "expected_tensors") != 48:
+    if _integer(gate, "expected_tensors") != expected_tensors:
         raise AtomicCheckpointGuardV3Error(
-            f"{STOP_MECHANICS_UNHEALTHY}: {label} expected_tensors != 48"
+            f"{STOP_MECHANICS_UNHEALTHY}: {label} expected_tensors != {expected_tensors}"
         )
     if _sha(gate.get("registry_sha256"), f"{label}.registry_sha256") != expected_registry_sha256:
         raise AtomicCheckpointGuardV3Error(
@@ -231,10 +235,13 @@ def validate_mechanics_v3(
     previous: Mapping[str, Any],
     current: Mapping[str, Any],
     *,
-    expected_registry_sha256: str,
+    protected_registry_authority: ProductionProtectedRegistryAuthorityV1,
 ) -> dict[str, Any]:
+    protected_registry_authority.validate()
+    expected_registry_sha256 = protected_registry_authority.registry_sha256()
+    expected_tensors = protected_registry_authority.expected_tensors
     mechanics = _mapping(current, "mechanics")
-    if tuple(mechanics.get("execution_order", ())) != MECHANICS_CHAIN_V2:
+    if tuple(mechanics.get("execution_order", ())) != PRODUCTION_MECHANICS_CHAIN_V1:
         raise AtomicCheckpointGuardV3Error(
             f"{STOP_MECHANICS_UNHEALTHY}: mechanics chain mismatch"
         )
@@ -252,18 +259,21 @@ def validate_mechanics_v3(
         _mapping(mechanics, "protected_gradient_gate"),
         label="protected_gradient_gate",
         expected_registry_sha256=expected_registry_sha256,
+        expected_tensors=expected_tensors,
         zero_fields=("missing", "nonfinite", "exact_zero"),
     )
     _validate_exact_protected_gate(
         _mapping(mechanics, "protected_parameter_motion_gate"),
         label="protected_parameter_motion_gate",
         expected_registry_sha256=expected_registry_sha256,
+        expected_tensors=expected_tensors,
         zero_fields=("missing", "nonfinite", "not_moved_beyond_decay"),
     )
     _validate_exact_protected_gate(
         _mapping(mechanics, "adam_moment_gate"),
         label="adam_moment_gate",
         expected_registry_sha256=expected_registry_sha256,
+        expected_tensors=expected_tensors,
         zero_fields=(
             "exp_avg_missing",
             "exp_avg_nonfinite",
@@ -299,7 +309,9 @@ def validate_mechanics_v3(
         )
     return {
         "status": "PASS",
-        "protected_tensors": 48,
+        "protected_tensors": expected_tensors,
+        "protected_registry_sha256": expected_registry_sha256,
+        "protected_registry_authority_sha256": protected_registry_authority.canonical_digest(),
         "presentations_before": before,
         "presentations_this_update": this_update,
         "presentations_after": after,
@@ -363,14 +375,9 @@ def validate_atomic_checkpoint_transition_v3(
     *,
     thresholds: CheckpointQualificationThresholdsV3,
     preexecution_authority: TrainerPreexecutionAuthorityV2,
+    protected_registry_authority: ProductionProtectedRegistryAuthorityV1,
 ) -> dict[str, Any]:
-    """Validate one decision-bearing checkpoint transition under current V5 authority.
-
-    This function is an evidence/telemetry validator only.  A PASS means the
-    declared transition is internally consistent with the frozen preexecution
-    authority; it does not grant permission to execute a future optimizer step
-    and does not authorize production training.
-    """
+    """Validate one decision-bearing checkpoint transition under current V5 authority."""
     if not isinstance(previous, Mapping) or not isinstance(current, Mapping):
         raise AtomicCheckpointGuardV3Error(
             f"{STOP_TELEMETRY_MISSING}: checkpoints must be mappings"
@@ -381,12 +388,12 @@ def validate_atomic_checkpoint_transition_v3(
                 f"{STOP_TELEMETRY_MISSING}: section {section}"
             )
 
-    authority_shas = _validate_preexecution_authority(preexecution_authority, thresholds)
-    _validate_authority_bindings(current, authority_shas=authority_shas)
-    expected_registry = _sha(
-        preexecution_authority.protected_registry_sha256,
-        "protected_registry_sha256",
+    authority_shas = _validate_preexecution_authority(
+        preexecution_authority,
+        thresholds,
+        protected_registry_authority,
     )
+    _validate_authority_bindings(current, authority_shas=authority_shas)
 
     previous_update = _integer(previous, "update")
     current_update = _integer(current, "update", minimum=1)
@@ -400,7 +407,7 @@ def validate_atomic_checkpoint_transition_v3(
     mechanics = validate_mechanics_v3(
         previous,
         current,
-        expected_registry_sha256=expected_registry,
+        protected_registry_authority=protected_registry_authority,
     )
     try:
         critical = validate_critical_test_execution(
@@ -457,6 +464,7 @@ def validate_atomic_checkpoint_transition_v3(
         "loss_improved": loss_improved,
         "threshold_authority_sha256": thresholds.threshold_authority_sha256.lower(),
         "preexecution_authority_sha256": preexecution_authority.canonical_digest(),
+        "protected_registry_authority_sha256": protected_registry_authority.canonical_digest(),
         "authority_bindings": authority_shas,
         "mechanics": mechanics,
         "critical_tests": critical,
