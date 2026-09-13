@@ -10,14 +10,22 @@ spec.loader.exec_module(m)
 
 
 def test_real_nph_integral_float_text_is_accepted():
-    assert m._parse_positive_integral_source_library("61129.0") == 61129
-    assert m._parse_positive_integral_source_library("1487.0") == 1487
+    assert m._parse_positive_integral_source_library("61129.0", "op37/block-00001") == 61129
+    assert m._parse_positive_integral_source_library("1487.0", "op37/block-00001") == 1487
+
+
+def test_integer_text_above_float64_exact_range_is_not_truncated():
+    value = "9007199254740993"
+    assert m._parse_positive_integral_source_library(value, "op37/block-00001") == 9007199254740993
 
 
 @pytest.mark.parametrize(
     "value",
     ["61129.5", "0.0", "-1.0", "nan", "inf", "-inf", "", "abc"],
 )
-def test_non_integral_non_positive_non_finite_or_invalid_library_is_rejected(value):
-    with pytest.raises(RuntimeError, match="STOP_FULL104_BLOCK_META_VALUE_SEMANTICS"):
-        m._parse_positive_integral_source_library(value)
+def test_non_integral_non_positive_non_finite_or_invalid_library_is_rejected_with_block_identity(value):
+    with pytest.raises(
+        RuntimeError,
+        match=r"STOP_FULL104_BLOCK_META_VALUE_SEMANTICS:op37/block-00001:source_library",
+    ):
+        m._parse_positive_integral_source_library(value, "op37/block-00001")
