@@ -12,16 +12,62 @@
   "seed0": 20260912,
   "nonconvergence_allowance_unchanged": 0.05,
   "omega_auc_true_vs_null": {
-    "uls|STRONG/0.75/0.55_vs_NULL": 0.9919474380032851,
-    "uls|MODERATE/0.75/0.55_vs_NULL": 0.9352994860463999,
-    "uls|WEAK/0.75/0.55_vs_NULL": 0.7345082890713021,
-    "ml|STRONG/0.75/0.55_vs_NULL": 0.9948873432019499,
-    "ml|MODERATE/0.75/0.55_vs_NULL": 0.8991669895389384,
-    "ml|WEAK/0.75/0.55_vs_NULL": 0.6998595505617977,
-    "uls_floor|STRONG/0.75/0.55_vs_NULL": 0.991697457074549,
-    "uls_floor|MODERATE/0.75/0.55_vs_NULL": 0.9360686042929034,
-    "uls_floor|WEAK/0.75/0.55_vs_NULL": 0.7337298215802889
+    "uls|STRONG/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.9919474380032851,
+      "auc_unconditional_all_cohorts": 0.6364388888888889,
+      "proper_rate_true": 0.7633333333333333,
+      "proper_rate_null": 0.36333333333333334
+    },
+    "uls|MODERATE/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.9352994860463999,
+      "auc_unconditional_all_cohorts": 0.6006944444444444,
+      "proper_rate_true": 0.6366666666666667,
+      "proper_rate_null": 0.36333333333333334
+    },
+    "uls|WEAK/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.7345082890713021,
+      "auc_unconditional_all_cohorts": 0.5323777777777777,
+      "proper_rate_true": 0.38,
+      "proper_rate_null": 0.36333333333333334
+    },
+    "ml|STRONG/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.9948873432019499,
+      "auc_unconditional_all_cohorts": 0.5924944444444444,
+      "proper_rate_true": 0.63,
+      "proper_rate_null": 0.2966666666666667
+    },
+    "ml|MODERATE/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.8991669895389384,
+      "auc_unconditional_all_cohorts": 0.5457888888888889,
+      "proper_rate_true": 0.38666666666666666,
+      "proper_rate_null": 0.2966666666666667
+    },
+    "ml|WEAK/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.6998595505617977,
+      "auc_unconditional_all_cohorts": 0.5158111111111111,
+      "proper_rate_true": 0.26666666666666666,
+      "proper_rate_null": 0.2966666666666667
+    },
+    "uls_floor|STRONG/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.991697457074549,
+      "auc_unconditional_all_cohorts": 0.6256833333333334,
+      "proper_rate_true": 0.7166666666666667,
+      "proper_rate_null": 0.3566666666666667
+    },
+    "uls_floor|MODERATE/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.9360686042929034,
+      "auc_unconditional_all_cohorts": 0.5943555555555555,
+      "proper_rate_true": 0.6066666666666667,
+      "proper_rate_null": 0.3566666666666667
+    },
+    "uls_floor|WEAK/0.75/0.55_vs_NULL": {
+      "auc_conditional_on_proper_fits": 0.7337298215802889,
+      "auc_unconditional_all_cohorts": 0.5305666666666666,
+      "proper_rate_true": 0.36666666666666664,
+      "proper_rate_null": 0.3566666666666667
+    }
   },
+  "discrimination_note": "conditional AUC drops improper-fit cohorts and is a DIAGNOSTIC; unconditional AUC counts them as uninformative ties and is the procedure's operating characteristic",
   "cells": [
     {
       "cell": "STRONG/0.25/0.15",
