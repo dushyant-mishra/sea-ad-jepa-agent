@@ -70,7 +70,7 @@ def restart_stream_digest(*,H,a,b,prefix,keys,mult,donor_n,D,restart_boundaries,
     for seg_start,seg_end in zip(bounds[:-1],bounds[1:]):
         for start in range(seg_start,seg_end,max_chunk):
             end=min(seg_end,start+max_chunk)
-            rec=presentation_records(start,end,H=H,a=a,b,prefix=prefix,keys=keys,mult=mult,donor_n=donor_n,D=D)
+            rec=presentation_records(start,end,H=H,a=a,b=b,prefix=prefix,keys=keys,mult=mult,donor_n=donor_n,D=D)
             h.update(rec.tobytes(order='C'))
     return h.hexdigest(),bounds
 
