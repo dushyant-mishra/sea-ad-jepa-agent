@@ -5,6 +5,11 @@ from collections import Counter
 from pathlib import Path
 import numpy as np
 
+from sea_ad_jepa.v5.full104_metadata_authority_v1 import (
+    EXPECTED_METADATA_SQLITE_SHA256,
+    validate_requested_metadata_authority,
+)
+
 DOMAIN=b'SEA_AD_JEPA_V5_FULL_POPULATION_SCHEDULE_V1\0'
 LEDGER_DTYPE=np.dtype([('stable_key','<i8'),('multiplicity','u1')],align=False)
 PRES_DTYPE=np.dtype([('presentation_index','<u8'),('stable_key','<i8'),('weight_denominator','<u8')],align=False)
@@ -15,7 +20,6 @@ def sha256_file(path: Path, chunk=8<<20):
     with path.open('rb') as f:
         for b in iter(lambda:f.read(chunk),b''): h.update(b)
     return h.hexdigest()
-
 def bound_ledger_digest(data: bytes): return hashlib.sha256(DOMAIN+b'LEDGER\0'+data).hexdigest()
 def affine_from(bound_hex: str,H:int):
     seed=hashlib.sha256(DOMAIN+b'ORDER\0'+bytes.fromhex(bound_hex)+H.to_bytes(8,'little')).digest()
@@ -66,14 +70,18 @@ def restart_stream_digest(*,H,a,b,prefix,keys,mult,donor_n,D,restart_boundaries,
     for seg_start,seg_end in zip(bounds[:-1],bounds[1:]):
         for start in range(seg_start,seg_end,max_chunk):
             end=min(seg_end,start+max_chunk)
-            rec=presentation_records(start,end,H=H,a=a,b=b,prefix=prefix,keys=keys,mult=mult,donor_n=donor_n,D=D)
+            rec=presentation_records(start,end,H=H,a=a,b,prefix=prefix,keys=keys,mult=mult,donor_n=donor_n,D=D)
             h.update(rec.tobytes(order='C'))
     return h.hexdigest(),bounds
 
-def audit(*,metadata_sqlite:Path,expected_metadata_sha256:str,partition:str,schedule_report:Path,ledger:Path,chunk_size:int=200_000):
-    if sha256_file(metadata_sqlite)!=expected_metadata_sha256: raise RuntimeError('STOP_PROPOSAL_METADATA_SHA_MISMATCH')
+def audit(*,metadata_sqlite:Path,expected_metadata_sha256:str,partition:str,schedule_report:Path,ledger:Path,chunk_size:int=200_000,_expected_metadata_sha256_for_test:str|None=None):
+    try:
+        active_expected_metadata_sha256=validate_requested_metadata_authority(expected_metadata_sha256,_expected_metadata_sha256_for_test=_expected_metadata_sha256_for_test)
+    except ValueError as exc:
+        raise RuntimeError(f'STOP_PROPOSAL_METADATA_AUTHORITY_MISMATCH: {exc}') from exc
+    if sha256_file(metadata_sqlite)!=active_expected_metadata_sha256: raise RuntimeError('STOP_PROPOSAL_METADATA_SHA_MISMATCH')
     report=json.loads(schedule_report.read_text())
-    if report.get('source_metadata_sha256')!=expected_metadata_sha256 or report.get('partition')!=partition: raise RuntimeError('STOP_PROPOSAL_SCHEDULE_PARENT_MISMATCH')
+    if report.get('source_metadata_sha256')!=active_expected_metadata_sha256 or report.get('partition')!=partition: raise RuntimeError('STOP_PROPOSAL_SCHEDULE_PARENT_MISMATCH')
     raw=ledger.read_bytes(); observed_raw=hashlib.sha256(raw).hexdigest(); info=report['canonical_multiplicity_ledger']
     if observed_raw!=info['raw_sha256']: raise RuntimeError('STOP_PROPOSAL_LEDGER_RAW_SHA_MISMATCH')
     observed_bound=bound_ledger_digest(raw)
@@ -116,7 +124,7 @@ def audit(*,metadata_sqlite:Path,expected_metadata_sha256:str,partition:str,sche
     return {
       'schema':'JEPA_V5_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_V1',
       'status':'PASS_FULL_READER_PROPOSAL_WEIGHT_PACKING_RESTART_REPLAY',
-      'source_metadata_sha256':expected_metadata_sha256,'partition':partition,'unique_cells':N,'donors':D,'total_presentations':H,
+      'source_metadata_sha256':active_expected_metadata_sha256,'partition':partition,'unique_cells':N,'donors':D,'total_presentations':H,
       'ledger_raw_sha256':observed_raw,'ledger_domain_bound_sha256':observed_bound,
       'affine_order':{'H':H,'a':a,'b':b,'gcd_a_H':math.gcd(a,H)},
       'proposal_definition':'q_i=m_i/H','target_definition':'p_i=1/(D*n_d)','exact_weight_definition':'w_i=H/(D*n_d*m_i)',
