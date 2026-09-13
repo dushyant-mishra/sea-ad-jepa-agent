@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import inspect
 from types import SimpleNamespace
 
 import pytest
@@ -12,6 +13,7 @@ from sea_ad_jepa.v5.qualified_optimizer_guard_v1 import (
 )
 from sea_ad_jepa.v5.qualified_teacher_student_runtime_v1 import qualified_production_update
 from sea_ad_jepa.v5.qualified_teacher_target_receipt_v1 import (
+    LEGACY_T0_AUTHORITY_SCOPE,
     REQUIRED_V5_ROOTS,
     seal_qualified_teacher_target_receipt,
     validate_qualified_teacher_target_receipt,
@@ -93,6 +95,19 @@ def test_receipt_tamper_and_stale_runtime_fail() -> None:
         )
 
 
+def test_v21_receipt_is_legacy_mechanics_only_not_current_v5_teacher() -> None:
+    verified = validate_qualified_teacher_target_receipt(
+        _receipt(),
+        expected_target_package_root=_h("a"),
+        expected_v5_authority_roots=_roots(),
+    )
+    assert verified["authority_scope"] == LEGACY_T0_AUTHORITY_SCOPE
+    assert verified["current_v5_teacher_authority"] is False
+    assert verified["production_training_authorized"] is False
+
+
+# Low-level optimizer-hook tests intentionally retain the historical V21 receipt:
+# they verify denial/residency/cursor mechanics only, not current V5 biology.
 def test_optimizer_step_without_arm_fails_before_parameter_or_state_change() -> None:
     modules = _module_with_sgd(momentum=0.9)
     guard = QualifiedOptimizerStepGuard(modules.optimizer, _receipt(), _h("a"), _roots())
@@ -105,7 +120,7 @@ def test_optimizer_step_without_arm_fails_before_parameter_or_state_change() -> 
     guard.close()
 
 
-def test_one_arm_allows_exactly_one_step_then_fails_closed() -> None:
+def test_one_arm_allows_exactly_one_mechanics_step_then_fails_closed() -> None:
     modules = _module_with_sgd()
     guard = QualifiedOptimizerStepGuard(modules.optimizer, _receipt(), _h("a"), _roots())
     guard.arm_for_step(schedule_cursor=7)
@@ -136,11 +151,10 @@ def test_stale_authorization_after_skipped_amp_step_cannot_mutate_later() -> Non
     modules = _module_with_sgd()
     guard = QualifiedOptimizerStepGuard(modules.optimizer, _receipt(), _h("a"), _roots())
     guard.arm_for_step(schedule_cursor=11)
-    # Simulate GradScaler skipping optimizer.step(): no hook fires and no mutation happens.
     assert guard.is_armed
     before = modules.parameter.detach().clone()
     with pytest.raises(RuntimeError, match="schedule cursor"):
-        modules.optimizer.step()  # later unauthorized ordinary step, no cursor presented
+        modules.optimizer.step()
     assert torch.equal(modules.parameter, before)
     assert not guard.is_armed
     guard.close()
@@ -158,88 +172,38 @@ def test_amp_scaler_step_hits_the_same_optimizer_hook_on_cpu_disabled_scaler() -
     guard.close()
 
 
-def test_qualified_update_entrypoint_arms_guard_at_the_update_boundary() -> None:
+def test_public_v5_update_rejects_legacy_t0_before_guard_or_mutation() -> None:
     modules = _module_with_sgd()
-
-    def update_fn(mods, **kwargs):
-        mods.scaler.step(mods.optimizer)
-        mods.scaler.update()
-        return {"schema": "teacher-student-update-v1", "schedule_cursor": kwargs["schedule_cursor"]}
-
-    result = qualified_production_update(
-        modules,
-        expression=None,
-        measurement_mask=None,
-        stable_mask_keys=None,
-        schedule_cursor=5,
-        target_receipt=_receipt(),
-        expected_target_package_root=_h("a"),
-        expected_v5_authority_roots=_roots(),
-        _update_fn=update_fn,
-    )
-    assert result["qualified_optimizer_guard"]["completed"]["guarded_optimizer_step"]
-    assert result["qualified_optimizer_guard"]["resident_on_optimizer"]
-    assert result["qualified_target_authority"]["target_package_root"] == _h("a")
-    assert result["production_training_authorized"] is False
-
-
-def test_resident_guard_blocks_direct_step_after_qualified_entrypoint_returns() -> None:
-    modules = _module_with_sgd()
-
-    def update_fn(mods, **kwargs):
-        mods.scaler.step(mods.optimizer)
-        mods.scaler.update()
-        return {"schema": "teacher-student-update-v1", "schedule_cursor": kwargs["schedule_cursor"]}
-
-    qualified_production_update(
-        modules,
-        expression=None,
-        measurement_mask=None,
-        stable_mask_keys=None,
-        schedule_cursor=6,
-        target_receipt=_receipt(),
-        expected_target_package_root=_h("a"),
-        expected_v5_authority_roots=_roots(),
-        _update_fn=update_fn,
-    )
-    modules.parameter.grad = torch.tensor([1.0])
     before = modules.parameter.detach().clone()
-    with pytest.raises(RuntimeError, match="not armed"):
-        modules.optimizer.step()
-    assert torch.equal(modules.parameter, before)
+    reached_update = False
 
+    def update_fn(mods, **kwargs):  # pragma: no cover - must never be reached
+        nonlocal reached_update
+        reached_update = True
+        mods.scaler.step(mods.optimizer)
+        return {"schedule_cursor": kwargs["schedule_cursor"]}
 
-def test_qualified_update_entrypoint_fails_if_update_does_not_step_optimizer() -> None:
-    modules = _module_with_sgd()
-
-    def no_step_fn(mods, **kwargs):
-        return {"schema": "teacher-student-update-v1", "schedule_cursor": kwargs["schedule_cursor"]}
-
-    before = modules.parameter.detach().clone()
-    with pytest.raises(RuntimeError, match="expected guarded optimizer step did not complete"):
+    with pytest.raises(RuntimeError, match="legacy T0/V21.*current V5"):
         qualified_production_update(
             modules,
             expression=None,
             measurement_mask=None,
             stable_mask_keys=None,
-            schedule_cursor=9,
+            schedule_cursor=5,
             target_receipt=_receipt(),
             expected_target_package_root=_h("a"),
             expected_v5_authority_roots=_roots(),
-            _update_fn=no_step_fn,
+            config=object(),
+            _update_fn=update_fn,
         )
+    assert reached_update is False
     assert torch.equal(modules.parameter, before)
+    assert not hasattr(modules.optimizer, "_v5_qualified_optimizer_guard")
 
 
-def test_qualified_update_entrypoint_refuses_stale_target_receipt_before_step() -> None:
+def test_public_v5_update_still_validates_legacy_receipt_before_quarantine() -> None:
     modules = _module_with_sgd()
-    receipt = _receipt()
     before = modules.parameter.detach().clone()
-
-    def update_fn(mods, **kwargs):  # pragma: no cover - must never be reached
-        mods.scaler.step(mods.optimizer)
-        return {"schedule_cursor": kwargs["schedule_cursor"]}
-
     with pytest.raises(RuntimeError, match="target package root mismatch"):
         qualified_production_update(
             modules,
@@ -247,33 +211,14 @@ def test_qualified_update_entrypoint_refuses_stale_target_receipt_before_step() 
             measurement_mask=None,
             stable_mask_keys=None,
             schedule_cursor=1,
-            target_receipt=receipt,
+            target_receipt=_receipt(),
             expected_target_package_root=_h("f"),
             expected_v5_authority_roots=_roots(),
-            _update_fn=update_fn,
+            config=object(),
         )
     assert torch.equal(modules.parameter, before)
 
 
-def test_qualified_update_binds_target_root_installed_on_modules() -> None:
-    modules = _module_with_sgd()
-    modules.qualified_target_package_root = _h("b")
-
-    def update_fn(mods, **kwargs):  # pragma: no cover - must never be reached
-        mods.scaler.step(mods.optimizer)
-        return {"schedule_cursor": kwargs["schedule_cursor"]}
-
-    before = modules.parameter.detach().clone()
-    with pytest.raises(RuntimeError, match="installed target package root"):
-        qualified_production_update(
-            modules,
-            expression=None,
-            measurement_mask=None,
-            stable_mask_keys=None,
-            schedule_cursor=2,
-            target_receipt=_receipt(),
-            expected_target_package_root=_h("a"),
-            expected_v5_authority_roots=_roots(),
-            _update_fn=update_fn,
-        )
-    assert torch.equal(modules.parameter, before)
+def test_public_v5_update_has_no_historical_v4_config_default() -> None:
+    parameter = inspect.signature(qualified_production_update).parameters["config"]
+    assert parameter.default is None
