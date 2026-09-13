@@ -1,0 +1,13 @@
+{
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V1",
+  "date": "2026-09-13",
+  "branch": "planning/v5-dataset-first-production-closure-20260912",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260913_V5_EXTERNAL_REVIEW_CURRENT.md",
+  "handoff_commit": "449d85ca7292d4f82fea75782f62853fa51eaf12",
+  "code_under_review_sha": "0536dcb5795e5f7f6a64172bde87bf9c8f1bcde0",
+  "code_under_review_ci_run": 34739274544,
+  "code_under_review_ci_conclusion": "failure",
+  "training_authorized": false,
+  "protected_data_authorized": false,
+  "next_action": "Re-fetch live head, read START_HERE.md and the current handoff, diagnose the first failing traceback from CI run 34739274544, preserve geometry/protected-registry anti-splice identity, restore exact-head green CI, then resume the three-lens external V5 review."
+}
