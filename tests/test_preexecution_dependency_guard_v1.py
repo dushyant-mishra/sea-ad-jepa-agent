@@ -47,6 +47,7 @@ def reports(r):
         "representation_firewall_artifact_sha256": r["representation_firewall"]["artifact_sha256"],
         "historical_c2_gpu_receipt_sha256": r["cuda_historical_mechanics_regression"]["artifact_sha256"],
         "protected_registry_sha256": "d" * 64,
+        "update_geometry_authority_sha256": "e" * 64,
     }
     gpu = {
         "schema": "JEPA_V5_PRODUCTION_GEOMETRY_GPU_QUALIFICATION_V1",
