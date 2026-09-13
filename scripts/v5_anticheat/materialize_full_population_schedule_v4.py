@@ -6,6 +6,12 @@ from collections import Counter, defaultdict
 from fractions import Fraction
 from pathlib import Path
 import numpy as np
+
+from sea_ad_jepa.v5.full104_metadata_authority_v1 import (
+    EXPECTED_METADATA_SQLITE_SHA256,
+    validate_requested_metadata_authority,
+)
+
 GROUP_DOMAIN=b'SEA_AD_JEPA_V5_GROUP_FLOOR_ASSIGNMENT_V1\0'; ASSIGN_DOMAIN=b'SEA_AD_JEPA_V5_DONOR_FINAL_ASSIGNMENT_V1\0'; DOMAIN=b'SEA_AD_JEPA_V5_FULL_POPULATION_SCHEDULE_V1\0'
 
 def rank(domain,donor,op,key): return hashlib.sha256(domain+donor.encode()+b'\0'+str(op).encode()+b'\0'+int(key).to_bytes(8,'little')).digest()
@@ -16,14 +22,18 @@ def sha256_file(path, chunk_size=1024*1024):
         for chunk in iter(lambda: f.read(chunk_size), b''): h.update(chunk)
     return h.hexdigest()
 
-def main(argv=None):
+def main(argv=None, *, _expected_metadata_sha256_for_test: str | None = None):
     p=argparse.ArgumentParser(); p.add_argument('--metadata-sqlite',type=Path,required=True); p.add_argument('--expected-metadata-sha256',required=True); p.add_argument('--partition',required=True); p.add_argument('--optimum-json',type=Path,required=True); p.add_argument('--outdir',type=Path,required=True); a=p.parse_args(argv)
+    try:
+        expected_metadata_sha256=validate_requested_metadata_authority(a.expected_metadata_sha256,_expected_metadata_sha256_for_test=_expected_metadata_sha256_for_test)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
     opt=json.loads(a.optimum_json.read_text()); observed=str(opt.get('metadata_sqlite_sha256',''))
-    if observed.lower()!=a.expected_metadata_sha256.lower() or opt.get('partition')!=a.partition: raise SystemExit('metadata/partition binding mismatch')
+    if observed.lower()!=expected_metadata_sha256 or opt.get('partition')!=a.partition: raise SystemExit('metadata/partition binding mismatch')
     st=a.metadata_sqlite.stat(); receipt=opt.get('metadata_file_receipt',{}); fp=(st.st_size,st.st_mtime_ns,st.st_ino,st.st_dev); expected=(int(receipt.get('bytes',-1)),int(receipt.get('mtime_ns',-1)),int(receipt.get('inode',-1)),int(receipt.get('device',-1)))
     if fp!=expected: raise SystemExit('metadata file fingerprint changed since optimizer authentication; rerun optimizer')
     actual_metadata_sha256=sha256_file(a.metadata_sqlite)
-    if actual_metadata_sha256.lower()!=observed.lower() or actual_metadata_sha256.lower()!=a.expected_metadata_sha256.lower(): raise SystemExit('metadata cryptographic digest changed since optimizer authentication; rerun optimizer')
+    if actual_metadata_sha256.lower()!=observed.lower() or actual_metadata_sha256.lower()!=expected_metadata_sha256: raise SystemExit('metadata cryptographic digest changed since optimizer authentication; rerun optimizer')
     final=opt['final_optimum']; counts=final['donor_multiplicity_counts']; bounds=final['donor_ratio_bounds']; group_floor=int(opt['constraints']['minimum_group_presentations']); N=int(opt['population_cells']); H=int(final['total_presentations'])
     keys=np.empty(N,dtype=np.int64); mult=np.empty(N,dtype=np.uint8); off=0; source_pres=Counter(); group_pres=[]; donor_check={}
     con=sqlite3.connect(f'file:{a.metadata_sqlite}?mode=ro',uri=True); c=con.cursor(); donors=[str(x[0]) for x in c.execute('select distinct donor_id from cells where partition=? order by donor_id',(a.partition,))]
