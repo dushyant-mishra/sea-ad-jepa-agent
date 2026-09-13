@@ -11,11 +11,18 @@ from collections import Counter, defaultdict
 from fractions import Fraction
 from pathlib import Path
 
+from sea_ad_jepa.v5.full104_metadata_authority_v1 import (
+    EXPECTED_METADATA_SQLITE_SHA256,
+    validate_requested_metadata_authority,
+)
+
+
 def file_sha256(path: Path) -> str:
     h=hashlib.sha256()
     with path.open('rb') as f:
         for b in iter(lambda:f.read(8<<20),b''): h.update(b)
     return h.hexdigest()
+
 
 def exact_product(counts, donor_n):
     D=len(donor_n); H=0; A=Fraction()
@@ -25,7 +32,8 @@ def exact_product(counts, donor_n):
             if c: H+=m*c; A+=Fraction(c,D*D*n*n*m)
     return H,A,Fraction(H)*A
 
-def main(argv=None):
+
+def main(argv=None, *, _expected_metadata_sha256_for_test: str | None = None):
     p=argparse.ArgumentParser()
     p.add_argument('--expected-metadata-sha256',required=True)
     p.add_argument('--partition',required=True)
@@ -39,12 +47,19 @@ def main(argv=None):
     p.add_argument('--ess-floor-numerator',type=int,required=True)
     p.add_argument('--ess-floor-denominator',type=int,required=True)
     a=p.parse_args(argv)
+    try:
+        expected_metadata_sha256 = validate_requested_metadata_authority(
+            a.expected_metadata_sha256,
+            _expected_metadata_sha256_for_test=_expected_metadata_sha256_for_test,
+        )
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
     ints=(a.expected_cells,a.expected_donors,a.expected_groups,a.group_floor,a.cell_cap,a.ess_floor_numerator,a.ess_floor_denominator)
     if min(ints)<1: raise SystemExit('all integer authorities must be positive')
     ess_floor=Fraction(a.ess_floor_numerator,a.ess_floor_denominator)
     if ess_floor>1: raise SystemExit('ESS floor cannot exceed 1')
     observed=file_sha256(a.metadata_sqlite)
-    if observed.lower()!=a.expected_metadata_sha256.lower(): raise SystemExit(f'metadata SHA mismatch: {observed}')
+    if observed.lower()!=expected_metadata_sha256: raise SystemExit(f'metadata SHA mismatch: {observed}')
 
     con=sqlite3.connect(f'file:{a.metadata_sqlite}?mode=ro',uri=True); c=con.cursor()
     rows=c.execute('select donor_id,operator_index,source,count(*) from cells where partition=? group by donor_id,operator_index,source',(a.partition,)).fetchall()
