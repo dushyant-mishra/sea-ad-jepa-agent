@@ -13,29 +13,52 @@ from sea_ad_jepa.v5.atomic_checkpoint_guard_v3 import (
     STOP_FORBIDDEN_GATE_OPENED,
     STOP_LOSS_IMPROVED_BUT_BIOLOGY_DEGRADED,
     STOP_MECHANICS_UNHEALTHY,
+    STOP_PREEXECUTION_AUTHORITY_INVALID,
     STOP_THRESHOLD_AUTHORITY_INVALID,
     STOP_Z_BIO_VARIANCE_COLLAPSE,
     validate_atomic_checkpoint_transition_v3,
 )
+from sea_ad_jepa.v5.production_protected_registry_authority_v1 import (
+    PRODUCTION_MECHANICS_CHAIN_V1,
+    PROTECTED_PARAMETERS,
+    PROTECTED_ROLES,
+    ProductionProtectedRegistryAuthorityV1,
+)
 from sea_ad_jepa.v5.rejection_gate_power_calibration_v1 import REJECTION_CAPABLE_POST_GATES
 from sea_ad_jepa.v5.trainer_preexecution_contract_v2 import (
-    MECHANICS_CHAIN_V2,
     REQUIRED_AUTHORITY_SHAS,
     REQUIRED_CRITICAL_TESTS_V2,
     TrainerPreexecutionAuthorityV2,
 )
 
-REG = "f" * 64
+
+def _registry(depth: int = 6) -> ProductionProtectedRegistryAuthorityV1:
+    return ProductionProtectedRegistryAuthorityV1(
+        authority_id=f"checkpoint-registry-depth-{depth}",
+        model_depth=depth,
+        records=[
+            {
+                "block_index": block,
+                "role": role,
+                "parameter": parameter,
+                "tensor_name": f"blocks.{block}.{role}.{parameter}",
+            }
+            for block in range(depth)
+            for role in PROTECTED_ROLES
+            for parameter in PROTECTED_PARAMETERS
+        ],
+    )
 
 
 def _authorities() -> dict[str, str]:
     return {name: f"{i + 1:064x}" for i, name in enumerate(REQUIRED_AUTHORITY_SHAS)}
 
 
-def _preexecution() -> TrainerPreexecutionAuthorityV2:
+def _preexecution(registry=None) -> TrainerPreexecutionAuthorityV2:
+    registry = registry or _registry()
     return TrainerPreexecutionAuthorityV2(
         authorities=_authorities(),
-        protected_registry_sha256=REG,
+        protected_registry_sha256=registry.registry_sha256(),
         presentation_horizon=1000,
         ema_half_life_presentations=250,
         singleton_queries_per_base_cell=3,
@@ -58,10 +81,10 @@ def _thresholds() -> CheckpointQualificationThresholdsV3:
     )
 
 
-def _protected_gate(**extra):
+def _protected_gate(registry, **extra):
     row = {
-        "expected_tensors": 48,
-        "registry_sha256": REG,
+        "expected_tensors": registry.expected_tensors,
+        "registry_sha256": registry.registry_sha256(),
     }
     row.update(extra)
     return row
@@ -75,15 +98,16 @@ def _previous():
     }
 
 
-def _current():
-    authority = _preexecution()
+def _current(registry=None):
+    registry = registry or _registry()
+    authority = _preexecution(registry)
     return {
         "update": 2,
         "jepa_loss": 0.9,
         "identity": {"base_presentations_seen": 256},
         "authority_bindings": dict(authority.authorities),
         "mechanics": {
-            "execution_order": list(MECHANICS_CHAIN_V2),
+            "execution_order": list(PRODUCTION_MECHANICS_CHAIN_V1),
             "forward_autocast_fp16": True,
             "backward_autocast_disabled": True,
             "unscale_before_gradient_gate": True,
@@ -91,16 +115,19 @@ def _current():
             "ema_update_after_optimizer_step": True,
             "no_target_gradients": True,
             "protected_gradient_gate": _protected_gate(
+                registry,
                 missing=0,
                 nonfinite=0,
                 exact_zero=0,
             ),
             "protected_parameter_motion_gate": _protected_gate(
+                registry,
                 missing=0,
                 nonfinite=0,
                 not_moved_beyond_decay=0,
             ),
             "adam_moment_gate": _protected_gate(
+                registry,
                 exp_avg_missing=0,
                 exp_avg_nonfinite=0,
                 exp_avg_exact_zero=0,
@@ -149,12 +176,14 @@ def _current():
     }
 
 
-def _validate(current=None, thresholds=None, authority=None):
+def _validate(current=None, thresholds=None, authority=None, registry=None):
+    registry = registry or _registry()
     return validate_atomic_checkpoint_transition_v3(
         _previous(),
-        _current() if current is None else current,
+        _current(registry) if current is None else current,
         thresholds=_thresholds() if thresholds is None else thresholds,
-        preexecution_authority=_preexecution() if authority is None else authority,
+        preexecution_authority=_preexecution(registry) if authority is None else authority,
+        protected_registry_authority=registry,
     )
 
 
@@ -166,6 +195,28 @@ def test_current_authority_atomic_checkpoint_guard_passes_healthy_transition():
     assert out["mechanics"]["presentations_after"] == 256
     assert set(out["anti_cheat"]["gates"]) == set(REJECTION_CAPABLE_POST_GATES)
     assert out["production_training_authorized"] is False
+
+
+def test_depth8_registry_protects_all_64_tensors_at_checkpoint():
+    registry = _registry(8)
+    out = _validate(registry=registry)
+    assert out["mechanics"]["protected_tensors"] == 64
+    assert out["mechanics"]["protected_registry_sha256"] == registry.registry_sha256()
+
+
+def test_depth8_checkpoint_cannot_report_historical_48_expected_tensors():
+    registry = _registry(8)
+    cur = _current(registry)
+    cur["mechanics"]["protected_gradient_gate"]["expected_tensors"] = 48
+    with pytest.raises(AtomicCheckpointGuardV3Error, match=STOP_MECHANICS_UNHEALTHY):
+        _validate(cur, registry=registry)
+
+
+def test_preexecution_registry_must_match_production_registry_authority():
+    registry = _registry(8)
+    stale = _preexecution(_registry(6))
+    with pytest.raises(AtomicCheckpointGuardV3Error, match=STOP_PREEXECUTION_AUTHORITY_INVALID):
+        _validate(authority=stale, registry=registry)
 
 
 def test_threshold_sha_must_be_the_preexecution_threshold_authority():
@@ -226,12 +277,14 @@ def test_ema_cursor_must_join_previous_current_and_update_exposure():
 
     prev = _previous()
     prev["identity"]["base_presentations_seen"] = 127
+    registry = _registry()
     with pytest.raises(AtomicCheckpointGuardV3Error, match=STOP_MECHANICS_UNHEALTHY):
         validate_atomic_checkpoint_transition_v3(
             prev,
-            _current(),
+            _current(registry),
             thresholds=_thresholds(),
-            preexecution_authority=_preexecution(),
+            preexecution_authority=_preexecution(registry),
+            protected_registry_authority=registry,
         )
 
 
