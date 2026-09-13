@@ -1,0 +1,16 @@
+{
+  "schema": "JEPA_V5_CRITICAL_TEST_MANIFEST_V1",
+  "expected_test_ids": [
+    "test_all_expected_critical_tests_must_execute_and_pass",
+    "test_skipped_critical_test_is_not_green",
+    "test_missing_critical_test_is_not_green",
+    "test_all_gates_must_accept_valid_and_reject_invalid_controls",
+    "test_blind_overrejecting_gate_stops",
+    "test_fail_open_gate_stops",
+    "test_recomputes_verdicts_from_bound_raw_bytes",
+    "test_mutated_raw_bytes_with_stale_digest_stop",
+    "test_declared_pass_cannot_override_recomputed_failure",
+    "test_after_the_fact_threshold_provenance_stops",
+    "test_geometry_substitution_stops"
+  ]
+}
