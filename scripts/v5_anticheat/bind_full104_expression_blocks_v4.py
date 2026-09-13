@@ -8,6 +8,7 @@ import json
 import math
 import sqlite3
 import tempfile
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 EXPECTED_BLOCK_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
@@ -47,13 +48,14 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
-def _parse_positive_integral_source_library(value: object) -> int:
+def _parse_positive_integral_source_library(value: object, block_key: str) -> int:
+    terminal = f"STOP_FULL104_BLOCK_META_VALUE_SEMANTICS:{block_key}:source_library"
     try:
-        numeric = float(value)
-    except (TypeError, ValueError) as exc:
-        raise RuntimeError("STOP_FULL104_BLOCK_META_VALUE_SEMANTICS:source_library") from exc
-    if not math.isfinite(numeric) or numeric <= 0 or not numeric.is_integer():
-        raise RuntimeError("STOP_FULL104_BLOCK_META_VALUE_SEMANTICS:source_library")
+        numeric = Decimal(str(value))
+    except (InvalidOperation, TypeError, ValueError) as exc:
+        raise RuntimeError(terminal) from exc
+    if not numeric.is_finite() or numeric <= 0 or numeric != numeric.to_integral_value():
+        raise RuntimeError(terminal)
     return int(numeric)
 
 
@@ -229,7 +231,7 @@ def bind_full104_blocks(
                     selection_min = sel if selection_min is None else min(selection_min, sel)
                     selection_max = sel if selection_max is None else max(selection_max, sel)
                     weight = float(x["primary_row_weight"])
-                    library = _parse_positive_integral_source_library(x["source_library"])
+                    library = _parse_positive_integral_source_library(x["source_library"], r["block_key"])
                     expression_row = int(x["expression_row"])
                     if not math.isfinite(weight) or weight <= 0 or expression_row < 0:
                         raise RuntimeError(f"STOP_FULL104_BLOCK_META_VALUE_SEMANTICS:{r['block_key']}")
