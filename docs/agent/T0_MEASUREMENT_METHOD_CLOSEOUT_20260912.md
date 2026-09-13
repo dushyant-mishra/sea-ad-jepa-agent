@@ -10,8 +10,10 @@ declared pathology columns unread, expression association closed, V20 immutable
 at `d5d67e21`, F1 transport open, training OFF, and `NONCONVERGENCE_ALLOWANCE`
 unchanged at 0.05 in every file.
 
-This document was independently audited against its own evidence before being
-committed; §8 records what that audit found and changed.
+This document underwent an adversarial review against its own evidence; the
+workflow's independent verification stage did not execute, and the recovered
+findings were subsequently adjudicated by the draft's author. §8 records this
+limitation.
 
 ---
 
