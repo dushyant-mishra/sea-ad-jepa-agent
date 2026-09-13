@@ -18,7 +18,7 @@ def make(tmp):
     rep=tmp/'r.json'; rep.write_text(json.dumps({'source_metadata_sha256':md,'partition':'reader_fit','unique_cells':4,'total_presentations':H,'canonical_multiplicity_ledger':{'raw_sha256':raw,'domain_bound_sha256':bound},'scientific_order_permutation':{'H':H,'a':a,'b':b}}))
     return db,md,led,rep
 
-def run(db,md,led,rep): return m.audit(metadata_sqlite=db,expected_metadata_sha256=md,partition='reader_fit',schedule_report=rep,ledger=led,chunk_size=3)
+def run(db,md,led,rep): return m.audit(metadata_sqlite=db,expected_metadata_sha256=md,partition='reader_fit',schedule_report=rep,ledger=led,chunk_size=3,_expected_metadata_sha256_for_test=md)
 
 def test_full_replay_passes_and_never_authorizes_training(tmp_path):
     db,md,led,rep=make(tmp_path); out=run(db,md,led,rep)
@@ -38,3 +38,8 @@ def test_affine_parameter_tamper_fails_closed(tmp_path):
 def test_metadata_key_mismatch_fails_closed_even_with_rehashed_parent(tmp_path):
     db,md,led,rep=make(tmp_path); con=sqlite3.connect(db); con.execute('update cells set stable_key=11 where stable_key=10'); con.commit(); con.close(); md2=sh(db); o=json.loads(rep.read_text()); o['source_metadata_sha256']=md2; rep.write_text(json.dumps(o))
     with pytest.raises(RuntimeError,match='STOP_PROPOSAL_LEDGER_METADATA_KEY_MISMATCH'): run(db,md2,led,rep)
+
+def test_public_alternate_metadata_authority_is_rejected():
+    db=Path('never-used.sqlite'); rep=Path('never-used.json'); led=Path('never-used.bin')
+    with pytest.raises(RuntimeError,match='STOP_PROPOSAL_METADATA_AUTHORITY_MISMATCH'):
+        m.audit(metadata_sqlite=db,expected_metadata_sha256='1'*64,partition='reader_fit',schedule_report=rep,ledger=led)
