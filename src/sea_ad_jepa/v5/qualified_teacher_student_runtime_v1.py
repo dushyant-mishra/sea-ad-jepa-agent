@@ -1,25 +1,33 @@
-"""V5 qualified teacher/student update entrypoint.
+"""Fail-closed V5 teacher/student update entrypoint.
 
-This module is the production-facing bridge between a qualified V21 target receipt
-and the historical v4 teacher/student runtime. It does not authorize training;
-production_training_authorized remains false. It only makes bounded qualification
-updates fail closed unless the optimizer has a resident deny-by-default guard and
-that guard is armed by the exact 46-donor target receipt immediately before the
-parameter-mutation boundary.
+The historical V21 46-donor target receipt is retained elsewhere for forensic
+and optimizer-guard mechanics replay only.  It is not the dataset-first V5
+biological teacher authority.  Until a current V5 teacher-target authority is
+established from authenticated FULL104 data, dimensions, schedule/packing,
+production-geometry qualification and the bounded base-learning qualification
+chain, this public entrypoint must reject the legacy receipt before installing
+an optimizer guard or mutating parameters.
+
+No historical V4 production configuration is selected implicitly.  A future
+current-V5 authority path must provide its data-derived configuration explicitly.
 """
 from __future__ import annotations
 
 from typing import Any, Callable, Mapping
 
-from sea_ad_jepa.v4.teacher_student_runtime import PRODUCTION_CONFIG, production_update
+from sea_ad_jepa.v4.teacher_student_runtime import production_update
 
 from .qualified_optimizer_guard_v1 import (
     CURSOR_KWARG,
     install_qualified_optimizer_guard,
 )
-from .qualified_teacher_target_receipt_v1 import validate_qualified_teacher_target_receipt
+from .qualified_teacher_target_receipt_v1 import (
+    LEGACY_T0_AUTHORITY_SCOPE,
+    validate_qualified_teacher_target_receipt,
+)
 
 STOP = "STOP_V5_QUALIFIED_UPDATE_NOT_VALID"
+CURRENT_V5_TEACHER_AUTHORITY_REQUIRED = "CURRENT_V5_DATASET_DERIVED_TEACHER_AUTHORITY_REQUIRED"
 
 
 def _fail(message: str) -> None:
@@ -63,24 +71,34 @@ def qualified_production_update(
     expected_target_package_root: str,
     expected_v5_authority_roots: Mapping[str, str],
     observed_target_package_root: str | None = None,
-    config: Any = PRODUCTION_CONFIG,
+    config: Any | None = None,
     _update_fn: Callable[..., dict[str, Any]] = production_update,
 ) -> dict[str, Any]:
-    """Run one bounded-qualification update with a resident optimizer guard.
+    """Attempt one bounded V5 update, failing closed without current authority.
 
-    The guard is installed directly on `modules.optimizer` and is intentionally
-    left installed after this function returns. Subsequent direct optimizer calls
-    therefore fail closed unless a future qualified call arms the same resident
-    guard and presents the matching schedule cursor at step time. AMP calls are
-    supported by temporarily proxying `modules.scaler.step(...)` so the cursor is
-    passed to `optimizer.step(...)` and removed by the guard before the optimizer
-    implementation sees it.
+    Today the only receipt understood by ``validate_qualified_teacher_target_receipt``
+    is the historical T0/V21 receipt.  Validation is still performed so corrupt
+    forensic receipts are distinguished from valid-but-legacy receipts, but a
+    valid legacy receipt is then quarantined before optimizer-guard installation.
+
+    A future current-V5 teacher authority must be implemented as a distinct,
+    dataset-derived authority path rather than widening this legacy schema.
     """
     verified = validate_qualified_teacher_target_receipt(
         target_receipt,
         expected_target_package_root=expected_target_package_root,
         expected_v5_authority_roots=expected_v5_authority_roots,
     )
+    if verified.get("authority_scope") == LEGACY_T0_AUTHORITY_SCOPE:
+        _fail(
+            "legacy T0/V21 target is mechanics-only and cannot authorize a current V5 "
+            f"base-learning update; {CURRENT_V5_TEACHER_AUTHORITY_REQUIRED}"
+        )
+    if verified.get("current_v5_teacher_authority") is not True:
+        _fail(CURRENT_V5_TEACHER_AUTHORITY_REQUIRED)
+    if config is None:
+        _fail("current V5 data-derived runtime config must be supplied explicitly")
+
     observed_root = _resolve_observed_target_root(modules, observed_target_package_root)
     if observed_root != verified["target_package_root"]:
         _fail("installed target package root does not match the qualified receipt")
