@@ -6,6 +6,8 @@ import math
 import re
 from typing import Mapping, Sequence
 
+from .full104_dimension_interface_v1 import validate_full104_dimension_input
+
 
 class PrecisionAuthorityStop(RuntimeError):
     pass
@@ -46,6 +48,12 @@ def _finite_number(value: object, field: str) -> float:
     if not math.isfinite(out):
         raise PrecisionAuthorityStop(f"STOP_PRECISION_AUTHORITY_INVALID_NUMERIC:{field}")
     return out
+
+
+def _require_sha256(value: object, field: str) -> str:
+    if not isinstance(value, str) or _SHA256.fullmatch(value) is None:
+        raise PrecisionAuthorityStop(f"STOP_PRECISION_AUTHORITY_INVALID_SHA:{field}")
+    return value
 
 
 def derive_hoeffding_fixed_n(range_width: float, tolerance: float, alpha: float) -> int:
@@ -187,3 +195,48 @@ def bind_precision_execution_plan_v1(
         "estimator_failure_policy": authority["estimator_failure_policy"],
         "training_authorized": False,
     }
+
+
+def bind_full104_precision_execution_plan_v1(
+    authority: Mapping[str, object],
+    *,
+    authority_sha256: str,
+    full104_dimension_envelope: Mapping[str, object],
+    full104_artifact_sha256: str,
+    dimension_interface_sha256: str,
+) -> dict[str, object]:
+    """Bind exact FULL104 dimension input and frozen precision policy before outcomes exist."""
+    plan = bind_precision_execution_plan_v1(authority, authority_sha256=authority_sha256)
+    expected_full104_sha = _require_sha256(full104_artifact_sha256, "full104_artifact_sha256")
+    expected_interface_sha = _require_sha256(dimension_interface_sha256, "dimension_interface_sha256")
+
+    envelope_sha = full104_dimension_envelope.get("artifact_sha256") if isinstance(full104_dimension_envelope, Mapping) else None
+    if envelope_sha != expected_full104_sha:
+        raise PrecisionAuthorityStop("STOP_PRECISION_BINDING_FULL104_ARTIFACT_SHA_MISMATCH")
+
+    authority_interface_sha = authority.get("dimension_interface_sha256")
+    if expected_interface_sha != authority_interface_sha:
+        raise PrecisionAuthorityStop("STOP_PRECISION_BINDING_DIMENSION_INTERFACE_SHA_MISMATCH")
+
+    try:
+        full104_payload = validate_full104_dimension_input(full104_dimension_envelope)
+    except (ValueError, RuntimeError) as exc:
+        raise PrecisionAuthorityStop("STOP_PRECISION_BINDING_FULL104_DIMENSION_INPUT_INVALID") from exc
+
+    parents = authority.get("full104_parent_bindings")
+    if not isinstance(parents, Mapping):
+        raise PrecisionAuthorityStop("STOP_PRECISION_AUTHORITY_PARENT_BINDINGS_INCOMPLETE")
+    for field in sorted(_REQUIRED_PARENT_KEYS):
+        if full104_payload.get(field) != parents.get(field):
+            raise PrecisionAuthorityStop(f"STOP_PRECISION_BINDING_FULL104_PARENT_MISMATCH:{field}")
+
+    out = dict(plan)
+    out.update({
+        "schema": "JEPA_V5_FULL104_PRECISION_PREOUTCOME_BINDING_V1",
+        "full104_dimension_input_artifact_sha256": expected_full104_sha,
+        "dimension_interface_sha256": expected_interface_sha,
+        "all_full104_parents_match_precision_authority": True,
+        "dimension_outcomes_authorized": True,
+        "training_authorized": False,
+    })
+    return out
