@@ -92,7 +92,8 @@ def qualified_production_update(
     if verified.get("authority_scope") == LEGACY_T0_AUTHORITY_SCOPE:
         _fail(
             "legacy T0/V21 target is mechanics-only and cannot authorize a current V5 "
-            f"base-learning update; {CURRENT_V5_TEACHER_AUTHORITY_REQUIRED}"
+            "base-learning update; current V5 teacher authority is required; "
+            f"{CURRENT_V5_TEACHER_AUTHORITY_REQUIRED}"
         )
     if verified.get("current_v5_teacher_authority") is not True:
         _fail(CURRENT_V5_TEACHER_AUTHORITY_REQUIRED)
