@@ -1,3 +1,5 @@
+import math
+
 import pytest
 
 from sea_ad_jepa.v5.null_mobility_audit_v1 import audit_blocked_permutation_v1
@@ -67,6 +69,19 @@ def test_duplicate_missing_or_cross_block_indices_fail_closed():
         audit_blocked_permutation_v1(permutation=[2, 3, 0, 1], **common)
 
 
+def test_noninteger_permutation_indices_are_not_coerced():
+    with pytest.raises(ValueError, match="integer"):
+        audit_blocked_permutation_v1(
+            block_labels=["a", "a"], permutation=[1.0, 0],
+            parent_sha256=PARENT, rng_binding_sha256=SEED, min_changed_fraction=0.5,
+        )
+    with pytest.raises(ValueError, match="integer"):
+        audit_blocked_permutation_v1(
+            block_labels=["a", "a"], permutation=[True, 0],
+            parent_sha256=PARENT, rng_binding_sha256=SEED, min_changed_fraction=0.5,
+        )
+
+
 def test_outcome_feedback_or_authority_escalation_is_forbidden():
     common = dict(
         block_labels=["a", "a"],
@@ -86,11 +101,10 @@ def test_outcome_feedback_or_authority_escalation_is_forbidden():
             audit_blocked_permutation_v1(**common, **{field: True})
 
 
-def test_threshold_and_hashes_are_explicit_and_valid():
+def test_threshold_and_hashes_are_explicit_finite_and_valid():
     common = dict(block_labels=["a", "a"], permutation=[1, 0], rng_binding_sha256=SEED)
     with pytest.raises(ValueError):
         audit_blocked_permutation_v1(**common, parent_sha256="bad", min_changed_fraction=0.5)
-    with pytest.raises(ValueError):
-        audit_blocked_permutation_v1(**common, parent_sha256=PARENT, min_changed_fraction=-0.1)
-    with pytest.raises(ValueError):
-        audit_blocked_permutation_v1(**common, parent_sha256=PARENT, min_changed_fraction=1.1)
+    for value in (-0.1, 1.1, float("nan"), float("inf"), True):
+        with pytest.raises(ValueError):
+            audit_blocked_permutation_v1(**common, parent_sha256=PARENT, min_changed_fraction=value)
