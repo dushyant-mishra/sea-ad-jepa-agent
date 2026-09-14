@@ -1,0 +1,27 @@
+{
+  "schema": "JEPA_V5_GOVERNANCE_REFRESH_RECEIPT_V1",
+  "date": "2026-09-13",
+  "status": "PASS_CURRENT_GOVERNANCE_REFRESH__NO_SCIENTIFIC_AUTHORITY_ESCALATION",
+  "files_added": [
+    "docs/agent/V5_CURRENT_AUTHORITY_AND_BLOCKERS_20260913.md",
+    "docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json",
+    "docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260913_CURRENT.json",
+    "docs/agent/V5_GOVERNANCE_REFRESH_20260913.md",
+    "docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md",
+    "docs/agent/V5_MASTER_OPEN_ITEMS_20260913.md"
+  ],
+  "files_refreshed": [
+    "START_HERE.md"
+  ],
+  "code_bearing_verified_head_preserved": "3e1164aa055d956dad09f44b05c1b05a9b14cf3a",
+  "code_ci_run_preserved": 34785684828,
+  "code_ci_result_preserved": "223 passed; 17/17 critical tests passed; authority-source compilation PASS",
+  "full104_precision_cross_binding_receipt_sha256": "eccc30f9f5d01f7905a0740982d678d0ce45532a08cd5a61c51f5448b63b3d3a",
+  "numeric_dimensions_authorized": false,
+  "training_authorized": false,
+  "protected_data_authorized": false,
+  "td60_authorized": false,
+  "relational_target_activation_authorized": false,
+  "external_validation_outcomes_authorized_for_design": false,
+  "next_scientific_blocker": "D_SHARED_PRODUCTION_METRIC_EXECUTOR_NOT_YET_AUTHORITY_BEARING"
+}
