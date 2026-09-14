@@ -27,6 +27,8 @@
     "test_reconnaissance_rejects_decision_bearing_fields_even_when_outcome_flags_are_false",
     "test_exact_feature_lineage_round_trip_binds_full104_and_historical_roots",
     "test_feature_lineage_rejects_noncertifiable_derivation_and_root_substitution",
+    "test_historical_feature_lineage_rejects_frozen_geometry_or_transform_substitution",
+    "test_mechanics_repair_classification_requires_explicit_repair_receipt_and_semantic_identity",
     "test_measurement_qualification_requirements_are_frozen_but_numeric_plan_is_pending",
     "test_measurement_qualification_receipt_is_unconditional_and_enforces_control_acceptance",
     "test_measurement_qualification_rejects_outcome_feedback_and_same_run_redesign",
