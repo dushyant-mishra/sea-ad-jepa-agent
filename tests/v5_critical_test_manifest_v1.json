@@ -34,6 +34,7 @@
     "test_live_environment_collector_checks_real_git_bytes_and_junit_execution",
     "test_reconnaissance_cannot_pass_without_hash_bound_diagnostic_evidence",
     "test_feature_lineage_requires_donor_operator_identity_and_complete_transform_disclosure",
+    "test_reconnaissance_rejects_root_not_derived_from_complete_evidence_map",
     "test_lossless_discrete_preimage_receipt_is_sealable_but_does_not_authorize_execution",
     "test_matching_state_resolution_rejects_arbitrary_bins_and_redundant_support_key",
     "test_matching_state_resolution_rejects_lossy_preimage_or_outcome_feedback",
