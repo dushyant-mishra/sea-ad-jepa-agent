@@ -29,6 +29,8 @@
     "test_feature_lineage_rejects_noncertifiable_derivation_and_root_substitution",
     "test_measurement_qualification_requirements_are_frozen_but_numeric_plan_is_pending",
     "test_measurement_qualification_receipt_is_unconditional_and_enforces_control_acceptance",
-    "test_measurement_qualification_rejects_outcome_feedback_and_same_run_redesign"
+    "test_measurement_qualification_rejects_outcome_feedback_and_same_run_redesign",
+    "test_environment_preflight_receipt_round_trip_is_fail_closed",
+    "test_live_environment_collector_checks_real_git_bytes_and_junit_execution"
   ]
 }
