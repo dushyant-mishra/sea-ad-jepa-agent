@@ -93,6 +93,7 @@ jobs:
           src/sea_ad_jepa/v5/full104_metadata_authority_v1.py
           src/sea_ad_jepa/v5/full104_dimension_interface_v1.py
           src/sea_ad_jepa/v5/full104_reconnaissance_authority_v1.py
+          src/sea_ad_jepa/v5/full104_feature_lineage_v1.py
           src/sea_ad_jepa/v5/dimension_metric_artifact_v1.py
           src/sea_ad_jepa/v5/dimension_execution_firewall_v1.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v3.py
