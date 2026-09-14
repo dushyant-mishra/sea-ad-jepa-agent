@@ -1,11 +1,12 @@
 """Substrate-independent mobility audit for prospective blocked nulls.
 
-This module does not choose a V3 null or block definition.  It validates a
+This module does not choose a V3 null or block definition. It validates a
 caller-supplied permutation against caller-supplied discrete block labels and
 reports whether the proposed null actually moves eligible observations.
 """
 from __future__ import annotations
 
+import math
 from collections import Counter
 from typing import Sequence
 
@@ -28,8 +29,8 @@ def _probability(value: object, name: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"{name} must be numeric in [0,1]")
     out = float(value)
-    if out < 0.0 or out > 1.0:
-        raise ValueError(f"{name} must be numeric in [0,1]")
+    if not math.isfinite(out) or out < 0.0 or out > 1.0:
+        raise ValueError(f"{name} must be finite numeric in [0,1]")
     return out
 
 
@@ -48,8 +49,8 @@ def audit_blocked_permutation_v1(
 ) -> dict[str, object]:
     """Audit a predeclared blocked permutation without choosing its blocks.
 
-    `permutation[i]` is the source row assigned to destination row `i`.  The map
-    must be a full bijection and must never cross a declared block.  Singleton
+    `permutation[i]` is the source row assigned to destination row `i`. The map
+    must be a full bijection and must never cross a declared block. Singleton
     blocks remain part of the population and are explicitly noneligible.
     """
     forbidden = {
@@ -71,10 +72,10 @@ def audit_blocked_permutation_v1(
     if not labels or any(not x for x in labels):
         raise ValueError("block_labels must be nonempty row-aligned labels")
     n = len(labels)
-    try:
-        perm = tuple(int(x) for x in permutation)
-    except (TypeError, ValueError) as exc:
-        raise ValueError("permutation must contain integer indices") from exc
+    raw_perm = tuple(permutation)
+    if any(isinstance(x, bool) or not isinstance(x, int) for x in raw_perm):
+        raise ValueError("permutation must contain integer indices without coercion")
+    perm = raw_perm
     if len(perm) != n or sorted(perm) != list(range(n)):
         raise NullMobilityStop("STOP_NULL_MOBILITY_NOT_BIJECTION")
 
