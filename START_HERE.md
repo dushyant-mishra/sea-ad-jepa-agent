@@ -16,20 +16,22 @@ Re-fetch the live active branch before every current-state claim. Branch names d
 
 1. `START_HERE.md`
 2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260914_CURRENT.json`
-3. `docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md`
-4. `docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md`
-5. `docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md`
-6. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT.json`
-7. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260914_CURRENT.md` — earlier same-day handoff; use the V3/T0 ledger above to supersede its stale RED/branch status.
-8. `docs/agent/V5_CURRENT_AUTHORITY_AND_BLOCKERS_20260913.md`
-9. `docs/agent/V5_MASTER_OPEN_ITEMS_20260913.md`
-10. `docs/agent/V5_T0_LESSONS_DATA_AWARE_MEASUREMENT_QUALIFICATION_COURSE_CORRECTION_20260914.md`
-11. `docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json`
-12. `docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`
-13. `docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`
-14. `docs/superpowers/specs/2026-09-14-v5-v3-null-and-t0-stress-bench-design.md`
-15. `docs/agent/T0_V5_ORIENTATION_AND_CROSSWALK_20260912.md`
-16. `docs/agent/T0_MEASUREMENT_METHOD_CLOSEOUT_20260912.md`
+3. `docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md` — consolidated historical work across prior chats/agents; read before proposing new geometry/null/training parameters.
+4. `docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md`
+5. `docs/agent/V5_LOCAL_PARAMETER_DERIVABILITY_AUDIT_20260914.md`
+6. `docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md`
+7. `docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md`
+8. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT.json`
+9. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260914_CURRENT.md` — earlier same-day handoff; use the V3/T0 and historical ledgers above to supersede its stale RED/branch status.
+10. `docs/agent/V5_CURRENT_AUTHORITY_AND_BLOCKERS_20260913.md`
+11. `docs/agent/V5_MASTER_OPEN_ITEMS_20260913.md`
+12. `docs/agent/V5_T0_LESSONS_DATA_AWARE_MEASUREMENT_QUALIFICATION_COURSE_CORRECTION_20260914.md`
+13. `docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json`
+14. `docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`
+15. `docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`
+16. `docs/superpowers/specs/2026-09-14-v5-v3-null-and-t0-stress-bench-design.md`
+17. `docs/agent/T0_V5_ORIENTATION_AND_CROSSWALK_20260912.md`
+18. `docs/agent/T0_MEASUREMENT_METHOD_CLOSEOUT_20260912.md`
 
 ## Governing scientific order
 
@@ -47,6 +49,18 @@ Standing protected-data rule:
 
 `IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK`
 
+## Historical-first rule for expensive work
+
+Before proposing or launching any new long FULL104/GPU/CPU run:
+
+1. read `JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md`;
+2. inspect the frozen local discovery/calibration assets;
+3. derive or narrow every structural parameter possible locally;
+4. state the exact residual question that requires full-population execution;
+5. only then launch the heavy run.
+
+Historical work already established strong source/support readability, donor-block validation requirements, support-only falsification controls, common/operator-aware/within-source geometry concepts, and several target/training failure modes. Do not rediscover these from scratch.
+
 ## Current V5 status
 
 Closed or established:
@@ -62,6 +76,7 @@ Closed or established:
 - exact V2 matching key shown operationally degenerate: 99.911% singleton cells, max stratum size 3;
 - historical A/B shown to be two hashes of the same molecular address universe, not genuinely disjoint molecular views;
 - historical feature covariance shown singular/highly redundant;
+- local discovery/calibration audit narrowed serious disjoint-view counts approximately to K in `{2,3,4,6}` before any additional heavy rebuild;
 - no current-V5 D_shared/D_private/D_obs outcome has been generated or inspected.
 
 D_shared Authority V2 SHA-256:
@@ -99,6 +114,8 @@ Therefore do not design the final V3 null first. The current order is:
 
 Claude has access to the complete heavy FULL104 assets on the user's other GPU-enabled machine. Do not ask the user to upload the >30 GB substrate here.
 
+Claude's current K=2 run is a full-scale **reference rebuild**, not automatic final view-count authority. The final K must not be chosen merely because K=2 was computed first. Local discovery/calibration screening has already shown K=2,3,4,6 are serious candidates; any further heavy rebuild must be justified by the residual questions after K=2 characterization.
+
 Claude's current assignment is to rebuild a V5-authoritative substrate from authenticated FULL104 using a deterministic genuinely disjoint partition of the 17,186-address common measured core, retain an operator-native comparator channel, rerun outcome-blind spectrum/confound/exchangeability characterization, and return hash-bound evidence. Claude must not execute or inspect D_shared.
 
 Heavy path:
@@ -111,12 +128,13 @@ See the current ledger:
 
 `docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md`
 
-Local calibration/falsification evidence is recorded separately in:
+Local discovery/parameter evidence:
 
+- `docs/agent/V5_LOCAL_PARAMETER_DERIVABILITY_AUDIT_20260914.md`
 - `docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md`
 - `docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md`
 
-Those local records independently reproduce Claude's deterministic disjoint partition hashes, reproduce source nesting in the 50K discovery sample, and falsify several simplistic nulls/adjustments. They are calibration evidence only, not FULL104 authority.
+Those local records independently reproduce Claude's deterministic disjoint partition hashes, reproduce source nesting in the 50K discovery sample, narrow candidate K, and falsify several simplistic nulls/adjustments. They are calibration evidence only, not FULL104 authority.
 
 Mechanics available and protected by CI include:
 
@@ -128,20 +146,23 @@ Mechanics available and protected by CI include:
 - donor-disjoint train/validation/test split integrity guard;
 - hardened matching-state occupancy arithmetic consistency.
 
-These are mechanics only. They do not freeze the final V3 null, final nuisance adjustment, final rank envelope, final thresholds, or production training geometry.
+These are mechanics only. They do not freeze the final V3 null, final nuisance adjustment, final rank envelope, final thresholds, final view count, or production training geometry.
 
 ## Local null-falsification findings
 
 On the locally available real 50K discovery geometry and 84-cell/all-operator calibration fixture:
 
-- Claude's common-core partition reproduced exactly: 17,186 addresses; 8,568/8,618 split; exact address-list hashes matched;
-- the disjoint halves preserve calibration cell-distance ordering strongly (cosine-distance Spearman ~0.984);
-- unrestricted whole-donor permutation across sources is invalid (100% rejection in a synthetic conditional-null stress at nominal 5%);
-- source-blocked donor permutation can still fail under within-source operator-exposure confounding (55.5% to 100% rejection across stress strengths);
-- cell-level within-operator permutation is pseudoreplication-prone (52.5% rejection under donor random-effect null);
-- aggressive operator residualization can nearly erase nuisance summaries while badly distorting geometry (distance Spearman ~0.56; median relative distance change ~21%);
-- a pooled operator-exposure nuisance slope fails when nuisance behavior differs by source (26% to 83% rejection), while source-specific nuisance slopes restore approximate nominal calibration in the local stress;
-- source-aligned injected signal is erased by operator adjustment while source-orthogonal injected signal is preserved, exposing the irreducible identifiability boundary.
+- common core = 17,186 addresses;
+- serious disjoint-view candidates narrowed approximately to K `{2,3,4,6}`; K>=8 begins paying a clearer information/sparsity cost;
+- Claude's K=2 common-core partition reproduced exactly: 17,186 addresses; 8,568/8,618 split; exact address-list hashes matched;
+- the disjoint halves preserve calibration cell-distance ordering strongly;
+- unrestricted whole-donor permutation across sources is invalid;
+- source-blocked donor permutation can still fail under within-source operator-exposure confounding;
+- cell-level within-operator permutation is pseudoreplication-prone under donor random effects;
+- aggressive operator residualization can nearly erase nuisance summaries while badly distorting biological geometry;
+- a pooled operator-exposure nuisance slope can fail when nuisance behavior differs by source; source-specific nuisance slopes are a stronger candidate;
+- source-aligned injected signal can be erased by operator adjustment while source-orthogonal signal is preserved, exposing the irreducible identifiability boundary;
+- common-core restriction removes support-pattern availability differences but does not by itself eliminate source/operator-associated expression structure.
 
 Current strongest unfrozen candidate family:
 
@@ -189,19 +210,22 @@ Passing tests or mechanics checks does not create biology or training authority.
 
 ## Immediate critical path
 
-1. Receive/authenticate Claude's rebuilt genuinely disjoint FULL104 substrate evidence.
-2. Verify exact molecular disjointness, row/address lineage and deterministic partition replay.
-3. Review rebuilt covariance/effective-rank/operator/source/QC structure.
-4. Re-run the local-falsification survivors on the rebuilt FULL104 geometry: source-blocked donor inference, source-conditional operator-exposure nuisance adjustment, whole-procedure residual/conditional randomization, structure preservation, and same-cell measurement interventions.
-5. Characterize candidate exchangeability units and require null mobility before considering a permutation family viable.
-6. Prospectively derive/freeze a structural rank-support rule; do not inherit `1..512` automatically.
-7. Freeze successor V3 measurement/null authority without D_shared feedback.
-8. Use T0 only to falsify/stress-test the frozen mechanism; T0 cannot certify V5.
-9. Run real-geometry FULL104 positive/negative measurement qualification.
-10. Only then create exact pre-outcome binding and contemplate one real D_shared execution.
+1. Finish all parameter derivation/narrowing possible in the lightweight environment using historical discovery + 50K + calibration data.
+2. Receive/authenticate Claude's rebuilt genuinely disjoint K=2 FULL104 reference evidence.
+3. Verify exact molecular disjointness, row/address lineage and deterministic partition replay.
+4. Review rebuilt covariance/effective-rank/operator/source/QC structure.
+5. Compare K=2 reference against the locally narrowed K candidate family before authorizing any second full rebuild.
+6. Re-run the local-falsification survivors on rebuilt FULL104 geometry: source-blocked donor inference, source-conditional operator-exposure nuisance adjustment, whole-procedure residual/conditional randomization, structure preservation, and same-cell measurement interventions.
+7. Characterize candidate exchangeability units and require null mobility before considering a permutation family viable.
+8. Prospectively derive/freeze a structural rank-support rule; do not inherit `1..512` automatically.
+9. Freeze successor V3 measurement/null authority without D_shared feedback.
+10. Use T0 only to falsify/stress-test the frozen mechanism; T0 cannot certify V5.
+11. Run real-geometry FULL104 positive/negative measurement qualification.
+12. Only then create exact pre-outcome binding and contemplate one real D_shared execution.
 
 ## Permanent warnings
 
+- Do not launch a new expensive run before checking the historical ledger/local assets for already-derivable parameters.
 - Do not use arbitrary Q_DEPTH/Q_DETECT bins merely to create permutations.
 - Do not treat A/B hash agreement as independent biological-view evidence.
 - Do not treat nuisance residualization or corrected expression as the canonical biological substrate without qualification.
