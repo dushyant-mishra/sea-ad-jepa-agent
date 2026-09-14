@@ -37,8 +37,8 @@ def _receipt(classification="CERTIFIABLE_EXACT_DERIVATION"):
         "full104_dimension_input_artifact_sha256": FULL104,
         "source_feature_matrix_root_sha256": HIST_FEATURE,
         "source_multiview_root_sha256": HIST_MULTIVIEW,
-        "certified_feature_matrix_root_sha256": ("a" * 64 if repaired else HIST_FEATURE),
-        "certified_multiview_root_sha256": ("b" * 64 if repaired else HIST_MULTIVIEW),
+        "certified_feature_matrix_root_sha256": HIST_FEATURE,
+        "certified_multiview_root_sha256": HIST_MULTIVIEW,
         "producer_script_sha256": {"scripts/v4/derive_full104_phase2_shared_state.py": "1" * 64},
         "producer_commit_sha256": "2" * 40,
         "transformation_contract_sha256": "3" * 64,
@@ -179,6 +179,8 @@ def test_mechanics_repair_classification_requires_explicit_repair_receipt_and_se
     payload = m.validate_full104_feature_lineage_v1(m.seal_full104_feature_lineage_v1(good))
     assert payload["mechanics_repair_applied"] is True
     assert payload["deterministic_reproduction_passed"] is False
+    assert payload["certified_feature_matrix_root_sha256"] == HIST_FEATURE
+    assert payload["certified_multiview_root_sha256"] == HIST_MULTIVIEW
     assert payload["original_writer_replay_status"] == "ORIGINAL_WRITER_HASH_UNRESOLVED__PUBLISHED_BYTES_AND_SEMANTICS_VERIFIED"
     bad = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"); bad["mechanics_repair_receipt_sha256"] = None
     with pytest.raises(m.FeatureLineageStop, match="REPAIR_RECEIPT"):
@@ -189,3 +191,7 @@ def test_mechanics_repair_classification_requires_explicit_repair_receipt_and_se
     bad = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"); bad["deterministic_reproduction_passed"] = True
     with pytest.raises(m.FeatureLineageStop, match="WRITER|DETERMINISTIC"):
         m.seal_full104_feature_lineage_v1(bad)
+    for field in ("certified_feature_matrix_root_sha256", "certified_multiview_root_sha256"):
+        bad = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"); bad[field] = "a" * 64
+        with pytest.raises(m.FeatureLineageStop, match="ROOT"):
+            m.seal_full104_feature_lineage_v1(bad)
