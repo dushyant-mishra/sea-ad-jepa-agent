@@ -17,6 +17,18 @@ def _module():
     return importlib.import_module(MODULE)
 
 
+def _published_files():
+    return {
+        "A_full": "a" * 64,
+        "B_full": "b" * 64,
+        "A_views": "c" * 64,
+        "B_views": "d" * 64,
+        "physical_descriptors": "e" * 64,
+        "ASSEMBLY_SEEN": "f" * 64,
+        "rows": "0" * 64,
+    }
+
+
 def _receipt(classification="CERTIFIABLE_EXACT_DERIVATION"):
     repaired = classification == "CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"
     return {
@@ -31,7 +43,25 @@ def _receipt(classification="CERTIFIABLE_EXACT_DERIVATION"):
         "producer_commit_sha256": "2" * 40,
         "transformation_contract_sha256": "3" * 64,
         "row_identity_digest_sha256": "4" * 64,
-        "address_identity_digest_sha256": "5" * 64,
+        "donor_identity_digest_sha256": "5" * 64,
+        "operator_identity_digest_sha256": "6" * 64,
+        "row_order_identity_digest_sha256": "7" * 64,
+        "address_identity_digest_sha256": "8" * 64,
+        "normalization_formula": "log1p(raw_count*10000/full_source_library)",
+        "sketch_projection_semantics": "TWO_FROZEN_INDEPENDENT_SKETCHES_A_B",
+        "visibility_channel_construction": "VALUE_AND_VISIBILITY_CHANNELS_256_PLUS_256",
+        "view_count": 4,
+        "visible_fraction": 0.60,
+        "mask_fraction": 0.40,
+        "pca_svd_feature_reduction_applied": False,
+        "logical_name_to_content_sha256": _published_files(),
+        "original_writer_replay_status": (
+            "ORIGINAL_WRITER_HASH_UNRESOLVED__PUBLISHED_BYTES_AND_SEMANTICS_VERIFIED"
+            if repaired
+            else "EXACT_WRITER_REPLAY_VERIFIED"
+        ),
+        "location_identity_policy": "CONTENT_HASH_AND_LOGICAL_NAME_AUTHORITATIVE__ABSOLUTE_PATH_INFORMATIONAL_ONLY_V1",
+        "historical_measurement_geometry_current_v5_authorized": False,
         "cells": 4_553_407,
         "donors": 104,
         "operators": 42,
@@ -61,7 +91,7 @@ def _receipt(classification="CERTIFIABLE_EXACT_DERIVATION"):
         "adaptive_outcome_choice_used": False,
         "deterministic_reproduction_passed": True,
         "mechanics_repair_applied": repaired,
-        "mechanics_repair_receipt_sha256": ("6" * 64 if repaired else None),
+        "mechanics_repair_receipt_sha256": ("9" * 64 if repaired else None),
         "semantic_transform_unchanged": True,
         "d_shared_outcomes_inspected": False,
         "d_shared_real_outcome_access_authorized": False,
@@ -78,6 +108,7 @@ def test_exact_feature_lineage_round_trip_binds_full104_and_historical_roots():
     assert payload["certified_feature_matrix_root_sha256"] == HIST_FEATURE
     assert payload["certified_multiview_root_sha256"] == HIST_MULTIVIEW
     assert payload["row_identity_closed"] is True and payload["address_identity_closed"] is True
+    assert payload["historical_measurement_geometry_current_v5_authorized"] is False
     assert payload["d_shared_real_outcome_access_authorized"] is False
 
 
@@ -90,6 +121,10 @@ def test_feature_lineage_rejects_wrong_geometry_identity_or_shape():
     bad = _receipt(); bad["shapes"]["A_full"] = [4_553_407, 511]
     with pytest.raises(m.FeatureLineageStop, match="SHAPE"):
         m.seal_full104_feature_lineage_v1(bad)
+    for field in ("donor_identity_digest_sha256", "operator_identity_digest_sha256", "row_order_identity_digest_sha256"):
+        bad = _receipt(); bad.pop(field)
+        with pytest.raises(m.FeatureLineageStop, match="IDENTITY"):
+            m.seal_full104_feature_lineage_v1(bad)
 
 
 def test_feature_lineage_rejects_capping_sampling_outcome_adaptation_or_nondeterminism():
@@ -100,6 +135,20 @@ def test_feature_lineage_rejects_capping_sampling_outcome_adaptation_or_nondeter
             m.seal_full104_feature_lineage_v1(bad)
     bad = _receipt(); bad["deterministic_reproduction_passed"] = False
     with pytest.raises(m.FeatureLineageStop, match="DETERMINISTIC"):
+        m.seal_full104_feature_lineage_v1(bad)
+
+
+def test_feature_lineage_rejects_incomplete_transform_disclosure_or_geometry_authorization():
+    m = _module()
+    for field in ("normalization_formula", "sketch_projection_semantics", "visibility_channel_construction"):
+        bad = _receipt(); bad.pop(field)
+        with pytest.raises(m.FeatureLineageStop, match="TRANSFORM"):
+            m.seal_full104_feature_lineage_v1(bad)
+    bad = _receipt(); bad["pca_svd_feature_reduction_applied"] = True
+    with pytest.raises(m.FeatureLineageStop, match="TRANSFORM"):
+        m.seal_full104_feature_lineage_v1(bad)
+    bad = _receipt(); bad["historical_measurement_geometry_current_v5_authorized"] = True
+    with pytest.raises(m.FeatureLineageStop, match="MEASUREMENT_GEOMETRY"):
         m.seal_full104_feature_lineage_v1(bad)
 
 
@@ -118,6 +167,7 @@ def test_mechanics_repair_classification_requires_explicit_repair_receipt_and_se
     good = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY")
     payload = m.validate_full104_feature_lineage_v1(m.seal_full104_feature_lineage_v1(good))
     assert payload["mechanics_repair_applied"] is True
+    assert payload["original_writer_replay_status"] == "ORIGINAL_WRITER_HASH_UNRESOLVED__PUBLISHED_BYTES_AND_SEMANTICS_VERIFIED"
     bad = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"); bad["mechanics_repair_receipt_sha256"] = None
     with pytest.raises(m.FeatureLineageStop, match="REPAIR_RECEIPT"):
         m.seal_full104_feature_lineage_v1(bad)
