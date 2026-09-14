@@ -56,6 +56,7 @@ jobs:
           tests/test_d_shared_matching_state_resolution_v1.py
           tests/test_null_mobility_audit_v1.py
           tests/test_t0_v3_sandbox_firewall_v1.py
+          tests/test_nuisance_adjustment_probe_v1.py
           tests/test_preexecution_dependency_guard_v1.py
           tests/test_preexecution_qualification_bundle_v2.py
           tests/test_postqualification_dependency_guard_v2.py
@@ -114,6 +115,8 @@ jobs:
           src/sea_ad_jepa/v5/d_shared_matching_state_resolution_v1.py
           src/sea_ad_jepa/v5/null_mobility_audit_v1.py
           src/sea_ad_jepa/v5/t0_v3_sandbox_firewall_v1.py
+          src/sea_ad_jepa/v5/nuisance_adjustment_probe_v1.py
+          src/sea_ad_jepa/v5/same_cell_technical_intervention_probe_v1.py
           src/sea_ad_jepa/v5/environment_preflight_v1.py
           src/sea_ad_jepa/v5/preexecution_dependency_guard_v1.py
           src/sea_ad_jepa/v5/preexecution_qualification_bundle_v2.py
