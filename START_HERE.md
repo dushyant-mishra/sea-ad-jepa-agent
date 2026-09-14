@@ -4,38 +4,37 @@ Date: 2026-09-13
 
 ## Current project entrypoint
 
-For current V5 implementation and execution work, use the canonical successor branch:
+For current V5 execution work, use:
 
-`planning/v5-dataset-first-production-closure-20260912`
+`repair/v5-prospective-precision-authority-20260913`
 
-Re-fetch the live head before every current-state claim. `main` remains useful for historical/governance ancestry, but it is **not** the current V5 implementation ledger.
+The prior planning branch `planning/v5-dataset-first-production-closure-20260912` remains the design/ancestry authority, but it no longer contains the latest execution-state governance by itself. `main` remains historical/governance ancestry only.
 
-Branch names do not confer authority. Historical PASS/STOP artifacts and older handoffs remain provenance only unless explicitly carried into the current authority chain.
+Re-fetch the live active branch before every current-state claim. Branch names do not confer scientific authority.
 
 ## Read in this order
 
 1. `START_HERE.md`
-2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260913.json`
-3. the handoff named by that pointer
-4. `docs/agent/JEPA_LIVE_BRANCH_INVENTORY_20260913.md`
-5. `docs/superpowers/specs/2026-09-12-v5-dataset-first-production-closure-design.md`
-6. `docs/agent/V5_EXTERNAL_REVIEW_FINAL_VERDICT_20260913.md`
-7. `docs/agent/V5_FULL104_HISTORICAL_PRODUCTION_RECOVERY_20260912.md`
-8. `docs/agent/V5_FULL104_HISTORICAL_EXECUTOR_REUSE_MATRIX_20260912.md`
-9. `docs/agent/V5_FULL104_REMOTE_BINDING_EXECUTION_20260912.md`
-10. `docs/agent/V5_DIMENSION_NUMERIC_AUTHORITY_BLOCKERS_20260912.md`
-11. `docs/agent/V5_TARGET_DISCOVERY_LEARNING_STEP_QUALIFICATION_AMENDMENT_20260912.md`
-12. `docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md`
+2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260913_CURRENT.json`
+3. `docs/agent/V5_CURRENT_AUTHORITY_AND_BLOCKERS_20260913.md`
+4. `docs/agent/V5_MASTER_OPEN_ITEMS_20260913.md`
+5. `docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`
+6. `docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`
+7. `docs/agent/V5_GOVERNANCE_REFRESH_20260913.md`
+8. `docs/agent/JEPA_LIVE_BRANCH_INVENTORY_20260913.md`
+9. `docs/superpowers/specs/2026-09-12-v5-dataset-first-production-closure-design.md`
+10. `docs/agent/V5_EXTERNAL_REVIEW_FINAL_VERDICT_20260913.md`
+11. `docs/agent/V5_DIMENSION_NUMERIC_AUTHORITY_BLOCKERS_20260912.md` — historical blocker ledger; current status is superseded by item 3.
+12. `docs/agent/V5_TARGET_DISCOVERY_LEARNING_STEP_QUALIFICATION_AMENDMENT_20260912.md`
+13. `docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md`
 
-For T0 specifically, follow its own latest closeout branch/artifacts. T0 is a separate methodology/test-rig lane and does not supply V5 biological targets or numeric production constants.
+For T0 specifically, follow its own closeout authority. T0 remains separate methodology/test-rig work and does not supply V5 biological targets or numeric production constants.
 
 ## Governing scientific order
 
 `DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> PRODUCTION GEOMETRY -> MODEL`
 
-Do not invert this into model-first geometry.
-
-Decision-bearing metrics must be unconditional over the declared evaluation population. Keep measurement failure, estimator failure, representation failure, unresolved technical confounding, biology-not-demonstrated, and a qualified biological negative as distinct outcomes.
+Decision-bearing metrics must be unconditional over their declared evaluation population. Keep measurement failure, estimator failure, representation failure, unresolved technical confounding, biology-not-demonstrated, and a qualified biological negative distinct.
 
 Standing protected-data rule:
 
@@ -43,27 +42,34 @@ Standing protected-data rule:
 
 ## Current V5 status
 
-Repository-side engineering/review is green through the last verified code-bearing head recorded in the latest handoff pointer. Later documentation commits do not create new numeric/scientific authority.
+Closed under current V5 authority:
 
-The next real blocker is the authenticated heavy-data execution path:
+- historical FULL104 physical bytes relocated/authenticated;
+- hardened FULL104 binder replay PASS;
+- 4,553,407 cells / 104 donors / 42 operators / 42 matrices / 8,915 blocks / 41,238 addresses closed;
+- current FULL104 dimension-input artifact sealed;
+- prospective precision authority frozen before current-V5 dimension outcomes;
+- FULL104 ↔ precision pre-outcome cross-binding PASS with all six parent hashes matching;
+- FULL104 historical hash-bound text tree protected from EOL translation;
+- no current-V5 D_shared/D_private/D_obs outcome inspected before freeze/binding.
 
-`existing historical FULL104 bytes -> verify frozen hashes -> current V5 rebind -> seal V5 dimension input -> prospective precision authority -> real full-stream D_shared -> freeze D_shared -> D_private -> D_obs -> dataset-derived runtime geometry -> production CUDA + executable anti-cheat qualification -> bounded base-learning qualification -> lawful EMA teacher -> TD60 -> relational student qualification -> integrated review`
+Frozen precision authority SHA-256:
 
-FULL104 was historically materialized and exercised. Do **not** rematerialize it by default.
+`cc4ac4d5116fa81990f1c3bd0497fc578eda86bb2d7d3cd2747abcf7ffcf9428`
 
-Expected historical Level-4 root:
+Sealed FULL104 dimension-input artifact SHA-256:
 
-`outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/`
+`eb1264489306413fb57316abe7f70205a771248881302d8c867c70b69273f1ad`
 
-Current binder:
+FULL104 ↔ precision cross-binding receipt SHA-256:
 
-`scripts/v5_anticheat/bind_full104_expression_blocks_v4.py`
+`eccc30f9f5d01f7905a0740982d678d0ce45532a08cd5a61c51f5448b63b3d3a`
 
-Required physical-closure terminal:
+Immediate blocker:
 
-`PASS_FULL104_4553407_EXPRESSION_BLOCK_AND_IDENTITY_CLOSURE`
+`D_SHARED_PRODUCTION_METRIC_EXECUTOR_NOT_YET_AUTHORITY_BEARING`
 
-If a frozen historical parent hash differs, STOP. Do not substitute TRAIN, 50K, synthetic, reconstructed, validation/oracle, pathology, or newly materialized bytes without a separately reviewed authority decision.
+The selector exists. It must not receive caller-authored metric rows. A real producer must compute the five frozen D_shared quantities from authenticated FULL104 under the exact cross-bound precision policy, preserve raw evidence, count estimator failures unconditionally, and seal its execution receipt before rank adjudication.
 
 ## Current hard boundaries
 
@@ -77,32 +83,40 @@ If a frozen historical parent hash differs, STOP. Do not substitute TRAIN, 50K, 
 
 `relational_target_activation_authorized = false`
 
-Passing tests or mechanics checks does not create biological or training authority.
+`external_validation_outcomes_authorized_for_design = false`
+
+Passing tests or mechanics checks does not create biology or training authority.
+
+## Current critical path
+
+`D_shared executor -> real D_shared -> freeze D_shared -> finalize/review D_private -> D_private -> finalize/review D_obs -> D_obs -> dataset-derived schedule/proposal/packing/model geometry -> executable anti-cheat controls -> production-geometry CUDA qualification -> bounded base-learning qualification -> lawful EMA teacher -> TD60 -> relational student qualification -> internal biology validation -> matched-context controls -> external transport -> integrated review`
+
+External/confirmation cohorts are governed by `V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`; their outcomes may not flow backward into design choices.
 
 ## Target Discovery state
 
-Foundation Target Discovery is separate from T0.
-
 - TD57B global donor-recurrent relational ordering: historical PASS 24/24.
 - TD57C nearest-third locality: FAIL; failure stands.
-- TD59 nearest-half mesoscale: historical PASS 24/24 pilot evidence only; it is not production locality authority.
+- TD59 nearest-half mesoscale: historical PASS 24/24 pilot only; not production locality authority.
 - TD60: prospective; waits for a lawful dataset-derived learned EMA teacher.
 
-Historical fixed model widths, batch/microbatch geometry, views, mask fractions, target blocks, EMA constants and replicate counts are not current V5 authority by inheritance.
+Historical model widths, batch/microbatch geometry, views, mask fractions, target blocks, EMA constants, and replicate counts are not inherited current-V5 authority.
 
 ## Historical T1 mechanics lesson
 
-Historical fp16-autocast backward caused exact-zero protected gradients. Current mechanics must preserve the order:
+Preserve:
 
 `fp16 forward -> backward with autocast disabled -> unscale -> protected-gradient gate -> optimizer step/motion proved -> both Adam moments -> EMA -> presentation cursor -> atomic checkpoint/telemetry`
 
-The active production protected-registry authority derives registry size from the prospectively selected model depth. Legacy helpers that encode the historical six-block/48-tensor geometry are supporting/history APIs only and must not be promoted into current production authority.
+Historical six-block/48-tensor helpers remain supporting/history APIs unless rederived for production geometry.
+
+## Environment authority
+
+Conclusion-bearing heavy/local execution must prove the declared test suite actually collected and executed in a compatible environment. Current documented heavy-machine environment is `sea-ad-jepa-v3`; collection errors or skipped critical tests are not green evidence. See `V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`.
 
 ## Branch hygiene
 
-There are multiple live historical and review branches. Do **not** assume only `main` remains and do not blindly delete or merge divergent branches.
-
-Use `docs/agent/JEPA_LIVE_BRANCH_INVENTORY_20260913.md` for the current branch inventory. Preserve historical branches until a branch-to-unique-content/ancestry audit proves their scientifically or operationally unique material has been retained.
+Do not blindly delete/merge historical branches. A branch-to-unique-content/ancestry matrix is still required before cleanup.
 
 ## Permanent implementation-verifier rule
 
