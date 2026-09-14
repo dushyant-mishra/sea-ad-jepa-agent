@@ -283,8 +283,10 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
 
 
 def _parents(payload: Mapping[str, object]) -> dict[str, str]:
+    git_head = str(payload["git_head"])
+    git_head_binding = hashlib.sha256((git_head + "\n").encode("utf-8")).hexdigest()
     return {
-        "git_head": str(payload["git_head"]),
+        "git_head_binding_sha256": git_head_binding,
         "authority_source_bundle_sha256": str(payload["authority_source_bundle_sha256"]),
     }
 
