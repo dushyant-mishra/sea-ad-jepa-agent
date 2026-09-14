@@ -1,9 +1,11 @@
 {
-  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT_V3",
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT_V4",
   "date": "2026-09-14",
   "repository": "dushyant-mishra/sea-ad-jepa-agent",
   "active_branch": "repair/v5-v3-null-t0-stressbench-20260914",
   "historical_discovery_agent_ledger": "docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md",
+  "closed_substrate_invariant_registry": "docs/agent/V5_CLOSED_SUBSTRATE_INVARIANT_REGISTRY_20260914.md",
+  "local_work_completion": "docs/agent/V5_LOCAL_WORK_COMPLETION_20260914.md",
   "current_status_ledger": "docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md",
   "local_parameter_derivability_audit": "docs/agent/V5_LOCAL_PARAMETER_DERIVABILITY_AUDIT_20260914.md",
   "local_stress_test_record": "docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md",
@@ -17,14 +19,23 @@
     "critical_executed_passed": 45,
     "authority_source_compilation": "PASS"
   },
-  "d_shared_authority_v2_sha256": "f9568eb19a22f106b0be3ce0580bc1058695ca1a2de6dd2d0475c3240a6bbda2",
-  "full104_dimension_input_artifact_sha256": "eb1264489306413fb57316abe7f70205a771248881302d8c867c70b69273f1ad",
-  "full104_recon_evidence_root_sha256": "629e860ac1b6bae2ef80512b9c9f9e0bf93b75b8d9077305cb5717320cdf26be",
-  "full104_recon_artifact_sha256": "552b220edcc0e05591cb3876b3ab0be58277c0c5fd8a111cdfe8d4b5ad6200da",
-  "historical_feature_matrix_root_sha256": "c9a6ede6f33a4a9d4ce22cde0f1a8c0fb5e7e039bac3df364325c778487329ef",
-  "historical_multiview_root_sha256": "d6f70ee1bca777f3d2cbd89dd560395cc46ec25f6a648ae4ba0fd6e77c1c2cf1",
-  "historical_discovery_expression_expected_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
-  "foundation_calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+  "closed_invariant_policy": "INHERIT_CLOSED_INVARIANTS__RECOMPUTE_ONLY_REPRESENTATION_DEPENDENT_QUANTITIES__REOPEN_ONLY_IF_PARENT_BYTES_OR_SEMANTICS_CHANGE",
+  "closed_substrate_invariants": {
+    "population_cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "matrices": 42,
+    "blocks": 8915,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "support_patterns": 9,
+    "historical_exactly_once_row_assembly_closed": true,
+    "successor_assembly_seen_role": "LINEAGE_CORROBORATION_ONLY_UNLESS_ROW_PARENT_OR_ORDERING_CHANGES",
+    "donors_spanning_multiple_sources": 0,
+    "operators_spanning_multiple_sources": 0,
+    "donors_per_source": {"HVS": 41, "NPH52": 17, "SEA_AD": 46},
+    "normalization": "log1p(raw_count*10000/full_source_library)_EXACTLY_ONCE"
+  },
   "t0_status": "CLOSED",
   "t0_terminal": "T0_MEASUREMENT_PROCEDURE_NOT_QUALIFIED_AT_N28__BIOLOGY_UNRESOLVED",
   "t0_current_role": "RETROSPECTIVE_METHOD_FALSIFICATION_ONLY__CANNOT_CERTIFY_V5",
@@ -34,43 +45,39 @@
     "TD59": "HISTORICAL_PASS_24_OF_24_PILOT_ONLY__NOT_PRODUCTION_LOCALITY_AUTHORITY",
     "TD60": "PROSPECTIVE__WAITS_FOR_LAWFUL_DATASET_DERIVED_EMA_TEACHER"
   },
-  "historical_qid_warning": "MATCHED_NULL_STATE_INTERVENTION_NOT_DEMONSTRATED_EQUIVALENT_TO_PAIRED_WRONG_QUERY_INTERVENTION",
-  "historical_discovery_reusable_findings": [
-    "17,186-address universal common measured core",
-    "9 recurring operator support patterns",
-    "common-core / operator-aware / within-source geometry separation",
-    "donor-block resampling/generalization requirement",
-    "support-only geometry falsification control",
-    "source/support strongly readable before training",
-    "historical exploratory neighborhood k={15,30,60,120}",
-    "historical graph resolutions={0.25,0.5,1.0,2.0}"
-  ],
   "matching_state_resolution": {
     "q_depth_lossless_discrete_preimage": true,
     "q_detect_lossless_discrete_preimage": true,
     "support_measurability_redundant_with_operator": true,
-    "effective_exact_key": ["donor", "operator", "Q_DEPTH_COUNT", "Q_DETECT_COUNT"],
     "singleton_cell_fraction": 0.99911,
     "maximum_stratum_size": 3,
     "terminal": "V2_MATCHED_NULL_TECHNICALLY_DEFINED__OPERATIONALLY_DEGENERATE"
   },
-  "source_nesting": {
-    "donors_spanning_multiple_sources": 0,
-    "operators_spanning_multiple_sources": 0,
-    "support_patterns_nested_within_source": true,
-    "donors_per_source": {"HVS": 41, "NPH52": 17, "SEA_AD": 46},
-    "whole_donor_permutation_across_sources_lawful": false
-  },
-  "historical_view_issue": "A_AND_B_ARE_HASHES_OF_THE_SAME_MOLECULAR_ADDRESS_UNIVERSE__NOT_GENUINELY_DISJOINT_BIOLOGICAL_VIEWS",
-  "historical_rank_issue": "POOLED_COVARIANCE_SINGULAR__NOMINAL_512_RANK_ENVELOPE_NOT_AUTOMATIC_SUCCESSOR_AUTHORITY",
-  "local_parameter_screening": {
-    "common_core_addresses": 17186,
+  "local_parameter_lane": {
+    "substantively_complete": true,
     "serious_candidate_view_counts": [2, 3, 4, 6],
-    "k_greater_equal_8_has_clearer_information_sparsity_cost": true,
-    "same_cell_thinning_range_derivable_from_frozen_50k": true,
-    "final_K_frozen": false
+    "same_cell_thinning_screening_retention_fractions": [1.0, 0.9, 0.75, 0.5, 0.25],
+    "historical_control_difficulty_order_recovered": true,
+    "unrestricted_cross_source_donor_permutation_rejected": true,
+    "naive_source_only_donor_permutation_rejected_under_operator_exposure_confounding": true,
+    "cell_level_within_operator_permutation_rejected_for_pseudoreplication": true,
+    "aggressive_residualization_without_structure_gate_rejected": true,
+    "pooled_cross_source_operator_exposure_slope_rejected": true,
+    "strongest_unfrozen_candidate_family": "DONOR_LEVEL_INFERENCE + SOURCE_BLOCKING + SOURCE_CONDITIONAL_OPERATOR_EXPOSURE_NUISANCE_MODEL + WHOLE_PROCEDURE_RESIDUAL/CONDITIONAL_RANDOMIZATION_CALIBRATION + STRUCTURE_PRESERVATION_GATE + SAME_CELL_MEASUREMENT_INTERVENTION_GATE"
   },
-  "heavy_machine_current_assignment": "K2_GENUINELY_DISJOINT_COMMON_CORE_FULL104_REFERENCE_REBUILD_AND_OUTCOME_BLIND_CHARACTERIZATION_ONLY",
+  "historical_control_difficulty_heldout_combined_lawful_RNA_R2": {
+    "core_halo": 0.999629,
+    "local_halo": 0.998738,
+    "local": 0.994047,
+    "broad_common": 0.979218,
+    "local_core": 0.975574,
+    "weak_distributed": 0.952972,
+    "sparse_marker_like": 0.934011,
+    "innovation_tail": 0.575256,
+    "recurrent_5pct": 0.340912,
+    "recurrent_1pct": 0.031173
+  },
+  "heavy_machine_current_assignment": "K2_GENUINELY_DISJOINT_COMMON_CORE_FULL104_REFERENCE_REBUILD_AND_REPRESENTATION_DEPENDENT_CHARACTERIZATION_ONLY",
   "k2_reference_partition_interim": {
     "namespace": "JEPA_V5_COMMON_CORE_DISJOINT_VIEW_PARTITION_V1",
     "common_core": 17186,
@@ -83,28 +90,16 @@
     "partition_artifact_sha256": "129631f95c9ef90bd5a4af2a70cbc2adbbf907ed6357b9c13c4aa370cafc1575",
     "final_view_count_authority": false
   },
-  "current_sequence": [
-    "historical discovery review",
-    "local frozen discovery/calibration parameter derivation",
-    "authenticated FULL104",
-    "genuinely disjoint molecular views",
-    "rebuilt V5 feature substrate",
-    "outcome-blind structural characterization",
-    "supported rank envelope",
-    "source/operator/QC nuisance characterization",
-    "V3 null design",
-    "T0 falsification",
-    "FULL104 measurement qualification",
-    "D_shared last"
-  ],
-  "substrate_independent_mechanics_green": [
-    "null_mobility_audit_v1",
-    "t0_v3_sandbox_firewall_v1",
-    "same_cell_technical_intervention_probe_v1 receipt hardening",
-    "nuisance_adjustment_probe_v1",
-    "structure_preservation_probe_v1",
-    "group_split_integrity_v1",
-    "d_shared_matching_state_resolution_v1 occupancy consistency hardening"
+  "representation_dependent_outputs_still_required": [
+    "new feature-array hashes/dtypes/shapes",
+    "new partition disjointness/union receipt",
+    "per-view covariance spectrum/effective rank/conditioning",
+    "per-view QC/source/operator predictability",
+    "view-specific sparsity and geometry",
+    "rank-support evidence",
+    "nuisance reduction versus structure preservation",
+    "same-cell representation response",
+    "whole-procedure null/control calibration"
   ],
   "hard_boundaries": {
     "training_authorized": false,
@@ -119,27 +114,22 @@
   },
   "still_unfrozen": [
     "final view count K",
-    "final deterministic canonical K-way partition authority",
     "final V3 null family",
-    "final nuisance-adjustment family and hyperparameters",
+    "final nuisance model/hyperparameters",
     "final rank-support rule/envelope",
     "same-cell qualification thresholds",
     "structure-preservation thresholds",
-    "positive-control injection ladder",
     "successor D_shared decision authority"
   ],
-  "historical_first_expensive_run_rule": "READ_HISTORICAL_LEDGER__EXHAUST_LOCAL_DISCOVERY_CALIBRATION_DERIVATIONS__NARROW_CANDIDATES__SPECIFY_RESIDUAL_HEAVY_QUESTION__THEN_RUN_FULL104",
   "next_actions": [
-    "finish all remaining local derivations using historical discovery + 50K + calibration assets",
-    "re-fetch/authenticate Claude K2 rebuilt substrate when complete",
-    "verify exact row/address/disjoint-view lineage",
-    "review rebuilt spectrum and residual source/operator/QC structure",
-    "compare K2 full-scale reference to locally narrowed K={2,3,4,6} before any second heavy rebuild",
-    "apply nuisance comparator and structure-preservation diagnostics jointly",
-    "audit candidate exchangeability units for actual null mobility",
-    "prospectively freeze structural rank-support and V3 null authority",
-    "use T0 only as a falsification sandbox",
-    "qualify the measurement procedure on FULL104 before any real D_shared"
+    "re-fetch/authenticate Claude K2 rebuilt representation-dependent evidence",
+    "do not re-promote population/exactly-once assembly as new discovery",
+    "review spectrum/effective rank/conditioning and QC/source/operator predictability",
+    "compare K2 full-scale reference to local K={2,3,4,6} information budget before any second heavy rebuild",
+    "requalify source-conditional donor-level nuisance/null candidate family on rebuilt representation",
+    "freeze structural rank-support and V3 authority prospectively",
+    "use T0 only as falsification",
+    "qualify FULL104 measurement procedure before D_shared"
   ],
   "d_shared_outcomes_inspected": false,
   "training_authorized": false
