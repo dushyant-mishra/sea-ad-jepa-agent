@@ -40,6 +40,7 @@
     "test_lossless_discrete_preimage_receipt_is_sealable_but_does_not_authorize_execution",
     "test_matching_state_resolution_rejects_arbitrary_bins_and_redundant_support_key",
     "test_matching_state_resolution_rejects_lossy_preimage_or_outcome_feedback",
+    "test_matching_state_resolution_rejects_internally_inconsistent_stratum_occupancy",
     "test_continuous_state_terminal_requires_v3_and_cannot_pass_as_lossless"
   ]
 }
