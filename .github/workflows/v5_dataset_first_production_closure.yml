@@ -45,6 +45,7 @@ jobs:
           tests/test_prospective_precision_authority_v1.py
           tests/test_precision_full104_preoutcome_binding_v1.py
           tests/test_d_shared_authority_v2.py
+          tests/test_d_shared_execution_firewall_v2.py
           tests/test_preexecution_dependency_guard_v1.py
           tests/test_preexecution_qualification_bundle_v2.py
           tests/test_postqualification_dependency_guard_v2.py
@@ -93,6 +94,7 @@ jobs:
           src/sea_ad_jepa/v5/dimension_authority_guard_v3.py
           src/sea_ad_jepa/v5/dimension_authority_guard_v4.py
           src/sea_ad_jepa/v5/prospective_precision_authority_v1.py
+          src/sea_ad_jepa/v5/d_shared_authority_v2.py
           src/sea_ad_jepa/v5/preexecution_dependency_guard_v1.py
           src/sea_ad_jepa/v5/preexecution_qualification_bundle_v2.py
           src/sea_ad_jepa/v5/trainer_preexecution_contract_v4.py
