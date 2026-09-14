@@ -17,17 +17,19 @@ Re-fetch the live active branch before every current-state claim. Branch names d
 1. `START_HERE.md`
 2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260914_CURRENT.json`
 3. `docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md`
-4. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT.json`
-5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260914_CURRENT.md` — earlier same-day handoff; use the V3/T0 ledger above to supersede its stale RED/branch status.
-6. `docs/agent/V5_CURRENT_AUTHORITY_AND_BLOCKERS_20260913.md`
-7. `docs/agent/V5_MASTER_OPEN_ITEMS_20260913.md`
-8. `docs/agent/V5_T0_LESSONS_DATA_AWARE_MEASUREMENT_QUALIFICATION_COURSE_CORRECTION_20260914.md`
-9. `docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json`
-10. `docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`
-11. `docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`
-12. `docs/superpowers/specs/2026-09-14-v5-v3-null-and-t0-stress-bench-design.md`
-13. `docs/agent/T0_V5_ORIENTATION_AND_CROSSWALK_20260912.md`
-14. `docs/agent/T0_MEASUREMENT_METHOD_CLOSEOUT_20260912.md`
+4. `docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md`
+5. `docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md`
+6. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT.json`
+7. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260914_CURRENT.md` — earlier same-day handoff; use the V3/T0 ledger above to supersede its stale RED/branch status.
+8. `docs/agent/V5_CURRENT_AUTHORITY_AND_BLOCKERS_20260913.md`
+9. `docs/agent/V5_MASTER_OPEN_ITEMS_20260913.md`
+10. `docs/agent/V5_T0_LESSONS_DATA_AWARE_MEASUREMENT_QUALIFICATION_COURSE_CORRECTION_20260914.md`
+11. `docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json`
+12. `docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`
+13. `docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`
+14. `docs/superpowers/specs/2026-09-14-v5-v3-null-and-t0-stress-bench-design.md`
+15. `docs/agent/T0_V5_ORIENTATION_AND_CROSSWALK_20260912.md`
+16. `docs/agent/T0_MEASUREMENT_METHOD_CLOSEOUT_20260912.md`
 
 ## Governing scientific order
 
@@ -109,6 +111,13 @@ See the current ledger:
 
 `docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md`
 
+Local calibration/falsification evidence is recorded separately in:
+
+- `docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md`
+- `docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md`
+
+Those local records independently reproduce Claude's deterministic disjoint partition hashes, reproduce source nesting in the 50K discovery sample, and falsify several simplistic nulls/adjustments. They are calibration evidence only, not FULL104 authority.
+
 Mechanics available and protected by CI include:
 
 - blocked-null mobility/bijection audit;
@@ -121,9 +130,28 @@ Mechanics available and protected by CI include:
 
 These are mechanics only. They do not freeze the final V3 null, final nuisance adjustment, final rank envelope, final thresholds, or production training geometry.
 
+## Local null-falsification findings
+
+On the locally available real 50K discovery geometry and 84-cell/all-operator calibration fixture:
+
+- Claude's common-core partition reproduced exactly: 17,186 addresses; 8,568/8,618 split; exact address-list hashes matched;
+- the disjoint halves preserve calibration cell-distance ordering strongly (cosine-distance Spearman ~0.984);
+- unrestricted whole-donor permutation across sources is invalid (100% rejection in a synthetic conditional-null stress at nominal 5%);
+- source-blocked donor permutation can still fail under within-source operator-exposure confounding (55.5% to 100% rejection across stress strengths);
+- cell-level within-operator permutation is pseudoreplication-prone (52.5% rejection under donor random-effect null);
+- aggressive operator residualization can nearly erase nuisance summaries while badly distorting geometry (distance Spearman ~0.56; median relative distance change ~21%);
+- a pooled operator-exposure nuisance slope fails when nuisance behavior differs by source (26% to 83% rejection), while source-specific nuisance slopes restore approximate nominal calibration in the local stress;
+- source-aligned injected signal is erased by operator adjustment while source-orthogonal injected signal is preserved, exposing the irreducible identifiability boundary.
+
+Current strongest unfrozen candidate family:
+
+`DONOR_LEVEL_INFERENCE + SOURCE_BLOCKING + SOURCE_CONDITIONAL_OPERATOR_EXPOSURE_NUISANCE_MODEL + WHOLE_PROCEDURE_RESIDUAL/CONDITIONAL_RANDOMIZATION_CALIBRATION + STRUCTURE_PRESERVATION_GATE + SAME_CELL_MEASUREMENT_INTERVENTION_GATE`
+
+This is a candidate family only. It is not V3 authority and must be requalified against Claude's rebuilt FULL104 substrate.
+
 ## Latest verified CI
 
-Verified pre-ledger head:
+Verified pre-ledger code head:
 
 `0e770cdd708228c3628ef0e2d29bd5fee1757547`
 
@@ -135,7 +163,7 @@ Result:
 
 `305 passed; 45/45 critical tests executed and passed; authority-source compilation PASS`
 
-A later recordkeeping commit may exist. Re-fetch the branch and latest workflow before claiming that later commit green.
+Later recordkeeping/evidence commits exist. Re-fetch the branch and latest workflow before claiming those later commits green.
 
 ## Current hard boundaries
 
@@ -164,7 +192,7 @@ Passing tests or mechanics checks does not create biology or training authority.
 1. Receive/authenticate Claude's rebuilt genuinely disjoint FULL104 substrate evidence.
 2. Verify exact molecular disjointness, row/address lineage and deterministic partition replay.
 3. Review rebuilt covariance/effective-rank/operator/source/QC structure.
-4. Use nuisance comparator and structure-preservation diagnostics jointly; do not optimize batch removal alone.
+4. Re-run the local-falsification survivors on the rebuilt FULL104 geometry: source-blocked donor inference, source-conditional operator-exposure nuisance adjustment, whole-procedure residual/conditional randomization, structure preservation, and same-cell measurement interventions.
 5. Characterize candidate exchangeability units and require null mobility before considering a permutation family viable.
 6. Prospectively derive/freeze a structural rank-support rule; do not inherit `1..512` automatically.
 7. Freeze successor V3 measurement/null authority without D_shared feedback.
