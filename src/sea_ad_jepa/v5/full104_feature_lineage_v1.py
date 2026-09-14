@@ -28,6 +28,8 @@ _ALLOWED_WRITER_REPLAY_STATUS = {
 }
 _LOCATION_POLICY = "CONTENT_HASH_AND_LOGICAL_NAME_AUTHORITATIVE__ABSOLUTE_PATH_INFORMATIONAL_ONLY_V1"
 _EXPECTED_NORMALIZATION = "log1p(raw_count*10000/full_source_library)"
+_EXPECTED_VISIBLE_FRACTION = 0.60
+_EXPECTED_MASK_FRACTION = 0.40
 _FORBIDDEN_TRUE = (
     "filtering_applied",
     "cell_capping_applied",
@@ -127,6 +129,8 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
     mask_fraction = _fraction(receipt.get("mask_fraction"), "mask_fraction")
     if abs((visible_fraction + mask_fraction) - 1.0) > 1e-12:
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:visible_mask_fraction")
+    if abs(visible_fraction - _EXPECTED_VISIBLE_FRACTION) > 1e-12 or abs(mask_fraction - _EXPECTED_MASK_FRACTION) > 1e-12:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:historical_view_fractions")
     if receipt.get("pca_svd_feature_reduction_applied") is not False:
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:pca_svd_feature_reduction_applied")
 
@@ -160,19 +164,19 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_VIEW_CONSTRUCTION")
 
     for field in ("clipping_applied", "winsorization_applied", "imputation_applied"):
-        if receipt.get(field) not in (True, False):
+        if receipt.get(field) is not False:
             raise FeatureLineageStop(f"STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:{field}")
     for field in _FORBIDDEN_TRUE:
         if receipt.get(field) is not False:
             raise FeatureLineageStop(f"STOP_FULL104_FEATURE_LINEAGE_FORBIDDEN:{field}")
-    if receipt.get("deterministic_reproduction_passed") is not True:
-        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_DETERMINISTIC_REPRODUCTION")
     if receipt.get("semantic_transform_unchanged") is not True:
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_SEMANTIC_TRANSFORM_CHANGED")
 
     repair_applied = receipt.get("mechanics_repair_applied")
     repair_sha = receipt.get("mechanics_repair_receipt_sha256")
     if classification == "CERTIFIABLE_EXACT_DERIVATION":
+        if receipt.get("deterministic_reproduction_passed") is not True:
+            raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_DETERMINISTIC_REPRODUCTION")
         if repair_applied is not False or repair_sha is not None:
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_EXACT_WITH_REPAIR")
         if writer_status != "EXACT_WRITER_REPLAY_VERIFIED":
@@ -180,6 +184,8 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
         if certified_feature != HISTORICAL_FEATURE_MATRIX_ROOT_SHA256 or certified_multiview != HISTORICAL_MULTIVIEW_ROOT_SHA256:
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_EXACT_CERTIFIED_ROOT_MISMATCH")
     else:
+        if receipt.get("deterministic_reproduction_passed") is not False:
+            raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_ORIGINAL_WRITER_DETERMINISTIC_REPLAY_CLAIM")
         if repair_applied is not True:
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_REPAIR_NOT_APPLIED")
         try:
