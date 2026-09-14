@@ -1,0 +1,103 @@
+{
+  "schema": "JEPA_V5_EXTERNAL_COHORT_ROLE_REGISTRY_V1",
+  "date": "2026-09-13",
+  "status": "FROZEN_ROLE_POLICY_BEFORE_EXTERNAL_OUTCOME_ACCESS__ASSET_BINDINGS_PENDING",
+  "governing_rule": "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+  "design_feedback_from_validation_outcomes_allowed": false,
+  "training_authorized": false,
+  "protected_data_authorized": false,
+  "td60_authorized": false,
+  "relational_target_activation_authorized": false,
+  "production_discovery_authority": {
+    "dataset": "FULL104_SEA_AD_HVS_NPH52",
+    "role": "PRODUCTION_DISCOVERY_AND_REPRESENTATION_QUALIFICATION_SUBSTRATE",
+    "allowed_stage": "PRE_VALIDATION_PRODUCTION_DESIGN_AND_QUALIFICATION",
+    "may_set_current_v5_design_choices": true,
+    "pathology_blind_design_required": true
+  },
+  "cohorts": [
+    {
+      "dataset": "SEA_AD_INTERNAL_PATHOLOGY_SPECTRUM",
+      "role": "INTERNAL_BIOLOGY_VALIDATION_AND_MATCHED_CONTEXT_RECURRENCE",
+      "allowed_stage": "AFTER_LAWFUL_TEACHER_AND_REPRESENTATION_QUALIFICATION",
+      "estimand": "WITHIN_STUDY_BIOLOGICAL_RECURRENCE_AND_CONTEXT_MATCHED_VALIDATION",
+      "control_purpose": "INTERNAL_BIOLOGY_VALIDATION",
+      "may_change_upstream_design": false,
+      "outcome_access_before_stage": false,
+      "asset_binding_status": "PENDING_EXACT_ASSET_LOCATOR_AND_HASH"
+    },
+    {
+      "dataset": "GSE146639",
+      "role": "INDEPENDENT_EXTERNAL_DISEASE_SPECTRUM_RECURRENCE_AND_TRANSPORT",
+      "allowed_stage": "AFTER_INTERNAL_BIOLOGY_VALIDATION_AND_FROZEN_MODEL_GEOMETRY",
+      "estimand": "EXTERNAL_TRANSPORT_OF_FROZEN_BIOLOGICAL_RELATIONS_OR_REPRESENTATION_SIGNALS",
+      "control_purpose": "INDEPENDENT_EXTERNAL_REPLICATION_TRANSPORT",
+      "may_change_upstream_design": false,
+      "outcome_access_before_stage": false,
+      "asset_binding_status": "PENDING_EXACT_ASSET_LOCATOR_AND_HASH"
+    },
+    {
+      "dataset": "GSE243292",
+      "role": "INDEPENDENT_EXTERNAL_DISEASE_SPECTRUM_RECURRENCE_AND_TRANSPORT",
+      "allowed_stage": "AFTER_INTERNAL_BIOLOGY_VALIDATION_AND_FROZEN_MODEL_GEOMETRY",
+      "estimand": "EXTERNAL_TRANSPORT_OF_FROZEN_BIOLOGICAL_RELATIONS_OR_REPRESENTATION_SIGNALS",
+      "control_purpose": "INDEPENDENT_EXTERNAL_REPLICATION_TRANSPORT",
+      "may_change_upstream_design": false,
+      "outcome_access_before_stage": false,
+      "asset_binding_status": "PENDING_EXACT_ASSET_LOCATOR_AND_HASH"
+    },
+    {
+      "dataset": "GSE133357_PAIRED_STG_CEREBELLUM",
+      "role": "WITHIN_PERSON_REGIONAL_POSITIVE_NEGATIVE_CONTROL",
+      "allowed_stage": "AFTER_FROZEN_BIOLOGICAL_VALIDATION_TARGETS",
+      "estimand": "WITHIN_PERSON_REGIONALLY_CONTRASTED_RECURRENCE_UNDER_FROZEN_TARGETS",
+      "control_purpose": "STG_POSITIVE_CONTEXT_AND_CEREBELLUM_NEGATIVE_OR_LOW_EXPECTATION_CONTEXT_CONTROL",
+      "may_change_upstream_design": false,
+      "outcome_access_before_stage": false,
+      "asset_binding_status": "PENDING_EXACT_ASSET_LOCATOR_AND_HASH"
+    },
+    {
+      "dataset": "OTHER_INDEPENDENT_COHORTS",
+      "role": "EXTERNAL_REPLICATION_ONLY_UNLESS_SEPARATELY_PREDECLARED",
+      "allowed_stage": "AFTER_EXACT_ROLE_AND_ESTIMAND_ARE_FROZEN",
+      "estimand": "UNRESOLVED_UNTIL_SEPARATE_PREDECLARATION",
+      "control_purpose": "NO_DEFAULT_DESIGN_AUTHORITY",
+      "may_change_upstream_design": false,
+      "outcome_access_before_stage": false,
+      "asset_binding_status": "NO_COHORT_MAY_ENTER_EXECUTION_WITHOUT_EXACT_LOCATOR_HASH_AND_ADAPTER_REVIEW"
+    }
+  ],
+  "forbidden_feedback_targets": [
+    "D_shared",
+    "D_private",
+    "D_obs",
+    "rank_search_envelope",
+    "effect_thresholds",
+    "precision_budget",
+    "model_width",
+    "model_depth",
+    "masking_policy",
+    "locality_policy",
+    "triplet_budget",
+    "proposal_weights",
+    "presentation_schedule",
+    "packing_geometry",
+    "ema_half_life",
+    "anti_cheat_thresholds"
+  ],
+  "execution_requirements_before_any_external_outcome_access": [
+    "exact dataset asset locator",
+    "raw asset SHA-256 or package-root authority",
+    "adapter/reader version and SHA",
+    "frozen inclusion/exclusion rules",
+    "frozen feature/address mapping policy",
+    "frozen estimand and endpoint",
+    "frozen positive/negative/control interpretation",
+    "proof no upstream design feedback is allowed"
+  ],
+  "notes": [
+    "This registry freezes roles, not outcomes.",
+    "Pending asset bindings are fail-closed; they do not authorize data access.",
+    "If a cohort cannot support the frozen estimand, report NOT_ESTIMABLE rather than adapting the estimand after outcome access."
+  ]
+}
