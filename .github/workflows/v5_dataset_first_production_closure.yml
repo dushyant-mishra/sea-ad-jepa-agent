@@ -58,6 +58,7 @@ jobs:
           tests/test_t0_v3_sandbox_firewall_v1.py
           tests/test_nuisance_adjustment_probe_v1.py
           tests/test_structure_preservation_probe_v1.py
+          tests/test_group_split_integrity_v1.py
           tests/test_preexecution_dependency_guard_v1.py
           tests/test_preexecution_qualification_bundle_v2.py
           tests/test_postqualification_dependency_guard_v2.py
@@ -118,6 +119,7 @@ jobs:
           src/sea_ad_jepa/v5/t0_v3_sandbox_firewall_v1.py
           src/sea_ad_jepa/v5/nuisance_adjustment_probe_v1.py
           src/sea_ad_jepa/v5/structure_preservation_probe_v1.py
+          src/sea_ad_jepa/v5/group_split_integrity_v1.py
           src/sea_ad_jepa/v5/same_cell_technical_intervention_probe_v1.py
           src/sea_ad_jepa/v5/environment_preflight_v1.py
           src/sea_ad_jepa/v5/preexecution_dependency_guard_v1.py
