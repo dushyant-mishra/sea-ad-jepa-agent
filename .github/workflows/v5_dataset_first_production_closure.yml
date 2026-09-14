@@ -52,6 +52,7 @@ jobs:
           tests/test_d_shared_measurement_qualification_v1.py
           tests/test_environment_preflight_v1.py
           tests/test_v5_redteam_evidence_binding_20260914.py
+          tests/test_v5_redteam_reconnaissance_root_binding_20260914.py
           tests/test_d_shared_matching_state_resolution_v1.py
           tests/test_preexecution_dependency_guard_v1.py
           tests/test_preexecution_qualification_bundle_v2.py
