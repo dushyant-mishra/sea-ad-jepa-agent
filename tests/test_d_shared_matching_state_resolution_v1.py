@@ -35,13 +35,17 @@ def _receipt() -> dict[str, object]:
         "bin_edges": None,
         "occupancy": {
             "cells_total": 4_553_407,
-            "strata_total": 100_000,
+            "strata_total": 400_000,
             "cells_in_singleton_strata": 100_000,
+            "strata_size_1": 100_000,
             "cells_in_size_2_3_strata": 250_000,
+            "strata_size_2_3": 100_000,
             "cells_in_size_4_7_strata": 500_000,
+            "strata_size_4_7": 100_000,
             "cells_in_size_ge_8_strata": 3_703_407,
+            "strata_size_ge_8": 100_000,
             "stratum_size_min": 1,
-            "stratum_size_median": 10.0,
+            "stratum_size_median": 4.0,
             "stratum_size_p95": 100.0,
             "stratum_size_max": 1000,
         },
@@ -92,6 +96,24 @@ def test_matching_state_resolution_rejects_lossy_preimage_or_outcome_feedback():
     bad = _receipt()
     bad["d_shared_outcomes_inspected"] = True
     with pytest.raises(m.MatchingStateResolutionStop, match="OUTCOME"):
+        m.seal_d_shared_matching_state_resolution_v1(bad)
+
+
+def test_matching_state_resolution_rejects_internally_inconsistent_stratum_occupancy():
+    m = _m()
+    bad = _receipt()
+    bad["occupancy"]["strata_size_1"] = 99_999
+    with pytest.raises(m.MatchingStateResolutionStop, match="OCCUPANCY"):
+        m.seal_d_shared_matching_state_resolution_v1(bad)
+
+    bad = _receipt()
+    bad["occupancy"]["strata_size_2_3"] = 50_000
+    with pytest.raises(m.MatchingStateResolutionStop, match="OCCUPANCY"):
+        m.seal_d_shared_matching_state_resolution_v1(bad)
+
+    bad = _receipt()
+    bad["occupancy"]["strata_total"] = 399_999
+    with pytest.raises(m.MatchingStateResolutionStop, match="OCCUPANCY"):
         m.seal_d_shared_matching_state_resolution_v1(bad)
 
 
