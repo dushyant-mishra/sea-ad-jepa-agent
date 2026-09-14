@@ -123,7 +123,10 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
     else:
         if repair_applied is not True:
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_REPAIR_NOT_APPLIED")
-        _sha64(repair_sha, "mechanics_repair_receipt_sha256")
+        try:
+            _sha64(repair_sha, "mechanics_repair_receipt_sha256")
+        except FeatureLineageStop as exc:
+            raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_REPAIR_RECEIPT") from exc
 
     if receipt.get("terminal") != "PASS_FULL104_FEATURE_LINEAGE_V1":
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TERMINAL")
