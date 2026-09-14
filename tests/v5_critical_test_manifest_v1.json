@@ -41,6 +41,10 @@
     "test_matching_state_resolution_rejects_arbitrary_bins_and_redundant_support_key",
     "test_matching_state_resolution_rejects_lossy_preimage_or_outcome_feedback",
     "test_matching_state_resolution_rejects_internally_inconsistent_stratum_occupancy",
-    "test_continuous_state_terminal_requires_v3_and_cannot_pass_as_lossless"
+    "test_continuous_state_terminal_requires_v3_and_cannot_pass_as_lossless",
+    "test_identity_null_is_visible_and_nonqualifying",
+    "test_v5_or_dshared_authority_escalation_is_impossible",
+    "test_same_cell_receipt_rejects_outcome_feedback_and_authority_escalation",
+    "test_crossfit_nuisance_probe_detects_strong_technical_structure_without_authority_escalation"
   ]
 }
