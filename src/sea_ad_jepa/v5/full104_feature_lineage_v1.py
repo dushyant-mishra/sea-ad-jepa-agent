@@ -194,6 +194,8 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_REPAIR_RECEIPT") from exc
         if writer_status != "ORIGINAL_WRITER_HASH_UNRESOLVED__PUBLISHED_BYTES_AND_SEMANTICS_VERIFIED":
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_REPAIR_WRITER_STATUS")
+        if certified_feature != HISTORICAL_FEATURE_MATRIX_ROOT_SHA256 or certified_multiview != HISTORICAL_MULTIVIEW_ROOT_SHA256:
+            raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_REPAIR_CERTIFIED_ROOT_MISMATCH")
 
     if receipt.get("terminal") != "PASS_FULL104_FEATURE_LINEAGE_V1":
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TERMINAL")
