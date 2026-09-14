@@ -1,17 +1,18 @@
 {
-  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT_V4",
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT_V5",
   "date": "2026-09-14",
   "repository": "dushyant-mishra/sea-ad-jepa-agent",
   "active_branch": "repair/v5-v3-null-t0-stressbench-20260914",
   "historical_discovery_agent_ledger": "docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md",
   "closed_substrate_invariant_registry": "docs/agent/V5_CLOSED_SUBSTRATE_INVARIANT_REGISTRY_20260914.md",
   "local_work_completion": "docs/agent/V5_LOCAL_WORK_COMPLETION_20260914.md",
+  "k2_rebuilt_substrate_evidence": "docs/agent/V5_K2_REBUILT_SUBSTRATE_EVIDENCE_AND_VISIBILITY_BLOCKER_20260914.md",
   "current_status_ledger": "docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md",
   "local_parameter_derivability_audit": "docs/agent/V5_LOCAL_PARAMETER_DERIVABILITY_AUDIT_20260914.md",
   "local_stress_test_record": "docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md",
   "local_nuisance_stress_addendum": "docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md",
-  "latest_fully_verified_code_head": "0e770cdd708228c3628ef0e2d29bd5fee1757547",
-  "latest_verified_workflow_run": 34885448123,
+  "latest_exact_head_verified_before_k2_evidence_commit": "380426c0b454f72265fd330163d98614b6519bf5",
+  "latest_verified_workflow_run": 34894159904,
   "latest_verified_result": {
     "passed": 305,
     "failed": 0,
@@ -36,70 +37,54 @@
     "donors_per_source": {"HVS": 41, "NPH52": 17, "SEA_AD": 46},
     "normalization": "log1p(raw_count*10000/full_source_library)_EXACTLY_ONCE"
   },
-  "t0_status": "CLOSED",
-  "t0_terminal": "T0_MEASUREMENT_PROCEDURE_NOT_QUALIFIED_AT_N28__BIOLOGY_UNRESOLVED",
-  "t0_current_role": "RETROSPECTIVE_METHOD_FALSIFICATION_ONLY__CANNOT_CERTIFY_V5",
-  "target_discovery": {
-    "TD57B": "HISTORICAL_PASS_24_OF_24_GLOBAL_DONOR_RECURRENT_RELATIONAL_ORDERING",
-    "TD57C": "FAIL_NEAREST_THIRD_LOCALITY__FAILURE_STANDS",
-    "TD59": "HISTORICAL_PASS_24_OF_24_PILOT_ONLY__NOT_PRODUCTION_LOCALITY_AUTHORITY",
-    "TD60": "PROSPECTIVE__WAITS_FOR_LAWFUL_DATASET_DERIVED_EMA_TEACHER"
-  },
-  "matching_state_resolution": {
-    "q_depth_lossless_discrete_preimage": true,
-    "q_detect_lossless_discrete_preimage": true,
-    "support_measurability_redundant_with_operator": true,
-    "singleton_cell_fraction": 0.99911,
-    "maximum_stratum_size": 3,
-    "terminal": "V2_MATCHED_NULL_TECHNICALLY_DEFINED__OPERATIONALLY_DEGENERATE"
-  },
   "local_parameter_lane": {
     "substantively_complete": true,
     "serious_candidate_view_counts": [2, 3, 4, 6],
     "same_cell_thinning_screening_retention_fractions": [1.0, 0.9, 0.75, 0.5, 0.25],
     "historical_control_difficulty_order_recovered": true,
-    "unrestricted_cross_source_donor_permutation_rejected": true,
-    "naive_source_only_donor_permutation_rejected_under_operator_exposure_confounding": true,
-    "cell_level_within_operator_permutation_rejected_for_pseudoreplication": true,
-    "aggressive_residualization_without_structure_gate_rejected": true,
-    "pooled_cross_source_operator_exposure_slope_rejected": true,
     "strongest_unfrozen_candidate_family": "DONOR_LEVEL_INFERENCE + SOURCE_BLOCKING + SOURCE_CONDITIONAL_OPERATOR_EXPOSURE_NUISANCE_MODEL + WHOLE_PROCEDURE_RESIDUAL/CONDITIONAL_RANDOMIZATION_CALIBRATION + STRUCTURE_PRESERVATION_GATE + SAME_CELL_MEASUREMENT_INTERVENTION_GATE"
   },
-  "historical_control_difficulty_heldout_combined_lawful_RNA_R2": {
-    "core_halo": 0.999629,
-    "local_halo": 0.998738,
-    "local": 0.994047,
-    "broad_common": 0.979218,
-    "local_core": 0.975574,
-    "weak_distributed": 0.952972,
-    "sparse_marker_like": 0.934011,
-    "innovation_tail": 0.575256,
-    "recurrent_5pct": 0.340912,
-    "recurrent_1pct": 0.031173
-  },
-  "heavy_machine_current_assignment": "K2_GENUINELY_DISJOINT_COMMON_CORE_FULL104_REFERENCE_REBUILD_AND_REPRESENTATION_DEPENDENT_CHARACTERIZATION_ONLY",
-  "k2_reference_partition_interim": {
-    "namespace": "JEPA_V5_COMMON_CORE_DISJOINT_VIEW_PARTITION_V1",
+  "k2_reference_rebuild": {
+    "mechanics_and_lineage_pass": true,
+    "heavy_head": "d9938dd782443b5310919ecf6c14099c0b4c23ec",
     "common_core": 17186,
-    "view0": 8568,
-    "view1": 8618,
+    "view0_addresses": 8568,
+    "view1_addresses": 8618,
     "intersection": 0,
-    "view0_address_sha256": "0cda9e8ed75f23d244bf1b4e67b881df43c6c3749f21d13a0491bfd2b1884b37",
-    "view1_address_sha256": "76432f120a154ba78f1534f9e1b1ee018007fdda26cbbe4d435cc1c5bb5b4669",
-    "core_address_sha256": "f23342ac67dde64a53d86b2e271b473a01c8bd97a490cb3497e1f39feee91bb8",
     "partition_artifact_sha256": "129631f95c9ef90bd5a4af2a70cbc2adbbf907ed6357b9c13c4aa370cafc1575",
-    "final_view_count_authority": false
+    "v0_full_sha256": "3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada",
+    "v1_full_sha256": "c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c",
+    "assembly_seen_sha256": "0339d2e79599419f369d78cddf14448019f89476eb674000437b72a1b4fb640e",
+    "full512_numerical_rank_v0_v1": [512, 512],
+    "full512_condition_v0_v1": [411, 445],
+    "full512_participation_ratio_v0_v1": [35.6, 37.3],
+    "full512_spectral_entropy_rank_v0_v1": [201, 204],
+    "full512_rank99_v0_v1": [493, 492],
+    "full512_noise_floor_rank_v0_v1": [480, 480],
+    "donor_var_fraction_v0_v1": [0.15166, 0.15100],
+    "operator_var_fraction_v0_v1": [0.17883, 0.17961],
+    "source_var_fraction_v0_v1": [0.13798, 0.13712],
+    "q_depth_max_abs_corr_v0_v1": [0.67166, 0.64221],
+    "q_detect_max_abs_corr_v0_v1": [0.77254, 0.74523]
   },
-  "representation_dependent_outputs_still_required": [
-    "new feature-array hashes/dtypes/shapes",
-    "new partition disjointness/union receipt",
-    "per-view covariance spectrum/effective rank/conditioning",
-    "per-view QC/source/operator predictability",
-    "view-specific sparsity and geometry",
-    "rank-support evidence",
-    "nuisance reduction versus structure preservation",
-    "same-cell representation response",
-    "whole-procedure null/control calibration"
+  "visibility_channel_blocker": {
+    "status": "OPEN",
+    "reason": "CURRENT_256_VISIBILITY_CHANNELS_LIKELY_DIRECTLY_ENCODE_DETECTION_COUNT_AND_WORSEN_QC_COUPLING",
+    "required_ablation": ["VALUE_ONLY_256", "VISIBILITY_ONLY_256", "FULL_512"],
+    "new_expression_rebuild_authorized": false,
+    "primary_representation_authority_frozen": false,
+    "rank_authority_frozen": false,
+    "v3_null_authority_frozen": false
+  },
+  "current_decision_logic": [
+    "freeze existing K2 arrays; no new rebuild yet",
+    "verify exact producer column mapping",
+    "run value-only / visibility-only / full ablation",
+    "recompute spectrum, rank, QC/source/operator nuisance and geometry preservation",
+    "if visibility is dominant QC encoder and value-only preserves geometry, demote visibility to nuisance-control semantics",
+    "only after primary representation is settled revisit rank authority and V3 null",
+    "compare K2 reference with locally narrowed K={2,3,4,6} before any second full rebuild",
+    "keep D_shared sealed"
   ],
   "hard_boundaries": {
     "training_authorized": false,
@@ -112,25 +97,15 @@
     "relational_target_activation_authorized": false,
     "external_validation_outcomes_authorized_for_design": false
   },
-  "still_unfrozen": [
-    "final view count K",
-    "final V3 null family",
-    "final nuisance model/hyperparameters",
-    "final rank-support rule/envelope",
-    "same-cell qualification thresholds",
-    "structure-preservation thresholds",
-    "successor D_shared decision authority"
-  ],
-  "next_actions": [
-    "re-fetch/authenticate Claude K2 rebuilt representation-dependent evidence",
-    "do not re-promote population/exactly-once assembly as new discovery",
-    "review spectrum/effective rank/conditioning and QC/source/operator predictability",
-    "compare K2 full-scale reference to local K={2,3,4,6} information budget before any second heavy rebuild",
-    "requalify source-conditional donor-level nuisance/null candidate family on rebuilt representation",
-    "freeze structural rank-support and V3 authority prospectively",
-    "use T0 only as falsification",
-    "qualify FULL104 measurement procedure before D_shared"
-  ],
-  "d_shared_outcomes_inspected": false,
-  "training_authorized": false
+  "terminals": [
+    "LOCAL_PARAMETER_DERIVATION_AND_FALSIFICATION_LANE_SUBSTANTIVELY_COMPLETE",
+    "PASS_GENUINELY_DISJOINT_COMMON_CORE_VIEWS",
+    "PASS_V5_REBUILT_FEATURE_SUBSTRATE_MECHANICS_AND_LINEAGE",
+    "VALUE_VISIBILITY_ABLATION_REQUIRED_BEFORE_PRIMARY_REPRESENTATION_AUTHORITY",
+    "PRIMARY_REPRESENTATION_AUTHORITY_NOT_YET_FROZEN",
+    "RANK_SUPPORT_AUTHORITY_NOT_YET_FROZEN",
+    "V3_NULL_NOT_YET_DESIGNED_OR_EXECUTED",
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION",
+    "TRAINING_OFF"
+  ]
 }
