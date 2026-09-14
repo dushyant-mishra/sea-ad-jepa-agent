@@ -47,6 +47,7 @@ jobs:
           tests/test_d_shared_authority_v2.py
           tests/test_d_shared_execution_firewall_v2.py
           tests/test_d_shared_rank_adjudication_v2.py
+          tests/test_full104_reconnaissance_authority_v1.py
           tests/test_preexecution_dependency_guard_v1.py
           tests/test_preexecution_qualification_bundle_v2.py
           tests/test_postqualification_dependency_guard_v2.py
