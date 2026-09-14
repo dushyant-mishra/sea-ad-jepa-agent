@@ -20,7 +20,14 @@ _EXPECTED_SHAPES = {
     "A_views": [4_553_407, 4, 512],
     "B_views": [4_553_407, 4, 512],
 }
+_EXPECTED_LOGICAL_FILES = {"A_full", "B_full", "A_views", "B_views", "physical_descriptors", "ASSEMBLY_SEEN", "rows"}
 _ALLOWED_CLASSIFICATIONS = {"CERTIFIABLE_EXACT_DERIVATION", "CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"}
+_ALLOWED_WRITER_REPLAY_STATUS = {
+    "EXACT_WRITER_REPLAY_VERIFIED",
+    "ORIGINAL_WRITER_HASH_UNRESOLVED__PUBLISHED_BYTES_AND_SEMANTICS_VERIFIED",
+}
+_LOCATION_POLICY = "CONTENT_HASH_AND_LOGICAL_NAME_AUTHORITATIVE__ABSOLUTE_PATH_INFORMATIONAL_ONLY_V1"
+_EXPECTED_NORMALIZATION = "log1p(raw_count*10000/full_source_library)"
 _FORBIDDEN_TRUE = (
     "filtering_applied",
     "cell_capping_applied",
@@ -55,6 +62,21 @@ def _gitsha40(value: object, field: str) -> str:
     return value.lower()
 
 
+def _nonempty_string(value: object, field: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise FeatureLineageStop(f"STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:{field}")
+    return value
+
+
+def _fraction(value: object, field: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise FeatureLineageStop(f"STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:{field}")
+    out = float(value)
+    if out < 0.0 or out > 1.0:
+        raise FeatureLineageStop(f"STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:{field}")
+    return out
+
+
 def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
     if not isinstance(receipt, Mapping):
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_NOT_MAPPING")
@@ -85,8 +107,43 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
         _sha64(digest, f"producer_script_sha256[{path}]")
     _gitsha40(receipt.get("producer_commit_sha256"), "producer_commit_sha256")
     transform_sha = _sha64(receipt.get("transformation_contract_sha256"), "transformation_contract_sha256")
-    _sha64(receipt.get("row_identity_digest_sha256"), "row_identity_digest_sha256")
-    _sha64(receipt.get("address_identity_digest_sha256"), "address_identity_digest_sha256")
+
+    try:
+        row_identity_sha = _sha64(receipt.get("row_identity_digest_sha256"), "row_identity_digest_sha256")
+        donor_identity_sha = _sha64(receipt.get("donor_identity_digest_sha256"), "donor_identity_digest_sha256")
+        operator_identity_sha = _sha64(receipt.get("operator_identity_digest_sha256"), "operator_identity_digest_sha256")
+        row_order_sha = _sha64(receipt.get("row_order_identity_digest_sha256"), "row_order_identity_digest_sha256")
+        address_identity_sha = _sha64(receipt.get("address_identity_digest_sha256"), "address_identity_digest_sha256")
+    except FeatureLineageStop as exc:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_IDENTITY_DISCLOSURE") from exc
+
+    if receipt.get("normalization_formula") != _EXPECTED_NORMALIZATION:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:normalization_formula")
+    _nonempty_string(receipt.get("sketch_projection_semantics"), "sketch_projection_semantics")
+    _nonempty_string(receipt.get("visibility_channel_construction"), "visibility_channel_construction")
+    if receipt.get("view_count") != 4:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:view_count")
+    visible_fraction = _fraction(receipt.get("visible_fraction"), "visible_fraction")
+    mask_fraction = _fraction(receipt.get("mask_fraction"), "mask_fraction")
+    if abs((visible_fraction + mask_fraction) - 1.0) > 1e-12:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:visible_mask_fraction")
+    if receipt.get("pca_svd_feature_reduction_applied") is not False:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TRANSFORM_DISCLOSURE:pca_svd_feature_reduction_applied")
+
+    published = receipt.get("logical_name_to_content_sha256")
+    if not isinstance(published, Mapping) or set(published) != _EXPECTED_LOGICAL_FILES:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_LOGICAL_FILE_BINDING")
+    normalized_published: dict[str, str] = {}
+    for name in sorted(_EXPECTED_LOGICAL_FILES):
+        normalized_published[name] = _sha64(published.get(name), f"logical_name_to_content_sha256[{name}]")
+
+    writer_status = receipt.get("original_writer_replay_status")
+    if writer_status not in _ALLOWED_WRITER_REPLAY_STATUS:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_WRITER_REPLAY_STATUS")
+    if receipt.get("location_identity_policy") != _LOCATION_POLICY:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_LOCATION_POLICY")
+    if receipt.get("historical_measurement_geometry_current_v5_authorized") is not False:
+        raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_MEASUREMENT_GEOMETRY_NOT_AUTHORIZED")
 
     for field, expected in _EXPECTED_GEOMETRY.items():
         value = receipt.get(field)
@@ -118,6 +175,8 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
     if classification == "CERTIFIABLE_EXACT_DERIVATION":
         if repair_applied is not False or repair_sha is not None:
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_EXACT_WITH_REPAIR")
+        if writer_status != "EXACT_WRITER_REPLAY_VERIFIED":
+            raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_EXACT_WRITER_REPLAY_NOT_VERIFIED")
         if certified_feature != HISTORICAL_FEATURE_MATRIX_ROOT_SHA256 or certified_multiview != HISTORICAL_MULTIVIEW_ROOT_SHA256:
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_EXACT_CERTIFIED_ROOT_MISMATCH")
     else:
@@ -127,6 +186,8 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
             _sha64(repair_sha, "mechanics_repair_receipt_sha256")
         except FeatureLineageStop as exc:
             raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_REPAIR_RECEIPT") from exc
+        if writer_status != "ORIGINAL_WRITER_HASH_UNRESOLVED__PUBLISHED_BYTES_AND_SEMANTICS_VERIFIED":
+            raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_REPAIR_WRITER_STATUS")
 
     if receipt.get("terminal") != "PASS_FULL104_FEATURE_LINEAGE_V1":
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_TERMINAL")
@@ -135,6 +196,13 @@ def _validate_payload(receipt: Mapping[str, object]) -> dict[str, object]:
     out["certified_feature_matrix_root_sha256"] = certified_feature
     out["certified_multiview_root_sha256"] = certified_multiview
     out["transformation_contract_sha256"] = transform_sha
+    out["row_identity_digest_sha256"] = row_identity_sha
+    out["donor_identity_digest_sha256"] = donor_identity_sha
+    out["operator_identity_digest_sha256"] = operator_identity_sha
+    out["row_order_identity_digest_sha256"] = row_order_sha
+    out["address_identity_digest_sha256"] = address_identity_sha
+    out["logical_name_to_content_sha256"] = normalized_published
+    out["historical_measurement_geometry_current_v5_authorized"] = False
     out["d_shared_real_outcome_access_authorized"] = False
     out["training_authorized"] = False
     return out
@@ -148,6 +216,11 @@ def _parents(payload: Mapping[str, object]) -> dict[str, str]:
         "certified_feature_matrix_root_sha256": _sha64(payload.get("certified_feature_matrix_root_sha256"), "certified_feature_matrix_root_sha256"),
         "certified_multiview_root_sha256": _sha64(payload.get("certified_multiview_root_sha256"), "certified_multiview_root_sha256"),
         "transformation_contract_sha256": _sha64(payload.get("transformation_contract_sha256"), "transformation_contract_sha256"),
+        "row_identity_digest_sha256": _sha64(payload.get("row_identity_digest_sha256"), "row_identity_digest_sha256"),
+        "donor_identity_digest_sha256": _sha64(payload.get("donor_identity_digest_sha256"), "donor_identity_digest_sha256"),
+        "operator_identity_digest_sha256": _sha64(payload.get("operator_identity_digest_sha256"), "operator_identity_digest_sha256"),
+        "row_order_identity_digest_sha256": _sha64(payload.get("row_order_identity_digest_sha256"), "row_order_identity_digest_sha256"),
+        "address_identity_digest_sha256": _sha64(payload.get("address_identity_digest_sha256"), "address_identity_digest_sha256"),
     }
 
 
@@ -168,6 +241,6 @@ def validate_full104_feature_lineage_v1(envelope: Mapping[str, object]) -> dict[
             expected_schema=FULL104_FEATURE_LINEAGE_ARTIFACT_SCHEMA,
             expected_parents=_parents(raw_payload),
         )
-    except (ValueError, RuntimeError) as exc:
+    except (ValueError, RuntimeError, FeatureLineageStop) as exc:
         raise FeatureLineageStop("STOP_FULL104_FEATURE_LINEAGE_ARTIFACT_INVALID") from exc
     return _validate_payload(payload)
