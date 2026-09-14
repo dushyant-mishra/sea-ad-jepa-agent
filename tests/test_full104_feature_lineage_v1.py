@@ -89,7 +89,7 @@ def _receipt(classification="CERTIFIABLE_EXACT_DERIVATION"):
         "protected_data_used": False,
         "checkpoint_outcomes_used": False,
         "adaptive_outcome_choice_used": False,
-        "deterministic_reproduction_passed": True,
+        "deterministic_reproduction_passed": not repaired,
         "mechanics_repair_applied": repaired,
         "mechanics_repair_receipt_sha256": ("9" * 64 if repaired else None),
         "semantic_transform_unchanged": True,
@@ -152,6 +152,17 @@ def test_feature_lineage_rejects_incomplete_transform_disclosure_or_geometry_aut
         m.seal_full104_feature_lineage_v1(bad)
 
 
+def test_historical_feature_lineage_rejects_frozen_geometry_or_transform_substitution():
+    m = _module()
+    bad = _receipt(); bad["visible_fraction"] = 0.50; bad["mask_fraction"] = 0.50
+    with pytest.raises(m.FeatureLineageStop, match="TRANSFORM"):
+        m.seal_full104_feature_lineage_v1(bad)
+    for field in ("clipping_applied", "winsorization_applied", "imputation_applied"):
+        bad = _receipt(); bad[field] = True
+        with pytest.raises(m.FeatureLineageStop, match="TRANSFORM"):
+            m.seal_full104_feature_lineage_v1(bad)
+
+
 def test_feature_lineage_rejects_noncertifiable_derivation_and_root_substitution():
     m = _module()
     bad = _receipt("NOT_CERTIFIABLE_REBUILD_FROM_AUTHENTICATED_FULL104_REQUIRED")
@@ -167,10 +178,14 @@ def test_mechanics_repair_classification_requires_explicit_repair_receipt_and_se
     good = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY")
     payload = m.validate_full104_feature_lineage_v1(m.seal_full104_feature_lineage_v1(good))
     assert payload["mechanics_repair_applied"] is True
+    assert payload["deterministic_reproduction_passed"] is False
     assert payload["original_writer_replay_status"] == "ORIGINAL_WRITER_HASH_UNRESOLVED__PUBLISHED_BYTES_AND_SEMANTICS_VERIFIED"
     bad = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"); bad["mechanics_repair_receipt_sha256"] = None
     with pytest.raises(m.FeatureLineageStop, match="REPAIR_RECEIPT"):
         m.seal_full104_feature_lineage_v1(bad)
     bad = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"); bad["semantic_transform_unchanged"] = False
     with pytest.raises(m.FeatureLineageStop, match="SEMANTIC_TRANSFORM"):
+        m.seal_full104_feature_lineage_v1(bad)
+    bad = _receipt("CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY"); bad["deterministic_reproduction_passed"] = True
+    with pytest.raises(m.FeatureLineageStop, match="WRITER|DETERMINISTIC"):
         m.seal_full104_feature_lineage_v1(bad)
