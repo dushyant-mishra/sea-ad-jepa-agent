@@ -1,0 +1,57 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT_V1",
+  "date": "2026-09-14",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "active_branch": "repair/v5-dshared-authority-v2-20260914",
+  "handoff_content_base_head": "d9938dd782443b5310919ecf6c14099c0b4c23ec",
+  "handoff_markdown_commit": "a24d3987d8117526f2798af88d8b135fbc238d22",
+  "latest_known_workflow_run_before_handoff_commit": 34866260614,
+  "latest_known_workflow_conclusion": "failure_intentional_red",
+  "latest_known_test_result": {
+    "passed": 256,
+    "failed": 8
+  },
+  "last_clean_green_head": "0d857e33bf70c6350752681032910e80fad5a5ad",
+  "last_clean_green_result": "258 passed; 31/31 critical; compile PASS",
+  "d_shared_authority_v2_sha256": "f9568eb19a22f106b0be3ce0580bc1058695ca1a2de6dd2d0475c3240a6bbda2",
+  "full104_dimension_input_artifact_sha256": "eb1264489306413fb57316abe7f70205a771248881302d8c867c70b69273f1ad",
+  "feature_matrix_root_sha256": "c9a6ede6f33a4a9d4ce22cde0f1a8c0fb5e7e039bac3df364325c778487329ef",
+  "multiview_root_sha256": "d6f70ee1bca777f3d2cbd89dd560395cc46ec25f6a648ae4ba0fd6e77c1c2cf1",
+  "t0_status": "CLOSED",
+  "t0_terminal": "T0_MEASUREMENT_PROCEDURE_NOT_QUALIFIED_AT_N28__BIOLOGY_UNRESOLVED",
+  "governing_rule": "UNDERSTAND_FULL104_DEEPLY__KEEP_FINAL_D_SHARED_HYPOTHESIS_TEST_SEALED",
+  "matching_state_current_terminal": "STOP_D_SHARED_MATCHED_NULL_STRATIFICATION_UNSPECIFIED",
+  "matching_resolution_policy": "LOSSLESS_DISCRETE_PREIMAGE_FIRST__NO_ARBITRARY_BINS__ELSE_PROSPECTIVE_V3_NULL",
+  "feature_lineage_classification": "CERTIFIABLE_WITH_MECHANICS_REPAIR_ONLY_PENDING_F1_F2_AND_HARDENED_RECEIPT",
+  "f1": "ORIGINAL_WRITER_HASH_UNRESOLVED__PUBLISHED_BYTES_AND_SEMANTICS_VERIFIED",
+  "f2": "HISTORICAL_VIEWS4_VISIBLE060_NOT_CURRENT_V5_MEASUREMENT_AUTHORITY",
+  "f3": "CONTENT_HASH_AND_LOGICAL_NAME_AUTHORITATIVE__ABSOLUTE_PATH_INFORMATIONAL_ONLY_V1",
+  "hard_boundaries": {
+    "training_authorized": false,
+    "protected_data_authorized": false,
+    "numeric_dimensions_authorized": false,
+    "d_shared_real_outcome_access_authorized": false,
+    "d_private_execution_authorized": false,
+    "d_obs_execution_authorized": false,
+    "td60_authorized": false,
+    "relational_target_activation_authorized": false,
+    "external_validation_outcomes_authorized_for_design": false
+  },
+  "claude_instruction_file": "docs/agent/V5_CLAUDE_FULL104_RECON_AND_MATCHING_RESOLUTION_20260914.md",
+  "current_red_failures": [
+    "three reconnaissance fixture/error-order failures under new evidence binding",
+    "one feature-lineage fail-open on donor/operator identity and transform disclosure",
+    "four missing d_shared_matching_state_resolution_v1 module tests"
+  ],
+  "next_repo_actions": [
+    "repair reconnaissance fixtures while preserving evidence binding",
+    "harden feature-lineage validator",
+    "implement d_shared_matching_state_resolution_v1",
+    "restore exact-head green protected CI",
+    "adjudicate Claude outcome-blind reconnaissance",
+    "freeze numeric V5 measurement-qualification plan from real FULL104 scales",
+    "qualify measurement procedure before real D_shared"
+  ],
+  "d_shared_outcomes_inspected": false,
+  "training_authorized": false
+}
