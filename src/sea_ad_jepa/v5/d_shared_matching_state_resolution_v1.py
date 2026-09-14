@@ -57,14 +57,39 @@ def _validate_occupancy(value: object) -> dict[str, object]:
     if cells_total != _EXPECTED_CELLS:
         raise MatchingStateResolutionStop("STOP_D_SHARED_MATCHING_STATE_OCCUPANCY_CELLS")
     strata_total = _int(value.get("strata_total"), "occupancy.strata_total", minimum=1)
-    buckets = {
+    cell_buckets = {
         "cells_in_singleton_strata": _int(value.get("cells_in_singleton_strata"), "occupancy.cells_in_singleton_strata"),
         "cells_in_size_2_3_strata": _int(value.get("cells_in_size_2_3_strata"), "occupancy.cells_in_size_2_3_strata"),
         "cells_in_size_4_7_strata": _int(value.get("cells_in_size_4_7_strata"), "occupancy.cells_in_size_4_7_strata"),
         "cells_in_size_ge_8_strata": _int(value.get("cells_in_size_ge_8_strata"), "occupancy.cells_in_size_ge_8_strata"),
     }
-    if sum(buckets.values()) != cells_total:
+    stratum_buckets = {
+        "strata_size_1": _int(value.get("strata_size_1"), "occupancy.strata_size_1"),
+        "strata_size_2_3": _int(value.get("strata_size_2_3"), "occupancy.strata_size_2_3"),
+        "strata_size_4_7": _int(value.get("strata_size_4_7"), "occupancy.strata_size_4_7"),
+        "strata_size_ge_8": _int(value.get("strata_size_ge_8"), "occupancy.strata_size_ge_8"),
+    }
+    if sum(cell_buckets.values()) != cells_total:
         raise MatchingStateResolutionStop("STOP_D_SHARED_MATCHING_STATE_OCCUPANCY_PARTITION")
+    if sum(stratum_buckets.values()) != strata_total:
+        raise MatchingStateResolutionStop("STOP_D_SHARED_MATCHING_STATE_OCCUPANCY_STRATA_PARTITION")
+    if cell_buckets["cells_in_singleton_strata"] != stratum_buckets["strata_size_1"]:
+        raise MatchingStateResolutionStop("STOP_D_SHARED_MATCHING_STATE_OCCUPANCY_SINGLETON_CONSISTENCY")
+
+    bounded = (
+        ("cells_in_size_2_3_strata", "strata_size_2_3", 2, 3),
+        ("cells_in_size_4_7_strata", "strata_size_4_7", 4, 7),
+    )
+    for cell_key, strata_key, lo, hi in bounded:
+        cells = cell_buckets[cell_key]
+        strata = stratum_buckets[strata_key]
+        if cells < lo * strata or cells > hi * strata:
+            raise MatchingStateResolutionStop("STOP_D_SHARED_MATCHING_STATE_OCCUPANCY_BUCKET_CONSISTENCY")
+    ge8_cells = cell_buckets["cells_in_size_ge_8_strata"]
+    ge8_strata = stratum_buckets["strata_size_ge_8"]
+    if ge8_cells < 8 * ge8_strata or (ge8_cells > 0 and ge8_strata == 0):
+        raise MatchingStateResolutionStop("STOP_D_SHARED_MATCHING_STATE_OCCUPANCY_BUCKET_CONSISTENCY")
+
     size_min = _int(value.get("stratum_size_min"), "occupancy.stratum_size_min", minimum=1)
     size_median = _number(value.get("stratum_size_median"), "occupancy.stratum_size_median", minimum=1.0)
     size_p95 = _number(value.get("stratum_size_p95"), "occupancy.stratum_size_p95", minimum=1.0)
@@ -76,7 +101,8 @@ def _validate_occupancy(value: object) -> dict[str, object]:
     return {
         "cells_total": cells_total,
         "strata_total": strata_total,
-        **buckets,
+        **cell_buckets,
+        **stratum_buckets,
         "stratum_size_min": size_min,
         "stratum_size_median": size_median,
         "stratum_size_p95": size_p95,
