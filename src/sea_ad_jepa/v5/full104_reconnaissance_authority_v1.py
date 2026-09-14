@@ -109,6 +109,17 @@ def validate_full104_reconnaissance_authority_v1(authority: Mapping[str, object]
     }
 
 
+def _evidence_bindings(receipt: Mapping[str, object]) -> tuple[dict[str, str], str]:
+    evidence = receipt.get("diagnostic_evidence_sha256")
+    if not isinstance(evidence, Mapping) or set(evidence) != set(_ALLOWED_DIAGNOSTICS):
+        raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_EVIDENCE_BINDINGS_INCOMPLETE")
+    normalized: dict[str, str] = {}
+    for diagnostic in _ALLOWED_DIAGNOSTICS:
+        normalized[diagnostic] = _sha(evidence.get(diagnostic), f"diagnostic_evidence_sha256[{diagnostic}]")
+    root = _sha(receipt.get("reconnaissance_evidence_root_sha256"), "reconnaissance_evidence_root_sha256")
+    return normalized, root
+
+
 def _validate_receipt_payload(receipt: Mapping[str, object]) -> dict[str, object]:
     if not isinstance(receipt, Mapping):
         raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_RECEIPT_NOT_MAPPING")
@@ -123,6 +134,7 @@ def _validate_receipt_payload(receipt: Mapping[str, object]) -> dict[str, object
     diagnostics = receipt.get("diagnostics_completed")
     if not isinstance(diagnostics, Sequence) or isinstance(diagnostics, (str, bytes)) or list(diagnostics) != list(_ALLOWED_DIAGNOSTICS):
         raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_DIAGNOSTICS_INCOMPLETE")
+    evidence, root = _evidence_bindings(receipt)
     for field in _FORBIDDEN_DECISION_FIELDS:
         if field in receipt:
             raise Full104ReconnaissanceStop(f"STOP_FULL104_RECONNAISSANCE_DECISION_FIELD_PRESENT:{field}")
@@ -134,38 +146,41 @@ def _validate_receipt_payload(receipt: Mapping[str, object]) -> dict[str, object
     if receipt.get("terminal") != "PASS_FULL104_OUTCOME_BLIND_RECONNAISSANCE_V1":
         raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_RECEIPT_TERMINAL")
     out = dict(receipt)
+    out["diagnostic_evidence_sha256"] = evidence
+    out["reconnaissance_evidence_root_sha256"] = root
     out["reconnaissance_authority_sha256"] = FROZEN_RECONNAISSANCE_AUTHORITY_SHA256
     out["d_shared_real_outcome_access_authorized"] = False
     out["training_authorized"] = False
     return out
 
 
+def _parents(payload: Mapping[str, object]) -> dict[str, str]:
+    return {
+        "full104_dimension_input_artifact_sha256": EXPECTED_FULL104_ARTIFACT_SHA256,
+        "reconnaissance_authority_sha256": FROZEN_RECONNAISSANCE_AUTHORITY_SHA256,
+        "reconnaissance_evidence_root_sha256": _sha(payload.get("reconnaissance_evidence_root_sha256"), "reconnaissance_evidence_root_sha256"),
+    }
+
+
 def seal_full104_reconnaissance_receipt_v1(authority: Mapping[str, object], receipt: Mapping[str, object]) -> dict[str, object]:
     validate_full104_reconnaissance_authority_v1(authority)
     payload = _validate_receipt_payload(receipt)
-    return seal_artifact(
-        FULL104_RECONNAISSANCE_ARTIFACT_SCHEMA,
-        payload,
-        {
-            "full104_dimension_input_artifact_sha256": EXPECTED_FULL104_ARTIFACT_SHA256,
-            "reconnaissance_authority_sha256": FROZEN_RECONNAISSANCE_AUTHORITY_SHA256,
-        },
-    )
+    return seal_artifact(FULL104_RECONNAISSANCE_ARTIFACT_SCHEMA, payload, _parents(payload))
 
 
 def validate_full104_reconnaissance_receipt_v1(envelope: Mapping[str, object]) -> dict[str, object]:
     if not isinstance(envelope, Mapping):
         raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_ENVELOPE_NOT_MAPPING")
+    raw_payload = envelope.get("payload")
+    if not isinstance(raw_payload, Mapping):
+        raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_PAYLOAD_NOT_MAPPING")
     try:
         payload = validate_artifact(
             envelope,
             expected_schema=FULL104_RECONNAISSANCE_ARTIFACT_SCHEMA,
-            expected_parents={
-                "full104_dimension_input_artifact_sha256": EXPECTED_FULL104_ARTIFACT_SHA256,
-                "reconnaissance_authority_sha256": FROZEN_RECONNAISSANCE_AUTHORITY_SHA256,
-            },
+            expected_parents=_parents(raw_payload),
         )
-    except (ValueError, RuntimeError) as exc:
+    except (ValueError, RuntimeError, Full104ReconnaissanceStop) as exc:
         raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_ARTIFACT_INVALID") from exc
     if payload.get("reconnaissance_authority_sha256") != FROZEN_RECONNAISSANCE_AUTHORITY_SHA256:
         raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_AUTHORITY_PARENT_MISMATCH")
