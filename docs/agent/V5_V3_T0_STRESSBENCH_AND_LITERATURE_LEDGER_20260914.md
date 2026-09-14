@@ -21,6 +21,24 @@ Verification result:
 
 The final ledger commit itself must be re-fetched before any later current-state claim.
 
+## Historical work is now a required input
+
+Before proposing any new geometry, view count, null, nuisance adjustment, training schedule or expensive FULL104 run, read:
+
+`docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md`
+
+That ledger consolidates prior discovery, feature-lineage, T0, Target Discovery, T1/training, QID/F1, FULL104 reconnaissance and current Claude/heavy-machine work. It distinguishes durable findings from superseded implementation choices.
+
+Current local parameter screening is recorded in:
+
+`docs/agent/V5_LOCAL_PARAMETER_DERIVABILITY_AUDIT_20260914.md`
+
+Historical-first rule:
+
+`READ_HISTORICAL_LEDGER -> EXHAUST_LOCAL_DISCOVERY_CALIBRATION_DERIVATIONS -> NARROW_CANDIDATES -> SPECIFY_RESIDUAL_HEAVY_QUESTION -> ONLY_THEN_RUN_FULL104`
+
+This rule exists because the frozen historical discovery assets already answer or constrain many design questions, including support geometry, source/operator aliasing, donor-block validation, support-only falsification, nuisance channels, neighborhood scales, measurement-depth ranges and candidate disjoint-view counts.
+
 ## Governing scientific rule
 
 `DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> PRODUCTION GEOMETRY -> MODEL`
@@ -68,6 +86,7 @@ Key findings:
 6. Historical A/B are independent hash projections of the same 41,238-address molecular content, not genuinely disjoint molecular views.
 7. Historical pooled covariance is singular; effective dimensionality is far below nominal 512.
 8. Q_DEPTH and Q_DETECT are materially correlated with feature coordinates.
+9. Donors, operators and support patterns are nested within source; no donor/operator crosses source.
 
 Interpretation:
 
@@ -75,13 +94,37 @@ Interpretation:
 
 This is not evidence that biology is absent. It is evidence that the control assay is invalid at exact matching resolution.
 
+## Local historical/discovery re-use now completed
+
+The frozen local discovery/calibration assets were audited rather than treating the environment as empty.
+
+Reusable historical findings include:
+
+- 17,186-address universal common measured core;
+- 9 recurring support patterns across 42 operators;
+- common-core / operator-aware / within-source geometry separation;
+- donor-block resampling/generalization requirement;
+- support-only geometry as a falsification control;
+- strong source/support readability before training;
+- historical exploratory cosine-kNN scales `k={15,30,60,120}`;
+- historical graph resolutions `{0.25,0.5,1.0,2.0}`;
+- historical T1 anti-cheat mechanics and Target Discovery terminals preserved separately.
+
+Current local screens using the 84-cell/all-operator calibration truth table plus frozen 50K discovery expression narrow serious genuinely disjoint molecular-view counts approximately to:
+
+`K in {2,3,4,6}`
+
+K>=8 begins paying a clearer per-view sparsity/information cost on the local frozen discovery geometry. This is a screening result, not final K authority.
+
+The current heavy K=2 rebuild therefore remains a **reference full-scale substrate**, not an automatically final two-view design.
+
 ## Sequencing change now adopted
 
 Do not design/freeze final V3 null against the historical A/B substrate.
 
 Current order:
 
-`authenticated FULL104 -> genuinely disjoint molecular views -> rebuilt V5 feature substrate -> outcome-blind structural characterization -> supported rank envelope -> operator/QC nuisance characterization -> V3 null design -> T0 falsification -> FULL104 measurement qualification -> only then D_shared`
+`historical discovery + local frozen discovery/calibration -> parameter derivation/narrowing -> authenticated FULL104 -> genuinely disjoint molecular views -> rebuilt V5 feature substrate -> outcome-blind structural characterization -> supported rank envelope -> source/operator/QC nuisance characterization -> V3 null design -> T0 falsification -> FULL104 measurement qualification -> only then D_shared`
 
 Claude/heavy-machine lane was instructed to:
 
@@ -93,6 +136,18 @@ Claude/heavy-machine lane was instructed to:
 - characterize same-cell intervention feasibility;
 - return hash-bound evidence only;
 - NOT execute or inspect D_shared.
+
+Interim Claude K=2 partition:
+
+- namespace `JEPA_V5_COMMON_CORE_DISJOINT_VIEW_PARTITION_V1`;
+- common core 17,186;
+- view0/view1 = 8,568 / 8,618;
+- intersection 0;
+- exact union 17,186;
+- view0 address-list SHA-256 `0cda9e8ed75f23d244bf1b4e67b881df43c6c3749f21d13a0491bfd2b1884b37`;
+- view1 address-list SHA-256 `76432f120a154ba78f1534f9e1b1ee018007fdda26cbbe4d435cc1c5bb5b4669`;
+- core address-list SHA-256 `f23342ac67dde64a53d86b2e271b473a01c8bd97a490cb3497e1f39feee91bb8`;
+- partition artifact SHA-256 `129631f95c9ef90bd5a4af2a70cbc2adbbf907ed6357b9c13c4aa370cafc1575`.
 
 ## T0 role
 
@@ -266,8 +321,8 @@ Still unfrozen:
 - conditional randomization model;
 - nuisance regression family/degree;
 - ridge value for production;
-- common-core final view partition;
-- final number of views;
+- final number of molecular views K;
+- final deterministic canonical K-way partition;
 - final rank envelope;
 - rank cutoff rule;
 - pair-preservation acceptance threshold;
@@ -279,20 +334,23 @@ No arbitrary depth/detection bins have been introduced.
 
 ## Current decision logic after Claude returns
 
-1. Authenticate Claude's rebuilt substrate and deterministic common-core partition.
+1. Authenticate Claude's rebuilt K=2 reference substrate and deterministic common-core partition.
 2. Verify genuine molecular disjointness and complete row/address lineage.
 3. Rerun/inspect outcome-blind spectrum, conditioning and nuisance dominance on the new substrate.
-4. Apply nuisance comparator and structure-preservation mechanics together; do not optimize one without the other.
-5. Characterize candidate exchangeability units and run the null-mobility audit before treating any permutation family as viable.
-6. Derive a prospective structural rank-support rule from the rebuilt spectrum/numerical stability; do not inherit 1..512 or choose a convenient threshold retrospectively.
-7. Freeze candidate V3 authority only after these inputs are reviewed.
-8. Use T0 to falsify the frozen candidate mechanics; T0 cannot certify V5.
-9. Run independent FULL104 measurement qualification at real geometry.
-10. Only after qualification and exact pre-outcome binding may one real D_shared execution be contemplated.
+4. Compare the K=2 full-scale information budget against the locally narrowed serious candidate family K={2,3,4,6} before authorizing any second heavy rebuild.
+5. Apply nuisance comparator and structure-preservation mechanics together; do not optimize one without the other.
+6. Characterize candidate exchangeability units and run the null-mobility audit before treating any permutation family as viable.
+7. Derive a prospective structural rank-support rule from the rebuilt spectrum/numerical stability; do not inherit 1..512 or choose a convenient threshold retrospectively.
+8. Freeze candidate V3 authority only after these inputs are reviewed.
+9. Use T0 to falsify the frozen candidate mechanics; T0 cannot certify V5.
+10. Run independent FULL104 measurement qualification at real geometry.
+11. Only after qualification and exact pre-outcome binding may one real D_shared execution be contemplated.
 
 ## Current hard terminals
 
 `V3_NULL_NOT_YET_DESIGNED_OR_EXECUTED`
+
+`FINAL_VIEW_COUNT_K_NOT_YET_FROZEN`
 
 `RANK_SUPPORT_AUTHORITY_NOT_YET_FROZEN`
 
@@ -320,4 +378,4 @@ Result:
 
 `305 passed; 45/45 critical tests executed and passed; authority-source compilation PASS`
 
-Do not claim the ledger-writing commit itself is verified by that run. Re-fetch the branch and its next workflow before making a newer green claim.
+Do not claim later ledger-writing commits are verified by that run. Re-fetch the branch and its latest workflow before making a newer green claim.
