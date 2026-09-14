@@ -1,38 +1,41 @@
 # START HERE — JEPA PROJECT
 
-Date: 2026-09-13
+Date: 2026-09-14
 
 ## Current project entrypoint
 
-For current V5 execution work, use:
+For current V5 execution/governance work, use:
 
-`repair/v5-prospective-precision-authority-20260913`
+`repair/v5-dshared-authority-v2-20260914`
 
-The prior planning branch `planning/v5-dataset-first-production-closure-20260912` remains the design/ancestry authority, but it no longer contains the latest execution-state governance by itself. `main` remains historical/governance ancestry only.
+The prior planning branch `planning/v5-dataset-first-production-closure-20260912` remains design/ancestry authority, but it no longer contains the latest execution-state governance by itself. `main` remains historical/governance ancestry only.
 
 Re-fetch the live active branch before every current-state claim. Branch names do not confer scientific authority.
 
 ## Read in this order
 
 1. `START_HERE.md`
-2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260913_CURRENT.json`
+2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260914_CURRENT.json`
 3. `docs/agent/V5_CURRENT_AUTHORITY_AND_BLOCKERS_20260913.md`
 4. `docs/agent/V5_MASTER_OPEN_ITEMS_20260913.md`
-5. `docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`
-6. `docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`
-7. `docs/agent/V5_GOVERNANCE_REFRESH_20260913.md`
-8. `docs/agent/JEPA_LIVE_BRANCH_INVENTORY_20260913.md`
-9. `docs/superpowers/specs/2026-09-12-v5-dataset-first-production-closure-design.md`
-10. `docs/agent/V5_EXTERNAL_REVIEW_FINAL_VERDICT_20260913.md`
-11. `docs/agent/V5_DIMENSION_NUMERIC_AUTHORITY_BLOCKERS_20260912.md` — historical blocker ledger; current status is superseded by item 3.
-12. `docs/agent/V5_TARGET_DISCOVERY_LEARNING_STEP_QUALIFICATION_AMENDMENT_20260912.md`
-13. `docs/agent/TEACHER_STUDENT_V5_ANTI_CHEAT_AND_T1_MECHANICS_FINDINGS_20260909.md`
-
-For T0 specifically, follow its own closeout authority. T0 remains separate methodology/test-rig work and does not supply V5 biological targets or numeric production constants.
+5. `docs/agent/V5_T0_LESSONS_DATA_AWARE_MEASUREMENT_QUALIFICATION_COURSE_CORRECTION_20260914.md`
+6. `docs/agent/V5_CLAUDE_DSHARED_FEATURE_LINEAGE_INSTRUCTIONS_20260914.md`
+7. `docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json`
+8. `docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`
+9. `docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`
+10. `docs/superpowers/specs/2026-09-12-v5-dataset-first-production-closure-design.md`
+11. `docs/agent/T0_V5_ORIENTATION_AND_CROSSWALK_20260912.md` — historical T0→V5 lesson source; T0 remains closed.
+12. `docs/agent/T0_MEASUREMENT_METHOD_CLOSEOUT_20260912.md` — historical T0 closeout; do not reinterpret its failed procedure as absence of biology.
 
 ## Governing scientific order
 
 `DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> PRODUCTION GEOMETRY -> MODEL`
+
+Current refinement:
+
+`UNDERSTAND_FULL104_DEEPLY__KEEP_FINAL_D_SHARED_HYPOTHESIS_TEST_SEALED`
+
+Prospective design does **not** mean blindness to the dataset. FULL104 should be characterized deeply enough to design and qualify the pipeline around the actual data. Only final decision-bearing current-V5 D_shared hypothesis-test outputs remain sealed until the complete procedure is frozen.
 
 Decision-bearing metrics must be unconditional over their declared evaluation population. Keep measurement failure, estimator failure, representation failure, unresolved technical confounding, biology-not-demonstrated, and a qualified biological negative distinct.
 
@@ -48,28 +51,47 @@ Closed under current V5 authority:
 - hardened FULL104 binder replay PASS;
 - 4,553,407 cells / 104 donors / 42 operators / 42 matrices / 8,915 blocks / 41,238 addresses closed;
 - current FULL104 dimension-input artifact sealed;
-- prospective precision authority frozen before current-V5 dimension outcomes;
-- FULL104 ↔ precision pre-outcome cross-binding PASS with all six parent hashes matching;
-- FULL104 historical hash-bound text tree protected from EOL translation;
-- no current-V5 D_shared/D_private/D_obs outcome inspected before freeze/binding.
+- D_shared Authority V2 prospectively frozen before any current-V5 D_shared outcome access;
+- V2 repairs the earlier scalar-count, null-generator, effect-rule, rank-envelope and multiplicity defects;
+- no current-V5 D_shared/D_private/D_obs outcome has been generated or inspected.
 
-Frozen precision authority SHA-256:
+D_shared Authority V2 SHA-256:
 
-`cc4ac4d5116fa81990f1c3bd0497fc578eda86bb2d7d3cd2747abcf7ffcf9428`
+`f9568eb19a22f106b0be3ce0580bc1058695ca1a2de6dd2d0475c3240a6bbda2`
 
 Sealed FULL104 dimension-input artifact SHA-256:
 
 `eb1264489306413fb57316abe7f70205a771248881302d8c867c70b69273f1ad`
 
-FULL104 ↔ precision cross-binding receipt SHA-256:
+V2 is currently classified as:
 
-`eccc30f9f5d01f7905a0740982d678d0ce45532a08cd5a61c51f5448b63b3d3a`
+`STATISTICAL_AUTHORITY_FROZEN__NOT_SUFFICIENT_FOR_REAL_D_SHARED_EXECUTION_WITHOUT_UPSTREAM_DATA_AND_MEASUREMENT_QUALIFICATION`
 
-Immediate blocker:
+## Why the sequence changed
 
-`D_SHARED_PRODUCTION_METRIC_EXECUTOR_NOT_YET_AUTHORITY_BEARING`
+The frozen T0 closeout established that a specific n=28 latent/common-factor measurement procedure was not qualified and that biology remained unresolved. T0 is not the same procedure as V5 D_shared.
 
-The selector exists. It must not receive caller-authored metric rows. A real producer must compute the five frozen D_shared quantities from authenticated FULL104 under the exact cross-bound precision policy, preserve raw evidence, count estimator failures unconditionally, and seal its execution receipt before rank adjudication.
+However, the T0↔V5 audit identified a transferable gap: V5 needed explicit real-data/target-distribution characterization and a measurement-procedure qualification stage before trusting its final biological measurement.
+
+That gap is now on the V5 critical path. See:
+
+`docs/agent/V5_T0_LESSONS_DATA_AWARE_MEASUREMENT_QUALIFICATION_COURSE_CORRECTION_20260914.md`
+
+## Immediate blockers before real D_shared
+
+1. **Feature-lineage qualification or rebuild.** The historical derived matrices `A_full`, `B_full`, `A_views`, and `B_views` must be provably derived from authenticated FULL104. Existing package hashes alone are insufficient.
+2. **FULL104 data reconnaissance.** Characterize non-outcome structural properties: support, sparsity, depth/detection, donor/operator/source balance, technical confounding, matched-null stratum sizes, feature covariance/effective rank, A/B-view redundancy, leverage/influence, estimability and execution mechanics.
+3. **V5 measurement-procedure qualification at real geometry.** Prospectively freeze and review realistic negative controls, positive controls, a difficulty/detection curve, unconditional failure handling, donor influence diagnostics and a nuisance/simple comparator.
+4. **Matching-state discreteness.** Prove donor/operator/Q_DEPTH/Q_DETECT/support-measurability states are already frozen/discrete; do not invent bins after outcome access.
+5. **Exact successor pre-outcome binding and executor review.** Only after 1–4 close may the final real D_shared execution binding be created and reviewed.
+
+Heavy-machine feature-lineage instructions:
+
+`docs/agent/V5_CLAUDE_DSHARED_FEATURE_LINEAGE_INSTRUCTIONS_20260914.md`
+
+## Premature D_shared access rule
+
+If decision-bearing D_shared outcomes are opened before the upstream procedure is frozen, that run becomes exploratory. Any outcome-informed change to ranks, thresholds, nulls, matching bins, feature construction, replicate counts, failure semantics or decision rules means that run cannot retain independent confirmatory standing; a new prospectively frozen confirmation design/run is required.
 
 ## Current hard boundaries
 
@@ -78,6 +100,12 @@ The selector exists. It must not receive caller-authored metric rows. A real pro
 `protected_data_authorized = false`
 
 `numeric_dimensions_authorized = false`
+
+`d_shared_real_outcome_access_authorized = false`
+
+`d_private_execution_authorized = false`
+
+`d_obs_execution_authorized = false`
 
 `td60_authorized = false`
 
@@ -89,9 +117,9 @@ Passing tests or mechanics checks does not create biology or training authority.
 
 ## Current critical path
 
-`D_shared executor -> real D_shared -> freeze D_shared -> finalize/review D_private -> D_private -> finalize/review D_obs -> D_obs -> dataset-derived schedule/proposal/packing/model geometry -> executable anti-cheat controls -> production-geometry CUDA qualification -> bounded base-learning qualification -> lawful EMA teacher -> TD60 -> relational student qualification -> internal biology validation -> matched-context controls -> external transport -> integrated review`
+`feature-lineage qualification/rebuild -> FULL104 data reconnaissance -> support/estimability review -> V5 D_shared measurement-procedure qualification at real geometry -> freeze any required successor authority -> exact pre-outcome binding -> independent executor review -> real D_shared once -> seal raw evidence -> rank adjudication/freeze D_shared -> D_private -> D_obs -> dataset-derived schedule/proposal/packing/model geometry -> executable anti-cheat controls -> production-geometry CUDA qualification -> bounded base-learning qualification -> lawful EMA teacher -> TD60 -> relational student qualification -> internal biology validation -> matched-context controls -> external transport -> integrated review`
 
-External/confirmation cohorts are governed by `V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`; their outcomes may not flow backward into design choices.
+External/confirmation cohorts remain governed by `V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`; their outcomes may not flow backward into design choices.
 
 ## Target Discovery state
 
