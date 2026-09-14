@@ -51,6 +51,7 @@ jobs:
           tests/test_full104_feature_lineage_v1.py
           tests/test_d_shared_measurement_qualification_v1.py
           tests/test_environment_preflight_v1.py
+          tests/test_v5_redteam_evidence_binding_20260914.py
           tests/test_preexecution_dependency_guard_v1.py
           tests/test_preexecution_qualification_bundle_v2.py
           tests/test_postqualification_dependency_guard_v2.py
