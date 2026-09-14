@@ -31,6 +31,8 @@
     "test_measurement_qualification_receipt_is_unconditional_and_enforces_control_acceptance",
     "test_measurement_qualification_rejects_outcome_feedback_and_same_run_redesign",
     "test_environment_preflight_receipt_round_trip_is_fail_closed",
-    "test_live_environment_collector_checks_real_git_bytes_and_junit_execution"
+    "test_live_environment_collector_checks_real_git_bytes_and_junit_execution",
+    "test_reconnaissance_cannot_pass_without_hash_bound_diagnostic_evidence",
+    "test_feature_lineage_requires_donor_operator_identity_and_complete_transform_disclosure"
   ]
 }
