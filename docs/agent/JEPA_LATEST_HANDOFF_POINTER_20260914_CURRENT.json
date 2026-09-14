@@ -1,13 +1,17 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V6",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V7",
   "date": "2026-09-14",
-  "status": "CURRENT__FULL104_RECON_COMPLETE__V2_NULL_DEGENERATE__V3_SUBSTRATE_REBUILD_PENDING__SUBSTRATE_INDEPENDENT_STRESSBENCH_MECHANICS_GREEN__NO_D_SHARED_OUTCOME_ACCESS__NO_TRAINING_AUTHORITY",
+  "status": "CURRENT__HISTORICAL_DISCOVERY_LEDGER_FRONT_LOADED__LOCAL_PARAMETER_DERIVABILITY_AUDIT_ACTIVE__FULL104_RECON_COMPLETE__V2_NULL_DEGENERATE__K2_REFERENCE_REBUILD_IN_PROGRESS__NO_D_SHARED_OUTCOME_ACCESS__NO_TRAINING_AUTHORITY",
   "branch": "repair/v5-v3-null-t0-stressbench-20260914",
-  "recorded_pre_ledger_verified_head": "0e770cdd708228c3628ef0e2d29bd5fee1757547",
-  "current_start_here_commit": "734e6638820a34abf10bd69e81ee06f7f0ee73ac",
+  "current_start_here": "START_HERE.md",
+  "historical_discovery_agent_ledger": "docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md",
   "current_status_ledger": "docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md",
+  "local_parameter_derivability_audit": "docs/agent/V5_LOCAL_PARAMETER_DERIVABILITY_AUDIT_20260914.md",
+  "local_available_data_stress_tests": "docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md",
+  "local_nuisance_model_stress_addendum": "docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md",
   "current_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260914_CURRENT.md",
   "current_handoff_state": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT.json",
+  "latest_fully_verified_code_head": "0e770cdd708228c3628ef0e2d29bd5fee1757547",
   "latest_verified_workflow_run": 34885448123,
   "latest_verified_test_result": "305 passed; 45/45 critical tests executed and passed; authority-source compilation PASS",
   "d_shared_authority_v2_sha256": "f9568eb19a22f106b0be3ce0580bc1058695ca1a2de6dd2d0475c3240a6bbda2",
@@ -16,6 +20,8 @@
   "full104_recon_artifact_sha256": "552b220edcc0e05591cb3876b3ab0be58277c0c5fd8a111cdfe8d4b5ad6200da",
   "historical_feature_matrix_root_sha256": "c9a6ede6f33a4a9d4ce22cde0f1a8c0fb5e7e039bac3df364325c778487329ef",
   "historical_multiview_root_sha256": "d6f70ee1bca777f3d2cbd89dd560395cc46ec25f6a648ae4ba0fd6e77c1c2cf1",
+  "historical_discovery_expression_expected_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+  "foundation_calibration_bundle_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
   "t0_closed": true,
   "t0_role": "RETROSPECTIVE_METHOD_FALSIFICATION_ONLY__CANNOT_CERTIFY_V5",
   "d_shared_v2_statistical_authority_frozen": true,
@@ -24,6 +30,10 @@
   "matching_state_lossless_recovery_closed": true,
   "v2_matched_null_operationally_usable": false,
   "v2_matched_null_terminal": "V2_MATCHED_NULL_TECHNICALLY_DEFINED__OPERATIONALLY_DEGENERATE",
+  "historical_discovery_must_be_read_before_new_heavy_run": true,
+  "local_parameter_screening_complete_for_view_count_first_pass": true,
+  "serious_candidate_view_counts": [2, 3, 4, 6],
+  "k2_heavy_rebuild_is_reference_not_final_authority": true,
   "rebuilt_disjoint_full104_substrate_closed": false,
   "rank_support_authority_closed": false,
   "v3_null_authority_closed": false,
@@ -37,7 +47,8 @@
   "relational_target_activation_authorized": false,
   "external_validation_outcomes_authorized_for_design": false,
   "governing_rule": "UNDERSTAND_FULL104_DEEPLY__KEEP_FINAL_D_SHARED_HYPOTHESIS_TEST_SEALED",
-  "current_sequence": "AUTHENTICATED_FULL104 -> GENUINELY_DISJOINT_MOLECULAR_VIEWS -> REBUILT_V5_FEATURE_SUBSTRATE -> OUTCOME_BLIND_STRUCTURAL_CHARACTERIZATION -> SUPPORTED_RANK_ENVELOPE -> OPERATOR_QC_NUISANCE_CHARACTERIZATION -> V3_NULL_DESIGN -> T0_FALSIFICATION -> FULL104_MEASUREMENT_QUALIFICATION -> D_SHARED_LAST",
+  "historical_first_expensive_run_rule": "READ_HISTORICAL_LEDGER -> EXHAUST_LOCAL_DISCOVERY_CALIBRATION_DERIVATIONS -> NARROW_CANDIDATES -> SPECIFY_RESIDUAL_HEAVY_QUESTION -> ONLY_THEN_RUN_FULL104",
+  "current_sequence": "HISTORICAL_DISCOVERY + LOCAL_FROZEN_DISCOVERY/CALIBRATION -> PARAMETER_DERIVATION/NARROWING -> AUTHENTICATED_FULL104 -> GENUINELY_DISJOINT_MOLECULAR_VIEWS -> REBUILT_V5_FEATURE_SUBSTRATE -> OUTCOME_BLIND_STRUCTURAL_CHARACTERIZATION -> SUPPORTED_RANK_ENVELOPE -> SOURCE_OPERATOR_QC_NUISANCE_CHARACTERIZATION -> V3_NULL_DESIGN -> T0_FALSIFICATION -> FULL104_MEASUREMENT_QUALIFICATION -> D_SHARED_LAST",
   "available_substrate_independent_mechanics": [
     "null mobility and blocked-permutation bijection audit",
     "T0-to-V5 sandbox authority firewall",
@@ -47,5 +58,5 @@
     "donor-disjoint split integrity guard",
     "matching-state occupancy arithmetic consistency guard"
   ],
-  "next_action": "Re-fetch live branch and Claude/heavy-machine evidence. Authenticate the rebuilt genuinely disjoint FULL104 substrate, re-characterize spectrum/confounds on that substrate, then use the existing mechanics to compare nuisance handling and exchangeability before prospectively freezing any V3 null or rank-support authority. Do not open D_shared."
+  "next_action": "Finish all remaining locally derivable/narrowable parameters from historical discovery + 50K + calibration assets. Re-fetch Claude/heavy-machine K=2 evidence when complete. Treat K=2 as reference, compare against locally narrowed K={2,3,4,6}, and authorize no second heavy rebuild until the residual question is explicit. Do not open D_shared."
 }
