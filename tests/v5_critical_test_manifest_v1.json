@@ -17,6 +17,11 @@
     "test_mutated_or_substitute_precision_authority_cannot_bind_execution_plan",
     "test_precision_authority_is_mandatory_and_exact",
     "test_preoutcome_bridge_binds_exact_full104_artifact_to_frozen_precision_parent",
-    "test_preoutcome_bridge_rejects_artifact_or_interface_substitution"
+    "test_preoutcome_bridge_rejects_artifact_or_interface_substitution",
+    "test_v2_plan_carries_per_quantity_counts_not_scalar_execution_authority",
+    "test_v2_full104_binding_is_d_shared_only_and_rejects_v1_as_execution_authority",
+    "test_v2_firewall_rejects_v1_or_scalar_max_execution_semantics",
+    "test_v2_firewall_rejects_per_quantity_count_or_rank_substitution",
+    "test_v2_full_512_supported_boundary_is_terminal_and_uses_one_se_rule"
   ]
 }
