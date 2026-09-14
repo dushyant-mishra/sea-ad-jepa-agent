@@ -8,6 +8,8 @@ pairwise distances on the full population.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 from typing import Sequence
 
 import numpy as np
@@ -37,7 +39,7 @@ def _matrix(value: object, name: str) -> np.ndarray:
     return out
 
 
-def _pairs(value: Sequence[object], n: int) -> tuple[tuple[int,int], ...]:
+def _pairs(value: Sequence[object], n: int | None = None) -> tuple[tuple[int,int], ...]:
     if not isinstance(value, Sequence) or isinstance(value,(str,bytes)) or len(value) < 1:
         raise ValueError("pair_indices must contain at least one pair")
     out=[]
@@ -51,7 +53,7 @@ def _pairs(value: Sequence[object], n: int) -> tuple[tuple[int,int], ...]:
         a=int(a); b=int(b)
         if a == b:
             raise ValueError("pair_indices must use distinct row indices")
-        if not (0 <= a < n and 0 <= b < n):
+        if n is not None and not (0 <= a < n and 0 <= b < n):
             raise ValueError("pair_indices row index out of range")
         key=(min(a,b),max(a,b))
         if key in seen:
@@ -59,6 +61,14 @@ def _pairs(value: Sequence[object], n: int) -> tuple[tuple[int,int], ...]:
         seen.add(key)
         out.append((a,b))
     return tuple(out)
+
+
+def canonical_pair_indices_sha256(pair_indices: Sequence[object]) -> str:
+    """Digest the canonical undirected pair set without changing multiplicity semantics."""
+    pairs=_pairs(pair_indices,None)
+    canonical=sorted((min(a,b),max(a,b)) for a,b in pairs)
+    raw=json.dumps(canonical,separators=(",",":"),ensure_ascii=False).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
 
 
 def _spearman(a: np.ndarray, b: np.ndarray) -> float:
@@ -77,8 +87,11 @@ def audit_pair_structure_preservation_v1(
     baseline_representation: object,
     candidate_representation: object,
     pair_indices: Sequence[object],
+    expected_pair_indices_sha256: str,
     pair_plan_sha256: str,
     parent_sha256: str,
+    baseline_row_identity_sha256: str,
+    candidate_row_identity_sha256: str,
     d_shared_outcomes_used: bool=False,
     protected_data_used: bool=False,
     pathology_used: bool=False,
@@ -99,8 +112,17 @@ def audit_pair_structure_preservation_v1(
     if base.shape != cand.shape:
         raise ValueError("baseline and candidate representation shapes differ")
     pairs=_pairs(pair_indices,len(base))
+    observed_pair_sha=canonical_pair_indices_sha256(pairs)
+    expected_pair_sha=_sha64(expected_pair_indices_sha256,"expected_pair_indices_sha256")
+    if observed_pair_sha != expected_pair_sha:
+        raise StructurePreservationStop("STOP_STRUCTURE_PRESERVATION_PAIR_BINDING_MISMATCH")
+
     pair_plan=_sha64(pair_plan_sha256,"pair_plan_sha256")
     parent=_sha64(parent_sha256,"parent_sha256")
+    base_row_sha=_sha64(baseline_row_identity_sha256,"baseline_row_identity_sha256")
+    cand_row_sha=_sha64(candidate_row_identity_sha256,"candidate_row_identity_sha256")
+    if base_row_sha != cand_row_sha:
+        raise StructurePreservationStop("STOP_STRUCTURE_PRESERVATION_ROW_IDENTITY_MISMATCH")
 
     idx_a=np.fromiter((a for a,_ in pairs),dtype=np.int64,count=len(pairs))
     idx_b=np.fromiter((b for _,b in pairs),dtype=np.int64,count=len(pairs))
@@ -116,6 +138,8 @@ def audit_pair_structure_preservation_v1(
         "schema":"JEPA_V5_STRUCTURE_PRESERVATION_PROBE_V1",
         "parent_sha256":parent,
         "pair_plan_sha256":pair_plan,
+        "pair_indices_sha256":observed_pair_sha,
+        "row_identity_sha256":base_row_sha,
         "population_count":len(base),
         "feature_count":base.shape[1],
         "pair_count":len(pairs),
