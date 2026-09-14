@@ -117,6 +117,15 @@ def _evidence_bindings(receipt: Mapping[str, object]) -> tuple[dict[str, str], s
     for diagnostic in _ALLOWED_DIAGNOSTICS:
         normalized[diagnostic] = _sha(evidence.get(diagnostic), f"diagnostic_evidence_sha256[{diagnostic}]")
     root = _sha(receipt.get("reconnaissance_evidence_root_sha256"), "reconnaissance_evidence_root_sha256")
+    canonical_evidence = json.dumps(
+        normalized,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    expected_root = hashlib.sha256(canonical_evidence).hexdigest()
+    if root != expected_root:
+        raise Full104ReconnaissanceStop("STOP_FULL104_RECONNAISSANCE_EVIDENCE_ROOT_MISMATCH")
     return normalized, root
 
 
