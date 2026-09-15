@@ -1,0 +1,52 @@
+{
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V10",
+  "date": "2026-09-15",
+  "status": "CURRENT__LAYER2_SHORTCUT_AUDIT_REFRAMED__WITHIN_DONOR_MOLECULAR_SIGNAL_RECURS__CONTEXT_POOLING_SHORTCUT_OPEN__MASKING_SHORTCUT_AUTHORITY_OPEN__TRAINING_OFF__D_SHARED_SEALED",
+  "branch": "handoff/jepa-current-ledger-layer2-20260915",
+  "current_start_here": "START_HERE.md",
+  "current_work_ledger": "docs/agent/JEPA_CURRENT_WORK_LEDGER_20260915.md",
+  "historical_and_current_findings": "docs/agent/JEPA_HISTORICAL_AND_CURRENT_FINDINGS_20260915.md",
+  "current_handoff_state": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json",
+  "independent_layer2_reconciliation": "docs/agent/LOCAL_LAYER2_RECONCILIATION_WITH_CLAUDE_20260915.md",
+  "historical_discovery_agent_ledger": "docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md",
+  "closed_substrate_invariant_registry": "docs/agent/V5_CLOSED_SUBSTRATE_INVARIANT_REGISTRY_20260914.md",
+  "d_shared_v2_authority": "docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json",
+  "parent_analysis_branch": "analysis/layer2-method-redteam-20260915",
+  "parent_analysis_head": "b2b93f3f559df268069b74b4ae7fe4e1fbd523d4",
+  "active_v5_execution_ancestry_branch": "repair/v5-v3-null-t0-stressbench-20260914",
+  "active_v5_execution_ancestry_head_at_pointer_creation": "5124ef830db4e2f9fe3279162adc30bbdd528f62",
+  "current_layer2_terminals": [
+    "MEASUREMENT_SHORTCUT_NOT_DEMONSTRATED_AT_THIS_MODEL_CLASS",
+    "WITHIN_DONOR_MOLECULAR_VIEW_SIGNAL_BEYOND_MEASURED_QC_RECURS_ACROSS_ALL_THREE_SOURCES",
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_DEMONSTRATED_IN_SEA_AD_AT_THIS_MODEL_CLASS",
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_NOT_DEMONSTRATED_IN_HVS_OR_NPH52_AT_THIS_MODEL_CLASS",
+    "POOLED_CROSS_VIEW_PREDICTABILITY_LARGELY_COLLINEAR_WITH_COARSE_CONTEXT",
+    "BATCH_TECHNICAL_VS_BIOLOGICAL_DECOMPOSITION_NOT_IDENTIFIABLE_IN_FULL104",
+    "MECHANICS_ALIGNED_LOSS_PROXY_CHARACTERIZED",
+    "MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED"
+  ],
+  "major_blockers": [
+    "CURRENT_V5_TEACHER_AUTHORITY_NOT_YET_ESTABLISHED",
+    "CONTEXT_SHORTCUT_HANDLING_NOT_YET_FROZEN",
+    "MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED",
+    "HVS_NPH52_DONOR_TRANSPORT_UNRESOLVED",
+    "SCIENTIFIC_TRAINING_ESTIMAND_NOT_YET_FROZEN",
+    "PROSPECTIVE_ANTI_CHEAT_FAMILY_NOT_YET_FROZEN",
+    "PRIMARY_REPRESENTATION_AUTHORITY_NOT_YET_FROZEN",
+    "RANK_SUPPORT_AUTHORITY_NOT_YET_FROZEN",
+    "MEASUREMENT_ROBUSTNESS_DECISION_RULE_NOT_YET_FROZEN",
+    "V3_NULL_NOT_YET_FROZEN",
+    "FULL104_MEASUREMENT_PROCEDURE_NOT_YET_QUALIFIED"
+  ],
+  "hard_boundaries": {
+    "training_authorized": false,
+    "protected_data_authorized": false,
+    "d_shared_real_outcome_access_authorized": false,
+    "d_private_execution_authorized": false,
+    "d_obs_execution_authorized": false,
+    "td60_authorized": false,
+    "relational_target_activation_authorized": false,
+    "external_validation_outcomes_authorized_for_design": false
+  },
+  "next_action": "Finish Layer-2 independent decomposition, estimand-sensitivity and donor-recurrence closeout on frozen arrays; then resolve current V5 teacher-target authority and prospectively audit masking shortcut exposure before any production training. Keep D_shared sealed."
+}
