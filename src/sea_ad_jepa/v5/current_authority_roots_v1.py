@@ -2,6 +2,7 @@
 CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS = (
     "full104_substrate_sha256",
     "representation_authority_sha256",
+    "support_estimability_authority_sha256",
     "base_training_estimand_sha256",
     "teacher_target_semantics_sha256",
     "target_address_query_authority_sha256",
