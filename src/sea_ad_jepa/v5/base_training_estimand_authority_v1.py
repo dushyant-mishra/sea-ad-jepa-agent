@@ -38,6 +38,7 @@ def _canonical_sha(payload: Mapping[str, Any]) -> str:
 class BaseTrainingEstimandAuthorityV1:
     authority_id: str
     population_authority_sha256: str
+    support_estimability_authority_sha256: str
     support_eligibility_authority_sha256: str
     estimand_id: str
     scientific_weight_artifact_sha256: str
@@ -49,6 +50,7 @@ class BaseTrainingEstimandAuthorityV1:
     def validate(self) -> None:
         _nonempty(self.authority_id, "authority_id")
         _sha(self.population_authority_sha256, "population_authority_sha256")
+        _sha(self.support_estimability_authority_sha256, "support_estimability_authority_sha256")
         _sha(
             self.support_eligibility_authority_sha256,
             "support_eligibility_authority_sha256",
