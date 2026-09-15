@@ -1,0 +1,116 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V12",
+  "date": "2026-09-15",
+  "status": "CURRENT_V5_LAYER2_SHORTCUT_AND_MASKING_REVIEW__NO_TRAINING_AUTHORITY",
+  "governing_ledger": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
+  "training_authorized": false,
+  "d_shared_real_outcome_access_authorized": false,
+  "protected_outcome_access_authorized": false,
+  "primary_representation_authority_frozen": false,
+  "rank_support_authority_frozen": false,
+  "v3_null_frozen": false,
+  "measurement_robustness_rule_frozen": false,
+  "current_v5_teacher_authority_established": false,
+  "context_shortcut_handling_frozen": false,
+  "masking_shortcut_authority_resolved": false,
+  "population": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "sources": ["SEA_AD", "HVS", "NPH52"]
+  },
+  "representation": {
+    "candidate": "VALUE_ONLY_256",
+    "visibility_interpretation": "OBSERVATION_STATE_NUISANCE_ONLY_CANDIDATE",
+    "v0_address_count": 8568,
+    "v1_address_count": 8618,
+    "v0_full_sha256": "3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada",
+    "v1_full_sha256": "c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c"
+  },
+  "layer2_current_findings": {
+    "measurement_realization_shortcut": "NOT_DEMONSTRATED_AT_SIMPLE_MODEL_CLASS",
+    "pooled_context_collinearity": "STRONG",
+    "within_donor_molecular_view_signal_recurrence": "PRESENT_IN_ALL_THREE_SOURCES_BEYOND_MEASURED_QC",
+    "donor_generalization_sea_ad": "DEMONSTRATED_AT_LINEAR_MODEL_CLASS",
+    "donor_generalization_hvs": "NOT_DEMONSTRATED_AT_LINEAR_MODEL_CLASS",
+    "donor_generalization_nph52": "NOT_DEMONSTRATED_AT_LINEAR_MODEL_CLASS",
+    "causal_batch_vs_biology_decomposition": "NOT_IDENTIFIABLE_IN_FULL104"
+  },
+  "headline_r2": {
+    "pooled_q_only": 0.031,
+    "pooled_context_q_source_operator": 0.4671,
+    "pooled_v0_only": 0.4666,
+    "pooled_context_plus_v0": 0.4982,
+    "operator_centered_all": 0.0687,
+    "within_donor_all": 0.1850,
+    "within_donor_hvs": 0.1906,
+    "within_donor_nph52": 0.2646,
+    "within_donor_sea_ad": 0.2487
+  },
+  "measured_qc_increment_over_v0_within_donor": {
+    "ALL": 0.0026,
+    "HVS": 0.0029,
+    "NPH52": 0.0026,
+    "SEA_AD": 0.0029
+  },
+  "discarded_estimators": [
+    {
+      "name": "x4_within.py_initial",
+      "status": "DISCARDED_FALSE_POSITIVE_ON_OPERATOR_ONLY_FIXTURE",
+      "authority": false
+    }
+  ],
+  "architecture_candidates_not_frozen": [
+    "RESIDUAL_OVER_FROZEN_CONTEXT_BASELINE",
+    "SOURCE_ENVIRONMENT_AWARE_LOSS_ACCOUNTING",
+    "DEPENDENCY_AWARE_HYBRID_MASKING",
+    "RESIDUAL_PLUS_DEPENDENCY_AWARE_MASKING"
+  ],
+  "lower_priority_candidates": [
+    "GENERIC_INFORMATION_BOTTLENECK",
+    "SOURCE_OPERATOR_ADVERSARIAL_INVARIANCE"
+  ],
+  "new_external_research": {
+    "paper": "Taking the Easy Way Out: When Single-Cell Foundation Models Learn Shortcuts Instead of Biology",
+    "venue": "Machine Learning for Genomics Explorations Workshop at ICLR 2026",
+    "openreview_id": "KlDSNIvt9A",
+    "project_relevance": "CORRMASK_SHOWS_RANDOM_MASKING_CAN_ENABLE_CORRELATED_GENE_LOCAL_INTERPOLATION; HYBRID_DEPENDENCY_AWARE_PLUS_RANDOM_MASKING_IS A CANDIDATE ANTI_SHORTCUT MECHANISM",
+    "production_authority": false
+  },
+  "major_blockers_ordered": [
+    "CURRENT_V5_TEACHER_AUTHORITY_NOT_YET_ESTABLISHED",
+    "CONTEXT_SHORTCUT_HANDLING_NOT_YET_FROZEN",
+    "MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED",
+    "HVS_NPH52_DONOR_TRANSPORT_NOT_YET_EXPLAINED",
+    "SCIENTIFIC_TRAINING_ESTIMAND_NOT_YET_FROZEN",
+    "OBJECTIVE_ALIGNED_SHORTCUT_GATE_NOT_YET_FROZEN",
+    "PRIMARY_REPRESENTATION_AUTHORITY_NOT_YET_FROZEN",
+    "RANK_SUPPORT_AUTHORITY_NOT_YET_FROZEN",
+    "V3_NULL_NOT_YET_FROZEN",
+    "MEASUREMENT_ROBUSTNESS_DECISION_RULE_NOT_YET_FROZEN"
+  ],
+  "independent_review_lane": {
+    "branch": "analysis/layer2-method-redteam-20260915",
+    "observed_head": "b2b93f3f559df268069b74b4ae7fe4e1fbd523d4",
+    "purpose": "INDEPENDENT_METHOD_REDTEAM_AND_LOCAL_SUPPORTING_SANITY_CHECKS__NOT_PRODUCTION_AUTHORITY"
+  },
+  "heavy_machine_outstanding_as_of_ledger": [
+    "INDEPENDENT_SECOND_IMPLEMENTATION_OF_CONTEXT_DECOMPOSITION",
+    "ESTIMAND_WEIGHTING_SENSITIVITY",
+    "DONOR_LEVEL_RECURRENCE_CHARACTERIZATION",
+    "FULL_REFIT_DONOR_GENERALIZATION_SENSITIVITY_IF_FEASIBLE",
+    "LAYER2_CLOSEOUT_PACKAGE"
+  ],
+  "standing_rules": [
+    "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+    "DO_NOT_CALL_SOURCE_OPERATOR_STRUCTURE_TECHNICAL_WITHOUT_CAUSAL_SUPPORT",
+    "DO_NOT_CALL_WITHIN_DONOR_SIGNAL_BIOLOGY_JUST_BECAUSE_MEASURED_QC_DOES_NOT_EXPLAIN_IT",
+    "DO_NOT_RESTORE_HISTORICAL_GRAPH_MASKING_WITHOUT_PROSPECTIVE_REVIEW",
+    "DO_NOT_MODIFY_PRODUCTION_TRAINER_BEFORE_CURRENT_V5_TEACHER_TARGET_AND_SHORTCUT_AUTHORITIES_ARE_FROZEN",
+    "TRAINING_OFF",
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION"
+  ]
+}
