@@ -32,6 +32,7 @@ def _canonical_sha(payload: Mapping[str, Any]) -> str:
 class TeacherTargetSemanticsAuthorityV1:
     authority_id: str
     representation_authority_sha256: str
+    support_estimability_authority_sha256: str
     teacher_input_support_authority_sha256: str
     teacher_state_location_id: str
     target_aggregation_id: str
@@ -47,6 +48,7 @@ class TeacherTargetSemanticsAuthorityV1:
     def validate(self) -> None:
         _nonempty(self.authority_id, "authority_id")
         _sha(self.representation_authority_sha256, "representation_authority_sha256")
+        _sha(self.support_estimability_authority_sha256, "support_estimability_authority_sha256")
         _sha(self.teacher_input_support_authority_sha256, "teacher_input_support_authority_sha256")
         _nonempty(self.teacher_state_location_id, "teacher_state_location_id")
         _nonempty(self.target_aggregation_id, "target_aggregation_id")
