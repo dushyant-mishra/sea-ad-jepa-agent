@@ -337,21 +337,55 @@ Positive finding:
 
 This is a successful anti-carryover pattern and should be retained.
 
-## 16. Checkpoint / receipt semantics
+## 16. Preexecution authority
+
+### `v5.trainer_preexecution_contract_v2`
+
+Classification: mixed: valuable fail-closed structure plus active historical geometry carryover.
+
+Positive mechanics worth retaining:
+
+- authority bundle is hash-bound;
+- preexecution authority cannot be created after optimizer start;
+- design cannot change after freeze/optimizer start;
+- EMA half-life and presentation horizon are explicit;
+- contract itself cannot authorize training.
+
+Active carryover found:
+
+- `MECHANICS_CHAIN_V2` names `PROTECTED_48_GRADIENT_GATE`;
+- required critical tests include `PROTECTED_48_GRADIENT_GATE`, `PROTECTED_48_ADAM_MOMENT_GATE`, and `PROTECTED_48_PARAMETER_MOTION_BEYOND_DECAY`;
+- required critical tests include `HISTORICAL_128X8_CORRECTED_UPDATE_REGRESSION`;
+- `validate_protected_registry()` requires exactly 48 tensors;
+- exact registry cross-product is hard-coded to six blocks × four roles × two parameter kinds;
+- block indices are limited to 0–5;
+- registry schema is named `V5_PROTECTED_48_REGISTRY_V2`.
+
+Classification of those geometry-specific elements: `FORENSIC_ONLY` / `FORBIDDEN_AS_CURRENT_GEOMETRY_AUTHORITY`.
+
+Required successor:
+
+`CURRENT_V5_PREEXECUTION_AUTHORITY_SUCCESSOR_REQUIRED`
+
+The successor must consume current protected-registry/model/update authority and keep historical 48/128×8 regressions only as supporting evidence.
+
+## 17. Checkpoint / receipt semantics
 
 ### `v5.atomic_checkpoint_guard_v3`
 
-Classification: `REUSABLE_MECHANIC` / current-authority checkpoint pattern.
+Classification: `REUSABLE_MECHANIC` / current-authority checkpoint pattern, **with inherited preexecution dependency caveat**.
 
 Positive finding:
 
-- explicitly restores historical checkpoint invariants **without** restoring the historical 48-tensor production assumption;
+- explicitly restores historical checkpoint invariants **without** restoring the historical 48-tensor production assumption in its protected-registry validation;
 - expected protected tensor count is read from `ProductionProtectedRegistryAuthorityV1`;
 - checkpoint telemetry registry SHA must match current preexecution authority;
 - threshold authority is external and hash-bound;
 - the guard does not itself authorize optimizer or production training.
 
-This is another successful anti-carryover pattern.
+Carryover caveat:
+
+It still imports `REQUIRED_AUTHORITY_SHAS`, `TrainerPreexecutionAuthorityV2`, `TrainerPreexecutionError`, and `validate_critical_test_execution` from `trainer_preexecution_contract_v2.py`. Therefore the checkpoint guard's protected-registry count is current-aware, but its critical-test/preexecution vocabulary still inherits the V2 `PROTECTED_48_*` / historical 128×8 assumptions.
 
 ### Hash-bound receipt pattern, atomic write, cursor binding
 
@@ -363,7 +397,7 @@ Classification: `FORENSIC_ONLY`.
 
 Current V5 requires a distinct schema rather than widening the legacy target kind in place.
 
-## 17. Carryover firewall required for future implementation
+## 18. Carryover firewall required for future implementation
 
 Before a current-V5 runtime can be called production-eligible, static tests should fail if any of the following enter through defaults or imported historical authorities:
 
@@ -379,20 +413,28 @@ Before a current-V5 runtime can be called production-eligible, static tests shou
 - unweighted loss when scientific weights are required;
 - historical protected-parameter registry hash after architecture change;
 - hard-coded protected tensor count such as 48;
+- historical `PROTECTED_48_*` gate names treated as current geometry qualification;
+- historical `128x8` regression treated as current update-geometry authority;
 - direct use of online gene-identity embeddings for target query unless target-identity authority explicitly permits it;
 - old seeds without current RNG authority;
 - hidden visibility channels as molecular representation unless explicitly authorized.
 
 Every production-relevant numeric or scientific choice must be present in an immutable current-V5 authority receipt or derived deterministically from one.
 
-## 18. Current conclusion
+## 19. Current conclusion
 
 The project has two distinct classes of inherited code:
 
 1. **valuable mechanics** that should be reused or ported; and
 2. **historical scientific/numerical defaults** that must be quarantined.
 
-The newer V5 authority/schema, protected-registry, and checkpoint modules already embody this separation well. The main accidental-carryover seam remains the current V5 wrapper's default delegation to historical V4 `production_update`, plus its dependence on the legacy target-receipt validator.
+The newer V5 data-first schema and protected-registry modules embody this separation well. The principal carryover seams currently identified are:
+
+1. V5 wrapper -> historical V4 `production_update`;
+2. optimizer guard -> legacy target receipt validator;
+3. preexecution V2 -> hard-coded `48` / six-block / historical `128x8` vocabulary;
+4. checkpoint V3 -> partially repaired registry logic but inherited V2 critical-test vocabulary;
+5. predictor target query -> shared trainable online gene-identity embedding.
 
 Current terminals:
 
@@ -400,9 +442,11 @@ Current terminals:
 
 `V5_DATA_FIRST_SCHEMAS_NO_DEFAULTS_CONFIRMED`
 
-`V5_PROTECTED_REGISTRY_48_TENSOR_CARRYOVER_BLOCKED`
+`V5_PROTECTED_REGISTRY_48_TENSOR_CARRYOVER_BLOCKED_LOCALLY`
 
-`V5_CHECKPOINT_GUARD_CURRENT_REGISTRY_BOUND`
+`PREEXECUTION_V2_CONTAINS_HISTORICAL_48_AND_128X8_CARRYOVER`
+
+`CURRENT_V5_PREEXECUTION_AUTHORITY_SUCCESSOR_REQUIRED`
 
 `LEGACY_V4_PRODUCTION_UPDATE_NOT_CURRENT_V5_AUTHORITY`
 
