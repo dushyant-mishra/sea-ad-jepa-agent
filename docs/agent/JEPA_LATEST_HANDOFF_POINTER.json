@@ -1,46 +1,43 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V11",
-  "date": "2026-09-11",
-  "status": "CURRENT_CANONICAL_NEW_CHAT_HANDOFF__TARGET_DISCOVERY_TO_V5_INTEGRATED_EXTERNAL_REVIEW__NO_TRAINING_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V12",
+  "date": "2026-09-15",
+  "status": "CURRENT_V5_LAYER2_SHORTCUT_MASKING_AND_TEACHER_AUTHORITY_REVIEW__NO_TRAINING_AUTHORITY",
+  "current_work_ledger_path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json",
+  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
+  "prior_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260911_CURRENT.json",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_T0_V21_EXTERNAL_REVIEW_V5_CURRENT.md",
-  "prior_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_ADDENDUM_20260910_FINAL4.md",
-  "prior_formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
-  "prior_heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "observed_lane_heads_before_20260911_integrated_governance_update": {
-    "main": "04d91537358f5adc8973c091d4bfae4e2390bd22",
-    "v5": "1de20b1c222c7fb27fcef5ec1a4b798d5b26a534",
-    "t0_v20_frozen": "d5d67e21398da92e39095afd864b4fb9ebe3da02",
-    "t0_v21_draft": "11e76d36ace556ac48cdd2992995e63c1e35df18"
+  "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
+  "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
+  "main_head_before_20260915_update": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f",
+  "independent_layer2_review": {
+    "branch": "analysis/layer2-method-redteam-20260915",
+    "observed_head": "b2b93f3f559df268069b74b4ae7fe4e1fbd523d4",
+    "authority": "METHOD_REDTEAM_AND_LOCAL_SUPPORTING_EVIDENCE_ONLY"
   },
-  "branches": {
-    "v5": "planning/v5-full-population-cheat-proofing-20260909",
-    "t0_v20": "t0/v20-pathology-blind-materialization-20260908",
-    "t0_v21_draft": "t0/v21-prospective-design-20260910"
-  },
-  "integrated_review_scope": "RAW_SEA_AD_TO_TARGET_DISCOVERY_TO_TARGET_FREEZE_TO_V5_TEACHER_TARGET_TO_TRAINING",
-  "target_discovery_review_status": "IN_PROGRESS_NOT_YET_END_TO_END_EXTERNAL_CODE_EVIDENCE_REVIEW_COMPLETE",
-  "t0_status": "V21_DESIGN_PROSE_BLOCKERS_ADDRESSED_AT_11e76d36__EXECUTABLE_TARGET_DISCOVERY_SELECTION_AND_POWER_REVIEW_STILL_REQUIRED__NO_SELECTION_OR_POWER_GATE_RUN",
-  "t0_next_action": "EXTERNALLY_REVIEW_EXECUTABLE_TARGET_DISCOVERY_S0_S4_SELECTION_NESTED_OOF_HC3_AND_POWER_GATE_BEFORE_ANY SINGLE_SHOT_SELECTION_RUN",
-  "v5_review_status": "MAJOR_REVISION_NO_GO_FOR_PRODUCTION_TRAINING_AT_1de20b1c__UPSTREAM_TARGET_DISCOVERY_REVIEW_MUST_ALSO_CLOSE",
-  "v5_next_action": "REPAIR_CONFIRMED_V5_DEFECTS_AND_PROVE_NON_BYPASSABILITY_IN_PARALLEL_WITH_TARGET_DISCOVERY_EXTERNAL_AUDIT_AND_FULL104_RECOVERY",
-  "runtime_asset_verification": {
-    "discovery_parts_and_assembled_stream": "PASS_HASH_VERIFIED",
-    "foundation_calibration": "PASS_HASH_VERIFIED",
-    "checkpoints": "PASS_HASH_VERIFIED",
-    "t1_checkpoint_u0200": "PASS_HASH_VERIFIED",
-    "expression_zip": "PASS_HASH_VERIFIED",
-    "corrected_train_cache_zip": "PASS_EXACT_CORRECTED_TRAIN_CACHE_BYTE_BINDING_ONLY",
-    "operator_address_state_npz": "PROVENANCE_MISMATCH_DO_NOT_USE"
-  },
-  "target_discovery_external_review_complete": false,
-  "s0_s4_authorized": false,
-  "fresh_reader_validation_open_authorized": false,
-  "reader_oracle_open_authorized": false,
-  "v5_full104_expression_closed": false,
-  "v5_integrated_review_closed": false,
-  "training_authorized": false,
-  "instruction": "Open START_HERE.md first, then this pointer, then the integrated 20260911 handoff/state. Re-fetch live heads before acting. Treat target discovery and V5 as one production-review chain. Keep V20 immutable. Do not run S0-S4 or open fresh validation/oracle before the executable discovery/selection/power implementation passes external/adversarial review and the target is frozen under the prospective contract. TRAIN-cache PASS is not FULL104 PASS. Repair V5 confirmed defects and prove optimizer-path non-bypassability, but do not claim training authority. Exclude the provenance-mismatched operator-address NPZ. Training remains OFF."
+  "current_terminals": [
+    "MEASUREMENT_SHORTCUT_NOT_DEMONSTRATED_AT_THIS_MODEL_CLASS",
+    "WITHIN_DONOR_MOLECULAR_VIEW_SIGNAL_BEYOND_MEASURED_QC_RECURS_ACROSS_ALL_THREE_SOURCES",
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_DEMONSTRATED_IN_SEA_AD_AT_THIS_MODEL_CLASS",
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_NOT_DEMONSTRATED_IN_HVS_OR_NPH52_AT_THIS_MODEL_CLASS",
+    "PREDICTIVE_INFORMATION_LARGELY_COLLINEAR_WITH_CONTEXT_ON_POOLED_MECHANICS_SAMPLE",
+    "BATCH_TECHNICAL_VS_BIOLOGICAL_DECOMPOSITION_NOT_IDENTIFIABLE_IN_FULL104",
+    "MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED",
+    "CURRENT_V5_TEACHER_AUTHORITY_NOT_YET_ESTABLISHED",
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION",
+    "TRAINING_OFF"
+  ],
+  "major_blockers_ordered": [
+    "CURRENT_V5_TEACHER_AUTHORITY_NOT_YET_ESTABLISHED",
+    "CONTEXT_SHORTCUT_HANDLING_NOT_YET_FROZEN",
+    "MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED",
+    "HVS_NPH52_DONOR_TRANSPORT_NOT_YET_EXPLAINED",
+    "SCIENTIFIC_TRAINING_ESTIMAND_NOT_YET_FROZEN",
+    "OBJECTIVE_ALIGNED_SHORTCUT_GATE_NOT_YET_FROZEN",
+    "PRIMARY_REPRESENTATION_AUTHORITY_NOT_YET_FROZEN",
+    "RANK_SUPPORT_AUTHORITY_NOT_YET_FROZEN",
+    "V3_NULL_NOT_YET_FROZEN",
+    "MEASUREMENT_ROBUSTNESS_DECISION_RULE_NOT_YET_FROZEN"
+  ],
+  "instruction": "Open START_HERE.md first, then this pointer, then JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md and JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json. Re-fetch all live lane heads before acting. Preserve older 20260911 integrated handoff as historical/upstream target-discovery context. Do not trust outputs from the discarded x4_within estimator. Do not label operator/source structure technical without causal evidence, and do not label within-donor molecular-view signal biology merely because measured QC does not explain it. Current leading architecture candidates are residual-over-frozen-context plus dependency-aware hybrid masking, but neither is frozen. Current V5 teacher-target authority and masking-shortcut authority remain blockers. Keep D_shared sealed and training OFF."
 }
