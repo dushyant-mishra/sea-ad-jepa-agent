@@ -100,7 +100,15 @@ On the local 50K discovery expression substrate, using the same 17,186 common-co
 - operator-only R2 ~0;
 - correctly computed within-operator V0->V1 R2 ~0.4724.
 
-This does not contradict Claude because the projection/substrate differ. It does show that operator dominance is not a mathematical inevitability of disjoint common-core views. The V5 result is specific and must be understood, not assumed.
+Source-specific within-operator R2 on this local diagnostic is:
+
+- HVS: 0.4632 (10,958 cells; 41 donors; 24 operators);
+- NPH52: 0.4508 (5,221 cells; 17 donors; 7 operators);
+- SEA_AD: 0.4718 (33,821 cells; 46 donors; 11 operators).
+
+All held-out cells had an operator represented in the corresponding training fold.
+
+This does not contradict Claude because the projection/substrate differ. It does show that operator dominance is not a mathematical inevitability of disjoint common-core views, and that the source-specific recurrence diagnostic is mechanically capable of returning positive signal in all three sources on an independent real-data substrate. The V5 result is specific and must be understood, not assumed.
 
 ## Strongest next question
 
