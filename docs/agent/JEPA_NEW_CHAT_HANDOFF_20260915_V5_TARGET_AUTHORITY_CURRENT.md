@@ -10,11 +10,11 @@ This is the current startup handoff. Historical audits are indexed separately in
 2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
 3. this handoff
 4. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
-5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_V5_TARGET_AUTHORITY_CURRENT.json`
+5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json` — prior Layer-2 machine-readable snapshot; current target/carryover state is in this handoff
 6. `docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md`
 7. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md`
 8. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md`
-9. runtime assets, formulas/heavy-asset references, authority/supersession maps.
+9. runtime assets, formulas/heavy-asset references, authority/supersession maps referenced by the pointer.
 
 Always re-fetch live heads before acting.
 
@@ -30,14 +30,14 @@ Always re-fetch live heads before acting.
 No protected/pathology/DEV/SEALED outcomes, D_private, D_obs outcomes, TD60 or relational activation while design choices remain open.
 
 ## Live lanes observed during this handoff
-- `analysis/v5-layer2-cross-view-shortcut-claude-20260915 @ 219831b899b914984369c7a41828bf750554d1d9`.
-- `repair/v5-dshared-authority-v2-20260914 @ 3717c9c0a292dfcd883949d5d0bf36d263f79300`.
-- `planning/v5-teacher-student-ema-canonical-20260915 @ 88c45b97b3e9a4ad3c0fd178c992f844fd58dbab`.
+- Claude Layer-2: `analysis/v5-layer2-cross-view-shortcut-claude-20260915 @ 219831b899b914984369c7a41828bf750554d1d9`.
+- teacher/student/D_shared mechanics: `repair/v5-dshared-authority-v2-20260914 @ 3717c9c0a292dfcd883949d5d0bf36d263f79300`.
+- canonical planning/carryover audit: `planning/v5-teacher-student-ema-canonical-20260915 @ 88c45b97b3e9a4ad3c0fd178c992f844fd58dbab`.
 
 The planning lane is materially divergent from main. Do not merge it blindly; use exact-SHA evidence until governance reconciliation is deliberate.
 
-## FULL104
-4,553,407 cells; 104 donors; 42 operators; 41,238 addresses; 17,186 common-core addresses; 8,915 Level-4 blocks; SEA-AD/HVS/NPH52.
+## FULL104 and representation
+FULL104: 4,553,407 cells; 104 donors; 42 operators; 41,238 addresses; 17,186 common-core addresses; 8,915 Level-4 blocks; SEA-AD/HVS/NPH52.
 
 Historical FULL104 manifest root: `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`.
 
@@ -45,37 +45,31 @@ Heavy path: `D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_deriv
 
 Permanent normalization fact: `FULL_SOURCE_LIBRARY_EXTENDS_BEYOND_41K_LEDGER__SOURCE_DEPENDENT_OUTSIDE_LEDGER_FRACTION`.
 
-## Current representation
-V0=8,568 addresses; V1=8,618; disjoint union 17,186.
+V0=8,568 addresses; V1=8,618; disjoint union 17,186. V0 SHA `3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada`; V1 SHA `c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c`.
 
-V0 SHA `3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada`.
-V1 SHA `c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c`.
+Visibility is strongly QC/observation-bearing. Current candidate, not frozen: `VALUE_ONLY_256`.
 
-Each has 256 VALUE + 256 VISIBILITY channels. Visibility is strongly QC/observation-bearing. Current candidate, not frozen: `VALUE_ONLY_256`.
-
-## Claude Layer-2 closeout — do not repeat
-Pushed branch: `analysis/v5-layer2-cross-view-shortcut-claude-20260915 @ 219831b8...`.
-
-Key results:
-- same-cell measurement shortcut not demonstrated at tested linear model class; excess synergy peaks ~0.0051 at p=.25 (~1% of full-depth R2);
-- corrected within-donor cross-view R2: ALL ~0.1850, HVS ~0.1906, NPH52 ~0.2646, SEA_AD ~0.2487;
+## Claude Layer-2 closeout — completed, pushed, do not repeat
+Key results at tested linear model class:
+- measurement shortcut not demonstrated; excess matched-state synergy peaks ~0.0051 at p=.25 (~1% of full-depth R2);
+- corrected within-donor R2: ALL ~0.1850, HVS ~0.1906, NPH52 ~0.2646, SEA_AD ~0.2487;
 - measured QC adds only ~0.003 after V0;
 - 93/94 donors positive; 93.6% above 0.10;
-- source-specific full-refit LODO: SEA_AD ~0.241, HVS ~0.045, NPH52 ~0.055;
-- pooled context dominance is estimand-sensitive: empirical/FULL104 weighting increases the molecular increment over context from ~+0.031 to ~+0.121;
-- residual-over-context remains specification-only, not default architecture.
+- full-refit LODO: SEA_AD ~0.241, HVS ~0.045, NPH52 ~0.055;
+- pooled context dominance is estimand-sensitive; empirical/FULL104 weighting increases molecular increment over context from ~+0.031 to ~+0.121;
+- residual-over-context remains specification-only.
 
-Permanent interpretation rules:
+Permanent rules:
 `NO_REAL_RESULT_FROM_THE_DISCARDED_X4_WITHIN_ESTIMATOR_IS_AUTHORITY`.
 Do not call source/operator structure technical without causal support.
 Do not call within-donor signal biology merely because measured QC does not explain it.
 
 ## Teacher/student/EMA mechanics already exist
-Core mechanics live in V4 runtime/EMA plus V5 fail-closed wrapper. Reusable: online gradients, predictor learning, exact-copy frozen EMA teacher, no teacher gradients, one EMA update per proved optimizer step, protected gradient and Adam-moment gates.
+The architecture exists in V4 mechanics + V5 fail-closed wrapper. Reusable: online gradients, predictor learning, exact-copy frozen EMA teacher, no teacher gradients, one EMA update per proved optimizer step, protected gradient gate and Adam-moment gates.
 
 Historical `160 / 4 heads / 6 blocks / batch128 / microbatch8 / 4 views / .40 mask / 16 target blocks / .996 EMA` are not current V5 authority.
 
-The unresolved problem is authority binding, not architecture existence.
+The unresolved problem is current authority binding, not architecture existence.
 
 ## Accidental carryover — active blocker
 Known seams:
@@ -116,7 +110,7 @@ Draft spec lives on `planning/v5-teacher-target-redteam-20260915`.
 Leading candidate, not frozen: fixed/separate replay-stable target-address code plus identity-only and cell-permutation controls under identical targets/masks/weights/loss geometry.
 
 ## Masking blocker
-Neither historical Pearson-graph masking nor later graph-free uniform masking is current authority. Compare uniform, historical graph diagnostic, and donor/source-recurrent or cross-source-consensus hybrid masking with outcome-blind coverage/exposure metrics. Do not call pooled FULL104 covariance biological truth.
+Neither historical Pearson-graph masking nor later graph-free uniform masking is current authority. Compare uniform, historical graph diagnostic, and donor/source-recurrent or cross-source-consensus hybrid masking using outcome-blind coverage/exposure metrics. Do not call pooled FULL104 covariance biological truth.
 
 ## Semantic carryover rules
 `NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY`
@@ -127,7 +121,7 @@ Neither historical Pearson-graph masking nor later graph-free uniform masking is
 
 `QUALIFICATION_RANK_CEILING != PRODUCTION_MODEL_WIDTH`
 
-Prefer neutral production terms (`z_primary`, `z_molecular`, `primary_state_anchor`, `observation_state`) until biology is independently established.
+Prefer neutral terms (`z_primary`, `z_molecular`, `primary_state_anchor`, `observation_state`) until biology is independently established.
 
 ## EMA
 EMA mechanics are reusable. Historical `.996` is not authority. Preferred prospective convention: `m_u = exp(log(0.5) * p_u / H)` using authorized presentation mass; exact unit/half-life remain open.
