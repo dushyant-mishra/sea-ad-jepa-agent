@@ -1,0 +1,16 @@
+{
+  "base_nonuniform_inclusion": "BASE_MECHANICS_HAS_NONUNIFORM_CELL_INCLUSION_PROBABILITY_BY_OPERATOR",
+  "final_N": 201149,
+  "final_cell_id_digest": "f5e9d8dcac3cfdc20f985e6515eef5b4b040e5ae9deb20166131672868eda3eb",
+  "final_manifest_sha256": "c409cdf3b5579022936c52e3ba9aee0144a9a3a663588545607684301d517726",
+  "pair_namespace": "JEPA_V5_MEASUREMENT_SCREEN_PAIR_PLAN_V1",
+  "pair_plan_sha256": "c2176b05d166dd3ed9520090172739c3140e753de8daa017a7a8c446400ef673",
+  "strata": {
+    "BASE_MECHANICS": 196817,
+    "STRESS_HVS": 119,
+    "STRESS_NPH52": 190,
+    "STRESS_SEA_AD": 4023
+  },
+  "stress_namespace": "JEPA_V5_SOURCE_CONDITIONAL_LOW_DEPTH_STRESS_V1",
+  "stress_rule": "per source: ceil(0.001*N_source) cells, ordered by (source_library asc, selection_row asc)"
+}

@@ -1,0 +1,461 @@
+{
+  "artifact_hashes": {
+    "V5_VALUE_ONLY_SAME_CELL_MEASUREMENT_PREFLIGHT_RECEIPT.json": "5ed97a433e16c34a9a4049d86cf448827d9510d7991bf1ee740d75b7fcac6296",
+    "X_CROSS_VIEW_SHORTCUT_AUDIT_SPEC.json": "b280a1ed40127ec08e493deb2096c50c0734d76152405e6a32cf1b5cddc490e7",
+    "Z_RESIDUAL_OVER_CONTEXT_SPECIFICATION.md": "d088bdefa854f50f6d47a5a863f9f9c59138a564d17547be4f6f00e37a2b677e",
+    "bind_population.npz": "4488bcc0226826de332c0ee5c3504dfe6a2c22853de17dce7b366397c56c99be",
+    "final_manifest.csv": "c409cdf3b5579022936c52e3ba9aee0144a9a3a663588545607684301d517726",
+    "pair_plan.csv": "c2176b05d166dd3ed9520090172739c3140e753de8daa017a7a8c446400ef673",
+    "qc_post.npz": "a3b6b526192b604044fcbcb01bfda19311ca40fe47193bd2d24a6979176d72c8",
+    "screen_out.npz": "0fc144a82a6b1bd6d8bcf41c7a2443601203307535fdffd6f882a59343289ffa",
+    "x1_spec.py": "ee3573f8ee0e609245080509329618e8a0ca53da3283e3af8bcbe01562a5c9af",
+    "x2_audit.py": "df7e4db1f0c84736d4a3d48920398a909b21ad6f2e877ed04e41dc861b69841e",
+    "x3_nuis.py": "fe9466c2aa211c62531edb67f585ba46e222b546f995299e625f167846b0e2dc",
+    "x5_within.py": "eea7053dffd586c881e554d9a9dc972b765511dac2ce4782f364d6e593b05950",
+    "x6_fixture.py": "c0c867bc8b99afb577f81fcaa2b2181fcf4c997221a9cd29b35f3cf4b9f60190",
+    "x_audit.json": "dbde5f6e48dc46f3e0683ccdfb594e1d29b3e528e17d747e63b5d6050c6d6f46",
+    "x_fixture.json": "8d136d2ad2f52dba78adc36001495abdf18ec531c40ff01c0ff693bc7868849e",
+    "x_nuisance.json": "e69691b52b8bfc731c7076e122a776a055cefa57ebb0b2ecbf2505aa8794dd11",
+    "x_within.json": "ee8a6445af6021e6797a1c0d38ad31a3b11a2195fef4d20e1ef0cb2f4fb96cb7",
+    "y1_source.py": "fcc6499513d182049b1a92e5ccb5fe83896f79493744004b5fb550d3eef5446d",
+    "y2_donor.py": "c4d0f26c157c03bd93033cb9c211e9ddab7e24ecf4d7a550c1b98591901bfa7a",
+    "y3_qc.py": "b416de412a836f375e6b3a051f2c7135ba0d968c17da090872192e735cd6fe80",
+    "y4_ln.py": "c4fb51164a2325b89078ff96d59d3b1d1b6247c59d4cfbf56805b3c70b0577d3",
+    "y_donor.json": "ddd625dd8fa743cf5019ad5b0600b974f81c157b3adfb53011be296e8424e907",
+    "y_ln.json": "954020387d07b08f57c30285925b65530466154282a83a031836c2234cd1defb",
+    "y_qc.json": "aa5782850ae3e6983b5c930b12465df0b606f072b686f4f437486ea1c0eea79a",
+    "y_source.json": "cfa899100411582db93a2586cfecb089c5852242c4abbb7203aad486b2a836d7",
+    "z1_repro.py": "96bbbb558b710edb891025ab32eefe656fbc86bd0bd29cb97e33818388a7cf86",
+    "z2_estimand.py": "fe9b3c56f9300ee02c71b6f19048798fa12cc3c43db2fd721e9c88ed3820c954",
+    "z3_donorrec.py": "4c74fd450ac2dddac2c555e68220bfdd025461b73f16d0ced26cffd93ccd86c1",
+    "z4_lodo.py": "945fcd2ce5748f67088eef70429b5a255a519b3f8247395193fca251767f313a",
+    "z5_lodo.py": "8b343279447d4c6d4122c7435bd808939e1a0f8bd11649f0f32e78599707ba7d",
+    "z6_closeout.py": "29b4b68f75b896ce41afbf17624336ea51d3d02cb45080ac9ee40add26a289c1",
+    "z_donorrec.json": "4c0b46a853a9f60a29e0532fae1e5a31cee52870ce033f435b5faa116eba6217",
+    "z_estimand.json": "e2258721f15e5fea1a34945f4058df3f824067b72b7f87f5a93e3e404456a405",
+    "z_lodo.json": "277eab6e11fefa25d52cdb72522dbd8e29e3cc1602c4f1e3a85b117947f63fdb",
+    "z_repro.json": "0e4f72ca2e5abd29eb63eacff90e483b7161a8a7be5855611a793da4d7214f1a"
+  },
+  "corrected_interpretation": {
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_DEMONSTRATED_IN_SEA_AD_AT_THIS_MODEL_CLASS": true,
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_NOT_DEMONSTRATED_IN_HVS_OR_NPH52_AT_THIS_MODEL_CLASS": true,
+    "WITHIN_DONOR_MOLECULAR_VIEW_SIGNAL_BEYOND_MEASURED_QC_RECURS_ACROSS_ALL_THREE_SOURCES": true,
+    "explicitly_not_claimed": [
+      "THE_SIGNAL_IS_BIOLOGICAL",
+      "THE_SIGNAL_IS_NOT_TECHNICAL"
+    ],
+    "negative_result_is_not_absence": true,
+    "prior_claim_corrected": "the earlier '85% of cross-view signal is operator mean structure' was computed correctly but conflated between-source pooling inflation with donor-generalisation failure; per-source and within-donor analyses supersede that framing",
+    "scope_of_qc_control": "rules out the measured Q_DEPTH/Q_DETECT family as the primary explanation; does NOT eliminate unmeasured technical state"
+  },
+  "estimator_validation": {
+    "fixtureA_operator_centred": -0.006803359768960737,
+    "fixtureA_raw": 0.8299332752940274,
+    "negcontrol_centred": -0.0020025473016547224,
+    "negcontrol_raw": -0.002042267779508,
+    "passA": true,
+    "passB": true,
+    "passC": true,
+    "validated": true
+  },
+  "fold_identities": {
+    "binding_digest": "f0ca25e5e91d2b87991a6ea301d41a4f64d8805519aa39370e29dd43c8635ec0",
+    "cell_held_out": "default_rng(7).integers(0,5), sizes [39358,39351,39087,39504,39517]",
+    "donor_held_out": "donor_code mod 5, sizes [39924,33340,44759,39770,39024]"
+  },
+  "item2_independent_reproduction": {
+    "Q only": {
+      "abs_diff": 1.0422218643668657e-14,
+      "path_A": 0.03060994187656796,
+      "path_B": 0.03060994187657838
+    },
+    "V0 only": {
+      "abs_diff": 5.218048215738236e-15,
+      "path_A": 0.4666224193817138,
+      "path_B": 0.466622419381719
+    },
+    "_overlap": {
+      "Q_increment_over_OV": 0.0014416557686579567,
+      "V0_increment_over_OQ": 0.0309130376159219,
+      "shared": 0.42974767547829895,
+      "unique_V0": 0.03687474390341483,
+      "unique_operator": 0.02997108488130107
+    },
+    "_reproduced": true,
+    "_tolerance": 0.0001,
+    "_worst_abs_diff": 1.0422218643668657e-14,
+    "operator + Q": {
+      "abs_diff": 5.10702591327572e-15,
+      "path_A": 0.4671221224157509,
+      "path_B": 0.467122122415756
+    },
+    "operator + Q + V0": {
+      "abs_diff": 4.107825191113079e-15,
+      "path_A": 0.4980351600316728,
+      "path_B": 0.4980351600316769
+    },
+    "operator + V0": {
+      "abs_diff": 4.6629367034256575e-15,
+      "path_A": 0.49659350426301485,
+      "path_B": 0.4965935042630195
+    },
+    "operator only": {
+      "abs_diff": 6.827871601444713e-15,
+      "path_A": 0.4597187603596,
+      "path_B": 0.45971876035960685
+    },
+    "source + operator": {
+      "abs_diff": 4.6629367034256575e-15,
+      "path_A": 0.4597424911491933,
+      "path_B": 0.45974249114919796
+    },
+    "source only": {
+      "abs_diff": 6.772360450213455e-15,
+      "path_A": 0.33800309251507976,
+      "path_B": 0.33800309251508653
+    }
+  },
+  "item3_estimand_sensitivity": [
+    {
+      "combined_r2": 0.49824378834984007,
+      "context_only_r2": 0.46714503222108195,
+      "estimand": "UNWEIGHTED_RECON",
+      "kish_ess": 196817,
+      "molecular_increment_over_context": 0.03109875612875812,
+      "v0_only_r2": 0.46662241938171367,
+      "within_donor_molecular_r2": 0.1850233109715893
+    },
+    {
+      "combined_r2": 0.38580802650953816,
+      "context_only_r2": 0.2650845876253568,
+      "estimand": "EMPIRICAL_FULL104_STRUCTURE",
+      "kish_ess": 61374,
+      "molecular_increment_over_context": 0.12072343888418136,
+      "v0_only_r2": 0.36452233241539966,
+      "within_donor_molecular_r2": 0.21818808688365654
+    },
+    {
+      "combined_r2": 0.5001502806337625,
+      "context_only_r2": 0.4714738942449077,
+      "estimand": "SOURCE_UNIFORM_CELL_WITHIN_SOURCE",
+      "kish_ess": 96338,
+      "molecular_increment_over_context": 0.028676386388854835,
+      "v0_only_r2": 0.47461770811034576,
+      "within_donor_molecular_r2": 0.1750336948279173
+    },
+    {
+      "combined_r2": 0.48554596226236435,
+      "context_only_r2": 0.4532032910059878,
+      "estimand": "DONOR_PRIMARY_OPERATOR_BALANCED",
+      "kish_ess": 34726,
+      "molecular_increment_over_context": 0.032342671256376576,
+      "v0_only_r2": 0.4535503006222742,
+      "within_donor_molecular_r2": 0.17637674119578184
+    }
+  ],
+  "item4_donor_recurrence": {
+    "ALL": {
+      "frac_above_0p05": 0.9893617021276596,
+      "frac_above_0p10": 0.9361702127659575,
+      "frac_positive": 0.9893617021276596,
+      "max": 0.26949343139707327,
+      "median": 0.1739198628586499,
+      "min": -0.022418483103514353,
+      "n_donors": 94,
+      "q1": 0.1499563493150205,
+      "q3": 0.20496945464201688
+    },
+    "HVS": {
+      "frac_above_0p05": 1.0,
+      "frac_above_0p10": 0.926829268292683,
+      "frac_positive": 1.0,
+      "max": 0.26949343139707327,
+      "median": 0.15815521755555495,
+      "min": 0.07584126657291723,
+      "n_donors": 41,
+      "q1": 0.13919346503629948,
+      "q3": 0.1809530696940328
+    },
+    "NPH52": {
+      "frac_above_0p05": 0.9411764705882353,
+      "frac_above_0p10": 0.9411764705882353,
+      "frac_positive": 0.9411764705882353,
+      "max": 0.2694767733622685,
+      "median": 0.22037137830539733,
+      "min": -0.022418483103514353,
+      "n_donors": 17,
+      "q1": 0.20157087205594704,
+      "q3": 0.24975394737673995
+    },
+    "SEA_AD": {
+      "frac_above_0p05": 1.0,
+      "frac_above_0p10": 0.9444444444444444,
+      "frac_positive": 1.0,
+      "max": 0.23785238386858076,
+      "median": 0.18086578634693107,
+      "min": 0.0892354022801225,
+      "n_donors": 36,
+      "q1": 0.16137028400829365,
+      "q3": 0.19188030132635917
+    }
+  },
+  "item5_lodo_full_refit": {
+    "ALL": {
+      "fastpath_rel_dev_vs_direct": 2.083954381805688e-14,
+      "frac_positive": 1.0,
+      "max": 0.2542927619284917,
+      "median": 0.04418615384363095,
+      "min": 0.002608099518450757,
+      "n_donors": 94,
+      "pooled_lodo_r2": 0.0687231474121911,
+      "q1": 0.023326749104805367,
+      "q3": 0.19150026979801846,
+      "sole_donor_operators": 0
+    },
+    "HVS": {
+      "fastpath_rel_dev_vs_direct": 2.5005338402280606e-15,
+      "frac_positive": 1.0,
+      "max": 0.1362933590641232,
+      "median": 0.04185851936149998,
+      "min": 0.0188611957470205,
+      "n_donors": 41,
+      "pooled_lodo_r2": 0.04508741749145817,
+      "q1": 0.027410337946316865,
+      "q3": 0.0673068289994514,
+      "sole_donor_operators": 0
+    },
+    "NPH52": {
+      "fastpath_rel_dev_vs_direct": 4.376733444280725e-15,
+      "frac_positive": 1.0,
+      "max": 0.09395520841597149,
+      "median": 0.05766754542981911,
+      "min": 0.031147954334162842,
+      "n_donors": 17,
+      "pooled_lodo_r2": 0.05462934735003744,
+      "q1": 0.053966181610358266,
+      "q3": 0.06636570238814343,
+      "sole_donor_operators": 0
+    },
+    "SEA_AD": {
+      "fastpath_rel_dev_vs_direct": 7.382981881074809e-15,
+      "frac_positive": 1.0,
+      "max": 0.29956395683496617,
+      "median": 0.24084153307018785,
+      "min": 0.1490971012104776,
+      "n_donors": 36,
+      "pooled_lodo_r2": 0.2410121580995348,
+      "q1": 0.22695325661977464,
+      "q3": 0.2522557237277864,
+      "sole_donor_operators": 0
+    }
+  },
+  "item6_loss_geometry_proxy": {
+    "layer-normalised": {
+      "both_donor_heldout": 0.5115488449733929,
+      "ctx_only_donor_heldout": 0.46833254460117524,
+      "mol_increment_over_ctx": 0.043216300372217686,
+      "mol_only_donor_heldout": 0.4826275970897205,
+      "within_donor_mol": 0.1959630119979635,
+      "within_donor_qc": 0.02565544954088561
+    },
+    "raw": {
+      "both_donor_heldout": 0.49824378834984007,
+      "ctx_only_donor_heldout": 0.46714503222108217,
+      "mol_increment_over_ctx": 0.0310987561287579,
+      "mol_only_donor_heldout": 0.4666224193817138,
+      "within_donor_mol": 0.1850233109715893,
+      "within_donor_qc": 0.020822757918595558
+    }
+  },
+  "measurement_shortcut_audit": {
+    "C01": {
+      "100|100": 0.4666345577579507,
+      "100|25": 0.30392985753875934,
+      "100|50": 0.3821982620828066,
+      "100|75": 0.4313693008745224,
+      "100|90": 0.45373636403742623,
+      "25|100": 0.43465039493860513,
+      "25|25": 0.28817903946840195,
+      "25|50": 0.35881483011212567,
+      "25|75": 0.40297110824572213,
+      "25|90": 0.4230877071340031,
+      "50|100": 0.45260838087786737,
+      "50|25": 0.2970398673819913,
+      "50|50": 0.3719894968641938,
+      "50|75": 0.41896201395247057,
+      "50|90": 0.4403095361592868,
+      "75|100": 0.461217424721203,
+      "75|25": 0.3012641320899725,
+      "75|50": 0.3782636211601711,
+      "75|75": 0.42657737331235857,
+      "75|90": 0.4485479137660555,
+      "90|100": 0.46473396396113287,
+      "90|25": 0.30299149114219237,
+      "90|50": 0.3808098888420717,
+      "90|75": 0.4296802955526887,
+      "90|90": 0.4519068119598768
+    },
+    "C10": {
+      "100|100": 0.46463613811485416,
+      "100|25": 0.2993273602013963,
+      "100|50": 0.3789214465505475,
+      "100|75": 0.42883914476398544,
+      "100|90": 0.45156150278462526,
+      "25|100": 0.43422164281967846,
+      "25|25": 0.2846142849170773,
+      "25|50": 0.3568124439419228,
+      "25|75": 0.4019268230636951,
+      "25|90": 0.4224098499614829,
+      "50|100": 0.4511747720670065,
+      "50|25": 0.29286400342157903,
+      "50|50": 0.3691843414700757,
+      "50|75": 0.41694685484134486,
+      "50|90": 0.43866102165322196,
+      "75|100": 0.4594205654215239,
+      "75|25": 0.29680635072728,
+      "75|50": 0.375162034726346,
+      "75|75": 0.4242324486170569,
+      "75|90": 0.4465590672667644,
+      "90|100": 0.4627810362151056,
+      "90|25": 0.2984324457891365,
+      "90|50": 0.37757847616239504,
+      "90|75": 0.4271993590811888,
+      "90|90": 0.4497748112527794
+    },
+    "ladder": {
+      "25": {
+        "V0_clean": 0.30392985753875934,
+        "V0_clean+Lp": 0.3063072747879064,
+        "V0_clean+Lp+Dp": 0.30656630902610604,
+        "V0_clean+Lp+Dp+L1+D1": 0.30667704302683907,
+        "V0_matched": 0.28817903946840195
+      },
+      "50": {
+        "V0_clean": 0.3821982620828067,
+        "V0_clean+Lp": 0.3837620623805603,
+        "V0_clean+Lp+Dp": 0.3842577158756376,
+        "V0_clean+Lp+Dp+L1+D1": 0.3843475689099698,
+        "V0_matched": 0.3719894968641938
+      },
+      "75": {
+        "V0_clean": 0.4313693008745225,
+        "V0_clean+Lp": 0.4325051520620443,
+        "V0_clean+Lp+Dp": 0.4331474265703307,
+        "V0_clean+Lp+Dp+L1+D1": 0.43322435204678955,
+        "V0_matched": 0.42657737331235845
+      },
+      "90": {
+        "V0_clean": 0.45373636403742634,
+        "V0_clean+Lp": 0.45471340838060514,
+        "V0_clean+Lp+Dp": 0.45541747938028965,
+        "V0_clean+Lp+Dp+L1+D1": 0.4554889794574515,
+        "V0_matched": 0.4519068119598768
+      }
+    },
+    "n_base": 196817,
+    "n_cells": 196817
+  },
+  "model_class": "ridge, lambda=1e-2*n_train, metric = total-variance-explained OOF R2",
+  "not_done": [
+    "residual objective NOT implemented - specification only",
+    "no production training",
+    "no representation modification",
+    "no operator/source residualization",
+    "D_shared and protected outcomes untouched"
+  ],
+  "package_id": "V5_LAYER2_CROSS_VIEW_SHORTCUT_CLOSEOUT",
+  "population": {
+    "cells": 196817,
+    "donors": 94,
+    "inclusion": "q_i = min(12,B_o)/B_o, whole blocks, content-independence proven by reproduction (396/396)",
+    "operators": 42,
+    "sources": {
+      "HVS": 88015,
+      "NPH52": 41218,
+      "SEA_AD": 67584
+    },
+    "stratum": "BASE_MECHANICS (probability sample)",
+    "stress_strata_excluded_from_all_weighting": true
+  },
+  "qc_control_within_donor": {
+    "ALL": {
+      "qc_increment": 0.0025874008889210653,
+      "qc_only": 0.020822757918595558,
+      "qc_plus_v0": 0.18761071186051037,
+      "v0_increment": 0.1667879539419148,
+      "v0_only": 0.1850233109715893
+    },
+    "HVS": {
+      "qc_increment": 0.0029230188828702763,
+      "qc_only": 0.05345538716408427,
+      "qc_plus_v0": 0.193505958943062,
+      "v0_increment": 0.14005057177897773,
+      "v0_only": 0.19058294006019172
+    },
+    "NPH52": {
+      "qc_increment": 0.0026329024782679733,
+      "qc_only": 0.0689806898851435,
+      "qc_plus_v0": 0.2672166044502051,
+      "v0_increment": 0.19823591456506162,
+      "v0_only": 0.26458370197193715
+    },
+    "SEA_AD": {
+      "qc_increment": 0.0029164319733380184,
+      "qc_only": 0.05751738590336508,
+      "qc_plus_v0": 0.25162056013751344,
+      "v0_increment": 0.19410317423414836,
+      "v0_only": 0.24870412816417542
+    }
+  },
+  "retained": [
+    "BATCH_TECHNICAL_VS_BIOLOGICAL_DECOMPOSITION_NOT_IDENTIFIABLE_IN_FULL104",
+    "CURRENT_V5_TEACHER_AUTHORITY_NOT_YET_ESTABLISHED",
+    "PRIMARY_REPRESENTATION_AUTHORITY_NOT_YET_FROZEN",
+    "MEASUREMENT_ROBUSTNESS_DECISION_RULE_NOT_YET_FROZEN",
+    "V3_NULL_NOT_YET_FROZEN",
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION",
+    "TRAINING_OFF"
+  ],
+  "scope": "Layer 2 - training-objective shortcut exposure. NOT Layer 1 substrate qualification, NOT Layer 3 downstream inference.",
+  "terminals": [
+    "MEASUREMENT_SHORTCUT_NOT_DEMONSTRATED_AT_THIS_MODEL_CLASS",
+    "WITHIN_DONOR_MOLECULAR_VIEW_SIGNAL_BEYOND_MEASURED_QC_RECURS_ACROSS_ALL_THREE_SOURCES",
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_DEMONSTRATED_IN_SEA_AD_AT_THIS_MODEL_CLASS",
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_NOT_DEMONSTRATED_IN_HVS_OR_NPH52_AT_THIS_MODEL_CLASS",
+    "CONTEXT_SHORTCUT_DECOMPOSITION_INDEPENDENTLY_REPRODUCED",
+    "ESTIMAND_SENSITIVITY_CHARACTERIZED",
+    "DONOR_LEVEL_RECURRENCE_CHARACTERIZED",
+    "MECHANICS_ALIGNED_LOSS_PROXY_CHARACTERIZED"
+  ],
+  "unresolved_questions": [
+    "Whether the within-donor signal survives a non-linear model class - a linear probe bounds neither direction.",
+    "Why HVS and NPH52 fail donor generalisation while SEA_AD succeeds; cohort heterogeneity is a hypothesis, not evidence.",
+    "Whether unmeasured technical state (beyond Q_DEPTH/Q_DETECT) explains part of the within-donor signal.",
+    "Whether the residual-over-context construction changes what the molecular pathway LEARNS - requires training.",
+    "The V5 teacher target is undefined, so no objective-aligned result is possible, only a geometry proxy.",
+    "Whether operator identity is admissible as a training-time input at all - a design decision, not a measurement."
+  ],
+  "variance_decomposition": {
+    "HVS": {
+      "between_operator": 0.21263987367033557,
+      "donor_within_operator": 0.1928019259732124,
+      "donors": 41,
+      "operators": 24,
+      "within_donor": 0.5945582003564521
+    },
+    "NPH52": {
+      "between_operator": 0.2527172016115872,
+      "donor_within_operator": 0.22834783337104517,
+      "donors": 17,
+      "operators": 7,
+      "within_donor": 0.5189349650173677
+    },
+    "SEA_AD": {
+      "between_operator": 0.027811984819088816,
+      "donor_within_operator": 0.0402235418691348,
+      "donors": 36,
+      "operators": 11,
+      "within_donor": 0.9319644733117765
+    }
+  }
+}

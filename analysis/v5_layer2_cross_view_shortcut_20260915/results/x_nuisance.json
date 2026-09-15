@@ -1,0 +1,7 @@
+{
+  "Q + source + operator one-hot (50 cols)": 0.46709710433860263,
+  "QCS_plus_V0": 0.49818854693918146,
+  "Q_DEPTH,Q_DETECT (+squares,interaction, 5)": 0.03144649621824591,
+  "Q_DEPTH,Q_DETECT (linear, 2 cols)": 0.02697077969251349,
+  "V0_molecular_full": 0.4666345577579507
+}

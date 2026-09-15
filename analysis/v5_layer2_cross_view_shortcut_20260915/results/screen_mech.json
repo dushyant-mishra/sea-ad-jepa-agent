@@ -1,0 +1,9 @@
+{
+  "N": 201149,
+  "cells_filled": 201149,
+  "indices_strictly_increasing": true,
+  "nesting_monotone": false,
+  "numpy": "1.24.2",
+  "outside_ledger_nonneg": true,
+  "rng": "Philox(sha256(THIN_NS|canonical_cell_id)[:8]) per cell; outside-ledger substream sha256(THIN_NS|cid|OUTSIDE_LEDGER_TOTAL)"
+}

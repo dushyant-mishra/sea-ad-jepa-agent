@@ -1,0 +1,53 @@
+{
+  "artifacts": {
+    "V0_full.npy": {
+      "description": "disjoint-view substrate, view 0",
+      "path": "D:\\jepa_v5_substrate_20260914\\V0_full.npy",
+      "sha256_declared_in_manifest": true,
+      "size_bytes": 9325377664
+    },
+    "V1_full.npy": {
+      "description": "disjoint-view substrate, view 1",
+      "path": "D:\\jepa_v5_substrate_20260914\\V1_full.npy",
+      "sha256_declared_in_manifest": true,
+      "size_bytes": 9325377664
+    },
+    "bind_population.npz": {
+      "description": "bound cell index and fold identities; deterministically regenerable from final_manifest.csv",
+      "path": "C:\\Users\\dushy\\AppData\\Local\\Temp\\claude\\d--Jepa-project\\cdf819f6-5db4-4119-9a97-37fef1d27909\\scratchpad\\bind_population.npz",
+      "sha256": "4488bcc0226826de332c0ee5c3504dfe6a2c22853de17dce7b366397c56c99be",
+      "size_bytes": 5118788
+    },
+    "final_manifest.csv": {
+      "description": "frozen sample manifest (201,149 cells: BASE_MECHANICS + source-conditional stress strata)",
+      "path": "C:\\Users\\dushy\\AppData\\Local\\Temp\\claude\\d--Jepa-project\\cdf819f6-5db4-4119-9a97-37fef1d27909\\scratchpad\\final_manifest.csv",
+      "sha256": "c409cdf3b5579022936c52e3ba9aee0144a9a3a663588545607684301d517726",
+      "size_bytes": 22860892
+    },
+    "pair_plan.csv": {
+      "description": "frozen pair plan (154,631 pairs)",
+      "path": "C:\\Users\\dushy\\AppData\\Local\\Temp\\claude\\d--Jepa-project\\cdf819f6-5db4-4119-9a97-37fef1d27909\\scratchpad\\pair_plan.csv",
+      "sha256": "c2176b05d166dd3ed9520090172739c3140e753de8daa017a7a8c446400ef673",
+      "size_bytes": 4454886
+    },
+    "qc_post.npz": {
+      "description": "re-derived post-intervention Q_DEPTH/Q_DETECT; bit-identical replay of screen_out",
+      "path": "C:\\Users\\dushy\\AppData\\Local\\Temp\\claude\\d--Jepa-project\\cdf819f6-5db4-4119-9a97-37fef1d27909\\scratchpad\\qc_post.npz",
+      "sha256": "a3b6b526192b604044fcbcb01bfda19311ca40fe47193bd2d24a6979176d72c8",
+      "size_bytes": 5919001
+    },
+    "rowmap.csv": {
+      "description": "FULL104 population row map (4,553,407 cells) used to derive B_o and q_i",
+      "path": "C:\\Users\\dushy\\AppData\\Local\\Temp\\claude\\d--Jepa-project\\cdf819f6-5db4-4119-9a97-37fef1d27909\\scratchpad\\rowmap.csv",
+      "sha256": "1db95b027ea1be416890d67f068e880503e3c902e5eb46ba074643f47a4d7bd5",
+      "size_bytes": 476144036
+    },
+    "screen_out.npz": {
+      "description": "frozen VALUE_ONLY same-cell thinning output (5 p-levels x 2 views x 201,149 cells)",
+      "path": "C:\\Users\\dushy\\AppData\\Local\\Temp\\claude\\d--Jepa-project\\cdf819f6-5db4-4119-9a97-37fef1d27909\\scratchpad\\screen_out.npz",
+      "sha256": "0fc144a82a6b1bd6d8bcf41c7a2443601203307535fdffd6f882a59343289ffa",
+      "size_bytes": 1403900426
+    }
+  },
+  "policy": "Large binary artifacts are referenced by path, size and SHA-256 rather than committed, per the project production-run protocol. Every committed result is reproducible from these inputs using the committed scripts."
+}

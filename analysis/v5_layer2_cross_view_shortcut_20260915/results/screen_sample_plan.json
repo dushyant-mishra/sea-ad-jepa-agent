@@ -1,0 +1,25 @@
+{
+  "authority": "MECHANICS_SCALE_MEASUREMENT_SCREEN__NOT_FULL104_QUALIFICATION",
+  "block_manifest_parent": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "blocks": 396,
+  "cells": 196817,
+  "depth_bands": [
+    "<100",
+    "100-1k",
+    "1k-5k",
+    "5k-20k",
+    "20k-50k",
+    ">=50k"
+  ],
+  "donors": 94,
+  "frozen_before_any_thinning": true,
+  "namespace": "JEPA_V5_MECHANICS_SCALE_MEASUREMENT_SCREEN_SAMPLE_V1",
+  "operators": 42,
+  "sample_cell_id_digest": "424a1c8d55df6704c61d5bb175c103f5fd67ed19c51281223d327c3853fe318a",
+  "selection_rule": "per operator, rank blocks by sha256(ns|block_key), take first 12",
+  "sources": {
+    "HVS": 88015,
+    "NPH52": 41218,
+    "SEA_AD": 67584
+  }
+}

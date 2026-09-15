@@ -1,0 +1,10 @@
+{
+  "fixtureA_operator_centred": -0.006803359768960737,
+  "fixtureA_raw": 0.8299332752940274,
+  "negcontrol_centred": -0.0020025473016547224,
+  "negcontrol_raw": -0.002042267779508,
+  "passA": true,
+  "passB": true,
+  "passC": true,
+  "validated": true
+}

@@ -1,0 +1,354 @@
+{
+  "artifact_hashes": {
+    "ablation.json": "37ee5fe8d482f51782b42c1282770b5712999ec09768de23fd134bbf01ba1019",
+    "aud_design.json": "3cb8e8320d6d2561ed9d3ff2a00549491e833051fddfe359d62ad13c446f2ce3",
+    "aud_geometry.json": "027b76be0b5c69d48cb9f25bee77931142207c4672f7801206c46b6c9c313c26",
+    "aud_qc.json": "30bea4af902f7933e8ca262ad9b966988d79c98abf7f65df0af645654541fd9a",
+    "aud_spectra.json": "f3352e94500dc4c6fbbd2db833deb79e32bb5becd3dfa65827824f6439e6d98a",
+    "aud_stress.json": "deb16ae848cdc5d05e69564cda3c46340b5343a90d81d56028ad459225e5dd2b",
+    "aud_verify.json": "b8e8dbcfda67e6ce39ada48fcb50e71f8ada18988ba97b0203eac333db3c6f95",
+    "aud_weights.json": "720c730d489739249fe8617ee50604fe5059a3084365684ab2dddf4ce84d82b8",
+    "final_manifest.csv": "c409cdf3b5579022936c52e3ba9aee0144a9a3a663588545607684301d517726",
+    "freeze_receipt.json": "ad0d809e044b88c6b31853cf22c291a948c928b767900471c28b0e8583125c4e",
+    "g1_geo.py": "d66ac571937f508f629027081836bb6c18eb3c16d9a54594f561c21b948da999",
+    "g2_stress.py": "29344ea19e754590cd9c2b12c27f0fbc6b9a2b91d3b01db3da2c7740934d5c3b",
+    "g3_spec.py": "5cfd09faced47b454aaca0b33b6e0acacebe61c1d0a9712984490eb1172f6544",
+    "g4_qc.py": "ccc55d629d3010089cb757c96546312caeafee4617c6e620a031298affe6ed2e",
+    "g5_verify.py": "7415017f4ecb50b5c90fb343897f9daf7f9962eea83cf3c0b9af3a222b2f499b",
+    "pair_plan.csv": "c2176b05d166dd3ed9520090172739c3140e753de8daa017a7a8c446400ef673",
+    "partition_v1.json": "129631f95c9ef90bd5a4af2a70cbc2adbbf907ed6357b9c13c4aa370cafc1575",
+    "qc_post.npz": "a3b6b526192b604044fcbcb01bfda19311ca40fe47193bd2d24a6979176d72c8",
+    "qc_replay.py": "5efef8c33c03be5584f53a84f8b4547c062fe85f6fcb4dadd262456a2986127a",
+    "rebuild.py": "abe8ecff642af47e07e9657835a88d4ca0c90a0fe97de111f353ea4cf7e8297b",
+    "screen.py": "d0fe0ab135585586b27c2c23af0cacc0ea3380ccf3eb270a3c640f4c41976fd6",
+    "screen_mech.json": "d749e1cd20a6d398177c85d43fb11383bebd36057ad983c2dd96242accaac27f",
+    "screen_out.npz": "0fc144a82a6b1bd6d8bcf41c7a2443601203307535fdffd6f882a59343289ffa",
+    "screen_sample_plan.json": "eb932b31102ecdbc4c0a4f262c5d999fed9b429d58ba90c07ed2b19c2d306175",
+    "w1_design.py": "69c5304ddee0f4ab2843ad1aeb45e4d47fd3f3f77c1faecdde8564de49018c14",
+    "w2_audit.py": "5a4e18c818ca98066c94cbdf08b8c8583da4562909e752aadd5ba9332afd34d5"
+  },
+  "authority": "MECHANICS_SCALE_MEASUREMENT_SCREEN__NOT_FULL104_QUALIFICATION",
+  "base_sampling_design": {
+    "BASE_SAMPLING_DESIGN": "OPERATOR_STRATIFIED_WHOLE_BLOCK_HASH_RANK_SAMPLE",
+    "BLOCK_HASH_SELECTION_IS_CONTENT_INDEPENDENT_BY_CONSTRUCTION": true,
+    "CELL_INCLUSION_PROBABILITY_WITHIN_OPERATOR": "min(12,B_o)/B_o",
+    "content_independence_evidence": "PROVEN BY REPRODUCTION: recomputing the rank from namespace + block_key alone reproduced the frozen 396-block BASE selection exactly (396/396, 0 missing, 0 extra). The hash input contains no cell content, depth, expression, QC, outcome, source abundance or learned quantity.",
+    "not_simple_random_sampling": true,
+    "operators": 42,
+    "operators_with_Bo_le_12_hence_q_eq_1": 16,
+    "population_blocks": 8915,
+    "primary_inclusion_unit": "BLOCK",
+    "q_max": 1.0,
+    "q_median": 0.406897,
+    "q_min": 0.008386,
+    "selected_blocks": 396,
+    "selection_rule": "per operator, rank population blocks by sha256(JEPA_V5_MECHANICS_SCALE_MEASUREMENT_SCREEN_SAMPLE_V1|block_key), take first 12",
+    "whole_block_inclusion": true
+  },
+  "checks": [
+    {
+      "class": "CHECK_EXECUTED_BEFORE_SCREEN_ON_SHIPPED_CONSTRUCTION",
+      "name": "p=1.00 identity replay vs frozen substrate (5 blocks, both views)",
+      "note": "binding-independent: p=1 performs no draws, so the superseded RNG binding does not affect it",
+      "result": "PASS (max abs diff below 1e-4 tolerance; script preflight.py)"
+    },
+    {
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "n": 201149,
+      "name": "full-sample p=1 identity: lib_p100 == declared source_library for every cell",
+      "result": "PASS",
+      "value": true
+    },
+    {
+      "class": "CHECK_EXECUTED_BEFORE_SCREEN_ON_SUPERSEDED_RNG_BINDING",
+      "name": "nested-thinning monotonicity and analytic retention (preflight)",
+      "note": "preflight.py seeded Philox from sha256(THIN_NS|block_key) and used ladder PROB=[.25,.25,.25,.15,.10]; screen.py shipped cell-identity seeding with COND=[.25,1/3,.5,.6]. These preflight results therefore validate the mechanics FAMILY, not the shipped construction.",
+      "result": "PASS (on superseded binding) - DOES NOT CARRY"
+    },
+    {
+      "ascending_violations": 0,
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "defect_note": "recorded flag is FALSE due to a checker orientation defect in screen.py (it iterated PS descending while asserting prev<=tc ascending); correct-orientation re-verification over the same frozen realization gives 0 violations, and frozen library totals are monotone with 0 violations",
+      "library_total_violations": 0,
+      "name": "nested-thinning monotonicity, shipped construction",
+      "result": "PASS",
+      "screen_mech_json_raw_flag": false
+    },
+    {
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "max_abs_error": 6.160726993109655e-06,
+      "name": "analytic thinning verifier, shipped construction",
+      "observed_retention": {
+        "0.25": {
+          "abs_error": 6.160726993109655e-06,
+          "observed": 0.2499938392730069,
+          "target": 0.25
+        },
+        "0.50": {
+          "abs_error": 3.6623304596750117e-06,
+          "observed": 0.5000036623304597,
+          "target": 0.5
+        },
+        "0.75": {
+          "abs_error": 9.585931770583755e-08,
+          "observed": 0.7500000958593177,
+          "target": 0.75
+        },
+        "0.90": {
+          "abs_error": 6.144582265221743e-07,
+          "observed": 0.9000006144582265,
+          "target": 0.9
+        },
+        "1.00": {
+          "abs_error": 0.0,
+          "observed": 1.0,
+          "target": 1.0
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "name": "deterministic replay reproduces the frozen realization",
+      "note": "qc_replay.py re-ran the exact RNG call sequence; all five lib_p*, ledger and outside matched bit-for-bit",
+      "result": "PASS",
+      "total_deviation": 0.0
+    },
+    {
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "exact": true,
+      "max_abs_diff": 0.0,
+      "name": "full-library arithmetic: ledger + outside == declared source_library",
+      "result": "PASS"
+    },
+    {
+      "cells_with_zero_outside": 88180,
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "name": "OUTSIDE_LEDGER_TOTAL non-negativity and mass",
+      "nonneg": true,
+      "outside_mass_fraction": 0.020808326643454497,
+      "result": "PASS",
+      "rule": "thinned in its own RNG substream so its presence cannot perturb in-ledger draws; normalization denominator is the FULL library (ledger+outside), applied exactly once"
+    },
+    {
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "matches_source_library": true,
+      "max_abs_diff": 0.0,
+      "name": "Q_DEPTH row authority",
+      "note": "qdepth_cnt.npy holds the DECLARED source_library (ledger + out-of-ledger), not the in-block ledger sum; indexed by selection_row it matches lib_p100 exactly for all 201,149 rows (max abs diff 0). An initial assertion against the ledger sum failed because it named the wrong quantity.",
+      "result": "PASS"
+    },
+    {
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "name": "Q_DETECT row authority",
+      "note": "re-derived p=1 detected-address count equals qdetect_cnt.npy exactly for all rows",
+      "result": "PASS",
+      "value": true
+    },
+    {
+      "N": 201149,
+      "canonical_cell_id_unique": true,
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "name": "canonical cell id / selection row uniqueness",
+      "result": "PASS",
+      "selection_row_unique": true
+    },
+    {
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "name": "cells addressed individually, not by block",
+      "note": "screen.py maps selection_row -> global index per cell; RNG seeded per canonical_cell_id",
+      "result": "PASS"
+    },
+    {
+      "by_p": {
+        "0.25": {
+          "attempted": 201149,
+          "non_estimable": 2
+        },
+        "0.50": {
+          "attempted": 201149,
+          "non_estimable": 1
+        },
+        "0.75": {
+          "attempted": 201149,
+          "non_estimable": 0
+        },
+        "0.90": {
+          "attempted": 201149,
+          "non_estimable": 0
+        },
+        "1.00": {
+          "attempted": 201149,
+          "non_estimable": 0
+        }
+      },
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "name": "zero-library accounting (unconditional denominators)",
+      "policy": "MEASUREMENT_FAILURE_ZERO_LIBRARY -> NOT_ESTIMABLE, retained in the attempted population, never imputed",
+      "result": "PASS"
+    },
+    {
+      "class": "CHECK_VERIFIED_AFTER_SCREEN_FROM_FROZEN_EVIDENCE",
+      "name": "BASE/STRESS stratum disjointness",
+      "overlapping_selection_rows": 0,
+      "result": "PASS"
+    },
+    {
+      "blocks_read": 1698,
+      "cells_filled": 201149,
+      "class": "MIXED",
+      "name": "runtime benchmark",
+      "observed_replay_wall_minutes": 9.6,
+      "observed_screen_wall_minutes": 18.9,
+      "preflight_projection_class": "CHECK_EXECUTED_BEFORE_SCREEN_ON_SUPERSEDED_RNG_BINDING"
+    }
+  ],
+  "decision_authority": {
+    "MEASUREMENT_ROBUSTNESS_DECISION_RULE_NOT_YET_FROZEN": true,
+    "no_threshold_introduced_after_seeing_outcomes": true
+  },
+  "firewall_state": {
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION": true,
+    "PROTECTED_DATA_CLOSED": true,
+    "RELATIONAL_ACTIVATION_OFF": true,
+    "TD60_OFF": true,
+    "TRAINING_OFF": true,
+    "inputs_NOT_read": [
+      "D_shared outcomes",
+      "pathology / protected donor variables",
+      "training checkpoints",
+      "TD60"
+    ],
+    "inputs_read": [
+      "expression_level4 count blocks + meta (FULL104)",
+      "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+      "stage81a2r molecular address registry",
+      "FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+      "D:/jepa_v5_substrate_20260914 V0_full.npy / V1_full.npy",
+      "scratchpad frozen screen artifacts"
+    ]
+  },
+  "population": {
+    "N_by_source": {
+      "HVS": 198718,
+      "NPH52": 236476,
+      "SEA_AD": 4118213
+    },
+    "N_total": 4553407,
+    "S": 3
+  },
+  "provenance_class": "RECEIPT_ASSEMBLED_AFTER_SCREEN_FROM_PREEXISTING_EVIDENCE",
+  "provenance_warning": "This receipt was assembled after the screen completed. It is NOT a prospectively created artifact. Each check below carries its own execution class; only checks marked CHECK_EXECUTED_BEFORE_SCREEN_ON_SHIPPED_CONSTRUCTION were both run in advance and run against the construction that actually shipped.",
+  "receipt_id": "V5_VALUE_ONLY_SAME_CELL_MEASUREMENT_PREFLIGHT_RECEIPT",
+  "rng": {
+    "binding_rule": "Philox(int(sha256(THIN_NS|canonical_cell_id)[:8])) - one generator per CELL IDENTITY",
+    "bit_generator": "numpy.random.Philox",
+    "conditional_ladder": [
+      0.25,
+      0.3333333333333333,
+      0.5,
+      0.6
+    ],
+    "cumulative_retention": [
+      0.25,
+      0.5,
+      0.75,
+      0.9
+    ],
+    "namespace": "JEPA_V5_SAME_CELL_THINNING_V1",
+    "numpy_version": "1.24.2",
+    "outside_ledger_substream": "Philox(int(sha256(THIN_NS|canonical_cell_id|OUTSIDE_LEDGER_TOTAL|<outside>)[:8]))",
+    "storage_independence": "seed depends only on canonical_cell_id; NOT on block_key, shard, row offset or any other storage artifact, so repacking the store cannot change any cell's realization"
+  },
+  "weighting": {
+    "donor_mass_max_abs_dev": 1.734723475976807e-18,
+    "estimands": [
+      {
+        "estimand": "EMPIRICAL_FULL104_STRUCTURE",
+        "kish_ess": 61373.754375443954,
+        "kish_ess_frac": 0.31183157133501654,
+        "mass_by_source": {
+          "HVS": 0.04342272354158838,
+          "NPH52": 0.051912794822279965,
+          "SEA_AD": 0.905055928450938
+        },
+        "max_block_contribution": 0.013403613859965172,
+        "max_norm_cell_weight": 2.6178933320244477e-05,
+        "max_operator_contribution": 0.16084336631958207,
+        "n_blocks": 396,
+        "n_cells": 196817,
+        "n_donors": 94,
+        "n_operators": 42,
+        "normalized_mass_by_source": {
+          "HVS": 0.04340573250585463,
+          "NPH52": 0.05189248167561565,
+          "SEA_AD": 0.9047017858185298
+        },
+        "total_estimated_target_mass": 1.0003914468148063,
+        "w_max": 2.6189180980307712e-05,
+        "w_median": 6.405460058076659e-07,
+        "w_min": 2.1961577341977118e-07
+      },
+      {
+        "estimand": "SOURCE_UNIFORM_CELL_WITHIN_SOURCE",
+        "kish_ess": 96338.15152618215,
+        "kish_ess_frac": 0.4894808452835992,
+        "mass_by_source": {
+          "HVS": 0.3316615058077835,
+          "NPH52": 0.3331981305126572,
+          "SEA_AD": 0.3335660394447786
+        },
+        "max_block_contribution": 0.014999058387517885,
+        "max_norm_cell_weight": 2.929503591312087e-05,
+        "max_operator_contribution": 0.1799887006502146,
+        "n_blocks": 396,
+        "n_cells": 196817,
+        "n_donors": 94,
+        "n_operators": 42,
+        "normalized_mass_by_source": {
+          "HVS": 0.33218447187226985,
+          "NPH52": 0.33372351953718093,
+          "SEA_AD": 0.3340920085905493
+        },
+        "total_estimated_target_mass": 0.9984256757652191,
+        "w_max": 2.9248916028124066e-05,
+        "w_median": 3.5239657865209717e-06,
+        "w_min": 1.4095863146083888e-06
+      },
+      {
+        "estimand": "DONOR_PRIMARY_OPERATOR_BALANCED",
+        "kish_ess": 34726.29761268631,
+        "kish_ess_frac": 0.17643952307314056,
+        "mass_by_source": {
+          "HVS": 41.0,
+          "NPH52": 17.0,
+          "SEA_AD": 36.0
+        },
+        "max_block_contribution": 0.021040390777393978,
+        "max_norm_cell_weight": 0.0006648936170212765,
+        "max_operator_contribution": 0.07163120567375886,
+        "n_blocks": 396,
+        "n_cells": 196817,
+        "n_donors": 94,
+        "n_operators": 42,
+        "normalized_mass_by_source": {
+          "HVS": 0.43617021276595735,
+          "NPH52": 0.18085106382978722,
+          "SEA_AD": 0.38297872340425526
+        },
+        "total_estimated_target_mass": 94.00000000000001,
+        "w_max": 0.0625,
+        "w_median": 0.00028011204481792715,
+        "w_min": 3.785011355034065e-05
+      }
+    ],
+    "independent_units": {
+      "blocks": 396,
+      "donors": 94,
+      "operators": 42,
+      "primary_inclusion_unit": "BLOCK",
+      "sources": 3
+    },
+    "within_donor_operator_mass_max_sd": 3.925231146709438e-17
+  }
+}

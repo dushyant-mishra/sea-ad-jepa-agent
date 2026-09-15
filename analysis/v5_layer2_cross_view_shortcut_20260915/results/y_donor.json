@@ -1,0 +1,47 @@
+{
+  "decomposition": {
+    "HVS": {
+      "between_operator": 0.21263987367033557,
+      "donor_within_operator": 0.1928019259732124,
+      "donors": 41,
+      "operators": 24,
+      "within_donor": 0.5945582003564521
+    },
+    "NPH52": {
+      "between_operator": 0.2527172016115872,
+      "donor_within_operator": 0.22834783337104517,
+      "donors": 17,
+      "operators": 7,
+      "within_donor": 0.5189349650173677
+    },
+    "SEA_AD": {
+      "between_operator": 0.027811984819088816,
+      "donor_within_operator": 0.0402235418691348,
+      "donors": 36,
+      "operators": 11,
+      "within_donor": 0.9319644733117765
+    }
+  },
+  "designs": {
+    "ALL": {
+      "design_A_op_centred_donor_heldout": 0.0686841751801659,
+      "design_B_donor_centred_cell_heldout": 0.1850233109715893,
+      "raw": 0.4666224193817138
+    },
+    "HVS": {
+      "design_A_op_centred_donor_heldout": 0.043718772380595516,
+      "design_B_donor_centred_cell_heldout": 0.19058294006019172,
+      "raw": 0.21005785859018278
+    },
+    "NPH52": {
+      "design_A_op_centred_donor_heldout": 0.05299627749482838,
+      "design_B_donor_centred_cell_heldout": 0.26458370197193715,
+      "raw": 0.2761401159485275
+    },
+    "SEA_AD": {
+      "design_A_op_centred_donor_heldout": 0.2402473203938481,
+      "design_B_donor_centred_cell_heldout": 0.24870412816417542,
+      "raw": 0.2534155812650418
+    }
+  }
+}

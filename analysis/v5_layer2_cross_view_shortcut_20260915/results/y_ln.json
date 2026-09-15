@@ -1,0 +1,18 @@
+{
+  "layer-normalised": {
+    "both_donor_heldout": 0.5115488449733929,
+    "ctx_only_donor_heldout": 0.46833254460117524,
+    "mol_increment_over_ctx": 0.043216300372217686,
+    "mol_only_donor_heldout": 0.4826275970897205,
+    "within_donor_mol": 0.1959630119979635,
+    "within_donor_qc": 0.02565544954088561
+  },
+  "raw": {
+    "both_donor_heldout": 0.49824378834984007,
+    "ctx_only_donor_heldout": 0.46714503222108217,
+    "mol_increment_over_ctx": 0.0310987561287579,
+    "mol_only_donor_heldout": 0.4666224193817138,
+    "within_donor_mol": 0.1850233109715893,
+    "within_donor_qc": 0.020822757918595558
+  }
+}

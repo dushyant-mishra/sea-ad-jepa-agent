@@ -1,0 +1,661 @@
+{
+  "geometry": {
+    "V0|p0.25": {
+      "ALL": {
+        "pairs_estimable": 154596,
+        "pairs_not_estimable_after_intervention": 35,
+        "pairs_planned": 154631,
+        "spearman_cosine": 0.8230112133297295,
+        "spearman_euclidean": 0.8432997364022348,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 2,
+        "zero_dist_released": 0
+      },
+      "BASE_MECHANICS": {
+        "pairs_estimable": 120000,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 120000,
+        "spearman_cosine": 0.8809031127685963,
+        "spearman_euclidean": 0.8196856758523988,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "STRESS": {
+        "pairs_estimable": 34596,
+        "pairs_not_estimable_after_intervention": 35,
+        "pairs_planned": 34631,
+        "spearman_cosine": 0.3620528331993045,
+        "spearman_euclidean": 0.7832326219774096,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 2,
+        "zero_dist_released": 0
+      },
+      "displacement_by_baseline_depth_band": {
+        "100-1k": {
+          "median_cosine_displacement": 0.4633931517601013,
+          "median_rel_displacement": 0.8672774071818039,
+          "n": 4878
+        },
+        "1k-5k": {
+          "median_cosine_displacement": 0.3525817096233368,
+          "median_rel_displacement": 0.8118039287292935,
+          "n": 33532
+        },
+        "20k-50k": {
+          "median_cosine_displacement": 0.13293665647506714,
+          "median_rel_displacement": 0.5324723350488543,
+          "n": 52942
+        },
+        "5k-20k": {
+          "median_cosine_displacement": 0.23532330989837646,
+          "median_rel_displacement": 0.6999196763378817,
+          "n": 94032
+        },
+        "<100": {
+          "median_cosine_displacement": 0.4777669906616211,
+          "median_rel_displacement": 0.8717321720526718,
+          "n": 299
+        },
+        ">=50k": {
+          "median_cosine_displacement": 0.069947749376297,
+          "median_rel_displacement": 0.38287887699847895,
+          "n": 15464
+        }
+      },
+      "displacement_by_source": {
+        "HVS": {
+          "median_cosine_displacement": 0.21183833479881287,
+          "median_rel_displacement": 0.6692094867483904,
+          "n": 88134
+        },
+        "NPH52": {
+          "median_cosine_displacement": 0.267608642578125,
+          "median_rel_displacement": 0.7409532078267751,
+          "n": 41408
+        },
+        "SEA_AD": {
+          "median_cosine_displacement": 0.1796906590461731,
+          "median_rel_displacement": 0.6151649099423226,
+          "n": 71605
+        }
+      }
+    },
+    "V0|p0.50": {
+      "ALL": {
+        "pairs_estimable": 154611,
+        "pairs_not_estimable_after_intervention": 20,
+        "pairs_planned": 154631,
+        "spearman_cosine": 0.9076355881908132,
+        "spearman_euclidean": 0.9417537888198916,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "BASE_MECHANICS": {
+        "pairs_estimable": 120000,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 120000,
+        "spearman_cosine": 0.9451043833275902,
+        "spearman_euclidean": 0.9472528479351493,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "STRESS": {
+        "pairs_estimable": 34611,
+        "pairs_not_estimable_after_intervention": 20,
+        "pairs_planned": 34631,
+        "spearman_cosine": 0.6090680364761938,
+        "spearman_euclidean": 0.872397170366596,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "displacement_by_baseline_depth_band": {
+        "100-1k": {
+          "median_cosine_displacement": 0.26062002778053284,
+          "median_rel_displacement": 0.687136534518924,
+          "n": 4878
+        },
+        "1k-5k": {
+          "median_cosine_displacement": 0.18001794815063477,
+          "median_rel_displacement": 0.5963970325696459,
+          "n": 33532
+        },
+        "20k-50k": {
+          "median_cosine_displacement": 0.05313986539840698,
+          "median_rel_displacement": 0.33134431815077625,
+          "n": 52942
+        },
+        "5k-20k": {
+          "median_cosine_displacement": 0.10726654529571533,
+          "median_rel_displacement": 0.47105983598678713,
+          "n": 94032
+        },
+        "<100": {
+          "median_cosine_displacement": 0.2744069993495941,
+          "median_rel_displacement": 0.702804805073163,
+          "n": 300
+        },
+        ">=50k": {
+          "median_cosine_displacement": 0.02562621235847473,
+          "median_rel_displacement": 0.22864718138831386,
+          "n": 15464
+        }
+      },
+      "displacement_by_source": {
+        "HVS": {
+          "median_cosine_displacement": 0.09396275877952576,
+          "median_rel_displacement": 0.4423470633983647,
+          "n": 88134
+        },
+        "NPH52": {
+          "median_cosine_displacement": 0.12538719177246094,
+          "median_rel_displacement": 0.5084690353530068,
+          "n": 41408
+        },
+        "SEA_AD": {
+          "median_cosine_displacement": 0.07693973183631897,
+          "median_rel_displacement": 0.3990960055229425,
+          "n": 71606
+        }
+      }
+    },
+    "V0|p0.75": {
+      "ALL": {
+        "pairs_estimable": 154631,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 154631,
+        "spearman_cosine": 0.9591329176158533,
+        "spearman_euclidean": 0.9833351184765617,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "BASE_MECHANICS": {
+        "pairs_estimable": 120000,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 120000,
+        "spearman_cosine": 0.9776666061426207,
+        "spearman_euclidean": 0.9838018699244515,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "STRESS": {
+        "pairs_estimable": 34631,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 34631,
+        "spearman_cosine": 0.8141708058071054,
+        "spearman_euclidean": 0.939384363516123,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "displacement_by_baseline_depth_band": {
+        "100-1k": {
+          "median_cosine_displacement": 0.1152157187461853,
+          "median_rel_displacement": 0.4706579357560303,
+          "n": 4878
+        },
+        "1k-5k": {
+          "median_cosine_displacement": 0.07454627752304077,
+          "median_rel_displacement": 0.38642501617817293,
+          "n": 33532
+        },
+        "20k-50k": {
+          "median_cosine_displacement": 0.018949121236801147,
+          "median_rel_displacement": 0.19606602731683212,
+          "n": 52942
+        },
+        "5k-20k": {
+          "median_cosine_displacement": 0.041007548570632935,
+          "median_rel_displacement": 0.2890178451745148,
+          "n": 94032
+        },
+        "<100": {
+          "median_cosine_displacement": 0.125919371843338,
+          "median_rel_displacement": 0.48939474540623956,
+          "n": 301
+        },
+        ">=50k": {
+          "median_cosine_displacement": 0.008815854787826538,
+          "median_rel_displacement": 0.1334466578366901,
+          "n": 15464
+        }
+      },
+      "displacement_by_source": {
+        "HVS": {
+          "median_cosine_displacement": 0.03539395332336426,
+          "median_rel_displacement": 0.2684453061258465,
+          "n": 88134
+        },
+        "NPH52": {
+          "median_cosine_displacement": 0.04885205626487732,
+          "median_rel_displacement": 0.31539943309113017,
+          "n": 41408
+        },
+        "SEA_AD": {
+          "median_cosine_displacement": 0.02835613489151001,
+          "median_rel_displacement": 0.23997721478903566,
+          "n": 71607
+        }
+      }
+    },
+    "V0|p0.90": {
+      "ALL": {
+        "pairs_estimable": 154631,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 154631,
+        "spearman_cosine": 0.9844807596284652,
+        "spearman_euclidean": 0.9955610374640239,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "BASE_MECHANICS": {
+        "pairs_estimable": 120000,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 120000,
+        "spearman_cosine": 0.9919795437825343,
+        "spearman_euclidean": 0.994849841850035,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "STRESS": {
+        "pairs_estimable": 34631,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 34631,
+        "spearman_cosine": 0.9269540208994842,
+        "spearman_euclidean": 0.9747524385056924,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "displacement_by_baseline_depth_band": {
+        "100-1k": {
+          "median_cosine_displacement": 0.04256683588027954,
+          "median_rel_displacement": 0.2900269321508596,
+          "n": 4878
+        },
+        "1k-5k": {
+          "median_cosine_displacement": 0.026940524578094482,
+          "median_rel_displacement": 0.23259458504294084,
+          "n": 33532
+        },
+        "20k-50k": {
+          "median_cosine_displacement": 0.006457865238189697,
+          "median_rel_displacement": 0.11407469932668296,
+          "n": 52942
+        },
+        "5k-20k": {
+          "median_cosine_displacement": 0.014320403337478638,
+          "median_rel_displacement": 0.170044156319685,
+          "n": 94032
+        },
+        "<100": {
+          "median_cosine_displacement": 0.03780233860015869,
+          "median_rel_displacement": 0.27203048651586403,
+          "n": 301
+        },
+        ">=50k": {
+          "median_cosine_displacement": 0.0029776394367218018,
+          "median_rel_displacement": 0.07738984540869732,
+          "n": 15464
+        }
+      },
+      "displacement_by_source": {
+        "HVS": {
+          "median_cosine_displacement": 0.012319445610046387,
+          "median_rel_displacement": 0.1576988305509775,
+          "n": 88134
+        },
+        "NPH52": {
+          "median_cosine_displacement": 0.017115652561187744,
+          "median_rel_displacement": 0.1859025787207212,
+          "n": 41408
+        },
+        "SEA_AD": {
+          "median_cosine_displacement": 0.009725838899612427,
+          "median_rel_displacement": 0.1401280813313948,
+          "n": 71607
+        }
+      }
+    },
+    "V1|p0.25": {
+      "ALL": {
+        "pairs_estimable": 154596,
+        "pairs_not_estimable_after_intervention": 35,
+        "pairs_planned": 154631,
+        "spearman_cosine": 0.785831757512052,
+        "spearman_euclidean": 0.8376311378488022,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 1,
+        "zero_dist_released": 0
+      },
+      "BASE_MECHANICS": {
+        "pairs_estimable": 120000,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 120000,
+        "spearman_cosine": 0.8801184458019746,
+        "spearman_euclidean": 0.8010188713755684,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "STRESS": {
+        "pairs_estimable": 34596,
+        "pairs_not_estimable_after_intervention": 35,
+        "pairs_planned": 34631,
+        "spearman_cosine": 0.2949519490810041,
+        "spearman_euclidean": 0.781919345941058,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 1,
+        "zero_dist_released": 0
+      },
+      "displacement_by_baseline_depth_band": {
+        "100-1k": {
+          "median_cosine_displacement": 0.45007941126823425,
+          "median_rel_displacement": 0.8573685515317849,
+          "n": 4878
+        },
+        "1k-5k": {
+          "median_cosine_displacement": 0.34958550333976746,
+          "median_rel_displacement": 0.8096283290219578,
+          "n": 33532
+        },
+        "20k-50k": {
+          "median_cosine_displacement": 0.13286453485488892,
+          "median_rel_displacement": 0.5325546352990576,
+          "n": 52942
+        },
+        "5k-20k": {
+          "median_cosine_displacement": 0.2332438826560974,
+          "median_rel_displacement": 0.6968584558178252,
+          "n": 94032
+        },
+        "<100": {
+          "median_cosine_displacement": 0.4444224536418915,
+          "median_rel_displacement": 0.8502288244960778,
+          "n": 299
+        },
+        ">=50k": {
+          "median_cosine_displacement": 0.07178226113319397,
+          "median_rel_displacement": 0.3887539319298758,
+          "n": 15464
+        }
+      },
+      "displacement_by_source": {
+        "HVS": {
+          "median_cosine_displacement": 0.20409709215164185,
+          "median_rel_displacement": 0.6542978527965498,
+          "n": 88134
+        },
+        "NPH52": {
+          "median_cosine_displacement": 0.26828891038894653,
+          "median_rel_displacement": 0.7449127546271872,
+          "n": 41408
+        },
+        "SEA_AD": {
+          "median_cosine_displacement": 0.18574249744415283,
+          "median_rel_displacement": 0.6287029960209907,
+          "n": 71605
+        }
+      }
+    },
+    "V1|p0.50": {
+      "ALL": {
+        "pairs_estimable": 154611,
+        "pairs_not_estimable_after_intervention": 20,
+        "pairs_planned": 154631,
+        "spearman_cosine": 0.8931663080013926,
+        "spearman_euclidean": 0.9385080316138674,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "BASE_MECHANICS": {
+        "pairs_estimable": 120000,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 120000,
+        "spearman_cosine": 0.9460989555697468,
+        "spearman_euclidean": 0.9353834045942522,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "STRESS": {
+        "pairs_estimable": 34611,
+        "pairs_not_estimable_after_intervention": 20,
+        "pairs_planned": 34631,
+        "spearman_cosine": 0.5690113289895992,
+        "spearman_euclidean": 0.8707775137684639,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "displacement_by_baseline_depth_band": {
+        "100-1k": {
+          "median_cosine_displacement": 0.2537181079387665,
+          "median_rel_displacement": 0.6793905149153421,
+          "n": 4878
+        },
+        "1k-5k": {
+          "median_cosine_displacement": 0.17950963973999023,
+          "median_rel_displacement": 0.5959613702288116,
+          "n": 33532
+        },
+        "20k-50k": {
+          "median_cosine_displacement": 0.05298161506652832,
+          "median_rel_displacement": 0.3306922240416574,
+          "n": 52942
+        },
+        "5k-20k": {
+          "median_cosine_displacement": 0.1062113344669342,
+          "median_rel_displacement": 0.46860362304177494,
+          "n": 94032
+        },
+        "<100": {
+          "median_cosine_displacement": 0.2586629390716553,
+          "median_rel_displacement": 0.681591420841785,
+          "n": 300
+        },
+        ">=50k": {
+          "median_cosine_displacement": 0.02634015679359436,
+          "median_rel_displacement": 0.2320801302637749,
+          "n": 15464
+        }
+      },
+      "displacement_by_source": {
+        "HVS": {
+          "median_cosine_displacement": 0.08999758958816528,
+          "median_rel_displacement": 0.43144867428712214,
+          "n": 88134
+        },
+        "NPH52": {
+          "median_cosine_displacement": 0.12542816996574402,
+          "median_rel_displacement": 0.5097084468310855,
+          "n": 41408
+        },
+        "SEA_AD": {
+          "median_cosine_displacement": 0.0799969732761383,
+          "median_rel_displacement": 0.40755992036627603,
+          "n": 71606
+        }
+      }
+    },
+    "V1|p0.75": {
+      "ALL": {
+        "pairs_estimable": 154631,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 154631,
+        "spearman_cosine": 0.9547186834985016,
+        "spearman_euclidean": 0.981748773359446,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "BASE_MECHANICS": {
+        "pairs_estimable": 120000,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 120000,
+        "spearman_cosine": 0.9794090111390215,
+        "spearman_euclidean": 0.9793123345710837,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "STRESS": {
+        "pairs_estimable": 34631,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 34631,
+        "spearman_cosine": 0.794931637795166,
+        "spearman_euclidean": 0.9357576310241816,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "displacement_by_baseline_depth_band": {
+        "100-1k": {
+          "median_cosine_displacement": 0.11250728368759155,
+          "median_rel_displacement": 0.46644962084217423,
+          "n": 4878
+        },
+        "1k-5k": {
+          "median_cosine_displacement": 0.07419097423553467,
+          "median_rel_displacement": 0.3856490396009399,
+          "n": 33532
+        },
+        "20k-50k": {
+          "median_cosine_displacement": 0.01891195774078369,
+          "median_rel_displacement": 0.19586406390268246,
+          "n": 52942
+        },
+        "5k-20k": {
+          "median_cosine_displacement": 0.04057839512825012,
+          "median_rel_displacement": 0.28729486404125304,
+          "n": 94032
+        },
+        "<100": {
+          "median_cosine_displacement": 0.1096217930316925,
+          "median_rel_displacement": 0.46356615939688217,
+          "n": 301
+        },
+        ">=50k": {
+          "median_cosine_displacement": 0.009085148572921753,
+          "median_rel_displacement": 0.13558636071388067,
+          "n": 15464
+        }
+      },
+      "displacement_by_source": {
+        "HVS": {
+          "median_cosine_displacement": 0.03374233841896057,
+          "median_rel_displacement": 0.26191201798602304,
+          "n": 88134
+        },
+        "NPH52": {
+          "median_cosine_displacement": 0.04875490069389343,
+          "median_rel_displacement": 0.3151874599787087,
+          "n": 41408
+        },
+        "SEA_AD": {
+          "median_cosine_displacement": 0.029413968324661255,
+          "median_rel_displacement": 0.24487406377059703,
+          "n": 71607
+        }
+      }
+    },
+    "V1|p0.90": {
+      "ALL": {
+        "pairs_estimable": 154631,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 154631,
+        "spearman_cosine": 0.9827575218071398,
+        "spearman_euclidean": 0.9947537208414303,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "BASE_MECHANICS": {
+        "pairs_estimable": 120000,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 120000,
+        "spearman_cosine": 0.9926304277503261,
+        "spearman_euclidean": 0.9931301725472826,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "STRESS": {
+        "pairs_estimable": 34631,
+        "pairs_not_estimable_after_intervention": 0,
+        "pairs_planned": 34631,
+        "spearman_cosine": 0.9181819857059711,
+        "spearman_euclidean": 0.9747865851022204,
+        "zero_dist_baseline": 0,
+        "zero_dist_created": 0,
+        "zero_dist_released": 0
+      },
+      "displacement_by_baseline_depth_band": {
+        "100-1k": {
+          "median_cosine_displacement": 0.04155421257019043,
+          "median_rel_displacement": 0.2870892994945733,
+          "n": 4878
+        },
+        "1k-5k": {
+          "median_cosine_displacement": 0.026852846145629883,
+          "median_rel_displacement": 0.23227055906296207,
+          "n": 33532
+        },
+        "20k-50k": {
+          "median_cosine_displacement": 0.006446242332458496,
+          "median_rel_displacement": 0.11397529722630131,
+          "n": 52942
+        },
+        "5k-20k": {
+          "median_cosine_displacement": 0.014171361923217773,
+          "median_rel_displacement": 0.16914322794176057,
+          "n": 94032
+        },
+        "<100": {
+          "median_cosine_displacement": 0.04275500774383545,
+          "median_rel_displacement": 0.28979080987256456,
+          "n": 301
+        },
+        ">=50k": {
+          "median_cosine_displacement": 0.0030538439750671387,
+          "median_rel_displacement": 0.07841577897171156,
+          "n": 15464
+        }
+      },
+      "displacement_by_source": {
+        "HVS": {
+          "median_cosine_displacement": 0.011697858572006226,
+          "median_rel_displacement": 0.15355047809947497,
+          "n": 88134
+        },
+        "NPH52": {
+          "median_cosine_displacement": 0.017159491777420044,
+          "median_rel_displacement": 0.18628903017758708,
+          "n": 41408
+        },
+        "SEA_AD": {
+          "median_cosine_displacement": 0.010098397731781006,
+          "median_rel_displacement": 0.14275407252938058,
+          "n": 71607
+        }
+      }
+    }
+  },
+  "lib_nesting_violations": 0,
+  "pairs_planned": 154631,
+  "zero_library": {
+    "0.25": 2,
+    "0.5": 1,
+    "0.75": 0,
+    "0.9": 0,
+    "1.0": 0
+  }
+}

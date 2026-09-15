@@ -1,0 +1,68 @@
+{
+  "N": 201149,
+  "analytic_retention": {
+    "0.25": {
+      "abs_error": 6.160726993109655e-06,
+      "observed": 0.2499938392730069,
+      "target": 0.25
+    },
+    "0.50": {
+      "abs_error": 3.6623304596750117e-06,
+      "observed": 0.5000036623304597,
+      "target": 0.5
+    },
+    "0.75": {
+      "abs_error": 9.585931770583755e-08,
+      "observed": 0.7500000958593177,
+      "target": 0.75
+    },
+    "0.90": {
+      "abs_error": 6.144582265221743e-07,
+      "observed": 0.9000006144582265,
+      "target": 0.9
+    },
+    "1.00": {
+      "abs_error": 0.0,
+      "observed": 1.0,
+      "target": 1.0
+    }
+  },
+  "analytic_retention_max_abs_error": 6.160726993109655e-06,
+  "canonical_cell_id_unique": true,
+  "ledger_plus_outside_equals_source_library_exact": true,
+  "ledger_plus_outside_max_abs_diff": 0.0,
+  "lib_total_nesting_violations": 0,
+  "nesting_violations_ascending_correct_orientation": 0,
+  "outside_ledger_mass_fraction": 0.020808326643454497,
+  "outside_ledger_nonneg": true,
+  "outside_ledger_zero_cells": 88180,
+  "p1_identity_lib_equals_source_library": true,
+  "qdepth_row_authority_matches_ledger": false,
+  "qdetect_row_authority_matches_p1_detect": true,
+  "replay_vs_frozen_total_deviation": 0.0,
+  "screen_mech_json_nesting_flag_note": "recorded flag is FALSE due to a checker orientation defect in screen.py (it iterated PS descending while asserting prev<=tc ascending); correct-orientation re-verification over the same frozen realization gives 0 violations, and frozen library totals are monotone with 0 violations",
+  "screen_mech_json_nesting_flag_raw": false,
+  "selection_row_unique": true,
+  "zero_library": {
+    "0.25": {
+      "attempted": 201149,
+      "non_estimable": 2
+    },
+    "0.50": {
+      "attempted": 201149,
+      "non_estimable": 1
+    },
+    "0.75": {
+      "attempted": 201149,
+      "non_estimable": 0
+    },
+    "0.90": {
+      "attempted": 201149,
+      "non_estimable": 0
+    },
+    "1.00": {
+      "attempted": 201149,
+      "non_estimable": 0
+    }
+  }
+}

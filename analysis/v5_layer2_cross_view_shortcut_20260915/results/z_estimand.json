@@ -1,0 +1,38 @@
+[
+  {
+    "combined_r2": 0.49824378834984007,
+    "context_only_r2": 0.46714503222108195,
+    "estimand": "UNWEIGHTED_RECON",
+    "kish_ess": 196817,
+    "molecular_increment_over_context": 0.03109875612875812,
+    "v0_only_r2": 0.46662241938171367,
+    "within_donor_molecular_r2": 0.1850233109715893
+  },
+  {
+    "combined_r2": 0.38580802650953816,
+    "context_only_r2": 0.2650845876253568,
+    "estimand": "EMPIRICAL_FULL104_STRUCTURE",
+    "kish_ess": 61374,
+    "molecular_increment_over_context": 0.12072343888418136,
+    "v0_only_r2": 0.36452233241539966,
+    "within_donor_molecular_r2": 0.21818808688365654
+  },
+  {
+    "combined_r2": 0.5001502806337625,
+    "context_only_r2": 0.4714738942449077,
+    "estimand": "SOURCE_UNIFORM_CELL_WITHIN_SOURCE",
+    "kish_ess": 96338,
+    "molecular_increment_over_context": 0.028676386388854835,
+    "v0_only_r2": 0.47461770811034576,
+    "within_donor_molecular_r2": 0.1750336948279173
+  },
+  {
+    "combined_r2": 0.48554596226236435,
+    "context_only_r2": 0.4532032910059878,
+    "estimand": "DONOR_PRIMARY_OPERATOR_BALANCED",
+    "kish_ess": 34726,
+    "molecular_increment_over_context": 0.032342671256376576,
+    "v0_only_r2": 0.4535503006222742,
+    "within_donor_molecular_r2": 0.17637674119578184
+  }
+]
