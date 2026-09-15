@@ -1,204 +1,140 @@
 # START HERE — JEPA PROJECT
 
-Date: 2026-09-14
+Date: 2026-09-15
 
-## Current project entrypoint
+## Current documentation entrypoint
 
-For current V5 execution/governance work, use:
+Use:
+
+`handoff/jepa-current-ledger-layer2-20260915`
+
+This branch consolidates the latest Layer-2 shortcut audit, independent red-team findings, corrected source-specific interpretation, current blockers, and the new masking-shortcut question raised by CorrMask literature.
+
+Current V5 execution ancestry remains:
 
 `repair/v5-v3-null-t0-stressbench-20260914`
 
-This branch contains the latest substrate-independent V3/T0 mechanics, historical/local parameter work, the completed FULL104 K=2 disjoint-view rebuild evidence, and current recordkeeping. The prior branch `repair/v5-dshared-authority-v2-20260914` remains important ancestry and contains the frozen D_shared V2 statistical authority. `planning/v5-dataset-first-production-closure-20260912` remains design ancestry. `main` is historical/governance ancestry only.
+Independent analytical parent:
 
-Re-fetch the live active branch before every current-state claim. Branch names do not confer scientific authority.
+`analysis/layer2-method-redteam-20260915`
+
+Re-fetch live branch heads before every current-state claim. Branch names do not confer scientific authority.
 
 ## Read in this order
 
 1. `START_HERE.md`
-2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260914_CURRENT.json`
-3. `docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md`
-4. `docs/agent/V5_CLOSED_SUBSTRATE_INVARIANT_REGISTRY_20260914.md`
-5. `docs/agent/V5_LOCAL_WORK_COMPLETION_20260914.md`
-6. `docs/agent/V5_K2_REBUILT_SUBSTRATE_EVIDENCE_AND_VISIBILITY_BLOCKER_20260914.md`
-7. `docs/agent/V5_V3_T0_STRESSBENCH_AND_LITERATURE_LEDGER_20260914.md`
-8. `docs/agent/V5_LOCAL_PARAMETER_DERIVABILITY_AUDIT_20260914.md`
-9. `docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md`
-10. `docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md`
-11. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260914_CURRENT.json`
-12. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260914_CURRENT.md` — earlier same-day handoff; superseded where it conflicts with the ledgers above.
-13. `docs/agent/V5_CURRENT_AUTHORITY_AND_BLOCKERS_20260913.md`
-14. `docs/agent/V5_MASTER_OPEN_ITEMS_20260913.md`
-15. `docs/agent/V5_T0_LESSONS_DATA_AWARE_MEASUREMENT_QUALIFICATION_COURSE_CORRECTION_20260914.md`
-16. `docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json`
-17. `docs/agent/V5_EXTERNAL_COHORT_ROLE_REGISTRY_20260913.json`
-18. `docs/agent/V5_ENVIRONMENT_PREFLIGHT_REQUIREMENT_20260913.md`
-19. `docs/superpowers/specs/2026-09-14-v5-v3-null-and-t0-stress-bench-design.md`
-20. `docs/agent/T0_V5_ORIENTATION_AND_CROSSWALK_20260912.md`
-21. `docs/agent/T0_MEASUREMENT_METHOD_CLOSEOUT_20260912.md`
+2. `docs/agent/JEPA_LATEST_HANDOFF_POINTER_20260915_CURRENT.json`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_CURRENT.md`
+4. `docs/agent/JEPA_CURRENT_WORK_LEDGER_20260915.md`
+5. `docs/agent/JEPA_HISTORICAL_AND_CURRENT_FINDINGS_20260915.md`
+6. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json`
+7. `docs/agent/LOCAL_LAYER2_RECONCILIATION_WITH_CLAUDE_20260915.md`
+8. `docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md`
+9. `docs/agent/V5_CLOSED_SUBSTRATE_INVARIANT_REGISTRY_20260914.md`
+10. `docs/agent/V5_K2_REBUILT_SUBSTRATE_EVIDENCE_AND_VISIBILITY_BLOCKER_20260914.md`
+11. `docs/agent/V5_LOCAL_WORK_COMPLETION_20260914.md`
+12. `docs/agent/V5_LOCAL_PARAMETER_DERIVABILITY_AUDIT_20260914.md`
+13. `docs/agent/V5_LOCAL_AVAILABLE_DATA_STRESS_TESTS_20260914.md`
+14. `docs/agent/V5_LOCAL_NUISANCE_MODEL_STRESS_ADDENDUM_20260914.md`
+15. `docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json`
+16. `docs/agent/T0_V5_ORIENTATION_AND_CROSSWALK_20260912.md`
+17. `docs/agent/T0_MEASUREMENT_METHOD_CLOSEOUT_20260912.md`
 
 ## Governing scientific order
 
 `DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> PRODUCTION GEOMETRY -> MODEL`
 
-Current refinement:
+Governing rule:
 
 `UNDERSTAND_FULL104_DEEPLY__KEEP_FINAL_D_SHARED_HYPOTHESIS_TEST_SEALED`
 
-Standing protected-data rule:
+Protected-data rule:
 
 `IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK`
 
-## Historical-first and invariant-first rule for expensive work
+## Current one-paragraph state
 
-Before proposing or launching any new long FULL104/GPU/CPU run:
+V5 now has a genuine K=2 disjoint common-core molecular partition and strong evidence that VALUE_ONLY is a better primary molecular candidate than the visibility-augmented 512-D representation. Same-cell thinning shows VALUE_ONLY is measurement-sensitive, but the direct fixed-target Layer-2 audit did not demonstrate a large measurement-realization shortcut at the tested simple model class. The larger pooled issue is source/operator/context collinearity. Crucially, source-specific and donor-centred analyses show substantial within-donor V0<->V1 molecular-view signal in HVS, NPH52 and SEA_AD that is not primarily explained by measured Q_DEPTH/Q_DETECT. Donor-held-out transfer is currently strong in SEA_AD but not demonstrated in HVS/NPH52 at the tested linear model class. A second Layer-2 threat is now open: uniform masking may allow hidden genes to be reconstructed from correlated visible partners. Historical JEPA had Pearson-graph-expanded masking; current V5 uses graph-free uniform target blocks. Residual-over-context prediction and recurrence-audited hybrid dependency-aware masking are leading candidates, but neither is production authority. The biggest upstream blocker remains the current dataset-derived V5 teacher-target definition.
 
-1. read the historical ledger;
-2. read the closed-substrate invariant registry;
-3. inspect the frozen local discovery/calibration assets;
-4. derive or narrow every structural parameter possible locally;
-5. classify the requested work as `CLOSED_INVARIANT_LINEAGE_CHECK`, `REPRESENTATION_DEPENDENT_RECOMPUTATION`, `NEW_UNRESOLVED_PARAMETER`, or `FULL104_ONLY_RESIDUAL_QUESTION`;
-6. only launch heavy execution for categories that genuinely require it.
+## Current Layer-2 terminals
 
-Do **not** schedule a closed invariant as a discovery task. The historical 4,553,407-row exactly-once assembly is already closed. A successor all-ones `ASSEMBLY_SEEN` over the unchanged row universe is lineage corroboration only.
+`MEASUREMENT_SHORTCUT_NOT_DEMONSTRATED_AT_THIS_MODEL_CLASS`
 
-## Current V5 status
+`WITHIN_DONOR_MOLECULAR_VIEW_SIGNAL_BEYOND_MEASURED_QC_RECURS_ACROSS_ALL_THREE_SOURCES`
 
-Closed/established:
+`DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_DEMONSTRATED_IN_SEA_AD_AT_THIS_MODEL_CLASS`
 
-- authenticated FULL104 population: 4,553,407 cells / 104 donors / 42 operators / 42 matrices / 8,915 blocks / 41,238 addresses;
-- universal common measured core = 17,186 addresses; 9 support patterns;
-- D_shared Authority V2 frozen before current-V5 D_shared outcome access;
-- V2 exact matched-null key operationally degenerate: 99.911% singleton cells, max stratum size 3;
-- historical A/B are not genuinely disjoint molecular views;
-- historical covariance is singular/highly redundant;
-- donors/operators/support patterns are nested within source;
-- local parameter/falsification lane is substantively complete and narrowed serious K candidates to `{2,3,4,6}`;
-- K=2 FULL104 rebuild completed and passed mechanics/lineage with genuinely disjoint address views;
-- rebuilt V0/V1 arrays are full-rank and much better conditioned than historical A/B;
-- current full-512 rebuild worsened Q_DEPTH/Q_DETECT coupling, with visibility channels the leading construction-level suspect;
-- no current-V5 D_shared/D_private/D_obs outcome has been generated or inspected.
+`DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_NOT_DEMONSTRATED_IN_HVS_OR_NPH52_AT_THIS_MODEL_CLASS`
 
-Current classification:
+`POOLED_CROSS_VIEW_PREDICTABILITY_LARGELY_COLLINEAR_WITH_COARSE_CONTEXT`
 
-`K2_REBUILD_MECHANICS_PASS__VISIBILITY_QC_BLOCKER_OPEN__PRIMARY_REPRESENTATION_NOT_FROZEN__V3_NOT_FROZEN__D_SHARED_SEALED`
+`BATCH_TECHNICAL_VS_BIOLOGICAL_DECOMPOSITION_NOT_IDENTIFIABLE_IN_FULL104`
 
-## Completed K=2 reference rebuild
+`MECHANICS_ALIGNED_LOSS_PROXY_CHARACTERIZED`
 
-See `V5_K2_REBUILT_SUBSTRATE_EVIDENCE_AND_VISIBILITY_BLOCKER_20260914.md`.
+`MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED`
 
-Key mechanics:
+## Current major blockers
 
-- V0 addresses 8,568; V1 8,618; intersection 0; union 17,186;
-- `V0_full.npy` SHA-256 `3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada`;
-- `V1_full.npy` SHA-256 `c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c`;
-- current arrays are 512 dims = 256 value + 256 visibility;
-- numerical rank 512/512; condition ~411/445; participation ratio ~35.6/37.3; spectral-entropy rank ~201/204;
-- full-512 donor/operator/source variance fractions approximately 0.152 / 0.179 / 0.137;
-- Q_DEPTH max |corr| ~0.672 and Q_DETECT max |corr| ~0.773, worse than historical ~0.371/~0.417.
-
-The absolute operator fraction fell versus the historical operator-native substrate, but donor variance also fell; the operator/donor ratio did not improve. Do not claim technical confounding solved.
-
-## Immediate representation blocker
-
-The 256 visibility channels are likely encoding detection count directly in the common-core/no-mask construction. Therefore:
-
-- do not freeze the current 512-channel representation;
-- do not freeze rank from the current 512-channel spectrum;
-- do not design/freeze V3 null against a representation likely to change;
-- do not launch another 86-minute expression rebuild yet.
-
-Required next heavy-machine action is an **ablation of the already-built arrays**:
-
-`VALUE_ONLY 256` vs `VISIBILITY_ONLY 256` vs `FULL 512`
-
-For V0/V1 recompute spectrum/rank, donor/operator/source fractions, Q_DEPTH/Q_DETECT coupling, donor-disjoint nuisance predictability and pair/geometry preservation. If visibility is the dominant QC encoder and value-only preserves structure, the leading semantic repair is:
-
-`PRIMARY_MOLECULAR_REPRESENTATION = VALUE_ONLY`
-
-`VISIBILITY_DETECTION = OBSERVATION_STATE_NUISANCE_CONTROL_ONLY`
-
-This is not yet frozen authority.
-
-## Current strongest unfrozen V3 candidate family
-
-Local falsification leaves:
-
-`DONOR_LEVEL_INFERENCE + SOURCE_BLOCKING + SOURCE_CONDITIONAL_OPERATOR_EXPOSURE_NUISANCE_MODEL + WHOLE_PROCEDURE_RESIDUAL/CONDITIONAL_RANDOMIZATION_CALIBRATION + STRUCTURE_PRESERVATION_GATE + SAME_CELL_MEASUREMENT_INTERVENTION_GATE`
-
-Mobility is not validity: simple within-source donor permutation can fail under operator-exposure confounding, and cell-level within-operator permutation is pseudoreplication-prone.
-
-## Exact-head CI verification
-
-Exact head `380426c0b454f72265fd330163d98614b6519bf5` was verified by GitHub Actions run `34894159904`:
-
-`305 passed in 7.33s; 45/45 critical tests executed and passed; authority-source compilation PASS`.
-
-Later K2 evidence/recordkeeping commits are documentation-only and require a newer exact-head workflow before claiming those exact commits green.
-
-## Current hard boundaries
-
-`training_authorized = false`
-
-`protected_data_authorized = false`
-
-`numeric_dimensions_authorized = false`
-
-`d_shared_real_outcome_access_authorized = false`
-
-`d_private_execution_authorized = false`
-
-`d_obs_execution_authorized = false`
-
-`td60_authorized = false`
-
-`relational_target_activation_authorized = false`
-
-`external_validation_outcomes_authorized_for_design = false`
+1. `CURRENT_V5_TEACHER_AUTHORITY_NOT_YET_ESTABLISHED`
+2. `CONTEXT_SHORTCUT_HANDLING_NOT_YET_FROZEN`
+3. `MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED`
+4. `HVS_NPH52_DONOR_TRANSPORT_UNRESOLVED`
+5. `SCIENTIFIC_TRAINING_ESTIMAND_NOT_YET_FROZEN`
+6. `PROSPECTIVE_ANTI_CHEAT_FAMILY_NOT_YET_FROZEN`
+7. `PRIMARY_REPRESENTATION_AUTHORITY_NOT_YET_FROZEN`
+8. `RANK_SUPPORT_AUTHORITY_NOT_YET_FROZEN`
+9. `MEASUREMENT_ROBUSTNESS_DECISION_RULE_NOT_YET_FROZEN`
+10. `V3_NULL_NOT_YET_FROZEN`
+11. `FULL104_MEASUREMENT_PROCEDURE_NOT_YET_QUALIFIED`
 
 ## Immediate critical path
 
-1. Run VALUE_ONLY / VISIBILITY_ONLY / FULL ablation on the existing K=2 arrays; no new expression rebuild yet.
-2. Decide the primary representation semantics from outcome-blind measurement evidence.
-3. Recompute/freeze rank support only after the primary representation is settled.
-4. Requalify the surviving source-conditional donor-level nuisance/null candidate family on that representation.
-5. Compare K=2 against the local K={2,3,4,6} information budget before authorizing any second full K rebuild.
-6. Apply same-cell thinning and structure-preservation gates.
-7. Freeze successor V3 authority prospectively without D_shared feedback.
-8. Use T0 only as falsification.
-9. Qualify FULL104 measurement procedure.
+1. Finish independent context-decomposition reproduction on the frozen Layer-2 arrays.
+2. Characterize estimand sensitivity under explicit empirical/source-uniform/donor-primary views where mathematically valid.
+3. Characterize donor-level recurrence and full-refit donor-generalization uncertainty.
+4. Resolve the current V5 teacher/student target from current dataset semantics.
+5. Audit current uniform masking versus historical graph masking and hybrid dependency-aware masking without training.
+6. Freeze an objective-aligned coarse-context shortcut family before training.
+7. Sandbox-test the smallest anti-shortcut candidates: unchanged objective, residual-over-context, hybrid masking, and their combination.
+8. Qualify anti-cheat mechanics before production training.
+9. Only then return to downstream donor-level nuisance qualification and V3.
 10. D_shared remains last.
+
+## Hard boundaries
+
+`TRAINING_OFF`
+
+`NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION`
+
+`NO_PROTECTED_DATA_USE_FOR_DESIGN`
+
+`NO_TD60`
+
+`NO_RELATIONAL_TARGET_ACTIVATION`
 
 ## Permanent warnings
 
-- Do not launch expensive work before checking historical and closed-invariant ledgers.
-- Do not present lineage re-verification as new discovery.
-- Do not use arbitrary Q_DEPTH/Q_DETECT bins merely to create permutations.
-- Do not treat nuisance removal alone as success.
-- Do not use random cell-level CV as donor-generalization evidence.
-- Do not allow T0 results to choose V5 thresholds/ranks/nulls.
+- Do not call source/operator covariance purely technical.
+- Do not call within-donor residual cross-view signal proven biology.
+- Do not use donor averaging to clear a cell-level training shortcut.
+- Do not treat a negative linear shortcut probe as proof a deep model is safe.
+- Do not residualize source/operator away without structure-preservation evidence.
+- Do not restore historical graph masking blindly.
+- Do not let pooled covariance define a biological dependency graph without recurrence/context audits.
+- Do not let the sampler silently choose the scientific estimand.
+- Do not use protected outcomes to choose ranks, masks, nulls, thresholds or architecture.
 - Do not reopen the historical QID estimand error.
-- Do not silently drop failed/nonpermutable observations from decision populations.
-
-## Target Discovery state
-
-- TD57B: historical PASS 24/24.
-- TD57C: FAIL; failure stands.
-- TD59: historical PASS 24/24 pilot only.
-- TD60: prospective; waits for a lawful dataset-derived learned EMA teacher.
 
 ## Historical T1 mechanics lesson
 
 Preserve:
 
-`fp16 forward -> backward with autocast disabled -> unscale -> protected-gradient gate -> optimizer step/motion proved -> both Adam moments -> EMA -> presentation cursor -> atomic checkpoint/telemetry`
+`fp16 forward -> backward with autocast disabled -> unscale -> protected-gradient gate -> optimizer movement beyond decay -> both Adam moments -> EMA -> presentation cursor -> atomic checkpoint/telemetry`
 
 ## Environment authority
 
-Conclusion-bearing execution must prove the declared test suite actually collected and executed in a compatible environment. Collection errors, skips, omitted critical tests, or wrong Git head are not green evidence.
-
-## Branch hygiene
-
-Do not blindly delete/merge historical branches. A branch-to-unique-content/ancestry matrix is still required before cleanup.
+Conclusion-bearing execution must prove the declared suite actually collected and executed in a compatible environment. Collection errors, skips, omitted critical tests or wrong Git head are not green evidence.
 
 ## Permanent implementation-verifier rule
 
