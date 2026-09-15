@@ -1,0 +1,217 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V13",
+  "date": "2026-09-15",
+  "status": "CURRENT_V5_TARGET_AUTHORITY_CARRYOVER_AND_MASKING_REVIEW__NO_TRAINING_AUTHORITY",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "handoff_branch": "handoff/jepa-v5-target-authority-build-20260915",
+  "main_observed_head": "c8898923fc10ffa5ef0662b04908b0d94bcb158b",
+  "training_authorized": false,
+  "d_shared_real_outcome_access_authorized": false,
+  "protected_outcome_access_authorized": false,
+  "production_trainer_mutation_authorized": false,
+  "governing_order": [
+    "DATA",
+    "SUPPORT_ESTIMABILITY",
+    "SCIENTIFIC_ESTIMAND",
+    "TARGET_SEMANTICS",
+    "PRODUCTION_GEOMETRY",
+    "MODEL"
+  ],
+  "standing_rules": [
+    "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+    "TRAINING_OFF",
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION",
+    "NO_REAL_RESULT_FROM_THE_DISCARDED_X4_WITHIN_ESTIMATOR_IS_AUTHORITY",
+    "NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY",
+    "COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY",
+    "DIMENSION_ESTIMAND_AUTHORITY != BASE_TRAINING_ESTIMAND_AUTHORITY",
+    "QUALIFICATION_RANK_CEILING != PRODUCTION_MODEL_WIDTH",
+    "DO_NOT_UNLOCK_V5_BY_RECEIPT_ONLY"
+  ],
+  "live_lanes": {
+    "main": "c8898923fc10ffa5ef0662b04908b0d94bcb158b",
+    "claude_layer2": "analysis/v5-layer2-cross-view-shortcut-claude-20260915@219831b899b914984369c7a41828bf750554d1d9",
+    "teacher_student_mechanics": "repair/v5-dshared-authority-v2-20260914@3717c9c0a292dfcd883949d5d0bf36d263f79300",
+    "planning_carryover": "planning/v5-teacher-student-ema-canonical-20260915@88c45b97b3e9a4ad3c0fd178c992f844fd58dbab",
+    "target_identity_redteam": "planning/v5-teacher-target-redteam-20260915@d9a678f261797f5dfc7a6e6b7a281e413ae7e0ae"
+  },
+  "branch_governance": {
+    "planning_lane_divergent_from_main": true,
+    "blind_merge_allowed": false,
+    "instruction": "Use exact-SHA evidence and reconcile deliberately; re-fetch every live head before acting."
+  },
+  "population": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "sources": ["SEA_AD", "HVS", "NPH52"],
+    "historical_full104_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "heavy_expression_path": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/"
+  },
+  "permanent_dataset_facts": [
+    "FULL_SOURCE_LIBRARY_EXTENDS_BEYOND_41K_LEDGER__SOURCE_DEPENDENT_OUTSIDE_LEDGER_FRACTION",
+    "UNMEASURED_IS_NOT_BIOLOGICAL_ZERO",
+    "COMMON_CORE_IS_COMPARABILITY_SUPPORT_NOT_BIOLOGICAL_TRUTH",
+    "SOURCE_OPERATOR_STRUCTURE_IS_CAUSALLY_CONFOUNDED_WITH_BIOLOGY_AND_COHORT",
+    "VISIBILITY_CHANNELS_ARE_STRONGLY_OBSERVATION_QC_BEARING"
+  ],
+  "representation": {
+    "primary_candidate": "VALUE_ONLY_256",
+    "frozen": false,
+    "visibility_primary_molecular_authority": false,
+    "v0_address_count": 8568,
+    "v1_address_count": 8618,
+    "v0_full_sha256": "3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada",
+    "v1_full_sha256": "c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c"
+  },
+  "layer2_established_findings": {
+    "measurement_shortcut": "NOT_DEMONSTRATED_AT_TESTED_LINEAR_MODEL_CLASS__NOT_ABSENT",
+    "within_donor_signal": "RECURS_ACROSS_ALL_THREE_SOURCES_BEYOND_MEASURED_QC",
+    "donor_recurrence": "93_OF_94_POSITIVE__93_6_PERCENT_ABOVE_0_10",
+    "sea_ad_lodo": "DEMONSTRATED_AT_LINEAR_MODEL_CLASS__R2_APPROX_0_241",
+    "hvs_lodo": "NOT_DEMONSTRATED_AT_LINEAR_MODEL_CLASS__R2_APPROX_0_045",
+    "nph52_lodo": "NOT_DEMONSTRATED_AT_LINEAR_MODEL_CLASS__R2_APPROX_0_055",
+    "context_interpretation": "STRONGLY_ESTIMAND_SENSITIVE__OLD_POOLED_DOMINANCE_NOT_POPULATION_AUTHORITY",
+    "empirical_full104_molecular_increment_over_context": 0.1207,
+    "causal_batch_vs_biology_decomposition": "NOT_IDENTIFIABLE_IN_FULL104",
+    "residual_over_context": "SPECIFICATION_ONLY__QUALIFY_FIRST"
+  },
+  "teacher_student_ema": {
+    "mechanics_exist": true,
+    "current_v5_teacher_authority_established": false,
+    "reusable_mechanics": [
+      "ONLINE_STUDENT_GRADIENTS",
+      "PREDICTOR_OPTIMIZATION",
+      "EXACT_COPY_FROZEN_EMA_TEACHER",
+      "NO_TEACHER_GRADIENTS",
+      "BACKWARD_OUTSIDE_AUTOCAST",
+      "UNSCALE_BEFORE_PROTECTED_GRADIENT_GATE",
+      "OPTIMIZER_STEP_PROVED_BEYOND_DECAY",
+      "ADAM_EXP_AVG_LIVE",
+      "ADAM_EXP_AVG_SQ_LIVE",
+      "EMA_ONLY_AFTER_PROVED_OPTIMIZER_STEP",
+      "ATOMIC_CHECKPOINT_TELEMETRY_PATTERN"
+    ],
+    "historical_forbidden_defaults": [
+      "WIDTH_160",
+      "HEADS_4",
+      "BLOCKS_6",
+      "EFFECTIVE_BATCH_128",
+      "MICROBATCH_8",
+      "VIEWS_4",
+      "MASK_FRACTION_0_40",
+      "TARGET_BLOCKS_16",
+      "EMA_0_996",
+      "HISTORICAL_OPTIMIZER_HYPERPARAMETERS",
+      "HISTORICAL_SEEDS"
+    ]
+  },
+  "accidental_carryover_seams": [
+    "V5_WRAPPER_DEFAULTS_TO_HISTORICAL_V4_PRODUCTION_UPDATE",
+    "OPTIMIZER_GUARD_VALIDATES_LEGACY_TARGET_RECEIPT_SCHEMA",
+    "PREEXECUTION_V2_HARD_CODES_6_BLOCKS_48_TENSORS_AND_HISTORICAL_128X8_TEST_VOCABULARY",
+    "CHECKPOINT_V3_FIXES_REGISTRY_COUNT_BUT_IMPORTS_PART_OF_PREEXECUTION_V2_VOCABULARY",
+    "PREDICTOR_TARGET_QUERY_USES_ONLINE_TRAINABLE_GENE_IDENTITY_TABLE",
+    "HISTORICAL_NUMERIC_DEFAULTS_SEEDS_VISIBILITY_AND_REGISTRY_HASHES_CAN_REENTER_IF_NOT_REBOUND",
+    "Z_BIO_NAMING_CAN_OVERSTATE_EVIDENCE",
+    "COMMON_CORE_CAN_BE_MISTAKEN_FOR_BIOLOGICAL_TRUTH",
+    "NATIVE_SUPPORT_CAN_BE_MISTAKEN_FOR_PRIVATE_BIOLOGY",
+    "DIMENSION_QUALIFICATION_ESTIMAND_CAN_BE_MISTAKEN_FOR_BASE_TRAINING_ESTIMAND",
+    "D_SHARED_512_QUALIFICATION_CEILING_CAN_BE_MISTAKEN_FOR_PRODUCTION_MODEL_WIDTH"
+  ],
+  "successful_anti_carryover_patterns": [
+    "DATA_CONTRACT_V2_NO_PRODUCTION_DEFAULTS",
+    "SCHEDULE_AUTHORITY_V2_NO_PRODUCTION_DEFAULTS",
+    "PROPOSAL_POLICY_SEPARATES_TARGET_P_PROPOSAL_Q_AND_PACKING",
+    "PRODUCTION_PROTECTED_REGISTRY_DERIVES_TENSOR_COUNT_FROM_CURRENT_MODEL_DEPTH",
+    "ATOMIC_CHECKPOINT_V3_BINDS_CURRENT_REGISTRY",
+    "OBSERVATION_ADAPTER_V2_GRADIENT_FIREWALL"
+  ],
+  "target_identity": {
+    "status": "OPEN__AUDIT_SPEC_DRAFTED",
+    "risk_path": "HIDDEN_TARGET_ID -> PREDICTOR_QUERY -> JEPA_GRADIENT -> ONLINE_GENE_IDENTITY -> EMA_TEACHER -> FUTURE_TARGET",
+    "hidden_expression_leakage_alleged": false,
+    "leading_candidate_not_frozen": "FIXED_OR_SEPARATE_REPLAY_STABLE_TARGET_ADDRESS_CODE",
+    "required_controls": [
+      "IDENTITY_ONLY_SHARED_CURRENT",
+      "IDENTITY_ONLY_FIXED_ADDRESS",
+      "FULL_SHARED_CURRENT",
+      "FULL_FIXED_ADDRESS",
+      "FULL_STOPGRAD_ONLINE_ID",
+      "CELL_PERMUTED_VISIBLE_MEMORY_WITH_TARGET_IDS_FIXED",
+      "TARGET_ID_PERTURBATION_WHERE_LAWFUL"
+    ]
+  },
+  "masking": {
+    "authority_resolved": false,
+    "historical_pearson_graph_authority": false,
+    "graph_free_uniform_authority": false,
+    "required_comparators": [
+      "GRAPH_FREE_UNIFORM",
+      "HISTORICAL_GRAPH_EXPANDED_DIAGNOSTIC",
+      "DONOR_SOURCE_RECURRENT_OR_CROSS_SOURCE_CONSENSUS_HYBRID"
+    ],
+    "required_outcome_blind_metrics": [
+      "CORRELATED_PARTNER_EXPOSURE",
+      "ADDRESS_COVERAGE",
+      "MASK_BUDGET_CONCENTRATION",
+      "RARE_ADDRESS_COVERAGE",
+      "SOURCE_OPERATOR_DEPENDENCE",
+      "DETERMINISTIC_REPLAY",
+      "SPARSE_SUPPORT_FAILURE_BEHAVIOR"
+    ]
+  },
+  "scientific_estimand": {
+    "base_training_estimand_frozen": false,
+    "candidate_views_to_keep_separate": [
+      "EMPIRICAL_FULL104",
+      "SOURCE_UNIFORM",
+      "DONOR_PRIMARY_OPERATOR_BALANCED"
+    ],
+    "rule": "Do not average these into a synthetic compromise and do not infer the preferred estimand from representation quality."
+  },
+  "ema": {
+    "mechanics_established": true,
+    "historical_0_996_authority": false,
+    "preferred_prospective_formula": "m_u = exp(log(0.5) * p_u / H)",
+    "presentation_unit_frozen": false,
+    "half_life_frozen": false
+  },
+  "open_blockers_ordered": [
+    "CURRENT_V5_TEACHER_TARGET_OBJECT_AND_SEMANTICS",
+    "PRIMARY_REPRESENTATION_FREEZE",
+    "BASE_TRAINING_ESTIMAND_AND_SCIENTIFIC_WEIGHT_ROOT",
+    "TARGET_ADDRESS_QUERY_AUTHORITY_AND_IDENTITY_SHORTCUT_GATE",
+    "DEPENDENCY_AWARE_MASKING_AUTHORITY",
+    "OBJECTIVE_ALIGNED_SHORTCUT_THRESHOLDS_FROZEN_BEFORE_RESULTS",
+    "CURRENT_V5_PREEXECUTION_SUCCESSOR_WITHOUT_6_48_128X8_CARRYOVER",
+    "CURRENT_V5_RECEIPT_AND_OPTIMIZER_GUARD_SCHEMA",
+    "PRODUCTION_RANK_AND_MODEL_GEOMETRY_FROM_PROTECTED_DIMENSION_CHAIN",
+    "PRESENTATION_NORMALIZED_EMA_HALF_LIFE",
+    "HVS_NPH52_DONOR_TRANSPORT_EXPLANATION_WITHOUT_FORCED_INVARIANCE",
+    "V3_NULL_GOVERNANCE_RECONCILIATION",
+    "MEASUREMENT_ROBUSTNESS_DECISION_RULE",
+    "EXPLICIT_PRODUCTION_TRAINING_AUTHORIZATION_AFTER_ALL_UPSTREAM_ROOTS_ARE_IMMUTABLE"
+  ],
+  "historical_context_rule": {
+    "index": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+    "classification_required_before_new_work": [
+      "ALREADY_AUDITED",
+      "SUPERSEDED",
+      "OPEN",
+      "CHANGED_INPUT_REQUIRES_REQUALIFICATION"
+    ]
+  },
+  "next_safe_work": [
+    "CONSOLIDATE_CURRENT_V5_TEACHER_TARGET_SEMANTICS_AS_A_PROSPECTIVE_SPEC",
+    "DESIGN_CURRENT_V5_PREEXECUTION_V3_SUCCESSOR_WITH_GEOMETRY_NEUTRAL_REGISTRY",
+    "DESIGN_CURRENT_V5_TARGET_RECEIPT_SCHEMA_SEPARATE_FROM_LEGACY_V21_T0",
+    "DESIGN_TARGET_ADDRESS_QUERY_INTERFACE_AND_STATIC_GRADIENT_ISOLATION_TESTS",
+    "FREEZE_OUTCOME_BLIND_MASKING_AUDIT_SPEC_AND_METRICS",
+    "FREEZE_BASE_TRAINING_ESTIMAND_AUTHORITY_SEPARATE_FROM_DIMENSION_ESTIMAND",
+    "ONLY_AFTER_DESIGN_APPROVAL_IMPLEMENT_WITH_TDD_AND_KEEP_TRAINING_OFF"
+  ]
+}
