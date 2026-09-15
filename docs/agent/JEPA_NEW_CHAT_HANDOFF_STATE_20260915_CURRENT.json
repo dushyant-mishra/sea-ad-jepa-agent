@@ -1,0 +1,151 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V10",
+  "date": "2026-09-15",
+  "status": "CURRENT__LAYER2_SHORTCUT_AUDIT_REFRAMED__WITHIN_DONOR_MOLECULAR_SIGNAL_RECURS__CONTEXT_POOLING_SHORTCUT_OPEN__MASKING_SHORTCUT_AUTHORITY_OPEN__TRAINING_OFF__D_SHARED_SEALED",
+  "handoff_branch": "handoff/jepa-current-ledger-layer2-20260915",
+  "parent_analysis_branch": "analysis/layer2-method-redteam-20260915",
+  "parent_analysis_head": "b2b93f3f559df268069b74b4ae7fe4e1fbd523d4",
+  "active_v5_execution_ancestry_branch": "repair/v5-v3-null-t0-stressbench-20260914",
+  "active_v5_execution_ancestry_head_at_handoff_creation": "5124ef830db4e2f9fe3279162adc30bbdd528f62",
+  "governing_order": "DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> PRODUCTION GEOMETRY -> MODEL",
+  "governing_rule": "UNDERSTAND_FULL104_DEEPLY__KEEP_FINAL_D_SHARED_HYPOTHESIS_TEST_SEALED",
+  "protected_data_rule": "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+  "current_docs": {
+    "start_here": "START_HERE.md",
+    "current_work_ledger": "docs/agent/JEPA_CURRENT_WORK_LEDGER_20260915.md",
+    "historical_and_current_findings": "docs/agent/JEPA_HISTORICAL_AND_CURRENT_FINDINGS_20260915.md",
+    "independent_layer2_reconciliation": "docs/agent/LOCAL_LAYER2_RECONCILIATION_WITH_CLAUDE_20260915.md",
+    "historical_discovery_ledger": "docs/agent/JEPA_HISTORICAL_DISCOVERY_AND_AGENT_WORK_LEDGER_20260914.md",
+    "closed_invariant_registry": "docs/agent/V5_CLOSED_SUBSTRATE_INVARIANT_REGISTRY_20260914.md",
+    "d_shared_v2_authority": "docs/agent/V5_PROSPECTIVE_D_SHARED_AUTHORITY_V2.json"
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "matrices": 42,
+    "expression_blocks": 8915,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "sources": ["HVS", "NPH52", "SEA_AD"]
+  },
+  "k2_partition": {
+    "namespace": "JEPA_V5_COMMON_CORE_DISJOINT_VIEW_PARTITION_V1",
+    "view0_addresses": 8568,
+    "view1_addresses": 8618,
+    "intersection": 0,
+    "partition_artifact_sha256": "129631f95c9ef90bd5a4af2a70cbc2adbbf907ed6357b9c13c4aa370cafc1575"
+  },
+  "k2_arrays": {
+    "V0_full.npy": "3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada",
+    "V1_full.npy": "c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c",
+    "ASSEMBLY_SEEN_V5.npy": "0339d2e79599419f369d78cddf14448019f89476eb674000437b72a1b4fb640e"
+  },
+  "representation_status": {
+    "leading_candidate": "VALUE_ONLY_256",
+    "visibility_role": "OBSERVATION_STATE_NUISANCE_CONTROL_ONLY_CANDIDATE",
+    "primary_representation_authority_frozen": false,
+    "rank_support_authority_frozen": false
+  },
+  "measurement_shortcut_audit": {
+    "terminal": "MEASUREMENT_SHORTCUT_NOT_DEMONSTRATED_AT_THIS_MODEL_CLASS",
+    "matched_state_beats_clean_predictor": false,
+    "max_reported_excess_synergy_r2": 0.0051,
+    "max_reported_excess_synergy_fraction_of_full_depth_r2": 0.0109,
+    "negative_probe_does_not_prove_absence": true
+  },
+  "pooled_context_decomposition": {
+    "qc_only_r2": 0.031,
+    "context_source_operator_qc_r2": 0.4671,
+    "v0_only_r2": 0.4666,
+    "context_plus_v0_r2": 0.4982,
+    "overlap_r2": 0.4355,
+    "safe_terminal": "POOLED_CROSS_VIEW_PREDICTABILITY_LARGELY_COLLINEAR_WITH_COARSE_CONTEXT",
+    "causal_technical_fraction_identified": false
+  },
+  "source_specific_cross_view": {
+    "HVS": {
+      "cells": 88015,
+      "donors": 41,
+      "operators": 24,
+      "raw_r2": 0.2101,
+      "operator_centred_donor_heldout_r2": 0.0437,
+      "donor_centred_cell_heldout_r2": 0.1906,
+      "within_donor_qc_only_r2": 0.0535
+    },
+    "NPH52": {
+      "cells": 41218,
+      "donors": 17,
+      "operators": 7,
+      "raw_r2": 0.2761,
+      "operator_centred_donor_heldout_r2": 0.0530,
+      "donor_centred_cell_heldout_r2": 0.2646,
+      "within_donor_qc_only_r2": 0.0690
+    },
+    "SEA_AD": {
+      "cells": 67584,
+      "donors": 36,
+      "operators": 11,
+      "raw_r2": 0.2534,
+      "operator_centred_donor_heldout_r2": 0.2402,
+      "donor_centred_cell_heldout_r2": 0.2487,
+      "within_donor_qc_only_r2": 0.0575
+    }
+  },
+  "current_safe_findings": [
+    "WITHIN_DONOR_MOLECULAR_VIEW_SIGNAL_BEYOND_MEASURED_QC_RECURS_ACROSS_ALL_THREE_SOURCES",
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_DEMONSTRATED_IN_SEA_AD_AT_THIS_MODEL_CLASS",
+    "DONOR_GENERALISABLE_LINEAR_CROSS_VIEW_SIGNAL_NOT_DEMONSTRATED_IN_HVS_OR_NPH52_AT_THIS_MODEL_CLASS",
+    "POOLED_CROSS_VIEW_PREDICTABILITY_LARGELY_COLLINEAR_WITH_COARSE_CONTEXT",
+    "BATCH_TECHNICAL_VS_BIOLOGICAL_DECOMPOSITION_NOT_IDENTIFIABLE_IN_FULL104",
+    "MECHANICS_ALIGNED_LOSS_PROXY_CHARACTERIZED"
+  ],
+  "corrmask_literature": {
+    "paper": "Taking the Easy Way Out: When Single-Cell Foundation Models Learn Shortcuts Instead of Biology",
+    "openreview_id": "KlDSNIvt9A",
+    "project_terminal": "MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED",
+    "historical_graph_masking_exists": true,
+    "current_v5_graph_free_uniform_masking_exists": true,
+    "blind_restore_historical_graph_authorized": false
+  },
+  "leading_architecture_candidates_unfrozen": [
+    "RESIDUAL_OVER_FROZEN_CONTEXT_BASELINE",
+    "HYBRID_RECURRENCE_AUDITED_DEPENDENCY_AWARE_MASKING",
+    "RESIDUAL_PLUS_HYBRID_MASKING"
+  ],
+  "secondary_architecture_candidates": [
+    "INFORMATION_BOTTLENECK_ON_RESIDUAL_CHANNEL_ONLY",
+    "SOURCE_OPERATOR_ADVERSARIAL_REMOVAL_ONLY_IF_CAUSAL_NUISANCE_JUSTIFIED"
+  ],
+  "major_blockers": [
+    "CURRENT_V5_TEACHER_AUTHORITY_NOT_YET_ESTABLISHED",
+    "CONTEXT_SHORTCUT_HANDLING_NOT_YET_FROZEN",
+    "MASKING_SHORTCUT_AUTHORITY_NOT_YET_RESOLVED",
+    "HVS_NPH52_DONOR_TRANSPORT_UNRESOLVED",
+    "SCIENTIFIC_TRAINING_ESTIMAND_NOT_YET_FROZEN",
+    "PROSPECTIVE_ANTI_CHEAT_FAMILY_NOT_YET_FROZEN",
+    "PRIMARY_REPRESENTATION_AUTHORITY_NOT_YET_FROZEN",
+    "RANK_SUPPORT_AUTHORITY_NOT_YET_FROZEN",
+    "MEASUREMENT_ROBUSTNESS_DECISION_RULE_NOT_YET_FROZEN",
+    "V3_NULL_NOT_YET_FROZEN",
+    "FULL104_MEASUREMENT_PROCEDURE_NOT_YET_QUALIFIED"
+  ],
+  "hard_boundaries": {
+    "training_authorized": false,
+    "protected_data_authorized": false,
+    "d_shared_real_outcome_access_authorized": false,
+    "d_private_execution_authorized": false,
+    "d_obs_execution_authorized": false,
+    "td60_authorized": false,
+    "relational_target_activation_authorized": false,
+    "external_validation_outcomes_authorized_for_design": false
+  },
+  "next_actions": [
+    "Finish independent context decomposition reproduction on frozen Layer-2 arrays",
+    "Characterize estimand sensitivity under empirical/source-uniform/donor-primary views where valid",
+    "Characterize donor-level recurrence and full-refit donor-generalization uncertainty",
+    "Resolve current V5 teacher-target authority",
+    "Audit current uniform masking vs historical graph masking vs hybrid dependency-aware candidates without training",
+    "Freeze shortcut comparator family and objective-aligned anti-cheat semantics before production training"
+  ]
+}
