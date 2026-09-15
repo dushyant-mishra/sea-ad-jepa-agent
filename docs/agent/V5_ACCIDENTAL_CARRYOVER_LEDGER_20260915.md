@@ -306,7 +306,52 @@ Registry contents themselves must be regenerated/rebound if the current V5 archi
 
 Do not reuse a historical registry hash as authority for a changed model.
 
-## 15. Checkpoint / receipt semantics
+## 15. Optimizer guard and protected-registry authority
+
+### `v5.qualified_optimizer_guard_v1`
+
+Classification: `FAIL_CLOSED_SHELL` / reusable guard pattern.
+
+Positive finding:
+
+- optimizer mutation requires an armed receipt-bound schedule cursor;
+- authorization is consumed exactly once;
+- stale authorization from a skipped AMP step cannot be consumed by a later unqualified step;
+- receipt mismatch is fail-closed.
+
+Carryover warning:
+
+The current implementation validates through the legacy target receipt validator. A future current-V5 optimizer guard should preserve the same resident optimizer-bound pattern but validate a **new current-V5 receipt schema**, not widen the legacy schema in place.
+
+### `v5.production_protected_registry_authority_v1`
+
+Classification: `REUSABLE_MECHANIC` / current-geometry authority pattern.
+
+Positive finding:
+
+- explicitly rejects the historical six-block/48-tensor constant as authority;
+- protected tensor count is derived from prospectively supplied `model_depth`;
+- exact depth × protected-role × parameter-kind cross-product is required;
+- canonical registry digest is recomputed from explicit current records;
+- the registry itself cannot authorize training.
+
+This is a successful anti-carryover pattern and should be retained.
+
+## 16. Checkpoint / receipt semantics
+
+### `v5.atomic_checkpoint_guard_v3`
+
+Classification: `REUSABLE_MECHANIC` / current-authority checkpoint pattern.
+
+Positive finding:
+
+- explicitly restores historical checkpoint invariants **without** restoring the historical 48-tensor production assumption;
+- expected protected tensor count is read from `ProductionProtectedRegistryAuthorityV1`;
+- checkpoint telemetry registry SHA must match current preexecution authority;
+- threshold authority is external and hash-bound;
+- the guard does not itself authorize optimizer or production training.
+
+This is another successful anti-carryover pattern.
 
 ### Hash-bound receipt pattern, atomic write, cursor binding
 
@@ -318,7 +363,7 @@ Classification: `FORENSIC_ONLY`.
 
 Current V5 requires a distinct schema rather than widening the legacy target kind in place.
 
-## 16. Carryover firewall required for future implementation
+## 17. Carryover firewall required for future implementation
 
 Before a current-V5 runtime can be called production-eligible, static tests should fail if any of the following enter through defaults or imported historical authorities:
 
@@ -329,29 +374,35 @@ Before a current-V5 runtime can be called production-eligible, static tests shou
 - historical EMA scalar/schedule;
 - historical optimizer hyperparameters;
 - V21/T0 target receipt or package root;
+- legacy target-receipt validator as the semantic validator for current V5;
 - V4 target semantic assumption without a current target authority ID;
 - unweighted loss when scientific weights are required;
 - historical protected-parameter registry hash after architecture change;
+- hard-coded protected tensor count such as 48;
 - direct use of online gene-identity embeddings for target query unless target-identity authority explicitly permits it;
 - old seeds without current RNG authority;
 - hidden visibility channels as molecular representation unless explicitly authorized.
 
 Every production-relevant numeric or scientific choice must be present in an immutable current-V5 authority receipt or derived deterministically from one.
 
-## 17. Current conclusion
+## 18. Current conclusion
 
 The project has two distinct classes of inherited code:
 
 1. **valuable mechanics** that should be reused or ported; and
 2. **historical scientific/numerical defaults** that must be quarantined.
 
-The newer V5 authority/schema modules already embody this separation well. The main accidental-carryover seam is the current V5 wrapper's default delegation to historical V4 `production_update`.
+The newer V5 authority/schema, protected-registry, and checkpoint modules already embody this separation well. The main accidental-carryover seam remains the current V5 wrapper's default delegation to historical V4 `production_update`, plus its dependence on the legacy target-receipt validator.
 
 Current terminals:
 
 `ACCIDENTAL_CARRYOVER_AUDIT_ACTIVE`
 
 `V5_DATA_FIRST_SCHEMAS_NO_DEFAULTS_CONFIRMED`
+
+`V5_PROTECTED_REGISTRY_48_TENSOR_CARRYOVER_BLOCKED`
+
+`V5_CHECKPOINT_GUARD_CURRENT_REGISTRY_BOUND`
 
 `LEGACY_V4_PRODUCTION_UPDATE_NOT_CURRENT_V5_AUTHORITY`
 
