@@ -1,7 +1,8 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V12",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V13",
   "date": "2026-09-15",
   "status": "CURRENT_V5_LAYER2_SHORTCUT_MASKING_AND_TEACHER_AUTHORITY_REVIEW__NO_TRAINING_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md",
   "current_work_ledger_path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
   "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json",
   "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
@@ -9,7 +10,6 @@
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
   "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "main_head_before_20260915_update": "ba3f2a1200d0bbaf4b9ee0d7d16ddc17341d779f",
   "independent_layer2_review": {
     "branch": "analysis/layer2-method-redteam-20260915",
     "observed_head": "b2b93f3f559df268069b74b4ae7fe4e1fbd523d4",
@@ -39,5 +39,5 @@
     "V3_NULL_NOT_YET_FROZEN",
     "MEASUREMENT_ROBUSTNESS_DECISION_RULE_NOT_YET_FROZEN"
   ],
-  "instruction": "Open START_HERE.md first, then this pointer, then JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md and JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json. Re-fetch all live lane heads before acting. Preserve older 20260911 integrated handoff as historical/upstream target-discovery context. Do not trust outputs from the discarded x4_within estimator. Do not label operator/source structure technical without causal evidence, and do not label within-donor molecular-view signal biology merely because measured QC does not explain it. Current leading architecture candidates are residual-over-frozen-context plus dependency-aware hybrid masking, but neither is frozen. Current V5 teacher-target authority and masking-shortcut authority remain blockers. Keep D_shared sealed and training OFF."
+  "instruction": "Open START_HERE.md first, then this pointer, then the detailed 20260915 handoff, work ledger, and machine-readable state. Re-fetch all live lane heads before acting. Preserve the 20260911 integrated handoff as historical/upstream target-discovery context. Do not trust outputs from the discarded x4_within estimator. Do not label operator/source structure technical without causal evidence, and do not label within-donor molecular-view signal biology merely because measured QC does not explain it. Current leading architecture candidates are residual-over-frozen-context plus dependency-aware hybrid masking, but neither is frozen. Current V5 teacher-target authority and masking-shortcut authority remain blockers. Keep D_shared sealed and training OFF."
 }
