@@ -1,20 +1,55 @@
 import hashlib
+from dataclasses import replace
 from pathlib import Path
 import pytest
+from sea_ad_jepa.v5.base_training_estimand_recovery_v1 import (
+    EXPECTED_FULL_READER_REPLAY_SHA256,
+    EXPECTED_OPERATOR_MASS_POLICY_ID,
+    EXPECTED_POPULATION_AUTHORITY_SHA256,
+    EXPECTED_PROPOSAL_SEPARATION_POLICY_ID,
+    EXPECTED_SOURCE_MASS_POLICY_ID,
+    EXPECTED_SUPPORT_ELIGIBILITY_SHA256,
+    EXPECTED_SUPPORT_ESTIMABILITY_SHA256,
+    EXPECTED_TARGET_AUTHORITY_SHA256,
+    EXPECTED_TARGET_PROBABILITY_FORMULA,
+    EXPECTED_WEIGHT_NORMALIZATION_ID,
+    EXPECTED_WEIGHT_UNIT_ID,
+    EXPECTED_ESTIMAND_ID,
+    RecoveredScientificWeightLawV1,
+    build_current_recovered_base_estimand_v1,
+)
 from sea_ad_jepa.v5.current_authority_roots_v1 import CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS, CURRENT_V5_RECEIPT_AUTHORITY_ROOTS
 from sea_ad_jepa.v5.current_authority_closure_v1 import validate_current_v5_authority_closure_v1
 
 def h(name): return hashlib.sha256(name.encode()).hexdigest()
 class Stub:
-    def __init__(self,name,**attrs): self._d=h(name); self.__dict__.update(attrs); self.training_authorized=False
+    def __init__(self,name,digest=None,**attrs): self._d=digest or h(name); self.__dict__.update(attrs); self.training_authorized=False
     def validate(self): return None
     def canonical_digest(self): return self._d
 
+def recovered_weight_law():
+    return RecoveredScientificWeightLawV1(
+        authority_id='JEPA_V5_RECOVERED_BASE_TRAINING_SCIENTIFIC_WEIGHT_LAW_V1',
+        source_scientific_target_authority_sha256=EXPECTED_TARGET_AUTHORITY_SHA256,
+        source_full_reader_replay_sha256=EXPECTED_FULL_READER_REPLAY_SHA256,
+        population_authority_sha256=EXPECTED_POPULATION_AUTHORITY_SHA256,
+        support_estimability_authority_sha256=EXPECTED_SUPPORT_ESTIMABILITY_SHA256,
+        support_eligibility_authority_sha256=EXPECTED_SUPPORT_ELIGIBILITY_SHA256,
+        estimand_id=EXPECTED_ESTIMAND_ID,
+        target_probability_formula=EXPECTED_TARGET_PROBABILITY_FORMULA,
+        weight_normalization_id=EXPECTED_WEIGHT_NORMALIZATION_ID,
+        weight_unit_id=EXPECTED_WEIGHT_UNIT_ID,
+        source_mass_policy_id=EXPECTED_SOURCE_MASS_POLICY_ID,
+        operator_mass_policy_id=EXPECTED_OPERATOR_MASS_POLICY_ID,
+        proposal_separation_policy_id=EXPECTED_PROPOSAL_SEPARATION_POLICY_ID,
+    )
+
 def fixtures():
-    full=h('full'); schedule=h('schedule'); runtime=h('runtime'); firewall=h('firewall')
-    rep=Stub('rep',substrate_authority_sha256=full,support_authority_sha256=h('measurement-support'))
-    support=Stub('support',full104_substrate_sha256=full,measurement_support_authority_sha256=h('measurement-support'))
-    est=Stub('est',support_estimability_authority_sha256=support.canonical_digest())
+    full='66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29'; schedule=h('schedule'); runtime=h('runtime'); firewall=h('firewall')
+    rep=Stub('rep',substrate_authority_sha256=full,support_authority_sha256=EXPECTED_SUPPORT_ELIGIBILITY_SHA256)
+    support=Stub('support',digest=EXPECTED_SUPPORT_ESTIMABILITY_SHA256,full104_substrate_sha256=full,measurement_support_authority_sha256=EXPECTED_SUPPORT_ELIGIBILITY_SHA256)
+    weight_law=recovered_weight_law()
+    est=build_current_recovered_base_estimand_v1(weight_law)
     address=Stub('address')
     masking=Stub('masking')
     ema=Stub('ema',base_training_estimand_sha256=est.canonical_digest(),schedule_authority_sha256=schedule)
@@ -30,7 +65,7 @@ def fixtures():
     pre.normalized_roots=lambda: dict(roots)
     return locals()
 def call(f):
-    return validate_current_v5_authority_closure_v1(full104_substrate_sha256=f['full'],representation=f['rep'],support_estimability=f['support'],base_training_estimand=f['est'],target_address=f['address'],masking=f['masking'],ema=f['ema'],teacher_target=f['teacher'],measurement_robustness=f['measurement'],target_identity_gate=f['identity'],critical_test=f['critical'],anti_cheat=f['anticheat'],model_geometry=f['geometry'],protected_registry=f['registry'],preexecution=f['pre'],observation_gradient_firewall_authority_sha256=f['firewall'],schedule_authority_sha256=f['schedule'],runtime_source_sha256=f['runtime'])
+    return validate_current_v5_authority_closure_v1(full104_substrate_sha256=f['full'],representation=f['rep'],support_estimability=f['support'],base_training_weight_law=f['weight_law'],base_training_estimand=f['est'],target_address=f['address'],masking=f['masking'],ema=f['ema'],teacher_target=f['teacher'],measurement_robustness=f['measurement'],target_identity_gate=f['identity'],critical_test=f['critical'],anti_cheat=f['anticheat'],model_geometry=f['geometry'],protected_registry=f['registry'],preexecution=f['pre'],observation_gradient_firewall_authority_sha256=f['firewall'],schedule_authority_sha256=f['schedule'],runtime_source_sha256=f['runtime'])
 def test_valid_closure_produces_exact_receipt_root_vocab():
     f=fixtures(); out=call(f)
     assert tuple(out['authority_roots']) == CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS
@@ -51,5 +86,8 @@ def test_source_has_no_historical_runtime_or_training_shortcut():
     forbidden=('PRODUCTION_CONFIG','production_update','trainer_preexecution_contract_v2','PROTECTED_48','HISTORICAL_128X8','0.996','z_bio','training_authorized=True')
     assert [token for token in forbidden if token in source] == []
 def test_support_splice_rejected():
-    f=fixtures(); f['est'].support_estimability_authority_sha256=h('other')
-    with pytest.raises(ValueError,match='estimand.*support'): call(f)
+    f=fixtures(); f['est']=replace(f['est'],support_estimability_authority_sha256=h('other'))
+    with pytest.raises(ValueError,match='recovered current V5 authority|current recovered estimand binding mismatch|does not match recovered'): call(f)
+def test_alternative_estimand_substitution_rejected_even_when_generic_schema_valid():
+    f=fixtures(); f['est']=replace(f['est'],estimand_id='SOURCE_UNIFORM')
+    with pytest.raises(ValueError,match='does not match recovered'): call(f)

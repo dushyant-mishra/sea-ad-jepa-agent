@@ -2,6 +2,7 @@
 from __future__ import annotations
 import hashlib, json
 from typing import Any, Mapping
+from .base_training_estimand_recovery_v1 import validate_current_recovered_base_estimand_v1
 from .current_authority_roots_v1 import CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS, CURRENT_V5_RECEIPT_AUTHORITY_ROOTS
 
 def _sha(v:object,name:str)->str:
@@ -18,10 +19,11 @@ def _auth(obj:Any,name:str)->str:
 def _eq(actual:object,expected:str,message:str)->None:
     if actual!=expected: raise ValueError(message)
 
-def validate_current_v5_authority_closure_v1(*,full104_substrate_sha256:str,representation:Any,support_estimability:Any,base_training_estimand:Any,target_address:Any,masking:Any,ema:Any,teacher_target:Any,measurement_robustness:Any,target_identity_gate:Any,critical_test:Any,anti_cheat:Any,model_geometry:Any,protected_registry:Any,preexecution:Any,observation_gradient_firewall_authority_sha256:str,schedule_authority_sha256:str,runtime_source_sha256:str)->dict[str,Any]:
+def validate_current_v5_authority_closure_v1(*,full104_substrate_sha256:str,representation:Any,support_estimability:Any,base_training_weight_law:Any,base_training_estimand:Any,target_address:Any,masking:Any,ema:Any,teacher_target:Any,measurement_robustness:Any,target_identity_gate:Any,critical_test:Any,anti_cheat:Any,model_geometry:Any,protected_registry:Any,preexecution:Any,observation_gradient_firewall_authority_sha256:str,schedule_authority_sha256:str,runtime_source_sha256:str)->dict[str,Any]:
     full=_sha(full104_substrate_sha256,'full104_substrate_sha256'); schedule=_sha(schedule_authority_sha256,'schedule_authority_sha256'); runtime=_sha(runtime_source_sha256,'runtime_source_sha256'); firewall=_sha(observation_gradient_firewall_authority_sha256,'observation_gradient_firewall_authority_sha256')
     rep=_auth(representation,'representation'); support=_auth(support_estimability,'support_estimability'); est=_auth(base_training_estimand,'base_training_estimand'); address=_auth(target_address,'target_address'); mask=_auth(masking,'masking'); ema_sha=_auth(ema,'ema'); teacher=_auth(teacher_target,'teacher_target'); measurement=_auth(measurement_robustness,'measurement_robustness'); identity=_auth(target_identity_gate,'target_identity_gate'); critical=_auth(critical_test,'critical_test'); anticheat=_auth(anti_cheat,'anti_cheat'); registry=_auth(protected_registry,'protected_registry'); geometry=_auth(model_geometry,'model_geometry'); pre=_auth(preexecution,'preexecution')
 
+    validate_current_recovered_base_estimand_v1(base_training_weight_law,base_training_estimand)
     _eq(getattr(representation,'substrate_authority_sha256',None),full,'representation substrate root mismatch')
     _eq(getattr(support_estimability,'full104_substrate_sha256',None),full,'support substrate root mismatch')
     _eq(getattr(support_estimability,'measurement_support_authority_sha256',None),getattr(representation,'support_authority_sha256',None),'support measurement root mismatch')
