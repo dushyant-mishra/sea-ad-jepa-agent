@@ -1,17 +1,18 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V16_SUCCESSOR",
-  "date": "2026-09-15",
-  "status": "CURRENT_V5_AUTHORITY_SUCCESSOR__UPSTREAM_SCIENCE_PARTIALLY_FROZEN__RUNTIME_ABSENT__NO_TRAINING_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_SUCCESSOR_CURRENT.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_V5_SUCCESSOR_CURRENT.json",
-  "instructions_path": "docs/agent/JEPA_NEW_CHAT_INSTRUCTIONS_20260915_V5_SUCCESSOR_CURRENT.md",
-  "package_manifest_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_MANIFEST_20260915_V5_SUCCESSOR_CURRENT.json",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V17_SUCCESSOR",
+  "date": "2026-09-16",
+  "status": "CURRENT_V5_AUTHORITY_SUCCESSOR__UPSTREAM_SCIENCE_PARTIALLY_FROZEN__STAGE_A_OPEN__RUNTIME_ABSENT__NO_TRAINING_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260916_V5_CURRENT.md",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260916_V5_CURRENT.json",
+  "instructions_path": "docs/agent/JEPA_NEW_CHAT_INSTRUCTIONS_20260916_V5_CURRENT.md",
+  "package_manifest_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_MANIFEST_20260916_V5_CURRENT.json",
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "main_ref_for_historical_audits": "c8898923fc10ffa5ef0662b04908b0d94bcb158b",
   "implementation_branch": "impl/v5-current-target-authority-successors-20260915",
   "implementation_head": "812352a70ce1322f1a7d35a3fa9feeda4e4148c3",
   "implementation_tree": "497fd3021c82aae05f0b36c8f4567674ebcd9f40",
-  "predecessor_handoff_branch": "handoff/jepa-v5-target-authority-build-20260915",
-  "predecessor_handoff_head": "af0ae024808e6642509121db8278c15259959632",
-  "instruction": "Open START_HERE.md, then this pointer, then the detailed successor handoff/state/instructions. Re-fetch live heads. Classify historical work before computing. Continue target-address Stage-A structural audit. Keep training OFF and protected/D_shared outcomes sealed."
+  "predecessor_handoff_branch": "handoff/jepa-v5-current-authority-successor-20260915",
+  "predecessor_handoff_head": "f6f0cb736cb993d0fadb0407d29951087c9719b1",
+  "handoff_branch": "handoff/jepa-v5-new-chat-20260916",
+  "instruction": "Open START_HERE.md, then this pointer, then the detailed handoff/state/instructions. Re-fetch live heads. Classify historical work before computing. Do not redo Layer-2/T0/T1/base-estimand work. Finish static/CPU Stage-A qualification before GPU work. Keep training OFF and protected/D_shared outcomes sealed."
 }

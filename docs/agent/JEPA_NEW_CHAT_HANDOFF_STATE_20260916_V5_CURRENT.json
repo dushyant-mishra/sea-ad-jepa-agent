@@ -1,0 +1,139 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V17_SUCCESSOR",
+  "date": "2026-09-16",
+  "status": "CURRENT_V5_AUTHORITY_SUCCESSOR__STAGE_A_OPEN__NO_TRAINING_AUTHORITY",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "git": {
+    "main": "c8898923fc10ffa5ef0662b04908b0d94bcb158b",
+    "implementation_branch": "impl/v5-current-target-authority-successors-20260915",
+    "implementation_head": "812352a70ce1322f1a7d35a3fa9feeda4e4148c3",
+    "implementation_tree": "497fd3021c82aae05f0b36c8f4567674ebcd9f40",
+    "predecessor_handoff_branch": "handoff/jepa-v5-current-authority-successor-20260915",
+    "predecessor_handoff_head": "f6f0cb736cb993d0fadb0407d29951087c9719b1",
+    "handoff_branch": "handoff/jepa-v5-new-chat-20260916",
+    "handoff_is_docs_only": true
+  },
+  "governance": {
+    "training_authorized": false,
+    "training_state": "OFF",
+    "protected_outcomes_sealed": true,
+    "d_shared_execution_or_inspection": false,
+    "confirmation_rule": "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+    "history_classification_labels": [
+      "ALREADY_AUDITED",
+      "SUPERSEDED",
+      "OPEN",
+      "CHANGED_INPUT_REQUIRES_REQUALIFICATION"
+    ]
+  },
+  "substrate": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "sources": [
+      "SEA_AD",
+      "HVS",
+      "NPH52"
+    ],
+    "donors_by_source": {
+      "HVS": 41,
+      "NPH52": 17,
+      "SEA_AD": 46
+    },
+    "full104_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "heavy_expression_path": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/",
+    "heavy_expression_note": ">30 GB; available on Claude/GPU machine; do not request chat upload"
+  },
+  "partition": {
+    "v0": 8568,
+    "v1": 8618,
+    "intersection": 0,
+    "union": 17186,
+    "sha256": "129631f95c9ef90bd5a4af2a70cbc2adbbf907ed6357b9c13c4aa370cafc1575",
+    "v0_parent_sha256": "3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada",
+    "v1_parent_sha256": "c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c"
+  },
+  "frozen_authorities": {
+    "primary_representation": {
+      "status": "PRIMARY_MOLECULAR_REPRESENTATION_FROZEN__VALUE_ONLY_256__NO_TRAINING_AUTHORITY",
+      "authority_sha256": "92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1",
+      "receipt_sha256": "bc6f66c0b35c640caff80ee0922d0bc338f47fb1b562da07eb529348729c10a4"
+    },
+    "support_estimability": {
+      "artifact": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json",
+      "sha256": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08"
+    },
+    "base_training_estimand": {
+      "name": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+      "formula": "p_i = 1 / (D * n_d)",
+      "normalization": "MEAN_OVER_DONORS__MEAN_OVER_ELIGIBLE_CELLS_WITHIN_DONOR",
+      "scientific_weight_sha256": "0ddab1d6d88dfd671ce615c7b470a2ce0545c4f06fe2388f48499e6eb18aa774",
+      "estimand_sha256": "a766d42f9f8e37aa63e6c694d6c65b30962e45568f41b1cde8199cbed118ce26",
+      "population_authority_root_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+      "measurement_support_eligibility_root_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+    }
+  },
+  "layer2": {
+    "status": "ALREADY_AUDITED_SUPPORTING_ONLY",
+    "redo": false,
+    "production_geometry_authority": false,
+    "note": "Layer-2 proxy/rank evidence must not be treated as production model width."
+  },
+  "current_blocker": {
+    "name": "TARGET_ADDRESS_STAGE_A_STRUCTURAL_QUALIFICATION",
+    "shortcut_discovery_status": "ALREADY_AUDITED",
+    "current_provider_choice_status": "OPEN",
+    "training_required": false,
+    "protected_outcome_required": false,
+    "required_checks": [
+      "shared trainable target/address mechanism; no per-target memorization",
+      "context/evidence gradient path into shared target/address mechanism",
+      "correct teacher/EMA reachability",
+      "checkpoint/restart and deterministic replay binding",
+      "eligibility independent of hidden target value",
+      "no post-hoc/value-derived QC eligibility",
+      "no unauthorized target-specific lookup/coordinate/ontology/graph leakage",
+      "provider source/provenance bound",
+      "no unauthorized historical carryover",
+      "no visibility/QC re-entry to primary molecular path",
+      "no historical experiment result promoted by naming similarity"
+    ]
+  },
+  "open_after_stage_a": [
+    "teacher_target_semantics_if_unresolved",
+    "masking_policy",
+    "ema_presentation_and_timescale_authority",
+    "deep_measurement_robustness_rule",
+    "protected_production_geometry",
+    "runtime_source_and_qualification",
+    "explicit_training_authority"
+  ],
+  "gpu_handoff_boundary": {
+    "rule": "Finish all feasible static/CPU/unit/governance work first.",
+    "heavy_work_examples": [
+      "full >30 GB FULL104 materialization",
+      "genuinely full-data structural statistics",
+      "GPU tensor/gradient execution not faithfully reproducible by unit fixtures",
+      "runtime qualification after design closure",
+      "training after explicit authority"
+    ]
+  },
+  "test_evidence": {
+    "fresh_unified_exact_head_green_claim_allowed": false,
+    "known_prior_checks": [
+      "early scaffold: 84 passed; runtime sentinel intentionally deselected",
+      "representation freeze: 87 passed; runtime sentinel intentionally deselected",
+      "support-root integration: 49/49",
+      "estimand unit/integration: 24/24",
+      "compile checks clean",
+      "runtime intentionally absent"
+    ]
+  },
+  "historical_audits": {
+    "path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+    "pinned_main_ref": "c8898923fc10ffa5ef0662b04908b0d94bcb158b"
+  }
+}

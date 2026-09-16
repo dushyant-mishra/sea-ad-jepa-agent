@@ -1,0 +1,32 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_MANIFEST_V17_SUCCESSOR",
+  "date": "2026-09-16",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "handoff_branch": "handoff/jepa-v5-new-chat-20260916",
+  "implementation_branch": "impl/v5-current-target-authority-successors-20260915",
+  "implementation_head": "812352a70ce1322f1a7d35a3fa9feeda4e4148c3",
+  "predecessor_handoff_head": "f6f0cb736cb993d0fadb0407d29951087c9719b1",
+  "files": {
+    "START_HERE.md": {
+      "sha256": "2434cd19da2aa2b783a8dfeaa8a9617ea11cb411c1afa533a2aa751acdd6e3c7",
+      "bytes": 2164
+    },
+    "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json": {
+      "sha256": "7a056d4c7529b2d83e1562a3a7257844dc58a4159e428bc8fd7534cc5d3073df",
+      "bytes": 1495
+    },
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260916_V5_CURRENT.md": {
+      "sha256": "3ad88642f387805fbc67db548d39a9b42690d779f2318545b76c7d8339ab3a71",
+      "bytes": 14339
+    },
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260916_V5_CURRENT.json": {
+      "sha256": "30c1df9f5d9214b4d29e36fd71edc7ad0832bd4d180f1ac8671aaf9d57b8d595",
+      "bytes": 5890
+    },
+    "docs/agent/JEPA_NEW_CHAT_INSTRUCTIONS_20260916_V5_CURRENT.md": {
+      "sha256": "21dedbf642d4a106e19d74914a1bc7ee980af0352448a0500aed1674cdcd3ecb",
+      "bytes": 3033
+    }
+  },
+  "note": "Manifest hashes all handoff inputs except itself. Re-fetch live GitHub heads before work."
+}
