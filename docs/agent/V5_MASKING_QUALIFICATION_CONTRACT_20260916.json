@@ -1,0 +1,140 @@
+{
+  "schema": "V5_MASKING_QUALIFICATION_CONTRACT_V1",
+  "date": "2026-09-16",
+  "status": "FROZEN_BEFORE_ANY_REAL_FULL104_DEPENDENCY_EVALUATION",
+  "lane": "dependency-aware masking qualification",
+  "training_authorized": false,
+
+  "purpose": "Define, before any candidate is run, the exact metrics and failure conditions by which masking candidates are judged. No metric may be added or relaxed after seeing candidate results.",
+
+  "hard_boundaries": [
+    "TRAINING_OFF",
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION",
+    "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK",
+    "NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY",
+    "COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY",
+    "QUALIFICATION_RANK_CEILING != PRODUCTION_MODEL_WIDTH",
+    "NO_REAL_RESULT_FROM_THE_DISCARDED_X4_WITHIN_ESTIMATOR_IS_AUTHORITY"
+  ],
+  "no_model_performance_input": "No JEPA loss, accuracy, downstream biological score, disease outcome or published CorrMask benchmark number may be used to select the policy. The CorrMask literature motivates evaluating a HYBRID family; it does not select it.",
+  "dependency_is_not_biology": "Every edge produced in this lane is a statistical dependency under a declared estimator. It is not a causal or biological claim.",
+
+  "authority_scope_finding": {
+    "question": "does the masking authority own the numeric mask fraction?",
+    "answer": "NO",
+    "evidence": "MaskingAuthorityV1 carries dependency_source_authority_id, a random/structural mixture ratio, and REFERENCES to a separate target_evidence_budget_authority_id and rng_authority_id.",
+    "consequence": "this lane freezes dependency semantics and the structural/random mixture ratio only. It must NOT freeze a mask fraction, block count, or evidence budget; those belong to the target-evidence-budget and schedule/runtime authorities.",
+    "historical_values_with_zero_current_authority": ["mask_fraction 0.40", "16 blocks", "GRAPH_K", "any historical seed"]
+  },
+
+  "estimator_family_declared_before_execution": {
+    "id": "DONOR_STRATIFIED_RANK_RECURRENCE_V1",
+    "statistic": "within-donor Spearman rank correlation between address pairs, computed per donor on that donor's own cells",
+    "why_rank": "robust to per-address scale and to depth-driven magnitude differences across technologies",
+    "why_within_donor": "a pooled FULL104 coefficient can be dominated by source, operator, donor and composition differences; within-donor estimation removes between-donor mean structure by construction",
+    "recurrence_rule": "an ordered pair (a -> b) is a candidate edge iff b appears in a's top-K within-donor neighbour list in at least R of the evaluable donor strata",
+    "balancing": "each donor contributes exactly one vote regardless of its cell count; each source's donor votes are additionally renormalised so a source cannot gain authority merely by having more donors or more cells",
+    "missing_support": "a pair is EVALUABLE in a stratum only where both addresses are measurable there. Non-evaluable is missing evidence, never disagreement and never a negative vote.",
+    "forbidden_inputs": ["hidden target value", "target rank", "target-derived statistic", "QC", "depth", "detection", "visibility", "source label", "operator label", "donor label", "dataset label", "ontology", "pathway", "chromosomal coordinate", "gene symbol", "biotype", "common-core membership as evidence of importance"]
+  },
+
+  "grids_frozen_before_execution": {
+    "K_neighbour_rank": [5, 10, 20],
+    "R_recurrence_fraction_of_evaluable_donors": [0.5, 0.6, 0.75],
+    "cross_source_consensus_S": [1, 2, 3],
+    "structural_random_mixture_numerators": [[0, 4], [1, 3], [2, 2], [3, 1], [4, 0]],
+    "no_other_values_may_be_introduced_later": true
+  },
+
+  "tie_breaking_rule": "If two candidate configurations are indistinguishable on the primary metric within its declared tolerance, prefer, in order: (1) lower mask burden, (2) higher target coverage, (3) lower source/operator leakage delta, (4) lower max component size, (5) lexicographically smaller (K, R, S). Never prefer by model performance.",
+
+  "metrics_frozen": {
+    "A_dependency_recurrence": {
+      "definition": "fraction of candidate edges surviving the recurrence rule across evaluable donor strata",
+      "reported_by": ["source", "common-core vs native support"],
+      "failure_condition": "if no (K,R) cell yields any edge set with recurrence above chance on the permutation null, the family FAILS"
+    },
+    "B_cross_source_recurrence": {
+      "definition": "for edges whose pair is jointly measurable in >=2 sources, fraction recurring in >=S sources",
+      "unmeasured_handling": "excluded from both numerator and denominator; reported as NOT_ESTIMABLE",
+      "failure_condition": "reporting invariance where a technology cannot measure the pair"
+    },
+    "C_stability": {
+      "definitions": ["neighbour-set Jaccard between disjoint donor halves", "sign agreement of the within-donor coefficient across strata", "rank recurrence of the top-K list"],
+      "failure_condition": "median split-half Jaccard not exceeding the permuted-label null"
+    },
+    "D_anti_interpolation_exposure": {
+      "definition": "correlated_partner_exposure(mask, edges) from masking_audit_metrics_v1 -- the fraction of dependency edges with exactly one endpoint hidden",
+      "primary_metric": true,
+      "direction": "LOWER IS BETTER",
+      "comparison": "dependency-aware candidate vs uniform baseline at COMPARABLE MASK BURDEN (matched within 2 percentage points of masked fraction)",
+      "qualification_threshold": "candidate must reduce exposure by at least 20 percent relative to the uniform baseline at matched burden",
+      "threshold_justification": "declared prospectively as a CONVENTION; it is a structural mask-geometry effect size, not tuned to any observed value and not derived from model performance"
+    },
+    "E_coverage": {
+      "definition": "fraction of lawful target addresses receiving a valid mask construction",
+      "reported_by": ["source", "operator", "donor", "support family", "common-core vs native"],
+      "failure_condition": "coverage below 0.95 for any source, or any silent drop of difficult targets"
+    },
+    "F_mask_burden": {
+      "definitions": ["masked address count", "fraction of measurable support masked", "context retained", "co-mask expansion factor", "largest connected component of the co-mask graph"],
+      "failure_condition": "largest co-mask component exceeding 5 percent of measurable support for any target, or context retention falling below 0.5 of measurable support"
+    },
+    "G_source_operator_leakage": {
+      "definition": "balanced-accuracy delta for predicting source and operator from (support pattern) vs (support pattern + generated mask pattern), donor-held-out, simple linear probe",
+      "direction": "delta must not materially increase",
+      "qualification_threshold": "delta <= 0.02 absolute balanced accuracy",
+      "threshold_justification": "CONVENTION declared prospectively; chosen as a small absolute effect, not from observed results"
+    },
+    "H_hidden_target_independence": {
+      "definition": "permuting hidden target scalars while holding target identity and support fixed must leave the mask bit-identical",
+      "failure_condition": "any bit difference"
+    },
+    "I_replay": {
+      "definition": "deterministic_mask_digest identical for the same authority, registry, support state and RNG state",
+      "failure_condition": "any digest difference"
+    },
+    "J_eligibility": {
+      "definition": "target eligibility resolved from the current support/estimability authority only",
+      "failure_condition": "eligibility depending on expression magnitude, QC, or any post-hoc statistic"
+    }
+  },
+
+  "estimator_must_pass_before_real_data": {
+    "note": "the dependency estimator is qualified on synthetic fixtures with known ground truth BEFORE it touches FULL104",
+    "fixtures": [
+      "independent addresses -> no dependency structure recovered",
+      "planted pairwise latent relationship -> recovered",
+      "donor-only effect -> must NOT become within-cell molecular dependence",
+      "operator-only effect -> must NOT manufacture neighbour structure",
+      "source-only effect -> must NOT become a universal dependency",
+      "shared missing-support pattern -> must NOT become an edge",
+      "unequal source sample size -> large source must NOT dominate"
+    ],
+    "rule": "if the estimator fails any fixture, fix the estimator before any real FULL104 dependency analysis"
+  },
+
+  "candidates_declared_before_execution": {
+    "U": "uniform/random baseline at matched burden -- reference, never automatically authority",
+    "H": "historical Pearson/top-K graph comparator -- HISTORICAL_COMPARATOR_ONLY, thresholds carry zero current authority",
+    "R": "donor-stratified recurrent dependency masking",
+    "C": "cross-source-consensus recurrent masking, donor/source balanced",
+    "HY": "conservative hybrid: recurrent donor evidence + cross-source agreement where observable + deterministic fallback where consensus evidence is unavailable. DEFINED NOW, before any outcome inspection, so that selecting it later is not post-hoc."
+  },
+
+  "fallback_for_native_support_declared_now": "Targets whose pairs are not jointly measurable across sources are NOT declared private biology and are NOT dropped. They fall back, in order: (1) donor-recurrent evidence within measurable strata if that qualifies, (2) deterministic conservative expansion over the measurable support, (3) uniform masking. Coverage is reported separately for this population.",
+
+  "global_failure_conditions": [
+    "no candidate family satisfies D at matched burden -> report MASKING_AUTHORITY_REMAINS_OPEN",
+    "estimator fails any synthetic fixture and cannot be repaired -> report failure, do not proceed to real data",
+    "any metric is added, removed or relaxed after seeing candidate results -> the lane is void",
+    "a test that executes zero eligible targets or pairs is a FAILURE, not a pass",
+    "insufficient comparable support in a source -> NOT_ESTIMABLE, never PASS"
+  ],
+
+  "explicitly_not_frozen_in_this_lane": [
+    "latent dimension", "query width", "transformer width", "block count", "heads",
+    "D_shared", "provider bucket count m", "address-query width d",
+    "numeric mask fraction", "evidence budget", "EMA timescale", "optimizer", "schedule", "seed"
+  ]
+}
