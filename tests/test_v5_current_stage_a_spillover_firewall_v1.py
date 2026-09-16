@@ -142,7 +142,10 @@ import sys
 import sea_ad_jepa.v5 as v5
 assert 'sea_ad_jepa.v5.data_first_geometry' not in sys.modules
 assert 'sea_ad_jepa.v5.proposal_policy_v1' not in sys.modules
-assert 'PackedValidTokens' in v5.__all__
+# __all__ is deliberately empty: a star-import must not resolve compatibility names,
+# because resolving one triggers __getattr__ and loads the quarantined helper.
+# Explicit named access below still works and still loads lazily.
+assert v5.__all__ == []
 _ = v5.PackedValidTokens
 assert 'sea_ad_jepa.v5.data_first_geometry' in sys.modules
 assert 'sea_ad_jepa.v5.proposal_policy_v1' not in sys.modules

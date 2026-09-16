@@ -25,10 +25,19 @@ _GEOMETRY_PUBLIC_EXPORTS = (
     "weighted_loss_partition_weight",
 )
 
-# Preserve the historical star-import surface without importing the module on
-# package initialization.  These names are compatibility-only and are not
-# current production authority.
-__all__ = list(_GEOMETRY_PUBLIC_EXPORTS)
+# `from sea_ad_jepa.v5 import *` must not be a hole in the spillover firewall.
+# A star-import resolves every name in __all__, and resolving a compatibility name
+# triggers __getattr__ below, which imports the quarantined helper -- so listing them
+# here would reintroduce exactly the eager load the firewall exists to prevent.
+#
+# Repository evidence (2026-09-16): no module in src/ or tests/ performs a wildcard
+# import of this package, and no caller reaches these symbols through the package at
+# all -- every existing use imports the submodule directly. Nothing therefore depends
+# on the star-import surface, so it is withdrawn.
+#
+# Explicit named access (`from sea_ad_jepa.v5 import PackedValidTokens`) still works and
+# still loads lazily, via __getattr__. Historical source files are untouched.
+__all__: list[str] = []
 
 _LAZY_COMPATIBILITY_EXPORTS = {
     **{name: (".data_first_geometry", name) for name in _GEOMETRY_PUBLIC_EXPORTS},
