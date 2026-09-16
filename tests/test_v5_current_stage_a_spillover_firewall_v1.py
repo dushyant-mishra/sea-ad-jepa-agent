@@ -57,20 +57,42 @@ EAGER_SIDE_EFFECT_MODULES = (
 )
 
 
+_V5_PACKAGE = "sea_ad_jepa.v5"
+_DYNAMIC_IMPORT_CALLS = frozenset({"import_module", "__import__"})
+
+
 def _local_imports(path: Path) -> set[str]:
+    """Local v5 module names reachable from this file's import statements.
+
+    Every form below can actually reach a quarantined module, so every form must
+    be recognised. `from sea_ad_jepa.v5 import X` matters in particular, because
+    the package __getattr__ resolves that form lazily rather than failing.
+    """
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     found: set[str] = set()
     for node in ast.walk(tree):
-        if isinstance(node, ast.ImportFrom) and node.module:
+        if isinstance(node, ast.ImportFrom):
             module = node.module
-            if module.startswith("sea_ad_jepa.v5."):
+            if module is None:
+                if node.level > 0:                              # from . import X
+                    found.update(alias.name for alias in node.names)
+            elif module == _V5_PACKAGE:                         # from sea_ad_jepa.v5 import X
+                found.update(alias.name for alias in node.names)
+            elif module.startswith(_V5_PACKAGE + "."):          # from sea_ad_jepa.v5.X import Y
                 found.add(module.rsplit(".", 1)[-1])
-            elif node.level > 0:
+            elif node.level > 0:                                # from .X import Y
                 found.add(module.split(".", 1)[0])
         elif isinstance(node, ast.Import):
             for alias in node.names:
-                if alias.name.startswith("sea_ad_jepa.v5."):
+                if alias.name.startswith(_V5_PACKAGE + "."):    # import sea_ad_jepa.v5.X
                     found.add(alias.name.rsplit(".", 1)[-1])
+        elif isinstance(node, ast.Call):                        # import_module("...")
+            func = node.func
+            name = getattr(func, "attr", None) or getattr(func, "id", None)
+            if name in _DYNAMIC_IMPORT_CALLS and node.args:
+                target = node.args[0]
+                if isinstance(target, ast.Constant) and isinstance(target.value, str):
+                    found.add(target.value.lstrip(".").rsplit(".", 1)[-1])
     return found
 
 
