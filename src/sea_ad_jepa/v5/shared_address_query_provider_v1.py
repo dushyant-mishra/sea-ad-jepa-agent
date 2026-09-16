@@ -130,3 +130,49 @@ class SharedAddressQueryProviderV1(nn.Module):
         if provider.encoding.replay_fingerprint() != state["encoding_fingerprint"]:
             raise ValueError("encoding fingerprint mismatch on replay")
         return provider
+
+
+class ProviderEmaState:
+    """Step-gated EMA over provider parameters.
+
+    Stage-A requires that a skipped optimizer step cannot advance EMA state. An ungated
+    update does not satisfy this even when the student is unchanged: in float32
+    `decay*x + (1-decay)*x` differs from `x` by up to one ULP, so the teacher drifts on
+    every skipped step. The gate is therefore part of the mechanism, not the test.
+
+    The decay is supplied by the EMA-timescale authority. No timescale is frozen here.
+    """
+
+    def __init__(self, provider: SharedAddressQueryProviderV1) -> None:
+        self._state = {k: v.detach().clone() for k, v in provider.named_trainable_parameters()}
+        enrolled = set(self._state)
+        expected = {k for k, q in provider.named_parameters() if q.requires_grad}
+        if enrolled != expected:
+            raise ValueError(
+                f"EMA enrolment incomplete: missing {sorted(expected - enrolled)}"
+            )
+
+    @property
+    def parameter_names(self) -> Tuple[str, ...]:
+        return tuple(sorted(self._state))
+
+    def tensor(self, name: str) -> "torch.Tensor":
+        return self._state[name]
+
+    def update(self, provider: SharedAddressQueryProviderV1, *, decay: float,
+               step_taken: bool) -> bool:
+        """Advance the EMA only when an optimizer step actually occurred."""
+        if not isinstance(step_taken, bool):
+            raise ValueError("step_taken must be an explicit bool")
+        if not (0.0 <= float(decay) < 1.0):
+            raise ValueError("decay must be in [0, 1)")
+        if not step_taken:
+            return False
+        live = dict(provider.named_parameters())
+        missing = sorted(set(self._state) - set(live))
+        if missing:
+            raise ValueError(f"EMA update missing provider parameters: {missing}")
+        with torch.no_grad():
+            for name, value in self._state.items():
+                value.mul_(decay).add_(live[name].detach(), alpha=1.0 - decay)
+        return True

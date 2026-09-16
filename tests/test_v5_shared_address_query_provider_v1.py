@@ -22,6 +22,7 @@ torch = pytest.importorskip("torch", reason="structural gradient/EMA checks requ
 
 from sea_ad_jepa.v5.shared_address_query_provider_v1 import (  # noqa: E402
     PROVIDER_ID,
+    ProviderEmaState,
     SharedAddressQueryProviderV1,
 )
 
@@ -115,39 +116,61 @@ def test_stop_gradient_provider_fails_qualification() -> None:
 
 
 # ============================================================ CHECK 3: teacher/EMA
-def _ema_update(teacher: dict, student, decay: float) -> dict:
-    return {k: decay * teacher[k] + (1.0 - decay) * dict(student.named_parameters())[k].detach()
-            for k in teacher}
-
-
 def test_every_trainable_parameter_is_enrolled_in_ema_state() -> None:
     p = make_provider()
-    enrolled = {k for k, _ in p.named_trainable_parameters()}
-    assert enrolled == {k for k, q in p.named_parameters() if q.requires_grad}
-    assert enrolled, "provider exposes no trainable parameters to EMA"
+    ema = ProviderEmaState(p)
+    assert set(ema.parameter_names) == {k for k, q in p.named_parameters() if q.requires_grad}
+    assert ema.parameter_names, "provider exposes no trainable parameters to EMA"
 
 
 def test_no_trainable_parameter_is_silently_omitted_from_ema() -> None:
-    p = make_provider()
-    teacher = {k: v.detach().clone() for k, v in p.named_trainable_parameters()}
-    assert set(teacher) == {"projection", "bias"}
+    assert set(ProviderEmaState(make_provider()).parameter_names) == {"projection", "bias"}
 
 
 def test_skipped_optimizer_step_cannot_advance_ema_state() -> None:
     p = make_provider()
-    teacher = {k: v.detach().clone() for k, v in p.named_trainable_parameters()}
-    # no optimizer step taken -> student unchanged -> EMA must be a fixed point
-    updated = _ema_update(teacher, p, decay=0.9)
-    for k in teacher:
-        assert torch.equal(teacher[k], updated[k]), f"EMA advanced for {k} without a step"
+    ema = ProviderEmaState(p)
+    before = {n: ema.tensor(n).clone() for n in ema.parameter_names}
+    assert ema.update(p, decay=0.9, step_taken=False) is False
+    for n in ema.parameter_names:
+        assert torch.equal(before[n], ema.tensor(n)), f"EMA advanced for {n} without a step"
+
+
+def test_ungated_ema_would_drift_on_a_skipped_step() -> None:
+    """The attack the gate exists to stop: float32 decay*x+(1-decay)*x != x."""
+    p = make_provider()
+    x = p.projection.detach().clone()
+    drifted = x * 0.9 + x * 0.1
+    assert not torch.equal(x, drifted), "fixture no longer exercises the drift it guards"
+
+
+def test_ema_advances_only_when_a_step_is_taken() -> None:
+    p = make_provider()
+    ema = ProviderEmaState(p)
+    before = ema.tensor("projection").clone()
+    with torch.no_grad():
+        p.projection.add_(1.0)
+    assert ema.update(p, decay=0.5, step_taken=True) is True
+    assert not torch.equal(before, ema.tensor("projection"))
+
+
+def test_ema_rejects_a_provider_missing_enrolled_parameters() -> None:
+    p = make_provider()
+    ema = ProviderEmaState(p)
+
+    class Stripped:
+        def named_parameters(self):
+            return iter([("bias", p.bias)])
+    with pytest.raises(ValueError, match="missing"):
+        ema.update(Stripped(), decay=0.9, step_taken=True)
 
 
 def test_teacher_and_student_provider_state_are_distinguishable() -> None:
     student = make_provider()
-    teacher = {k: v.detach().clone() for k, v in student.named_trainable_parameters()}
+    ema = ProviderEmaState(student)
     with torch.no_grad():
         student.projection.add_(1.0)
-    assert not torch.equal(teacher["projection"], student.projection.detach())
+    assert not torch.equal(ema.tensor("projection"), student.projection.detach())
 
 
 # ============================================================ CHECK 4: replay
