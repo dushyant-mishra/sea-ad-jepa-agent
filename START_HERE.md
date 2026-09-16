@@ -1,25 +1,53 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-09-15
-Status: `CURRENT_V5_TARGET_AUTHORITY_CARRYOVER_AND_MASKING_REVIEW__NO_TRAINING_AUTHORITY`
+Status: `CURRENT_V5_AUTHORITY_SUCCESSOR__UPSTREAM_SCIENCE_PARTIALLY_FROZEN__RUNTIME_ABSENT__NO_TRAINING_AUTHORITY`
 
 ## Read first
-Use `main` for current governance/startup context. Read in this order:
+
+Use this handoff branch for startup context, then move to the exact implementation SHA for code work.
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md`
-3. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
-4. `docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md`
-5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json` (prior machine-readable Layer-2 snapshot)
-6. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md`
-7. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md`
-8. runtime-asset, formulas, heavy-asset, authority-index and supersession-map files referenced by the pointer.
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_SUCCESSOR_CURRENT.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_V5_SUCCESSOR_CURRENT.json`
+4. `docs/agent/JEPA_NEW_CHAT_INSTRUCTIONS_20260915_V5_SUCCESSOR_CURRENT.md`
+5. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` from `main @ c8898923fc10ffa5ef0662b04908b0d94bcb158b`
+6. predecessor V15 handoff `handoff/jepa-v5-target-authority-build-20260915 @ af0ae024808e6642509121db8278c15259959632` if deeper planning context is needed.
 
-Before acting, re-fetch live branch heads. Branch names and commit messages do not confer scientific authority.
+Always re-fetch live branch heads before acting.
 
-Before repeating any audit, read the historical-audits index and classify the proposed task as `ALREADY_AUDITED`, `SUPERSEDED`, `OPEN`, or `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+Before repeating any audit, classify the proposed task as `ALREADY_AUDITED`, `SUPERSEDED`, `OPEN`, or `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+
+## Current code authority lane
+
+`impl/v5-current-target-authority-successors-20260915 @ 812352a70ce1322f1a7d35a3fa9feeda4e4148c3`
+
+At handoff creation this branch was 56 commits ahead / 0 behind `main @ c8898923fc10ffa5ef0662b04908b0d94bcb158b`.
+
+## Current headline
+
+Frozen/recovered now:
+
+- primary molecular channel role: `VALUE_ONLY_256`;
+- support/estimability invariants;
+- base-training scientific estimand: `DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1` with `p_i = 1/(D*n_d)`;
+- current preexecution/receipt/optimizer/checkpoint/closure mechanics exist as fail-closed successors.
+
+Still open:
+
+- exact teacher-target semantics;
+- target-address provider and identity-shortcut gate instantiation;
+- masking policy;
+- EMA presentation unit/half-life;
+- deep measurement-robustness rule;
+- protected production geometry;
+- current runtime;
+- explicit training authority.
+
+Current active next task: target-address Stage-A structural dependency/gradient/EMA-reachability audit.
 
 ## Permanent boundaries
+
 `DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> TARGET SEMANTICS -> PRODUCTION GEOMETRY -> MODEL`
 
 `IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK`
@@ -28,27 +56,6 @@ Before repeating any audit, read the historical-audits index and classify the pr
 
 `NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION`
 
-Do not inspect protected/pathology/DEV/SEALED outcomes, D_private, D_obs outcomes, TD60, or other confirmation data while design choices remain open.
+Do not inspect protected/pathology/DEV/SEALED outcomes, D_private/D_obs decision-bearing outcomes, TD60, or relational activation while design choices remain open.
 
-## Current headline state
-- FULL104: 4,553,407 cells; 104 donors; 42 operators; 41,238 addresses; 17,186 common-core addresses.
-- current molecular candidate: `VALUE_ONLY_256`, not frozen.
-- Claude Layer-2 closeout is pushed at `analysis/v5-layer2-cross-view-shortcut-claude-20260915 @ 219831b899b914984369c7a41828bf750554d1d9`.
-- teacher/student/EMA mechanics already exist; current-V5 authority binding is the blocker, not architecture existence.
-- active carryover planning lane: `planning/v5-teacher-student-ema-canonical-20260915 @ 88c45b97b3e9a4ad3c0fd178c992f844fd58dbab`; it is divergent from main, so do not merge blindly.
-- current blockers include teacher-target semantics, target-identity shortcut authority, masking authority, base-training estimand, current-V5 preexecution/receipt successors, production geometry, EMA timescale, V3-null governance reconciliation and measurement-robustness rule.
-
-## Load-bearing rules
-`NO_REAL_RESULT_FROM_THE_DISCARDED_X4_WITHIN_ESTIMATOR_IS_AUTHORITY`
-
-`NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY`
-
-`COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY`
-
-`DIMENSION_ESTIMAND_AUTHORITY != BASE_TRAINING_ESTIMAND_AUTHORITY`
-
-`QUALIFICATION_RANK_CEILING != PRODUCTION_MODEL_WIDTH`
-
-`DO_NOT_UNLOCK_V5_BY_RECEIPT_ONLY`
-
-Do not call source/operator structure technical without causal support. Do not call within-donor signal biology merely because measured QC does not explain it. Do not silently inherit historical V4/V21 numerical geometry, masking, target semantics, optimizer settings, seeds, visibility channels, registry hashes or EMA `.996` into current V5.
+Do not silently inherit historical V4/V21/T0 geometry, target semantics, masking, optimizer defaults, seeds, visibility channels, registry counts or EMA `.996`.

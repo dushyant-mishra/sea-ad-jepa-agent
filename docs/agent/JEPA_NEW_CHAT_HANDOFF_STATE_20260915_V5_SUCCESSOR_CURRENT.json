@@ -1,0 +1,190 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V16_SUCCESSOR",
+  "date": "2026-09-15",
+  "status": "CURRENT_V5_AUTHORITY_SUCCESSOR__UPSTREAM_SCIENCE_PARTIALLY_FROZEN__RUNTIME_ABSENT__NO_TRAINING_AUTHORITY",
+  "governance": {
+    "training_authorized": false,
+    "d_shared_real_outcome_access_authorized": false,
+    "protected_outcome_access_authorized": false,
+    "production_runtime_authorized": false,
+    "production_trainer_mutation_authorized": false,
+    "confirmation_data_rule": "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK"
+  },
+  "git": {
+    "main": "c8898923fc10ffa5ef0662b04908b0d94bcb158b",
+    "implementation_branch": "impl/v5-current-target-authority-successors-20260915",
+    "implementation_head": "812352a70ce1322f1a7d35a3fa9feeda4e4148c3",
+    "implementation_tree": "497fd3021c82aae05f0b36c8f4567674ebcd9f40",
+    "implementation_ahead_of_main": 56,
+    "implementation_behind_main": 0,
+    "predecessor_v15_handoff_branch": "handoff/jepa-v5-target-authority-build-20260915",
+    "predecessor_v15_handoff_head": "af0ae024808e6642509121db8278c15259959632"
+  },
+  "population": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "sources": ["SEA_AD", "HVS", "NPH52"],
+    "donors_by_source": {"HVS": 41, "NPH52": 17, "SEA_AD": 46},
+    "full104_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "heavy_expression_path": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/"
+  },
+  "representation": {
+    "status": "FROZEN_CHANNEL_ROLE_ONLY",
+    "primary": "VALUE_ONLY_256",
+    "visibility_role": "OBSERVATION_QC_CONTROL_ONLY__NOT_PRIMARY_MOLECULAR_INPUT",
+    "authority_sha256": "92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1",
+    "freeze_receipt_sha256": "bc6f66c0b35c640caff80ee0922d0bc338f47fb1b562da07eb529348729c10a4",
+    "v0_parent_sha256": "3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada",
+    "v1_parent_sha256": "c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c"
+  },
+  "support_estimability": {
+    "status": "FROZEN_INVARIANTS",
+    "authority_sha256": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+    "measurement_support_authority_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "common_core_partition_sha256": "129631f95c9ef90bd5a4af2a70cbc2adbbf907ed6357b9c13c4aa370cafc1575",
+    "rules": [
+      "TARGET_COMPONENT_MUST_BE_MEASURED_ON_CELL__NO_UNMEASURED_TARGET",
+      "UNMEASURED_IS_MISSING_NOT_ZERO",
+      "COMMON_CORE_IS_COMPARABILITY_SUPPORT__NOT_BIOLOGICAL_TRUTH",
+      "NATIVE_MEASURED_SUPPORT_IS_EVIDENCE__NOT_PRIVATE_BIOLOGY",
+      "SUPPORT_FAMILY_DOES_NOT_IMPLY_LATENT_SEMANTIC_ROLE"
+    ]
+  },
+  "base_training_estimand": {
+    "status": "RECOVERED_AND_BOUND_TO_EXISTING_SCIENTIFIC_AUTHORITY",
+    "estimand_id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "target_probability_formula": "1/(D*n_d)",
+    "weight_normalization_id": "MEAN_OVER_DONORS__MEAN_OVER_ELIGIBLE_CELLS_WITHIN_DONOR",
+    "scientific_weight_law_sha256": "0ddab1d6d88dfd671ce615c7b470a2ce0545c4f06fe2388f48499e6eb18aa774",
+    "authority_sha256": "a766d42f9f8e37aa63e6c694d6c65b30962e45568f41b1cde8199cbed118ce26",
+    "population_authority_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "proposal_separation_policy": "PROPOSAL_Q_MAY_DIFFER__EXACT_P_OVER_Q_CORRECTION_REQUIRED",
+    "operator_mass_policy": "OPERATOR_DOES_NOT_SET_BASE_SCIENTIFIC_MASS",
+    "source_mass_policy": "SOURCE_IS_DOMAIN_AND_ROBUSTNESS_STRATUM__NOT_AUTOMATIC_OBJECTIVE_MASS"
+  },
+  "current_authority_roots": [
+    "full104_substrate_sha256",
+    "representation_authority_sha256",
+    "support_estimability_authority_sha256",
+    "base_training_estimand_sha256",
+    "teacher_target_semantics_sha256",
+    "target_address_query_authority_sha256",
+    "masking_authority_sha256",
+    "model_geometry_authority_sha256",
+    "schedule_authority_sha256",
+    "ema_authority_sha256",
+    "anti_cheat_authority_sha256",
+    "runtime_source_sha256"
+  ],
+  "receipt_extra_root": "preexecution_authority_sha256",
+  "implemented_current_mechanics_or_schemas": [
+    "anti_cheat_authority_bundle_v1",
+    "base_training_estimand_authority_v1",
+    "base_training_estimand_recovery_v1",
+    "critical_test_execution_authority_v1",
+    "current_atomic_checkpoint_guard_v1",
+    "current_authority_closure_v1",
+    "current_authority_roots_v1",
+    "current_teacher_target_receipt_v1",
+    "current_trainer_preexecution_contract_v1",
+    "ema_presentation_v1",
+    "ema_timescale_authority_v1",
+    "masking_audit_metrics_v1",
+    "masking_authority_v1",
+    "measurement_robustness_authority_v1",
+    "model_geometry_authority_v1",
+    "primary_representation_authority_v1",
+    "production_protected_registry_authority_v1",
+    "qualified_optimizer_guard_v2",
+    "support_estimability_authority_v1",
+    "target_address_query_authority_v1",
+    "target_identity_shortcut_gate_authority_v1",
+    "teacher_target_semantics_authority_v1"
+  ],
+  "runtime": {
+    "intended_current_runtime_path": "src/sea_ad_jepa/v5/current_teacher_student_runtime_v1.py",
+    "present": false,
+    "absence_is_fail_closed": true
+  },
+  "target_address": {
+    "shortcut_discovery_status": "ALREADY_AUDITED",
+    "provider_choice_status": "OPEN",
+    "current_schema_status": "IMPLEMENTED_NOT_INSTANTIATED",
+    "inherited_risk_path": "HIDDEN_TARGET_ID -> PREDICTOR_QUERY -> JEPA_GRADIENT -> ONLINE_GENE_IDENTITY -> EMA_TEACHER -> FUTURE_TARGET",
+    "latest_history_findings": [
+      "historical singleton target-query code is sampling-only and is not a provider authority",
+      "BlockPredictor accepts an identity embedding and is reusable mechanics",
+      "inherited V5 call site passes modules.online.tokenizer.gene_identity directly",
+      "no frozen separate/fixed provider was recovered under the obvious historical searches before handoff"
+    ],
+    "next_step": "STAGE_A_STRUCTURAL_DEPENDENCY_GRADIENT_AND_EMA_REACHABILITY_AUDIT"
+  },
+  "open_scientific_choices": [
+    "EXACT_CURRENT_V5_TEACHER_TARGET_OBJECT_AND_SEMANTICS",
+    "TARGET_ADDRESS_PROVIDER_AND_GRADIENT_POLICY",
+    "TARGET_IDENTITY_SHORTCUT_DECISION_RULE_THRESHOLDS",
+    "DEPENDENCY_AWARE_MASKING_POLICY_AND_THRESHOLDS",
+    "EMA_PRESENTATION_UNIT_AND_HALF_LIFE",
+    "MEASUREMENT_ROBUSTNESS_PROTOCOL_AND_MARGIN",
+    "PRODUCTION_MODEL_GEOMETRY_FROM_PROTECTED_DIMENSION_CHAIN",
+    "SCHEDULE_ROOT_FINAL_BINDING_WHERE_REQUIRED",
+    "ANTI_CHEAT_BUNDLE_FINAL_INSTANTIATION",
+    "CURRENT_RUNTIME_IMPLEMENTATION_AFTER_UPSTREAM_FREEZE"
+  ],
+  "other_open_work": [
+    "HVS_NPH52_DONOR_TRANSPORT_EXPLANATION_WITHOUT_FORCED_INVARIANCE",
+    "V3_NULL_GOVERNANCE_RECONCILIATION",
+    "EXPLICIT_PRODUCTION_TRAINING_AUTHORIZATION_AFTER_ALL_UPSTREAM_ROOTS_IMMUTABLE"
+  ],
+  "forbidden_carryover": [
+    "V4_PRODUCTION_CONFIG_AS_CURRENT_AUTHORITY",
+    "V4_PRODUCTION_UPDATE_DELEGATION",
+    "V2_PREEXECUTION_6_BLOCK_48_TENSOR_128X8_ASSUMPTIONS",
+    "HISTORICAL_160_4HEAD_6BLOCK_BATCH128_MICROBATCH8_4VIEW_DEFAULTS",
+    "MASK_FRACTION_0_40_DEFAULT",
+    "TARGET_BLOCKS_16_DEFAULT",
+    "EMA_0_996_DEFAULT",
+    "LEGACY_TARGET_RECEIPT_VALIDATION",
+    "VISIBILITY_IN_PRIMARY_MOLECULAR_PATH",
+    "ONLINE_TRAINABLE_GENE_IDENTITY_SHARED_TARGET_QUERY_WITHOUT_AUTHORITY",
+    "Z_BIO_OR_BIOLOGY_NAMING_AS_EVIDENCE",
+    "COMMON_CORE_AS_BIOLOGY",
+    "NATIVE_SUPPORT_AS_PRIVATE_BIOLOGY",
+    "DIMENSION_ESTIMAND_AS_BASE_TRAINING_ESTIMAND",
+    "D_SHARED_512_CEILING_AS_MODEL_WIDTH",
+    "SOURCE_OR_OPERATOR_BALANCING_AS_BASE_OBJECTIVE_MASS",
+    "SCHEMA_EXISTENCE_AS_FROZEN_SCIENTIFIC_CHOICE",
+    "RECEIPT_CLOSURE_AS_TRAINING_AUTHORIZATION"
+  ],
+  "verification_history_in_this_chat": {
+    "note": "Separate incremental checkpoints, not one final branch-wide total. Re-run full suite from exact implementation SHA in the next chat.",
+    "checkpoints": [
+      "84 passed; runtime sentinel intentionally deselected",
+      "87 passed after representation freeze; runtime sentinel intentionally deselected",
+      "49/49 support/current mechanics integration checkpoint",
+      "24/24 estimand recovery/integration unit"
+    ],
+    "compile_checks": "clean at recorded checkpoints",
+    "carryover_scans": "zero tracked forbidden-token hits in new production sources at recorded checkpoints"
+  },
+  "next_ordered_actions": [
+    "REFETCH_LIVE_HEADS",
+    "RUN_FULL_SUCCESSOR_TEST_SUITE_FROM_EXACT_IMPLEMENTATION_SHA",
+    "RUN_WHOLE_SUCCESSOR_STATIC_CARRYOVER_SCAN",
+    "TARGET_ADDRESS_STAGE_A_STRUCTURAL_AUDIT",
+    "HISTORY_CHECK_AND_FREEZE_TARGET_ADDRESS_PROVIDER",
+    "RECONCILE_AND_FREEZE_TEACHER_TARGET_SEMANTICS",
+    "FREEZE_MASKING_DECISION_RULE_BEFORE_HEAVY_STATS",
+    "FREEZE_TARGET_IDENTITY_SHORTCUT_RULE_BEFORE_RESULTS",
+    "FREEZE_MEASUREMENT_ROBUSTNESS_RULE_BEFORE_RESULTS",
+    "BIND_SCHEDULE_AND_EMA_PRESENTATION_TIMESCALE",
+    "ONLY_THEN_OPEN_PROTECTED_DIMENSION_CHAIN_AND_DERIVE_GEOMETRY",
+    "IMPLEMENT_DISTINCT_CURRENT_RUNTIME_WITH_TDD",
+    "RUN_FULL_MECHANICS_AND_ANTI_CHEAT_QUALIFICATION",
+    "CREATE_EXPLICIT_PRODUCTION_TRAINING_AUTHORITY_LAST"
+  ]
+}

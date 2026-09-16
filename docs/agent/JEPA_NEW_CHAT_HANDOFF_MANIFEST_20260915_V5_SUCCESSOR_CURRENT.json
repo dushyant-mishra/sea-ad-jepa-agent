@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-15",
+  "files": [
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_SUCCESSOR_CURRENT.md",
+      "sha256": "f0edc84c43786de9f7f878abd6a26761601fe9ba22f5dade8089da529f177fe7",
+      "size": 29361
+    },
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_V5_SUCCESSOR_CURRENT.json",
+      "sha256": "39dff9fea646360d89c95403de0ca850f0da734234ffd7df5e17a2476c64b8d8",
+      "size": 9275
+    },
+    {
+      "path": "docs/agent/JEPA_NEW_CHAT_INSTRUCTIONS_20260915_V5_SUCCESSOR_CURRENT.md",
+      "sha256": "434472eb3949fef290ee4f39715003a8f750791e7e02efaa3030f4c3f23ad010",
+      "size": 3705
+    },
+    {
+      "path": "START_HERE.md",
+      "sha256": "49befc67c82f85cea3da1dda88f1b1445a5c0fbea270594abce0cad0fe776af8",
+      "size": 2591
+    },
+    {
+      "path": "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
+      "sha256": "8f46dce8fb74841f3c0bd29fa588b32738e7f01a3bab9b5bbd0182aae0fe0d42",
+      "size": 1416
+    }
+  ],
+  "implementation_head": "812352a70ce1322f1a7d35a3fa9feeda4e4148c3",
+  "schema": "JEPA_NEW_CHAT_HANDOFF_MANIFEST_V16_SUCCESSOR"
+}
