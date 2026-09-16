@@ -215,3 +215,25 @@ def test_planted_pair_survives_under_universal_confound(confound) -> None:
         values = values + rng.normal(size=donors.size)[:, None] * 4.0
     res = _fit(values, donors, _all_measurable())
     assert (3, 7) in res["undirected_edges"], f"planted pair lost under {confound}"
+
+
+# ---------------------------------------------------------------- vectorised equivalence
+@pytest.mark.parametrize("seed", [11, 12, 13])
+def test_fit_dense_matches_the_reference_implementation(seed: int) -> None:
+    rng = np.random.default_rng(seed)
+    donors = _donors()
+    values = rng.normal(size=(donors.size, N_ADDR))
+    latent = rng.normal(size=donors.size)
+    values[:, 2] = latent + 0.2 * rng.normal(size=latent.size)
+    values[:, 6] = latent + 0.2 * rng.normal(size=latent.size)
+    measurable = _all_measurable()
+    measurable[: N_DONORS // 4, 5] = False
+    src = np.repeat(np.arange(3), N_DONORS // 3)
+    a = EST.fit(values=values, donor_codes=donors, measurable_by_donor=measurable,
+                source_by_donor=src)
+    b = EST.fit_dense(values=values, donor_codes=donors, measurable_by_donor=measurable,
+                      source_by_donor=src)
+    assert a["strata_used"] == b["strata_used"]
+    assert a["undirected_edges"] == b["undirected_edges"]
+    assert [(e[0], e[1], round(e[2], 12), e[3]) for e in a["edges"]] == \
+           [(e[0], e[1], round(e[2], 12), e[3]) for e in b["edges"]]

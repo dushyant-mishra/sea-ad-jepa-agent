@@ -195,3 +195,96 @@ class DonorStratifiedRankRecurrenceV1:
             "edges": edges,
             "undirected_edges": sorted({(min(a, b), max(a, b)) for a, b, _, _ in edges}),
         }
+
+    # ------------------------------------------------------------------ vectorised
+    def fit_dense(
+        self,
+        *,
+        values: np.ndarray,
+        donor_codes: np.ndarray,
+        measurable_by_donor: np.ndarray,
+        source_by_donor: Optional[np.ndarray] = None,
+    ) -> Dict[str, object]:
+        """Identical semantics to fit(), accumulated in dense arrays.
+
+        fit() is the readable reference; this is what real analysis uses. Equivalence is
+        asserted by test rather than assumed.
+        """
+        values = np.asarray(values, dtype=np.float64)
+        donor_codes = np.asarray(donor_codes)
+        measurable_by_donor = np.asarray(measurable_by_donor, dtype=bool)
+        n_addr = values.shape[1]
+        donors = np.unique(donor_codes)
+
+        if source_by_donor is None:
+            weight_of_donor = {int(d): 1.0 for d in donors}
+        else:
+            source_by_donor = np.asarray(source_by_donor)
+            per_source: Dict[object, int] = {}
+            for d in donors:
+                s = source_by_donor[int(d)]
+                per_source[s] = per_source.get(s, 0) + 1
+            n_sources = len(per_source)
+            weight_of_donor = {
+                int(d): 1.0 / (n_sources * per_source[source_by_donor[int(d)]]) for d in donors
+            }
+
+        votes = np.zeros((n_addr, n_addr), dtype=np.float64)
+        evaluable = np.zeros((n_addr, n_addr), dtype=np.float64)
+        raw_strata = np.zeros((n_addr, n_addr), dtype=np.int32)
+        strata_used = 0
+
+        for d in donors:
+            sel = donor_codes == d
+            if int(sel.sum()) < 3:
+                continue
+            block = values[sel]
+            usable = measurable_by_donor[int(d)].copy()
+            usable &= block.var(axis=0) > 0
+            live = np.flatnonzero(usable)
+            if live.size < 2:
+                continue
+            rho = _corr_from_ranks(_rankdata_columns(block[:, live]))
+            np.fill_diagonal(rho, np.nan)
+            mag = np.abs(rho)
+            strata_used += 1
+            w = weight_of_donor[int(d)]
+
+            grid = np.ix_(live, live)
+            evaluable[grid] += w
+            raw_strata[grid] += 1
+
+            k = min(self.top_k, live.size - 1)
+            # deterministic: primary -|rho| (NaN last), secondary global address index
+            key = np.where(np.isfinite(mag), -mag, np.inf)
+            order = np.lexsort((np.tile(live, (live.size, 1)), key), axis=1)
+            chosen = order[:, :k]
+            finite_ct = np.isfinite(mag).sum(axis=1)
+            for local in range(live.size):
+                kk = int(min(k, finite_ct[local]))
+                if kk <= 0:
+                    continue
+                votes[live[local], live[chosen[local, :kk]]] += w
+
+        np.fill_diagonal(evaluable, 0.0)
+        np.fill_diagonal(raw_strata, 0)
+        np.fill_diagonal(votes, 0.0)
+
+        with np.errstate(invalid="ignore", divide="ignore"):
+            frac = np.where(evaluable > 0, votes / evaluable, 0.0)
+        ok = (frac >= self.recurrence_fraction) & (raw_strata >= self.min_evaluable_strata) \
+            & (evaluable > 0)
+        aa, bb = np.nonzero(ok)
+        edges = [(int(a), int(b), float(frac[a, b]), int(raw_strata[a, b]))
+                 for a, b in zip(aa, bb)]
+        edges.sort(key=lambda e: (-e[2], e[0], e[1]))
+        return {
+            "estimator_id": ESTIMATOR_ID,
+            "top_k": self.top_k,
+            "recurrence_fraction": self.recurrence_fraction,
+            "min_evaluable_strata": self.min_evaluable_strata,
+            "n_addresses": int(n_addr),
+            "strata_used": int(strata_used),
+            "edges": edges,
+            "undirected_edges": sorted({(min(a, b), max(a, b)) for a, b, _, _ in edges}),
+        }
