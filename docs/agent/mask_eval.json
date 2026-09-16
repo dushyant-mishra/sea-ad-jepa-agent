@@ -1,0 +1,72 @@
+{
+  "K": 10,
+  "R": 0.6,
+  "burden": 80,
+  "candidates": {
+    "C": {
+      "concentration": 0.0009213706872565385,
+      "digest": "f094028c8951ef35c28b0ab3c750b24bfdb05a1df2db1d6cad1697c903d706f6",
+      "exposure": 0.1946642685851319,
+      "masked_fraction": 0.2,
+      "max_component": 80,
+      "relative_to_U": "+0.0%",
+      "struct_expansion_mean": 1.0
+    },
+    "H": {
+      "concentration": 0.001029102323316639,
+      "digest": "e6f5ca3f8f89401051cf0c34255748de790441056abef053c6736f6699ceeecb",
+      "exposure": 0.2128896882494005,
+      "masked_fraction": 0.2,
+      "max_component": 80,
+      "relative_to_U": "+9.4%",
+      "struct_expansion_mean": 12.533333333333333
+    },
+    "R": {
+      "concentration": 0.0009152406789092934,
+      "digest": "6af46cc3a0d7122d1b848615e01d249d4216a9c9f1508ffcec3ac2b240f28d2f",
+      "exposure": 0.1853117505995204,
+      "masked_fraction": 0.2,
+      "max_component": 80,
+      "relative_to_U": "-4.8%",
+      "struct_expansion_mean": 1.0
+    },
+    "U": {
+      "concentration": 0.0009309352392877017,
+      "digest": "dcbda7628486f75b4931fef335742a3c3e3082fba58b75643cd9e372d90b1161",
+      "exposure": 0.1946043165467626,
+      "masked_fraction": 0.2,
+      "max_component": 80,
+      "relative_to_U": "",
+      "struct_expansion_mean": 1.0
+    }
+  },
+  "donor_split": {
+    "A": 41,
+    "B": 44
+  },
+  "edges": {
+    "C_A": 123,
+    "C_B": 119,
+    "H_pooled": 5626,
+    "R_A": 135,
+    "R_B": 139
+  },
+  "held_out_edges": 139,
+  "min_strata": 3,
+  "namespace": "JEPA_V5_MASKING_CANDIDATE_EVAL_V1",
+  "stability": {
+    "C": {
+      "above_null": true,
+      "jaccard": 0.38285714285714284,
+      "null_mean": 0.00039471171374503026,
+      "null_p95": 0.004149377593360996
+    },
+    "R": {
+      "above_null": true,
+      "jaccard": 0.37,
+      "null_mean": 0.0004950456623182909,
+      "null_p95": 0.003663003663003663
+    }
+  },
+  "targets": 120
+}

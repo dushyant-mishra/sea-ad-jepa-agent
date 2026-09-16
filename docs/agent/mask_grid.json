@@ -1,0 +1,84 @@
+{
+  "burden": 400,
+  "candidates": {
+    "R": {
+      "digest": "e3da8c82b977a0c8b9a59d20c0253ef894ad15fda742d1e840c08c04f3d69fc6",
+      "exposure": 0.0,
+      "masked_fraction": 0.2,
+      "max_component": 2,
+      "struct_expansion": 2.0
+    },
+    "U": {
+      "digest": "50d4571fa39b897d1ae7072ab62dab6187369624108ca8610df8316408f23914",
+      "exposure": 1.0,
+      "masked_fraction": 0.2,
+      "max_component": 1,
+      "struct_expansion": 1.0
+    }
+  },
+  "grid": {
+    "K10_R0.5": {
+      "edges_A": 1,
+      "edges_B": 1,
+      "jaccard": 1.0,
+      "targets_with_nbr": 2
+    },
+    "K10_R0.6": {
+      "edges_A": 1,
+      "edges_B": 0,
+      "jaccard": 0.0,
+      "targets_with_nbr": 0
+    },
+    "K10_R0.75": {
+      "edges_A": 0,
+      "edges_B": 0,
+      "jaccard": 0.0,
+      "targets_with_nbr": 0
+    },
+    "K20_R0.5": {
+      "edges_A": 3,
+      "edges_B": 2,
+      "jaccard": 0.6666666666666666,
+      "targets_with_nbr": 4
+    },
+    "K20_R0.6": {
+      "edges_A": 1,
+      "edges_B": 0,
+      "jaccard": 0.0,
+      "targets_with_nbr": 0
+    },
+    "K20_R0.75": {
+      "edges_A": 0,
+      "edges_B": 0,
+      "jaccard": 0.0,
+      "targets_with_nbr": 0
+    },
+    "K5_R0.5": {
+      "edges_A": 1,
+      "edges_B": 0,
+      "jaccard": 0.0,
+      "targets_with_nbr": 0
+    },
+    "K5_R0.6": {
+      "edges_A": 0,
+      "edges_B": 0,
+      "jaccard": 0.0,
+      "targets_with_nbr": 0
+    },
+    "K5_R0.75": {
+      "edges_A": 0,
+      "edges_B": 0,
+      "jaccard": 0.0,
+      "targets_with_nbr": 0
+    }
+  },
+  "meets_contract_D": true,
+  "namespace": "JEPA_V5_MASKING_GRID_V1",
+  "reduction_pct": 100.0,
+  "selected": {
+    "K": 10,
+    "R": 0.5,
+    "jaccard": 1.0
+  },
+  "targets": 2
+}
