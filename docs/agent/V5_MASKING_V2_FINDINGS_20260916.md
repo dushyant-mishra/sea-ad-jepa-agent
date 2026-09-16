@@ -95,19 +95,44 @@ weakly supported at this power, for common-core targets, against a linear attack
 
 ---
 
-## Ladder status — INCOMPLETE
+## Power ladder — COMPLETE, all three levels executed
 
-| level | blocks/op | status |
-|---|---|---|
-| 1 | 3 | **executed** (above) |
-| 2 | 8 | **still executing** |
-| 3 | 20 | **not yet executed** |
+Wall time 155.7 min, read-only FULL104.
 
-The contract requires executing every level. Stopping at level 1 is *not* cherry-picking a
-pass — level 1 failed — but the ladder is not complete, so the level-2/3 power question is
-**NOT YET ANSWERED**. The disposition above is correct regardless, since nothing qualified.
+| level | blocks/op | cells | donors | U | V1 control | V2 | reduction | shortcuts found |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 3 | 56,503 | 76 | −0.3317 | −0.3290 | −0.3319 | **+0.1%** | 22/600 |
+| 2 | 8 | 140,733 | 93 | −0.2644 | −0.2621 | −0.2587 | **−2.1%** | 37/600 |
+| 3 | 20 | 250,000 | 99 | −0.2433 | −0.2430 | −0.2472 | **+1.6%** | 20/600 |
 
----
+**Every level fails** the frozen requirement of ≥30% relative and ≥0.02 absolute. At level 2
+V2 is slightly *worse* than uniform. The whole preregistered ladder was executed; nothing
+was stopped early and no threshold was touched.
+
+### This settles the V1-versus-power question
+
+The contract enumerated four outcomes. The result is **outcome D: neither works**. The V1
+control tracks uniform at every level (−0.3290 / −0.2621 / −0.2430 against −0.3317 /
+−0.2644 / −0.2433), so V1's sparsity was not merely a power artefact, and V2's reframing
+did not expose a shortcut that V1 had missed.
+
+### The power trend is informative, and points the same way
+
+| level | discovery partial R² median | p90 | max | fraction ≥ 0.05 |
+|---|---|---|---|---|
+| 1 | −0.7112 | +0.0088 | +0.1830 | 0.040 |
+| 2 | −0.2606 | +0.0371 | +0.6945 | 0.068 |
+| 3 | −0.1031 | +0.0266 | +0.2283 | 0.040 |
+
+More cells clearly improve the attacker: the median rises from −0.711 to −0.103. But it is
+converging toward **zero from below**, not toward a positive shortcut signal, and the
+fraction of targets clearing the 0.05 floor stays flat at 4–7%. Level 2 shows a single
+target reaching 0.69, so strong shortcuts do exist for a few addresses — they are simply
+too rare to move a mask-geometry metric.
+
+**Reading:** the extra evidence buys estimator precision, not shortcut discovery. This is a
+much stronger negative than V1 produced, because it is bounded by a preregistered ladder
+rather than limited by one sample size.
 
 ## Masking-authority schema repair — COMPLETE, schema only
 
@@ -131,8 +156,8 @@ frozen `MaskingAuthorityV1` is untouched; this is a successor.
 | FAILED | 0 at HEAD (4 genuine failures during development drove V2-D1…D4) |
 | SKIPPED / DESELECTED | 0 / 0 |
 | NOT ESTIMABLE | source/operator leakage probe and per-source heterogeneity — not reached, because no policy qualified |
-| NOT EXECUTED | power-ladder levels 2 and 3; native/non-common-core targets |
-| HEAVY/DATA-DEPENDENT | level 1 executed read-only; levels 2–3 in progress |
+| NOT EXECUTED | native/non-common-core targets (common-core only this lane) |
+| HEAVY/DATA-DEPENDENT | all three ladder levels executed read-only, 155.7 min |
 
 ---
 
@@ -143,6 +168,6 @@ frozen `MaskingAuthorityV1` is untouched; this is a successor.
    lane, so "no cheap shortcut" means *no cheap linear shortcut*.
 2. **Screening false negatives.** Recall was qualified on synthetic plants (1.000), not on
    real shortcuts, which are unknown by construction.
-3. **Power.** Levels 2–3 unexecuted.
+3. **Power.** The ladder is complete, but it tops out at 250,000 cells and 99 donors; a still larger budget is untested.
 4. **Scope.** Common-core targets only; native support not evaluated.
 5. **Production geometry** remains unchosen and could change the shortcut landscape.
