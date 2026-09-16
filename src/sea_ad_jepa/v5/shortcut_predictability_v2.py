@@ -210,12 +210,13 @@ class CheapRidgeAttackerV1:
         values: np.ndarray,
         target: int,
         features: Sequence[int],
-        visible: np.ndarray,
+        visible: Optional[np.ndarray],
         train_rows: np.ndarray,
         eval_rows: np.ndarray,
         eval_donor_codes: np.ndarray,
         train_donor_codes: np.ndarray,
         source_by_donor: Optional[np.ndarray] = None,
+        precomputed_baseline: Optional[np.ndarray] = None,
     ) -> Dict[str, object]:
         """PRIMARY shortcut statistic: predictability BEYOND global cell state.
 
@@ -223,7 +224,7 @@ class CheapRidgeAttackerV1:
         their difference. A universal depth/global factor inflates baseline and full
         equally, so it contributes ~0 incrementally, which is the intended behaviour.
         """
-        base = global_cell_state_baseline(values, visible)
+        base = precomputed_baseline if precomputed_baseline is not None             else global_cell_state_baseline(values, visible)
         aug = np.hstack([base, values[:, np.asarray(sorted(set(int(f) for f in features)),
                                                     dtype=np.int64)]])             if len(features) else base
 
@@ -309,6 +310,35 @@ def global_cell_state_baseline(values: np.ndarray, visible: np.ndarray) -> np.nd
     mean = block.mean(axis=1, keepdims=True)
     sd = block.std(axis=1, keepdims=True)
     return np.hstack([mean, sd])
+
+
+def baseline_sums(values: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """Per-cell sum and sum-of-squares over ALL addresses, computed once."""
+    V = values.astype(np.float64, copy=False)
+    return V.sum(axis=1), (V * V).sum(axis=1)
+
+
+def baseline_from_sums(values: np.ndarray, s1: np.ndarray, s2: np.ndarray,
+                       masked_cols: np.ndarray, n_total: int) -> np.ndarray:
+    """Exact global-cell-state baseline over the VISIBLE set, in O(n_masked).
+
+    Mathematically identical to global_cell_state_baseline over the visible columns; it
+    just subtracts the masked columns from precomputed totals instead of materialising a
+    large visible block on every call.
+    """
+    masked_cols = np.asarray(masked_cols, dtype=np.int64)
+    k = n_total - masked_cols.size
+    if k <= 0:
+        return np.zeros((values.shape[0], 2))
+    if masked_cols.size:
+        blk = values[:, masked_cols].astype(np.float64)
+        a = s1 - blk.sum(axis=1)
+        b = s2 - (blk * blk).sum(axis=1)
+    else:
+        a, b = s1, s2
+    mean = a / k
+    var = np.maximum(b / k - mean * mean, 0.0)
+    return np.column_stack([mean, np.sqrt(var)])
 
 
 def donor_standardize(M: np.ndarray, donor_codes: np.ndarray) -> np.ndarray:
