@@ -1,0 +1,151 @@
+{
+  "schema": "V5_MASKING_V2_SHORTCUT_PREDICTABILITY_CONTRACT_V1",
+  "date": "2026-09-16",
+  "status": "FROZEN_BEFORE_ANY_REAL_FULL104_V2_SHORTCUT_RESULT",
+  "supersedes_target_definition_of": "V5_MASKING_QUALIFICATION_CONTRACT_20260916.json (509ca697...)",
+  "v1_is_immutable": "V1 remains untouched at authority/v5-masking-qualification-20260916@897bb0c1 with disposition MASKING_AUTHORITY_REMAINS_OPEN. Its interpretation is TOP_K_RECURRENCE_IS_SCALE_UNSTABLE_FOR_THIS_PURPOSE, NOT that dependency-aware masking cannot work.",
+  "training_authorized": false,
+
+  "target_definition": {
+    "v1": "TOP_K_CORRELATION_RECURRENCE",
+    "v2": "CROSS_FITTED_SHORTCUT_PREDICTABILITY",
+    "question": "Can a targeted mask, discovered without touching the validation donors, prevent a completely fresh cheap attacker from finding another easy molecular reconstruction route better than an equally costly random mask?"
+  },
+
+  "design_defects_found_by_synthetic_testing_before_this_freeze": [
+    {
+      "id": "V2-D1",
+      "found": "a within-donor global factor (depth, overall expression level) produced held-out R2 of 0.941 with NO planted shortcut",
+      "why": "a universal per-cell factor lifts every address including the target, so any address predicts any target",
+      "fix": "shortcut strength is measured INCREMENTALLY over a global-cell-state baseline computed from visible values only. A global cell factor IS broader cell state; the stated goal is reconstruction WITHOUT understanding broader cell state, so predicting from it is the legitimate signal, not the shortcut."
+    },
+    {
+      "id": "V2-D2",
+      "found": "operator- and source-only offsets drove baseline R2 to -22.3 and -9.0 on held-out donors, inflating the incremental gain to +22.2 and +8.9 with no shortcut planted",
+      "why": "train-fitted feature standardisation is mis-scaled on donors whose feature distribution is shifted by a batch effect",
+      "fix": "features are standardised WITHIN each donor. Lawful, because features are visible at inference and no target information is used."
+    },
+    {
+      "id": "V2-D3",
+      "found": "under a strong global factor a genuine planted shortcut scored only 0.084 raw incremental R2",
+      "why": "raw incremental R2 is normalised by total target variance, which the confound dominates",
+      "fix": "primary statistic is PARTIAL R2 = (R2_full - R2_base) / (1 - R2_base): of the variance the baseline could not explain, how much do the candidates explain?"
+    },
+    {
+      "id": "V2-D4",
+      "found": "per-donor level offsets distorted evaluation",
+      "fix": "per-donor R2 is computed on donor-centred target and donor-centred prediction, so a per-donor level offset counts neither for nor against"
+    }
+  ],
+  "post_fix_synthetic_evidence": {
+    "null_partial_r2_by_nuisance": {"none": -0.054, "donor": -0.054, "operator": -0.055,
+                                    "source": -0.054, "within_donor_depth": -0.001,
+                                    "within_donor_shift": -0.014},
+    "planted_partial_r2_by_nuisance": {"none": 0.903, "donor": 0.903, "operator": 0.903,
+                                       "source": 0.901, "within_donor_depth": 0.673,
+                                       "within_donor_shift": 0.802},
+    "interpretation": "suppression and specificity hold simultaneously; suppressing confounds is not achieved by predicting nothing"
+  },
+
+  "cross_fitting_design": {
+    "outer_folds": 10,
+    "outer_rule": "deterministic source-stratified; seed = sha256(namespace|source); every donor validates exactly once",
+    "outer_validation_donors_never_participate_in": ["screening", "attacker fitting", "shortcut-set selection", "alpha selection", "threshold selection", "mask construction", "candidate ranking"],
+    "inner_rotation": "source-stratified halves of the outer-training donors; A screens -> B fits, and B screens -> A fits",
+    "inner_combination_rule": "UNION_WITH_SUPPORT",
+    "inner_combination_justification": "screening is a RECALL instrument. Intersection would compound two independent recall failures and systematically drop real shortcuts, which is the exact failure mode that made historical pooled-Pearson masking worse than uniform. Union keeps a candidate discovered by either direction; the attacker, not the screen, decides what is real.",
+    "fold_count_justification": "approximately 85-104 donors across three sources; 10 folds leaves ~8-10 validation donors per fold while preserving ~90 percent of donors for discovery. A 30/30/30 split would waste NPH52, the smallest source."
+  },
+
+  "screening": {
+    "id": "DonorBalancedScreenerV1",
+    "statistic": "per-donor |Spearman| against the target, averaged with equal donor weight inside a source and equal weight across sources",
+    "role": "RECALL_INSTRUMENT_NEVER_AUTHORITY",
+    "candidate_budget_m": 20,
+    "calibration": "SYNTHETIC ONLY. Grid m in {20,40,80,160} x alpha in {1e-3,1e-2,1e-1}. Rule declared before reading results: maximise planted recall subject to null partial R2 < 0.10 on every nuisance, tie-break smallest m then largest alpha.",
+    "calibration_result": {"recall": 1.0, "min_planted_partial_r2": 0.884, "max_null_partial_r2": -0.0135},
+    "forbidden_inputs": ["gene symbol", "biotype", "ontology", "pathway", "chromosome", "coordinate", "graph", "disease", "phenotype", "source/operator/donor/dataset as feature", "QC", "depth", "detection", "visibility", "hidden target values from validation donors"]
+  },
+
+  "attacker": {
+    "id": "CheapRidgeAttackerV1",
+    "model_class": "linear ridge, closed-form normal equations",
+    "alpha": 0.01,
+    "alpha_selection": "synthetic-only calibration; no real FULL104 outcome influenced it",
+    "max_features": 64,
+    "feature_standardization": "per-donor z-score over visible addresses",
+    "target_scaling": "train-donor mean and sd",
+    "intercept": "absorbed by donor-centred evaluation",
+    "loss": "squared error",
+    "donor_weighting": "equal within source",
+    "source_weighting": "equal across sources",
+    "missing_support": "address excluded where not measurable; unmeasured is never zero and never disagreement",
+    "solver": "numpy.linalg.solve, deterministic",
+    "random_state": "none; no warm start, no coefficient reuse, no feature reuse beyond the lawful screening universe",
+    "escalation_forbidden": "no nonlinear or neural attacker in this lane; the purpose is to detect EASY shortcuts, not to approximate JEPA capacity"
+  },
+
+  "primary_metric": {
+    "name": "FRESH_REFIT_RESIDUAL_SHORTCUT_PREDICTABILITY",
+    "definition": "for each masking condition, instantiate a completely fresh attacker, screen and fit it from scratch on outer-training donors using ONLY addresses that remain visible, then evaluate partial R2 on outer-validation donors",
+    "direction": "LOWER IS BETTER",
+    "why_not_the_frozen_attacker": "deleting the features the first attacker selected and re-scoring that same attacker is close to tautological; only a fresh refit can reveal that the attacker simply found another route"
+  },
+  "secondary_metric": {
+    "name": "FROZEN_ATTACKER_AFTER_MASK",
+    "label": "SECONDARY_DIAGNOSTIC_ONLY",
+    "rule": "a large drop here cannot qualify V2 by itself"
+  },
+
+  "shortcut_set_rule_frozen": {
+    "ordering": "candidates by screening score descending, ties by address index",
+    "rule": "smallest prefix S whose removal reduces the cross-fitted partial R2 (measured on inner-fit donors, never on outer-validation donors) to at most 50 percent of its full-candidate value",
+    "cap": 8,
+    "no_shortcut_floor": 0.05,
+    "no_shortcut_behaviour": "if full-candidate partial R2 < 0.05 the target is declared NO_SHORTCUT and receives no augmentation; the ordinary random mask still applies",
+    "conventions_declared_prospectively": ["50 percent reduction", "cap 8", "floor 0.05"],
+    "threshold_honesty": "V2 is NOT threshold-free. These are frozen conventions chosen from synthetic reasoning, not tuned on real data."
+  },
+
+  "conditions_compared_at_matched_budget": {
+    "U": "uniform/random masking",
+    "V1_CONTROL": "frozen V1 top-K recurrence mask rerun at the V2 evidence budget, using the ORIGINAL V1 definition. K and R may not be changed to help it.",
+    "V2": "uniform mask with shortcut co-mask augmentation"
+  },
+  "matched_budget": "all three conditions mask the same number of addresses",
+  "budget_label": "QUALIFICATION_ONLY_NOT_PRODUCTION_AUTHORITY",
+  "budget_authority_note": "MaskingAuthorityV1 references a separate target_evidence_budget_authority. This lane does not own and does not set the production mask fraction.",
+
+  "power_ladder_frozen": [
+    {"level": 1, "blocks_per_operator": 3, "purpose": "V1-comparable"},
+    {"level": 2, "blocks_per_operator": 8, "purpose": "intermediate"},
+    {"level": 3, "blocks_per_operator": 20, "purpose": "large read-only budget"}
+  ],
+  "power_ladder_rule": "execute every level; do not stop at the first that passes",
+
+  "qualification_thresholds_frozen": {
+    "primary": "V2 must reduce fresh-refit partial R2 by at least 30 percent relative to matched-budget uniform masking",
+    "absolute_floor": "and by at least 0.02 in absolute partial R2",
+    "justification": "V1's 20 percent is NOT recycled. Partial R2 over residual variance is a more sensitive scale than V1's edge-crossing fraction, so a larger relative effect is required. Both numbers are CONVENTIONS declared before any real V2 result, chosen as substantial structural effects rather than derived from an observation.",
+    "minimum_evaluated_targets": 50,
+    "minimum_outer_validation_donors_per_fold": 3,
+    "no_vacuous_subgroup": "a subgroup with zero evaluated targets is NOT_ESTIMABLE, never PASS",
+    "source_operator_leakage_cap": 0.02,
+    "spectacular_small_n_rule": "a large improvement on a handful of targets is NOT a pass"
+  },
+
+  "reporting_required": ["donor-level differences", "source-level differences", "target-level distribution", "median", "weighted mean", "uncertainty interval", "fraction improved", "fraction worsened", "worst-case source", "count NOT_ESTIMABLE"],
+  "reporting_prohibition": "no confidence interval may be restated as a biological claim; the question is shortcut suppression only",
+
+  "heterogeneity_reporting": ["SEA_AD", "HVS", "NPH52", "common-core targets", "native/non-common-core targets where estimable"],
+
+  "hard_boundaries": ["TRAINING_OFF", "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION", "IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK", "NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY", "COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY", "QUALIFICATION_RANK_CEILING != PRODUCTION_MODEL_WIDTH", "NO_REAL_RESULT_FROM_THE_DISCARDED_X4_WITHIN_ESTIMATOR_IS_AUTHORITY"],
+  "not_frozen_here": ["D_shared", "latent width", "provider bucket count", "query width", "transformer width/depth", "head count", "EMA half-life", "optimizer", "schedule", "production mask fraction"],
+
+  "global_failure_conditions": [
+    "no condition meets the primary threshold -> MASKING_V2_SHORTCUT_AUTHORITY_REMAINS_OPEN",
+    "any threshold changed after seeing real V2 results -> the lane is void",
+    "a vacuous subgroup reported as PASS -> the lane is void",
+    "screening planted-shortcut recall failure -> fix screening before real evaluation"
+  ]
+}
