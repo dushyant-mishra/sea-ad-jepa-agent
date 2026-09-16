@@ -39,7 +39,12 @@ def make_registry(**over) -> CanonicalAddressRegistryAuthorityV1:
         registry_row_count=CANONICAL_ADDRESS_REGISTRY_ROW_COUNT,
         full104_block_manifest_sha256=BLOCK_MANIFEST,
         observation_state_sha256=OBSERVATION_STATE,
-        recovery_provenance="stage81a2r foundation molecular address registry derivation",
+        # Must match the published authority artifact exactly: recovery_provenance is part
+        # of canonical_digest(), so a paraphrase here would produce a different authority.
+        recovery_provenance=(
+            "stage81a2r foundation molecular address registry derivation; injectivity audit "
+            "docs/history/results/v4/stage81a2r_foundation_molecular_address_injectivity_audit.json"
+        ),
         informative_path="results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv",
     )
     base.update(over)
@@ -178,3 +183,41 @@ def test_wildcard_import_does_not_load_quarantined_helpers() -> None:
     assert result.returncode == 0, result.stdout
     loaded = json.loads(result.stdout.strip().splitlines()[-1])
     assert loaded == [], f"wildcard import bypassed the spillover firewall: {loaded}"
+
+
+# ------------------------------------------------- exact registry-authority binding
+# RED against f33e0a7b: an arbitrary well-formed SHA that is not a known raw artifact
+# hash was accepted, so the provider bound to "some digest" rather than THE authority.
+from sea_ad_jepa.v5.current_target_address_provider_authority_v1 import (  # noqa: E402
+    CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256,
+    bind_provider_to_registry_authority,
+)
+
+ARBITRARY_SHAS = [
+    "b" * 64, "0" * 64, "f" * 64, "deadbeef" * 8, "1234567890abcdef" * 4,
+    "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25677",  # off by one char
+]
+
+
+@pytest.mark.parametrize("bad", ARBITRARY_SHAS)
+def test_arbitrary_registry_authority_digest_fails_closed(bad: str) -> None:
+    with pytest.raises(ValueError, match="address_registry_authority_sha256"):
+        dataclasses.replace(make_provider(), address_registry_authority_sha256=bad).validate()
+
+
+def test_only_the_current_canonical_registry_authority_digest_is_accepted() -> None:
+    assert make_registry().canonical_digest() == CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256
+    make_provider().validate()
+
+
+def test_cross_authority_closure_binds_the_live_registry_authority() -> None:
+    assert bind_provider_to_registry_authority(
+        provider=make_provider(), registry_authority=make_registry()
+    ) == CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256
+
+
+def test_cross_authority_closure_rejects_a_mutated_registry_authority() -> None:
+    # A registry authority that is internally valid but not the current canonical one.
+    other = make_registry(observation_state_sha256="c" * 64)
+    with pytest.raises(ValueError, match="address_registry_authority_sha256|current canonical"):
+        bind_provider_to_registry_authority(provider=make_provider(), registry_authority=other)

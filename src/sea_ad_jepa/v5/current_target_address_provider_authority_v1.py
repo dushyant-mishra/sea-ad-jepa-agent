@@ -47,6 +47,16 @@ KNOWN_RAW_ARTIFACT_SHA256: Tuple[str, ...] = (
     "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",  # full104 block manifest
 )
 
+# The provider binds to the CURRENT canonical registry AUTHORITY digest -- an allowlist of
+# exactly one value, not a denylist of known-bad ones. An unknown digest fails closed.
+#
+#   raw registry artifact sha256      = 7d61ed7b...   (the CSV file)
+#   canonical registry AUTHORITY sha  = 28b20a45...   (CanonicalAddressRegistryAuthorityV1
+#                                                      .canonical_digest(), what binds here)
+CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256 = (
+    "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676"
+)
+
 _FORBIDDEN_NAME_FRAGMENTS = ("TD57", "TD59", "TD60")
 
 
@@ -97,6 +107,14 @@ class CurrentTargetAddressProviderAuthorityV1:
                 "address_registry_authority_sha256 must be the canonical registry AUTHORITY "
                 "digest, not a raw artifact file digest"
             )
+        # Allowlist, not denylist: any digest that is not the current canonical registry
+        # authority fails closed, including well-formed but unrelated ones.
+        if (self.address_registry_authority_sha256
+                != CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256):
+            raise ValueError(
+                "address_registry_authority_sha256 must equal the current canonical address-"
+                f"registry authority digest {CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256}"
+            )
         _sha(self.query_artifact_sha256, "query_artifact_sha256")
 
         _enum(self.query_provider_id, APPROVED_QUERY_PROVIDER_IDS, "query_provider_id")
@@ -117,3 +135,29 @@ class CurrentTargetAddressProviderAuthorityV1:
                 "training_authorized": False,
             }
         )
+
+
+def bind_provider_to_registry_authority(
+    *, provider: CurrentTargetAddressProviderAuthorityV1, registry_authority: Any
+) -> str:
+    """Cross-authority closure: the provider must bind the *live* registry authority.
+
+    Stronger than the frozen constant alone, because it recomputes the registry
+    authority's own canonical digest rather than trusting a transcribed value.
+    Returns the bound digest; raises otherwise.
+    """
+    if getattr(registry_authority, "training_authorized", False) is not False:
+        raise ValueError("registry authority unexpectedly authorizes training")
+    registry_authority.validate()
+    digest = registry_authority.canonical_digest()
+    provider.validate()
+    if provider.address_registry_authority_sha256 != digest:
+        raise ValueError(
+            "address_registry_authority_sha256 does not match the supplied canonical "
+            "address-registry authority digest"
+        )
+    if digest != CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256:
+        raise ValueError(
+            "supplied registry authority is not the current canonical address-registry authority"
+        )
+    return digest
