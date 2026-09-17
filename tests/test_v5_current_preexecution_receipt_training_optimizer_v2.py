@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import replace
 
 import pytest
@@ -22,6 +23,12 @@ from sea_ad_jepa.v5.qualified_optimizer_guard_v3 import install_current_optimize
 
 def h(name: str) -> str:
     return hashlib.sha256(name.encode()).hexdigest()
+
+
+def canonical_digest(payload: dict) -> str:
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode()
+    ).hexdigest()
 
 
 def roots_v2() -> dict[str, str]:
@@ -71,12 +78,12 @@ class FakeOptimizer:
 
 
 def closure_for(roots: dict[str, str]) -> dict:
-    return {
+    core = {
         "schema": "V5_CURRENT_AUTHORITY_CLOSURE_V2",
         "authority_roots": dict(roots),
         "training_authorized": False,
-        "closure_digest": h("closure-v2"),
     }
+    return {**core, "closure_digest": canonical_digest(core)}
 
 
 def critical_for(roots: dict[str, str]) -> AuthorityStub:
@@ -88,9 +95,10 @@ def runtime_for(roots: dict[str, str]) -> AuthorityStub:
 
 
 def make_preexecution(roots: dict[str, str]) -> CurrentTrainerPreexecutionAuthorityV2:
+    closure = closure_for(roots)
     return CurrentTrainerPreexecutionAuthorityV2(
         authority_roots=roots,
-        closure_v2_sha256=h("closure-v2"),
+        closure_v2_sha256=closure["closure_digest"],
         protected_registry_authority_sha256=roots["protected_registry_authority_sha256"],
         critical_test_authority_sha256=roots["critical_test_authority_sha256"],
         relational_training_active=False,
@@ -104,7 +112,7 @@ def make_receipt(roots: dict[str, str], pre: CurrentTrainerPreexecutionAuthority
     return seal_current_teacher_target_receipt_v2(
         target_package_root=h("target-package"),
         authority_roots=receipt_roots,
-        closure_v2_sha256=h("closure-v2"),
+        closure_v2_sha256=pre.closure_v2_sha256,
     )
 
 
@@ -121,7 +129,7 @@ def test_preexecution_v2_requires_exact_v2_root_vocabulary_and_live_closure_bind
 
     bad = closure_for(roots)
     bad["authority_roots"] = {**roots, "masking_authority_sha256": h("splice")}
-    with pytest.raises(ValueError, match="closure.*roots"):
+    with pytest.raises(ValueError, match="closure.*roots|digest"):
         pre.bind_closure_v2(bad)
 
 
@@ -135,7 +143,7 @@ def test_receipt_v2_seals_v2_roots_preexecution_and_closure_and_rejects_v1_recei
         receipt,
         expected_target_package_root=h("target-package"),
         expected_authority_roots=expected,
-        expected_closure_v2_sha256=h("closure-v2"),
+        expected_closure_v2_sha256=pre.closure_v2_sha256,
     )
     assert tuple(verified["authority_roots"]) == CURRENT_V5_RECEIPT_AUTHORITY_ROOTS_V2
     assert verified["training_authorized"] is False
@@ -148,7 +156,7 @@ def test_receipt_v2_seals_v2_roots_preexecution_and_closure_and_rejects_v1_recei
             legacy,
             expected_target_package_root=h("target-package"),
             expected_authority_roots=expected,
-            expected_closure_v2_sha256=h("closure-v2"),
+            expected_closure_v2_sha256=pre.closure_v2_sha256,
         )
 
 
@@ -169,7 +177,7 @@ def test_training_authority_is_issued_only_after_closure_preexecution_receipt_cr
     )
     authority.validate()
     assert authority.training_authorized is True
-    assert authority.closure_v2_sha256 == h("closure-v2")
+    assert authority.closure_v2_sha256 == closure["closure_digest"]
     assert authority.preexecution_authority_sha256 == pre.canonical_digest()
 
     bad_runtime = AuthorityStub(h("wrong-runtime"))
@@ -208,7 +216,7 @@ def test_optimizer_v3_requires_v2_receipt_and_explicit_matching_training_authori
         training_authority=authority,
         expected_target_package_root=h("target-package"),
         expected_authority_roots=expected_roots,
-        expected_closure_v2_sha256=h("closure-v2"),
+        expected_closure_v2_sha256=closure["closure_digest"],
     )
     guard.arm_for_step(schedule_cursor=3)
     optimizer.step(v5_current_guard_schedule_cursor=3)
@@ -224,5 +232,5 @@ def test_optimizer_v3_requires_v2_receipt_and_explicit_matching_training_authori
             training_authority=authority,
             expected_target_package_root=h("target-package"),
             expected_authority_roots=expected_roots,
-            expected_closure_v2_sha256=h("closure-v2"),
+            expected_closure_v2_sha256=closure["closure_digest"],
         )
