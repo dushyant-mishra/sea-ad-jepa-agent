@@ -263,6 +263,42 @@ def test_stream_fails_closed_on_block_hash_mismatch(tmp_path: Path) -> None:
         stream.validate_layout()
 
 
+def test_stream_fails_closed_on_duplicate_selection_row_within_block(tmp_path: Path) -> None:
+    _, stream, _, rows = _fixture(tmp_path)
+    meta = stream.block_root / rows[0]["meta_path"]
+    lines = meta.read_text(encoding="utf-8").splitlines()
+    fields = lines[1].split(",")
+    duplicate = lines[2].split(",")
+    duplicate[0] = fields[0]
+    lines[2] = ",".join(duplicate)
+    meta.write_text("\\n".join(lines) + "\\n", encoding="utf-8")
+
+    # Rebind the manifest to the deliberately modified fixture so the failure is
+    # selection-row identity, not the earlier metadata-hash guard.
+    manifest = stream.manifest_path
+    manifest_rows = list(csv.DictReader(manifest.open(newline="", encoding="utf-8")))
+    manifest_rows[0]["meta_sha256"] = sha(meta)
+    with manifest.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=manifest_rows[0].keys(), lineterminator="\\n")
+        writer.writeheader()
+        writer.writerows(manifest_rows)
+    rebound = Full104ManifestStreamV1(
+        manifest_path=manifest,
+        block_root=stream.block_root,
+        expected_manifest_sha256=sha(manifest),
+        donor_id_to_code=stream.donor_id_to_code,
+        source_by_donor=stream.source_by_donor,
+        fold_by_donor=stream.fold_by_donor,
+        universe_cols=stream.universe_cols,
+        target_cols=stream.target_cols,
+        target_ids=stream.target_ids,
+        expected_cell_count=stream.expected_cell_count,
+        verify_block_hashes=True,
+    )
+    with pytest.raises(ValueError, match="duplicate selection_row"):
+        rebound.validate_layout()
+
+
 def test_streaming_executor_does_not_construct_a_monolithic_full104_matrix() -> None:
     source = Path("src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py").read_text(encoding="utf-8")
     forbidden = (
