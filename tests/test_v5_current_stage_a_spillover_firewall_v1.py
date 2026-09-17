@@ -11,10 +11,11 @@ ROOT = Path(__file__).resolve().parents[1]
 V5 = ROOT / "src" / "sea_ad_jepa" / "v5"
 
 CURRENT_STAGE_A_SOURCE_PATHS = (
-    "target_address_query_authority_v1.py",
-    "teacher_target_semantics_authority_v1.py",
+    "current_target_address_provider_authority_v1.py",
+    "remaining_rna_necessity_v1.py",
+    "teacher_target_semantics_authority_v2.py",
     "primary_representation_authority_v1.py",
-    "masking_authority_v1.py",
+    "current_masking_policy_authority_v2.py",
     "ema_presentation_v1.py",
     "ema_timescale_authority_v1.py",
     "measurement_robustness_authority_v1.py",
@@ -39,9 +40,12 @@ QUARANTINED_V5_MODULES = frozenset(
         "inactive_update_reference",
         "keyed_dropout_prototype",
         "keyed_dropout_v2",
+        "masking_authority_v1",
         "proposal_horizon_v1",
         "proposal_policy_v1",
         "proposal_policy_v2",
+        "target_address_query_authority_v1",
+        "teacher_target_semantics_authority_v1",
         "teacher_student_data_first_v1",
         "teacher_student_integration_freeze",
         "teacher_student_integration_freeze_v2",
