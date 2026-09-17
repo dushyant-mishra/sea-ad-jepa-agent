@@ -1,0 +1,81 @@
+{
+  "schema": "V5_FULL104_MASKING_SUCCESSOR_QUALIFICATION_CONTRACT_DRAFT_V1",
+  "date": "2026-09-17",
+  "status": "PROSPECTIVE_DRAFT_NOT_AUTHORITY",
+  "training_authorized": false,
+  "execution_authorized": false,
+  "protected_outcomes_authorized": false,
+  "purpose": "Qualify shortcut-aware masking policies on FULL104 without training or protected outcomes.",
+  "required_authority_roots": {
+    "full104_substrate_sha256": "UNRESOLVED_BIND_AT_CANONICAL_EXECUTION",
+    "representation_authority_sha256": "UNRESOLVED_BIND_AT_CANONICAL_EXECUTION",
+    "support_estimability_authority_sha256": "UNRESOLVED_BIND_AT_CANONICAL_EXECUTION",
+    "canonical_address_registry_authority_sha256": "UNRESOLVED_BIND_AT_CANONICAL_EXECUTION",
+    "target_evidence_budget_authority_sha256": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED",
+    "precision_authority_sha256": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED",
+    "outer_split_authority_sha256": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED",
+    "target_panel_authority_sha256": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED"
+  },
+  "policy_arms": [
+    "UNIFORM_RANDOM",
+    "TOP8_CORRELATION",
+    "RIDGE8_CONDITIONAL",
+    "PREFIX3_SELECTIVE"
+  ],
+  "masking_requirements": {
+    "common_random_base_mask": true,
+    "method_absent_from_base_mask_seed": true,
+    "burden_preserving_swaps": true,
+    "exact_mask_cardinality_assertion": true,
+    "target_always_masked": true,
+    "mask_burden_source": "TARGET_EVIDENCE_BUDGET_AUTHORITY_ONLY",
+    "cap_8_status": "COMPARATOR_LABEL_ONLY_NOT_PRODUCTION_AUTHORITY"
+  },
+  "primary_attacker": {
+    "family": "RIDGE",
+    "fit_on_outer_training_donors_only": true,
+    "feature_screen_on_outer_training_donors_only": true,
+    "evaluate_on_outer_validation_donors_only": true,
+    "score": "SOURCE_BALANCED_MEAN_DONOR_CENTERED_PREDICTION_CORRELATION_SQUARED",
+    "score_bounds": [0.0, 1.0]
+  },
+  "secondary_attacker": {
+    "family": "NONLINEAR_TREE_ENSEMBLE",
+    "role": "ROBUSTNESS_CHALLENGE_NOT_SELECTION_TUNER",
+    "fit_on_outer_training_donors_only": true,
+    "evaluate_on_outer_validation_donors_only": true
+  },
+  "paired_estimand": {
+    "unit": "TARGET_X_OUTER_FOLD",
+    "effect": "DELTA_EQUALS_UNIFORM_SCORE_MINUS_TARGETED_SCORE",
+    "positive_is_better": true,
+    "aggregate_unit": "TARGET",
+    "uncertainty": "TARGET_CLUSTERED_BOOTSTRAP_OR_EQUIVALENT_PROSPECTIVELY_BOUND_METHOD"
+  },
+  "controls": {
+    "planted_shortcut_positive": "REQUIRED",
+    "within_donor_shuffled_negative": "REQUIRED",
+    "untreated_mask_identity": "REQUIRED",
+    "deterministic_replay": "REQUIRED",
+    "no_privileged_metadata": "REQUIRED"
+  },
+  "address_universe_ladder": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED",
+  "target_count": "UNRESOLVED_PRECISION_AUTHORITY_REQUIRED",
+  "decision_requirements": [
+    "POSITIVE_CONTROL_MUST_PASS_PREDECLARED_TOLERANCE",
+    "NEGATIVE_CONTROL_MUST_PASS_PREDECLARED_TOLERANCE",
+    "PRIMARY_EFFECT_MUST_BE_EVALUATED_WITH_TARGET_CLUSTERED_UNCERTAINTY",
+    "NO_POLICY_MAY_QUALIFY_ON_VACUOUS_OR_BELOW_PRECISION_TARGET_SET",
+    "FULL_COMMON_CORE_TERMINAL_UNIVERSE_MUST_BE_INCLUDED",
+    "NO_HARMFUL_SIGN_REVERSAL_MAY_BE_HIDDEN_BY_POOLED_MEANS",
+    "NONLINEAR_CHALLENGE_MUST_BE_REPORTED_WITHOUT_RETUNING_POLICY_ON_ITS_OUTCOME"
+  ],
+  "explicit_non_authorities": [
+    "15_PERCENT_MASK_BURDEN",
+    "CAP_8_AS_PRODUCTION_VALUE",
+    "RIDGE_ALPHA_0_01_AS_PRODUCTION_VALUE",
+    "DISCOVERY_TARGET_COUNT_32",
+    "DISCOVERY_NONLINEAR_TARGET_COUNT_8",
+    "EXPLORATORY_PREFIX3_THRESHOLDS"
+  ]
+}
