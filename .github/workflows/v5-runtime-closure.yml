@@ -13,6 +13,7 @@ on:
       - 'tests/test_v5_ema_timescale_authority_v2.py'
       - 'tests/test_v5_measurement_robustness_authority_v2.py'
       - 'tests/test_v5_current_authority_roots_v2.py'
+      - 'tests/test_v5_current_authority_closure_v2.py'
       - '.github/workflows/v5-runtime-closure.yml'
   workflow_dispatch:
 
@@ -40,7 +41,8 @@ jobs:
             tests/test_v5_geometry_memorization_qualification_authority_v1.py \
             tests/test_v5_ema_timescale_authority_v2.py \
             tests/test_v5_measurement_robustness_authority_v2.py \
-            tests/test_v5_current_authority_roots_v2.py
+            tests/test_v5_current_authority_roots_v2.py \
+            tests/test_v5_current_authority_closure_v2.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -52,5 +54,6 @@ jobs:
             tests/test_v5_ema_timescale_authority_v2.py \
             tests/test_v5_measurement_robustness_authority_v2.py \
             tests/test_v5_current_authority_roots_v2.py \
+            tests/test_v5_current_authority_closure_v2.py \
             -rs --tb=short | tee /tmp/runtime-v5.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/runtime-v5.txt; then echo 'RUNTIME V5 TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
