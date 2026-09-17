@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -49,11 +50,12 @@ def _install_current_address_and_mask(f: dict) -> None:
     f["address"] = address
     f["masking"] = masking
     f["identity"].masking_authority_sha256 = masking.canonical_digest()
-    f["anticheat"].masking_authority_sha256 = masking.canonical_digest()
+    f["anticheat"] = replace(f["anticheat"], masking_authority_sha256=masking.canonical_digest())
     _rebind_preexecution_roots(
         f,
         target_address_query_authority_sha256=address.canonical_digest(),
         masking_authority_sha256=masking.canonical_digest(),
+        anti_cheat_authority_sha256=f["anticheat"].canonical_digest(),
     )
 
 
