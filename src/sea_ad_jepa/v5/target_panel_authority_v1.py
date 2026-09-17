@@ -1,4 +1,9 @@
-"""Outcome-blind target-panel authority for current V5 qualification."""
+"""Outcome-blind target-panel authority for current V5 qualification.
+
+Targets are selected only from an explicitly bound eligible universe under the
+strict measured-scalar support interpretation. Collision-unresolved observations
+are not silently treated as measured scalar evidence.
+"""
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -7,6 +12,9 @@ import json
 from typing import Any, Mapping, Tuple
 
 
+APPROVED_SUPPORT_STATE_POLICY_IDS: Tuple[str, ...] = (
+    "STRICT_MEASURED_SCALAR_ONLY__COLLISION_UNRESOLVED_EXCLUDED_V1",
+)
 APPROVED_SELECTION_POLICY_IDS: Tuple[str, ...] = ("DETERMINISTIC_OUTCOME_BLIND_TARGET_PANEL_V1",)
 APPROVED_OUTCOME_FIREWALL_POLICY_IDS: Tuple[str, ...] = (
     "MASKING_QUALIFICATION_OUTCOME_NOT_USED_FOR_SELECTION_V1",
@@ -36,7 +44,9 @@ def _positive_int(value: object, name: str) -> int:
 
 
 def _digest(payload: Mapping[str, Any]) -> str:
-    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode()
+    ).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -44,8 +54,11 @@ class TargetPanelAuthorityV1:
     authority_id: str
     full104_substrate_sha256: str
     canonical_registry_authority_sha256: str
+    support_estimability_authority_sha256: str
+    eligible_universe_authority_sha256: str
     selector_artifact_sha256: str
     target_list_artifact_sha256: str
+    support_state_policy_id: str
     selection_policy_id: str
     outcome_firewall_policy_id: str
     target_count: int
@@ -57,11 +70,14 @@ class TargetPanelAuthorityV1:
         roots = [
             _sha(self.full104_substrate_sha256, "full104_substrate_sha256"),
             _sha(self.canonical_registry_authority_sha256, "canonical_registry_authority_sha256"),
+            _sha(self.support_estimability_authority_sha256, "support_estimability_authority_sha256"),
+            _sha(self.eligible_universe_authority_sha256, "eligible_universe_authority_sha256"),
             _sha(self.selector_artifact_sha256, "selector_artifact_sha256"),
             _sha(self.target_list_artifact_sha256, "target_list_artifact_sha256"),
         ]
         if len(set(roots)) != len(roots):
             raise ValueError("target-panel authority role roots must be distinct")
+        _enum(self.support_state_policy_id, APPROVED_SUPPORT_STATE_POLICY_IDS, "support_state_policy_id")
         _enum(self.selection_policy_id, APPROVED_SELECTION_POLICY_IDS, "selection_policy_id")
         _enum(self.outcome_firewall_policy_id, APPROVED_OUTCOME_FIREWALL_POLICY_IDS, "outcome_firewall_policy_id")
         _positive_int(self.target_count, "target_count")
