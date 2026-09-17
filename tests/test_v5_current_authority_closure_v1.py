@@ -20,6 +20,11 @@ from sea_ad_jepa.v5.base_training_estimand_recovery_v1 import (
 )
 from sea_ad_jepa.v5.current_authority_roots_v1 import CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS, CURRENT_V5_RECEIPT_AUTHORITY_ROOTS
 from sea_ad_jepa.v5.current_authority_closure_v1 import validate_current_v5_authority_closure_v1
+from sea_ad_jepa.v5.current_masking_policy_authority_v2 import CurrentMaskingPolicyAuthorityV2
+from sea_ad_jepa.v5.current_target_address_provider_authority_v1 import (
+    CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256,
+    CurrentTargetAddressProviderAuthorityV1,
+)
 
 def h(name): return hashlib.sha256(name.encode()).hexdigest()
 class Stub:
@@ -50,8 +55,28 @@ def fixtures():
     support=Stub('support',digest=EXPECTED_SUPPORT_ESTIMABILITY_SHA256,full104_substrate_sha256=full,measurement_support_authority_sha256=EXPECTED_SUPPORT_ELIGIBILITY_SHA256)
     weight_law=recovered_weight_law()
     est=build_current_recovered_base_estimand_v1(weight_law)
-    address=Stub('address')
-    masking=Stub('masking')
+    address=CurrentTargetAddressProviderAuthorityV1(
+        authority_id='JEPA_V5_CURRENT_TARGET_ADDRESS_PROVIDER_AUTHORITY_V1',
+        address_registry_authority_sha256=CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256,
+        query_provider_id='V5_SHARED_ADDRESS_QUERY_PROVIDER_V1',
+        query_artifact_sha256=h('query-artifact'),
+        replay_policy_id='FULL_PROVIDER_STATE_DETERMINISTIC_REPLAY_V1',
+        parameter_sharing_policy_id='SHARED_TRAINABLE_ADDRESS_QUERY_MECHANISM_V1',
+        gradient_policy_id='CONTEXT_EVIDENCE_TO_PREDICTION_GRADIENT_REACHABLE_V1',
+    )
+    masking=CurrentMaskingPolicyAuthorityV2(
+        authority_id='JEPA_V5_CURRENT_MASKING_POLICY_AUTHORITY_V2',
+        canonical_registry_authority_sha256=CURRENT_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_SHA256,
+        support_estimability_authority_sha256=support.canonical_digest(),
+        shortcut_artifact_sha256=h('shortcut-authority'),
+        masking_policy_id='V5_UNIFORM_RANDOM_MASK_V1',
+        target_evidence_budget_authority_id='V5_TARGET_EVIDENCE_BUDGET_AUTHORITY_V1',
+        target_evidence_budget_authority_sha256=h('target-evidence-budget-authority'),
+        rng_replay_authority_id='V5_DETERMINISTIC_MASK_REPLAY_AUTHORITY_V1',
+        eligibility_policy_id='SUPPORT_ESTIMABILITY_AUTHORITY_ELIGIBILITY_V1',
+        fallback_policy_id='DETERMINISTIC_UNIFORM_FALLBACK_V1',
+        rng_replay_authority_sha256=h('rng-replay-authority'),
+    )
     ema=Stub('ema',base_training_estimand_sha256=est.canonical_digest(),schedule_authority_sha256=schedule)
     teacher=Stub('teacher',representation_authority_sha256=rep.canonical_digest(),support_estimability_authority_sha256=support.canonical_digest(),target_address_query_authority_sha256=address.canonical_digest(),scientific_weight_authority_sha256=est.canonical_digest(),masking_authority_sha256=masking.canonical_digest(),ema_boundary_authority_sha256=ema.canonical_digest())
     measurement=Stub('measurement',representation_authority_sha256=rep.canonical_digest(),teacher_target_semantics_sha256=teacher.canonical_digest())
