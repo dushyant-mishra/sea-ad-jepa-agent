@@ -1,0 +1,99 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V16",
+  "date": "2026-09-17",
+  "status": "CURRENT_V5_CANONICAL_MASKING_RUNTIME_FRAMEWORK_READY__FULL104_QUALIFICATION_PENDING__TRAINING_OFF",
+  "working_branch": "impl/v5-remaining-rna-target-semantics-20260917",
+  "pull_request": 18,
+  "verified_code_head": "ffbdcce060abb1c9c4463e0505d83b12c342c16e",
+  "verified_workflows": {
+    "v5_runtime_closure": {"run_id": 35275746415, "conclusion": "success"},
+    "v5_full104_masking_runner": {"run_id": 35275746392, "conclusion": "success"},
+    "v5_remaining_rna_target_semantics": {"run_id": 35275746434, "conclusion": "success", "skip_gate": "pass"},
+    "v5_stage_a_spillover": {"run_id": 35275746427, "conclusion": "success", "skip_gate": "pass"}
+  },
+  "scientific_semantics": {
+    "foundation_target": "BIOLOGICAL_CELLULAR_STATE_WITH_QUERY_LOCAL_STATE",
+    "query_identity": "SUPPLIED_CANONICAL_ADDRESS",
+    "query_scalar": "WITHHELD_BEFORE_CONTEXT_MIXING",
+    "hidden_gene_scalar_reconstruction": "FORBIDDEN_AS_JEPA_OBJECTIVE",
+    "expression_attackers": "ANTI_SHORTCUT_DIAGNOSTIC_ONLY"
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+  },
+  "closed_framework": [
+    "VALUE_ONLY_256_PRIMARY_REPRESENTATION_FROZEN",
+    "SUPPORT_ESTIMABILITY_FROZEN",
+    "DONOR_UNIFORM_CELL_UNIFORM_WITHIN_DONOR_BASE_ESTIMAND_FROZEN",
+    "STAGE_A_STRUCTURAL_QUALIFICATION_11_PASS_0_FAIL_0_UNPROVEN",
+    "CURRENT_AUTHORITY_ROOTS_V2",
+    "CURRENT_AUTHORITY_CLOSURE_V2",
+    "CURRENT_PREEXECUTION_V2",
+    "CURRENT_TEACHER_RECEIPT_V2",
+    "CURRENT_TRAINING_AUTHORITY_SCHEMA_V1",
+    "QUALIFIED_OPTIMIZER_GUARD_V3_REQUIRES_TRAINING_AUTHORITY",
+    "CURRENT_ATOMIC_CHECKPOINT_GUARD_V2",
+    "MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_SCHEMA_V1",
+    "MASKING_QUALIFICATION_RUN_CONTRACT_SCHEMA_V1",
+    "MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2",
+    "CANONICAL_IN_MEMORY_MASKING_QUALIFICATION_RUNNER_V1",
+    "LEGACY_MASKING_EXECUTION_V1_QUARANTINED_FROM_CURRENT_CLOSURE",
+    "CURRENT_CI_NO_SKIP_GATES_FOR_STAGE_A_AND_REMAINING_RNA"
+  ],
+  "supporting_not_authority": [
+    "RIDGE8_EXPANDED_DISCOVERY_VALIDATION",
+    "TOP8_COMPARATOR_RESULTS",
+    "PREFIX3_SELECTIVE_RESULTS",
+    "NONLINEAR_MASKING_CHALLENGES",
+    "HISTORICAL_T1_CHECKPOINT_STRESS"
+  ],
+  "open_before_full104_masking_execution": [
+    "CANONICAL_WORK_CHECKPOINT_BUILD_AND_VALIDATE",
+    "AUTHENTICATED_HEAVY_SUBSTRATE_BINDING_ON_GPU_MACHINE",
+    "PROSPECTIVE_MASKING_DESIGN_INSTANTIATION_AND_FREEZE",
+    "PROSPECTIVE_NUMERIC_PARAMETER_AUTHORITY_INSTANTIATION_AND_FREEZE",
+    "EXACT_RUNNER_AND_EXECUTOR_SOURCE_SHA256_BINDING",
+    "STREAMING_FULL104_MASKING_QUALIFICATION_ADAPTER_WITH_REFERENCE_PARITY_TESTS"
+  ],
+  "open_before_training": [
+    "TERMINAL_FULL_COMMON_CORE_MASKING_QUALIFICATION_EXECUTION",
+    "SELECTED_MASKING_POLICY_AUTHORITY_FROM_REAL_EXECUTION",
+    "HEALTHY_CURRENT_TEACHER_REMAINING_RNA_EXECUTION",
+    "CURRENT_MEASUREMENT_ROBUSTNESS_EXECUTION",
+    "PRODUCTION_GEOMETRY_SELECTION",
+    "GEOMETRY_SPECIFIC_MEMORIZATION_EXECUTION",
+    "CURRENT_RUNTIME_SOURCE_ENVIRONMENT_PROVENANCE",
+    "REAL_CURRENT_AUTHORITY_GRAPH_CLOSURE_WITHOUT_TEST_FIXTURES",
+    "EXPLICIT_FINAL_TRAINING_AUTHORITY_ISSUANCE"
+  ],
+  "heavy_execution": {
+    "historical_corrected_cache_root": "D:\\Jepa project\\data\\cache\\stage81a3r_corrected_real_train",
+    "current_gpu_level4_root": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/",
+    "historical_reader_source_branch": "planning/v5-full-population-cheat-proofing-20260909",
+    "historical_reader_script": "scripts/v5_anticheat/build_full_reader_expression_identity_closure_v3.py",
+    "historical_block_binder": "scripts/v5_anticheat/bind_full104_expression_blocks_v4.py",
+    "physical_layout": "42_AUTHENTICATED_SCIPY_CSR_SHARDS_PLUS_META_AND_READER_FIT_SQLITE",
+    "streaming_adapter_status": "NOT_YET_IMPLEMENTED_IN_CURRENT_BRANCH",
+    "monolithic_full_common_core_materialization": "DO_NOT_REQUIRE_AS_DEFAULT_EXECUTION_PATH"
+  },
+  "hard_boundaries": [
+    "TRAINING_OFF",
+    "NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION",
+    "NO_PATHOLOGY_DEV_SEALED_OUTCOME_OPENING_WHILE_DESIGN_OPEN",
+    "NO_HIDDEN_GENE_SCALAR_JEPA_OBJECTIVE",
+    "NO_EXPLORATORY_MASKING_POLICY_PROMOTION",
+    "NO_RECEIPT_ONLY_OPTIMIZER_UNLOCK",
+    "NO_LEGACY_MASKING_EXECUTION_V1_IN_CURRENT_CLOSURE",
+    "NO_SILENT_SKIPPED_CRITICAL_TESTS",
+    "NO_SMALLER_OR_UNAUTHENTICATED_FULL104_SUBSTITUTE"
+  ],
+  "next_action": "DESIGN_AND_IMPLEMENT_STREAMING_FULL104_MASKING_QUALIFICATION_ADAPTER_WITH_PARITY_TO_CANONICAL_REFERENCE_THEN_BUILD_CANONICAL_WORK_CHECKPOINT_AND_FREEZE_PROSPECTIVE_RUN_CONTRACT",
+  "training_authorized": false,
+  "protected_outcomes_authorized": false
+}
