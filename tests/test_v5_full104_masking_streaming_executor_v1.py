@@ -279,7 +279,22 @@ def test_stream_fails_closed_on_duplicate_selection_row_within_block(tmp_path: P
     manifest_rows = list(csv.DictReader(manifest.open(newline="", encoding="utf-8")))
     manifest_rows[0]["meta_sha256"] = sha(meta)
     with manifest.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=manifest_rows[0].keys(), lineterminator="\\n")
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "block_key",
+                "source",
+                "operator_index",
+                "matrix_id",
+                "rows",
+                "nnz",
+                "counts_path",
+                "counts_sha256",
+                "meta_path",
+                "meta_sha256",
+            ],
+            lineterminator="\\n",
+        )
         writer.writeheader()
         writer.writerows(manifest_rows)
     rebound = Full104ManifestStreamV1(
