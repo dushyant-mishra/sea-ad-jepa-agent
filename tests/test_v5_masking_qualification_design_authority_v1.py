@@ -32,6 +32,7 @@ def authority(**updates):
         expression_attacker_role_id="ANTI_SHORTCUT_DIAGNOSTIC_ONLY_NOT_JEPA_LOSS_V1",
         policy_arms=("UNIFORM_RANDOM", "TOP8_CORRELATION", "RIDGE8_CONDITIONAL", "PREFIX3_SELECTIVE"),
         primary_attacker_id="RIDGE_EXPRESSION_PROXY_ATTACKER_V1",
+        primary_attacker_application_policy_id="SAME_PRIMARY_ATTACKER_AND_SCORE_FOR_ALL_POLICY_ARMS_V1",
         secondary_attacker_id="NONLINEAR_TREE_ENSEMBLE_EXPRESSION_PROXY_CHALLENGE_V1",
         primary_score_id="SOURCE_BALANCED_MEAN_DONOR_CENTERED_PREDICTION_CORRELATION_SQUARED_V1",
         paired_estimand_id="UNIFORM_MINUS_TARGETED_SCORE_AT_TARGET_X_OUTER_FOLD_V1",
@@ -77,6 +78,11 @@ def test_expression_attacker_cannot_become_foundation_objective() -> None:
         authority(scientific_semantics_id="PREDICT_HIDDEN_GENE_EXPRESSION").validate()
     with pytest.raises(ValueError, match="expression_attacker_role_id"):
         authority(expression_attacker_role_id="JEPA_TRAINING_LOSS").validate()
+
+
+def test_same_primary_attacker_and_score_must_apply_to_every_policy_arm() -> None:
+    with pytest.raises(ValueError, match="primary_attacker_application_policy_id"):
+        authority(primary_attacker_application_policy_id="PER_ARM_ATTACKER_ALLOWED").validate()
 
 
 def test_attackers_estimand_and_guardrails_are_enumerated() -> None:
