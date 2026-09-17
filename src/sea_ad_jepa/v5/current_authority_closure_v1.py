@@ -4,6 +4,8 @@ import hashlib, json
 from typing import Any, Mapping
 from .base_training_estimand_recovery_v1 import validate_current_recovered_base_estimand_v1
 from .current_authority_roots_v1 import CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS, CURRENT_V5_RECEIPT_AUTHORITY_ROOTS
+from .current_masking_policy_authority_v2 import CurrentMaskingPolicyAuthorityV2
+from .current_target_address_provider_authority_v1 import CurrentTargetAddressProviderAuthorityV1
 
 def _sha(v:object,name:str)->str:
     if not isinstance(v,str) or len(v)!=64 or v!=v.lower(): raise ValueError(f"{name} must be a lowercase SHA-256 digest")
@@ -18,8 +20,14 @@ def _auth(obj:Any,name:str)->str:
     return _sha(obj.canonical_digest(),f'{name} canonical digest')
 def _eq(actual:object,expected:str,message:str)->None:
     if actual!=expected: raise ValueError(message)
+def _require_current_successor_schemas(*,target_address:Any,masking:Any)->None:
+    if not isinstance(target_address,CurrentTargetAddressProviderAuthorityV1):
+        raise ValueError('target_address must use the current target-address provider schema')
+    if not isinstance(masking,CurrentMaskingPolicyAuthorityV2):
+        raise ValueError('masking must use the current masking policy schema')
 
 def validate_current_v5_authority_closure_v1(*,full104_substrate_sha256:str,representation:Any,support_estimability:Any,base_training_weight_law:Any,base_training_estimand:Any,target_address:Any,masking:Any,ema:Any,teacher_target:Any,measurement_robustness:Any,target_identity_gate:Any,critical_test:Any,anti_cheat:Any,model_geometry:Any,protected_registry:Any,preexecution:Any,observation_gradient_firewall_authority_sha256:str,schedule_authority_sha256:str,runtime_source_sha256:str)->dict[str,Any]:
+    _require_current_successor_schemas(target_address=target_address,masking=masking)
     full=_sha(full104_substrate_sha256,'full104_substrate_sha256'); schedule=_sha(schedule_authority_sha256,'schedule_authority_sha256'); runtime=_sha(runtime_source_sha256,'runtime_source_sha256'); firewall=_sha(observation_gradient_firewall_authority_sha256,'observation_gradient_firewall_authority_sha256')
     rep=_auth(representation,'representation'); support=_auth(support_estimability,'support_estimability'); est=_auth(base_training_estimand,'base_training_estimand'); address=_auth(target_address,'target_address'); mask=_auth(masking,'masking'); ema_sha=_auth(ema,'ema'); teacher=_auth(teacher_target,'teacher_target'); measurement=_auth(measurement_robustness,'measurement_robustness'); identity=_auth(target_identity_gate,'target_identity_gate'); critical=_auth(critical_test,'critical_test'); anticheat=_auth(anti_cheat,'anti_cheat'); registry=_auth(protected_registry,'protected_registry'); geometry=_auth(model_geometry,'model_geometry'); pre=_auth(preexecution,'preexecution')
 
