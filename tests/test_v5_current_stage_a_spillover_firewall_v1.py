@@ -31,6 +31,7 @@ CURRENT_STAGE_A_SOURCE_PATHS = (
     "masking_qualification_run_contract_v1.py",
     "masking_qualification_execution_authority_v2.py",
     "full104_masking_qualification_runner_v1.py",
+    "full104_masking_streaming_executor_v1.py",
     "current_masking_policy_authority_v2.py",
     "target_construction_authority_v1.py",
     "remaining_rna_necessity_v1.py",
