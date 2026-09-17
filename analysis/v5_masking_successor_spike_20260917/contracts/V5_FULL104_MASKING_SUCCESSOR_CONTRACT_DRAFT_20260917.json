@@ -6,11 +6,21 @@
   "execution_authorized": false,
   "protected_outcomes_authorized": false,
   "purpose": "Qualify shortcut-aware masking policies on FULL104 without training or protected outcomes.",
+  "scientific_semantics": {
+    "foundation_objective": "INFER_UNDERLYING_BIOLOGICAL_CELLULAR_STATE_FROM_PARTIAL_RNA_EVIDENCE",
+    "query_local_target": "QUERY_LOCAL_BIOLOGICAL_STATE_ASSOCIATED_WITH_A_MASKED_ADDRESS",
+    "hidden_address_role": "DEFINE_WHICH_LOCAL_STATE_MUST_BE_INFERRED_NOT_A_SCALAR_RECONSTRUCTION_TARGET",
+    "forbidden_foundation_objective": "PREDICT_NUMERICAL_EXPRESSION_OF_THE_HIDDEN_GENE",
+    "masking_role": "REMOVE_EASY_PROXY_EVIDENCE_WHILE_PRESERVING_A_STATE_INFERENCE_TASK",
+    "expression_attacker_role": "ANTI_SHORTCUT_DIAGNOSTIC_ONLY_NOT_THE_JEPA_TARGET_OR_TRAINING_LOSS",
+    "qualification_scope_limit": "EXPRESSION_PROXY_REMOVAL_DOES_NOT_BY_ITSELF_ESTABLISH_BIOLOGICAL_STATE_RECOVERY"
+  },
   "required_authority_roots": {
     "full104_substrate_sha256": "UNRESOLVED_BIND_AT_CANONICAL_EXECUTION",
     "representation_authority_sha256": "UNRESOLVED_BIND_AT_CANONICAL_EXECUTION",
     "support_estimability_authority_sha256": "UNRESOLVED_BIND_AT_CANONICAL_EXECUTION",
     "canonical_address_registry_authority_sha256": "UNRESOLVED_BIND_AT_CANONICAL_EXECUTION",
+    "teacher_target_semantics_authority_sha256": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED",
     "target_evidence_budget_authority_sha256": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED",
     "precision_authority_sha256": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED",
     "outer_split_authority_sha256": "UNRESOLVED_PROSPECTIVE_AUTHORITY_REQUIRED",
@@ -33,6 +43,7 @@
   },
   "primary_attacker": {
     "family": "RIDGE",
+    "role": "EXPRESSION_PROXY_SHORTCUT_DIAGNOSTIC_ONLY",
     "fit_on_outer_training_donors_only": true,
     "feature_screen_on_outer_training_donors_only": true,
     "evaluate_on_outer_validation_donors_only": true,
@@ -41,7 +52,7 @@
   },
   "secondary_attacker": {
     "family": "NONLINEAR_TREE_ENSEMBLE",
-    "role": "ROBUSTNESS_CHALLENGE_NOT_SELECTION_TUNER",
+    "role": "EXPRESSION_PROXY_ROBUSTNESS_CHALLENGE_NOT_SELECTION_TUNER_OR_TRAINING_OBJECTIVE",
     "fit_on_outer_training_donors_only": true,
     "evaluate_on_outer_validation_donors_only": true
   },
@@ -68,7 +79,9 @@
     "NO_POLICY_MAY_QUALIFY_ON_VACUOUS_OR_BELOW_PRECISION_TARGET_SET",
     "FULL_COMMON_CORE_TERMINAL_UNIVERSE_MUST_BE_INCLUDED",
     "NO_HARMFUL_SIGN_REVERSAL_MAY_BE_HIDDEN_BY_POOLED_MEANS",
-    "NONLINEAR_CHALLENGE_MUST_BE_REPORTED_WITHOUT_RETUNING_POLICY_ON_ITS_OUTCOME"
+    "NONLINEAR_CHALLENGE_MUST_BE_REPORTED_WITHOUT_RETUNING_POLICY_ON_ITS_OUTCOME",
+    "MASKING_QUALIFICATION_MUST_NOT_BE_REPORTED_AS_HIDDEN_GENE_RECONSTRUCTION_SUCCESS",
+    "MASKING_QUALIFICATION_MUST_NOT_BE_REPORTED_AS_BIOLOGICAL_STATE_RECOVERY_SUCCESS"
   ],
   "explicit_non_authorities": [
     "15_PERCENT_MASK_BURDEN",
@@ -76,6 +89,8 @@
     "RIDGE_ALPHA_0_01_AS_PRODUCTION_VALUE",
     "DISCOVERY_TARGET_COUNT_32",
     "DISCOVERY_NONLINEAR_TARGET_COUNT_8",
-    "EXPLORATORY_PREFIX3_THRESHOLDS"
+    "EXPLORATORY_PREFIX3_THRESHOLDS",
+    "HIDDEN_GENE_NUMERICAL_RECONSTRUCTION_AS_FOUNDATION_OBJECTIVE",
+    "EXPRESSION_ATTACKER_SCORE_AS_JEPA_TRAINING_LOSS"
   ]
 }
