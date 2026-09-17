@@ -250,7 +250,7 @@ class Full104ManifestStreamV1:
                 raise ValueError(f"metadata row count mismatch: {row['block_key']}")
             if np.any(selection < 0) or np.any(selection >= self.expected_cell_count):
                 raise ValueError(f"selection_row out of range: {row['block_key']}")
-            if np.any(seen_selection[selection]):
+            if np.unique(selection).size != selection.size or np.any(seen_selection[selection]):
                 raise ValueError("duplicate selection_row across expression blocks")
             seen_selection[selection] = True
             if np.any(expression_rows < 0):
