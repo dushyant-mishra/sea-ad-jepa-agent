@@ -1,12 +1,10 @@
 """Current V5 teacher-target semantic successor with enumerated state semantics.
 
-This successor fixes the V1 semantic hole: V1 required several semantic labels to be
-nonempty but did not constrain what they meant. V2 binds the target to biological/cellular
-latent state, requires query-local semantics, forbids hidden-gene scalar reconstruction as
-the objective, and binds a remaining-RNA-necessity authority proving that query identity
-and lawful global biological context cannot solve the task by themselves.
-
-Historical V1 remains untouched for provenance. This module cannot authorize training.
+V2 binds the target to biological/cellular latent state, requires query-local
+semantics, forbids hidden-gene scalar reconstruction, and binds both the
+remaining-RNA necessity rule and the exact live target-construction authority.
+Historical V1 remains untouched for provenance. This module cannot authorize
+training.
 """
 from __future__ import annotations
 
@@ -125,3 +123,17 @@ class TeacherTargetSemanticsAuthorityV2:
                 "training_authorized": False,
             }
         )
+
+
+def bind_teacher_semantics_to_target_construction_v1(
+    teacher_target: TeacherTargetSemanticsAuthorityV2,
+    target_construction: Any,
+) -> None:
+    """Require the semantic authority to bind the exact live target constructor."""
+    teacher_target.validate()
+    if getattr(target_construction, "training_authorized", False) is not False:
+        raise ValueError("target construction unexpectedly authorizes training")
+    target_construction.validate()
+    observed = _sha(target_construction.canonical_digest(), "target construction canonical digest")
+    if observed != teacher_target.target_construction_authority_sha256:
+        raise ValueError("target construction authority root mismatch")
