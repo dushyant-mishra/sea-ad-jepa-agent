@@ -1,0 +1,23 @@
+{
+  "schema": "JEPA_CURRENT_WORK_CHECKPOINT_V1",
+  "date": "2026-09-17",
+  "branch": "analysis/v5-ridge8-expanded-validation-20260917",
+  "parent_head": "d909ca4255672a3d0f26b110e7093f2369a5fc41",
+  "status": "RIDGE8_EXPANDED_DISCOVERY_VALIDATION__EXPLORATORY_ONLY__TRAINING_OFF",
+  "scientific_scope": "Discovery-side masking successor validation only. No FULL104 successor outcome inspection, no D_shared, no pathology/protected outcomes, no training.",
+  "current_tasks": [
+    "preserve unified 32-target ridge-scored RIDGE8/TOP8/PREFIX3 results",
+    "preserve outside-original-800 32-target challenge results",
+    "preserve nonlinear attacker checks",
+    "preserve STABLE10/STABLE15 diagnosis",
+    "prepare prospective FULL104 masking qualification contract only after discovery-side evidence is reconciled"
+  ],
+  "authority_boundary": "EXPLORATORY_SUCCESSOR_EVIDENCE_NOT_AUTHORITY",
+  "training_authorized": false,
+  "protected_outcomes_opened": false,
+  "notes": [
+    "RIDGE8 remains exploratory; cap 8 and mask burden are not production authority.",
+    "PREFIX3 remains a selective comparator and is not declared superseded.",
+    "GitHub is the running ledger for verified scripts, results, provenance, and handoff notes."
+  ]
+}
