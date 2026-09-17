@@ -2,7 +2,7 @@
 
 Date: 2026-09-17
 
-Status: `CURRENT_V5_CANONICAL_MASKING_RUNTIME_FRAMEWORK_READY__FULL104_QUALIFICATION_PENDING__TRAINING_OFF`
+Status: `CURRENT_V5_STREAMING_MASKING_EXECUTOR_PARITY_READY__FULL104_GPU_QUALIFICATION_PENDING__TRAINING_OFF`
 
 ## Read first
 
@@ -12,7 +12,7 @@ The current implementation/governance lane is:
 
 Verified code anchor:
 
-`ffbdcce060abb1c9c4463e0505d83b12c342c16e`
+`8ee5d0a5be483e18819a6f6975efa183327b2158`
 
 Read in this order:
 
@@ -50,35 +50,45 @@ Do not inspect protected/pathology/DEV/SEALED outcomes while upstream design cho
 - support/estimability and donor-uniform/cell-uniform-within-donor base estimand are frozen.
 - Stage-A structural qualification is complete: 11 PASS / 0 FAIL / 0 UNPROVEN. Geometry-specific memorization must still be rerun after final production geometry is selected.
 - current V2/V3 runtime trust chain is implemented: authority roots/closure, preexecution, receipt, explicit training-authority schema, optimizer V3 and checkpoint V2.
-- masking qualification now has separate design, numeric-parameter, frozen-run-contract and execution-V2 schemas.
-- the canonical in-memory primary masking qualification algorithm is implemented in `src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py` and CI-verified.
-- legacy masking qualification execution V1 is quarantined from current closure.
-- exact code head `ffbdcce0...` passed runtime closure, FULL104 runner, remaining-RNA/target-semantics and Stage-A workflows; Stage-A and remaining-RNA suites fail closed on skipped tests.
+- masking qualification has separate design, numeric-parameter, frozen-run-contract and execution-V2 schemas.
+- canonical in-memory masking reference: `src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py`.
+- authenticated Level-4 streaming/sufficient-statistics adapter: `src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py`.
+- the streaming adapter applies `log1p(raw*10000/source_library)` exactly once, never requires a monolithic 4,553,407 x 17,186 CSR, and is parity-tested against the canonical reference for all four primary masking arms.
+- hash corruption and duplicate `selection_row` conditions fail closed.
+- the streaming executor is included in the current Stage-A spillover/source inventory.
+- exact code head `8ee5d0a5...` passed all four current workflows, including no-skip gates.
+
+Verified workflow runs at the code anchor:
+
+- runtime closure: `35278901437` — SUCCESS
+- FULL104 masking runner + streaming parity: `35278901430` — SUCCESS
+- remaining-RNA / target-semantics successor: `35278901433` — SUCCESS
+- Stage-A spillover firewall: `35278901569` — SUCCESS
 
 ## What is NOT closed
 
-Do not confuse schema/mechanics tests with real scientific execution.
+Do not confuse schema/mechanics/parity tests with real scientific execution.
 
-- terminal FULL104 masking qualification has not been executed under the new frozen run contract;
+- terminal FULL104 masking qualification has not been executed under the prospectively frozen real run contract;
 - no production masking policy is selected/frozen from RIDGE8 exploratory evidence;
 - no final training authority has been issued;
-- the heavy FULL104 execution path still needs a streaming/sufficient-statistics adapter over authenticated sharded expression/Level-4 data with parity to the canonical in-memory reference;
 - `docs/agent/CURRENT_WORK_CHECKPOINT.json` must be built/validated on a canonical Git worktree before authority-bearing promotion or expensive FULL104 execution;
+- the GPU/full-data lane must bind the authenticated physical Level-4 substrate, instantiate/freeze the real design + numeric parameters + run contract, and bind exact source SHA-256 values before qualification outcomes are opened;
+- the streaming adapter is parity-correct but has not itself executed the 4.55M-cell terminal run in this environment;
 - remaining real-evidence gates must close before training, including healthy-current-teacher remaining-RNA evidence, measurement robustness, production geometry + geometry-specific memorization, and exact runtime provenance.
 
 ## Immediate next sequence
 
-1. Design and implement the streaming FULL104 masking-qualification adapter using the authenticated physical layout; do not require a monolithic 4,553,407 x 17,186 CSR.
-2. Prove parity against `full104_masking_qualification_runner_v1.py` on controlled fixtures.
-3. On the canonical worktree, build/validate `CURRENT_WORK_CHECKPOINT.json`.
-4. Prospectively instantiate/freeze masking design + numeric parameters + run contract, including exact runner/executor source SHA-256.
-5. Execute the ladder through terminal `FULL_COMMON_CORE_17186_V1` on the GPU/full-data machine with all required controls and no retuning.
-6. Bind the actual execution result and selected policy, then close remaining real-evidence authorities.
-7. Issue explicit training authority only after the actual current graph closes.
+1. On the canonical GPU Git worktree, build/validate `CURRENT_WORK_CHECKPOINT.json`.
+2. Authenticate/bind the FULL104 Level-4 physical substrate and donor/source/fold/target/universe artifacts; do not substitute a smaller cache.
+3. Prospectively instantiate/freeze the masking design, numeric parameter authority and run contract. Bind the canonical in-memory runner source in the design and the exact streaming executor source used for execution in the run contract before inspecting terminal outcomes.
+4. Execute the qualification ladder through terminal `FULL_COMMON_CORE_17186_V1` with all required controls, precision rules and nonlinear challenge without retuning.
+5. Bind the actual `MaskingQualificationExecutionAuthorityV2` result and selected policy only if the frozen contract passes.
+6. Close remaining real-evidence authorities, then issue explicit final training authority only after the actual current graph closes.
 
 ## Do not redo
 
-Do not reopen FULL104 lineage, K2 partition, VALUE_ONLY_256, support/estimability, base estimand, T0/T1/C2 history, QID/F1, Stage81A3 scope, Layer-2 shortcut audit, target-identity discovery, or Stage-A structural qualification unless their inputs materially change.
+Do not reopen FULL104 lineage, K2 partition, VALUE_ONLY_256, support/estimability, base estimand, T0/T1/C2 history, QID/F1, Stage81A3 scope, Layer-2 shortcut audit, target-identity discovery, Stage-A structural qualification, or streaming-reference parity unless their inputs materially change.
 
 ## Load-bearing rules
 
@@ -95,3 +105,5 @@ Do not reopen FULL104 lineage, K2 partition, VALUE_ONLY_256, support/estimabilit
 `NO_LEGACY_MASKING_EXECUTION_V1_IN_CURRENT_CLOSURE`
 
 `NO_SILENT_SKIPPED_CRITICAL_TESTS`
+
+`NO_MONOLITHIC_FULL104_MATRIX_REQUIRED_FOR_MASKING_QUALIFICATION`
