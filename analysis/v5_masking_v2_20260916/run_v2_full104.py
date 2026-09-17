@@ -230,11 +230,27 @@ for level, bpo in enumerate(LADDER, start=1):
     results[f'level{level}'] = {'blocks_per_op': bpo, 'cells': int(V.shape[0]), 'donors': int(n_donor),
                                'targets': int(N_TARGETS), 'burden': burden,
                                'targets_with_shortcut': n_short,
+                               'shortcut_set_size_histogram': {
+                                   str(k): int(sum(1 for r in per_target if r['n_shortcut'] == k))
+                                   for k in range(0, SHORTCUT_CAP + 1)},
+                               'target_folds_with_nonempty_shortcut': int(
+                                   sum(1 for r in per_target if r['n_shortcut'] > 0)),
+                               'target_folds_total': int(len(per_target)),
+                               'mean_shortcut_set_size_when_nonempty': (
+                                   float(np.mean([r['n_shortcut'] for r in per_target
+                                                  if r['n_shortcut'] > 0]))
+                                   if any(r['n_shortcut'] > 0 for r in per_target) else 0.0),
+                               'max_shortcut_set_size': int(max([r['n_shortcut'] for r in per_target], default=0)),
                                'conditions': out,
                                'reduction_pct_V2_vs_U': float(red),
                                'abs_reduction': float(u.mean() - v2.mean()) if u.size else None,
                                'frac_improved': float(np.mean(v2 < u)) if u.size else None,
-                               'per_target': per_target[:400]}
+                               'per_target': per_target}
+    hist = results[f'level{level}']['shortcut_set_size_histogram']
+    print('  shortcut-set size histogram (0..8): %s' % {k: hist[k] for k in sorted(hist, key=int)}, flush=True)
+    print('  target-folds with a NON-EMPTY capped shortcut set: %d of %d'
+          % (results[f'level{level}']['target_folds_with_nonempty_shortcut'],
+             results[f'level{level}']['target_folds_total']), flush=True)
     print('  U %.4f  V1 %.4f  V2 %.4f   reduction %.1f%%  shortcuts found %d/%d'
           % (out.get('U', {}).get('mean', float('nan')), out.get('V1', {}).get('mean', float('nan')),
              out.get('V2', {}).get('mean', float('nan')), red, n_short, N_TARGETS * OUTER_FOLDS), flush=True)
