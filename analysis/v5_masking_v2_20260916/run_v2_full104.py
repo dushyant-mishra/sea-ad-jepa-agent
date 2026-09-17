@@ -10,7 +10,7 @@ import numpy as np
 sys.path.insert(0, r'D:/jepa_mask_v2_20260916/src')
 from sea_ad_jepa.v5.shortcut_predictability_v2 import (
     CheapRidgeAttackerV1, DonorBalancedScreenerV1, donor_standardize,
-    baseline_sums, baseline_from_sums,
+    baseline_sums, baseline_from_sums, combine_direction_shortcuts,
     global_cell_state_baseline, inner_rotation, stratified_outer_folds, _rank_columns)
 
 P = pathlib.Path(r'D:/Jepa project')
@@ -192,7 +192,11 @@ for level, bpo in enumerate(LADDER, start=1):
 
             sAB, pAB = _direction(iA, rowsB, donB, rowsA, donA)
             sBA, pBA = _direction(iB, rowsA, donA, rowsB, donB)
-            short = sorted(set(sAB) | set(sBA))        # UNION_WITH_SUPPORT
+            # UNION_WITH_SUPPORT then the deterministic GLOBAL cap. Each direction may
+            # return up to SHORTCUT_CAP; their union must still not exceed it.
+            _, acc_tr = screen(rho, tr_d, ti, src_of_donor, allvis, CAND_M)
+            short = combine_direction_shortcuts([sAB, sBA], acc_tr, SHORTCUT_CAP)
+            assert len(short) <= SHORTCUT_CAP, "global shortcut cap violated"
             base_pr = max(pAB, pBA)
             if short: n_short += 1
             # ---- three matched-budget conditions, fresh refit each

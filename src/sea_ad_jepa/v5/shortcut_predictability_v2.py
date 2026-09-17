@@ -361,6 +361,37 @@ def baseline_from_sums(values: np.ndarray, s1: np.ndarray, s2: np.ndarray,
     return np.column_stack([mean, np.sqrt(var)])
 
 
+def combine_direction_shortcuts(direction_sets, score: np.ndarray, cap: int):
+    """UNION_WITH_SUPPORT across inner directions, then a deterministic GLOBAL cap.
+
+    Two independent directions each return at most `cap` addresses, so their union can
+    reach 2*cap and silently exceed the frozen shortcut cap -- handing the targeted mask
+    twice its allowed capacity even at matched total burden.
+
+    The cap must not be applied by truncating an index-sorted union: that would reintroduce
+    the address-index dependence that defeated an earlier implementation. Ranking is:
+
+      1. support count across directions, descending  (found by BOTH directions wins)
+      2. combined screening/discovery score, descending
+      3. canonical address index, ascending -- ties only
+
+    Deterministic and evidence-led at every level above the tie-break.
+    """
+    if not isinstance(cap, int) or cap < 1:
+        raise ValueError("cap must be a positive int")
+    support = {}
+    for one in direction_sets:
+        for a in {int(x) for x in one}:
+            support[a] = support.get(a, 0) + 1
+    if not support:
+        return []
+    items = np.array(sorted(support), dtype=np.int64)
+    sup = np.array([support[int(a)] for a in items], dtype=np.float64)
+    sc = np.asarray(score, dtype=np.float64)[items]
+    order = np.lexsort((items, -sc, -sup))          # last key is primary
+    return [int(items[i]) for i in order[:cap]]
+
+
 def donor_standardize(M: np.ndarray, donor_codes: np.ndarray) -> np.ndarray:
     """Z-score every feature WITHIN each donor, using that donor's own visible cells.
 

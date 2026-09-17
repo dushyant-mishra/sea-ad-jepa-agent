@@ -13,6 +13,7 @@ import pytest
 
 from sea_ad_jepa.v5.shortcut_predictability_v2 import (
     CheapRidgeAttackerV1,
+    combine_direction_shortcuts,
     global_cell_state_baseline,
     DonorBalancedScreenerV1,
     ForbiddenShortcutInputError,
@@ -317,8 +318,12 @@ def _production_path(V, donor, src, meas, target, burden, seed=0):
                 return list(cnd[:n])
         return list(cnd[:min(SHORTCUT_CAP, cnd.size)])
 
-    short = sorted(set(direction(iA, rowsB, donB, rowsA, donA))
-                   | set(direction(iB, rowsA, donA, rowsB, donB)))
+    sAB = direction(iA, rowsB, donB, rowsA, donA)
+    sBA = direction(iB, rowsA, donA, rowsB, donB)
+    acc_tr = scr.score(values=V[np.flatnonzero(np.isin(donor, tr_d))], target=target,
+                       donor_codes=donor[np.flatnonzero(np.isin(donor, tr_d))],
+                       eligible=allvis, source_by_donor=src)
+    short = combine_direction_shortcuts([sAB, sBA], acc_tr, SHORTCUT_CAP)
     g = np.random.default_rng(seed)
     pool = np.setdiff1d(np.arange(n_addr), np.array([target]))
     pre = short[:burden - 1]
@@ -377,3 +382,132 @@ def test_address_renumbering_does_not_change_which_columns_are_selected() -> Non
     back = sorted(perm[x] for x in short_b)
     assert truth[0] in back, (
         f"renumbering changed the selection: {sorted(short_a)} -> {back}")
+
+
+# =================================================================== GLOBAL CAP
+# D-D: each inner direction may return up to SHORTCUT_CAP, so their union could reach
+# 2*cap and hand the targeted mask twice its allowed capacity even at matched burden.
+# The cap must not be applied by truncating an index-sorted union, which would reintroduce
+# the address-index dependence that D-A eliminated.
+def test_combined_shortcut_set_never_exceeds_the_frozen_cap() -> None:
+    score = np.linspace(1.0, 0.0, 200)
+    for cap in (1, 3, 8):
+        for a, b in ((range(8), range(8, 16)), (range(8), range(4, 12)), (range(8), range(8))):
+            out = combine_direction_shortcuts([list(a), list(b)], score, cap)
+            assert len(out) <= cap
+            assert len(set(out)) == len(out), "duplicates in combined shortcut set"
+
+
+def test_cap_is_actually_exercised_by_two_disjoint_full_directions() -> None:
+    """sAB=8 and sBA=8 with zero overlap: the union is 16 and must be cut to 8."""
+    score = np.zeros(200)
+    score[np.arange(16)] = np.linspace(0.9, 0.1, 16)
+    sAB, sBA = list(range(8)), list(range(8, 16))
+    out = combine_direction_shortcuts([sAB, sBA], score, 8)
+    assert len(set(sAB) | set(sBA)) == 16, "fixture does not exercise the cap"
+    assert len(out) == 8
+    # kept by SCORE, not by address number: top-8 scores are addresses 0..7 here,
+    # but shuffle the scores and the selection must follow the scores
+    score2 = np.zeros(200)
+    score2[np.arange(16)] = np.concatenate([np.linspace(0.1, 0.4, 8), np.linspace(0.9, 0.5, 8)])
+    out2 = combine_direction_shortcuts([sAB, sBA], score2, 8)
+    assert set(out2) == set(range(8, 16)), f"cap selected by index, not evidence: {out2}"
+
+
+def test_addresses_found_by_both_directions_outrank_higher_scoring_singletons() -> None:
+    score = np.zeros(200)
+    score[5] = 0.20          # found by BOTH directions, lower score
+    score[9] = 0.95          # found by ONE direction, higher score
+    out = combine_direction_shortcuts([[5, 9], [5]], score, 1)
+    assert out == [5], "support count must outrank raw score"
+
+
+def test_planted_partner_survives_the_global_cap() -> None:
+    V, d, s, m, truth = world(np.random.default_rng(71), plant="single")
+    short, mask = _production_path(V, d, s, m, TARGET, burden=40)
+    assert len(short) <= SHORTCUT_CAP, f"cap violated: {len(short)}"
+    assert truth[0] in short, "planted partner lost to the global cap"
+    assert truth[0] in mask
+
+
+def test_capped_selection_is_invariant_to_address_renumbering() -> None:
+    """The cap must follow the data, not the numbering."""
+    rng = np.random.default_rng(8)
+    score = rng.random(200)
+    sAB, sBA = list(range(8)), list(range(6, 14))
+    base = combine_direction_shortcuts([sAB, sBA], score, 8)
+    perm = rng.permutation(200)
+    inv = np.empty_like(perm); inv[perm] = np.arange(200)
+    score_p = np.empty_like(score); score_p[inv] = score
+    out_p = combine_direction_shortcuts([[int(inv[a]) for a in sAB],
+                                         [int(inv[a]) for a in sBA]], score_p, 8)
+    assert sorted(int(perm[a]) for a in out_p) == sorted(base), (
+        "renumbering changed which addresses the cap kept")
+
+
+def test_redundant_shortcuts_are_capped_by_evidence_not_address_number() -> None:
+    V, d, s, m, truth = world(np.random.default_rng(72), plant="redundant")
+    short, _ = _production_path(V, d, s, m, TARGET, burden=40)
+    assert len(short) <= SHORTCUT_CAP
+    kept = [t for t in truth if t in short]
+    assert len(kept) >= 2, f"cap discarded real redundant partners: kept {kept} of {truth}"
+
+
+def test_combined_cap_is_not_low_index_biased() -> None:
+    """A high-evidence HIGH-index address must beat a low-evidence LOW-index one."""
+    score = np.zeros(200)
+    score[3] = 0.05          # low index, weak evidence
+    score[177] = 0.90        # high index, strong evidence
+    out = combine_direction_shortcuts([[3, 177], [3, 177]], score, 1)
+    assert out == [177], f"cap preferred the low-index address: {out}"
+
+
+def test_integration_full_chain_planted_partner_and_attacker_loses_shortcut() -> None:
+    """candidate set -> direction set -> globally capped set -> mask -> attacker loses it."""
+    V, d, s, m, truth = world(np.random.default_rng(81), plant="single")
+    partner = truth[0]
+    folds = stratified_outer_folds(s, 4, "TEST_V2")
+    val_d, tr_d = np.flatnonzero(folds == 0), np.flatnonzero(folds != 0)
+    iA, iB = inner_rotation(tr_d, s, "TEST_V2")
+    rowsA = np.flatnonzero(np.isin(d, iA)); rowsB = np.flatnonzero(np.isin(d, iB))
+    trrows = np.flatnonzero(np.isin(d, tr_d)); evrows = np.flatnonzero(np.isin(d, val_d))
+    eligible = m.all(0).copy()
+    allvis = eligible.copy(); allvis[TARGET] = False
+    scr = DonorBalancedScreenerV1(candidate_budget=BUDGET)
+    atk = CheapRidgeAttackerV1(alpha=ALPHA, max_features=MAXF)
+
+    cand = scr.candidates(values=V[rowsA], target=TARGET, donor_codes=d[rowsA],
+                          eligible=allvis, source_by_donor=s)
+    assert partner in cand, "1. planted partner missing from the candidate set"
+
+    short, mask = _production_path(V, d, s, m, TARGET, burden=40)
+    assert partner in short, "2/3. planted partner missing from the capped shortcut set"
+    assert len(short) <= SHORTCUT_CAP, "global cap violated"
+    assert partner in mask, "4. planted partner missing from the actual V2 mask"
+
+    # 5. a FRESH attacker, refit on what remains visible, must lose the shortcut
+    def fresh(maskset):
+        mcols = np.array(sorted(maskset), dtype=np.int64)
+        vis = eligible.copy(); vis[mcols] = False
+        fc = scr.candidates(values=V[trrows], target=TARGET, donor_codes=d[trrows],
+                            eligible=vis, source_by_donor=s)
+        base = global_cell_state_baseline(V, vis)
+        return atk.incremental_r2(values=V, target=TARGET, features=fc, visible=None,
+                                  train_rows=trrows, eval_rows=evrows,
+                                  eval_donor_codes=d[evrows], train_donor_codes=d[trrows],
+                                  source_by_donor=s, precomputed_baseline=base)["partial_r2"]
+
+    # A uniform mask covering 20 percent of addresses hides the partner by luck about one
+    # time in five. Search deterministically for a seed where it does NOT, so the contrast
+    # is "targeted removal" versus "partner still visible" rather than a coin flip.
+    pool = np.setdiff1d(np.arange(V.shape[1]), np.array([TARGET]))
+    umask = None
+    for seed in range(50):
+        cand_mask = set(np.random.default_rng(seed).choice(pool, size=39, replace=False).tolist()) | {TARGET}
+        if partner not in cand_mask:
+            umask = cand_mask
+            break
+    assert umask is not None, "no seed left the partner visible under uniform masking"
+    u_r2, v2_r2 = fresh(umask), fresh(mask)
+    assert u_r2 > 0.3, f"fixture invalid: uniform mask left no shortcut to remove ({u_r2:.3f})"
+    assert v2_r2 < u_r2, f"5. fresh attacker did not lose the shortcut ({v2_r2:.3f} vs {u_r2:.3f})"
