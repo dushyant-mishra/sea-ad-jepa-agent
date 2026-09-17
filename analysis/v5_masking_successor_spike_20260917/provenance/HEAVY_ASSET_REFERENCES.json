@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-17",
+  "status": "REFERENCE_ONLY_NOT_COMMITTED_DUE_SIZE",
+  "inputs": [
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip",
+      "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+      "local_path_used": "/mnt/data/FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip",
+      "notes": "Frozen 50k discovery expression sample; 41,238-address sparse matrix."
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"
+    },
+    {
+      "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "local_path_used": "/mnt/data/FOUNDATION_CALIBRATION_BUNDLE_20260824.zip"
+    },
+    {
+      "name": "FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz",
+      "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+      "notes": "42 x 41,238 support-state matrix; common-core support derived from measured-scalar across all operators."
+    }
+  ],
+  "derived_heavy_not_committed": [
+    "X_common6000.npz",
+    "donor_target_abs_corr.npy",
+    "negative_corr_8x6000.npy",
+    "csr_raw/*",
+    "universe/target .npy arrays"
+  ]
+}
