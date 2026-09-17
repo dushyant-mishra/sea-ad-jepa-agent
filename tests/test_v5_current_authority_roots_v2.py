@@ -18,6 +18,8 @@ def test_v2_root_vocabulary_is_exact_unique_and_explicit() -> None:
         "address_universe_ladder_authority_sha256",
         "masking_rng_replay_authority_sha256",
         "masking_qualification_design_authority_sha256",
+        "masking_qualification_parameters_authority_sha256",
+        "masking_qualification_run_contract_authority_sha256",
         "masking_qualification_execution_authority_sha256",
         "masking_authority_sha256",
         "target_construction_authority_sha256",
