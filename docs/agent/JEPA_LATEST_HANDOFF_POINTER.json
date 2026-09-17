@@ -1,9 +1,9 @@
 {
   "schema": "JEPA_LATEST_HANDOFF_POINTER_V16",
   "date": "2026-09-17",
-  "status": "CURRENT_V5_CANONICAL_MASKING_RUNTIME_FRAMEWORK_READY__FULL104_QUALIFICATION_PENDING__TRAINING_OFF",
+  "status": "CURRENT_V5_STREAMING_MASKING_EXECUTOR_PARITY_READY__FULL104_GPU_QUALIFICATION_PENDING__TRAINING_OFF",
   "working_branch": "impl/v5-remaining-rna-target-semantics-20260917",
-  "verified_code_head": "ffbdcce060abb1c9c4463e0505d83b12c342c16e",
+  "verified_code_head": "8ee5d0a5be483e18819a6f6975efa183327b2158",
   "pull_request": 18,
   "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260917_V5_CANONICAL_MASKING_RUNTIME_CURRENT.md",
   "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260917_V5_CANONICAL_MASKING_RUNTIME_CURRENT.json",
@@ -11,5 +11,5 @@
   "active_execution_plan_path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
   "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
   "ridge8_provenance_path": "analysis/v5_masking_successor_spike_20260917/provenance/RIDGE8_EXPANDED_VALIDATION_PROVENANCE_20260917.md",
-  "instruction": "Open START_HERE.md, then this pointer, then the canonical masking/runtime handoff and state. Re-fetch the live impl/v5-remaining-rna-target-semantics-20260917 head. Do not repeat settled FULL104-lineage, VALUE_ONLY_256, support/estimability, base-estimand, T0/T1/QID/F1/Stage81A3/Layer-2 or Stage-A structural audits unless inputs changed. The current runtime/authority framework and canonical in-memory masking algorithm are implemented and CI-verified, but terminal FULL104 masking qualification has not been executed and no masking policy or training authority is frozen. The next engineering item is a streaming FULL104 executor over authenticated shards/Level-4 blocks with parity to the canonical reference. Build/validate CURRENT_WORK_CHECKPOINT on a canonical worktree before authority-bearing promotion or expensive execution. Keep training OFF and protected/D_shared outcomes sealed."
+  "instruction": "Open START_HERE.md, then this pointer, then the canonical masking/runtime handoff and state. Re-fetch the live impl/v5-remaining-rna-target-semantics-20260917 head. Do not repeat settled FULL104-lineage, VALUE_ONLY_256, support/estimability, base-estimand, T0/T1/QID/F1/Stage81A3/Layer-2, Stage-A structural or streaming-reference parity work unless inputs changed. The current runtime/authority framework, canonical in-memory masking reference and authenticated Level-4 streaming/sufficient-statistics adapter are implemented and CI-verified at code anchor 8ee5d0a5be483e18819a6f6975efa183327b2158. Terminal FULL104 masking qualification has not been executed and no masking policy or training authority is frozen. The next lane is canonical-worktree checkpoint + authenticated GPU substrate binding + prospective design/parameter/run-contract freeze, followed by terminal FULL104 execution. Keep training OFF and protected/D_shared outcomes sealed."
 }
