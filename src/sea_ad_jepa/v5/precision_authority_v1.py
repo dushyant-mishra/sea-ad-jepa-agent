@@ -42,6 +42,12 @@ def _positive_int(value: object, name: str) -> int:
     return value
 
 
+def _nonnegative_int(value: object, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError(f"{name} must be a nonnegative integer")
+    return value
+
+
 def _canonical_sha(payload: Mapping[str, Any]) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -83,9 +89,9 @@ class QualificationPrecisionAuthorityV1:
             APPROVED_INSUFFICIENT_SUPPORT_POLICY_IDS,
             "insufficient_support_policy_id",
         )
-        numerator = _positive_int(self.confidence_level_numerator, "confidence_level_numerator")
+        numerator = _nonnegative_int(self.confidence_level_numerator, "confidence_level_numerator")
         denominator = _positive_int(self.confidence_level_denominator, "confidence_level_denominator")
-        if numerator >= denominator:
+        if numerator == 0 or numerator >= denominator:
             raise ValueError("confidence level must lie strictly between zero and one")
         _positive_int(self.bootstrap_replicates, "bootstrap_replicates")
         _positive_int(self.min_target_count, "min_target_count")
