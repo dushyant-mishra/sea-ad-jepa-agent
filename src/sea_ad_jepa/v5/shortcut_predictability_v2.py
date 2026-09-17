@@ -129,13 +129,30 @@ class DonorBalancedScreenerV1:
         return acc / max(wsum, 1e-12)
 
     def candidates(self, **kw) -> np.ndarray:
+        """Top-m candidates IN SCREENING-SCORE ORDER, descending, ties by address index.
+
+        Order is load-bearing, not cosmetic: the frozen shortcut-set rule takes the
+        smallest PREFIX of this list. Returning it in address-index order (as an earlier
+        implementation did, via np.sort) makes that prefix an arbitrary low-index subset
+        rather than the strongest candidates -- which silently defeats the entire mask.
+        """
         s = self.score(**kw)
         m = min(self.candidate_budget, int((s > 0).sum()))
         if m <= 0:
             return np.empty(0, dtype=np.int64)
-        # deterministic: by -score then by address index
-        idx = np.lexsort((np.arange(s.size), -s))[:m]
-        return np.sort(idx.astype(np.int64))
+        return np.lexsort((np.arange(s.size), -s))[:m].astype(np.int64)
+
+    def order_by_score(self, candidates: np.ndarray, **kw) -> np.ndarray:
+        """Re-rank an arbitrary candidate SET into contract order (score desc, index tie).
+
+        Needed because a set union (e.g. of the two inner rotation directions) returns
+        index-sorted output and would otherwise destroy the ordering the prefix rule needs.
+        """
+        cand = np.asarray(candidates, dtype=np.int64)
+        if cand.size == 0:
+            return cand
+        s = self.score(**kw)
+        return cand[np.lexsort((cand, -s[cand]))]
 
 
 # --------------------------------------------------------------------------- attacker
@@ -279,11 +296,14 @@ class CheapRidgeAttackerV1:
         # PARTIAL R2: of the variance global cell state could NOT explain, how much do the
         # candidates explain? Raw incremental R2 is diluted when a strong global factor
         # dominates target variance -- a planted shortcut scored only 0.084 that way.
+        # NO CLIPPING. The frozen contract defines partial R2 as (full - base)/(1 - base)
+        # and says nothing about clipping. Clamping to [-1, 1] changes condition means
+        # unequally across U / V1 / V2 and would corrupt the comparison.
         denom = 1.0 - r2_base
         partial = (r2_full - r2_base) / denom if denom > 1e-9 else 0.0
         return {"baseline_r2": r2_base, "full_r2": r2_full,
                 "incremental_r2": r2_full - r2_base,
-                "partial_r2": float(np.clip(partial, -1.0, 1.0)),
+                "partial_r2": float(partial),
                 "per_donor_baseline": per_base, "per_donor_full": per_full,
                 "evaluated_donors": len(per_full)}
 

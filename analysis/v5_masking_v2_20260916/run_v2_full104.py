@@ -106,8 +106,10 @@ def screen(rho, donors, targets_idx, src_of_donor, visible, budget):
     acc /= max(w, 1e-12)
     acc[~visible] = -1.0
     m = min(budget, int((acc > 0).sum()))
-    if m <= 0: return np.empty(0, np.int64)
-    return np.sort(np.lexsort((np.arange(acc.size), -acc))[:m].astype(np.int64))
+    if m <= 0: return np.empty(0, np.int64), acc
+    # SCORE ORDER, descending, ties by address index. The frozen shortcut rule takes a
+    # PREFIX of this list, so index-sorting here would make that prefix arbitrary.
+    return np.lexsort((np.arange(acc.size), -acc))[:m].astype(np.int64), acc
 
 
 ATK = CheapRidgeAttackerV1(alpha=ALPHA, max_features=MAXF)
@@ -158,27 +160,40 @@ for level, bpo in enumerate(LADDER, start=1):
         if val_d.size < 3: continue
         iA, iB = inner_rotation(tr_d, src_of_donor, NS)
         ev_rows = np.flatnonzero(np.isin(dcode, val_d)); ev_don = dcode[ev_rows]
-        fitrows = np.flatnonzero(np.isin(dcode, iB)); fitdon = dcode[fitrows]
+        rowsA = np.flatnonzero(np.isin(dcode, iA)); donA = dcode[rowsA]
+        rowsB = np.flatnonzero(np.isin(dcode, iB)); donB = dcode[rowsB]
         trrows = np.flatnonzero(np.isin(dcode, tr_d)); trdon = dcode[trrows]
         v1nb = v1_neighbours(rho, tr_d, targets, src_of_donor, N_ADDR)
         for ti, t in enumerate(targets):
             allvis = np.ones(N_ADDR, bool); allvis[t] = False
             base_disc = baseline_from_sums(V, S1, S2, np.array([t]), N_ADDR)
             # ---- discovery (training donors only), union of both rotation directions
-            cA = screen(rho, iA, ti, src_of_donor, allvis, CAND_M)
-            cB = screen(rho, iB, ti, src_of_donor, allvis, CAND_M)
-            cand = np.union1d(cA, cB)
-            disc = partial_r2(V, t, cand, base_disc, fitrows, fitdon, trrows, trdon, src_of_donor)
-            base_pr = disc['partial_r2']
-            short = []
-            if base_pr >= NO_SHORTCUT_FLOOR and cand.size:
-                for n in range(1, min(SHORTCUT_CAP, cand.size) + 1):
-                    trial = np.setdiff1d(cand, cand[:n])
-                    d2 = partial_r2(V, t, trial, base_disc, fitrows, fitdon, trrows, trdon, src_of_donor)
-                    if d2['partial_r2'] <= SHORTCUT_REDUCTION * base_pr:
-                        short = list(cand[:n]); break
-                else:
-                    short = list(cand[:min(SHORTCUT_CAP, cand.size)])
+            # Two INDEPENDENT discovery directions, as the frozen contract specifies:
+            #   A screens -> B fits -> evaluate on A   (A never fits)
+            #   B screens -> A fits -> evaluate on B   (B never fits)
+            # The evaluation side is never the fitting side, so discovery is genuinely
+            # cross-fitted. Shortcut sets are combined afterwards under UNION_WITH_SUPPORT.
+            def _direction(screen_d, fit_rows, fit_don, eval_rows, eval_don):
+                cnd, _ = screen(rho, screen_d, ti, src_of_donor, allvis, CAND_M)
+                if cnd.size == 0:
+                    return [], 0.0
+                d0 = partial_r2(V, t, cnd, base_disc, fit_rows, fit_don,
+                                eval_rows, eval_don, src_of_donor)
+                p0 = d0['partial_r2']
+                if p0 < NO_SHORTCUT_FLOOR:
+                    return [], p0
+                for n in range(1, min(SHORTCUT_CAP, cnd.size) + 1):
+                    trial = np.setdiff1d(cnd, cnd[:n])
+                    d2 = partial_r2(V, t, trial, base_disc, fit_rows, fit_don,
+                                    eval_rows, eval_don, src_of_donor)
+                    if d2['partial_r2'] <= SHORTCUT_REDUCTION * p0:
+                        return list(cnd[:n]), p0
+                return list(cnd[:min(SHORTCUT_CAP, cnd.size)]), p0
+
+            sAB, pAB = _direction(iA, rowsB, donB, rowsA, donA)
+            sBA, pBA = _direction(iB, rowsA, donA, rowsB, donB)
+            short = sorted(set(sAB) | set(sBA))        # UNION_WITH_SUPPORT
+            base_pr = max(pAB, pBA)
             if short: n_short += 1
             # ---- three matched-budget conditions, fresh refit each
             g = seeded(f'mask|{level}|{f}|{int(t)}')
@@ -197,7 +212,7 @@ for level, bpo in enumerate(LADDER, start=1):
             for cname, mset in masks.items():
                 mcols = np.array(sorted(mset), dtype=np.int64)
                 vis = np.ones(N_ADDR, bool); vis[mcols] = False
-                fc = screen(rho, np.concatenate([iA, iB]), ti, src_of_donor, vis, CAND_M)
+                fc, _ = screen(rho, np.concatenate([iA, iB]), ti, src_of_donor, vis, CAND_M)
                 bse = baseline_from_sums(V, S1, S2, mcols, N_ADDR)
                 fr = partial_r2(V, t, fc, bse, trrows, trdon, ev_rows, ev_don, src_of_donor)
                 rec[cname].append(fr['partial_r2'])

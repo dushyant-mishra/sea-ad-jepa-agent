@@ -1,5 +1,27 @@
 # V5 masking V2 — cross-fitted shortcut predictability, findings 2026-09-16
 
+> ## ⚠ REAL-DATA RESULTS IN THIS DOCUMENT ARE INVALIDATED
+> ### `V2_FULL104_EXECUTION_INVALIDATED_BY_CONTRACT_IMPLEMENTATION_DEFECTS`
+>
+> A real-data positive control — planting a known shortcut into the actual FULL104 matrix —
+> exposed three defects in which the **implementation did not execute the frozen contract**.
+> The contract itself was sound. The ladder numbers below (+0.1% / −2.1% / +1.6%) came from
+> code that did not apply the targeted masks it claimed to apply, and **must not be read as
+> evidence that shortcut-targeted masking fails**. They are preserved for audit, not deleted.
+>
+> | defect | contract says | code did | consequence |
+> |---|---|---|---|
+> | **D-A candidate ordering** | candidates ordered by screening score descending, index only breaking ties | `np.sort(...)` and `np.union1d` returned **address-index order** | the shortcut prefix `cand[:n]` was an arbitrary low-index subset. The planted partner ranked **1 of 28 by score** and was **never masked** |
+> | **D-B inner rotation** | A screens → B fits, **and** B screens → A fits, combined afterwards | candidates unioned first, a single fit on `iB`, evaluated on **all** outer-training donors including `iB` | only one direction ran, and discovery evaluation was partly in-sample |
+> | **D-C clipping** | partial R² = (full − base)/(1 − base) | silently `np.clip(..., -1, 1)` | clamping can shift U / V1 / V2 means unequally |
+>
+> After repair, the same real-data positive control gives: planted partner in the shortcut
+> set **10/10 folds**, and fresh-refit predictability **0.5414 → −0.0134 (102.5% reduction)**.
+> The machinery works; the earlier wiring did not.
+>
+> **Status:** V1 remains valid negative evidence. V2 design remains viable. V2 execution is
+> invalid pending the corrected rerun. Masking unresolved. Training off.
+
 Branch `authority/v5-masking-shortcut-predictability-v2-20260916`, from V1 head `897bb0c1`.
 Contract frozen **before any real V2 result** at commit `15732d4c`, digest
 `0c3e89cf2be164bb22d43e5ba5592d562b2f33c32b4aea78bfa460f825a44ecf`.
@@ -10,7 +32,8 @@ No training. No `D_shared`. No protected outcome. FULL104 read-only.
 
 ### `MASKING_V2_SHORTCUT_AUTHORITY_REMAINS_OPEN`
 
-No masking condition met the frozen threshold. No threshold was changed after seeing results.
+Unchanged — but now because execution was invalidated, **not** because a valid run failed.
+No threshold was changed at any point. The defects were in code, not in the contract.
 
 ---
 
