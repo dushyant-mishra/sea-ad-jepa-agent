@@ -43,6 +43,7 @@ jobs:
             tests/test_v5_remaining_rna_execution_authority_v1.py \
             tests/test_v5_teacher_target_construction_binding_v1.py \
             tests/test_v5_current_anti_cheat_authority_bundle_v2.py \
+            tests/test_v5_current_closure_execution_evidence_v1.py \
             tests/test_v5_current_semantic_successor_spillover_v1.py \
             tests/test_v5_current_successor_schema_spillover_firewall_v1.py \
             tests/test_v5_current_authority_closure_v1.py \
@@ -67,6 +68,7 @@ jobs:
             tests/test_v5_remaining_rna_execution_authority_v1.py \
             tests/test_v5_teacher_target_construction_binding_v1.py \
             tests/test_v5_current_anti_cheat_authority_bundle_v2.py \
+            tests/test_v5_current_closure_execution_evidence_v1.py \
             tests/test_v5_current_semantic_successor_spillover_v1.py \
             tests/test_v5_current_successor_schema_spillover_firewall_v1.py \
             tests/test_v5_current_authority_closure_v1.py \
