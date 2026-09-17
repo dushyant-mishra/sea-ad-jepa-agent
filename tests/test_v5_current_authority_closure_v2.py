@@ -21,6 +21,9 @@ from sea_ad_jepa.v5.geometry_memorization_qualification_authority_v1 import (
 )
 from sea_ad_jepa.v5.masking_qualification_design_authority_v1 import MaskingQualificationDesignAuthorityV1
 from sea_ad_jepa.v5.masking_qualification_execution_authority_v1 import MaskingQualificationExecutionAuthorityV1
+from sea_ad_jepa.v5.masking_qualification_execution_authority_v2 import MaskingQualificationExecutionAuthorityV2
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v1 import MaskingQualificationParametersAuthorityV1
+from sea_ad_jepa.v5.masking_qualification_run_contract_v1 import MaskingQualificationRunContractV1
 from sea_ad_jepa.v5.masking_rng_replay_authority_v1 import MaskingRngReplayAuthorityV1
 from sea_ad_jepa.v5.measurement_robustness_authority_v2 import MeasurementRobustnessAuthorityV2
 from sea_ad_jepa.v5.model_geometry_authority_v2 import ModelGeometryAuthorityV2
@@ -240,10 +243,33 @@ def build_v2():
         nonlinear_retuning_policy_id="NONLINEAR_REPORTED_WITHOUT_POLICY_RETUNING_V1",
         pooled_mean_guardrail_id="NO_HARMFUL_SIGN_REVERSAL_HIDDEN_BY_POOLED_MEAN_V1",
     )
-    mask_exec = MaskingQualificationExecutionAuthorityV1(
-        authority_id="JEPA_V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V1",
+    params = MaskingQualificationParametersAuthorityV1(
+        authority_id="JEPA_V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V1",
+        primary_attacker_id="RIDGE_EXPRESSION_PROXY_ATTACKER_V1",
+        primary_score_id="SOURCE_BALANCED_MEAN_DONOR_CENTERED_PREDICTION_CORRELATION_SQUARED_V1",
+        targeted_partner_cap=8,
+        ridge_candidate_pool_count=64,
+        ridge_score_feature_count=32,
+        ridge_alpha_numerator=1,
+        ridge_alpha_denominator=100,
+        prefix_inner_fold_count=3,
+        prefix_candidate_count=20,
+        prefix_floor_numerator=5,
+        prefix_floor_denominator=100,
+        prefix_reduction_numerator=1,
+        prefix_reduction_denominator=2,
+    )
+    run_contract = MaskingQualificationRunContractV1(
+        authority_id="JEPA_V5_MASKING_QUALIFICATION_RUN_CONTRACT_V1",
         qualification_design_authority_sha256=design.canonical_digest(),
-        execution_source_sha256=h("v2-mask-execution-source"),
+        qualification_parameters_authority_sha256=params.canonical_digest(),
+        runner_source_sha256=design.qualification_runner_source_sha256,
+        freeze_policy_id="FROZEN_BEFORE_QUALIFICATION_OUTCOMES_V1",
+        support_state_policy_id=STRICT_SCALAR,
+    )
+    mask_exec = MaskingQualificationExecutionAuthorityV2(
+        authority_id="JEPA_V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2",
+        run_contract_authority_sha256=run_contract.canonical_digest(),
         result_artifact_sha256=h("v2-mask-result"),
         execution_status="EXECUTED_PASS",
         selected_policy_id="RIDGE8_CONDITIONAL",
@@ -359,6 +385,8 @@ def call_v2(f):
         address_universe_ladder=f["ladder"],
         masking_rng_replay=f["rng"],
         masking_qualification_design=f["design"],
+        masking_qualification_parameters=f["params"],
+        masking_qualification_run_contract=f["run_contract"],
         masking_qualification_execution=f["mask_exec"],
         masking=f["masking"],
         target_construction=f["construction"],
@@ -416,4 +444,24 @@ def test_geometry_memorization_must_match_selected_geometry_artifact() -> None:
     f["mem"] = replace(f["mem"], geometry_artifact_sha256=h("wrong-geometry-artifact"))
     f["geometry"] = replace(f["geometry"], memorization_qualification_authority_sha256=f["mem"].canonical_digest())
     with pytest.raises(ValueError, match="geometry artifact root mismatch"):
+        call_v2(f)
+
+
+def test_legacy_masking_execution_v1_is_rejected() -> None:
+    f = build_v2()
+    legacy = MaskingQualificationExecutionAuthorityV1(
+        authority_id="JEPA_V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V1",
+        qualification_design_authority_sha256=f["design"].canonical_digest(),
+        execution_source_sha256=h("legacy-mask-execution-source"),
+        result_artifact_sha256=h("legacy-mask-result"),
+        execution_status="EXECUTED_PASS",
+        selected_policy_id="RIDGE8_CONDITIONAL",
+        terminal_universe_status_id="FULL_COMMON_CORE_17186_EXECUTED_V1",
+        controls_status_id="ALL_REQUIRED_CONTROLS_EXECUTED_PASS_V1",
+        nonlinear_status_id="NONLINEAR_CHALLENGE_REPORTED_WITHOUT_RETUNING_V1",
+        precision_status_id="BOUND_PRECISION_REQUIREMENTS_MET_V1",
+    )
+    f["mask_exec"] = legacy
+    f["anti"] = replace(f["anti"], masking_qualification_execution_authority_sha256=legacy.canonical_digest())
+    with pytest.raises(ValueError, match="MaskingQualificationExecutionAuthorityV2"):
         call_v2(f)
