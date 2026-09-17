@@ -1,9 +1,8 @@
 """Prospective FULL104 masking-qualification design authority for current V5.
 
-This schema binds *how masking candidates are to be qualified* before the
-qualification outcomes are inspected. It does not select a production winner,
-does not choose a numerical mask burden, and cannot authorize training or
-protected-outcome access.
+This schema binds *how masking candidates are to be qualified* before outcomes
+are inspected. All policy arms use the same primary attacker implementation and
+score; this prevents cross-arm rankings from mixing unlike attack procedures.
 """
 from __future__ import annotations
 
@@ -27,6 +26,9 @@ APPROVED_POLICY_ARMS: Tuple[str, ...] = (
 )
 APPROVED_PRIMARY_ATTACKER_IDS: Tuple[str, ...] = (
     "RIDGE_EXPRESSION_PROXY_ATTACKER_V1",
+)
+APPROVED_PRIMARY_ATTACKER_APPLICATION_POLICY_IDS: Tuple[str, ...] = (
+    "SAME_PRIMARY_ATTACKER_AND_SCORE_FOR_ALL_POLICY_ARMS_V1",
 )
 APPROVED_SECONDARY_ATTACKER_IDS: Tuple[str, ...] = (
     "NONLINEAR_TREE_ENSEMBLE_EXPRESSION_PROXY_CHALLENGE_V1",
@@ -109,6 +111,7 @@ class MaskingQualificationDesignAuthorityV1:
     expression_attacker_role_id: str
     policy_arms: Sequence[str]
     primary_attacker_id: str
+    primary_attacker_application_policy_id: str
     secondary_attacker_id: str
     primary_score_id: str
     paired_estimand_id: str
@@ -147,6 +150,11 @@ class MaskingQualificationDesignAuthorityV1:
         )
         _exact_sequence(self.policy_arms, APPROVED_POLICY_ARMS, "policy_arms")
         _enum(self.primary_attacker_id, APPROVED_PRIMARY_ATTACKER_IDS, "primary_attacker_id")
+        _enum(
+            self.primary_attacker_application_policy_id,
+            APPROVED_PRIMARY_ATTACKER_APPLICATION_POLICY_IDS,
+            "primary_attacker_application_policy_id",
+        )
         _enum(self.secondary_attacker_id, APPROVED_SECONDARY_ATTACKER_IDS, "secondary_attacker_id")
         _enum(self.primary_score_id, APPROVED_PRIMARY_SCORE_IDS, "primary_score_id")
         _enum(self.paired_estimand_id, APPROVED_PAIRED_ESTIMAND_IDS, "paired_estimand_id")
