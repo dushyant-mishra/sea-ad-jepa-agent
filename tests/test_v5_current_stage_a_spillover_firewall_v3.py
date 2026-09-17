@@ -17,7 +17,10 @@ CURRENT_SUCCESSOR_FILES = {
     "address_universe_ladder_authority_v1.py",
     "masking_rng_replay_authority_v1.py",
     "masking_qualification_design_authority_v1.py",
-    "masking_qualification_execution_authority_v1.py",
+    "masking_qualification_parameters_authority_v1.py",
+    "masking_qualification_run_contract_v1.py",
+    "masking_qualification_execution_authority_v2.py",
+    "full104_masking_qualification_runner_v1.py",
     "current_masking_policy_authority_v2.py",
     "target_construction_authority_v1.py",
     "remaining_rna_necessity_v1.py",
@@ -42,6 +45,7 @@ CURRENT_SUCCESSOR_FILES = {
 }
 
 SUPERSEDED_CURRENT_MODULES = {
+    "masking_qualification_execution_authority_v1",
     "ema_timescale_authority_v1",
     "measurement_robustness_authority_v1",
     "anti_cheat_authority_bundle_v1",
