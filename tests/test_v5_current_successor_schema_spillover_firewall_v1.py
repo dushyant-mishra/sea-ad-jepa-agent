@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
+from sea_ad_jepa.v5.masking_authority_v1 import MaskingAuthorityV1
+from sea_ad_jepa.v5.target_address_query_authority_v1 import TargetAddressQueryAuthorityV1
+from test_v5_current_authority_closure_v1 import call, fixtures, h
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -21,13 +27,57 @@ def test_stage_a_firewall_tracks_current_successors_not_superseded_schemas() -> 
     assert "masking_authority_v1" in QUARANTINED_V5_MODULES
 
 
-def test_current_closure_source_explicitly_rejects_superseded_successor_schemas() -> None:
+def _rebind_preexecution_roots(f: dict, **updates: str) -> None:
+    roots = dict(f["roots"])
+    roots.update(updates)
+    f["pre"].normalized_roots = lambda: dict(roots)
+
+
+def test_current_closure_rejects_superseded_target_address_schema_even_if_roots_are_consistent() -> None:
+    f = fixtures()
+    legacy = TargetAddressQueryAuthorityV1(
+        authority_id="LEGACY_BUT_SELF_CONSISTENT",
+        address_registry_authority_sha256=h("registry"),
+        query_provider_id="trust_me_shared",
+        query_artifact_sha256=h("query"),
+        replay_policy_id="legacy_replay",
+        parameter_sharing_policy_id="legacy_sharing",
+        gradient_policy_id="legacy_gradient",
+    )
+    digest = legacy.canonical_digest()
+    f["address"] = legacy
+    f["teacher"].target_address_query_authority_sha256 = digest
+    _rebind_preexecution_roots(f, target_address_query_authority_sha256=digest)
+
+    with pytest.raises(ValueError, match="current target-address provider schema"):
+        call(f)
+
+
+def test_current_closure_rejects_superseded_masking_schema_even_if_roots_are_consistent() -> None:
+    f = fixtures()
+    legacy = MaskingAuthorityV1(
+        policy_id="LEGACY_SELF_CONSISTENT_MASK",
+        dependency_source_authority_id="legacy_dependency",
+        random_mixture_numerator=1,
+        structural_mixture_numerator=0,
+        mixture_denominator=1,
+        target_evidence_budget_authority_id="legacy_budget",
+        rng_authority_id="legacy_rng",
+    )
+    digest = legacy.canonical_digest()
+    f["masking"] = legacy
+    f["teacher"].masking_authority_sha256 = digest
+    f["identity"].masking_authority_sha256 = digest
+    f["anticheat"].masking_authority_sha256 = digest
+    _rebind_preexecution_roots(f, masking_authority_sha256=digest)
+
+    with pytest.raises(ValueError, match="current masking policy schema"):
+        call(f)
+
+
+def test_current_closure_source_names_successor_schemas_explicitly() -> None:
     source = (ROOT / "src" / "sea_ad_jepa" / "v5" / "current_authority_closure_v1.py").read_text(
         encoding="utf-8"
     )
-    # The current closure must identify the successor schemas themselves, not merely
-    # accept any internally self-consistent object exposing validate/canonical_digest.
     assert "CurrentTargetAddressProviderAuthorityV1" in source
     assert "CurrentMaskingPolicyAuthorityV2" in source
-    assert "current target-address provider schema" in source
-    assert "current masking policy schema" in source
