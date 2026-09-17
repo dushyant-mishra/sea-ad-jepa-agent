@@ -1,10 +1,11 @@
 """Explicit current-V5 scientific/runtime authority closure V2.
 
-V2 promotes masking population/design/execution, target construction/necessity/
-execution, runtime, measurement, geometry and geometry-specific memorization to
-first-class roots. It validates a complete current graph but deliberately does
-not authorize training; a separate final training authority must consume this
-closure after preexecution/receipt/optimizer guards are closed.
+V2 promotes masking population/design/parameters/run-contract/execution, target
+construction/necessity/execution, runtime, measurement, geometry and
+geometry-specific memorization to first-class roots. It validates a complete
+current graph but deliberately does not authorize training; a separate final
+training authority must consume this closure after preexecution/receipt/
+optimizer guards are closed.
 """
 from __future__ import annotations
 
@@ -28,7 +29,9 @@ from .geometry_memorization_qualification_authority_v1 import (
     GeometryMemorizationQualificationAuthorityV1,
 )
 from .masking_qualification_design_authority_v1 import MaskingQualificationDesignAuthorityV1
-from .masking_qualification_execution_authority_v1 import MaskingQualificationExecutionAuthorityV1
+from .masking_qualification_execution_authority_v2 import MaskingQualificationExecutionAuthorityV2
+from .masking_qualification_parameters_authority_v1 import MaskingQualificationParametersAuthorityV1
+from .masking_qualification_run_contract_v1 import MaskingQualificationRunContractV1
 from .masking_rng_replay_authority_v1 import MaskingRngReplayAuthorityV1
 from .measurement_robustness_authority_v2 import MeasurementRobustnessAuthorityV2
 from .model_geometry_authority_v2 import ModelGeometryAuthorityV2
@@ -100,7 +103,9 @@ def validate_current_v5_authority_closure_v2(
     address_universe_ladder: AddressUniverseLadderAuthorityV1,
     masking_rng_replay: MaskingRngReplayAuthorityV1,
     masking_qualification_design: MaskingQualificationDesignAuthorityV1,
-    masking_qualification_execution: MaskingQualificationExecutionAuthorityV1,
+    masking_qualification_parameters: MaskingQualificationParametersAuthorityV1,
+    masking_qualification_run_contract: MaskingQualificationRunContractV1,
+    masking_qualification_execution: MaskingQualificationExecutionAuthorityV2,
     masking: CurrentMaskingPolicyAuthorityV2,
     target_construction: TargetConstructionAuthorityV1,
     remaining_rna_necessity: RemainingRnaNecessityAuthorityV1,
@@ -128,7 +133,9 @@ def validate_current_v5_authority_closure_v2(
         (address_universe_ladder, AddressUniverseLadderAuthorityV1, "address_universe_ladder"),
         (masking_rng_replay, MaskingRngReplayAuthorityV1, "masking_rng_replay"),
         (masking_qualification_design, MaskingQualificationDesignAuthorityV1, "masking_qualification_design"),
-        (masking_qualification_execution, MaskingQualificationExecutionAuthorityV1, "masking_qualification_execution"),
+        (masking_qualification_parameters, MaskingQualificationParametersAuthorityV1, "masking_qualification_parameters"),
+        (masking_qualification_run_contract, MaskingQualificationRunContractV1, "masking_qualification_run_contract"),
+        (masking_qualification_execution, MaskingQualificationExecutionAuthorityV2, "masking_qualification_execution"),
         (masking, CurrentMaskingPolicyAuthorityV2, "masking"),
         (target_construction, TargetConstructionAuthorityV1, "target_construction"),
         (remaining_rna_necessity, RemainingRnaNecessityAuthorityV1, "remaining_rna_necessity"),
@@ -164,6 +171,8 @@ def validate_current_v5_authority_closure_v2(
     ladder = _auth(address_universe_ladder, "address universe ladder")
     rng = _auth(masking_rng_replay, "masking RNG replay")
     design = _auth(masking_qualification_design, "masking qualification design")
+    parameters = _auth(masking_qualification_parameters, "masking qualification parameters")
+    run_contract = _auth(masking_qualification_run_contract, "masking qualification run contract")
     mask_exec = _auth(masking_qualification_execution, "masking qualification execution")
     mask = _auth(masking, "masking")
     construction = _auth(target_construction, "target construction")
@@ -232,7 +241,7 @@ def validate_current_v5_authority_closure_v2(
     _eq(teacher_target.masking_authority_sha256, mask, "teacher masking root mismatch")
     _eq(teacher_target.remaining_rna_necessity_authority_sha256, necessity, "teacher remaining-RNA root mismatch")
 
-    # Masking design/execution uses one exact population/attacker graph.
+    # Masking design/run-contract/execution uses one exact population/attacker graph.
     _eq(masking_qualification_design.full104_substrate_sha256, full, "masking design FULL104 root mismatch")
     _eq(masking_qualification_design.representation_authority_sha256, rep, "masking design representation root mismatch")
     _eq(masking_qualification_design.support_estimability_authority_sha256, support, "masking design support root mismatch")
@@ -246,7 +255,34 @@ def validate_current_v5_authority_closure_v2(
         address_universe_ladder=address_universe_ladder,
         rng_replay=masking_rng_replay,
     )
-    masking_qualification_execution.bind_qualification_design(masking_qualification_design)
+    _eq(
+        masking_qualification_parameters.primary_attacker_id,
+        masking_qualification_design.primary_attacker_id,
+        "masking parameters primary attacker mismatch",
+    )
+    _eq(
+        masking_qualification_parameters.primary_score_id,
+        masking_qualification_design.primary_score_id,
+        "masking parameters primary score mismatch",
+    )
+    masking_qualification_run_contract.bind_design(masking_qualification_design)
+    masking_qualification_run_contract.bind_parameters(masking_qualification_parameters)
+    _eq(
+        masking_qualification_run_contract.runner_source_sha256,
+        masking_qualification_design.qualification_runner_source_sha256,
+        "masking run-contract runner source mismatch",
+    )
+    _eq(
+        masking_qualification_run_contract.support_state_policy_id,
+        target_panel.support_state_policy_id,
+        "masking run-contract target-panel support-state mismatch",
+    )
+    _eq(
+        masking_qualification_run_contract.support_state_policy_id,
+        address_universe_ladder.support_state_policy_id,
+        "masking run-contract address-ladder support-state mismatch",
+    )
+    masking_qualification_execution.bind_run_contract(masking_qualification_run_contract)
     if masking_qualification_execution.passed is not True:
         raise ValueError("masking qualification execution must be EXECUTED_PASS")
 
@@ -315,6 +351,8 @@ def validate_current_v5_authority_closure_v2(
         "address_universe_ladder_authority_sha256": ladder,
         "masking_rng_replay_authority_sha256": rng,
         "masking_qualification_design_authority_sha256": design,
+        "masking_qualification_parameters_authority_sha256": parameters,
+        "masking_qualification_run_contract_authority_sha256": run_contract,
         "masking_qualification_execution_authority_sha256": mask_exec,
         "masking_authority_sha256": mask,
         "target_construction_authority_sha256": construction,
