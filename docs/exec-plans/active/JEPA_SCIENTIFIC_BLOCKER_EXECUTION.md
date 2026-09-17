@@ -2,57 +2,137 @@
 
 Date: 2026-09-17
 
-Status: `V5_MASKING_SUCCESSOR_DISCOVERY_VALIDATION_ACTIVE__NO_MASKING_AUTHORITY__TRAINING_OFF`
+Status: `V5_STREAMING_FULL104_MASKING_EXECUTOR_PARITY_READY__CANONICAL_GPU_QUALIFICATION_NEXT__NO_MASKING_AUTHORITY__TRAINING_OFF`
 
 Working branch:
 
-`analysis/v5-ridge8-expanded-validation-20260917`
+`impl/v5-remaining-rna-target-semantics-20260917`
+
+Verified code anchor:
+
+`8ee5d0a5be483e18819a6f6975efa183327b2158`
 
 ## Scientific semantic invariant
 
 The foundation objective is **not** numerical reconstruction of a hidden gene.
 
-Masking removes molecular evidence and asks whether the remaining RNA supports recovery of the underlying biological/cellular state, including the **query-local biological state associated with the masked address**.
+Masking removes molecular evidence and asks whether the remaining RNA supports recovery of the underlying biological/cellular state, including query-local biological state associated with the supplied masked address.
 
 Accordingly:
 
-- a masked address identifies which local biological state must be inferred;
-- the hidden scalar expression value is **not** the JEPA target;
-- ridge/correlation/nonlinear expression attackers are **anti-shortcut diagnostics only**;
-- success at suppressing expression-proxy predictability does **not** by itself establish biological-state recovery;
-- masking policy must preserve a state-inference task rather than convert the project into masked-gene reconstruction.
+- the address identifies which local biological state must be inferred;
+- hidden scalar expression is not the JEPA target;
+- ridge/correlation/nonlinear expression predictors are anti-shortcut diagnostics only;
+- suppressing expression-proxy predictability does not by itself establish biological-state recovery;
+- the masking policy must preserve a state-inference task.
 
-## Immediate sequence
+## Closed implementation state
 
-1. Preserve and independently verify the expanded discovery-side masking evidence.
-2. Keep RIDGE8, TOP8, and PREFIX3 directly comparable under common folds, common random masks, matched burden, and the same attacker within each comparison.
-3. Preserve the 32-target challenge drawn outside the original 800-address target subset.
-4. Preserve nonlinear attacker checks as supporting robustness evidence, not production authority.
-5. Keep STABLE15 marked vacuous at the tested threshold; keep STABLE10 classified as ineffective for the tested threat model unless a separate implementation defect is demonstrated.
-6. Prepare a **prospective** FULL104 successor masking qualification contract before inspecting any FULL104 successor outcomes.
-7. Keep target evidence budget separate from masking-policy authority.
-8. Close teacher-target semantics so the model target is explicitly a biological/state representation rather than scalar hidden-expression reconstruction.
-9. Only after masking and the remaining V5 design authorities are frozen may protected D_shared/pathology outcomes be opened under their own authority.
+Implemented and CI-verified:
 
-## Current evidence state
+- canonical current authority roots/closure V2;
+- preexecution V2, receipt V2, explicit training-authority schema, optimizer V3 and checkpoint V2;
+- numeric masking qualification parameter authority with no production defaults;
+- frozen masking qualification run-contract schema;
+- masking qualification execution authority V2 bound to the run contract;
+- canonical primary in-memory masking qualification reference runner;
+- authenticated Level-4 streaming/sufficient-statistics masking executor;
+- exact `log1p(raw*10000/source_library)` normalization once in the streaming path;
+- train-only TOP8/RIDGE8/PREFIX3 partner selection and same primary ridge attacker across arms;
+- parity of streaming target x fold results to the canonical reference on controlled raw-count fixtures;
+- hash-corruption and duplicate-selection-row fail-closed behavior;
+- streaming executor included in Stage-A/current-source spillover inventory;
+- current closure rejection of legacy masking execution V1;
+- fail-closed no-skip CI for all current focused suites.
 
-The earlier cross-table comparison between RIDGE8 and PREFIX3 was not sufficient because attacker class and target count differed. The successor work therefore uses same-scorer comparisons.
+Verified workflow runs at code anchor `8ee5d0a5...`:
 
-Current exploratory evidence supports RIDGE8 as the strongest broad candidate tested so far, while PREFIX3 remains a sparse/selective comparator with potentially large acted effects. This is **not** a production masking decision.
+- runtime closure: `35278901437` — SUCCESS
+- FULL104 masking runner + streaming parity: `35278901430` — SUCCESS
+- remaining-RNA / target-semantics: `35278901433` — SUCCESS
+- Stage-A spillover: `35278901569` — SUCCESS
 
-The expression-predictability results answer a narrower question: whether visible RNA still exposes easy local proxies that could let a learner shortcut the intended state-inference task. They do not redefine the scientific target.
+## Current exploratory evidence state
 
-## Prospective scientific additions to integrate without reopening settled authority
+September 17 discovery still supports RIDGE8 as the strongest broad candidate tested so far under matched comparisons, with TOP8 as comparator and PREFIX3 as a sparse/selective arm. Nonlinear challenges remain supporting evidence.
 
-- evidence-response curves for biological evidence quantity;
-- separate measurement-depth response curves;
-- separate biological uncertainty from measurement uncertainty;
-- observation-process/operator conditioning without unrestricted dataset or donor embeddings;
-- donor/matrix balanced basis and subspace-stability qualification before coordinate-specific uncertainty claims;
-- held-donor -> held-matrix -> held-study/source -> held-technology transfer hierarchy where estimable;
-- pathology-blind confirmation after representation design is frozen.
+This is **not** a production masking decision and does not freeze cap 8, ridge alpha 0.01, mask fraction, PREFIX3 thresholds, target count or other exploratory values.
 
-These are design requirements or future qualification targets, not current training features or frozen thresholds.
+## Streaming FULL104 blocker — closed
+
+Current reference:
+
+`src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py`
+
+Current streaming executor:
+
+`src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py`
+
+The executor consumes authenticated Phase-2 Level-4 blocks and row metadata, normalizes raw counts once, and accumulates per-donor sufficient statistics. It does not require a monolithic 4,553,407 x 17,186 CSR.
+
+Parity tests cover:
+
+- normalization;
+- donor identity;
+- training-only screening;
+- TOP8/RIDGE8/PREFIX3 targeted partners;
+- common-random base masks;
+- exact burden-preserving swaps;
+- ridge fitting;
+- donor-centered heldout prediction correlation squared;
+- source-balanced aggregation;
+- deterministic result parity;
+- block hash failure;
+- duplicate selection-row failure.
+
+This closes the **implementation/parity** blocker only. The real terminal FULL104 qualification remains unexecuted.
+
+## Primary blocker now: canonical GPU worktree freeze and execution
+
+The next authoritative work must happen on the canonical GPU/full-data worktree because this connector environment cannot truthfully create the machine-bound work checkpoint or access the >30 GB substrate.
+
+### Immediate sequence
+
+1. Build and validate `docs/agent/CURRENT_WORK_CHECKPOINT.json` with `scripts/agent/work_checkpoint.py` on the canonical worktree.
+2. Authenticate/bind the actual Level-4 root:
+   `D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/`
+3. Bind current donor/source registry, outer split, target panel, address-universe ladder and support eligibility to the physical expression blocks.
+4. Prospectively instantiate/freeze the actual masking qualification design.
+5. Prospectively instantiate/freeze the actual numeric parameter authority. Do not inherit exploratory constants silently.
+6. Bind the exact canonical reference source SHA in the design and exact streaming-executor source SHA used for execution in the run contract.
+7. Freeze the run contract **before** inspecting terminal qualification outcomes.
+8. Execute the address-universe ladder through terminal `FULL_COMMON_CORE_17186_V1`.
+9. Run all required positive/negative/replay/no-privileged-metadata controls and target-clustered precision. Report nonlinear challenge without retuning.
+10. Issue the real `MaskingQualificationExecutionAuthorityV2` and bind a selected policy only if the frozen contract passes.
+11. Continue real-evidence closure: healthy-current-teacher remaining-RNA necessity, measurement robustness, production geometry + geometry-specific memorization, runtime provenance and critical-test closure.
+12. Issue final explicit training authority only after the actual current graph closes.
+
+## Heavy-data references
+
+Current GPU/external-drive Level-4 root:
+
+`D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/`
+
+Historical corrected-cache root:
+
+`D:\Jepa project\data\cache\stage81a3r_corrected_real_train`
+
+Historical provenance branch:
+
+`planning/v5-full-population-cheat-proofing-20260909`
+
+Historical helper files:
+
+- `scripts/v5_anticheat/build_full_reader_expression_identity_closure_v3.py`
+- `scripts/v5_anticheat/bind_full104_expression_blocks_v4.py`
+
+Historical code is provenance/support, not automatically current authority.
+
+## Performance guardrail
+
+The current streaming executor is an exact parity reference for the heavy path. It may rescan Level-4 blocks multiple times and has not been performance-qualified on the full 4.55M-cell run.
+
+If I/O becomes the limiting factor, optimize through an authenticated sufficient-statistics/memmap cache whose outputs are parity-tested against the current streaming reference. Do not retune scientific parameters or inspect terminal outcomes to decide the optimization.
 
 ## Hard boundaries
 
@@ -60,14 +140,17 @@ These are design requirements or future qualification targets, not current train
 - No pathology labels in foundation representation learning.
 - DEV/SEALED RNA remain closed unless separately authorized.
 - No D_shared outcome inspection while upstream masking/design choices remain open.
-- FULL104 successor outcomes must not be inspected before the successor masking contract is prospectively frozen.
-- Hidden-gene numerical expression reconstruction must not be substituted for the biological/query-local state objective.
-- Historical T1 remains historical failure evidence and must not be rehabilitated.
-- Do not silently promote 15% burden, cap 8, RIDGE8, PREFIX3, attacker hyperparameters, or exploratory thresholds into authority.
-- Conclusion-bearing promotion still requires independent implementation verification and specialist review.
+- Terminal FULL104 successor outcomes must not be inspected before the prospective run contract is frozen.
+- Hidden-gene numerical expression reconstruction must not substitute for biological/query-local state.
+- Historical T1 remains failure/adversarial evidence and cannot serve as healthy-teacher authority.
+- Do not silently promote exploratory mask burden, cap 8, RIDGE8, PREFIX3, alpha 0.01 or other exploratory hyperparameters into authority.
+- Legacy `MaskingQualificationExecutionAuthorityV1` is superseded for current closure.
+- Skipped critical regression tests are failures, not passes.
+- Do not require a monolithic FULL104 matrix.
+- Do not substitute a smaller or unauthenticated cache for FULL104 terminal authority.
 
 ## Governance note
 
-`AGENTS.md` requires a validator-built `docs/agent/CURRENT_WORK_CHECKPOINT.json`. The predecessor masking handoff branch did not contain one. This GitHub-connector environment cannot truthfully generate and validate the machine/worktree-bound checkpoint because it has no canonical Git worktree or network Git checkout. Do not fabricate a validator PASS. A canonical-worktree agent should build and validate the checkpoint with `scripts/agent/work_checkpoint.py` before any authority-bearing promotion or expensive FULL104 execution.
+`AGENTS.md` requires validator-built `docs/agent/CURRENT_WORK_CHECKPOINT.json`. This GitHub-connector environment cannot truthfully generate and validate that machine/worktree-bound checkpoint because it does not own the canonical Git worktree.
 
-The GitHub branch is therefore being used here as a **read/write exploratory evidence ledger**, not as proof that the canonical work-checkpoint validator has passed.
+The canonical-worktree/GPU lane must build and validate that checkpoint before authority-bearing promotion or expensive FULL104 execution.
