@@ -5,6 +5,7 @@
   "working_branch": "impl/v5-remaining-rna-target-semantics-20260917",
   "pull_request": 18,
   "verified_code_head": "ffbdcce060abb1c9c4463e0505d83b12c342c16e",
+  "governance_after_verified_code_head": "DOCUMENTATION_ONLY_UNLESS_EXPLICITLY_STATED",
   "verified_workflows": {
     "v5_runtime_closure": {"run_id": 35275746415, "conclusion": "success"},
     "v5_full104_masking_runner": {"run_id": 35275746392, "conclusion": "success"},
