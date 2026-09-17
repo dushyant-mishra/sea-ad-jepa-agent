@@ -1,16 +1,33 @@
 {
   "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V16",
   "date": "2026-09-17",
-  "status": "CURRENT_V5_CANONICAL_MASKING_RUNTIME_FRAMEWORK_READY__FULL104_QUALIFICATION_PENDING__TRAINING_OFF",
+  "status": "CURRENT_V5_STREAMING_MASKING_EXECUTOR_PARITY_READY__FULL104_GPU_QUALIFICATION_PENDING__TRAINING_OFF",
   "working_branch": "impl/v5-remaining-rna-target-semantics-20260917",
   "pull_request": 18,
-  "verified_code_head": "ffbdcce060abb1c9c4463e0505d83b12c342c16e",
+  "verified_code_head": "8ee5d0a5be483e18819a6f6975efa183327b2158",
   "governance_after_verified_code_head": "DOCUMENTATION_ONLY_UNLESS_EXPLICITLY_STATED",
   "verified_workflows": {
-    "v5_runtime_closure": {"run_id": 35275746415, "conclusion": "success"},
-    "v5_full104_masking_runner": {"run_id": 35275746392, "conclusion": "success"},
-    "v5_remaining_rna_target_semantics": {"run_id": 35275746434, "conclusion": "success", "skip_gate": "pass"},
-    "v5_stage_a_spillover": {"run_id": 35275746427, "conclusion": "success", "skip_gate": "pass"}
+    "v5_runtime_closure": {
+      "run_id": 35278901437,
+      "conclusion": "success",
+      "skip_gate": "pass"
+    },
+    "v5_full104_masking_runner": {
+      "run_id": 35278901430,
+      "conclusion": "success",
+      "streaming_parity": "pass",
+      "skip_gate": "pass"
+    },
+    "v5_remaining_rna_target_semantics": {
+      "run_id": 35278901433,
+      "conclusion": "success",
+      "skip_gate": "pass"
+    },
+    "v5_stage_a_spillover": {
+      "run_id": 35278901569,
+      "conclusion": "success",
+      "skip_gate": "pass"
+    }
   },
   "scientific_semantics": {
     "foundation_target": "BIOLOGICAL_CELLULAR_STATE_WITH_QUERY_LOCAL_STATE",
@@ -44,8 +61,13 @@
     "MASKING_QUALIFICATION_RUN_CONTRACT_SCHEMA_V1",
     "MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2",
     "CANONICAL_IN_MEMORY_MASKING_QUALIFICATION_RUNNER_V1",
+    "FULL104_LEVEL4_STREAMING_SUFFICIENT_STATISTICS_EXECUTOR_V1",
+    "STREAMING_EXECUTOR_PARITY_WITH_CANONICAL_REFERENCE_ALL_PRIMARY_ARMS",
+    "STREAMING_LOG1P10K_EXACTLY_ONCE",
+    "STREAMING_HASH_AND_DUPLICATE_SELECTION_ROW_FAIL_CLOSED",
+    "STREAMING_EXECUTOR_INCLUDED_IN_STAGE_A_SOURCE_INVENTORY",
     "LEGACY_MASKING_EXECUTION_V1_QUARANTINED_FROM_CURRENT_CLOSURE",
-    "CURRENT_CI_NO_SKIP_GATES_FOR_STAGE_A_AND_REMAINING_RNA"
+    "CURRENT_CI_NO_SKIP_GATES"
   ],
   "supporting_not_authority": [
     "RIDGE8_EXPANDED_DISCOVERY_VALIDATION",
@@ -59,8 +81,7 @@
     "AUTHENTICATED_HEAVY_SUBSTRATE_BINDING_ON_GPU_MACHINE",
     "PROSPECTIVE_MASKING_DESIGN_INSTANTIATION_AND_FREEZE",
     "PROSPECTIVE_NUMERIC_PARAMETER_AUTHORITY_INSTANTIATION_AND_FREEZE",
-    "EXACT_RUNNER_AND_EXECUTOR_SOURCE_SHA256_BINDING",
-    "STREAMING_FULL104_MASKING_QUALIFICATION_ADAPTER_WITH_REFERENCE_PARITY_TESTS"
+    "EXACT_CANONICAL_REFERENCE_AND_STREAMING_EXECUTOR_SOURCE_SHA256_BINDING"
   ],
   "open_before_training": [
     "TERMINAL_FULL_COMMON_CORE_MASKING_QUALIFICATION_EXECUTION",
@@ -79,9 +100,11 @@
     "historical_reader_source_branch": "planning/v5-full-population-cheat-proofing-20260909",
     "historical_reader_script": "scripts/v5_anticheat/build_full_reader_expression_identity_closure_v3.py",
     "historical_block_binder": "scripts/v5_anticheat/bind_full104_expression_blocks_v4.py",
-    "physical_layout": "42_AUTHENTICATED_SCIPY_CSR_SHARDS_PLUS_META_AND_READER_FIT_SQLITE",
-    "streaming_adapter_status": "NOT_YET_IMPLEMENTED_IN_CURRENT_BRANCH",
-    "monolithic_full_common_core_materialization": "DO_NOT_REQUIRE_AS_DEFAULT_EXECUTION_PATH"
+    "physical_layout": "8915_AUTHENTICATED_LEVEL4_SCIPY_CSR_BLOCKS_PLUS_ROW_META_OVER_42_OPERATORS",
+    "canonical_reference_source": "src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py",
+    "streaming_executor_source": "src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py",
+    "streaming_adapter_status": "IMPLEMENTED_AND_CI_PARITY_VERIFIED__REAL_FULL104_EXECUTION_NOT_RUN_HERE",
+    "monolithic_full_common_core_materialization": "NOT_REQUIRED"
   },
   "hard_boundaries": [
     "TRAINING_OFF",
@@ -92,9 +115,10 @@
     "NO_RECEIPT_ONLY_OPTIMIZER_UNLOCK",
     "NO_LEGACY_MASKING_EXECUTION_V1_IN_CURRENT_CLOSURE",
     "NO_SILENT_SKIPPED_CRITICAL_TESTS",
-    "NO_SMALLER_OR_UNAUTHENTICATED_FULL104_SUBSTITUTE"
+    "NO_SMALLER_OR_UNAUTHENTICATED_FULL104_SUBSTITUTE",
+    "NO_MONOLITHIC_FULL104_MATRIX_REQUIRED_FOR_MASKING_QUALIFICATION"
   ],
-  "next_action": "DESIGN_AND_IMPLEMENT_STREAMING_FULL104_MASKING_QUALIFICATION_ADAPTER_WITH_PARITY_TO_CANONICAL_REFERENCE_THEN_BUILD_CANONICAL_WORK_CHECKPOINT_AND_FREEZE_PROSPECTIVE_RUN_CONTRACT",
+  "next_action": "ON_CANONICAL_GPU_WORKTREE_BUILD_VALIDATE_CURRENT_WORK_CHECKPOINT_BIND_AUTHENTICATED_LEVEL4_SUBSTRATE_FREEZE_PROSPECTIVE_MASKING_DESIGN_PARAMETERS_RUN_CONTRACT_THEN_EXECUTE_TERMINAL_FULL104_QUALIFICATION",
   "training_authorized": false,
   "protected_outcomes_authorized": false
 }
