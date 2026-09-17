@@ -25,7 +25,7 @@ jobs:
           python-version: '3.12'
       - name: Install regression dependencies
         run: |
-          python -m pip install --disable-pip-version-check pytest
+          python -m pip install --disable-pip-version-check pytest numpy scipy
           python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
       - name: Run current V5 semantic and spillover regression set
         env:
