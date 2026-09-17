@@ -34,6 +34,9 @@ jobs:
           python -m pytest -q -p no:randomly --strict-markers \
             tests/test_v5_remaining_rna_necessity_v1.py \
             tests/test_v5_target_evidence_budget_authority_v1.py \
+            tests/test_v5_precision_authority_v1.py \
+            tests/test_v5_masking_design_population_authorities_v1.py \
+            tests/test_v5_masking_rng_replay_authority_v1.py \
             tests/test_v5_current_semantic_successor_spillover_v1.py \
             tests/test_v5_current_successor_schema_spillover_firewall_v1.py \
             tests/test_v5_current_authority_closure_v1.py \
@@ -49,6 +52,9 @@ jobs:
           python -m pytest -q \
             tests/test_v5_remaining_rna_necessity_v1.py \
             tests/test_v5_target_evidence_budget_authority_v1.py \
+            tests/test_v5_precision_authority_v1.py \
+            tests/test_v5_masking_design_population_authorities_v1.py \
+            tests/test_v5_masking_rng_replay_authority_v1.py \
             tests/test_v5_current_semantic_successor_spillover_v1.py \
             tests/test_v5_current_successor_schema_spillover_firewall_v1.py \
             tests/test_v5_current_authority_closure_v1.py \
