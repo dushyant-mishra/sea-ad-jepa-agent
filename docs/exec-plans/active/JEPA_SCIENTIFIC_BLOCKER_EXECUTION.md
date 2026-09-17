@@ -8,6 +8,20 @@ Working branch:
 
 `analysis/v5-ridge8-expanded-validation-20260917`
 
+## Scientific semantic invariant
+
+The foundation objective is **not** numerical reconstruction of a hidden gene.
+
+Masking removes molecular evidence and asks whether the remaining RNA supports recovery of the underlying biological/cellular state, including the **query-local biological state associated with the masked address**.
+
+Accordingly:
+
+- a masked address identifies which local biological state must be inferred;
+- the hidden scalar expression value is **not** the JEPA target;
+- ridge/correlation/nonlinear expression attackers are **anti-shortcut diagnostics only**;
+- success at suppressing expression-proxy predictability does **not** by itself establish biological-state recovery;
+- masking policy must preserve a state-inference task rather than convert the project into masked-gene reconstruction.
+
 ## Immediate sequence
 
 1. Preserve and independently verify the expanded discovery-side masking evidence.
@@ -17,13 +31,16 @@ Working branch:
 5. Keep STABLE15 marked vacuous at the tested threshold; keep STABLE10 classified as ineffective for the tested threat model unless a separate implementation defect is demonstrated.
 6. Prepare a **prospective** FULL104 successor masking qualification contract before inspecting any FULL104 successor outcomes.
 7. Keep target evidence budget separate from masking-policy authority.
-8. Only after masking and the remaining V5 design authorities are frozen may protected D_shared/pathology outcomes be opened under their own authority.
+8. Close teacher-target semantics so the model target is explicitly a biological/state representation rather than scalar hidden-expression reconstruction.
+9. Only after masking and the remaining V5 design authorities are frozen may protected D_shared/pathology outcomes be opened under their own authority.
 
 ## Current evidence state
 
 The earlier cross-table comparison between RIDGE8 and PREFIX3 was not sufficient because attacker class and target count differed. The successor work therefore uses same-scorer comparisons.
 
 Current exploratory evidence supports RIDGE8 as the strongest broad candidate tested so far, while PREFIX3 remains a sparse/selective comparator with potentially large acted effects. This is **not** a production masking decision.
+
+The expression-predictability results answer a narrower question: whether visible RNA still exposes easy local proxies that could let a learner shortcut the intended state-inference task. They do not redefine the scientific target.
 
 ## Prospective scientific additions to integrate without reopening settled authority
 
@@ -44,6 +61,7 @@ These are design requirements or future qualification targets, not current train
 - DEV/SEALED RNA remain closed unless separately authorized.
 - No D_shared outcome inspection while upstream masking/design choices remain open.
 - FULL104 successor outcomes must not be inspected before the successor masking contract is prospectively frozen.
+- Hidden-gene numerical expression reconstruction must not be substituted for the biological/query-local state objective.
 - Historical T1 remains historical failure evidence and must not be rehabilitated.
 - Do not silently promote 15% burden, cap 8, RIDGE8, PREFIX3, attacker hyperparameters, or exploratory thresholds into authority.
 - Conclusion-bearing promotion still requires independent implementation verification and specialist review.
