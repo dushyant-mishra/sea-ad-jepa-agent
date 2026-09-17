@@ -1,10 +1,4 @@
-"""Attack tests for the masking-authority schema repair (V1 defect, §21).
-
-V1 found that MaskingAuthorityV1 accepts free-form identifiers and binds no SHA roots --
-the same weakness that was repaired for the target-address provider authority. This is a
-SCHEMA repair only: no production masking policy is instantiated or frozen, because V2 has
-not scientifically qualified.
-"""
+"""Attack tests for the current masking-policy authority successor."""
 from __future__ import annotations
 
 import dataclasses
@@ -48,12 +42,18 @@ def make(**over) -> CurrentMaskingPolicyAuthorityV2:
     return CurrentMaskingPolicyAuthorityV2(**base)
 
 
+class Stub:
+    training_authorized = False
+    def __init__(self, digest: str): self._digest = digest
+    def validate(self): return None
+    def canonical_digest(self): return self._digest
+
+
 def test_lawful_authority_validates() -> None:
     make().validate()
     assert len(make().canonical_digest()) == 64
 
 
-# ---------------------------------------------------------------- free-string defect
 @pytest.mark.parametrize("field", ["masking_policy_id", "target_evidence_budget_authority_id",
                                    "rng_replay_authority_id", "eligibility_policy_id",
                                    "fallback_policy_id"])
@@ -73,7 +73,6 @@ def test_no_approved_vocabulary_carries_a_historical_experiment_name() -> None:
             assert not any(t in v.upper() for t in ("TD57", "TD59", "TD60", "CORRMASK"))
 
 
-# ---------------------------------------------------------------- exact root binding
 @pytest.mark.parametrize("bad", ["b" * 64, "0" * 64, "f" * 64, "deadbeef" * 8])
 def test_arbitrary_registry_authority_digest_fails_closed(bad: str) -> None:
     with pytest.raises(ValueError, match="canonical_registry_authority_sha256"):
@@ -88,7 +87,6 @@ def test_raw_artifact_digest_cannot_stand_in_for_an_authority_root(raw: str) -> 
         dataclasses.replace(make(), support_estimability_authority_sha256=raw).validate()
 
 
-# ---------------------------------------------------------------- role splicing
 @pytest.mark.parametrize("a,b", [
     ("support_estimability_authority_sha256", "shortcut_artifact_sha256"),
     ("shortcut_artifact_sha256", "target_evidence_budget_authority_sha256"),
@@ -108,7 +106,6 @@ def test_registry_root_cannot_be_reused_as_another_role() -> None:
         ).validate()
 
 
-# ---------------------------------------------------------------- malformed digests
 @pytest.mark.parametrize("field", ["support_estimability_authority_sha256",
                                    "shortcut_artifact_sha256",
                                    "target_evidence_budget_authority_sha256",
@@ -119,20 +116,58 @@ def test_malformed_digest_fails_closed(field: str) -> None:
             dataclasses.replace(make(), **{field: bad}).validate()
 
 
-# ---------------------------------------------------------------- training authority
 def test_authority_cannot_turn_training_on() -> None:
     assert make().training_authorized is False
     with pytest.raises(ValueError, match="training"):
         dataclasses.replace(make(), training_authorized=True).validate()
 
 
-# ---------------------------------------------------------------- budget ownership
 def test_authority_does_not_carry_a_numeric_mask_fraction() -> None:
-    """V1 finding: mask burden belongs to the evidence-budget authority, not here."""
     fields = {f.name for f in dataclasses.fields(CurrentMaskingPolicyAuthorityV2)}
     for forbidden in ("mask_fraction", "mask_burden", "n_masked", "blocks", "evidence_budget"):
         assert forbidden not in fields, f"{forbidden} must not live on the masking authority"
     assert "target_evidence_budget_authority_sha256" in fields
+
+
+def test_live_dependencies_must_match_bound_support_budget_and_rng_roots() -> None:
+    a = make()
+    a.bind_live_authorities(
+        support_estimability=Stub(SUPPORT),
+        target_evidence_budget=Stub(BUDGET),
+        rng_replay=Stub(RNG),
+    )
+    with pytest.raises(ValueError, match="support estimability authority root mismatch"):
+        a.bind_live_authorities(
+            support_estimability=Stub("5" * 64),
+            target_evidence_budget=Stub(BUDGET),
+            rng_replay=Stub(RNG),
+        )
+    with pytest.raises(ValueError, match="target evidence budget authority root mismatch"):
+        a.bind_live_authorities(
+            support_estimability=Stub(SUPPORT),
+            target_evidence_budget=Stub("6" * 64),
+            rng_replay=Stub(RNG),
+        )
+    with pytest.raises(ValueError, match="rng replay authority root mismatch"):
+        a.bind_live_authorities(
+            support_estimability=Stub(SUPPORT),
+            target_evidence_budget=Stub(BUDGET),
+            rng_replay=Stub("7" * 64),
+        )
+
+
+def test_live_dependency_cannot_authorize_training() -> None:
+    a = make()
+
+    class BadStub(Stub):
+        training_authorized = True
+
+    with pytest.raises(ValueError, match="unexpectedly authorizes training"):
+        a.bind_live_authorities(
+            support_estimability=BadStub(SUPPORT),
+            target_evidence_budget=Stub(BUDGET),
+            rng_replay=Stub(RNG),
+        )
 
 
 def test_digest_is_stable_and_order_independent() -> None:
