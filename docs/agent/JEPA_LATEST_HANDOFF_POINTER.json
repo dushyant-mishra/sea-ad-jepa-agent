@@ -1,20 +1,14 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V14",
-  "date": "2026-09-15",
-  "status": "CURRENT_V5_TARGET_AUTHORITY_CARRYOVER_AND_MASKING_REVIEW__NO_TRAINING_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V15",
+  "date": "2026-09-17",
+  "status": "CURRENT_RIDGE8_EXPANDED_VALIDATION_T1_STRESS_SPILLOVER_AUDIT__NO_TRAINING_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260917_RIDGE8_T1_SPILLOVER_CURRENT.md",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260917_RIDGE8_T1_SPILLOVER_CURRENT.json",
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
-  "prior_layer2_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md",
-  "current_work_ledger_path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json",
-  "prior_integrated_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
+  "prior_target_authority_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
+  "ridge8_provenance_path": "analysis/v5_masking_successor_spike_20260917/provenance/RIDGE8_EXPANDED_VALIDATION_PROVENANCE_20260917.md",
+  "t1_stress_report_path": "analysis/t1_checkpoint_state_stress_20260917/JEPA_T1_CHECKPOINT_STATE_STRESS_20260917.md",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "live_evidence_lanes": {
-    "claude_layer2": "analysis/v5-layer2-cross-view-shortcut-claude-20260915@219831b899b914984369c7a41828bf750554d1d9",
-    "teacher_student_mechanics": "repair/v5-dshared-authority-v2-20260914@3717c9c0a292dfcd883949d5d0bf36d263f79300",
-    "planning_carryover_audit": "planning/v5-teacher-student-ema-canonical-20260915@88c45b97b3e9a4ad3c0fd178c992f844fd58dbab"
-  },
-  "instruction": "Open START_HERE.md, then this pointer, then the current V5 target-authority handoff and the historical-audits index. Before doing any new audit, classify it as ALREADY_AUDITED, SUPERSEDED, OPEN, or CHANGED_INPUT_REQUIRES_REQUALIFICATION. Re-fetch live heads. Do not blindly merge the divergent planning lane. Keep training OFF and real D_shared/protected outcomes sealed."
+  "instruction": "Open START_HERE.md, then this pointer, then the 20260917 RIDGE8/T1/spillover handoff and historical-audits index. Re-fetch the live analysis/v5-ridge8-expanded-validation-20260917 head. Classify proposed work before executing. Do not repeat settled T0/T1/QID/F1/Stage81A3/FULL104-lineage/Stage-A audits. Historical T1 checkpoints are adversarial fixtures only, not healthy-teacher authority. The JEPA target is biological/cellular state including query-local state, never hidden-gene scalar expression. Keep training OFF and protected/D_shared outcomes sealed."
 }
