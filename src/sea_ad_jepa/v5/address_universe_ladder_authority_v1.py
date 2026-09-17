@@ -1,4 +1,8 @@
-"""Prospective address-universe ladder authority for masking qualification."""
+"""Prospective address-universe ladder authority for masking qualification.
+
+The terminal common core is defined using strict MEASURED_SCALAR support only;
+MEASURED_COLLISION_UNRESOLVED never counts as a measured scalar for this role.
+"""
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -9,6 +13,9 @@ from typing import Any, Mapping, Sequence, Tuple
 
 TERMINAL_UNIVERSE_ID = "FULL_COMMON_CORE_17186_V1"
 TERMINAL_UNIVERSE_SIZE = 17186
+APPROVED_SUPPORT_STATE_POLICY_IDS: Tuple[str, ...] = (
+    "STRICT_MEASURED_SCALAR_ONLY__COLLISION_UNRESOLVED_EXCLUDED_V1",
+)
 APPROVED_TERMINAL_POLICY_IDS: Tuple[str, ...] = ("FULL_COMMON_CORE_MUST_BE_TERMINAL_V1",)
 
 
@@ -29,7 +36,9 @@ def _seq(value: object, name: str) -> tuple:
 
 
 def _digest(payload: Mapping[str, Any]) -> str:
-    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode()
+    ).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -41,6 +50,7 @@ class AddressUniverseLadderAuthorityV1:
     ordered_universe_ids: Sequence[str]
     ordered_universe_sha256: Sequence[str]
     ordered_universe_sizes: Sequence[int]
+    support_state_policy_id: str
     terminal_policy_id: str
     training_authorized: bool = False
 
@@ -76,6 +86,8 @@ class AddressUniverseLadderAuthorityV1:
         ]
         if len(set(role_roots)) != len(role_roots):
             raise ValueError("address-universe role roots must be distinct")
+        if self.support_state_policy_id not in APPROVED_SUPPORT_STATE_POLICY_IDS:
+            raise ValueError(f"support_state_policy_id must be one of {APPROVED_SUPPORT_STATE_POLICY_IDS!r}")
         if self.terminal_policy_id not in APPROVED_TERMINAL_POLICY_IDS:
             raise ValueError(f"terminal_policy_id must be one of {APPROVED_TERMINAL_POLICY_IDS!r}")
         ids, _, sizes = self.normalized()
