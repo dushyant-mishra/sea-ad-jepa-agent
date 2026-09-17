@@ -271,7 +271,7 @@ def test_stream_fails_closed_on_duplicate_selection_row_within_block(tmp_path: P
     duplicate = lines[2].split(",")
     duplicate[0] = fields[0]
     lines[2] = ",".join(duplicate)
-    meta.write_text("\\n".join(lines) + "\\n", encoding="utf-8")
+    meta.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     # Rebind the manifest to the deliberately modified fixture so the failure is
     # selection-row identity, not the earlier metadata-hash guard.
@@ -293,7 +293,7 @@ def test_stream_fails_closed_on_duplicate_selection_row_within_block(tmp_path: P
                 "meta_path",
                 "meta_sha256",
             ],
-            lineterminator="\\n",
+            lineterminator="\n",
         )
         writer.writeheader()
         writer.writerows(manifest_rows)
