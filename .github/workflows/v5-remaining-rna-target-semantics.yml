@@ -37,6 +37,7 @@ jobs:
             tests/test_v5_precision_authority_v1.py \
             tests/test_v5_masking_design_population_authorities_v1.py \
             tests/test_v5_masking_rng_replay_authority_v1.py \
+            tests/test_v5_masking_qualification_design_authority_v1.py \
             tests/test_v5_current_semantic_successor_spillover_v1.py \
             tests/test_v5_current_successor_schema_spillover_firewall_v1.py \
             tests/test_v5_current_authority_closure_v1.py \
@@ -55,6 +56,7 @@ jobs:
             tests/test_v5_precision_authority_v1.py \
             tests/test_v5_masking_design_population_authorities_v1.py \
             tests/test_v5_masking_rng_replay_authority_v1.py \
+            tests/test_v5_masking_qualification_design_authority_v1.py \
             tests/test_v5_current_semantic_successor_spillover_v1.py \
             tests/test_v5_current_successor_schema_spillover_firewall_v1.py \
             tests/test_v5_current_authority_closure_v1.py \
