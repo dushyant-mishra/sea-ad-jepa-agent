@@ -107,6 +107,7 @@ def test_live_source_roles_are_explicit_current_files_and_include_spillover_fire
     )
     assert roles["terminal_evidence_assembly_live_sha256"] == "src/sea_ad_jepa/v5/masking_terminal_evidence_assembly_v1.py"
     assert roles["terminal_mechanical_controls_live_sha256"] == "src/sea_ad_jepa/v5/masking_terminal_mechanical_controls_v1.py"
+    assert roles["terminal_one_rung_executor_live_sha256"] == "src/sea_ad_jepa/v5/masking_terminal_one_rung_executor_v1.py"
     assert roles["anti_spillover_test_live_sha256"] == "tests/test_v5_full104_masking_anti_spillover_v2.py"
     for relative in roles.values():
         assert Path(relative).is_file(), relative
