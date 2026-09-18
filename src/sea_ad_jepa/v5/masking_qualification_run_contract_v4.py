@@ -279,6 +279,32 @@ class MaskingQualificationRunContractV4:
         if getattr(sizing_plan, "target_eligibility_receipt_sha256", None) != getattr(cache_manifest, "target_eligibility_receipt_sha256", None):
             raise ValueError("calibration cache uses a different target-eligibility receipt")
 
+    def bind_control_calibration_precision_plan(self, precision_plan: Any, cache_manifest: Any) -> None:
+        self.validate()
+        if _live_digest(precision_plan, "control-calibration precision plan") != self.control_calibration_precision_plan_sha256:
+            raise ValueError("control-calibration precision plan root mismatch")
+        required = (
+            "fold_assignment_artifact_sha256",
+            "calibration_cache_manifest_sha256",
+        )
+        if any(not hasattr(precision_plan, field) for field in required):
+            raise ValueError(
+                "final run contract requires ControlCalibrationPrecisionPlanV2 or later; "
+                "a split receipt may not masquerade as an outer-split authority"
+            )
+        if precision_plan.calibration_cache_manifest_sha256 != self.control_calibration_cache_manifest_sha256:
+            raise ValueError("control-calibration precision plan binds a different calibration cache")
+        if precision_plan.census_authority_sha256 != self.census_authority_sha256:
+            raise ValueError("control-calibration precision plan binds a different census authority")
+        if precision_plan.support_estimability_authority_sha256 != self.support_estimability_authority_sha256:
+            raise ValueError("control-calibration precision plan binds a different support authority")
+        if precision_plan.fold_assignment_artifact_sha256 != getattr(cache_manifest, "split_receipt_sha256", None):
+            raise ValueError("control-calibration precision plan binds a different fold-assignment receipt")
+        if precision_plan.target_eligibility_receipt_sha256 != getattr(cache_manifest, "target_eligibility_receipt_sha256", None):
+            raise ValueError("control-calibration precision plan binds a different target-eligibility receipt")
+        if cache_manifest.canonical_digest() != self.control_calibration_cache_manifest_sha256:
+            raise ValueError("control-calibration precision plan was checked against a different cache manifest")
+
     def bind_target_panel(self, panel: Any, sizing_plan: Any, sizing_receipt: Any) -> None:
         self.validate()
         if _live_digest(sizing_plan, "target-panel sizing plan") != self.target_panel_sizing_plan_sha256:

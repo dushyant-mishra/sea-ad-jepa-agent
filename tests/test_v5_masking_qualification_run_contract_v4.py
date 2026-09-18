@@ -143,6 +143,44 @@ def test_final_contract_accepts_design_v2_template_and_burden_roots():
     c.bind_design(design)
 
 
+def test_final_contract_rejects_precision_plan_v1_receipt_as_authority_role():
+    c = contract()
+    old = _BoundStub(
+        c.control_calibration_precision_plan_sha256,
+        census_authority_sha256=c.census_authority_sha256,
+        support_estimability_authority_sha256=c.support_estimability_authority_sha256,
+        target_eligibility_receipt_sha256=h("elig"),
+        outer_split_authority_sha256=h("raw-split-receipt"),
+    )
+    cache = _BoundStub(
+        c.control_calibration_cache_manifest_sha256,
+        split_receipt_sha256=h("raw-split-receipt"),
+        target_eligibility_receipt_sha256=h("elig"),
+    )
+    with pytest.raises(ValueError, match="PlanV2"):
+        c.bind_control_calibration_precision_plan(old, cache)
+
+
+def test_final_contract_accepts_precision_plan_v2_with_explicit_fold_receipt_and_cache_root():
+    c = contract()
+    split_receipt = h("fold-receipt-current")
+    eligibility = h("elig-current")
+    cache = _BoundStub(
+        c.control_calibration_cache_manifest_sha256,
+        split_receipt_sha256=split_receipt,
+        target_eligibility_receipt_sha256=eligibility,
+    )
+    plan = _BoundStub(
+        c.control_calibration_precision_plan_sha256,
+        census_authority_sha256=c.census_authority_sha256,
+        support_estimability_authority_sha256=c.support_estimability_authority_sha256,
+        target_eligibility_receipt_sha256=eligibility,
+        fold_assignment_artifact_sha256=split_receipt,
+        calibration_cache_manifest_sha256=c.control_calibration_cache_manifest_sha256,
+    )
+    c.bind_control_calibration_precision_plan(plan, cache)
+
+
 def test_control_calibration_provenance_is_bound_but_not_promoted_to_terminal_input():
     c = contract()
     fold_receipt = h("fold-receipt")

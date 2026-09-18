@@ -10,8 +10,8 @@ from pathlib import Path
 
 import numpy as np
 
-from sea_ad_jepa.v5.control_calibration_precision_authority_v1 import (
-    ControlCalibrationPrecisionPlanV1,
+from sea_ad_jepa.v5.control_calibration_precision_authority_v2 import (
+    ControlCalibrationPrecisionPlanV2,
 )
 from sea_ad_jepa.v5.control_capacity_calibration_receipt_v1 import (
     ControlCapacityCalibrationReceiptV1,
@@ -107,16 +107,32 @@ def main() -> int:
     plan.validate()
     target_count = plan.next_target_count(prior)
 
-    precision = ControlCalibrationPrecisionPlanV1(
-        authority_id="JEPA_V5_FULL104_CONTROL_CALIBRATION_PRECISION_V1",
+    precision = ControlCalibrationPrecisionPlanV2(
+        authority_id="JEPA_V5_FULL104_CONTROL_CALIBRATION_PRECISION_V2",
         census_authority_sha256=cache.manifest.census_authority_sha256,
         support_estimability_authority_sha256=cache.manifest.support_estimability_authority_sha256,
         target_eligibility_receipt_sha256=cache.manifest.target_eligibility_receipt_sha256,
-        outer_split_authority_sha256=cache.manifest.split_receipt_sha256,
+        fold_assignment_artifact_sha256=cache.manifest.split_receipt_sha256,
+        calibration_cache_manifest_sha256=cache.manifest_sha256,
     )
-    precision.validate()
+    precision.bind_calibration_cache(cache.manifest)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    write_json(args.out_dir / "target_panel_sizing_plan_v2.json", {
+        "schema": "V5_TARGET_PANEL_SIZING_PLAN_AUTHORITY_V2",
+        **plan.__dict__,
+        "panel_count_ladder": list(plan.panel_count_ladder),
+        "authority_sha256": plan.canonical_digest(),
+        "terminal_outcomes_inspected_before_freeze": False,
+        "training_authorized": False,
+    })
+    write_json(args.out_dir / "control_calibration_precision_plan_v2.json", {
+        "schema": "V5_CONTROL_CALIBRATION_PRECISION_PLAN_V2",
+        **precision.__dict__,
+        "authority_sha256": precision.canonical_digest(),
+        "terminal_policy_outcomes_inspected_before_freeze": False,
+        "training_authorized": False,
+    })
     prefix = f"target_panel_{target_count}"
     global_seed = seed_from_cache(cache.manifest_sha256)
     planted, shuffled = evaluate_linear_capacity_rung(
