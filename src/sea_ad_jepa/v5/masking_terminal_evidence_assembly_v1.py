@@ -25,6 +25,7 @@ from .masking_qualification_decision_v1 import (
     POLICIES,
 )
 from .masking_qualification_decision_v2 import DECISION_RULE_ID
+from .precision_authority_v4 import QualificationPrecisionAuthorityV4
 
 PRIMARY_DELTA_ESTIMAND_ID = "UNIFORM_MINUS_POLICY_PAIRED_TARGET_DONOR_V1"
 PRIMARY_NULL_ESTIMAND_ID = "REAL_POLICY_MINUS_SAME_MASK_WITHIN_DONOR_SHUFFLED_TARGET_V1"
@@ -473,13 +474,15 @@ def _source_balanced_target_means(
 def assemble_policy_decision_evidence(
     *,
     raw_evidence: TerminalPolicyRawEvidenceV1,
-    precision: Any,
+    precision: QualificationPrecisionAuthorityV4,
 ) -> MaskingPolicyDecisionEvidenceV1:
     """Assemble one policy's decision evidence from a hash-bound raw bundle."""
 
     TerminalEvidenceAssemblySemanticsV1().validate()
     if not isinstance(raw_evidence, TerminalPolicyRawEvidenceV1):
         raise ValueError("raw_evidence must be TerminalPolicyRawEvidenceV1")
+    if not isinstance(precision, QualificationPrecisionAuthorityV4):
+        raise ValueError("precision must be QualificationPrecisionAuthorityV4")
     raw_evidence.validate()
     precision.validate()
 
