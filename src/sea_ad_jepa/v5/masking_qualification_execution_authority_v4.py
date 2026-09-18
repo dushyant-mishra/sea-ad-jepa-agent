@@ -77,9 +77,9 @@ class MaskingQualificationExecutionAuthorityV4:
 
     def bind_rung_decision_receipt(self, receipt: Any) -> None:
         self.validate()
-        receipt.validate()
         if getattr(receipt, "decision_rule_id", None) != self.decision_rule_id:
             raise ValueError("rung decision receipt was produced by a different decision rule")
+        receipt.validate()
         digest = _sha(receipt.canonical_digest(), "rung decision receipt digest")
         if digest != self.rung_decision_receipt_sha256:
             raise ValueError("rung decision receipt root mismatch")
