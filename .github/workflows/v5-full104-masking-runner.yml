@@ -22,6 +22,8 @@ on:
       - 'src/sea_ad_jepa/v5/masking_qualification_decision_v1.py'
       - 'src/sea_ad_jepa/v5/masking_donor_evidence_v1.py'
       - 'src/sea_ad_jepa/v5/masking_control_executor_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_nonlinear_challenge_executor_v1.py'
       - 'tests/test_v5_full104_census_receipt_v2.py'
       - 'tests/test_v5_masking_qualification_parameters_authority_v2.py'
       - 'tests/test_v5_masking_burden_ladder_authority_v2.py'
@@ -49,7 +51,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install focused dependencies
-        run: python -m pip install --disable-pip-version-check pytest numpy scipy
+        run: python -m pip install --disable-pip-version-check pytest numpy scipy scikit-learn
       - name: Run FULL104 masking authority regressions
         env:
           PYTHONPATH: src:.
@@ -67,7 +69,9 @@ jobs:
             tests/test_v5_precision_authority_v2.py \
             tests/test_v5_masking_qualification_decision_v1.py \
             tests/test_v5_masking_donor_evidence_v1.py \
-            tests/test_v5_masking_control_executor_v1.py
+            tests/test_v5_masking_control_executor_v1.py \
+            tests/test_v5_masking_nonlinear_challenge_authority_v1.py \
+            tests/test_v5_masking_nonlinear_challenge_executor_v1.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -86,5 +90,7 @@ jobs:
             tests/test_v5_masking_qualification_decision_v1.py \
             tests/test_v5_masking_donor_evidence_v1.py \
             tests/test_v5_masking_control_executor_v1.py \
+            tests/test_v5_masking_nonlinear_challenge_authority_v1.py \
+            tests/test_v5_masking_nonlinear_challenge_executor_v1.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
