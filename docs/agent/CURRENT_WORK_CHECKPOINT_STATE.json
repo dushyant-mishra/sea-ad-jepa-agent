@@ -32,6 +32,7 @@
   },
   "unresolved_blockers": [
     "GPU_MACHINE_MUST_GENERATE_AND_HASH_BIND_CENSUS_V2_EXECUTION_RECEIPTS_FROM_REAL_PASS1_NPZ",
+    "GPU_MACHINE_MUST_BUILD_AUTHENTICATED_CONTROL_CALIBRATION_CACHE_FROM_FULL104",
     "CONTROL_ONLY_TARGET_PANEL_SIZING_RECEIPT_NOT_YET_EXECUTED",
     "CONTROL_ONLY_NONLINEAR_SAMPLING_CALIBRATION_RECEIPT_NOT_YET_EXECUTED",
     "FINAL_TARGET_PANEL_AUTHORITY_V3_INSTANCE_NOT_YET_FROZEN",
@@ -92,7 +93,11 @@
       "anti_spillover": "tests/test_v5_full104_masking_anti_spillover_v2.py",
       "control_calibration_precision": "src/sea_ad_jepa/v5/control_calibration_precision_authority_v1.py",
       "control_calibration_interval_receipt": "src/sea_ad_jepa/v5/control_calibration_interval_receipt_v1.py",
-      "control_capacity_calibration_receipt": "src/sea_ad_jepa/v5/control_capacity_calibration_receipt_v1.py"
+      "control_capacity_calibration_receipt": "src/sea_ad_jepa/v5/control_capacity_calibration_receipt_v1.py",
+      "control_calibration_cache": "src/sea_ad_jepa/v5/full104_control_calibration_cache_v1.py",
+      "control_calibration_cache_evaluator": "src/sea_ad_jepa/v5/full104_control_calibration_cache_evaluator_v1.py",
+      "control_calibration_cache_builder": "scripts/agent/build_full104_control_calibration_cache_v1.py",
+      "target_panel_capacity_evaluator": "scripts/agent/evaluate_full104_target_panel_capacity_from_cache_v1.py"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
@@ -116,7 +121,9 @@
       "stage_a_successors": "tests/test_v5_current_stage_a_spillover_firewall_v3.py",
       "control_calibration_precision": "tests/test_v5_control_calibration_precision_authority_v1.py",
       "control_calibration_interval": "tests/test_v5_control_calibration_interval_receipt_v1.py",
-      "control_capacity_calibration_receipt": "tests/test_v5_control_capacity_calibration_receipt_v1.py"
+      "control_capacity_calibration_receipt": "tests/test_v5_control_capacity_calibration_receipt_v1.py",
+      "control_calibration_cache": "tests/test_v5_full104_control_calibration_cache_v1.py",
+      "control_calibration_cache_evaluator": "tests/test_v5_full104_control_calibration_cache_evaluator_v1.py"
     },
     "verified_ci": {
       "code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
@@ -150,14 +157,15 @@
   "next_authorized_actions": [
     "RUN_FOCUSED_CI_AND_FAIL_CLOSED_ON_ANY_SKIP_OR_NEW_FAILURE",
     "ON_GPU_REGENERATE_CENSUS_V2_SUMMARY_SPLIT_AND_TARGET_ELIGIBILITY_RECEIPTS_FROM_AUTHENTICATED_PASS1_NPZ",
-    "RUN_CONTROL_ONLY_TARGET_PANEL_LADDER_128_256_512_1024_STOPPING_AT_FIRST_QUALIFYING_RUNG",
+    "BUILD_AUTHENTICATED_FULL104_CONTROL_CALIBRATION_CACHE_ONCE_FROM_CURRENT_LEVEL4_AND_CANONICAL_REGISTRY",
+    "VERIFY_CACHE_HASHES_ROLE_AND_ALL_104_DONORS_WITH_CACHE_FORBIDDEN_FOR_TERMINAL_USE",
+    "RUN_CONTROL_ONLY_TARGET_PANEL_LADDER_128_256_512_1024_STOPPING_AT_FIRST_QUALIFYING_RUNG_WITH_EXACT_REPLAY",
     "FREEZE_TARGET_PANEL_AUTHORITY_V3_FROM_CONTROL_CALIBRATION_AND_DETERMINISTIC_HASH_SELECTION",
     "FREEZE_PRECISION_AUTHORITY_V4_BOUND_TO_SELECTED_TARGET_COUNT",
     "RUN_CONTROL_ONLY_NONLINEAR_CAP_LADDER_64_128_256_512_1024_STOPPING_AT_FIRST_QUALIFYING_RUNG",
     "FREEZE_NONLINEAR_CHALLENGE_AUTHORITY_V3_FROM_CONTROL_CALIBRATION",
-    "BIND_OUTER_SPLIT_RNG_AND_ALL_CURRENT_SOURCE_HASHES",
-    "BENCHMARK_OUTCOME_BLIND_STREAMING_RUNTIME_AND_BUILD_CACHE_ONLY_IF_EXACT_PARITY_IS_PROVEN",
-    "FREEZE_FINAL_MASKING_RUN_CONTRACT_V4_BEFORE_REAL_POLICY_OUTCOMES",
+    "BIND_OUTER_SPLIT_RNG_CACHE_PROVENANCE_AND_ALL_CURRENT_SOURCE_HASHES",
+    "FREEZE_FINAL_MASKING_RUN_CONTRACT_V4_WITH_AUTHENTICATED_FULL104_LEVEL4_AS_ONLY_TERMINAL_INPUT",
     "REBUILD_AND_VALIDATE_MACHINE_WORKTREE_CHECKPOINT_ON_FINAL_HEAD",
     "INDEPENDENTLY_VERIFY_FINAL_PACKAGE",
     "ONLY_THEN_OPEN_5_PERCENT_TERMINAL_FULL104_RUNG",
@@ -179,7 +187,11 @@
     "TREAT_128_TARGETS_AS_FINAL_ONLY_BECAUSE_IT_IS_A_POWER_OF_TWO",
     "TREAT_256_NONLINEAR_CELLS_PER_DONOR_AS_FINAL_WITHOUT_CONTROL_CALIBRATION",
     "USE_REAL_MASKING_POLICY_OUTCOMES_TO_CHOOSE_TARGET_PANEL_SIZE_OR_NONLINEAR_SAMPLING_CAP",
-    "BIND_TARGET_PANEL_AUTHORITY_V2_PRECISION_V3_OR_NONLINEAR_AUTHORITY_V2_IN_FINAL_RUN_CONTRACT"
+    "BIND_TARGET_PANEL_AUTHORITY_V2_PRECISION_V3_OR_NONLINEAR_AUTHORITY_V2_IN_FINAL_RUN_CONTRACT",
+    "CALIBRATION_CACHE_FORBIDDEN_AS_TERMINAL_FULL104_INPUT",
+    "CALIBRATION_CACHE_FORBIDDEN_AS_TRAINING_INPUT",
+    "USE_DIRECT_STREAM_TARGET_PANEL_CALIBRATION_SUPERSEDED_BY_CACHE_PATH",
+    "USE_ANY_HISTORICAL_TARGET_LIST_OR_SMALLER_RUN_MATRIX_TO_BUILD_CONTROL_CALIBRATION_CACHE"
   ],
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
