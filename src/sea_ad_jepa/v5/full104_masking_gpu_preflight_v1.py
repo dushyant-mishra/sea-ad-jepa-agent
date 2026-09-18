@@ -32,6 +32,8 @@ EXPECTED_DONORS = 104
 EXPECTED_ADDRESSES = 41238
 EXPECTED_CORE = 17186
 EXPECTED_ELIGIBLE = 17053
+EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256 = "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08"
+EXPECTED_REGISTRY_AUTHORITY_CANONICAL_JSON_SHA256 = "3321f6a0acd5ae89faa4912dde2d2ebc7c9d52d2bccf82ef63e415ace51158c9"
 
 
 def load_json(path: Path | str) -> dict[str, Any]:
@@ -101,6 +103,8 @@ def validate_calibration_bindings(
     if registry_file_sha256 != EXPECTED_REGISTRY_SHA256:
         raise ValueError("canonical registry file root mismatch")
 
+    if canonical_sha(dict(registry_authority)) != EXPECTED_REGISTRY_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise ValueError("canonical registry authority is not the exact current semantic authority")
     if registry_authority.get("schema") != "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1":
         raise ValueError("canonical registry authority schema mismatch")
     registry = registry_authority.get("ADDRESS_REGISTRY", {})
@@ -117,6 +121,8 @@ def validate_calibration_bindings(
     if registry_authority.get("training_authorized") is not False:
         raise ValueError("canonical registry authority unexpectedly authorizes training")
 
+    if canonical_sha(dict(support_authority)) != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise ValueError("support authority is not the exact current semantic authority")
     if support_authority.get("schema") != "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1":
         raise ValueError("support authority schema mismatch")
     if support_authority.get("full104_substrate_sha256") != EXPECTED_BLOCK_MANIFEST_SHA256:
