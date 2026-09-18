@@ -1,14 +1,14 @@
 """Additive donor-level evidence for the frozen masking runners.
 
-The canonical and streaming runners remain byte-stable.  This companion
+The canonical and streaming runners remain byte-stable. This companion
 reconstructs the already-frozen masks from their ordinary result rows, refits
-the same ridge attacker with the same private primitives, and emits held-out
-per-donor correlation-squared values.  It fails if those donor values do not
+the same ridge attacker with each runner's own primitives, and emits held-out
+per-donor correlation-squared values. It fails if those donor values do not
 reproduce the runner's source-balanced aggregate score.
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
 
@@ -53,7 +53,8 @@ def _reference_donor_scores(
         dtype=np.int64,
     )
     if visible.size == 0:
-        return 0.0, {int(d): 0.0 for d in heldout_donors}
+        out = {int(d): 0.0 for d in heldout_donors}
+        return _source_balanced_from_donors(out, arrays.source_by_donor), out
     screen = reference._source_balanced_abs_corr_scores(
         arrays,
         donors=train_donors,
@@ -87,8 +88,7 @@ def _reference_donor_scores(
         den = float(np.sqrt(np.dot(yy, yy) * np.dot(pp, pp)))
         r = 0.0 if den <= _EPS else float(np.dot(yy, pp) / den)
         out[donor] = r * r
-    aggregate = _source_balanced_from_donors(out, arrays.source_by_donor)
-    return aggregate, out
+    return _source_balanced_from_donors(out, arrays.source_by_donor), out
 
 
 def _streaming_donor_scores(
@@ -110,7 +110,8 @@ def _streaming_donor_scores(
         dtype=np.int64,
     )
     if visible.size == 0:
-        return 0.0, {int(d): 0.0 for d in heldout_donors}
+        out = {int(d): 0.0 for d in heldout_donors}
+        return _source_balanced_from_donors(out, stream.source_by_donor), out
     screen = streaming._source_balanced_abs_corr_scores(
         stream,
         donors=train_donors,
@@ -141,8 +142,7 @@ def _streaming_donor_scores(
         den = float(np.sqrt(max(rss_y, 0.0) * max(pred_ss, 0.0)))
         r = 0.0 if den <= _EPS else cov / den
         out[donor] = r * r
-    aggregate = _source_balanced_from_donors(out, stream.source_by_donor)
-    return aggregate, out
+    return _source_balanced_from_donors(out, stream.source_by_donor), out
 
 
 def _mask_from_row(
@@ -155,8 +155,10 @@ def _mask_from_row(
     co_mask_count: int,
     method: str,
     targeted_cols: tuple[int, ...],
+    base_mask_fn: Callable[..., set[int]],
+    removable_order_fn: Callable[..., tuple[int, ...]],
 ) -> set[int]:
-    base = reference._base_uniform_mask(
+    base = base_mask_fn(
         universe_cols,
         target_col=int(target_col),
         co_mask_count=int(co_mask_count),
@@ -166,7 +168,7 @@ def _mask_from_row(
     )
     if method == "UNIFORM_RANDOM":
         return set(base)
-    removable = reference._removable_order(
+    removable = removable_order_fn(
         base,
         target_col=int(target_col),
         fold_index=int(fold_index),
@@ -179,44 +181,6 @@ def _mask_from_row(
         targeted_cols=tuple(map(int, targeted_cols)),
         removable_order=removable,
     )
-
-
-def _attach_donor_evidence(
-    *,
-    rows: list[dict[str, Any]],
-    universe_cols: np.ndarray,
-    fold_by_donor: np.ndarray,
-    source_by_donor: np.ndarray,
-    evidence_budget: Any,
-    parameters: Any,
-    global_seed: int,
-    scorer: Any,
-    scorer_owner: Any,
-) -> list[dict[str, Any]]:
-    eligible_non_target = int(np.asarray(universe_cols).size - 1)
-    co_mask_count = int(evidence_budget.mask_count(eligible_non_target))
-    out: list[dict[str, Any]] = []
-    folds = np.asarray(fold_by_donor, dtype=np.int64)
-    for row in rows:
-        fold_index = int(row["fold"])
-        heldout = np.flatnonzero(folds == fold_index).astype(np.int64)
-        train = np.flatnonzero(folds != fold_index).astype(np.int64)
-        mask = _mask_from_row(
-            universe_cols=np.asarray(universe_cols, dtype=np.int64),
-            target_col=int(row["target_col"]),
-            target_id=row["target_id"],
-            fold_index=fold_index,
-            global_seed=int(global_seed),
-            co_mask_count=co_mask_count,
-            method=str(row["method"]),
-            targeted_cols=tuple(row["targeted_cols"]),
-        )
-        aggregate, donor_scores = scorer(
-            **{
-                scorer_owner: None
-            }
-        )
-        raise AssertionError("unreachable")
 
 
 def run_reference_fold_with_donor_evidence(
@@ -234,8 +198,7 @@ def run_reference_fold_with_donor_evidence(
         evidence_budget=evidence_budget,
         global_seed=global_seed,
     )
-    eligible_non_target = int(arrays.universe_cols.size - 1)
-    co_mask_count = int(evidence_budget.mask_count(eligible_non_target))
+    co_mask_count = int(evidence_budget.mask_count(int(arrays.universe_cols.size - 1)))
     folds = np.asarray(arrays.fold_by_donor, dtype=np.int64)
     heldout = np.flatnonzero(folds == fold_index).astype(np.int64)
     train = np.flatnonzero(folds != fold_index).astype(np.int64)
@@ -250,6 +213,8 @@ def run_reference_fold_with_donor_evidence(
             co_mask_count=co_mask_count,
             method=str(row["method"]),
             targeted_cols=tuple(row["targeted_cols"]),
+            base_mask_fn=reference._base_uniform_mask,
+            removable_order_fn=reference._removable_order,
         )
         aggregate, donor_scores = _reference_donor_scores(
             arrays=arrays,
@@ -261,9 +226,7 @@ def run_reference_fold_with_donor_evidence(
             alpha=float(parameters.ridge_alpha),
         )
         if not np.isclose(aggregate, float(row["score"]), rtol=0.0, atol=1e-12):
-            raise ValueError(
-                "donor evidence does not reproduce canonical aggregate score"
-            )
+            raise ValueError("donor evidence does not reproduce canonical aggregate score")
         enriched = dict(row)
         enriched["heldout_donor_scores"] = tuple(
             (int(d), float(donor_scores[int(d)])) for d in sorted(donor_scores)
@@ -287,8 +250,7 @@ def run_streaming_fold_with_donor_evidence(
         evidence_budget=evidence_budget,
         global_seed=global_seed,
     )
-    eligible_non_target = int(stream.universe_cols.size - 1)
-    co_mask_count = int(evidence_budget.mask_count(eligible_non_target))
+    co_mask_count = int(evidence_budget.mask_count(int(stream.universe_cols.size - 1)))
     folds = np.asarray(stream.fold_by_donor, dtype=np.int64)
     heldout = np.flatnonzero(folds == fold_index).astype(np.int64)
     train = np.flatnonzero(folds != fold_index).astype(np.int64)
@@ -303,6 +265,8 @@ def run_streaming_fold_with_donor_evidence(
             co_mask_count=co_mask_count,
             method=str(row["method"]),
             targeted_cols=tuple(row["targeted_cols"]),
+            base_mask_fn=streaming._base_uniform_mask,
+            removable_order_fn=streaming._removable_order,
         )
         aggregate, donor_scores = _streaming_donor_scores(
             stream=stream,
@@ -314,9 +278,7 @@ def run_streaming_fold_with_donor_evidence(
             alpha=float(parameters.ridge_alpha),
         )
         if not np.isclose(aggregate, float(row["score"]), rtol=0.0, atol=1e-12):
-            raise ValueError(
-                "donor evidence does not reproduce streaming aggregate score"
-            )
+            raise ValueError("donor evidence does not reproduce streaming aggregate score")
         enriched = dict(row)
         enriched["heldout_donor_scores"] = tuple(
             (int(d), float(donor_scores[int(d)])) for d in sorted(donor_scores)
