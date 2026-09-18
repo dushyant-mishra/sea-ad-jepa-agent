@@ -129,6 +129,7 @@ def valid_bundle():
     census["census_authority_sha256"] = canonical_sha(census)
     cache = CacheManifestStub(
         census_authority_sha256=census["census_authority_sha256"],
+        support_estimability_authority_sha256=support_file_sha,
         split_receipt_sha256=split["receipt_sha256"],
         target_eligibility_receipt_sha256=eligibility["receipt_sha256"],
     )
