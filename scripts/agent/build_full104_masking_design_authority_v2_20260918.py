@@ -7,7 +7,7 @@ from dataclasses import fields
 import json
 from pathlib import Path
 
-from sea_ad_jepa.v5.full104_census_receipt_v2 import sha256_file
+from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
 from sea_ad_jepa.v5.masking_burden_ladder_authority_v2 import MaskingBurdenLadderAuthorityV2
 from sea_ad_jepa.v5.masking_qualification_design_authority_v1 import (
     APPROVED_EXPRESSION_ATTACKER_ROLE_IDS,
@@ -32,6 +32,10 @@ from sea_ad_jepa.v5.target_panel_authority_v3 import TargetPanelAuthorityV3
 EXPECTED_FULL104_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 EXPECTED_REGISTRY_AUTHORITY_DIGEST = "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676"
 RUNNER_RELPATH = "src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py"
+EXPECTED_REPRESENTATION_AUTHORITY_CANONICAL_JSON_SHA256 = "92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1"
+EXPECTED_TEACHER_TARGET_AUTHORITY_CANONICAL_JSON_SHA256 = "a5c4702eae54ffeb9d3a92957ce3176e29db25c805843a48cf3a6121037d89d2"
+EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256 = "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08"
+EXPECTED_REGISTRY_AUTHORITY_CANONICAL_JSON_SHA256 = "3321f6a0acd5ae89faa4912dde2d2ebc7c9d52d2bccf82ef63e415ace51158c9"
 
 
 def load(path: Path) -> dict:
@@ -80,6 +84,8 @@ def main() -> int:
     args = p.parse_args()
 
     representation = load(args.representation_authority)
+    if canonical_sha(representation) != EXPECTED_REPRESENTATION_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise SystemExit("representation authority is not the exact current semantic authority")
     if representation.get("schema") != "V5_PRIMARY_REPRESENTATION_AUTHORITY_V1":
         raise SystemExit("current primary representation authority V1 is required")
     if representation.get("substrate_authority_sha256") != EXPECTED_FULL104_MANIFEST_SHA256:
@@ -89,6 +95,8 @@ def main() -> int:
     representation_sha = sha256_file(args.representation_authority)
 
     teacher = load(args.teacher_target_semantics_authority)
+    if canonical_sha(teacher) != EXPECTED_TEACHER_TARGET_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise SystemExit("teacher-target authority is not the exact current semantic authority")
     if teacher.get("schema") != "TEACHER_STUDENT_V5_SCIENTIFIC_TARGET_AUTHORITY_V2":
         raise SystemExit("current teacher-target scientific authority V2 is required")
     if teacher.get("training_authorized") is not False or teacher.get("execution_authorized") is not False:
@@ -96,6 +104,8 @@ def main() -> int:
     teacher_sha = sha256_file(args.teacher_target_semantics_authority)
 
     registry = load(args.canonical_registry_authority)
+    if canonical_sha(registry) != EXPECTED_REGISTRY_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise SystemExit("canonical registry authority is not the exact current semantic authority")
     if registry.get("schema") != "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1":
         raise SystemExit("canonical registry authority schema mismatch")
     registry_digest = str(registry.get("canonical_authority_digest", ""))
@@ -105,6 +115,8 @@ def main() -> int:
         raise SystemExit("canonical registry authority binds a different FULL104 substrate")
 
     support = load(args.support_authority)
+    if canonical_sha(support) != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise SystemExit("support authority is not the exact current semantic authority")
     support_sha = sha256_file(args.support_authority)
     if support.get("schema") != "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1":
         raise SystemExit("support authority schema mismatch")
