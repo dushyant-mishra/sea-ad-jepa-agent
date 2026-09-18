@@ -10,6 +10,9 @@ from sea_ad_jepa.v5 import (
     control_calibration_precision_authority_v1,
     full104_control_calibration_cache_v1,
     full104_control_calibration_cache_evaluator_v1,
+    full104_nonlinear_capacity_cache_evaluator_v1,
+    nonlinear_capacity_model_authority_v1,
+    nonlinear_sampling_calibration_authority_v2,
     masking_burden_ladder_authority_v2,
     masking_control_executor_v1,
     masking_donor_evidence_v1,
@@ -20,7 +23,6 @@ from sea_ad_jepa.v5 import (
     masking_qualification_parameters_authority_v2,
     masking_qualification_run_contract_v4,
     masking_rng_replay_authority_v2,
-    nonlinear_sampling_calibration_authority_v1,
     precision_authority_v4,
     target_panel_authority_v3,
     target_panel_selector_v2,
@@ -115,6 +117,9 @@ def test_calibration_cache_and_scripts_cannot_spill_historical_substrates_into_f
     script_paths = (
         Path("scripts/agent/build_full104_control_calibration_cache_v1.py"),
         Path("scripts/agent/evaluate_full104_target_panel_capacity_from_cache_v1.py"),
+        Path("scripts/agent/evaluate_full104_nonlinear_capacity_from_cache_v1.py"),
+        Path("scripts/agent/build_full104_outer_split_authority_v1_20260918.py"),
+        Path("scripts/agent/build_full104_precision_authority_v4_20260918.py"),
     )
     forbidden = {
         "historical_analysis_path": re.compile(r"(?i)(?:^|[\\/])analysis[\\/]"),
@@ -155,3 +160,14 @@ def test_current_state_binds_calibration_cache_sources_and_explicitly_forbids_te
     assert sources["control_calibration_cache_builder"].endswith("build_full104_control_calibration_cache_v1.py")
     assert sources["target_panel_capacity_evaluator"].endswith("evaluate_full104_target_panel_capacity_from_cache_v1.py")
     assert "CALIBRATION_CACHE_FORBIDDEN_AS_TERMINAL_FULL104_INPUT" in state["forbidden_actions"]
+
+
+def test_nonlinear_model_capacity_builder_has_narrow_historical_role_only():
+    path=Path("scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py")
+    source=path.read_text(encoding="utf-8")
+    compile(source,str(path),"exec")
+    assert "HISTORICAL_SCRIPT" in source and "HISTORICAL_SUMMARY" in source
+    assert "NonlinearCapacityModelAuthorityV1" in source
+    assert "MODEL_CAPACITY_PROVENANCE_ONLY__NO_DATA_TARGET_BURDEN_FOLD_SEED_OR_ROW_CAP_AUTHORITY" in source
+    for forbidden in ("X_common6000.npz","outer5200_targets32_cols.npy","JEPA_SCALE_MASK","JEPA_SCALE_FOLD","random_state=20260917"):
+        assert forbidden not in source
