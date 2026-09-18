@@ -236,8 +236,18 @@ def main() -> int:
         sorted_order = np.argsort(selection_rows)
         sorted_rows = selection_rows[sorted_order]
         seen = np.zeros(selection_rows.size, dtype=np.bool_)
+        full_donor_n = np.zeros(EXPECTED_DONOR_COUNT, dtype=np.int64)
+        full_donor_sum = np.zeros((EXPECTED_DONOR_COUNT, cache_cols.size), dtype=np.float64)
+        full_donor_sumsq = np.zeros((EXPECTED_DONOR_COUNT, cache_cols.size), dtype=np.float64)
         for block in stream.iter_blocks(columns=cache_cols):
             rows = np.asarray(block.selection_rows, dtype=np.int64)
+            block_donors = np.asarray(block.donor_code, dtype=np.int64)
+            for donor in np.unique(block_donors):
+                ix = block_donors == int(donor)
+                local_all = block.X[ix].tocsr()
+                full_donor_n[int(donor)] += int(local_all.shape[0])
+                full_donor_sum[int(donor)] += np.asarray(local_all.sum(axis=0)).reshape(-1)
+                full_donor_sumsq[int(donor)] += np.asarray(local_all.power(2).sum(axis=0)).reshape(-1)
             pos = np.searchsorted(sorted_rows, rows)
             valid = pos < sorted_rows.size
             safe_pos = np.minimum(pos, max(sorted_rows.size - 1, 0))
@@ -254,6 +264,8 @@ def main() -> int:
         del X
         if not np.all(seen):
             raise SystemExit("cache materialization did not close over every selected row")
+        if int(full_donor_n.sum()) != EXPECTED_CELLS or np.any(full_donor_n <= 0):
+            raise SystemExit("full-donor sufficient statistics do not close over 4,553,407 cells")
 
         file_sha: dict[str, str] = {"x": sha256_file(x_path)}
         arrays = {
@@ -263,6 +275,9 @@ def main() -> int:
             "retained_count_by_donor_i64.npy": retained_counts.astype(np.int64, copy=False),
             "fold_by_donor_i64.npy": fold_by_donor.astype(np.int64, copy=False),
             "donor_source_code_i64.npy": donor_source_code.astype(np.int64, copy=False),
+            "full_donor_n_i64.npy": full_donor_n,
+            "full_donor_sum_f64.npy": full_donor_sum,
+            "full_donor_sumsq_f64.npy": full_donor_sumsq,
             "target_cols_i64.npy": np.asarray(column_plan["target_cols"], dtype=np.int64),
             "proxy_cols_i64.npy": np.asarray(column_plan["proxy_cols"], dtype=np.int64),
             "distractor_cols_i64.npy": np.asarray(column_plan["distractor_cols"], dtype=np.int64),
@@ -314,6 +329,9 @@ def main() -> int:
             retained_count_by_donor_file_sha256=file_sha["retained_count_by_donor_i64.npy"],
             fold_by_donor_file_sha256=file_sha["fold_by_donor_i64.npy"],
             donor_source_code_file_sha256=file_sha["donor_source_code_i64.npy"],
+            full_donor_n_file_sha256=file_sha["full_donor_n_i64.npy"],
+            full_donor_sum_file_sha256=file_sha["full_donor_sum_f64.npy"],
+            full_donor_sumsq_file_sha256=file_sha["full_donor_sumsq_f64.npy"],
             target_cols_file_sha256=file_sha["target_cols_i64.npy"],
             proxy_cols_file_sha256=file_sha["proxy_cols_i64.npy"],
             distractor_cols_file_sha256=file_sha["distractor_cols_i64.npy"],
@@ -333,6 +351,9 @@ def main() -> int:
                 "retained_count_by_donor": "retained_count_by_donor_i64.npy",
                 "fold_by_donor": "fold_by_donor_i64.npy",
                 "donor_source_code": "donor_source_code_i64.npy",
+                "full_donor_n": "full_donor_n_i64.npy",
+                "full_donor_sum": "full_donor_sum_f64.npy",
+                "full_donor_sumsq": "full_donor_sumsq_f64.npy",
                 "target_cols": "target_cols_i64.npy",
                 "proxy_cols": "proxy_cols_i64.npy",
                 "distractor_cols": "distractor_cols_i64.npy",
