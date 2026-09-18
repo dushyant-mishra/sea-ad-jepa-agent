@@ -97,3 +97,68 @@ def test_terminal_contract_pins_actual_full104_substrate_and_observation_state()
         contract(full104_block_manifest_sha256=h("wrong-manifest")).validate()
     with pytest.raises(ValueError,match="observation-state"):
         contract(observation_state_sha256=h("wrong-observation")).validate()
+
+
+class _BoundStub:
+    training_authorized = False
+    def __init__(self, digest, **attrs):
+        self._digest = digest
+        for key, value in attrs.items():
+            setattr(self, key, value)
+    def validate(self):
+        return None
+    def canonical_digest(self):
+        return self._digest
+
+
+def test_control_calibration_provenance_is_bound_but_not_promoted_to_terminal_input():
+    c = contract()
+    fold_receipt = h("fold-receipt")
+    eligibility_receipt = h("eligibility-receipt")
+    cache = _BoundStub(
+        c.control_calibration_cache_manifest_sha256,
+        cache_role_id=CALIBRATION_CACHE_ROLE_ID,
+        terminal_masking_qualification_authorized=False,
+        full104_block_manifest_sha256=c.full104_block_manifest_sha256,
+        census_authority_sha256=c.census_authority_sha256,
+        support_estimability_authority_sha256=c.support_estimability_authority_sha256,
+        split_receipt_sha256=fold_receipt,
+        target_eligibility_receipt_sha256=eligibility_receipt,
+    )
+    outer = _BoundStub(
+        c.outer_split_authority_sha256,
+        full104_substrate_sha256=c.full104_block_manifest_sha256,
+        fold_assignment_artifact_sha256=fold_receipt,
+    )
+    sizing = _BoundStub(
+        c.target_panel_sizing_plan_sha256,
+        target_eligibility_receipt_sha256=eligibility_receipt,
+    )
+    c.bind_control_calibration_provenance(cache, outer, sizing)
+    with pytest.raises(ValueError, match="forbidden as terminal"):
+        c.assert_terminal_execution_input_role(cache.cache_role_id)
+
+
+def test_control_calibration_provenance_fails_if_fold_receipt_is_spliced():
+    c = contract()
+    cache = _BoundStub(
+        c.control_calibration_cache_manifest_sha256,
+        cache_role_id=CALIBRATION_CACHE_ROLE_ID,
+        terminal_masking_qualification_authorized=False,
+        full104_block_manifest_sha256=c.full104_block_manifest_sha256,
+        census_authority_sha256=c.census_authority_sha256,
+        support_estimability_authority_sha256=c.support_estimability_authority_sha256,
+        split_receipt_sha256=h("fold-a"),
+        target_eligibility_receipt_sha256=h("elig"),
+    )
+    outer = _BoundStub(
+        c.outer_split_authority_sha256,
+        full104_substrate_sha256=c.full104_block_manifest_sha256,
+        fold_assignment_artifact_sha256=h("fold-b"),
+    )
+    sizing = _BoundStub(
+        c.target_panel_sizing_plan_sha256,
+        target_eligibility_receipt_sha256=h("elig"),
+    )
+    with pytest.raises(ValueError, match="fold-assignment"):
+        c.bind_control_calibration_provenance(cache, outer, sizing)
