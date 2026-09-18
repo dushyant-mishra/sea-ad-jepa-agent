@@ -103,6 +103,7 @@ on:
       - 'tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py'
       - 'tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py'
       - 'tests/test_v5_outer_split_and_precision_builders_current.py'
+      - 'tests/test_v5_precision_authority_v4.py'
       - '.github/workflows/v5-full104-masking-runner.yml'
   workflow_dispatch:
 
@@ -158,6 +159,7 @@ jobs:
             tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py \
             tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py \
             tests/test_v5_outer_split_and_precision_builders_current.py \
+            tests/test_v5_precision_authority_v4.py \
             tests/test_v5_masking_qualification_run_contract_v4.py \
             tests/test_v5_full104_masking_gpu_preflight_v1.py \
             tests/test_v5_masking_design_authority_v2.py \
@@ -207,6 +209,7 @@ jobs:
             tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py \
             tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py \
             tests/test_v5_outer_split_and_precision_builders_current.py \
+            tests/test_v5_precision_authority_v4.py \
             tests/test_v5_masking_qualification_run_contract_v4.py \
             tests/test_v5_full104_masking_gpu_preflight_v1.py \
             tests/test_v5_masking_design_authority_v2.py \
