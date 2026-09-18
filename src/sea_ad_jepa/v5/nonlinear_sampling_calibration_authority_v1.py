@@ -20,6 +20,8 @@ def _digest(p): return hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",
 class NonlinearCapControlVerdictV1:
     max_cells_per_donor:int
     raw_control_evidence_sha256:str
+    precision_authority_sha256:str
+    calibration_interval_receipt_sha256:str
     negative_lower_two_sided:float
     negative_upper_two_sided:float
     planted_detect_lower_one_sided:float
@@ -30,6 +32,8 @@ class NonlinearCapControlVerdictV1:
 
     def validate(self):
         _sha(self.raw_control_evidence_sha256,"raw_control_evidence_sha256")
+        _sha(self.precision_authority_sha256,"precision_authority_sha256")
+        _sha(self.calibration_interval_receipt_sha256,"calibration_interval_receipt_sha256")
         if self.max_cells_per_donor not in CAP_LADDER: raise ValueError("max_cells_per_donor is not a frozen calibration rung")
         import math
         vals=(self.negative_lower_two_sided,self.negative_upper_two_sided,self.planted_detect_lower_one_sided,self.planted_after_mask_upper_one_sided)
@@ -43,6 +47,28 @@ class NonlinearCapControlVerdictV1:
     def qualified(self)->bool:
         self.validate(); tol=self.null_noise_tolerance
         return bool(self.planted_detect_lower_one_sided>tol and self.planted_after_mask_upper_one_sided<=tol and self.replay_exact and self.all_donors_represented)
+    def bind_interval_receipt(self, receipt) -> None:
+        self.validate()
+        receipt.validate()
+        if receipt.scope_id != "NONLINEAR_CAP_CONTROL_CALIBRATION_V1":
+            raise ValueError("nonlinear-cap verdict requires nonlinear interval scope")
+        if receipt.candidate_value != self.max_cells_per_donor:
+            raise ValueError("nonlinear calibration interval cap mismatch")
+        if receipt.raw_control_evidence_sha256 != self.raw_control_evidence_sha256:
+            raise ValueError("nonlinear raw control evidence root mismatch")
+        if receipt.precision_root_sha256 != self.precision_authority_sha256:
+            raise ValueError("nonlinear calibration precision root mismatch")
+        if receipt.canonical_digest() != self.calibration_interval_receipt_sha256:
+            raise ValueError("nonlinear calibration interval receipt root mismatch")
+        pairs = (
+            (receipt.negative_lower_two_sided, self.negative_lower_two_sided),
+            (receipt.negative_upper_two_sided, self.negative_upper_two_sided),
+            (receipt.planted_detect_lower_one_sided, self.planted_detect_lower_one_sided),
+            (receipt.planted_after_mask_upper_one_sided, self.planted_after_mask_upper_one_sided),
+        )
+        if any(float(a) != float(b) for a,b in pairs):
+            raise ValueError("nonlinear calibration intervals do not match bound receipt")
+
     def canonical_digest(self)->str:
         self.validate()
         return _digest({"schema":"V5_NONLINEAR_CAP_CONTROL_VERDICT_V1",**asdict(self),"null_noise_tolerance":self.null_noise_tolerance,"qualified":self.qualified})
