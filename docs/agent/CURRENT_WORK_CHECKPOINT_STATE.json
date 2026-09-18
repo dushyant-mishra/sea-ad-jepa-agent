@@ -23,18 +23,21 @@
     }
   ],
   "gates": {
-    "current": "V5_STREAMING_FULL104_MASKING_EXECUTOR_PARITY_READY__CANONICAL_GPU_QUALIFICATION_NEXT",
-    "masking_qualification": "PENDING_PROSPECTIVE_FREEZE_AND_TERMINAL_FULL104_EXECUTION",
+    "current": "FULL104_MASKING_PROSPECTIVE_PACKAGE_REPAIR_IN_PROGRESS__TERMINAL_OUTCOMES_UNOPENED",
+    "masking_qualification": "PROSPECTIVE_FREEZE_REPAIR_OPEN__NO_TERMINAL_OUTCOME_ACCESS",
     "stage_a": "PASS_11_OF_11__GEOMETRY_MEMORIZATION_DEFERRED_UNTIL_FINAL_GEOMETRY",
     "protected_outcomes": "CLOSED",
     "d_shared": "CLOSED",
     "training": "FORBIDDEN_UNTIL_EXPLICIT_FINAL_TRAINING_AUTHORITY"
   },
   "unresolved_blockers": [
-    "CANONICAL_WORK_CHECKPOINT_MUST_BE_BUILT_AND_VALIDATED_ON_GPU_WORKTREE",
-    "AUTHENTICATED_FULL104_LEVEL4_SUBSTRATE_MUST_BE_BOUND_TO_CURRENT_AUTHORITIES",
-    "PROSPECTIVE_MASKING_DESIGN_AND_NUMERIC_PARAMETER_AUTHORITIES_MUST_BE_FROZEN_BEFORE_TERMINAL_OUTCOMES",
-    "EXACT_REFERENCE_AND_STREAMING_EXECUTOR_SOURCE_SHA256_MUST_BE_BOUND_IN_REAL_RUN_CONTRACT",
+    "CENSUS_EXECUTION_RESULTS_MUST_BE_HASH_BOUND_NOT_HARDCODED",
+    "MASKING_NUMERIC_PARAMETERS_MUST_BE_EXPLICITLY_REAUTHORIZED_FROM_DISCOVERY_PROVENANCE",
+    "OUTER_SPLIT_TARGET_PANEL_PRECISION_AND_RNG_INSTANCES_MUST_BE_FROZEN",
+    "REQUIRED_CONTROLS_AND_NONLINEAR_CHALLENGE_MUST_HAVE_EXECUTABLE_RESULT_BINDING",
+    "MASKING_DECISION_RULE_MUST_BE_MECHANICALLY_EVALUATED_NOT_STATUS_STRING_ONLY",
+    "BURDEN_ESCALATION_MUST_STOP_AT_FIRST_QUALIFYING_RUNG",
+    "FINAL_MACHINE_WORKTREE_CHECKPOINT_MUST_BE_REBUILT_AFTER_SOURCE_FREEZE",
     "TERMINAL_FULL_COMMON_CORE_17186_MASKING_QUALIFICATION_NOT_EXECUTED",
     "REAL_SELECTED_MASKING_POLICY_AUTHORITY_NOT_ISSUED",
     "HEALTHY_CURRENT_TEACHER_REMAINING_RNA_EVIDENCE_OPEN",
@@ -46,7 +49,7 @@
   "assets": {
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
-      "working_branch": "impl/v5-remaining-rna-target-semantics-20260917",
+      "working_branch": "impl/v5-full104-masking-redteam-freeze-20260918",
       "verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
       "pull_request": 18,
       "pr_base": "analysis/v5-ridge8-expanded-validation-20260917",
@@ -67,14 +70,22 @@
       "canonical_masking_reference": "src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py",
       "streaming_masking_executor": "src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py",
       "masking_parameters_authority": "src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v1.py",
-      "masking_run_contract": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v1.py",
+      "masking_run_contract": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v2.py",
       "masking_execution_authority_v2": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v2.py",
-      "target_evidence_budget": "src/sea_ad_jepa/v5/target_evidence_budget_authority_v1.py"
+      "target_evidence_budget": "src/sea_ad_jepa/v5/target_evidence_budget_authority_v2.py",
+      "burden_ladder": "src/sea_ad_jepa/v5/masking_burden_ladder_authority_v1.py",
+      "strict_support_selection": "src/sea_ad_jepa/v5/full104_strict_support_selection_v1.py",
+      "census_authority": "docs/agent/FULL104_READONLY_CENSUS_AUTHORITY_20260917.json",
+      "support_estimability_authority": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
       "streaming_parity": "tests/test_v5_full104_masking_streaming_executor_v1.py",
-      "run_contract": "tests/test_v5_masking_qualification_run_contract_v1.py",
+      "budget_v2_executor_equivalence": "tests/test_v5_full104_streaming_executor_accepts_budget_v2.py",
+      "run_contract_v2": "tests/test_v5_masking_qualification_run_contract_v2.py",
+      "anti_spillover": "tests/test_v5_full104_masking_anti_spillover_v1.py",
+      "strict_support": "tests/test_v5_full104_strict_support_selection_v1.py",
+      "budget_and_ladder": "tests/test_v5_target_evidence_budget_v2_and_burden_ladder_v1.py",
       "stage_a": "tests/test_v5_current_stage_a_spillover_firewall_v1.py",
       "stage_a_successors": "tests/test_v5_current_stage_a_spillover_firewall_v3.py"
     },
@@ -108,18 +119,21 @@
     }
   },
   "next_authorized_actions": [
-    "FETCH_LIVE_BRANCH_AND_VERIFY_VERIFIED_CODE_ANCHOR_IS_ANCESTOR",
-    "BUILD_AND_VALIDATE_CURRENT_WORK_CHECKPOINT_ON_CANONICAL_GPU_WORKTREE",
-    "VERIFY_AUTHENTICATED_FULL104_LEVEL4_ROOT_AND_BLOCK_MANIFEST_SHA256",
-    "BIND_CURRENT_DONOR_SOURCE_OUTER_SPLIT_TARGET_PANEL_UNIVERSE_AND_SUPPORT_ARTIFACTS",
-    "INSTANTIATE_AND_FREEZE_PROSPECTIVE_MASKING_DESIGN",
-    "INSTANTIATE_AND_FREEZE_NUMERIC_MASKING_PARAMETERS_WITHOUT_INHERITING_EXPLORATORY_DEFAULTS",
-    "COMPUTE_AND_BIND_EXACT_SHA256_OF_CANONICAL_REFERENCE_AND_STREAMING_EXECUTOR_SOURCE",
+    "REMOVE_ACCIDENTALLY_TRACKED_HISTORICAL_TMP_ARTIFACTS",
+    "REPAIR_CENSUS_PROVENANCE_TO_BIND_ACTUAL_EXECUTION_RESULTS_AND_INDEPENDENT_CROSSCHECK",
+    "BIND_EXISTING_CURRENT_SUPPORT_ESTIMABILITY_AUTHORITY_NOT_PLACEHOLDER",
+    "EXPLICITLY_REAUTHORIZE_DISCOVERY_DEFINED_ATTACKER_PARAMETERS_WITH_CURRENT_CONFIRMATION_ROLE",
+    "FREEZE_DONOR_FOLD_ASSIGNMENT_TARGET_ELIGIBILITY_AND_OUTCOME_BLIND_TARGET_PANEL",
+    "IMPLEMENT_DONOR_AWARE_PAIRED_UNCERTAINTY",
+    "IMPLEMENT_AND_BIND_POSITIVE_NEGATIVE_IDENTITY_REPLAY_AND_NO_PRIVILEGED_METADATA_CONTROLS",
+    "IMPLEMENT_NONLINEAR_CHALLENGE_WITHOUT_POLICY_RETUNING",
+    "IMPLEMENT_MECHANICAL_MASKING_DECISION_AUTHORITY",
+    "REPAIR_BURDEN_ESCALATION_TO_STOP_AT_FIRST_QUALIFYING_RUNG",
+    "RED_TEAM_PLACEHOLDER_AND_HISTORICAL_SPILLOVER_PATHS",
+    "BENCHMARK_OUTCOME_BLIND_STREAMING_RUNTIME_AND_CACHE_ONLY_IF_EXACT_PARITY_IS_PROVEN",
+    "REBUILD_AND_VALIDATE_FINAL_MACHINE_WORKTREE_CHECKPOINT_AFTER_SOURCE_FREEZE",
     "FREEZE_REAL_MASKING_RUN_CONTRACT_BEFORE_INSPECTING_TERMINAL_OUTCOMES",
-    "EXECUTE_LADDER_THROUGH_FULL_COMMON_CORE_17186_WITH_REQUIRED_CONTROLS_AND_PRECISION",
-    "ISSUE_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2_FROM_REAL_RESULT",
-    "PROMOTE_SELECTED_MASKING_POLICY_ONLY_IF_FROZEN_CONTRACT_PASSES",
-    "CONTINUE_REMAINING_REAL_EVIDENCE_CLOSURE_WITH_TRAINING_STILL_OFF"
+    "ONLY_THEN_EXECUTE_TERMINAL_FULL104_MASKING_QUALIFICATION"
   ],
   "forbidden_actions": [
     "RUN_TRAINING",
@@ -129,9 +143,13 @@
     "CHANGE_MASKING_PARAMETERS_AFTER_TERMINAL_OUTCOME_INSPECTION",
     "SUBSTITUTE_SMALLER_OR_UNAUTHENTICATED_DATA_FOR_FULL104",
     "REQUIRE_MONOLITHIC_FULL104_MATRIX",
-    "REOPEN_SETTLED_T0_T1_QID_F1_LAYER2_STAGE_A_OR_STREAMING_PARITY_WITHOUT_CHANGED_INPUTS"
+    "REOPEN_SETTLED_T0_T1_QID_F1_LAYER2_STAGE_A_OR_STREAMING_PARITY_WITHOUT_CHANGED_INPUTS",
+    "USE_PLACEHOLDER_SHA256_AS_PRODUCTION_AUTHORITY",
+    "PROMOTE_HISTORICAL_OR_SMALLER_RUN_ARTIFACT_WITHOUT_EXPLICIT_CURRENT_REAUTHORIZATION",
+    "CONTINUE_BURDEN_ESCALATION_AFTER_THE_LOWEST_RUNG_HAS_FULLY_QUALIFIED",
+    "DECLARE_CONTROLS_OR_PRECISION_PASS_FROM_STATUS_STRINGS_WITHOUT_BOUND_EXECUTABLE_EVIDENCE"
   ],
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
-  "checkpoint_artifact_note": "docs/agent/CURRENT_WORK_CHECKPOINT.json and docs/agent/CLAUDE_TAKEOVER.md are gitignored (.gitignore lines 102-103). The checkpoint inventory uses 'git ls-files --others --exclude-standard', which excludes ignored paths by construction, so these two files can never appear in untracked_files and MUST NOT be declared in allowed_untracked_files. Commit 04329cc3 declared them and thereby made UNTRACKED_FILES_MISMATCH unconditional. A local validation PASS is true but not reproducible from the branch alone; review packages must carry the frozen checkpoint bytes or bind its digest explicitly."
+  "checkpoint_artifact_note": "This tracked state declares the scientific lane only. The ignored machine-bound CURRENT_WORK_CHECKPOINT.json must be rebuilt and validated on the canonical GPU worktree after the final source/authority commit and again immediately before terminal execution. No committed artifact may claim a still-current machine checkpoint across a subsequent commit."
 }
