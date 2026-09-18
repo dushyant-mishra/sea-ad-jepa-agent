@@ -56,7 +56,7 @@ def required_cli_flags(path: Path) -> tuple[str, ...]:
 def powershell_fences(text: str) -> tuple[str, ...]:
     return tuple(
         match.group(1)
-        for match in re.finditer(r"\x60\x60\x60powershell\\s*\\n(.*?)\x60\x60\x60", text, flags=re.DOTALL)
+        for match in re.finditer(r"\x60\x60\x60powershell\s*\n(.*?)\x60\x60\x60", text, flags=re.DOTALL)
     )
 
 
@@ -71,7 +71,7 @@ def test_canonical_gpu_command_authority_covers_every_required_current_cli_flag(
         assert required, f"{script}: expected at least one required CLI flag"
         matching = tuple(block for block in fences if script.name in block)
         assert matching, f"{script}: missing from canonical GPU command authority"
-        command_context = "\\n".join(matching)
+        command_context = "\n".join(matching)
         missing = [flag for flag in required if flag not in command_context]
         assert not missing, (
             f"{script}: canonical GPU command authority is stale; "
