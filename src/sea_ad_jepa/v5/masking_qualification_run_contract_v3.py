@@ -76,6 +76,7 @@ class MaskingQualificationRunContractV3:
     control_executor_source_sha256: str
     nonlinear_executor_source_sha256: str
     decision_evaluator_source_sha256: str
+    execution_authority_source_sha256: str
     anti_spillover_test_source_sha256: str
 
     execution_source_role_id: str
@@ -111,6 +112,7 @@ class MaskingQualificationRunContractV3:
             ("control_executor_source_sha256", self.control_executor_source_sha256),
             ("nonlinear_executor_source_sha256", self.nonlinear_executor_source_sha256),
             ("decision_evaluator_source_sha256", self.decision_evaluator_source_sha256),
+            ("execution_authority_source_sha256", self.execution_authority_source_sha256),
             ("anti_spillover_test_source_sha256", self.anti_spillover_test_source_sha256),
         )
 
@@ -180,6 +182,7 @@ class MaskingQualificationRunContractV3:
         control_executor_live_sha256: str,
         nonlinear_executor_live_sha256: str,
         decision_evaluator_live_sha256: str,
+        execution_authority_live_sha256: str,
         anti_spillover_test_live_sha256: str,
     ) -> None:
         self.validate()
@@ -191,6 +194,7 @@ class MaskingQualificationRunContractV3:
             "control_executor_source_sha256": _sha(control_executor_live_sha256, "control_executor_live_sha256"),
             "nonlinear_executor_source_sha256": _sha(nonlinear_executor_live_sha256, "nonlinear_executor_live_sha256"),
             "decision_evaluator_source_sha256": _sha(decision_evaluator_live_sha256, "decision_evaluator_live_sha256"),
+            "execution_authority_source_sha256": _sha(execution_authority_live_sha256, "execution_authority_live_sha256"),
             "anti_spillover_test_source_sha256": _sha(anti_spillover_test_live_sha256, "anti_spillover_test_live_sha256"),
         }
         for field, live in observed.items():
