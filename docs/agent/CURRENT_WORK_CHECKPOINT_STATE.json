@@ -13,7 +13,7 @@
     },
     {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "f974904efbb2325ee75c24e02ecd044c4fdadd1f28d3c7b45e87500eeea4b9b6",
+      "sha256": "5da8ef7967dbe372d75e87f78b101e0b8663f0ecb5756e90678eb66d058da2a9",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
@@ -53,12 +53,12 @@
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
       "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "scientific_implementation_head": "ee8ae818937b46a99be29ade5bdf65fd85d706a7",
+      "scientific_implementation_head": "5ed613ac700d1505cef10f2fb01e4a5302a933f9",
       "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35385138227",
+      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35385752247",
       "pull_request": 20,
       "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
-      "governance_note": "Current source/test/workflow bytes are anchored at ee8ae818... after final RunContract V4 custody was closed through live upstream artifact paths. Later docs-only command/governance repairs do not change scientific implementation. Historical/smaller-run artifacts may motivate only; exact-current semantic authority ingress and current FULL104 root binding are mandatory."
+      "governance_note": "Current source/test/workflow bytes are anchored at 5ed613ac... after exact-byte pinning of every intentional historical reauthorization root. The six historical provenance files were independently verified byte-identical at pre-FULL104 discovery head 99dc3a6f... and current head. Later docs-only governance/command repairs do not change scientific implementation."
     },
     "full104": {
       "cells": 4553407,
@@ -158,14 +158,14 @@
     },
     "verified_ci": {
       "role": "EXACT_CURRENT_SCIENTIFIC_SOURCE_TEST_WORKFLOW_VERIFICATION",
-      "code_anchor": "ee8ae818937b46a99be29ade5bdf65fd85d706a7",
+      "code_anchor": "5ed613ac700d1505cef10f2fb01e4a5302a933f9",
       "workflow": "V5 FULL104 masking runner",
-      "run_id": 35385138227,
+      "run_id": 35385752247,
       "conclusion": "success",
       "regression_step": "success",
       "skip_gate": "pass",
-      "predecessor_verified_anchor": "bd968ea4be40da649a443916197e2985b5c8749f",
-      "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__CURRENT_FULL104_ROLE_REQUIRES_EXPLICIT_REAUTHORIZATION_CURRENT_ROOT_BINDING_EXACT_CURRENT_SEMANTIC_AUTHORITY_INGRESS_AND_PATH_ONLY_FINAL_CONTRACT_ASSEMBLY"
+      "predecessor_verified_anchor": "ee8ae818937b46a99be29ade5bdf65fd85d706a7",
+      "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__INTENTIONAL_REAUTHORIZATION_REQUIRES_EXACT_PRE_FULL104_BYTES_CURRENT_FULL104_ROLE_LIMITS_CURRENT_ROOT_BINDING_EXACT_CURRENT_SEMANTIC_AUTHORITY_INGRESS_AND_PATH_ONLY_FINAL_CONTRACT_ASSEMBLY"
     },
     "supporting_exploratory_results": {
       "branch": "analysis/v5-ridge8-expanded-validation-20260917",
@@ -223,7 +223,8 @@
     "USE_HISTORICAL_OR_SMALLER_RUN_HASH_AS_CURRENT_FULL104_ROLE_WITHOUT_EXPLICIT_REAUTHORIZATION_AND_CURRENT_ROOT_BINDING",
     "MANUFACTURE_ADDRESS_UNIVERSE_LADDER_DIGEST_FROM_DISCOVERY_UNIVERSES_IF_CURRENT_ARTIFACT_IS_MISSING",
     "USE_PROVISIONAL_20260917_FREEZE_STATUS_PLACEHOLDER_SUPPORT_ROOT_AS_CURRENT_AUTHORITY",
-    "REINTRODUCE_DISCOVERY_ADDRESS_UNIVERSE_LADDER_AS_FINAL_DESIGN_V2_ROLE"
+    "REINTRODUCE_DISCOVERY_ADDRESS_UNIVERSE_LADDER_AS_FINAL_DESIGN_V2_ROLE",
+    "ACCEPT_SAME_PATH_HISTORICAL_ARTIFACT_IF_BYTES_DRIFT_FROM_FROZEN_PRE_FULL104_DIGEST"
   ],
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
