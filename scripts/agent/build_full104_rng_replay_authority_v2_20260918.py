@@ -7,6 +7,7 @@ from dataclasses import fields
 import json
 from pathlib import Path
 
+from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha
 from sea_ad_jepa.v5.masking_burden_ladder_authority_v2 import MaskingBurdenLadderAuthorityV2
 from sea_ad_jepa.v5.masking_rng_replay_authority_v2 import MaskingRngReplayAuthorityV2
 from sea_ad_jepa.v5.outer_split_authority_v1 import OuterDonorSplitAuthorityV1
@@ -14,6 +15,7 @@ from sea_ad_jepa.v5.target_panel_authority_v3 import TargetPanelAuthorityV3
 
 EXPECTED_FULL104_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 EXPECTED_REGISTRY_AUTHORITY_DIGEST = "28b20a457c44ac864c375492c8875e865ed6fe6d2000338d5fd46d9557a25676"
+EXPECTED_REGISTRY_AUTHORITY_CANONICAL_JSON_SHA256 = "3321f6a0acd5ae89faa4912dde2d2ebc7c9d52d2bccf82ef63e415ace51158c9"
 
 
 def load(path: Path) -> dict:
@@ -42,6 +44,8 @@ def main() -> int:
     args = p.parse_args()
 
     registry = load(args.canonical_registry_authority)
+    if canonical_sha(registry) != EXPECTED_REGISTRY_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise SystemExit("canonical registry authority is not the exact current semantic authority")
     if registry.get("schema") != "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1":
         raise SystemExit("canonical registry authority schema mismatch")
     registry_digest = str(registry.get("canonical_authority_digest", ""))
