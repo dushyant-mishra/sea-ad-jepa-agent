@@ -13,12 +13,12 @@
     },
     {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "f1c8db99ebb6eb35c39583590e5a50b7a7c6146c5eae40e5d31751a8a2e2468a",
+      "sha256": "47f6b104fd536ad9f748368c5d3c23260094374184c36d5f17bc563d284f3361",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
   "gates": {
-    "current": "FULL104_MASKING_CONTROL_CALIBRATION_IMPLEMENTED__GOVERNANCE_REPAIRED__GPU_RUNTIME_RECEIPTS_PENDING__TERMINAL_OUTCOMES_UNOPENED",
+    "current": "FULL104_MASKING_CURRENT_PREFLIGHT_VERIFIED__GPU_RUNTIME_RECEIPTS_PENDING__TERMINAL_OUTCOMES_UNOPENED",
     "masking_qualification": "CONTROL_CALIBRATION_PENDING__NO_TERMINAL_POLICY_OUTCOME_ACCESS",
     "stage_a": "PASS_11_OF_11__GEOMETRY_MEMORIZATION_DEFERRED_UNTIL_FINAL_GEOMETRY",
     "protected_outcomes": "CLOSED",
@@ -33,8 +33,13 @@
     "CONTROL_ONLY_NONLINEAR_SAMPLING_CALIBRATION_RECEIPT_NOT_YET_EXECUTED",
     "FINAL_TARGET_PANEL_AUTHORITY_V3_INSTANCE_NOT_YET_FROZEN",
     "FINAL_PRECISION_AUTHORITY_V4_INSTANCE_NOT_YET_FROZEN",
+    "OUTER_SPLIT_AUTHORITY_V1_CURRENT_INSTANCE_NOT_YET_FROZEN",
     "FINAL_NONLINEAR_CHALLENGE_AUTHORITY_V3_INSTANCE_NOT_YET_FROZEN",
-    "OUTER_SPLIT_AND_RNG_CURRENT_INSTANCES_MUST_BE_HASH_BOUND",
+    "MASKING_QUALIFICATION_DESIGN_AUTHORITY_V1_CURRENT_INSTANCE_NOT_YET_FROZEN",
+    "MASKING_RNG_REPLAY_AUTHORITY_V2_CURRENT_INSTANCE_NOT_YET_FROZEN",
+    "ADDRESS_UNIVERSE_LADDER_AUTHORITY_V1_CURRENT_INSTANCE_OR_LAWFUL_CURRENT_ARTIFACT_NOT_YET_RECOVERED",
+    "MASKING_BURDEN_LADDER_AUTHORITY_V2_CURRENT_INSTANCE_NOT_YET_FROZEN",
+    "TARGET_EVIDENCE_BUDGET_AUTHORITY_V2_TEMPLATE_CURRENT_INSTANCE_NOT_YET_FROZEN",
     "FINAL_MASKING_RUN_CONTRACT_V4_INSTANCE_NOT_YET_FROZEN",
     "FINAL_MACHINE_WORKTREE_CHECKPOINT_MUST_BE_REBUILT_AFTER_SOURCE_FREEZE",
     "TERMINAL_FULL_COMMON_CORE_17186_MASKING_QUALIFICATION_NOT_EXECUTED",
@@ -49,12 +54,12 @@
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
       "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "scientific_implementation_head": "f62dc42582c8b8933955505f5127bebfaa687304",
+      "scientific_implementation_head": "ca643f5d389f470d41472366c64a9b2b4ecbe11d",
       "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35373584821",
+      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35374354706",
       "pull_request": 20,
       "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
-      "governance_note": "Current source/test/data bytes are anchored at f62dc425... after a narrow stale-test V1->V2 repair; later docs-only governance/handoff commits do not change scientific implementation."
+      "governance_note": "Current source/test/workflow bytes are anchored at ca643f5d... after adding the fail-closed current FULL104 GPU preflight. Historical/smaller-run artifacts remain provenance/support only unless an explicit current authority re-authorizes the exact role and binds current FULL104 roots."
     },
     "full104": {
       "cells": 4553407,
@@ -103,7 +108,10 @@
       "nonlinear_capacity_model_authority_builder": "scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py",
       "nonlinear_capacity_cache_evaluator": "src/sea_ad_jepa/v5/full104_nonlinear_capacity_cache_evaluator_v1.py",
       "nonlinear_capacity_evaluator": "scripts/agent/evaluate_full104_nonlinear_capacity_from_cache_v1.py",
-      "masking_parameters_authority_builder": "scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py"
+      "masking_parameters_authority_builder": "scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py",
+      "full104_gpu_preflight_validator": "src/sea_ad_jepa/v5/full104_masking_gpu_preflight_v1.py",
+      "full104_gpu_preflight_cli": "scripts/agent/validate_full104_masking_gpu_preflight_v1.py",
+      "full104_gpu_preflight_windows": "scripts/agent/v5_full104_masking_gpu_preflight_20260918.ps1"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
@@ -133,21 +141,19 @@
       "target_panel_authority_builder": "tests/test_v5_target_panel_authority_builder_v3.py",
       "outer_split_and_precision_builders": "tests/test_v5_outer_split_and_precision_builders_current.py",
       "nonlinear_capacity_model_and_plan_v2": "tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py",
-      "nonlinear_capacity_cache_evaluator": "tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py"
+      "nonlinear_capacity_cache_evaluator": "tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py",
+      "full104_gpu_preflight": "tests/test_v5_full104_masking_gpu_preflight_v1.py"
     },
     "verified_ci": {
-      "role": "EXACT_CURRENT_SCIENTIFIC_ANCHOR_VERIFICATION",
-      "code_anchor": "f62dc42582c8b8933955505f5127bebfaa687304",
+      "role": "EXACT_CURRENT_SCIENTIFIC_SOURCE_TEST_WORKFLOW_VERIFICATION",
+      "code_anchor": "ca643f5d389f470d41472366c64a9b2b4ecbe11d",
       "workflow": "V5 FULL104 masking runner",
-      "run_id": 35373584821,
+      "run_id": 35374354706,
       "conclusion": "success",
       "regression_step": "success",
       "skip_gate": "pass",
-      "predecessor_failure": {
-        "run_id": 35373486676,
-        "cause": "STALE_ANTI_SPILLOVER_TEST_REFERENCED_NONLINEAR_SAMPLING_AUTHORITY_V1_AFTER_CURRENT_CHAIN_MOVED_TO_V2",
-        "repaired_by": "f62dc42582c8b8933955505f5127bebfaa687304"
-      }
+      "predecessor_verified_anchor": "f62dc42582c8b8933955505f5127bebfaa687304",
+      "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__CURRENT_FULL104_ROLE_REQUIRES_EXPLICIT_REAUTHORIZATION_AND_CURRENT_ROOT_BINDING"
     },
     "supporting_exploratory_results": {
       "branch": "analysis/v5-ridge8-expanded-validation-20260917",
@@ -157,19 +163,23 @@
     }
   },
   "next_authorized_actions": [
-    "EXACT_HEAD_FOCUSED_CI_PASS_NO_SKIPS__RERUN_AFTER_ANY_SOURCE_TEST_WORKFLOW_CHANGE",
+    "REVERIFY_LIVE_HEAD_AND_PR20_BEFORE_EACH_IMPLEMENTATION_INCREMENT",
+    "USE_ONLY_20260918_TWO_MODE_FULL104_GPU_PREFLIGHT__20260917_PREFLIGHT_SUPERSEDED",
     "BUILD_EXPLICIT_MASKING_PARAMETERS_AUTHORITY_V2_FROM_FROZEN_DISCOVERY_PROVENANCE",
     "ON_GPU_REGENERATE_CENSUS_V2_SUMMARY_SPLIT_AND_TARGET_ELIGIBILITY_RECEIPTS_FROM_AUTHENTICATED_PASS1_NPZ",
     "BUILD_AUTHENTICATED_FULL104_CONTROL_CALIBRATION_CACHE_ONCE_FROM_CURRENT_LEVEL4_AND_CANONICAL_REGISTRY",
     "VERIFY_CACHE_HASHES_ROLE_ALL_104_DONORS_AND_FULL_DONOR_SUFFICIENT_STAT_CLOSURE",
     "RUN_CONTROL_ONLY_TARGET_PANEL_LADDER_128_256_512_1024_STOPPING_AT_FIRST_QUALIFYING_RUNG_WITH_EXACT_REPLAY",
-    "BUILD_TARGET_PANEL_AUTHORITY_V3_FROM_SIZING_VERDICTS_SELECTION_AND_AUTHENTICATED_CACHE_PREFIX",
+    "BUILD_TARGET_PANEL_AUTHORITY_V3_FROM_CURRENT_SIZING_VERDICTS_SELECTION_AND_AUTHENTICATED_CACHE_PREFIX",
     "BUILD_OUTER_SPLIT_AUTHORITY_V1_FROM_CURRENT_SPLIT_RECEIPT",
     "BUILD_PRECISION_AUTHORITY_V4_FROM_TARGET_PANEL_SUPPORT_AND_OUTER_SPLIT",
     "BUILD_NONLINEAR_MODEL_CAPACITY_AUTHORITY_V1_WITH_HISTORICAL_ROLE_LIMITED_TO_MODEL_SHAPE",
     "RUN_CONTROL_ONLY_NONLINEAR_CAP_LADDER_64_128_256_512_1024_FROM_AUTHENTICATED_CACHE_STOPPING_AT_FIRST_PASS_WITH_EXACT_REPLAY",
-    "FREEZE_NONLINEAR_CHALLENGE_AUTHORITY_V3_FROM_CURRENT_PLAN_AND_SELECTED_CAP",
-    "BIND_RNG_AND_ALL_CURRENT_SOURCE_HASHES",
+    "FREEZE_CURRENT_EVIDENCE_BUDGET_TEMPLATE_AND_BURDEN_LADDER_FROM_CURRENT_FULL104_ROOTS_ONLY",
+    "RECOVER_OR_BUILD_CURRENT_ADDRESS_UNIVERSE_LADDER_WITHOUT_DISCOVERY_HASH_SUBSTITUTION__STOP_IF_NO_LAWFUL_CURRENT_ARTIFACT",
+    "FREEZE_RNG_REPLAY_V2_FROM_CURRENT_REGISTRY_SPLIT_PANEL_AND_BURDEN_ROOTS",
+    "FREEZE_NONLINEAR_CHALLENGE_AUTHORITY_V3_FROM_CURRENT_PLAN_RECEIPT_SELECTED_CAP_AND_CURRENT_ROOTS",
+    "FREEZE_MASKING_QUALIFICATION_DESIGN_V1_FROM_CURRENT_AUTHORITY_OBJECTS_AND_LIVE_RUNNER_SOURCE",
     "FREEZE_FINAL_MASKING_RUN_CONTRACT_V4_WITH_AUTHENTICATED_FULL104_LEVEL4_AS_ONLY_TERMINAL_INPUT",
     "REBUILD_AND_VALIDATE_MACHINE_WORKTREE_CHECKPOINT_ON_FINAL_HEAD",
     "INDEPENDENTLY_VERIFY_FINAL_PACKAGE",
@@ -198,7 +208,10 @@
     "USE_DIRECT_STREAM_TARGET_PANEL_CALIBRATION_SUPERSEDED_BY_CACHE_PATH",
     "USE_ANY_HISTORICAL_TARGET_LIST_OR_SMALLER_RUN_MATRIX_TO_BUILD_CONTROL_CALIBRATION_CACHE",
     "USE_NONLINEAR_SAMPLING_CALIBRATION_AUTHORITY_V1_IN_FINAL_RUN_CONTRACT",
-    "INHERIT_DISCOVERY_NONLINEAR_DATA_TARGETS_FOLDS_BURDEN_SEED_OR_ROW_CAP_INTO_FULL104"
+    "INHERIT_DISCOVERY_NONLINEAR_DATA_TARGETS_FOLDS_BURDEN_SEED_OR_ROW_CAP_INTO_FULL104",
+    "USE_HISTORICAL_OR_SMALLER_RUN_HASH_AS_CURRENT_FULL104_ROLE_WITHOUT_EXPLICIT_REAUTHORIZATION_AND_CURRENT_ROOT_BINDING",
+    "MANUFACTURE_ADDRESS_UNIVERSE_LADDER_DIGEST_FROM_DISCOVERY_UNIVERSES_IF_CURRENT_ARTIFACT_IS_MISSING",
+    "USE_PROVISIONAL_20260917_FREEZE_STATUS_PLACEHOLDER_SUPPORT_ROOT_AS_CURRENT_AUTHORITY"
   ],
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
