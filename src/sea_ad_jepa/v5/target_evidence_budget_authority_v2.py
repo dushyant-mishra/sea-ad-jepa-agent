@@ -28,10 +28,10 @@ must be drawn from a prospectively frozen ladder.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, replace
 import hashlib
 import json
-from typing import Any, Iterable, Mapping, Sequence, Tuple
+from typing import Any, Mapping, Sequence, Tuple
 
 
 APPROVED_BUDGET_SEMANTICS_IDS: Tuple[str, ...] = (
@@ -240,3 +240,41 @@ class TargetEvidenceBudgetAuthorityV2:
                 "training_authorized": False,
             }
         )
+
+    def template_digest(self) -> str:
+        """Digest of everything EXCEPT the burden fraction.
+
+        A prospective freeze must not presuppose which burden will be selected --
+        the ladder requires every rung to be evaluated, and the lowest qualifying
+        one chosen afterwards. So a run contract binds this template digest, which
+        fixes support semantics, provenance roots, eligibility rule, rounding and
+        the retained-evidence floor while leaving the fraction open. Each rung's
+        concrete authority is then derived from the template, and no single burden
+        is frozen in advance.
+        """
+        self.validate()
+        payload = dict(asdict(self))
+        payload["excluded_observation_state_ids"] = list(
+            self.excluded_observation_state_ids
+        )
+        payload.pop("mask_fraction_numerator")
+        payload.pop("mask_fraction_denominator")
+        return _canonical_sha(
+            {
+                "schema": "V5_TARGET_EVIDENCE_BUDGET_AUTHORITY_V2_TEMPLATE",
+                **payload,
+                "training_authorized": False,
+            }
+        )
+
+    def with_fraction(self, numerator: int, denominator: int) -> "TargetEvidenceBudgetAuthorityV2":
+        """Derive the concrete authority for one burden rung from this template."""
+        derived = replace(
+            self,
+            mask_fraction_numerator=int(numerator),
+            mask_fraction_denominator=int(denominator),
+        )
+        derived.validate()
+        if derived.template_digest() != self.template_digest():
+            raise ValueError("deriving a rung budget must not change the template")
+        return derived

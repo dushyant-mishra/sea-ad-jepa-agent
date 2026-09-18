@@ -92,7 +92,7 @@ class MaskingQualificationRunContractV2:
     census_authority_sha256: str
 
     # budget and burden
-    target_evidence_budget_authority_sha256: str
+    target_evidence_budget_template_sha256: str
     burden_ladder_authority_sha256: str
 
     # population geometry
@@ -123,7 +123,7 @@ class MaskingQualificationRunContractV2:
             ("observation_state_sha256", self.observation_state_sha256),
             ("support_estimability_authority_sha256", self.support_estimability_authority_sha256),
             ("census_authority_sha256", self.census_authority_sha256),
-            ("target_evidence_budget_authority_sha256", self.target_evidence_budget_authority_sha256),
+            ("target_evidence_budget_template_sha256", self.target_evidence_budget_template_sha256),
             ("burden_ladder_authority_sha256", self.burden_ladder_authority_sha256),
             ("outer_split_authority_sha256", self.outer_split_authority_sha256),
             ("target_panel_authority_sha256", self.target_panel_authority_sha256),
@@ -227,10 +227,44 @@ class MaskingQualificationRunContractV2:
         if _live_digest(design, "qualification design") != self.qualification_design_authority_sha256:
             raise ValueError("qualification design authority root mismatch")
 
-    def bind_evidence_budget(self, budget: Any) -> None:
+    def bind_evidence_budget_template(self, budget_template: Any) -> None:
+        """Bind the burden-free budget template, never one chosen burden.
+
+        The ladder requires every rung to be evaluated and the lowest qualifying
+        one selected afterwards, so freezing a single concrete budget would
+        presuppose the outcome. The contract therefore binds the template digest,
+        which fixes everything except the fraction.
+        """
         self.validate()
-        if _live_digest(budget, "evidence budget") != self.target_evidence_budget_authority_sha256:
-            raise ValueError("evidence-budget authority root mismatch")
+        if getattr(budget_template, "training_authorized", False) is not False:
+            raise ValueError("evidence-budget template unexpectedly authorizes training")
+        budget_template.validate()
+        if _sha(budget_template.template_digest(), "budget template digest") != self.target_evidence_budget_template_sha256:
+            raise ValueError("evidence-budget template root mismatch")
+
+    def bind_rung_budget(self, ladder: Any, rung_budget: Any) -> None:
+        """Verify a concrete per-rung budget descends from the frozen template.
+
+        Fails if the burden is not a frozen ladder rung, or if any non-fraction
+        field was changed while deriving it.
+        """
+        self.validate()
+        from fractions import Fraction
+
+        rung_budget.validate()
+        if _sha(rung_budget.template_digest(), "rung budget template digest") != self.target_evidence_budget_template_sha256:
+            raise ValueError(
+                "per-rung evidence budget does not descend from the frozen template"
+            )
+        rung = Fraction(
+            int(rung_budget.mask_fraction_numerator),
+            int(rung_budget.mask_fraction_denominator),
+        )
+        if rung not in ladder.ordered_rungs():
+            raise ValueError(
+                f"per-rung evidence budget carries burden {rung}, which is not a "
+                "frozen ladder rung"
+            )
 
     def bind_burden_ladder(self, ladder: Any) -> None:
         self.validate()

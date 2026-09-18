@@ -49,7 +49,7 @@ def contract(**overrides) -> MaskingQualificationRunContractV2:
         observation_state_sha256=roots[3],
         support_estimability_authority_sha256=roots[4],
         census_authority_sha256=roots[5],
-        target_evidence_budget_authority_sha256=roots[6],
+        target_evidence_budget_template_sha256=roots[6],
         burden_ladder_authority_sha256=roots[7],
         outer_split_authority_sha256=roots[8],
         target_panel_authority_sha256=roots[9],
@@ -150,7 +150,7 @@ class RunContractRootTests(unittest.TestCase):
         shared = "9" * 64
         run = contract(
             census_authority_sha256=shared,
-            target_evidence_budget_authority_sha256=shared,
+            target_evidence_budget_template_sha256=shared,
         )
         with self.assertRaises(ValueError) as ctx:
             run.validate()

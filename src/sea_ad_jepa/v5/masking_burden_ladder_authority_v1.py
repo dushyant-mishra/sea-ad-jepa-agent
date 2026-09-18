@@ -219,6 +219,26 @@ class MaskingBurdenLadderAuthorityV1:
             )
         return (eligible_non_target_address_count * rung.numerator) // rung.denominator
 
+    def budget_for(self, rung: Fraction, budget_template: Any) -> Any:
+        """Derive the concrete evidence-budget authority for one rung.
+
+        The template fixes support semantics, provenance roots, eligibility rule,
+        rounding and the retained-evidence floor, leaving only the fraction open.
+        Deriving every rung from one template is what lets a run be frozen without
+        presupposing which burden will be selected.
+        """
+        self.validate()
+        self._require_rung(rung)
+        derived = budget_template.with_fraction(rung.numerator, rung.denominator)
+        if derived.template_digest() != budget_template.template_digest():
+            raise ValueError("rung budget does not share the frozen budget template")
+        return derived
+
+    def all_rung_budgets(self, budget_template: Any) -> "dict[Fraction, Any]":
+        """Every rung's concrete budget, so no rung can be silently skipped."""
+        self.validate()
+        return {rung: self.budget_for(rung, budget_template) for rung in self.ordered_rungs()}
+
     def assert_agrees_with_budget(
         self, budget_authority: Any, eligible_non_target_address_count: int
     ) -> int:

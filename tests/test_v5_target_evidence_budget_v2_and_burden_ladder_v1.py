@@ -313,3 +313,50 @@ class BurdenLadderTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BudgetTemplateTests(unittest.TestCase):
+    """A prospective freeze must not presuppose which burden gets selected."""
+
+    def test_template_digest_ignores_the_fraction(self) -> None:
+        digests = {budget_v2(n, d).template_digest() for n, d in FROZEN_BURDEN_LADDER}
+        self.assertEqual(len(digests), 1)
+
+    def test_template_digest_differs_from_canonical_digest(self) -> None:
+        budget = budget_v2(3, 20)
+        self.assertNotEqual(budget.template_digest(), budget.canonical_digest())
+
+    def test_template_digest_responds_to_non_fraction_fields(self) -> None:
+        a = budget_v2(3, 20)
+        b = budget_v2(3, 20, min_retained=7)
+        self.assertNotEqual(a.template_digest(), b.template_digest())
+
+    def test_with_fraction_preserves_the_template(self) -> None:
+        template = budget_v2(1, 20)
+        for num, den in FROZEN_BURDEN_LADDER:
+            derived = template.with_fraction(num, den)
+            self.assertEqual(derived.template_digest(), template.template_digest())
+            self.assertEqual(derived.mask_fraction_numerator, num)
+            self.assertEqual(derived.mask_fraction_denominator, den)
+
+    def test_ladder_derives_every_rung_from_one_template(self) -> None:
+        board = ladder()
+        template = budget_v2(1, 20)
+        budgets = board.all_rung_budgets(template)
+        self.assertEqual(set(budgets), set(board.ordered_rungs()))
+        for rung, derived in budgets.items():
+            self.assertEqual(derived.template_digest(), template.template_digest())
+            self.assertEqual(
+                derived.mask_count(ELIGIBLE),
+                (ELIGIBLE * rung.numerator) // rung.denominator,
+            )
+
+    def test_every_rung_budget_is_distinct(self) -> None:
+        board = ladder()
+        budgets = board.all_rung_budgets(budget_v2(1, 20))
+        digests = {b.canonical_digest() for b in budgets.values()}
+        self.assertEqual(len(digests), len(FROZEN_BURDEN_LADDER))
+
+    def test_no_rung_can_be_silently_skipped(self) -> None:
+        board = ladder()
+        self.assertEqual(len(board.all_rung_budgets(budget_v2(1, 20))), 6)
