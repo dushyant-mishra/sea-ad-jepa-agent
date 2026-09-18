@@ -21,6 +21,7 @@ from .precision_authority_v2 import paired_target_donor_bootstrap
 
 METHOD_ID = "PAIRED_TARGET_AND_DONOR_WITHIN_FIXED_SOURCE_BOOTSTRAP_V4"
 SOURCE_POPULATION_FRAME_ID = "FIXED_OBSERVED_SOURCES_HVS_NPH52_SEA_AD_V1"
+SOURCE_AGGREGATION_ESTIMAND_ID = "EQUAL_WEIGHT_MEAN_OVER_FIXED_HVS_NPH52_SEA_AD_SOURCES_V1"
 INSUFFICIENT_POLICY_ID = "FAIL_CLOSED_IF_BELOW_PRECISION_V2"
 NEGATIVE_CONTROL_PRECISION_POLICY_ID = (
     "NEGATIVE_CONTROL_95CI_MUST_CONTAIN_ZERO_AND_FIT_INSIDE_FROZEN_EQUIVALENCE_MARGIN_V1"
@@ -63,6 +64,7 @@ class QualificationPrecisionAuthorityV4:
     null_equivalence_margin_denominator: int
     uncertainty_method_id: str = METHOD_ID
     source_population_frame_id: str = SOURCE_POPULATION_FRAME_ID
+    source_aggregation_estimand_id: str = SOURCE_AGGREGATION_ESTIMAND_ID
     confidence_level_numerator: int = CONFIDENCE_NUMERATOR
     confidence_level_denominator: int = CONFIDENCE_DENOMINATOR
     bootstrap_replicates: int = BOOTSTRAP_REPLICATES
@@ -102,6 +104,7 @@ class QualificationPrecisionAuthorityV4:
                         "sizing": self.target_panel_sizing_receipt_sha256,
                         "split": self.outer_split_authority_sha256,
                         "source_population_frame_id": self.source_population_frame_id,
+                        "source_aggregation_estimand_id": self.source_aggregation_estimand_id,
                         "null_equivalence_margin": [
                             self.null_equivalence_margin_numerator,
                             self.null_equivalence_margin_denominator,
@@ -147,6 +150,8 @@ class QualificationPrecisionAuthorityV4:
             raise ValueError("uncertainty_method_id mismatch")
         if self.source_population_frame_id != SOURCE_POPULATION_FRAME_ID:
             raise ValueError("source_population_frame_id mismatch")
+        if self.source_aggregation_estimand_id != SOURCE_AGGREGATION_ESTIMAND_ID:
+            raise ValueError("source_aggregation_estimand_id mismatch")
         if (self.confidence_level_numerator, self.confidence_level_denominator) != (
             95,
             100,
