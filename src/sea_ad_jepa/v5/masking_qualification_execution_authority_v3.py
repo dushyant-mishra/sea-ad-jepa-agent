@@ -1,4 +1,4 @@
-"""Masking execution authority V3 bound to a mechanical decision receipt."""
+"""Masking execution authority V3 bound to a rung-level mechanical decision receipt."""
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -34,7 +34,7 @@ class MaskingQualificationExecutionAuthorityV3:
     authority_id: str
     run_contract_authority_sha256: str
     raw_result_artifact_sha256: str
-    decision_receipt_sha256: str
+    rung_decision_receipt_sha256: str
     selected_policy_id: str
     selected_burden_numerator: int
     selected_burden_denominator: int
@@ -49,7 +49,7 @@ class MaskingQualificationExecutionAuthorityV3:
         roots = (
             _sha(self.run_contract_authority_sha256, "run_contract_authority_sha256"),
             _sha(self.raw_result_artifact_sha256, "raw_result_artifact_sha256"),
-            _sha(self.decision_receipt_sha256, "decision_receipt_sha256"),
+            _sha(self.rung_decision_receipt_sha256, "rung_decision_receipt_sha256"),
         )
         if len(set(roots)) != len(roots):
             raise ValueError("execution authority roots must be distinct")
@@ -74,13 +74,14 @@ class MaskingQualificationExecutionAuthorityV3:
         if self.training_authorized is not False:
             raise ValueError("masking execution cannot authorize training")
 
-    def bind_decision_receipt(self, receipt: Any) -> None:
+    def bind_rung_decision_receipt(self, receipt: Any) -> None:
         self.validate()
-        digest = _sha(receipt.canonical_digest(), "decision receipt digest")
-        if digest != self.decision_receipt_sha256:
-            raise ValueError("decision receipt root mismatch")
-        if self.selected_policy_id != receipt.policy_id:
-            raise ValueError("selected policy does not match decision receipt")
+        receipt.validate()
+        digest = _sha(receipt.canonical_digest(), "rung decision receipt digest")
+        if digest != self.rung_decision_receipt_sha256:
+            raise ValueError("rung decision receipt root mismatch")
+        if self.selected_policy_id != receipt.selected_policy_id:
+            raise ValueError("selected policy does not match rung decision receipt")
         if (
             self.selected_burden_numerator,
             self.selected_burden_denominator,
@@ -88,11 +89,10 @@ class MaskingQualificationExecutionAuthorityV3:
             receipt.burden_numerator,
             receipt.burden_denominator,
         ):
-            raise ValueError("selected burden does not match decision receipt")
-        if self.execution_status == "EXECUTED_PASS" and receipt.qualified is not True:
-            raise ValueError("EXECUTED_PASS requires a mechanically qualifying receipt")
-        if self.execution_status == "EXECUTED_FAIL" and receipt.qualified is not False:
-            raise ValueError("EXECUTED_FAIL requires a nonqualifying decision receipt")
+            raise ValueError("selected burden does not match rung decision receipt")
+        expected_pass = receipt.qualified is True
+        if (self.execution_status == "EXECUTED_PASS") != expected_pass:
+            raise ValueError("execution status does not match mechanical rung decision")
 
     def canonical_digest(self) -> str:
         self.validate()
