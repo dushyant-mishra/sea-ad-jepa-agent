@@ -170,6 +170,8 @@ def main() -> int:
     capacity = ControlCapacityCalibrationReceiptV1(
         scope_id="TARGET_PANEL_SIZE_CAPACITY_CALIBRATION_V1",
         candidate_value=target_count,
+        calibration_cache_manifest_sha256=cache.manifest_sha256,
+        calibration_cache_role_id=cache.manifest.cache_role_id,
         raw_planted_evidence_sha256=sha256_file(planted_path),
         raw_shuffled_evidence_sha256=sha256_file(shuffled_path),
         precision_root_sha256=precision.canonical_digest(),
