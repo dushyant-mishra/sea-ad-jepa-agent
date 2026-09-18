@@ -174,17 +174,23 @@ def assemble_masking_evidence(
     nonlinear_rows: Sequence[Mapping[str, Any]],
     donor_source_code: np.ndarray,
     precision_authority: Any,
+    evidence_budget: Any,
     nonlinear_authority_sha256: str,
     primary_artifact_sha256: str,
     control_artifact_sha256: str,
-    nonlinear_artifact_sha256: str,
+    nonlinear_real_artifact_sha256: str,
+    nonlinear_shuffled_artifact_sha256: str,
+    nonlinear_planted_artifact_sha256: str,
 ) -> AssembledMaskingEvidenceV1:
     precision_authority.validate()
+    evidence_budget.validate()
     _assert_roots(
         nonlinear_authority_sha256,
         primary_artifact_sha256,
         control_artifact_sha256,
-        nonlinear_artifact_sha256,
+        nonlinear_real_artifact_sha256,
+        nonlinear_shuffled_artifact_sha256,
+        nonlinear_planted_artifact_sha256,
         precision_authority.canonical_digest(),
     )
     source = np.asarray(donor_source_code)
@@ -355,12 +361,12 @@ def assemble_masking_evidence(
         nonlinear_receipt = evaluate_nonlinear_challenge(
             NonlinearChallengeEvidenceV1(
                 policy_id=policy,
-                burden_numerator=int(primary_rows[0]["burden_numerator"]),
-                burden_denominator=int(primary_rows[0]["burden_denominator"]),
+                burden_numerator=int(evidence_budget.mask_fraction_numerator),
+                burden_denominator=int(evidence_budget.mask_fraction_denominator),
                 nonlinear_authority_sha256=nonlinear_authority_sha256,
-                raw_real_evidence_sha256=nonlinear_artifact_sha256,
-                raw_shuffled_evidence_sha256=control_artifact_sha256,
-                raw_planted_evidence_sha256=primary_artifact_sha256,
+                raw_real_evidence_sha256=nonlinear_real_artifact_sha256,
+                raw_shuffled_evidence_sha256=nonlinear_shuffled_artifact_sha256,
+                raw_planted_evidence_sha256=nonlinear_planted_artifact_sha256,
                 negative_control_delta=nl_negative_interval,
                 planted_detect_excess=nl_detect_interval,
                 planted_after_mask_excess=nl_after_interval,
@@ -380,11 +386,11 @@ def assemble_masking_evidence(
 
         policy_evidence[policy] = MaskingPolicyDecisionEvidenceV1(
             policy_id=policy,
-            burden_numerator=int(primary_rows[0]["burden_numerator"]),
-            burden_denominator=int(primary_rows[0]["burden_denominator"]),
+            burden_numerator=int(evidence_budget.mask_fraction_numerator),
+            burden_denominator=int(evidence_budget.mask_fraction_denominator),
             raw_primary_evidence_sha256=primary_artifact_sha256,
             raw_control_evidence_sha256=control_artifact_sha256,
-            raw_nonlinear_evidence_sha256=nonlinear_artifact_sha256,
+            raw_nonlinear_evidence_sha256=nonlinear_real_artifact_sha256,
             precision_authority_sha256=precision_authority.canonical_digest(),
             delta_vs_uniform=delta_interval,
             excess_over_shuffled_null=residual_interval,
