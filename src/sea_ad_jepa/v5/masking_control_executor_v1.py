@@ -615,6 +615,156 @@ def run_planted_proxy_control_fold(
     }
 
 
+
+def run_planted_proxy_matched_shuffle_control_fold(
+    *,
+    stream: stream_impl.Full104ManifestStreamV1,
+    fold_index: int,
+    parameters: Any,
+    evidence_budget: Any,
+    target_col: int,
+    target_id: object,
+    eligible_proxy_cols: Sequence[int],
+    global_seed: int,
+) -> dict[str, Any]:
+    """Compare a planted proxy with its deterministic same-mask shuffled null.
+
+    The targeted mask is selected once from the real planted proxy and then held
+    fixed for the shuffled comparison.  This makes both detection and post-mask
+    evidence like-with-like; the shuffled proxy never selects a different mask.
+    """
+
+    stream.validate_layout()
+    parameters.validate()
+    evidence_budget.validate()
+    proxy_col = select_planted_proxy(
+        eligible_cols=eligible_proxy_cols,
+        target_col=int(target_col),
+        target_id=target_id,
+    )
+    y, donor_by_row = materialize_stream_column(stream, column=proxy_col)
+    if not np.array_equal(
+        np.sort(np.unique(donor_by_row)),
+        np.arange(stream.source_by_donor.size, dtype=np.int64),
+    ):
+        raise ValueError("planted control target does not cover the donor registry")
+
+    shuffled = deterministic_within_donor_shuffle(
+        y,
+        donor_by_row,
+        target_id=f"{target_id}|PLANTED_PROXY|{int(proxy_col)}",
+        global_seed=int(global_seed),
+    )
+    heldout = np.flatnonzero(stream.fold_by_donor == int(fold_index)).astype(np.int64)
+    train = np.flatnonzero(stream.fold_by_donor != int(fold_index)).astype(np.int64)
+    if heldout.size == 0 or train.size == 0:
+        raise ValueError("control fold requires train and heldout donors")
+
+    detection_mask = {int(target_col)}
+    detect_score, detect_donor = _score_mask(
+        stream,
+        train_donors=train,
+        heldout_donors=heldout,
+        y_by_selection=y,
+        target_col=int(target_col),
+        mask=detection_mask,
+        parameters=parameters,
+    )
+    shuffled_detect_score, shuffled_detect_donor = _score_mask(
+        stream,
+        train_donors=train,
+        heldout_donors=heldout,
+        y_by_selection=shuffled,
+        target_col=int(target_col),
+        mask=detection_mask,
+        parameters=parameters,
+    )
+
+    targeted = _ridge_targets(
+        stream,
+        train_donors=train,
+        y_by_selection=y,
+        target_col=int(target_col),
+        parameters=parameters,
+    )
+    eligible_non_target = int(stream.universe_cols.size - 1)
+    co_mask_count = int(evidence_budget.mask_count(eligible_non_target))
+    base = stream_impl._base_uniform_mask(
+        stream.universe_cols,
+        target_col=int(target_col),
+        co_mask_count=co_mask_count,
+        fold_index=int(fold_index),
+        target_id=target_id,
+        global_seed=int(global_seed),
+    )
+    removable = stream_impl._removable_order(
+        base,
+        target_col=int(target_col),
+        fold_index=int(fold_index),
+        target_id=target_id,
+        global_seed=int(global_seed),
+    )
+    targeted_mask = stream_impl.apply_burden_preserving_swaps(
+        base_mask=base,
+        target_col=int(target_col),
+        targeted_cols=targeted,
+        removable_order=removable,
+    )
+    after_score, after_donor = _score_mask(
+        stream,
+        train_donors=train,
+        heldout_donors=heldout,
+        y_by_selection=y,
+        target_col=int(target_col),
+        mask=targeted_mask,
+        parameters=parameters,
+    )
+    shuffled_after_score, shuffled_after_donor = _score_mask(
+        stream,
+        train_donors=train,
+        heldout_donors=heldout,
+        y_by_selection=shuffled,
+        target_col=int(target_col),
+        mask=targeted_mask,
+        parameters=parameters,
+    )
+
+    donor_detect_excess = tuple(
+        (
+            int(d),
+            float(detect_donor[int(d)] - shuffled_detect_donor[int(d)]),
+        )
+        for d in sorted(detect_donor)
+    )
+    donor_after_excess = tuple(
+        (
+            int(d),
+            float(after_donor[int(d)] - shuffled_after_donor[int(d)]),
+        )
+        for d in sorted(after_donor)
+    )
+    return {
+        "control_id": "PLANTED_SHORTCUT_MATCHED_SHUFFLE_CONTROL_V1",
+        "fold": int(fold_index),
+        "target_col": int(target_col),
+        "target_id": target_id,
+        "proxy_col": int(proxy_col),
+        "proxy_selected": int(proxy_col) in set(targeted),
+        "targeted_cols": targeted,
+        "detect_score": float(detect_score),
+        "shuffled_detect_score": float(shuffled_detect_score),
+        "detect_excess": float(detect_score - shuffled_detect_score),
+        "after_mask_score": float(after_score),
+        "shuffled_after_mask_score": float(shuffled_after_score),
+        "after_mask_excess": float(after_score - shuffled_after_score),
+        "detect_donor_excess": donor_detect_excess,
+        "after_mask_donor_excess": donor_after_excess,
+        "mask_cardinality": len(targeted_mask),
+        "uniform_mask_cardinality": len(base),
+        "same_mask_shuffled_proxy": True,
+    }
+
+
 def run_shuffled_negative_control_fold(
     *,
     stream: stream_impl.Full104ManifestStreamV1,
