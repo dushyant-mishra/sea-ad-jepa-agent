@@ -477,9 +477,30 @@ def _verify_prior_rung_results(
 
         artifact.bind_raw_evidence(result.raw_evidence_by_policy, controls_receipt)
 
+        reference_raw = result.raw_evidence_by_policy["UNIFORM_RANDOM"]
+        reference_axes = (
+            tuple(reference_raw.target_ids),
+            tuple(reference_raw.donor_ids),
+            tuple(map(int, reference_raw.donor_source_code)),
+            tuple(map(int, reference_raw.donor_outer_fold)),
+            reference_raw.burden_numerator,
+            reference_raw.burden_denominator,
+        )
         raw_mask_roots: dict[tuple[str, int, int], str] = {}
         for policy in POLICIES:
             raw = result.raw_evidence_by_policy[policy]
+            observed_axes = (
+                tuple(raw.target_ids),
+                tuple(raw.donor_ids),
+                tuple(map(int, raw.donor_source_code)),
+                tuple(map(int, raw.donor_outer_fold)),
+                raw.burden_numerator,
+                raw.burden_denominator,
+            )
+            if observed_axes != reference_axes:
+                raise ValueError(
+                    "prior policy evidence mixes target/donor/source/fold/burden identities"
+                )
             for target_index, fold_roots in enumerate(raw.policy_mask_sha256_by_target_fold):
                 for fold, root in enumerate(fold_roots):
                     raw_mask_roots[(policy, target_index, fold)] = str(root)
@@ -496,6 +517,14 @@ def _verify_prior_rung_results(
         recomputed_rung = evaluate_rung_v2(recomputed_evidence)
         if recomputed_rung.canonical_digest() != stored_rung.canonical_digest():
             raise ValueError("prior rung decision is not the mechanical result of its raw evidence")
+        if (
+            artifact.burden_numerator,
+            artifact.burden_denominator,
+        ) != (
+            stored_rung.burden_numerator,
+            stored_rung.burden_denominator,
+        ):
+            raise ValueError("prior raw-result artifact burden differs from its decision receipt")
 
         if tuple(artifact.prior_rung_decision_receipt_sha256) != tuple(expected_prior_roots):
             raise ValueError("prior raw-result artifact does not preserve the exact failed-prefix chain")
