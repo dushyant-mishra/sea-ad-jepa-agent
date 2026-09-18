@@ -11,7 +11,7 @@ def contract(**updates):
     names=[
         "design","params","manifest","obs","support","census","budget","burden","split",
         "panel-plan","calibration-precision","panel-receipt","panel","precision","nl-plan","nl-receipt","nonlinear","rng",
-        "checkpoint","reference","streaming","panel-source","calibration-precision-source","panel-authority-source","precision-source",
+        "checkpoint","reference","streaming","panel-source","calibration-precision-source","capacity-source","panel-authority-source","precision-source",
         "donor-source","control-source","nlcal-source","nlauth-source","nlexec-source","decision-source",
         "execution-source","spillover-source"
     ]
@@ -41,6 +41,7 @@ def contract(**updates):
         full104_streaming_execution_source_sha256=r["streaming"],
         target_panel_sizing_source_sha256=r["panel-source"],
         control_calibration_precision_source_sha256=r["calibration-precision-source"],
+        control_capacity_calibration_source_sha256=r["capacity-source"],
         target_panel_authority_source_sha256=r["panel-authority-source"],
         precision_evaluator_source_sha256=r["precision-source"],
         donor_evidence_source_sha256=r["donor-source"],
