@@ -1,0 +1,103 @@
+Audit complete. Writing up.
+
+END-TO-END JEPA AUDIT — 2026-09-18
+Audit base: origin/impl/v5-full104-masking-redteam2-20260918 @ 91d50145 (PR #20 head), isolated worktree D:/jepa_audit_20260918. No production worktree was reset, cleaned or stashed. No terminal masking outcome, pathology, DEV, SEALED or D_shared data was opened.
+
+Overall verdict: NOT PASS. Terminal FULL104 masking must STOP on one critical defect plus one missing component. Calibration/control work may proceed.
+
+Layer 1 — Repository authority
+CI on head 91d50145 is genuine green, not "green because it did not run": I reproduced the exact 42-file CI selection locally — 232 passed, 0 failed, 0 skipped. The workflow has an explicit fail-closed-on-skips step (v5-full104-masking-runner.yml:214) and push to the four named branches carries no paths filter.
+
+F6 (MEDIUM, CHANGED_INPUT_REQUIRES_REQUALIFICATION). The governance pointer on PR #20's own head branch is stale. docs/agent/JEPA_LATEST_HANDOFF_POINTER.json declares working_branch: impl/v5-remaining-rna-target-semantics-20260917, verified_code_head: 8ee5d0a5, pull_request: 18, and START_HERE.md still dates to 2026-09-17 — while sitting on redteam2 @ 91d50145, PR #20, 164 commits later. Consequence: a new session following START_HERE in its declared order is routed to a superseded anchor. Repair: bump pointer to V17 naming 91d50145/PR 20. Test: extend the existing command-authority test to assert pointer.verified_code_head == HEAD.
+
+F7 (MEDIUM). PR #20 is isDraft: true, mergeable: CONFLICTING against base impl/v5-full104-masking-redteam-freeze-20260918 (PR #19, also open). Two stacked open PRs with an unresolved conflict is not a defensible freeze base.
+
+Lineage is otherwise sound: my 9336b600 is a verified ancestor of HEAD.
+
+Layer 2 — Data lineage · ALREADY_AUDITED, closure holds
+Both immutable roots re-verified live against the values I established independently yesterday:
+
+block manifest 66f589e5…ea29 — MATCH
+observation state 852cb3ec…2537 — MATCH
+Population constants (4,553,407 / 104 / 42 / 41,238 / 17,186 / 8,915) were verified by my own full sparsity pass, with nnz_outside_declared_panel = 0 and nnz_in_collision_unresolved = 0. Inputs unchanged; role unchanged; no later commit touched them. Spillover scan found no Stage81A3, T1-checkpoint, X_common6000, spike-work path, EMA .996, placeholder SHA, or loose-support (MEASURED_ANY/17405) token anywhere in src/sea_ad_jepa/v5/.
+
+Layer 8/10 — Historical re-authorization · verified correct
+I independently recomputed all six pinned historical digests; all six MATCH:
+
+file	pinned
+reports/RIDGE8_EXPANDED_VALIDATION_20260917.md	a649a4bd…
+scripts/ridge8_universe_fold.py	eb32280d…
+scripts/outer5200_32_unified_ridge_fold.py	7a33785c…
+provenance/RIDGE8_EXPANDED_VALIDATION_PROVENANCE_20260917.md	6b972a20…
+scripts/outer5200_nonlinear_probe32.py	73c5125c…
+results/outer5200_nonlinear32_summary.csv	b43676f7…
+MaskingQualificationParametersAuthorityV2 (digest d72c1bf8…) correctly resolves the blocker I raised yesterday: cap 8 / α=1/100 / pool 64 / features 32 are re-authorized as a byte-bound confirmation candidate (FULL104_CONFIRMATION_WITHOUT_PARAMETER_RETUNING_V1), with burden explicitly disowned (BURDEN_OWNED_BY_FULL104_CENSUS_LADDER_V1). Crucially the restriction is structural, not merely declarative — the dataclass contains no burden, target-count, fold, seed or row-cap field, so it cannot supply them. Ladders are frozen and reorder/extend-proof: panel (128,256,512,1024), nonlinear cap (64,128,256,512,1024).
+
+Layer 14 — Terminal evidence assembly · CRITICAL, STOP
+F1 (CRITICAL, OPEN). src/sea_ad_jepa/v5/masking_terminal_evidence_assembly_v1.py:165-167, 223-225 — the raw_*_sha256 roots are unbound pass-through strings. The file contains zero occurrences of hashlib. A caller supplies the matrices and the digests; nothing connects them.
+
+Reproducible evidence (synthetic matrices only):
+
+
+TEST 1  arbitrary matrices + raw_primary="aaa…", raw_control="bbb…", raw_nonlinear="ccc…"
+        → valid MaskingPolicyDecisionEvidenceV1 produced
+TEST 2  completely different matrices (seed 999 vs 1), IDENTICAL declared roots
+        → both accepted; delta means 0.008621 vs -0.003532
+        → two different evidence sets carry identical provenance
+TEST 3  identical roots rejected — but only for role-distinctness
+        (masking_qualification_decision_v1.py:115), never against any array
+Scientific consequence is larger than provenance hygiene. Because the evidence objects carry only interval summaries, the raw roots are the only mechanism that could ever detect §14's "shuffled null must not be borrowed across policy arms" and "uniform-vs-policy delta is same target/donor/rung". With the roots unbound, those two requirements are currently unenforceable at every layer, including evaluate_rung_v2.
+
+Does this invalidate prior conclusions? No terminal outcome has been produced, so nothing is retroactively invalidated — but commit 91d50145 "freeze terminal evidence assembly semantics" froze semantics that do not meet the project's own documented requirement at docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md:144 ("emits hash-bound raw evidence").
+
+Smallest defensible repair: the correct helper already exists and is simply unused — masking_audit_metrics_v1.py:71 (sha256(header + arr.tobytes(order="C"))). Add an analogous float-matrix digest, recompute each of the three roots from the supplied matrices inside the assembler, and reject a mismatch. Tests required: a fabricated-root test must FAIL; permuting any matrix must change its root; the shuffled matrix root must differ across policy arms.
+
+F2 (HIGH). precision: Any is duck-typed — nothing requires QualificationPrecisionAuthorityV4. The shipped tests pass a PrecisionStub(), so the V4 donor≥104 / fold≥4 / target-count floors are never exercised in the assembly tests. §14's "PrecisionAuthorityV4 is actually used" is not verified.
+
+F3 (HIGH). replay_exact, untreated_identity_exact, no_privileged_metadata are caller-supplied booleans; passing True performs no replay, no identity check and no metadata scan. precision_requirements_met=True is hard-coded at line 236.
+
+F4 (HIGH). outer_fold_count=4 is hard-coded at the assert_sufficient call rather than derived from the frozen split authority.
+
+The assembler is otherwise clean: it imports nothing historical or calibration-bearing, and the paired estimand IDs are explicit and current.
+
+Layer 15 — One-rung terminal executor · does not exist
+F5 (HIGH, OPEN). No terminal executor module exists (masking_control_executor_v1 and masking_nonlinear_challenge_executor_v1 are calibration-lane). RunContractV4 contains no single-rung or no-auto-escalation enforcement — grep for single_rung|one_rung|exactly one|escalat returns nothing. Every §15 requirement is unimplemented. This is correctly self-declared as TERMINAL_ONE_RUNG_EVIDENCE_ASSEMBLER_AND_EXECUTOR_NOT_YET_IMPLEMENTED_OR_FROZEN.
+
+Layers 9/19 — Firewalls that do hold
+Calibration cache is forbidden as terminal input at two independent enforcement points (full104_control_calibration_cache_v1.py:369, masking_qualification_run_contract_v4.py:185). EXECUTED_PASS is enumerated and cross-checked against receipt.qualified (execution_authority_v4.py:96), not a free string. Only current_training_authority_v1.py may carry training_authorized=True; no masking module does.
+
+F8 (LOW). My own superseded scripts/agent/build_full104_masking_freeze_status_20260917.py still instantiates MaskingBurdenLadderAuthorityV1 and can still emit a competing "freeze status" artifact. Mark superseded or delete.
+
+F9 (LOW). masking_burden_ladder_authority_v2.py:20 reuses LADDER_ID = "…_20260917_V1" while carrying a different escalation rule (ASCENDING_STOP_AT_FIRST_FULLY_QUALIFYING_RUNG_V2). A receipt recording only ladder_id cannot distinguish V1 from V2 semantics.
+
+Master table
+component	status	authoritative input	evidence	historical role	current risk	action
+Repo authority / pointer	CHANGED_INPUT_REQUIRES_REQUALIFICATION	pointer V16	stale vs 91d50145	—	misrouting	F6 bump pointer
+PR #20	OPEN	gh API	draft, CONFLICTING	—	unstable freeze base	F7 resolve
+Data lineage FULL104	ALREADY_AUDITED	66f589e5…, 852cb3ec…	both re-verified MATCH	substrate	none	none
+Support / strict core 17,186	ALREADY_AUDITED	observation state	219 loose-only excluded	comparability	none	none
+Historical re-authorization	ALREADY_AUDITED	6 byte-pins	all 6 MATCH, recomputed	candidate only	none	none
+Parameters authority V2	OPEN→resolved	d72c1bf8…	structural burden separation	confirmation candidate	none	freeze instance
+Burden / panel / nonlinear ladders	ALREADY_AUDITED	frozen tuples	reorder/extend rejected	census	low	F9 ladder_id
+Terminal evidence assembly	OPEN	—	roots unbound, demonstrated	—	CRITICAL	F1–F4, STOP
+One-rung terminal executor	OPEN	—	module absent	—	HIGH	F5 implement
+Spillover firewall	ALREADY_AUDITED	scan	clean on all classes	—	low	F8
+CI/CD	ALREADY_AUDITED	workflow	232/0/0 reproduced	—	low	none
+Training boundary	ALREADY_AUDITED	training authority	sole gate, OFF	—	none	none
+Teacher/student, T0/T1/QID/F1, anti-cheat combinations	OPEN — not reached	—	—	—	unknown	see below
+Blockers
+To terminal FULL104 masking (5% rung):
+
+F1 raw evidence roots unbound — hard STOP
+F5 one-rung terminal executor absent; no anti-escalation enforcement
+F2/F3/F4 precision duck-typing and unverified control attestations
+F7 PR #20 conflicting/draft
+The 20 self-declared unresolved blockers (all calibration instances still unfrozen: census V2 receipts, calibration cache, panel sizing, nonlinear sampling, panel V3, precision V4, split, nonlinear V3, design V2, RNG V2, ladder V2, budget template, run contract V4, machine checkpoint)
+To training authority: all of the above, plus the five already declared — healthy-teacher remaining-RNA necessity, measurement robustness, production geometry and geometry-specific memorization, runtime/source/environment provenance, and the final training authority itself. No masking result alone can authorize training.
+
+Scope I did not reach
+I am reporting this honestly rather than implying full coverage. Sections 3–7, 13, 17, 18 (representation/multiview lineage, dimensionality authority, teacher/student shortcut tracing, training-failure recurrence gates, the statistical layer traced raw→intervals, Monte-Carlo scope discipline, and adversarial combinations of weak leakage channels) were not audited to the depth the mandate specifies. Given F1 forces a terminal STOP regardless, I prioritised the blocking path. Those sections remain OPEN — unaudited this pass, and §18 in particular deserves a dedicated adversarial session.
+
+Section 20's GPU calibration lane is unblocked by F1 (calibration ≠ terminal) and can proceed on steps 1–4 once F6/F7 are settled — but I have not started it, since you asked for the audit first.
+
+Want me to implement the F1 repair (recompute-and-verify inside the assembler, plus the three discriminating tests) on a branch?

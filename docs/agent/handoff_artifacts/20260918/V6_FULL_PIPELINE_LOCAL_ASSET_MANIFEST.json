@@ -1,0 +1,145 @@
+{
+  "schema": "V6_FULL_PIPELINE_LOCAL_ASSET_MANIFEST_20260918",
+  "role_boundary": "SUPPORTING_PROJECT_FILES_NOT_CURRENT_FULL104_AUTHORITY_UNLESS_EXPLICITLY_REAUTHORIZED",
+  "artifacts": [
+    {
+      "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "project_file_id": "file_00000000c06081f5be182432bf21bff0",
+      "role": "HISTORICAL_CALIBRATION_SUPPORT_ONLY"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "project_file_id": "file_0000000067a881f598039e56d0748f26",
+      "role": "HISTORICAL_DISCOVERY_PART"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "project_file_id": "file_00000000dce081f584f83bdd7c0fe10e",
+      "role": "HISTORICAL_DISCOVERY_PART"
+    },
+    {
+      "name": "RECONSTRUCTED_DISCOVERY_ZIP",
+      "bytes": 607959761,
+      "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+      "project_file_id": null,
+      "role": "PART001_PLUS_PART002_STREAMING_HASH_VERIFIED"
+    },
+    {
+      "name": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "project_file_id": "file_00000000c034822fa8b77a2b22be8db1",
+      "role": "HISTORICAL_T1_ONLY"
+    },
+    {
+      "name": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "project_file_id": "file_000000008c1081f5975617fb8b80bb02",
+      "role": "HISTORICAL_T1_TRAJECTORY_ONLY"
+    },
+    {
+      "name": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "project_file_id": "file_0000000019fc81f59c36e7611a79842e",
+      "role": "HISTORICAL_50K_DISCOVERY_SUPPORT"
+    },
+    {
+      "name": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "project_file_id": "file_00000000dd44822fb18c47b5a8152694",
+      "role": "41238_ADDRESS_PROFILE_ARRAYS_SUPPORTING_ONLY_ROLE_UNRECOVERED"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "project_file_id": "file_00000000614881f5be880ce018610135",
+      "role": "INTEGRITY_MANIFEST"
+    },
+    {
+      "name": "Pasted markdown.md",
+      "bytes": 12817,
+      "sha256": "df18e8e852684ea3109aa5df8627a6b6b4a65cdc3c280c8165eec29e9b0a1981",
+      "project_file_id": "file_00000000b5cc81f59e702ab8517ef432",
+      "role": "PRIOR_HANDOFF_RAW"
+    },
+    {
+      "name": "Claude audit pass 1",
+      "bytes": 11204,
+      "sha256": null,
+      "project_file_id": "file_000000007e9c81f589606b779f501e0a",
+      "role": "AUDIT_RAW"
+    },
+    {
+      "name": "Claude audit pass 2",
+      "bytes": 27805,
+      "sha256": "f88277e9b1512c4b0fa471a84c1a49c141d6b8ccf4f3d67e9133a2150a1d1650",
+      "project_file_id": "file_00000000834881f5827de76df6babab9",
+      "role": "AUDIT_RAW"
+    },
+    {
+      "name": "Status and Repair Plan.txt",
+      "bytes": 5233,
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "project_file_id": "file_00000000924081f59534317bb96f6023",
+      "role": "HISTORICAL_DIMENSION_CONTEXT"
+    },
+    {
+      "name": "WSL execution issue.txt",
+      "bytes": 14576,
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "project_file_id": "file_0000000022c8822f8f2a400258740650",
+      "role": "HISTORICAL_ARCHITECTURE_CONTEXT"
+    }
+  ],
+  "extracted_facts": {
+    "calibration_bundle": {
+      "files": 97,
+      "manifest_sha256": "da7c3daf507a66118131e88ae6685cf43eb14d4163539ade5e0705f6fb845cef",
+      "dev_sealed_expression_included": false,
+      "pathology_fields_included": false,
+      "expression_cells": 50000,
+      "metadata_cells": 6351753,
+      "addresses": 41238,
+      "operators": 42
+    },
+    "discovery_expression": {
+      "cells": 50000,
+      "addresses": 41238,
+      "nnz": 246702069,
+      "normalization": "log1p(raw_count*10000/full_source_library) exactly once",
+      "output_sha256": "4c50f1de2446b07bbf3199bba80ebc89749c8104cb7668664ed705dbfc579d92",
+      "heldout_expression_read": false,
+      "dev_expression_read": false,
+      "sealed_expression_read": false,
+      "pathology_read": false
+    },
+    "historical_checkpoint_manifest": {
+      "contract_sha256": "33cd9758db351e8f2a0e72d5a55341e9ff24f6f50cba620b91f0987be3b95a06",
+      "u0_features_sha256": "9e5aa079b12c7ffbe7c9b27557e660356520d4b776bc216b58c580ea163d5dd7",
+      "updates": [
+        0,
+        10,
+        25,
+        50,
+        100,
+        200,
+        205
+      ]
+    },
+    "profile_npz": {
+      "address_count": 41238,
+      "array_count": 21
+    }
+  },
+  "warning": "Project-file availability never creates authority."
+}

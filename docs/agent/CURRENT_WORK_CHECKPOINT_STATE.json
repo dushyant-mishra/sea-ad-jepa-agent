@@ -18,8 +18,8 @@
     }
   ],
   "gates": {
-    "current": "FULL104_MASKING_CURRENT_PREFLIGHT_VERIFIED__GPU_RUNTIME_RECEIPTS_PENDING__TERMINAL_OUTCOMES_UNOPENED",
-    "masking_qualification": "CONTROL_CALIBRATION_PENDING__NO_TERMINAL_POLICY_OUTCOME_ACCESS",
+    "current": "FULL104_MASKING_TERMINAL_MECHANICS_IMPLEMENTED_AND_CI_VERIFIED__GPU_RUNTIME_RECEIPTS_AND_FINAL_FREEZE_PENDING__TERMINAL_OUTCOMES_UNOPENED",
+    "masking_qualification": "CONTROL_CALIBRATION_AND_FINAL_AUTHORITY_INSTANCES_PENDING__NO_TERMINAL_OUTCOME_ACCESS",
     "stage_a": "PASS_11_OF_11__GEOMETRY_MEMORIZATION_DEFERRED_UNTIL_FINAL_GEOMETRY",
     "protected_outcomes": "CLOSED",
     "d_shared": "CLOSED",
@@ -48,18 +48,21 @@
     "PRODUCTION_GEOMETRY_AND_GEOMETRY_SPECIFIC_MEMORIZATION_OPEN",
     "CURRENT_RUNTIME_SOURCE_ENVIRONMENT_PROVENANCE_OPEN",
     "FINAL_TRAINING_AUTHORITY_NOT_ISSUED",
-    "TERMINAL_ONE_RUNG_EVIDENCE_ASSEMBLER_AND_EXECUTOR_NOT_YET_IMPLEMENTED_OR_FROZEN"
+    "PR20_DRAFT_AND_CONFLICTING_WITH_CURRENT_BASE__NOT_A_DEFENSIBLE_FINAL_FREEZE_BASE",
+    "CURRENT_V5_REPRESENTATION_AUTHORITY_INSTANCE_AND_EXECUTABLE_BINDING_NOT_CLOSED",
+    "CURRENT_V5_DIMENSION_AUTHORITY_IMPLEMENTATION_BINDING_NOT_CLOSED__DO_NOT_REOPEN_D_SHARED_OUTCOMES_WITHOUT_CHANGED_INPUT",
+    "ACTIVE_V5_TEACHER_STUDENT_PRODUCTION_UPDATE_PATH_AND_MECHANICS_CHAIN_NOT_BOUND"
   ],
   "assets": {
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
       "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "scientific_implementation_head": "93093be1da09c46983f932d756b0fc9690a3eac4",
+      "scientific_implementation_head": "3084c1f497a3db6056fd100fb896ccdf67318c8a",
       "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35386306268",
+      "exact_scientific_head_ci_status": "PASS_268_NO_SKIPS__GITHUB_ACTIONS_RUN_35392547631",
       "pull_request": 20,
       "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
-      "governance_note": "Current source/test/workflow bytes are anchored at 93093be1... with exact historical-byte reauthorization, narrow historical-ingress allowlisting, and automated canonical command/CLI parity. Later docs-only governance edits do not change scientific implementation. Terminal FULL104 outcomes remain unopened."
+      "governance_note": "Current scientific bytes are anchored at 3084c1f... after terminal-provenance, mechanical-control, one-rung executor, fixed-source estimand, per-source benefit and frozen-null-margin repairs. Terminal outcomes remain unopened."
     },
     "full104": {
       "cells": 4553407,
@@ -120,7 +123,10 @@
       "nonlinear_challenge_v3_builder": "scripts/agent/build_full104_nonlinear_challenge_authority_v3_20260918.py",
       "masking_design_v2_builder": "scripts/agent/build_full104_masking_design_authority_v2_20260918.py",
       "masking_run_contract_builder": "scripts/agent/build_full104_masking_run_contract_v4_20260918.py",
-      "current_gpu_commands": "docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md"
+      "current_gpu_commands": "docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md",
+      "terminal_evidence_assembly": "src/sea_ad_jepa/v5/masking_terminal_evidence_assembly_v1.py",
+      "terminal_mechanical_controls": "src/sea_ad_jepa/v5/masking_terminal_mechanical_controls_v1.py",
+      "terminal_one_rung_executor": "src/sea_ad_jepa/v5/masking_terminal_one_rung_executor_v1.py"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
@@ -155,18 +161,20 @@
       "masking_design_v2": "tests/test_v5_masking_design_authority_v2.py",
       "current_freeze_builders": "tests/test_v5_full104_current_freeze_builders_v1.py",
       "nonlinear_v3_builder": "tests/test_v5_nonlinear_v3_builder_current.py",
-      "masking_run_contract_builder": "tests/test_v5_full104_run_contract_builder_v4.py"
+      "masking_run_contract_builder": "tests/test_v5_full104_run_contract_builder_v4.py",
+      "terminal_evidence_assembly": "tests/test_v5_masking_terminal_evidence_assembly_v1.py",
+      "terminal_mechanical_controls": "tests/test_v5_masking_terminal_mechanical_controls_v1.py",
+      "terminal_one_rung_executor": "tests/test_v5_masking_terminal_one_rung_executor_v1.py",
+      "precision_v4": "tests/test_v5_precision_authority_v4.py"
     },
     "verified_ci": {
       "role": "EXACT_CURRENT_SCIENTIFIC_SOURCE_TEST_WORKFLOW_VERIFICATION",
-      "code_anchor": "93093be1da09c46983f932d756b0fc9690a3eac4",
+      "code_anchor": "3084c1f497a3db6056fd100fb896ccdf67318c8a",
       "workflow": "V5 FULL104 masking runner",
-      "run_id": 35386306268,
+      "run_id": 35392547631,
       "conclusion": "success",
-      "regression_step": "success",
-      "skip_gate": "pass",
-      "predecessor_verified_anchor": "5ed613ac700d1505cef10f2fb01e4a5302a933f9",
-      "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__INTENTIONAL_REAUTHORIZATION_REQUIRES_EXACT_PRE_FULL104_BYTES_CURRENT_FULL104_ROLE_LIMITS_CURRENT_ROOT_BINDING_EXACT_CURRENT_SEMANTIC_AUTHORITY_INGRESS_AND_PATH_ONLY_FINAL_CONTRACT_ASSEMBLY"
+      "regression_step": "268 passed",
+      "skip_gate": "268 passed; zero skipped"
     },
     "supporting_exploratory_results": {
       "branch": "analysis/v5-ridge8-expanded-validation-20260917",
@@ -197,7 +205,9 @@
     "INDEPENDENTLY_VERIFY_FINAL_PACKAGE",
     "ONLY_THEN_OPEN_5_PERCENT_TERMINAL_FULL104_RUNG",
     "STOP_AT_FIRST_FULLY_QUALIFYING_BURDEN",
-    "IMPLEMENT_AND_INDEPENDENTLY_TEST_CURRENT_ONE_RUNG_TERMINAL_EVIDENCE_ASSEMBLER_EXECUTOR_WITH_NO_CACHE_TERMINAL_INPUT_AND_NO_AUTO_ESCALATION"
+    "INDEPENDENTLY_REAUDIT_CURRENT_TERMINAL_EXECUTOR_AND_STATISTICAL_GUARDRAILS_ON_EXACT_FINAL_HEAD_BEFORE_TERMINAL_OUTCOMES",
+    "RECONCILE_HISTORICAL_DIMENSION_CLOSURE_WITH_CURRENT_V5_PRODUCTION_AUTHORITY_BINDING_WITHOUT_REOPENING_D_SHARED_OUTCOMES_UNLESS_INPUTS_CHANGED",
+    "BUILD_OR_BIND_ACTIVE_V5_TEACHER_STUDENT_PRODUCTION_UPDATE_PATH_ONLY_AFTER_REPRESENTATION_DIMENSION_AND_REMAINING_TRAINING_GATES_CLOSE"
   ],
   "forbidden_actions": [
     "RUN_TRAINING",

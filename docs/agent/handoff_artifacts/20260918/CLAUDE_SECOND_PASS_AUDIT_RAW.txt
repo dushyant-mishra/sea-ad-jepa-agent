@@ -1,0 +1,514 @@
+You're right, and I shouldn't have framed it the way I did. I audited the blocking path and then declared six of twenty-one sections out of scope — including the deepest scientific ones. "A blocker exists downstream" doesn't shrink the mandate, and most of those sections gate training authority, which F1 doesn't touch at all. Let me record that and go do the work.
+
+Write C:\Users\dushy\.claude\projects\d--Jepa-project\memory\jepa-an-early-blocker-does-not-shrink-the-audit-scope.md
+52 lines
+Starting with §13 — the statistical core. If paired_target_donor_bootstrap is wrong, every interval in the pipeline is wrong.
+
+Bash Read the paired bootstrap implementation
+IN
+AW="D:/jepa_audit_20260918"; cd "$AW" && echo "=== precision_authority_v2: the bootstrap ==="; cat src/sea_ad_jepa/v5/precision_authority_v2.py
+
+OUT
+=== precision_authority_v2: the bootstrap ===
+"""Paired target-and-donor uncertainty for FULL104 masking qualification."""
+from __future__ import annotations
+
+from dataclasses import asdict, dataclass
+import hashlib
+import json
+from typing import Any, Mapping
+
+import numpy as np
+
+METHOD_ID = "PAIRED_TARGET_AND_DONOR_WITHIN_SOURCE_BOOTSTRAP_V2"
+INSUFFICIENT_POLICY_ID = "FAIL_CLOSED_IF_BELOW_PRECISION_V2"
+
+
+def _sha(value: object, name: str) -> str:
+    if not isinstance(value, str) or len(value) != 64 or value != value.lower():
+        raise ValueError(f"{name} must be a lowercase SHA-256 digest")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a lowercase SHA-256 digest") from exc
+    return value
+
+
+def _digest(payload: Mapping[str, Any]) -> str:
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode("utf-8")
+    ).hexdigest()
+
+
+@dataclass(frozen=True)
+class QualificationPrecisionAuthorityV2:
+    authority_id: str
+    support_estimability_authority_sha256: str
+    target_panel_authority_sha256: str
+    outer_split_authority_sha256: str
+    uncertainty_method_id: str
+    confidence_level_numerator: int
+    confidence_level_denominator: int
+    bootstrap_replicates: int
+    bootstrap_seed: int
+    min_target_count: int
+    min_donor_count: int
+    min_outer_fold_count: int
+    insufficient_support_policy_id: str
+    terminal_outcomes_inspected: bool = False
+    training_authorized: bool = False
+
+    @property
+    def confidence_level(self) -> float:
+        self.validate()
+        return self.confidence_level_numerator / self.confidence_level_denominator
+
+    def validate(self) -> None:
+        if not isinstance(self.authority_id, str) or not self.authority_id.strip():
+            raise ValueError("authority_id must be nonempty")
+        roots = (
+            _sha(self.support_estimability_authority_sha256, "support_estimability_authority_sha256"),
+            _sha(self.target_panel_authority_sha256, "target_panel_authority_sha256"),
+            _sha(self.outer_split_authority_sha256, "outer_split_authority_sha256"),
+        )
+        if len(set(roots)) != len(roots):
+            raise ValueError("precision authority role roots must be distinct")
+        if self.uncertainty_method_id != METHOD_ID:
+            raise ValueError("uncertainty_method_id mismatch")
+        if self.insufficient_support_policy_id != INSUFFICIENT_POLICY_ID:
+            raise ValueError("insufficient_support_policy_id mismatch")
+        if (
+            isinstance(self.confidence_level_numerator, bool)
+            or isinstance(self.confidence_level_denominator, bool)
+            or not isinstance(self.confidence_level_numerator, int)
+            or not isinstance(self.confidence_level_denominator, int)
+            or self.confidence_level_denominator <= 0
+            or not 0 < self.confidence_level_numerator < self.confidence_level_denominator
+        ):
+            raise ValueError("confidence level must be an exact rational strictly between zero and one")
+        for name in ("bootstrap_replicates", "min_target_count", "min_donor_count", "min_outer_fold_count"):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+                raise ValueError(f"{name} must be a positive integer")
+        if isinstance(self.bootstrap_seed, bool) or not isinstance(self.bootstrap_seed, int) or self.bootstrap_seed < 0:
+            raise ValueError("bootstrap_seed must be a nonnegative integer")
+        if self.terminal_outcomes_inspected is not False:
+            raise ValueError("precision parameters must be frozen before terminal outcomes")
+        if self.training_authorized is not False:
+            raise ValueError("precision authority cannot authorize training")
+
+    def assert_sufficient(self, *, target_count: int, donor_count: int, outer_fold_count: int) -> None:
+        self.validate()
+        observed = {
+            "target_count": target_count,
+            "donor_count": donor_count,
+            "outer_fold_count": outer_fold_count,
+        }
+        required = {
+            "target_count": self.min_target_count,
+            "donor_count": self.min_donor_count,
+            "outer_fold_count": self.min_outer_fold_count,
+        }
+        for name, value in observed.items():
+            if isinstance(value, bool) or not isinstance(value, int) or value < required[name]:
+                raise ValueError(f"{name} is below the frozen precision requirement")
+
+    def canonical_digest(self) -> str:
+        self.validate()
+        return _digest({"schema": "V5_QUALIFICATION_PRECISION_AUTHORITY_V2", **asdict(self)})
+
+
+@dataclass(frozen=True)
+class BootstrapIntervalV2:
+    mean: float
+    lower_two_sided: float
+    upper_two_sided: float
+    lower_one_sided: float
+    upper_one_sided: float
+    confidence_level: float
+    bootstrap_replicates: int
+    bootstrap_seed: int
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+def source_balanced_mean(matrix: np.ndarray, donor_source_code: np.ndarray) -> float:
+    values = np.asarray(matrix, dtype=np.float64)
+    source = np.asarray(donor_source_code)
+    if values.ndim != 2 or source.ndim != 1 or values.shape[1] != source.size:
+        raise ValueError("matrix must be target x donor and align with donor_source_code")
+    if values.shape[0] == 0 or source.size == 0 or not np.all(np.isfinite(values)):
+        raise ValueError("precision matrix must be nonempty and finite")
+    source_means = []
+    for code in sorted(set(map(int, source))):
+        donor_ix = np.flatnonzero(source == code)
+        if donor_ix.size == 0:
+            raise ValueError("empty source stratum")
+        source_means.append(float(values[:, donor_ix].mean()))
+    return float(np.mean(source_means))
+
+
+def paired_target_donor_bootstrap(
+    matrix: np.ndarray,
+    donor_source_code: np.ndarray,
+    *,
+    replicates: int,
+    seed: int,
+    confidence_level: float,
+) -> BootstrapIntervalV2:
+    """Bootstrap paired target x donor evidence, resampling donors within source."""
+
+    values = np.asarray(matrix, dtype=np.float64)
+    source = np.asarray(donor_source_code)
+    if values.ndim != 2 or source.ndim != 1 or values.shape[1] != source.size:
+        raise ValueError("matrix must be target x donor and align with donor_source_code")
+    if values.shape[0] < 1 or source.size < 1 or not np.all(np.isfinite(values)):
+        raise ValueError("bootstrap matrix must be nonempty and finite")
+    if isinstance(replicates, bool) or not isinstance(replicates, int) or replicates < 1:
+        raise ValueError("replicates must be positive")
+    if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
+        raise ValueError("seed must be nonnegative")
+    if not 0.0 < float(confidence_level) < 1.0:
+        raise ValueError("confidence_level must lie strictly between zero and one")
+
+    source_groups = [np.flatnonzero(source == code) for code in sorted(set(map(int, source)))]
+    if any(group.size == 0 for group in source_groups):
+        raise ValueError("every source needs at least one donor")
+    rng = np.random.default_rng(seed)
+    n_targets = values.shape[0]
+    boot = np.empty(replicates, dtype=np.float64)
+    for b in range(replicates):
+        target_ix = rng.integers(0, n_targets, size=n_targets)
+        source_means = []
+        for donors in source_groups:
+            sampled_donors = donors[rng.integers(0, donors.size, size=donors.size)]
+            source_means.append(float(values[np.ix_(target_ix, sampled_donors)].mean()))
+        boot[b] = float(np.mean(source_means))
+
+    alpha = 1.0 - float(confidence_level)
+    lower_two, upper_two = np.quantile(boot, [alpha / 2.0, 1.0 - alpha / 2.0])
+    lower_one = float(np.quantile(boot, alpha))
+    upper_one = float(np.quantile(boot, 1.0 - alpha))
+    return BootstrapIntervalV2(
+        mean=source_balanced_mean(values, source),
+        lower_two_sided=float(lower_two),
+        upper_two_sided=float(upper_two),
+        lower_one_sided=lower_one,
+        upper_one_sided=upper_one,
+        confidence_level=float(confidence_level),
+        bootstrap_replicates=replicates,
+        bootstrap_seed=seed,
+    )
+Shell cwd was reset to d:\Jepa project
+Structurally this is a two-way (target × donor-within-source) percentile bootstrap. Structure alone doesn't establish coverage, so let me test it empirically at real FULL104 geometry.
+
+Write C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\scratchpad\audit_bootstrap_coverage.py
+95 lines
+Bash Run bootstrap coverage study
+IN
+cd "D:/Jepa project" && python "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/audit_bootstrap_coverage.py" 2>&1 | tail -30
+
+OUT
+================================================================================================
+Nominal two-sided coverage 95.0%, one-sided-upper 95.0%   (T=128, D=104, sources (41, 17, 46))
+================================================================================================
+  pure noise (no structure)                  two-sided  99.5%  one-sided-upper  99.5%  mean width 0.0635  sd(point) 0.0098
+  target effects only                        two-sided  91.0%  one-sided-upper  92.5%  mean width 0.3430  sd(point) 0.0928
+  donor effects only                         two-sided  90.5%  one-sided-upper  94.0%  mean width 0.4083  sd(point) 0.1092
+  target + donor effects                     two-sided  94.0%  one-sided-upper  94.5%  mean width 0.5349  sd(point) 0.1380
+  target + donor + SOURCE effects            two-sided  33.5%  one-sided-upper  61.5%  mean width 0.5349  sd(point) 0.5795
+  strong source effects                      two-sided   7.5%  one-sided-upper  48.5%  mean width 0.2692  sd(point) 1.1133
+
+================================================================================================
+Point-estimate sanity: does source_balanced_mean equal the equal-weight source mean?
+================================================================================================
+  source_balanced_mean : 0.5862264344
+  manual equal-weight  : 0.5862264344
+  naive flat mean      : 0.7791450540   (differs: True)
+
+================================================================================================
+Determinism / replay: same seed -> identical interval?
+================================================================================================
+  seed 42 twice identical : True
+  seed 43 differs         : True
+
+AUDIT_BOOTSTRAP_COVERAGE_DONE
+Major finding. Coverage collapses to 33.5% (nominal 95%) with source effects, and 7.5% with strong ones — while interval width is unchanged (0.5349 in both the 94% and 33.5% rows) even as sd(point) goes 0.1380 → 0.5795. The bootstrap has no source-level variance component: it resamples targets and donors-within-source, never sources. Before reporting, let me test whether this matters for the paired differences actually used, where additive source effects should cancel.
+
+Write C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\scratchpad\audit_bootstrap_paired.py
+86 lines
+Bash Test paired-difference coverage
+IN
+cd "D:/Jepa project" && python "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/audit_bootstrap_paired.py" 2>&1 | tail -20
+
+OUT
+====================================================================================================
+PAIRED difference estimand. Nominal 95%. True source-balanced mean = 0 in all rows.
+====================================================================================================
+  no source x arm interaction (pure additive)    two-sided 100.0%  one-sided  99.5%  width 0.0448  sd(point) 0.0068
+  small source x arm interaction (sd 0.05)       two-sided 100.0%  one-sided  99.5%  width 0.0448  sd(point) 0.0068
+  moderate source x arm interaction (sd 0.15)    two-sided 100.0%  one-sided  99.5%  width 0.0448  sd(point) 0.0068
+  large source x arm interaction (sd 0.40)       two-sided 100.0%  one-sided  99.5%  width 0.0448  sd(point) 0.0068
+
+====================================================================================================
+How many independent units does the equal-weight source mean really have?
+====================================================================================================
+  sources = 3 (HVS, NPH52, SEA_AD) -> the outer average is over THREE clusters.
+  A bootstrap that never resamples sources cannot express that component,
+  and with 3 clusters it arguably cannot be estimated by resampling at all.
+
+AUDIT_PAIRED_DONE
+My paired test was mis-designed — I centred the interaction across sources, which makes it contribute exactly zero to an equal-weight source mean, so it measured nothing. Redoing it properly.
+
+Bash Proper superpopulation paired coverage test
+IN
+cd "D:/Jepa project" && python - <<'PY' 2>&1 | tail -30
+import sys, numpy as np
+sys.path.insert(0, r"D:/jepa_audit_20260918/src")
+from sea_ad_jepa.v5.precision_authority_v2 import paired_target_donor_bootstrap
+T=128; SRC=(41,17,46)
+SOURCE=np.concatenate([np.full(n,i) for i,n in enumerate(SRC)]).astype(np.int64); D=SOURCE.size
+CONF,REPS,SIMS=0.95,400,200
+
+def run(label, inter_sd):
+    rng=np.random.default_rng(20260918); c2=c1=0; w=[]; p=[]
+    for s in range(SIMS):
+        tgt=rng.normal(0,1.0,size=(T,1)); don=rng.normal(0,1.0,size=(1,D))
+        src=rng.normal(0,2.0,size=3)[SOURCE][None,:]
+        base=tgt+don+src
+        uni=base+rng.normal(0,0.5,size=(T,D))
+        pol=base+rng.normal(0,0.5,size=(T,D))
+        inter=rng.normal(0,inter_sd,size=3)          # NOT centred: sources are a DRAW
+        pol=pol+inter[SOURCE][None,:]
+        d=uni-pol
+        ci=paired_target_donor_bootstrap(d,SOURCE,replicates=REPS,seed=9000+s,confidence_level=CONF)
+        if ci.lower_two_sided<=0.0<=ci.upper_two_sided: c2+=1
+        if 0.0<=ci.upper_one_sided: c1+=1
+        w.append(ci.upper_two_sided-ci.lower_two_sided); p.append(ci.mean)
+    print("  %-52s two-sided %5.1f%%  one-sided %5.1f%%  width %.4f  sd(point) %.4f"
+          %(label,100*c2/SIMS,100*c1/SIMS,float(np.mean(w)),float(np.std(p))))
+
+print("="*104)
+print("PAIRED difference, sources treated as a DRAW (superpopulation reading). Nominal 95%, true mean 0.")
+print("="*104)
+for sd,lab in [(0.0,"no source x arm interaction"),(0.02,"interaction sd 0.02"),
+               (0.05,"interaction sd 0.05"),(0.15,"interaction sd 0.15"),(0.40,"interaction sd 0.40")]:
+    run(lab,sd)
+print()
+print("="*104)
+print("Same rows under the FIXED-source reading (estimand = these 3 sources only):")
+print("  the source x arm interaction is part of the estimand, not noise, so the")
+print("  estimator is unbiased for it and the bootstrap need not model it.")
+print("="*104)
+PY
+
+OUT
+========================================================================================================
+PAIRED difference, sources treated as a DRAW (superpopulation reading). Nominal 95%, true mean 0.
+========================================================================================================
+  no source x arm interaction                          two-sided 100.0%  one-sided  99.5%  width 0.0450  sd(point) 0.0068
+  interaction sd 0.02                                  two-sided  93.0%  one-sided  95.0%  width 0.0450  sd(point) 0.0120
+  interaction sd 0.05                                  two-sided  61.5%  one-sided  75.0%  width 0.0450  sd(point) 0.0270
+  interaction sd 0.15                                  two-sided  26.0%  one-sided  62.5%  width 0.0450  sd(point) 0.0803
+  interaction sd 0.40                                  two-sided   8.5%  one-sided  56.0%  width 0.0450  sd(point) 0.2149
+
+========================================================================================================
+Same rows under the FIXED-source reading (estimand = these 3 sources only):
+  the source x arm interaction is part of the estimand, not noise, so the
+  estimator is unbiased for it and the bootstrap need not model it.
+========================================================================================================
+Now precise: interval width is constant at 0.0450 across every row while sd(point) moves 0.0068 → 0.2149 (32×). Coverage breaks around interaction sd ≈ 0.05. Before assigning severity, let me check whether the per-source guardrails compensate.
+
+Bash Inspect source guardrail construction and use
+IN
+AW="D:/jepa_audit_20260918"; cd "$AW" && echo "=== _source_upper_bounds in the assembler ==="; sed -n '105,132p' src/sea_ad_jepa/v5/masking_terminal_evidence_assembly_v1.py; echo; echo "=== how does decision_v2 use source guardrails? ==="; sed -n '96,145p' src/sea_ad_jepa/v5/masking_qualification_decision_v2.py
+
+OUT
+=== _source_upper_bounds in the assembler ===
+def _source_upper_bounds(
+    precision: Any,
+    matrix: np.ndarray,
+    donor_source_code: np.ndarray,
+    source_names: Mapping[int, str],
+) -> dict[str, float]:
+    source = np.asarray(donor_source_code, dtype=np.int64)
+    if source.ndim != 1 or source.size != matrix.shape[1]:
+        raise ValueError("donor_source_code must align with donor columns")
+    codes = sorted(set(map(int, source)))
+    normalized_names = {int(k): str(v) for k, v in source_names.items()}
+    if set(codes) != set(normalized_names):
+        raise ValueError("source_names must exactly cover donor source codes")
+    out: dict[str, float] = {}
+    for code in codes:
+        ix = np.flatnonzero(source == code)
+        if ix.size == 0:
+            raise ValueError("empty source stratum")
+        local_source = np.zeros(ix.size, dtype=np.int64)
+        interval = precision.interval(matrix[:, ix], local_source)
+        name = normalized_names[code]
+        if not name or name in out:
+            raise ValueError("source names must be unique and nonempty")
+        out[name] = float(interval.upper_one_sided)
+    return out
+
+
+def _source_balanced_target_means(matrix: np.ndarray, donor_source_code: np.ndarray) -> np.ndarray:
+
+=== how does decision_v2 use source guardrails? ===
+def evaluate_policy_v2(
+    evidence: MaskingPolicyDecisionEvidenceV1,
+) -> MaskingPolicyDecisionReceiptV2:
+    evidence.validate()
+    tolerance = null_noise_tolerance(evidence)
+
+    negative_ok = (
+        evidence.negative_control_delta.lower_two_sided <= 0.0
+        <= evidence.negative_control_delta.upper_two_sided
+    )
+    planted_ok = (
+        evidence.planted_detect_excess.lower_one_sided > tolerance
+        and evidence.planted_after_mask_excess.upper_one_sided <= tolerance
+    )
+    controls = (
+        negative_ok
+        and planted_ok
+        and evidence.replay_exact
+        and evidence.untreated_identity_exact
+        and evidence.no_privileged_metadata
+        and evidence.precision_requirements_met
+    )
+
+    primary_null = (
+        evidence.excess_over_shuffled_null.upper_one_sided <= tolerance
+        and all(
+            float(value) <= tolerance
+            for value in evidence.source_excess_upper_one_sided.values()
+        )
+    )
+
+    if evidence.policy_id == "UNIFORM_RANDOM":
+        improvement = True
+        heterogeneity = True
+    else:
+        improvement = (
+            evidence.delta_vs_uniform.lower_one_sided > 0.0
+            and evidence.target_delta_median >= 0.0
+        )
+        heterogeneity = (
+            evidence.worst_target_delta
+            >= evidence.negative_control_delta.lower_two_sided
+        )
+
+    nonlinear = (
+        evidence.nonlinear_excess_over_shuffled_null.upper_one_sided <= tolerance
+    )
+    qualified = controls and primary_null and improvement and heterogeneity and nonlinear
+
+    raw = {
+Shell cwd was reset to d:\Jepa project
+Now precise. primary_null is protected — it requires every per-source bound to pass. But improvement is not: it's delta_vs_uniform.lower_one_sided > 0.0 and target_delta_median >= 0.0, pooled-only, with no per-source guardrail — and that's the exact statistic blind to source×arm interaction. Let me demonstrate it concretely.
+
+Write C:\Users\dushy\AppData\Local\Temp\claude\d--Jepa-project\cdf819f6-5db4-4119-9a97-37fef1d27909\scratchpad\audit_single_source_qualification.py
+84 lines
+Bash Test single-source qualification
+IN
+cd "D:/Jepa project" && python "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/audit_single_source_qualification.py" 2>&1 | tail -35
+
+OUT
+====================================================================================================
+Does `improvement` require every source to benefit?
+====================================================================================================
+  A. genuine broad improvement (all sources)
+    true per-source effect      : HVS +0.0100  NPH52 +0.0100  SEA_AD +0.0100
+    pooled delta mean           : +0.00979
+    pooled lower_one_sided      : +0.00757
+    target_delta_median         : +0.01060
+    -> improvement PASSES       : True
+    per-source lower_one_sided  : HVS +0.00671  NPH52 +0.00637  SEA_AD +0.00650
+    sources NOT individually positive: none
+
+  B. SEA_AD ONLY (others exactly neutral)
+    true per-source effect      : HVS +0.0000  NPH52 +0.0000  SEA_AD +0.0300
+    pooled delta mean           : +0.00979
+    pooled lower_one_sided      : +0.00757
+    target_delta_median         : +0.01060
+    -> improvement PASSES       : True
+    per-source lower_one_sided  : HVS -0.00329  NPH52 -0.00363  SEA_AD +0.02650
+    sources NOT individually positive: ['HVS', 'NPH52']
+
+  C. SEA_AD helps, HVS and NPH52 are HARMED
+    true per-source effect      : HVS -0.0100  NPH52 -0.0100  SEA_AD +0.0500
+    pooled delta mean           : +0.00979
+    pooled lower_one_sided      : +0.00757
+    target_delta_median         : +0.01060
+    -> improvement PASSES       : True
+    per-source lower_one_sided  : HVS -0.01329  NPH52 -0.01363  SEA_AD +0.04650
+    sources NOT individually positive: ['HVS', 'NPH52']
+
+====================================================================================================
+`improvement` has no per-source guardrail, so B and C are judged only on the
+equal-weight pooled mean. `primary_null` IS guarded per-source, but it tests
+shortcut suppression, not benefit over uniform.
+====================================================================================================
+Decisive. A, B and C produce identical pooled statistics (+0.00979 / +0.00757 / +0.01060) and all three pass improvement — yet C actively harms HVS (−0.01329) and NPH52 (−0.01363). A policy damaging two of three sources is indistinguishable from one helping all three. Now §5 — teacher/student and the shortcut classes.
+
+Bash Audit teacher target semantics
+IN
+AW="D:/jepa_audit_20260918"; cd "$AW" && echo "=== teacher target semantics V2: what is the target? ==="; grep -nE "APPROVED_|TARGET_|_ID *=|class |def validate" src/sea_ad_jepa/v5/teacher_target_semantics_authority_v2.py | head -30; echo; echo "=== does anything forbid hidden-gene scalar as target? ==="; grep -rn "HIDDEN_GENE\|hidden_gene\|SCALAR_RECONSTRUCTION\|scalar_expression" src/sea_ad_jepa/v5/teacher_target_semantics_authority_v2.py | head -8
+
+OUT
+=== teacher target semantics V2: what is the target? ===
+17:APPROVED_STATE_SEMANTICS_IDS: Tuple[str, ...] = (
+20:APPROVED_QUERY_LOCAL_SEMANTICS_IDS: Tuple[str, ...] = (
+23:APPROVED_SCALAR_EXPRESSION_OBJECTIVE_POLICY_IDS: Tuple[str, ...] = (
+26:APPROVED_ROUTE_SUFFICIENCY_POLICY_IDS: Tuple[str, ...] = (
+59:class TeacherTargetSemanticsAuthorityV2:
+78:    def validate(self) -> None:
+97:        _enum(self.state_semantics_id, APPROVED_STATE_SEMANTICS_IDS, "state_semantics_id")
+100:            APPROVED_QUERY_LOCAL_SEMANTICS_IDS,
+105:            APPROVED_SCALAR_EXPRESSION_OBJECTIVE_POLICY_IDS,
+110:            APPROVED_ROUTE_SUFFICIENCY_POLICY_IDS,
+121:                "schema": "V5_TEACHER_TARGET_SEMANTICS_AUTHORITY_V2",
+
+=== does anything forbid hidden-gene scalar as target? ===
+24:    "HIDDEN_GENE_SCALAR_RECONSTRUCTION_FORBIDDEN_V1",
+74:    scalar_expression_objective_policy_id: str
+104:            self.scalar_expression_objective_policy_id,
+106:            "scalar_expression_objective_policy_id",
+Shell cwd was reset to d:\Jepa project
+Bash Check teacher/student implementation presence
+IN
+AW="D:/jepa_audit_20260918"; cd "$AW" && sed -n '15,30p' src/sea_ad_jepa/v5/teacher_target_semantics_authority_v2.py; echo; echo "=== is there executable teacher/student MODEL code in the current v5 chain? ==="; grep -rln "nn.Module\|torch.nn\|forward(" src/sea_ad_jepa/v5/*.py 2>/dev/null | head -10; echo "(empty = authorities only, no model implementation in v5)"; echo; echo "=== where does the actual teacher/student model live? ==="; grep -rln "class .*Teacher\|EMATargetEncoder\|stopgrad\|stop_gradient" src/ --include=*.py 2>/dev/null | head -8
+
+OUT
+APPROVED_STATE_SEMANTICS_IDS: Tuple[str, ...] = (
+    "BIOLOGICAL_CELLULAR_LATENT_STATE_V1",
+)
+APPROVED_QUERY_LOCAL_SEMANTICS_IDS: Tuple[str, ...] = (
+    "QUERY_LOCAL_STATE_CONDITIONED_ON_CANONICAL_ADDRESS_V1",
+)
+APPROVED_SCALAR_EXPRESSION_OBJECTIVE_POLICY_IDS: Tuple[str, ...] = (
+    "HIDDEN_GENE_SCALAR_RECONSTRUCTION_FORBIDDEN_V1",
+)
+APPROVED_ROUTE_SUFFICIENCY_POLICY_IDS: Tuple[str, ...] = (
+    "REMAINING_RNA_REQUIRED__IDENTITY_ONLY_AND_GLOBAL_ONLY_INSUFFICIENT_V1",
+)
+
+
+
+=== is there executable teacher/student MODEL code in the current v5 chain? ===
+src/sea_ad_jepa/v5/inactive_update_reference.py
+src/sea_ad_jepa/v5/keyed_dropout_prototype.py
+src/sea_ad_jepa/v5/keyed_dropout_prototype_v2.py
+src/sea_ad_jepa/v5/shared_address_query_provider_v1.py
+(empty = authorities only, no model implementation in v5)
+
+=== where does the actual teacher/student model live? ===
+src/sea_ad_jepa/v4/__init__.py
+src/sea_ad_jepa/v4/ema.py
+src/sea_ad_jepa/v4/teacher_student_runtime.py
+src/sea_ad_jepa/v5/teacher_target_semantics_authority_v1.py
+src/sea_ad_jepa/v5/teacher_target_semantics_authority_v2.py
+Shell cwd was reset to d:\Jepa project
+§5 structural finding: V5 contains only authorities; the executable teacher/student model is still src/sea_ad_jepa/v4/teacher_student_runtime.py + v4/ema.py. The semantics themselves are correctly frozen as allowlists-of-one. Checking whether the known V5→V4 seam still exists at HEAD.

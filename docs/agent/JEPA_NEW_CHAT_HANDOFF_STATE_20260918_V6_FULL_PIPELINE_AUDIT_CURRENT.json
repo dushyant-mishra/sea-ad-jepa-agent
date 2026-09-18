@@ -1,0 +1,63 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260918_V6_FULL_PIPELINE_AUDIT_CURRENT",
+  "date": "2026-09-18",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "implementation_branch": "impl/v5-full104-masking-redteam2-20260918",
+  "scientific_head": "3084c1f497a3db6056fd100fb896ccdf67318c8a",
+  "handoff_branch": "handoff/jepa-v5-full-pipeline-audit-20260918",
+  "pr": {
+    "number": 20,
+    "base": "impl/v5-full104-masking-redteam-freeze-20260918",
+    "draft": true,
+    "mergeable": false
+  },
+  "ci": {
+    "run_id": 35392547631,
+    "conclusion": "success",
+    "regression": "268 passed",
+    "skip_gate": "268 passed; zero skipped"
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_core": 17186,
+    "blocks": 8915,
+    "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "terminal": {
+    "outcomes_opened": false,
+    "policy_selected": false,
+    "evidence_binding": true,
+    "mechanical_controls": true,
+    "one_rung_executor": true,
+    "fixed_source_frame": true,
+    "source_benefit_guardrail": true,
+    "frozen_null_margin": true
+  },
+  "audit": {
+    "repaired": [
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5",
+      "F6",
+      "F8",
+      "F9",
+      "F10",
+      "F11",
+      "F12"
+    ],
+    "open": [
+      "F7",
+      "F13",
+      "F14",
+      "F15"
+    ]
+  },
+  "training_authorized": false
+}

@@ -10,11 +10,11 @@ Historical/smaller-run artifacts may motivate a current hypothesis or model shap
 
 Current scientific source/test/workflow anchor:
 
-`93093be1da09c46983f932d756b0fc9690a3eac4`
+`3084c1f497a3db6056fd100fb896ccdf67318c8a`
 
 Verified GitHub Actions run:
 
-`35386306268` — PASS, including fail-on-skips.
+`35392547631` — PASS, including fail-on-skips.
 
 ## 1. Re-fetch and preserve the worktree
 
@@ -23,7 +23,7 @@ PowerShell:
 ```powershell
 $Repo = "D:\Jepa project"
 $Branch = "impl/v5-full104-masking-redteam2-20260918"
-$ExpectedAnchor = "93093be1da09c46983f932d756b0fc9690a3eac4"
+$ExpectedAnchor = "3084c1f497a3db6056fd100fb896ccdf67318c8a"
 
 git -C $Repo fetch origin
 git -C $Repo status --porcelain
@@ -266,7 +266,7 @@ Any failure is a STOP.
 
 ## 14. Terminal masking boundary
 
-Terminal execution is currently STOPPED after preflight until the current one-rung evidence assembler/executor is implemented, independently tested, and frozen. Do not substitute the older 2026-09-16 runner, a historical results file, a calibration-cache evaluator, or hand-assembled decision JSON.
+The current one-rung terminal evidence assembler, mechanical controls, and one-rung executor are implemented and exact-head CI tested. Terminal execution is still STOPPED until GPU control/calibration authority instances, final RunContract V4, final machine checkpoint, terminal preflight, and an independent exact-head audit are complete. Do not substitute the older 2026-09-16 runner, a historical results file, a calibration-cache evaluator, or hand-assembled decision JSON.
 
 Only after that current terminal executor exists and terminal preflight passes may the 5% FULL104 terminal rung be opened.
 
@@ -292,3 +292,19 @@ A masking PASS still does not authorize training. Healthy-current-teacher remain
 - no historical T1 checkpoint as healthy-current-teacher authority;
 - no post-outcome retuning;
 - no reopening settled audits without changed inputs.
+
+
+## September 18 audit-driven safeguards
+
+At scientific head `3084c1f497a3db6056fd100fb896ccdf67318c8a`:
+- terminal raw arrays/axes/masks are internally hash-bound;
+- terminal assembly requires QualificationPrecisionAuthorityV4;
+- source framing is fixed to the observed HVS/NPH52/SEA_AD populations;
+- targeted policy improvement requires a per-source lower-bound guardrail;
+- null tolerance is a prospectively frozen equivalence margin, never the observed negative-control width;
+- the negative-control 95% CI must contain zero and fit wholly inside the frozen margin;
+- replay/untreated identity/no-privileged-metadata come from a mechanical-control receipt;
+- one-rung execution cannot auto-escalate and cannot continue after a lower rung qualifies;
+- calibration cache remains forbidden as terminal input.
+
+Exact-head CI: run `35392547631`, 268 passed in the regression step and 268 passed in the no-skip rerun.

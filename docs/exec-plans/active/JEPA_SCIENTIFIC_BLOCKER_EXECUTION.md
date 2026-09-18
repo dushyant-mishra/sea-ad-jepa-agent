@@ -10,7 +10,7 @@ Working implementation branch:
 
 Scientific implementation anchor (source/test/data bytes):
 
-`93093be1da09c46983f932d756b0fc9690a3eac4`
+`3084c1f497a3db6056fd100fb896ccdf67318c8a`
 
 Draft implementation PR:
 
@@ -110,9 +110,9 @@ Historical evidence may define the pre-FULL104 confirmation candidate and nonlin
 
 ## Current exact-head verification status
 
-The focused FULL104 masking workflow is verified on the current scientific source/test/workflow anchor `93093be1da09c46983f932d756b0fc9690a3eac4`.
+The focused FULL104 masking workflow is verified on the current scientific source/test/workflow anchor `3084c1f497a3db6056fd100fb896ccdf67318c8a`.
 
-GitHub Actions run `35386306268` completed SUCCESS. The full regression step and the explicit fail-closed-on-skips step both completed SUCCESS after adding the current two-mode FULL104 GPU preflight validator/wrapper and its anti-spillover behavior tests.
+GitHub Actions run `35392547631` completed SUCCESS. The full regression step and the explicit fail-closed-on-skips step both completed SUCCESS after adding the current two-mode FULL104 GPU preflight validator/wrapper and its anti-spillover behavior tests.
 
 The verified predecessor anchors `ca643f5d...` (run `35374354706`) and `bdb779ce...` (run `35382450942`) remain historical implementation evidence only. The current anchor additionally canonically binds the no-extra-retained-floor policy and exact-current representation/teacher/support/registry semantic authorities at FULL104 ingress. The earlier collection failure `35373486676` was caused by a stale nonlinear-calibration V1 test reference and was narrowly repaired before the successful successor runs.
 
@@ -123,7 +123,7 @@ Exact-head focused CI is therefore `ALREADY_AUDITED__PASS_NO_SKIPS` at `93093be1
 ## Immediate authoritative sequence
 
 1. Re-fetch the live implementation branch and PR #20. If source/test/workflow/data bytes changed from `93093be1...`, classify the delta as `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
-2. Exact-head focused CI at `93093be1...` is audited PASS/no-skips in run `35386306268`; rerun it after any source/test/workflow change.
+2. Exact-head focused CI at `93093be1...` is audited PASS/no-skips in run `35392547631`; rerun it after any source/test/workflow change.
 3. Use the current two-mode preflight only: `scripts/agent/v5_full104_masking_gpu_preflight_20260918.ps1` plus `scripts/agent/validate_full104_masking_gpu_preflight_v1.py`. Calibration mode must not require terminal artifacts; terminal mode must reject the calibration cache as terminal input and must bind the final machine checkpoint and live execution-source hashes.
 4. Build the explicit pre-FULL104 confirmation `MaskingQualificationParametersAuthorityV2` instance from the frozen discovery provenance. This is an explicit re-authorization of a pre-FULL104 candidate only; it does not authorize burden, targets, folds, seeds, row caps, outcomes, or training.
 5. On the canonical GPU worktree, regenerate the census V2 summary, split, and target-eligibility receipts from the real authenticated `pass1.npz`, then build census authority V2.
@@ -141,7 +141,7 @@ Exact-head focused CI is therefore `ALREADY_AUDITED__PASS_NO_SKIPS` at `93093be1
     The older AddressUniverseLadderAuthorityV1 is not a final Design V2 role. Discovery universes 800/2,000/6,000 remain historical scale-stress evidence only and may not be manufactured into a FULL104 terminal authority.
 11. Freeze the final V4 run-contract instance before inspecting terminal masking-policy outcomes.
 12. Rebuild and validate `docs/agent/CURRENT_WORK_CHECKPOINT.json` on the final committed GPU worktree head and independently verify the package.
-13. Before any terminal outcome is opened, close the current terminal execution gap: add and independently test a one-rung FULL104 terminal executor/evidence assembler that consumes only the frozen V4 run contract plus authenticated Level-4 stream/current receipts; reconstructs donor/target evidence with the existing streaming/control/nonlinear/precision/decision primitives; emits hash-bound raw evidence, policy receipts, rung decision receipt, and ExecutionAuthorityV4; accepts exactly one burden rung per invocation; cannot auto-escalate; cannot consume the calibration cache as terminal input; and cannot authorize training or protected outcomes. Do not invent or inherit a historical aggregation formula: the terminal evidence-to-decision mapping must be explicitly current and mechanically tested.
+13. The one-rung terminal evidence assembler, mechanical controls and one-rung executor now exist and are exact-head CI tested. Before terminal outcomes are opened, independently re-audit them on the final source-frozen head; bind them in final RunContract V4; finish GPU control/calibration receipts and authority instances; rebuild the machine checkpoint; and pass terminal preflight.
 14. Only after that executor is frozen and terminal preflight passes may FULL104 masking be executed at 5%. Do not inspect 10% if 5% fully qualifies. Continue upward only after explicit failure and stop at the first fully qualifying burden.
 14. Masking PASS still does not authorize training. Continue healthy-current-teacher remaining-RNA necessity, measurement robustness, production geometry + geometry-specific memorization, runtime provenance, and final explicit training authority.
 
@@ -188,3 +188,12 @@ The following builder is V2 only and must not be used as final nonlinear authori
 `docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json` is the tracked scientific-lane declaration. Its pinned authorities must be stable implementation-governance files. Docs-only handoffs may update `START_HERE.md`; therefore `START_HERE.md` must not be hard-pinned in the tracked checkpoint state in a way that invalidates every handoff commit.
 
 This connector environment cannot truthfully generate the machine/worktree-bound checkpoint. The canonical GPU worktree must build and validate it after final source/authority freeze and again immediately before terminal execution.
+
+
+## Independent audit reconciliation at 3084c1f497a3db6056fd100fb896ccdf67318c8a
+
+Repaired after audit: F1 raw evidence binding; F2 precision V4 type; F3 mechanical control attestations; F4 fold derivation; F5 one-rung executor; F8 superseded freeze tombstone; F9 distinct ladder V2 identity; F10 fixed observed-source estimand; F11 per-source policy-benefit guardrail; F12 frozen null-equivalence margin plus negative-control precision.
+
+Open for training-side closure: F13 current V5 representation authority/executable binding; F14 current V5 dimension/rank/subspace authority binding; F15 active V5 teacher/student production update path/mechanics-chain enforcement.
+
+PR #20 remains draft/conflicting. No terminal masking, pathology, DEV, SEALED or D_shared outcome was opened during the audits.
