@@ -5,8 +5,10 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import inspect
 
 from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
+from sea_ad_jepa.v5 import target_panel_selector_v2 as selector_impl
 from sea_ad_jepa.v5.target_panel_selector_v2 import TargetPanelSelectionReceiptV2, select_target_cols
 
 
@@ -43,7 +45,8 @@ def main() -> int:
         "schema": "V5_TARGET_PANEL_SELECTION_RECEIPT_V2",
         **receipt.__dict__,
         "selected_target_cols": list(selected),
-        "selector_source_sha256": sha256_file(Path(__file__).resolve()),
+        "selector_source_sha256": sha256_file(Path(inspect.getfile(selector_impl)).resolve()),
+        "builder_source_sha256": sha256_file(Path(__file__).resolve()),
         "receipt_sha256": receipt.canonical_digest(),
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
