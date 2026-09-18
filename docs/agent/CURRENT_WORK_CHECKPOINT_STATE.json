@@ -23,19 +23,21 @@
     }
   ],
   "gates": {
-    "current": "V5_STREAMING_FULL104_MASKING_EXECUTOR_PARITY_READY__CANONICAL_GPU_QUALIFICATION_NEXT",
-    "masking_qualification": "PENDING_PROSPECTIVE_FREEZE_AND_TERMINAL_FULL104_EXECUTION",
+    "current": "FULL104_MASKING_PROSPECTIVE_SUCCESSOR_REPAIR_NEAR_FREEZE__TERMINAL_OUTCOMES_UNOPENED",
+    "masking_qualification": "CURRENT_SUCCESSOR_AUTHORITIES_IMPLEMENTED__GPU_BOUND_INSTANCES_AND_FINAL_CONTRACT_STILL_OPEN",
     "stage_a": "PASS_11_OF_11__GEOMETRY_MEMORIZATION_DEFERRED_UNTIL_FINAL_GEOMETRY",
     "protected_outcomes": "CLOSED",
     "d_shared": "CLOSED",
     "training": "FORBIDDEN_UNTIL_EXPLICIT_FINAL_TRAINING_AUTHORITY"
   },
   "unresolved_blockers": [
-    "CANONICAL_WORK_CHECKPOINT_MUST_BE_BUILT_AND_VALIDATED_ON_GPU_WORKTREE",
-    "AUTHENTICATED_FULL104_LEVEL4_SUBSTRATE_MUST_BE_BOUND_TO_CURRENT_AUTHORITIES",
-    "PROSPECTIVE_MASKING_DESIGN_AND_NUMERIC_PARAMETER_AUTHORITIES_MUST_BE_FROZEN_BEFORE_TERMINAL_OUTCOMES",
-    "EXACT_REFERENCE_AND_STREAMING_EXECUTOR_SOURCE_SHA256_MUST_BE_BOUND_IN_REAL_RUN_CONTRACT",
-    "TERMINAL_FULL_COMMON_CORE_17186_MASKING_QUALIFICATION_NOT_EXECUTED",
+    "GPU_MUST_GENERATE_AND_HASH_BIND_CENSUS_V2_RECEIPTS_FROM_REAL_PASS1_NPZ",
+    "GPU_MUST_INSTANTIATE_AND_BIND_OUTER_SPLIT_TARGET_PANEL_PRECISION_V4_NONLINEAR_V2_AND_RNG_V2_AUTHORITIES",
+    "GPU_MUST_EXECUTE_AND_HASH_BIND_POLICY_SPECIFIC_PRIMARY_CONTROL_AND_NONLINEAR_RAW_EVIDENCE",
+    "OUTCOME_BLIND_STREAMING_RUNTIME_BENCHMARK_AND_OPTIONAL_EXACT_PARITY_CACHE_DECISION_OPEN",
+    "FINAL_MACHINE_WORKTREE_CHECKPOINT_MUST_BE_REBUILT_AFTER_FINAL_SOURCE_FREEZE",
+    "REAL_RUN_CONTRACT_V3_MUST_BE_INSTANTIATED_WITH_EXACT_LIVE_SOURCE_HASHES",
+    "TERMINAL_FULL104_MASKING_QUALIFICATION_NOT_EXECUTED",
     "REAL_SELECTED_MASKING_POLICY_AUTHORITY_NOT_ISSUED",
     "HEALTHY_CURRENT_TEACHER_REMAINING_RNA_EVIDENCE_OPEN",
     "CURRENT_MEASUREMENT_ROBUSTNESS_EVIDENCE_OPEN",
@@ -46,10 +48,10 @@
   "assets": {
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
-      "working_branch": "impl/v5-remaining-rna-target-semantics-20260917",
+      "working_branch": "impl/v5-full104-masking-redteam-freeze-20260918",
       "verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "pull_request": 18,
-      "pr_base": "analysis/v5-ridge8-expanded-validation-20260917",
+      "pull_request": 19,
+      "pr_base": "impl/v5-full104-masking-budget-freeze-20260917",
       "base_divergence_note": "The PR base has two later commits only touching accidental __never__ connector-probe cleanup/noop files; no newer science/result bytes are omitted from this handoff."
     },
     "full104": {
@@ -66,17 +68,47 @@
     "current_sources": {
       "canonical_masking_reference": "src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py",
       "streaming_masking_executor": "src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py",
-      "masking_parameters_authority": "src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v1.py",
-      "masking_run_contract": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v1.py",
-      "masking_execution_authority_v2": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v2.py",
-      "target_evidence_budget": "src/sea_ad_jepa/v5/target_evidence_budget_authority_v1.py"
+      "donor_evidence": "src/sea_ad_jepa/v5/masking_donor_evidence_v1.py",
+      "masking_control_executor": "src/sea_ad_jepa/v5/masking_control_executor_v1.py",
+      "nonlinear_challenge_authority": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v2.py",
+      "nonlinear_challenge_executor": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_executor_v1.py",
+      "nonlinear_challenge_receipt": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_receipt_v1.py",
+      "masking_parameters_authority": "src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v2.py",
+      "masking_run_contract": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v3.py",
+      "masking_execution_authority": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v5.py",
+      "masking_decision": "src/sea_ad_jepa/v5/masking_qualification_decision_v3.py",
+      "target_evidence_budget": "src/sea_ad_jepa/v5/target_evidence_budget_authority_v2.py",
+      "burden_ladder": "src/sea_ad_jepa/v5/masking_burden_ladder_authority_v2.py",
+      "precision_authority": "src/sea_ad_jepa/v5/precision_authority_v4.py",
+      "target_panel_sizing": "src/sea_ad_jepa/v5/target_panel_sizing_authority_v1.py",
+      "target_panel_selector": "src/sea_ad_jepa/v5/target_panel_selector_v2.py",
+      "target_panel_authority": "src/sea_ad_jepa/v5/target_panel_authority_v2.py",
+      "rng_replay_authority": "src/sea_ad_jepa/v5/masking_rng_replay_authority_v2.py",
+      "strict_support_selection": "src/sea_ad_jepa/v5/full104_strict_support_selection_v1.py",
+      "census_receipt": "src/sea_ad_jepa/v5/full104_census_receipt_v2.py",
+      "support_estimability_authority": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json",
+      "masking_structural_controls": "src/sea_ad_jepa/v5/masking_structural_controls_v1.py",
+      "masking_evidence_assembler": "src/sea_ad_jepa/v5/masking_evidence_assembler_v1.py",
+      "nonlinear_orchestrator": "src/sea_ad_jepa/v5/masking_nonlinear_orchestrator_v1.py"
     },
     "current_tests": {
-      "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
-      "streaming_parity": "tests/test_v5_full104_masking_streaming_executor_v1.py",
-      "run_contract": "tests/test_v5_masking_qualification_run_contract_v1.py",
+      "focused_masking_workflow": ".github/workflows/v5-full104-masking-runner.yml",
+      "anti_spillover": "tests/test_v5_full104_masking_anti_spillover_v2.py",
+      "donor_evidence": "tests/test_v5_masking_donor_evidence_v1.py",
+      "controls": "tests/test_v5_masking_control_executor_v1.py",
+      "nonlinear_executor": "tests/test_v5_masking_nonlinear_challenge_executor_v1.py",
+      "nonlinear_competence": "tests/test_v5_masking_nonlinear_challenge_receipt_v1.py",
+      "decision_v3": "tests/test_v5_masking_qualification_decision_v3.py",
+      "execution_v5": "tests/test_v5_masking_qualification_execution_authority_v5.py",
+      "precision_v4": "tests/test_v5_precision_authority_v4.py",
+      "target_panel": "tests/test_v5_target_panel_authority_v2.py",
+      "rng": "tests/test_v5_masking_rng_replay_authority_v2.py",
+      "run_contract_v3": "tests/test_v5_masking_qualification_run_contract_v3.py",
       "stage_a": "tests/test_v5_current_stage_a_spillover_firewall_v1.py",
-      "stage_a_successors": "tests/test_v5_current_stage_a_spillover_firewall_v3.py"
+      "stage_a_successors": "tests/test_v5_current_stage_a_spillover_firewall_v3.py",
+      "structural_controls": "tests/test_v5_masking_structural_controls_v1.py",
+      "evidence_assembler": "tests/test_v5_masking_evidence_assembler_v1.py",
+      "nonlinear_orchestrator": "tests/test_v5_masking_nonlinear_orchestrator_v1.py"
     },
     "verified_ci": {
       "code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
@@ -108,18 +140,17 @@
     }
   },
   "next_authorized_actions": [
-    "FETCH_LIVE_BRANCH_AND_VERIFY_VERIFIED_CODE_ANCHOR_IS_ANCESTOR",
-    "BUILD_AND_VALIDATE_CURRENT_WORK_CHECKPOINT_ON_CANONICAL_GPU_WORKTREE",
-    "VERIFY_AUTHENTICATED_FULL104_LEVEL4_ROOT_AND_BLOCK_MANIFEST_SHA256",
-    "BIND_CURRENT_DONOR_SOURCE_OUTER_SPLIT_TARGET_PANEL_UNIVERSE_AND_SUPPORT_ARTIFACTS",
-    "INSTANTIATE_AND_FREEZE_PROSPECTIVE_MASKING_DESIGN",
-    "INSTANTIATE_AND_FREEZE_NUMERIC_MASKING_PARAMETERS_WITHOUT_INHERITING_EXPLORATORY_DEFAULTS",
-    "COMPUTE_AND_BIND_EXACT_SHA256_OF_CANONICAL_REFERENCE_AND_STREAMING_EXECUTOR_SOURCE",
-    "FREEZE_REAL_MASKING_RUN_CONTRACT_BEFORE_INSPECTING_TERMINAL_OUTCOMES",
-    "EXECUTE_LADDER_THROUGH_FULL_COMMON_CORE_17186_WITH_REQUIRED_CONTROLS_AND_PRECISION",
-    "ISSUE_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V2_FROM_REAL_RESULT",
-    "PROMOTE_SELECTED_MASKING_POLICY_ONLY_IF_FROZEN_CONTRACT_PASSES",
-    "CONTINUE_REMAINING_REAL_EVIDENCE_CLOSURE_WITH_TRAINING_STILL_OFF"
+    "RUN_FOCUSED_CI_AND_FAIL_CLOSED_ON_ANY_SKIP_OR_FAILURE",
+    "GPU_GENERATE_CENSUS_V2_SUMMARY_SPLIT_AND_TARGET_ELIGIBILITY_RECEIPTS_FROM_REAL_PASS1_NPZ",
+    "BUILD_CURRENT_TARGET_PANEL_SIZING_SELECTION_PANEL_PRECISION_V4_NONLINEAR_V2_AND_RNG_V2_INSTANCES",
+    "RUN_OUTCOME_BLIND_STREAMING_RUNTIME_BENCHMARK_WITH_TERMINAL_MASKING_OUTCOMES_CLOSED",
+    "IF_NEEDED_BUILD_AUTHENTICATED_CACHE_ONLY_WITH_EXACT_REFERENCE_PARITY",
+    "COMPUTE_LIVE_SHA256_FOR_ALL_RUN_CONTRACT_V3_SOURCE_ROLES",
+    "REBUILD_AND_VALIDATE_MACHINE_WORKTREE_CHECKPOINT_ON_FINAL_SOURCE_HEAD",
+    "FREEZE_REAL_RUN_CONTRACT_V3",
+    "INDEPENDENTLY_VERIFY_COMPLETE_PROSPECTIVE_PACKAGE",
+    "ONLY_THEN_OPEN_LOWEST_5_PERCENT_TERMINAL_RUNG",
+    "STOP_IMMEDIATELY_IF_A_RUNG_FULLY_QUALIFIES"
   ],
   "forbidden_actions": [
     "RUN_TRAINING",
@@ -129,9 +160,13 @@
     "CHANGE_MASKING_PARAMETERS_AFTER_TERMINAL_OUTCOME_INSPECTION",
     "SUBSTITUTE_SMALLER_OR_UNAUTHENTICATED_DATA_FOR_FULL104",
     "REQUIRE_MONOLITHIC_FULL104_MATRIX",
-    "REOPEN_SETTLED_T0_T1_QID_F1_LAYER2_STAGE_A_OR_STREAMING_PARITY_WITHOUT_CHANGED_INPUTS"
+    "REOPEN_SETTLED_T0_T1_QID_F1_LAYER2_STAGE_A_OR_STREAMING_PARITY_WITHOUT_CHANGED_INPUTS",
+    "USE_PLACEHOLDER_SHA256_AS_PRODUCTION_AUTHORITY",
+    "PROMOTE_HISTORICAL_OR_SMALLER_RUN_ARTIFACT_WITHOUT_EXPLICIT_CURRENT_REAUTHORIZATION",
+    "CONTINUE_BURDEN_ESCALATION_AFTER_THE_LOWEST_RUNG_HAS_FULLY_QUALIFIED",
+    "DECLARE_CONTROLS_OR_PRECISION_PASS_FROM_STATUS_STRINGS_WITHOUT_BOUND_EXECUTABLE_EVIDENCE"
   ],
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
-  "checkpoint_artifact_note": "docs/agent/CURRENT_WORK_CHECKPOINT.json and docs/agent/CLAUDE_TAKEOVER.md are gitignored (.gitignore lines 102-103). The checkpoint inventory uses 'git ls-files --others --exclude-standard', which excludes ignored paths by construction, so these two files can never appear in untracked_files and MUST NOT be declared in allowed_untracked_files. Commit 04329cc3 declared them and thereby made UNTRACKED_FILES_MISMATCH unconditional. A local validation PASS is true but not reproducible from the branch alone; review packages must carry the frozen checkpoint bytes or bind its digest explicitly."
+  "checkpoint_artifact_note": "This tracked state declares the scientific lane only. The ignored machine-bound CURRENT_WORK_CHECKPOINT.json must be rebuilt and validated on the canonical GPU worktree after the final source/authority commit and again immediately before terminal execution. No committed artifact may claim a still-current machine checkpoint across a subsequent commit."
 }
