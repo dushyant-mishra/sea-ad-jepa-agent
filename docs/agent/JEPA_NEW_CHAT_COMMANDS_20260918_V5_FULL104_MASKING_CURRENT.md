@@ -126,8 +126,11 @@ $TP_B = "$RUN\target_panel_128_runB"
 
 python "$Worktree\scripts\agent\evaluate_full104_target_panel_capacity_from_cache_v1.py" --cache-dir "$CACHE" --parameters-authority "$PARAMS" --out-dir "$TP_A" --workers $WORKERS
 if ($LASTEXITCODE -ne 3) { throw "STOP: target-panel Run A did not request lawful replay" }
+$TP_A_STATUS = Get-Content -Raw "$TP_A\target_panel_128.status.json" | ConvertFrom-Json
+if ($TP_A_STATUS.status -ne "REPLAY_REQUIRED_BEFORE_CAPACITY_VERDICT") { throw "STOP: target-panel Run A status is not the exact replay-required state" }
 
 python "$Worktree\scripts\agent\evaluate_full104_target_panel_capacity_from_cache_v1.py" --cache-dir "$CACHE" --parameters-authority "$PARAMS" --out-dir "$TP_B" --workers $WORKERS --replay-planted "$TP_A\target_panel_128.planted_f64.npy" --replay-shuffled "$TP_A\target_panel_128.shuffled_f64.npy"
+if ($LASTEXITCODE -ne 0) { throw "STOP: target-panel Run B failed" }
 ```
 
 If 128 fails, repeat only the next rung using new A/B directories and repeated `--prior-verdict` arguments for every lower rung. Never skip/reorder rungs or inspect higher rungs after a lower one qualifies.
@@ -176,8 +179,11 @@ $NL_B = "$RUN\nonlinear_64_runB"
 
 python "$Worktree\scripts\agent\evaluate_full104_nonlinear_capacity_from_cache_v1.py" --cache-dir "$CACHE" --parameters-authority "$PARAMS" --model-capacity-authority "$RUN\nonlinear_capacity_model_authority_v1.json" --target-panel-authority "$RUN\target_panel_authority_v3.json" --target-selection-receipt "$RUN\target_panel_selection_v2.json" --precision-authority "$RUN\precision_authority_v4.json" --outer-split-authority "$RUN\outer_split_authority_v1.json" --out-dir "$NL_A" --workers $WORKERS
 if ($LASTEXITCODE -ne 3) { throw "STOP: nonlinear Run A did not request lawful replay" }
+$NL_A_STATUS = Get-Content -Raw "$NL_A\nonlinear_cap_64.status.json" | ConvertFrom-Json
+if ($NL_A_STATUS.status -ne "REPLAY_REQUIRED_BEFORE_NONLINEAR_CAPACITY_VERDICT") { throw "STOP: nonlinear Run A status is not the exact replay-required state" }
 
 python "$Worktree\scripts\agent\evaluate_full104_nonlinear_capacity_from_cache_v1.py" --cache-dir "$CACHE" --parameters-authority "$PARAMS" --model-capacity-authority "$RUN\nonlinear_capacity_model_authority_v1.json" --target-panel-authority "$RUN\target_panel_authority_v3.json" --target-selection-receipt "$RUN\target_panel_selection_v2.json" --precision-authority "$RUN\precision_authority_v4.json" --outer-split-authority "$RUN\outer_split_authority_v1.json" --out-dir "$NL_B" --workers $WORKERS --replay-planted "$NL_A\nonlinear_cap_64.planted_f64.npy" --replay-shuffled "$NL_A\nonlinear_cap_64.shuffled_f64.npy"
+if ($LASTEXITCODE -ne 0) { throw "STOP: nonlinear Run B failed" }
 ```
 
 If 64 fails, continue only to the next lawful cap with repeated `--prior-verdict` arguments. Historical nonlinear work supplies model-shape provenance only; never import historical data, target list, folds, burden, seed, or row cap.
