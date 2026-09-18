@@ -57,6 +57,28 @@ class TargetPanelControlVerdictV2:
             and self.planted_after_mask_upper_one_sided<=tol
             and self.replay_exact and self.donor_coverage_complete and self.bootstrap_finite
         )
+    def bind_interval_receipt(self, receipt) -> None:
+        self.validate()
+        receipt.validate()
+        if receipt.scope_id != "TARGET_PANEL_SIZE_CONTROL_CALIBRATION_V1":
+            raise ValueError("target-panel verdict requires target-panel interval scope")
+        if receipt.candidate_value != self.target_count or receipt.target_count != self.target_count:
+            raise ValueError("target-panel interval receipt count mismatch")
+        if receipt.raw_control_evidence_sha256 != self.raw_control_evidence_sha256:
+            raise ValueError("target-panel raw control evidence root mismatch")
+        if receipt.precision_root_sha256 != self.calibration_precision_plan_sha256:
+            raise ValueError("target-panel calibration precision root mismatch")
+        if receipt.canonical_digest() != self.calibration_interval_receipt_sha256:
+            raise ValueError("target-panel calibration interval receipt root mismatch")
+        pairs = (
+            (receipt.negative_lower_two_sided, self.negative_lower_two_sided),
+            (receipt.negative_upper_two_sided, self.negative_upper_two_sided),
+            (receipt.planted_detect_lower_one_sided, self.planted_detect_lower_one_sided),
+            (receipt.planted_after_mask_upper_one_sided, self.planted_after_mask_upper_one_sided),
+        )
+        if any(float(a) != float(b) for a,b in pairs):
+            raise ValueError("target-panel verdict intervals do not match bound receipt")
+
     def canonical_digest(self)->str:
         self.validate()
         return _digest({"schema":"V5_TARGET_PANEL_CONTROL_VERDICT_V2",**asdict(self),"null_noise_tolerance":self.null_noise_tolerance,"qualified":self.qualified})
