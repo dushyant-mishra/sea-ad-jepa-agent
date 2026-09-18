@@ -7,13 +7,14 @@ from dataclasses import fields
 import json
 from pathlib import Path
 
-from sea_ad_jepa.v5.full104_census_receipt_v2 import sha256_file
+from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
 from sea_ad_jepa.v5.outer_split_authority_v1 import OuterDonorSplitAuthorityV1
 from sea_ad_jepa.v5.precision_authority_v4 import QualificationPrecisionAuthorityV4
 from sea_ad_jepa.v5.target_panel_authority_v3 import TargetPanelAuthorityV3
 from sea_ad_jepa.v5.target_panel_sizing_authority_v2 import TargetPanelSizingReceiptV2
 
 EXPECTED_FULL104_MANIFEST_SHA256="66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256="cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08"
 
 
 def load(path:Path)->dict:
@@ -39,6 +40,8 @@ def main()->int:
     args=p.parse_args()
 
     support=load(args.support_authority)
+    if canonical_sha(support)!=EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise SystemExit("support authority is not the exact current semantic authority")
     support_sha=sha256_file(args.support_authority)
     if support.get("schema")!="V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1":
         raise SystemExit("support authority schema mismatch")
