@@ -15,7 +15,7 @@ FREEZE_POLICY_ID = "FROZEN_BEFORE_QUALIFICATION_OUTCOMES_V1"
 STRICT_SUPPORT_POLICY_ID = "STRICT_MEASURED_SCALAR_ONLY__COLLISION_UNRESOLVED_EXCLUDED_V1"
 TERMINAL_UNIVERSE_ID = "FULL_COMMON_CORE_17186_V1"
 EXECUTION_SOURCE_ROLE_ID = "FULL104_STREAMING_EXECUTION_V1"
-DECISION_RULE_ID = "NULL_NOISE_CALIBRATED_SHORTCUT_SUPPRESSION_WITH_PAIRED_DONOR_TARGET_UNCERTAINTY_V2"
+DECISION_RULE_ID = "NULL_NOISE_CALIBRATED_SHORTCUT_SUPPRESSION_WITH_NONLINEAR_COMPETENCE_V3"
 
 
 def _sha(value: object, name: str) -> str:
@@ -75,6 +75,7 @@ class MaskingQualificationRunContractV3:
     donor_evidence_source_sha256: str
     control_executor_source_sha256: str
     nonlinear_executor_source_sha256: str
+    nonlinear_receipt_source_sha256: str
     decision_evaluator_source_sha256: str
     execution_authority_source_sha256: str
     anti_spillover_test_source_sha256: str
@@ -111,6 +112,7 @@ class MaskingQualificationRunContractV3:
             ("donor_evidence_source_sha256", self.donor_evidence_source_sha256),
             ("control_executor_source_sha256", self.control_executor_source_sha256),
             ("nonlinear_executor_source_sha256", self.nonlinear_executor_source_sha256),
+            ("nonlinear_receipt_source_sha256", self.nonlinear_receipt_source_sha256),
             ("decision_evaluator_source_sha256", self.decision_evaluator_source_sha256),
             ("execution_authority_source_sha256", self.execution_authority_source_sha256),
             ("anti_spillover_test_source_sha256", self.anti_spillover_test_source_sha256),
@@ -181,6 +183,7 @@ class MaskingQualificationRunContractV3:
         donor_evidence_live_sha256: str,
         control_executor_live_sha256: str,
         nonlinear_executor_live_sha256: str,
+        nonlinear_receipt_live_sha256: str,
         decision_evaluator_live_sha256: str,
         execution_authority_live_sha256: str,
         anti_spillover_test_live_sha256: str,
@@ -193,6 +196,7 @@ class MaskingQualificationRunContractV3:
             "donor_evidence_source_sha256": _sha(donor_evidence_live_sha256, "donor_evidence_live_sha256"),
             "control_executor_source_sha256": _sha(control_executor_live_sha256, "control_executor_live_sha256"),
             "nonlinear_executor_source_sha256": _sha(nonlinear_executor_live_sha256, "nonlinear_executor_live_sha256"),
+            "nonlinear_receipt_source_sha256": _sha(nonlinear_receipt_live_sha256, "nonlinear_receipt_live_sha256"),
             "decision_evaluator_source_sha256": _sha(decision_evaluator_live_sha256, "decision_evaluator_live_sha256"),
             "execution_authority_source_sha256": _sha(execution_authority_live_sha256, "execution_authority_live_sha256"),
             "anti_spillover_test_source_sha256": _sha(anti_spillover_test_live_sha256, "anti_spillover_test_live_sha256"),
