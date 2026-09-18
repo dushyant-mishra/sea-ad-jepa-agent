@@ -15,7 +15,7 @@ def contract(**updates):
         "panel-plan","calibration-precision","panel-receipt","panel","precision","nl-plan","nl-receipt","nonlinear","rng",
         "checkpoint","reference","streaming","panel-source","calibration-precision-source","capacity-source","cache-builder-source","cache-evaluator-source","panel-authority-source","precision-source",
         "donor-source","control-source","nlcal-source","nlauth-source","nlexec-source","decision-source",
-        "execution-source","spillover-source"
+        "assembly-source","execution-source","spillover-source"
     ]
     r={n:h(n) for n in names}
     values=dict(
@@ -55,6 +55,7 @@ def contract(**updates):
         nonlinear_authority_source_sha256=r["nlauth-source"],
         nonlinear_executor_source_sha256=r["nlexec-source"],
         decision_evaluator_source_sha256=r["decision-source"],
+        terminal_evidence_assembly_source_sha256=r["assembly-source"],
         execution_authority_source_sha256=r["execution-source"],
         anti_spillover_test_source_sha256=r["spillover-source"],
         execution_source_role_id=EXECUTION_SOURCE_ROLE_ID,
