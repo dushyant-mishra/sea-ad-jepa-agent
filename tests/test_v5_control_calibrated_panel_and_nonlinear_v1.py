@@ -5,7 +5,7 @@ from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v1 import Nonlinear
 def h(x): return hashlib.sha256(x.encode()).hexdigest()
 def panel(): return TargetPanelSizingPlanAuthorityV2("TEST",h("census"),h("elig"),104,17053)
 def pver(count,ok=True):
-    return TargetPanelControlVerdictV2(count,h(f"control-{count}"),h(f"precision-{count}"),-0.01,0.01,0.03 if ok else 0.005,0.005,True,True,True)
+    return TargetPanelControlVerdictV2(count,h(f"control-{count}"),h("calibration-precision-plan"),h(f"interval-{count}"),-0.01,0.01,0.03 if ok else 0.005,0.005,True,True,True)
 def nplan(): return NonlinearSamplingCalibrationPlanV1("TEST",h("panel"),h("split"),h("params"))
 def nver(cap,ok=True):
     return NonlinearCapControlVerdictV1(cap,h(f"nl-{cap}"),-0.01,0.01,0.03 if ok else 0.005,0.005,True,True)
