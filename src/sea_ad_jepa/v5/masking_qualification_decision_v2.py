@@ -1,6 +1,6 @@
 """Null-noise-calibrated mechanical masking qualification decision.
 
-V2 replaces the impossible exact-zero residual requirement with a prospective
+The current V3 semantic rule replaces the impossible exact-zero residual requirement with a prospective
 noise-calibrated rule.  The acceptable residual shortcut level is derived only
 from the required within-donor shuffled negative-control uncertainty, never from
 the real masking outcome itself.
@@ -18,7 +18,7 @@ from .masking_qualification_decision_v1 import (
     POLICY_ORDER,
 )
 
-DECISION_RULE_ID = "NULL_NOISE_CALIBRATED_SHORTCUT_SUPPRESSION_WITH_PAIRED_DONOR_TARGET_UNCERTAINTY_V2"
+DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_AND_SOURCE_BENEFIT_GUARDED_SHORTCUT_SUPPRESSION_V3"
 POLICY_SELECTION_RULE_ID = "UNIFORM_IF_SUFFICIENT_ELSE_MIN_TARGETING_THEN_MAX_LOWER_BOUND_V1"
 
 
