@@ -12,6 +12,11 @@ on:
       - 'src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py'
       - 'src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py'
       - 'src/sea_ad_jepa/v5/full104_census_receipt_v2.py'
+      - 'src/sea_ad_jepa/v5/full104_control_calibration_cache_v1.py'
+      - 'src/sea_ad_jepa/v5/full104_control_calibration_cache_evaluator_v1.py'
+      - 'scripts/agent/build_full104_control_calibration_cache_v1.py'
+      - 'scripts/agent/evaluate_full104_target_panel_capacity_from_cache_v1.py'
+      - 'scripts/agent/run_full104_target_panel_capacity_calibration_v1.py'
       - 'src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v1.py'
       - 'src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v2.py'
       - 'src/sea_ad_jepa/v5/masking_qualification_run_contract_v1.py'
@@ -34,6 +39,8 @@ on:
       - 'src/sea_ad_jepa/v5/target_panel_authority_v2.py'
       - 'src/sea_ad_jepa/v5/precision_authority_v3.py'
       - 'tests/test_v5_full104_census_receipt_v2.py'
+      - 'tests/test_v5_full104_control_calibration_cache_v1.py'
+      - 'tests/test_v5_full104_control_calibration_cache_evaluator_v1.py'
       - 'tests/test_v5_masking_qualification_parameters_authority_v2.py'
       - 'tests/test_v5_masking_burden_ladder_authority_v2.py'
       - 'tests/test_v5_precision_authority_v2.py'
@@ -88,6 +95,8 @@ jobs:
             tests/test_v5_full104_streaming_executor_accepts_budget_v2.py \
             tests/test_v5_full104_masking_anti_spillover_v1.py \
             tests/test_v5_full104_census_receipt_v2.py \
+            tests/test_v5_full104_control_calibration_cache_v1.py \
+            tests/test_v5_full104_control_calibration_cache_evaluator_v1.py \
             tests/test_v5_masking_qualification_parameters_authority_v2.py \
             tests/test_v5_masking_burden_ladder_authority_v2.py \
             tests/test_v5_precision_authority_v2.py \
@@ -121,6 +130,8 @@ jobs:
             tests/test_v5_full104_streaming_executor_accepts_budget_v2.py \
             tests/test_v5_full104_masking_anti_spillover_v1.py \
             tests/test_v5_full104_census_receipt_v2.py \
+            tests/test_v5_full104_control_calibration_cache_v1.py \
+            tests/test_v5_full104_control_calibration_cache_evaluator_v1.py \
             tests/test_v5_masking_qualification_parameters_authority_v2.py \
             tests/test_v5_masking_burden_ladder_authority_v2.py \
             tests/test_v5_precision_authority_v2.py \
