@@ -124,9 +124,18 @@ def main()->int:
         model=model,cache_manifest=cache.manifest
     )
 
+    args.out_dir.mkdir(parents=True,exist_ok=True)
+    write(args.out_dir/"nonlinear_sampling_calibration_plan_v2.json",{
+        "schema":"V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2",
+        **plan.__dict__,
+        "cap_ladder":list(plan.cap_ladder),
+        "authority_sha256":plan.canonical_digest(),
+        "terminal_outcomes_inspected_before_freeze":False,
+        "training_authorized":False,
+    })
+
     prior=load_prior(args.prior_verdict)
     cap=plan.next_cap(prior)
-    args.out_dir.mkdir(parents=True,exist_ok=True)
     prefix=f"nonlinear_cap_{cap}"
     planted,shuffled=evaluate_nonlinear_capacity_rung(
         cache,target_count=panel.target_count,cap=cap,model_authority=model,

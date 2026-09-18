@@ -79,6 +79,8 @@ on:
       - 'scripts/agent/build_full104_masking_design_authority_v2_20260918.py'
       - 'tests/test_v5_masking_design_authority_v2.py'
       - 'tests/test_v5_full104_current_freeze_builders_v1.py'
+      - 'scripts/agent/build_full104_nonlinear_challenge_authority_v3_20260918.py'
+      - 'tests/test_v5_nonlinear_v3_builder_current.py'
       - 'src/sea_ad_jepa/v5/nonlinear_capacity_model_authority_v1.py'
       - 'src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v2.py'
       - 'src/sea_ad_jepa/v5/full104_nonlinear_capacity_cache_evaluator_v1.py'
@@ -147,7 +149,8 @@ jobs:
             tests/test_v5_masking_qualification_run_contract_v4.py \
             tests/test_v5_full104_masking_gpu_preflight_v1.py \
             tests/test_v5_masking_design_authority_v2.py \
-            tests/test_v5_full104_current_freeze_builders_v1.py
+            tests/test_v5_full104_current_freeze_builders_v1.py \
+            tests/test_v5_nonlinear_v3_builder_current.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -190,5 +193,6 @@ jobs:
             tests/test_v5_full104_masking_gpu_preflight_v1.py \
             tests/test_v5_masking_design_authority_v2.py \
             tests/test_v5_full104_current_freeze_builders_v1.py \
+            tests/test_v5_nonlinear_v3_builder_current.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
