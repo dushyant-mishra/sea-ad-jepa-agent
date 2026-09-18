@@ -69,6 +69,7 @@ SOURCE_ROLES = {
     "nonlinear_executor_live_sha256": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_executor_v1.py",
     "decision_evaluator_live_sha256": "src/sea_ad_jepa/v5/masking_qualification_decision_v2.py",
     "terminal_evidence_assembly_live_sha256": "src/sea_ad_jepa/v5/masking_terminal_evidence_assembly_v1.py",
+    "terminal_mechanical_controls_live_sha256": "src/sea_ad_jepa/v5/masking_terminal_mechanical_controls_v1.py",
     "execution_authority_live_sha256": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v4.py",
     "anti_spillover_test_live_sha256": "tests/test_v5_full104_masking_anti_spillover_v2.py",
 }
@@ -339,6 +340,7 @@ def main() -> int:
         nonlinear_executor_source_sha256=live_sources["nonlinear_executor_live_sha256"],
         decision_evaluator_source_sha256=live_sources["decision_evaluator_live_sha256"],
         terminal_evidence_assembly_source_sha256=live_sources["terminal_evidence_assembly_live_sha256"],
+        terminal_mechanical_controls_source_sha256=live_sources["terminal_mechanical_controls_live_sha256"],
         execution_authority_source_sha256=live_sources["execution_authority_live_sha256"],
         anti_spillover_test_source_sha256=live_sources["anti_spillover_test_live_sha256"],
         execution_source_role_id=EXECUTION_SOURCE_ROLE_ID,
