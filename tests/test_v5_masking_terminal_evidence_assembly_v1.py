@@ -52,6 +52,8 @@ def precision():
         target_panel_sizing_receipt_sha256=h("sizing"),
         outer_split_authority_sha256=h("split"),
         required_target_count=128,
+        null_equivalence_margin_numerator=1,
+        null_equivalence_margin_denominator=100,
     )
 
 
@@ -315,3 +317,27 @@ def test_terminal_evidence_source_has_no_historical_or_calibration_input_path():
         "protected_outcomes_authorized=True",
     )
     assert [token for token in forbidden if token in source] == []
+
+
+def test_source_specific_benefit_guardrail_detects_harm():
+    shape, source, _ = matrices()
+    actual = np.full(shape, 0.20)
+    uniform = actual.copy()
+    uniform[:, source == 0] = 0.19
+    uniform[:, source == 1] = 0.19
+    uniform[:, source == 2] = 0.25
+    evidence = assemble(
+        actual_policy_scores=actual,
+        actual_uniform_scores=uniform,
+        shuffled_same_mask_scores=actual,
+    )
+    assert evidence.source_delta_lower_one_sided["HVS"] < 0.0
+    assert evidence.source_delta_lower_one_sided["NPH52"] < 0.0
+    assert not evaluate_policy_v2(evidence).qualified
+
+
+def test_negative_control_interval_must_fit_inside_frozen_margin():
+    shape, _, _ = matrices()
+    evidence = assemble(negative_control_delta=np.zeros(shape))
+    assert evidence.negative_control_precision_passed is True
+    assert evidence.null_noise_tolerance_ceiling == pytest.approx(0.01)
