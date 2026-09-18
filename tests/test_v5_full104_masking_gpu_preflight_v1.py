@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from dataclasses import asdict
 import hashlib
+import json
 from pathlib import Path
 
 import pytest
 
-from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha
+from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
 from sea_ad_jepa.v5.full104_control_calibration_cache_v1 import CACHE_ROLE_ID
 from sea_ad_jepa.v5.full104_masking_gpu_preflight_v1 import (
     EXPECTED_BLOCK_MANIFEST_SHA256,
@@ -95,24 +96,11 @@ class CacheManifestStub:
 
 
 def valid_bundle():
-    support_file_sha = h("support-file")
-    support = {
-        "schema": "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1",
-        "full104_substrate_sha256": EXPECTED_BLOCK_MANIFEST_SHA256,
-        "missing_value_semantics_id": "UNMEASURED_IS_MISSING_NOT_ZERO",
-        "training_authorized": False,
-    }
-    registry_authority = {
-        "schema": "V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_V1",
-        "ADDRESS_REGISTRY": {"sha256": EXPECTED_REGISTRY_SHA256, "row_count": 41238},
-        "FULL104_SUBSTRATE": {
-            "sha256": EXPECTED_BLOCK_MANIFEST_SHA256,
-            "cells": 4553407,
-            "donors": 104,
-        },
-        "OPERATOR_ADDRESS_OBSERVATION_STATE": {"sha256": EXPECTED_OBSERVATION_STATE_SHA256},
-        "training_authorized": False,
-    }
+    support_path = Path("docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json")
+    registry_path = Path("docs/agent/V5_CANONICAL_ADDRESS_REGISTRY_AUTHORITY_20260916.json")
+    support_file_sha = sha256_file(support_path)
+    support = json.loads(support_path.read_text(encoding="utf-8"))
+    registry_authority = json.loads(registry_path.read_text(encoding="utf-8"))
     split = receipt(
         "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1",
         n_folds=4,
@@ -171,6 +159,22 @@ def test_calibration_preflight_closes_current_full104_roots():
     roots = call_valid()
     assert roots["parameters_authority_sha256"] == parameters_payload()["parameter_authority_sha256"]
     assert roots["cache_manifest_sha256"] == h("cache-manifest")
+
+
+def test_calibration_preflight_rejects_same_schema_historical_support_lookalike():
+    _, support, _, _, _, _, _, _ = valid_bundle()
+    fake = dict(support)
+    fake["authority_id"] = "HISTORICAL_LOOKALIKE"
+    with pytest.raises(ValueError, match="exact current semantic authority"):
+        call_valid(support_authority=fake)
+
+
+def test_calibration_preflight_rejects_same_schema_historical_registry_lookalike():
+    registry, _, _, _, _, _, _, _ = valid_bundle()
+    fake = dict(registry)
+    fake["date"] = "2026-09-15"
+    with pytest.raises(ValueError, match="exact current semantic authority"):
+        call_valid(registry_authority=fake)
 
 
 def test_calibration_preflight_rejects_registry_splice():
