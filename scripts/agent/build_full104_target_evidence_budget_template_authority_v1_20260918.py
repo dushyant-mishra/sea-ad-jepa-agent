@@ -14,6 +14,7 @@ from sea_ad_jepa.v5.target_evidence_budget_template_authority_v1 import (
 
 EXPECTED_BLOCK_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 EXPECTED_OBSERVATION_STATE_SHA256 = "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256 = "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08"
 
 
 def load(path: Path) -> dict:
@@ -38,6 +39,8 @@ def main() -> int:
         raise SystemExit("observation-state authority mismatch")
 
     support = load(args.support_authority)
+    if canonical_sha(support) != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise SystemExit("support authority is not the exact current semantic authority")
     support_sha = sha256_file(args.support_authority)
     if support.get("schema") != "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1":
         raise SystemExit("support authority schema mismatch")
