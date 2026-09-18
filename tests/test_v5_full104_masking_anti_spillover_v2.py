@@ -16,8 +16,10 @@ from sea_ad_jepa.v5 import (
     masking_qualification_execution_authority_v4,
     masking_qualification_parameters_authority_v2,
     masking_qualification_run_contract_v3,
-    precision_authority_v2,
+    precision_authority_v3,
     target_panel_selector_v2,
+    target_panel_sizing_authority_v1,
+    target_panel_authority_v2,
     masking_rng_replay_authority_v2,
 )
 
@@ -32,8 +34,10 @@ CURRENT_PRODUCTION_MODULES = (
     masking_qualification_execution_authority_v3,
     masking_qualification_parameters_authority_v2,
     masking_qualification_run_contract_v3,
-    precision_authority_v2,
+    precision_authority_v3,
     target_panel_selector_v2,
+    target_panel_sizing_authority_v1,
+    target_panel_authority_v2,
     masking_rng_replay_authority_v2,
 )
 
