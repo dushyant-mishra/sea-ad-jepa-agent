@@ -10,11 +10,11 @@ Historical/smaller-run artifacts may motivate a current hypothesis or model shap
 
 Current scientific source/test/workflow anchor:
 
-`bd968ea4be40da649a443916197e2985b5c8749f`
+`ee8ae818937b46a99be29ade5bdf65fd85d706a7`
 
 Verified GitHub Actions run:
 
-`35384493193` — PASS, including fail-on-skips.
+`35385138227` — PASS, including fail-on-skips.
 
 ## 1. Re-fetch and preserve the worktree
 
@@ -23,7 +23,7 @@ PowerShell:
 ```powershell
 $Repo = "D:\Jepa project"
 $Branch = "impl/v5-full104-masking-redteam2-20260918"
-$ExpectedAnchor = "bd968ea4be40da649a443916197e2985b5c8749f"
+$ExpectedAnchor = "ee8ae818937b46a99be29ade5bdf65fd85d706a7"
 
 git -C $Repo fetch origin
 git -C $Repo status --porcelain
@@ -241,7 +241,7 @@ if ($LASTEXITCODE -ne 0) { throw "STOP: machine checkpoint validation failed" }
 The builder intentionally exposes no caller-entered `--*-sha256` role arguments.
 
 ```powershell
-python "$Worktree\scripts\agent\build_full104_masking_run_contract_v4_20260918.py" --repo "$Worktree" --support-authority "$SUPPORT" --parameters-authority "$PARAMS" --census-authority "$CENSUS" --cache-dir "$CACHE" --target-evidence-budget-template "$RUN\target_evidence_budget_template_v1.json" --burden-ladder-authority "$RUN\masking_burden_ladder_authority_v2.json" --outer-split-authority "$RUN\outer_split_authority_v1.json" --target-panel-sizing-plan "$TPQ\target_panel_sizing_plan_v2.json" --control-calibration-precision-plan "$TPQ\control_calibration_precision_plan_v2.json" --target-panel-sizing-receipt "$TPQ\target_panel_sizing_receipt_v2.json" --target-panel-authority "$RUN\target_panel_authority_v3.json" --precision-authority "$RUN\precision_authority_v4.json" --nonlinear-sampling-plan "$NLQ\nonlinear_sampling_calibration_plan_v2.json" --nonlinear-sampling-receipt "$NLQ\nonlinear_sampling_calibration_receipt_v2.json" --nonlinear-authority "$RUN\nonlinear_challenge_authority_v3.json" --rng-authority "$RUN\masking_rng_replay_authority_v2.json" --design-authority "$RUN\masking_qualification_design_authority_v2.json" --machine-checkpoint "$Worktree\docs\agent\CURRENT_WORK_CHECKPOINT.json" --out "$RUN\masking_qualification_run_contract_v4.json"
+python "$Worktree\scripts\agent\build_full104_masking_run_contract_v4_20260918.py" --repo "$Worktree" --support-authority "$SUPPORT" --parameters-authority "$PARAMS" --census-authority "$CENSUS" --cache-dir "$CACHE" --target-evidence-budget-template "$RUN\target_evidence_budget_template_v1.json" --burden-ladder-authority "$RUN\masking_burden_ladder_authority_v2.json" --outer-split-authority "$RUN\outer_split_authority_v1.json" --target-panel-sizing-plan "$TPQ\target_panel_sizing_plan_v2.json" --control-calibration-precision-plan "$TPQ\control_calibration_precision_plan_v2.json" --target-panel-sizing-receipt "$TPQ\target_panel_sizing_receipt_v2.json" --target-panel-authority "$RUN\target_panel_authority_v3.json" --target-selection-receipt "$RUN\target_panel_selection_v2.json" --precision-authority "$RUN\precision_authority_v4.json" --model-capacity-authority "$RUN\nonlinear_capacity_model_authority_v1.json" --nonlinear-sampling-plan "$NLQ\nonlinear_sampling_calibration_plan_v2.json" --nonlinear-sampling-receipt "$NLQ\nonlinear_sampling_calibration_receipt_v2.json" --nonlinear-authority "$RUN\nonlinear_challenge_authority_v3.json" --rng-authority "$RUN\masking_rng_replay_authority_v2.json" --design-authority "$RUN\masking_qualification_design_authority_v2.json" --machine-checkpoint "$Worktree\docs\agent\CURRENT_WORK_CHECKPOINT.json" --out "$RUN\masking_qualification_run_contract_v4.json"
 ```
 
 This builder reconstructs current typed objects, validates exact-current support semantics, binds the calibration cache only as provenance, derives live source hashes itself, binds the checkpoint semantic digest, and requires terminal input role `AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM_V1`.
