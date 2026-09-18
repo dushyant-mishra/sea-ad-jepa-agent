@@ -32,6 +32,7 @@ from sea_ad_jepa.v5.masking_qualification_run_contract_v4 import (
     MaskingQualificationRunContractV4,
 )
 from sea_ad_jepa.v5.masking_rng_replay_authority_v2 import MaskingRngReplayAuthorityV2
+from sea_ad_jepa.v5.nonlinear_capacity_model_authority_v1 import NonlinearCapacityModelAuthorityV1
 from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v2 import (
     NonlinearSamplingCalibrationPlanV2,
     NonlinearSamplingCalibrationReceiptV2,
@@ -41,6 +42,7 @@ from sea_ad_jepa.v5.precision_authority_v4 import QualificationPrecisionAuthorit
 from sea_ad_jepa.v5.control_calibration_precision_authority_v2 import ControlCalibrationPrecisionPlanV2
 from sea_ad_jepa.v5.target_evidence_budget_template_authority_v1 import TargetEvidenceBudgetTemplateAuthorityV1
 from sea_ad_jepa.v5.target_panel_authority_v3 import TargetPanelAuthorityV3
+from sea_ad_jepa.v5.target_panel_selector_v2 import TargetPanelSelectionReceiptV2
 from sea_ad_jepa.v5.target_panel_sizing_authority_v2 import (
     TargetPanelSizingPlanAuthorityV2,
     TargetPanelSizingReceiptV2,
@@ -165,7 +167,9 @@ def main() -> int:
     p.add_argument("--control-calibration-precision-plan", type=Path, required=True)
     p.add_argument("--target-panel-sizing-receipt", type=Path, required=True)
     p.add_argument("--target-panel-authority", type=Path, required=True)
+    p.add_argument("--target-selection-receipt", type=Path, required=True)
     p.add_argument("--precision-authority", type=Path, required=True)
+    p.add_argument("--model-capacity-authority", type=Path, required=True)
     p.add_argument("--nonlinear-sampling-plan", type=Path, required=True)
     p.add_argument("--nonlinear-sampling-receipt", type=Path, required=True)
     p.add_argument("--nonlinear-authority", type=Path, required=True)
@@ -234,13 +238,50 @@ def main() -> int:
 
     sizing_receipt = sizing_receipt_typed(load(args.target_panel_sizing_receipt))
     panel = typed(load(args.target_panel_authority), TargetPanelAuthorityV3, "authority_sha256")
+    selection_payload = load(args.target_selection_receipt)
+    if selection_payload.get("schema") != "V5_TARGET_PANEL_SELECTION_RECEIPT_V2":
+        raise SystemExit("target-panel selection receipt V2 is required")
+    selection = typed(
+        selection_payload,
+        TargetPanelSelectionReceiptV2,
+        "receipt_sha256",
+        conversions=lambda values: {
+            **values,
+            "selected_target_cols": tuple(map(int, values["selected_target_cols"])),
+        },
+    )
+    if panel.target_selection_receipt_sha256 != selection.canonical_digest():
+        raise SystemExit("target panel binds a different target-selection receipt")
+    if selection.target_count != panel.target_count:
+        raise SystemExit("target-selection receipt count disagrees with final target panel")
+    if selection.eligibility_receipt_sha256 != cache.manifest.target_eligibility_receipt_sha256:
+        raise SystemExit("target-selection receipt binds a different eligibility receipt")
+    if tuple(map(int, selection.selected_target_cols)) != tuple(map(int, cache.target_cols[: panel.target_count])):
+        raise SystemExit("target-selection receipt does not match authenticated cache target prefix")
     precision = typed(load(args.precision_authority), QualificationPrecisionAuthorityV4, "authority_sha256")
+
+    model = typed(
+        load(args.model_capacity_authority),
+        NonlinearCapacityModelAuthorityV1,
+        "authority_sha256",
+    )
+    model.bind_primary_parameters(parameters)
 
     nonlinear_plan_payload = load(args.nonlinear_sampling_plan)
     if nonlinear_plan_payload.get("schema") != "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2":
         raise SystemExit("nonlinear sampling calibration plan V2 is required")
     nonlinear_plan = typed(nonlinear_plan_payload, NonlinearSamplingCalibrationPlanV2, "authority_sha256")
+    nonlinear_plan.bind_current_roots(
+        panel=panel,
+        precision=precision,
+        outer_split=outer,
+        parameters=parameters,
+        model=model,
+        cache_manifest=cache.manifest,
+    )
     nonlinear_receipt = nonlinear_receipt_typed(load(args.nonlinear_sampling_receipt))
+    if nonlinear_receipt.model_capacity_authority_sha256 != model.canonical_digest():
+        raise SystemExit("nonlinear sampling receipt binds a different model-capacity authority")
     nonlinear = typed(load(args.nonlinear_authority), NonlinearMaskingChallengeAuthorityV3, "authority_sha256")
     rng = typed(load(args.rng_authority), MaskingRngReplayAuthorityV2, "authority_sha256")
     design = typed(load(args.design_authority), MaskingQualificationDesignAuthorityV2, "authority_sha256")
@@ -305,6 +346,15 @@ def main() -> int:
         support_state_policy_id=STRICT_SUPPORT_POLICY_ID,
         terminal_universe_id=TERMINAL_UNIVERSE_ID,
     )
+    design.bind_live_authorities(
+        target_evidence_budget_template=budget,
+        burden_ladder=burden,
+        precision=precision,
+        outer_split=outer,
+        target_panel=panel,
+        rng_replay=rng,
+    )
+
     contract.validate()
     contract.bind_machine_checkpoint_semantic(checkpoint)
     contract.bind_parameters(parameters)
