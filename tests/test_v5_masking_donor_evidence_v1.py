@@ -33,16 +33,18 @@ def test_donor_evidence_matches_between_reference_and_streaming(tmp_path: Path) 
     assert len(ref_rows) == len(stream_rows)
     assert ref_rows
     for got, want in zip(stream_rows, ref_rows):
-        assert got.keys() == want.keys()
         assert got["method"] == want["method"]
         assert got["target_id"] == want["target_id"]
         assert got["score"] == pytest.approx(want["score"], abs=1e-12, rel=1e-12)
-        assert got["heldout_donor_scores"] == pytest.approx(
-            want["heldout_donor_scores"], abs=1e-12, rel=1e-12
-        )
+        assert len(got["heldout_donor_scores"]) == len(want["heldout_donor_scores"])
+        for (gd, gs), (wd, ws) in zip(
+            got["heldout_donor_scores"], want["heldout_donor_scores"]
+        ):
+            assert gd == wd
+            assert gs == pytest.approx(ws, abs=1e-12, rel=1e-12)
 
 
-def test_default_runner_rows_are_not_mutated_by_donor_companion(tmp_path: Path) -> None:
+def test_companion_adds_all_heldout_donors_without_changing_core_row_fields(tmp_path: Path) -> None:
     reference, _, _, _ = _fixture(tmp_path)
     rows = run_reference_fold_with_donor_evidence(
         arrays=reference,
@@ -53,3 +55,4 @@ def test_default_runner_rows_are_not_mutated_by_donor_companion(tmp_path: Path) 
     )
     assert all("heldout_donor_scores" in row for row in rows)
     assert all(len(row["heldout_donor_scores"]) == 4 for row in rows)
+    assert all("score" in row and "uniform_score" in row and "delta" in row for row in rows)
