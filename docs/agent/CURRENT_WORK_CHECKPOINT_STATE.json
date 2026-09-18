@@ -13,7 +13,7 @@
     },
     {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "4eaa7e132aeb0b8a6e3b6d45b78c5c4373db226c6643d0848b75d0adbbed1d33",
+      "sha256": "f1c8db99ebb6eb35c39583590e5a50b7a7c6146c5eae40e5d31751a8a2e2468a",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
@@ -49,12 +49,12 @@
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
       "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "scientific_implementation_head": "86692cde7e61fe4beae7fff4070bd376a8090af2",
+      "scientific_implementation_head": "f62dc42582c8b8933955505f5127bebfaa687304",
       "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "exact_scientific_head_ci_status": "NO_WORKFLOW_RUNS_RECORDED__RUN_FOCUSED_CI_FIRST",
+      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35373584821",
       "pull_request": 20,
       "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
-      "governance_note": "Source/test/data scientific bytes are anchored at 86692cde...; later docs-only governance/handoff commits do not promote CI status or change scientific implementation."
+      "governance_note": "Current source/test/data bytes are anchored at f62dc425... after a narrow stale-test V1->V2 repair; later docs-only governance/handoff commits do not change scientific implementation."
     },
     "full104": {
       "cells": 4553407,
@@ -136,26 +136,17 @@
       "nonlinear_capacity_cache_evaluator": "tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py"
     },
     "verified_ci": {
-      "role": "HISTORICAL_GREEN_ANCHOR_ONLY__NOT_EXACT_CURRENT_HEAD_VERIFICATION",
-      "code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "runtime_closure": {
-        "run_id": 35278901437,
-        "conclusion": "success"
-      },
-      "masking_runner_streaming_parity": {
-        "run_id": 35278901430,
-        "conclusion": "success",
-        "skip_gate": "pass"
-      },
-      "remaining_rna_target_semantics": {
-        "run_id": 35278901433,
-        "conclusion": "success",
-        "skip_gate": "pass"
-      },
-      "stage_a_spillover": {
-        "run_id": 35278901569,
-        "conclusion": "success",
-        "skip_gate": "pass"
+      "role": "EXACT_CURRENT_SCIENTIFIC_ANCHOR_VERIFICATION",
+      "code_anchor": "f62dc42582c8b8933955505f5127bebfaa687304",
+      "workflow": "V5 FULL104 masking runner",
+      "run_id": 35373584821,
+      "conclusion": "success",
+      "regression_step": "success",
+      "skip_gate": "pass",
+      "predecessor_failure": {
+        "run_id": 35373486676,
+        "cause": "STALE_ANTI_SPILLOVER_TEST_REFERENCED_NONLINEAR_SAMPLING_AUTHORITY_V1_AFTER_CURRENT_CHAIN_MOVED_TO_V2",
+        "repaired_by": "f62dc42582c8b8933955505f5127bebfaa687304"
       }
     },
     "supporting_exploratory_results": {
@@ -166,7 +157,7 @@
     }
   },
   "next_authorized_actions": [
-    "RUN_FOCUSED_CI_AND_FAIL_CLOSED_ON_ANY_SKIP_OR_NEW_FAILURE",
+    "EXACT_HEAD_FOCUSED_CI_PASS_NO_SKIPS__RERUN_AFTER_ANY_SOURCE_TEST_WORKFLOW_CHANGE",
     "BUILD_EXPLICIT_MASKING_PARAMETERS_AUTHORITY_V2_FROM_FROZEN_DISCOVERY_PROVENANCE",
     "ON_GPU_REGENERATE_CENSUS_V2_SUMMARY_SPLIT_AND_TARGET_ELIGIBILITY_RECEIPTS_FROM_AUTHENTICATED_PASS1_NPZ",
     "BUILD_AUTHENTICATED_FULL104_CONTROL_CALIBRATION_CACHE_ONCE_FROM_CURRENT_LEVEL4_AND_CANONICAL_REGISTRY",
