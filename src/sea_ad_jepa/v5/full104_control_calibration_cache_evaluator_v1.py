@@ -39,6 +39,9 @@ class LoadedControlCalibrationCacheV1:
     retained_count_by_donor: np.ndarray
     fold_by_donor: np.ndarray
     donor_source_code: np.ndarray
+    full_donor_n: np.ndarray
+    full_donor_sum: np.ndarray
+    full_donor_sumsq: np.ndarray
     target_cols: np.ndarray
     proxy_cols: np.ndarray
     distractor_cols: np.ndarray
@@ -63,6 +66,13 @@ class LoadedControlCalibrationCacheV1:
             raise ValueError("retained_count_by_donor must contain 104 donors")
         if self.fold_by_donor.shape != (104,) or self.donor_source_code.shape != (104,):
             raise ValueError("donor fold/source vectors must contain 104 donors")
+        if self.full_donor_n.shape != (104,) or int(self.full_donor_n.sum()) != 4553407:
+            raise ValueError("full_donor_n must close exactly over 4,553,407 cells")
+        expected_stats_shape = (104, self.manifest.cache_column_count)
+        if self.full_donor_sum.shape != expected_stats_shape or self.full_donor_sumsq.shape != expected_stats_shape:
+            raise ValueError("full-donor sufficient statistics shape mismatch")
+        if np.any(self.full_donor_n < self.retained_count_by_donor):
+            raise ValueError("retained donor rows exceed full donor population")
         if self.target_cols.shape != (MAX_TARGET_COUNT,):
             raise ValueError("target_cols must contain the full 1024-target envelope")
         if self.proxy_cols.shape != (MAX_TARGET_COUNT,):
@@ -118,7 +128,7 @@ def load_control_calibration_cache(root: Path | str) -> LoadedControlCalibration
     required_names = {
         "x", "selection_rows", "donor_code", "row_rank",
         "retained_count_by_donor", "fold_by_donor", "donor_source_code",
-        "target_cols", "proxy_cols", "distractor_cols", "cache_cols", "target_ids",
+        "full_donor_n", "full_donor_sum", "full_donor_sumsq", "target_cols", "proxy_cols", "distractor_cols", "cache_cols", "target_ids",
     }
     if set(names) != required_names:
         raise ValueError("cache file-name role set is incomplete or contains unknown roles")
@@ -131,6 +141,9 @@ def load_control_calibration_cache(root: Path | str) -> LoadedControlCalibration
         "retained_count_by_donor": manifest.retained_count_by_donor_file_sha256,
         "fold_by_donor": manifest.fold_by_donor_file_sha256,
         "donor_source_code": manifest.donor_source_code_file_sha256,
+        "full_donor_n": manifest.full_donor_n_file_sha256,
+        "full_donor_sum": manifest.full_donor_sum_file_sha256,
+        "full_donor_sumsq": manifest.full_donor_sumsq_file_sha256,
         "target_cols": manifest.target_cols_file_sha256,
         "proxy_cols": manifest.proxy_cols_file_sha256,
         "distractor_cols": manifest.distractor_cols_file_sha256,
@@ -149,7 +162,8 @@ def load_control_calibration_cache(root: Path | str) -> LoadedControlCalibration
         role: np.load(root / names[role], allow_pickle=False)
         for role in (
             "selection_rows", "donor_code", "row_rank", "retained_count_by_donor",
-            "fold_by_donor", "donor_source_code", "target_cols", "proxy_cols",
+            "fold_by_donor", "donor_source_code", "full_donor_n", "full_donor_sum",
+            "full_donor_sumsq", "target_cols", "proxy_cols",
             "distractor_cols", "cache_cols",
         )
     }
@@ -184,6 +198,9 @@ def load_control_calibration_cache(root: Path | str) -> LoadedControlCalibration
         retained_count_by_donor=np.asarray(arrays["retained_count_by_donor"], dtype=np.int64),
         fold_by_donor=np.asarray(arrays["fold_by_donor"], dtype=np.int64),
         donor_source_code=np.asarray(arrays["donor_source_code"], dtype=np.int64),
+        full_donor_n=np.asarray(arrays["full_donor_n"], dtype=np.int64),
+        full_donor_sum=np.asarray(arrays["full_donor_sum"], dtype=np.float64),
+        full_donor_sumsq=np.asarray(arrays["full_donor_sumsq"], dtype=np.float64),
         target_cols=np.asarray(arrays["target_cols"], dtype=np.int64),
         proxy_cols=np.asarray(arrays["proxy_cols"], dtype=np.int64),
         distractor_cols=np.asarray(arrays["distractor_cols"], dtype=np.int64),
