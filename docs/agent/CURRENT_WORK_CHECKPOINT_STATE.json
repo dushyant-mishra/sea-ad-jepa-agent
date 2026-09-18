@@ -13,7 +13,7 @@
     },
     {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "76fc1efed5fd2bd3bd8a88c8efc258814a6c7ed26fe12503dc39428f190b82aa",
+      "sha256": "f974904efbb2325ee75c24e02ecd044c4fdadd1f28d3c7b45e87500eeea4b9b6",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
@@ -53,12 +53,12 @@
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
       "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "scientific_implementation_head": "bd968ea4be40da649a443916197e2985b5c8749f",
+      "scientific_implementation_head": "ee8ae818937b46a99be29ade5bdf65fd85d706a7",
       "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35384493193",
+      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35385138227",
       "pull_request": 20,
       "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
-      "governance_note": "Current source/test/workflow bytes are anchored at bd968ea4... after adding the path-only final RunContract V4 builder. Historical/smaller-run artifacts may motivate only; exact-current semantic authority ingress and current FULL104 root binding are mandatory. AddressUniverseLadder V1 is not a final Design V2 role."
+      "governance_note": "Current source/test/workflow bytes are anchored at ee8ae818... after final RunContract V4 custody was closed through live upstream artifact paths. Later docs-only command/governance repairs do not change scientific implementation. Historical/smaller-run artifacts may motivate only; exact-current semantic authority ingress and current FULL104 root binding are mandatory."
     },
     "full104": {
       "cells": 4553407,
@@ -158,13 +158,13 @@
     },
     "verified_ci": {
       "role": "EXACT_CURRENT_SCIENTIFIC_SOURCE_TEST_WORKFLOW_VERIFICATION",
-      "code_anchor": "bd968ea4be40da649a443916197e2985b5c8749f",
+      "code_anchor": "ee8ae818937b46a99be29ade5bdf65fd85d706a7",
       "workflow": "V5 FULL104 masking runner",
-      "run_id": 35384493193,
+      "run_id": 35385138227,
       "conclusion": "success",
       "regression_step": "success",
       "skip_gate": "pass",
-      "predecessor_verified_anchor": "8962a89d7aff23cb10315e11f3cede1e196948ef",
+      "predecessor_verified_anchor": "bd968ea4be40da649a443916197e2985b5c8749f",
       "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__CURRENT_FULL104_ROLE_REQUIRES_EXPLICIT_REAUTHORIZATION_CURRENT_ROOT_BINDING_EXACT_CURRENT_SEMANTIC_AUTHORITY_INGRESS_AND_PATH_ONLY_FINAL_CONTRACT_ASSEMBLY"
     },
     "supporting_exploratory_results": {
