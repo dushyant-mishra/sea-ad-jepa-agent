@@ -21,7 +21,8 @@ def _digest(p): return hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",
 class TargetPanelControlVerdictV2:
     target_count:int
     raw_control_evidence_sha256:str
-    precision_authority_sha256:str
+    calibration_precision_plan_sha256:str
+    calibration_interval_receipt_sha256:str
     negative_lower_two_sided:float
     negative_upper_two_sided:float
     planted_detect_lower_one_sided:float
@@ -33,7 +34,8 @@ class TargetPanelControlVerdictV2:
 
     def validate(self):
         _sha(self.raw_control_evidence_sha256,"raw_control_evidence_sha256")
-        _sha(self.precision_authority_sha256,"precision_authority_sha256")
+        _sha(self.calibration_precision_plan_sha256,"calibration_precision_plan_sha256")
+        _sha(self.calibration_interval_receipt_sha256,"calibration_interval_receipt_sha256")
         if self.target_count not in PANEL_COUNT_LADDER: raise ValueError("target_count is not a frozen panel rung")
         vals=(self.negative_lower_two_sided,self.negative_upper_two_sided,self.planted_detect_lower_one_sided,self.planted_after_mask_upper_one_sided)
         import math
