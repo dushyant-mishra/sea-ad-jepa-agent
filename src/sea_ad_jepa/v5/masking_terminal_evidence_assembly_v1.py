@@ -497,10 +497,11 @@ def assemble_policy_decision_evidence(
     donor_source = raw_evidence.donor_source_code
     effective = raw_evidence.effective_targeted_n_by_target_fold
 
+    outer_fold_count = len(set(map(int, raw_evidence.donor_outer_fold)))
     precision.assert_sufficient(
         target_count=int(actual.shape[0]),
         donor_count=int(actual.shape[1]),
-        outer_fold_count=4,
+        outer_fold_count=outer_fold_count,
     )
 
     delta = uniform - actual
