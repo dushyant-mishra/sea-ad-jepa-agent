@@ -84,13 +84,14 @@ class MaskingRungDecisionReceiptV2:
 
 
 def null_noise_tolerance(evidence: MaskingPolicyDecisionEvidenceV1) -> float:
+    """Return the prospectively frozen equivalence margin.
+
+    The terminal negative-control width never defines or enlarges this margin.
+    Its only role is to pass the separately frozen precision/equivalence check.
+    """
+
     evidence.validate()
-    interval = evidence.negative_control_delta
-    if not interval.lower_two_sided <= 0.0 <= interval.upper_two_sided:
-        raise ValueError(
-            "negative control must contain zero before it can define null-noise tolerance"
-        )
-    return float(max(abs(interval.lower_two_sided), abs(interval.upper_two_sided)))
+    return float(evidence.null_noise_tolerance_ceiling)
 
 
 def evaluate_policy_v2(
@@ -99,10 +100,7 @@ def evaluate_policy_v2(
     evidence.validate()
     tolerance = null_noise_tolerance(evidence)
 
-    negative_ok = (
-        evidence.negative_control_delta.lower_two_sided <= 0.0
-        <= evidence.negative_control_delta.upper_two_sided
-    )
+    negative_ok = bool(evidence.negative_control_precision_passed)
     planted_ok = (
         evidence.planted_detect_excess.lower_one_sided > tolerance
         and evidence.planted_after_mask_excess.upper_one_sided <= tolerance
@@ -131,6 +129,10 @@ def evaluate_policy_v2(
         improvement = (
             evidence.delta_vs_uniform.lower_one_sided > 0.0
             and evidence.target_delta_median >= 0.0
+            and all(
+                float(value) >= 0.0
+                for value in evidence.source_delta_lower_one_sided.values()
+            )
         )
         heterogeneity = (
             evidence.worst_target_delta
@@ -152,6 +154,8 @@ def evaluate_policy_v2(
         "precision_authority_sha256": evidence.precision_authority_sha256,
         "null_noise_tolerance": tolerance,
         "source_excess_upper_one_sided": dict(evidence.source_excess_upper_one_sided),
+        "source_delta_lower_one_sided": dict(evidence.source_delta_lower_one_sided),
+        "negative_control_precision_passed": evidence.negative_control_precision_passed,
         "replay_exact": evidence.replay_exact,
         "untreated_identity_exact": evidence.untreated_identity_exact,
         "no_privileged_metadata": evidence.no_privileged_metadata,
