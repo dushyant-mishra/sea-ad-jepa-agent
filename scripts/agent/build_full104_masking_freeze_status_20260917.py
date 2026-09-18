@@ -2,7 +2,7 @@
 """SUPERSEDED — fail-closed tombstone for the 2026-09-17 partial freeze builder.
 
 This script previously emitted a partial prospective freeze package containing a
-placeholder support root, MaskingBurdenLadderAuthorityV1, and RunContractV2-era
+placeholder support root, the legacy V1 burden-ladder class and RunContractV2-era
 source roles. Those semantics are superseded by the current 2026-09-18 builder
 chain and must never be used to construct a FULL104 terminal package.
 
