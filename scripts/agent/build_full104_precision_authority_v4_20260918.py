@@ -36,6 +36,8 @@ def main()->int:
     p.add_argument("--target-panel-authority",type=Path,required=True)
     p.add_argument("--target-panel-sizing-receipt",type=Path,required=True)
     p.add_argument("--outer-split-authority",type=Path,required=True)
+    p.add_argument("--null-equivalence-margin-numerator",type=int,required=True)
+    p.add_argument("--null-equivalence-margin-denominator",type=int,required=True)
     p.add_argument("--out",type=Path,required=True)
     args=p.parse_args()
 
@@ -92,6 +94,8 @@ def main()->int:
         target_panel_sizing_receipt_sha256=sizing.canonical_digest(),
         outer_split_authority_sha256=outer.canonical_digest(),
         required_target_count=panel.target_count,
+        null_equivalence_margin_numerator=args.null_equivalence_margin_numerator,
+        null_equivalence_margin_denominator=args.null_equivalence_margin_denominator,
     )
     authority.bind_target_panel(panel,sizing)
     authority.assert_sufficient(
@@ -103,6 +107,7 @@ def main()->int:
         "schema":"V5_QUALIFICATION_PRECISION_AUTHORITY_V4",
         **authority.__dict__,
         "bootstrap_seed":authority.bootstrap_seed,
+        "null_equivalence_margin":authority.null_equivalence_margin,
         "authority_sha256":authority.canonical_digest(),
         "terminal_outcomes_inspected_before_freeze":False,
         "training_authorized":False,
