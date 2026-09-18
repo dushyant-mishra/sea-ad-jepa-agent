@@ -117,25 +117,28 @@ First takeover action is focused CI on the exact current implementation bytes, f
 1. Re-fetch the live implementation branch and PR #20. If source/test/data bytes changed from `86692cde...`, classify the delta as `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
 2. Run the focused FULL104 masking/calibration CI on the exact current implementation bytes; fail closed on skips.
 3. Refresh/supersede `scripts/agent/v5_full104_masking_gpu_preflight_20260917.ps1`. It is stale for the V4/cache-calibrated chain and must not be used as final GPU authority.
-4. On the canonical GPU worktree, regenerate the census V2 summary, split, and target-eligibility receipts from the real `pass1.npz`, then build census authority V2.
-5. Build the authenticated calibration-only cache once from current FULL104 Level-4 blocks plus the canonical registry. Verify hashes, role, all 104 donors, and full-donor closure. Never use this cache as terminal input.
-6. Run the target-panel capacity ladder `128 -> 256 -> 512 -> 1024` from the authenticated cache with exact replay. Stop at the first qualifying rung.
-7. Build the target-selection receipt, then TargetPanelAuthorityV3.
-8. Build OuterSplitAuthorityV1 from the current split receipt and PrecisionAuthorityV4 from current support + target panel + split.
-9. Build nonlinear model-capacity authority V1. Run the nonlinear row-cap ladder `64 -> 128 -> 256 -> 512 -> 1024` from the authenticated cache with exact replay; stop at first qualifying cap.
-10. Close the currently missing final-authority builder gaps before terminal execution:
+4. Build the explicit pre-FULL104 confirmation `MaskingQualificationParametersAuthorityV2` instance with `scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py`. This re-authorizes only the frozen discovery-defined candidate; it does not authorize a burden or training.
+5. On the canonical GPU worktree, regenerate the census V2 summary, split, and target-eligibility receipts from the real `pass1.npz`, then build census authority V2.
+6. Build the authenticated calibration-only cache once from current FULL104 Level-4 blocks plus the canonical registry. Verify hashes, role, all 104 donors, and full-donor closure. Never use this cache as terminal input.
+7. Run the target-panel capacity ladder `128 -> 256 -> 512 -> 1024` from the authenticated cache with exact replay. Stop at the first qualifying rung.
+8. Build the target-selection receipt, then TargetPanelAuthorityV3.
+9. Build OuterSplitAuthorityV1 from the current split receipt and PrecisionAuthorityV4 from current support + target panel + split.
+10. Build nonlinear model-capacity authority V1. Run the nonlinear row-cap ladder `64 -> 128 -> 256 -> 512 -> 1024` from the authenticated cache with exact replay; stop at first qualifying cap.
+11. Close the currently missing final-authority builder gaps before terminal execution:
     - add/use a current builder for `NonlinearChallengeAuthorityV3` (the existing `build_full104_nonlinear_challenge_authority_v2_20260918.py` is V2 and is not final authority);
     - add/use a current builder for `MaskingRngReplayAuthorityV2`;
     - add/use a current builder for `MaskingQualificationRunContractV4`.
     Each builder must bind exact current roots/source hashes and have behavior tests plus independent review.
-11. Freeze the final V4 run-contract instance before inspecting terminal masking-policy outcomes.
-12. Rebuild and validate `docs/agent/CURRENT_WORK_CHECKPOINT.json` on the final committed GPU worktree head and independently verify the package.
-13. Only then execute terminal FULL104 masking at 5%. Do not inspect 10% if 5% fully qualifies. Continue upward only after explicit failure and stop at the first fully qualifying burden.
-14. Masking PASS still does not authorize training. Continue healthy-current-teacher remaining-RNA necessity, measurement robustness, production geometry + geometry-specific memorization, runtime provenance, and final explicit training authority.
+12. Freeze the final V4 run-contract instance before inspecting terminal masking-policy outcomes.
+13. Rebuild and validate `docs/agent/CURRENT_WORK_CHECKPOINT.json` on the final committed GPU worktree head and independently verify the package.
+14. Only then execute terminal FULL104 masking at 5%. Do not inspect 10% if 5% fully qualifies. Continue upward only after explicit failure and stop at the first fully qualifying burden.
+15. Masking PASS still does not authorize training. Continue healthy-current-teacher remaining-RNA necessity, measurement robustness, production geometry + geometry-specific memorization, runtime provenance, and final explicit training authority.
 
 ## Executability notes
 
 Do not treat bare script names as commands. The builders require explicit runtime paths/receipts. Use the current new-chat commands document for complete argument templates.
+
+Both cache-capacity evaluators intentionally return exit code `3` after Run A once they have written replay matrices and a `REPLAY_REQUIRED_*` status. Treat exactly that combination as the expected handoff to Run B; any other nonzero code is a STOP. Run B must write to a different output directory and consume the unchanged Run-A matrices.
 
 The following current script is stale and non-authoritative until refreshed:
 
