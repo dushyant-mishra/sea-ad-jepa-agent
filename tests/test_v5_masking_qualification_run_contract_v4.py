@@ -10,8 +10,8 @@ def h(x): return hashlib.sha256(x.encode()).hexdigest()
 def contract(**updates):
     names=[
         "design","params","manifest","obs","support","census","budget","burden","split",
-        "panel-plan","panel-receipt","panel","precision","nl-plan","nl-receipt","nonlinear","rng",
-        "checkpoint","reference","streaming","panel-source","panel-authority-source","precision-source",
+        "panel-plan","calibration-precision","panel-receipt","panel","precision","nl-plan","nl-receipt","nonlinear","rng",
+        "checkpoint","reference","streaming","panel-source","calibration-precision-source","panel-authority-source","precision-source",
         "donor-source","control-source","nlcal-source","nlauth-source","nlexec-source","decision-source",
         "execution-source","spillover-source"
     ]
@@ -28,6 +28,7 @@ def contract(**updates):
         burden_ladder_authority_sha256=r["burden"],
         outer_split_authority_sha256=r["split"],
         target_panel_sizing_plan_sha256=r["panel-plan"],
+        control_calibration_precision_plan_sha256=r["calibration-precision"],
         target_panel_sizing_receipt_sha256=r["panel-receipt"],
         target_panel_authority_sha256=r["panel"],
         precision_authority_sha256=r["precision"],
@@ -39,6 +40,7 @@ def contract(**updates):
         canonical_reference_source_sha256=r["reference"],
         full104_streaming_execution_source_sha256=r["streaming"],
         target_panel_sizing_source_sha256=r["panel-source"],
+        control_calibration_precision_source_sha256=r["calibration-precision-source"],
         target_panel_authority_source_sha256=r["panel-authority-source"],
         precision_evaluator_source_sha256=r["precision-source"],
         donor_evidence_source_sha256=r["donor-source"],
