@@ -42,6 +42,7 @@ def contract(**updates):
         nonlinear_challenge_authority_sha256=roots["nonlinear-authority"],
         rng_replay_authority_sha256=roots["rng"],
         machine_worktree_checkpoint_sha256=roots["checkpoint"],
+        source_closure_manifest_sha256=roots["source-closure"],
         canonical_reference_source_sha256=roots["reference"],
         full104_streaming_execution_source_sha256=roots["streaming"],
         precision_evaluator_source_sha256=roots["precision-source"],

@@ -68,6 +68,7 @@ class MaskingQualificationRunContractV3:
     rng_replay_authority_sha256: str
 
     machine_worktree_checkpoint_sha256: str
+    source_closure_manifest_sha256: str
 
     canonical_reference_source_sha256: str
     full104_streaming_execution_source_sha256: str
@@ -109,6 +110,7 @@ class MaskingQualificationRunContractV3:
             ("nonlinear_challenge_authority_sha256", self.nonlinear_challenge_authority_sha256),
             ("rng_replay_authority_sha256", self.rng_replay_authority_sha256),
             ("machine_worktree_checkpoint_sha256", self.machine_worktree_checkpoint_sha256),
+            ("source_closure_manifest_sha256", self.source_closure_manifest_sha256),
             ("canonical_reference_source_sha256", self.canonical_reference_source_sha256),
             ("full104_streaming_execution_source_sha256", self.full104_streaming_execution_source_sha256),
             ("precision_evaluator_source_sha256", self.precision_evaluator_source_sha256),
