@@ -56,6 +56,7 @@ class MaskingRungDecisionReceiptV2:
     qualified: bool
     selected_policy_id: str
     policy_receipt_sha256: Mapping[str, str]
+    decision_rule_id: str = DECISION_RULE_ID
     policy_selection_rule_id: str = POLICY_SELECTION_RULE_ID
 
     def validate(self) -> None:
@@ -65,6 +66,8 @@ class MaskingRungDecisionReceiptV2:
             raise ValueError("selected_policy_id mismatch")
         if self.qualified != (self.selected_policy_id != "NO_POLICY_QUALIFIED"):
             raise ValueError("qualified flag and selected policy disagree")
+        if self.decision_rule_id != DECISION_RULE_ID:
+            raise ValueError("decision_rule_id mismatch")
         if self.policy_selection_rule_id != POLICY_SELECTION_RULE_ID:
             raise ValueError("policy_selection_rule_id mismatch")
         for digest in self.policy_receipt_sha256.values():
