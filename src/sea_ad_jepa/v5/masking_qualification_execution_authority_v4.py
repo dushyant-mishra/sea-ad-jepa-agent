@@ -1,4 +1,4 @@
-"""Masking execution authority V4 bound to the V2 mechanical decision rule."""
+"""Masking execution authority V4 bound to the current V3 mechanical decision rule."""
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -7,7 +7,7 @@ import hashlib
 import json
 from typing import Any, Mapping
 
-DECISION_RULE_ID = "NULL_NOISE_CALIBRATED_SHORTCUT_SUPPRESSION_WITH_PAIRED_DONOR_TARGET_UNCERTAINTY_V2"
+DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_AND_SOURCE_BENEFIT_GUARDED_SHORTCUT_SUPPRESSION_V3"
 APPROVED_POLICIES = (
     "UNIFORM_RANDOM", "TOP8_CORRELATION", "RIDGE8_CONDITIONAL",
     "PREFIX3_SELECTIVE", "NO_POLICY_QUALIFIED",
