@@ -25,6 +25,7 @@ from sea_ad_jepa.v5.target_evidence_budget_authority_v2 import (
     TargetEvidenceBudgetAuthorityV2,
 )
 from sea_ad_jepa.v5.target_evidence_budget_template_authority_v1 import (
+    MIN_RETAINED_POLICY_ID,
     TargetEvidenceBudgetTemplateAuthorityV1,
 )
 
@@ -46,6 +47,7 @@ def template(**updates):
         eligibility_rule_id="VALUE_INDEPENDENT_ELIGIBILITY__MEASURED_ZERO_IS_MEASURED_EVIDENCE_V1",
         rounding_policy_id="FLOOR_EXACT_RATIONAL_V1",
         min_retained_non_target_address_count=0,
+        min_retained_policy_id=MIN_RETAINED_POLICY_ID,
         infeasible_policy_id="FAIL_CLOSED_IF_BUDGET_INFEASIBLE_V1",
     )
     values.update(updates)
@@ -118,13 +120,22 @@ class Stub:
         return self._digest
 
 
-def test_burden_free_template_digest_is_compatible_with_existing_v2_template_digest():
+def test_burden_free_template_canonically_binds_policy_and_preserves_v2_nonfraction_semantics():
     t = template()
     t.validate()
+    assert t.min_retained_policy_id == MIN_RETAINED_POLICY_ID
+    assert t.template_digest() != t.carrier_template_digest()
     for num, den in ((1, 20), (1, 10), (3, 20), (1, 5), (3, 10), (1, 2)):
         budget = t.with_fraction(num, den)
-        assert budget.template_digest() == t.template_digest()
-    assert concrete_budget().template_digest() == t.template_digest()
+        assert budget.template_digest() == t.carrier_template_digest()
+    assert concrete_budget().template_digest() == t.carrier_template_digest()
+
+
+def test_template_rejects_unbound_or_nonzero_retained_floor_policy():
+    with pytest.raises(ValueError, match="policy"):
+        template(min_retained_policy_id="HISTORICAL_OR_UNSPECIFIED").validate()
+    with pytest.raises(ValueError, match="forbids an additional"):
+        template(min_retained_non_target_address_count=1).validate()
 
 
 def test_template_has_no_mask_fraction_field_and_cannot_authorize_training():
