@@ -46,6 +46,7 @@ on:
       - 'tests/test_v5_full104_masking_anti_spillover_v1.py'
       - 'src/sea_ad_jepa/v5/control_calibration_precision_authority_v1.py'
       - 'src/sea_ad_jepa/v5/control_calibration_interval_receipt_v1.py'
+      - 'src/sea_ad_jepa/v5/control_capacity_calibration_receipt_v1.py'
       - 'src/sea_ad_jepa/v5/target_panel_sizing_authority_v2.py'
       - 'src/sea_ad_jepa/v5/target_panel_authority_v3.py'
       - 'src/sea_ad_jepa/v5/precision_authority_v4.py'
@@ -54,6 +55,7 @@ on:
       - 'src/sea_ad_jepa/v5/masking_qualification_run_contract_v4.py'
       - 'tests/test_v5_control_calibration_precision_authority_v1.py'
       - 'tests/test_v5_control_calibration_interval_receipt_v1.py'
+      - 'tests/test_v5_control_capacity_calibration_receipt_v1.py'
       - 'tests/test_v5_full104_masking_anti_spillover_v2.py'
       - 'tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py'
       - 'tests/test_v5_masking_qualification_run_contract_v4.py'
@@ -103,6 +105,7 @@ jobs:
             tests/test_v5_target_panel_authority_v2.py \
             tests/test_v5_control_calibration_precision_authority_v1.py \
             tests/test_v5_control_calibration_interval_receipt_v1.py \
+            tests/test_v5_control_capacity_calibration_receipt_v1.py \
             tests/test_v5_full104_masking_anti_spillover_v2.py \
             tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
             tests/test_v5_masking_qualification_run_contract_v4.py
@@ -135,6 +138,7 @@ jobs:
             tests/test_v5_target_panel_authority_v2.py \
             tests/test_v5_control_calibration_precision_authority_v1.py \
             tests/test_v5_control_calibration_interval_receipt_v1.py \
+            tests/test_v5_control_capacity_calibration_receipt_v1.py \
             tests/test_v5_full104_masking_anti_spillover_v2.py \
             tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
             tests/test_v5_masking_qualification_run_contract_v4.py \
