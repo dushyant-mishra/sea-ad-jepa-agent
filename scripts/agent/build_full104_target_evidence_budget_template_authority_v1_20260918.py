@@ -8,6 +8,7 @@ from pathlib import Path
 
 from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
 from sea_ad_jepa.v5.target_evidence_budget_template_authority_v1 import (
+    MIN_RETAINED_POLICY_ID,
     TargetEvidenceBudgetTemplateAuthorityV1,
 )
 
@@ -78,13 +79,11 @@ def main() -> int:
         eligibility_rule_id="VALUE_INDEPENDENT_ELIGIBILITY__MEASURED_ZERO_IS_MEASURED_EVIDENCE_V1",
         rounding_policy_id="FLOOR_EXACT_RATIONAL_V1",
         min_retained_non_target_address_count=0,
+        min_retained_policy_id=MIN_RETAINED_POLICY_ID,
         infeasible_policy_id="FAIL_CLOSED_IF_BUDGET_INFEASIBLE_V1",
     )
     payload = template.as_payload()
     payload["fraction_frozen_here"] = False
-    payload["min_retained_policy"] = (
-        "NO_ADDITIONAL_RETAINED_COUNT_FLOOR__FROZEN_BURDEN_LADDER_OWNS_MASK_FRACTION"
-    )
     payload["terminal_masking_outcomes_inspected"] = False
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
