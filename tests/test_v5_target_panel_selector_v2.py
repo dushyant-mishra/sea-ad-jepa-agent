@@ -38,3 +38,11 @@ def test_receipt_fails_if_frozen_after_outcomes():
             selected_target_cols=(1, 2),
             terminal_masking_outcomes_inspected=True,
         ).validate()
+
+
+def test_selection_builder_hashes_actual_selector_not_only_builder_script():
+    from pathlib import Path
+    source=Path("scripts/agent/build_full104_target_panel_selection_v2_20260918.py").read_text(encoding="utf-8")
+    assert 'inspect.getfile(selector_impl)' in source
+    assert '"builder_source_sha256"' in source
+    assert '"selector_source_sha256": sha256_file(Path(__file__).resolve())' not in source
