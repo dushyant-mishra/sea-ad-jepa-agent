@@ -70,7 +70,7 @@ def manifest(**updates):
     roots = {name: h(name) for name in (
         "manifest","registry","census","support","split","eligibility",
         "target-sem","target-id-sem","proxy-sem","distractor-sem","cache-sem",
-        "x","selection","donor","rank","counts","fold","source",
+        "x","selection","donor","rank","counts","fold","source","full-n","full-sum","full-sumsq",
         "target-file","proxy-file","distractor-file","cache-file","ids-file"
     )}
     values = dict(
@@ -109,6 +109,9 @@ def manifest(**updates):
         retained_count_by_donor_file_sha256=roots["counts"],
         fold_by_donor_file_sha256=roots["fold"],
         donor_source_code_file_sha256=roots["source"],
+        full_donor_n_file_sha256=roots["full-n"],
+        full_donor_sum_file_sha256=roots["full-sum"],
+        full_donor_sumsq_file_sha256=roots["full-sumsq"],
         target_cols_file_sha256=roots["target-file"],
         proxy_cols_file_sha256=roots["proxy-file"],
         distractor_cols_file_sha256=roots["distractor-file"],
