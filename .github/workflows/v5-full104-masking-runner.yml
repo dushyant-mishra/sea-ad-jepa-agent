@@ -4,16 +4,33 @@ on:
   push:
     branches:
       - impl/v5-remaining-rna-target-semantics-20260917
+      - impl/v5-full104-masking-budget-freeze-20260917
+      - impl/v5-full104-masking-redteam-freeze-20260918
   pull_request:
     paths:
       - 'src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py'
       - 'src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py'
+      - 'src/sea_ad_jepa/v5/full104_census_receipt_v2.py'
       - 'src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v2.py'
       - 'src/sea_ad_jepa/v5/masking_qualification_run_contract_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_qualification_run_contract_v2.py'
       - 'src/sea_ad_jepa/v5/masking_qualification_execution_authority_v2.py'
+      - 'src/sea_ad_jepa/v5/masking_qualification_execution_authority_v3.py'
+      - 'src/sea_ad_jepa/v5/masking_burden_ladder_authority_v2.py'
+      - 'src/sea_ad_jepa/v5/precision_authority_v2.py'
+      - 'src/sea_ad_jepa/v5/masking_qualification_decision_v1.py'
+      - 'tests/test_v5_full104_census_receipt_v2.py'
+      - 'tests/test_v5_masking_qualification_parameters_authority_v2.py'
+      - 'tests/test_v5_masking_burden_ladder_authority_v2.py'
+      - 'tests/test_v5_precision_authority_v2.py'
+      - 'tests/test_v5_masking_qualification_decision_v1.py'
       - 'tests/test_v5_masking_qualification_run_contract_v1.py'
+      - 'tests/test_v5_masking_qualification_run_contract_v2.py'
       - 'tests/test_v5_full104_masking_qualification_runner_v1.py'
       - 'tests/test_v5_full104_masking_streaming_executor_v1.py'
+      - 'tests/test_v5_full104_streaming_executor_accepts_budget_v2.py'
+      - 'tests/test_v5_full104_masking_anti_spillover_v1.py'
       - '.github/workflows/v5-full104-masking-runner.yml'
   workflow_dispatch:
 
@@ -31,21 +48,37 @@ jobs:
           python-version: '3.12'
       - name: Install focused dependencies
         run: python -m pip install --disable-pip-version-check pytest numpy scipy
-      - name: Run runner, streaming parity and run-contract regressions
+      - name: Run FULL104 masking authority regressions
         env:
           PYTHONPATH: src:.
         run: |
           python -m pytest -q -p no:randomly --strict-markers \
             tests/test_v5_masking_qualification_run_contract_v1.py \
+            tests/test_v5_masking_qualification_run_contract_v2.py \
             tests/test_v5_full104_masking_qualification_runner_v1.py \
-            tests/test_v5_full104_masking_streaming_executor_v1.py
+            tests/test_v5_full104_masking_streaming_executor_v1.py \
+            tests/test_v5_full104_streaming_executor_accepts_budget_v2.py \
+            tests/test_v5_full104_masking_anti_spillover_v1.py \
+            tests/test_v5_full104_census_receipt_v2.py \
+            tests/test_v5_masking_qualification_parameters_authority_v2.py \
+            tests/test_v5_masking_burden_ladder_authority_v2.py \
+            tests/test_v5_precision_authority_v2.py \
+            tests/test_v5_masking_qualification_decision_v1.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
         run: |
           python -m pytest -q \
             tests/test_v5_masking_qualification_run_contract_v1.py \
+            tests/test_v5_masking_qualification_run_contract_v2.py \
             tests/test_v5_full104_masking_qualification_runner_v1.py \
             tests/test_v5_full104_masking_streaming_executor_v1.py \
+            tests/test_v5_full104_streaming_executor_accepts_budget_v2.py \
+            tests/test_v5_full104_masking_anti_spillover_v1.py \
+            tests/test_v5_full104_census_receipt_v2.py \
+            tests/test_v5_masking_qualification_parameters_authority_v2.py \
+            tests/test_v5_masking_burden_ladder_authority_v2.py \
+            tests/test_v5_precision_authority_v2.py \
+            tests/test_v5_masking_qualification_decision_v1.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
