@@ -13,7 +13,7 @@ def model(**u):
     v.update(u); return NonlinearCapacityModelAuthorityV1(**v)
 
 def plan(**u):
-    v=dict(authority_id="TEST",target_panel_authority_sha256=h("panel"),precision_authority_sha256=h("precision"),outer_split_authority_sha256=h("split"),primary_parameters_authority_sha256=h("params"),model_capacity_authority_sha256=h("model"),calibration_cache_manifest_sha256=h("cache"))
+    v=dict(authority_id="TEST",target_panel_authority_sha256=h("panel"),precision_authority_sha256=h("precision"),outer_split_authority_sha256=h("split"),primary_parameters_authority_sha256=h("params"),model_capacity_authority_sha256=h("model"),calibration_cache_manifest_sha256=h("cache"),calibration_evaluator_source_sha256=h("evaluator"))
     v.update(u); return NonlinearSamplingCalibrationPlanV2(**v)
 
 def verdict(cap,ok=True):
