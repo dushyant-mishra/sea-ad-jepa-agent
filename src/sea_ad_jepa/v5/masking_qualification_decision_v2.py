@@ -21,7 +21,7 @@ from .masking_qualification_decision_v1 import (
     POLICY_ORDER,
 )
 
-DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_AND_FIXED_HETEROGENEITY_GUARDED_SHORTCUT_SUPPRESSION_V4"
+DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_FIXED_HETEROGENEITY_AND_MATERIAL_TARGETING_SHORTCUT_SUPPRESSION_V4"
 POLICY_SELECTION_RULE_ID = "UNIFORM_IF_SUFFICIENT_ELSE_MIN_TARGETING_WITHIN_ONE_PARTNER_EQUIVALENCE_THEN_MAX_LOWER_BOUND_V2"
 TARGET_HETEROGENEITY_FLOOR_RULE_ID = "WORST_TARGET_NO_WORSE_THAN_NEGATIVE_FROZEN_NULL_EQUIVALENCE_MARGIN_V1"
 TARGETING_COMPLEXITY_MATERIALITY_RULE_ID = "ONE_MEAN_EFFECTIVE_TARGETED_PARTNER_PER_TARGET_FOLD_V1"
@@ -49,6 +49,7 @@ class MaskingPolicyDecisionReceiptV2:
     nonlinear_guardrail_passed: bool
     null_noise_tolerance: float
     target_heterogeneity_floor: float
+    target_heterogeneity_floor_rule_id: str
     mean_effective_targeted_n: float
     delta_lower_one_sided: float
     decision_rule_id: str
@@ -193,6 +194,7 @@ def evaluate_policy_v2(
         nonlinear_guardrail_passed=nonlinear,
         null_noise_tolerance=tolerance,
         target_heterogeneity_floor=target_heterogeneity_floor,
+        target_heterogeneity_floor_rule_id=TARGET_HETEROGENEITY_FLOOR_RULE_ID,
         mean_effective_targeted_n=float(evidence.mean_effective_targeted_n),
         delta_lower_one_sided=float(evidence.delta_vs_uniform.lower_one_sided),
         decision_rule_id=DECISION_RULE_ID,
@@ -204,6 +206,8 @@ def select_policy_v2(receipts: Sequence[MaskingPolicyDecisionReceiptV2]) -> str:
     by_policy = {receipt.policy_id: receipt for receipt in receipts}
     if len(by_policy) != len(receipts) or set(by_policy) != set(POLICIES):
         raise ValueError("exactly one decision receipt is required for every policy arm")
+    if any(r.decision_rule_id != DECISION_RULE_ID for r in receipts):
+        raise ValueError("all policy receipts must use the current decision rule")
     burdens = {(r.burden_numerator, r.burden_denominator) for r in receipts}
     if len(burdens) != 1:
         raise ValueError("all policy receipts must belong to the same burden rung")
