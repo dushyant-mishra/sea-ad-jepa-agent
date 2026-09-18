@@ -5,6 +5,8 @@ from pathlib import Path
 
 from sea_ad_jepa.v5 import (
     full104_census_receipt_v2,
+    control_calibration_interval_receipt_v1,
+    control_calibration_precision_authority_v1,
     masking_burden_ladder_authority_v2,
     masking_control_executor_v1,
     masking_donor_evidence_v1,
@@ -24,6 +26,8 @@ from sea_ad_jepa.v5 import (
 
 CURRENT_PRODUCTION_MODULES=(
     full104_census_receipt_v2,
+    control_calibration_interval_receipt_v1,
+    control_calibration_precision_authority_v1,
     masking_burden_ladder_authority_v2,
     masking_control_executor_v1,
     masking_donor_evidence_v1,
