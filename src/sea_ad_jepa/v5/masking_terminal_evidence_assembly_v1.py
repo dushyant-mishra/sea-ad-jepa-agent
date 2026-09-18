@@ -101,6 +101,39 @@ def _sequence_digest(role: str, value: Sequence[str]) -> str:
     return _json_digest({"role": role, "values": list(value)})
 
 
+def _sha256_value(value: Any, name: str) -> str:
+    if not isinstance(value, str) or len(value) != 64 or value != value.lower():
+        raise ValueError(f"{name} must be a lowercase SHA-256 digest")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a lowercase SHA-256 digest") from exc
+    return value
+
+
+def _sha256_grid(
+    value: Sequence[Sequence[Any]],
+    name: str,
+    *,
+    rows: int,
+    cols: int = 4,
+) -> tuple[tuple[str, ...], ...]:
+    if isinstance(value, (str, bytes)) or len(value) != rows:
+        raise ValueError(f"{name} must contain one row per target")
+    out = []
+    for i, row in enumerate(value):
+        if isinstance(row, (str, bytes)) or len(row) != cols:
+            raise ValueError(f"{name}[{i}] must contain exactly {cols} fold roots")
+        out.append(
+            tuple(_sha256_value(item, f"{name}[{i}]") for item in row)
+        )
+    return tuple(out)
+
+
+def _sha256_grid_digest(role: str, value: Sequence[Sequence[str]]) -> str:
+    return _json_digest({"role": role, "values": [list(row) for row in value]})
+
+
 def _required_bool(value: Any, name: str) -> bool:
     if not isinstance(value, bool):
         raise ValueError(f"{name} must be a mechanically computed boolean")
@@ -160,6 +193,7 @@ class TerminalPolicyRawEvidenceV1:
     donor_source_code: Any
     donor_outer_fold: Any
     source_names: Mapping[int, str]
+    policy_mask_sha256_by_target_fold: Sequence[Sequence[Any]]
     actual_policy_scores: Any
     actual_uniform_scores: Any
     shuffled_same_mask_scores: Any
@@ -209,6 +243,15 @@ class TerminalPolicyRawEvidenceV1:
         )
         normalized_names = {int(k): str(v) for k, v in self.source_names.items()}
         object.__setattr__(self, "source_names", MappingProxyType(normalized_names))
+        object.__setattr__(
+            self,
+            "policy_mask_sha256_by_target_fold",
+            _sha256_grid(
+                self.policy_mask_sha256_by_target_fold,
+                "policy_mask_sha256_by_target_fold",
+                rows=actual.shape[0],
+            ),
+        )
         self.validate()
 
     def validate(self) -> None:
@@ -288,6 +331,10 @@ class TerminalPolicyRawEvidenceV1:
                 "policy_id": self.policy_id,
                 "burden": [self.burden_numerator, self.burden_denominator],
                 "axes": self._axis_roots(),
+                "policy_mask_sha256_by_target_fold": _sha256_grid_digest(
+                    "policy_mask_sha256_by_target_fold",
+                    self.policy_mask_sha256_by_target_fold,
+                ),
                 "actual_policy_scores": _array_digest(
                     "actual_policy_scores", self.actual_policy_scores
                 ),
@@ -335,6 +382,10 @@ class TerminalPolicyRawEvidenceV1:
                 "policy_id": self.policy_id,
                 "burden": [self.burden_numerator, self.burden_denominator],
                 "axes": self._axis_roots(),
+                "policy_mask_sha256_by_target_fold": _sha256_grid_digest(
+                    "policy_mask_sha256_by_target_fold",
+                    self.policy_mask_sha256_by_target_fold,
+                ),
                 "nonlinear_actual_scores": _array_digest(
                     "nonlinear_actual_scores", self.nonlinear_actual_scores
                 ),
