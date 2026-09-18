@@ -9,7 +9,12 @@ lawful burden-ladder rung.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+import hashlib
+import json
 from typing import Tuple
+
+MIN_RETAINED_POLICY_ID = "NO_ADDITIONAL_RETAINED_COUNT_FLOOR__FROZEN_BURDEN_LADDER_OWNS_MASK_FRACTION_V1"
+
 
 from .target_evidence_budget_authority_v2 import (
     REQUIRED_EXCLUDED_OBSERVATION_STATE_IDS,
@@ -30,6 +35,7 @@ class TargetEvidenceBudgetTemplateAuthorityV1:
     eligibility_rule_id: str
     rounding_policy_id: str
     min_retained_non_target_address_count: int
+    min_retained_policy_id: str
     infeasible_policy_id: str
     excluded_observation_state_ids: Tuple[str, ...] = REQUIRED_EXCLUDED_OBSERVATION_STATE_IDS
     measured_zero_is_measured_evidence: bool = True
@@ -61,15 +67,33 @@ class TargetEvidenceBudgetTemplateAuthorityV1:
         if not isinstance(self.authority_id, str) or not self.authority_id.strip():
             raise ValueError("authority_id must be nonempty")
         self._carrier().validate()
+        if self.min_retained_non_target_address_count != 0:
+            raise ValueError("current FULL104 template forbids an additional retained-count floor")
+        if self.min_retained_policy_id != MIN_RETAINED_POLICY_ID:
+            raise ValueError("min_retained_policy_id mismatch")
         if self.training_authorized is not False:
             raise ValueError("target evidence-budget template cannot authorize training")
 
-    def template_digest(self) -> str:
+    def carrier_template_digest(self) -> str:
+        """V2 non-fraction semantics digest used only to validate derived rung budgets."""
         self.validate()
         return self._carrier().template_digest()
 
+    def template_digest(self) -> str:
+        """Canonical FULL104 template digest including the explicit retained-floor policy."""
+        self.validate()
+        payload = dict(asdict(self))
+        payload["excluded_observation_state_ids"] = list(self.excluded_observation_state_ids)
+        raw = json.dumps(
+            {"schema": "V5_TARGET_EVIDENCE_BUDGET_TEMPLATE_AUTHORITY_V1", **payload},
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("utf-8")
+        return hashlib.sha256(raw).hexdigest()
+
     def canonical_digest(self) -> str:
-        """Alias to the burden-free digest so generic authority binders stay safe."""
         return self.template_digest()
 
     def with_fraction(self, numerator: int, denominator: int) -> TargetEvidenceBudgetAuthorityV2:
@@ -94,8 +118,8 @@ class TargetEvidenceBudgetTemplateAuthorityV1:
             training_authorized=False,
         )
         budget.validate()
-        if budget.template_digest() != self.template_digest():
-            raise ValueError("derived rung budget changed the frozen burden-free template")
+        if budget.template_digest() != self.carrier_template_digest():
+            raise ValueError("derived rung budget changed the frozen non-fraction budget semantics")
         return budget
 
     def as_payload(self) -> dict:
