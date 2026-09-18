@@ -37,8 +37,12 @@ from .masking_qualification_execution_authority_v4 import (
     MaskingQualificationExecutionAuthorityV4,
 )
 from .masking_qualification_run_contract_v4 import (
+    MaskingQualificationRunContractV4,
     TERMINAL_EXECUTION_INPUT_ROLE_ID,
 )
+from .masking_burden_ladder_authority_v2 import MaskingBurdenLadderAuthorityV2
+from .outer_split_authority_v1 import OuterDonorSplitAuthorityV1
+from .precision_authority_v4 import QualificationPrecisionAuthorityV4
 from .masking_terminal_evidence_assembly_v1 import (
     TerminalPolicyRawEvidenceV1,
     assemble_policy_decision_evidence,
@@ -143,9 +147,9 @@ def _load_registry_ids(
 def _validate_split_binding(
     *,
     stream: streaming.Full104ManifestStreamV1,
-    outer_split: Any,
+    outer_split: OuterDonorSplitAuthorityV1,
     split_receipt: Mapping[str, Any],
-    run_contract: Any,
+    run_contract: MaskingQualificationRunContractV4,
 ) -> tuple[tuple[str, ...], np.ndarray, dict[int, str]]:
     outer_split.validate()
     if outer_split.canonical_digest() != run_contract.outer_split_authority_sha256:
@@ -252,7 +256,7 @@ def _validate_target_binding(
 
 def _validate_requested_rung(
     *,
-    burden_ladder: Any,
+    burden_ladder: MaskingBurdenLadderAuthorityV2,
     numerator: int,
     denominator: int,
     prior_rung_receipts: Sequence[MaskingRungDecisionReceiptV2],
@@ -440,7 +444,7 @@ def execute_one_terminal_rung(
     target_eligibility_receipt: Mapping[str, Any],
     canonical_registry_authority: CanonicalAddressRegistryAuthorityV1,
     canonical_registry_path: Path,
-    precision: Any,
+    precision: QualificationPrecisionAuthorityV4,
     nonlinear_authority: Any,
     nonlinear_sampling_calibration_plan: Any,
     nonlinear_sampling_calibration_receipt: Any,
@@ -450,6 +454,14 @@ def execute_one_terminal_rung(
 
     if not isinstance(stream, streaming.Full104ManifestStreamV1):
         raise ValueError("terminal executor requires Full104ManifestStreamV1")
+    if not isinstance(run_contract, MaskingQualificationRunContractV4):
+        raise ValueError("run_contract must be MaskingQualificationRunContractV4")
+    if not isinstance(burden_ladder, MaskingBurdenLadderAuthorityV2):
+        raise ValueError("burden_ladder must be MaskingBurdenLadderAuthorityV2")
+    if not isinstance(outer_split, OuterDonorSplitAuthorityV1):
+        raise ValueError("outer_split must be OuterDonorSplitAuthorityV1")
+    if not isinstance(precision, QualificationPrecisionAuthorityV4):
+        raise ValueError("precision must be QualificationPrecisionAuthorityV4")
     run_contract.validate()
     run_contract.assert_terminal_execution_input_role(TERMINAL_EXECUTION_INPUT_ROLE_ID)
 
