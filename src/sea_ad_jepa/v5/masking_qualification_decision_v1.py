@@ -1,7 +1,7 @@
-"""Mechanical masking-qualification decision from bound evidence summaries.
+"""Mechanical masking-qualification decisions from bound evidence summaries.
 
 The decision asks whether easy expression-proxy predictability has been reduced
-to the within-donor shuffled/null level.  It does not claim biological-state
+to the within-donor shuffled/null level. It does not claim biological-state
 recovery and it never tunes a policy after terminal outcomes are seen.
 """
 from __future__ import annotations
@@ -13,6 +13,7 @@ import json
 from typing import Any, Mapping, Sequence
 
 POLICIES = ("UNIFORM_RANDOM", "TOP8_CORRELATION", "RIDGE8_CONDITIONAL", "PREFIX3_SELECTIVE")
+POLICY_ORDER = {name: index for index, name in enumerate(POLICIES)}
 DECISION_RULE_ID = "NULL_LEVEL_SHORTCUT_SUPPRESSION_WITH_PAIRED_DONOR_TARGET_UNCERTAINTY_V1"
 POLICY_SELECTION_RULE_ID = "UNIFORM_IF_SUFFICIENT_ELSE_MIN_TARGETING_THEN_MAX_LOWER_BOUND_V1"
 
@@ -50,18 +51,16 @@ class IntervalEvidenceV1:
     upper_one_sided: float
 
     def validate(self) -> None:
-        values = [
-            _finite(self.mean, "mean"),
-            _finite(self.lower_two_sided, "lower_two_sided"),
-            _finite(self.upper_two_sided, "upper_two_sided"),
-            _finite(self.lower_one_sided, "lower_one_sided"),
-            _finite(self.upper_one_sided, "upper_one_sided"),
-        ]
-        if values[0] < values[1] or values[0] > values[2]:
-            raise ValueError("mean must lie inside the two-sided interval")
-        if self.lower_two_sided > self.upper_two_sided:
+        mean = _finite(self.mean, "mean")
+        lower_two = _finite(self.lower_two_sided, "lower_two_sided")
+        upper_two = _finite(self.upper_two_sided, "upper_two_sided")
+        lower_one = _finite(self.lower_one_sided, "lower_one_sided")
+        upper_one = _finite(self.upper_one_sided, "upper_one_sided")
+        if lower_two > upper_two:
             raise ValueError("two-sided interval is reversed")
-        if self.lower_one_sided > self.upper_one_sided:
+        if not lower_two <= mean <= upper_two:
+            raise ValueError("mean must lie inside the two-sided interval")
+        if lower_one > upper_one:
             raise ValueError("one-sided bounds are reversed")
 
 
@@ -159,11 +158,45 @@ class MaskingPolicyDecisionReceiptV1:
     targeted_improvement_passed: bool
     heterogeneity_guardrail_passed: bool
     nonlinear_guardrail_passed: bool
+    mean_effective_targeted_n: float
+    delta_lower_one_sided: float
     decision_rule_id: str
     evidence_digest: str
 
     def canonical_digest(self) -> str:
         return _digest({"schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V1", **asdict(self)})
+
+
+@dataclass(frozen=True)
+class MaskingRungDecisionReceiptV1:
+    burden_numerator: int
+    burden_denominator: int
+    qualified: bool
+    selected_policy_id: str
+    policy_receipt_sha256: Mapping[str, str]
+    policy_selection_rule_id: str = POLICY_SELECTION_RULE_ID
+
+    def validate(self) -> None:
+        if set(self.policy_receipt_sha256) != set(POLICIES):
+            raise ValueError("rung receipt must bind exactly one receipt for every policy")
+        for policy, digest in self.policy_receipt_sha256.items():
+            if policy not in POLICIES:
+                raise ValueError("unapproved policy in rung receipt")
+            _sha(digest, f"policy_receipt_sha256[{policy}]")
+        if self.policy_selection_rule_id != POLICY_SELECTION_RULE_ID:
+            raise ValueError("policy_selection_rule_id mismatch")
+        if self.selected_policy_id not in (*POLICIES, "NO_POLICY_QUALIFIED"):
+            raise ValueError("selected_policy_id mismatch")
+        if self.qualified != (self.selected_policy_id != "NO_POLICY_QUALIFIED"):
+            raise ValueError("qualified flag and selected policy disagree")
+
+    def canonical_digest(self) -> str:
+        self.validate()
+        return _digest({
+            "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V1",
+            **asdict(self),
+            "policy_receipt_sha256": dict(sorted(self.policy_receipt_sha256.items())),
+        })
 
 
 def evaluate_policy(evidence: MaskingPolicyDecisionEvidenceV1) -> MaskingPolicyDecisionReceiptV1:
@@ -240,6 +273,8 @@ def evaluate_policy(evidence: MaskingPolicyDecisionEvidenceV1) -> MaskingPolicyD
         targeted_improvement_passed=improvement,
         heterogeneity_guardrail_passed=heterogeneity,
         nonlinear_guardrail_passed=nonlinear,
+        mean_effective_targeted_n=float(evidence.mean_effective_targeted_n),
+        delta_lower_one_sided=float(evidence.delta_vs_uniform.lower_one_sided),
         decision_rule_id=DECISION_RULE_ID,
         evidence_digest=_digest(raw),
     )
@@ -249,7 +284,7 @@ def select_policy(receipts: Sequence[MaskingPolicyDecisionReceiptV1]) -> str:
     """Select prospectively: uniform if sufficient, else least targeted qualifier."""
 
     by_policy = {receipt.policy_id: receipt for receipt in receipts}
-    if set(by_policy) != set(POLICIES):
+    if len(by_policy) != len(receipts) or set(by_policy) != set(POLICIES):
         raise ValueError("exactly one decision receipt is required for every policy arm")
     burdens = {(r.burden_numerator, r.burden_denominator) for r in receipts}
     if len(burdens) != 1:
@@ -257,18 +292,40 @@ def select_policy(receipts: Sequence[MaskingPolicyDecisionReceiptV1]) -> str:
 
     if by_policy["UNIFORM_RANDOM"].qualified:
         return "UNIFORM_RANDOM"
+
     qualified = [
         r for r in receipts
         if r.policy_id != "UNIFORM_RANDOM" and r.qualified
     ]
     if not qualified:
-        raise ValueError("NO_POLICY_QUALIFIED_AT_THIS_BURDEN")
-    # The decision receipt does not retain targeting count or lower bound, so
-    # selection among targeted policies must be performed from bound evidence
-    # before receipts are reduced. This fail-closed rule prevents arbitrary
-    # post-hoc ranking.
-    if len(qualified) > 1:
-        raise ValueError(
-            "MULTIPLE_TARGETED_POLICIES_QUALIFIED__REQUIRES_PREDECLARED_SELECTION_EVIDENCE"
+        return "NO_POLICY_QUALIFIED"
+
+    qualified.sort(
+        key=lambda r: (
+            float(r.mean_effective_targeted_n),
+            -float(r.delta_lower_one_sided),
+            POLICY_ORDER[r.policy_id],
         )
+    )
     return qualified[0].policy_id
+
+
+def evaluate_rung(
+    evidence_by_policy: Sequence[MaskingPolicyDecisionEvidenceV1],
+) -> MaskingRungDecisionReceiptV1:
+    if len(evidence_by_policy) != len(POLICIES):
+        raise ValueError("rung evaluation requires evidence for all four policy arms")
+    receipts = [evaluate_policy(evidence) for evidence in evidence_by_policy]
+    selected = select_policy(receipts)
+    burdens = {(r.burden_numerator, r.burden_denominator) for r in receipts}
+    if len(burdens) != 1:
+        raise ValueError("all policy evidence must belong to the same burden rung")
+    numerator, denominator = next(iter(burdens))
+    policy_hashes = {r.policy_id: r.canonical_digest() for r in receipts}
+    return MaskingRungDecisionReceiptV1(
+        burden_numerator=numerator,
+        burden_denominator=denominator,
+        qualified=selected != "NO_POLICY_QUALIFIED",
+        selected_policy_id=selected,
+        policy_receipt_sha256=policy_hashes,
+    )
