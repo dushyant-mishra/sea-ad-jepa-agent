@@ -47,11 +47,19 @@ def test_planted_proxy_control_detects_and_selects_exact_visible_proxy(tmp_path:
         target_col=int(stream.target_cols[0]),
         target_id=stream.target_ids[0],
         eligible_proxy_cols=stream.universe_cols,
+        method="RIDGE8_CONDITIONAL",
         global_seed=17,
     )
     assert result["control_id"] == "PLANTED_SHORTCUT_POSITIVE_CONTROL_V1"
+    assert result["method"] == "RIDGE8_CONDITIONAL"
     assert result["proxy_selected"] is True
     assert result["detect_score"] >= result["after_mask_score"]
+    assert result["detect_excess"] == pytest.approx(
+        result["detect_score"] - result["shuffled_detect_score"]
+    )
+    assert result["after_mask_excess"] == pytest.approx(
+        result["after_mask_score"] - result["shuffled_after_mask_score"]
+    )
     assert result["mask_cardinality"] == result["uniform_mask_cardinality"]
 
 
@@ -64,6 +72,7 @@ def test_shuffled_negative_control_is_exactly_replayable(tmp_path: Path) -> None
         evidence_budget=budget(),
         target_col=int(stream.target_cols[0]),
         target_id=stream.target_ids[0],
+        method="RIDGE8_CONDITIONAL",
         global_seed=17,
     )
     a = run_shuffled_negative_control_fold(**kwargs)
@@ -86,3 +95,42 @@ def test_control_source_contains_no_discovery_path_or_burden_constant() -> None:
         "12345",
     )
     assert [token for token in forbidden if token in source] == []
+
+
+@pytest.mark.parametrize(
+    "method",
+    ["UNIFORM_RANDOM", "TOP8_CORRELATION", "RIDGE8_CONDITIONAL", "PREFIX3_SELECTIVE"],
+)
+def test_shuffled_control_runs_each_declared_policy_without_hidden_ridge_default(
+    tmp_path: Path, method: str
+) -> None:
+    _, stream, _, _ = _fixture(tmp_path)
+    out = run_shuffled_negative_control_fold(
+        stream=stream,
+        fold_index=0,
+        parameters=parameters(),
+        evidence_budget=budget(),
+        target_col=int(stream.target_cols[0]),
+        target_id=stream.target_ids[0],
+        method=method,
+        global_seed=17,
+    )
+    assert out["method"] == method
+    assert out["mask_cardinality"] == out["uniform_mask_cardinality"]
+
+
+def test_uniform_planted_control_does_not_pretend_to_target_proxy(tmp_path: Path) -> None:
+    _, stream, _, _ = _fixture(tmp_path)
+    out = run_planted_proxy_control_fold(
+        stream=stream,
+        fold_index=0,
+        parameters=parameters(),
+        evidence_budget=budget(),
+        target_col=int(stream.target_cols[0]),
+        target_id=stream.target_ids[0],
+        eligible_proxy_cols=stream.universe_cols,
+        method="UNIFORM_RANDOM",
+        global_seed=17,
+    )
+    assert out["method"] == "UNIFORM_RANDOM"
+    assert out["targeted_cols"] == ()
