@@ -37,6 +37,7 @@ EXPECTED_REGISTRY_SHA256 = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a
 EXPECTED_REGISTRY_ROWS = 41238
 EXPECTED_CELLS = 4553407
 EXPECTED_ELIGIBLE_TARGETS = 17053
+EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256 = "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08"
 
 
 def load_json(path: Path) -> dict:
@@ -148,6 +149,8 @@ def main() -> int:
         raise SystemExit("target eligibility is bound to a different donor split")
 
     support = load_json(args.support_authority)
+    if canonical_sha(support) != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise SystemExit("support authority is not the exact current semantic authority")
     support_sha = sha256_file(args.support_authority)
     if support.get("schema") != "V5_SUPPORT_ESTIMABILITY_AUTHORITY_V1":
         raise SystemExit("support authority schema mismatch")
