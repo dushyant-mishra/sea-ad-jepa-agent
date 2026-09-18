@@ -132,8 +132,6 @@
     "REOPEN_SETTLED_T0_T1_QID_F1_LAYER2_STAGE_A_OR_STREAMING_PARITY_WITHOUT_CHANGED_INPUTS"
   ],
   "allowed_tracked_modifications": [],
-  "allowed_untracked_files": [
-    "docs/agent/CURRENT_WORK_CHECKPOINT.json",
-    "docs/agent/CLAUDE_TAKEOVER.md"
-  ]
+  "allowed_untracked_files": [],
+  "checkpoint_artifact_note": "docs/agent/CURRENT_WORK_CHECKPOINT.json and docs/agent/CLAUDE_TAKEOVER.md are gitignored (.gitignore lines 102-103). The checkpoint inventory uses 'git ls-files --others --exclude-standard', which excludes ignored paths by construction, so these two files can never appear in untracked_files and MUST NOT be declared in allowed_untracked_files. Commit 04329cc3 declared them and thereby made UNTRACKED_FILES_MISMATCH unconditional. A local validation PASS is true but not reproducible from the branch alone; review packages must carry the frozen checkpoint bytes or bind its digest explicitly."
 }
