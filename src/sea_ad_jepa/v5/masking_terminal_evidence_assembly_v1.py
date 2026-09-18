@@ -24,7 +24,13 @@ from .masking_qualification_decision_v1 import (
     MaskingPolicyDecisionEvidenceV1,
     POLICIES,
 )
-from .masking_qualification_decision_v2 import DECISION_RULE_ID
+from .masking_qualification_decision_v2 import (
+    DECISION_RULE_ID,
+    TARGET_HETEROGENEITY_GUARDRAIL_ID,
+    TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR,
+    TARGETING_COMPLEXITY_MATERIALITY_ID,
+    TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR,
+)
 from .precision_authority_v4 import (
     QualificationPrecisionAuthorityV4,
     SOURCE_POPULATION_FRAME_ID,
@@ -157,7 +163,11 @@ class TerminalEvidenceAssemblySemanticsV1:
     planted_after_estimand_id: str = PLANTED_AFTER_ESTIMAND_ID
     nonlinear_null_estimand_id: str = NONLINEAR_NULL_ESTIMAND_ID
     target_heterogeneity_id: str = TARGET_HETEROGENEITY_ID
+    target_heterogeneity_guardrail_id: str = TARGET_HETEROGENEITY_GUARDRAIL_ID
     targeting_complexity_id: str = TARGETING_COMPLEXITY_ID
+    targeting_complexity_materiality_id: str = TARGETING_COMPLEXITY_MATERIALITY_ID
+    targeting_complexity_materiality_numerator: int = TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR
+    targeting_complexity_materiality_denominator: int = TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR
     interval_method_id: str = INTERVAL_METHOD_ID
     source_population_frame_id: str = SOURCE_POPULATION_FRAME_ID
     source_aggregation_estimand_id: str = SOURCE_AGGREGATION_ESTIMAND_ID
@@ -176,7 +186,17 @@ class TerminalEvidenceAssemblySemanticsV1:
             and self.planted_after_estimand_id == PLANTED_AFTER_ESTIMAND_ID
             and self.nonlinear_null_estimand_id == NONLINEAR_NULL_ESTIMAND_ID
             and self.target_heterogeneity_id == TARGET_HETEROGENEITY_ID
+            and self.target_heterogeneity_guardrail_id == TARGET_HETEROGENEITY_GUARDRAIL_ID
             and self.targeting_complexity_id == TARGETING_COMPLEXITY_ID
+            and self.targeting_complexity_materiality_id == TARGETING_COMPLEXITY_MATERIALITY_ID
+            and (
+                self.targeting_complexity_materiality_numerator,
+                self.targeting_complexity_materiality_denominator,
+            )
+            == (
+                TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR,
+                TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR,
+            )
             and self.interval_method_id == INTERVAL_METHOD_ID
             and self.source_population_frame_id == SOURCE_POPULATION_FRAME_ID
             and self.source_aggregation_estimand_id == SOURCE_AGGREGATION_ESTIMAND_ID
@@ -227,9 +247,17 @@ class TerminalPolicyRawEvidenceV1:
             "planted_after_mask_excess",
             "nonlinear_actual_scores",
             "nonlinear_shuffled_same_mask_scores",
-            "effective_targeted_n_by_target_fold",
         ):
             object.__setattr__(self, name, _immutable_matrix(getattr(self, name), name))
+        effective = _immutable_matrix(
+            self.effective_targeted_n_by_target_fold,
+            "effective_targeted_n_by_target_fold",
+        )
+        if not np.all(effective == np.floor(effective)):
+            raise ValueError(
+                "effective targeting counts must be integral target-by-fold counts"
+            )
+        object.__setattr__(self, "effective_targeted_n_by_target_fold", effective)
         object.__setattr__(
             self,
             "donor_source_code",

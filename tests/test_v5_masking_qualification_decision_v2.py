@@ -3,10 +3,14 @@ import pytest
 from sea_ad_jepa.v5.masking_qualification_decision_v1 import (
     IntervalEvidenceV1,
     MaskingPolicyDecisionEvidenceV1,
+    POLICY_ORDER,
 )
 from sea_ad_jepa.v5.masking_qualification_decision_v2 import (
+    TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR,
+    TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR,
     evaluate_policy_v2,
     null_noise_tolerance,
+    select_policy_v2,
 )
 
 
@@ -146,3 +150,178 @@ def test_control_width_alone_cannot_flip_fail_to_qualified():
     assert not wide_receipt.negative_control_precision_passed
     assert narrow_receipt.null_noise_tolerance == pytest.approx(0.0100)
     assert wide_receipt.null_noise_tolerance == pytest.approx(0.0100)
+
+
+def failed_policy(policy_id):
+    return evidence(
+        policy_id=policy_id,
+        excess_over_shuffled_null=I(0.02, 0.01, 0.03, 0.012, 0.028),
+        source_excess_upper_one_sided={"HVS": 0.02, "NPH52": 0.02, "SEA_AD": 0.02},
+        nonlinear_excess_over_shuffled_null=I(0.02, 0.01, 0.03, 0.012, 0.028),
+    )
+
+
+def targeted(policy_id, *, mean_effective_targeted_n, lower_bound):
+    return evidence(
+        policy_id=policy_id,
+        mean_effective_targeted_n=mean_effective_targeted_n,
+        delta_vs_uniform=I(
+            lower_bound + 0.01,
+            lower_bound,
+            lower_bound + 0.02,
+            lower_bound,
+            lower_bound + 0.02,
+        ),
+    )
+
+
+def test_f16_one_reachable_target_fold_event_cannot_dominate_material_effect():
+    one_reachable_event = 1.0 / (128 * 4)
+    receipts = [
+        evaluate_policy_v2(failed_policy("UNIFORM_RANDOM")),
+        evaluate_policy_v2(failed_policy("TOP8_CORRELATION")),
+        evaluate_policy_v2(
+            targeted(
+                "RIDGE8_CONDITIONAL",
+                mean_effective_targeted_n=7.0 + one_reachable_event,
+                lower_bound=0.040,
+            )
+        ),
+        evaluate_policy_v2(
+            targeted(
+                "PREFIX3_SELECTIVE",
+                mean_effective_targeted_n=7.0,
+                lower_bound=0.001,
+            )
+        ),
+    ]
+    targeted_receipts = [r for r in receipts if r.qualified and r.policy_id != "UNIFORM_RANDOM"]
+    legacy = sorted(
+        targeted_receipts,
+        key=lambda r: (
+            float(r.mean_effective_targeted_n),
+            -float(r.delta_lower_one_sided),
+            POLICY_ORDER[r.policy_id],
+        ),
+    )[0]
+    assert legacy.policy_id == "PREFIX3_SELECTIVE"
+    assert select_policy_v2(receipts) == "RIDGE8_CONDITIONAL"
+
+
+def test_f16_full_one_partner_average_advantage_is_material():
+    materiality = (
+        TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR
+        / TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR
+    )
+    assert materiality == pytest.approx(1.0)
+    receipts = [
+        evaluate_policy_v2(failed_policy("UNIFORM_RANDOM")),
+        evaluate_policy_v2(failed_policy("TOP8_CORRELATION")),
+        evaluate_policy_v2(
+            targeted(
+                "RIDGE8_CONDITIONAL",
+                mean_effective_targeted_n=7.0,
+                lower_bound=0.040,
+            )
+        ),
+        evaluate_policy_v2(
+            targeted(
+                "PREFIX3_SELECTIVE",
+                mean_effective_targeted_n=6.0,
+                lower_bound=0.001,
+            )
+        ),
+    ]
+    assert select_policy_v2(receipts) == "PREFIX3_SELECTIVE"
+
+
+def test_f16_exact_targeted_ties_remain_deterministic():
+    receipts = [
+        evaluate_policy_v2(failed_policy("UNIFORM_RANDOM")),
+        evaluate_policy_v2(
+            targeted("TOP8_CORRELATION", mean_effective_targeted_n=7.0, lower_bound=0.020)
+        ),
+        evaluate_policy_v2(
+            targeted("RIDGE8_CONDITIONAL", mean_effective_targeted_n=7.0, lower_bound=0.020)
+        ),
+        evaluate_policy_v2(failed_policy("PREFIX3_SELECTIVE")),
+    ]
+    assert select_policy_v2(receipts) == "TOP8_CORRELATION"
+
+
+def test_f16_uniform_still_short_circuits_when_it_qualifies():
+    receipts = [
+        evaluate_policy_v2(evidence(policy_id="UNIFORM_RANDOM")),
+        evaluate_policy_v2(
+            targeted("TOP8_CORRELATION", mean_effective_targeted_n=7.0, lower_bound=0.050)
+        ),
+        evaluate_policy_v2(
+            targeted("RIDGE8_CONDITIONAL", mean_effective_targeted_n=7.0, lower_bound=0.060)
+        ),
+        evaluate_policy_v2(
+            targeted("PREFIX3_SELECTIVE", mean_effective_targeted_n=2.0, lower_bound=0.070)
+        ),
+    ]
+    assert select_policy_v2(receipts) == "UNIFORM_RANDOM"
+
+
+def test_f17_observed_negative_control_interval_cannot_move_heterogeneity_floor():
+    narrow = evidence(
+        worst_target_delta=-0.0075,
+        null_noise_tolerance_ceiling=0.0100,
+        negative_control_delta=I(0.0, -0.0020, 0.0020, -0.0015, 0.0015),
+    )
+    wide = evidence(
+        worst_target_delta=-0.0075,
+        null_noise_tolerance_ceiling=0.0100,
+        negative_control_delta=I(0.0, -0.0090, 0.0090, -0.0080, 0.0080),
+    )
+    legacy_narrow = narrow.worst_target_delta >= narrow.negative_control_delta.lower_two_sided
+    legacy_wide = wide.worst_target_delta >= wide.negative_control_delta.lower_two_sided
+    assert legacy_narrow is False
+    assert legacy_wide is True
+    narrow_receipt = evaluate_policy_v2(narrow)
+    wide_receipt = evaluate_policy_v2(wide)
+    assert narrow_receipt.heterogeneity_guardrail_passed
+    assert wide_receipt.heterogeneity_guardrail_passed
+    assert narrow_receipt.qualified
+    assert wide_receipt.qualified
+
+
+def test_f17_target_harm_beyond_frozen_margin_fails():
+    e = evidence(
+        worst_target_delta=-0.0101,
+        null_noise_tolerance_ceiling=0.0100,
+        negative_control_delta=I(0.0, -0.0020, 0.0020, -0.0015, 0.0015),
+    )
+    r = evaluate_policy_v2(e)
+    assert not r.heterogeneity_guardrail_passed
+    assert not r.qualified
+
+
+def test_f17_target_delta_inside_frozen_equivalence_region_can_pass():
+    e = evidence(
+        worst_target_delta=-0.0099,
+        null_noise_tolerance_ceiling=0.0100,
+        negative_control_delta=I(0.0, -0.0020, 0.0020, -0.0015, 0.0015),
+    )
+    r = evaluate_policy_v2(e)
+    assert r.heterogeneity_guardrail_passed
+    assert r.qualified
+
+
+def test_f17_only_prospective_margin_can_move_heterogeneity_floor():
+    tight = evidence(
+        worst_target_delta=-0.0075,
+        null_noise_tolerance_ceiling=0.0050,
+        negative_control_delta=I(0.0, -0.0020, 0.0020, -0.0015, 0.0015),
+    )
+    loose = evidence(
+        worst_target_delta=-0.0075,
+        null_noise_tolerance_ceiling=0.0100,
+        negative_control_delta=I(0.0, -0.0020, 0.0020, -0.0015, 0.0015),
+    )
+    tight_receipt = evaluate_policy_v2(tight)
+    loose_receipt = evaluate_policy_v2(loose)
+    assert not tight_receipt.heterogeneity_guardrail_passed
+    assert loose_receipt.heterogeneity_guardrail_passed

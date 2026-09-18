@@ -1,14 +1,22 @@
 """Fixed-source, prospectively margin-calibrated masking qualification decision.
 
-The current V3 semantic rule replaces the impossible exact-zero residual
-requirement with a pre-terminal equivalence margin frozen in PrecisionAuthorityV4.
-The terminal negative-control interval must fit inside that fixed margin; its
-observed width can never enlarge the qualification bar. Targeted improvements
-must also clear source-specific lower-bound guardrails for every observed source.
+The current V4 semantic rule keeps the pre-terminal null-equivalence margin from
+PrecisionAuthorityV4, uses that same frozen margin for target-level heterogeneity,
+and never lets the realized negative-control interval move the target-harm floor.
+Targeted improvements must clear source-specific lower-bound guardrails for every
+observed source.
+
+Within one burden rung, targeting complexity is measured as the mean number of
+effective targeted partners over target x outer-fold cells. Because each cell is
+an integer count, differences smaller than one full effective partner per cell on
+average are prospectively treated as complexity-equivalent; efficacy lower bound
+then decides among those policies. A full one-partner average advantage remains
+material. This rule is frozen before terminal outcomes.
 """
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from fractions import Fraction
 import hashlib
 import json
 from typing import Mapping, Sequence
@@ -19,8 +27,12 @@ from .masking_qualification_decision_v1 import (
     POLICY_ORDER,
 )
 
-DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_AND_SOURCE_BENEFIT_GUARDED_SHORTCUT_SUPPRESSION_V3"
-POLICY_SELECTION_RULE_ID = "UNIFORM_IF_SUFFICIENT_ELSE_MIN_TARGETING_THEN_MAX_LOWER_BOUND_V1"
+DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_PROSPECTIVE_HETEROGENEITY_AND_MATERIAL_TARGETING_V4"
+POLICY_SELECTION_RULE_ID = "UNIFORM_IF_SUFFICIENT_ELSE_ONE_EFFECTIVE_PARTNER_MATERIALITY_THEN_MAX_LOWER_BOUND_V2"
+TARGET_HETEROGENEITY_GUARDRAIL_ID = "WORST_TARGET_DELTA_GE_NEGATIVE_FROZEN_NULL_EQUIVALENCE_MARGIN_V1"
+TARGETING_COMPLEXITY_MATERIALITY_ID = "ONE_EFFECTIVE_PARTNER_PER_TARGET_FOLD_MEAN_V1"
+TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR = 1
+TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR = 1
 
 
 def _digest(payload) -> str:
@@ -49,7 +61,7 @@ class MaskingPolicyDecisionReceiptV2:
     evidence_digest: str
 
     def canonical_digest(self) -> str:
-        return _digest({"schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V3", **asdict(self)})
+        return _digest({"schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V4", **asdict(self)})
 
 
 @dataclass(frozen=True)
@@ -61,6 +73,10 @@ class MaskingRungDecisionReceiptV2:
     policy_receipt_sha256: Mapping[str, str]
     decision_rule_id: str = DECISION_RULE_ID
     policy_selection_rule_id: str = POLICY_SELECTION_RULE_ID
+    target_heterogeneity_guardrail_id: str = TARGET_HETEROGENEITY_GUARDRAIL_ID
+    targeting_complexity_materiality_id: str = TARGETING_COMPLEXITY_MATERIALITY_ID
+    targeting_complexity_materiality_numerator: int = TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR
+    targeting_complexity_materiality_denominator: int = TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR
 
     def validate(self) -> None:
         if set(self.policy_receipt_sha256) != set(POLICIES):
@@ -73,6 +89,18 @@ class MaskingRungDecisionReceiptV2:
             raise ValueError("decision_rule_id mismatch")
         if self.policy_selection_rule_id != POLICY_SELECTION_RULE_ID:
             raise ValueError("policy_selection_rule_id mismatch")
+        if self.target_heterogeneity_guardrail_id != TARGET_HETEROGENEITY_GUARDRAIL_ID:
+            raise ValueError("target_heterogeneity_guardrail_id mismatch")
+        if self.targeting_complexity_materiality_id != TARGETING_COMPLEXITY_MATERIALITY_ID:
+            raise ValueError("targeting_complexity_materiality_id mismatch")
+        if (
+            self.targeting_complexity_materiality_numerator,
+            self.targeting_complexity_materiality_denominator,
+        ) != (
+            TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR,
+            TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR,
+        ):
+            raise ValueError("targeting complexity materiality mismatch")
         for digest in self.policy_receipt_sha256.values():
             if not isinstance(digest, str) or len(digest) != 64:
                 raise ValueError("policy receipt roots must be SHA-256 digests")
@@ -80,7 +108,7 @@ class MaskingRungDecisionReceiptV2:
     def canonical_digest(self) -> str:
         self.validate()
         return _digest({
-            "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V3",
+            "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V4",
             **asdict(self),
             "policy_receipt_sha256": dict(sorted(self.policy_receipt_sha256.items())),
         })
@@ -141,7 +169,7 @@ def evaluate_policy_v2(
         )
         heterogeneity = (
             evidence.worst_target_delta
-            >= evidence.negative_control_delta.lower_two_sided
+            >= -tolerance
         )
 
     nonlinear = (
@@ -200,14 +228,26 @@ def select_policy_v2(receipts: Sequence[MaskingPolicyDecisionReceiptV2]) -> str:
     ]
     if not qualified:
         return "NO_POLICY_QUALIFIED"
-    qualified.sort(
+    materiality = float(
+        Fraction(
+            TARGETING_COMPLEXITY_MATERIALITY_NUMERATOR,
+            TARGETING_COMPLEXITY_MATERIALITY_DENOMINATOR,
+        )
+    )
+    min_targeting = min(float(r.mean_effective_targeted_n) for r in qualified)
+    complexity_equivalent = [
+        r
+        for r in qualified
+        if float(r.mean_effective_targeted_n) - min_targeting < materiality
+    ]
+    complexity_equivalent.sort(
         key=lambda r: (
-            float(r.mean_effective_targeted_n),
             -float(r.delta_lower_one_sided),
+            float(r.mean_effective_targeted_n),
             POLICY_ORDER[r.policy_id],
         )
     )
-    return qualified[0].policy_id
+    return complexity_equivalent[0].policy_id
 
 
 def evaluate_rung_v2(

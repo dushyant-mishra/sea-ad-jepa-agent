@@ -159,6 +159,22 @@ def test_targeting_complexity_is_target_by_fold_not_donor_weighted():
     assert evidence.mean_effective_targeted_n == pytest.approx(2.0)
 
 
+def test_effective_targeting_counts_must_be_integral_target_fold_counts():
+    counts = np.full((128, 4), 7.0)
+    counts[0, 0] = 7.5
+    with pytest.raises(ValueError, match="integral target-by-fold counts"):
+        raw_bundle(effective_targeted_n_by_target_fold=counts)
+
+
+def test_one_target_fold_event_has_the_expected_reachable_mean_increment():
+    counts = np.full((128, 4), 7.0)
+    counts[0, 0] = 8.0
+    evidence = assemble(effective_targeted_n_by_target_fold=counts)
+    assert evidence.mean_effective_targeted_n == pytest.approx(
+        7.0 + 1.0 / (128 * 4)
+    )
+
+
 @pytest.mark.parametrize(
     "field",
     ("replay_exact", "untreated_identity_exact", "no_privileged_metadata"),
