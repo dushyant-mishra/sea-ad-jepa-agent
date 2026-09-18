@@ -35,8 +35,10 @@ class MaskingPolicyDecisionReceiptV2:
     burden_denominator: int
     qualified: bool
     controls_passed: bool
+    negative_control_precision_passed: bool
     primary_null_level_passed: bool
     targeted_improvement_passed: bool
+    source_improvement_guardrail_passed: bool
     heterogeneity_guardrail_passed: bool
     nonlinear_guardrail_passed: bool
     null_noise_tolerance: float
@@ -123,16 +125,18 @@ def evaluate_policy_v2(
     )
 
     if evidence.policy_id == "UNIFORM_RANDOM":
+        source_improvement_guardrail = True
         improvement = True
         heterogeneity = True
     else:
+        source_improvement_guardrail = all(
+            float(value) >= 0.0
+            for value in evidence.source_delta_lower_one_sided.values()
+        )
         improvement = (
             evidence.delta_vs_uniform.lower_one_sided > 0.0
             and evidence.target_delta_median >= 0.0
-            and all(
-                float(value) >= 0.0
-                for value in evidence.source_delta_lower_one_sided.values()
-            )
+            and source_improvement_guardrail
         )
         heterogeneity = (
             evidence.worst_target_delta
@@ -167,8 +171,10 @@ def evaluate_policy_v2(
         burden_denominator=evidence.burden_denominator,
         qualified=qualified,
         controls_passed=controls,
+        negative_control_precision_passed=negative_ok,
         primary_null_level_passed=primary_null,
         targeted_improvement_passed=improvement,
+        source_improvement_guardrail_passed=source_improvement_guardrail,
         heterogeneity_guardrail_passed=heterogeneity,
         nonlinear_guardrail_passed=nonlinear,
         null_noise_tolerance=tolerance,
