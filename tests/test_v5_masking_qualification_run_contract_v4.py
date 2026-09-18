@@ -2,16 +2,18 @@ import hashlib
 import pytest
 from sea_ad_jepa.v5.masking_qualification_run_contract_v4 import (
     MaskingQualificationRunContractV4, DECISION_RULE_ID, EXECUTION_SOURCE_ROLE_ID,
-    FREEZE_POLICY_ID, STRICT_SUPPORT_POLICY_ID, TERMINAL_UNIVERSE_ID
+    FREEZE_POLICY_ID, STRICT_SUPPORT_POLICY_ID, TERMINAL_UNIVERSE_ID,
+    EXPECTED_FULL104_BLOCK_MANIFEST_SHA256, EXPECTED_OBSERVATION_STATE_SHA256,
+    TERMINAL_EXECUTION_INPUT_ROLE_ID, CALIBRATION_CACHE_ROLE_ID
 )
 
 def h(x): return hashlib.sha256(x.encode()).hexdigest()
 
 def contract(**updates):
     names=[
-        "design","params","manifest","obs","support","census","budget","burden","split",
+        "design","params","calibration-cache","support","census","budget","burden","split",
         "panel-plan","calibration-precision","panel-receipt","panel","precision","nl-plan","nl-receipt","nonlinear","rng",
-        "checkpoint","reference","streaming","panel-source","calibration-precision-source","capacity-source","panel-authority-source","precision-source",
+        "checkpoint","reference","streaming","panel-source","calibration-precision-source","capacity-source","cache-builder-source","cache-evaluator-source","panel-authority-source","precision-source",
         "donor-source","control-source","nlcal-source","nlauth-source","nlexec-source","decision-source",
         "execution-source","spillover-source"
     ]
@@ -20,10 +22,11 @@ def contract(**updates):
         authority_id="TEST",
         qualification_design_authority_sha256=r["design"],
         qualification_parameters_authority_sha256=r["params"],
-        full104_block_manifest_sha256=r["manifest"],
-        observation_state_sha256=r["obs"],
+        full104_block_manifest_sha256=EXPECTED_FULL104_BLOCK_MANIFEST_SHA256,
+        observation_state_sha256=EXPECTED_OBSERVATION_STATE_SHA256,
         support_estimability_authority_sha256=r["support"],
         census_authority_sha256=r["census"],
+        control_calibration_cache_manifest_sha256=r["calibration-cache"],
         target_evidence_budget_template_sha256=r["budget"],
         burden_ladder_authority_sha256=r["burden"],
         outer_split_authority_sha256=r["split"],
@@ -42,6 +45,8 @@ def contract(**updates):
         target_panel_sizing_source_sha256=r["panel-source"],
         control_calibration_precision_source_sha256=r["calibration-precision-source"],
         control_capacity_calibration_source_sha256=r["capacity-source"],
+        control_calibration_cache_builder_source_sha256=r["cache-builder-source"],
+        control_calibration_cache_evaluator_source_sha256=r["cache-evaluator-source"],
         target_panel_authority_source_sha256=r["panel-authority-source"],
         precision_evaluator_source_sha256=r["precision-source"],
         donor_evidence_source_sha256=r["donor-source"],
@@ -53,6 +58,7 @@ def contract(**updates):
         execution_authority_source_sha256=r["execution-source"],
         anti_spillover_test_source_sha256=r["spillover-source"],
         execution_source_role_id=EXECUTION_SOURCE_ROLE_ID,
+        execution_input_role_id=TERMINAL_EXECUTION_INPUT_ROLE_ID,
         decision_rule_id=DECISION_RULE_ID,
         freeze_policy_id=FREEZE_POLICY_ID,
         support_state_policy_id=STRICT_SUPPORT_POLICY_ID,
@@ -77,3 +83,17 @@ def test_role_splicing_fails_closed():
 def test_terminal_outcome_access_before_freeze_fails():
     with pytest.raises(ValueError,match="before terminal outcomes"):
         contract(terminal_outcomes_inspected_before_freeze=True).validate()
+
+
+def test_terminal_contract_refuses_calibration_cache_as_execution_input():
+    c=contract(); c.validate()
+    c.assert_terminal_execution_input_role(TERMINAL_EXECUTION_INPUT_ROLE_ID)
+    with pytest.raises(ValueError,match="forbidden as terminal"):
+        c.assert_terminal_execution_input_role(CALIBRATION_CACHE_ROLE_ID)
+
+
+def test_terminal_contract_pins_actual_full104_substrate_and_observation_state():
+    with pytest.raises(ValueError,match="block-manifest"):
+        contract(full104_block_manifest_sha256=h("wrong-manifest")).validate()
+    with pytest.raises(ValueError,match="observation-state"):
+        contract(observation_state_sha256=h("wrong-observation")).validate()
