@@ -26,6 +26,7 @@ def evidence(**updates):
         delta_vs_uniform=I(0.03, 0.01, 0.05, 0.015, 0.045),
         excess_over_shuffled_null=I(0.001, -0.002, 0.004, -0.001, 0.004),
         source_excess_upper_one_sided={"HVS": 0.004, "NPH52": 0.003, "SEA_AD": 0.004},
+        source_delta_lower_one_sided={"HVS": 0.01, "NPH52": 0.01, "SEA_AD": 0.01},
         target_delta_median=0.02,
         worst_target_delta=-0.002,
         mean_effective_targeted_n=7.5,
@@ -33,6 +34,8 @@ def evidence(**updates):
         planted_detect_excess=I(0.5, 0.4, 0.6, 0.42, 0.58),
         planted_after_mask_excess=I(0.001, -0.002, 0.004, -0.001, 0.004),
         nonlinear_excess_over_shuffled_null=I(0.001, -0.002, 0.004, -0.001, 0.004),
+        null_noise_tolerance_ceiling=0.005,
+        negative_control_precision_passed=True,
         replay_exact=True,
         untreated_identity_exact=True,
         no_privileged_metadata=True,
@@ -42,9 +45,11 @@ def evidence(**updates):
     return MaskingPolicyDecisionEvidenceV1(**values)
 
 
-def test_null_tolerance_comes_only_from_negative_control_interval():
-    e = evidence()
-    assert null_noise_tolerance(e) == pytest.approx(0.005)
+def test_null_tolerance_is_frozen_and_not_derived_from_negative_control_width():
+    narrow = evidence(negative_control_delta=I(0.0, -0.002, 0.002, -0.001, 0.001))
+    wide = evidence(negative_control_delta=I(0.0, -0.050, 0.050, -0.040, 0.040))
+    assert null_noise_tolerance(narrow) == pytest.approx(0.005)
+    assert null_noise_tolerance(wide) == pytest.approx(0.005)
 
 
 def test_true_null_level_can_pass_with_small_positive_upper_bound():
@@ -69,12 +74,16 @@ def test_source_specific_residual_above_noise_fails():
     assert not evaluate_policy_v2(e).qualified
 
 
-def test_negative_control_that_excludes_zero_cannot_set_tolerance():
+def test_imprecise_negative_control_cannot_buy_a_looser_bar():
     e = evidence(
-        negative_control_delta=I(0.01, 0.006, 0.014, 0.007, 0.013)
+        negative_control_delta=I(0.0, -0.015, 0.015, -0.012, 0.012),
+        negative_control_precision_passed=False,
+        excess_over_shuffled_null=I(0.0100, 0.0084, 0.0116, 0.0088, 0.0116),
     )
-    with pytest.raises(ValueError, match="must contain zero"):
-        evaluate_policy_v2(e)
+    r = evaluate_policy_v2(e)
+    assert r.null_noise_tolerance == pytest.approx(0.005)
+    assert not r.controls_passed
+    assert not r.qualified
 
 
 def test_planted_control_must_clear_noise_before_and_return_to_noise_after():
@@ -95,3 +104,12 @@ def test_nonlinear_residual_uses_same_null_noise_tolerance():
     r = evaluate_policy_v2(e)
     assert not r.qualified
     assert not r.nonlinear_guardrail_passed
+
+
+def test_policy_harming_any_source_fails_improvement():
+    e = evidence(
+        source_delta_lower_one_sided={"HVS": -0.01329, "NPH52": -0.01363, "SEA_AD": 0.04650}
+    )
+    r = evaluate_policy_v2(e)
+    assert not r.targeted_improvement_passed
+    assert not r.qualified
