@@ -92,6 +92,7 @@ class MaskingQualificationRunContractV4:
     nonlinear_executor_source_sha256: str
     decision_evaluator_source_sha256: str
     terminal_evidence_assembly_source_sha256: str
+    terminal_mechanical_controls_source_sha256: str
     execution_authority_source_sha256: str
     anti_spillover_test_source_sha256: str
 
@@ -144,6 +145,7 @@ class MaskingQualificationRunContractV4:
             "nonlinear_executor_source_sha256",
             "decision_evaluator_source_sha256",
             "terminal_evidence_assembly_source_sha256",
+            "terminal_mechanical_controls_source_sha256",
             "execution_authority_source_sha256",
             "anti_spillover_test_source_sha256",
         )
@@ -422,6 +424,7 @@ class MaskingQualificationRunContractV4:
             "nonlinear_executor_source_sha256": "nonlinear_executor_live_sha256",
             "decision_evaluator_source_sha256": "decision_evaluator_live_sha256",
             "terminal_evidence_assembly_source_sha256": "terminal_evidence_assembly_live_sha256",
+            "terminal_mechanical_controls_source_sha256": "terminal_mechanical_controls_live_sha256",
             "execution_authority_source_sha256": "execution_authority_live_sha256",
             "anti_spillover_test_source_sha256": "anti_spillover_test_live_sha256",
         }
