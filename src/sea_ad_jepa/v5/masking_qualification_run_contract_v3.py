@@ -64,6 +64,7 @@ class MaskingQualificationRunContractV3:
     outer_split_authority_sha256: str
     target_panel_authority_sha256: str
     precision_authority_sha256: str
+    nonlinear_challenge_authority_sha256: str
     rng_replay_authority_sha256: str
 
     machine_worktree_checkpoint_sha256: str
@@ -73,6 +74,7 @@ class MaskingQualificationRunContractV3:
     precision_evaluator_source_sha256: str
     donor_evidence_source_sha256: str
     control_executor_source_sha256: str
+    nonlinear_executor_source_sha256: str
     decision_evaluator_source_sha256: str
     anti_spillover_test_source_sha256: str
 
@@ -99,6 +101,7 @@ class MaskingQualificationRunContractV3:
             ("outer_split_authority_sha256", self.outer_split_authority_sha256),
             ("target_panel_authority_sha256", self.target_panel_authority_sha256),
             ("precision_authority_sha256", self.precision_authority_sha256),
+            ("nonlinear_challenge_authority_sha256", self.nonlinear_challenge_authority_sha256),
             ("rng_replay_authority_sha256", self.rng_replay_authority_sha256),
             ("machine_worktree_checkpoint_sha256", self.machine_worktree_checkpoint_sha256),
             ("canonical_reference_source_sha256", self.canonical_reference_source_sha256),
@@ -106,6 +109,7 @@ class MaskingQualificationRunContractV3:
             ("precision_evaluator_source_sha256", self.precision_evaluator_source_sha256),
             ("donor_evidence_source_sha256", self.donor_evidence_source_sha256),
             ("control_executor_source_sha256", self.control_executor_source_sha256),
+            ("nonlinear_executor_source_sha256", self.nonlinear_executor_source_sha256),
             ("decision_evaluator_source_sha256", self.decision_evaluator_source_sha256),
             ("anti_spillover_test_source_sha256", self.anti_spillover_test_source_sha256),
         )
@@ -155,6 +159,17 @@ class MaskingQualificationRunContractV3:
         if _live_digest(precision, "precision") != self.precision_authority_sha256:
             raise ValueError("precision authority root mismatch")
 
+    def bind_nonlinear_challenge(self, nonlinear: Any) -> None:
+        self.validate()
+        if _live_digest(nonlinear, "nonlinear challenge") != self.nonlinear_challenge_authority_sha256:
+            raise ValueError("nonlinear challenge authority root mismatch")
+        if getattr(nonlinear, "primary_parameters_authority_sha256", None) != self.qualification_parameters_authority_sha256:
+            raise ValueError("nonlinear challenge is bound to different primary parameters")
+        if getattr(nonlinear, "outer_split_authority_sha256", None) != self.outer_split_authority_sha256:
+            raise ValueError("nonlinear challenge is bound to different outer split")
+        if getattr(nonlinear, "target_panel_authority_sha256", None) != self.target_panel_authority_sha256:
+            raise ValueError("nonlinear challenge is bound to different target panel")
+
     def bind_execution_sources(
         self,
         *,
@@ -163,6 +178,7 @@ class MaskingQualificationRunContractV3:
         precision_evaluator_live_sha256: str,
         donor_evidence_live_sha256: str,
         control_executor_live_sha256: str,
+        nonlinear_executor_live_sha256: str,
         decision_evaluator_live_sha256: str,
         anti_spillover_test_live_sha256: str,
     ) -> None:
@@ -173,6 +189,7 @@ class MaskingQualificationRunContractV3:
             "precision_evaluator_source_sha256": _sha(precision_evaluator_live_sha256, "precision_evaluator_live_sha256"),
             "donor_evidence_source_sha256": _sha(donor_evidence_live_sha256, "donor_evidence_live_sha256"),
             "control_executor_source_sha256": _sha(control_executor_live_sha256, "control_executor_live_sha256"),
+            "nonlinear_executor_source_sha256": _sha(nonlinear_executor_live_sha256, "nonlinear_executor_live_sha256"),
             "decision_evaluator_source_sha256": _sha(decision_evaluator_live_sha256, "decision_evaluator_live_sha256"),
             "anti_spillover_test_source_sha256": _sha(anti_spillover_test_live_sha256, "anti_spillover_test_live_sha256"),
         }
