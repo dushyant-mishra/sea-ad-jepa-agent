@@ -46,7 +46,7 @@ CURRENT_PRODUCTION_MODULES=(
     masking_qualification_parameters_authority_v2,
     masking_qualification_run_contract_v4,
     masking_rng_replay_authority_v2,
-    nonlinear_sampling_calibration_authority_v1,
+    nonlinear_sampling_calibration_authority_v2,
     precision_authority_v4,
     target_panel_authority_v3,
     target_panel_selector_v2,
@@ -109,7 +109,7 @@ def test_current_checkpoint_state_names_redteam2_successors():
     assert sources["target_panel_sizing"].endswith("target_panel_sizing_authority_v2.py")
     assert sources["target_panel_authority"].endswith("target_panel_authority_v3.py")
     assert sources["precision_authority"].endswith("precision_authority_v4.py")
-    assert sources["nonlinear_sampling_calibration"].endswith("nonlinear_sampling_calibration_authority_v1.py")
+    assert sources["nonlinear_sampling_calibration"].endswith("nonlinear_sampling_calibration_authority_v2.py")
     assert sources["nonlinear_challenge_authority"].endswith("masking_nonlinear_challenge_authority_v3.py")
 
 
