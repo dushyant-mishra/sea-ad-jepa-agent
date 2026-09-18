@@ -1,0 +1,157 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V20",
+  "date": "2026-09-18",
+  "status": "FULL104_MASKING_HANDOFF_AUTHORITY_REPAIRED__GPU_RUNTIME_RECEIPTS_PENDING__TERMINAL_OUTCOMES_UNOPENED__TRAINING_OFF",
+  "implementation_branch": "impl/v5-full104-masking-redteam2-20260918",
+  "implementation_head": "038a162f03f29f5f0e00337dde3cbbcf3cf7870c",
+  "implementation_pr": 20,
+  "handoff_branch": "handoff/jepa-v5-full104-calibration-takeover-ready-20260918",
+  "verified_code_anchor": "f62dc42582c8b8933955505f5127bebfaa687304",
+  "exact_head_ci_status": "SCIENTIFIC_SOURCE_TEST_ANCHOR_PASS_NO_SKIPS__RUN_35373584821__LIVE_HEAD_DOCS_ONLY_ABOVE",
+  "scientific_task": "BIOLOGICAL_CELL_STATE_INFERENCE_FROM_PARTIAL_RNA_WITH_QUERY_LOCAL_STATE_AT_CANONICAL_MOLECULAR_ADDRESS__NOT_HIDDEN_GENE_SCALAR_RECONSTRUCTION",
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_common_core": 17186,
+    "level4_blocks": 8915,
+    "manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "gpu_root": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/"
+  },
+  "census_changed_input": {
+    "corrected_core_measured_zero_frequency": 0.832983,
+    "core_nonzero_count": 13069917135,
+    "core_measured_zero_count": 65184935567,
+    "estimable_all_4_folds": 17053,
+    "eligible_core_total": 17186,
+    "kish_ess_donor_equivalents": 42,
+    "authority_note": "GPU runtime V2 receipts still must be regenerated and bound"
+  },
+  "current_design": {
+    "masking_unit": "STRICT_MEASURED_SCALAR_NON_TARGET_ADDRESS__REALIZED_ZERO_REMAINS_ELIGIBLE",
+    "burden_ladder": [
+      "5%",
+      "10%",
+      "15%",
+      "20%",
+      "30%",
+      "50%"
+    ],
+    "burden_rule": "ASCENDING_STOP_AT_FIRST_FULLY_QUALIFYING_RUNG",
+    "target_panel_ladder": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "target_panel_rule": "CONTROL_CAPACITY_ONLY__REAL_MASKING_OUTCOMES_FORBIDDEN",
+    "nonlinear_row_cap_ladder": [
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "nonlinear_rule": "CONTROL_CAPACITY_ONLY__REAL_MASKING_OUTCOMES_FORBIDDEN",
+    "discovery_candidate_parameters": {
+      "targeted_partner_cap": 8,
+      "ridge_candidate_pool_count": 64,
+      "ridge_score_feature_count": 32,
+      "ridge_alpha": "1/100",
+      "prefix_inner_folds": 3,
+      "prefix_candidates": 20,
+      "prefix_floor": "1/20",
+      "prefix_reduction": "1/2"
+    },
+    "cache_role": "CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1",
+    "terminal_input_role": "AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM_V1"
+  },
+  "gates": {
+    "training": "OFF",
+    "terminal_masking": "NOT_EXECUTED",
+    "selected_policy": "NONE",
+    "protected_outcomes": "CLOSED",
+    "d_shared": "CLOSED",
+    "stage_a": "PASS_11_OF_11__GEOMETRY_MEMORIZATION_DEFERRED",
+    "target_panel": "NOT_SELECTED",
+    "nonlinear_cap": "NOT_SELECTED",
+    "final_run_contract": "NOT_INSTANTIATED"
+  },
+  "next_actions": [
+    "re-fetch live branch/PR; if source/test/workflow changed after f62dc425 rerun focused CI and fail closed on skips",
+    "refresh/supersede stale 20260917 GPU preflight for current V4/cache-calibrated chain",
+    "build explicit masking parameters authority V2",
+    "on GPU regenerate census V2 summary/split/target-eligibility receipts from real pass1 NPZ",
+    "build authenticated FULL104 calibration-only cache from Level-4 plus canonical registry and verify all 104 donors",
+    "run target-panel cache ladder 128-256-512-1024 using separate run-A/run-B replay directories and stop at first qualification",
+    "build target-selection receipt then TargetPanelAuthorityV3",
+    "build OuterSplitAuthorityV1 and PrecisionAuthorityV4",
+    "build nonlinear model-capacity authority and run nonlinear cap cache ladder 64-128-256-512-1024 using separate run-A/run-B replay directories",
+    "implement/test/review missing V3 nonlinear challenge, RNG V2 and RunContract V4 builders",
+    "freeze final current authorities and V4 run contract before terminal outcome access",
+    "rebuild machine checkpoint on final committed head and independently verify",
+    "only then execute terminal 5 percent FULL104 rung; stop at first full qualification"
+  ],
+  "forbidden": [
+    "training",
+    "terminal masking outcome access before final design and run-contract freeze",
+    "D_shared pathology DEV SEALED opening",
+    "smaller or historical data substitution for FULL104",
+    "calibration cache as terminal input or training input",
+    "historical target lists or Stage81 T1 artifacts in current chain",
+    "placeholder SHA256 roots",
+    "free PASS status strings without computed evidence",
+    "post-outcome parameter retuning",
+    "burden escalation after first qualifying rung",
+    "treat 128 targets or 256 nonlinear rows as final by convenience",
+    "reuse stale V1 V2 GPU preflight as final authority"
+  ],
+  "manifest_path": "docs/agent/handoff_artifacts/20260918/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json",
+  "scientific_source_test_data_anchor": "f62dc42582c8b8933955505f5127bebfaa687304",
+  "supersedes_handoff_branch": "handoff/jepa-v5-full104-calibration-final-audited-20260918",
+  "implementation_pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
+  "governance_repair": {
+    "implementation_governance_commit": "038a162f03f29f5f0e00337dde3cbbcf3cf7870c",
+    "changed_files": [
+      "docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json",
+      "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md"
+    ],
+    "start_here_hard_pin_removed": true,
+    "active_execution_plan_sha256": "f1c8db99ebb6eb35c39583590e5a50b7a7c6146c5eae40e5d31751a8a2e2468a",
+    "checkpoint_pr": 20,
+    "checkpoint_pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
+    "old_handoff_status": "SUPERSEDED_DUE_TO_STALE_GOVERNANCE_METADATA_AND_PLAN"
+  },
+  "implementation_gaps_before_terminal": [
+    "CURRENT_GPU_PREFLIGHT_SUCCESSOR_NOT_YET_IMPLEMENTED_AND_VERIFIED",
+    "NONLINEAR_CHALLENGE_AUTHORITY_V3_BUILDER_MISSING",
+    "MASKING_RNG_REPLAY_AUTHORITY_V2_BUILDER_MISSING",
+    "MASKING_QUALIFICATION_RUN_CONTRACT_V4_BUILDER_MISSING"
+  ],
+  "replay_rule": "RUN_A_AND_RUN_B_MUST_USE_DIFFERENT_OUTPUT_DIRECTORIES__PRESERVE_RUN_A_MATRICES_UNCHANGED",
+  "pr_state_at_final_audit": {
+    "state": "open",
+    "draft": true,
+    "mergeable_state": "dirty",
+    "takeover_rule": "RE_FETCH__NO_AUTOMATIC_MERGE_REBASE_RETARGET_OR_CONFLICT_RESOLUTION"
+  },
+  "authority_package_audit": {
+    "live_implementation_head": "038a162f03f29f5f0e00337dde3cbbcf3cf7870c",
+    "handoff_relation": "EXACTLY_ONE_DOCS_ONLY_COMMIT_AHEAD_ZERO_BEHIND",
+    "current_paths_rechecked": 60,
+    "missing_claimed_paths": 0,
+    "final_builder_gaps_are_explicit_tasks": true
+  },
+  "source_data_lineage_anchor": "86692cde7e61fe4beae7fff4070bd376a8090af2",
+  "exact_scientific_anchor_ci": {
+    "sha": "f62dc42582c8b8933955505f5127bebfaa687304",
+    "run_id": 35373584821,
+    "conclusion": "success",
+    "skip_gate": "pass",
+    "predecessor_failed_run": 35373486676,
+    "predecessor_failure": "STALE_ANTI_SPILLOVER_TEST_REFERENCED_NONLINEAR_SAMPLING_AUTHORITY_V1_AFTER_CURRENT_CHAIN_MOVED_TO_V2"
+  }
+}
