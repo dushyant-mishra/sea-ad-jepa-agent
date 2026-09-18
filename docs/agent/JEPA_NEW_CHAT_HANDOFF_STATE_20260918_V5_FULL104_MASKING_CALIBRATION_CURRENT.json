@@ -1,0 +1,112 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V17",
+  "date": "2026-09-18",
+  "status": "FULL104_MASKING_CONTROL_CALIBRATION_IMPLEMENTED__GPU_RECEIPT_EXECUTION_PENDING__TERMINAL_OUTCOMES_UNOPENED__TRAINING_OFF",
+  "implementation_branch": "impl/v5-full104-masking-redteam2-20260918",
+  "implementation_head": "86692cde7e61fe4beae7fff4070bd376a8090af2",
+  "implementation_pr": 20,
+  "handoff_branch": "handoff/jepa-v5-full104-calibration-20260918",
+  "verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
+  "exact_head_ci_status": "NO_COMBINED_STATUS_RECORDED_AT_HANDOFF__RUN_FOCUSED_CI_FIRST",
+  "scientific_task": "BIOLOGICAL_CELL_STATE_INFERENCE_FROM_PARTIAL_RNA_WITH_QUERY_LOCAL_STATE_AT_CANONICAL_MOLECULAR_ADDRESS__NOT_HIDDEN_GENE_SCALAR_RECONSTRUCTION",
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_common_core": 17186,
+    "level4_blocks": 8915,
+    "manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "gpu_root": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/"
+  },
+  "census_changed_input": {
+    "corrected_core_measured_zero_frequency": 0.832983,
+    "core_nonzero_count": 13069917135,
+    "core_measured_zero_count": 65184935567,
+    "estimable_all_4_folds": 17053,
+    "eligible_core_total": 17186,
+    "kish_ess_donor_equivalents": 42,
+    "authority_note": "GPU runtime V2 receipts still must be regenerated and bound"
+  },
+  "current_design": {
+    "masking_unit": "STRICT_MEASURED_SCALAR_NON_TARGET_ADDRESS__REALIZED_ZERO_REMAINS_ELIGIBLE",
+    "burden_ladder": [
+      "5%",
+      "10%",
+      "15%",
+      "20%",
+      "30%",
+      "50%"
+    ],
+    "burden_rule": "ASCENDING_STOP_AT_FIRST_FULLY_QUALIFYING_RUNG",
+    "target_panel_ladder": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "target_panel_rule": "CONTROL_CAPACITY_ONLY__REAL_MASKING_OUTCOMES_FORBIDDEN",
+    "nonlinear_row_cap_ladder": [
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "nonlinear_rule": "CONTROL_CAPACITY_ONLY__REAL_MASKING_OUTCOMES_FORBIDDEN",
+    "discovery_candidate_parameters": {
+      "targeted_partner_cap": 8,
+      "ridge_candidate_pool_count": 64,
+      "ridge_score_feature_count": 32,
+      "ridge_alpha": "1/100",
+      "prefix_inner_folds": 3,
+      "prefix_candidates": 20,
+      "prefix_floor": "1/20",
+      "prefix_reduction": "1/2"
+    },
+    "cache_role": "CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1",
+    "terminal_input_role": "AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM_V1"
+  },
+  "gates": {
+    "training": "OFF",
+    "terminal_masking": "NOT_EXECUTED",
+    "selected_policy": "NONE",
+    "protected_outcomes": "CLOSED",
+    "d_shared": "CLOSED",
+    "stage_a": "PASS_11_OF_11__GEOMETRY_MEMORIZATION_DEFERRED",
+    "target_panel": "NOT_SELECTED",
+    "nonlinear_cap": "NOT_SELECTED",
+    "final_run_contract": "NOT_INSTANTIATED"
+  },
+  "next_actions": [
+    "run focused CI on exact implementation head and fail on skips",
+    "refresh stale 20260917 GPU preflight for current V4/cache-calibrated chain",
+    "on GPU regenerate census V2 summary/split/target-eligibility receipts from real pass1 NPZ",
+    "build authenticated FULL104 calibration-only cache from Level-4 plus canonical registry and verify all 104 donors",
+    "run target-panel cache ladder 128-256-512-1024 with exact replay and stop at first qualification",
+    "build TargetPanelAuthorityV3, OuterSplitAuthorityV1 and PrecisionAuthorityV4",
+    "build nonlinear model-capacity authority and run nonlinear cap cache ladder 64-128-256-512-1024 with exact replay",
+    "freeze NonlinearChallengeAuthorityV3 and RNG current authority",
+    "bind exact current source hashes and freeze final MaskingQualificationRunContractV4",
+    "rebuild machine checkpoint on final committed head and independently verify",
+    "only then execute terminal 5 percent FULL104 rung; escalate only after failure and stop at first full qualification",
+    "after masking closure continue healthy-current-teacher remaining-RNA, measurement robustness, production geometry/memorization/runtime provenance, then explicit final training authority"
+  ],
+  "forbidden": [
+    "training",
+    "terminal masking outcome access before final design and run-contract freeze",
+    "D_shared pathology DEV SEALED opening",
+    "smaller or historical data substitution for FULL104",
+    "calibration cache as terminal input or training input",
+    "historical target lists or Stage81 T1 artifacts in current chain",
+    "placeholder SHA256 roots",
+    "free PASS status strings without computed evidence",
+    "post-outcome parameter retuning",
+    "burden escalation after first qualifying rung",
+    "treat 128 targets or 256 nonlinear rows as final by convenience",
+    "reuse stale V1 V2 GPU preflight as final authority"
+  ],
+  "manifest_path": "docs/agent/handoff_artifacts/20260918/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json"
+}
