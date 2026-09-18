@@ -72,6 +72,7 @@ class MaskingQualificationRunContractV3:
     full104_streaming_execution_source_sha256: str
     precision_evaluator_source_sha256: str
     donor_evidence_source_sha256: str
+    control_executor_source_sha256: str
     decision_evaluator_source_sha256: str
     anti_spillover_test_source_sha256: str
 
@@ -104,6 +105,7 @@ class MaskingQualificationRunContractV3:
             ("full104_streaming_execution_source_sha256", self.full104_streaming_execution_source_sha256),
             ("precision_evaluator_source_sha256", self.precision_evaluator_source_sha256),
             ("donor_evidence_source_sha256", self.donor_evidence_source_sha256),
+            ("control_executor_source_sha256", self.control_executor_source_sha256),
             ("decision_evaluator_source_sha256", self.decision_evaluator_source_sha256),
             ("anti_spillover_test_source_sha256", self.anti_spillover_test_source_sha256),
         )
@@ -160,6 +162,7 @@ class MaskingQualificationRunContractV3:
         full104_streaming_execution_live_sha256: str,
         precision_evaluator_live_sha256: str,
         donor_evidence_live_sha256: str,
+        control_executor_live_sha256: str,
         decision_evaluator_live_sha256: str,
         anti_spillover_test_live_sha256: str,
     ) -> None:
@@ -169,6 +172,7 @@ class MaskingQualificationRunContractV3:
             "full104_streaming_execution_source_sha256": _sha(full104_streaming_execution_live_sha256, "full104_streaming_execution_live_sha256"),
             "precision_evaluator_source_sha256": _sha(precision_evaluator_live_sha256, "precision_evaluator_live_sha256"),
             "donor_evidence_source_sha256": _sha(donor_evidence_live_sha256, "donor_evidence_live_sha256"),
+            "control_executor_source_sha256": _sha(control_executor_live_sha256, "control_executor_live_sha256"),
             "decision_evaluator_source_sha256": _sha(decision_evaluator_live_sha256, "decision_evaluator_live_sha256"),
             "anti_spillover_test_source_sha256": _sha(anti_spillover_test_live_sha256, "anti_spillover_test_live_sha256"),
         }
