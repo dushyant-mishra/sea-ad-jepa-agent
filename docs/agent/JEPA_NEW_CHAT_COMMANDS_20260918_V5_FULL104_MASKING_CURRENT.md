@@ -10,11 +10,11 @@ Historical/smaller-run artifacts may motivate a current hypothesis or model shap
 
 Current scientific source/test/workflow anchor:
 
-`5ed613ac700d1505cef10f2fb01e4a5302a933f9`
+`93093be1da09c46983f932d756b0fc9690a3eac4`
 
 Verified GitHub Actions run:
 
-`35385752247` — PASS, including fail-on-skips.
+`35386306268` — PASS, including fail-on-skips.
 
 ## 1. Re-fetch and preserve the worktree
 
@@ -23,7 +23,7 @@ PowerShell:
 ```powershell
 $Repo = "D:\Jepa project"
 $Branch = "impl/v5-full104-masking-redteam2-20260918"
-$ExpectedAnchor = "5ed613ac700d1505cef10f2fb01e4a5302a933f9"
+$ExpectedAnchor = "93093be1da09c46983f932d756b0fc9690a3eac4"
 
 git -C $Repo fetch origin
 git -C $Repo status --porcelain
@@ -266,7 +266,9 @@ Any failure is a STOP.
 
 ## 14. Terminal masking boundary
 
-Only after terminal preflight passes may the 5% FULL104 terminal rung be opened.
+Terminal execution is currently STOPPED after preflight until the current one-rung evidence assembler/executor is implemented, independently tested, and frozen. Do not substitute the older 2026-09-16 runner, a historical results file, a calibration-cache evaluator, or hand-assembled decision JSON.
+
+Only after that current terminal executor exists and terminal preflight passes may the 5% FULL104 terminal rung be opened.
 
 - start at 5%;
 - do not inspect 10% if 5% fully qualifies;
