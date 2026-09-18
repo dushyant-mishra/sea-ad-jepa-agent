@@ -75,3 +75,27 @@ def test_current_template_canonically_names_no_extra_retained_floor_policy():
     assert policy in source
     assert "min_retained_policy_id" in source
     assert "min_retained_policy_id=MIN_RETAINED_POLICY_ID" in builder
+
+def test_intentional_historical_reauthorizations_pin_exact_frozen_bytes():
+    params = Path(
+        "scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py"
+    ).read_text(encoding="utf-8")
+    nonlinear = Path(
+        "scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py"
+    ).read_text(encoding="utf-8")
+
+    expected_parameter_roots = (
+        "a649a4bd220851423679a3ee47fdc096691056eea0cfb09984de64caceb3ad88",
+        "eb32280d90cf2bdc7ab2fed86e1a5af41c4e0293d89d61cc6f2641b9a1fb3511",
+        "7a33785c774485363ea0f57d90acdee2a1d64c81772da1a35f1bef24c5b3a5dc",
+        "6b972a20e49876b5f77b35ab836b5ce9d416cc1e671aa80dcd5d8461e5a6f038",
+    )
+    for digest in expected_parameter_roots:
+        assert digest in params
+    assert "historical discovery provenance byte drift" in params
+
+    assert "73c5125cb79555401836159d861f1775bce7e23879ab0dbada8350813d6ae89a" in nonlinear
+    assert "b43676f7d95bd8599ad7be47b2b121a6f02b4314d4507f537d4e59b7c68d01c4" in nonlinear
+    assert "historical nonlinear script byte drift" in nonlinear
+    assert "historical nonlinear summary byte drift" in nonlinear
+
