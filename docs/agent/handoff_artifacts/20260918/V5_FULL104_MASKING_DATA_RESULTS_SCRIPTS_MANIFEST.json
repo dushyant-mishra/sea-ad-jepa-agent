@@ -1,0 +1,256 @@
+{
+  "schema": "V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST_V4",
+  "date": "2026-09-18",
+  "status": "AUDITED_CURRENT_IMPLEMENTATION_IN_GIT__GOVERNANCE_REPAIRED__GPU_RUNTIME_ARTIFACTS_PENDING",
+  "implementation": {
+    "branch": "impl/v5-full104-masking-redteam2-20260918",
+    "head": "d6ef93e274e42e17d78f3fc652b0dfec202036ac",
+    "pull_request": 20,
+    "predecessor_prs": [
+      19
+    ],
+    "handoff_branch": "handoff/jepa-v5-full104-calibration-final-audited-20260918",
+    "scientific_source_test_data_anchor": "86692cde7e61fe4beae7fff4070bd376a8090af2",
+    "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
+    "superseded_handoff_branches": [
+      "handoff/jepa-v5-full104-calibration-20260918",
+      "handoff/jepa-v5-full104-calibration-audited-20260918"
+    ]
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_common_core": 17186,
+    "level4_blocks": 8915,
+    "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "gpu_level4_root": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/",
+    "policy": "REFERENCE_ONLY_IN_GIT__DO_NOT_DUPLICATE_OR_SUBSTITUTE"
+  },
+  "current_sources": [
+    "src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py",
+    "src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py",
+    "src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v2.py",
+    "src/sea_ad_jepa/v5/masking_qualification_run_contract_v4.py",
+    "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v4.py",
+    "src/sea_ad_jepa/v5/target_evidence_budget_authority_v2.py",
+    "src/sea_ad_jepa/v5/masking_burden_ladder_authority_v2.py",
+    "src/sea_ad_jepa/v5/full104_census_receipt_v2.py",
+    "src/sea_ad_jepa/v5/full104_control_calibration_cache_v1.py",
+    "src/sea_ad_jepa/v5/full104_control_calibration_cache_evaluator_v1.py",
+    "src/sea_ad_jepa/v5/control_calibration_precision_authority_v1.py",
+    "src/sea_ad_jepa/v5/control_capacity_calibration_receipt_v1.py",
+    "src/sea_ad_jepa/v5/target_panel_sizing_authority_v2.py",
+    "src/sea_ad_jepa/v5/target_panel_selector_v2.py",
+    "src/sea_ad_jepa/v5/target_panel_authority_v3.py",
+    "src/sea_ad_jepa/v5/precision_authority_v4.py",
+    "src/sea_ad_jepa/v5/masking_rng_replay_authority_v2.py",
+    "src/sea_ad_jepa/v5/masking_donor_evidence_v1.py",
+    "src/sea_ad_jepa/v5/masking_control_executor_v1.py",
+    "src/sea_ad_jepa/v5/nonlinear_capacity_model_authority_v1.py",
+    "src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v2.py",
+    "src/sea_ad_jepa/v5/full104_nonlinear_capacity_cache_evaluator_v1.py",
+    "src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v3.py",
+    "src/sea_ad_jepa/v5/masking_nonlinear_challenge_executor_v1.py",
+    "src/sea_ad_jepa/v5/masking_qualification_decision_v2.py",
+    "tests/test_v5_full104_masking_anti_spillover_v2.py"
+  ],
+  "current_scripts": [
+    "scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py",
+    "analysis/v5_full104_census_20260918/full104_readonly_census_receipts_v2.py",
+    "scripts/agent/build_full104_census_authority_v2_20260918.py",
+    "scripts/agent/build_full104_control_calibration_cache_v1.py",
+    "scripts/agent/evaluate_full104_target_panel_capacity_from_cache_v1.py",
+    "scripts/agent/build_full104_target_panel_selection_v2_20260918.py",
+    "scripts/agent/build_full104_target_panel_authority_v3_20260918.py",
+    "scripts/agent/build_full104_outer_split_authority_v1_20260918.py",
+    "scripts/agent/build_full104_precision_authority_v4_20260918.py",
+    "scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py",
+    "scripts/agent/evaluate_full104_nonlinear_capacity_from_cache_v1.py"
+  ],
+  "current_tests": [
+    "tests/test_v5_full104_census_receipt_v2.py",
+    "tests/test_v5_full104_control_calibration_cache_v1.py",
+    "tests/test_v5_full104_control_calibration_cache_evaluator_v1.py",
+    "tests/test_v5_control_calibration_precision_authority_v1.py",
+    "tests/test_v5_control_capacity_calibration_receipt_v1.py",
+    "tests/test_v5_target_panel_selector_v2.py",
+    "tests/test_v5_target_panel_authority_builder_v3.py",
+    "tests/test_v5_outer_split_and_precision_builders_current.py",
+    "tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py",
+    "tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py",
+    "tests/test_v5_masking_qualification_run_contract_v4.py",
+    "tests/test_v5_masking_qualification_execution_authority_v4.py",
+    "tests/test_v5_masking_qualification_decision_v2.py",
+    "tests/test_v5_full104_masking_anti_spillover_v2.py",
+    "tests/test_v5_full104_masking_streaming_executor_v1.py",
+    "tests/test_v5_full104_masking_qualification_runner_v1.py"
+  ],
+  "supporting_exploratory": {
+    "branch": "analysis/v5-ridge8-expanded-validation-20260917",
+    "head": "99dc3a6ff5f540fac17e86b135f2c6710bb41405",
+    "role": "SUPPORTING_ONLY_NOT_PRODUCTION_AUTHORITY",
+    "paths": [
+      "analysis/v5_masking_successor_spike_20260917/provenance/RIDGE8_EXPANDED_VALIDATION_PROVENANCE_20260917.md",
+      "analysis/v5_masking_successor_spike_20260917/reports/RIDGE8_EXPANDED_VALIDATION_20260917.md",
+      "analysis/v5_masking_successor_spike_20260917/reports/JEPA_MASKING_SCALE_STRESS_FOLLOWUP_20260917.md",
+      "analysis/v5_masking_successor_spike_20260917/reports/JEPA_RIDGE8_NONLINEAR32_OUTSIDE800_20260917.md",
+      "analysis/v5_masking_successor_spike_20260917/results/outer5200_32_unified_summary.csv",
+      "analysis/v5_masking_successor_spike_20260917/results/outer5200_nonlinear32_summary.csv",
+      "analysis/v5_masking_successor_spike_20260917/results/ridge8_negative_6000_combined.csv",
+      "analysis/v5_masking_successor_spike_20260917/results/ridge8_planted_6000.csv",
+      "analysis/v5_masking_successor_spike_20260917/results/ridge8_exact_scale_target_clustered.csv",
+      "analysis/v5_masking_successor_spike_20260917/results/unified32_ridge_summary.csv"
+    ]
+  },
+  "local_chat_assets": {
+    "policy": "REFERENCE_BY_NAME_SIZE_SHA_ONLY__DO_NOT_COMMIT_BULKY_BINARIES__DO_NOT_USE_AS_FULL104_SUBSTITUTE",
+    "discovery_archive_expected_combined": {
+      "file": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip",
+      "bytes": 607959761,
+      "sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+      "present_as_parts": true
+    },
+    "assets": [
+      {
+        "file": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+        "bytes": 1531109,
+        "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+        "role": "LOCAL_BINARY_ROLE_UNVERIFIED__DO_NOT_PROMOTE"
+      },
+      {
+        "file": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+        "bytes": 410278055,
+        "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+        "role": "HISTORICAL_FOUNDATION_CALIBRATION_SUPPORT_ONLY"
+      },
+      {
+        "file": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+        "bytes": 303979881,
+        "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+        "role": "HISTORICAL_DISCOVERY_EXPRESSION_PART_ONLY"
+      },
+      {
+        "file": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+        "bytes": 303979880,
+        "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+        "role": "HISTORICAL_DISCOVERY_EXPRESSION_PART_ONLY"
+      },
+      {
+        "file": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+        "bytes": 437,
+        "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+        "role": "CHECKSUM_MANIFEST_FOR_DISCOVERY_ARCHIVE"
+      },
+      {
+        "file": "Status and Repair Plan.txt",
+        "bytes": 5233,
+        "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+        "role": "HISTORICAL_20260912_DIMENSION_REPAIR_NOT_CURRENT_MASKING_AUTHORITY"
+      },
+      {
+        "file": "WSL execution issue.txt",
+        "bytes": 14576,
+        "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+        "role": "HISTORICAL_CONCEPTUAL_NOTES_NOT_CURRENT_AUTHORITY"
+      },
+      {
+        "file": "checkpoints.zip",
+        "bytes": 71356460,
+        "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+        "role": "HISTORICAL_CHECKPOINT_BUNDLE__DO_NOT_USE_AS_CURRENT_TEACHER"
+      },
+      {
+        "file": "expression.zip",
+        "bytes": 3599456,
+        "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+        "role": "HISTORICAL_EXPRESSION_ARCHIVE__NOT_FULL104_SUBSTITUTE"
+      },
+      {
+        "file": "t1_checkpoint_u0200.zip",
+        "bytes": 233729581,
+        "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+        "role": "HISTORICAL_T1_CHECKPOINT_SUPPORT_ONLY__NOT_HEALTHY_CURRENT_TEACHER"
+      }
+    ]
+  },
+  "stale_or_superseded": [
+    {
+      "path": "scripts/agent/v5_full104_masking_gpu_preflight_20260917.ps1",
+      "status": "STALE_FOR_CURRENT_V4_CACHE_CALIBRATED_CHAIN__DO_NOT_USE_AS_FINAL_PREFLIGHT_UNTIL_REFRESHED"
+    },
+    {
+      "path": "scripts/agent/run_full104_target_panel_capacity_calibration_v1.py",
+      "status": "DIRECT_STREAM_PATH_SUPERSEDED_BY_CACHE_PATH__REFERENCE_ONLY"
+    },
+    {
+      "name": "stage81a3r_corrected_real_train",
+      "status": "HISTORICAL_SCOPE_ONLY__NOT_FULL104_SUBSTITUTE"
+    },
+    {
+      "name": "t1_checkpoint_u0200.zip",
+      "status": "HISTORICAL_FAILED_T1_SUPPORT_ONLY"
+    },
+    {
+      "name": "handoff/jepa-v5-full104-calibration-20260918",
+      "status": "SUPERSEDED__STALE_CHECKPOINT_METADATA_ACTIVE_PLAN_AND_HASH_CONSISTENCY"
+    },
+    {
+      "path": "scripts/agent/build_full104_nonlinear_challenge_authority_v2_20260918.py",
+      "status": "V2_BUILDER_ONLY__DO_NOT_USE_AS_FINAL_V3_NONLINEAR_AUTHORITY"
+    }
+  ],
+  "missing_runtime_artifacts": [
+    "real pass1.npz-bound census V2 summary/split/target-eligibility receipts on GPU machine",
+    "authenticated FULL104 control-calibration cache manifest and files",
+    "target-panel sizing receipt from exact replayed cache evaluation",
+    "TargetPanelAuthorityV3 instance",
+    "OuterSplitAuthorityV1 instance",
+    "PrecisionAuthorityV4 instance",
+    "nonlinear model-capacity authority instance and nonlinear-cap calibration receipt",
+    "NonlinearChallengeAuthorityV3 instance",
+    "RNG authority instance bound into final chain",
+    "final MaskingQualificationRunContractV4 instance",
+    "final machine CURRENT_WORK_CHECKPOINT.json",
+    "terminal FULL104 masking execution result and selected policy"
+  ],
+  "audit_verification": {
+    "implementation_governance_head": "d6ef93e274e42e17d78f3fc652b0dfec202036ac",
+    "scientific_source_test_data_anchor": "86692cde7e61fe4beae7fff4070bd376a8090af2",
+    "implementation_governance_diff": "TWO_DOC_FILES_ONLY__ZERO_SOURCE_TEST_DATA_CHANGES",
+    "pr20_head": "d6ef93e274e42e17d78f3fc652b0dfec202036ac",
+    "pr20_base": "impl/v5-full104-masking-redteam-freeze-20260918",
+    "exact_head_workflow_runs": "NONE_RECORDED_AT_HANDOFF",
+    "current_claimed_source_test_builder_paths_checked": 60,
+    "missing_claimed_paths": 0,
+    "local_chat_assets_verified": 10,
+    "discovery_parts_combined_bytes": 607959761,
+    "discovery_parts_combined_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "pr20_state": "open",
+    "pr20_draft": true,
+    "pr20_mergeable_state": "dirty",
+    "pr20_takeover_rule": "RE_FETCH__NO_AUTOMATIC_MERGE_REBASE_RETARGET_OR_CONFLICT_RESOLUTION"
+  },
+  "implementation_gaps": [
+    {
+      "required": "NonlinearChallengeAuthorityV3 builder",
+      "current_state": "MISSING",
+      "trap": "scripts/agent/build_full104_nonlinear_challenge_authority_v2_20260918.py builds V2 only"
+    },
+    {
+      "required": "MaskingRngReplayAuthorityV2 builder",
+      "current_state": "MISSING"
+    },
+    {
+      "required": "MaskingQualificationRunContractV4 builder",
+      "current_state": "MISSING"
+    },
+    {
+      "required": "current V4/cache-aware GPU preflight",
+      "current_state": "MISSING__20260917_SCRIPT_STALE"
+    }
+  ]
+}
