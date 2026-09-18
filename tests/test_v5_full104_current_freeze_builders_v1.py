@@ -81,9 +81,15 @@ def test_intentional_historical_reauthorizations_pin_exact_frozen_bytes():
     params = Path(
         "scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py"
     ).read_text(encoding="utf-8")
-    nonlinear = Path(
+    nonlinear_path = Path(
         "scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py"
-    ).read_text(encoding="utf-8")
+    )
+    nonlinear = nonlinear_path.read_text(encoding="utf-8")
+    params_path = Path(
+        "scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py"
+    )
+    compile(params, str(params_path), "exec")
+    compile(nonlinear, str(nonlinear_path), "exec")
 
     expected_parameter_roots = (
         "a649a4bd220851423679a3ee47fdc096691056eea0cfb09984de64caceb3ad88",
