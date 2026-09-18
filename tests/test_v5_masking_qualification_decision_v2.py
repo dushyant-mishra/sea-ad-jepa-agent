@@ -123,3 +123,26 @@ def test_policy_harming_any_source_fails_improvement():
     assert not r.targeted_improvement_passed
     assert not r.source_improvement_guardrail_passed
     assert not r.qualified
+
+
+def test_control_width_alone_cannot_flip_fail_to_qualified():
+    residual = I(0.0100, 0.0084, 0.0116, 0.0088, 0.0116)
+    narrow = evidence(
+        null_noise_tolerance_ceiling=0.0100,
+        negative_control_delta=I(0.0, -0.0100, 0.0100, -0.0080, 0.0080),
+        excess_over_shuffled_null=residual,
+    )
+    wide = evidence(
+        null_noise_tolerance_ceiling=0.0100,
+        negative_control_delta=I(0.0, -0.0150, 0.0150, -0.0120, 0.0120),
+        excess_over_shuffled_null=residual,
+    )
+    narrow_receipt = evaluate_policy_v2(narrow)
+    wide_receipt = evaluate_policy_v2(wide)
+    assert not narrow_receipt.qualified
+    assert not narrow_receipt.primary_null_level_passed
+    assert narrow_receipt.negative_control_precision_passed
+    assert not wide_receipt.qualified
+    assert not wide_receipt.negative_control_precision_passed
+    assert narrow_receipt.null_noise_tolerance == pytest.approx(0.0100)
+    assert wide_receipt.null_noise_tolerance == pytest.approx(0.0100)
