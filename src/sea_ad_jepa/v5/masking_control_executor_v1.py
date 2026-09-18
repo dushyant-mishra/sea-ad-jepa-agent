@@ -831,6 +831,12 @@ def run_shuffled_negative_control_fold(
         "uniform_score": float(uniform_score),
         "targeted_score": float(targeted_score),
         "delta": float(uniform_score - targeted_score),
+        "uniform_donor_scores": tuple(
+            sorted((int(d), float(v)) for d, v in uniform_donor.items())
+        ),
+        "targeted_donor_scores": tuple(
+            sorted((int(d), float(v)) for d, v in targeted_donor.items())
+        ),
         "donor_delta": donor_delta,
         "targeted_cols": targeted,
         "mask_cardinality": len(targeted_mask),
