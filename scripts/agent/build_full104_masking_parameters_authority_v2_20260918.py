@@ -24,6 +24,13 @@ UNIVERSE_SCRIPT = "analysis/v5_masking_successor_spike_20260917/scripts/ridge8_u
 OUTSIDE_SCRIPT = "analysis/v5_masking_successor_spike_20260917/scripts/outer5200_32_unified_ridge_fold.py"
 PROVENANCE = "analysis/v5_masking_successor_spike_20260917/provenance/RIDGE8_EXPANDED_VALIDATION_PROVENANCE_20260917.md"
 
+EXPECTED_HISTORICAL_SHA256 = {
+    REPORT: "a649a4bd220851423679a3ee47fdc096691056eea0cfb09984de64caceb3ad88",
+    UNIVERSE_SCRIPT: "eb32280d90cf2bdc7ab2fed86e1a5af41c4e0293d89d61cc6f2641b9a1fb3511",
+    OUTSIDE_SCRIPT: "7a33785c774485363ea0f57d90acdee2a1d64c81772da1a35f1bef24c5b3a5dc",
+    PROVENANCE: "6b972a20e49876b5f77b35ab836b5ce9d416cc1e671aa80dcd5d8461e5a6f038",
+}
+
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
@@ -35,9 +42,22 @@ def main() -> int:
     universe = args.repo / UNIVERSE_SCRIPT
     outside = args.repo / OUTSIDE_SCRIPT
     provenance = args.repo / PROVENANCE
-    for path in (report, universe, outside, provenance):
+    path_by_role = {
+        REPORT: report,
+        UNIVERSE_SCRIPT: universe,
+        OUTSIDE_SCRIPT: outside,
+        PROVENANCE: provenance,
+    }
+    for role, path in path_by_role.items():
         if not path.is_file():
             raise SystemExit(f"missing discovery provenance file: {path}")
+        observed = sha256_file(path)
+        expected = EXPECTED_HISTORICAL_SHA256[role]
+        if observed != expected:
+            raise SystemExit(
+                f"historical discovery provenance byte drift for {role}: "
+                f"expected {expected}, observed {observed}"
+            )
 
     report_text = report.read_text(encoding="utf-8")
     if "EXPLORATORY SUCCESSOR EVIDENCE ONLY. NO MASKING AUTHORITY. TRAINING OFF." not in report_text:
