@@ -411,6 +411,111 @@ def _score_mask(
     return _source_balanced_mean(donor_scores, stream.source_by_donor), donor_scores
 
 
+
+def run_planted_proxy_detection_fold(
+    *,
+    stream: stream_impl.Full104ManifestStreamV1,
+    fold_index: int,
+    parameters: Any,
+    target_col: int,
+    target_id: object,
+    eligible_proxy_cols: Sequence[int],
+) -> dict[str, Any]:
+    """Detect an easy planted shortcut without invoking any masking burden.
+
+    This is a design-capacity control only. The virtual target is the normalized
+    expression of one deterministic eligible proxy address. Only the query target
+    itself is excluded from attacker features; no uniform or targeted policy mask
+    is constructed.
+    """
+
+    stream.validate_layout()
+    parameters.validate()
+    proxy_col = select_planted_proxy(
+        eligible_cols=eligible_proxy_cols,
+        target_col=int(target_col),
+        target_id=target_id,
+    )
+    y, donor_by_row = materialize_stream_column(stream, column=proxy_col)
+    if not np.array_equal(
+        np.sort(np.unique(donor_by_row)),
+        np.arange(stream.source_by_donor.size, dtype=np.int64),
+    ):
+        raise ValueError("planted detection target does not cover the donor registry")
+    heldout = np.flatnonzero(stream.fold_by_donor == int(fold_index)).astype(np.int64)
+    train = np.flatnonzero(stream.fold_by_donor != int(fold_index)).astype(np.int64)
+    if heldout.size == 0 or train.size == 0:
+        raise ValueError("detection fold requires train and heldout donors")
+    score, donor_scores = _score_mask(
+        stream,
+        train_donors=train,
+        heldout_donors=heldout,
+        y_by_selection=y,
+        target_col=int(target_col),
+        mask={int(target_col)},
+        parameters=parameters,
+    )
+    return {
+        "control_id": "PLANTED_SHORTCUT_CAPACITY_DETECTION_V1",
+        "fold": int(fold_index),
+        "target_col": int(target_col),
+        "target_id": target_id,
+        "proxy_col": int(proxy_col),
+        "score": float(score),
+        "donor_scores": tuple(
+            sorted((int(d), float(v)) for d, v in donor_scores.items())
+        ),
+        "masking_policy_outcomes_inspected": False,
+        "masking_burden_used": False,
+    }
+
+
+def run_shuffled_null_detection_fold(
+    *,
+    stream: stream_impl.Full104ManifestStreamV1,
+    fold_index: int,
+    parameters: Any,
+    target_col: int,
+    target_id: object,
+    global_seed: int,
+) -> dict[str, Any]:
+    """Measure the within-donor shuffled null without invoking a masking burden."""
+
+    stream.validate_layout()
+    parameters.validate()
+    raw_y, donor_by_row = materialize_stream_column(stream, column=int(target_col))
+    shuffled = deterministic_within_donor_shuffle(
+        raw_y,
+        donor_by_row,
+        target_id=target_id,
+        global_seed=int(global_seed),
+    )
+    heldout = np.flatnonzero(stream.fold_by_donor == int(fold_index)).astype(np.int64)
+    train = np.flatnonzero(stream.fold_by_donor != int(fold_index)).astype(np.int64)
+    if heldout.size == 0 or train.size == 0:
+        raise ValueError("detection fold requires train and heldout donors")
+    score, donor_scores = _score_mask(
+        stream,
+        train_donors=train,
+        heldout_donors=heldout,
+        y_by_selection=shuffled,
+        target_col=int(target_col),
+        mask={int(target_col)},
+        parameters=parameters,
+    )
+    return {
+        "control_id": "WITHIN_DONOR_SHUFFLED_CAPACITY_NULL_V1",
+        "fold": int(fold_index),
+        "target_col": int(target_col),
+        "target_id": target_id,
+        "score": float(score),
+        "donor_scores": tuple(
+            sorted((int(d), float(v)) for d, v in donor_scores.items())
+        ),
+        "masking_policy_outcomes_inspected": False,
+        "masking_burden_used": False,
+    }
+
 def run_planted_proxy_control_fold(
     *,
     stream: stream_impl.Full104ManifestStreamV1,
