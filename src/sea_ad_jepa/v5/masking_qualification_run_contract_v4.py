@@ -253,8 +253,42 @@ class MaskingQualificationRunContractV4:
         self.validate()
         if _live_digest(calibration_plan, "nonlinear sampling calibration plan") != self.nonlinear_sampling_calibration_plan_sha256:
             raise ValueError("nonlinear sampling calibration plan root mismatch")
+        required_plan_fields = (
+            "target_panel_authority_sha256",
+            "precision_authority_sha256",
+            "outer_split_authority_sha256",
+            "primary_parameters_authority_sha256",
+            "model_capacity_authority_sha256",
+            "calibration_cache_manifest_sha256",
+            "calibration_evaluator_source_sha256",
+        )
+        if any(not hasattr(calibration_plan, field) for field in required_plan_fields):
+            raise ValueError("final run contract requires nonlinear sampling calibration plan V2 or later")
+        if calibration_plan.target_panel_authority_sha256 != self.target_panel_authority_sha256:
+            raise ValueError("nonlinear calibration plan binds different target panel")
+        if calibration_plan.precision_authority_sha256 != self.precision_authority_sha256:
+            raise ValueError("nonlinear calibration plan binds different precision authority")
+        if calibration_plan.outer_split_authority_sha256 != self.outer_split_authority_sha256:
+            raise ValueError("nonlinear calibration plan binds different outer split")
+        if calibration_plan.primary_parameters_authority_sha256 != self.qualification_parameters_authority_sha256:
+            raise ValueError("nonlinear calibration plan binds different primary parameters")
+        if calibration_plan.calibration_cache_manifest_sha256 != self.control_calibration_cache_manifest_sha256:
+            raise ValueError("nonlinear calibration plan binds different calibration cache")
         if _live_digest(calibration_receipt, "nonlinear sampling calibration receipt") != self.nonlinear_sampling_calibration_receipt_sha256:
             raise ValueError("nonlinear sampling calibration receipt root mismatch")
+        required_receipt_fields = (
+            "calibration_cache_manifest_sha256",
+            "precision_authority_sha256",
+            "model_capacity_authority_sha256",
+        )
+        if any(not hasattr(calibration_receipt, field) for field in required_receipt_fields):
+            raise ValueError("final run contract requires nonlinear sampling calibration receipt V2 or later")
+        if calibration_receipt.calibration_cache_manifest_sha256 != self.control_calibration_cache_manifest_sha256:
+            raise ValueError("nonlinear calibration receipt binds different calibration cache")
+        if calibration_receipt.precision_authority_sha256 != self.precision_authority_sha256:
+            raise ValueError("nonlinear calibration receipt binds different precision authority")
+        if calibration_receipt.model_capacity_authority_sha256 != calibration_plan.model_capacity_authority_sha256:
+            raise ValueError("nonlinear calibration receipt binds different model-capacity authority")
         if _live_digest(nonlinear, "nonlinear challenge") != self.nonlinear_challenge_authority_sha256:
             raise ValueError("nonlinear challenge authority root mismatch")
         if not hasattr(nonlinear, "sampling_calibration_receipt_sha256"):
@@ -265,6 +299,10 @@ class MaskingQualificationRunContractV4:
             raise ValueError("nonlinear authority binds different calibration receipt")
         if nonlinear.target_panel_authority_sha256 != self.target_panel_authority_sha256:
             raise ValueError("nonlinear authority binds different target panel")
+        if nonlinear.primary_parameters_authority_sha256 != self.qualification_parameters_authority_sha256:
+            raise ValueError("nonlinear authority binds different primary parameters")
+        if nonlinear.outer_split_authority_sha256 != self.outer_split_authority_sha256:
+            raise ValueError("nonlinear authority binds different outer split")
 
     def bind_execution_sources(self, **live_sources: str) -> None:
         self.validate()
