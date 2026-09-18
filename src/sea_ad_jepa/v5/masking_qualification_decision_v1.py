@@ -142,6 +142,17 @@ class MaskingPolicyDecisionEvidenceV1:
         tolerance = _finite(self.null_noise_tolerance_ceiling, "null_noise_tolerance_ceiling")
         if tolerance <= 0.0:
             raise ValueError("null_noise_tolerance_ceiling must be positive")
+        neg = self.negative_control_delta
+        expected_negative_precision = bool(
+            neg.lower_two_sided <= 0.0 <= neg.upper_two_sided
+            and neg.lower_two_sided >= -tolerance
+            and neg.upper_two_sided <= tolerance
+        )
+        if self.negative_control_precision_passed is not expected_negative_precision:
+            raise ValueError(
+                "negative_control_precision_passed disagrees with the frozen "
+                "null-equivalence margin and negative-control interval"
+            )
         for name in ("target_delta_median", "worst_target_delta", "mean_effective_targeted_n"):
             _finite(getattr(self, name), name)
         if self.mean_effective_targeted_n < 0:
