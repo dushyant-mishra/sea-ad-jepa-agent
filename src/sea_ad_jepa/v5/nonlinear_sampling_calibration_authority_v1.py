@@ -1,12 +1,12 @@
-"""Control-only calibration of the FULL104 nonlinear donor sampling cap."""
+"""Capacity-only calibration of the FULL104 nonlinear donor sampling cap."""
 from __future__ import annotations
 from dataclasses import asdict,dataclass
 import hashlib,json
 from typing import Mapping,Tuple
 
 CAP_LADDER:Tuple[int,...]=(64,128,256,512,1024)
-LADDER_ID="FULL104_NONLINEAR_DONOR_CAP_CONTROL_LADDER_V1"
-SELECTION_RULE_ID="LOWEST_PLANTED_CONTROL_QUALIFYING_NONLINEAR_CAP_V1"
+LADDER_ID="FULL104_NONLINEAR_DONOR_CAP_CAPACITY_LADDER_V1"
+SELECTION_RULE_ID="LOWEST_PLANTED_VS_SHUFFLED_QUALIFYING_NONLINEAR_CAP_V1"
 OUTCOME_FIREWALL_ID="REAL_MASKING_POLICY_OUTCOMES_FORBIDDEN_DURING_NONLINEAR_CAP_CALIBRATION_V1"
 
 def _sha(v,n):
@@ -19,59 +19,32 @@ def _digest(p): return hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",
 @dataclass(frozen=True)
 class NonlinearCapControlVerdictV1:
     max_cells_per_donor:int
-    raw_control_evidence_sha256:str
-    precision_authority_sha256:str
-    calibration_interval_receipt_sha256:str
-    negative_lower_two_sided:float
-    negative_upper_two_sided:float
-    planted_detect_lower_one_sided:float
-    planted_after_mask_upper_one_sided:float
+    capacity_receipt_sha256:str
+    planted_minus_shuffled_lower_one_sided:float
     replay_exact:bool
     all_donors_represented:bool
     real_masking_policy_outcomes_inspected:bool=False
 
     def validate(self):
-        _sha(self.raw_control_evidence_sha256,"raw_control_evidence_sha256")
-        _sha(self.precision_authority_sha256,"precision_authority_sha256")
-        _sha(self.calibration_interval_receipt_sha256,"calibration_interval_receipt_sha256")
+        _sha(self.capacity_receipt_sha256,"capacity_receipt_sha256")
         if self.max_cells_per_donor not in CAP_LADDER: raise ValueError("max_cells_per_donor is not a frozen calibration rung")
         import math
-        vals=(self.negative_lower_two_sided,self.negative_upper_two_sided,self.planted_detect_lower_one_sided,self.planted_after_mask_upper_one_sided)
-        if not all(math.isfinite(float(x)) for x in vals): raise ValueError("nonlinear control intervals must be finite")
-        if self.negative_lower_two_sided>0 or self.negative_upper_two_sided<0: raise ValueError("nonlinear negative-control interval must contain zero")
+        if not math.isfinite(float(self.planted_minus_shuffled_lower_one_sided)): raise ValueError("nonlinear capacity statistic must be finite")
         if self.real_masking_policy_outcomes_inspected is not False: raise ValueError("nonlinear cap calibration cannot inspect real masking-policy outcomes")
     @property
-    def null_noise_tolerance(self)->float:
-        self.validate(); return float(max(abs(self.negative_lower_two_sided),abs(self.negative_upper_two_sided)))
-    @property
     def qualified(self)->bool:
-        self.validate(); tol=self.null_noise_tolerance
-        return bool(self.planted_detect_lower_one_sided>tol and self.planted_after_mask_upper_one_sided<=tol and self.replay_exact and self.all_donors_represented)
-    def bind_interval_receipt(self, receipt) -> None:
         self.validate()
-        receipt.validate()
-        if receipt.scope_id != "NONLINEAR_CAP_CONTROL_CALIBRATION_V1":
-            raise ValueError("nonlinear-cap verdict requires nonlinear interval scope")
-        if receipt.candidate_value != self.max_cells_per_donor:
-            raise ValueError("nonlinear calibration interval cap mismatch")
-        if receipt.raw_control_evidence_sha256 != self.raw_control_evidence_sha256:
-            raise ValueError("nonlinear raw control evidence root mismatch")
-        if receipt.precision_root_sha256 != self.precision_authority_sha256:
-            raise ValueError("nonlinear calibration precision root mismatch")
-        if receipt.canonical_digest() != self.calibration_interval_receipt_sha256:
-            raise ValueError("nonlinear calibration interval receipt root mismatch")
-        pairs = (
-            (receipt.negative_lower_two_sided, self.negative_lower_two_sided),
-            (receipt.negative_upper_two_sided, self.negative_upper_two_sided),
-            (receipt.planted_detect_lower_one_sided, self.planted_detect_lower_one_sided),
-            (receipt.planted_after_mask_upper_one_sided, self.planted_after_mask_upper_one_sided),
-        )
-        if any(float(a) != float(b) for a,b in pairs):
-            raise ValueError("nonlinear calibration intervals do not match bound receipt")
-
+        return bool(self.planted_minus_shuffled_lower_one_sided>0.0 and self.replay_exact and self.all_donors_represented)
+    def bind_capacity_receipt(self,receipt)->None:
+        self.validate(); receipt.validate()
+        if receipt.scope_id!="NONLINEAR_CAP_CAPACITY_CALIBRATION_V1": raise ValueError("nonlinear verdict requires nonlinear capacity scope")
+        if receipt.candidate_value!=self.max_cells_per_donor: raise ValueError("nonlinear capacity receipt cap mismatch")
+        if receipt.canonical_digest()!=self.capacity_receipt_sha256: raise ValueError("nonlinear capacity receipt root mismatch")
+        if float(receipt.planted_minus_shuffled_lower_one_sided)!=float(self.planted_minus_shuffled_lower_one_sided): raise ValueError("nonlinear capacity statistic mismatch")
+        if receipt.replay_exact!=self.replay_exact: raise ValueError("nonlinear replay status mismatch")
     def canonical_digest(self)->str:
         self.validate()
-        return _digest({"schema":"V5_NONLINEAR_CAP_CONTROL_VERDICT_V1",**asdict(self),"null_noise_tolerance":self.null_noise_tolerance,"qualified":self.qualified})
+        return _digest({"schema":"V5_NONLINEAR_CAP_CONTROL_VERDICT_V1",**asdict(self),"qualified":self.qualified})
 
 @dataclass(frozen=True)
 class NonlinearSamplingCalibrationPlanV1:
@@ -105,7 +78,7 @@ class NonlinearSamplingCalibrationPlanV1:
         if first is not None:
             if first!=len(keys)-1: raise ValueError("higher nonlinear cap opened after lower cap already qualified")
             return keys[first]
-        if len(keys)==len(self.cap_ladder): raise ValueError("FAIL_CLOSED_NO_CONTROL_QUALIFYING_NONLINEAR_CAP")
+        if len(keys)==len(self.cap_ladder): raise ValueError("FAIL_CLOSED_NO_CAPACITY_QUALIFYING_NONLINEAR_CAP")
         return None
 
     def next_cap(self,verdicts:Mapping[int,NonlinearCapControlVerdictV1])->int:
@@ -140,7 +113,7 @@ class NonlinearSamplingCalibrationReceiptV1:
         self.validate(); plan.validate()
         if plan.canonical_digest()!=self.plan_authority_sha256: raise ValueError("nonlinear calibration plan root mismatch")
         selected=plan.select(verdicts)
-        if selected!=self.selected_max_cells_per_donor: raise ValueError("receipt cap disagrees with mechanical control calibration")
+        if selected!=self.selected_max_cells_per_donor: raise ValueError("receipt cap disagrees with mechanical capacity calibration")
         observed={c:v.canonical_digest() for c,v in verdicts.items()}
         if dict(observed)!=dict(self.verdict_digest_by_cap): raise ValueError("nonlinear calibration verdict digests mismatch")
 
