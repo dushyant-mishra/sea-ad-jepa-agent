@@ -100,3 +100,31 @@ def test_current_command_authority_requires_exact_replay_status_not_exit_code_al
     assert "REPLAY_REQUIRED_BEFORE_NONLINEAR_CAPACITY_VERDICT" in text
     assert 'STOP: target-panel Run B failed' in text
     assert 'STOP: nonlinear Run B failed' in text
+
+def test_current_pipeline_historical_ingress_is_narrow_explicit_allowlist():
+    historical_root = "analysis/v5_masking_successor_spike_20260917"
+    allowed = {
+        "build_full104_masking_parameters_authority_v2_20260918.py",
+        "build_full104_nonlinear_capacity_model_authority_v1_20260918.py",
+    }
+    observed = set()
+    forbidden_tokens = (
+        "stage81a3",
+        "corrected_real_train",
+        "v2_full104_corrected_ladder_results",
+        "FULL104_MASKING_PROSPECTIVE_FREEZE_STATUS_20260917",
+        "QUALIFICATION_800_V1",
+        "QUALIFICATION_6000_V1",
+        "PLACEHOLDER_SUPPORT_ESTIMABILITY_AUTHORITY",
+    )
+    for script in CURRENT_PIPELINE_SCRIPTS:
+        source = script.read_text(encoding="utf-8")
+        if historical_root in source:
+            observed.add(script.name)
+        for token in forbidden_tokens:
+            assert token not in source, f"{script}: forbidden historical/placeholder ingress token {token}"
+    assert observed == allowed, (
+        "current pipeline historical ingress changed; historical evidence may motivate only, "
+        f"and intentional reauthorization is restricted to {sorted(allowed)}; observed {sorted(observed)}"
+    )
+
