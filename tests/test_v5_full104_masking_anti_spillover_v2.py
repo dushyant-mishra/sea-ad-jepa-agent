@@ -8,6 +8,7 @@ from pathlib import Path
 from sea_ad_jepa.v5 import (
     full104_census_receipt_v2,
     masking_burden_ladder_authority_v2,
+    masking_donor_evidence_v1,
     masking_qualification_decision_v1,
     masking_qualification_execution_authority_v3,
     masking_qualification_parameters_authority_v2,
@@ -18,6 +19,7 @@ from sea_ad_jepa.v5 import (
 CURRENT_PRODUCTION_MODULES = (
     full104_census_receipt_v2,
     masking_burden_ladder_authority_v2,
+    masking_donor_evidence_v1,
     masking_qualification_decision_v1,
     masking_qualification_execution_authority_v3,
     masking_qualification_parameters_authority_v2,
