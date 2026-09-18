@@ -1,3 +1,4 @@
+import hashlib
 from pathlib import Path
 
 BUILDER_PATHS = (
@@ -98,4 +99,22 @@ def test_intentional_historical_reauthorizations_pin_exact_frozen_bytes():
     assert "b43676f7d95bd8599ad7be47b2b121a6f02b4314d4507f537d4e59b7c68d01c4" in nonlinear
     assert "historical nonlinear script byte drift" in nonlinear
     assert "historical nonlinear summary byte drift" in nonlinear
+
+    pinned_files = {
+        "analysis/v5_masking_successor_spike_20260917/reports/RIDGE8_EXPANDED_VALIDATION_20260917.md":
+            "a649a4bd220851423679a3ee47fdc096691056eea0cfb09984de64caceb3ad88",
+        "analysis/v5_masking_successor_spike_20260917/scripts/ridge8_universe_fold.py":
+            "eb32280d90cf2bdc7ab2fed86e1a5af41c4e0293d89d61cc6f2641b9a1fb3511",
+        "analysis/v5_masking_successor_spike_20260917/scripts/outer5200_32_unified_ridge_fold.py":
+            "7a33785c774485363ea0f57d90acdee2a1d64c81772da1a35f1bef24c5b3a5dc",
+        "analysis/v5_masking_successor_spike_20260917/provenance/RIDGE8_EXPANDED_VALIDATION_PROVENANCE_20260917.md":
+            "6b972a20e49876b5f77b35ab836b5ce9d416cc1e671aa80dcd5d8461e5a6f038",
+        "analysis/v5_masking_successor_spike_20260917/scripts/outer5200_nonlinear_probe32.py":
+            "73c5125cb79555401836159d861f1775bce7e23879ab0dbada8350813d6ae89a",
+        "analysis/v5_masking_successor_spike_20260917/results/outer5200_nonlinear32_summary.csv":
+            "b43676f7d95bd8599ad7be47b2b121a6f02b4314d4507f537d4e59b7c68d01c4",
+    }
+    for rel, expected in pinned_files.items():
+        observed = hashlib.sha256(Path(rel).read_bytes()).hexdigest()
+        assert observed == expected, rel
 
