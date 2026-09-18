@@ -1,13 +1,12 @@
 """Control-calibrated successor for FULL104 target-panel sizing."""
 from __future__ import annotations
+from dataclasses import asdict,dataclass
+import hashlib,json
+from typing import Mapping,Tuple
 
-from dataclasses import asdict, dataclass
-import hashlib, json
-from typing import Mapping, Tuple
-
-PANEL_COUNT_LADDER: Tuple[int,...]=(128,256,512,1024)
-LADDER_ID="FULL104_TARGET_PANEL_CONTROL_CALIBRATION_LADDER_V2"
-SELECTION_RULE_ID="LOWEST_CONTROL_QUALIFYING_TARGET_PANEL_V2"
+PANEL_COUNT_LADDER:Tuple[int,...]=(128,256,512,1024)
+LADDER_ID="FULL104_TARGET_PANEL_CAPACITY_CALIBRATION_LADDER_V2"
+SELECTION_RULE_ID="LOWEST_CAPACITY_QUALIFYING_TARGET_PANEL_V2"
 OUTCOME_FIREWALL_ID="REAL_MASKING_POLICY_OUTCOMES_FORBIDDEN_DURING_PANEL_SIZING_V1"
 
 def _sha(v,n):
@@ -20,68 +19,38 @@ def _digest(p): return hashlib.sha256(json.dumps(p,sort_keys=True,separators=(",
 @dataclass(frozen=True)
 class TargetPanelControlVerdictV2:
     target_count:int
-    raw_control_evidence_sha256:str
-    calibration_precision_plan_sha256:str
-    calibration_interval_receipt_sha256:str
-    negative_lower_two_sided:float
-    negative_upper_two_sided:float
-    planted_detect_lower_one_sided:float
-    planted_after_mask_upper_one_sided:float
+    capacity_receipt_sha256:str
+    planted_minus_shuffled_lower_one_sided:float
     replay_exact:bool
     donor_coverage_complete:bool
     bootstrap_finite:bool
     real_masking_policy_outcomes_inspected:bool=False
 
     def validate(self):
-        _sha(self.raw_control_evidence_sha256,"raw_control_evidence_sha256")
-        _sha(self.calibration_precision_plan_sha256,"calibration_precision_plan_sha256")
-        _sha(self.calibration_interval_receipt_sha256,"calibration_interval_receipt_sha256")
+        _sha(self.capacity_receipt_sha256,"capacity_receipt_sha256")
         if self.target_count not in PANEL_COUNT_LADDER: raise ValueError("target_count is not a frozen panel rung")
-        vals=(self.negative_lower_two_sided,self.negative_upper_two_sided,self.planted_detect_lower_one_sided,self.planted_after_mask_upper_one_sided)
         import math
-        if not all(math.isfinite(float(x)) for x in vals): raise ValueError("control intervals must be finite")
-        if self.negative_lower_two_sided>0 or self.negative_upper_two_sided<0: raise ValueError("negative control interval must contain zero")
+        if not math.isfinite(float(self.planted_minus_shuffled_lower_one_sided)): raise ValueError("capacity statistic must be finite")
         for name in ("replay_exact","donor_coverage_complete","bootstrap_finite","real_masking_policy_outcomes_inspected"):
             if not isinstance(getattr(self,name),bool): raise ValueError(f"{name} must be boolean")
         if self.real_masking_policy_outcomes_inspected is not False: raise ValueError("target-panel calibration cannot inspect real masking-policy outcomes")
 
     @property
-    def null_noise_tolerance(self)->float:
-        self.validate(); return float(max(abs(self.negative_lower_two_sided),abs(self.negative_upper_two_sided)))
-    @property
     def qualified(self)->bool:
         self.validate()
-        tol=self.null_noise_tolerance
-        return bool(
-            self.planted_detect_lower_one_sided>tol
-            and self.planted_after_mask_upper_one_sided<=tol
-            and self.replay_exact and self.donor_coverage_complete and self.bootstrap_finite
-        )
-    def bind_interval_receipt(self, receipt) -> None:
-        self.validate()
-        receipt.validate()
-        if receipt.scope_id != "TARGET_PANEL_SIZE_CONTROL_CALIBRATION_V1":
-            raise ValueError("target-panel verdict requires target-panel interval scope")
-        if receipt.candidate_value != self.target_count or receipt.target_count != self.target_count:
-            raise ValueError("target-panel interval receipt count mismatch")
-        if receipt.raw_control_evidence_sha256 != self.raw_control_evidence_sha256:
-            raise ValueError("target-panel raw control evidence root mismatch")
-        if receipt.precision_root_sha256 != self.calibration_precision_plan_sha256:
-            raise ValueError("target-panel calibration precision root mismatch")
-        if receipt.canonical_digest() != self.calibration_interval_receipt_sha256:
-            raise ValueError("target-panel calibration interval receipt root mismatch")
-        pairs = (
-            (receipt.negative_lower_two_sided, self.negative_lower_two_sided),
-            (receipt.negative_upper_two_sided, self.negative_upper_two_sided),
-            (receipt.planted_detect_lower_one_sided, self.planted_detect_lower_one_sided),
-            (receipt.planted_after_mask_upper_one_sided, self.planted_after_mask_upper_one_sided),
-        )
-        if any(float(a) != float(b) for a,b in pairs):
-            raise ValueError("target-panel verdict intervals do not match bound receipt")
+        return bool(self.planted_minus_shuffled_lower_one_sided>0.0 and self.replay_exact and self.donor_coverage_complete and self.bootstrap_finite)
+
+    def bind_capacity_receipt(self,receipt)->None:
+        self.validate(); receipt.validate()
+        if receipt.scope_id!="TARGET_PANEL_SIZE_CAPACITY_CALIBRATION_V1": raise ValueError("target-panel verdict requires target-panel capacity scope")
+        if receipt.candidate_value!=self.target_count or receipt.target_count!=self.target_count: raise ValueError("target-panel capacity receipt count mismatch")
+        if receipt.canonical_digest()!=self.capacity_receipt_sha256: raise ValueError("target-panel capacity receipt root mismatch")
+        if float(receipt.planted_minus_shuffled_lower_one_sided)!=float(self.planted_minus_shuffled_lower_one_sided): raise ValueError("target-panel capacity statistic mismatch")
+        if receipt.replay_exact!=self.replay_exact: raise ValueError("target-panel replay status mismatch")
 
     def canonical_digest(self)->str:
         self.validate()
-        return _digest({"schema":"V5_TARGET_PANEL_CONTROL_VERDICT_V2",**asdict(self),"null_noise_tolerance":self.null_noise_tolerance,"qualified":self.qualified})
+        return _digest({"schema":"V5_TARGET_PANEL_CONTROL_VERDICT_V2",**asdict(self),"qualified":self.qualified})
 
 @dataclass(frozen=True)
 class TargetPanelSizingPlanAuthorityV2:
@@ -108,8 +77,7 @@ class TargetPanelSizingPlanAuthorityV2:
         if self.training_authorized is not False: raise ValueError("target-panel sizing cannot authorize training")
 
     def select(self,verdicts:Mapping[int,TargetPanelControlVerdictV2])->int|None:
-        self.validate()
-        keys=tuple(verdicts.keys())
+        self.validate(); keys=tuple(verdicts.keys())
         if keys!=self.panel_count_ladder[:len(keys)]: raise ValueError("target-panel control verdicts must form an exact ladder prefix")
         first=None
         for i,count in enumerate(keys):
@@ -119,7 +87,7 @@ class TargetPanelSizingPlanAuthorityV2:
         if first is not None:
             if first!=len(keys)-1: raise ValueError("higher panel-count controls were opened after a lower panel already qualified")
             return keys[first]
-        if len(keys)==len(self.panel_count_ladder): raise ValueError("FAIL_CLOSED_NO_CONTROL_QUALIFYING_TARGET_PANEL")
+        if len(keys)==len(self.panel_count_ladder): raise ValueError("FAIL_CLOSED_NO_CAPACITY_QUALIFYING_TARGET_PANEL")
         return None
 
     def next_target_count(self,verdicts:Mapping[int,TargetPanelControlVerdictV2])->int:
@@ -154,9 +122,9 @@ class TargetPanelSizingReceiptV2:
         self.validate(); plan.validate()
         if plan.canonical_digest()!=self.plan_authority_sha256: raise ValueError("target-panel sizing plan root mismatch")
         selected=plan.select(verdicts)
-        if selected!=self.selected_target_count: raise ValueError("receipt selected_target_count disagrees with mechanical control calibration")
+        if selected!=self.selected_target_count: raise ValueError("receipt selected_target_count disagrees with mechanical capacity calibration")
         observed={c:v.canonical_digest() for c,v in verdicts.items()}
-        if dict(observed)!=dict(self.verdict_digest_by_count): raise ValueError("receipt verdict digests do not match supplied control evidence")
+        if dict(observed)!=dict(self.verdict_digest_by_count): raise ValueError("receipt verdict digests do not match supplied capacity evidence")
 
     def canonical_digest(self)->str:
         self.validate(); p=dict(asdict(self)); p["evaluated_counts"]=list(self.evaluated_counts); p["verdict_digest_by_count"]={str(k):v for k,v in sorted(self.verdict_digest_by_count.items())}
