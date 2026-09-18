@@ -194,6 +194,7 @@ class TerminalPolicyRawEvidenceV1:
     donor_outer_fold: Any
     source_names: Mapping[int, str]
     policy_mask_sha256_by_target_fold: Sequence[Sequence[Any]]
+    mechanical_control_receipt_sha256: str
     actual_policy_scores: Any
     actual_uniform_scores: Any
     shuffled_same_mask_scores: Any
@@ -257,6 +258,10 @@ class TerminalPolicyRawEvidenceV1:
     def validate(self) -> None:
         if self.policy_id not in POLICIES:
             raise ValueError("policy_id is not an approved masking arm")
+        _sha256_value(
+            self.mechanical_control_receipt_sha256,
+            "mechanical_control_receipt_sha256",
+        )
         if (
             isinstance(self.burden_numerator, bool)
             or isinstance(self.burden_denominator, bool)
@@ -329,6 +334,7 @@ class TerminalPolicyRawEvidenceV1:
             {
                 "schema": RAW_EVIDENCE_SCHEMA_ID + "__PRIMARY",
                 "policy_id": self.policy_id,
+                "mechanical_control_receipt_sha256": self.mechanical_control_receipt_sha256,
                 "burden": [self.burden_numerator, self.burden_denominator],
                 "axes": self._axis_roots(),
                 "policy_mask_sha256_by_target_fold": _sha256_grid_digest(
@@ -360,6 +366,7 @@ class TerminalPolicyRawEvidenceV1:
             {
                 "schema": RAW_EVIDENCE_SCHEMA_ID + "__CONTROL",
                 "policy_id": self.policy_id,
+                "mechanical_control_receipt_sha256": self.mechanical_control_receipt_sha256,
                 "burden": [self.burden_numerator, self.burden_denominator],
                 "axes": self._axis_roots(),
                 "negative_control_delta": _array_digest(
@@ -380,6 +387,7 @@ class TerminalPolicyRawEvidenceV1:
             {
                 "schema": RAW_EVIDENCE_SCHEMA_ID + "__NONLINEAR",
                 "policy_id": self.policy_id,
+                "mechanical_control_receipt_sha256": self.mechanical_control_receipt_sha256,
                 "burden": [self.burden_numerator, self.burden_denominator],
                 "axes": self._axis_roots(),
                 "policy_mask_sha256_by_target_fold": _sha256_grid_digest(
