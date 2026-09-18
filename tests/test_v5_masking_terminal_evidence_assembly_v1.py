@@ -73,6 +73,10 @@ def raw_bundle(target_count: int = 128, **updates):
         donor_source_code=source,
         donor_outer_fold=folds,
         source_names={0: "HVS", 1: "NPH52", 2: "SEA_AD"},
+        policy_mask_sha256_by_target_fold=[
+            [h(f"mask-{i}-{fold}") for fold in range(4)]
+            for i in range(target_count)
+        ],
         actual_policy_scores=np.full(shape, 0.10),
         actual_uniform_scores=np.full(shape, 0.20),
         shuffled_same_mask_scores=np.full(shape, 0.10),
@@ -188,6 +192,10 @@ def test_exact_full104_donor_axis_is_required():
             donor_source_code=source,
             donor_outer_fold=folds,
             source_names={0: "HVS", 1: "NPH52", 2: "SEA_AD"},
+            policy_mask_sha256_by_target_fold=[
+                [h(f"mask-{i}-{fold}") for fold in range(4)]
+                for i in range(128)
+            ],
             actual_policy_scores=np.zeros(shape),
             actual_uniform_scores=np.zeros(shape),
             shuffled_same_mask_scores=np.zeros(shape),
@@ -212,6 +220,25 @@ def test_raw_roots_change_when_bound_matrix_changes():
     assert first.canonical_digest() != second.canonical_digest()
     assert first.control_evidence_digest() == second.control_evidence_digest()
     assert first.nonlinear_evidence_digest() == second.nonlinear_evidence_digest()
+
+
+def test_mask_identity_is_bound_into_primary_and_nonlinear_roots():
+    first = raw_bundle()
+    changed_masks = [
+        [h(f"mask-{i}-{fold}") for fold in range(4)]
+        for i in range(128)
+    ]
+    changed_masks[0][0] = h("different-mask")
+    second = raw_bundle(policy_mask_sha256_by_target_fold=changed_masks)
+    assert first.primary_evidence_digest() != second.primary_evidence_digest()
+    assert first.nonlinear_evidence_digest() != second.nonlinear_evidence_digest()
+    assert first.control_evidence_digest() == second.control_evidence_digest()
+
+
+def test_mask_grid_must_cover_every_target_and_four_folds():
+    bad = [[h("mask")] * 4 for _ in range(127)]
+    with pytest.raises(ValueError, match="one row per target"):
+        raw_bundle(policy_mask_sha256_by_target_fold=bad)
 
 
 def test_raw_bundle_copies_and_freezes_input_arrays():
