@@ -366,6 +366,226 @@ def _ridge_targets(
     )
 
 
+def _top_targets(
+    stream: stream_impl.Full104ManifestStreamV1,
+    *,
+    train_donors: np.ndarray,
+    y_by_selection: np.ndarray,
+    target_col: int,
+    parameters: Any,
+) -> tuple[int, ...]:
+    universe = np.asarray(
+        [int(col) for col in stream.universe_cols if int(col) != int(target_col)],
+        dtype=np.int64,
+    )
+    score = _abs_corr_scores(
+        stream,
+        donors=train_donors,
+        y_by_selection=y_by_selection,
+        candidate_cols=universe,
+    )
+    return tuple(
+        map(int, _rank(universe, score, int(parameters.targeted_partner_cap)))
+    )
+
+
+def _single_partner_score_override(
+    stream: stream_impl.Full104ManifestStreamV1,
+    *,
+    donors: np.ndarray,
+    y_by_selection: np.ndarray,
+    partner_col: int,
+) -> float:
+    cols = np.asarray([int(partner_col)], dtype=np.int64)
+    stats = _collect_override_stats(
+        stream,
+        donors=donors,
+        y_by_selection=y_by_selection,
+        feature_cols=cols,
+        need_xx=False,
+    )
+    donor_scores: dict[int, float] = {}
+    for raw_donor in donors:
+        donor = int(raw_donor)
+        st = stats[donor]
+        vx = max(float(st.sum_x2[0] - (st.sum_x[0] * st.sum_x[0]) / st.n), 0.0)
+        vy = max(float(st.sum_y2 - (st.sum_y * st.sum_y) / st.n), 0.0)
+        cov = float(st.sum_xy[0] - st.sum_x[0] * (st.sum_y / st.n))
+        den = float(np.sqrt(vx * vy))
+        r = 0.0 if den <= _EPS else cov / den
+        donor_scores[donor] = r * r
+    return _source_balanced_mean(donor_scores, stream.source_by_donor)
+
+
+def _prefix3_targets(
+    stream: stream_impl.Full104ManifestStreamV1,
+    *,
+    train_donors: np.ndarray,
+    y_by_selection: np.ndarray,
+    target_col: int,
+    parameters: Any,
+    global_seed: int,
+) -> tuple[int, ...]:
+    groups = stream_impl._inner_donor_groups(
+        stream,
+        train_donors=train_donors,
+        global_seed=int(global_seed),
+    )
+    if groups is None:
+        return ()
+    universe = np.asarray(
+        [int(col) for col in stream.universe_cols if int(col) != int(target_col)],
+        dtype=np.int64,
+    )
+    selected_sets: list[tuple[int, ...]] = []
+    for rotation in range(3):
+        screen_donors = groups[rotation]
+        rank_donors = groups[(rotation + 1) % 3]
+        validate_donors = groups[(rotation + 2) % 3]
+        screen = _abs_corr_scores(
+            stream,
+            donors=screen_donors,
+            y_by_selection=y_by_selection,
+            candidate_cols=universe,
+        )
+        candidates = _rank(universe, screen, int(parameters.prefix_candidate_count))
+        if candidates.size == 0:
+            selected_sets.append(())
+            continue
+
+        def remaining_proxy_score(remaining: np.ndarray) -> float:
+            if remaining.size == 0:
+                return 0.0
+            rank_score = _abs_corr_scores(
+                stream,
+                donors=rank_donors,
+                y_by_selection=y_by_selection,
+                candidate_cols=remaining,
+            )
+            best = int(_rank(remaining, rank_score, 1)[0])
+            return _single_partner_score_override(
+                stream,
+                donors=validate_donors,
+                y_by_selection=y_by_selection,
+                partner_col=best,
+            )
+
+        baseline = remaining_proxy_score(candidates)
+        if baseline < float(parameters.prefix_floor):
+            selected_sets.append(())
+            continue
+        chosen: tuple[int, ...] = ()
+        for k in range(1, min(int(parameters.targeted_partner_cap), candidates.size) + 1):
+            remaining = candidates[k:]
+            if remaining_proxy_score(remaining) <= (
+                1.0 - float(parameters.prefix_reduction)
+            ) * baseline:
+                chosen = tuple(map(int, candidates[:k]))
+                break
+        selected_sets.append(chosen)
+
+    support: dict[int, int] = {}
+    for selected in selected_sets:
+        for col in set(selected):
+            support[col] = support.get(col, 0) + 1
+    if not support:
+        return ()
+    items = np.asarray(sorted(support), dtype=np.int64)
+    evidence = _abs_corr_scores(
+        stream,
+        donors=train_donors,
+        y_by_selection=y_by_selection,
+        candidate_cols=items,
+    )
+    support_count = np.asarray([support[int(col)] for col in items], dtype=np.int64)
+    order = np.lexsort((items, -evidence, -support_count))
+    return tuple(
+        map(
+            int,
+            items[
+                order[: min(int(parameters.targeted_partner_cap), items.size)]
+            ],
+        )
+    )
+
+
+def _policy_targets(
+    method: str,
+    *,
+    stream: stream_impl.Full104ManifestStreamV1,
+    train_donors: np.ndarray,
+    y_by_selection: np.ndarray,
+    target_col: int,
+    parameters: Any,
+    global_seed: int,
+) -> tuple[int, ...]:
+    if method == "UNIFORM_RANDOM":
+        return ()
+    if method == "TOP8_CORRELATION":
+        return _top_targets(
+            stream,
+            train_donors=train_donors,
+            y_by_selection=y_by_selection,
+            target_col=target_col,
+            parameters=parameters,
+        )
+    if method == "RIDGE8_CONDITIONAL":
+        return _ridge_targets(
+            stream,
+            train_donors=train_donors,
+            y_by_selection=y_by_selection,
+            target_col=target_col,
+            parameters=parameters,
+        )
+    if method == "PREFIX3_SELECTIVE":
+        return _prefix3_targets(
+            stream,
+            train_donors=train_donors,
+            y_by_selection=y_by_selection,
+            target_col=target_col,
+            parameters=parameters,
+            global_seed=global_seed,
+        )
+    raise ValueError(f"unapproved masking policy for control execution: {method!r}")
+
+
+def _policy_mask(
+    method: str,
+    *,
+    stream: stream_impl.Full104ManifestStreamV1,
+    target_col: int,
+    target_id: object,
+    fold_index: int,
+    global_seed: int,
+    co_mask_count: int,
+    targeted: tuple[int, ...],
+) -> tuple[set[int], set[int]]:
+    base = stream_impl._base_uniform_mask(
+        stream.universe_cols,
+        target_col=int(target_col),
+        co_mask_count=int(co_mask_count),
+        fold_index=int(fold_index),
+        target_id=target_id,
+        global_seed=int(global_seed),
+    )
+    if method == "UNIFORM_RANDOM":
+        return set(base), set(base)
+    removable = stream_impl._removable_order(
+        base,
+        target_col=int(target_col),
+        fold_index=int(fold_index),
+        target_id=target_id,
+        global_seed=int(global_seed),
+    )
+    masked = stream_impl.apply_burden_preserving_swaps(
+        base_mask=base,
+        target_col=int(target_col),
+        targeted_cols=targeted,
+        removable_order=removable,
+    )
+    return set(base), masked
+
+
 def _score_mask(
     stream: stream_impl.Full104ManifestStreamV1,
     *,
@@ -420,6 +640,7 @@ def run_planted_proxy_control_fold(
     target_col: int,
     target_id: object,
     eligible_proxy_cols: Sequence[int],
+    method: str,
     global_seed: int,
 ) -> dict[str, Any]:
     """Run the current planted-shortcut control for one held-donor fold."""
@@ -454,35 +675,26 @@ def run_planted_proxy_control_fold(
         mask=detection_mask,
         parameters=parameters,
     )
-    targeted = _ridge_targets(
-        stream,
+    targeted = _policy_targets(
+        method,
+        stream=stream,
         train_donors=train,
         y_by_selection=y,
         target_col=int(target_col),
         parameters=parameters,
+        global_seed=int(global_seed),
     )
     eligible_non_target = int(stream.universe_cols.size - 1)
     co_mask_count = int(evidence_budget.mask_count(eligible_non_target))
-    base = stream_impl._base_uniform_mask(
-        stream.universe_cols,
+    base, targeted_mask = _policy_mask(
+        method,
+        stream=stream,
         target_col=int(target_col),
+        target_id=target_id,
+        fold_index=int(fold_index),
+        global_seed=int(global_seed),
         co_mask_count=co_mask_count,
-        fold_index=int(fold_index),
-        target_id=target_id,
-        global_seed=int(global_seed),
-    )
-    removable = stream_impl._removable_order(
-        base,
-        target_col=int(target_col),
-        fold_index=int(fold_index),
-        target_id=target_id,
-        global_seed=int(global_seed),
-    )
-    targeted_mask = stream_impl.apply_burden_preserving_swaps(
-        base_mask=base,
-        target_col=int(target_col),
-        targeted_cols=targeted,
-        removable_order=removable,
+        targeted=targeted,
     )
     after_score, after_donor = _score_mask(
         stream,
@@ -493,9 +705,34 @@ def run_planted_proxy_control_fold(
         mask=targeted_mask,
         parameters=parameters,
     )
+    shuffled_y = deterministic_within_donor_shuffle(
+        y,
+        donor_by_row,
+        target_id=f"PLANTED|{target_id}",
+        global_seed=int(global_seed),
+    )
+    shuffled_detect_score, shuffled_detect_donor = _score_mask(
+        stream,
+        train_donors=train,
+        heldout_donors=heldout,
+        y_by_selection=shuffled_y,
+        target_col=int(target_col),
+        mask=detection_mask,
+        parameters=parameters,
+    )
+    shuffled_after_score, shuffled_after_donor = _score_mask(
+        stream,
+        train_donors=train,
+        heldout_donors=heldout,
+        y_by_selection=shuffled_y,
+        target_col=int(target_col),
+        mask=targeted_mask,
+        parameters=parameters,
+    )
     return {
         "control_id": "PLANTED_SHORTCUT_POSITIVE_CONTROL_V1",
         "fold": int(fold_index),
+        "method": method,
         "target_col": int(target_col),
         "target_id": target_id,
         "proxy_col": int(proxy_col),
@@ -503,8 +740,14 @@ def run_planted_proxy_control_fold(
         "targeted_cols": targeted,
         "detect_score": float(detect_score),
         "after_mask_score": float(after_score),
+        "shuffled_detect_score": float(shuffled_detect_score),
+        "shuffled_after_mask_score": float(shuffled_after_score),
+        "detect_excess": float(detect_score - shuffled_detect_score),
+        "after_mask_excess": float(after_score - shuffled_after_score),
         "detect_donor_scores": tuple(sorted((int(k), float(v)) for k, v in detect_donor.items())),
         "after_mask_donor_scores": tuple(sorted((int(k), float(v)) for k, v in after_donor.items())),
+        "shuffled_detect_donor_scores": tuple(sorted((int(k), float(v)) for k, v in shuffled_detect_donor.items())),
+        "shuffled_after_mask_donor_scores": tuple(sorted((int(k), float(v)) for k, v in shuffled_after_donor.items())),
         "mask_cardinality": len(targeted_mask),
         "uniform_mask_cardinality": len(base),
     }
@@ -518,9 +761,10 @@ def run_shuffled_negative_control_fold(
     evidence_budget: Any,
     target_col: int,
     target_id: object,
+    method: str,
     global_seed: int,
 ) -> dict[str, Any]:
-    """Run deterministic within-donor shuffled target control for one fold."""
+    """Run deterministic within-donor shuffled target control for one fold and policy."""
 
     stream.validate_layout()
     parameters.validate()
@@ -535,35 +779,26 @@ def run_shuffled_negative_control_fold(
 
     heldout = np.flatnonzero(stream.fold_by_donor == int(fold_index)).astype(np.int64)
     train = np.flatnonzero(stream.fold_by_donor != int(fold_index)).astype(np.int64)
-    targeted = _ridge_targets(
-        stream,
+    targeted = _policy_targets(
+        method,
+        stream=stream,
         train_donors=train,
         y_by_selection=y,
         target_col=int(target_col),
         parameters=parameters,
+        global_seed=int(global_seed),
     )
     eligible_non_target = int(stream.universe_cols.size - 1)
     co_mask_count = int(evidence_budget.mask_count(eligible_non_target))
-    base = stream_impl._base_uniform_mask(
-        stream.universe_cols,
+    base, targeted_mask = _policy_mask(
+        method,
+        stream=stream,
         target_col=int(target_col),
+        target_id=target_id,
+        fold_index=int(fold_index),
+        global_seed=int(global_seed),
         co_mask_count=co_mask_count,
-        fold_index=int(fold_index),
-        target_id=target_id,
-        global_seed=int(global_seed),
-    )
-    removable = stream_impl._removable_order(
-        base,
-        target_col=int(target_col),
-        fold_index=int(fold_index),
-        target_id=target_id,
-        global_seed=int(global_seed),
-    )
-    targeted_mask = stream_impl.apply_burden_preserving_swaps(
-        base_mask=base,
-        target_col=int(target_col),
-        targeted_cols=targeted,
-        removable_order=removable,
+        targeted=targeted,
     )
     uniform_score, uniform_donor = _score_mask(
         stream,
@@ -589,6 +824,7 @@ def run_shuffled_negative_control_fold(
     )
     return {
         "control_id": "WITHIN_DONOR_SHUFFLED_NEGATIVE_CONTROL_V1",
+        "method": method,
         "fold": int(fold_index),
         "target_col": int(target_col),
         "target_id": target_id,
