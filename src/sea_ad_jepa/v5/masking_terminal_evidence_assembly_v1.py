@@ -25,7 +25,10 @@ from .masking_qualification_decision_v1 import (
     POLICIES,
 )
 from .masking_qualification_decision_v2 import DECISION_RULE_ID
-from .precision_authority_v4 import QualificationPrecisionAuthorityV4
+from .precision_authority_v4 import (
+    QualificationPrecisionAuthorityV4,
+    SOURCE_POPULATION_FRAME_ID,
+)
 
 PRIMARY_DELTA_ESTIMAND_ID = "UNIFORM_MINUS_POLICY_PAIRED_TARGET_DONOR_V1"
 PRIMARY_NULL_ESTIMAND_ID = "REAL_POLICY_MINUS_SAME_MASK_WITHIN_DONOR_SHUFFLED_TARGET_V1"
@@ -36,7 +39,7 @@ PLANTED_AFTER_ESTIMAND_ID = "PLANTED_PROXY_AFTER_TARGETED_MASK_MINUS_SAME_MASK_S
 NONLINEAR_NULL_ESTIMAND_ID = "REAL_NONLINEAR_MINUS_SAME_MASK_WITHIN_DONOR_SHUFFLED_TARGET_V1"
 TARGET_HETEROGENEITY_ID = "SOURCE_BALANCED_DONOR_MEAN_DELTA_PER_TARGET_V1"
 TARGETING_COMPLEXITY_ID = "MEAN_EFFECTIVE_TARGETED_COUNT_OVER_TARGET_X_OUTER_FOLD_V1"
-INTERVAL_METHOD_ID = "QUALIFICATION_PRECISION_AUTHORITY_V4_PAIRED_TARGET_DONOR_BOOTSTRAP_V1"
+INTERVAL_METHOD_ID = "QUALIFICATION_PRECISION_AUTHORITY_V4_FIXED_SOURCE_PAIRED_TARGET_DONOR_BOOTSTRAP_V1"
 RAW_EVIDENCE_SCHEMA_ID = "V5_FULL104_TERMINAL_POLICY_RAW_EVIDENCE_V1"
 
 
@@ -155,6 +158,7 @@ class TerminalEvidenceAssemblySemanticsV1:
     target_heterogeneity_id: str = TARGET_HETEROGENEITY_ID
     targeting_complexity_id: str = TARGETING_COMPLEXITY_ID
     interval_method_id: str = INTERVAL_METHOD_ID
+    source_population_frame_id: str = SOURCE_POPULATION_FRAME_ID
     raw_evidence_schema_id: str = RAW_EVIDENCE_SCHEMA_ID
     terminal_outcomes_inspected_before_freeze: bool = False
     training_authorized: bool = False
@@ -172,6 +176,7 @@ class TerminalEvidenceAssemblySemanticsV1:
             and self.target_heterogeneity_id == TARGET_HETEROGENEITY_ID
             and self.targeting_complexity_id == TARGETING_COMPLEXITY_ID
             and self.interval_method_id == INTERVAL_METHOD_ID
+            and self.source_population_frame_id == SOURCE_POPULATION_FRAME_ID
             and self.raw_evidence_schema_id == RAW_EVIDENCE_SCHEMA_ID
         )
         if not expected:
