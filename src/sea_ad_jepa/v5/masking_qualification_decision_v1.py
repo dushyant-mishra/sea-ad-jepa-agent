@@ -77,6 +77,7 @@ class MaskingPolicyDecisionEvidenceV1:
     delta_vs_uniform: IntervalEvidenceV1
     excess_over_shuffled_null: IntervalEvidenceV1
     source_excess_upper_one_sided: Mapping[str, float]
+    source_delta_lower_one_sided: Mapping[str, float]
     target_delta_median: float
     worst_target_delta: float
     mean_effective_targeted_n: float
@@ -85,6 +86,8 @@ class MaskingPolicyDecisionEvidenceV1:
     planted_detect_excess: IntervalEvidenceV1
     planted_after_mask_excess: IntervalEvidenceV1
     nonlinear_excess_over_shuffled_null: IntervalEvidenceV1
+    null_noise_tolerance_ceiling: float
+    negative_control_precision_passed: bool
 
     replay_exact: bool
     untreated_identity_exact: bool
@@ -124,15 +127,27 @@ class MaskingPolicyDecisionEvidenceV1:
             interval.validate()
         if not self.source_excess_upper_one_sided:
             raise ValueError("source-specific null comparison is required")
+        if not self.source_delta_lower_one_sided:
+            raise ValueError("source-specific improvement comparison is required")
+        if set(self.source_excess_upper_one_sided) != set(self.source_delta_lower_one_sided):
+            raise ValueError("source-specific null and improvement maps must cover identical sources")
         for source, value in self.source_excess_upper_one_sided.items():
             if not isinstance(source, str) or not source:
                 raise ValueError("source names must be nonempty")
             _finite(value, f"source_excess_upper_one_sided[{source}]")
+            _finite(
+                self.source_delta_lower_one_sided[source],
+                f"source_delta_lower_one_sided[{source}]",
+            )
+        tolerance = _finite(self.null_noise_tolerance_ceiling, "null_noise_tolerance_ceiling")
+        if tolerance <= 0.0:
+            raise ValueError("null_noise_tolerance_ceiling must be positive")
         for name in ("target_delta_median", "worst_target_delta", "mean_effective_targeted_n"):
             _finite(getattr(self, name), name)
         if self.mean_effective_targeted_n < 0:
             raise ValueError("mean_effective_targeted_n cannot be negative")
         for name in (
+            "negative_control_precision_passed",
             "replay_exact", "untreated_identity_exact", "no_privileged_metadata",
             "precision_requirements_met", "terminal_outcomes_inspected_before_freeze",
         ):
