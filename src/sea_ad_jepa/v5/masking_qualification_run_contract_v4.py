@@ -17,6 +17,10 @@ STRICT_SUPPORT_POLICY_ID = "STRICT_MEASURED_SCALAR_ONLY__COLLISION_UNRESOLVED_EX
 TERMINAL_UNIVERSE_ID = "FULL_COMMON_CORE_17186_V1"
 EXECUTION_SOURCE_ROLE_ID = "FULL104_STREAMING_EXECUTION_V1"
 DECISION_RULE_ID = "NULL_NOISE_CALIBRATED_SHORTCUT_SUPPRESSION_WITH_PAIRED_DONOR_TARGET_UNCERTAINTY_V2"
+EXPECTED_FULL104_BLOCK_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+EXPECTED_OBSERVATION_STATE_SHA256 = "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+TERMINAL_EXECUTION_INPUT_ROLE_ID = "AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM_V1"
+CALIBRATION_CACHE_ROLE_ID = "CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1"
 
 
 def _sha(value: object, name: str) -> str:
@@ -53,6 +57,7 @@ class MaskingQualificationRunContractV4:
     observation_state_sha256: str
     support_estimability_authority_sha256: str
     census_authority_sha256: str
+    control_calibration_cache_manifest_sha256: str
 
     target_evidence_budget_template_sha256: str
     burden_ladder_authority_sha256: str
@@ -76,6 +81,8 @@ class MaskingQualificationRunContractV4:
     target_panel_sizing_source_sha256: str
     control_calibration_precision_source_sha256: str
     control_capacity_calibration_source_sha256: str
+    control_calibration_cache_builder_source_sha256: str
+    control_calibration_cache_evaluator_source_sha256: str
     target_panel_authority_source_sha256: str
     precision_evaluator_source_sha256: str
     donor_evidence_source_sha256: str
@@ -88,6 +95,7 @@ class MaskingQualificationRunContractV4:
     anti_spillover_test_source_sha256: str
 
     execution_source_role_id: str
+    execution_input_role_id: str
     decision_rule_id: str
     freeze_policy_id: str
     support_state_policy_id: str
@@ -105,6 +113,7 @@ class MaskingQualificationRunContractV4:
             "observation_state_sha256",
             "support_estimability_authority_sha256",
             "census_authority_sha256",
+            "control_calibration_cache_manifest_sha256",
             "target_evidence_budget_template_sha256",
             "burden_ladder_authority_sha256",
             "outer_split_authority_sha256",
@@ -123,6 +132,8 @@ class MaskingQualificationRunContractV4:
             "target_panel_sizing_source_sha256",
             "control_calibration_precision_source_sha256",
             "control_capacity_calibration_source_sha256",
+            "control_calibration_cache_builder_source_sha256",
+            "control_calibration_cache_evaluator_source_sha256",
             "target_panel_authority_source_sha256",
             "precision_evaluator_source_sha256",
             "donor_evidence_source_sha256",
@@ -145,8 +156,14 @@ class MaskingQualificationRunContractV4:
             if digest in seen:
                 raise ValueError(f"run-contract roots must be role-distinct: {name} duplicates {seen[digest]}")
             seen[digest] = name
+        if self.full104_block_manifest_sha256 != EXPECTED_FULL104_BLOCK_MANIFEST_SHA256:
+            raise ValueError("terminal FULL104 block-manifest root mismatch")
+        if self.observation_state_sha256 != EXPECTED_OBSERVATION_STATE_SHA256:
+            raise ValueError("terminal observation-state root mismatch")
         if self.execution_source_role_id != EXECUTION_SOURCE_ROLE_ID:
             raise ValueError("execution_source_role_id mismatch")
+        if self.execution_input_role_id != TERMINAL_EXECUTION_INPUT_ROLE_ID:
+            raise ValueError("execution_input_role_id must require the authenticated FULL104 Level-4 stream")
         if self.decision_rule_id != DECISION_RULE_ID:
             raise ValueError("decision_rule_id mismatch")
         if self.freeze_policy_id != FREEZE_POLICY_ID:
@@ -161,6 +178,43 @@ class MaskingQualificationRunContractV4:
             raise ValueError("run contract cannot authorize protected outcomes")
         if self.training_authorized is not False:
             raise ValueError("run contract cannot authorize training")
+
+    def assert_terminal_execution_input_role(self, runtime_role_id: str) -> None:
+        self.validate()
+        if runtime_role_id == CALIBRATION_CACHE_ROLE_ID:
+            raise ValueError("calibration cache is forbidden as terminal masking qualification input")
+        if runtime_role_id != TERMINAL_EXECUTION_INPUT_ROLE_ID:
+            raise ValueError("terminal execution input role is not the authenticated FULL104 Level-4 stream")
+
+    def bind_control_calibration_provenance(
+        self,
+        cache_manifest: Any,
+        outer_split: Any,
+        sizing_plan: Any,
+    ) -> None:
+        self.validate()
+        if _live_digest(cache_manifest, "control calibration cache") != self.control_calibration_cache_manifest_sha256:
+            raise ValueError("control calibration cache root mismatch")
+        if getattr(cache_manifest, "cache_role_id", None) != CALIBRATION_CACHE_ROLE_ID:
+            raise ValueError("control calibration cache role mismatch")
+        if getattr(cache_manifest, "terminal_masking_qualification_authorized", None) is not False:
+            raise ValueError("control calibration cache unexpectedly authorizes terminal masking")
+        if getattr(cache_manifest, "full104_block_manifest_sha256", None) != self.full104_block_manifest_sha256:
+            raise ValueError("control calibration cache is bound to a different FULL104 substrate")
+        if getattr(cache_manifest, "census_authority_sha256", None) != self.census_authority_sha256:
+            raise ValueError("control calibration cache is bound to a different census authority")
+        if getattr(cache_manifest, "support_estimability_authority_sha256", None) != self.support_estimability_authority_sha256:
+            raise ValueError("control calibration cache is bound to a different support authority")
+        if _live_digest(outer_split, "outer split") != self.outer_split_authority_sha256:
+            raise ValueError("outer split authority root mismatch")
+        if getattr(outer_split, "full104_substrate_sha256", None) != self.full104_block_manifest_sha256:
+            raise ValueError("outer split is bound to a different FULL104 substrate")
+        if getattr(outer_split, "fold_assignment_artifact_sha256", None) != getattr(cache_manifest, "split_receipt_sha256", None):
+            raise ValueError("calibration cache uses a different fold-assignment receipt")
+        if _live_digest(sizing_plan, "target-panel sizing plan") != self.target_panel_sizing_plan_sha256:
+            raise ValueError("target-panel sizing plan root mismatch")
+        if getattr(sizing_plan, "target_eligibility_receipt_sha256", None) != getattr(cache_manifest, "target_eligibility_receipt_sha256", None):
+            raise ValueError("calibration cache uses a different target-eligibility receipt")
 
     def bind_target_panel(self, panel: Any, sizing_plan: Any, sizing_receipt: Any) -> None:
         self.validate()
@@ -220,6 +274,8 @@ class MaskingQualificationRunContractV4:
             "target_panel_sizing_source_sha256": "target_panel_sizing_live_sha256",
             "control_calibration_precision_source_sha256": "control_calibration_precision_live_sha256",
             "control_capacity_calibration_source_sha256": "control_capacity_calibration_live_sha256",
+            "control_calibration_cache_builder_source_sha256": "control_calibration_cache_builder_live_sha256",
+            "control_calibration_cache_evaluator_source_sha256": "control_calibration_cache_evaluator_live_sha256",
             "target_panel_authority_source_sha256": "target_panel_authority_live_sha256",
             "precision_evaluator_source_sha256": "precision_evaluator_live_sha256",
             "donor_evidence_source_sha256": "donor_evidence_live_sha256",
