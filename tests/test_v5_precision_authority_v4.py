@@ -8,6 +8,7 @@ from sea_ad_jepa.v5.masking_qualification_decision_v1 import IntervalEvidenceV1
 from sea_ad_jepa.v5.precision_authority_v4 import (
     NEGATIVE_CONTROL_PRECISION_POLICY_ID,
     SOURCE_POPULATION_FRAME_ID,
+    SOURCE_AGGREGATION_ESTIMAND_ID,
     QualificationPrecisionAuthorityV4,
 )
 
@@ -46,6 +47,8 @@ def test_fixed_source_frame_is_explicit_and_frozen():
     a.validate()
     assert a.source_population_frame_id == SOURCE_POPULATION_FRAME_ID
     assert SOURCE_POPULATION_FRAME_ID == "FIXED_OBSERVED_SOURCES_HVS_NPH52_SEA_AD_V1"
+    assert a.source_aggregation_estimand_id == SOURCE_AGGREGATION_ESTIMAND_ID
+    assert SOURCE_AGGREGATION_ESTIMAND_ID == "EQUAL_WEIGHT_MEAN_OVER_FIXED_HVS_NPH52_SEA_AD_SOURCES_V1"
 
 
 def test_null_margin_is_exact_rational_and_bound_into_identity():
