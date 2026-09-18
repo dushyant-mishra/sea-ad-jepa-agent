@@ -10,7 +10,7 @@ Working implementation branch:
 
 Scientific implementation anchor (source/test/data bytes):
 
-`86692cde7e61fe4beae7fff4070bd376a8090af2`
+`f62dc42582c8b8933955505f5127bebfaa687304`
 
 Draft implementation PR:
 
@@ -106,16 +106,20 @@ Historical evidence may define the pre-FULL104 confirmation candidate and nonlin
 
 ## Current exact-head verification status
 
-Do not inherit old green status as verification of the latest successor bytes.
+The focused FULL104 masking workflow is verified on the current scientific source/test/data anchor `f62dc42582c8b8933955505f5127bebfaa687304`.
 
-At the scientific implementation anchor `86692cde...`, GitHub records no workflow runs. The older independently green anchor `8ee5d0a5...` remains useful historical implementation evidence only.
+GitHub Actions run `35373584821` completed SUCCESS. Both the full regression step and the explicit fail-closed-on-skips step completed SUCCESS.
 
-First takeover action is focused CI on the exact current implementation bytes, fail closed on any skip/new failure.
+The immediately preceding exact-head run `35373486676` failed during collection because `tests/test_v5_full104_masking_anti_spillover_v2.py` still referenced nonlinear sampling authority V1 after the current chain had moved to V2. Commit `f62dc425...` corrected only those stale test references and the successor run passed.
+
+Historical green anchor `8ee5d0a5...` remains historical evidence only. Historical run `35366475387` on `86692cde...` was a failed push run, so prior handoff wording that no workflow run existed at that head is superseded.
+
+Exact-head focused CI is therefore `ALREADY_AUDITED__PASS_NO_SKIPS` at `f62dc425...`.
 
 ## Immediate authoritative sequence
 
-1. Re-fetch the live implementation branch and PR #20. If source/test/data bytes changed from `86692cde...`, classify the delta as `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
-2. Run the focused FULL104 masking/calibration CI on the exact current implementation bytes; fail closed on skips.
+1. Re-fetch the live implementation branch and PR #20. If source/test/data bytes changed from `f62dc425...`, classify the delta as `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+2. Exact-head focused CI at `f62dc425...` is already audited PASS/no-skips in run `35373584821`; rerun it after any source/test/workflow change.
 3. Refresh/supersede `scripts/agent/v5_full104_masking_gpu_preflight_20260917.ps1`. It is stale for the V4/cache-calibrated chain and must not be used as final GPU authority.
 4. Build the explicit pre-FULL104 confirmation `MaskingQualificationParametersAuthorityV2` instance with `scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py`. This re-authorizes only the frozen discovery-defined candidate; it does not authorize a burden or training.
 5. On the canonical GPU worktree, regenerate the census V2 summary, split, and target-eligibility receipts from the real `pass1.npz`, then build census authority V2.
