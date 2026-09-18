@@ -142,7 +142,7 @@ def nonlinear_receipt_typed(payload: dict[str, Any]) -> NonlinearSamplingCalibra
         selected_max_cells_per_donor=int(payload["selected_max_cells_per_donor"]),
         evaluated_caps=tuple(map(int, payload["evaluated_caps"])),
         verdict_digest_by_cap={int(k): str(v) for k, v in payload["verdict_digest_by_cap"].items()},
-        terminal_outcomes_inspected_before_freeze=bool(payload.get("terminal_outcomes_inspected_before_freeze", False)),
+        real_masking_policy_outcomes_inspected=bool(payload.get("real_masking_policy_outcomes_inspected", False)),
         training_authorized=bool(payload.get("training_authorized", False)),
     )
     obj.validate()
