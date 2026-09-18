@@ -190,7 +190,6 @@ def main() -> int:
         "policy_arms": list(authority.policy_arms),
         "controls": list(authority.controls),
         "authority_sha256": authority.canonical_digest(),
-        "historical_discovery_address_universe_ladder_bound": False,
         "concrete_burden_frozen_in_design": False,
         "protected_outcomes_authorized": False,
         "training_authorized": False,
