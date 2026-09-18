@@ -23,7 +23,7 @@ def contract(**updates):
         "design", "parameters", "manifest", "observation", "support", "census",
         "budget-template", "burden-ladder", "split", "target-panel", "precision",
         "rng", "checkpoint", "reference", "streaming", "precision-source",
-        "donor-evidence-source", "decision-source", "spillover-source",
+        "donor-evidence-source", "control-source", "decision-source", "spillover-source",
     ]
     roots = {name: h(name) for name in fields}
     values = dict(
@@ -45,6 +45,7 @@ def contract(**updates):
         full104_streaming_execution_source_sha256=roots["streaming"],
         precision_evaluator_source_sha256=roots["precision-source"],
         donor_evidence_source_sha256=roots["donor-evidence-source"],
+        control_executor_source_sha256=roots["control-source"],
         decision_evaluator_source_sha256=roots["decision-source"],
         anti_spillover_test_source_sha256=roots["spillover-source"],
         execution_source_role_id=EXECUTION_SOURCE_ROLE_ID,
