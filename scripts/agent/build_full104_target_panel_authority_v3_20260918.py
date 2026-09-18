@@ -11,6 +11,8 @@ from pathlib import Path
 import numpy as np
 
 from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
+from sea_ad_jepa.v5.control_capacity_calibration_receipt_v1 import ControlCapacityCalibrationReceiptV1
+from sea_ad_jepa.v5.control_calibration_precision_authority_v2 import ControlCalibrationPrecisionPlanV2
 from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import (
     load_control_calibration_cache,
 )
@@ -53,6 +55,25 @@ def require_receipt(payload: dict, schema: str, path: Path) -> str:
     return str(declared)
 
 
+def typed(payload: dict, cls, digest_field: str):
+    names={f.name for f in fields(cls)}
+    missing=names-set(payload)
+    if missing:
+        raise SystemExit(f"{cls.__name__} missing fields: {sorted(missing)[:5]}")
+    obj=cls(**{name:payload[name] for name in names})
+    obj.validate()
+    if payload.get(digest_field)!=obj.canonical_digest():
+        raise SystemExit(f"{cls.__name__} digest mismatch")
+    return obj
+
+
+def load_capacity_receipt(path: Path) -> ControlCapacityCalibrationReceiptV1:
+    payload=load(path)
+    if payload.get("schema")!="V5_CONTROL_CAPACITY_CALIBRATION_RECEIPT_V1":
+        raise SystemExit(f"{path}: capacity receipt schema mismatch")
+    return typed(payload,ControlCapacityCalibrationReceiptV1,"receipt_sha256")
+
+
 def load_verdict(path: Path) -> TargetPanelControlVerdictV2:
     payload=load(path)
     if payload.get("schema")!="V5_TARGET_PANEL_CONTROL_VERDICT_V2":
@@ -72,7 +93,10 @@ def main()->int:
     p.add_argument("--support-authority",type=Path,required=True)
     p.add_argument("--census-authority",type=Path,required=True)
     p.add_argument("--target-eligibility",type=Path,required=True)
+    p.add_argument("--sizing-plan",type=Path,required=True)
+    p.add_argument("--control-calibration-precision-plan",type=Path,required=True)
     p.add_argument("--sizing-receipt",type=Path,required=True)
+    p.add_argument("--capacity-receipt",type=Path,action="append",required=True)
     p.add_argument("--capacity-verdict",type=Path,action="append",required=True)
     p.add_argument("--selection-receipt",type=Path,required=True)
     p.add_argument("--out",type=Path,required=True)
@@ -120,14 +144,34 @@ def main()->int:
     if registry.get("FULL104_SUBSTRATE",{}).get("sha256")!=EXPECTED_FULL104_MANIFEST_SHA256:
         raise SystemExit("canonical registry authority uses a different FULL104 substrate")
 
-    plan=TargetPanelSizingPlanAuthorityV2(
-        authority_id="JEPA_V5_FULL104_TARGET_PANEL_SIZING_PLAN_V2",
-        census_authority_sha256=census_root,
-        target_eligibility_receipt_sha256=eligibility_root,
-        independent_donor_count=104,
-        eligible_target_count=EXPECTED_ELIGIBLE_TARGET_COUNT,
-    )
-    plan.validate()
+    plan_payload=load(args.sizing_plan)
+    if plan_payload.get("schema")!="V5_TARGET_PANEL_SIZING_PLAN_AUTHORITY_V2":
+        raise SystemExit("target-panel sizing plan V2 is required")
+    plan=typed(plan_payload,TargetPanelSizingPlanAuthorityV2,"authority_sha256")
+    if plan.census_authority_sha256!=census_root:
+        raise SystemExit("target-panel sizing plan binds a different census authority")
+    if plan.target_eligibility_receipt_sha256!=eligibility_root:
+        raise SystemExit("target-panel sizing plan binds a different target-eligibility receipt")
+
+    precision_plan_payload=load(args.control_calibration_precision_plan)
+    if precision_plan_payload.get("schema")!="V5_CONTROL_CALIBRATION_PRECISION_PLAN_V2":
+        raise SystemExit("control-calibration precision plan V2 is required")
+    precision_plan=typed(precision_plan_payload,ControlCalibrationPrecisionPlanV2,"authority_sha256")
+    precision_plan.bind_calibration_cache(cache.manifest)
+
+    capacity_receipts={}
+    for path in args.capacity_receipt:
+        receipt=load_capacity_receipt(path)
+        if receipt.scope_id!="TARGET_PANEL_SIZE_CAPACITY_CALIBRATION_V1":
+            raise SystemExit(f"{path}: target-panel capacity scope required")
+        if receipt.candidate_value in capacity_receipts:
+            raise SystemExit("duplicate target-panel capacity receipt")
+        if receipt.calibration_cache_manifest_sha256!=cache.manifest_sha256:
+            raise SystemExit(f"{path}: capacity receipt binds a different calibration cache")
+        if receipt.precision_root_sha256!=precision_plan.canonical_digest():
+            raise SystemExit(f"{path}: capacity receipt binds a different control precision plan")
+        capacity_receipts[receipt.candidate_value]=receipt
+    capacity_receipts=dict(sorted(capacity_receipts.items()))
 
     verdicts={}
     for path in args.capacity_verdict:
@@ -136,6 +180,13 @@ def main()->int:
             raise SystemExit("duplicate target-panel capacity verdict")
         verdicts[verdict.target_count]=verdict
     verdicts=dict(sorted(verdicts.items()))
+    if set(verdicts)!=set(capacity_receipts):
+        raise SystemExit("target-panel verdict and capacity-receipt rungs differ")
+    for count,verdict in verdicts.items():
+        receipt=capacity_receipts[count]
+        verdict.bind_capacity_receipt(receipt)
+        if receipt.target_count!=count:
+            raise SystemExit("target-panel capacity receipt target_count mismatch")
 
     sizing_payload=load(args.sizing_receipt)
     if sizing_payload.get("schema")!="V5_TARGET_PANEL_SIZING_RECEIPT_V2":

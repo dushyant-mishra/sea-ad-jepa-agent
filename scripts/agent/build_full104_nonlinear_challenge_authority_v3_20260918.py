@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import load_control_calibration_cache
+from sea_ad_jepa.v5.control_capacity_calibration_receipt_v1 import ControlCapacityCalibrationReceiptV1
 from sea_ad_jepa.v5.masking_nonlinear_challenge_authority_v3 import NonlinearMaskingChallengeAuthorityV3
 from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
 from sea_ad_jepa.v5.nonlinear_capacity_model_authority_v1 import NonlinearCapacityModelAuthorityV1
@@ -37,6 +38,25 @@ def typed(payload: dict, cls, digest_field: str):
     return obj
 
 
+def load_capacity_receipts(paths: list[Path]) -> dict[int, ControlCapacityCalibrationReceiptV1]:
+    out: dict[int, ControlCapacityCalibrationReceiptV1] = {}
+    names={f.name for f in fields(ControlCapacityCalibrationReceiptV1)}
+    for path in paths:
+        payload=load(path)
+        if payload.get("schema")!="V5_CONTROL_CAPACITY_CALIBRATION_RECEIPT_V1":
+            raise SystemExit(f"{path}: capacity receipt schema mismatch")
+        obj=ControlCapacityCalibrationReceiptV1(**{name:payload[name] for name in names})
+        obj.validate()
+        if payload.get("receipt_sha256")!=obj.canonical_digest():
+            raise SystemExit(f"{path}: capacity receipt digest mismatch")
+        if obj.scope_id!="NONLINEAR_CAP_CAPACITY_CALIBRATION_V1":
+            raise SystemExit(f"{path}: nonlinear capacity scope required")
+        if obj.candidate_value in out:
+            raise SystemExit("duplicate nonlinear capacity receipt")
+        out[obj.candidate_value]=obj
+    return dict(sorted(out.items()))
+
+
 def load_verdicts(paths: list[Path]) -> dict[int, NonlinearCapControlVerdictV1]:
     out: dict[int, NonlinearCapControlVerdictV1] = {}
     names = {f.name for f in fields(NonlinearCapControlVerdictV1)}
@@ -64,6 +84,7 @@ def main() -> int:
     p.add_argument("--outer-split-authority", type=Path, required=True)
     p.add_argument("--sampling-plan", type=Path, required=True)
     p.add_argument("--sampling-receipt", type=Path, required=True)
+    p.add_argument("--capacity-receipt", type=Path, action="append", required=True)
     p.add_argument("--cap-verdict", type=Path, action="append", required=True)
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
@@ -118,7 +139,19 @@ def main() -> int:
     if receipt_payload.get("receipt_sha256") != receipt.canonical_digest():
         raise SystemExit("nonlinear sampling calibration receipt digest mismatch")
 
+    capacity_receipts = load_capacity_receipts(args.capacity_receipt)
     verdicts = load_verdicts(args.cap_verdict)
+    if set(capacity_receipts)!=set(verdicts):
+        raise SystemExit("nonlinear verdict and capacity-receipt rungs differ")
+    for cap,verdict in verdicts.items():
+        capacity=capacity_receipts[cap]
+        if capacity.calibration_cache_manifest_sha256!=cache.manifest_sha256:
+            raise SystemExit("nonlinear capacity receipt binds a different calibration cache")
+        if capacity.precision_root_sha256!=precision.canonical_digest():
+            raise SystemExit("nonlinear capacity receipt binds a different precision authority")
+        if capacity.target_count!=panel.target_count:
+            raise SystemExit("nonlinear capacity receipt target count disagrees with panel")
+        verdict.bind_capacity_receipt(capacity)
     receipt.bind_verdicts(plan, verdicts)
     selected = receipt.selected_max_cells_per_donor
     if selected != plan.select(verdicts):

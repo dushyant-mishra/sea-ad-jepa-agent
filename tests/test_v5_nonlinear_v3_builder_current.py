@@ -105,7 +105,10 @@ def test_current_v3_builder_does_not_open_historical_files_directly():
     assert "historical_nonlinear_summary_sha256=model.historical_nonlinear_summary_sha256" in source
     assert "--sampling-plan" in source
     assert "--sampling-receipt" in source
+    assert "--capacity-receipt" in source
     assert "--cap-verdict" in source
+    assert "verdict.bind_capacity_receipt(capacity)" in source
+    assert "capacity.precision_root_sha256!=precision.canonical_digest()" in source
 
 
 def test_nonlinear_evaluator_materializes_plan_before_opening_a_rung():
