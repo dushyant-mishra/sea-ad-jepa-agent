@@ -22,8 +22,8 @@ def contract(**updates):
     fields = [
         "design", "parameters", "manifest", "observation", "support", "census",
         "budget-template", "burden-ladder", "split", "target-panel", "precision",
-        "rng", "checkpoint", "reference", "streaming", "precision-source",
-        "donor-evidence-source", "control-source", "decision-source", "spillover-source",
+        "nonlinear-authority", "rng", "checkpoint", "reference", "streaming", "precision-source",
+        "donor-evidence-source", "control-source", "nonlinear-source", "decision-source", "spillover-source",
     ]
     roots = {name: h(name) for name in fields}
     values = dict(
@@ -39,6 +39,7 @@ def contract(**updates):
         outer_split_authority_sha256=roots["split"],
         target_panel_authority_sha256=roots["target-panel"],
         precision_authority_sha256=roots["precision"],
+        nonlinear_challenge_authority_sha256=roots["nonlinear-authority"],
         rng_replay_authority_sha256=roots["rng"],
         machine_worktree_checkpoint_sha256=roots["checkpoint"],
         canonical_reference_source_sha256=roots["reference"],
@@ -46,6 +47,7 @@ def contract(**updates):
         precision_evaluator_source_sha256=roots["precision-source"],
         donor_evidence_source_sha256=roots["donor-evidence-source"],
         control_executor_source_sha256=roots["control-source"],
+        nonlinear_executor_source_sha256=roots["nonlinear-source"],
         decision_evaluator_source_sha256=roots["decision-source"],
         anti_spillover_test_source_sha256=roots["spillover-source"],
         execution_source_role_id=EXECUTION_SOURCE_ROLE_ID,
