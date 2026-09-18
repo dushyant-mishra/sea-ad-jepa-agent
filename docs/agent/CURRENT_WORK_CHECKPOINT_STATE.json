@@ -13,7 +13,7 @@
     },
     {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "5da8ef7967dbe372d75e87f78b101e0b8663f0ecb5756e90678eb66d058da2a9",
+      "sha256": "346dbc27b2aed7d80fed6cf91e10f438eedf1cfcfeeeb154dc10b643ff376fcc",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
@@ -47,18 +47,19 @@
     "CURRENT_MEASUREMENT_ROBUSTNESS_EVIDENCE_OPEN",
     "PRODUCTION_GEOMETRY_AND_GEOMETRY_SPECIFIC_MEMORIZATION_OPEN",
     "CURRENT_RUNTIME_SOURCE_ENVIRONMENT_PROVENANCE_OPEN",
-    "FINAL_TRAINING_AUTHORITY_NOT_ISSUED"
+    "FINAL_TRAINING_AUTHORITY_NOT_ISSUED",
+    "TERMINAL_ONE_RUNG_EVIDENCE_ASSEMBLER_AND_EXECUTOR_NOT_YET_IMPLEMENTED_OR_FROZEN"
   ],
   "assets": {
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
       "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "scientific_implementation_head": "5ed613ac700d1505cef10f2fb01e4a5302a933f9",
+      "scientific_implementation_head": "93093be1da09c46983f932d756b0fc9690a3eac4",
       "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35385752247",
+      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35386306268",
       "pull_request": 20,
       "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
-      "governance_note": "Current source/test/workflow bytes are anchored at 5ed613ac... after exact-byte pinning of every intentional historical reauthorization root. The six historical provenance files were independently verified byte-identical at pre-FULL104 discovery head 99dc3a6f... and current head. Later docs-only governance/command repairs do not change scientific implementation."
+      "governance_note": "Current source/test/workflow bytes are anchored at 93093be1... with exact historical-byte reauthorization, narrow historical-ingress allowlisting, and automated canonical command/CLI parity. Later docs-only governance edits do not change scientific implementation. Terminal FULL104 outcomes remain unopened."
     },
     "full104": {
       "cells": 4553407,
@@ -158,13 +159,13 @@
     },
     "verified_ci": {
       "role": "EXACT_CURRENT_SCIENTIFIC_SOURCE_TEST_WORKFLOW_VERIFICATION",
-      "code_anchor": "5ed613ac700d1505cef10f2fb01e4a5302a933f9",
+      "code_anchor": "93093be1da09c46983f932d756b0fc9690a3eac4",
       "workflow": "V5 FULL104 masking runner",
-      "run_id": 35385752247,
+      "run_id": 35386306268,
       "conclusion": "success",
       "regression_step": "success",
       "skip_gate": "pass",
-      "predecessor_verified_anchor": "ee8ae818937b46a99be29ade5bdf65fd85d706a7",
+      "predecessor_verified_anchor": "5ed613ac700d1505cef10f2fb01e4a5302a933f9",
       "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__INTENTIONAL_REAUTHORIZATION_REQUIRES_EXACT_PRE_FULL104_BYTES_CURRENT_FULL104_ROLE_LIMITS_CURRENT_ROOT_BINDING_EXACT_CURRENT_SEMANTIC_AUTHORITY_INGRESS_AND_PATH_ONLY_FINAL_CONTRACT_ASSEMBLY"
     },
     "supporting_exploratory_results": {
@@ -195,7 +196,8 @@
     "REBUILD_AND_VALIDATE_MACHINE_WORKTREE_CHECKPOINT_ON_FINAL_HEAD",
     "INDEPENDENTLY_VERIFY_FINAL_PACKAGE",
     "ONLY_THEN_OPEN_5_PERCENT_TERMINAL_FULL104_RUNG",
-    "STOP_AT_FIRST_FULLY_QUALIFYING_BURDEN"
+    "STOP_AT_FIRST_FULLY_QUALIFYING_BURDEN",
+    "IMPLEMENT_AND_INDEPENDENTLY_TEST_CURRENT_ONE_RUNG_TERMINAL_EVIDENCE_ASSEMBLER_EXECUTOR_WITH_NO_CACHE_TERMINAL_INPUT_AND_NO_AUTO_ESCALATION"
   ],
   "forbidden_actions": [
     "RUN_TRAINING",
@@ -224,7 +226,10 @@
     "MANUFACTURE_ADDRESS_UNIVERSE_LADDER_DIGEST_FROM_DISCOVERY_UNIVERSES_IF_CURRENT_ARTIFACT_IS_MISSING",
     "USE_PROVISIONAL_20260917_FREEZE_STATUS_PLACEHOLDER_SUPPORT_ROOT_AS_CURRENT_AUTHORITY",
     "REINTRODUCE_DISCOVERY_ADDRESS_UNIVERSE_LADDER_AS_FINAL_DESIGN_V2_ROLE",
-    "ACCEPT_SAME_PATH_HISTORICAL_ARTIFACT_IF_BYTES_DRIFT_FROM_FROZEN_PRE_FULL104_DIGEST"
+    "ACCEPT_SAME_PATH_HISTORICAL_ARTIFACT_IF_BYTES_DRIFT_FROM_FROZEN_PRE_FULL104_DIGEST",
+    "USE_20260916_HISTORICAL_FULL104_RUNNER_AS_CURRENT_TERMINAL_EXECUTOR",
+    "HAND_ASSEMBLE_TERMINAL_DECISION_JSON_OR_EXECUTION_AUTHORITY_FROM_UNBOUND_NUMBERS",
+    "AUTO_ESCALATE_TO_HIGHER_MASKING_BURDEN_IN_ONE_TERMINAL_EXECUTOR_INVOCATION"
   ],
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
