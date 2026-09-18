@@ -166,9 +166,10 @@ def decision_receipt(policy_id, *, qualified, mean_effective_targeted_n, delta_l
         nonlinear_guardrail_passed=True,
         null_noise_tolerance=0.005,
         target_heterogeneity_floor=-0.005,
+        target_heterogeneity_floor_rule_id="WORST_TARGET_NO_WORSE_THAN_NEGATIVE_FROZEN_NULL_EQUIVALENCE_MARGIN_V1",
         mean_effective_targeted_n=mean_effective_targeted_n,
         delta_lower_one_sided=delta_lower_one_sided,
-        decision_rule_id="FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_AND_FIXED_HETEROGENEITY_GUARDED_SHORTCUT_SUPPRESSION_V4",
+        decision_rule_id="FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_FIXED_HETEROGENEITY_AND_MATERIAL_TARGETING_SHORTCUT_SUPPRESSION_V4",
         evidence_digest=("1" if policy_id == "UNIFORM_RANDOM" else "2" if policy_id == "TOP8_CORRELATION" else "3" if policy_id == "RIDGE8_CONDITIONAL" else "4") * 64,
     )
 
@@ -201,7 +202,7 @@ def test_f16_material_one_partner_per_target_fold_advantage_keeps_complexity_pri
         "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
     )
     prefix = decision_receipt(
-        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=6.9, delta_lower_one_sided=0.001
+        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.0, delta_lower_one_sided=0.001
     )
     ridge = decision_receipt(
         "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040
@@ -294,4 +295,23 @@ def test_f17_prospective_margin_not_realized_control_width_changes_heterogeneity
     assert large.target_heterogeneity_floor == pytest.approx(-0.005)
     assert not small.heterogeneity_guardrail_passed
     assert large.heterogeneity_guardrail_passed
+
+def test_f16_rejects_stale_decision_receipt_semantics():
+    uniform = decision_receipt(
+        "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
+    )
+    top = decision_receipt(
+        "TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.010
+    )
+    ridge = decision_receipt(
+        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040
+    )
+    prefix = decision_receipt(
+        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.9999, delta_lower_one_sided=0.001
+    )
+    stale = MaskingPolicyDecisionReceiptV2(
+        **{**prefix.__dict__, "decision_rule_id": "FIXED_SOURCE_NULL_EQUIVALENCE_AND_SOURCE_BENEFIT_GUARDED_SHORTCUT_SUPPRESSION_V3"}
+    )
+    with pytest.raises(ValueError, match="current decision rule"):
+        select_policy_v2([uniform, top, ridge, stale])
 
