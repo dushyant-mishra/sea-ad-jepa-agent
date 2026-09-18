@@ -455,6 +455,31 @@ def _source_upper_bounds(
     return out
 
 
+def _source_lower_bounds(
+    precision: QualificationPrecisionAuthorityV4,
+    matrix: np.ndarray,
+    donor_source_code: np.ndarray,
+    source_names: Mapping[int, str],
+) -> dict[str, float]:
+    source = np.asarray(donor_source_code, dtype=np.int64)
+    codes = sorted(set(map(int, source)))
+    normalized_names = {int(k): str(v) for k, v in source_names.items()}
+    if set(codes) != set(normalized_names):
+        raise ValueError("source_names must exactly cover donor source codes")
+    out: dict[str, float] = {}
+    for code in codes:
+        ix = np.flatnonzero(source == code)
+        if ix.size == 0:
+            raise ValueError("empty source stratum")
+        local_source = np.zeros(ix.size, dtype=np.int64)
+        interval = precision.interval(matrix[:, ix], local_source)
+        name = normalized_names[code]
+        if not name or name in out:
+            raise ValueError("source names must be unique and nonempty")
+        out[name] = float(interval.lower_one_sided)
+    return out
+
+
 def _source_balanced_target_means(
     matrix: np.ndarray, donor_source_code: np.ndarray
 ) -> np.ndarray:
@@ -508,6 +533,10 @@ def assemble_policy_decision_evidence(
     residual = actual - shuffled
     nonlinear_residual = nl_actual - nl_shuffled
     target_delta = _source_balanced_target_means(delta, donor_source)
+    negative_interval = _interval(precision, neg, donor_source)
+    negative_precision_passed = precision.negative_control_precision_passed(
+        negative_interval
+    )
 
     evidence = MaskingPolicyDecisionEvidenceV1(
         policy_id=raw_evidence.policy_id,
@@ -522,15 +551,20 @@ def assemble_policy_decision_evidence(
         source_excess_upper_one_sided=_source_upper_bounds(
             precision, residual, donor_source, raw_evidence.source_names
         ),
+        source_delta_lower_one_sided=_source_lower_bounds(
+            precision, delta, donor_source, raw_evidence.source_names
+        ),
         target_delta_median=float(np.median(target_delta)),
         worst_target_delta=float(np.min(target_delta)),
         mean_effective_targeted_n=float(np.mean(effective)),
-        negative_control_delta=_interval(precision, neg, donor_source),
+        negative_control_delta=negative_interval,
         planted_detect_excess=_interval(precision, plant_detect, donor_source),
         planted_after_mask_excess=_interval(precision, plant_after, donor_source),
         nonlinear_excess_over_shuffled_null=_interval(
             precision, nonlinear_residual, donor_source
         ),
+        null_noise_tolerance_ceiling=precision.null_equivalence_margin,
+        negative_control_precision_passed=negative_precision_passed,
         replay_exact=raw_evidence.replay_exact,
         untreated_identity_exact=raw_evidence.untreated_identity_exact,
         no_privileged_metadata=raw_evidence.no_privileged_metadata,
