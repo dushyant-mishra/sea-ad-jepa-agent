@@ -31,6 +31,7 @@ class NonlinearSamplingCalibrationPlanV2:
     primary_parameters_authority_sha256:str
     model_capacity_authority_sha256:str
     calibration_cache_manifest_sha256:str
+    calibration_evaluator_source_sha256:str
     ladder_id:str=LADDER_ID
     selection_rule_id:str=SELECTION_RULE_ID
     outcome_firewall_policy_id:str=OUTCOME_FIREWALL_ID
@@ -43,8 +44,9 @@ class NonlinearSamplingCalibrationPlanV2:
             "target_panel_authority_sha256","precision_authority_sha256",
             "outer_split_authority_sha256","primary_parameters_authority_sha256",
             "model_capacity_authority_sha256","calibration_cache_manifest_sha256",
+            "calibration_evaluator_source_sha256",
         ))
-        if len(set(roots))!=6:
+        if len(set(roots))!=7:
             raise ValueError("nonlinear calibration V2 roots must be role-distinct")
         if self.ladder_id!=LADDER_ID:
             raise ValueError("ladder_id mismatch")
