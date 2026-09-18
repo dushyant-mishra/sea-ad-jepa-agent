@@ -10,11 +10,11 @@ Historical/smaller-run artifacts may motivate a current hypothesis or model shap
 
 Current scientific source/test/workflow anchor:
 
-`ee8ae818937b46a99be29ade5bdf65fd85d706a7`
+`5ed613ac700d1505cef10f2fb01e4a5302a933f9`
 
 Verified GitHub Actions run:
 
-`35385138227` — PASS, including fail-on-skips.
+`35385752247` — PASS, including fail-on-skips.
 
 ## 1. Re-fetch and preserve the worktree
 
@@ -23,7 +23,7 @@ PowerShell:
 ```powershell
 $Repo = "D:\Jepa project"
 $Branch = "impl/v5-full104-masking-redteam2-20260918"
-$ExpectedAnchor = "ee8ae818937b46a99be29ade5bdf65fd85d706a7"
+$ExpectedAnchor = "5ed613ac700d1505cef10f2fb01e4a5302a933f9"
 
 git -C $Repo fetch origin
 git -C $Repo status --porcelain
