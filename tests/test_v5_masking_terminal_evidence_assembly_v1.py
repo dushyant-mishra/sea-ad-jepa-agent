@@ -77,6 +77,7 @@ def raw_bundle(target_count: int = 128, **updates):
             [h(f"mask-{i}-{fold}") for fold in range(4)]
             for i in range(target_count)
         ],
+        mechanical_control_receipt_sha256=h("mechanical-controls"),
         actual_policy_scores=np.full(shape, 0.10),
         actual_uniform_scores=np.full(shape, 0.20),
         shuffled_same_mask_scores=np.full(shape, 0.10),
@@ -196,6 +197,7 @@ def test_exact_full104_donor_axis_is_required():
                 [h(f"mask-{i}-{fold}") for fold in range(4)]
                 for i in range(128)
             ],
+            mechanical_control_receipt_sha256=h("mechanical-controls"),
             actual_policy_scores=np.zeros(shape),
             actual_uniform_scores=np.zeros(shape),
             shuffled_same_mask_scores=np.zeros(shape),
@@ -239,6 +241,16 @@ def test_mask_grid_must_cover_every_target_and_four_folds():
     bad = [[h("mask")] * 4 for _ in range(127)]
     with pytest.raises(ValueError, match="one row per target"):
         raw_bundle(policy_mask_sha256_by_target_fold=bad)
+
+
+def test_mechanical_control_receipt_is_bound_into_every_raw_evidence_root():
+    first = raw_bundle()
+    second = raw_bundle(
+        mechanical_control_receipt_sha256=h("different-mechanical-controls")
+    )
+    assert first.primary_evidence_digest() != second.primary_evidence_digest()
+    assert first.control_evidence_digest() != second.control_evidence_digest()
+    assert first.nonlinear_evidence_digest() != second.nonlinear_evidence_digest()
 
 
 def test_raw_bundle_copies_and_freezes_input_arrays():
