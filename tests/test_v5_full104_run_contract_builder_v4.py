@@ -1,11 +1,19 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
 import re
 
 from scripts.agent.work_checkpoint import semantic_sha256 as checkpoint_semantic_sha256
+
+from sea_ad_jepa.v5.control_calibration_precision_authority_v2 import ControlCalibrationPrecisionPlanV2
+from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v2 import (
+    NonlinearSamplingCalibrationPlanV2,
+    NonlinearSamplingCalibrationReceiptV2,
+)
+from sea_ad_jepa.v5.target_panel_sizing_authority_v2 import TargetPanelSizingPlanAuthorityV2
 
 
 BUILDER = Path("scripts/agent/build_full104_masking_run_contract_v4_20260918.py")
@@ -100,3 +108,90 @@ def test_live_source_roles_are_explicit_current_files_and_include_spillover_fire
     assert roles["anti_spillover_test_live_sha256"] == "tests/test_v5_full104_masking_anti_spillover_v2.py"
     for relative in roles.values():
         assert Path(relative).is_file(), relative
+
+
+def h(value: str) -> str:
+    return hashlib.sha256(value.encode()).hexdigest()
+
+
+def json_roundtrip(value):
+    return json.loads(json.dumps(value))
+
+
+def test_builder_roundtrips_actual_evaluator_plan_and_receipt_json_shapes():
+    module = load_builder_module()
+
+    sizing = TargetPanelSizingPlanAuthorityV2(
+        authority_id="ROUNDTRIP_SIZING",
+        census_authority_sha256=h("census"),
+        target_eligibility_receipt_sha256=h("eligibility"),
+        independent_donor_count=104,
+        eligible_target_count=17053,
+    )
+    sizing_payload = json_roundtrip({
+        "schema": "V5_TARGET_PANEL_SIZING_PLAN_AUTHORITY_V2",
+        **sizing.__dict__,
+        "authority_sha256": sizing.canonical_digest(),
+    })
+    rebuilt_sizing = module.typed(
+        sizing_payload, TargetPanelSizingPlanAuthorityV2, "authority_sha256"
+    )
+    assert rebuilt_sizing.canonical_digest() == sizing.canonical_digest()
+
+    precision_plan = ControlCalibrationPrecisionPlanV2(
+        authority_id="ROUNDTRIP_PRECISION",
+        census_authority_sha256=h("pcensus"),
+        support_estimability_authority_sha256=h("psupport"),
+        target_eligibility_receipt_sha256=h("peligibility"),
+        fold_assignment_artifact_sha256=h("psplit"),
+        calibration_cache_manifest_sha256=h("pcache"),
+    )
+    precision_payload = json_roundtrip({
+        "schema": "V5_CONTROL_CALIBRATION_PRECISION_PLAN_V2",
+        **precision_plan.__dict__,
+        "authority_sha256": precision_plan.canonical_digest(),
+    })
+    rebuilt_precision = module.typed(
+        precision_payload, ControlCalibrationPrecisionPlanV2, "authority_sha256"
+    )
+    assert rebuilt_precision.canonical_digest() == precision_plan.canonical_digest()
+
+    nonlinear_plan = NonlinearSamplingCalibrationPlanV2(
+        authority_id="ROUNDTRIP_NONLINEAR_PLAN",
+        target_panel_authority_sha256=h("panel"),
+        precision_authority_sha256=h("precision"),
+        outer_split_authority_sha256=h("split"),
+        primary_parameters_authority_sha256=h("params"),
+        model_capacity_authority_sha256=h("model"),
+        calibration_cache_manifest_sha256=h("cache"),
+        calibration_evaluator_source_sha256=h("evaluator"),
+    )
+    nonlinear_plan_payload = json_roundtrip({
+        "schema": "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2",
+        **nonlinear_plan.__dict__,
+        "authority_sha256": nonlinear_plan.canonical_digest(),
+    })
+    rebuilt_plan = module.typed(
+        nonlinear_plan_payload, NonlinearSamplingCalibrationPlanV2, "authority_sha256"
+    )
+    assert rebuilt_plan.canonical_digest() == nonlinear_plan.canonical_digest()
+
+    nonlinear_receipt = NonlinearSamplingCalibrationReceiptV2(
+        plan_authority_sha256=nonlinear_plan.canonical_digest(),
+        calibration_cache_manifest_sha256=nonlinear_plan.calibration_cache_manifest_sha256,
+        precision_authority_sha256=nonlinear_plan.precision_authority_sha256,
+        model_capacity_authority_sha256=nonlinear_plan.model_capacity_authority_sha256,
+        selected_max_cells_per_donor=64,
+        evaluated_caps=(64,),
+        verdict_digest_by_cap={64: h("cap64-verdict")},
+        real_masking_policy_outcomes_inspected=False,
+        training_authorized=False,
+    )
+    nonlinear_receipt_payload = json_roundtrip({
+        "schema": "V5_NONLINEAR_SAMPLING_CALIBRATION_RECEIPT_V2",
+        **nonlinear_receipt.__dict__,
+        "receipt_sha256": nonlinear_receipt.canonical_digest(),
+    })
+    rebuilt_receipt = module.nonlinear_receipt_typed(nonlinear_receipt_payload)
+    assert rebuilt_receipt.canonical_digest() == nonlinear_receipt.canonical_digest()
+    assert rebuilt_receipt.real_masking_policy_outcomes_inspected is False
