@@ -91,6 +91,7 @@ def test_imprecise_negative_control_cannot_buy_a_looser_bar():
     r = evaluate_policy_v2(e)
     assert r.null_noise_tolerance == pytest.approx(0.005)
     assert not r.controls_passed
+    assert not r.negative_control_precision_passed
     assert not r.qualified
 
 
@@ -120,4 +121,5 @@ def test_policy_harming_any_source_fails_improvement():
     )
     r = evaluate_policy_v2(e)
     assert not r.targeted_improvement_passed
+    assert not r.source_improvement_guardrail_passed
     assert not r.qualified
