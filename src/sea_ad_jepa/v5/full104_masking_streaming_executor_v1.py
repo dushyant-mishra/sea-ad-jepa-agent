@@ -279,6 +279,37 @@ class Full104ManifestStreamV1:
         self._matrix_width = width
         self._validated = True
 
+    def revalidate_physical_inputs(self) -> str:
+        """Re-hash authenticated Level-4 inputs without using the validation cache.
+
+        Terminal execution calls this after evidence generation so a prior
+        successful validate_layout() cannot hide later mutation of the manifest,
+        counts blocks, or metadata blocks.
+        """
+
+        if not self.manifest_path.is_file():
+            raise ValueError("block manifest is missing")
+        manifest_digest = _sha256_file(self.manifest_path)
+        if manifest_digest != self.expected_manifest_sha256:
+            raise ValueError("block manifest hash mismatch during physical revalidation")
+        rows = self._load_manifest()
+        for row in rows:
+            counts_path = _resolve_under_root(self.block_root, row["counts_path"])
+            meta_path = _resolve_under_root(self.block_root, row["meta_path"])
+            if not counts_path.is_file() or not meta_path.is_file():
+                raise ValueError(
+                    f"block file missing during physical revalidation: {row['block_key']}"
+                )
+            if _sha256_file(counts_path) != row["counts_sha256"]:
+                raise ValueError(
+                    f"counts block hash mismatch during physical revalidation: {row['block_key']}"
+                )
+            if _sha256_file(meta_path) != row["meta_sha256"]:
+                raise ValueError(
+                    f"metadata block hash mismatch during physical revalidation: {row['block_key']}"
+                )
+        return manifest_digest
+
     def iter_blocks(self, *, columns: np.ndarray) -> Iterator[StreamingBlock]:
         """Yield normalized sparse blocks for exactly the requested columns."""
 
