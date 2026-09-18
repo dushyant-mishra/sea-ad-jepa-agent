@@ -1,10 +1,12 @@
 """Fixed-source, prospectively margin-calibrated masking qualification decision.
 
-The current V3 semantic rule replaces the impossible exact-zero residual
-requirement with a pre-terminal equivalence margin frozen in PrecisionAuthorityV4.
-The terminal negative-control interval must fit inside that fixed margin; its
-observed width can never enlarge the qualification bar. Targeted improvements
-must also clear source-specific lower-bound guardrails for every observed source.
+The current V4 semantic rule uses a pre-terminal equivalence margin frozen
+in PrecisionAuthorityV4. The terminal negative-control interval must fit inside
+that fixed margin; its observed width can never enlarge either the null bar or
+the target-heterogeneity floor. Targeted improvements must clear source-specific
+lower-bound guardrails. Among qualified targeted policies, differences smaller
+than one mean effective targeted partner per target x outer-fold are treated as
+complexity-equivalent before effect lower bounds break the tie.
 """
 from __future__ import annotations
 
