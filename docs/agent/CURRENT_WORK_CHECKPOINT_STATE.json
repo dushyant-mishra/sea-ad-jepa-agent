@@ -13,7 +13,7 @@
     },
     {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "dde8324e0b989557202af55cd3c38bc5f9abacfa72b0a274aa53149abdd6c8dd",
+      "sha256": "4eaa7e132aeb0b8a6e3b6d45b78c5c4373db226c6643d0848b75d0adbbed1d33",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
@@ -26,6 +26,7 @@
     "training": "FORBIDDEN_UNTIL_EXPLICIT_FINAL_TRAINING_AUTHORITY"
   },
   "unresolved_blockers": [
+    "MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2_INSTANCE_NOT_YET_BUILT",
     "GPU_MACHINE_MUST_GENERATE_AND_HASH_BIND_CENSUS_V2_EXECUTION_RECEIPTS_FROM_REAL_PASS1_NPZ",
     "GPU_MACHINE_MUST_BUILD_AUTHENTICATED_CONTROL_CALIBRATION_CACHE_FROM_FULL104",
     "CONTROL_ONLY_TARGET_PANEL_SIZING_RECEIPT_NOT_YET_EXECUTED",
@@ -101,7 +102,8 @@
       "nonlinear_capacity_model_authority": "src/sea_ad_jepa/v5/nonlinear_capacity_model_authority_v1.py",
       "nonlinear_capacity_model_authority_builder": "scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py",
       "nonlinear_capacity_cache_evaluator": "src/sea_ad_jepa/v5/full104_nonlinear_capacity_cache_evaluator_v1.py",
-      "nonlinear_capacity_evaluator": "scripts/agent/evaluate_full104_nonlinear_capacity_from_cache_v1.py"
+      "nonlinear_capacity_evaluator": "scripts/agent/evaluate_full104_nonlinear_capacity_from_cache_v1.py",
+      "masking_parameters_authority_builder": "scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
@@ -165,6 +167,7 @@
   },
   "next_authorized_actions": [
     "RUN_FOCUSED_CI_AND_FAIL_CLOSED_ON_ANY_SKIP_OR_NEW_FAILURE",
+    "BUILD_EXPLICIT_MASKING_PARAMETERS_AUTHORITY_V2_FROM_FROZEN_DISCOVERY_PROVENANCE",
     "ON_GPU_REGENERATE_CENSUS_V2_SUMMARY_SPLIT_AND_TARGET_ELIGIBILITY_RECEIPTS_FROM_AUTHENTICATED_PASS1_NPZ",
     "BUILD_AUTHENTICATED_FULL104_CONTROL_CALIBRATION_CACHE_ONCE_FROM_CURRENT_LEVEL4_AND_CANONICAL_REGISTRY",
     "VERIFY_CACHE_HASHES_ROLE_ALL_104_DONORS_AND_FULL_DONOR_SUFFICIENT_STAT_CLOSURE",
