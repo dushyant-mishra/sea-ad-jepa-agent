@@ -9,6 +9,7 @@ import pytest
 from sea_ad_jepa.v5.masking_control_executor_v1 import (
     deterministic_within_donor_shuffle,
     run_planted_proxy_control_fold,
+    run_planted_proxy_matched_shuffle_control_fold,
     run_shuffled_negative_control_fold,
     run_planted_proxy_detection_fold,
     run_shuffled_null_detection_fold,
@@ -55,6 +56,36 @@ def test_planted_proxy_control_detects_and_selects_exact_visible_proxy(tmp_path:
     assert result["proxy_selected"] is True
     assert result["detect_score"] >= result["after_mask_score"]
     assert result["mask_cardinality"] == result["uniform_mask_cardinality"]
+
+
+
+def test_planted_matched_shuffle_control_is_same_mask_and_replays(tmp_path: Path) -> None:
+    _, stream, _, _ = _fixture(tmp_path)
+    kwargs = dict(
+        stream=stream,
+        fold_index=0,
+        parameters=parameters(),
+        evidence_budget=budget(),
+        target_col=int(stream.target_cols[0]),
+        target_id=stream.target_ids[0],
+        eligible_proxy_cols=stream.universe_cols,
+        global_seed=17,
+    )
+    first = run_planted_proxy_matched_shuffle_control_fold(**kwargs)
+    second = run_planted_proxy_matched_shuffle_control_fold(**kwargs)
+    assert first == second
+    assert first["control_id"] == "PLANTED_SHORTCUT_MATCHED_SHUFFLE_CONTROL_V1"
+    assert first["same_mask_shuffled_proxy"] is True
+    assert first["proxy_selected"] is True
+    assert first["mask_cardinality"] == first["uniform_mask_cardinality"]
+    assert len(first["detect_donor_excess"]) == 4
+    assert len(first["after_mask_donor_excess"]) == 4
+    assert first["detect_excess"] == pytest.approx(
+        first["detect_score"] - first["shuffled_detect_score"]
+    )
+    assert first["after_mask_excess"] == pytest.approx(
+        first["after_mask_score"] - first["shuffled_after_mask_score"]
+    )
 
 
 def test_shuffled_negative_control_is_exactly_replayable(tmp_path: Path) -> None:
