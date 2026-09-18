@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 from sea_ad_jepa.v5.masking_qualification_decision_v2 import evaluate_policy_v2
+from sea_ad_jepa.v5.precision_authority_v4 import QualificationPrecisionAuthorityV4
 from sea_ad_jepa.v5.masking_terminal_evidence_assembly_v1 import (
     NONLINEAR_NULL_ESTIMAND_ID,
     PLANTED_DETECT_ESTIMAND_ID,
@@ -33,19 +34,7 @@ class _Interval:
     upper_one_sided: float
 
 
-class PrecisionStub:
-    required_target_count = 128
-
-    def validate(self):
-        return None
-
-    def assert_sufficient(self, *, target_count, donor_count, outer_fold_count):
-        if target_count < 128 or donor_count < 104 or outer_fold_count < 4:
-            raise ValueError("below frozen precision")
-
-    def canonical_digest(self):
-        return h("precision")
-
+class PrecisionStub(QualificationPrecisionAuthorityV4):
     def interval(self, matrix, donor_source_code):
         values = np.asarray(matrix, dtype=float)
         mean = float(np.mean(values))
@@ -53,6 +42,17 @@ class PrecisionStub:
             return _Interval(mean, mean, mean, mean, mean)
         span = float(np.max(np.abs(values - mean)))
         return _Interval(mean, mean - span, mean + span, mean - span, mean + span)
+
+
+def precision():
+    return PrecisionStub(
+        authority_id="TEST_QUALIFICATION_PRECISION_AUTHORITY_V4",
+        support_estimability_authority_sha256=h("support"),
+        target_panel_authority_sha256=h("panel"),
+        target_panel_sizing_receipt_sha256=h("sizing"),
+        outer_split_authority_sha256=h("split"),
+        required_target_count=128,
+    )
 
 
 def matrices(target_count: int = 128):
@@ -98,7 +98,7 @@ def raw_bundle(target_count: int = 128, **updates):
 def assemble(**updates):
     return assemble_policy_decision_evidence(
         raw_evidence=raw_bundle(**updates),
-        precision=PrecisionStub(),
+        precision=precision(),
     )
 
 
@@ -116,7 +116,7 @@ def test_semantics_freeze_is_explicit_and_preoutcome():
 
 def test_like_with_like_same_mask_null_can_qualify():
     raw = raw_bundle()
-    evidence = assemble_policy_decision_evidence(raw_evidence=raw, precision=PrecisionStub())
+    evidence = assemble_policy_decision_evidence(raw_evidence=raw, precision=precision())
     receipt = evaluate_policy_v2(evidence)
     assert evidence.raw_primary_evidence_sha256 == raw.primary_evidence_digest()
     assert evidence.raw_control_evidence_sha256 == raw.control_evidence_digest()
@@ -171,11 +171,30 @@ def test_matrix_role_mismatch_fails_closed():
         raw_bundle(shuffled_same_mask_scores=np.zeros((128, 103)))
 
 
+def test_duck_typed_precision_is_rejected():
+    class DuckPrecision:
+        required_target_count = 128
+        def validate(self):
+            return None
+        def assert_sufficient(self, **kwargs):
+            return None
+        def canonical_digest(self):
+            return h("duck")
+        def interval(self, matrix, donor_source_code):
+            return _Interval(0.0, 0.0, 0.0, 0.0, 0.0)
+
+    with pytest.raises(ValueError, match="QualificationPrecisionAuthorityV4"):
+        assemble_policy_decision_evidence(
+            raw_evidence=raw_bundle(),
+            precision=DuckPrecision(),
+        )
+
+
 def test_precision_shortfall_fails_closed():
-    with pytest.raises(ValueError, match="below frozen precision"):
+    with pytest.raises(ValueError, match="target_count below calibrated precision requirement"):
         assemble_policy_decision_evidence(
             raw_evidence=raw_bundle(target_count=127),
-            precision=PrecisionStub(),
+            precision=precision(),
         )
 
 
@@ -277,7 +296,7 @@ def test_assembler_no_longer_accepts_free_raw_sha_arguments():
     with pytest.raises(TypeError):
         assemble_policy_decision_evidence(
             raw_evidence=raw,
-            precision=PrecisionStub(),
+            precision=precision(),
             raw_primary_evidence_sha256=h("unrelated"),
         )
 
