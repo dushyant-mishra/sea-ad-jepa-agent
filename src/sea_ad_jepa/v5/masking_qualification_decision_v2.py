@@ -1,9 +1,10 @@
-"""Null-noise-calibrated mechanical masking qualification decision.
+"""Fixed-source, prospectively margin-calibrated masking qualification decision.
 
-The current V3 semantic rule replaces the impossible exact-zero residual requirement with a prospective
-noise-calibrated rule.  The acceptable residual shortcut level is derived only
-from the required within-donor shuffled negative-control uncertainty, never from
-the real masking outcome itself.
+The current V3 semantic rule replaces the impossible exact-zero residual
+requirement with a pre-terminal equivalence margin frozen in PrecisionAuthorityV4.
+The terminal negative-control interval must fit inside that fixed margin; its
+observed width can never enlarge the qualification bar. Targeted improvements
+must also clear source-specific lower-bound guardrails for every observed source.
 """
 from __future__ import annotations
 
@@ -48,7 +49,7 @@ class MaskingPolicyDecisionReceiptV2:
     evidence_digest: str
 
     def canonical_digest(self) -> str:
-        return _digest({"schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V2", **asdict(self)})
+        return _digest({"schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V3", **asdict(self)})
 
 
 @dataclass(frozen=True)
@@ -79,7 +80,7 @@ class MaskingRungDecisionReceiptV2:
     def canonical_digest(self) -> str:
         self.validate()
         return _digest({
-            "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V2",
+            "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V3",
             **asdict(self),
             "policy_receipt_sha256": dict(sorted(self.policy_receipt_sha256.items())),
         })
