@@ -12,6 +12,13 @@ def board():
     )
 
 
+def test_v2_ladder_has_distinct_v2_semantic_identity():
+    b = board()
+    b.validate()
+    assert b.ladder_id == "FULL104_CENSUS_BURDEN_LADDER_20260918_V2"
+    assert b.escalation_rule_id.endswith("_V2")
+
+
 def test_starts_at_lowest_rung_and_advances_only_after_failure():
     b = board()
     r = b.ordered_rungs()
