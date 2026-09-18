@@ -89,7 +89,9 @@
       "nonlinear_challenge_authority": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v3.py",
       "nonlinear_executor": "src/sea_ad_jepa/v5/masking_nonlinear_challenge_executor_v1.py",
       "decision_evaluator": "src/sea_ad_jepa/v5/masking_qualification_decision_v2.py",
-      "anti_spillover": "tests/test_v5_full104_masking_anti_spillover_v2.py"
+      "anti_spillover": "tests/test_v5_full104_masking_anti_spillover_v2.py",
+      "control_calibration_precision": "src/sea_ad_jepa/v5/control_calibration_precision_authority_v1.py",
+      "control_calibration_interval_receipt": "src/sea_ad_jepa/v5/control_calibration_interval_receipt_v1.py"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
@@ -110,7 +112,9 @@
       "run_contract_v4": "tests/test_v5_masking_qualification_run_contract_v4.py",
       "anti_spillover_v2": "tests/test_v5_full104_masking_anti_spillover_v2.py",
       "stage_a": "tests/test_v5_current_stage_a_spillover_firewall_v1.py",
-      "stage_a_successors": "tests/test_v5_current_stage_a_spillover_firewall_v3.py"
+      "stage_a_successors": "tests/test_v5_current_stage_a_spillover_firewall_v3.py",
+      "control_calibration_precision": "tests/test_v5_control_calibration_precision_authority_v1.py",
+      "control_calibration_interval": "tests/test_v5_control_calibration_interval_receipt_v1.py"
     },
     "verified_ci": {
       "code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
