@@ -28,6 +28,7 @@ from .masking_qualification_decision_v2 import DECISION_RULE_ID
 from .precision_authority_v4 import (
     QualificationPrecisionAuthorityV4,
     SOURCE_POPULATION_FRAME_ID,
+    SOURCE_AGGREGATION_ESTIMAND_ID,
 )
 
 PRIMARY_DELTA_ESTIMAND_ID = "UNIFORM_MINUS_POLICY_PAIRED_TARGET_DONOR_V1"
@@ -159,6 +160,7 @@ class TerminalEvidenceAssemblySemanticsV1:
     targeting_complexity_id: str = TARGETING_COMPLEXITY_ID
     interval_method_id: str = INTERVAL_METHOD_ID
     source_population_frame_id: str = SOURCE_POPULATION_FRAME_ID
+    source_aggregation_estimand_id: str = SOURCE_AGGREGATION_ESTIMAND_ID
     raw_evidence_schema_id: str = RAW_EVIDENCE_SCHEMA_ID
     terminal_outcomes_inspected_before_freeze: bool = False
     training_authorized: bool = False
@@ -177,6 +179,7 @@ class TerminalEvidenceAssemblySemanticsV1:
             and self.targeting_complexity_id == TARGETING_COMPLEXITY_ID
             and self.interval_method_id == INTERVAL_METHOD_ID
             and self.source_population_frame_id == SOURCE_POPULATION_FRAME_ID
+            and self.source_aggregation_estimand_id == SOURCE_AGGREGATION_ESTIMAND_ID
             and self.raw_evidence_schema_id == RAW_EVIDENCE_SCHEMA_ID
         )
         if not expected:
