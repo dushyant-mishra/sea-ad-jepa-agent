@@ -217,6 +217,19 @@ def test_stream_normalizes_log1p10k_exactly_once_and_preserves_donor_identity(tm
     assert np.array_equal(observed_donor, reference.donor_code)
 
 
+def test_uncached_physical_revalidation_detects_post_validation_tamper(tmp_path: Path) -> None:
+    _, stream, _, manifest_rows = _fixture(tmp_path)
+    stream.validate_layout()
+    assert stream.revalidate_physical_inputs() == stream.expected_manifest_sha256
+
+    counts_path = stream.block_root / manifest_rows[0]["counts_path"]
+    with counts_path.open("ab") as handle:
+        handle.write(b"post-validation-tamper")
+
+    with pytest.raises(ValueError, match="counts block hash mismatch during physical revalidation"):
+        stream.revalidate_physical_inputs()
+
+
 def test_streaming_fold_matches_canonical_reference_for_all_policy_arms(tmp_path: Path) -> None:
     reference, stream, _, _ = _fixture(tmp_path)
     expected = run_primary_fold(
