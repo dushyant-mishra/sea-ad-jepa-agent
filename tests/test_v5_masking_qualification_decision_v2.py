@@ -42,6 +42,14 @@ def evidence(**updates):
         precision_requirements_met=True,
     )
     values.update(updates)
+    if "negative_control_precision_passed" not in updates:
+        neg = values["negative_control_delta"]
+        tol = float(values["null_noise_tolerance_ceiling"])
+        values["negative_control_precision_passed"] = bool(
+            neg.lower_two_sided <= 0.0 <= neg.upper_two_sided
+            and neg.lower_two_sided >= -tol
+            and neg.upper_two_sided <= tol
+        )
     return MaskingPolicyDecisionEvidenceV1(**values)
 
 
