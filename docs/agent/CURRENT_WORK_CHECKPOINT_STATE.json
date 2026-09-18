@@ -12,18 +12,13 @@
       "status": "FROZEN_PROJECT_GOVERNANCE"
     },
     {
-      "path": "START_HERE.md",
-      "sha256": "f6a4a9247ec30dea48cb075e106596e4a507bf30d6f5d7b4b3fc96727623e84d",
-      "status": "CURRENT_HANDOFF_AUTHORITY"
-    },
-    {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "5403a418fdd020bd0e64ef0e686496bddc076e961052239a6c5e7534124d0dc5",
+      "sha256": "dde8324e0b989557202af55cd3c38bc5f9abacfa72b0a274aa53149abdd6c8dd",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
   "gates": {
-    "current": "FULL104_MASKING_CONTROL_CALIBRATION_AND_FINAL_FREEZE_REPAIR_IN_PROGRESS__TERMINAL_OUTCOMES_UNOPENED",
+    "current": "FULL104_MASKING_CONTROL_CALIBRATION_IMPLEMENTED__GOVERNANCE_REPAIRED__GPU_RUNTIME_RECEIPTS_PENDING__TERMINAL_OUTCOMES_UNOPENED",
     "masking_qualification": "CONTROL_CALIBRATION_PENDING__NO_TERMINAL_POLICY_OUTCOME_ACCESS",
     "stage_a": "PASS_11_OF_11__GEOMETRY_MEMORIZATION_DEFERRED_UNTIL_FINAL_GEOMETRY",
     "protected_outcomes": "CLOSED",
@@ -53,10 +48,12 @@
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
       "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "pull_request": 18,
-      "pr_base": "analysis/v5-ridge8-expanded-validation-20260917",
-      "base_divergence_note": "The PR base has two later commits only touching accidental __never__ connector-probe cleanup/noop files; no newer science/result bytes are omitted from this handoff."
+      "scientific_implementation_head": "86692cde7e61fe4beae7fff4070bd376a8090af2",
+      "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
+      "exact_scientific_head_ci_status": "NO_WORKFLOW_RUNS_RECORDED__RUN_FOCUSED_CI_FIRST",
+      "pull_request": 20,
+      "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
+      "governance_note": "Source/test/data scientific bytes are anchored at 86692cde...; later docs-only governance/handoff commits do not promote CI status or change scientific implementation."
     },
     "full104": {
       "cells": 4553407,
@@ -137,6 +134,7 @@
       "nonlinear_capacity_cache_evaluator": "tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py"
     },
     "verified_ci": {
+      "role": "HISTORICAL_GREEN_ANCHOR_ONLY__NOT_EXACT_CURRENT_HEAD_VERIFICATION",
       "code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
       "runtime_closure": {
         "run_id": 35278901437,
@@ -210,5 +208,5 @@
   ],
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
-  "checkpoint_artifact_note": "This tracked state declares the scientific lane only. The ignored machine-bound CURRENT_WORK_CHECKPOINT.json must be rebuilt and validated on the canonical GPU worktree after the final source/authority commit and again immediately before terminal execution. No committed artifact may claim a still-current machine checkpoint across a subsequent commit."
+  "checkpoint_artifact_note": "This tracked state declares the scientific lane only. It intentionally does not hard-pin START_HERE.md because docs-only handoff commits update START_HERE and would invalidate the checkpoint state across branches. The ignored machine-bound CURRENT_WORK_CHECKPOINT.json must be rebuilt and validated on the canonical GPU worktree after final source/authority freeze and again immediately before terminal execution."
 }
