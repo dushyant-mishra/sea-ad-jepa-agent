@@ -111,6 +111,38 @@ class _BoundStub:
         return self._digest
 
 
+def test_final_contract_rejects_design_v1_concrete_budget_binding():
+    c = contract()
+    old_design = _BoundStub(
+        c.qualification_design_authority_sha256,
+        full104_substrate_sha256=c.full104_block_manifest_sha256,
+        support_estimability_authority_sha256=c.support_estimability_authority_sha256,
+        target_evidence_budget_authority_sha256=h("concrete-budget"),
+        precision_authority_sha256=c.precision_authority_sha256,
+        outer_split_authority_sha256=c.outer_split_authority_sha256,
+        target_panel_authority_sha256=c.target_panel_authority_sha256,
+        rng_replay_authority_sha256=c.rng_replay_authority_sha256,
+    )
+    with pytest.raises(ValueError, match="DesignAuthorityV2"):
+        c.bind_design(old_design)
+
+
+def test_final_contract_accepts_design_v2_template_and_burden_roots():
+    c = contract()
+    design = _BoundStub(
+        c.qualification_design_authority_sha256,
+        full104_substrate_sha256=c.full104_block_manifest_sha256,
+        support_estimability_authority_sha256=c.support_estimability_authority_sha256,
+        target_evidence_budget_template_sha256=c.target_evidence_budget_template_sha256,
+        burden_ladder_authority_sha256=c.burden_ladder_authority_sha256,
+        precision_authority_sha256=c.precision_authority_sha256,
+        outer_split_authority_sha256=c.outer_split_authority_sha256,
+        target_panel_authority_sha256=c.target_panel_authority_sha256,
+        rng_replay_authority_sha256=c.rng_replay_authority_sha256,
+    )
+    c.bind_design(design)
+
+
 def test_control_calibration_provenance_is_bound_but_not_promoted_to_terminal_input():
     c = contract()
     fold_receipt = h("fold-receipt")

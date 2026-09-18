@@ -186,6 +186,69 @@ class MaskingQualificationRunContractV4:
         if runtime_role_id != TERMINAL_EXECUTION_INPUT_ROLE_ID:
             raise ValueError("terminal execution input role is not the authenticated FULL104 Level-4 stream")
 
+    def bind_parameters(self, parameters: Any) -> None:
+        self.validate()
+        if _live_digest(parameters, "parameters") != self.qualification_parameters_authority_sha256:
+            raise ValueError("parameters authority root mismatch")
+
+    def bind_evidence_budget_template(self, budget_template: Any) -> None:
+        self.validate()
+        if getattr(budget_template, "training_authorized", False) is not False:
+            raise ValueError("evidence-budget template unexpectedly authorizes training")
+        budget_template.validate()
+        if not hasattr(budget_template, "template_digest"):
+            raise ValueError("final run contract requires a burden-free evidence-budget template")
+        if _sha(budget_template.template_digest(), "budget template digest") != self.target_evidence_budget_template_sha256:
+            raise ValueError("evidence-budget template root mismatch")
+        if getattr(budget_template, "full104_block_manifest_sha256", None) != self.full104_block_manifest_sha256:
+            raise ValueError("evidence-budget template binds a different FULL104 substrate")
+        if getattr(budget_template, "observation_state_sha256", None) != self.observation_state_sha256:
+            raise ValueError("evidence-budget template binds a different observation state")
+        if getattr(budget_template, "support_estimability_authority_sha256", None) != self.support_estimability_authority_sha256:
+            raise ValueError("evidence-budget template binds a different support authority")
+        if getattr(budget_template, "census_authority_sha256", None) != self.census_authority_sha256:
+            raise ValueError("evidence-budget template binds a different census authority")
+
+    def bind_burden_ladder(self, ladder: Any) -> None:
+        self.validate()
+        if _live_digest(ladder, "burden ladder") != self.burden_ladder_authority_sha256:
+            raise ValueError("burden-ladder authority root mismatch")
+        if getattr(ladder, "census_authority_sha256", None) != self.census_authority_sha256:
+            raise ValueError("burden ladder binds a different census authority")
+
+    def bind_rng_replay(self, rng_replay: Any) -> None:
+        self.validate()
+        if _live_digest(rng_replay, "RNG replay") != self.rng_replay_authority_sha256:
+            raise ValueError("RNG replay authority root mismatch")
+        if getattr(rng_replay, "outer_split_authority_sha256", None) != self.outer_split_authority_sha256:
+            raise ValueError("RNG replay binds a different outer split")
+        if getattr(rng_replay, "target_panel_authority_sha256", None) != self.target_panel_authority_sha256:
+            raise ValueError("RNG replay binds a different target panel")
+        if getattr(rng_replay, "burden_ladder_authority_sha256", None) != self.burden_ladder_authority_sha256:
+            raise ValueError("RNG replay binds a different burden ladder")
+
+    def bind_design(self, design: Any) -> None:
+        self.validate()
+        if _live_digest(design, "qualification design") != self.qualification_design_authority_sha256:
+            raise ValueError("qualification design authority root mismatch")
+        if not hasattr(design, "target_evidence_budget_template_sha256"):
+            raise ValueError("final run contract requires qualification DesignAuthorityV2 or later")
+        if hasattr(design, "target_evidence_budget_authority_sha256"):
+            raise ValueError("final design may not freeze one concrete evidence-budget burden")
+        expected = {
+            "full104_substrate_sha256": self.full104_block_manifest_sha256,
+            "support_estimability_authority_sha256": self.support_estimability_authority_sha256,
+            "target_evidence_budget_template_sha256": self.target_evidence_budget_template_sha256,
+            "burden_ladder_authority_sha256": self.burden_ladder_authority_sha256,
+            "precision_authority_sha256": self.precision_authority_sha256,
+            "outer_split_authority_sha256": self.outer_split_authority_sha256,
+            "target_panel_authority_sha256": self.target_panel_authority_sha256,
+            "rng_replay_authority_sha256": self.rng_replay_authority_sha256,
+        }
+        for field, root in expected.items():
+            if getattr(design, field, None) != root:
+                raise ValueError(f"qualification design binds a different {field}")
+
     def bind_control_calibration_provenance(
         self,
         cache_manifest: Any,
