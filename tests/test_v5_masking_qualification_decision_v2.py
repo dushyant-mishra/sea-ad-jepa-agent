@@ -14,6 +14,11 @@ from sea_ad_jepa.v5.masking_qualification_decision_v2 import (
     null_noise_tolerance,
     select_policy_v2,
 )
+from sea_ad_jepa.v5.masking_qualification_run_contract_v4 import (
+    DECISION_RULE_ID as RUN_CONTRACT_DECISION_RULE_ID,
+)
+
+
 
 
 def I(mean, lo2, hi2, lo1, hi1):
@@ -349,4 +354,7 @@ def test_f16_selector_rejects_stale_heterogeneity_floor_rule_receipt():
     )
     with pytest.raises(ValueError, match="current target-heterogeneity floor rule"):
         select_policy_v2([*receipts[:-1], stale])
+
+def test_decision_rule_id_is_identical_in_evaluator_and_run_contract():
+    assert DECISION_RULE_ID == RUN_CONTRACT_DECISION_RULE_ID
 
