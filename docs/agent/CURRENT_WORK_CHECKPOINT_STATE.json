@@ -97,7 +97,8 @@
       "control_calibration_cache": "src/sea_ad_jepa/v5/full104_control_calibration_cache_v1.py",
       "control_calibration_cache_evaluator": "src/sea_ad_jepa/v5/full104_control_calibration_cache_evaluator_v1.py",
       "control_calibration_cache_builder": "scripts/agent/build_full104_control_calibration_cache_v1.py",
-      "target_panel_capacity_evaluator": "scripts/agent/evaluate_full104_target_panel_capacity_from_cache_v1.py"
+      "target_panel_capacity_evaluator": "scripts/agent/evaluate_full104_target_panel_capacity_from_cache_v1.py",
+      "target_panel_authority_builder": "scripts/agent/build_full104_target_panel_authority_v3_20260918.py"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
@@ -123,7 +124,8 @@
       "control_calibration_interval": "tests/test_v5_control_calibration_interval_receipt_v1.py",
       "control_capacity_calibration_receipt": "tests/test_v5_control_capacity_calibration_receipt_v1.py",
       "control_calibration_cache": "tests/test_v5_full104_control_calibration_cache_v1.py",
-      "control_calibration_cache_evaluator": "tests/test_v5_full104_control_calibration_cache_evaluator_v1.py"
+      "control_calibration_cache_evaluator": "tests/test_v5_full104_control_calibration_cache_evaluator_v1.py",
+      "target_panel_authority_builder": "tests/test_v5_target_panel_authority_builder_v3.py"
     },
     "verified_ci": {
       "code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
