@@ -67,6 +67,16 @@ on:
       - 'tests/test_v5_full104_masking_anti_spillover_v2.py'
       - 'tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py'
       - 'tests/test_v5_masking_qualification_run_contract_v4.py'
+      - 'src/sea_ad_jepa/v5/nonlinear_capacity_model_authority_v1.py'
+      - 'src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v2.py'
+      - 'src/sea_ad_jepa/v5/full104_nonlinear_capacity_cache_evaluator_v1.py'
+      - 'scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py'
+      - 'scripts/agent/evaluate_full104_nonlinear_capacity_from_cache_v1.py'
+      - 'scripts/agent/build_full104_outer_split_authority_v1_20260918.py'
+      - 'scripts/agent/build_full104_precision_authority_v4_20260918.py'
+      - 'tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py'
+      - 'tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py'
+      - 'tests/test_v5_outer_split_and_precision_builders_current.py'
       - '.github/workflows/v5-full104-masking-runner.yml'
   workflow_dispatch:
 
@@ -119,6 +129,9 @@ jobs:
             tests/test_v5_control_capacity_calibration_receipt_v1.py \
             tests/test_v5_full104_masking_anti_spillover_v2.py \
             tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
+            tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py \
+            tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py \
+            tests/test_v5_outer_split_and_precision_builders_current.py \
             tests/test_v5_masking_qualification_run_contract_v4.py
       - name: Fail closed on skips
         env:
@@ -155,6 +168,9 @@ jobs:
             tests/test_v5_control_capacity_calibration_receipt_v1.py \
             tests/test_v5_full104_masking_anti_spillover_v2.py \
             tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
+            tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py \
+            tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py \
+            tests/test_v5_outer_split_and_precision_builders_current.py \
             tests/test_v5_masking_qualification_run_contract_v4.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
