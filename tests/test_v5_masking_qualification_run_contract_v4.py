@@ -162,3 +162,19 @@ def test_control_calibration_provenance_fails_if_fold_receipt_is_spliced():
     )
     with pytest.raises(ValueError, match="fold-assignment"):
         c.bind_control_calibration_provenance(cache, outer, sizing)
+
+
+def test_final_contract_rejects_provisional_nonlinear_calibration_plan_without_v2_roots():
+    c=contract()
+    old_plan=_BoundStub(c.nonlinear_sampling_calibration_plan_sha256)
+    receipt=_BoundStub(c.nonlinear_sampling_calibration_receipt_sha256)
+    nonlinear=_BoundStub(
+        c.nonlinear_challenge_authority_sha256,
+        sampling_calibration_plan_sha256=c.nonlinear_sampling_calibration_plan_sha256,
+        sampling_calibration_receipt_sha256=c.nonlinear_sampling_calibration_receipt_sha256,
+        target_panel_authority_sha256=c.target_panel_authority_sha256,
+        primary_parameters_authority_sha256=c.qualification_parameters_authority_sha256,
+        outer_split_authority_sha256=c.outer_split_authority_sha256,
+    )
+    with pytest.raises(ValueError,match="plan V2"):
+        c.bind_nonlinear(nonlinear,old_plan,receipt)
