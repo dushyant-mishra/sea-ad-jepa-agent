@@ -35,6 +35,9 @@ on:
       - 'src/sea_ad_jepa/v5/masking_qualification_execution_authority_v5.py'
       - 'src/sea_ad_jepa/v5/masking_qualification_decision_v3.py'
       - 'src/sea_ad_jepa/v5/masking_nonlinear_challenge_receipt_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_nonlinear_orchestrator_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_evidence_assembler_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_structural_controls_v1.py'
       - 'src/sea_ad_jepa/v5/precision_authority_v4.py'
       - 'tests/test_v5_full104_census_receipt_v2.py'
       - 'tests/test_v5_masking_qualification_parameters_authority_v2.py'
@@ -95,7 +98,10 @@ jobs:
             tests/test_v5_masking_qualification_execution_authority_v5.py \
             tests/test_v5_masking_qualification_decision_v3.py \
             tests/test_v5_masking_nonlinear_challenge_receipt_v1.py \
-            tests/test_v5_precision_authority_v4.py
+            tests/test_v5_precision_authority_v4.py \
+            tests/test_v5_masking_nonlinear_orchestrator_v1.py \
+            tests/test_v5_masking_evidence_assembler_v1.py \
+            tests/test_v5_masking_structural_controls_v1.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -123,5 +129,13 @@ jobs:
             tests/test_v5_masking_rng_replay_authority_v2.py \
             tests/test_v5_target_panel_sizing_and_precision_v3.py \
             tests/test_v5_target_panel_authority_v2.py \
+            tests/test_v5_full104_masking_anti_spillover_v2.py \
+            tests/test_v5_masking_qualification_execution_authority_v5.py \
+            tests/test_v5_masking_qualification_decision_v3.py \
+            tests/test_v5_masking_nonlinear_challenge_receipt_v1.py \
+            tests/test_v5_precision_authority_v4.py \
+            tests/test_v5_masking_structural_controls_v1.py \
+            tests/test_v5_masking_evidence_assembler_v1.py \
+            tests/test_v5_masking_nonlinear_orchestrator_v1.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi

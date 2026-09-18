@@ -33,6 +33,7 @@
   "unresolved_blockers": [
     "GPU_MUST_GENERATE_AND_HASH_BIND_CENSUS_V2_RECEIPTS_FROM_REAL_PASS1_NPZ",
     "GPU_MUST_INSTANTIATE_AND_BIND_OUTER_SPLIT_TARGET_PANEL_PRECISION_V4_NONLINEAR_V2_AND_RNG_V2_AUTHORITIES",
+    "GPU_MUST_EXECUTE_AND_HASH_BIND_POLICY_SPECIFIC_PRIMARY_CONTROL_AND_NONLINEAR_RAW_EVIDENCE",
     "OUTCOME_BLIND_STREAMING_RUNTIME_BENCHMARK_AND_OPTIONAL_EXACT_PARITY_CACHE_DECISION_OPEN",
     "FINAL_MACHINE_WORKTREE_CHECKPOINT_MUST_BE_REBUILT_AFTER_FINAL_SOURCE_FREEZE",
     "REAL_RUN_CONTRACT_V3_MUST_BE_INSTANTIATED_WITH_EXACT_LIVE_SOURCE_HASHES",
@@ -85,7 +86,10 @@
       "rng_replay_authority": "src/sea_ad_jepa/v5/masking_rng_replay_authority_v2.py",
       "strict_support_selection": "src/sea_ad_jepa/v5/full104_strict_support_selection_v1.py",
       "census_receipt": "src/sea_ad_jepa/v5/full104_census_receipt_v2.py",
-      "support_estimability_authority": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json"
+      "support_estimability_authority": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json",
+      "masking_structural_controls": "src/sea_ad_jepa/v5/masking_structural_controls_v1.py",
+      "masking_evidence_assembler": "src/sea_ad_jepa/v5/masking_evidence_assembler_v1.py",
+      "nonlinear_orchestrator": "src/sea_ad_jepa/v5/masking_nonlinear_orchestrator_v1.py"
     },
     "current_tests": {
       "focused_masking_workflow": ".github/workflows/v5-full104-masking-runner.yml",
@@ -101,7 +105,10 @@
       "rng": "tests/test_v5_masking_rng_replay_authority_v2.py",
       "run_contract_v3": "tests/test_v5_masking_qualification_run_contract_v3.py",
       "stage_a": "tests/test_v5_current_stage_a_spillover_firewall_v1.py",
-      "stage_a_successors": "tests/test_v5_current_stage_a_spillover_firewall_v3.py"
+      "stage_a_successors": "tests/test_v5_current_stage_a_spillover_firewall_v3.py",
+      "structural_controls": "tests/test_v5_masking_structural_controls_v1.py",
+      "evidence_assembler": "tests/test_v5_masking_evidence_assembler_v1.py",
+      "nonlinear_orchestrator": "tests/test_v5_masking_nonlinear_orchestrator_v1.py"
     },
     "verified_ci": {
       "code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",

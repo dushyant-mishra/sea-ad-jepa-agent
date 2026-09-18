@@ -76,6 +76,9 @@ class MaskingQualificationRunContractV3:
     control_executor_source_sha256: str
     nonlinear_executor_source_sha256: str
     nonlinear_receipt_source_sha256: str
+    structural_control_source_sha256: str
+    evidence_assembler_source_sha256: str
+    nonlinear_orchestrator_source_sha256: str
     decision_evaluator_source_sha256: str
     execution_authority_source_sha256: str
     anti_spillover_test_source_sha256: str
@@ -113,6 +116,9 @@ class MaskingQualificationRunContractV3:
             ("control_executor_source_sha256", self.control_executor_source_sha256),
             ("nonlinear_executor_source_sha256", self.nonlinear_executor_source_sha256),
             ("nonlinear_receipt_source_sha256", self.nonlinear_receipt_source_sha256),
+            ("structural_control_source_sha256", self.structural_control_source_sha256),
+            ("evidence_assembler_source_sha256", self.evidence_assembler_source_sha256),
+            ("nonlinear_orchestrator_source_sha256", self.nonlinear_orchestrator_source_sha256),
             ("decision_evaluator_source_sha256", self.decision_evaluator_source_sha256),
             ("execution_authority_source_sha256", self.execution_authority_source_sha256),
             ("anti_spillover_test_source_sha256", self.anti_spillover_test_source_sha256),
@@ -184,6 +190,9 @@ class MaskingQualificationRunContractV3:
         control_executor_live_sha256: str,
         nonlinear_executor_live_sha256: str,
         nonlinear_receipt_live_sha256: str,
+        structural_control_live_sha256: str,
+        evidence_assembler_live_sha256: str,
+        nonlinear_orchestrator_live_sha256: str,
         decision_evaluator_live_sha256: str,
         execution_authority_live_sha256: str,
         anti_spillover_test_live_sha256: str,
@@ -197,6 +206,9 @@ class MaskingQualificationRunContractV3:
             "control_executor_source_sha256": _sha(control_executor_live_sha256, "control_executor_live_sha256"),
             "nonlinear_executor_source_sha256": _sha(nonlinear_executor_live_sha256, "nonlinear_executor_live_sha256"),
             "nonlinear_receipt_source_sha256": _sha(nonlinear_receipt_live_sha256, "nonlinear_receipt_live_sha256"),
+            "structural_control_source_sha256": _sha(structural_control_live_sha256, "structural_control_live_sha256"),
+            "evidence_assembler_source_sha256": _sha(evidence_assembler_live_sha256, "evidence_assembler_live_sha256"),
+            "nonlinear_orchestrator_source_sha256": _sha(nonlinear_orchestrator_live_sha256, "nonlinear_orchestrator_live_sha256"),
             "decision_evaluator_source_sha256": _sha(decision_evaluator_live_sha256, "decision_evaluator_live_sha256"),
             "execution_authority_source_sha256": _sha(execution_authority_live_sha256, "execution_authority_live_sha256"),
             "anti_spillover_test_source_sha256": _sha(anti_spillover_test_live_sha256, "anti_spillover_test_live_sha256"),
