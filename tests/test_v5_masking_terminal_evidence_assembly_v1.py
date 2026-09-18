@@ -112,6 +112,7 @@ def test_semantics_freeze_is_explicit_and_preoutcome():
     assert s.planted_detect_estimand_id == PLANTED_DETECT_ESTIMAND_ID
     assert s.nonlinear_null_estimand_id == NONLINEAR_NULL_ESTIMAND_ID
     assert s.raw_evidence_schema_id == RAW_EVIDENCE_SCHEMA_ID
+    assert s.authority_id == "JEPA_V5_FULL104_TERMINAL_EVIDENCE_ASSEMBLY_SEMANTICS_V2"
     assert s.terminal_outcomes_inspected_before_freeze is False
     assert s.training_authorized is False
 
@@ -157,6 +158,22 @@ def test_targeting_complexity_is_target_by_fold_not_donor_weighted():
     counts[:, 3] = 8.0
     evidence = assemble(effective_targeted_n_by_target_fold=counts)
     assert evidence.mean_effective_targeted_n == pytest.approx(2.0)
+
+
+def test_effective_targeting_counts_must_be_integral_target_fold_counts():
+    counts = np.full((128, 4), 7.0)
+    counts[0, 0] = 7.5
+    with pytest.raises(ValueError, match="integral target-by-fold counts"):
+        raw_bundle(effective_targeted_n_by_target_fold=counts)
+
+
+def test_one_target_fold_event_has_the_expected_reachable_mean_increment():
+    counts = np.full((128, 4), 7.0)
+    counts[0, 0] = 8.0
+    evidence = assemble(effective_targeted_n_by_target_fold=counts)
+    assert evidence.mean_effective_targeted_n == pytest.approx(
+        7.0 + 1.0 / (128 * 4)
+    )
 
 
 @pytest.mark.parametrize(

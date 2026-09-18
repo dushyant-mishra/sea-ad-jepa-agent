@@ -2,7 +2,9 @@
 
 This is intentionally a single-rung executor. It cannot choose or advance the
 burden ladder. A higher rung is lawful only when the caller supplies the exact
-contiguous prefix of prior V2 rung receipts and every prior rung failed.
+contiguous prefix of prior terminal execution results and every prior result is
+mechanically re-bound to its raw evidence, controls, decision and execution
+authority before its failed rung receipt is admitted.
 
 The executor consumes authenticated FULL104 Level-4 streaming input. The
 calibration cache is not an input and cannot be substituted for the terminal
@@ -423,6 +425,121 @@ class TerminalOneRungExecutionResultV1:
     execution_authority: MaskingQualificationExecutionAuthorityV4
 
 
+def _verify_prior_rung_results(
+    *,
+    prior_rung_results: Sequence[TerminalOneRungExecutionResultV1],
+    run_contract_sha256: str,
+    precision: QualificationPrecisionAuthorityV4,
+) -> tuple[MaskingRungDecisionReceiptV2, ...]:
+    """Re-admit prior failures only through their mechanically bound result chain.
+
+    A bare or hand-assembled rung receipt is not sufficient to authorize opening
+    a higher burden. Each prior result is re-bound to the current frozen run
+    contract and PrecisionAuthorityV4, its raw evidence/control roots are checked,
+    its four policy decisions are recomputed, and its execution authority must
+    match the exact recomputed failed rung.
+    """
+
+    contract_root = _sha(run_contract_sha256, "run_contract_sha256")
+    if not isinstance(precision, QualificationPrecisionAuthorityV4):
+        raise ValueError("prior-rung verification requires QualificationPrecisionAuthorityV4")
+
+    verified: list[MaskingRungDecisionReceiptV2] = []
+    expected_prior_roots: list[str] = []
+    for result in prior_rung_results:
+        if not isinstance(result, TerminalOneRungExecutionResultV1):
+            raise ValueError(
+                "higher burden requires verified prior terminal execution results; "
+                "a bare rung receipt is insufficient"
+            )
+
+        controls_receipt = result.mechanical_control_receipt
+        artifact = result.raw_result_artifact
+        stored_rung = result.rung_decision_receipt
+        execution = result.execution_authority
+
+        controls_receipt.validate()
+        artifact.validate()
+        stored_rung.validate()
+        execution.validate()
+
+        if controls_receipt.run_contract_sha256 != contract_root:
+            raise ValueError("prior mechanical controls bind a different run contract")
+        if artifact.run_contract_sha256 != contract_root:
+            raise ValueError("prior raw-result artifact binds a different run contract")
+        if execution.run_contract_authority_sha256 != contract_root:
+            raise ValueError("prior execution authority binds a different run contract")
+        if (
+            controls_receipt.terminal_input_manifest_sha256
+            != artifact.terminal_input_manifest_sha256
+        ):
+            raise ValueError("prior controls and raw-result artifact bind different terminal input")
+
+        artifact.bind_raw_evidence(result.raw_evidence_by_policy, controls_receipt)
+
+        reference_raw = result.raw_evidence_by_policy["UNIFORM_RANDOM"]
+        reference_axes = (
+            tuple(reference_raw.target_ids),
+            tuple(reference_raw.donor_ids),
+            tuple(map(int, reference_raw.donor_source_code)),
+            tuple(map(int, reference_raw.donor_outer_fold)),
+            reference_raw.burden_numerator,
+            reference_raw.burden_denominator,
+        )
+        raw_mask_roots: dict[tuple[str, int, int], str] = {}
+        for policy in POLICIES:
+            raw = result.raw_evidence_by_policy[policy]
+            observed_axes = (
+                tuple(raw.target_ids),
+                tuple(raw.donor_ids),
+                tuple(map(int, raw.donor_source_code)),
+                tuple(map(int, raw.donor_outer_fold)),
+                raw.burden_numerator,
+                raw.burden_denominator,
+            )
+            if observed_axes != reference_axes:
+                raise ValueError(
+                    "prior policy evidence mixes target/donor/source/fold/burden identities"
+                )
+            for target_index, fold_roots in enumerate(raw.policy_mask_sha256_by_target_fold):
+                for fold, root in enumerate(fold_roots):
+                    raw_mask_roots[(policy, target_index, fold)] = str(root)
+        if mask_grid_digest(raw_mask_roots) != controls_receipt.mask_grid_sha256:
+            raise ValueError("prior mechanical-control mask grid does not match raw evidence")
+
+        recomputed_evidence = [
+            assemble_policy_decision_evidence(
+                raw_evidence=result.raw_evidence_by_policy[policy],
+                precision=precision,
+            )
+            for policy in POLICIES
+        ]
+        recomputed_rung = evaluate_rung_v2(recomputed_evidence)
+        if recomputed_rung.canonical_digest() != stored_rung.canonical_digest():
+            raise ValueError("prior rung decision is not the mechanical result of its raw evidence")
+        if (
+            artifact.burden_numerator,
+            artifact.burden_denominator,
+        ) != (
+            stored_rung.burden_numerator,
+            stored_rung.burden_denominator,
+        ):
+            raise ValueError("prior raw-result artifact burden differs from its decision receipt")
+
+        if tuple(artifact.prior_rung_decision_receipt_sha256) != tuple(expected_prior_roots):
+            raise ValueError("prior raw-result artifact does not preserve the exact failed-prefix chain")
+        if execution.raw_result_artifact_sha256 != artifact.canonical_digest():
+            raise ValueError("prior execution authority binds a different raw-result artifact")
+        execution.bind_rung_decision_receipt(stored_rung)
+        if execution.execution_status != "EXECUTED_FAIL" or stored_rung.qualified is not False:
+            raise ValueError("only mechanically failed prior rungs may authorize escalation")
+
+        verified.append(stored_rung)
+        expected_prior_roots.append(stored_rung.canonical_digest())
+
+    return tuple(verified)
+
+
 def execute_one_terminal_rung(
     *,
     run_contract: Any,
@@ -433,7 +550,7 @@ def execute_one_terminal_rung(
     burden_ladder: Any,
     burden_numerator: int,
     burden_denominator: int,
-    prior_rung_receipts: Sequence[MaskingRungDecisionReceiptV2],
+    prior_rung_results: Sequence[TerminalOneRungExecutionResultV1],
     rng_replay: Any,
     outer_split: Any,
     split_receipt: Mapping[str, Any],
@@ -506,11 +623,16 @@ def execute_one_terminal_rung(
         nonlinear_sampling_calibration_receipt,
     )
 
+    verified_prior_receipts = _verify_prior_rung_results(
+        prior_rung_results=prior_rung_results,
+        run_contract_sha256=run_contract.canonical_digest(),
+        precision=precision,
+    )
     requested, prior_roots = _validate_requested_rung(
         burden_ladder=burden_ladder,
         numerator=burden_numerator,
         denominator=burden_denominator,
-        prior_rung_receipts=prior_rung_receipts,
+        prior_rung_receipts=verified_prior_receipts,
     )
     budget = evidence_budget_template.with_fraction(
         requested.numerator,
