@@ -128,3 +128,12 @@ def test_current_pipeline_historical_ingress_is_narrow_explicit_allowlist():
         f"and intentional reauthorization is restricted to {sorted(allowed)}; observed {sorted(observed)}"
     )
 
+
+
+def test_superseded_20260917_freeze_builder_is_a_fail_closed_tombstone():
+    path = Path("scripts/agent/build_full104_masking_freeze_status_20260917.py")
+    source = path.read_text(encoding="utf-8")
+    assert "SUPERSEDED_FAIL_CLOSED" in source
+    assert "MaskingBurdenLadderAuthorityV1" not in source
+    assert "PLACEHOLDER_SUPPORT_ESTIMABILITY_AUTHORITY" not in source
+    assert "build_full104_masking_run_contract_v4_20260918.py" in source
