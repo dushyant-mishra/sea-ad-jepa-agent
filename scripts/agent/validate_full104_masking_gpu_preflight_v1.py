@@ -14,12 +14,13 @@ from sea_ad_jepa.v5.full104_masking_gpu_preflight_v1 import (
     validate_terminal_bindings,
 )
 from sea_ad_jepa.v5.masking_qualification_run_contract_v4 import MaskingQualificationRunContractV4
+from scripts.agent.work_checkpoint import semantic_sha256
 
 SOURCE_ROLES = {
     "canonical_reference_live_sha256": "src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py",
     "full104_streaming_execution_live_sha256": "src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py",
     "target_panel_sizing_live_sha256": "src/sea_ad_jepa/v5/target_panel_sizing_authority_v2.py",
-    "control_calibration_precision_live_sha256": "src/sea_ad_jepa/v5/control_calibration_precision_authority_v1.py",
+    "control_calibration_precision_live_sha256": "src/sea_ad_jepa/v5/control_calibration_precision_authority_v2.py",
     "control_capacity_calibration_live_sha256": "src/sea_ad_jepa/v5/control_capacity_calibration_receipt_v1.py",
     "control_calibration_cache_builder_live_sha256": "scripts/agent/build_full104_control_calibration_cache_v1.py",
     "control_calibration_cache_evaluator_live_sha256": "src/sea_ad_jepa/v5/full104_control_calibration_cache_evaluator_v1.py",
@@ -109,10 +110,15 @@ def main() -> int:
                 raise SystemExit(f"missing live source role {role}: {path}")
             live_sources[role] = sha256_file(path)
         contract.bind_execution_sources(**live_sources)
-        checkpoint_sha = sha256_file(checkpoint_path)
-        if contract.machine_worktree_checkpoint_sha256 != checkpoint_sha:
-            raise SystemExit("run contract is bound to a different machine/worktree checkpoint")
-        result["terminal"] = {**terminal, "machine_worktree_checkpoint_sha256": checkpoint_sha}
+        checkpoint_payload = load_json(checkpoint_path)
+        declared_checkpoint_semantic = str(checkpoint_payload.get("checkpoint_semantic_sha256", ""))
+        if declared_checkpoint_semantic != semantic_sha256(checkpoint_payload):
+            raise SystemExit("machine/worktree checkpoint semantic digest mismatch")
+        contract.bind_machine_checkpoint_semantic(checkpoint_payload)
+        result["terminal"] = {
+            **terminal,
+            "machine_worktree_checkpoint_semantic_sha256": declared_checkpoint_semantic,
+        }
 
     print(json.dumps(result, sort_keys=True))
     return 0

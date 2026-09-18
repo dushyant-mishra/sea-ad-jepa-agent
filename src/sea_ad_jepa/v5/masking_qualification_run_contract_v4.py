@@ -186,6 +186,14 @@ class MaskingQualificationRunContractV4:
         if runtime_role_id != TERMINAL_EXECUTION_INPUT_ROLE_ID:
             raise ValueError("terminal execution input role is not the authenticated FULL104 Level-4 stream")
 
+    def bind_machine_checkpoint_semantic(self, checkpoint_payload: Mapping[str, Any]) -> None:
+        self.validate()
+        if not isinstance(checkpoint_payload, Mapping):
+            raise ValueError("machine/worktree checkpoint payload must be a mapping")
+        declared = checkpoint_payload.get("checkpoint_semantic_sha256")
+        if _sha(declared, "checkpoint_semantic_sha256") != self.machine_worktree_checkpoint_sha256:
+            raise ValueError("run contract is bound to a different machine/worktree checkpoint semantic digest")
+
     def bind_parameters(self, parameters: Any) -> None:
         self.validate()
         if _live_digest(parameters, "parameters") != self.qualification_parameters_authority_sha256:

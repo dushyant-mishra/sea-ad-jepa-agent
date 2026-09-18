@@ -111,6 +111,17 @@ class _BoundStub:
         return self._digest
 
 
+def test_run_contract_binds_machine_checkpoint_semantic_digest_not_file_bytes():
+    c = contract()
+    c.bind_machine_checkpoint_semantic({
+        "checkpoint_semantic_sha256": c.machine_worktree_checkpoint_sha256,
+    })
+    with pytest.raises(ValueError, match="different machine/worktree checkpoint"):
+        c.bind_machine_checkpoint_semantic({
+            "checkpoint_semantic_sha256": h("different-checkpoint-semantic"),
+        })
+
+
 def test_final_contract_rejects_design_v1_concrete_budget_binding():
     c = contract()
     old_design = _BoundStub(

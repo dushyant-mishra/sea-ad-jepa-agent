@@ -190,6 +190,15 @@ def test_calibration_preflight_rejects_cache_promoted_to_terminal_role():
         call_valid(cache_manifest=cache)
 
 
+def test_terminal_python_preflight_binds_checkpoint_semantics_not_json_file_bytes():
+    source = Path("scripts/agent/validate_full104_masking_gpu_preflight_v1.py").read_text(encoding="utf-8")
+    assert "semantic_sha256(checkpoint_payload)" in source
+    assert "bind_machine_checkpoint_semantic" in source
+    assert "checkpoint_sha = sha256_file(checkpoint_path)" not in source
+    assert 'control_calibration_precision_authority_v2.py' in source
+    assert 'control_calibration_precision_authority_v1.py' not in source
+
+
 def test_powershell_wrapper_is_current_fail_closed_and_non_destructive():
     source = Path("scripts/agent/v5_full104_masking_gpu_preflight_20260918.ps1").read_text(encoding="utf-8")
     assert 'ValidateSet("Calibration","Terminal")' in source
