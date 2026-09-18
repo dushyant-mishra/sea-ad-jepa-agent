@@ -8,7 +8,7 @@ def pver(count,ok=True):
     return TargetPanelControlVerdictV2(count,h(f"control-{count}"),h("calibration-precision-plan"),h(f"interval-{count}"),-0.01,0.01,0.03 if ok else 0.005,0.005,True,True,True)
 def nplan(): return NonlinearSamplingCalibrationPlanV1("TEST",h("panel"),h("split"),h("params"))
 def nver(cap,ok=True):
-    return NonlinearCapControlVerdictV1(cap,h(f"nl-{cap}"),-0.01,0.01,0.03 if ok else 0.005,0.005,True,True)
+    return NonlinearCapControlVerdictV1(cap,h(f"nl-{cap}"),h("precision"),h(f"nl-interval-{cap}"),-0.01,0.01,0.03 if ok else 0.005,0.005,True,True)
 
 def test_target_panel_starts_at_128_but_success_is_control_derived():
     p=panel(); assert p.next_target_count({})==128
