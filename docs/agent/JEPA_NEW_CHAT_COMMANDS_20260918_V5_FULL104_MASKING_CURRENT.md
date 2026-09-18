@@ -147,10 +147,12 @@ Build target selection and TargetPanelAuthorityV3, supplying every evaluated cap
 ```powershell
 python "$Worktree\scripts\agent\build_full104_target_panel_selection_v2_20260918.py" --eligibility "$ELIG" --target-count $TARGET_COUNT --out "$RUN\target_panel_selection_v2.json"
 
+$TP_CAPACITY_ARGS = @()
+foreach ($r in @(<REQUIRED_ALL_TARGET_PANEL_CAPACITY_RECEIPT_PATHS_IN_LAWFUL_ORDER>)) { $TP_CAPACITY_ARGS += @("--capacity-receipt", $r) }
 $TP_VERDICT_ARGS = @()
 foreach ($v in @(<REQUIRED_ALL_TARGET_PANEL_VERDICT_PATHS_IN_LAWFUL_ORDER>)) { $TP_VERDICT_ARGS += @("--capacity-verdict", $v) }
 
-python "$Worktree\scripts\agent\build_full104_target_panel_authority_v3_20260918.py" --cache-dir "$CACHE" --canonical-registry-authority "$REGISTRY_AUTH" --support-authority "$SUPPORT" --census-authority "$CENSUS" --target-eligibility "$ELIG" --sizing-receipt "$TPQ\target_panel_sizing_receipt_v2.json" @TP_VERDICT_ARGS --selection-receipt "$RUN\target_panel_selection_v2.json" --out "$RUN\target_panel_authority_v3.json"
+python "$Worktree\scripts\agent\build_full104_target_panel_authority_v3_20260918.py" --cache-dir "$CACHE" --canonical-registry-authority "$REGISTRY_AUTH" --support-authority "$SUPPORT" --census-authority "$CENSUS" --target-eligibility "$ELIG" --sizing-plan "$TPQ\target_panel_sizing_plan_v2.json" --control-calibration-precision-plan "$TPQ\control_calibration_precision_plan_v2.json" --sizing-receipt "$TPQ\target_panel_sizing_receipt_v2.json" @TP_CAPACITY_ARGS @TP_VERDICT_ARGS --selection-receipt "$RUN\target_panel_selection_v2.json" --out "$RUN\target_panel_authority_v3.json"
 ```
 
 ## 8. Build outer split and PrecisionAuthorityV4
