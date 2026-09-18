@@ -10,7 +10,7 @@ Working implementation branch:
 
 Scientific implementation anchor (source/test/data bytes):
 
-`ee8ae818937b46a99be29ade5bdf65fd85d706a7`
+`5ed613ac700d1505cef10f2fb01e4a5302a933f9`
 
 Draft implementation PR:
 
@@ -110,9 +110,9 @@ Historical evidence may define the pre-FULL104 confirmation candidate and nonlin
 
 ## Current exact-head verification status
 
-The focused FULL104 masking workflow is verified on the current scientific source/test/workflow anchor `ee8ae818937b46a99be29ade5bdf65fd85d706a7`.
+The focused FULL104 masking workflow is verified on the current scientific source/test/workflow anchor `5ed613ac700d1505cef10f2fb01e4a5302a933f9`.
 
-GitHub Actions run `35385138227` completed SUCCESS. The full regression step and the explicit fail-closed-on-skips step both completed SUCCESS after adding the current two-mode FULL104 GPU preflight validator/wrapper and its anti-spillover behavior tests.
+GitHub Actions run `35385752247` completed SUCCESS. The full regression step and the explicit fail-closed-on-skips step both completed SUCCESS after adding the current two-mode FULL104 GPU preflight validator/wrapper and its anti-spillover behavior tests.
 
 The verified predecessor anchors `ca643f5d...` (run `35374354706`) and `bdb779ce...` (run `35382450942`) remain historical implementation evidence only. The current anchor additionally canonically binds the no-extra-retained-floor policy and exact-current representation/teacher/support/registry semantic authorities at FULL104 ingress. The earlier collection failure `35373486676` was caused by a stale nonlinear-calibration V1 test reference and was narrowly repaired before the successful successor runs.
 
@@ -123,7 +123,7 @@ Exact-head focused CI is therefore `ALREADY_AUDITED__PASS_NO_SKIPS` at `bd968ea4
 ## Immediate authoritative sequence
 
 1. Re-fetch the live implementation branch and PR #20. If source/test/workflow/data bytes changed from `bd968ea4...`, classify the delta as `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
-2. Exact-head focused CI at `bd968ea4...` is audited PASS/no-skips in run `35385138227`; rerun it after any source/test/workflow change.
+2. Exact-head focused CI at `bd968ea4...` is audited PASS/no-skips in run `35385752247`; rerun it after any source/test/workflow change.
 3. Use the current two-mode preflight only: `scripts/agent/v5_full104_masking_gpu_preflight_20260918.ps1` plus `scripts/agent/validate_full104_masking_gpu_preflight_v1.py`. Calibration mode must not require terminal artifacts; terminal mode must reject the calibration cache as terminal input and must bind the final machine checkpoint and live execution-source hashes.
 4. Build the explicit pre-FULL104 confirmation `MaskingQualificationParametersAuthorityV2` instance from the frozen discovery provenance. This is an explicit re-authorization of a pre-FULL104 candidate only; it does not authorize burden, targets, folds, seeds, row caps, outcomes, or training.
 5. On the canonical GPU worktree, regenerate the census V2 summary, split, and target-eligibility receipts from the real authenticated `pass1.npz`, then build census authority V2.
