@@ -9,11 +9,13 @@ import pytest
 
 from sea_ad_jepa.v5.masking_qualification_decision_v2 import evaluate_policy_v2
 from sea_ad_jepa.v5.masking_terminal_evidence_assembly_v1 import (
+    NONLINEAR_NULL_ESTIMAND_ID,
+    PLANTED_DETECT_ESTIMAND_ID,
     PRIMARY_DELTA_ESTIMAND_ID,
     PRIMARY_NULL_ESTIMAND_ID,
-    PLANTED_DETECT_ESTIMAND_ID,
-    NONLINEAR_NULL_ESTIMAND_ID,
+    RAW_EVIDENCE_SCHEMA_ID,
     TerminalEvidenceAssemblySemanticsV1,
+    TerminalPolicyRawEvidenceV1,
     assemble_policy_decision_evidence,
 )
 
@@ -47,26 +49,30 @@ class PrecisionStub:
     def interval(self, matrix, donor_source_code):
         values = np.asarray(matrix, dtype=float)
         mean = float(np.mean(values))
-        # Exact intervals are intentional for constant synthetic matrices.
         if np.all(values == values.flat[0]):
             return _Interval(mean, mean, mean, mean, mean)
-        # Deterministic conservative test-only envelope around the mean.
         span = float(np.max(np.abs(values - mean)))
         return _Interval(mean, mean - span, mean + span, mean - span, mean + span)
 
 
-def matrices():
-    shape = (128, 104)
+def matrices(target_count: int = 128):
+    shape = (target_count, 104)
     source = np.array([0] * 40 + [1] * 34 + [2] * 30, dtype=np.int64)
-    return shape, source
+    folds = np.arange(104, dtype=np.int64) % 4
+    return shape, source, folds
 
 
-def assemble(**updates):
-    shape, source = matrices()
+def raw_bundle(target_count: int = 128, **updates):
+    shape, source, folds = matrices(target_count)
     values = dict(
         policy_id="RIDGE8_CONDITIONAL",
         burden_numerator=1,
         burden_denominator=20,
+        target_ids=[f"target-{i:04d}" for i in range(target_count)],
+        donor_ids=[f"donor-{i:03d}" for i in range(104)],
+        donor_source_code=source,
+        donor_outer_fold=folds,
+        source_names={0: "HVS", 1: "NPH52", 2: "SEA_AD"},
         actual_policy_scores=np.full(shape, 0.10),
         actual_uniform_scores=np.full(shape, 0.20),
         shuffled_same_mask_scores=np.full(shape, 0.10),
@@ -75,19 +81,20 @@ def assemble(**updates):
         planted_after_mask_excess=np.zeros(shape),
         nonlinear_actual_scores=np.full(shape, 0.05),
         nonlinear_shuffled_same_mask_scores=np.full(shape, 0.05),
-        effective_targeted_n_by_target_fold=np.full((128, 4), 7.0),
-        donor_source_code=source,
-        source_names={0: "HVS", 1: "NPH52", 2: "SEA_AD"},
-        precision=PrecisionStub(),
-        raw_primary_evidence_sha256=h("primary"),
-        raw_control_evidence_sha256=h("control"),
-        raw_nonlinear_evidence_sha256=h("nonlinear"),
+        effective_targeted_n_by_target_fold=np.full((target_count, 4), 7.0),
         replay_exact=True,
         untreated_identity_exact=True,
         no_privileged_metadata=True,
     )
     values.update(updates)
-    return assemble_policy_decision_evidence(**values)
+    return TerminalPolicyRawEvidenceV1(**values)
+
+
+def assemble(**updates):
+    return assemble_policy_decision_evidence(
+        raw_evidence=raw_bundle(**updates),
+        precision=PrecisionStub(),
+    )
 
 
 def test_semantics_freeze_is_explicit_and_preoutcome():
@@ -97,13 +104,18 @@ def test_semantics_freeze_is_explicit_and_preoutcome():
     assert s.primary_null_estimand_id == PRIMARY_NULL_ESTIMAND_ID
     assert s.planted_detect_estimand_id == PLANTED_DETECT_ESTIMAND_ID
     assert s.nonlinear_null_estimand_id == NONLINEAR_NULL_ESTIMAND_ID
+    assert s.raw_evidence_schema_id == RAW_EVIDENCE_SCHEMA_ID
     assert s.terminal_outcomes_inspected_before_freeze is False
     assert s.training_authorized is False
 
 
 def test_like_with_like_same_mask_null_can_qualify():
-    evidence = assemble()
+    raw = raw_bundle()
+    evidence = assemble_policy_decision_evidence(raw_evidence=raw, precision=PrecisionStub())
     receipt = evaluate_policy_v2(evidence)
+    assert evidence.raw_primary_evidence_sha256 == raw.primary_evidence_digest()
+    assert evidence.raw_control_evidence_sha256 == raw.control_evidence_digest()
+    assert evidence.raw_nonlinear_evidence_sha256 == raw.nonlinear_evidence_digest()
     assert evidence.delta_vs_uniform.mean == pytest.approx(0.10)
     assert evidence.excess_over_shuffled_null.mean == pytest.approx(0.0)
     assert evidence.nonlinear_excess_over_shuffled_null.mean == pytest.approx(0.0)
@@ -111,7 +123,7 @@ def test_like_with_like_same_mask_null_can_qualify():
 
 
 def test_real_residual_above_same_mask_shuffled_null_fails():
-    shape, _ = matrices()
+    shape, _, _ = matrices()
     evidence = assemble(shuffled_same_mask_scores=np.zeros(shape))
     receipt = evaluate_policy_v2(evidence)
     assert evidence.excess_over_shuffled_null.mean == pytest.approx(0.10)
@@ -120,11 +132,9 @@ def test_real_residual_above_same_mask_shuffled_null_fails():
 
 
 def test_source_balanced_target_delta_does_not_follow_donor_count():
-    shape, source = matrices()
+    shape, source, _ = matrices()
     actual = np.full(shape, 0.20)
     uniform = actual.copy()
-    # Source deltas 0, 0, 0.30. Equal-source mean is 0.10 even though SEA_AD
-    # has the fewest donors in this synthetic geometry.
     uniform[:, source == 2] = 0.50
     evidence = assemble(
         actual_policy_scores=actual,
@@ -148,39 +158,88 @@ def test_targeting_complexity_is_target_by_fold_not_donor_weighted():
 )
 def test_free_status_strings_cannot_enter_mechanical_booleans(field):
     with pytest.raises(ValueError, match="mechanically computed boolean"):
-        assemble(**{field: "PASS"})
+        raw_bundle(**{field: "PASS"})
 
 
 def test_matrix_role_mismatch_fails_closed():
     with pytest.raises(ValueError, match="align target x donor"):
-        assemble(shuffled_same_mask_scores=np.zeros((128, 103)))
+        raw_bundle(shuffled_same_mask_scores=np.zeros((128, 103)))
 
 
 def test_precision_shortfall_fails_closed():
-    shape, source = matrices()
     with pytest.raises(ValueError, match="below frozen precision"):
         assemble_policy_decision_evidence(
+            raw_evidence=raw_bundle(target_count=127),
+            precision=PrecisionStub(),
+        )
+
+
+def test_exact_full104_donor_axis_is_required():
+    shape = (128, 103)
+    source = np.array([0] * 40 + [1] * 33 + [2] * 30, dtype=np.int64)
+    folds = np.arange(103, dtype=np.int64) % 4
+    with pytest.raises(ValueError, match="exactly 104 donors"):
+        TerminalPolicyRawEvidenceV1(
             policy_id="RIDGE8_CONDITIONAL",
             burden_numerator=1,
             burden_denominator=20,
-            actual_policy_scores=np.zeros((127, 104)),
-            actual_uniform_scores=np.zeros((127, 104)),
-            shuffled_same_mask_scores=np.zeros((127, 104)),
-            negative_control_delta=np.zeros((127, 104)),
-            planted_detect_excess=np.ones((127, 104)),
-            planted_after_mask_excess=np.zeros((127, 104)),
-            nonlinear_actual_scores=np.zeros((127, 104)),
-            nonlinear_shuffled_same_mask_scores=np.zeros((127, 104)),
-            effective_targeted_n_by_target_fold=np.zeros((127, 4)),
+            target_ids=[f"t-{i}" for i in range(128)],
+            donor_ids=[f"d-{i}" for i in range(103)],
             donor_source_code=source,
+            donor_outer_fold=folds,
             source_names={0: "HVS", 1: "NPH52", 2: "SEA_AD"},
-            precision=PrecisionStub(),
-            raw_primary_evidence_sha256=h("primary"),
-            raw_control_evidence_sha256=h("control"),
-            raw_nonlinear_evidence_sha256=h("nonlinear"),
+            actual_policy_scores=np.zeros(shape),
+            actual_uniform_scores=np.zeros(shape),
+            shuffled_same_mask_scores=np.zeros(shape),
+            negative_control_delta=np.zeros(shape),
+            planted_detect_excess=np.zeros(shape),
+            planted_after_mask_excess=np.zeros(shape),
+            nonlinear_actual_scores=np.zeros(shape),
+            nonlinear_shuffled_same_mask_scores=np.zeros(shape),
+            effective_targeted_n_by_target_fold=np.zeros((128, 4)),
             replay_exact=True,
             untreated_identity_exact=True,
             no_privileged_metadata=True,
+        )
+
+
+def test_raw_roots_change_when_bound_matrix_changes():
+    first = raw_bundle()
+    changed = np.full((128, 104), 0.10)
+    changed[0, 0] = 0.1000001
+    second = raw_bundle(actual_policy_scores=changed)
+    assert first.primary_evidence_digest() != second.primary_evidence_digest()
+    assert first.canonical_digest() != second.canonical_digest()
+    assert first.control_evidence_digest() == second.control_evidence_digest()
+    assert first.nonlinear_evidence_digest() == second.nonlinear_evidence_digest()
+
+
+def test_raw_bundle_copies_and_freezes_input_arrays():
+    original = np.full((128, 104), 0.10)
+    raw = raw_bundle(actual_policy_scores=original)
+    digest = raw.primary_evidence_digest()
+    original[0, 0] = 999.0
+    assert raw.actual_policy_scores[0, 0] == pytest.approx(0.10)
+    assert raw.primary_evidence_digest() == digest
+    with pytest.raises(ValueError):
+        raw.actual_policy_scores[0, 0] = 2.0
+
+
+def test_target_or_donor_identity_changes_root():
+    first = raw_bundle()
+    second = raw_bundle(target_ids=[f"other-{i:04d}" for i in range(128)])
+    third = raw_bundle(donor_ids=[f"other-donor-{i:03d}" for i in range(104)])
+    assert first.canonical_digest() != second.canonical_digest()
+    assert first.canonical_digest() != third.canonical_digest()
+
+
+def test_assembler_no_longer_accepts_free_raw_sha_arguments():
+    raw = raw_bundle()
+    with pytest.raises(TypeError):
+        assemble_policy_decision_evidence(
+            raw_evidence=raw,
+            precision=PrecisionStub(),
+            raw_primary_evidence_sha256=h("unrelated"),
         )
 
 
