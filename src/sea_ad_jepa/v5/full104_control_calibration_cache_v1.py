@@ -276,6 +276,9 @@ class Full104ControlCalibrationCacheManifestV1:
     retained_count_by_donor_file_sha256: str
     fold_by_donor_file_sha256: str
     donor_source_code_file_sha256: str
+    full_donor_n_file_sha256: str
+    full_donor_sum_file_sha256: str
+    full_donor_sumsq_file_sha256: str
     target_cols_file_sha256: str
     proxy_cols_file_sha256: str
     distractor_cols_file_sha256: str
@@ -350,6 +353,9 @@ class Full104ControlCalibrationCacheManifestV1:
             self.retained_count_by_donor_file_sha256,
             self.fold_by_donor_file_sha256,
             self.donor_source_code_file_sha256,
+            self.full_donor_n_file_sha256,
+            self.full_donor_sum_file_sha256,
+            self.full_donor_sumsq_file_sha256,
             self.target_cols_file_sha256,
             self.proxy_cols_file_sha256,
             self.distractor_cols_file_sha256,
