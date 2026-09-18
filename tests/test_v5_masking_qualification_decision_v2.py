@@ -5,8 +5,12 @@ from sea_ad_jepa.v5.masking_qualification_decision_v1 import (
     MaskingPolicyDecisionEvidenceV1,
 )
 from sea_ad_jepa.v5.masking_qualification_decision_v2 import (
+    MaskingPolicyDecisionReceiptV2,
+    POLICY_SELECTION_RULE_ID,
+    TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH,
     evaluate_policy_v2,
     null_noise_tolerance,
+    select_policy_v2,
 )
 
 
@@ -146,3 +150,148 @@ def test_control_width_alone_cannot_flip_fail_to_qualified():
     assert not wide_receipt.negative_control_precision_passed
     assert narrow_receipt.null_noise_tolerance == pytest.approx(0.0100)
     assert wide_receipt.null_noise_tolerance == pytest.approx(0.0100)
+
+def decision_receipt(policy_id, *, qualified, mean_effective_targeted_n, delta_lower_one_sided):
+    return MaskingPolicyDecisionReceiptV2(
+        policy_id=policy_id,
+        burden_numerator=1,
+        burden_denominator=10,
+        qualified=qualified,
+        controls_passed=True,
+        negative_control_precision_passed=True,
+        primary_null_level_passed=True,
+        targeted_improvement_passed=True,
+        source_improvement_guardrail_passed=True,
+        heterogeneity_guardrail_passed=True,
+        nonlinear_guardrail_passed=True,
+        null_noise_tolerance=0.005,
+        target_heterogeneity_floor=-0.005,
+        mean_effective_targeted_n=mean_effective_targeted_n,
+        delta_lower_one_sided=delta_lower_one_sided,
+        decision_rule_id="FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_AND_FIXED_HETEROGENEITY_GUARDED_SHORTCUT_SUPPRESSION_V4",
+        evidence_digest=("1" if policy_id == "UNIFORM_RANDOM" else "2" if policy_id == "TOP8_CORRELATION" else "3" if policy_id == "RIDGE8_CONDITIONAL" else "4") * 64,
+    )
+
+
+def test_f16_legacy_lexicographic_selector_is_reproduced_then_rejected():
+    uniform = decision_receipt(
+        "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
+    )
+    prefix = decision_receipt(
+        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.9999, delta_lower_one_sided=0.001
+    )
+    ridge = decision_receipt(
+        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040
+    )
+    top = decision_receipt(
+        "TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.010
+    )
+    legacy = min(
+        (prefix, ridge),
+        key=lambda r: (r.mean_effective_targeted_n, -r.delta_lower_one_sided),
+    )
+    assert legacy.policy_id == "PREFIX3_SELECTIVE"
+    assert TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH == 1.0
+    assert "ONE_PARTNER_EQUIVALENCE" in POLICY_SELECTION_RULE_ID
+    assert select_policy_v2([uniform, top, ridge, prefix]) == "RIDGE8_CONDITIONAL"
+
+
+def test_f16_material_one_partner_per_target_fold_advantage_keeps_complexity_priority():
+    uniform = decision_receipt(
+        "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
+    )
+    prefix = decision_receipt(
+        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=6.9, delta_lower_one_sided=0.001
+    )
+    ridge = decision_receipt(
+        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040
+    )
+    top = decision_receipt(
+        "TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.010
+    )
+    assert select_policy_v2([uniform, top, ridge, prefix]) == "PREFIX3_SELECTIVE"
+
+
+def test_f16_exact_ties_are_deterministic_and_uniform_still_short_circuits():
+    uniform_failed = decision_receipt(
+        "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
+    )
+    top = decision_receipt(
+        "TOP8_CORRELATION", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.020
+    )
+    ridge = decision_receipt(
+        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.020
+    )
+    prefix = decision_receipt(
+        "PREFIX3_SELECTIVE", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.020
+    )
+    assert select_policy_v2([uniform_failed, top, ridge, prefix]) == "TOP8_CORRELATION"
+
+    uniform_passed = decision_receipt(
+        "UNIFORM_RANDOM", qualified=True, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
+    )
+    assert select_policy_v2([uniform_passed, top, ridge, prefix]) == "UNIFORM_RANDOM"
+
+
+def test_f17_legacy_control_width_flip_is_reproduced_but_new_heterogeneity_is_invariant():
+    narrow = evidence(
+        worst_target_delta=-0.003,
+        negative_control_delta=I(0.0, -0.001, 0.001, -0.0008, 0.0008),
+    )
+    wide = evidence(
+        worst_target_delta=-0.003,
+        negative_control_delta=I(0.0, -0.005, 0.005, -0.004, 0.004),
+    )
+    legacy_narrow = narrow.worst_target_delta >= narrow.negative_control_delta.lower_two_sided
+    legacy_wide = wide.worst_target_delta >= wide.negative_control_delta.lower_two_sided
+    assert legacy_narrow is False
+    assert legacy_wide is True
+
+    narrow_receipt = evaluate_policy_v2(narrow)
+    wide_receipt = evaluate_policy_v2(wide)
+    assert narrow_receipt.target_heterogeneity_floor == pytest.approx(-0.005)
+    assert wide_receipt.target_heterogeneity_floor == pytest.approx(-0.005)
+    assert narrow_receipt.heterogeneity_guardrail_passed
+    assert wide_receipt.heterogeneity_guardrail_passed
+    assert narrow_receipt.qualified == wide_receipt.qualified
+
+
+def test_f17_target_harm_beyond_frozen_margin_fails_independent_of_control_width():
+    narrow = evaluate_policy_v2(
+        evidence(
+            worst_target_delta=-0.006,
+            negative_control_delta=I(0.0, -0.001, 0.001, -0.0008, 0.0008),
+        )
+    )
+    wide = evaluate_policy_v2(
+        evidence(
+            worst_target_delta=-0.006,
+            negative_control_delta=I(0.0, -0.005, 0.005, -0.004, 0.004),
+        )
+    )
+    assert not narrow.heterogeneity_guardrail_passed
+    assert not wide.heterogeneity_guardrail_passed
+    assert not narrow.qualified
+    assert not wide.qualified
+
+
+def test_f17_prospective_margin_not_realized_control_width_changes_heterogeneity_floor():
+    small = evaluate_policy_v2(
+        evidence(
+            null_noise_tolerance_ceiling=0.002,
+            worst_target_delta=-0.003,
+            negative_control_delta=I(0.0, -0.001, 0.001, -0.0008, 0.0008),
+        )
+    )
+    large = evaluate_policy_v2(
+        evidence(
+            null_noise_tolerance_ceiling=0.005,
+            worst_target_delta=-0.003,
+            negative_control_delta=I(0.0, -0.001, 0.001, -0.0008, 0.0008),
+        )
+    )
+    assert small.target_heterogeneity_floor == pytest.approx(-0.002)
+    assert large.target_heterogeneity_floor == pytest.approx(-0.005)
+    assert not small.heterogeneity_guardrail_passed
+    assert large.heterogeneity_guardrail_passed
+
