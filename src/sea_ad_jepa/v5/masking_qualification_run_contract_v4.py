@@ -59,6 +59,7 @@ class MaskingQualificationRunContractV4:
 
     outer_split_authority_sha256: str
     target_panel_sizing_plan_sha256: str
+    control_calibration_precision_plan_sha256: str
     target_panel_sizing_receipt_sha256: str
     target_panel_authority_sha256: str
     precision_authority_sha256: str
@@ -73,6 +74,7 @@ class MaskingQualificationRunContractV4:
     canonical_reference_source_sha256: str
     full104_streaming_execution_source_sha256: str
     target_panel_sizing_source_sha256: str
+    control_calibration_precision_source_sha256: str
     target_panel_authority_source_sha256: str
     precision_evaluator_source_sha256: str
     donor_evidence_source_sha256: str
@@ -106,6 +108,7 @@ class MaskingQualificationRunContractV4:
             "burden_ladder_authority_sha256",
             "outer_split_authority_sha256",
             "target_panel_sizing_plan_sha256",
+            "control_calibration_precision_plan_sha256",
             "target_panel_sizing_receipt_sha256",
             "target_panel_authority_sha256",
             "precision_authority_sha256",
@@ -117,6 +120,7 @@ class MaskingQualificationRunContractV4:
             "canonical_reference_source_sha256",
             "full104_streaming_execution_source_sha256",
             "target_panel_sizing_source_sha256",
+            "control_calibration_precision_source_sha256",
             "target_panel_authority_source_sha256",
             "precision_evaluator_source_sha256",
             "donor_evidence_source_sha256",
@@ -212,6 +216,7 @@ class MaskingQualificationRunContractV4:
             "canonical_reference_source_sha256": "canonical_reference_live_sha256",
             "full104_streaming_execution_source_sha256": "full104_streaming_execution_live_sha256",
             "target_panel_sizing_source_sha256": "target_panel_sizing_live_sha256",
+            "control_calibration_precision_source_sha256": "control_calibration_precision_live_sha256",
             "target_panel_authority_source_sha256": "target_panel_authority_live_sha256",
             "precision_evaluator_source_sha256": "precision_evaluator_live_sha256",
             "donor_evidence_source_sha256": "donor_evidence_live_sha256",
