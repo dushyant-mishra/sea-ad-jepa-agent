@@ -19,8 +19,11 @@ from .masking_qualification_decision_v1 import (
     POLICY_ORDER,
 )
 
-DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_AND_SOURCE_BENEFIT_GUARDED_SHORTCUT_SUPPRESSION_V3"
-POLICY_SELECTION_RULE_ID = "UNIFORM_IF_SUFFICIENT_ELSE_MIN_TARGETING_THEN_MAX_LOWER_BOUND_V1"
+DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_AND_FIXED_HETEROGENEITY_GUARDED_SHORTCUT_SUPPRESSION_V4"
+POLICY_SELECTION_RULE_ID = "UNIFORM_IF_SUFFICIENT_ELSE_MIN_TARGETING_WITHIN_ONE_PARTNER_EQUIVALENCE_THEN_MAX_LOWER_BOUND_V2"
+TARGET_HETEROGENEITY_FLOOR_RULE_ID = "WORST_TARGET_NO_WORSE_THAN_NEGATIVE_FROZEN_NULL_EQUIVALENCE_MARGIN_V1"
+TARGETING_COMPLEXITY_MATERIALITY_RULE_ID = "ONE_MEAN_EFFECTIVE_TARGETED_PARTNER_PER_TARGET_FOLD_V1"
+TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH = 1.0
 
 
 def _digest(payload) -> str:
@@ -43,13 +46,14 @@ class MaskingPolicyDecisionReceiptV2:
     heterogeneity_guardrail_passed: bool
     nonlinear_guardrail_passed: bool
     null_noise_tolerance: float
+    target_heterogeneity_floor: float
     mean_effective_targeted_n: float
     delta_lower_one_sided: float
     decision_rule_id: str
     evidence_digest: str
 
     def canonical_digest(self) -> str:
-        return _digest({"schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V3", **asdict(self)})
+        return _digest({"schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V4", **asdict(self)})
 
 
 @dataclass(frozen=True)
@@ -61,6 +65,8 @@ class MaskingRungDecisionReceiptV2:
     policy_receipt_sha256: Mapping[str, str]
     decision_rule_id: str = DECISION_RULE_ID
     policy_selection_rule_id: str = POLICY_SELECTION_RULE_ID
+    targeting_complexity_materiality_rule_id: str = TARGETING_COMPLEXITY_MATERIALITY_RULE_ID
+    targeting_complexity_equivalence_width: float = TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH
 
     def validate(self) -> None:
         if set(self.policy_receipt_sha256) != set(POLICIES):
@@ -73,6 +79,10 @@ class MaskingRungDecisionReceiptV2:
             raise ValueError("decision_rule_id mismatch")
         if self.policy_selection_rule_id != POLICY_SELECTION_RULE_ID:
             raise ValueError("policy_selection_rule_id mismatch")
+        if self.targeting_complexity_materiality_rule_id != TARGETING_COMPLEXITY_MATERIALITY_RULE_ID:
+            raise ValueError("targeting_complexity_materiality_rule_id mismatch")
+        if float(self.targeting_complexity_equivalence_width) != TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH:
+            raise ValueError("targeting_complexity_equivalence_width mismatch")
         for digest in self.policy_receipt_sha256.values():
             if not isinstance(digest, str) or len(digest) != 64:
                 raise ValueError("policy receipt roots must be SHA-256 digests")
@@ -80,7 +90,7 @@ class MaskingRungDecisionReceiptV2:
     def canonical_digest(self) -> str:
         self.validate()
         return _digest({
-            "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V3",
+            "schema": "V5_MASKING_RUNG_DECISION_RECEIPT_V4",
             **asdict(self),
             "policy_receipt_sha256": dict(sorted(self.policy_receipt_sha256.items())),
         })
@@ -125,6 +135,8 @@ def evaluate_policy_v2(
         )
     )
 
+    target_heterogeneity_floor = -tolerance
+
     if evidence.policy_id == "UNIFORM_RANDOM":
         source_improvement_guardrail = True
         improvement = True
@@ -139,10 +151,7 @@ def evaluate_policy_v2(
             and evidence.target_delta_median >= 0.0
             and source_improvement_guardrail
         )
-        heterogeneity = (
-            evidence.worst_target_delta
-            >= evidence.negative_control_delta.lower_two_sided
-        )
+        heterogeneity = evidence.worst_target_delta >= target_heterogeneity_floor
 
     nonlinear = (
         evidence.nonlinear_excess_over_shuffled_null.upper_one_sided <= tolerance
@@ -158,6 +167,8 @@ def evaluate_policy_v2(
         "raw_nonlinear_evidence_sha256": evidence.raw_nonlinear_evidence_sha256,
         "precision_authority_sha256": evidence.precision_authority_sha256,
         "null_noise_tolerance": tolerance,
+        "target_heterogeneity_floor": target_heterogeneity_floor,
+        "target_heterogeneity_floor_rule_id": TARGET_HETEROGENEITY_FLOOR_RULE_ID,
         "source_excess_upper_one_sided": dict(evidence.source_excess_upper_one_sided),
         "source_delta_lower_one_sided": dict(evidence.source_delta_lower_one_sided),
         "negative_control_precision_passed": evidence.negative_control_precision_passed,
@@ -179,6 +190,7 @@ def evaluate_policy_v2(
         heterogeneity_guardrail_passed=heterogeneity,
         nonlinear_guardrail_passed=nonlinear,
         null_noise_tolerance=tolerance,
+        target_heterogeneity_floor=target_heterogeneity_floor,
         mean_effective_targeted_n=float(evidence.mean_effective_targeted_n),
         delta_lower_one_sided=float(evidence.delta_vs_uniform.lower_one_sided),
         decision_rule_id=DECISION_RULE_ID,
@@ -200,14 +212,20 @@ def select_policy_v2(receipts: Sequence[MaskingPolicyDecisionReceiptV2]) -> str:
     ]
     if not qualified:
         return "NO_POLICY_QUALIFIED"
-    qualified.sort(
+    minimum_complexity = min(float(r.mean_effective_targeted_n) for r in qualified)
+    complexity_equivalent = [
+        r
+        for r in qualified
+        if float(r.mean_effective_targeted_n) - minimum_complexity
+        < TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH
+    ]
+    complexity_equivalent.sort(
         key=lambda r: (
-            float(r.mean_effective_targeted_n),
             -float(r.delta_lower_one_sided),
             POLICY_ORDER[r.policy_id],
         )
     )
-    return qualified[0].policy_id
+    return complexity_equivalent[0].policy_id
 
 
 def evaluate_rung_v2(
