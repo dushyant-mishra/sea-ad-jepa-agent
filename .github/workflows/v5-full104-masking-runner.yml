@@ -6,6 +6,7 @@ on:
       - impl/v5-remaining-rna-target-semantics-20260917
       - impl/v5-full104-masking-budget-freeze-20260917
       - impl/v5-full104-masking-redteam-freeze-20260918
+      - impl/v5-full104-masking-redteam2-20260918
   pull_request:
     paths:
       - 'src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py'
@@ -43,6 +44,21 @@ on:
       - 'tests/test_v5_full104_masking_streaming_executor_v1.py'
       - 'tests/test_v5_full104_streaming_executor_accepts_budget_v2.py'
       - 'tests/test_v5_full104_masking_anti_spillover_v1.py'
+      - 'src/sea_ad_jepa/v5/control_calibration_precision_authority_v1.py'
+      - 'src/sea_ad_jepa/v5/control_calibration_interval_receipt_v1.py'
+      - 'src/sea_ad_jepa/v5/control_capacity_calibration_receipt_v1.py'
+      - 'src/sea_ad_jepa/v5/target_panel_sizing_authority_v2.py'
+      - 'src/sea_ad_jepa/v5/target_panel_authority_v3.py'
+      - 'src/sea_ad_jepa/v5/precision_authority_v4.py'
+      - 'src/sea_ad_jepa/v5/nonlinear_sampling_calibration_authority_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v3.py'
+      - 'src/sea_ad_jepa/v5/masking_qualification_run_contract_v4.py'
+      - 'tests/test_v5_control_calibration_precision_authority_v1.py'
+      - 'tests/test_v5_control_calibration_interval_receipt_v1.py'
+      - 'tests/test_v5_control_capacity_calibration_receipt_v1.py'
+      - 'tests/test_v5_full104_masking_anti_spillover_v2.py'
+      - 'tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py'
+      - 'tests/test_v5_masking_qualification_run_contract_v4.py'
       - '.github/workflows/v5-full104-masking-runner.yml'
   workflow_dispatch:
 
@@ -86,7 +102,13 @@ jobs:
             tests/test_v5_target_panel_selector_v2.py \
             tests/test_v5_masking_rng_replay_authority_v2.py \
             tests/test_v5_target_panel_sizing_and_precision_v3.py \
-            tests/test_v5_target_panel_authority_v2.py
+            tests/test_v5_target_panel_authority_v2.py \
+            tests/test_v5_control_calibration_precision_authority_v1.py \
+            tests/test_v5_control_calibration_interval_receipt_v1.py \
+            tests/test_v5_control_capacity_calibration_receipt_v1.py \
+            tests/test_v5_full104_masking_anti_spillover_v2.py \
+            tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
+            tests/test_v5_masking_qualification_run_contract_v4.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -114,5 +136,11 @@ jobs:
             tests/test_v5_masking_rng_replay_authority_v2.py \
             tests/test_v5_target_panel_sizing_and_precision_v3.py \
             tests/test_v5_target_panel_authority_v2.py \
+            tests/test_v5_control_calibration_precision_authority_v1.py \
+            tests/test_v5_control_calibration_interval_receipt_v1.py \
+            tests/test_v5_control_capacity_calibration_receipt_v1.py \
+            tests/test_v5_full104_masking_anti_spillover_v2.py \
+            tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
+            tests/test_v5_masking_qualification_run_contract_v4.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi

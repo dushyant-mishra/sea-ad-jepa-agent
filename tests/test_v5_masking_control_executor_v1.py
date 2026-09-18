@@ -10,6 +10,8 @@ from sea_ad_jepa.v5.masking_control_executor_v1 import (
     deterministic_within_donor_shuffle,
     run_planted_proxy_control_fold,
     run_shuffled_negative_control_fold,
+    run_planted_proxy_detection_fold,
+    run_shuffled_null_detection_fold,
     select_planted_proxy,
 )
 
@@ -86,3 +88,46 @@ def test_control_source_contains_no_discovery_path_or_burden_constant() -> None:
         "12345",
     )
     assert [token for token in forbidden if token in source] == []
+
+
+def test_capacity_detection_controls_use_no_masking_burden(tmp_path: Path) -> None:
+    _, stream, _, _ = _fixture(tmp_path)
+    planted = run_planted_proxy_detection_fold(
+        stream=stream,
+        fold_index=0,
+        parameters=parameters(),
+        target_col=int(stream.target_cols[0]),
+        target_id=stream.target_ids[0],
+        eligible_proxy_cols=stream.universe_cols,
+    )
+    shuffled = run_shuffled_null_detection_fold(
+        stream=stream,
+        fold_index=0,
+        parameters=parameters(),
+        target_col=int(stream.target_cols[0]),
+        target_id=stream.target_ids[0],
+        global_seed=17,
+    )
+    assert planted["masking_burden_used"] is False
+    assert shuffled["masking_burden_used"] is False
+    assert planted["masking_policy_outcomes_inspected"] is False
+    assert shuffled["masking_policy_outcomes_inspected"] is False
+    assert planted["control_id"] == "PLANTED_SHORTCUT_CAPACITY_DETECTION_V1"
+    assert shuffled["control_id"] == "WITHIN_DONOR_SHUFFLED_CAPACITY_NULL_V1"
+    assert len(planted["donor_scores"]) == 4
+    assert len(shuffled["donor_scores"]) == 4
+
+
+def test_capacity_detection_replays_exactly(tmp_path: Path) -> None:
+    _, stream, _, _ = _fixture(tmp_path)
+    kwargs = dict(
+        stream=stream,
+        fold_index=0,
+        parameters=parameters(),
+        target_col=int(stream.target_cols[0]),
+        target_id=stream.target_ids[0],
+        global_seed=17,
+    )
+    a = run_shuffled_null_detection_fold(**kwargs)
+    b = run_shuffled_null_detection_fold(**kwargs)
+    assert a == b
