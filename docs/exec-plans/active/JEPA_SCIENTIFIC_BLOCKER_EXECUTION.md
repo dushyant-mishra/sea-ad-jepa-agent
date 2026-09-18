@@ -10,7 +10,7 @@ Working implementation branch:
 
 Scientific implementation anchor (source/test/data bytes):
 
-`8962a89d7aff23cb10315e11f3cede1e196948ef`
+`bd968ea4be40da649a443916197e2985b5c8749f`
 
 Draft implementation PR:
 
@@ -82,7 +82,7 @@ Current Git implementation contains and must use:
 - MaskingQualificationDesignAuthorityV2 + current builder
 - ControlCalibrationPrecisionPlanV2
 - final NonlinearChallengeAuthorityV3 / RNG replay V2 builders
-- final RunContract V4 schema
+- final RunContract V4 schema + path-only current builder `scripts/agent/build_full104_masking_run_contract_v4_20260918.py`
 - anti-spillover V2 plus exact-current semantic authority ingress pins
 
 The calibration cache role is permanently:
@@ -110,20 +110,20 @@ Historical evidence may define the pre-FULL104 confirmation candidate and nonlin
 
 ## Current exact-head verification status
 
-The focused FULL104 masking workflow is verified on the current scientific source/test/workflow anchor `8962a89d7aff23cb10315e11f3cede1e196948ef`.
+The focused FULL104 masking workflow is verified on the current scientific source/test/workflow anchor `bd968ea4be40da649a443916197e2985b5c8749f`.
 
-GitHub Actions run `35384092066` completed SUCCESS. The full regression step and the explicit fail-closed-on-skips step both completed SUCCESS after adding the current two-mode FULL104 GPU preflight validator/wrapper and its anti-spillover behavior tests.
+GitHub Actions run `35384493193` completed SUCCESS. The full regression step and the explicit fail-closed-on-skips step both completed SUCCESS after adding the current two-mode FULL104 GPU preflight validator/wrapper and its anti-spillover behavior tests.
 
 The verified predecessor anchors `ca643f5d...` (run `35374354706`) and `bdb779ce...` (run `35382450942`) remain historical implementation evidence only. The current anchor additionally canonically binds the no-extra-retained-floor policy and exact-current representation/teacher/support/registry semantic authorities at FULL104 ingress. The earlier collection failure `35373486676` was caused by a stale nonlinear-calibration V1 test reference and was narrowly repaired before the successful successor runs.
 
 Historical green anchor `8ee5d0a5...` remains historical evidence only. Historical or smaller-run green status never substitutes for exact-current-head verification.
 
-Exact-head focused CI is therefore `ALREADY_AUDITED__PASS_NO_SKIPS` at `8962a89d...`.
+Exact-head focused CI is therefore `ALREADY_AUDITED__PASS_NO_SKIPS` at `bd968ea4...`.
 
 ## Immediate authoritative sequence
 
-1. Re-fetch the live implementation branch and PR #20. If source/test/workflow/data bytes changed from `8962a89d...`, classify the delta as `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
-2. Exact-head focused CI at `8962a89d...` is audited PASS/no-skips in run `35384092066`; rerun it after any source/test/workflow change.
+1. Re-fetch the live implementation branch and PR #20. If source/test/workflow/data bytes changed from `bd968ea4...`, classify the delta as `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+2. Exact-head focused CI at `bd968ea4...` is audited PASS/no-skips in run `35384493193`; rerun it after any source/test/workflow change.
 3. Use the current two-mode preflight only: `scripts/agent/v5_full104_masking_gpu_preflight_20260918.ps1` plus `scripts/agent/validate_full104_masking_gpu_preflight_v1.py`. Calibration mode must not require terminal artifacts; terminal mode must reject the calibration cache as terminal input and must bind the final machine checkpoint and live execution-source hashes.
 4. Build the explicit pre-FULL104 confirmation `MaskingQualificationParametersAuthorityV2` instance from the frozen discovery provenance. This is an explicit re-authorization of a pre-FULL104 candidate only; it does not authorize burden, targets, folds, seeds, row caps, outcomes, or training.
 5. On the canonical GPU worktree, regenerate the census V2 summary, split, and target-eligibility receipts from the real authenticated `pass1.npz`, then build census authority V2.
@@ -146,7 +146,7 @@ Exact-head focused CI is therefore `ALREADY_AUDITED__PASS_NO_SKIPS` at `8962a89d
 
 ## Executability notes
 
-Do not treat bare script names as commands. The builders require explicit runtime paths/receipts. Use the current new-chat commands document for complete argument templates.
+Do not treat bare script names as commands. The builders require explicit runtime paths/receipts. Use `docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md` for the current complete argument templates. The 20260917 command document is superseded.
 
 Both cache-capacity evaluators intentionally return exit code `3` after Run A once they have written replay matrices and a `REPLAY_REQUIRED_*` status. Treat exactly that combination as the expected handoff to Run B; any other nonzero code is a STOP. Run B must write to a different output directory and consume the unchanged Run-A matrices.
 

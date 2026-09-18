@@ -13,7 +13,7 @@
     },
     {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "ffd2af049c02d2203ac6ee8570dc0a2c3be04f333d0b22d75ad96e913f638c09",
+      "sha256": "76fc1efed5fd2bd3bd8a88c8efc258814a6c7ed26fe12503dc39428f190b82aa",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
@@ -53,12 +53,12 @@
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
       "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "scientific_implementation_head": "8962a89d7aff23cb10315e11f3cede1e196948ef",
+      "scientific_implementation_head": "bd968ea4be40da649a443916197e2985b5c8749f",
       "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35384092066",
+      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35384493193",
       "pull_request": 20,
       "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
-      "governance_note": "Current source/test/workflow bytes are anchored at 8962a89d... after exact-current semantic authority ingress hardening. Historical/smaller-run artifacts may motivate hypotheses/model shape only; they cannot occupy FULL104 roles without explicit current reauthorization and current-root binding. AddressUniverseLadder V1 is not a final Design V2 role."
+      "governance_note": "Current source/test/workflow bytes are anchored at bd968ea4... after adding the path-only final RunContract V4 builder. Historical/smaller-run artifacts may motivate only; exact-current semantic authority ingress and current FULL104 root binding are mandatory. AddressUniverseLadder V1 is not a final Design V2 role."
     },
     "full104": {
       "cells": 4553407,
@@ -117,7 +117,9 @@
       "burden_ladder_builder": "scripts/agent/build_full104_burden_ladder_authority_v2_20260918.py",
       "rng_replay_builder": "scripts/agent/build_full104_rng_replay_authority_v2_20260918.py",
       "nonlinear_challenge_v3_builder": "scripts/agent/build_full104_nonlinear_challenge_authority_v3_20260918.py",
-      "masking_design_v2_builder": "scripts/agent/build_full104_masking_design_authority_v2_20260918.py"
+      "masking_design_v2_builder": "scripts/agent/build_full104_masking_design_authority_v2_20260918.py",
+      "masking_run_contract_builder": "scripts/agent/build_full104_masking_run_contract_v4_20260918.py",
+      "current_gpu_commands": "docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
@@ -151,18 +153,19 @@
       "full104_gpu_preflight": "tests/test_v5_full104_masking_gpu_preflight_v1.py",
       "masking_design_v2": "tests/test_v5_masking_design_authority_v2.py",
       "current_freeze_builders": "tests/test_v5_full104_current_freeze_builders_v1.py",
-      "nonlinear_v3_builder": "tests/test_v5_nonlinear_v3_builder_current.py"
+      "nonlinear_v3_builder": "tests/test_v5_nonlinear_v3_builder_current.py",
+      "masking_run_contract_builder": "tests/test_v5_full104_run_contract_builder_v4.py"
     },
     "verified_ci": {
       "role": "EXACT_CURRENT_SCIENTIFIC_SOURCE_TEST_WORKFLOW_VERIFICATION",
-      "code_anchor": "8962a89d7aff23cb10315e11f3cede1e196948ef",
+      "code_anchor": "bd968ea4be40da649a443916197e2985b5c8749f",
       "workflow": "V5 FULL104 masking runner",
-      "run_id": 35384092066,
+      "run_id": 35384493193,
       "conclusion": "success",
       "regression_step": "success",
       "skip_gate": "pass",
-      "predecessor_verified_anchor": "bdb779ceb1939d5380a244ea23b9cd52d336391b",
-      "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__CURRENT_FULL104_ROLE_REQUIRES_EXPLICIT_REAUTHORIZATION_CURRENT_ROOT_BINDING_AND_EXACT_CURRENT_SEMANTIC_AUTHORITY_INGRESS"
+      "predecessor_verified_anchor": "8962a89d7aff23cb10315e11f3cede1e196948ef",
+      "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__CURRENT_FULL104_ROLE_REQUIRES_EXPLICIT_REAUTHORIZATION_CURRENT_ROOT_BINDING_EXACT_CURRENT_SEMANTIC_AUTHORITY_INGRESS_AND_PATH_ONLY_FINAL_CONTRACT_ASSEMBLY"
     },
     "supporting_exploratory_results": {
       "branch": "analysis/v5-ridge8-expanded-validation-20260917",

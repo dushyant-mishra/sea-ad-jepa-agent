@@ -1,4 +1,4 @@
-# JEPA V5 — New Chat and GPU Handoff Commands
+# JEPA V5 — New Chat and GPU Handoff Commands\n\n> **SUPERSEDED_BY_20260918_CURRENT_COMMAND_CHAIN.** Do not use this file for current FULL104 execution. Use `docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md`.
 
 Date: 2026-09-17
 
