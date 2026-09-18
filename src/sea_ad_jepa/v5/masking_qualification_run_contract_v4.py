@@ -75,6 +75,7 @@ class MaskingQualificationRunContractV4:
     full104_streaming_execution_source_sha256: str
     target_panel_sizing_source_sha256: str
     control_calibration_precision_source_sha256: str
+    control_capacity_calibration_source_sha256: str
     target_panel_authority_source_sha256: str
     precision_evaluator_source_sha256: str
     donor_evidence_source_sha256: str
@@ -121,6 +122,7 @@ class MaskingQualificationRunContractV4:
             "full104_streaming_execution_source_sha256",
             "target_panel_sizing_source_sha256",
             "control_calibration_precision_source_sha256",
+            "control_capacity_calibration_source_sha256",
             "target_panel_authority_source_sha256",
             "precision_evaluator_source_sha256",
             "donor_evidence_source_sha256",
@@ -217,6 +219,7 @@ class MaskingQualificationRunContractV4:
             "full104_streaming_execution_source_sha256": "full104_streaming_execution_live_sha256",
             "target_panel_sizing_source_sha256": "target_panel_sizing_live_sha256",
             "control_calibration_precision_source_sha256": "control_calibration_precision_live_sha256",
+            "control_capacity_calibration_source_sha256": "control_capacity_calibration_live_sha256",
             "target_panel_authority_source_sha256": "target_panel_authority_live_sha256",
             "precision_evaluator_source_sha256": "precision_evaluator_live_sha256",
             "donor_evidence_source_sha256": "donor_evidence_live_sha256",
