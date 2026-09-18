@@ -153,7 +153,7 @@ def _required_bool(value: Any, name: str) -> bool:
 
 @dataclass(frozen=True)
 class TerminalEvidenceAssemblySemanticsV1:
-    authority_id: str = "JEPA_V5_FULL104_TERMINAL_EVIDENCE_ASSEMBLY_SEMANTICS_V1"
+    authority_id: str = "JEPA_V5_FULL104_TERMINAL_EVIDENCE_ASSEMBLY_SEMANTICS_V2"
     decision_rule_id: str = DECISION_RULE_ID
     primary_delta_estimand_id: str = PRIMARY_DELTA_ESTIMAND_ID
     primary_null_estimand_id: str = PRIMARY_NULL_ESTIMAND_ID

@@ -112,6 +112,7 @@ def test_semantics_freeze_is_explicit_and_preoutcome():
     assert s.planted_detect_estimand_id == PLANTED_DETECT_ESTIMAND_ID
     assert s.nonlinear_null_estimand_id == NONLINEAR_NULL_ESTIMAND_ID
     assert s.raw_evidence_schema_id == RAW_EVIDENCE_SCHEMA_ID
+    assert s.authority_id == "JEPA_V5_FULL104_TERMINAL_EVIDENCE_ASSEMBLY_SEMANTICS_V2"
     assert s.terminal_outcomes_inspected_before_freeze is False
     assert s.training_authorized is False
 
