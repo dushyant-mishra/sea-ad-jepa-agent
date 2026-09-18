@@ -25,6 +25,7 @@ on:
       - 'src/sea_ad_jepa/v5/masking_donor_evidence_v1.py'
       - 'src/sea_ad_jepa/v5/masking_control_executor_v1.py'
       - 'src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_nonlinear_challenge_authority_v2.py'
       - 'src/sea_ad_jepa/v5/masking_nonlinear_challenge_executor_v1.py'
       - 'src/sea_ad_jepa/v5/target_panel_selector_v2.py'
       - 'src/sea_ad_jepa/v5/masking_rng_replay_authority_v2.py'
@@ -80,6 +81,7 @@ jobs:
             tests/test_v5_masking_donor_evidence_v1.py \
             tests/test_v5_masking_control_executor_v1.py \
             tests/test_v5_masking_nonlinear_challenge_authority_v1.py \
+            tests/test_v5_masking_nonlinear_challenge_authority_v2.py \
             tests/test_v5_masking_nonlinear_challenge_executor_v1.py \
             tests/test_v5_target_panel_selector_v2.py \
             tests/test_v5_masking_rng_replay_authority_v2.py \
@@ -106,6 +108,7 @@ jobs:
             tests/test_v5_masking_donor_evidence_v1.py \
             tests/test_v5_masking_control_executor_v1.py \
             tests/test_v5_masking_nonlinear_challenge_authority_v1.py \
+            tests/test_v5_masking_nonlinear_challenge_authority_v2.py \
             tests/test_v5_masking_nonlinear_challenge_executor_v1.py \
             tests/test_v5_target_panel_selector_v2.py \
             tests/test_v5_masking_rng_replay_authority_v2.py \
