@@ -13,6 +13,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import hashlib
 import json
+import math
 from typing import Mapping, Sequence
 
 from .masking_qualification_decision_v1 import (
@@ -208,6 +209,15 @@ def select_policy_v2(receipts: Sequence[MaskingPolicyDecisionReceiptV2]) -> str:
         raise ValueError("exactly one decision receipt is required for every policy arm")
     if any(r.decision_rule_id != DECISION_RULE_ID for r in receipts):
         raise ValueError("all policy receipts must use the current decision rule")
+    if any(r.target_heterogeneity_floor_rule_id != TARGET_HETEROGENEITY_FLOOR_RULE_ID for r in receipts):
+        raise ValueError("all policy receipts must use the current target-heterogeneity floor rule")
+    for receipt in receipts:
+        complexity = float(receipt.mean_effective_targeted_n)
+        effect = float(receipt.delta_lower_one_sided)
+        if not math.isfinite(complexity) or complexity < 0.0:
+            raise ValueError("mean_effective_targeted_n must be finite and nonnegative")
+        if not math.isfinite(effect):
+            raise ValueError("delta_lower_one_sided must be finite")
     burdens = {(r.burden_numerator, r.burden_denominator) for r in receipts}
     if len(burdens) != 1:
         raise ValueError("all policy receipts must belong to the same burden rung")
