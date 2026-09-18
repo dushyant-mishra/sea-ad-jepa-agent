@@ -1,109 +1,130 @@
 # START HERE — JEPA PROJECT
 
-Date: 2026-09-17
+Date: 2026-09-18
 
-Status: `CURRENT_V5_STREAMING_MASKING_EXECUTOR_PARITY_READY__FULL104_GPU_QUALIFICATION_PENDING__TRAINING_OFF`
+Status: FULL104_MASKING_HANDOFF_AUTHORITY_REPAIRED__GPU_RUNTIME_RECEIPTS_PENDING__TERMINAL_OUTCOMES_UNOPENED__TRAINING_OFF
 
-## Read first
+## Current implementation and handoff
 
-The current implementation/governance lane is:
+Implementation branch:
 
-`impl/v5-remaining-rna-target-semantics-20260917`
+impl/v5-full104-masking-redteam2-20260918
 
-Verified code anchor:
+Current implementation/governance head:
 
-`8ee5d0a5be483e18819a6f6975efa183327b2158`
+d6ef93e274e42e17d78f3fc652b0dfec202036ac
 
-Read in this order:
+Scientific source/test/data anchor underneath the docs-only governance repair:
 
-1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260917_V5_CANONICAL_MASKING_RUNTIME_CURRENT.md`
-3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260917_V5_CANONICAL_MASKING_RUNTIME_CURRENT.json`
-4. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
-5. `docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md`
-6. `docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md`
-7. supporting RIDGE8 provenance referenced by the pointer.
+86692cde7e61fe4beae7fff4070bd376a8090af2
 
-Before acting, re-fetch live branch heads. Filenames, branch names and commit messages do not create scientific authority.
+Draft implementation PR: #20
+PR base: impl/v5-full104-masking-redteam-freeze-20260918
 
-Before repeating any audit, classify it as `ALREADY_AUDITED`, `SUPERSEDED`, `OPEN`, or `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+Current audited docs-only handoff branch:
 
-## Permanent scientific boundaries
+handoff/jepa-v5-full104-calibration-audited-20260918
 
-`DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> TARGET SEMANTICS -> PRODUCTION GEOMETRY -> MODEL`
+The handoff branch must remain exactly one documentation commit above the implementation/governance head. Do not treat the handoff commit as a scientific implementation change.
 
-`IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK`
+The older handoff branch handoff/jepa-v5-full104-calibration-20260918 is superseded because its linked checkpoint state and execution plan were internally stale.
 
-`TRAINING_OFF`
+## Read in this order
 
-`NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION`
+1. docs/agent/JEPA_LATEST_HANDOFF_POINTER.json
+2. docs/agent/JEPA_NEW_CHAT_HANDOFF_20260918_V5_FULL104_MASKING_CALIBRATION_CURRENT.md
+3. docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260918_V5_FULL104_MASKING_CALIBRATION_CURRENT.json
+4. docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CALIBRATION.md
+5. docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json
+6. docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md
+7. docs/agent/handoff_artifacts/20260918/V5_FULL104_MASKING_DATA_RESULTS_SCRIPTS_MANIFEST.json
+8. docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md
+9. docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md
 
-The foundation task is biological/cellular state inference from partial RNA, including query-local state associated with a supplied canonical molecular address. It is **not** hidden-gene scalar reconstruction. Expression predictors are anti-shortcut diagnostics only.
+Re-fetch live GitHub heads before acting. Classify repeated work as ALREADY_AUDITED, SUPERSEDED, OPEN, or CHANGED_INPUT_REQUIRES_REQUALIFICATION.
 
-Do not inspect protected/pathology/DEV/SEALED outcomes while upstream design choices remain open.
+## Governance repair completed before this handoff
 
-## Current headline state
+Implementation-head governance commit d6ef93e274e42e17d78f3fc652b0dfec202036ac fixed:
 
-- FULL104: 4,553,407 cells; 104 donors; 42 operators; 41,238 addresses; 17,186 common-core addresses; 8,915 Level-4 blocks.
-- FULL104 block-manifest SHA-256: `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`.
-- `VALUE_ONLY_256` is frozen as the primary molecular representation. QC/visibility channels are observation/QC only.
-- support/estimability and donor-uniform/cell-uniform-within-donor base estimand are frozen.
-- Stage-A structural qualification is complete: 11 PASS / 0 FAIL / 0 UNPROVEN. Geometry-specific memorization must still be rerun after final production geometry is selected.
-- current V2/V3 runtime trust chain is implemented: authority roots/closure, preexecution, receipt, explicit training-authority schema, optimizer V3 and checkpoint V2.
-- masking qualification has separate design, numeric-parameter, frozen-run-contract and execution-V2 schemas.
-- canonical in-memory masking reference: `src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py`.
-- authenticated Level-4 streaming/sufficient-statistics adapter: `src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py`.
-- the streaming adapter applies `log1p(raw*10000/source_library)` exactly once, never requires a monolithic 4,553,407 x 17,186 CSR, and is parity-tested against the canonical reference for all four primary masking arms.
-- hash corruption and duplicate `selection_row` conditions fail closed.
-- the streaming executor is included in the current Stage-A spillover/source inventory.
-- exact code head `8ee5d0a5...` passed all four current workflows, including no-skip gates.
+- CURRENT_WORK_CHECKPOINT_STATE.json: PR #20/base are current; the historical green anchor is explicitly not current-head CI; START_HERE.md is no longer hard-pinned.
+- docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md: the September-17 V2 execution plan was replaced by the current V4/cache-calibrated sequence.
+- The active plan now explicitly records missing final builders instead of pretending the final freeze is already executable.
 
-Verified workflow runs at the code anchor:
+Pinned checkpoint authorities are stable implementation-governance files only: AGENTS.md and the active execution plan. A docs-only handoff can therefore update START_HERE without invalidating CURRENT_WORK_CHECKPOINT_STATE.json.
 
-- runtime closure: `35278901437` — SUCCESS
-- FULL104 masking runner + streaming parity: `35278901430` — SUCCESS
-- remaining-RNA / target-semantics successor: `35278901433` — SUCCESS
-- Stage-A spillover firewall: `35278901569` — SUCCESS
+## Scientific objective
 
-## What is NOT closed
+Infer biological/cellular state from partial RNA, including query-local state associated with a supplied canonical molecular address.
 
-Do not confuse schema/mechanics/parity tests with real scientific execution.
+Do not turn this into hidden-gene scalar reconstruction. Ridge/correlation/nonlinear expression predictors are shortcut diagnostics only.
 
-- terminal FULL104 masking qualification has not been executed under the prospectively frozen real run contract;
-- no production masking policy is selected/frozen from RIDGE8 exploratory evidence;
-- no final training authority has been issued;
-- `docs/agent/CURRENT_WORK_CHECKPOINT.json` must be built/validated on a canonical Git worktree before authority-bearing promotion or expensive FULL104 execution;
-- the GPU/full-data lane must bind the authenticated physical Level-4 substrate, instantiate/freeze the real design + numeric parameters + run contract, and bind exact source SHA-256 values before qualification outcomes are opened;
-- the streaming adapter is parity-correct but has not itself executed the 4.55M-cell terminal run in this environment;
-- remaining real-evidence gates must close before training, including healthy-current-teacher remaining-RNA evidence, measurement robustness, production geometry + geometry-specific memorization, and exact runtime provenance.
+## Current FULL104 substrate
 
-## Immediate next sequence
+- 4,553,407 cells
+- 104 donors
+- 42 operators
+- 41,238 addresses
+- 17,186 strict common-core addresses
+- 8,915 Level-4 blocks
+- block-manifest SHA-256: 66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29
+- GPU Level-4 root: D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/
 
-1. On the canonical GPU Git worktree, build/validate `CURRENT_WORK_CHECKPOINT.json`.
-2. Authenticate/bind the FULL104 Level-4 physical substrate and donor/source/fold/target/universe artifacts; do not substitute a smaller cache.
-3. Prospectively instantiate/freeze the masking design, numeric parameter authority and run contract. Bind the canonical in-memory runner source in the design and the exact streaming executor source used for execution in the run contract before inspecting terminal outcomes.
-4. Execute the qualification ladder through terminal `FULL_COMMON_CORE_17186_V1` with all required controls, precision rules and nonlinear challenge without retuning.
-5. Bind the actual `MaskingQualificationExecutionAuthorityV2` result and selected policy only if the frozen contract passes.
-6. Close remaining real-evidence authorities, then issue explicit final training authority only after the actual current graph closes.
+Calibration-cache role:
 
-## Do not redo
+CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1
 
-Do not reopen FULL104 lineage, K2 partition, VALUE_ONLY_256, support/estimability, base estimand, T0/T1/C2 history, QID/F1, Stage81A3 scope, Layer-2 shortcut audit, target-identity discovery, Stage-A structural qualification, or streaming-reference parity unless their inputs materially change.
+Terminal masking input role:
 
-## Load-bearing rules
+AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM_V1
 
-`NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY`
+## Changed-input census
 
-`COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY`
+Corrected strict-core measured-zero frequency: 0.832983.
+Core nonzeros: 13,069,917,135.
+Core measured zeros: 65,184,935,567.
+17,053 / 17,186 strict-core addresses are estimable in all four donor-held-out folds.
+Kish ESS is about 42 donor-equivalents from 104 donors.
 
-`QUALIFICATION_RANK_CEILING != PRODUCTION_MODEL_WIDTH`
+Runtime census V2 receipts still must be regenerated and hash-bound on the GPU machine. Repository constants are not runtime authority.
 
-`DO_NOT_UNLOCK_V5_BY_RECEIPT_ONLY`
+## Current immediate boundary
 
-`NO_EXPLORATORY_MASKING_POLICY_PROMOTION`
+No target-panel rung is selected.
+No nonlinear row cap is selected.
+No final V4 run-contract instance exists.
+No terminal masking outcome has been opened.
+No masking policy is selected.
+Training remains OFF.
 
-`NO_LEGACY_MASKING_EXECUTION_V1_IN_CURRENT_CLOSURE`
+The exact current implementation/governance head d6ef93e274e42e17d78f3fc652b0dfec202036ac has no workflow runs recorded at handoff. Run focused CI first and fail closed on skips. Do not inherit older green status as verification of this head.
 
-`NO_SILENT_SKIPPED_CRITICAL_TESTS`
+scripts/agent/v5_full104_masking_gpu_preflight_20260917.ps1 is stale for the current chain. Refresh/supersede it before final GPU authority or execution.
 
-`NO_MONOLITHIC_FULL104_MATRIX_REQUIRED_FOR_MASKING_QUALIFICATION`
+## Builder gaps that remain real blockers
+
+Before terminal masking, implement/test/review current builders for:
+
+- NonlinearChallengeAuthorityV3. The existing build_full104_nonlinear_challenge_authority_v2_20260918.py is V2 only and is not final authority.
+- MaskingRngReplayAuthorityV2.
+- MaskingQualificationRunContractV4.
+
+Do not replace these gaps with manual placeholder JSON.
+
+## Hard boundaries
+
+TRAINING_OFF
+
+NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION
+
+NO_PATHOLOGY_DEV_SEALED_OUTCOME_ACCESS_WHILE_DESIGN_OPEN
+
+NO_SMALLER_OR_HISTORICAL_FULL104_SUBSTITUTE
+
+NO_CALIBRATION_CACHE_AS_TERMINAL_INPUT
+
+NO_PLACEHOLDER_HASH_AUTHORITY
+
+NO_POST_OUTCOME_RETUNING
+
+NO_BURDEN_ESCALATION_AFTER_FIRST_FULL_QUALIFICATION
