@@ -5,8 +5,10 @@ from sea_ad_jepa.v5.masking_qualification_decision_v1 import (
     MaskingPolicyDecisionEvidenceV1,
 )
 from sea_ad_jepa.v5.masking_qualification_decision_v2 import (
+    DECISION_RULE_ID,
     MaskingPolicyDecisionReceiptV2,
     POLICY_SELECTION_RULE_ID,
+    TARGET_HETEROGENEITY_FLOOR_RULE_ID,
     TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH,
     evaluate_policy_v2,
     null_noise_tolerance,
@@ -166,10 +168,10 @@ def decision_receipt(policy_id, *, qualified, mean_effective_targeted_n, delta_l
         nonlinear_guardrail_passed=True,
         null_noise_tolerance=0.005,
         target_heterogeneity_floor=-0.005,
-        target_heterogeneity_floor_rule_id="WORST_TARGET_NO_WORSE_THAN_NEGATIVE_FROZEN_NULL_EQUIVALENCE_MARGIN_V1",
+        target_heterogeneity_floor_rule_id=TARGET_HETEROGENEITY_FLOOR_RULE_ID,
         mean_effective_targeted_n=mean_effective_targeted_n,
         delta_lower_one_sided=delta_lower_one_sided,
-        decision_rule_id="FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_FIXED_HETEROGENEITY_AND_MATERIAL_TARGETING_SHORTCUT_SUPPRESSION_V4",
+        decision_rule_id=DECISION_RULE_ID,
         evidence_digest=("1" if policy_id == "UNIFORM_RANDOM" else "2" if policy_id == "TOP8_CORRELATION" else "3" if policy_id == "RIDGE8_CONDITIONAL" else "4") * 64,
     )
 
@@ -314,4 +316,37 @@ def test_f16_rejects_stale_decision_receipt_semantics():
     )
     with pytest.raises(ValueError, match="current decision rule"):
         select_policy_v2([uniform, top, ridge, stale])
+
+def test_f16_selector_rejects_spoofed_nonfinite_or_negative_complexity():
+    uniform = decision_receipt(
+        "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
+    )
+    top = decision_receipt(
+        "TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.010
+    )
+    ridge = decision_receipt(
+        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040
+    )
+    for bad_value in (float("nan"), float("inf"), -1.0):
+        bad = MaskingPolicyDecisionReceiptV2(
+            **{**decision_receipt(
+                "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.0, delta_lower_one_sided=0.001
+            ).__dict__, "mean_effective_targeted_n": bad_value}
+        )
+        with pytest.raises(ValueError, match="finite and nonnegative"):
+            select_policy_v2([uniform, top, ridge, bad])
+
+
+def test_f16_selector_rejects_stale_heterogeneity_floor_rule_receipt():
+    receipts = [
+        decision_receipt("UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0),
+        decision_receipt("TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.010),
+        decision_receipt("RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040),
+        decision_receipt("PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.9999, delta_lower_one_sided=0.001),
+    ]
+    stale = MaskingPolicyDecisionReceiptV2(
+        **{**receipts[-1].__dict__, "target_heterogeneity_floor_rule_id": "REALIZED_NEGATIVE_CONTROL_LOWER_BOUND_V0"}
+    )
+    with pytest.raises(ValueError, match="current target-heterogeneity floor rule"):
+        select_policy_v2([*receipts[:-1], stale])
 
