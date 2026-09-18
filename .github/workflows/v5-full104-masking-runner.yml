@@ -99,7 +99,7 @@ jobs:
             tests/test_v5_target_panel_authority_v2.py \
             tests/test_v5_full104_masking_anti_spillover_v2.py \
             tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
-            tests/test_v5_masking_qualification_run_contract_v4.py \
+            tests/test_v5_masking_qualification_run_contract_v4.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -129,6 +129,6 @@ jobs:
             tests/test_v5_target_panel_authority_v2.py \
             tests/test_v5_full104_masking_anti_spillover_v2.py \
             tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
-            tests/test_v5_masking_qualification_run_contract_v4.py \ \
+            tests/test_v5_masking_qualification_run_contract_v4.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
