@@ -90,6 +90,57 @@ def test_runtime_validation_rejects_known_historical_bytes_even_with_innocent_na
         )
 
 
+def test_runtime_validation_rejects_unallowlisted_innocent_file(tmp_path):
+    root = tmp_path / "runtime"
+    prepare(root)
+    artifact = root / "current-looking.json"
+    artifact.write_text("{}", encoding="utf-8")
+    with pytest.raises(ValueError, match="unapproved file in fresh FULL104 runtime envelope"):
+        validate_runtime_envelope(
+            root,
+            expected_scientific_anchor_sha256=ANCHOR,
+        )
+    observed = validate_runtime_envelope(
+        root,
+        expected_scientific_anchor_sha256=ANCHOR,
+        allowed_relative_paths=("current-looking.json",),
+    )
+    assert observed.scientific_anchor_sha256 == ANCHOR
+
+
+def test_live_scientific_head_is_derived_and_dirty_worktree_fails(monkeypatch, tmp_path):
+    worktree = tmp_path / "repo"
+    worktree.mkdir()
+    calls = []
+
+    class Result:
+        def __init__(self, stdout):
+            self.stdout = stdout
+
+    def clean_run(args, **kwargs):
+        calls.append(tuple(args))
+        if args[-2:] == ["rev-parse", "HEAD"]:
+            return Result("a" * 40 + "\n")
+        if args[-2:] == ["status", "--porcelain"]:
+            return Result("")
+        raise AssertionError(args)
+
+    monkeypatch.setattr(runtime.subprocess, "run", clean_run)
+    assert runtime.live_clean_scientific_head(worktree) == "a" * 40
+    assert any("rev-parse" in call for call in calls)
+
+    def dirty_run(args, **kwargs):
+        if args[-2:] == ["rev-parse", "HEAD"]:
+            return Result("b" * 40 + "\n")
+        if args[-2:] == ["status", "--porcelain"]:
+            return Result("?? historical.npy\n")
+        raise AssertionError(args)
+
+    monkeypatch.setattr(runtime.subprocess, "run", dirty_run)
+    with pytest.raises(ValueError, match="must be clean"):
+        runtime.live_clean_scientific_head(worktree)
+
+
 def test_runtime_envelope_rejects_wrong_scientific_anchor(tmp_path):
     root = tmp_path / "runtime"
     prepare(root)
@@ -125,6 +176,8 @@ def test_runtime_envelope_cli_is_nonterminal_and_requires_real_root_inputs():
     assert "--level4-root" in source
     assert "--registry" in source
     assert "--observation-state" in source
+    assert "--worktree" in source
+    assert "live_clean_scientific_head" in source
     assert "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv" in source
     assert '"target_panel_ladder_authorized": False' in source
     assert '"terminal_masking_authorized": False' in source
