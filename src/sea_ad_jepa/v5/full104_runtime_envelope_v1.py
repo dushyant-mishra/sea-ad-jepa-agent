@@ -296,9 +296,9 @@ def validate_runtime_envelope(
     if payload.get("runtime_envelope_sha256") != envelope.canonical_digest():
         raise ValueError("FULL104 runtime envelope digest mismatch")
     assert_runtime_path_names_clean(root)
+    assert_no_known_historical_runtime_hashes(root)
     assert_runtime_contents_allowlisted(
         root,
         allowed_relative_paths=allowed_relative_paths,
     )
-    assert_no_known_historical_runtime_hashes(root)
     return envelope
