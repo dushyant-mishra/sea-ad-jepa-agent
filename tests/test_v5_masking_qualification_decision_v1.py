@@ -74,6 +74,7 @@ def uniform_failed():
         target_delta_median=0.0,
         worst_target_delta=0.0,
         mean_effective_targeted_n=0.0,
+        total_effective_targeted_n=0,
         nonlinear_excess_over_shuffled_null=I(0.01, 0.0, 0.02, 0.001, 0.019),
     )
 
