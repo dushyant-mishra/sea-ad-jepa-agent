@@ -21,8 +21,8 @@ from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import (
     evaluate_linear_capacity_rung,
     load_control_calibration_cache,
 )
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import (
-    MaskingQualificationParametersAuthorityV2,
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import (
+    MaskingQualificationParametersAuthorityV3,
 )
 from sea_ad_jepa.v5.target_panel_sizing_authority_v2 import (
     TargetPanelControlVerdictV2,
@@ -37,12 +37,12 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_parameters(path: Path) -> MaskingQualificationParametersAuthorityV2:
+def load_parameters(path: Path) -> MaskingQualificationParametersAuthorityV3:
     payload = load_json(path)
-    if payload.get("schema") != "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2":
+    if payload.get("schema") != "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3":
         raise SystemExit("parameter authority schema mismatch")
-    names = {field.name for field in fields(MaskingQualificationParametersAuthorityV2)}
-    authority = MaskingQualificationParametersAuthorityV2(
+    names = {field.name for field in fields(MaskingQualificationParametersAuthorityV3)}
+    authority = MaskingQualificationParametersAuthorityV3(
         **{name: payload[name] for name in names}
     )
     authority.validate()
