@@ -4,6 +4,7 @@ import hashlib
 import pytest
 
 from sea_ad_jepa.v5.null_equivalence_margin_authority_v1 import (
+    FULL104_SUBSTRATE_SHA256,
     HISTORICAL_ROLE_ID,
     HISTORICAL_SCALE_CONTEXT_SHA256,
     MARGIN_DENOMINATOR,
@@ -17,6 +18,7 @@ from sea_ad_jepa.v5.null_equivalence_margin_authority_v1 import (
 def authority(**updates):
     values = dict(
         authority_id="TEST_NULL_MARGIN",
+        full104_substrate_sha256=FULL104_SUBSTRATE_SHA256,
         historical_scale_context_artifact_sha256=HISTORICAL_SCALE_CONTEXT_SHA256,
     )
     values.update(updates)
@@ -64,6 +66,14 @@ def test_digest_binds_historical_context_root():
     a = authority()
     b = NullEquivalenceMarginAuthorityV1(
         authority_id="TEST_NULL_MARGIN_2",
+        full104_substrate_sha256=FULL104_SUBSTRATE_SHA256,
         historical_scale_context_artifact_sha256=HISTORICAL_SCALE_CONTEXT_SHA256,
     )
     assert a.canonical_digest() != b.canonical_digest()
+
+def test_authority_rejects_different_full104_substrate():
+    with pytest.raises(ValueError, match="different FULL104 substrate"):
+        authority(
+            full104_substrate_sha256=hashlib.sha256(b"other-substrate").hexdigest()
+        ).validate()
+
