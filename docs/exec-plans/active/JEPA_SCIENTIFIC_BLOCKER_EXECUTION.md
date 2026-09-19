@@ -2,189 +2,178 @@
 
 Date: 2026-09-18
 
-Status: `FULL104_MASKING_CURRENT_PREFLIGHT_VERIFIED__GPU_RUNTIME_RECEIPTS_AND_CONTROL_CALIBRATION_NEXT__TERMINAL_OUTCOMES_UNOPENED__TRAINING_OFF`
+Status: `F16_F17_CLOSED_AND_REDTEAM_HARDENED__GPU_CALIBRATION_NEXT__TERMINAL_OUTCOMES_UNOPENED__TRAINING_OFF`
 
-Working implementation branch:
+## Exact current scientific anchor
 
-`impl/v5-full104-masking-redteam2-20260918`
+Scientific branch:
 
-Scientific implementation anchor (source/test/data bytes):
+`impl/v5-full104-masking-f16-f17-receipt-hardening-20260918`
 
-`93093be1da09c46983f932d756b0fc9690a3eac4`
+Exact scientific SHA:
 
-Draft implementation PR:
+`64affd70cce578459658668f0e1076d212c1ab28`
 
-`#20` based on `impl/v5-full104-masking-redteam-freeze-20260918`
+Exact-head verification:
 
-## Scientific invariant
+- V5 FULL104 masking runner: `35412955924` — SUCCESS
+- regression run: `283 passed`
+- explicit fail-closed no-skip rerun: `283 passed`
+- V5 Stage-A spillover firewall: `35412955890` — SUCCESS
+- V5 runtime closure: `35412955886` — SUCCESS
+- V5 remaining-RNA and target-semantics successor: `35412955899` — SUCCESS
 
-The foundation objective is biological/cellular-state inference from partial RNA, including query-local state associated with a supplied canonical molecular address. It is not hidden-gene scalar reconstruction.
+Scientific predecessor anchors remain historical evidence only:
+- `3084c1f497a3db6056fd100fb896ccdf67318c8a`
+- exact-lattice F16/F17 predecessor `144873cec377e2cd098ce66220377f10723f413a`
 
-Expression ridge/correlation/nonlinear models are shortcut diagnostics only. Reducing expression predictability does not itself establish biological-state recovery.
-
-Permanent order:
+## Permanent scientific rules
 
 `DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> TARGET SEMANTICS -> PRODUCTION GEOMETRY -> MODEL`
 
 `IF_CONFIRMATION_DATA_COULD_CHANGE_A_DESIGN_CHOICE_DO_NOT_LOOK`
 
-## Current FULL104 substrate
+`TRAINING_OFF`
 
+`NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION`
+
+`NO_PATHOLOGY_DEV_SEALED_OUTCOME_ACCESS_WHILE_DESIGN_OPEN`
+
+Historical/smaller-run findings may explain a guardrail, motivate a candidate, or provide explicitly limited model-shape provenance. They may not supply FULL104 data roots, target lists, folds, burdens, seeds, row caps, policy outcomes, authority digests, PASS states, training checkpoints, or placeholders unless the exact historical bytes and role are explicitly reauthorized and bound to current FULL104 roots.
+
+FULL104 remains:
 - 4,553,407 cells
 - 104 donors
 - 42 operators
 - 41,238 addresses
 - 17,186 strict common-core addresses
-- 8,915 authenticated Level-4 sparse blocks
-- block-manifest SHA-256: `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`
-- canonical registry SHA-256: `7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd`
-- observation-state SHA-256: `852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537`
-- GPU Level-4 root: `D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/`
+- 8,915 Level-4 blocks
+- block-manifest SHA-256 `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`
 
-Historical Stage81/T1/discovery files are support/provenance only and must never substitute for FULL104. A historical finding may motivate a prospective FULL104 hypothesis or model-shape candidate, but it cannot supply a FULL104 data root, target list, fold, burden, seed, row cap, selected policy, authority digest, or PASS state unless a current authority explicitly re-authorizes that exact role and binds current roots.
+## Closed in this successor
 
-## Changed-input census boundary
+### F16 — policy-selector materiality
 
-The corrected read-only census established:
+CLOSED at exact head.
 
-- strict-core measured-zero frequency `0.832983`
-- strict-core nonzeros `13,069,917,135`
-- strict-core measured zeros `65,184,935,567`
-- `17,053 / 17,186` strict-core addresses estimable in every donor-held-out fold
-- 104 donors but Kish ESS about 42 donor-equivalents
+Targeting complexity is now bound to the exact integer total of effective targeting events on the bound target × outer-fold grid. Off-lattice floating complexity is rejected. Among qualified targeted policies, only a one-total-event difference across the entire bound grid is treated as complexity-equivalent before the effect lower bound breaks the tie.
 
-Consequences:
+Current rule:
+`ONE_TOTAL_EFFECTIVE_TARGET_EVENT_OVER_BOUND_TARGET_X_FOLD_GRID_V2`
 
-- strict `MEASURED_SCALAR` support is required;
-- measured zero remains measured evidence, not structural missingness;
-- masking eligibility is value-independent over strictly measured non-target addresses;
-- the discovery-era 15% burden from an 800-address universe is not terminal authority.
+This preserves the prospective historical intent to prefer less targeting without allowing an infinitesimal floating-point difference to dominate materially stronger evidence.
 
-The GPU machine must still regenerate and hash-bind the actual V2 census summary/split/target-eligibility receipts from the real `pass1.npz`.
+### F17 — target heterogeneity
 
-## Current implemented chain
+CLOSED at exact head.
 
-Current Git implementation contains and must use:
+The target-harm floor is prospectively fixed at the negative of the frozen null-equivalence margin. The realized negative-control confidence interval no longer sets or loosens the heterogeneity threshold.
 
-- canonical reference: `src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py`
-- authenticated streaming executor: `src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py`
-- parameter authority V2: `src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v2.py`
-- burden authority V2 / ladder V2
-- census receipt/builder V2
-- calibration-only cache contract/builder/evaluator
-- target-panel sizing V2, selector V2, TargetPanelAuthorityV3 builder
-- OuterSplitAuthorityV1 builder
-- PrecisionAuthorityV4 builder
-- nonlinear model-capacity V1 + row-cap calibration V2 + cache evaluator
-- masking decision V2
-- masking execution authority V4
-- burden-free TargetEvidenceBudgetTemplateAuthorityV1 + current builder
+### Receipt and authority hardening
+
+Policy decision receipts self-validate current rule identity, fixed F17 floor semantics, exact targeting lattice, component guardrails, qualification consistency, and evidence digest shape. RunContract V4 and ExecutionAuthority V4 bind the canonical decision rule rather than copied stale literals.
+
+## Historical findings in current perspective
+
+### F13 — primary representation
+
+Classification: `ALREADY_AUDITED__CURRENTLY_BINDABLE` for masking-side use.
+
+The frozen `VALUE_ONLY_256` representation authority is real and FULL104-bound:
+`docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json`
+canonical authority digest:
+`92756711fde939e27abc982d6ab1a0bc0dab53fae209c0f5a3fba4fde86ef4b1`
+
+The current Design V2 builder requires that exact semantic authority, exact schema, exact FULL104 substrate, and physical authority-file SHA. Do not reopen representation selection or D_shared. Final Design V2 must use this exact authority.
+
+Training-side executable representation use remains a later training closure issue.
+
+### F14 — dimension/rank/subspace
+
+Classification: `OPEN_CURRENT_PRODUCTION_AUTHORITY_BINDING`.
+
+Historical dimension-design work is authentic and remains informative, but historical ranks/widths are not production geometry authority. The historical audit explicitly keeps D_shared outcomes sealed. No current V5 production dimension/rank/subspace authority instance equivalent to the representation authority has been recovered.
+
+Do not open or rerun D_shared merely because the current production binding is missing. Recover/build the current authority from already-authorized design lineage first; only a demonstrated changed input can justify requalification.
+
+### F15 — teacher/student production mechanics
+
+Classification: `OPEN_EXECUTABLE_PRODUCTION_UPDATE_BINDING`.
+
+Current V5 contains preexecution authority, training-authority schema, runtime-source authority, optimizer guard V3, critical-test schema, EMA authority, and an inactive update reference. The inactive reference proves mechanics but explicitly is not a production training runtime. Historical F1 mechanics are synthetic and explicitly do not authorize backward/optimizer/EMA.
+
+Do not treat schemas, pass strings, optimizer hooks, old T1 checkpoints, or historical F1 mechanics as a production update path. Training remains OFF until an exact executable V5 production update path binds and enforces teacher no-grad, student/predictor gradient recurrence, one authorized optimizer step, and EMA only after that proved step.
+
+## Current masking-side implemented chain
+
+Current source includes:
+- authenticated FULL104 streaming executor
+- census V2
+- calibration-only cache builder/evaluator
+- target-panel sizing/selection and TargetPanelAuthorityV3
+- OuterSplitAuthorityV1
+- PrecisionAuthorityV4
+- nonlinear capacity/calibration and NonlinearChallengeAuthorityV3
+- burden-free TargetEvidenceBudgetTemplateAuthorityV1
+- MaskingBurdenLadderAuthorityV2
+- MaskingRngReplayAuthorityV2
 - MaskingQualificationDesignAuthorityV2 + current builder
-- ControlCalibrationPrecisionPlanV2
-- final NonlinearChallengeAuthorityV3 / RNG replay V2 builders
-- final RunContract V4 schema + path-only current builder `scripts/agent/build_full104_masking_run_contract_v4_20260918.py`
-- anti-spillover V2 plus exact-current semantic authority ingress pins
+- MaskingQualificationRunContractV4 + current builder
+- terminal evidence assembly
+- terminal mechanical controls
+- one-rung terminal executor
+- ExecutionAuthorityV4
+- anti-spillover and exact-current semantic ingress tests
 
-The calibration cache role is permanently:
+The one-rung terminal executor is implemented. Do not resurrect the stale blocker claiming it is missing.
 
-`CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1`
+## Target-evidence-budget role separation
 
-Terminal masking input must be:
+- `target_evidence_budget_template_authority_v1.py` = burden-free final Design V2 role.
+- `target_evidence_budget_authority_v2.py` = concrete burden-specific carrier where applicable.
 
-`AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM_V1`
+A successor must not substitute the concrete burden authority for the burden-free Design V2 template.
 
-## Historical findings: correct role
+## Authoritative next sequence
 
-The September 17 discovery lineage supports a candidate worth independent confirmation:
+1. Re-fetch the live scientific head before every implementation increment. Any source/test/workflow/data delta from `64affd70cce578459658668f0e1076d212c1ab28` is `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+2. On the canonical GPU worktree, regenerate and hash-bind the real census V2 summary, split, and target-eligibility receipts from authenticated FULL104 `pass1.npz`.
+3. Build the authenticated FULL104 calibration-only cache from current Level-4 blocks and canonical registry. Calibration cache is forbidden as terminal or training input.
+4. Run target-panel control-only ladder `128 -> 256 -> 512 -> 1024`, exact replay, stop at first qualifier.
+5. Freeze TargetPanelAuthorityV3 and OuterSplitAuthorityV1 from current receipts.
+6. Freeze PrecisionAuthorityV4 from current support + panel + split, including the prospectively fixed null-equivalence margin.
+7. Run nonlinear control-only capacity ladder `64 -> 128 -> 256 -> 512 -> 1024`, exact replay, stop at first qualifying cap. Historical nonlinear work may supply model-shape provenance only.
+8. Freeze the burden-free evidence-budget template, burden ladder, RNG replay V2, and NonlinearChallengeAuthorityV3 from current roots.
+9. Build Design V2 using the exact frozen `VALUE_ONLY_256` representation authority and current support/registry/teacher-target/panel/split/precision/RNG/runner roots.
+10. Commit the final scientific source freeze and rerun exact-head CI + explicit no-skip + Stage-A spillover.
+11. Build and validate the machine/worktree checkpoint on that exact clean GPU worktree.
+12. Build RunContract V4 from artifact paths plus the validated machine checkpoint. The checkpoint must exist first because the RunContract binds its semantic digest.
+13. Independently audit the complete frozen package and source-role hashes.
+14. Run terminal-mode preflight.
+15. Only then execute the 5% FULL104 terminal rung with the one-rung executor.
+16. If 5% qualifies, stop and leave all higher rungs unopened. Escalate only after explicit failure, one burden per invocation.
+17. A masking PASS still does not authorize training. F14/F15 plus healthy-current-teacher remaining-RNA necessity, measurement robustness, final geometry/memorization, runtime provenance, and explicit training authority remain separate.
 
-- targeted partner cap 8
-- ridge candidate pool 64
-- ridge score features 32
-- ridge alpha `1/100`
-- PREFIX inner folds 3
-- PREFIX candidates 20
-- PREFIX floor `1/20`
-- PREFIX reduction `1/2`
+## Hard anti-spillover rules
 
-Historical evidence may define the pre-FULL104 confirmation candidate and nonlinear model shape. It may not supply current data, target lists, folds, burden, seed, row cap, teacher health, or terminal PASS.
-
-## Current exact-head verification status
-
-The focused FULL104 masking workflow is verified on the current scientific source/test/workflow anchor `93093be1da09c46983f932d756b0fc9690a3eac4`.
-
-GitHub Actions run `35386306268` completed SUCCESS. The full regression step and the explicit fail-closed-on-skips step both completed SUCCESS after adding the current two-mode FULL104 GPU preflight validator/wrapper and its anti-spillover behavior tests.
-
-The verified predecessor anchors `ca643f5d...` (run `35374354706`) and `bdb779ce...` (run `35382450942`) remain historical implementation evidence only. The current anchor additionally canonically binds the no-extra-retained-floor policy and exact-current representation/teacher/support/registry semantic authorities at FULL104 ingress. The earlier collection failure `35373486676` was caused by a stale nonlinear-calibration V1 test reference and was narrowly repaired before the successful successor runs.
-
-Historical green anchor `8ee5d0a5...` remains historical evidence only. Historical or smaller-run green status never substitutes for exact-current-head verification.
-
-Exact-head focused CI is therefore `ALREADY_AUDITED__PASS_NO_SKIPS` at `93093be1...`.
-
-## Immediate authoritative sequence
-
-1. Re-fetch the live implementation branch and PR #20. If source/test/workflow/data bytes changed from `93093be1...`, classify the delta as `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
-2. Exact-head focused CI at `93093be1...` is audited PASS/no-skips in run `35386306268`; rerun it after any source/test/workflow change.
-3. Use the current two-mode preflight only: `scripts/agent/v5_full104_masking_gpu_preflight_20260918.ps1` plus `scripts/agent/validate_full104_masking_gpu_preflight_v1.py`. Calibration mode must not require terminal artifacts; terminal mode must reject the calibration cache as terminal input and must bind the final machine checkpoint and live execution-source hashes.
-4. Build the explicit pre-FULL104 confirmation `MaskingQualificationParametersAuthorityV2` instance from the frozen discovery provenance. This is an explicit re-authorization of a pre-FULL104 candidate only; it does not authorize burden, targets, folds, seeds, row caps, outcomes, or training.
-5. On the canonical GPU worktree, regenerate the census V2 summary, split, and target-eligibility receipts from the real authenticated `pass1.npz`, then build census authority V2.
-6. Build the authenticated calibration-only cache once from current FULL104 Level-4 blocks plus the canonical registry. Verify hashes, role, all 104 donors, and full-donor sufficient-statistic closure. Never use this cache as terminal or training input.
-7. Run the target-panel capacity ladder `128 -> 256 -> 512 -> 1024` from the authenticated cache with exact replay. Stop at the first qualifying rung. Build the target-selection receipt and TargetPanelAuthorityV3 from current receipts only.
-8. Build OuterSplitAuthorityV1 from the current split receipt and PrecisionAuthorityV4 from current support + target panel + split.
-9. Build nonlinear model-capacity authority V1 with historical evidence limited to model shape. Run the nonlinear row-cap ladder `64 -> 128 -> 256 -> 512 -> 1024` from the authenticated cache with exact replay and stop at the first qualifying cap.
-10. Close every remaining final-freeze instance/builder gap without placeholder or historical-role substitution:
-    - build the burden-free TargetEvidenceBudgetTemplateAuthorityV1 instance from exact current support/census/block-manifest/observation-state semantic authority;
-    - build MaskingBurdenLadderAuthorityV2 from the current census;
-    - build MaskingRngReplayAuthorityV2 from the current registry, outer split, target panel, and burden ladder;
-    - build NonlinearChallengeAuthorityV3 from current parameters/panel/split plus the control-calibrated nonlinear plan/receipt and selected cap;
-    - build MaskingQualificationDesignAuthorityV2 from exact current representation, teacher-target semantics, support, registry, evidence-budget template, burden ladder, precision, split, target panel, RNG, and live qualification-runner source;
-    - add/build the final MaskingQualificationRunContractV4 instance from concrete current authority artifacts, the authenticated calibration provenance, final machine checkpoint semantic digest, and exact live source roles. The builder must not accept caller-entered role SHA strings.
-    The older AddressUniverseLadderAuthorityV1 is not a final Design V2 role. Discovery universes 800/2,000/6,000 remain historical scale-stress evidence only and may not be manufactured into a FULL104 terminal authority.
-11. Freeze the final V4 run-contract instance before inspecting terminal masking-policy outcomes.
-12. Rebuild and validate `docs/agent/CURRENT_WORK_CHECKPOINT.json` on the final committed GPU worktree head and independently verify the package.
-13. Before any terminal outcome is opened, close the current terminal execution gap: add and independently test a one-rung FULL104 terminal executor/evidence assembler that consumes only the frozen V4 run contract plus authenticated Level-4 stream/current receipts; reconstructs donor/target evidence with the existing streaming/control/nonlinear/precision/decision primitives; emits hash-bound raw evidence, policy receipts, rung decision receipt, and ExecutionAuthorityV4; accepts exactly one burden rung per invocation; cannot auto-escalate; cannot consume the calibration cache as terminal input; and cannot authorize training or protected outcomes. Do not invent or inherit a historical aggregation formula: the terminal evidence-to-decision mapping must be explicitly current and mechanically tested.
-14. Only after that executor is frozen and terminal preflight passes may FULL104 masking be executed at 5%. Do not inspect 10% if 5% fully qualifies. Continue upward only after explicit failure and stop at the first fully qualifying burden.
-14. Masking PASS still does not authorize training. Continue healthy-current-teacher remaining-RNA necessity, measurement robustness, production geometry + geometry-specific memorization, runtime provenance, and final explicit training authority.
-
-## Executability notes
-
-Do not treat bare script names as commands. The builders require explicit runtime paths/receipts. Use `docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md` for the current complete argument templates. The 20260917 command document is superseded.
-
-Both cache-capacity evaluators intentionally return exit code `3` after Run A once they have written replay matrices and a `REPLAY_REQUIRED_*` status. Treat exactly that combination as the expected handoff to Run B; any other nonzero code is a STOP. Run B must write to a different output directory and consume the unchanged Run-A matrices.
-
-The 2026-09-17 preflight is stale/superseded and must not be used:
-
-`scripts/agent/v5_full104_masking_gpu_preflight_20260917.ps1`
-
-Current preflight authority is the tested 2026-09-18 wrapper + Python validator. Its calibration mode validates current FULL104/calibration roots; terminal mode additionally requires current final authorities, machine checkpoint, and live-source binding.
-
-The following direct-stream calibration path is superseded by the authenticated cache route:
-
-`scripts/agent/run_full104_target_panel_capacity_calibration_v1.py`
-
-The following builder is V2 only and must not be used as final nonlinear authority:
-
-`scripts/agent/build_full104_nonlinear_challenge_authority_v2_20260918.py`
-
-## Hard boundaries
-
-- `TRAINING_OFF`
-- `NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION`
-- `NO_PATHOLOGY_DEV_SEALED_OUTCOME_ACCESS_WHILE_DESIGN_OPEN`
-- no smaller/historical/unauthenticated substitute for FULL104
-- no historical or smaller-run hash may occupy a current FULL104 role merely because the historical finding remains scientifically informative
-- no placeholder, synthetic digest, test-fixture root, stale-version authority, or path-name coincidence may satisfy a production authority role
-- no calibration cache as terminal masking input
-- no placeholder hashes
-- no free PASS strings without computed/bound evidence
-- no post-outcome retuning
-- no burden escalation after first full qualification
-- no reopening settled T0/T1/QID/F1/Layer-2/Stage-A/streaming-parity work without changed input
-- no historical T1 checkpoint as healthy-current-teacher authority
+- no Stage81/T1/discovery matrix as FULL104;
+- no historical target list/fold/burden/seed/row cap/policy/PASS as current authority;
+- no historical checkpoint as healthy-current-teacher authority;
+- no placeholder/synthetic digest/test fixture in a production authority role;
+- no stale-version authority accepted by name/path coincidence;
+- no discovery 800/2,000/6,000 universe promoted into final Design V2;
+- no calibration cache as terminal/training input;
+- no caller-entered role SHA in the final RunContract builder;
+- no hand-assembled terminal decision JSON;
+- no post-outcome retuning;
+- no auto-escalation after the first qualifying burden;
+- no reopening settled T0/T1/QID/F1/Layer-2/Stage-A/representation work without changed inputs.
 
 ## Governance
 
-`AGENTS.md` requires a validator-built machine checkpoint at `docs/agent/CURRENT_WORK_CHECKPOINT.json`.
+PR #20 remains a historical/current implementation PR context and is draft/conflicting; do not merge/rebase it as housekeeping.
 
-`docs/agent/CURRENT_WORK_CHECKPOINT_STATE.json` is the tracked scientific-lane declaration. Its pinned authorities must be stable implementation-governance files. Docs-only handoffs may update `START_HERE.md`; therefore `START_HERE.md` must not be hard-pinned in the tracked checkpoint state in a way that invalidates every handoff commit.
+PR #22 carries the F16/F17 exact-lattice repair lineage.
+PR #25 carries independent receipt fail-closed hardening on top of the exact-lattice head.
 
-This connector environment cannot truthfully generate the machine/worktree-bound checkpoint. The canonical GPU worktree must build and validate it after final source/authority freeze and again immediately before terminal execution.
+The ignored machine-bound `CURRENT_WORK_CHECKPOINT.json` must be rebuilt on the canonical GPU worktree after final source/authority freeze and immediately before terminal execution.

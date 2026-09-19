@@ -10,7 +10,7 @@ Historical/smaller-run artifacts may motivate a current hypothesis or model shap
 
 Current scientific source/test/workflow anchor:
 
-`93093be1da09c46983f932d756b0fc9690a3eac4`
+`64affd70cce578459658668f0e1076d212c1ab28`
 
 Verified GitHub Actions run:
 
@@ -23,7 +23,7 @@ PowerShell:
 ```powershell
 $Repo = "D:\Jepa project"
 $Branch = "impl/v5-full104-masking-redteam2-20260918"
-$ExpectedAnchor = "93093be1da09c46983f932d756b0fc9690a3eac4"
+$ExpectedAnchor = "64affd70cce578459658668f0e1076d212c1ab28"
 
 git -C $Repo fetch origin
 git -C $Repo status --porcelain

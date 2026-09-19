@@ -13,13 +13,13 @@
     },
     {
       "path": "docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md",
-      "sha256": "346dbc27b2aed7d80fed6cf91e10f438eedf1cfcfeeeb154dc10b643ff376fcc",
+      "sha256": "34b3894333a0a10f12fd70af12d9bd407b3c307763aa7bb0fa330abebc0c3430",
       "status": "CURRENT_EXECUTION_PLAN"
     }
   ],
   "gates": {
-    "current": "FULL104_MASKING_CURRENT_PREFLIGHT_VERIFIED__GPU_RUNTIME_RECEIPTS_PENDING__TERMINAL_OUTCOMES_UNOPENED",
-    "masking_qualification": "CONTROL_CALIBRATION_PENDING__NO_TERMINAL_POLICY_OUTCOME_ACCESS",
+    "current": "F16_F17_CLOSED_REDTEAM_HARDENED__GPU_RUNTIME_RECEIPTS_AND_CONTROL_CALIBRATION_NEXT__TERMINAL_OUTCOMES_UNOPENED",
+    "masking_qualification": "CONTROL_CALIBRATION_PENDING__ONE_RUNG_EXECUTOR_IMPLEMENTED__NO_TERMINAL_POLICY_OUTCOME_ACCESS",
     "stage_a": "PASS_11_OF_11__GEOMETRY_MEMORIZATION_DEFERRED_UNTIL_FINAL_GEOMETRY",
     "protected_outcomes": "CLOSED",
     "d_shared": "CLOSED",
@@ -38,7 +38,7 @@
     "MASKING_QUALIFICATION_DESIGN_AUTHORITY_V2_CURRENT_INSTANCE_NOT_YET_FROZEN",
     "MASKING_RNG_REPLAY_AUTHORITY_V2_CURRENT_INSTANCE_NOT_YET_FROZEN",
     "MASKING_BURDEN_LADDER_AUTHORITY_V2_CURRENT_INSTANCE_NOT_YET_FROZEN",
-    "TARGET_EVIDENCE_BUDGET_AUTHORITY_V2_TEMPLATE_CURRENT_INSTANCE_NOT_YET_FROZEN",
+    "TARGET_EVIDENCE_BUDGET_TEMPLATE_AUTHORITY_V1_CURRENT_INSTANCE_NOT_YET_FROZEN",
     "FINAL_MASKING_RUN_CONTRACT_V4_INSTANCE_NOT_YET_FROZEN",
     "FINAL_MACHINE_WORKTREE_CHECKPOINT_MUST_BE_REBUILT_AFTER_SOURCE_FREEZE",
     "TERMINAL_FULL_COMMON_CORE_17186_MASKING_QUALIFICATION_NOT_EXECUTED",
@@ -48,18 +48,21 @@
     "PRODUCTION_GEOMETRY_AND_GEOMETRY_SPECIFIC_MEMORIZATION_OPEN",
     "CURRENT_RUNTIME_SOURCE_ENVIRONMENT_PROVENANCE_OPEN",
     "FINAL_TRAINING_AUTHORITY_NOT_ISSUED",
-    "TERMINAL_ONE_RUNG_EVIDENCE_ASSEMBLER_AND_EXECUTOR_NOT_YET_IMPLEMENTED_OR_FROZEN"
+    "CURRENT_V5_DIMENSION_RANK_SUBSPACE_PRODUCTION_AUTHORITY_NOT_YET_BOUND",
+    "CURRENT_V5_PRODUCTION_TEACHER_STUDENT_UPDATE_MECHANICS_PATH_NOT_YET_BOUND"
   ],
   "assets": {
     "repository": {
       "full_name": "dushyant-mishra/sea-ad-jepa-agent",
-      "working_branch": "impl/v5-full104-masking-redteam2-20260918",
-      "scientific_implementation_head": "93093be1da09c46983f932d756b0fc9690a3eac4",
-      "historical_verified_code_anchor": "8ee5d0a5be483e18819a6f6975efa183327b2158",
-      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35386306268",
-      "pull_request": 20,
-      "pr_base": "impl/v5-full104-masking-redteam-freeze-20260918",
-      "governance_note": "Current source/test/workflow bytes are anchored at 93093be1... with exact historical-byte reauthorization, narrow historical-ingress allowlisting, and automated canonical command/CLI parity. Later docs-only governance edits do not change scientific implementation. Terminal FULL104 outcomes remain unopened."
+      "working_branch": "impl/v5-full104-masking-f16-f17-receipt-hardening-20260918",
+      "scientific_implementation_head": "64affd70cce578459658668f0e1076d212c1ab28",
+      "scientific_predecessor_exact_lattice_head": "144873cec377e2cd098ce66220377f10723f413a",
+      "original_redteam2_anchor": "3084c1f497a3db6056fd100fb896ccdf67318c8a",
+      "exact_scientific_head_ci_status": "PASS_NO_SKIPS__GITHUB_ACTIONS_RUN_35412955924__283_PASSED_TWICE",
+      "pull_request": 25,
+      "predecessor_pull_request": 22,
+      "legacy_conflicting_pull_request": 20,
+      "governance_note": "F16/F17 exact-lattice decision semantics plus independent receipt fail-closed hardening are exact-head verified. Terminal FULL104 outcomes remain unopened. Training remains OFF."
     },
     "full104": {
       "cells": 4553407,
@@ -78,7 +81,6 @@
       "masking_parameters_authority": "src/sea_ad_jepa/v5/masking_qualification_parameters_authority_v2.py",
       "masking_run_contract": "src/sea_ad_jepa/v5/masking_qualification_run_contract_v4.py",
       "masking_execution_authority": "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v4.py",
-      "target_evidence_budget": "src/sea_ad_jepa/v5/target_evidence_budget_authority_v2.py",
       "burden_ladder": "src/sea_ad_jepa/v5/masking_burden_ladder_authority_v2.py",
       "census_receipt": "src/sea_ad_jepa/v5/full104_census_receipt_v2.py",
       "support_estimability_authority": "docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json",
@@ -120,7 +122,12 @@
       "nonlinear_challenge_v3_builder": "scripts/agent/build_full104_nonlinear_challenge_authority_v3_20260918.py",
       "masking_design_v2_builder": "scripts/agent/build_full104_masking_design_authority_v2_20260918.py",
       "masking_run_contract_builder": "scripts/agent/build_full104_masking_run_contract_v4_20260918.py",
-      "current_gpu_commands": "docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md"
+      "current_gpu_commands": "docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md",
+      "primary_representation_authority": "docs/agent/V5_PRIMARY_REPRESENTATION_AUTHORITY_20260915.json",
+      "target_evidence_budget_concrete": "src/sea_ad_jepa/v5/target_evidence_budget_authority_v2.py",
+      "terminal_evidence_assembly": "src/sea_ad_jepa/v5/masking_terminal_evidence_assembly_v1.py",
+      "terminal_mechanical_controls": "src/sea_ad_jepa/v5/masking_terminal_mechanical_controls_v1.py",
+      "terminal_one_rung_executor": "src/sea_ad_jepa/v5/masking_terminal_one_rung_executor_v1.py"
     },
     "current_tests": {
       "canonical_runner": "tests/test_v5_full104_masking_qualification_runner_v1.py",
@@ -159,14 +166,17 @@
     },
     "verified_ci": {
       "role": "EXACT_CURRENT_SCIENTIFIC_SOURCE_TEST_WORKFLOW_VERIFICATION",
-      "code_anchor": "93093be1da09c46983f932d756b0fc9690a3eac4",
+      "code_anchor": "64affd70cce578459658668f0e1076d212c1ab28",
       "workflow": "V5 FULL104 masking runner",
-      "run_id": 35386306268,
+      "run_id": 35412955924,
       "conclusion": "success",
-      "regression_step": "success",
+      "regression_step": "283 passed",
+      "no_skip_rerun": "283 passed",
       "skip_gate": "pass",
-      "predecessor_verified_anchor": "5ed613ac700d1505cef10f2fb01e4a5302a933f9",
-      "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__INTENTIONAL_REAUTHORIZATION_REQUIRES_EXACT_PRE_FULL104_BYTES_CURRENT_FULL104_ROLE_LIMITS_CURRENT_ROOT_BINDING_EXACT_CURRENT_SEMANTIC_AUTHORITY_INGRESS_AND_PATH_ONLY_FINAL_CONTRACT_ASSEMBLY"
+      "stage_a_spillover_run_id": 35412955890,
+      "runtime_closure_run_id": 35412955886,
+      "remaining_rna_target_semantics_run_id": 35412955899,
+      "anti_spillover_rule": "HISTORICAL_OR_SMALLER_RUN_EVIDENCE_MAY_MOTIVATE_ONLY__CURRENT_FULL104_ROLE_REQUIRES_EXPLICIT_REAUTHORIZATION_EXACT_BYTES_CURRENT_ROOT_BINDING_AND_CURRENT_SEMANTIC_AUTHORITY"
     },
     "supporting_exploratory_results": {
       "branch": "analysis/v5-ridge8-expanded-validation-20260917",
@@ -176,28 +186,22 @@
     }
   },
   "next_authorized_actions": [
-    "REVERIFY_LIVE_HEAD_AND_PR20_BEFORE_EACH_IMPLEMENTATION_INCREMENT",
-    "USE_ONLY_20260918_TWO_MODE_FULL104_GPU_PREFLIGHT__20260917_PREFLIGHT_SUPERSEDED",
-    "BUILD_EXPLICIT_MASKING_PARAMETERS_AUTHORITY_V2_FROM_FROZEN_DISCOVERY_PROVENANCE",
-    "ON_GPU_REGENERATE_CENSUS_V2_SUMMARY_SPLIT_AND_TARGET_ELIGIBILITY_RECEIPTS_FROM_AUTHENTICATED_PASS1_NPZ",
-    "BUILD_AUTHENTICATED_FULL104_CONTROL_CALIBRATION_CACHE_ONCE_FROM_CURRENT_LEVEL4_AND_CANONICAL_REGISTRY",
-    "VERIFY_CACHE_HASHES_ROLE_ALL_104_DONORS_AND_FULL_DONOR_SUFFICIENT_STAT_CLOSURE",
-    "RUN_CONTROL_ONLY_TARGET_PANEL_LADDER_128_256_512_1024_STOPPING_AT_FIRST_QUALIFYING_RUNG_WITH_EXACT_REPLAY",
-    "BUILD_TARGET_PANEL_AUTHORITY_V3_FROM_CURRENT_SIZING_VERDICTS_SELECTION_AND_AUTHENTICATED_CACHE_PREFIX",
-    "BUILD_OUTER_SPLIT_AUTHORITY_V1_FROM_CURRENT_SPLIT_RECEIPT",
-    "BUILD_PRECISION_AUTHORITY_V4_FROM_TARGET_PANEL_SUPPORT_AND_OUTER_SPLIT",
-    "BUILD_NONLINEAR_MODEL_CAPACITY_AUTHORITY_V1_WITH_HISTORICAL_ROLE_LIMITED_TO_MODEL_SHAPE",
-    "RUN_CONTROL_ONLY_NONLINEAR_CAP_LADDER_64_128_256_512_1024_FROM_AUTHENTICATED_CACHE_STOPPING_AT_FIRST_PASS_WITH_EXACT_REPLAY",
-    "FREEZE_CURRENT_EVIDENCE_BUDGET_TEMPLATE_AND_BURDEN_LADDER_FROM_CURRENT_FULL104_ROOTS_ONLY",
-    "FREEZE_RNG_REPLAY_V2_FROM_CURRENT_REGISTRY_SPLIT_PANEL_AND_BURDEN_ROOTS",
-    "FREEZE_NONLINEAR_CHALLENGE_AUTHORITY_V3_FROM_CURRENT_PLAN_RECEIPT_SELECTED_CAP_AND_CURRENT_ROOTS",
-    "FREEZE_MASKING_QUALIFICATION_DESIGN_V2_FROM_EXACT_CURRENT_SEMANTIC_AUTHORITIES_AND_LIVE_RUNNER_SOURCE",
-    "FREEZE_FINAL_MASKING_RUN_CONTRACT_V4_WITH_AUTHENTICATED_FULL104_LEVEL4_AS_ONLY_TERMINAL_INPUT",
-    "REBUILD_AND_VALIDATE_MACHINE_WORKTREE_CHECKPOINT_ON_FINAL_HEAD",
-    "INDEPENDENTLY_VERIFY_FINAL_PACKAGE",
-    "ONLY_THEN_OPEN_5_PERCENT_TERMINAL_FULL104_RUNG",
+    "REVERIFY_LIVE_SCIENTIFIC_HEAD_BEFORE_EACH_INCREMENT",
+    "GPU_REGENERATE_AND_HASH_BIND_CENSUS_V2_RECEIPTS_FROM_AUTHENTICATED_FULL104",
+    "BUILD_AUTHENTICATED_FULL104_CONTROL_CALIBRATION_CACHE",
+    "RUN_CONTROL_ONLY_TARGET_PANEL_LADDER_STOP_AT_FIRST_QUALIFIER",
+    "FREEZE_TARGET_PANEL_V3_OUTER_SPLIT_V1_AND_PRECISION_V4",
+    "RUN_CONTROL_ONLY_NONLINEAR_CAP_LADDER_STOP_AT_FIRST_QUALIFIER",
+    "FREEZE_BURDEN_FREE_TEMPLATE_BURDEN_LADDER_RNG_AND_NONLINEAR_V3_FROM_CURRENT_ROOTS",
+    "BUILD_DESIGN_V2_WITH_EXACT_FROZEN_VALUE_ONLY_256_REPRESENTATION_AUTHORITY",
+    "FINAL_COMMITTED_SOURCE_FREEZE_THEN_EXACT_HEAD_CI_NO_SKIPS_AND_SPILLOVER",
+    "BUILD_AND_VALIDATE_MACHINE_CHECKPOINT",
+    "BUILD_RUN_CONTRACT_V4_FROM_ARTIFACT_PATHS_AND_MACHINE_CHECKPOINT",
+    "INDEPENDENTLY_VERIFY_FROZEN_PACKAGE",
+    "RUN_TERMINAL_PREFLIGHT",
+    "ONLY_THEN_OPEN_5_PERCENT_FULL104_ONE_RUNG_EXECUTION",
     "STOP_AT_FIRST_FULLY_QUALIFYING_BURDEN",
-    "IMPLEMENT_AND_INDEPENDENTLY_TEST_CURRENT_ONE_RUNG_TERMINAL_EVIDENCE_ASSEMBLER_EXECUTOR_WITH_NO_CACHE_TERMINAL_INPUT_AND_NO_AUTO_ESCALATION"
+    "KEEP_TRAINING_OFF_UNTIL_F14_F15_AND_ALL_TRAINING_GATES_CLOSE"
   ],
   "forbidden_actions": [
     "RUN_TRAINING",
@@ -229,7 +233,10 @@
     "ACCEPT_SAME_PATH_HISTORICAL_ARTIFACT_IF_BYTES_DRIFT_FROM_FROZEN_PRE_FULL104_DIGEST",
     "USE_20260916_HISTORICAL_FULL104_RUNNER_AS_CURRENT_TERMINAL_EXECUTOR",
     "HAND_ASSEMBLE_TERMINAL_DECISION_JSON_OR_EXECUTION_AUTHORITY_FROM_UNBOUND_NUMBERS",
-    "AUTO_ESCALATE_TO_HIGHER_MASKING_BURDEN_IN_ONE_TERMINAL_EXECUTOR_INVOCATION"
+    "AUTO_ESCALATE_TO_HIGHER_MASKING_BURDEN_IN_ONE_TERMINAL_EXECUTOR_INVOCATION",
+    "USE_HISTORICAL_DIMENSION_OR_MODEL_WIDTH_AS_CURRENT_V5_PRODUCTION_GEOMETRY_AUTHORITY",
+    "TREAT_INACTIVE_UPDATE_REFERENCE_AS_PRODUCTION_TRAINING_RUNTIME",
+    "TREAT_CRITICAL_TEST_PASS_STRINGS_AS_PRODUCTION_MECHANICS_EXECUTION_PROOF"
   ],
   "allowed_tracked_modifications": [],
   "allowed_untracked_files": [],
