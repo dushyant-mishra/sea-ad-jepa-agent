@@ -10,7 +10,7 @@ from pathlib import Path
 from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import load_control_calibration_cache
 from sea_ad_jepa.v5.control_capacity_calibration_receipt_v1 import ControlCapacityCalibrationReceiptV1
 from sea_ad_jepa.v5.masking_nonlinear_challenge_authority_v3 import NonlinearMaskingChallengeAuthorityV3
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import MaskingQualificationParametersAuthorityV3
 from sea_ad_jepa.v5.nonlinear_capacity_model_authority_v1 import NonlinearCapacityModelAuthorityV1
 from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v1 import NonlinearCapControlVerdictV1
 from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v2 import (
@@ -92,7 +92,7 @@ def main() -> int:
     cache = load_control_calibration_cache(args.cache_dir)
     cache.manifest.assert_calibration_only()
 
-    parameters = typed(load(args.parameters_authority), MaskingQualificationParametersAuthorityV2, "parameter_authority_sha256")
+    parameters = typed(load(args.parameters_authority), MaskingQualificationParametersAuthorityV3, "parameter_authority_sha256")
     model = typed(load(args.model_capacity_authority), NonlinearCapacityModelAuthorityV1, "authority_sha256")
     model.bind_primary_parameters(parameters)
 
