@@ -9,6 +9,7 @@ from sea_ad_jepa.v5.masking_qualification_decision_v1 import (
 from sea_ad_jepa.v5.masking_qualification_decision_v2 import (
     DECISION_RULE_ID,
     MaskingPolicyDecisionReceiptV2,
+    MaskingRungDecisionReceiptV2,
     POLICY_SELECTION_RULE_ID,
     TARGET_HETEROGENEITY_FLOOR_RULE_ID,
     TARGETING_COMPLEXITY_EQUIVALENCE_EVENTS,
