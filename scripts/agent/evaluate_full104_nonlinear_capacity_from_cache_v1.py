@@ -15,7 +15,7 @@ from sea_ad_jepa.v5.full104_census_receipt_v2 import sha256_file
 from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import load_control_calibration_cache
 from sea_ad_jepa.v5 import full104_nonlinear_capacity_cache_evaluator_v1 as eval_impl
 from sea_ad_jepa.v5.full104_nonlinear_capacity_cache_evaluator_v1 import evaluate_nonlinear_capacity_rung
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import MaskingQualificationParametersAuthorityV3
 from sea_ad_jepa.v5.nonlinear_capacity_model_authority_v1 import NonlinearCapacityModelAuthorityV1
 from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v1 import NonlinearCapControlVerdictV1
 from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v2 import (
@@ -81,7 +81,7 @@ def main()->int:
     cache.manifest.assert_calibration_only()
 
     pp=load(args.parameters_authority)
-    parameters=typed(pp,MaskingQualificationParametersAuthorityV2,"parameter_authority_sha256")
+    parameters=typed(pp,MaskingQualificationParametersAuthorityV3,"parameter_authority_sha256")
     mp=load(args.model_capacity_authority)
     model=typed(mp,NonlinearCapacityModelAuthorityV1,"authority_sha256")
     model.bind_primary_parameters(parameters)
