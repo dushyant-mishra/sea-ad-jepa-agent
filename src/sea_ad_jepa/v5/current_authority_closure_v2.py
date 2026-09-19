@@ -49,6 +49,20 @@ from .teacher_target_semantics_authority_v2 import (
 )
 
 
+CURRENT_CLOSURE_STATUS_ID = (
+    "STALE_MASKING_V1_V2_GRAPH__CURRENT_MASKING_V3_V4_AND_F13_F14_F15_OPEN_V1"
+)
+STOP_STALE_CURRENT_CLOSURE_V2 = "STOP_V5_CURRENT_AUTHORITY_CLOSURE_V2_STALE"
+
+
+def assert_current_authority_closure_v2_open() -> None:
+    """Fail closed until a successor binds the current authority generations."""
+
+    raise RuntimeError(
+        f"{STOP_STALE_CURRENT_CLOSURE_V2}: {CURRENT_CLOSURE_STATUS_ID}"
+    )
+
+
 def _sha(value: object, name: str) -> str:
     if not isinstance(value, str) or len(value) != 64 or value != value.lower():
         raise ValueError(f"{name} must be a lowercase SHA-256 digest")
@@ -123,6 +137,8 @@ def validate_current_v5_authority_closure_v2(
     observation_gradient_firewall_authority_sha256: str,
     runtime_source: CurrentRuntimeSourceAuthorityV1,
 ) -> dict[str, Any]:
+    assert_current_authority_closure_v2_open()
+
     typed = (
         (canonical_address_registry, CanonicalAddressRegistryAuthorityV1, "canonical_address_registry"),
         (target_address, CurrentTargetAddressProviderAuthorityV1, "target_address"),
