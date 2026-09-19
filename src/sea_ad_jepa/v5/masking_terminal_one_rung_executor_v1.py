@@ -312,6 +312,13 @@ def _validate_requested_rung(
     prior_rung_raw_result_artifacts: Sequence["TerminalOneRungRawResultArtifactV1"],
     expected_run_contract_sha256: str,
     expected_terminal_input_manifest_sha256: str,
+    prior_rung_raw_evidence_by_policy: Sequence[
+        Mapping[str, TerminalPolicyRawEvidenceV1]
+    ] = (),
+    prior_rung_mechanical_control_receipts: Sequence[
+        TerminalMechanicalControlReceiptV1
+    ] = (),
+    precision: QualificationPrecisionAuthorityV4 | None = None,
 ) -> tuple[Fraction, tuple[str, ...], tuple[str, ...]]:
     burden_ladder.validate()
     requested = Fraction(int(numerator), int(denominator))
@@ -369,6 +376,56 @@ def _validate_requested_rung(
             raise ValueError("prior rung receipts are not an exact ascending ladder prefix")
         if receipt.qualified is not False:
             raise ValueError("higher burden cannot open after a lower burden qualified")
+
+        if (
+            index >= len(prior_rung_raw_evidence_by_policy)
+            or index >= len(prior_rung_mechanical_control_receipts)
+        ):
+            raise ValueError(
+                "higher burden requires the actual prior raw-policy evidence "
+                "and mechanical-control receipt for decision re-derivation"
+            )
+        raw_by_policy = prior_rung_raw_evidence_by_policy[index]
+        controls_receipt = prior_rung_mechanical_control_receipts[index]
+        if not isinstance(controls_receipt, TerminalMechanicalControlReceiptV1):
+            raise ValueError(
+                "prior rung mechanical controls must use "
+                "TerminalMechanicalControlReceiptV1"
+            )
+        if not isinstance(raw_by_policy, Mapping) or set(raw_by_policy) != set(POLICIES):
+            raise ValueError("prior rung raw evidence must contain every policy arm")
+        if any(
+            not isinstance(raw_by_policy[policy], TerminalPolicyRawEvidenceV1)
+            for policy in POLICIES
+        ):
+            raise ValueError(
+                "prior rung raw evidence must use TerminalPolicyRawEvidenceV1"
+            )
+        raw_artifact.bind_raw_evidence(raw_by_policy, controls_receipt)
+
+        if not isinstance(precision, QualificationPrecisionAuthorityV4):
+            raise ValueError(
+                "higher burden requires current QualificationPrecisionAuthorityV4 "
+                "to rederive the prior rung decision"
+            )
+        precision.validate()
+        rederived_evidence = [
+            assemble_policy_decision_evidence(
+                raw_evidence=raw_by_policy[policy],
+                precision=precision,
+            )
+            for policy in POLICIES
+        ]
+        rederived_receipt = evaluate_rung_v2(
+            rederived_evidence,
+            precision=precision,
+        )
+        rederived_receipt.validate()
+        if rederived_receipt.canonical_digest() != receipt.canonical_digest():
+            raise ValueError(
+                "prior rung decision receipt does not rederive from bound raw evidence"
+            )
+
         verdicts[rung] = False
         prior_roots.append(receipt.canonical_digest())
         prior_execution_roots.append(execution.canonical_digest())
@@ -505,6 +562,15 @@ class TerminalOneRungRawResultArtifactV1:
         controls_receipt.validate()
         if controls_receipt.canonical_digest() != self.mechanical_control_receipt_sha256:
             raise ValueError("raw result artifact binds a different mechanical-control receipt")
+        if controls_receipt.run_contract_sha256 != self.run_contract_sha256:
+            raise ValueError("mechanical controls bind a different run contract")
+        if (
+            controls_receipt.terminal_input_manifest_sha256
+            != self.terminal_input_manifest_sha256
+        ):
+            raise ValueError(
+                "mechanical controls bind a different authenticated FULL104 manifest"
+            )
         if set(raw_by_policy) != set(POLICIES):
             raise ValueError("raw evidence map must contain every policy arm")
         for policy in POLICIES:
@@ -540,6 +606,12 @@ def execute_one_terminal_rung(
     prior_rung_receipts: Sequence[MaskingRungDecisionReceiptV2],
     prior_rung_execution_authorities: Sequence[MaskingQualificationExecutionAuthorityV4],
     prior_rung_raw_result_artifacts: Sequence[TerminalOneRungRawResultArtifactV1],
+    prior_rung_raw_evidence_by_policy: Sequence[
+        Mapping[str, TerminalPolicyRawEvidenceV1]
+    ] = (),
+    prior_rung_mechanical_control_receipts: Sequence[
+        TerminalMechanicalControlReceiptV1
+    ] = (),
     rng_replay: Any,
     outer_split: Any,
     split_receipt: Mapping[str, Any],
@@ -628,6 +700,9 @@ def execute_one_terminal_rung(
         prior_rung_raw_result_artifacts=prior_rung_raw_result_artifacts,
         expected_run_contract_sha256=run_contract.canonical_digest(),
         expected_terminal_input_manifest_sha256=before_manifest,
+        prior_rung_raw_evidence_by_policy=prior_rung_raw_evidence_by_policy,
+        prior_rung_mechanical_control_receipts=prior_rung_mechanical_control_receipts,
+        precision=precision,
     )
     budget = evidence_budget_template.with_fraction(
         requested.numerator,
