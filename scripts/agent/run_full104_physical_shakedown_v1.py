@@ -33,7 +33,7 @@ def main() -> int:
 
     validate_runtime_envelope(
         args.runtime_root,
-        expected_scientific_anchor_sha256=live_head,
+        expected_scientific_anchor_git_oid=live_head,
     )
     try:
         out_relative = args.out.resolve().relative_to(args.runtime_root.resolve())
@@ -73,7 +73,7 @@ def main() -> int:
         raise SystemExit("scientific worktree HEAD changed during FULL104 shakedown")
     validate_runtime_envelope(
         args.runtime_root,
-        expected_scientific_anchor_sha256=live_head,
+        expected_scientific_anchor_git_oid=live_head,
         allowed_relative_paths=(str(out_relative).replace("\\", "/"),),
     )
     print(
