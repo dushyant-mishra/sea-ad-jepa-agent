@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -70,3 +72,14 @@ def test_kish_ess_never_turns_cells_into_independent_donors() -> None:
     skewed = np.asarray([1, 1, 1, 100], dtype=np.int64)
     assert kish_ess(equal) == pytest.approx(4.0)
     assert 1.0 < kish_ess(skewed) < 4.0
+
+
+def test_census_reports_kish_only_as_descriptive_cell_count_imbalance() -> None:
+    source = Path(
+        "analysis/v5_full104_census_20260918/full104_readonly_census_receipts_v2.py"
+    ).read_text(encoding="utf-8")
+    assert '"independent_donor_units": int(donor_src.size)' in source
+    assert "cell_count_weight_kish_ess_descriptive_only" in source
+    assert "kish_ess_is_inferential_donor_sample_size" in source
+    assert "must not be used as a donor-level power or confirmation sample size" in source
+    assert "kish_ess_donor_equivalents" not in source
