@@ -17,6 +17,11 @@ import hashlib
 import json
 from typing import Any, Mapping
 
+from .null_equivalence_margin_authority_v1 import (
+    MARGIN_DENOMINATOR,
+    MARGIN_NUMERATOR,
+    NullEquivalenceMarginAuthorityV1,
+)
 from .precision_authority_v2 import paired_target_donor_bootstrap
 
 METHOD_ID = "PAIRED_TARGET_AND_DONOR_WITHIN_FIXED_SOURCE_BOOTSTRAP_V4"
@@ -59,6 +64,7 @@ class QualificationPrecisionAuthorityV4:
     target_panel_authority_sha256: str
     target_panel_sizing_receipt_sha256: str
     outer_split_authority_sha256: str
+    null_equivalence_margin_authority_sha256: str
     required_target_count: int
     null_equivalence_margin_numerator: int
     null_equivalence_margin_denominator: int
@@ -103,6 +109,7 @@ class QualificationPrecisionAuthorityV4:
                         "panel": self.target_panel_authority_sha256,
                         "sizing": self.target_panel_sizing_receipt_sha256,
                         "split": self.outer_split_authority_sha256,
+                        "null_equivalence_margin_authority": self.null_equivalence_margin_authority_sha256,
                         "source_population_frame_id": self.source_population_frame_id,
                         "source_aggregation_estimand_id": self.source_aggregation_estimand_id,
                         "null_equivalence_margin": [
@@ -123,6 +130,7 @@ class QualificationPrecisionAuthorityV4:
                 "target_panel_authority_sha256",
                 "target_panel_sizing_receipt_sha256",
                 "outer_split_authority_sha256",
+                "null_equivalence_margin_authority_sha256",
             )
         )
         if len(set(roots)) != len(roots):
@@ -146,6 +154,13 @@ class QualificationPrecisionAuthorityV4:
         )
         if margin >= 1:
             raise ValueError("null equivalence margin must be strictly below one")
+        if (
+            self.null_equivalence_margin_numerator,
+            self.null_equivalence_margin_denominator,
+        ) != (MARGIN_NUMERATOR, MARGIN_DENOMINATOR):
+            raise ValueError(
+                "precision V4 must use the frozen null-equivalence margin authority rational"
+            )
         if self.uncertainty_method_id != METHOD_ID:
             raise ValueError("uncertainty_method_id mismatch")
         if self.source_population_frame_id != SOURCE_POPULATION_FRAME_ID:
@@ -169,6 +184,25 @@ class QualificationPrecisionAuthorityV4:
             raise ValueError("precision authority must freeze before terminal outcomes")
         if self.training_authorized is not False:
             raise ValueError("precision authority cannot authorize training")
+
+    def bind_null_equivalence_margin_authority(
+        self, authority: NullEquivalenceMarginAuthorityV1
+    ) -> None:
+        self.validate()
+        if not isinstance(authority, NullEquivalenceMarginAuthorityV1):
+            raise ValueError(
+                "null-equivalence margin must use NullEquivalenceMarginAuthorityV1"
+            )
+        authority.validate()
+        if authority.canonical_digest() != self.null_equivalence_margin_authority_sha256:
+            raise ValueError("null-equivalence margin authority root mismatch")
+        if (
+            authority.margin_numerator != self.null_equivalence_margin_numerator
+            or authority.margin_denominator != self.null_equivalence_margin_denominator
+        ):
+            raise ValueError(
+                "precision margin rational disagrees with bound margin authority"
+            )
 
     def bind_target_panel(self, panel: Any, sizing_receipt: Any):
         self.validate()

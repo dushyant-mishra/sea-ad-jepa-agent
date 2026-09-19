@@ -51,9 +51,10 @@ def precision():
         target_panel_authority_sha256=h("panel"),
         target_panel_sizing_receipt_sha256=h("sizing"),
         outer_split_authority_sha256=h("split"),
+        null_equivalence_margin_authority_sha256=h("null-margin"),
         required_target_count=128,
         null_equivalence_margin_numerator=1,
-        null_equivalence_margin_denominator=100,
+        null_equivalence_margin_denominator=1000,
     )
 
 
@@ -350,4 +351,4 @@ def test_negative_control_interval_must_fit_inside_frozen_margin():
     shape, _, _ = matrices()
     evidence = assemble(negative_control_delta=np.zeros(shape))
     assert evidence.negative_control_precision_passed is True
-    assert evidence.null_noise_tolerance_ceiling == pytest.approx(0.01)
+    assert evidence.null_noise_tolerance_ceiling == pytest.approx(0.001)

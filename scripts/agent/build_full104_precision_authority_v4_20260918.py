@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
+from sea_ad_jepa.v5.null_equivalence_margin_authority_v1 import NullEquivalenceMarginAuthorityV1
 from sea_ad_jepa.v5.outer_split_authority_v1 import OuterDonorSplitAuthorityV1
 from sea_ad_jepa.v5.precision_authority_v4 import QualificationPrecisionAuthorityV4
 from sea_ad_jepa.v5.target_panel_authority_v3 import TargetPanelAuthorityV3
@@ -36,8 +37,7 @@ def main()->int:
     p.add_argument("--target-panel-authority",type=Path,required=True)
     p.add_argument("--target-panel-sizing-receipt",type=Path,required=True)
     p.add_argument("--outer-split-authority",type=Path,required=True)
-    p.add_argument("--null-equivalence-margin-numerator",type=int,required=True)
-    p.add_argument("--null-equivalence-margin-denominator",type=int,required=True)
+    p.add_argument("--null-equivalence-margin-authority",type=Path,required=True)
     p.add_argument("--out",type=Path,required=True)
     args=p.parse_args()
 
@@ -87,16 +87,31 @@ def main()->int:
     if outer.n_donors!=104 or outer.n_folds!=4:
         raise SystemExit("outer split donor/fold geometry mismatch")
 
+    margin_payload=load(args.null_equivalence_margin_authority)
+    if margin_payload.get("schema")!="V5_NULL_EQUIVALENCE_MARGIN_AUTHORITY_V1":
+        raise SystemExit("null-equivalence margin authority V1 is required")
+    margin=typed(
+        margin_payload,
+        NullEquivalenceMarginAuthorityV1,
+        "authority_sha256",
+    )
+    if margin_payload.get("terminal_outcomes_inspected_before_freeze") is not False:
+        raise SystemExit("null-equivalence margin authority was not frozen prospectively")
+    if margin_payload.get("training_authorized") is not False:
+        raise SystemExit("null-equivalence margin authority unexpectedly authorizes training")
+
     authority=QualificationPrecisionAuthorityV4(
         authority_id="JEPA_V5_FULL104_QUALIFICATION_PRECISION_AUTHORITY_V4",
         support_estimability_authority_sha256=support_sha,
         target_panel_authority_sha256=panel.canonical_digest(),
         target_panel_sizing_receipt_sha256=sizing.canonical_digest(),
         outer_split_authority_sha256=outer.canonical_digest(),
+        null_equivalence_margin_authority_sha256=margin.canonical_digest(),
         required_target_count=panel.target_count,
-        null_equivalence_margin_numerator=args.null_equivalence_margin_numerator,
-        null_equivalence_margin_denominator=args.null_equivalence_margin_denominator,
+        null_equivalence_margin_numerator=margin.margin_numerator,
+        null_equivalence_margin_denominator=margin.margin_denominator,
     )
+    authority.bind_null_equivalence_margin_authority(margin)
     authority.bind_target_panel(panel,sizing)
     authority.assert_sufficient(
         target_count=panel.target_count,

@@ -63,6 +63,9 @@ def test_final_run_contract_builder_uses_only_current_final_roles():
     assert "ControlCalibrationPrecisionPlanV2" in source
     assert "TargetPanelAuthorityV3" in source
     assert "QualificationPrecisionAuthorityV4" in source
+    assert "NullEquivalenceMarginAuthorityV1" in source
+    assert "--null-equivalence-margin-authority" in source
+    assert "precision.bind_null_equivalence_margin_authority(margin)" in source
     assert "NonlinearSamplingCalibrationPlanV2" in source
     assert "NonlinearMaskingChallengeAuthorityV3" in source
     assert "MaskingRngReplayAuthorityV2" in source
