@@ -180,7 +180,7 @@ def decision_receipt(
         qualified=qualified,
         controls_passed=True,
         negative_control_precision_passed=True,
-        primary_null_level_passed=True,
+        primary_null_level_passed=qualified,
         targeted_improvement_passed=True,
         source_improvement_guardrail_passed=True,
         heterogeneity_guardrail_passed=True,
@@ -388,4 +388,55 @@ def test_f16_selector_rejects_stale_heterogeneity_floor_rule_receipt():
 
 def test_decision_rule_id_is_identical_in_evaluator_and_run_contract():
     assert DECISION_RULE_ID == RUN_CONTRACT_DECISION_RULE_ID
+
+def test_policy_receipt_rejects_qualified_flag_spoofing():
+    receipt = decision_receipt(
+        "RIDGE8_CONDITIONAL",
+        qualified=True,
+        mean_effective_targeted_n=8.0,
+        total_effective_targeted_n=4096,
+        delta_lower_one_sided=0.04,
+    )
+    spoofed = MaskingPolicyDecisionReceiptV2(
+        **{**receipt.__dict__, "qualified": False}
+    )
+    with pytest.raises(ValueError, match="qualified flag disagrees"):
+        spoofed.validate()
+    with pytest.raises(ValueError, match="qualified flag disagrees"):
+        spoofed.canonical_digest()
+
+
+def test_policy_receipt_rejects_f17_floor_spoofing():
+    receipt = decision_receipt(
+        "RIDGE8_CONDITIONAL",
+        qualified=True,
+        mean_effective_targeted_n=8.0,
+        total_effective_targeted_n=4096,
+        delta_lower_one_sided=0.04,
+    )
+    spoofed = MaskingPolicyDecisionReceiptV2(
+        **{**receipt.__dict__, "target_heterogeneity_floor": -0.004}
+    )
+    with pytest.raises(ValueError, match="negative frozen tolerance"):
+        select_policy_v2([
+            decision_receipt("UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, total_effective_targeted_n=0, delta_lower_one_sided=0.0),
+            decision_receipt("TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, total_effective_targeted_n=4096, delta_lower_one_sided=0.01),
+            spoofed,
+            decision_receipt("PREFIX3_SELECTIVE", qualified=False, mean_effective_targeted_n=7.0, total_effective_targeted_n=3584, delta_lower_one_sided=0.01),
+        ])
+
+
+def test_policy_receipt_rejects_exact_complexity_lattice_spoofing():
+    receipt = decision_receipt(
+        "RIDGE8_CONDITIONAL",
+        qualified=True,
+        mean_effective_targeted_n=8.0,
+        total_effective_targeted_n=4096,
+        delta_lower_one_sided=0.04,
+    )
+    spoofed = MaskingPolicyDecisionReceiptV2(
+        **{**receipt.__dict__, "mean_effective_targeted_n": 7.9999}
+    )
+    with pytest.raises(ValueError, match="off the exact target x fold lattice"):
+        spoofed.validate()
 
