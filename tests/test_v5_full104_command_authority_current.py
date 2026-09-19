@@ -12,16 +12,12 @@ CURRENT_PIPELINE_SCRIPTS = (
     Path("analysis/v5_full104_census_20260918/full104_readonly_census_receipts_v2.py"),
     Path("scripts/agent/build_full104_census_authority_v2_20260918.py"),
     Path("scripts/agent/build_full104_control_calibration_cache_v1.py"),
-    Path("scripts/agent/build_full104_target_panel_selection_v2_20260918.py"),
-    Path("scripts/agent/build_full104_target_panel_authority_v3_20260918.py"),
     Path("scripts/agent/build_full104_outer_split_authority_v1_20260918.py"),
-    Path("scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py"),
-    Path("scripts/agent/evaluate_full104_nonlinear_capacity_from_cache_v1.py"),
     Path("scripts/agent/build_full104_target_evidence_budget_template_authority_v1_20260918.py"),
     Path("scripts/agent/build_full104_burden_ladder_authority_v2_20260918.py"),
-    Path("scripts/agent/build_full104_rng_replay_authority_v2_20260918.py"),
-    Path("scripts/agent/build_full104_nonlinear_challenge_authority_v3_20260918.py"),
-    Path("scripts/agent/build_full104_masking_design_authority_v2_20260918.py"),
+    Path("scripts/agent/prepare_full104_runtime_envelope_v1.py"),
+    Path("scripts/agent/run_full104_physical_shakedown_v1.py"),
+    Path("scripts/agent/build_full104_primary_representation_routing_v1_20260919.py"),
 )
 
 
@@ -85,7 +81,8 @@ def test_current_command_authority_keeps_historical_and_terminal_boundaries_expl
         "AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM_V1",
         "AddressUniverseLadderAuthorityV1",
         "no caller-entered role SHA",
-        "stop at the first fully qualifying rung",
+        "do not execute the target-panel ladder",
+        "TRAINING_OFF",
     )
     for phrase in required_phrases:
         assert phrase in text, phrase
@@ -100,7 +97,6 @@ def test_current_pipeline_historical_ingress_is_narrow_explicit_allowlist():
     historical_root = "analysis/v5_masking_successor_spike_20260917"
     allowed = {
         "build_full104_masking_parameters_authority_v3_20260919.py",
-        "build_full104_nonlinear_capacity_model_authority_v1_20260918.py",
     }
     observed = set()
     forbidden_tokens = (
