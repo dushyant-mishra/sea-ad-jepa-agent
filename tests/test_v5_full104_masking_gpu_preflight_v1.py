@@ -213,8 +213,24 @@ def test_powershell_wrapper_is_current_fail_closed_and_non_destructive():
     assert "AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM" not in source or "Terminal" in source
     assert "critical focused suite reported a skip" in source
     assert "Run FULL104 masking authority regressions" in source
+    assert "governance_branch" in source
+    assert 'git -C $Worktree diff --name-only "$ExpectedScientificAnchor..HEAD" --' in source
+    assert 'StartsWith("docs/")' in source
+    assert "source/test/workflow/data changes after the frozen scientific anchor" in source
+    assert "impl/v5-full104-masking-redteam2-20260918" not in source
     lowered = source.lower()
     assert "git reset" not in lowered
     assert "git clean" not in lowered
     assert "git stash" not in lowered
     assert "8ee5d0a5be483e18819a6f6975efa183327b2158" not in source
+
+def test_powershell_wrapper_allows_only_governance_delta_after_scientific_anchor():
+    source = Path("scripts/agent/v5_full104_masking_gpu_preflight_20260918.ps1").read_text(
+        encoding="utf-8"
+    )
+    assert '$normalized -eq "START_HERE.md"' in source
+    assert '$normalized -eq "AGENTS.md"' in source
+    assert '$normalized.StartsWith("docs/")' in source
+    for forbidden_prefix in ("src/", "tests/", ".github/", "scripts/", "analysis/"):
+        assert f'$normalized.StartsWith("{forbidden_prefix}")' not in source
+
