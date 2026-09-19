@@ -137,6 +137,14 @@ def validate_calibration_bindings(
         MaskingQualificationParametersAuthorityV3,
         ("parameter_authority_sha256", "authority_sha256"),
     )
+    if parameters.full104_substrate_sha256 != block_manifest_sha256:
+        raise ValueError("masking parameters bind a different FULL104 substrate")
+    if parameters.support_estimability_authority_sha256 != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise ValueError("masking parameters bind a different support authority")
+    if parameters.terminal_universe_id != "FULL_COMMON_CORE_17186_V1":
+        raise ValueError("masking parameters bind a different terminal universe")
+    if parameters.terminal_universe_size != EXPECTED_CORE:
+        raise ValueError("masking parameters bind a different terminal-universe size")
     split_root = receipt_digest(
         split_payload, "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1"
     )
