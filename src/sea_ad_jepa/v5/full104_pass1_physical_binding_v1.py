@@ -346,19 +346,20 @@ def verify_pass1_against_physical_full104(
         if not np.array_equal(cell_donor[selection_arr], donor_codes):
             raise ValueError("pass1 cell_donor does not rederive from physical metadata")
 
-        flags = core_mask[matrix.indices].astype(np.int64, copy=False)
-        prefix = np.empty(flags.size + 1, dtype=np.int64)
-        prefix[0] = 0
-        np.cumsum(flags, dtype=np.int64, out=prefix[1:])
-        physical_row_core_nnz = prefix[matrix.indptr[1:]] - prefix[matrix.indptr[:-1]]
+        # Slice the physical strict core once per block, then reuse it for
+        # both per-cell and donor/address support checks.  This avoids repeating
+        # a 41,238 -> 17,186 column projection for every donor in the block.
+        core_block = matrix[:, physical_core].tocsr()
+        physical_row_core_nnz = np.diff(core_block.indptr).astype(
+            np.int64, copy=False
+        )
         if not np.array_equal(cell_nnz_core[selection_arr], physical_row_core_nnz):
             raise ValueError("pass1 cell_nnz_core does not rederive from physical count blocks")
 
         for donor_code in np.unique(donor_codes):
             local_rows = np.flatnonzero(donor_codes == int(donor_code))
-            local = matrix[local_rows][:, physical_core]
             physical_donor_core_nnz[int(donor_code)] += np.asarray(
-                local.getnnz(axis=0), dtype=np.int64
+                core_block[local_rows].getnnz(axis=0), dtype=np.int64
             ).reshape(-1)
 
         total_rows += expected_rows
