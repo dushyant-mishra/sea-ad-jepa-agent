@@ -154,10 +154,16 @@ def main() -> int:
             "per_fold_estimable": list(map(int, per_fold)),
             "estimable_in_all_folds": int(eligible.size),
         },
-        "donor_precision_context": {
+        "donor_sampling_context": {
             "independent_donor_units": int(donor_src.size),
-            "kish_ess_donor_equivalents": kish_ess(donor_counts),
-            "kish_ess_by_source": source_ess,
+            "cell_count_weight_kish_ess_descriptive_only": kish_ess(donor_counts),
+            "cell_count_weight_kish_ess_by_source_descriptive_only": source_ess,
+            "kish_ess_is_inferential_donor_sample_size": False,
+            "interpretation": (
+                "Kish ESS here summarizes imbalance in cell-count weights only. "
+                "It does not reduce or replace the 104 independent donor units and "
+                "must not be used as a donor-level power or confirmation sample size."
+            ),
             "donor_cell_count_min": int(donor_counts.min()),
             "donor_cell_count_median": float(np.median(donor_counts)),
             "donor_cell_count_max": int(donor_counts.max()),
