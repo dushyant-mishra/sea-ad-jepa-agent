@@ -313,6 +313,86 @@ def test_h1_prior_decision_must_rederive_from_bound_raw_evidence(monkeypatch):
         )
 
 
+def test_h1_prior_raw_and_control_sequences_must_align_exactly():
+    first = receipt(1, 20, qualified=False)
+    raw_by_policy, _ = raw_evidence_bundle(first)
+    first_artifact = raw_artifact(first)
+    first_execution = execution_authority(first, artifact=first_artifact)
+    with pytest.raises(ValueError, match="exactly align with the prior-rung receipt chain"):
+        _validate_requested_rung(
+            burden_ladder=ladder(),
+            numerator=1,
+            denominator=10,
+            prior_rung_receipts=(first,),
+            prior_rung_execution_authorities=(first_execution,),
+            prior_rung_raw_result_artifacts=(first_artifact,),
+            expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
+            prior_rung_raw_evidence_by_policy=(raw_by_policy,),
+            prior_rung_mechanical_control_receipts=(),
+            precision=precision(),
+        )
+
+
+def test_h1_mechanical_controls_from_other_run_contract_cannot_authenticate_prior_raw():
+    first = receipt(1, 20, qualified=False)
+    raw_by_policy, controls = raw_evidence_bundle(
+        first,
+        run_contract_sha256=h("other-run-contract"),
+    )
+    first_artifact = raw_artifact(
+        first,
+        raw_evidence_by_policy=raw_by_policy,
+        mechanical_control_receipt=controls,
+    )
+    first_execution = execution_authority(first, artifact=first_artifact)
+    with pytest.raises(ValueError, match="mechanical controls bind a different run contract"):
+        _validate_requested_rung(
+            burden_ladder=ladder(),
+            numerator=1,
+            denominator=10,
+            prior_rung_receipts=(first,),
+            prior_rung_execution_authorities=(first_execution,),
+            prior_rung_raw_result_artifacts=(first_artifact,),
+            expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
+            prior_rung_raw_evidence_by_policy=(raw_by_policy,),
+            prior_rung_mechanical_control_receipts=(controls,),
+            precision=precision(),
+        )
+
+
+def test_h1_mechanical_controls_from_other_full104_manifest_cannot_authenticate_prior_raw():
+    first = receipt(1, 20, qualified=False)
+    raw_by_policy, controls = raw_evidence_bundle(
+        first,
+        terminal_input_manifest_sha256=h("other-manifest"),
+    )
+    first_artifact = raw_artifact(
+        first,
+        raw_evidence_by_policy=raw_by_policy,
+        mechanical_control_receipt=controls,
+    )
+    first_execution = execution_authority(first, artifact=first_artifact)
+    with pytest.raises(
+        ValueError,
+        match="mechanical controls bind a different authenticated FULL104 manifest",
+    ):
+        _validate_requested_rung(
+            burden_ladder=ladder(),
+            numerator=1,
+            denominator=10,
+            prior_rung_receipts=(first,),
+            prior_rung_execution_authorities=(first_execution,),
+            prior_rung_raw_result_artifacts=(first_artifact,),
+            expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
+            prior_rung_raw_evidence_by_policy=(raw_by_policy,),
+            prior_rung_mechanical_control_receipts=(controls,),
+            precision=precision(),
+        )
+
+
 def test_higher_rung_cannot_open_after_lower_rung_qualified():
     first = receipt(1, 20, qualified=True)
     first_artifact = raw_artifact(first)
