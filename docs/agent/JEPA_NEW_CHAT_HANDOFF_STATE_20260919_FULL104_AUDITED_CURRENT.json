@@ -1,0 +1,128 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260919_FULL104_AUDITED_CURRENT_V1",
+  "date": "2026-09-19",
+  "status": "FULL104_PRETERMINAL_PROVENANCE_REPAIR_ACTIVE__OLD_PASS1_INVALID__H3_G5_TERMINAL_LOCKED__NO_TERMINAL_OUTCOMES_OPENED__TRAINING_OFF",
+  "scientific_branch": "impl/v5-full104-provenance-spillover-repair-20260919",
+  "scientific_head": "a51cdbe8bbfac1c77980711cca13df8bc58caa1d",
+  "handoff_branch": "handoff/jepa-v5-full104-audited-20260919",
+  "scientific_invariant": "DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> TARGET SEMANTICS -> PRODUCTION GEOMETRY -> MODEL",
+  "training_authorized": false,
+  "protected_outcomes_authorized": false,
+  "d_shared_outcomes_opened": false,
+  "terminal_masking_outcomes_opened": false,
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_common_core": 17186,
+    "blocks": 8915,
+    "manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "pass1": {
+    "sept17_status": "INVALID_FOR_CURRENT_ROLE__ROW_IDENTITY_KEYED_TO_BLOCK_ITERATION_ORDER",
+    "authoritative_cell_id": "selection_row",
+    "new_physical_pass1_required": true,
+    "patch_or_permute_old_artifact_forbidden": true
+  },
+  "base_estimand": {
+    "id": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "formula": "1/(D*n_d)",
+    "independent_donor_units": 104,
+    "kish_cell_count_weight_ess_is_inferential_n": false
+  },
+  "representation": {
+    "role": "VALUE_ONLY_256",
+    "v0_parent_sha256": "3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada",
+    "v1_parent_sha256": "c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c",
+    "visibility_channels_primary_molecular_input": false,
+    "f13_closed": false
+  },
+  "open_blockers": [
+    "G5_EQUIVALENCE_MARGIN_BASIS",
+    "H3_EQUIVALENCE_POWER_PANEL_SIZING",
+    "H4_ALL_RUNG_FAILURE_INTERPRETATION",
+    "G2_TARGETING_COMPLEXITY_MATERIALITY",
+    "G3_CAPACITY_MATCHED_SHORTCUT_ATTACK",
+    "G4_STATE_SIGNAL_PRESERVATION",
+    "F13_REPRESENTATION_CONSUMER_BINDING",
+    "F14_PRODUCTION_DIMENSION_GEOMETRY",
+    "F15_CURRENT_TEACHER_STUDENT_RUNTIME",
+    "FINAL_EXECUTION_AUTHORITY_DERIVE_VS_DECLARE",
+    "QUERY_SCALAR_GLOBAL_CONTEXT_LEAKAGE_CONTRACT"
+  ],
+  "hard_stops": [
+    "STOP_H3_EQUIVALENCE_POWER_OPEN",
+    "STOP_G5_NULL_EQUIVALENCE_MARGIN_BASIS_OPEN",
+    "STOP_H3_G5_TERMINAL_RUN_CONTRACT_UNAUTHORIZED",
+    "STOP_H3_G5_TERMINAL_MASKING_UNAUTHORIZED"
+  ],
+  "exact_head_ci": [
+    {
+      "workflow": "V5 FULL104 masking runner",
+      "run_id": 35451597882,
+      "job_id": 105919598903,
+      "passed_each_run": 342,
+      "zero_skips": true
+    },
+    {
+      "workflow": "V5 Stage-A spillover firewall",
+      "run_id": 35451597886,
+      "job_id": 105919598957,
+      "passed_each_run": 159,
+      "zero_skips": true
+    },
+    {
+      "workflow": "V5 remaining-RNA and target-semantics successor",
+      "run_id": 35451597885,
+      "job_id": 105919598853,
+      "passed_each_run": 314,
+      "zero_skips": true
+    },
+    {
+      "workflow": "V5 runtime closure",
+      "run_id": 35451597891,
+      "job_id": 105919598836,
+      "passed_each_run": 40,
+      "zero_skips": true
+    }
+  ],
+  "claude_latest_reported": {
+    "canonical_env": "sea-ad-jepa",
+    "canonical_gpu": "RTX 3080",
+    "local_safety_tests_passed": 76,
+    "local_safety_tests_skipped": 0,
+    "pass1_physical_requalification": "FAILED_EXPECTEDLY_ON_IDENTITY_DEFECT",
+    "physical_shakedown": "IN_PROGRESS_OR_RESULT_NOT_YET_RETURNED_TO_THIS_CHAT",
+    "terminal_outcomes_opened": false
+  },
+  "audit_findings": {
+    "final_closure_schema_stale": true,
+    "caller_declared_execution_pass_risk": true,
+    "query_scalar_global_context_leakage_unproven": true,
+    "masking_vs_training_estimand_bridge_required": true,
+    "target_estimability_threshold_rationale_required": true,
+    "historical_nonzero_mask_feasibility_bug_currently_repaired": true
+  },
+  "next_sequence": [
+    "ingest_and_verify_claude_shakedown",
+    "build_and_commit_selection_row_keyed_pass1_producer",
+    "verify_canonical_donor_ordering",
+    "run_independent_physical_pass1_binding",
+    "regenerate_census_split_eligibility",
+    "build_calibration_only_cache",
+    "G5_margin_basis",
+    "H3_equivalence_power",
+    "H4_failure_diagnostics",
+    "G2_materiality",
+    "G4_signal_preservation",
+    "G3_capacity_matched_attack",
+    "F13",
+    "F14",
+    "F15",
+    "rebuild_final_authority_closure",
+    "derive_all_execution_passes_from_physical_evidence"
+  ]
+}
