@@ -9,7 +9,7 @@ from sea_ad_jepa.v5.masking_qualification_decision_v2 import (
     MaskingPolicyDecisionReceiptV2,
     POLICY_SELECTION_RULE_ID,
     TARGET_HETEROGENEITY_FLOOR_RULE_ID,
-    TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH,
+    TARGETING_COMPLEXITY_EQUIVALENCE_EVENTS,
     evaluate_policy_v2,
     null_noise_tolerance,
     select_policy_v2,
@@ -160,7 +160,19 @@ def test_control_width_alone_cannot_flip_fail_to_qualified():
     assert narrow_receipt.null_noise_tolerance == pytest.approx(0.0100)
     assert wide_receipt.null_noise_tolerance == pytest.approx(0.0100)
 
-def decision_receipt(policy_id, *, qualified, mean_effective_targeted_n, delta_lower_one_sided):
+def decision_receipt(
+    policy_id,
+    *,
+    qualified,
+    mean_effective_targeted_n,
+    delta_lower_one_sided,
+    total_effective_targeted_n=None,
+    targeting_complexity_observation_count=512,
+):
+    if total_effective_targeted_n is None:
+        total_effective_targeted_n = int(
+            round(float(mean_effective_targeted_n) * targeting_complexity_observation_count)
+        )
     return MaskingPolicyDecisionReceiptV2(
         policy_id=policy_id,
         burden_numerator=1,
@@ -177,44 +189,61 @@ def decision_receipt(policy_id, *, qualified, mean_effective_targeted_n, delta_l
         target_heterogeneity_floor=-0.005,
         target_heterogeneity_floor_rule_id=TARGET_HETEROGENEITY_FLOOR_RULE_ID,
         mean_effective_targeted_n=mean_effective_targeted_n,
+        total_effective_targeted_n=total_effective_targeted_n,
+        targeting_complexity_observation_count=targeting_complexity_observation_count,
         delta_lower_one_sided=delta_lower_one_sided,
         decision_rule_id=DECISION_RULE_ID,
         evidence_digest=("1" if policy_id == "UNIFORM_RANDOM" else "2" if policy_id == "TOP8_CORRELATION" else "3" if policy_id == "RIDGE8_CONDITIONAL" else "4") * 64,
     )
 
-
-def test_f16_legacy_lexicographic_selector_is_reproduced_then_rejected():
+def test_f16_legacy_one_event_difference_is_reproduced_then_treated_as_equivalent():
     uniform = decision_receipt(
-        "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
+        "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0,
+        total_effective_targeted_n=0,
     )
     prefix = decision_receipt(
-        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.9999, delta_lower_one_sided=0.001
+        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=4095 / 512,
+        total_effective_targeted_n=4095, delta_lower_one_sided=0.001,
     )
     ridge = decision_receipt(
-        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040
+        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0,
+        total_effective_targeted_n=4096, delta_lower_one_sided=0.040,
     )
     top = decision_receipt(
-        "TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.010
+        "TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0,
+        total_effective_targeted_n=4096, delta_lower_one_sided=0.010,
     )
     legacy = min(
         (prefix, ridge),
         key=lambda r: (r.mean_effective_targeted_n, -r.delta_lower_one_sided),
     )
     assert legacy.policy_id == "PREFIX3_SELECTIVE"
-    assert TARGETING_COMPLEXITY_EQUIVALENCE_WIDTH == 1.0
-    assert "ONE_PARTNER_EQUIVALENCE" in POLICY_SELECTION_RULE_ID
+    assert TARGETING_COMPLEXITY_EQUIVALENCE_EVENTS == 1
+    assert "ONE_TOTAL_EVENT_EQUIVALENCE" in POLICY_SELECTION_RULE_ID
     assert select_policy_v2([uniform, top, ridge, prefix]) == "RIDGE8_CONDITIONAL"
 
 
-def test_f16_material_one_partner_per_target_fold_advantage_keeps_complexity_priority():
+def test_f16_impossible_off_lattice_float_is_rejected():
+    receipts = [
+        decision_receipt("UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, total_effective_targeted_n=0, delta_lower_one_sided=0.0),
+        decision_receipt("TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, total_effective_targeted_n=4096, delta_lower_one_sided=0.010),
+        decision_receipt("RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, total_effective_targeted_n=4096, delta_lower_one_sided=0.040),
+        decision_receipt("PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.9999, total_effective_targeted_n=4096, delta_lower_one_sided=0.001),
+    ]
+    with pytest.raises(ValueError, match="off the exact target x fold lattice"):
+        select_policy_v2(receipts)
+
+def test_f16_two_total_event_advantage_keeps_complexity_priority():
     uniform = decision_receipt(
         "UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0
     )
     prefix = decision_receipt(
-        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.0, delta_lower_one_sided=0.001
+        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=4094 / 512,
+        total_effective_targeted_n=4094, delta_lower_one_sided=0.001
     )
     ridge = decision_receipt(
-        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040
+        "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0,
+        total_effective_targeted_n=4096, delta_lower_one_sided=0.040
     )
     top = decision_receipt(
         "TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.010
@@ -316,7 +345,7 @@ def test_f16_rejects_stale_decision_receipt_semantics():
         "RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040
     )
     prefix = decision_receipt(
-        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.9999, delta_lower_one_sided=0.001
+        "PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=4095 / 512, total_effective_targeted_n=4095, delta_lower_one_sided=0.001
     )
     stale = MaskingPolicyDecisionReceiptV2(
         **{**prefix.__dict__, "decision_rule_id": "FIXED_SOURCE_NULL_EQUIVALENCE_AND_SOURCE_BENEFIT_GUARDED_SHORTCUT_SUPPRESSION_V3"}
@@ -349,7 +378,7 @@ def test_f16_selector_rejects_stale_heterogeneity_floor_rule_receipt():
         decision_receipt("UNIFORM_RANDOM", qualified=False, mean_effective_targeted_n=0.0, delta_lower_one_sided=0.0),
         decision_receipt("TOP8_CORRELATION", qualified=False, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.010),
         decision_receipt("RIDGE8_CONDITIONAL", qualified=True, mean_effective_targeted_n=8.0, delta_lower_one_sided=0.040),
-        decision_receipt("PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=7.9999, delta_lower_one_sided=0.001),
+        decision_receipt("PREFIX3_SELECTIVE", qualified=True, mean_effective_targeted_n=4095 / 512, total_effective_targeted_n=4095, delta_lower_one_sided=0.001),
     ]
     stale = MaskingPolicyDecisionReceiptV2(
         **{**receipts[-1].__dict__, "target_heterogeneity_floor_rule_id": "REALIZED_NEGATIVE_CONTROL_LOWER_BOUND_V0"}
