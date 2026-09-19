@@ -1,0 +1,1 @@
+This docs-only handoff branch was created from the live post-Claude scientific repair branch. The parent commit of this capture commit is the exact scientific handoff anchor.\n
