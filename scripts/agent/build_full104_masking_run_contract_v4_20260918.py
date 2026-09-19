@@ -21,7 +21,7 @@ from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import load_c
 from sea_ad_jepa.v5.masking_burden_ladder_authority_v2 import MaskingBurdenLadderAuthorityV2
 from sea_ad_jepa.v5.masking_nonlinear_challenge_authority_v3 import NonlinearMaskingChallengeAuthorityV3
 from sea_ad_jepa.v5.masking_qualification_design_authority_v2 import MaskingQualificationDesignAuthorityV2
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import MaskingQualificationParametersAuthorityV3
 from sea_ad_jepa.v5.masking_qualification_run_contract_v4 import (
     DECISION_RULE_ID,
     EXECUTION_SOURCE_ROLE_ID,
@@ -194,9 +194,9 @@ def main() -> int:
         raise SystemExit("support authority unexpectedly authorizes training")
 
     parameters_payload = load(args.parameters_authority)
-    if parameters_payload.get("schema") != "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2":
-        raise SystemExit("masking parameter authority V2 is required")
-    parameters = typed(parameters_payload, MaskingQualificationParametersAuthorityV2, "parameter_authority_sha256")
+    if parameters_payload.get("schema") != "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3":
+        raise SystemExit("FULL104-bound masking parameter authority V3 is required")
+    parameters = typed(parameters_payload, MaskingQualificationParametersAuthorityV3, "parameter_authority_sha256")
 
     census = load(args.census_authority)
     if census.get("schema") != "V5_FULL104_READONLY_CENSUS_AUTHORITY_V2":
