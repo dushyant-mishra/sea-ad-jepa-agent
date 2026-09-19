@@ -2,7 +2,7 @@
 
 Date: 2026-09-18
 
-Status: `F16_F17_REPAIRED__EXACT_HEAD_QUALIFIED__GPU_CALIBRATION_NEXT__TERMINAL_UNOPENED__TRAINING_OFF`
+Status: `F16_F17_REPAIRED__EXACT_HEAD_QUALIFIED__NULL_MARGIN_NUMERICAL_AUTHORITY_OPEN__GPU_CALIBRATION_PARTIAL_NEXT__TERMINAL_UNOPENED__TRAINING_OFF`
 
 ## Read first
 
@@ -32,6 +32,8 @@ Before acting, re-fetch the live scientific branch and PR state. Names and filen
 
 F16/F17 are repaired. F13 masking-side representation authority is bound. F14 dimension/rank/subspace authority and F15 executable current production trainer/runtime binding remain open.
 
+**Pre-Precision blocker:** no frozen numerical authority for the prospective null-equivalence margin has been recovered. `0.01` appears in tests only and is not authority. GPU census, cache construction, and target-panel calibration may proceed, but Precision V4 and all downstream authorities must STOP until the margin is justified and frozen without terminal-outcome access.
+
 ## Working rule
 
 Historical/smaller-run artifacts may provide context or narrowly reauthorized provenance only. They may not silently occupy FULL104 data, target, fold, burden, seed, row-cap, target-count, selected-policy, PASS, authority-root, runtime or training roles.
@@ -40,7 +42,7 @@ For every repair: reproduce → prospectively derive → patch narrowly → adve
 
 ## Next lane
 
-GPU census → calibration-only cache → target-panel calibration → Precision V4 → nonlinear calibration → final authorities → Design V2 → final committed source freeze → machine checkpoint → RunContract V4 → independent frozen-package audit → terminal preflight → 5% only.
+GPU census → calibration-only cache → target-panel calibration → **STOP for frozen numerical null-equivalence-margin authority if still unresolved** → Precision V4 → nonlinear calibration → final authorities → Design V2 → final committed source freeze → machine checkpoint → RunContract V4 → independent frozen-package audit → terminal preflight → 5% only.
 
 Do not auto-escalate. A masking PASS does not authorize training.
 

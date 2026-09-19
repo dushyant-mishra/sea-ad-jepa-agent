@@ -134,7 +134,7 @@ Intentional historical reauthorization is lawful only when exact historical byte
 5. Run calibration-mode preflight.
 6. Run target-panel ladder 128 → 256 → 512 → 1024 with exact replay; stop at first qualifier.
 7. Freeze TargetPanelAuthorityV3 and current OuterSplitAuthorityV1.
-8. Freeze PrecisionAuthorityV4, including prospective null-equivalence margin before terminal outcomes.
+8. Before PrecisionAuthorityV4, require a separately justified and frozen numerical null-equivalence-margin authority. No recovered project authority currently fixes the number; test fixtures (including 0.01) are not authority. STOP rather than choose a value ad hoc. Once frozen prospectively, build PrecisionAuthorityV4 with that exact rational margin before terminal outcomes.
 9. Run nonlinear cap ladder 64 → 128 → 256 → 512 → 1024 with exact replay; stop at first qualifier.
 10. Freeze burden-free template, burden ladder, RNG replay, nonlinear V3 authority and Design V2.
 11. Commit final scientific source freeze and rerun exact-head CI/no-skips if any source/test/workflow bytes changed.
@@ -162,3 +162,12 @@ Masking PASS does not authorize training.
 - separate Project artifacts supply some historical material.
 
 Do not describe it as a self-contained 97-file FULL104 bundle and do not promote it to current FULL104 authority.
+
+
+## Pre-Precision numerical-authority blocker — 2026-09-18
+
+Status: `OPEN__FAIL_CLOSED`.
+
+The current PrecisionAuthorityV4 schema correctly requires an explicit positive exact-rational null-equivalence margin, but repository audit did not recover a frozen numerical scientific authority for that margin. The value `0.01` is present in unit-test fixtures only and must not be promoted to production by convention. The GPU lane may execute authenticated census, calibration-cache construction, and target-panel control calibration without opening terminal outcomes. It must not instantiate final PrecisionAuthorityV4, nonlinear calibration that depends on it, Design V2, RunContract V4, or terminal execution until the numerical margin has been prospectively justified, frozen, and provenance-bound.
+
+This is not permission to derive the margin from realized terminal negative-control width. F12/F17 require the qualification threshold and heterogeneity floor to remain independent of realized terminal control precision.

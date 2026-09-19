@@ -84,3 +84,17 @@ Do not substitute the concrete carrier for the burden-free design template.
 `NO_TERMINAL_MASKING_OUTCOME_ACCESS_BEFORE_FINAL_FREEZE_AUDIT_PREFLIGHT`
 
 `NO_PATHOLOGY_DEV_SEALED_OUTCOME_ACCESS_WHILE_DESIGN_OPEN`
+
+
+## Addendum — prospective null-equivalence numerical authority remains open
+
+A post-handoff audit of the PrecisionAuthorityV4 lineage found that the schema and builder correctly require an explicit positive exact-rational null-equivalence margin, but **no frozen numerical project authority for that margin was recovered**. Unit tests commonly instantiate `1/100 = 0.01`; that is a fixture, not scientific authority, and must not be promoted into the FULL104 run by convention.
+
+This refines the takeover order:
+
+- lawful now: GPU census V2 receipts, authenticated calibration-only cache, target-panel control calibration, TargetPanelAuthorityV3, OuterSplitAuthorityV1;
+- STOP boundary: before final PrecisionAuthorityV4 unless the numerical margin has been prospectively justified and frozen;
+- downstream nonlinear calibration/NonlinearChallengeAuthorityV3/Design V2/RunContract V4 remain blocked on that final Precision V4 instance;
+- terminal outcomes remain unopened and may not be used to choose the margin.
+
+The margin must not be derived from realized terminal negative-control width. F12/F17 specifically separate the frozen equivalence threshold from realized control precision.
