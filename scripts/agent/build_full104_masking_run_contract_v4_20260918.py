@@ -194,6 +194,13 @@ def main() -> int:
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
 
+    raise SystemExit(
+        "STOP_H3_G5_TERMINAL_RUN_CONTRACT_UNAUTHORIZED: the current V2 "
+        "target-panel sizing receipt is capacity-only and the V4 precision "
+        "margin has no prospective scientific basis. Do not construct a "
+        "terminal run contract until both successor authorities exist."
+    )
+
     support = load(args.support_authority)
     if canonical_sha(support) != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
         raise SystemExit("support authority is not the exact current semantic authority")
