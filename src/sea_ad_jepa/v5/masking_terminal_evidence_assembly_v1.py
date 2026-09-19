@@ -579,6 +579,8 @@ def assemble_policy_decision_evidence(
             precision, nonlinear_residual, donor_source
         ),
         null_noise_tolerance_ceiling=precision.null_equivalence_margin,
+        null_equivalence_margin_numerator=precision.null_equivalence_margin_numerator,
+        null_equivalence_margin_denominator=precision.null_equivalence_margin_denominator,
         negative_control_precision_passed=negative_precision_passed,
         replay_exact=raw_evidence.replay_exact,
         untreated_identity_exact=raw_evidence.untreated_identity_exact,
