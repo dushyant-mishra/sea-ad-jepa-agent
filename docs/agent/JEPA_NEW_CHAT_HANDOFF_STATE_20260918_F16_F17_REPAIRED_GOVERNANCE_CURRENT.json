@@ -1,0 +1,56 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_F16_F17_REPAIRED_GOVERNANCE_V1",
+  "date": "2026-09-18",
+  "status": "F16_F17_REPAIRED__EXACT_HEAD_QUALIFIED__GPU_CALIBRATION_NEXT__TERMINAL_UNOPENED__TRAINING_OFF",
+  "scientific_branch": "impl/v5-full104-masking-f16-f17-repair-20260918",
+  "scientific_head": "144873cec377e2cd098ce66220377f10723f413a",
+  "ci": {
+    "full104_masking": {
+      "run_id": 35408018294,
+      "result": "SUCCESS",
+      "regression": "280 passed",
+      "no_skip_rerun": "280 passed"
+    },
+    "stage_a_spillover": {
+      "run_id": 35408018321,
+      "result": "SUCCESS"
+    },
+    "runtime_closure": {
+      "run_id": 35408018218,
+      "result": "SUCCESS"
+    },
+    "remaining_rna_target_semantics": {
+      "run_id": 35408018310,
+      "result": "SUCCESS"
+    }
+  },
+  "findings": {
+    "F16": "REPAIRED_AND_EXACT_HEAD_QUALIFIED__DISCRETE_TARGET_X_FOLD_EVENT_LATTICE",
+    "F17": "REPAIRED_AND_EXACT_HEAD_QUALIFIED__FIXED_FROZEN_EQUIVALENCE_MARGIN_FLOOR",
+    "F13_masking": "CLOSED__EXACT_VALUE_ONLY_256_REPRESENTATION_AUTHORITY_BOUND",
+    "F13_training": "OPEN__DEEP_MODEL_MEASUREMENT_ROBUSTNESS_EXECUTABLE_USE",
+    "F14": "OPEN__CURRENT_V5_DIMENSION_RANK_SUBSPACE_AUTHORITY_NOT_BOUND__NO_D_SHARED_REOPEN",
+    "F15": "OPEN__NO_CONCRETE_CURRENT_PRODUCTION_TRAINER_ENTRYPOINT_RUNTIME_SOURCE_INSTANCE"
+  },
+  "terminal_outcomes_opened": false,
+  "production_masking_policy_selected": false,
+  "training_authorized": false,
+  "next_lane": [
+    "GPU_CENSUS_V2",
+    "AUTHENTICATED_CALIBRATION_ONLY_CACHE",
+    "TARGET_PANEL_CALIBRATION",
+    "TARGET_PANEL_AUTHORITY_V3",
+    "OUTER_SPLIT_AUTHORITY_V1",
+    "PRECISION_AUTHORITY_V4",
+    "NONLINEAR_CAP_CALIBRATION",
+    "FINAL_TEMPLATE_BURDEN_RNG_NONLINEAR_AUTHORITIES",
+    "MASKING_DESIGN_V2",
+    "FINAL_COMMITTED_SOURCE_FREEZE",
+    "MACHINE_CHECKPOINT",
+    "RUN_CONTRACT_V4",
+    "INDEPENDENT_FROZEN_PACKAGE_AUDIT",
+    "TERMINAL_PREFLIGHT",
+    "OPEN_5_PERCENT_ONLY"
+  ],
+  "anti_spillover": "HISTORICAL_OR_SMALLER_RUN_MATERIAL_NEVER_OCCUPIES_CURRENT_FULL104_ROLE_WITHOUT_EXACT_EXPLICIT_REAUTHORIZATION_CURRENT_ROOT_BINDING_AND_NARROW_ROLE_TESTS"
+}

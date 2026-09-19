@@ -10,11 +10,11 @@ Historical/smaller-run artifacts may motivate a current hypothesis or model shap
 
 Current scientific source/test/workflow anchor:
 
-`93093be1da09c46983f932d756b0fc9690a3eac4`
+`144873cec377e2cd098ce66220377f10723f413a`
 
 Verified GitHub Actions run:
 
-`35386306268` — PASS, including fail-on-skips.
+`35408018294` — PASS, including fail-on-skips.
 
 ## 1. Re-fetch and preserve the worktree
 
@@ -23,7 +23,7 @@ PowerShell:
 ```powershell
 $Repo = "D:\Jepa project"
 $Branch = "impl/v5-full104-masking-redteam2-20260918"
-$ExpectedAnchor = "93093be1da09c46983f932d756b0fc9690a3eac4"
+$ExpectedAnchor = "144873cec377e2cd098ce66220377f10723f413a"
 
 git -C $Repo fetch origin
 git -C $Repo status --porcelain
@@ -254,7 +254,11 @@ python "$Worktree\scripts\agent\build_full104_masking_run_contract_v4_20260918.p
 
 This builder reconstructs current typed objects, validates exact-current support semantics, binds the calibration cache only as provenance, derives live source hashes itself, binds the checkpoint semantic digest, and requires terminal input role `AUTHENTICATED_FULL104_LEVEL4_BLOCK_STREAM_V1`.
 
-## 13. Terminal-mode preflight
+## 13. Independent frozen-package audit
+
+Before terminal preflight, independently verify final committed source hashes, authority roots, machine-checkpoint semantic digest, terminal input role, and anti-spillover invariants. Any unexplained historical/smaller-run target, fold, burden, seed, row-cap, policy, PASS state, or role root is a STOP.
+
+## 14. Terminal-mode preflight
 
 Only after RunContract V4 exists:
 
@@ -264,11 +268,11 @@ powershell -ExecutionPolicy Bypass -File "$Worktree\scripts\agent\v5_full104_mas
 
 Any failure is a STOP.
 
-## 14. Terminal masking boundary
+## 15. Terminal masking boundary
 
-Terminal execution is currently STOPPED after preflight until the current one-rung evidence assembler/executor is implemented, independently tested, and frozen. Do not substitute the older 2026-09-16 runner, a historical results file, a calibration-cache evaluator, or hand-assembled decision JSON.
+The current one-rung evidence assembler, mechanical-controls layer and executor are implemented and exact-head tested. Their existence does not authorize terminal execution. Do not substitute the older 2026-09-16 runner, a historical results file, a calibration-cache evaluator, or hand-assembled decision JSON.
 
-Only after that current terminal executor exists and terminal preflight passes may the 5% FULL104 terminal rung be opened.
+Only after the independent frozen-package audit and terminal preflight both pass may the 5% FULL104 terminal rung be opened.
 
 - start at 5%;
 - do not inspect 10% if 5% fully qualifies;
