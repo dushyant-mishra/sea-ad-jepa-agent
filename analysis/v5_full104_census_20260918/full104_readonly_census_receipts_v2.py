@@ -3,12 +3,17 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import json
 from fractions import Fraction
 from pathlib import Path
 
 import numpy as np
 
+from sea_ad_jepa.v5.full104_pass1_physical_binding_v1 import (
+    SCHEMA_ID as PASS1_BINDING_SCHEMA_ID,
+    verify_pass1_against_physical_full104,
+)
 from sea_ad_jepa.v5.full104_census_receipt_v2 import (
     FULL104_CORE_SIZE,
     FULL104_N_CELLS,
@@ -32,12 +37,33 @@ def write_json(path: Path, payload: dict) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pass1", type=Path, required=True)
+    parser.add_argument("--level4-root", type=Path, required=True)
+    parser.add_argument("--registry", type=Path, required=True)
+    parser.add_argument("--observation-state", type=Path, required=True)
+    parser.add_argument("--out-pass1-physical-binding", type=Path, required=True)
     parser.add_argument("--out-summary", type=Path, required=True)
     parser.add_argument("--out-split", type=Path, required=True)
     parser.add_argument("--out-target-eligibility", type=Path, required=True)
     args = parser.parse_args()
 
+    binding_receipt = verify_pass1_against_physical_full104(
+        pass1_path=args.pass1,
+        level4_root=args.level4_root,
+        registry_path=args.registry,
+        observation_state_path=args.observation_state,
+    )
+    pass1_binding_root = binding_receipt.canonical_digest()
+    binding_payload = {
+        "schema": PASS1_BINDING_SCHEMA_ID,
+        **asdict(binding_receipt),
+        "source_names": list(binding_receipt.source_names),
+        "receipt_sha256": pass1_binding_root,
+    }
+    write_json(args.out_pass1_physical_binding, binding_payload)
+
     pass1_sha = sha256_file(args.pass1)
+    if pass1_sha != binding_receipt.pass1_npz_sha256:
+        raise SystemExit("pass1 bytes changed after physical verification")
     data = np.load(args.pass1, allow_pickle=False)
     required = {
         "cell_donor", "cell_nnz_core", "donor_addr_nnz", "donor_src", "duniq", "core"
@@ -109,6 +135,7 @@ def main() -> int:
     summary = {
         "schema": "V5_FULL104_READONLY_CENSUS_SUMMARY_RECEIPT_V2",
         "pass1_npz_sha256": pass1_sha,
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "terminal_masking_outcomes_inspected": False,
         "population": {
             "cells": int(cell_donor.size),
@@ -138,6 +165,7 @@ def main() -> int:
     split = {
         "schema": "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1",
         "pass1_npz_sha256": pass1_sha,
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "split_id": "SOURCE_STRATIFIED_DONOR_HELD_OUT_V1",
         "seed_namespace": "JEPA_FULL104_CENSUS_FOLD",
         "n_folds": 4,
@@ -153,6 +181,7 @@ def main() -> int:
     target_eligibility = {
         "schema": "V5_FULL104_TARGET_ELIGIBILITY_RECEIPT_V1",
         "pass1_npz_sha256": pass1_sha,
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "split_receipt_sha256": split["receipt_sha256"],
         "support_policy_id": "STRICT_MEASURED_SCALAR_ONLY__COLLISION_UNRESOLVED_EXCLUDED_V1",
         "estimability_rule": "donor_nonzero_cells>=30__train_donors>=20__validation_donors>=5",
@@ -167,6 +196,7 @@ def main() -> int:
     write_json(args.out_split, split)
     write_json(args.out_target_eligibility, target_eligibility)
     print(json.dumps({
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "summary_sha256": summary["receipt_sha256"],
         "split_sha256": split["receipt_sha256"],
         "target_eligibility_sha256": target_eligibility["receipt_sha256"],
