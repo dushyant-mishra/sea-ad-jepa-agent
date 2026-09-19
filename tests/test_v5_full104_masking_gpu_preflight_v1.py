@@ -92,6 +92,7 @@ class CacheManifestStub:
             full104_block_manifest_sha256=EXPECTED_BLOCK_MANIFEST_SHA256,
             canonical_registry_sha256=EXPECTED_REGISTRY_SHA256,
             census_authority_sha256="",
+            pass1_physical_binding_sha256="",
             support_estimability_authority_sha256=h("support-file"),
             split_receipt_sha256="",
             target_eligibility_receipt_sha256="",
@@ -112,16 +113,19 @@ def valid_bundle():
     support_file_sha = sha256_file(support_path)
     support = json.loads(support_path.read_text(encoding="utf-8"))
     registry_authority = json.loads(registry_path.read_text(encoding="utf-8"))
+    pass1_binding_root = h("physical-pass1")
     split = receipt(
         "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1",
         n_folds=4,
         fold_sizes=[28, 26, 25, 25],
+        pass1_physical_binding_sha256=pass1_binding_root,
     )
     eligibility = receipt(
         "V5_FULL104_TARGET_ELIGIBILITY_RECEIPT_V1",
         eligible_target_count=17053,
         split_receipt_sha256=split["receipt_sha256"],
         strict_core_cols=list(range(17186)),
+        pass1_physical_binding_sha256=pass1_binding_root,
     )
     census = {
         "schema": "V5_FULL104_READONLY_CENSUS_AUTHORITY_V2",
@@ -130,9 +134,11 @@ def valid_bundle():
         "substrate": {
             "full104_block_manifest_sha256": EXPECTED_BLOCK_MANIFEST_SHA256,
             "operator_address_observation_state_sha256": EXPECTED_OBSERVATION_STATE_SHA256,
+            "pass1_physical_binding_sha256": pass1_binding_root,
         },
         "support_estimability_authority": {"sha256": support_file_sha},
         "execution_receipts": {
+            "pass1_physical_binding_receipt_sha256": pass1_binding_root,
             "split_receipt_sha256": split["receipt_sha256"],
             "target_eligibility_receipt_sha256": eligibility["receipt_sha256"],
         },
@@ -140,6 +146,7 @@ def valid_bundle():
     census["census_authority_sha256"] = canonical_sha(census)
     cache = CacheManifestStub(
         census_authority_sha256=census["census_authority_sha256"],
+        pass1_physical_binding_sha256=pass1_binding_root,
         support_estimability_authority_sha256=support_file_sha,
         split_receipt_sha256=split["receipt_sha256"],
         target_eligibility_receipt_sha256=eligibility["receipt_sha256"],
@@ -171,6 +178,7 @@ def test_calibration_preflight_closes_current_full104_roots():
     roots = call_valid()
     assert roots["parameters_authority_sha256"] == parameters_payload()["parameter_authority_sha256"]
     assert roots["cache_manifest_sha256"] == h("cache-manifest")
+    assert roots["pass1_physical_binding_sha256"] == h("physical-pass1")
 
 
 def test_calibration_preflight_rejects_same_schema_historical_support_lookalike():
