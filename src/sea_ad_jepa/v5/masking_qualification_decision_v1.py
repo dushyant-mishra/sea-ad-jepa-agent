@@ -302,6 +302,8 @@ def evaluate_policy(evidence: MaskingPolicyDecisionEvidenceV1) -> MaskingPolicyD
         "target_delta_median": evidence.target_delta_median,
         "worst_target_delta": evidence.worst_target_delta,
         "mean_effective_targeted_n": evidence.mean_effective_targeted_n,
+        "total_effective_targeted_n": evidence.total_effective_targeted_n,
+        "targeting_complexity_observation_count": evidence.targeting_complexity_observation_count,
         "negative_control_delta": asdict(evidence.negative_control_delta),
         "planted_detect_excess": asdict(evidence.planted_detect_excess),
         "planted_after_mask_excess": asdict(evidence.planted_after_mask_excess),
