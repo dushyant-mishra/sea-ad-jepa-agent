@@ -160,8 +160,15 @@ def main() -> int:
         raise SystemExit("pass1 physical binding uses a different canonical registry")
     if census.get("substrate", {}).get("pass1_physical_binding_sha256") != physical_binding_root:
         raise SystemExit("census authority is bound to a different pass1 physical proof")
-    if census.get("execution_receipts", {}).get("pass1_physical_binding_receipt_sha256") != physical_binding_root:
+    census_execution = census.get("execution_receipts", {})
+    if census_execution.get("pass1_physical_binding_receipt_sha256") != physical_binding_root:
         raise SystemExit("census execution receipts do not bind the physical pass1 proof")
+    if census_execution.get("pass1_physical_binding_file_sha256") != sha256_file(
+        args.pass1_physical_binding
+    ):
+        raise SystemExit("census authority binds different physical-binding receipt bytes")
+    if census.get("substrate", {}).get("pass1_npz_sha256") != physical_binding.pass1_npz_sha256:
+        raise SystemExit("census authority and physical binding disagree on pass1 bytes")
 
     split = load_json(args.split_receipt)
     split_root = require_receipt(
