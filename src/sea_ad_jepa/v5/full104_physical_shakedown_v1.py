@@ -339,6 +339,16 @@ def run_physical_shakedown(
             raise ValueError("duplicate selection_row across FULL104 blocks")
         selection_seen[sel] = True
 
+        # Level-4 stores only a subset of each cell's raw library, so the
+        # mapped row sum must never exceed the authenticated source-library
+        # total paired with that matrix row.  This is a necessary runtime
+        # invariant for metadata-CSV order <-> matrix-row alignment.
+        mapped_row_sums = np.asarray(matrix.sum(axis=1), dtype=np.int64).reshape(-1)
+        if mapped_row_sums.shape != libs.shape or np.any(mapped_row_sums > libs):
+            raise ValueError(
+                f"FULL104 source_library row-alignment invariant failed: {row['block_key']}"
+            )
+
         source = str(row["source"])
         for donor in block_donors:
             if not donor:
