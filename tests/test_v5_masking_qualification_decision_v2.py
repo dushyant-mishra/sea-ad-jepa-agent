@@ -350,7 +350,7 @@ def test_f16_rejects_stale_decision_receipt_semantics():
     stale = MaskingPolicyDecisionReceiptV2(
         **{**prefix.__dict__, "decision_rule_id": "FIXED_SOURCE_NULL_EQUIVALENCE_AND_SOURCE_BENEFIT_GUARDED_SHORTCUT_SUPPRESSION_V3"}
     )
-    with pytest.raises(ValueError, match="current decision rule"):
+    with pytest.raises(ValueError, match="decision_rule_id mismatch"):
         select_policy_v2([uniform, top, ridge, stale])
 
 def test_f16_selector_rejects_spoofed_nonfinite_or_negative_complexity():
@@ -383,7 +383,7 @@ def test_f16_selector_rejects_stale_heterogeneity_floor_rule_receipt():
     stale = MaskingPolicyDecisionReceiptV2(
         **{**receipts[-1].__dict__, "target_heterogeneity_floor_rule_id": "REALIZED_NEGATIVE_CONTROL_LOWER_BOUND_V0"}
     )
-    with pytest.raises(ValueError, match="current target-heterogeneity floor rule"):
+    with pytest.raises(ValueError, match="target_heterogeneity_floor_rule_id mismatch"):
         select_policy_v2([*receipts[:-1], stale])
 
 def test_decision_rule_id_is_identical_in_evaluator_and_run_contract():
