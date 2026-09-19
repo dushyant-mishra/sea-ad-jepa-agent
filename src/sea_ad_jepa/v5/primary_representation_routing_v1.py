@@ -35,6 +35,8 @@ CANONICAL_REGISTRY_SHA256 = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287
 OBSERVATION_STATE_SHA256 = "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
 FEATURE_PARENT_MANIFEST_SHA256 = "0ceec0884d8bb03b00046e9d57ffceadae0c2d389953e51b12c20ae3614a8eaa"
 VALUE_ONLY_SELECTION_ARTIFACT_SHA256 = "5802bd0b71d7ecccf3feddef6ba1edbf88f708f264b853b9596207d7568c68ce"
+V0_FULL_PARENT_SHA256 = "3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada"
+V1_FULL_PARENT_SHA256 = "c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c"
 
 RNA_VALUE_ROUTE_ID = "AUTHENTICATED_FULL104_CANONICAL_ADDRESS_LOG1P10K_VALUES_V1"
 GLOBAL_CONTEXT_ROUTE_ID = "AUTHENTICATED_V0_V1_VALUE_CHANNELS_0_256_GLOBAL_CONTEXT_ONLY_V1"
@@ -77,6 +79,8 @@ class PrimaryRepresentationRoutingAuthorityV1:
     observation_state_sha256: str
     feature_parent_manifest_sha256: str
     value_only_selection_artifact_sha256: str
+    v0_full_parent_sha256: str
+    v1_full_parent_sha256: str
     full104_streaming_source_sha256: str
     rna_value_route_id: str = RNA_VALUE_ROUTE_ID
     global_context_route_id: str = GLOBAL_CONTEXT_ROUTE_ID
@@ -102,6 +106,10 @@ class PrimaryRepresentationRoutingAuthorityV1:
             raise ValueError("representation routing binds a different V0/V1 parent manifest")
         if _sha(self.value_only_selection_artifact_sha256, "value_only_selection_artifact_sha256") != VALUE_ONLY_SELECTION_ARTIFACT_SHA256:
             raise ValueError("representation routing binds a different value-only selection")
+        if _sha(self.v0_full_parent_sha256, "v0_full_parent_sha256") != V0_FULL_PARENT_SHA256:
+            raise ValueError("representation routing binds a different V0 full parent")
+        if _sha(self.v1_full_parent_sha256, "v1_full_parent_sha256") != V1_FULL_PARENT_SHA256:
+            raise ValueError("representation routing binds a different V1 full parent")
         _sha(self.full104_streaming_source_sha256, "full104_streaming_source_sha256")
         if self.rna_value_route_id != RNA_VALUE_ROUTE_ID:
             raise ValueError("rna_value_route_id mismatch")
@@ -150,6 +158,30 @@ class PrimaryRepresentationRoutingAuthorityV1:
             raise ValueError("remaining-RNA stream binds a different FULL104 manifest")
         stream.validate_layout()
 
+    def bind_global_context_parent_files(
+        self,
+        *,
+        v0_parent_path: Path,
+        v1_parent_path: Path,
+    ) -> None:
+        """Authenticate exact V0/V1 full parent files from live bytes.
+
+        This is a provenance check only. It does not by itself prove that a
+        future production model consumes these files; F13 remains open until
+        the production consumer is bound to this verifier or an equivalent one.
+        """
+
+        self.validate()
+        for label, path, expected in (
+            ("V0", Path(v0_parent_path), self.v0_full_parent_sha256),
+            ("V1", Path(v1_parent_path), self.v1_full_parent_sha256),
+        ):
+            if not path.is_file():
+                raise ValueError(f"{label} full parent file is missing")
+            observed = hashlib.sha256(path.read_bytes()).hexdigest()
+            if observed != expected:
+                raise ValueError(f"{label} full parent file root mismatch")
+
 
 def validate_value_only_selection_payload(
     authority: PrimaryRepresentationRoutingAuthorityV1,
@@ -187,6 +219,22 @@ def validate_value_only_selection_payload(
         "visibility": {"start_inclusive": 256, "stop_exclusive": 512},
     }:
         raise ValueError("feature-parent channel layout drifted")
+    views = parent_payload.get("views")
+    if not isinstance(views, Mapping):
+        raise ValueError("feature-parent manifest lacks V0/V1 views")
+    for view_id, expected_sha256 in (
+        ("V0", authority.v0_full_parent_sha256),
+        ("V1", authority.v1_full_parent_sha256),
+    ):
+        view = views.get(view_id)
+        if not isinstance(view, Mapping):
+            raise ValueError(f"feature-parent manifest lacks {view_id}")
+        if view.get("full_array_sha256") != expected_sha256:
+            raise ValueError(f"{view_id} full-parent root mismatch")
+        if view.get("shape") != [4_553_407, 512]:
+            raise ValueError(f"{view_id} full-parent shape mismatch")
+        if view.get("dtype") != "float32":
+            raise ValueError(f"{view_id} full-parent dtype mismatch")
     if parent_payload.get("normalization") != "log1p(raw_count * 10000 / full_source_library)__APPLIED_EXACTLY_ONCE":
         raise ValueError("feature-parent normalization semantics drifted")
     if parent_payload.get("training_authorized") is not False:
@@ -199,10 +247,12 @@ def value_only_global_context_views(
     v0_full: np.ndarray,
     v1_full: np.ndarray,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Return only the 256 value channels from each authenticated-shape parent.
+    """Mechanical channel slicer only; not a production provenance boundary.
 
-    This is intentionally a zero-copy slice when NumPy permits it.  It never
-    exposes the visibility half to the returned molecular/global-context route.
+    The caller must separately bind the physical V0/V1 files before these arrays
+    can be treated as current FULL104 inputs. This helper deliberately does not
+    claim F13 closure; it only enforces shape, dtype, finiteness, and exclusion
+    of the visibility half.
     """
 
     authority.validate()
