@@ -68,6 +68,7 @@ on:
       - 'tests/test_v5_control_capacity_calibration_receipt_v1.py'
       - 'tests/test_v5_full104_masking_anti_spillover_v2.py'
       - 'tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py'
+      - 'tests/test_v5_calibration_ladder_provenance_v1.py'
       - 'tests/test_v5_masking_qualification_run_contract_v4.py'
       - 'src/sea_ad_jepa/v5/full104_masking_gpu_preflight_v1.py'
       - 'scripts/agent/validate_full104_masking_gpu_preflight_v1.py'
@@ -159,6 +160,7 @@ jobs:
             tests/test_v5_control_capacity_calibration_receipt_v1.py \
             tests/test_v5_full104_masking_anti_spillover_v2.py \
             tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
+            tests/test_v5_calibration_ladder_provenance_v1.py \
             tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py \
             tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py \
             tests/test_v5_outer_split_and_precision_builders_current.py \
@@ -210,6 +212,7 @@ jobs:
             tests/test_v5_control_capacity_calibration_receipt_v1.py \
             tests/test_v5_full104_masking_anti_spillover_v2.py \
             tests/test_v5_control_calibrated_panel_and_nonlinear_v1.py \
+            tests/test_v5_calibration_ladder_provenance_v1.py \
             tests/test_v5_nonlinear_capacity_model_and_calibration_v2.py \
             tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py \
             tests/test_v5_outer_split_and_precision_builders_current.py \
