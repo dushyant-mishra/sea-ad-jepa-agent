@@ -31,7 +31,12 @@ def load(path:Path)->dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def typed(payload,cls,sha_field):
+def typed(payload,cls,sha_field,expected_schema):
+    if payload.get("schema") != expected_schema:
+        raise SystemExit(
+            f"{cls.__name__} schema mismatch: expected {expected_schema}, "
+            f"observed {payload.get('schema')!r}"
+        )
     names={f.name for f in fields(cls)}
     obj=cls(**{name:payload[name] for name in names})
     obj.validate()
@@ -81,28 +86,28 @@ def main()->int:
     cache.manifest.assert_calibration_only()
 
     pp=load(args.parameters_authority)
-    parameters=typed(pp,MaskingQualificationParametersAuthorityV3,"parameter_authority_sha256")
+    parameters=typed(pp,MaskingQualificationParametersAuthorityV3,"parameter_authority_sha256","V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3")
     mp=load(args.model_capacity_authority)
-    model=typed(mp,NonlinearCapacityModelAuthorityV1,"authority_sha256")
+    model=typed(mp,NonlinearCapacityModelAuthorityV1,"authority_sha256","V5_NONLINEAR_CAPACITY_MODEL_AUTHORITY_V1")
     model.bind_primary_parameters(parameters)
 
     panel_payload=load(args.target_panel_authority)
-    panel=typed(panel_payload,TargetPanelAuthorityV3,"authority_sha256")
+    panel=typed(panel_payload,TargetPanelAuthorityV3,"authority_sha256","V5_TARGET_PANEL_AUTHORITY_V3")
     selection_payload=load(args.target_selection_receipt)
-    selection=typed(selection_payload,TargetPanelSelectionReceiptV2,"receipt_sha256")
+    selection=typed(selection_payload,TargetPanelSelectionReceiptV2,"receipt_sha256","V5_TARGET_PANEL_SELECTION_RECEIPT_V2")
     if selection.target_count!=panel.target_count:
         raise SystemExit("target selection count disagrees with final target panel")
     if tuple(map(int,selection.selected_target_cols))!=tuple(map(int,cache.target_cols[:panel.target_count])):
         raise SystemExit("final target panel does not match authenticated cache target prefix")
 
     precision_payload=load(args.precision_authority)
-    precision=typed(precision_payload,QualificationPrecisionAuthorityV4,"authority_sha256")
+    precision=typed(precision_payload,QualificationPrecisionAuthorityV4,"authority_sha256","V5_QUALIFICATION_PRECISION_AUTHORITY_V4")
     if precision.target_panel_authority_sha256!=panel.canonical_digest():
         raise SystemExit("precision authority is bound to a different target panel")
     precision.assert_sufficient(target_count=panel.target_count,donor_count=104,outer_fold_count=4)
 
     outer_payload=load(args.outer_split_authority)
-    outer=typed(outer_payload,OuterDonorSplitAuthorityV1,"authority_sha256")
+    outer=typed(outer_payload,OuterDonorSplitAuthorityV1,"authority_sha256","V5_OUTER_DONOR_SPLIT_AUTHORITY_V1")
     if precision.outer_split_authority_sha256!=outer.canonical_digest():
         raise SystemExit("precision and nonlinear calibration use different outer split")
     if outer.fold_assignment_artifact_sha256!=cache.manifest.split_receipt_sha256:
