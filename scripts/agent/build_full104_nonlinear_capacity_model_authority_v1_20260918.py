@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from sea_ad_jepa.v5.full104_census_receipt_v2 import sha256_file
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import MaskingQualificationParametersAuthorityV3
 from sea_ad_jepa.v5.nonlinear_capacity_model_authority_v1 import NonlinearCapacityModelAuthorityV1
 
 HISTORICAL_SCRIPT="analysis/v5_masking_successor_spike_20260917/scripts/outer5200_nonlinear_probe32.py"
@@ -26,10 +26,10 @@ def main()->int:
     args=p.parse_args()
 
     pp=json.loads(args.parameters_authority.read_text(encoding="utf-8"))
-    if pp.get("schema")!="V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2":
-        raise SystemExit("current parameter authority V2 is required")
-    names={f.name for f in fields(MaskingQualificationParametersAuthorityV2)}
-    parameters=MaskingQualificationParametersAuthorityV2(**{name:pp[name] for name in names})
+    if pp.get("schema")!="V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3":
+        raise SystemExit("current FULL104-bound parameter authority V3 is required")
+    names={f.name for f in fields(MaskingQualificationParametersAuthorityV3)}
+    parameters=MaskingQualificationParametersAuthorityV3(**{name:pp[name] for name in names})
     parameters.validate()
     if pp.get("parameter_authority_sha256")!=parameters.canonical_digest():
         raise SystemExit("parameter authority digest mismatch")
