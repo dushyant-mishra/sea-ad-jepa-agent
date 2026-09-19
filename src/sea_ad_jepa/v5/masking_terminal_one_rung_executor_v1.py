@@ -94,6 +94,45 @@ def _sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def _live_checkpoint_validation_errors(
+    checkpoint_payload: Mapping[str, Any],
+) -> list[str]:
+    """Validate the checkpoint against its declared live worktree."""
+
+    if not isinstance(checkpoint_payload, Mapping):
+        return ["CHECKPOINT_PAYLOAD_NOT_MAPPING"]
+    git = checkpoint_payload.get("git")
+    if not isinstance(git, Mapping):
+        return ["CHECKPOINT_GIT_SNAPSHOT_MISSING"]
+    worktree_raw = git.get("worktree_path")
+    if not isinstance(worktree_raw, str) or not worktree_raw.strip():
+        return ["CHECKPOINT_WORKTREE_PATH_MISSING"]
+    worktree = Path(worktree_raw)
+    try:
+        from scripts.agent.work_checkpoint import (
+            resolve_canonical_repo,
+            validate_checkpoint,
+        )
+        repo = resolve_canonical_repo(worktree)
+        return list(validate_checkpoint(dict(checkpoint_payload), repo, worktree))
+    except Exception as exc:
+        return [
+            "CHECKPOINT_LIVE_VALIDATION_UNAVAILABLE:"
+            f"{type(exc).__name__}:{exc}"
+        ]
+
+
+def _assert_live_machine_checkpoint(
+    checkpoint_payload: Mapping[str, Any],
+) -> None:
+    errors = _live_checkpoint_validation_errors(checkpoint_payload)
+    if errors:
+        raise ValueError(
+            "terminal executor requires a live-valid machine/worktree checkpoint: "
+            + "; ".join(errors[:8])
+        )
+
+
 def _receipt_digest(payload: Mapping[str, Any], schema: str) -> str:
     if payload.get("schema") != schema:
         raise ValueError(f"expected receipt schema {schema}")
@@ -470,6 +509,7 @@ def execute_one_terminal_rung(
         raise ValueError("run contract does not bind the live one-rung terminal executor")
 
     run_contract.bind_machine_checkpoint_semantic(machine_checkpoint_payload)
+    _assert_live_machine_checkpoint(machine_checkpoint_payload)
     run_contract.bind_parameters(parameters)
     run_contract.bind_evidence_budget_template(evidence_budget_template)
     run_contract.bind_burden_ladder(burden_ladder)
