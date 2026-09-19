@@ -333,9 +333,12 @@ def _validate_requested_rung(
         len(prior_rung_receipts)
         == len(prior_rung_execution_authorities)
         == len(prior_rung_raw_result_artifacts)
+        == len(prior_rung_raw_evidence_by_policy)
+        == len(prior_rung_mechanical_control_receipts)
     ):
         raise ValueError(
-            "every prior rung must supply receipt, execution authority, and raw-result artifact"
+            "every prior rung must supply receipt, execution authority, raw-result "
+            "artifact, raw-policy evidence, and mechanical-control receipt"
         )
 
     expected_terminal_input_manifest_sha256 = _sha(
