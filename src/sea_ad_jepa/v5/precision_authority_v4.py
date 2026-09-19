@@ -17,7 +17,11 @@ import hashlib
 import json
 from typing import Any, Mapping
 
-from .null_equivalence_margin_authority_v1 import NullEquivalenceMarginAuthorityV1
+from .null_equivalence_margin_authority_v1 import (
+    MARGIN_DENOMINATOR,
+    MARGIN_NUMERATOR,
+    NullEquivalenceMarginAuthorityV1,
+)
 from .precision_authority_v2 import paired_target_donor_bootstrap
 
 METHOD_ID = "PAIRED_TARGET_AND_DONOR_WITHIN_FIXED_SOURCE_BOOTSTRAP_V4"
@@ -150,6 +154,13 @@ class QualificationPrecisionAuthorityV4:
         )
         if margin >= 1:
             raise ValueError("null equivalence margin must be strictly below one")
+        if (
+            self.null_equivalence_margin_numerator,
+            self.null_equivalence_margin_denominator,
+        ) != (MARGIN_NUMERATOR, MARGIN_DENOMINATOR):
+            raise ValueError(
+                "precision V4 must use the frozen null-equivalence margin authority rational"
+            )
         if self.uncertainty_method_id != METHOD_ID:
             raise ValueError("uncertainty_method_id mismatch")
         if self.source_population_frame_id != SOURCE_POPULATION_FRAME_ID:
