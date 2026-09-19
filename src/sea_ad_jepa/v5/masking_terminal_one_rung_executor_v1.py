@@ -2,7 +2,8 @@
 
 This is intentionally a single-rung executor. It cannot choose or advance the
 burden ladder. A higher rung is lawful only when the caller supplies the exact
-contiguous prefix of prior V2 rung receipts and every prior rung failed.
+contiguous prefix of prior V2 rung receipts together with the bound execution
+authority for every prior rung, and every prior execution failed.
 
 The executor consumes authenticated FULL104 Level-4 streaming input. The
 calibration cache is not an input and cannot be substituted for the terminal
@@ -58,7 +59,7 @@ from .masking_terminal_mechanical_controls_v1 import (
 )
 from .target_panel_selector_v2 import TargetPanelSelectionReceiptV2
 
-RAW_RESULT_SCHEMA_ID = "V5_FULL104_TERMINAL_ONE_RUNG_RAW_RESULT_ARTIFACT_V1"
+RAW_RESULT_SCHEMA_ID = "V5_FULL104_TERMINAL_ONE_RUNG_RAW_RESULT_ARTIFACT_V2"
 EXECUTOR_POLICY_ID = "EXACTLY_ONE_BURDEN_RUNG_PER_INVOCATION__NO_AUTO_ESCALATION_V1"
 
 
@@ -260,17 +261,35 @@ def _validate_requested_rung(
     numerator: int,
     denominator: int,
     prior_rung_receipts: Sequence[MaskingRungDecisionReceiptV2],
-) -> tuple[Fraction, tuple[str, ...]]:
+    prior_rung_execution_authorities: Sequence[MaskingQualificationExecutionAuthorityV4],
+    expected_run_contract_sha256: str,
+) -> tuple[Fraction, tuple[str, ...], tuple[str, ...]]:
     burden_ladder.validate()
     requested = Fraction(int(numerator), int(denominator))
     verdicts: dict[Fraction, bool] = {}
     prior_roots: list[str] = []
+    prior_execution_roots: list[str] = []
     expected_rungs = burden_ladder.ordered_rungs()
+    expected_run_contract_sha256 = _sha(
+        expected_run_contract_sha256, "expected_run_contract_sha256"
+    )
+    if len(prior_rung_receipts) != len(prior_rung_execution_authorities):
+        raise ValueError("every prior rung receipt must have one execution authority")
 
-    for index, receipt in enumerate(prior_rung_receipts):
+    for index, (receipt, execution) in enumerate(
+        zip(prior_rung_receipts, prior_rung_execution_authorities)
+    ):
         if not isinstance(receipt, MaskingRungDecisionReceiptV2):
             raise ValueError("prior terminal rung evidence must be a V2 rung decision receipt")
         receipt.validate()
+        if not isinstance(execution, MaskingQualificationExecutionAuthorityV4):
+            raise ValueError("prior rung authorization must be ExecutionAuthorityV4")
+        execution.validate()
+        if execution.run_contract_authority_sha256 != expected_run_contract_sha256:
+            raise ValueError("prior rung execution binds a different run contract")
+        execution.bind_rung_decision_receipt(receipt)
+        if execution.execution_status != "EXECUTED_FAIL":
+            raise ValueError("higher burden requires a proven failed prior execution")
         rung = Fraction(receipt.burden_numerator, receipt.burden_denominator)
         if index >= len(expected_rungs) or rung != expected_rungs[index]:
             raise ValueError("prior rung receipts are not an exact ascending ladder prefix")
@@ -278,13 +297,14 @@ def _validate_requested_rung(
             raise ValueError("higher burden cannot open after a lower burden qualified")
         verdicts[rung] = False
         prior_roots.append(receipt.canonical_digest())
+        prior_execution_roots.append(execution.canonical_digest())
 
     lawful_next = burden_ladder.next_rung(verdicts)
     if lawful_next is None or requested != lawful_next:
         raise ValueError(
             f"requested burden {requested} is not the only lawful next rung {lawful_next}"
         )
-    return requested, tuple(prior_roots)
+    return requested, tuple(prior_roots), tuple(prior_execution_roots)
 
 
 def _fill_donor_values(
@@ -320,6 +340,7 @@ class TerminalOneRungRawResultArtifactV1:
     burden_numerator: int
     burden_denominator: int
     prior_rung_decision_receipt_sha256: tuple[str, ...]
+    prior_rung_execution_authority_sha256: tuple[str, ...]
     terminal_input_manifest_sha256: str
     split_receipt_sha256: str
     target_eligibility_receipt_sha256: str
@@ -337,8 +358,14 @@ class TerminalOneRungRawResultArtifactV1:
         _sha(self.target_eligibility_receipt_sha256, "target_eligibility_receipt_sha256")
         _sha(self.target_selection_receipt_sha256, "target_selection_receipt_sha256")
         _sha(self.mechanical_control_receipt_sha256, "mechanical_control_receipt_sha256")
+        if len(self.prior_rung_decision_receipt_sha256) != len(
+            self.prior_rung_execution_authority_sha256
+        ):
+            raise ValueError("prior rung receipt/execution roots must be one-to-one")
         for root in self.prior_rung_decision_receipt_sha256:
             _sha(root, "prior_rung_decision_receipt_sha256")
+        for root in self.prior_rung_execution_authority_sha256:
+            _sha(root, "prior_rung_execution_authority_sha256")
         if set(self.raw_policy_evidence_sha256) != set(POLICIES):
             raise ValueError("raw result artifact must bind every policy arm exactly once")
         for policy, root in self.raw_policy_evidence_sha256.items():
@@ -364,6 +391,9 @@ class TerminalOneRungRawResultArtifactV1:
             "burden_denominator": self.burden_denominator,
             "prior_rung_decision_receipt_sha256": list(
                 self.prior_rung_decision_receipt_sha256
+            ),
+            "prior_rung_execution_authority_sha256": list(
+                self.prior_rung_execution_authority_sha256
             ),
             "terminal_input_manifest_sha256": self.terminal_input_manifest_sha256,
             "split_receipt_sha256": self.split_receipt_sha256,
@@ -434,6 +464,7 @@ def execute_one_terminal_rung(
     burden_numerator: int,
     burden_denominator: int,
     prior_rung_receipts: Sequence[MaskingRungDecisionReceiptV2],
+    prior_rung_execution_authorities: Sequence[MaskingQualificationExecutionAuthorityV4],
     rng_replay: Any,
     outer_split: Any,
     split_receipt: Mapping[str, Any],
@@ -506,11 +537,13 @@ def execute_one_terminal_rung(
         nonlinear_sampling_calibration_receipt,
     )
 
-    requested, prior_roots = _validate_requested_rung(
+    requested, prior_roots, prior_execution_roots = _validate_requested_rung(
         burden_ladder=burden_ladder,
         numerator=burden_numerator,
         denominator=burden_denominator,
         prior_rung_receipts=prior_rung_receipts,
+        prior_rung_execution_authorities=prior_rung_execution_authorities,
+        expected_run_contract_sha256=run_contract.canonical_digest(),
     )
     budget = evidence_budget_template.with_fraction(
         requested.numerator,
@@ -862,6 +895,7 @@ def execute_one_terminal_rung(
         burden_numerator=requested.numerator,
         burden_denominator=requested.denominator,
         prior_rung_decision_receipt_sha256=prior_roots,
+        prior_rung_execution_authority_sha256=prior_execution_roots,
         terminal_input_manifest_sha256=before_manifest,
         split_receipt_sha256=split_root,
         target_eligibility_receipt_sha256=eligibility_root,
