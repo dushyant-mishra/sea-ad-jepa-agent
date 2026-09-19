@@ -181,6 +181,15 @@ def validate_calibration_bindings(
     if census_payload.get("support_estimability_authority", {}).get("sha256") != support_file_sha256:
         raise ValueError("census authority binds a different support authority")
     receipts = census_payload.get("execution_receipts", {})
+    pass1_binding_root = csubstrate.get("pass1_physical_binding_sha256")
+    if not isinstance(pass1_binding_root, str) or len(pass1_binding_root) != 64:
+        raise ValueError("census authority lacks current physical pass1 binding")
+    if receipts.get("pass1_physical_binding_receipt_sha256") != pass1_binding_root:
+        raise ValueError("census authority physical pass1 receipt mismatch")
+    if split_payload.get("pass1_physical_binding_sha256") != pass1_binding_root:
+        raise ValueError("donor split binds a different physical pass1 proof")
+    if eligibility_payload.get("pass1_physical_binding_sha256") != pass1_binding_root:
+        raise ValueError("target eligibility binds a different physical pass1 proof")
     if receipts.get("split_receipt_sha256") != split_root:
         raise ValueError("census authority binds a different donor split")
     if receipts.get("target_eligibility_receipt_sha256") != eligibility_root:
@@ -195,6 +204,8 @@ def validate_calibration_bindings(
         raise ValueError("calibration cache binds a different canonical registry")
     if cache_manifest.census_authority_sha256 != census_root:
         raise ValueError("calibration cache binds a different census authority")
+    if cache_manifest.pass1_physical_binding_sha256 != pass1_binding_root:
+        raise ValueError("calibration cache binds a different physical pass1 proof")
     if cache_manifest.support_estimability_authority_sha256 != support_file_sha256:
         raise ValueError("calibration cache binds a different support authority")
     if cache_manifest.split_receipt_sha256 != split_root:
@@ -209,6 +220,7 @@ def validate_calibration_bindings(
     return {
         "parameters_authority_sha256": parameters.canonical_digest(),
         "census_authority_sha256": census_root,
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "split_receipt_sha256": split_root,
         "target_eligibility_receipt_sha256": eligibility_root,
         "support_authority_file_sha256": support_file_sha256,
