@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import fields
 import json
 from pathlib import Path
 
+from sea_ad_jepa.v5.full104_pass1_physical_binding_v1 import (
+    SCHEMA_ID as PASS1_BINDING_SCHEMA_ID,
+    Full104Pass1PhysicalBindingReceiptV1,
+    verify_pass1_against_physical_full104,
+)
 from sea_ad_jepa.v5.full104_census_receipt_v2 import (
     FULL104_CORE_NONZERO_COUNT,
     FULL104_CORE_SLOT_COUNT,
@@ -42,7 +48,9 @@ def main() -> int:
     p.add_argument("--repo", type=Path, required=True)
     p.add_argument("--level4-root", type=Path, required=True)
     p.add_argument("--observation-state", type=Path, required=True)
+    p.add_argument("--registry", type=Path, required=True)
     p.add_argument("--pass1", type=Path, required=True)
+    p.add_argument("--pass1-physical-binding", type=Path, required=True)
     p.add_argument("--summary", type=Path, required=True)
     p.add_argument("--split", type=Path, required=True)
     p.add_argument("--target-eligibility", type=Path, required=True)
@@ -59,6 +67,37 @@ def main() -> int:
         raise SystemExit("observation-state authority mismatch")
 
     pass1_sha = sha256_file(args.pass1)
+
+    binding_payload = load(args.pass1_physical_binding)
+    if binding_payload.get("schema") != PASS1_BINDING_SCHEMA_ID:
+        raise SystemExit("pass1 physical-binding receipt schema mismatch")
+    binding_names = {item.name for item in fields(Full104Pass1PhysicalBindingReceiptV1)}
+    missing_binding = binding_names - set(binding_payload)
+    if missing_binding:
+        raise SystemExit(
+            f"pass1 physical-binding receipt missing fields: {sorted(missing_binding)[:5]}"
+        )
+    binding_values = {name: binding_payload[name] for name in binding_names}
+    binding_values["source_names"] = tuple(binding_values["source_names"])
+    persisted_binding = Full104Pass1PhysicalBindingReceiptV1(**binding_values)
+    persisted_binding.validate()
+    binding_root = persisted_binding.canonical_digest()
+    if binding_payload.get("receipt_sha256") != binding_root:
+        raise SystemExit("pass1 physical-binding receipt digest mismatch")
+    if persisted_binding.pass1_npz_sha256 != pass1_sha:
+        raise SystemExit("pass1 physical-binding receipt binds different pass1 bytes")
+
+    rederived_binding = verify_pass1_against_physical_full104(
+        pass1_path=args.pass1,
+        level4_root=args.level4_root,
+        registry_path=args.registry,
+        observation_state_path=args.observation_state,
+    )
+    if rederived_binding.canonical_digest() != binding_root:
+        raise SystemExit(
+            "pass1 physical binding does not rederive from current FULL104 physical bytes"
+        )
+
     summary = load(args.summary)
     split = load(args.split)
     eligibility = load(args.target_eligibility)
@@ -68,6 +107,10 @@ def main() -> int:
     for label, receipt in (("summary", summary), ("split", split), ("eligibility", eligibility)):
         if receipt.get("pass1_npz_sha256") != pass1_sha:
             raise SystemExit(f"{label} receipt is not bound to supplied pass1 NPZ")
+        if receipt.get("pass1_physical_binding_sha256") != binding_root:
+            raise SystemExit(
+                f"{label} receipt is not bound to the rederived physical FULL104 pass1 proof"
+            )
 
     validate_full104_crosscheck(summary["corrected_core_zero_crosscheck"])
     if summary["corrected_core_zero_crosscheck"]["total_core_slots"] != FULL104_CORE_SLOT_COUNT:
@@ -110,12 +153,17 @@ def main() -> int:
             "full104_block_manifest_sha256": manifest_sha,
             "operator_address_observation_state_sha256": observation_sha,
             "pass1_npz_sha256": pass1_sha,
+            "pass1_physical_binding_sha256": binding_root,
+            "canonical_registry_sha256": rederived_binding.canonical_registry_sha256,
         },
         "support_estimability_authority": {
             "path": str(args.support_authority),
             "sha256": support_sha,
         },
         "execution_receipts": {
+            "pass1_physical_binding_path": str(args.pass1_physical_binding),
+            "pass1_physical_binding_file_sha256": sha256_file(args.pass1_physical_binding),
+            "pass1_physical_binding_receipt_sha256": binding_root,
             "summary_path": str(args.summary),
             "summary_file_sha256": sha256_file(args.summary),
             "summary_receipt_sha256": summary["receipt_sha256"],
@@ -133,7 +181,8 @@ def main() -> int:
         "withdrawn_v1_builder_semantics": (
             "V1 packaged hard-coded census constants with script and substrate hashes "
             "but did not bind the actual pass1/result receipts. V2 requires the pass1 "
-            "NPZ and receipt files and refuses mismatched roots."
+            "NPZ and receipt files, re-derives pass1 semantics from the authenticated "
+            "8,915-block FULL104 substrate, and refuses mismatched roots."
         ),
     }
     payload["census_authority_sha256"] = canonical_sha(payload)
