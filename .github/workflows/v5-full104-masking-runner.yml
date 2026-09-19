@@ -71,6 +71,9 @@ on:
       - 'tests/test_v5_calibration_ladder_provenance_v1.py'
       - 'tests/test_v5_masking_qualification_run_contract_v4.py'
       - 'src/sea_ad_jepa/v5/full104_masking_gpu_preflight_v1.py'
+      - 'src/sea_ad_jepa/v5/full104_runtime_envelope_v1.py'
+      - 'scripts/agent/prepare_full104_runtime_envelope_v1.py'
+      - 'tests/test_v5_full104_runtime_envelope_v1.py'
       - 'scripts/agent/validate_full104_masking_gpu_preflight_v1.py'
       - 'scripts/agent/v5_full104_masking_gpu_preflight_20260918.ps1'
       - 'tests/test_v5_full104_masking_gpu_preflight_v1.py'
@@ -167,6 +170,7 @@ jobs:
             tests/test_v5_precision_authority_v4.py \
             tests/test_v5_masking_qualification_run_contract_v4.py \
             tests/test_v5_full104_masking_gpu_preflight_v1.py \
+            tests/test_v5_full104_runtime_envelope_v1.py \
             tests/test_v5_masking_design_authority_v2.py \
             tests/test_v5_full104_current_freeze_builders_v1.py \
             tests/test_v5_nonlinear_v3_builder_current.py \
@@ -219,6 +223,7 @@ jobs:
             tests/test_v5_precision_authority_v4.py \
             tests/test_v5_masking_qualification_run_contract_v4.py \
             tests/test_v5_full104_masking_gpu_preflight_v1.py \
+            tests/test_v5_full104_runtime_envelope_v1.py \
             tests/test_v5_masking_design_authority_v2.py \
             tests/test_v5_full104_current_freeze_builders_v1.py \
             tests/test_v5_nonlinear_v3_builder_current.py \
