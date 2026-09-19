@@ -1,0 +1,56 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_POST_CLAUDE_FULL104_V1",
+  "date": "2026-09-18",
+  "status": "POST_CLAUDE_BINDING_REPAIRS_GREEN__SCIENTIFIC_INTERPRETABILITY_BLOCKERS_OPEN__TERMINAL_UNOPENED__TRAINING_OFF",
+  "scientific_branch": "impl/v5-full104-post-claude-binding-repair-20260918",
+  "scientific_head": "72338541c3a161cf461dde5215e6841ee9704ee7",
+  "scientific_base_audited_head": "144873cec377e2cd098ce66220377f10723f413a",
+  "scientific_pr": 26,
+  "prior_f16_f17_pr": 22,
+  "ci": {
+    "full104_masking_runner": {"run_id": 35414815529, "conclusion": "success", "first_pass": 285, "second_pass": 285, "skips": 0},
+    "stage_a_spillover": {"run_id": 35414815136, "conclusion": "success"},
+    "runtime_closure": {"run_id": 35414815158, "conclusion": "success"},
+    "remaining_rna_target_semantics": {"run_id": 35414815141, "conclusion": "success"}
+  },
+  "repaired": {
+    "F16": "mechanically closed at independently audited 144873ce; G2 materiality remains open",
+    "F17": "mechanically closed; realized control width no longer sets heterogeneity floor",
+    "G1": "exact rational margin plus PrecisionAuthorityV4 root cross-binding at terminal decision",
+    "H1": "prior rung requires matching failed ExecutionAuthorityV4 from same RunContract",
+    "H2": "policy receipt roots require lowercase hexadecimal SHA-256"
+  },
+  "open_scientific_blockers": [
+    "G2 targeting-complexity materiality justification/scale",
+    "H3 target-panel sizing must establish equivalence power, not only planted superiority detectability",
+    "H4 pre-registered interpretation/feasibility for all-rung FAIL_CLOSED",
+    "G3 attacker capacity mismatch: 32-feature probe versus production full context",
+    "G4 missing biological-signal preservation criterion",
+    "G5 prospective null-equivalence margin derivation or external rationale",
+    "F13 executable representation authority binding",
+    "F14 production dimension/rank/subspace authority",
+    "F15 executable production teacher/student mechanics"
+  ],
+  "claims_requiring_independent_rederivation": [
+    "whether VALUE_ONLY_256 is actually instantiated in executable production src",
+    "whether D_shared/D_private/D_obs production pipeline exists beyond scaffolding",
+    "downstream donor-level power/Kish ESS/rho≈0.6 arithmetic"
+  ],
+  "protected_state": {
+    "terminal_masking_outcomes_opened": false,
+    "d_shared_outcomes_opened": false,
+    "protected_pathology_dev_sealed_opened": false,
+    "training_authorized": false
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_common_core": 17186,
+    "level4_blocks": 8915,
+    "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "foundation-discovery-sample-freeze-v1",
+  "selection_seed": "FOUNDATION_CORPUS_DISCOVERY_V1_20260824",
+  "frozen_before_selected_expression_read": true,
+  "sample_a_rows": 25000,
+  "sample_b_rows": 25000,
+  "samples_disjoint": true,
+  "original_t1_excluded": true,
+  "sample_a": "donor-proportional largest-remainder quotas; deterministic minimum hash; empirical source/operator/class mixture retained within donor",
+  "sample_b": "one deterministic representative per observed source/operator/native/broad/support stratum, then deterministic donor-primary round-robin fill",
+  "manifest": {"path":"FOUNDATION_DISCOVERY_SAMPLE_FREEZE.csv","sha256":"79eb005c719788119d9c3021e211148d34198301a59393707c9a2dc88dcef9a6"},
+  "firewalls": {"fit_donors":104,"heldout_donors_metadata_only":45,"heldout_expression_read":false,"dev_expression_read":false,"sealed_expression_read":false,"pathology_read":false}
+}
