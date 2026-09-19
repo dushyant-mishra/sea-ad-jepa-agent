@@ -68,7 +68,7 @@ def budget() -> TargetEvidenceBudgetAuthorityV1:
     )
 
 
-def _fixture(tmp_path: Path):
+def _fixture(tmp_path: Path, *, misaligned_library: bool = False):
     n_donors = 12
     cells_per_donor = 4
     donor_ids = [f"D{i:02d}" for i in range(n_donors)]
@@ -136,7 +136,11 @@ def _fixture(tmp_path: Path):
                         donor_id,
                         row_index,
                         "1.0",
-                        int(libraries[row_index]),
+                        (
+                            1
+                            if misaligned_library and selection_row == 0
+                            else int(libraries[row_index])
+                        ),
                     ]
                 )
                 selection_row += 1
@@ -228,6 +232,12 @@ def test_uncached_physical_revalidation_detects_post_validation_tamper(tmp_path:
 
     with pytest.raises(ValueError, match="counts block hash mismatch during physical revalidation"):
         stream.revalidate_physical_inputs()
+
+
+def test_stream_fails_closed_on_metadata_matrix_row_misalignment(tmp_path: Path) -> None:
+    _, stream, _, _ = _fixture(tmp_path, misaligned_library=True)
+    with pytest.raises(ValueError, match="source_library row-alignment invariant failed"):
+        stream.validate_layout()
 
 
 def test_streaming_fold_matches_canonical_reference_for_all_policy_arms(tmp_path: Path) -> None:
