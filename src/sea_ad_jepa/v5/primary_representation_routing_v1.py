@@ -131,6 +131,17 @@ class PrimaryRepresentationRoutingAuthorityV1:
             }
         )
 
+    def bind_streaming_source(self, source_path: Path) -> None:
+        """Recompute the exact streaming implementation root from live bytes."""
+
+        self.validate()
+        path = Path(source_path)
+        if not path.is_file():
+            raise ValueError("FULL104 streaming source file is missing")
+        observed = hashlib.sha256(path.read_bytes()).hexdigest()
+        if observed != self.full104_streaming_source_sha256:
+            raise ValueError("FULL104 streaming implementation source root mismatch")
+
     def bind_stream(self, stream: Full104ManifestStreamV1) -> None:
         self.validate()
         if not isinstance(stream, Full104ManifestStreamV1):
