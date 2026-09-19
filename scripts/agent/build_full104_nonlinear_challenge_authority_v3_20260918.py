@@ -26,7 +26,12 @@ def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def typed(payload: dict, cls, digest_field: str):
+def typed(payload: dict, cls, digest_field: str, expected_schema: str):
+    if payload.get("schema") != expected_schema:
+        raise SystemExit(
+            f"{cls.__name__} schema mismatch: expected {expected_schema}, "
+            f"observed {payload.get('schema')!r}"
+        )
     names = {f.name for f in fields(cls)}
     missing = names - set(payload)
     if missing:
@@ -92,13 +97,13 @@ def main() -> int:
     cache = load_control_calibration_cache(args.cache_dir)
     cache.manifest.assert_calibration_only()
 
-    parameters = typed(load(args.parameters_authority), MaskingQualificationParametersAuthorityV3, "parameter_authority_sha256")
-    model = typed(load(args.model_capacity_authority), NonlinearCapacityModelAuthorityV1, "authority_sha256")
+    parameters = typed(load(args.parameters_authority), MaskingQualificationParametersAuthorityV3, "parameter_authority_sha256", "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3")
+    model = typed(load(args.model_capacity_authority), NonlinearCapacityModelAuthorityV1, "authority_sha256", "V5_NONLINEAR_CAPACITY_MODEL_AUTHORITY_V1")
     model.bind_primary_parameters(parameters)
 
-    panel = typed(load(args.target_panel_authority), TargetPanelAuthorityV3, "authority_sha256")
-    precision = typed(load(args.precision_authority), QualificationPrecisionAuthorityV4, "authority_sha256")
-    outer = typed(load(args.outer_split_authority), OuterDonorSplitAuthorityV1, "authority_sha256")
+    panel = typed(load(args.target_panel_authority), TargetPanelAuthorityV3, "authority_sha256", "V5_TARGET_PANEL_AUTHORITY_V3")
+    precision = typed(load(args.precision_authority), QualificationPrecisionAuthorityV4, "authority_sha256", "V5_QUALIFICATION_PRECISION_AUTHORITY_V4")
+    outer = typed(load(args.outer_split_authority), OuterDonorSplitAuthorityV1, "authority_sha256", "V5_OUTER_DONOR_SPLIT_AUTHORITY_V1")
     if precision.target_panel_authority_sha256 != panel.canonical_digest():
         raise SystemExit("precision authority binds a different target panel")
     if precision.outer_split_authority_sha256 != outer.canonical_digest():
@@ -109,7 +114,7 @@ def main() -> int:
     plan_payload = load(args.sampling_plan)
     if plan_payload.get("schema") != "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2":
         raise SystemExit("nonlinear sampling calibration plan V2 is required")
-    plan = typed(plan_payload, NonlinearSamplingCalibrationPlanV2, "authority_sha256")
+    plan = typed(plan_payload, NonlinearSamplingCalibrationPlanV2, "authority_sha256", "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2")
     plan.bind_current_roots(
         panel=panel,
         precision=precision,
