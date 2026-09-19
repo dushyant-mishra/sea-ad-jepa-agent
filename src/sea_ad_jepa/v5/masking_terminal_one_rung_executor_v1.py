@@ -61,6 +61,17 @@ from .target_panel_selector_v2 import TargetPanelSelectionReceiptV2
 
 RAW_RESULT_SCHEMA_ID = "V5_FULL104_TERMINAL_ONE_RUNG_RAW_RESULT_ARTIFACT_V2"
 EXECUTOR_POLICY_ID = "EXACTLY_ONE_BURDEN_RUNG_PER_INVOCATION__NO_AUTO_ESCALATION_V1"
+TERMINAL_SCIENTIFIC_BLOCKER_ID = "H3_EQUIVALENCE_POWER_AND_G5_MARGIN_BASIS_OPEN_V1"
+
+
+def _assert_terminal_scientific_design_ready() -> None:
+    """Fail closed until H3/G5 have prospective successor authorities."""
+
+    raise ValueError(
+        "STOP_H3_G5_TERMINAL_MASKING_UNAUTHORIZED: target-panel sizing is still "
+        "capacity-only and the null-equivalence margin lacks a prospective "
+        "scientific basis. Terminal burden execution remains closed."
+    )
 
 
 def _sha(value: object, name: str) -> str:
@@ -546,6 +557,8 @@ def execute_one_terminal_rung(
     stream: streaming.Full104ManifestStreamV1,
 ) -> TerminalOneRungExecutionResultV1:
     """Execute exactly one currently-lawful terminal burden rung."""
+
+    _assert_terminal_scientific_design_ready()
 
     if not isinstance(stream, streaming.Full104ManifestStreamV1):
         raise ValueError("terminal executor requires Full104ManifestStreamV1")
