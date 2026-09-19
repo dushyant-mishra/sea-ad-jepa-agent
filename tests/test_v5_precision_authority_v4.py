@@ -6,6 +6,7 @@ import pytest
 
 from sea_ad_jepa.v5.masking_qualification_decision_v1 import IntervalEvidenceV1
 from sea_ad_jepa.v5.null_equivalence_margin_authority_v1 import (
+    FULL104_SUBSTRATE_SHA256,
     HISTORICAL_SCALE_CONTEXT_SHA256,
     NullEquivalenceMarginAuthorityV1,
 )
@@ -102,6 +103,7 @@ def test_margin_is_mandatory_and_must_be_positive_and_below_one():
 def test_precision_binds_exact_margin_authority_root_and_rational():
     margin = NullEquivalenceMarginAuthorityV1(
         authority_id="TEST_MARGIN",
+        full104_substrate_sha256=FULL104_SUBSTRATE_SHA256,
         historical_scale_context_artifact_sha256=HISTORICAL_SCALE_CONTEXT_SHA256,
     )
     a = authority(null_equivalence_margin_authority_sha256=margin.canonical_digest())
