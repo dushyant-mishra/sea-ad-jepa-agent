@@ -16,6 +16,23 @@ from .current_teacher_target_receipt_v2 import validate_current_teacher_target_r
 from .current_trainer_preexecution_contract_v2 import CurrentTrainerPreexecutionAuthorityV2
 
 ISSUANCE_POLICY_ID = "CURRENT_V5_ALL_GATES_PASS_BEFORE_TRAINING_V1"
+CURRENT_CHAIN_STATUS_ID = (
+    "STALE_RELATIVE_TO_CURRENT_MASKING_V3_V4_AND_OPEN_F13_F14_F15_V1"
+)
+STOP_STALE_TRAINING_CHAIN = "STOP_V5_CURRENT_TRAINING_AUTHORITY_V1_STALE_CHAIN"
+
+
+def assert_current_training_authority_v1_issuance_open() -> None:
+    """Fail closed while the V1/V2 final closure graph is stale.
+
+    Current masking qualification uses newer V3/V4 authorities and F13/F14/F15
+    remain open.  Historical V1 training-authority objects remain readable for
+    provenance, but they cannot issue or arm a new optimizer step.
+    """
+
+    raise RuntimeError(
+        f"{STOP_STALE_TRAINING_CHAIN}: {CURRENT_CHAIN_STATUS_ID}"
+    )
 
 
 def _sha(value: object, name: str) -> str:
@@ -83,6 +100,7 @@ class CurrentTrainingAuthorityV1:
 
 
 def issue_training_authority_v1(*, closure_v2: Mapping[str, Any], preexecution: CurrentTrainerPreexecutionAuthorityV2, receipt_v2: Mapping[str, Any], expected_target_package_root: str, critical_test: Any, runtime_source: Any) -> CurrentTrainingAuthorityV1:
+    assert_current_training_authority_v1_issuance_open()
     if not isinstance(closure_v2, Mapping) or closure_v2.get("schema") != "V5_CURRENT_AUTHORITY_CLOSURE_V2":
         raise ValueError("closure_v2 schema mismatch")
     if closure_v2.get("training_authorized") is not False:
