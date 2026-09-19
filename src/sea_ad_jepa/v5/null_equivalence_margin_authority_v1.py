@@ -13,6 +13,7 @@ import hashlib
 import json
 from typing import Mapping, Any
 
+FULL104_SUBSTRATE_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 PRIMARY_SCORE_ID = "SOURCE_BALANCED_MEAN_DONOR_CENTERED_PREDICTION_CORRELATION_SQUARED_V1"
 HISTORICAL_SCALE_CONTEXT_SHA256 = "2b2cebd922e8a6c37a67f58fda10b3069a76a4bc00d1f9e8636fbcb1d8ac6dd6"
 HISTORICAL_ROLE_ID = (
@@ -52,6 +53,7 @@ def _digest(payload: Mapping[str, Any]) -> str:
 @dataclass(frozen=True)
 class NullEquivalenceMarginAuthorityV1:
     authority_id: str
+    full104_substrate_sha256: str
     historical_scale_context_artifact_sha256: str
     primary_score_id: str = PRIMARY_SCORE_ID
     historical_role_id: str = HISTORICAL_ROLE_ID
@@ -69,6 +71,9 @@ class NullEquivalenceMarginAuthorityV1:
     def validate(self) -> None:
         if not isinstance(self.authority_id, str) or not self.authority_id.strip():
             raise ValueError("authority_id must be nonempty")
+        substrate = _sha(self.full104_substrate_sha256, "full104_substrate_sha256")
+        if substrate != FULL104_SUBSTRATE_SHA256:
+            raise ValueError("null-equivalence margin authority binds a different FULL104 substrate")
         historical = _sha(
             self.historical_scale_context_artifact_sha256,
             "historical_scale_context_artifact_sha256",
