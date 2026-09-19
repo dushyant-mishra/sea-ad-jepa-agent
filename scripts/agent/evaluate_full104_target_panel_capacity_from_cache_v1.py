@@ -52,22 +52,113 @@ def load_parameters(path: Path) -> MaskingQualificationParametersAuthorityV3:
     return authority
 
 
-def load_prior_verdicts(paths: list[Path]) -> dict[int, TargetPanelControlVerdictV2]:
+def _load_capacity_receipt(path: Path) -> ControlCapacityCalibrationReceiptV1:
+    payload = load_json(path)
+    if payload.get("schema") != "V5_CONTROL_CAPACITY_CALIBRATION_RECEIPT_V1":
+        raise SystemExit(f"{path}: capacity receipt schema mismatch")
+    names = {field.name for field in fields(ControlCapacityCalibrationReceiptV1)}
+    receipt = ControlCapacityCalibrationReceiptV1(
+        **{name: payload[name] for name in names}
+    )
+    receipt.validate()
+    if payload.get("receipt_sha256") != receipt.canonical_digest():
+        raise SystemExit(f"{path}: capacity receipt digest mismatch")
+    if receipt.scope_id != "TARGET_PANEL_SIZE_CAPACITY_CALIBRATION_V1":
+        raise SystemExit(f"{path}: target-panel capacity scope required")
+    return receipt
+
+
+def load_prior_evidence(
+    *,
+    verdict_paths: list[Path],
+    capacity_paths: list[Path],
+    planted_paths: list[Path],
+    shuffled_paths: list[Path],
+    replay_planted_paths: list[Path],
+    replay_shuffled_paths: list[Path],
+    cache,
+    precision: ControlCalibrationPrecisionPlanV2,
+) -> dict[int, TargetPanelControlVerdictV2]:
+    counts = {
+        len(verdict_paths),
+        len(capacity_paths),
+        len(planted_paths),
+        len(shuffled_paths),
+        len(replay_planted_paths),
+        len(replay_shuffled_paths),
+    }
+    if len(counts) != 1:
+        raise SystemExit(
+            "every prior target-panel rung requires verdict, capacity receipt, "
+            "raw planted/shuffled matrices, and exact replay planted/shuffled matrices"
+        )
+
+    verdict_names = {field.name for field in fields(TargetPanelControlVerdictV2)}
     out: dict[int, TargetPanelControlVerdictV2] = {}
-    names = {field.name for field in fields(TargetPanelControlVerdictV2)}
-    for path in paths:
-        payload = load_json(path)
+    for verdict_path, capacity_path, planted_path, shuffled_path, replay_planted_path, replay_shuffled_path in zip(
+        verdict_paths,
+        capacity_paths,
+        planted_paths,
+        shuffled_paths,
+        replay_planted_paths,
+        replay_shuffled_paths,
+    ):
+        payload = load_json(verdict_path)
         if payload.get("schema") != "V5_TARGET_PANEL_CONTROL_VERDICT_V2":
-            raise SystemExit(f"{path}: target-panel verdict schema mismatch")
+            raise SystemExit(f"{verdict_path}: target-panel verdict schema mismatch")
         verdict = TargetPanelControlVerdictV2(
-            **{name: payload[name] for name in names}
+            **{name: payload[name] for name in verdict_names}
         )
         verdict.validate()
         if payload.get("verdict_sha256") != verdict.canonical_digest():
-            raise SystemExit(f"{path}: target-panel verdict digest mismatch")
-        if verdict.target_count in out:
+            raise SystemExit(f"{verdict_path}: target-panel verdict digest mismatch")
+
+        capacity = _load_capacity_receipt(capacity_path)
+        verdict.bind_capacity_receipt(capacity)
+        count = int(verdict.target_count)
+        if capacity.candidate_value != count or capacity.target_count != count:
+            raise SystemExit("prior target-panel capacity count mismatch")
+        if capacity.calibration_cache_manifest_sha256 != cache.manifest_sha256:
+            raise SystemExit("prior target-panel capacity binds a different calibration cache")
+        if capacity.precision_root_sha256 != precision.canonical_digest():
+            raise SystemExit("prior target-panel capacity binds a different precision plan")
+
+        for raw_path, replay_path, expected_sha, label in (
+            (planted_path, replay_planted_path, capacity.raw_planted_evidence_sha256, "planted"),
+            (shuffled_path, replay_shuffled_path, capacity.raw_shuffled_evidence_sha256, "shuffled"),
+        ):
+            if sha256_file(raw_path) != expected_sha:
+                raise SystemExit(f"prior {label} matrix hash mismatch")
+            if sha256_file(replay_path) != expected_sha:
+                raise SystemExit(f"prior {label} replay hash mismatch")
+            raw = np.load(raw_path, allow_pickle=False)
+            replay = np.load(replay_path, allow_pickle=False)
+            if raw.shape != (count, 104) or replay.shape != (count, 104):
+                raise SystemExit(f"prior {label} matrix shape mismatch")
+            if not np.array_equal(raw, replay):
+                raise SystemExit(f"prior {label} replay is not exact")
+            if not np.all(np.isfinite(raw)):
+                raise SystemExit(f"prior {label} matrix contains non-finite values")
+
+        planted = np.load(planted_path, allow_pickle=False)
+        shuffled = np.load(shuffled_path, allow_pickle=False)
+        difference = planted - shuffled
+        interval = precision.interval(
+            difference,
+            cache.donor_source_code,
+            target_count=count,
+        )
+        if float(interval.mean) != float(capacity.planted_minus_shuffled_mean):
+            raise SystemExit("prior target-panel capacity mean does not rederive from raw matrices")
+        if float(interval.lower_one_sided) != float(capacity.planted_minus_shuffled_lower_one_sided):
+            raise SystemExit("prior target-panel capacity lower bound does not rederive from raw matrices")
+        if verdict.planted_minus_shuffled_lower_one_sided != float(interval.lower_one_sided):
+            raise SystemExit("prior target-panel verdict statistic does not rederive from raw matrices")
+        if verdict.replay_exact is not True or capacity.replay_exact is not True:
+            raise SystemExit("prior target-panel rung lacks exact replay proof")
+        if count in out:
             raise SystemExit("duplicate target-panel verdict rung")
-        out[verdict.target_count] = verdict
+        out[count] = verdict
     return dict(sorted(out.items()))
 
 
@@ -88,6 +179,11 @@ def main() -> int:
     p.add_argument("--out-dir", type=Path, required=True)
     p.add_argument("--workers", type=int, required=True)
     p.add_argument("--prior-verdict", type=Path, action="append", default=[])
+    p.add_argument("--prior-capacity-receipt", type=Path, action="append", default=[])
+    p.add_argument("--prior-planted", type=Path, action="append", default=[])
+    p.add_argument("--prior-shuffled", type=Path, action="append", default=[])
+    p.add_argument("--prior-replay-planted", type=Path, action="append", default=[])
+    p.add_argument("--prior-replay-shuffled", type=Path, action="append", default=[])
     p.add_argument("--replay-planted", type=Path)
     p.add_argument("--replay-shuffled", type=Path)
     args = p.parse_args()
@@ -95,7 +191,6 @@ def main() -> int:
     cache = load_control_calibration_cache(args.cache_dir)
     cache.manifest.assert_calibration_only()
     parameters = load_parameters(args.parameters_authority)
-    prior = load_prior_verdicts(args.prior_verdict)
 
     plan = TargetPanelSizingPlanAuthorityV2(
         authority_id="JEPA_V5_FULL104_TARGET_PANEL_SIZING_PLAN_V2",
@@ -105,7 +200,6 @@ def main() -> int:
         eligible_target_count=17053,
     )
     plan.validate()
-    target_count = plan.next_target_count(prior)
 
     precision = ControlCalibrationPrecisionPlanV2(
         authority_id="JEPA_V5_FULL104_CONTROL_CALIBRATION_PRECISION_V2",
@@ -116,6 +210,18 @@ def main() -> int:
         calibration_cache_manifest_sha256=cache.manifest_sha256,
     )
     precision.bind_calibration_cache(cache.manifest)
+
+    prior = load_prior_evidence(
+        verdict_paths=args.prior_verdict,
+        capacity_paths=args.prior_capacity_receipt,
+        planted_paths=args.prior_planted,
+        shuffled_paths=args.prior_shuffled,
+        replay_planted_paths=args.prior_replay_planted,
+        replay_shuffled_paths=args.prior_replay_shuffled,
+        cache=cache,
+        precision=precision,
+    )
+    target_count = plan.next_target_count(prior)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     write_json(args.out_dir / "target_panel_sizing_plan_v2.json", {
