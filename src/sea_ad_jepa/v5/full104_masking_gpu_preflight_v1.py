@@ -40,7 +40,17 @@ def load_json(path: Path | str) -> dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
-def typed(payload: Mapping[str, Any], cls: type, digest_fields: tuple[str, ...]):
+def typed(
+    payload: Mapping[str, Any],
+    cls: type,
+    digest_fields: tuple[str, ...],
+    expected_schema: str,
+):
+    if payload.get("schema") != expected_schema:
+        raise ValueError(
+            f"{cls.__name__} schema mismatch: expected {expected_schema}, "
+            f"observed {payload.get('schema')!r}"
+        )
     names = {item.name for item in fields(cls)}
     missing = names - set(payload)
     if missing:
@@ -136,6 +146,7 @@ def validate_calibration_bindings(
         parameters_payload,
         MaskingQualificationParametersAuthorityV3,
         ("parameter_authority_sha256", "authority_sha256"),
+        "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3",
     )
     if parameters.full104_substrate_sha256 != block_manifest_sha256:
         raise ValueError("masking parameters bind a different FULL104 substrate")
@@ -246,15 +257,41 @@ def validate_terminal_bindings(
     rng_payload: Mapping[str, Any],
     run_contract_payload: Mapping[str, Any],
 ) -> dict[str, str]:
-    panel = typed(target_panel_payload, TargetPanelAuthorityV3, ("authority_sha256",))
-    precision = typed(precision_payload, QualificationPrecisionAuthorityV4, ("authority_sha256",))
-    outer = typed(outer_split_payload, OuterDonorSplitAuthorityV1, ("authority_sha256",))
-    nonlinear = typed(nonlinear_payload, NonlinearMaskingChallengeAuthorityV3, ("authority_sha256",))
-    rng = typed(rng_payload, MaskingRngReplayAuthorityV2, ("authority_sha256",))
+    panel = typed(
+        target_panel_payload,
+        TargetPanelAuthorityV3,
+        ("authority_sha256",),
+        "V5_TARGET_PANEL_AUTHORITY_V3",
+    )
+    precision = typed(
+        precision_payload,
+        QualificationPrecisionAuthorityV4,
+        ("authority_sha256",),
+        "V5_QUALIFICATION_PRECISION_AUTHORITY_V4",
+    )
+    outer = typed(
+        outer_split_payload,
+        OuterDonorSplitAuthorityV1,
+        ("authority_sha256",),
+        "V5_OUTER_DONOR_SPLIT_AUTHORITY_V1",
+    )
+    nonlinear = typed(
+        nonlinear_payload,
+        NonlinearMaskingChallengeAuthorityV3,
+        ("authority_sha256",),
+        "V5_NONLINEAR_MASKING_CHALLENGE_AUTHORITY_V3",
+    )
+    rng = typed(
+        rng_payload,
+        MaskingRngReplayAuthorityV2,
+        ("authority_sha256",),
+        "V5_MASKING_RNG_REPLAY_AUTHORITY_V2",
+    )
     contract = typed(
         run_contract_payload,
         MaskingQualificationRunContractV4,
         ("run_contract_sha256", "authority_sha256"),
+        "V5_MASKING_QUALIFICATION_RUN_CONTRACT_V4",
     )
     if precision.target_panel_authority_sha256 != panel.canonical_digest():
         raise ValueError("precision authority binds a different target panel")
