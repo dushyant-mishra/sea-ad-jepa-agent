@@ -19,6 +19,7 @@ from typing import Any
 from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
 from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import load_control_calibration_cache
 from sea_ad_jepa.v5.masking_burden_ladder_authority_v2 import MaskingBurdenLadderAuthorityV2
+from sea_ad_jepa.v5.null_equivalence_margin_authority_v1 import NullEquivalenceMarginAuthorityV1
 from sea_ad_jepa.v5.masking_nonlinear_challenge_authority_v3 import NonlinearMaskingChallengeAuthorityV3
 from sea_ad_jepa.v5.masking_qualification_design_authority_v2 import MaskingQualificationDesignAuthorityV2
 from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
@@ -172,6 +173,7 @@ def main() -> int:
     p.add_argument("--target-panel-authority", type=Path, required=True)
     p.add_argument("--target-selection-receipt", type=Path, required=True)
     p.add_argument("--precision-authority", type=Path, required=True)
+    p.add_argument("--null-equivalence-margin-authority", type=Path, required=True)
     p.add_argument("--model-capacity-authority", type=Path, required=True)
     p.add_argument("--nonlinear-sampling-plan", type=Path, required=True)
     p.add_argument("--nonlinear-sampling-receipt", type=Path, required=True)
@@ -262,6 +264,15 @@ def main() -> int:
     if tuple(map(int, selection.selected_target_cols)) != tuple(map(int, cache.target_cols[: panel.target_count])):
         raise SystemExit("target-selection receipt does not match authenticated cache target prefix")
     precision = typed(load(args.precision_authority), QualificationPrecisionAuthorityV4, "authority_sha256")
+    margin_payload = load(args.null_equivalence_margin_authority)
+    if margin_payload.get("schema") != "V5_NULL_EQUIVALENCE_MARGIN_AUTHORITY_V1":
+        raise SystemExit("null-equivalence margin authority V1 is required")
+    margin = typed(
+        margin_payload,
+        NullEquivalenceMarginAuthorityV1,
+        "authority_sha256",
+    )
+    precision.bind_null_equivalence_margin_authority(margin)
 
     model = typed(
         load(args.model_capacity_authority),
