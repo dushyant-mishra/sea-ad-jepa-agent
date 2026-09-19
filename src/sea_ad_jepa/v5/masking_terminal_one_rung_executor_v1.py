@@ -841,7 +841,7 @@ def execute_one_terminal_rung(
             )
         )
 
-    rung_receipt = evaluate_rung_v2(decision_evidence)
+    rung_receipt = evaluate_rung_v2(decision_evidence, precision=precision)
     rung_receipt.validate()
     if (
         rung_receipt.burden_numerator,
