@@ -17,7 +17,11 @@ from sea_ad_jepa.v5.current_teacher_target_receipt_v2 import (
     seal_current_teacher_target_receipt_v2,
     validate_current_teacher_target_receipt_v2,
 )
-from sea_ad_jepa.v5.current_training_authority_v1 import issue_training_authority_v1
+from sea_ad_jepa.v5.current_training_authority_v1 import (
+    CurrentTrainingAuthorityV1,
+    STOP_STALE_TRAINING_CHAIN,
+    issue_training_authority_v1,
+)
 from sea_ad_jepa.v5.qualified_optimizer_guard_v3 import install_current_optimizer_guard_v3
 
 
@@ -160,76 +164,49 @@ def test_receipt_v2_seals_v2_roots_preexecution_and_closure_and_rejects_v1_recei
         )
 
 
-def test_training_authority_is_issued_only_after_closure_preexecution_receipt_critical_and_runtime_match() -> None:
+def test_training_authority_v1_issuance_is_hard_stopped_on_stale_current_graph() -> None:
     roots = roots_v2()
     closure = closure_for(roots)
     pre = make_preexecution(roots)
     pre.bind_closure_v2(closure)
     receipt = make_receipt(roots, pre)
 
-    authority = issue_training_authority_v1(
-        closure_v2=closure,
-        preexecution=pre,
-        receipt_v2=receipt,
-        expected_target_package_root=h("target-package"),
-        critical_test=critical_for(roots),
-        runtime_source=runtime_for(roots),
-    )
-    authority.validate()
-    assert authority.training_authorized is True
-    assert authority.closure_v2_sha256 == closure["closure_digest"]
-    assert authority.preexecution_authority_sha256 == pre.canonical_digest()
-
-    bad_runtime = AuthorityStub(h("wrong-runtime"))
-    with pytest.raises(ValueError, match="runtime"):
+    with pytest.raises(RuntimeError, match=STOP_STALE_TRAINING_CHAIN):
         issue_training_authority_v1(
             closure_v2=closure,
             preexecution=pre,
             receipt_v2=receipt,
             expected_target_package_root=h("target-package"),
             critical_test=critical_for(roots),
-            runtime_source=bad_runtime,
+            runtime_source=runtime_for(roots),
         )
 
 
-def test_optimizer_v3_requires_v2_receipt_and_explicit_matching_training_authority() -> None:
+def test_optimizer_v3_cannot_arm_from_archival_training_authority_v1() -> None:
     roots = roots_v2()
     closure = closure_for(roots)
     pre = make_preexecution(roots)
-    pre.bind_closure_v2(closure)
     receipt = make_receipt(roots, pre)
-    authority = issue_training_authority_v1(
-        closure_v2=closure,
-        preexecution=pre,
-        receipt_v2=receipt,
-        expected_target_package_root=h("target-package"),
-        critical_test=critical_for(roots),
-        runtime_source=runtime_for(roots),
-    )
     expected_roots = dict(roots)
     expected_roots["preexecution_authority_sha256"] = pre.canonical_digest()
 
-    optimizer = FakeOptimizer()
-    guard = install_current_optimizer_guard_v3(
-        optimizer,
-        receipt,
-        training_authority=authority,
-        expected_target_package_root=h("target-package"),
-        expected_authority_roots=expected_roots,
-        expected_closure_v2_sha256=closure["closure_digest"],
+    archival = CurrentTrainingAuthorityV1(
+        authority_id="ARCHIVAL_V1",
+        closure_v2_sha256=closure["closure_digest"],
+        preexecution_authority_sha256=pre.canonical_digest(),
+        receipt_v2_sha256=h("archival-receipt"),
+        target_package_root=h("target-package"),
+        critical_test_authority_sha256=roots["critical_test_authority_sha256"],
+        runtime_source_authority_sha256=roots["runtime_source_authority_sha256"],
+        issuance_policy_id="CURRENT_V5_ALL_GATES_PASS_BEFORE_TRAINING_V1",
+        issuance_proof_sha256=h("archival-proof"),
     )
-    guard.arm_for_step(schedule_cursor=3)
-    optimizer.step(v5_current_guard_schedule_cursor=3)
-    assert guard.assert_step_completed(schedule_cursor=3)["guarded_optimizer_step"] is True
 
-    legacy_roots = {name: h(name) for name in CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS}
-    legacy_roots["preexecution_authority_sha256"] = h("legacy-pre")
-    legacy = seal_current_teacher_target_receipt_v1(h("target-package"), legacy_roots)
-    with pytest.raises(ValueError):
+    with pytest.raises(RuntimeError, match=STOP_STALE_TRAINING_CHAIN):
         install_current_optimizer_guard_v3(
             FakeOptimizer(),
-            legacy,
-            training_authority=authority,
+            receipt,
+            training_authority=archival,
             expected_target_package_root=h("target-package"),
             expected_authority_roots=expected_roots,
             expected_closure_v2_sha256=closure["closure_digest"],
