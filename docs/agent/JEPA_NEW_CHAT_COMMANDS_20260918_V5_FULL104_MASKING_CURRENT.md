@@ -160,7 +160,10 @@ python "$Worktree\scripts\agent\build_full104_target_panel_authority_v3_20260918
 ```powershell
 python "$Worktree\scripts\agent\build_full104_outer_split_authority_v1_20260918.py" --split-receipt "$SPLIT" --out "$RUN\outer_split_authority_v1.json"
 
-$NULL_MARGIN_NUMERATOR = <PROSPECTIVE_NULL_EQUIVALENCE_MARGIN_NUMERATOR__MUST_BE_FROZEN_BEFORE_TERMINAL_OUTCOMES>\n$NULL_MARGIN_DENOMINATOR = <PROSPECTIVE_NULL_EQUIVALENCE_MARGIN_DENOMINATOR__MUST_BE_FROZEN_BEFORE_TERMINAL_OUTCOMES>\n\npython "$Worktree\scripts\agent\build_full104_precision_authority_v4_20260918.py" --support-authority "$SUPPORT" --target-panel-authority "$RUN\target_panel_authority_v3.json" --target-panel-sizing-receipt "$TPQ\target_panel_sizing_receipt_v2.json" --outer-split-authority "$RUN\outer_split_authority_v1.json" --null-equivalence-margin-numerator $NULL_MARGIN_NUMERATOR --null-equivalence-margin-denominator $NULL_MARGIN_DENOMINATOR --out "$RUN\precision_authority_v4.json"
+python "$Worktree\scripts\agent\build_full104_null_equivalence_margin_authority_v1_20260918.py" --repo "$Worktree" --out "$RUN\null_equivalence_margin_authority_v1.json"
+$NULL_MARGIN_AUTH = "$RUN\null_equivalence_margin_authority_v1.json"
+
+python "$Worktree\scripts\agent\build_full104_precision_authority_v4_20260918.py" --support-authority "$SUPPORT" --target-panel-authority "$RUN\target_panel_authority_v3.json" --target-panel-sizing-receipt "$TPQ\target_panel_sizing_receipt_v2.json" --outer-split-authority "$RUN\outer_split_authority_v1.json" --null-equivalence-margin-authority "$NULL_MARGIN_AUTH" --out "$RUN\precision_authority_v4.json"
 ```
 
 ## 9. Nonlinear row-cap calibration
