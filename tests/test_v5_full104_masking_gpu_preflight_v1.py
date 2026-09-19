@@ -194,6 +194,13 @@ def test_calibration_preflight_rejects_registry_splice():
         call_valid(registry_file_sha256=h("smaller-historical-registry"))
 
 
+def test_calibration_preflight_rejects_stale_parameter_schema_even_with_current_fields():
+    stale = parameters_payload()
+    stale["schema"] = "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2"
+    with pytest.raises(ValueError, match="schema mismatch"):
+        call_valid(parameters_payload=stale)
+
+
 def test_calibration_preflight_rejects_historical_parameter_substrate_splice():
     with pytest.raises(ValueError, match="different FULL104 substrate"):
         call_valid(
