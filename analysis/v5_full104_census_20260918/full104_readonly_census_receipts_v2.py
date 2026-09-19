@@ -31,6 +31,10 @@ from sea_ad_jepa.v5.full104_census_receipt_v2 import (
 
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        raise SystemExit(
+            f"refuse to overwrite existing FULL104 census artifact: {path}"
+        )
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
