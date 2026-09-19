@@ -12,6 +12,9 @@ on:
       - 'src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py'
       - 'src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py'
       - 'src/sea_ad_jepa/v5/full104_census_receipt_v2.py'
+      - 'src/sea_ad_jepa/v5/full104_pass1_physical_binding_v1.py'
+      - 'analysis/v5_full104_census_20260918/full104_readonly_census_receipts_v2.py'
+      - 'scripts/agent/build_full104_census_authority_v2_20260918.py'
       - 'src/sea_ad_jepa/v5/full104_control_calibration_cache_v1.py'
       - 'src/sea_ad_jepa/v5/full104_control_calibration_cache_evaluator_v1.py'
       - 'scripts/agent/build_full104_control_calibration_cache_v1.py'
@@ -42,6 +45,7 @@ on:
       - 'src/sea_ad_jepa/v5/target_panel_authority_v2.py'
       - 'src/sea_ad_jepa/v5/precision_authority_v3.py'
       - 'tests/test_v5_full104_census_receipt_v2.py'
+      - 'tests/test_v5_full104_pass1_physical_binding_v1.py'
       - 'tests/test_v5_full104_control_calibration_cache_v1.py'
       - 'tests/test_v5_full104_control_calibration_cache_evaluator_v1.py'
       - 'tests/test_v5_masking_qualification_parameters_authority_v2.py'
@@ -146,6 +150,7 @@ jobs:
             tests/test_v5_full104_streaming_executor_accepts_budget_v2.py \
             tests/test_v5_full104_masking_anti_spillover_v1.py \
             tests/test_v5_full104_census_receipt_v2.py \
+            tests/test_v5_full104_pass1_physical_binding_v1.py \
             tests/test_v5_full104_control_calibration_cache_v1.py \
             tests/test_v5_full104_control_calibration_cache_evaluator_v1.py \
             tests/test_v5_masking_qualification_parameters_authority_v2.py \
@@ -202,6 +207,7 @@ jobs:
             tests/test_v5_full104_streaming_executor_accepts_budget_v2.py \
             tests/test_v5_full104_masking_anti_spillover_v1.py \
             tests/test_v5_full104_census_receipt_v2.py \
+            tests/test_v5_full104_pass1_physical_binding_v1.py \
             tests/test_v5_full104_control_calibration_cache_v1.py \
             tests/test_v5_full104_control_calibration_cache_evaluator_v1.py \
             tests/test_v5_masking_qualification_parameters_authority_v2.py \
