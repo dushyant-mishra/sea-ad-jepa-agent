@@ -128,6 +128,14 @@ def build_fixture(tmp_path: Path, monkeypatch, *, duplicate: bool = False):
 
 def test_physical_shakedown_streams_authenticated_fixture_and_normalizes(tmp_path, monkeypatch):
     root, registry, obs, _ = build_fixture(tmp_path, monkeypatch)
+    real_log1p = np.log1p
+    normalized_sizes = []
+
+    def capture_log1p(values):
+        normalized_sizes.append(np.asarray(values).size)
+        return real_log1p(values)
+
+    monkeypatch.setattr(physical.np, "log1p", capture_log1p)
     receipt = physical.run_physical_shakedown(
         level4_root=root,
         registry_path=registry,
@@ -139,6 +147,7 @@ def test_physical_shakedown_streams_authenticated_fixture_and_normalizes(tmp_pat
     assert receipt.operator_count == 2
     assert receipt.address_count == 4
     assert receipt.total_nnz > 0
+    assert sum(normalized_sizes) == receipt.total_nnz
     assert receipt.rows_per_second > 0
     assert receipt.training_authorized is False
     assert receipt.terminal_masking_outcomes_inspected is False
@@ -186,6 +195,9 @@ def test_physical_shakedown_driver_is_nonterminal_and_pass1_independent():
     assert "--level4-root" in source
     assert "--registry" in source
     assert "--observation-state" in source
+    assert "--worktree" in source
+    assert "live_clean_scientific_head" in source
+    assert "allowed_relative_paths" in source
     assert "--pass1" not in source
     assert '"terminal_masking_authorized": False' in source
     assert '"training_authorized": False' in source
