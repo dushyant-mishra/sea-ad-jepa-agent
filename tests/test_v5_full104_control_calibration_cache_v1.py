@@ -68,7 +68,7 @@ def test_column_plan_uses_current_targets_proxies_and_disjoint_distractors() -> 
 
 def manifest(**updates):
     roots = {name: h(name) for name in (
-        "manifest","registry","census","support","split","eligibility",
+        "manifest","registry","census","pass1-binding","support","split","eligibility",
         "target-sem","target-id-sem","proxy-sem","distractor-sem","cache-sem",
         "x","selection","donor","rank","counts","fold","source","full-n","full-sum","full-sumsq",
         "target-file","proxy-file","distractor-file","cache-file","ids-file"
@@ -82,6 +82,7 @@ def manifest(**updates):
         full104_block_manifest_sha256=roots["manifest"],
         canonical_registry_sha256=roots["registry"],
         census_authority_sha256=roots["census"],
+        pass1_physical_binding_sha256=roots["pass1-binding"],
         support_estimability_authority_sha256=roots["support"],
         split_receipt_sha256=roots["split"],
         target_eligibility_receipt_sha256=roots["eligibility"],
