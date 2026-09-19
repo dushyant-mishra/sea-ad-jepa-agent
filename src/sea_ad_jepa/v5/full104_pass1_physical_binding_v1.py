@@ -65,6 +65,19 @@ def _array_digest(value: np.ndarray) -> str:
     return h.hexdigest()
 
 
+def _string_vector_digest(values: np.ndarray) -> str:
+    """Canonical, platform-independent digest for string identity vectors."""
+
+    items = [str(item) for item in np.asarray(values).reshape(-1)]
+    return _canonical_sha(
+        {
+            "schema": "V5_CANONICAL_STRING_VECTOR_V1",
+            "shape": [len(items)],
+            "values": items,
+        }
+    )
+
+
 def _resolve_under(root: Path, relative: str) -> Path:
     rel = Path(relative)
     if rel.is_absolute():
@@ -370,7 +383,7 @@ def verify_pass1_against_physical_full104(
         cell_donor_semantic_sha256=_array_digest(cell_donor),
         cell_nnz_core_semantic_sha256=_array_digest(cell_nnz_core),
         donor_core_nnz_semantic_sha256=_array_digest(physical_donor_core_nnz),
-        donor_ids_semantic_sha256=_array_digest(np.asarray(donor_ids, dtype="U")),
+        donor_ids_semantic_sha256=_string_vector_digest(donor_ids),
         donor_source_semantic_sha256=_array_digest(donor_src),
         strict_core_cols_semantic_sha256=_array_digest(physical_core),
     )
