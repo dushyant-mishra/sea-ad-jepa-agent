@@ -137,7 +137,8 @@ def test_builder_roundtrips_actual_evaluator_plan_and_receipt_json_shapes():
         "authority_sha256": sizing.canonical_digest(),
     })
     rebuilt_sizing = module.typed(
-        sizing_payload, TargetPanelSizingPlanAuthorityV2, "authority_sha256"
+        sizing_payload, TargetPanelSizingPlanAuthorityV2, "authority_sha256",
+        "V5_TARGET_PANEL_SIZING_PLAN_AUTHORITY_V2"
     )
     assert rebuilt_sizing.canonical_digest() == sizing.canonical_digest()
 
@@ -155,7 +156,8 @@ def test_builder_roundtrips_actual_evaluator_plan_and_receipt_json_shapes():
         "authority_sha256": precision_plan.canonical_digest(),
     })
     rebuilt_precision = module.typed(
-        precision_payload, ControlCalibrationPrecisionPlanV2, "authority_sha256"
+        precision_payload, ControlCalibrationPrecisionPlanV2, "authority_sha256",
+        "V5_CONTROL_CALIBRATION_PRECISION_PLAN_V2"
     )
     assert rebuilt_precision.canonical_digest() == precision_plan.canonical_digest()
 
@@ -175,7 +177,8 @@ def test_builder_roundtrips_actual_evaluator_plan_and_receipt_json_shapes():
         "authority_sha256": nonlinear_plan.canonical_digest(),
     })
     rebuilt_plan = module.typed(
-        nonlinear_plan_payload, NonlinearSamplingCalibrationPlanV2, "authority_sha256"
+        nonlinear_plan_payload, NonlinearSamplingCalibrationPlanV2, "authority_sha256",
+        "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2"
     )
     assert rebuilt_plan.canonical_digest() == nonlinear_plan.canonical_digest()
 

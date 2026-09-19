@@ -41,6 +41,13 @@ def main()->int:
     p.add_argument("--out",type=Path,required=True)
     args=p.parse_args()
 
+    raise SystemExit(
+        "STOP_G5_NULL_EQUIVALENCE_MARGIN_BASIS_OPEN: PrecisionAuthorityV4 "
+        "cannot be built from caller-entered margin numerators/denominators. "
+        "Freeze a prospective scientific margin basis and the H3 equivalence "
+        "panel-sizing successor before building terminal precision."
+    )
+
     support=load(args.support_authority)
     if canonical_sha(support)!=EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
         raise SystemExit("support authority is not the exact current semantic authority")

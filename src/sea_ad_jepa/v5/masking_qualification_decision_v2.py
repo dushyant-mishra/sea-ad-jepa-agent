@@ -61,7 +61,67 @@ class MaskingPolicyDecisionReceiptV2:
     decision_rule_id: str
     evidence_digest: str
 
+    def validate(self) -> None:
+        if self.policy_id not in POLICIES:
+            raise ValueError("policy_id is not an approved masking arm")
+        if self.decision_rule_id != DECISION_RULE_ID:
+            raise ValueError("decision_rule_id mismatch")
+        if self.target_heterogeneity_floor_rule_id != TARGET_HETEROGENEITY_FLOOR_RULE_ID:
+            raise ValueError("target_heterogeneity_floor_rule_id mismatch")
+        tolerance = float(self.null_noise_tolerance)
+        floor = float(self.target_heterogeneity_floor)
+        complexity = float(self.mean_effective_targeted_n)
+        effect = float(self.delta_lower_one_sided)
+        if not math.isfinite(tolerance) or tolerance <= 0.0:
+            raise ValueError("null_noise_tolerance must be finite and positive")
+        if not math.isfinite(floor) or floor != -tolerance:
+            raise ValueError("target_heterogeneity_floor must equal negative frozen tolerance")
+        if not math.isfinite(complexity) or complexity < 0.0:
+            raise ValueError("mean_effective_targeted_n must be finite and nonnegative")
+        if not math.isfinite(effect):
+            raise ValueError("delta_lower_one_sided must be finite")
+        total = self.total_effective_targeted_n
+        count = self.targeting_complexity_observation_count
+        if isinstance(total, bool) or not isinstance(total, int) or total < 0:
+            raise ValueError("total_effective_targeted_n must be a nonnegative integer")
+        if isinstance(count, bool) or not isinstance(count, int) or count < 1:
+            raise ValueError("targeting_complexity_observation_count must be a positive integer")
+        if abs(complexity - (float(total) / float(count))) > 1e-12:
+            raise ValueError("mean targeting complexity is off the exact target x fold lattice")
+        flags = (
+            self.qualified,
+            self.controls_passed,
+            self.negative_control_precision_passed,
+            self.primary_null_level_passed,
+            self.targeted_improvement_passed,
+            self.source_improvement_guardrail_passed,
+            self.heterogeneity_guardrail_passed,
+            self.nonlinear_guardrail_passed,
+        )
+        if any(not isinstance(flag, bool) for flag in flags):
+            raise ValueError("decision receipt status fields must be boolean")
+        expected_qualified = (
+            self.controls_passed
+            and self.primary_null_level_passed
+            and self.targeted_improvement_passed
+            and self.heterogeneity_guardrail_passed
+            and self.nonlinear_guardrail_passed
+        )
+        if self.qualified != expected_qualified:
+            raise ValueError("qualified flag disagrees with component guardrails")
+        if self.controls_passed and not self.negative_control_precision_passed:
+            raise ValueError("controls_passed requires negative-control precision")
+        if self.targeted_improvement_passed and not self.source_improvement_guardrail_passed:
+            raise ValueError("targeted improvement requires source improvement guardrail")
+        if not isinstance(self.evidence_digest, str) or len(self.evidence_digest) != 64 or self.evidence_digest != self.evidence_digest.lower():
+            raise ValueError("evidence_digest must be a lowercase SHA-256 digest")
+        try:
+            int(self.evidence_digest, 16)
+        except ValueError as exc:
+            raise ValueError("evidence_digest must be a lowercase SHA-256 digest") from exc
+
     def canonical_digest(self) -> str:
+        self.validate()
         return _digest({"schema": "V5_MASKING_POLICY_DECISION_RECEIPT_V5", **asdict(self)})
 
 
@@ -239,6 +299,8 @@ def evaluate_policy_v2(
 
 
 def select_policy_v2(receipts: Sequence[MaskingPolicyDecisionReceiptV2]) -> str:
+    for receipt in receipts:
+        receipt.validate()
     by_policy = {receipt.policy_id: receipt for receipt in receipts}
     if len(by_policy) != len(receipts) or set(by_policy) != set(POLICIES):
         raise ValueError("exactly one decision receipt is required for every policy arm")

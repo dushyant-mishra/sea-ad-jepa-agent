@@ -61,6 +61,17 @@ from .target_panel_selector_v2 import TargetPanelSelectionReceiptV2
 
 RAW_RESULT_SCHEMA_ID = "V5_FULL104_TERMINAL_ONE_RUNG_RAW_RESULT_ARTIFACT_V2"
 EXECUTOR_POLICY_ID = "EXACTLY_ONE_BURDEN_RUNG_PER_INVOCATION__NO_AUTO_ESCALATION_V1"
+TERMINAL_SCIENTIFIC_BLOCKER_ID = "H3_EQUIVALENCE_POWER_AND_G5_MARGIN_BASIS_OPEN_V1"
+
+
+def _assert_terminal_scientific_design_ready() -> None:
+    """Fail closed until H3/G5 have prospective successor authorities."""
+
+    raise ValueError(
+        "STOP_H3_G5_TERMINAL_MASKING_UNAUTHORIZED: target-panel sizing is still "
+        "capacity-only and the null-equivalence margin lacks a prospective "
+        "scientific basis. Terminal burden execution remains closed."
+    )
 
 
 def _sha(value: object, name: str) -> str:
@@ -93,6 +104,42 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(8 << 20), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def _live_checkpoint_validation_errors(
+    checkpoint_payload: Mapping[str, Any],
+) -> list[str]:
+    """Validate the checkpoint against its declared live worktree."""
+
+    if not isinstance(checkpoint_payload, Mapping):
+        return ["CHECKPOINT_PAYLOAD_NOT_MAPPING"]
+    git = checkpoint_payload.get("git")
+    if not isinstance(git, Mapping):
+        return ["CHECKPOINT_GIT_SNAPSHOT_MISSING"]
+    worktree_raw = git.get("worktree_path")
+    if not isinstance(worktree_raw, str) or not worktree_raw.strip():
+        return ["CHECKPOINT_WORKTREE_PATH_MISSING"]
+    worktree = Path(worktree_raw)
+    try:
+        from scripts.agent.work_checkpoint import resolve_canonical_repo, validate_checkpoint
+        repo = resolve_canonical_repo(worktree)
+        return list(validate_checkpoint(dict(checkpoint_payload), repo, worktree))
+    except Exception as exc:
+        return [
+            "CHECKPOINT_LIVE_VALIDATION_UNAVAILABLE:"
+            f"{type(exc).__name__}:{exc}"
+        ]
+
+
+def _assert_live_machine_checkpoint(
+    checkpoint_payload: Mapping[str, Any],
+) -> None:
+    errors = _live_checkpoint_validation_errors(checkpoint_payload)
+    if errors:
+        raise ValueError(
+            "terminal executor requires a live-valid machine/worktree checkpoint: "
+            + "; ".join(errors[:8])
+        )
 
 
 def _receipt_digest(payload: Mapping[str, Any], schema: str) -> str:
@@ -262,7 +309,9 @@ def _validate_requested_rung(
     denominator: int,
     prior_rung_receipts: Sequence[MaskingRungDecisionReceiptV2],
     prior_rung_execution_authorities: Sequence[MaskingQualificationExecutionAuthorityV4],
+    prior_rung_raw_result_artifacts: Sequence["TerminalOneRungRawResultArtifactV1"],
     expected_run_contract_sha256: str,
+    expected_terminal_input_manifest_sha256: str,
 ) -> tuple[Fraction, tuple[str, ...], tuple[str, ...]]:
     burden_ladder.validate()
     requested = Fraction(int(numerator), int(denominator))
@@ -273,11 +322,26 @@ def _validate_requested_rung(
     expected_run_contract_sha256 = _sha(
         expected_run_contract_sha256, "expected_run_contract_sha256"
     )
-    if len(prior_rung_receipts) != len(prior_rung_execution_authorities):
-        raise ValueError("every prior rung receipt must have one execution authority")
+    if not (
+        len(prior_rung_receipts)
+        == len(prior_rung_execution_authorities)
+        == len(prior_rung_raw_result_artifacts)
+    ):
+        raise ValueError(
+            "every prior rung must supply receipt, execution authority, and raw-result artifact"
+        )
 
-    for index, (receipt, execution) in enumerate(
-        zip(prior_rung_receipts, prior_rung_execution_authorities)
+    expected_terminal_input_manifest_sha256 = _sha(
+        expected_terminal_input_manifest_sha256,
+        "expected_terminal_input_manifest_sha256",
+    )
+
+    for index, (receipt, execution, raw_artifact) in enumerate(
+        zip(
+            prior_rung_receipts,
+            prior_rung_execution_authorities,
+            prior_rung_raw_result_artifacts,
+        )
     ):
         if not isinstance(receipt, MaskingRungDecisionReceiptV2):
             raise ValueError("prior terminal rung evidence must be a V2 rung decision receipt")
@@ -287,7 +351,17 @@ def _validate_requested_rung(
         execution.validate()
         if execution.run_contract_authority_sha256 != expected_run_contract_sha256:
             raise ValueError("prior rung execution binds a different run contract")
+        if not isinstance(raw_artifact, TerminalOneRungRawResultArtifactV1):
+            raise ValueError("prior rung raw evidence must be TerminalOneRungRawResultArtifactV1")
+        raw_artifact.validate()
+        execution.bind_raw_result_artifact(raw_artifact)
         execution.bind_rung_decision_receipt(receipt)
+        if raw_artifact.terminal_input_manifest_sha256 != expected_terminal_input_manifest_sha256:
+            raise ValueError("prior rung raw result binds a different authenticated FULL104 manifest")
+        if tuple(raw_artifact.prior_rung_decision_receipt_sha256) != tuple(prior_roots):
+            raise ValueError("prior rung raw result does not bind the exact preceding decision chain")
+        if tuple(raw_artifact.prior_rung_execution_authority_sha256) != tuple(prior_execution_roots):
+            raise ValueError("prior rung raw result does not bind the exact preceding execution chain")
         if execution.execution_status != "EXECUTED_FAIL":
             raise ValueError("higher burden requires a proven failed prior execution")
         rung = Fraction(receipt.burden_numerator, receipt.burden_denominator)
@@ -465,6 +539,7 @@ def execute_one_terminal_rung(
     burden_denominator: int,
     prior_rung_receipts: Sequence[MaskingRungDecisionReceiptV2],
     prior_rung_execution_authorities: Sequence[MaskingQualificationExecutionAuthorityV4],
+    prior_rung_raw_result_artifacts: Sequence[TerminalOneRungRawResultArtifactV1],
     rng_replay: Any,
     outer_split: Any,
     split_receipt: Mapping[str, Any],
@@ -482,6 +557,8 @@ def execute_one_terminal_rung(
     stream: streaming.Full104ManifestStreamV1,
 ) -> TerminalOneRungExecutionResultV1:
     """Execute exactly one currently-lawful terminal burden rung."""
+
+    _assert_terminal_scientific_design_ready()
 
     if not isinstance(stream, streaming.Full104ManifestStreamV1):
         raise ValueError("terminal executor requires Full104ManifestStreamV1")
@@ -501,6 +578,7 @@ def execute_one_terminal_rung(
         raise ValueError("run contract does not bind the live one-rung terminal executor")
 
     run_contract.bind_machine_checkpoint_semantic(machine_checkpoint_payload)
+    _assert_live_machine_checkpoint(machine_checkpoint_payload)
     run_contract.bind_parameters(parameters)
     run_contract.bind_evidence_budget_template(evidence_budget_template)
     run_contract.bind_burden_ladder(burden_ladder)
@@ -537,13 +615,19 @@ def execute_one_terminal_rung(
         nonlinear_sampling_calibration_receipt,
     )
 
+    if stream.expected_manifest_sha256 != run_contract.full104_block_manifest_sha256:
+        raise ValueError("terminal stream binds a different FULL104 block manifest")
+    before_manifest = stream.revalidate_physical_inputs()
+
     requested, prior_roots, prior_execution_roots = _validate_requested_rung(
         burden_ladder=burden_ladder,
         numerator=burden_numerator,
         denominator=burden_denominator,
         prior_rung_receipts=prior_rung_receipts,
         prior_rung_execution_authorities=prior_rung_execution_authorities,
+        prior_rung_raw_result_artifacts=prior_rung_raw_result_artifacts,
         expected_run_contract_sha256=run_contract.canonical_digest(),
+        expected_terminal_input_manifest_sha256=before_manifest,
     )
     budget = evidence_budget_template.with_fraction(
         requested.numerator,
@@ -551,9 +635,6 @@ def execute_one_terminal_rung(
     )
     budget.validate()
 
-    if stream.expected_manifest_sha256 != run_contract.full104_block_manifest_sha256:
-        raise ValueError("terminal stream binds a different FULL104 block manifest")
-    before_manifest = stream.revalidate_physical_inputs()
     no_privileged = assert_no_privileged_metadata_interface(
         run_contract=run_contract,
         stream=stream,
@@ -923,6 +1004,7 @@ def execute_one_terminal_rung(
             "EXECUTED_PASS" if rung_receipt.qualified else "EXECUTED_FAIL"
         ),
     )
+    execution.bind_raw_result_artifact(artifact)
     execution.bind_rung_decision_receipt(rung_receipt)
 
     return TerminalOneRungExecutionResultV1(

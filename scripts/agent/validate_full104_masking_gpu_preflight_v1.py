@@ -102,6 +102,7 @@ def main() -> int:
             load_json(contract_path),
             MaskingQualificationRunContractV4,
             ("run_contract_sha256", "authority_sha256"),
+            "V5_MASKING_QUALIFICATION_RUN_CONTRACT_V4",
         )
         live_sources = {}
         for role, relative in SOURCE_ROLES.items():

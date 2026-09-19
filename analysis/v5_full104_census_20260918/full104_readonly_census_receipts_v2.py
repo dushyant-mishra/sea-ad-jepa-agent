@@ -3,12 +3,17 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import json
 from fractions import Fraction
 from pathlib import Path
 
 import numpy as np
 
+from sea_ad_jepa.v5.full104_pass1_physical_binding_v1 import (
+    SCHEMA_ID as PASS1_BINDING_SCHEMA_ID,
+    verify_pass1_against_physical_full104,
+)
 from sea_ad_jepa.v5.full104_census_receipt_v2 import (
     FULL104_CORE_SIZE,
     FULL104_N_CELLS,
@@ -26,18 +31,43 @@ from sea_ad_jepa.v5.full104_census_receipt_v2 import (
 
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        raise SystemExit(
+            f"refuse to overwrite existing FULL104 census artifact: {path}"
+        )
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pass1", type=Path, required=True)
+    parser.add_argument("--level4-root", type=Path, required=True)
+    parser.add_argument("--registry", type=Path, required=True)
+    parser.add_argument("--observation-state", type=Path, required=True)
+    parser.add_argument("--out-pass1-physical-binding", type=Path, required=True)
     parser.add_argument("--out-summary", type=Path, required=True)
     parser.add_argument("--out-split", type=Path, required=True)
     parser.add_argument("--out-target-eligibility", type=Path, required=True)
     args = parser.parse_args()
 
+    binding_receipt = verify_pass1_against_physical_full104(
+        pass1_path=args.pass1,
+        level4_root=args.level4_root,
+        registry_path=args.registry,
+        observation_state_path=args.observation_state,
+    )
+    pass1_binding_root = binding_receipt.canonical_digest()
+    binding_payload = {
+        "schema": PASS1_BINDING_SCHEMA_ID,
+        **asdict(binding_receipt),
+        "source_names": list(binding_receipt.source_names),
+        "receipt_sha256": pass1_binding_root,
+    }
+    write_json(args.out_pass1_physical_binding, binding_payload)
+
     pass1_sha = sha256_file(args.pass1)
+    if pass1_sha != binding_receipt.pass1_npz_sha256:
+        raise SystemExit("pass1 bytes changed after physical verification")
     data = np.load(args.pass1, allow_pickle=False)
     required = {
         "cell_donor", "cell_nnz_core", "donor_addr_nnz", "donor_src", "duniq", "core"
@@ -109,6 +139,7 @@ def main() -> int:
     summary = {
         "schema": "V5_FULL104_READONLY_CENSUS_SUMMARY_RECEIPT_V2",
         "pass1_npz_sha256": pass1_sha,
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "terminal_masking_outcomes_inspected": False,
         "population": {
             "cells": int(cell_donor.size),
@@ -123,10 +154,16 @@ def main() -> int:
             "per_fold_estimable": list(map(int, per_fold)),
             "estimable_in_all_folds": int(eligible.size),
         },
-        "donor_precision_context": {
+        "donor_sampling_context": {
             "independent_donor_units": int(donor_src.size),
-            "kish_ess_donor_equivalents": kish_ess(donor_counts),
-            "kish_ess_by_source": source_ess,
+            "cell_count_weight_kish_ess_descriptive_only": kish_ess(donor_counts),
+            "cell_count_weight_kish_ess_by_source_descriptive_only": source_ess,
+            "kish_ess_is_inferential_donor_sample_size": False,
+            "interpretation": (
+                "Kish ESS here summarizes imbalance in cell-count weights only. "
+                "It does not reduce or replace the 104 independent donor units and "
+                "must not be used as a donor-level power or confirmation sample size."
+            ),
             "donor_cell_count_min": int(donor_counts.min()),
             "donor_cell_count_median": float(np.median(donor_counts)),
             "donor_cell_count_max": int(donor_counts.max()),
@@ -138,6 +175,7 @@ def main() -> int:
     split = {
         "schema": "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1",
         "pass1_npz_sha256": pass1_sha,
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "split_id": "SOURCE_STRATIFIED_DONOR_HELD_OUT_V1",
         "seed_namespace": "JEPA_FULL104_CENSUS_FOLD",
         "n_folds": 4,
@@ -153,6 +191,7 @@ def main() -> int:
     target_eligibility = {
         "schema": "V5_FULL104_TARGET_ELIGIBILITY_RECEIPT_V1",
         "pass1_npz_sha256": pass1_sha,
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "split_receipt_sha256": split["receipt_sha256"],
         "support_policy_id": "STRICT_MEASURED_SCALAR_ONLY__COLLISION_UNRESOLVED_EXCLUDED_V1",
         "estimability_rule": "donor_nonzero_cells>=30__train_donors>=20__validation_donors>=5",
@@ -167,6 +206,7 @@ def main() -> int:
     write_json(args.out_split, split)
     write_json(args.out_target_eligibility, target_eligibility)
     print(json.dumps({
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "summary_sha256": summary["receipt_sha256"],
         "split_sha256": split["receipt_sha256"],
         "target_eligibility_sha256": target_eligibility["receipt_sha256"],

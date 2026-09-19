@@ -15,7 +15,7 @@ from sea_ad_jepa.v5.full104_census_receipt_v2 import sha256_file
 from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import load_control_calibration_cache
 from sea_ad_jepa.v5 import full104_nonlinear_capacity_cache_evaluator_v1 as eval_impl
 from sea_ad_jepa.v5.full104_nonlinear_capacity_cache_evaluator_v1 import evaluate_nonlinear_capacity_rung
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import MaskingQualificationParametersAuthorityV3
 from sea_ad_jepa.v5.nonlinear_capacity_model_authority_v1 import NonlinearCapacityModelAuthorityV1
 from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v1 import NonlinearCapControlVerdictV1
 from sea_ad_jepa.v5.nonlinear_sampling_calibration_authority_v2 import (
@@ -31,7 +31,12 @@ def load(path:Path)->dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def typed(payload,cls,sha_field):
+def typed(payload,cls,sha_field,expected_schema):
+    if payload.get("schema") != expected_schema:
+        raise SystemExit(
+            f"{cls.__name__} schema mismatch: expected {expected_schema}, "
+            f"observed {payload.get('schema')!r}"
+        )
     names={f.name for f in fields(cls)}
     obj=cls(**{name:payload[name] for name in names})
     obj.validate()
@@ -40,19 +45,97 @@ def typed(payload,cls,sha_field):
     return obj
 
 
-def load_prior(paths:list[Path])->dict[int,NonlinearCapControlVerdictV1]:
-    out={}
+def _load_capacity_receipt(path:Path)->ControlCapacityCalibrationReceiptV1:
+    payload=load(path)
+    if payload.get("schema")!="V5_CONTROL_CAPACITY_CALIBRATION_RECEIPT_V1":
+        raise SystemExit(f"{path}: capacity receipt schema mismatch")
+    names={f.name for f in fields(ControlCapacityCalibrationReceiptV1)}
+    receipt=ControlCapacityCalibrationReceiptV1(**{name:payload[name] for name in names})
+    receipt.validate()
+    if payload.get("receipt_sha256")!=receipt.canonical_digest():
+        raise SystemExit(f"{path}: capacity receipt digest mismatch")
+    if receipt.scope_id!="NONLINEAR_CAP_CAPACITY_CALIBRATION_V1":
+        raise SystemExit(f"{path}: nonlinear capacity scope required")
+    return receipt
+
+
+def load_prior_evidence(
+    *,
+    verdict_paths:list[Path],
+    capacity_paths:list[Path],
+    planted_paths:list[Path],
+    shuffled_paths:list[Path],
+    replay_planted_paths:list[Path],
+    replay_shuffled_paths:list[Path],
+    cache,
+    precision:QualificationPrecisionAuthorityV4,
+    target_count:int,
+)->dict[int,NonlinearCapControlVerdictV1]:
+    counts={
+        len(verdict_paths),len(capacity_paths),len(planted_paths),
+        len(shuffled_paths),len(replay_planted_paths),len(replay_shuffled_paths)
+    }
+    if len(counts)!=1:
+        raise SystemExit(
+            "every prior nonlinear rung requires verdict, capacity receipt, "
+            "raw planted/shuffled matrices, and exact replay planted/shuffled matrices"
+        )
     names={f.name for f in fields(NonlinearCapControlVerdictV1)}
-    for path in paths:
-        payload=load(path)
+    out={}
+    for verdict_path,capacity_path,planted_path,shuffled_path,replay_planted_path,replay_shuffled_path in zip(
+        verdict_paths,capacity_paths,planted_paths,shuffled_paths,
+        replay_planted_paths,replay_shuffled_paths
+    ):
+        payload=load(verdict_path)
         if payload.get("schema")!="V5_NONLINEAR_CAP_CONTROL_VERDICT_V1":
-            raise SystemExit(f"{path}: nonlinear cap verdict schema mismatch")
-        v=NonlinearCapControlVerdictV1(**{name:payload[name] for name in names}); v.validate()
-        if payload.get("verdict_sha256")!=v.canonical_digest():
-            raise SystemExit(f"{path}: nonlinear cap verdict digest mismatch")
-        if v.max_cells_per_donor in out:
+            raise SystemExit(f"{verdict_path}: nonlinear cap verdict schema mismatch")
+        verdict=NonlinearCapControlVerdictV1(**{name:payload[name] for name in names})
+        verdict.validate()
+        if payload.get("verdict_sha256")!=verdict.canonical_digest():
+            raise SystemExit(f"{verdict_path}: nonlinear cap verdict digest mismatch")
+        capacity=_load_capacity_receipt(capacity_path)
+        verdict.bind_capacity_receipt(capacity)
+        cap=int(verdict.max_cells_per_donor)
+        if capacity.candidate_value!=cap:
+            raise SystemExit("prior nonlinear capacity cap mismatch")
+        if capacity.target_count!=int(target_count):
+            raise SystemExit("prior nonlinear capacity target count mismatch")
+        if capacity.calibration_cache_manifest_sha256!=cache.manifest_sha256:
+            raise SystemExit("prior nonlinear capacity binds a different calibration cache")
+        if capacity.precision_root_sha256!=precision.canonical_digest():
+            raise SystemExit("prior nonlinear capacity binds a different precision authority")
+
+        for raw_path,replay_path,expected_sha,label in (
+            (planted_path,replay_planted_path,capacity.raw_planted_evidence_sha256,"planted"),
+            (shuffled_path,replay_shuffled_path,capacity.raw_shuffled_evidence_sha256,"shuffled"),
+        ):
+            if sha256_file(raw_path)!=expected_sha:
+                raise SystemExit(f"prior nonlinear {label} matrix hash mismatch")
+            if sha256_file(replay_path)!=expected_sha:
+                raise SystemExit(f"prior nonlinear {label} replay hash mismatch")
+            raw=np.load(raw_path,allow_pickle=False)
+            replay=np.load(replay_path,allow_pickle=False)
+            if raw.shape!=(int(target_count),104) or replay.shape!=(int(target_count),104):
+                raise SystemExit(f"prior nonlinear {label} matrix shape mismatch")
+            if not np.array_equal(raw,replay):
+                raise SystemExit(f"prior nonlinear {label} replay is not exact")
+            if not np.all(np.isfinite(raw)):
+                raise SystemExit(f"prior nonlinear {label} matrix contains non-finite values")
+
+        planted=np.load(planted_path,allow_pickle=False)
+        shuffled=np.load(shuffled_path,allow_pickle=False)
+        interval=precision.interval(planted-shuffled,cache.donor_source_code)
+        if float(interval.mean)!=float(capacity.planted_minus_shuffled_mean):
+            raise SystemExit("prior nonlinear capacity mean does not rederive from raw matrices")
+        if float(interval.lower_one_sided)!=float(capacity.planted_minus_shuffled_lower_one_sided):
+            raise SystemExit("prior nonlinear capacity lower bound does not rederive from raw matrices")
+        if float(verdict.planted_minus_shuffled_lower_one_sided)!=float(interval.lower_one_sided):
+            raise SystemExit("prior nonlinear verdict statistic does not rederive from raw matrices")
+        if verdict.replay_exact is not True or capacity.replay_exact is not True:
+            raise SystemExit("prior nonlinear rung lacks exact replay proof")
+        if cap in out:
             raise SystemExit("duplicate nonlinear cap verdict")
-        out[v.max_cells_per_donor]=v
+        out[cap]=verdict
     return dict(sorted(out.items()))
 
 
@@ -73,6 +156,11 @@ def main()->int:
     p.add_argument("--out-dir",type=Path,required=True)
     p.add_argument("--workers",type=int,required=True)
     p.add_argument("--prior-verdict",type=Path,action="append",default=[])
+    p.add_argument("--prior-capacity-receipt",type=Path,action="append",default=[])
+    p.add_argument("--prior-planted",type=Path,action="append",default=[])
+    p.add_argument("--prior-shuffled",type=Path,action="append",default=[])
+    p.add_argument("--prior-replay-planted",type=Path,action="append",default=[])
+    p.add_argument("--prior-replay-shuffled",type=Path,action="append",default=[])
     p.add_argument("--replay-planted",type=Path)
     p.add_argument("--replay-shuffled",type=Path)
     args=p.parse_args()
@@ -81,28 +169,28 @@ def main()->int:
     cache.manifest.assert_calibration_only()
 
     pp=load(args.parameters_authority)
-    parameters=typed(pp,MaskingQualificationParametersAuthorityV2,"parameter_authority_sha256")
+    parameters=typed(pp,MaskingQualificationParametersAuthorityV3,"parameter_authority_sha256","V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3")
     mp=load(args.model_capacity_authority)
-    model=typed(mp,NonlinearCapacityModelAuthorityV1,"authority_sha256")
+    model=typed(mp,NonlinearCapacityModelAuthorityV1,"authority_sha256","V5_NONLINEAR_CAPACITY_MODEL_AUTHORITY_V1")
     model.bind_primary_parameters(parameters)
 
     panel_payload=load(args.target_panel_authority)
-    panel=typed(panel_payload,TargetPanelAuthorityV3,"authority_sha256")
+    panel=typed(panel_payload,TargetPanelAuthorityV3,"authority_sha256","V5_TARGET_PANEL_AUTHORITY_V3")
     selection_payload=load(args.target_selection_receipt)
-    selection=typed(selection_payload,TargetPanelSelectionReceiptV2,"receipt_sha256")
+    selection=typed(selection_payload,TargetPanelSelectionReceiptV2,"receipt_sha256","V5_TARGET_PANEL_SELECTION_RECEIPT_V2")
     if selection.target_count!=panel.target_count:
         raise SystemExit("target selection count disagrees with final target panel")
     if tuple(map(int,selection.selected_target_cols))!=tuple(map(int,cache.target_cols[:panel.target_count])):
         raise SystemExit("final target panel does not match authenticated cache target prefix")
 
     precision_payload=load(args.precision_authority)
-    precision=typed(precision_payload,QualificationPrecisionAuthorityV4,"authority_sha256")
+    precision=typed(precision_payload,QualificationPrecisionAuthorityV4,"authority_sha256","V5_QUALIFICATION_PRECISION_AUTHORITY_V4")
     if precision.target_panel_authority_sha256!=panel.canonical_digest():
         raise SystemExit("precision authority is bound to a different target panel")
     precision.assert_sufficient(target_count=panel.target_count,donor_count=104,outer_fold_count=4)
 
     outer_payload=load(args.outer_split_authority)
-    outer=typed(outer_payload,OuterDonorSplitAuthorityV1,"authority_sha256")
+    outer=typed(outer_payload,OuterDonorSplitAuthorityV1,"authority_sha256","V5_OUTER_DONOR_SPLIT_AUTHORITY_V1")
     if precision.outer_split_authority_sha256!=outer.canonical_digest():
         raise SystemExit("precision and nonlinear calibration use different outer split")
     if outer.fold_assignment_artifact_sha256!=cache.manifest.split_receipt_sha256:
@@ -134,7 +222,17 @@ def main()->int:
         "training_authorized":False,
     })
 
-    prior=load_prior(args.prior_verdict)
+    prior=load_prior_evidence(
+        verdict_paths=args.prior_verdict,
+        capacity_paths=args.prior_capacity_receipt,
+        planted_paths=args.prior_planted,
+        shuffled_paths=args.prior_shuffled,
+        replay_planted_paths=args.prior_replay_planted,
+        replay_shuffled_paths=args.prior_replay_shuffled,
+        cache=cache,
+        precision=precision,
+        target_count=panel.target_count,
+    )
     cap=plan.next_cap(prior)
     prefix=f"nonlinear_cap_{cap}"
     planted,shuffled=evaluate_nonlinear_capacity_rung(

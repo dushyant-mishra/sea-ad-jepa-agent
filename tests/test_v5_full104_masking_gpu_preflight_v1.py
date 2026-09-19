@@ -19,11 +19,16 @@ from sea_ad_jepa.v5.masking_qualification_parameters_authority_v1 import (
     PRIMARY_ATTACKER_ID,
     PRIMARY_SCORE_ID,
 )
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import (
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import (
     BURDEN_SEPARATION_POLICY_ID,
     CONFIRMATION_ROLE_ID,
+    FULL104_SUBSTRATE_SHA256,
+    HISTORICAL_PROVENANCE_ROLE_ID,
     ORIGIN_POLICY_ID,
-    MaskingQualificationParametersAuthorityV2,
+    SUPPORT_ESTIMABILITY_AUTHORITY_SHA256,
+    TERMINAL_UNIVERSE_ID,
+    TERMINAL_UNIVERSE_SIZE,
+    MaskingQualificationParametersAuthorityV3,
 )
 
 
@@ -34,6 +39,10 @@ def h(value: str) -> str:
 def parameters_payload(**updates):
     values = dict(
         authority_id="TEST",
+        full104_substrate_sha256=FULL104_SUBSTRATE_SHA256,
+        support_estimability_authority_sha256=SUPPORT_ESTIMABILITY_AUTHORITY_SHA256,
+        terminal_universe_id=TERMINAL_UNIVERSE_ID,
+        terminal_universe_size=TERMINAL_UNIVERSE_SIZE,
         primary_attacker_id=PRIMARY_ATTACKER_ID,
         primary_score_id=PRIMARY_SCORE_ID,
         targeted_partner_cap=8,
@@ -54,12 +63,14 @@ def parameters_payload(**updates):
         parameter_origin_policy_id=ORIGIN_POLICY_ID,
         confirmation_role_id=CONFIRMATION_ROLE_ID,
         burden_separation_policy_id=BURDEN_SEPARATION_POLICY_ID,
+        historical_provenance_role_id=HISTORICAL_PROVENANCE_ROLE_ID,
         terminal_full104_masking_outcomes_inspected=False,
+        protected_outcomes_authorized=False,
         training_authorized=False,
     )
     values.update(updates)
-    obj = MaskingQualificationParametersAuthorityV2(**values)
-    payload = {"schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2", **asdict(obj)}
+    obj = MaskingQualificationParametersAuthorityV3(**values)
+    payload = {"schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3", **asdict(obj)}
     payload["parameter_authority_sha256"] = obj.canonical_digest()
     return payload
 
@@ -81,6 +92,7 @@ class CacheManifestStub:
             full104_block_manifest_sha256=EXPECTED_BLOCK_MANIFEST_SHA256,
             canonical_registry_sha256=EXPECTED_REGISTRY_SHA256,
             census_authority_sha256="",
+            pass1_physical_binding_sha256="",
             support_estimability_authority_sha256=h("support-file"),
             split_receipt_sha256="",
             target_eligibility_receipt_sha256="",
@@ -101,16 +113,19 @@ def valid_bundle():
     support_file_sha = sha256_file(support_path)
     support = json.loads(support_path.read_text(encoding="utf-8"))
     registry_authority = json.loads(registry_path.read_text(encoding="utf-8"))
+    pass1_binding_root = h("physical-pass1")
     split = receipt(
         "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1",
         n_folds=4,
         fold_sizes=[28, 26, 25, 25],
+        pass1_physical_binding_sha256=pass1_binding_root,
     )
     eligibility = receipt(
         "V5_FULL104_TARGET_ELIGIBILITY_RECEIPT_V1",
         eligible_target_count=17053,
         split_receipt_sha256=split["receipt_sha256"],
         strict_core_cols=list(range(17186)),
+        pass1_physical_binding_sha256=pass1_binding_root,
     )
     census = {
         "schema": "V5_FULL104_READONLY_CENSUS_AUTHORITY_V2",
@@ -119,9 +134,11 @@ def valid_bundle():
         "substrate": {
             "full104_block_manifest_sha256": EXPECTED_BLOCK_MANIFEST_SHA256,
             "operator_address_observation_state_sha256": EXPECTED_OBSERVATION_STATE_SHA256,
+            "pass1_physical_binding_sha256": pass1_binding_root,
         },
         "support_estimability_authority": {"sha256": support_file_sha},
         "execution_receipts": {
+            "pass1_physical_binding_receipt_sha256": pass1_binding_root,
             "split_receipt_sha256": split["receipt_sha256"],
             "target_eligibility_receipt_sha256": eligibility["receipt_sha256"],
         },
@@ -129,6 +146,7 @@ def valid_bundle():
     census["census_authority_sha256"] = canonical_sha(census)
     cache = CacheManifestStub(
         census_authority_sha256=census["census_authority_sha256"],
+        pass1_physical_binding_sha256=pass1_binding_root,
         support_estimability_authority_sha256=support_file_sha,
         split_receipt_sha256=split["receipt_sha256"],
         target_eligibility_receipt_sha256=eligibility["receipt_sha256"],
@@ -160,6 +178,7 @@ def test_calibration_preflight_closes_current_full104_roots():
     roots = call_valid()
     assert roots["parameters_authority_sha256"] == parameters_payload()["parameter_authority_sha256"]
     assert roots["cache_manifest_sha256"] == h("cache-manifest")
+    assert roots["pass1_physical_binding_sha256"] == h("physical-pass1")
 
 
 def test_calibration_preflight_rejects_same_schema_historical_support_lookalike():
@@ -181,6 +200,22 @@ def test_calibration_preflight_rejects_same_schema_historical_registry_lookalike
 def test_calibration_preflight_rejects_registry_splice():
     with pytest.raises(ValueError, match="registry file root"):
         call_valid(registry_file_sha256=h("smaller-historical-registry"))
+
+
+def test_calibration_preflight_rejects_stale_parameter_schema_even_with_current_fields():
+    stale = parameters_payload()
+    stale["schema"] = "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2"
+    with pytest.raises(ValueError, match="schema mismatch"):
+        call_valid(parameters_payload=stale)
+
+
+def test_calibration_preflight_rejects_historical_parameter_substrate_splice():
+    with pytest.raises(ValueError, match="different FULL104 substrate"):
+        call_valid(
+            parameters_payload=parameters_payload(
+                full104_substrate_sha256=h("historical-smaller-run")
+            )
+        )
 
 
 def test_calibration_preflight_rejects_post_outcome_parameter_reuse():

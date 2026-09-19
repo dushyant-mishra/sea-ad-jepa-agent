@@ -12,7 +12,7 @@ from typing import Any, Mapping
 
 from .full104_census_receipt_v2 import canonical_sha, sha256_file
 from .full104_control_calibration_cache_evaluator_v1 import load_control_calibration_cache
-from .masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
+from .masking_qualification_parameters_authority_v3 import MaskingQualificationParametersAuthorityV3
 from .masking_qualification_run_contract_v4 import (
     CALIBRATION_CACHE_ROLE_ID,
     MaskingQualificationRunContractV4,
@@ -40,7 +40,17 @@ def load_json(path: Path | str) -> dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
-def typed(payload: Mapping[str, Any], cls: type, digest_fields: tuple[str, ...]):
+def typed(
+    payload: Mapping[str, Any],
+    cls: type,
+    digest_fields: tuple[str, ...],
+    expected_schema: str,
+):
+    if payload.get("schema") != expected_schema:
+        raise ValueError(
+            f"{cls.__name__} schema mismatch: expected {expected_schema}, "
+            f"observed {payload.get('schema')!r}"
+        )
     names = {item.name for item in fields(cls)}
     missing = names - set(payload)
     if missing:
@@ -134,9 +144,18 @@ def validate_calibration_bindings(
 
     parameters = typed(
         parameters_payload,
-        MaskingQualificationParametersAuthorityV2,
+        MaskingQualificationParametersAuthorityV3,
         ("parameter_authority_sha256", "authority_sha256"),
+        "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3",
     )
+    if parameters.full104_substrate_sha256 != block_manifest_sha256:
+        raise ValueError("masking parameters bind a different FULL104 substrate")
+    if parameters.support_estimability_authority_sha256 != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
+        raise ValueError("masking parameters bind a different support authority")
+    if parameters.terminal_universe_id != "FULL_COMMON_CORE_17186_V1":
+        raise ValueError("masking parameters bind a different terminal universe")
+    if parameters.terminal_universe_size != EXPECTED_CORE:
+        raise ValueError("masking parameters bind a different terminal-universe size")
     split_root = receipt_digest(
         split_payload, "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1"
     )
@@ -162,6 +181,15 @@ def validate_calibration_bindings(
     if census_payload.get("support_estimability_authority", {}).get("sha256") != support_file_sha256:
         raise ValueError("census authority binds a different support authority")
     receipts = census_payload.get("execution_receipts", {})
+    pass1_binding_root = csubstrate.get("pass1_physical_binding_sha256")
+    if not isinstance(pass1_binding_root, str) or len(pass1_binding_root) != 64:
+        raise ValueError("census authority lacks current physical pass1 binding")
+    if receipts.get("pass1_physical_binding_receipt_sha256") != pass1_binding_root:
+        raise ValueError("census authority physical pass1 receipt mismatch")
+    if split_payload.get("pass1_physical_binding_sha256") != pass1_binding_root:
+        raise ValueError("donor split binds a different physical pass1 proof")
+    if eligibility_payload.get("pass1_physical_binding_sha256") != pass1_binding_root:
+        raise ValueError("target eligibility binds a different physical pass1 proof")
     if receipts.get("split_receipt_sha256") != split_root:
         raise ValueError("census authority binds a different donor split")
     if receipts.get("target_eligibility_receipt_sha256") != eligibility_root:
@@ -176,6 +204,8 @@ def validate_calibration_bindings(
         raise ValueError("calibration cache binds a different canonical registry")
     if cache_manifest.census_authority_sha256 != census_root:
         raise ValueError("calibration cache binds a different census authority")
+    if cache_manifest.pass1_physical_binding_sha256 != pass1_binding_root:
+        raise ValueError("calibration cache binds a different physical pass1 proof")
     if cache_manifest.support_estimability_authority_sha256 != support_file_sha256:
         raise ValueError("calibration cache binds a different support authority")
     if cache_manifest.split_receipt_sha256 != split_root:
@@ -190,6 +220,7 @@ def validate_calibration_bindings(
     return {
         "parameters_authority_sha256": parameters.canonical_digest(),
         "census_authority_sha256": census_root,
+        "pass1_physical_binding_sha256": pass1_binding_root,
         "split_receipt_sha256": split_root,
         "target_eligibility_receipt_sha256": eligibility_root,
         "support_authority_file_sha256": support_file_sha256,
@@ -238,15 +269,41 @@ def validate_terminal_bindings(
     rng_payload: Mapping[str, Any],
     run_contract_payload: Mapping[str, Any],
 ) -> dict[str, str]:
-    panel = typed(target_panel_payload, TargetPanelAuthorityV3, ("authority_sha256",))
-    precision = typed(precision_payload, QualificationPrecisionAuthorityV4, ("authority_sha256",))
-    outer = typed(outer_split_payload, OuterDonorSplitAuthorityV1, ("authority_sha256",))
-    nonlinear = typed(nonlinear_payload, NonlinearMaskingChallengeAuthorityV3, ("authority_sha256",))
-    rng = typed(rng_payload, MaskingRngReplayAuthorityV2, ("authority_sha256",))
+    panel = typed(
+        target_panel_payload,
+        TargetPanelAuthorityV3,
+        ("authority_sha256",),
+        "V5_TARGET_PANEL_AUTHORITY_V3",
+    )
+    precision = typed(
+        precision_payload,
+        QualificationPrecisionAuthorityV4,
+        ("authority_sha256",),
+        "V5_QUALIFICATION_PRECISION_AUTHORITY_V4",
+    )
+    outer = typed(
+        outer_split_payload,
+        OuterDonorSplitAuthorityV1,
+        ("authority_sha256",),
+        "V5_OUTER_DONOR_SPLIT_AUTHORITY_V1",
+    )
+    nonlinear = typed(
+        nonlinear_payload,
+        NonlinearMaskingChallengeAuthorityV3,
+        ("authority_sha256",),
+        "V5_NONLINEAR_MASKING_CHALLENGE_AUTHORITY_V3",
+    )
+    rng = typed(
+        rng_payload,
+        MaskingRngReplayAuthorityV2,
+        ("authority_sha256",),
+        "V5_MASKING_RNG_REPLAY_AUTHORITY_V2",
+    )
     contract = typed(
         run_contract_payload,
         MaskingQualificationRunContractV4,
         ("run_contract_sha256", "authority_sha256"),
+        "V5_MASKING_QUALIFICATION_RUN_CONTRACT_V4",
     )
     if precision.target_panel_authority_sha256 != panel.canonical_digest():
         raise ValueError("precision authority binds a different target panel")

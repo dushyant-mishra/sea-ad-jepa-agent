@@ -76,6 +76,27 @@ class MaskingQualificationExecutionAuthorityV4:
         if self.training_authorized is not False:
             raise ValueError("masking execution cannot authorize training")
 
+    def bind_raw_result_artifact(self, artifact: Any) -> None:
+        """Re-derive execution provenance from the bound raw-result artifact."""
+
+        self.validate()
+        if artifact is None or not hasattr(artifact, "validate") or not hasattr(artifact, "canonical_digest"):
+            raise ValueError("raw result artifact must be a validated current terminal artifact")
+        artifact.validate()
+        digest = _sha(artifact.canonical_digest(), "raw result artifact digest")
+        if digest != self.raw_result_artifact_sha256:
+            raise ValueError("raw result artifact root mismatch")
+        if getattr(artifact, "run_contract_sha256", None) != self.run_contract_authority_sha256:
+            raise ValueError("raw result artifact binds a different run contract")
+        if (
+            getattr(artifact, "burden_numerator", None),
+            getattr(artifact, "burden_denominator", None),
+        ) != (
+            self.selected_burden_numerator,
+            self.selected_burden_denominator,
+        ):
+            raise ValueError("raw result artifact burden does not match execution authority")
+
     def bind_rung_decision_receipt(self, receipt: Any) -> None:
         self.validate()
         if getattr(receipt, "decision_rule_id", None) != self.decision_rule_id:

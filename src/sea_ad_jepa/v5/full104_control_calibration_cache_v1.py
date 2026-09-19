@@ -245,6 +245,7 @@ class Full104ControlCalibrationCacheManifestV1:
     full104_block_manifest_sha256: str
     canonical_registry_sha256: str
     census_authority_sha256: str
+    pass1_physical_binding_sha256: str
     support_estimability_authority_sha256: str
     split_receipt_sha256: str
     target_eligibility_receipt_sha256: str
@@ -305,6 +306,7 @@ class Full104ControlCalibrationCacheManifestV1:
             _sha(self.full104_block_manifest_sha256, "full104_block_manifest_sha256"),
             _sha(self.canonical_registry_sha256, "canonical_registry_sha256"),
             _sha(self.census_authority_sha256, "census_authority_sha256"),
+            _sha(self.pass1_physical_binding_sha256, "pass1_physical_binding_sha256"),
             _sha(self.support_estimability_authority_sha256, "support_estimability_authority_sha256"),
             _sha(self.split_receipt_sha256, "split_receipt_sha256"),
             _sha(self.target_eligibility_receipt_sha256, "target_eligibility_receipt_sha256"),

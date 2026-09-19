@@ -21,7 +21,7 @@ from sea_ad_jepa.v5.full104_control_calibration_cache_evaluator_v1 import load_c
 from sea_ad_jepa.v5.masking_burden_ladder_authority_v2 import MaskingBurdenLadderAuthorityV2
 from sea_ad_jepa.v5.masking_nonlinear_challenge_authority_v3 import NonlinearMaskingChallengeAuthorityV3
 from sea_ad_jepa.v5.masking_qualification_design_authority_v2 import MaskingQualificationDesignAuthorityV2
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import MaskingQualificationParametersAuthorityV3
 from sea_ad_jepa.v5.masking_qualification_run_contract_v4 import (
     DECISION_RULE_ID,
     EXECUTION_SOURCE_ROLE_ID,
@@ -89,7 +89,19 @@ def semantic_sha256(payload: dict[str, Any]) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def typed(payload: dict[str, Any], cls: type, digest_field: str, *, conversions=None):
+def typed(
+    payload: dict[str, Any],
+    cls: type,
+    digest_field: str,
+    expected_schema: str,
+    *,
+    conversions=None,
+):
+    if payload.get("schema") != expected_schema:
+        raise SystemExit(
+            f"{cls.__name__} schema mismatch: expected {expected_schema}, "
+            f"observed {payload.get('schema')!r}"
+        )
     names = {item.name for item in fields(cls)}
     missing = names - set(payload)
     if missing:
@@ -182,6 +194,13 @@ def main() -> int:
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
 
+    raise SystemExit(
+        "STOP_H3_G5_TERMINAL_RUN_CONTRACT_UNAUTHORIZED: the current V2 "
+        "target-panel sizing receipt is capacity-only and the V4 precision "
+        "margin has no prospective scientific basis. Do not construct a "
+        "terminal run contract until both successor authorities exist."
+    )
+
     support = load(args.support_authority)
     if canonical_sha(support) != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
         raise SystemExit("support authority is not the exact current semantic authority")
@@ -194,9 +213,9 @@ def main() -> int:
         raise SystemExit("support authority unexpectedly authorizes training")
 
     parameters_payload = load(args.parameters_authority)
-    if parameters_payload.get("schema") != "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2":
-        raise SystemExit("masking parameter authority V2 is required")
-    parameters = typed(parameters_payload, MaskingQualificationParametersAuthorityV2, "parameter_authority_sha256")
+    if parameters_payload.get("schema") != "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3":
+        raise SystemExit("FULL104-bound masking parameter authority V3 is required")
+    parameters = typed(parameters_payload, MaskingQualificationParametersAuthorityV3, "parameter_authority_sha256", "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3")
 
     census = load(args.census_authority)
     if census.get("schema") != "V5_FULL104_READONLY_CENSUS_AUTHORITY_V2":
@@ -223,24 +242,24 @@ def main() -> int:
         raise SystemExit("calibration cache binds a different support authority")
 
     budget = template_typed(load(args.target_evidence_budget_template))
-    burden = typed(load(args.burden_ladder_authority), MaskingBurdenLadderAuthorityV2, "authority_sha256")
-    outer = typed(load(args.outer_split_authority), OuterDonorSplitAuthorityV1, "authority_sha256")
+    burden = typed(load(args.burden_ladder_authority), MaskingBurdenLadderAuthorityV2, "authority_sha256", "V5_MASKING_BURDEN_LADDER_AUTHORITY_V2")
+    outer = typed(load(args.outer_split_authority), OuterDonorSplitAuthorityV1, "authority_sha256", "V5_OUTER_DONOR_SPLIT_AUTHORITY_V1")
 
     sizing_plan_payload = load(args.target_panel_sizing_plan)
     if sizing_plan_payload.get("schema") != "V5_TARGET_PANEL_SIZING_PLAN_AUTHORITY_V2":
         raise SystemExit("target-panel sizing plan V2 is required")
-    sizing_plan = typed(sizing_plan_payload, TargetPanelSizingPlanAuthorityV2, "authority_sha256")
+    sizing_plan = typed(sizing_plan_payload, TargetPanelSizingPlanAuthorityV2, "authority_sha256", "V5_TARGET_PANEL_SIZING_PLAN_AUTHORITY_V2")
     if sizing_plan.census_authority_sha256 != census_root:
         raise SystemExit("target-panel sizing plan binds a different census authority")
 
     precision_plan_payload = load(args.control_calibration_precision_plan)
     if precision_plan_payload.get("schema") != "V5_CONTROL_CALIBRATION_PRECISION_PLAN_V2":
         raise SystemExit("control-calibration precision plan V2 is required")
-    precision_plan = typed(precision_plan_payload, ControlCalibrationPrecisionPlanV2, "authority_sha256")
+    precision_plan = typed(precision_plan_payload, ControlCalibrationPrecisionPlanV2, "authority_sha256", "V5_CONTROL_CALIBRATION_PRECISION_PLAN_V2")
     precision_plan.bind_calibration_cache(cache.manifest)
 
     sizing_receipt = sizing_receipt_typed(load(args.target_panel_sizing_receipt))
-    panel = typed(load(args.target_panel_authority), TargetPanelAuthorityV3, "authority_sha256")
+    panel = typed(load(args.target_panel_authority), TargetPanelAuthorityV3, "authority_sha256", "V5_TARGET_PANEL_AUTHORITY_V3")
     selection_payload = load(args.target_selection_receipt)
     if selection_payload.get("schema") != "V5_TARGET_PANEL_SELECTION_RECEIPT_V2":
         raise SystemExit("target-panel selection receipt V2 is required")
@@ -248,6 +267,7 @@ def main() -> int:
         selection_payload,
         TargetPanelSelectionReceiptV2,
         "receipt_sha256",
+        "V5_TARGET_PANEL_SELECTION_RECEIPT_V2",
         conversions=lambda values: {
             **values,
             "selected_target_cols": tuple(map(int, values["selected_target_cols"])),
@@ -261,19 +281,20 @@ def main() -> int:
         raise SystemExit("target-selection receipt binds a different eligibility receipt")
     if tuple(map(int, selection.selected_target_cols)) != tuple(map(int, cache.target_cols[: panel.target_count])):
         raise SystemExit("target-selection receipt does not match authenticated cache target prefix")
-    precision = typed(load(args.precision_authority), QualificationPrecisionAuthorityV4, "authority_sha256")
+    precision = typed(load(args.precision_authority), QualificationPrecisionAuthorityV4, "authority_sha256", "V5_QUALIFICATION_PRECISION_AUTHORITY_V4")
 
     model = typed(
         load(args.model_capacity_authority),
         NonlinearCapacityModelAuthorityV1,
         "authority_sha256",
+        "V5_NONLINEAR_CAPACITY_MODEL_AUTHORITY_V1",
     )
     model.bind_primary_parameters(parameters)
 
     nonlinear_plan_payload = load(args.nonlinear_sampling_plan)
     if nonlinear_plan_payload.get("schema") != "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2":
         raise SystemExit("nonlinear sampling calibration plan V2 is required")
-    nonlinear_plan = typed(nonlinear_plan_payload, NonlinearSamplingCalibrationPlanV2, "authority_sha256")
+    nonlinear_plan = typed(nonlinear_plan_payload, NonlinearSamplingCalibrationPlanV2, "authority_sha256", "V5_NONLINEAR_SAMPLING_CALIBRATION_PLAN_V2")
     nonlinear_plan.bind_current_roots(
         panel=panel,
         precision=precision,
@@ -285,9 +306,9 @@ def main() -> int:
     nonlinear_receipt = nonlinear_receipt_typed(load(args.nonlinear_sampling_receipt))
     if nonlinear_receipt.model_capacity_authority_sha256 != model.canonical_digest():
         raise SystemExit("nonlinear sampling receipt binds a different model-capacity authority")
-    nonlinear = typed(load(args.nonlinear_authority), NonlinearMaskingChallengeAuthorityV3, "authority_sha256")
-    rng = typed(load(args.rng_authority), MaskingRngReplayAuthorityV2, "authority_sha256")
-    design = typed(load(args.design_authority), MaskingQualificationDesignAuthorityV2, "authority_sha256")
+    nonlinear = typed(load(args.nonlinear_authority), NonlinearMaskingChallengeAuthorityV3, "authority_sha256", "V5_NONLINEAR_MASKING_CHALLENGE_AUTHORITY_V3")
+    rng = typed(load(args.rng_authority), MaskingRngReplayAuthorityV2, "authority_sha256", "V5_MASKING_RNG_REPLAY_AUTHORITY_V2")
+    design = typed(load(args.design_authority), MaskingQualificationDesignAuthorityV2, "authority_sha256", "V5_MASKING_QUALIFICATION_DESIGN_AUTHORITY_V2")
 
     checkpoint = load(args.machine_checkpoint)
     if checkpoint.get("schema") != "JEPA_WORK_CHECKPOINT_V1":
