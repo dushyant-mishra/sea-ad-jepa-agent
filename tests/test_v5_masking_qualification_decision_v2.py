@@ -1,3 +1,5 @@
+from fractions import Fraction
+
 import pytest
 
 from sea_ad_jepa.v5.masking_qualification_decision_v1 import (
@@ -11,12 +13,14 @@ from sea_ad_jepa.v5.masking_qualification_decision_v2 import (
     TARGET_HETEROGENEITY_FLOOR_RULE_ID,
     TARGETING_COMPLEXITY_EQUIVALENCE_EVENTS,
     evaluate_policy_v2,
+    evaluate_rung_v2,
     null_noise_tolerance,
     select_policy_v2,
 )
 from sea_ad_jepa.v5.masking_qualification_run_contract_v4 import (
     DECISION_RULE_ID as RUN_CONTRACT_DECISION_RULE_ID,
 )
+from sea_ad_jepa.v5.precision_authority_v4 import QualificationPrecisionAuthorityV4
 
 
 
@@ -48,6 +52,8 @@ def evidence(**updates):
         planted_after_mask_excess=I(0.001, -0.002, 0.004, -0.001, 0.004),
         nonlinear_excess_over_shuffled_null=I(0.001, -0.002, 0.004, -0.001, 0.004),
         null_noise_tolerance_ceiling=0.005,
+        null_equivalence_margin_numerator=1,
+        null_equivalence_margin_denominator=200,
         negative_control_precision_passed=True,
         replay_exact=True,
         untreated_identity_exact=True,
@@ -55,6 +61,14 @@ def evidence(**updates):
         precision_requirements_met=True,
     )
     values.update(updates)
+    if (
+        "null_equivalence_margin_numerator" not in updates
+        and "null_equivalence_margin_denominator" not in updates
+        and "null_noise_tolerance_ceiling" in updates
+    ):
+        exact_margin = Fraction(str(values["null_noise_tolerance_ceiling"]))
+        values["null_equivalence_margin_numerator"] = exact_margin.numerator
+        values["null_equivalence_margin_denominator"] = exact_margin.denominator
     if "negative_control_precision_passed" not in updates:
         neg = values["negative_control_delta"]
         tol = float(values["null_noise_tolerance_ceiling"])
@@ -64,6 +78,32 @@ def evidence(**updates):
             and neg.upper_two_sided <= tol
         )
     return MaskingPolicyDecisionEvidenceV1(**values)
+
+
+def precision_authority(*, numerator=1, denominator=200):
+    return QualificationPrecisionAuthorityV4(
+        authority_id="TEST_PRECISION_V4",
+        support_estimability_authority_sha256="1" * 64,
+        target_panel_authority_sha256="2" * 64,
+        target_panel_sizing_receipt_sha256="3" * 64,
+        outer_split_authority_sha256="4" * 64,
+        required_target_count=128,
+        null_equivalence_margin_numerator=numerator,
+        null_equivalence_margin_denominator=denominator,
+    )
+
+
+def rung_evidence_for_precision(precision):
+    root = precision.canonical_digest()
+    return [
+        evidence(policy_id=policy, precision_authority_sha256=root)
+        for policy in (
+            "UNIFORM_RANDOM",
+            "TOP8_CORRELATION",
+            "RIDGE8_CONDITIONAL",
+            "PREFIX3_SELECTIVE",
+        )
+    ]
 
 
 def test_null_tolerance_is_frozen_and_not_derived_from_negative_control_width():
@@ -388,4 +428,43 @@ def test_f16_selector_rejects_stale_heterogeneity_floor_rule_receipt():
 
 def test_decision_rule_id_is_identical_in_evaluator_and_run_contract():
     assert DECISION_RULE_ID == RUN_CONTRACT_DECISION_RULE_ID
+
+def test_g1_terminal_rung_rejects_ceiling_not_bound_to_precision_authority():
+    precision = precision_authority()
+    items = rung_evidence_for_precision(precision)
+    forged = MaskingPolicyDecisionEvidenceV1(
+        **{
+            **items[2].__dict__,
+            "null_noise_tolerance_ceiling": 0.100,
+            "null_equivalence_margin_numerator": 1,
+            "null_equivalence_margin_denominator": 10,
+        }
+    )
+    forged.validate()
+    items[2] = forged
+    with pytest.raises(ValueError, match="exact null-equivalence margin disagrees"):
+        evaluate_rung_v2(items, precision=precision)
+
+
+def test_g1_terminal_rung_accepts_exact_bound_precision_margin():
+    precision = precision_authority()
+    receipt = evaluate_rung_v2(rung_evidence_for_precision(precision), precision=precision)
+    receipt.validate()
+
+
+def test_h2_rung_receipt_rejects_non_hex_policy_roots():
+    receipt = MaskingRungDecisionReceiptV2(
+        burden_numerator=1,
+        burden_denominator=20,
+        qualified=False,
+        selected_policy_id="NO_POLICY_QUALIFIED",
+        policy_receipt_sha256={
+            "UNIFORM_RANDOM": "Z" * 64,
+            "TOP8_CORRELATION": "2" * 64,
+            "RIDGE8_CONDITIONAL": "3" * 64,
+            "PREFIX3_SELECTIVE": "4" * 64,
+        },
+    )
+    with pytest.raises(ValueError, match="lowercase SHA-256"):
+        receipt.validate()
 
