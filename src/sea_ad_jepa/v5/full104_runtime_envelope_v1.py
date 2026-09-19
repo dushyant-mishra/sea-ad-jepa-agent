@@ -71,6 +71,20 @@ def _sha(value: object, name: str) -> str:
     return value
 
 
+def _git_oid(value: object, name: str) -> str:
+    if (
+        not isinstance(value, str)
+        or len(value) not in (40, 64)
+        or value != value.lower()
+    ):
+        raise ValueError(f"{name} must be a lowercase Git object id")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a lowercase Git object id") from exc
+    return value
+
+
 def canonical_sha(payload: Mapping[str, Any]) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -105,7 +119,7 @@ def live_clean_scientific_head(worktree: Path) -> str:
             text=True,
             timeout=30,
         ).stdout.strip().lower()
-        _sha(head, "live scientific HEAD")
+        _git_oid(head, "live scientific HEAD")
         dirty = subprocess.run(
             ["git", "-C", str(worktree), "status", "--porcelain"],
             check=True,
@@ -125,7 +139,7 @@ def live_clean_scientific_head(worktree: Path) -> str:
 
 @dataclass(frozen=True)
 class Full104RuntimeEnvelopeV1:
-    scientific_anchor_sha256: str
+    scientific_anchor_git_oid: str
     full104_block_manifest_sha256: str
     canonical_registry_sha256: str
     observation_state_sha256: str
@@ -137,7 +151,7 @@ class Full104RuntimeEnvelopeV1:
     training_authorized: bool = False
 
     def validate(self) -> None:
-        _sha(self.scientific_anchor_sha256, "scientific_anchor_sha256")
+        _git_oid(self.scientific_anchor_git_oid, "scientific_anchor_git_oid")
         if _sha(self.full104_block_manifest_sha256, "full104_block_manifest_sha256") != FULL104_BLOCK_MANIFEST_SHA256:
             raise ValueError("runtime envelope binds a different FULL104 block manifest")
         if _sha(self.canonical_registry_sha256, "canonical_registry_sha256") != CANONICAL_REGISTRY_SHA256:
@@ -236,7 +250,7 @@ def assert_no_known_historical_runtime_hashes(
 def prepare_fresh_runtime(
     root: Path,
     *,
-    scientific_anchor_sha256: str,
+    scientific_anchor_git_oid: str,
     full104_block_manifest_sha256: str,
     canonical_registry_sha256: str,
     observation_state_sha256: str,
@@ -253,7 +267,7 @@ def prepare_fresh_runtime(
         root.mkdir(parents=True, exist_ok=False)
 
     envelope = Full104RuntimeEnvelopeV1(
-        scientific_anchor_sha256=scientific_anchor_sha256,
+        scientific_anchor_git_oid=scientific_anchor_git_oid,
         full104_block_manifest_sha256=full104_block_manifest_sha256,
         canonical_registry_sha256=canonical_registry_sha256,
         observation_state_sha256=observation_state_sha256,
@@ -274,7 +288,7 @@ def prepare_fresh_runtime(
 def validate_runtime_envelope(
     root: Path,
     *,
-    expected_scientific_anchor_sha256: str,
+    expected_scientific_anchor_git_oid: str,
     allowed_relative_paths: Iterable[str] = (),
 ) -> Full104RuntimeEnvelopeV1:
     root = Path(root)
@@ -291,7 +305,7 @@ def validate_runtime_envelope(
         **{name: payload[name] for name in names}
     )
     envelope.validate()
-    if envelope.scientific_anchor_sha256 != expected_scientific_anchor_sha256:
+    if envelope.scientific_anchor_git_oid != expected_scientific_anchor_git_oid:
         raise ValueError("FULL104 runtime envelope scientific anchor mismatch")
     if payload.get("runtime_envelope_sha256") != envelope.canonical_digest():
         raise ValueError("FULL104 runtime envelope digest mismatch")
