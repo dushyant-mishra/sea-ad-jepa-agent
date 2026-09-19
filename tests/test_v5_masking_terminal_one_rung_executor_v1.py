@@ -123,7 +123,9 @@ def test_first_invocation_can_open_only_first_frozen_rung():
             denominator=10,
             prior_rung_receipts=(),
             prior_rung_execution_authorities=(),
+            prior_rung_raw_result_artifacts=(),
             expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
         )
 
 
