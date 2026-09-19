@@ -8,15 +8,13 @@ import re
 COMMANDS = Path("docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_FULL104_MASKING_CURRENT.md")
 
 CURRENT_PIPELINE_SCRIPTS = (
-    Path("scripts/agent/build_full104_masking_parameters_authority_v2_20260918.py"),
+    Path("scripts/agent/build_full104_masking_parameters_authority_v3_20260919.py"),
     Path("analysis/v5_full104_census_20260918/full104_readonly_census_receipts_v2.py"),
     Path("scripts/agent/build_full104_census_authority_v2_20260918.py"),
     Path("scripts/agent/build_full104_control_calibration_cache_v1.py"),
-    Path("scripts/agent/evaluate_full104_target_panel_capacity_from_cache_v1.py"),
     Path("scripts/agent/build_full104_target_panel_selection_v2_20260918.py"),
     Path("scripts/agent/build_full104_target_panel_authority_v3_20260918.py"),
     Path("scripts/agent/build_full104_outer_split_authority_v1_20260918.py"),
-    Path("scripts/agent/build_full104_precision_authority_v4_20260918.py"),
     Path("scripts/agent/build_full104_nonlinear_capacity_model_authority_v1_20260918.py"),
     Path("scripts/agent/evaluate_full104_nonlinear_capacity_from_cache_v1.py"),
     Path("scripts/agent/build_full104_target_evidence_budget_template_authority_v1_20260918.py"),
@@ -24,7 +22,6 @@ CURRENT_PIPELINE_SCRIPTS = (
     Path("scripts/agent/build_full104_rng_replay_authority_v2_20260918.py"),
     Path("scripts/agent/build_full104_nonlinear_challenge_authority_v3_20260918.py"),
     Path("scripts/agent/build_full104_masking_design_authority_v2_20260918.py"),
-    Path("scripts/agent/build_full104_masking_run_contract_v4_20260918.py"),
 )
 
 
@@ -94,17 +91,15 @@ def test_current_command_authority_keeps_historical_and_terminal_boundaries_expl
         assert phrase in text, phrase
 
 
-def test_current_command_authority_requires_exact_replay_status_not_exit_code_alone():
+def test_current_command_authority_keeps_calibration_replay_mechanics_supporting_only():
     text = COMMANDS.read_text(encoding="utf-8")
-    assert "REPLAY_REQUIRED_BEFORE_CAPACITY_VERDICT" in text
-    assert "REPLAY_REQUIRED_BEFORE_NONLINEAR_CAPACITY_VERDICT" in text
-    assert 'STOP: target-panel Run B failed' in text
-    assert 'STOP: nonlinear Run B failed' in text
+    assert "planted-shortcut capacity evidence remains supporting positive-control evidence only" in text
+    assert "do not execute the target-panel ladder" in text
 
 def test_current_pipeline_historical_ingress_is_narrow_explicit_allowlist():
     historical_root = "analysis/v5_masking_successor_spike_20260917"
     allowed = {
-        "build_full104_masking_parameters_authority_v2_20260918.py",
+        "build_full104_masking_parameters_authority_v3_20260919.py",
         "build_full104_nonlinear_capacity_model_authority_v1_20260918.py",
     }
     observed = set()
@@ -128,6 +123,26 @@ def test_current_pipeline_historical_ingress_is_narrow_explicit_allowlist():
         f"and intentional reauthorization is restricted to {sorted(allowed)}; observed {sorted(observed)}"
     )
 
+
+
+def test_h3_g5_blocked_commands_are_not_presented_as_current_execution_steps():
+    text = COMMANDS.read_text(encoding="utf-8")
+    required_stops = (
+        "STOP_H3_EQUIVALENCE_POWER_OPEN",
+        "STOP_G5_NULL_EQUIVALENCE_MARGIN_BASIS_OPEN",
+        "STOP_H3_G5_TERMINAL_RUN_CONTRACT_UNAUTHORIZED",
+        "STOP_H3_G5_TERMINAL_MASKING_UNAUTHORIZED",
+    )
+    for phrase in required_stops:
+        assert phrase in text, phrase
+
+    forbidden_executable_fragments = (
+        'python "$Worktree\\scripts\\agent\\evaluate_full104_target_panel_capacity_from_cache_v1.py"',
+        'python "$Worktree\\scripts\\agent\\build_full104_precision_authority_v4_20260918.py"',
+        'python "$Worktree\\scripts\\agent\\build_full104_masking_run_contract_v4_20260918.py"',
+    )
+    for fragment in forbidden_executable_fragments:
+        assert fragment not in text, fragment
 
 
 def test_superseded_20260917_freeze_builder_is_a_fail_closed_tombstone():
