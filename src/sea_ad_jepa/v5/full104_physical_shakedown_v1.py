@@ -348,17 +348,23 @@ def run_physical_shakedown(
                 raise ValueError("donor appears under multiple source identities")
             donors.add(donor)
 
+        # Exercise the exact production sparse normalization over every
+        # nonzero in the physical block.  This intentionally mirrors
+        # Full104ManifestStreamV1.iter_blocks instead of probing a few columns.
         assert probe_columns is not None
-        probe = matrix[:, probe_columns].astype(np.float64).tocsr(copy=True)
-        if probe.data.size:
+        normalized_block = matrix.astype(np.float64).tocsr(copy=True)
+        if normalized_block.data.size:
             data_rows = np.repeat(
-                np.arange(probe.shape[0], dtype=np.int64),
-                np.diff(probe.indptr),
+                np.arange(normalized_block.shape[0], dtype=np.int64),
+                np.diff(normalized_block.indptr),
             )
-            normalized = np.log1p(
-                probe.data * (10000.0 / libs[data_rows])
+            normalized_block.data = np.log1p(
+                normalized_block.data * (10000.0 / libs[data_rows])
             )
-            if not np.all(np.isfinite(normalized)) or np.any(normalized < 0):
+            if (
+                not np.all(np.isfinite(normalized_block.data))
+                or np.any(normalized_block.data < 0)
+            ):
                 raise ValueError("FULL104 log1p10K normalization produced invalid values")
 
         total_rows += expected_rows
