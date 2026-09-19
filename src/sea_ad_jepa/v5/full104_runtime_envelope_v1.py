@@ -14,7 +14,8 @@ from dataclasses import asdict, dataclass
 import hashlib
 import json
 from pathlib import Path
-from typing import Any, Mapping
+import subprocess
+from typing import Any, Iterable, Mapping
 
 FULL104_BLOCK_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 CANONICAL_REGISTRY_SHA256 = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
@@ -90,6 +91,38 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def live_clean_scientific_head(worktree: Path) -> str:
+    """Derive the scientific anchor from a clean live Git worktree."""
+
+    worktree = Path(worktree)
+    if not worktree.is_dir():
+        raise ValueError("scientific worktree does not exist")
+    try:
+        head = subprocess.run(
+            ["git", "-C", str(worktree), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).stdout.strip().lower()
+        _sha(head, "live scientific HEAD")
+        dirty = subprocess.run(
+            ["git", "-C", str(worktree), "status", "--porcelain"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+        raise ValueError("cannot derive live scientific Git HEAD") from exc
+    if dirty.strip():
+        raise ValueError(
+            "scientific worktree must be clean before FULL104 shakedown; "
+            "do not reuse or hide local source/artifact changes"
+        )
+    return head
+
+
 @dataclass(frozen=True)
 class Full104RuntimeEnvelopeV1:
     scientific_anchor_sha256: str
@@ -144,6 +177,33 @@ def assert_runtime_path_names_clean(root: Path) -> None:
                 raise ValueError(
                     f"historical/smaller-run spillover token {fragment!r} in runtime path {rel!r}"
                 )
+
+
+def assert_runtime_contents_allowlisted(
+    root: Path,
+    *,
+    allowed_relative_paths: Iterable[str] = (),
+) -> None:
+    """Permit only the sentinel plus explicitly named current-run outputs."""
+
+    root = Path(root)
+    if not root.exists():
+        return
+    allowed = {SENTINEL_NAME}
+    for raw in allowed_relative_paths:
+        rel = str(raw).replace("\\", "/").strip("/")
+        if not rel or rel.startswith("../") or "/../" in f"/{rel}/":
+            raise ValueError("runtime allowlist path must stay inside runtime root")
+        allowed.add(rel)
+    for path in root.rglob("*"):
+        if path.is_dir():
+            continue
+        rel = str(path.relative_to(root)).replace("\\", "/")
+        if rel not in allowed:
+            raise ValueError(
+                "unapproved file in fresh FULL104 runtime envelope: "
+                f"{rel!r}; only current-run allowlisted outputs are permitted"
+            )
 
 
 def assert_no_known_historical_runtime_hashes(
@@ -215,6 +275,7 @@ def validate_runtime_envelope(
     root: Path,
     *,
     expected_scientific_anchor_sha256: str,
+    allowed_relative_paths: Iterable[str] = (),
 ) -> Full104RuntimeEnvelopeV1:
     root = Path(root)
     payload_path = root / SENTINEL_NAME
@@ -235,5 +296,9 @@ def validate_runtime_envelope(
     if payload.get("runtime_envelope_sha256") != envelope.canonical_digest():
         raise ValueError("FULL104 runtime envelope digest mismatch")
     assert_runtime_path_names_clean(root)
+    assert_runtime_contents_allowlisted(
+        root,
+        allowed_relative_paths=allowed_relative_paths,
+    )
     assert_no_known_historical_runtime_hashes(root)
     return envelope
