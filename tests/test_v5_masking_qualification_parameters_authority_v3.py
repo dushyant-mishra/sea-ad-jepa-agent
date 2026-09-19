@@ -112,7 +112,7 @@ def test_v3_builder_requires_physical_full104_and_current_support_inputs():
     assert '--level4-root' in source
     assert '--support-authority' in source
     assert 'PHASE2_EXPRESSION_BLOCK_MANIFEST.csv' in source
-    assert FULL104_SUBSTRATE_SHA256 in source
-    assert SUPPORT_ESTIMABILITY_AUTHORITY_SHA256 in source
+    assert "FULL104_SUBSTRATE_SHA256" in source
+    assert "SUPPORT_ESTIMABILITY_AUTHORITY_SHA256" in source
     assert "historical_evidence_role" in source
     assert "capacity_scope_note" in source
