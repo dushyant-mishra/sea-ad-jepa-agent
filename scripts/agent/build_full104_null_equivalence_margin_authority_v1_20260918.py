@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from sea_ad_jepa.v5.null_equivalence_margin_authority_v1 import (
+    FULL104_SUBSTRATE_SHA256,
     HISTORICAL_SCALE_CONTEXT_SHA256,
     NullEquivalenceMarginAuthorityV1,
 )
@@ -56,6 +57,7 @@ def main() -> int:
 
     authority = NullEquivalenceMarginAuthorityV1(
         authority_id="JEPA_V5_FULL104_NULL_EQUIVALENCE_MARGIN_AUTHORITY_V1",
+        full104_substrate_sha256=FULL104_SUBSTRATE_SHA256,
         historical_scale_context_artifact_sha256=observed_sha,
     )
     authority.validate()
