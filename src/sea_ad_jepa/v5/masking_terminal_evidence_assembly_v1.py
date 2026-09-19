@@ -303,6 +303,11 @@ class TerminalPolicyRawEvidenceV1:
             )
         if np.any(self.effective_targeted_n_by_target_fold < 0):
             raise ValueError("effective targeting counts must be nonnegative")
+        if not np.all(
+            self.effective_targeted_n_by_target_fold
+            == np.floor(self.effective_targeted_n_by_target_fold)
+        ):
+            raise ValueError("effective targeting counts must be exact integers")
         if self.donor_source_code.size != expected[1]:
             raise ValueError("donor_source_code must align with donor columns")
         if self.donor_outer_fold.size != expected[1]:
@@ -565,6 +570,8 @@ def assemble_policy_decision_evidence(
         target_delta_median=float(np.median(target_delta)),
         worst_target_delta=float(np.min(target_delta)),
         mean_effective_targeted_n=float(np.mean(effective)),
+        total_effective_targeted_n=int(np.sum(effective)),
+        targeting_complexity_observation_count=int(effective.size),
         negative_control_delta=negative_interval,
         planted_detect_excess=_interval(precision, plant_detect, donor_source),
         planted_after_mask_excess=_interval(precision, plant_after, donor_source),
