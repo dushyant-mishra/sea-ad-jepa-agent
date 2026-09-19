@@ -10,6 +10,7 @@ from sea_ad_jepa.v5.full104_runtime_envelope_v1 import (
     CANONICAL_REGISTRY_SHA256,
     FULL104_BLOCK_MANIFEST_SHA256,
     OBSERVATION_STATE_SHA256,
+    live_clean_scientific_head,
     prepare_fresh_runtime,
     sha256_file,
     validate_runtime_envelope,
@@ -20,11 +21,18 @@ def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--mode", choices=("prepare", "validate"), required=True)
     p.add_argument("--runtime-root", type=Path, required=True)
+    p.add_argument("--worktree", type=Path, required=True)
     p.add_argument("--expected-scientific-anchor", required=True)
     p.add_argument("--level4-root", type=Path)
     p.add_argument("--registry", type=Path)
     p.add_argument("--observation-state", type=Path)
     args = p.parse_args()
+
+    live_head = live_clean_scientific_head(args.worktree)
+    if args.expected_scientific_anchor.lower() != live_head:
+        raise SystemExit(
+            "expected scientific anchor does not equal the live clean worktree HEAD"
+        )
 
     if args.mode == "prepare":
         for name in ("level4_root", "registry", "observation_state"):
@@ -50,13 +58,13 @@ def main() -> int:
                 )
         envelope = prepare_fresh_runtime(
             args.runtime_root,
-            scientific_anchor_sha256=args.expected_scientific_anchor,
+            scientific_anchor_sha256=live_head,
             **roots,
         )
     else:
         envelope = validate_runtime_envelope(
             args.runtime_root,
-            expected_scientific_anchor_sha256=args.expected_scientific_anchor,
+            expected_scientific_anchor_sha256=live_head,
         )
 
     print(
