@@ -1,32 +1,33 @@
 # START HERE — JEPA PROJECT
 
-Date: 2026-09-17
+Date: 2026-09-18
 
-Status: `CURRENT_V5_STREAMING_MASKING_EXECUTOR_PARITY_READY__FULL104_GPU_QUALIFICATION_PENDING__TRAINING_OFF`
+Status: `CURRENT_V5_POST_CLAUDE_BINDING_REPAIR__FULL104_PRETERMINAL_SHAKEDOWN_READY__TERMINAL_MASKING_BLOCKED__TRAINING_OFF`
+
+## Current scientific anchor
+
+Repository: `dushyant-mishra/sea-ad-jepa-agent`
+
+Scientific branch: `impl/v5-full104-post-claude-binding-repair-20260918`
+
+Exact scientific head: `72338541c3a161cf461dde5215e6841ee9704ee7`
+
+Draft PR: `#26` — `V5 post-Claude binding repairs: G1 H1 H2`
+
+This handoff branch is documentation only. Do not treat its commit SHA as a new scientific implementation SHA.
 
 ## Read first
 
-The current implementation/governance lane is:
-
-`impl/v5-remaining-rna-target-semantics-20260917`
-
-Verified code anchor:
-
-`8ee5d0a5be483e18819a6f6975efa183327b2158`
-
-Read in this order:
-
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260917_V5_CANONICAL_MASKING_RUNTIME_CURRENT.md`
-3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260917_V5_CANONICAL_MASKING_RUNTIME_CURRENT.json`
-4. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
-5. `docs/exec-plans/active/JEPA_SCIENTIFIC_BLOCKER_EXECUTION.md`
-6. `docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md`
-7. supporting RIDGE8 provenance referenced by the pointer.
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260918_V5_POST_CLAUDE_72338541_CURRENT.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260918_V5_POST_CLAUDE_72338541_CURRENT.json`
+4. `docs/exec-plans/active/JEPA_V5_POST_CLAUDE_FULL104_EXECUTION_20260918.md`
+5. `docs/agent/JEPA_NEW_CHAT_COMMANDS_20260918_V5_POST_CLAUDE_72338541_CURRENT.md`
+6. `docs/agent/audits/CLAUDE_F16_F17_AUDIT_SUMMARY_20260918.md`
+7. `docs/agent/handoff_artifacts/20260918/V5_POST_CLAUDE_72338541_DATA_RESULTS_SCRIPTS_MANIFEST.json`
+8. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
 
-Before acting, re-fetch live branch heads. Filenames, branch names and commit messages do not create scientific authority.
-
-Before repeating any audit, classify it as `ALREADY_AUDITED`, `SUPERSEDED`, `OPEN`, or `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+Before acting, re-fetch all live branch and PR heads. Branch names, filenames, historical PASS strings and documentation prose do not create scientific authority.
 
 ## Permanent scientific boundaries
 
@@ -36,74 +37,70 @@ Before repeating any audit, classify it as `ALREADY_AUDITED`, `SUPERSEDED`, `OPE
 
 `TRAINING_OFF`
 
-`NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION`
+`NO_D_SHARED_OUTCOME_EXECUTION_OR_INSPECTION_WHILE_UPSTREAM_DESIGN_OPEN`
 
-The foundation task is biological/cellular state inference from partial RNA, including query-local state associated with a supplied canonical molecular address. It is **not** hidden-gene scalar reconstruction. Expression predictors are anti-shortcut diagnostics only.
+`NO_TERMINAL_MASKING_OUTCOME_ACCESS_UNTIL_PRETERMINAL_REPAIRS_AND_FREEZE_CLOSE`
 
-Do not inspect protected/pathology/DEV/SEALED outcomes while upstream design choices remain open.
+`NO_CALLER_SUPPLIED_DERIVABLE_RECEIPT_FIELDS_V1`
 
-## Current headline state
+Historical/smaller-run material may explain a guardrail or motivate a hypothesis. It may not occupy a FULL104 runtime role, target list, fold map, burden, seed, row cap, selected policy, authority digest, PASS state or training role unless the current authority chain explicitly re-authorizes the exact bytes and role against current FULL104 roots.
 
-- FULL104: 4,553,407 cells; 104 donors; 42 operators; 41,238 addresses; 17,186 common-core addresses; 8,915 Level-4 blocks.
-- FULL104 block-manifest SHA-256: `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`.
-- `VALUE_ONLY_256` is frozen as the primary molecular representation. QC/visibility channels are observation/QC only.
-- support/estimability and donor-uniform/cell-uniform-within-donor base estimand are frozen.
-- Stage-A structural qualification is complete: 11 PASS / 0 FAIL / 0 UNPROVEN. Geometry-specific memorization must still be rerun after final production geometry is selected.
-- current V2/V3 runtime trust chain is implemented: authority roots/closure, preexecution, receipt, explicit training-authority schema, optimizer V3 and checkpoint V2.
-- masking qualification has separate design, numeric-parameter, frozen-run-contract and execution-V2 schemas.
-- canonical in-memory masking reference: `src/sea_ad_jepa/v5/full104_masking_qualification_runner_v1.py`.
-- authenticated Level-4 streaming/sufficient-statistics adapter: `src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py`.
-- the streaming adapter applies `log1p(raw*10000/source_library)` exactly once, never requires a monolithic 4,553,407 x 17,186 CSR, and is parity-tested against the canonical reference for all four primary masking arms.
-- hash corruption and duplicate `selection_row` conditions fail closed.
-- the streaming executor is included in the current Stage-A spillover/source inventory.
-- exact code head `8ee5d0a5...` passed all four current workflows, including no-skip gates.
+## FULL104 substrate
 
-Verified workflow runs at the code anchor:
+- 4,553,407 cells
+- 104 donors
+- 42 operators
+- 41,238 canonical addresses
+- 17,186 strict common-core addresses
+- 8,915 Level-4 blocks
+- FULL104 block-manifest SHA-256: `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`
+- canonical registry SHA-256: `7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd`
+- observation-state SHA-256: `852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537`
 
-- runtime closure: `35278901437` — SUCCESS
-- FULL104 masking runner + streaming parity: `35278901430` — SUCCESS
-- remaining-RNA / target-semantics successor: `35278901433` — SUCCESS
-- Stage-A spillover firewall: `35278901569` — SUCCESS
+GPU Level-4 root remains external to this chat environment: `D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/`.
 
-## What is NOT closed
+## What is closed at 72338541
 
-Do not confuse schema/mechanics/parity tests with real scientific execution.
+- F16/F17 mechanics remain repaired as specified.
+- G1 is repaired: terminal decision evidence carries the exact rational null-equivalence margin and is cross-bound to the actual `QualificationPrecisionAuthorityV4` canonical digest and margin.
+- H1 is repaired: advancing the burden ladder requires a matching prior `MaskingQualificationExecutionAuthorityV4` from the same RunContract and a proven `EXECUTED_FAIL`; prior receipt and prior execution roots are both bound.
+- H2 is repaired: policy receipt roots require lowercase hexadecimal SHA-256.
+- exact-head GitHub Actions are green.
+- FULL104 masking runner `35414815529`: `285 passed`, explicit fail-on-skips check, rerun `285 passed`, zero skips.
+- Stage-A spillover firewall `35414815136`: SUCCESS.
+- runtime closure `35414815158`: SUCCESS.
+- remaining-RNA / target-semantics successor `35414815141`: SUCCESS.
+- terminal FULL104 masking outcomes remain unopened.
+- training remains OFF.
 
-- terminal FULL104 masking qualification has not been executed under the prospectively frozen real run contract;
-- no production masking policy is selected/frozen from RIDGE8 exploratory evidence;
-- no final training authority has been issued;
-- `docs/agent/CURRENT_WORK_CHECKPOINT.json` must be built/validated on a canonical Git worktree before authority-bearing promotion or expensive FULL104 execution;
-- the GPU/full-data lane must bind the authenticated physical Level-4 substrate, instantiate/freeze the real design + numeric parameters + run contract, and bind exact source SHA-256 values before qualification outcomes are opened;
-- the streaming adapter is parity-correct but has not itself executed the 4.55M-cell terminal run in this environment;
-- remaining real-evidence gates must close before training, including healthy-current-teacher remaining-RNA evidence, measurement robustness, production geometry + geometry-specific memorization, and exact runtime provenance.
+## Critical parallel-branch warning
 
-## Immediate next sequence
+PRs #23, #24 and #25 are parallel candidate repairs based on `144873ce...`; they are NOT ancestors of PR #26 and must not be silently treated as integrated current authority.
 
-1. On the canonical GPU Git worktree, build/validate `CURRENT_WORK_CHECKPOINT.json`.
-2. Authenticate/bind the FULL104 Level-4 physical substrate and donor/source/fold/target/universe artifacts; do not substitute a smaller cache.
-3. Prospectively instantiate/freeze the masking design, numeric parameter authority and run contract. Bind the canonical in-memory runner source in the design and the exact streaming executor source used for execution in the run contract before inspecting terminal outcomes.
-4. Execute the qualification ladder through terminal `FULL_COMMON_CORE_17186_V1` with all required controls, precision rules and nonlinear challenge without retuning.
-5. Bind the actual `MaskingQualificationExecutionAuthorityV2` result and selected policy only if the frozen contract passes.
-6. Close remaining real-evidence authorities, then issue explicit final training authority only after the actual current graph closes.
+- PR #23 `c7750142...`: live machine-checkpoint closure candidate.
+- PR #24 `6379e5b1...`: prospective null-equivalence-margin authority candidate.
+- PR #25 `64affd70...`: policy-receipt self-validation hardening candidate.
+- PR #26 `72338541...`: current G1/H1/H2 post-Claude repair lane.
 
-## Do not redo
+Any integration must be explicit, diff-reviewed, red-teamed and rerun through exact-head CI. Do not merge/rebase merely for housekeeping.
 
-Do not reopen FULL104 lineage, K2 partition, VALUE_ONLY_256, support/estimability, base estimand, T0/T1/C2 history, QID/F1, Stage81A3 scope, Layer-2 shortcut audit, target-identity discovery, Stage-A structural qualification, or streaming-reference parity unless their inputs materially change.
+## What can be exercised on the real FULL104 data now
 
-## Load-bearing rules
+Use the real >30 GB FULL104 store now for non-terminal shakedown: physical hash authentication, complete block streaming, census V2 reproduction, donor/source/fold coverage, strict-core/eligibility reconstruction, exactly-once assembly checks, calibration-only cache construction, memory/runtime telemetry and calibration-mode preflight.
 
-`NAMES_DO_NOT_CREATE_CAUSAL_OR_BIOLOGICAL_AUTHORITY`
+Do NOT start the target-panel capacity ladder until H3 is resolved prospectively, because the current ladder sizes on detectability of an easy planted shortcut rather than demonstrated power for the terminal equivalence question. Do NOT execute the 5% terminal masking rung.
 
-`COMMON_CORE_SUPPORT_IS_COMPARABILITY_NOT_BIOLOGY_AUTHORITY`
+## Open scientific blockers
 
-`QUALIFICATION_RANK_CEILING != PRODUCTION_MODEL_WIDTH`
+- G2: current one-total-event policy-selection equivalence band still lacks a satisfactory scale/materiality justification.
+- G3: shortcut attacker is 32 features while the production model will see thousands of visible addresses; masking qualification is conditional on this attacker class.
+- G4: no explicit biological signal-preservation / learnability criterion yet accompanies shortcut suppression.
+- G5: the current PR #26 branch does not contain the PR #24 margin-authority candidate; margin derivation/justification and integration remain open.
+- H3: target-panel sizing currently tests superiority for an easy planted shortcut rather than equivalence power for the primary terminal criterion.
+- H4: pre-register what `FAIL_CLOSED_NO_MASKING_AUTHORITY` means and how to distinguish policy failure, too-tight margin, irreducible measurement structure and inadequate equivalence power.
+- F13/F14/F15: current representation, dimension/subspace and production mechanics authority still require re-derivation/integration before training authority.
+- Global caller-trust audit: apply `NO_CALLER_SUPPLIED_DERIVABLE_RECEIPT_FIELDS_V1` across all authorities/receipts rather than fixing instances reactively.
 
-`DO_NOT_UNLOCK_V5_BY_RECEIPT_ONLY`
+## Do not redo without changed inputs
 
-`NO_EXPLORATORY_MASKING_POLICY_PROMOTION`
-
-`NO_LEGACY_MASKING_EXECUTION_V1_IN_CURRENT_CLOSURE`
-
-`NO_SILENT_SKIPPED_CRITICAL_TESTS`
-
-`NO_MONOLITHIC_FULL104_MATRIX_REQUIRED_FOR_MASKING_QUALIFICATION`
+Do not reopen FULL104 lineage, support/estimability, base estimand, T0/T1/C2 history, QID/F1, Stage81A3 scope, Layer-2 shortcut audit, Stage-A structural qualification or streaming/reference parity merely because a new chat starts.

@@ -1,0 +1,122 @@
+{
+  "schema": "V5_POST_CLAUDE_72338541_DATA_RESULTS_SCRIPTS_MANIFEST_V1",
+  "date": "2026-09-18",
+  "scientific_head": "72338541c3a161cf461dde5215e6841ee9704ee7",
+  "policy": "LOCAL_CHAT_FILES_ARE_SUPPORTING_ONLY_UNLESS_EXPLICITLY_REAUTHORIZED_BY_CURRENT_FULL104_AUTHORITY",
+  "local_files": [
+    {
+      "name": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70",
+      "role": "historical_41k_address_vectors",
+      "authority": "SUPPORTING_ONLY",
+      "metadata": "41238-address arrays; 10 raw + 10 l2 float32 vectors plus molecular_address_id object array"
+    },
+    {
+      "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "role": "historical_calibration_bundle",
+      "authority": "SUPPORTING_ONLY",
+      "physical_files": 50,
+      "internal_status_files_claim": 97,
+      "manifest_records": 97,
+      "manifest_listed_paths_absent_physically": 49
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e",
+      "role": "historical_discovery_expression_part",
+      "authority": "SUPPORTING_ONLY"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875",
+      "role": "historical_discovery_expression_part",
+      "authority": "SUPPORTING_ONLY"
+    },
+    {
+      "name": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356",
+      "role": "historical_split_archive_hash_manifest",
+      "authority": "SUPPORTING_ONLY",
+      "declared_joined_zip_bytes": 607959761,
+      "declared_joined_zip_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7"
+    },
+    {
+      "name": "Pasted markdown.md",
+      "bytes": 10667,
+      "sha256": "365ead17caa6d4a5d288f58d77987d9111221e7c2649c68e6269ad101b95097d",
+      "role": "claude_external_audit_source",
+      "authority": "SUPPORTING_AUDIT_ONLY"
+    },
+    {
+      "name": "Status and Repair Plan.txt",
+      "bytes": 5233,
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56",
+      "role": "historical_status_and_repair_context",
+      "authority": "SUPPORTING_ONLY"
+    },
+    {
+      "name": "WSL execution issue.txt",
+      "bytes": 14576,
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e",
+      "role": "historical_design_context",
+      "authority": "SUPPORTING_ONLY"
+    },
+    {
+      "name": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c",
+      "role": "historical_t1_checkpoints",
+      "authority": "SUPPORTING_ONLY",
+      "members": [
+        "checkpoints/checkpoint_manifest.json",
+        "checkpoints/t1_checkpoint_u0000.pt",
+        "checkpoints/t1_checkpoint_u0205.pt"
+      ]
+    },
+    {
+      "name": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4",
+      "role": "historical_discovery_expression_metadata",
+      "authority": "SUPPORTING_ONLY",
+      "physical_files": 45
+    },
+    {
+      "name": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c",
+      "role": "historical_t1_checkpoint_trajectory",
+      "authority": "SUPPORTING_ONLY",
+      "members": [
+        "t1_checkpoint_u0200.pt",
+        "t1_checkpoint_u0010.pt",
+        "t1_checkpoint_u0025.pt",
+        "t1_checkpoint_u0050.pt",
+        "t1_checkpoint_u0100.pt"
+      ]
+    }
+  ],
+  "gpu_only_current_full104": {
+    "level4_root": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/",
+    "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "note": "Not present in this chat container; use the authenticated GPU worktree and physical substrate. Never substitute a local historical bundle."
+  },
+  "current_code_paths": [
+    "src/sea_ad_jepa/v5/masking_qualification_decision_v1.py",
+    "src/sea_ad_jepa/v5/masking_qualification_decision_v2.py",
+    "src/sea_ad_jepa/v5/masking_terminal_evidence_assembly_v1.py",
+    "src/sea_ad_jepa/v5/masking_terminal_one_rung_executor_v1.py",
+    "src/sea_ad_jepa/v5/masking_qualification_execution_authority_v4.py",
+    "src/sea_ad_jepa/v5/masking_qualification_run_contract_v4.py",
+    "src/sea_ad_jepa/v5/precision_authority_v4.py",
+    "src/sea_ad_jepa/v5/target_panel_sizing_authority_v2.py"
+  ]
+}

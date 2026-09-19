@@ -1,0 +1,98 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V18",
+  "date": "2026-09-18",
+  "scientific": {
+    "branch": "impl/v5-full104-post-claude-binding-repair-20260918",
+    "sha": "72338541c3a161cf461dde5215e6841ee9704ee7",
+    "pr": 26,
+    "pr_state": "open_draft",
+    "training_authorized": false,
+    "terminal_masking_outcomes_opened": false
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_common_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+  },
+  "exact_head_ci": {
+    "full104_masking_runner": {
+      "run_id": 35414815529,
+      "conclusion": "success",
+      "passed": 285,
+      "skipped": 0,
+      "rerun_passed": 285
+    },
+    "stage_a_spillover_firewall": {
+      "run_id": 35414815136,
+      "conclusion": "success"
+    },
+    "runtime_closure": {
+      "run_id": 35414815158,
+      "conclusion": "success"
+    },
+    "remaining_rna_target_semantics": {
+      "run_id": 35414815141,
+      "conclusion": "success"
+    }
+  },
+  "repaired_on_pr26": {
+    "G1_precision_margin_cross_binding": "REPAIRED_AWAITING_INDEPENDENT_REREVIEW",
+    "H1_prior_rung_execution_binding": "REPAIRED_AWAITING_INDEPENDENT_REREVIEW",
+    "H2_lowercase_hex_receipt_roots": "REPAIRED_AWAITING_INDEPENDENT_REREVIEW"
+  },
+  "open": {
+    "G2_complexity_materiality": "OPEN",
+    "G3_attacker_capacity_match": "OPEN",
+    "G4_signal_preservation": "OPEN",
+    "G5_margin_scientific_rationale_and_integration": "OPEN",
+    "H3_target_panel_equivalence_power": "OPEN_BLOCKS_PANEL_LADDER",
+    "H4_fail_closed_interpretation": "OPEN",
+    "F13_representation_authority": "OPEN",
+    "F14_dimension_rank_subspace_authority": "OPEN",
+    "F15_production_mechanics_authority": "OPEN",
+    "global_no_caller_supplied_derivable_fields_audit": "OPEN"
+  },
+  "parallel_candidate_prs": [
+    {
+      "pr": 23,
+      "sha": "c7750142e7a585beb53f97aa2b4acb8660004ea3",
+      "role": "terminal_live_checkpoint_closure",
+      "integrated_into_pr26": false
+    },
+    {
+      "pr": 24,
+      "sha": "6379e5b1d62f7d97b5aad70e688fa8d7880618e8",
+      "role": "prospective_null_equivalence_margin_authority_candidate",
+      "integrated_into_pr26": false
+    },
+    {
+      "pr": 25,
+      "sha": "64affd70cce578459658668f0e1076d212c1ab28",
+      "role": "policy_receipt_self_validation_candidate",
+      "integrated_into_pr26": false
+    }
+  ],
+  "safe_now_full104": [
+    "physical_hash_authentication",
+    "readonly_census_v2",
+    "all_block_streaming_and_exactly_once_checks",
+    "donor_source_fold_coverage",
+    "calibration_only_cache_build",
+    "calibration_mode_preflight",
+    "runtime_memory_throughput_telemetry",
+    "runtime_directory_anti_spillover_scan"
+  ],
+  "blocked_now": [
+    "target_panel_capacity_ladder_until_H3_resolved",
+    "terminal_5_percent_masking_rung",
+    "protected_D_shared_pathology_DEV_SEALED_outcomes",
+    "training"
+  ],
+  "structural_rule": "NO_CALLER_SUPPLIED_DERIVABLE_RECEIPT_FIELDS_V1"
+}
