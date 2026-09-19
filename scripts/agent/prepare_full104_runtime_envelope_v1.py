@@ -58,13 +58,13 @@ def main() -> int:
                 )
         envelope = prepare_fresh_runtime(
             args.runtime_root,
-            scientific_anchor_sha256=live_head,
+            scientific_anchor_git_oid=live_head,
             **roots,
         )
     else:
         envelope = validate_runtime_envelope(
             args.runtime_root,
-            expected_scientific_anchor_sha256=live_head,
+            expected_scientific_anchor_git_oid=live_head,
         )
 
     print(
