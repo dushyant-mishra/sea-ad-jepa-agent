@@ -260,6 +260,19 @@ class Full104ManifestStreamV1:
             if np.any(libraries <= 0):
                 raise ValueError(f"invalid source_library: {row['block_key']}")
 
+            # The Level-4 matrix contains mapped raw counts only. Their row-wise
+            # sum is therefore a lower bound on the authenticated source-library
+            # total for the same physical cell. A violation catches metadata /
+            # matrix-row misalignment before normalization.
+            mapped_row_sums = np.asarray(matrix.sum(axis=1), dtype=np.int64).reshape(-1)
+            if (
+                mapped_row_sums.shape != libraries.shape
+                or np.any(mapped_row_sums > libraries)
+            ):
+                raise ValueError(
+                    f"source_library row-alignment invariant failed: {row['block_key']}"
+                )
+
             manifest_source = str(row["source"])
             for donor_id in donor_ids:
                 if donor_id not in self.donor_id_to_code:
