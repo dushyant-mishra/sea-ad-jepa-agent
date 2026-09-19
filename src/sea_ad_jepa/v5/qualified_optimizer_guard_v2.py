@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping
 from .current_teacher_target_receipt_v1 import validate_current_teacher_target_receipt_v1
+from .current_training_authority_v1 import assert_current_training_authority_v1_issuance_open
 
 STOP='STOP_V5_CURRENT_OPTIMIZER_AUTHORITY_NOT_ARMED'
 CURSOR_KWARG='v5_current_guard_schedule_cursor'
@@ -18,6 +19,7 @@ class CurrentOptimizerStepGuard:
     expected_target_package_root: str
     expected_authority_roots: Mapping[str,str]
     def __post_init__(self)->None:
+        assert_current_training_authority_v1_issuance_open()
         verified=validate_current_teacher_target_receipt_v1(self.receipt,expected_target_package_root=self.expected_target_package_root,expected_authority_roots=self.expected_authority_roots)
         self._receipt_digest=verified['receipt_digest']; self._target_package_root=verified['target_package_root']
         self._armed_cursor=None; self._consumed_cursor=None; self._closed=False
@@ -71,6 +73,7 @@ class CurrentOptimizerStepGuard:
         self._pre_handle.remove(); self._post_handle.remove(); self._armed_cursor=None; self._closed=True
 
 def install_current_optimizer_guard(optimizer:Any,receipt:Mapping[str,Any],*,expected_target_package_root:str,expected_authority_roots:Mapping[str,str])->CurrentOptimizerStepGuard:
+    assert_current_training_authority_v1_issuance_open()
     verified=validate_current_teacher_target_receipt_v1(receipt,expected_target_package_root=expected_target_package_root,expected_authority_roots=expected_authority_roots)
     existing=getattr(optimizer,'_v5_current_optimizer_guard',None)
     if existing is not None:
