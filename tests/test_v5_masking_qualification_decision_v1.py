@@ -29,6 +29,8 @@ def evidence(policy="RIDGE8_CONDITIONAL", **updates):
         target_delta_median=0.02,
         worst_target_delta=-0.002,
         mean_effective_targeted_n=7.5,
+        total_effective_targeted_n=30,
+        targeting_complexity_observation_count=4,
         negative_control_delta=I(0.0, -0.005, 0.005, -0.004, 0.004),
         planted_detect_excess=I(0.5, 0.4, 0.6, 0.42, 0.58),
         planted_after_mask_excess=I(-0.01, -0.03, 0.0, -0.025, 0.0),
@@ -59,6 +61,7 @@ def uniform_qualified():
         target_delta_median=0.0,
         worst_target_delta=0.0,
         mean_effective_targeted_n=0.0,
+        total_effective_targeted_n=0,
     )
 
 
@@ -71,6 +74,7 @@ def uniform_failed():
         target_delta_median=0.0,
         worst_target_delta=0.0,
         mean_effective_targeted_n=0.0,
+        total_effective_targeted_n=0,
         nonlinear_excess_over_shuffled_null=I(0.01, 0.0, 0.02, 0.001, 0.019),
     )
 
@@ -123,8 +127,8 @@ def test_uniform_is_selected_if_it_is_already_null_level():
 
 
 def test_targeted_tie_break_prefers_less_targeting_then_stronger_lower_bound():
-    prefix = evidence(policy="PREFIX3_SELECTIVE", mean_effective_targeted_n=2.0)
-    ridge = evidence(policy="RIDGE8_CONDITIONAL", mean_effective_targeted_n=7.5)
+    prefix = evidence(policy="PREFIX3_SELECTIVE", mean_effective_targeted_n=2.0, total_effective_targeted_n=8)
+    ridge = evidence(policy="RIDGE8_CONDITIONAL", mean_effective_targeted_n=7.5, total_effective_targeted_n=30)
     top = evidence(policy="TOP8_CORRELATION", mean_effective_targeted_n=7.5)
     receipts = [
         evaluate_policy(uniform_failed()),
@@ -140,7 +144,7 @@ def test_rung_receipt_binds_all_four_policy_receipts():
         uniform_failed(),
         evidence(policy="TOP8_CORRELATION"),
         evidence(policy="RIDGE8_CONDITIONAL"),
-        evidence(policy="PREFIX3_SELECTIVE", mean_effective_targeted_n=2.0),
+        evidence(policy="PREFIX3_SELECTIVE", mean_effective_targeted_n=2.0, total_effective_targeted_n=8),
     ])
     rung.validate()
     assert rung.qualified

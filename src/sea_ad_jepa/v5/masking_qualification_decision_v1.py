@@ -81,6 +81,8 @@ class MaskingPolicyDecisionEvidenceV1:
     target_delta_median: float
     worst_target_delta: float
     mean_effective_targeted_n: float
+    total_effective_targeted_n: int
+    targeting_complexity_observation_count: int
 
     negative_control_delta: IntervalEvidenceV1
     planted_detect_excess: IntervalEvidenceV1
@@ -157,6 +159,26 @@ class MaskingPolicyDecisionEvidenceV1:
             _finite(getattr(self, name), name)
         if self.mean_effective_targeted_n < 0:
             raise ValueError("mean_effective_targeted_n cannot be negative")
+        if (
+            isinstance(self.total_effective_targeted_n, bool)
+            or not isinstance(self.total_effective_targeted_n, int)
+            or self.total_effective_targeted_n < 0
+        ):
+            raise ValueError("total_effective_targeted_n must be a nonnegative integer")
+        if (
+            isinstance(self.targeting_complexity_observation_count, bool)
+            or not isinstance(self.targeting_complexity_observation_count, int)
+            or self.targeting_complexity_observation_count < 1
+        ):
+            raise ValueError("targeting_complexity_observation_count must be a positive integer")
+        expected_mean = (
+            float(self.total_effective_targeted_n)
+            / float(self.targeting_complexity_observation_count)
+        )
+        if abs(float(self.mean_effective_targeted_n) - expected_mean) > 1e-12:
+            raise ValueError(
+                "mean_effective_targeted_n must equal exact total/count complexity"
+            )
         for name in (
             "negative_control_precision_passed",
             "replay_exact", "untreated_identity_exact", "no_privileged_metadata",
@@ -280,6 +302,8 @@ def evaluate_policy(evidence: MaskingPolicyDecisionEvidenceV1) -> MaskingPolicyD
         "target_delta_median": evidence.target_delta_median,
         "worst_target_delta": evidence.worst_target_delta,
         "mean_effective_targeted_n": evidence.mean_effective_targeted_n,
+        "total_effective_targeted_n": evidence.total_effective_targeted_n,
+        "targeting_complexity_observation_count": evidence.targeting_complexity_observation_count,
         "negative_control_delta": asdict(evidence.negative_control_delta),
         "planted_detect_excess": asdict(evidence.planted_detect_excess),
         "planted_after_mask_excess": asdict(evidence.planted_after_mask_excess),
