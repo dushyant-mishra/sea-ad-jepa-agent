@@ -8,12 +8,16 @@ import json
 from pathlib import Path
 
 from sea_ad_jepa.v5.full104_physical_shakedown_v1 import run_physical_shakedown
-from sea_ad_jepa.v5.full104_runtime_envelope_v1 import validate_runtime_envelope
+from sea_ad_jepa.v5.full104_runtime_envelope_v1 import (
+    live_clean_scientific_head,
+    validate_runtime_envelope,
+)
 
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--runtime-root", type=Path, required=True)
+    p.add_argument("--worktree", type=Path, required=True)
     p.add_argument("--expected-scientific-anchor", required=True)
     p.add_argument("--level4-root", type=Path, required=True)
     p.add_argument("--registry", type=Path, required=True)
@@ -21,12 +25,18 @@ def main() -> int:
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
 
+    live_head = live_clean_scientific_head(args.worktree)
+    if args.expected_scientific_anchor.lower() != live_head:
+        raise SystemExit(
+            "expected scientific anchor does not equal the live clean worktree HEAD"
+        )
+
     validate_runtime_envelope(
         args.runtime_root,
-        expected_scientific_anchor_sha256=args.expected_scientific_anchor,
+        expected_scientific_anchor_sha256=live_head,
     )
     try:
-        args.out.resolve().relative_to(args.runtime_root.resolve())
+        out_relative = args.out.resolve().relative_to(args.runtime_root.resolve())
     except ValueError as exc:
         raise SystemExit(
             "physical shakedown receipt must be written inside the fresh runtime envelope"
@@ -58,9 +68,13 @@ def main() -> int:
 
     # Re-scan the runtime after receipt creation.  The newly written receipt must
     # itself comply with the no-spillover runtime envelope.
+    live_head_after = live_clean_scientific_head(args.worktree)
+    if live_head_after != live_head:
+        raise SystemExit("scientific worktree HEAD changed during FULL104 shakedown")
     validate_runtime_envelope(
         args.runtime_root,
-        expected_scientific_anchor_sha256=args.expected_scientific_anchor,
+        expected_scientific_anchor_sha256=live_head,
+        allowed_relative_paths=(str(out_relative).replace("\\", "/"),),
     )
     print(
         json.dumps(
