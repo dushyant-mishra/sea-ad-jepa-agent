@@ -17,6 +17,11 @@ def test_precision_v4_builder_requires_final_target_panel_and_outer_split_author
     assert "TargetPanelAuthorityV3" in source
     assert "OuterDonorSplitAuthorityV1" in source
     assert "QualificationPrecisionAuthorityV4" in source
+    assert "NullEquivalenceMarginAuthorityV1" in source
+    assert "--null-equivalence-margin-authority" in source
+    assert "--null-equivalence-margin-numerator" not in source
+    assert "--null-equivalence-margin-denominator" not in source
+    assert "authority.bind_null_equivalence_margin_authority(margin)" in source
     assert "authority.bind_target_panel(panel,sizing)" in source
     assert "required_target_count=panel.target_count" in source
     for forbidden in ("stage81","t1_checkpoint","0.996","analysis/"):
