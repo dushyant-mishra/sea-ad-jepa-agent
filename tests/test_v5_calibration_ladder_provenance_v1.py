@@ -52,8 +52,8 @@ def write_json(path: Path, payload: dict) -> Path:
     return path
 
 
-def write_matrix_pair(root: Path, stem: str, shape: tuple[int, int]):
-    arr = np.zeros(shape, dtype=np.float64)
+def write_matrix_pair(root: Path, stem: str, shape: tuple[int, int], *, fill: float):
+    arr = np.full(shape, fill, dtype=np.float64)
     raw = root / f"{stem}.raw.npy"
     replay = root / f"{stem}.replay.npy"
     np.save(raw, arr, allow_pickle=False)
@@ -65,8 +65,8 @@ def write_matrix_pair(root: Path, stem: str, shape: tuple[int, int]):
 def panel_bundle(tmp_path: Path):
     cache_root = h("cache")
     precision_root = h("precision")
-    planted, replay_planted = write_matrix_pair(tmp_path, "panel-planted", (128, 104))
-    shuffled, replay_shuffled = write_matrix_pair(tmp_path, "panel-shuffled", (128, 104))
+    planted, replay_planted = write_matrix_pair(tmp_path, "panel-planted", (128, 104), fill=0.0)
+    shuffled, replay_shuffled = write_matrix_pair(tmp_path, "panel-shuffled", (128, 104), fill=1.0)
     capacity = ControlCapacityCalibrationReceiptV1(
         scope_id="TARGET_PANEL_SIZE_CAPACITY_CALIBRATION_V1",
         candidate_value=128,
@@ -130,8 +130,8 @@ def panel_bundle(tmp_path: Path):
 def nonlinear_bundle(tmp_path: Path):
     cache_root = h("nl-cache")
     precision_root = h("nl-precision")
-    planted, replay_planted = write_matrix_pair(tmp_path, "nl-planted", (128, 104))
-    shuffled, replay_shuffled = write_matrix_pair(tmp_path, "nl-shuffled", (128, 104))
+    planted, replay_planted = write_matrix_pair(tmp_path, "nl-planted", (128, 104), fill=0.0)
+    shuffled, replay_shuffled = write_matrix_pair(tmp_path, "nl-shuffled", (128, 104), fill=1.0)
     capacity = ControlCapacityCalibrationReceiptV1(
         scope_id="NONLINEAR_CAP_CAPACITY_CALIBRATION_V1",
         candidate_value=64,
