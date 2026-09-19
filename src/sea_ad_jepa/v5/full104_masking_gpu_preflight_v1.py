@@ -12,7 +12,7 @@ from typing import Any, Mapping
 
 from .full104_census_receipt_v2 import canonical_sha, sha256_file
 from .full104_control_calibration_cache_evaluator_v1 import load_control_calibration_cache
-from .masking_qualification_parameters_authority_v2 import MaskingQualificationParametersAuthorityV2
+from .masking_qualification_parameters_authority_v3 import MaskingQualificationParametersAuthorityV3
 from .masking_qualification_run_contract_v4 import (
     CALIBRATION_CACHE_ROLE_ID,
     MaskingQualificationRunContractV4,
@@ -134,7 +134,7 @@ def validate_calibration_bindings(
 
     parameters = typed(
         parameters_payload,
-        MaskingQualificationParametersAuthorityV2,
+        MaskingQualificationParametersAuthorityV3,
         ("parameter_authority_sha256", "authority_sha256"),
     )
     split_root = receipt_digest(
