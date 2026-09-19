@@ -19,11 +19,16 @@ from sea_ad_jepa.v5.masking_qualification_parameters_authority_v1 import (
     PRIMARY_ATTACKER_ID,
     PRIMARY_SCORE_ID,
 )
-from sea_ad_jepa.v5.masking_qualification_parameters_authority_v2 import (
+from sea_ad_jepa.v5.masking_qualification_parameters_authority_v3 import (
     BURDEN_SEPARATION_POLICY_ID,
     CONFIRMATION_ROLE_ID,
+    FULL104_SUBSTRATE_SHA256,
+    HISTORICAL_PROVENANCE_ROLE_ID,
     ORIGIN_POLICY_ID,
-    MaskingQualificationParametersAuthorityV2,
+    SUPPORT_ESTIMABILITY_AUTHORITY_SHA256,
+    TERMINAL_UNIVERSE_ID,
+    TERMINAL_UNIVERSE_SIZE,
+    MaskingQualificationParametersAuthorityV3,
 )
 
 
@@ -34,6 +39,10 @@ def h(value: str) -> str:
 def parameters_payload(**updates):
     values = dict(
         authority_id="TEST",
+        full104_substrate_sha256=FULL104_SUBSTRATE_SHA256,
+        support_estimability_authority_sha256=SUPPORT_ESTIMABILITY_AUTHORITY_SHA256,
+        terminal_universe_id=TERMINAL_UNIVERSE_ID,
+        terminal_universe_size=TERMINAL_UNIVERSE_SIZE,
         primary_attacker_id=PRIMARY_ATTACKER_ID,
         primary_score_id=PRIMARY_SCORE_ID,
         targeted_partner_cap=8,
@@ -54,12 +63,14 @@ def parameters_payload(**updates):
         parameter_origin_policy_id=ORIGIN_POLICY_ID,
         confirmation_role_id=CONFIRMATION_ROLE_ID,
         burden_separation_policy_id=BURDEN_SEPARATION_POLICY_ID,
+        historical_provenance_role_id=HISTORICAL_PROVENANCE_ROLE_ID,
         terminal_full104_masking_outcomes_inspected=False,
+        protected_outcomes_authorized=False,
         training_authorized=False,
     )
     values.update(updates)
-    obj = MaskingQualificationParametersAuthorityV2(**values)
-    payload = {"schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V2", **asdict(obj)}
+    obj = MaskingQualificationParametersAuthorityV3(**values)
+    payload = {"schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3", **asdict(obj)}
     payload["parameter_authority_sha256"] = obj.canonical_digest()
     return payload
 
@@ -181,6 +192,15 @@ def test_calibration_preflight_rejects_same_schema_historical_registry_lookalike
 def test_calibration_preflight_rejects_registry_splice():
     with pytest.raises(ValueError, match="registry file root"):
         call_valid(registry_file_sha256=h("smaller-historical-registry"))
+
+
+def test_calibration_preflight_rejects_historical_parameter_substrate_splice():
+    with pytest.raises(ValueError, match="different FULL104 substrate"):
+        call_valid(
+            parameters_payload=parameters_payload(
+                full104_substrate_sha256=h("historical-smaller-run")
+            )
+        )
 
 
 def test_calibration_preflight_rejects_post_outcome_parameter_reuse():
