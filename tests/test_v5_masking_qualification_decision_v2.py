@@ -41,6 +41,8 @@ def evidence(**updates):
         target_delta_median=0.02,
         worst_target_delta=-0.002,
         mean_effective_targeted_n=7.5,
+        total_effective_targeted_n=3840,
+        targeting_complexity_observation_count=512,
         negative_control_delta=I(0.0, -0.005, 0.005, -0.004, 0.004),
         planted_detect_excess=I(0.5, 0.4, 0.6, 0.42, 0.58),
         planted_after_mask_excess=I(0.001, -0.002, 0.004, -0.001, 0.004),
