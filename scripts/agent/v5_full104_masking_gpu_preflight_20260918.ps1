@@ -26,7 +26,6 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-$ExpectedBranch = "impl/v5-full104-masking-redteam2-20260918"
 $ExpectedBlockManifestSha256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 
 function Stop-Preflight([string]$Message) { throw "STOP_V5_FULL104_PREFLIGHT: $Message" }
@@ -44,7 +43,6 @@ git -C $CanonicalRepo fetch origin
 if ($LASTEXITCODE -ne 0) { Stop-Preflight "git fetch failed" }
 $head = (git -C $Worktree rev-parse HEAD).Trim()
 $branchNow = (git -C $Worktree branch --show-current).Trim()
-if ($branchNow -ne $ExpectedBranch) { Stop-Preflight "wrong branch: $branchNow" }
 $dirty = git -C $Worktree status --porcelain
 if ($dirty) { Stop-Preflight "worktree is dirty; preserve user changes and use a clean isolated worktree" }
 
@@ -58,8 +56,34 @@ $stateAnchor = [string]$state.assets.repository.scientific_implementation_head
 if ($stateAnchor -ne $ExpectedScientificAnchor) {
     Stop-Preflight "supplied scientific anchor $ExpectedScientificAnchor disagrees with checkpoint-state anchor $stateAnchor"
 }
+$stateBranch = [string]$state.assets.repository.governance_branch
+if ([string]::IsNullOrWhiteSpace($stateBranch)) {
+    Stop-Preflight "checkpoint state does not declare the current governance branch"
+}
+if ($branchNow -ne $stateBranch) {
+    Stop-Preflight "wrong branch: $branchNow; checkpoint state requires $stateBranch"
+}
 git -C $Worktree merge-base --is-ancestor $ExpectedScientificAnchor HEAD
 if ($LASTEXITCODE -ne 0) { Stop-Preflight "scientific anchor is not an ancestor of current HEAD" }
+
+$changedSinceAnchor = @(git -C $Worktree diff --name-only "$ExpectedScientificAnchor..HEAD" --)
+if ($LASTEXITCODE -ne 0) { Stop-Preflight "cannot classify descendant delta from scientific anchor" }
+$nonGovernanceDelta = @(
+    $changedSinceAnchor | Where-Object {
+        $normalized = ([string]$_).Replace("\", "/")
+        -not (
+            $normalized -eq "START_HERE.md" -or
+            $normalized -eq "AGENTS.md" -or
+            $normalized.StartsWith("docs/")
+        )
+    }
+)
+if ($nonGovernanceDelta.Count -gt 0) {
+    Stop-Preflight (
+        "current HEAD contains source/test/workflow/data changes after the frozen scientific anchor: " +
+        ($nonGovernanceDelta -join ", ")
+    )
+}
 
 foreach ($authority in $state.authorities) {
     $authorityPath = Join-Path $Worktree ([string]$authority.path)
