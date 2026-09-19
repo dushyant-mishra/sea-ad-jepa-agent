@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+from dataclasses import fields
 import json
 import os
 from pathlib import Path
@@ -13,6 +14,10 @@ import tempfile
 import numpy as np
 
 from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha, sha256_file
+from sea_ad_jepa.v5.full104_pass1_physical_binding_v1 import (
+    SCHEMA_ID as PASS1_BINDING_SCHEMA_ID,
+    Full104Pass1PhysicalBindingReceiptV1,
+)
 from sea_ad_jepa.v5.full104_control_calibration_cache_v1 import (
     CACHE_ROLE_ID,
     DISTRACTOR_COUNT,
@@ -102,6 +107,7 @@ def main() -> int:
     p.add_argument("--level4-root", type=Path, required=True)
     p.add_argument("--registry", type=Path, required=True)
     p.add_argument("--census-authority", type=Path, required=True)
+    p.add_argument("--pass1-physical-binding", type=Path, required=True)
     p.add_argument("--split-receipt", type=Path, required=True)
     p.add_argument("--target-eligibility", type=Path, required=True)
     p.add_argument("--support-authority", type=Path, required=True)
@@ -132,6 +138,31 @@ def main() -> int:
     if census.get("substrate", {}).get("full104_block_manifest_sha256") != manifest_sha:
         raise SystemExit("census authority is bound to a different FULL104 substrate")
 
+    binding_payload = load_json(args.pass1_physical_binding)
+    if binding_payload.get("schema") != PASS1_BINDING_SCHEMA_ID:
+        raise SystemExit("pass1 physical-binding receipt schema mismatch")
+    binding_names = {item.name for item in fields(Full104Pass1PhysicalBindingReceiptV1)}
+    missing_binding = binding_names - set(binding_payload)
+    if missing_binding:
+        raise SystemExit(
+            f"pass1 physical-binding receipt missing fields: {sorted(missing_binding)[:5]}"
+        )
+    binding_values = {name: binding_payload[name] for name in binding_names}
+    binding_values["source_names"] = tuple(binding_values["source_names"])
+    physical_binding = Full104Pass1PhysicalBindingReceiptV1(**binding_values)
+    physical_binding.validate()
+    physical_binding_root = physical_binding.canonical_digest()
+    if binding_payload.get("receipt_sha256") != physical_binding_root:
+        raise SystemExit("pass1 physical-binding receipt digest mismatch")
+    if physical_binding.full104_block_manifest_sha256 != manifest_sha:
+        raise SystemExit("pass1 physical binding uses a different FULL104 manifest")
+    if physical_binding.canonical_registry_sha256 != EXPECTED_REGISTRY_SHA256:
+        raise SystemExit("pass1 physical binding uses a different canonical registry")
+    if census.get("substrate", {}).get("pass1_physical_binding_sha256") != physical_binding_root:
+        raise SystemExit("census authority is bound to a different pass1 physical proof")
+    if census.get("execution_receipts", {}).get("pass1_physical_binding_receipt_sha256") != physical_binding_root:
+        raise SystemExit("census execution receipts do not bind the physical pass1 proof")
+
     split = load_json(args.split_receipt)
     split_root = require_receipt(
         split, "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1", args.split_receipt
@@ -147,6 +178,9 @@ def main() -> int:
         raise SystemExit("census authority is bound to a different target-eligibility receipt")
     if eligibility.get("split_receipt_sha256") != split_root:
         raise SystemExit("target eligibility is bound to a different donor split")
+    for label, receipt in (("split", split), ("target eligibility", eligibility)):
+        if receipt.get("pass1_physical_binding_sha256") != physical_binding_root:
+            raise SystemExit(f"{label} is bound to a different pass1 physical proof")
 
     support = load_json(args.support_authority)
     if canonical_sha(support) != EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256:
@@ -305,6 +339,7 @@ def main() -> int:
             full104_block_manifest_sha256=manifest_sha,
             canonical_registry_sha256=EXPECTED_REGISTRY_SHA256,
             census_authority_sha256=census_root,
+            pass1_physical_binding_sha256=physical_binding_root,
             support_estimability_authority_sha256=support_sha,
             split_receipt_sha256=split_root,
             target_eligibility_receipt_sha256=eligibility_root,
@@ -364,7 +399,8 @@ def main() -> int:
                 "target_ids": "target_ids.json",
             },
             "scientific_scope_note": (
-                "CONTROL CALIBRATION ONLY. This cache is forbidden as terminal FULL104 "
+                "CONTROL CALIBRATION ONLY. This cache is bound to the physically "
+                "rederived FULL104 pass1 proof and is forbidden as terminal FULL104 "
                 "masking qualification input and forbidden as training input."
             ),
         }
