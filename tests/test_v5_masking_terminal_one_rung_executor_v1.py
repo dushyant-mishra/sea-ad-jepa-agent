@@ -6,6 +6,7 @@ import hashlib
 import numpy as np
 import pytest
 
+from sea_ad_jepa.v5 import masking_terminal_one_rung_executor_v1 as executor_module
 from sea_ad_jepa.v5.masking_burden_ladder_authority_v2 import (
     MaskingBurdenLadderAuthorityV2,
 )
@@ -313,3 +314,44 @@ def test_raw_result_artifact_binds_exactly_all_policy_arms():
                 policy: h(f"raw:{policy}") for policy in POLICIES[:-1]
             },
         ).validate()
+
+def test_terminal_executor_live_checkpoint_gate_fails_closed_on_validator_error(monkeypatch):
+    monkeypatch.setattr(
+        executor_module,
+        "_live_checkpoint_validation_errors",
+        lambda payload: ["HEAD_MISMATCH"],
+    )
+    with pytest.raises(ValueError, match="live-valid machine/worktree checkpoint"):
+        executor_module._assert_live_machine_checkpoint(
+            {"git": {"worktree_path": "/tmp/x"}}
+        )
+
+
+def test_terminal_executor_live_checkpoint_gate_accepts_only_empty_error_set(monkeypatch):
+    monkeypatch.setattr(
+        executor_module,
+        "_live_checkpoint_validation_errors",
+        lambda payload: [],
+    )
+    executor_module._assert_live_machine_checkpoint(
+        {"git": {"worktree_path": "/tmp/x"}}
+    )
+
+
+def test_terminal_executor_checkpoint_validator_rejects_missing_git_snapshot():
+    assert executor_module._live_checkpoint_validation_errors({}) == [
+        "CHECKPOINT_GIT_SNAPSHOT_MISSING"
+    ]
+
+
+def test_terminal_executor_calls_live_checkpoint_gate_before_authority_consumption():
+    import inspect
+
+    source = inspect.getsource(executor_module.execute_one_terminal_rung)
+    checkpoint_bind = source.index(
+        "run_contract.bind_machine_checkpoint_semantic(machine_checkpoint_payload)"
+    )
+    live_gate = source.index("_assert_live_machine_checkpoint(machine_checkpoint_payload)")
+    parameter_bind = source.index("run_contract.bind_parameters(parameters)")
+    assert checkpoint_bind < live_gate < parameter_bind
+
