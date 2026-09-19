@@ -188,6 +188,14 @@ def main() -> int:
     p.add_argument("--replay-shuffled", type=Path)
     args = p.parse_args()
 
+    raise SystemExit(
+        "STOP_H3_EQUIVALENCE_POWER_OPEN: the V2 planted-shortcut capacity ladder "
+        "cannot select or freeze a FULL104 target panel. Preserve these helpers for "
+        "positive-control calibration only; implement and freeze the successor "
+        "equivalence-power/precision design tied to a prospectively justified G5 "
+        "margin before any target-panel rung is executed."
+    )
+
     cache = load_control_calibration_cache(args.cache_dir)
     cache.manifest.assert_calibration_only()
     parameters = load_parameters(args.parameters_authority)
