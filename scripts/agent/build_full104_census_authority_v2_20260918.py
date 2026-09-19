@@ -176,7 +176,7 @@ def main() -> int:
         },
         "corrected_core_zero_accounting": summary["corrected_core_zero_crosscheck"],
         "target_support": summary["target_support"],
-        "donor_precision_context": summary["donor_precision_context"],
+        "donor_sampling_context": summary["donor_sampling_context"],
         "burden_stress_ladder": summary["burden_stress_ladder"],
         "withdrawn_v1_builder_semantics": (
             "V1 packaged hard-coded census constants with script and substrate hashes "
