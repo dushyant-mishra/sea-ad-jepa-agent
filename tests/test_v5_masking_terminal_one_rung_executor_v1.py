@@ -50,9 +50,11 @@ def precision() -> QualificationPrecisionAuthorityV4:
         target_panel_authority_sha256=h("panel"),
         target_panel_sizing_receipt_sha256=h("sizing"),
         outer_split_authority_sha256=h("outer-split"),
-        required_target_count=128,
+        # Deliberately non-production test-only values.  This fixture exists
+        # only to exercise provenance re-derivation and carries no G5/H3 authority.
+        required_target_count=1024,
         null_equivalence_margin_numerator=1,
-        null_equivalence_margin_denominator=1000,
+        null_equivalence_margin_denominator=2,
     )
 
 
