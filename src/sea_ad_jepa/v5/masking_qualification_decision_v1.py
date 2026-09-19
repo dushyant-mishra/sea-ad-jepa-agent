@@ -89,6 +89,8 @@ class MaskingPolicyDecisionEvidenceV1:
     planted_after_mask_excess: IntervalEvidenceV1
     nonlinear_excess_over_shuffled_null: IntervalEvidenceV1
     null_noise_tolerance_ceiling: float
+    null_equivalence_margin_numerator: int
+    null_equivalence_margin_denominator: int
     negative_control_precision_passed: bool
 
     replay_exact: bool
@@ -144,6 +146,23 @@ class MaskingPolicyDecisionEvidenceV1:
         tolerance = _finite(self.null_noise_tolerance_ceiling, "null_noise_tolerance_ceiling")
         if tolerance <= 0.0:
             raise ValueError("null_noise_tolerance_ceiling must be positive")
+        for name in (
+            "null_equivalence_margin_numerator",
+            "null_equivalence_margin_denominator",
+        ):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                raise ValueError("null equivalence margin must be a positive exact rational")
+        exact_margin = Fraction(
+            self.null_equivalence_margin_numerator,
+            self.null_equivalence_margin_denominator,
+        )
+        if exact_margin >= 1:
+            raise ValueError("null equivalence margin must be strictly below one")
+        if float(exact_margin) != tolerance:
+            raise ValueError(
+                "null_noise_tolerance_ceiling disagrees with exact null-equivalence margin"
+            )
         neg = self.negative_control_delta
         expected_negative_precision = bool(
             neg.lower_two_sided <= 0.0 <= neg.upper_two_sided

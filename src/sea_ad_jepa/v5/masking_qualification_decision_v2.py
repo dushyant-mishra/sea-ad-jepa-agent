@@ -23,6 +23,7 @@ from .masking_qualification_decision_v1 import (
     POLICIES,
     POLICY_ORDER,
 )
+from .precision_authority_v4 import QualificationPrecisionAuthorityV4
 
 DECISION_RULE_ID = "FIXED_SOURCE_NULL_EQUIVALENCE_SOURCE_BENEFIT_FIXED_HETEROGENEITY_AND_DISCRETE_TARGETING_SHORTCUT_SUPPRESSION_V5"
 POLICY_SELECTION_RULE_ID = "UNIFORM_IF_SUFFICIENT_ELSE_MIN_EXACT_TARGETING_WITHIN_ONE_TOTAL_EVENT_EQUIVALENCE_THEN_MAX_LOWER_BOUND_V3"
@@ -92,8 +93,12 @@ class MaskingRungDecisionReceiptV2:
         if self.targeting_complexity_equivalence_events != TARGETING_COMPLEXITY_EQUIVALENCE_EVENTS:
             raise ValueError("targeting_complexity_equivalence_events mismatch")
         for digest in self.policy_receipt_sha256.values():
-            if not isinstance(digest, str) or len(digest) != 64:
-                raise ValueError("policy receipt roots must be SHA-256 digests")
+            if not isinstance(digest, str) or len(digest) != 64 or digest != digest.lower():
+                raise ValueError("policy receipt roots must be lowercase SHA-256 digests")
+            try:
+                int(digest, 16)
+            except ValueError as exc:
+                raise ValueError("policy receipt roots must be lowercase SHA-256 digests") from exc
 
     def canonical_digest(self) -> str:
         self.validate()
@@ -102,6 +107,28 @@ class MaskingRungDecisionReceiptV2:
             **asdict(self),
             "policy_receipt_sha256": dict(sorted(self.policy_receipt_sha256.items())),
         })
+
+
+def _bind_precision_authority(
+    evidence: MaskingPolicyDecisionEvidenceV1,
+    precision: QualificationPrecisionAuthorityV4,
+) -> None:
+    if not isinstance(precision, QualificationPrecisionAuthorityV4):
+        raise ValueError("precision must be QualificationPrecisionAuthorityV4")
+    precision.validate()
+    evidence.validate()
+    if evidence.precision_authority_sha256 != precision.canonical_digest():
+        raise ValueError("decision evidence binds a different precision authority")
+    if (
+        evidence.null_equivalence_margin_numerator,
+        evidence.null_equivalence_margin_denominator,
+    ) != (
+        precision.null_equivalence_margin_numerator,
+        precision.null_equivalence_margin_denominator,
+    ):
+        raise ValueError("decision evidence exact null-equivalence margin disagrees with precision authority")
+    if float(evidence.null_noise_tolerance_ceiling) != precision.null_equivalence_margin:
+        raise ValueError("decision evidence null-noise ceiling disagrees with precision authority")
 
 
 def null_noise_tolerance(evidence: MaskingPolicyDecisionEvidenceV1) -> float:
@@ -275,9 +302,13 @@ def select_policy_v2(receipts: Sequence[MaskingPolicyDecisionReceiptV2]) -> str:
 
 def evaluate_rung_v2(
     evidence_by_policy: Sequence[MaskingPolicyDecisionEvidenceV1],
+    *,
+    precision: QualificationPrecisionAuthorityV4,
 ) -> MaskingRungDecisionReceiptV2:
     if len(evidence_by_policy) != len(POLICIES):
         raise ValueError("rung evaluation requires evidence for all four policy arms")
+    for evidence in evidence_by_policy:
+        _bind_precision_authority(evidence, precision)
     receipts = [evaluate_policy_v2(e) for e in evidence_by_policy]
     selected = select_policy_v2(receipts)
     burdens = {(r.burden_numerator, r.burden_denominator) for r in receipts}

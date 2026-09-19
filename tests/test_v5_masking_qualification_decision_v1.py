@@ -1,3 +1,5 @@
+from fractions import Fraction
+
 import pytest
 
 from sea_ad_jepa.v5.masking_qualification_decision_v1 import (
@@ -36,6 +38,8 @@ def evidence(policy="RIDGE8_CONDITIONAL", **updates):
         planted_after_mask_excess=I(-0.01, -0.03, 0.0, -0.025, 0.0),
         nonlinear_excess_over_shuffled_null=I(-0.005, -0.02, 0.0, -0.015, 0.0),
         null_noise_tolerance_ceiling=0.005,
+        null_equivalence_margin_numerator=1,
+        null_equivalence_margin_denominator=200,
         negative_control_precision_passed=True,
         replay_exact=True,
         untreated_identity_exact=True,
@@ -43,6 +47,14 @@ def evidence(policy="RIDGE8_CONDITIONAL", **updates):
         precision_requirements_met=True,
     )
     values.update(updates)
+    if (
+        "null_equivalence_margin_numerator" not in updates
+        and "null_equivalence_margin_denominator" not in updates
+        and "null_noise_tolerance_ceiling" in updates
+    ):
+        exact_margin = Fraction(str(values["null_noise_tolerance_ceiling"]))
+        values["null_equivalence_margin_numerator"] = exact_margin.numerator
+        values["null_equivalence_margin_denominator"] = exact_margin.denominator
     if "negative_control_precision_passed" not in updates:
         neg = values["negative_control_delta"]
         tol = float(values["null_noise_tolerance_ceiling"])
