@@ -158,6 +158,16 @@ def test_targeting_complexity_is_target_by_fold_not_donor_weighted():
     evidence = assemble(effective_targeted_n_by_target_fold=counts)
     assert evidence.mean_effective_targeted_n == pytest.approx(2.0)
 
+    assert evidence.total_effective_targeted_n == 1024
+    assert evidence.targeting_complexity_observation_count == 512
+
+
+def test_fractional_effective_targeting_counts_are_rejected_before_decision():
+    counts = np.full((128, 4), 7.0, dtype=float)
+    counts[0, 0] = 7.5
+    with pytest.raises(ValueError, match="exact integers"):
+        raw_bundle(effective_targeted_n_by_target_fold=counts)
+
 
 @pytest.mark.parametrize(
     "field",
