@@ -112,6 +112,7 @@ def test_census_authority_builder_rederives_receipts_and_excludes_local_paths() 
         "derive_expected_receipts(",
         "AUTHORITY_REVISION_ID",
         "repo_relpath",
+        '"sha256": support_sha',
         "refuse to overwrite existing census authority",
     ):
         assert token in source
