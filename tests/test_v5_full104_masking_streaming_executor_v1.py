@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 import scipy.sparse as sp
 
+from sea_ad_jepa.v5 import full104_masking_streaming_executor_v1 as streaming
 from sea_ad_jepa.v5.full104_masking_qualification_runner_v1 import (
     QualificationArrays,
     run_primary_fold,
@@ -68,7 +69,7 @@ def budget() -> TargetEvidenceBudgetAuthorityV1:
     )
 
 
-def _fixture(tmp_path: Path):
+def _fixture(tmp_path: Path, *, misaligned_library: bool = False):
     n_donors = 12
     cells_per_donor = 4
     donor_ids = [f"D{i:02d}" for i in range(n_donors)]
@@ -136,7 +137,11 @@ def _fixture(tmp_path: Path):
                         donor_id,
                         row_index,
                         "1.0",
-                        int(libraries[row_index]),
+                        (
+                            1
+                            if misaligned_library and selection_row == 0
+                            else int(libraries[row_index])
+                        ),
                     ]
                 )
                 selection_row += 1
@@ -205,6 +210,20 @@ def _fixture(tmp_path: Path):
     return reference, stream, normalized, manifest_rows
 
 
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    (("61129", 61129), ("61129.0", 61129), ("6.1129E4", 61129)),
+)
+def test_stream_source_library_parser_accepts_exact_integral_renderings(raw, expected):
+    assert streaming._parse_source_library(raw) == expected
+
+
+@pytest.mark.parametrize("raw", ("0", "-1", "61129.5", "nan", "inf", ""))
+def test_stream_source_library_parser_rejects_invalid_values(raw):
+    with pytest.raises(ValueError, match="invalid source_library"):
+        streaming._parse_source_library(raw)
+
+
 def test_stream_normalizes_log1p10k_exactly_once_and_preserves_donor_identity(tmp_path: Path) -> None:
     reference, stream, normalized, _ = _fixture(tmp_path)
     stream.validate_layout()
@@ -228,6 +247,12 @@ def test_uncached_physical_revalidation_detects_post_validation_tamper(tmp_path:
 
     with pytest.raises(ValueError, match="counts block hash mismatch during physical revalidation"):
         stream.revalidate_physical_inputs()
+
+
+def test_stream_fails_closed_on_metadata_matrix_row_misalignment(tmp_path: Path) -> None:
+    _, stream, _, _ = _fixture(tmp_path, misaligned_library=True)
+    with pytest.raises(ValueError, match="source_library row-alignment invariant failed"):
+        stream.validate_layout()
 
 
 def test_streaming_fold_matches_canonical_reference_for_all_policy_arms(tmp_path: Path) -> None:

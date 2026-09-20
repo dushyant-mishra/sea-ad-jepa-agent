@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import csv
 from dataclasses import asdict, dataclass
+from decimal import Decimal, InvalidOperation
 import hashlib
 import json
 from pathlib import Path
@@ -50,6 +51,18 @@ META_COLUMNS = (
     "primary_row_weight",
     "source_library",
 )
+
+
+def _parse_source_library(raw: object, block_key: str) -> int:
+    """Parse an on-disk positive integral source-library value exactly."""
+
+    try:
+        value = Decimal(str(raw).strip())
+    except (InvalidOperation, ValueError) as exc:
+        raise ValueError(f"invalid source_library: {block_key}") from exc
+    if not value.is_finite() or value <= 0 or value != value.to_integral_value():
+        raise ValueError(f"invalid source_library: {block_key}")
+    return int(value)
 
 
 def _canonical_sha(payload: Mapping[str, Any]) -> str:
@@ -320,7 +333,7 @@ def run_physical_shakedown(
                 block_donors.append(str(meta["donor_id"]))
                 expression_row = int(meta["expression_row"])
                 weight = float(meta["primary_row_weight"])
-                library = int(meta["source_library"])
+                library = _parse_source_library(meta["source_library"], row["block_key"])
                 if expression_row < 0:
                     raise ValueError(f"negative expression_row: {row['block_key']}")
                 if not np.isfinite(weight) or weight <= 0:
@@ -338,6 +351,16 @@ def run_physical_shakedown(
         if np.unique(sel).size != sel.size or np.any(selection_seen[sel]):
             raise ValueError("duplicate selection_row across FULL104 blocks")
         selection_seen[sel] = True
+
+        # Level-4 stores only a subset of each cell's raw library, so the
+        # mapped row sum must never exceed the authenticated source-library
+        # total paired with that matrix row.  This is a necessary runtime
+        # invariant for metadata-CSV order <-> matrix-row alignment.
+        mapped_row_sums = np.asarray(matrix.sum(axis=1), dtype=np.int64).reshape(-1)
+        if mapped_row_sums.shape != libs.shape or np.any(mapped_row_sums > libs):
+            raise ValueError(
+                f"FULL104 source_library row-alignment invariant failed: {row['block_key']}"
+            )
 
         source = str(row["source"])
         for donor in block_donors:

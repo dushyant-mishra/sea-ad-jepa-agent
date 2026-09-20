@@ -7,7 +7,11 @@ import pytest
 from sea_ad_jepa.v5.address_universe_ladder_authority_v1 import AddressUniverseLadderAuthorityV1
 from sea_ad_jepa.v5.anti_cheat_authority_bundle_v2 import AntiCheatAuthorityBundleV2
 from sea_ad_jepa.v5.canonical_address_registry_authority_v1 import CanonicalAddressRegistryAuthorityV1
-from sea_ad_jepa.v5.current_authority_closure_v2 import validate_current_v5_authority_closure_v2
+import sea_ad_jepa.v5.current_authority_closure_v2 as closure_module
+from sea_ad_jepa.v5.current_authority_closure_v2 import (
+    STOP_STALE_CURRENT_CLOSURE_V2,
+    validate_current_v5_authority_closure_v2,
+)
 from sea_ad_jepa.v5.current_authority_roots_v2 import CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS_V2
 from sea_ad_jepa.v5.current_masking_policy_authority_v2 import CurrentMaskingPolicyAuthorityV2
 from sea_ad_jepa.v5.current_runtime_source_authority_v1 import CurrentRuntimeSourceAuthorityV1
@@ -43,6 +47,16 @@ FULL = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 OBS = "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
 REGISTRY_RAW = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
 STRICT_SCALAR = "STRICT_MEASURED_SCALAR_ONLY__COLLISION_UNRESOLVED_EXCLUDED_V1"
+
+
+@pytest.fixture
+def historical_v2_graph_mechanics(monkeypatch):
+    """Keep the superseded graph's internal regression coverage test-only."""
+    monkeypatch.setattr(
+        closure_module,
+        "assert_current_authority_closure_v2_open",
+        lambda: None,
+    )
 
 
 def build_v2():
@@ -407,14 +421,19 @@ def call_v2(f):
     )
 
 
-def test_complete_v2_graph_closes_with_exact_root_vocabulary() -> None:
+def test_public_v2_closure_is_hard_stopped_as_stale() -> None:
+    with pytest.raises(RuntimeError, match=STOP_STALE_CURRENT_CLOSURE_V2):
+        call_v2(build_v2())
+
+
+def test_complete_v2_graph_closes_with_exact_root_vocabulary(historical_v2_graph_mechanics) -> None:
     f = build_v2(); out = call_v2(f)
     assert tuple(out["authority_roots"]) == CURRENT_V5_UPSTREAM_AUTHORITY_ROOTS_V2
     assert out["training_authorized"] is False
 
 
 @pytest.mark.parametrize("field", ["mask_exec", "rna_exec", "measurement", "mem"])
-def test_any_failed_execution_blocks_v2_closure(field: str) -> None:
+def test_any_failed_execution_blocks_v2_closure(field: str, historical_v2_graph_mechanics) -> None:
     f = build_v2()
     if field == "mask_exec":
         f[field] = replace(f[field], execution_status="EXECUTED_FAIL", selected_policy_id="NO_POLICY_QUALIFIED")
@@ -432,14 +451,14 @@ def test_any_failed_execution_blocks_v2_closure(field: str) -> None:
         call_v2(f)
 
 
-def test_masking_budget_splice_is_rejected_at_top_level() -> None:
+def test_masking_budget_splice_is_rejected_at_top_level(historical_v2_graph_mechanics) -> None:
     f = build_v2()
     f["masking"] = replace(f["masking"], target_evidence_budget_authority_sha256=h("wrong-budget"))
     with pytest.raises(ValueError, match="target evidence budget authority root mismatch"):
         call_v2(f)
 
 
-def test_geometry_memorization_must_match_selected_geometry_artifact() -> None:
+def test_geometry_memorization_must_match_selected_geometry_artifact(historical_v2_graph_mechanics) -> None:
     f = build_v2()
     f["mem"] = replace(f["mem"], geometry_artifact_sha256=h("wrong-geometry-artifact"))
     f["geometry"] = replace(f["geometry"], memorization_qualification_authority_sha256=f["mem"].canonical_digest())
@@ -447,7 +466,7 @@ def test_geometry_memorization_must_match_selected_geometry_artifact() -> None:
         call_v2(f)
 
 
-def test_legacy_masking_execution_v1_is_rejected() -> None:
+def test_legacy_masking_execution_v1_is_rejected(historical_v2_graph_mechanics) -> None:
     f = build_v2()
     legacy = MaskingQualificationExecutionAuthorityV1(
         authority_id="JEPA_V5_MASKING_QUALIFICATION_EXECUTION_AUTHORITY_V1",

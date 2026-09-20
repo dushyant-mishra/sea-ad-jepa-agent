@@ -41,6 +41,8 @@ def build_fixture(
     pass1_core: np.ndarray | None = None,
     donor_src: np.ndarray | None = None,
     corrupt_support: bool = False,
+    misaligned_library: bool = False,
+    decimal_library: bool = False,
 ):
     root = tmp_path / "level4"
     root.mkdir()
@@ -80,7 +82,11 @@ def build_fixture(
                     "donor_id": donors[block_index],
                     "expression_row": local_row,
                     "primary_row_weight": 1.0,
-                    "source_library": 100,
+                    "source_library": (
+                        1
+                        if misaligned_library and block_index == 0 and local_row == 0
+                        else ("100.0" if decimal_library else 100)
+                    ),
                 }
             )
         write_meta(meta_path, block_rows)
@@ -168,6 +174,11 @@ def test_pass1_physical_binding_happy_path(tmp_path, monkeypatch):
     assert len(receipt.canonical_digest()) == 64
 
 
+def test_pass1_physical_binding_accepts_integral_decimal_source_library(tmp_path, monkeypatch):
+    receipt = verify(build_fixture(tmp_path, monkeypatch, decimal_library=True))
+    assert receipt.row_count == 4
+
+
 def test_stale_pass1_core_cannot_bind_to_current_observation_state(tmp_path, monkeypatch):
     paths = build_fixture(
         tmp_path,
@@ -197,6 +208,12 @@ def test_pass1_donor_source_substitution_fails(tmp_path, monkeypatch):
 def test_duplicate_physical_selection_row_fails(tmp_path, monkeypatch):
     paths = build_fixture(tmp_path, monkeypatch, duplicate_selection=True)
     with pytest.raises(ValueError, match="duplicate physical selection_row"):
+        verify(paths)
+
+
+def test_physical_metadata_matrix_row_misalignment_fails(tmp_path, monkeypatch):
+    paths = build_fixture(tmp_path, monkeypatch, misaligned_library=True)
+    with pytest.raises(ValueError, match="source_library row-alignment invariant failed"):
         verify(paths)
 
 

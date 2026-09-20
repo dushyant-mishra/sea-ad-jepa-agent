@@ -43,7 +43,13 @@ def write_meta(path: Path, rows: list[dict]) -> None:
             writer.writerow(row)
 
 
-def build_fixture(tmp_path: Path, monkeypatch, *, duplicate: bool = False):
+def build_fixture(
+    tmp_path: Path,
+    monkeypatch,
+    *,
+    duplicate: bool = False,
+    misaligned_library: bool = False,
+):
     root = tmp_path / "level4"
     root.mkdir()
     registry = tmp_path / "registry.csv"
@@ -80,7 +86,9 @@ def build_fixture(tmp_path: Path, monkeypatch, *, duplicate: bool = False):
                     "donor_id": donor_by_block[block_index],
                     "expression_row": 0,
                     "primary_row_weight": 1.0,
-                    "source_library": 100,
+                    "source_library": (
+                        1 if misaligned_library and block_index == 0 else 100
+                    ),
                 },
                 {
                     "selection_row": selection[1],
@@ -126,6 +134,20 @@ def build_fixture(tmp_path: Path, monkeypatch, *, duplicate: bool = False):
     return root, registry, obs, manifest_rows
 
 
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    (("61129", 61129), ("61129.0", 61129), ("6.1129E4", 61129)),
+)
+def test_source_library_parser_accepts_exact_integral_renderings(raw, expected):
+    assert physical._parse_source_library(raw, "op37/block-00001") == expected
+
+
+@pytest.mark.parametrize("raw", ("0", "-1", "61129.5", "nan", "inf", ""))
+def test_source_library_parser_rejects_nonpositive_nonintegral_or_nonfinite(raw):
+    with pytest.raises(ValueError, match="invalid source_library"):
+        physical._parse_source_library(raw, "op37/block-00001")
+
+
 def test_physical_shakedown_streams_authenticated_fixture_and_normalizes(tmp_path, monkeypatch):
     root, registry, obs, _ = build_fixture(tmp_path, monkeypatch)
     real_log1p = np.log1p
@@ -158,6 +180,20 @@ def test_physical_shakedown_fails_on_counts_hash_corruption(tmp_path, monkeypatc
     with (root / "counts_0.npz").open("ab") as handle:
         handle.write(b"corruption")
     with pytest.raises(ValueError, match="counts hash mismatch"):
+        physical.run_physical_shakedown(
+            level4_root=root,
+            registry_path=registry,
+            observation_state_path=obs,
+        )
+
+
+def test_physical_shakedown_fails_on_metadata_matrix_row_misalignment(tmp_path, monkeypatch):
+    root, registry, obs, _ = build_fixture(
+        tmp_path,
+        monkeypatch,
+        misaligned_library=True,
+    )
+    with pytest.raises(ValueError, match="source_library row-alignment invariant failed"):
         physical.run_physical_shakedown(
             level4_root=root,
             registry_path=registry,

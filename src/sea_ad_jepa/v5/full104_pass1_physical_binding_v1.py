@@ -25,6 +25,7 @@ from .full104_masking_qualification_runner_v1 import (
 from .full104_physical_shakedown_v1 import (
     MANIFEST_COLUMNS,
     META_COLUMNS,
+    _parse_source_library,
     sha256_file,
 )
 
@@ -321,6 +322,7 @@ def verify_pass1_against_physical_full104(
                 raise ValueError(f"FULL104 metadata schema mismatch: {row['block_key']}")
             selection = []
             block_donor_codes = []
+            block_libraries = []
             source = str(row["source"])
             expected_source_code = source_to_code[source]
             for meta in meta_reader:
@@ -331,12 +333,21 @@ def verify_pass1_against_physical_full104(
                 donor_code = donor_to_code[donor_id]
                 if int(donor_src[donor_code]) != expected_source_code:
                     raise ValueError("pass1 donor/source identity disagrees with physical metadata")
+                library = _parse_source_library(meta["source_library"], row["block_key"])
+                if library <= 0:
+                    raise ValueError("physical metadata contains invalid source_library")
                 selection.append(selection_row)
                 block_donor_codes.append(donor_code)
+                block_libraries.append(library)
 
         selection_arr = np.asarray(selection, dtype=np.int64)
         donor_codes = np.asarray(block_donor_codes, dtype=np.int64)
-        if selection_arr.shape != (expected_rows,) or donor_codes.shape != (expected_rows,):
+        libraries = np.asarray(block_libraries, dtype=np.int64)
+        if (
+            selection_arr.shape != (expected_rows,)
+            or donor_codes.shape != (expected_rows,)
+            or libraries.shape != (expected_rows,)
+        ):
             raise ValueError(f"FULL104 metadata row count mismatch: {row['block_key']}")
         if np.any(selection_arr < 0) or np.any(selection_arr >= EXPECTED_ROWS):
             raise ValueError("physical selection_row is out of range")
@@ -345,6 +356,15 @@ def verify_pass1_against_physical_full104(
         seen_selection[selection_arr] = True
         if not np.array_equal(cell_donor[selection_arr], donor_codes):
             raise ValueError("pass1 cell_donor does not rederive from physical metadata")
+
+        mapped_row_sums = np.asarray(matrix.sum(axis=1), dtype=np.int64).reshape(-1)
+        if (
+            mapped_row_sums.shape != libraries.shape
+            or np.any(mapped_row_sums > libraries)
+        ):
+            raise ValueError(
+                f"source_library row-alignment invariant failed: {row['block_key']}"
+            )
 
         # Slice the physical strict core once per block, then reuse it for
         # both per-cell and donor/address support checks.  This avoids repeating

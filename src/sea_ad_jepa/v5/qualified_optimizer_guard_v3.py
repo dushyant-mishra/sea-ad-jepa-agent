@@ -5,7 +5,10 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 from .current_teacher_target_receipt_v2 import validate_current_teacher_target_receipt_v2
-from .current_training_authority_v1 import CurrentTrainingAuthorityV1
+from .current_training_authority_v1 import (
+    CurrentTrainingAuthorityV1,
+    assert_current_training_authority_v1_issuance_open,
+)
 
 STOP = "STOP_V5_CURRENT_OPTIMIZER_V3_AUTHORITY_NOT_ARMED"
 CURSOR_KWARG = "v5_current_guard_schedule_cursor"
@@ -27,6 +30,10 @@ class CurrentOptimizerStepGuardV3:
     expected_closure_v2_sha256: str
 
     def __post_init__(self) -> None:
+        # V1 authority objects remain readable as historical provenance, but
+        # the current graph is stale relative to masking V3/V4 and open
+        # F13/F14/F15.  Refuse to arm an optimizer from that graph.
+        assert_current_training_authority_v1_issuance_open()
         self.training_authority.validate()
         verified = validate_current_teacher_target_receipt_v2(
             self.receipt,

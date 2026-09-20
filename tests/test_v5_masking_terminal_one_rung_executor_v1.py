@@ -17,6 +17,13 @@ from sea_ad_jepa.v5.masking_qualification_decision_v2 import (
 from sea_ad_jepa.v5.masking_qualification_execution_authority_v4 import (
     MaskingQualificationExecutionAuthorityV4,
 )
+from sea_ad_jepa.v5.masking_terminal_evidence_assembly_v1 import (
+    TerminalPolicyRawEvidenceV1,
+)
+from sea_ad_jepa.v5.masking_terminal_mechanical_controls_v1 import (
+    TerminalMechanicalControlReceiptV1,
+)
+from sea_ad_jepa.v5.precision_authority_v4 import QualificationPrecisionAuthorityV4
 from sea_ad_jepa.v5.masking_terminal_one_rung_executor_v1 import (
     TerminalOneRungRawResultArtifactV1,
     _fill_donor_values,
@@ -34,6 +41,80 @@ def ladder() -> MaskingBurdenLadderAuthorityV2:
         authority_id="TEST_FULL104_BURDEN_LADDER_V2",
         census_authority_sha256=h("census"),
     )
+
+
+def precision() -> QualificationPrecisionAuthorityV4:
+    return QualificationPrecisionAuthorityV4(
+        authority_id="TEST_PRECISION_V4",
+        support_estimability_authority_sha256=h("support"),
+        target_panel_authority_sha256=h("panel"),
+        target_panel_sizing_receipt_sha256=h("sizing"),
+        outer_split_authority_sha256=h("outer-split"),
+        # Deliberately non-production test-only values.  This fixture exists
+        # only to exercise provenance re-derivation and carries no G5/H3 authority.
+        required_target_count=1024,
+        null_equivalence_margin_numerator=1,
+        null_equivalence_margin_denominator=2,
+    )
+
+
+def raw_evidence_bundle(
+    rung_receipt: MaskingRungDecisionReceiptV2,
+    *,
+    run_contract_sha256: str = h("run-contract"),
+    terminal_input_manifest_sha256: str = h("manifest"),
+):
+    controls = TerminalMechanicalControlReceiptV1(
+        run_contract_sha256=run_contract_sha256,
+        terminal_input_manifest_sha256=terminal_input_manifest_sha256,
+        mask_grid_sha256=h(
+            f"mask-grid:{rung_receipt.burden_numerator}/{rung_receipt.burden_denominator}"
+        ),
+        replay_exact=True,
+        untreated_identity_exact=True,
+        no_privileged_metadata=True,
+    )
+    mechanical_root = controls.canonical_digest()
+    donor_ids = tuple(f"D{i:03d}" for i in range(104))
+    donor_source = np.zeros(104, dtype=np.int64)
+    donor_fold = np.tile(np.arange(4, dtype=np.int64), 26)
+    zeros = np.zeros((1, 104), dtype=np.float64)
+    effective = np.zeros((1, 4), dtype=np.float64)
+    raw = {}
+    for policy in POLICIES:
+        raw[policy] = TerminalPolicyRawEvidenceV1(
+            policy_id=policy,
+            burden_numerator=rung_receipt.burden_numerator,
+            burden_denominator=rung_receipt.burden_denominator,
+            target_ids=("T0",),
+            donor_ids=donor_ids,
+            donor_source_code=donor_source,
+            donor_outer_fold=donor_fold,
+            source_names={0: "SRC"},
+            policy_mask_sha256_by_target_fold=(
+                tuple(
+                    h(
+                        f"mask:{policy}:{rung_receipt.burden_numerator}/"
+                        f"{rung_receipt.burden_denominator}:{fold}"
+                    )
+                    for fold in range(4)
+                ),
+            ),
+            mechanical_control_receipt_sha256=mechanical_root,
+            actual_policy_scores=zeros,
+            actual_uniform_scores=zeros,
+            shuffled_same_mask_scores=zeros,
+            negative_control_delta=zeros,
+            planted_detect_excess=zeros,
+            planted_after_mask_excess=zeros,
+            nonlinear_actual_scores=zeros,
+            nonlinear_shuffled_same_mask_scores=zeros,
+            effective_targeted_n_by_target_fold=effective,
+            replay_exact=True,
+            untreated_identity_exact=True,
+            no_privileged_metadata=True,
+        )
+    return raw, controls
 
 
 def receipt(numerator: int, denominator: int, *, qualified: bool):
@@ -56,7 +137,27 @@ def raw_artifact(
     terminal_input_manifest_sha256: str = h("manifest"),
     prior_receipt_roots: tuple[str, ...] = (),
     prior_execution_roots: tuple[str, ...] = (),
+    raw_evidence_by_policy=None,
+    mechanical_control_receipt=None,
 ) -> TerminalOneRungRawResultArtifactV1:
+    mechanical_root = (
+        mechanical_control_receipt.canonical_digest()
+        if mechanical_control_receipt is not None
+        else h("mechanical")
+    )
+    raw_roots = (
+        {
+            policy: raw_evidence_by_policy[policy].canonical_digest()
+            for policy in POLICIES
+        }
+        if raw_evidence_by_policy is not None
+        else {
+            policy: h(
+                f"raw:{rung_receipt.burden_numerator}/{rung_receipt.burden_denominator}:{policy}"
+            )
+            for policy in POLICIES
+        }
+    )
     return TerminalOneRungRawResultArtifactV1(
         run_contract_sha256=run_contract_sha256,
         burden_numerator=rung_receipt.burden_numerator,
@@ -67,13 +168,8 @@ def raw_artifact(
         split_receipt_sha256=h("split"),
         target_eligibility_receipt_sha256=h("eligibility"),
         target_selection_receipt_sha256=h("selection"),
-        mechanical_control_receipt_sha256=h("mechanical"),
-        raw_policy_evidence_sha256={
-            policy: h(
-                f"raw:{rung_receipt.burden_numerator}/{rung_receipt.burden_denominator}:{policy}"
-            )
-            for policy in POLICIES
-        },
+        mechanical_control_receipt_sha256=mechanical_root,
+        raw_policy_evidence_sha256=raw_roots,
     )
 
 
@@ -129,10 +225,25 @@ def test_first_invocation_can_open_only_first_frozen_rung():
         )
 
 
-def test_second_rung_requires_exact_failed_first_rung_receipt():
+def test_second_rung_requires_exact_failed_first_rung_receipt(monkeypatch):
     first = receipt(1, 20, qualified=False)
-    first_artifact = raw_artifact(first)
+    raw_by_policy, controls = raw_evidence_bundle(first)
+    first_artifact = raw_artifact(
+        first,
+        raw_evidence_by_policy=raw_by_policy,
+        mechanical_control_receipt=controls,
+    )
     first_execution = execution_authority(first, artifact=first_artifact)
+    monkeypatch.setattr(
+        executor_module,
+        "assemble_policy_decision_evidence",
+        lambda *, raw_evidence, precision: raw_evidence.policy_id,
+    )
+    monkeypatch.setattr(
+        executor_module,
+        "evaluate_rung_v2",
+        lambda evidence, *, precision: first,
+    )
     requested, prior, prior_execution = _validate_requested_rung(
         burden_ladder=ladder(),
         numerator=1,
@@ -142,10 +253,146 @@ def test_second_rung_requires_exact_failed_first_rung_receipt():
         prior_rung_raw_result_artifacts=(first_artifact,),
         expected_run_contract_sha256=h("run-contract"),
         expected_terminal_input_manifest_sha256=h("manifest"),
+        prior_rung_raw_evidence_by_policy=(raw_by_policy,),
+        prior_rung_mechanical_control_receipts=(controls,),
+        precision=precision(),
     )
     assert requested == Fraction(1, 10)
     assert prior == (first.canonical_digest(),)
     assert prior_execution == (first_execution.canonical_digest(),)
+
+
+def test_h1_self_consistent_hash_triple_without_raw_evidence_cannot_open_next_rung():
+    first = receipt(1, 20, qualified=False)
+    first_artifact = raw_artifact(first)
+    first_execution = execution_authority(first, artifact=first_artifact)
+    with pytest.raises(ValueError, match="actual prior raw-policy evidence"):
+        _validate_requested_rung(
+            burden_ladder=ladder(),
+            numerator=1,
+            denominator=10,
+            prior_rung_receipts=(first,),
+            prior_rung_execution_authorities=(first_execution,),
+            prior_rung_raw_result_artifacts=(first_artifact,),
+            expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
+        )
+
+
+def test_h1_prior_decision_must_rederive_from_bound_raw_evidence(monkeypatch):
+    first = receipt(1, 20, qualified=False)
+    raw_by_policy, controls = raw_evidence_bundle(first)
+    first_artifact = raw_artifact(
+        first,
+        raw_evidence_by_policy=raw_by_policy,
+        mechanical_control_receipt=controls,
+    )
+    first_execution = execution_authority(first, artifact=first_artifact)
+    rederived_other = receipt(1, 20, qualified=True)
+    monkeypatch.setattr(
+        executor_module,
+        "assemble_policy_decision_evidence",
+        lambda *, raw_evidence, precision: raw_evidence.policy_id,
+    )
+    monkeypatch.setattr(
+        executor_module,
+        "evaluate_rung_v2",
+        lambda evidence, *, precision: rederived_other,
+    )
+    with pytest.raises(ValueError, match="does not rederive from bound raw evidence"):
+        _validate_requested_rung(
+            burden_ladder=ladder(),
+            numerator=1,
+            denominator=10,
+            prior_rung_receipts=(first,),
+            prior_rung_execution_authorities=(first_execution,),
+            prior_rung_raw_result_artifacts=(first_artifact,),
+            expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
+            prior_rung_raw_evidence_by_policy=(raw_by_policy,),
+            prior_rung_mechanical_control_receipts=(controls,),
+            precision=precision(),
+        )
+
+
+def test_h1_prior_raw_and_control_sequences_must_align_exactly():
+    first = receipt(1, 20, qualified=False)
+    raw_by_policy, _ = raw_evidence_bundle(first)
+    first_artifact = raw_artifact(first)
+    first_execution = execution_authority(first, artifact=first_artifact)
+    with pytest.raises(ValueError, match="exactly align with the prior-rung receipt chain"):
+        _validate_requested_rung(
+            burden_ladder=ladder(),
+            numerator=1,
+            denominator=10,
+            prior_rung_receipts=(first,),
+            prior_rung_execution_authorities=(first_execution,),
+            prior_rung_raw_result_artifacts=(first_artifact,),
+            expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
+            prior_rung_raw_evidence_by_policy=(raw_by_policy,),
+            prior_rung_mechanical_control_receipts=(),
+            precision=precision(),
+        )
+
+
+def test_h1_mechanical_controls_from_other_run_contract_cannot_authenticate_prior_raw():
+    first = receipt(1, 20, qualified=False)
+    raw_by_policy, controls = raw_evidence_bundle(
+        first,
+        run_contract_sha256=h("other-run-contract"),
+    )
+    first_artifact = raw_artifact(
+        first,
+        raw_evidence_by_policy=raw_by_policy,
+        mechanical_control_receipt=controls,
+    )
+    first_execution = execution_authority(first, artifact=first_artifact)
+    with pytest.raises(ValueError, match="mechanical controls bind a different run contract"):
+        _validate_requested_rung(
+            burden_ladder=ladder(),
+            numerator=1,
+            denominator=10,
+            prior_rung_receipts=(first,),
+            prior_rung_execution_authorities=(first_execution,),
+            prior_rung_raw_result_artifacts=(first_artifact,),
+            expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
+            prior_rung_raw_evidence_by_policy=(raw_by_policy,),
+            prior_rung_mechanical_control_receipts=(controls,),
+            precision=precision(),
+        )
+
+
+def test_h1_mechanical_controls_from_other_full104_manifest_cannot_authenticate_prior_raw():
+    first = receipt(1, 20, qualified=False)
+    raw_by_policy, controls = raw_evidence_bundle(
+        first,
+        terminal_input_manifest_sha256=h("other-manifest"),
+    )
+    first_artifact = raw_artifact(
+        first,
+        raw_evidence_by_policy=raw_by_policy,
+        mechanical_control_receipt=controls,
+    )
+    first_execution = execution_authority(first, artifact=first_artifact)
+    with pytest.raises(
+        ValueError,
+        match="mechanical controls bind a different authenticated FULL104 manifest",
+    ):
+        _validate_requested_rung(
+            burden_ladder=ladder(),
+            numerator=1,
+            denominator=10,
+            prior_rung_receipts=(first,),
+            prior_rung_execution_authorities=(first_execution,),
+            prior_rung_raw_result_artifacts=(first_artifact,),
+            expected_run_contract_sha256=h("run-contract"),
+            expected_terminal_input_manifest_sha256=h("manifest"),
+            prior_rung_raw_evidence_by_policy=(raw_by_policy,),
+            prior_rung_mechanical_control_receipts=(controls,),
+            precision=precision(),
+        )
 
 
 def test_higher_rung_cannot_open_after_lower_rung_qualified():
