@@ -411,6 +411,7 @@ def main() -> int:
         },
         "support_estimability_authority": {
             "repo_relpath": SUPPORT_AUTHORITY_RELPATH.as_posix(),
+            "sha256": support_sha,
             "file_sha256": support_sha,
             "canonical_json_sha256": EXPECTED_SUPPORT_AUTHORITY_CANONICAL_JSON_SHA256,
         },
