@@ -134,6 +134,20 @@ def build_fixture(
     return root, registry, obs, manifest_rows
 
 
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    (("61129", 61129), ("61129.0", 61129), ("6.1129E4", 61129)),
+)
+def test_source_library_parser_accepts_exact_integral_renderings(raw, expected):
+    assert physical._parse_source_library(raw, "op37/block-00001") == expected
+
+
+@pytest.mark.parametrize("raw", ("0", "-1", "61129.5", "nan", "inf", ""))
+def test_source_library_parser_rejects_nonpositive_nonintegral_or_nonfinite(raw):
+    with pytest.raises(ValueError, match="invalid source_library"):
+        physical._parse_source_library(raw, "op37/block-00001")
+
+
 def test_physical_shakedown_streams_authenticated_fixture_and_normalizes(tmp_path, monkeypatch):
     root, registry, obs, _ = build_fixture(tmp_path, monkeypatch)
     real_log1p = np.log1p
