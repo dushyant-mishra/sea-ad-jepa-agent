@@ -1,0 +1,191 @@
+{
+  "schema": "V5_FULL104_CONTROL_CALIBRATION_CACHE_EVIDENCE_V1",
+  "date": "2026-09-20",
+  "execution_git_head": "7cb7cc085db117585c4b2d72f08341652d3fe45e",
+  "execution_worktree_clean": true,
+  "cache_role_id": "CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1",
+  "role_note": "CONTROL_CALIBRATION_ONLY. Forbidden as terminal masking input, as training input, and as the basis for selecting a G5 margin.",
+  "envelope_constants_note": "max_target_count=1024, max_rows_per_donor=1024 and distractor_count=31 are a calibration/acceleration ENVELOPE. They are not evidence that H3 equivalence power, G3 production-capacity shortcut resistance, or any production capacity has been scientifically established. Freezing them in code does not confer production authority.",
+  "bound_roots": {
+    "census_authority_sha256": "7a090d4078239e9bc161ae60c289b7f1a5bbb02e7cf3e6bcc0ae9c284b89ee21",
+    "pass1_physical_binding_sha256": "4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602",
+    "support_estimability_authority_sha256": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+    "split_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "target_eligibility_receipt_sha256": "33539852932a8d71eea6984b9a3c946a22574e7fccfba5ed09bd59438e4aa2f9",
+    "full104_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+  },
+  "cache_manifest_canonical_sha256": "6e2482a092b4dde606908a6e81dd152b3c7a38478443d6d096741f2fb0029a01",
+  "cache_manifest_file_sha256": "74bfcce9daf393a649c839c7dae47b1c05d56d573229d5073b1c5438750286ca",
+  "authentication_scope": {
+    "semantic_digests_present_for": [
+      "target_cols",
+      "target_ids",
+      "proxy_cols",
+      "distractor_cols",
+      "cache_cols"
+    ],
+    "all_other_arrays_authenticated_by": "file SHA-256 only",
+    "explicit_note": "The manifest carries semantic digests for the five column/ID vectors listed above. Every other cache array is authenticated by its file SHA-256, not by a second semantic digest."
+  },
+  "geometry": {
+    "retained_row_count": 105553,
+    "retained_donor_count": 104,
+    "min_retained_rows_per_donor": 81,
+    "max_retained_rows_observed_per_donor": 1024,
+    "cache_column_count": 1984,
+    "x_shape_rows": 105553,
+    "x_shape_cols": 1984,
+    "max_rows_per_donor": 1024,
+    "max_target_count": 1024,
+    "distractor_count": 31
+  },
+  "external_artifact": {
+    "location": "GPU_MACHINE_NOT_COMMITTED",
+    "path": "D:\\jepa_full104_preterminal_20260919_a51cdbe8_outputs\\control_calibration_cache_v1",
+    "total_bytes": 843564125,
+    "file_count": 16,
+    "files": [
+      {
+        "name": "cache_cols_i64.npy",
+        "bytes": 16000,
+        "sha256": "4fb163b23b5db8d7357b6df994b8ae338899740f2c65fa06d25ed10a82e1ff1f"
+      },
+      {
+        "name": "cache_manifest.json",
+        "bytes": 4810,
+        "sha256": "74bfcce9daf393a649c839c7dae47b1c05d56d573229d5073b1c5438750286ca"
+      },
+      {
+        "name": "distractor_cols_i64.npy",
+        "bytes": 376,
+        "sha256": "949201c8f304f43dcf592269d81fb32bf63d27d632431ecf9b18fdaed28d714f"
+      },
+      {
+        "name": "donor_code_i64.npy",
+        "bytes": 844552,
+        "sha256": "05e03bedab5f7f5e1c4abd2083fa4c659476a747ecab806e4ed9358d7790123f"
+      },
+      {
+        "name": "donor_source_code_i64.npy",
+        "bytes": 960,
+        "sha256": "b45653e79cd1b781d72b0187f8be64b4dee88a1e7996bcc4acb5f4f42eda1933"
+      },
+      {
+        "name": "fold_by_donor_i64.npy",
+        "bytes": 960,
+        "sha256": "dca6135b567c1276805c8b940bae708ee217ed0878470fba7f2383496ca024db"
+      },
+      {
+        "name": "full_donor_n_i64.npy",
+        "bytes": 960,
+        "sha256": "35e36432470e0349ea11b73ef9d698c3431bf0443a51b865595aa57cda227da1"
+      },
+      {
+        "name": "full_donor_sum_f64.npy",
+        "bytes": 1650816,
+        "sha256": "201ad14287a56e584b40f8657de9b274fd04b95509e34198067ea7b3ef80a975"
+      },
+      {
+        "name": "full_donor_sumsq_f64.npy",
+        "bytes": 1650816,
+        "sha256": "1e1e6ae608cadc4411151e00ac54d5cd5ce13972c685bac0a1155b42bde4bf99"
+      },
+      {
+        "name": "proxy_cols_i64.npy",
+        "bytes": 8320,
+        "sha256": "21059121f8661f4c982dee51b46c1d1656fb74bec1e18be7c7144010a8c61cf2"
+      },
+      {
+        "name": "retained_count_by_donor_i64.npy",
+        "bytes": 960,
+        "sha256": "3872863ec82b6bb1ae827f47a819b29c93e591bd0e1c96184c5fa2d14e8be12f"
+      },
+      {
+        "name": "row_rank_i64.npy",
+        "bytes": 844552,
+        "sha256": "dff6e449eae9f12b34484a47ff64a4b22a2bfdd7898234d533f27a1fa9b8e9ca"
+      },
+      {
+        "name": "selection_rows_i64.npy",
+        "bytes": 844552,
+        "sha256": "ad38c214016945d42a3110d0f71ca362f2ef80c2c1d36282ed194aef0a735513"
+      },
+      {
+        "name": "target_cols_i64.npy",
+        "bytes": 8320,
+        "sha256": "034b5e4f5beb2897432b3927bde5602468c275e1daba35bd8634197a8dc92a35"
+      },
+      {
+        "name": "target_ids.json",
+        "bytes": 18435,
+        "sha256": "ac706ee6dd998d4534ed3b4b1e102aad7e64b928ebdf4d951fefe02dec0565da"
+      },
+      {
+        "name": "X_log1p10k_f32.npy",
+        "bytes": 837668736,
+        "sha256": "9bca92a41040e8ae53710d1e49002889a05e82d4f573714fd5d07a937d2617a9"
+      }
+    ]
+  },
+  "code_provenance_sha256": {
+    "scripts/agent/build_full104_control_calibration_cache_v1.py": "4aaeedc10c536bf8bccd2fdc10c46a7dc87d6eb388c86df30f43cf9cc94e9cf2",
+    "src/sea_ad_jepa/v5/full104_control_calibration_cache_v1.py": "3a0fce5e315bfb8e4484836b8a56a393e31fd258b1ceea35e47b4edbc5314d8c",
+    "src/sea_ad_jepa/v5/full104_masking_streaming_executor_v1.py": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
+    "src/sea_ad_jepa/v5/full104_pass1_physical_binding_v1.py": "c94166b08c4ba438838fad0232542767bea26ac48f35ca8675fb0e10be38d354"
+  },
+  "environment": {
+    "python": "3.11.15",
+    "numpy": "1.26.4",
+    "scipy": "1.15.3",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "conda_env": "sea-ad-jepa",
+    "numerical_packages": [
+      {
+        "name": "libblas",
+        "version": "3.11.0",
+        "channel": "conda-forge",
+        "build": "7_h8455456_mkl"
+      },
+      {
+        "name": "libcblas",
+        "version": "3.11.0",
+        "channel": "conda-forge",
+        "build": "7_h2a3cdd5_mkl"
+      },
+      {
+        "name": "liblapack",
+        "version": "3.11.0",
+        "channel": "conda-forge",
+        "build": "7_hf9ab0e9_mkl"
+      },
+      {
+        "name": "mkl",
+        "version": "2026.0.0",
+        "channel": "conda-forge",
+        "build": "hac47afa_908"
+      },
+      {
+        "name": "numpy",
+        "version": "1.26.4",
+        "channel": "conda-forge",
+        "build": "py311h0b4df5a_0"
+      },
+      {
+        "name": "onemkl-license",
+        "version": "2026.0.0",
+        "channel": "conda-forge",
+        "build": "h57928b3_908"
+      },
+      {
+        "name": "scipy",
+        "version": "1.15.3",
+        "channel": "pypi",
+        "build": "pypi_0"
+      }
+    ]
+  },
+  "terminal_masking_qualification_authorized": false,
+  "protected_outcomes_authorized": false,
+  "training_authorized": false
+}
