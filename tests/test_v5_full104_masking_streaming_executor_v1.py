@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 import scipy.sparse as sp
 
+from sea_ad_jepa.v5 import full104_masking_streaming_executor_v1 as streaming
 from sea_ad_jepa.v5.full104_masking_qualification_runner_v1 import (
     QualificationArrays,
     run_primary_fold,
@@ -207,6 +208,20 @@ def _fixture(tmp_path: Path, *, misaligned_library: bool = False):
         verify_block_hashes=True,
     )
     return reference, stream, normalized, manifest_rows
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    (("61129", 61129), ("61129.0", 61129), ("6.1129E4", 61129)),
+)
+def test_stream_source_library_parser_accepts_exact_integral_renderings(raw, expected):
+    assert streaming._parse_source_library(raw) == expected
+
+
+@pytest.mark.parametrize("raw", ("0", "-1", "61129.5", "nan", "inf", ""))
+def test_stream_source_library_parser_rejects_invalid_values(raw):
+    with pytest.raises(ValueError, match="invalid source_library"):
+        streaming._parse_source_library(raw)
 
 
 def test_stream_normalizes_log1p10k_exactly_once_and_preserves_donor_identity(tmp_path: Path) -> None:
