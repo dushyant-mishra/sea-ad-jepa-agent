@@ -47,9 +47,13 @@ It was not requalifiable: the row-identity mapping was wrong, not stale.
 `cell_donor` is the join between the cell-level representation and the
 donor-level outcome. Corrupting it means donor-held-out evaluation stops holding
 anything out: cells physically belonging to the evaluation donor are relabelled
-into training folds. The failure is directionally dangerous — train and
-evaluation share cells from the same people, so apparent cross-donor
-generalization **inflates**. Nothing downstream would have flagged it.
+into training folds.
+
+It **invalidates donor-held-out inference and can bias apparent cross-donor
+performance upward**, because physical donor information leaks across the nominal
+train/evaluation boundary. Upward bias is the dangerous expected direction, but
+it is not a mathematical guarantee for every arbitrary permutation. Either way
+the inference is void, and nothing downstream would have flagged it.
 
 The donor axis was unaffected: `duniq` was `sorted(unique donor_id)`, a stable
 storage-independent rule, and `donor_addr_nnz` was accumulated from each block's
@@ -159,6 +163,55 @@ returns an off-by-one; `Decimal` is exact.
 
 ---
 
+## 4a. Metadata/matrix row correspondence and `expression_row`
+
+### Why the correspondence holds — construction lineage, not a runtime test
+
+The primary provenance is the authenticated materializer lineage bound by the
+materialization manifest:
+
+| role | SHA-256 |
+|---|---|
+| Level-4 block manifest | `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29` |
+| Python materializer | `575d02a4e7f7c5c6f3187eeed691a2eac7d3f1df9510621bc497b283806c270b` |
+| NPH R materializer | `ca595536f6144a1f6fb2570fe24f58c5335ba31e43a1f9a4b660e18db58e7529` |
+
+Both materializers construct the sparse matrix row and the metadata row from the
+**same ordered `take` selection**. The Python/H5 path writes sparse row `local`
+and metadata row `local`; the NPH R path builds matrix rows from `columns[take]`
+and metadata from `requested[take]`. That construction is the reason metadata CSV
+row *i* corresponds to sparse matrix row *i*.
+
+### The runtime check is a necessary condition, not a proof
+
+An earlier draft of this report said the sampled library-size test "proves" CSV
+row order equals matrix row order. **That wording was too strong and is
+withdrawn.**
+
+The test — a row's summed raw counts cannot exceed that row's `source_library` —
+is a *necessary-condition / adversarial diagnostic*. Over 8 blocks it gives 0
+violations as built and 1,980 under a deliberate shuffle, so it has power to
+detect misalignment and would refute the correspondence if it failed. Satisfying
+a necessary condition does not establish identity.
+
+It is retained as **defense in depth**, and uses the exact positive-integral
+parser rather than loose `float()` parsing.
+
+### `expression_row` — resolved
+
+`expression_row` is **not** a block-local row identity, which is why values such
+as 3471 appear inside a 512-row block.
+
+| path | meaning |
+|---|---|
+| Python / H5 materialization | the original source H5 matrix row used to retrieve the cell |
+| NPH R materialization | the zero-based original source matrix column/cell coordinate, `columns[take] - 1` |
+
+It must never be used as a replacement for `selection_row`. **`selection_row`
+remains the immutable global FULL104 cell identity.**
+
+---
+
 ## 5. Execution environment
 
 Canonical: conda env `sea-ad-jepa`.
@@ -183,9 +236,16 @@ on a matrix as small as 4×4.
 | `base` | 1.24.2 | works |
 | `sea-ad-jepa` | 1.26.4 | **process killed** |
 
-Cause: broken BLAS linkage. numpy reports `blas 3.9.0` with placeholder
+**Observed fact:** `np.linalg.solve` terminates the canonical interpreter with
+Windows fatal exception `0xc06d007f`, even on a 4x4 system. Reproduced repeatedly.
+
+**Current diagnosis (hypothesis, not established):** a broken BLAS/LAPACK
+linkage. numpy reports `blas 3.9.0` with placeholder
 `lapack: dep1473604930576`; the env holds a 108 KB `libblas.dll` shim alongside a
-72 MB `mkl_core.3.dll`, and the forwarding fails on the first LAPACK call.
+72 MB `mkl_core.3.dll`. The delay-load failure code is consistent with the shim
+failing to forward, but this is **not proven** until subprocess-isolated backend
+diagnostics establish it. The distinction matters: the symptom is certain, the
+cause is not.
 
 Surfaced via `full104_masking_qualification_runner_v1.py:277` (`_fit_ridge_weights`).
 
@@ -247,6 +307,16 @@ files, this doubles as byte-integrity verification of the SSD copy.
 | artifact | SHA-256 |
 |---|---|
 | pass1 NPZ (18,029,576 B, **not committed**, on GPU machine) | `37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1` |
+
+### PR file counts — both figures are correct
+
+| figure | meaning |
+|---|---|
+| **15 files** | the PR31-specific successor delta *relative to PR29* (`1fef4452`) |
+| **19 files** | the GitHub PR #31 diff against its actual base `a51cdbe8`, which also contains the PR29 parser changes |
+
+The total PR surface must not be described as 15 files without that
+qualification.
 | physical binding receipt | `4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602` |
 | census summary V2 | `ebe31809e29c3462854e0ecebe9e3ad1af1ae21885a0dcca4ca3e3581425676d` |
 | split receipt | `5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4` |
@@ -278,11 +348,21 @@ arrays are content-addressed rather than merely declared.
 Nothing is `CHANGED_AFTER_IDENTITY_CORRECTION`. No hard-coded expectation was
 modified to fit.
 
-**Strongest internal check:** the summary computes core nonzeros two independent
-ways — summed from the per-cell vector and summed from the donor×address matrix
-— and both give **13,069,917,135**. These accumulate through different code
-paths, so their agreement is real evidence the `selection_row` keying is coherent
-end to end.
+**Arithmetic/support consistency check:** the summary computes core nonzeros two
+independent ways — summed from the per-cell vector and summed from the
+donor×address matrix — and both give **13,069,917,135**. These accumulate through
+different code paths, so the agreement is real evidence of arithmetic and support
+consistency.
+
+It is **not an identity check.** Both totals are invariant under row permutation,
+so they would have agreed under the September-17 defect too. The actual identity
+evidence is:
+
+- `cell_donor[selection_row]` verified against physical metadata, per block;
+- `cell_nnz_core[selection_row]` verified against the corresponding physical
+  matrix row, per block;
+- complete `selection_row` closure over all 4,553,407 positions;
+- authenticated materializer row-order construction (see §4a).
 
 Kish ESS is recorded with `kish_ess_is_inferential_donor_sample_size: False`
 alongside `independent_donor_units: 104`. Independent donor N remains **104**.
@@ -313,8 +393,15 @@ alongside `independent_donor_units: 104`. Independent donor N remains **104**.
 
 ## 9. Not done, not claimed
 
-`OPEN_NOT_EXECUTED`: census authority V2 (needs a `--support-authority` input not
-yet available); control-calibration cache; preterminal authorities.
+`OPEN_NOT_EXECUTED`: census authority V2; control-calibration cache;
+preterminal authorities.
+
+**Status correction.** An earlier draft said Census Authority V2 was blocked on a
+`--support-authority` input that was "not yet available". That was stale. The
+support authority is checked in at
+`docs/agent/V5_SUPPORT_ESTIMABILITY_AUTHORITY_20260915.json`, canonical semantic
+digest `cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08`. No
+replacement support authority is to be created; that existing one is to be bound.
 
 Still open and **not** closed by this work: H3 (equivalence power), G5
 (null-equivalence margin basis), G3 (stronger attacker), G4 (signal-preservation
