@@ -42,6 +42,7 @@ def build_fixture(
     donor_src: np.ndarray | None = None,
     corrupt_support: bool = False,
     misaligned_library: bool = False,
+    decimal_library: bool = False,
 ):
     root = tmp_path / "level4"
     root.mkdir()
@@ -82,7 +83,9 @@ def build_fixture(
                     "expression_row": local_row,
                     "primary_row_weight": 1.0,
                     "source_library": (
-                        1 if misaligned_library and block_index == 0 and local_row == 0 else 100
+                        1
+                        if misaligned_library and block_index == 0 and local_row == 0
+                        else ("100.0" if decimal_library else 100)
                     ),
                 }
             )
@@ -169,6 +172,11 @@ def test_pass1_physical_binding_happy_path(tmp_path, monkeypatch):
     assert receipt.protected_outcomes_authorized is False
     assert receipt.terminal_masking_outcomes_inspected is False
     assert len(receipt.canonical_digest()) == 64
+
+
+def test_pass1_physical_binding_accepts_integral_decimal_source_library(tmp_path, monkeypatch):
+    receipt = verify(build_fixture(tmp_path, monkeypatch, decimal_library=True))
+    assert receipt.row_count == 4
 
 
 def test_stale_pass1_core_cannot_bind_to_current_observation_state(tmp_path, monkeypatch):
