@@ -18,6 +18,7 @@ remains read-only and training/protected outcomes are never authorized here.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
 import csv
 import hashlib
 from pathlib import Path
@@ -56,6 +57,18 @@ _METHODS = (
     "RIDGE8_CONDITIONAL",
     "PREFIX3_SELECTIVE",
 )
+
+
+def _parse_source_library(raw: object) -> int:
+    """Parse positive integral source-library semantics exactly."""
+
+    try:
+        value = Decimal(str(raw).strip())
+    except (InvalidOperation, ValueError) as exc:
+        raise ValueError("invalid source_library") from exc
+    if not value.is_finite() or value <= 0 or value != value.to_integral_value():
+        raise ValueError("invalid source_library")
+    return int(value)
 
 
 def _sha256_file(path: Path) -> str:
@@ -200,7 +213,7 @@ class Full104ManifestStreamV1:
                 donor_ids.append(str(row["donor_id"]))
                 expression_rows.append(int(row["expression_row"]))
                 weights.append(float(row["primary_row_weight"]))
-                libraries.append(int(row["source_library"]))
+                libraries.append(_parse_source_library(row["source_library"]))
         return (
             np.asarray(selection, dtype=np.int64),
             donor_ids,
