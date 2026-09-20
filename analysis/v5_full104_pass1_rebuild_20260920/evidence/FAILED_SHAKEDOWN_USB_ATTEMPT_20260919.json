@@ -1,0 +1,41 @@
+{
+  "schema": "V5_FULL104_FAILED_SHAKEDOWN_ATTEMPT_RECORD_V1",
+  "status": "FAIL_PARSER_FORMAT_ONLY__op37/block-00001__512_INTEGRAL_DECIMAL_LIBRARIES",
+  "date": "2026-09-19",
+  "scientific_anchor_git_oid": "a51cdbe8bbfac1c77980711cca13df8bc58caa1d",
+  "level4_root": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4",
+  "storage_media": "WD My Book 14.6TB HDD over USB",
+  "elapsed_minutes_before_failure": "UNMEASURED__LAST_POLL_WAS_55.0_MIN_AND_RUN_CONTINUED_PAST_IT",
+  "blocks_verified_before_failure": 8497,
+  "total_blocks": 8915,
+  "failure": {
+    "exception": "ValueError: invalid literal for int() with base 10: '61129.0'",
+    "location": "src/sea_ad_jepa/v5/full104_physical_shakedown_v1.py:323",
+    "cause": "strict int() parse of an integral value serialised in decimal notation"
+  },
+  "substrate_finding": {
+    "blocks_with_float_formatted_source_library": 1,
+    "offending_block_key": "op37/block-00001",
+    "manifest_index": 8497,
+    "source": "NPH52",
+    "affected_rows": 512,
+    "rows_parsing_as_int_elsewhere": 4552895,
+    "non_integral_values": 0,
+    "non_positive_values": 0,
+    "classification": "AUTHENTICATED_FORMATTING_ANOMALY_NOT_A_DATA_DEFECT",
+    "open_question": "why op37/block-00001 was serialised differently from the other 8,914 blocks (does not block the rerun; bytes are hash-authenticated and all 512 values are positive integers)"
+  },
+  "disposition": "PRESERVED_AS_PROVENANCE__NOT_OVERWRITTEN_BY_RETRY",
+  "retry_plan": "PR #29 head 1fef4452 exact-decimal parser, Level-4 copied to SSD, original D: bytes untouched",
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false,
+  "elapsed_note": "The shakedown writes its receipt only on success, so no timer was recorded for the failed attempt. An earlier draft of this record stated 57.0 minutes; that was an estimate from my last status poll, not a measurement, and is withdrawn.",
+  "successful_retry": {
+    "scientific_anchor_git_oid": "1fef4452e7d9b178adc532eef9786996e412943f",
+    "pull_request": 29,
+    "level4_root": "C:/jepa_full104_ssd/expression_level4 (byte-identical copy; D: left untouched)",
+    "status": "FULL104_PHYSICAL_SHAKEDOWN_PASS",
+    "receipt_sha256": "56ffb8687275eb81f9e8119c6279d9ef4eb6d536f3bc055bc32e5945064a8722",
+    "elapsed_seconds": 7884.42636610003
+  }
+}
