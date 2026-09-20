@@ -31,6 +31,21 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# ------------------------------------------------ NATIVE DLL DIRECTORY (required)
+# $Python is launched by absolute path, so conda activation never runs and the
+# environment's Library\bin is absent from the loader search path. numpy's conda
+# libblas.dll / liblapack.dll are pure forwarder DLLs whose exports all forward
+# to mkl_rt.<n>.dll; forwarders resolve at FIRST CALL using the loader's own
+# search order and do not consult os.add_dll_directory entries. Without this
+# prepend, `import numpy` succeeds and the first `@` or np.linalg.solve
+# terminates the process with Win32 status 127 (ERROR_PROC_NOT_FOUND, surfaced
+# as 0xC06D007F) -- no exception, no traceback, mid-run.
+$EnvBin = Join-Path (Split-Path -Parent $Python) "Library\bin"
+if (-not (Test-Path -LiteralPath $EnvBin)) { throw "native DLL directory not found: $EnvBin" }
+$env:PATH = "$EnvBin;$env:PATH"
+& $Python -c "import numpy as np; a=np.eye(8)*2.0; assert float((a@a)[0,0])==4.0; assert float(np.linalg.solve(a,np.ones(8))[0])==0.5"
+if ($LASTEXITCODE -ne 0) { throw "dense BLAS/LAPACK unusable from $Python (exit $LASTEXITCODE)" }
+
 $REGISTRY  = "D:\Jepa project\exports\foundation_calibration_bundle_20260824\contracts\address_namespace.csv"
 $OBS       = "D:\Jepa project\exports\foundation_calibration_bundle_20260824\support\FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz"
 $L4_SOURCE = "D:\Jepa project\outputs\full104_v014_20260826\03_phase2_state_derivation_v1\expression_level4"
@@ -123,6 +138,7 @@ New-Item -ItemType Directory -Force -Path $C | Out-Null
 
 # ------------------------------------------------------------------ 6. tests
 & $Python -m pytest -q -p no:randomly --strict-markers -rs `
+    tests\test_v5_dense_ridge_backend_equivalence_v1.py `
     tests\test_v5_full104_pass1_builder_v1.py `
     tests\test_v5_full104_pass1_physical_binding_v1.py `
     tests\test_v5_full104_physical_shakedown_v1.py `

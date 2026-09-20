@@ -1,13 +1,35 @@
 """Subprocess-isolated dense-solver preflight for the canonical environment.
 
-`np.linalg.solve` terminates the canonical interpreter (Windows fatal exception
+Dense LAPACK can terminate the interpreter outright (Windows fatal exception
 0xc06d007f) rather than raising, so every probe must run in its own subprocess:
-an in-process try/except cannot observe the failure, and catching a fatal
-process error and continuing would be unsafe anyway.
+an in-process try/except cannot observe a hard process kill, and catching a
+fatal process error and continuing would be unsafe anyway.
+
+What 0xc06d007f actually means
+------------------------------
+``0xC06D007F`` is the Visual C++ delay-load/forwarder helper exception carrying
+Win32 status ``127 = ERROR_PROC_NOT_FOUND`` -- *a module that loaded but did not
+supply a required export*. It is **not** ``126 = ERROR_MOD_NOT_FOUND``. The
+distinction matters: the observed failure is a resolution failure, not a missing
+file, and an earlier revision of this project's diagnosis misread it as evidence
+of an incoherent package stack.
+
+In this environment the concrete mechanism is:
+
+* ``Library\\bin\\liblapack.dll`` and ``libblas.dll`` are *pure forwarder* DLLs --
+  every one of their 1949 / 151 exports forwards to ``mkl_rt.3.dll``;
+* forwarder targets are resolved by the loader at **first call**, using the
+  loader's own search order, which does **not** consult directories registered
+  through ``os.add_dll_directory``;
+* so if ``<env>\\Library\\bin`` is not on ``PATH``, ``import numpy`` succeeds and
+  the first BLAS or LAPACK call kills the process.
+
+That is an **invocation** defect, not a broken numerical stack. This preflight
+therefore records DLL-directory reachability alongside the probe results, so the
+two can never again be confused.
 
 This script DIAGNOSES ONLY. It changes no production solver code, installs
-nothing, and selects no estimator. Its output is evidence for deciding whether
-the environment can be qualified, not a repair.
+nothing, and selects no estimator.
 
 Usage:
     python solver_backend_preflight_20260920.py [--python <interpreter>] [--json out.json]
@@ -65,6 +87,24 @@ METHODS = ("numpy_solve", "numpy_cholesky", "numpy_lstsq", "scipy_solve_pos", "s
 SIZES = (4, 32, 64)
 
 
+#: Win32 statuses the VC++ delay-load/forwarder helper reports, and the plain
+#: exit codes CPython yields when the loader kills it. Decoding these is what
+#: separates "a DLL is missing" from "a DLL loaded but lacked an export".
+_WIN32_STATUS = {
+    126: "ERROR_MOD_NOT_FOUND (a required DLL could not be found)",
+    127: "ERROR_PROC_NOT_FOUND (a DLL loaded but did not supply a required export)",
+}
+
+
+def _decode_win32(code: int | None) -> str | None:
+    if code is None:
+        return None
+    low = code & 0xFFFF
+    if (code & 0xFFFFFFFF) == 0xC06D007F or low in _WIN32_STATUS:
+        return _WIN32_STATUS.get(low, f"unmapped win32 status {low}")
+    return None
+
+
 def run_probe(python: str, n: int, method: str, timeout: int = 120) -> dict:
     code = PROBE.format(n=n, method=method)
     try:
@@ -80,6 +120,7 @@ def run_probe(python: str, n: int, method: str, timeout: int = 120) -> dict:
     if payload is None:
         return {"n": n, "method": method, "ok": False, "exit_code": proc.returncode,
                 "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+                "win32_status": _decode_win32(proc.returncode),
                 "stderr": proc.stderr.strip()[-400:]}
     payload["exit_code"] = proc.returncode
     payload["failure_mode"] = None if payload.get("ok") else "RAISED"
@@ -89,8 +130,20 @@ def run_probe(python: str, n: int, method: str, timeout: int = 120) -> dict:
 
 def environment(python: str) -> dict:
     code = r"""
-import json, sys, platform
+import json, sys, platform, os
 out = {"python": sys.version.split()[0], "platform": platform.platform(), "executable": sys.executable}
+
+# The determinant of the 0xC06D007F failure: is the environment's native DLL
+# directory reachable by the loader when it resolves forwarder targets?
+prefix = os.path.dirname(sys.executable)
+libbin = os.path.join(prefix, "Library", "bin")
+path_entries = [p.rstrip("\\/").lower() for p in os.environ.get("PATH", "").split(os.pathsep) if p]
+out["library_bin"] = libbin
+out["library_bin_exists"] = os.path.isdir(libbin)
+out["library_bin_on_path"] = libbin.rstrip("\\/").lower() in path_entries
+out["mkl_rt_present"] = sorted(
+    f for f in (os.listdir(libbin) if os.path.isdir(libbin) else []) if f.lower().startswith("mkl_rt")
+)
 try:
     import numpy
     out["numpy"] = numpy.__version__
@@ -161,9 +214,31 @@ def main() -> int:
                         if r.get("failure_mode") == "PROCESS_TERMINATED_WITHOUT_RESULT"})
         print("  fatal exit codes              :",
               [(c, hex(c & 0xFFFFFFFF) if isinstance(c, int) else None) for c in codes])
+        for c in codes:
+            print("  win32 status                  :", _decode_win32(c) or "(not a loader status)")
         with_err = [r for r in results if r.get("stderr")]
         print("  sample stderr                 :",
               (with_err[0]["stderr"][:200] if with_err else "(empty on every probe - hard process kill, not a Python exception)"))
+
+    # The determinant, printed next to the result so the two are never separated.
+    reachable = env.get("library_bin_on_path")
+    print()
+    print("  Library\\bin                    :", env.get("library_bin"))
+    print("  Library\\bin on PATH            :", reachable)
+    print("  mkl_rt builds present          :", env.get("mkl_rt_present"))
+
+    if fatal and reachable is False:
+        classification = ("INVOCATION_DEFECT__DLL_DIRECTORY_NOT_ON_PATH "
+                          "(forwarder exports into mkl_rt cannot resolve; "
+                          "the numerical stack itself is not implicated)")
+    elif fatal:
+        classification = "UNEXPLAINED__DLL_DIRECTORY_REACHABLE_BUT_PROBES_STILL_DIED"
+    elif reachable is False:
+        classification = "PASSED_WITHOUT_PATH__BACKEND_DOES_NOT_DEPEND_ON_LIBRARY_BIN"
+    else:
+        classification = "ALL_PROBES_COMPLETED__DLL_DIRECTORY_REACHABLE"
+    print("  classification                 :", classification)
+
     print()
     print("  DIAGNOSIS ONLY. No production solver code was changed, nothing was")
     print("  installed, and no estimator was selected.")
@@ -171,9 +246,10 @@ def main() -> int:
     if args.json:
         args.json.parent.mkdir(parents=True, exist_ok=True)
         args.json.write_text(json.dumps(
-            {"schema": "V5_DENSE_SOLVER_BACKEND_PREFLIGHT_V1",
+            {"schema": "V5_DENSE_SOLVER_BACKEND_PREFLIGHT_V2",
              "environment": env, "probes": results,
              "methods_completed": usable, "methods_fatal": fatal,
+             "classification": classification,
              "diagnosis_only": True, "production_solver_changed": False},
             indent=2) + "\n", encoding="utf-8")
         print("\n  written:", args.json)
