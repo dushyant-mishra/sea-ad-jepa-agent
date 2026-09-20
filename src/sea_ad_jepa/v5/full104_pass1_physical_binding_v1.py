@@ -25,6 +25,7 @@ from .full104_masking_qualification_runner_v1 import (
 from .full104_physical_shakedown_v1 import (
     MANIFEST_COLUMNS,
     META_COLUMNS,
+    _parse_source_library,
     sha256_file,
 )
 
@@ -332,7 +333,7 @@ def verify_pass1_against_physical_full104(
                 donor_code = donor_to_code[donor_id]
                 if int(donor_src[donor_code]) != expected_source_code:
                     raise ValueError("pass1 donor/source identity disagrees with physical metadata")
-                library = int(meta["source_library"])
+                library = _parse_source_library(meta["source_library"], row["block_key"])
                 if library <= 0:
                     raise ValueError("physical metadata contains invalid source_library")
                 selection.append(selection_row)
