@@ -182,7 +182,7 @@ def _all_summaries(*, fail_one=False):
         for rung in BURDEN_RUNGS:
             values = [1.0, 1.0, 1.0, 1.0]
             if fail_one and policy == NONUNIFORM_POLICIES[0] and rung == BURDEN_RUNGS[0]:
-                values = [-1.0, 1.0]
+                values = [0.0, 0.0, 0.0, 1.0]
             out.append(
                 precision_summary(
                     policy_id=policy,
@@ -253,3 +253,14 @@ def test_partial_heldout_fold_cannot_be_silently_subsampled() -> None:
             donor_umi=np.ones((3, 5)),
             rung=Fraction(1, 20),
         )
+
+
+def test_zero_mean_rse_stops_instead_of_driving_escalation() -> None:
+    summaries = _all_summaries()
+    summaries[0] = precision_summary(
+        policy_id=NONUNIFORM_POLICIES[0],
+        rung=BURDEN_RUNGS[0],
+        target_values=[-1.0, 1.0],
+    )
+    with pytest.raises(ValueError, match="STOP_ZERO_MEAN_RULE_UNRESOLVED"):
+        escalation_decision(summaries, sample_level="N1")
