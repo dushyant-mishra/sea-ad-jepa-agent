@@ -19,11 +19,13 @@ Per-target aggregation is source-balanced and donor-uniform within source across
 all 104 donors, each evaluated only in its own held-out fold. Targets are then
 weighted equally.
 
-Precision is the ordinary sample SE across frozen target units. Relative SE is
-SE / |mean|. A zero mean makes relative SE undefined and therefore FAILS the
-precision criterion rather than earning a pass. Audit-B escalation is
-conservative: every non-uniform policy x burden-rung estimate must have
-RSE <= 0.05; otherwise the frozen prefix ladder escalates.
+Precision primitives are implemented prospectively, but the scientific scope of
+the escalation rule is intentionally UNRESOLVED. The original Phase-IV freeze did
+not determine whether one predeclared policy x rung cell or all 18 non-uniform
+policy x rung cells control sample-size escalation, nor how an undefined zero-mean
+RSE should affect the ladder. Consequently this module may compute descriptive
+precision summaries, but a zero-mean RSE causes escalation_decision() to STOP
+rather than choose N2/N3. The preexecution V1 contract cannot authorize N1.
 
 B3 raw-UMI burden is carried as a secondary descriptive metric and can never
 drive escalation.
@@ -58,7 +60,8 @@ SECONDARY_METRIC_ID = "B3_HELDOUT_RAW_UMI_BURDEN__DESCRIPTIVE_ONLY"
 NORMALIZATION_ID = "ADDED_MINUS_DROPPED_OVER_UNIFORM_FULL_MASK_WITH_TARGET_V1"
 TARGET_AGGREGATION_ID = "SOURCE_BALANCED__DONOR_UNIFORM_WITHIN_SOURCE__TARGET_UNIFORM_V1"
 PRECISION_ID = "TARGET_SAMPLE_SD_OVER_SQRT_N__RELATIVE_TO_ABS_MEAN_V1"
-ESCALATION_ID = "MAX_RSE_ACROSS_ALL_NONUNIFORM_POLICY_X_RUNG_CELLS_V1"
+ESCALATION_ID = "CANDIDATE_MAX_RSE_ACROSS_ALL_NONUNIFORM_POLICY_X_RUNG_CELLS_V1"
+SCIENTIFIC_EXECUTION_SCOPE_STATE = "UNRESOLVED__PREEXECUTION_ONLY"
 
 
 @dataclass(frozen=True)
@@ -157,8 +160,10 @@ def measure_plan_burden(
     folds = np.asarray(fold_by_donor, dtype=np.int64)
     if folds.ndim != 1 or folds.size != nnz.shape[0]:
         raise ValueError("fold_by_donor must align burden donors")
-    if int(fold_index) < 0:
-        raise ValueError("fold_index must be nonnegative")
+    if np.any(folds < 0) or np.any(folds >= 4):
+        raise ValueError("fold_by_donor must contain only authenticated fold codes 0..3")
+    if int(fold_index) < 0 or int(fold_index) >= 4:
+        raise ValueError("fold_index must be one of the four authenticated folds: 0..3")
     expected_heldout = np.flatnonzero(folds == int(fold_index)).astype(np.int64)
     if expected_heldout.size == 0:
         raise ValueError(f"authenticated fold {int(fold_index)} has no held-out donors")
