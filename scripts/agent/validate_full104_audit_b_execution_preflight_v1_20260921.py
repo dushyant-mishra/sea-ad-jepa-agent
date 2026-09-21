@@ -23,6 +23,7 @@ def main() -> int:
     p.add_argument("--burden-estimator-source", type=Path, required=True)
     p.add_argument("--full104-manifest", type=Path, required=True)
     p.add_argument("--canonical-registry", type=Path, required=True)
+    p.add_argument("--repo-root", type=Path, required=True)
     args = p.parse_args()
 
     contract = require_contract_ready(args.contract)
@@ -36,6 +37,7 @@ def main() -> int:
         burden_estimator_source=args.burden_estimator_source,
         full104_manifest=args.full104_manifest,
         canonical_registry=args.canonical_registry,
+        repo_root=args.repo_root,
     )
     print(json.dumps({
         "state": "READY_FOR_AUDIT_B_EXECUTION",
