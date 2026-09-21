@@ -22,6 +22,7 @@ def authority(**updates) -> Full104TargetQualificationSampleAuthorityV1:
     values = dict(
         authority_id="TEST_FULL104_TARGET_QUALIFICATION_SAMPLE",
         population_authority_sha256=h("population"),
+        full104_block_manifest_sha256=h("level4-manifest"),
         dataset_etl_atlas_sha256=h("etl"),
         outer_split_receipt_sha256=h("split"),
     )
