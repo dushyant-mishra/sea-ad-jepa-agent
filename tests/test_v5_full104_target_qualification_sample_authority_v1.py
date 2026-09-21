@@ -3,6 +3,9 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 import inspect
+import json
+import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -18,6 +21,7 @@ from sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1 import (
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "scripts/agent/build_full104_target_qualification_sample_v1_20260921.py"
+VALIDATOR = ROOT / "scripts/agent/validate_full104_target_qualification_sample_v1_20260921.py"
 
 
 def h(x: str) -> str:
@@ -215,3 +219,98 @@ def test_receipt_geometry_and_file_digests_fail_closed() -> None:
         receipt(a, retained_cells=105_552).validate()
     with pytest.raises(ValueError, match="selection_rows_file_sha256"):
         receipt(a, selection_rows_file_sha256="bad").validate()
+
+
+def _file_sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _write_synthetic_sample_package(tmp_path: Path) -> tuple[Path, Full104TargetQualificationSampleReceiptV1]:
+    rows, donors = _synthetic_full104_like_rows()
+    a = authority()
+    selector = RetainedQualificationRowSelectorV1(a)
+    selector.update(rows, donors)
+    selection, donor_code, rank, retained = selector.finalize()
+
+    sample_dir = tmp_path / "sample"
+    sample_dir.mkdir()
+
+    full_n = np.full(104, 44_207, dtype=np.int64)
+    full_n[102] = 44_212
+    full_n[103] = 81
+    assert int(full_n.sum()) == 4_553_407
+
+    fold = np.arange(104, dtype=np.int64) % 4
+    source = np.empty(104, dtype=np.int64)
+    source[:41] = 0
+    source[41:58] = 1
+    source[58:] = 2
+
+    arrays = {
+        "selection_rows": ("selection_rows_i64.npy", selection),
+        "donor_code": ("donor_code_i64.npy", donor_code),
+        "row_rank": ("row_rank_i64.npy", rank),
+        "retained_count_by_donor": ("retained_count_by_donor_i64.npy", retained),
+        "full_donor_n": ("full_donor_n_i64.npy", full_n),
+        "fold_by_donor": ("fold_by_donor_i64.npy", fold),
+        "donor_source_code": ("donor_source_code_i64.npy", source),
+    }
+    for _, (name, value) in arrays.items():
+        np.save(sample_dir / name, value, allow_pickle=False)
+
+    rec = receipt(
+        a,
+        selection_rows_file_sha256=_file_sha(sample_dir / arrays["selection_rows"][0]),
+        donor_code_file_sha256=_file_sha(sample_dir / arrays["donor_code"][0]),
+        row_rank_file_sha256=_file_sha(sample_dir / arrays["row_rank"][0]),
+        retained_count_by_donor_file_sha256=_file_sha(
+            sample_dir / arrays["retained_count_by_donor"][0]
+        ),
+        full_donor_n_file_sha256=_file_sha(sample_dir / arrays["full_donor_n"][0]),
+        fold_by_donor_file_sha256=_file_sha(sample_dir / arrays["fold_by_donor"][0]),
+        donor_source_code_file_sha256=_file_sha(
+            sample_dir / arrays["donor_source_code"][0]
+        ),
+        builder_source_sha256=_file_sha(BUILDER),
+    )
+    payload = {
+        "schema": "V5_FULL104_TARGET_QUALIFICATION_SAMPLE_RECEIPT_V1",
+        **rec.__dict__,
+        "sample_receipt_sha256": rec.canonical_digest(),
+        "authority": a.__dict__,
+        "file_names": {role: name for role, (name, _) in arrays.items()},
+    }
+    (sample_dir / "sample_receipt.json").write_text(
+        json.dumps(payload, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return sample_dir, rec
+
+
+def test_downstream_validator_accepts_typed_package_and_rejects_corruption(
+    tmp_path: Path,
+) -> None:
+    sample_dir, rec = _write_synthetic_sample_package(tmp_path)
+    cmd = [
+        sys.executable,
+        str(VALIDATOR),
+        "--sample-dir",
+        str(sample_dir),
+        "--builder-source",
+        str(BUILDER),
+    ]
+    ok = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    assert ok.returncode == 0, ok.stdout + ok.stderr
+    parsed = json.loads(ok.stdout.strip().splitlines()[-1])
+    assert parsed["status"] == "PASS_FULL104_TARGET_QUALIFICATION_SAMPLE_V1"
+    assert parsed["sample_receipt_sha256"] == rec.canonical_digest()
+
+    # A single-byte-equivalent semantic corruption (rewrite an array) must fail
+    # before downstream target evaluation can use the package.
+    x = np.load(sample_dir / "selection_rows_i64.npy", allow_pickle=False)
+    x = np.array(x, copy=True)
+    x[0], x[1] = x[1], x[0]
+    np.save(sample_dir / "selection_rows_i64.npy", x, allow_pickle=False)
+    bad = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    assert bad.returncode != 0
+    assert "hash mismatch" in (bad.stdout + bad.stderr)
