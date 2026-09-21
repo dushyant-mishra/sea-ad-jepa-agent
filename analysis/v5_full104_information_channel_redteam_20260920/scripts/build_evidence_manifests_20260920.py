@@ -65,63 +65,94 @@ EXTERNAL_SPECS = [
     {
         "role": "AUDIT_A_PER_CELL_NORMALIZATION_DENOMINATOR",
         "path": "D:/jepa_full104_redteam_20260920_external/audit_a_cell_level_denominator_v1.npz",
-        "schema": "V5_FULL104_NORMALIZATION_DENOMINATOR_AUDIT_V1",
+        "bytes": 42283767,
+        "sha256": "9ff45071fb09f5d89340a7cca76ab77ab826533f29e9dd80b33a821645283cd1",
+        "producer_git_sha": "abcea57c1934ed70dea16fbad32e73b3d07d719d",
         "producer_script": "analysis/v5_full104_information_channel_redteam_20260920/scripts/"
                            "audit_a_normalization_denominator_20260920.py",
+        "producer_script_sha256": "b1c7d745bacfd31bfd69c52fd1eda937644cffbb049e497eecd7641c9e9252ab",
+        "schema": "V5_FULL104_NORMALIZATION_DENOMINATOR_AUDIT_V1",
         "contains_cell_level_material": True,
         "cell_level_content": "per-cell L_total, L_ledger, L_core, donor code, source code, "
                               "operator index for all 4,553,407 cells; keyed by selection_row "
                               "position, no raw cell identifiers",
         "why_not_committed": "4.55M rows across six int64 vectors; aggregate distributions and "
                              "every stratum table are committed instead",
+        "reuse_status": "CURRENT_PRODUCER_SEMANTICS_UNCHANGED__CONTENT_ADDRESS_REUSE_ALLOWED",
     },
     {
-        "role": "CORE_SUFFICIENT_STATISTICS_FOR_AUDITS_B_AND_C",
+        "role": "CORE_SUFFICIENT_STATISTICS_FOR_AUDITS_B_C_AND_E",
         "path": "D:/jepa_full104_redteam_20260920_external/core_sufficient_statistics_v1.npz",
-        "schema": "V5_FULL104_CORE_SUFFICIENT_STATISTICS_V1",
+        "bytes": 242087519,
+        "sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+        "producer_git_sha": "abcea57c1934ed70dea16fbad32e73b3d07d719d",
         "producer_script": "analysis/v5_full104_information_channel_redteam_20260920/scripts/"
                            "build_core_sufficient_statistics_20260920.py",
-        "contains_cell_level_material": False,
-        "cell_level_content": "per-stratum x per-core-address aggregates only (donor, depth "
-                              "decile, core-nnz decile); the per-cell library and source vectors "
-                              "it carries are keyed by selection_row position with no identifiers",
-        "why_not_committed": "104 x 17,186 and 10 x 17,186 matrices across several arrays",
+        "producer_script_sha256": "230ae5420ca3daef1cd1b2743c7f9466bec96d71f8829afc7d7eb85cde2d639f",
+        "schema": "V5_FULL104_CORE_SUFFICIENT_STATISTICS_V1",
+        "contains_cell_level_material": True,
+        "cell_level_content": "per-donor/per-address and stratum aggregates plus per-cell "
+                              "library/source vectors keyed by selection_row position; no raw "
+                              "cell identifiers",
+        "why_not_committed": "large per-donor/per-address matrices plus cell-level vectors; "
+                             "compact aggregate evidence is committed separately",
+        "reuse_status": "REQUIRES_METADATA_ONLY_STRICT_PARSE_EQUIVALENCE_CHECK_BEFORE_REUSE",
     },
 ]
 
 
 def build_external(repo: Path, head: str) -> dict:
+    """Describe immutable external-artifact provenance without rewriting history.
+
+    The artifact's producer commit/script hash belong to the bytes and therefore
+    come from EXTERNAL_SPECS. The current checkout is recorded separately. A
+    manifest rebuild must never relabel an old heavy artifact as if the current
+    code produced it.
+    """
     entries = []
     for spec in EXTERNAL_SPECS:
         path = Path(spec["path"])
         script = repo / spec["producer_script"]
-        script_sha = sha256_file(script)[0] if script.is_file() else None
+        current_script_sha = sha256_file(script)[0] if script.is_file() else None
+        local_state = "REFERENCED_NOT_LOCAL"
+        local_verification = None
         if path.is_file():
-            sha, size = sha256_file(path)
-            state = "PRESENT_ON_GPU_MACHINE"
-        else:
-            sha, size, state = None, None, "NOT_YET_PRODUCED"
+            local_sha, local_size = sha256_file(path)
+            if local_sha != spec["sha256"] or local_size != spec["bytes"]:
+                local_state = "LOCAL_CONTENT_MISMATCH"
+                local_verification = {
+                    "observed_bytes": local_size,
+                    "observed_sha256": local_sha,
+                }
+            else:
+                local_state = "PRESENT_AND_CONTENT_VERIFIED"
+                local_verification = "MATCH"
         entries.append({
             "role": spec["role"],
             "path": spec["path"],
-            "bytes": size,
-            "sha256": sha,
-            "producer_git_sha": head,
+            "bytes": spec["bytes"],
+            "sha256": spec["sha256"],
+            "producer_git_sha": spec["producer_git_sha"],
             "producer_script": spec["producer_script"],
-            "producer_script_sha256": script_sha,
+            "producer_script_sha256": spec["producer_script_sha256"],
+            "current_checkout_git_sha": head,
+            "current_producer_script_sha256": current_script_sha,
+            "producer_script_matches_current":
+                current_script_sha == spec["producer_script_sha256"],
             "schema": spec["schema"],
             "contains_cell_level_material": spec["contains_cell_level_material"],
             "cell_level_content": spec["cell_level_content"],
             "why_not_committed": spec["why_not_committed"],
-            "state": state,
+            "reuse_status": spec["reuse_status"],
+            "state": local_state,
+            "local_verification": local_verification,
             "location": "GPU_MACHINE_NOT_COMMITTED",
         })
     return {
-        "schema": "V5_FULL104_REDTEAM_EXTERNAL_ARTIFACTS_V1",
-        "note": "Large artifacts are content-addressed rather than committed. A reviewer cannot "
-                "recompute them from GitHub, but can verify byte-identity against the artifact "
-                "the reported numbers came from, and every aggregate needed to challenge the "
-                "conclusion is committed alongside.",
+        "schema": "V5_FULL104_REDTEAM_EXTERNAL_ARTIFACTS_V2_IMMUTABLE_PROVENANCE",
+        "note": "Producer commit/script hashes are immutable properties of the referenced "
+                "artifact bytes. Current checkout/script hashes are recorded separately so "
+                "a manifest rebuild cannot falsely relabel historical heavy bytes as current.",
         "artifacts": entries,
         "training_authorized": False,
     }
@@ -144,6 +175,8 @@ def main() -> int:
         rel = path.relative_to(repo).as_posix()
         if rel == (LANE / MANIFEST.name).as_posix():
             continue                      # a manifest cannot contain its own digest
+        if "__pycache__" in path.parts or path.suffix in {".pyc", ".pyo"}:
+            continue                      # environment bytecode is never canonical evidence
         sha, size = sha256_file(path)
         rows.append({"path": rel, "bytes": str(size), "sha256": sha, "location": "repository"})
 
@@ -162,9 +195,14 @@ def main() -> int:
 
     print(f"  repository files          : {len(rows)}")
     external = build_external(repo, head)
-    present = sum(1 for a in external["artifacts"] if a["state"] == "PRESENT_ON_GPU_MACHINE")
+    present = sum(1 for a in external["artifacts"]
+                  if a["state"] == "PRESENT_AND_CONTENT_VERIFIED")
+    mismatched = [a["role"] for a in external["artifacts"]
+                  if a["state"] == "LOCAL_CONTENT_MISMATCH"]
     print(f"  external artifacts        : {len(external['artifacts'])} "
-          f"({present} present on this machine)")
+          f"({present} locally content-verified)")
+    if mismatched:
+        raise SystemExit("external artifact content mismatch: " + ", ".join(mismatched))
 
     if args.write:
         with manifest_path.open("w", newline="", encoding="utf-8") as handle:
