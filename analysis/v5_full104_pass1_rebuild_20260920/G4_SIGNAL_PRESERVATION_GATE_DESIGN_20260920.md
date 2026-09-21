@@ -104,18 +104,37 @@ selected here.
 
 A candidate S is useless unless it can tell the two signals apart. So before any
 S is frozen, it must be run on controlled fixtures and shown to behave
-correctly in **all three** of these conditions:
+correctly in **all four** of these conditions:
 
 | fixture | construction | required behaviour of S |
 |---|---|---|
 | **F-null** | biological state structure removed, shortcut structure retained | S **must fall** — otherwise S is reading the shortcut, not biology |
 | **F-shortcut-only** | shortcut structure removed, biological state retained | S **must not fall materially** — otherwise S punishes exactly what masking is for, and no policy can ever pass |
 | **F-both** | both retained (as-built) | S at its reference level |
+| **F-technical-only-decoy** | preserve lawful source/operator/depth/sparsity/support geometry and label/program marginals while breaking cell-level biological coupling | S **must fall materially relative to F-both**; otherwise technical geometry can impersonate the claimed biological content |
 
 A functional that fails F-null is measuring the shortcut. One that fails
-F-shortcut-only makes the whole masking programme unpassable. Only a functional
-that separates them can carry the gate — and this is checkable **now**, on
-synthetic fixtures, with no terminal outcome opened.
+F-shortcut-only makes the whole masking programme unpassable. A functional that
+fails the technical-only decoy is not specific enough to biology. Only a
+functional that separates all four cases can carry the gate — and this is
+checkable **now**, on synthetic fixtures, with no terminal outcome opened.
+
+The technical-only decoy is required because historical supporting evidence showed
+that source/support geometry could be highly recoverable from earlier
+representations. Those historical values are **not** used as current thresholds;
+they only motivate this prospective falsification control.
+
+For candidate A, the decoy must preserve the nuisance geometry and annotation
+marginals while breaking the cell-level biological mapping. For candidate C,
+extra care is required because donor state composition can itself be correlated
+with source; source/donor identity alone must not nearly reproduce S.
+
+A lawful technical-only baseline may use only predeclared nuisance summaries such
+as source, operator geometry, source_library/depth, detected strict-core count,
+sparsity, and observation/support geometry, fit donor-honestly. The question is
+not whether biology is independent of technical variables; it is whether the
+candidate content functional provides **incremental biological discrimination
+beyond technical geometry alone**.
 
 The fixtures must match the real geometry — the real n, dimensionality, marginal
 shapes, dependence structure and missingness — or the discrimination result will
@@ -146,9 +165,10 @@ argument in S's units that would survive being stated on its own.
 
 In dependency order, none of it requiring a terminal outcome:
 
-1. Build F-null, F-shortcut-only and F-both at real FULL104 geometry.
+1. Build F-null, F-shortcut-only, F-both, and F-technical-only-decoy at real FULL104 geometry.
 2. Evaluate candidates A–D on those fixtures; report the discrimination table in
-   §5 for each, unconditionally.
+   §5 for each, unconditionally, including the incremental margin above the
+   technical-only baseline.
 3. Discard every candidate that fails either direction. **Report the discards** —
    a functional that cannot separate the two signals is itself a finding.
 4. For survivors, characterise S against a swept planted-residual magnitude to
