@@ -45,10 +45,14 @@ def _plans():
 
 
 def test_exact_heldout_burden_uses_added_minus_dropped_and_uniform_denominator() -> None:
-    core = np.arange(5)
+    # 21 addresses makes the 5% rung exactly one non-target co-mask address:
+    # floor((21-1) * 1/20) = 1, plus the target => mask cardinality 2.
+    core = np.arange(21)
     # donor 0 held out. Uniform B2 burden = address0 + address1 = 10 + 20 = 30.
-    nnz = np.array([[10, 20, 50, 35, 5], [1, 2, 3, 4, 5]], dtype=float)
-    umi = np.array([[100, 200, 500, 350, 50], [10, 20, 30, 40, 50]], dtype=float)
+    nnz = np.zeros((2, 21), dtype=float)
+    umi = np.zeros((2, 21), dtype=float)
+    nnz[:, :5] = np.array([[10, 20, 50, 35, 5], [1, 2, 3, 4, 5]], dtype=float)
+    umi[:, :5] = np.array([[100, 200, 500, 350, 50], [10, 20, 30, 40, 50]], dtype=float)
     rows = measure_plan_burden(
         target_col=0,
         fold_index=0,
@@ -84,9 +88,9 @@ def test_target_address_must_be_in_uniform_base_and_never_in_swap_sets() -> None
             heldout_donors=[0],
             fold_by_donor=[0],
             donor_source_code=[0],
-            core_addresses=np.arange(5),
-            donor_nnz=np.ones((1, 5)),
-            donor_umi=np.ones((1, 5)),
+            core_addresses=np.arange(21),
+            donor_nnz=np.ones((1, 21)),
+            donor_umi=np.ones((1, 21)),
             rung=Fraction(1, 20),
         )
 
@@ -101,9 +105,9 @@ def test_target_address_must_be_in_uniform_base_and_never_in_swap_sets() -> None
             heldout_donors=[0],
             fold_by_donor=[0],
             donor_source_code=[0],
-            core_addresses=np.arange(5),
-            donor_nnz=np.ones((1, 5)),
-            donor_umi=np.ones((1, 5)),
+            core_addresses=np.arange(21),
+            donor_nnz=np.ones((1, 21)),
+            donor_umi=np.ones((1, 21)),
             rung=Fraction(1, 20),
         )
 
@@ -117,9 +121,9 @@ def test_zero_uniform_detected_burden_fails_closed() -> None:
             heldout_donors=[0],
             fold_by_donor=[0],
             donor_source_code=[0],
-            core_addresses=np.arange(5),
-            donor_nnz=np.zeros((1, 5)),
-            donor_umi=np.ones((1, 5)),
+            core_addresses=np.arange(21),
+            donor_nnz=np.zeros((1, 21)),
+            donor_umi=np.ones((1, 21)),
             rung=Fraction(1, 20),
         )
 
@@ -230,9 +234,9 @@ def test_training_donor_cannot_be_passed_as_heldout() -> None:
             heldout_donors=[1],
             fold_by_donor=[0, 1],
             donor_source_code=[0, 1],
-            core_addresses=np.arange(5),
-            donor_nnz=np.ones((2, 5)),
-            donor_umi=np.ones((2, 5)),
+            core_addresses=np.arange(21),
+            donor_nnz=np.ones((2, 21)),
+            donor_umi=np.ones((2, 21)),
             rung=Fraction(1, 20),
         )
 
@@ -248,9 +252,9 @@ def test_partial_heldout_fold_cannot_be_silently_subsampled() -> None:
             heldout_donors=[0],
             fold_by_donor=[0, 0, 1],
             donor_source_code=[0, 1, 1],
-            core_addresses=np.arange(5),
-            donor_nnz=np.ones((3, 5)),
-            donor_umi=np.ones((3, 5)),
+            core_addresses=np.arange(21),
+            donor_nnz=np.ones((3, 21)),
+            donor_umi=np.ones((3, 21)),
             rung=Fraction(1, 20),
         )
 
@@ -264,3 +268,39 @@ def test_zero_mean_rse_stops_instead_of_driving_escalation() -> None:
     )
     with pytest.raises(ValueError, match="STOP_ZERO_MEAN_RULE_UNRESOLVED"):
         escalation_decision(summaries, sample_level="N1")
+
+
+def test_plan_swap_lists_must_match_actual_mask() -> None:
+    plans = _plans()
+    plans["TOP8_CORRELATION"]["added_vs_base"] = [3]  # actual mask adds 2
+    with pytest.raises(ValueError, match="do not match the actual mask"):
+        measure_plan_burden(
+            target_col=0,
+            fold_index=0,
+            plans=plans,
+            heldout_donors=[0],
+            fold_by_donor=[0],
+            donor_source_code=[0],
+            core_addresses=np.arange(21),
+            donor_nnz=np.ones((1, 21)),
+            donor_umi=np.ones((1, 21)),
+            rung=Fraction(1, 20),
+        )
+
+
+def test_rung_label_must_match_mask_cardinality() -> None:
+    # _plans() contains target + one co-mask address, valid at 5% for 21 addresses
+    # but not at 50%, where ten non-target addresses are required.
+    with pytest.raises(ValueError, match="frozen rung arithmetic"):
+        measure_plan_burden(
+            target_col=0,
+            fold_index=0,
+            plans=_plans(),
+            heldout_donors=[0],
+            fold_by_donor=[0],
+            donor_source_code=[0],
+            core_addresses=np.arange(21),
+            donor_nnz=np.ones((1, 21)),
+            donor_umi=np.ones((1, 21)),
+            rung=Fraction(1, 2),
+        )
