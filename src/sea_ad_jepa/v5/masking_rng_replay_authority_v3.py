@@ -30,6 +30,17 @@ SEED_NAMESPACE_ID = "V5_COMMON_RANDOM_BASE_MASK_PREPANEL_ROOT_DERIVED_V3"
 METHOD_EXCLUSION_POLICY_ID = "MASK_POLICY_ID_ABSENT_FROM_BASE_MASK_SEED_V1"
 REPLAY_POLICY_ID = "DETERMINISTIC_EXACT_MASK_REPLAY_V1"
 
+CELL_KEY_COMMON_RANDOM_BASE_MASK = "COMMON_RANDOM_BASE_MASK"
+CELL_KEY_PREFIX3_INNER_GROUPING = "PREFIX3_INNER_GROUPING"
+CELL_KEY_MASK_REMOVAL_ORDER = "MASK_REMOVAL_ORDER"
+ALLOWED_CELL_KEYS = frozenset(
+    {
+        CELL_KEY_COMMON_RANDOM_BASE_MASK,
+        CELL_KEY_PREFIX3_INNER_GROUPING,
+        CELL_KEY_MASK_REMOVAL_ORDER,
+    }
+)
+
 FULL104_SUBSTRATE_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 CANONICAL_REGISTRY_SHA256 = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
 
@@ -125,10 +136,18 @@ class MaskingRngReplayAuthorityV3:
         self.validate()
         if not isinstance(target_id, str) or not target_id:
             raise ValueError("target_id must be nonempty")
-        if isinstance(outer_fold, bool) or not isinstance(outer_fold, int) or outer_fold < 0:
-            raise ValueError("outer_fold must be a nonnegative integer")
-        if not isinstance(cell_key, str) or not cell_key:
-            raise ValueError("cell_key must be nonempty")
+        if (
+            isinstance(outer_fold, bool)
+            or not isinstance(outer_fold, int)
+            or outer_fold < 0
+            or outer_fold >= 4
+        ):
+            raise ValueError("outer_fold must be one of the four authenticated folds: 0..3")
+        if cell_key not in ALLOWED_CELL_KEYS:
+            raise ValueError(
+                "cell_key must be a fixed masking RNG namespace, never caller-derived "
+                f"content; expected one of {sorted(ALLOWED_CELL_KEYS)}"
+            )
         payload = {
             "schema": "V5_COMMON_RANDOM_BASE_MASK_SEED_V3",
             "authority_sha256": self.canonical_digest(),
