@@ -18,7 +18,7 @@
       "location": "GPU_MACHINE_NOT_COMMITTED"
     },
     {
-      "role": "CORE_SUFFICIENT_STATISTICS_FOR_AUDITS_B_AND_C",
+      "role": "CORE_SUFFICIENT_STATISTICS_FOR_AUDITS_B_C_AND_E",
       "path": "D:/jepa_full104_redteam_20260920_external/core_sufficient_statistics_v1.npz",
       "bytes": 242087519,
       "sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
@@ -26,9 +26,9 @@
       "producer_script": "analysis/v5_full104_information_channel_redteam_20260920/scripts/build_core_sufficient_statistics_20260920.py",
       "producer_script_sha256": "230ae5420ca3daef1cd1b2743c7f9466bec96d71f8829afc7d7eb85cde2d639f",
       "schema": "V5_FULL104_CORE_SUFFICIENT_STATISTICS_V1",
-      "contains_cell_level_material": false,
-      "cell_level_content": "per-stratum x per-core-address aggregates only (donor, depth decile, core-nnz decile); the per-cell library and source vectors it carries are keyed by selection_row position with no identifiers",
-      "why_not_committed": "104 x 17,186 and 10 x 17,186 matrices across several arrays",
+      "contains_cell_level_material": true,
+      "cell_level_content": "per-donor and other aggregate sufficient statistics plus per-cell library/source vectors keyed by selection_row position; no raw cell identifiers",
+      "why_not_committed": "large per-donor/per-address matrices plus cell-level vectors; compact aggregate evidence required to challenge conclusions is committed instead",
       "state": "PRESENT_ON_GPU_MACHINE",
       "location": "GPU_MACHINE_NOT_COMMITTED"
     }
