@@ -24,6 +24,7 @@ def authority(**updates) -> Full104TeacherRelationalTargetQualificationAuthority
         dataset_etl_atlas_sha256=h("etl"),
         scientific_weight_law_sha256=h("weight"),
         teacher_target_semantics_authority_sha256=h("semantics"),
+        outer_split_receipt_sha256=h("split"),
         td57b_protocol_sha256=h("td57b"),
         td59_protocol_sha256=h("td59"),
         td60_legacy_prospective_protocol_sha256=h("td60"),
@@ -33,6 +34,7 @@ def authority(**updates) -> Full104TeacherRelationalTargetQualificationAuthority
         source_policy_id=(
             "SOURCE_IS_ROBUSTNESS_STRATUM__ALL_THREE_SOURCES_REPORTED_SEPARATELY_V1"
         ),
+        evaluation_partition_id="AUTHENTICATED_FULL104_SOURCE_STRATIFIED_FOUR_FOLD_V1",
         relational_policy_id=(
             "TD57B_GLOBAL_PLUS_TD59_NEAREST_HALF_MESOSCALE__NO_NEW_SEARCH_V1"
         ),
