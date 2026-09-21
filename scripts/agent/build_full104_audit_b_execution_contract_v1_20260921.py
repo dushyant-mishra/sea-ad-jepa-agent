@@ -26,6 +26,7 @@ from sea_ad_jepa.v5.audit_b_execution_contract_v1 import (
     AuditBExecutionContractV1,
 )
 from sea_ad_jepa.v5.masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
+from sea_ad_jepa.v5.audit_b_execution_preflight_v1 import verify_phase_iv_sample_freeze
 
 
 def sha256_file(path: Path) -> str:
@@ -111,6 +112,13 @@ def main() -> int:
         != MASK_PLAN_GENERATOR_SHA256
     ):
         raise SystemExit("sample freeze binds a different mask-plan generator")
+    try:
+        verify_phase_iv_sample_freeze(
+            args.sample_freeze,
+            repo_root=args.repo_root,
+        )
+    except ValueError as exc:
+        raise SystemExit(f"Phase-IV sample freeze runtime binding failed: {exc}") from exc
 
     heavy = load_json(args.heavy_qualification_receipt)
     if heavy.get("schema") not in {
