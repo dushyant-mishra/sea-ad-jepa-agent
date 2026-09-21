@@ -1,0 +1,73 @@
+{
+  "schema": "V5_FULL104_AUDIT_G_HOSTED_EQUAL_DONOR_FIXTURE_V1",
+  "purpose": "Committed regression fixture derived from the physically executed Audit G evidence; hosted CI verifies design interpretation and evidence consistency without claiming physical access to the Windows cache.",
+  "source_artifacts": {
+    "coverage_summary": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/CALIBRATION_CACHE_COVERAGE_SUMMARY.json",
+    "cache_manifest": "analysis/v5_full104_pass1_rebuild_20260920/evidence/calibration_cache/cache_manifest.json",
+    "cache_evidence": "analysis/v5_full104_pass1_rebuild_20260920/evidence/calibration_cache/CALIBRATION_CACHE_EVIDENCE.json"
+  },
+  "cache_role": "CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1",
+  "population_cells": 4553407,
+  "cached_cells": 105553,
+  "donors": 104,
+  "per_donor_cap": 1024,
+  "donors_at_cap": 103,
+  "short_donors": [
+    {
+      "donor_code": 96,
+      "source": "NPH52",
+      "available_cells": 81,
+      "retained_cells": 81
+    }
+  ],
+  "source_design": [
+    {
+      "source": "HVS",
+      "donors": 41,
+      "equal_donor_target": 0.3942307692307692,
+      "expected_rows_at_cap": 41984,
+      "observed_rows": 41984
+    },
+    {
+      "source": "NPH52",
+      "donors": 17,
+      "equal_donor_target": 0.16346153846153846,
+      "expected_rows_at_cap": 17408,
+      "observed_rows": 16465
+    },
+    {
+      "source": "SEA_AD",
+      "donors": 46,
+      "equal_donor_target": 0.4423076923076923,
+      "expected_rows_at_cap": 47104,
+      "observed_rows": 47104
+    }
+  ],
+  "complexity": {
+    "population_mean_core_nonzeros": 2870.359960135345,
+    "equal_donor_expected_mean_core_nonzeros": 3370.1,
+    "observed_cache_mean_core_nonzeros": 3371.63975443616,
+    "claimed_relative_deviation": 0.0005,
+    "admissible_relative_tolerance": 0.01
+  },
+  "low_tail": {
+    "threshold_core_nonzeros": 438,
+    "population_cells": 45655,
+    "expected_cache_cells_equal_donor_hash_sampling": 420,
+    "observed_cache_cells": 403,
+    "observed_expected_ratio": 0.9595238095238096,
+    "admissible_ratio_band": [
+      0.8,
+      1.2
+    ]
+  },
+  "withdrawn_claims": [
+    "G_CACHE_BIASED_TOWARD_HIGH_COMPLEXITY_CELLS",
+    "G_PER_DONOR_CAP_REORGANIZES_SOURCE_COMPOSITION_AS_DEFECT",
+    "G_LOW_TAIL_SUPPRESSED"
+  ],
+  "audit_outcome": "NO_ISSUE_FOUND",
+  "physical_requalification_required_if_selector_or_bound_artifact_changes": true,
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false
+}
