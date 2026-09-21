@@ -35,7 +35,7 @@ the gap.
 NPH52 has only 17 donors in total, so its guardrail — one third of the verdict —
 rests on at most 17 units and on average fewer than 15.
 
-## 3. The headline
+## 3. All-donor descriptive support benchmark
 
 | | targets | share |
 |---|---|---|
@@ -44,8 +44,9 @@ rests on at most 17 units and on average fewer than 15.
 | two weak sources | 80 | 0.47% |
 | three weak sources | 0 | 0% |
 
-**2,527 of 17,053 targets (14.8%) pass global eligibility but are weak or
-non-estimable in at least one source whose guardrail nonetheless votes.**
+**2,527 of 17,053 targets (14.8%) have fewer than five globally supported donors
+in at least one source under this all-donor descriptive benchmark.** This is not a
+new per-source eligibility rule and is not yet fold-specific estimability.
 
 Weakness by source — the criterion is fewer than 5 supported donors:
 
@@ -55,7 +56,7 @@ Weakness by source — the criterion is fewer than 5 supported donors:
 | NPH52 | 608 | 258 |
 | SEA_AD | 1,189 | 923 |
 
-## 4. C3 — the sharp part: zero within-donor target variance
+## 4. C3 — the sharp part: scorer-relevant target non-variability
 
 This is why §3 matters rather than being a bookkeeping note.
 
@@ -74,7 +75,7 @@ Zero is the *best possible* score. A donor where the target never varies therefo
 contributes a **perfect "no shortcut detected" verdict** — not a missing value,
 not an abstention.
 
-| source | donor×target pairs | zero-variance pairs | fraction | targets with **any** zero-variance donor | targets where **every** donor is zero-variance |
+| source | donor×target pairs | **all-zero** pairs | fraction | targets with **any** all-zero donor | targets where **every** donor is all-zero |
 |---|---|---|---|---|---|
 | HVS | 699,173 | 887 | 0.127% | 380 | 0 |
 | NPH52 | 289,901 | 6,220 | **2.146%** | **4,976** | 0 |
@@ -82,25 +83,49 @@ not an abstention.
 
 Two things stand out.
 
-**4,976 targets (29.2%)** have at least one NPH52 donor contributing a free
-perfect score. NPH52 has only 17 donors, so one silent donor is ~6% of that
+**4,976 targets (29.2%)** have at least one NPH52 donor that is all-zero for the
+target and therefore contributes a free zero under the current score. NPH52 has only 17 donors, so one silent donor is ~6% of that
 source's entire guardrail.
 
-**75 targets** have *every* SEA_AD donor at zero variance. For those, the SEA_AD
-guardrail — a full third of the verdict — is **identically zero by construction**.
+**75 targets** have *every* SEA_AD donor all-zero. For those targets, every SEA_AD
+donor has undefined target correlation and the current implementation maps those
+terms to zero.
 It cannot fail. It reports "clean" because there is nothing there to be dirty.
 
 ## 5. Method note
 
-The headline uses the **exact** route: a target detected in **no** cell of a donor
-is identically zero across that donor, so its within-donor variance is exactly
-zero. No subtraction is involved, so there is no cancellation.
+The exact route proves a sufficient condition: a target detected in **no** cell of
+a donor is identically zero across that donor, so its within-donor variance is
+exactly zero. It does **not** exhaust all mathematically constant targets; a
+constant-positive target would also have zero variance. The scorer-epsilon route
+is therefore retained as the scorer-relevant comparison.
 
 The scorer-epsilon route (`rss ≤ 1e-12`, using the scorer's own constant) is
 reported beside it, not instead of it, because `sumsq/n − mean²` suffers
 catastrophic cancellation precisely at near-zero variance — exactly where this
 audit looks. On the real data the two routes agree exactly in every source, which
 is reassuring but was not assumed.
+
+## 5b. C2 fold-aware estimability is now required before promotion
+
+The reviewed V1 script accepted `--fold-by-donor` but did not use it. That is now
+treated as an instrument defect, not as missing prose.
+
+The successor instrument is bound to the authenticated FULL104 split receipt by
+SHA, donor order and source codes. It reports, for every source × outer fold:
+
+- available training and held-out donors;
+- supported training/held-out donors per target;
+- scorer-variable training/held-out donors (`rss_y > EPS`);
+- the number of donor score terms the current scorer would include;
+- how many targets therefore contain one or more undefined-target terms mapped to zero.
+
+No new threshold is chosen from those counts.
+
+The already-committed all-donor numbers above remain
+`CURRENT_FULL104_RECONNAISSANCE`, but they **must not be promoted to the
+fold-specific terminal estimability result** until the updated instrument is run
+against the content-addressed FULL104 sufficient-statistics artifact.
 
 ## 6. Classification
 
