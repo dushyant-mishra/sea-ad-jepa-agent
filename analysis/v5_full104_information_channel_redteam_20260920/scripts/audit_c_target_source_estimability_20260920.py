@@ -47,11 +47,12 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import json
 from pathlib import Path
 
 import numpy as np
+
+from sea_ad_jepa.v5.full104_census_receipt_v2 import canonical_sha
 
 SCHEMA = "V5_FULL104_TARGET_SOURCE_ESTIMABILITY_V1"
 _EPS = 1e-12                      # the scorer's own epsilon, not a new constant
@@ -103,12 +104,16 @@ def main() -> int:
 
     # C2 is bound to the CURRENT authenticated FULL104 split. A historical,
     # fixture or convenience fold vector cannot be substituted silently.
-    split_bytes = args.split_receipt.read_bytes()
-    split_sha256 = hashlib.sha256(split_bytes).hexdigest()
+    split = json.loads(args.split_receipt.read_text(encoding="utf-8"))
+    declared_split_sha256 = str(split.get("receipt_sha256", ""))
+    split_semantic = dict(split)
+    split_semantic.pop("receipt_sha256", None)
+    if not declared_split_sha256 or declared_split_sha256 != canonical_sha(split_semantic):
+        raise SystemExit("split receipt canonical digest mismatch")
     expected_split_sha256 = str(eligibility.get("split_receipt_sha256", ""))
-    if not expected_split_sha256 or split_sha256 != expected_split_sha256:
+    if not expected_split_sha256 or declared_split_sha256 != expected_split_sha256:
         raise SystemExit("split receipt SHA does not match the eligibility authority")
-    split = json.loads(split_bytes.decode("utf-8"))
+    split_sha256 = declared_split_sha256
     if [str(x) for x in split.get("donor_ids", [])] != duniq:
         raise SystemExit("split receipt donor order does not match sufficient statistics")
     split_src = np.asarray(split.get("donor_source_code", []), dtype=np.int64)
