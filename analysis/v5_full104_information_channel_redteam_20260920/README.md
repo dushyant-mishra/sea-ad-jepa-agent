@@ -1,13 +1,18 @@
 # FULL104 information-channel red-team — 2026-09-20
 
 Reconnaissance and qualification audits of information channels exposed by the
-actual FULL104 code and history.
+current FULL104 code, with historical results retained only as supporting
+failure-mode priors.
 
-**No current authority is modified by anything in this directory.** Not pass1,
-not Census Authority V2, not the target eligibility set, not the masking burden
-ladder, not the masking policy, not G5, G4, G3, and not any terminal run
-contract. Where an audit finds a real mismatch it is recorded as an open design
-issue with a repair *plan*; discovery and policy choice are kept separable.
+**No current scientific authority is modified by anything in this directory.**
+No pass1, Census Authority V2, target eligibility set, masking burden ladder,
+masking policy, G3/G4/G5 authority, terminal contract, or training authority has
+been changed.
+
+The scope discipline for this lane is explicit in
+`FULL104_SCOPE_AND_HISTORICAL_FIREWALL.md`. Smaller pools, fixtures, historical
+runs, stale handoffs, and withdrawn findings cannot silently become FULL104
+production claims.
 
 ```
 TERMINAL_MASKING_OUTCOMES   = UNOPENED
@@ -18,69 +23,115 @@ MASKING_POLICY_SELECTED     = NO
 TRAINING_OFF
 ```
 
-The corrected census value `core_measured_zero_frequency = 0.8329826626244999`
-remains authoritative. This phase does not attempt to repair it and does not
-depend on repairing it.
+The corrected authoritative
+`core_measured_zero_frequency = 0.8329826626244999` remains unchanged.
 
 ---
 
-## Audits
+## Current audit state
 
-| | audit | question | report |
+| audit | current state | what is established | what remains open |
 |---|---|---|---|
-| **A** | normalization denominator | `source_library` is computed from raw source expression *before* ledger mapping, so RNA outside the 41,238-address ledger divides every visible feature | `NORMALIZATION_DENOMINATOR_AUDIT_REPORT.md` |
-| **B** | effective mask burden | does exact address-count parity imply equal evidence burden? | `MASK_EFFECTIVE_BURDEN_AUDIT_REPORT.md` |
-| **C** | target source estimability | is every globally eligible target actually estimable within each source, and how often is the target unvarying within a donor? | `TARGET_SOURCE_ESTIMABILITY_AUDIT_REPORT.md` |
-| **D** | attacker standardization | what estimand does held-out-donor standardization define? | `ATTACKER_STANDARDIZATION_ESTIMAND_AUDIT.md` |
-| **E** | co-detection vs co-expression | are screening-selected partners *detected together* or *quantitatively covarying*? | `PARTNER_CODETECTION_DECOMPOSITION_REPORT.md` |
-| **F** | target identity × target-zero | on target-zero cells, how much of the target representation is identity and context? | `TARGET_IDENTITY_ZERO_STRATIFIED_DESIGN.md` |
-| **G** | calibration-cache coverage | does the cache cover the real support extremes? | `CALIBRATION_CACHE_COVERAGE_AUDIT.md` |
+| **A — normalization denominator** | FULL104 reconnaissance | outside-ledger RNA enters the normalization denominator and is strongly source-structured; causal rescaling route exists | whether a model can recover source from the resulting model-visible features |
+| **B — effective mask burden** | FULL104 burden geometry + reduced-pool screening diagnostic | burden per address is highly heterogeneous; screening-preferred addresses are burden-enriched inside the deterministic 512-address diagnostic | exact fold-specific full-universe TOP8/RIDGE8/PREFIX3 burden |
+| **C — target/source estimability** | FULL104 reconnaissance; C2 instrument repaired | all-donor source support/all-zero geometry is measured; current scorer maps undefined target correlation to finite zero | authenticated source×fold C2 execution and terminal evidence-schema treatment of non-estimability |
+| **D — score/standardization estimand** | design finding | current score discards pure between-donor/source location-scale information | complementary guardrail / attacker estimand design |
+| **E — co-detection vs quantitative association** | reduced-pool diagnostic | pooled E1/E2 and screening-shaped E3 measured on current rows | production-aligned within-donor/source-balanced E1/E2 with training-side partner selection |
+| **F — target decomposition** | historical mechanism fixture only | scalar fixture controls exist | real V5 multivariate query-local latent-state decomposition |
+| **G — calibration cache** | **NO_ISSUE_FOUND** | equal-donor cache behaves as designed | only the separate G3 question of which fit-weight geometry is right for capacity calibration |
 
-`CROSS_AUDIT_INTERACTIONS.md` carries the required status table across all of
-them.
+Additional prospective designs:
+
+- `G3_ATTACKER_FIT_OBJECTIVE_CONTRACT_GAP.md`: keeps
+  `CURRENT_CELL_WEIGHTED`, `PRODUCTION_OBJECTIVE_MATCHED`, and
+  `SOURCE_DONOR_BALANCED_DIAGNOSTIC` distinct.
+- `H3_TARGET_VS_DONOR_PRECISION_DECOMPOSITION_DESIGN.md`: separates target-panel
+  uncertainty from donor-within-source uncertainty.
+- the upstream G4 design now requires a technical-only decoy before any biological
+  content functional can be frozen.
+
+`CROSS_AUDIT_INTERACTIONS.md` carries the dependency graph and current blocker
+states.
+
+## Evidence scope classes
+
+Every result belongs to one of:
+
+- `CURRENT_FULL104_AUTHORITY`
+- `CURRENT_FULL104_RECONNAISSANCE`
+- `REDUCED_POOL_DIAGNOSTIC`
+- `FIXTURE_ONLY`
+- `HISTORICAL_SUPPORTING_ONLY`
+- `WITHDRAWN`
+
+Only the first class may set current numeric authority, and only for its bound
+role. Historical findings may motivate tests and negative controls; they cannot
+set thresholds, margins, policies, target universes, or expected effects.
 
 ## Evidence layout
 
 ```
-scripts/     every producing script, committed
-evidence/    compact JSON and CSV, committed
-EVIDENCE_SHA256.csv      byte size + SHA-256 of every committed file here
-EXTERNAL_ARTIFACTS.json  large artifacts NOT committed, content-addressed
+scripts/                     producing/qualification scripts
+evidence/                    compact committed evidence
+EVIDENCE_SHA256.csv          byte size + SHA-256 manifest; regenerated LAST
+EXTERNAL_ARTIFACTS.json      immutable provenance for large GPU-machine artifacts
 ```
 
-Large row-level artifacts stay on the GPU machine. Each is recorded with its
-absolute path, byte size, SHA-256, producer Git SHA, producer script SHA-256,
-schema/role, whether it contains cell-level material, and
-`GPU_MACHINE_NOT_COMMITTED`. A reviewer cannot recompute those from GitHub, but
-can verify byte-identity against the artifact the reported numbers came from —
-and every aggregate needed to challenge a conclusion is committed alongside.
+Large external artifacts preserve the producer commit and producer-script hash
+that created the bytes. A later manifest rebuild is not allowed to relabel old
+bytes as current output.
 
-Donor identity is carried as canonical donor codes and IDs already present in
-the authenticated pass1 registry. No raw cell identifiers are committed.
+The existing 242 MB B/C/E sufficient-statistics artifact predates adoption of the
+production-exact `source_library` parser in the shared audit builder. It is
+therefore **not reusable yet**. Reuse is allowed only if
+`audit_source_library_parser_equivalence_20260920.py` verifies exact equality of
+legacy and current parser outputs over all authenticated 4,553,407 metadata rows;
+otherwise the heavy statistics must be rebuilt.
+
+## Audit G: hosted CI versus physical qualification
+
+GitHub-hosted Linux runners cannot access the Windows-local calibration cache.
+The responsibilities are therefore split without using skips:
+
+1. hosted CI validates the committed Audit G evidence fixture, cache role/design,
+   and content-blind selector implementation;
+2. `qualify_audit_g_physical_artifact_20260920.py` re-authenticates and
+   re-derives the physical cache/pass1 invariants on the machine that actually
+   holds those bytes.
+
+The physical qualifier fails closed on missing bytes, hash mismatch, geometry
+mismatch, or disagreement with committed evidence. Hosted CI does **not** claim
+physical access it does not have.
 
 ## Verification protocol
 
-Each audit follows the same sequence, and the status is derived from the
-evidence rather than declared by the caller:
+For a result to advance beyond reconnaissance:
 
-1. implement;
-2. unit-test;
-3. synthetic **positive** control, where the answer is known by construction;
-4. **negative** control capable of falsifying the test — an audit that cannot
-   fail is not evidence;
-5. real FULL104 safe-lane execution;
-6. invariant inspection, fail-closed;
-7. independent recomputation of headline totals **by a second route**, not by
-   calling the same helper twice;
-8. red-team the interpretation;
-9. only then commit.
+1. bind current FULL104 authority inputs;
+2. implement and unit-test;
+3. include a positive control with known answer;
+4. include a falsifying negative/adversarial control;
+5. execute on the declared substrate and candidate universe;
+6. fail closed on provenance/estimability;
+7. independently cross-check headline quantities where possible;
+8. red-team the interpretation and scope class;
+9. regenerate manifests only after scientific/code content is stable.
 
-Where a quantity could not be measured it is reported `NOT_MEASURABLE` with a
-reason, never as a zero and never silently omitted.
+`NOT_MEASURABLE`, `OPEN`, and undefined scientific quantities are never
+silently converted to zero.
 
-## Reproduction
+## Current next work
 
-All scripts take explicit paths and run from the repository root with
-`PYTHONPATH=src`. The environment must have its native DLL directory on `PATH`;
-see `analysis/v5_full104_pass1_rebuild_20260920/SOLVER_ENVIRONMENT_DIAGNOSIS_CORRECTION_20260920.md`
-for why that is a hard precondition rather than a convenience.
+Before G4/G5 or terminal masking:
+
+1. run the metadata-only parser-equivalence qualification for the existing B/C/E
+   heavy statistics;
+2. if it passes, execute authenticated fold-aware C2 from those bound statistics;
+   otherwise rebuild the heavy statistics first;
+3. run exact/prospectively sampled fold-specific production-policy burden for B;
+4. recompute E under production-aligned donor/source conditioning;
+5. settle the attacker score/fit-objective questions;
+6. then freeze G4 (including the technical-only decoy), justify G5, and proceed
+   through H3/H4/G2/G3 in dependency order.
+
+Nothing in this lane authorizes terminal masking or training.
