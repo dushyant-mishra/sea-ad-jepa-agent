@@ -21,6 +21,7 @@ on:
       - 'tests/test_v5_audit_b_mask_plan_v1.py'
       - 'tests/test_v5_audit_bc_burden_estimability_v1.py'
       - 'tests/test_v5_audit_f_target_identity_zero_v1.py'
+      - 'tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py'
       - 'tests/test_teacher_student_v5_support_schedule_v1.py'
       - 'analysis/v5_full104_census_20260918/full104_readonly_census_receipts_v2.py'
       - 'scripts/agent/build_full104_census_authority_v2_20260918.py'
@@ -165,6 +166,7 @@ jobs:
             tests/test_v5_audit_b_mask_plan_v1.py \
             tests/test_v5_audit_bc_burden_estimability_v1.py \
             tests/test_v5_audit_f_target_identity_zero_v1.py \
+            tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py \
             tests/test_teacher_student_v5_support_schedule_v1.py \
             tests/test_v5_full104_pass1_builder_v1.py \
             tests/test_v5_full104_pass1_physical_binding_v1.py \
@@ -230,6 +232,7 @@ jobs:
             tests/test_v5_audit_b_mask_plan_v1.py \
             tests/test_v5_audit_bc_burden_estimability_v1.py \
             tests/test_v5_audit_f_target_identity_zero_v1.py \
+            tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py \
             tests/test_teacher_student_v5_support_schedule_v1.py \
             tests/test_v5_full104_pass1_builder_v1.py \
             tests/test_v5_full104_pass1_physical_binding_v1.py \
