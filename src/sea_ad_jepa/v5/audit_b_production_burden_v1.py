@@ -131,6 +131,7 @@ def measure_plan_burden(
     fold_index: int,
     plans: Mapping[str, Mapping[str, Any]],
     heldout_donors: Sequence[int],
+    fold_by_donor: Sequence[int],
     donor_source_code: Sequence[int],
     core_addresses: Sequence[int],
     donor_nnz: Any,
@@ -151,6 +152,22 @@ def measure_plan_burden(
     donors = np.asarray(heldout_donors, dtype=np.int64)
     if donors.ndim != 1 or donors.size == 0 or donors.min() < 0 or donors.max() >= nnz.shape[0]:
         raise ValueError("heldout_donors must be valid nonempty donor codes")
+    if np.unique(donors).size != donors.size:
+        raise ValueError("heldout_donors must not contain duplicates")
+    folds = np.asarray(fold_by_donor, dtype=np.int64)
+    if folds.ndim != 1 or folds.size != nnz.shape[0]:
+        raise ValueError("fold_by_donor must align burden donors")
+    if int(fold_index) < 0:
+        raise ValueError("fold_index must be nonnegative")
+    expected_heldout = np.flatnonzero(folds == int(fold_index)).astype(np.int64)
+    if expected_heldout.size == 0:
+        raise ValueError(f"authenticated fold {int(fold_index)} has no held-out donors")
+    if not np.array_equal(np.sort(donors), expected_heldout):
+        raise ValueError(
+            "heldout_donors do not exactly match authenticated fold membership: "
+            f"fold={int(fold_index)} expected={expected_heldout.tolist()} "
+            f"observed={np.sort(donors).tolist()}"
+        )
     if set(POLICIES) - set(plans):
         raise ValueError("plans must contain every masking policy")
     if "_base_mask" not in plans:
