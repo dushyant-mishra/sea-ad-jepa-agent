@@ -38,11 +38,11 @@ Addresses are not interchangeable. Masking *an* address and masking *that*
 address remove wildly different amounts of evidence — six thousandfold different
 for UMI mass between the median and the heaviest address.
 
-## 3. Targeted selection systematically picks heavier addresses
+## 3. Reduced-pool screening diagnostic selects heavier addresses
 
-Comparing the addresses the production screening score selects against the pool
-baseline they displace (512-address deterministic pool, 512 targets, 8 partners
-each, all 4,553,407 cells):
+Comparing addresses selected by the **production-shaped screening score within a
+deterministic 512-address diagnostic pool** against that pool's baseline (512
+targets, 8 partners each, all 4,553,407 cells):
 
 | burden measure | selected mean | baseline mean | **ratio** |
 |---|---|---|---|
@@ -52,11 +52,12 @@ each, all 4,553,407 cells):
 
 The screening score correlates 0.360 with an address's detection rate.
 
-So at **identical address count**, a targeted policy swaps in addresses carrying
-**twice the detected genes and over five times the RNA mass** of the random
-addresses it swaps out.
+So, inside this reduced mechanism mirror, screening-preferred addresses carry
+**twice the detected tokens and over five times the RNA mass** of the pool
+baseline. This does **not** yet measure the exact addresses swapped by the
+fold-specific full-universe TOP8/RIDGE8/PREFIX3 production plans.
 
-## 4. What that means at each burden rung
+## 4. Implied rung effect under the reduced-pool diagnostic
 
 Because every mask difference is carried by at most `targeted_partner_cap = 8`
 swapped addresses out of the whole mask, the effect is bounded and shrinks as the
@@ -71,9 +72,10 @@ rung grows:
 | 30% | 5,155 | 0.299953 | +0.17% | +0.81% |
 | 50% | 8,592 | 0.499942 | +0.10% | +0.48% |
 
-At the 5% rung — the first rung the ladder would evaluate — a targeted policy
-removes about **4.8% more RNA mass** than the uniform policy it is compared
-against, while removing exactly the same number of addresses.
+Under this reduced-pool substitution calculation, the 5% rung implies about
+**4.8% more UMI mass** than the uniform expectation at equal address count.
+This is a mechanism-sized diagnostic, **not an observed production-policy burden
+difference**.
 
 ## 5. Classification
 
@@ -81,8 +83,13 @@ against, while removing exactly the same number of addresses.
 G_BURDEN_ADDRESS_PARITY_DOES_NOT_IMPLY_EVIDENCE_PARITY
 ```
 
-Confirmed on the full substrate. The parity the masking contract guarantees is
-real but is not the parity the scientific comparison needs.
+Two distinct statements are now separated:
+
+- per-address burden heterogeneity is confirmed over the full FULL104 substrate;
+- screening-selection burden enrichment is demonstrated only in the deterministic
+  512-address diagnostic pool.
+
+The actual fold-specific full-universe policy burden remains `OPEN`.
 
 `zero != missing` is preserved throughout: B2 (detected tokens) and B3 (UMI mass)
 are reported separately precisely because masking a measured zero removes
@@ -94,9 +101,11 @@ and B5 `SUPPORTING_DETECTION_ENTROPY_BURDEN`; neither carries authority.
 
 ## 6. Why this matters for G5
 
-If two policies remove different amounts of evidence at the same address count,
-then comparing them against a single equivalence margin δ compares conditions
-that are not exchangeable. A residual difference between UNIFORM and TOP8 would
+If the **actual production policies** remove different amounts of evidence at the
+same address count, then comparing them against a single equivalence margin δ
+would compare conditions that are not exchangeable. The current diagnostic makes
+that a live risk requiring direct measurement; it does not by itself establish
+the exact production difference. A residual difference between UNIFORM and TOP8 would
 be partly a burden difference, not purely a targeting effect — so an equivalence
 claim would be conditional on burden rather than on policy.
 
