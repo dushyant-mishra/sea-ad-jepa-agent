@@ -198,17 +198,21 @@ class AuditBExecutionContractV1:
 
     @property
     def execution_authorized(self) -> bool:
+        """V1 is a pre-execution binding contract and can NEVER authorize N1.
+
+        A reviewed scientific decision about precision scope/weighting must be
+        represented by a successor contract, not activated by changing one V1 field.
+        """
         self.validate()
-        return self.precision_scope_id != PRECISION_SCOPE_UNRESOLVED
+        return False
 
     def require_execution_ready(self) -> None:
         self.validate()
-        if self.precision_scope_id == PRECISION_SCOPE_UNRESOLVED:
-            raise ValueError(
-                "STOP_PRECISION_SCOPE_UNRESOLVED: Phase-IV N1 execution is forbidden "
-                "until the meaning of 'RSE of the primary burden statistic' is "
-                "prospectively resolved and frozen without observing burden outcomes"
-            )
+        raise ValueError(
+            "STOP_AUDIT_B_V1_PREEXECUTION_ONLY: V1 intentionally cannot authorize "
+            "Phase-IV N1. A successor execution contract is required after outcome-blind "
+            "scientific review resolves precision scope and weighting."
+        )
 
     def canonical_digest(self) -> str:
         self.validate()
