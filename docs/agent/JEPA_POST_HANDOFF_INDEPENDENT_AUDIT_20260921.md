@@ -127,26 +127,41 @@ Outcome-blind hardening on this branch:
 
 No rare-tail molecular outcome has been opened.
 
-## Finding D — target-sample validation has strong receipt checks but no independent full-source replay
+## Finding D — target-sample validation lacked independent full-source replay
 
-Severity: MEDIUM hardening opportunity; OPEN.
+Severity: MEDIUM hardening opportunity; CLOSED ON THIS AUDIT BRANCH.
 
 The builder authenticates the Level-4 manifest and every metadata block, traverses
 all 4,553,407 selection rows exactly once, and constructs a content-addressed
-receipt. The downstream validator rehashes the produced arrays and builder source
-and checks all geometry.
+receipt. The original downstream validator rehashed the produced arrays and
+builder source and checked geometry, but did not independently reconstruct the
+sample from source metadata.
 
-What it does not independently do is replay the bottom-k selector from the
-authenticated Level-4 metadata and prove the materialized 105,553 identities are
-the unique expected output. This is not evidence of corruption; it is a
-chain-of-custody strengthening opportunity before the first real materialization.
+Outcome-blind hardening now adds an optional full-source replay mode to the
+validator. When run on the GPU/full-data machine it:
+- authenticates the Level-4 block manifest and every metadata block;
+- independently reconstructs the frozen selection-hash preimage;
+- traverses the 4,553,407 global selection rows exactly once;
+- re-derives donor/source/fold identities from the authenticated split;
+- independently rebuilds the donor-wise bottom-k sample;
+- requires exact equality of selection rows, donor codes, row ranks, retained
+  counts, full donor counts, folds and source codes;
+- never opens expression/count matrices.
 
-Recommended next outcome-blind implementation:
-- add an optional heavy metadata replay verifier;
-- recompute donor-wise selected rows from the authenticated block manifest;
-- byte/element-compare selection rows, donor codes, ranks, retained counts,
-  fold codes and source codes to the receipt package;
-- never open expression arrays.
+The real 105,553-cell package is still unmaterialized, so the heavy replay has not
+yet been executed.
+
+## Finding E — inherited donor-half naming drifted into the four-fold rare-tail design
+
+Severity: MEDIUM semantic/provenance issue; CLOSED ON THIS AUDIT BRANCH.
+
+The rare-tail authority uses the authenticated FULL104 four-fold split, but its
+minimum measurable donor field was named `min_measurable_donors_per_half`, a
+leftover from TD59's old donor-half evaluation. The threshold value 4 was correct,
+but the label was semantically wrong for a future authority receipt.
+
+The field/constant are now source-fold explicit:
+`min_measurable_donors_per_source_fold = 4`.
 
 ## Remaining lawful next steps
 
@@ -160,7 +175,7 @@ Recommended next outcome-blind implementation:
 
 ### Target / rare biology
 1. Materialize the real 105,553-cell target-qualification sample metadata-only.
-2. Add the independent source-replay validator.
+2. Run the independent metadata-only source replay when the real sample is materialized.
 3. Finish/freeze the exact rare-tail molecular evaluator and null/replay execution contract.
 4. Only then execute the label-free molecular rare-tail prequalification.
 5. Preserve any result as qualification evidence only.
