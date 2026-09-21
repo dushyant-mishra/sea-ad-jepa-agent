@@ -1,0 +1,155 @@
+{
+  "schema": "V5_FULL104_NORMALIZATION_DENOMINATOR_AUDIT_V1",
+  "partial_run": false,
+  "blocks_limited_to": null,
+  "cells_measured": 4553407,
+  "cells_expected": 4553407,
+  "identity_space_closed": true,
+  "global": {
+    "L_total": {
+      "n": 4553407,
+      "mean": 26906.73352766401,
+      "min": 3.0,
+      "p01": 1109.0,
+      "p05": 2778.0,
+      "p25": 8444.0,
+      "median": 18751.0,
+      "p75": 36784.0,
+      "p95": 78082.0,
+      "p99": 122726.94000000041,
+      "max": 685696.0
+    },
+    "L_ledger": {
+      "n": 4553407,
+      "mean": 25879.2465219999,
+      "min": 3.0,
+      "p01": 1069.0,
+      "p05": 2684.0,
+      "p25": 8150.0,
+      "median": 18057.0,
+      "p75": 35372.0,
+      "p95": 75009.0,
+      "p99": 117864.0,
+      "max": 657632.0
+    },
+    "L_core": {
+      "n": 4553407,
+      "mean": 15431.25111372649,
+      "min": 1.0,
+      "p01": 608.0,
+      "p05": 1570.0,
+      "p25": 4889.0,
+      "median": 10747.0,
+      "p75": 21053.0,
+      "p95": 44876.0,
+      "p99": 70340.94000000041,
+      "max": 382331.0
+    },
+    "L_outside_ledger": {
+      "n": 4553407,
+      "mean": 1027.4870056641105,
+      "min": 0.0,
+      "p01": 0.0,
+      "p05": 27.0,
+      "p25": 268.0,
+      "median": 694.0,
+      "p75": 1438.0,
+      "p95": 3123.0,
+      "p99": 4926.0,
+      "max": 28064.0
+    },
+    "fraction_outside_ledger": {
+      "n": 4553407,
+      "mean": 0.0367751457857232,
+      "min": 0.0,
+      "p01": 0.0,
+      "p05": 0.010534446694141693,
+      "p25": 0.036262468641500595,
+      "median": 0.03951379435955444,
+      "p75": 0.04214789260536973,
+      "p95": 0.04646829366907033,
+      "p99": 0.05037364670320623,
+      "max": 0.25
+    },
+    "fraction_inside_ledger": {
+      "n": 4553407,
+      "mean": 0.963224854214277,
+      "min": 0.75,
+      "p01": 0.9496263532967938,
+      "p05": 0.9535317063309297,
+      "p25": 0.9578521073946302,
+      "median": 0.9604862056404455,
+      "p75": 0.9637375313584995,
+      "p95": 0.9894655533058583,
+      "p99": 1.0,
+      "max": 1.0
+    },
+    "fraction_core": {
+      "n": 4553407,
+      "mean": 0.5811317741732275,
+      "min": 0.15310865775711796,
+      "p01": 0.49425915800984144,
+      "p05": 0.5127272727272727,
+      "p25": 0.5348419540229885,
+      "median": 0.5491994125443278,
+      "p75": 0.5625795929677984,
+      "p95": 0.9063291139240506,
+      "p99": 0.9564872715628406,
+      "max": 0.9746490579977836
+    }
+  },
+  "invariants": {
+    "source_library_positive": true,
+    "ledger_mass_never_exceeds_source_library": true,
+    "outside_ledger_mass_never_negative": true,
+    "core_mass_never_exceeds_ledger_mass": true,
+    "all_fractions_finite": true,
+    "core_nonzero_count_matches_authenticated_pass1": true,
+    "independent_ledger_sum_routes_agree": true
+  },
+  "aggregate_mass": {
+    "total_source_library": 122517308792,
+    "total_ledger_mass": 117838742268,
+    "total_core_mass": 70264766840,
+    "total_outside_ledger_mass": 4678566524,
+    "pooled_fraction_outside_ledger": 0.038186984109672965,
+    "pooled_fraction_core": 0.5735088987245863
+  },
+  "cells_with_any_outside_ledger_mass": 4354643,
+  "fraction_of_cells_with_any_outside_ledger_mass": 0.9563482904119927,
+  "denominator_predictiveness": {
+    "method": "donor-honest leave-one-donor-out nearest centroid on the DONOR-MEAN denominator fractions (outside, inside, core). Unconditional over all 104 donors; donors with a degenerate training label set are counted as attempted and not silently dropped.",
+    "features": [
+      "mean fraction_outside_ledger",
+      "mean fraction_inside_ledger",
+      "mean fraction_core"
+    ],
+    "source": {
+      "n_donors_attempted": 104,
+      "accuracy_unconditional": 1.0,
+      "majority_class_rate": 0.4423076923076923,
+      "n_classes": 3
+    },
+    "operator": {
+      "n_donors_attempted": 104,
+      "accuracy_unconditional": 0.3173076923076923,
+      "majority_class_rate": 0.25961538461538464,
+      "n_classes": 12
+    },
+    "donor_identity_note": "donor identity is not predicted from donor-mean features: leave-one-donor-out makes the held-out donor's own class absent from training, so the task is undefined by construction. Reported instead as a CELL-level separability diagnostic below.",
+    "donor_cell_level_nearest_donor_mean": {
+      "accuracy_unconditional": 0.03429102647753649,
+      "chance_rate": 0.009615384615384616,
+      "note": "SUPPORTING diagnostic only. Cells of a donor contribute to that donor's own centroid, so this is a separability measure, not an out-of-donor claim."
+    }
+  },
+  "all_donors_present": true,
+  "labels": {
+    "channel": "OUTSIDE_LEDGER_DENOMINATOR_INFLUENCE",
+    "not_the_same_as": "DIRECT_HIDDEN_TARGET_LEAKAGE",
+    "evidence_class": "SUPPORTING_SHORTCUT_RECONNAISSANCE",
+    "biological_claim": "NONE"
+  },
+  "elapsed_seconds": 2362.184282064438,
+  "training_authorized": false
+}
