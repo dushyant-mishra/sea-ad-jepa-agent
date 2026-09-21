@@ -1,9 +1,11 @@
 """Shared per-stratum x per-core-address sufficient statistics.
 
 One authenticated streaming pass over the FULL104 Level-4 store, producing the
-statistics Audit B (mask burden) and Audit C (target source estimability) both
-need. Building them once, exactly, avoids two more full passes and -- more
-importantly -- guarantees B and C are talking about the same substrate.
+statistics Audits B (mask burden), C (target source estimability) and E
+(co-detection decomposition) all need. Each full traversal of this substrate
+costs hours, dominated by decompressing 23.7 billion nonzeros, so building the
+statistics once is not merely an optimization: it guarantees the three audits are
+talking about the same substrate rather than three separate reads of it.
 
 Why sufficient statistics rather than per-cell x per-mask evaluation
 --------------------------------------------------------------------
@@ -62,6 +64,20 @@ import scipy.sparse as sp
 SCHEMA = "V5_FULL104_CORE_SUFFICIENT_STATISTICS_V1"
 N_LEDGER = 41238
 
+
+def codetection_pool(core: np.ndarray, *, size: int,
+                     salt: str = "V5_AUDIT_E_POOL_20260920") -> np.ndarray:
+    """Deterministic address pool for the Audit E co-detection decomposition.
+
+    Selected by a declared hash rule fixed before any result is seen, so the pool
+    cannot have been chosen to favour an outcome. Accumulated in this same pass
+    because a second full traversal of the substrate costs hours and would tell
+    us nothing the first one could not.
+    """
+    order = sorted(range(core.size),
+                   key=lambda i: hashlib.sha256(f"{salt}|{int(core[i])}".encode()).digest())
+    return np.sort(core[np.asarray(order[:size], dtype=np.int64)])
+
 _META_COLUMNS = (
     "selection_row", "canonical_cell_id", "donor_id",
     "expression_row", "primary_row_weight", "source_library",
@@ -86,6 +102,8 @@ def main() -> int:
     ap.add_argument("--limit-blocks", type=int, default=None)
     ap.add_argument("--expect-core-size", type=int, default=17186)
     ap.add_argument("--no-verify-hashes", action="store_true")
+    ap.add_argument("--codetection-pool-size", type=int, default=512,
+                    help="size of the deterministic Audit E address pool; 0 disables")
     args = ap.parse_args()
 
     started = time.time()
@@ -165,6 +183,22 @@ def main() -> int:
     corenz_umi = np.zeros((n_corenz, n_core), dtype=np.int64)
     corenz_cells = np.zeros(n_corenz, dtype=np.int64)
 
+    pool = codetection_pool(core, size=args.codetection_pool_size) if args.codetection_pool_size else None
+    if pool is not None:
+        p_n = pool.size
+        pool_NN = np.zeros((p_n, p_n), np.float64)   # co-detection counts
+        pool_SD = np.zeros((p_n, p_n), np.float64)   # sum x_i over cells where j detected
+        pool_QQ = np.zeros((p_n, p_n), np.float64)   # sum x_i * x_j
+        pool_SQ = np.zeros((p_n, p_n), np.float64)   # sum x_i^2 over cells where j detected
+        pool_det = np.zeros(p_n, np.float64)
+        pool_dn = np.zeros(n_donors, np.float64)
+        pool_sx = np.zeros((n_donors, p_n), np.float64)
+        pool_sxx = np.zeros((n_donors, p_n), np.float64)
+        pool_cross = np.zeros((n_donors, p_n, p_n), np.float64)
+        pool_pos_map = np.full(N_LEDGER, -1, np.int64)
+        pool_pos_map[pool] = np.arange(p_n, dtype=np.int64)
+        print(f"  Audit E co-detection pool: {p_n} addresses", flush=True)
+
     print("sweep 2/2: accumulating core sufficient statistics", flush=True)
     checksum_umi = 0
     checksum_nnz = 0
@@ -212,6 +246,25 @@ def main() -> int:
         corenz_nnz.ravel()[:] += np.bincount(flat_c, minlength=n_corenz * n_core)
         corenz_umi.ravel()[:] += np.bincount(flat_c, weights=v_local.astype(np.float64),
                                              minlength=n_corenz * n_core).astype(np.int64)
+
+        if pool is not None:
+            sub = matrix[:, pool].astype(np.float64)
+            dense = np.asarray(sub.todense())
+            lib_rows = libraries[sel].astype(np.float64)
+            xp = np.log1p(dense * (10000.0 / lib_rows[:, None]))     # frozen normalization
+            dp = (dense > 0).astype(np.float64)
+            pool_NN += dp.T @ dp
+            pool_SD += xp.T @ dp
+            pool_QQ += xp.T @ xp
+            pool_SQ += (xp * xp).T @ dp
+            pool_det += dp.sum(axis=0)
+            for donor in np.unique(cell_donor[sel]):
+                m = cell_donor[sel] == donor
+                xd = xp[m]
+                pool_dn[donor] += xd.shape[0]
+                pool_sx[donor] += xd.sum(axis=0)
+                pool_sxx[donor] += (xd * xd).sum(axis=0)
+                pool_cross[donor] += xd.T @ xd
 
         checksum_umi += int(v_local.sum())
         checksum_nnz += int(keep.sum())
@@ -267,6 +320,12 @@ def main() -> int:
         total_core_umi=np.array(checksum_umi, dtype=np.int64),
         total_core_nnz=np.array(checksum_nnz, dtype=np.int64),
         partial=np.array(bool(partial)),
+        **({} if pool is None else {
+            "pool": pool, "pool_NN": pool_NN, "pool_SD": pool_SD, "pool_QQ": pool_QQ,
+            "pool_SQ": pool_SQ, "pool_det": pool_det, "pool_dn": pool_dn,
+            "pool_sx": pool_sx, "pool_sxx": pool_sxx, "pool_cross": pool_cross,
+            "pool_cells": np.array(int(donor_cells.sum()), dtype=np.int64),
+        }),
     )
     print(json.dumps({
         "schema": SCHEMA,
@@ -279,6 +338,7 @@ def main() -> int:
         "cells": int(donor_cells.sum()),
         "invariants_passed": True,
         "corroborated_against_pass1_donor_addr_nnz": bool(not partial),
+        "codetection_pool_addresses": int(pool.size) if pool is not None else 0,
         "elapsed_seconds": time.time() - started,
     }, indent=2))
     return 0
