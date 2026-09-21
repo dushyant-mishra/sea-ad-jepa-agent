@@ -1,168 +1,148 @@
-"""Pin the calibration cache's equal-donor-weighting design.
+"""Pin Audit G's corrected equal-donor interpretation in hosted CI.
 
-Why this test exists
---------------------
-An earlier revision of Audit G reported that the cache over-represented the HVS
-source by 9.1x and was biased toward high-complexity cells. Both conclusions were
-wrong: they compared the cache against the **population marginal**, which the
-design explicitly rejects. From `FULL104_MASKING_NONLINEAR_CHALLENGE_20260918.md`:
+Hosted GitHub Actions cannot access the Windows-only calibration-cache directory.
+Therefore hosted CI verifies:
+1. the committed physical-audit summary/manifest evidence;
+2. a compact content-addressed equal-donor fixture derived from that evidence;
+3. the selector implementation remains expression-content blind.
 
-    "each donor receives equal total fit weight so large donors cannot dominate
-     merely because they contain more cells"
+Physical requalification is a separate fail-closed script executed where the
+cache/pass1 files actually exist. Hosted CI never claims to have physically
+re-read those bytes.
 
-Against the baseline the design actually targets, the cache matches to within
-0.05%. These tests pin that, so the same misreading cannot be made again without
-a test failing.
-
-They are written against the real artifacts and skip-free: if the cache or pass1
-is absent the test FAILS rather than skips, because a silently skipped test would
-restore exactly the blind spot this file exists to close.
-
-Nothing here opens a terminal masking outcome, target-panel ladder,
-null-equivalence margin, D_shared, protected/pathology/DEV/SEALED data, or
-training.
+Nothing here opens terminal masking outcomes, D_shared, pathology/DEV/SEALED
+data, or training.
 """
 from __future__ import annotations
 
+import inspect
+import json
 from pathlib import Path
 
-import numpy as np
-import pytest
-
-CACHE = Path("D:/jepa_full104_preterminal_20260919_a51cdbe8_outputs/control_calibration_cache_v1")
-PASS1 = Path("D:/jepa_full104_preterminal_20260919_a51cdbe8_outputs/"
-             "full104_pass1_v2_selection_row_keyed.npz")
-
-MAX_ROWS_PER_DONOR = 1024
-SOURCE_NAMES = ("HVS", "NPH52", "SEA_AD")
-
-#: Tolerances are properties of the design, declared here before comparison:
-#: equal-donor weighting predicts the marginal exactly up to donors that hold
-#: fewer cells than the cap, so only a small residual is admissible.
-SOURCE_SHARE_TOLERANCE = 0.01          # absolute, on a fraction
-COMPLEXITY_RELATIVE_TOLERANCE = 0.01   # 1% of the predicted mean
-LOW_TAIL_RATIO_BAND = (0.80, 1.20)     # observed / expected under hash sampling
+from sea_ad_jepa.v5.full104_control_calibration_cache_v1 import row_priority
 
 
-def _require(path: Path):
-    if not path.exists():
-        pytest.fail(
-            f"required artifact missing: {path}. This test is deliberately not skipped -- "
-            "a skip here would restore the blind spot the file exists to close.")
+ROOT = Path(__file__).resolve().parents[1]
+FIXTURE = ROOT / (
+    "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/"
+    "HOSTED_AUDIT_G_EQUAL_DONOR_FIXTURE_V1.json"
+)
+SUMMARY = ROOT / (
+    "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/"
+    "CALIBRATION_CACHE_COVERAGE_SUMMARY.json"
+)
+CACHE_MANIFEST = ROOT / (
+    "analysis/v5_full104_pass1_rebuild_20260920/evidence/calibration_cache/"
+    "cache_manifest.json"
+)
+
+SOURCE_SHARE_TOLERANCE = 0.01
+COMPLEXITY_RELATIVE_TOLERANCE = 0.01
+LOW_TAIL_RATIO_BAND = (0.80, 1.20)
 
 
-@pytest.fixture(scope="module")
-def artifacts():
-    _require(CACHE)
-    _require(PASS1)
-    p1 = np.load(PASS1, allow_pickle=True)
-    return {
-        "cell_donor": np.asarray(p1["cell_donor"], dtype=np.int64),
-        "cell_nnz_core": np.asarray(p1["cell_nnz_core"], dtype=np.float64),
-        "donor_src": np.asarray(p1["donor_src"], dtype=np.int64),
-        "selection": np.load(CACHE / "selection_rows_i64.npy").astype(np.int64),
-        "retained": np.load(CACHE / "retained_count_by_donor_i64.npy").astype(np.int64),
-    }
+def _load(path: Path) -> dict:
+    assert path.is_file(), f"required committed evidence missing: {path}"
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
-def test_every_donor_is_at_the_cap_or_holds_fewer_cells_than_the_cap(artifacts):
-    """The design is 1,024 per donor; the only admissible shortfall is a short donor."""
-    retained = artifacts["retained"]
-    cell_donor = artifacts["cell_donor"]
-    for donor in range(retained.size):
-        available = int((cell_donor == donor).sum())
-        if retained[donor] < MAX_ROWS_PER_DONOR:
-            assert retained[donor] == available, (
-                f"donor {donor} retained {retained[donor]} of {available} available cells "
-                f"without reaching the {MAX_ROWS_PER_DONOR} cap -- that is neither the cap "
-                "nor exhaustion, so the selection is not equal-donor weighting")
-        else:
-            assert retained[donor] == MAX_ROWS_PER_DONOR
+def test_committed_fixture_is_bound_to_current_cache_role_and_geometry():
+    fx = _load(FIXTURE)
+    summary = _load(SUMMARY)
+    manifest = _load(CACHE_MANIFEST)
+
+    assert fx["cache_role"] == (
+        "CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1"
+    )
+    assert manifest["cache_role_id"] == fx["cache_role"]
+    assert summary["cache_role"] == fx["cache_role"]
+
+    assert fx["population_cells"] == summary["population_cells"] == 4_553_407
+    assert fx["cached_cells"] == summary["cached_cells"] == 105_553
+    assert fx["donors"] == summary["donors"] == 104
+    assert fx["per_donor_cap"] == summary["per_donor_cap"] == manifest["max_rows_per_donor"] == 1024
+    assert fx["donors_at_cap"] == summary["donors_at_cap"] == 103
+    assert summary["donors_below_cap"] == 1
+    assert summary["min_retained_per_donor"] == 81
+    assert summary["max_retained_per_donor"] == 1024
+
+    assert fx["terminal_masking_outcomes_inspected"] is False
+    assert fx["training_authorized"] is False
 
 
-def test_source_shares_match_the_equal_donor_weight_target_not_the_population(artifacts):
-    """The load-bearing test: the design target is equal donor weight, not the corpus."""
-    retained = artifacts["retained"].astype(np.float64)
-    donor_src = artifacts["donor_src"]
-    cell_donor = artifacts["cell_donor"]
+def test_source_shares_match_equal_donor_target_not_population_marginal():
+    fx = _load(FIXTURE)
+    summary = _load(SUMMARY)
+    by_source = {r["group"]: r for r in summary["composition"]["source"]}
 
-    total = retained.sum()
-    for source in range(len(SOURCE_NAMES)):
-        donors = np.flatnonzero(donor_src == source)
-        target = donors.size / donor_src.size          # equal donor weight
-        observed = retained[donors].sum() / total
-        assert abs(observed - target) < SOURCE_SHARE_TOLERANCE, (
-            f"{SOURCE_NAMES[source]}: cache share {observed:.4%} deviates from the "
-            f"equal-donor-weight target {target:.4%} by more than "
-            f"{SOURCE_SHARE_TOLERANCE:.1%}")
+    total_observed = sum(int(r["observed_rows"]) for r in fx["source_design"])
+    assert total_observed == fx["cached_cells"]
 
-    # And the population marginal is emphatically NOT the target -- pinned so that
-    # comparing against it is visibly the wrong reference.
-    population = np.array([float((donor_src[cell_donor] == s).sum())
-                           for s in range(len(SOURCE_NAMES))])
-    population /= population.sum()
-    sea_ad = SOURCE_NAMES.index("SEA_AD")
-    assert population[sea_ad] > 0.85, "fixture assumption: SEA_AD dominates the corpus"
-    observed_sea_ad = retained[np.flatnonzero(donor_src == sea_ad)].sum() / total
-    assert observed_sea_ad < 0.60, (
-        "the cache should NOT reproduce the corpus marginal -- that is what the "
-        "per-donor cap exists to prevent")
+    for row in fx["source_design"]:
+        src = row["source"]
+        observed = int(row["observed_rows"]) / total_observed
+        target = float(row["equal_donor_target"])
+        assert abs(observed - target) < SOURCE_SHARE_TOLERANCE
+        assert int(by_source[src]["cells_cached"]) == int(row["observed_rows"])
+
+    # The one short donor is fully retained rather than silently under-sampled.
+    short = fx["short_donors"]
+    assert short == [{
+        "donor_code": 96, "source": "NPH52",
+        "available_cells": 81, "retained_cells": 81,
+    }]
+
+    # Population marginal is explicitly not the design target.
+    assert by_source["SEA_AD"]["share_full"] > 0.85
+    assert by_source["SEA_AD"]["share_cached"] < 0.60
 
 
-def test_complexity_marginal_matches_the_equal_donor_weight_prediction(artifacts):
-    """The apparent complexity 'bias' is fully predicted by equal-donor weighting."""
-    cell_donor = artifacts["cell_donor"]
-    nnz = artifacts["cell_nnz_core"]
-    retained = artifacts["retained"].astype(np.float64)
-    selection = artifacts["selection"]
+def test_complexity_shift_matches_equal_donor_expectation():
+    fx = _load(FIXTURE)
+    summary = _load(SUMMARY)
+    c = fx["complexity"]
+    observed = float(summary["coverage"]["core_nonzero_count"]["cached"]["mean"])
+    expected = float(c["equal_donor_expected_mean_core_nonzeros"])
 
-    donor_mean = np.array([nnz[cell_donor == d].mean() for d in range(retained.size)])
-    predicted = float((donor_mean * retained).sum() / retained.sum())
-    observed = float(nnz[selection].mean())
+    assert abs(observed - float(c["observed_cache_mean_core_nonzeros"])) < 1e-12
+    assert abs(observed - expected) / expected < COMPLEXITY_RELATIVE_TOLERANCE
 
-    assert abs(observed - predicted) / predicted < COMPLEXITY_RELATIVE_TOLERANCE, (
-        f"cache mean core nonzeros {observed:.1f} deviates from the equal-donor-weight "
-        f"prediction {predicted:.1f} by more than {COMPLEXITY_RELATIVE_TOLERANCE:.0%}")
-
-    # The population mean is a materially different number, which is exactly why
-    # comparing against it produced a false 'bias' finding.
-    assert abs(float(nnz.mean()) - predicted) / predicted > 0.10, (
-        "fixture assumption: the population mean and the equal-donor-weight "
-        "prediction should differ enough that confusing them matters")
+    population = float(summary["coverage"]["core_nonzero_count"]["full"]["mean"])
+    assert abs(population - expected) / expected > 0.10
 
 
-def test_low_tail_retention_matches_hash_sampling_expectation(artifacts):
-    """There is no sparse-cell filter; the low tail is retained as sampling predicts."""
-    cell_donor = artifacts["cell_donor"]
-    nnz = artifacts["cell_nnz_core"]
-    retained = artifacts["retained"].astype(np.float64)
-    selection = artifacts["selection"]
+def test_low_tail_retention_matches_equal_donor_hash_sampling_expectation():
+    fx = _load(FIXTURE)
+    summary = _load(SUMMARY)
+    lt = fx["low_tail"]
+    cov = summary["coverage"]["core_nonzero_count"]["low_tail"]
 
-    threshold = float(np.quantile(nnz, 0.01))
-    expected = sum(float((nnz[cell_donor == d] <= threshold).mean()) * retained[d]
-                   for d in range(retained.size))
-    observed = float((nnz[selection] <= threshold).sum())
-    ratio = observed / expected
+    assert int(summary["coverage"]["core_nonzero_count"]["tail_definition"]["low_threshold"]) == 438
+    assert int(cov["cells_in_full"]) == int(lt["population_cells"]) == 45_655
+    assert int(cov["cells_in_cache"]) == int(lt["observed_cache_cells"]) == 403
+
+    ratio = float(lt["observed_cache_cells"]) / float(
+        lt["expected_cache_cells_equal_donor_hash_sampling"]
+    )
     lo, hi = LOW_TAIL_RATIO_BAND
-    assert lo < ratio < hi, (
-        f"low-tail retention ratio {ratio:.3f} outside the admissible band "
-        f"[{lo}, {hi}] -- that would indicate a sparse-cell filter, which the "
-        "content-blind hash selector should make impossible")
+    assert lo < ratio < hi
+    assert abs(ratio - float(lt["observed_expected_ratio"])) < 1e-15
 
 
 def test_within_donor_selection_is_blind_to_expression_content():
-    """The selector hashes scientific identity, so it cannot see complexity.
-
-    Static guard: if this ever changes, the complexity conclusions above stop
-    following and must be re-derived rather than inherited.
-    """
-    import inspect
-
-    from sea_ad_jepa.v5.full104_control_calibration_cache_v1 import row_priority
-
+    """Static guard: selector may depend on identity, never expression content."""
     source = inspect.getsource(row_priority)
     assert "selection_row" in source and "donor_code" in source
     for forbidden in ("counts", "expression", "nnz", "library", "matrix", "value"):
         assert forbidden not in source, (
-            f"row_priority now references {forbidden!r}; the selector may no longer be "
-            "content-blind, so Audit G's complexity conclusions must be re-derived")
+            f"row_priority now references {forbidden!r}; Audit G must be re-derived "
+            "before its corrected interpretation can be inherited"
+        )
+
+
+def test_withdrawn_findings_remain_explicitly_withdrawn():
+    fx = _load(FIXTURE)
+    assert fx["audit_outcome"] == "NO_ISSUE_FOUND"
+    withdrawn = set(fx["withdrawn_claims"])
+    assert "G_CACHE_BIASED_TOWARD_HIGH_COMPLEXITY_CELLS" in withdrawn
+    assert "G_LOW_TAIL_SUPPRESSED" in withdrawn
