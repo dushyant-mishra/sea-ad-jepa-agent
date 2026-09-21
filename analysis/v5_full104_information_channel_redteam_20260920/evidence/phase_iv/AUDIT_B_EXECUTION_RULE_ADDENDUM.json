@@ -1,0 +1,92 @@
+{
+  "schema": "V5_AUDIT_B_EXECUTION_RULE_ADDENDUM_V1",
+  "scope_class": "CURRENT_FULL104_RECONNAISSANCE",
+  "supersedes_nothing": true,
+  "original_sample_freeze_unmodified": true,
+  "sample_freeze_digest": "c2c5e1b5addc50db7e9676ebf59e9c63b5d0b9eee882ef78aff5baa9d4a3b0ac",
+  "gap_this_addendum_closes": "the sample freeze digest covers schema, salt, ladder, seven bound input hashes and the target lists, but NOT the escalation rule, the primary burden statistic definition, the execution requirements, or the boundary flags. Those could all be edited without moving freeze_digest, which was verified by mutation.",
+  "rule": {
+    "primary_metric_id": "B2_HELDOUT_DETECTED_TOKEN_BURDEN",
+    "secondary_metric_id": "B3_HELDOUT_RAW_UMI_BURDEN__DESCRIPTIVE_ONLY",
+    "normalization_id": "ADDED_MINUS_DROPPED_OVER_UNIFORM_FULL_MASK_WITH_TARGET_V1",
+    "primary_quantity": "per target x fold x policy x rung: [B2(addresses ADDED by policy) - B2(addresses DROPPED)] / B2(UNIFORM_RANDOM full mask at the same target/fold/rung); the target address is included in the uniform denominator because it is masked in every arm, and never appears in ADDED or DROPPED",
+    "aggregation": "donors equal-weighted within source; sources equal-weighted within target; targets equal-weighted; every donor contributes only through its own held-out fold",
+    "burden_rungs": [
+      "1/20",
+      "1/10",
+      "3/20",
+      "1/5",
+      "3/10",
+      "1/2"
+    ],
+    "nonuniform_policies": [
+      "TOP8_CORRELATION",
+      "RIDGE8_CONDITIONAL",
+      "PREFIX3_SELECTIVE"
+    ],
+    "max_relative_standard_error": 0.05,
+    "relative_standard_error_definition": "target-level SE / |target-level mean|",
+    "zero_mean_rule": "UNDEFINED_ZERO_MEAN__FAIL_CLOSED (never a pass)",
+    "escalation_ladder": [
+      256,
+      1024,
+      4096
+    ],
+    "escalation_is_prefix_extension": true,
+    "terminal_outcome_if_unmet_at_N3": "INSUFFICIENT_PRECISION_AT_N3",
+    "b3_may_drive_escalation": false,
+    "execution_requirements": [
+      "policy construction uses TRAINING-side information only",
+      "burden measured on the HELD-OUT side only",
+      "reported by source x donor x fold, never only pooled",
+      "NO policy adaptation from observed burden",
+      "no held-out realized zero/nonzero state may influence mask choice",
+      "burden metric fixed in advance; never chosen after seeing which metric favours a policy",
+      "a masked measured zero is legitimate evidence of non-detection, not missingness"
+    ],
+    "boundaries": {
+      "terminal_masking_outcomes_inspected": false,
+      "terminal_policy_selected": null,
+      "p1_p2_p3_p4_selected": null,
+      "p4_adopted": false,
+      "g5_margin_selected": null,
+      "terminal_target_panel_selected": null,
+      "d_shared_opened": false,
+      "pathology_opened": false,
+      "training_authorized": false
+    },
+    "interpretation_dispute": {
+      "id": "RSE_SCOPE__18_CELL_CONJUNCTION_VS_SINGLE_AGGREGATE",
+      "frozen_text": "escalate from Nk to Nk+1 iff relative standard error of the primary burden statistic > 0.05",
+      "why_ambiguous": "the frozen text says 'the primary burden statistic' in the singular while the frozen definition of that statistic is indexed by policy AND rung. It therefore does not determine whether the criterion is one aggregate RSE, a conjunction over cells, or something else.",
+      "implementation_reading": "conjunction: all 3 non-uniform policies x 6 burden rungs = 18 cells must each satisfy RSE <= 0.05",
+      "why_this_is_a_new_scientific_choice": [
+        "a conjunction over 18 cells is materially stricter than one aggregate RSE, so it changes when escalation fires",
+        "the zero-mean fail-closed rule appears NOWHERE in the frozen text and is wholly additional",
+        "structurally, the numerator is (ADDED - DROPPED) while the denominator is the full uniform mask; if for some policy x rung those two burdens are close, the target-level mean approaches zero, RSE becomes undefined or very large, and escalation is forced by a near-zero denominator rather than by genuine imprecision on the cells that matter"
+      ],
+      "not_predicted_here": "whether any cell actually has a near-zero mean is an OUTCOME and is deliberately not estimated. The earlier 512-address reduced-pool ratios are REDUCED_POOL_DIAGNOSTIC and must not be used to predict it.",
+      "status": "REQUIRES_EXPLICIT_RATIFICATION_BEFORE_N1"
+    }
+  },
+  "rule_sources": {
+    "estimator": {
+      "path": "src/sea_ad_jepa/v5/audit_b_production_burden_v1.py",
+      "sha256": "157f07928a43fc8ede13168d9f64db7500de82da0cdd3255da4f2160dd844152"
+    },
+    "evidence_contract": {
+      "path": "src/sea_ad_jepa/v5/evidence_estimability_contract_v2.py",
+      "sha256": "e9302a8bcdf2682b1d639b164d95ca8f8a6f69e63cce16c638b558ac6f5ae799"
+    },
+    "rng_authority": {
+      "path": "src/sea_ad_jepa/v5/masking_rng_replay_authority_v3.py",
+      "sha256": "6a0b854d3067145296fb675da7d6e84d568497b67325f107143ba68d2cf9f152"
+    }
+  },
+  "rule_digest": "e6335d27f8e19637f85f1b89564fb4d6842271b9a827521bf700956b5a37e0c8",
+  "execution_contract_digest": "342acc235a317e46edcb86f0a9de914114dd9765764fffff2c5ca94a535f12c7",
+  "ratified": false,
+  "execution_gate": "an Audit-B execution run MUST cite execution_contract_digest and MUST refuse to run while ratified is false",
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false
+}
