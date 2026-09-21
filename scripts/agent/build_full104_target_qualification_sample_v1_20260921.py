@@ -280,6 +280,7 @@ def main() -> int:
             full_donor_n_file_sha256=file_sha["full_donor_n"],
             fold_by_donor_file_sha256=file_sha["fold_by_donor"],
             donor_source_code_file_sha256=file_sha["donor_source_code"],
+            builder_source_sha256=sha256_file(Path(__file__)),
         )
         receipt.validate_against_authority(authority)
         manifest = {
