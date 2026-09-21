@@ -7,6 +7,8 @@ from pathlib import Path
 
 import pytest
 
+from sea_ad_jepa.v5.masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/agent/build_full104_audit_b_execution_contract_v1_20260921.py"
 SAMPLE = ROOT / (
@@ -28,6 +30,11 @@ def write_heavy(path: Path, *, schema="V5_FULL104_HEAVY_SUFFICIENT_STATISTICS_QU
                 "verdict": "HEAVY_ARTIFACT_QUALIFIED_FOR_REUSE",
                 "artifact_sha256": HEAVY_SHA,
                 "artifact_sha_matches_bound": True,
+                "block_manifest_sha256": FULL104_SHA,
+                "rows_traversed": 4_553_407,
+                "donors": 104,
+                "core_addresses": 17_186,
+                "three_route_total_agreement": True,
                 "all_104_donor_library_totals_agree": True,
                 "per_cell_source_vector_agrees": True,
                 "terminal_masking_outcomes_inspected": False,
@@ -38,19 +45,24 @@ def write_heavy(path: Path, *, schema="V5_FULL104_HEAVY_SUFFICIENT_STATISTICS_QU
 
 
 def write_rng(path: Path, *, schema="V5_MASKING_RNG_REPLAY_AUTHORITY_V3") -> None:
-    path.write_text(
-        json.dumps(
-            {
-                "schema": schema,
-                "full104_substrate_sha256": FULL104_SHA,
-                "canonical_registry_sha256": REGISTRY_SHA,
-                "target_panel_dependency": "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS",
-                "terminal_outcomes_inspected_before_freeze": False,
-                "training_authorized": False,
-                "authority_sha256": "a" * 64,
-            }
-        )
+    authority = MaskingRngReplayAuthorityV3(
+        authority_id="TEST_RNG_V3",
+        full104_substrate_sha256=FULL104_SHA,
+        canonical_registry_sha256=REGISTRY_SHA,
+        outer_split_receipt_sha256="1" * 64,
+        qualification_parameters_authority_sha256="2" * 64,
+        burden_ladder_authority_sha256="3" * 64,
     )
+    payload = {
+        "schema": schema,
+        **authority.__dict__,
+        "global_seed": authority.global_seed,
+        "authority_sha256": authority.canonical_digest(),
+        "target_panel_dependency": "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS",
+        "terminal_outcomes_inspected_before_freeze": False,
+        "training_authorized": False,
+    }
+    path.write_text(json.dumps(payload))
 
 
 def run_builder(tmp: Path, *, sample=SAMPLE, heavy_schema=None, rng_schema=None, scope=None):
