@@ -97,7 +97,7 @@ def test_target_address_must_be_in_uniform_base_and_never_in_swap_sets() -> None
     plans = _plans()
     plans["TOP8_CORRELATION"]["added_vs_base"] = [0]
     plans["TOP8_CORRELATION"]["dropped_vs_base"] = [1]
-    with pytest.raises(ValueError, match="Target|target"):
+    with pytest.raises(ValueError, match="do not match the actual mask"):
         measure_plan_burden(
             target_col=0,
             fold_index=0,
@@ -158,7 +158,7 @@ def test_source_balanced_target_value_is_not_cell_or_donor_pooled() -> None:
 
 
 def test_missing_required_source_cannot_disappear() -> None:
-    with pytest.raises(ValueError, match="required source"):
+    with pytest.raises(ValueError, match="source set differs|required source"):
         source_balanced_target_value(
             [_row(0, 0, 0.2)],
             expected_source_codes=[0, 1],
