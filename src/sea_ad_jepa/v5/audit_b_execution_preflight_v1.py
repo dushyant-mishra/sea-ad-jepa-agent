@@ -12,7 +12,10 @@ import json
 from pathlib import Path
 from typing import Any, Mapping
 
-from .audit_b_execution_contract_v1 import AuditBExecutionContractV1
+from .audit_b_execution_contract_v1 import (
+    PHASE_IV_SAMPLE_FREEZE_DIGEST,
+    AuditBExecutionContractV1,
+)
 from .masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
 
 
@@ -25,6 +28,98 @@ def sha256_file(path: str | Path) -> str:
         for chunk in iter(lambda: handle.read(8 << 20), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+
+EXPECTED_SAMPLE_BOUND_ROLES = frozenset(
+    {
+        "target_universe",
+        "split_receipt",
+        "planner_source",
+        "qualification_runner",
+        "masking_parameters_authority",
+        "evidence_budget_authority",
+        "mask_plan_generator",
+    }
+)
+
+
+def _canonical_freeze_digest(payload: Mapping[str, Any]) -> str:
+    material = json.dumps(
+        {
+            "schema": payload["schema"],
+            "salt": payload["salt"],
+            "ladder": payload["ladder"],
+            "bound": payload["bound_inputs"],
+            "samples": {
+                key: value["targets"] for key, value in payload["samples"].items()
+            },
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(material).hexdigest()
+
+
+def verify_phase_iv_sample_freeze(
+    sample_freeze: str | Path,
+    *,
+    repo_root: str | Path,
+) -> dict[str, str]:
+    """Verify the immutable sample receipt and every file it bound.
+
+    The sample digest proves what hashes were frozen; this function proves the
+    runtime checkout still contains exactly those bytes.
+    """
+    freeze_path = Path(sample_freeze)
+    if not freeze_path.is_file():
+        raise ValueError(f"Phase-IV sample freeze is missing: {freeze_path}")
+    payload = json.loads(freeze_path.read_text(encoding="utf-8"))
+    if payload.get("schema") != "V5_AUDIT_B_FROZEN_TARGET_SAMPLE_V1":
+        raise ValueError("Phase-IV sample freeze schema mismatch")
+    observed_digest = _canonical_freeze_digest(payload)
+    if payload.get("freeze_digest") != observed_digest:
+        raise ValueError("Phase-IV sample freeze internal digest mismatch")
+    if observed_digest != PHASE_IV_SAMPLE_FREEZE_DIGEST:
+        raise ValueError("runtime uses a different Phase-IV sample freeze")
+    if payload.get("terminal_masking_outcomes_inspected") is not False:
+        raise ValueError("Phase-IV sample freeze records terminal outcome access")
+    if payload.get("training_authorized") is not False:
+        raise ValueError("Phase-IV sample freeze unexpectedly authorizes training")
+
+    bound = payload.get("bound_inputs")
+    if not isinstance(bound, dict) or set(bound) != EXPECTED_SAMPLE_BOUND_ROLES:
+        raise ValueError(
+            "Phase-IV sample freeze bound-input role set drifted: "
+            f"expected={sorted(EXPECTED_SAMPLE_BOUND_ROLES)} "
+            f"observed={sorted(bound) if isinstance(bound, dict) else type(bound).__name__}"
+        )
+
+    root = Path(repo_root).resolve()
+    observed: dict[str, str] = {}
+    for role, rec in bound.items():
+        if not isinstance(rec, dict):
+            raise ValueError(f"Phase-IV bound input {role} is malformed")
+        rel = rec.get("path")
+        expected = rec.get("sha256")
+        if not isinstance(rel, str) or not rel or Path(rel).is_absolute():
+            raise ValueError(f"Phase-IV bound input {role} must use a relative repo path")
+        candidate = (root / rel).resolve()
+        try:
+            candidate.relative_to(root)
+        except ValueError as exc:
+            raise ValueError(f"Phase-IV bound input {role} escapes repo_root") from exc
+        actual = sha256_file(candidate)
+        if actual != expected:
+            raise ValueError(
+                f"Phase-IV bound input drift for {role}: "
+                f"expected {expected}, observed {actual}"
+            )
+        observed[role] = actual
+    return {
+        **observed,
+        **{f"phase_iv_bound::{role}": digest for role, digest in frozen_inputs.items()},
+    }
 
 
 def contract_from_payload(payload: Mapping[str, Any]) -> AuditBExecutionContractV1:
@@ -75,8 +170,13 @@ def verify_runtime_bindings(
     burden_estimator_source: str | Path,
     full104_manifest: str | Path,
     canonical_registry: str | Path,
+    repo_root: str | Path,
 ) -> dict[str, str]:
     """Verify exact physical bytes against the already validated contract."""
+    frozen_inputs = verify_phase_iv_sample_freeze(
+        sample_freeze,
+        repo_root=repo_root,
+    )
     observed = {
         "phase_iv_sample_artifact_sha256": sha256_file(sample_freeze),
         "heavy_artifact_sha256": sha256_file(heavy_artifact),
