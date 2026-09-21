@@ -23,7 +23,9 @@ that item can be settled; `NO` = independent; `—` = not applicable.
 | actual fold-specific policy burden | `OPEN` / not yet measured | no | no | **YES** | no | **YES** | no |
 | source-specific target support | `NEW_FINDING` / FULL104 reconnaissance | **not yet** | no | no | no | **YES** | no |
 | fold-aware scorer estimability (C2) | `OPEN` — authenticated rerun required | **not yet** | no | no | no | **YES** | no |
-| held-out-donor standardization | `NEW_FINDING` / `OPEN` | no — regime unchanged | no | no | **YES** | no | no |
+| held-out-donor standardization / score scope | `NEW_FINDING` / `OPEN` | no — regime unchanged | no | no | **YES** | no | no |
+| attacker fit-objective weighting | `NEW_FINDING` / `OPEN` | no — attacker unchanged | no | no | **YES** | **YES** | no |
+| H3 donor-vs-target precision decomposition | `DESIGN_OPEN` / outcome-blind | no | no | no | no | **YES** after G5 | no |
 | co-detection/quantitative partner decomposition | `PARTIALLY_AUDITED` / reduced-pool, estimand-mismatched | no | **YES** | no | no | no | no |
 | current V5 query-local latent decomposition | `DESIGN_OPEN` | no | **YES** | no | no | no | **YES** (needs a real teacher) |
 | calibration-cache tail coverage | **`NO_ISSUE_FOUND`** — behaves exactly as designed | no — role unchanged | no | no | no | no | no |
@@ -95,6 +97,23 @@ and belongs to G3: whether equal-donor weighting is the right weighting for
 *capacity* calibration specifically, as distinct from for a source-balanced
 score.
 
+**G3 fit objective.** The full-data ridge is cell-weighted even though the frozen
+production scientific mass is donor-uniform. A separate source/donor-balanced
+fit would instead optimize the anti-cheat score. These are distinct questions;
+G3 must compare `CURRENT_CELL_WEIGHTED`, `PRODUCTION_OBJECTIVE_MATCHED`, and
+`SOURCE_DONOR_BALANCED_DIAGNOSTIC` prospectively before selecting any replacement.
+
+**H3 precision.** NPH52 contributes only 4–5 held-out donors per fold while each
+source gets 1/3 of the primary score. H3 therefore needs target-only,
+donor-only-within-source, and paired target+donor bootstrap contrasts to determine
+whether precision is donor-limited. No per-source eligibility threshold is
+invented from this geometry.
+
+**G4 technical-only decoy.** Historical support/source shortcut findings motivate
+—but do not numerically calibrate—a prospective `F-technical-only-decoy`. Any G4
+content functional must outperform lawful source/operator/depth/sparsity/support
+geometry alone before it can be frozen.
+
 **B → G5.** The reduced-pool diagnostic establishes a plausible burden-enrichment
 mechanism, not the production burden difference. G5 remains blocked until the
 actual fold-specific full-universe policy masks are measured prospectively. If
@@ -133,9 +152,11 @@ by current V5 authority.
 
 ## 5. Revised dependency order
 
-The expected order was: close these audits → decide whether masking burden,
-estimability or the attacker need repair → freeze G4 → justify G5 → H3 → H4/G2 →
-G4 execution → G3 → F13/F14/F15 → terminal masking → training.
+The expected order is now: finish production-aligned A/B/C/E instrument closure →
+settle masking burden/estimability/attacker estimands → freeze G4 including the
+technical-only decoy → justify G5 → H3 target-vs-donor precision → H4/G2 → G4
+execution → G3 capacity/functional-form/fit-objective challenge → current V5 F
+latent-state decomposition and remaining F13/F14/F15 → terminal masking → training.
 
 Audit D changes one step. G3 was scoped as capacity and functional form; it now
 also requires settling the estimand, because a capacity-matched attacker
