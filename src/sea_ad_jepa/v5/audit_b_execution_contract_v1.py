@@ -175,6 +175,11 @@ class AuditBExecutionContractV1:
             raise ValueError("RNG target-panel dependency drifted")
         if self.precision_scope_id not in ALLOWED_PRECISION_SCOPES:
             raise ValueError("unknown precision_scope_id")
+        if self.precision_scope_id != PRECISION_SCOPE_UNRESOLVED:
+            raise ValueError(
+                "V1 precision scope must remain UNRESOLVED; a reviewed successor "
+                "contract is required to encode any scientific resolution"
+            )
         if self.primary_metric_id != PRIMARY_METRIC_ID:
             raise ValueError("primary burden metric drifted")
         if self.secondary_metric_id != SECONDARY_METRIC_ID:
