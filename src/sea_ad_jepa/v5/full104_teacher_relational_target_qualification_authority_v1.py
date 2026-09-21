@@ -41,6 +41,9 @@ APPROVED_PRIMARY_WEIGHTING_IDS: Tuple[str, ...] = (
 APPROVED_SOURCE_POLICY_IDS: Tuple[str, ...] = (
     "SOURCE_IS_ROBUSTNESS_STRATUM__ALL_THREE_SOURCES_REPORTED_SEPARATELY_V1",
 )
+APPROVED_EVALUATION_PARTITION_IDS: Tuple[str, ...] = (
+    "AUTHENTICATED_FULL104_SOURCE_STRATIFIED_FOUR_FOLD_V1",
+)
 APPROVED_RELATIONAL_POLICY_IDS: Tuple[str, ...] = (
     "TD57B_GLOBAL_PLUS_TD59_NEAREST_HALF_MESOSCALE__NO_NEW_SEARCH_V1",
 )
@@ -96,6 +99,7 @@ class Full104TeacherRelationalTargetQualificationAuthorityV1:
     dataset_etl_atlas_sha256: str
     scientific_weight_law_sha256: str
     teacher_target_semantics_authority_sha256: str
+    outer_split_receipt_sha256: str
 
     # Historical qualified relational roots.
     td57b_protocol_sha256: str
@@ -106,6 +110,7 @@ class Full104TeacherRelationalTargetQualificationAuthorityV1:
     teacher_state_id: str
     primary_weighting_id: str
     source_policy_id: str
+    evaluation_partition_id: str
     relational_policy_id: str
     rare_biology_policy_id: str
     label_firewall_id: str
@@ -141,6 +146,7 @@ class Full104TeacherRelationalTargetQualificationAuthorityV1:
             "dataset_etl_atlas_sha256",
             "scientific_weight_law_sha256",
             "teacher_target_semantics_authority_sha256",
+            "outer_split_receipt_sha256",
             "td57b_protocol_sha256",
             "td59_protocol_sha256",
             "td60_legacy_prospective_protocol_sha256",
@@ -155,6 +161,11 @@ class Full104TeacherRelationalTargetQualificationAuthorityV1:
             "primary_weighting_id",
         )
         _enum(self.source_policy_id, APPROVED_SOURCE_POLICY_IDS, "source_policy_id")
+        _enum(
+            self.evaluation_partition_id,
+            APPROVED_EVALUATION_PARTITION_IDS,
+            "evaluation_partition_id",
+        )
         _enum(
             self.relational_policy_id,
             APPROVED_RELATIONAL_POLICY_IDS,
