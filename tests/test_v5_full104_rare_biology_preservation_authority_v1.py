@@ -22,6 +22,7 @@ def authority(**updates) -> Full104RareBiologyPreservationAuthorityV1:
         td59_protocol_sha256=h("td59"),
         teacher_relational_target_authority_sha256=h("teacher-relational"),
         outer_split_receipt_sha256=h("split"),
+        qualification_sample_authority_sha256=h("qualification-sample"),
         selector_id="TD59_Z_NEAREST_HALF_BOUNDARY_DISTANCE_V1",
         stratification_id=(
             "WITHIN_DONOR_OPERATOR__OPERATOR_DOES_NOT_SET_OBJECTIVE_MASS_V1"
