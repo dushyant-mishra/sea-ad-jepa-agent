@@ -37,10 +37,10 @@ def test_current_geometry_is_exact_and_nonexecuting() -> None:
 
 def test_priority_is_deterministic_and_identity_only() -> None:
     a = authority()
-    x = a.selection_priority(donor_id="D1", stable_cell_key="C1")
-    assert x == a.selection_priority(donor_id="D1", stable_cell_key="C1")
-    assert x != a.selection_priority(donor_id="D1", stable_cell_key="C2")
-    assert x != a.selection_priority(donor_id="D2", stable_cell_key="C1")
+    x = a.selection_priority(donor_code=1, selection_row=10)
+    assert x == a.selection_priority(donor_code=1, selection_row=10)
+    assert x != a.selection_priority(donor_code=1, selection_row=11)
+    assert x != a.selection_priority(donor_code=2, selection_row=10)
 
     source = inspect.getsource(Full104TargetQualificationSampleAuthorityV1.selection_priority)
     for forbidden in (
@@ -51,6 +51,7 @@ def test_priority_is_deterministic_and_identity_only() -> None:
         "region",
         "class_",
         "pathology",
+        "source_library",
     ):
         assert forbidden not in source
 
@@ -91,3 +92,13 @@ def test_root_changes_change_sample_authority_digest() -> None:
     a = authority()
     b = dataclasses.replace(a, outer_split_receipt_sha256=h("other-split"))
     assert a.canonical_digest() != b.canonical_digest()
+
+
+def test_priority_rejects_row_alias_and_invalid_donor_inputs() -> None:
+    a = authority()
+    with pytest.raises(ValueError, match="donor_code"):
+        a.selection_priority(donor_code=-1, selection_row=0)
+    with pytest.raises(ValueError, match="selection_row"):
+        a.selection_priority(donor_code=0, selection_row=-1)
+    with pytest.raises(ValueError, match="selection_row"):
+        a.selection_priority(donor_code=0, selection_row=4_553_407)
