@@ -1,7 +1,7 @@
 {
   "schema": "V5_AUDIT_B_PREEXECUTION_STATUS_V1",
   "date": "2026-09-21",
-  "based_on_integration_sha": "8c3d37a475dea8a2829899d4c96b234d9afb4b1f",
+  "based_on_integration_sha": "a8cbd9f62d12ba1c3c51af081843b918a41d6b01",
   "protected_state": {
     "audit_b_n1_burden_outcomes_opened": false,
     "terminal_masking_outcomes_opened": false,
@@ -17,9 +17,9 @@
     "audited_head": "cdac29eba5f08994bc3d8309a31c05cd21da50aa",
     "exact_head_ci": "537 passed / 0 skipped",
     "numerical_findings_status": "INTERNALLY_CONSISTENT__NO_EVIDENCE_NUMBER_REVERSAL_FOUND",
-    "phase_i_original_status": "SUPPORTED_BUT_QUALIFIER_V1_NOT_EXHAUSTIVE_FOR_DONOR_LIBRARY_AND_CELL_SOURCE_IDENTITY",
+    "phase_i_original_status": "V1_SUPPORTED__V2_REAL_GPU_SUCCESSOR_PASS__B1_CLOSED",
     "phase_ii_status": "DEFECT_QUANTIFIED__ROW_LEVEL_SAMPLE_CONFIRMS_CLASSIFICATION_ROUTE",
-    "phase_iii_status": "CORE_SIX_STATE_RESULT_SUPPORTED__REFERENCE_IMPLEMENTATION_HAS_ADDITIONAL_EDGE_CASES__INTEGRATED_SUCCESSOR_REQUIRED",
+    "phase_iii_status": "CORE_SIX_STATE_RESULT_SUPPORTED__REFERENCE_EDGE_CASES_FIXED_AND_PARITY_TESTED",
     "phase_iv_sample_status": "TARGET_SAMPLE_IMMUTABLY_FROZEN__SCIENTIFIC_EXECUTION_RULE_NOT_FULLY_DIGEST_COVERED"
   },
   "integration_repairs": {
@@ -33,63 +33,65 @@
       ]
     },
     "heavy_qualification_v2": {
-      "state": "IMPLEMENTED_AND_FIXTURE_TESTED__REAL_GPU_ARTIFACT_RUN_PENDING",
-      "requires": [
-        "all 104 donor source-library totals agree",
-        "complete per-cell source vector agrees with authenticated donor/source identity"
-      ],
-      "expected_heavy_artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae"
+      "state": "REAL_GPU_RUN_PASS__B1_CLOSED",
+      "receipt": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V2.json",
+      "artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+      "rows_traversed": 4553407,
+      "all_104_donor_library_totals_agree": true,
+      "complete_per_cell_source_vector_agrees": true,
+      "failures": []
     },
     "masking_rng_replay_authority_v3": {
       "state": "IMPLEMENTED_AND_TESTED__REAL_AUTHORITY_RECEIPT_PENDING",
-      "target_panel_dependency": "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS"
+      "target_panel_dependency": "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS",
+      "free_form_cell_key": "FORBIDDEN__FIXED_MASK_NAMESPACES_ONLY",
+      "authenticated_outer_folds": "0..3_ONLY"
     },
     "audit_b_execution_contract_v1": {
+      "state": "IMPLEMENTED_AND_PERMANENTLY_PREEXECUTION_ONLY",
+      "precision_scope": "UNRESOLVED__ONLY_LAWFUL_V1_STATE",
+      "execution_authorized": false,
+      "note": "V1 cannot encode a resolved precision scope or authorize N1. A reviewed successor contract is required after outcome-blind scientific resolution."
+    },
+    "audit_b_scientific_resolution_v1": {
+      "state": "SCHEMA_IMPLEMENTED__NO_RESOLUTION_RECORDED",
+      "records": [
+        "parent preexecution contract digest",
+        "resolver identity",
+        "UTC resolution time",
+        "scientific rationale",
+        "resolved precision scope",
+        "resolved target weighting",
+        "resolved zero-mean rule",
+        "outcome-blind attestation"
+      ]
+    },
+    "audit_b_burden_fold_guard": {
+      "state": "IMPLEMENTED_AND_TESTED",
+      "rule": "heldout_donors must equal the complete authenticated donor set for fold_index; training-side or partial heldout sets are refused"
+    },
+    "zero_mean_rse_guard": {
       "state": "IMPLEMENTED_AND_FAIL_CLOSED",
-      "default_precision_scope": "UNRESOLVED__EXECUTION_FORBIDDEN",
-      "binds": [
-        "original Phase-IV sample freeze",
-        "sample artifact bytes",
-        "FULL104 manifest",
-        "canonical registry",
-        "heavy artifact",
-        "heavy qualification receipt",
-        "RNG V3 authority",
-        "frozen mask-plan generator",
-        "burden-estimator source",
-        "primary and secondary metrics",
-        "normalization",
-        "target/source/donor weighting",
-        "precision estimator",
-        "5 percent RSE threshold",
-        "N1/N2/N3 ladder",
-        "execution requirements"
-      ],
-      "note": "Current source-balanced/donor-uniform/target-uniform aggregation is a prospective candidate bound by the new contract, not claimed to have been decided by the original c2c5e1b5 sample freeze."
+      "rule": "undefined zero-mean RSE cannot trigger sample escalation until the zero-mean scientific rule is prospectively resolved"
     }
   },
   "remaining_blockers_before_n1": [
     {
-      "id": "B1_HEAVY_QUALIFICATION_V2_REAL_RUN",
-      "owner": "CLAUDE_GPU_LANE",
-      "condition": "run V2 qualifier on the content-addressed 242 MB real artifact and obtain PASS"
-    },
-    {
       "id": "B2_SCIENTIFIC_EXECUTION_SCOPE",
       "owner": "SCIENTIFIC_REVIEW",
-      "condition": "resolve prospectively, without viewing burden outcomes, both (a) whether frozen 'RSE of primary burden statistic' means one predeclared statistic or all policy x rung cells, and (b) the source/donor/fold weighting used to form the target-level primary statistic"
+      "condition": "resolve prospectively without viewing burden outcomes: (a) precision/RSE scope, (b) source-donor-fold weighting for the target-level statistic, and (c) zero-mean RSE handling"
     },
     {
       "id": "B3_RNG_V3_REAL_RECEIPT",
-      "owner": "INTEGRATION",
-      "condition": "build and verify content-addressed RNG V3 authority from current pre-panel roots"
+      "owner": "INTEGRATION_OR_GPU_LANE",
+      "condition": "build and verify the content-addressed RNG V3 authority from current pre-panel roots using the authenticated canonical-registry artifact"
     },
     {
-      "id": "B4_EXECUTION_CONTRACT_FREEZE",
+      "id": "B4_RESOLVED_SUCCESSOR_EXECUTION_CONTRACT",
       "owner": "INTEGRATION",
-      "condition": "after B1-B3, build resolved execution-contract JSON and verify execution_authorized=true"
+      "condition": "after B2-B3, create a provenance-bearing scientific-resolution record and a successor execution contract; V1 must remain non-executable"
     }
   ],
-  "next_authorized_action": "PREOUTCOME_REVIEW_AND_BINDING_ONLY",
+  "next_authorized_action": "PREOUTCOME_SCIENTIFIC_RESOLUTION_AND_RNG_BINDING_ONLY",
   "audit_b_n1_execution_authorized": false
 }
