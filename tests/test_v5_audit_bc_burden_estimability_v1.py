@@ -241,10 +241,13 @@ def _write_split_receipt(tmp: Path, *, fold_by_donor=None) -> tuple[Path, str]:
         "source_names": ["HVS", "NPH52", "SEA_AD"],
         "fold_by_donor": np.asarray(fold_by_donor, dtype=np.int64).tolist(),
     }
+    canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"),
+                           ensure_ascii=True, allow_nan=False).encode("utf-8")
+    digest = hashlib.sha256(canonical).hexdigest()
+    payload["receipt_sha256"] = digest
     path = tmp / "split.json"
-    raw = (json.dumps(payload, indent=2) + "\n").encode("utf-8")
-    path.write_bytes(raw)
-    return path, hashlib.sha256(raw).hexdigest()
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    return path, digest
 
 
 def _run_c(tmp: Path, stats: Path, eligible: list[int]) -> dict:
