@@ -28,6 +28,8 @@ from sea_ad_jepa.v5.audit_b_execution_contract_v1 import (
 from sea_ad_jepa.v5.masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
 from sea_ad_jepa.v5.audit_b_execution_preflight_v1 import verify_phase_iv_sample_freeze
 
+ROOT = Path(__file__).resolve().parents[2]
+
 
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
@@ -62,6 +64,7 @@ def load_json(path: Path) -> dict:
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--repo-root", type=Path, default=ROOT)
     p.add_argument(
         "--sample-freeze",
         type=Path,
