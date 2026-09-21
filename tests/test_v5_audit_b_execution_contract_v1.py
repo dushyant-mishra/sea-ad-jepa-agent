@@ -51,19 +51,18 @@ def test_v1_explicitly_forbids_execution() -> None:
     "scope",
     [PRECISION_SCOPE_SINGLE_PRIMARY, PRECISION_SCOPE_ALL_POLICY_RUNG],
 )
-def test_even_a_resolved_scope_cannot_make_v1_execution_ready(scope: str) -> None:
+def test_v1_cannot_even_represent_a_resolved_precision_scope(scope: str) -> None:
     c = contract(precision_scope_id=scope)
-    c.validate()
-    assert c.execution_authorized is False
-    with pytest.raises(ValueError, match="successor execution contract"):
-        c.require_execution_ready()
+    with pytest.raises(ValueError, match="must remain UNRESOLVED"):
+        c.validate()
 
 
-def test_contract_digest_changes_when_precision_scope_changes() -> None:
+def test_contract_digest_exists_only_for_the_unresolved_v1_state() -> None:
     unresolved = contract().canonical_digest()
-    one = contract(precision_scope_id=PRECISION_SCOPE_SINGLE_PRIMARY).canonical_digest()
-    eighteen = contract(precision_scope_id=PRECISION_SCOPE_ALL_POLICY_RUNG).canonical_digest()
-    assert len({unresolved, one, eighteen}) == 3
+    assert len(unresolved) == 64
+    for scope in (PRECISION_SCOPE_SINGLE_PRIMARY, PRECISION_SCOPE_ALL_POLICY_RUNG):
+        with pytest.raises(ValueError, match="must remain UNRESOLVED"):
+            contract(precision_scope_id=scope).canonical_digest()
 
 
 def test_scientific_execution_rules_are_not_mutable_without_invalidating_contract() -> None:
