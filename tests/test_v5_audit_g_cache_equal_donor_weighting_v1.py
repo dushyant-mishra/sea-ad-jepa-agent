@@ -15,9 +15,14 @@ data, or training.
 """
 from __future__ import annotations
 
+import hashlib
+import importlib.util
 import inspect
 import json
 from pathlib import Path
+
+import numpy as np
+import pytest
 
 from sea_ad_jepa.v5.full104_control_calibration_cache_v1 import row_priority
 
@@ -34,6 +39,10 @@ SUMMARY = ROOT / (
 CACHE_MANIFEST = ROOT / (
     "analysis/v5_full104_pass1_rebuild_20260920/evidence/calibration_cache/"
     "cache_manifest.json"
+)
+QUALIFIER = ROOT / (
+    "analysis/v5_full104_information_channel_redteam_20260920/scripts/"
+    "qualify_audit_g_physical_artifact_20260920.py"
 )
 
 SOURCE_SHARE_TOLERANCE = 0.01
@@ -146,3 +155,102 @@ def test_withdrawn_findings_remain_explicitly_withdrawn():
     withdrawn = set(fx["withdrawn_claims"])
     assert "G_CACHE_BIASED_TOWARD_HIGH_COMPLEXITY_CELLS" in withdrawn
     assert "G_LOW_TAIL_SUPPRESSED" in withdrawn
+
+def _sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _load_qualifier():
+    spec = importlib.util.spec_from_file_location("audit_g_physical_qualifier", QUALIFIER)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _write_physical_qualifier_fixture(tmp_path: Path):
+    # Four donors, cap=2, donor 1 intentionally short with one available cell.
+    cell_donor = np.array([0, 0, 0, 1, 2, 2, 2, 3, 3], dtype=np.int64)
+    cell_nnz = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=np.int64)
+    donor_src = np.array([0, 1, 2, 2], dtype=np.int64)
+    pass1 = tmp_path / "pass1.npz"
+    np.savez(pass1, cell_donor=cell_donor, cell_nnz_core=cell_nnz, donor_src=donor_src)
+
+    cache = tmp_path / "cache"
+    cache.mkdir()
+    selection = np.array([0, 1, 3, 4, 5, 7, 8], dtype=np.int64)
+    donor_code = cell_donor[selection]
+    retained = np.array([2, 1, 2, 2], dtype=np.int64)
+    np.save(cache / "selection_rows_i64.npy", selection)
+    np.save(cache / "donor_code_i64.npy", donor_code)
+    np.save(cache / "retained_count_by_donor_i64.npy", retained)
+
+    manifest = {
+        "cache_role_id": "CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1",
+        "max_rows_per_donor": 2,
+        "file_names": {
+            "selection_rows": "selection_rows_i64.npy",
+            "donor_code": "donor_code_i64.npy",
+            "retained_count_by_donor": "retained_count_by_donor_i64.npy",
+        },
+        "selection_rows_file_sha256": _sha(cache / "selection_rows_i64.npy"),
+        "donor_code_file_sha256": _sha(cache / "donor_code_i64.npy"),
+        "retained_count_by_donor_file_sha256": _sha(
+            cache / "retained_count_by_donor_i64.npy"
+        ),
+    }
+    manifest_path = tmp_path / "cache_manifest.json"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    observed_mean = float(cell_nnz[selection].mean())
+    fixture = {
+        "cache_role": manifest["cache_role_id"],
+        "population_cells": int(cell_donor.size),
+        "cached_cells": int(selection.size),
+        "donors": 4,
+        "per_donor_cap": 2,
+        "source_design": [
+            {"source": "HVS", "equal_donor_target": 0.25, "observed_rows": 2},
+            {"source": "NPH52", "equal_donor_target": 0.25, "observed_rows": 1},
+            {"source": "SEA_AD", "equal_donor_target": 0.50, "observed_rows": 4},
+        ],
+        "complexity": {
+            "equal_donor_expected_mean_core_nonzeros": observed_mean,
+            "observed_cache_mean_core_nonzeros": observed_mean,
+        },
+        "low_tail": {
+            "threshold_core_nonzeros": 2,
+            "observed_cache_cells": 2,
+        },
+    }
+    fixture_path = tmp_path / "hosted_fixture.json"
+    fixture_path.write_text(json.dumps(fixture), encoding="utf-8")
+    return pass1, cache, manifest_path, fixture_path
+
+
+def test_physical_qualifier_rederives_fixture_and_fails_closed_on_hashes(tmp_path: Path):
+    mod = _load_qualifier()
+    pass1, cache, manifest, fixture = _write_physical_qualifier_fixture(tmp_path)
+    result = mod.qualify(
+        cache_dir=cache,
+        pass1_path=pass1,
+        cache_manifest_path=manifest,
+        hosted_fixture_path=fixture,
+        expected_pass1_sha256=_sha(pass1),
+    )
+    assert result["status"] == "PASS_PHYSICAL_AUDIT_G_EQUAL_DONOR_QUALIFICATION"
+    assert result["cached_cells"] == 7
+    assert result["donors_below_cap"] == 1
+
+    # Corrupt one bound cache file after its manifest hash was frozen.
+    arr = np.load(cache / "selection_rows_i64.npy")
+    arr[0] = 2
+    np.save(cache / "selection_rows_i64.npy", arr)
+    with pytest.raises(ValueError, match="cache file hash mismatch"):
+        mod.qualify(
+            cache_dir=cache,
+            pass1_path=pass1,
+            cache_manifest_path=manifest,
+            hosted_fixture_path=fixture,
+            expected_pass1_sha256=_sha(pass1),
+        )
+
