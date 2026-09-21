@@ -25,8 +25,11 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import hashlib
+import heapq
 import json
 from typing import Any, Mapping
+
+import numpy as np
 
 
 FULL104_READER_FIT_CELLS = 4_553_407
@@ -148,7 +151,7 @@ class Full104TargetQualificationSampleAuthorityV1:
             }
         )
 
-    def selection_priority(self, *, donor_code: int, selection_row: int) -> bytes:
+    def selection_priority(self, *, donor_code: int, selection_row: int) -> int:
         """Deterministic expression-blind within-donor ordering key."""
         self.validate()
         if isinstance(donor_code, bool) or not isinstance(donor_code, int) or donor_code < 0:
@@ -165,4 +168,93 @@ class Full104TargetQualificationSampleAuthorityV1:
             f"{self.population_authority_sha256}|"
             f"donor|{donor_code}|selection_row|{selection_row}"
         ).encode("utf-8")
-        return hashlib.sha256(payload).digest()
+        return int.from_bytes(hashlib.sha256(payload).digest(), "big", signed=False)
+
+
+class RetainedQualificationRowSelectorV1:
+    """Streaming bottom-k selector for the target-qualification sample."""
+
+    def __init__(self, authority: Full104TargetQualificationSampleAuthorityV1) -> None:
+        authority.validate()
+        self.authority = authority
+        self._heaps: list[list[tuple[int, int]]] = [
+            [] for _ in range(authority.reader_fit_donors)
+        ]
+        self._observed = np.zeros(authority.reader_fit_donors, dtype=np.int64)
+
+    def update(self, selection_rows: np.ndarray, donor_code: np.ndarray) -> None:
+        rows = np.asarray(selection_rows)
+        donors = np.asarray(donor_code)
+        if (
+            rows.ndim != 1
+            or donors.ndim != 1
+            or rows.size != donors.size
+            or not np.issubdtype(rows.dtype, np.integer)
+            or not np.issubdtype(donors.dtype, np.integer)
+        ):
+            raise ValueError("selection_rows and donor_code must be aligned integer vectors")
+        if rows.size == 0:
+            return
+        if np.any(rows < 0) or np.any(rows >= self.authority.reader_fit_cells):
+            raise ValueError("selection_rows contain invalid global FULL104 rows")
+        if np.any(donors < 0) or np.any(donors >= self.authority.reader_fit_donors):
+            raise ValueError("donor_code is outside the current FULL104 donor registry")
+
+        for raw_row, raw_donor in zip(rows, donors):
+            row = int(raw_row)
+            donor = int(raw_donor)
+            self._observed[donor] += 1
+            priority = self.authority.selection_priority(
+                donor_code=donor,
+                selection_row=row,
+            )
+            # max-priority item sits at heap[0] through negation; replace it when
+            # a lower-priority row arrives.
+            item = (-priority, -row)
+            heap = self._heaps[donor]
+            if len(heap) < self.authority.per_donor_cap:
+                heapq.heappush(heap, item)
+            elif item > heap[0]:
+                heapq.heapreplace(heap, item)
+
+    def finalize(self) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        if np.any(self._observed <= 0):
+            raise ValueError("qualification selector did not observe all 104 donors")
+
+        rows: list[int] = []
+        donors: list[int] = []
+        ranks: list[int] = []
+        retained = np.zeros(self.authority.reader_fit_donors, dtype=np.int64)
+
+        for donor, heap in enumerate(self._heaps):
+            selected = sorted(
+                [(-neg_priority, -neg_row) for neg_priority, neg_row in heap],
+                key=lambda pair: (pair[0], pair[1]),
+            )
+            expected = min(int(self._observed[donor]), self.authority.per_donor_cap)
+            if len(selected) != expected:
+                raise ValueError("retained donor rows do not equal min(cap, donor cells)")
+            retained[donor] = len(selected)
+            for rank, (_, row) in enumerate(selected):
+                rows.append(row)
+                donors.append(donor)
+                ranks.append(rank)
+
+        out_rows = np.asarray(rows, dtype=np.int64)
+        out_donors = np.asarray(donors, dtype=np.int64)
+        out_ranks = np.asarray(ranks, dtype=np.int64)
+        if np.unique(out_rows).size != out_rows.size:
+            raise ValueError("retained qualification rows are not globally unique")
+        if out_rows.size != self.authority.expected_sample_cells:
+            raise ValueError(
+                f"qualification sample row count {out_rows.size} != "
+                f"expected {self.authority.expected_sample_cells}"
+            )
+        if int(np.sum(retained == self.authority.per_donor_cap)) != (
+            self.authority.expected_donors_at_cap
+        ):
+            raise ValueError("donors-at-cap geometry does not match authenticated FULL104")
+        short = retained[retained < self.authority.per_donor_cap]
+        if short.tolist() != [self.authority.expected_short_donor_cells]:
+            raise ValueError("short-donor geometry does not match authenticated FULL104")
+        return out_rows, out_donors, out_ranks, retained
