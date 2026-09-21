@@ -154,7 +154,7 @@ class Full104TargetQualificationSampleAuthorityV1:
         )
 
     def selection_priority(self, *, donor_code: int, selection_row: int) -> int:
-        """Deterministic expression-blind within-donor ordering key."""
+        """Deterministic identity-only within-donor ordering key."""
         self.validate()
         return _selection_priority_unchecked(
             self,
