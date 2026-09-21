@@ -8,6 +8,8 @@ on:
     paths:
       - 'src/sea_ad_jepa/v5/**'
       - 'tests/test_v5_*.py'
+      - 'scripts/agent/build_full104_target_qualification_sample_v1_20260921.py'
+      - 'scripts/agent/validate_full104_target_qualification_sample_v1_20260921.py'
       - '.github/workflows/v5-remaining-rna-target-semantics.yml'
   workflow_dispatch:
 
@@ -51,7 +53,10 @@ jobs:
             tests/test_v5_current_stage_a_spillover_firewall_v2.py \
             tests/test_v5_current_address_registry_and_policy_authority_v1.py \
             tests/test_v5_current_masking_policy_authority_v2.py \
-            tests/test_v5_shared_address_query_provider_v1.py
+            tests/test_v5_shared_address_query_provider_v1.py \
+            tests/test_v5_full104_teacher_relational_target_qualification_authority_v1.py \
+            tests/test_v5_full104_target_qualification_sample_authority_v1.py \
+            tests/test_v5_full104_rare_biology_preservation_authority_v1.py
       - name: Fail closed on skipped regression tests
         env:
           PYTHONPATH: src:.
@@ -77,5 +82,8 @@ jobs:
             tests/test_v5_current_address_registry_and_policy_authority_v1.py \
             tests/test_v5_current_masking_policy_authority_v2.py \
             tests/test_v5_shared_address_query_provider_v1.py \
+            tests/test_v5_full104_teacher_relational_target_qualification_authority_v1.py \
+            tests/test_v5_full104_target_qualification_sample_authority_v1.py \
+            tests/test_v5_full104_rare_biology_preservation_authority_v1.py \
             -rs --tb=short | tee /tmp/current-v5.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/current-v5.txt; then echo 'CURRENT V5 REGRESSION TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
