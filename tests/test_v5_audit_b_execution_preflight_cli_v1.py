@@ -74,6 +74,7 @@ def test_cli_stops_on_unresolved_precision_before_touching_runtime_files(tmp_pat
         "--burden-estimator-source", str(missing),
         "--full104-manifest", str(missing),
         "--canonical-registry", str(missing),
+        "--repo-root", str(tmp_path),
     ]
     proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=60)
     assert proc.returncode != 0
