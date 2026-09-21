@@ -18,6 +18,7 @@ training.
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import subprocess
 import sys
@@ -229,12 +230,34 @@ def test_b_detection_entropy_is_zero_at_the_degenerate_endpoints():
 # Audit C
 # --------------------------------------------------------------------------- #
 
+def _write_split_receipt(tmp: Path, *, fold_by_donor=None) -> tuple[Path, str]:
+    if fold_by_donor is None:
+        fold_by_donor = np.arange(N_DONORS, dtype=np.int64) % 4
+    payload = {
+        "schema": "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1",
+        "n_folds": int(np.max(fold_by_donor)) + 1,
+        "donor_ids": [f"D{i:02d}" for i in range(N_DONORS)],
+        "donor_source_code": SOURCES.tolist(),
+        "source_names": ["HVS", "NPH52", "SEA_AD"],
+        "fold_by_donor": np.asarray(fold_by_donor, dtype=np.int64).tolist(),
+    }
+    path = tmp / "split.json"
+    raw = (json.dumps(payload, indent=2) + "\n").encode("utf-8")
+    path.write_bytes(raw)
+    return path, hashlib.sha256(raw).hexdigest()
+
+
 def _run_c(tmp: Path, stats: Path, eligible: list[int]) -> dict:
+    split, split_sha = _write_split_receipt(tmp)
     elig = tmp / "elig.json"
-    elig.write_text(json.dumps({"eligible_target_cols_all_folds": eligible}), encoding="utf-8")
+    elig.write_text(json.dumps({
+        "eligible_target_cols_all_folds": eligible,
+        "split_receipt_sha256": split_sha,
+    }), encoding="utf-8")
     out = tmp / "c"
     proc = subprocess.run([sys.executable, str(C_SCRIPT), "--stats", str(stats),
-                           "--eligibility", str(elig), "--out-dir", str(out)],
+                           "--eligibility", str(elig), "--split-receipt", str(split),
+                           "--out-dir", str(out)],
                           capture_output=True, text=True, timeout=900)
     assert proc.returncode == 0, proc.stderr[-2000:]
     return json.loads((out / "TARGET_SOURCE_ESTIMABILITY.json").read_text())
@@ -309,3 +332,43 @@ def test_c_weak_source_accounting_partitions_every_target(tmp_path: Path):
              + payload["targets_with_three_weak_sources"])
     assert total == payload["targets_examined"], (
         "weak-source accounting must partition every target exactly once")
+
+def test_c2_uses_authenticated_fold_geometry_and_reports_undefined_score_terms(tmp_path: Path):
+    rng = np.random.default_rng(25)
+    nnz, umi, nsum, nsq, cells = _base_arrays(rng)
+    nnz = np.maximum(nnz, 1)
+    # Make target 3 mathematically undefined in donor 0 only; donor 0 is held out
+    # in fold 0 under the synthetic authenticated split.
+    nnz[0, 3] = 0
+    nsum[0, 3] = 0.0
+    nsq[0, 3] = 0.0
+    stats = _write_stats(tmp_path / "s.npz", donor_nnz=nnz, donor_umi=nnz * 2,
+                         donor_nsum=nsum, donor_nsq=nsq, donor_cells=cells)
+    payload = _run_c(tmp_path, stats, list(range(40)))
+    rows = payload["c2_fold_geometry"]
+    hvs_fold0 = next(r for r in rows if r["fold"] == 0 and r["source"] == "HVS")
+    assert hvs_fold0["available_heldout_donors"] == 1
+    assert hvs_fold0["current_score_terms_per_target"] == 1
+    assert hvs_fold0["targets_current_score_includes_undefined_zero_terms"] >= 1
+    assert payload["c2_interpretation"].startswith("DESCRIPTIVE_ONLY")
+
+
+def test_c2_rejects_split_receipt_not_bound_by_eligibility_authority(tmp_path: Path):
+    rng = np.random.default_rng(26)
+    nnz, umi, nsum, nsq, cells = _base_arrays(rng)
+    stats = _write_stats(tmp_path / "s.npz", donor_nnz=nnz, donor_umi=umi,
+                         donor_nsum=nsum, donor_nsq=nsq, donor_cells=cells)
+    split, _ = _write_split_receipt(tmp_path)
+    elig = tmp_path / "elig.json"
+    elig.write_text(json.dumps({
+        "eligible_target_cols_all_folds": list(range(40)),
+        "split_receipt_sha256": "0" * 64,
+    }), encoding="utf-8")
+    out = tmp_path / "c_bad_split"
+    proc = subprocess.run([sys.executable, str(C_SCRIPT), "--stats", str(stats),
+                           "--eligibility", str(elig), "--split-receipt", str(split),
+                           "--out-dir", str(out)],
+                          capture_output=True, text=True, timeout=900)
+    assert proc.returncode != 0
+    assert "split receipt SHA does not match" in (proc.stderr + proc.stdout)
+
