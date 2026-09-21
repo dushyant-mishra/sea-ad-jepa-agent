@@ -121,3 +121,19 @@ def test_duplicate_role_hashes_are_rejected() -> None:
     c = contract(rng_authority_sha256=h("sample-artifact"))
     with pytest.raises(ValueError, match="role-distinct"):
         c.validate()
+
+
+def test_evidence_schema_semantics_are_bound() -> None:
+    with pytest.raises(ValueError, match="heavy qualification schema drifted"):
+        dataclasses.replace(
+            contract(),
+            heavy_qualification_schema_id="V5_FULL104_HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V1",
+        ).validate()
+    with pytest.raises(ValueError, match="RNG authority schema drifted"):
+        dataclasses.replace(
+            contract(), rng_authority_schema_id="V5_MASKING_RNG_REPLAY_AUTHORITY_V2"
+        ).validate()
+    with pytest.raises(ValueError, match="target-panel dependency drifted"):
+        dataclasses.replace(
+            contract(), rng_target_panel_dependency_id="TARGET_PANEL_CAN_REROLL_MASKS"
+        ).validate()
