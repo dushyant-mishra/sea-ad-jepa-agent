@@ -156,21 +156,35 @@ class Full104TargetQualificationSampleAuthorityV1:
     def selection_priority(self, *, donor_code: int, selection_row: int) -> int:
         """Deterministic expression-blind within-donor ordering key."""
         self.validate()
-        if isinstance(donor_code, bool) or not isinstance(donor_code, int) or donor_code < 0:
-            raise ValueError("donor_code must be a nonnegative integer")
-        if (
-            isinstance(selection_row, bool)
-            or not isinstance(selection_row, int)
-            or selection_row < 0
-            or selection_row >= FULL104_READER_FIT_CELLS
-        ):
-            raise ValueError("selection_row must be a valid global FULL104 row")
-        payload = (
-            f"{self.selection_namespace_id}|"
-            f"{self.population_authority_sha256}|"
-            f"donor|{donor_code}|selection_row|{selection_row}"
-        ).encode("utf-8")
-        return int.from_bytes(hashlib.sha256(payload).digest(), "big", signed=False)
+        return _selection_priority_unchecked(
+            self,
+            donor_code=donor_code,
+            selection_row=selection_row,
+        )
+
+
+def _selection_priority_unchecked(
+    authority: Full104TargetQualificationSampleAuthorityV1,
+    *,
+    donor_code: int,
+    selection_row: int,
+) -> int:
+    """Hot-path priority after the authority itself has already been validated."""
+    if isinstance(donor_code, bool) or not isinstance(donor_code, int) or donor_code < 0:
+        raise ValueError("donor_code must be a nonnegative integer")
+    if (
+        isinstance(selection_row, bool)
+        or not isinstance(selection_row, int)
+        or selection_row < 0
+        or selection_row >= FULL104_READER_FIT_CELLS
+    ):
+        raise ValueError("selection_row must be a valid global FULL104 row")
+    payload = (
+        f"{authority.selection_namespace_id}|"
+        f"{authority.population_authority_sha256}|"
+        f"donor|{donor_code}|selection_row|{selection_row}"
+    ).encode("utf-8")
+    return int.from_bytes(hashlib.sha256(payload).digest(), "big", signed=False)
 
 
 class RetainedQualificationRowSelectorV1:
@@ -206,7 +220,8 @@ class RetainedQualificationRowSelectorV1:
             row = int(raw_row)
             donor = int(raw_donor)
             self._observed[donor] += 1
-            priority = self.authority.selection_priority(
+            priority = _selection_priority_unchecked(
+                self.authority,
                 donor_code=donor,
                 selection_row=row,
             )
