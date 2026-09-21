@@ -1,0 +1,184 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260921_V5_FULL104_TARGET_ETL_V1",
+  "date": "2026-09-21",
+  "status": "CURRENT_V5_FULL104_ETL_TARGET_CONTINUITY_AUDIT_B_PREEXECUTION__TRAINING_OFF",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "branches": {
+    "scientific_integration": {
+      "name": "integrate/v5-full104-gpt-claude-20260921",
+      "sha": "3bf6b659de9bdd2711face82b50b47ec567ea449",
+      "pr": 38
+    },
+    "safe_lane_etl": {
+      "name": "gpt/v5-full104-safe-lane-20260921",
+      "sha": "0c2f5fb8419ea7d1572479e6ef1b13768e52f3c5",
+      "pr": 35
+    },
+    "claude_independent_audit": {
+      "sha": "885c307583f9a773aebe2f9acf9885bbce30473c",
+      "pr": 39,
+      "status": "supporting independent audit; substantive files consolidated onto integration; do not wholesale merge"
+    },
+    "information_channel_base": {
+      "sha": "ae5dc5c624fff341b8ef30c5359c55528383920a",
+      "pr": 33
+    },
+    "main": {
+      "sha": "c8898923fc10ffa5ef0662b04908b0d94bcb158b",
+      "status": "stale relative to current V5 work"
+    },
+    "handoff": {
+      "name": "handoff/jepa-v5-full104-target-etl-20260921",
+      "parent_scientific_sha": "3bf6b659de9bdd2711face82b50b47ec567ea449",
+      "role": "docs-only successor"
+    }
+  },
+  "ci": {
+    "scientific_head": "3bf6b659de9bdd2711face82b50b47ec567ea449",
+    "workflows": [
+      {
+        "name": "V5 runtime closure",
+        "run_id": 35657896178,
+        "conclusion": "success"
+      },
+      {
+        "name": "V5 remaining-RNA and target-semantics successor",
+        "run_id": 35657896258,
+        "conclusion": "success"
+      },
+      {
+        "name": "V5 Stage-A spillover firewall",
+        "run_id": 35657896169,
+        "conclusion": "success"
+      },
+      {
+        "name": "V5 FULL104 masking runner",
+        "run_id": 35657896215,
+        "conclusion": "success"
+      }
+    ]
+  },
+  "protected_state": {
+    "audit_b_n1_executed": false,
+    "terminal_masking_outcomes_opened": false,
+    "p1_p2_p3_p4_terminal_policy_selected": false,
+    "d_shared_opened": false,
+    "pathology_adaptive_decision_opened": false,
+    "dev_sealed_expression_opened": false,
+    "g5_margin_selected": false,
+    "terminal_target_panel_selected": false,
+    "training_authorized": false
+  },
+  "full104": {
+    "reader_fit_cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "canonical_addresses": 41238,
+    "all42_common_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "split_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "source_cells": {
+      "HVS": 198718,
+      "NPH52": 236476,
+      "SEA_AD": 4118213
+    },
+    "source_donors": {
+      "HVS": 41,
+      "NPH52": 17,
+      "SEA_AD": 46
+    }
+  },
+  "etl": {
+    "status": "REPRODUCED_CURRENT_DESIGN_INPUT__NOT_MODEL_INPUT_AUTHORITY",
+    "major_findings": [
+      "SEA_AD is 90.44% of cells but 44.23% of donors; cell-uniform and donor-uniform populations differ materially",
+      "operator semantics differ by source and operator is not a universal nuisance axis",
+      "native cell-class labels are not harmonized across all three sources",
+      "support geometry is source-identifying",
+      "structural unmeasurement, measured zero and collision-unresolved states remain distinct"
+    ],
+    "successor_guardrails": [
+      "unknown matrix IDs fail closed rather than default to SEA_AD",
+      "support-pattern/source uniqueness is directly validated"
+    ]
+  },
+  "audit_b": {
+    "phase_i_v2": "PASS_REAL_GPU_ARTIFACT",
+    "heavy_artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+    "phase_ii": "UNDEFINED_CORRELATION_DEFECT_CONFIRMED_ON_REAL_SOURCE_FOLD_GEOMETRY",
+    "phase_iii": "SIX_STATE_ESTIMABILITY_IMPLEMENTED__EDGE_CASES_FIXED__NO_POLICY_SELECTED",
+    "phase_iv_sample": "FROZEN_NOT_EXECUTED",
+    "phase_iv_sample_freeze_digest_prefix": "c2c5e1b5addc50db",
+    "sample_ladder": {
+      "N1": 256,
+      "N2": 1024,
+      "N3": 4096
+    },
+    "execution_contract_v1": "PERMANENTLY_PREEXECUTION_ONLY",
+    "scientific_resolution": "UNRESOLVED",
+    "rng_v3": "IMPLEMENTED_AND_TESTED__REAL_RECEIPT_PENDING",
+    "blockers": [
+      "B2: prospectively resolve precision/RSE scope, target weighting and zero-mean handling without burden outcomes",
+      "B3: build real content-addressed RNG V3 authority receipt",
+      "B4: after B2-B3, create provenance-bearing scientific resolution record and successor execution contract"
+    ]
+  },
+  "target_discovery": {
+    "current_semantics": "BIOLOGICAL_CELLULAR_LATENT_STATE_V1",
+    "hidden_gene_scalar_reconstruction": "FORBIDDEN",
+    "historical_conclusion": "DO_NOT_RESTART_HANDCRAFTED_TARGET_SEARCH",
+    "surviving_relational_evidence": [
+      "TD56 disjoint-gene relational geometry across HVS/NPH52/SEA_AD",
+      "TD57B independent triplet recurrence 24/24",
+      "TD58 partial-evidence relational recurrence 24/24",
+      "TD59 nearest-half mesoscale relational recurrence 24/24"
+    ],
+    "failed_or_superseded_summary": [
+      "pathology prediction is not target authority",
+      "historical rare-microglia labels/modules did not earn production target authority",
+      "Stage81 axes rotate within a more stable subspace",
+      "TD13-TD55 coordinate/loading/dependency/ordinal target searches mostly failed donor or cross-source recurrence",
+      "TD57C nearest-third locality failed"
+    ],
+    "td60": "PROSPECTIVE_ONLY__NO_LAWFUL_TEACHER_RESULT",
+    "full104_teacher_target_authority": "IMPLEMENTED_PROSPECTIVE_ONLY",
+    "target_qualification_sample": {
+      "status": "AUTHORITY_BUILDER_VALIDATOR_IMPLEMENTED__REAL_SAMPLE_NOT_YET_MATERIALIZED",
+      "per_donor_cap": 1024,
+      "expected_cells": 105553,
+      "expected_donors_at_cap": 103,
+      "short_donor_cells": 81,
+      "expression_used_for_selection": false
+    },
+    "rare_biology": {
+      "status": "PROSPECTIVE_LABEL_FREE_MOLECULAR_PREQUALIFICATION_DESIGNED__NOT_EXECUTED",
+      "supervised_rare_or_disease_label_target": false,
+      "q95_reused_as_historical_fixed_tail_fraction": true,
+      "production_training_weight_selected": false
+    }
+  },
+  "next_actions": [
+    "Keep training and all protected outcomes sealed",
+    "Resolve Audit-B B2 outcome-blind and record provenance",
+    "Build RNG V3 real receipt",
+    "Create successor Audit-B execution contract; V1 stays non-executable",
+    "Only then execute Audit-B N1 and frozen precision-only escalation",
+    "Materialize and validate the 105,553-cell metadata-only target-qualification sample",
+    "Finish/freeze the label-free rare-biology molecular evaluator and execution contract before opening rare-tail outcomes",
+    "Do not execute TD60 until a lawful teacher exists under a separately closed training authority"
+  ],
+  "do_not_redo": [
+    "FULL104 lineage and Level-4 substrate discovery",
+    "ETL atlas/reproducibility work unless source bytes change",
+    "T0/T1/C2/QID/F1 historical audits",
+    "Stage81 historical target work",
+    "TD13-TD55 superseded target searches",
+    "TD56/57B/58/59 molecular relational discovery",
+    "Stage-A structural qualification",
+    "streaming reference parity",
+    "Phase-I V2 heavy-statistics qualification",
+    "Claude Phase-III estimability edge-case audit"
+  ]
+}
