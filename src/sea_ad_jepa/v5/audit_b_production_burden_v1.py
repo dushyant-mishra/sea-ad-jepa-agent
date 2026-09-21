@@ -172,12 +172,62 @@ def measure_plan_burden(
         raise ValueError("plans must contain every masking policy")
     if "_base_mask" not in plans:
         raise ValueError("plans must expose the common-random base mask")
+    if rung not in BURDEN_RUNGS:
+        raise ValueError("rung must be one of the six frozen burden rungs")
 
     pos = {int(c): i for i, c in enumerate(core)}
     base = set(map(int, plans["_base_mask"]["mask"]))
     base_pos = _mask_positions(base, pos)
     if int(target_col) not in base:
         raise ValueError("uniform base mask must contain the target")
+
+    expected_co_mask_count = (
+        (int(core.size) - 1) * int(rung.numerator)
+    ) // int(rung.denominator)
+    expected_mask_cardinality = 1 + expected_co_mask_count
+    if len(base) != expected_mask_cardinality:
+        raise ValueError(
+            "uniform base-mask cardinality does not match frozen rung arithmetic: "
+            f"rung={rung} expected={expected_mask_cardinality} observed={len(base)}"
+        )
+    declared_base_cardinality = plans["_base_mask"].get("mask_cardinality")
+    if (
+        declared_base_cardinality is not None
+        and int(declared_base_cardinality) != len(base)
+    ):
+        raise ValueError("declared base mask_cardinality disagrees with mask bytes")
+
+    # Validate every plan against the common-random base BEFORE reading burden.
+    for policy in POLICIES:
+        plan = plans[policy]
+        if "mask" not in plan:
+            raise ValueError(f"{policy} plan is missing its mask")
+        mask = set(map(int, plan["mask"]))
+        _mask_positions(mask, pos)
+        if int(target_col) not in mask:
+            raise ValueError(f"{policy} mask does not contain the target")
+        if len(mask) != expected_mask_cardinality:
+            raise ValueError(
+                f"{policy} mask cardinality {len(mask)} does not match frozen rung "
+                f"cardinality {expected_mask_cardinality}"
+            )
+        if policy == "UNIFORM_RANDOM" and mask != base:
+            raise ValueError("UNIFORM_RANDOM mask must equal the common-random base mask")
+        observed_added = mask - base
+        observed_dropped = base - mask
+        declared_added = set(map(int, plan.get("added_vs_base", ())))
+        declared_dropped = set(map(int, plan.get("dropped_vs_base", ())))
+        if declared_added != observed_added or declared_dropped != observed_dropped:
+            raise ValueError(
+                f"{policy} added_vs_base/dropped_vs_base do not match the actual mask"
+            )
+        if len(observed_added) != len(observed_dropped):
+            raise ValueError(f"{policy} violates exact burden-preserving swap cardinality")
+        if int(target_col) in observed_added or int(target_col) in observed_dropped:
+            raise ValueError("target cannot enter added/dropped swap sets")
+        declared_cardinality = plan.get("mask_cardinality")
+        if declared_cardinality is not None and int(declared_cardinality) != len(mask):
+            raise ValueError(f"{policy} declared mask_cardinality disagrees with mask bytes")
 
     rows: list[DonorBurdenObservationV1] = []
     for donor in donors:
