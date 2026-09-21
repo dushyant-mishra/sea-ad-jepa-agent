@@ -32,6 +32,8 @@ LANE = ROOT / "analysis/v5_full104_information_channel_redteam_20260920/scripts"
 B_SCRIPT = LANE / "audit_b_effective_burden_20260920.py"
 C_SCRIPT = LANE / "audit_c_target_source_estimability_20260920.py"
 BUILD_SCRIPT = LANE / "build_core_sufficient_statistics_20260920.py"
+PARSER_EQ_SCRIPT = LANE / "audit_source_library_parser_equivalence_20260920.py"
+MANIFEST_SCRIPT = LANE / "build_evidence_manifests_20260920.py"
 
 N_DONORS = 12
 N_CORE = 200
@@ -374,4 +376,113 @@ def test_c2_rejects_split_receipt_not_bound_by_eligibility_authority(tmp_path: P
                           capture_output=True, text=True, timeout=900)
     assert proc.returncode != 0
     assert "split receipt SHA does not match" in (proc.stderr + proc.stdout)
+
+# --------------------------------------------------------------------------- #
+# Heavy-artifact parser equivalence / provenance firewall
+# --------------------------------------------------------------------------- #
+
+def _load_script(path: Path, name: str):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _parser_equivalence_fixture(tmp_path: Path, tokens: list[str]):
+    mod = _load_script(PARSER_EQ_SCRIPT, "parser_eq")
+    root = tmp_path / "level4"
+    root.mkdir()
+    meta = root / "meta.csv"
+    fields = ["selection_row", "canonical_cell_id", "donor_id",
+              "expression_row", "primary_row_weight", "source_library"]
+    import csv as _csv
+    with meta.open("w", newline="", encoding="utf-8") as h:
+        w = _csv.DictWriter(h, fieldnames=fields, lineterminator="\n")
+        w.writeheader()
+        for i, token in enumerate(tokens):
+            w.writerow({
+                "selection_row": i,
+                "canonical_cell_id": f"C{i}",
+                "donor_id": "D00",
+                "expression_row": i,
+                "primary_row_weight": 1.0 / max(len(tokens), 1),
+                "source_library": token,
+            })
+    meta_sha = hashlib.sha256(meta.read_bytes()).hexdigest()
+    manifest = tmp_path / "manifest.csv"
+    mfields = ["block_key", "source", "operator_index", "matrix_id", "rows", "nnz",
+               "counts_path", "counts_sha256", "meta_path", "meta_sha256"]
+    with manifest.open("w", newline="", encoding="utf-8") as h:
+        w = _csv.DictWriter(h, fieldnames=mfields, lineterminator="\n")
+        w.writeheader()
+        w.writerow({
+            "block_key": "op0/block-00000",
+            "source": "HVS",
+            "operator_index": 0,
+            "matrix_id": "fixture",
+            "rows": len(tokens),
+            "nnz": 0,
+            "counts_path": "unused.npz",
+            "counts_sha256": "0" * 64,
+            "meta_path": "meta.csv",
+            "meta_sha256": meta_sha,
+        })
+    manifest_sha = hashlib.sha256(manifest.read_bytes()).hexdigest()
+    return mod, manifest, root, manifest_sha
+
+
+def test_source_library_parser_equivalence_allows_exact_current_semantics(tmp_path: Path):
+    mod, manifest, root, manifest_sha = _parser_equivalence_fixture(
+        tmp_path, ["61129", "61129.0", "6.1129e4"])
+    result = mod.run(
+        manifest, root,
+        expected_manifest_sha256=manifest_sha,
+        expected_cells=3,
+        bound_artifact_sha256="f" * 64,
+    )
+    assert result["strict_parser_equals_legacy_for_current_FULL104"] is True
+    assert result["value_or_parse_mismatches"] == 0
+    assert result["reuse_decision"] == "ALLOW_CONTENT_ADDRESSED_REUSE_WITH_CURRENT_PARSER"
+
+
+def test_source_library_parser_equivalence_catches_float_precision_spillover(tmp_path: Path):
+    mod, manifest, root, manifest_sha = _parser_equivalence_fixture(
+        tmp_path, ["9007199254740993"])
+    result = mod.run(
+        manifest, root,
+        expected_manifest_sha256=manifest_sha,
+        expected_cells=1,
+        bound_artifact_sha256="f" * 64,
+    )
+    assert result["strict_parser_equals_legacy_for_current_FULL104"] is False
+    assert result["value_or_parse_mismatches"] == 1
+    assert result["mismatch_examples"][0]["strict_value"] == 9007199254740993
+    assert result["mismatch_examples"][0]["legacy_value"] != 9007199254740993
+    assert result["reuse_decision"] == "REBUILD_HEAVY_SUFFICIENT_STATISTICS_REQUIRED"
+
+
+def test_source_library_parser_equivalence_catches_legacy_fraction_truncation(tmp_path: Path):
+    mod, manifest, root, manifest_sha = _parser_equivalence_fixture(
+        tmp_path, ["1000.5"])
+    result = mod.run(
+        manifest, root,
+        expected_manifest_sha256=manifest_sha,
+        expected_cells=1,
+        bound_artifact_sha256="f" * 64,
+    )
+    assert result["strict_rejections"] == 1
+    assert result["legacy_rejections"] == 0
+    assert result["strict_parser_equals_legacy_for_current_FULL104"] is False
+
+
+def test_external_manifest_builder_never_relabels_old_artifact_to_current_head(tmp_path: Path):
+    mod = _load_script(MANIFEST_SCRIPT, "manifest_builder")
+    out = mod.build_external(tmp_path, "NEW_CURRENT_HEAD")
+    core = next(a for a in out["artifacts"]
+                if a["role"] == "CORE_SUFFICIENT_STATISTICS_FOR_AUDITS_B_C_AND_E")
+    assert core["producer_git_sha"] == "abcea57c1934ed70dea16fbad32e73b3d07d719d"
+    assert core["producer_git_sha"] != core["current_checkout_git_sha"]
+    assert core["current_checkout_git_sha"] == "NEW_CURRENT_HEAD"
+    assert core["contains_cell_level_material"] is True
+    assert core["reuse_status"] == "REQUIRES_METADATA_ONLY_STRICT_PARSE_EQUIVALENCE_CHECK_BEFORE_REUSE"
 
