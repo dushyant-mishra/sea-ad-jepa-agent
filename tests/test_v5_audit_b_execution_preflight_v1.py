@@ -17,13 +17,26 @@ from sea_ad_jepa.v5.audit_b_execution_contract_v1 import (
     PRECISION_SCOPE_SINGLE_PRIMARY,
     AuditBExecutionContractV1,
 )
+from sea_ad_jepa.v5.masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
 
 
 def h(x: str) -> str:
     return hashlib.sha256(x.encode()).hexdigest()
 
 
+def rng_authority() -> MaskingRngReplayAuthorityV3:
+    return MaskingRngReplayAuthorityV3(
+        authority_id="TEST_PREFLIGHT_RNG_V3",
+        full104_substrate_sha256=FULL104_MANIFEST_SHA256,
+        canonical_registry_sha256=CANONICAL_REGISTRY_SHA256,
+        outer_split_receipt_sha256="1" * 64,
+        qualification_parameters_authority_sha256="2" * 64,
+        burden_ladder_authority_sha256="3" * 64,
+    )
+
+
 def contract(*, resolved=True) -> AuditBExecutionContractV1:
+    rng = rng_authority()
     return AuditBExecutionContractV1(
         contract_id="TEST_PREFLIGHT",
         phase_iv_sample_freeze_digest=PHASE_IV_SAMPLE_FREEZE_DIGEST,
@@ -32,7 +45,7 @@ def contract(*, resolved=True) -> AuditBExecutionContractV1:
         canonical_registry_sha256=CANONICAL_REGISTRY_SHA256,
         heavy_artifact_sha256=HEAVY_ARTIFACT_SHA256,
         heavy_qualification_receipt_sha256=h("heavy-receipt"),
-        rng_authority_sha256=h("rng-authority-semantic"),
+        rng_authority_sha256=rng.canonical_digest(),
         mask_plan_generator_sha256=MASK_PLAN_GENERATOR_SHA256,
         burden_estimator_source_sha256=h("estimator"),
         precision_scope_id=(
@@ -86,9 +99,12 @@ def test_runtime_binding_success_checks_rng_semantic_digest_not_file_hash(
     for p in paths.values():
         p.write_text("placeholder")
 
+    rng = rng_authority()
     paths["rng"].write_text(json.dumps({
         "schema": c.rng_authority_schema_id,
-        "authority_sha256": c.rng_authority_sha256,
+        **rng.__dict__,
+        "global_seed": rng.global_seed,
+        "authority_sha256": rng.canonical_digest(),
         "target_panel_dependency": c.rng_target_panel_dependency_id,
         "terminal_outcomes_inspected_before_freeze": False,
         "training_authorized": False,
@@ -96,6 +112,12 @@ def test_runtime_binding_success_checks_rng_semantic_digest_not_file_hash(
     paths["heavy-receipt"].write_text(json.dumps({
         "schema": c.heavy_qualification_schema_id,
         "verdict": c.heavy_qualification_verdict_id,
+        "block_manifest_sha256": c.full104_manifest_sha256,
+        "artifact_sha256": c.heavy_artifact_sha256,
+        "rows_traversed": 4_553_407,
+        "donors": 104,
+        "core_addresses": 17_186,
+        "three_route_total_agreement": True,
         "all_104_donor_library_totals_agree": True,
         "per_cell_source_vector_agrees": True,
     }))
