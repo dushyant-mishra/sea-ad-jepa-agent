@@ -57,6 +57,16 @@ class SameCellStabilityResultV1:
             raise ValueError("equal_donor_mean_stability must be bounded in [0,1]")
 
 
+@dataclass(frozen=True)
+class StateContentIncrementOverNuisanceV1:
+    representation_balanced_accuracy: float
+    nuisance_balanced_accuracy: float
+    balanced_accuracy_increment: float
+    representation_mean_composition_fidelity: float
+    nuisance_mean_composition_fidelity: float
+    composition_fidelity_increment: float
+
+
 def _embedding(value: Any, name: str) -> np.ndarray:
     x = np.asarray(value, dtype=np.float64)
     if x.ndim != 2 or x.shape[0] < 2 or x.shape[1] < 1 or not np.all(np.isfinite(x)):
@@ -188,4 +198,40 @@ def paired_same_cell_cosine_stability(
         per_row_stability=stability,
         per_donor_stability=per_donor,
         equal_donor_mean_stability=float(per_donor.mean()),
+    )
+
+
+
+def compare_state_content_to_nuisance_baseline(
+    representation_content: StateContentResultV1,
+    nuisance_content: StateContentResultV1,
+) -> StateContentIncrementOverNuisanceV1:
+    """Report incremental content beyond a lawful nuisance-only baseline.
+
+    No acceptance threshold is chosen here. A high absolute content score with
+    near-zero increment is explicitly visible rather than being called biology.
+    """
+
+    if representation_content.classes != nuisance_content.classes:
+        raise ValueError("representation and nuisance probes must use identical classes")
+    if len(representation_content.oof_predicted_label) != len(nuisance_content.oof_predicted_label):
+        raise ValueError("representation and nuisance probes must cover identical rows")
+    if representation_content.donor_composition_fidelity.shape != nuisance_content.donor_composition_fidelity.shape:
+        raise ValueError("representation and nuisance probes must cover identical donors")
+    return StateContentIncrementOverNuisanceV1(
+        representation_balanced_accuracy=float(representation_content.balanced_accuracy),
+        nuisance_balanced_accuracy=float(nuisance_content.balanced_accuracy),
+        balanced_accuracy_increment=float(
+            representation_content.balanced_accuracy - nuisance_content.balanced_accuracy
+        ),
+        representation_mean_composition_fidelity=float(
+            representation_content.mean_donor_composition_fidelity
+        ),
+        nuisance_mean_composition_fidelity=float(
+            nuisance_content.mean_donor_composition_fidelity
+        ),
+        composition_fidelity_increment=float(
+            representation_content.mean_donor_composition_fidelity
+            - nuisance_content.mean_donor_composition_fidelity
+        ),
     )
