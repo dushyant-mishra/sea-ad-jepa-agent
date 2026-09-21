@@ -115,6 +115,13 @@ def _validate(values: np.ndarray, states: np.ndarray, group: np.ndarray):
 
     if not (v.shape == s.shape == g.shape) or v.ndim != 1:
         raise ContractViolation("values, states and group must be aligned 1-D arrays")
+    # Zero evidence is not weak evidence; it is the absence of evidence. Allowing
+    # an empty term set through lets aggregate() average an empty list and return
+    # an ESTIMABLE NaN -- a state the contract exists to forbid.
+    if v.size == 0:
+        raise ContractViolation(
+            "score terms are empty; zero evidence must fail closed rather than "
+            "aggregate to an estimable NaN")
     if s.size and (s.min() < 0 or s.max() > INVALID_NUMERIC):
         raise ContractViolation("unknown state code")
 
@@ -205,9 +212,18 @@ class ScoreTerms:
         states = np.full(n, ESTIMABLE, dtype=np.int8)
         values = np.full(n, np.nan, dtype=np.float64)
 
-        t_bad = present_arr & (rss <= eps)
-        p_bad = present_arr & (pss <= eps)
         states[~present_arr] = MISSING
+
+        # A sum of squares cannot be negative. Within +/- eps that is floating-point
+        # noise around zero and the term is genuinely non-variable; materially below
+        # -eps the upstream computation is wrong, and calling it "non-variable" would
+        # launder an arithmetic fault into a legitimate scientific state.
+        invalid_ss = present_arr & ((rss < -eps) | (pss < -eps))
+        states[invalid_ss] = INVALID_NUMERIC
+
+        candidate = present_arr & ~invalid_ss
+        t_bad = candidate & (rss <= eps)
+        p_bad = candidate & (pss <= eps)
         states[t_bad & ~p_bad] = TARGET_NON_VARIABLE
         states[p_bad & ~t_bad] = PREDICTION_NON_VARIABLE
         states[t_bad & p_bad] = TARGET_AND_PREDICTION_NON_VARIABLE
@@ -335,12 +351,24 @@ def aggregate(terms: ScoreTerms, *, policy: str | None = None, square: bool = Tr
     base = dict(terms_total=int(terms.states.size), terms_estimable=int(est.sum()),
                 state_counts=counts, group_status=group_status, group_coverage=group_cov)
 
-    if not terms.has_non_estimable():
+    # Both conditions matter. Every supplied term can be estimable while a
+    # REQUIRED group is absent entirely -- no term ever carried its label, so
+    # has_non_estimable() is False and nothing upstream notices. Without the second
+    # condition this early return fires first and short-circuits every policy
+    # branch below, including P4's own coverage guard.
+    if not terms.has_non_estimable() and not any_group_not_estimable:
         return Aggregate(policy=policy or "NOT_REQUIRED", status="ESTIMABLE",
                          conditional_statistic=float(np.mean(per_group)),
                          full_estimand_point_estimated=True,
                          quantity_name="group-balanced mean of squared correlation",
-                         note="all terms estimable; no policy was required.", **base)
+                         note="all terms and required groups are estimable; no policy "
+                              "was required.", **base)
+
+    if any_group_not_estimable and policy is None:
+        raise NonEstimableError(
+            f"one or more required groups have no estimable term: {group_status}. "
+            "A required source that contributed nothing is not an absence of "
+            "consequence; name a policy rather than dropping it silently")
 
     if policy == P1:
         return Aggregate(
