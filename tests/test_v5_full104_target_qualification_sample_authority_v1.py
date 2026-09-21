@@ -4,11 +4,13 @@ import dataclasses
 import hashlib
 import inspect
 
+import numpy as np
 import pytest
 
 from sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1 import (
     EXPECTED_SAMPLE_CELLS,
     Full104TargetQualificationSampleAuthorityV1,
+    RetainedQualificationRowSelectorV1,
 )
 
 
@@ -102,3 +104,42 @@ def test_priority_rejects_row_alias_and_invalid_donor_inputs() -> None:
         a.selection_priority(donor_code=0, selection_row=-1)
     with pytest.raises(ValueError, match="selection_row"):
         a.selection_priority(donor_code=0, selection_row=4_553_407)
+
+
+def _synthetic_full104_like_rows() -> tuple[np.ndarray, np.ndarray]:
+    rows = []
+    donors = []
+    cursor = 0
+    for donor in range(104):
+        n = 1026 if donor < 103 else 81
+        rows.extend(range(cursor, cursor + n))
+        donors.extend([donor] * n)
+        cursor += n
+    return np.asarray(rows, dtype=np.int64), np.asarray(donors, dtype=np.int64)
+
+
+def test_streaming_selector_closes_exact_current_sample_geometry() -> None:
+    rows, donors = _synthetic_full104_like_rows()
+    a = authority()
+
+    one = RetainedQualificationRowSelectorV1(a)
+    # Deliberately feed multiple chunks to prove streaming order does not change
+    # the deterministic donor-wise selection.
+    cut = rows.size // 3
+    one.update(rows[:cut], donors[:cut])
+    one.update(rows[cut:2 * cut], donors[cut:2 * cut])
+    one.update(rows[2 * cut:], donors[2 * cut:])
+    sel1, donor1, rank1, retained1 = one.finalize()
+
+    two = RetainedQualificationRowSelectorV1(a)
+    two.update(rows, donors)
+    sel2, donor2, rank2, retained2 = two.finalize()
+
+    assert sel1.size == 105_553
+    assert np.unique(sel1).size == sel1.size
+    assert np.array_equal(sel1, sel2)
+    assert np.array_equal(donor1, donor2)
+    assert np.array_equal(rank1, rank2)
+    assert np.array_equal(retained1, retained2)
+    assert np.all(retained1[:103] == 1024)
+    assert retained1[103] == 81
