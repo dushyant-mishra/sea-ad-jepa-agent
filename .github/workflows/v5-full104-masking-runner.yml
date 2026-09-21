@@ -23,6 +23,7 @@ on:
       - 'tests/test_v5_audit_f_target_identity_zero_v1.py'
       - 'tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py'
       - 'src/sea_ad_jepa/v5/evidence_estimability_contract_v1.py'
+      - 'src/sea_ad_jepa/v5/evidence_estimability_contract_v2.py'
       - 'src/sea_ad_jepa/v5/query_denominator_counterfactual_v1.py'
       - 'src/sea_ad_jepa/v5/targeting_complexity_materiality_v1.py'
       - 'src/sea_ad_jepa/v5/shortcut_consequence_curve_v1.py'
@@ -35,6 +36,10 @@ on:
       - 'src/sea_ad_jepa/v5/latent_state_decomposition_v1.py'
       - 'src/sea_ad_jepa/v5/technical_only_decoy_v1.py'
       - 'tests/test_v5_evidence_estimability_contract_v1.py'
+      - 'tests/test_v5_audit_b_frozen_target_sample_v1.py'
+      - 'tests/test_v5_heavy_sufficient_statistics_qualification_v1.py'
+      - 'tests/test_v5_score_term_evidence_contract_v2.py'
+      - 'tests/test_v5_evidence_estimability_contract_v2.py'
       - 'tests/test_v5_query_denominator_counterfactual_v1.py'
       - 'tests/test_v5_targeting_complexity_materiality_v1.py'
       - 'tests/test_v5_shortcut_consequence_curve_v1.py'
@@ -155,6 +160,7 @@ on:
       - 'tests/test_v5_full104_nonlinear_capacity_cache_evaluator_v1.py'
       - 'tests/test_v5_outer_split_and_precision_builders_current.py'
       - 'tests/test_v5_precision_authority_v4.py'
+      - 'analysis/v5_full104_information_channel_redteam_20260920/**'
       - '.github/workflows/v5-full104-masking-runner.yml'
   workflow_dispatch:
 
@@ -196,19 +202,7 @@ jobs:
             tests/test_v5_targeting_complexity_materiality_v1.py \
             tests/test_v5_shortcut_consequence_curve_v1.py \
             tests/test_v5_g4_state_content_functionals_v1.py \
-            tests/test_v5_g4_state_content_functionals_v1.py \
-            tests/test_v5_shortcut_consequence_curve_v1.py \
-            tests/test_v5_targeting_complexity_materiality_v1.py \
-            tests/test_v5_query_denominator_counterfactual_v1.py \
             tests/test_v5_dataset_field_roles_v1.py \
-            tests/test_v5_dataset_field_roles_v1.py \
-            tests/test_v5_h3_precision_resampling_v1.py \
-            tests/test_v5_attacker_fit_objective_weights_v1.py \
-            tests/test_v5_masking_burden_parity_audit_v1.py \
-            tests/test_v5_partner_association_estimands_v1.py \
-            tests/test_v5_latent_state_decomposition_v1.py \
-            tests/test_v5_technical_only_decoy_v1.py \
-            tests/test_v5_evidence_estimability_contract_v1.py \
             tests/test_v5_h3_precision_resampling_v1.py \
             tests/test_v5_attacker_fit_objective_weights_v1.py \
             tests/test_v5_masking_burden_parity_audit_v1.py \
@@ -261,7 +255,10 @@ jobs:
             tests/test_v5_full104_command_authority_current.py \
             tests/test_v5_masking_terminal_evidence_assembly_v1.py \
             tests/test_v5_masking_terminal_mechanical_controls_v1.py \
-            tests/test_v5_masking_terminal_one_rung_executor_v1.py
+            tests/test_v5_evidence_estimability_contract_v2.py \
+            tests/test_v5_score_term_evidence_contract_v2.py \
+            tests/test_v5_heavy_sufficient_statistics_qualification_v1.py \
+            tests/test_v5_audit_b_frozen_target_sample_v1.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -281,6 +278,18 @@ jobs:
             tests/test_v5_audit_bc_burden_estimability_v1.py \
             tests/test_v5_audit_f_target_identity_zero_v1.py \
             tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py \
+            tests/test_v5_evidence_estimability_contract_v1.py \
+            tests/test_v5_query_denominator_counterfactual_v1.py \
+            tests/test_v5_targeting_complexity_materiality_v1.py \
+            tests/test_v5_shortcut_consequence_curve_v1.py \
+            tests/test_v5_g4_state_content_functionals_v1.py \
+            tests/test_v5_dataset_field_roles_v1.py \
+            tests/test_v5_h3_precision_resampling_v1.py \
+            tests/test_v5_attacker_fit_objective_weights_v1.py \
+            tests/test_v5_masking_burden_parity_audit_v1.py \
+            tests/test_v5_partner_association_estimands_v1.py \
+            tests/test_v5_latent_state_decomposition_v1.py \
+            tests/test_v5_technical_only_decoy_v1.py \
             tests/test_teacher_student_v5_support_schedule_v1.py \
             tests/test_v5_full104_pass1_builder_v1.py \
             tests/test_v5_full104_pass1_physical_binding_v1.py \
@@ -327,6 +336,9 @@ jobs:
             tests/test_v5_full104_command_authority_current.py \
             tests/test_v5_masking_terminal_evidence_assembly_v1.py \
             tests/test_v5_masking_terminal_mechanical_controls_v1.py \
-            tests/test_v5_masking_terminal_one_rung_executor_v1.py \
+            tests/test_v5_evidence_estimability_contract_v2.py \
+            tests/test_v5_score_term_evidence_contract_v2.py \
+            tests/test_v5_heavy_sufficient_statistics_qualification_v1.py \
+            tests/test_v5_audit_b_frozen_target_sample_v1.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
