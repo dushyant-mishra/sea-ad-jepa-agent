@@ -275,6 +275,7 @@ def source_balanced_target_value(
     rows: Sequence[DonorBurdenObservationV1],
     *,
     expected_source_codes: Sequence[int],
+    expected_donor_codes: Sequence[int],
     metric: str = "normalized_delta_detected",
 ) -> float:
     """Equal donors within source, then equal source weight for one target."""
@@ -288,6 +289,21 @@ def source_balanced_target_value(
     expected = tuple(int(x) for x in expected_source_codes)
     if len(expected) == 0 or len(set(expected)) != len(expected):
         raise ValueError("expected_source_codes must be unique and nonempty")
+    donors_expected = tuple(int(x) for x in expected_donor_codes)
+    if len(donors_expected) == 0 or len(set(donors_expected)) != len(donors_expected):
+        raise ValueError("expected_donor_codes must be unique and nonempty")
+    donors_observed = [int(r.donor_code) for r in rows]
+    if len(set(donors_observed)) != len(donors_observed):
+        raise ValueError("target aggregation contains duplicate donor observations")
+    if set(donors_observed) != set(donors_expected):
+        raise ValueError(
+            "target aggregation donor set is incomplete or contains unexpected donors"
+        )
+    observed_sources = {int(r.source_code) for r in rows}
+    if observed_sources != set(expected):
+        raise ValueError(
+            "target aggregation source set differs from expected_source_codes"
+        )
     means: list[float] = []
     for source in expected:
         values = np.asarray(
