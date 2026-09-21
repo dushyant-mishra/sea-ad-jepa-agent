@@ -298,6 +298,7 @@ class Full104TargetQualificationSampleReceiptV1:
     full_donor_n_file_sha256: str
     fold_by_donor_file_sha256: str
     donor_source_code_file_sha256: str
+    builder_source_sha256: str
 
     expression_opened_by_builder: bool = False
     masking_authorized: bool = False
@@ -317,6 +318,7 @@ class Full104TargetQualificationSampleReceiptV1:
             "full_donor_n_file_sha256",
             "fold_by_donor_file_sha256",
             "donor_source_code_file_sha256",
+            "builder_source_sha256",
         ):
             _sha(getattr(self, name), name)
 
