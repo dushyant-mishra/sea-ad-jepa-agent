@@ -34,10 +34,18 @@
       "contains_cell_level_material": true,
       "cell_level_content": "per-donor/per-address and stratum aggregates plus per-cell library/source vectors keyed by selection_row position; no raw cell identifiers",
       "why_not_committed": "large per-donor/per-address matrices plus cell-level vectors; compact aggregate evidence required to challenge conclusions is committed separately",
-      "reuse_status": "REQUIRES_METADATA_ONLY_STRICT_PARSE_EQUIVALENCE_CHECK_BEFORE_REUSE",
+      "reuse_status": "PHASE_I_PARSER_EQUIVALENCE_AND_THREE_ROUTE_AGGREGATE_QUALIFIED__CONTENT_ADDRESSED_REUSE_ALLOWED",
       "equivalence_check": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_source_library_parser_equivalence_20260920.py",
-      "state": "RECORDED_PRESENT_ON_GPU_MACHINE_AT_PRODUCTION__NOT_VERIFIED_IN_THIS_SESSION",
-      "location": "GPU_MACHINE_NOT_COMMITTED"
+      "state": "QUALIFIED_FOR_CONTENT_ADDRESSED_REUSE__PHYSICAL_BYTES_STILL_GPU_MACHINE_ONLY",
+      "location": "GPU_MACHINE_NOT_COMMITTED",
+      "reuse_qualification": {
+        "report": "analysis/v5_full104_information_channel_redteam_20260920/PHASE_I_HEAVY_STATISTICS_QUALIFICATION_REPORT.md",
+        "receipt": "analysis/v5_full104_information_channel_redteam_20260920/evidence/parser_equivalence/HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION.json",
+        "artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+        "rows_traversed": 4553407,
+        "parser_mismatches": 0,
+        "three_route_source_library_total_agreement": true
+      }
     }
   ],
   "terminal_masking_outcomes_inspected": false,
