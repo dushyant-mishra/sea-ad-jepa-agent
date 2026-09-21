@@ -11,6 +11,7 @@ import pytest
 from sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1 import (
     EXPECTED_SAMPLE_CELLS,
     Full104TargetQualificationSampleAuthorityV1,
+    Full104TargetQualificationSampleReceiptV1,
     RetainedQualificationRowSelectorV1,
 )
 
@@ -163,3 +164,53 @@ def test_builder_is_metadata_only_and_binds_current_identity_roots() -> None:
     assert ".iter_blocks(" not in source
     assert "toarray(" not in source
     assert "X_log1p10k" not in source
+
+
+def receipt(a: Full104TargetQualificationSampleAuthorityV1, **updates):
+    values = dict(
+        sample_authority_sha256=a.canonical_digest(),
+        full104_block_manifest_sha256=a.full104_block_manifest_sha256,
+        population_authority_sha256=a.population_authority_sha256,
+        dataset_etl_atlas_sha256=a.dataset_etl_atlas_sha256,
+        outer_split_receipt_sha256=a.outer_split_receipt_sha256,
+        retained_cells=105_553,
+        retained_donors=104,
+        donors_at_cap=103,
+        min_retained_per_donor=81,
+        max_retained_per_donor=1024,
+        selection_rows_file_sha256=h("selection"),
+        donor_code_file_sha256=h("donor"),
+        row_rank_file_sha256=h("rank"),
+        retained_count_by_donor_file_sha256=h("retained"),
+        full_donor_n_file_sha256=h("full-n"),
+        fold_by_donor_file_sha256=h("fold"),
+        donor_source_code_file_sha256=h("source"),
+    )
+    values.update(updates)
+    return Full104TargetQualificationSampleReceiptV1(**values)
+
+
+def test_typed_receipt_binds_authority_and_every_array_role() -> None:
+    a = authority()
+    rec = receipt(a)
+    rec.validate_against_authority(a)
+    assert len(rec.canonical_digest()) == 64
+    assert rec.expression_opened_by_builder is False
+    assert rec.masking_authorized is False
+    assert rec.training_authorized is False
+
+
+def test_receipt_cannot_bind_a_different_sampling_authority() -> None:
+    a = authority()
+    rec = receipt(a)
+    other = dataclasses.replace(a, outer_split_receipt_sha256=h("other-split"))
+    with pytest.raises(ValueError, match="sample authority digest mismatch"):
+        rec.validate_against_authority(other)
+
+
+def test_receipt_geometry_and_file_digests_fail_closed() -> None:
+    a = authority()
+    with pytest.raises(ValueError, match="retained_cells mismatch"):
+        receipt(a, retained_cells=105_552).validate()
+    with pytest.raises(ValueError, match="selection_rows_file_sha256"):
+        receipt(a, selection_rows_file_sha256="bad").validate()
