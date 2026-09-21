@@ -1,0 +1,45 @@
+{
+  "schema": "V5_PHASE_III_POLICY_CONSEQUENCE_ON_REAL_C2_GEOMETRY_V1",
+  "scope_class": "CURRENT_FULL104_RECONNAISSANCE",
+  "policy_selected": null,
+  "note": "Structural consequences only. NO score was computed and no terminal masking outcome was opened; these are counts over the authenticated fold geometry.",
+  "targets_total": 17053,
+  "held_out_score_terms_total": 1773512,
+  "held_out_score_terms_undefined": 30451,
+  "P1_PROSPECTIVE_ELIGIBILITY": {
+    "targets_excluded": 6653,
+    "targets_retained": 10400,
+    "retained_fraction": 0.6098633671494752,
+    "consequence": "universe shrinks from 17,053 to the retained count"
+  },
+  "P2_ABSTAIN_AND_REWEIGHT": {
+    "abstaining_terms": 30451,
+    "retained_term_fraction": 0.9828301133570001,
+    "targets_with_a_wholly_vacuous_source": 202,
+    "per_source": {
+      "HVS": {
+        "intended_terms": 699173,
+        "abstaining_terms": 887,
+        "retained_fraction": 0.9987313583333453
+      },
+      "NPH52": {
+        "intended_terms": 289901,
+        "abstaining_terms": 6220,
+        "retained_fraction": 0.978544399639877
+      },
+      "SEA_AD": {
+        "intended_terms": 784438,
+        "abstaining_terms": 23344,
+        "retained_fraction": 0.9702411152952815
+      }
+    },
+    "consequence": "estimand becomes a conditional mean over estimable donors"
+  },
+  "P3_REPORT_CONDITIONALITY": {
+    "numerically_equals_P2_point_estimate": true,
+    "additional_requirement": "every reported aggregate carries terms_estimable / terms_total",
+    "consequence": "estimand unchanged; what may be CLAIMED is narrowed"
+  },
+  "training_authorized": false,
+  "terminal_masking_outcomes_inspected": false
+}
