@@ -12,6 +12,7 @@ from sea_ad_jepa.v5.audit_b_production_burden_v1 import (
     measure_plan_burden,
     precision_summary,
     source_balanced_target_value,
+    donor_uniform_target_value,
 )
 
 
@@ -156,6 +157,52 @@ def test_source_balanced_target_value_is_not_cell_or_donor_pooled() -> None:
         expected_donor_codes=[0, 1, 2],
     ) == pytest.approx(0.6)
 
+
+
+
+def test_donor_uniform_and_source_balanced_estimands_are_distinct() -> None:
+    # Three donors in source 0 and one donor in source 1.
+    # Donor-uniform gives every donor one vote:
+    # (0.2 + 0.4 + 0.6 + 0.9) / 4 = 0.525.
+    # Source-balanced first averages source 0 to 0.4, then gives source 1 equal
+    # source mass: (0.4 + 0.9) / 2 = 0.65.
+    rows = [
+        _row(0, 0, 0.2),
+        _row(1, 0, 0.4),
+        _row(2, 0, 0.6),
+        _row(3, 1, 0.9),
+    ]
+    expected_sources = [0, 1]
+    expected_donors = [0, 1, 2, 3]
+    donor_uniform = donor_uniform_target_value(
+        rows,
+        expected_source_codes=expected_sources,
+        expected_donor_codes=expected_donors,
+    )
+    source_balanced = source_balanced_target_value(
+        rows,
+        expected_source_codes=expected_sources,
+        expected_donor_codes=expected_donors,
+    )
+    assert donor_uniform == pytest.approx(0.525)
+    assert source_balanced == pytest.approx(0.65)
+    assert donor_uniform != pytest.approx(source_balanced)
+
+
+def test_donor_uniform_still_requires_complete_sources_and_donors() -> None:
+    rows = [_row(0, 0, 0.2), _row(1, 1, 0.8)]
+    with pytest.raises(ValueError, match="incomplete or contains unexpected donors"):
+        donor_uniform_target_value(
+            rows,
+            expected_source_codes=[0, 1],
+            expected_donor_codes=[0, 1, 2],
+        )
+    with pytest.raises(ValueError, match="source set differs"):
+        donor_uniform_target_value(
+            [_row(0, 0, 0.2)],
+            expected_source_codes=[0, 1],
+            expected_donor_codes=[0],
+        )
 
 def test_missing_required_source_cannot_disappear() -> None:
     with pytest.raises(ValueError, match="source set differs|required source"):

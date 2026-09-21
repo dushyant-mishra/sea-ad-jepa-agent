@@ -169,6 +169,7 @@ on:
       - 'tests/test_v5_audit_b_production_burden_v1.py'
       - 'src/sea_ad_jepa/v5/audit_b_execution_contract_v1.py'
       - 'tests/test_v5_audit_b_scientific_resolution_v1.py'
+      - 'tests/test_v5_audit_b_scientific_resolution_v2.py'
       - 'src/sea_ad_jepa/v5/audit_b_scientific_resolution_v1.py'
       - 'tests/test_v5_audit_b_execution_contract_v1.py'
       - 'tests/test_v5_audit_b_execution_contract_redteam_v1.py'
@@ -285,6 +286,8 @@ jobs:
             tests/test_v5_audit_b_execution_contract_v1.py \
             tests/test_v5_audit_b_execution_contract_redteam_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v1.py \
+            tests/test_v5_audit_b_scientific_resolution_v2.py \
+            tests/test_v5_audit_b_scientific_resolution_v2.py \
             tests/test_v5_audit_b_execution_contract_builder_v1.py \
             tests/test_v5_audit_b_execution_preflight_v1.py \
             tests/test_v5_audit_b_execution_preflight_cli_v1.py \

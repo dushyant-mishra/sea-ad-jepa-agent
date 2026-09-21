@@ -287,6 +287,38 @@ def _write_synthetic_sample_package(tmp_path: Path) -> tuple[Path, Full104Target
     return sample_dir, rec
 
 
+
+
+def test_validator_optional_full_source_replay_is_metadata_only_and_fail_closed(
+    tmp_path: Path,
+) -> None:
+    source = VALIDATOR.read_text(encoding="utf-8")
+    assert "_replay_full_source_selection" in source
+    assert "_independent_priority" in source
+    assert "meta_sha256" in source
+    # The replay may load the materialized identity arrays, but must never
+    # deserialize Level-4 expression/count matrices.
+    assert "sp.load_npz" not in source
+    assert ".iter_blocks(" not in source
+    assert "X_log1p10k" not in source
+
+    sample_dir, _ = _write_synthetic_sample_package(tmp_path)
+    cmd = [
+        sys.executable,
+        str(VALIDATOR),
+        "--sample-dir",
+        str(sample_dir),
+        "--builder-source",
+        str(BUILDER),
+        "--level4-root",
+        str(tmp_path / "level4"),
+    ]
+    bad = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    assert bad.returncode != 0
+    assert "--level4-root and --split-receipt must be supplied together" in (
+        bad.stdout + bad.stderr
+    )
+
 def test_downstream_validator_accepts_typed_package_and_rejects_corruption(
     tmp_path: Path,
 ) -> None:

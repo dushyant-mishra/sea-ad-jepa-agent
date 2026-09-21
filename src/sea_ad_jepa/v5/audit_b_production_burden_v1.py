@@ -58,7 +58,11 @@ MAX_RELATIVE_STANDARD_ERROR = 0.05
 PRIMARY_METRIC_ID = "B2_HELDOUT_DETECTED_TOKEN_BURDEN"
 SECONDARY_METRIC_ID = "B3_HELDOUT_RAW_UMI_BURDEN__DESCRIPTIVE_ONLY"
 NORMALIZATION_ID = "ADDED_MINUS_DROPPED_OVER_UNIFORM_FULL_MASK_WITH_TARGET_V1"
-TARGET_AGGREGATION_ID = "SOURCE_BALANCED__DONOR_UNIFORM_WITHIN_SOURCE__TARGET_UNIFORM_V1"
+TARGET_AGGREGATION_SOURCE_BALANCED_ID = "SOURCE_BALANCED__DONOR_UNIFORM_WITHIN_SOURCE__TARGET_UNIFORM_V1"
+TARGET_AGGREGATION_DONOR_UNIFORM_ID = "DONOR_UNIFORM_ACROSS_ALL_DONORS__TARGET_UNIFORM_V1"
+# Backward-compatible V1 alias. Audit-B execution contract V1 remains bound to
+# the original source-balanced candidate and is permanently preexecution-only.
+TARGET_AGGREGATION_ID = TARGET_AGGREGATION_SOURCE_BALANCED_ID
 PRECISION_ID = "TARGET_SAMPLE_SD_OVER_SQRT_N__RELATIVE_TO_ABS_MEAN_V1"
 ESCALATION_ID = "CANDIDATE_MAX_RSE_ACROSS_ALL_NONUNIFORM_POLICY_X_RUNG_CELLS_V1"
 SCIENTIFIC_EXECUTION_SCOPE_STATE = "UNRESOLVED__PREEXECUTION_ONLY"
@@ -321,6 +325,53 @@ def source_balanced_target_value(
             raise ValueError(f"metric {metric!r} is nonfinite for source {source}")
         means.append(float(values.mean()))
     return float(np.mean(means))
+
+
+def donor_uniform_target_value(
+    rows: Sequence[DonorBurdenObservationV1],
+    *,
+    expected_source_codes: Sequence[int],
+    expected_donor_codes: Sequence[int],
+    metric: str = "normalized_delta_detected",
+) -> float:
+    """Equal weight for every expected donor, with source completeness enforced.
+
+    This is the current base-population weighting candidate implied by the ETL
+    donor-uniform scientific population. Source identities remain required and
+    visible, but they do not receive equal source mass in this aggregate.
+    """
+    if not rows:
+        raise ValueError("rows must be nonempty")
+    targets = {r.target_col for r in rows}
+    policies = {r.policy_id for r in rows}
+    rungs = {(r.rung_numerator, r.rung_denominator) for r in rows}
+    if len(targets) != 1 or len(policies) != 1 or len(rungs) != 1:
+        raise ValueError("target aggregation requires one target, one policy, one rung")
+
+    expected_sources = tuple(int(x) for x in expected_source_codes)
+    if len(expected_sources) == 0 or len(set(expected_sources)) != len(expected_sources):
+        raise ValueError("expected_source_codes must be unique and nonempty")
+    donors_expected = tuple(int(x) for x in expected_donor_codes)
+    if len(donors_expected) == 0 or len(set(donors_expected)) != len(donors_expected):
+        raise ValueError("expected_donor_codes must be unique and nonempty")
+
+    donors_observed = [int(r.donor_code) for r in rows]
+    if len(set(donors_observed)) != len(donors_observed):
+        raise ValueError("target aggregation contains duplicate donor observations")
+    if set(donors_observed) != set(donors_expected):
+        raise ValueError(
+            "target aggregation donor set is incomplete or contains unexpected donors"
+        )
+    observed_sources = {int(r.source_code) for r in rows}
+    if observed_sources != set(expected_sources):
+        raise ValueError(
+            "target aggregation source set differs from expected_source_codes"
+        )
+
+    values = np.asarray([float(getattr(r, metric)) for r in rows], dtype=np.float64)
+    if not np.all(np.isfinite(values)):
+        raise ValueError(f"metric {metric!r} is nonfinite for one or more donors")
+    return float(values.mean())
 
 
 def precision_summary(

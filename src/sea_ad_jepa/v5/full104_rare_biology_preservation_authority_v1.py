@@ -20,13 +20,17 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import hashlib
 import json
-from typing import Any, Mapping, Tuple
+from typing import Any, Mapping, Sequence, Tuple
+
+import numpy as np
 
 
 TAIL_QUANTILE = 0.95
+TAIL_COUNT_RULE_ID = "CEIL_TOP_5_PERCENT_OF_FINITE_Z_ISOLATION_ANCHORS_V1"
+TAIL_TIEBREAK_ID = "ISOLATION_DESC__GLOBAL_SELECTION_ROW_ASC_V1"
 MIN_TAIL_ANCHORS = 5
 MIN_RESOLVED_TRIPLETS_PER_DONOR = 20
-MIN_MEASURABLE_DONORS_PER_HALF = 4
+MIN_MEASURABLE_DONORS_PER_SOURCE_FOLD = 4
 NULL_REPLICATES = 64
 
 APPROVED_SELECTOR_IDS: Tuple[str, ...] = (
@@ -37,6 +41,12 @@ APPROVED_STRATIFICATION_IDS: Tuple[str, ...] = (
 )
 APPROVED_TAIL_IDS: Tuple[str, ...] = (
     "Q95_ISOLATION_TAIL__MIN5_ANCHORS_PER_DONOR_V1",
+)
+APPROVED_TAIL_COUNT_RULE_IDS: Tuple[str, ...] = (
+    TAIL_COUNT_RULE_ID,
+)
+APPROVED_TAIL_TIEBREAK_IDS: Tuple[str, ...] = (
+    TAIL_TIEBREAK_ID,
 )
 APPROVED_MOLECULAR_GATE_IDS: Tuple[str, ...] = (
     "FULL104_XY_RELATIONAL_RECURRENCE_REQUIRED_BEFORE_TEACHER_TAIL_CLAIM_V1",
@@ -83,6 +93,52 @@ def _canonical_sha(payload: Mapping[str, Any]) -> str:
     ).hexdigest()
 
 
+
+
+def q95_tail_count_from_finite_n(finite_anchor_count: int) -> int:
+    """Exact ranked-tail count corresponding to the frozen q95 convention."""
+    if isinstance(finite_anchor_count, bool) or not isinstance(finite_anchor_count, int):
+        raise ValueError("finite_anchor_count must be an integer")
+    if finite_anchor_count < 0:
+        raise ValueError("finite_anchor_count must be nonnegative")
+    if finite_anchor_count == 0:
+        return 0
+    # q95 means exactly the top 1/20 under the frozen ranked-tail convention.
+    # Integer arithmetic avoids floating-point ceil drift at exact multiples of 20.
+    return (finite_anchor_count + 19) // 20
+
+
+def select_q95_isolation_tail_v1(
+    isolation_scores: Sequence[float],
+    selection_rows: Sequence[int],
+) -> np.ndarray:
+    """Select the exact q95 tail from finite Z-isolation anchors.
+
+    Non-finite isolation is missing measurement support, not low isolation, and
+    is therefore excluded before computing the tail count. Equal isolation
+    scores are resolved only by authenticated global selection_row ascending.
+    """
+    score = np.asarray(isolation_scores, dtype=np.float64)
+    rows = np.asarray(selection_rows)
+    if score.ndim != 1 or rows.ndim != 1 or score.size != rows.size:
+        raise ValueError("isolation_scores and selection_rows must be aligned vectors")
+    if not np.issubdtype(rows.dtype, np.integer):
+        raise ValueError("selection_rows must be integers")
+    if np.any(rows < 0):
+        raise ValueError("selection_rows must be nonnegative")
+    if np.unique(rows).size != rows.size:
+        raise ValueError("selection_rows must be unique within a stratum")
+
+    finite = np.flatnonzero(np.isfinite(score))
+    n_keep = q95_tail_count_from_finite_n(int(finite.size))
+    if n_keep == 0:
+        return np.empty(0, dtype=np.int64)
+
+    order = np.lexsort((rows[finite].astype(np.int64), -score[finite]))
+    chosen = finite[order[:n_keep]]
+    return chosen.astype(np.int64, copy=False)
+
+
 @dataclass(frozen=True)
 class Full104RareBiologyPreservationAuthorityV1:
     authority_id: str
@@ -96,6 +152,8 @@ class Full104RareBiologyPreservationAuthorityV1:
     selector_id: str
     stratification_id: str
     tail_id: str
+    tail_count_rule_id: str
+    tail_tiebreak_id: str
     molecular_gate_id: str
     null_id: str
     primary_weighting_id: str
@@ -105,7 +163,7 @@ class Full104RareBiologyPreservationAuthorityV1:
     tail_quantile: float = TAIL_QUANTILE
     min_tail_anchors: int = MIN_TAIL_ANCHORS
     min_resolved_triplets_per_donor: int = MIN_RESOLVED_TRIPLETS_PER_DONOR
-    min_measurable_donors_per_half: int = MIN_MEASURABLE_DONORS_PER_HALF
+    min_measurable_donors_per_source_fold: int = MIN_MEASURABLE_DONORS_PER_SOURCE_FOLD
     null_replicates: int = NULL_REPLICATES
 
     pathology_labels_used: bool = False
@@ -133,6 +191,16 @@ class Full104RareBiologyPreservationAuthorityV1:
         _enum(self.selector_id, APPROVED_SELECTOR_IDS, "selector_id")
         _enum(self.stratification_id, APPROVED_STRATIFICATION_IDS, "stratification_id")
         _enum(self.tail_id, APPROVED_TAIL_IDS, "tail_id")
+        _enum(
+            self.tail_count_rule_id,
+            APPROVED_TAIL_COUNT_RULE_IDS,
+            "tail_count_rule_id",
+        )
+        _enum(
+            self.tail_tiebreak_id,
+            APPROVED_TAIL_TIEBREAK_IDS,
+            "tail_tiebreak_id",
+        )
         _enum(self.molecular_gate_id, APPROVED_MOLECULAR_GATE_IDS, "molecular_gate_id")
         _enum(self.null_id, APPROVED_NULL_IDS, "null_id")
         _enum(self.primary_weighting_id, APPROVED_WEIGHTING_IDS, "primary_weighting_id")
@@ -149,8 +217,11 @@ class Full104RareBiologyPreservationAuthorityV1:
             raise ValueError("min_tail_anchors is frozen at 5")
         if self.min_resolved_triplets_per_donor != MIN_RESOLVED_TRIPLETS_PER_DONOR:
             raise ValueError("min_resolved_triplets_per_donor drifted")
-        if self.min_measurable_donors_per_half != MIN_MEASURABLE_DONORS_PER_HALF:
-            raise ValueError("min_measurable_donors_per_half drifted")
+        if (
+            self.min_measurable_donors_per_source_fold
+            != MIN_MEASURABLE_DONORS_PER_SOURCE_FOLD
+        ):
+            raise ValueError("min_measurable_donors_per_source_fold drifted")
         if self.null_replicates != NULL_REPLICATES:
             raise ValueError("null_replicates drifted")
 
