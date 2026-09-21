@@ -1,10 +1,14 @@
 """Deterministic technical-stratum decoy for prospective G4 falsification.
 
 The decoy preserves the exact multivariate state multiset within each caller-
-declared technical stratum while breaking row-specific coupling by a fixed-point-
-free within-stratum permutation. The caller is responsible for prospectively
-declaring lawful pathology-blind strata such as source/operator/depth/support
-bins. Pathology labels are neither required nor accepted by this primitive.
+declared nuisance stratum while breaking row-specific coupling by a fixed-point-
+free within-stratum permutation. Every stratum component must carry an explicit
+role. DOMAIN_NUISANCE and EXOGENOUS_TECHNICAL components are accepted for exact
+stratification; MIXED_BIO_TECH, BIOLOGICAL, and UNKNOWN components fail closed.
+
+This distinction matters in FULL104 because an "operator" may encode biological
+structure (for example brain region or cell class) rather than a pure technical
+batch. Pathology labels are neither required nor accepted by this primitive.
 """
 from __future__ import annotations
 
@@ -13,6 +17,17 @@ import hashlib
 from typing import Any
 
 import numpy as np
+
+
+ALLOWED_EXACT_STRATUM_ROLES = frozenset({
+    "DOMAIN_NUISANCE",
+    "EXOGENOUS_TECHNICAL",
+})
+FORBIDDEN_EXACT_STRATUM_ROLES = frozenset({
+    "MIXED_BIO_TECH",
+    "BIOLOGICAL",
+    "UNKNOWN",
+})
 
 
 @dataclass(frozen=True)
@@ -40,11 +55,31 @@ class TechnicalDecoyReceiptV1:
         object.__setattr__(self, "stratum_size_by_row", s)
 
 
-def build_technical_stratum_id(*components: Any) -> np.ndarray:
-    """Combine prospectively declared technical components without interpretation."""
+def build_technical_stratum_id(
+    *components: Any,
+    component_roles: tuple[str, ...],
+) -> np.ndarray:
+    """Combine only prospectively role-qualified nuisance components.
+
+    Exact stratification is intentionally conservative. Mixed biological/
+    technical fields must first be decomposed into a defensible nuisance-only
+    component or be handled by a separately labelled mixed-nuisance diagnostic.
+    """
 
     if not components:
-        raise ValueError("at least one technical component is required")
+        raise ValueError("at least one technical/nuisance component is required")
+    if not isinstance(component_roles, tuple) or len(component_roles) != len(components):
+        raise ValueError("component_roles must explicitly align every stratum component")
+    normalized_roles = tuple(str(r) for r in component_roles)
+    unknown = [r for r in normalized_roles if r not in ALLOWED_EXACT_STRATUM_ROLES | FORBIDDEN_EXACT_STRATUM_ROLES]
+    if unknown:
+        raise ValueError(f"unrecognized nuisance component roles: {unknown}")
+    forbidden = [r for r in normalized_roles if r not in ALLOWED_EXACT_STRATUM_ROLES]
+    if forbidden:
+        raise ValueError(
+            "exact technical-decoy stratification rejects mixed/biological/unknown "
+            f"components: {forbidden}"
+        )
     arrays = [np.asarray([str(v) for v in x], dtype=object) for x in components]
     n = arrays[0].size
     if n == 0 or any(a.ndim != 1 or a.size != n for a in arrays):
