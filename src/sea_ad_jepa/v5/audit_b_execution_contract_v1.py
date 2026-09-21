@@ -42,6 +42,12 @@ TARGET_AGGREGATION_ID = (
 )
 PRECISION_ESTIMATOR_ID = "TARGET_SAMPLE_SD_OVER_SQRT_N__RELATIVE_TO_ABS_MEAN_V1"
 
+PHASE_IV_SAMPLE_SCHEMA_ID = "V5_AUDIT_B_FROZEN_TARGET_SAMPLE_V1"
+HEAVY_QUALIFICATION_SCHEMA_ID = "V5_FULL104_HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V2"
+HEAVY_QUALIFICATION_VERDICT_ID = "HEAVY_ARTIFACT_QUALIFIED_FOR_REUSE"
+RNG_AUTHORITY_SCHEMA_ID = "V5_MASKING_RNG_REPLAY_AUTHORITY_V3"
+RNG_TARGET_PANEL_DEPENDENCY_ID = "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS"
+
 PRECISION_SCOPE_UNRESOLVED = "UNRESOLVED__EXECUTION_FORBIDDEN"
 PRECISION_SCOPE_SINGLE_PRIMARY = "ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1"
 PRECISION_SCOPE_ALL_POLICY_RUNG = "ALL_3_NONUNIFORM_X_6_RUNG_CELLS_V1"
@@ -106,6 +112,11 @@ class AuditBExecutionContractV1:
     rng_authority_sha256: str
     mask_plan_generator_sha256: str
     burden_estimator_source_sha256: str
+    phase_iv_sample_schema_id: str = PHASE_IV_SAMPLE_SCHEMA_ID
+    heavy_qualification_schema_id: str = HEAVY_QUALIFICATION_SCHEMA_ID
+    heavy_qualification_verdict_id: str = HEAVY_QUALIFICATION_VERDICT_ID
+    rng_authority_schema_id: str = RNG_AUTHORITY_SCHEMA_ID
+    rng_target_panel_dependency_id: str = RNG_TARGET_PANEL_DEPENDENCY_ID
     precision_scope_id: str = PRECISION_SCOPE_UNRESOLVED
     primary_metric_id: str = PRIMARY_METRIC_ID
     secondary_metric_id: str = SECONDARY_METRIC_ID
@@ -152,6 +163,16 @@ class AuditBExecutionContractV1:
         if len(set(roots)) != len(roots):
             raise ValueError("execution-contract hashes must remain role-distinct")
 
+        if self.phase_iv_sample_schema_id != PHASE_IV_SAMPLE_SCHEMA_ID:
+            raise ValueError("Phase-IV sample schema drifted")
+        if self.heavy_qualification_schema_id != HEAVY_QUALIFICATION_SCHEMA_ID:
+            raise ValueError("heavy qualification schema drifted")
+        if self.heavy_qualification_verdict_id != HEAVY_QUALIFICATION_VERDICT_ID:
+            raise ValueError("heavy qualification verdict drifted")
+        if self.rng_authority_schema_id != RNG_AUTHORITY_SCHEMA_ID:
+            raise ValueError("RNG authority schema drifted")
+        if self.rng_target_panel_dependency_id != RNG_TARGET_PANEL_DEPENDENCY_ID:
+            raise ValueError("RNG target-panel dependency drifted")
         if self.precision_scope_id not in ALLOWED_PRECISION_SCOPES:
             raise ValueError("unknown precision_scope_id")
         if self.primary_metric_id != PRIMARY_METRIC_ID:
