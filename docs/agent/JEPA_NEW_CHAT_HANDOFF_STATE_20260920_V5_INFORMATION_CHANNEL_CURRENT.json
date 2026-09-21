@@ -1,0 +1,97 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260920_V5_INFORMATION_CHANNEL_V1",
+  "date": "2026-09-20",
+  "status": "FULL104_INFORMATION_CHANNEL_REDTEAM_ACTIVE__A_C_CONFIRMED_BLOCKERS__B_E_SUPPORTING_ONLY__G_NO_ISSUE__F_MULTIVARIATE_DESIGN_OPEN__TERMINAL_LOCKED__TRAINING_OFF",
+  "branches": {
+    "cleaned_pr32": {
+      "name": "impl/v5-full104-pass1-review-repairs-20260920",
+      "head": "a215bb77c4dbaa4bb60ad5b7ed54c2d574c8bf2a",
+      "pr": 32
+    },
+    "active_audit": {
+      "name": "audit/v5-full104-information-channel-redteam-20260920",
+      "head_seen": "abcea57c1934ed70dea16fbad32e73b3d07d719d",
+      "pr": 33
+    },
+    "handoff": {
+      "name": "handoff/jepa-v5-gpt-parallel-audit-20260920",
+      "pr": 34
+    }
+  },
+  "authority_roots": {
+    "full104_manifest": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "registry": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "pass1": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+    "pass1_physical_binding": "4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602",
+    "support_estimability": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+    "census_authority_v2": "7a090d4078239e9bc161ae60c289b7f1a5bbb02e7cf3e6bcc0ae9c284b89ee21"
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "strict_core": 17186,
+    "current_eligible_targets": 17053,
+    "measured_zero_frequency": 0.8329826626244999
+  },
+  "audits": {
+    "A": {
+      "state": "REAL_OPEN",
+      "headline": "outside-ledger normalization denominator is source-structured; pooled outside fraction 0.0381869841",
+      "review_scope": "derived denominator fractions perfectly classify donor source, but model-visible recoverability is not identical to explicit fraction access; D blindness only pure between-donor/source location-scale"
+    },
+    "B": {
+      "state": "MECHANISM_CONFIRMED_PRODUCTION_MAGNITUDE_OPEN",
+      "headline": "address parity does not imply evidence parity",
+      "review_scope": "current 512-address pool mirror is not actual fold-specific full-universe TOP8/RIDGE8/PREFIX3 burden; B5 not fully training-side/fold aligned"
+    },
+    "C": {
+      "state": "REAL_OPEN",
+      "headline": "2527/17053 targets weak in >=1 source under current characterization; non-estimability can map to r2=0",
+      "review_scope": "source×fold C2 and exhaustive scorer-aligned variance handling remain open; do not transplant global thresholds per source"
+    },
+    "D": {
+      "state": "OPEN_G3_ESTIMAND",
+      "headline": "within-donor score discards pure between-donor/source location-scale information",
+      "review_scope": "do not broaden to all source-level channels"
+    },
+    "E": {
+      "state": "PARTIAL_OPEN",
+      "headline": "512-pool decomposition weakly aligned with co-detection and not with pooled conditional quantitative association",
+      "review_scope": "E1/E2 pooled vs E3 source-balanced within-donor; production-aligned decomposition still needed"
+    },
+    "F": {
+      "state": "SCALAR_FIXTURE_QUALIFIED_REAL_DESIGN_OPEN",
+      "headline": "target identity x zero fixture works only as scalar design",
+      "review_scope": "real teacher is multivariate; dense identity one-hot unscalable; descriptive vs predictive interpretation unresolved"
+    },
+    "G": {
+      "state": "NO_ISSUE_CURRENT_ROLE",
+      "headline": "cache matches equal-donor design",
+      "review_scope": "capacity-calibration weighting remains a G3 design choice"
+    }
+  },
+  "additional_open": {
+    "g3_attacker_fit_objective": "current full-data ridge fit is cell-weighted while production scientific mass is donor-uniform; replacement not selected",
+    "h3_precision": "need target-only vs donor-only-within-source vs paired bootstrap; NPH52 has 17 donors and 4-5 heldout per fold",
+    "g5": "no margin selected; wait for prospective pathology-blind G4 state-fidelity functional and well-posed masking estimand"
+  },
+  "protected_state": {
+    "terminal_masking_opened": false,
+    "d_shared_opened": false,
+    "pathology_opened": false,
+    "dev_sealed_opened": false,
+    "masking_policy_selected": false,
+    "training_authorized": false
+  },
+  "future_agent_start": [
+    "Re-fetch live PR #33 and PR #34 heads.",
+    "Read START_HERE, latest handoff pointer, detailed handoff/state/commands/manifest.",
+    "Read all PR #33 review comments after the latest head before accepting audit report wording.",
+    "Do not promote B/E reduced-pool magnitudes to production authority.",
+    "Do not alter current scientific authorities until the estimand/repair choices are prospectively justified.",
+    "Keep terminal outcomes sealed and TRAINING_OFF."
+  ]
+}

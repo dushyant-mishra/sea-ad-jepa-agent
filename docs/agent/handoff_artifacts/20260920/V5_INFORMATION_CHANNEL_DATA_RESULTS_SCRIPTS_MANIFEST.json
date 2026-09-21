@@ -1,0 +1,65 @@
+{
+  "schema": "V5_INFORMATION_CHANNEL_DATA_RESULTS_SCRIPTS_MANIFEST_V1",
+  "date": "2026-09-20",
+  "audit_root": "analysis/v5_full104_information_channel_redteam_20260920",
+  "current_full104_results": [
+    "NORMALIZATION_DENOMINATOR_AUDIT_REPORT.md",
+    "MASK_EFFECTIVE_BURDEN_AUDIT_REPORT.md",
+    "TARGET_SOURCE_ESTIMABILITY_AUDIT_REPORT.md",
+    "ATTACKER_STANDARDIZATION_ESTIMAND_AUDIT.md",
+    "PARTNER_CODETECTION_DECOMPOSITION_REPORT.md",
+    "TARGET_IDENTITY_ZERO_STRATIFIED_DESIGN.md",
+    "CALIBRATION_CACHE_COVERAGE_AUDIT.md",
+    "CROSS_AUDIT_INTERACTIONS.md",
+    "EVIDENCE_SHA256.csv",
+    "EXTERNAL_ARTIFACTS.json"
+  ],
+  "scripts": [
+    "scripts/audit_a_normalization_denominator_20260920.py",
+    "scripts/audit_b_effective_burden_20260920.py",
+    "scripts/audit_b_mask_plan_generator_20260920.py",
+    "scripts/audit_c_target_source_estimability_20260920.py",
+    "scripts/audit_d_standardization_estimand_20260920.py",
+    "scripts/audit_e_codetection_decomposition_20260920.py",
+    "scripts/audit_f_target_identity_zero_decomposition_20260920.py",
+    "scripts/audit_g_cache_coverage_20260920.py",
+    "scripts/build_core_sufficient_statistics_20260920.py",
+    "scripts/build_evidence_manifests_20260920.py"
+  ],
+  "evidence_dirs": [
+    "evidence/audit_a",
+    "evidence/audit_b",
+    "evidence/audit_c",
+    "evidence/audit_d",
+    "evidence/audit_e",
+    "evidence/audit_f",
+    "evidence/audit_g"
+  ],
+  "tests": [
+    "tests/test_v5_audit_a_normalization_denominator_v1.py",
+    "tests/test_v5_audit_b_mask_plan_v1.py",
+    "tests/test_v5_audit_bc_burden_estimability_v1.py",
+    "tests/test_v5_audit_f_target_identity_zero_v1.py",
+    "tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py"
+  ],
+  "supporting_root": "analysis/v5_full104_information_channel_redteam_20260920/supporting_gpt_parallel",
+  "supporting_files": [
+    "JEPA_LOCAL_PARALLEL_AUDIT_20260920.md",
+    "GPT_PARALLEL_AUDIT_STATE_20260920.json",
+    "ATTACKER_FIT_WEIGHTING_CONTRACT_GAP.md",
+    "CURRENT_SOURCE_BALANCED_SCORE_GEOMETRY.md",
+    "H3_TARGET_VS_DONOR_PRECISION_DECOMPOSITION_DESIGN.md",
+    "current_source_fold_donor_geometry.csv",
+    "historical50k_source_sparsity_aggregate_safe.csv",
+    "historical_t1_gene_identity_drift_trajectory.csv",
+    "historical_t1_identity_drift_by_support_pattern.csv",
+    "SHA256SUMS_GPT_PARALLEL.csv"
+  ],
+  "authority_note": "EVIDENCE_SHA256.csv is the committed current-audit evidence hash manifest. EXTERNAL_ARTIFACTS.json is authoritative only for locating/content-addressing heavy GPU artifacts, not for promoting their scientific interpretation.",
+  "scope_warnings": {
+    "audit_b": "current magnitudes arise from a deterministic 512-address mechanism mirror, not actual full-universe fold-specific policy plans",
+    "audit_e": "512-address partial audit; E1/E2 and E3 are not yet estimand-aligned",
+    "audit_f": "scalar fixtures only; real multivariate teacher-state design open",
+    "historical_support": "supporting-only, never current threshold authority"
+  }
+}
