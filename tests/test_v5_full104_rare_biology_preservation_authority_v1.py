@@ -118,8 +118,8 @@ def test_td59_null_and_donor_level_measurability_are_frozen() -> None:
         authority(null_replicates=63).validate()
     with pytest.raises(ValueError, match="min_resolved_triplets_per_donor"):
         authority(min_resolved_triplets_per_donor=19).validate()
-    with pytest.raises(ValueError, match="min_measurable_donors_per_half"):
-        authority(min_measurable_donors_per_half=3).validate()
+    with pytest.raises(ValueError, match="min_measurable_donors_per_source_fold"):
+        authority(min_measurable_donors_per_source_fold=3).validate()
 
 
 def test_v1_cannot_promote_itself_after_outcomes() -> None:
