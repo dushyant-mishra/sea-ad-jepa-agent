@@ -53,6 +53,7 @@ jobs:
             tests/test_v5_current_masking_policy_authority_v2.py \
             tests/test_v5_shared_address_query_provider_v1.py \
             tests/test_v5_full104_teacher_relational_target_qualification_authority_v1.py \
+            tests/test_v5_full104_target_qualification_sample_authority_v1.py \
             tests/test_v5_full104_rare_biology_preservation_authority_v1.py
       - name: Fail closed on skipped regression tests
         env:
@@ -80,6 +81,7 @@ jobs:
             tests/test_v5_current_masking_policy_authority_v2.py \
             tests/test_v5_shared_address_query_provider_v1.py \
             tests/test_v5_full104_teacher_relational_target_qualification_authority_v1.py \
+            tests/test_v5_full104_target_qualification_sample_authority_v1.py \
             tests/test_v5_full104_rare_biology_preservation_authority_v1.py \
             -rs --tb=short | tee /tmp/current-v5.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/current-v5.txt; then echo 'CURRENT V5 REGRESSION TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
