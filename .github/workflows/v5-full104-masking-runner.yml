@@ -26,6 +26,7 @@ on:
       - 'src/sea_ad_jepa/v5/query_denominator_counterfactual_v1.py'
       - 'src/sea_ad_jepa/v5/targeting_complexity_materiality_v1.py'
       - 'src/sea_ad_jepa/v5/shortcut_consequence_curve_v1.py'
+      - 'src/sea_ad_jepa/v5/g4_state_content_functionals_v1.py'
       - 'src/sea_ad_jepa/v5/dataset_field_roles_v1.py'
       - 'src/sea_ad_jepa/v5/h3_precision_resampling_v1.py'
       - 'src/sea_ad_jepa/v5/attacker_fit_objective_weights_v1.py'
@@ -37,6 +38,7 @@ on:
       - 'tests/test_v5_query_denominator_counterfactual_v1.py'
       - 'tests/test_v5_targeting_complexity_materiality_v1.py'
       - 'tests/test_v5_shortcut_consequence_curve_v1.py'
+      - 'tests/test_v5_g4_state_content_functionals_v1.py'
       - 'tests/test_v5_dataset_field_roles_v1.py'
       - 'tests/test_v5_h3_precision_resampling_v1.py'
       - 'tests/test_v5_attacker_fit_objective_weights_v1.py'
@@ -193,6 +195,8 @@ jobs:
             tests/test_v5_query_denominator_counterfactual_v1.py \
             tests/test_v5_targeting_complexity_materiality_v1.py \
             tests/test_v5_shortcut_consequence_curve_v1.py \
+            tests/test_v5_g4_state_content_functionals_v1.py \
+            tests/test_v5_g4_state_content_functionals_v1.py \
             tests/test_v5_shortcut_consequence_curve_v1.py \
             tests/test_v5_targeting_complexity_materiality_v1.py \
             tests/test_v5_query_denominator_counterfactual_v1.py \
