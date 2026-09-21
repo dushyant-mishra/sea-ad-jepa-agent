@@ -40,6 +40,7 @@ on:
       - 'tests/test_v5_heavy_sufficient_statistics_qualification_v1.py'
       - 'tests/test_v5_heavy_sufficient_statistics_qualification_v2.py'
       - 'tests/test_v5_score_term_evidence_contract_v2.py'
+      - 'tests/test_v5_score_term_evidence_contract_v2_edge_cases.py'
       - 'tests/test_v5_evidence_estimability_contract_v2.py'
       - 'tests/test_v5_query_denominator_counterfactual_v1.py'
       - 'tests/test_v5_targeting_complexity_materiality_v1.py'
@@ -274,6 +275,7 @@ jobs:
             tests/test_v5_masking_terminal_mechanical_controls_v1.py \
             tests/test_v5_evidence_estimability_contract_v2.py \
             tests/test_v5_score_term_evidence_contract_v2.py \
+            tests/test_v5_score_term_evidence_contract_v2_edge_cases.py \
             tests/test_v5_heavy_sufficient_statistics_qualification_v1.py \
             tests/test_v5_heavy_sufficient_statistics_qualification_v2.py \
             tests/test_v5_audit_b_frozen_target_sample_v1.py \
@@ -363,6 +365,7 @@ jobs:
             tests/test_v5_masking_terminal_mechanical_controls_v1.py \
             tests/test_v5_evidence_estimability_contract_v2.py \
             tests/test_v5_score_term_evidence_contract_v2.py \
+            tests/test_v5_score_term_evidence_contract_v2_edge_cases.py \
             tests/test_v5_heavy_sufficient_statistics_qualification_v1.py \
             tests/test_v5_heavy_sufficient_statistics_qualification_v2.py \
             tests/test_v5_audit_b_frozen_target_sample_v1.py \
