@@ -22,6 +22,20 @@ on:
       - 'tests/test_v5_audit_bc_burden_estimability_v1.py'
       - 'tests/test_v5_audit_f_target_identity_zero_v1.py'
       - 'tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py'
+      - 'src/sea_ad_jepa/v5/evidence_estimability_contract_v1.py'
+      - 'src/sea_ad_jepa/v5/h3_precision_resampling_v1.py'
+      - 'src/sea_ad_jepa/v5/attacker_fit_objective_weights_v1.py'
+      - 'src/sea_ad_jepa/v5/masking_burden_parity_audit_v1.py'
+      - 'src/sea_ad_jepa/v5/partner_association_estimands_v1.py'
+      - 'src/sea_ad_jepa/v5/latent_state_decomposition_v1.py'
+      - 'src/sea_ad_jepa/v5/technical_only_decoy_v1.py'
+      - 'tests/test_v5_evidence_estimability_contract_v1.py'
+      - 'tests/test_v5_h3_precision_resampling_v1.py'
+      - 'tests/test_v5_attacker_fit_objective_weights_v1.py'
+      - 'tests/test_v5_masking_burden_parity_audit_v1.py'
+      - 'tests/test_v5_partner_association_estimands_v1.py'
+      - 'tests/test_v5_latent_state_decomposition_v1.py'
+      - 'tests/test_v5_technical_only_decoy_v1.py'
       - 'tests/test_teacher_student_v5_support_schedule_v1.py'
       - 'analysis/v5_full104_census_20260918/full104_readonly_census_receipts_v2.py'
       - 'scripts/agent/build_full104_census_authority_v2_20260918.py'
@@ -167,6 +181,20 @@ jobs:
             tests/test_v5_audit_bc_burden_estimability_v1.py \
             tests/test_v5_audit_f_target_identity_zero_v1.py \
             tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py \
+            tests/test_v5_evidence_estimability_contract_v1.py \
+            tests/test_v5_h3_precision_resampling_v1.py \
+            tests/test_v5_attacker_fit_objective_weights_v1.py \
+            tests/test_v5_masking_burden_parity_audit_v1.py \
+            tests/test_v5_partner_association_estimands_v1.py \
+            tests/test_v5_latent_state_decomposition_v1.py \
+            tests/test_v5_technical_only_decoy_v1.py \
+            tests/test_v5_evidence_estimability_contract_v1.py \
+            tests/test_v5_h3_precision_resampling_v1.py \
+            tests/test_v5_attacker_fit_objective_weights_v1.py \
+            tests/test_v5_masking_burden_parity_audit_v1.py \
+            tests/test_v5_partner_association_estimands_v1.py \
+            tests/test_v5_latent_state_decomposition_v1.py \
+            tests/test_v5_technical_only_decoy_v1.py \
             tests/test_teacher_student_v5_support_schedule_v1.py \
             tests/test_v5_full104_pass1_builder_v1.py \
             tests/test_v5_full104_pass1_physical_binding_v1.py \
