@@ -25,7 +25,7 @@ def authority(**updates) -> Full104RareBiologyPreservationAuthorityV1:
         stratification_id=(
             "WITHIN_DONOR_OPERATOR__OPERATOR_DOES_NOT_SET_OBJECTIVE_MASS_V1"
         ),
-        tail_id="Q95_ISOLATION_TAIL__MIN5_ANCHORS_V1",
+        tail_id="Q95_ISOLATION_TAIL__MIN5_ANCHORS_PER_DONOR_V1",
         molecular_gate_id=(
             "FULL104_XY_RELATIONAL_RECURRENCE_REQUIRED_BEFORE_TEACHER_TAIL_CLAIM_V1"
         ),
