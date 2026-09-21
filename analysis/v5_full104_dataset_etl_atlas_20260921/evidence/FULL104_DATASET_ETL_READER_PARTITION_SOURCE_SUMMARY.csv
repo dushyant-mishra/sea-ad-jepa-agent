@@ -1,0 +1,9 @@
+partition,source,cells,donors
+reader_fit,HVS,198718,41
+reader_fit,NPH52,236476,17
+reader_fit,SEA_AD,4118213,46
+reader_oracle,HVS,55848,11
+reader_oracle,NPH52,28925,2
+reader_oracle,SEA_AD,766542,10
+reader_validation,HVS,53933,10
+reader_validation,SEA_AD,893098,12
