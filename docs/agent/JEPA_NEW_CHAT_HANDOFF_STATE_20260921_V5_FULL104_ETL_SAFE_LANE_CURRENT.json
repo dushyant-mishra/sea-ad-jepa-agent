@@ -1,0 +1,219 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_20260921_V5_FULL104_ETL_SAFE_LANE_V1",
+  "date": "2026-09-21",
+  "status": "CURRENT_FULL104_ETL_ATLAS_REPRODUCED__SAFE_LANE_GREEN__GPU_C2_MEASURED__PARALLEL_LANES_REQUIRE_RECONCILIATION__TRAINING_OFF",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "handoff_branch": "handoff/jepa-v5-full104-etl-safe-lane-20260921",
+  "handoff_base_sha": "0c2f5fb8419ea7d1572479e6ef1b13768e52f3c5",
+  "branches_at_freeze": {
+    "active_science_base": {
+      "branch": "audit/v5-full104-information-channel-redteam-20260920",
+      "pr": 33,
+      "sha": "ae5dc5c624fff341b8ef30c5359c55528383920a"
+    },
+    "gpt_safe_lane_etl": {
+      "branch": "gpt/v5-full104-safe-lane-20260921",
+      "pr": 35,
+      "sha": "0c2f5fb8419ea7d1572479e6ef1b13768e52f3c5",
+      "ahead_of_pr33": 69,
+      "behind_pr33": 0,
+      "ci": {
+        "V5 runtime closure": {"run_number": 390, "conclusion": "success"},
+        "V5 Stage-A spillover firewall": {"run_number": 372, "conclusion": "success"},
+        "V5 remaining-RNA and target-semantics successor": {"run_number": 541, "conclusion": "success"},
+        "V5 FULL104 masking runner": {"run_number": 589, "conclusion": "success"}
+      }
+    },
+    "claude_gpu": {
+      "branch": "claude/v5-full104-blocker-clearance-20260921",
+      "sha": "cdac29eba5f08994bc3d8309a31c05cd21da50aa",
+      "ahead_of_pr33": 5,
+      "behind_pr33": 0,
+      "relation_to_pr35": {
+        "status": "diverged",
+        "claude_unique_commits": 5,
+        "pr35_unique_commits": 69
+      }
+    }
+  },
+  "scope_firewall": {
+    "allowed_classes": [
+      "CURRENT_FULL104_AUTHORITY",
+      "CURRENT_FULL104_RECONNAISSANCE",
+      "REDUCED_POOL_DIAGNOSTIC",
+      "FIXTURE_ONLY",
+      "HISTORICAL_SUPPORTING_ONLY",
+      "WITHDRAWN"
+    ],
+    "rule": "Historical or reduced-pool evidence may motivate tests but may not set current FULL104 values, thresholds, margins, eligibility, policy selection, or terminal conclusions without a new authenticated execution."
+  },
+  "protected_state": {
+    "terminal_masking_outcomes": "UNOPENED",
+    "d_shared": "SEALED",
+    "pathology": "SEALED_FOR_MODEL_AND_TERMINAL_ADAPTATION",
+    "dev_sealed": "SEALED",
+    "masking_policy_selected": false,
+    "g5_margin_selected": false,
+    "training": "OFF"
+  },
+  "full104": {
+    "reader_fit_cells": 4553407,
+    "reader_fit_donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core_measured_by_all_operators": 17186,
+    "eligible_targets": 17053,
+    "measured_zero_frequency": 0.8329826626244999,
+    "roots": {
+      "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "address_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+      "corrected_pass1_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+      "pass1_physical_binding_sha256": "4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602",
+      "support_estimability_sha256": "cab2cecdd5ff31c2fbcaff408e1b1b7548eb2f72c1d3213931f1ce39188b6e08",
+      "census_authority_v2_sha256": "7a090d4078239e9bc161ae60c289b7f1a5bbb02e7cf3e6bcc0ae9c284b89ee21"
+    }
+  },
+  "etl": {
+    "path": "analysis/v5_full104_dataset_etl_20260921",
+    "scope": "CURRENT_FULL104_RECONNAISSANCE__DATASET_DESIGN_INPUT__NOT_MODEL_INPUT_AUTHORITY",
+    "calibration_bundle": {
+      "name": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+    },
+    "metadata_sqlite": {
+      "member": "metadata/foundation_metadata_rows.sqlite",
+      "bytes": 2709786624,
+      "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+    },
+    "scripts": {
+      "sql_extractor": "analysis/v5_full104_dataset_etl_20260921/scripts/extract_full104_dataset_sql_aggregates_v1_20260921.py",
+      "atlas_builder": "analysis/v5_full104_dataset_etl_20260921/scripts/build_full104_dataset_etl_atlas_v3_20260921.py"
+    },
+    "summary_path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_ATLAS_SUMMARY_V3.json",
+    "report_path": "analysis/v5_full104_dataset_etl_20260921/FULL104_DATASET_ETL_ATLAS_REPORT_20260921.md",
+    "repro_receipt_path": "analysis/v5_full104_dataset_etl_20260921/FULL104_DATASET_ETL_REPRODUCIBILITY_RECEIPT_V1.json",
+    "content_manifest_path": "analysis/v5_full104_dataset_etl_20260921/FULL104_DATASET_ETL_GITHUB_CONTENT_MANIFEST_20260921.csv",
+    "atlas_summary_sha256": "069057b9a265c27e90b1965ee7ee15e42ba44b1f8ace220a2bc56af677902b43",
+    "atlas_output_manifest_sha256": "11b19fea96b1fd4696401566bbc306d024ee52a02e17f82cec0ffb7729ec63e7",
+    "sql_aggregate_manifest_sha256": "7e50b6439eef388a186b363500c8339aed7462564232ed522986eb1b988a4ec6",
+    "independent_replay": {
+      "sql_files_compared": 11,
+      "sql_all_byte_identical": true,
+      "atlas_machine_outputs_compared": 13,
+      "atlas_all_byte_identical": true
+    },
+    "population": {
+      "metadata_cells": 6351753,
+      "metadata_donors": 149,
+      "reader_fit": {
+        "cells": 4553407,
+        "donors": 104,
+        "operators": 42
+      }
+    },
+    "reader_fit_sources": {
+      "HVS": {"cells": 198718, "cell_fraction": 0.04364160726243009, "donors": 41, "donor_fraction": 0.3942307692307692, "operators": 24},
+      "NPH52": {"cells": 236476, "cell_fraction": 0.05193385963521381, "donors": 17, "donor_fraction": 0.16346153846153846, "operators": 7},
+      "SEA_AD": {"cells": 4118213, "cell_fraction": 0.9044245331023562, "donors": 46, "donor_fraction": 0.4423076923076923, "operators": 11}
+    },
+    "key_findings": {
+      "operator_is_not_common_semantic_axis": true,
+      "source_cell_mass_is_highly_imbalanced": true,
+      "sea_ad_region_coverage_is_donor_ragged": true,
+      "nph_broad_class_missing_for_all_reader_fit_cells": true,
+      "support_pattern_is_source_identifying": true,
+      "reader_partitions_are_donor_disjoint": true,
+      "measured_by_all_42": 17186,
+      "measured_by_all_3_sources": 17346,
+      "measured_by_no_operator": 289,
+      "exact_support_patterns": 9
+    }
+  },
+  "gpt_safe_lane_modules": [
+    "src/sea_ad_jepa/v5/evidence_estimability_contract_v1.py",
+    "src/sea_ad_jepa/v5/h3_precision_resampling_v1.py",
+    "src/sea_ad_jepa/v5/attacker_fit_objective_weights_v1.py",
+    "src/sea_ad_jepa/v5/masking_burden_parity_audit_v1.py",
+    "src/sea_ad_jepa/v5/partner_association_estimands_v1.py",
+    "src/sea_ad_jepa/v5/latent_state_decomposition_v1.py",
+    "src/sea_ad_jepa/v5/dataset_field_roles_v1.py",
+    "src/sea_ad_jepa/v5/technical_only_decoy_v1.py",
+    "src/sea_ad_jepa/v5/query_denominator_counterfactual_v1.py",
+    "src/sea_ad_jepa/v5/targeting_complexity_materiality_v1.py",
+    "src/sea_ad_jepa/v5/shortcut_consequence_curve_v1.py",
+    "src/sea_ad_jepa/v5/g4_state_content_functionals_v1.py"
+  ],
+  "claude_gpu_commits": [
+    {
+      "sha": "a153ab655b84c26ac9646ccccef88468da9c7dba",
+      "phase": "I",
+      "result": "HEAVY_ARTIFACT_QUALIFIED_FOR_REUSE",
+      "parser_rows_checked": 4553407,
+      "parser_mismatches": 0,
+      "heavy_stats_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae"
+    },
+    {
+      "sha": "1fe022de5f33c4644d74016e48dee5f0f2c25b6b",
+      "phase": "II_C2",
+      "targets_with_any_undefined_term": 6653,
+      "target_fraction": 0.3901,
+      "wholly_vacuous_source_guardrail_targets": 202,
+      "undefined_heldout_terms": 30451,
+      "heldout_terms_total": 1773512
+    },
+    {
+      "sha": "065bc12e67a1b3cf983773feb7a528b41dbb7403",
+      "phase": "III_V1",
+      "status": "SUPERSEDED_BY_CLAUDE_V2"
+    },
+    {
+      "sha": "b6cac05aa05068ad576ac9bcac48e4ac9d97b943",
+      "phase": "III_V2",
+      "status": "PROSPECTIVE_CONTRACT__NO_POLICY_SELECTED",
+      "policy_costs": {
+        "P1_targets_kept": 10400,
+        "P2_terms_abstained": 30451,
+        "P4_target_folds_refused": 531,
+        "P4_target_folds_total": 68212
+      }
+    },
+    {
+      "sha": "cdac29eba5f08994bc3d8309a31c05cd21da50aa",
+      "phase": "IV_AUDIT_B_SAMPLE_FREEZE",
+      "freeze_digest": "c2c5e1b5addc50db7e9676ebf59e9c63b5d0b9eee882ef78aff5baa9d4a3b0ac",
+      "sample_ladder": [256, 1024, 4096],
+      "escalation_relative_se_threshold": 0.05,
+      "burden_computed": false
+    }
+  ],
+  "blockers": {
+    "A_normalization": "MECHANISM_ESTABLISHED__EXPLOITABILITY_AND_REPAIR_OPEN",
+    "B_burden": "PROSPECTIVE_TARGET_SAMPLE_FROZEN__HEAVY_EXECUTION_PENDING",
+    "C_estimability": "C2_MEASURED__EVIDENCE_POLICY_OPEN",
+    "D_G3_estimand": "FIT_OBJECTIVE_COMPARISON_OPEN",
+    "E_partner_association": "DONOR_LOCAL_IMPLEMENTATION_READY__FULL104_PRODUCTION_ALIGNED_EXECUTION_OPEN",
+    "F_target_semantics": "MULTIVARIATE_IMPLEMENTATION_READY__HEALTHY_TEACHER_MEASUREMENT_OPEN",
+    "G4_content": "CANDIDATES_AND_NUISANCE_DECOY_READY__FUNCTIONAL_AND_TOLERANCE_OPEN",
+    "G5_margin": "CONSEQUENCE_MACHINERY_READY__EPSILON_AND_MARGIN_OPEN",
+    "H3_precision": "MECHANICS_READY__WAIT_FOR_INTEGRATED_ESTIMABILITY_CONTRACT",
+    "F14_geometry": "SCHEMA_FAIL_CLOSED__REAL_GEOMETRY_AND_MEMORIZATION_EXECUTION_OPEN",
+    "F15_ema": "SCHEMA_FAIL_CLOSED__CURRENT_HALF_LIFE_AUTHORITY_OPEN"
+  },
+  "next_actions": [
+    "Re-fetch PR33, PR35 and Claude heads and CI.",
+    "Create a new integration branch from the current green PR35 head.",
+    "Port Claude Phase I and Phase II evidence/reports deliberately.",
+    "Reconcile PR35 and Claude V2 estimability contracts; preserve the strongest invariants and both adversarial test sets.",
+    "Port the Claude Audit-B frozen sample without changing its digest/bound inputs.",
+    "Execute Audit B on GPU using N1=256 and escalate only by the frozen precision rule.",
+    "Production-align Audit E.",
+    "Run G3 fit-objective comparison on planted/null lawful controls.",
+    "Advance real healthy-teacher F and G4 qualification.",
+    "Derive G5 only after a G4 functional and prospective epsilon are frozen.",
+    "Run H3/H4/G2 and capacity checks.",
+    "Open terminal masking only after all prerequisites.",
+    "Issue training authority last."
+  ]
+}
