@@ -43,26 +43,24 @@ correlation of E3 with E1 (co-detection)            = +0.1774
 correlation of E3 with E2 (quantitative covariation) = −0.0721
 ```
 
-The production screening score tracks **neither** component strongly. It leans
-weakly toward co-detection, and if anything leans *away* from quantitative
-covariation among cells where both genes are on.
+In this reduced diagnostic, E3 tracks **neither pooled component strongly**. It
+leans weakly toward pooled co-detection and slightly away from pooled conditional
+quantitative covariation. However, E1/E2 are pooled across cells whereas E3 is
+source-balanced and within-donor centred, so these correlations compare different
+estimands and are descriptive only.
 
 Two readings follow, and both matter:
 
-**The screening score is not "quantitative co-expression".** Its correlation with
-conditional quantitative association is slightly negative. Whatever TOP8 and
-RIDGE8 are selecting, it is not primarily "genes whose levels move together".
+These numbers do **not** yet establish what production TOP8/RIDGE8 select. Before
+that conclusion is allowed, E1 and E2 must be recomputed within donor and
+aggregated with the same source/donor weighting as E3, with partner selection
+performed training-side per authenticated fold. The current pooled decomposition
+remains useful mechanism reconnaissance, not a production-semantic verdict.
 
-**But it is not simply co-detection either.** At +0.18, co-detection explains
-little of it. The score is dominated by something neither component captures —
-most plausibly the overall variance and scale structure of the normalized values,
-which both components deliberately factor out.
-
-There is also a genuinely reassuring sub-result: **E2 (mean 0.26) exceeds E1
-(mean 0.14)**. Among cells where both genes are detected, real quantitative
-covariation is present and is *stronger* than the detection-level association. So
-the underlying biology is not merely co-detection — even though the screening
-score is not selecting on it.
+One descriptive sub-result is that pooled E2 mean (0.26) exceeds pooled E1 mean
+(0.14), showing quantitative covariation exists in the substrate. Because these
+are pooled quantities, this is **not** promoted to a source-balanced biological
+claim.
 
 ## 4. No threshold is frozen
 
@@ -105,10 +103,11 @@ problem as partner choice across the full universe — the best available partne
 in a pool of 512 may be a poor one in absolute terms, which could itself depress
 the observed relationships.
 
-What the audit does establish is narrower and still useful: **on the real
-substrate, the production screening shape does not preferentially select
-quantitatively co-varying partners.** Whether that holds at full scale needs the
-full-universe computation.
+What the audit establishes is narrower: on the real FULL104 rows, within a
+prospectively deterministic 512-address pool, the current screening-shaped score
+has weak association with pooled E1/E2 summaries. Whether that persists after
+production-aligned donor/source conditioning and full-universe partner search is
+`OPEN`.
 
 ## 7. Relation to Audit F
 
