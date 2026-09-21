@@ -11,7 +11,11 @@ from sea_ad_jepa.v5.technical_only_decoy_v1 import (
 def test_decoy_is_deterministic_fixed_point_free_and_stratum_preserving() -> None:
     source = ["HVS"] * 4 + ["SEA"] * 4
     operator = ["o1", "o1", "o2", "o2"] * 2
-    strata = build_technical_stratum_id(source, operator)
+    strata = build_technical_stratum_id(
+        source,
+        operator,
+        component_roles=("DOMAIN_NUISANCE", "EXOGENOUS_TECHNICAL"),
+    )
     keys = [f"r{i}" for i in range(8)]
     receipt = deterministic_stratified_derangement(keys, strata, salt="fixture")
     replay = deterministic_stratified_derangement(keys, strata, salt="fixture")
@@ -50,6 +54,25 @@ def test_fixture_breaks_row_specific_biology_while_preserving_technical_means_ex
 
 
 def test_decoy_never_requires_pathology_component() -> None:
-    strata = build_technical_stratum_id(["source"] * 4, ["operator"] * 4, ["depth-bin"] * 4)
+    strata = build_technical_stratum_id(
+        ["source"] * 4,
+        ["batch"] * 4,
+        ["chemistry"] * 4,
+        component_roles=("DOMAIN_NUISANCE", "EXOGENOUS_TECHNICAL", "EXOGENOUS_TECHNICAL"),
+    )
     receipt = deterministic_stratified_derangement([f"r{i}" for i in range(4)], strata)
     assert receipt.permutation.size == 4
+
+
+def test_mixed_biological_operator_role_fails_closed() -> None:
+    with pytest.raises(ValueError, match="rejects mixed"):
+        build_technical_stratum_id(
+            ["SEA_AD"] * 4,
+            ["sea_ad_mtg_rna_final_2026"] * 4,
+            component_roles=("DOMAIN_NUISANCE", "MIXED_BIO_TECH"),
+        )
+
+
+def test_roles_are_mandatory_not_inferred_from_column_names() -> None:
+    with pytest.raises(ValueError, match="component_roles"):
+        build_technical_stratum_id(["source"] * 4, component_roles=())
