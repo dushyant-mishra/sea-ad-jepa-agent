@@ -185,6 +185,7 @@ def receipt(a: Full104TargetQualificationSampleAuthorityV1, **updates):
         full_donor_n_file_sha256=h("full-n"),
         fold_by_donor_file_sha256=h("fold"),
         donor_source_code_file_sha256=h("source"),
+        builder_source_sha256=h("builder"),
     )
     values.update(updates)
     return Full104TargetQualificationSampleReceiptV1(**values)
