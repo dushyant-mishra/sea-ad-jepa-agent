@@ -1,11 +1,20 @@
 # Audit F — target identity × target-zero: design and controls
 
 Date: 2026-09-20
-Real-measurement status: **`CHANGED_INPUT_REQUIRES_REAL_TEACHER_REQUALIFICATION`**
+Current V5 real-measurement status: **`DESIGN_OPEN__REAL_TEACHER_REQUIRED`**
 
 Produced by `scripts/audit_f_target_identity_zero_decomposition_20260920.py`,
 validated by `tests/test_v5_audit_f_target_identity_zero_v1.py` (10 passed, 0
 skipped).
+
+> **Semantic correction.** The scalar zero/detection/quantitative decomposition in
+> this file is a historical mechanism fixture only. Current V5 authority defines
+> `QUERY_LOCAL_BIOLOGICAL_LATENT_STATE_V1`, with
+> `HIDDEN_GENE_SCALAR_RECONSTRUCTION_FORBIDDEN_V1`,
+> `QUERY_SCALAR_WITHHELD_BEFORE_CONTEXT_MIXING_V1`, and
+> `SCALAR_EXPRESSION_OBJECTIVE_ABSENT_V1`. Therefore target detection or scalar
+> expression must **not** be treated as desired positive components of the future
+> V5 teacher target.
 
 This is **not** generic target-identity archaeology, which is already open and is
 not redone here. It asks one new question.
@@ -120,6 +129,32 @@ cells, then for ~83% of pairs the prediction task carries little target-specific
 information, and both the masking evaluation and any claim about learned
 biology would need restating in those terms. That is a hypothesis with a
 preregistered test, not a finding.
+
+## 5b. Successor decomposition for the actual V5 target
+
+The real-teacher measurement must be redesigned around the current query-local
+latent semantics:
+
+1. **F1 — address identity baseline:** variance in `T(c,q)` explained by query
+   identity `q` alone.
+2. **F2 — cell/context main effect:** additional variation explained by lawful
+   global cell context shared across queries.
+3. **F3 — query × context interaction:** reproducible query-specific contextual
+   variation after removing F1/F2; this is the component closest to
+   `QUERY_LOCAL_BIOLOGICAL_LATENT_STATE_V1`.
+4. **F4 — technical decoy explanation:** how much of F2/F3 is explained by lawful
+   source/operator/depth/sparsity/support geometry alone.
+5. **F5 — query-scalar invariance:** a **negative control** requiring the teacher
+   state to remain invariant to direct intervention on the withheld query scalar
+   when lawful non-query context is held fixed.
+6. **F6 — remaining-RNA necessity:** removing lawful remaining-RNA/context should
+   destroy the query-local interaction in the expected direction.
+
+Because the teacher state is multivariate, the successor must use a prospective
+vector-valued decomposition (for example Frobenius SSE/SST plus a declared
+per-latent-dimension summary) with scalable grouped/fixed-effect residualization.
+No scalar fixture number in this file may set that design's threshold or expected
+magnitude.
 
 ## 6. Status
 
