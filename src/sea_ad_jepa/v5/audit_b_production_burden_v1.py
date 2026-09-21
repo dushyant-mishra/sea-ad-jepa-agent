@@ -308,6 +308,19 @@ def escalation_decision(
     }
     if observed != required or len(summaries) != len(required):
         raise ValueError("precision summaries must cover every nonuniform policy x burden rung exactly once")
+    unresolved_zero_mean = [
+        s for s in summaries
+        if s.relative_standard_error_state != "FINITE"
+    ]
+    if unresolved_zero_mean:
+        raise ValueError(
+            "STOP_ZERO_MEAN_RULE_UNRESOLVED: at least one policy x rung cell has "
+            "undefined relative standard error because its target-level mean is zero. "
+            "The original Phase-IV freeze did not specify whether this should stop, "
+            "escalate, or use another precision estimand; no sample-size action is lawful "
+            "until that rule is prospectively resolved."
+        )
+
     failures = [s for s in summaries if not s.precision_passed]
     if not failures:
         return {
