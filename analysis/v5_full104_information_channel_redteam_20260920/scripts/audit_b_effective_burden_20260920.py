@@ -214,6 +214,9 @@ def main() -> int:
 
         selection = {
             "state": "MEASURED",
+            "scope_class": "REDUCED_POOL_DIAGNOSTIC",
+            "actual_production_policy_burden_state": "OPEN__NOT_MEASURED",
+            "screening_fold_alignment": "NOT_PRODUCTION_FOLD_SPECIFIC",
             "pool_addresses": int(p_n),
             "targets_evaluated": int(p_n),
             "partners_per_target": TARGETED_PARTNER_CAP,
@@ -285,6 +288,12 @@ def main() -> int:
         "per_address_burden": per_address,
         "burden_rungs": rung_rows,
         "targeted_selection_vs_uniform": selection,
+        "scope_firewall": {
+            "per_address_burden": "CURRENT_FULL104_RECONNAISSANCE",
+            "selection_ratios": "REDUCED_POOL_DIAGNOSTIC",
+            "implied_rung_deltas": "REDUCED_POOL_DIAGNOSTIC",
+            "actual_fold_specific_TOP8_RIDGE8_PREFIX3_burden": "OPEN__NOT_MEASURED",
+        },
         "labels": {
             "B4": "DIAGNOSTIC_ONLY__NOT_CALLED_INFORMATION_WITHOUT_AN_INFORMATION_THEORETIC_ARGUMENT",
             "B5": "SUPPORTING_DETECTION_ENTROPY_BURDEN",
