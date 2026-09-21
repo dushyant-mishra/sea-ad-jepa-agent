@@ -81,7 +81,7 @@ def verify_runtime_bindings(
         "phase_iv_sample_artifact_sha256": sha256_file(sample_freeze),
         "heavy_artifact_sha256": sha256_file(heavy_artifact),
         "heavy_qualification_receipt_sha256": sha256_file(heavy_qualification_receipt),
-        "rng_authority_sha256": sha256_file(rng_authority),
+        "rng_authority_file_sha256": sha256_file(rng_authority),
         "mask_plan_generator_sha256": sha256_file(mask_plan_generator),
         "burden_estimator_source_sha256": sha256_file(burden_estimator_source),
         "full104_manifest_sha256": sha256_file(full104_manifest),
