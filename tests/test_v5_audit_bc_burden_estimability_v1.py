@@ -487,3 +487,52 @@ def test_external_manifest_builder_never_relabels_old_artifact_to_current_head(t
     assert core["contains_cell_level_material"] is True
     assert core["reuse_status"] == "REQUIRES_METADATA_ONLY_STRICT_PARSE_EQUIVALENCE_CHECK_BEFORE_REUSE"
 
+
+
+def test_c2_adversarial_constant_positive_target_is_flagged_not_just_all_zero(tmp_path: Path):
+    """The instrument must not be merely an 'all-zero detector'.
+
+    A target detected in EVERY cell of a donor at an identical normalized value
+    also has zero within-donor variance, so the frozen scorer's ``rss_y`` is 0 and
+    ``r`` is undefined there just as surely as for an all-zero target. But its
+    detection count is maximal, so a detector keyed on ``nnz == 0`` would call it
+    perfectly well-behaved.
+
+    This control constructs exactly that case and requires it to be flagged.
+    Without it, the whole C2 undefined-term count could be an artifact of only
+    ever looking for absent targets.
+    """
+    rng = np.random.default_rng(27)
+    nnz, umi, nsum, nsq, cells = _base_arrays(rng)
+    nnz = np.maximum(nnz, 1)
+    # Give every donor genuine variance on every target first.
+    nsum = nnz.astype(np.float64) * 0.7
+    nsq = nnz.astype(np.float64) * 0.9
+
+    donor, target = 0, 3
+    n = float(cells[donor])
+    value = 1.25
+    nnz[donor, target] = int(n)               # detected in EVERY cell
+    nsum[donor, target] = n * value           # constant value
+    nsq[donor, target] = n * value * value    # => variance exactly zero
+
+    # Sanity: an all-zero-only detector would NOT flag this.
+    assert nnz[donor, target] != 0
+
+    stats = _write_stats(tmp_path / "s.npz", donor_nnz=nnz, donor_umi=nnz * 2,
+                         donor_nsum=nsum, donor_nsq=nsq, donor_cells=cells)
+    payload = _run_c(tmp_path, stats, list(range(40)))
+
+    rows = payload["c2_fold_geometry"]
+    hvs_fold0 = next(r for r in rows if r["fold"] == 0 and r["source"] == "HVS")
+    assert hvs_fold0["available_heldout_donors"] == 1, "fixture assumption: donor 0 held out"
+    assert hvs_fold0["targets_current_score_includes_undefined_zero_terms"] >= 1, (
+        "a constant-POSITIVE zero-variance target was not flagged; the instrument is "
+        "behaving as an all-zero detector and would understate undefined score terms")
+
+    # And the exact detection-count route, reported separately, must NOT claim it:
+    # that asymmetry is precisely why both routes are carried.
+    hvs_zero = next(r for r in payload["c3_zero_variance"] if r["source"] == "HVS")
+    assert hvs_zero["zero_variance_pairs_exact"] == 0, (
+        "the exact nnz==0 route should not see a constant-positive target; if it does, "
+        "the two routes are no longer measuring different things")
