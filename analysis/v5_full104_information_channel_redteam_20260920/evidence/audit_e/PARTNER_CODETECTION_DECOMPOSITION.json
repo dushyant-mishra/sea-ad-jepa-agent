@@ -1,0 +1,57 @@
+{
+  "schema": "V5_FULL104_PARTNER_CODETECTION_DECOMPOSITION_V1",
+  "diagnostic_subset": {
+    "reason": "the real planner scores each target against all 17,186 addresses, costing one streaming pass per target per fold",
+    "pool_size": 512,
+    "pool_rule": "SHA-256 of the salt joined to the address, declared before results",
+    "targets": 64,
+    "partners_per_target": 8,
+    "partners_selected_within_pool_only": true,
+    "is_a_claim_about_production_partner_identity": false,
+    "accumulated_in": "the shared core sufficient-statistics pass, the same traversal that feeds Audits B and C"
+  },
+  "cells": 4553407,
+  "pairs": 512,
+  "min_both_detected_for_e2": 30,
+  "e2_non_estimable_pairs": 0,
+  "e1_detection_association_phi": {
+    "n": 512,
+    "mean": 0.14235473447101452,
+    "min": -0.4589286627076553,
+    "p05": -0.09530335355643539,
+    "p25": 0.034602771629295676,
+    "median": 0.11490270810101008,
+    "p75": 0.21948495500700352,
+    "p95": 0.4879521735468339,
+    "max": 0.762759412678758
+  },
+  "e2_conditional_quantitative_r": {
+    "n": 512,
+    "mean": 0.25996939474719,
+    "min": -0.4250575255049318,
+    "p05": -0.2798426310720236,
+    "p25": 0.0679660764263009,
+    "median": 0.2620917375544047,
+    "p75": 0.5001586148877739,
+    "p95": 0.6757183696007555,
+    "max": 0.8568959585648126
+  },
+  "e3_production_screening_score": {
+    "n": 512,
+    "mean": 0.07597361046834361,
+    "min": 0.014090578464849618,
+    "p05": 0.023849628294863392,
+    "p25": 0.042442014900741384,
+    "median": 0.0678322897704314,
+    "p75": 0.09895071944404615,
+    "p95": 0.15933074324643776,
+    "max": 0.20845931431131992
+  },
+  "correlation_of_e3_with_e1": 0.17741963381330816,
+  "correlation_of_e3_with_e2": -0.07207635216474852,
+  "categories_frozen": false,
+  "classification_policy": "UNFROZEN__CONTINUOUS_ONLY",
+  "biological_claim": "NONE",
+  "elapsed_seconds": 2.1117753982543945,
+  "training_authorized": false
+}

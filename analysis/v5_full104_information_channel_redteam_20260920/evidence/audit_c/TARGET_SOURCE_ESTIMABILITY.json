@@ -1,0 +1,101 @@
+{
+  "schema": "V5_FULL104_TARGET_SOURCE_ESTIMABILITY_V1",
+  "eligibility_set_altered": false,
+  "targets_examined": 17053,
+  "donors": 104,
+  "criteria_restated_per_source": {
+    "min_donor_nonzero_cells": 30,
+    "min_validation_supported_donors": 5,
+    "min_train_supported_donors": 20
+  },
+  "c1_per_source": [
+    {
+      "source": "HVS",
+      "donors": 41,
+      "cells": 198718,
+      "targets": 17053,
+      "mean_supported_donors_per_target": 36.96164897671964,
+      "targets_with_zero_supported_donors": 274,
+      "targets_with_fewer_than_5_supported_donors": 810,
+      "mean_detection_rate": 0.23777723953873953
+    },
+    {
+      "source": "NPH52",
+      "donors": 17,
+      "cells": 236476,
+      "targets": 17053,
+      "mean_supported_donors_per_target": 14.844602122793644,
+      "targets_with_zero_supported_donors": 258,
+      "targets_with_fewer_than_5_supported_donors": 608,
+      "mean_detection_rate": 0.2078675829282889
+    },
+    {
+      "source": "SEA_AD",
+      "donors": 46,
+      "cells": 4118213,
+      "targets": 17053,
+      "mean_supported_donors_per_target": 40.15487011083094,
+      "targets_with_zero_supported_donors": 923,
+      "targets_with_fewer_than_5_supported_donors": 1189,
+      "mean_detection_rate": 0.16259798509397225
+    }
+  ],
+  "c3_zero_variance": [
+    {
+      "source": "HVS",
+      "donor_target_pairs": 699173,
+      "zero_variance_pairs_exact": 887,
+      "zero_variance_fraction_exact": 0.0012686416666547477,
+      "near_zero_variance_pairs_scorer_epsilon": 887,
+      "near_zero_variance_fraction_scorer_epsilon": 0.0012686416666547477,
+      "targets_with_every_donor_zero_variance": 0,
+      "targets_with_any_donor_zero_variance": 380
+    },
+    {
+      "source": "NPH52",
+      "donor_target_pairs": 289901,
+      "zero_variance_pairs_exact": 6220,
+      "zero_variance_fraction_exact": 0.02145560036012294,
+      "near_zero_variance_pairs_scorer_epsilon": 6220,
+      "near_zero_variance_fraction_scorer_epsilon": 0.02145560036012294,
+      "targets_with_every_donor_zero_variance": 0,
+      "targets_with_any_donor_zero_variance": 4976
+    },
+    {
+      "source": "SEA_AD",
+      "donor_target_pairs": 784438,
+      "zero_variance_pairs_exact": 23344,
+      "zero_variance_fraction_exact": 0.029758884704718536,
+      "near_zero_variance_pairs_scorer_epsilon": 23344,
+      "near_zero_variance_fraction_scorer_epsilon": 0.029758884704718536,
+      "targets_with_every_donor_zero_variance": 75,
+      "targets_with_any_donor_zero_variance": 2031
+    }
+  ],
+  "estimable_in_all_three_sources": 14526,
+  "estimable_in_all_three_sources_fraction": 0.8518149299243535,
+  "targets_with_one_weak_source": 2447,
+  "targets_with_two_weak_sources": 80,
+  "targets_with_three_weak_sources": 0,
+  "reasons_by_source": {
+    "HVS": {
+      "targets_weak_in_this_source": 810,
+      "of_which_zero_supported_donors": 274,
+      "criterion": "supported donors (>= 30 nonzero cells) < 5"
+    },
+    "NPH52": {
+      "targets_weak_in_this_source": 608,
+      "of_which_zero_supported_donors": 258,
+      "criterion": "supported donors (>= 30 nonzero cells) < 5"
+    },
+    "SEA_AD": {
+      "targets_weak_in_this_source": 1189,
+      "of_which_zero_supported_donors": 923,
+      "criterion": "supported donors (>= 30 nonzero cells) < 5"
+    }
+  },
+  "scorer_behaviour_note": "A donor where the target does not vary yields rss_y = 0, so the frozen scorer returns r = 0 and contributes r**2 = 0 to its source mean. That is a perfect 'no shortcut detected' contribution, NOT a missing value. A source guardrail can therefore look clean because the target was unvarying there.",
+  "zero_variance_method_note": "The headline uses the EXACT route -- a target detected in no cell of a donor is identically zero across that donor -- which involves no subtraction. The scorer-epsilon route is reported beside it because sumsq/n - mean**2 suffers catastrophic cancellation exactly at near-zero variance.",
+  "design_issue_if_mismatch": "If a material share of the 17,053 targets is weak or non-estimable in a source whose guardrail nonetheless votes, the global eligibility universe and the source-balanced guardrails are measuring different populations. That is an OPEN design issue; the target set is NOT shrunk here.",
+  "training_authorized": false
+}

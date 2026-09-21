@@ -1,0 +1,4 @@
+source,donors,cells,targets,mean_supported_donors_per_target,targets_with_zero_supported_donors,targets_with_fewer_than_5_supported_donors,mean_detection_rate
+HVS,41,198718,17053,36.96164897671964,274,810,0.23777723953873953
+NPH52,17,236476,17053,14.844602122793644,258,608,0.2078675829282889
+SEA_AD,46,4118213,17053,40.15487011083094,923,1189,0.16259798509397225

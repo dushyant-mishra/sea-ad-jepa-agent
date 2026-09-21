@@ -1,0 +1,4 @@
+quantity,state,n_full,n_cached,full_min,cache_min,full_median,cache_median,full_max,cache_max,low_tail_retained,high_tail_retained
+core_nonzero_count,MEASURED,4553407,105553,1.0,30.0,2822.0,3146.0,11181.0,11022.0,0.008827072609790822,0.12104847207586934
+source_library_depth,NOT_MEASURABLE,,,,,,,,,,
+fraction_outside_ledger,NOT_MEASURABLE,,,,,,,,,,
