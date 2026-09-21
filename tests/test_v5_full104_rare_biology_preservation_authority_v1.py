@@ -21,6 +21,7 @@ def authority(**updates) -> Full104RareBiologyPreservationAuthorityV1:
         dataset_etl_atlas_sha256=h("etl"),
         td59_protocol_sha256=h("td59"),
         teacher_relational_target_authority_sha256=h("teacher-relational"),
+        outer_split_receipt_sha256=h("split"),
         selector_id="TD59_Z_NEAREST_HALF_BOUNDARY_DISTANCE_V1",
         stratification_id=(
             "WITHIN_DONOR_OPERATOR__OPERATOR_DOES_NOT_SET_OBJECTIVE_MASS_V1"
@@ -31,6 +32,7 @@ def authority(**updates) -> Full104RareBiologyPreservationAuthorityV1:
         ),
         null_id="TD59_MATCHED_WRONG_CELL_Y_NULL__64_REPLICATES_V1",
         primary_weighting_id="DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+        evaluation_partition_id="AUTHENTICATED_FULL104_SOURCE_STRATIFIED_FOUR_FOLD_V1",
         label_firewall_id=(
             "NO_PATHOLOGY_DISEASE_NATIVE_CLASS_OR_RARE_STATE_LABEL_IN_TAIL_SELECTION_V1"
         ),
