@@ -1,0 +1,152 @@
+{
+  "schema": "V5_DENSE_SOLVER_BACKEND_PREFLIGHT_V1",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa\\python.exe",
+    "numpy": "1.26.4",
+    "blas": {
+      "name": "blas",
+      "version": "3.9.0",
+      "detection method": "pkgconfig"
+    },
+    "lapack": {
+      "name": "dep1473604930576",
+      "version": "1.26.4",
+      "detection method": "internal"
+    },
+    "scipy": "1.15.3"
+  },
+  "probes": [
+    {
+      "n": 4,
+      "method": "numpy_solve",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "numpy_solve",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "numpy_solve",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 4,
+      "method": "numpy_cholesky",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "numpy_cholesky",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "numpy_cholesky",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 4,
+      "method": "numpy_lstsq",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "numpy_lstsq",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "numpy_lstsq",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 4,
+      "method": "scipy_solve_pos",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "scipy_solve_pos",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "scipy_solve_pos",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 4,
+      "method": "scipy_cho",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "scipy_cho",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "scipy_cho",
+      "ok": false,
+      "exit_code": 3228369023,
+      "failure_mode": "PROCESS_TERMINATED_WITHOUT_RESULT",
+      "stderr": ""
+    }
+  ],
+  "methods_completed": [],
+  "methods_fatal": [
+    "numpy_cholesky",
+    "numpy_lstsq",
+    "numpy_solve",
+    "scipy_cho",
+    "scipy_solve_pos"
+  ],
+  "diagnosis_only": true,
+  "production_solver_changed": false
+}

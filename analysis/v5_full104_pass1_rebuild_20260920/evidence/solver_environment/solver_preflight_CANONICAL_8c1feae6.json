@@ -1,0 +1,204 @@
+{
+  "schema": "V5_DENSE_SOLVER_BACKEND_PREFLIGHT_V2",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "executable": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa\\python.exe",
+    "library_bin": "C:\\Users\\dushy\\anaconda3\\envs\\sea-ad-jepa\\Library\\bin",
+    "library_bin_exists": true,
+    "library_bin_on_path": true,
+    "mkl_rt_present": [
+      "mkl_rt.3.dll"
+    ],
+    "numpy": "1.26.4",
+    "blas": {
+      "name": "blas",
+      "version": "3.9.0",
+      "detection method": "pkgconfig"
+    },
+    "lapack": {
+      "name": "dep1473604930576",
+      "version": "1.26.4",
+      "detection method": "internal"
+    },
+    "scipy": "1.15.3"
+  },
+  "probes": [
+    {
+      "n": 4,
+      "method": "numpy_solve",
+      "ok": true,
+      "residual": 1.2485756872049206e-16,
+      "max_abs_err_vs_ones": 2.220446049250313e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "numpy_solve",
+      "ok": true,
+      "residual": 2.306726174483929e-16,
+      "max_abs_err_vs_ones": 6.661338147750939e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "numpy_solve",
+      "ok": true,
+      "residual": 4.486635168449576e-16,
+      "max_abs_err_vs_ones": 1.6653345369377348e-15,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 4,
+      "method": "numpy_cholesky",
+      "ok": true,
+      "residual": 1.2485756872049206e-16,
+      "max_abs_err_vs_ones": 4.440892098500626e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "numpy_cholesky",
+      "ok": true,
+      "residual": 2.4685738122939925e-16,
+      "max_abs_err_vs_ones": 8.881784197001252e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "numpy_cholesky",
+      "ok": true,
+      "residual": 4.1004970226075873e-16,
+      "max_abs_err_vs_ones": 1.2212453270876722e-15,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 4,
+      "method": "numpy_lstsq",
+      "ok": true,
+      "residual": 7.410086033368597e-16,
+      "max_abs_err_vs_ones": 1.3322676295501878e-15,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "numpy_lstsq",
+      "ok": true,
+      "residual": 1.2507887912549874e-15,
+      "max_abs_err_vs_ones": 2.6645352591003757e-15,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "numpy_lstsq",
+      "ok": true,
+      "residual": 1.5984557226831048e-15,
+      "max_abs_err_vs_ones": 5.218048215738236e-15,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 4,
+      "method": "scipy_solve_pos",
+      "ok": true,
+      "residual": 8.323837914699471e-17,
+      "max_abs_err_vs_ones": 6.661338147750939e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "scipy_solve_pos",
+      "ok": true,
+      "residual": 2.325961555757325e-16,
+      "max_abs_err_vs_ones": 8.881784197001252e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "scipy_solve_pos",
+      "ok": true,
+      "residual": 2.4086050607043923e-16,
+      "max_abs_err_vs_ones": 9.992007221626409e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 4,
+      "method": "scipy_cho",
+      "ok": true,
+      "residual": 8.323837914699471e-17,
+      "max_abs_err_vs_ones": 6.661338147750939e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 32,
+      "method": "scipy_cho",
+      "ok": true,
+      "residual": 2.325961555757325e-16,
+      "max_abs_err_vs_ones": 8.881784197001252e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    },
+    {
+      "n": 64,
+      "method": "scipy_cho",
+      "ok": true,
+      "residual": 2.4086050607043923e-16,
+      "max_abs_err_vs_ones": 9.992007221626409e-16,
+      "finite": true,
+      "exit_code": 0,
+      "failure_mode": null,
+      "stderr": ""
+    }
+  ],
+  "methods_completed": [
+    "numpy_cholesky",
+    "numpy_lstsq",
+    "numpy_solve",
+    "scipy_cho",
+    "scipy_solve_pos"
+  ],
+  "methods_fatal": [],
+  "classification": "ALL_PROBES_COMPLETED__DLL_DIRECTORY_REACHABLE",
+  "diagnosis_only": true,
+  "production_solver_changed": false
+}

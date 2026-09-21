@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
+import re
 import csv
 import hashlib
 from pathlib import Path
@@ -59,11 +60,27 @@ _METHODS = (
 )
 
 
-def _parse_source_library(raw: object) -> int:
-    """Parse positive integral source-library semantics exactly."""
+# Narrow numeric grammar for the authenticated source_library CSV field.
+# Accepts plain integers, integral decimals and legitimate scientific notation.
+# Rejects underscore separators, hex/alternate syntax, NaN and Infinity at the
+# syntax layer, before Decimal ever sees the token.
+_SOURCE_LIBRARY_TOKEN = re.compile(r"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$")
 
+
+def _parse_source_library(raw: object) -> int:
+    """Parse an on-disk positive integral source-library value exactly.
+
+    Two layers. First a narrow decimal/scientific grammar, so underscore
+    separators, hex and alternate syntax, NaN and Infinity are rejected as
+    syntax rather than reaching Decimal. Then exact decimal semantics, so
+    binary rounding cannot turn a large integer into an off-by-one.
+    """
+
+    token = str(raw).strip()
+    if not _SOURCE_LIBRARY_TOKEN.match(token):
+        raise ValueError("invalid source_library")
     try:
-        value = Decimal(str(raw).strip())
+        value = Decimal(token)
     except (InvalidOperation, ValueError) as exc:
         raise ValueError("invalid source_library") from exc
     if not value.is_finite() or value <= 0 or value != value.to_integral_value():

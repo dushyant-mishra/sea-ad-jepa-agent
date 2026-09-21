@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from sea_ad_jepa.v5.full104_runtime_envelope_v1 import (
@@ -17,7 +19,55 @@ from sea_ad_jepa.v5.full104_runtime_envelope_v1 import (
 )
 
 
+#: Plain BLAS and dense LAPACK, run in a child so a hard loader kill is
+#: observable rather than fatal to this process.
+_DENSE_LA_PROBE = (
+    "import numpy as np;"
+    "a=np.eye(8)*2.0;"
+    "assert float((a@a)[0,0])==4.0;"
+    "assert float(np.linalg.solve(a,np.ones(8))[0])==0.5;"
+    "print('DENSE_LA_OK')"
+)
+
+
+def require_dense_linear_algebra() -> None:
+    """Fail before a long run starts if BLAS/LAPACK would kill the interpreter.
+
+    On Windows conda environments, ``libblas.dll`` and ``liblapack.dll`` are pure
+    forwarder DLLs whose exports all forward to ``mkl_rt.<n>.dll``. Forwarders are
+    resolved by the loader at first call and do **not** consult directories
+    registered with ``os.add_dll_directory``. So when an interpreter is launched
+    by absolute path without activating its environment, ``import numpy``
+    succeeds and the first ``@`` or ``np.linalg.solve`` terminates the process
+    with Win32 status 127 (ERROR_PROC_NOT_FOUND, surfaced as 0xC06D007F) -- no
+    exception, no traceback.
+
+    Every FULL104 estimator solves a dense ridge system, so a run launched that
+    way would die partway through with no diagnosable error. This precondition
+    converts that into an immediate, explanatory failure.
+    """
+    proc = subprocess.run(
+        [sys.executable, "-c", _DENSE_LA_PROBE], capture_output=True, text=True, timeout=180
+    )
+    if proc.returncode == 0 and "DENSE_LA_OK" in proc.stdout:
+        return
+    prefix = Path(sys.executable).parent
+    raise SystemExit(
+        "dense linear algebra is not usable from this interpreter "
+        f"(child returncode {proc.returncode}). Every FULL104 estimator solves a "
+        "dense ridge system, so this run would terminate partway through with no "
+        "Python traceback.\n"
+        f"  interpreter : {sys.executable}\n"
+        f"  expected DLL directory: {prefix / 'Library' / 'bin'}\n"
+        "  remedy: activate the environment, or prepend that directory to PATH, so "
+        "forwarder exports into mkl_rt can resolve. This is an invocation "
+        "condition, not a defect in the numerical packages.\n"
+        f"  child stderr: {proc.stderr.strip()[-400:]!r}"
+    )
+
+
 def main() -> int:
+    require_dense_linear_algebra()
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--mode", choices=("prepare", "validate"), required=True)
     p.add_argument("--runtime-root", type=Path, required=True)

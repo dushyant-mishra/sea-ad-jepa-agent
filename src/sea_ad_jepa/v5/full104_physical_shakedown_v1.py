@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 from dataclasses import asdict, dataclass
 from decimal import Decimal, InvalidOperation
+import re
 import hashlib
 import json
 from pathlib import Path
@@ -53,11 +54,27 @@ META_COLUMNS = (
 )
 
 
-def _parse_source_library(raw: object, block_key: str) -> int:
-    """Parse an on-disk positive integral source-library value exactly."""
+# Narrow numeric grammar for the authenticated source_library CSV field.
+# Accepts plain integers, integral decimals and legitimate scientific notation.
+# Rejects underscore separators, hex/alternate syntax, NaN and Infinity at the
+# syntax layer, before Decimal ever sees the token.
+_SOURCE_LIBRARY_TOKEN = re.compile(r"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$")
 
+
+def _parse_source_library(raw: object, block_key: str) -> int:
+    """Parse an on-disk positive integral source-library value exactly.
+
+    Two layers. First a narrow decimal/scientific grammar, so underscore
+    separators, hex and alternate syntax, NaN and Infinity are rejected as
+    syntax rather than reaching Decimal. Then exact decimal semantics, so
+    binary rounding cannot turn a large integer into an off-by-one.
+    """
+
+    token = str(raw).strip()
+    if not _SOURCE_LIBRARY_TOKEN.match(token):
+        raise ValueError(f"invalid source_library: {block_key}")
     try:
-        value = Decimal(str(raw).strip())
+        value = Decimal(token)
     except (InvalidOperation, ValueError) as exc:
         raise ValueError(f"invalid source_library: {block_key}") from exc
     if not value.is_finite() or value <= 0 or value != value.to_integral_value():

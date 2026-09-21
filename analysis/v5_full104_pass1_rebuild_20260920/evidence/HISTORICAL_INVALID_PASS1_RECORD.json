@@ -1,0 +1,17 @@
+{
+  "schema": "V5_FULL104_HISTORICAL_INVALID_PASS1_RECORD_V1",
+  "status": "INVALID_FOR_CURRENT_ROLE__ROW_IDENTITY_KEYED_TO_BLOCK_ITERATION_ORDER",
+  "path": "D:\\jepa_full104_preterminal_20260919_a51cdbe8_outputs\\historical_invalid_pass1_20260917\\pass1_SEPT17_INVALID_FOR_CURRENT_ROLE.npz",
+  "bytes": 40320179,
+  "sha256": "0e99d12b9b74e3cc6ae95ab436effa84c9e71c461496258653022ae56d396811",
+  "original_scratchpad_path": "C:/Users/dushy/AppData/Local/Temp/claude/d--Jepa-project/cdf819f6-5db4-4119-9a97-37fef1d27909/scratchpad/census/pass1.npz",
+  "created": "2026-09-17",
+  "role": "HISTORICAL_SUPPORTING_CROSSCHECK_ONLY__NEVER_CURRENT_INPUT",
+  "why_preserved": "content-addresses the artifact whose defect the audit indexing check reproduces; retaining it keeps that check measurable rather than fail-open",
+  "must_never_be_used_as": [
+    "current pass1",
+    "census input",
+    "calibration input",
+    "training input"
+  ]
+}
