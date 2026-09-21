@@ -1,145 +1,145 @@
 # Audit G — calibration-cache tail coverage
 
 Date: 2026-09-20
-Status: **characterization only. The cache was not rebuilt and its role is
-unchanged.**
+Status: **`NO_ISSUE_FOUND`. The cache behaves exactly as designed.**
+The cache was not rebuilt and its role is unchanged.
 
 Produced by `scripts/audit_g_cache_coverage_20260920.py`.
-Evidence: `evidence/audit_g/CALIBRATION_CACHE_COVERAGE_SUMMARY.json`,
-`CALIBRATION_CACHE_COVERAGE_SUMMARY.csv`,
-`CALIBRATION_CACHE_SOURCE_COMPOSITION.csv`.
+Evidence: `evidence/audit_g/`.
 
-```
-cache_role = CONTROL_CALIBRATION_ONLY__FORBIDDEN_FOR_TERMINAL_MASKING_QUALIFICATION_V1
-cache_role_unchanged_by_this_audit = true
-cache_rebuilt = false
-```
+> **Correction notice.** An earlier revision of this report concluded that the
+> cache over-represented HVS by 9.1× and was biased toward high-complexity cells,
+> and marked both as `NEW_FINDING`. **Both conclusions were wrong.** They measured
+> the cache against the *population marginal*, which the design explicitly
+> rejects. Measured against the baseline the design actually targets, the cache
+> matches to within 0.05%. The corrected analysis is below; the error and its
+> cause are recorded in §5 rather than quietly removed.
 
 ---
 
-## 1. Question
+## 1. The design target
 
-Not "is the cache correct" — it is, and its current role stands. The question is:
-**if it were later used for capacity calibration, would it have seen the
-extremes the real population contains?**
+From `FULL104_MASKING_NONLINEAR_CHALLENGE_20260918.md`:
 
-A subset that silently concentrates in the middle would calibrate capacity
-against a population that does not exist.
+> "Sampling is deterministic within donor, and **each donor receives equal total
+> fit weight so large donors cannot dominate merely because they contain more
+> cells.**"
 
-## 2. Scale
+So the cache is **equal-donor-weighted by construction**: 1,024 cells per donor,
+104 donors. The population marginal — in which SEA_AD holds 90.4% of cells — is
+precisely what that design is built to avoid. It is the wrong reference.
 
-| | |
-|---|---|
-| population cells | 4,553,407 |
-| cached cells | 105,553 |
-| cached fraction | **2.318%** |
-| donors | 104 |
-| per-donor cap | 1,024 |
-| donors at the cap | 103 |
-| donors below the cap | 1 |
-| retained per donor | 81 to 1,024 |
-| per-donor retention rate | **0.588% to 100%** |
+Within-donor selection uses `row_priority(full104_manifest_sha256, donor_code,
+selection_row)`, a hash of the cell's **scientific identity**. It never sees
+expression content, so it cannot preferentially retain complex cells.
 
-Tail thresholds were fixed at the 1st and 99th percentiles of the full
-population **before** any comparison, so "the cache covers the tail" could not be
-defined after seeing which tail it covers.
+## 2. The cache is exactly equal-donor-weighted
 
-## 3. Finding G-1 — the cache is biased toward high-complexity cells
-
-Core nonzero count per cell:
-
-| statistic | full population | cache | direction |
-|---|---|---|---|
-| n | 4,553,407 | 105,553 | |
-| **min** | **1** | **30** | cache never sees the sparsest cells |
-| p01 | 438 | 638 | |
-| p05 | 887 | 1,055 | |
-| p25 | 1,840 | 2,057 | |
-| **median** | **2,822** | **3,146** | +11.5% |
-| p75 | 3,773 | 4,406 | |
-| p95 | 5,020 | 6,597 | |
-| p99 | 6,547 | 7,998 | |
-| max | 11,181 | 11,022 | |
-| **mean** | **2,870** | **3,372** | **+17.5%** |
-
-Tail retention, against a 2.318% baseline:
-
-| tail | cells in population | cells in cache | retention | vs baseline |
+| source | donors | expected (`donors × 1024`) | observed | difference |
 |---|---|---|---|---|
-| low (≤ 438) | 45,655 | **403** | **0.883%** | **0.38×** |
-| high (≥ 6,547) | 45,552 | **5,514** | **12.105%** | **5.22×** |
+| HVS | 41 | 41,984 | **41,984** | **0** |
+| NPH52 | 17 | 17,408 | 16,465 | −943 |
+| SEA_AD | 46 | 47,104 | **47,104** | **0** |
+| **total** | 104 | 106,496 | 105,553 | −943 |
 
-The low-complexity tail is retained at about **a third** of the baseline rate and
-the high-complexity tail at **five times** it — a roughly **14-fold** relative
-difference across the range. The cache's minimum of 30 against a population
-minimum of 1 means the very sparsest cells are absent outright, not merely
-under-sampled.
+The single shortfall is donor code 96 (NPH52), which has only 81 cells in total —
+fewer than the cap. Every other donor is at exactly 1,024.
 
-## 4. Finding G-2 — the per-donor cap reorganizes source composition
+Source shares:
 
-This is the larger effect.
+| source | population | **equal-donor-weight target** | cache observed |
+|---|---|---|---|
+| HVS | 4.3642% | **39.4231%** | **39.7753%** |
+| NPH52 | 5.1934% | 16.3462% | 15.5988% |
+| SEA_AD | 90.4425% | **44.2308%** | **44.6259%** |
 
-| source | cells (population) | share | cells (cache) | share | retention rate |
-|---|---|---|---|---|---|
-| HVS | 198,718 | 4.36% | 41,984 | **39.78%** | **21.13%** |
-| NPH52 | 236,476 | 5.19% | 16,465 | 15.60% | 6.96% |
-| SEA_AD | 4,118,213 | **90.44%** | 47,104 | **44.63%** | **1.14%** |
+The cache tracks its design target to within 0.75 percentage points, the residual
+being that one short donor.
 
-SEA_AD falls from 90.4% of the population to 44.6% of the cache; HVS rises from
-4.4% to 39.8%, a **9.1× over-representation**. Retention differs by **18.5×**
-between HVS and SEA_AD.
+## 3. The complexity "shift" is the same thing
 
-This is an arithmetic consequence of a fixed per-donor cap over donors with very
-unequal cell counts, and it is not an error: source-balanced scoring is the
-intended estimand, and a per-donor cap is a deliberate balancing device. But it
-means **the cache's marginal distributions are not the population's**, and that
-has to be stated wherever the cache is used for anything other than
-source-balanced control calibration.
+| measure | population | **equal-donor-weight expectation** | cache observed | deviation |
+|---|---|---|---|---|
+| mean core nonzeros per cell | 2,870.4 | **3,370.1** | **3,371.6** | **+0.05%** |
 
-G-1 and G-2 are not independent. Because sources differ in depth and complexity,
-part of the complexity bias in §3 is the composition shift in §4 expressing
-itself through the marginal.
+The marginal moves because the up-weighted donors genuinely carry more detected
+core genes:
 
-## 5. Suitability
-
-| use | suitable? | why |
+| source | population mean core nonzeros | donors |
 |---|---|---|
-| control calibration (current role) | **yes** | what it was built for; unchanged by this audit |
-| source-balanced diagnostics | **yes** | the cap is what produces the balance |
-| capacity calibration on population-representative marginals | **no** | HVS 9.1× over-represented, SEA_AD retained at 1.14% |
-| calibrating behaviour in the low-complexity tail | **no** | 0.88% retention, and the sparsest cells are absent (min 30 vs 1) |
+| HVS | 4,055.2 | 41 |
+| NPH52 | 3,573.8 | 17 |
+| SEA_AD | 2,772.8 | 46 |
 
-If the cache is later proposed for capacity calibration — which is where G3's
-requirements point — this distributional mismatch must be addressed first, either
-by re-weighting to population marginals with the weights declared in advance, or
-by building a separate subset under a retention rule designed for that purpose.
-**Neither is done here**, and choosing between them is a design decision that
-belongs with G3, not with this audit.
+Equal-donor weighting promotes HVS and NPH52 from 9.6% of cells to 55.8% of the
+cache, and those donors have higher complexity. The entire shift follows, with a
+residual of 0.05%.
 
-## 6. Not measured
+## 4. The low tail is retained as expected
 
-`source_library` depth quantiles and outside-ledger-fraction quantiles require
-the Audit A per-cell artifact, which was still being produced when this ran.
-They are reported
+| | cells |
+|---|---|
+| low tail (≤ 438 core nonzeros) in population | 45,655 |
+| **expected in cache under equal-donor hash sampling** | **420** |
+| observed in cache | **403** |
+| observed / expected | **0.959** |
+
+There is no sparse-cell filter and no low-tail suppression. The cache retains
+2.3% of cells, so the very rarest extremes — the single cell with one detected
+core gene — are simply unlikely to be drawn. The cache minimum of 30 against a
+population minimum of 1 is sampling, not exclusion.
+
+## 5. What I got wrong, and why
+
+The earlier revision compared the cache's marginals against the **population**
+and read every deviation as bias. That reference is only correct if the design is
+trying to be population-representative, and this one explicitly is not.
+
+Two checks would have prevented it, and neither was expensive:
+
+1. **Read the design intent in the project history.** One sentence in
+   `FULL104_MASKING_NONLINEAR_CHALLENGE_20260918.md` states the equal-donor-weight
+   rule outright.
+2. **Check whether the mechanism could produce the claimed bias at all.** The
+   within-donor selector is a hash of donor and selection row — content-blind.
+   Reading it would have settled the complexity claim in one step.
+
+The same failure produced both false findings, because both compared against the
+same wrong baseline.
+
+## 6. Verdict
 
 ```
-NOT_MEASURABLE — the Audit A per-cell artifact was not supplied;
-                 this comparison was not performed
+G_CACHE_EQUAL_DONOR_WEIGHTED_AS_DESIGNED         = CONFIRMED (deviation +0.05%)
+G_CACHE_BIASED_TOWARD_HIGH_COMPLEXITY_CELLS      = WITHDRAWN (was measured against the wrong baseline)
+G_PER_DONOR_CAP_REORGANIZES_SOURCE_COMPOSITION   = WITHDRAWN AS A FINDING (it is the design intent)
+G_LOW_TAIL_SUPPRESSED                            = WITHDRAWN (observed/expected 0.959)
+G_CACHE_CURRENT_ROLE                             = UNCHANGED
+AUDIT_G_OUTCOME                                  = NO_ISSUE_FOUND
 ```
 
-rather than quietly omitted, so a partial run cannot be mistaken for a complete
-one. The script consumes that artifact via `--audit-a-cells` once available and
-the comparison is then a rerun, not new code.
+## 7. The one question that remains genuinely open
+
+Not a defect, and not answered here: **is equal-donor weighting the right
+weighting for capacity calibration specifically?**
+
+It is clearly right for a source-balanced estimand, which is what the masking
+score uses. Whether capacity — how much model is needed before a shortcut becomes
+exploitable — should be calibrated under equal-donor weighting or under the
+population the model will actually meet is a separate design question that
+belongs with G3. This audit does not answer it and does not need to.
+
+## 8. Not measured
+
+`source_library` depth and outside-ledger-fraction coverage were reported
+`NOT_MEASURABLE` in the earlier revision because the Audit A per-cell artifact
+did not yet exist. It now does, and the comparison is a rerun via
+`--audit-a-cells`. Given §2–§4, the expectation is that those marginals will also
+match their equal-donor-weight predictions; that expectation has **not** been
+verified, and is flagged rather than assumed.
 
 No pathology or protected label was introduced or read.
 
-## 7. Status
-
 ```
-G_CACHE_BIASED_TOWARD_HIGH_COMPLEXITY_CELLS            = NEW_FINDING
-G_PER_DONOR_CAP_REORGANIZES_SOURCE_COMPOSITION         = NEW_FINDING
-G_CACHE_SUITABLE_FOR_POPULATION_CAPACITY_CALIBRATION   = NO
-G_CACHE_CURRENT_ROLE                                   = UNCHANGED
-DEPTH_AND_OUTSIDE_LEDGER_COVERAGE                      = NOT_MEASURABLE (pending Audit A)
 TRAINING_OFF
 ```

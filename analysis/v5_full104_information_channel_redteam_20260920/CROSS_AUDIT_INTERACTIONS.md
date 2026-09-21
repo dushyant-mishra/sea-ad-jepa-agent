@@ -25,16 +25,18 @@ that item can be settled; `NO` = independent; `—` = not applicable.
 | held-out-donor standardization | `NEW_FINDING` / `OPEN` | no — regime unchanged | no | no | **YES** | no | no |
 | co-detection partner selection | `PARTIALLY_AUDITED` / `OPEN` | no | **YES** | no | no | no | no |
 | target identity × target-zero | `OPEN` | no | **YES** | no | no | no | **YES** (needs a real teacher) |
-| calibration-cache tail coverage | `NEW_FINDING` / `CLOSED` for its current role | no — role unchanged | no | no | **YES** | no | no |
+| calibration-cache tail coverage | **`NO_ISSUE_FOUND`** — behaves exactly as designed | no — role unchanged | no | no | no | no | no |
 
 ---
 
 ## 1. Why so few `CLOSED`
 
-Only two rows close. The sparsity value was already audited and stands. The cache
-audit closes its own question — *is the cache suitable for its current control-
-calibration role?* — and answers yes, while opening a separate question about
-capacity calibration that it does not close.
+Two rows settle. The sparsity value was already audited and stands. The cache
+audit **found no issue**: the cache is equal-donor-weighted by design and matches
+that target to within 0.05%, and the two defects an earlier revision reported
+were artifacts of comparing it against the population marginal, which the design
+explicitly rejects. A separate and narrower question — whether equal-donor
+weighting is right for *capacity* calibration — is left open and assigned to G3.
 
 Everything else is `OPEN` because these audits were built to **establish whether
 a mechanism exists**, not to decide what to do about it. Establishing the
@@ -72,11 +74,16 @@ much capacity a G3 attacker is given. **G3 must settle the estimand, not only
 capacity and functional form.** This is the single most consequential interaction
 in this lane.
 
-**A → G.** The cache over-represents HVS by 9.1× and retains SEA_AD at 1.14%.
-HVS has an outside-ledger fraction of exactly zero while SEA_AD's is ~4%. So the
-cache's *denominator-channel* composition differs from the population's even more
-than its source composition does — the cache is enriched in precisely the source
-where the channel is absent.
+**A → G, withdrawn as a concern.** An earlier revision claimed the cache was
+distorted because it over-represents HVS — the one source whose outside-ledger
+fraction is exactly zero — relative to the population. That comparison used the
+wrong baseline. The cache is equal-donor-weighted **by design**, so that large
+sources cannot dominate by cell count alone, and it matches that design target to
+within 0.05%. Its composition is a deliberate choice, not a distortion, and the
+denominator channel does not make it one. What remains genuinely open is narrower
+and belongs to G3: whether equal-donor weighting is the right weighting for
+*capacity* calibration specifically, as distinct from for a source-balanced
+score.
 
 **B → G5.** If detected-token burden differs across policies at equal address
 count, then a margin δ compared across policies is comparing conditions that
@@ -96,6 +103,11 @@ both would be considerably stronger than either alone.
 ## 4. What is not claimed
 
 - No biological claim is made by any audit in this lane.
+- **Audit G found no issue.** The calibration cache behaves exactly as designed.
+  An earlier revision of that report claimed two defects; both were measured
+  against the population marginal, which the design explicitly rejects, and both
+  are withdrawn. The error and its cause are recorded in that report rather than
+  removed.
 - No audit inspected a terminal masking outcome, D_shared, pathology, or any
   DEV/SEALED outcome.
 - Audit F reports **no real number at all**, because no lawful teacher
