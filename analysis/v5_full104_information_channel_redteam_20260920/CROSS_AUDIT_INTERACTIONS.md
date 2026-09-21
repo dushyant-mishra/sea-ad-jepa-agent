@@ -17,17 +17,26 @@ that item can be settled; `NO` = independent; `—` = not applicable.
 | channel | state | changes current authority? | blocks G4? | blocks G5? | blocks G3? | blocks terminal masking? | requires training? |
 |---|---|---|---|---|---|---|---|
 | global measured-zero sparsity (0.8329826626244999) | `ALREADY_AUDITED` / `CLOSED` | no — it is the authority | no | no | no | no | no |
-| outside-ledger denominator fraction | `NEW_FINDING` / `OPEN` | **not yet** — see §2 | no | no | **YES** | **YES** | no |
-| actual mask detected-token burden | `NEW_FINDING` / `OPEN` | **not yet** | no | **YES** | no | **YES** | no |
-| actual mask UMI burden | `NEW_FINDING` / `OPEN` | **not yet** | no | **YES** | no | **YES** | no |
-| source-specific target support | `NEW_FINDING` / `OPEN` | **not yet** | no | no | no | **YES** | no |
-| source-specific zero target variance | `NEW_FINDING` / `OPEN` | **not yet** | no | no | no | **YES** | no |
+| outside-ledger denominator influence | `NEW_FINDING` / `OPEN` — A1/A2 established, model recoverability open | **not yet** — see §2 | no | no | **YES** | **YES** | no |
+| per-address burden heterogeneity | `ESTABLISHED` / FULL104 reconnaissance | no | no | no | no | no | no |
+| reduced-pool screening burden enrichment | `ESTABLISHED` / `REDUCED_POOL_DIAGNOSTIC` | no | no | **YES** as motivation | no | no | no |
+| actual fold-specific policy burden | `OPEN` / not yet measured | no | no | **YES** | no | **YES** | no |
+| source-specific target support | `NEW_FINDING` / FULL104 reconnaissance | **not yet** | no | no | no | **YES** | no |
+| fold-aware scorer estimability (C2) | `OPEN` — authenticated rerun required | **not yet** | no | no | no | **YES** | no |
 | held-out-donor standardization | `NEW_FINDING` / `OPEN` | no — regime unchanged | no | no | **YES** | no | no |
-| co-detection partner selection | `PARTIALLY_AUDITED` / `OPEN` | no | **YES** | no | no | no | no |
-| target identity × target-zero | `OPEN` | no | **YES** | no | no | no | **YES** (needs a real teacher) |
+| co-detection/quantitative partner decomposition | `PARTIALLY_AUDITED` / reduced-pool, estimand-mismatched | no | **YES** | no | no | no | no |
+| current V5 query-local latent decomposition | `DESIGN_OPEN` | no | **YES** | no | no | no | **YES** (needs a real teacher) |
 | calibration-cache tail coverage | **`NO_ISSUE_FOUND`** — behaves exactly as designed | no — role unchanged | no | no | no | no | no |
 
 ---
+
+
+## Scope firewall
+
+This lane is governed by `FULL104_SCOPE_AND_HISTORICAL_FIREWALL.md`. In
+particular, `REDUCED_POOL_DIAGNOSTIC`, `FIXTURE_ONLY`, and
+`HISTORICAL_SUPPORTING_ONLY` results may motivate tests but may not set current
+FULL104 thresholds, margins, policies, target eligibility, or terminal claims.
 
 ## 1. Why so few `CLOSED`
 
@@ -66,7 +75,8 @@ applies, with the repair options stated and none selected.
 ## 3. Interactions that matter
 
 **A → D → G3.** The denominator channel is partly source-level. Audit D
-establishes that the primary score is blind to donor- and source-level structure
+establishes that the primary score is blind to **pure between-donor/source
+location-scale structure**
 — not because of the standardization, but because the score correlates
 *within-donor centred* target and prediction. So the attacker's estimand cannot
 express the part of the denominator channel that lives between donors, however
@@ -85,20 +95,24 @@ and belongs to G3: whether equal-donor weighting is the right weighting for
 *capacity* calibration specifically, as distinct from for a source-balanced
 score.
 
-**B → G5.** If detected-token burden differs across policies at equal address
-count, then a margin δ compared across policies is comparing conditions that
-removed different amounts of evidence. The equivalence claim would be
+**B → G5.** The reduced-pool diagnostic establishes a plausible burden-enrichment
+mechanism, not the production burden difference. G5 remains blocked until the
+actual fold-specific full-universe policy masks are measured prospectively. If
+those burdens differ at equal address count, a single margin δ would compare
+conditions that removed different amounts of evidence. The equivalence claim would be
 conditional on burden, not on policy alone.
 
 **C → terminal masking.** If a target does not vary within a donor, the frozen
-scorer returns `r = 0`, contributing `r² = 0` — a *perfect* "no shortcut
-detected" score, not a missing value. A source guardrail can therefore pass
+scorer returns `r = 0`, contributing `r² = 0` — numerically identical to an
+estimable zero-correlation result. The terminal raw evidence schema currently
+loses that distinction. A source guardrail can therefore pass
 because the target was unvarying there. This is the clearest path by which the
 terminal verdict could be right for the wrong reason.
 
-**E → F.** Both decompose the same seam — co-detection versus quantitative
-co-expression — at different points in the pipeline. A consistent answer across
-both would be considerably stronger than either alone.
+**E → F.** The old scalar seam is historical motivation only. Audit E must first
+be recomputed under production-aligned donor/source conditioning; the future F
+measurement is instead the multivariate query-local latent decomposition required
+by current V5 authority.
 
 ## 4. What is not claimed
 
@@ -110,9 +124,9 @@ both would be considerably stronger than either alone.
   removed.
 - No audit inspected a terminal masking outcome, D_shared, pathology, or any
   DEV/SEALED outcome.
-- Audit F reports **no real number at all**, because no lawful teacher
-  representation exists. It is marked
-  `CHANGED_INPUT_REQUIRES_REAL_TEACHER_REQUALIFICATION` rather than estimated.
+- Audit F's scalar fixtures are `HISTORICAL_SUPPORTING_ONLY`; they do not define
+  the current V5 target. The real query-local latent decomposition is `DESIGN_OPEN`
+  and requires a lawful teacher.
 - Audit E's partners are selected within a deterministic address pool, not the
   full 17,186-address universe, and that is stated wherever its numbers appear.
   It is not a claim about which partners production would choose.
