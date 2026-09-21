@@ -116,10 +116,7 @@ def verify_phase_iv_sample_freeze(
                 f"expected {expected}, observed {actual}"
             )
         observed[role] = actual
-    return {
-        **observed,
-        **{f"phase_iv_bound::{role}": digest for role, digest in frozen_inputs.items()},
-    }
+    return observed
 
 
 def contract_from_payload(payload: Mapping[str, Any]) -> AuditBExecutionContractV1:
@@ -262,4 +259,10 @@ def verify_runtime_bindings(
     if heavy.get("per_cell_source_vector_agrees") is not True:
         raise ValueError("runtime heavy qualification lacks source-vector agreement")
 
-    return observed
+    return {
+        **observed,
+        **{
+            f"phase_iv_bound::{role}": digest
+            for role, digest in frozen_inputs.items()
+        },
+    }
