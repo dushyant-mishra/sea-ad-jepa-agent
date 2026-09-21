@@ -3,6 +3,7 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 import inspect
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -12,6 +13,10 @@ from sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1 import (
     Full104TargetQualificationSampleAuthorityV1,
     RetainedQualificationRowSelectorV1,
 )
+
+
+ROOT = Path(__file__).resolve().parents[1]
+BUILDER = ROOT / "scripts/agent/build_full104_target_qualification_sample_v1_20260921.py"
 
 
 def h(x: str) -> str:
@@ -144,3 +149,17 @@ def test_streaming_selector_closes_exact_current_sample_geometry() -> None:
     assert np.array_equal(retained1, retained2)
     assert np.all(retained1[:103] == 1024)
     assert retained1[103] == 81
+
+
+def test_builder_is_metadata_only_and_binds_current_identity_roots() -> None:
+    source = BUILDER.read_text(encoding="utf-8")
+    assert "meta_sha256" in source
+    assert "selection_row" in source
+    assert "outer_split_receipt_sha256" in source
+    assert "EXPECTED_BLOCK_MANIFEST_SHA256" in source
+    assert "expression_opened_by_builder" in source
+    # The qualification sample builder must not deserialize or iterate expression.
+    assert "sp.load_npz" not in source
+    assert ".iter_blocks(" not in source
+    assert "toarray(" not in source
+    assert "X_log1p10k" not in source
