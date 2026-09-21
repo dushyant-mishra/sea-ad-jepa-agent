@@ -33,7 +33,7 @@ CURRENT_FULL104_FIELD_ROLES: Mapping[str, DatasetFieldRole] = {
     "native_class": DatasetFieldRole.BIOLOGICAL,
     "broad_class": DatasetFieldRole.BIOLOGICAL,
     "source_library": DatasetFieldRole.MIXED_BIO_TECH,
-    "support_fingerprint": DatasetFieldRole.DOMAIN_NUISANCE,
+    "support_fingerprint": DatasetFieldRole.MIXED_BIO_TECH,
     "donor_id": DatasetFieldRole.GROUPING_ONLY,
     "cell_id": DatasetFieldRole.GROUPING_ONLY,
     "stable_key": DatasetFieldRole.GROUPING_ONLY,
