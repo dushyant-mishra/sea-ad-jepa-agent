@@ -11,7 +11,7 @@ Sampling law
 - retain all cells when a donor has <=1024 cells;
 - otherwise retain exactly 1024 cells with the smallest deterministic
   stable-identity hashes;
-- selection may use donor identity + stable cell identity + frozen namespace only;
+- selection may use donor code + authenticated global selection_row + frozen namespace only;
 - expression values, library size, nnz, class, operator, region, pathology and
   outcomes are forbidden selection inputs.
 
@@ -148,16 +148,21 @@ class Full104TargetQualificationSampleAuthorityV1:
             }
         )
 
-    def selection_priority(self, *, donor_id: str, stable_cell_key: str) -> bytes:
+    def selection_priority(self, *, donor_code: int, selection_row: int) -> bytes:
         """Deterministic expression-blind within-donor ordering key."""
         self.validate()
-        if not isinstance(donor_id, str) or not donor_id:
-            raise ValueError("donor_id must be nonempty")
-        if not isinstance(stable_cell_key, str) or not stable_cell_key:
-            raise ValueError("stable_cell_key must be nonempty")
+        if isinstance(donor_code, bool) or not isinstance(donor_code, int) or donor_code < 0:
+            raise ValueError("donor_code must be a nonnegative integer")
+        if (
+            isinstance(selection_row, bool)
+            or not isinstance(selection_row, int)
+            or selection_row < 0
+            or selection_row >= FULL104_READER_FIT_CELLS
+        ):
+            raise ValueError("selection_row must be a valid global FULL104 row")
         payload = (
             f"{self.selection_namespace_id}|"
             f"{self.population_authority_sha256}|"
-            f"donor|{donor_id}|cell|{stable_cell_key}"
+            f"donor|{donor_code}|selection_row|{selection_row}"
         ).encode("utf-8")
         return hashlib.sha256(payload).digest()
