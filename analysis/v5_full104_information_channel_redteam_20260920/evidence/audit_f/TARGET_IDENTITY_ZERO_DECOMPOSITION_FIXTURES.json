@@ -1,0 +1,233 @@
+{
+  "schema": "V5_FULL104_TARGET_IDENTITY_ZERO_DECOMPOSITION_V1",
+  "real_measurement_status": "CHANGED_INPUT_REQUIRES_REAL_TEACHER_REQUALIFICATION",
+  "real_measurement_reason": "No lawful current teacher representation exists. Producing one requires training or protected outcomes, both out of scope. The decomposition and its controls are committed so the measurement is unavoidable once a real teacher exists.",
+  "core_measured_zero_frequency_used_in_fixtures": 0.8329826626244999,
+  "decomposition_order": [
+    "identity",
+    "context",
+    "detection",
+    "quantitative"
+  ],
+  "decomposition_order_rationale": "Declared before results. Identity is the cheapest explanation and quantitative the most demanding, so incremental crediting is deliberately conservative about attributing variance to target-specific information.",
+  "fixture_results": {
+    "pure_noise": {
+      "pooled": {
+        "n": 18000,
+        "r2_identity": 0.000819400982624785,
+        "r2_identity_context": 0.0011979965841120155,
+        "r2_plus_detection": 0.001286374424849468,
+        "r2_plus_quantitative": 0.001415941158131151,
+        "share_identity": 0.000819400982624785,
+        "share_context": 0.0003785956014872305,
+        "share_detection": 8.837784073745247e-05,
+        "share_quantitative": 0.000129566733281683
+      },
+      "observed_zero_fraction": 0.83,
+      "target_observed_zero": {
+        "n": 14940,
+        "r2_identity": 0.0006557349101270482,
+        "r2_identity_context": 0.001254600953329077,
+        "r2_plus_detection": 0.001254600953329077,
+        "r2_plus_quantitative": 0.001254600953329077,
+        "share_identity": 0.0006557349101270482,
+        "share_context": 0.0005988660432020287,
+        "share_detection": 0.0,
+        "share_quantitative": 0.0
+      },
+      "target_observed_nonzero": {
+        "n": 3060,
+        "r2_identity": 0.00796583676007745,
+        "r2_identity_context": 0.008697957853176175,
+        "r2_plus_detection": 0.008697957853176397,
+        "r2_plus_quantitative": 0.009499805681239537,
+        "share_identity": 0.00796583676007745,
+        "share_context": 0.0007321210930987254,
+        "share_detection": 2.220446049250313e-16,
+        "share_quantitative": 0.0008018478280631403
+      }
+    },
+    "identity_only": {
+      "pooled": {
+        "n": 18000,
+        "r2_identity": 0.9979541531496743,
+        "r2_identity_context": 0.9979549283334794,
+        "r2_plus_detection": 0.9979551092892819,
+        "r2_plus_quantitative": 0.9979553745803549,
+        "share_identity": 0.9979541531496743,
+        "share_context": 7.751838051461846e-07,
+        "share_detection": 1.809558024534752e-07,
+        "share_quantitative": 2.6529107299833043e-07
+      },
+      "observed_zero_fraction": 0.83,
+      "target_observed_zero": {
+        "n": 14940,
+        "r2_identity": 0.9979694078121262,
+        "r2_identity_context": 0.9979706246627665,
+        "r2_plus_detection": 0.9979706246627665,
+        "r2_plus_quantitative": 0.9979706246627665,
+        "share_identity": 0.9979694078121262,
+        "share_context": 1.2168506403620327e-06,
+        "share_detection": 0.0,
+        "share_quantitative": 0.0
+      },
+      "target_observed_nonzero": {
+        "n": 3060,
+        "r2_identity": 0.9978895571782261,
+        "r2_identity_context": 0.9978911146847746,
+        "r2_plus_detection": 0.9978911146847746,
+        "r2_plus_quantitative": 0.9978928205272302,
+        "share_identity": 0.9978895571782261,
+        "share_context": 1.5575065485107231e-06,
+        "share_detection": 0.0,
+        "share_quantitative": 1.7058424555127516e-06
+      }
+    },
+    "identity_plus_context": {
+      "pooled": {
+        "n": 18000,
+        "r2_identity": 0.19881878958936317,
+        "r2_identity_context": 0.9995925677827204,
+        "r2_plus_detection": 0.9995926038338893,
+        "r2_plus_quantitative": 0.9995926566868684,
+        "share_identity": 0.19881878958936317,
+        "share_context": 0.8007737781933573,
+        "share_detection": 3.6051168827988533e-08,
+        "share_quantitative": 5.285297910440079e-08
+      },
+      "observed_zero_fraction": 0.83,
+      "target_observed_zero": {
+        "n": 14940,
+        "r2_identity": 0.20024340413535602,
+        "r2_identity_context": 0.9995944552569732,
+        "r2_plus_detection": 0.9995944552569732,
+        "r2_plus_quantitative": 0.9995944552569732,
+        "share_identity": 0.20024340413535602,
+        "share_context": 0.7993510511216172,
+        "share_detection": 0.0,
+        "share_quantitative": 0.0
+      },
+      "target_observed_nonzero": {
+        "n": 3060,
+        "r2_identity": 0.1951022668016139,
+        "r2_identity_context": 0.9995860908515447,
+        "r2_plus_detection": 0.9995860908515447,
+        "r2_plus_quantitative": 0.9995864256558098,
+        "share_identity": 0.1951022668016139,
+        "share_context": 0.8044838240499308,
+        "share_detection": 0.0,
+        "share_quantitative": 3.348042650896943e-07
+      }
+    },
+    "detection_only": {
+      "pooled": {
+        "n": 18000,
+        "r2_identity": 0.6806356316802262,
+        "r2_identity_context": 0.6806711366679571,
+        "r2_plus_detection": 0.9985720192333222,
+        "r2_plus_quantitative": 0.9985722044904354,
+        "share_identity": 0.6806356316802262,
+        "share_context": 3.550498773086108e-05,
+        "share_detection": 0.3179008825653651,
+        "share_quantitative": 1.8525711320549476e-07
+      },
+      "observed_zero_fraction": 0.83,
+      "target_observed_zero": {
+        "n": 14940,
+        "r2_identity": 0.9979694078121262,
+        "r2_identity_context": 0.9979706246627665,
+        "r2_plus_detection": 0.9979706246627665,
+        "r2_plus_quantitative": 0.9979706246627665,
+        "share_identity": 0.9979694078121262,
+        "share_context": 1.2168506403620327e-06,
+        "share_detection": 0.0,
+        "share_quantitative": 0.0
+      },
+      "target_observed_nonzero": {
+        "n": 3060,
+        "r2_identity": 0.9978895571782261,
+        "r2_identity_context": 0.9978911146847746,
+        "r2_plus_detection": 0.9978911146847746,
+        "r2_plus_quantitative": 0.9978928205272302,
+        "share_identity": 0.9978895571782261,
+        "share_context": 1.5575065485107231e-06,
+        "share_detection": 0.0,
+        "share_quantitative": 1.7058424555127516e-06
+      }
+    },
+    "quantitative": {
+      "pooled": {
+        "n": 18000,
+        "r2_identity": 0.2106274466760184,
+        "r2_identity_context": 0.2108602273175304,
+        "r2_plus_detection": 0.7040374573584427,
+        "r2_plus_quantitative": 0.9995605090275433,
+        "share_identity": 0.2106274466760184,
+        "share_context": 0.00023278064151199818,
+        "share_detection": 0.4931772300409123,
+        "share_quantitative": 0.29552305166910064
+      },
+      "observed_zero_fraction": 0.83,
+      "target_observed_zero": {
+        "n": 14940,
+        "r2_identity": 0.9979694078121262,
+        "r2_identity_context": 0.9979706246627665,
+        "r2_plus_detection": 0.9979706246627665,
+        "r2_plus_quantitative": 0.9979706246627665,
+        "share_identity": 0.9979694078121262,
+        "share_context": 1.2168506403620327e-06,
+        "share_detection": 0.0,
+        "share_quantitative": 0.0
+      },
+      "target_observed_nonzero": {
+        "n": 3060,
+        "r2_identity": 0.13042042562352552,
+        "r2_identity_context": 0.1314036086779956,
+        "r2_plus_detection": 0.1314036086779956,
+        "r2_plus_quantitative": 0.9997753710703565,
+        "share_identity": 0.13042042562352552,
+        "share_context": 0.0009831830544700937,
+        "share_detection": 0.0,
+        "share_quantitative": 0.8683717623923609
+      }
+    },
+    "identity_context_detection_quantitative": {
+      "pooled": {
+        "n": 18000,
+        "r2_identity": 0.14764098336649478,
+        "r2_identity_context": 0.7423119306710397,
+        "r2_plus_detection": 0.9406089928893956,
+        "r2_plus_quantitative": 0.9996908642014202,
+        "share_identity": 0.14764098336649478,
+        "share_context": 0.594670947304545,
+        "share_detection": 0.19829706221835586,
+        "share_quantitative": 0.05908187131202458
+      },
+      "observed_zero_fraction": 0.83,
+      "target_observed_zero": {
+        "n": 14940,
+        "r2_identity": 0.20024340413535602,
+        "r2_identity_context": 0.9995944552569732,
+        "r2_plus_detection": 0.9995944552569732,
+        "r2_plus_quantitative": 0.9995944552569732,
+        "share_identity": 0.20024340413535602,
+        "share_context": 0.7993510511216172,
+        "share_detection": 0.0,
+        "share_quantitative": 0.0
+      },
+      "target_observed_nonzero": {
+        "n": 3060,
+        "r2_identity": 0.15125321209142628,
+        "r2_identity_context": 0.6833889040834502,
+        "r2_plus_detection": 0.6833889040834503,
+        "r2_plus_quantitative": 0.9997121001477564,
+        "share_identity": 0.15125321209142628,
+        "share_context": 0.5321356919920239,
+        "share_detection": 1.1102230246251565e-16,
+        "share_quantitative": 0.31632319606430603
+      }
+    }
+  },
+  "biological_claim": "NONE",
+  "training_authorized": false
+}
