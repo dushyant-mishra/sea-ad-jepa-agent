@@ -1,44 +1,57 @@
 {
-  "schema": "V5_PHASE_III_POLICY_CONSEQUENCE_ON_REAL_C2_GEOMETRY_V1",
+  "schema": "V5_PHASE_III_V2_POLICY_CONSEQUENCE_ON_REAL_C2_GEOMETRY_V2",
   "scope_class": "CURRENT_FULL104_RECONNAISSANCE",
   "policy_selected": null,
-  "note": "Structural consequences only. NO score was computed and no terminal masking outcome was opened; these are counts over the authenticated fold geometry.",
+  "note": "Structural consequences only. NO score computed, no terminal masking outcome opened. Counts over the authenticated fold geometry.",
   "targets_total": 17053,
+  "target_folds_total": 68212,
   "held_out_score_terms_total": 1773512,
   "held_out_score_terms_undefined": 30451,
   "P1_PROSPECTIVE_ELIGIBILITY": {
     "targets_excluded": 6653,
     "targets_retained": 10400,
     "retained_fraction": 0.6098633671494752,
-    "consequence": "universe shrinks from 17,053 to the retained count"
+    "cost": "discards 39% of the scientific target universe"
   },
   "P2_ABSTAIN_AND_REWEIGHT": {
     "abstaining_terms": 30451,
     "retained_term_fraction": 0.9828301133570001,
-    "targets_with_a_wholly_vacuous_source": 202,
-    "per_source": {
-      "HVS": {
-        "intended_terms": 699173,
-        "abstaining_terms": 887,
-        "retained_fraction": 0.9987313583333453
-      },
-      "NPH52": {
-        "intended_terms": 289901,
-        "abstaining_terms": 6220,
-        "retained_fraction": 0.978544399639877
-      },
-      "SEA_AD": {
-        "intended_terms": 784438,
-        "abstaining_terms": 23344,
-        "retained_fraction": 0.9702411152952815
-      }
-    },
-    "consequence": "estimand becomes a conditional mean over estimable donors"
+    "targets_still_scored_with_a_wholly_vacuous_source": 202,
+    "cost": "changes the estimand AND still scores vacuous guardrails"
   },
-  "P3_REPORT_CONDITIONALITY": {
-    "numerically_equals_P2_point_estimate": true,
-    "additional_requirement": "every reported aggregate carries terms_estimable / terms_total",
-    "consequence": "estimand unchanged; what may be CLAIMED is narrowed"
+  "P3_CONDITIONAL_WITH_MANDATORY_COVERAGE": {
+    "point_estimate_equals_P2": true,
+    "full_estimand_point_estimated": false,
+    "cost": "reporting discipline only; does not stop a vacuous guardrail being scored"
+  },
+  "P4_COVERAGE_GUARDED_CONDITIONAL": {
+    "targets_retained_in_universe": 17053,
+    "target_folds_marked_NOT_ESTIMABLE": 531,
+    "target_folds_total": 68212,
+    "fraction_of_target_folds_not_estimable": 0.007784554037412772,
+    "targets_with_at_least_one_not_estimable_fold": 202,
+    "wholly_vacuous_guardrails_that_can_no_longer_score": 531,
+    "cost": "preserves the full 17,053-target universe while refusing to score any target-fold whose required source has no estimable held-out donor"
+  },
+  "per_source": {
+    "HVS": {
+      "intended_terms": 699173,
+      "abstaining_terms": 887,
+      "retained_fraction": 0.9987313583333453,
+      "target_folds_vacuous": 1
+    },
+    "NPH52": {
+      "intended_terms": 289901,
+      "abstaining_terms": 6220,
+      "retained_fraction": 0.978544399639877,
+      "target_folds_vacuous": 1
+    },
+    "SEA_AD": {
+      "intended_terms": 784438,
+      "abstaining_terms": 23344,
+      "retained_fraction": 0.9702411152952815,
+      "target_folds_vacuous": 529
+    }
   },
   "training_authorized": false,
   "terminal_masking_outcomes_inspected": false
