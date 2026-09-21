@@ -65,11 +65,14 @@ For each TD59 panel and donor×operator stratum:
    nearest-half set);
 4. rank anchors by isolation descending with authenticated global `selection_row`
    as deterministic tie-break;
-5. select the q95 isolation tail within each donor×operator stratum.
+5. exclude anchors whose Z isolation score is non-finite (missing measurement support, not low isolation);
+6. among finite anchors, retain exactly `ceil(n_finite/20)` anchors (the ranked top 5%);
+7. order by isolation descending and use authenticated global `selection_row` ascending as the only tie-break.
 
-The q95 fraction is applied per stratum, but **no minimum is applied per
-operator**. Tail anchors are pooled within donor. A donor must have at least five
-tail anchors after pooling.
+The q95 fraction is applied per stratum with exact integer arithmetic, but **no
+minimum is applied per operator**. This avoids NumPy/library quantile interpolation
+or tied-cutoff behavior changing tail membership. Tail anchors are pooled within
+donor. A donor must have at least five tail anchors after pooling.
 
 This keeps each operator's contribution proportional to its cell mass within the
 donor rather than artificially giving tiny operators equal mass.
