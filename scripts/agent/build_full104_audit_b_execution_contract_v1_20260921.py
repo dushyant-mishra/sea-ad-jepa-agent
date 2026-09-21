@@ -25,6 +25,7 @@ from sea_ad_jepa.v5.audit_b_execution_contract_v1 import (
     PRECISION_SCOPE_UNRESOLVED,
     AuditBExecutionContractV1,
 )
+from sea_ad_jepa.v5.masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
 
 
 def sha256_file(path: Path) -> str:
@@ -116,6 +117,16 @@ def main() -> int:
         raise SystemExit("heavy qualification binds a different heavy artifact")
     if heavy.get("artifact_sha_matches_bound") is not True:
         raise SystemExit("heavy artifact content-address binding failed")
+    if heavy.get("block_manifest_sha256") != FULL104_MANIFEST_SHA256:
+        raise SystemExit("heavy qualification binds a different FULL104 manifest")
+    if heavy.get("rows_traversed") != 4_553_407:
+        raise SystemExit("heavy qualification row count drifted")
+    if heavy.get("donors") != 104:
+        raise SystemExit("heavy qualification donor count drifted")
+    if heavy.get("core_addresses") != 17_186:
+        raise SystemExit("heavy qualification core-address count drifted")
+    if heavy.get("three_route_total_agreement") is not True:
+        raise SystemExit("heavy qualification lacks three-route library-total agreement")
     if heavy.get("all_104_donor_library_totals_agree") is not True:
         raise SystemExit("all-104-donor source-library qualification did not pass")
     if heavy.get("per_cell_source_vector_agrees") is not True:
@@ -128,19 +139,38 @@ def main() -> int:
     rng = load_json(args.rng_authority)
     if rng.get("schema") != "V5_MASKING_RNG_REPLAY_AUTHORITY_V3":
         raise SystemExit("pre-panel masking RNG authority V3 is required")
-    if rng.get("full104_substrate_sha256") != FULL104_MANIFEST_SHA256:
+    try:
+        rng_obj = MaskingRngReplayAuthorityV3(
+            authority_id=str(rng["authority_id"]),
+            full104_substrate_sha256=str(rng["full104_substrate_sha256"]),
+            canonical_registry_sha256=str(rng["canonical_registry_sha256"]),
+            outer_split_receipt_sha256=str(rng["outer_split_receipt_sha256"]),
+            qualification_parameters_authority_sha256=str(
+                rng["qualification_parameters_authority_sha256"]
+            ),
+            burden_ladder_authority_sha256=str(rng["burden_ladder_authority_sha256"]),
+            seed_namespace_id=str(rng["seed_namespace_id"]),
+            method_exclusion_policy_id=str(rng["method_exclusion_policy_id"]),
+            replay_policy_id=str(rng["replay_policy_id"]),
+            terminal_outcomes_inspected_before_freeze=bool(
+                rng["terminal_outcomes_inspected_before_freeze"]
+            ),
+            training_authorized=bool(rng["training_authorized"]),
+        )
+        rng_obj.validate()
+    except (KeyError, TypeError, ValueError) as exc:
+        raise SystemExit(f"RNG V3 authority payload is invalid: {exc}") from exc
+    if rng_obj.full104_substrate_sha256 != FULL104_MANIFEST_SHA256:
         raise SystemExit("RNG authority binds a different FULL104 substrate")
-    if rng.get("canonical_registry_sha256") != CANONICAL_REGISTRY_SHA256:
+    if rng_obj.canonical_registry_sha256 != CANONICAL_REGISTRY_SHA256:
         raise SystemExit("RNG authority binds a different canonical registry")
     if rng.get("target_panel_dependency") != "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS":
         raise SystemExit("RNG authority does not explicitly exclude target-panel dependence")
-    if rng.get("terminal_outcomes_inspected_before_freeze") is not False:
-        raise SystemExit("RNG authority was frozen after terminal outcomes")
-    if rng.get("training_authorized") is not False:
-        raise SystemExit("RNG authority unexpectedly authorizes training")
-    rng_digest = str(rng.get("authority_sha256", ""))
-    if len(rng_digest) != 64:
-        raise SystemExit("RNG authority digest is missing or malformed")
+    rng_digest = rng_obj.canonical_digest()
+    if rng.get("authority_sha256") != rng_digest:
+        raise SystemExit("RNG authority canonical digest mismatch")
+    if int(rng.get("global_seed", -1)) != rng_obj.global_seed:
+        raise SystemExit("RNG authority global_seed mismatch")
 
     if not args.burden_estimator_source.is_file():
         raise SystemExit("burden estimator source is missing")
