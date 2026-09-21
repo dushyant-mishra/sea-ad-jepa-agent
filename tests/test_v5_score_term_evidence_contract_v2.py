@@ -29,6 +29,17 @@ import pytest
 import sea_ad_jepa.v5.evidence_estimability_contract_v2 as C
 
 
+def _mixed() -> "C.ScoreTerms":
+    """Group 0 fully estimable; group 1 carries every failure mode and one survivor."""
+    return C.ScoreTerms.from_scorer_components(
+        cov=[0.5, 0.4, 0.3, 0.9, 0.2, 0.1, 0.8, 0.6],
+        rss_y=[1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0],
+        pred_ss=[1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0],
+        group=[0, 0, 0, 1, 1, 1, 1, 1],
+        present=[True, True, True, True, True, False, True, True],
+    )
+
+
 # --------------------------------------------------------------------------- #
 # Regressions against the three V1 faults
 # --------------------------------------------------------------------------- #
