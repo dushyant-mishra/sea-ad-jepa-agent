@@ -30,7 +30,7 @@ TAIL_COUNT_RULE_ID = "CEIL_TOP_5_PERCENT_OF_FINITE_Z_ISOLATION_ANCHORS_V1"
 TAIL_TIEBREAK_ID = "ISOLATION_DESC__GLOBAL_SELECTION_ROW_ASC_V1"
 MIN_TAIL_ANCHORS = 5
 MIN_RESOLVED_TRIPLETS_PER_DONOR = 20
-MIN_MEASURABLE_DONORS_PER_HALF = 4
+MIN_MEASURABLE_DONORS_PER_SOURCE_FOLD = 4
 NULL_REPLICATES = 64
 
 APPROVED_SELECTOR_IDS: Tuple[str, ...] = (
@@ -163,7 +163,7 @@ class Full104RareBiologyPreservationAuthorityV1:
     tail_quantile: float = TAIL_QUANTILE
     min_tail_anchors: int = MIN_TAIL_ANCHORS
     min_resolved_triplets_per_donor: int = MIN_RESOLVED_TRIPLETS_PER_DONOR
-    min_measurable_donors_per_half: int = MIN_MEASURABLE_DONORS_PER_HALF
+    min_measurable_donors_per_source_fold: int = MIN_MEASURABLE_DONORS_PER_SOURCE_FOLD
     null_replicates: int = NULL_REPLICATES
 
     pathology_labels_used: bool = False
@@ -217,8 +217,11 @@ class Full104RareBiologyPreservationAuthorityV1:
             raise ValueError("min_tail_anchors is frozen at 5")
         if self.min_resolved_triplets_per_donor != MIN_RESOLVED_TRIPLETS_PER_DONOR:
             raise ValueError("min_resolved_triplets_per_donor drifted")
-        if self.min_measurable_donors_per_half != MIN_MEASURABLE_DONORS_PER_HALF:
-            raise ValueError("min_measurable_donors_per_half drifted")
+        if (
+            self.min_measurable_donors_per_source_fold
+            != MIN_MEASURABLE_DONORS_PER_SOURCE_FOLD
+        ):
+            raise ValueError("min_measurable_donors_per_source_fold drifted")
         if self.null_replicates != NULL_REPLICATES:
             raise ValueError("null_replicates drifted")
 
