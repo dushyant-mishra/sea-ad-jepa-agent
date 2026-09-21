@@ -84,9 +84,9 @@ def test_q95_and_historical_minimum_are_frozen_before_outcomes() -> None:
 def test_q95_rank_count_is_exact_and_deterministic() -> None:
     assert q95_tail_count_from_finite_n(0) == 0
     assert q95_tail_count_from_finite_n(1) == 1
-    assert q95_tail_count_from_finite_n(20) == 2 - 1  # exactly top 5%
+    assert q95_tail_count_from_finite_n(20) == 1  # exactly top 5%
     assert q95_tail_count_from_finite_n(21) == 2
-    assert q95_tail_count_from_finite_n(100) == 6 - 1
+    assert q95_tail_count_from_finite_n(100) == 5
     with pytest.raises(ValueError, match="nonnegative"):
         q95_tail_count_from_finite_n(-1)
 
