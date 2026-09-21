@@ -100,22 +100,22 @@ def test_outcome_or_training_state_cannot_be_laundered_into_contract() -> None:
         dataclasses.replace(contract(), training_authorized=True).validate()
 
 
-def test_every_scientific_choice_is_digest_covered() -> None:
-    base = contract(precision_scope_id=PRECISION_SCOPE_SINGLE_PRIMARY)
+def test_v1_digest_covers_preexecution_roots_and_rejects_scientific_resolution() -> None:
+    base = contract()
     digest = base.canonical_digest()
 
-    # Fields that define how Audit B would be interpreted cannot be omitted from
-    # the canonical scientific state. Each lawful alternative or bound-root change
-    # must therefore change the digest, while illegal drift fails validation.
-    assert digest != dataclasses.replace(
-        base, precision_scope_id=PRECISION_SCOPE_ALL_POLICY_RUNG
-    ).canonical_digest()
+    # V1 may bind preexecution roots, but it may not encode a resolved scientific
+    # choice. The separate scientific-resolution record and a successor contract
+    # own that transition.
     assert digest != dataclasses.replace(
         base, rng_authority_sha256=h("other-rng")
     ).canonical_digest()
     assert digest != dataclasses.replace(
         base, burden_estimator_source_sha256=h("other-estimator")
     ).canonical_digest()
+    for scope in (PRECISION_SCOPE_SINGLE_PRIMARY, PRECISION_SCOPE_ALL_POLICY_RUNG):
+        with pytest.raises(ValueError, match="must remain UNRESOLVED"):
+            dataclasses.replace(base, precision_scope_id=scope).canonical_digest()
 
 
 def test_duplicate_role_hashes_are_rejected() -> None:
