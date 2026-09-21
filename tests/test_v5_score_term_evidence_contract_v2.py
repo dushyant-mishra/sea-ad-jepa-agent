@@ -20,38 +20,13 @@ training.
 """
 from __future__ import annotations
 
-import importlib.util
 import json
-import sys
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-ROOT = Path(__file__).resolve().parents[1]
-MOD = ROOT / ("analysis/v5_full104_information_channel_redteam_20260920/scripts/"
-              "score_term_evidence_contract_v2.py")
-_spec = importlib.util.spec_from_file_location("score_term_contract_v2", MOD)
-C = importlib.util.module_from_spec(_spec)
-# Register before exec: @dataclass resolves annotations through sys.modules.
-sys.modules["score_term_contract_v2"] = C
-_spec.loader.exec_module(C)
-
-
-def _mixed() -> "C.ScoreTerms":
-    """Group 0 fully estimable; group 1 carries every failure mode AND one survivor.
-
-    Group 1 deliberately retains one estimable term. A group with no estimable
-    term at all is a different case -- the coverage-guard case -- and is built
-    inline by the test that exercises it, so this fixture stays genuinely mixed.
-    """
-    return C.ScoreTerms.from_scorer_components(
-        cov=[0.5, 0.4, 0.3, 0.9, 0.2, 0.1, 0.8, 0.6],
-        rss_y=[1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0],     # 3: target, 6: both
-        pred_ss=[1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0],   # 4: prediction, 6: both
-        group=[0, 0, 0, 1, 1, 1, 1, 1],
-        present=[True, True, True, True, True, False, True, True],   # 5: missing
-    )
+import sea_ad_jepa.v5.evidence_estimability_contract_v2 as C
 
 
 # --------------------------------------------------------------------------- #
