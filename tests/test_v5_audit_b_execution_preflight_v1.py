@@ -14,7 +14,6 @@ from sea_ad_jepa.v5.audit_b_execution_contract_v1 import (
     HEAVY_ARTIFACT_SHA256,
     MASK_PLAN_GENERATOR_SHA256,
     PHASE_IV_SAMPLE_FREEZE_DIGEST,
-    PRECISION_SCOPE_SINGLE_PRIMARY,
     AuditBExecutionContractV1,
 )
 from sea_ad_jepa.v5.masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
@@ -35,7 +34,7 @@ def rng_authority() -> MaskingRngReplayAuthorityV3:
     )
 
 
-def contract(*, resolved=True) -> AuditBExecutionContractV1:
+def contract() -> AuditBExecutionContractV1:
     rng = rng_authority()
     return AuditBExecutionContractV1(
         contract_id="TEST_PREFLIGHT",
@@ -48,11 +47,6 @@ def contract(*, resolved=True) -> AuditBExecutionContractV1:
         rng_authority_sha256=rng.canonical_digest(),
         mask_plan_generator_sha256=MASK_PLAN_GENERATOR_SHA256,
         burden_estimator_source_sha256=h("estimator"),
-        precision_scope_id=(
-            PRECISION_SCOPE_SINGLE_PRIMARY
-            if resolved
-            else "UNRESOLVED__EXECUTION_FORBIDDEN"
-        ),
     )
 
 
@@ -76,15 +70,15 @@ def test_contract_payload_round_trip_and_digest_check() -> None:
     assert loaded.canonical_digest() == c.canonical_digest()
 
     bad = payload(c)
-    bad["precision_scope_id"] = "UNRESOLVED__EXECUTION_FORBIDDEN"
-    with pytest.raises(ValueError, match="digest mismatch"):
+    bad["max_relative_standard_error"] = 0.50
+    with pytest.raises(ValueError, match="threshold drifted"):
         P.contract_from_payload(bad)
 
 
-def test_unresolved_contract_cannot_pass_preflight(tmp_path: Path) -> None:
+def test_v1_contract_cannot_pass_execution_preflight(tmp_path: Path) -> None:
     p = tmp_path / "contract.json"
-    p.write_text(json.dumps(payload(contract(resolved=False))))
-    with pytest.raises(ValueError, match="STOP_PRECISION_SCOPE_UNRESOLVED"):
+    p.write_text(json.dumps(payload(contract())))
+    with pytest.raises(ValueError, match="STOP_AUDIT_B_V1_PREEXECUTION_ONLY"):
         P.require_contract_ready(p)
 
 
