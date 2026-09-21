@@ -24,6 +24,7 @@ on:
       - 'tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py'
       - 'tests/test_v5_heavy_sufficient_statistics_qualification_v1.py'
       - 'tests/test_v5_score_term_evidence_contract_v2.py'
+      - 'tests/test_v5_audit_b_frozen_target_sample_v1.py'
       - 'analysis/v5_full104_information_channel_redteam_20260920/scripts/**'
       - '.github/workflows/v5-full104-masking-runner.yml'
       - 'tests/test_teacher_student_v5_support_schedule_v1.py'
@@ -173,6 +174,7 @@ jobs:
             tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py \
             tests/test_v5_heavy_sufficient_statistics_qualification_v1.py \
             tests/test_v5_score_term_evidence_contract_v2.py \
+            tests/test_v5_audit_b_frozen_target_sample_v1.py \
             tests/test_teacher_student_v5_support_schedule_v1.py \
             tests/test_v5_full104_pass1_builder_v1.py \
             tests/test_v5_full104_pass1_physical_binding_v1.py \
@@ -241,6 +243,7 @@ jobs:
             tests/test_v5_audit_g_cache_equal_donor_weighting_v1.py \
             tests/test_v5_heavy_sufficient_statistics_qualification_v1.py \
             tests/test_v5_score_term_evidence_contract_v2.py \
+            tests/test_v5_audit_b_frozen_target_sample_v1.py \
             tests/test_teacher_student_v5_support_schedule_v1.py \
             tests/test_v5_full104_pass1_builder_v1.py \
             tests/test_v5_full104_pass1_physical_binding_v1.py \
