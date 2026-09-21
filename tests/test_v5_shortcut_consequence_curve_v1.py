@@ -108,3 +108,18 @@ def test_fidelity_is_bounded_and_paired_across_levels() -> None:
             [0.0, 0.01, 0.02],
             [[1.0, 0.9], [0.9, 0.8]],
         )
+
+
+def test_paired_harm_cannot_be_hidden_by_mean_cancellation() -> None:
+    curve = characterize_shortcut_consequence_curve(
+        [0.0, 0.01],
+        np.array([
+            [0.0, 1.0],
+            [1.0, 0.0],
+        ]),
+    )
+    assert curve.absolute_mean_change_from_zero[1] == pytest.approx(0.0)
+    assert curve.mean_absolute_paired_change_from_zero[1] == pytest.approx(1.0)
+    out = evaluate_biological_negligibility_frontier(curve, authority(1, 10))
+    assert out.grid_frontier_residual == pytest.approx(0.0)
+    assert out.first_exceeding_residual == pytest.approx(0.01)
