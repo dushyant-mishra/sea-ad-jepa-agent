@@ -7,8 +7,9 @@ The tail is selected without pathology or cell-type labels:
 - reuse TD59's independent Z-view nearest-half locality;
 - define per-anchor isolation by the Z nearest-half boundary distance;
 - select the top q95 isolation tail within donor×operator strata;
-- retain at least 5 anchors when the stratum supports them, matching the
-  historical Stage64 rare-tail minimum without reusing Stage64 biology labels.
+- select q95 within donor×operator strata, then require at least 5 tail anchors
+  per donor after pooling strata. The minimum is NOT applied per operator, so
+  small operators/classes do not receive artificial scientific mass.
 
 Before any learned-teacher rare-tail claim, the same tail construction must first
 earn molecular X/Y recurrence on FULL104. Teacher evaluation is forbidden until
@@ -35,7 +36,7 @@ APPROVED_STRATIFICATION_IDS: Tuple[str, ...] = (
     "WITHIN_DONOR_OPERATOR__OPERATOR_DOES_NOT_SET_OBJECTIVE_MASS_V1",
 )
 APPROVED_TAIL_IDS: Tuple[str, ...] = (
-    "Q95_ISOLATION_TAIL__MIN5_ANCHORS_V1",
+    "Q95_ISOLATION_TAIL__MIN5_ANCHORS_PER_DONOR_V1",
 )
 APPROVED_MOLECULAR_GATE_IDS: Tuple[str, ...] = (
     "FULL104_XY_RELATIONAL_RECURRENCE_REQUIRED_BEFORE_TEACHER_TAIL_CLAIM_V1",
