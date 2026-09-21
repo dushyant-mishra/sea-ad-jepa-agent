@@ -42,7 +42,7 @@ Selection:
 
 - maximum 1,024 cells per donor;
 - donors with <=1,024 cells are fully retained;
-- larger donors are selected only by deterministic stable-identity hash;
+- larger donors are selected only by deterministic donor-code + authenticated global `selection_row` hash;
 - expression, library size, nnz, source/operator/class/region/pathology are not
   selection inputs.
 
@@ -63,8 +63,8 @@ For each TD59 panel and donor×operator stratum:
 3. define the anchor isolation score as the Z distance at the nearest-half
    boundary (the distance to the furthest candidate still inside the frozen
    nearest-half set);
-4. rank anchors by isolation descending with stable-cell identity as deterministic
-   tie-break;
+4. rank anchors by isolation descending with authenticated global `selection_row`
+   as deterministic tie-break;
 5. select the q95 isolation tail within each donor×operator stratum.
 
 The q95 fraction is applied per stratum, but **no minimum is applied per
