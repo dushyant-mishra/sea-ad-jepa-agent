@@ -1,0 +1,4 @@
+source,donor_target_pairs,zero_variance_pairs_exact,zero_variance_fraction_exact,near_zero_variance_pairs_scorer_epsilon,near_zero_variance_fraction_scorer_epsilon,targets_with_every_donor_zero_variance,targets_with_any_donor_zero_variance
+HVS,699173,887,0.0012686416666547477,887,0.0012686416666547477,0,380
+NPH52,289901,6220,0.02145560036012294,6220,0.02145560036012294,0,4976
+SEA_AD,784438,23344,0.029758884704718536,23344,0.029758884704718536,75,2031

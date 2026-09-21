@@ -2,23 +2,54 @@
 
 One authenticated streaming pass over the FULL104 Level-4 store, producing the
 statistics Audits B (mask burden), C (target source estimability) and E
-(co-detection decomposition) all need. Each full traversal of this substrate
-costs hours, dominated by decompressing 23.7 billion nonzeros, so building the
-statistics once is not merely an optimization: it guarantees the three audits are
-talking about the same substrate rather than three separate reads of it.
+(co-detection decomposition) all need. Building them once guarantees the three
+audits are talking about the same substrate rather than three separate reads.
 
 Why sufficient statistics rather than per-cell x per-mask evaluation
 --------------------------------------------------------------------
-A mask is a SET of core addresses. Every burden quantity Audit B needs is a sum
-over the addresses in that set:
+A mask is a SET of core addresses, so every burden quantity Audit B needs is a
+sum over the addresses in that set::
 
     detected tokens removed from stratum S = sum over a in mask of nnz[S, a]
     UMI mass removed from stratum S        = sum over a in mask of umi[S, a]
 
-So accumulating ``nnz`` and ``umi`` per (stratum, address) once makes every
-mask's burden an EXACT dot product, with no approximation and no second pass.
-Evaluating 4.55M cells against each of thousands of candidate masks directly
-would be both intractable and unnecessary.
+Accumulating ``nnz`` and ``umi`` per (stratum, address) once makes every mask's
+burden an EXACT dot product. Evaluating 4.55M cells against each of thousands of
+candidate masks would be both intractable and unnecessary.
+
+Why this runs across cores, and why not on the GPU
+--------------------------------------------------
+Profiled on real SEA_AD blocks, the per-block cost divides as:
+
+    NPZ decompression (zlib)        50.9%
+    numeric work (sums / bincount)  42.9%
+    SSD read                         3.1%
+    SHA-256 authentication           3.1%
+
+Half the cost is unzipping, which is CPU work with no GPU path in this pipeline
+-- scipy reads zlib on the host. The other half is memory-bound sparse
+scatter/reduce over data that has to be decompressed into host memory first, so
+shipping it to a GPU would buy little. Blocks are completely independent, so
+both halves parallelize across cores almost linearly, which is the actual win
+available here. A single-threaded loop on a 16-core machine was leaving close to
+an order of magnitude unused.
+
+**Determinism under parallelism.** Blocks are split into contiguous chunks and
+reduced in FIXED chunk order through an ordered ``imap``, so a run is
+reproducible from run to run. Integer accumulators (``nnz``, ``umi``, cell
+counts) are exact regardless of summation order, by construction.
+
+Float accumulators (``nsum``, ``nsq``, pool cross-products) are summed in a
+different association order than the serial version, and floating-point addition
+is not associative, so they are not guaranteed to match bit for bit. **Measured
+on a 40-block fixture, every float array came back bit-identical as well** --
+max absolute and max relative difference both exactly 0.0 across all eleven float
+accumulators. That is the observed result, not a guarantee, so the equivalence is
+pinned by test rather than assumed, and Audit C's headline zero-variance route
+continues to use the EXACT integer counts because the float route is
+cancellation-prone regardless.
+
+``--workers 1`` reproduces the serial accumulation order.
 
 Accumulated, over the strict 17,186-address common core only
 ------------------------------------------------------------
@@ -27,23 +58,13 @@ per donor (104):
     ``umi[d, a]``    total raw UMI mass of address a across donor d's cells
     ``nsum[d, a]``   sum of the frozen log1p10K normalized value
     ``nsq[d, a]``    sum of squares of that normalized value
-    ``ncells[d]``    cells of donor d
-per depth decile (10, by source_library) and per core-nonzero decile (10):
+per depth decile and per core-nonzero decile (10 each):
     the same ``nnz`` / ``umi`` / cell counts, for depth-stratified burden
-
-``nsum`` / ``nsq`` give the exact within-donor variance of the normalized value
-of any core address in any donor, which is what decides whether the frozen
-scorer can produce a nonzero correlation for a target in a donor at all.
 
 Numerical care
 --------------
-* Raw counts are cast to int64 BEFORE any reduction. int32 row sums silently
-  overflow on this substrate and once produced 0.009717 in place of 0.832983.
-* ``nsq`` is accumulated in float64. The naive ``nsq/n - mean**2`` form suffers
-  catastrophic cancellation exactly where this audit looks hardest -- at
-  near-zero variance -- so consumers are given ``nnz`` as well, which settles
-  the dominant exactly-zero case (an address detected in no cell of a donor has
-  identically zero within-donor variance) without any subtraction.
+Raw counts are cast to int64 BEFORE any reduction. int32 row sums silently
+overflow on this substrate and once produced 0.009717 in place of 0.832983.
 
 Nothing here opens a terminal masking outcome, target-panel ladder,
 null-equivalence margin, D_shared, protected/pathology/DEV/SEALED data, or
@@ -55,6 +76,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import time
 from pathlib import Path
 
@@ -63,20 +85,6 @@ import scipy.sparse as sp
 
 SCHEMA = "V5_FULL104_CORE_SUFFICIENT_STATISTICS_V1"
 N_LEDGER = 41238
-
-
-def codetection_pool(core: np.ndarray, *, size: int,
-                     salt: str = "V5_AUDIT_E_POOL_20260920") -> np.ndarray:
-    """Deterministic address pool for the Audit E co-detection decomposition.
-
-    Selected by a declared hash rule fixed before any result is seen, so the pool
-    cannot have been chosen to favour an outcome. Accumulated in this same pass
-    because a second full traversal of the substrate costs hours and would tell
-    us nothing the first one could not.
-    """
-    order = sorted(range(core.size),
-                   key=lambda i: hashlib.sha256(f"{salt}|{int(core[i])}".encode()).digest())
-    return np.sort(core[np.asarray(order[:size], dtype=np.int64)])
 
 _META_COLUMNS = (
     "selection_row", "canonical_cell_id", "donor_id",
@@ -92,6 +100,152 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def codetection_pool(core: np.ndarray, *, size: int,
+                     salt: str = "V5_AUDIT_E_POOL_20260920") -> np.ndarray:
+    """Deterministic address pool for the Audit E co-detection decomposition.
+
+    Selected by a declared hash rule fixed before any result is seen, so the pool
+    cannot have been chosen to favour an outcome.
+    """
+    order = sorted(range(core.size),
+                   key=lambda i: hashlib.sha256(f"{salt}|{int(core[i])}".encode()).digest())
+    return np.sort(core[np.asarray(order[:size], dtype=np.int64)])
+
+
+# --------------------------------------------------------------------------- #
+# Worker state: set once per process, read-only thereafter.
+# --------------------------------------------------------------------------- #
+_W: dict = {}
+
+
+def _init_worker(level4_root, core_pos, libraries, cell_donor, depth_decile,
+                 corenz_decile, pool, shape, verify_hashes):
+    # Each worker is one core's share of the job. Letting MKL also fan out inside
+    # a worker oversubscribes the machine and makes the whole run slower.
+    os.environ["OMP_NUM_THREADS"] = "1"
+    os.environ["MKL_NUM_THREADS"] = "1"
+    _W.update(level4_root=Path(level4_root), core_pos=core_pos, libraries=libraries,
+              cell_donor=cell_donor, depth_decile=depth_decile,
+              corenz_decile=corenz_decile, pool=pool, shape=shape,
+              verify_hashes=verify_hashes)
+
+
+def _blank(shape: dict) -> dict:
+    nd, nc = shape["n_donors"], shape["n_core"]
+    out = {
+        "donor_nnz": np.zeros((nd, nc), np.int64),
+        "donor_umi": np.zeros((nd, nc), np.int64),
+        "donor_nsum": np.zeros((nd, nc), np.float64),
+        "donor_nsq": np.zeros((nd, nc), np.float64),
+        "donor_cells": np.zeros(nd, np.int64),
+        "depth_nnz": np.zeros((shape["n_depth"], nc), np.int64),
+        "depth_umi": np.zeros((shape["n_depth"], nc), np.int64),
+        "depth_cells": np.zeros(shape["n_depth"], np.int64),
+        "corenz_nnz": np.zeros((shape["n_corenz"], nc), np.int64),
+        "corenz_umi": np.zeros((shape["n_corenz"], nc), np.int64),
+        "corenz_cells": np.zeros(shape["n_corenz"], np.int64),
+        "checksum_umi": 0, "checksum_nnz": 0,
+    }
+    p = shape["p_n"]
+    if p:
+        out.update({
+            "pool_NN": np.zeros((p, p), np.float64),
+            "pool_SD": np.zeros((p, p), np.float64),
+            "pool_QQ": np.zeros((p, p), np.float64),
+            "pool_SQ": np.zeros((p, p), np.float64),
+            "pool_det": np.zeros(p, np.float64),
+            "pool_dn": np.zeros(nd, np.float64),
+            "pool_sx": np.zeros((nd, p), np.float64),
+            "pool_sxx": np.zeros((nd, p), np.float64),
+            "pool_cross": np.zeros((nd, p, p), np.float64),
+        })
+    return out
+
+
+def _accumulate(acc: dict, rows: list[dict]) -> dict:
+    root = _W["level4_root"]
+    core_pos, libraries, cell_donor = _W["core_pos"], _W["libraries"], _W["cell_donor"]
+    depth_decile, corenz_decile, pool = _W["depth_decile"], _W["corenz_decile"], _W["pool"]
+    nd, nc = _W["shape"]["n_donors"], _W["shape"]["n_core"]
+    n_depth, n_corenz = _W["shape"]["n_depth"], _W["shape"]["n_corenz"]
+
+    for row in rows:
+        counts_path = root / row["counts_path"]
+        meta_path = root / row["meta_path"]
+        if _W["verify_hashes"] and sha256_file(counts_path) != row["counts_sha256"]:
+            raise RuntimeError(f"counts digest mismatch: {row['block_key']}")
+        with meta_path.open(newline="", encoding="utf-8") as handle:
+            meta = list(csv.DictReader(handle))
+        sel = np.asarray([int(m["selection_row"]) for m in meta], dtype=np.int64)
+
+        matrix = sp.load_npz(counts_path).tocsr()
+        if matrix.shape != (len(meta), N_LEDGER):
+            raise RuntimeError(f"block geometry mismatch: {row['block_key']}")
+        data64 = matrix.data.astype(np.int64)      # int64 BEFORE any reduction
+        row_of = np.repeat(np.arange(matrix.shape[0], dtype=np.int64), np.diff(matrix.indptr))
+        pos = core_pos[matrix.indices]
+        keep = (pos >= 0) & (data64 > 0)
+
+        if keep.any():
+            r_local, a_local, v_local = row_of[keep], pos[keep], data64[keep]
+            lib_local = libraries[sel][r_local].astype(np.float64)
+            norm = np.log1p(v_local.astype(np.float64) * (10000.0 / lib_local))
+            vf = v_local.astype(np.float64)
+
+            flat = cell_donor[sel][r_local] * nc + a_local
+            acc["donor_nnz"].ravel()[:] += np.bincount(flat, minlength=nd * nc)
+            acc["donor_umi"].ravel()[:] += np.bincount(flat, weights=vf,
+                                                       minlength=nd * nc).astype(np.int64)
+            acc["donor_nsum"].ravel()[:] += np.bincount(flat, weights=norm, minlength=nd * nc)
+            acc["donor_nsq"].ravel()[:] += np.bincount(flat, weights=norm * norm,
+                                                       minlength=nd * nc)
+
+            flat_q = depth_decile[sel][r_local] * nc + a_local
+            acc["depth_nnz"].ravel()[:] += np.bincount(flat_q, minlength=n_depth * nc)
+            acc["depth_umi"].ravel()[:] += np.bincount(flat_q, weights=vf,
+                                                       minlength=n_depth * nc).astype(np.int64)
+
+            flat_c = corenz_decile[sel][r_local] * nc + a_local
+            acc["corenz_nnz"].ravel()[:] += np.bincount(flat_c, minlength=n_corenz * nc)
+            acc["corenz_umi"].ravel()[:] += np.bincount(flat_c, weights=vf,
+                                                        minlength=n_corenz * nc).astype(np.int64)
+
+            acc["checksum_umi"] += int(v_local.sum())
+            acc["checksum_nnz"] += int(keep.sum())
+
+        if pool is not None and pool.size:
+            sub = np.asarray(matrix[:, pool].todense(), dtype=np.float64)
+            lib_rows = libraries[sel].astype(np.float64)
+            xp = np.log1p(sub * (10000.0 / lib_rows[:, None]))   # frozen normalization
+            dp = (sub > 0).astype(np.float64)
+            acc["pool_NN"] += dp.T @ dp
+            acc["pool_SD"] += xp.T @ dp
+            acc["pool_QQ"] += xp.T @ xp
+            acc["pool_SQ"] += (xp * xp).T @ dp
+            acc["pool_det"] += dp.sum(axis=0)
+            donors_here = cell_donor[sel]
+            for donor in np.unique(donors_here):
+                xd = xp[donors_here == donor]
+                acc["pool_dn"][donor] += xd.shape[0]
+                acc["pool_sx"][donor] += xd.sum(axis=0)
+                acc["pool_sxx"][donor] += (xd * xd).sum(axis=0)
+                acc["pool_cross"][donor] += xd.T @ xd
+
+        np.add.at(acc["donor_cells"], cell_donor[sel], 1)
+        np.add.at(acc["depth_cells"], depth_decile[sel], 1)
+        np.add.at(acc["corenz_cells"], corenz_decile[sel], 1)
+    return acc
+
+
+def _process_chunk(rows: list[dict]) -> dict:
+    return _accumulate(_blank(_W["shape"]), rows)
+
+
+def _merge(into: dict, part: dict) -> None:
+    for key, value in part.items():
+        into[key] += value
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--level4-root", type=Path, default=Path("C:/jepa_full104_ssd/expression_level4"))
@@ -102,8 +256,9 @@ def main() -> int:
     ap.add_argument("--limit-blocks", type=int, default=None)
     ap.add_argument("--expect-core-size", type=int, default=17186)
     ap.add_argument("--no-verify-hashes", action="store_true")
-    ap.add_argument("--codetection-pool-size", type=int, default=512,
-                    help="size of the deterministic Audit E address pool; 0 disables")
+    ap.add_argument("--codetection-pool-size", type=int, default=512)
+    ap.add_argument("--workers", type=int, default=0,
+                    help="0 = auto (cores-2, capped at 8); 1 = serial accumulation order")
     args = ap.parse_args()
 
     started = time.time()
@@ -115,20 +270,13 @@ def main() -> int:
     cell_nnz_core = np.asarray(pass1["cell_nnz_core"], dtype=np.int64)
     duniq = [str(x) for x in pass1["duniq"]]
     donor_src = np.asarray(pass1["donor_src"], dtype=np.int64)
-    n_cells = cell_donor.size
-    n_donors = len(duniq)
-    n_core = core.size
+    n_cells, n_donors, n_core = cell_donor.size, len(duniq), core.size
 
-    # Dense ledger -> core position map; -1 marks a non-core ledger address.
     core_pos = np.full(N_LEDGER, -1, dtype=np.int64)
     core_pos[core] = np.arange(n_core, dtype=np.int64)
 
-    # Depth deciles need source_library, which lives in block metadata, so the
-    # decile edges are derived in a first cheap metadata-only sweep. Deriving
-    # them from the data rather than hard-coding cut points keeps the strata
-    # tied to the real geometry.
-    manifest_path = args.level4_root / "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"
-    manifest_rows = list(csv.DictReader(manifest_path.open(newline="", encoding="utf-8")))
+    manifest_rows = list(csv.DictReader(
+        (args.level4_root / "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv").open(newline="", encoding="utf-8")))
     if args.limit_blocks is not None:
         manifest_rows = manifest_rows[: args.limit_blocks]
 
@@ -160,140 +308,64 @@ def main() -> int:
     if not partial and not seen.all():
         raise SystemExit("identity space not closed in the metadata sweep")
 
-    def deciles(values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    def deciles(values: np.ndarray):
         edges = np.unique(np.quantile(values[seen], np.linspace(0, 1, 11)))
         assign = np.clip(np.digitize(values, edges[1:-1], right=True), 0, len(edges) - 2)
         return assign.astype(np.int64), edges
 
     depth_decile, depth_edges = deciles(libraries)
     corenz_decile, corenz_edges = deciles(cell_nnz_core)
-    n_depth = int(depth_decile[seen].max()) + 1
-    n_corenz = int(corenz_decile[seen].max()) + 1
-
-    donor_nnz = np.zeros((n_donors, n_core), dtype=np.int64)
-    donor_umi = np.zeros((n_donors, n_core), dtype=np.int64)
-    donor_nsum = np.zeros((n_donors, n_core), dtype=np.float64)
-    donor_nsq = np.zeros((n_donors, n_core), dtype=np.float64)
-    donor_cells = np.zeros(n_donors, dtype=np.int64)
-
-    depth_nnz = np.zeros((n_depth, n_core), dtype=np.int64)
-    depth_umi = np.zeros((n_depth, n_core), dtype=np.int64)
-    depth_cells = np.zeros(n_depth, dtype=np.int64)
-    corenz_nnz = np.zeros((n_corenz, n_core), dtype=np.int64)
-    corenz_umi = np.zeros((n_corenz, n_core), dtype=np.int64)
-    corenz_cells = np.zeros(n_corenz, dtype=np.int64)
+    shape = {"n_donors": n_donors, "n_core": n_core,
+             "n_depth": int(depth_decile[seen].max()) + 1,
+             "n_corenz": int(corenz_decile[seen].max()) + 1, "p_n": 0}
 
     pool = codetection_pool(core, size=args.codetection_pool_size) if args.codetection_pool_size else None
-    if pool is not None:
-        p_n = pool.size
-        pool_NN = np.zeros((p_n, p_n), np.float64)   # co-detection counts
-        pool_SD = np.zeros((p_n, p_n), np.float64)   # sum x_i over cells where j detected
-        pool_QQ = np.zeros((p_n, p_n), np.float64)   # sum x_i * x_j
-        pool_SQ = np.zeros((p_n, p_n), np.float64)   # sum x_i^2 over cells where j detected
-        pool_det = np.zeros(p_n, np.float64)
-        pool_dn = np.zeros(n_donors, np.float64)
-        pool_sx = np.zeros((n_donors, p_n), np.float64)
-        pool_sxx = np.zeros((n_donors, p_n), np.float64)
-        pool_cross = np.zeros((n_donors, p_n, p_n), np.float64)
-        pool_pos_map = np.full(N_LEDGER, -1, np.int64)
-        pool_pos_map[pool] = np.arange(p_n, dtype=np.int64)
-        print(f"  Audit E co-detection pool: {p_n} addresses", flush=True)
+    shape["p_n"] = int(pool.size) if pool is not None else 0
 
-    print("sweep 2/2: accumulating core sufficient statistics", flush=True)
-    checksum_umi = 0
-    checksum_nnz = 0
-    for i, row in enumerate(manifest_rows):
-        counts_path = args.level4_root / row["counts_path"]
-        meta_path = args.level4_root / row["meta_path"]
-        if not args.no_verify_hashes and sha256_file(counts_path) != row["counts_sha256"]:
-            raise SystemExit(f"counts digest mismatch: {row['block_key']}")
-        with meta_path.open(newline="", encoding="utf-8") as handle:
-            meta = list(csv.DictReader(handle))
-        sel = np.asarray([int(m["selection_row"]) for m in meta], dtype=np.int64)
+    workers = args.workers if args.workers > 0 else min(8, max(1, (os.cpu_count() or 2) - 2))
+    chunk_size = max(1, len(manifest_rows) // (workers * 4)) if workers > 1 else len(manifest_rows)
+    chunks = [manifest_rows[i:i + chunk_size] for i in range(0, len(manifest_rows), chunk_size)]
+    print(f"sweep 2/2: {len(manifest_rows)} blocks, {workers} worker(s), "
+          f"{len(chunks)} ordered chunks, pool={shape['p_n']}", flush=True)
 
-        matrix = sp.load_npz(counts_path).tocsr()
-        if matrix.shape != (len(meta), N_LEDGER):
-            raise SystemExit(f"block geometry mismatch: {row['block_key']}")
-        data64 = matrix.data.astype(np.int64)          # int64 BEFORE any reduction
-        row_of = np.repeat(np.arange(matrix.shape[0], dtype=np.int64), np.diff(matrix.indptr))
-        pos = core_pos[matrix.indices]
-        keep = (pos >= 0) & (data64 > 0)
-        if not keep.any():
-            continue
-        r_local = row_of[keep]
-        a_local = pos[keep]
-        v_local = data64[keep]
-        lib_local = libraries[sel][r_local].astype(np.float64)
-        norm = np.log1p(v_local.astype(np.float64) * (10000.0 / lib_local))
+    total = _blank(shape)
+    init_args = (str(args.level4_root), core_pos, libraries, cell_donor, depth_decile,
+                 corenz_decile, pool, shape, not args.no_verify_hashes)
+    if workers == 1:
+        _init_worker(*init_args)
+        for i, chunk in enumerate(chunks):
+            _merge(total, _process_chunk(chunk))
+            print(f"  chunk {i+1}/{len(chunks)} {time.time()-started:.0f}s", flush=True)
+    else:
+        import multiprocessing as mp
+        ctx = mp.get_context("spawn")
+        with ctx.Pool(processes=workers, initializer=_init_worker, initargs=init_args) as ex:
+            # imap preserves ORDER, so the float reduction order is fixed and the
+            # result is reproducible from run to run.
+            for i, part in enumerate(ex.imap(_process_chunk, chunks)):
+                _merge(total, part)
+                print(f"  chunk {i+1}/{len(chunks)} "
+                      f"({100.0*(i+1)/len(chunks):.1f}%) {time.time()-started:.0f}s", flush=True)
 
-        d_local = cell_donor[sel][r_local]
-        flat_donor = d_local * n_core + a_local
-        donor_nnz.ravel()[:] += np.bincount(flat_donor, minlength=n_donors * n_core)
-        donor_umi.ravel()[:] += np.bincount(flat_donor, weights=v_local.astype(np.float64),
-                                            minlength=n_donors * n_core).astype(np.int64)
-        donor_nsum.ravel()[:] += np.bincount(flat_donor, weights=norm, minlength=n_donors * n_core)
-        donor_nsq.ravel()[:] += np.bincount(flat_donor, weights=norm * norm,
-                                            minlength=n_donors * n_core)
+    donor_nnz, donor_umi = total["donor_nnz"], total["donor_umi"]
+    donor_cells = total["donor_cells"]
+    checksum_nnz, checksum_umi = total["checksum_nnz"], total["checksum_umi"]
 
-        q_local = depth_decile[sel][r_local]
-        flat_q = q_local * n_core + a_local
-        depth_nnz.ravel()[:] += np.bincount(flat_q, minlength=n_depth * n_core)
-        depth_umi.ravel()[:] += np.bincount(flat_q, weights=v_local.astype(np.float64),
-                                            minlength=n_depth * n_core).astype(np.int64)
-
-        c_local = corenz_decile[sel][r_local]
-        flat_c = c_local * n_core + a_local
-        corenz_nnz.ravel()[:] += np.bincount(flat_c, minlength=n_corenz * n_core)
-        corenz_umi.ravel()[:] += np.bincount(flat_c, weights=v_local.astype(np.float64),
-                                             minlength=n_corenz * n_core).astype(np.int64)
-
-        if pool is not None:
-            sub = matrix[:, pool].astype(np.float64)
-            dense = np.asarray(sub.todense())
-            lib_rows = libraries[sel].astype(np.float64)
-            xp = np.log1p(dense * (10000.0 / lib_rows[:, None]))     # frozen normalization
-            dp = (dense > 0).astype(np.float64)
-            pool_NN += dp.T @ dp
-            pool_SD += xp.T @ dp
-            pool_QQ += xp.T @ xp
-            pool_SQ += (xp * xp).T @ dp
-            pool_det += dp.sum(axis=0)
-            for donor in np.unique(cell_donor[sel]):
-                m = cell_donor[sel] == donor
-                xd = xp[m]
-                pool_dn[donor] += xd.shape[0]
-                pool_sx[donor] += xd.sum(axis=0)
-                pool_sxx[donor] += (xd * xd).sum(axis=0)
-                pool_cross[donor] += xd.T @ xd
-
-        checksum_umi += int(v_local.sum())
-        checksum_nnz += int(keep.sum())
-        np.add.at(donor_cells, cell_donor[sel], 1)
-        np.add.at(depth_cells, depth_decile[sel], 1)
-        np.add.at(corenz_cells, corenz_decile[sel], 1)
-        if i % 500 == 0:
-            print(f"  block {i+1}/{len(manifest_rows)} "
-                  f"({100.0*(i+1)/len(manifest_rows):.1f}%) {time.time()-started:.0f}s", flush=True)
-
-    # --------------------------------------------------------------- invariants
     failures = []
     if int(donor_nnz.sum()) != checksum_nnz:
         failures.append("donor nnz total disagrees with the streaming checksum")
-    if int(depth_nnz.sum()) != checksum_nnz:
+    if int(total["depth_nnz"].sum()) != checksum_nnz:
         failures.append("depth-decile nnz total disagrees with the streaming checksum")
-    if int(corenz_nnz.sum()) != checksum_nnz:
+    if int(total["corenz_nnz"].sum()) != checksum_nnz:
         failures.append("core-nnz-decile total disagrees with the streaming checksum")
     if int(donor_umi.sum()) != checksum_umi:
         failures.append("donor UMI total disagrees with the streaming checksum")
-    if int(depth_umi.sum()) != checksum_umi:
+    if int(total["depth_umi"].sum()) != checksum_umi:
         failures.append("depth-decile UMI total disagrees with the streaming checksum")
-    # Independent corroboration against a different producer: pass1's
-    # donor_addr_nnz was built by another script in another session.
     p1_addr = np.asarray(pass1["donor_addr_nnz"], dtype=np.int64)[:, core]
     if not partial and not np.array_equal(p1_addr, donor_nnz):
-        bad = int((p1_addr != donor_nnz).sum())
         failures.append(f"donor x address detection counts disagree with authenticated pass1 "
-                        f"in {bad} of {p1_addr.size} entries")
+                        f"in {int((p1_addr != donor_nnz).sum())} of {p1_addr.size} entries")
     if not partial and int(donor_cells.sum()) != n_cells:
         failures.append(f"donor cell counts sum to {int(donor_cells.sum())}, expected {n_cells}")
     if failures:
@@ -302,43 +374,41 @@ def main() -> int:
         raise SystemExit("core sufficient statistics aborted on invariants")
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(
-        args.out,
-        schema=np.array(SCHEMA),
-        core=core,
-        duniq=np.array(duniq, dtype=object),
-        donor_src=donor_src,
-        source_names=np.array([k for k, _ in sorted(source_names.items(), key=lambda kv: kv[1])],
-                              dtype=object),
-        donor_nnz=donor_nnz, donor_umi=donor_umi,
-        donor_nsum=donor_nsum, donor_nsq=donor_nsq, donor_cells=donor_cells,
-        depth_nnz=depth_nnz, depth_umi=depth_umi, depth_cells=depth_cells,
-        depth_edges=depth_edges,
-        corenz_nnz=corenz_nnz, corenz_umi=corenz_umi, corenz_cells=corenz_cells,
-        corenz_edges=corenz_edges,
-        libraries=libraries, src_of_cell=src_of_cell,
-        total_core_umi=np.array(checksum_umi, dtype=np.int64),
-        total_core_nnz=np.array(checksum_nnz, dtype=np.int64),
-        partial=np.array(bool(partial)),
-        **({} if pool is None else {
-            "pool": pool, "pool_NN": pool_NN, "pool_SD": pool_SD, "pool_QQ": pool_QQ,
-            "pool_SQ": pool_SQ, "pool_det": pool_det, "pool_dn": pool_dn,
-            "pool_sx": pool_sx, "pool_sxx": pool_sxx, "pool_cross": pool_cross,
+    payload = {
+        "schema": np.array(SCHEMA), "core": core,
+        "duniq": np.array(duniq, dtype=object), "donor_src": donor_src,
+        "source_names": np.array([k for k, _ in sorted(source_names.items(), key=lambda kv: kv[1])],
+                                 dtype=object),
+        "donor_nnz": donor_nnz, "donor_umi": donor_umi,
+        "donor_nsum": total["donor_nsum"], "donor_nsq": total["donor_nsq"],
+        "donor_cells": donor_cells,
+        "depth_nnz": total["depth_nnz"], "depth_umi": total["depth_umi"],
+        "depth_cells": total["depth_cells"], "depth_edges": depth_edges,
+        "corenz_nnz": total["corenz_nnz"], "corenz_umi": total["corenz_umi"],
+        "corenz_cells": total["corenz_cells"], "corenz_edges": corenz_edges,
+        "libraries": libraries, "src_of_cell": src_of_cell,
+        "total_core_umi": np.array(checksum_umi, dtype=np.int64),
+        "total_core_nnz": np.array(checksum_nnz, dtype=np.int64),
+        "partial": np.array(bool(partial)), "workers": np.array(workers),
+    }
+    if shape["p_n"]:
+        payload.update({
+            "pool": pool, "pool_NN": total["pool_NN"], "pool_SD": total["pool_SD"],
+            "pool_QQ": total["pool_QQ"], "pool_SQ": total["pool_SQ"],
+            "pool_det": total["pool_det"], "pool_dn": total["pool_dn"],
+            "pool_sx": total["pool_sx"], "pool_sxx": total["pool_sxx"],
+            "pool_cross": total["pool_cross"],
             "pool_cells": np.array(int(donor_cells.sum()), dtype=np.int64),
-        }),
-    )
+        })
+    np.savez_compressed(args.out, **payload)
+
     print(json.dumps({
-        "schema": SCHEMA,
-        "out": str(args.out),
-        "partial": bool(partial),
-        "donors": n_donors,
-        "core_addresses": n_core,
-        "total_core_nnz": checksum_nnz,
-        "total_core_umi": checksum_umi,
-        "cells": int(donor_cells.sum()),
-        "invariants_passed": True,
+        "schema": SCHEMA, "out": str(args.out), "partial": bool(partial),
+        "workers": workers, "donors": n_donors, "core_addresses": n_core,
+        "total_core_nnz": checksum_nnz, "total_core_umi": checksum_umi,
+        "cells": int(donor_cells.sum()), "invariants_passed": True,
         "corroborated_against_pass1_donor_addr_nnz": bool(not partial),
-        "codetection_pool_addresses": int(pool.size) if pool is not None else 0,
+        "codetection_pool_addresses": shape["p_n"],
         "elapsed_seconds": time.time() - started,
     }, indent=2))
     return 0
