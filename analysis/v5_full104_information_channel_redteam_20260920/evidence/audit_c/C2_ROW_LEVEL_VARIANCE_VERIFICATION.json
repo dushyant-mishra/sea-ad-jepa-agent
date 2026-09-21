@@ -1,0 +1,24 @@
+{
+  "schema": "V5_FULL104_C2_ROW_LEVEL_VARIANCE_VERIFICATION_V1",
+  "scope_class": "CURRENT_FULL104_RECONNAISSANCE",
+  "selection": {
+    "route_1": "HASH_SAMPLE",
+    "route_1_rule": "SHA-256 of a declared salt joined to the target address / donor id; independent of the data and of the C2 classification",
+    "route_2": "FLAGGED_VERIFICATION",
+    "route_2_note": "every sampled pair C2 flagged non-variable; a targeted check of the positive class, NOT a random sample -- its counts are not prevalence",
+    "targets": 32,
+    "donors": 12,
+    "pairs": 384
+  },
+  "numerical_route": "two-pass (mean, then summed squared deviations) recomputed from rows; deliberately different from the one-pass sufficient-statistics form, which cancels catastrophically at near-zero variance",
+  "pairs_checked": 384,
+  "pairs_in_agreement": 384,
+  "pairs_disagreeing": 0,
+  "flagged_non_variable_pairs_verified": 8,
+  "disagreements": [],
+  "verdict": "C2_CLASSIFICATION_CONFIRMED_AT_ROW_LEVEL",
+  "workers": 8,
+  "elapsed_seconds": 65.69974255561829,
+  "terminal_masking_outcomes_inspected": false,
+  "training_authorized": false
+}
