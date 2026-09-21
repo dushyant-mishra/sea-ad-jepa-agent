@@ -91,6 +91,7 @@ class Full104RareBiologyPreservationAuthorityV1:
     td59_protocol_sha256: str
     teacher_relational_target_authority_sha256: str
     outer_split_receipt_sha256: str
+    qualification_sample_authority_sha256: str
 
     selector_id: str
     stratification_id: str
@@ -125,6 +126,7 @@ class Full104RareBiologyPreservationAuthorityV1:
             "td59_protocol_sha256",
             "teacher_relational_target_authority_sha256",
             "outer_split_receipt_sha256",
+            "qualification_sample_authority_sha256",
         ):
             _sha(getattr(self, name), name)
 
