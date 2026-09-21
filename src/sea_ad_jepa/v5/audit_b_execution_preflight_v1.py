@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .audit_b_execution_contract_v1 import AuditBExecutionContractV1
+from .masking_rng_replay_authority_v3 import MaskingRngReplayAuthorityV3
 
 
 def sha256_file(path: str | Path) -> str:
@@ -111,20 +112,51 @@ def verify_runtime_bindings(
     rng = json.loads(rng_path.read_text(encoding="utf-8"))
     if rng.get("schema") != contract.rng_authority_schema_id:
         raise ValueError("runtime RNG authority schema mismatch")
-    if rng.get("authority_sha256") != contract.rng_authority_sha256:
+    try:
+        rng_obj = MaskingRngReplayAuthorityV3(
+            authority_id=str(rng["authority_id"]),
+            full104_substrate_sha256=str(rng["full104_substrate_sha256"]),
+            canonical_registry_sha256=str(rng["canonical_registry_sha256"]),
+            outer_split_receipt_sha256=str(rng["outer_split_receipt_sha256"]),
+            qualification_parameters_authority_sha256=str(
+                rng["qualification_parameters_authority_sha256"]
+            ),
+            burden_ladder_authority_sha256=str(rng["burden_ladder_authority_sha256"]),
+            seed_namespace_id=str(rng["seed_namespace_id"]),
+            method_exclusion_policy_id=str(rng["method_exclusion_policy_id"]),
+            replay_policy_id=str(rng["replay_policy_id"]),
+            terminal_outcomes_inspected_before_freeze=bool(
+                rng["terminal_outcomes_inspected_before_freeze"]
+            ),
+            training_authorized=bool(rng["training_authorized"]),
+        )
+        rng_obj.validate()
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError(f"runtime RNG V3 authority payload is invalid: {exc}") from exc
+    if rng_obj.canonical_digest() != contract.rng_authority_sha256:
         raise ValueError("runtime RNG authority canonical digest mismatch")
+    if rng.get("authority_sha256") != rng_obj.canonical_digest():
+        raise ValueError("runtime RNG authority declared digest mismatch")
+    if int(rng.get("global_seed", -1)) != rng_obj.global_seed:
+        raise ValueError("runtime RNG authority global_seed mismatch")
     if rng.get("target_panel_dependency") != contract.rng_target_panel_dependency_id:
         raise ValueError("runtime RNG target-panel dependency mismatch")
-    if rng.get("terminal_outcomes_inspected_before_freeze") is not False:
-        raise ValueError("runtime RNG authority was frozen after terminal outcomes")
-    if rng.get("training_authorized") is not False:
-        raise ValueError("runtime RNG authority unexpectedly authorizes training")
 
     heavy = json.loads(Path(heavy_qualification_receipt).read_text(encoding="utf-8"))
     if heavy.get("schema") != contract.heavy_qualification_schema_id:
         raise ValueError("runtime heavy qualification schema mismatch")
     if heavy.get("verdict") != contract.heavy_qualification_verdict_id:
         raise ValueError("runtime heavy qualification verdict mismatch")
+    if heavy.get("block_manifest_sha256") != contract.full104_manifest_sha256:
+        raise ValueError("runtime heavy qualification FULL104 manifest mismatch")
+    if heavy.get("artifact_sha256") != contract.heavy_artifact_sha256:
+        raise ValueError("runtime heavy qualification artifact mismatch")
+    if heavy.get("rows_traversed") != 4_553_407:
+        raise ValueError("runtime heavy qualification row count drifted")
+    if heavy.get("donors") != 104 or heavy.get("core_addresses") != 17_186:
+        raise ValueError("runtime heavy qualification geometry drifted")
+    if heavy.get("three_route_total_agreement") is not True:
+        raise ValueError("runtime heavy qualification lacks total-library agreement")
     if heavy.get("all_104_donor_library_totals_agree") is not True:
         raise ValueError("runtime heavy qualification lacks all-donor agreement")
     if heavy.get("per_cell_source_vector_agrees") is not True:
