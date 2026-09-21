@@ -1,0 +1,4 @@
+left_source,right_source,left_native_classes,right_native_classes,literal_intersection,literal_jaccard,shared_labels
+HVS,NPH52,24,7,1,0.03333333333333333,OPC
+HVS,SEA_AD,24,46,22,0.4583333333333333,Astrocyte|Chandelier|Endothelial|L2/3 IT|L4 IT|L5 ET|L5 IT|L5/6 NP|L6 CT|L6 IT|L6 IT Car3|L6b|Lamp5|Lamp5 Lhx6|OPC|Oligodendrocyte|Pax6|Pvalb|Sncg|Sst|Sst Chodl|Vip
+NPH52,SEA_AD,7,46,1,0.019230769230769232,OPC
