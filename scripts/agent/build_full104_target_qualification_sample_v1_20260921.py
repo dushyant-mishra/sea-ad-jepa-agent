@@ -24,6 +24,7 @@ from sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1 import (
     FULL104_READER_FIT_CELLS,
     FULL104_READER_FIT_DONORS,
     Full104TargetQualificationSampleAuthorityV1,
+    Full104TargetQualificationSampleReceiptV1,
     RetainedQualificationRowSelectorV1,
 )
 
@@ -261,20 +262,31 @@ def main() -> int:
                 tmp / "donor_source_code_i64.npy", donor_source_code
             ),
         }
+        receipt = Full104TargetQualificationSampleReceiptV1(
+            sample_authority_sha256=authority.canonical_digest(),
+            full104_block_manifest_sha256=EXPECTED_BLOCK_MANIFEST_SHA256,
+            population_authority_sha256=EXPECTED_POPULATION_AUTHORITY_SHA256,
+            dataset_etl_atlas_sha256=etl_sha,
+            outer_split_receipt_sha256=split_root,
+            retained_cells=int(selection_rows.size),
+            retained_donors=FULL104_READER_FIT_DONORS,
+            donors_at_cap=int(np.sum(retained == authority.per_donor_cap)),
+            min_retained_per_donor=int(retained.min()),
+            max_retained_per_donor=int(retained.max()),
+            selection_rows_file_sha256=file_sha["selection_rows"],
+            donor_code_file_sha256=file_sha["donor_code"],
+            row_rank_file_sha256=file_sha["row_rank"],
+            retained_count_by_donor_file_sha256=file_sha["retained_count_by_donor"],
+            full_donor_n_file_sha256=file_sha["full_donor_n"],
+            fold_by_donor_file_sha256=file_sha["fold_by_donor"],
+            donor_source_code_file_sha256=file_sha["donor_source_code"],
+        )
+        receipt.validate_against_authority(authority)
         manifest = {
             "schema": "V5_FULL104_TARGET_QUALIFICATION_SAMPLE_RECEIPT_V1",
-            "authority_sha256": authority.canonical_digest(),
+            **receipt.__dict__,
+            "sample_receipt_sha256": receipt.canonical_digest(),
             "authority": authority.__dict__,
-            "full104_block_manifest_sha256": EXPECTED_BLOCK_MANIFEST_SHA256,
-            "population_authority_sha256": EXPECTED_POPULATION_AUTHORITY_SHA256,
-            "etl_atlas_file_sha256": etl_sha,
-            "outer_split_receipt_sha256": split_root,
-            "retained_cells": int(selection_rows.size),
-            "retained_donors": FULL104_READER_FIT_DONORS,
-            "donors_at_cap": int(np.sum(retained == authority.per_donor_cap)),
-            "min_retained_per_donor": int(retained.min()),
-            "max_retained_per_donor": int(retained.max()),
-            "file_sha256": file_sha,
             "file_names": {
                 "selection_rows": "selection_rows_i64.npy",
                 "donor_code": "donor_code_i64.npy",
@@ -290,12 +302,7 @@ def main() -> int:
                 "frozen_population_root",
                 "frozen_selection_namespace",
             ],
-            "expression_opened_by_builder": False,
-            "masking_authorized": False,
-            "training_authorized": False,
         }
-        semantic = dict(manifest)
-        manifest["receipt_sha256"] = canonical_sha(semantic)
         (tmp / "sample_receipt.json").write_text(
             json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
             encoding="utf-8",
