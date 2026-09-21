@@ -275,3 +275,94 @@ class RetainedQualificationRowSelectorV1:
         if short.tolist() != [self.authority.expected_short_donor_cells]:
             raise ValueError("short-donor geometry does not match authenticated FULL104")
         return out_rows, out_donors, out_ranks, retained
+
+
+@dataclass(frozen=True)
+class Full104TargetQualificationSampleReceiptV1:
+    sample_authority_sha256: str
+    full104_block_manifest_sha256: str
+    population_authority_sha256: str
+    dataset_etl_atlas_sha256: str
+    outer_split_receipt_sha256: str
+
+    retained_cells: int
+    retained_donors: int
+    donors_at_cap: int
+    min_retained_per_donor: int
+    max_retained_per_donor: int
+
+    selection_rows_file_sha256: str
+    donor_code_file_sha256: str
+    row_rank_file_sha256: str
+    retained_count_by_donor_file_sha256: str
+    full_donor_n_file_sha256: str
+    fold_by_donor_file_sha256: str
+    donor_source_code_file_sha256: str
+
+    expression_opened_by_builder: bool = False
+    masking_authorized: bool = False
+    training_authorized: bool = False
+
+    def validate(self) -> None:
+        for name in (
+            "sample_authority_sha256",
+            "full104_block_manifest_sha256",
+            "population_authority_sha256",
+            "dataset_etl_atlas_sha256",
+            "outer_split_receipt_sha256",
+            "selection_rows_file_sha256",
+            "donor_code_file_sha256",
+            "row_rank_file_sha256",
+            "retained_count_by_donor_file_sha256",
+            "full_donor_n_file_sha256",
+            "fold_by_donor_file_sha256",
+            "donor_source_code_file_sha256",
+        ):
+            _sha(getattr(self, name), name)
+
+        if self.retained_cells != EXPECTED_SAMPLE_CELLS:
+            raise ValueError("retained_cells mismatch")
+        if self.retained_donors != FULL104_READER_FIT_DONORS:
+            raise ValueError("retained_donors mismatch")
+        if self.donors_at_cap != EXPECTED_DONORS_AT_CAP:
+            raise ValueError("donors_at_cap mismatch")
+        if self.min_retained_per_donor != EXPECTED_SHORT_DONOR_CELLS:
+            raise ValueError("min_retained_per_donor mismatch")
+        if self.max_retained_per_donor != PER_DONOR_CAP:
+            raise ValueError("max_retained_per_donor mismatch")
+        for name in (
+            "expression_opened_by_builder",
+            "masking_authorized",
+            "training_authorized",
+        ):
+            if getattr(self, name) is not False:
+                raise ValueError(f"{name} must remain false")
+
+    def validate_against_authority(
+        self,
+        authority: Full104TargetQualificationSampleAuthorityV1,
+    ) -> None:
+        self.validate()
+        authority.validate()
+        if self.sample_authority_sha256 != authority.canonical_digest():
+            raise ValueError("sample authority digest mismatch")
+        if self.full104_block_manifest_sha256 != authority.full104_block_manifest_sha256:
+            raise ValueError("FULL104 block manifest root mismatch")
+        if self.population_authority_sha256 != authority.population_authority_sha256:
+            raise ValueError("population authority root mismatch")
+        if self.dataset_etl_atlas_sha256 != authority.dataset_etl_atlas_sha256:
+            raise ValueError("ETL atlas root mismatch")
+        if self.outer_split_receipt_sha256 != authority.outer_split_receipt_sha256:
+            raise ValueError("outer split root mismatch")
+
+    def canonical_digest(self) -> str:
+        self.validate()
+        return _canonical_sha(
+            {
+                "schema": "V5_FULL104_TARGET_QUALIFICATION_SAMPLE_RECEIPT_V1",
+                **asdict(self),
+                "expression_opened_by_builder": False,
+                "masking_authorized": False,
+                "training_authorized": False,
+            }
+        )
