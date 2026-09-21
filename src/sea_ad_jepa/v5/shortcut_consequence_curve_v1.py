@@ -86,6 +86,7 @@ class ShortcutConsequenceCurveV1:
     fidelity_by_level_unit: np.ndarray
     mean_fidelity: np.ndarray
     absolute_mean_change_from_zero: np.ndarray
+    mean_absolute_paired_change_from_zero: np.ndarray
     harm_increment: np.ndarray
     monotone_non_decreasing_harm: bool
 
@@ -94,6 +95,7 @@ class ShortcutConsequenceCurveV1:
             "residual_level",
             "mean_fidelity",
             "absolute_mean_change_from_zero",
+            "mean_absolute_paired_change_from_zero",
             "harm_increment",
         ):
             arr = np.array(getattr(self, name), dtype=np.float64, copy=True)
@@ -136,14 +138,16 @@ def characterize_shortcut_consequence_curve(
         raise ValueError("fidelity must be finite and bounded in [0,1]")
 
     mean = s.mean(axis=1)
-    harm = np.abs(mean - mean[0])
-    increments = np.diff(harm)
+    mean_change = np.abs(mean - mean[0])
+    paired_harm = np.mean(np.abs(s - s[0:1, :]), axis=1)
+    increments = np.diff(paired_harm)
     monotone = bool(np.all(increments >= -1e-15))
     return ShortcutConsequenceCurveV1(
         residual_level=r,
         fidelity_by_level_unit=s,
         mean_fidelity=mean,
-        absolute_mean_change_from_zero=harm,
+        absolute_mean_change_from_zero=mean_change,
+        mean_absolute_paired_change_from_zero=paired_harm,
         harm_increment=increments,
         monotone_non_decreasing_harm=monotone,
     )
@@ -166,7 +170,7 @@ def evaluate_biological_negligibility_frontier(
             monotone_non_decreasing_harm=False,
         )
 
-    acceptable = curve.absolute_mean_change_from_zero < eps
+    acceptable = curve.mean_absolute_paired_change_from_zero < eps
     # The zero-residual reference must necessarily be acceptable for epsilon>0.
     if not bool(acceptable[0]):
         raise AssertionError("zero-residual reference is not inside positive epsilon")
