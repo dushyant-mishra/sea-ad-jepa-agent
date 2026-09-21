@@ -100,6 +100,7 @@ class Full104TeacherRelationalTargetQualificationAuthorityV1:
     scientific_weight_law_sha256: str
     teacher_target_semantics_authority_sha256: str
     outer_split_receipt_sha256: str
+    qualification_sample_authority_sha256: str
 
     # Historical qualified relational roots.
     td57b_protocol_sha256: str
@@ -147,6 +148,7 @@ class Full104TeacherRelationalTargetQualificationAuthorityV1:
             "scientific_weight_law_sha256",
             "teacher_target_semantics_authority_sha256",
             "outer_split_receipt_sha256",
+            "qualification_sample_authority_sha256",
             "td57b_protocol_sha256",
             "td59_protocol_sha256",
             "td60_legacy_prospective_protocol_sha256",
