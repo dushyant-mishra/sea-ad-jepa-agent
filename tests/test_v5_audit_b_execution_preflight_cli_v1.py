@@ -78,5 +78,5 @@ def test_cli_stops_on_unresolved_precision_before_touching_runtime_files(tmp_pat
     proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=60)
     assert proc.returncode != 0
     combined = proc.stdout + proc.stderr
-    assert "STOP_PRECISION_SCOPE_UNRESOLVED" in combined
+    assert "STOP_AUDIT_B_V1_PREEXECUTION_ONLY" in combined
     assert "required file is missing" not in combined
