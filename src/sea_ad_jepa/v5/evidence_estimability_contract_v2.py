@@ -97,7 +97,7 @@ def _validate_correlation_state(
     if np.any(np.abs(value[estimable]) > 1.0 + CORRELATION_TOL):
         raise ContractViolation("ESTIMABLE terms carry |r| > 1 beyond tolerance")
     if np.any(np.isfinite(value[~estimable])):
-        raise ContractViolation("non-estimable terms must serialize correlation as NaN")
+        raise ContractViolation("non-estimable terms carry a finite value; they must serialize correlation as NaN")
     value[estimable] = np.clip(value[estimable], -1.0, 1.0)
     value.flags.writeable = False
     state.flags.writeable = False
