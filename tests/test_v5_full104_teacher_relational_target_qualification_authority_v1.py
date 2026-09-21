@@ -25,6 +25,7 @@ def authority(**updates) -> Full104TeacherRelationalTargetQualificationAuthority
         scientific_weight_law_sha256=h("weight"),
         teacher_target_semantics_authority_sha256=h("semantics"),
         outer_split_receipt_sha256=h("split"),
+        qualification_sample_authority_sha256=h("qualification-sample"),
         td57b_protocol_sha256=h("td57b"),
         td59_protocol_sha256=h("td59"),
         td60_legacy_prospective_protocol_sha256=h("td60"),
