@@ -481,8 +481,9 @@ def test_external_manifest_builder_never_relabels_old_artifact_to_current_head(t
     core = next(a for a in out["artifacts"]
                 if a["role"] == "CORE_SUFFICIENT_STATISTICS_FOR_AUDITS_B_C_AND_E")
     assert core["producer_git_sha"] == "abcea57c1934ed70dea16fbad32e73b3d07d719d"
-    assert core["producer_git_sha"] != core["current_checkout_git_sha"]
-    assert core["current_checkout_git_sha"] == "NEW_CURRENT_HEAD"
+    assert "current_checkout_git_sha" not in core
+    assert core["current_producer_script_sha256"] != core["producer_script_sha256"]
+    assert core["producer_script_matches_current"] is False
     assert core["contains_cell_level_material"] is True
     assert core["reuse_status"] == "REQUIRES_METADATA_ONLY_STRICT_PARSE_EQUIVALENCE_CHECK_BEFORE_REUSE"
 
