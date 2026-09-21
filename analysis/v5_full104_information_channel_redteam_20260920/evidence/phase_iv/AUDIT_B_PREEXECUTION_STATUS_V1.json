@@ -1,0 +1,94 @@
+{
+  "schema": "V5_AUDIT_B_PREEXECUTION_STATUS_V1",
+  "date": "2026-09-21",
+  "based_on_integration_sha": "d19df359ce0641f84ea26239ddc711cb48895d3a",
+  "protected_state": {
+    "audit_b_n1_burden_outcomes_opened": false,
+    "terminal_masking_outcomes_opened": false,
+    "p1_p2_p3_p4_terminal_policy_selected": false,
+    "d_shared_opened": false,
+    "pathology_adaptive_decision_opened": false,
+    "dev_sealed_expression_opened": false,
+    "g5_margin_selected": false,
+    "terminal_target_panel_selected": false,
+    "training_authorized": false
+  },
+  "claude_lane_audit": {
+    "audited_head": "cdac29eba5f08994bc3d8309a31c05cd21da50aa",
+    "exact_head_ci": "537 passed / 0 skipped",
+    "numerical_findings_status": "INTERNALLY_CONSISTENT__NO_EVIDENCE_NUMBER_REVERSAL_FOUND",
+    "phase_i_original_status": "SUPPORTED_BUT_QUALIFIER_V1_NOT_EXHAUSTIVE_FOR_DONOR_LIBRARY_AND_CELL_SOURCE_IDENTITY",
+    "phase_ii_status": "DEFECT_QUANTIFIED__ROW_LEVEL_SAMPLE_CONFIRMS_CLASSIFICATION_ROUTE",
+    "phase_iii_status": "CORE_SIX_STATE_RESULT_SUPPORTED__REFERENCE_IMPLEMENTATION_HAS_ADDITIONAL_EDGE_CASES__INTEGRATED_SUCCESSOR_REQUIRED",
+    "phase_iv_sample_status": "TARGET_SAMPLE_IMMUTABLY_FROZEN__SCIENTIFIC_EXECUTION_RULE_NOT_FULLY_DIGEST_COVERED"
+  },
+  "integration_repairs": {
+    "evidence_estimability_contract_v2": {
+      "state": "IMPLEMENTED_AND_HOSTED_TESTED",
+      "closes": [
+        "absent required group cannot silently disappear",
+        "empty evidence cannot aggregate as ESTIMABLE NaN",
+        "materially negative sum-of-squares becomes INVALID_NUMERIC",
+        "undefined never becomes numeric zero"
+      ]
+    },
+    "heavy_qualification_v2": {
+      "state": "IMPLEMENTED_AND_FIXTURE_TESTED__REAL_GPU_ARTIFACT_RUN_PENDING",
+      "requires": [
+        "all 104 donor source-library totals agree",
+        "complete per-cell source vector agrees with authenticated donor/source identity"
+      ],
+      "expected_heavy_artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae"
+    },
+    "masking_rng_replay_authority_v3": {
+      "state": "IMPLEMENTED_AND_TESTED__REAL_AUTHORITY_RECEIPT_PENDING",
+      "target_panel_dependency": "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS"
+    },
+    "audit_b_execution_contract_v1": {
+      "state": "IMPLEMENTED_AND_FAIL_CLOSED",
+      "default_precision_scope": "UNRESOLVED__EXECUTION_FORBIDDEN",
+      "binds": [
+        "original Phase-IV sample freeze",
+        "sample artifact bytes",
+        "FULL104 manifest",
+        "canonical registry",
+        "heavy artifact",
+        "heavy qualification receipt",
+        "RNG V3 authority",
+        "frozen mask-plan generator",
+        "burden-estimator source",
+        "primary and secondary metrics",
+        "normalization",
+        "target/source/donor weighting",
+        "precision estimator",
+        "5 percent RSE threshold",
+        "N1/N2/N3 ladder",
+        "execution requirements"
+      ]
+    }
+  },
+  "remaining_blockers_before_n1": [
+    {
+      "id": "B1_HEAVY_QUALIFICATION_V2_REAL_RUN",
+      "owner": "CLAUDE_GPU_LANE",
+      "condition": "run V2 qualifier on the content-addressed 242 MB real artifact and obtain PASS"
+    },
+    {
+      "id": "B2_PRECISION_SCOPE",
+      "owner": "SCIENTIFIC_REVIEW",
+      "condition": "resolve prospectively whether frozen 'RSE of primary burden statistic' means one predeclared statistic or all policy x rung cells, without viewing burden outcomes"
+    },
+    {
+      "id": "B3_RNG_V3_REAL_RECEIPT",
+      "owner": "INTEGRATION",
+      "condition": "build and verify content-addressed RNG V3 authority from current pre-panel roots"
+    },
+    {
+      "id": "B4_EXECUTION_CONTRACT_FREEZE",
+      "owner": "INTEGRATION",
+      "condition": "after B1-B3, build resolved execution-contract JSON and verify execution_authorized=true"
+    }
+  ],
+  "next_authorized_action": "PREOUTCOME_REVIEW_AND_BINDING_ONLY",
+  "audit_b_n1_execution_authorized": false
+}
