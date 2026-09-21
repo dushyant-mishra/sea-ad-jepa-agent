@@ -40,6 +40,550 @@
       "mean_detection_rate": 0.16259798509397225
     }
   ],
+  "c2_fold_geometry": [
+    {
+      "fold": 0,
+      "source": "HVS",
+      "available_train_donors": 30,
+      "available_heldout_donors": 11,
+      "current_score_terms_per_target": 11,
+      "train_supported": {
+        "min": 0,
+        "median": 30.0,
+        "max": 30,
+        "targets_zero": 348,
+        "targets_one": 232,
+        "targets_two": 142,
+        "targets_three_or_more": 16331
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 11.0,
+        "max": 11,
+        "targets_zero": 483,
+        "targets_one": 403,
+        "targets_two": 252,
+        "targets_three_or_more": 15915
+      },
+      "train_scorer_variable": {
+        "min": 7,
+        "median": 30.0,
+        "max": 30,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "heldout_scorer_variable": {
+        "min": 5,
+        "median": 11.0,
+        "max": 11,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "targets_current_score_includes_undefined_zero_terms": 214,
+      "targets_no_scorer_variable_heldout_donor": 0
+    },
+    {
+      "fold": 0,
+      "source": "NPH52",
+      "available_train_donors": 12,
+      "available_heldout_donors": 5,
+      "current_score_terms_per_target": 5,
+      "train_supported": {
+        "min": 0,
+        "median": 12.0,
+        "max": 12,
+        "targets_zero": 292,
+        "targets_one": 114,
+        "targets_two": 125,
+        "targets_three_or_more": 16522
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 4.0,
+        "max": 5,
+        "targets_zero": 439,
+        "targets_one": 217,
+        "targets_two": 282,
+        "targets_three_or_more": 16115
+      },
+      "train_scorer_variable": {
+        "min": 4,
+        "median": 12.0,
+        "max": 12,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "heldout_scorer_variable": {
+        "min": 0,
+        "median": 5.0,
+        "max": 5,
+        "targets_zero": 1,
+        "targets_one": 2,
+        "targets_two": 8,
+        "targets_three_or_more": 17042
+      },
+      "targets_current_score_includes_undefined_zero_terms": 4897,
+      "targets_no_scorer_variable_heldout_donor": 1
+    },
+    {
+      "fold": 0,
+      "source": "SEA_AD",
+      "available_train_donors": 34,
+      "available_heldout_donors": 12,
+      "current_score_terms_per_target": 12,
+      "train_supported": {
+        "min": 0,
+        "median": 34.0,
+        "max": 34,
+        "targets_zero": 944,
+        "targets_one": 142,
+        "targets_two": 57,
+        "targets_three_or_more": 15910
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 12.0,
+        "max": 12,
+        "targets_zero": 1100,
+        "targets_one": 155,
+        "targets_two": 104,
+        "targets_three_or_more": 15694
+      },
+      "train_scorer_variable": {
+        "min": 0,
+        "median": 34.0,
+        "max": 34,
+        "targets_zero": 87,
+        "targets_one": 38,
+        "targets_two": 23,
+        "targets_three_or_more": 16905
+      },
+      "heldout_scorer_variable": {
+        "min": 0,
+        "median": 12.0,
+        "max": 12,
+        "targets_zero": 118,
+        "targets_one": 58,
+        "targets_two": 42,
+        "targets_three_or_more": 16835
+      },
+      "targets_current_score_includes_undefined_zero_terms": 1681,
+      "targets_no_scorer_variable_heldout_donor": 118
+    },
+    {
+      "fold": 1,
+      "source": "HVS",
+      "available_train_donors": 31,
+      "available_heldout_donors": 10,
+      "current_score_terms_per_target": 10,
+      "train_supported": {
+        "min": 0,
+        "median": 31.0,
+        "max": 31,
+        "targets_zero": 388,
+        "targets_one": 200,
+        "targets_two": 132,
+        "targets_three_or_more": 16333
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 10.0,
+        "max": 10,
+        "targets_zero": 459,
+        "targets_one": 421,
+        "targets_two": 229,
+        "targets_three_or_more": 15944
+      },
+      "train_scorer_variable": {
+        "min": 7,
+        "median": 31.0,
+        "max": 31,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "heldout_scorer_variable": {
+        "min": 5,
+        "median": 10.0,
+        "max": 10,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "targets_current_score_includes_undefined_zero_terms": 114,
+      "targets_no_scorer_variable_heldout_donor": 0
+    },
+    {
+      "fold": 1,
+      "source": "NPH52",
+      "available_train_donors": 13,
+      "available_heldout_donors": 4,
+      "current_score_terms_per_target": 4,
+      "train_supported": {
+        "min": 0,
+        "median": 12.0,
+        "max": 13,
+        "targets_zero": 276,
+        "targets_one": 121,
+        "targets_two": 125,
+        "targets_three_or_more": 16531
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 4.0,
+        "max": 4,
+        "targets_zero": 430,
+        "targets_one": 334,
+        "targets_two": 320,
+        "targets_three_or_more": 15969
+      },
+      "train_scorer_variable": {
+        "min": 3,
+        "median": 13.0,
+        "max": 13,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "heldout_scorer_variable": {
+        "min": 1,
+        "median": 4.0,
+        "max": 4,
+        "targets_zero": 0,
+        "targets_one": 2,
+        "targets_two": 14,
+        "targets_three_or_more": 17037
+      },
+      "targets_current_score_includes_undefined_zero_terms": 623,
+      "targets_no_scorer_variable_heldout_donor": 0
+    },
+    {
+      "fold": 1,
+      "source": "SEA_AD",
+      "available_train_donors": 34,
+      "available_heldout_donors": 12,
+      "current_score_terms_per_target": 12,
+      "train_supported": {
+        "min": 0,
+        "median": 34.0,
+        "max": 34,
+        "targets_zero": 937,
+        "targets_one": 134,
+        "targets_two": 73,
+        "targets_three_or_more": 15909
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 12.0,
+        "max": 12,
+        "targets_zero": 1130,
+        "targets_one": 147,
+        "targets_two": 96,
+        "targets_three_or_more": 15680
+      },
+      "train_scorer_variable": {
+        "min": 0,
+        "median": 34.0,
+        "max": 34,
+        "targets_zero": 81,
+        "targets_one": 36,
+        "targets_two": 22,
+        "targets_three_or_more": 16914
+      },
+      "heldout_scorer_variable": {
+        "min": 0,
+        "median": 12.0,
+        "max": 12,
+        "targets_zero": 135,
+        "targets_one": 60,
+        "targets_two": 51,
+        "targets_three_or_more": 16807
+      },
+      "targets_current_score_includes_undefined_zero_terms": 1438,
+      "targets_no_scorer_variable_heldout_donor": 135
+    },
+    {
+      "fold": 2,
+      "source": "HVS",
+      "available_train_donors": 31,
+      "available_heldout_donors": 10,
+      "current_score_terms_per_target": 10,
+      "train_supported": {
+        "min": 0,
+        "median": 31.0,
+        "max": 31,
+        "targets_zero": 286,
+        "targets_one": 213,
+        "targets_two": 159,
+        "targets_three_or_more": 16395
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 10.0,
+        "max": 10,
+        "targets_zero": 729,
+        "targets_one": 369,
+        "targets_two": 246,
+        "targets_three_or_more": 15709
+      },
+      "train_scorer_variable": {
+        "min": 10,
+        "median": 31.0,
+        "max": 31,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "heldout_scorer_variable": {
+        "min": 2,
+        "median": 10.0,
+        "max": 10,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 1,
+        "targets_three_or_more": 17052
+      },
+      "targets_current_score_includes_undefined_zero_terms": 203,
+      "targets_no_scorer_variable_heldout_donor": 0
+    },
+    {
+      "fold": 2,
+      "source": "NPH52",
+      "available_train_donors": 13,
+      "available_heldout_donors": 4,
+      "current_score_terms_per_target": 4,
+      "train_supported": {
+        "min": 0,
+        "median": 12.0,
+        "max": 13,
+        "targets_zero": 319,
+        "targets_one": 131,
+        "targets_two": 106,
+        "targets_three_or_more": 16497
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 4.0,
+        "max": 4,
+        "targets_zero": 352,
+        "targets_one": 256,
+        "targets_two": 545,
+        "targets_three_or_more": 15900
+      },
+      "train_scorer_variable": {
+        "min": 4,
+        "median": 13.0,
+        "max": 13,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "heldout_scorer_variable": {
+        "min": 1,
+        "median": 4.0,
+        "max": 4,
+        "targets_zero": 0,
+        "targets_one": 6,
+        "targets_two": 5,
+        "targets_three_or_more": 17042
+      },
+      "targets_current_score_includes_undefined_zero_terms": 64,
+      "targets_no_scorer_variable_heldout_donor": 0
+    },
+    {
+      "fold": 2,
+      "source": "SEA_AD",
+      "available_train_donors": 35,
+      "available_heldout_donors": 11,
+      "current_score_terms_per_target": 11,
+      "train_supported": {
+        "min": 0,
+        "median": 35.0,
+        "max": 35,
+        "targets_zero": 1039,
+        "targets_one": 95,
+        "targets_two": 80,
+        "targets_three_or_more": 15839
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 11.0,
+        "max": 11,
+        "targets_zero": 973,
+        "targets_one": 163,
+        "targets_two": 85,
+        "targets_three_or_more": 15832
+      },
+      "train_scorer_variable": {
+        "min": 0,
+        "median": 35.0,
+        "max": 35,
+        "targets_zero": 87,
+        "targets_one": 35,
+        "targets_two": 28,
+        "targets_three_or_more": 16903
+      },
+      "heldout_scorer_variable": {
+        "min": 0,
+        "median": 11.0,
+        "max": 11,
+        "targets_zero": 112,
+        "targets_one": 57,
+        "targets_two": 36,
+        "targets_three_or_more": 16848
+      },
+      "targets_current_score_includes_undefined_zero_terms": 912,
+      "targets_no_scorer_variable_heldout_donor": 112
+    },
+    {
+      "fold": 3,
+      "source": "HVS",
+      "available_train_donors": 31,
+      "available_heldout_donors": 10,
+      "current_score_terms_per_target": 10,
+      "train_supported": {
+        "min": 0,
+        "median": 31.0,
+        "max": 31,
+        "targets_zero": 290,
+        "targets_one": 226,
+        "targets_two": 182,
+        "targets_three_or_more": 16355
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 10.0,
+        "max": 10,
+        "targets_zero": 639,
+        "targets_one": 241,
+        "targets_two": 169,
+        "targets_three_or_more": 16004
+      },
+      "train_scorer_variable": {
+        "min": 12,
+        "median": 31.0,
+        "max": 31,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "heldout_scorer_variable": {
+        "min": 0,
+        "median": 10.0,
+        "max": 10,
+        "targets_zero": 1,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17052
+      },
+      "targets_current_score_includes_undefined_zero_terms": 84,
+      "targets_no_scorer_variable_heldout_donor": 1
+    },
+    {
+      "fold": 3,
+      "source": "NPH52",
+      "available_train_donors": 13,
+      "available_heldout_donors": 4,
+      "current_score_terms_per_target": 4,
+      "train_supported": {
+        "min": 0,
+        "median": 12.0,
+        "max": 13,
+        "targets_zero": 266,
+        "targets_one": 99,
+        "targets_two": 104,
+        "targets_three_or_more": 16584
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 4.0,
+        "max": 4,
+        "targets_zero": 594,
+        "targets_one": 328,
+        "targets_two": 833,
+        "targets_three_or_more": 15298
+      },
+      "train_scorer_variable": {
+        "min": 4,
+        "median": 13.0,
+        "max": 13,
+        "targets_zero": 0,
+        "targets_one": 0,
+        "targets_two": 0,
+        "targets_three_or_more": 17053
+      },
+      "heldout_scorer_variable": {
+        "min": 1,
+        "median": 4.0,
+        "max": 4,
+        "targets_zero": 0,
+        "targets_one": 4,
+        "targets_two": 37,
+        "targets_three_or_more": 17012
+      },
+      "targets_current_score_includes_undefined_zero_terms": 370,
+      "targets_no_scorer_variable_heldout_donor": 0
+    },
+    {
+      "fold": 3,
+      "source": "SEA_AD",
+      "available_train_donors": 35,
+      "available_heldout_donors": 11,
+      "current_score_terms_per_target": 11,
+      "train_supported": {
+        "min": 0,
+        "median": 35.0,
+        "max": 35,
+        "targets_zero": 923,
+        "targets_one": 130,
+        "targets_two": 68,
+        "targets_three_or_more": 15932
+      },
+      "heldout_supported": {
+        "min": 0,
+        "median": 11.0,
+        "max": 11,
+        "targets_zero": 1413,
+        "targets_one": 183,
+        "targets_two": 147,
+        "targets_three_or_more": 15310
+      },
+      "train_scorer_variable": {
+        "min": 0,
+        "median": 35.0,
+        "max": 35,
+        "targets_zero": 79,
+        "targets_one": 35,
+        "targets_two": 22,
+        "targets_three_or_more": 16917
+      },
+      "heldout_scorer_variable": {
+        "min": 0,
+        "median": 11.0,
+        "max": 11,
+        "targets_zero": 164,
+        "targets_one": 88,
+        "targets_two": 58,
+        "targets_three_or_more": 16743
+      },
+      "targets_current_score_includes_undefined_zero_terms": 1477,
+      "targets_no_scorer_variable_heldout_donor": 164
+    }
+  ],
+  "c2_split_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+  "c2_interpretation": "DESCRIPTIVE_ONLY__NO_NEW_PER_SOURCE_THRESHOLD_FROZEN; reports authenticated available/support/scorer-variable donor counts and preserves the distinction between current serialized zero terms and mathematically estimable correlations",
   "c3_zero_variance": [
     {
       "source": "HVS",
