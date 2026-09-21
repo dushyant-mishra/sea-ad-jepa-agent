@@ -166,6 +166,8 @@ on:
       - 'scripts/agent/build_full104_rng_replay_authority_v3_20260921.py'
       - 'tests/test_v5_masking_rng_replay_authority_v3.py'
       - 'tests/test_v5_audit_b_production_burden_v1.py'
+      - 'src/sea_ad_jepa/v5/audit_b_execution_contract_v1.py'
+      - 'tests/test_v5_audit_b_execution_contract_v1.py'
       - 'analysis/v5_full104_information_channel_redteam_20260920/**'
       - '.github/workflows/v5-full104-masking-runner.yml'
   workflow_dispatch:
@@ -266,6 +268,7 @@ jobs:
             tests/test_v5_heavy_sufficient_statistics_qualification_v1.py \
             tests/test_v5_heavy_sufficient_statistics_qualification_v2.py \
             tests/test_v5_audit_b_frozen_target_sample_v1.py \
+            tests/test_v5_audit_b_execution_contract_v1.py \
             tests/test_v5_audit_b_production_burden_v1.py \
             tests/test_v5_masking_rng_replay_authority_v3.py
       - name: Fail closed on skips
@@ -350,6 +353,7 @@ jobs:
             tests/test_v5_heavy_sufficient_statistics_qualification_v1.py \
             tests/test_v5_heavy_sufficient_statistics_qualification_v2.py \
             tests/test_v5_audit_b_frozen_target_sample_v1.py \
+            tests/test_v5_audit_b_execution_contract_v1.py \
             tests/test_v5_audit_b_production_burden_v1.py \
             tests/test_v5_masking_rng_replay_authority_v3.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
