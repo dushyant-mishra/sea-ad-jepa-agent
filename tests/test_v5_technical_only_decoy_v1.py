@@ -65,7 +65,7 @@ def test_decoy_never_requires_pathology_component() -> None:
 
 
 def test_mixed_biological_operator_role_fails_closed() -> None:
-    with pytest.raises(ValueError, match="rejects mixed"):
+    with pytest.raises(ValueError, match="reject mixed"):
         build_technical_stratum_id(
             ["SEA_AD"] * 4,
             ["sea_ad_mtg_rna_final_2026"] * 4,
