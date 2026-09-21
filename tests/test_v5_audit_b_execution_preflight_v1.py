@@ -8,6 +8,12 @@ from pathlib import Path
 import pytest
 
 import sea_ad_jepa.v5.audit_b_execution_preflight_v1 as P
+
+ROOT = Path(__file__).resolve().parents[1]
+SAMPLE = ROOT / (
+    "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/"
+    "AUDIT_B_FROZEN_TARGET_SAMPLE.json"
+)
 from sea_ad_jepa.v5.audit_b_execution_contract_v1 import (
     CANONICAL_REGISTRY_SHA256,
     FULL104_MANIFEST_SHA256,
@@ -134,6 +140,7 @@ def test_runtime_binding_success_checks_rng_semantic_digest_not_file_hash(
         lambda path: expected_by_name[Path(path).name],
     )
 
+    monkeypatch.setattr(P, "verify_phase_iv_sample_freeze", lambda *args, **kwargs: {})
     observed = P.verify_runtime_bindings(
         c,
         sample_freeze=paths["sample"],
@@ -144,6 +151,7 @@ def test_runtime_binding_success_checks_rng_semantic_digest_not_file_hash(
         burden_estimator_source=paths["estimator"],
         full104_manifest=paths["manifest"],
         canonical_registry=paths["registry"],
+        repo_root=tmp_path,
     )
     assert observed["rng_authority_file_sha256"] == h("rng-json-file-bytes")
     assert c.rng_authority_sha256 != observed["rng_authority_file_sha256"]
@@ -153,6 +161,7 @@ def test_runtime_binding_mismatch_fails_closed(tmp_path: Path, monkeypatch) -> N
     c = contract()
     dummy = tmp_path / "x"
     dummy.write_text("{}")
+    monkeypatch.setattr(P, "verify_phase_iv_sample_freeze", lambda *args, **kwargs: {})
     monkeypatch.setattr(P, "sha256_file", lambda path: h("wrong"))
     with pytest.raises(ValueError, match="runtime binding mismatch"):
         P.verify_runtime_bindings(
@@ -165,4 +174,17 @@ def test_runtime_binding_mismatch_fails_closed(tmp_path: Path, monkeypatch) -> N
             burden_estimator_source=dummy,
             full104_manifest=dummy,
             canonical_registry=dummy,
+            repo_root=tmp_path,
         )
+
+
+def test_real_frozen_sample_bound_inputs_match_current_checkout() -> None:
+    observed = P.verify_phase_iv_sample_freeze(SAMPLE, repo_root=ROOT)
+    assert set(observed) == P.EXPECTED_SAMPLE_BOUND_ROLES
+    assert all(len(x) == 64 for x in observed.values())
+
+
+def test_sample_bound_input_drift_fails_closed(monkeypatch) -> None:
+    monkeypatch.setattr(P, "sha256_file", lambda path: "0" * 64)
+    with pytest.raises(ValueError, match="bound input drift"):
+        P.verify_phase_iv_sample_freeze(SAMPLE, repo_root=ROOT)
