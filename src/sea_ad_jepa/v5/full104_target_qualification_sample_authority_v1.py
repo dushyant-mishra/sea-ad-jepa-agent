@@ -72,6 +72,7 @@ def _canonical_sha(payload: Mapping[str, Any]) -> str:
 class Full104TargetQualificationSampleAuthorityV1:
     authority_id: str
     population_authority_sha256: str
+    full104_block_manifest_sha256: str
     dataset_etl_atlas_sha256: str
     outer_split_receipt_sha256: str
 
@@ -102,6 +103,7 @@ class Full104TargetQualificationSampleAuthorityV1:
             raise ValueError("authority_id must be nonempty")
         for name in (
             "population_authority_sha256",
+            "full104_block_manifest_sha256",
             "dataset_etl_atlas_sha256",
             "outer_split_receipt_sha256",
         ):
