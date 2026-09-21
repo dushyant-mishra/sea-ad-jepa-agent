@@ -121,17 +121,19 @@ def test_precision_scope_defaults_to_unresolved():
 def test_execution_is_refused_while_the_precision_scope_is_unresolved():
     contract = _contract()
     assert contract.execution_authorized is False
-    with pytest.raises(ValueError, match="STOP_PRECISION_SCOPE_UNRESOLVED"):
+    with pytest.raises(ValueError, match="STOP_AUDIT_B_V1_PREEXECUTION_ONLY"):
         contract.require_execution_ready()
 
 
 @pytest.mark.parametrize("scope", [PRECISION_SCOPE_SINGLE_PRIMARY,
                                    PRECISION_SCOPE_ALL_POLICY_RUNG])
-def test_a_resolved_scope_authorizes_execution(scope):
-    """Both readings are lawful once chosen; the contract does not pick one."""
+def test_v1_rejects_even_a_named_resolved_scope(scope):
+    """Scientific resolution belongs in a provenance record + successor contract."""
     contract = _contract(precision_scope_id=scope)
-    assert contract.execution_authorized is True
-    contract.require_execution_ready()
+    with pytest.raises(ValueError, match="must remain UNRESOLVED"):
+        contract.validate()
+    with pytest.raises(ValueError, match="must remain UNRESOLVED"):
+        _ = contract.execution_authorized
 
 
 def test_the_contract_does_not_choose_between_the_two_readings():
