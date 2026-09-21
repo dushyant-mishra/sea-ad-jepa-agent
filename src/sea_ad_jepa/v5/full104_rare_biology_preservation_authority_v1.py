@@ -20,7 +20,6 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import hashlib
 import json
-import math
 from typing import Any, Mapping, Sequence, Tuple
 
 import numpy as np
@@ -104,7 +103,9 @@ def q95_tail_count_from_finite_n(finite_anchor_count: int) -> int:
         raise ValueError("finite_anchor_count must be nonnegative")
     if finite_anchor_count == 0:
         return 0
-    return int(math.ceil((1.0 - TAIL_QUANTILE) * finite_anchor_count))
+    # q95 means exactly the top 1/20 under the frozen ranked-tail convention.
+    # Integer arithmetic avoids floating-point ceil drift at exact multiples of 20.
+    return (finite_anchor_count + 19) // 20
 
 
 def select_q95_isolation_tail_v1(
