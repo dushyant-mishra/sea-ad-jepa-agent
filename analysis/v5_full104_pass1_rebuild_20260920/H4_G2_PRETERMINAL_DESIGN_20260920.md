@@ -164,3 +164,41 @@ Both items are **design work only**. Nothing is frozen, no constant is selected,
 no rung is opened, and no terminal outcome was consulted. H4 remains open pending
 its preregistration and pending H3; G2 remains open pending a prospectively
 justified scale-free band.
+
+
+---
+
+## 2026-09-21 implementation update — G2 mechanics separated from parameter choice
+
+A successor implementation now exists at:
+
+`src/sea_ad_jepa/v5/targeting_complexity_materiality_v1.py`
+
+with focused tests at:
+
+`tests/test_v5_targeting_complexity_materiality_v1.py`.
+
+It represents the complexity-equivalence band as an **exact fraction of the
+bound target x outer-fold grid**, using integer cross-multiplication rather than
+floating-point rounding. Therefore one declared relative materiality has the
+same stringency at 128, 256, 512, or 1024 targets.
+
+The successor authority requires:
+
+- an exact numerator/denominator for the relative band;
+- a nonempty scientific rationale ID;
+- a SHA-256 binding the rationale;
+- an explicit declaration that terminal outcomes were not inspected.
+
+It rejects post-outcome freezing.
+
+This closes the **implementation-form** problem only. It does not justify or
+select the production fraction, and the canonical selector remains unchanged.
+
+```
+G2_SCALE_FREE_SELECTOR_IMPLEMENTATION = READY_AND_TESTED
+G2_PRODUCTION_MATERIALITY_FRACTION   = OPEN
+CANONICAL_POLICY_SELECTOR_CHANGED    = false
+TERMINAL_MASKING_OUTCOMES            = UNOPENED
+TRAINING_OFF
+```

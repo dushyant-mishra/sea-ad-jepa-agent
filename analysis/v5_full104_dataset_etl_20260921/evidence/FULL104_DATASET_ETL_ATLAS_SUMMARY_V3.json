@@ -1,0 +1,538 @@
+{
+  "address_identity": {
+    "addresses": 41238,
+    "identity_class_counts": {
+      "current_exact": 40422,
+      "legacy_exact": 773,
+      "source_native_anchored": 43
+    },
+    "source_family_contribution_counts": {
+      "1": 9990,
+      "2": 13679,
+      "3": 17569
+    }
+  },
+  "address_support": {
+    "addresses": 41238,
+    "measured_by_all_3_source_families": 17346,
+    "measured_by_all_42": 17186,
+    "measured_by_no_operator": 289,
+    "operator_measured_scalar_quantiles": {
+      "0": 0.0,
+      "0.01": 1.0,
+      "0.05": 4.0,
+      "0.1": 7.0,
+      "0.25": 13.0,
+      "0.5": 18.0,
+      "0.75": 42.0,
+      "0.9": 42.0,
+      "0.95": 42.0,
+      "0.99": 42.0,
+      "1": 42.0
+    }
+  },
+  "collision_summary": {
+    "addresses": 2,
+    "matrices": 7,
+    "rows": 14,
+    "source_datasets": 7,
+    "sources": [
+      "NPH52"
+    ]
+  },
+  "donor_native_class_count_distribution_by_source": {
+    "HVS": {
+      "21": 3,
+      "22": 6,
+      "23": 15,
+      "24": 17
+    },
+    "NPH52": {
+      "1": 1,
+      "5": 2,
+      "7": 14
+    },
+    "SEA_AD": {
+      "24": 2,
+      "25": 3,
+      "26": 14,
+      "43": 1,
+      "44": 7,
+      "45": 12,
+      "46": 7
+    }
+  },
+  "findings": {
+    "broad_class_schema_is_not_harmonized_across_sources": true,
+    "bundle_contains_dev_sealed_expression": false,
+    "bundle_contains_pathology_fields": false,
+    "measurement_support_is_source_dependent": true,
+    "nph_reader_population_is_control_subcohort_only": true,
+    "operator_is_not_common_semantic_axis": true,
+    "pathology_was_not_used_for_foundation_split": true,
+    "reader_partitions_are_donor_disjoint": true,
+    "reader_validation_has_no_nph52": true,
+    "sea_ad_region_coverage_is_donor_ragged": true,
+    "source_cell_mass_is_highly_imbalanced": true,
+    "support_pattern_is_source_identifying": true
+  },
+  "interpretation_limits": [
+    "This bundle contains no pathology fields and no DEV/SEALED expression.",
+    "Foundation cohort labels are used only for provenance/composition and are not model-facing features or terminal policy-selection inputs.",
+    "The 50k expression sample is not consumed by this atlas builder and cannot set FULL104 adaptive thresholds."
+  ],
+  "nph_reader_foundation_cohort_summary": [
+    {
+      "cohort": "NPH_Ctrl",
+      "donors": 17,
+      "partition": "reader_fit"
+    },
+    {
+      "cohort": "NPH_Ctrl",
+      "donors": 2,
+      "partition": "reader_oracle"
+    }
+  ],
+  "operator_semantics_by_source": {
+    "HVS": {
+      "dominant_native_class_share": {
+        "0": 1.0,
+        "0.01": 1.0,
+        "0.05": 1.0,
+        "0.1": 1.0,
+        "0.25": 1.0,
+        "0.5": 1.0,
+        "0.75": 1.0,
+        "0.9": 1.0,
+        "0.95": 1.0,
+        "0.99": 1.0,
+        "1": 1.0
+      },
+      "native_classes_per_operator": {
+        "0": 1.0,
+        "0.01": 1.0,
+        "0.05": 1.0,
+        "0.1": 1.0,
+        "0.25": 1.0,
+        "0.5": 1.0,
+        "0.75": 1.0,
+        "0.9": 1.0,
+        "0.95": 1.0,
+        "0.99": 1.0,
+        "1": 1.0
+      },
+      "operator_is_native_class_pure_for_all": true,
+      "operators": 24
+    },
+    "NPH52": {
+      "dominant_native_class_share": {
+        "0": 1.0,
+        "0.01": 1.0,
+        "0.05": 1.0,
+        "0.1": 1.0,
+        "0.25": 1.0,
+        "0.5": 1.0,
+        "0.75": 1.0,
+        "0.9": 1.0,
+        "0.95": 1.0,
+        "0.99": 1.0,
+        "1": 1.0
+      },
+      "native_classes_per_operator": {
+        "0": 1.0,
+        "0.01": 1.0,
+        "0.05": 1.0,
+        "0.1": 1.0,
+        "0.25": 1.0,
+        "0.5": 1.0,
+        "0.75": 1.0,
+        "0.9": 1.0,
+        "0.95": 1.0,
+        "0.99": 1.0,
+        "1": 1.0
+      },
+      "operator_is_native_class_pure_for_all": true,
+      "operators": 7
+    },
+    "SEA_AD": {
+      "dominant_native_class_share": {
+        "0": 0.1964033850493653,
+        "0.01": 0.1968379363836817,
+        "0.05": 0.19857614172094723,
+        "0.1": 0.20074889839252918,
+        "0.25": 0.23174696074121676,
+        "0.5": 0.2523349172538096,
+        "0.75": 0.27973791692593086,
+        "0.9": 0.28626782437840415,
+        "0.95": 0.28891129336848576,
+        "0.99": 0.2910260685605511,
+        "1": 0.2915547623585674
+      },
+      "native_classes_per_operator": {
+        "0": 17.0,
+        "0.01": 17.6,
+        "0.05": 20.0,
+        "0.1": 23.0,
+        "0.25": 24.0,
+        "0.5": 24.0,
+        "0.75": 24.0,
+        "0.9": 24.0,
+        "0.95": 25.0,
+        "0.99": 25.8,
+        "1": 26.0
+      },
+      "operator_is_native_class_pure_for_all": false,
+      "operators": 11
+    }
+  },
+  "population": {
+    "addresses": 41238,
+    "metadata_cells": 6351753,
+    "metadata_donors": 149,
+    "partition_source": [
+      {
+        "broad_classes": 3,
+        "cell_fraction_within_partition": 0.04364160726243009,
+        "cells": 198718,
+        "donor_fraction_within_partition": 0.3942307692307692,
+        "donors": 41,
+        "native_classes": 24,
+        "operators": 24,
+        "partition": "reader_fit",
+        "source": "HVS"
+      },
+      {
+        "broad_classes": 1,
+        "cell_fraction_within_partition": 0.05193385963521381,
+        "cells": 236476,
+        "donor_fraction_within_partition": 0.16346153846153846,
+        "donors": 17,
+        "native_classes": 7,
+        "operators": 7,
+        "partition": "reader_fit",
+        "source": "NPH52"
+      },
+      {
+        "broad_classes": 20,
+        "cell_fraction_within_partition": 0.9044245331023562,
+        "cells": 4118213,
+        "donor_fraction_within_partition": 0.4423076923076923,
+        "donors": 46,
+        "native_classes": 46,
+        "operators": 11,
+        "partition": "reader_fit",
+        "source": "SEA_AD"
+      },
+      {
+        "broad_classes": 3,
+        "cell_fraction_within_partition": 0.06560203919818164,
+        "cells": 55848,
+        "donor_fraction_within_partition": 0.4782608695652174,
+        "donors": 11,
+        "native_classes": 24,
+        "operators": 24,
+        "partition": "reader_oracle",
+        "source": "HVS"
+      },
+      {
+        "broad_classes": 1,
+        "cell_fraction_within_partition": 0.03397684758285711,
+        "cells": 28925,
+        "donor_fraction_within_partition": 0.08695652173913043,
+        "donors": 2,
+        "native_classes": 7,
+        "operators": 7,
+        "partition": "reader_oracle",
+        "source": "NPH52"
+      },
+      {
+        "broad_classes": 20,
+        "cell_fraction_within_partition": 0.9004211132189612,
+        "cells": 766542,
+        "donor_fraction_within_partition": 0.43478260869565216,
+        "donors": 10,
+        "native_classes": 46,
+        "operators": 11,
+        "partition": "reader_oracle",
+        "source": "SEA_AD"
+      },
+      {
+        "broad_classes": 3,
+        "cell_fraction_within_partition": 0.05694956131319883,
+        "cells": 53933,
+        "donor_fraction_within_partition": 0.45454545454545453,
+        "donors": 10,
+        "native_classes": 24,
+        "operators": 24,
+        "partition": "reader_validation",
+        "source": "HVS"
+      },
+      {
+        "broad_classes": 20,
+        "cell_fraction_within_partition": 0.9430504386868012,
+        "cells": 893098,
+        "donor_fraction_within_partition": 0.5454545454545454,
+        "donors": 12,
+        "native_classes": 46,
+        "operators": 11,
+        "partition": "reader_validation",
+        "source": "SEA_AD"
+      }
+    ],
+    "reader_fit_cells": 4553407,
+    "reader_fit_donors": 104,
+    "reader_operators": 42
+  },
+  "protected_state": {
+    "d_shared": "SEALED",
+    "dev_sealed": "SEALED",
+    "pathology": "SEALED_FOR_MODEL_AND_TERMINAL_ADAPTATION",
+    "terminal_masking_outcomes": "UNOPENED",
+    "training": "OFF"
+  },
+  "reader_fit_donor_quantiles_by_source": {
+    "HVS": {
+      "cells": {
+        "0": 1625.0,
+        "0.01": 1761.4,
+        "0.05": 2677.0,
+        "0.1": 2863.0,
+        "0.25": 3587.0,
+        "0.5": 4292.0,
+        "0.75": 5613.0,
+        "0.9": 6948.0,
+        "0.95": 9734.0,
+        "0.99": 11448.600000000004,
+        "1": 12509.0
+      },
+      "native_classes": {
+        "0": 21.0,
+        "0.01": 21.0,
+        "0.05": 21.0,
+        "0.1": 22.0,
+        "0.25": 23.0,
+        "0.5": 23.0,
+        "0.75": 24.0,
+        "0.9": 24.0,
+        "0.95": 24.0,
+        "0.99": 24.0,
+        "1": 24.0
+      },
+      "operators": {
+        "0": 21.0,
+        "0.01": 21.0,
+        "0.05": 21.0,
+        "0.1": 22.0,
+        "0.25": 23.0,
+        "0.5": 23.0,
+        "0.75": 24.0,
+        "0.9": 24.0,
+        "0.95": 24.0,
+        "0.99": 24.0,
+        "1": 24.0
+      }
+    },
+    "NPH52": {
+      "cells": {
+        "0": 81.0,
+        "0.01": 551.24,
+        "0.05": 2432.2000000000003,
+        "0.1": 5975.6,
+        "0.25": 10490.0,
+        "0.5": 14874.0,
+        "0.75": 18792.0,
+        "0.9": 20757.8,
+        "0.95": 22030.399999999998,
+        "0.99": 23583.68,
+        "1": 23972.0
+      },
+      "native_classes": {
+        "0": 1.0,
+        "0.01": 1.6400000000000001,
+        "0.05": 4.2,
+        "0.1": 5.0,
+        "0.25": 7.0,
+        "0.5": 7.0,
+        "0.75": 7.0,
+        "0.9": 7.0,
+        "0.95": 7.0,
+        "0.99": 7.0,
+        "1": 7.0
+      },
+      "operators": {
+        "0": 1.0,
+        "0.01": 1.6400000000000001,
+        "0.05": 4.2,
+        "0.1": 5.0,
+        "0.25": 7.0,
+        "0.5": 7.0,
+        "0.75": 7.0,
+        "0.9": 7.0,
+        "0.95": 7.0,
+        "0.99": 7.0,
+        "1": 7.0
+      }
+    },
+    "SEA_AD": {
+      "cells": {
+        "0": 9127.0,
+        "0.01": 10742.05,
+        "0.05": 17760.25,
+        "0.1": 33782.5,
+        "0.25": 42022.75,
+        "0.5": 91242.5,
+        "0.75": 138394.75,
+        "0.9": 152427.5,
+        "0.95": 164299.75,
+        "0.99": 171816.9,
+        "1": 174111.0
+      },
+      "native_classes": {
+        "0": 24.0,
+        "0.01": 24.0,
+        "0.05": 25.0,
+        "0.1": 25.5,
+        "0.25": 26.0,
+        "0.5": 44.0,
+        "0.75": 45.0,
+        "0.9": 46.0,
+        "0.95": 46.0,
+        "0.99": 46.0,
+        "1": 46.0
+      },
+      "operators": {
+        "0": 2.0,
+        "0.01": 2.0,
+        "0.05": 2.25,
+        "0.1": 3.0,
+        "0.25": 3.0,
+        "0.5": 10.0,
+        "0.75": 11.0,
+        "0.9": 11.0,
+        "0.95": 11.0,
+        "0.99": 11.0,
+        "1": 11.0
+      }
+    }
+  },
+  "reader_fit_source_summary": [
+    {
+      "broad_classes": 3,
+      "broad_missing_fraction": 0.0,
+      "cell_fraction": 0.04364160726243009,
+      "cell_weighted_collision_unresolved_fraction": 0.0,
+      "cell_weighted_measured_scalar_fraction": 0.4543382317280179,
+      "cell_weighted_structurally_unmeasured_fraction": 0.5456617682719823,
+      "cells": 198718,
+      "donor_fraction": 0.3942307692307692,
+      "donors": 41,
+      "missing_broad": 0,
+      "native_classes": 24,
+      "operators": 24,
+      "source": "HVS",
+      "support_fingerprints": 1
+    },
+    {
+      "broad_classes": 1,
+      "broad_missing_fraction": 1.0,
+      "cell_fraction": 0.05193385963521381,
+      "cell_weighted_collision_unresolved_fraction": 0.0132124754232278,
+      "cell_weighted_measured_scalar_fraction": 0.8070538124992247,
+      "cell_weighted_structurally_unmeasured_fraction": 0.1797337120775474,
+      "cells": 236476,
+      "donor_fraction": 0.16346153846153846,
+      "donors": 17,
+      "missing_broad": 236476,
+      "native_classes": 7,
+      "operators": 7,
+      "source": "NPH52",
+      "support_fingerprints": 7
+    },
+    {
+      "broad_classes": 20,
+      "broad_missing_fraction": 0.0,
+      "cell_fraction": 0.9044245331023562,
+      "cell_weighted_collision_unresolved_fraction": 0.0172171298317086,
+      "cell_weighted_measured_scalar_fraction": 0.8505747126436781,
+      "cell_weighted_structurally_unmeasured_fraction": 0.1322081575246132,
+      "cells": 4118213,
+      "donor_fraction": 0.4423076923076923,
+      "donors": 46,
+      "missing_broad": 0,
+      "native_classes": 46,
+      "operators": 11,
+      "source": "SEA_AD",
+      "support_fingerprints": 1
+    }
+  ],
+  "schema": "FULL104_DATASET_ETL_ATLAS_V3",
+  "scope": "AUTHENTICATED_BUNDLE_METADATA_AND_SUPPORT__NO_DEV_SEALED_EXPRESSION",
+  "sea_ad_fit_donor_region_count_distribution": {
+    "10": 2,
+    "11": 22,
+    "2": 3,
+    "3": 16,
+    "9": 3
+  },
+  "sql_aggregate_manifest_sha256": "7e50b6439eef388a186b363500c8339aed7462564232ed522986eb1b988a4ec6",
+  "support_geometry": {
+    "exact_support_patterns": 9,
+    "patterns_by_source": {
+      "HVS": 1,
+      "NPH52": 7,
+      "SEA_AD": 1
+    },
+    "source_all_measured": {
+      "HVS": 18736,
+      "NPH52": 29136,
+      "SEA_AD": 35076
+    },
+    "source_any_measured": {
+      "HVS": 18736,
+      "NPH52": 35098,
+      "SEA_AD": 35076
+    }
+  },
+  "verified_inputs": {
+    "contracts/address_namespace.csv": {
+      "bytes": 24946770,
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+    },
+    "contracts/unregistered_collisions.csv": {
+      "bytes": 2485,
+      "sha256": "16f4b62565d483bb4d77bb653f300dd1515df0423877b7dd36eb2545d89aedb1"
+    },
+    "metadata/FOUNDATION_METADATA_ATLAS.json": {
+      "bytes": 19151,
+      "sha256": "877a454ffcf8f20cc81fe313024726c15bd25547876195ba7327496c9b16efc9"
+    },
+    "metadata/foundation_metadata_rows.sqlite": {
+      "bytes": 2709786624,
+      "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+    },
+    "splits/foundation_split_registry.csv": {
+      "bytes": 25392,
+      "sha256": "35afb7f53fa36d580a4552dd5ad7e59841e454ea85d4adcb761666cb20d05433"
+    },
+    "splits/reader_donor_split.csv": {
+      "bytes": 3589,
+      "sha256": "efe43e63bfd580085f115f74dd00fdf3051f2c2a77674c99cee5c9ce43322511"
+    },
+    "support/FOUNDATION_OPERATOR_ADDRESS_OBSERVATION_STATE.npz": {
+      "bytes": 227532,
+      "sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
+    },
+    "support/FOUNDATION_SUPPORT_ADDRESS_RECURRENCE.csv": {
+      "bytes": 2517356,
+      "sha256": "8f90c91e333eba6b58c39767069addef72bb4d9d6015ad8de14e7ff383c092da"
+    },
+    "support/FOUNDATION_SUPPORT_BY_OPERATOR.csv": {
+      "bytes": 5365,
+      "sha256": "1814a22c8ae01ee94a6fe132546a029af01a7d762384d53c152f37cb545787c1"
+    },
+    "support/FOUNDATION_SUPPORT_BY_SOURCE.csv": {
+      "bytes": 398,
+      "sha256": "1d6643b87eb1de38d8072e4ec634260763b8ce23acb5b99051eb7c52b02fdfb7"
+    }
+  }
+}

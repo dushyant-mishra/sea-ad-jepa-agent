@@ -111,7 +111,7 @@ correctly in **all four** of these conditions:
 | **F-null** | biological state structure removed, shortcut structure retained | S **must fall** — otherwise S is reading the shortcut, not biology |
 | **F-shortcut-only** | shortcut structure removed, biological state retained | S **must not fall materially** — otherwise S punishes exactly what masking is for, and no policy can ever pass |
 | **F-both** | both retained (as-built) | S at its reference level |
-| **F-technical-only-decoy** | preserve lawful source/operator/depth/sparsity/support geometry and label/program marginals while breaking cell-level biological coupling | S **must fall materially relative to F-both**; otherwise technical geometry can impersonate the claimed biological content |
+| **F-technical-only-decoy** | preserve only prospectively role-qualified nuisance geometry and the relevant marginals while breaking cell-level biological coupling | S **must fall materially relative to F-both**; otherwise nuisance geometry can impersonate the claimed biological content |
 
 A functional that fails F-null is measuring the shortcut. One that fails
 F-shortcut-only makes the whole masking programme unpassable. A functional that
@@ -129,12 +129,26 @@ marginals while breaking the cell-level biological mapping. For candidate C,
 extra care is required because donor state composition can itself be correlated
 with source; source/donor identity alone must not nearly reproduce S.
 
-A lawful technical-only baseline may use only predeclared nuisance summaries such
-as source, operator geometry, source_library/depth, detected strict-core count,
-sparsity, and observation/support geometry, fit donor-honestly. The question is
-not whether biology is independent of technical variables; it is whether the
-candidate content functional provides **incremental biological discrimination
-beyond technical geometry alone**.
+A lawful nuisance baseline must use only predeclared fields whose role is
+explicitly justified. Do **not** infer that a field is technical from its name.
+
+The current FULL104 metadata makes this concrete: SEA_AD `matrix_id/operator`
+encodes brain region, NPH52 `matrix_id/operator` encodes cell class, and HVS
+operator semantics are not sufficiently resolved to call the field pure batch.
+Therefore `operator` is currently `MIXED_BIO_TECH`, not an automatically legal
+exact technical stratum. Likewise `source_library`, detected-gene count and
+sparsity mix measurement and biology and require explicit treatment rather than
+automatic preservation.
+
+The controlling diagnostic role ledger is
+`analysis/v5_full104_information_channel_redteam_20260920/FULL104_DATASET_FIELD_ROLE_LEDGER_20260921.md`.
+The executable exact-decoy builder accepts only fields explicitly classified as
+`DOMAIN_NUISANCE` or `EXOGENOUS_TECHNICAL`; mixed/biological/grouping/unknown
+roles fail closed.
+
+The question is not whether biology is independent of nuisance variables; it is
+whether the candidate content functional provides **incremental biological
+discrimination beyond the lawful nuisance geometry alone**.
 
 The fixtures must match the real geometry — the real n, dimensionality, marginal
 shapes, dependence structure and missingness — or the discrimination result will
