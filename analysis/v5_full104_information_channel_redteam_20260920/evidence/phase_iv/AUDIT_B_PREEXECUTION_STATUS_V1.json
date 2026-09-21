@@ -1,7 +1,7 @@
 {
   "schema": "V5_AUDIT_B_PREEXECUTION_STATUS_V1",
   "date": "2026-09-21",
-  "based_on_integration_sha": "d19df359ce0641f84ea26239ddc711cb48895d3a",
+  "based_on_integration_sha": "8c3d37a475dea8a2829899d4c96b234d9afb4b1f",
   "protected_state": {
     "audit_b_n1_burden_outcomes_opened": false,
     "terminal_masking_outcomes_opened": false,
@@ -64,7 +64,8 @@
         "5 percent RSE threshold",
         "N1/N2/N3 ladder",
         "execution requirements"
-      ]
+      ],
+      "note": "Current source-balanced/donor-uniform/target-uniform aggregation is a prospective candidate bound by the new contract, not claimed to have been decided by the original c2c5e1b5 sample freeze."
     }
   },
   "remaining_blockers_before_n1": [
@@ -74,9 +75,9 @@
       "condition": "run V2 qualifier on the content-addressed 242 MB real artifact and obtain PASS"
     },
     {
-      "id": "B2_PRECISION_SCOPE",
+      "id": "B2_SCIENTIFIC_EXECUTION_SCOPE",
       "owner": "SCIENTIFIC_REVIEW",
-      "condition": "resolve prospectively whether frozen 'RSE of primary burden statistic' means one predeclared statistic or all policy x rung cells, without viewing burden outcomes"
+      "condition": "resolve prospectively, without viewing burden outcomes, both (a) whether frozen 'RSE of primary burden statistic' means one predeclared statistic or all policy x rung cells, and (b) the source/donor/fold weighting used to form the target-level primary statistic"
     },
     {
       "id": "B3_RNG_V3_REAL_RECEIPT",
