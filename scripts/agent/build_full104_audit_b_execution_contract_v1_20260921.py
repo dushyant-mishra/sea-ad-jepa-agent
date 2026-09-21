@@ -84,6 +84,12 @@ def main() -> int:
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
 
+    if args.precision_scope != PRECISION_SCOPE_UNRESOLVED:
+        raise SystemExit(
+            "V1 is permanently pre-execution-only: a resolved precision scope must "
+            "be encoded by a reviewed successor contract, not enabled by a CLI flag"
+        )
+
     freeze = load_json(args.sample_freeze)
     if freeze.get("schema") != "V5_AUDIT_B_FROZEN_TARGET_SAMPLE_V1":
         raise SystemExit("Phase-IV sample freeze schema mismatch")
