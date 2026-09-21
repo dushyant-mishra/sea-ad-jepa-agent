@@ -56,7 +56,9 @@ jobs:
             tests/test_v5_shared_address_query_provider_v1.py \
             tests/test_v5_full104_teacher_relational_target_qualification_authority_v1.py \
             tests/test_v5_full104_target_qualification_sample_authority_v1.py \
-            tests/test_v5_full104_rare_biology_preservation_authority_v1.py
+            tests/test_v5_full104_rare_biology_preservation_authority_v1.py \
+            tests/test_v5_audit_b_scientific_resolution_v2.py \
+            tests/test_v5_audit_b_scientific_resolution_v2.py
       - name: Fail closed on skipped regression tests
         env:
           PYTHONPATH: src:.
