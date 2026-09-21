@@ -47,6 +47,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 from pathlib import Path
 
@@ -70,9 +71,11 @@ def main() -> int:
     ap.add_argument("--eligibility", type=Path,
                     default=Path("analysis/v5_full104_pass1_rebuild_20260920/evidence/"
                                  "full104_target_eligibility_v1.json"))
-    ap.add_argument("--fold-by-donor", type=Path, default=None,
-                    help="optional NPY of fold assignment per donor; without it the "
-                         "per-fold section is reported NOT_MEASURABLE")
+    ap.add_argument("--split-receipt", type=Path,
+                    default=Path("analysis/v5_full104_pass1_rebuild_20260920/evidence/"
+                                 "full104_split_receipt_v1.json"),
+                    help="authenticated FULL104 donor/source/fold receipt; its SHA, donor "
+                         "order and source codes are verified before C2 is computed")
     ap.add_argument("--out-dir", type=Path, required=True)
     args = ap.parse_args()
 
@@ -97,6 +100,26 @@ def main() -> int:
         raise SystemExit(
             "could not locate the all-fold eligible address list in the eligibility receipt; "
             f"available keys: {sorted(eligibility)[:20]}")
+
+    # C2 is bound to the CURRENT authenticated FULL104 split. A historical,
+    # fixture or convenience fold vector cannot be substituted silently.
+    split_bytes = args.split_receipt.read_bytes()
+    split_sha256 = hashlib.sha256(split_bytes).hexdigest()
+    expected_split_sha256 = str(eligibility.get("split_receipt_sha256", ""))
+    if not expected_split_sha256 or split_sha256 != expected_split_sha256:
+        raise SystemExit("split receipt SHA does not match the eligibility authority")
+    split = json.loads(split_bytes.decode("utf-8"))
+    if [str(x) for x in split.get("donor_ids", [])] != duniq:
+        raise SystemExit("split receipt donor order does not match sufficient statistics")
+    split_src = np.asarray(split.get("donor_source_code", []), dtype=np.int64)
+    if split_src.shape != donor_src.shape or not np.array_equal(split_src, donor_src):
+        raise SystemExit("split receipt source codes do not match sufficient statistics")
+    fold_by_donor = np.asarray(split.get("fold_by_donor", []), dtype=np.int64)
+    n_folds = int(split.get("n_folds", 0))
+    if fold_by_donor.shape != (n_donors,) or n_folds < 2:
+        raise SystemExit("split receipt fold geometry is invalid")
+    if np.any(fold_by_donor < 0) or np.any(fold_by_donor >= n_folds):
+        raise SystemExit("split receipt contains out-of-range fold assignments")
 
     pos_of_address = {int(a): i for i, a in enumerate(core)}
     missing = [int(a) for a in eligible_addresses if int(a) not in pos_of_address]
@@ -141,6 +164,61 @@ def main() -> int:
         var = donor_nsq[:, target_pos] / np.maximum(n_d, 1.0) - mean * mean
     rss = np.maximum(var, 0.0) * np.maximum(n_d, 1.0)
     near_zero_by_epsilon = rss <= _EPS
+    scorer_variable = ~near_zero_by_epsilon
+
+    # ---------------------------------------------------------------- C2
+    # Descriptive target x source x outer-fold geometry. No new threshold is
+    # chosen here. "Supported" restates the current >=30-nonzero-cell donor
+    # rule; "scorer-variable" asks whether target correlation is mathematically
+    # defined for that donor (rss_y > EPS).
+    c2_rows = []
+    detail_shape = (n_folds, len(SOURCE_NAMES), n_targets)
+    train_supported_detail = np.zeros(detail_shape, dtype=np.int16)
+    held_supported_detail = np.zeros(detail_shape, dtype=np.int16)
+    train_variable_detail = np.zeros(detail_shape, dtype=np.int16)
+    held_variable_detail = np.zeros(detail_shape, dtype=np.int16)
+
+    def _qcounts(values: np.ndarray) -> dict:
+        a = np.asarray(values, dtype=np.int64)
+        return {
+            "min": int(a.min()) if a.size else 0,
+            "median": float(np.median(a)) if a.size else 0.0,
+            "max": int(a.max()) if a.size else 0,
+            "targets_zero": int((a == 0).sum()),
+            "targets_one": int((a == 1).sum()),
+            "targets_two": int((a == 2).sum()),
+            "targets_three_or_more": int((a >= 3).sum()),
+        }
+
+    for fold in range(n_folds):
+        held_fold = fold_by_donor == fold
+        for s, name in enumerate(SOURCE_NAMES):
+            src_mask = donor_src == s
+            train_donors = np.flatnonzero(src_mask & ~held_fold)
+            held_donors = np.flatnonzero(src_mask & held_fold)
+            train_sup = supported[np.ix_(train_donors, target_pos)].sum(axis=0)
+            held_sup = supported[np.ix_(held_donors, target_pos)].sum(axis=0)
+            train_var = scorer_variable[train_donors].sum(axis=0)
+            held_var = scorer_variable[held_donors].sum(axis=0)
+            train_supported_detail[fold, s] = train_sup
+            held_supported_detail[fold, s] = held_sup
+            train_variable_detail[fold, s] = train_var
+            held_variable_detail[fold, s] = held_var
+            row = {
+                "fold": int(fold),
+                "source": name,
+                "available_train_donors": int(train_donors.size),
+                "available_heldout_donors": int(held_donors.size),
+                "current_score_terms_per_target": int(held_donors.size),
+                "train_supported": _qcounts(train_sup),
+                "heldout_supported": _qcounts(held_sup),
+                "train_scorer_variable": _qcounts(train_var),
+                "heldout_scorer_variable": _qcounts(held_var),
+                "targets_current_score_includes_undefined_zero_terms":
+                    int((held_var < held_donors.size).sum()),
+                "targets_no_scorer_variable_heldout_donor": int((held_var == 0).sum()),
+            }
+            c2_rows.append(row)
 
     rows_zero = []
     for s, name in enumerate(SOURCE_NAMES):
@@ -188,6 +266,30 @@ def main() -> int:
     write_csv("TARGET_SOURCE_SUPPORT_SUMMARY.csv", src_rows)
     write_csv("TARGET_SOURCE_ZERO_VARIANCE_SUMMARY.csv", rows_zero)
 
+    # Flatten the fold summaries for a compact human-readable table while
+    # retaining the exact target-level counts in a compressed detail artifact.
+    c2_csv_rows = []
+    for r in c2_rows:
+        flat = {k: v for k, v in r.items()
+                if not isinstance(v, dict)}
+        for group in ("train_supported", "heldout_supported",
+                      "train_scorer_variable", "heldout_scorer_variable"):
+            for k, v in r[group].items():
+                flat[f"{group}_{k}"] = v
+        c2_csv_rows.append(flat)
+    write_csv("TARGET_SOURCE_FOLD_ESTIMABILITY_SUMMARY.csv", c2_csv_rows)
+    np.savez_compressed(
+        args.out_dir / "TARGET_SOURCE_FOLD_ESTIMABILITY_DETAIL.npz",
+        eligible_addresses=eligible_addresses,
+        fold_by_donor=fold_by_donor,
+        donor_src=donor_src,
+        train_supported=train_supported_detail,
+        heldout_supported=held_supported_detail,
+        train_scorer_variable=train_variable_detail,
+        heldout_scorer_variable=held_variable_detail,
+        split_receipt_sha256=np.array(split_sha256),
+    )
+
     payload = {
         "schema": SCHEMA,
         "eligibility_set_altered": False,
@@ -199,6 +301,12 @@ def main() -> int:
             "min_train_supported_donors": MIN_TRAIN_SUPPORTED_DONORS,
         },
         "c1_per_source": src_rows,
+        "c2_fold_geometry": c2_rows,
+        "c2_split_receipt_sha256": split_sha256,
+        "c2_interpretation":
+            "DESCRIPTIVE_ONLY__NO_NEW_PER_SOURCE_THRESHOLD_FROZEN; reports authenticated "
+            "available/support/scorer-variable donor counts and preserves the distinction "
+            "between current serialized zero terms and mathematically estimable correlations",
         "c3_zero_variance": rows_zero,
         "estimable_in_all_three_sources": fully_estimable,
         "estimable_in_all_three_sources_fraction": fully_estimable / n_targets,
@@ -226,7 +334,8 @@ def main() -> int:
     (args.out_dir / "TARGET_SOURCE_ESTIMABILITY.json").write_text(
         json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in payload.items()
-                      if k not in ("c1_per_source", "c3_zero_variance")}, indent=2))
+                      if k not in ("c1_per_source", "c2_fold_geometry", "c3_zero_variance")},
+                     indent=2))
     for r in src_rows:
         print(r)
     for r in rows_zero:
