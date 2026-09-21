@@ -47,6 +47,9 @@ APPROVED_NULL_IDS: Tuple[str, ...] = (
 APPROVED_WEIGHTING_IDS: Tuple[str, ...] = (
     "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
 )
+APPROVED_EVALUATION_PARTITION_IDS: Tuple[str, ...] = (
+    "AUTHENTICATED_FULL104_SOURCE_STRATIFIED_FOUR_FOLD_V1",
+)
 APPROVED_LABEL_FIREWALL_IDS: Tuple[str, ...] = (
     "NO_PATHOLOGY_DISEASE_NATIVE_CLASS_OR_RARE_STATE_LABEL_IN_TAIL_SELECTION_V1",
 )
@@ -87,6 +90,7 @@ class Full104RareBiologyPreservationAuthorityV1:
     dataset_etl_atlas_sha256: str
     td59_protocol_sha256: str
     teacher_relational_target_authority_sha256: str
+    outer_split_receipt_sha256: str
 
     selector_id: str
     stratification_id: str
@@ -94,6 +98,7 @@ class Full104RareBiologyPreservationAuthorityV1:
     molecular_gate_id: str
     null_id: str
     primary_weighting_id: str
+    evaluation_partition_id: str
     label_firewall_id: str
 
     tail_quantile: float = TAIL_QUANTILE
@@ -119,6 +124,7 @@ class Full104RareBiologyPreservationAuthorityV1:
             "dataset_etl_atlas_sha256",
             "td59_protocol_sha256",
             "teacher_relational_target_authority_sha256",
+            "outer_split_receipt_sha256",
         ):
             _sha(getattr(self, name), name)
 
@@ -128,6 +134,11 @@ class Full104RareBiologyPreservationAuthorityV1:
         _enum(self.molecular_gate_id, APPROVED_MOLECULAR_GATE_IDS, "molecular_gate_id")
         _enum(self.null_id, APPROVED_NULL_IDS, "null_id")
         _enum(self.primary_weighting_id, APPROVED_WEIGHTING_IDS, "primary_weighting_id")
+        _enum(
+            self.evaluation_partition_id,
+            APPROVED_EVALUATION_PARTITION_IDS,
+            "evaluation_partition_id",
+        )
         _enum(self.label_firewall_id, APPROVED_LABEL_FIREWALL_IDS, "label_firewall_id")
 
         if self.tail_quantile != TAIL_QUANTILE:
