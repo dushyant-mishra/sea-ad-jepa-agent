@@ -188,10 +188,15 @@ silent fallback to RNG V2.
 ## Remaining pre-execution questions
 
 1. Run the heavy-statistics V2 qualifier on the real GPU artifact.
-2. Independently resolve the Phase-IV precision scope without looking at burden:
-   does "RSE of the primary burden statistic" mean one predeclared statistic, or
-   all 3 non-uniform policies x 6 burden rungs?
-3. Freeze that decision in the execution-contract digest.
+2. Independently resolve the Phase-IV scientific execution scope without looking
+   at burden:
+   - does "RSE of the primary burden statistic" mean one predeclared statistic,
+     or all 3 non-uniform policies x 6 burden rungs?
+   - how are source x donor x fold strata weighted into the target-level primary
+     statistic? The integration candidate is equal donors within source, equal
+     sources within target, equal targets overall, but the original sample freeze
+     did not explicitly freeze that weighting.
+3. Freeze those decisions in the execution-contract digest.
 4. Bind the exact RNG-V3 authority and burden-estimator source.
 5. Only then may Audit-B N1=256 be executed.
 
