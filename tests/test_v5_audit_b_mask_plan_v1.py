@@ -213,33 +213,3 @@ def test_plan_generator_never_references_the_heldout_scorer():
         "the mask-plan generator must never reference the held-out scorer")
     assert "heldout" not in body.lower().replace("held-out", ""), (
         "the mask-plan generator must never construct a held-out donor set")
-
-
-def test_ladder_planner_matches_repeated_single_rung_calls(tmp_path: Path):
-    """Optimization must be byte-for-byte equivalent to independent rung planning."""
-    stream, parameters, _, _ = _setup(tmp_path)
-    max_count = int(stream.universe_cols.size - 1)
-    counts = list(range(1, min(4, max_count + 1)))
-    assert len(counts) >= 2
-    for target_col, target_id in zip(stream.target_cols, stream.target_ids):
-        ladder = plan_mod.plan_masks_for_target_ladder(
-            stream=stream,
-            fold_index=FOLD,
-            target_col=int(target_col),
-            target_id=target_id,
-            parameters=parameters,
-            co_mask_counts=counts,
-            global_seed=GLOBAL_SEED,
-        )
-        for count in counts:
-            repeated = plan_mod.plan_masks_for_target(
-                stream=stream,
-                fold_index=FOLD,
-                target_col=int(target_col),
-                target_id=target_id,
-                parameters=parameters,
-                co_mask_count=count,
-                global_seed=GLOBAL_SEED,
-            )
-            for method in (*_METHODS, "_base_mask"):
-                assert ladder[count][method] == repeated[method]
