@@ -1,0 +1,123 @@
+{
+  "schema": "JEPA_GPT_PARALLEL_AUDIT_HANDOFF_V2",
+  "date": "2026-09-20",
+  "branch": "handoff/jepa-v5-gpt-parallel-audit-20260920",
+  "base_audit_branch": "audit/v5-full104-information-channel-redteam-20260920",
+  "base_audit_head_at_creation": "317e3cbc8da6308b59f406943d9f98d1c96f60df",
+  "latest_pr33_head_seen": "505dc78ae88303d3b61928eedf4b572942f203b4",
+  "cleaned_pr32_head_at_creation": "a215bb77c4dbaa4bb60ad5b7ed54c2d574c8bf2a",
+  "pr33": 33,
+  "pr34": 34,
+  "authority_boundaries": {
+    "terminal_masking_outcomes_inspected": false,
+    "d_shared_opened": false,
+    "pathology_opened": false,
+    "dev_sealed_opened": false,
+    "training_authorized": false
+  },
+  "current_authority_inputs_verified": {
+    "address_namespace_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+    "pass1_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+    "pass1_physical_binding_sha256": "4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602",
+    "census_authority_v2_sha256": "7a090d4078239e9bc161ae60c289b7f1a5bbb02e7cf3e6bcc0ae9c284b89ee21"
+  },
+  "current_geometry_derivations": {
+    "donor_count_by_source": {
+      "HVS": 41,
+      "NPH52": 17,
+      "SEA_AD": 46
+    },
+    "heldout_donors_by_fold_source": {
+      "0": {
+        "HVS": 11,
+        "NPH52": 5,
+        "SEA_AD": 12
+      },
+      "1": {
+        "HVS": 10,
+        "NPH52": 4,
+        "SEA_AD": 12
+      },
+      "2": {
+        "HVS": 10,
+        "NPH52": 4,
+        "SEA_AD": 11
+      },
+      "3": {
+        "HVS": 10,
+        "NPH52": 4,
+        "SEA_AD": 11
+      }
+    },
+    "primary_row_weight_formula": "1/(104 * donor_cell_count)",
+    "production_base_estimand": "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR_V1",
+    "induced_source_mass_under_production_donor_uniform": {
+      "HVS": 0.3942307692307692,
+      "NPH52": 0.16346153846153846,
+      "SEA_AD": 0.4423076923076923
+    }
+  },
+  "supporting_findings": {
+    "historical50k_source_measured_zero_fraction": {
+      "HVS": 0.764343188743793,
+      "SEA_AD": 0.850062689928117,
+      "NPH52": 0.8820906835273956
+    },
+    "historical_u0_partial_H_support_measured_count_R2": 0.991084,
+    "historical_u0_partial_H_source_balanced_accuracy": 1,
+    "historical_truth_table_measured_zero_fraction": 0.8214667441,
+    "historical_t1_identity_drift_support_patterned": true
+  },
+  "pr33_review_blockers_or_refinements": {
+    "audit_a": [
+      "Separate hidden denominator source-structure from actual model-visible recoverability.",
+      "Prefer causal normalization-input distortion L_total vs L_ledger; denominator fractions themselves are not JEPA inputs.",
+      "Nearest-centroid feature set currently duplicates outside fraction because inside=1-outside; predictive headline needs independent features/balanced accuracy.",
+      "Shared statistics/Audit E producers must use exact production source_library parser semantics."
+    ],
+    "audit_b": [
+      "Current reduced-pool calculation is mechanism reconnaissance, not actual fold-specific TOP8/RIDGE8/PREFIX3 burden.",
+      "Current B5 entropy uses whole-population detection rather than training-side-only weights."
+    ],
+    "audit_c": [
+      "fold_by_donor was parsed but unused in reviewed version; source×fold contribution counts required.",
+      "Do not transplant global train>=20/heldout>=5 thresholds per source: NPH52 has only 17 donors and 4 heldout donors in folds 1-3.",
+      "donor_nnz==0 proves all-zero/zero-variance but is not exhaustive exact zero variance.",
+      "Terminal raw evidence schema currently loses target-variance estimability by encoding rss_y<=EPS as finite r2=0."
+    ],
+    "audit_d": [
+      "Blindness claim should be limited to pure between-donor/source location-scale channels.",
+      "Full-data ridge fit is cell-weighted even though screening/scoring are source/donor balanced.",
+      "primary_row_weight is an explicit donor-uniform scientific weight but is validated then discarded by masking stream."
+    ],
+    "audit_e": [
+      "Pooled E1/E2 are not estimand-aligned with source-balanced within-donor E3; Simpson/source-composition effects possible.",
+      "Production-relevant decomposition needs donor-conditioned/source-balanced E1/E2 and training-side partner selection."
+    ],
+    "audit_f": [
+      "Scalar fixture instrument is not yet a frozen real-teacher design: real teacher state is multivariate and dense 17,186-address one-hot is not scalable.",
+      "Need prospective multivariate variance definition and clarify descriptive vs predictive/cross-fit interpretation."
+    ],
+    "audit_g": [
+      "Marginal high-complexity shift must be decomposed into deliberate donor/source reweighting vs within-donor selection imbalance because cache selection is hash bottom-k per donor."
+    ],
+    "g3_new": [
+      "Attacker fit-objective contract is open: CURRENT_CELL_WEIGHTED vs PRODUCTION_OBJECTIVE_MATCHED donor-uniform vs SOURCE_DONOR_BALANCED diagnostic.",
+      "Existing cache/nonlinear/full-data attacker paths have different effective fit weights."
+    ],
+    "h3_new": [
+      "Need target-only vs donor-only-within-source vs paired precision diagnostic to determine donor-limited precision floor, especially NPH52.",
+      "Bootstrap structure is source-aware but cannot repair undefined target-variance cases once upstream encodes them as zero."
+    ]
+  },
+  "future_agent_start": [
+    "Re-fetch live PR #33 head before relying on this state; it was actively advancing.",
+    "Read PR #33 README, CROSS_AUDIT_INTERACTIONS, and all PR #33 review comments after the latest head.",
+    "Read PR #34 supporting files under supporting_gpt_parallel.",
+    "Treat historical 50K/T1 numbers as supporting-only; never use them to set current FULL104 constants.",
+    "Preserve distinction between production donor-uniform scientific objective and source-balanced anti-cheat diagnostic objective.",
+    "Do not accept B/C/E/F headline closure until reviewed instrument issues are repaired or explicitly scoped.",
+    "Keep terminal outcomes sealed and TRAINING_OFF."
+  ]
+}
