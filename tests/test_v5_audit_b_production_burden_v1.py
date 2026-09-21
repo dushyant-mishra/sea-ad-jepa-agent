@@ -151,13 +151,19 @@ def test_source_balanced_target_value_is_not_cell_or_donor_pooled() -> None:
     # Source-balanced result is (0.3 + 0.9)/2 = 0.6, not pooled-donor 0.5.
     rows = [_row(0, 0, 0.2), _row(1, 0, 0.4), _row(2, 1, 0.9)]
     assert source_balanced_target_value(
-        rows, expected_source_codes=[0, 1]
+        rows,
+        expected_source_codes=[0, 1],
+        expected_donor_codes=[0, 1, 2],
     ) == pytest.approx(0.6)
 
 
 def test_missing_required_source_cannot_disappear() -> None:
     with pytest.raises(ValueError, match="required source"):
-        source_balanced_target_value([_row(0, 0, 0.2)], expected_source_codes=[0, 1])
+        source_balanced_target_value(
+            [_row(0, 0, 0.2)],
+            expected_source_codes=[0, 1],
+            expected_donor_codes=[0],
+        )
 
 
 def test_precision_summary_uses_target_units_and_zero_mean_fails_closed() -> None:
@@ -303,4 +309,22 @@ def test_rung_label_must_match_mask_cardinality() -> None:
             donor_nnz=np.ones((1, 21)),
             donor_umi=np.ones((1, 21)),
             rung=Fraction(1, 2),
+        )
+
+
+def test_duplicate_or_missing_donor_cannot_change_target_weighting() -> None:
+    rows = [_row(0, 0, 0.2), _row(1, 1, 0.8)]
+    with pytest.raises(ValueError, match="incomplete or contains unexpected donors"):
+        source_balanced_target_value(
+            rows,
+            expected_source_codes=[0, 1],
+            expected_donor_codes=[0, 1, 2],
+        )
+
+    duplicated = rows + [_row(1, 1, 0.8)]
+    with pytest.raises(ValueError, match="duplicate donor"):
+        source_balanced_target_value(
+            duplicated,
+            expected_source_codes=[0, 1],
+            expected_donor_codes=[0, 1],
         )
