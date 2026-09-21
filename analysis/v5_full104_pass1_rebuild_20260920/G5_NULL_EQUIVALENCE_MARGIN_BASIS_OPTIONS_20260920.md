@@ -261,3 +261,45 @@ No margin selected. No basis frozen. The blocking dependency is identified and
 specific: **G5 requires G4's state-fidelity functional first.** That is a real
 result — it converts an open question into an ordered one — but it is not
 closure, and it is not manufactured as such.
+
+
+---
+
+## 2026-09-21 implementation support — consequence curve without margin selection
+
+Prospective consequence-curve machinery now exists at:
+
+`src/sea_ad_jepa/v5/shortcut_consequence_curve_v1.py`
+
+with adversarial tests at:
+
+`tests/test_v5_shortcut_consequence_curve_v1.py`.
+
+It accepts a bounded pathology-blind G4 fidelity functional evaluated on the same
+paired units across a prospectively fixed residual-shortcut sweep. Harm is
+measured conservatively as the **mean absolute paired change from the zero-
+residual reference**, not merely the change in the population mean; this prevents
+opposite donor/unit changes from cancelling.
+
+The implementation:
+
+- requires residual level zero plus a strictly increasing declared grid;
+- keeps the bounded fidelity range explicit;
+- characterises exact monotonic/non-monotonic harm;
+- requires a separately hash-bound prospective `epsilon_bio` authority;
+- refuses to freeze a margin from a non-monotone consequence curve;
+- refuses to extrapolate when the sweep never crosses the biological boundary;
+- labels any crossing only
+  `GRID_FRONTIER_IDENTIFIED__NOT_TERMINAL_MARGIN_AUTHORITY`.
+
+Therefore the computation needed after G4 is now available, but the scientific
+inputs remain intentionally unresolved.
+
+```
+G5_CONSEQUENCE_CURVE_IMPLEMENTATION = READY_AND_TESTED
+G4_FIDELITY_FUNCTIONAL              = NOT_SELECTED
+EPSILON_BIO                         = NOT_SELECTED
+G5_TERMINAL_MARGIN                  = NOT_SELECTED
+TERMINAL_MASKING_OUTCOMES           = UNOPENED
+TRAINING_OFF
+```
