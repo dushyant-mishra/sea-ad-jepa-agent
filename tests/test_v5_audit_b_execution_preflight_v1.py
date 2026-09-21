@@ -151,8 +151,8 @@ def test_runtime_binding_success_checks_rng_semantic_digest_not_file_hash(
         full104_manifest=paths["manifest"],
         canonical_registry=paths["registry"],
     )
-    assert observed["rng_authority_sha256"] == h("rng-json-file-bytes")
-    assert c.rng_authority_sha256 != observed["rng_authority_sha256"]
+    assert observed["rng_authority_file_sha256"] == h("rng-json-file-bytes")
+    assert c.rng_authority_sha256 != observed["rng_authority_file_sha256"]
 
 
 def test_runtime_binding_mismatch_fails_closed(tmp_path: Path, monkeypatch) -> None:
