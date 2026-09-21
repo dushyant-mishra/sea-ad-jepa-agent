@@ -135,7 +135,6 @@ def build_external(repo: Path, head: str) -> dict:
             "producer_git_sha": spec["producer_git_sha"],
             "producer_script": spec["producer_script"],
             "producer_script_sha256": spec["producer_script_sha256"],
-            "current_checkout_git_sha": head,
             "current_producer_script_sha256": current_script_sha,
             "producer_script_matches_current":
                 current_script_sha == spec["producer_script_sha256"],
@@ -151,7 +150,7 @@ def build_external(repo: Path, head: str) -> dict:
     return {
         "schema": "V5_FULL104_REDTEAM_EXTERNAL_ARTIFACTS_V2_IMMUTABLE_PROVENANCE",
         "note": "Producer commit/script hashes are immutable properties of the referenced "
-                "artifact bytes. Current checkout/script hashes are recorded separately so "
+                "artifact bytes. Current producer-script hashes are recorded separately so "
                 "a manifest rebuild cannot falsely relabel historical heavy bytes as current.",
         "artifacts": entries,
         "training_authorized": False,
