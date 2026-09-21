@@ -30,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LANE = ROOT / "analysis/v5_full104_information_channel_redteam_20260920/scripts"
 B_SCRIPT = LANE / "audit_b_effective_burden_20260920.py"
 C_SCRIPT = LANE / "audit_c_target_source_estimability_20260920.py"
+BUILD_SCRIPT = LANE / "build_core_sufficient_statistics_20260920.py"
 
 N_DONORS = 12
 N_CORE = 200
@@ -114,6 +115,37 @@ def _run_b(tmp: Path, stats: Path) -> dict:
                            "--out-dir", str(out)], capture_output=True, text=True, timeout=900)
     assert proc.returncode == 0, proc.stderr[-2000:]
     return json.loads((out / "MASK_EFFECTIVE_BURDEN.json").read_text())
+
+
+# --------------------------------------------------------------------------- #
+# Shared FULL104 metadata semantics
+# --------------------------------------------------------------------------- #
+
+def _load_build_module():
+    spec = importlib.util.spec_from_file_location("audit_stats_builder", BUILD_SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+@pytest.mark.parametrize("token, expected", [
+    ("61129", 61129),
+    ("61129.0", 61129),
+    ("6.1129e4", 61129),
+    ("+61129.000", 61129),
+])
+def test_shared_stats_builder_accepts_only_production_legal_integral_library_forms(token, expected):
+    mod = _load_build_module()
+    assert mod.parse_source_library(token) == expected
+
+
+@pytest.mark.parametrize("token", [
+    "1_000", "0x10", "nan", "NaN", "inf", "-inf", "1.5", "0", "-1", "",
+])
+def test_shared_stats_builder_rejects_production_illegal_library_forms(token):
+    mod = _load_build_module()
+    with pytest.raises(ValueError, match="invalid source_library"):
+        mod.parse_source_library(token)
 
 
 # --------------------------------------------------------------------------- #
