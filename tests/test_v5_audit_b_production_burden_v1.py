@@ -54,6 +54,7 @@ def test_exact_heldout_burden_uses_added_minus_dropped_and_uniform_denominator()
         fold_index=0,
         plans=_plans(),
         heldout_donors=[0],
+        fold_by_donor=[0, 1],
         donor_source_code=[0, 1],
         core_addresses=core,
         donor_nnz=nnz,
@@ -81,6 +82,7 @@ def test_target_address_must_be_in_uniform_base_and_never_in_swap_sets() -> None
             fold_index=0,
             plans=plans,
             heldout_donors=[0],
+            fold_by_donor=[0],
             donor_source_code=[0],
             core_addresses=np.arange(5),
             donor_nnz=np.ones((1, 5)),
@@ -97,6 +99,7 @@ def test_target_address_must_be_in_uniform_base_and_never_in_swap_sets() -> None
             fold_index=0,
             plans=plans,
             heldout_donors=[0],
+            fold_by_donor=[0],
             donor_source_code=[0],
             core_addresses=np.arange(5),
             donor_nnz=np.ones((1, 5)),
@@ -112,6 +115,7 @@ def test_zero_uniform_detected_burden_fails_closed() -> None:
             fold_index=0,
             plans=_plans(),
             heldout_donors=[0],
+            fold_by_donor=[0],
             donor_source_code=[0],
             core_addresses=np.arange(5),
             donor_nnz=np.zeros((1, 5)),
@@ -213,3 +217,39 @@ def test_escalation_rejects_incomplete_or_duplicate_precision_grid() -> None:
         escalation_decision(summaries[:-1], sample_level="N1")
     with pytest.raises(ValueError, match="every nonuniform policy"):
         escalation_decision(summaries + [summaries[0]], sample_level="N1")
+
+
+def test_training_donor_cannot_be_passed_as_heldout() -> None:
+    # fold 0 authenticates donor 0 only. Supplying donor 1 would measure burden
+    # on training-side material and must fail before any burden is computed.
+    with pytest.raises(ValueError, match="exactly match authenticated fold membership"):
+        measure_plan_burden(
+            target_col=0,
+            fold_index=0,
+            plans=_plans(),
+            heldout_donors=[1],
+            fold_by_donor=[0, 1],
+            donor_source_code=[0, 1],
+            core_addresses=np.arange(5),
+            donor_nnz=np.ones((2, 5)),
+            donor_umi=np.ones((2, 5)),
+            rung=Fraction(1, 20),
+        )
+
+
+def test_partial_heldout_fold_cannot_be_silently_subsampled() -> None:
+    # Both donors 0 and 1 belong to fold 0; evaluating only one would change the
+    # donor-weighted estimand and is therefore refused.
+    with pytest.raises(ValueError, match="exactly match authenticated fold membership"):
+        measure_plan_burden(
+            target_col=0,
+            fold_index=0,
+            plans=_plans(),
+            heldout_donors=[0],
+            fold_by_donor=[0, 0, 1],
+            donor_source_code=[0, 1, 1],
+            core_addresses=np.arange(5),
+            donor_nnz=np.ones((3, 5)),
+            donor_umi=np.ones((3, 5)),
+            rung=Fraction(1, 20),
+        )
