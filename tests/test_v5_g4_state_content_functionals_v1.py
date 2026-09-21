@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from sea_ad_jepa.v5.g4_state_content_functionals_v1 import (
+    compare_state_content_to_nuisance_baseline,
     donor_heldout_state_content,
     paired_same_cell_cosine_stability,
 )
@@ -75,3 +76,26 @@ def test_content_probe_never_trains_on_heldout_donor_class_absence() -> None:
     donor_fold = np.array([0, 1])
     with pytest.raises(ValueError, match="absent from a training fold"):
         donor_heldout_state_content(emb, labels, donor, donor_fold)
+
+
+
+def test_source_only_content_is_not_mislabeled_incremental_biology() -> None:
+    # Two sources, two donors per source, each source perfectly determines the
+    # state label. A representation that only encodes source has perfect content
+    # recovery, but so does the lawful source-only nuisance baseline.
+    donor = np.repeat(np.arange(4), 6)
+    source_by_donor = np.array([0, 1, 0, 1])
+    source = source_by_donor[donor]
+    labels = np.where(source == 0, "A", "B").tolist()
+    donor_fold = np.array([0, 0, 1, 1])
+    rep = np.column_stack([source == 0, source == 1]).astype(float)
+    nuisance = rep.copy()
+
+    rep_content = donor_heldout_state_content(rep, labels, donor, donor_fold)
+    nuisance_content = donor_heldout_state_content(nuisance, labels, donor, donor_fold)
+    inc = compare_state_content_to_nuisance_baseline(rep_content, nuisance_content)
+
+    assert rep_content.balanced_accuracy == pytest.approx(1.0)
+    assert rep_content.mean_donor_composition_fidelity == pytest.approx(1.0)
+    assert inc.balanced_accuracy_increment == pytest.approx(0.0)
+    assert inc.composition_fidelity_increment == pytest.approx(0.0)
