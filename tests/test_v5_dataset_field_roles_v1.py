@@ -34,3 +34,12 @@ def test_only_domain_or_exogenous_roles_are_legal_exact_decoy_strata() -> None:
         DatasetFieldRole.DOMAIN_NUISANCE,
         DatasetFieldRole.EXOGENOUS_TECHNICAL,
     )
+
+
+def test_support_fingerprint_is_not_legal_exact_nuisance() -> None:
+    # NPH52 support fingerprints are tied to native-class-pure operators, so the
+    # field carries mixed biological/measurement structure and cannot be used as
+    # an exact nuisance-only decoy stratum.
+    assert CURRENT_FULL104_FIELD_ROLES["support_fingerprint"] is DatasetFieldRole.MIXED_BIO_TECH
+    with pytest.raises(ValueError, match="reject mixed"):
+        require_legal_exact_decoy_roles(CURRENT_FULL104_FIELD_ROLES["support_fingerprint"])
