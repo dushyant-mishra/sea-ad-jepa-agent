@@ -82,7 +82,7 @@ Two cells with identical ledger counts therefore normalize differently depending
 on which source they came from. The denominator carries source identity into
 every feature.
 
-## 4. The denominator identifies the source perfectly
+## 4. The hidden denominator-fraction geometry identifies source perfectly at donor level
 
 Donor-honest leave-one-donor-out nearest-centroid classification, using **only**
 the three denominator fractions averaged per donor, unconditional over all 104
@@ -93,8 +93,12 @@ donors (no donor contributes to its own prediction):
 | **source** | **1.0000** | 0.4423 | 3 |
 | operator | 0.3173 | 0.2596 | 12 |
 
-**104 of 104 donors classified correctly.** The normalization denominator alone
-is a perfect out-of-donor source label.
+**104 of 104 donors classified correctly from these audit-only denominator-fraction summaries.**
+This establishes that the hidden normalization factor is strongly source-structured.
+It does **not** establish that JEPA can decode source from model-visible normalized
+features, because the classifier receives variables the model does not receive
+directly. In addition, `fraction_inside = 1 - fraction_outside`, so the diagnostic
+feature vector contains a redundant axis.
 
 A cell-level diagnostic — what share of cells fall nearest their own donor's mean
 denominator vector — gives 0.0343 against a 0.0096 chance rate. Above chance but
@@ -112,14 +116,20 @@ consequential is Audit D:
 > **every** standardization regime tested — it is a property of the score, not of
 > the standardization.
 
-So this channel is, by construction, **invisible to the current attacker and to
-any capacity-matched successor that inherits the same estimand**, while remaining
-fully available to a production JEPA that reads absolute normalized values across
-donors and sources.
+The hidden factor is source-structured, and it causally changes every positive
+model-visible normalized feature. For outside-ledger fraction `f`, if
+`x = log1p(10000*c/L_total)` and the ledger-only counterfactual is
+`x* = log1p(expm1(x)/(1-f))`, then `0 <= x* - x <= -log(1-f)`.
+At the observed source means this upper bound is exactly 0 for HVS, about 0.01410
+for NPH52 and 0.04067 for SEA_AD; the worst observed cell (`f=0.25`) has bound
+about 0.28768. Actual shifts are smaller and count-dependent.
 
-That is the `A → D → G3` chain, and it is now quantified at both ends: the
-channel perfectly identifies source (§4), and the estimand cannot express it
-(Audit D, measured affine-invariance of exactly 0.000e+00).
+Audit D shows the current within-donor centred score cannot express the **pure
+between-donor/source location-scale component** of such structure. It does not
+show that every cell-varying source-modulated denominator effect is invisible.
+The `A → D → G3` chain therefore motivates a complementary donor/source-level
+leakage guardrail and a model-visible recoverability test, not a claim that source
+recovery by JEPA is already proven.
 
 ## 6. Verification
 
