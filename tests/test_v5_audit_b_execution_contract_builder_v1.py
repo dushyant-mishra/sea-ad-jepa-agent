@@ -131,28 +131,15 @@ def test_builder_rejects_tampered_sample_membership(tmp_path: Path) -> None:
     assert "invalid internal digest" in proc.stdout + proc.stderr
 
 
-def test_builder_can_only_authorize_after_an_explicit_precision_scope(tmp_path: Path) -> None:
-    proc, out = run_builder(
-        tmp_path,
-        scope="ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1",
-    )
-    assert proc.returncode == 0, proc.stdout + proc.stderr
-    d = json.loads(out.read_text())
-    assert d["execution_authorized"] is True
-    assert d["precision_scope_id"] == "ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1"
-
-
-def test_contract_digest_changes_with_precision_scope(tmp_path: Path) -> None:
-    proc1, out1 = run_builder(tmp_path)
-    assert proc1.returncode == 0
-    first = json.loads(out1.read_text())["contract_sha256"]
-
-    other = tmp_path / "second"
-    other.mkdir()
-    proc2, out2 = run_builder(
-        other,
-        scope="ALL_3_NONUNIFORM_X_6_RUNG_CELLS_V1",
-    )
-    assert proc2.returncode == 0
-    second = json.loads(out2.read_text())["contract_sha256"]
-    assert first != second
+@pytest.mark.parametrize(
+    "scope",
+    [
+        "ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1",
+        "ALL_3_NONUNIFORM_X_6_RUNG_CELLS_V1",
+    ],
+)
+def test_v1_builder_rejects_resolved_precision_scope(tmp_path: Path, scope: str) -> None:
+    proc, out = run_builder(tmp_path, scope=scope)
+    assert proc.returncode != 0
+    assert not out.exists()
+    assert "permanently pre-execution-only" in proc.stdout + proc.stderr
