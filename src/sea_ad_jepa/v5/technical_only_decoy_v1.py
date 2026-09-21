@@ -18,16 +18,7 @@ from typing import Any
 
 import numpy as np
 
-
-ALLOWED_EXACT_STRATUM_ROLES = frozenset({
-    "DOMAIN_NUISANCE",
-    "EXOGENOUS_TECHNICAL",
-})
-FORBIDDEN_EXACT_STRATUM_ROLES = frozenset({
-    "MIXED_BIO_TECH",
-    "BIOLOGICAL",
-    "UNKNOWN",
-})
+from .dataset_field_roles_v1 import require_legal_exact_decoy_roles
 
 
 @dataclass(frozen=True)
@@ -70,16 +61,7 @@ def build_technical_stratum_id(
         raise ValueError("at least one technical/nuisance component is required")
     if not isinstance(component_roles, tuple) or len(component_roles) != len(components):
         raise ValueError("component_roles must explicitly align every stratum component")
-    normalized_roles = tuple(str(r) for r in component_roles)
-    unknown = [r for r in normalized_roles if r not in ALLOWED_EXACT_STRATUM_ROLES | FORBIDDEN_EXACT_STRATUM_ROLES]
-    if unknown:
-        raise ValueError(f"unrecognized nuisance component roles: {unknown}")
-    forbidden = [r for r in normalized_roles if r not in ALLOWED_EXACT_STRATUM_ROLES]
-    if forbidden:
-        raise ValueError(
-            "exact technical-decoy stratification rejects mixed/biological/unknown "
-            f"components: {forbidden}"
-        )
+    require_legal_exact_decoy_roles(*component_roles)
     arrays = [np.asarray([str(v) for v in x], dtype=object) for x in components]
     n = arrays[0].size
     if n == 0 or any(a.ndim != 1 or a.size != n for a in arrays):
