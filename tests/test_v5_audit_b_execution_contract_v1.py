@@ -39,11 +39,11 @@ def contract(**updates) -> AuditBExecutionContractV1:
     return AuditBExecutionContractV1(**values)
 
 
-def test_unresolved_precision_scope_explicitly_forbids_execution() -> None:
+def test_v1_explicitly_forbids_execution() -> None:
     c = contract()
     c.validate()
     assert c.execution_authorized is False
-    with pytest.raises(ValueError, match="STOP_PRECISION_SCOPE_UNRESOLVED"):
+    with pytest.raises(ValueError, match="STOP_AUDIT_B_V1_PREEXECUTION_ONLY"):
         c.require_execution_ready()
 
 
@@ -51,10 +51,12 @@ def test_unresolved_precision_scope_explicitly_forbids_execution() -> None:
     "scope",
     [PRECISION_SCOPE_SINGLE_PRIMARY, PRECISION_SCOPE_ALL_POLICY_RUNG],
 )
-def test_only_explicitly_resolved_precision_scope_can_be_execution_ready(scope: str) -> None:
+def test_even_a_resolved_scope_cannot_make_v1_execution_ready(scope: str) -> None:
     c = contract(precision_scope_id=scope)
-    c.require_execution_ready()
-    assert c.execution_authorized is True
+    c.validate()
+    assert c.execution_authorized is False
+    with pytest.raises(ValueError, match="successor execution contract"):
+        c.require_execution_ready()
 
 
 def test_contract_digest_changes_when_precision_scope_changes() -> None:
