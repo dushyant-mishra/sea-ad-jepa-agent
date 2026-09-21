@@ -83,6 +83,10 @@ from pathlib import Path
 import numpy as np
 import scipy.sparse as sp
 
+from sea_ad_jepa.v5.full104_masking_streaming_executor_v1 import (
+    _parse_source_library as parse_source_library,
+)
+
 SCHEMA = "V5_FULL104_CORE_SUFFICIENT_STATISTICS_V1"
 N_LEDGER = 41238
 
@@ -295,7 +299,7 @@ def main() -> int:
                 raise SystemExit(f"block metadata schema mismatch: {row['block_key']}")
             meta = list(reader)
         sel = np.asarray([int(m["selection_row"]) for m in meta], dtype=np.int64)
-        lib = np.asarray([int(float(m["source_library"])) for m in meta], dtype=np.int64)
+        lib = np.asarray([parse_source_library(m["source_library"]) for m in meta], dtype=np.int64)
         if np.any(lib <= 0):
             raise SystemExit(f"non-positive source_library in {row['block_key']}")
         libraries[sel] = lib
