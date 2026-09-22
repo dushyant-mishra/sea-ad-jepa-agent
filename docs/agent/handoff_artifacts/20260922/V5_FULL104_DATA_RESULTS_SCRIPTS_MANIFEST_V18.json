@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_V5_FULL104_NEW_CHAT_DATA_RESULTS_SCRIPTS_MANIFEST_V18",
   "date": "2026-09-22",
-  "assembly_policy": "This is a cross-branch lineage index, NOT a claim that all PR branches are merged. Baseline entries retain their Sep21 Git blob hashes at PR38; PR overlays are exact per-PR head paths. Resolve each path at its listed head, not at main or an arbitrary worktree. PR51 remains RED.",
+  "assembly_policy": "Cross-branch immutable lineage index, NOT a merged-worktree inventory. Baseline 178 files refer to Sep21 handoff PR40/PR38. PR41-PR50 masking ancestry, PR44/49/51 target ancestry and PR52 test-only corrective successor must be resolved at their exact listed heads. PR51 original head has 3 failed tests; PR52 inherits PR51 code and fixes tests only; PR52 exact-head target CI and no-skip gate are GREEN. No molecular outcomes were executed.",
   "baseline": {
     "manifest_path": "docs/agent/handoff_artifacts/20260921/V5_FULL104_TARGET_ETL_DATA_RESULTS_SCRIPTS_MANIFEST.json",
     "commit": "034be1949c389c93a26d8476ceedbcd402c55505",
@@ -1319,6 +1319,31 @@
         "tests/test_v5_full104_rare_tail_molecular_primitives_v1.py",
         "tests/test_v5_full104_rare_tail_molecular_runner_v1.py"
       ]
+    },
+    {
+      "pr": 52,
+      "head": "213552a46903cd92b8a0338df185f0fce9655832",
+      "base": "f8718b66f1c8bf39787408582fbbc85d5ada97d5",
+      "role": "TEST_ONLY_CI_CORRECTION__NO_MOLECULAR_SOURCE_AUTHORITY_CHANGE",
+      "exact_head_target_workflow_id": 35739933731,
+      "exact_head_target_workflow": "SUCCESS_WITH_FAIL_CLOSED_NO_SKIP_SUCCESS",
+      "source_code_changed": false,
+      "molecular_outcome_opened": false,
+      "files": [
+        "tests/test_v5_full104_rare_tail_molecular_execution_contract_v1.py",
+        "tests/test_v5_full104_rare_tail_molecular_primitives_v1.py",
+        "tests/test_v5_full104_rare_tail_molecular_runner_v1.py"
+      ],
+      "git_blob_sha_by_path": {
+        "tests/test_v5_full104_rare_tail_molecular_execution_contract_v1.py": "9b8fe1b37f13cbfe74101a6035f1bd758d0b8184",
+        "tests/test_v5_full104_rare_tail_molecular_primitives_v1.py": "bc0acb062503daf6f9d1fb1437ddedd9249b7d48",
+        "tests/test_v5_full104_rare_tail_molecular_runner_v1.py": "109d14ac3b90748acdb1285c5456e27ec1848d05"
+      },
+      "fixes": [
+        "ROOT fixture defined in strict-core panel-hash test",
+        "42-operator positive synthetic fixture + negative omitting operator 41; no production guard relaxation",
+        "canonical JSON list/tuple normalization of NPH52 zero-slack cases"
+      ]
     }
   ],
   "external_heavy_assets": [
@@ -1378,14 +1403,60 @@
     "structural_receipt_canonical_sha256": "f0d71c9b2f25d31a0b277b9a55f2a31f44d9084b924c3c14c67ef0c4c4a4bc89",
     "n1_execution_authority_canonical_sha256": "eb3293720c54ae10023a90b73c1bf35b46b6cacfda70632522014d988ebb0096",
     "rare_tail_molecular_authority_canonical_sha256": "0b5629ca5e7087b1535e006021ec35d24a981986d5096eb4c99f001294c4c000",
-    "rare_tail_molecular_contract_canonical_sha256": "e834285f652d35fe335d16c0e58eadf7ee2b0ffc11fb11035c4ba17a94b80c02"
+    "rare_tail_molecular_contract_canonical_sha256": "e834285f652d35fe335d16c0e58eadf7ee2b0ffc11fb11035c4ba17a94b80c02",
+    "full104_cells": 4553407,
+    "full104_donors": 104,
+    "full104_operators": 42,
+    "full104_canonical_addresses": 41238,
+    "full104_strict_core_addresses": 17186,
+    "full104_level4_blocks": 8915,
+    "full104_manifest_bytes": 2372002,
+    "canonical_registry_bytes": 24946770,
+    "heavy_sufficient_statistics_bytes": 242087519,
+    "full104_metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "sample_qualified_cells": 105553,
+    "sample_receipt_file_sha256": "1f73b3b11640a06bcf23d0cc3d5dce9614c12d071131e75dd4a7e24ca67bbc88",
+    "sample_selection_rows_npy_sha256": "6c68d732c94ad44b67b5e50f264a70a840fd49cebe80d73d00dcd90cee3af823",
+    "sample_donor_code_npy_sha256": "05e03bedab5f7f5e1c4abd2083fa4c659476a747ecab806e4ed9358d7790123f",
+    "b4_runtime_receipt_pr": 48,
+    "rare_structural_receipt_pr": 49,
+    "rare_structural_receipt_file_sha256": "7b9ff5938e3940fca8640e98217b1c9cf075597305d80bbc04c6df15d1eae801",
+    "rare_structural_receipt_bytes": 498827,
+    "rare_structural_donor_operator_strata": 1347,
+    "rare_structural_strata_at_cap": 881,
+    "rare_structural_min_eligible_donors_per_source_fold": 4,
+    "rare_tail_zero_slack_nph52_cases": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "rare_molecular_fresh_panels": 2,
+    "rare_molecular_pair_coordinates_per_view": 2048,
+    "rare_molecular_min_informative_coords": 256,
+    "rare_molecular_triplets_per_stratum_cap": 64,
+    "rare_molecular_null_replicates": 64,
+    "rare_molecular_source_fold_panel_cases": 24,
+    "rng_global_seed_decimal_string": "1267387626254385975",
+    "mask_protocol_note": "N1 only may be executed after exact B4 preflight, N2 and N3 require precision-derived escalation receipts; no burden or masks have been executed"
   },
   "current_outcome_status": {
-    "audit_b_n1": "NOT_EXECUTED",
-    "n2_n3": "NOT_AUTHORIZED_WITHOUT_ESCALATION_RECEIPT",
-    "rare_tail_molecular": "NOT_EXECUTED_PR51_CI_RED",
+    "audit_b_n1": "NOT_EXECUTED__N1_ONLY_AUTHORITY_ISSUED__RESULT_CONTRACT_CODE_CI_GREEN",
+    "n2_n3": "UNAUTHORIZED_WITHOUT_PRECISION_DERIVED_ESCALATION",
+    "rare_tail_molecular": "NOT_EXECUTED__PR51_AUTHORITY_CODE_FROZEN__PR52_TEST_ONLY_FIX_GREEN",
     "td60": "NOT_EXECUTED",
-    "training": "OFF"
+    "training": "OFF",
+    "rare_tail_structural": "STRUCTURALLY_POSSIBLE__NOT_MOLECULAR_ESTIMABILITY",
+    "pathology_dev_sealed": "UNOPENED",
+    "d_shared_g5": "UNOPENED"
   },
   "current_ci": {
     "pr50": {
@@ -1400,13 +1471,19 @@
     },
     "pr51": {
       "head": "f8718b66f1c8bf39787408582fbbc85d5ada97d5",
-      "runs": {
-        "target": 35690220963,
-        "spillover": 35690220684,
-        "runtime": 35690220722
-      },
-      "target_failure": "3 failed, 420 passed; fail-on-skip step did not run",
-      "molecular_execution_allowed": false
-    }
+      "target_workflow_run": 35690220963,
+      "result": "FAILURE_3_TESTS__420_PASSED__NO_SKIP_STEP_NOT_RUN",
+      "superseded_for_testing_by_pr": 52
+    },
+    "pr52": {
+      "head": "213552a46903cd92b8a0338df185f0fce9655832",
+      "base": "f8718b66f1c8bf39787408582fbbc85d5ada97d5",
+      "target_workflow_run": 35739933731,
+      "conclusion": "SUCCESS",
+      "fail_closed_on_skipped_regression_tests": "SUCCESS",
+      "files_changed": 3,
+      "changes_scope": "tests only; underlying PR51 molecular sources/receipts unchanged"
+    },
+    "warning": "Hosted checks on PR52 validate PR51 molecular source with corrected test fixtures, but do not constitute real FULL104 molecular execution or production training authorization."
   }
 }
