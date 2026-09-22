@@ -35,33 +35,42 @@ def _payload(v):
         }
         for d in range(104)
     ]
-    cases = [
+    cases = []
+    for s in range(3):
+        for f in range(4):
+            rows = [
+                x for x in donors
+                if x["source_code"] == s and x["fold_index"] == f
+            ]
+            cases.append(
+                {
+                    "source_code": s,
+                    "fold_index": f,
+                    "donors_total": len(rows),
+                    "donors_structurally_eligible": len(rows),
+                    "structurally_possible": len(rows) >= 4,
+                }
+            )
+    assert all(x["structurally_possible"] for x in cases)
+
+    operator_capacity = [
         {
-            "source_code": s,
-            "fold_index": f,
-            "donors_total": 4,
-            "donors_structurally_eligible": 4,
-            "structurally_possible": True,
+            "donor_code": d,
+            "source_code": donors[d]["source_code"],
+            "fold_index": donors[d]["fold_index"],
+            "operator_code": d % 42,
+            "retained_cells": donors[d]["retained_cells"],
+            "q95_tail_anchor_upper_bound": 5,
+            "triplet_capable_tail_anchor_upper_bound": 5,
+            "tail_triplet_upper_bound": 100,
         }
-        for s in range(3)
-        for f in range(4)
+        for d in range(104)
     ]
     payload = {
         "schema": "V5_FULL104_RARE_TAIL_STRUCTURAL_SUPPORT_PREFLIGHT_V1",
         "status": "STRUCTURALLY_POSSIBLE__MOLECULAR_ESTIMABILITY_UNPROVEN",
         "structurally_possible_all_source_fold_cases": True,
-        "operator_capacity": [
-            {
-                "donor_code": 0,
-                "source_code": 0,
-                "fold_index": 0,
-                "operator_code": 0,
-                "retained_cells": 105553,
-                "q95_tail_anchor_upper_bound": 5278,
-                "triplet_capable_tail_anchor_upper_bound": 5278,
-                "tail_triplet_upper_bound": 999999,
-            }
-        ],
+        "operator_capacity": operator_capacity,
         "donor_capacity": donors,
         "source_fold_cases": cases,
         "tail_anchor_minimum_per_donor": 5,
