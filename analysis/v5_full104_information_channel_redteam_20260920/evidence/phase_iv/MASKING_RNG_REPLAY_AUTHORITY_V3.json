@@ -1,0 +1,17 @@
+{
+  "schema": "V5_MASKING_RNG_REPLAY_AUTHORITY_V3",
+  "authority_id": "JEPA_V5_FULL104_MASKING_RNG_REPLAY_AUTHORITY_V3",
+  "full104_substrate_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+  "outer_split_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+  "qualification_parameters_authority_sha256": "e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1",
+  "burden_ladder_authority_sha256": "85148fdf9be2bdd655ec601c4d26870f47f6885ce83d93b6e5c7ff8046d32685",
+  "seed_namespace_id": "V5_COMMON_RANDOM_BASE_MASK_PREPANEL_ROOT_DERIVED_V3",
+  "method_exclusion_policy_id": "MASK_POLICY_ID_ABSENT_FROM_BASE_MASK_SEED_V1",
+  "replay_policy_id": "DETERMINISTIC_EXACT_MASK_REPLAY_V1",
+  "terminal_outcomes_inspected_before_freeze": false,
+  "training_authorized": false,
+  "global_seed": 1267387626254385975,
+  "authority_sha256": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+  "target_panel_dependency": "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS"
+}

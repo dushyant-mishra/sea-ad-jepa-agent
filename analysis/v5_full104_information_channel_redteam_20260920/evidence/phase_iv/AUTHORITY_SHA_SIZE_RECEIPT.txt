@@ -1,15 +1,25 @@
-# Newly materialized Phase-IV authorities (2026-09-22 UTC)
-# branch gpu/v5-full104-metadata-receipts-20260921 @ ebae1f9667a6e483ec35a6918234c40b99ae9ea2
+# Phase-IV authority receipts
+# branch gpu/v5-full104-b3-v1-receipts-20260922
+# parent 18b9476625d14ecf90b0b6b1efd12d5a7495b548  (PR #43 head, approved RNG-V3 repair)
+# built  2026-09-22T03:27:41Z
 #
-# file_sha256  bytes  path
+# file_sha256                                                       bytes  path
 e9fc24dd93a15d0246c0f5de701ff219d3a70b4bf0e60bf51b0fba9d869e7b51      2582  MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json
 8ae737d1ee72c0330564559cbad984195b4942acc1b377a5e862e718a614e429       926  MASKING_BURDEN_LADDER_AUTHORITY_V2.json
+ee95306997c33d76066579e77db88c53ff0bc6c0fcb964003b75da5717e3d396      1163  MASKING_RNG_REPLAY_AUTHORITY_V3.json
+b00926494025b54480f3fb1ecd837a672c6498b87e3f2e633a7b62ade0d89040      3559  AUDIT_B_EXECUTION_CONTRACT_V1.json
+7579fac636d46a95d9913d8cea997e7bcbddc7effd2ecd74f4fe46d4482f6029      6802  B3_AND_AUDIT_B_V1_EXECUTION_PROVENANCE.json
 6a2e32cc05c3920dcce413b85fcce60d43cc1af5290b9cf715e11754e7eacb95      6265  B3_RNG_V3_AUTHORITY_BLOCKER.md
 
-# canonical (semantic) digests, distinct from the file hashes above:
-#   parameters V3  parameter_authority_sha256 = e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1
-#   burden ladder  authority_sha256           = 85148fdf9be2bdd655ec601c4d26870f47f6885ce83d93b6e5c7ff8046d32685
+# canonical (semantic) digests -- distinct from the file hashes above:
+#   parameters V3   parameter_authority_sha256 = e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1
+#   burden ladder   authority_sha256           = 85148fdf9be2bdd655ec601c4d26870f47f6885ce83d93b6e5c7ff8046d32685
+#   RNG V3          authority_sha256           = 775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb
+#   RNG V3          global_seed                = 1267387626254385975   (FROZEN, NOT SPENT)
+#   Audit-B V1      contract_sha256            = 95db537de2df04e83c72d17ab788f985901ee4b644769d598243a9eed5eef398
+#   Audit-B V1      precision_scope_id         = UNRESOLVED__EXECUTION_FORBIDDEN
+#   Audit-B V1      execution_authorized       = false
 
-# NOT PRODUCED: MASKING_RNG_REPLAY_AUTHORITY_V3.json  -- see B3_RNG_V3_AUTHORITY_BLOCKER.md
-# content-addressed reference, left on the GPU drive (not committed):
+# content-addressed, left in place and NOT duplicated here:
 #   role=canonical_address_registry  bytes=24946770  sha256=7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd
+#   role=heavy_sufficient_statistics bytes=242087519 sha256=f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae
