@@ -101,3 +101,13 @@ def test_precision_receipt_cannot_change_policy_or_rung_after_n1() -> None:
         dataclasses.replace(r, policy_id="TOP8_CORRELATION").validate()
     with pytest.raises(ValueError, match="frozen primary burden rung"):
         dataclasses.replace(r, rung_denominator=10).validate()
+
+
+def test_b4_preflight_source_identity_is_git_commit_sha() -> None:
+    a = AuditBN1ExecutionAuthorityV1(
+        authority_id="JEPA_V5_FULL104_AUDIT_B_N1_EXECUTION_AUTHORITY_V1"
+    )
+    a.validate()
+    assert len(a.b4_runtime_preflight_source_sha) == 40
+    with pytest.raises(ValueError, match="40-hex Git commit SHA"):
+        dataclasses.replace(a, b4_runtime_preflight_source_sha="0" * 64).validate()
