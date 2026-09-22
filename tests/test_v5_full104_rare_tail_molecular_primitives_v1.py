@@ -1,10 +1,13 @@
 import hashlib
 import json
+from pathlib import Path
 
 import numpy as np
 import pytest
 
 import sea_ad_jepa.v5.full104_rare_tail_molecular_primitives_v1 as P
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_distance_matrix_matches_tie_aware_sign_concordance() -> None:
