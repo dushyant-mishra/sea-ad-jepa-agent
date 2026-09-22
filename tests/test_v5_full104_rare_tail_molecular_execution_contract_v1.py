@@ -71,7 +71,7 @@ def test_execution_contract_binds_exact_normalized_code_sources() -> None:
 
 def test_zero_slack_nph52_cases_are_explicitly_bound_not_relaxed() -> None:
     c = load_contract()
-    assert c.zero_slack_structural_cases == ((1, 1), (1, 2), (1, 3))
+    assert tuple(tuple(x) for x in c.zero_slack_structural_cases) == ((1, 1), (1, 2), (1, 3))
     assert c.expected_zero_slack_donors == 4
     assert c.evaluate_all_24_cases_even_after_failure is True
     assert c.not_estimable_dominates_full_terminal is True

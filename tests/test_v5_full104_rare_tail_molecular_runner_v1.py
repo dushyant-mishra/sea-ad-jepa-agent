@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+import pytest
 import scipy.sparse as sp
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -103,6 +104,44 @@ def test_materialize_panel_binds_selection_donor_source_operator_and_log1p10k(
             "meta_sha256": _sha(meta),
         }
     ]
+    # Positive fixture satisfies the unchanged production all-42-operators
+    # guard. Each additional operator has one authenticated zero-count cell;
+    # only operator 0 carries the two nonzero cells under test.
+    dummy_selection: list[int] = []
+    for op in range(1, 42):
+        selection_row = 1000 + op
+        dummy_selection.append(selection_row)
+        dummy = sp.csr_matrix((1, m.N_LEDGER), dtype=np.int64)
+        op_counts = level4 / f"counts_op{op}.npz"
+        op_meta = level4 / f"meta_op{op}.csv"
+        sp.save_npz(op_counts, dummy)
+        with op_meta.open("w", newline="", encoding="utf-8") as h:
+            w = csv.DictWriter(h, fieldnames=m.META_COLUMNS, lineterminator="\n")
+            w.writeheader()
+            w.writerow(
+                {
+                    "selection_row": selection_row,
+                    "canonical_cell_id": f"c{selection_row}",
+                    "donor_id": "D0",
+                    "expression_row": 0,
+                    "primary_row_weight": 1,
+                    "source_library": 100,
+                }
+            )
+        manifest_rows.append(
+            {
+                "block_key": f"b{op}",
+                "source": "HVS",
+                "operator_index": str(op),
+                "matrix_id": f"m{op}",
+                "rows": "1",
+                "nnz": "0",
+                "counts_path": op_counts.name,
+                "counts_sha256": _sha(op_counts),
+                "meta_path": op_meta.name,
+                "meta_sha256": _sha(op_meta),
+            }
+        )
     views = {
         "Z": np.arange(0, 512, dtype=np.int64),
         "X": np.arange(512, 1024, dtype=np.int64),
@@ -111,19 +150,32 @@ def test_materialize_panel_binds_selection_donor_source_operator_and_log1p10k(
     out = m.materialize_panel(
         level4_root=level4,
         manifest_rows=manifest_rows,
-        selected_rows=np.array([11, 22], dtype=np.int64),
-        donor_code=np.array([0, 1], dtype=np.int64),
+        selected_rows=np.array([11, 22, *dummy_selection], dtype=np.int64),
+        donor_code=np.array([0, 1, *([0] * 41)], dtype=np.int64),
         donor_id_to_code={"D0": 0, "D1": 1},
         donor_source_code=np.array([0, 0], dtype=np.int64),
         genes_by_view=views,
     )
     values = out["values"]
-    assert values.shape == (2, 1536)
+    assert values.shape == (43, 1536)
     assert values[0, 0] == np.float32(np.log1p(2 * 10000 / 20))
     assert values[0, 512] == np.float32(np.log1p(4 * 10000 / 20))
     assert values[1, 1024] == np.float32(np.log1p(3 * 10000 / 10))
-    assert out["operator_code"].tolist() == [0, 0]
-    assert out["detected_count"].tolist() == [2, 1]
+    assert out["operator_code"].tolist() == [0, 0, *range(1, 42)]
+    assert out["detected_count"].tolist() == [2, 1, *([0] * 41)]
+
+    # Removing an entire operator must still fail even when every selected
+    # row of the reduced fixture materializes exactly once.
+    with pytest.raises(ValueError, match="all 42 operators"):
+        m.materialize_panel(
+            level4_root=level4,
+            manifest_rows=manifest_rows[:-1],
+            selected_rows=np.array([11, 22, *dummy_selection[:-1]], dtype=np.int64),
+            donor_code=np.array([0, 1, *([0] * 40)], dtype=np.int64),
+            donor_id_to_code={"D0": 0, "D1": 1},
+            donor_source_code=np.array([0, 0], dtype=np.int64),
+            genes_by_view=views,
+        )
 
 
 def test_materialize_panel_rejects_sample_donor_identity_drift(tmp_path: Path) -> None:
