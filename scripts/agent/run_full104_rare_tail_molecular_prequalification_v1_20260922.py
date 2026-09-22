@@ -53,6 +53,7 @@ from sea_ad_jepa.v5.full104_rare_tail_molecular_authority_v1 import (
     FAIL_TERMINAL,
     NOT_ESTIMABLE_TERMINAL,
     REQUIRED_CASES,
+    TARGET_ELIGIBILITY_FILE_SHA256,
     Full104RareTailMolecularAuthorityV1,
     case_pass,
     full_gate_terminal,
@@ -66,6 +67,9 @@ from sea_ad_jepa.v5.full104_rare_tail_molecular_primitives_v1 import (
     select_pairs,
     select_tail_triplets,
     verify_pair_address_hash,
+)
+from sea_ad_jepa.v5.full104_masking_streaming_executor_v1 import (
+    _parse_source_library,
 )
 from sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1 import (
     EXPECTED_SAMPLE_CELLS,
@@ -125,17 +129,6 @@ def _safe_under(root: Path, relative: str) -> Path:
     except ValueError as exc:
         raise ValueError("manifest path escapes Level-4 root") from exc
     return path
-
-
-def _parse_positive_integral_library(raw: object) -> int:
-    token = str(raw).strip()
-    try:
-        value = float(token)
-    except ValueError as exc:
-        raise ValueError("invalid source_library") from exc
-    if not np.isfinite(value) or value <= 0 or value != np.floor(value):
-        raise ValueError("source_library must be a positive integer")
-    return int(value)
 
 
 def load_sample(sample_dir: Path) -> tuple[dict[str, Any], dict[str, np.ndarray]]:
@@ -310,7 +303,7 @@ def materialize_panel(
                 raise ValueError("manifest source disagrees with donor source receipt")
             local_rows.append(local)
             out_rows.append(out)
-            libraries.append(_parse_positive_integral_library(row["source_library"]))
+            libraries.append(_parse_source_library(row["source_library"]))
 
         if not local_rows:
             continue
@@ -557,6 +550,7 @@ def main() -> int:
     p.add_argument("--sample-dir", type=Path, required=True)
     p.add_argument("--split-receipt", type=Path, required=True)
     p.add_argument("--level4-root", type=Path, required=True)
+    p.add_argument("--target-eligibility", type=Path, required=True)
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
     if args.out.exists():
@@ -580,20 +574,19 @@ def main() -> int:
         raise SystemExit("sample source vector differs from authenticated split")
 
     manifest_rows = load_manifest(args.level4_root)
-    common = np.asarray(
-        sorted(
-            {
-                int(x)
-                for x in json.loads(
-                    (Path("analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_target_eligibility_v1.json"))
-                    .read_text(encoding="utf-8")
-                )["strict_core_cols"]
-            }
-        ),
-        dtype=np.int64,
-    )
-    if common.size != 17_186:
-        raise SystemExit("strict common-core cardinality drifted")
+    if sha256_file(args.target_eligibility) != TARGET_ELIGIBILITY_FILE_SHA256:
+        raise SystemExit("target-eligibility receipt hash mismatch")
+    eligibility = json.loads(args.target_eligibility.read_text(encoding="utf-8"))
+    if eligibility.get("schema") != "V5_FULL104_TARGET_ELIGIBILITY_RECEIPT_V1":
+        raise SystemExit("target-eligibility receipt schema mismatch")
+    common = np.asarray(eligibility["strict_core_cols"], dtype=np.int64)
+    if (
+        common.ndim != 1
+        or common.size != 17_186
+        or np.unique(common).size != common.size
+        or np.any(common < 0)
+    ):
+        raise SystemExit("strict common-core geometry drifted")
     donor_id_to_code = {str(x): i for i, x in enumerate(split["donor_ids"])}
 
     panel_results = []
