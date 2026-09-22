@@ -33,6 +33,9 @@ def test_builder_materializes_execution_ready_b4_from_real_semantic_parents(
     payload = json.loads(out.read_text(encoding="utf-8"))
     assert payload["schema"] == "V5_AUDIT_B_EXECUTION_CONTRACT_V2"
     assert payload["execution_authorized"] is True
+    assert payload["initial_sample_level_id"] == "N1"
+    assert payload["initial_sample_size"] == 256
+    assert payload["direct_n2_n3_execution_authorized"] is False
     assert payload["terminal_masking_authorized"] is False
     assert payload["training_authorized"] is False
 
