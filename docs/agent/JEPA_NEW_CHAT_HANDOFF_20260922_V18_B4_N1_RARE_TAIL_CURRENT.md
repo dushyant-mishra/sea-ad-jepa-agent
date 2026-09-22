@@ -1,5 +1,8 @@
 # JEPA V5/FULL104 — September 22, 2026 new-chat handoff V18
 
+**LATEST SUCCESSOR UPDATE:** PR #52 at `213552a46903cd92b8a0338df185f0fce9655832` is a three-test-only successor of original red PR #51; target-semantics Actions `35739933731` and explicit no-skip gate are **GREEN**. The original PR #51 remains historically RED; its failures below are an audit record, not the latest execution-readiness state. **Read `docs/agent/JEPA_V18_PR52_GREEN_SUCCESSOR_ADDENDUM_20260922.md` before using any target-lane status or commands below.** Molecular outcomes remain UNOPENED; next action is independent review then read-only runtime preflight.
+
+
 Status: `B4_RUNTIME_PREFLIGHT_PASS__N1_AUTHORITY_CODE_GREEN_NOT_RUN__RARE_TAIL_STRUCTURAL_POSSIBLE__MOLECULAR_PR51_CI_FAILED__TRAINING_OFF`
 
 **This is a docs-only cross-lane handoff.** It is based on the exact green Audit-B PR #50 head `e4b7e9f46842d66cd7db71b1df9de60fc037f971`. The target molecular work exists on **parallel** PR #51 `f8718b66f1c8bf39787408582fbbc85d5ada97d5` and **is not in the Audit-B branch**. Do not treat this handoff's Git ancestry as containing both lanes. Re-fetch all live heads and Actions status before acting.
