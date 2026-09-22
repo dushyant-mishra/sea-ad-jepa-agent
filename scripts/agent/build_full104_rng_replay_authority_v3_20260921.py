@@ -88,7 +88,7 @@ def main() -> int:
     parameters = typed(
         parameters_payload,
         MaskingQualificationParametersAuthorityV3,
-        "authority_sha256",
+        "parameter_authority_sha256",
     )
     if parameters.full104_substrate_sha256 != FULL104_SUBSTRATE_SHA256:
         raise SystemExit("masking parameters bind a different FULL104 substrate")

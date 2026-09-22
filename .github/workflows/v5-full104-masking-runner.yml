@@ -166,6 +166,7 @@ on:
       - 'src/sea_ad_jepa/v5/audit_b_production_burden_v1.py'
       - 'scripts/agent/build_full104_rng_replay_authority_v3_20260921.py'
       - 'tests/test_v5_masking_rng_replay_authority_v3.py'
+      - 'tests/test_v5_full104_rng_replay_builder_v3.py'
       - 'tests/test_v5_audit_b_production_burden_v1.py'
       - 'src/sea_ad_jepa/v5/audit_b_execution_contract_v1.py'
       - 'tests/test_v5_audit_b_scientific_resolution_v1.py'
@@ -287,12 +288,12 @@ jobs:
             tests/test_v5_audit_b_execution_contract_redteam_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v2.py \
-            tests/test_v5_audit_b_scientific_resolution_v2.py \
             tests/test_v5_audit_b_execution_contract_builder_v1.py \
             tests/test_v5_audit_b_execution_preflight_v1.py \
             tests/test_v5_audit_b_execution_preflight_cli_v1.py \
             tests/test_v5_audit_b_production_burden_v1.py \
-            tests/test_v5_masking_rng_replay_authority_v3.py
+            tests/test_v5_masking_rng_replay_authority_v3.py \
+            tests/test_v5_full104_rng_replay_builder_v3.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -385,5 +386,6 @@ jobs:
             tests/test_v5_audit_b_execution_preflight_cli_v1.py \
             tests/test_v5_audit_b_production_burden_v1.py \
             tests/test_v5_masking_rng_replay_authority_v3.py \
+            tests/test_v5_full104_rng_replay_builder_v3.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
