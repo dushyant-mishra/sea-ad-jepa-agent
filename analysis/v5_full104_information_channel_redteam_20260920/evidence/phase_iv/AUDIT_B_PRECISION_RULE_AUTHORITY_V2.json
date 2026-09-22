@@ -1,0 +1,19 @@
+{
+  "schema": "V5_AUDIT_B_PRECISION_RULE_AUTHORITY_V2",
+  "authority_id": "JEPA_V5_FULL104_AUDIT_B_PRECISION_RULE_AUTHORITY_V2",
+  "strict_core_addresses": 17186,
+  "precision_scope_id": "ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1",
+  "reporting_scope_id": "ALL_3_NONUNIFORM_X_6_RUNG_CELLS_REPORTED_V1",
+  "primary_policy_id": "RIDGE8_CONDITIONAL",
+  "primary_rung_numerator": 1,
+  "primary_rung_denominator": 20,
+  "primary_mask_cardinality": 860,
+  "precision_estimator_id": "HYBRID_ABSOLUTE_OR_RELATIVE_TARGET_SAMPLE_SE_V2",
+  "relative_se_tolerance_numerator": 1,
+  "relative_se_tolerance_denominator": 20,
+  "absolute_se_tolerance_numerator": 1,
+  "absolute_se_tolerance_denominator": 860,
+  "absolute_tolerance_origin_id": "ONE_AVERAGE_MASKED_ADDRESS_SHARE_AT_PRIMARY_5_PERCENT_RUNG_V1",
+  "zero_mean_rule_id": "ZERO_MEAN_USES_ABSOLUTE_SE_BRANCH_V1",
+  "authority_sha256": "0a712b3aeebc42732726667722c90b2b9d97a6110cba157c2d99aa642c0c97b4"
+}
