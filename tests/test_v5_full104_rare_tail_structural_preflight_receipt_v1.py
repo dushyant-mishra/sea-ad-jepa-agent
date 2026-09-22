@@ -101,8 +101,9 @@ def _payload(v):
         "blocks_by_operator": {str(i): 1 for i in range(42)},
         "operator_derivation": "test fixture",
         "sample_role_id": "FULL104_TARGET_QUALIFICATION_ONLY__NOT_MASKING__NOT_TRAINING_V1",
-        "evaluator_source_sha256": v.sha256_file(v.EVALUATOR),
-        "runner_source_sha256": v.sha256_file(v.RUNNER),
+        "evaluator_source_normalized_text_sha256": v.normalized_text_sha256(v.EVALUATOR),
+        "runner_source_normalized_text_sha256": v.normalized_text_sha256(v.RUNNER),
+        "source_hash_normalization": "UTF8_TEXT__CRLF_CR_TO_LF_V1",
         "result_role": "METADATA_ONLY_STRUCTURAL_SUPPORT__NOT_MOLECULAR_QUALIFICATION",
         "expression_opened": False,
         "count_matrix_opened": False,
@@ -161,3 +162,12 @@ def test_validator_rejects_resealed_capacity_arithmetic_drift() -> None:
     )
     with pytest.raises(ValueError, match="sampled triplet capacity disagrees with frozen arithmetic"):
         v.validate_structural_receipt(payload, sample_dir=SAMPLE_DIR)
+
+
+def test_normalized_source_hash_is_crlf_lf_stable(tmp_path: Path) -> None:
+    v = _load_validator()
+    lf = tmp_path / "lf.py"
+    crlf = tmp_path / "crlf.py"
+    lf.write_bytes(b"print('x')\nprint('y')\n")
+    crlf.write_bytes(b"print('x')\r\nprint('y')\r\n")
+    assert v.normalized_text_sha256(lf) == v.normalized_text_sha256(crlf)
