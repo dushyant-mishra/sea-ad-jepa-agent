@@ -5,6 +5,7 @@ import pytest
 
 from sea_ad_jepa.v5.audit_b_precision_rule_v2 import (
     ABSOLUTE_SE_TOLERANCE,
+    AuditBPrecisionRuleAuthorityV2,
     PRIMARY_MASK_CARDINALITY,
     PRIMARY_POLICY_ID,
     PRIMARY_RUNG,
@@ -116,3 +117,14 @@ def test_n3_failure_stops_without_inventing_n4() -> None:
     out = escalation_decision_v2(summary, sample_level="N3")
     assert out["state"] == "INSUFFICIENT_PRECISION_AT_N3"
     assert out["next_sample_authorized"] is None
+
+
+def test_precision_rule_authority_is_semantic_and_geometry_bound() -> None:
+    authority = AuditBPrecisionRuleAuthorityV2()
+    authority.validate()
+    assert len(authority.canonical_digest()) == 64
+
+    with pytest.raises(ValueError, match="strict_core_addresses drifted"):
+        type(authority)(strict_core_addresses=17185).validate()
+    with pytest.raises(ValueError, match="absolute_se_tolerance_denominator drifted"):
+        type(authority)(absolute_se_tolerance_denominator=859).validate()
