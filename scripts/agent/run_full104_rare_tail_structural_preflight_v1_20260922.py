@@ -33,6 +33,10 @@ from sea_ad_jepa.v5.full104_target_qualification_sample_authority_v1 import (
     Full104TargetQualificationSampleReceiptV1,
 )
 
+ROOT = Path(__file__).resolve().parents[2]
+EVALUATOR_SOURCE = (
+    ROOT / "src/sea_ad_jepa/v5/full104_rare_tail_structural_preflight_v1.py"
+)
 EXPECTED_BLOCK_MANIFEST_SHA256 = (
     "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
 )
@@ -64,6 +68,18 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(8 << 20), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def canonical_sha256(payload: dict) -> str:
+    return hashlib.sha256(
+        json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("utf-8")
+    ).hexdigest()
 
 
 def _typed(payload: dict, cls):
@@ -265,6 +281,9 @@ def main() -> int:
             "the unique metadata block containing each retained global selection_row"
         ),
         "sample_role_id": sample_payload["authority"]["sample_role_id"],
+        "evaluator_source_sha256": sha256_file(EVALUATOR_SOURCE),
+        "runner_source_sha256": sha256_file(Path(__file__)),
+        "result_role": "METADATA_ONLY_STRUCTURAL_SUPPORT__NOT_MOLECULAR_QUALIFICATION",
         "expression_opened": False,
         "count_matrix_opened": False,
         "molecular_distance_computed": False,
@@ -273,6 +292,7 @@ def main() -> int:
         "training_authorized": False,
     }
 
+    output["structural_preflight_sha256"] = canonical_sha256(output)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(output, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(
