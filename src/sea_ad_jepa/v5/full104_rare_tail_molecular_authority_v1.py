@@ -146,6 +146,16 @@ def _sha(value: object, name: str) -> str:
     return value
 
 
+def _git_commit_sha(value: object, name: str) -> str:
+    if not isinstance(value, str) or len(value) != 40 or value != value.lower():
+        raise ValueError(f"{name} must be a lowercase 40-hex Git commit SHA")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a lowercase 40-hex Git commit SHA") from exc
+    return value
+
+
 @dataclass(frozen=True)
 class Full104RareTailMolecularAuthorityV1:
     authority_id: str
@@ -200,7 +210,6 @@ class Full104RareTailMolecularAuthorityV1:
             raise ValueError("authority_id must be nonempty")
         roots = {
             "structural_preflight_sha256": STRUCTURAL_PREFLIGHT_SHA256,
-            "structural_preflight_source_sha": STRUCTURAL_PREFLIGHT_SOURCE_SHA,
             "sample_receipt_sha256": SAMPLE_RECEIPT_SHA256,
             "full104_manifest_sha256": FULL104_MANIFEST_SHA256,
             "outer_split_receipt_sha256": OUTER_SPLIT_RECEIPT_SHA256,
@@ -208,6 +217,16 @@ class Full104RareTailMolecularAuthorityV1:
         for name, expected in roots.items():
             if _sha(getattr(self, name), name) != expected:
                 raise ValueError(f"{name} drifted from verified pre-molecular authority")
+        if (
+            _git_commit_sha(
+                self.structural_preflight_source_sha,
+                "structural_preflight_source_sha",
+            )
+            != STRUCTURAL_PREFLIGHT_SOURCE_SHA
+        ):
+            raise ValueError(
+                "structural_preflight_source_sha drifted from verified receipt commit"
+            )
         if self.structural_terminal != STRUCTURAL_TERMINAL:
             raise ValueError("structural terminal must remain molecular-estimability-unproven")
 
