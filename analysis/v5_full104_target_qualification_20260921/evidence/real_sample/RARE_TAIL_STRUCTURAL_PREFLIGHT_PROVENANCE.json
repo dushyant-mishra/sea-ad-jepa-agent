@@ -1,0 +1,155 @@
+{
+  "schema": "V5_FULL104_RARE_TAIL_STRUCTURAL_PREFLIGHT_PROVENANCE_V1",
+  "scope_class": "CURRENT_FULL104_RECONNAISSANCE",
+  "branch": "gpu/v5-full104-rare-tail-structural-20260922",
+  "source_sha": "e48c15975b440160e48e29ace74196314d5fa9a6",
+  "source_role": "PR #44 head, target/v5-full104-rare-tail-structural-preflight-20260922 (verified unmoved)",
+  "utc_execution_time": "2026-09-22T04:42:42Z",
+  "runner": "scripts/agent/run_full104_rare_tail_structural_preflight_v1_20260922.py",
+  "runner_sha256": "5256e34b5311a0245af809de3d9706d01f2346eb74b4ef4b8f0661b4841444c1",
+  "validator": "scripts/agent/validate_full104_rare_tail_structural_preflight_v1_20260922.py",
+  "validator_sha256": "b3ba9f45531bef81b3b9ac507a711eae63f8da48ca128d43ba8e90e33f3c87a3",
+  "output_path_was_new_not_overwritten": true,
+  "structural_terminal": "STRUCTURALLY_POSSIBLE__MOLECULAR_ESTIMABILITY_UNPROVEN",
+  "terminal_meaning": "the donor-capped sample has enough structural support to ATTEMPT the frozen molecular design. It is NOT a molecular recurrence PASS, NOT rare-state biological authority, NOT teacher authority, and NOT training authority.",
+  "structural_preflight_sha256": "f0d71c9b2f25d31a0b277b9a55f2a31f44d9084b924c3c14c67ef0c4c4a4bc89",
+  "structural_preflight_file_sha256": "7b9ff5938e3940fca8640e98217b1c9cf075597305d80bbc04c6df15d1eae801",
+  "structural_preflight_bytes": 498827,
+  "sample": {
+    "dir": "analysis/v5_full104_target_qualification_20260921/evidence/real_sample",
+    "sample_receipt_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6",
+    "retained_cells": 105553,
+    "retained_donors": 104,
+    "operators_present": 42,
+    "full104_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+  },
+  "frozen_structural_parameters_unchanged_after_seeing_the_result": {
+    "tail_anchor_minimum_per_donor": 5,
+    "resolved_triplet_minimum_per_donor": 20,
+    "triplets_per_stratum_cap": 64,
+    "measurable_donor_minimum_per_source_fold": 4,
+    "note": "nothing was adjusted after the result was seen; the terminal was reached under the frozen values."
+  },
+  "source_fold_cases": [
+    {
+      "source": "HVS",
+      "fold": 0,
+      "donors_total": 11,
+      "donors_structurally_eligible": 11,
+      "structurally_possible": true
+    },
+    {
+      "source": "HVS",
+      "fold": 1,
+      "donors_total": 10,
+      "donors_structurally_eligible": 10,
+      "structurally_possible": true
+    },
+    {
+      "source": "HVS",
+      "fold": 2,
+      "donors_total": 10,
+      "donors_structurally_eligible": 10,
+      "structurally_possible": true
+    },
+    {
+      "source": "HVS",
+      "fold": 3,
+      "donors_total": 10,
+      "donors_structurally_eligible": 10,
+      "structurally_possible": true
+    },
+    {
+      "source": "NPH52",
+      "fold": 0,
+      "donors_total": 5,
+      "donors_structurally_eligible": 5,
+      "structurally_possible": true
+    },
+    {
+      "source": "NPH52",
+      "fold": 1,
+      "donors_total": 4,
+      "donors_structurally_eligible": 4,
+      "structurally_possible": true
+    },
+    {
+      "source": "NPH52",
+      "fold": 2,
+      "donors_total": 4,
+      "donors_structurally_eligible": 4,
+      "structurally_possible": true
+    },
+    {
+      "source": "NPH52",
+      "fold": 3,
+      "donors_total": 4,
+      "donors_structurally_eligible": 4,
+      "structurally_possible": true
+    },
+    {
+      "source": "SEA_AD",
+      "fold": 0,
+      "donors_total": 12,
+      "donors_structurally_eligible": 12,
+      "structurally_possible": true
+    },
+    {
+      "source": "SEA_AD",
+      "fold": 1,
+      "donors_total": 12,
+      "donors_structurally_eligible": 12,
+      "structurally_possible": true
+    },
+    {
+      "source": "SEA_AD",
+      "fold": 2,
+      "donors_total": 11,
+      "donors_structurally_eligible": 11,
+      "structurally_possible": true
+    },
+    {
+      "source": "SEA_AD",
+      "fold": 3,
+      "donors_total": 11,
+      "donors_structurally_eligible": 11,
+      "structurally_possible": true
+    }
+  ],
+  "source_fold_cases_count": 12,
+  "all_twelve_structurally_possible": true,
+  "minimum_structurally_eligible_donors_across_cases": 4,
+  "zero_margin_observation": "NPH52 folds 1, 2 and 3 each have exactly 4 structurally eligible donors against a required minimum of 4. Three of the twelve cases therefore pass with no slack: losing a single NPH52 donor would fail them. Reported as a fragility of the design, not as a reason to change any frozen threshold.",
+  "triplet_cap_proof": {
+    "declared_cap": 64,
+    "donor_x_operator_strata": 1347,
+    "max_sampled_tail_triplet_upper_bound": 64,
+    "strata_at_the_cap": 881,
+    "cap_never_exceeded": true
+  },
+  "operator_derivation": "operator_code is the authenticated Level-4 manifest operator_index of the unique metadata block containing each retained global selection_row",
+  "sample_role_id": "FULL104_TARGET_QUALIFICATION_ONLY__NOT_MASKING__NOT_TRAINING_V1",
+  "result_role": "METADATA_ONLY_STRUCTURAL_SUPPORT__NOT_MOLECULAR_QUALIFICATION",
+  "receipt_validator": {
+    "terminal": "PASS_FULL104_RARE_TAIL_STRUCTURAL_PREFLIGHT_RECEIPT_V1",
+    "source_fold_cases_checked": 12,
+    "molecular_outcome_opened": false
+  },
+  "expression_opened": false,
+  "count_matrices_opened": false,
+  "molecular_distances_computed": false,
+  "rare_tail_molecular_outcome": "UNOPENED",
+  "molecular_rare_tail_gate_executed_after_structural_pass": false,
+  "firewall": {
+    "audit_b_n1": "UNOPENED",
+    "masks_executed": "NONE",
+    "burden_calculation": "NOT_RUN",
+    "terminal_masking": "UNOPENED",
+    "rare_tail_molecular": "UNOPENED",
+    "td60": "UNEXECUTED",
+    "pathology_dev_sealed": "UNOPENED",
+    "d_shared": "UNOPENED",
+    "g5": "UNOPENED",
+    "training": "OFF"
+  }
+}
