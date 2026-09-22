@@ -1,5 +1,29 @@
 # START HERE — JEPA PROJECT
 
+Date: 2026-09-22
+
+**Current V18 new-chat handoff (docs-only):** `handoff/jepa-v5-full104-b4-n1-rare-tail-20260922-v18`. Based on the green Audit-B PR #50 head `e4b7e9f46842d66cd7db71b1df9de60fc037f971`. The rare-tail molecular proposal originated in parallel PR #51 (historically red); **test-only successor PR #52 is now GREEN**, including fail-on-skips. Neither target branch is present in this handoff's ancestry. Read the V18 PR52 addendum. Re-fetch live heads before acting.
+
+Read in this order:
+1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260922_V18_B4_N1_RARE_TAIL_CURRENT.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260922_V18_CURRENT.json`
+4. `docs/agent/JEPA_V18_DATA_RESULTS_SCRIPTS_MANIFEST_20260922.json`
+5. `docs/agent/JEPA_V18_TAKEOVER_COMMANDS_20260922.md`
+6. `docs/agent/JEPA_V18_PR52_GREEN_SUCCESSOR_ADDENDUM_20260922.md`
+7. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
+8. Prior 2026-09-21 target ETL/handoff manifest and exact source receipts referenced in V18.
+
+Current status: **B4 full-runtime read-only preflight PASS; N1 authority/code green but N1 not executed; metadata-only rare-tail structural preflight possible; rare-tail molecular PR #52 test-only successor GREEN, but molecular outcome still unopened; all protected outcomes unopened; training OFF.**
+
+Do not repeat completed FULL104 lineage, T0/T1/C2, Stage-A or historical TD discovery without a changed input. Never substitute historical/small/placeholder data for the FULL104 source.
+
+---
+
+## Archived START_HERE.md from parent (historical, not current authority)
+
+# START HERE — JEPA PROJECT
+
 Date: 2026-09-17
 
 Status: `CURRENT_V5_STREAMING_MASKING_EXECUTOR_PARITY_READY__FULL104_GPU_QUALIFICATION_PENDING__TRAINING_OFF`
