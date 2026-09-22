@@ -1,0 +1,22 @@
+{
+  "schema": "V5_AUDIT_B_N1_EXECUTION_AUTHORITY_V1",
+  "authority_id": "JEPA_V5_FULL104_AUDIT_B_N1_EXECUTION_AUTHORITY_V1",
+  "b4_contract_sha256": "c68231e53ee08990949688013261c957fc205f9599bbc446780a12ba4d276927",
+  "b4_runtime_preflight_source_sha": "979cacbc924c45e55ad57e239a2ed4b0429e88ef",
+  "b4_runtime_preflight_state": "READY_FOR_AUDIT_B_N1_EXECUTION",
+  "sample_level": "N1",
+  "target_count": 256,
+  "precision_scope_id": "ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1",
+  "precision_estimator_id": "HYBRID_ABSOLUTE_OR_RELATIVE_TARGET_SAMPLE_SE_V2",
+  "primary_policy_id": "RIDGE8_CONDITIONAL",
+  "primary_rung_numerator": 1,
+  "primary_rung_denominator": 20,
+  "reporting_scope_id": "ALL_3_NONUNIFORM_X_6_RUNG_CELLS_REPORTED_V1",
+  "result_scope_id": "ALL_3_NONUNIFORM_X_6_RUNG_CELLS_PLUS_SOURCE_STRATA_V1",
+  "primary_decision_role_id": "RIDGE8_CONDITIONAL_AT_5_PERCENT_ONLY_CONTROLS_PREFIX_ESCALATION_V1",
+  "n2_directly_authorized": false,
+  "terminal_masking_authorized": false,
+  "training_authorized": false,
+  "authority_sha256": "eb3293720c54ae10023a90b73c1bf35b46b6cacfda70632522014d988ebb0096",
+  "target_rng_id_rule_id": "INTEGER_MOLECULAR_ADDRESS_COLUMN_V1"
+}
