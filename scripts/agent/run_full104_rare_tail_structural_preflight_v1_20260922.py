@@ -276,7 +276,9 @@ def main() -> int:
     output = {
         **result,
         "sample_receipt_sha256": sample_receipt.canonical_digest(),
-        "sample_receipt_file_sha256": sha256_file(args.sample_dir / "sample_receipt.json"),
+        "sample_receipt_normalized_text_sha256": normalized_text_sha256(
+            args.sample_dir / "sample_receipt.json"
+        ),
         "full104_block_manifest_sha256": EXPECTED_BLOCK_MANIFEST_SHA256,
         "retained_cells": int(vectors["selection_rows"].size),
         "retained_donors": int(np.unique(vectors["donor_code"]).size),
