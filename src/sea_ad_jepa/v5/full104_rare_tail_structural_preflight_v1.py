@@ -31,6 +31,7 @@ FULL104_OPERATORS = 42
 
 MIN_CELLS_FOR_ISOLATION_BOUNDARY = 2
 MIN_CELLS_FOR_LOCAL_TRIPLET = 4
+TRIPLETS_PER_STRATUM_CAP = 64
 
 
 @dataclass(frozen=True)
@@ -42,7 +43,8 @@ class OperatorStructuralCapacityV1:
     retained_cells: int
     q95_tail_anchor_upper_bound: int
     triplet_capable_tail_anchor_upper_bound: int
-    tail_triplet_upper_bound: int
+    tail_triplet_population_upper_bound: int
+    sampled_tail_triplet_upper_bound: int
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -57,7 +59,8 @@ class DonorStructuralCapacityV1:
     represented_operators: int
     q95_tail_anchor_upper_bound: int
     triplet_capable_tail_anchor_upper_bound: int
-    tail_triplet_upper_bound: int
+    tail_triplet_population_upper_bound: int
+    sampled_tail_triplet_upper_bound: int
     structurally_eligible: bool
 
     def as_dict(self) -> dict[str, Any]:
@@ -83,8 +86,8 @@ def _integer_vector(value: Sequence[int] | np.ndarray, name: str) -> np.ndarray:
     return x.astype(np.int64, copy=False)
 
 
-def _tail_triplet_capacity(retained_cells: int) -> tuple[int, int, int]:
-    """Return (tail anchors, triplet-capable tail anchors, triplet upper bound).
+def _tail_triplet_capacity(retained_cells: int) -> tuple[int, int, int, int]:
+    """Return tail anchors, triplet-capable anchors, population and sampled caps.
 
     The q95 anchor count is an upper bound because metadata cannot know whether a
     Z isolation distance will be finite. For n>=2 an isolation boundary is
@@ -97,14 +100,16 @@ def _tail_triplet_capacity(retained_cells: int) -> tuple[int, int, int]:
 
     tail = q95_tail_count_from_finite_n(n) if n >= MIN_CELLS_FOR_ISOLATION_BOUNDARY else 0
     if n < MIN_CELLS_FOR_LOCAL_TRIPLET:
-        return tail, 0, 0
+        return tail, 0, 0, 0
 
     triplet_tail = q95_tail_count_from_finite_n(n)
     nearest_half_candidates = n // 2  # ceil((n-1)/2)
     comparisons_per_anchor = (
         nearest_half_candidates * (nearest_half_candidates - 1)
     ) // 2
-    return tail, triplet_tail, triplet_tail * comparisons_per_anchor
+    population = triplet_tail * comparisons_per_anchor
+    sampled = min(population, TRIPLETS_PER_STRATUM_CAP)
+    return tail, triplet_tail, population, sampled
 
 
 def evaluate_rare_tail_structural_support_v1(
@@ -147,14 +152,18 @@ def evaluate_rare_tail_structural_support_v1(
         operators = np.unique(operator[ix_d])
         tail_total = 0
         triplet_tail_total = 0
-        triplet_total = 0
+        triplet_population_total = 0
+        sampled_triplet_total = 0
 
         for op in operators:
             n = int(np.sum(operator[ix_d] == int(op)))
-            tail_n, triplet_tail_n, triplets = _tail_triplet_capacity(n)
+            tail_n, triplet_tail_n, triplet_population, sampled_triplets = (
+                _tail_triplet_capacity(n)
+            )
             tail_total += tail_n
             triplet_tail_total += triplet_tail_n
-            triplet_total += triplets
+            triplet_population_total += triplet_population
+            sampled_triplet_total += sampled_triplets
             operator_rows.append(
                 OperatorStructuralCapacityV1(
                     donor_code=d,
@@ -164,13 +173,14 @@ def evaluate_rare_tail_structural_support_v1(
                     retained_cells=n,
                     q95_tail_anchor_upper_bound=tail_n,
                     triplet_capable_tail_anchor_upper_bound=triplet_tail_n,
-                    tail_triplet_upper_bound=triplets,
+                    tail_triplet_population_upper_bound=triplet_population,
+                    sampled_tail_triplet_upper_bound=sampled_triplets,
                 )
             )
 
         eligible = bool(
             tail_total >= MIN_TAIL_ANCHORS
-            and triplet_total >= MIN_RESOLVED_TRIPLETS_PER_DONOR
+            and sampled_triplet_total >= MIN_RESOLVED_TRIPLETS_PER_DONOR
         )
         donor_rows.append(
             DonorStructuralCapacityV1(
@@ -181,7 +191,8 @@ def evaluate_rare_tail_structural_support_v1(
                 represented_operators=int(operators.size),
                 q95_tail_anchor_upper_bound=int(tail_total),
                 triplet_capable_tail_anchor_upper_bound=int(triplet_tail_total),
-                tail_triplet_upper_bound=int(triplet_total),
+                tail_triplet_population_upper_bound=int(triplet_population_total),
+                sampled_tail_triplet_upper_bound=int(sampled_triplet_total),
                 structurally_eligible=eligible,
             )
         )
@@ -221,6 +232,7 @@ def evaluate_rare_tail_structural_support_v1(
         "source_fold_cases": [x.as_dict() for x in case_rows],
         "tail_anchor_minimum_per_donor": MIN_TAIL_ANCHORS,
         "resolved_triplet_minimum_per_donor": MIN_RESOLVED_TRIPLETS_PER_DONOR,
+        "triplets_per_stratum_cap": TRIPLETS_PER_STRATUM_CAP,
         "measurable_donor_minimum_per_source_fold": MIN_MEASURABLE_DONORS_PER_SOURCE_FOLD,
         "zxy_molecular_outcome_opened": False,
         "rare_tail_molecular_pass_claimed": False,
