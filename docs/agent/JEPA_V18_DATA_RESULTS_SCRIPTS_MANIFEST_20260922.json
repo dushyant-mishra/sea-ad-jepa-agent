@@ -1,0 +1,192 @@
+{
+  "schema": "JEPA_V18_DATA_RESULTS_SCRIPTS_MANIFEST",
+  "date": "2026-09-22",
+  "base_commit": "e4b7e9f46842d66cd7db71b1df9de60fc037f971",
+  "note": "All paths are repository-relative unless explicitly marked EXTERNAL. PR51 is a parallel unmerged branch, not part of this handoff's tree. Never infer a sandbox download or local file existence from this manifest.",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "path_roots": {
+    "phase_iv": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/",
+    "real_sample": "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/",
+    "previous_etl_manifest": "docs/agent/handoff_artifacts/20260921/V5_FULL104_TARGET_ETL_DATA_RESULTS_SCRIPTS_MANIFEST.json"
+  },
+  "evidence": [
+    {
+      "pr": 42,
+      "scope": "real metadata sample",
+      "paths": [
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/sample_receipt.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/EXECUTION_PROVENANCE.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/SHA256SUMS.txt",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/VALIDATION_STDOUT.txt",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/OPERATOR_SUPPORT_CANDIDATE_V1.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/selection_rows_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/donor_code_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/row_rank_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/retained_count_by_donor_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/full_donor_n_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/fold_by_donor_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/donor_source_code_i64.npy"
+      ],
+      "sample_canonical_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6",
+      "cells": 105553,
+      "donors": 104
+    },
+    {
+      "pr": 46,
+      "scope": "B3 and V1",
+      "paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_RNG_REPLAY_AUTHORITY_V3.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V1.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B3_AND_AUDIT_B_V1_EXECUTION_PROVENANCE.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/RUNTIME_BINDING_VERIFICATION.txt",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUTHORITY_SHA_SIZE_RECEIPT.txt"
+      ]
+    },
+    {
+      "pr": 47,
+      "scope": "B2 and B4",
+      "paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_SCIENTIFIC_RESOLUTION_V3.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_PRECISION_RULE_AUTHORITY_V2.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V2.json"
+      ]
+    },
+    {
+      "pr": 48,
+      "scope": "B4 read-only GPU PASS",
+      "paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B4_FULL_RUNTIME_PREFLIGHT_RECEIPT.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B4_RUNTIME_PREFLIGHT_PROVENANCE.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/SHA256SUMS_B4_PREFLIGHT.txt"
+      ]
+    },
+    {
+      "pr": 49,
+      "scope": "rare-tail metadata-only structural possible; no CI triggered",
+      "paths": [
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_STRUCTURAL_PREFLIGHT_V1.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_STRUCTURAL_PREFLIGHT_PROVENANCE.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/SHA256SUMS_RARE_TAIL_STRUCTURAL.txt"
+      ]
+    },
+    {
+      "pr": 50,
+      "scope": "N1 prospective code authority; N1 unexecuted",
+      "paths": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_N1_EXECUTION_AUTHORITY_V1.json"
+      ]
+    },
+    {
+      "pr": 51,
+      "scope": "PROPOSED molecular authority and contract; CI FAILED; do not execute",
+      "branch": "target/v5-full104-rare-tail-molecular-freeze-20260922",
+      "paths": [
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_MOLECULAR_AUTHORITY_V1.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_MOLECULAR_EXECUTION_CONTRACT_V1.json"
+      ]
+    }
+  ],
+  "scripts_by_pr": {
+    "42": [
+      "analysis/v5_full104_target_qualification_20260921/scripts/derive_operator_support_candidate_v1_20260921.py"
+    ],
+    "44": [
+      "scripts/agent/run_full104_rare_tail_structural_preflight_v1_20260922.py",
+      "scripts/agent/validate_full104_rare_tail_structural_preflight_v1_20260922.py",
+      "src/sea_ad_jepa/v5/full104_rare_tail_structural_preflight_v1.py"
+    ],
+    "47": [
+      "scripts/agent/build_full104_audit_b_execution_contract_v2_20260922.py",
+      "scripts/agent/validate_full104_audit_b_execution_preflight_v2_20260922.py",
+      "src/sea_ad_jepa/v5/audit_b_execution_contract_v2.py",
+      "src/sea_ad_jepa/v5/audit_b_execution_preflight_v2.py",
+      "src/sea_ad_jepa/v5/audit_b_precision_rule_v2.py",
+      "src/sea_ad_jepa/v5/audit_b_scientific_resolution_v3.py"
+    ],
+    "50": [
+      "scripts/agent/build_full104_audit_b_n1_execution_authority_v1_20260922.py",
+      "src/sea_ad_jepa/v5/audit_b_n1_cached_planner_v1.py",
+      "src/sea_ad_jepa/v5/audit_b_n1_crossfold_planner_v1.py",
+      "src/sea_ad_jepa/v5/audit_b_n1_execution_authority_v1.py",
+      "src/sea_ad_jepa/v5/audit_b_n1_result_contract_v1.py",
+      "src/sea_ad_jepa/v5/audit_b_n1_runtime_rng_bridge_v1.py"
+    ],
+    "51": [
+      "scripts/agent/run_full104_rare_tail_molecular_prequalification_v1_20260922.py",
+      "src/sea_ad_jepa/v5/full104_rare_tail_molecular_authority_v1.py",
+      "src/sea_ad_jepa/v5/full104_rare_tail_molecular_execution_contract_v1.py",
+      "src/sea_ad_jepa/v5/full104_rare_tail_molecular_primitives_v1.py"
+    ]
+  },
+  "tests_by_pr": {
+    "44": [
+      "tests/test_v5_full104_rare_tail_structural_preflight_cli_v1.py",
+      "tests/test_v5_full104_rare_tail_structural_preflight_receipt_v1.py",
+      "tests/test_v5_full104_rare_tail_structural_preflight_v1.py"
+    ],
+    "47": [
+      "tests/test_v5_audit_b_execution_contract_builder_v2.py",
+      "tests/test_v5_audit_b_execution_contract_v2.py",
+      "tests/test_v5_audit_b_execution_preflight_cli_v2.py",
+      "tests/test_v5_audit_b_execution_preflight_v2.py",
+      "tests/test_v5_audit_b_precision_rule_v2.py",
+      "tests/test_v5_audit_b_scientific_resolution_v3.py"
+    ],
+    "50": [
+      "tests/test_v5_audit_b_n1_cached_planner_v1.py",
+      "tests/test_v5_audit_b_n1_crossfold_planner_v1.py",
+      "tests/test_v5_audit_b_n1_execution_authority_builder_v1.py",
+      "tests/test_v5_audit_b_n1_execution_authority_v1.py",
+      "tests/test_v5_audit_b_n1_result_contract_v1.py",
+      "tests/test_v5_audit_b_n1_runtime_rng_bridge_v1.py"
+    ],
+    "51": [
+      "tests/test_v5_full104_rare_tail_molecular_authority_v1.py",
+      "tests/test_v5_full104_rare_tail_molecular_execution_contract_v1.py",
+      "tests/test_v5_full104_rare_tail_molecular_primitives_v1.py",
+      "tests/test_v5_full104_rare_tail_molecular_runner_v1.py"
+    ]
+  },
+  "external_heavy_assets": [
+    {
+      "role": "FULL104 Level-4 8915-block dataset",
+      "path_hint": "C:/jepa_full104_ssd/expression_level4",
+      "manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "availability": "GPU laptop; resolve by authenticated receipt"
+    },
+    {
+      "role": "41,238-address canonical registry",
+      "path": "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv",
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "bytes": 24946770
+    },
+    {
+      "role": "heavy qualified sufficient stats NPZ",
+      "sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+      "bytes": 242087519,
+      "availability": "GPU machine; resolve by Phase-I qualification receipt; do not rebuild"
+    },
+    {
+      "role": "population metadata SQLite",
+      "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+      "availability": "external calibration bundle; not Git"
+    }
+  ],
+  "test_status": {
+    "pr50": "four exact-head workflows success including masking no-skip",
+    "pr49": "15 local rare-tail tests pass; evidence-only paths did not trigger Actions",
+    "pr51": "target semantics run 35690220963: 420 passed, 3 failed, fail-on-skip step not reached"
+  },
+  "no_outcomes_opened": [
+    "N1",
+    "terminal masking",
+    "rare-tail molecular",
+    "TD60",
+    "pathology",
+    "DEV",
+    "SEALED",
+    "D_shared",
+    "G5",
+    "training"
+  ]
+}
