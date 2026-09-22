@@ -173,6 +173,7 @@ on:
       - 'src/sea_ad_jepa/v5/audit_b_scientific_resolution_v3.py'
       - 'src/sea_ad_jepa/v5/audit_b_execution_contract_v2.py'
       - 'src/sea_ad_jepa/v5/audit_b_execution_preflight_v2.py'
+      - 'src/sea_ad_jepa/v5/audit_b_n1_execution_authority_v1.py'
       - 'tests/test_v5_audit_b_scientific_resolution_v1.py'
       - 'tests/test_v5_audit_b_scientific_resolution_v2.py'
       - 'src/sea_ad_jepa/v5/audit_b_scientific_resolution_v1.py'
@@ -194,6 +195,7 @@ on:
       - 'tests/test_v5_audit_b_execution_contract_builder_v2.py'
       - 'tests/test_v5_audit_b_execution_preflight_v2.py'
       - 'tests/test_v5_audit_b_execution_preflight_cli_v2.py'
+      - 'tests/test_v5_audit_b_n1_execution_authority_v1.py'
       - 'analysis/v5_full104_information_channel_redteam_20260920/**'
       - '.github/workflows/v5-full104-masking-runner.yml'
   workflow_dispatch:
@@ -311,7 +313,8 @@ jobs:
             tests/test_v5_audit_b_execution_contract_v2.py \
             tests/test_v5_audit_b_execution_contract_builder_v2.py \
             tests/test_v5_audit_b_execution_preflight_v2.py \
-            tests/test_v5_audit_b_execution_preflight_cli_v2.py
+            tests/test_v5_audit_b_execution_preflight_cli_v2.py \
+            tests/test_v5_audit_b_n1_execution_authority_v1.py
       - name: Fail closed on skips
         env:
           PYTHONPATH: src:.
@@ -411,5 +414,6 @@ jobs:
             tests/test_v5_audit_b_execution_contract_builder_v2.py \
             tests/test_v5_audit_b_execution_preflight_v2.py \
             tests/test_v5_audit_b_execution_preflight_cli_v2.py \
+            tests/test_v5_audit_b_n1_execution_authority_v1.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
