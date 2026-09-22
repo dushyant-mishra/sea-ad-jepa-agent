@@ -1,0 +1,42 @@
+{
+  "schema": "V5_FULL104_RARE_TAIL_MOLECULAR_EXECUTION_CONTRACT_V1",
+  "contract_id": "JEPA_V5_FULL104_RARE_TAIL_MOLECULAR_EXECUTION_CONTRACT_V1",
+  "molecular_authority_sha256": "0b5629ca5e7087b1535e006021ec35d24a981986d5096eb4c99f001294c4c000",
+  "structural_preflight_sha256": "f0d71c9b2f25d31a0b277b9a55f2a31f44d9084b924c3c14c67ef0c4c4a4bc89",
+  "structural_preflight_source_sha": "5503cd8c99506d172616b1e2edd8090eeaa41a05",
+  "sample_receipt_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6",
+  "full104_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "outer_split_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+  "target_eligibility_file_sha256": "3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e",
+  "runner_normalized_text_sha256": "d2d3b029de377adf9e3dc1f3f882f08ce0ec44be69a2718da34175aeb53f459a",
+  "primitives_normalized_text_sha256": "9219cf06260bef8f7d298e48cb977fb75791e0b2e75616ab47779a6c332c77cd",
+  "authority_source_normalized_text_sha256": "bd921546494ec5992fcf2b6f7bd9fba44aaef29d9688f1c9c6d60ed586f94837",
+  "tail_selector_source_normalized_text_sha256": "8e053d4dc5817e9684fd4681e85ae66d49dffb83cf57eb45346edb41336fecd2",
+  "source_library_parser_source_normalized_text_sha256": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
+  "source_hash_normalization": "UTF8_TEXT__CRLF_CR_TO_LF_V1",
+  "required_cases": 24,
+  "zero_slack_structural_cases": [
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "expected_zero_slack_donors": 4,
+  "evaluate_all_24_cases_even_after_failure": true,
+  "not_estimable_dominates_full_terminal": true,
+  "post_outcome_tail_threshold_adaptation_allowed": false,
+  "alternate_q90_q99_rescue_allowed": false,
+  "molecular_execution_authorized": true,
+  "teacher_tail_evaluation_authorized": false,
+  "td60_authorized": false,
+  "training_authorized": false,
+  "contract_sha256": "e834285f652d35fe335d16c0e58eadf7ee2b0ffc11fb11035c4ba17a94b80c02"
+}
