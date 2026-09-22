@@ -11,6 +11,7 @@ on:
       - 'scripts/agent/build_full104_target_qualification_sample_v1_20260921.py'
       - 'scripts/agent/validate_full104_target_qualification_sample_v1_20260921.py'
       - 'scripts/agent/run_full104_rare_tail_structural_preflight_v1_20260922.py'
+      - 'scripts/agent/validate_full104_rare_tail_structural_preflight_v1_20260922.py'
       - '.github/workflows/v5-remaining-rna-target-semantics.yml'
   workflow_dispatch:
 
@@ -60,6 +61,7 @@ jobs:
             tests/test_v5_full104_rare_biology_preservation_authority_v1.py \
             tests/test_v5_full104_rare_tail_structural_preflight_v1.py \
             tests/test_v5_full104_rare_tail_structural_preflight_cli_v1.py \
+            tests/test_v5_full104_rare_tail_structural_preflight_receipt_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v2.py
       - name: Fail closed on skipped regression tests
         env:
@@ -91,6 +93,7 @@ jobs:
             tests/test_v5_full104_rare_biology_preservation_authority_v1.py \
             tests/test_v5_full104_rare_tail_structural_preflight_v1.py \
             tests/test_v5_full104_rare_tail_structural_preflight_cli_v1.py \
+            tests/test_v5_full104_rare_tail_structural_preflight_receipt_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v2.py \
             -rs --tb=short | tee /tmp/current-v5.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/current-v5.txt; then echo 'CURRENT V5 REGRESSION TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
