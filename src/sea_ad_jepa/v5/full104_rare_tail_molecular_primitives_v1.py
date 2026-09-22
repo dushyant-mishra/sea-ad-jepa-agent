@@ -59,12 +59,13 @@ def select_gene_views(common_addresses: Sequence[int], panel: int) -> dict[str, 
     for label, genes in views.items():
         if genes.size != 512:
             raise ValueError(f"{label} view must contain exactly 512 addresses")
-        observed = hashlib.sha256(genes.astype("<i8").tobytes()).hexdigest()
-        # Gene SHA in historical TD59 was produced by its frozen authority
-        # representation. Do not silently claim byte-hash identity here; exact
-        # address arrays are instead verified by pair-address SHA below.
-        if observed == "":
-            raise AssertionError("unreachable")
+        observed = hashlib.sha256(genes.astype("<i4").tobytes()).hexdigest()
+        expected = PANEL_GENE_SHA256[panel][label]
+        if observed != expected:
+            raise ValueError(
+                f"TD59 gene-view hash mismatch for panel={panel} view={label}: "
+                f"{observed} != {expected}"
+            )
     labels = tuple(views)
     for i, a in enumerate(labels):
         for b in labels[i + 1:]:
