@@ -42,6 +42,12 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def normalized_text_sha256(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
 def canonical_sha256(payload: dict) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -113,9 +119,15 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
     if declared != observed:
         raise ValueError("structural-preflight canonical digest mismatch")
 
-    if payload.get("evaluator_source_sha256") != sha256_file(EVALUATOR):
+    if payload.get("source_hash_normalization") != "UTF8_TEXT__CRLF_CR_TO_LF_V1":
+        raise ValueError("structural-preflight source hash normalization drifted")
+    if payload.get("evaluator_source_normalized_text_sha256") != normalized_text_sha256(
+        EVALUATOR
+    ):
         raise ValueError("structural-preflight evaluator source hash mismatch")
-    if payload.get("runner_source_sha256") != sha256_file(RUNNER):
+    if payload.get("runner_source_normalized_text_sha256") != normalized_text_sha256(
+        RUNNER
+    ):
         raise ValueError("structural-preflight runner source hash mismatch")
 
     sample_digest, sample_file_sha = _sample_receipt_digest(sample_dir)
