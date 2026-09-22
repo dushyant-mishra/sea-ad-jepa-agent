@@ -51,6 +51,7 @@ RESULT_SCOPE_ID = "ALL_3_NONUNIFORM_X_6_RUNG_CELLS_PLUS_SOURCE_STRATA_V1"
 PRIMARY_DECISION_ROLE_ID = (
     "RIDGE8_CONDITIONAL_AT_5_PERCENT_ONLY_CONTROLS_PREFIX_ESCALATION_V1"
 )
+TARGET_RNG_ID_RULE_ID = "INTEGER_MOLECULAR_ADDRESS_COLUMN_V1"
 ESCALATION_RECEIPT_ID = "AUDIT_B_N1_TO_N2_PRECISION_ESCALATION_RECEIPT_V1"
 
 
@@ -101,6 +102,7 @@ class AuditBN1ExecutionAuthorityV1:
     reporting_scope_id: str = REPORTING_SCOPE_ID
     result_scope_id: str = RESULT_SCOPE_ID
     primary_decision_role_id: str = PRIMARY_DECISION_ROLE_ID
+    target_rng_id_rule_id: str = TARGET_RNG_ID_RULE_ID
 
     n2_directly_authorized: bool = False
     terminal_masking_authorized: bool = False
@@ -131,6 +133,7 @@ class AuditBN1ExecutionAuthorityV1:
             "reporting_scope_id": REPORTING_SCOPE_ID,
             "result_scope_id": RESULT_SCOPE_ID,
             "primary_decision_role_id": PRIMARY_DECISION_ROLE_ID,
+            "target_rng_id_rule_id": TARGET_RNG_ID_RULE_ID,
         }
         for name, value in expected.items():
             if getattr(self, name) != value:
