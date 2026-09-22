@@ -13,6 +13,7 @@ PHASE_IV = ROOT / "analysis/v5_full104_information_channel_redteam_20260920/evid
 PARENT = PHASE_IV / "AUDIT_B_EXECUTION_CONTRACT_V1.json"
 RESOLUTION = PHASE_IV / "AUDIT_B_SCIENTIFIC_RESOLUTION_V3.json"
 PRECISION = PHASE_IV / "AUDIT_B_PRECISION_RULE_AUTHORITY_V2.json"
+REAL_B4 = PHASE_IV / "AUDIT_B_EXECUTION_CONTRACT_V2.json"
 
 
 def test_builder_materializes_execution_ready_b4_from_real_semantic_parents(
@@ -38,6 +39,11 @@ def test_builder_materializes_execution_ready_b4_from_real_semantic_parents(
     contract = load_contract(out)
     contract.require_execution_ready()
     assert payload["contract_sha256"] == contract.canonical_digest()
+
+    committed = json.loads(REAL_B4.read_text(encoding="utf-8"))
+    committed_contract = load_contract(REAL_B4)
+    assert committed["contract_sha256"] == contract.canonical_digest()
+    assert committed_contract.canonical_digest() == contract.canonical_digest()
 
 
 def test_builder_refuses_overwrite_before_touching_inputs(tmp_path: Path) -> None:
