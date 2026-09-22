@@ -1,0 +1,236 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V18",
+  "date": "2026-09-22",
+  "status": "B4_PREFLIGHT_PASS__N1_AUTHORITY_GREEN_UNEXECUTED__RARE_TAIL_STRUCTURAL_POSSIBLE__MOLECULAR_PR51_CI_FAILED__TRAINING_OFF",
+  "handoff_parent": "e4b7e9f46842d66cd7db71b1df9de60fc037f971",
+  "handoff_branch": "handoff/jepa-v5-full104-b4-n1-rare-tail-20260922-v18",
+  "scientific_integration": {
+    "pr": 38,
+    "head": "3bf6b659de9bdd2711face82b50b47ec567ea449"
+  },
+  "masking_chain": [
+    {
+      "pr": 41,
+      "head": "ebae1f9667a6e483ec35a6918234c40b99ae9ea2",
+      "role": "preexecution hardening"
+    },
+    {
+      "pr": 42,
+      "head": "87de6cfd91e4a1f23e02467ca24e9cacf8a32582",
+      "role": "GPU target sample and producer authorities"
+    },
+    {
+      "pr": 43,
+      "head": "18b9476625d14ecf90b0b6b1efd12d5a7495b548",
+      "role": "RNG parameter-key fix",
+      "ci": "green"
+    },
+    {
+      "pr": 46,
+      "head": "ed65f1ba97b95bf135aaa15209bc8cc6ca5c670b",
+      "role": "B3 RNG + nonexecutable V1"
+    },
+    {
+      "pr": 47,
+      "head": "0180158f61f50ea4e5ad403fb11eb9d525b004c6",
+      "role": "B2 decision + B4 N1-only",
+      "ci": "four green"
+    },
+    {
+      "pr": 48,
+      "head": "979cacbc924c45e55ad57e239a2ed4b0429e88ef",
+      "role": "B4 GPU read-only preflight PASS",
+      "ci": "masking green"
+    },
+    {
+      "pr": 50,
+      "head": "e4b7e9f46842d66cd7db71b1df9de60fc037f971",
+      "role": "N1 execution authority/result/escalation contracts green, unexecuted",
+      "ci": "four green including no-skip"
+    }
+  ],
+  "target_chain": [
+    {
+      "pr": 44,
+      "head": "e48c15975b440160e48e29ace74196314d5fa9a6",
+      "role": "metadata structural runner and validator",
+      "ci": "green"
+    },
+    {
+      "pr": 49,
+      "head": "5503cd8c99506d172616b1e2edd8090eeaa41a05",
+      "role": "GPU structural result",
+      "ci": "not triggered on evidence-only paths; local validator PASS"
+    },
+    {
+      "pr": 51,
+      "head": "f8718b66f1c8bf39787408582fbbc85d5ada97d5",
+      "role": "molecular proposal with 3 failing tests",
+      "ci": "target workflow 35690220963 FAILED 420 passed 3 failed; runtime/spillover green"
+    }
+  ],
+  "parallel_docs": {
+    "previous_handoff_pr": 40,
+    "b2_memo_pr": 45
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "canonical_addresses": 41238,
+    "strict_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "source_donors": {
+      "HVS": 41,
+      "NPH52": 17,
+      "SEA_AD": 46
+    },
+    "fold_donors": [
+      28,
+      26,
+      25,
+      25
+    ]
+  },
+  "roots": {
+    "level4_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+    "split_receipt_canonical_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "split_receipt_file_sha256": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+    "heavy_statistics_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+    "metadata_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+    "phase_iv_sample_canonical_sha256": "c2c5e1b5addc50db7e9676ebf59e9c63b5d0b9eee882ef78aff5baa9d4a3b0ac",
+    "target_qualification_sample_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6",
+    "b3_rng_sha256": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+    "b3_global_seed_decimal_string": "1267387626254385975",
+    "audit_b_v1_sha256": "95db537de2df04e83c72d17ab788f985901ee4b644769d598243a9eed5eef398",
+    "b2_resolution_sha256": "766f467f4566cf0087ca4bc22f5263575a8ae50d7e5905666886190c3ad95889",
+    "precision_authority_sha256": "0a712b3aeebc42732726667722c90b2b9d97a6110cba157c2d99aa642c0c97b4",
+    "b4_contract_sha256": "c68231e53ee08990949688013261c957fc205f9599bbc446780a12ba4d276927",
+    "n1_execution_authority_sha256": "eb3293720c54ae10023a90b73c1bf35b46b6cacfda70632522014d988ebb0096",
+    "rare_tail_structural_sha256": "f0d71c9b2f25d31a0b277b9a55f2a31f44d9084b924c3c14c67ef0c4c4a4bc89",
+    "rare_tail_molecular_proposed_authority_sha256": "0b5629ca5e7087b1535e006021ec35d24a981986d5096eb4c99f001294c4c000",
+    "rare_tail_molecular_proposed_contract_sha256": "e834285f652d35fe335d16c0e58eadf7ee2b0ffc11fb11035c4ba17a94b80c02"
+  },
+  "masking": {
+    "B4_read_only_preflight": "READY_FOR_AUDIT_B_N1_EXECUTION",
+    "B4_source_pr": 48,
+    "n1_authority_pr": 50,
+    "n1_target_count": 256,
+    "n1_executed": false,
+    "burden_computed": false,
+    "masks_executed": false,
+    "direct_n2_n3_authorized": false,
+    "n2_count": 1024,
+    "n3_count": 4096,
+    "primary_weighting": "SOURCE_BALANCED__DONOR_UNIFORM_WITHIN_SOURCE__TARGET_UNIFORM_V1",
+    "robustness_weighting": "DONOR_UNIFORM_ACROSS_ALL_DONORS__TARGET_UNIFORM_V1",
+    "precision_scope": "ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1",
+    "primary_policy": "RIDGE8_CONDITIONAL",
+    "primary_rung": [
+      1,
+      20
+    ],
+    "precision_rule": "SE <= max(1/860,0.05*abs(mean_normalized_delta_B2))",
+    "mandatory_reported_policy_rung_cells": 18,
+    "raw_umi_descriptive_only": true,
+    "ci_at_pr50": {
+      "masking_run": 35690520168,
+      "status": "success",
+      "skipped_test_gate": "success",
+      "other_workflows": "all three success"
+    }
+  },
+  "rare_tail": {
+    "qualified_sample_cells": 105553,
+    "qualified_donors": 104,
+    "operators": 42,
+    "structural_status": "STRUCTURALLY_POSSIBLE__MOLECULAR_ESTIMABILITY_UNPROVEN",
+    "donor_operator_strata": 1347,
+    "triplet_cap": 64,
+    "strata_at_cap": 881,
+    "eligible_donors_per_source_fold": {
+      "HVS": [
+        11,
+        10,
+        10,
+        10
+      ],
+      "NPH52": [
+        5,
+        4,
+        4,
+        4
+      ],
+      "SEA_AD": [
+        12,
+        12,
+        11,
+        11
+      ]
+    },
+    "zero_slack_cases": [
+      [
+        "NPH52",
+        1
+      ],
+      [
+        "NPH52",
+        2
+      ],
+      [
+        "NPH52",
+        3
+      ]
+    ],
+    "molecular_outcome_opened": false,
+    "td60_executed": false,
+    "proposed_design": {
+      "panels": 2,
+      "genes_per_view": 512,
+      "pair_coordinates_per_view": 2048,
+      "min_informative_coordinates": 256,
+      "q95_tail": true,
+      "nearest_half": true,
+      "min_tail_anchors_per_donor": 5,
+      "triplets_per_stratum_cap": 64,
+      "min_resolved_triplets_per_donor": 20,
+      "matched_null_replicates": 64,
+      "null_p95_sorted_index": 60,
+      "min_measurable_donors_per_case": 4,
+      "cases": 24,
+      "pass_rule": "all 24 observed median donor agreement >0.5 and >matched-null p95"
+    },
+    "pr51_blockers": [
+      "ROOT undefined in frozen TD59 hash regression test",
+      "synthetic materialization fixture fails production all-42-operators gate; preserve production gate",
+      "nested JSON zero-slack lists compared to tuple-of-tuples"
+    ],
+    "pr51_workflow": {
+      "id": 35690220963,
+      "status": "failed",
+      "passed": 420,
+      "failed": 3,
+      "fail_on_skip_step": "not executed following failed suite"
+    }
+  },
+  "protections": {
+    "N1": "UNOPENED",
+    "masks": "NONE",
+    "burden": "NOT_RUN",
+    "terminal_masking": "UNOPENED",
+    "P1_P2_P3_P4": "UNSELECTED",
+    "rare_tail_molecular": "UNOPENED",
+    "TD60": "UNEXECUTED",
+    "pathology_dev_sealed": "UNOPENED",
+    "D_shared_G5": "UNOPENED",
+    "training": "OFF"
+  },
+  "next_actions": [
+    "Re-fetch live GitHub heads and exact SHA CI; do not merge parallel lanes blindly",
+    "Red-team #50 N1 planner/result/precision/end-to-end GPU execution mechanics before one-time N1",
+    "Fix #51 three exact regression failures without science/threshold changes; rerun full exact-head no-skip CI",
+    "Independent read-only rare-tail molecular runtime preflight only after #51 green; no molecular outcome before review",
+    "Preserve zero-slack NPH52 cases and anti-spillover firewall"
+  ]
+}
