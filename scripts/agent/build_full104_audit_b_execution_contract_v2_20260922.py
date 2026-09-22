@@ -136,6 +136,10 @@ def main() -> int:
                 "state": "B4_EXECUTION_CONTRACT_MATERIALIZED",
                 "contract_sha256": contract.canonical_digest(),
                 "execution_authorized": True,
+                "initial_sample_level_id": contract.initial_sample_level_id,
+                "initial_sample_size": contract.initial_sample_size,
+                "direct_n2_n3_execution_authorized":
+                    contract.direct_n2_n3_execution_authorized,
                 "terminal_masking_authorized": False,
                 "training_authorized": False,
             },
