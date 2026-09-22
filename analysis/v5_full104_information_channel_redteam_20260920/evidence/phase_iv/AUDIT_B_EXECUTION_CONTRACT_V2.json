@@ -65,11 +65,14 @@
   "terminal_masking_authorized": false,
   "training_authorized": false,
   "execution_authorized": true,
-  "contract_sha256": "2c91e661812ab5cbb22902ddffb7a098ed11300c42a8c465e76389153e0200aa",
+  "contract_sha256": "c68231e53ee08990949688013261c957fc205f9599bbc446780a12ba4d276927",
   "terminal_masking_outcomes_inspected": false,
   "source_artifacts": {
     "parent_contract": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V1.json",
     "scientific_resolution": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_SCIENTIFIC_RESOLUTION_V3.json",
     "precision_rule_authority": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_PRECISION_RULE_AUTHORITY_V2.json"
-  }
+  },
+  "initial_sample_level_id": "N1",
+  "initial_sample_size": 256,
+  "direct_n2_n3_execution_authorized": false
 }
