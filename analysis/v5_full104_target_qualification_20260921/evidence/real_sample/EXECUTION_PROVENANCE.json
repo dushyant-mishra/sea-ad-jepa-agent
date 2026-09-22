@@ -1,0 +1,137 @@
+{
+  "schema": "V5_FULL104_TARGET_QUALIFICATION_EXECUTION_PROVENANCE_V1",
+  "scope_class": "CURRENT_FULL104_AUTHORITY",
+  "utc_execution_time": "2026-09-22T00:21:10Z",
+  "source_branch": "gpu/v5-full104-metadata-receipts-20260921",
+  "source_commit": "ebae1f9667a6e483ec35a6918234c40b99ae9ea2",
+  "source_commit_role": "PR #41 head, audit/v5-full104-posthandoff-hardening-20260921",
+  "scientific_integration_head_at_start": "3bf6b659de9bdd2711face82b50b47ec567ea449",
+  "both_named_heads_matched_handoff": true,
+  "inputs": {
+    "level4_root": "C:/jepa_full104_ssd/expression_level4  (GPU_MACHINE_NOT_COMMITTED)",
+    "level4_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "split_receipt_path": "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_split_receipt_v1.json",
+    "split_receipt_canonical_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "split_receipt_file_sha256": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+    "etl_atlas_summary_path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_ATLAS_SUMMARY_V3.json",
+    "etl_atlas_file_sha256": "069057b9a265c27e90b1965ee7ee15e42ba44b1f8ace220a2bc56af677902b43",
+    "population_metadata_authority_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913"
+  },
+  "code": {
+    "builder_path": "scripts/agent/build_full104_target_qualification_sample_v1_20260921.py",
+    "builder_sha256": "db9de2f3d4d082d7ff4443115fce85b5391d99d481e0512aa6bbc17d2b7d8e18",
+    "builder_modified": false,
+    "validator_path": "scripts/agent/validate_full104_target_qualification_sample_v1_20260921.py",
+    "validator_sha256": "031385bdaa6efcd61be680287fabf1894691c28c7e9303a66e5f525a7ecf88c7",
+    "operator_candidate_script_sha256": "421f762e7bff21e82601cdfe4abd9c1542d76d7a122eadf2ebb6d1bbad1f839b"
+  },
+  "geometry": {
+    "source_metadata_rows_traversed": 4553407,
+    "donors": 104,
+    "donors_at_cap_1024": 103,
+    "min_retained_per_donor": 81,
+    "max_retained_per_donor": 1024,
+    "retained_cells": 105553,
+    "selection_rows_unique": true,
+    "fold_donor_counts": {
+      "0": 28,
+      "1": 26,
+      "2": 25,
+      "3": 25
+    },
+    "source_donor_counts": {
+      "0": 41,
+      "1": 17,
+      "2": 46
+    },
+    "matches_expected_geometry_exactly": true
+  },
+  "sample_receipt_canonical_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6",
+  "sample_receipt_file_sha256": "1f73b3b11640a06bcf23d0cc3d5dce9614c12d071131e75dd4a7e24ca67bbc88",
+  "validation": {
+    "mode": "FULL_SOURCE_REPLAY",
+    "status": "PASS_FULL104_TARGET_QUALIFICATION_SAMPLE_V1",
+    "full_source_replay": true,
+    "arrays_independently_reconstructed_and_matched": [
+      "selection_rows",
+      "donor_code",
+      "row_rank",
+      "retained_count_by_donor",
+      "full_donor_n",
+      "fold_by_donor",
+      "donor_source_code"
+    ],
+    "negative_controls_run_on_disposable_copies": [
+      {
+        "perturbation": "row_rank[7] += 1",
+        "caught_by": "receipt file-hash gate: 'sample file hash mismatch: row_rank'"
+      },
+      {
+        "perturbation": "row_rank[7] += 1, receipt re-sealed so the hash gate passes",
+        "caught_by": "structural check: 'donor 0: row_rank is not contiguous from zero'"
+      },
+      {
+        "perturbation": "fold_by_donor[3] rotated, receipt re-sealed",
+        "caught_by": "REPLAY comparison: 'sample fold_by_donor differs from authenticated split'"
+      }
+    ],
+    "negative_control_note": "the third control exists because the first two were intercepted before the replay ran, so they evidenced the receipt binding rather than the replay. The third reaches the replay and is caught by it. The real sample directory was never modified; every control ran on a copy that was deleted afterwards."
+  },
+  "outputs": {
+    "donor_code_i64.npy": {
+      "bytes": 844552,
+      "sha256": "05e03bedab5f7f5e1c4abd2083fa4c659476a747ecab806e4ed9358d7790123f"
+    },
+    "donor_source_code_i64.npy": {
+      "bytes": 960,
+      "sha256": "b45653e79cd1b781d72b0187f8be64b4dee88a1e7996bcc4acb5f4f42eda1933"
+    },
+    "fold_by_donor_i64.npy": {
+      "bytes": 960,
+      "sha256": "dca6135b567c1276805c8b940bae708ee217ed0878470fba7f2383496ca024db"
+    },
+    "full_donor_n_i64.npy": {
+      "bytes": 960,
+      "sha256": "35e36432470e0349ea11b73ef9d698c3431bf0443a51b865595aa57cda227da1"
+    },
+    "OPERATOR_SUPPORT_CANDIDATE_V1.json": {
+      "bytes": 3163,
+      "sha256": "3423175990653af1e75feec7d59b2b0b11d827a20e93328b01943c7b616fc1ac"
+    },
+    "retained_count_by_donor_i64.npy": {
+      "bytes": 960,
+      "sha256": "3872863ec82b6bb1ae827f47a819b29c93e591bd0e1c96184c5fa2d14e8be12f"
+    },
+    "row_rank_i64.npy": {
+      "bytes": 844552,
+      "sha256": "dff6e449eae9f12b34484a47ff64a4b22a2bfdd7898234d533f27a1fa9b8e9ca"
+    },
+    "sample_receipt.json": {
+      "bytes": 3571,
+      "sha256": "1f73b3b11640a06bcf23d0cc3d5dce9614c12d071131e75dd4a7e24ca67bbc88"
+    },
+    "selection_rows_i64.npy": {
+      "bytes": 844552,
+      "sha256": "6c68d732c94ad44b67b5e50f264a70a840fd49cebe80d73d00dcd90cee3af823"
+    },
+    "VALIDATION_STDOUT.txt": {
+      "bytes": 317,
+      "sha256": "0a759f16a00e19f87350569cb7f8ab4e2d9015e046f5049a05b09bd0905c88a4"
+    }
+  },
+  "expression_opened": false,
+  "protected_outcomes_opened": false,
+  "training_authorized": false,
+  "boundaries_held": {
+    "audit_b_n1_burden_outcomes": "UNOPENED",
+    "terminal_masking_outcomes": "UNOPENED",
+    "p1_p2_p3_p4_terminal_selection": "NONE",
+    "td60_learned_teacher_outcomes": "UNEXECUTED",
+    "rare_tail_z_x_y_molecular_outcomes": "UNOPENED",
+    "pathology_adaptive_analyses": "UNOPENED",
+    "dev_sealed_expression": "UNOPENED",
+    "d_shared": "UNOPENED",
+    "g5": "UNOPENED",
+    "production_training": "OFF"
+  }
+}

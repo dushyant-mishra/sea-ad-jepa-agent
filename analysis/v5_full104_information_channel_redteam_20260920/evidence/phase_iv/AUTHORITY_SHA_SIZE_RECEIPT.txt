@@ -1,0 +1,15 @@
+# Newly materialized Phase-IV authorities (2026-09-22 UTC)
+# branch gpu/v5-full104-metadata-receipts-20260921 @ ebae1f9667a6e483ec35a6918234c40b99ae9ea2
+#
+# file_sha256  bytes  path
+e9fc24dd93a15d0246c0f5de701ff219d3a70b4bf0e60bf51b0fba9d869e7b51      2582  MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json
+8ae737d1ee72c0330564559cbad984195b4942acc1b377a5e862e718a614e429       926  MASKING_BURDEN_LADDER_AUTHORITY_V2.json
+6a2e32cc05c3920dcce413b85fcce60d43cc1af5290b9cf715e11754e7eacb95      6265  B3_RNG_V3_AUTHORITY_BLOCKER.md
+
+# canonical (semantic) digests, distinct from the file hashes above:
+#   parameters V3  parameter_authority_sha256 = e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1
+#   burden ladder  authority_sha256           = 85148fdf9be2bdd655ec601c4d26870f47f6885ce83d93b6e5c7ff8046d32685
+
+# NOT PRODUCED: MASKING_RNG_REPLAY_AUTHORITY_V3.json  -- see B3_RNG_V3_AUTHORITY_BLOCKER.md
+# content-addressed reference, left on the GPU drive (not committed):
+#   role=canonical_address_registry  bytes=24946770  sha256=7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd
