@@ -41,6 +41,9 @@ FULL104_MANIFEST_SHA256 = (
 OUTER_SPLIT_RECEIPT_SHA256 = (
     "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4"
 )
+TARGET_ELIGIBILITY_FILE_SHA256 = (
+    "3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e"
+)
 
 PAIR_COUNT_PER_VIEW = 2048
 MIN_INFORMATIVE_PAIR_COORDINATES = 256
@@ -166,6 +169,7 @@ class Full104RareTailMolecularAuthorityV1:
     sample_receipt_sha256: str = SAMPLE_RECEIPT_SHA256
     full104_manifest_sha256: str = FULL104_MANIFEST_SHA256
     outer_split_receipt_sha256: str = OUTER_SPLIT_RECEIPT_SHA256
+    target_eligibility_file_sha256: str = TARGET_ELIGIBILITY_FILE_SHA256
 
     pair_count_per_view: int = PAIR_COUNT_PER_VIEW
     min_informative_pair_coordinates: int = MIN_INFORMATIVE_PAIR_COORDINATES
@@ -213,6 +217,7 @@ class Full104RareTailMolecularAuthorityV1:
             "sample_receipt_sha256": SAMPLE_RECEIPT_SHA256,
             "full104_manifest_sha256": FULL104_MANIFEST_SHA256,
             "outer_split_receipt_sha256": OUTER_SPLIT_RECEIPT_SHA256,
+            "target_eligibility_file_sha256": TARGET_ELIGIBILITY_FILE_SHA256,
         }
         for name, expected in roots.items():
             if _sha(getattr(self, name), name) != expected:
