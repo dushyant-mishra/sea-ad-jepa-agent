@@ -1,0 +1,1412 @@
+{
+  "schema": "JEPA_V5_FULL104_NEW_CHAT_DATA_RESULTS_SCRIPTS_MANIFEST_V18",
+  "date": "2026-09-22",
+  "assembly_policy": "This is a cross-branch lineage index, NOT a claim that all PR branches are merged. Baseline entries retain their Sep21 Git blob hashes at PR38; PR overlays are exact per-PR head paths. Resolve each path at its listed head, not at main or an arbitrary worktree. PR51 remains RED.",
+  "baseline": {
+    "manifest_path": "docs/agent/handoff_artifacts/20260921/V5_FULL104_TARGET_ETL_DATA_RESULTS_SCRIPTS_MANIFEST.json",
+    "commit": "034be1949c389c93a26d8476ceedbcd402c55505",
+    "scientific_commit": "3bf6b659de9bdd2711face82b50b47ec567ea449",
+    "repo_file_count": 178,
+    "repo_files": [
+      {
+        "category": "CI_WORKFLOW",
+        "path": ".github/workflows/v5-full104-masking-runner.yml",
+        "git_blob_sha": "84f6ca4e270ddc88afe4d91ed419bb346ed4b05f",
+        "size_bytes": 24064
+      },
+      {
+        "category": "CI_WORKFLOW",
+        "path": ".github/workflows/v5-remaining-rna-target-semantics.yml",
+        "git_blob_sha": "5108fc3005d139b1ca0aa702901c7d5bee43a763",
+        "size_bytes": 4724
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/environment/JEPA_ENVIRONMENT_ARTIFACT_INVENTORY_20260921.csv",
+        "git_blob_sha": "8a3c89dacbaa9ff9399d295d1be82cd257a90c2f",
+        "size_bytes": 2556
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/environment/JEPA_ENVIRONMENT_ARTIFACT_ROLES_20260921.csv",
+        "git_blob_sha": "35bf664bbceba6033378e5b0a3611dea2c36acba",
+        "size_bytes": 2285
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_ATLAS_SUMMARY_V3.json",
+        "git_blob_sha": "5fd8842d4f9d597487f26a2ac3e165bded03e906",
+        "size_bytes": 14356
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_DONOR_CLASS_COVERAGE.csv",
+        "git_blob_sha": "6c3173bf062a4bd8a9a89f74e600dabeb6537d02",
+        "size_bytes": 3519
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_EXACT_SUPPORT_PATTERN_SUMMARY.csv",
+        "git_blob_sha": "239443bde75dc55a597c8fe19fcdecbabeae0bfa",
+        "size_bytes": 777
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_NATIVE_CLASS_COVERAGE.csv",
+        "git_blob_sha": "af0987aba2591b69197b64d12d965c98434c90c0",
+        "size_bytes": 2100
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_NATIVE_CLASS_OVERLAP.csv",
+        "git_blob_sha": "85e59f942e005d70f5765afe210e6f9dc52abca8",
+        "size_bytes": 406
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_NPH_READER_COHORT_SUMMARY.csv",
+        "git_blob_sha": "7d7a71297311e9329c5cfab9d69461ce051e0c01",
+        "size_bytes": 71
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_OPERATOR_SUMMARY.csv",
+        "git_blob_sha": "de0064b3b4849dcecdbfb90759cce98cdde929de",
+        "size_bytes": 2807
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_OUTPUT_SHA256.csv",
+        "git_blob_sha": "dc6bb8de807dd6e79cda3f7284a184eaf9801840",
+        "size_bytes": 1419
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_READER_PARTITION_SOURCE_SUMMARY.csv",
+        "git_blob_sha": "907684f2f7b670945977ae1cc059b9a7db279afa",
+        "size_bytes": 740
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_SEAAD_DONOR_REGION_COVERAGE.csv",
+        "git_blob_sha": "e9894a67544756c4cba6bd9d7aec6dbb10354b66",
+        "size_bytes": 1489
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_SOURCE_SUMMARY.csv",
+        "git_blob_sha": "98b9ce9fe9f43085097c8faadc1b963dd27006c9",
+        "size_bytes": 648
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_SOURCE_SUPPORT_OVERLAP.csv",
+        "git_blob_sha": "6801d923395f7b00c29d5e84b7cdf8336f308fba",
+        "size_bytes": 680
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_SQL_AGGREGATE_SHA256.csv",
+        "git_blob_sha": "1a4a8a8687108d8e09af18b31f44d7e5feaf3c1e",
+        "size_bytes": 1205
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/evidence/FULL104_DATASET_ETL_SUPPORT_FINGERPRINT_SUMMARY.csv",
+        "git_blob_sha": "4b3c74b809d26c3dcadb295e7412ad569711855b",
+        "size_bytes": 825
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/FULL104_DATASET_ETL_ATLAS_REPORT_20260921.md",
+        "git_blob_sha": "0d2b73bcfdb81801709b773f0d3faee93158d9dd",
+        "size_bytes": 11350
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/FULL104_DATASET_ETL_GITHUB_CONTENT_MANIFEST_20260921.csv",
+        "git_blob_sha": "e3a1dcbc4d229b2e74e0e2e29042404957a7f8ff",
+        "size_bytes": 3555
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/FULL104_DATASET_ETL_REPRODUCIBILITY_RECEIPT_V1.json",
+        "git_blob_sha": "9462fb5d228584740eaa0a0b28aa7604fc8fe6ea",
+        "size_bytes": 1714
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/README.md",
+        "git_blob_sha": "c24055f4b23e14d7e7a789b31b41e424ff93547b",
+        "size_bytes": 4380
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/scripts/build_full104_dataset_etl_atlas_v3_20260921.py",
+        "git_blob_sha": "fec5d55d10fe286e5a966319bb3e3a2ab3919085",
+        "size_bytes": 22377
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/scripts/extract_full104_dataset_sql_aggregates_v1_20260921.py",
+        "git_blob_sha": "8b34f02d7aade8c319fbc920ca14a9d424d67c29",
+        "size_bytes": 5019
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/supporting/historical_t1_identity_drift_by_support_pattern.csv",
+        "git_blob_sha": "afc87baff886735e4da01e020836b4c939ee3143",
+        "size_bytes": 1992
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/supporting/historical50k_source_sparsity_aggregate_safe.csv",
+        "git_blob_sha": "863d47033c613ac769adbd077d149f1e9375a290",
+        "size_bytes": 375
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/supporting/JEPA_LOCAL_PARALLEL_AUDIT_20260920.md",
+        "git_blob_sha": "7ff1d4d04925f531eada520d1a0985965421efea",
+        "size_bytes": 8760
+      },
+      {
+        "category": "ETL_ATLAS",
+        "path": "analysis/v5_full104_dataset_etl_20260921/supporting/SHA256SUMS_LOCAL_PARALLEL_AUDIT.txt",
+        "git_blob_sha": "4b9f0c263c463bb39e21e35980c7dadfaab9ea93",
+        "size_bytes": 679
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/ATTACKER_STANDARDIZATION_ESTIMAND_AUDIT.md",
+        "git_blob_sha": "922f47ff512bb98172c4bd35c8dfc92b43d727d0",
+        "size_bytes": 8136
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/CALIBRATION_CACHE_COVERAGE_AUDIT.md",
+        "git_blob_sha": "6b925e7cf42bd59847308da4b3b00dfac5c21335",
+        "size_bytes": 6029
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/CLAUDE_GPU_LANE_DEEP_AUDIT_20260921.md",
+        "git_blob_sha": "25957d72fbc03b3084b9d26afb4577c0f4d7d28f",
+        "size_bytes": 7419
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/CROSS_AUDIT_INTERACTIONS.md",
+        "git_blob_sha": "0d118b75fefab0c672f1636890bbb1905f5f732f",
+        "size_bytes": 10049
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/EVIDENCE_SHA256.csv",
+        "git_blob_sha": "d8c02737e2c713ebade323a0ed6d6ad844cb4f61",
+        "size_bytes": 9268
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_a/NORMALIZATION_DENOMINATOR_BY_CORE_NNZ_DECILE.csv",
+        "git_blob_sha": "91fd50491ab8bd1cec9f772a4a49da26b9ed4466",
+        "size_bytes": 10248
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_a/NORMALIZATION_DENOMINATOR_BY_DEPTH_DECILE.csv",
+        "git_blob_sha": "ec3b2f6807f9b3106a8bc7e22bdf337e283ef2f2",
+        "size_bytes": 10047
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_a/NORMALIZATION_DENOMINATOR_BY_DONOR.csv",
+        "git_blob_sha": "7f0b2003717cf3d3d24fb907281abddce553f207",
+        "size_bytes": 89780
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_a/NORMALIZATION_DENOMINATOR_BY_OPERATOR.csv",
+        "git_blob_sha": "3c134675735f5a1f63148c84088aff07dae2908a",
+        "size_bytes": 34165
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_a/NORMALIZATION_DENOMINATOR_BY_SOURCE_OPERATOR.csv",
+        "git_blob_sha": "d70225170edfc249dba42ad29b53d2e8a2906498",
+        "size_bytes": 34380
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_a/NORMALIZATION_DENOMINATOR_BY_SOURCE.csv",
+        "git_blob_sha": "27d454e61c9582af0a1f88ff5071a84c52b817f4",
+        "size_bytes": 3834
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_a/NORMALIZATION_DENOMINATOR_SUMMARY.json",
+        "git_blob_sha": "a3440a057258b0bc0486ea48b6080f1712ac6275",
+        "size_bytes": 5021
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_b/MASK_EFFECTIVE_BURDEN_POLICY_SUMMARY.csv",
+        "git_blob_sha": "937a02497ff4e5f8429141a23c23627d385ad20c",
+        "size_bytes": 1995
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_b/MASK_EFFECTIVE_BURDEN_SOURCE_SUMMARY.csv",
+        "git_blob_sha": "b86011d717825876d72bfe2af3e3dcbc338b86be",
+        "size_bytes": 503
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_b/MASK_EFFECTIVE_BURDEN.json",
+        "git_blob_sha": "d1cdf90157a40eab3bf4b337da39dfc46fcb587d",
+        "size_bytes": 9374
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/C2_ROW_LEVEL_VARIANCE_VERIFICATION.json",
+        "git_blob_sha": "d20f6de9a5289e14451cf08fd547da8d0f4e891e",
+        "size_bytes": 1146
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_ESTIMABILITY.json",
+        "git_blob_sha": "0f05c654b229ed8ded092a2e454bf3bf592886a4",
+        "size_bytes": 19488
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_FOLD_ESTIMABILITY_DETAIL.npz",
+        "git_blob_sha": "7e0f1a0182fd254db0930585a049efb000225081",
+        "size_bytes": 206089
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_FOLD_ESTIMABILITY_SUMMARY.csv",
+        "git_blob_sha": "af43944c04e7b91136613c42136d0642dece957d",
+        "size_bytes": 2526
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_SUPPORT_SUMMARY.csv",
+        "git_blob_sha": "d39721524d5690231bb3f76df49444ca771b40b9",
+        "size_bytes": 364
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_ZERO_VARIANCE_SUMMARY.csv",
+        "git_blob_sha": "cc9a55b10fea27dd535062bf78e52223dad5da8b",
+        "size_bytes": 455
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_d/ATTACKER_STANDARDIZATION_CALIBRATION_RESULTS.json",
+        "git_blob_sha": "121fee155d3c4c2f3a77fe56771acd300d3b0e49",
+        "size_bytes": 8721
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_d/ATTACKER_STANDARDIZATION_FIXTURE_RESULTS.csv",
+        "git_blob_sha": "6e5d2f91f5addf56ec76bdcea5a8919edcccc67c",
+        "size_bytes": 2015
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_e/PARTNER_CODETECTION_DECOMPOSITION.csv",
+        "git_blob_sha": "1b9df1a4c20e99685450ce695162ac77e87a2a2c",
+        "size_bytes": 99626
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_e/PARTNER_CODETECTION_DECOMPOSITION.json",
+        "git_blob_sha": "ae7979a59d998eb7a74b2aca8527836d0bf96333",
+        "size_bytes": 1993
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_f/TARGET_IDENTITY_ZERO_DECOMPOSITION_FIXTURES.json",
+        "git_blob_sha": "f7b4cf60144871912371254827652e2a3fabb3fd",
+        "size_bytes": 9386
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/CALIBRATION_CACHE_COVERAGE_SUMMARY.csv",
+        "git_blob_sha": "cd9fa5e45e5da347292a6e7c2f7c36d8b8250e48",
+        "size_bytes": 349
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/CALIBRATION_CACHE_COVERAGE_SUMMARY.json",
+        "git_blob_sha": "bc1e01afb4b1ed411fc8ac70867c443667b7e4ea",
+        "size_bytes": 29828
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/CALIBRATION_CACHE_SOURCE_COMPOSITION.csv",
+        "git_blob_sha": "eb8814c47fecfa59a6ca6c90c6fd875b4c7dd52d",
+        "size_bytes": 305
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_g/HOSTED_AUDIT_G_EQUAL_DONOR_FIXTURE_V1.json",
+        "git_blob_sha": "dfb6f0be6d4d3685791e65cf4bf6f8c806808c77",
+        "size_bytes": 2536
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/CURRENT_SOURCE_FOLD_DONOR_GEOMETRY.csv",
+        "git_blob_sha": "690db570fad10d98f506320d82dffdd50404b95b",
+        "size_bytes": 1141
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/parser_equivalence/HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION.json",
+        "git_blob_sha": "418620d0c34e32dad098c315bde12563405e0d8b",
+        "size_bytes": 3912
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/parser_equivalence/SOURCE_LIBRARY_PARSER_EQUIVALENCE.json",
+        "git_blob_sha": "2074c794dd2598138db1c2944400b89cb134277c",
+        "size_bytes": 756
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V2.json",
+        "git_blob_sha": "a94a7898d6c5a530824736cac33d75b6467513cc",
+        "size_bytes": 4002
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iii/POLICY_CONSEQUENCE_ON_REAL_GEOMETRY.json",
+        "git_blob_sha": "7042bdce94bae84b5638397e81909b99c1905e27",
+        "size_bytes": 2274
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_FROZEN_TARGET_SAMPLE.json",
+        "git_blob_sha": "8e005dcd619804bf54a2b6e858f8f4dcc382bfff",
+        "size_bytes": 86826
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_PREEXECUTION_STATUS_V1.json",
+        "git_blob_sha": "c2428d516abd229466ed8bc4a51071688bca79b3",
+        "size_bytes": 4579
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/EXTERNAL_ARTIFACTS.json",
+        "git_blob_sha": "d17bce48371793336327fd57eab4ca59beee5385",
+        "size_bytes": 4501
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/F13_QUERY_DENOMINATOR_DEPENDENCE_20260921.md",
+        "git_blob_sha": "a7d4ba708eca4bb0de820e276a37678ba0394332",
+        "size_bytes": 3232
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/FULL104_DATASET_FIELD_ROLE_LEDGER_20260921.md",
+        "git_blob_sha": "e030892f43e7d15f71057cb3662fe9d1e2c2803d",
+        "size_bytes": 4299
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/FULL104_SCOPE_AND_HISTORICAL_FIREWALL.md",
+        "git_blob_sha": "92d07a406c5488e5fe7ce32340d9eaf45c9540c0",
+        "size_bytes": 4033
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/G3_ATTACKER_FIT_OBJECTIVE_CONTRACT_GAP.md",
+        "git_blob_sha": "0812f9d12588fbe269298cde7305d07a16473239",
+        "size_bytes": 3142
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/H3_TARGET_VS_DONOR_PRECISION_DECOMPOSITION_DESIGN.md",
+        "git_blob_sha": "59e2320b2a36de613b47c730104bd9a7365d372c",
+        "size_bytes": 2472
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/HANDOFF_FOR_GPT_20260920.md",
+        "git_blob_sha": "43e4f30eae5e92ca53d0f5580d65f1bc888bf42e",
+        "size_bytes": 13988
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/MASK_EFFECTIVE_BURDEN_AUDIT_REPORT.md",
+        "git_blob_sha": "b45f36ce67f5764a8f855149f74d13ed3e44f51d",
+        "size_bytes": 6789
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/NORMALIZATION_DENOMINATOR_AUDIT_REPORT.md",
+        "git_blob_sha": "137a47ef170742d7235cb2bc8745297aa29a61d2",
+        "size_bytes": 8904
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/PARTNER_CODETECTION_DECOMPOSITION_REPORT.md",
+        "git_blob_sha": "6b3adaecd87998b6b96819be958a745349fb830d",
+        "size_bytes": 5447
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/PHASE_I_HEAVY_STATISTICS_QUALIFICATION_REPORT.md",
+        "git_blob_sha": "30ca85b48f9629212e0da4bd8d1b07e753bff494",
+        "size_bytes": 7771
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/PHASE_II_C2_SOURCE_FOLD_ESTIMABILITY_REPORT.md",
+        "git_blob_sha": "308d48db3723a2582822d175f63cefad8d6ba5bc",
+        "size_bytes": 8782
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/PHASE_III_NON_ESTIMABILITY_EVIDENCE_CONTRACT.md",
+        "git_blob_sha": "154320ea26cd39f37b10ca622379f422365d369d",
+        "size_bytes": 10377
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/PHASE_IV_INTEGRATION_RECONCILIATION_20260921.md",
+        "git_blob_sha": "a8a479cccd1d58edb33346e1e53c48504176d1c8",
+        "size_bytes": 5297
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/PHASE_IV_PREEXECUTION_AUDIT_REPORT_20260921.md",
+        "git_blob_sha": "0c367ec87f5f7ce54b09cd5b19f998e96b653733",
+        "size_bytes": 21772
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/README.md",
+        "git_blob_sha": "09efe8f51862bd473f67a4c53d50c79c0cf0d2e6",
+        "size_bytes": 6702
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_a_normalization_denominator_20260920.py",
+        "git_blob_sha": "b66098c7e2bf78cddf2118c025c40c1654462251",
+        "size_bytes": 24855
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_b_effective_burden_20260920.py",
+        "git_blob_sha": "77452b4af4b046e8a813c23a3b9d38b9f4b055de",
+        "size_bytes": 14433
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_b_mask_plan_generator_20260920.py",
+        "git_blob_sha": "aa3ee85c9eadfe551bc82449e5f9d4b9f7e3f664",
+        "size_bytes": 6437
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_c_target_source_estimability_20260920.py",
+        "git_blob_sha": "2feb5b226111134c79a3d4aed7a9d876ecb31dcd",
+        "size_bytes": 17653
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_d_standardization_estimand_20260920.py",
+        "git_blob_sha": "63666cced5d1c7069c8d0d97556a23a8a31a8c89",
+        "size_bytes": 14591
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_e_codetection_decomposition_20260920.py",
+        "git_blob_sha": "01675372a9c239b50e658719f979f4ad965af76d",
+        "size_bytes": 10823
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_f_target_identity_zero_decomposition_20260920.py",
+        "git_blob_sha": "358e75d6f52f8fe86571f6a6063e66d601f24683",
+        "size_bytes": 11202
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_g_cache_coverage_20260920.py",
+        "git_blob_sha": "2cb1d97c76a550ff09d73e6e826176e545dfc00c",
+        "size_bytes": 11456
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/audit_source_library_parser_equivalence_20260920.py",
+        "git_blob_sha": "d1d9b0dbb8d3def38fdd5dad922a23398d6d0a93",
+        "size_bytes": 8006
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/build_core_sufficient_statistics_20260920.py",
+        "git_blob_sha": "59298a402970c2fa8c2bf9bfaf8709f45aea6915",
+        "size_bytes": 20674
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/build_evidence_manifests_20260920.py",
+        "git_blob_sha": "18d044113691bc90ab43b3efa1b51191f6d72950",
+        "size_bytes": 10344
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/freeze_audit_b_target_sample_20260921.py",
+        "git_blob_sha": "ffa6998f41e4c6eae93099420e73ea0db0c9e77c",
+        "size_bytes": 9235
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_audit_g_physical_artifact_20260920.py",
+        "git_blob_sha": "12677a6176283d041a0b3fe2e86f97408fc40ac2",
+        "size_bytes": 8707
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_heavy_sufficient_statistics_20260920.py",
+        "git_blob_sha": "96b6a072e987bee6ac5e338b59b745ec677d02e7",
+        "size_bytes": 15745
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_heavy_sufficient_statistics_v2_20260921.py",
+        "git_blob_sha": "0aaab972af25c74229f569e3075b5d1d4c532db4",
+        "size_bytes": 18984
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/score_term_evidence_contract_v2.py",
+        "git_blob_sha": "e43bcbbe5a1ca74fa4c8c486d1bfc868835bc436",
+        "size_bytes": 21252
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/verify_c2_variance_from_rows_20260920.py",
+        "git_blob_sha": "7d836698bc37537021083055beb7c123c1face29",
+        "size_bytes": 13149
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/TARGET_IDENTITY_ZERO_STRATIFIED_DESIGN.md",
+        "git_blob_sha": "32dfc4aad2d1a8f3871d043abb5aa34c4315a255",
+        "size_bytes": 7664
+      },
+      {
+        "category": "INFORMATION_CHANNEL_AUDIT",
+        "path": "analysis/v5_full104_information_channel_redteam_20260920/TARGET_SOURCE_ESTIMABILITY_AUDIT_REPORT.md",
+        "git_blob_sha": "8d9e6623f2c5788524441864537cb2d3a790a359",
+        "size_bytes": 7275
+      },
+      {
+        "category": "CURRENT_TARGET_DESIGN_DOC",
+        "path": "docs/agent/V5_FULL104_RARE_BIOLOGY_PRESERVATION_PROSPECTIVE_20260921.md",
+        "git_blob_sha": "09b078544e58a55ca398e5b4c916d84a335d366f",
+        "size_bytes": 5774
+      },
+      {
+        "category": "CURRENT_TARGET_DESIGN_DOC",
+        "path": "docs/agent/V5_FULL104_TARGET_DISCOVERY_HISTORY_TO_TD60_SUCCESSOR_20260921.md",
+        "git_blob_sha": "3d48525e1301f827d398f06646a030c86dfcb2c3",
+        "size_bytes": 6754
+      },
+      {
+        "category": "CURRENT_EXECUTION_SCRIPT",
+        "path": "scripts/agent/build_full104_audit_b_execution_contract_v1_20260921.py",
+        "git_blob_sha": "ff4d495433975de279f77bca01f63b16d9631cd4",
+        "size_bytes": 10697
+      },
+      {
+        "category": "CURRENT_EXECUTION_SCRIPT",
+        "path": "scripts/agent/build_full104_rng_replay_authority_v3_20260921.py",
+        "git_blob_sha": "1af2f4a51d5221e8aa2547670279f55477957d64",
+        "size_bytes": 5094
+      },
+      {
+        "category": "CURRENT_EXECUTION_SCRIPT",
+        "path": "scripts/agent/build_full104_target_qualification_sample_v1_20260921.py",
+        "git_blob_sha": "56c936e22d6c1a8c95094ba6590b1c2c741793fe",
+        "size_bytes": 13918
+      },
+      {
+        "category": "CURRENT_EXECUTION_SCRIPT",
+        "path": "scripts/agent/validate_full104_audit_b_execution_preflight_v1_20260921.py",
+        "git_blob_sha": "f8bb31dfa1f0314b6c9f9ac06451c74adbaf16f2",
+        "size_bytes": 2094
+      },
+      {
+        "category": "CURRENT_EXECUTION_SCRIPT",
+        "path": "scripts/agent/validate_full104_target_qualification_sample_v1_20260921.py",
+        "git_blob_sha": "3a28550b5b9778834615c6791b5677cc55879432",
+        "size_bytes": 7658
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/attacker_fit_objective_weights_v1.py",
+        "git_blob_sha": "53da0bf553e8613548d55cccb749e3c312939e59",
+        "size_bytes": 4776
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/audit_b_execution_contract_v1.py",
+        "git_blob_sha": "38b18dd34c6cdd8e5f2951b699644d6c833e3b7e",
+        "size_bytes": 10800
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/audit_b_execution_preflight_v1.py",
+        "git_blob_sha": "47a8879f06116dcfff17d774f57638c57cb70b96",
+        "size_bytes": 11946
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/audit_b_production_burden_v1.py",
+        "git_blob_sha": "11a9a4053cf03449d7e1b078ad704322ec9caa1d",
+        "size_bytes": 18234
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/audit_b_scientific_resolution_v1.py",
+        "git_blob_sha": "911eb39d0f4e03a9ec43a9fbc21df6d1b320fb46",
+        "size_bytes": 6010
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/dataset_etl_guardrails_v1.py",
+        "git_blob_sha": "51d7ae9fe52d9a3540fa86006c2786295522dcbd",
+        "size_bytes": 4985
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/dataset_field_roles_v1.py",
+        "git_blob_sha": "9c3bc5fc21502afadc3c8067d99c01111ce4e2c6",
+        "size_bytes": 2211
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/evidence_estimability_contract_v1.py",
+        "git_blob_sha": "ee4bf67c755ee0220d1eb3c090461bf62326db12",
+        "size_bytes": 6621
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/evidence_estimability_contract_v2.py",
+        "git_blob_sha": "65f473cce023847a086a0003ed438daebabe41b2",
+        "size_bytes": 24598
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/full104_rare_biology_preservation_authority_v1.py",
+        "git_blob_sha": "b1fa017b53ef946ead1666708f404e96e01dc662",
+        "size_bytes": 7233
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/full104_target_qualification_sample_authority_v1.py",
+        "git_blob_sha": "c3d1ae1b22a51e440778ed0bb75f362ddd5ebf77",
+        "size_bytes": 14530
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/full104_teacher_relational_target_qualification_authority_v1.py",
+        "git_blob_sha": "4877c0023977f32454f12667b331c92245742163",
+        "size_bytes": 9135
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/h3_precision_resampling_v1.py",
+        "git_blob_sha": "fe401c025204074287764b8684dd28f979b7ce78",
+        "size_bytes": 5132
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/masking_burden_parity_audit_v1.py",
+        "git_blob_sha": "b95e749fbbd8560b7b8751d4d4e4d56550eeff00",
+        "size_bytes": 3241
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/masking_rng_replay_authority_v3.py",
+        "git_blob_sha": "8f00708ae0ee61b428ea176570ba5a2929e14254",
+        "size_bytes": 7008
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/remaining_rna_execution_authority_v1.py",
+        "git_blob_sha": "3e0fa85fb7cd489f66aecdb299f340cacb23b69e",
+        "size_bytes": 5248
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/remaining_rna_necessity_v1.py",
+        "git_blob_sha": "6f4e231366db2c13e8e7e315e06aa0e52a5a7ad8",
+        "size_bytes": 9274
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/teacher_target_semantics_authority_v2.py",
+        "git_blob_sha": "0f0cf18db5e1217d292ef1c8d82db846e790c74e",
+        "size_bytes": 5222
+      },
+      {
+        "category": "CURRENT_V5_SOURCE",
+        "path": "src/sea_ad_jepa/v5/technical_only_decoy_v1.py",
+        "git_blob_sha": "6f42be384f13c693202648ed430c4c3ffad15397",
+        "size_bytes": 5520
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td56s_disjoint_gene_relational_geometry/TD56S_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "809ad4d67823fc1bacbf753a5f777ecc58903a59",
+        "size_bytes": 3281
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td56s_disjoint_gene_relational_geometry/TD56S_RESULT.md",
+        "git_blob_sha": "41976554b30aaae913d09ef86b6d29ac329bc45e",
+        "size_bytes": 4361
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57a_compute_safe_triplet_relational_target/TD57A_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "313d711bffb11042ccff9f9e14db0074d3f469ec",
+        "size_bytes": 4397
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57a_compute_safe_triplet_relational_target/TD57A_RESULT.md",
+        "git_blob_sha": "a83d76c4603db8431bf526448fc4ebd5d7e87dba",
+        "size_bytes": 4542
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57a_exploratory_quarantine/TD57A_EXPLORATORY_QUARANTINE.md",
+        "git_blob_sha": "a12530fff1bed0cb50321d99a5bb8246fc06fc76",
+        "size_bytes": 2429
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_CASE_TABLE.csv",
+        "git_blob_sha": "922df89b56012842cb3eb883c297eafd09116c00",
+        "size_bytes": 2109
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/td57b_exact_fast_wrapper.py",
+        "git_blob_sha": "61547cabe3acba79e82e226ad006e1c43630e633",
+        "size_bytes": 1267
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_FAST_KERNEL_BINDING.md",
+        "git_blob_sha": "568204407b0920a0d7d6a4ecce62688604f9e95a",
+        "size_bytes": 1407
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/td57b_fixed_relational_recurrence.py",
+        "git_blob_sha": "2b838e37257bef56eb64afa842e84a1daf6fc218",
+        "size_bytes": 16291
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_LOCAL_EXECUTION_BINDING.md",
+        "git_blob_sha": "ca2c99e11ede6d7e06986a1395d7e6fead7104de",
+        "size_bytes": 1578
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_PANEL0_RESULT.md",
+        "git_blob_sha": "37d4bdea7d5bd810e534cb72aef8fb4f26eba588",
+        "size_bytes": 2743
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "59af658893477db36f8bb09e4f2db3f9971daac7",
+        "size_bytes": 7558
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57b_independent_triplet_recurrence/TD57B_RESULT.md",
+        "git_blob_sha": "c2da6d60de57d15e773961a03fd3ca4a88331f4c",
+        "size_bytes": 4330
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57c_three_view_local_geometry/TD57C_LOCALITY_FEASIBILITY_AUDIT.md",
+        "git_blob_sha": "2e211e36e63ac2b14736a45202993b2fccf3287d",
+        "size_bytes": 1628
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57c_three_view_local_geometry/TD57C_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "64c75b69f8515728d480fc090664a8f884c4085c",
+        "size_bytes": 6870
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57c_three_view_local_geometry/TD57C_RESULT.md",
+        "git_blob_sha": "cf285bda85e651bd3eaa58070e4a0d7432eef13e",
+        "size_bytes": 4547
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td57s_triplet_ordinal_relational_target/TD57S_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "c8e48782357b4dc611cdf71747760e7ae28e9956",
+        "size_bytes": 4439
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td58s_primary60_partial_evidence_triplet/TD58S_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "dbd2857d87bdc96c3baed08656fb78364cbf3653",
+        "size_bytes": 4422
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td58s_primary60_partial_evidence_triplet/TD58S_RESULT.md",
+        "git_blob_sha": "473a86716c505df8b9ddd2b45bc0582886307eb9",
+        "size_bytes": 2645
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/replay_closure_20260908/TD59_REPLAY_CLOSURE_20260908.md",
+        "git_blob_sha": "e94a5449e737b3066d76bbaaaa92132b6ba8ce30",
+        "size_bytes": 3345
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/replay_closure_20260908/TD59_REPLAY_CLOSURE_CASE_MATCH.csv",
+        "git_blob_sha": "29996a85a0d0b5174c6fc605adbef3adda80be2c",
+        "size_bytes": 3583
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/replay_closure_20260908/td59_replay_closure_executor_v1.py",
+        "git_blob_sha": "e233191e80ba3e3f5b1e2f16d93f7c9a141ff395",
+        "size_bytes": 19887
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/replay_closure_20260908/TD59_REPLAY_CLOSURE_MANIFEST_V1.csv",
+        "git_blob_sha": "c4610f2b6319f67bf9f42c70eb0158ad32cb5d36",
+        "size_bytes": 331
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/replay_closure_20260908/TD59_REPLAY_CLOSURE_ROOT_V1.txt",
+        "git_blob_sha": "b9f780d31e7aa3561aae47ca40c7511430c92e78",
+        "size_bytes": 65
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/TD59_CASE_TABLE.csv",
+        "git_blob_sha": "06926bb9260743941a177fc9d69076b43f293609",
+        "size_bytes": 3039
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/TD59_PANEL0_RESULT.md",
+        "git_blob_sha": "34d2ac9f0168bc8fa338f42b154201fa186ff2e9",
+        "size_bytes": 2631
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/TD59_PREOUTCOME_BINDING.json",
+        "git_blob_sha": "0d9e1ac8b9ac477c7e2532dec3b5d11b0bc09ab8",
+        "size_bytes": 1771
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/TD59_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "842b3d332351bc491f977ac5071f7025ef6204e9",
+        "size_bytes": 10191
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59_mesoscale_half_locality/TD59_RESULT.md",
+        "git_blob_sha": "782480b828ec79f94efd83c2a52563ec67118307",
+        "size_bytes": 6817
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td59s_heterogeneous60_triplet/TD59S_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "af152a1c00060008bcaa2f0d2f7540c2ce620e50",
+        "size_bytes": 4347
+      },
+      {
+        "category": "TARGET_DISCOVERY_HISTORY",
+        "path": "target_discovery/iterations/td60_learned_teacher_continuity/TD60_PROSPECTIVE_SCREEN.md",
+        "git_blob_sha": "5e87da1c992862a68159b965c68973c21db5464d",
+        "size_bytes": 12399
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_execution_contract_builder_v1.py",
+        "git_blob_sha": "1006034fe65fd6c3ccbea809aed2e0f854a890f3",
+        "size_bytes": 5228
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_execution_contract_redteam_v1.py",
+        "git_blob_sha": "180de5a624eb7846f58c81bc8f826a0ac5b847f0",
+        "size_bytes": 10903
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_execution_contract_v1.py",
+        "git_blob_sha": "5739e579ad27cd057fa6697901eba5ebc6587b3b",
+        "size_bytes": 5643
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_execution_preflight_cli_v1.py",
+        "git_blob_sha": "7fa8a131516268ce85070968ff7d439abd1abae1",
+        "size_bytes": 3114
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_execution_preflight_v1.py",
+        "git_blob_sha": "f2a10e4c61758716a5aa6076205b6935cec07d51",
+        "size_bytes": 7001
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_frozen_target_sample_v1.py",
+        "git_blob_sha": "7c8ae7e4bdd0113f62984f06c6eb07f5df5bcb9e",
+        "size_bytes": 7745
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_mask_plan_v1.py",
+        "git_blob_sha": "a27f9a3961ecac943740d77e6ce0b042d006fea5",
+        "size_bytes": 10564
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_production_burden_v1.py",
+        "git_blob_sha": "0104504c068351ec2b4f49af09eb7abab461ea14",
+        "size_bytes": 11770
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_audit_b_scientific_resolution_v1.py",
+        "git_blob_sha": "5d7ada2ee7955446d0723765680536d2c24a44e4",
+        "size_bytes": 4908
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_dataset_etl_guardrails_v1.py",
+        "git_blob_sha": "7334e9fef8bbc37ac2f95459620bc153407ab069",
+        "size_bytes": 2921
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_evidence_estimability_contract_v1.py",
+        "git_blob_sha": "c898dc1fcd82759e2435e76890379a70850a4af4",
+        "size_bytes": 2564
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_evidence_estimability_contract_v2.py",
+        "git_blob_sha": "a327173d38587b80e8b742ca6b6f45fb37a92359",
+        "size_bytes": 4680
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_full104_rare_biology_preservation_authority_v1.py",
+        "git_blob_sha": "295431aa563c3447640fe693268e6aba1d00a1b3",
+        "size_bytes": 3694
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_full104_target_qualification_sample_authority_v1.py",
+        "git_blob_sha": "19f6d299aa27dec4d25af5520a4f6441039bfec3",
+        "size_bytes": 11605
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_full104_teacher_relational_target_qualification_authority_v1.py",
+        "git_blob_sha": "dd087a97079530e91916f2796828c862858e3aae",
+        "size_bytes": 5343
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_masking_rng_replay_authority_v3.py",
+        "git_blob_sha": "b936247c40f362d64e7d630be5480569bbbee120",
+        "size_bytes": 4491
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_remaining_rna_execution_authority_v1.py",
+        "git_blob_sha": "576cc7866b6b3092956f8853a54c6ebebbd9242f",
+        "size_bytes": 4045
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_remaining_rna_necessity_v1.py",
+        "git_blob_sha": "fbc4ce1772fb68cb9d2d2b41236c21c28586fcd7",
+        "size_bytes": 8158
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_score_term_evidence_contract_v2_edge_cases.py",
+        "git_blob_sha": "07a3710ea617d538dd2215e7218a0a9daa6c0618",
+        "size_bytes": 10971
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_score_term_evidence_contract_v2.py",
+        "git_blob_sha": "852ddfbaaa2d2d569e137b995acfd9ef784d543d",
+        "size_bytes": 13692
+      },
+      {
+        "category": "CURRENT_TEST",
+        "path": "tests/test_v5_teacher_target_semantics_authority_v1.py",
+        "git_blob_sha": "0973e80298d11ff6d2220cea061cb1a6df41e80c",
+        "size_bytes": 2283
+      }
+    ]
+  },
+  "overlays": [
+    {
+      "pr": 38,
+      "head": "3bf6b659de9bdd2711face82b50b47ec567ea449",
+      "files": [
+        ".github/workflows/v5-full104-masking-runner.yml",
+        ".github/workflows/v5-remaining-rna-target-semantics.yml",
+        "analysis/v5_full104_dataset_etl_20260921/FULL104_DATASET_ETL_GITHUB_CONTENT_MANIFEST_20260921.csv",
+        "analysis/v5_full104_dataset_etl_20260921/environment/JEPA_ENVIRONMENT_ARTIFACT_ROLES_20260921.csv",
+        "analysis/v5_full104_information_channel_redteam_20260920/CLAUDE_GPU_LANE_DEEP_AUDIT_20260921.md",
+        "analysis/v5_full104_information_channel_redteam_20260920/EXTERNAL_ARTIFACTS.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/PHASE_III_NON_ESTIMABILITY_EVIDENCE_CONTRACT.md",
+        "analysis/v5_full104_information_channel_redteam_20260920/PHASE_II_C2_SOURCE_FOLD_ESTIMABILITY_REPORT.md",
+        "analysis/v5_full104_information_channel_redteam_20260920/PHASE_IV_INTEGRATION_RECONCILIATION_20260921.md",
+        "analysis/v5_full104_information_channel_redteam_20260920/PHASE_IV_PREEXECUTION_AUDIT_REPORT_20260921.md",
+        "analysis/v5_full104_information_channel_redteam_20260920/PHASE_I_HEAVY_STATISTICS_QUALIFICATION_REPORT.md",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/C2_ROW_LEVEL_VARIANCE_VERIFICATION.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_ESTIMABILITY.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_FOLD_ESTIMABILITY_DETAIL.npz",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/audit_c/TARGET_SOURCE_FOLD_ESTIMABILITY_SUMMARY.csv",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/parser_equivalence/HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/parser_equivalence/SOURCE_LIBRARY_PARSER_EQUIVALENCE.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_i/HEAVY_SUFFICIENT_STATISTICS_QUALIFICATION_V2.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iii/POLICY_CONSEQUENCE_ON_REAL_GEOMETRY.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_FROZEN_TARGET_SAMPLE.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_PREEXECUTION_STATUS_V1.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/scripts/freeze_audit_b_target_sample_20260921.py",
+        "analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_heavy_sufficient_statistics_20260920.py",
+        "analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_heavy_sufficient_statistics_v2_20260921.py",
+        "analysis/v5_full104_information_channel_redteam_20260920/scripts/score_term_evidence_contract_v2.py",
+        "analysis/v5_full104_information_channel_redteam_20260920/scripts/verify_c2_variance_from_rows_20260920.py",
+        "docs/agent/V5_FULL104_RARE_BIOLOGY_PRESERVATION_PROSPECTIVE_20260921.md",
+        "docs/agent/V5_FULL104_TARGET_DISCOVERY_HISTORY_TO_TD60_SUCCESSOR_20260921.md",
+        "scripts/agent/build_full104_audit_b_execution_contract_v1_20260921.py",
+        "scripts/agent/build_full104_rng_replay_authority_v3_20260921.py",
+        "scripts/agent/build_full104_target_qualification_sample_v1_20260921.py",
+        "scripts/agent/validate_full104_audit_b_execution_preflight_v1_20260921.py",
+        "scripts/agent/validate_full104_target_qualification_sample_v1_20260921.py",
+        "src/sea_ad_jepa/v5/audit_b_execution_contract_v1.py",
+        "src/sea_ad_jepa/v5/audit_b_execution_preflight_v1.py",
+        "src/sea_ad_jepa/v5/audit_b_production_burden_v1.py",
+        "src/sea_ad_jepa/v5/audit_b_scientific_resolution_v1.py",
+        "src/sea_ad_jepa/v5/dataset_etl_guardrails_v1.py",
+        "src/sea_ad_jepa/v5/dataset_field_roles_v1.py",
+        "src/sea_ad_jepa/v5/evidence_estimability_contract_v2.py",
+        "src/sea_ad_jepa/v5/full104_rare_biology_preservation_authority_v1.py",
+        "src/sea_ad_jepa/v5/full104_target_qualification_sample_authority_v1.py",
+        "src/sea_ad_jepa/v5/full104_teacher_relational_target_qualification_authority_v1.py",
+        "src/sea_ad_jepa/v5/masking_rng_replay_authority_v3.py",
+        "tests/test_v5_audit_b_execution_contract_builder_v1.py",
+        "tests/test_v5_audit_b_execution_contract_redteam_v1.py",
+        "tests/test_v5_audit_b_execution_contract_v1.py",
+        "tests/test_v5_audit_b_execution_preflight_cli_v1.py",
+        "tests/test_v5_audit_b_execution_preflight_v1.py",
+        "tests/test_v5_audit_b_frozen_target_sample_v1.py",
+        "tests/test_v5_audit_b_production_burden_v1.py",
+        "tests/test_v5_audit_b_scientific_resolution_v1.py",
+        "tests/test_v5_audit_bc_burden_estimability_v1.py",
+        "tests/test_v5_dataset_etl_guardrails_v1.py",
+        "tests/test_v5_dataset_field_roles_v1.py",
+        "tests/test_v5_evidence_estimability_contract_v2.py",
+        "tests/test_v5_full104_rare_biology_preservation_authority_v1.py",
+        "tests/test_v5_full104_target_qualification_sample_authority_v1.py",
+        "tests/test_v5_full104_teacher_relational_target_qualification_authority_v1.py",
+        "tests/test_v5_heavy_sufficient_statistics_qualification_v1.py",
+        "tests/test_v5_heavy_sufficient_statistics_qualification_v2.py",
+        "tests/test_v5_masking_rng_replay_authority_v3.py",
+        "tests/test_v5_score_term_evidence_contract_v2.py",
+        "tests/test_v5_score_term_evidence_contract_v2_edge_cases.py"
+      ]
+    },
+    {
+      "pr": 40,
+      "head": "034be1949c389c93a26d8476ceedbcd402c55505",
+      "files": [
+        "START_HERE.md",
+        "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
+        "docs/agent/JEPA_NEW_CHAT_COMMANDS_20260921_V5_FULL104_TARGET_ETL.md",
+        "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260921_V5_FULL104_TARGET_ETL_CURRENT.md",
+        "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260921_V5_FULL104_TARGET_ETL_CURRENT.json",
+        "docs/agent/handoff_artifacts/20260921/V5_FULL104_TARGET_ETL_DATA_RESULTS_SCRIPTS_MANIFEST.json"
+      ]
+    },
+    {
+      "pr": 41,
+      "head": "ebae1f9667a6e483ec35a6918234c40b99ae9ea2",
+      "files": [
+        ".github/workflows/v5-full104-masking-runner.yml",
+        ".github/workflows/v5-remaining-rna-target-semantics.yml",
+        "docs/agent/JEPA_POST_HANDOFF_INDEPENDENT_AUDIT_20260921.md",
+        "docs/agent/V5_FULL104_RARE_BIOLOGY_PRESERVATION_PROSPECTIVE_20260921.md",
+        "scripts/agent/validate_full104_target_qualification_sample_v1_20260921.py",
+        "src/sea_ad_jepa/v5/audit_b_production_burden_v1.py",
+        "src/sea_ad_jepa/v5/audit_b_scientific_resolution_v2.py",
+        "src/sea_ad_jepa/v5/full104_rare_biology_preservation_authority_v1.py",
+        "tests/test_v5_audit_b_production_burden_v1.py",
+        "tests/test_v5_audit_b_scientific_resolution_v2.py",
+        "tests/test_v5_full104_rare_biology_preservation_authority_v1.py",
+        "tests/test_v5_full104_target_qualification_sample_authority_v1.py"
+      ]
+    },
+    {
+      "pr": 42,
+      "head": "87de6cfd91e4a1f23e02467ca24e9cacf8a32582",
+      "files": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUTHORITY_SHA_SIZE_RECEIPT.txt",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B3_RNG_V3_AUTHORITY_BLOCKER.md",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_BURDEN_LADDER_AUTHORITY_V2.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/EXECUTION_PROVENANCE.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/OPERATOR_SUPPORT_CANDIDATE_V1.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/SHA256SUMS.txt",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/VALIDATION_STDOUT.txt",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/donor_code_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/donor_source_code_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/fold_by_donor_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/full_donor_n_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/retained_count_by_donor_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/row_rank_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/sample_receipt.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/selection_rows_i64.npy",
+        "analysis/v5_full104_target_qualification_20260921/scripts/derive_operator_support_candidate_v1_20260921.py"
+      ]
+    },
+    {
+      "pr": 43,
+      "head": "18b9476625d14ecf90b0b6b1efd12d5a7495b548",
+      "files": [
+        ".github/workflows/v5-full104-masking-runner.yml",
+        "scripts/agent/build_full104_rng_replay_authority_v3_20260921.py",
+        "tests/test_v5_full104_rng_replay_builder_v3.py"
+      ]
+    },
+    {
+      "pr": 44,
+      "head": "e48c15975b440160e48e29ace74196314d5fa9a6",
+      "files": [
+        ".github/workflows/v5-remaining-rna-target-semantics.yml",
+        "scripts/agent/run_full104_rare_tail_structural_preflight_v1_20260922.py",
+        "scripts/agent/validate_full104_rare_tail_structural_preflight_v1_20260922.py",
+        "src/sea_ad_jepa/v5/full104_rare_tail_structural_preflight_v1.py",
+        "tests/test_v5_full104_rare_tail_structural_preflight_cli_v1.py",
+        "tests/test_v5_full104_rare_tail_structural_preflight_receipt_v1.py",
+        "tests/test_v5_full104_rare_tail_structural_preflight_v1.py"
+      ]
+    },
+    {
+      "pr": 45,
+      "head": "5e7612c909c3ed677a91c6dec42e298dc02a6f24",
+      "files": [
+        "docs/agent/V5_AUDIT_B_B2_SCIENTIFIC_DECISION_MEMO_20260922.md"
+      ]
+    },
+    {
+      "pr": 46,
+      "head": "ed65f1ba97b95bf135aaa15209bc8cc6ca5c670b",
+      "files": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V1.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUTHORITY_SHA_SIZE_RECEIPT.txt",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B3_AND_AUDIT_B_V1_EXECUTION_PROVENANCE.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_RNG_REPLAY_AUTHORITY_V3.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/RUNTIME_BINDING_VERIFICATION.txt"
+      ]
+    },
+    {
+      "pr": 47,
+      "head": "0180158f61f50ea4e5ad403fb11eb9d525b004c6",
+      "files": [
+        ".github/workflows/v5-full104-masking-runner.yml",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V2.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_PRECISION_RULE_AUTHORITY_V2.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_SCIENTIFIC_RESOLUTION_V3.json",
+        "docs/agent/V5_AUDIT_B_B2_B4_RESOLUTION_20260922.md",
+        "scripts/agent/build_full104_audit_b_execution_contract_v2_20260922.py",
+        "scripts/agent/validate_full104_audit_b_execution_preflight_v2_20260922.py",
+        "src/sea_ad_jepa/v5/audit_b_execution_contract_v2.py",
+        "src/sea_ad_jepa/v5/audit_b_execution_preflight_v2.py",
+        "src/sea_ad_jepa/v5/audit_b_precision_rule_v2.py",
+        "src/sea_ad_jepa/v5/audit_b_scientific_resolution_v3.py",
+        "tests/test_v5_audit_b_execution_contract_builder_v2.py",
+        "tests/test_v5_audit_b_execution_contract_v2.py",
+        "tests/test_v5_audit_b_execution_preflight_cli_v2.py",
+        "tests/test_v5_audit_b_execution_preflight_v2.py",
+        "tests/test_v5_audit_b_precision_rule_v2.py",
+        "tests/test_v5_audit_b_scientific_resolution_v3.py"
+      ]
+    },
+    {
+      "pr": 48,
+      "head": "979cacbc924c45e55ad57e239a2ed4b0429e88ef",
+      "files": [
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B4_FULL_RUNTIME_PREFLIGHT_RECEIPT.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/B4_RUNTIME_PREFLIGHT_PROVENANCE.json",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/SHA256SUMS_B4_PREFLIGHT.txt"
+      ]
+    },
+    {
+      "pr": 49,
+      "head": "5503cd8c99506d172616b1e2edd8090eeaa41a05",
+      "files": [
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_STRUCTURAL_PREFLIGHT_PROVENANCE.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_STRUCTURAL_PREFLIGHT_V1.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/SHA256SUMS_RARE_TAIL_STRUCTURAL.txt"
+      ]
+    },
+    {
+      "pr": 50,
+      "head": "e4b7e9f46842d66cd7db71b1df9de60fc037f971",
+      "files": [
+        ".github/workflows/v5-full104-masking-runner.yml",
+        "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_N1_EXECUTION_AUTHORITY_V1.json",
+        "scripts/agent/build_full104_audit_b_n1_execution_authority_v1_20260922.py",
+        "src/sea_ad_jepa/v5/audit_b_n1_cached_planner_v1.py",
+        "src/sea_ad_jepa/v5/audit_b_n1_crossfold_planner_v1.py",
+        "src/sea_ad_jepa/v5/audit_b_n1_execution_authority_v1.py",
+        "src/sea_ad_jepa/v5/audit_b_n1_result_contract_v1.py",
+        "src/sea_ad_jepa/v5/audit_b_n1_runtime_rng_bridge_v1.py",
+        "tests/test_v5_audit_b_n1_cached_planner_v1.py",
+        "tests/test_v5_audit_b_n1_crossfold_planner_v1.py",
+        "tests/test_v5_audit_b_n1_execution_authority_builder_v1.py",
+        "tests/test_v5_audit_b_n1_execution_authority_v1.py",
+        "tests/test_v5_audit_b_n1_result_contract_v1.py",
+        "tests/test_v5_audit_b_n1_runtime_rng_bridge_v1.py"
+      ]
+    },
+    {
+      "pr": 51,
+      "head": "f8718b66f1c8bf39787408582fbbc85d5ada97d5",
+      "files": [
+        ".github/workflows/v5-remaining-rna-target-semantics.yml",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_MOLECULAR_AUTHORITY_V1.json",
+        "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_MOLECULAR_EXECUTION_CONTRACT_V1.json",
+        "scripts/agent/run_full104_rare_tail_molecular_prequalification_v1_20260922.py",
+        "src/sea_ad_jepa/v5/full104_rare_tail_molecular_authority_v1.py",
+        "src/sea_ad_jepa/v5/full104_rare_tail_molecular_execution_contract_v1.py",
+        "src/sea_ad_jepa/v5/full104_rare_tail_molecular_primitives_v1.py",
+        "tests/test_v5_full104_rare_tail_molecular_authority_v1.py",
+        "tests/test_v5_full104_rare_tail_molecular_execution_contract_v1.py",
+        "tests/test_v5_full104_rare_tail_molecular_primitives_v1.py",
+        "tests/test_v5_full104_rare_tail_molecular_runner_v1.py"
+      ]
+    }
+  ],
+  "external_heavy_assets": [
+    {
+      "id": "FULL104_LEVEL4_BLOCK_MANIFEST",
+      "sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "location": "GPU/full-data machine; manifest-backed Level-4 substrate",
+      "status": "AUTHENTICATED_CURRENT_SUBSTRATE",
+      "note": "4,553,407 reader-fit cells; 8,915 blocks. Heavy block bytes are not committed to GitHub."
+    },
+    {
+      "id": "CORE_SUFFICIENT_STATISTICS_V1_NPZ",
+      "sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+      "location": "GPU/full-data machine",
+      "status": "PHASE_I_V2_QUALIFIED_FOR_CONTENT_ADDRESSED_REUSE",
+      "note": "All 4,553,407 rows; all 104 donor library totals; complete per-cell source vector verified."
+    },
+    {
+      "id": "FOUNDATION_CALIBRATION_BUNDLE_20260824_ZIP",
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "location": "external/heavy calibration asset; compact evidence derived into GitHub ETL package",
+      "status": "AUTHENTICATED_INPUT",
+      "note": "Do not copy the heavy bundle into GitHub; use content-addressed reference."
+    },
+    {
+      "id": "FOUNDATION_METADATA_ROWS_SQLITE",
+      "sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+      "location": "inside calibration bundle / external heavy asset",
+      "status": "AUTHENTICATED_POPULATION_AUTHORITY",
+      "note": "Population metadata authority used by ETL and target-qualification sampling."
+    },
+    {
+      "id": "CANONICAL_MOLECULAR_ADDRESS_NAMESPACE",
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "location": "calibration contracts/address_namespace.csv",
+      "status": "CURRENT_CANONICAL_REGISTRY",
+      "note": "41,238 canonical addresses."
+    },
+    {
+      "id": "FULL104_SOURCE_STRATIFIED_SPLIT_RECEIPT_V1",
+      "sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+      "location": "current FULL104 split authority",
+      "status": "CURRENT_4_FOLD_DONOR_SPLIT",
+      "note": "104 donors; source-stratified outer folds."
+    }
+  ],
+  "exact_additional_artifacts": {
+    "full104_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "split_receipt_canonical_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "sample_receipt_canonical_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6",
+    "rng_v3_canonical_sha256": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+    "rng_global_seed": "1267387626254385975",
+    "audit_b_v1_parent_canonical_sha256": "95db537de2df04e83c72d17ab788f985901ee4b644769d598243a9eed5eef398",
+    "b2_resolution_canonical_sha256": "766f467f4566cf0087ca4bc22f5263575a8ae50d7e5905666886190c3ad95889",
+    "precision_rule_authority_canonical_sha256": "0a712b3aeebc42732726667722c90b2b9d97a6110cba157c2d99aa642c0c97b4",
+    "b4_contract_canonical_sha256": "c68231e53ee08990949688013261c957fc205f9599bbc446780a12ba4d276927",
+    "structural_receipt_canonical_sha256": "f0d71c9b2f25d31a0b277b9a55f2a31f44d9084b924c3c14c67ef0c4c4a4bc89",
+    "n1_execution_authority_canonical_sha256": "eb3293720c54ae10023a90b73c1bf35b46b6cacfda70632522014d988ebb0096",
+    "rare_tail_molecular_authority_canonical_sha256": "0b5629ca5e7087b1535e006021ec35d24a981986d5096eb4c99f001294c4c000",
+    "rare_tail_molecular_contract_canonical_sha256": "e834285f652d35fe335d16c0e58eadf7ee2b0ffc11fb11035c4ba17a94b80c02"
+  },
+  "current_outcome_status": {
+    "audit_b_n1": "NOT_EXECUTED",
+    "n2_n3": "NOT_AUTHORIZED_WITHOUT_ESCALATION_RECEIPT",
+    "rare_tail_molecular": "NOT_EXECUTED_PR51_CI_RED",
+    "td60": "NOT_EXECUTED",
+    "training": "OFF"
+  },
+  "current_ci": {
+    "pr50": {
+      "head": "e4b7e9f46842d66cd7db71b1df9de60fc037f971",
+      "runs": {
+        "masking": 35690520168,
+        "runtime": 35690520303,
+        "target": 35690520214,
+        "spillover": 35690520169
+      },
+      "all_four_success": true
+    },
+    "pr51": {
+      "head": "f8718b66f1c8bf39787408582fbbc85d5ada97d5",
+      "runs": {
+        "target": 35690220963,
+        "spillover": 35690220684,
+        "runtime": 35690220722
+      },
+      "target_failure": "3 failed, 420 passed; fail-on-skip step did not run",
+      "molecular_execution_allowed": false
+    }
+  }
+}
