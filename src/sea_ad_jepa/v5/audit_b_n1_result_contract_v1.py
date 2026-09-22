@@ -35,7 +35,7 @@ from .audit_b_production_burden_v1 import (
 )
 
 N1_EXECUTION_AUTHORITY_SHA256 = (
-    "2917a84b5796b0c6dfe8a962d67dbf69b2932dafa1894f56922c2e9257c59bb2"
+    "eb3293720c54ae10023a90b73c1bf35b46b6cacfda70632522014d988ebb0096"
 )
 N_DONORS = 104
 N_SOURCES = 3
