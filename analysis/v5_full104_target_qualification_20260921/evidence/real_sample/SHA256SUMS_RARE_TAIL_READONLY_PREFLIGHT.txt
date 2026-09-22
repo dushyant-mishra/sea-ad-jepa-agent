@@ -1,0 +1,13 @@
+# rare-tail READ-ONLY molecular preflight receipts
+# branch gpu/v5-rare-tail-readonly-preflight-exec-20260922-claude
+# source 4a2eabbec081eb62e5c250cbe67e98231aba8f8e  (PR #57 head)
+# python 3.9.7   tests 42 passed / 0 failed / 0 skipped
+#
+# file_sha256                                                       bytes  path
+c8c1c03e34675fcc1a1b05b02225e0c409f3726f1d2083738ddb3400decc0b55      2395  RARE_TAIL_MOLECULAR_READONLY_PREFLIGHT_V1.json
+07fab6c86b06c0dbc9632e6aa80f45d5315c57c18f71a489158f291ffd599cff      7754  RARE_TAIL_MOLECULAR_READONLY_PREFLIGHT_PROVENANCE.json
+
+# state: READY_FOR_REVIEW__NO_RNA_OPENED
+# EXPRESSION OPENED = FALSE   COUNT MATRICES OPENED = FALSE
+# MOLECULAR DISTANCES COMPUTED = FALSE   MOLECULAR OUTCOME = UNOPENED
+# manifest-only negative control: preflight reached terminal with ZERO .npz blocks on disk

@@ -1,0 +1,149 @@
+{
+  "schema": "V5_FULL104_RARE_TAIL_READONLY_PREFLIGHT_PROVENANCE_V1",
+  "scope_class": "CURRENT_FULL104_RECONNAISSANCE",
+  "branch": "gpu/v5-rare-tail-readonly-preflight-exec-20260922-claude",
+  "source_sha": "4a2eabbec081eb62e5c250cbe67e98231aba8f8e",
+  "source_role": "PR #57 head, target/v5-full104-rare-tail-readonly-preflight-20260922 (verified unmoved)",
+  "utc_execution_time": "2026-09-22T15:05:00Z",
+  "python_version": "3.9.7",
+  "molecular_experiment_NOT_run": "run_full104_rare_tail_molecular_prequalification_v1_20260922.py was imported for shared helpers only; its main() is __main__-guarded and was never invoked.",
+  "A2_targeted_tests": {
+    "suites": [
+      "tests/test_v5_full104_rare_tail_molecular_authority_v1.py",
+      "tests/test_v5_full104_rare_tail_molecular_execution_contract_v1.py",
+      "tests/test_v5_full104_rare_tail_molecular_primitives_v1.py",
+      "tests/test_v5_full104_rare_tail_molecular_runner_v1.py",
+      "tests/test_v5_full104_rare_tail_molecular_readonly_preflight_v1.py"
+    ],
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0
+  },
+  "A1_identity_resolution": {
+    "level4_manifest_file_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "level4_manifest_bytes": 2372002,
+    "level4_block_rows": 8915,
+    "level4_unique_block_keys": 8915,
+    "target_eligibility_file_sha256": "3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e",
+    "sample_receipt_canonical_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6",
+    "outer_split_canonical_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "structural_receipt_canonical_sha256": "f0d71c9b2f25d31a0b277b9a55f2a31f44d9084b924c3c14c67ef0c4c4a4bc89",
+    "molecular_authority_canonical_sha256": "0b5629ca5e7087b1535e006021ec35d24a981986d5096eb4c99f001294c4c000",
+    "molecular_contract_canonical_sha256": "e834285f652d35fe335d16c0e58eadf7ee2b0ffc11fb11035c4ba17a94b80c02",
+    "authority_and_contract_located_by_canonical_value_not_by_guessed_path": true,
+    "no_substitution": "no Stage81A3, TD59/50K historical, discovery ZIP, synthetic or partial-cache artifact was used."
+  },
+  "A3_manifest_only_negative_control": {
+    "method": "a temporary Level-4 root was created containing ONLY the authenticated PHASE2_EXPRESSION_BLOCK_MANIFEST.csv, with zero .npz count blocks and no blocks directory.",
+    "temp_root_npz_count": 0,
+    "result": "READY_FOR_REVIEW__NO_RNA_OPENED",
+    "conclusion": "the preflight reaches its terminal with no count file existing on disk, so it cannot be dereferencing the manifest counts_path column.",
+    "authenticated_original_untouched": true,
+    "original_manifest_sha_after": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+  },
+  "A4_real_preflight": {
+    "receipt_path": "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_MOLECULAR_READONLY_PREFLIGHT_V1.json",
+    "receipt_bytes": 2395,
+    "receipt_file_sha256": "c8c1c03e34675fcc1a1b05b02225e0c409f3726f1d2083738ddb3400decc0b55",
+    "state": "READY_FOR_REVIEW__NO_RNA_OPENED",
+    "level4_manifest_rows": 8915,
+    "strict_core_addresses": 17186,
+    "pair_address_hashes": {
+      "0": {
+        "X": "5d9f539d723117bffebfbcd57feefb9b880c50bc4c0aaab55dc9c9f9411a99fd",
+        "Y": "eb6182759465df0e719bc793781ce0964e9a766761508ebe7bb192eda05defad",
+        "Z": "806553cdacc4d1e3214a2d61880b8795ca4a0637f3762280750cfb502dcd36ed"
+      },
+      "1": {
+        "X": "d28d1bd09181bbfd24ca3d737a95a6d911ace6906a5e94d6bbdf133bbc33e0da",
+        "Y": "bc81c334afdcf169a0e4636ec5f76da51e248b4ac35821e26b2a71b8dbe4599f",
+        "Z": "960741f9b74118e8991cb859e3f044176afa8151eed3dace3f7b98102198db84"
+      }
+    },
+    "source_hashes": {
+      "authority_source_normalized_text_sha256": "bd921546494ec5992fcf2b6f7bd9fba44aaef29d9688f1c9c6d60ed586f94837",
+      "primitives_normalized_text_sha256": "9219cf06260bef8f7d298e48cb977fb75791e0b2e75616ab47779a6c332c77cd",
+      "runner_normalized_text_sha256": "d2d3b029de377adf9e3dc1f3f882f08ce0ec44be69a2718da34175aeb53f459a",
+      "source_library_parser_source_normalized_text_sha256": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
+      "tail_selector_source_normalized_text_sha256": "8e053d4dc5817e9684fd4681e85ae66d49dffb83cf57eb45346edb41336fecd2"
+    },
+    "written_to_a_new_path_never_overwritten": true
+  },
+  "A5_red_team": {
+    "all_on_disposable_copies": true,
+    "baseline_on_copies": "PASS",
+    "controls": [
+      {
+        "control": "altered manifest",
+        "result": "REJECTED",
+        "message": "FULL104 Level-4 manifest hash mismatch"
+      },
+      {
+        "control": "wrong sample receipt",
+        "result": "REJECTED",
+        "message": "sample receipt canonical digest mismatch"
+      },
+      {
+        "control": "shuffled sample vector",
+        "result": "REJECTED",
+        "message": "sample array hash mismatch: selection_rows"
+      },
+      {
+        "control": "wrong donor/source vector",
+        "result": "REJECTED",
+        "message": "sample array hash mismatch: donor_source_code"
+      },
+      {
+        "control": "wrong fold vector",
+        "result": "REJECTED",
+        "message": "sample array hash mismatch: fold_by_donor"
+      },
+      {
+        "control": "wrong target-eligibility file",
+        "result": "REJECTED",
+        "message": "target-eligibility file hash mismatch"
+      },
+      {
+        "control": "altered execution contract",
+        "result": "REJECTED",
+        "message": "molecular execution contract digest mismatch"
+      },
+      {
+        "control": "altered runner source byte",
+        "result": "REJECTED",
+        "message": "runner_normalized_text_sha256 mismatch"
+      },
+      {
+        "control": "altered primitives source byte",
+        "result": "REJECTED",
+        "message": "primitives_normalized_text_sha256 mismatch"
+      },
+      {
+        "control": "altered pair-address hash",
+        "result": "REJECTED",
+        "message": "target-eligibility file hash mismatch (earlier gate)"
+      },
+      {
+        "control": "structural provenance expression_opened=true",
+        "result": "REJECTED",
+        "message": "structural provenance unexpectedly opened expression"
+      },
+      {
+        "control": "structural provenance count_matrices_opened=true",
+        "result": "REJECTED",
+        "message": "structural provenance unexpectedly opened count matrices"
+      }
+    ],
+    "all_twelve_fail_closed": true,
+    "pair_address_depth_note": "the pair-address control was intercepted by the eligibility-hash gate before reaching the pair-address comparison. An attempt to re-seal past that gate showed why: TARGET_ELIGIBILITY_FILE_SHA256 is pinned as a module constant in the FROZEN molecular execution code, and the execution contract itself refuses the re-declaration with 'target_eligibility_file_sha256 drifted from frozen molecular execution code'. The pair-address authority is therefore a backstop behind two earlier pins and is unreachable by eligibility tampering. Reported as observed rather than claimed as a direct exercise of that check."
+  },
+  "no_molecular_executor_run_after_pass": true,
+  "preflight_pass_means": "READY_FOR_INDEPENDENT_REVIEW only; it is not permission to open the molecular outcome.",
+  "expression_opened": false,
+  "count_matrices_opened": false,
+  "molecular_distances_computed": false,
+  "molecular_outcome_opened": false,
+  "td60_authorized": false,
+  "teacher_tail_evaluation_authorized": false,
+  "training_authorized": false
+}
