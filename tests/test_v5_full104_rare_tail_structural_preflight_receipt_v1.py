@@ -20,7 +20,7 @@ def _load_validator():
 
 
 def _payload(v):
-    sample_digest, sample_file_sha = v._sample_receipt_digest(SAMPLE_DIR)
+    sample_digest, sample_text_sha = v._sample_receipt_digest(SAMPLE_DIR)
     donors = []
     for d in range(104):
         retained = 1024 if d != 103 else 81
@@ -93,7 +93,7 @@ def _payload(v):
         "teacher_tail_evaluation_authorized": False,
         "training_authorized": False,
         "sample_receipt_sha256": sample_digest,
-        "sample_receipt_file_sha256": sample_file_sha,
+        "sample_receipt_normalized_text_sha256": sample_text_sha,
         "full104_block_manifest_sha256": v.EXPECTED_BLOCK_MANIFEST_SHA256,
         "retained_cells": 105553,
         "retained_donors": 104,
