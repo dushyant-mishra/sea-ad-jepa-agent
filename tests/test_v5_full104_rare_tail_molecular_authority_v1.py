@@ -117,3 +117,11 @@ def test_authority_digest_changes_if_identity_changes() -> None:
     a = authority()
     b = dataclasses.replace(a, authority_id="OTHER")
     assert a.canonical_digest() != b.canonical_digest()
+
+
+def test_structural_source_commit_uses_git_sha_not_sha256_type() -> None:
+    a = authority()
+    a.validate()
+    assert len(a.structural_preflight_source_sha) == 40
+    with pytest.raises(ValueError, match="40-hex Git commit SHA"):
+        authority(structural_preflight_source_sha="0" * 64).validate()
