@@ -1,0 +1,114 @@
+{
+  "schema": "V5_B3_AND_AUDIT_B_V1_EXECUTION_PROVENANCE_V1",
+  "scope_class": "CURRENT_FULL104_AUTHORITY",
+  "branch": "gpu/v5-full104-b3-v1-receipts-20260922",
+  "parent_sha": "18b9476625d14ecf90b0b6b1efd12d5a7495b548",
+  "parent_role": "PR #43 head, fix/v5-full104-rng-v3-parameter-digest-key-20260921 (approved RNG-V3 repair)",
+  "parent_contains_pr42_evidence_commit": "87de6cfd91e4a1f23e02467ca24e9cacf8a32582",
+  "repair_used_as_committed_not_locally_patched": true,
+  "utc_execution_time": "2026-09-22T03:27:41Z",
+  "code": {
+    "rng_builder_path": "scripts/agent/build_full104_rng_replay_authority_v3_20260921.py",
+    "rng_builder_sha256": "6859821127481419ac0b12d3807549f832c7b6e188ca2802db1a3f170d65b25d",
+    "audit_b_v1_builder_path": "scripts/agent/build_full104_audit_b_execution_contract_v1_20260921.py",
+    "audit_b_v1_builder_sha256": "413082d073c5e0fbe30c667733b384e0ac4e3504d772f2916056de916b2a8403",
+    "burden_estimator_source_path": "src/sea_ad_jepa/v5/audit_b_production_burden_v1.py",
+    "burden_estimator_source_sha256": "7f589f548bf94fd0bd207717f1b0289e2718958915e08d3a6d716b22164d441a",
+    "builders_modified": false
+  },
+  "b3_inputs": {
+    "canonical_registry": {
+      "path": "results/v4/stage81a2r_foundation_molecular_address_registry_candidate.csv",
+      "path_note": "located by authority ROLE then confirmed by hash; the registry authority records path_is_not_identity=true. Resident in the main working tree; referenced content-addressed, not duplicated here.",
+      "file_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "bytes": 24946770,
+      "rows": 41238
+    },
+    "split_receipt": {
+      "path": "analysis/v5_full104_pass1_rebuild_20260920/evidence/full104_split_receipt_v1.json",
+      "schema": "V5_FULL104_SOURCE_STRATIFIED_DONOR_SPLIT_RECEIPT_V1",
+      "canonical_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+      "canonical_digest_independently_recomputed": true,
+      "file_sha256": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+      "n_folds": 4,
+      "donors": 104
+    },
+    "masking_parameters_authority_v3": {
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3.json",
+      "schema": "V5_MASKING_QUALIFICATION_PARAMETERS_AUTHORITY_V3",
+      "parameter_authority_sha256": "e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1",
+      "file_sha256": "e9fc24dd93a15d0246c0f5de701ff219d3a70b4bf0e60bf51b0fba9d869e7b51"
+    },
+    "burden_ladder_authority_v2": {
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_BURDEN_LADDER_AUTHORITY_V2.json",
+      "schema": "V5_MASKING_BURDEN_LADDER_AUTHORITY_V2",
+      "authority_sha256": "85148fdf9be2bdd655ec601c4d26870f47f6885ce83d93b6e5c7ff8046d32685",
+      "file_sha256": "8ae737d1ee72c0330564559cbad984195b4942acc1b377a5e862e718a614e429"
+    }
+  },
+  "b3_result": {
+    "status": "PASS",
+    "output_path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/MASKING_RNG_REPLAY_AUTHORITY_V3.json",
+    "schema": "V5_MASKING_RNG_REPLAY_AUTHORITY_V3",
+    "authority_sha256": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+    "global_seed": 1267387626254385975,
+    "file_sha256": "ee95306997c33d76066579e77db88c53ff0bc6c0fcb964003b75da5717e3d396",
+    "bytes": 1163,
+    "five_bound_semantic_roots": {
+      "full104_substrate_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "outer_split_receipt_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+      "qualification_parameters_authority_sha256": "e942c1253ea71e08f50196fbfe28b7eadc1c5757971094673bce75fe6b1436c1",
+      "burden_ladder_authority_sha256": "85148fdf9be2bdd655ec601c4d26870f47f6885ce83d93b6e5c7ff8046d32685"
+    },
+    "target_panel_dependency": "NONE__PANEL_SELECTION_MUST_NOT_REROLL_MASKS",
+    "terminal_outcomes_inspected_before_freeze": false,
+    "training_authorized": false,
+    "independent_validation": {
+      "dataclass_reconstructed_from_payload": true,
+      "validate_passed": true,
+      "canonical_digest_recomputed_and_equal": true,
+      "global_seed_recomputed_and_equal": true,
+      "global_seed_deterministic_across_recomputations": true,
+      "seed_payload_contains_no_target_panel_term": true,
+      "method_exclusion_policy_bound": true,
+      "note": "the builder's stdout was not accepted on its own; every field above was recomputed from the emitted JSON through the typed authority."
+    }
+  },
+  "audit_b_v1_result": {
+    "status": "PASS",
+    "output_path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_EXECUTION_CONTRACT_V1.json",
+    "contract_sha256": "95db537de2df04e83c72d17ab788f985901ee4b644769d598243a9eed5eef398",
+    "file_sha256": "b00926494025b54480f3fb1ecd837a672c6498b87e3f2e633a7b62ade0d89040",
+    "bytes": 3559,
+    "precision_scope_id": "UNRESOLVED__EXECUTION_FORBIDDEN",
+    "execution_authorized": false,
+    "training_authorized": false,
+    "terminal_masking_outcomes_inspected_before_freeze": false,
+    "phase_iv_sample_freeze_digest": "c2c5e1b5addc50db7e9676ebf59e9c63b5d0b9eee882ef78aff5baa9d4a3b0ac",
+    "heavy_artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+    "rng_authority_sha256": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+    "precision_scope_flag_not_passed": true,
+    "builder_refuses_resolved_scope_by_construction": true,
+    "require_execution_ready_refuses": "STOP_AUDIT_B_V1_PREEXECUTION_ONLY",
+    "aggregation_semantics_note": "V1 may carry historical source-balanced aggregation semantics. That is NOT a B2 weighting decision and must not be read as one. V1 is only the immutable non-executable parent; the reviewed weighting and precision choices belong to a later B2/B4 successor."
+  },
+  "no_rng_mask_was_executed": true,
+  "no_burden_calculation_occurred": true,
+  "no_protected_outcome_was_opened": true,
+  "seed_frozen_not_spent": true,
+  "firewall": {
+    "audit_b_n1": "UNOPENED",
+    "masks_executed": "NONE",
+    "burden_calculation": "NOT_RUN",
+    "terminal_masking_outcomes": "UNOPENED",
+    "p1_p2_p3_p4_selection": "NONE",
+    "rare_tail_z_x_y_outcomes": "UNOPENED",
+    "td60": "UNEXECUTED",
+    "pathology_adaptive_analyses": "UNOPENED",
+    "dev_sealed_expression": "UNOPENED",
+    "d_shared": "UNOPENED",
+    "g5": "UNOPENED",
+    "training": "OFF"
+  }
+}
