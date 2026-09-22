@@ -1,0 +1,234 @@
+{
+  "schema": "V5_FULL104_DONOR_UMI_INDEPENDENT_QUALIFICATION_V1",
+  "scope_class": "CURRENT_FULL104_AUTHORITY",
+  "finding": "donor_umi is PRESENT in the qualified heavy NPZ at (104, 17186) int64. The V2 qualification receipt never verifies it, so it carried no authentication. This run supplies that authentication by recomputing it from raw Level-4 blocks along a route sharing no code with the producer.",
+  "artifact": "D:\\jepa_full104_redteam_20260920_external\\core_sufficient_statistics_v1.npz",
+  "artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+  "artifact_bytes": 242087519,
+  "block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "blocks_verified": 8915,
+  "blocks_containing_subset": 387,
+  "cells_accounted_exactly_once": 4553407,
+  "donor_nnz_semantics": "donor_nnz[d,a] = number of cells of donor d whose raw count at strict-core address a is > 0 (detected-token count)",
+  "donor_umi_semantics": "donor_umi[d,a] = sum of raw integer counts of donor d at strict-core address a, over cells where that count is > 0",
+  "semantics_recovered_from": "analysis/v5_full104_information_channel_redteam_20260920/scripts/build_core_sufficient_statistics_20260920.py (frozen producer), not guessed",
+  "strict_core_order_sha256": "7affd20f8a6781ed7288e208d97a7f9323545320f995291aaebfce70c7317d04",
+  "strict_core_addresses": 17186,
+  "strict_core_strictly_increasing": true,
+  "donor_order_sha256": "306e8f7f0c51f0650daf2ee8561bf6056a61bc037d1b5139ff9953884af1e8e1",
+  "donor_order_rule": "sorted unique donor_id strings, identical in pass1 and the artifact",
+  "donor_source_vector_sha256": "1aa54d73bc3100af15503aed6d4a1b894bc72245f89c63997b7ae283d2cc64ea",
+  "donor_sample_rule": "SHA-256 of 'V5_DONOR_UMI_INDEPENDENT_QUALIFICATION_20260922|<donor_id>', stratified by source; fixed before comparison",
+  "donors_checked": [
+    "H16.03.002",
+    "H19.06.356",
+    "H20.33.043",
+    "H21.33.028",
+    "human_NPH_896",
+    "human_NPH_906"
+  ],
+  "donor_nnz_exact_match": true,
+  "donor_umi_exact_match": true,
+  "comparison_tolerance": "none; exact integer equality",
+  "per_donor": [
+    {
+      "donor": "H16.03.002",
+      "donor_code": 6,
+      "source": "HVS",
+      "nnz_row_exact_match": true,
+      "umi_row_exact_match": true,
+      "recomputed_nnz_total": 12074328,
+      "recomputed_umi_total": 54372622,
+      "detection_probes": {
+        "low": {
+          "address": 175,
+          "artifact_nnz": 1,
+          "recomputed_nnz": 1,
+          "artifact_umi": 1,
+          "recomputed_umi": 1
+        },
+        "median": {
+          "address": 13139,
+          "artifact_nnz": 406,
+          "recomputed_nnz": 406,
+          "artifact_umi": 500,
+          "recomputed_umi": 500
+        },
+        "high": {
+          "address": 11580,
+          "artifact_nnz": 2677,
+          "recomputed_nnz": 2677,
+          "artifact_umi": 2303767,
+          "recomputed_umi": 2303767
+        }
+      }
+    },
+    {
+      "donor": "H19.06.356",
+      "donor_code": 36,
+      "source": "HVS",
+      "nnz_row_exact_match": true,
+      "umi_row_exact_match": true,
+      "recomputed_nnz_total": 25921353,
+      "recomputed_umi_total": 89988524,
+      "detection_probes": {
+        "low": {
+          "address": 9,
+          "artifact_nnz": 1,
+          "recomputed_nnz": 1,
+          "artifact_umi": 1,
+          "recomputed_umi": 1
+        },
+        "median": {
+          "address": 1394,
+          "artifact_nnz": 993,
+          "recomputed_nnz": 993,
+          "artifact_umi": 1120,
+          "recomputed_umi": 1120
+        },
+        "high": {
+          "address": 11580,
+          "artifact_nnz": 6596,
+          "recomputed_nnz": 6596,
+          "artifact_umi": 8936358,
+          "recomputed_umi": 8936358
+        }
+      }
+    },
+    {
+      "donor": "H20.33.043",
+      "donor_code": 64,
+      "source": "NPH52",
+      "nnz_row_exact_match": true,
+      "umi_row_exact_match": true,
+      "recomputed_nnz_total": 127932646,
+      "recomputed_umi_total": 763686438,
+      "detection_probes": {
+        "low": {
+          "address": 121,
+          "artifact_nnz": 1,
+          "recomputed_nnz": 1,
+          "artifact_umi": 1,
+          "recomputed_umi": 1
+        },
+        "median": {
+          "address": 4555,
+          "artifact_nnz": 1898,
+          "recomputed_nnz": 1898,
+          "artifact_umi": 2467,
+          "recomputed_umi": 2467
+        },
+        "high": {
+          "address": 22327,
+          "artifact_nnz": 42707,
+          "recomputed_nnz": 42707,
+          "artifact_umi": 34382551,
+          "recomputed_umi": 34382551
+        }
+      }
+    },
+    {
+      "donor": "H21.33.028",
+      "donor_code": 76,
+      "source": "NPH52",
+      "nnz_row_exact_match": true,
+      "umi_row_exact_match": true,
+      "recomputed_nnz_total": 243175275,
+      "recomputed_umi_total": 1260248583,
+      "detection_probes": {
+        "low": {
+          "address": 1,
+          "artifact_nnz": 1,
+          "recomputed_nnz": 1,
+          "artifact_umi": 1,
+          "recomputed_umi": 1
+        },
+        "median": {
+          "address": 6691,
+          "artifact_nnz": 2680,
+          "recomputed_nnz": 2680,
+          "artifact_umi": 2971,
+          "recomputed_umi": 2971
+        },
+        "high": {
+          "address": 22327,
+          "artifact_nnz": 101942,
+          "recomputed_nnz": 101942,
+          "artifact_umi": 43760995,
+          "recomputed_umi": 43760995
+        }
+      }
+    },
+    {
+      "donor": "human_NPH_896",
+      "donor_code": 94,
+      "source": "SEA_AD",
+      "nnz_row_exact_match": true,
+      "umi_row_exact_match": true,
+      "recomputed_nnz_total": 32644803,
+      "recomputed_umi_total": 94864389,
+      "detection_probes": {
+        "low": {
+          "address": 983,
+          "artifact_nnz": 1,
+          "recomputed_nnz": 1,
+          "artifact_umi": 1,
+          "recomputed_umi": 1
+        },
+        "median": {
+          "address": 2672,
+          "artifact_nnz": 950,
+          "recomputed_nnz": 950,
+          "artifact_umi": 1468,
+          "recomputed_umi": 1468
+        },
+        "high": {
+          "address": 28507,
+          "artifact_nnz": 12556,
+          "recomputed_nnz": 12556,
+          "artifact_umi": 3677615,
+          "recomputed_umi": 3677615
+        }
+      }
+    },
+    {
+      "donor": "human_NPH_906",
+      "donor_code": 96,
+      "source": "SEA_AD",
+      "nnz_row_exact_match": true,
+      "umi_row_exact_match": true,
+      "recomputed_nnz_total": 122499,
+      "recomputed_umi_total": 219531,
+      "detection_probes": {
+        "low": {
+          "address": 30,
+          "artifact_nnz": 1,
+          "recomputed_nnz": 1,
+          "artifact_umi": 1,
+          "recomputed_umi": 1
+        },
+        "median": {
+          "address": 15601,
+          "artifact_nnz": 6,
+          "recomputed_nnz": 6,
+          "artifact_umi": 8,
+          "recomputed_umi": 8
+        },
+        "high": {
+          "address": 28507,
+          "artifact_nnz": 81,
+          "recomputed_nnz": 81,
+          "artifact_umi": 14509,
+          "recomputed_umi": 14509
+        }
+      }
+    }
+  ],
+  "verdict": "DONOR_UMI_INDEPENDENTLY_QUALIFIED",
+  "n1_target_selected": false,
+  "mask_generated": false,
+  "n1_burden_calculated": false,
+  "precision_calculated": false,
+  "protected_outcome_opened": false,
+  "training_authorized": false
+}
