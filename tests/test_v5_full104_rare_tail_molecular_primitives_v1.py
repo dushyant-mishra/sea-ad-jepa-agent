@@ -1,4 +1,5 @@
 import hashlib
+import json
 
 import numpy as np
 import pytest
@@ -171,3 +172,29 @@ def test_gene_and_pair_hash_serialization_is_little_endian_int32(monkeypatch) ->
             assert P.verify_pair_address_hash(
                 addresses, panel=panel, view=view
             ) == expected_pair[panel][view]
+
+
+def test_real_current_strict_core_reproduces_all_frozen_td59_view_hashes() -> None:
+    receipt = json.loads(
+        (
+            ROOT
+            / "analysis/v5_full104_pass1_rebuild_20260920/evidence/"
+            / "full104_target_eligibility_v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    common = np.asarray(receipt["strict_core_cols"], dtype=np.int64)
+    assert common.size == 17186
+
+    for panel in (0, 1):
+        views = P.select_gene_views(common, panel)
+        for view in ("Z", "X", "Y"):
+            genes = views[view]
+            observed_gene = hashlib.sha256(
+                genes.astype("<i4").tobytes()
+            ).hexdigest()
+            assert observed_gene == P.PANEL_GENE_SHA256[panel][view]
+            _, addresses = P.select_pairs(genes, panel=panel, view=view)
+            assert (
+                P.verify_pair_address_hash(addresses, panel=panel, view=view)
+                == P.PANEL_PAIR_ADDRESS_SHA256[panel][view]
+            )
