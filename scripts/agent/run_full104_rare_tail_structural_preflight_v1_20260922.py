@@ -70,6 +70,12 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def normalized_text_sha256(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
 def canonical_sha256(payload: dict) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -281,8 +287,13 @@ def main() -> int:
             "the unique metadata block containing each retained global selection_row"
         ),
         "sample_role_id": sample_payload["authority"]["sample_role_id"],
-        "evaluator_source_sha256": sha256_file(EVALUATOR_SOURCE),
-        "runner_source_sha256": sha256_file(Path(__file__)),
+        "evaluator_source_normalized_text_sha256": normalized_text_sha256(
+            EVALUATOR_SOURCE
+        ),
+        "runner_source_normalized_text_sha256": normalized_text_sha256(
+            Path(__file__)
+        ),
+        "source_hash_normalization": "UTF8_TEXT__CRLF_CR_TO_LF_V1",
         "result_role": "METADATA_ONLY_STRUCTURAL_SUPPORT__NOT_MOLECULAR_QUALIFICATION",
         "expression_opened": False,
         "count_matrix_opened": False,
