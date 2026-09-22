@@ -151,13 +151,112 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
     donor_codes = [int(x["donor_code"]) for x in donors]
     if sorted(donor_codes) != list(range(FULL104_READER_FIT_DONORS)):
         raise ValueError("donor_capacity donor registry is incomplete or duplicated")
+    donor_by_code = {int(x["donor_code"]): x for x in donors}
+    for donor_code, row in donor_by_code.items():
+        source_code = int(row["source_code"])
+        fold_index = int(row["fold_index"])
+        if source_code not in range(3) or fold_index not in range(4):
+            raise ValueError("donor_capacity contains invalid source/fold code")
+        if int(row["retained_cells"]) < 1:
+            raise ValueError("donor_capacity retained_cells must be positive")
+        expected_eligible = bool(
+            int(row["q95_tail_anchor_upper_bound"]) >= 5
+            and int(row["tail_triplet_upper_bound"]) >= 20
+        )
+        if bool(row["structurally_eligible"]) is not expected_eligible:
+            raise ValueError("donor structural eligibility disagrees with frozen thresholds")
+
+    if sum(int(x["retained_cells"]) for x in donors) != EXPECTED_SAMPLE_CELLS:
+        raise ValueError("donor-capacity retained cells do not sum to 105,553")
 
     operators = payload.get("operator_capacity")
     if not isinstance(operators, list) or not operators:
         raise ValueError("operator_capacity must be nonempty")
+    seen_pairs = set()
+    operator_codes = set()
+    grouped = {
+        d: {
+            "retained": 0,
+            "tail": 0,
+            "triplet_tail": 0,
+            "triplets": 0,
+        }
+        for d in range(FULL104_READER_FIT_DONORS)
+    }
+    for row in operators:
+        donor_code = int(row["donor_code"])
+        operator_code = int(row["operator_code"])
+        if donor_code not in donor_by_code:
+            raise ValueError("operator_capacity contains unknown donor")
+        if operator_code not in range(42):
+            raise ValueError("operator_capacity contains invalid operator code")
+        key = (donor_code, operator_code)
+        if key in seen_pairs:
+            raise ValueError("operator_capacity contains duplicate donor x operator row")
+        seen_pairs.add(key)
+        operator_codes.add(operator_code)
+        donor_row = donor_by_code[donor_code]
+        if int(row["source_code"]) != int(donor_row["source_code"]):
+            raise ValueError("operator_capacity source disagrees with donor_capacity")
+        if int(row["fold_index"]) != int(donor_row["fold_index"]):
+            raise ValueError("operator_capacity fold disagrees with donor_capacity")
+        if int(row["retained_cells"]) < 1:
+            raise ValueError("operator_capacity retained_cells must be positive")
+        grouped[donor_code]["retained"] += int(row["retained_cells"])
+        grouped[donor_code]["tail"] += int(row["q95_tail_anchor_upper_bound"])
+        grouped[donor_code]["triplet_tail"] += int(
+            row["triplet_capable_tail_anchor_upper_bound"]
+        )
+        grouped[donor_code]["triplets"] += int(row["tail_triplet_upper_bound"])
+
+    if operator_codes != set(range(42)):
+        raise ValueError("operator_capacity does not actually represent all 42 operators")
+    if payload.get("operators_present") != len(operator_codes):
+        raise ValueError("operators_present disagrees with operator_capacity")
+
+    for donor_code, totals in grouped.items():
+        donor_row = donor_by_code[donor_code]
+        if totals["retained"] != int(donor_row["retained_cells"]):
+            raise ValueError("donor retained_cells disagree with operator_capacity")
+        if totals["tail"] != int(donor_row["q95_tail_anchor_upper_bound"]):
+            raise ValueError("donor q95 tail capacity disagrees with operator_capacity")
+        if totals["triplet_tail"] != int(
+            donor_row["triplet_capable_tail_anchor_upper_bound"]
+        ):
+            raise ValueError(
+                "donor triplet-capable tail capacity disagrees with operator_capacity"
+            )
+        if totals["triplets"] != int(donor_row["tail_triplet_upper_bound"]):
+            raise ValueError("donor triplet capacity disagrees with operator_capacity")
+
     retained_sum = sum(int(x["retained_cells"]) for x in operators)
     if retained_sum != EXPECTED_SAMPLE_CELLS:
         raise ValueError("operator-capacity retained cells do not sum to 105,553")
+
+    case_by_key = {
+        (int(x["source_code"]), int(x["fold_index"])): x
+        for x in cases
+    }
+    for source_code in range(3):
+        for fold_index in range(4):
+            rows = [
+                x
+                for x in donors
+                if int(x["source_code"]) == source_code
+                and int(x["fold_index"]) == fold_index
+            ]
+            eligible = sum(int(bool(x["structurally_eligible"])) for x in rows)
+            case = case_by_key[(source_code, fold_index)]
+            if int(case["donors_total"]) != len(rows):
+                raise ValueError("source x fold donors_total disagrees with donor_capacity")
+            if int(case["donors_structurally_eligible"]) != eligible:
+                raise ValueError(
+                    "source x fold eligible-donor count disagrees with donor_capacity"
+                )
+            if bool(case["structurally_possible"]) is not bool(eligible >= 4):
+                raise ValueError(
+                    "source x fold structural possibility disagrees with donor capacity"
+                )
 
     for name in (
         "expression_opened",
