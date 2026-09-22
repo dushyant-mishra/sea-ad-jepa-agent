@@ -78,6 +78,14 @@ def test_b4_contract_is_executable_but_never_training_authority() -> None:
     c.validate()
     assert c.execution_authorized is True
     c.require_execution_ready()
+    c.require_sample_level_ready("N1")
+    assert c.initial_sample_level_id == "N1"
+    assert c.initial_sample_size == 256
+    assert c.direct_n2_n3_execution_authorized is False
+    with pytest.raises(ValueError, match="ESCALATION_RECEIPT_REQUIRED"):
+        c.require_sample_level_ready("N2")
+    with pytest.raises(ValueError, match="ESCALATION_RECEIPT_REQUIRED"):
+        c.require_sample_level_ready("N3")
     assert c.terminal_masking_authorized is False
     assert c.training_authorized is False
     assert len(c.canonical_digest()) == 64
@@ -117,6 +125,8 @@ def test_b4_cannot_authorize_terminal_masking_or_training() -> None:
         dataclasses.replace(c, terminal_masking_authorized=True).validate()
     with pytest.raises(ValueError, match="training_authorized must remain false"):
         dataclasses.replace(c, training_authorized=True).validate()
+    with pytest.raises(ValueError, match="direct_n2_n3_execution_authorized"):
+        dataclasses.replace(c, direct_n2_n3_execution_authorized=True).validate()
     with pytest.raises(ValueError, match="audit_b_burden_outcomes_inspected_before_freeze"):
         dataclasses.replace(c, audit_b_burden_outcomes_inspected_before_freeze=True).validate()
 
