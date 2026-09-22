@@ -55,7 +55,16 @@ def test_cached_planner_matches_frozen_plan_generator_across_rungs(tmp_path: Pat
         )
         # Exercise several distinct burden geometries; partner discovery remains fixed.
         max_co = int(stream.universe_cols.size - 1)
-        counts = sorted(set([1, max(1, max_co // 3), max(1, max_co // 2)]))
+        cap = int(parameters.targeted_partner_cap)
+        counts = sorted(
+            set(
+                [
+                    cap,
+                    max(cap, max_co // 3),
+                    max(cap, max_co // 2),
+                ]
+            )
+        )
         for co_mask_count in counts:
             expected = plan_mod.plan_masks_for_target(
                 stream=stream,
@@ -117,7 +126,8 @@ def test_rung_materialization_does_not_repeat_partner_discovery(
     assert calls == {"top": 1, "ridge": 1, "prefix": 1}
 
     max_co = int(stream.universe_cols.size - 1)
-    for co_mask_count in range(1, min(max_co, 6) + 1):
+    cap = int(parameters.targeted_partner_cap)
+    for co_mask_count in range(cap, min(max_co, cap + 5) + 1):
         cached.plans_from_cached_partners(
             stream=stream,
             partners=partners,
