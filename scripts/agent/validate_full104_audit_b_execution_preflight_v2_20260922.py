@@ -29,6 +29,7 @@ def main() -> int:
     args = p.parse_args()
 
     contract = require_contract_ready(args.contract)
+    contract.require_sample_level_ready("N1")
     observed = verify_runtime_bindings(
         contract,
         scientific_resolution=args.scientific_resolution,
@@ -53,6 +54,9 @@ def main() -> int:
             contract.primary_rung_denominator,
         ],
         "precision_estimator_id": contract.precision_estimator_id,
+        "authorized_sample_level": "N1",
+        "direct_n2_n3_execution_authorized":
+            contract.direct_n2_n3_execution_authorized,
         "runtime_bindings": observed,
         "burden_computed": False,
         "masks_executed": False,
