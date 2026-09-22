@@ -23,6 +23,11 @@ from .audit_b_execution_contract_v1 import (
     HEAVY_ARTIFACT_SHA256,
     MASK_PLAN_GENERATOR_SHA256,
     PHASE_IV_SAMPLE_FREEZE_DIGEST,
+    PHASE_IV_SAMPLE_SCHEMA_ID,
+    HEAVY_QUALIFICATION_SCHEMA_ID,
+    HEAVY_QUALIFICATION_VERDICT_ID,
+    RNG_AUTHORITY_SCHEMA_ID,
+    RNG_TARGET_PANEL_DEPENDENCY_ID,
 )
 from .audit_b_precision_rule_v2 import (
     ABSOLUTE_SE_TOLERANCE,
@@ -67,6 +72,8 @@ PRIMARY_METRIC_ID = "B2_HELDOUT_DETECTED_TOKEN_BURDEN"
 SECONDARY_METRIC_ID = "B3_HELDOUT_RAW_UMI_BURDEN__DESCRIPTIVE_ONLY"
 NORMALIZATION_ID = "ADDED_MINUS_DROPPED_OVER_UNIFORM_FULL_MASK_WITH_TARGET_V1"
 SAMPLE_LADDER = (256, 1024, 4096)
+SCIENTIFIC_RESOLUTION_SCHEMA_ID = "V5_AUDIT_B_SCIENTIFIC_RESOLUTION_V3"
+PRECISION_RULE_AUTHORITY_SCHEMA_ID = "V5_AUDIT_B_PRECISION_RULE_AUTHORITY_V2"
 
 EXECUTION_REQUIREMENTS = (
     "policy construction uses TRAINING-side information only",
@@ -141,6 +148,14 @@ class AuditBExecutionContractV2:
     reporting_scope_id: str
     source_stratified_reporting_id: str
 
+    phase_iv_sample_schema_id: str = PHASE_IV_SAMPLE_SCHEMA_ID
+    heavy_qualification_schema_id: str = HEAVY_QUALIFICATION_SCHEMA_ID
+    heavy_qualification_verdict_id: str = HEAVY_QUALIFICATION_VERDICT_ID
+    rng_authority_schema_id: str = RNG_AUTHORITY_SCHEMA_ID
+    rng_target_panel_dependency_id: str = RNG_TARGET_PANEL_DEPENDENCY_ID
+    scientific_resolution_schema_id: str = SCIENTIFIC_RESOLUTION_SCHEMA_ID
+    precision_rule_authority_schema_id: str = PRECISION_RULE_AUTHORITY_SCHEMA_ID
+
     primary_metric_id: str = PRIMARY_METRIC_ID
     secondary_metric_id: str = SECONDARY_METRIC_ID
     normalization_id: str = NORMALIZATION_ID
@@ -175,6 +190,13 @@ class AuditBExecutionContractV2:
                 raise ValueError(f"{name} drifted from the frozen B4 authority graph")
 
         expected_semantics = {
+            "phase_iv_sample_schema_id": PHASE_IV_SAMPLE_SCHEMA_ID,
+            "heavy_qualification_schema_id": HEAVY_QUALIFICATION_SCHEMA_ID,
+            "heavy_qualification_verdict_id": HEAVY_QUALIFICATION_VERDICT_ID,
+            "rng_authority_schema_id": RNG_AUTHORITY_SCHEMA_ID,
+            "rng_target_panel_dependency_id": RNG_TARGET_PANEL_DEPENDENCY_ID,
+            "scientific_resolution_schema_id": SCIENTIFIC_RESOLUTION_SCHEMA_ID,
+            "precision_rule_authority_schema_id": PRECISION_RULE_AUTHORITY_SCHEMA_ID,
             "precision_scope_id": PRECISION_SCOPE_ID,
             "target_aggregation_id": PRIMARY_TARGET_AGGREGATION_ID,
             "mandatory_robustness_aggregation_id": MANDATORY_ROBUSTNESS_AGGREGATION_ID,
