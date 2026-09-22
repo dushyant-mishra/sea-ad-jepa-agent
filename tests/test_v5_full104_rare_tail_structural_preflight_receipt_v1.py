@@ -21,20 +21,23 @@ def _load_validator():
 
 def _payload(v):
     sample_digest, sample_file_sha = v._sample_receipt_digest(SAMPLE_DIR)
-    donors = [
-        {
-            "donor_code": d,
-            "source_code": 0 if d < 41 else (1 if d < 58 else 2),
-            "fold_index": d % 4,
-            "retained_cells": 1024 if d != 103 else 81,
-            "represented_operators": 1,
-            "q95_tail_anchor_upper_bound": 5,
-            "triplet_capable_tail_anchor_upper_bound": 5,
-            "tail_triplet_upper_bound": 100,
-            "structurally_eligible": True,
-        }
-        for d in range(104)
-    ]
+    donors = []
+    for d in range(104):
+        retained = 1024 if d != 103 else 81
+        tail, triplet_tail, triplets = v._expected_operator_capacity(retained)
+        donors.append(
+            {
+                "donor_code": d,
+                "source_code": 0 if d < 41 else (1 if d < 58 else 2),
+                "fold_index": d % 4,
+                "retained_cells": retained,
+                "represented_operators": 1,
+                "q95_tail_anchor_upper_bound": tail,
+                "triplet_capable_tail_anchor_upper_bound": triplet_tail,
+                "tail_triplet_upper_bound": triplets,
+                "structurally_eligible": tail >= 5 and triplets >= 20,
+            }
+        )
     cases = []
     for s in range(3):
         for f in range(4):
@@ -53,19 +56,23 @@ def _payload(v):
             )
     assert all(x["structurally_possible"] for x in cases)
 
-    operator_capacity = [
-        {
-            "donor_code": d,
-            "source_code": donors[d]["source_code"],
-            "fold_index": donors[d]["fold_index"],
-            "operator_code": d % 42,
-            "retained_cells": donors[d]["retained_cells"],
-            "q95_tail_anchor_upper_bound": 5,
-            "triplet_capable_tail_anchor_upper_bound": 5,
-            "tail_triplet_upper_bound": 100,
-        }
-        for d in range(104)
-    ]
+    operator_capacity = []
+    for d in range(104):
+        tail, triplet_tail, triplets = v._expected_operator_capacity(
+            donors[d]["retained_cells"]
+        )
+        operator_capacity.append(
+            {
+                "donor_code": d,
+                "source_code": donors[d]["source_code"],
+                "fold_index": donors[d]["fold_index"],
+                "operator_code": d % 42,
+                "retained_cells": donors[d]["retained_cells"],
+                "q95_tail_anchor_upper_bound": tail,
+                "triplet_capable_tail_anchor_upper_bound": triplet_tail,
+                "tail_triplet_upper_bound": triplets,
+            }
+        )
     payload = {
         "schema": "V5_FULL104_RARE_TAIL_STRUCTURAL_SUPPORT_PREFLIGHT_V1",
         "status": "STRUCTURALLY_POSSIBLE__MOLECULAR_ESTIMABILITY_UNPROVEN",
@@ -136,4 +143,16 @@ def test_validator_rejects_incomplete_source_fold_grid_even_if_resealed() -> Non
         {k: value for k, value in payload.items() if k != "structural_preflight_sha256"}
     )
     with pytest.raises(ValueError, match="exactly 12 source x fold cases"):
+        v.validate_structural_receipt(payload, sample_dir=SAMPLE_DIR)
+
+
+def test_validator_rejects_resealed_capacity_arithmetic_drift() -> None:
+    v = _load_validator()
+    payload = _payload(v)
+    payload["operator_capacity"][0]["tail_triplet_upper_bound"] += 1
+    payload["donor_capacity"][0]["tail_triplet_upper_bound"] += 1
+    payload["structural_preflight_sha256"] = v.canonical_sha256(
+        {k: value for k, value in payload.items() if k != "structural_preflight_sha256"}
+    )
+    with pytest.raises(ValueError, match="triplet capacity disagrees with frozen arithmetic"):
         v.validate_structural_receipt(payload, sample_dir=SAMPLE_DIR)
