@@ -31,17 +31,17 @@ Inspect frozen JSON under `analysis/v5_full104_information_channel_redteam_20260
 
 ## 2. Target lane: repair failing #51 CI before read-only preflight
 
-Expected #51 `f8718b66f1c8bf39787408582fbbc85d5ada97d5`, parallel base #49 `5503cd8c99506d172616b1e2edd8090eeaa41a05`. The structural sample has NPH52 fold 1–3 exactly four eligible donors; preserve them.
+**Update:** original PR #51 is historically red; use reviewed green test-only PR #52 exact head `213552a46903cd92b8a0338df185f0fce9655832`, workflow `35739933731` including no-skip SUCCESS. Read V18 PR52 addendum. Original #51 `f8718b66f1c8bf39787408582fbbc85d5ada97d5`, parallel base #49 `5503cd8c99506d172616b1e2edd8090eeaa41a05`. The structural sample has NPH52 fold 1–3 exactly four eligible donors; preserve them.
 
 ```bash
-git switch --detach f8718b66f1c8bf39787408582fbbc85d5ada97d5
+git switch --detach 213552a46903cd92b8a0338df185f0fce9655832
 python -m pytest -q \
   tests/test_v5_full104_rare_tail_molecular_authority_v1.py \
   tests/test_v5_full104_rare_tail_molecular_execution_contract_v1.py \
   tests/test_v5_full104_rare_tail_molecular_primitives_v1.py \
   tests/test_v5_full104_rare_tail_molecular_runner_v1.py
 ```
-Three known exact-head failures:
+Three original PR51 failures (fixed in test-only PR52; preserve audit history):
 1. undefined `ROOT` in frozen TD59 strict-core hash regression test;
 2. synthetic panel materialization test has fewer than 42 operators and triggers correct production fail-closed gate; fix fixture, not gate;
 3. JSON list-vs-tuple comparison of the exact three NPH52 zero-slack cases; normalize representation without changing cases.
