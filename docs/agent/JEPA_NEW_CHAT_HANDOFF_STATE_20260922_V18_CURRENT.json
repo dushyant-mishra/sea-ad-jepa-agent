@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V18",
   "date": "2026-09-22",
-  "status": "B4_PREFLIGHT_PASS__N1_AUTHORITY_GREEN_UNEXECUTED__RARE_TAIL_STRUCTURAL_POSSIBLE__MOLECULAR_PR51_CI_FAILED__TRAINING_OFF",
+  "status": "B4_PREFLIGHT_PASS__N1_CODE_GREEN_UNEXECUTED__RARE_TAIL_STRUCTURAL_POSSIBLE__PR52_TARGET_CI_GREEN__MOLECULAR_UNOPENED__TRAINING_OFF",
   "handoff_parent": "e4b7e9f46842d66cd7db71b1df9de60fc037f971",
   "handoff_branch": "handoff/jepa-v5-full104-b4-n1-rare-tail-20260922-v18",
   "scientific_integration": {
@@ -67,6 +67,13 @@
       "head": "f8718b66f1c8bf39787408582fbbc85d5ada97d5",
       "role": "molecular proposal with 3 failing tests",
       "ci": "target workflow 35690220963 FAILED 420 passed 3 failed; runtime/spillover green"
+    },
+    {
+      "pr": 52,
+      "head": "213552a46903cd92b8a0338df185f0fce9655832",
+      "base": "f8718b66f1c8bf39787408582fbbc85d5ada97d5",
+      "role": "test-only repair of three original PR51 regressions; production molecular code unchanged",
+      "ci": "target-semantics 35739933731 SUCCESS including fail-on-skips"
     }
   ],
   "parallel_docs": {
@@ -212,6 +219,12 @@
       "passed": 420,
       "failed": 3,
       "fail_on_skip_step": "not executed following failed suite"
+    },
+    "pr51_blockers_status": "RESOLVED_IN_TEST_ONLY_PR52_SUCCESSOR__PR51_ORIGINAL_HEAD_REMAINS_RED",
+    "pr52_workflow": {
+      "id": 35739933731,
+      "status": "success",
+      "fail_on_skip_step": "success"
     }
   },
   "protections": {
@@ -229,7 +242,7 @@
   "next_actions": [
     "Re-fetch live GitHub heads and exact SHA CI; do not merge parallel lanes blindly",
     "Red-team #50 N1 planner/result/precision/end-to-end GPU execution mechanics before one-time N1",
-    "Fix #51 three exact regression failures without science/threshold changes; rerun full exact-head no-skip CI",
+    "Independently review test-only PR52 green successor and freeze source/contract hashes; perform read-only molecular runtime preflight before expression access",
     "Independent read-only rare-tail molecular runtime preflight only after #51 green; no molecular outcome before review",
     "Preserve zero-slack NPH52 cases and anti-spillover firewall"
   ]
