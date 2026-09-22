@@ -54,6 +54,21 @@ def canonical_sha256(payload: dict) -> str:
     ).hexdigest()
 
 
+def _expected_operator_capacity(retained_cells: int) -> tuple[int, int, int]:
+    n = int(retained_cells)
+    if n < 1:
+        raise ValueError("operator retained_cells must be positive")
+    tail = ((n + 19) // 20) if n >= 2 else 0
+    if n < 4:
+        return tail, 0, 0
+    triplet_tail = (n + 19) // 20
+    nearest_half_candidates = n // 2
+    comparisons_per_anchor = (
+        nearest_half_candidates * (nearest_half_candidates - 1)
+    ) // 2
+    return tail, triplet_tail, triplet_tail * comparisons_per_anchor
+
+
 def _typed(payload: dict, cls):
     names = {f.name for f in fields(cls)}
     missing = names - set(payload)
@@ -200,14 +215,28 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
             raise ValueError("operator_capacity source disagrees with donor_capacity")
         if int(row["fold_index"]) != int(donor_row["fold_index"]):
             raise ValueError("operator_capacity fold disagrees with donor_capacity")
-        if int(row["retained_cells"]) < 1:
+        retained_cells = int(row["retained_cells"])
+        if retained_cells < 1:
             raise ValueError("operator_capacity retained_cells must be positive")
-        grouped[donor_code]["retained"] += int(row["retained_cells"])
-        grouped[donor_code]["tail"] += int(row["q95_tail_anchor_upper_bound"])
-        grouped[donor_code]["triplet_tail"] += int(
-            row["triplet_capable_tail_anchor_upper_bound"]
+        expected_tail, expected_triplet_tail, expected_triplets = (
+            _expected_operator_capacity(retained_cells)
         )
-        grouped[donor_code]["triplets"] += int(row["tail_triplet_upper_bound"])
+        if int(row["q95_tail_anchor_upper_bound"]) != expected_tail:
+            raise ValueError("operator q95 tail capacity disagrees with frozen arithmetic")
+        if (
+            int(row["triplet_capable_tail_anchor_upper_bound"])
+            != expected_triplet_tail
+        ):
+            raise ValueError(
+                "operator triplet-capable tail capacity disagrees with frozen arithmetic"
+            )
+        if int(row["tail_triplet_upper_bound"]) != expected_triplets:
+            raise ValueError("operator triplet capacity disagrees with frozen arithmetic")
+
+        grouped[donor_code]["retained"] += retained_cells
+        grouped[donor_code]["tail"] += expected_tail
+        grouped[donor_code]["triplet_tail"] += expected_triplet_tail
+        grouped[donor_code]["triplets"] += expected_triplets
 
     if operator_codes != set(range(42)):
         raise ValueError("operator_capacity does not actually represent all 42 operators")
