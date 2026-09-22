@@ -42,16 +42,17 @@ def _full104_like_case(*, weaken_nph_fold0: bool = False):
 
 
 def test_tail_capacity_respects_q95_and_nearest_half_geometry() -> None:
-    assert _tail_triplet_capacity(0) == (0, 0, 0)
-    assert _tail_triplet_capacity(1) == (0, 0, 0)
-    assert _tail_triplet_capacity(2) == (1, 0, 0)
-    assert _tail_triplet_capacity(3) == (1, 0, 0)
+    assert _tail_triplet_capacity(0) == (0, 0, 0, 0)
+    assert _tail_triplet_capacity(1) == (0, 0, 0, 0)
+    assert _tail_triplet_capacity(2) == (1, 0, 0, 0)
+    assert _tail_triplet_capacity(3) == (1, 0, 0, 0)
 
     # n=4 => one q95 anchor, nearest-half k=2 => one comparison.
-    assert _tail_triplet_capacity(4) == (1, 1, 1)
+    assert _tail_triplet_capacity(4) == (1, 1, 1, 1)
 
     # n=100 => q95 top 5 anchors; k=50 => C(50,2)=1225 each.
-    assert _tail_triplet_capacity(100) == (5, 5, 6125)
+    # Population = 6125, but the inherited TD59 sample cap is 64/stratum.
+    assert _tail_triplet_capacity(100) == (5, 5, 6125, 64)
 
 
 def test_all_source_fold_cases_can_be_structurally_possible_without_claiming_biology() -> None:
