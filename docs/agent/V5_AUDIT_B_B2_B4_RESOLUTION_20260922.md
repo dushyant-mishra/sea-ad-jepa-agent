@@ -120,15 +120,19 @@ Precision-rule authority V2:
 
 Executable B4 contract V2:
 
-`2c91e661812ab5cbb22902ddffb7a098ed11300c42a8c465e76389153e0200aa`
+`c68231e53ee08990949688013261c957fc205f9599bbc446780a12ba4d276927`
 
 ## What B4 authorizes
 
-B4 authorizes only Audit-B execution under the frozen prefix ladder:
+B4 directly authorizes **N1 only**:
 
-- N1 = 256;
-- N2 = 1,024 only if frozen primary precision at N1 is insufficient;
-- N3 = 4,096 only if frozen primary precision at N2 remains insufficient.
+- N1 = 256 is the only sample level directly executable under B4;
+- N2 = 1,024 requires a separately frozen escalation receipt proving the
+  B4-bound primary precision rule failed at N1;
+- N3 = 4,096 requires a separately frozen escalation receipt proving the same
+  rule still failed at N2.
+
+Direct N2/N3 execution under B4 is explicitly forbidden.
 
 The RNG seed, target prefixes, weighting, primary cell and precision thresholds
 may not change after seeing N1.
