@@ -62,6 +62,7 @@ jobs:
             tests/test_v5_full104_rare_tail_structural_preflight_v1.py \
             tests/test_v5_full104_rare_tail_structural_preflight_cli_v1.py \
             tests/test_v5_full104_rare_tail_structural_preflight_receipt_v1.py \
+            tests/test_v5_full104_rare_tail_molecular_authority_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v2.py
       - name: Fail closed on skipped regression tests
         env:
@@ -94,6 +95,7 @@ jobs:
             tests/test_v5_full104_rare_tail_structural_preflight_v1.py \
             tests/test_v5_full104_rare_tail_structural_preflight_cli_v1.py \
             tests/test_v5_full104_rare_tail_structural_preflight_receipt_v1.py \
+            tests/test_v5_full104_rare_tail_molecular_authority_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v2.py \
             -rs --tb=short | tee /tmp/current-v5.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/current-v5.txt; then echo 'CURRENT V5 REGRESSION TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
