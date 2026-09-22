@@ -17,5 +17,6 @@
   "n2_directly_authorized": false,
   "terminal_masking_authorized": false,
   "training_authorized": false,
-  "authority_sha256": "2917a84b5796b0c6dfe8a962d67dbf69b2932dafa1894f56922c2e9257c59bb2"
+  "authority_sha256": "eb3293720c54ae10023a90b73c1bf35b46b6cacfda70632522014d988ebb0096",
+  "target_rng_id_rule_id": "INTEGER_MOLECULAR_ADDRESS_COLUMN_V1"
 }
