@@ -291,6 +291,34 @@ For larger observed effects, a relative-precision criterion may apply.
 This is scientifically interpretable but requires more machinery and an
 independently justified materiality threshold.
 
+## 6. Current resolution-schema capability
+
+The existing `AuditBScientificResolutionV2` can prospectively encode:
+
+- W1 or W2 weighting;
+- S1 or S2 precision scope;
+- the predeclared policy/rung when S1 is selected;
+- one of the currently implemented exact-zero handling rules.
+
+It does **not** currently encode:
+
+- an absolute SE tolerance;
+- a mixed absolute/relative precision envelope;
+- a practical-null/materiality threshold;
+- a precision-estimator ID other than the current relative-RSE formulation.
+
+Therefore:
+
+- if the reviewed B2 decision retains relative-only RSE, V2 may be sufficient as
+  the decision record, followed by a separate executable B4 successor;
+- if the reviewed decision selects P2, P3 or P4, a new reviewed scientific
+  resolution schema (V3 or equivalent) is required before B4;
+- no numerical tolerance may be introduced only inside B4 without first being
+  present in the signed scientific-resolution object.
+
+This prevents the execution contract from silently making a scientific decision
+that the decision record itself did not encode.
+
 ## 6. Constraints on any B2 resolution
 
 Whatever is selected must be frozen before N1 and must include:
