@@ -72,6 +72,8 @@ PRIMARY_METRIC_ID = "B2_HELDOUT_DETECTED_TOKEN_BURDEN"
 SECONDARY_METRIC_ID = "B3_HELDOUT_RAW_UMI_BURDEN__DESCRIPTIVE_ONLY"
 NORMALIZATION_ID = "ADDED_MINUS_DROPPED_OVER_UNIFORM_FULL_MASK_WITH_TARGET_V1"
 SAMPLE_LADDER = (256, 1024, 4096)
+INITIAL_SAMPLE_LEVEL_ID = "N1"
+INITIAL_SAMPLE_SIZE = 256
 SCIENTIFIC_RESOLUTION_SCHEMA_ID = "V5_AUDIT_B_SCIENTIFIC_RESOLUTION_V3"
 PRECISION_RULE_AUTHORITY_SCHEMA_ID = "V5_AUDIT_B_PRECISION_RULE_AUTHORITY_V2"
 
@@ -156,6 +158,10 @@ class AuditBExecutionContractV2:
     scientific_resolution_schema_id: str = SCIENTIFIC_RESOLUTION_SCHEMA_ID
     precision_rule_authority_schema_id: str = PRECISION_RULE_AUTHORITY_SCHEMA_ID
 
+    initial_sample_level_id: str = INITIAL_SAMPLE_LEVEL_ID
+    initial_sample_size: int = INITIAL_SAMPLE_SIZE
+    direct_n2_n3_execution_authorized: bool = False
+
     primary_metric_id: str = PRIMARY_METRIC_ID
     secondary_metric_id: str = SECONDARY_METRIC_ID
     normalization_id: str = NORMALIZATION_ID
@@ -212,6 +218,8 @@ class AuditBExecutionContractV2:
             "zero_mean_rule_id": ZERO_MEAN_RULE_ID,
             "reporting_scope_id": REPORTING_SCOPE_ID,
             "source_stratified_reporting_id": SOURCE_STRATIFIED_REPORTING_ID,
+            "initial_sample_level_id": INITIAL_SAMPLE_LEVEL_ID,
+            "initial_sample_size": INITIAL_SAMPLE_SIZE,
             "primary_metric_id": PRIMARY_METRIC_ID,
             "secondary_metric_id": SECONDARY_METRIC_ID,
             "normalization_id": NORMALIZATION_ID,
@@ -220,6 +228,11 @@ class AuditBExecutionContractV2:
             if getattr(self, name) != expected:
                 raise ValueError(f"{name} drifted from the signed B2 resolution")
 
+        if self.direct_n2_n3_execution_authorized is not False:
+            raise ValueError(
+                "direct_n2_n3_execution_authorized must remain false; "
+                "precision-derived escalation receipt is required"
+            )
         if tuple(self.sample_ladder) != SAMPLE_LADDER:
             raise ValueError("sample_ladder drifted")
         if tuple(self.execution_requirements) != EXECUTION_REQUIREMENTS:
@@ -243,6 +256,17 @@ class AuditBExecutionContractV2:
         self.validate()
         if self.execution_authorized is not True:
             raise ValueError("STOP_AUDIT_B_B4_EXECUTION_NOT_AUTHORIZED")
+
+    def require_sample_level_ready(self, sample_level: str) -> None:
+        self.require_execution_ready()
+        if sample_level == INITIAL_SAMPLE_LEVEL_ID:
+            return
+        if sample_level in {"N2", "N3"}:
+            raise ValueError(
+                "STOP_AUDIT_B_ESCALATION_RECEIPT_REQUIRED: B4 directly authorizes "
+                "N1 only; N2/N3 require a frozen precision-derived escalation receipt"
+            )
+        raise ValueError("sample_level must be N1, N2, or N3")
 
     def canonical_digest(self) -> str:
         self.validate()
