@@ -26,7 +26,9 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from fractions import Fraction
-from typing import Any, Sequence
+import hashlib
+import json
+from typing import Any, Mapping, Sequence
 
 import numpy as np
 
@@ -55,6 +57,78 @@ PRECISION_SCOPE_ID = "ONE_PREDECLARED_PRIMARY_BURDEN_STATISTIC_V1"
 REPORTING_SCOPE_ID = "ALL_3_NONUNIFORM_X_6_RUNG_CELLS_REPORTED_V1"
 
 SAMPLE_LEVEL_TO_N = {"N1": 256, "N2": 1024, "N3": 4096}
+PRECISION_RULE_AUTHORITY_ID = "JEPA_V5_FULL104_AUDIT_B_PRECISION_RULE_AUTHORITY_V2"
+
+
+def _canonical(payload: Mapping[str, Any]) -> bytes:
+    return json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("utf-8")
+
+
+@dataclass(frozen=True)
+class AuditBPrecisionRuleAuthorityV2:
+    authority_id: str = PRECISION_RULE_AUTHORITY_ID
+    strict_core_addresses: int = STRICT_CORE_ADDRESSES
+    precision_scope_id: str = PRECISION_SCOPE_ID
+    reporting_scope_id: str = REPORTING_SCOPE_ID
+    primary_policy_id: str = PRIMARY_POLICY_ID
+    primary_rung_numerator: int = PRIMARY_RUNG.numerator
+    primary_rung_denominator: int = PRIMARY_RUNG.denominator
+    primary_mask_cardinality: int = PRIMARY_MASK_CARDINALITY
+    precision_estimator_id: str = PRECISION_ESTIMATOR_ID
+    relative_se_tolerance_numerator: int = RELATIVE_SE_TOLERANCE.numerator
+    relative_se_tolerance_denominator: int = RELATIVE_SE_TOLERANCE.denominator
+    absolute_se_tolerance_numerator: int = ABSOLUTE_SE_TOLERANCE.numerator
+    absolute_se_tolerance_denominator: int = ABSOLUTE_SE_TOLERANCE.denominator
+    absolute_tolerance_origin_id: str = ABSOLUTE_TOLERANCE_ORIGIN_ID
+    zero_mean_rule_id: str = ZERO_MEAN_RULE_ID
+
+    def validate(self) -> None:
+        expected = {
+            "authority_id": PRECISION_RULE_AUTHORITY_ID,
+            "strict_core_addresses": STRICT_CORE_ADDRESSES,
+            "precision_scope_id": PRECISION_SCOPE_ID,
+            "reporting_scope_id": REPORTING_SCOPE_ID,
+            "primary_policy_id": PRIMARY_POLICY_ID,
+            "primary_rung_numerator": PRIMARY_RUNG.numerator,
+            "primary_rung_denominator": PRIMARY_RUNG.denominator,
+            "primary_mask_cardinality": PRIMARY_MASK_CARDINALITY,
+            "precision_estimator_id": PRECISION_ESTIMATOR_ID,
+            "relative_se_tolerance_numerator": RELATIVE_SE_TOLERANCE.numerator,
+            "relative_se_tolerance_denominator": RELATIVE_SE_TOLERANCE.denominator,
+            "absolute_se_tolerance_numerator": ABSOLUTE_SE_TOLERANCE.numerator,
+            "absolute_se_tolerance_denominator": ABSOLUTE_SE_TOLERANCE.denominator,
+            "absolute_tolerance_origin_id": ABSOLUTE_TOLERANCE_ORIGIN_ID,
+            "zero_mean_rule_id": ZERO_MEAN_RULE_ID,
+        }
+        for name, value in expected.items():
+            if getattr(self, name) != value:
+                raise ValueError(f"{name} drifted from the reviewed precision rule")
+        expected_cardinality = 1 + (
+            (self.strict_core_addresses - 1) * self.primary_rung_numerator
+        ) // self.primary_rung_denominator
+        if self.primary_mask_cardinality != expected_cardinality:
+            raise ValueError("primary mask cardinality is inconsistent with frozen geometry")
+        if self.absolute_se_tolerance_denominator != self.primary_mask_cardinality:
+            raise ValueError(
+                "absolute SE tolerance must remain one average primary-mask address share"
+            )
+
+    def canonical_digest(self) -> str:
+        self.validate()
+        return hashlib.sha256(
+            _canonical(
+                {
+                    "schema": "V5_AUDIT_B_PRECISION_RULE_AUTHORITY_V2",
+                    **asdict(self),
+                }
+            )
+        ).hexdigest()
 
 
 @dataclass(frozen=True)
