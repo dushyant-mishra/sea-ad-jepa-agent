@@ -1,0 +1,16 @@
+# rare-tail metadata-only structural preflight receipts
+# branch gpu/v5-full104-rare-tail-structural-20260922
+# source e48c15975b440160e48e29ace74196314d5fa9a6  (PR #44 head)
+# built  2026-09-22T04:42:42Z
+#
+# file_sha256                                                       bytes  path
+7b9ff5938e3940fca8640e98217b1c9cf075597305d80bbc04c6df15d1eae801    498827  RARE_TAIL_STRUCTURAL_PREFLIGHT_V1.json
+3f1ecdffbeea6d942ee5dc8d488a8de98cb9c99d00c79cd10a7bb695bd9d9d9d      5944  RARE_TAIL_STRUCTURAL_PREFLIGHT_PROVENANCE.json
+
+# structural receipt canonical sha256 : f0d71c9b2f25d31a0b277b9a55f2a31f44d9084b924c3c14c67ef0c4c4a4bc89
+# sample receipt canonical sha256     : 7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6
+# terminal                            : STRUCTURALLY_POSSIBLE__MOLECULAR_ESTIMABILITY_UNPROVEN
+# validator terminal                  : PASS_FULL104_RARE_TAIL_STRUCTURAL_PREFLIGHT_RECEIPT_V1
+
+# EXPRESSION OPENED = FALSE   COUNT MATRICES OPENED = FALSE
+# MOLECULAR DISTANCES COMPUTED = FALSE   RARE-TAIL MOLECULAR OUTCOME = UNOPENED
