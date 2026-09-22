@@ -101,7 +101,7 @@ def _sample_receipt_digest(sample_dir: Path) -> tuple[str, str]:
     digest = receipt.canonical_digest()
     if payload.get("sample_receipt_sha256") != digest:
         raise ValueError("sample receipt canonical digest mismatch")
-    return digest, sha256_file(path)
+    return digest, normalized_text_sha256(path)
 
 
 def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
@@ -130,11 +130,16 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
     ):
         raise ValueError("structural-preflight runner source hash mismatch")
 
-    sample_digest, sample_file_sha = _sample_receipt_digest(sample_dir)
+    sample_digest, sample_text_sha = _sample_receipt_digest(sample_dir)
     if payload.get("sample_receipt_sha256") != sample_digest:
         raise ValueError("structural preflight binds a different qualification sample")
-    if payload.get("sample_receipt_file_sha256") != sample_file_sha:
-        raise ValueError("structural preflight binds different sample receipt bytes")
+    if (
+        payload.get("sample_receipt_normalized_text_sha256")
+        != sample_text_sha
+    ):
+        raise ValueError(
+            "structural preflight binds different normalized sample receipt text"
+        )
     if payload.get("full104_block_manifest_sha256") != EXPECTED_BLOCK_MANIFEST_SHA256:
         raise ValueError("structural preflight binds a different FULL104 manifest")
 
