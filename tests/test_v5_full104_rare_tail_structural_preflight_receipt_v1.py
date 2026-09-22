@@ -24,7 +24,9 @@ def _payload(v):
     donors = []
     for d in range(104):
         retained = 1024 if d != 103 else 81
-        tail, triplet_tail, triplets = v._expected_operator_capacity(retained)
+        tail, triplet_tail, triplet_population, sampled_triplets = (
+            v._expected_operator_capacity(retained)
+        )
         donors.append(
             {
                 "donor_code": d,
@@ -34,8 +36,9 @@ def _payload(v):
                 "represented_operators": 1,
                 "q95_tail_anchor_upper_bound": tail,
                 "triplet_capable_tail_anchor_upper_bound": triplet_tail,
-                "tail_triplet_upper_bound": triplets,
-                "structurally_eligible": tail >= 5 and triplets >= 20,
+                "tail_triplet_population_upper_bound": triplet_population,
+                "sampled_tail_triplet_upper_bound": sampled_triplets,
+                "structurally_eligible": tail >= 5 and sampled_triplets >= 20,
             }
         )
     cases = []
@@ -58,8 +61,8 @@ def _payload(v):
 
     operator_capacity = []
     for d in range(104):
-        tail, triplet_tail, triplets = v._expected_operator_capacity(
-            donors[d]["retained_cells"]
+        tail, triplet_tail, triplet_population, sampled_triplets = (
+            v._expected_operator_capacity(donors[d]["retained_cells"])
         )
         operator_capacity.append(
             {
@@ -70,7 +73,8 @@ def _payload(v):
                 "retained_cells": donors[d]["retained_cells"],
                 "q95_tail_anchor_upper_bound": tail,
                 "triplet_capable_tail_anchor_upper_bound": triplet_tail,
-                "tail_triplet_upper_bound": triplets,
+                "tail_triplet_population_upper_bound": triplet_population,
+                "sampled_tail_triplet_upper_bound": sampled_triplets,
             }
         )
     payload = {
@@ -82,6 +86,7 @@ def _payload(v):
         "source_fold_cases": cases,
         "tail_anchor_minimum_per_donor": 5,
         "resolved_triplet_minimum_per_donor": 20,
+        "triplets_per_stratum_cap": 64,
         "measurable_donor_minimum_per_source_fold": 4,
         "zxy_molecular_outcome_opened": False,
         "rare_tail_molecular_pass_claimed": False,
@@ -149,10 +154,10 @@ def test_validator_rejects_incomplete_source_fold_grid_even_if_resealed() -> Non
 def test_validator_rejects_resealed_capacity_arithmetic_drift() -> None:
     v = _load_validator()
     payload = _payload(v)
-    payload["operator_capacity"][0]["tail_triplet_upper_bound"] += 1
-    payload["donor_capacity"][0]["tail_triplet_upper_bound"] += 1
+    payload["operator_capacity"][0]["sampled_tail_triplet_upper_bound"] += 1
+    payload["donor_capacity"][0]["sampled_tail_triplet_upper_bound"] += 1
     payload["structural_preflight_sha256"] = v.canonical_sha256(
         {k: value for k, value in payload.items() if k != "structural_preflight_sha256"}
     )
-    with pytest.raises(ValueError, match="triplet capacity disagrees with frozen arithmetic"):
+    with pytest.raises(ValueError, match="sampled triplet capacity disagrees with frozen arithmetic"):
         v.validate_structural_receipt(payload, sample_dir=SAMPLE_DIR)
