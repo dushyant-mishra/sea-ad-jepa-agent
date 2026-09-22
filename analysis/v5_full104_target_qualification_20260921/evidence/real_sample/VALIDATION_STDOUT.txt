@@ -1,0 +1,1 @@
+{"expression_opened": false, "full_source_replay": true, "masking_authorized": false, "retained_cells": 105553, "retained_donors": 104, "sample_receipt_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6", "status": "PASS_FULL104_TARGET_QUALIFICATION_SAMPLE_V1", "training_authorized": false}
