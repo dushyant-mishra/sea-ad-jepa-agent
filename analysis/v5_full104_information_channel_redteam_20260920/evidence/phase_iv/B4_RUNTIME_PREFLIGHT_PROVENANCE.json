@@ -1,0 +1,103 @@
+{
+  "schema": "V5_AUDIT_B_B4_RUNTIME_PREFLIGHT_PROVENANCE_V1",
+  "scope_class": "CURRENT_FULL104_AUTHORITY",
+  "branch": "gpu/v5-full104-b4-runtime-preflight-20260922",
+  "source_sha": "0180158f61f50ea4e5ad403fb11eb9d525b004c6",
+  "source_role": "PR #47 head, audit/v5-full104-b2-b4-resolution-20260922 (verified unmoved; four workflows green)",
+  "utc_execution_time": "2026-09-22T04:36:44Z",
+  "preflight_script": "scripts/agent/validate_full104_audit_b_execution_preflight_v2_20260922.py",
+  "preflight_script_sha256": "d201134e566aba231b3cfb07455bbcdbd7a65d1a49e50d549351f892661c4d76",
+  "read_only": true,
+  "terminal_state": "READY_FOR_AUDIT_B_N1_EXECUTION",
+  "required_flags": {
+    "burden_computed": false,
+    "masks_executed": false,
+    "terminal_masking_outcomes_inspected": false,
+    "terminal_masking_authorized": false,
+    "training_authorized": false,
+    "authorized_sample_level": "N1",
+    "direct_n2_n3_execution_authorized": false
+  },
+  "semantic_roots_recomputed_not_trusted": {
+    "b4_contract_v2_canonical": "c68231e53ee08990949688013261c957fc205f9599bbc446780a12ba4d276927",
+    "b2_scientific_resolution_v3": "766f467f4566cf0087ca4bc22f5263575a8ae50d7e5905666886190c3ad95889",
+    "precision_rule_authority_v2": "0a712b3aeebc42732726667722c90b2b9d97a6110cba157c2d99aa642c0c97b4",
+    "immutable_v1_parent": "95db537de2df04e83c72d17ab788f985901ee4b644769d598243a9eed5eef398",
+    "parent_field_name": "parent_preexecution_contract_sha256",
+    "rng_authority_canonical": "775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb",
+    "rng_global_seed": 1267387626254385975,
+    "phase_iv_sample_freeze_digest": "c2c5e1b5addc50db7e9676ebf59e9c63b5d0b9eee882ef78aff5baa9d4a3b0ac"
+  },
+  "physical_roots_resolved_by_role_then_hash_verified": {
+    "resolution_note": "each path was derived from the bound authority/receipt that declares the role, never from a remembered path; the registry authority records path_is_not_identity=true, so its path is informative and the hash is the identity.",
+    "full104_manifest": {
+      "declared_by": "contract.full104_manifest_sha256",
+      "sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "bytes": 2372002
+    },
+    "canonical_registry": {
+      "declared_by": "contract.canonical_registry_sha256",
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "bytes": 24946770
+    },
+    "heavy_artifact": {
+      "declared_by": "heavy_receipt.artifact_sha256",
+      "sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+      "bytes": 242087519
+    },
+    "mask_plan_generator": {
+      "declared_by": "sample.bound_inputs.mask_plan_generator.sha256",
+      "sha256": "fdc0cec140132b71fd0c01af5ec97c323bac091055191754dfcf81111ee6441e",
+      "bytes": 6437
+    },
+    "burden_estimator_source": {
+      "declared_by": "contract.burden_estimator_source_sha256",
+      "sha256": "7f589f548bf94fd0bd207717f1b0289e2718958915e08d3a6d716b22164d441a",
+      "bytes": 20795
+    }
+  },
+  "seven_frozen_phase_iv_bound_inputs_all_verified": {
+    "target_universe": "3723ec4a3fe0e2d0f5b07cc2c6c296bd956ad7d89877621d974eff7b00e7eb3e",
+    "split_receipt": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+    "planner_source": "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d",
+    "qualification_runner": "a98e81cd1c6ba2a9faf0652c422dc1debe007719e6d7b3db1a5be987df571541",
+    "masking_parameters_authority": "e53b454673010a9ec20c044662bef61a48a64be58c26cc31c3287bce7901cb39",
+    "evidence_budget_authority": "b10c3ee0354d37d59ba43051b5b2e21a2afe19d1d4bfbc1038fcff87e8eb44e4",
+    "mask_plan_generator": "fdc0cec140132b71fd0c01af5ec97c323bac091055191754dfcf81111ee6441e"
+  },
+  "heavy_qualification_geometry_reconfirmed": {
+    "rows_traversed": 4553407,
+    "donors": 104,
+    "core_addresses": 17186,
+    "three_route_total_agreement": true,
+    "all_104_donor_library_totals_agree": true,
+    "per_cell_source_vector_agrees": true,
+    "verdict": "HEAVY_ARTIFACT_QUALIFIED_FOR_REUSE"
+  },
+  "escalation_guard_exercised_read_only": {
+    "N1": "ALLOWED",
+    "N2": "REFUSED: STOP_AUDIT_B_ESCALATION_RECEIPT_REQUIRED",
+    "N3": "REFUSED: STOP_AUDIT_B_ESCALATION_RECEIPT_REQUIRED",
+    "note": "require_sample_level_ready() was called for inspection only; no sample was opened."
+  },
+  "independent_validation_note": "the CLI success line was not accepted on its own. The B4 contract was rebuilt from its JSON through the typed dataclass and its canonical digest recomputed; the RNG authority likewise, including its global_seed; all seven frozen Phase-IV bound inputs were re-hashed from disk; and the heavy qualification geometry was re-read from its receipt.",
+  "burden_computed": false,
+  "masks_executed": false,
+  "n1_executed": false,
+  "protected_outcomes_opened": false,
+  "firewall": {
+    "audit_b_n1": "UNOPENED",
+    "n2": "UNOPENED",
+    "n3": "UNOPENED",
+    "masks_executed": "NONE",
+    "burden_calculation": "NOT_RUN",
+    "terminal_masking": "UNOPENED",
+    "p1_p2_p3_p4_selection": "NONE",
+    "rare_tail_molecular": "UNOPENED",
+    "td60": "UNEXECUTED",
+    "pathology_dev_sealed": "UNOPENED",
+    "d_shared": "UNOPENED",
+    "g5": "UNOPENED",
+    "training": "OFF"
+  }
+}

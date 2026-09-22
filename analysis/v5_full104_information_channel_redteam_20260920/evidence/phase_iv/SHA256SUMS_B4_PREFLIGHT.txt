@@ -1,0 +1,16 @@
+# B4 full-runtime preflight receipts
+# branch gpu/v5-full104-b4-runtime-preflight-20260922
+# source 0180158f61f50ea4e5ad403fb11eb9d525b004c6  (PR #47 head)
+# built  2026-09-22T04:36:44Z
+#
+# file_sha256                                                       bytes  path
+d947436b689f72774b676c614f475a81bf28c4076c8c5d6a8158d084d89860e8      2601  B4_FULL_RUNTIME_PREFLIGHT_RECEIPT.json
+29bab91a746482ca71459366ea25320a80351e00fc09dd9c4e2e1d1312a0ff76      5395  B4_RUNTIME_PREFLIGHT_PROVENANCE.json
+
+# terminal state: READY_FOR_AUDIT_B_N1_EXECUTION
+# burden_computed=false  masks_executed=false  N1 NOT EXECUTED
+# authorized_sample_level=N1  direct_n2_n3_execution_authorized=false
+
+# content-addressed, not duplicated here:
+#   heavy_sufficient_statistics  bytes=242087519  sha256=f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae
+#   canonical_address_registry   bytes=24946770   sha256=7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd
