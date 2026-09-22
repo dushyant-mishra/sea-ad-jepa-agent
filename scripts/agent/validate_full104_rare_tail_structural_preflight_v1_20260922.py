@@ -54,19 +54,20 @@ def canonical_sha256(payload: dict) -> str:
     ).hexdigest()
 
 
-def _expected_operator_capacity(retained_cells: int) -> tuple[int, int, int]:
+def _expected_operator_capacity(retained_cells: int) -> tuple[int, int, int, int]:
     n = int(retained_cells)
     if n < 1:
         raise ValueError("operator retained_cells must be positive")
     tail = ((n + 19) // 20) if n >= 2 else 0
     if n < 4:
-        return tail, 0, 0
+        return tail, 0, 0, 0
     triplet_tail = (n + 19) // 20
     nearest_half_candidates = n // 2
     comparisons_per_anchor = (
         nearest_half_candidates * (nearest_half_candidates - 1)
     ) // 2
-    return tail, triplet_tail, triplet_tail * comparisons_per_anchor
+    population = triplet_tail * comparisons_per_anchor
+    return tail, triplet_tail, population, min(population, 64)
 
 
 def _typed(payload: dict, cls):
@@ -176,7 +177,7 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
             raise ValueError("donor_capacity retained_cells must be positive")
         expected_eligible = bool(
             int(row["q95_tail_anchor_upper_bound"]) >= 5
-            and int(row["tail_triplet_upper_bound"]) >= 20
+            and int(row["sampled_tail_triplet_upper_bound"]) >= 20
         )
         if bool(row["structurally_eligible"]) is not expected_eligible:
             raise ValueError("donor structural eligibility disagrees with frozen thresholds")
@@ -194,7 +195,8 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
             "retained": 0,
             "tail": 0,
             "triplet_tail": 0,
-            "triplets": 0,
+            "triplet_population": 0,
+            "sampled_triplets": 0,
         }
         for d in range(FULL104_READER_FIT_DONORS)
     }
@@ -218,9 +220,12 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
         retained_cells = int(row["retained_cells"])
         if retained_cells < 1:
             raise ValueError("operator_capacity retained_cells must be positive")
-        expected_tail, expected_triplet_tail, expected_triplets = (
-            _expected_operator_capacity(retained_cells)
-        )
+        (
+            expected_tail,
+            expected_triplet_tail,
+            expected_triplet_population,
+            expected_sampled_triplets,
+        ) = _expected_operator_capacity(retained_cells)
         if int(row["q95_tail_anchor_upper_bound"]) != expected_tail:
             raise ValueError("operator q95 tail capacity disagrees with frozen arithmetic")
         if (
@@ -230,13 +235,26 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
             raise ValueError(
                 "operator triplet-capable tail capacity disagrees with frozen arithmetic"
             )
-        if int(row["tail_triplet_upper_bound"]) != expected_triplets:
-            raise ValueError("operator triplet capacity disagrees with frozen arithmetic")
+        if (
+            int(row["tail_triplet_population_upper_bound"])
+            != expected_triplet_population
+        ):
+            raise ValueError(
+                "operator triplet population disagrees with frozen arithmetic"
+            )
+        if (
+            int(row["sampled_tail_triplet_upper_bound"])
+            != expected_sampled_triplets
+        ):
+            raise ValueError(
+                "operator sampled triplet capacity disagrees with frozen arithmetic"
+            )
 
         grouped[donor_code]["retained"] += retained_cells
         grouped[donor_code]["tail"] += expected_tail
         grouped[donor_code]["triplet_tail"] += expected_triplet_tail
-        grouped[donor_code]["triplets"] += expected_triplets
+        grouped[donor_code]["triplet_population"] += expected_triplet_population
+        grouped[donor_code]["sampled_triplets"] += expected_sampled_triplets
 
     if operator_codes != set(range(42)):
         raise ValueError("operator_capacity does not actually represent all 42 operators")
@@ -255,8 +273,18 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
             raise ValueError(
                 "donor triplet-capable tail capacity disagrees with operator_capacity"
             )
-        if totals["triplets"] != int(donor_row["tail_triplet_upper_bound"]):
-            raise ValueError("donor triplet capacity disagrees with operator_capacity")
+        if totals["triplet_population"] != int(
+            donor_row["tail_triplet_population_upper_bound"]
+        ):
+            raise ValueError(
+                "donor triplet population disagrees with operator_capacity"
+            )
+        if totals["sampled_triplets"] != int(
+            donor_row["sampled_tail_triplet_upper_bound"]
+        ):
+            raise ValueError(
+                "donor sampled triplet capacity disagrees with operator_capacity"
+            )
 
     retained_sum = sum(int(x["retained_cells"]) for x in operators)
     if retained_sum != EXPECTED_SAMPLE_CELLS:
@@ -286,6 +314,9 @@ def validate_structural_receipt(payload: dict, *, sample_dir: Path) -> dict:
                 raise ValueError(
                     "source x fold structural possibility disagrees with donor capacity"
                 )
+
+    if payload.get("triplets_per_stratum_cap") != 64:
+        raise ValueError("triplets_per_stratum_cap drifted from frozen TD59 mechanics")
 
     for name in (
         "expression_opened",
