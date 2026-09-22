@@ -74,6 +74,16 @@ def _sha(value: object, name: str) -> str:
     return value
 
 
+def _git_commit_sha(value: object, name: str) -> str:
+    if not isinstance(value, str) or len(value) != 40 or value != value.lower():
+        raise ValueError(f"{name} must be a lowercase 40-hex Git commit SHA")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a lowercase 40-hex Git commit SHA") from exc
+    return value
+
+
 @dataclass(frozen=True)
 class AuditBN1ExecutionAuthorityV1:
     authority_id: str
@@ -102,7 +112,10 @@ class AuditBN1ExecutionAuthorityV1:
         if _sha(self.b4_contract_sha256, "b4_contract_sha256") != B4_CONTRACT_SHA256:
             raise ValueError("N1 authority binds a different B4 contract")
         if (
-            _sha(self.b4_runtime_preflight_source_sha, "b4_runtime_preflight_source_sha")
+            _git_commit_sha(
+                self.b4_runtime_preflight_source_sha,
+                "b4_runtime_preflight_source_sha",
+            )
             != B4_RUNTIME_PREFLIGHT_SOURCE_SHA
         ):
             raise ValueError("N1 authority binds a different B4 preflight receipt commit")
