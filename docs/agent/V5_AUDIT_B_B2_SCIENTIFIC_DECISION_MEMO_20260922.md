@@ -47,6 +47,29 @@ parent record.
 
 A reviewed successor contract must encode the actual B2 resolution.
 
+## 1A. Immutable preexecution parent now exists
+
+Claude materialized B3 and the non-executable Audit-B V1 parent on PR #46.
+
+Independently recomputed current roots:
+
+- RNG-V3 authority SHA-256:
+  `775aba506982a9a8dbecccb454d8d3d68709e524bb7f67e9397bbf819b72c2fb`
+- RNG global seed:
+  `1267387626254385975`
+- non-executable Audit-B V1 contract SHA-256:
+  `95db537de2df04e83c72d17ab788f985901ee4b644769d598243a9eed5eef398`
+
+The V1 contract is:
+
+- `precision_scope_id = UNRESOLVED__EXECUTION_FORBIDDEN`
+- `execution_authorized = false`
+- `training_authorized = false`
+
+Any signed B2 scientific resolution must bind exactly that V1 contract digest (or
+a later explicitly reviewed superseding parent if one is deliberately created
+before any burden outcome access).
+
 ## 2. Weighting decision
 
 Two weighting estimands are now implemented and tested.
