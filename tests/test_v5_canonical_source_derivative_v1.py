@@ -639,6 +639,6 @@ def test_end_to_end_successor_rejects_within_source_donor_swap_without_receipts(
     donors[1] = 1  # D0 -> D1, both HVS; source invariant is still satisfied
     np.savez(fx["pass1"], cell_donor=donors, core=core, duniq=registry)
     six, pre = tmp_path / "not_six.json", tmp_path / "not_pre.json"
-    with pytest.raises(SystemExit, match="authenticated PR67"):
+    with pytest.raises(SystemExit, match="pass1 donor vector differs from PR67 full-metadata physical audit"):
         _run_successor(monkeypatch, fx, six, pre)
     assert not six.exists() and not pre.exists()
