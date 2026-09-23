@@ -1,20 +1,27 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V14",
-  "date": "2026-09-15",
-  "status": "CURRENT_V5_TARGET_AUTHORITY_CARRYOVER_AND_MASKING_REVIEW__NO_TRAINING_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V21",
+  "date": "2026-09-23",
+  "status": "CURRENT_PARALLEL_FULL104_AND_EXPERIMENTAL_HANDOFF__NO_TRAINING_OR_N1_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md",
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "prior_layer2_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md",
   "current_work_ledger_path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json",
   "prior_integrated_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
   "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
   "live_evidence_lanes": {
-    "claude_layer2": "analysis/v5-layer2-cross-view-shortcut-claude-20260915@219831b899b914984369c7a41828bf750554d1d9",
-    "teacher_student_mechanics": "repair/v5-dshared-authority-v2-20260914@3717c9c0a292dfcd883949d5d0bf36d263f79300",
-    "planning_carryover_audit": "planning/v5-teacher-student-ema-canonical-20260915@88c45b97b3e9a4ad3c0fd178c992f844fd58dbab"
+    "full104_adapter": "PR83@6ff12edb8f97287ae994f41b5217350a453e6d77",
+    "full104_redteam": "PR85@0bccba8ce62d9006539b8d7a0f649faf906255fd",
+    "experimental_physical": "PR77@f34fae312a3006e9eefaa1dfb85749037de9dddd",
+    "experimental_guide_identity_stop": "PR92@bc09c0f432db6e17bec3047baeb0812975043937",
+    "experimental_authority": "PR82@d65c45745ba36ff93c384d435af1edcc99982453",
+    "benchmark_head": "PR90@3669e5c2a9f3e9466ce269efcbd696c4c28746b2",
+    "cross_study_feature_head": "PR89@06c2b498d13d289382e804340d98baa736dea3ee",
+    "gse254205_schema": "PR86@0ffb62cac6ea3d6e0e1b9cef3fa3e95f2d581e91",
+    "gse301119_support": "PR91@56600f66492b18af20edcfe5d11761d2cdca9383"
   },
-  "instruction": "Open START_HERE.md, then this pointer, then the current V5 target-authority handoff and the historical-audits index. Before doing any new audit, classify it as ALREADY_AUDITED, SUPERSEDED, OPEN, or CHANGED_INPUT_REQUIRES_REQUALIFICATION. Re-fetch live heads. Do not blindly merge the divergent planning lane. Keep training OFF and real D_shared/protected outcomes sealed."
+  "instruction": "Open START_HERE.md, then this pointer, new V21 handoff/state and historical-audits index. Re-fetch live GitHub heads. PR92 independently found 3 duplicate BIN1 feature labels in GSE311359 V1; preserve STOP until authenticated source-ID/library and versioned V2 reexecution. GSE178317 CRISPR STOP, bulk LPS/context usable. Keep training/N1/rare-tail and protected outcomes unopened; synthetic gate PASS is not physical authority.",
+  "prior_september15_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md"
 }
