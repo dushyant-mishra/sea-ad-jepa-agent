@@ -5,6 +5,7 @@ on:
     paths:
       - 'analysis/therapeutic_perturbation_etl/scripts/build_gse254205_drug_response_v2.py'
       - 'analysis/therapeutic_perturbation_etl/BENCHMARKING_SPECIFICATION_V1_20260923.md'
+      - 'analysis/therapeutic_perturbation_etl/STUDY_READINESS_AND_UNRESOLVED_ISSUES_20260923.md'
       - 'tests/test_gse254205_assay_detection_v2.py'
       - '.github/workflows/gse254205-assay-detection-v2.yml'
   workflow_dispatch:
