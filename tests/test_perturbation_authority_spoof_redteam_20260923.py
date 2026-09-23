@@ -21,10 +21,17 @@ def fixture_context(tmp_path, monkeypatch):
     sha = hashlib.sha256(data).hexdigest()
     role = "TEST_FIXTURE_ONLY_DO_NOT_USE_AS_PHYSICAL_EVIDENCE"
     monkeypatch.setitem(gate.REVIEWED_SOURCE_ROOTS, role, (sha, len(data)))
+    script = tmp_path / "synthetic_producer.py"
+    script.write_bytes(b"# fixture only\\n")
+    script_sha = gate.sha256_file(script)
+    monkeypatch.setitem(gate.REVIEWED_QUALIFICATION_TASKS, "TEST_ONLY_FROZEN_ROOT_BEHAVIOR", {
+        "roles": frozenset({role}), "code_sha256": script_sha,
+    })
     ctx = gate.ExecutionContext(
         mode=gate.ExecutionMode.PHYSICAL_QUALIFICATION,
         task="TEST_ONLY_FROZEN_ROOT_BEHAVIOR",
-        code_sha256="a" * 64,
+        code_sha256=script_sha,
+        code_path=str(script),
         inputs=[gate.AuthenticatedInput(role, str(path), sha, len(data))],
         parameters={"n": 2},
     )
@@ -155,3 +162,35 @@ def test_qualification_receipts_are_immutable(tmp_path, monkeypatch):
     with pytest.raises(FileExistsError):
         gate.emit_qualification_receipt(path=dst, context=ctx, body={"value": 2})
     assert dst.read_bytes() == first
+
+
+
+def test_cannot_self_approve_a_different_scientific_task(tmp_path, monkeypatch):
+    _, ctx, _ = fixture_context(tmp_path, monkeypatch)
+    ctx.task = "UNREVIEWED_THERAPEUTIC_EFFICACY_CLAIM"
+    with pytest.raises(gate.ExecutionAuthorityError, match="task lacks a separately reviewed"):
+        gate.emit_qualification_receipt(
+            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+        )
+
+
+def test_actual_script_mutation_rejected_despite_stale_declared_script_sha(
+    tmp_path, monkeypatch,
+):
+    _, ctx, _ = fixture_context(tmp_path, monkeypatch)
+    Path(ctx.code_path).write_bytes(b"changed script after review")
+    with pytest.raises(gate.ExecutionAuthorityError, match="actual script bytes differ"):
+        gate.emit_qualification_receipt(
+            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+        )
+
+
+def test_wrong_approved_code_root_rejected_even_if_script_is_present(
+    tmp_path, monkeypatch,
+):
+    _, ctx, _ = fixture_context(tmp_path, monkeypatch)
+    ctx.code_sha256 = "f" * 64
+    with pytest.raises(gate.ExecutionAuthorityError, match="script digest differs"):
+        gate.emit_qualification_receipt(
+            path=tmp_path / "never.json", context=ctx, body={},
+        )
