@@ -1,0 +1,141 @@
+{
+  "schema": "JEPA_V19_FULL104_SOURCE_REPAIR_HANDOFF_STATE_V1",
+  "snapshot_date": "2026-09-23",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "docs_branch": "handoff/jepa-v5-source-repair-raretail-20260923-v19",
+  "docs_parent_commit": "c4a893cbc98bfa736f3d44a2fe9a9ebe31dec6fa",
+  "branch_semantics": "PR67 code ancestry plus docs only; PR63/66 are parallel and absent from this branch",
+  "status": "N1_ORIGINAL_PHYSICAL_SOURCE_ENCODING_FAILED__SOURCE_DERIVATIVE_NOT_CREATED__RARE_TAIL_V2_READONLY_PASS__MOLECULAR_UNOPENED__TRAINING_OFF",
+  "population": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "molecular_addresses": 41238,
+    "strict_core_addresses": 17186,
+    "level4_blocks": 8915,
+    "source_names": [
+      "HVS",
+      "NPH52",
+      "SEA_AD"
+    ],
+    "source_donors": [
+      41,
+      17,
+      46
+    ],
+    "source_cells": [
+      198718,
+      236476,
+      4118213
+    ],
+    "outer_fold_donors": [
+      28,
+      26,
+      25,
+      25
+    ]
+  },
+  "physical_roots": {
+    "level4_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+    "heavy_original_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+    "heavy_original_bytes": 242087519,
+    "donor_umi_original_qualification_file_sha256": "bbd2b95b882f52c313a3623bab55e5d7ff6562cdba27e48f9c84009075cf713d",
+    "outer_split_file_sha256": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+    "outer_split_canonical_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+    "rare_tail_structural_file_sha256": "7b9ff5938e3940fca8640e98217b1c9cf075597305d80bbc04c6df15d1eae801",
+    "rare_tail_structural_provenance_file_sha256": "3f1ecdffbeea6d942ee5dc8d488a8de98cb9c99d00c79cd10a7bb695bd9d9d",
+    "rare_tail_v2_file_sha256": "feac846b76b39f6c07b93ef3f78adeb7539b3b0a3b7933a7ec677cf003774ade",
+    "rare_tail_v2_canonical_sha256": "84e6f716fec00fd660f67dc18bd468759c47a7cc935e9a359c4c4bebabb8efa7"
+  },
+  "heads_at_snapshot": {
+    "59": "1bdff2a8f12d7971652dcf92b5b81ca45c37a933",
+    "60": "7a8b97ef268d3ec34be1d62d4edf0688e83978b8",
+    "61": "bf248a97f6e5249dc7922e4499fc18128cc89fc5",
+    "62": "8348c7308156a23df08a83897027e55260e3c203",
+    "63": "59e16ab6edf3979d5cfc6d18c2f7ac2add6bb159",
+    "64": "9c94a26553bdaa23d46a4efc59e85364d0c0df9b",
+    "65": "29ec6a0d49b006e49e34143b30a950ad156dbd3f",
+    "66": "f13c8364fe997d800cb84ad5370da43e75e17d3e",
+    "67": "c4a893cbc98bfa736f3d44a2fe9a9ebe31dec6fa"
+  },
+  "results": {
+    "n1_physical_original": "FAILED_SOURCE_NAME_AND_SRC_OF_CELL_MISMATCH__N1_NOT_EXECUTED",
+    "n1_original_adversarial": "10_OF_10_REJECTED_REPORTED_IN_PR64",
+    "n1_full_metadata_diagnostic": "SYNTHETIC_CI_GREEN__PHYSICAL_NOT_EXECUTED",
+    "n1_canonical_heavy_derivative": "NOT_CREATED",
+    "n1_new_qualification": "NOT_ISSUED",
+    "n1_crashsafe": "SYNTHETIC_ONLY_PR63__PARALLEL_LANE",
+    "rare_tail_v2": "PASS_READ_ONLY__NO_RNA_OPENED",
+    "rare_tail_windows_gateway": "FIX_IN_PR66_LINUX_CI_GREEN__WINDOWS_NATIVE_NOT_RETESTED",
+    "rare_tail_molecular": "UNOPENED",
+    "td60": "UNEXECUTED",
+    "d_shared_g5": "UNOPENED",
+    "training": "OFF"
+  },
+  "ci": {
+    "pr63": {
+      "runtime": [
+        40,
+        40
+      ],
+      "stage_a": [
+        159,
+        159
+      ],
+      "target": [
+        369,
+        363
+      ],
+      "masking": [
+        828,
+        822
+      ],
+      "skips": 0
+    },
+    "pr66": {
+      "target": [
+        441,
+        441
+      ],
+      "skips": 0,
+      "run_id": 35813927942
+    },
+    "pr67": {
+      "runtime": [
+        40,
+        40
+      ],
+      "stage_a": [
+        159,
+        159
+      ],
+      "target": [
+        369,
+        363
+      ],
+      "masking": [
+        831,
+        825
+      ],
+      "skips": 0,
+      "run_ids": [
+        35814431528,
+        35814431523,
+        35814431532,
+        35814431469
+      ]
+    }
+  },
+  "hard_gates": [
+    "Do not treat filename/head/green CI as permission for full-data execution",
+    "Do not silently substitute corrected source_names at an in-memory call without an independently sourced new heavy artifact",
+    "No repair-in-place of original heavy NPZ or original receipts",
+    "No raw N1 burden/masks until new physical binder receipt reviewed",
+    "No expression-opening rare-tail run until Windows native guard tests and new source approval reviewed",
+    "Do not merge divergent #63 / #67 / #66 ancestries without explicit reviewed integration plan",
+    "Protected confirmation, pathology/DEV/SEALED, D_shared/G5, TD60 and training remain off"
+  ],
+  "handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V19_SOURCE_REPAIR_RARETAIL.md",
+  "manifest": "docs/agent/JEPA_V19_DATA_RESULTS_SCRIPTS_MANIFEST_20260923.json",
+  "takeover": "docs/agent/JEPA_V19_TAKEOVER_COMMANDS_20260923.md"
+}
