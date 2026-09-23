@@ -7,11 +7,13 @@ Status: `CURRENT_PARALLEL_FULL104_AND_EXPERIMENTAL_HANDOFF__NO_TRAINING_OR_N1_AU
 Use `main` for current governance/startup context. Read in this order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md` (latest operational status and dependency map)
-3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json` (latest machine-readable statuses, source SHAs, PR heads)
-4. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` (classify before repeating old work)
-5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md` (historical scientific contracts; do not mistake September 15 status for live)
-6. runtime-asset, formulas, historical Layer-2, heavy-asset and supersession maps linked by the pointer.
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V22_BULK_GEO_ADDENDUM.md` (latest bulk-context and independently reviewed GEO updates)
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V22.json` (latest machine-readable delta)
+4. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md` (full operational/dependency handoff)
+5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json` (full machine-readable state)
+6. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` (classify before repeating old work)
+7. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md` (historical scientific contracts; do not mistake September 15 status for live)
+8. runtime-asset, formulas, historical Layer-2, heavy-asset and supersession maps linked by the pointer.
 
 Before acting, re-fetch live branch heads. Branch names and commit messages do not confer scientific authority.
 
@@ -28,7 +30,10 @@ Before repeating any audit, read the historical-audits index and classify the pr
 
 Do not inspect protected/pathology/DEV/SEALED outcomes, D_private, D_obs outcomes, TD60, or other confirmation data while design choices remain open.
 
-## September 23 operational headline (read V21 handoff before executing)
+## September 23 operational headline (read V22 addendum, then full V21 handoff)
+
+- LATEST: Claude PR #77 physical bulk V1 now includes GSE241858 TREM2 R47H × cytokine contexts (2 iPSC clones per genotype) and GSE240609 4-sample APOE3ch × WT/PSEN1 neuron contexts. One GSE240609 sample per factorial cell: descriptive effects only; public GEO confirms CD11b-purified microglia AFTER neuron coculture, not mixed bulk coculture. Independent PR #94 adds exact GEO titles/source-root V2 gates (9 synthetic/metadata tests PASS) and requires separate physical V2 execution before qualification.
+- GSE311359 PR #92 independent duplicate-BIN1 guide-identity STOP remains unresolved (7 adversarial tests PASS).
 
 - FULL104 corrected derivative physically requalified; independent PR #83 adapter preflight PASS and PR #85 red-team PASS, but real N1 remains UNAUTHORIZED; all-104 Level-4 raw-count reaggregation UNPROVED.
 - Experimental GSE301119 reader parity/raw integer pseudobulk PASS; next physical goal donor-aware transcriptome-wide effects, not more toy fixtures.
