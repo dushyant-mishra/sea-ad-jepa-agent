@@ -29,6 +29,7 @@ cat(tag, "layer class:", paste(attr(L, "class"), collapse = ","), "\n")
 Dim <- attr(L, "Dim")
 stopifnot(Dim[1] == length(features), Dim[2] == length(cells))
 stopifnot(identical(rownames(md), cells))
+stopifnot(!anyDuplicated(features), !anyDuplicated(cells))
 
 i <- attr(L, "i"); p <- attr(L, "p"); xv <- attr(L, "x")
 cat(tag, "nnz:", length(xv), " genes:", Dim[1], " cells:", Dim[2], "\n")
@@ -55,6 +56,19 @@ md$guide_identity <- as.character(md$guide_identity)
 md$Gene_Targeted  <- as.character(md$Gene_Targeted)
 md$donor          <- as.character(md$donor)
 md$crispr         <- as.character(md$crispr)
+stopifnot(all(nzchar(md$guide_identity)), all(nzchar(md$Gene_Targeted)),
+          all(nzchar(md$donor)), all(nzchar(md$crispr)))
+stopifnot(setequal(unique(md$crispr), c("NT", "Perturbed")))
+stopifnot(setequal(unique(md$donor), c("D1", "D2")))
+
+# A guide identity must have one immutable target and CRISPR role across cells.
+# The historical reader summarized these fields, but downstream ETL must fail
+# rather than silently taking the first row if a guide's annotation drifts.
+guide_target_n <- tapply(md$Gene_Targeted, md$guide_identity,
+                         function(z) length(unique(z)))
+guide_role_n <- tapply(md$crispr, md$guide_identity,
+                       function(z) length(unique(z)))
+stopifnot(all(guide_target_n == 1L), all(guide_role_n == 1L))
 
 # --- guide x donor pseudobulk: the pre-aggregation unit ---------------------
 md$gd <- paste(md$guide_identity, md$donor, sep = "||")
@@ -83,7 +97,19 @@ lg  <- log2(cpm + 1)
 
 # Keep the guide-level matrix but only for the targeted genes plus a bounded
 # set, to keep the committed artifact small; the full matrix stays on disk.
-saveRDS(list(features = features, gd_meta = gd_meta, logcpm = lg),
+saveRDS(list(
+          schema = "GSE301119_GUIDE_DONOR_RAW_PSEUDOBULK_V1",
+          features = features,
+          gd_meta = gd_meta,
+          counts = PB,
+          library_size = colSums(PB)),
+        file.path(outdir, paste0(tag, "_guide_donor_raw_counts.rds")))
+saveRDS(list(
+          schema = "GSE301119_GUIDE_DONOR_LOGCPM_V1",
+          normalization = "log2(CPM+1)_within_guide_donor_pseudobulk",
+          features = features,
+          gd_meta = gd_meta,
+          logcpm = lg),
         file.path(outdir, paste0(tag, "_guide_donor_logcpm.rds")))
 
 # --- target-level effects vs non-targeting control, within donor ------------
