@@ -71,6 +71,7 @@ def assess_source_vectors(
     metadata_cell_donor: np.ndarray,
     metadata_cell_source: np.ndarray,
     expected_cells: int = N_CELLS,
+    expected_source_cells: tuple[int, int, int] = SOURCE_CELLS,
 ) -> dict[str, Any]:
     """Pure fail-closed role check; wrong stored labels yield quarantine.
 
@@ -99,7 +100,7 @@ def assess_source_vectors(
         raise ValueError("metadata cell donor outside canonical donor registry")
     if np.any(meta_src < 0) or np.any(meta_src >= len(SOURCES)):
         raise ValueError("metadata cell source outside canonical source registry")
-    if not np.array_equal(np.bincount(meta_src, minlength=3), SOURCE_CELLS):
+    if not np.array_equal(np.bincount(meta_src, minlength=3), expected_source_cells):
         raise ValueError("metadata source cell census drift")
     expected = donor_src[cell_donor]
     if not np.array_equal(meta_src, expected):
@@ -121,7 +122,7 @@ def assess_source_vectors(
         "src_of_cell_equals_donor_src_at_metadata_donor": cell_ok,
         "src_of_cell_mismatch_count": bad,
         "donor_source_counts": list(SOURCE_DONORS),
-        "metadata_cell_source_counts": list(SOURCE_CELLS),
+        "metadata_cell_source_counts": list(expected_source_cells),
         "canonical_donor_source_vector_sha256": int64_digest(donor_src),
         "stored_per_cell_source_sha256": int64_digest(src_of_cell),
         "metadata_donor_vector_sha256": int64_digest(cell_donor),
