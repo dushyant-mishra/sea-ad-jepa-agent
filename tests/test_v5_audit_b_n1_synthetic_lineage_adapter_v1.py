@@ -36,6 +36,11 @@ def fixture_kwargs():
         donor_umi=np.full((104, 256), 2, dtype=np.int64),
         expected_cell_donor_sha256=digest(donors),
         expected_donor_source_sha256=digest(source),
+        expected_fold_sha256=digest(fold),
+        expected_core_sha256=digest(core),
+        expected_target_order_sha256=digest(core),
+        expected_donor_nnz_sha256=digest(np.ones((104, 256), dtype=np.int64)),
+        expected_donor_umi_sha256=digest(np.full((104, 256), 2, dtype=np.int64)),
         source_names=("HVS", "NPH52", "SEA_AD"),
         stream_root_sha256="a" * 64, code_root_sha256="b" * 64,
         parameter_root_sha256="c" * 64, rng_root_sha256="d" * 64,
@@ -211,3 +216,29 @@ def test_partial_synthetic_finalization_fails_closed(tmp_path):
             result_receipt=tmp_path / "result.json",
         )
     assert not (tmp_path / "result.npz").exists()
+
+
+def test_same_census_fold_permutation_is_not_authenticated():
+    kw = fixture_kwargs()
+    kw["fold_by_donor"][0], kw["fold_by_donor"][11] = (
+        kw["fold_by_donor"][11], kw["fold_by_donor"][0]
+    )
+    assert tuple(np.bincount(kw["fold_by_donor"], minlength=4)) == (28, 26, 25, 25)
+    with pytest.raises(ValueError, match="synthetic fold assignment differs"):
+        adapter.bind_synthetic_lineage(**kw)
+
+
+def test_same_set_different_target_order_is_not_authenticated():
+    kw = fixture_kwargs()
+    kw["frozen_targets"][0], kw["frozen_targets"][1] = (
+        kw["frozen_targets"][1], kw["frozen_targets"][0]
+    )
+    with pytest.raises(ValueError, match="synthetic target order differs"):
+        adapter.bind_synthetic_lineage(**kw)
+
+
+def test_valid_shape_changed_donor_statistics_rejected():
+    kw = fixture_kwargs()
+    kw["donor_umi"][12, 7] += 1
+    with pytest.raises(ValueError, match="synthetic donor umi differs"):
+        adapter.bind_synthetic_lineage(**kw)
