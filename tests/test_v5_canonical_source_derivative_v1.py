@@ -257,3 +257,101 @@ def test_canonical_census_constants_match_the_authenticated_metadata():
     assert B.EXPECTED_SOURCE_CELLS == (198_718, 236_476, 4_118_213)
     assert sum(B.EXPECTED_SOURCE_CELLS) == B.EXPECTED_CELLS
     assert sum(B.EXPECTED_SOURCE_DONORS) == B.EXPECTED_DONORS
+
+
+# --------------------------------------------------------------------------- #
+# Independent-review regressions: execute the production gates themselves.
+# --------------------------------------------------------------------------- #
+
+QUAL = ROOT / (
+    "analysis/v5_full104_information_channel_redteam_20260920/scripts/"
+    "qualify_canonical_derivative_successor_v1_20260923.py"
+)
+_qspec = importlib.util.spec_from_file_location("canon_src_qual_review", QUAL)
+Q = importlib.util.module_from_spec(_qspec)
+sys.modules["canon_src_qual_review"] = Q
+_qspec.loader.exec_module(Q)
+
+
+def test_full_donor_identity_gate_rejects_unsampled_same_source_swap():
+    # Old producer checked every 4001st cell; a swap at rows 1 and 2 passed
+    # that test and all source-census/invariant checks. Exercise the real helper.
+    metadata = {0: "A", 1: "A", 2: "B", 3: "B"}
+    canonical = np.array([0, 0, 1, 1], dtype=np.int64)
+    B.require_full_metadata_donor_identity(metadata, canonical, ["A", "B"])
+    swapped = canonical.copy()
+    swapped[1], swapped[2] = swapped[2], swapped[1]
+    with pytest.raises(SystemExit, match="metadata donor disagrees"):
+        B.require_full_metadata_donor_identity(metadata, swapped, ["A", "B"])
+
+
+def test_full_donor_identity_rejects_duplicate_or_missing_selection():
+    metadata = {0: "A", 1: "A", 2: "B", 3: "B"}
+    donor = np.array([0, 0, 1, 1], dtype=np.int64)
+    with pytest.raises(SystemExit, match="does not cover all cells"):
+        B.require_full_metadata_donor_identity({0: "A", 1: "A", 3: "B"}, donor, ["A", "B"])
+    with pytest.raises(SystemExit, match="does not cover all cells"):
+        B.require_full_metadata_donor_identity({0: "A", 1: "A", 2: "B", 4: "B"}, donor, ["A", "B"])
+
+
+class _SyntheticNPZ(dict):
+    @property
+    def files(self):
+        return list(self)
+
+
+def _three_member_fixture():
+    old = _SyntheticNPZ(
+        core=np.array([1, 2, 3], dtype=np.int64),
+        source_names=np.array(["HVS", "SEA_AD", "NPH52"], dtype=object),
+        src_of_cell=np.array([0, 2, 1], dtype=np.int64),
+    )
+    new = _SyntheticNPZ(
+        core=old["core"].copy(),
+        source_names=np.array(["HVS", "NPH52", "SEA_AD"], dtype=object),
+        src_of_cell=np.array([0, 1, 2], dtype=np.int64),
+    )
+    per_array = []
+    for name in sorted(old):
+        changed = Q.value_sha256(old[name]) != Q.value_sha256(new[name])
+        per_array.append({
+            "name": name, "dtype": str(old[name].dtype),
+            "shape": list(old[name].shape),
+            "old_value_sha256": Q.value_sha256(old[name]),
+            "new_value_sha256": Q.value_sha256(new[name]),
+            "changed": changed, "scientific_role": "synthetic role",
+            "source_dependent": "yes" if changed else "no",
+            "disposition": (
+                "INTENDED_CHANGE__REBUILT_FROM_LEVEL4" if changed
+                else "UNAFFECTED_BY_BUG__PROVED"
+            )
+        })
+    manifest = {
+        "per_array": per_array, "members_total": 3,
+        "members_changed": 2, "members_unchanged": 1
+    }
+    return old, new, manifest
+
+
+def test_successor_independently_rehashes_each_real_member_not_only_manifest(monkeypatch):
+    monkeypatch.setattr(Q, "EXPECTED_MEMBERS", 3)
+    old, new, candidate = _three_member_fixture()
+    Q.verify_all_members(old, new, candidate)
+    # A manifest with a valid former self-digest is no substitute for
+    # reading the changed physical array. Mutation in an "unchanged" numeric
+    # member must fail before a successor preflight receipt is emitted.
+    new["core"][1] += 1
+    with pytest.raises(SystemExit, match="independent per-member value digest mismatch"):
+        Q.verify_all_members(old, new, candidate)
+
+
+def test_successor_rejects_manifest_relabel_and_member_census(monkeypatch):
+    monkeypatch.setattr(Q, "EXPECTED_MEMBERS", 3)
+    old, new, candidate = _three_member_fixture()
+    candidate["per_array"][0]["changed"] = True
+    with pytest.raises(SystemExit, match="change flag mismatch"):
+        Q.verify_all_members(old, new, candidate)
+    _, new2, other = _three_member_fixture()
+    del new2["core"]
+    with pytest.raises(SystemExit, match="physical NPZ member census mismatch"):
+        Q.verify_all_members(old, new2, other)
