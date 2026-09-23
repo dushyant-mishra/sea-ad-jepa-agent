@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -274,7 +275,7 @@ def main() -> int:
         raise SystemExit("frozen four-fold donor assignment invalid")
 
     six = {
-        "schema": "V5_FULL104_SIX_DONOR_SUCCESSOR_QUALIFICATION_V1",
+        "schema": "V5_FULL104_SIX_DONOR_SUCCESSOR_QUALIFICATION_V2",
         "role": "LABEL_CORRECTION_SUCCESSOR__NOT_A_NEW_NUMERIC_CLAIM",
         "supersedes_nothing": True,
         "original_receipt_preserved_untouched": True,
@@ -310,7 +311,7 @@ def main() -> int:
 
     # ---- successor physical N1 preflight ------------------------------------
     pre = {
-        "schema": "V5_FULL104_N1_PHYSICAL_PREFLIGHT_SUCCESSOR_V1",
+        "schema": "V5_FULL104_N1_PHYSICAL_PREFLIGHT_SUCCESSOR_V2",
         "state": "NEW_PHYSICAL_N1_INPUTS_QUALIFIED_FOR_INDEPENDENT_REVIEW",
         "not_execution_authority": (
             "this terminal authorises independent review only. It does not permit "
@@ -359,11 +360,24 @@ def main() -> int:
     pre["receipt_sha256"] = canonical_digest({k: v for k, v in pre.items()
                                               if k != "receipt_sha256"})
 
+    # Publish the independent-qualification pair with durable exclusive stages.
+    # The final N1 preflight is always committed last: a crash cannot produce a
+    # qualified-looking preflight without the corresponding six-donor receipt.
+    stages = []
     for out, payload in ((args.out_six_donor, six), (args.out_preflight, pre)):
         out.parent.mkdir(parents=True, exist_ok=True)
-        with out.open("x", encoding="utf-8") as handle:
+        stage = out.with_name("." + out.name + ".staged")
+        if stage.exists() or out.exists():
+            raise SystemExit("refusing to reuse existing receipt or stage: " + str(out))
+        with stage.open("x", encoding="utf-8") as handle:
             handle.write(json.dumps(payload, indent=2) + "\n")
             handle.flush()
+            os.fsync(handle.fileno())
+        stages.append((stage, out))
+    for stage, out in stages:
+        if out.exists():
+            raise SystemExit("receipt appeared during staged commit: " + str(out))
+        os.replace(stage, out)
     print(json.dumps({
         "six_donor_receipt_sha256": six["receipt_sha256"],
         "numeric_rows_unchanged_from_parent": numbers_unchanged,
