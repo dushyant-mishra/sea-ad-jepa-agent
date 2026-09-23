@@ -261,7 +261,13 @@ def test_10_positive_control_resolved_parameters_emit_a_receipt(tmp_path, monkey
     p, sha = _file(tmp_path, "fixture.bin", b"test-only-reviewed-fixture")
     role = "TEST_ONLY_DO_NOT_USE_FOR_PHYSICAL_AUTHORITY"
     monkeypatch.setitem(auth.REVIEWED_SOURCE_ROOTS, role, (sha, p.stat().st_size))
-    ctx = _ctx(parameters={"min_cells": 10}, inputs=[
+    code = tmp_path / "fixture_producer.py"
+    code.write_bytes(b"# independently pinned synthetic fixture")
+    code_sha = auth.sha256_file(code)
+    monkeypatch.setitem(auth.REVIEWED_QUALIFICATION_TASKS, "unit", {
+        "roles": frozenset({role}), "code_sha256": code_sha,
+    })
+    ctx = _ctx(code_sha=code_sha, code_path=str(code), parameters={"min_cells": 10}, inputs=[
         auth.AuthenticatedInput(role=role, path=str(p), sha256=sha, bytes_=p.stat().st_size)
     ])
     digest = emit_qualification_receipt(path=tmp_path / "r.json", context=ctx,
