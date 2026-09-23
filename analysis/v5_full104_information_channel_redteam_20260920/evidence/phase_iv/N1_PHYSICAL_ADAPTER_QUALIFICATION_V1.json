@@ -1,0 +1,59 @@
+{
+  "schema": "AUDIT_B_N1_PHYSICAL_ADAPTER_QUALIFICATION_V1",
+  "mode": "PHYSICAL_QUALIFICATION",
+  "task": "AUDIT_B_N1_PHYSICAL_ADAPTER_QUALIFICATION",
+  "context_digest": "27264be96906ec687eedf397274cd6c390d28e9cb13f0ddacc3f1bceeb97080e",
+  "code_sha256": "4002f93a46722f330fe8ca21b9053f52f2e29aca428e5417fd6390f7b65dd2a0",
+  "inputs": [
+    {
+      "role": "corrected_derivative",
+      "path": "D:\\jepa_full104_redteam_20260920_external\\core_sufficient_statistics_canonical_source_v2_20260923.npz",
+      "sha256": "4b15ee5238c6e48d931329d222a9488a7b4f122c58767b6615a0b480afc4800b",
+      "bytes": 363053057
+    },
+    {
+      "role": "pass1_whole_file",
+      "path": "D:\\jepa_full104_preterminal_20260919_a51cdbe8_outputs\\full104_pass1_v2_selection_row_keyed.npz",
+      "sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+      "bytes": 18029576
+    },
+    {
+      "role": "full104_level4_manifest",
+      "path": "C:\\jepa_full104_ssd\\expression_level4\\PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+      "sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "bytes": 2372002
+    }
+  ],
+  "identity_digests": {
+    "donor_order": "8e05044aef2d1b31039b8d0207325270480eeca966d80954df8aabe3f818736f",
+    "donor_source_order": "0c13291e111d65207da629c94829adbf80746f6d6221bb6bda4807c6cf4ad9a6",
+    "strict_core_order": "24588357af43de5062646fa5cca147ad7a148993e312e07f107b016492b57d96",
+    "src_of_cell_digest": "4dbe1b11768f1b37bd4fde51326edc3c920d5fc692e00080f5702b6d36c930ae"
+  },
+  "parameters": {
+    "donors": "104",
+    "strict_core": "17186",
+    "folds": "4",
+    "source_names": "HVS|NPH52|SEA_AD"
+  },
+  "n1_execution_authorized": false,
+  "audit_b_n1": "UNOPENED",
+  "masks_executed": "NONE",
+  "burden_calculated": false,
+  "precision_calculated": false,
+  "training_authorized": false,
+  "terminal": "PHYSICAL_ADAPTER_QUALIFIED_FOR_INDEPENDENT_REVIEW",
+  "n1_authority_gate_exercised": "STOP_N1_NOT_AUTHORIZED",
+  "molecular_outcomes_opened": false,
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.9.7",
+    "numpy": "1.24.2"
+  },
+  "limitations": [
+    "adapter qualification is not N1 execution authority",
+    "all-104 raw-count reaggregation from Level-4 remains UNPROVED; the exhaustive metadata comparison does not establish it",
+    "the physical burden stream has not been exercised"
+  ],
+  "receipt_sha256": "2a3f6eb2082a7d5d98c2272675c5177cda29e6a575b4a151fdc603bd3999a718"
+}
