@@ -163,3 +163,46 @@ def test_finalizer_refuses_partial_and_extra_journals(tmp_path: Path) -> None:
             donor_source_code=source,
             fold_by_donor=fold,
         )
+
+
+def test_crash_temp_is_discarded_and_finalization_can_resume(tmp_path: Path) -> None:
+    source, fold = source_fold()
+    targets = np.arange(256, dtype=np.int64)
+    j = tmp_path / "j"
+    stale = j / (rt.unit_name(0, 0, 0) + ".tmp")
+    j.mkdir(parents=True)
+    stale.write_text("{partial", encoding="utf-8")
+    rt.run_resumable_units(
+        journal_dir=j, frozen_targets=targets,
+        compute_unit=fake_unit_factory(source, fold, []), stop_after_new_units=1,
+    )
+    assert not stale.exists()
+    assert (j / rt.unit_name(0, 0, 0)).is_file()
+
+
+def test_finalization_recovers_when_artifact_already_committed(tmp_path: Path) -> None:
+    source, fold = source_fold()
+    targets = np.arange(256, dtype=np.int64)
+    j = tmp_path / "j"
+    rt.run_resumable_units(
+        journal_dir=j, frozen_targets=targets,
+        compute_unit=fake_unit_factory(source, fold, []),
+    )
+    first_artifact = tmp_path / "first.npz"
+    first_receipt = tmp_path / "first.json"
+    rt.finalize_from_journal(
+        journal_dir=j, result_artifact=first_artifact, result_receipt=first_receipt,
+        frozen_targets=targets, donor_source_code=source, fold_by_donor=fold,
+    )
+    # Simulate a crash after artifact commit but before receipt commit by copying
+    # only the deterministic artifact into a fresh finalization location.
+    recovered_artifact = tmp_path / "recovered.npz"
+    recovered_artifact.write_bytes(first_artifact.read_bytes())
+    recovered_receipt = tmp_path / "recovered.json"
+    rt.finalize_from_journal(
+        journal_dir=j, result_artifact=recovered_artifact,
+        result_receipt=recovered_receipt, frozen_targets=targets,
+        donor_source_code=source, fold_by_donor=fold,
+    )
+    assert recovered_artifact.read_bytes() == first_artifact.read_bytes()
+    assert recovered_receipt.read_bytes() == first_receipt.read_bytes()
