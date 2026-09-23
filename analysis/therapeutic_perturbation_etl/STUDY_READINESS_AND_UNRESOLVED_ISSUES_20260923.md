@@ -15,7 +15,7 @@ is *not* ETL qualification, and the two are kept separate below.
 |---|---|---|---|---|---|
 | **GSE301119** | primary human macrophage, CRISPRi + CRISPRa | ✅ | ✅ | ✅ target engagement, 2 objects | — |
 | **GSE254205** | APOE4/4 iMG, fAβ ± GNE-317 | ✅ | ✅ *(bulk arm)* | ✅ 3 drug contrasts | other 3 assets not yet done |
-| **GSE293118** | HMC3, noncoding CRISPRi | ✅ | identity ✅, matrix in progress | pending | 356M-entry MEX stream |
+| **GSE293118** | HMC3, noncoding CRISPRi | ✅ | ✅ | ✅ 6 measurable targets | cis-target authority for 77 |
 | GSE178317 | iPSC microglia CRISPRi/a | ✅ | ❌ | ❌ | lane-matched GEX↔sgRNA join |
 | GSE311359 | iPSC microglia Perturb-seq | ✅ | ❌ | ❌ | per-sample matrix + perturbation metadata |
 | GSE175721 | engineered microglia in organoids | ✅ | ❌ | ❌ | guide→cell assignment |
@@ -56,7 +56,7 @@ ETL deliberately stops before that inference.
 One cell model, one timepoint, three replicates — a thin basis for any transport
 claim.
 
-## In progress: GSE293118
+## Qualified: GSE293118
 
 Identity resolved and committed. The structure is more heterogeneous than the
 registry suggested:
@@ -82,8 +82,34 @@ transcriptome-wide response against non-targeting controls, which requires a
 nominated cis-target before it can be read as regulatory-element effect.
 
 Multiplicity is real: 64,148 cells carry one guide, 12,698 carry two, with a tail
-to six or more. Single-perturbation effects use singly-assigned cells only and
-the multiplet fraction is reported, not silently collapsed.
+to six or more. Single-perturbation effects use singly-assigned cells only; the
+multiplet fraction is **23.2 %** of called cells, reported rather than silently
+collapsed.
+
+### Result
+
+All 356,105,687 matrix entries were read; 269 of 269 library guides were observed
+in singly-assigned cells, including all 23 non-targeting controls.
+
+| target | guides | cells | log2FC | SE |
+|---|---:|---:|---:|---:|
+| CLU | 3 | 550 | **−1.615** | 0.464 |
+| BIN1 | 3 | 660 | **−1.530** | 0.715 |
+| SNX1 | 3 | 521 | **−1.383** | 0.892 |
+| RAB1A | 3 | 556 | **−1.284** | 0.497 |
+| TSPAN14 | 3 | 670 | **−1.022** | 0.376 |
+| SYVN1 | **1** | 335 | −0.090 | — |
+
+Median −1.333; all six negative; five of six beyond two-fold.
+
+Worth noting rather than averaging away: **SYVN1 is the only single-guide target
+and also the only one without detectable knockdown**, with no SE because one
+guide gives no replication. Whether that is a failed guide or a real absence of
+effect cannot be settled from this study, and it should not be pooled with the
+five replicated targets.
+
+The 77 targets without measurable engagement carry an empty log2FC and an
+explicit reason. None was assigned a fabricated value.
 
 ## Not started, with the specific blocker
 
