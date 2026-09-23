@@ -31,11 +31,26 @@ def digest(body: object) -> str:
     ).encode("utf-8")).hexdigest()
 
 
+def unit_census_digest(
+    guide_ids: Sequence[str], donor_ids: Sequence[str],
+    target_ids: Sequence[str],
+) -> str:
+    """Order-independent *row census* (not expression-value information)."""
+    if len(guide_ids) != len(donor_ids) or len(guide_ids) != len(target_ids):
+        raise ValueError("unit census metadata arrays have mismatched lengths")
+    rows = [(str(g), str(d), str(t))
+            for g, d, t in zip(guide_ids, donor_ids, target_ids)]
+    if any(not all(row) for row in rows) or len(rows) != len(set(rows)):
+        raise ValueError("unit census has missing or duplicate guide×donor×target")
+    return digest(sorted(rows))
+
+
 @dataclass(frozen=True)
 class ProspectivePartition:
     schema: str
     assay: str
     source_sha256: str
+    unit_census_sha256: str
     exposure: str
     seed: str
     n_folds: int
@@ -53,6 +68,9 @@ class ProspectivePartition:
             raise ValueError("source SHA identity is missing")
         if not self.seed:
             raise ValueError("a fixed seed is required")
+        if (len(self.unit_census_sha256) != 64
+                or any(c not in "0123456789abcdef" for c in self.unit_census_sha256)):
+            raise ValueError("unit census root missing or malformed")
         names = [t for t, _ in self.target_to_fold]
         if len(names) != len(set(names)) or names != sorted(names):
             raise ValueError("target IDs must be unique and sorted")
@@ -64,14 +82,17 @@ class ProspectivePartition:
     def body(self) -> dict:
         return {
             "schema": self.schema, "assay": self.assay,
-            "source_sha256": self.source_sha256, "exposure": self.exposure,
+            "source_sha256": self.source_sha256,
+            "unit_census_sha256": self.unit_census_sha256,
+            "exposure": self.exposure,
             "seed": self.seed, "n_folds": self.n_folds,
             "target_to_fold": [list(x) for x in self.target_to_fold],
         }
 
 
 def freeze_target_partition(
-    *, target_ids: Sequence[str], assay: str, source_sha256: str,
+    *, target_ids: Sequence[str], guide_ids: Sequence[str],
+    donor_ids: Sequence[str], assay: str, source_sha256: str,
     exposure: str, seed: str, n_folds: int = 5,
 ) -> ProspectivePartition:
     """Freeze without loading response values; stable under input row order."""
@@ -84,6 +105,7 @@ def freeze_target_partition(
         raise ValueError("assay, declared exposure and fixed seed required")
     if len(source_sha256) != 64 or any(c not in "0123456789abcdef" for c in source_sha256):
         raise ValueError("source SHA must be lowercase hex")
+    census_sha = unit_census_digest(guide_ids, donor_ids, target_ids)
     # Sorted digest order makes fold assignment independent of data row order.
     shuffled = sorted(targets, key=lambda t: (digest([seed, assay, t]), t))
     assignments = tuple(sorted(
@@ -91,12 +113,13 @@ def freeze_target_partition(
     ))
     body = {
         "schema": SCHEMA, "assay": assay,
-        "source_sha256": source_sha256, "exposure": exposure,
+        "source_sha256": source_sha256,
+        "unit_census_sha256": census_sha, "exposure": exposure,
         "seed": seed, "n_folds": n_folds,
         "target_to_fold": [list(x) for x in assignments],
     }
     frozen = ProspectivePartition(
-        SCHEMA, assay, source_sha256, exposure, seed, n_folds,
+        SCHEMA, assay, source_sha256, census_sha, exposure, seed, n_folds,
         assignments, digest(body),
     )
     frozen.validate()
@@ -106,6 +129,7 @@ def freeze_target_partition(
 @dataclass(frozen=True)
 class GuideDonorEffects:
     assay: str
+    source_sha256: str
     feature_ids: tuple[str, ...]
     guide_ids: tuple[str, ...]
     donor_ids: tuple[str, ...]
@@ -121,6 +145,9 @@ class GuideDonorEffects:
             raise ValueError("effects/mask must be aligned guide×donor matrices")
         if len(self.donor_ids) != n or len(self.target_ids) != n:
             raise ValueError("guide, donor and target identities do not align")
+        if (len(self.source_sha256) != 64
+                or any(c not in "0123456789abcdef" for c in self.source_sha256)):
+            raise ValueError("effects must bind a lowercase physical/synthetic source root")
         if not self.assay or not all(self.guide_ids) or not all(self.donor_ids):
             raise ValueError("assay, donor and guide must be present")
         if not all(self.target_ids) or not all(self.feature_ids):
@@ -139,9 +166,12 @@ class GuideDonorEffects:
         if not np.all(np.isnan(x[~mask])):
             raise ValueError("unmeasured entries must be NaN, never zero")
 
+    def metadata_digest(self) -> str:
+        return unit_census_digest(self.guide_ids, self.donor_ids, self.target_ids)
+
 
 def donor_matched_effects(
-    *, assay: str, feature_ids: Sequence[str],
+    *, assay: str, source_sha256: str, feature_ids: Sequence[str],
     guide_ids: Sequence[str], donor_ids: Sequence[str],
     target_ids: Sequence[str], is_control: Sequence[bool],
     logcpm: np.ndarray, measured_features: Sequence[bool],
@@ -184,7 +214,7 @@ def donor_matched_effects(
         raise ValueError("no perturbed guide×donor units")
     mask = np.broadcast_to(measured, (len(effects), p)).copy()
     out = GuideDonorEffects(
-        assay, tuple(feature_ids), tuple(gids), tuple(dids),
+        assay, source_sha256, tuple(feature_ids), tuple(gids), tuple(dids),
         tuple(tids), np.asarray(effects), mask,
     )
     out.validate()
@@ -196,6 +226,10 @@ def select_fold(data: GuideDonorEffects, partition: ProspectivePartition, fold: 
     partition.validate()
     if partition.assay != data.assay:
         raise ValueError("assay differs from frozen partition")
+    if partition.source_sha256 != data.source_sha256:
+        raise ValueError("effects source root differs from frozen partition")
+    if partition.unit_census_sha256 != data.metadata_digest():
+        raise ValueError("guide×donor×target row census differs from frozen partition")
     if not 0 <= fold < partition.n_folds:
         raise ValueError("fold outside frozen partition")
     mapping = dict(partition.target_to_fold)
