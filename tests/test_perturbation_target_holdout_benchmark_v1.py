@@ -37,7 +37,7 @@ def planted():
             x[j] = 7.0
             rows.append(x)
     return donor_matched_effects(
-        assay="SYNTHETIC_CRISPRi", feature_ids=FEATURES,
+        assay="SYNTHETIC_CRISPRi", source_sha256=SOURCE, feature_ids=FEATURES,
         guide_ids=gids, donor_ids=dids, target_ids=tids,
         is_control=controls, logcpm=np.array(rows, dtype=float),
         measured_features=[True] * len(FEATURES),
@@ -46,7 +46,8 @@ def planted():
 
 def partition(data, seed="FROZEN_BEFORE_EFFECTS"):
     return freeze_target_partition(
-        target_ids=data.target_ids, assay=data.assay,
+        target_ids=data.target_ids, guide_ids=data.guide_ids,
+        donor_ids=data.donor_ids, assay=data.assay,
         source_sha256=SOURCE, exposure="DEVELOPMENT",
         seed=seed, n_folds=4,
     )
@@ -68,7 +69,9 @@ def test_partition_is_content_bound_and_row_order_invariant():
     data = planted()
     a = partition(data)
     b = freeze_target_partition(
-        target_ids=tuple(reversed(data.target_ids)), assay=data.assay,
+        target_ids=tuple(reversed(data.target_ids)),
+        guide_ids=tuple(reversed(data.guide_ids)),
+        donor_ids=tuple(reversed(data.donor_ids)), assay=data.assay,
         source_sha256=SOURCE, exposure="DEVELOPMENT",
         seed="FROZEN_BEFORE_EFFECTS", n_folds=4,
     )
@@ -155,7 +158,7 @@ def test_missing_donor_controls_and_guide_identity_drift_fail():
     data = planted()
     with pytest.raises(ValueError, match="no matched non-targeting controls"):
         donor_matched_effects(
-            assay="TEST", feature_ids=("A",),
+            assay="TEST", source_sha256=SOURCE, feature_ids=("A",),
             guide_ids=("G1", "NT1"), donor_ids=("D1", "D2"),
             target_ids=("A", "NT"), is_control=(False, True),
             logcpm=np.array([[6.], [2.]]), measured_features=(True,),
@@ -191,7 +194,25 @@ def test_partition_exposure_is_never_invented():
     data = planted()
     with pytest.raises(ValueError, match="assay, declared exposure"):
         freeze_target_partition(
-            target_ids=data.target_ids, assay=data.assay,
+            target_ids=data.target_ids, guide_ids=data.guide_ids,
+            donor_ids=data.donor_ids, assay=data.assay,
             source_sha256=SOURCE, exposure="PROSPECTIVE_EXTERNAL_CONFIRMED",
             seed="seed", n_folds=4,
         )
+
+
+def test_partition_rejects_changed_source_root_and_same_targets_different_units():
+    data = planted()
+    frozen = partition(data)
+    bad_root = replace(data, source_sha256="b" * 64)
+    with pytest.raises(ValueError, match="source root differs"):
+        select_fold(bad_root, frozen, 0)
+    guides = list(data.guide_ids)
+    for i, guide in enumerate(guides):
+        if guide == "G00_guide":
+            guides[i] = "G00_relabelled_guide"
+    changed = replace(data, guide_ids=tuple(guides))
+    changed.validate()
+    assert set(changed.target_ids) == set(data.target_ids)
+    with pytest.raises(ValueError, match="row census differs"):
+        select_fold(changed, frozen, 0)
