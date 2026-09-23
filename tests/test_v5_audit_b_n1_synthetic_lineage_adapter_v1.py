@@ -273,3 +273,23 @@ def test_context_mutation_before_first_unit_is_rejected(tmp_path):
             compute_unit=lambda *_: (_ for _ in ()).throw(AssertionError("should not compute")),
             stop_after_new_units=1,
         )
+
+
+def test_full_core_synthetic_geometry_binds_without_physical_data():
+    """Exercise native 17,186-feature donor-statistic shapes on CPU, no N1."""
+    kw = fixture_kwargs()
+    core = np.arange(17186, dtype=np.int64)
+    nnz = np.ones((104, 17186), dtype=np.int64)
+    umi = np.full((104, 17186), 3, dtype=np.int64)
+    kw.update(
+        core_addresses=core,
+        donor_nnz=nnz,
+        donor_umi=umi,
+        expected_core_sha256=digest(core),
+        expected_donor_nnz_sha256=digest(nnz),
+        expected_donor_umi_sha256=digest(umi),
+    )
+    bound = adapter.bind_synthetic_lineage(**kw)
+    assert bound.frozen_targets.shape == (256,)
+    assert bound.context["core_sha256"] == digest(core)
+    assert bound.context["scope"] == adapter.MODE
