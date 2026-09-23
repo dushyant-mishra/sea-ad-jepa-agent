@@ -506,3 +506,139 @@ def test_end_to_end_failed_postwrite_comparison_never_publishes_final(tmp_path, 
     assert n[0] >= 2
     assert not out.exists() and not receipt.exists()
     assert (tmp_path / "never.stage.npz").exists()  # unauthorised stage, NOT a final
+
+
+# --------------------------------------------------------------------------- #
+# End-to-end successor preflight (synthetic only) including receipt publication.
+# We patch frozen SHA constants only within the temporary fixture; real code
+# retains its immutable FULL104 authority roots.
+# --------------------------------------------------------------------------- #
+
+def _successor_fixture(tmp_path, monkeypatch):
+    names = [f"D{x}" for x in range(6)]
+    source = np.array([0, 0, 1, 1, 2, 2], dtype=np.int64)
+    donors = np.repeat(np.arange(6, dtype=np.int64), 2)
+    core = np.array([1, 5, 9], dtype=np.int64)
+    old = {k: np.array([0], dtype=np.int64) for k in B.ROLES}
+    old.update({
+        "schema": np.array("fixture", dtype="<U8"),
+        "core": core, "duniq": np.asarray(names, dtype=object),
+        "donor_src": source,
+        "source_names": np.asarray(["HVS", "SEA_AD", "NPH52"], dtype=object),
+        "src_of_cell": np.array([0]*4 + [2]*4 + [1]*4, dtype=np.int64),
+        "donor_nnz": np.arange(18, dtype=np.int64).reshape(6,3),
+        "donor_umi": np.arange(18, dtype=np.int64).reshape(6,3) + 3,
+    })
+    new = dict(old)
+    new["source_names"] = np.asarray(CANON, dtype=object)
+    new["src_of_cell"] = source[donors]
+    parent, derivative = tmp_path / "parent.npz", tmp_path / "derivative.npz"
+    np.savez_compressed(parent, **old)
+    np.savez(derivative, **new)
+    member_rows = []
+    for name in sorted(old):
+        changed = Q.value_sha256(old[name]) != Q.value_sha256(new[name])
+        member_rows.append({
+            "name": name, "dtype": str(old[name].dtype),
+            "shape": list(old[name].shape),
+            "old_value_sha256": Q.value_sha256(old[name]),
+            "new_value_sha256": Q.value_sha256(new[name]),
+            "changed": changed,
+            "scientific_role": B.ROLES[name][0],
+            "source_dependent": B.ROLES[name][1],
+            "disposition": ("INTENDED_CHANGE__REBUILT_FROM_LEVEL4" if changed
+                            else "UNAFFECTED_BY_BUG__PROVED"),
+        })
+    manifest = {
+        "schema": "FIXTURE", "parent_original_sha256": Q.sha256_file(parent),
+        "derivative_sha256": Q.sha256_file(derivative),
+        "members_total": 35, "members_changed": 2, "members_unchanged": 33,
+        "per_array": member_rows,
+    }
+    manifest["manifest_sha256"] = Q.canonical_digest(manifest)
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    original_rows = []
+    for k, name in enumerate(names):
+        original_rows.append({
+            "donor": name,
+            "source": ["HVS", "SEA_AD", "NPH52"][int(source[k])],
+            "recomputed_nnz_total": int(old["donor_nnz"][k].sum()),
+            "recomputed_umi_total": int(old["donor_umi"][k].sum()),
+        })
+    original = {
+        "verdict": "DONOR_UMI_INDEPENDENTLY_QUALIFIED",
+        "artifact_sha256": Q.sha256_file(parent),
+        "donors_checked": names, "per_donor": original_rows,
+    }
+    original_path = tmp_path / "original_six.json"
+    original_path.write_text(json.dumps(original), encoding="utf-8")
+    split = {
+        "receipt_sha256": "synthetic-four-fold-contract",
+        "fold_by_donor": [0,0,1,1,2,3],
+    }
+    split_path = tmp_path / "split.json"
+    split_path.write_text(json.dumps(split), encoding="utf-8")
+    pass1_path = tmp_path / "pass1.npz"
+    np.savez(pass1_path, cell_donor=donors, core=core,
+             duniq=np.asarray(names, dtype=object))
+    frozen_test_values = {
+        "PARENT_SHA256": Q.sha256_file(parent),
+        "DERIVATIVE_SHA256": Q.sha256_file(derivative),
+        "ARRAY_MANIFEST_CANONICAL_SHA256": manifest["manifest_sha256"],
+        "ARRAY_MANIFEST_FILE_SHA256": Q.sha256_file(manifest_path),
+        "SPLIT_CANONICAL_SHA256": split["receipt_sha256"],
+        "SPLIT_FILE_SHA256": Q.sha256_file(split_path),
+        "ORIGINAL_SIX_FILE_SHA256": Q.sha256_file(original_path),
+        "AUTHENTICATED_METADATA_CELL_DONOR_SHA256": Q.int64_digest(donors),
+        "EXPECTED_DONORS": 6, "EXPECTED_SOURCE_DONORS": (2,2,2),
+        "EXPECTED_CELLS": 12, "EXPECTED_CORE": 3,
+        "EXPECTED_FOLD_DONORS": (2,2,1,1),
+    }
+    for key, value in frozen_test_values.items():
+        monkeypatch.setattr(Q, key, value)
+    return dict(parent=parent, derivative=derivative, manifest=manifest_path,
+                original_six=original_path, split=split_path, pass1=pass1_path)
+
+
+def _run_successor(monkeypatch, fixture, six_path, pre_path):
+    monkeypatch.setattr(sys, "argv", [
+        str(QUAL),
+        "--derivative", str(fixture["derivative"]),
+        "--parent", str(fixture["parent"]),
+        "--array-manifest", str(fixture["manifest"]),
+        "--original-six-donor-receipt", str(fixture["original_six"]),
+        "--split-receipt", str(fixture["split"]),
+        "--pass1", str(fixture["pass1"]),
+        "--out-six-donor", str(six_path),
+        "--out-preflight", str(pre_path),
+    ])
+    return Q.main()
+
+
+def test_end_to_end_successor_publishes_new_versioned_receipts(tmp_path, monkeypatch):
+    fx = _successor_fixture(tmp_path, monkeypatch)
+    six, pre = tmp_path / "six_v2.json", tmp_path / "preflight_v2.json"
+    assert _run_successor(monkeypatch, fx, six, pre) == 0
+    a, b = json.loads(six.read_text()), json.loads(pre.read_text())
+    assert a["schema"].endswith("_V2") and b["schema"].endswith("_V2")
+    assert a["numeric_rows_unchanged_from_parent"] is True
+    assert b["all_35_members_independently_reloaded_and_hashed_here"] is True
+    assert b["six_donor_successor_receipt_sha256"] == a["receipt_sha256"]
+    assert b["source_invariant_violations"] == 0
+    assert b["training_authorized"] is False
+
+
+def test_end_to_end_successor_rejects_within_source_donor_swap_without_receipts(
+    tmp_path, monkeypatch,
+):
+    fx = _successor_fixture(tmp_path, monkeypatch)
+    with np.load(fx["pass1"], allow_pickle=True) as p:
+        donors = p["cell_donor"].copy()
+        core, registry = p["core"], p["duniq"]
+    donors[1] = 1  # D0 -> D1, both HVS; source invariant is still satisfied
+    np.savez(fx["pass1"], cell_donor=donors, core=core, duniq=registry)
+    six, pre = tmp_path / "not_six.json", tmp_path / "not_pre.json"
+    with pytest.raises(SystemExit, match="authenticated PR67"):
+        _run_successor(monkeypatch, fx, six, pre)
+    assert not six.exists() and not pre.exists()
