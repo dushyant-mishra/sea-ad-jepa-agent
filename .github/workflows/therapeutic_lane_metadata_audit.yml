@@ -1,0 +1,40 @@
+name: Therapeutic lane metadata-only audit
+
+on:
+  push:
+    branches:
+      - lane/therapeutic-crispr-phase0-20260923
+  pull_request:
+    paths:
+      - 'scripts/therapeutic/**'
+      - 'tests/therapeutic/**'
+      - 'docs/therapeutic/**'
+      - '.github/workflows/therapeutic_lane_metadata_audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-and-historical-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run focused fail-closed synthetic tests
+        run: python -m unittest discover -s tests/therapeutic -v
+      - name: Audit only committed historical metadata (no RNA, no external requests)
+        run: |
+          python scripts/therapeutic/audit_legacy_perturbation_inventory.py --repo-root . --output "$RUNNER_TEMP/perturbation_manifest_metadata_only.json"
+          python - "$RUNNER_TEMP/perturbation_manifest_metadata_only.json" <<'PY'
+          import json,sys
+          r=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert r['historical_asset_count']==16, r
+          assert r['historical_study_count']==8, r
+          assert r['historical_readiness_pass_count']==0, r
+          assert all(a['physical_state']=='NOT_INSPECTED' and not a['perturbation_training_authorized'] for a in r['assets'])
+          print('PASS_METADATA_ONLY_16_ASSETS_8_STUDIES_ZERO_TRAINING_AUTHORITY')
+          PY
