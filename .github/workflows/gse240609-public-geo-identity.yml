@@ -1,0 +1,35 @@
+name: GSE240609 public GEO sample identity and source SHA review
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/gse240609_public_geo_sample_authority_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_bulk_disease_context_effects_v2.py'
+      - 'tests/test_gse240609_public_geo_sample_authority_v1.py'
+      - '.github/workflows/gse240609-public-geo-identity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-geo-and-byte-root-guards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused CPU dependencies
+        run: python -m pip install --disable-pip-version-check numpy pytest
+      - name: Exercise frozen sample titles/roots and actual V2 stop path
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_gse240609_public_geo_sample_authority_v1.py | tee /tmp/gse240609-geo-redteam.log
+      - name: Fail on skipped tests
+        run: |
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/gse240609-geo-redteam.log; then
+            echo 'GSE240609 MANDATORY TESTS SKIPPED — STOP'
+            exit 1
+          fi
