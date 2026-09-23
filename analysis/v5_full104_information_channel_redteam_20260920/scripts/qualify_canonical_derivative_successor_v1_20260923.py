@@ -267,6 +267,14 @@ def main() -> int:
     if sorted(len([r for r in rows if r["corrected_canonical_label"] == s])
               for s in CANONICAL_SOURCE_NAMES) != [2, 2, 2]:
         raise SystemExit("corrected six-donor source census is not two per source")
+    if "donor_source_code" not in split:
+        raise SystemExit("frozen split missing required donor_source_code vector")
+    split_source = np.asarray(split["donor_source_code"])
+    if (split_source.dtype.kind not in "iu"
+            or split_source.shape != (EXPECTED_DONORS,)
+            or not np.array_equal(split_source, donor_src)):
+        raise SystemExit("frozen split donor-source map differs from authenticated derivative")
+
     if "fold_by_donor" not in split:
         raise SystemExit("frozen split missing required fold_by_donor vector")
     fold = np.asarray(split["fold_by_donor"])
@@ -338,6 +346,7 @@ def main() -> int:
         "donor_source_vector_sha256": value_sha256(donor_src),
         "canonical_src_of_cell_sha256": value_sha256(src_of_cell),
         "fold_by_donor_sha256": value_sha256(fold),
+        "split_donor_source_vector_sha256": value_sha256(split_source),
         "donor_nnz_value_sha256": value_sha256(nnz),
         "donor_umi_value_sha256": value_sha256(umi),
         "source_invariant_violations": mismatch,
