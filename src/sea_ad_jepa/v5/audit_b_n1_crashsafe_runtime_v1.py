@@ -111,6 +111,10 @@ def commit_unit(
     }
     payload["record_sha256"] = canonical_digest(payload)
     stage = final.with_suffix(".json.tmp")
+    # A crash may leave an uncommitted temp file. It has no authority because
+    # only the atomically renamed final path is a committed unit.
+    if stage.exists():
+        stage.unlink()
     fd = os.open(str(stage), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as handle:
         json.dump(payload, handle, sort_keys=True, separators=(",", ":"))
@@ -179,9 +183,9 @@ def _deterministic_npy_bytes(array: np.ndarray) -> bytes:
 
 def write_deterministic_npz(path: Path, arrays: Mapping[str, np.ndarray]) -> None:
     stage = path.with_suffix(path.suffix + ".tmp")
-    if path.exists() or stage.exists():
-        raise ValueError("result artifact path already exists")
     path.parent.mkdir(parents=True, exist_ok=True)
+    if stage.exists():
+        stage.unlink()
     with zipfile.ZipFile(stage, "w", compression=zipfile.ZIP_STORED) as zf:
         for name in sorted(arrays):
             info = zipfile.ZipInfo(f"{name}.npy", date_time=(1980, 1, 1, 0, 0, 0))
@@ -189,7 +193,12 @@ def write_deterministic_npz(path: Path, arrays: Mapping[str, np.ndarray]) -> Non
             info.create_system = 0
             info.external_attr = 0
             zf.writestr(info, _deterministic_npy_bytes(np.asarray(arrays[name])))
-    os.replace(stage, path)
+    if path.exists():
+        if sha256_file(path) != sha256_file(stage):
+            raise ValueError("existing result artifact differs from deterministic journal replay")
+        stage.unlink()
+    else:
+        os.replace(stage, path)
 
 
 def finalize_from_journal(
@@ -255,13 +264,17 @@ def finalize_from_journal(
         "training_authorized": False,
     }
     stage = result_receipt.with_suffix(result_receipt.suffix + ".tmp")
-    if result_receipt.exists() or stage.exists():
-        raise ValueError("result receipt path already exists")
     result_receipt.parent.mkdir(parents=True, exist_ok=True)
+    if stage.exists():
+        stage.unlink()
+    encoded = json.dumps(payload, sort_keys=True, indent=2) + "\n"
+    if result_receipt.exists():
+        if result_receipt.read_text(encoding="utf-8") != encoded:
+            raise ValueError("existing result receipt differs from deterministic journal replay")
+        return payload
     fd = os.open(str(stage), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as handle:
-        json.dump(payload, handle, sort_keys=True, indent=2)
-        handle.write("\n")
+        handle.write(encoded)
         handle.flush()
         os.fsync(handle.fileno())
     os.replace(stage, result_receipt)
