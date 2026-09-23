@@ -295,7 +295,7 @@ def test_synthetic_test_cannot_emit_a_qualification_receipt(tmp_path):
 
 def test_production_requires_a_separately_reviewed_authorization(tmp_path):
     ctx = _ctx(mode=ExecutionMode.PRODUCTION)
-    with pytest.raises(ExecutionAuthorityError, match="separately reviewed execution authorization"):
+    with pytest.raises(ExecutionAuthorityError, match="PRODUCTION is CLOSED"):
         emit_qualification_receipt(path=tmp_path / "r.json", context=ctx, body={})
     ctx.authorization_receipt_sha256 = "d" * 64
     with pytest.raises(ExecutionAuthorityError, match="PRODUCTION is CLOSED"):
