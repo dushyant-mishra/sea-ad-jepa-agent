@@ -46,6 +46,23 @@ QUARANTINED_ORIGINAL_SHA256 = "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf
 FROZEN_PASS1_SHA256 = "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1"
 SPLIT_CANONICAL_SHA256 = "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4"
 FULL104_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+SPLIT_FILE_SHA256 = "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585"
+ARRAY_MANIFEST_FILE_SHA256 = "9517b95446013c7f803df0b63b662d24f2e1df81f0b4917a2af41dae1df2b1ee"
+V2_PREFLIGHT_FILE_SHA256 = "28dc18d2c7f9876c6b93cce318ecc0bb6fac42068e819b9047099a63eeaad91c"
+PHYSICAL_INPUT_ROOTS = {
+    "corrected_derivative": CORRECTED_DERIVATIVE_SHA256,
+    "pass1_whole_file": FROZEN_PASS1_SHA256,
+    "full104_level4_manifest": FULL104_MANIFEST_SHA256,
+    "split_receipt": SPLIT_FILE_SHA256,
+    "per_member_manifest": ARRAY_MANIFEST_FILE_SHA256,
+    "v2_preflight_receipt": V2_PREFLIGHT_FILE_SHA256,
+}
+PROTECTED_RECEIPT_KEYS = frozenset({
+    "schema", "mode", "task", "context_digest", "code_sha256", "inputs",
+    "identity_digests", "parameters", "n1_execution_authorized", "audit_b_n1",
+    "masks_executed", "burden_calculated", "precision_calculated",
+    "training_authorized", "receipt_sha256",
+})
 
 SOURCE_NAMES = ("HVS", "NPH52", "SEA_AD")
 EXPECTED_SOURCE_COUNTS = (41, 17, 46)
@@ -210,6 +227,17 @@ def authenticate_corrected_inputs(
     man = Path(level4_manifest)
     inputs.append(authenticate_file(role="full104_level4_manifest", path=man,
                                     expected_sha256=FULL104_MANIFEST_SHA256, mode=mode))
+    # Freeze the whole receipt files, not just their self-declared canonical
+    # fields; otherwise a forged/resealed JSON can mimic a reviewed receipt.
+    for role, file_path in (
+        ("split_receipt", split_receipt),
+        ("per_member_manifest", array_manifest),
+        ("v2_preflight_receipt", preflight_receipt),
+    ):
+        inputs.append(authenticate_file(
+            role=role, path=file_path, expected_sha256=PHYSICAL_INPUT_ROOTS[role],
+            mode=mode,
+        ))
     split = json.loads(Path(split_receipt).read_text(encoding="utf-8"))
     if split.get("receipt_sha256") != SPLIT_CANONICAL_SHA256:
         raise PhysicalLineageError("split receipt carries the wrong frozen canonical digest")
@@ -285,38 +313,70 @@ def build_context(*, mode: ExecutionMode, task: str, code_sha256: str,
 
 
 def require_n1_execution_authority(ctx: PhysicalExecutionContext) -> None:
-    """The gate that stays shut.
+    """FAIL CLOSED: this qualification module cannot verify a production grant.
 
-    Adapter qualification is not execution authority. This raises unless a
-    separately reviewed authorization is present, and this module never issues one.
+    A caller-supplied 64-character hash and mutable Boolean are not a reviewed
+    authorization. A separate future executor must implement an independently
+    anchored, versioned authorization verifier; do not silently add a success
+    path to this preflight module.
     """
-    if ctx.mode is not ExecutionMode.PRODUCTION:
-        raise PhysicalLineageError(
-            "STOP_N1_NOT_AUTHORIZED: real N1 requires PRODUCTION mode under a separately "
-            "reviewed execution authorization. Passing adapter qualification is not that "
-            "authorization")
-    if not ctx.execution_authorization_sha256 or not ctx.n1_execution_authorized:
-        raise PhysicalLineageError(
-            "STOP_N1_NOT_AUTHORIZED: no reviewed execution authorization is bound")
+    raise PhysicalLineageError(
+        "STOP_N1_NOT_AUTHORIZED: no reviewed execution authorization verifier "
+        "exists in this adapter; PRODUCTION mode, a claimed SHA and a Boolean "
+        "cannot unlock molecular N1"
+    )
 
 
 def emit_adapter_qualification_receipt(*, path: Path | str,
                                        ctx: PhysicalExecutionContext,
                                        body: Mapping[str, Any]) -> str:
-    if ctx.mode is ExecutionMode.SYNTHETIC_TEST:
+    """Issue only immutable V2 physical *qualification*, never N1 authority."""
+    if ctx.mode is not ExecutionMode.PHYSICAL_QUALIFICATION:
         raise PhysicalLineageError(
-            "a synthetic run may not emit a physical qualification receipt; passing the "
-            "synthetic suite is engineering evidence, not physical evidence")
+            "only PHYSICAL_QUALIFICATION can issue the non-authoritative "
+            "adapter receipt; synthetic or PRODUCTION mode is forbidden")
     ctx.require_resolved()
+    if not isinstance(body, Mapping):
+        raise PhysicalLineageError("qualification evidence body must be a mapping")
+    overlap = PROTECTED_RECEIPT_KEYS.intersection(body)
+    if overlap:
+        raise PhysicalLineageError(
+            f"qualification body attempts to override protected fields: {sorted(overlap)}")
+    if body.get("terminal") != "PHYSICAL_ADAPTER_QUALIFIED_FOR_INDEPENDENT_REVIEW":
+        raise PhysicalLineageError(
+            "receipt requires the explicit, non-authoritative physical-review terminal")
+    roles = [x.role for x in ctx.inputs]
+    if len(roles) != len(set(roles)) or set(roles) != set(PHYSICAL_INPUT_ROOTS):
+        raise PhysicalLineageError(
+            "physical qualification requires all six distinct, independently pinned roles")
+    if ctx.n1_execution_authorized or ctx.execution_authorization_sha256:
+        raise PhysicalLineageError(
+            "adapter preflight cannot carry claimed production execution authority")
+    if ctx.code_sha256 != sha256_file(Path(__file__)):
+        raise PhysicalLineageError(
+            "adapter implementation code root does not match actual loaded source bytes")
+    # TOCTOU reduction: recompute each physical digest at publication, rather
+    # than trusting PhysicalInput dataclass fields captured earlier.
+    for item in ctx.inputs:
+        expected = PHYSICAL_INPUT_ROOTS[item.role]
+        if item.sha256 != expected:
+            raise PhysicalLineageError(
+                f"{item.role} digest differs from independently reviewed frozen root")
+        authenticate_file(
+            role=item.role, path=item.path, expected_sha256=expected,
+            expected_bytes=item.bytes_, mode=ExecutionMode.PHYSICAL_QUALIFICATION,
+        )
     payload = {
-        "schema": "AUDIT_B_N1_PHYSICAL_ADAPTER_QUALIFICATION_V1",
+        "schema": "AUDIT_B_N1_PHYSICAL_ADAPTER_QUALIFICATION_V2",
         "mode": ctx.mode.value,
         "task": ctx.task,
         "context_digest": ctx.digest(),
         "code_sha256": ctx.code_sha256,
-        "inputs": [{"role": i.role, "path": i.path, "sha256": i.sha256, "bytes": i.bytes_}
-                   for i in ctx.inputs],
-        "identity_digests": ctx.identity_digests,
+        "inputs": [
+            {"role": i.role, "path": i.path, "sha256": i.sha256, "bytes": i.bytes_}
+            for i in sorted(ctx.inputs, key=lambda x: x.role)
+        ],
+        "identity_digests": dict(ctx.identity_digests),
         "parameters": {k: str(v) for k, v in ctx.parameters.items()},
         "n1_execution_authorized": False,
         "audit_b_n1": "UNOPENED",
@@ -324,12 +384,13 @@ def emit_adapter_qualification_receipt(*, path: Path | str,
         "burden_calculated": False,
         "precision_calculated": False,
         "training_authorized": False,
-        **dict(body),
+        "evidence": dict(body),
     }
     payload["receipt_sha256"] = canonical_digest(payload)
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
-    stage = p.with_suffix(p.suffix + ".stage")
-    stage.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    stage.replace(p)
+    # Exclusive creation: do not silently overwrite historical V1 receipts.
+    with p.open("x", encoding="utf-8") as out:
+        out.write(json.dumps(payload, sort_keys=True, indent=2) + "\n")
+        out.flush()
     return payload["receipt_sha256"]
