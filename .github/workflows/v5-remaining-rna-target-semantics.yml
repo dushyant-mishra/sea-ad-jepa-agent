@@ -15,6 +15,7 @@ on:
       - 'scripts/agent/run_full104_rare_tail_molecular_prequalification_v1_20260922.py'
       - 'scripts/agent/preflight_full104_rare_tail_molecular_readonly_v1_20260922.py'
       - 'scripts/agent/preflight_full104_rare_tail_molecular_readonly_v2_20260922.py'
+      - 'scripts/agent/run_full104_rare_tail_molecular_guarded_v1_20260922.py'
       - '.github/workflows/v5-remaining-rna-target-semantics.yml'
   workflow_dispatch:
 
@@ -71,6 +72,7 @@ jobs:
             tests/test_v5_full104_rare_tail_molecular_execution_contract_v1.py \
             tests/test_v5_full104_rare_tail_molecular_readonly_preflight_v1.py \
             tests/test_v5_full104_rare_tail_molecular_readonly_preflight_v2.py \
+            tests/test_v5_full104_rare_tail_molecular_guarded_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v2.py
       - name: Fail closed on skipped regression tests
         env:
@@ -109,6 +111,7 @@ jobs:
             tests/test_v5_full104_rare_tail_molecular_execution_contract_v1.py \
             tests/test_v5_full104_rare_tail_molecular_readonly_preflight_v1.py \
             tests/test_v5_full104_rare_tail_molecular_readonly_preflight_v2.py \
+            tests/test_v5_full104_rare_tail_molecular_guarded_v1.py \
             tests/test_v5_audit_b_scientific_resolution_v2.py \
             -rs --tb=short | tee /tmp/current-v5.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/current-v5.txt; then echo 'CURRENT V5 REGRESSION TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
