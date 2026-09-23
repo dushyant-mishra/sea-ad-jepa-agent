@@ -1,3 +1,23 @@
+# START HERE — JEPA PROJECT (V19 active handoff branch)
+
+Date: 2026-09-23
+Status: `N1_ORIGINAL_HEAVY_SOURCE_ENCODING_FAILED__RARE_TAIL_READONLY_V2_PASS__TRAINING_OFF`
+
+**This branch is the V19 docs-only successor of diagnostic PR #67, NOT main.** At verification, main still pointed to the September 15 project handoff. For the current September 23 audited state, read:
+
+1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V19_SOURCE_REPAIR_RARETAIL.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V19.json`
+4. `docs/agent/JEPA_V19_DATA_RESULTS_SCRIPTS_MANIFEST_20260923.json`
+5. `docs/agent/JEPA_V19_TAKEOVER_COMMANDS_20260923.md`
+6. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
+
+Re-fetch live GitHub PR heads #59–#67 and Actions. **No corrected physical heavy NPZ exists yet; N1 remains blocked.** PR #63 crash-safe N1 infrastructure and PR #66 rare-tail Windows correction are PARALLEL and are not present in this branch. All experiment/protected outcomes unopened; training OFF. Never silently merge the parallel lineages or substitute historical/smaller artifacts for FULL104.
+
+---
+
+## Archived implementation-ancestry START_HERE (September 17; not current handoff)
+
 # START HERE — JEPA PROJECT
 
 Date: 2026-09-17
