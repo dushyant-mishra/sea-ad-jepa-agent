@@ -242,3 +242,34 @@ def test_valid_shape_changed_donor_statistics_rejected():
     kw["donor_umi"][12, 7] += 1
     with pytest.raises(ValueError, match="synthetic donor umi differs"):
         adapter.bind_synthetic_lineage(**kw)
+
+
+@pytest.mark.parametrize("field,expected", [
+    ("frozen_targets", "target_order_sha256"),
+    ("donor_source_code", "donor_source_sha256"),
+    ("fold_by_donor", "fold_by_donor_sha256"),
+])
+def test_bound_arrays_cannot_mutate_between_validation_and_first_unit(
+    field, expected, tmp_path,
+):
+    bound = adapter.bind_synthetic_lineage(**fixture_kwargs())
+    arr = getattr(bound, field)
+    arr[0] += 1
+    with pytest.raises(ValueError, match=expected):
+        adapter.run_synthetic_journal(
+            bound=bound, journal_dir=tmp_path / "journal",
+            compute_unit=lambda *_: (_ for _ in ()).throw(AssertionError("should not compute")),
+            stop_after_new_units=1,
+        )
+    assert not (tmp_path / "journal" / rt.CONTEXT_NAME).exists()
+
+
+def test_context_mutation_before_first_unit_is_rejected(tmp_path):
+    bound = adapter.bind_synthetic_lineage(**fixture_kwargs())
+    bound.context["rng_root_sha256"] = "e" * 64
+    with pytest.raises(ValueError, match="execution context drift"):
+        adapter.run_synthetic_journal(
+            bound=bound, journal_dir=tmp_path / "journal",
+            compute_unit=lambda *_: (_ for _ in ()).throw(AssertionError("should not compute")),
+            stop_after_new_units=1,
+        )
