@@ -112,15 +112,25 @@ class FrozenAnnotation:
         if sha_json(self.body()) != self.contract_sha256:
             raise FeatureContractError("frozen annotation digest mismatch")
 
-    def lookup(self, namespace: str, source_id: str) -> str | None:
+    def lookup_index(self) -> dict[tuple[str, str], str]:
+        """Validate once, then construct a one-to-one source-key lookup.
+
+        For tens of thousands of genes, rebuilding the entire mapping on every
+        query is quadratic. This validated index is local to one operation:
+        it is NEVER cached across a changed annotation or used as authority
+        independently of the frozen annotation digest.
+        """
         self.validate()
-        if namespace not in VALID_NAMESPACES:
-            raise FeatureContractError("unknown source feature namespace")
-        entries = {
+        return {
             (e.namespace, e.source_id): e.canonical_ensembl for e in self.entries
         }
-        # Unknown symbol or unrecorded version: NOT_MAPPED; never guess
-        return entries.get((namespace, source_id))
+
+    def lookup(self, namespace: str, source_id: str) -> str | None:
+        if namespace not in VALID_NAMESPACES:
+            raise FeatureContractError("unknown source feature namespace")
+        # Direct standalone lookups remain fail-closed, including for an
+        # independently altered or malformed frozen-annotation object.
+        return self.lookup_index().get((namespace, source_id))
 
 
 def freeze_annotation(
@@ -238,14 +248,17 @@ def align(
     """
     a.validate()
     b.validate()
-    annotation.validate()
+    # One frozen-digest validation and one lookup-index build per alignment.
+    # Previously annotation.lookup() rebuilt/rehash-validated all entries
+    # once for EVERY SOURCE FEATURE, O(features * annotation entries).
+    mapping_index = annotation.lookup_index()
     if same_gene_policy != "REJECT_COLLISION":
         raise FeatureContractError("unsupported gene collision policy")
     mapped = []
     for study in (a, b):
         index: dict[str, int] = {}
         for i, gene in enumerate(study.original_ids):
-            canonical = annotation.lookup(study.namespace, gene)
+            canonical = mapping_index.get((study.namespace, gene))
             if canonical is None:
                 raise FeatureContractError(
                     f"{study.study}/{study.assay}: unmapped feature {gene!r}; "
