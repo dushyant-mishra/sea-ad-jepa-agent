@@ -140,7 +140,7 @@ def census(path: Path, *, modality: str, test_fixture: bool = False) -> dict:
             "support_status": (
                 "NO_BOTH_DONOR_COVERAGE"
                 if min(len(guides["D1"]), len(guides["D2"])) == 0 else
-                "SINGLE_GUIDE_EACH_DONOR_NO_GUIDE_VARIANCE"
+                "SINGLE_GUIDE_IN_AT_LEAST_ONE_DONOR_NO_WITHIN_DONOR_GUIDE_VARIANCE"
                 if min(len(guides["D1"]), len(guides["D2"])) == 1 else
                 "TWO_GUIDES_MIN_PER_DONOR"
                 if min(len(guides["D1"]), len(guides["D2"])) == 2 else
@@ -149,7 +149,7 @@ def census(path: Path, *, modality: str, test_fixture: bool = False) -> dict:
         })
     result = {
         "schema": "GSE301119_GUIDE_DONOR_SUPPORT_AUDIT_V1",
-        "evidence_role": "PHYSICAL_PRODUCER_METADATA_ONLY__NO_EXPRESSION_OR_DE_ANALYSIS",
+        "evidence_role": ("SYNTHETIC_TEST_ONLY__NO_PHYSICAL_AUTHORITY" if test_fixture else "PHYSICAL_PRODUCER_METADATA_ONLY__NO_EXPRESSION_OR_DE_ANALYSIS"),
         "modality": modality,
         "input_sha256": observed_hash,
         "input_role": "PR77_SHA_BOUND_RAW_PSEUDOBULK_GUIDE_DONOR_METADATA",
