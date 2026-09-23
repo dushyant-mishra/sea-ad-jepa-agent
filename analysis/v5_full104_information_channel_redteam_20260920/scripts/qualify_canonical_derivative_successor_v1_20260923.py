@@ -48,6 +48,7 @@ ORIGINAL_SIX_FILE_SHA256 = "bbd2b95b882f52c313a3623bab55e5d7ff6562cdba27e48f9c84
 AUTHENTICATED_METADATA_CELL_DONOR_SHA256 = "3d56cda1d1d4ec228351b1f29197c9bce00ac8d7f12687430490fe7c6192a607"
 EXPECTED_CHANGED = {"source_names", "src_of_cell"}
 EXPECTED_MEMBERS = 35
+EXPECTED_FOLD_DONORS = (28, 26, 25, 25)
 
 
 def sha256_file(path: Path) -> str:
@@ -271,7 +272,7 @@ def main() -> int:
     fold = np.asarray(split["fold_by_donor"])
     if (fold.dtype.kind not in "iu" or fold.shape != (EXPECTED_DONORS,)
             or np.any(fold < 0) or np.any(fold >= 4)
-            or sorted(np.bincount(fold.astype(np.int64), minlength=4).tolist()) != [25,25,26,28]):
+            or sorted(np.bincount(fold.astype(np.int64), minlength=4).tolist()) != sorted(EXPECTED_FOLD_DONORS)):
         raise SystemExit("frozen four-fold donor assignment invalid")
 
     six = {
