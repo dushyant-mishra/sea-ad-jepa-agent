@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/sea_ad_jepa/perturbation/benchmark_target_holdout_v1.py'
       - 'tests/test_perturbation_target_holdout_benchmark_v1.py'
+      - 'tests/test_perturbation_donor_balanced_redteam_v1.py'
       - '.github/workflows/perturbation-target-heldout-benchmark.yml'
   workflow_dispatch:
 
@@ -27,7 +28,7 @@ jobs:
           PYTHONPATH: src
         run: |
           set -o pipefail
-          python -m pytest -q -W error tests/test_perturbation_target_holdout_benchmark_v1.py | tee /tmp/target-holdout.txt
+          python -m pytest -q -W error tests/test_perturbation_target_holdout_benchmark_v1.py tests/test_perturbation_donor_balanced_redteam_v1.py | tee /tmp/target-holdout.txt
       - name: Reject skipped tests
         run: |
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/target-holdout.txt; then
