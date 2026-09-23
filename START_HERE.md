@@ -1,19 +1,17 @@
 # START HERE — JEPA PROJECT
 
-Date: 2026-09-15
-Status: `CURRENT_V5_TARGET_AUTHORITY_CARRYOVER_AND_MASKING_REVIEW__NO_TRAINING_AUTHORITY`
+Date: 2026-09-23
+Status: `CURRENT_PARALLEL_FULL104_AND_EXPERIMENTAL_HANDOFF__NO_TRAINING_OR_N1_AUTHORITY`
 
 ## Read first
 Use `main` for current governance/startup context. Read in this order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md`
-3. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
-4. `docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md`
-5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260915_CURRENT.json` (prior machine-readable Layer-2 snapshot)
-6. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md`
-7. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md`
-8. runtime-asset, formulas, heavy-asset, authority-index and supersession-map files referenced by the pointer.
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md` (latest operational status and dependency map)
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json` (latest machine-readable statuses, source SHAs, PR heads)
+4. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` (classify before repeating old work)
+5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md` (historical scientific contracts; do not mistake September 15 status for live)
+6. runtime-asset, formulas, historical Layer-2, heavy-asset and supersession maps linked by the pointer.
 
 Before acting, re-fetch live branch heads. Branch names and commit messages do not confer scientific authority.
 
@@ -30,7 +28,18 @@ Before repeating any audit, read the historical-audits index and classify the pr
 
 Do not inspect protected/pathology/DEV/SEALED outcomes, D_private, D_obs outcomes, TD60, or other confirmation data while design choices remain open.
 
-## Current headline state
+## September 23 operational headline (read V21 handoff before executing)
+
+- FULL104 corrected derivative physically requalified; independent PR #83 adapter preflight PASS and PR #85 red-team PASS, but real N1 remains UNAUTHORIZED; all-104 Level-4 raw-count reaggregation UNPROVED.
+- Experimental GSE301119 reader parity/raw integer pseudobulk PASS; next physical goal donor-aware transcriptome-wide effects, not more toy fixtures.
+- GSE311359 initial V1 Perturb-seq producer results exist, **BUT NEW PR #92 independent RED-TEAM STOP**: its 381 capture-feature entries have only 379 unique guide labels; three `BIN1` entries collide in name-keyed guide/sample pseudobulk. No guide-level benchmark authority until authentic feature-ID→protospacer/library mapping and reviewed versioned V2 physical rerun.
+- GSE178317 four GEX↔sgRNA lane pairings recovered, but actual guide features absent from deposited enrichment matrices; CRISPR effect claims STOP. Its 18-sample differentiation/LPS bulk data remain a separately usable context study.
+- GSE293118 initial noncoding ETL complete; GSE254205 nine-sample GNE-317 bulk V1 complete but assay-undetected terminology corrected only in tested PR #86 V2 pending physical rerun.
+- Independent pending CPU review branches: #82 physical authorization checks; #84/#88/#90 target-heldout benchmark, donor-uniform scoring and immutable exposure ledger; #87/#89 frozen feature-ID schema + efficient mapping (real annotation release not yet authenticated); #91 SHA-bound GSE301119 guide/donor support.
+- Parallel code PRs are **draft and not implicitly merged**. Re-fetch latest GitHub heads and evaluate dependency chains before integration.
+- `TRAINING=OFF | AUDIT_B_N1=UNOPENED | RARE_TAIL_MOLECULAR=UNOPENED | D_SHARED_G5=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED`.
+
+## September 15 historical headline (retained for scientific context, not current operational status)
 - FULL104: 4,553,407 cells; 104 donors; 42 operators; 41,238 addresses; 17,186 common-core addresses.
 - current molecular candidate: `VALUE_ONLY_256`, not frozen.
 - Claude Layer-2 closeout is pushed at `analysis/v5-layer2-cross-view-shortcut-claude-20260915 @ 219831b899b914984369c7a41828bf750554d1d9`.
