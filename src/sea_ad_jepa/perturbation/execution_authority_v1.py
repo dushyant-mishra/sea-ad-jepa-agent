@@ -79,6 +79,19 @@ REVIEWED_SOURCE_ROOTS = {
         406836813,
     ),
 }
+# Fixed physical tasks; adding new studies requires explicit source review.
+# The raw-pseudobulk extraction and parity checker digests come from the
+# independently reviewed PR81 GSE301119 physical evidence manifest.
+REVIEWED_QUALIFICATION_TASKS = {
+    "GSE301119_RAW_PSEUDOBULK_QUALIFICATION": {
+        "roles": frozenset(REVIEWED_SOURCE_ROOTS),
+        "code_sha256": "260c7a3609f3fe987bb3c90755cc9369fd25c8d14941d996d6bcdee52c634fdb",
+    },
+    "GSE301119_COUNT_READER_PARITY": {
+        "roles": frozenset(REVIEWED_SOURCE_ROOTS),
+        "code_sha256": "7c2f9fd98e8cc40aaef1c9ca982a4a591b449e3fe6a820f1e1d5c7adaaffca4d",
+    },
+}
 RESERVED_RECEIPT_FIELDS = frozenset({
     "schema", "mode", "task", "context_digest", "code_sha256",
     "inputs", "identity_digests", "parameters", "receipt_sha256",
@@ -127,6 +140,7 @@ class ExecutionContext:
     mode: ExecutionMode
     task: str
     code_sha256: str
+    code_path: str | None = None
     inputs: list[AuthenticatedInput] = field(default_factory=list)
     identity_digests: dict[str, str] = field(default_factory=dict)
     parameters: dict[str, Any] = field(default_factory=dict)
@@ -310,7 +324,23 @@ def emit_qualification_receipt(*, path: Path | str, context: ExecutionContext,
     if not context.inputs:
         raise ExecutionAuthorityError(
             "qualification receipt requires independently reviewed physical inputs")
+    reviewed_task = REVIEWED_QUALIFICATION_TASKS.get(context.task)
+    if reviewed_task is None:
+        raise ExecutionAuthorityError(
+            "task lacks a separately reviewed physical qualification contract")
+    if context.code_sha256 != reviewed_task["code_sha256"]:
+        raise ExecutionAuthorityError(
+            "script digest differs from the reviewed task-specific code root")
+    if context.code_path is None or not Path(context.code_path).is_file():
+        raise ExecutionAuthorityError(
+            "reviewed script file missing; a caller-supplied script SHA is not evidence")
+    if sha256_file(Path(context.code_path)) != reviewed_task["code_sha256"]:
+        raise ExecutionAuthorityError(
+            "actual script bytes differ from the reviewed task-specific code root")
     roles = [item.role for item in context.inputs]
+    if set(roles) != reviewed_task["roles"]:
+        raise ExecutionAuthorityError(
+            "physical input roles differ from the reviewed task-specific roles")
     if len(roles) != len(set(roles)):
         raise ExecutionAuthorityError("duplicate physical input roles in qualification context")
     unreviewed = sorted(set(roles) - set(REVIEWED_SOURCE_ROOTS))
