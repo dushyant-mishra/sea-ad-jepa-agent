@@ -1,8 +1,12 @@
 """Synthetic-only tests for the missing per-cell/donor/source lineage check."""
 from __future__ import annotations
 
+import csv
+
 import numpy as np
 import pytest
+
+from sea_ad_jepa.v5 import audit_b_n1_source_lineage_v1 as gate
 
 from sea_ad_jepa.v5.audit_b_n1_source_lineage_v1 import (
     SOURCES,
@@ -93,3 +97,112 @@ def test_untrusted_float_source_or_out_of_range_donor_is_rejected(inputs):
     fake = dict(inputs, metadata_cell_donor=bad)
     with pytest.raises(ValueError, match="outside canonical donor"):
         assess_source_vectors(**fake)
+
+
+@pytest.fixture
+def synthetic_physical_layout(tmp_path, monkeypatch):
+    """Three independent SHA-verified metadata blocks, zero count matrices."""
+    donors = [f"D{i:03}" for i in range(104)]
+    donor_src = np.array([0] * 41 + [1] * 17 + [2] * 46, dtype=np.int64)
+    root = tmp_path / "level4"
+    root.mkdir()
+    heavy = tmp_path / "original-synthetic.npz"
+    np.savez(
+        heavy,
+        duniq=np.asarray(donors, dtype=object),
+        donor_src=donor_src,
+        source_names=np.asarray(["HVS", "SEA_AD", "NPH52"], dtype=object),
+        src_of_cell=np.asarray([0, 0, 2, 1], dtype=np.int64),
+    )
+    monkeypatch.setattr(gate, "N_CELLS", 4)
+    monkeypatch.setattr(gate, "N_BLOCKS", 3)
+    monkeypatch.setattr(gate, "SOURCE_CELLS", (2, 1, 1))
+    monkeypatch.setattr(gate, "ORIGINAL_HEAVY_SHA256", gate.sha256_file(heavy))
+    rows = []
+    meta_files = {}
+    for source, pairs in (
+        ("HVS", [(0, "D000"), (1, "D001")]),
+        ("NPH52", [(2, "D041")]),
+        ("SEA_AD", [(3, "D058")]),
+    ):
+        meta = root / f"{source}.csv"
+        with meta.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=gate.META_COLUMNS)
+            writer.writeheader()
+            for selection, donor in pairs:
+                writer.writerow({
+                    "selection_row": selection,
+                    "canonical_cell_id": f"C{selection}",
+                    "donor_id": donor,
+                    "expression_row": selection,
+                    "primary_row_weight": 1,
+                    "source_library": 100,
+                })
+        meta_files[source] = meta
+        rows.append({
+            "block_key": source,
+            "source": source,
+            "rows": len(pairs),
+            "meta_path": meta.name,
+            "meta_sha256": gate.sha256_file(meta),
+        })
+    manifest = root / "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"
+    def write_manifest():
+        with manifest.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=tuple(rows[0]))
+            writer.writeheader()
+            writer.writerows(rows)
+        monkeypatch.setattr(gate, "MANIFEST_SHA256", gate.sha256_file(manifest))
+    write_manifest()
+    return heavy, root, rows, meta_files, write_manifest
+
+
+def test_physical_metadata_auditor_quarantines_original_mislabel_without_count_files(
+    synthetic_physical_layout,
+):
+    heavy, root, _, _, _ = synthetic_physical_layout
+    assert not list(root.glob("*.npz"))
+    record = gate.audit_original_heavy_source_lineage(
+        heavy_artifact=heavy, level4_root=root,
+    )
+    assert record["state"] == "QUARANTINED_SOURCE_ENCODING__N1_STOP"
+    assert record["metadata_blocks_sha_verified"] == 3
+    assert record["metadata_cells_accounted_exactly_once"] == 4
+    assert record["src_of_cell_mismatch_count"] == 2
+    assert record["n1_targets_selected"] is False
+    assert record["training_authorized"] is False
+    assert record["receipt_sha256"] == gate.canonical_digest({
+        k: v for k, v in record.items() if k != "receipt_sha256"
+    })
+
+
+def test_physical_metadata_auditor_rejects_tampered_metadata_sha(
+    synthetic_physical_layout,
+):
+    heavy, root, _, meta_files, _ = synthetic_physical_layout
+    with meta_files["NPH52"].open("a", encoding="utf-8") as handle:
+        handle.write("TAMPER\n")
+    with pytest.raises(ValueError, match="metadata physical SHA"):
+        gate.audit_original_heavy_source_lineage(
+            heavy_artifact=heavy, level4_root=root,
+        )
+
+
+def test_physical_metadata_auditor_rejects_resealed_wrong_donor_source(
+    synthetic_physical_layout,
+):
+    heavy, root, rows, meta_files, write_manifest = synthetic_physical_layout
+    path = meta_files["NPH52"]
+    with path.open(newline="", encoding="utf-8") as handle:
+        records = list(csv.DictReader(handle))
+    records[0]["donor_id"] = "D058"  # SEA_AD donor inside NPH52 block
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=gate.META_COLUMNS)
+        writer.writeheader()
+        writer.writerows(records)
+    next(row for row in rows if row["source"] == "NPH52")["meta_sha256"] = gate.sha256_file(path)
+    write_manifest()  # simulate an attacker also resealing the outer manifest
+    with pytest.raises(ValueError, match="authenticated Level-4 donor/source"):
+        gate.audit_original_heavy_source_lineage(
+            heavy_artifact=heavy, level4_root=root,
+        )
