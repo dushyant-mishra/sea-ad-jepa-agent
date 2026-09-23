@@ -132,6 +132,19 @@ def test_result_validator_rejects_missing_duplicate_wrong_terminal_and_promotion
         m.validate_scientific_result(bad, preflight=preflight(m), exit_code=0)
 
 
+def test_real_execution_requires_preapproved_gateway_source(tmp_path, monkeypatch):
+    m = module()
+    payload = preflight(m)
+    payload["receipt_sha256"] = m.canonical_digest(payload)
+    monkeypatch.setattr(m, "verify_reviewed_preflight", lambda **_: payload)
+    with pytest.raises(ValueError, match="approved gateway source"):
+        m.run_guarded(
+            inputs={"repo_root": ROOT}, reviewed_receipt=tmp_path / "reviewed.json",
+            approved_file_sha256="2" * 64, out=tmp_path / "result.json",
+            out_receipt=tmp_path / "receipt.json", execute_after_independent_review=True,
+        )
+
+
 def test_atomic_synthetic_success_creates_one_result_one_receipt_and_intent(tmp_path, monkeypatch):
     m = module()
     payload = preflight(m)
@@ -164,6 +177,7 @@ def test_atomic_synthetic_success_creates_one_result_one_receipt_and_intent(tmp_
         reviewed_receipt=tmp_path / "reviewed.json",
         approved_file_sha256="2" * 64, out=dest, out_receipt=receipt,
         execute_after_independent_review=True,
+        approved_gateway_source_sha256=real_hash(GATE),
     )
     assert len(called) == 1
     assert dest.is_file() and receipt.is_file()
@@ -195,6 +209,7 @@ def test_crash_creates_exclusive_intent_and_cannot_repeat(tmp_path, monkeypatch)
         reviewed_receipt=ROOT, approved_file_sha256="a" * 64,
         out=tmp_path / "result.json", out_receipt=tmp_path / "receipt.json",
         execute_after_independent_review=True,
+        approved_gateway_source_sha256=payload["source_hashes"]["runner_normalized_text_sha256"],
     )
     with pytest.raises(RuntimeError, match="failed mechanically"):
         m.run_guarded(**kwargs)
