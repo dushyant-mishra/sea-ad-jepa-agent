@@ -47,7 +47,7 @@ def planted():
 def partition(data, seed="FROZEN_BEFORE_EFFECTS"):
     return freeze_target_partition(
         target_ids=data.target_ids, guide_ids=data.guide_ids,
-        donor_ids=data.donor_ids, assay=data.assay,
+        donor_ids=data.donor_ids, feature_ids=data.feature_ids, assay=data.assay,
         source_sha256=SOURCE, exposure="DEVELOPMENT",
         seed=seed, n_folds=4,
     )
@@ -71,7 +71,8 @@ def test_partition_is_content_bound_and_row_order_invariant():
     b = freeze_target_partition(
         target_ids=tuple(reversed(data.target_ids)),
         guide_ids=tuple(reversed(data.guide_ids)),
-        donor_ids=tuple(reversed(data.donor_ids)), assay=data.assay,
+        donor_ids=tuple(reversed(data.donor_ids)),
+        feature_ids=data.feature_ids, assay=data.assay,
         source_sha256=SOURCE, exposure="DEVELOPMENT",
         seed="FROZEN_BEFORE_EFFECTS", n_folds=4,
     )
@@ -195,7 +196,7 @@ def test_partition_exposure_is_never_invented():
     with pytest.raises(ValueError, match="assay, declared exposure"):
         freeze_target_partition(
             target_ids=data.target_ids, guide_ids=data.guide_ids,
-            donor_ids=data.donor_ids, assay=data.assay,
+            donor_ids=data.donor_ids, feature_ids=data.feature_ids, assay=data.assay,
             source_sha256=SOURCE, exposure="PROSPECTIVE_EXTERNAL_CONFIRMED",
             seed="seed", n_folds=4,
         )
@@ -216,3 +217,25 @@ def test_partition_rejects_changed_source_root_and_same_targets_different_units(
     assert set(changed.target_ids) == set(data.target_ids)
     with pytest.raises(ValueError, match="row census differs"):
         select_fold(changed, frozen, 0)
+
+
+def test_feature_order_swap_rejected_even_if_feature_names_and_values_preserved():
+    data = planted()
+    frozen = partition(data)
+    ids = list(data.feature_ids)
+    ids[0], ids[1] = ids[1], ids[0]
+    x = data.effects.copy()
+    x[:, [0, 1]] = x[:, [1, 0]]
+    m = data.measured.copy()
+    m[:, [0, 1]] = m[:, [1, 0]]
+    reordered = replace(data, feature_ids=tuple(ids), effects=x, measured=m)
+    reordered.validate()
+    with pytest.raises(ValueError, match="molecular feature order differs"):
+        select_fold(reordered, frozen, 0)
+
+
+def test_no_automatic_independent_confirmation_claim():
+    data = planted()
+    out = evaluate_target_excluded_baselines(data, partition(data), 0)
+    assert out["exposure_is_declared_not_independently_verified"] is True
+    assert out["independent_predictive_confirmation_authorized"] is False
