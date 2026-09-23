@@ -257,26 +257,36 @@ def select_fold(data: GuideDonorEffects, partition: ProspectivePartition, fold: 
     return train, test
 
 
+def _finite_mean(values: np.ndarray) -> np.ndarray:
+    """Featurewise finite mean without manufacturing values for empty support."""
+    finite = np.isfinite(values)
+    denom = finite.sum(axis=0)
+    out = np.full(values.shape[1], np.nan, dtype=float)
+    valid = denom > 0
+    out[valid] = np.nansum(values[:, valid], axis=0) / denom[valid]
+    return out
+
+
 def training_baselines(data: GuideDonorEffects, train: np.ndarray):
-    """Fit simple baselines on TRAIN ONLY, equal target weight."""
+    """Fit on TRAIN ONLY; equal guide-within-donor, donor, then target weights."""
     data.validate()
     train = np.asarray(train, dtype=bool)
     if train.shape != (len(data.target_ids),) or not train.any():
         raise ValueError("invalid train mask")
     targets = sorted(set(np.asarray(data.target_ids)[train]))
     by_target = []
+    target_array = np.asarray(data.target_ids)
+    donor_array = np.asarray(data.donor_ids)
     for target in targets:
-        rows = train & (np.asarray(data.target_ids) == target)
-        observed = data.effects[rows]
-        finite = np.isfinite(observed)
-        denom_target = finite.sum(axis=0)
-        per_feature = np.full(observed.shape[1], np.nan, dtype=float)
-        supported_target = denom_target > 0
-        per_feature[supported_target] = (
-            np.nansum(observed[:, supported_target], axis=0)
-            / denom_target[supported_target]
-        )
-        by_target.append(per_feature)
+        # First average guides *within donor*, then average available donors.
+        # Otherwise a donor with ten guides contributes 10x the weight of a
+        # donor with one guide. Finally each training target has equal weight.
+        target_mask = train & (target_array == target)
+        donor_effects = []
+        for donor in sorted(set(donor_array[target_mask])):
+            donor_rows = target_mask & (donor_array == donor)
+            donor_effects.append(_finite_mean(data.effects[donor_rows]))
+        by_target.append(_finite_mean(np.asarray(donor_effects)))
     target_matrix = np.asarray(by_target)
     # Avoid poison from masked-only columns; those remain non-estimable.
     available = np.isfinite(target_matrix)
@@ -298,7 +308,7 @@ def training_baselines(data: GuideDonorEffects, train: np.ndarray):
 def evaluate_target_excluded_baselines(
     data: GuideDonorEffects, partition: ProspectivePartition, fold: int,
 ) -> dict:
-    """Macro-average held-out targets, exclude each target gene from scoring.
+    """Macro-average held-out targets and donors; exclude target gene.
 
     Results are DESCRIPTIVE BASELINES. This function is not a predictive model
     training authorization or a prospective external validation claim.
@@ -326,14 +336,37 @@ def evaluate_target_excluded_baselines(
             if not evaluable.any():
                 target_rows.append({"target": target, "status": "NOT_ESTIMABLE", "n": 0})
                 continue
-            error = observed[evaluable] - np.broadcast_to(
-                prediction, observed.shape,
-            )[evaluable]
+            # Score guides within donor before taking the donor-uniform mean.
+            # A donor with more guides is not a larger biological population.
+            donor_scores = []
+            donors = np.asarray(data.donor_ids)[rows]
+            prediction_matrix = np.broadcast_to(prediction, observed.shape)
+            for donor in sorted(set(donors)):
+                own = donors == donor
+                own_valid = evaluable[own]
+                if not own_valid.any():
+                    continue
+                own_error = (observed[own] - prediction_matrix[own])[own_valid]
+                donor_scores.append({
+                    "donor": donor, "n": int(own_error.size),
+                    "mae": float(np.abs(own_error).mean()),
+                    "mse": float(np.square(own_error).mean()),
+                })
+            if not donor_scores:
+                target_rows.append({"target": target, "status": "NOT_ESTIMABLE", "n": 0})
+                continue
             target_rows.append({
                 "target": target, "status": "ESTIMABLE",
-                "n": int(error.size),
-                "mae": float(np.abs(error).mean()),
-                "rmse": float(np.sqrt(np.square(error).mean())),
+                "n": int(sum(d["n"] for d in donor_scores)),
+                "n_donors": len(donor_scores),
+                "n_guides": int(rows.sum()),
+                "mae": float(np.mean([d["mae"] for d in donor_scores])),
+                "rmse": float(np.sqrt(np.mean([d["mse"] for d in donor_scores]))),
+                "per_donor": [
+                    {"donor": d["donor"], "n": d["n"],
+                     "mae": d["mae"], "rmse": float(np.sqrt(d["mse"]))}
+                    for d in donor_scores
+                ],
             })
         estimable = [row for row in target_rows if row["status"] == "ESTIMABLE"]
         report[name] = {
@@ -354,6 +387,7 @@ def evaluate_target_excluded_baselines(
         "n_train_targets": len(set(np.asarray(data.target_ids)[train])),
         "n_test_targets": len(set(np.asarray(data.target_ids)[test])),
         "train_only_median_engagement": median_engagement,
+        "scoring_geometry": "EQUAL_TARGET_THEN_EQUAL_DONOR__GUIDE_MEAN_WITHIN_DONOR_V1",
         "baselines": report,
         "jepa_training_authorized": False,
         "therapeutic_ranking_authorized": False,
