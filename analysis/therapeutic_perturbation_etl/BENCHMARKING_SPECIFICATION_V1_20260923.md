@@ -97,7 +97,7 @@ A study that has been looked at is downgraded permanently and the ledger records
 when and why. This is the same discipline the FULL104 lane applies to its
 confirmation sets.
 
-Current status, as of this specification:
+Current status: original September 23 declaration, updated after the GSE254205 bulk contrast outputs were inspected. Exposure is tracked by arm and outcome family rather than declaring an entire study unexposed. Physical acquisition/inventory inspection alone does not constitute inspection of every response outcome:
 
 | study | system | exposure |
 |---|---|---|
@@ -106,7 +106,8 @@ Current status, as of this specification:
 | GSE178317 | iPSC microglia CRISPRi/a | `HELD_OUT` — not yet ETL-qualified, outcomes uninspected |
 | GSE311359 | iPSC microglia Perturb-seq | `HELD_OUT` |
 | GSE175721 | engineered microglia in organoids | `HELD_OUT` |
-| GSE254205 | APOE / amyloid / GNE317 | `HELD_OUT` |
+| GSE254205 — bulk nine-sample GNE-317 arm | APOE4/4 iPSC microglia, amyloid ± GNE-317 | `RETROSPECTIVE_BENCHMARK` — AB_vs_NT, AB_GNE_vs_AB and AB_GNE_vs_NT effect summaries inspected on September 23, 2026; NOT eligible for untouched external confirmation |
+| GSE254205 — three other authenticated assets | snRNA-seq, ATAC and LD-sort arms | `HELD_OUT` at the per-arm/outcome-family level only while their outcomes genuinely remain uninspected; reassess exposure before analysis |
 | GSE241858 | TREM2 R47H, cytokine | `HELD_OUT` |
 | GSE240609 | APOE3ch coculture | `HELD_OUT` |
 | Kampmann CROP-seq | historical | `HISTORICALLY_EXPOSED` — defeated the earlier pipeline |
