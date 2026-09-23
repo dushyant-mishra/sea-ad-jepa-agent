@@ -59,6 +59,9 @@ def bind_synthetic_lineage(
     fold_by_donor: Any, cell_donor: Any, src_of_cell: Any,
     stream_source_by_donor: Any, donor_nnz: Any, donor_umi: Any,
     expected_cell_donor_sha256: str, expected_donor_source_sha256: str,
+    expected_fold_sha256: str, expected_core_sha256: str,
+    expected_target_order_sha256: str, expected_donor_nnz_sha256: str,
+    expected_donor_umi_sha256: str,
     source_names: tuple[str, ...], stream_root_sha256: str,
     code_root_sha256: str, parameter_root_sha256: str, rng_root_sha256: str,
 ) -> SyntheticBound:
@@ -101,6 +104,15 @@ def bind_synthetic_lineage(
         raise ValueError("synthetic pass1 donor identity differs from frozen test authority")
     if _digest(source) != _sha_root(expected_donor_source_sha256, "source digest"):
         raise ValueError("synthetic corrected donor/source vector differs from frozen test authority")
+    for label, arr, expected in (
+        ("fold assignment", fold, expected_fold_sha256),
+        ("core order", core, expected_core_sha256),
+        ("target order", targets, expected_target_order_sha256),
+        ("donor nnz", nnz, expected_donor_nnz_sha256),
+        ("donor umi", umi, expected_donor_umi_sha256),
+    ):
+        if _digest(arr) != _sha_root(expected, label):
+            raise ValueError(f"synthetic {label} differs from frozen test authority")
     roots = {
         name: _sha_root(root, name)
         for name, root in {
