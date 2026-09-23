@@ -52,6 +52,7 @@ class SyntheticBound:
     frozen_targets: np.ndarray
     donor_source_code: np.ndarray
     fold_by_donor: np.ndarray
+    binding_sha256: str
 
 
 def bind_synthetic_lineage(
@@ -136,7 +137,21 @@ def bind_synthetic_lineage(
         "donor_umi_sha256": _digest(umi),
         **roots,
     }
-    return SyntheticBound(ctx, targets.copy(), source.copy(), fold.copy())
+    return SyntheticBound(ctx, targets.copy(), source.copy(), fold.copy(), runtime.canonical_digest(ctx))
+
+
+def _verify_bound(bound: SyntheticBound) -> None:
+    if bound.context.get("scope") != MODE or bound.context.get("schema") != runtime.CONTEXT_SCHEMA:
+        raise ValueError("only synthetic integration experiments are permitted")
+    if runtime.canonical_digest(bound.context) != bound.binding_sha256:
+        raise ValueError("synthetic execution context drift after frozen binding")
+    for key, arr in (
+        ("target_order_sha256", bound.frozen_targets),
+        ("donor_source_sha256", bound.donor_source_code),
+        ("fold_by_donor_sha256", bound.fold_by_donor),
+    ):
+        if _digest(arr) != bound.context[key]:
+            raise ValueError(f"bound {key} changed after validation")
 
 
 def run_synthetic_journal(
@@ -144,8 +159,7 @@ def run_synthetic_journal(
     compute_unit: Callable[[int, int, int, int], list[dict[str, Any]]],
     stop_after_new_units: int | None = None,
 ) -> int:
-    if bound.context.get("scope") != MODE:
-        raise ValueError("only synthetic integration experiments are permitted")
+    _verify_bound(bound)
     # The exact production accumulator validates every newly computed unit
     # BEFORE the crash-safe runtime commits it to the journal.
     validator = N1DonorTensorAccumulator(
@@ -175,8 +189,7 @@ def finalize_synthetic_journal(
     *, bound: SyntheticBound, journal_dir: Path,
     result_artifact: Path, result_receipt: Path,
 ) -> dict[str, Any]:
-    if bound.context.get("scope") != MODE:
-        raise ValueError("only synthetic integration experiments are permitted")
+    _verify_bound(bound)
     return runtime.finalize_from_journal(
         journal_dir=journal_dir,
         result_artifact=result_artifact, result_receipt=result_receipt,
