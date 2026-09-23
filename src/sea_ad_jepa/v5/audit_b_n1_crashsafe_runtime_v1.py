@@ -36,6 +36,8 @@ SCHEMA = "V5_AUDIT_B_N1_CRASHSAFE_JOURNAL_V1"
 FINAL_SCHEMA = "V5_AUDIT_B_N1_CRASHSAFE_FINALIZATION_V1"
 N_FOLDS = 4
 EXPECTED_UNITS = N1_TARGET_COUNT * N_FOLDS * N_RUNGS
+CONTEXT_SCHEMA = "V5_N1_IMMUTABLE_EXECUTION_CONTEXT_V1"
+CONTEXT_NAME = "EXECUTION_CONTEXT_V1.json"
 
 
 def canonical_digest(payload: Mapping[str, Any]) -> str:
@@ -54,6 +56,43 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def bind_execution_context(
+    *, journal_dir: Path, execution_context: Mapping[str, Any] | None,
+) -> str | None:
+    """Fail closed on stale journal context; caller authenticates source roots."""
+    final = journal_dir / CONTEXT_NAME
+    if execution_context is None:
+        if final.exists():
+            raise ValueError("context-bound journal requires execution context")
+        return None
+    body = dict(execution_context)
+    if body.get("schema") != CONTEXT_SCHEMA:
+        raise ValueError("execution context schema mismatch")
+    digest = canonical_digest(body)
+    payload = {"context": body, "context_sha256": digest}
+    journal_dir.mkdir(parents=True, exist_ok=True)
+    if final.exists():
+        observed = json.loads(final.read_text(encoding="utf-8"))
+        if observed.get("context_sha256") != canonical_digest(observed.get("context", {})):
+            raise ValueError("journal execution context self-digest mismatch")
+        if observed != payload:
+            raise ValueError("journal execution context drift")
+        return digest
+    if any(journal_dir.glob("t*_f*_r*.json")):
+        raise ValueError("existing journal units lack an immutable execution context")
+    stage = journal_dir / ("." + CONTEXT_NAME + ".staged")
+    if stage.exists():
+        stage.unlink()
+    fd = os.open(str(stage), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+        json.dump(payload, handle, sort_keys=True, separators=(",", ":"), allow_nan=False)
+        handle.write("\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(stage, final)
+    return digest
+
+
 def unit_name(target_index: int, fold_index: int, rung_index: int) -> str:
     if not (0 <= target_index < N1_TARGET_COUNT):
         raise ValueError("target_index outside N1 geometry")
@@ -66,7 +105,7 @@ def unit_name(target_index: int, fold_index: int, rung_index: int) -> str:
 
 def validate_unit_record(
     record: Mapping[str, Any], *, target_index: int, fold_index: int,
-    rung_index: int,
+    rung_index: int, expected_context_sha256: str | None = None,
 ) -> dict[str, Any]:
     if record.get("schema") != SCHEMA:
         raise ValueError("journal unit schema mismatch")
@@ -78,6 +117,8 @@ def validate_unit_record(
     for key, value in expected.items():
         if record.get(key) != value:
             raise ValueError(f"journal unit key drift: {key}")
+    if record.get("context_sha256") != expected_context_sha256:
+        raise ValueError("journal unit execution context drift")
     observations = record.get("observations")
     if not isinstance(observations, list) or not observations:
         raise ValueError("journal unit has no observations")
@@ -90,6 +131,7 @@ def validate_unit_record(
 def commit_unit(
     *, journal_dir: Path, target_index: int, fold_index: int, rung_index: int,
     target_col: int, observations: list[dict[str, Any]],
+    execution_context_sha256: str | None = None,
 ) -> Path:
     journal_dir.mkdir(parents=True, exist_ok=True)
     final = journal_dir / unit_name(target_index, fold_index, rung_index)
@@ -97,7 +139,7 @@ def commit_unit(
         existing = json.loads(final.read_text(encoding="utf-8"))
         validate_unit_record(
             existing, target_index=target_index, fold_index=fold_index,
-            rung_index=rung_index,
+            rung_index=rung_index, expected_context_sha256=execution_context_sha256,
         )
         return final
 
@@ -109,6 +151,8 @@ def commit_unit(
         "rung_index": int(rung_index),
         "observations": observations,
     }
+    if execution_context_sha256 is not None:
+        payload["context_sha256"] = execution_context_sha256
     payload["record_sha256"] = canonical_digest(payload)
     stage = final.with_suffix(".json.tmp")
     # A crash may leave an uncommitted temp file. It has no authority because
@@ -127,6 +171,7 @@ def commit_unit(
 
 def read_unit(
     *, journal_dir: Path, target_index: int, fold_index: int, rung_index: int,
+    expected_context_sha256: str | None = None,
 ) -> dict[str, Any]:
     path = journal_dir / unit_name(target_index, fold_index, rung_index)
     if not path.is_file():
@@ -134,7 +179,7 @@ def read_unit(
     payload = json.loads(path.read_text(encoding="utf-8"))
     return validate_unit_record(
         payload, target_index=target_index, fold_index=fold_index,
-        rung_index=rung_index,
+        rung_index=rung_index, expected_context_sha256=expected_context_sha256,
     )
 
 
