@@ -206,6 +206,27 @@ def derive_canonical_src_of_cell(level4_root: Path, n_cells: int) -> tuple[np.nd
                  "donor_of_cell": donor_of_cell}
 
 
+def require_full_metadata_donor_identity(
+    donor_of_cell: dict[int, str], cell_donor: np.ndarray, donor_names: list[str],
+) -> None:
+    """Fail on any cell-level donor swap, including swaps within the same source."""
+    n = len(cell_donor)
+    if len(donor_of_cell) != n or not np.array_equal(
+            np.fromiter(sorted(donor_of_cell), dtype=np.int64, count=n),
+            np.arange(n, dtype=np.int64)):
+        raise SystemExit("authenticated metadata donor mapping does not cover all cells")
+    if cell_donor.dtype != np.int64 or cell_donor.shape != (n,):
+        raise SystemExit("pass1 cell_donor must be exact int64")
+    if np.any(cell_donor < 0) or np.any(cell_donor >= len(donor_names)):
+        raise SystemExit("pass1 cell_donor outside frozen donor registry")
+    donor_index = {name: i for i, name in enumerate(donor_names)}
+    for sel in range(n):
+        if donor_index[donor_of_cell[sel]] != int(cell_donor[sel]):
+            raise SystemExit(
+                f"metadata donor disagrees with pass1 cell_donor at {sel}"
+            )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--original", type=Path, required=True)
@@ -264,12 +285,8 @@ def main() -> int:
         bad = int(np.count_nonzero(new_src != expected))
         raise SystemExit(f"derived src_of_cell disagrees with donor_src[cell_donor] for {bad} cells")
 
-    # Exhaustive donor-identity closure: source agreement alone cannot detect
-    # within-source donor swaps. No sampling and no caller-provided hash shortcut.
-    donor_index = {d: i for i, d in enumerate(duniq)}
-    for sel in range(EXPECTED_CELLS):
-        if donor_index[meta_stats["donor_of_cell"][sel]] != int(cell_donor[sel]):
-            raise SystemExit(f"metadata donor disagrees with pass1 cell_donor at {sel}")
+    # Exhaustive donor-identity closure: never use a sparse sample.
+    require_full_metadata_donor_identity(meta_stats["donor_of_cell"], cell_donor, duniq)
 
     old_src = np.asarray(z["src_of_cell"], dtype=np.int64)
     old_names = [str(x) for x in z["source_names"]]
