@@ -77,7 +77,7 @@ def test_structural_semantic_validator_is_not_bypassed_by_resealing(tmp_path, mo
         lambda p: m.STRUCTURAL_RECEIPT_FILE_SHA256 if p == path else sha_real(p),
     )
     # Simulate a hypothetical compromised outer file pin: inner semantic validator still fails.
-    with pytest.raises(ValueError, match="structural-preflight|operators_present"):
+    with pytest.raises(ValueError, match="structural preflight must retain all 42 operators"):
         verified_structure(m, result=path)
 
 
