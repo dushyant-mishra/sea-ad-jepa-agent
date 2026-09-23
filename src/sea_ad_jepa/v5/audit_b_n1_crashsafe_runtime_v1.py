@@ -317,6 +317,7 @@ def finalize_from_journal(
         "terminal_masking_authorized": False,
         "training_authorized": False,
     }
+    payload["finalization_sha256"] = canonical_digest(payload)
     stage = result_receipt.with_suffix(result_receipt.suffix + ".tmp")
     result_receipt.parent.mkdir(parents=True, exist_ok=True)
     if stage.exists():
