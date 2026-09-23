@@ -169,7 +169,9 @@ def run_guarded(
     result = json.loads(stage.read_text(encoding="utf-8"))
     terminal = validate_scientific_result(result, preflight=preflight, exit_code=child.returncode)
     file_sha = sha256_file(stage)
-    with stage.open("rb") as f:
+    # Windows rejects fsync on a read-only descriptor (EBADF). Open the staged
+    # result read-write solely for durability; do not modify its validated bytes.
+    with stage.open("rb+") as f:
         os.fsync(f.fileno())
     # Outcome file is atomic. An interruption between the two commits yields
     # NO admissible science receipt, and the intent prevents automatic retry.
