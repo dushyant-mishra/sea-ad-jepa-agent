@@ -1,7 +1,7 @@
 # Study-by-study readiness and unresolved issues
 
 Date: 2026-09-23
-Branch: `analysis/perturbation-etl-gse301119-claude-20260923`
+Original source: `analysis/perturbation-etl-gse301119-claude-20260923`; September 23 corrections proposed on PR #86. Original V1 outputs remain immutable.
 
 All 16 processed assets across 8 studies are **physically authenticated**
 (`PASS_PERTURBATION_ETL_PHYSICAL_ATLAS_V1`, 0 mismatches). Physical authentication
@@ -31,6 +31,15 @@ exactly. Target engagement validates the pipeline: CRISPRi median log2FC −0.81
 CRISPRa +2.115, donors reproducing at r = +0.526 / +0.776, and 177 of 203 shared
 targets opposing in sign.
 
+**Updated September 23 physical execution:** exact count-reader parity against
+SeuratObject 5.4.0 and original per-cell metadata passed for both modalities.
+PR #81's immutable-guide annotation guard passed physically. Raw integer
+guide×donor pseudobulk and log-CPM were regenerated; saved raw integers
+reproduced both log-CPM matrices exactly and all 412 target-engagement rows per
+modality within predeclared 1e-9 tolerance. See
+`GSE301119_COUNT_PARITY_QUALIFICATION_20260923.md` and the committed
+`gse301119_rawpb_v1/RAW_PSEUDOBULK_PROVENANCE_MANIFEST.json`.
+
 **Unresolved:** two donors is not a donor distribution; effects are target
 engagement rather than transcriptome-wide differential tests; this is macrophage,
 not microglia.
@@ -39,7 +48,11 @@ not microglia.
 
 ```
 NT rep1..3 | AB rep1..3 | AB_GNE rep1..3     9 samples, 58,395 Ensembl genes
-genes detected anywhere 36,117   masked as unmeasured 22,278
+genes assayed 58,395; detected anywhere 36,117; assayed but undetected 22,278
+no structurally unmeasured genes *within the declared reference universe*
+V1 incorrectly labeled 22,278 assay-present zero-detection genes unmeasured;
+PR #86 V2 repairs this schema without overwriting V1 evidence.
+PHYSICAL V2 RERUN ON THE SOURCE MACHINE: NOT_EXECUTED in this branch.
 
 AB_vs_NT        2,253 genes |log2FC| > 1
 AB_GNE_vs_AB    3,840 genes |log2FC| > 1,  481 > 2     <- drug in amyloid context
@@ -128,8 +141,11 @@ explicit reason. None was assigned a fabricated value.
 ## Cross-cutting unresolved issues
 
 1. **Feature namespaces differ across studies.** GSE301119 and GSE293118 use HGNC
-   symbols; GSE254205 uses Ensembl IDs. Cross-study comparison needs an explicit,
-   tested mapping with a documented collision policy — not a silent join.
+   symbols; GSE254205 uses Ensembl IDs. The synthetic-qualified PR #87/PR #89
+   feature-identity successor implements explicit collision handling, frozen
+   annotation identity and non-quadratic mapping. A REAL annotation release
+   and its physical hash/reconciliation have NOT yet been qualified; no actual
+   cross-study feature equivalence is claimed.
 2. **No cis-target authority for noncoding elements.** Blocks 76 of GSE293118's
    84 targets from contributing interpretable regulatory effects.
 3. **Engagement is not penetrance.** 17 % of GSE301119 CRISPRi targets were not
@@ -137,10 +153,13 @@ explicit reason. None was assigned a fabricated value.
    ignoring it models an intervention that did not happen.
 4. **Replicate depth is thin.** Two donors (GSE301119), three replicates
    (GSE254205). Sufficient for effect estimation, weak for transport claims.
-5. **Reader environment.** The installed Seurat is 4.1.1 / SeuratObject 4.1.0 and
-   cannot correctly read the Seurat 5.4.0 `Assay5` objects — `dim()` returns empty
-   rather than raising. Extraction is attribute-only for that reason. Installing
-   SeuratObject ≥ 5 would remove the hazard.
+5. **Reader environment (RESOLVED, retained historically).** Initial R
+   4.1.2/SeuratObject 4.1.0 could silently misread Seurat 5.4.0 objects.
+   Isolated R 4.6.1 plus SeuratObject 5.4.0 was installed and run. The
+   PR #81 accessor-versus-attribute reader parity check passed exactly for
+   both modalities, with an independent original-object metadata check across
+   all 52,050 cells. Do not revive the initial reader blocker without changed
+   inputs. V2 bulk assay/detection correction remains pending PHYSICAL rerun.
 
 ```
 JEPA_TRAINING=OFF · THERAPEUTIC_RANKING=OFF · PROTECTED_FULL104_OUTCOMES=UNOPENED
