@@ -10,7 +10,6 @@ source/data authentication before it may call analogous mechanics.
 """
 from __future__ import annotations
 
-from dataclasses import asdict
 import hashlib
 import io
 import json
@@ -23,12 +22,7 @@ import zipfile
 import numpy as np
 
 from .audit_b_n1_cpu_burden_assembly_v1 import N1DonorTensorAccumulator
-from .audit_b_n1_result_contract_v1 import (
-    AuditBN1ResultReceiptV1,
-    N1_TARGET_COUNT,
-    N_RUNGS,
-    array_sha256,
-)
+from .audit_b_n1_result_contract_v1 import N1_TARGET_COUNT, N_RUNGS, array_sha256
 
 SCHEMA = "V5_AUDIT_B_N1_CRASHSAFE_JOURNAL_V2"
 CONTEXT_SCHEMA = "V5_AUDIT_B_N1_EXECUTION_CONTEXT_V2"
@@ -135,8 +129,15 @@ def validate_context(context: Mapping[str, Any]) -> dict[str, Any]:
     expected = canonical_digest(body)
     if context.get("context_sha256") != expected:
         raise ValueError("execution context self-digest mismatch")
-    if set(context) != set(body) | {"context_sha256"}:
-        raise ValueError("execution context has unexpected fields")
+    expected_keys = {
+        "schema", "scope", "context_sha256", *_SHA_KEYS,
+        "physical_execution_authorized",
+        "n1_targets_selected_from_physical_data",
+        "masks_generated", "burden_calculated", "precision_calculated",
+        "training_authorized",
+    }
+    if set(context) != expected_keys:
+        raise ValueError("execution context has unexpected or missing fields")
     return dict(context)
 
 
@@ -277,10 +278,12 @@ def run_resumable_units(
             for ri in range(N_RUNGS):
                 final = journal_dir / unit_name(ti, fi, ri)
                 if final.exists():
-                    read_unit(
+                    existing = read_unit(
                         journal_dir=journal_dir, context_sha256=context_sha,
                         target_index=ti, fold_index=fi, rung_index=ri,
                     )
+                    if int(existing.get("target_col", -1)) != int(raw_target):
+                        raise ValueError("committed journal target differs from frozen target order")
                     continue
                 if stop_after_new_units is not None and committed >= stop_after_new_units:
                     return committed
@@ -383,26 +386,25 @@ def finalize_from_journal(
     arrays = acc.finalize()
     write_deterministic_npz(result_artifact, arrays)
     artifact_sha = sha256_file(result_artifact)
-    receipt = AuditBN1ResultReceiptV1(
-        result_artifact_sha256=artifact_sha,
-        target_cols_sha256=array_sha256(arrays["target_cols"], dtype="<i8"),
-        donor_normalized_delta_detected_sha256=array_sha256(
+    synthetic_result = {
+        "result_artifact_sha256": artifact_sha,
+        "target_cols_sha256": array_sha256(arrays["target_cols"], dtype="<i8"),
+        "donor_normalized_delta_detected_sha256": array_sha256(
             arrays["donor_normalized_delta_detected"], dtype="<f8"
         ),
-        donor_normalized_delta_umi_sha256=array_sha256(
+        "donor_normalized_delta_umi_sha256": array_sha256(
             arrays["donor_normalized_delta_umi"], dtype="<f8"
         ),
-        donor_source_code_sha256=array_sha256(
+        "donor_source_code_sha256": array_sha256(
             arrays["donor_source_code"], dtype="<i8"
         ),
-    )
-    canonical = receipt.canonical_digest()
+    }
+    synthetic_result["synthetic_result_sha256"] = canonical_digest(synthetic_result)
     payload = {
         "schema": FINAL_SCHEMA,
         "scope": SCOPE,
         "execution_context_sha256": context_sha,
-        "result_receipt": asdict(receipt),
-        "result_receipt_sha256": canonical,
+        "synthetic_result": synthetic_result,
         "journal_units": EXPECTED_UNITS,
         "physical_execution_authorized": False,
         "precision_calculated": False,
