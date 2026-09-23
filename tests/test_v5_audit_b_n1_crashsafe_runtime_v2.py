@@ -130,7 +130,7 @@ def test_interrupted_resume_is_byte_identical_and_context_bound(tmp_path: Path):
     assert out_a.read_bytes() == out_b.read_bytes()
     assert receipt_a.read_bytes() == receipt_b.read_bytes()
     assert final_a["execution_context_sha256"] == context["context_sha256"]
-    assert final_a["result_receipt_sha256"] == final_b["result_receipt_sha256"]
+    assert final_a["synthetic_result"]["synthetic_result_sha256"] == final_b["synthetic_result"]["synthetic_result_sha256"]
     assert final_a["physical_execution_authorized"] is False
     assert final_a["training_authorized"] is False
 
@@ -256,3 +256,39 @@ def test_stale_temp_is_discarded_but_does_not_gain_authority(tmp_path: Path):
     )
     assert not stale.exists()
     assert (j / rt.unit_name(0, 0, 0)).is_file()
+
+
+
+def test_context_rejects_extra_fields_even_when_rehashed():
+    source, fold = source_fold()
+    targets = np.arange(256, dtype=np.int64)
+    context = make_context(targets, source, fold)
+    context["unexpected"] = "not-authority"
+    context["context_sha256"] = rt.canonical_digest(
+        {k: v for k, v in context.items() if k != "context_sha256"}
+    )
+    with pytest.raises(ValueError, match="unexpected or missing"):
+        rt.validate_context(context)
+
+
+def test_resume_rejects_validly_rehashed_wrong_target_col(tmp_path: Path):
+    source, fold = source_fold()
+    targets = np.arange(256, dtype=np.int64)
+    context = make_context(targets, source, fold)
+    j = tmp_path / "j"
+    rt.run_resumable_units(
+        journal_dir=j, context=context, frozen_targets=targets,
+        compute_unit=fake_unit_factory(source, fold, []), stop_after_new_units=1,
+    )
+    path = j / rt.unit_name(0, 0, 0)
+    row = json.loads(path.read_text(encoding="utf-8"))
+    row["target_col"] = int(targets[1])
+    row["record_sha256"] = rt.canonical_digest(
+        {k: v for k, v in row.items() if k != "record_sha256"}
+    )
+    path.write_text(json.dumps(row), encoding="utf-8")
+    with pytest.raises(ValueError, match="committed journal target differs"):
+        rt.run_resumable_units(
+            journal_dir=j, context=context, frozen_targets=targets,
+            compute_unit=fake_unit_factory(source, fold, []), stop_after_new_units=1,
+        )
