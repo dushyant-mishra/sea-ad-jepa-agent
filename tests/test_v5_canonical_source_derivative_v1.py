@@ -276,11 +276,15 @@ _qspec.loader.exec_module(Q)
 def test_full_donor_identity_gate_rejects_unsampled_same_source_swap():
     # Old producer checked every 4001st cell; a swap at rows 1 and 2 passed
     # that test and all source-census/invariant checks. Exercise the real helper.
-    metadata = {0: "A", 1: "A", 2: "B", 3: "B"}
-    canonical = np.array([0, 0, 1, 1], dtype=np.int64)
+    # A and B represent *two donors of the same source*; source-level
+    # invariants remain unchanged when their cells are exchanged.
+    metadata = {0: "A", 1: "B", 2: "A", 3: "B"}
+    canonical = np.array([0, 1, 0, 1], dtype=np.int64)
+    donor_source = np.array([0, 0], dtype=np.int64)
     B.require_full_metadata_donor_identity(metadata, canonical, ["A", "B"])
     swapped = canonical.copy()
     swapped[1], swapped[2] = swapped[2], swapped[1]
+    assert np.array_equal(donor_source[swapped], donor_source[canonical])
     with pytest.raises(SystemExit, match="metadata donor disagrees"):
         B.require_full_metadata_donor_identity(metadata, swapped, ["A", "B"])
 
@@ -355,3 +359,150 @@ def test_successor_rejects_manifest_relabel_and_member_census(monkeypatch):
     del new2["core"]
     with pytest.raises(SystemExit, match="physical NPZ member census mismatch"):
         Q.verify_all_members(old, new2, other)
+
+
+# --------------------------------------------------------------------------- #
+# End-to-end producer fixture: invoke the actual CLI main with independently
+# SHA-pinned (test-only) source metadata, not hand-written surrogate guards.
+# No original FULL104 root or count block can be touched by this fixture.
+# --------------------------------------------------------------------------- #
+
+def _physical_fixture(tmp_path, monkeypatch):
+    import csv
+
+    root = tmp_path / "level4"
+    root.mkdir()
+    names = ["D0", "D1", "D2", "D3"]  # two distinct HVS donors
+    donor_src = np.array([0, 0, 1, 2], dtype=np.int64)
+    donor_of_cell = np.repeat(np.arange(4, dtype=np.int64), 2)
+    old_source = np.array([0, 0, 0, 0, 2, 2, 1, 1], dtype=np.int64)
+    core = np.array([1, 5, 9], dtype=np.int64)
+    original = tmp_path / "original_fixture.npz"
+    pass1 = tmp_path / "pass1_fixture.npz"
+    arrays = {k: np.array([0], dtype=np.int64) for k in B.ROLES}
+    arrays.update({
+        "schema": np.array("fixture", dtype="<U8"),
+        "core": core,
+        "duniq": np.asarray(names, dtype=object),
+        "donor_src": donor_src,
+        "source_names": np.asarray(["HVS", "SEA_AD", "NPH52"], dtype=object),
+        "src_of_cell": old_source,
+        "donor_nnz": np.ones((4, 3), dtype=np.int64),
+        "donor_umi": np.ones((4, 3), dtype=np.int64),
+    })
+    np.savez_compressed(original, **arrays)
+    np.savez(pass1, cell_donor=donor_of_cell, core=core,
+             duniq=np.asarray(names, dtype=object))
+    rows = []
+    for block, src_name, samples in (
+        ("hvs", "HVS", [(0, "D0"), (1, "D0"), (2, "D1"), (3, "D1")]),
+        ("nph", "NPH52", [(4, "D2"), (5, "D2")]),
+        ("sea", "SEA_AD", [(6, "D3"), (7, "D3")]),
+    ):
+        meta = root / (block + ".csv")
+        with meta.open("w", newline="", encoding="utf-8") as f:
+            wr = csv.DictWriter(f, fieldnames=B._META_COLUMNS)
+            wr.writeheader()
+            for selection, donor in samples:
+                wr.writerow({
+                    "selection_row": selection, "canonical_cell_id": "C" + str(selection),
+                    "donor_id": donor, "expression_row": selection,
+                    "primary_row_weight": 1, "source_library": 100
+                })
+        rows.append({"block_key": block, "source": src_name, "rows": len(samples),
+                     "meta_path": meta.name, "meta_sha256": B.sha256_file(meta)})
+    manifest = root / "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"
+    with manifest.open("w", newline="", encoding="utf-8") as f:
+        wr = csv.DictWriter(f, fieldnames=rows[0].keys())
+        wr.writeheader()
+        wr.writerows(rows)
+    for key, value in {
+        "ORIGINAL_SHA256": B.sha256_file(original),
+        "ORIGINAL_BYTES": original.stat().st_size,
+        "MANIFEST_SHA256": B.sha256_file(manifest),
+        "EXPECTED_BLOCKS": 3, "EXPECTED_CELLS": 8,
+        "EXPECTED_DONORS": 4, "EXPECTED_CORE": 3,
+        "EXPECTED_SOURCE_DONORS": (2, 1, 1),
+        "EXPECTED_SOURCE_CELLS": (4, 2, 2),
+    }.items():
+        monkeypatch.setattr(B, key, value)
+    return original, pass1, root, donor_of_cell
+
+
+def _call_producer(monkeypatch, original, pass1, root, out, receipt):
+    monkeypatch.setattr(sys, "argv", [
+        str(MOD), "--original", str(original), "--pass1", str(pass1),
+        "--level4-root", str(root), "--out-derivative", str(out),
+        "--out-manifest", str(receipt),
+    ])
+    return B.main()
+
+
+def test_end_to_end_synthetic_producer_passes_only_canonical_metadata(tmp_path, monkeypatch):
+    original, pass1, root, _ = _physical_fixture(tmp_path, monkeypatch)
+    out, receipt = tmp_path / "repaired.npz", tmp_path / "manifest.json"
+    assert _call_producer(monkeypatch, original, pass1, root, out, receipt) == 0
+    assert out.is_file() and receipt.is_file()
+    with np.load(out, allow_pickle=True) as z:
+        assert z.files and len(z.files) == len(B.ROLES)
+        assert list(z["source_names"]) == list(CANON)
+        assert np.array_equal(z["src_of_cell"], np.array([0]*4 + [1]*2 + [2]*2))
+    record = json.loads(receipt.read_text(encoding="utf-8"))
+    assert record["members_changed"] == 2
+    assert record["members_unchanged"] == 33
+    assert record["src_of_cell_mismatch_in_derivative"] == 0
+
+
+def test_end_to_end_same_source_donor_swap_blocks_derivative_publication(tmp_path, monkeypatch):
+    original, pass1, root, donors = _physical_fixture(tmp_path, monkeypatch)
+    altered = donors.copy()
+    altered[1] = 1  # D0 -> D1, both HVS; all source counts/invariants unchanged
+    with np.load(pass1, allow_pickle=True) as p:
+        np.savez(tmp_path / "pass1_altered.npz", cell_donor=altered,
+                 core=p["core"], duniq=p["duniq"])
+    out, receipt = tmp_path / "never.npz", tmp_path / "never.json"
+    with pytest.raises(SystemExit, match="metadata donor disagrees"):
+        _call_producer(monkeypatch, original, tmp_path / "pass1_altered.npz", root, out, receipt)
+    assert not out.exists() and not receipt.exists()
+
+
+def test_end_to_end_duplicate_metadata_blocks_publication(tmp_path, monkeypatch):
+    original, pass1, root, _ = _physical_fixture(tmp_path, monkeypatch)
+    meta = root / "hvs.csv"
+    content = meta.read_text(encoding="utf-8")
+    with meta.open("a", encoding="utf-8") as stream:
+        stream.write(content.splitlines(True)[1])  # duplicate selection_row 0
+    import csv
+    manifest_path = root / "PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"
+    with manifest_path.open(newline="", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    rows[0]["meta_sha256"] = B.sha256_file(meta)
+    rows[0]["rows"] = "5"
+    with manifest_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    monkeypatch.setattr(B, "MANIFEST_SHA256", B.sha256_file(manifest_path))
+    out, receipt = tmp_path / "never.npz", tmp_path / "never.json"
+    with pytest.raises(SystemExit, match="appears in two blocks"):
+        _call_producer(monkeypatch, original, pass1, root, out, receipt)
+    assert not out.exists() and not receipt.exists()
+
+
+def test_end_to_end_failed_postwrite_comparison_never_publishes_final(tmp_path, monkeypatch):
+    original, pass1, root, _ = _physical_fixture(tmp_path, monkeypatch)
+    genuine = B.value_sha256
+    n = [0]
+    def sabotage_second_core_digest(value):
+        if np.asarray(value).shape == (3,) and np.array_equal(value, [1, 5, 9]):
+            n[0] += 1
+            if n[0] == 2:
+                return "0" * 64
+        return genuine(value)
+    monkeypatch.setattr(B, "value_sha256", sabotage_second_core_digest)
+    out, receipt = tmp_path / "never.npz", tmp_path / "never.json"
+    with pytest.raises(SystemExit, match="unexpected or unclassified member change"):
+        _call_producer(monkeypatch, original, pass1, root, out, receipt)
+    assert n[0] >= 2
+    assert not out.exists() and not receipt.exists()
+    assert (tmp_path / "never.stage.npz").exists()  # unauthorised stage, NOT a final
