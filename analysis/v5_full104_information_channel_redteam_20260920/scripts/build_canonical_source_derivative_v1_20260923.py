@@ -219,6 +219,10 @@ def main() -> int:
         raise SystemExit("refusing to overwrite the original heavy artifact")
     if args.out_derivative.exists():
         raise SystemExit(f"refusing to overwrite an existing derivative: {args.out_derivative}")
+    if args.out_manifest.exists():
+        raise SystemExit(f"refusing to overwrite an existing manifest: {args.out_manifest}")
+    if args.out_manifest.resolve() == args.out_derivative.resolve():
+        raise SystemExit("derivative and manifest must use separate paths")
     if args.original.name == args.out_derivative.name:
         raise SystemExit("derivative must not reuse core_sufficient_statistics_v1.npz naming")
 
@@ -228,6 +232,8 @@ def main() -> int:
 
     z = np.load(args.original, allow_pickle=True)
     members = list(z.files)
+    if len(members) != len(ROLES) or set(members) != set(ROLES):
+        raise SystemExit("unclassified, missing or extra original NPZ member")
     core = np.asarray(z["core"], dtype=np.int64)
     duniq = [str(x) for x in z["duniq"]]
     donor_src = np.asarray(z["donor_src"], dtype=np.int64)
@@ -239,9 +245,11 @@ def main() -> int:
         raise SystemExit("donor/source census is not the canonical 41/17/46")
 
     p1 = np.load(args.pass1, allow_pickle=True)
-    cell_donor = np.asarray(p1["cell_donor"], dtype=np.int64)
-    if cell_donor.size != EXPECTED_CELLS:
-        raise SystemExit("pass1 cell_donor length mismatch")
+    cell_donor = np.asarray(p1["cell_donor"])
+    if cell_donor.dtype != np.int64 or cell_donor.shape != (EXPECTED_CELLS,):
+        raise SystemExit("pass1 cell_donor must be exact full int64 vector")
+    if np.any(cell_donor < 0) or np.any(cell_donor >= EXPECTED_DONORS):
+        raise SystemExit("pass1 cell_donor out of bounds")
     if not np.array_equal(np.asarray(p1["core"], dtype=np.int64), core):
         raise SystemExit("pass1 core differs from artifact core")
     if [str(x) for x in p1["duniq"]] != duniq:
@@ -256,12 +264,12 @@ def main() -> int:
         bad = int(np.count_nonzero(new_src != expected))
         raise SystemExit(f"derived src_of_cell disagrees with donor_src[cell_donor] for {bad} cells")
 
-    # Cross-check donor identity independently of pass1.
+    # Exhaustive donor-identity closure: source agreement alone cannot detect
+    # within-source donor swaps. No sampling and no caller-provided hash shortcut.
     donor_index = {d: i for i, d in enumerate(duniq)}
-    sample = np.arange(0, EXPECTED_CELLS, 4001)
-    for sel in sample:
-        if donor_index[meta_stats["donor_of_cell"][int(sel)]] != int(cell_donor[sel]):
-            raise SystemExit(f"metadata donor disagrees with pass1 cell_donor at {int(sel)}")
+    for sel in range(EXPECTED_CELLS):
+        if donor_index[meta_stats["donor_of_cell"][sel]] != int(cell_donor[sel]):
+            raise SystemExit(f"metadata donor disagrees with pass1 cell_donor at {sel}")
 
     old_src = np.asarray(z["src_of_cell"], dtype=np.int64)
     old_names = [str(x) for x in z["source_names"]]
@@ -275,10 +283,12 @@ def main() -> int:
             if name == "source_names" else z[name])
     stage = args.out_derivative.with_suffix(".stage.npz")
     args.out_derivative.parent.mkdir(parents=True, exist_ok=True)
+    if stage.exists():
+        raise SystemExit(f"refusing to reuse existing unreviewed stage: {stage}")
     np.savez(stage, **payload)
-    stage.replace(args.out_derivative)
 
-    d = np.load(args.out_derivative, allow_pickle=True)
+    # Audit the staged bytes before any final derivative path is published.
+    d = np.load(stage, allow_pickle=True)
     if sorted(d.files) != sorted(members):
         raise SystemExit("derivative member set differs from the original")
 
@@ -313,7 +323,7 @@ def main() -> int:
     if unexpected:
         raise SystemExit(f"unexpected or unclassified member change: {sorted(set(unexpected))}")
 
-    derivative_sha = sha256_file(args.out_derivative)
+    derivative_sha = sha256_file(stage)
     manifest = {
         "schema": "V5_FULL104_CANONICAL_SOURCE_DERIVATIVE_MANIFEST_V1",
         "role": "PHYSICAL_INPUT_REPAIR__NOT_EXECUTION_AUTHORITY",
@@ -321,7 +331,7 @@ def main() -> int:
         "parent_original_bytes": ORIGINAL_BYTES,
         "derivative_path": str(args.out_derivative.resolve()),
         "derivative_sha256": derivative_sha,
-        "derivative_bytes": args.out_derivative.stat().st_size,
+        "derivative_bytes": stage.stat().st_size,
         "full104_manifest_sha256": MANIFEST_SHA256,
         "canonical_source_names": list(CANONICAL_SOURCE_NAMES),
         "stored_source_names_in_parent": old_names,
@@ -354,8 +364,17 @@ def main() -> int:
     }
     manifest["manifest_sha256"] = canonical_digest(
         {k: v for k, v in manifest.items() if k != "manifest_sha256"})
+    # Stage both outputs and publish only after the full 35-member comparison.
     args.out_manifest.parent.mkdir(parents=True, exist_ok=True)
-    args.out_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    manifest_stage = args.out_manifest.with_suffix(args.out_manifest.suffix + ".stage")
+    if manifest_stage.exists():
+        raise SystemExit(f"refusing to reuse existing unreviewed manifest stage: {manifest_stage}")
+    with manifest_stage.open("x", encoding="utf-8") as handle:
+        handle.write(json.dumps(manifest, indent=2) + "\n")
+        handle.flush()
+    d.close()
+    stage.replace(args.out_derivative)
+    manifest_stage.replace(args.out_manifest)
     print(json.dumps({k: v for k, v in manifest.items() if k != "per_array"}, indent=2))
     return 0
 
