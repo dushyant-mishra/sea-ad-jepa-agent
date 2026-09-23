@@ -187,6 +187,7 @@ def run_resumable_units(
     *, journal_dir: Path, frozen_targets: np.ndarray,
     compute_unit: Callable[[int, int, int, int], list[dict[str, Any]]],
     stop_after_new_units: int | None = None,
+    execution_context: Mapping[str, Any] | None = None,
 ) -> int:
     targets = np.asarray(frozen_targets)
     if (
@@ -197,6 +198,7 @@ def run_resumable_units(
         raise ValueError("frozen_targets must be the exact 256 unique integer N1 order")
     if stop_after_new_units is not None and stop_after_new_units < 0:
         raise ValueError("stop_after_new_units must be nonnegative")
+    context_sha = bind_execution_context(journal_dir=journal_dir, execution_context=execution_context)
     committed = 0
     for ti, raw_target in enumerate(targets):
         for fi in range(N_FOLDS):
@@ -206,6 +208,7 @@ def run_resumable_units(
                     existing = read_unit(
                         journal_dir=journal_dir, target_index=ti,
                         fold_index=fi, rung_index=ri,
+                        expected_context_sha256=context_sha,
                     )
                     if int(existing.get("target_col", -1)) != int(raw_target):
                         raise ValueError("committed journal target differs from frozen target order")
@@ -216,7 +219,7 @@ def run_resumable_units(
                 commit_unit(
                     journal_dir=journal_dir, target_index=ti,
                     fold_index=fi, rung_index=ri, target_col=int(raw_target),
-                    observations=observations,
+                    observations=observations, execution_context_sha256=context_sha,
                 )
                 committed += 1
     return committed
@@ -252,7 +255,9 @@ def finalize_from_journal(
     *, journal_dir: Path, result_artifact: Path, result_receipt: Path,
     frozen_targets: np.ndarray, donor_source_code: np.ndarray,
     fold_by_donor: np.ndarray,
+    execution_context: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
+    context_sha = bind_execution_context(journal_dir=journal_dir, execution_context=execution_context)
     acc = N1DonorTensorAccumulator(
         frozen_targets=frozen_targets,
         donor_source_code=donor_source_code,
@@ -265,6 +270,7 @@ def finalize_from_journal(
                 row = read_unit(
                     journal_dir=journal_dir, target_index=ti,
                     fold_index=fi, rung_index=ri,
+                    expected_context_sha256=context_sha,
                 )
                 if int(row.get("target_col")) != int(raw_target):
                     raise ValueError("journal target identity differs from frozen target order")
@@ -305,6 +311,7 @@ def finalize_from_journal(
         "result_receipt": asdict(receipt),
         "result_receipt_sha256": canonical,
         "journal_units": EXPECTED_UNITS,
+        "execution_context_sha256": context_sha,
         "precision_calculated": False,
         "terminal_masking_outcomes_inspected": False,
         "terminal_masking_authorized": False,
