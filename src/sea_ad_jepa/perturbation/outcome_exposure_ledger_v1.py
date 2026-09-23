@@ -177,3 +177,53 @@ def seed_historical_exposure() -> FrozenLedger:
             "PR77_20260923_EXPERIMENTAL_PRODUCER_EVIDENCE",
         ) for key in sorted(KNOWN_EXPOSED_FLOOR)
     ])
+
+
+def guard_descriptive_benchmark(
+    *, ledger: FrozenLedger, key: OutcomeKey, partition_exposure: str,
+) -> dict:
+    """Reject historical exposure contradictions before retrospective scoring.
+
+    This is a REVIEWED-METADATA validation gate only: an untrusted caller may
+    pass an internally self-consistent fake ledger, so this return value never
+    certifies physical source identity or independence. A future physical
+    entry point must pin the reviewed ledger root independently.
+    """
+    status = ledger.status(key)
+    if status == UNKNOWN:
+        raise ExposureError(
+            "outcome exposure is UNKNOWN; inspect and document the historical "
+            "record before assigning this dataset to any benchmark"
+        )
+    if partition_exposure == "HELD_OUT":
+        raise ExposureError(
+            "HELD_OUT claim requires a separately reviewed prospective outcome "
+            "seal, not a producer-declared ledger or partition label"
+        )
+    if status in (INSPECTED, DEVELOPMENT) and partition_exposure not in (
+        "RETROSPECTIVE_BENCHMARK", "HISTORICALLY_EXPOSED", "DEVELOPMENT"
+    ):
+        raise ExposureError(
+            "previously inspected outcomes cannot be relabeled as untouched"
+        )
+    if status == DECLARED_UNINSPECTED and partition_exposure != "DEVELOPMENT":
+        raise ExposureError(
+            "declared-uninspected alone cannot authorize a benchmark claim; "
+            "use DEVELOPMENT until a separate prospective outcome seal qualifies"
+        )
+    if partition_exposure not in (
+        "RETROSPECTIVE_BENCHMARK", "HISTORICALLY_EXPOSED", "DEVELOPMENT"
+    ):
+        raise ExposureError("unknown benchmark exposure declaration")
+    return {
+        "schema": "PERTURBATION_EXPOSURE_GUARD_V1",
+        "study": key.study,
+        "arm": key.arm,
+        "outcome_family": key.outcome_family,
+        "recorded_status": status,
+        "requested_partition_exposure": partition_exposure,
+        "ledger_sha256": ledger.ledger_sha256,
+        "scope": "DESCRIPTIVE_DEVELOPMENT_OR_RETROSPECTIVE_ONLY",
+        "independent_confirmation_authorized": False,
+        "real_physical_input_authenticated_here": False,
+    }
