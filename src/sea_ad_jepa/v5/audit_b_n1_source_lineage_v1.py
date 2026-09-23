@@ -204,6 +204,8 @@ def audit_original_heavy_source_lineage(
         stored_per_cell_source=src_of_cell,
         metadata_cell_donor=cell_donor,
         metadata_cell_source=cell_source,
+        expected_cells=N_CELLS,
+        expected_source_cells=SOURCE_CELLS,
     )
     body = {
         "schema": SCHEMA,
