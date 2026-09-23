@@ -96,7 +96,9 @@ def test_reviewed_receipt_exact_bytes_and_self_digest_recomputed(tmp_path, monke
 
 def test_v2_review_gateway_defaults_to_no_expression_access(tmp_path, monkeypatch):
     m = module()
-    monkeypatch.setattr(m, "verify_reviewed_preflight", lambda **_: preflight(m))
+    ready = preflight(m)
+    ready["receipt_sha256"] = m.canonical_digest(ready)
+    monkeypatch.setattr(m, "verify_reviewed_preflight", lambda **_: ready)
     monkeypatch.setattr(m.subprocess, "run",
                         lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("unexpected molecular run")))
     out = m.run_guarded(
