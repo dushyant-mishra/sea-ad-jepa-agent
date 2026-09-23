@@ -51,6 +51,21 @@ The Windows fsync correction (`stage.open('rb+')`) is consistent with the report
 
 **Retain the existing 363,053,057-byte uncompressed derivative** for review, provided independent all-member identity verification passes. Recompression now would change the file SHA and require reissuing every byte-bound receipt; it is not necessary to close the current source-identity question. Distinguish 33 value-identical arrays from physically byte-identical .npy/ZIP members.
 
+## Focused downstream-consumer inventory (source-reviewed after F6)
+
+At PR #69's frozen code lineage, direct inspection of the following relevant active paths shows:
+
+| Consumer/producer | Source encoding dependency | Consequence |
+| --- | --- | --- |
+| `analysis/v5_full104_information_channel_redteam_20260920/scripts/build_core_sufficient_statistics_20260920.py` | Stores `source_names` and `src_of_cell` under first-appearance order; its accumulation uses `cell_donor`, library-depth/core-nnz deciles or address pool, not the misencoded vectors. | Original numeric sufficient statistics can be transported **only if independently per-array verified**. |
+| `src/sea_ad_jepa/v5/audit_b_n1_physical_binding_v1.py` | Reads `donor_src`, `source_names` and numeric burden arrays, and compares donor-source codes with the frozen split. Does **not** load per-cell source. | Original defective names remain rejected by #62; successor must also check metadata-derived full cell alignment. |
+| `src/sea_ad_jepa/v5/audit_b_n1_cpu_burden_assembly_v1.py` | Derives canonical source names via fixed `SOURCE_NAMES=("HVS","NPH52","SEA_AD")` from `donor_source_code`, and compares `stream.source_by_donor` directly. | No lookup through defective old NPZ `source_names` in this consumer; physical stream binding still mandatory. |
+| `src/sea_ad_jepa/v5/audit_b_n1_crossfold_planner_v1.py` | Uses `stream.source_by_donor` to group source-specific donor statistics. | Its source accuracy depends on the authenticated stream donor-source mapping; counts/histograms alone cannot authenticate it. |
+| `src/sea_ad_jepa/v5/audit_b_n1_result_contract_v1.py` | Records donor-level numeric `donor_source_code` and its hash. | New receipts must bind corrected derivative and fully authenticated donor source; old text-label receipts prohibited. |
+| `audit_b_n1_cached_planner_v1.py`, `audit_b_n1_execution_authority_v1.py`, `audit_b_n1_runtime_rng_bridge_v1.py` and N1 authority/preflight CLI | No direct `src_of_cell`/`source_names` references in reviewed current files. | Not evidence that an unreviewed future physical adapter cannot reintroduce old labels. |
+
+**Review limit:** this is a focused static inventory of the current N1 producer/binder/planner/result chain, not a proof that every historical or future repository script is source-independent. Before integrating #63, test the complete *new adapter's* stream→donor→source lineage and forbid loading the original quarantined file as an input or source-code authority.
+
 ## Required resolution / execution boundary
 
 1. Correct F1–F5 using source-independent checker logic, real fail-closed adversarial tests and physically checked receipts. Confirm F6 via downstream consumer inventory.
