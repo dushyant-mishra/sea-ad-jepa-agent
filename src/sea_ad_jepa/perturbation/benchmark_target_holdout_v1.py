@@ -220,7 +220,15 @@ def training_baselines(data: GuideDonorEffects, train: np.ndarray):
     by_target = []
     for target in targets:
         rows = train & (np.asarray(data.target_ids) == target)
-        per_feature = np.nanmean(data.effects[rows], axis=0)
+        observed = data.effects[rows]
+        finite = np.isfinite(observed)
+        denom_target = finite.sum(axis=0)
+        per_feature = np.full(observed.shape[1], np.nan, dtype=float)
+        supported_target = denom_target > 0
+        per_feature[supported_target] = (
+            np.nansum(observed[:, supported_target], axis=0)
+            / denom_target[supported_target]
+        )
         by_target.append(per_feature)
     target_matrix = np.asarray(by_target)
     # Avoid poison from masked-only columns; those remain non-estimable.
