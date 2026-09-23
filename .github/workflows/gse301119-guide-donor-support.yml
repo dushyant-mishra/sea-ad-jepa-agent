@@ -39,3 +39,10 @@ jobs:
             exit 1
           fi
           test -s /tmp/gse301119_support_receipt.json
+      - name: Preserve verified metadata-only support receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: gse301119-guide-donor-support-metadata-only
+          path: /tmp/gse301119_support_receipt.json
+          if-no-files-found: error
+          retention-days: 90
