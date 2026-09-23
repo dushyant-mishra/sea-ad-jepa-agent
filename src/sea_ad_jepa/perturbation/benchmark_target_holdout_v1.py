@@ -50,6 +50,7 @@ class ProspectivePartition:
     schema: str
     assay: str
     source_sha256: str
+    feature_order_sha256: str
     unit_census_sha256: str
     exposure: str
     seed: str
@@ -68,6 +69,9 @@ class ProspectivePartition:
             raise ValueError("source SHA identity is missing")
         if not self.seed:
             raise ValueError("a fixed seed is required")
+        if (len(self.feature_order_sha256) != 64
+                or any(c not in "0123456789abcdef" for c in self.feature_order_sha256)):
+            raise ValueError("feature-order root missing or malformed")
         if (len(self.unit_census_sha256) != 64
                 or any(c not in "0123456789abcdef" for c in self.unit_census_sha256)):
             raise ValueError("unit census root missing or malformed")
@@ -83,6 +87,7 @@ class ProspectivePartition:
         return {
             "schema": self.schema, "assay": self.assay,
             "source_sha256": self.source_sha256,
+            "feature_order_sha256": self.feature_order_sha256,
             "unit_census_sha256": self.unit_census_sha256,
             "exposure": self.exposure,
             "seed": self.seed, "n_folds": self.n_folds,
@@ -92,7 +97,8 @@ class ProspectivePartition:
 
 def freeze_target_partition(
     *, target_ids: Sequence[str], guide_ids: Sequence[str],
-    donor_ids: Sequence[str], assay: str, source_sha256: str,
+    donor_ids: Sequence[str], feature_ids: Sequence[str],
+    assay: str, source_sha256: str,
     exposure: str, seed: str, n_folds: int = 5,
 ) -> ProspectivePartition:
     """Freeze without loading response values; stable under input row order."""
@@ -105,6 +111,10 @@ def freeze_target_partition(
         raise ValueError("assay, declared exposure and fixed seed required")
     if len(source_sha256) != 64 or any(c not in "0123456789abcdef" for c in source_sha256):
         raise ValueError("source SHA must be lowercase hex")
+    features = tuple(feature_ids)
+    if not features or len(features) != len(set(features)) or any(not x for x in features):
+        raise ValueError("feature-order authority requires unique nonempty features")
+    feature_sha = digest(list(features))
     census_sha = unit_census_digest(guide_ids, donor_ids, target_ids)
     # Sorted digest order makes fold assignment independent of data row order.
     shuffled = sorted(targets, key=lambda t: (digest([seed, assay, t]), t))
@@ -114,12 +124,13 @@ def freeze_target_partition(
     body = {
         "schema": SCHEMA, "assay": assay,
         "source_sha256": source_sha256,
+        "feature_order_sha256": feature_sha,
         "unit_census_sha256": census_sha, "exposure": exposure,
         "seed": seed, "n_folds": n_folds,
         "target_to_fold": [list(x) for x in assignments],
     }
     frozen = ProspectivePartition(
-        SCHEMA, assay, source_sha256, census_sha, exposure, seed, n_folds,
+        SCHEMA, assay, source_sha256, feature_sha, census_sha, exposure, seed, n_folds,
         assignments, digest(body),
     )
     frozen.validate()
@@ -228,6 +239,8 @@ def select_fold(data: GuideDonorEffects, partition: ProspectivePartition, fold: 
         raise ValueError("assay differs from frozen partition")
     if partition.source_sha256 != data.source_sha256:
         raise ValueError("effects source root differs from frozen partition")
+    if partition.feature_order_sha256 != digest(list(data.feature_ids)):
+        raise ValueError("molecular feature order differs from frozen partition")
     if partition.unit_census_sha256 != data.metadata_digest():
         raise ValueError("guide×donor×target row census differs from frozen partition")
     if not 0 <= fold < partition.n_folds:
@@ -334,6 +347,8 @@ def evaluate_target_excluded_baselines(
     return {
         "schema": SCHEMA, "status": "BASELINE_ONLY_NO_JEPA_TRAINING",
         "exposure": partition.exposure,
+        "exposure_is_declared_not_independently_verified": True,
+        "independent_predictive_confirmation_authorized": False,
         "partition_sha256": partition.partition_sha256,
         "fold": fold,
         "n_train_targets": len(set(np.asarray(data.target_ids)[train])),
