@@ -353,6 +353,6 @@ def emit_qualification_receipt(*, path: Path | str, context: ExecutionContext,
     # immutable execution. Reissues require a distinct path and version.
     p.parent.mkdir(parents=True, exist_ok=True)
     with p.open("x", encoding="utf-8") as handle:
-        handle.write(json.dumps(payload, sort_keys=True, indent=2) + "\\n")
+        handle.write(json.dumps(payload, sort_keys=True, indent=2) + "\n")
         handle.flush()
     return payload["receipt_sha256"]
