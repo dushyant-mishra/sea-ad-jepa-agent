@@ -189,9 +189,22 @@ def validate_unit_record(
     for key, value in expected.items():
         if record.get(key) != value:
             raise ValueError(f"journal unit key/context drift: {key}")
+    expected_record_keys = {
+        "schema", "context_sha256", "target_index", "target_col",
+        "fold_index", "rung_index", "observations", "record_sha256",
+    }
+    if set(record) != expected_record_keys:
+        raise ValueError("journal unit has unexpected or missing fields")
     observations = record.get("observations")
     if not isinstance(observations, list) or not observations:
         raise ValueError("journal unit has no observations")
+    observation_keys = {
+        "target_col", "fold_index", "donor_code", "source_code", "policy_id",
+        "rung_numerator", "rung_denominator",
+        "normalized_delta_detected", "normalized_delta_umi",
+    }
+    if any(not isinstance(row, dict) or set(row) != observation_keys for row in observations):
+        raise ValueError("journal observation schema mismatch")
     body = {k: v for k, v in record.items() if k != "record_sha256"}
     if record.get("record_sha256") != canonical_digest(body):
         raise ValueError("journal unit self-digest mismatch")
@@ -263,6 +276,7 @@ def run_resumable_units(
         targets.shape != (N1_TARGET_COUNT,)
         or not np.issubdtype(targets.dtype, np.integer)
         or np.unique(targets).size != N1_TARGET_COUNT
+        or np.any(targets < 0)
     ):
         raise ValueError("frozen_targets must be the exact 256 unique integer N1 order")
     target_digest = hashlib.sha256(
