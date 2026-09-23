@@ -56,7 +56,7 @@ def test_full_outer_alignment_preserves_structural_absence_and_measured_zero():
     assert cross.index_a == (0, 1, -1)
     assert cross.index_b == (0, -1, 1)
     val_a, assayed_a, det_a = aligned_observation(
-        a, cross.index_a, np.array([[10, 0.]], dtype=float), sample_index=0,
+        a, cross, np.array([[10, 0.]], dtype=float), side="a", sample_index=0,
     )
     assert val_a[0] == 10
     assert val_a[1] == 0
@@ -65,7 +65,7 @@ def test_full_outer_alignment_preserves_structural_absence_and_measured_zero():
     assert det_a.tolist() == [True, False, False]
     assert a.status(0, 1) == ObservationStatus.ASSAYED_UNDETECTED
     val_b, assayed_b, det_b = aligned_observation(
-        b, cross.index_b, np.array([[4, 9.]], dtype=float), sample_index=0,
+        b, cross, np.array([[4, 9.]], dtype=float), side="b", sample_index=0,
     )
     assert val_b[0] == 4 and np.isnan(val_b[1]) and val_b[2] == 9
     assert assayed_b.tolist() == [True, False, True]
@@ -120,11 +120,11 @@ def test_assayed_undetected_must_retain_observed_zero_only():
     cross = align(a, study_b(), annotation())
     with pytest.raises(FeatureContractError, match="contradicts"):
         aligned_observation(
-            a, cross.index_a, np.array([[10, 2.]]), sample_index=0,
+            a, cross, np.array([[10, 2.]]), side="a", sample_index=0,
         )
     with pytest.raises(FeatureContractError, match="nonnegative"):
         aligned_observation(
-            a, cross.index_a, np.array([[10, -1.]]), sample_index=0,
+            a, cross, np.array([[10, -1.]]), side="a", sample_index=0,
         )
 
 
@@ -156,6 +156,11 @@ def test_source_feature_permutation_cannot_reuse_frozen_indices():
     fresh = align(swapped, b, annotation())
     assert fresh.index_a == (1, 0, -1)
     assert fresh.alignment_sha256 != cross.alignment_sha256
+    with pytest.raises(FeatureContractError, match="original feature order drifted"):
+        aligned_observation(
+            swapped, cross, np.array([[0., 10.]]),
+            side="a", sample_index=0,
+        )
 
 
 def test_detection_is_sample_specific_not_global():
