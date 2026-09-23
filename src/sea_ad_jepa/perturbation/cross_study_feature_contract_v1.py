@@ -34,7 +34,7 @@ class ObservationStatus(str, Enum):
 
 
 ENSG = re.compile(r"^ENSG[0-9]{11}$")
-ENSG_VERSIONED = re.compile(r"^(ENSG[0-9]{11})\\.([1-9][0-9]*)$")
+ENSG_VERSIONED = re.compile(r"^(ENSG[0-9]{11})\.([1-9][0-9]*)$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 VALID_NAMESPACES = frozenset({"HGNC_SYMBOL", "ENSEMBL_GENE_ID"})
 VALID_STATUS = frozenset({"PRIMARY_ID", "REVIEWED_ALIAS", "VERSIONED_ID"})
@@ -185,6 +185,16 @@ class StudyFeatures:
         return ObservationStatus.ASSAYED_UNDETECTED
 
 
+
+def study_identity_digest(study: StudyFeatures) -> str:
+    """Bind source feature order and experimental identity into alignment."""
+    study.validate()
+    return sha_json({
+        "study": study.study, "assay": study.assay,
+        "namespace": study.namespace, "original_ids": list(study.original_ids),
+    })
+
+
 @dataclass(frozen=True)
 class CrossStudyAlignment:
     canonical_ids: tuple[str, ...]
@@ -194,6 +204,8 @@ class CrossStudyAlignment:
     namespace_a: str
     namespace_b: str
     frozen_annotation_sha256: str
+    source_order_digest_a: str
+    source_order_digest_b: str
     alignment_sha256: str
 
     def validate(self) -> None:
@@ -207,6 +219,8 @@ class CrossStudyAlignment:
             "index_a": list(self.index_a), "index_b": list(self.index_b),
             "namespace_a": self.namespace_a, "namespace_b": self.namespace_b,
             "frozen_annotation_sha256": self.frozen_annotation_sha256,
+            "source_order_digest_a": self.source_order_digest_a,
+            "source_order_digest_b": self.source_order_digest_b,
         }
         if sha_json(body) != self.alignment_sha256:
             raise FeatureContractError("alignment was changed after freeze")
@@ -253,18 +267,22 @@ def align(
         "canonical_ids": list(ids), "index_a": list(ia), "index_b": list(ib),
         "namespace_a": a.namespace, "namespace_b": b.namespace,
         "frozen_annotation_sha256": annotation.contract_sha256,
+        "source_order_digest_a": study_identity_digest(a),
+        "source_order_digest_b": study_identity_digest(b),
     }
     result = CrossStudyAlignment(
         ids, ia, ib, a.namespace, b.namespace,
-        annotation.contract_sha256, sha_json(body),
+        annotation.contract_sha256,
+        study_identity_digest(a), study_identity_digest(b),
+        sha_json(body),
     )
     result.validate()
     return result
 
 
 def aligned_observation(
-    study: StudyFeatures, source_index: tuple[int, ...],
-    values: np.ndarray, *, sample_index: int,
+    study: StudyFeatures, alignment: CrossStudyAlignment,
+    values: np.ndarray, *, side: str, sample_index: int,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Return aligned values and distinct assay/detection masks.
 
@@ -272,6 +290,19 @@ def aligned_observation(
     zero if and only if the original source values are genuinely zero.
     """
     study.validate()
+    alignment.validate()
+    if side not in ("a", "b"):
+        raise FeatureContractError("must select alignment side a or b")
+    expected_namespace = alignment.namespace_a if side == "a" else alignment.namespace_b
+    expected_study = (
+        alignment.source_order_digest_a if side == "a"
+        else alignment.source_order_digest_b
+    )
+    if study.namespace != expected_namespace or study_identity_digest(study) != expected_study:
+        raise FeatureContractError(
+            "study identity or original feature order drifted from the frozen alignment"
+        )
+    source_index = alignment.index_a if side == "a" else alignment.index_b
     raw = np.asarray(values, dtype=float)
     if raw.shape != study.assayed.shape:
         raise FeatureContractError("molecular values and assay masks differ")
