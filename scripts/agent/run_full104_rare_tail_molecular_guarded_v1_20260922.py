@@ -108,6 +108,7 @@ def validate_scientific_result(result: dict[str, Any], *, preflight: dict[str, A
 def run_guarded(
     *, inputs: dict[str, Path], reviewed_receipt: Path, approved_file_sha256: str,
     out: Path, out_receipt: Path, execute_after_independent_review: bool,
+    approved_gateway_source_sha256: str | None = None,
 ) -> dict[str, Any]:
     preflight = verify_reviewed_preflight(
         reviewed_receipt=reviewed_receipt,
@@ -118,6 +119,15 @@ def run_guarded(
         return {"state": "GATE_VERIFIED__EXPRESSION_NOT_OPENED",
                 "v2_receipt_sha256": preflight["receipt_sha256"],
                 "training_authorized": False}
+    gateway_sha = normalized_text_sha256(Path(__file__))
+    if (
+        not isinstance(approved_gateway_source_sha256, str)
+        or len(approved_gateway_source_sha256) != 64
+        or any(c not in "0123456789abcdef" for c in approved_gateway_source_sha256)
+    ):
+        raise ValueError("execution requires an exact independently approved gateway source SHA-256")
+    if gateway_sha != approved_gateway_source_sha256:
+        raise ValueError("gateway source differs from independently approved source SHA-256")
     if out.exists() or out_receipt.exists():
         raise ValueError("result or execution receipt exists: refuse overwrite")
     root = inputs["repo_root"].resolve()
@@ -134,6 +144,7 @@ def run_guarded(
         json.dump({"schema": "RARE_TAIL_EXECUTION_INTENT_V1",
                    "reviewed_v2_preflight_file_sha256": approved_file_sha256,
                    "frozen_runner_source_sha256": preflight["source_hashes"]["runner_normalized_text_sha256"],
+                   "approved_gateway_source_sha256": approved_gateway_source_sha256,
                    "out": str(out.resolve()), "training_authorized": False}, f, sort_keys=True)
         f.write("\n")
         f.flush()
@@ -174,19 +185,21 @@ def run_guarded(
         "execution_contract_sha256": preflight["execution_contract_sha256"],
         "structural_receipt_file_sha256": preflight["structural_receipt_file_sha256"],
         "runner_source_normalized_sha256": preflight["source_hashes"]["runner_normalized_text_sha256"],
-        "gateway_source_normalized_sha256": normalized_text_sha256(Path(__file__)),
+        "gateway_source_normalized_sha256": gateway_sha,
         "child_return_code": child.returncode,
         "teacher_tail_evaluation_authorized": False,
         "td60_authorized": False,
         "training_authorized": False,
     }
     payload["receipt_sha256"] = canonical_digest(payload)
-    fd = os.open(str(out_receipt), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    receipt_stage = out_receipt.with_name("." + out_receipt.name + ".staged.json")
+    fd = os.open(str(receipt_stage), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         json.dump(payload, f, sort_keys=True, indent=2)
         f.write("\n")
         f.flush()
         os.fsync(f.fileno())
+    os.replace(receipt_stage, out_receipt)
     return payload
 
 
@@ -198,6 +211,7 @@ def main() -> int:
         p.add_argument("--" + name, type=Path, required=True)
     p.add_argument("--reviewed-v2-preflight", type=Path, required=True)
     p.add_argument("--externally-approved-v2-file-sha256", required=True)
+    p.add_argument("--externally-approved-gateway-source-sha256")
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--out-receipt", type=Path, required=True)
     p.add_argument("--execute-after-independent-review", action="store_true")
@@ -214,6 +228,7 @@ def main() -> int:
         approved_file_sha256=args.externally_approved_v2_file_sha256,
         out=args.out, out_receipt=args.out_receipt,
         execute_after_independent_review=args.execute_after_independent_review,
+        approved_gateway_source_sha256=args.externally_approved_gateway_source_sha256,
     )
     print(json.dumps(record, sort_keys=True))
     return 0
