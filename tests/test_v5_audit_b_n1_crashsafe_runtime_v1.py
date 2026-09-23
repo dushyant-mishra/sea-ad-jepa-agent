@@ -7,6 +7,8 @@ import numpy as np
 import pytest
 
 from sea_ad_jepa.v5 import audit_b_n1_crashsafe_runtime_v1 as rt
+from sea_ad_jepa.v5 import audit_b_n1_synthetic_lineage_adapter_v1 as adapter
+import hashlib
 from sea_ad_jepa.v5.audit_b_n1_cpu_burden_assembly_v1 import SOURCE_NAMES
 from sea_ad_jepa.v5.audit_b_production_burden_v1 import BURDEN_RUNGS, POLICIES
 
@@ -49,59 +51,73 @@ def fake_unit_factory(source, fold, calls):
 
 
 def test_interrupted_resume_is_byte_identical_to_clean_run(tmp_path: Path) -> None:
+    """Full 6,144-unit replay through the *new* source-bound synthetic adapter."""
     source, fold = source_fold()
     targets = np.arange(1000, 1256, dtype=np.int64)
+    donors = np.arange(104, dtype=np.int64)
+    nnz = np.ones((104, 256), dtype=np.int64)
+    umi = nnz * 2
+
+    def digest(value):
+        return hashlib.sha256(np.asarray(value, dtype="<i8").tobytes()).hexdigest()
+
+    bound = adapter.bind_synthetic_lineage(
+        frozen_targets=targets, core_addresses=targets,
+        donor_source_code=source, fold_by_donor=fold,
+        cell_donor=donors, src_of_cell=source.copy(),
+        stream_source_by_donor=source.copy(),
+        donor_nnz=nnz, donor_umi=umi,
+        expected_cell_donor_sha256=digest(donors),
+        expected_donor_source_sha256=digest(source),
+        expected_fold_sha256=digest(fold),
+        expected_core_sha256=digest(targets),
+        expected_target_order_sha256=digest(targets),
+        expected_donor_nnz_sha256=digest(nnz),
+        expected_donor_umi_sha256=digest(umi),
+        source_names=("HVS", "NPH52", "SEA_AD"),
+        stream_root_sha256="a" * 64,
+        code_root_sha256="b" * 64,
+        parameter_root_sha256="c" * 64,
+        rng_root_sha256="d" * 64,
+    )
 
     interrupted = tmp_path / "interrupted"
     calls_a = []
     compute_a = fake_unit_factory(source, fold, calls_a)
-    assert rt.run_resumable_units(
-        journal_dir=interrupted,
-        frozen_targets=targets,
-        compute_unit=compute_a,
-        stop_after_new_units=19,
+    assert adapter.run_synthetic_journal(
+        bound=bound, journal_dir=interrupted,
+        compute_unit=compute_a, stop_after_new_units=19,
     ) == 19
     assert len(calls_a) == 19
-    resumed_new = rt.run_resumable_units(
-        journal_dir=interrupted,
-        frozen_targets=targets,
-        compute_unit=compute_a,
+    resumed_new = adapter.run_synthetic_journal(
+        bound=bound, journal_dir=interrupted, compute_unit=compute_a,
     )
     assert resumed_new == rt.EXPECTED_UNITS - 19
     assert len(calls_a) == rt.EXPECTED_UNITS
 
     out_a = tmp_path / "resumed.npz"
     receipt_a = tmp_path / "resumed.json"
-    final_a = rt.finalize_from_journal(
-        journal_dir=interrupted,
-        result_artifact=out_a,
-        result_receipt=receipt_a,
-        frozen_targets=targets,
-        donor_source_code=source,
-        fold_by_donor=fold,
+    final_a = adapter.finalize_synthetic_journal(
+        bound=bound, journal_dir=interrupted,
+        result_artifact=out_a, result_receipt=receipt_a,
     )
-
     clean = tmp_path / "clean"
     calls_b = []
-    assert rt.run_resumable_units(
-        journal_dir=clean,
-        frozen_targets=targets,
+    assert adapter.run_synthetic_journal(
+        bound=bound, journal_dir=clean,
         compute_unit=fake_unit_factory(source, fold, calls_b),
     ) == rt.EXPECTED_UNITS
     out_b = tmp_path / "clean.npz"
     receipt_b = tmp_path / "clean.json"
-    final_b = rt.finalize_from_journal(
-        journal_dir=clean,
-        result_artifact=out_b,
-        result_receipt=receipt_b,
-        frozen_targets=targets,
-        donor_source_code=source,
-        fold_by_donor=fold,
+    final_b = adapter.finalize_synthetic_journal(
+        bound=bound, journal_dir=clean,
+        result_artifact=out_b, result_receipt=receipt_b,
     )
 
     assert out_a.read_bytes() == out_b.read_bytes()
     assert receipt_a.read_bytes() == receipt_b.read_bytes()
     assert final_a["result_receipt_sha256"] == final_b["result_receipt_sha256"]
+    assert final_a["execution_context_sha256"] == rt.canonical_digest(bound.context)
     assert final_a["precision_calculated"] is False
     assert final_a["training_authorized"] is False
 
