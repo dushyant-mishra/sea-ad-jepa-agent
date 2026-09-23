@@ -168,6 +168,14 @@ def test_atomic_synthetic_success_creates_one_result_one_receipt_and_intent(tmp_
         return SimpleNamespace(returncode=0)
 
     monkeypatch.setattr(m.subprocess, "run", fake_runner)
+    # Exercise the Windows failure mode on Linux CI as well: fsync must never
+    # receive a read-only descriptor. Zero-byte writes reject O_RDONLY fds,
+    # without changing any staged result/receipt bytes.
+    original_fsync = m.os.fsync
+    def windows_style_fsync(fd):
+        m.os.write(fd, b"")
+        original_fsync(fd)
+    monkeypatch.setattr(m.os, "fsync", windows_style_fsync)
     dest = tmp_path / "synthetic-result.json"
     receipt = tmp_path / "synthetic-evidence.json"
     actual = m.run_guarded(
