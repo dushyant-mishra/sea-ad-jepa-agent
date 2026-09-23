@@ -1,0 +1,270 @@
+{
+  "schema": "JEPA_V19_DATA_RESULTS_SCRIPTS_MANIFEST_V1",
+  "date": "2026-09-23",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "scope": "CURRENT_FULL104_PHYSICAL_REFERENCES_AND_GITHUB_SCRIPT_LANES",
+  "source_types": "GitHub small receipts/code; authenticated >30GB Level-4 on user's GPU/Windows disk; 242MB original NPZ GPU-only; do not invent available local files",
+  "data": [
+    {
+      "role": "FULL104_LEVEL4_EXPRESSION_BLOCK_MANIFEST",
+      "path": "<GPU_LEVEL4_ROOT>/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+      "sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "bytes": 2372002,
+      "blocks": 8915,
+      "location": "GPU/Windows authenticated external disk",
+      "access": "metadata diagnosis yes; RNA blocks forbidden pending gates"
+    },
+    {
+      "role": "FULL104_41238_ADDRESS_REGISTRY",
+      "path": "<authenticated registry from prior V18 heavy-asset manifest>",
+      "sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "bytes": 24946770,
+      "location": "GPU machine or prior calibration bundle"
+    },
+    {
+      "role": "ORIGINAL_QUALIFIED_HEAVY_NPZ_QUARANTINED_FOR_N1",
+      "path": "<GPU_FULL104_ROOT>/core_sufficient_statistics_v1.npz",
+      "sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+      "bytes": 242087519,
+      "source_names": [
+        "HVS",
+        "SEA_AD",
+        "NPH52"
+      ],
+      "donor_src_numeric_authority": [
+        "HVS",
+        "NPH52",
+        "SEA_AD"
+      ],
+      "src_of_cell": "DEFECTIVE_TRANSPOSED_FIRST_APPEARANCE",
+      "location": "GPU/Windows machine; physically absent from GitHub",
+      "status": "QUARANTINED_FOR_N1"
+    },
+    {
+      "role": "NEW_CORRECTED_HEAVY_NPZ",
+      "path": null,
+      "sha256": null,
+      "status": "NOT_CREATED__DO_NOT_ASSUME_EXISTS"
+    },
+    {
+      "role": "SIX_DONOR_INDEPENDENT_UMI_QUALIFICATION_ORIGINAL",
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/DONOR_UMI_INDEPENDENT_QUALIFICATION_V1.json",
+      "sha256": "bbd2b95b882f52c313a3623bab55e5d7ff6562cdba27e48f9c84009075cf713d",
+      "status": "ORIGINAL_6_DONOR_NUMERIC_COUNTS_ONLY__SOURCE_TEXT_LABELS_TRANSPOSED",
+      "scope": "Six donor rows 2/source; 387 count blocks for sampled donors; all 8915 metadata hashes and all 4553407 cell IDs exactly once"
+    },
+    {
+      "role": "FULL104_SOURCE_STRATIFIED_FOUR_FOLD_SPLIT",
+      "path": "<GPU original frozen split receipt full104_split_receipt_v1.json>",
+      "file_sha256": "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585",
+      "canonical_sha256": "5d616c9c509d8224d15d6e8c163ca38b4b5140a44fdab4c2fa00efad7a8f01e4",
+      "donors_by_fold": [
+        28,
+        26,
+        25,
+        25
+      ],
+      "source_by_fold": [
+        [
+          11,
+          10,
+          10,
+          10
+        ],
+        [
+          5,
+          4,
+          4,
+          4
+        ],
+        [
+          12,
+          12,
+          11,
+          11
+        ]
+      ]
+    },
+    {
+      "role": "REAL_TARGET_QUALIFICATION_SAMPLE",
+      "path": "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/",
+      "rows": 105553,
+      "donors": 104,
+      "operators": 42,
+      "canonical_receipt_sha256": "7220654284fe07c1abcf97a77d818700b46e3fe577fca4fd5bc4b99df6a4d6f6",
+      "status": "TARGET_QUALIFICATION_ONLY__NOT_N1"
+    },
+    {
+      "role": "RARE_TAIL_STRUCTURAL_RECEIPT",
+      "path": "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_STRUCTURAL_PREFLIGHT_V1.json",
+      "file_sha256": "7b9ff5938e3940fca8640e98217b1c9cf075597305d80bbc04c6df15d1eae801",
+      "bytes": 498827,
+      "canonical_sha256": "f0d71c9b2f25d31a0b277b9a55f2a31f44d9084b924c3c14c67ef0c4c4a4bc89",
+      "status": "STRUCTURALLY_POSSIBLE__MOLECULAR_UNPROVEN"
+    },
+    {
+      "role": "RARE_TAIL_STRUCTURAL_PROVENANCE",
+      "path": "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_STRUCTURAL_PREFLIGHT_PROVENANCE.json",
+      "file_sha256": "3f1ecdffbeea6d942ee5dc8d488a8de98cb9c99d00c79cd10a7bb695bd9d9d"
+    },
+    {
+      "role": "RARE_TAIL_MOLECULAR_READONLY_PREFLIGHT_V2",
+      "path": "analysis/v5_full104_target_qualification_20260921/evidence/real_sample/RARE_TAIL_MOLECULAR_READONLY_PREFLIGHT_V2.json",
+      "file_sha256": "feac846b76b39f6c07b93ef3f78adeb7539b3b0a3b7933a7ec677cf003774ade",
+      "canonical_sha256": "84e6f716fec00fd660f67dc18bd468759c47a7cc935e9a359c4c4bebabb8efa7",
+      "bytes": 3093,
+      "status": "PASS_READ_ONLY__NO_COUNT_BLOCKS_OPENED"
+    },
+    {
+      "role": "AUDIT_B_N1_B4_EXECUTION_AUTHORITY",
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_N1_EXECUTION_AUTHORITY_V1.json",
+      "canonical_sha256": "eb3293720c54ae10023a90b73c1bf35b46b6cacfda70632522014d988ebb0096",
+      "state": "DESIGN_CODE_ONLY__NOT_CURRENT_PHYSICAL_EXECUTION_APPROVAL"
+    },
+    {
+      "role": "AUDIT_B_N1_FULL_PHYSICAL_PREFLIGHT_RECEIPT_AFTER_REPAIR",
+      "path": null,
+      "sha256": null,
+      "state": "DOES_NOT_EXIST"
+    }
+  ],
+  "scripts": [
+    {
+      "role": "Original heavy NPZ producer — BUG REPRODUCED; frozen do not run as repair",
+      "pr": 59,
+      "ref": "1bdff2a8f12d7971652dcf92b5b81ca45c37a933",
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/build_core_sufficient_statistics_20260920.py"
+    },
+    {
+      "role": "Independent original six-donor UMI checker — numeric only; textual source labels wrong",
+      "pr": 59,
+      "ref": "1bdff2a8f12d7971652dcf92b5b81ca45c37a933",
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_donor_umi_independent_v1_20260922.py"
+    },
+    {
+      "role": "N1 original-heavy physical binding — failed on original real NPZ",
+      "pr": 62,
+      "ref": "8348c7308156a23df08a83897027e55260e3c203",
+      "path": "src/sea_ad_jepa/v5/audit_b_n1_physical_binding_v1.py"
+    },
+    {
+      "role": "N1 original-heavy read-only preflight CLI",
+      "pr": 62,
+      "ref": "8348c7308156a23df08a83897027e55260e3c203",
+      "path": "scripts/agent/preflight_full104_audit_b_n1_physical_v1_20260922.py"
+    },
+    {
+      "role": "N1 real preflight failure report; 10 adversarial controls",
+      "pr": 64,
+      "ref": "9c94a26553bdaa23d46a4efc59e85364d0c0df9b",
+      "path": "analysis/v5_full104_information_channel_redteam_20260920/N1_PHYSICAL_PREFLIGHT_DISCREPANCY_20260922.md"
+    },
+    {
+      "role": "Full Level-4 metadata source lineage audit, original SHA-pinned; needs physical execution",
+      "pr": 67,
+      "ref": "c4a893cbc98bfa736f3d44a2fe9a9ebe31dec6fa",
+      "path": "src/sea_ad_jepa/v5/audit_b_n1_source_lineage_v1.py"
+    },
+    {
+      "role": "Run N1 original metadata source diagnostic (will exit 2 on known original)",
+      "pr": 67,
+      "ref": "c4a893cbc98bfa736f3d44a2fe9a9ebe31dec6fa",
+      "path": "scripts/agent/audit_full104_n1_source_lineage_v1_20260922.py"
+    },
+    {
+      "role": "N1 source diagnostic red-team tests incl resealed metadata and coordinated permutation",
+      "pr": 67,
+      "ref": "c4a893cbc98bfa736f3d44a2fe9a9ebe31dec6fa",
+      "path": "tests/test_v5_audit_b_n1_source_lineage_v1.py"
+    },
+    {
+      "role": "Synthetic-only crash-safe N1 unit journal 256 x 4 x 6; parallel branch not inherited",
+      "pr": 63,
+      "ref": "59e16ab6edf3979d5cfc6d18c2f7ac2add6bb159",
+      "path": "src/sea_ad_jepa/v5/audit_b_n1_crashsafe_runtime_v1.py"
+    },
+    {
+      "role": "Crash-safe synthetic interruption/replay tests",
+      "pr": 63,
+      "ref": "59e16ab6edf3979d5cfc6d18c2f7ac2add6bb159",
+      "path": "tests/test_v5_audit_b_n1_crashsafe_runtime_v1.py"
+    },
+    {
+      "role": "Frozen N1 physical CPU burden and stream assembly",
+      "pr": 58,
+      "ref": "601cccf4fff98a471fa0cf2595374efa9ef9be59",
+      "path": "src/sea_ad_jepa/v5/audit_b_n1_cpu_burden_assembly_v1.py"
+    },
+    {
+      "role": "Frozen per-fold partner planner",
+      "pr": 50,
+      "ref": "e4b7e9f46842d66cd7db71b1df9de60fc037f971",
+      "path": "src/sea_ad_jepa/v5/audit_b_n1_crossfold_planner_v1.py"
+    },
+    {
+      "role": "Rare-tail physical read-only V2 authenticating structural/provenance bytes",
+      "pr": 61,
+      "ref": "bf248a97f6e5249dc7922e4499fc18128cc89fc5",
+      "path": "scripts/agent/preflight_full104_rare_tail_molecular_readonly_v2_20260922.py"
+    },
+    {
+      "role": "Rare-tail guarded entrypoint Windows fsync corrected; new source hash required",
+      "pr": 66,
+      "ref": "f13c8364fe997d800cb84ad5370da43e75e17d3e",
+      "path": "scripts/agent/run_full104_rare_tail_molecular_guarded_v1_20260922.py"
+    },
+    {
+      "role": "Rare-tail guarded synthetic tests including Windows-style read-only-fsync rejection",
+      "pr": 66,
+      "ref": "f13c8364fe997d800cb84ad5370da43e75e17d3e",
+      "path": "tests/test_v5_full104_rare_tail_molecular_guarded_v1.py"
+    },
+    {
+      "role": "Frozen molecular runner exists; direct call forbidden pending governance",
+      "pr": 61,
+      "ref": "bf248a97f6e5249dc7922e4499fc18128cc89fc5",
+      "path": "scripts/agent/run_full104_rare_tail_molecular_prequalification_v1_20260922.py"
+    }
+  ],
+  "results": [
+    {
+      "role": "N1 ORIGINAL REAL PREFLIGHT",
+      "location": "PR64",
+      "terminal": "FAIL; source_names first-appearance swapped and src_of_cell disagrees with donor_src[cell_donor]",
+      "science": "N1 NEVER OPENED"
+    },
+    {
+      "role": "N1 FULL-METADATA DIAGNOSTIC",
+      "location": "PR67",
+      "terminal": "SYNTHETIC TESTS GREEN; PHYSICAL NOT YET EXECUTED"
+    },
+    {
+      "role": "RARE_TAIL V2 READONLY",
+      "location": "PR65/analysis/real_sample",
+      "terminal": "PASS canonical 84e6f716... file feac846b...",
+      "science": "NO RNA OPENED"
+    },
+    {
+      "role": "RARE_TAIL WINDOWS GATEWAY",
+      "location": "PR66",
+      "terminal": "HOSTED LINUX 441+441 GREEN; NATIVE WINDOWS NOT RUN"
+    },
+    {
+      "role": "PR67 FOUR HOSTED WORKFLOWS",
+      "location": "GitHub Actions on c4a893cb",
+      "terminal": "Runtime 40+40; Stage-A 159+159; Target 369+363; Masking 831+825; no skips"
+    },
+    {
+      "role": "PR63 FOUR HOSTED WORKFLOWS",
+      "location": "GitHub Actions on 59e16ab6",
+      "terminal": "Runtime 40+40; Stage-A 159+159; Target 369+363; Masking 828+822; no skips"
+    }
+  ],
+  "files_not_available_in_git": [
+    "All 8,915 raw Level-4 count blocks and full 30GB+ FULL104 expression on GPU/Windows external disk, never substitute project uploads or old discovery ZIPs",
+    "Original 242,087,519-byte heavy sufficient-statistics NPZ physically on GPU disk",
+    "New corrected derivative and its independent receipts: NOT CREATED",
+    "Native Windows PR66 test output AFTER fix: NOT EXECUTED",
+    "Physical full-metadata PR67 quarantine receipt: NOT EXECUTED"
+  ]
+}
