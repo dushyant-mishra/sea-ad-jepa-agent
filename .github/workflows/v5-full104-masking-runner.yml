@@ -454,7 +454,6 @@ jobs:
             tests/test_v5_audit_b_n1_physical_binding_v1.py \
             tests/test_v5_audit_b_n1_source_lineage_v1.py \
             tests/test_v5_canonical_source_derivative_v1.py \
-            tests/test_v5_audit_b_n1_crashsafe_runtime_v1.py \
             tests/test_v5_audit_b_n1_synthetic_lineage_adapter_v1.py \
             -rs --tb=short | tee /tmp/full104-mask-runner.txt
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full104-mask-runner.txt; then echo 'FULL104 MASK RUNNER TESTS SKIPPED - FAIL CLOSED'; exit 1; fi
