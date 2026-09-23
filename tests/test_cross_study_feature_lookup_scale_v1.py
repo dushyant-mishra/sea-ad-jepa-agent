@@ -56,12 +56,10 @@ def fixture(n=2500):
 
 def test_large_join_validates_frozen_annotation_once_not_once_per_gene():
     annotation, a, b = fixture()
-    with patch.object(
-        FrozenAnnotation, "validate", autospec=True,
-        wraps=None,
-    ) as wrapped:
-        # Count calls without disabling genuine validation.
-        original = FrozenAnnotation.validate
+    original = FrozenAnnotation.validate
+    with patch.object(FrozenAnnotation, "validate", autospec=True) as wrapped:
+        # Capture the original BEFORE patching: otherwise this test recurses
+        # through the mock instead of actually validating the source digest.
         wrapped.side_effect = lambda self: original(self)
         result = align(a, b, annotation)
     assert wrapped.call_count == 1
