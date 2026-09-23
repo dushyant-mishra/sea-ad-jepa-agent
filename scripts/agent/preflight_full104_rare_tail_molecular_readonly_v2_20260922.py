@@ -75,9 +75,14 @@ def authenticate_structural_evidence(
     if provenance.get("structural_terminal") != EXPECTED_STRUCTURAL_TERMINAL:
         raise ValueError("structural provenance has the wrong terminal")
     for flag in ("expression_opened", "count_matrices_opened",
-                 "molecular_outcome_opened", "training_authorized"):
+                 "molecular_distances_computed",
+                 "molecular_rare_tail_gate_executed_after_structural_pass"):
         if provenance.get(flag) is not False:
             raise ValueError("structural provenance unsafe or missing flag: " + flag)
+    if provenance.get("rare_tail_molecular_outcome") != "UNOPENED":
+        raise ValueError("structural provenance reports an opened molecular outcome")
+    if provenance.get("firewall", {}).get("training") != "OFF":
+        raise ValueError("structural provenance does not assert TRAINING OFF")
     for flag in ("expression_opened", "count_matrix_opened",
                  "molecular_distance_computed", "zxy_molecular_outcome_opened",
                  "training_authorized"):
