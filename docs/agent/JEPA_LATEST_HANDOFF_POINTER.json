@@ -1,12 +1,12 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V21",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V22",
   "date": "2026-09-23",
-  "status": "CURRENT_PARALLEL_FULL104_AND_EXPERIMENTAL_HANDOFF__NO_TRAINING_OR_N1_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md",
+  "status": "POST_BULK_PHYSICAL_V1_AND_GSE240609_PUBLIC_GEO_V2_CPU__NO_TRAINING_OR_N1_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V22_BULK_GEO_ADDENDUM.md",
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "prior_layer2_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md",
   "current_work_ledger_path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V22.json",
   "prior_integrated_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
   "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
@@ -14,14 +14,17 @@
   "live_evidence_lanes": {
     "full104_adapter": "PR83@6ff12edb8f97287ae994f41b5217350a453e6d77",
     "full104_redteam": "PR85@0bccba8ce62d9006539b8d7a0f649faf906255fd",
-    "experimental_physical": "PR77@f34fae312a3006e9eefaa1dfb85749037de9dddd",
+    "experimental_physical": "PR77@3e293a43e4d6dfb6bba85eaf188bdbbe5ecb2821",
     "experimental_guide_identity_stop": "PR92@bc09c0f432db6e17bec3047baeb0812975043937",
     "experimental_authority": "PR82@d65c45745ba36ff93c384d435af1edcc99982453",
     "benchmark_head": "PR90@3669e5c2a9f3e9466ce269efcbd696c4c28746b2",
     "cross_study_feature_head": "PR89@06c2b498d13d289382e804340d98baa736dea3ee",
     "gse254205_schema": "PR86@0ffb62cac6ea3d6e0e1b9cef3fa3e95f2d581e91",
-    "gse301119_support": "PR91@56600f66492b18af20edcfe5d11761d2cdca9383"
+    "gse301119_support": "PR91@56600f66492b18af20edcfe5d11761d2cdca9383",
+    "gse240609_public_geo_v2": "PR94@9cc155a659f9a70bf2f1e7a1fd9cc05283089cbf"
   },
-  "instruction": "Open START_HERE.md, then this pointer, new V21 handoff/state and historical-audits index. Re-fetch live GitHub heads. PR92 independently found 3 duplicate BIN1 feature labels in GSE311359 V1; preserve STOP until authenticated source-ID/library and versioned V2 reexecution. GSE178317 CRISPR STOP, bulk LPS/context usable. Keep training/N1/rare-tail and protected outcomes unopened; synthetic gate PASS is not physical authority.",
-  "prior_september15_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md"
+  "instruction": "START_HERE.md -> pointer -> V22 addendum -> V21 FULL handoff/state -> September15 historical audits. PR77 now has GSE241858/GSE240609 physical bulk V1 results. Independently reviewed GEO GSE240609 original sample titles show CD11b-purified microglia AFTER neuron coculture; PR94 V2 restores source-identities, root checks and measured-material semantics, CPU 9 PASS only, physical V2 rerun pending. GSE311359 3 duplicate BIN1 guide names remains PR92 STOP. GSE178317 guide identity missing remains STOP. Re-fetch heads. Real N1/training/protected outcomes remain forbidden.",
+  "prior_september15_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
+  "prior_full_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md",
+  "prior_full_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json"
 }
