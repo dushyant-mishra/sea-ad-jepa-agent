@@ -1,0 +1,23 @@
+{
+  "firewall": {
+    "jepa_training": "OFF",
+    "pathology_adaptive_selection": "FORBIDDEN",
+    "protected_full104_outcomes": "UNOPENED",
+    "therapeutic_ranking": "OFF"
+  },
+  "guide_assignment_study_count": 5,
+  "historical_verified_asset_count": 16,
+  "interpretation": [
+    "Historical acquisition/hash success is provenance evidence, not perturbation-analysis readiness.",
+    "Guide assignment, controls, replicate structure, stable feature identity and measurement masks must be resolved before per-cell intervention effects are authoritative.",
+    "Different cell models and modalities remain separate strata and are not concatenated by label alone."
+  ],
+  "physical_authenticated_asset_count": 16,
+  "physical_missing_or_mismatch_count": 0,
+  "processed_asset_count": 16,
+  "schema": "THERAPEUTIC_PERTURBATION_ETL_ATLAS_V1",
+  "scope": "PERTURBATION_DATASET_ETL_AND_READINESS__NO_JEPA_TRAINING__NO_THERAPEUTIC_RANKING",
+  "single_cell_guide_assignment_fully_resolved_study_count": 1,
+  "study_count": 8,
+  "training_ready_study_count": 0
+}
