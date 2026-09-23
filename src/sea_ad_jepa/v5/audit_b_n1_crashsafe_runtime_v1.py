@@ -158,10 +158,12 @@ def run_resumable_units(
             for ri in range(N_RUNGS):
                 final = journal_dir / unit_name(ti, fi, ri)
                 if final.exists():
-                    read_unit(
+                    existing = read_unit(
                         journal_dir=journal_dir, target_index=ti,
                         fold_index=fi, rung_index=ri,
                     )
+                    if int(existing.get("target_col", -1)) != int(raw_target):
+                        raise ValueError("committed journal target differs from frozen target order")
                     continue
                 if stop_after_new_units is not None and committed >= stop_after_new_units:
                     return committed
