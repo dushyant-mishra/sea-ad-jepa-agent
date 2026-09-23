@@ -292,3 +292,43 @@ def test_resume_rejects_validly_rehashed_wrong_target_col(tmp_path: Path):
             journal_dir=j, context=context, frozen_targets=targets,
             compute_unit=fake_unit_factory(source, fold, []), stop_after_new_units=1,
         )
+
+
+
+def test_unit_rejects_injected_field_even_when_rehashed(tmp_path: Path):
+    source, fold = source_fold()
+    targets = np.arange(256, dtype=np.int64)
+    context = make_context(targets, source, fold)
+    j = tmp_path / "j"
+    rt.run_resumable_units(
+        journal_dir=j, context=context, frozen_targets=targets,
+        compute_unit=fake_unit_factory(source, fold, []), stop_after_new_units=1,
+    )
+    path = j / rt.unit_name(0, 0, 0)
+    row = json.loads(path.read_text(encoding="utf-8"))
+    row["unexpected"] = "ignored-if-not-checked"
+    row["record_sha256"] = rt.canonical_digest(
+        {k: v for k, v in row.items() if k != "record_sha256"}
+    )
+    path.write_text(json.dumps(row), encoding="utf-8")
+    with pytest.raises(ValueError, match="unexpected or missing fields"):
+        rt.read_unit(
+            journal_dir=j, context_sha256=context["context_sha256"],
+            target_index=0, fold_index=0, rung_index=0,
+        )
+
+
+def test_negative_target_rejected_before_compute(tmp_path: Path):
+    source, fold = source_fold()
+    targets = np.arange(256, dtype=np.int64)
+    context = make_context(targets, source, fold)
+    changed = targets.copy()
+    changed[0] = -1
+    with pytest.raises(ValueError, match="exact 256 unique integer"):
+        rt.run_resumable_units(
+            journal_dir=tmp_path / "j", context=context, frozen_targets=changed,
+            compute_unit=lambda *args: (_ for _ in ()).throw(
+                AssertionError("compute must not run")
+            ),
+            stop_after_new_units=1,
+        )
