@@ -5,7 +5,7 @@ import pytest
 from sea_ad_jepa.perturbation.outcome_exposure_ledger_v1 import (
     DECLARED_UNINSPECTED, DEVELOPMENT, INSPECTED, UNKNOWN,
     ExposureError, ExposureEvent, OutcomeKey, append_event,
-    freeze_ledger, seed_historical_exposure,
+    freeze_ledger, seed_historical_exposure, guard_descriptive_benchmark,
 )
 
 
@@ -98,3 +98,37 @@ def test_cannot_claim_heldout_for_known_inspected_even_from_empty_ledger():
     empty = freeze_ledger([])
     assert empty.status(key) == INSPECTED
     assert not empty.evaluation_scope(key)["untouched_external_confirmation_authorized"]
+
+
+def test_benchmark_exposure_gate_rejects_false_heldout_even_on_inspected_data():
+    frozen = seed_historical_exposure()
+    key = OutcomeKey("GSE254205", "bulk_GNE317", "AB_GNE_vs_AB")
+    with pytest.raises(ExposureError, match="prospective outcome seal"):
+        guard_descriptive_benchmark(
+            ledger=frozen, key=key, partition_exposure="HELD_OUT",
+        )
+    accepted = guard_descriptive_benchmark(
+        ledger=frozen, key=key, partition_exposure="RETROSPECTIVE_BENCHMARK",
+    )
+    assert accepted["recorded_status"] == INSPECTED
+    assert accepted["independent_confirmation_authorized"] is False
+    assert accepted["real_physical_input_authenticated_here"] is False
+
+
+def test_benchmark_exposure_gate_denies_unknown_or_unreviewed_declared_holdout():
+    frozen = seed_historical_exposure()
+    key = OutcomeKey("SYNTHETIC_NEW_STUDY", "SYNTHETIC_ASSAY", "target_excluded_response")
+    with pytest.raises(ExposureError, match="UNKNOWN"):
+        guard_descriptive_benchmark(
+            ledger=frozen, key=key, partition_exposure="RETROSPECTIVE_BENCHMARK",
+        )
+    declared = append_event(frozen, event(key, DECLARED_UNINSPECTED))
+    with pytest.raises(ExposureError, match="cannot authorize"):
+        guard_descriptive_benchmark(
+            ledger=declared, key=key, partition_exposure="RETROSPECTIVE_BENCHMARK",
+        )
+    development = guard_descriptive_benchmark(
+        ledger=declared, key=key, partition_exposure="DEVELOPMENT",
+    )
+    assert development["scope"] == "DESCRIPTIVE_DEVELOPMENT_OR_RETROSPECTIVE_ONLY"
+    assert not development["independent_confirmation_authorized"]
