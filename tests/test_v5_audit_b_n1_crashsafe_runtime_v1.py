@@ -118,6 +118,9 @@ def test_interrupted_resume_is_byte_identical_to_clean_run(tmp_path: Path) -> No
     assert receipt_a.read_bytes() == receipt_b.read_bytes()
     assert final_a["result_receipt_sha256"] == final_b["result_receipt_sha256"]
     assert final_a["execution_context_sha256"] == rt.canonical_digest(bound.context)
+    assert final_a["finalization_sha256"] == rt.canonical_digest({
+        k: v for k, v in final_a.items() if k != "finalization_sha256"
+    })
     assert final_a["precision_calculated"] is False
     assert final_a["training_authorized"] is False
 
