@@ -583,6 +583,8 @@ def _successor_fixture(tmp_path, monkeypatch):
     pass1_path = tmp_path / "pass1.npz"
     np.savez(pass1_path, cell_donor=donors, core=core,
              duniq=np.asarray(names, dtype=object))
+    split["pass1_npz_sha256"] = Q.sha256_file(pass1_path)
+    split_path.write_text(json.dumps(split), encoding="utf-8")
     frozen_test_values = {
         "PARENT_SHA256": Q.sha256_file(parent),
         "DERIVATIVE_SHA256": Q.sha256_file(derivative),
@@ -590,6 +592,7 @@ def _successor_fixture(tmp_path, monkeypatch):
         "ARRAY_MANIFEST_FILE_SHA256": Q.sha256_file(manifest_path),
         "SPLIT_CANONICAL_SHA256": split["receipt_sha256"],
         "SPLIT_FILE_SHA256": Q.sha256_file(split_path),
+        "PASS1_NPZ_SHA256": Q.sha256_file(pass1_path),
         "ORIGINAL_SIX_FILE_SHA256": Q.sha256_file(original_path),
         "AUTHENTICATED_METADATA_CELL_DONOR_SHA256": Q.int64_digest(donors),
         "EXPECTED_DONORS": 6, "EXPECTED_SOURCE_DONORS": (2,2,2),
@@ -640,7 +643,7 @@ def test_end_to_end_successor_rejects_within_source_donor_swap_without_receipts(
     donors[1] = 1  # D0 -> D1, both HVS; source invariant is still satisfied
     np.savez(fx["pass1"], cell_donor=donors, core=core, duniq=registry)
     six, pre = tmp_path / "not_six.json", tmp_path / "not_pre.json"
-    with pytest.raises(SystemExit, match="pass1 donor vector differs from PR67 full-metadata physical audit"):
+    with pytest.raises(SystemExit, match="pass1 NPZ physical SHA differs"):
         _run_successor(monkeypatch, fx, six, pre)
     assert not six.exists() and not pre.exists()
 
@@ -656,5 +659,58 @@ def test_end_to_end_successor_rejects_frozen_split_source_swap(tmp_path, monkeyp
     monkeypatch.setattr(Q, "SPLIT_FILE_SHA256", Q.sha256_file(fx["split"]))
     six, pre = tmp_path / "never_split_six.json", tmp_path / "never_split_pre.json"
     with pytest.raises(SystemExit, match="split donor-source map differs"):
+        _run_successor(monkeypatch, fx, six, pre)
+    assert not six.exists() and not pre.exists()
+
+
+def test_end_to_end_successor_rejects_pass1_same_arrays_different_container(
+    tmp_path, monkeypatch,
+):
+    """The authenticated donor vector alone does not authenticate the NPZ bytes."""
+    fx = _successor_fixture(tmp_path, monkeypatch)
+    # ZIP permits trailing bytes. Payload arrays still deserialize unchanged.
+    with fx["pass1"].open("ab") as stream:
+        stream.write(b"unreviewed-content-after-frozen-pass1")
+    with np.load(fx["pass1"], allow_pickle=True) as p:
+        assert Q.int64_digest(p["cell_donor"]) == Q.AUTHENTICATED_METADATA_CELL_DONOR_SHA256
+    six, pre = tmp_path / "never_same_array_six.json", tmp_path / "never_same_array_pre.json"
+    with pytest.raises(SystemExit, match="pass1 NPZ physical SHA differs"):
+        _run_successor(monkeypatch, fx, six, pre)
+    assert not six.exists() and not pre.exists()
+
+
+def test_end_to_end_successor_rejects_split_pass1_rebinding(
+    tmp_path, monkeypatch,
+):
+    """Even a syntactically trusted split must bind the independently frozen pass1."""
+    fx = _successor_fixture(tmp_path, monkeypatch)
+    split = json.loads(fx["split"].read_text(encoding="utf-8"))
+    split["pass1_npz_sha256"] = "0" * 64
+    fx["split"].write_text(json.dumps(split), encoding="utf-8")
+    monkeypatch.setattr(Q, "SPLIT_FILE_SHA256", Q.sha256_file(fx["split"]))
+    six, pre = tmp_path / "never_forged_six.json", tmp_path / "never_forged_pre.json"
+    with pytest.raises(SystemExit, match="frozen split pass1 SHA differs"):
+        _run_successor(monkeypatch, fx, six, pre)
+    assert not six.exists() and not pre.exists()
+
+
+def test_end_to_end_successor_rejects_wrong_donor_even_with_fixture_pass1_rebound(
+    tmp_path, monkeypatch,
+):
+    """Independent PR67 donor digest still protects against file-level rebinding."""
+    fx = _successor_fixture(tmp_path, monkeypatch)
+    with np.load(fx["pass1"], allow_pickle=True) as p:
+        donors = p["cell_donor"].copy()
+        core, registry = p["core"], p["duniq"]
+    donors[1] = 1  # Same source, wrong donor; deliberate synthetic authority attack.
+    np.savez(fx["pass1"], cell_donor=donors, core=core, duniq=registry)
+    forged = Q.sha256_file(fx["pass1"])
+    split = json.loads(fx["split"].read_text(encoding="utf-8"))
+    split["pass1_npz_sha256"] = forged
+    fx["split"].write_text(json.dumps(split), encoding="utf-8")
+    monkeypatch.setattr(Q, "SPLIT_FILE_SHA256", Q.sha256_file(fx["split"]))
+    monkeypatch.setattr(Q, "PASS1_NPZ_SHA256", forged)
+    six, pre = tmp_path / "never_donor_six.json", tmp_path / "never_donor_pre.json"
+    with pytest.raises(SystemExit, match="pass1 donor vector differs from PR67 full-metadata physical audit"):
         _run_successor(monkeypatch, fx, six, pre)
     assert not six.exists() and not pre.exists()

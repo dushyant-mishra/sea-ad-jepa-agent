@@ -43,6 +43,8 @@ DERIVATIVE_SHA256 = "4b15ee5238c6e48d931329d222a9488a7b4f122c58767b6615a0b480afc
 ARRAY_MANIFEST_CANONICAL_SHA256 = "4f55158c59d2ee6cdb3ad9276e887126ae78b5b9305021c8c607b524c61293a5"
 ARRAY_MANIFEST_FILE_SHA256 = "9517b95446013c7f803df0b63b662d24f2e1df81f0b4917a2af41dae1df2b1ee"
 SPLIT_FILE_SHA256 = "56f045d7dc80fde7e30c97632c1d109286e4b8f9f033b77476521c2822980585"
+# Independent physical identity is already frozen in the authenticated split receipt.
+PASS1_NPZ_SHA256 = "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1"
 ORIGINAL_SIX_FILE_SHA256 = "bbd2b95b882f52c313a3623bab55e5d7ff6562cdba27e48f9c84009075cf713d"
 # The PR #67 diagnostic rebuilt this vector from all 8,915 authenticated metadata files.
 AUTHENTICATED_METADATA_CELL_DONOR_SHA256 = "3d56cda1d1d4ec228351b1f29197c9bce00ac8d7f12687430490fe7c6192a607"
@@ -173,6 +175,10 @@ def main() -> int:
     split = json.loads(args.split_receipt.read_text(encoding="utf-8"))
     if split.get("receipt_sha256") != SPLIT_CANONICAL_SHA256:
         raise SystemExit("split receipt has the wrong frozen canonical digest")
+    if split.get("pass1_npz_sha256") != PASS1_NPZ_SHA256:
+        raise SystemExit("frozen split pass1 SHA differs from independently reviewed pass1 identity")
+    if sha256_file(args.pass1) != PASS1_NPZ_SHA256:
+        raise SystemExit("pass1 NPZ physical SHA differs from frozen split receipt")
 
     d = np.load(args.derivative, allow_pickle=True)
     p = np.load(args.parent, allow_pickle=True)
@@ -357,6 +363,7 @@ def main() -> int:
             "array_manifest": ARRAY_MANIFEST_FILE_SHA256,
             "original_six_donor": ORIGINAL_SIX_FILE_SHA256,
             "split_receipt": SPLIT_FILE_SHA256,
+            "pass1": PASS1_NPZ_SHA256,
         },
         "caller_supplied_sha_strings_trusted": False,
         "n1_targets_selected": False,
