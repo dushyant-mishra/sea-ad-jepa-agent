@@ -1,0 +1,2 @@
+"source_path","seurat_object_version","n_features","n_cells","nnz","same_dim","same_features","same_cells","same_i","same_p","same_x","same_colsum","same_rowsum","exact_count_layer_parity"
+"D:\Jepa project\data\external\v4\perturbation\GSE301119\GSE301119_CRISPRi_seurat5.rds","5.4.0",36601,28466,89015982,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE
