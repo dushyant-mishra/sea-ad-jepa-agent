@@ -1,0 +1,133 @@
+{
+  "schema": "V5_FULL104_SIX_DONOR_SUCCESSOR_QUALIFICATION_V1",
+  "role": "LABEL_CORRECTION_SUCCESSOR__NOT_A_NEW_NUMERIC_CLAIM",
+  "supersedes_nothing": true,
+  "original_receipt_preserved_untouched": true,
+  "original_receipt_sha256": "bbd2b95b882f52c313a3623bab55e5d7ff6562cdba27e48f9c84009075cf713d",
+  "original_receipt_verdict": "DONOR_UMI_INDEPENDENTLY_QUALIFIED",
+  "why_this_exists": "the historical six-donor receipt read its NPH52/SEA_AD source labels through the parent's transposed source_names table. The numbers were never affected: donor_nnz and donor_umi are keyed by cell_donor, not by any source code. Only the text labels were wrong, and they are corrected here without erasing or rewriting the original.",
+  "scope_preserved_exactly": "six donors, two per source, 387 count blocks consumed for those sampled donors, exact integer equality for donor_nnz and donor_umi, all 8,915 metadata hashes checked, all 4,553,407 cells accounted exactly once. It did NOT prove raw count reaggregation for all 104 donors, and this successor does not extend that scope.",
+  "raw_reaggregation_proved_for_all_104_donors": false,
+  "canonical_source_names": [
+    "HVS",
+    "NPH52",
+    "SEA_AD"
+  ],
+  "parent_stored_source_names": [
+    "HVS",
+    "SEA_AD",
+    "NPH52"
+  ],
+  "derivative_sha256": "4b15ee5238c6e48d931329d222a9488a7b4f122c58767b6615a0b480afc4800b",
+  "parent_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+  "donors": [
+    {
+      "donor": "H16.03.002",
+      "donor_code": 6,
+      "original_receipt_label": "HVS",
+      "corrected_canonical_label": "HVS",
+      "label_was_transposed": false,
+      "nnz_row_value_sha256": "ed14e3c5fd2aa6323b534467dcecdd2a8e126b7e4df559301b3fd64b9ffae7b1",
+      "umi_row_value_sha256": "ecb3250f5d9067311c78d0270a2f97d26ddc85d715aaa5fe80bdffa72edd9e4a",
+      "nnz_row_identical_to_parent": true,
+      "umi_row_identical_to_parent": true,
+      "recomputed_nnz_total": 12074328,
+      "recomputed_umi_total": 54372622,
+      "original_nnz_total": 12074328,
+      "original_umi_total": 54372622
+    },
+    {
+      "donor": "H19.06.356",
+      "donor_code": 36,
+      "original_receipt_label": "HVS",
+      "corrected_canonical_label": "HVS",
+      "label_was_transposed": false,
+      "nnz_row_value_sha256": "534d11e5b2058e14aecc1e73dbd00c487a7b4615c2d8f47390a85bc61c3ab7c3",
+      "umi_row_value_sha256": "c3ee252132c7b9321642a600fdf891a19ee630b17c999835653e0ed5aea50bcf",
+      "nnz_row_identical_to_parent": true,
+      "umi_row_identical_to_parent": true,
+      "recomputed_nnz_total": 25921353,
+      "recomputed_umi_total": 89988524,
+      "original_nnz_total": 25921353,
+      "original_umi_total": 89988524
+    },
+    {
+      "donor": "H20.33.043",
+      "donor_code": 64,
+      "original_receipt_label": "NPH52",
+      "corrected_canonical_label": "SEA_AD",
+      "label_was_transposed": true,
+      "nnz_row_value_sha256": "9938db50943822d5f860843379af9c100693ba13bc863a1b03e8d073e6bae145",
+      "umi_row_value_sha256": "36e8417020e44a98eb41995c77deef9f7cdfbfaa41147ad89696e6063e155ae8",
+      "nnz_row_identical_to_parent": true,
+      "umi_row_identical_to_parent": true,
+      "recomputed_nnz_total": 127932646,
+      "recomputed_umi_total": 763686438,
+      "original_nnz_total": 127932646,
+      "original_umi_total": 763686438
+    },
+    {
+      "donor": "H21.33.028",
+      "donor_code": 76,
+      "original_receipt_label": "NPH52",
+      "corrected_canonical_label": "SEA_AD",
+      "label_was_transposed": true,
+      "nnz_row_value_sha256": "d8bf7b33b1720310c4fcada3b065257ea0830ba351c6dc9976118aaaa28a1c6f",
+      "umi_row_value_sha256": "790fff9741e8bfc247f40e9d736ba77f1fc4d726e44884a1e59212b82e044bd0",
+      "nnz_row_identical_to_parent": true,
+      "umi_row_identical_to_parent": true,
+      "recomputed_nnz_total": 243175275,
+      "recomputed_umi_total": 1260248583,
+      "original_nnz_total": 243175275,
+      "original_umi_total": 1260248583
+    },
+    {
+      "donor": "human_NPH_896",
+      "donor_code": 94,
+      "original_receipt_label": "SEA_AD",
+      "corrected_canonical_label": "NPH52",
+      "label_was_transposed": true,
+      "nnz_row_value_sha256": "e43205645cb83ec41ac8aee1780a2304a8142fe1a214208faa34bc4eaff77f23",
+      "umi_row_value_sha256": "a79f19181255f72de923d5d75191201222700c26d120c5ee142be67b56331170",
+      "nnz_row_identical_to_parent": true,
+      "umi_row_identical_to_parent": true,
+      "recomputed_nnz_total": 32644803,
+      "recomputed_umi_total": 94864389,
+      "original_nnz_total": 32644803,
+      "original_umi_total": 94864389
+    },
+    {
+      "donor": "human_NPH_906",
+      "donor_code": 96,
+      "original_receipt_label": "SEA_AD",
+      "corrected_canonical_label": "NPH52",
+      "label_was_transposed": true,
+      "nnz_row_value_sha256": "7324ce0707a1ef2637e0c464a8c30f6f14c54be0201f130372ae9ba1b57ba02e",
+      "umi_row_value_sha256": "7e140ba5d4f17b4fd0e8b389063ea308f7db97363c927499679628d5a0172f8b",
+      "nnz_row_identical_to_parent": true,
+      "umi_row_identical_to_parent": true,
+      "recomputed_nnz_total": 122499,
+      "recomputed_umi_total": 219531,
+      "original_nnz_total": 122499,
+      "original_umi_total": 219531
+    }
+  ],
+  "donors_per_corrected_source": {
+    "HVS": [
+      "H16.03.002",
+      "H19.06.356"
+    ],
+    "SEA_AD": [
+      "H20.33.043",
+      "H21.33.028"
+    ],
+    "NPH52": [
+      "human_NPH_896",
+      "human_NPH_906"
+    ]
+  },
+  "numeric_rows_unchanged_from_parent": true,
+  "re_run_of_six_donor_raw_comparison_required": false,
+  "training_authorized": false,
+  "receipt_sha256": "e3249667f234e8225f3da875aba8a2296b01dfe5f423ec3c2b8c0e592ec16c2e"
+}

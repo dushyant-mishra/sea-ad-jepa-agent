@@ -1,0 +1,42 @@
+{
+  "burden_calculated": false,
+  "canonical_donor_source_vector_sha256": "1aa54d73bc3100af15503aed6d4a1b894bc72245f89c63997b7ae283d2cc64ea",
+  "canonical_source_names": [
+    "HVS",
+    "NPH52",
+    "SEA_AD"
+  ],
+  "donor_source_counts": [
+    41,
+    17,
+    46
+  ],
+  "full104_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "masks_executed": false,
+  "metadata_blocks_sha_verified": 8915,
+  "metadata_cell_source_counts": [
+    198718,
+    236476,
+    4118213
+  ],
+  "metadata_cells_accounted_exactly_once": 4553407,
+  "metadata_donor_vector_sha256": "3d56cda1d1d4ec228351b1f29197c9bce00ac8d7f12687430490fe7c6192a607",
+  "metadata_source_vector_sha256": "4dbe1b11768f1b37bd4fde51326edc3c920d5fc692e00080f5702b6d36c930ae",
+  "n1_targets_selected": false,
+  "original_heavy_artifact_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+  "precision_calculated": false,
+  "receipt_sha256": "9191a2496138712bb0a77aaad3774358acba0e12c8216a781c72c40f999c573c",
+  "role": "PHYSICAL_METADATA_DIAGNOSTIC_ONLY__NEVER_EXECUTION_AUTHORITY",
+  "schema": "V5_FULL104_N1_SOURCE_LINEAGE_DIAGNOSTIC_V1",
+  "source_name_order_matches": false,
+  "src_of_cell_equals_donor_src_at_metadata_donor": false,
+  "src_of_cell_mismatch_count": 4354689,
+  "state": "QUARANTINED_SOURCE_ENCODING__N1_STOP",
+  "stored_per_cell_source_sha256": "5c9fbd11554a865d627e271a4bdca04a43ebb152ae37aded25daaffacabbd1ec",
+  "stored_source_names": [
+    "HVS",
+    "SEA_AD",
+    "NPH52"
+  ],
+  "training_authorized": false
+}

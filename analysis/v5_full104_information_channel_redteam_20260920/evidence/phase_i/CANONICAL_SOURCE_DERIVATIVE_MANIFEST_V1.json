@@ -1,0 +1,511 @@
+{
+  "schema": "V5_FULL104_CANONICAL_SOURCE_DERIVATIVE_MANIFEST_V1",
+  "role": "PHYSICAL_INPUT_REPAIR__NOT_EXECUTION_AUTHORITY",
+  "parent_original_sha256": "f77dff47df71e2b97895f6e850db4d2a2ebdab441d195dedf91f582b4d53b5ae",
+  "parent_original_bytes": 242087519,
+  "derivative_path": "D:\\jepa_full104_redteam_20260920_external\\core_sufficient_statistics_canonical_source_v2_20260923.npz",
+  "derivative_sha256": "4b15ee5238c6e48d931329d222a9488a7b4f122c58767b6615a0b480afc4800b",
+  "derivative_bytes": 363053057,
+  "full104_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+  "canonical_source_names": [
+    "HVS",
+    "NPH52",
+    "SEA_AD"
+  ],
+  "stored_source_names_in_parent": [
+    "HVS",
+    "SEA_AD",
+    "NPH52"
+  ],
+  "donor_source_counts": [
+    41,
+    17,
+    46
+  ],
+  "source_cell_counts": [
+    198718,
+    236476,
+    4118213
+  ],
+  "metadata_blocks_sha_verified": 8915,
+  "cells_accounted_exactly_once": 4553407,
+  "src_of_cell_mismatch_in_parent": 4354689,
+  "src_of_cell_mismatch_in_derivative": 0,
+  "invariant_enforced": "new_src_of_cell[cell] == donor_src[cell_donor[cell]] for every cell",
+  "derivation_rule": "each cell's source is the source string of the SHA-verified Level-4 block physically containing its selection_row, mapped through the canonical sorted order HVS/NPH52/SEA_AD. Never a permutation of the stored codes.",
+  "strict_core_order_sha256": "b628dd3b84a06048125a12d5e73eb12f9734a521cc137a4bef536904b32340b6",
+  "donor_order_sha256": "59867cb9246127bfb75483c75461118c23f607d2e76f4941d8407b7ecb8f8f2e",
+  "donor_source_vector_sha256": "797afbff00c6d2e53907297916d4cbcd9d6d3cefb2256ef792be72f7c814328c",
+  "members_total": 35,
+  "members_changed": 2,
+  "members_unchanged": 33,
+  "per_array": [
+    {
+      "name": "core",
+      "dtype": "int64",
+      "shape": [
+        17186
+      ],
+      "old_value_sha256": "b628dd3b84a06048125a12d5e73eb12f9734a521cc137a4bef536904b32340b6",
+      "new_value_sha256": "b628dd3b84a06048125a12d5e73eb12f9734a521cc137a4bef536904b32340b6",
+      "changed": false,
+      "scientific_role": "strict-core address order",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "corenz_cells",
+      "dtype": "int64",
+      "shape": [
+        10
+      ],
+      "old_value_sha256": "6faddb4bade7e9ce534554c74983a07abe2786371f83dca572774dea19894992",
+      "new_value_sha256": "6faddb4bade7e9ce534554c74983a07abe2786371f83dca572774dea19894992",
+      "changed": false,
+      "scientific_role": "cells per core-nnz decile",
+      "source_dependent": "no: keyed by deciles(cell_nnz_core)",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "corenz_edges",
+      "dtype": "float64",
+      "shape": [
+        11
+      ],
+      "old_value_sha256": "5cfde7cd8c87d295f24188df87a4a0b0e7a5611e6b6d3bec6c8feaac7bf3f157",
+      "new_value_sha256": "5cfde7cd8c87d295f24188df87a4a0b0e7a5611e6b6d3bec6c8feaac7bf3f157",
+      "changed": false,
+      "scientific_role": "core-nnz decile edges",
+      "source_dependent": "no: derived from cell_nnz_core",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "corenz_nnz",
+      "dtype": "int64",
+      "shape": [
+        10,
+        17186
+      ],
+      "old_value_sha256": "3a4d6f2695033b38db1717bffb8380b54affdee1c9360e45b4a66f8c868daf12",
+      "new_value_sha256": "3a4d6f2695033b38db1717bffb8380b54affdee1c9360e45b4a66f8c868daf12",
+      "changed": false,
+      "scientific_role": "core-nnz decile x address detected count",
+      "source_dependent": "no: keyed by deciles(cell_nnz_core)",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "corenz_umi",
+      "dtype": "int64",
+      "shape": [
+        10,
+        17186
+      ],
+      "old_value_sha256": "0f683b3a99c978ab2d8b3cf5130d8bb560a5464534505710214a8727f9f34dd3",
+      "new_value_sha256": "0f683b3a99c978ab2d8b3cf5130d8bb560a5464534505710214a8727f9f34dd3",
+      "changed": false,
+      "scientific_role": "core-nnz decile x address UMI mass",
+      "source_dependent": "no: keyed by deciles(cell_nnz_core)",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "depth_cells",
+      "dtype": "int64",
+      "shape": [
+        10
+      ],
+      "old_value_sha256": "cc7a640cbfb7e4ba6d01758eec9ac4f02d29609be8320bde33a19e0353e6f132",
+      "new_value_sha256": "cc7a640cbfb7e4ba6d01758eec9ac4f02d29609be8320bde33a19e0353e6f132",
+      "changed": false,
+      "scientific_role": "cells per depth decile",
+      "source_dependent": "no: keyed by deciles(libraries)",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "depth_edges",
+      "dtype": "float64",
+      "shape": [
+        11
+      ],
+      "old_value_sha256": "af00417dfcb2d6173f893400f0abee663d106e9c7e47067e6763ab412259f93e",
+      "new_value_sha256": "af00417dfcb2d6173f893400f0abee663d106e9c7e47067e6763ab412259f93e",
+      "changed": false,
+      "scientific_role": "depth decile edges",
+      "source_dependent": "no: derived from libraries",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "depth_nnz",
+      "dtype": "int64",
+      "shape": [
+        10,
+        17186
+      ],
+      "old_value_sha256": "3ff6470f1862a551af0298372afda506db651f22ddaf887f851af55e05384ba0",
+      "new_value_sha256": "3ff6470f1862a551af0298372afda506db651f22ddaf887f851af55e05384ba0",
+      "changed": false,
+      "scientific_role": "library-depth decile x address detected count",
+      "source_dependent": "no: keyed by deciles(libraries)",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "depth_umi",
+      "dtype": "int64",
+      "shape": [
+        10,
+        17186
+      ],
+      "old_value_sha256": "c73908b7ede428080f51def45a841875a0baa6c4b7dec4c4190deae303ef50b7",
+      "new_value_sha256": "c73908b7ede428080f51def45a841875a0baa6c4b7dec4c4190deae303ef50b7",
+      "changed": false,
+      "scientific_role": "library-depth decile x address UMI mass",
+      "source_dependent": "no: keyed by deciles(libraries)",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "donor_cells",
+      "dtype": "int64",
+      "shape": [
+        104
+      ],
+      "old_value_sha256": "b3d1f20c81e4cc7ba98713f7b36b0b718d1106e74140bec9ae11d0261d34ed02",
+      "new_value_sha256": "b3d1f20c81e4cc7ba98713f7b36b0b718d1106e74140bec9ae11d0261d34ed02",
+      "changed": false,
+      "scientific_role": "cells per donor",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "donor_nnz",
+      "dtype": "int64",
+      "shape": [
+        104,
+        17186
+      ],
+      "old_value_sha256": "462fc94ca9df106b0fdc81a2ec1093ea51f57b6626094639f703bb4f0b9a1c7c",
+      "new_value_sha256": "462fc94ca9df106b0fdc81a2ec1093ea51f57b6626094639f703bb4f0b9a1c7c",
+      "changed": false,
+      "scientific_role": "donor x address detected-token count",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "donor_nsq",
+      "dtype": "float64",
+      "shape": [
+        104,
+        17186
+      ],
+      "old_value_sha256": "fa5662f3749e59d039b368c51e803854df10947a6021a2c4d2419334c27f2aad",
+      "new_value_sha256": "fa5662f3749e59d039b368c51e803854df10947a6021a2c4d2419334c27f2aad",
+      "changed": false,
+      "scientific_role": "donor x address sum of squared normalised value",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "donor_nsum",
+      "dtype": "float64",
+      "shape": [
+        104,
+        17186
+      ],
+      "old_value_sha256": "78c20dcaeb6a90c65e80a8b41352978cbc2e7b491dfe69dddd6e466a326ac878",
+      "new_value_sha256": "78c20dcaeb6a90c65e80a8b41352978cbc2e7b491dfe69dddd6e466a326ac878",
+      "changed": false,
+      "scientific_role": "donor x address sum of log1p-normalised value",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "donor_src",
+      "dtype": "int64",
+      "shape": [
+        104
+      ],
+      "old_value_sha256": "797afbff00c6d2e53907297916d4cbcd9d6d3cefb2256ef792be72f7c814328c",
+      "new_value_sha256": "797afbff00c6d2e53907297916d4cbcd9d6d3cefb2256ef792be72f7c814328c",
+      "changed": false,
+      "scientific_role": "donor -> canonical source code",
+      "source_dependent": "yes: IS the canonical source vector",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "donor_umi",
+      "dtype": "int64",
+      "shape": [
+        104,
+        17186
+      ],
+      "old_value_sha256": "4d2856b1af649be6bc5a9c7eb6793cd46f2f8b381f58bec02d4b9c252446e53e",
+      "new_value_sha256": "4d2856b1af649be6bc5a9c7eb6793cd46f2f8b381f58bec02d4b9c252446e53e",
+      "changed": false,
+      "scientific_role": "donor x address raw UMI mass",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "duniq",
+      "dtype": "object",
+      "shape": [
+        104
+      ],
+      "old_value_sha256": "59867cb9246127bfb75483c75461118c23f607d2e76f4941d8407b7ecb8f8f2e",
+      "new_value_sha256": "59867cb9246127bfb75483c75461118c23f607d2e76f4941d8407b7ecb8f8f2e",
+      "changed": false,
+      "scientific_role": "donor registry, sorted unique donor ids",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "libraries",
+      "dtype": "int64",
+      "shape": [
+        4553407
+      ],
+      "old_value_sha256": "5c16c1793b2d42b80ab73759668c19b7216e523ca9da71f50d1dce94a0e94c13",
+      "new_value_sha256": "5c16c1793b2d42b80ab73759668c19b7216e523ca9da71f50d1dce94a0e94c13",
+      "changed": false,
+      "scientific_role": "per-cell sequencing depth (NOT a source code)",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "partial",
+      "dtype": "bool",
+      "shape": [],
+      "old_value_sha256": "ce397ee8b49577b737c0e1d40eea9d7c9df2d62759cc0db9ba8a52d32b5eb4c0",
+      "new_value_sha256": "ce397ee8b49577b737c0e1d40eea9d7c9df2d62759cc0db9ba8a52d32b5eb4c0",
+      "changed": false,
+      "scientific_role": "partial-run flag",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool",
+      "dtype": "int64",
+      "shape": [
+        512
+      ],
+      "old_value_sha256": "93cb9d589004507dcdd0a7323f07cf54b0d1f24c687a1a49cd4b2ffd69b77db9",
+      "new_value_sha256": "93cb9d589004507dcdd0a7323f07cf54b0d1f24c687a1a49cd4b2ffd69b77db9",
+      "changed": false,
+      "scientific_role": "co-detection address pool",
+      "source_dependent": "no: codetection_pool(core), salted hash of addresses",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_NN",
+      "dtype": "float64",
+      "shape": [
+        512,
+        512
+      ],
+      "old_value_sha256": "dac95ddefb19c9d87399447c597ac0fbaacf641f64caf668246f2ba15860d82a",
+      "new_value_sha256": "dac95ddefb19c9d87399447c597ac0fbaacf641f64caf668246f2ba15860d82a",
+      "changed": false,
+      "scientific_role": "pool co-detection NN",
+      "source_dependent": "no: keyed by pool addresses",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_QQ",
+      "dtype": "float64",
+      "shape": [
+        512,
+        512
+      ],
+      "old_value_sha256": "d0c64e266648f570b37ef9837675d33dcb3f5192e52306d8a57d531dee552a11",
+      "new_value_sha256": "d0c64e266648f570b37ef9837675d33dcb3f5192e52306d8a57d531dee552a11",
+      "changed": false,
+      "scientific_role": "pool co-detection QQ",
+      "source_dependent": "no: keyed by pool addresses",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_SD",
+      "dtype": "float64",
+      "shape": [
+        512,
+        512
+      ],
+      "old_value_sha256": "2ccd0e9aaf43867e93d01c24c2d314894b9d57a9bd5d0cba1acfe451f2e749f9",
+      "new_value_sha256": "2ccd0e9aaf43867e93d01c24c2d314894b9d57a9bd5d0cba1acfe451f2e749f9",
+      "changed": false,
+      "scientific_role": "pool co-detection SD",
+      "source_dependent": "no: keyed by pool addresses",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_SQ",
+      "dtype": "float64",
+      "shape": [
+        512,
+        512
+      ],
+      "old_value_sha256": "ae78a065d0fc0c5295c101fb1dbaaba188b632b992f5eb66a38368d39f6c7d76",
+      "new_value_sha256": "ae78a065d0fc0c5295c101fb1dbaaba188b632b992f5eb66a38368d39f6c7d76",
+      "changed": false,
+      "scientific_role": "pool co-detection SQ",
+      "source_dependent": "no: keyed by pool addresses",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_cells",
+      "dtype": "int64",
+      "shape": [],
+      "old_value_sha256": "641a38ebf6e56c7758ddb467cfe6ad5587648d822d646b1d0455117b39ebfc2e",
+      "new_value_sha256": "641a38ebf6e56c7758ddb467cfe6ad5587648d822d646b1d0455117b39ebfc2e",
+      "changed": false,
+      "scientific_role": "cells entering the pool",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_cross",
+      "dtype": "float64",
+      "shape": [
+        104,
+        512,
+        512
+      ],
+      "old_value_sha256": "bb7f48b4fee15d8b3a241481f4b3b0e2b62337ec6281260cc801774f11b01443",
+      "new_value_sha256": "bb7f48b4fee15d8b3a241481f4b3b0e2b62337ec6281260cc801774f11b01443",
+      "changed": false,
+      "scientific_role": "pool donor x address x address cross",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_det",
+      "dtype": "float64",
+      "shape": [
+        512
+      ],
+      "old_value_sha256": "f4faeabc4cc9a28bd373ae755f922278f8a907979a4f1cbf607b2c8a6e87309e",
+      "new_value_sha256": "f4faeabc4cc9a28bd373ae755f922278f8a907979a4f1cbf607b2c8a6e87309e",
+      "changed": false,
+      "scientific_role": "pool per-address detection",
+      "source_dependent": "no: keyed by pool addresses",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_dn",
+      "dtype": "float64",
+      "shape": [
+        104
+      ],
+      "old_value_sha256": "e381eff1edfc5cb59fb2b81a04eeaa84e730b4297703aa91ecb647c70fc8f1c1",
+      "new_value_sha256": "e381eff1edfc5cb59fb2b81a04eeaa84e730b4297703aa91ecb647c70fc8f1c1",
+      "changed": false,
+      "scientific_role": "pool per-donor n",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_sx",
+      "dtype": "float64",
+      "shape": [
+        104,
+        512
+      ],
+      "old_value_sha256": "b7ffad23d8da981f315a1296e236ce066fc244d6b8ed8a5ea89ef885d5c84c0b",
+      "new_value_sha256": "b7ffad23d8da981f315a1296e236ce066fc244d6b8ed8a5ea89ef885d5c84c0b",
+      "changed": false,
+      "scientific_role": "pool donor x address sum",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "pool_sxx",
+      "dtype": "float64",
+      "shape": [
+        104,
+        512
+      ],
+      "old_value_sha256": "5e205705e51f73548da7b1b5bdd3804e3a56ea00a861c3d0f13d6b295c498c98",
+      "new_value_sha256": "5e205705e51f73548da7b1b5bdd3804e3a56ea00a861c3d0f13d6b295c498c98",
+      "changed": false,
+      "scientific_role": "pool donor x address sum of squares",
+      "source_dependent": "no: keyed by cell_donor",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "schema",
+      "dtype": "<U40",
+      "shape": [],
+      "old_value_sha256": "619e8a5be78b356b151b11748ef10c559dd36f0abae6b3b71f264fae74eb8a06",
+      "new_value_sha256": "619e8a5be78b356b151b11748ef10c559dd36f0abae6b3b71f264fae74eb8a06",
+      "changed": false,
+      "scientific_role": "artifact schema tag",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "source_names",
+      "dtype": "object",
+      "shape": [
+        3
+      ],
+      "old_value_sha256": "46f6ac9c973609a87c341d3bd0625482c3570480b75f76d14249ba24ad5ac513",
+      "new_value_sha256": "a0c21388100d972740323269395540c2a38589cb4ee59f1ed9aba0e4c9e3c316",
+      "changed": true,
+      "scientific_role": "source code -> name table",
+      "source_dependent": "yes: DEFECTIVE, first-appearance order",
+      "disposition": "INTENDED_CHANGE__REBUILT_FROM_LEVEL4"
+    },
+    {
+      "name": "src_of_cell",
+      "dtype": "int64",
+      "shape": [
+        4553407
+      ],
+      "old_value_sha256": "7973ab13814028e37529c183f043e6b82ff966c3d864a0598e3b873e46e8052e",
+      "new_value_sha256": "a315ac2ca62f2e1a8a0ddee665109345d15ab3f06bea5c0a086437ef872712e0",
+      "changed": true,
+      "scientific_role": "cell -> source code",
+      "source_dependent": "yes: DEFECTIVE, follows source_names",
+      "disposition": "INTENDED_CHANGE__REBUILT_FROM_LEVEL4"
+    },
+    {
+      "name": "total_core_nnz",
+      "dtype": "int64",
+      "shape": [],
+      "old_value_sha256": "7ca1f845fe355f95fc8bb53fc185be63a0951bdd50768fc8caa4019faf9d448c",
+      "new_value_sha256": "7ca1f845fe355f95fc8bb53fc185be63a0951bdd50768fc8caa4019faf9d448c",
+      "changed": false,
+      "scientific_role": "scalar total detected over strict core",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "total_core_umi",
+      "dtype": "int64",
+      "shape": [],
+      "old_value_sha256": "3ec4b0f061424c0c836ed3ad8ba04615d8534911dfdfb9bf420c33f0a08a5d25",
+      "new_value_sha256": "3ec4b0f061424c0c836ed3ad8ba04615d8534911dfdfb9bf420c33f0a08a5d25",
+      "changed": false,
+      "scientific_role": "scalar total UMI over strict core",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    },
+    {
+      "name": "workers",
+      "dtype": "int32",
+      "shape": [],
+      "old_value_sha256": "6ee88353e64d04758f0bb9865e960fc228c7f6e918e37af500d78e56176a6ea3",
+      "new_value_sha256": "6ee88353e64d04758f0bb9865e960fc228c7f6e918e37af500d78e56176a6ea3",
+      "changed": false,
+      "scientific_role": "producer worker count",
+      "source_dependent": "no",
+      "disposition": "UNAFFECTED_BY_BUG__PROVED"
+    }
+  ],
+  "expression_opened": false,
+  "count_matrices_opened": false,
+  "n1_targets_selected": false,
+  "masks_generated": false,
+  "burden_calculated": false,
+  "precision_calculated": false,
+  "training_authorized": false,
+  "manifest_sha256": "4f55158c59d2ee6cdb3ad9276e887126ae78b5b9305021c8c607b524c61293a5"
+}
