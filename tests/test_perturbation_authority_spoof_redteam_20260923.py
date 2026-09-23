@@ -99,17 +99,15 @@ def test_receipt_rechecks_physical_bytes_after_initial_authentication(
     assert not dst.exists()
 
 
-def test_receipt_rejects_forged_preconstructed_input(tmp_path):
+def test_receipt_rejects_forged_preconstructed_input(tmp_path, monkeypatch):
     fake = tmp_path / "fake.bin"
     fake.write_bytes(b"fake")
-    ctx = gate.ExecutionContext(
-        mode=gate.ExecutionMode.PHYSICAL_QUALIFICATION,
-        task="SPOOFED",
-        code_sha256="a" * 64,
-        inputs=[gate.AuthenticatedInput("FAKE_ROLE", str(fake), "f" * 64, 4)],
-    )
+    _, ctx, _ = fixture_context(tmp_path, monkeypatch)
+    ctx.inputs = [
+        gate.AuthenticatedInput("FAKE_ROLE", str(fake), "f" * 64, 4)
+    ]
     with pytest.raises(
-        gate.ExecutionAuthorityError, match="roles without reviewed source roots",
+        gate.ExecutionAuthorityError, match="physical input roles differ from the reviewed",
     ):
         gate.emit_qualification_receipt(
             path=tmp_path / "never.json", context=ctx, body={},
