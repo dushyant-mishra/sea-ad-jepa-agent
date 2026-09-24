@@ -86,6 +86,12 @@ def load_lane_matrix(h5_path):
 
 
 def main():
+    raise SystemExit(
+        "STOP_GSE178317_V1_EFFECTS_SUPERSEDED: this producer could label 10x "
+        "capture-well spread as biological uncertainty and accepted unqualified "
+        "guide assignments. Use versioned v2 descriptive producer only after "
+        "reviewed V2 lane-support and identity provenance checks."
+    )
     ap = argparse.ArgumentParser()
     ap.add_argument("--assignments", required=True)
     ap.add_argument("--gex-dir", required=True)
