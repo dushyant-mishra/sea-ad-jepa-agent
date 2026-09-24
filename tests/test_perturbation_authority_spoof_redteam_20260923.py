@@ -136,7 +136,7 @@ def test_empty_physical_inputs_cannot_claim_pass(tmp_path):
         gate.ExecutionAuthorityError, match="requires independently reviewed physical inputs",
     ):
         gate.emit_qualification_receipt(
-            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+            path=tmp_path / "never.json", context=ctx, body={"test_observation": "checked"},
         )
 
 
@@ -146,7 +146,7 @@ def test_64_digit_fake_production_grant_still_denied(tmp_path, monkeypatch):
     ctx.authorization_receipt_sha256 = "f" * 64
     with pytest.raises(gate.ExecutionAuthorityError, match="PRODUCTION is CLOSED"):
         gate.emit_qualification_receipt(
-            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+            path=tmp_path / "never.json", context=ctx, body={"test_observation": "checked"},
         )
     with pytest.raises(gate.ExecutionAuthorityError, match="PRODUCTION is CLOSED"):
         gate.authenticate_physical_input(
@@ -172,7 +172,7 @@ def test_cannot_self_approve_a_different_scientific_task(tmp_path, monkeypatch):
     ctx.task = "UNREVIEWED_THERAPEUTIC_EFFICACY_CLAIM"
     with pytest.raises(gate.ExecutionAuthorityError, match="task lacks a separately reviewed"):
         gate.emit_qualification_receipt(
-            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+            path=tmp_path / "never.json", context=ctx, body={"test_observation": "checked"},
         )
 
 
@@ -183,7 +183,7 @@ def test_actual_script_mutation_rejected_despite_stale_declared_script_sha(
     Path(ctx.code_path).write_bytes(b"changed script after review")
     with pytest.raises(gate.ExecutionAuthorityError, match="actual script bytes differ"):
         gate.emit_qualification_receipt(
-            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+            path=tmp_path / "never.json", context=ctx, body={"test_observation": "checked"},
         )
 
 
@@ -206,7 +206,7 @@ def test_wrong_approved_code_root_rejected_even_if_script_is_present(
     {"nested": [{"output_results_verified": True}]},
     {"production_execution_authorized": True},
 ])
-def test_source_prefight_rejects_scientific_or_production_claims(
+def test_source_preflight_rejects_scientific_or_production_claims(
     tmp_path, monkeypatch, claim,
 ):
     _, ctx, _ = fixture_context(tmp_path, monkeypatch)
