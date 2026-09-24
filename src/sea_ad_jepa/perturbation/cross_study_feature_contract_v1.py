@@ -36,7 +36,8 @@ class ObservationStatus(str, Enum):
 ENSG = re.compile(r"^ENSG[0-9]{11}$")
 ENSG_VERSIONED = re.compile(r"^(ENSG[0-9]{11})\.([1-9][0-9]*)$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
-VALID_NAMESPACES = frozenset({"HGNC_SYMBOL", "ENSEMBL_GENE_ID"})
+VALID_NAMESPACES = frozenset({"HGNC_SYMBOL", "ENSEMBL_GENE_ID", "ENTREZ_GENE_ID"})
+ENTREZ_ID = re.compile(r"^[1-9][0-9]*$")
 VALID_STATUS = frozenset({"PRIMARY_ID", "REVIEWED_ALIAS", "VERSIONED_ID"})
 
 
@@ -66,6 +67,16 @@ class FeatureMapEntry:
             raise FeatureContractError("missing annotation evidence")
         if not ENSG.fullmatch(self.canonical_ensembl):
             raise FeatureContractError("canonical Ensembl ID must be unversioned ENSG")
+        if self.namespace == "ENTREZ_GENE_ID":
+            # Entrez IDs are decimal strings, never integer-coerced (source
+            # namespace and byte-exact original identity must be preserved).
+            # Mapping to Ensembl is never inferred from numeric similarity:
+            # each entry still requires the frozen annotation evidence.
+            if (not ENTREZ_ID.fullmatch(self.source_id)
+                    or self.mapping_status != "PRIMARY_ID"):
+                raise FeatureContractError(
+                    "Entrez ID must be positive canonical decimal text with primary evidence"
+                )
         if self.namespace == "ENSEMBL_GENE_ID":
             m = ENSG_VERSIONED.fullmatch(self.source_id)
             if m is not None:
