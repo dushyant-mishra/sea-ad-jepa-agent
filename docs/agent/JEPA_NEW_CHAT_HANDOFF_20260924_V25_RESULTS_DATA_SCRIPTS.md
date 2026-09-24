@@ -16,7 +16,7 @@ Re-fetch live GitHub heads and verify receipts/physical assets before any action
 
 ## Current live GitHub state at this handoff
 
-- `main` contains V24 docs, not the new experimental physical binaries.
+- `main` contains the V25 governance/handoff docs after PR #109, but **not** the new experimental physical binaries; those remain on experimental PR #77.
 - Active experimental PR **#77**, branch `analysis/perturbation-etl-gse301119-claude-20260923`, audited head **`67981c8ef6e158d865470e70bca81cbe289be3dd`**, DRAFT, base `analysis/therapeutic-perturbation-etl-20260923`. Re-fetch before editing. The latest head differs from the prior code head by one new versioned comparison receipt only. At audit completion its CI rerun had **9 SUCCESS, 0 FAILED**. Re-check live heads before acting because later commits may supersede this snapshot. New integration after the earlier audit: previously reviewed PR #84 -> #88 -> #90 baseline/exposure code was integrated from PR #99; see benchmark section below.
 - Claude's 58 MB data commit `52f20a7a` is an ancestor of that head (12 commits behind, zero divergent commits). Physical output binaries, receipts and producers are already on GitHub under `analysis/therapeutic_perturbation_etl/`. Do not re-upload duplicate binaries or merge development results into main merely to make them accessible.
 - PR #83 plus #85 red-team merged into its parent at `64148023740d57777666faff15395262d4b0e3da`. N1 remains unauthorized.
