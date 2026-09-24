@@ -271,10 +271,10 @@ def test_10_positive_control_resolved_parameters_emit_a_receipt(tmp_path, monkey
         auth.AuthenticatedInput(role=role, path=str(p), sha256=sha, bytes_=p.stat().st_size)
     ])
     digest = emit_qualification_receipt(path=tmp_path / "r.json", context=ctx,
-                                        body={"terminal": "OK"})
+                                        body={"test_observation": "OK"})
     receipt = json.loads((tmp_path / "r.json").read_text())
     assert digest == receipt["receipt_sha256"]
-    assert receipt["evidence"]["terminal"] == "OK"
+    assert receipt["evidence"]["test_observation"] == "OK"
     assert receipt["production_execution_authorized"] is False
 
 

@@ -52,6 +52,9 @@ def test_receipt_positive_frozen_fixture_role(tmp_path, monkeypatch):
     assert obj["evidence"]["test_observation"] == 3
     assert obj["production_execution_authorized"] is False
     assert obj["training_authorized"] is False
+    assert obj["qualification_scope"] == "SOURCE_AND_SCRIPT_PREFLIGHT_ONLY"
+    assert obj["scientific_execution_verified"] is False
+    assert obj["output_results_verified"] is False
 
 
 @pytest.mark.parametrize("reserved", [
@@ -133,7 +136,7 @@ def test_empty_physical_inputs_cannot_claim_pass(tmp_path):
         gate.ExecutionAuthorityError, match="requires independently reviewed physical inputs",
     ):
         gate.emit_qualification_receipt(
-            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+            path=tmp_path / "never.json", context=ctx, body={"test_observation": "checked"},
         )
 
 
@@ -143,7 +146,7 @@ def test_64_digit_fake_production_grant_still_denied(tmp_path, monkeypatch):
     ctx.authorization_receipt_sha256 = "f" * 64
     with pytest.raises(gate.ExecutionAuthorityError, match="PRODUCTION is CLOSED"):
         gate.emit_qualification_receipt(
-            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+            path=tmp_path / "never.json", context=ctx, body={"test_observation": "checked"},
         )
     with pytest.raises(gate.ExecutionAuthorityError, match="PRODUCTION is CLOSED"):
         gate.authenticate_physical_input(
@@ -169,7 +172,7 @@ def test_cannot_self_approve_a_different_scientific_task(tmp_path, monkeypatch):
     ctx.task = "UNREVIEWED_THERAPEUTIC_EFFICACY_CLAIM"
     with pytest.raises(gate.ExecutionAuthorityError, match="task lacks a separately reviewed"):
         gate.emit_qualification_receipt(
-            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+            path=tmp_path / "never.json", context=ctx, body={"test_observation": "checked"},
         )
 
 
@@ -180,7 +183,7 @@ def test_actual_script_mutation_rejected_despite_stale_declared_script_sha(
     Path(ctx.code_path).write_bytes(b"changed script after review")
     with pytest.raises(gate.ExecutionAuthorityError, match="actual script bytes differ"):
         gate.emit_qualification_receipt(
-            path=tmp_path / "never.json", context=ctx, body={"terminal": "PASS"},
+            path=tmp_path / "never.json", context=ctx, body={"test_observation": "checked"},
         )
 
 
@@ -193,3 +196,34 @@ def test_wrong_approved_code_root_rejected_even_if_script_is_present(
         gate.emit_qualification_receipt(
             path=tmp_path / "never.json", context=ctx, body={},
         )
+
+
+@pytest.mark.parametrize("claim", [
+    {"terminal": "PASS_PHYSICAL"},
+    {"status": "PASS"},
+    {"scientific_execution_verified": True},
+    {"nested": {"execution_completed": True}},
+    {"nested": [{"output_results_verified": True}]},
+    {"production_execution_authorized": True},
+])
+def test_source_preflight_rejects_scientific_or_production_claims(
+    tmp_path, monkeypatch, claim,
+):
+    _, ctx, _ = fixture_context(tmp_path, monkeypatch)
+    target = tmp_path / "must_not_exist.json"
+    with pytest.raises(gate.ExecutionAuthorityError, match="(protected provenance|cannot attest)"):
+        gate.emit_qualification_receipt(path=target, context=ctx, body=claim)
+    assert not target.exists()
+
+
+def test_no_script_execution_or_output_check_is_claimed(tmp_path, monkeypatch):
+    _, ctx, _ = fixture_context(tmp_path, monkeypatch)
+    receipt_path = tmp_path / "preflight.json"
+    gate.emit_qualification_receipt(path=receipt_path, context=ctx,
+                                    body={"source_census": 2})
+    obj = json.loads(receipt_path.read_text())
+    assert obj["qualification_scope"] == "SOURCE_AND_SCRIPT_PREFLIGHT_ONLY"
+    assert obj["scientific_execution_verified"] is False
+    assert obj["output_results_verified"] is False
+    assert obj["production_execution_authorized"] is False
+    assert obj["training_authorized"] is False
