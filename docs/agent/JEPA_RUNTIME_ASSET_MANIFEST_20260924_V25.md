@@ -1,6 +1,6 @@
 # JEPA V25 — current results, data, scripts and provenance manifest
 
-As-of: 2026-09-24. **Source of truth for binaries is experimental PR #77 @ `5c5649def828b3e087e239acca26ec317683c426`, not `main`.** Re-fetch live heads before acting.
+As-of: 2026-09-24. **Source of truth for binaries is experimental PR #77 @ `0e0f47b133a87c64496367385083208442748e25`, not `main`.** Re-fetch live heads before acting.
 
 Repository: `dushyant-mishra/sea-ad-jepa-agent`.
 Root for everything below: `analysis/therapeutic_perturbation_etl/`.
@@ -47,7 +47,7 @@ Regeneration: `pip install crisprbrain && python analysis/therapeutic_perturbati
 - `scripts/validate_gse178317_against_crisprbrain_v1.py`: SAME-experiment reference comparison, not independent replication.
 - `scripts/acquire_crisprbrain_screens_v1.py`: 54-screen catalog acquisition, nine transcriptomic screens and overlap receipt; five microglia tables committed.
 - `src/sea_ad_jepa/perturbation/cross_study_feature_contract_v1.py`: existing Ensembl/HGNC/Entrez identity + assay-mask contract.
-- `src/sea_ad_jepa/perturbation/benchmark_domain_contract_v1.py`: cultured-vs-brain transport claim-scope gate; matching labels alone never authorize in-brain causal generalization.
+- `src/sea_ad_jepa/perturbation/benchmark_domain_contract_v1.py`: cultured-vs-brain transport claim-scope gate; matching labels alone never authorize in-brain causal generalization.\n- `src/sea_ad_jepa/perturbation/benchmark_target_holdout_v1.py`: reviewed target-heldout/donor-aware benchmark scaffold; only real donor units.\n- `src/sea_ad_jepa/perturbation/outcome_exposure_ledger_v1.py`: frozen INSPECTED/DEVELOPMENT vs untouched outcome accounting.\n- `src/sea_ad_jepa/perturbation/benchmark_screen_profile_baselines_v1.py` and `scripts/run_crisprbrain_target_profile_baselines_v1.py`: zero and other-target mean profile baselines, five target-disjoint folds, no own-target gene scoring.\n- `BENCHMARK_BASELINE_INTEGRATION_20260924.md`: scope, provenance and stop conditions.\n- `.github/workflows/perturbation-outcome-exposure.yml`, `perturbation-screen-profile-baselines.yml`, `perturbation-target-heldout-benchmark.yml`: integrated and green on audited experimental head.
 
 ## Receipts and authoritative interpretations
 
@@ -57,8 +57,8 @@ Frozen count source roots: sgRNA library SHA `8de1e7e737c8c42ec9a7feff0d6e198b4f
 
 ## Automated test workflows on experimental head
 
-At `5c5649def828b3e087e239acca26ec317683c426`, all six completed SUCCESS:
-`Perturbation domain and gene-authority contracts`; `GSE178317 design-authority red-team`; `Cross-study feature-identity contract`; `GSE178317 authenticated safe count reissue`; `GSE178317 V2 lane-support independent red-team`; `Perturbation physical-authority red-team`.
+At `0e0f47b133a87c64496367385083208442748e25`, all nine completed SUCCESS:
+`Perturbation domain and gene-authority contracts`; `GSE178317 design-authority red-team`; `Cross-study feature-identity contract`; `GSE178317 authenticated safe count reissue`; `GSE178317 V2 lane-support independent red-team`; `Perturbation physical-authority red-team`; `Experimental outcome exposure ledger`; `Perturbation target-heldout synthetic benchmark`; `Perturbation screen-profile retrospective baseline`.
 
 These are code/synthetic tests, not a physical safe-reissue receipt or scientific confirmation.
 
