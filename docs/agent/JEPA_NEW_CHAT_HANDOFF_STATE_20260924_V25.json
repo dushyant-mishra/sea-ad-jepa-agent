@@ -1,0 +1,121 @@
+{
+  "schema": "JEPA_NEW_CHAT_HANDOFF_STATE_V25",
+  "date": "2026-09-24",
+  "scope": "DOCS_ONLY_NEW_CHAT_HANDOFF",
+  "project": "dushyant-mishra/sea-ad-jepa-agent",
+  "main_at_branch_creation": "main",
+  "active_experimental": {
+    "pr": 77,
+    "branch": "analysis/perturbation-etl-gse301119-claude-20260923",
+    "audited_sha": "67981c8ef6e158d865470e70bca81cbe289be3dd",
+    "base": "analysis/therapeutic-perturbation-etl-20260923",
+    "draft": true,
+    "data_commit_ancestor": "52f20a7a",
+    "committed_outputs_root": "analysis/therapeutic_perturbation_etl/outputs/",
+    "outputs_approx_mb": 58,
+    "ci_workflows_success": 6,
+    "ci_workflows_success_at_previous_code_head": 9,
+    "latest_ci_rerun": {
+      "sha": "67981c8ef6e158d865470e70bca81cbe289be3dd",
+      "success": 9,
+      "in_progress": 0,
+      "failed": 0
+    }
+  },
+  "full104": {
+    "cells": 4553407,
+    "donors": 104,
+    "operators": 42,
+    "addresses": 41238,
+    "common_core": 17186,
+    "level4_feature_blocks": 8915,
+    "n1_authorized": false,
+    "raw_count_all104_reaggregation_proven": false
+  },
+  "gse178317": {
+    "scope": "DEVELOPMENT_ONLY",
+    "raw_spots": 221434278,
+    "cells": 58302,
+    "guides": 81,
+    "umi_total": 18006495,
+    "assigned_cells": 11775,
+    "targets": 39,
+    "lane_supported_targets": 37,
+    "ntc_cells": 800,
+    "knockdown_targets": 39,
+    "median_engagement_log2fc": -0.7146,
+    "biological_uncertainty_estimable": false,
+    "guide_identity_independently_verified": false,
+    "prospective_confirmation_eligible": false,
+    "legacy_count_npz_sha256": "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c",
+    "legacy_count_npz_safe_format": false,
+    "physical_safe_format_reissue_committed_at_audited_head": false,
+    "reference_comparison_same_experiment": true,
+    "reference_direction_agreement": "35/35",
+    "reference_spearman": 0.72,
+    "stale_reference_receipt_requires_versioned_correction": false,
+    "corrected_reference_receipt": "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_crisprbrain_reference_comparison_receipt_v2.json",
+    "reference_comparison_interpretation": "SAME_EXPERIMENT_PIPELINE_REFERENCE_NOT_INDEPENDENT_VALIDATION"
+  },
+  "crisprbrain": {
+    "screens_catalog": 54,
+    "transcriptomic_screens": 9,
+    "distinct_perturbation_targets": 352,
+    "committed_microglia_screens": 5,
+    "uncommitted_neuron_ipsc_screens": 4,
+    "uncommitted_raw_bytes": [
+      86055877,
+      49409869,
+      163362857,
+      48619012
+    ],
+    "gene_space_overlap_measured": true,
+    "donor_cell_line_overlap_checked": false,
+    "barcode_overlap_checked": false,
+    "baseline_brain_culture_distance_measured": false
+  },
+  "gene_ids": {
+    "canonical": "UNVERSIONED_ENSEMBL_HUMAN_GENE_ID",
+    "original_namespaces": [
+      "HGNC_APPROVED_SYMBOL",
+      "ENSEMBL_GENE_ID",
+      "ENTREZ_GENE_ID"
+    ],
+    "mapping_contract_exists": true,
+    "physical_frozen_annotation_crosswalk_authenticated": false
+  },
+  "open_prs_at_audit": {
+    "gse254205_v2": 86,
+    "gse301119_support": 91,
+    "gse311359_bin1_stop": 92,
+    "gse240609_v2": 94
+  },
+  "restrictions": [
+    "TRAINING_OFF",
+    "AUDIT_B_N1_UNOPENED",
+    "PROTECTED_FULL104_OUTCOMES_UNOPENED",
+    "D_SHARED_G5_UNOPENED",
+    "RARE_TAIL_MOLECULAR_UNOPENED",
+    "THERAPEUTIC_RANKING_OFF"
+  ],
+  "handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V25_RESULTS_DATA_SCRIPTS.md",
+  "manifest": "docs/agent/JEPA_RUNTIME_ASSET_MANIFEST_20260924_V25.md",
+  "takeover": "docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260924_V25.md",
+  "benchmark_integration": {
+    "integrated": true,
+    "source_chain": "PR84 -> PR88 -> PR90 selectively integrated from stale PR99",
+    "scope": "RETROSPECTIVE_DEVELOPMENT_ONLY",
+    "zero_profile_baseline": true,
+    "other_target_mean_profile_baseline": true,
+    "deterministic_target_disjoint_folds": 5,
+    "own_target_gene_excluded_from_scoring": true,
+    "outcome_exposure_ledger": true,
+    "gse178317_and_same_experiment_reference_marked_inspected": true,
+    "independent_biological_error_bar": false
+  },
+  "superseded_prs": {
+    "pr99": "PARTIALLY_SELECTIVELY_INTEGRATED_DO_NOT_MERGE_WHOLE_PR",
+    "pr100": "SUPERSEDED_BY_PR102",
+    "pr104": "CLOSED_SUPERSEDED_BYTE_IDENTICAL_IMPLEMENTATION_ALREADY_IN_PR77"
+  }
+}
