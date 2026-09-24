@@ -115,6 +115,13 @@ def calculate(rows, support):
             admissible.add(target)
     if len(admissible) != basis["usable_targets"] or len(admissible) != 37:
         raise QualificationError("STOP: global support count differs")
+    # Preflight the *whole* target keyset before any row-level geometry check;
+    # a duplicate must never be disguised by the first row's mismatched census.
+    names = [r.get("target_gene") for r in rows]
+    if not all(names) or len(set(names)) != len(names):
+        raise QualificationError("STOP: empty or duplicate comparison target")
+    if not set(names).issubset(all_support):
+        raise QualificationError("STOP: unknown comparison target")
     seen = set()
     qualified, excluded = [], []
     for row in rows:
