@@ -85,6 +85,14 @@ LANES = [
      "gex_h5": "GSM5387655_iTF_Microglia_10X_Lane4_filtered_feature_bc_matrix.h5"},
 ]
 
+REVIEWED_LIBRARY_SHA256 = "8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942"
+REVIEWED_GEX_H5_SHA256 = {
+    "L1": "0b1fd0ad00f3fabf170c4207ef3886c3bdc955256a59c10949dfa3b110cc82de",
+    "L2": "6cb4df62065006d18cc3f0d3df42d7ac3ce875a41cbc59d7814e855862abb754",
+    "L3": "1197f21919162472db9c7e998b1e16a422e18b86c78893d8fb669c6509a6b5f9",
+    "L4": "9e9046e893c9f15e1697dcd55df8595890c38a407ea68a091286acaa28abfc86",
+}
+
 # ---------------------------------------------------------------------------
 # Calling layer.  DECLARED BEFORE THE CALLING STAGE IS RUN.
 #
@@ -166,6 +174,10 @@ def load_called_cells(h5_path):
 # Stage 1: count
 # ---------------------------------------------------------------------------
 def stage_count(a):
+    if os.path.exists(a.out_dir):
+        raise SystemExit("V2 count refuses occupied output directory; use a new versioned path")
+    if sha256_file(a.library) != REVIEWED_LIBRARY_SHA256:
+        raise SystemExit("STOP: sgRNA library bytes differ from reviewed Supplementary Table 5")
     lib = load_library(a.library)
     guides = sorted({name for _, name in lib.values()})
     gidx = {g: i for i, g in enumerate(guides)}
@@ -177,6 +189,9 @@ def stage_count(a):
 
     for spec in LANES:
         h5 = os.path.join(a.gex_dir, spec["gex_h5"])
+        observed_h5_sha = sha256_file(h5)
+        if observed_h5_sha != REVIEWED_GEX_H5_SHA256[spec["lane"]]:
+            raise SystemExit("STOP: reviewed GEX H5 bytes drifted for " + spec["lane"])
         cells = load_called_cells(h5)
         order = sorted(cells)
         cpos = {c: i for i, c in enumerate(order)}
@@ -242,7 +257,7 @@ def stage_count(a):
         cell_lane.extend([spec["lane"]] * len(order))
         lane_recs.append({
             "lane": spec["lane"], "srr": spec["srr"], "gex_gsm": spec["gex_gsm"],
-            "gex_h5_sha256": sha256_file(h5),
+            "gex_h5_sha256": observed_h5_sha,
             "gex_called_cells": len(order),
             "spots_read": stat["spots"],
             "reads_on_called_cells": stat["reads_on_called_cells"],
@@ -258,17 +273,17 @@ def stage_count(a):
                 print("  %-30s %s" % (k, v))
 
     counts = np.vstack(counts_blocks)
-    os.makedirs(a.out_dir, exist_ok=True)
+    os.makedirs(a.out_dir, exist_ok=False)
     npz = os.path.join(a.out_dir, "gse178317_cell_guide_umi_counts_v2.npz")
     np.savez_compressed(
         npz,
         counts=counts,
-        cell_ids=np.array(cell_ids, dtype=object),
-        cell_lane=np.array(cell_lane, dtype=object),
-        guides=np.array(guides, dtype=object),
-        guide_target=np.array(
+        cell_ids=np.asarray(cell_ids, dtype=str),
+        cell_lane=np.asarray(cell_lane, dtype=str),
+        guides=np.asarray(guides, dtype=str),
+        guide_target=np.asarray(
             [dict((n, t) for t, n in lib.values())[g] for g in guides],
-            dtype=object),
+            dtype=str),
     )
     with open(os.path.join(a.out_dir, "gse178317_count_stage_receipt_v2.json"),
               "w") as fh:
@@ -288,6 +303,42 @@ def stage_count(a):
 # ---------------------------------------------------------------------------
 # Stage 2: call
 # ---------------------------------------------------------------------------
+def validate_count_stage_receipt(counts_npz, receipt_path):
+    """Authenticate the full count-stage artifact before loading NPZ contents."""
+    with open(receipt_path, encoding="utf-8") as fh:
+        receipt = json.load(fh)
+    if receipt.get("schema") != "GSE178317_GUIDE_COUNT_STAGE_V2":
+        raise SystemExit("STOP: wrong or missing GSE178317 V2 count-stage receipt")
+    if receipt.get("library_sha256") != REVIEWED_LIBRARY_SHA256:
+        raise SystemExit("STOP: count receipt does not bind the reviewed sgRNA library")
+    if receipt.get("max_spots_per_lane") is not None:
+        raise SystemExit("STOP: bounded/smoke count artifact cannot feed full V2 call")
+    lanes = receipt.get("lanes")
+    if not isinstance(lanes, list) or len(lanes) != len(LANES):
+        raise SystemExit("STOP: count receipt lane census is incomplete")
+    expected = {x["lane"]: x for x in LANES}
+    seen = set()
+    for rec in lanes:
+        lane = rec.get("lane")
+        if lane not in expected or lane in seen:
+            raise SystemExit("STOP: count receipt lane identity invalid or duplicated")
+        seen.add(lane)
+        spec = expected[lane]
+        if rec.get("srr") != spec["srr"] or rec.get("gex_gsm") != spec["gex_gsm"]:
+            raise SystemExit("STOP: count receipt lane source identity drift")
+        if rec.get("gex_h5_sha256") != REVIEWED_GEX_H5_SHA256[lane]:
+            raise SystemExit("STOP: count receipt GEX H5 digest drift")
+    matrix = receipt.get("matrix") or {}
+    if matrix.get("guides") != 81 or matrix.get("cells") != 58302:
+        raise SystemExit("STOP: count receipt matrix geometry differs from reviewed source census")
+    if matrix.get("total_umis", 0) <= 0:
+        raise SystemExit("STOP: count receipt has no guide UMI support")
+    observed = sha256_file(counts_npz)
+    if matrix.get("npz_sha256") != observed:
+        raise SystemExit("STOP: count NPZ digest does not match reviewed receipt")
+    return receipt
+
+
 def robust_z(counts, totals):
     """Per-guide robust z of the cell fraction against a median/MAD background.
 
@@ -388,7 +439,10 @@ def assess_lane_usable_assignments(rows, lanes):
 
 
 def stage_call(a):
-    z = np.load(a.counts_npz, allow_pickle=True)
+    if os.path.exists(a.out_dir):
+        raise SystemExit("V2 call refuses occupied output directory; use a new versioned path")
+    count_receipt = validate_count_stage_receipt(a.counts_npz, a.count_receipt)
+    z = np.load(a.counts_npz, allow_pickle=False)
     counts = z["counts"].astype(np.float64)
     cell_ids = list(z["cell_ids"])
     cell_lane = list(z["cell_lane"])
@@ -454,7 +508,7 @@ def stage_call(a):
             "robust_z": round(float(zsc[c, g]), 2),
         })
 
-    os.makedirs(a.out_dir, exist_ok=True)
+    os.makedirs(a.out_dir, exist_ok=False)
     out_csv = os.path.join(a.out_dir, "gse178317_cell_guide_assignments_v2.csv")
     if rows:
         with open(out_csv, "w", newline="") as fh:
@@ -499,6 +553,8 @@ def stage_call(a):
                      "run; this is not prospective confirmation or guide "
                      "identity validation"),
         },
+        "count_stage_receipt_sha256": sha256_file(a.count_receipt),
+        "count_stage_receipt_schema": count_receipt["schema"],
         "counts_npz_sha256": sha256_file(a.counts_npz),
         "method": ("agreement of a per-guide robust z-score on cell fraction "
                    "with a Poisson test against an ambient expectation; a cell "
@@ -562,6 +618,7 @@ def main():
     ap.add_argument("--library")
     ap.add_argument("--gex-dir")
     ap.add_argument("--counts-npz")
+    ap.add_argument("--count-receipt")
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--vdb-dump", default="vdb-dump")
     ap.add_argument("--tmp-dir")
@@ -573,8 +630,8 @@ def main():
                 raise SystemExit("--stage count requires --%s" % req.replace("_", "-"))
         os.makedirs(a.tmp_dir, exist_ok=True)
         return stage_count(a)
-    if not a.counts_npz:
-        raise SystemExit("--stage call requires --counts-npz")
+    if not a.counts_npz or not a.count_receipt:
+        raise SystemExit("--stage call requires --counts-npz and --count-receipt")
     return stage_call(a)
 
 
