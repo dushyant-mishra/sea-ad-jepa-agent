@@ -45,7 +45,7 @@ class DomainQualification:
     same_cell_type: bool
     same_culture_status: bool
     baseline_state_similarity_measured: bool
-    direct_brain_generalization_authorized: bool
+    direct_brain_generalization_authorized: bool  # always False under metadata-only review
     note: str
 
 
@@ -73,8 +73,8 @@ def qualify_domain(
     if exact:
         return DomainQualification(
             ClaimScope.SAME_DOMAIN, True, True, True, True,
-            baseline_state_similarity_measured, True,
-            "context labels match; ordinary benchmark limits still apply",
+            baseline_state_similarity_measured, False,
+            "matching metadata is descriptive; independent in-brain causal validation is still required",
         )
 
     # Any culture/tissue mismatch is development evidence only. Measuring
