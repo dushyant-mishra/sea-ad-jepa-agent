@@ -115,6 +115,7 @@ def score_retrospective_baselines(
     data = profiles.effects
     gidx = {name: i for i, name in enumerate(profiles.genes)}
     per_target: list[dict] = []
+    responsive_roots: dict[str, str] = {}
     for fold in range(n_folds):
         train = np.asarray([folds[t] != fold for t in profiles.targets])
         test = np.asarray([folds[t] == fold for t in profiles.targets])
@@ -125,6 +126,25 @@ def score_retrospective_baselines(
         train_mean = np.full(data.shape[1], np.nan)
         supported = n_train > 0
         train_mean[supported] = np.nansum(train_data[:, supported], axis=0) / n_train[supported]
+        # Secondary DEVELOPMENT diagnostic. Genes are selected solely from
+        # training-target effect magnitudes, never from a held-out target's
+        # apparent response. The 10% rule is post-exposure development only.
+        reactivity = np.full(data.shape[1], -np.inf)
+        reactivity[supported] = (
+            np.nansum(np.abs(train_data[:, supported]), axis=0)
+            / n_train[supported]
+        )
+        ranked = sorted(
+            np.flatnonzero(supported),
+            key=lambda j: (-reactivity[int(j)], profiles.genes[int(j)]),
+        )
+        n_reactive = max(1, int(np.ceil(0.10 * len(ranked))))
+        reactive_indices = np.asarray(ranked[:n_reactive], dtype=int)
+        reactive_mask = np.zeros(data.shape[1], dtype=bool)
+        reactive_mask[reactive_indices] = True
+        responsive_roots[str(fold)] = hashlib.sha256(
+            json.dumps(sorted(profiles.genes[int(j)] for j in reactive_indices)).encode()
+        ).hexdigest()
         for i in np.flatnonzero(test):
             target = profiles.targets[int(i)]
             own_gene_col = gidx.get(target)
@@ -140,6 +160,9 @@ def score_retrospective_baselines(
                 continue
             error_zero = observed[paired]
             error_mean = observed[paired] - train_mean[paired]
+            reactive_paired = paired & reactive_mask
+            reactive_zero = observed[reactive_paired]
+            reactive_mean = observed[reactive_paired] - train_mean[reactive_paired]
             per_target.append({
                 "target": target, "fold": fold, "status": "ESTIMABLE",
                 "measured_genes_excluding_target": int(measured.sum()),
@@ -148,10 +171,16 @@ def score_retrospective_baselines(
                 "no_change_rmse": float(np.sqrt(np.mean(error_zero ** 2))),
                 "train_target_equal_mean_mae": float(np.mean(np.abs(error_mean))),
                 "train_target_equal_mean_rmse": float(np.sqrt(np.mean(error_mean ** 2))),
+                "training_only_reactive_genes_scored": int(reactive_paired.sum()),
+                "reactive_no_change_mae": float(np.mean(np.abs(reactive_zero)))
+                    if reactive_zero.size else None,
+                "reactive_train_mean_mae": float(np.mean(np.abs(reactive_mean)))
+                    if reactive_mean.size else None,
             })
     observed_rows = [r for r in per_target if r["status"] == "ESTIMABLE"]
     def macro(key: str) -> float | None:
-        return float(np.mean([r[key] for r in observed_rows])) if observed_rows else None
+        values = [r[key] for r in observed_rows if r.get(key) is not None]
+        return float(np.mean(values)) if values else None
     return {
         "schema": "CRISPRBRAIN_SCREEN_RETROSPECTIVE_BASELINES_V1",
         "screen": profiles.screen,
@@ -164,6 +193,13 @@ def score_retrospective_baselines(
         "split_kind": "TARGET_HELDOUT_WITHIN_SAME_EXPERIMENT_NOT_INDEPENDENT_VALIDATION",
         "scoring": "MACRO_TARGET_EQUAL_WEIGHT_OFF_TARGET_SAME_FEATURE_SUPPORT",
         "original_feature_namespace": "PROVIDER_GENE_LABEL_UNHARMONIZED_WITH_FULL104",
+        "responsive_subset": {
+            "scope": "SECONDARY_DEVELOPMENT_DIAGNOSTIC",
+            "selection": "TOP_10_PERCENT_BY_MEAN_ABSOLUTE_EFFECT_TRAIN_TARGETS_ONLY",
+            "selection_digest_by_fold": responsive_roots,
+            "macro_no_change_mae": macro("reactive_no_change_mae"),
+            "macro_train_target_equal_mean_mae": macro("reactive_train_mean_mae"),
+        },
         "biological_uncertainty_estimable": False,
         "independent_confirmation_authorized": False,
         "brain_causal_generalization_authorized": False,
