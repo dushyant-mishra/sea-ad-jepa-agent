@@ -13,9 +13,9 @@ Root for everything below: `analysis/therapeutic_perturbation_etl/`.
 | `gse178317_cell_guide_assignments_v2.csv.gz` | 227,864 | `87d032b6a4b84367` | 11,775 lane-gated cell assignments |
 | `gse178317_target_engagement_v2.csv` | 2,573 | `c6d6f0013d791147` | 39 targets, technical-well spread only |
 | `gse178317_top_effects_v2.csv.gz` | 22,119 | `b55bd4b22c51fcf1` | top 25 up/down genes per target |
-| `gse178317_vs_crisprbrain_engagement_v1.csv` | 2,231 | `fff45935c994d3fb` | 35 comparable targets; SAME-experiment reference comparison |
+| `gse178317_vs_crisprbrain_engagement_v1.csv` | 2,231 | `fff45935c994d3fb` | 35 historically comparable targets (AARS and LSM6 fail matched-well support); SAME-experiment reference comparison; 33-target qualified result NOT YET CALCULATED |
 
-Legacy NPZ full SHA-256: `170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c`. It is NOT the new safe-format reissue.
+**Integrity qualification:** This human-readable table contains abbreviated digests for several committed binaries and is **not** a standalone machine-verifiable manifest. Before claiming complete physical asset integrity, publish/locate a JSON or CSV inventory with full SHA-256, exact bytes, GitHub source commit and a runnable verifier for every committed binary. Do not reconstruct missing full digests from their prefixes.\n\nLegacy NPZ full SHA-256: `170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c`. It is NOT the new safe-format reissue.
 
 ## Physically committed CRISPRbrain data — `outputs/crisprbrain/`
 
