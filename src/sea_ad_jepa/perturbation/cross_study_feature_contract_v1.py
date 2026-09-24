@@ -36,7 +36,8 @@ class ObservationStatus(str, Enum):
 ENSG = re.compile(r"^ENSG[0-9]{11}$")
 ENSG_VERSIONED = re.compile(r"^(ENSG[0-9]{11})\.([1-9][0-9]*)$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
-VALID_NAMESPACES = frozenset({"HGNC_SYMBOL", "ENSEMBL_GENE_ID"})
+VALID_NAMESPACES = frozenset({"HGNC_SYMBOL", "ENSEMBL_GENE_ID", "ENTREZ_GENE_ID"})
+ENTREZ_ID = re.compile(r"^[1-9][0-9]*$")
 VALID_STATUS = frozenset({"PRIMARY_ID", "REVIEWED_ALIAS", "VERSIONED_ID"})
 
 
@@ -66,6 +67,16 @@ class FeatureMapEntry:
             raise FeatureContractError("missing annotation evidence")
         if not ENSG.fullmatch(self.canonical_ensembl):
             raise FeatureContractError("canonical Ensembl ID must be unversioned ENSG")
+        if self.namespace == "ENTREZ_GENE_ID":
+            # Entrez IDs are decimal strings, never integer-coerced (source
+            # namespace and byte-exact original identity must be preserved).
+            # Mapping to Ensembl is never inferred from numeric similarity:
+            # each entry still requires the frozen annotation evidence.
+            if (not ENTREZ_ID.fullmatch(self.source_id)
+                    or self.mapping_status != "PRIMARY_ID"):
+                raise FeatureContractError(
+                    "Entrez ID must be positive canonical decimal text with primary evidence"
+                )
         if self.namespace == "ENSEMBL_GENE_ID":
             m = ENSG_VERSIONED.fullmatch(self.source_id)
             if m is not None:
@@ -112,15 +123,25 @@ class FrozenAnnotation:
         if sha_json(self.body()) != self.contract_sha256:
             raise FeatureContractError("frozen annotation digest mismatch")
 
-    def lookup(self, namespace: str, source_id: str) -> str | None:
+    def lookup_index(self) -> dict[tuple[str, str], str]:
+        """Validate once, then construct a one-to-one source-key lookup.
+
+        For tens of thousands of genes, rebuilding the entire mapping on every
+        query is quadratic. This validated index is local to one operation:
+        it is NEVER cached across a changed annotation or used as authority
+        independently of the frozen annotation digest.
+        """
         self.validate()
-        if namespace not in VALID_NAMESPACES:
-            raise FeatureContractError("unknown source feature namespace")
-        entries = {
+        return {
             (e.namespace, e.source_id): e.canonical_ensembl for e in self.entries
         }
-        # Unknown symbol or unrecorded version: NOT_MAPPED; never guess
-        return entries.get((namespace, source_id))
+
+    def lookup(self, namespace: str, source_id: str) -> str | None:
+        if namespace not in VALID_NAMESPACES:
+            raise FeatureContractError("unknown source feature namespace")
+        # Direct standalone lookups remain fail-closed, including for an
+        # independently altered or malformed frozen-annotation object.
+        return self.lookup_index().get((namespace, source_id))
 
 
 def freeze_annotation(
@@ -238,14 +259,17 @@ def align(
     """
     a.validate()
     b.validate()
-    annotation.validate()
+    # One frozen-digest validation and one lookup-index build per alignment.
+    # Previously annotation.lookup() rebuilt/rehash-validated all entries
+    # once for EVERY SOURCE FEATURE, O(features * annotation entries).
+    mapping_index = annotation.lookup_index()
     if same_gene_policy != "REJECT_COLLISION":
         raise FeatureContractError("unsupported gene collision policy")
     mapped = []
     for study in (a, b):
         index: dict[str, int] = {}
         for i, gene in enumerate(study.original_ids):
-            canonical = annotation.lookup(study.namespace, gene)
+            canonical = mapping_index.get((study.namespace, gene))
             if canonical is None:
                 raise FeatureContractError(
                     f"{study.study}/{study.assay}: unmapped feature {gene!r}; "
