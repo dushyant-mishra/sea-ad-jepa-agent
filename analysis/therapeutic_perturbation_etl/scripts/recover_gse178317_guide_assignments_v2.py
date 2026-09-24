@@ -85,6 +85,8 @@ LANES = [
      "gex_h5": "GSM5387655_iTF_Microglia_10X_Lane4_filtered_feature_bc_matrix.h5"},
 ]
 
+EXPECTED_CELLS = 58302
+EXPECTED_GUIDES = 81
 REVIEWED_LIBRARY_SHA256 = "8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942"
 REVIEWED_GEX_H5_SHA256 = {
     "L1": "0b1fd0ad00f3fabf170c4207ef3886c3bdc955256a59c10949dfa3b110cc82de",
@@ -329,7 +331,7 @@ def validate_count_stage_receipt(counts_npz, receipt_path):
         if rec.get("gex_h5_sha256") != REVIEWED_GEX_H5_SHA256[lane]:
             raise SystemExit("STOP: count receipt GEX H5 digest drift")
     matrix = receipt.get("matrix") or {}
-    if matrix.get("guides") != 81 or matrix.get("cells") != 58302:
+    if matrix.get("guides") != EXPECTED_GUIDES or matrix.get("cells") != EXPECTED_CELLS:
         raise SystemExit("STOP: count receipt matrix geometry differs from reviewed source census")
     if matrix.get("total_umis", 0) <= 0:
         raise SystemExit("STOP: count receipt has no guide UMI support")
@@ -337,6 +339,41 @@ def validate_count_stage_receipt(counts_npz, receipt_path):
     if matrix.get("npz_sha256") != observed:
         raise SystemExit("STOP: count NPZ digest does not match reviewed receipt")
     return receipt
+
+
+def validate_loaded_count_artifact(z, receipt):
+    required = {"counts", "cell_ids", "cell_lane", "guides", "guide_target"}
+    if set(z.files) != required:
+        raise SystemExit("STOP: count NPZ members differ from frozen V2 schema")
+    counts = z["counts"]
+    cell_ids = z["cell_ids"]
+    cell_lane = z["cell_lane"]
+    guides = z["guides"]
+    guide_target = z["guide_target"]
+    matrix = receipt["matrix"]
+    expected_shape = (matrix["cells"], matrix["guides"])
+    if counts.shape != expected_shape:
+        raise SystemExit("STOP: count NPZ matrix shape disagrees with receipt")
+    if counts.dtype.kind not in "iu" or np.any(counts < 0):
+        raise SystemExit("STOP: guide count matrix must be nonnegative integers")
+    if int(counts.sum()) != int(matrix["total_umis"]):
+        raise SystemExit("STOP: count NPZ total UMI count disagrees with receipt")
+    if len(cell_ids) != expected_shape[0] or len(cell_lane) != expected_shape[0]:
+        raise SystemExit("STOP: cell identity vectors disagree with count matrix")
+    if len(guides) != expected_shape[1] or len(guide_target) != expected_shape[1]:
+        raise SystemExit("STOP: guide identity vectors disagree with count matrix")
+    for name, arr in {
+        "cell_ids": cell_ids, "cell_lane": cell_lane,
+        "guides": guides, "guide_target": guide_target,
+    }.items():
+        if arr.dtype.kind not in "US":
+            raise SystemExit("STOP: %s must use non-pickle string arrays" % name)
+    if len(set(map(str, guides))) != len(guides):
+        raise SystemExit("STOP: duplicate guide identity in count NPZ")
+    expected_lanes = {x["lane"] for x in LANES}
+    if set(map(str, cell_lane)) != expected_lanes:
+        raise SystemExit("STOP: count NPZ lane identities differ from reviewed lanes")
+    return counts, list(map(str, cell_ids)), list(map(str, cell_lane)), list(map(str, guides)), list(map(str, guide_target))
 
 
 def robust_z(counts, totals):
@@ -443,11 +480,10 @@ def stage_call(a):
         raise SystemExit("V2 call refuses occupied output directory; use a new versioned path")
     count_receipt = validate_count_stage_receipt(a.counts_npz, a.count_receipt)
     z = np.load(a.counts_npz, allow_pickle=False)
-    counts = z["counts"].astype(np.float64)
-    cell_ids = list(z["cell_ids"])
-    cell_lane = list(z["cell_lane"])
-    guides = list(z["guides"])
-    guide_target = list(z["guide_target"])
+    counts_i, cell_ids, cell_lane, guides, guide_target = validate_loaded_count_artifact(
+        z, count_receipt
+    )
+    counts = counts_i.astype(np.float64)
     n_cells, n_guides = counts.shape
     totals = counts.sum(axis=1)
     print("matrix: %d cells x %d guides, %d UMIs"
