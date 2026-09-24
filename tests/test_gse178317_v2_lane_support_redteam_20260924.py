@@ -129,6 +129,12 @@ def test_actual_stage_call_reports_false_pooled_pass_as_fail(tmp_path, monkeypat
         counts[i, lookup[row["target_gene"]]] = 20
         ids.append(row["lane"] + "_FAKECELL%08d" % i)
         lanes.append(row["lane"])
+    # Preserve the reviewed four-lane census while keeping the actual false-PASS
+    # adversary confined to target L1 versus control L2. Two zero-count cells
+    # represent L3/L4 and are never judged/assigned.
+    counts = np.vstack([counts, np.zeros((2, len(genes)), dtype=np.int32)])
+    ids.extend(["L3_UNJUDGED", "L4_UNJUDGED"])
+    lanes.extend(["L3", "L4"])
     file = tmp_path / "synthetic-counts-NOT-PHYSICAL.npz"
     np.savez_compressed(file, counts=counts,
                         cell_ids=np.asarray(ids, dtype=str),
@@ -142,7 +148,7 @@ def test_actual_stage_call_reports_false_pooled_pass_as_fail(tmp_path, monkeypat
         lambda counts_npz, receipt_path: {
             "schema": "GSE178317_GUIDE_COUNT_STAGE_V2",
             "matrix": {
-                "cells": len(rows), "guides": len(genes),
+                "cells": len(ids), "guides": len(genes),
                 "total_umis": int(counts.sum()),
             },
         },
@@ -162,6 +168,7 @@ def test_actual_stage_call_reports_false_pooled_pass_as_fail(tmp_path, monkeypat
         (out_dir / "gse178317_guide_assignment_receipt_v2.json").read_text()
     )
     assert receipt["cells_assigned"] == 1240
+    assert receipt["cells_total"] == 1242
     assert receipt["verdict"] == "FAIL_LANE_SUPPORT"
     assert receipt["verdict_basis"]["usable_targets"] == 0
     assert receipt["qualification_scope"] == (
