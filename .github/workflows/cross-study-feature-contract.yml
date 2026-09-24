@@ -1,0 +1,38 @@
+name: Cross-study feature-identity contract
+
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/perturbation/cross_study_feature_contract_v1.py'
+      - 'tests/test_cross_study_feature_contract_v1.py'
+      - 'tests/test_cross_study_feature_lookup_scale_v1.py'
+      - 'tests/test_cross_study_entrez_namespace_v1.py'
+      - '.github/workflows/cross-study-feature-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  feature-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused dependencies
+        run: python -m pip install --disable-pip-version-check numpy pytest
+      - name: Run mandatory adversarial controls
+        env:
+          PYTHONPATH: src
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_cross_study_feature_contract_v1.py tests/test_cross_study_feature_lookup_scale_v1.py tests/test_cross_study_entrez_namespace_v1.py | tee /tmp/cross-study-feature-contract.log
+      - name: Fail closed on skip
+        run: |
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/cross-study-feature-contract.log; then
+            echo 'MANDATORY FEATURE TESTS SKIPPED — STOP'
+            exit 1
+          fi
