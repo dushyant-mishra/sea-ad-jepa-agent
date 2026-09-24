@@ -1,0 +1,83 @@
+{
+  "biological_validation_authorized": false,
+  "files": [
+    {
+      "exact_bytes": 188965,
+      "git_blob_sha1": "cc559eac105b0da96fa16adee8c5286332a51da1",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iPSC-Microglia-CITE-seq-CRISPRi.csv.gz",
+      "sha256": "d032364a457e1406b61a5109256953c9be5c90ee52236a1d3b885b790a51baaf",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 16133002,
+      "git_blob_sha1": "295bb9c72114b7e54769b53d5ced39f9ea1274b2",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iPSC-Microglia-CROP-seq-CRISPRi.csv.gz",
+      "sha256": "818ae3c383811c94ab56ea588d34fbaaeaa1c808673125f68d62644e6ca19606",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 187443,
+      "git_blob_sha1": "fe9ac04d01a6ea3e730510ea2e3c2e60840e4b93",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF-Microglia-CITE-seq-CRISPRi.csv.gz",
+      "sha256": "dcc204e858264e1e63959c628ebfaabee8249d86aac2d6fe637d8e7b872d3434",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 20358929,
+      "git_blob_sha1": "b525a005c8f50e1342446f46b0f35500b457d621",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF-Microglia-CROP-seq-CRISPRi.csv.gz",
+      "sha256": "58c48fa4400d469a0e616940070bb426a71df77ff12e6de2bbf8efb119ff884e",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 13586532,
+      "git_blob_sha1": "7b2d359f93e7692625ecff0d721bd221b3cdb559",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF_Microglia-Day-8-CROP-seq-CRISPRi.csv.gz",
+      "sha256": "201e8fb28a63dfb91ae5f37a77f9641a90c3cdf4c618943a55699c512227079f",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 227864,
+      "git_blob_sha1": "c8c8fceb71e29cd7b1b17fe4823ab4d230999ac7",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_cell_guide_assignments_v2.csv.gz",
+      "sha256": "87d032b6a4b8436771a8c1a79e3c882576f7c7155282aa933f8f94734ad052cd",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 3121266,
+      "git_blob_sha1": "2cf39c4bc8ff573c9fbb71496dc68e3afac3095e",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_cell_guide_umi_counts_v2.npz",
+      "sha256": "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 2573,
+      "git_blob_sha1": "3dc8e48767e8f3e2b013c75ae145bfd802995d0b",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_target_engagement_v2.csv",
+      "sha256": "c6d6f0013d7911477d51fb1c178e23af8806c2df48a2b60cb7b2de3e62f2d4df",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 22119,
+      "git_blob_sha1": "d9b8a6ab72c353fac27b26de4e4f11f16e1d8c1a",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_top_effects_v2.csv.gz",
+      "sha256": "b55bd4b22c51fcf17e0171f7436d61b084a979669462df117c266a8d286ba440",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    },
+    {
+      "exact_bytes": 2231,
+      "git_blob_sha1": "0bf6637b25d6b7ee17f23eb9764ad09d122ab793",
+      "repo_relative_path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_vs_crisprbrain_engagement_v1.csv",
+      "sha256": "fff45935c994d3fbce3293a9ddc53bce3acaa9507040e1ceb79ef19e8418a7e0",
+      "source_or_regeneration": "reviewed_PR77_physical_output"
+    }
+  ],
+  "jepa_training_authorized": false,
+  "n_committed_output_binaries": 10,
+  "regenerate_on_demand_neuron_ipsc": 4,
+  "reviewed_source_ref": "4213dd73e9a017daf776e898c6c7c68edf345f7a",
+  "schema": "JEPA_PERTURBATION_COMMITTED_OUTPUT_SHA256_V1",
+  "scope": "COMMITTED_DEVELOPMENT_BINARIES_ONLY",
+  "source_git_blob_verified": true,
+  "uncommitted_reference_tables_included": false
+}
