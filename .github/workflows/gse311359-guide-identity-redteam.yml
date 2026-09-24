@@ -1,0 +1,35 @@
+name: GSE311359 guide feature identity red-team
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_gse311359_intervention_effects_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/gse311359/GSE311359_perturbation_identity.csv'
+      - 'tests/test_gse311359_guide_feature_identity_redteam_v1.py'
+      - '.github/workflows/gse311359-guide-identity-redteam.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  duplicate-guide-identity-stop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused CPU test dependencies
+        run: python -m pip install --disable-pip-version-check numpy pytest
+      - name: Execute real metadata SHA pin and synthetic early-stop adversaries
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_gse311359_guide_feature_identity_redteam_v1.py | tee /tmp/gse311359-guide-identity.txt
+      - name: Reject mandatory test skips
+        run: |
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/gse311359-guide-identity.txt; then
+            echo "GSE311359 GUIDES TESTS SKIPPED — STOP"
+            exit 1
+          fi
