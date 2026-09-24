@@ -1,12 +1,12 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V22",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V23",
   "date": "2026-09-23",
-  "status": "POST_BULK_PHYSICAL_V1_AND_GSE240609_PUBLIC_GEO_V2_CPU__NO_TRAINING_OR_N1_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V22_BULK_GEO_ADDENDUM.md",
+  "status": "CURRENT_FULL_TAKEOVER_V23__PHYSICAL_ETL_PARALLEL_WITH_CPU_REDTEAM__NO_N1_OR_TRAINING_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V23_FULL_CURRENT.md",
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
   "prior_layer2_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md",
   "current_work_ledger_path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V22.json",
+  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V23.json",
   "prior_integrated_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
   "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
   "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
@@ -23,8 +23,11 @@
     "gse301119_support": "PR91@56600f66492b18af20edcfe5d11761d2cdca9383",
     "gse240609_public_geo_v2": "PR94@9cc155a659f9a70bf2f1e7a1fd9cc05283089cbf"
   },
-  "instruction": "START_HERE.md -> pointer -> V22 addendum -> V21 FULL handoff/state -> September15 historical audits. PR77 now has GSE241858/GSE240609 physical bulk V1 results. Independently reviewed GEO GSE240609 original sample titles show CD11b-purified microglia AFTER neuron coculture; PR94 V2 restores source-identities, root checks and measured-material semantics, CPU 9 PASS only, physical V2 rerun pending. GSE311359 3 duplicate BIN1 guide names remains PR92 STOP. GSE178317 guide identity missing remains STOP. Re-fetch heads. Real N1/training/protected outcomes remain forbidden.",
+  "instruction": "Open START_HERE.md FIRST. Read this V23 pointer, COMPLETE V23 handoff and V23 machine state, V23 copyable takeover instructions and Sep15 historical audits index. Older V21/V22 are historical supplemental. Refetch LIVE GitHub heads before acting. Real FULL104 N1 and V5 training remain UNAUTHORIZED. GSE311359 BIN1 V1 guide-level STOP (#92) and GSE178317 CRISPR GUIDE STOP remain. PR94 GSE240609 V2 and PR86 GSE254205 V2 have green CPU CI only, not real GPU physical rerun. Coordinate with Claude's physical extraction; prevent synthetic/historical spillover.",
   "prior_september15_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
   "prior_full_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md",
-  "prior_full_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json"
+  "prior_full_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json",
+  "takeover_instructions_path": "docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260923_V23.md",
+  "prior_v22_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V22_BULK_GEO_ADDENDUM.md",
+  "prior_v22_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V22.json"
 }

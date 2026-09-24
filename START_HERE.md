@@ -3,17 +3,18 @@
 Date: 2026-09-23
 Status: `CURRENT_PARALLEL_FULL104_AND_EXPERIMENTAL_HANDOFF__NO_TRAINING_OR_N1_AUTHORITY`
 
-## Read first
-Use `main` for current governance/startup context. Read in this order:
+## Read first — V23 canonical full takeover
+
+The latest operational authority is V23, merged as documentation-only after
+independent review. This pointer supersedes V22 as *startup status*, not
+historical source or scientific evidence. Read in this order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V22_BULK_GEO_ADDENDUM.md` (latest bulk-context and independently reviewed GEO updates)
-3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V22.json` (latest machine-readable delta)
-4. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md` (full operational/dependency handoff)
-5. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json` (full machine-readable state)
-6. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` (classify before repeating old work)
-7. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md` (historical scientific contracts; do not mistake September 15 status for live)
-8. runtime-asset, formulas, historical Layer-2, heavy-asset and supersession maps linked by the pointer.
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V23_FULL_CURRENT.md` — complete, standalone project status, all data/PRs/scripts/formulas/risks and workstream instructions
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V23.json` — machine-readable FULL104 source roots, all eight studies, exact PR snapshot and restrictions
+4. `docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260923_V23.md` — copyable new-chat setup prompt
+5. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` — prevent repeat audits and historical value spillover
+6. Prior September 23 V22 addendum / V21 full package, September 15 target authority, frozen formula and heavy-asset maps linked by the pointer, as needed.
 
 Before acting, re-fetch live branch heads. Branch names and commit messages do not confer scientific authority.
 
@@ -30,7 +31,9 @@ Before repeating any audit, read the historical-audits index and classify the pr
 
 Do not inspect protected/pathology/DEV/SEALED outcomes, D_private, D_obs outcomes, TD60, or other confirmation data while design choices remain open.
 
-## September 23 operational headline (read V22 addendum, then full V21 handoff)
+## September 23 operational headline (V23 supersedes V22 for startup status)
+
+- **V23 FULL handoff:** all latest live PR heads, eight-study status, source SHA roots and ordered parallel work documented together. PR #77 physical bulk V1 includes GSE241858 clone-by-cytokine and GSE240609 purified-microglia post-coculture. PR #94 public-GEO reviewed V2 has CPU CI only; physical V2 rerun pending. PR #92 BIN1 guide-ID STOP still applies to GSE311359. All code review PRs remain separate drafts unless a new live GitHub check proves otherwise.
 
 - LATEST: Claude PR #77 physical bulk V1 now includes GSE241858 TREM2 R47H × cytokine contexts (2 iPSC clones per genotype) and GSE240609 4-sample APOE3ch × WT/PSEN1 neuron contexts. One GSE240609 sample per factorial cell: descriptive effects only; public GEO confirms CD11b-purified microglia AFTER neuron coculture, not mixed bulk coculture. Independent PR #94 adds exact GEO titles/source-root V2 gates (9 synthetic/metadata tests PASS) and requires separate physical V2 execution before qualification.
 - GSE311359 PR #92 independent duplicate-BIN1 guide-identity STOP remains unresolved (7 adversarial tests PASS).
