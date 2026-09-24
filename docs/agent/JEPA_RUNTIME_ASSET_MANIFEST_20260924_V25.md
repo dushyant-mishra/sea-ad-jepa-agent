@@ -62,7 +62,7 @@ Frozen count source roots: sgRNA library SHA `8de1e7e737c8c42ec9a7feff0d6e198b4f
 
 ## Automated test workflows on experimental head
 
-At `67981c8ef6e158d865470e70bca81cbe289be3dd`, all nine completed SUCCESS:
+At `67981c8ef6e158d865470e70bca81cbe289be3dd`, audit status was **8 SUCCESS, 1 IN_PROGRESS, 0 FAILED**. The only unfinished workflow was `Perturbation target-heldout synthetic benchmark`; re-check before claiming nine green. Workflows present:
 `Perturbation domain and gene-authority contracts`; `GSE178317 design-authority red-team`; `Cross-study feature-identity contract`; `GSE178317 authenticated safe count reissue`; `GSE178317 V2 lane-support independent red-team`; `Perturbation physical-authority red-team`; `Experimental outcome exposure ledger`; `Perturbation target-heldout synthetic benchmark`; `Perturbation screen-profile retrospective baseline`.
 
 These are code/synthetic tests, not a physical safe-reissue receipt or scientific confirmation.
