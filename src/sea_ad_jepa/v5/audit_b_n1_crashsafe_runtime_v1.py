@@ -34,6 +34,7 @@ from .audit_b_n1_result_contract_v1 import (
 
 SCHEMA = "V5_AUDIT_B_N1_CRASHSAFE_JOURNAL_V1"
 FINAL_SCHEMA = "V5_AUDIT_B_N1_CRASHSAFE_FINALIZATION_V1"
+SYNTHETIC_FINAL_SCHEMA = "V5_AUDIT_B_N1_SYNTHETIC_FINALIZATION_V1"
 N_FOLDS = 4
 EXPECTED_UNITS = N1_TARGET_COUNT * N_FOLDS * N_RUNGS
 CONTEXT_SCHEMA = "V5_N1_IMMUTABLE_EXECUTION_CONTEXT_V1"
@@ -119,9 +120,24 @@ def validate_unit_record(
             raise ValueError(f"journal unit key drift: {key}")
     if record.get("context_sha256") != expected_context_sha256:
         raise ValueError("journal unit execution context drift")
+    expected_record_keys = {
+        "schema", "target_index", "target_col", "fold_index", "rung_index",
+        "observations", "record_sha256",
+    }
+    if expected_context_sha256 is not None:
+        expected_record_keys.add("context_sha256")
+    if set(record) != expected_record_keys:
+        raise ValueError("journal unit has unexpected or missing fields")
     observations = record.get("observations")
     if not isinstance(observations, list) or not observations:
         raise ValueError("journal unit has no observations")
+    observation_keys = {
+        "target_col", "fold_index", "donor_code", "source_code", "policy_id",
+        "rung_numerator", "rung_denominator",
+        "normalized_delta_detected", "normalized_delta_umi",
+    }
+    if any(not isinstance(row, dict) or set(row) != observation_keys for row in observations):
+        raise ValueError("journal observation schema mismatch")
     body = {k: v for k, v in record.items() if k != "record_sha256"}
     if record.get("record_sha256") != canonical_digest(body):
         raise ValueError("journal unit self-digest mismatch")
@@ -141,6 +157,8 @@ def commit_unit(
             existing, target_index=target_index, fold_index=fold_index,
             rung_index=rung_index, expected_context_sha256=execution_context_sha256,
         )
+        if int(existing.get("target_col", -1)) != int(target_col):
+            raise ValueError("committed journal target differs from frozen target order")
         return final
 
     payload: dict[str, Any] = {
@@ -194,6 +212,7 @@ def run_resumable_units(
         targets.shape != (N1_TARGET_COUNT,)
         or not np.issubdtype(targets.dtype, np.integer)
         or np.unique(targets).size != N1_TARGET_COUNT
+        or np.any(targets < 0)
     ):
         raise ValueError("frozen_targets must be the exact 256 unique integer N1 order")
     if stop_after_new_units is not None and stop_after_new_units < 0:
@@ -292,31 +311,59 @@ def finalize_from_journal(
     arrays = acc.finalize()
     write_deterministic_npz(result_artifact, arrays)
     artifact_sha = sha256_file(result_artifact)
-    receipt = AuditBN1ResultReceiptV1(
-        result_artifact_sha256=artifact_sha,
-        target_cols_sha256=array_sha256(arrays["target_cols"], dtype="<i8"),
-        donor_normalized_delta_detected_sha256=array_sha256(
-            arrays["donor_normalized_delta_detected"], dtype="<f8"
-        ),
-        donor_normalized_delta_umi_sha256=array_sha256(
-            arrays["donor_normalized_delta_umi"], dtype="<f8"
-        ),
-        donor_source_code_sha256=array_sha256(
-            arrays["donor_source_code"], dtype="<i8"
-        ),
-    )
-    canonical = receipt.canonical_digest()
-    payload = {
-        "schema": FINAL_SCHEMA,
-        "result_receipt": asdict(receipt),
-        "result_receipt_sha256": canonical,
-        "journal_units": EXPECTED_UNITS,
-        "execution_context_sha256": context_sha,
-        "precision_calculated": False,
-        "terminal_masking_outcomes_inspected": False,
-        "terminal_masking_authorized": False,
-        "training_authorized": False,
-    }
+    if execution_context is not None and str(execution_context.get("scope", "")).startswith("SYNTHETIC_ONLY"):
+        synthetic_result = {
+            "result_artifact_sha256": artifact_sha,
+            "target_cols_sha256": array_sha256(arrays["target_cols"], dtype="<i8"),
+            "donor_normalized_delta_detected_sha256": array_sha256(
+                arrays["donor_normalized_delta_detected"], dtype="<f8"
+            ),
+            "donor_normalized_delta_umi_sha256": array_sha256(
+                arrays["donor_normalized_delta_umi"], dtype="<f8"
+            ),
+            "donor_source_code_sha256": array_sha256(
+                arrays["donor_source_code"], dtype="<i8"
+            ),
+        }
+        synthetic_result["synthetic_result_sha256"] = canonical_digest(synthetic_result)
+        payload = {
+            "schema": SYNTHETIC_FINAL_SCHEMA,
+            "scope": execution_context["scope"],
+            "synthetic_result": synthetic_result,
+            "journal_units": EXPECTED_UNITS,
+            "execution_context_sha256": context_sha,
+            "physical_execution_authorized": False,
+            "precision_calculated": False,
+            "terminal_masking_outcomes_inspected": False,
+            "terminal_masking_authorized": False,
+            "training_authorized": False,
+        }
+    else:
+        receipt = AuditBN1ResultReceiptV1(
+            result_artifact_sha256=artifact_sha,
+            target_cols_sha256=array_sha256(arrays["target_cols"], dtype="<i8"),
+            donor_normalized_delta_detected_sha256=array_sha256(
+                arrays["donor_normalized_delta_detected"], dtype="<f8"
+            ),
+            donor_normalized_delta_umi_sha256=array_sha256(
+                arrays["donor_normalized_delta_umi"], dtype="<f8"
+            ),
+            donor_source_code_sha256=array_sha256(
+                arrays["donor_source_code"], dtype="<i8"
+            ),
+        )
+        canonical = receipt.canonical_digest()
+        payload = {
+            "schema": FINAL_SCHEMA,
+            "result_receipt": asdict(receipt),
+            "result_receipt_sha256": canonical,
+            "journal_units": EXPECTED_UNITS,
+            "execution_context_sha256": context_sha,
+            "precision_calculated": False,
+            "terminal_masking_outcomes_inspected": False,
+            "terminal_masking_authorized": False,
+            "training_authorized": False,
+        }
     payload["finalization_sha256"] = canonical_digest(payload)
     stage = result_receipt.with_suffix(result_receipt.suffix + ".tmp")
     result_receipt.parent.mkdir(parents=True, exist_ok=True)

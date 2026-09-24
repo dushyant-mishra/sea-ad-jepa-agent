@@ -23,6 +23,14 @@ from .audit_b_n1_result_contract_v1 import N1_TARGET_COUNT
 
 
 MODE = "SYNTHETIC_ONLY__NO_PHYSICAL_N1_AUTHORITY"
+_CONTEXT_KEYS = {
+    "schema", "scope", "source_names", "donor_source_sha256",
+    "fold_by_donor_sha256", "cell_donor_sha256", "src_of_cell_sha256",
+    "core_sha256", "target_order_sha256", "donor_nnz_sha256",
+    "donor_umi_sha256", "stream_root_sha256", "code_root_sha256",
+    "parameter_root_sha256", "rng_root_sha256",
+    "physical_execution_authorized", "training_authorized",
+}
 
 
 def _i8(value: Any, label: str, shape: tuple[int, ...] | None = None) -> np.ndarray:
@@ -136,6 +144,8 @@ def bind_synthetic_lineage(
         "donor_nnz_sha256": _digest(nnz),
         "donor_umi_sha256": _digest(umi),
         **roots,
+        "physical_execution_authorized": False,
+        "training_authorized": False,
     }
     return SyntheticBound(ctx, targets.copy(), source.copy(), fold.copy(), runtime.canonical_digest(ctx))
 
@@ -143,6 +153,12 @@ def bind_synthetic_lineage(
 def _verify_bound(bound: SyntheticBound) -> None:
     if bound.context.get("scope") != MODE or bound.context.get("schema") != runtime.CONTEXT_SCHEMA:
         raise ValueError("only synthetic integration experiments are permitted")
+    if set(bound.context) != _CONTEXT_KEYS:
+        raise ValueError("synthetic execution context has unexpected or missing fields")
+    if bound.context.get("physical_execution_authorized") is not False:
+        raise ValueError("synthetic context cannot authorize physical execution")
+    if bound.context.get("training_authorized") is not False:
+        raise ValueError("synthetic context cannot authorize training")
     if runtime.canonical_digest(bound.context) != bound.binding_sha256:
         raise ValueError("synthetic execution context drift after frozen binding")
     for key, arr in (

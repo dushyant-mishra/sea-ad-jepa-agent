@@ -116,7 +116,9 @@ def test_interrupted_resume_is_byte_identical_to_clean_run(tmp_path: Path) -> No
 
     assert out_a.read_bytes() == out_b.read_bytes()
     assert receipt_a.read_bytes() == receipt_b.read_bytes()
-    assert final_a["result_receipt_sha256"] == final_b["result_receipt_sha256"]
+    assert final_a["synthetic_result"]["synthetic_result_sha256"] == final_b["synthetic_result"]["synthetic_result_sha256"]
+    assert final_a["schema"] == rt.SYNTHETIC_FINAL_SCHEMA
+    assert final_a["physical_execution_authorized"] is False
     assert final_a["execution_context_sha256"] == rt.canonical_digest(bound.context)
     assert final_a["finalization_sha256"] == rt.canonical_digest({
         k: v for k, v in final_a.items() if k != "finalization_sha256"

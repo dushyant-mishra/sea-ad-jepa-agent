@@ -293,3 +293,46 @@ def test_full_core_synthetic_geometry_binds_without_physical_data():
     assert bound.frozen_targets.shape == (256,)
     assert bound.context["core_sha256"] == digest(core)
     assert bound.context["scope"] == adapter.MODE
+
+
+
+def test_synthetic_bound_rejects_authority_flag_or_context_field_injection(tmp_path):
+    bound = adapter.bind_synthetic_lineage(**fixture_kwargs())
+    bad = dict(bound.context)
+    bad["physical_execution_authorized"] = True
+    forged = replace(bound, context=bad, binding_sha256=rt.canonical_digest(bad))
+    with pytest.raises(ValueError, match="cannot authorize physical execution"):
+        adapter.run_synthetic_journal(
+            bound=forged, journal_dir=tmp_path / "p",
+            compute_unit=lambda *_: (_ for _ in ()).throw(AssertionError("should not compute")),
+            stop_after_new_units=1,
+        )
+
+    extra = dict(bound.context)
+    extra["invented_authority"] = "yes"
+    forged_extra = replace(bound, context=extra, binding_sha256=rt.canonical_digest(extra))
+    with pytest.raises(ValueError, match="unexpected or missing"):
+        adapter.run_synthetic_journal(
+            bound=forged_extra, journal_dir=tmp_path / "e",
+            compute_unit=lambda *_: (_ for _ in ()).throw(AssertionError("should not compute")),
+            stop_after_new_units=1,
+        )
+
+
+def test_synthetic_finalization_contains_no_production_execution_authority(tmp_path):
+    bound = adapter.bind_synthetic_lineage(**fixture_kwargs())
+    journal = tmp_path / "journal"
+    adapter.run_synthetic_journal(
+        bound=bound, journal_dir=journal,
+        compute_unit=fake_compute(bound, []),
+    )
+    receipt = adapter.finalize_synthetic_journal(
+        bound=bound, journal_dir=journal,
+        result_artifact=tmp_path / "result.npz",
+        result_receipt=tmp_path / "result.json",
+    )
+    encoded = json.dumps(receipt, sort_keys=True)
+    assert "n1_execution_authority_sha256" not in encoded
+    assert "b4_contract_sha256" not in encoded
+    assert receipt["physical_execution_authorized"] is False
+    assert receipt["training_authorized"] is False
