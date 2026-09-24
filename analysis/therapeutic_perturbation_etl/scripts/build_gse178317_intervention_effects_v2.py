@@ -1,33 +1,15 @@
 #!/usr/bin/env python3
-"""Measured intervention effects for GSE178317 (Kampmann iTF-Microglia CROP-seq).
+"""GSE178317 v2: descriptive capture-well pseudobulk, NEVER biological SE.
 
-Consumes the per-cell sgRNA assignments recovered by
-`recover_gse178317_guide_assignments_v1.py` and the deposited Cell Ranger
-gene-expression matrices, and produces the same kind of table already built for
-the other CRISPR studies in this collection: a pseudobulk profile per
-(lane, target gene), a log2 fold change against the non-targeting controls, and
-an explicit target-engagement measurement for the perturbed gene itself.
-
-Design decisions, fixed here rather than discovered from the results:
-
-  * The experimental unit is the (lane, target) pseudobulk.  Cells sharing a
-    lane are not independent replicates, so dispersion is estimated across the
-    four 10x lanes and never across cells.
-
-  * Fold changes are computed within a lane against that same lane's
-    non-targeting cells, then averaged across lanes.  Comparing a target in one
-    lane to controls in another would confound the perturbation with lane.
-
-  * This is CRISPRi (dCas9-KRAB), so engagement means the targeted gene goes
-    DOWN.  The sign is not chosen to suit the answer; it is stated here and the
-    measurement is reported whichever way it comes out.
-
-  * A target is reported as having estimable uncertainty only if it is present
-    in at least MIN_LANES_FOR_SPREAD lanes with at least MIN_CELLS_PER_UNIT
-    cells.  Targets below that threshold are still reported, with their spread
-    recorded as null rather than as a number that was not measured.
-
-No synthetic, historical or placeholder value contributes to any quantity here.
+The authors loaded day-eight iTF-Microglia into four 10x Chromium wells; four
+wells do NOT demonstrate independent differentiations, donors or cell lines.
+Nature Neuroscience 2022 DOI: 10.1038/s41593-022-01131-4, CROP-seq Methods.
+Lane-paired target-minus-NTC fold changes and well-to-well descriptive spread
+are allowed only after an explicit DEVELOPMENT V2 lane-support receipt.
+`biological_uncertainty_estimable` is always FALSE until actual independent
+biological replicates and their units are documented. This producer does not
+authorize held-out confirmation, therapeutic ranking or JEPA training.
+Historical V1 effect script is fail-closed, retained only for provenance.
 """
 
 from __future__ import annotations
@@ -43,6 +25,11 @@ import sys
 
 import numpy as np
 
+from recover_gse178317_guide_assignments_v2 import (
+    LANES as FROZEN_SOURCE_LANES,
+    assess_lane_usable_assignments,
+)
+
 # ---------------------------------------------------------------------------
 # Declared before inspecting any effect estimate.
 # ---------------------------------------------------------------------------
@@ -50,6 +37,13 @@ MIN_CELLS_PER_UNIT = 10        # cells required for a (lane, target) pseudobulk
 MIN_LANES_FOR_SPREAD = 3       # lanes required before a spread is reported
 PSEUDOCOUNT = 1.0              # log2(CPM + 1)
 NTC_LABEL = "NTC"
+
+REVIEWED_GEX_H5_ROOTS = {
+    "L1": "0b1fd0ad00f3fabf170c4207ef3886c3bdc955256a59c10949dfa3b110cc82de",
+    "L2": "6cb4df62065006d18cc3f0d3df42d7ac3ce875a41cbc59d7814e855862abb754",
+    "L3": "1197f21919162472db9c7e998b1e16a422e18b86c78893d8fb669c6509a6b5f9",
+    "L4": "9e9046e893c9f15e1697dcd55df8595890c38a407ea68a091286acaa28abfc86",
+}
 
 LANE_TO_H5 = {
     "L1": "GSM5387652_iTF_Microglia_10X_Lane1_filtered_feature_bc_matrix.h5",
@@ -86,39 +80,74 @@ def load_lane_matrix(h5_path):
 
 
 def main():
-    raise SystemExit(
-        "STOP_GSE178317_V1_EFFECTS_SUPERSEDED: this producer could label 10x "
-        "capture-well spread as biological uncertainty and accepted unqualified "
-        "guide assignments. Use versioned v2 descriptive producer only after "
-        "reviewed V2 lane-support and identity provenance checks."
-    )
     ap = argparse.ArgumentParser()
     ap.add_argument("--assignments", required=True)
+    ap.add_argument("--assignment-receipt", required=True)
     ap.add_argument("--gex-dir", required=True)
     ap.add_argument("--out-dir", required=True)
     a = ap.parse_args()
-    os.makedirs(a.out_dir, exist_ok=True)
+    if os.path.exists(a.out_dir):
+        raise SystemExit("V2 refuses occupied output directory; use a versioned new path")
+    with open(a.assignment_receipt, encoding="utf-8") as fh:
+        assignment_receipt = json.load(fh)
+    if (assignment_receipt.get("schema") != "GSE178317_GUIDE_ASSIGNMENT_V2"
+            or assignment_receipt.get("verdict") != "PASS_LANE_SUPPORT_ONLY"
+            or assignment_receipt.get("qualification_scope") !=
+                "DEVELOPMENT_POST_SMOKE_NOT_GUIDE_IDENTITY_VALIDATION"
+            or assignment_receipt.get("assignments_csv_sha256") !=
+                sha256_file(a.assignments)):
+        raise SystemExit("STOP: V2 source assignment/paired-lane development receipt missing or mismatched")
 
     # ---- assignments -------------------------------------------------------
     by_lane = collections.defaultdict(lambda: collections.defaultdict(list))
+    assigned = set()
+    support_rows = []
     with open(a.assignments, newline="") as fh:
         for row in csv.DictReader(fh):
-            by_lane[row["lane"]][row["target_gene"]].append(row["cell_barcode"])
+            lane, target, barcode = row["lane"], row["target_gene"], row["cell_barcode"]
+            if lane not in LANE_TO_H5 or not target or not barcode:
+                raise SystemExit("STOP: unknown lane or missing assignment identity")
+            key = (lane, barcode)
+            if key in assigned:
+                raise SystemExit("STOP: duplicate cell barcode / multiple target in lane")
+            assigned.add(key)
+            by_lane[lane][target].append(barcode)
+            support_rows.append({"lane": lane, "target_gene": target})
+    support = assess_lane_usable_assignments(
+        support_rows, [entry["lane"] for entry in FROZEN_SOURCE_LANES]
+    )
+    if not support["support_pass"]:
+        raise SystemExit("STOP: assignment CSV fails independently recomputed "
+                         "target/NTC matched-lane support: "
+                         + "; ".join(support["failure_reasons"]))
+    if assignment_receipt.get("verdict_basis", {}).get("usable_targets") != len(support["usable_targets"]):
+        raise SystemExit("STOP: caller-provided receipt disagrees with independently "
+                         "recomputed assigned-target lane support")
+    os.makedirs(a.out_dir, exist_ok=False)
     lanes = sorted(by_lane)
     print("lanes: %s" % ", ".join(lanes))
 
     receipt = {
-        "schema": "GSE178317_INTERVENTION_EFFECTS_V1",
+        "schema": "GSE178317_INTERVENTION_EFFECTS_V2_DEVELOPMENT",
+        "qualification_scope": "DESCRIPTIVE_WITHIN_CAPTURE_WELLS_ONLY",
+        "training_authorized": False,
+        "prospective_confirmation_authorized": False,
+        "biological_uncertainty_estimable": False,
+        "n_independent_biological_replicates": "NOT_ESTABLISHED",
+        "source_methods_doi": "10.1038/s41593-022-01131-4",
+        "assignment_receipt_sha256": sha256_file(a.assignment_receipt),
         "study": "GSE178317",
         "system": "iPSC-derived microglia (iTF-Microglia)",
         "modality": "CROP-seq CRISPRi (dCas9-KRAB), druggable-genome subset",
-        "experimental_unit": "(lane, target) pseudobulk; cells within a lane are "
-                             "not independent replicates",
+        "experimental_unit": "(10x capture well, target) paired pseudobulk; "
+                             "four wells are not established biological replicates",
+        "guide_identity_independently_verified": False,
         "guide_identity_provenance": (
             "recovered from SRA raw reads plus Suppl. Table 5 of Draeger et al. "
             "2022; absent from the processed GEO deposit"),
         "assignments_sha256": sha256_file(a.assignments),
-        "declared_before_inspection": {
+        "source_gex_sha256_by_well": {},
+        "development_thresholds_declared_after_inspected_smoke": {
             "min_cells_per_unit": MIN_CELLS_PER_UNIT,
             "min_lanes_for_spread": MIN_LANES_FOR_SPREAD,
             "pseudocount": PSEUDOCOUNT,
@@ -135,14 +164,21 @@ def main():
     symbols = gene_ids = None
     for lane in lanes:
         h5 = os.path.join(a.gex_dir, LANE_TO_H5[lane])
+        observed_sha = sha256_file(h5)
+        if observed_sha != REVIEWED_GEX_H5_ROOTS[lane]:
+            raise SystemExit("STOP: source GEX H5 digest not frozen or has drifted for " + lane)
+        receipt["source_gex_sha256_by_well"][lane] = observed_sha
         m, bc_index, sym, gid = load_lane_matrix(h5)
         if symbols is None:
             symbols, gene_ids = sym, gid
-        elif symbols != sym:
-            raise SystemExit("gene order differs between lanes; refusing to pool")
+        elif symbols != sym or gene_ids != gid:
+            raise SystemExit("symbol or Ensembl gene-ID order differs between wells")
         print("  %s matrix %s, %d barcodes" % (lane, m.shape, len(bc_index)))
         for target, bcs in by_lane[lane].items():
-            cols = [bc_index[b] for b in bcs if b in bc_index]
+            missing = [b for b in bcs if b not in bc_index]
+            if missing:
+                raise SystemExit("STOP: assigned barcodes are absent from GEX: %d" % len(missing))
+            cols = [bc_index[b] for b in bcs]
             if len(cols) < MIN_CELLS_PER_UNIT:
                 continue
             raw = np.asarray(m[:, cols].sum(axis=1)).ravel().astype(np.float64)
@@ -153,8 +189,10 @@ def main():
             ncells[(lane, target)] = len(cols)
 
     sym_to_row = {}
-    for i, s in enumerate(symbols):
-        sym_to_row.setdefault(s, i)
+    for i, symbol in enumerate(symbols):
+        if symbol in sym_to_row and symbol in {t for _, t in logcpm if t != NTC_LABEL}:
+            raise SystemExit("STOP: targeted symbol has multiple Ensembl IDs: " + symbol)
+        sym_to_row.setdefault(symbol, i)
 
     # ---- effects vs non-targeting, within lane -----------------------------
     targets = sorted({t for (_, t) in logcpm if t != NTC_LABEL})
@@ -171,7 +209,7 @@ def main():
             continue
         lfc = np.mean(per_lane_lfc, axis=0)
         n_lanes = len(per_lane_lfc)
-        estimable = n_lanes >= MIN_LANES_FOR_SPREAD
+        technical_spread_estimable = n_lanes >= MIN_LANES_FOR_SPREAD
 
         r = sym_to_row.get(target)
         if r is None:
@@ -179,7 +217,7 @@ def main():
         else:
             vals = [float(x[r]) for x in per_lane_lfc]
             eng = float(np.mean(vals))
-            eng_sd = float(np.std(vals, ddof=1)) if estimable else None
+            eng_sd = float(np.std(vals, ddof=1)) if technical_spread_estimable else None
 
         rows.append({
             "target_gene": target,
@@ -188,10 +226,11 @@ def main():
             "n_cells": cells_used,
             "target_in_reference": r is not None,
             "engagement_log2fc": None if eng is None else round(eng, 4),
-            "engagement_sd_across_lanes": None if eng_sd is None else round(eng_sd, 4),
+            "engagement_sd_across_capture_wells": None if eng_sd is None else round(eng_sd, 4),
             "engagement_direction_consistent_with_crispri":
                 None if eng is None else bool(eng < 0),
-            "uncertainty_estimable": bool(estimable),
+            "technical_capture_well_spread_estimable": bool(technical_spread_estimable),
+            "biological_uncertainty_estimable": False,
         })
 
         order = np.argsort(lfc)
@@ -202,14 +241,17 @@ def main():
                 "gene_id_ensembl": gene_ids[idx],
                 "log2fc_vs_ntc": round(float(lfc[idx]), 4),
                 "n_lanes": n_lanes,
+                "biological_uncertainty_estimable": False,
             })
 
-    out_t = os.path.join(a.out_dir, "gse178317_target_engagement_v1.csv")
+    if not rows:
+        raise SystemExit("STOP: no paired targets survived GEX pseudobulk checks")
+    out_t = os.path.join(a.out_dir, "gse178317_target_engagement_v2.csv")
     with open(out_t, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader(); w.writerows(rows)
 
-    out_e = os.path.join(a.out_dir, "gse178317_top_effects_v1.csv")
+    out_e = os.path.join(a.out_dir, "gse178317_top_effects_v2.csv")
     with open(out_e, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(eff_rows[0].keys()))
         w.writeheader(); w.writerows(eff_rows)
@@ -219,8 +261,9 @@ def main():
     receipt["targets_analyzed"] = len(rows)
     receipt["targets_with_engagement_measured"] = len(measured)
     receipt["targets_knocked_down"] = len(down)
-    receipt["targets_with_estimable_uncertainty"] = sum(
-        1 for r in rows if r["uncertainty_estimable"])
+    receipt["targets_with_estimable_technical_well_spread"] = sum(
+        1 for r in rows if r["technical_capture_well_spread_estimable"])
+    receipt["targets_with_estimable_biological_uncertainty"] = 0
     receipt["median_engagement_log2fc"] = (
         round(float(np.median([r["engagement_log2fc"] for r in measured])), 4)
         if measured else None)
@@ -228,14 +271,15 @@ def main():
     receipt["top_effects_csv_sha256"] = sha256_file(out_e)
 
     with open(os.path.join(a.out_dir,
-                           "gse178317_intervention_effects_receipt_v1.json"), "w") as fh:
+                           "gse178317_intervention_effects_receipt_v2.json"), "w") as fh:
         json.dump(receipt, fh, indent=2)
 
     print("\n=== GSE178317 intervention effects ===")
     print("  targets analyzed            : %d" % receipt["targets_analyzed"])
     print("  engagement measured         : %d" % receipt["targets_with_engagement_measured"])
     print("  knocked down (log2FC < 0)   : %d" % receipt["targets_knocked_down"])
-    print("  estimable uncertainty       : %d" % receipt["targets_with_estimable_uncertainty"])
+    print("  technical well spread count : %d" % receipt["targets_with_estimable_technical_well_spread"])
+    print("  biological uncertainty      : NOT ESTIMABLE")
     print("  median engagement log2FC    : %s" % receipt["median_engagement_log2fc"])
     print("\nwrote %s\nwrote %s" % (out_t, out_e))
     return 0

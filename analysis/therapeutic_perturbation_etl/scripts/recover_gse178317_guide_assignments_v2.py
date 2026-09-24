@@ -127,6 +127,8 @@ SENSITIVITY_Z = [3.0, 4.0, 5.0, 6.0, 8.0, 10.0]
 # ---------------------------------------------------------------------------
 MIN_CELLS_PER_USABLE_TARGET = 40      # ~10 cells x 4 lanes
 MIN_USABLE_TARGETS = 30               # of the 39 non-control targets
+MIN_CELLS_PER_PAIRED_LANE = 10           # matched target and NTC within lane
+MIN_PAIRED_LANES = 3                    # downstream spread needs >=3 lanes
 
 
 def sha256_file(path):
@@ -314,6 +316,77 @@ def poisson_sf_log(k, lam):
     return poisson.logsf(k - 1, lam)
 
 
+
+def assess_lane_usable_assignments(rows, lanes):
+    """Assess downstream lane-paired support, NOT identity or biological truth.
+
+    A pooled count can pass when every target cell is in L1 and all controls
+    are in L2. Require >=10 target AND NTC cells in each of >=3 matching lanes.
+    These development thresholds were fixed after an inspected smoke run.
+    """
+    lanes = tuple(lanes)
+    if len(lanes) < MIN_PAIRED_LANES or len(set(lanes)) != len(lanes):
+        raise ValueError("expected lane identities missing or duplicated")
+    per_lane, totals = collections.Counter(), collections.Counter()
+    for row in rows:
+        lane, target = row["lane"], row["target_gene"]
+        if lane not in lanes or not target:
+            raise ValueError("unknown lane or missing target identity")
+        per_lane[(lane, target)] += 1
+        totals[target] += 1
+    ntc_by_lane = {lane: per_lane[(lane, "NTC")] for lane in lanes}
+    ntc_supported_lanes = [
+        lane for lane in lanes
+        if ntc_by_lane[lane] >= MIN_CELLS_PER_PAIRED_LANE
+    ]
+    target_support = {}
+    for target in sorted(g for g in totals if g != "NTC"):
+        paired = [
+            lane for lane in lanes
+            if per_lane[(lane, target)] >= MIN_CELLS_PER_PAIRED_LANE
+            and ntc_by_lane[lane] >= MIN_CELLS_PER_PAIRED_LANE
+        ]
+        target_support[target] = {
+            "assigned_cells": totals[target],
+            "cells_by_lane": {lane: per_lane[(lane, target)] for lane in lanes},
+            "paired_lanes": paired,
+            "lane_support_sufficient": (
+                totals[target] >= MIN_CELLS_PER_USABLE_TARGET
+                and len(paired) >= MIN_PAIRED_LANES
+            ),
+        }
+    usable = [g for g, d in target_support.items()
+              if d["lane_support_sufficient"]]
+    ntc_ok = (totals["NTC"] >= MIN_CELLS_PER_USABLE_TARGET
+              and len(ntc_supported_lanes) >= MIN_PAIRED_LANES)
+    reasons = []
+    if len(usable) < MIN_USABLE_TARGETS:
+        reasons.append(
+            "only %d targets have >=%d cells and >=%d lanes with >=%d "
+            "target and >=%d same-lane NTC cells (need %d targets)"
+            % (len(usable), MIN_CELLS_PER_USABLE_TARGET, MIN_PAIRED_LANES,
+               MIN_CELLS_PER_PAIRED_LANE, MIN_CELLS_PER_PAIRED_LANE,
+               MIN_USABLE_TARGETS)
+        )
+    if not ntc_ok:
+        reasons.append(
+            "NTC has %d cells across %d sufficiently populated lanes; "
+            "need >=%d total and >=%d lanes with >=%d cells"
+            % (totals["NTC"], len(ntc_supported_lanes),
+               MIN_CELLS_PER_USABLE_TARGET, MIN_PAIRED_LANES,
+               MIN_CELLS_PER_PAIRED_LANE)
+        )
+    return {
+        "support_pass": not reasons,
+        "usable_targets": usable,
+        "ntc_cells": totals["NTC"],
+        "ntc_by_lane": ntc_by_lane,
+        "ntc_supported_lanes": ntc_supported_lanes,
+        "target_support": target_support,
+        "failure_reasons": reasons,
+    }
+
+
 def stage_call(a):
     z = np.load(a.counts_npz, allow_pickle=True)
     counts = z["counts"].astype(np.float64)
@@ -391,37 +464,40 @@ def stage_call(a):
     by_gene = collections.Counter(r["target_gene"] for r in rows)
     vals = sorted(by_gene.values())
 
-    # Usability verdict, against the floor declared at the top of this file.
-    usable = sorted(g for g, n in by_gene.items()
-                    if g != "NTC" and n >= MIN_CELLS_PER_USABLE_TARGET)
-    ntc_ok = by_gene.get("NTC", 0) >= MIN_CELLS_PER_USABLE_TARGET
-    verdict_pass = len(usable) >= MIN_USABLE_TARGETS and ntc_ok
-    reasons = []
-    if len(usable) < MIN_USABLE_TARGETS:
-        reasons.append("only %d of %d targets reach %d cells (need %d)"
-                       % (len(usable), MIN_USABLE_TARGETS,
-                          MIN_CELLS_PER_USABLE_TARGET, MIN_USABLE_TARGETS))
-    if not ntc_ok:
-        reasons.append("non-targeting controls have %d cells, below the %d "
-                       "needed for a comparison group"
-                       % (by_gene.get("NTC", 0), MIN_CELLS_PER_USABLE_TARGET))
+    # An overall n>=40 is insufficient: a target needs target and control
+    # pseudobulks in >=3 of the EXACT same sequencing lanes.
+    support = assess_lane_usable_assignments(
+        rows, [spec["lane"] for spec in LANES]
+    )
+    usable = support["usable_targets"]
+    verdict_pass = support["support_pass"]
+    reasons = support["failure_reasons"]
 
     receipt = {
         "schema": "GSE178317_GUIDE_ASSIGNMENT_V2",
         "development_status": "THRESHOLDS_FIXED_AFTER_BOUNDED_SMOKE_RUN",
         "prospective_confirmation_eligible": False,
         "verdict_scope": "DEVELOPMENT_USABILITY_ONLY",
-        "verdict": "PASS" if verdict_pass else "FAIL",
+        "verdict": "PASS_LANE_SUPPORT_ONLY" if verdict_pass else "FAIL_LANE_SUPPORT",
+        "qualification_scope": "DEVELOPMENT_POST_SMOKE_NOT_GUIDE_IDENTITY_VALIDATION",
+        "guide_identity_independently_verified": False,
+        "biological_replication_verified": False,
         "verdict_basis": {
             "min_cells_per_usable_target": MIN_CELLS_PER_USABLE_TARGET,
             "min_usable_targets": MIN_USABLE_TARGETS,
             "usable_targets": len(usable),
-            "ntc_cells_sufficient": bool(ntc_ok),
+            "ntc_cells_sufficient": bool(support["ntc_cells"] >= MIN_CELLS_PER_USABLE_TARGET
+                                          and len(support["ntc_supported_lanes"]) >= MIN_PAIRED_LANES),
+            "min_paired_lanes": MIN_PAIRED_LANES,
+            "min_target_and_ntc_cells_per_lane": MIN_CELLS_PER_PAIRED_LANE,
+            "ntc_cells_by_lane": support["ntc_by_lane"],
+            "ntc_supported_lanes": support["ntc_supported_lanes"],
+            "target_lane_support": support["target_support"],
             "failure_reasons": reasons,
-            "note": ("the floor comes from what the downstream pseudobulk "
-                     "analysis needs, not from any published count of assigned "
-                     "cells; a producer whose output cannot support the "
-                     "analysis it feeds must say so itself"),
+            "note": ("development thresholds reflect downstream lane-paired "
+                     "pseudobulk needs but were frozen AFTER an inspected smoke "
+                     "run; this is not prospective confirmation or guide "
+                     "identity validation"),
         },
         "counts_npz_sha256": sha256_file(a.counts_npz),
         "method": ("agreement of a per-guide robust z-score on cell fraction "
@@ -433,10 +509,10 @@ def stage_call(a):
             "poisson_tests": n_tests,
             "min_assigned_umi": MIN_ASSIGNED_UMI,
             "min_cell_total_umi": MIN_CELL_TOTAL_UMI,
-            "rationale": ("z of 5 is a stringent outlier cut motivated by the "
-                          "number of tests rather than a published assignment count; "
-                          "however a bounded smoke run had already been inspected, "
-                          "so this threshold is development-calibrated, not prospective"),
+            "rationale": ("z of 5 is motivated by the number of tests rather "
+                          "than a published assignment count; however a bounded "
+                          "smoke run had already been inspected, so this is "
+                          "development-calibrated, not prospective"),
         },
         "cells_total": n_cells,
         "cells_judged": int(judged.sum()),
@@ -463,7 +539,7 @@ def stage_call(a):
     print("\n=== VERDICT: %s ===" % receipt["verdict"])
     for r in reasons:
         print("  FAIL: %s" % r)
-    print("  usable targets (>= %d cells): %d of %d required"
+    print("  usable targets (>= %d cells and matched lanes): %d of %d required"
           % (MIN_CELLS_PER_USABLE_TARGET, len(usable), MIN_USABLE_TARGETS))
 
     print("\n=== assignment at the declared operating point (z >= %.1f) ===" % Z_THRESHOLD)
