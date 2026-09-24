@@ -6,6 +6,7 @@ on:
       - 'src/sea_ad_jepa/perturbation/cross_study_feature_contract_v1.py'
       - 'tests/test_cross_study_feature_contract_v1.py'
       - 'tests/test_cross_study_feature_lookup_scale_v1.py'
+      - 'tests/test_cross_study_entrez_namespace_v1.py'
       - '.github/workflows/cross-study-feature-contract.yml'
   workflow_dispatch:
 
@@ -28,7 +29,7 @@ jobs:
           PYTHONPATH: src
         run: |
           set -o pipefail
-          python -m pytest -q -W error tests/test_cross_study_feature_contract_v1.py tests/test_cross_study_feature_lookup_scale_v1.py | tee /tmp/cross-study-feature-contract.log
+          python -m pytest -q -W error tests/test_cross_study_feature_contract_v1.py tests/test_cross_study_feature_lookup_scale_v1.py tests/test_cross_study_entrez_namespace_v1.py | tee /tmp/cross-study-feature-contract.log
       - name: Fail closed on skip
         run: |
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/cross-study-feature-contract.log; then
