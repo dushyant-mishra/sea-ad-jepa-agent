@@ -408,6 +408,9 @@ def stage_call(a):
 
     receipt = {
         "schema": "GSE178317_GUIDE_ASSIGNMENT_V2",
+        "development_status": "THRESHOLDS_FIXED_AFTER_BOUNDED_SMOKE_RUN",
+        "prospective_confirmation_eligible": False,
+        "verdict_scope": "DEVELOPMENT_USABILITY_ONLY",
         "verdict": "PASS" if verdict_pass else "FAIL",
         "verdict_basis": {
             "min_cells_per_usable_target": MIN_CELLS_PER_USABLE_TARGET,
@@ -430,9 +433,10 @@ def stage_call(a):
             "poisson_tests": n_tests,
             "min_assigned_umi": MIN_ASSIGNED_UMI,
             "min_cell_total_umi": MIN_CELL_TOTAL_UMI,
-            "rationale": ("z of 5 is a stringent outlier cut chosen from the "
-                          "number of tests, not from any published count of "
-                          "assigned cells"),
+            "rationale": ("z of 5 is a stringent outlier cut motivated by the "
+                          "number of tests rather than a published assignment count; "
+                          "however a bounded smoke run had already been inspected, "
+                          "so this threshold is development-calibrated, not prospective"),
         },
         "cells_total": n_cells,
         "cells_judged": int(judged.sum()),

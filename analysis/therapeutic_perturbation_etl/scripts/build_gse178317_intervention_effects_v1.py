@@ -10,9 +10,10 @@ an explicit target-engagement measurement for the perturbed gene itself.
 
 Design decisions, fixed here rather than discovered from the results:
 
-  * The experimental unit is the (lane, target) pseudobulk.  Cells sharing a
-    lane are not independent replicates, so dispersion is estimated across the
-    four 10x lanes and never across cells.
+  * The four 10X lanes are sequencing/partition lanes from one Day-8 CROP-seq
+    experiment. They are not established independent biological replicates.
+    We therefore allow lane-level descriptive spread, but never relabel it as
+    biological uncertainty or a biological standard error.
 
   * Fold changes are computed within a lane against that same lane's
     non-targeting cells, then averaged across lanes.  Comparing a target in one
@@ -22,10 +23,10 @@ Design decisions, fixed here rather than discovered from the results:
     DOWN.  The sign is not chosen to suit the answer; it is stated here and the
     measurement is reported whichever way it comes out.
 
-  * A target is reported as having estimable uncertainty only if it is present
-    in at least MIN_LANES_FOR_SPREAD lanes with at least MIN_CELLS_PER_UNIT
-    cells.  Targets below that threshold are still reported, with their spread
-    recorded as null rather than as a number that was not measured.
+  * A target gets a descriptive lane-spread only if it is present in at least
+    MIN_LANES_FOR_SPREAD lanes with at least MIN_CELLS_PER_UNIT cells. This is
+    technical/partition sensitivity, not biological uncertainty. Biological
+    uncertainty is explicitly NOT_ESTIMABLE from these four lanes alone.
 
 No synthetic, historical or placeholder value contributes to any quantity here.
 """
@@ -106,8 +107,10 @@ def main():
         "study": "GSE178317",
         "system": "iPSC-derived microglia (iTF-Microglia)",
         "modality": "CROP-seq CRISPRi (dCas9-KRAB), druggable-genome subset",
-        "experimental_unit": "(lane, target) pseudobulk; cells within a lane are "
-                             "not independent replicates",
+        "analysis_unit": "(lane, target) pseudobulk for descriptive lane sensitivity",
+        "biological_replicate_authority": "NOT_ESTABLISHED",
+        "biological_uncertainty_estimable": False,
+        "lane_spread_interpretation": "DESCRIPTIVE_TECHNICAL_OR_PARTITION_SPREAD_ONLY",
         "guide_identity_provenance": (
             "recovered from SRA raw reads plus Suppl. Table 5 of Draeger et al. "
             "2022; absent from the processed GEO deposit"),
@@ -185,7 +188,8 @@ def main():
             "engagement_sd_across_lanes": None if eng_sd is None else round(eng_sd, 4),
             "engagement_direction_consistent_with_crispri":
                 None if eng is None else bool(eng < 0),
-            "uncertainty_estimable": bool(estimable),
+            "lane_spread_estimable": bool(estimable),
+            "biological_uncertainty_estimable": False,
         })
 
         order = np.argsort(lfc)
