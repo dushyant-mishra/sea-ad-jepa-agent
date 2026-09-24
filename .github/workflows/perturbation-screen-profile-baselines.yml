@@ -1,0 +1,51 @@
+name: Perturbation screen-profile retrospective baseline
+
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/perturbation/benchmark_screen_profile_baselines_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/run_crisprbrain_target_profile_baselines_v1.py'
+      - 'tests/test_perturbation_screen_profile_baselines_v1.py'
+      - '.github/workflows/perturbation-screen-profile-baselines.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  no-leakage-retrospective:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CPU test dependencies
+        run: python -m pip install --disable-pip-version-check numpy pytest
+      - name: Synthetic adversarial test suite
+        env:
+          PYTHONPATH: src
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_perturbation_screen_profile_baselines_v1.py | tee /tmp/screen-baseline-tests.log
+      - name: Reject skipped tests
+        run: |
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/screen-baseline-tests.log; then
+            echo 'MANDATORY BASELINE TESTS SKIPPED — STOP'
+            exit 1
+          fi
+      - name: Run on committed already-inspected GSE178317 CRISPRbrain reference
+        env:
+          PYTHONPATH: src
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/run_crisprbrain_target_profile_baselines_v1.py \
+            --source-csv-gz analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF_Microglia-Day-8-CROP-seq-CRISPRi.csv.gz \
+            --screen iTF_Microglia-Day8-CRISPRi \
+            --expected-uncompressed-sha256 41eb533dfd50852d0ebd8f2c27d42d5f6bb3b1f1264ab0c721106cfbaed9fc39 \
+            --out-json /tmp/gse178317_development_baselines_v1.json
+      - name: Upload DEVELOPMENT-only result for review, never as confirmation
+        uses: actions/upload-artifact@v4
+        with:
+          name: gse178317-RETROSPECTIVE-development-baselines
+          path: /tmp/gse178317_development_baselines_v1.json
