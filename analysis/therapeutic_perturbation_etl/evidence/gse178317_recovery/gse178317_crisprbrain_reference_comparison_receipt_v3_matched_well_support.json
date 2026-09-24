@@ -1,0 +1,47 @@
+{
+  "schema": "GSE178317_CRISPRBRAIN_REFERENCE_COMPARISON_V3_MATCHED_WELL_SUPPORT",
+  "date": "2026-09-24",
+  "scope": "DEVELOPMENT_SAME_EXPERIMENT_MATCHED_WELL_SUPPORT_QUALIFIED_REFERENCE_COMPARISON",
+  "independent_biological_replication": false,
+  "independent_validation": false,
+  "shared_source_experiment": true,
+  "shared_raw_read_origin": true,
+  "matched_well_support_qualified": true,
+  "support_filter_source": "analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_guide_assignment_receipt_v2_lanegate.json",
+  "support_filter_source_git_blob_sha": "04cddbfbad075aff5db536858e84079d4292d4f0",
+  "historical_comparison_csv_sha256": "fff45935c994d3fbce3293a9ddc53bce3acaa9507040e1ceb79ef19e8418a7e0",
+  "targets_comparable_historical": 35,
+  "targets_support_qualified": 33,
+  "excluded_targets_not_support_qualified": [
+    "AARS",
+    "LSM6"
+  ],
+  "sign_agreement": {
+    "agree": 33,
+    "of": 33,
+    "fraction": 1.0
+  },
+  "pearson_r": 0.6398,
+  "spearman_rho": 0.7473,
+  "median_log2fc_ours": -0.7146,
+  "median_log2fc_reference": -0.2437,
+  "magnitude_ratio_of_medians": 2.932,
+  "reference_hits_fdr_lt_0_05": {
+    "n": 17,
+    "both_negative": 17,
+    "spearman": 0.3064
+  },
+  "reference_nonsignificant_fdr_ge_0_05": {
+    "n": 16,
+    "median_abs_log2fc_ours": 0.3985,
+    "median_abs_log2fc_reference": 0.1682,
+    "warning": "These are reference-nonsignificant targets, not known biological nulls and not a false-positive calibration set."
+  },
+  "comparison_csv_sha256": "e66a09a8729570d7f82cba40dae0bb01be5bb35ccdbca83f529ac2daf127e55d",
+  "interpretation": "This recomputes the same-experiment reference comparison after filtering to targets that pass the authenticated matched-well support gate. It evaluates development pipeline/reference agreement only; it is not independent validation, biological replication, in-brain generalization or prospective confirmation.",
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "training_authorized": false,
+  "prospective_confirmation_authorized": false,
+  "therapeutic_ranking": false
+}
