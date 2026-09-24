@@ -34,6 +34,26 @@ def test_existing_six_outcome_families_cannot_be_marked_untouched():
             append_event(frozen, event(key, DECLARED_UNINSPECTED))
 
 
+def test_newly_inspected_gse178317_and_same_experiment_reference_are_irreversible():
+    frozen = seed_historical_exposure()
+    for key in (
+        OutcomeKey("GSE178317", "iTF_Microglia_Day8_CROPseq_CRISPRi", "target_engagement"),
+        OutcomeKey("GSE178317", "iTF_Microglia_Day8_CROPseq_CRISPRi", "transcriptome_wide_DE"),
+        OutcomeKey("CRISPRbrain", "iTF_Microglia_Day8_CROPseq_CRISPRi", "published_DE"),
+    ):
+        assert frozen.status(key) == INSPECTED
+        with pytest.raises(ExposureError, match="forbidden exposure regression"):
+            append_event(frozen, event(key, DECLARED_UNINSPECTED))
+        with pytest.raises(ExposureError, match="prospective outcome seal"):
+            guard_descriptive_benchmark(
+                ledger=frozen, key=key, partition_exposure="HELD_OUT",
+            )
+        dev = guard_descriptive_benchmark(
+            ledger=frozen, key=key, partition_exposure="DEVELOPMENT",
+        )
+        assert dev["independent_confirmation_authorized"] is False
+
+
 def test_other_arm_is_not_assumed_uninspected_or_inspected():
     frozen = seed_historical_exposure()
     other = OutcomeKey("GSE254205", "ATAC", "chromatin_response")
