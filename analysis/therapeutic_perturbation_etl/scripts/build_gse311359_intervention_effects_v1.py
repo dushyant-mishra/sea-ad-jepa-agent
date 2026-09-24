@@ -86,13 +86,43 @@ def read_features(path: Path) -> tuple[list[str], list[str], list[str]]:
     return ids, names, kinds
 
 
+def assert_unambiguous_feature_ids(ids: list[str], names: list[str],
+                                   kinds: list[str]) -> None:
+    """Fail before allocating PB or writing effects when guide names collide.
+
+    10x guide feature IDs may distinguish same-name entries, but an ID alone
+    cannot authenticate which library protospacer/target it represents.
+    Explicit, separately authenticated ID→guide→target mapping is required to
+    resolve duplicate *names*. No suffixes or positional guesses.
+    """
+    if not (len(ids) == len(names) == len(kinds)):
+        raise SystemExit("STOP_GSE311359_MALFORMED_FEATURE_TABLE")
+    if len(ids) != len(set(ids)):
+        raise SystemExit("STOP_GSE311359_DUPLICATE_FEATURE_IDS")
+    guides = [names[i] for i, kind in enumerate(kinds)
+              if kind == "CRISPR Guide Capture"]
+    if any(not g or not g.strip() for g in guides):
+        raise SystemExit("STOP_GSE311359_EMPTY_GUIDE_NAME")
+    counts = Counter(guides)
+    collisions = {g: n for g, n in sorted(counts.items()) if n > 1}
+    if collisions:
+        raise SystemExit(
+            "STOP_GSE311359_DUPLICATE_GUIDE_NAMES__"
+            "INDEPENDENT_FEATURE_ID_TO_GUIDE_LIBRARY_AUTHORITY_REQUIRED: "
+            + json.dumps(collisions, sort_keys=True)
+        )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--extracted-dir", type=Path, required=True)
     ap.add_argument("--out-dir", type=Path, required=True)
     args = ap.parse_args()
     E, out = args.extracted_dir, args.out_dir
-    out.mkdir(parents=True, exist_ok=True)
+    # No output directory or receipt is created before physical feature
+    # identity qualification. Existing V1 outputs remain immutable.
+    if out.exists() and any(out.iterdir()):
+        raise SystemExit("STOP_GSE311359_OUTPUT_EXISTS__VERSIONED_SUCCESSOR_REQUIRED")
 
     gsm = {}
     for p in sorted(E.glob("*_features.tsv.gz")):
@@ -102,14 +132,17 @@ def main() -> int:
     if missing:
         raise SystemExit(f"missing samples: {missing}")
 
-    ref_names = ref_kinds = None
+    ref_ids = ref_names = ref_kinds = None
     per_sample = {}
     for s in SAMPLES:
         ids, names, kinds = read_features(E / f"{gsm[s]}_{s}_features.tsv.gz")
+        assert_unambiguous_feature_ids(ids, names, kinds)
         if ref_names is None:
-            ref_names, ref_kinds = names, kinds
-        elif names != ref_names or kinds != ref_kinds:
-            raise SystemExit(f"{s}: feature universe differs from S1; refusing to merge")
+            ref_ids, ref_names, ref_kinds = ids, names, kinds
+        elif ids != ref_ids or names != ref_names or kinds != ref_kinds:
+            raise SystemExit(
+                f"{s}: full feature ID/name/type/order differs from S1; refusing to merge"
+            )
         per_sample[s] = None
 
     gene_rows = np.array([i for i, k in enumerate(ref_kinds) if k == "Gene Expression"],
@@ -117,6 +150,9 @@ def main() -> int:
     guide_rows = [i for i, k in enumerate(ref_kinds) if k == "CRISPR Guide Capture"]
     if gene_rows.size != N_GENE or len(guide_rows) != N_GUIDE:
         raise SystemExit("feature-type census drifted")
+    # All seven samples passed source feature-ID and exact guide-name
+    # qualification. Only now permit creation of any derived output.
+    out.mkdir(parents=True, exist_ok=True)
     gene_symbols = [ref_names[i] for i in gene_rows]
     guide_names = [ref_names[i] for i in guide_rows]
     guide_pos = {r: j for j, r in enumerate(guide_rows)}
