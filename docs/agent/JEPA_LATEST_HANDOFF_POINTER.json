@@ -12,7 +12,7 @@
   "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
   "live_evidence_lanes": {
-    "experimental_pr77": "5c5649def828b3e087e239acca26ec317683c426",
+    "experimental_pr77": "67981c8ef6e158d865470e70bca81cbe289be3dd",
     "experimental_outputs_commit": "52f20a7a",
     "gse178317_legacy_npz_sha256": "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c",
     "gse178317_safe_format_reissue": "CODE_CI_GREEN_PHYSICAL_REISSUE_NOT_COMMITTED",
@@ -22,9 +22,11 @@
     "gse254205_v2": "PR86_OPEN",
     "gse301119_support": "PR91_OPEN",
     "gse311359_stop": "PR92_OPEN",
-    "gse240609_v2": "PR94_OPEN"
+    "gse240609_v2": "PR94_OPEN",
+    "gse178317_reference_receipt_v2": "SAME_EXPERIMENT_PIPELINE_REFERENCE_NOT_INDEPENDENT_VALIDATION",
+    "benchmark_integration": "RETROSPECTIVE_DEVELOPMENT_BASELINES_AND_EXPOSURE_LEDGER_INTEGRATED"
   },
-  "instruction": "Read START_HERE, V25 handoff/state/manifest/takeover, historical audits; re-fetch live GitHub heads; no duplicate 58MB upload; do not promote DEVELOPMENT GSE178317 or synthetic CI to confirmation; training/N1/protected outcomes remain unopened.",
+  "instruction": "Read START_HERE, V25 handoff/state/manifest/takeover, historical audits; re-fetch live GitHub heads and CI. GSE178317 remains DEVELOPMENT only; use V2 same-experiment reference receipt; no duplicate 58MB upload; training/N1/protected outcomes remain unopened.",
   "prior_september15_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
   "prior_full_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md",
   "prior_full_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json",
