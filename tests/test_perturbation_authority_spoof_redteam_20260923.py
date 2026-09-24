@@ -52,6 +52,9 @@ def test_receipt_positive_frozen_fixture_role(tmp_path, monkeypatch):
     assert obj["evidence"]["test_observation"] == 3
     assert obj["production_execution_authorized"] is False
     assert obj["training_authorized"] is False
+    assert obj["qualification_scope"] == "SOURCE_AND_SCRIPT_PREFLIGHT_ONLY"
+    assert obj["scientific_execution_verified"] is False
+    assert obj["output_results_verified"] is False
 
 
 @pytest.mark.parametrize("reserved", [
@@ -193,3 +196,34 @@ def test_wrong_approved_code_root_rejected_even_if_script_is_present(
         gate.emit_qualification_receipt(
             path=tmp_path / "never.json", context=ctx, body={},
         )
+
+
+@pytest.mark.parametrize("claim", [
+    {"terminal": "PASS_PHYSICAL"},
+    {"status": "PASS"},
+    {"scientific_execution_verified": True},
+    {"nested": {"execution_completed": True}},
+    {"nested": [{"output_results_verified": True}]},
+    {"production_execution_authorized": True},
+])
+def test_source_prefight_rejects_scientific_or_production_claims(
+    tmp_path, monkeypatch, claim,
+):
+    _, ctx, _ = fixture_context(tmp_path, monkeypatch)
+    target = tmp_path / "must_not_exist.json"
+    with pytest.raises(gate.ExecutionAuthorityError, match="(protected provenance|cannot attest)"):
+        gate.emit_qualification_receipt(path=target, context=ctx, body=claim)
+    assert not target.exists()
+
+
+def test_no_script_execution_or_output_check_is_claimed(tmp_path, monkeypatch):
+    _, ctx, _ = fixture_context(tmp_path, monkeypatch)
+    receipt_path = tmp_path / "preflight.json"
+    gate.emit_qualification_receipt(path=receipt_path, context=ctx,
+                                    body={"source_census": 2})
+    obj = json.loads(receipt_path.read_text())
+    assert obj["qualification_scope"] == "SOURCE_AND_SCRIPT_PREFLIGHT_ONLY"
+    assert obj["scientific_execution_verified"] is False
+    assert obj["output_results_verified"] is False
+    assert obj["production_execution_authorized"] is False
+    assert obj["training_authorized"] is False
