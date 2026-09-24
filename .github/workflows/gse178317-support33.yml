@@ -1,0 +1,38 @@
+name: GSE178317 support33 physical-input comparison
+on:
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_gse178317_support33_reference_v2.py'
+      - 'tests/test_gse178317_support33_reference_v2.py'
+      - '.github/workflows/gse178317-support33.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  support33:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused test requirements
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Execute adversarial tests without skips
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_gse178317_support33_reference_v2.py | tee /tmp/gse178317-support33-tests.log
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/gse178317-support33-tests.log; then exit 1; fi
+      - name: Execute SHA-bound comparison on committed physical CSV and support receipt
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/build_gse178317_support33_reference_v2.py \
+            --comparison-csv analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_vs_crisprbrain_engagement_v1.csv \
+            --support-receipt analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_guide_assignment_receipt_v2_lanegate.json \
+            --out-dir /tmp/gse178317-support33-v2
+          python -c 'import json; r=json.load(open("/tmp/gse178317-support33-v2/gse178317_support33_reference_receipt_v2.json")); assert r["n_support_qualified"]==33 and r["direction_agree"]==33; assert abs(r["spearman_rho"]-0.7473262032085561)<1e-9; assert r["independent_validation"] is False'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gse178317-support33-development-only
+          path: /tmp/gse178317-support33-v2
+          if-no-files-found: error
