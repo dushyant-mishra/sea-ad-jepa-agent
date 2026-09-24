@@ -1,24 +1,31 @@
 # START HERE — JEPA PROJECT
 
-Date: 2026-09-23
-Status: `CURRENT_PARALLEL_FULL104_AND_EXPERIMENTAL_HANDOFF__NO_TRAINING_OR_N1_AUTHORITY`
+Date: 2026-09-24
+Status: `CURRENT_V24__EXPERIMENTAL_REDTEAM_INTEGRATED__FULL104_ADAPTER_CONSOLIDATED__NO_TRAINING_OR_N1_AUTHORITY`
 
-## Read first — V23 canonical full takeover
+## Read first — V24 canonical current takeover
 
-The latest operational authority is V23, merged as documentation-only after
-independent review. This pointer supersedes V22 as *startup status*, not
-historical source or scientific evidence. Read in this order:
+The latest operational authority is V24. It supersedes V23 as the startup snapshot, not as historical evidence.
+
+Read in this order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V23_FULL_CURRENT.md` — complete, standalone project status, all data/PRs/scripts/formulas/risks and workstream instructions
-3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V23.json` — machine-readable FULL104 source roots, all eight studies, exact PR snapshot and restrictions
-4. `docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260923_V23.md` — copyable new-chat setup prompt
-5. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md` — prevent repeat audits and historical value spillover
-6. Prior September 23 V22 addendum / V21 full package, September 15 target authority, frozen formula and heavy-asset maps linked by the pointer, as needed.
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V24_CURRENT.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260924_V24.json`
+4. `docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260924_V24.md`
+5. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
+6. V23/V22 and earlier frozen formula/heavy-asset references only as historical support.
 
-Before acting, re-fetch live branch heads. Branch names and commit messages do not confer scientific authority.
+Before acting, re-fetch live branch heads. Branch names, commit messages, receipts and synthetic CI do not by themselves confer scientific authority.
 
-Before repeating any audit, read the historical-audits index and classify the proposed task as `ALREADY_AUDITED`, `SUPERSEDED`, `OPEN`, or `CHANGED_INPUT_REQUIRES_REQUALIFICATION`.
+Current September 24 headline:
+- Experimental PR #77 current audited head: `c81ad41b485f16d4aa82dbe4cffca5d23aa93927`.
+- GSE178317 V2 is DEVELOPMENT only. Matched target/NTC support in the same lanes is required; four 10X lanes are not biological replicates and lane spread is not biological uncertainty.
+- Full physical GSE178317 V2 result was not qualified at the audited head.
+- PR #99 is stale and must not be merged as-is. PR #100 is superseded by integrated PR #102.
+- FULL104 PR #83 plus #85 red-team was consolidated into its parent at `64148023740d57777666faff15395262d4b0e3da`; N1 remains unauthorized and all-104 raw-count reaggregation remains unproved.
+- CRISPRbrain is now reference/benchmark evidence, not independent re-derived truth. FULL104 donor/cell-line and barcode overlap with benchmark data remain NOT_CHECKED.
+- `TRAINING=OFF | AUDIT_B_N1=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED | D_SHARED_G5=UNOPENED | RARE_TAIL_MOLECULAR=UNOPENED | THERAPEUTIC_RANKING=OFF`.
 
 ## Permanent boundaries
 `DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> TARGET SEMANTICS -> PRODUCTION GEOMETRY -> MODEL`
