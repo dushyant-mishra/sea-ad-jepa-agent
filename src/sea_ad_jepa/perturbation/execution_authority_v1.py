@@ -96,7 +96,35 @@ RESERVED_RECEIPT_FIELDS = frozenset({
     "schema", "mode", "task", "context_digest", "code_sha256",
     "inputs", "identity_digests", "parameters", "receipt_sha256",
     "authorization_receipt_sha256",
+    "qualification_scope", "scientific_execution_verified", "output_results_verified",
+    "production_execution_authorized", "training_authorized",
 })
+# A source-byte gate cannot attest that ETL ran, or that scientific outputs
+# were independently checked. Such assertions require a separate evidence
+# contract tied to actual output bytes and execution records.
+EXECUTION_CLAIM_FIELDS = frozenset({
+    "terminal", "status", "result_status", "execution_status", "qualification_status",
+    "physical_pass", "pass_physical", "execution_completed", "results_validated",
+    "scientific_execution_verified", "output_results_verified",
+    "production_execution_authorized", "training_authorized",
+})
+
+
+def reject_execution_claims(value: Any) -> None:
+    """Reject nested attempts to turn source preflight into scientific PASS."""
+    if isinstance(value, Mapping):
+        forbidden = EXECUTION_CLAIM_FIELDS.intersection(value)
+        if forbidden:
+            raise ExecutionAuthorityError(
+                f"source preflight cannot attest execution/results: {sorted(forbidden)}"
+            )
+        for child in value.values():
+            reject_execution_claims(child)
+    elif isinstance(value, (list, tuple)):
+        for child in value:
+            reject_execution_claims(child)
+
+
 
 
 def sha256_file(path: Path) -> str:
@@ -299,7 +327,7 @@ def write_checkpoint(*, path: Path | str, context: ExecutionContext,
 
 def emit_qualification_receipt(*, path: Path | str, context: ExecutionContext,
                                body: Mapping[str, Any]) -> str:
-    """Write a new, immutable qualification receipt from reviewed physical roots.
+    """Write a new, immutable *source preflight* receipt from reviewed roots.
 
     An arbitrary caller-provided digest cannot certify a physical sample.
     Existing generic roles without reviewed roots are not eligible for a
@@ -321,6 +349,7 @@ def emit_qualification_receipt(*, path: Path | str, context: ExecutionContext,
     if collisions:
         raise ExecutionAuthorityError(
             f"receipt body attempts to override protected provenance: {sorted(collisions)}")
+    reject_execution_claims(body)
     if not context.inputs:
         raise ExecutionAuthorityError(
             "qualification receipt requires independently reviewed physical inputs")
@@ -374,6 +403,9 @@ def emit_qualification_receipt(*, path: Path | str, context: ExecutionContext,
         "identity_digests": dict(context.identity_digests),
         "parameters": {k: str(v) for k, v in context.parameters.items()},
         "evidence": dict(body),
+        "qualification_scope": "SOURCE_AND_SCRIPT_PREFLIGHT_ONLY",
+        "scientific_execution_verified": False,
+        "output_results_verified": False,
         "production_execution_authorized": False,
         "training_authorized": False,
     }
