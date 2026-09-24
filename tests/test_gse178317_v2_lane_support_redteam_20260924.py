@@ -131,10 +131,22 @@ def test_actual_stage_call_reports_false_pooled_pass_as_fail(tmp_path, monkeypat
         lanes.append(row["lane"])
     file = tmp_path / "synthetic-counts-NOT-PHYSICAL.npz"
     np.savez_compressed(file, counts=counts,
-                        cell_ids=np.asarray(ids, dtype=object),
-                        cell_lane=np.asarray(lanes, dtype=object),
-                        guides=np.asarray(genes, dtype=object),
-                        guide_target=np.asarray(genes, dtype=object))
+                        cell_ids=np.asarray(ids, dtype=str),
+                        cell_lane=np.asarray(lanes, dtype=str),
+                        guides=np.asarray(genes, dtype=str),
+                        guide_target=np.asarray(genes, dtype=str))
+    receipt_path = tmp_path / "synthetic-count-receipt.json"
+    receipt_path.write_text("{}")
+    monkeypatch.setattr(
+        producer, "validate_count_stage_receipt",
+        lambda counts_npz, receipt_path: {
+            "schema": "GSE178317_GUIDE_COUNT_STAGE_V2",
+            "matrix": {
+                "cells": len(rows), "guides": len(genes),
+                "total_umis": int(counts.sum()),
+            },
+        },
+    )
     monkeypatch.setattr(producer, "robust_z",
                         lambda m, t: (np.where(m > 0, 10.0, 0.0),
                                       np.zeros(m.shape[1], dtype=bool)))
@@ -144,7 +156,7 @@ def test_actual_stage_call_reports_false_pooled_pass_as_fail(tmp_path, monkeypat
     )
     out_dir = tmp_path / "synthetic-output-NOT-PHYSICAL"
     assert producer.stage_call(SimpleNamespace(
-        counts_npz=str(file), out_dir=str(out_dir)
+        counts_npz=str(file), count_receipt=str(receipt_path), out_dir=str(out_dir)
     )) == 0
     receipt = json.loads(
         (out_dir / "gse178317_guide_assignment_receipt_v2.json").read_text()
