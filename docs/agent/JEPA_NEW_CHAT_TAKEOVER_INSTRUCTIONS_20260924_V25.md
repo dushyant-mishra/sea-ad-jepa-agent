@@ -1,0 +1,11 @@
+# V25 new-chat takeover — 2026-09-24
+
+Continue the existing JEPA project. **Do not redesign or restart.** First read `START_HERE.md`, `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`, the V25 detailed handoff, V25 machine state and V25 runtime asset manifest. Re-fetch live GitHub heads before edits; the audited experimental PR #77 head was `5c5649def828b3e087e239acca26ec317683c426`.
+
+All data in `analysis/therapeutic_perturbation_etl/outputs/` is on GitHub in experimental PR #77, including the expensive 58,302 x 81 GSE178317 count NPZ and five CRISPRbrain microglia tables. Do not rerun 221M SRA reads, upload duplicate binaries or conflate uncommitted four neuron/iPSC reference tables with committed data. Those four have exact regeneration instructions and full SHA-256 in `outputs/README.md`.
+
+First execution task: authenticated **format-only** safe NPZ reissue with `scripts/reissue_gse178317_safe_counts_v2.py` against committed legacy SHA `170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c` and the count-stage receipt. Commit the new versioned safe NPZ, receipt and provenance if physical parity passes; do not overwrite original. Then rerun the development V2 caller and compare assignment parity. The six green CI workflows are synthetic/code tests, not proof the physical reissue was run.
+
+Next correct the stale same-experiment 'external validation' assertion in the historical machine-readable comparison receipt via a versioned successor. Freeze actual HGNC/Ensembl annotation bytes and crosswalk; measure brain-vs-culture untreated-state distance without inspecting protected outcomes; implement simple perturbation baselines with donor/study/target-aware splits. Resolve #86/#91/#92/#94 physical or source-specific blockers before integration.
+
+All permanent stops: TRAINING OFF, N1 UNOPENED, protected FULL104 outcomes UNOPENED, D_SHARED G5 UNOPENED, rare-tail molecular UNOPENED, therapeutic ranking OFF. Four capture wells are NOT biological replicates. CRISPRbrain Day-8 comparison is SAME experiment, not independent biological replication. The current experimental PR remains DRAFT; publish documentation on main without accidentally merging unqualified science.
