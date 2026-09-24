@@ -1,0 +1,96 @@
+{
+  "schema": "GSE178317_CRISPRBRAIN_SUPPORT_QUALIFIED_COMPARISON_V3",
+  "date": "2026-09-24",
+  "label": "DEVELOPMENT / SAME-EXPERIMENT / MATCHED-WELL-SUPPORT-QUALIFIED",
+  "supersedes_statistics_of": [
+    "gse178317_crisprbrain_validation_receipt_v1.json",
+    "gse178317_crisprbrain_reference_comparison_receipt_v2.json"
+  ],
+  "do_not_inherit_historical_35_target_correlation": true,
+  "scope": "DEVELOPMENT_SAME_EXPERIMENT_PIPELINE_REFERENCE_COMPARISON",
+  "independent_biological_replication": false,
+  "independent_validation": false,
+  "shared_source_experiment": true,
+  "shared_raw_read_origin": true,
+  "prospective_confirmation_authorized": false,
+  "development_status": "INSPECTED_REFERENCE_NOT_PROSPECTIVE_CONFIRMATION",
+  "reference_screen": "iTF Microglia-Day-8-CROP-seq-CRISPRi",
+  "interpretation": "Both analyses derive from the same GSE178317 experiment and the same raw reads. Agreement evaluates whether the recovered pipeline reproduces the depositors' processed direction and ranking; it demonstrates neither biological replication nor in-brain generalization.",
+  "support_qualification": {
+    "source": "assignment receipt verdict_basis.target_lane_support",
+    "assignment_receipt_verdict": "PASS_LANE_SUPPORT_ONLY",
+    "assignment_receipt_sha256": "84cc1f122f1f52727487bd408b82439b206a9951806bcf701a911cdc00ba9f9a",
+    "rule": {
+      "min_paired_lanes": 3,
+      "min_target_and_ntc_cells_per_lane": 10,
+      "min_cells_per_usable_target": 40
+    },
+    "excluded_targets": [
+      "AARS",
+      "LSM6"
+    ],
+    "excluded_detail": {
+      "AARS": {
+        "assigned_cells": 42,
+        "cells_by_lane": {
+          "L1": 8,
+          "L2": 7,
+          "L3": 18,
+          "L4": 9
+        },
+        "paired_lanes": [
+          "L3"
+        ]
+      },
+      "LSM6": {
+        "assigned_cells": 33,
+        "cells_by_lane": {
+          "L1": 4,
+          "L2": 13,
+          "L3": 9,
+          "L4": 7
+        },
+        "paired_lanes": [
+          "L2"
+        ]
+      }
+    },
+    "note": "exclusions are read from the authenticated receipt, not named in the producer, so qualification cannot drift into manual preference"
+  },
+  "targets_comparable_before_qualification": 35,
+  "targets_support_qualified": 33,
+  "statistics": {
+    "n": 33,
+    "sign_agreement": {
+      "agree": 33,
+      "of": 33,
+      "fraction": 1.0
+    },
+    "pearson_r": 0.6398,
+    "spearman_rho": 0.7473,
+    "median_log2fc_ours": -0.7146,
+    "median_log2fc_reference": -0.2437,
+    "magnitude_ratio_of_medians": 2.932,
+    "reference_hits_fdr_lt_0_05": {
+      "n": 17,
+      "both_negative": 17,
+      "spearman": 0.3064
+    },
+    "reference_nonsignificant_fdr_ge_0_05": {
+      "n": 16,
+      "median_abs_log2fc_ours": 0.3985,
+      "median_abs_log2fc_reference": 0.1682,
+      "warning": "reference-nonsignificant targets are not known biological nulls and are not a false-positive calibration set"
+    }
+  },
+  "magnitude_note": "magnitudes are not expected to match: a stricter guide caller admits fewer cells, carries fewer misassigned cells diluting each estimate toward zero, and so reports larger effects; the ratio is a diagnostic, not a pass criterion",
+  "inputs": {
+    "engagement_csv_sha256": "c6d6f0013d7911477d51fb1c178e23af8806c2df48a2b60cb7b2de3e62f2d4df",
+    "reference_gz_sha256": "201e8fb28a63dfb91ae5f37a77f9641a90c3cdf4c618943a55699c512227079f"
+  },
+  "comparison_csv_sha256": "bd49db87ea42c6b390ffae8e173ed59c0592e54895a27c0f37a8d39f30427230",
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false
+}
