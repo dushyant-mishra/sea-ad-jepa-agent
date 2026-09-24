@@ -1,0 +1,81 @@
+{
+  "schema": "GSE178317_GUIDE_COUNT_STAGE_V2",
+  "library_sha256": "8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942",
+  "max_spots_per_lane": null,
+  "lanes": [
+    {
+      "lane": "L1",
+      "srr": "SRR14828091",
+      "gex_gsm": "GSM5387652",
+      "gex_h5_sha256": "0b1fd0ad00f3fabf170c4207ef3886c3bdc955256a59c10949dfa3b110cc82de",
+      "gex_called_cells": 13649,
+      "spots_read": 57367708,
+      "reads_on_called_cells": 48811016,
+      "reads_with_guide": 43634784,
+      "reads_no_guide_match": 5176232,
+      "guide_umis_after_dedup": 4508780,
+      "cells_with_any_guide_umi": 12735,
+      "distinct_guides_observed": 81,
+      "elapsed_s": 751.9
+    },
+    {
+      "lane": "L2",
+      "srr": "SRR14828092",
+      "gex_gsm": "GSM5387653",
+      "gex_h5_sha256": "6cb4df62065006d18cc3f0d3df42d7ac3ce875a41cbc59d7814e855862abb754",
+      "gex_called_cells": 14042,
+      "spots_read": 40668144,
+      "reads_on_called_cells": 35064518,
+      "reads_with_guide": 32079996,
+      "reads_no_guide_match": 2984522,
+      "guide_umis_after_dedup": 3657048,
+      "cells_with_any_guide_umi": 12929,
+      "distinct_guides_observed": 81,
+      "elapsed_s": 539.3
+    },
+    {
+      "lane": "L3",
+      "srr": "SRR14828093",
+      "gex_gsm": "GSM5387654",
+      "gex_h5_sha256": "1197f21919162472db9c7e998b1e16a422e18b86c78893d8fb669c6509a6b5f9",
+      "gex_called_cells": 15268,
+      "spots_read": 66988930,
+      "reads_on_called_cells": 58490114,
+      "reads_with_guide": 53606975,
+      "reads_no_guide_match": 4883139,
+      "guide_umis_after_dedup": 5174862,
+      "cells_with_any_guide_umi": 14809,
+      "distinct_guides_observed": 81,
+      "elapsed_s": 825.3
+    },
+    {
+      "lane": "L4",
+      "srr": "SRR14828094",
+      "gex_gsm": "GSM5387655",
+      "gex_h5_sha256": "9e9046e893c9f15e1697dcd55df8595890c38a407ea68a091286acaa28abfc86",
+      "gex_called_cells": 15343,
+      "spots_read": 56409496,
+      "reads_on_called_cells": 48670973,
+      "reads_with_guide": 44690260,
+      "reads_no_guide_match": 3980713,
+      "guide_umis_after_dedup": 4665805,
+      "cells_with_any_guide_umi": 14477,
+      "distinct_guides_observed": 81,
+      "elapsed_s": 718.6
+    }
+  ],
+  "matrix": {
+    "cells": 58302,
+    "guides": 81,
+    "total_umis": 18006495,
+    "npz_sha256": "82ae263f9b3309e349ef7eff601f544600e25c1c3820f7a1f2b3d1720888ac8b"
+  },
+  "reissue_provenance": {
+    "scope": "AUTHENTICATED_FORMAT_REISSUE_ONLY_NOT_NEW_EXTRACTION",
+    "legacy_npz_sha256": "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c",
+    "legacy_count_receipt_sha256": "807e5ebd7383ab74ad3d5101791bac31666cf7af640abc7ebe0c34fb100e406d",
+    "safe_npz_pickle_free": true,
+    "independent_biological_validation": false,
+    "prospective_confirmation_eligible": false
+  }
+}

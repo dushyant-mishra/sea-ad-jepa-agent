@@ -1,10 +1,10 @@
 {
   "schema": "PERTURBATION_COMMITTED_OUTPUTS_SHA256_MANIFEST_V1",
   "outputs_root": "analysis/therapeutic_perturbation_etl/outputs",
-  "commit": "a0ea9f2309dcd2f361f72e3127e83109833b6383",
-  "tree": "de92c1fcc33dfe98b262697b42259c3c4f834cad",
-  "file_count": 11,
-  "total_bytes": 53836167,
+  "commit": "86e6ee830e1cb70684fb03866c3d1f9ef2e7da2e",
+  "tree": "dfa06e275c34f9a0e0a9a7cc3e2859c864317337",
+  "file_count": 14,
+  "total_bytes": 56949910,
   "digest_rules": {
     "sha256_is_of_file_bytes": true,
     "git_blob_id_is_not_a_content_sha256": "git hashes 'blob <len>\\0<bytes>', so the blob id never equals the SHA-256 of the contents; it is recorded only to locate the object",
@@ -109,6 +109,33 @@
       "kind": "text",
       "producer": "scripts/validate_gse178317_against_crisprbrain_v1.py (FAIL-CLOSED)",
       "regeneration": "superseded; the authoritative comparison is scripts/compare_gse178317_vs_crisprbrain_support_qualified_v3.py"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317_safe/gse178317_cell_guide_umi_counts_v2_safe_reissue.npz",
+      "bytes": 3110104,
+      "sha256": "82ae263f9b3309e349ef7eff601f544600e25c1c3820f7a1f2b3d1720888ac8b",
+      "git_blob_id_NOT_A_CONTENT_SHA256": null,
+      "kind": "binary",
+      "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+      "regeneration": "format conversion of the legacy count NPZ 170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c; no SRA reread, no new guide calling. Loads with allow_pickle=False"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317_safe/gse178317_count_stage_receipt_v2_safe_reissue.json",
+      "bytes": 2888,
+      "sha256": "8b9d5148f523fafdca9c75908da78354e42953e4962ce82fc753ac8b3e711ebe",
+      "git_blob_id_NOT_A_CONTENT_SHA256": null,
+      "kind": "text",
+      "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+      "regeneration": "emitted alongside the safe NPZ"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317_safe/gse178317_safe_reissue_provenance.json",
+      "bytes": 751,
+      "sha256": "2d9f2171a64ddc4c1b7c26d10235dc09553144eb6d9f4f0ea61b41998c27a1e9",
+      "git_blob_id_NOT_A_CONTENT_SHA256": null,
+      "kind": "text",
+      "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+      "regeneration": "emitted alongside the safe NPZ"
     }
   ]
 }

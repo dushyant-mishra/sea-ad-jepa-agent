@@ -65,6 +65,24 @@ PROVENANCE = {
                          "scripts/compare_gse178317_vs_crisprbrain_support_qualified_v3.py"),
         "kind": "text",
     },
+    "gse178317_safe/gse178317_cell_guide_umi_counts_v2_safe_reissue.npz": {
+        "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+        "regeneration": ("format conversion of the legacy count NPZ "
+                         "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b34"
+                         "35567fe3b4c; no SRA reread, no new guide calling. "
+                         "Loads with allow_pickle=False"),
+        "kind": "binary",
+    },
+    "gse178317_safe/gse178317_count_stage_receipt_v2_safe_reissue.json": {
+        "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+        "regeneration": "emitted alongside the safe NPZ",
+        "kind": "text",
+    },
+    "gse178317_safe/gse178317_safe_reissue_provenance.json": {
+        "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+        "regeneration": "emitted alongside the safe NPZ",
+        "kind": "text",
+    },
     "crisprbrain/iTF_Microglia-Day-8-CROP-seq-CRISPRi.csv.gz": {
         "producer": "scripts/acquire_crisprbrain_screens_v1.py",
         "regeneration": "pip install crisprbrain; refetch, minutes",
