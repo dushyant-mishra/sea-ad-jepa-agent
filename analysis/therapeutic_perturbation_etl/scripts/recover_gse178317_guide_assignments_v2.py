@@ -326,7 +326,7 @@ def assess_lane_usable_assignments(rows, lanes):
     """
     lanes = tuple(lanes)
     if len(lanes) < MIN_PAIRED_LANES or len(set(lanes)) != len(lanes):
-        raise ValueError("expected independent lane identities missing or duplicated")
+        raise ValueError("expected lane identities missing or duplicated")
     per_lane, totals = collections.Counter(), collections.Counter()
     for row in rows:
         lane, target = row["lane"], row["target_gene"]
@@ -475,6 +475,9 @@ def stage_call(a):
 
     receipt = {
         "schema": "GSE178317_GUIDE_ASSIGNMENT_V2",
+        "development_status": "THRESHOLDS_FIXED_AFTER_BOUNDED_SMOKE_RUN",
+        "prospective_confirmation_eligible": False,
+        "verdict_scope": "DEVELOPMENT_USABILITY_ONLY",
         "verdict": "PASS_LANE_SUPPORT_ONLY" if verdict_pass else "FAIL_LANE_SUPPORT",
         "qualification_scope": "DEVELOPMENT_POST_SMOKE_NOT_GUIDE_IDENTITY_VALIDATION",
         "guide_identity_independently_verified": False,
@@ -506,9 +509,10 @@ def stage_call(a):
             "poisson_tests": n_tests,
             "min_assigned_umi": MIN_ASSIGNED_UMI,
             "min_cell_total_umi": MIN_CELL_TOTAL_UMI,
-            "rationale": ("z of 5 is a stringent outlier cut chosen from the "
-                          "number of tests, not from any published count of "
-                          "assigned cells"),
+            "rationale": ("z of 5 is motivated by the number of tests rather "
+                          "than a published assignment count; however a bounded "
+                          "smoke run had already been inspected, so this is "
+                          "development-calibrated, not prospective"),
         },
         "cells_total": n_cells,
         "cells_judged": int(judged.sum()),
