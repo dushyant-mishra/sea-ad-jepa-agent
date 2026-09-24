@@ -119,7 +119,7 @@ def test_mislabeled_lane_detected_from_source_matrix(tmp_path, monkeypatch):
     old, receipt, _ = make_synthetic(tmp_path, monkeypatch)
     with np.load(old, allow_pickle=True) as z:
         arrays = {k: z[k] for k in z.files}
-    arrays["cell_ids"][0] = "L2_0"
+    arrays["cell_ids"][0] = "L2_WRONG"
     np.savez_compressed(old, **arrays)
     monkeypatch.setattr(reissue, "REVIEWED_LEGACY_NPZ_SHA256", reissue.sha256_file(old))
     body = json.loads(receipt.read_text())
