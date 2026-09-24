@@ -17,9 +17,10 @@
     "ci_workflows_success_at_previous_code_head": 9,
     "latest_ci_rerun": {
       "sha": "67981c8ef6e158d865470e70bca81cbe289be3dd",
-      "success": 7,
-      "in_progress": 2,
-      "failed": 0
+      "success": 8,
+      "in_progress": 1,
+      "failed": 0,
+      "pending_workflow": "Perturbation target-heldout synthetic benchmark"
     }
   },
   "full104": {
