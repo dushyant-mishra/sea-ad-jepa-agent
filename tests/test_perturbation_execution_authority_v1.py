@@ -25,6 +25,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from sea_ad_jepa.perturbation import execution_authority_v1 as auth
 from sea_ad_jepa.perturbation.execution_authority_v1 import (
     ExecutionAuthorityError,
     ExecutionContext,
@@ -256,11 +257,25 @@ def test_9_a_single_synthetic_row_is_rejected():
 # 10. fallback to obsolete parameters / defaults
 # --------------------------------------------------------------------------- #
 
-def test_10_positive_control_resolved_parameters_emit_a_receipt(tmp_path):
-    ctx = _ctx(parameters={"min_cells": 10})
-    sha = emit_qualification_receipt(path=tmp_path / "r.json", context=ctx,
-                                     body={"terminal": "OK"})
-    assert len(sha) == 64
+def test_10_positive_control_resolved_parameters_emit_a_receipt(tmp_path, monkeypatch):
+    p, sha = _file(tmp_path, "fixture.bin", b"test-only-reviewed-fixture")
+    role = "TEST_ONLY_DO_NOT_USE_FOR_PHYSICAL_AUTHORITY"
+    monkeypatch.setitem(auth.REVIEWED_SOURCE_ROOTS, role, (sha, p.stat().st_size))
+    code = tmp_path / "fixture_producer.py"
+    code.write_bytes(b"# independently pinned synthetic fixture")
+    code_sha = auth.sha256_file(code)
+    monkeypatch.setitem(auth.REVIEWED_QUALIFICATION_TASKS, "unit", {
+        "roles": frozenset({role}), "code_sha256": code_sha,
+    })
+    ctx = _ctx(code_sha=code_sha, code_path=str(code), parameters={"min_cells": 10}, inputs=[
+        auth.AuthenticatedInput(role=role, path=str(p), sha256=sha, bytes_=p.stat().st_size)
+    ])
+    digest = emit_qualification_receipt(path=tmp_path / "r.json", context=ctx,
+                                        body={"test_observation": "OK"})
+    receipt = json.loads((tmp_path / "r.json").read_text())
+    assert digest == receipt["receipt_sha256"]
+    assert receipt["evidence"]["test_observation"] == "OK"
+    assert receipt["production_execution_authorized"] is False
 
 
 def test_10_an_unresolved_parameter_blocks_the_receipt(tmp_path):
@@ -286,11 +301,12 @@ def test_synthetic_test_cannot_emit_a_qualification_receipt(tmp_path):
 
 def test_production_requires_a_separately_reviewed_authorization(tmp_path):
     ctx = _ctx(mode=ExecutionMode.PRODUCTION)
-    with pytest.raises(ExecutionAuthorityError, match="separately reviewed execution authorization"):
+    with pytest.raises(ExecutionAuthorityError, match="PRODUCTION is CLOSED"):
         emit_qualification_receipt(path=tmp_path / "r.json", context=ctx, body={})
     ctx.authorization_receipt_sha256 = "d" * 64
-    assert len(emit_qualification_receipt(path=tmp_path / "r.json", context=ctx,
-                                          body={})) == 64
+    with pytest.raises(ExecutionAuthorityError, match="PRODUCTION is CLOSED"):
+        emit_qualification_receipt(path=tmp_path / "r.json", context=ctx, body={})
+    assert not (tmp_path / "r.json").exists()
 
 
 def test_context_digest_changes_with_every_bound_element(tmp_path):
