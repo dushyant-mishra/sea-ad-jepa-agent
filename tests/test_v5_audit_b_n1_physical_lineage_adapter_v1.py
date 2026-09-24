@@ -276,7 +276,7 @@ def test_production_mode_alone_does_not_authorize_n1():
 def test_synthetic_mode_cannot_emit_a_physical_qualification_receipt(tmp_path):
     ctx = _ctx(mode=ExecutionMode.SYNTHETIC_TEST)
     with pytest.raises(PhysicalLineageError,
-                       match="engineering evidence, not physical evidence"):
+                       match="only PHYSICAL_QUALIFICATION"):
         emit_adapter_qualification_receipt(path=tmp_path / "r.json", ctx=ctx, body={})
     assert not (tmp_path / "r.json").exists()
 
@@ -284,12 +284,9 @@ def test_synthetic_mode_cannot_emit_a_physical_qualification_receipt(tmp_path):
 def test_a_qualification_receipt_never_claims_n1_authority(tmp_path):
     ctx = build_context(mode=PHYS, task="adapter-qual", code_sha256="a" * 64,
                         inputs=[], identity_digests={}, parameters={})
-    sha = emit_adapter_qualification_receipt(path=tmp_path / "r.json", ctx=ctx,
-                                             body={"terminal": "ADAPTER_QUALIFIED"})
-    payload = json.loads((tmp_path / "r.json").read_text())
-    assert len(sha) == 64
-    assert payload["n1_execution_authorized"] is False
-    assert payload["audit_b_n1"] == "UNOPENED"
-    assert payload["masks_executed"] == "NONE"
-    assert payload["burden_calculated"] is False
-    assert payload["training_authorized"] is False
+    with pytest.raises(PhysicalLineageError, match="six distinct"):
+        emit_adapter_qualification_receipt(
+            path=tmp_path / "r.json", ctx=ctx,
+            body={"terminal": "PHYSICAL_ADAPTER_QUALIFIED_FOR_INDEPENDENT_REVIEW"},
+        )
+    assert not (tmp_path / "r.json").exists()
