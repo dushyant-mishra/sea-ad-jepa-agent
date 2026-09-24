@@ -25,6 +25,11 @@ import sys
 
 import numpy as np
 
+from recover_gse178317_guide_assignments_v2 import (
+    LANES as FROZEN_SOURCE_LANES,
+    assess_lane_usable_assignments,
+)
+
 # ---------------------------------------------------------------------------
 # Declared before inspecting any effect estimate.
 # ---------------------------------------------------------------------------
@@ -92,11 +97,11 @@ def main():
             or assignment_receipt.get("assignments_csv_sha256") !=
                 sha256_file(a.assignments)):
         raise SystemExit("STOP: V2 source assignment/paired-lane development receipt missing or mismatched")
-    os.makedirs(a.out_dir, exist_ok=False)
 
     # ---- assignments -------------------------------------------------------
     by_lane = collections.defaultdict(lambda: collections.defaultdict(list))
     assigned = set()
+    support_rows = []
     with open(a.assignments, newline="") as fh:
         for row in csv.DictReader(fh):
             lane, target, barcode = row["lane"], row["target_gene"], row["cell_barcode"]
@@ -107,6 +112,18 @@ def main():
                 raise SystemExit("STOP: duplicate cell barcode / multiple target in lane")
             assigned.add(key)
             by_lane[lane][target].append(barcode)
+            support_rows.append({"lane": lane, "target_gene": target})
+    support = assess_lane_usable_assignments(
+        support_rows, [entry["lane"] for entry in FROZEN_SOURCE_LANES]
+    )
+    if not support["support_pass"]:
+        raise SystemExit("STOP: assignment CSV fails independently recomputed "
+                         "target/NTC matched-lane support: "
+                         + "; ".join(support["failure_reasons"]))
+    if assignment_receipt.get("verdict_basis", {}).get("usable_targets") != len(support["usable_targets"]):
+        raise SystemExit("STOP: caller-provided receipt disagrees with independently "
+                         "recomputed assigned-target lane support")
+    os.makedirs(a.out_dir, exist_ok=False)
     lanes = sorted(by_lane)
     print("lanes: %s" % ", ".join(lanes))
 
@@ -124,12 +141,13 @@ def main():
         "modality": "CROP-seq CRISPRi (dCas9-KRAB), druggable-genome subset",
         "experimental_unit": "(10x capture well, target) paired pseudobulk; "
                              "four wells are not established biological replicates",
+        "guide_identity_independently_verified": False,
         "guide_identity_provenance": (
             "recovered from SRA raw reads plus Suppl. Table 5 of Draeger et al. "
             "2022; absent from the processed GEO deposit"),
         "assignments_sha256": sha256_file(a.assignments),
         "source_gex_sha256_by_well": {},
-        "declared_before_inspection": {
+        "development_thresholds_declared_after_inspected_smoke": {
             "min_cells_per_unit": MIN_CELLS_PER_UNIT,
             "min_lanes_for_spread": MIN_LANES_FOR_SPREAD,
             "pseudocount": PSEUDOCOUNT,
@@ -226,6 +244,8 @@ def main():
                 "biological_uncertainty_estimable": False,
             })
 
+    if not rows:
+        raise SystemExit("STOP: no paired targets survived GEX pseudobulk checks")
     out_t = os.path.join(a.out_dir, "gse178317_target_engagement_v2.csv")
     with open(out_t, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
@@ -236,8 +256,6 @@ def main():
         w = csv.DictWriter(fh, fieldnames=list(eff_rows[0].keys()))
         w.writeheader(); w.writerows(eff_rows)
 
-    if not rows:
-        raise SystemExit("STOP: no lane-paired targets survived GEX pseudobulk checks")
     measured = [r for r in rows if r["engagement_log2fc"] is not None]
     down = [r for r in measured if r["engagement_log2fc"] < 0]
     receipt["targets_analyzed"] = len(rows)
