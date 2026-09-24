@@ -1,0 +1,65 @@
+name: GSE178317 authenticated physical safe-format reissue and caller parity
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/gse178317-physical-safe-reissue.yml'
+      - 'analysis/therapeutic_perturbation_etl/scripts/reissue_gse178317_safe_counts_v2.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/recover_gse178317_guide_assignments_v2.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  physical-reissue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused physical conversion requirements
+        run: python -m pip install --disable-pip-version-check numpy scipy pytest
+      - name: Run existing adversarial non-pickle reissue tests
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_gse178317_safe_reissue_v1.py | tee /tmp/reissue-tests.log
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/reissue-tests.log; then exit 1; fi
+      - name: Convert exact authenticated legacy physical NPZ without rereading SRA
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/reissue_gse178317_safe_counts_v2.py \
+            --legacy-npz analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_cell_guide_umi_counts_v2.npz \
+            --legacy-count-receipt analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_count_stage_receipt_v2.json \
+            --out-dir "$RUNNER_TEMP/gse178317-safe-v2"
+      - name: Independently rerun development V2 guide caller using safe NPZ
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/recover_gse178317_guide_assignments_v2.py \
+            --stage call \
+            --counts-npz "$RUNNER_TEMP/gse178317-safe-v2/gse178317_cell_guide_umi_counts_v2_safe_reissue.npz" \
+            --count-receipt "$RUNNER_TEMP/gse178317-safe-v2/gse178317_count_stage_receipt_v2_safe_reissue.json" \
+            --out-dir "$RUNNER_TEMP/gse178317-safe-called-v2"
+      - name: Compare exact assignments and all matched-well support with historical source
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])
+          old=json.load(open("analysis/therapeutic_perturbation_etl/evidence/gse178317_recovery/gse178317_guide_assignment_receipt_v2_lanegate.json"))
+          new=json.load(open(root/"gse178317-safe-called-v2/gse178317_guide_assignment_receipt_v2.json"))
+          pv=json.load(open(root/"gse178317-safe-v2/gse178317_safe_reissue_provenance.json"))
+          assert pv["result"]=="PARITY_VERIFIED_FORMAT_ONLY"
+          assert pv["counts_shape"]==[58302,81] and pv["total_umis"]==18006495
+          assert old["verdict_basis"]==new["verdict_basis"],"changed lane support or assigned target census"
+          assert old["cells_assigned"]==new["cells_assigned"]==11775
+          assert new["verdict"]==old["verdict"]=="PASS_LANE_SUPPORT_ONLY"
+          assert old["assignments_csv_sha256"]==new["assignments_csv_sha256"],"assignment byte mismatch"
+          assert pv["safe_npz_sha256"]==new["counts_npz_sha256"]
+          assert new["prospective_confirmation_eligible"] is False
+          assert new["guide_identity_independently_verified"] is False
+          print("PHYSICAL_SAFE_REISSUE_PARITY_CONFIRMED 58302x81 18006495 11775 37")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gse178317-physical-safe-reissue-DEVELOPMENT
+          path: |
+            ${{ runner.temp }}/gse178317-safe-v2/
+            ${{ runner.temp }}/gse178317-safe-called-v2/
+          if-no-files-found: error
