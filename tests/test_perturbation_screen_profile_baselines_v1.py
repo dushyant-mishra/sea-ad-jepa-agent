@@ -64,6 +64,22 @@ def test_holdout_outcomes_do_not_influence_training_mean():
     assert a[other_same_fold] == b[other_same_fold]
 
 
+def test_training_only_responsive_selection_ignores_heldout_outcomes():
+    p = profiles()
+    before = score_retrospective_baselines(p, seed="FIXED")
+    folds = fixed_target_folds(p, seed="FIXED")
+    heldout = [p.targets.index(t) for t, fold in folds.items() if fold == 0]
+    x = p.effects.copy()
+    x[heldout, :] += 10_000
+    after = score_retrospective_baselines(replace(p, effects=x), seed="FIXED")
+    assert (
+        before["responsive_subset"]["selection_digest_by_fold"]["0"]
+        == after["responsive_subset"]["selection_digest_by_fold"]["0"]
+    )
+    assert before["responsive_subset"]["scope"] == "SECONDARY_DEVELOPMENT_DIAGNOSTIC"
+    assert before["responsive_subset"]["macro_no_change_mae"] is not None
+
+
 def test_missing_feature_is_not_silently_zero_filled():
     p = profiles()
     x = p.effects.copy()
