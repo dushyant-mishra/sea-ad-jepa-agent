@@ -1,0 +1,30 @@
+name: Perturbation committed-output SHA-256 manifest
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/evidence/committed_outputs_full_sha256_v1.json'
+      - 'analysis/therapeutic_perturbation_etl/scripts/verify_committed_outputs_sha256_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/outputs/**'
+      - '.github/workflows/perturbation-output-sha256-manifest.yml'
+  push:
+    branches:
+      - analysis/perturbation-etl-gse301119-claude-20260923
+      - gpt/gse178317-33target-comparison-20260924
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/evidence/committed_outputs_full_sha256_v1.json'
+      - 'analysis/therapeutic_perturbation_etl/scripts/verify_committed_outputs_sha256_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/outputs/**'
+      - '.github/workflows/perturbation-output-sha256-manifest.yml'
+
+jobs:
+  verify-committed-output-digests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify committed perturbation output SHA-256 manifest
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/verify_committed_outputs_sha256_v1.py --repo-root .
