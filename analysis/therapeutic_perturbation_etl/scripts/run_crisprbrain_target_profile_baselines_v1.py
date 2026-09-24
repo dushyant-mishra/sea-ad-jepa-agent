@@ -30,7 +30,7 @@ def main():
     )
     out = score_retrospective_baselines(profiles, seed=args.seed)
     Path(args.out_json).write_text(json.dumps(out, indent=2, allow_nan=False) + "\n")
-    print(json.dumps({k: out[k] for k in ("screen", "targets", "targets_estimable", "exposure", "macro")}))
+    print(json.dumps({k: out[k] for k in ("screen", "targets", "targets_estimable", "exposure", "macro", "responsive_subset")}))
     return 0
 
 
