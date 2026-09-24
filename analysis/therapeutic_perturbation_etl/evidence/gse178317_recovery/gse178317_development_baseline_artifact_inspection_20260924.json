@@ -1,0 +1,54 @@
+{
+  "schema": "GSE178317_DEVELOPMENT_BASELINE_ARTIFACT_INSPECTION_V1",
+  "date": "2026-09-24",
+  "source_workflow_run_id": 36052130162,
+  "artifact_id": 10830139891,
+  "artifact_name": "gse178317-RETROSPECTIVE-development-baselines",
+  "artifact_zip_sha256": "53641df7ca829c317b2fe1befebbe833f84ba2c26b3e1f09df1ca87ffaa8c038",
+  "report_file": "gse178317_development_baselines_v1.json",
+  "report_json_sha256": "bc967c899bc9da17351db7a73609c0681b3120c274c6efd921ea99ca1b470cad",
+  "report_schema": "CRISPRBRAIN_SCREEN_RETROSPECTIVE_BASELINES_V1",
+  "screen": "iTF_Microglia-Day8-CRISPRi",
+  "source_uncompressed_csv_sha256": "41eb533dfd50852d0ebd8f2c27d42d5f6bb3b1f1264ab0c721106cfbaed9fc39",
+  "split_seed": "GSE178317_RETROSPECTIVE_BASELINES_DEVELOPMENT_20260924",
+  "n_folds": 5,
+  "fold_target_counts": {
+    "0": 8,
+    "1": 8,
+    "2": 8,
+    "3": 8,
+    "4": 7
+  },
+  "targets": 39,
+  "targets_estimable": 39,
+  "status_counts": {
+    "ESTIMABLE": 39
+  },
+  "genes_in_original_screen": 10549,
+  "measured_genes_excluding_target_min": 8595,
+  "measured_genes_excluding_target_max": 9413,
+  "scored_genes_min": 8595,
+  "scored_genes_median": 8783,
+  "scored_genes_max": 9190,
+  "exposure": "DEVELOPMENT_RETROSPECTIVE_ALREADY_INSPECTED",
+  "split_kind": "TARGET_HELDOUT_WITHIN_SAME_EXPERIMENT_NOT_INDEPENDENT_VALIDATION",
+  "scoring": "MACRO_TARGET_EQUAL_WEIGHT_OFF_TARGET_SAME_FEATURE_SUPPORT",
+  "original_feature_namespace": "PROVIDER_GENE_LABEL_UNHARMONIZED_WITH_FULL104",
+  "macro": {
+    "no_change_mae": 0.07187554137405239,
+    "no_change_rmse": 0.10036723514131049,
+    "train_target_equal_mean_mae": 0.0686438789248116,
+    "train_target_equal_mean_rmse": 0.09712836045302368
+  },
+  "responsive_subset_secondary_development_diagnostic": {
+    "macro_no_change_mae": 0.2189812734116009,
+    "macro_train_target_equal_mean_mae": 0.21612942192818863
+  },
+  "biological_uncertainty_estimable": false,
+  "independent_confirmation_authorized": false,
+  "brain_causal_generalization_authorized": false,
+  "jepa_prediction_used": false,
+  "jepa_training_authorized": false,
+  "therapeutic_ranking_authorized": false,
+  "interpretation": "The baseline artifact contains a same-experiment retrospective DEVELOPMENT report. The other-target mean baseline is slightly lower MAE/RMSE than the no-change baseline on this inspected screen, but this is not independent confirmation, biological replication, brain causal generalization, JEPA performance, or therapeutic ranking."
+}
