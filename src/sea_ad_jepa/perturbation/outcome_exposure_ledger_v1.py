@@ -32,6 +32,12 @@ KNOWN_EXPOSED_FLOOR = frozenset({
     ("GSE254205", "bulk_GNE317", "AB_vs_NT"),
     ("GSE254205", "bulk_GNE317", "AB_GNE_vs_AB"),
     ("GSE254205", "bulk_GNE317", "AB_GNE_vs_NT"),
+    # September 24: GSE178317 recovery, lane-gated engagement and transcriptome-
+    # wide effects were physically inspected, as were same-experiment
+    # CRISPRbrain reference outputs. Never reclaim them as untouched.
+    ("GSE178317", "iTF_Microglia_Day8_CROPseq_CRISPRi", "target_engagement"),
+    ("GSE178317", "iTF_Microglia_Day8_CROPseq_CRISPRi", "transcriptome_wide_DE"),
+    ("CRISPRbrain", "iTF_Microglia_Day8_CROPseq_CRISPRi", "published_DE"),
 })
 
 
@@ -165,7 +171,7 @@ def append_event(ledger: FrozenLedger, event: ExposureEvent) -> FrozenLedger:
 
 
 def seed_historical_exposure() -> FrozenLedger:
-    """Freeze exactly the inspected outcome families known on 2026-09-23.
+    """Freeze the inspected outcome families known through 2026-09-24.
 
     We cannot infer untouched status of any other outcome from this list;
     all absent (study, arm, outcome) triples default to UNKNOWN.
@@ -173,8 +179,8 @@ def seed_historical_exposure() -> FrozenLedger:
     return freeze_ledger([
         ExposureEvent(
             OutcomeKey(*key), INSPECTED,
-            "Observed target engagement or bulk contrast outputs inspected on 2026-09-23.",
-            "PR77_20260923_EXPERIMENTAL_PRODUCER_EVIDENCE",
+            "Historical target-engagement, contrast and GSE178317 development outputs inspected by 2026-09-24.",
+            "PR77_20260923_TO_20260924_EXPERIMENTAL_PRODUCER_EVIDENCE",
         ) for key in sorted(KNOWN_EXPOSED_FLOOR)
     ])
 
