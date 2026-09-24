@@ -1,0 +1,141 @@
+{
+  "schema": "PERTURBATION_COMMITTED_OUTPUTS_SHA256_MANIFEST_V1",
+  "outputs_root": "analysis/therapeutic_perturbation_etl/outputs",
+  "commit": "86e6ee830e1cb70684fb03866c3d1f9ef2e7da2e",
+  "tree": "dfa06e275c34f9a0e0a9a7cc3e2859c864317337",
+  "file_count": 14,
+  "total_bytes": 56949910,
+  "digest_rules": {
+    "sha256_is_of_file_bytes": true,
+    "git_blob_id_is_not_a_content_sha256": "git hashes 'blob <len>\\0<bytes>', so the blob id never equals the SHA-256 of the contents; it is recorded only to locate the object",
+    "no_digest_inferred_from_a_prefix": "every digest here was computed from the bytes on disk; truncated prefixes appearing in prose are for reading only"
+  },
+  "files": [
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/README.md",
+      "bytes": 5243,
+      "sha256": "16fdaa4a5e1ca13bf84817dc3ff74d136a5caf1dbce5132253aa980cbdc13423",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "7e91be4fac646dfb1c3186349549bcbb7cff8a63",
+      "kind": "text",
+      "producer": "authored",
+      "regeneration": "n/a"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iPSC-Microglia-CITE-seq-CRISPRi.csv.gz",
+      "bytes": 188965,
+      "sha256": "d032364a457e1406b61a5109256953c9be5c90ee52236a1d3b885b790a51baaf",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "cc559eac105b0da96fa16adee8c5286332a51da1",
+      "kind": "binary",
+      "producer": "scripts/acquire_crisprbrain_screens_v1.py",
+      "regeneration": "pip install crisprbrain; refetch, minutes"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iPSC-Microglia-CROP-seq-CRISPRi.csv.gz",
+      "bytes": 16133002,
+      "sha256": "818ae3c383811c94ab56ea588d34fbaaeaa1c808673125f68d62644e6ca19606",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "295bb9c72114b7e54769b53d5ced39f9ea1274b2",
+      "kind": "binary",
+      "producer": "scripts/acquire_crisprbrain_screens_v1.py",
+      "regeneration": "pip install crisprbrain; refetch, minutes"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF-Microglia-CITE-seq-CRISPRi.csv.gz",
+      "bytes": 187443,
+      "sha256": "dcc204e858264e1e63959c628ebfaabee8249d86aac2d6fe637d8e7b872d3434",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "fe9ac04d01a6ea3e730510ea2e3c2e60840e4b93",
+      "kind": "binary",
+      "producer": "scripts/acquire_crisprbrain_screens_v1.py",
+      "regeneration": "pip install crisprbrain; refetch, minutes"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF-Microglia-CROP-seq-CRISPRi.csv.gz",
+      "bytes": 20358929,
+      "sha256": "58c48fa4400d469a0e616940070bb426a71df77ff12e6de2bbf8efb119ff884e",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "b525a005c8f50e1342446f46b0f35500b457d621",
+      "kind": "binary",
+      "producer": "scripts/acquire_crisprbrain_screens_v1.py",
+      "regeneration": "pip install crisprbrain; refetch, minutes"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF_Microglia-Day-8-CROP-seq-CRISPRi.csv.gz",
+      "bytes": 13586532,
+      "sha256": "201e8fb28a63dfb91ae5f37a77f9641a90c3cdf4c618943a55699c512227079f",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "7b2d359f93e7692625ecff0d721bd221b3cdb559",
+      "kind": "binary",
+      "producer": "scripts/acquire_crisprbrain_screens_v1.py",
+      "regeneration": "pip install crisprbrain; refetch, minutes"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_cell_guide_assignments_v2.csv.gz",
+      "bytes": 227864,
+      "sha256": "87d032b6a4b8436771a8c1a79e3c882576f7c7155282aa933f8f94734ad052cd",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "c8c8fceb71e29cd7b1b17fe4823ab4d230999ac7",
+      "kind": "binary",
+      "producer": "scripts/recover_gse178317_guide_assignments_v2.py --stage call",
+      "regeneration": "seconds, from the committed count NPZ"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_cell_guide_umi_counts_v2.npz",
+      "bytes": 3121266,
+      "sha256": "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "2cf39c4bc8ff573c9fbb71496dc68e3afac3095e",
+      "kind": "binary",
+      "producer": "scripts/recover_gse178317_guide_assignments_v2.py --stage count",
+      "regeneration": "streams 221,434,278 spots from SRA runs SRR14828091-94, about 47 minutes; requires sra-toolkit vdb-dump"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_target_engagement_v2.csv",
+      "bytes": 2573,
+      "sha256": "c6d6f0013d7911477d51fb1c178e23af8806c2df48a2b60cb7b2de3e62f2d4df",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "3dc8e48767e8f3e2b013c75ae145bfd802995d0b",
+      "kind": "text",
+      "producer": "scripts/build_gse178317_intervention_effects_v2.py",
+      "regeneration": "from committed assignments plus deposited GEX h5"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_top_effects_v2.csv.gz",
+      "bytes": 22119,
+      "sha256": "b55bd4b22c51fcf17e0171f7436d61b084a979669462df117c266a8d286ba440",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "d9b8a6ab72c353fac27b26de4e4f11f16e1d8c1a",
+      "kind": "binary",
+      "producer": "scripts/build_gse178317_intervention_effects_v2.py",
+      "regeneration": "from committed assignments plus deposited GEX h5"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317/gse178317_vs_crisprbrain_engagement_v1.csv",
+      "bytes": 2231,
+      "sha256": "fff45935c994d3fbce3293a9ddc53bce3acaa9507040e1ceb79ef19e8418a7e0",
+      "git_blob_id_NOT_A_CONTENT_SHA256": "0bf6637b25d6b7ee17f23eb9764ad09d122ab793",
+      "kind": "text",
+      "producer": "scripts/validate_gse178317_against_crisprbrain_v1.py (FAIL-CLOSED)",
+      "regeneration": "superseded; the authoritative comparison is scripts/compare_gse178317_vs_crisprbrain_support_qualified_v3.py"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317_safe/gse178317_cell_guide_umi_counts_v2_safe_reissue.npz",
+      "bytes": 3110104,
+      "sha256": "82ae263f9b3309e349ef7eff601f544600e25c1c3820f7a1f2b3d1720888ac8b",
+      "git_blob_id_NOT_A_CONTENT_SHA256": null,
+      "kind": "binary",
+      "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+      "regeneration": "format conversion of the legacy count NPZ 170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c; no SRA reread, no new guide calling. Loads with allow_pickle=False"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317_safe/gse178317_count_stage_receipt_v2_safe_reissue.json",
+      "bytes": 2888,
+      "sha256": "8b9d5148f523fafdca9c75908da78354e42953e4962ce82fc753ac8b3e711ebe",
+      "git_blob_id_NOT_A_CONTENT_SHA256": null,
+      "kind": "text",
+      "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+      "regeneration": "emitted alongside the safe NPZ"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/outputs/gse178317_safe/gse178317_safe_reissue_provenance.json",
+      "bytes": 751,
+      "sha256": "2d9f2171a64ddc4c1b7c26d10235dc09553144eb6d9f4f0ea61b41998c27a1e9",
+      "git_blob_id_NOT_A_CONTENT_SHA256": null,
+      "kind": "text",
+      "producer": "scripts/reissue_gse178317_safe_counts_v2.py",
+      "regeneration": "emitted alongside the safe NPZ"
+    }
+  ]
+}

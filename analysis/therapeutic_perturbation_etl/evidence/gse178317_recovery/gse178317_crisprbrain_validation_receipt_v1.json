@@ -1,0 +1,40 @@
+{
+  "schema": "GSE178317_CRISPRBRAIN_VALIDATION_V1",
+  "verdict": "PASS",
+  "reference_screen": "iTF Microglia-Day-8-CROP-seq-CRISPRi",
+  "independence": "the two paths share no intermediate: ours runs from archived SRA reads through our own guide calling, pseudobulk and normalisation; theirs is the authors' pipeline output",
+  "engagement_csv_sha256": "dc1b322fd2b1590e5c99e567a924c4bb58e04fd55549c9f062b9ad179224be9f",
+  "declared_before_comparison": {
+    "min_sign_agreement": 1.0,
+    "min_spearman": 0.5,
+    "magnitudes_not_expected_to_match": "a stricter guide caller admits fewer cells and so carries fewer misassigned cells diluting each estimate toward zero; the ratio is a diagnostic, not a pass criterion"
+  },
+  "targets_ours": 39,
+  "targets_reference": 35,
+  "targets_comparable": 35,
+  "sign_agreement": {
+    "agree": 35,
+    "of": 35,
+    "fraction": 1.0
+  },
+  "pearson_r": 0.5975,
+  "spearman_rho": 0.7199,
+  "median_log2fc_ours": -0.7146,
+  "median_log2fc_reference": -0.2328,
+  "magnitude_ratio_of_medians": 3.07,
+  "agreement_on_reference_hits_fdr_lt_0.05": {
+    "n": 17,
+    "both_negative": 17,
+    "spearman": 0.3064
+  },
+  "agreement_on_reference_nulls_fdr_ge_0.05": {
+    "n": 18,
+    "median_abs_log2fc_ours": 0.3985,
+    "median_abs_log2fc_reference": 0.1682,
+    "note": "targets the authors' own analysis did not call; a pipeline manufacturing signal would agree on hits and disagree here"
+  },
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "therapeutic_ranking": false,
+  "comparison_csv_sha256": "fff45935c994d3fbce3293a9ddc53bce3acaa9507040e1ceb79ef19e8418a7e0"
+}

@@ -1,0 +1,2 @@
+"tag","source_path","oracle","seuratobject_ge5_available","n_features","n_cells","nnz","colsums_exactly_match_nCount_RNA","colnnz_exactly_match_nFeature_RNA","n_cells_mismatched_count","n_cells_mismatched_nfeature","max_abs_diff_count","max_abs_diff_nfeature","counts_integral","counts_nonnegative","attribute_reader_verified"
+"CRISPRa","D:\Jepa project\data\external\v4\perturbation\GSE301119\GSE301119_CRISPRa_seurat5.rds","Seurat_5.4.0_meta.data_nCount_RNA_and_nFeature_RNA",FALSE,19162,23584,77128293,TRUE,TRUE,0,0,0,0,TRUE,TRUE,TRUE
