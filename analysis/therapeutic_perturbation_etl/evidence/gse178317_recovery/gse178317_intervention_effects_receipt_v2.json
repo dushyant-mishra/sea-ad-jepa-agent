@@ -1,0 +1,40 @@
+{
+  "schema": "GSE178317_INTERVENTION_EFFECTS_V2_DEVELOPMENT",
+  "qualification_scope": "DESCRIPTIVE_WITHIN_CAPTURE_WELLS_ONLY",
+  "training_authorized": false,
+  "prospective_confirmation_authorized": false,
+  "biological_uncertainty_estimable": false,
+  "n_independent_biological_replicates": "NOT_ESTABLISHED",
+  "source_methods_doi": "10.1038/s41593-022-01131-4",
+  "assignment_receipt_sha256": "84cc1f122f1f52727487bd408b82439b206a9951806bcf701a911cdc00ba9f9a",
+  "study": "GSE178317",
+  "system": "iPSC-derived microglia (iTF-Microglia)",
+  "modality": "CROP-seq CRISPRi (dCas9-KRAB), druggable-genome subset",
+  "experimental_unit": "(10x capture well, target) paired pseudobulk; four wells are not established biological replicates",
+  "guide_identity_independently_verified": false,
+  "guide_identity_provenance": "recovered from SRA raw reads plus Suppl. Table 5 of Draeger et al. 2022; absent from the processed GEO deposit",
+  "assignments_sha256": "3719a109f18ce9f5b10cf01b3e35aa670ed1e68d35d8ff77bf04efe2c48d3214",
+  "source_gex_sha256_by_well": {
+    "L1": "0b1fd0ad00f3fabf170c4207ef3886c3bdc955256a59c10949dfa3b110cc82de",
+    "L2": "6cb4df62065006d18cc3f0d3df42d7ac3ce875a41cbc59d7814e855862abb754",
+    "L3": "1197f21919162472db9c7e998b1e16a422e18b86c78893d8fb669c6509a6b5f9",
+    "L4": "9e9046e893c9f15e1697dcd55df8595890c38a407ea68a091286acaa28abfc86"
+  },
+  "development_thresholds_declared_after_inspected_smoke": {
+    "min_cells_per_unit": 10,
+    "min_lanes_for_spread": 3,
+    "pseudocount": 1.0,
+    "crispri_engagement_direction": "targeted gene expected to DECREASE"
+  },
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "therapeutic_ranking": false,
+  "targets_analyzed": 39,
+  "targets_with_engagement_measured": 39,
+  "targets_knocked_down": 39,
+  "targets_with_estimable_technical_well_spread": 37,
+  "targets_with_estimable_biological_uncertainty": 0,
+  "median_engagement_log2fc": -0.7146,
+  "target_engagement_csv_sha256": "c6d6f0013d7911477d51fb1c178e23af8806c2df48a2b60cb7b2de3e62f2d4df",
+  "top_effects_csv_sha256": "865aa064a6b36b130ec99da502386bb7cb029d4686c6ffafde2fce25aa7de09c"
+}
