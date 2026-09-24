@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Validate the GSE178317 recovery against the CRISPRbrain reference.
+"""SUPERSEDED historical V1 comparison — DO NOT RUN.
+
+The original claim of external biological validation was withdrawn: the
+CRISPRbrain and our recovery paths use the SAME experimental reads. Retained
+only as an immutable historical record of the original computation.
+
+Validate the GSE178317 recovery against the CRISPRbrain reference.
 
 The recovery reconstructs per-cell sgRNA assignments from raw SRA reads, then
 computes target engagement from them.  CRISPRbrain independently hosts the
@@ -58,6 +64,12 @@ def sha256_file(path):
 
 
 def main():
+    raise SystemExit(
+        'STOP_GSE178317_V1_REFERENCE_COMPARISON_WITHDRAWN: same experiment and '
+        'shared reads cannot validate biological replication; this V1 producer '
+        'also requests obsolete lane-uncertainty fields. Use the versioned '
+        'development concordance audit instead.'
+    )
     ap = argparse.ArgumentParser()
     ap.add_argument("--engagement", required=True,
                     help="gse178317_target_engagement_v1.csv from our recovery")
