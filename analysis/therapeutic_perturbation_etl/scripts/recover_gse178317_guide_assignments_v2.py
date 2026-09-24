@@ -105,6 +105,29 @@ MIN_CELL_TOTAL_UMI = 10          # cells below this carry too little to judge
 
 SENSITIVITY_Z = [3.0, 4.0, 5.0, 6.0, 8.0, 10.0]
 
+# ---------------------------------------------------------------------------
+# Usability verdict.  v1 exited 0 and wrote a file while assigning 10 of 58,302
+# cells.  Its only guard was "refuse to write if there are no rows at all",
+# which catches a literal zero and waves through a result that is empty in
+# every way that matters.  A producer whose output cannot support the analysis
+# it feeds must say so itself rather than rely on a reader noticing the number
+# is small.
+#
+# The floor is derived from the downstream requirement, not from any published
+# count of assigned cells: build_gse178317_intervention_effects_v1.py needs at
+# least 10 cells per (lane, target) pseudobulk and at least 3 lanes before it
+# reports a spread, so a target needs roughly 30 to 40 cells to contribute, and
+# the study only earns a place in the collection if most of its targets do.
+#
+# Stated plainly because it bears on how much this pre-declaration is worth: a
+# bounded smoke run over 0.27% of the reads had already been executed when these
+# numbers were fixed, and it assigned 4,223 cells across 38 targets.  So the
+# expectation was that the full run clears this bar comfortably.  The bar is set
+# by what the analysis needs, but it was not set in ignorance of the data.
+# ---------------------------------------------------------------------------
+MIN_CELLS_PER_USABLE_TARGET = 40      # ~10 cells x 4 lanes
+MIN_USABLE_TARGETS = 30               # of the 39 non-control targets
+
 
 def sha256_file(path):
     h = hashlib.sha256()
@@ -367,8 +390,36 @@ def stage_call(a):
 
     by_gene = collections.Counter(r["target_gene"] for r in rows)
     vals = sorted(by_gene.values())
+
+    # Usability verdict, against the floor declared at the top of this file.
+    usable = sorted(g for g, n in by_gene.items()
+                    if g != "NTC" and n >= MIN_CELLS_PER_USABLE_TARGET)
+    ntc_ok = by_gene.get("NTC", 0) >= MIN_CELLS_PER_USABLE_TARGET
+    verdict_pass = len(usable) >= MIN_USABLE_TARGETS and ntc_ok
+    reasons = []
+    if len(usable) < MIN_USABLE_TARGETS:
+        reasons.append("only %d of %d targets reach %d cells (need %d)"
+                       % (len(usable), MIN_USABLE_TARGETS,
+                          MIN_CELLS_PER_USABLE_TARGET, MIN_USABLE_TARGETS))
+    if not ntc_ok:
+        reasons.append("non-targeting controls have %d cells, below the %d "
+                       "needed for a comparison group"
+                       % (by_gene.get("NTC", 0), MIN_CELLS_PER_USABLE_TARGET))
+
     receipt = {
         "schema": "GSE178317_GUIDE_ASSIGNMENT_V2",
+        "verdict": "PASS" if verdict_pass else "FAIL",
+        "verdict_basis": {
+            "min_cells_per_usable_target": MIN_CELLS_PER_USABLE_TARGET,
+            "min_usable_targets": MIN_USABLE_TARGETS,
+            "usable_targets": len(usable),
+            "ntc_cells_sufficient": bool(ntc_ok),
+            "failure_reasons": reasons,
+            "note": ("the floor comes from what the downstream pseudobulk "
+                     "analysis needs, not from any published count of assigned "
+                     "cells; a producer whose output cannot support the "
+                     "analysis it feeds must say so itself"),
+        },
         "counts_npz_sha256": sha256_file(a.counts_npz),
         "method": ("agreement of a per-guide robust z-score on cell fraction "
                    "with a Poisson test against an ambient expectation; a cell "
@@ -404,6 +455,12 @@ def stage_call(a):
     with open(os.path.join(a.out_dir, "gse178317_guide_assignment_receipt_v2.json"),
               "w") as fh:
         json.dump(receipt, fh, indent=2)
+
+    print("\n=== VERDICT: %s ===" % receipt["verdict"])
+    for r in reasons:
+        print("  FAIL: %s" % r)
+    print("  usable targets (>= %d cells): %d of %d required"
+          % (MIN_CELLS_PER_USABLE_TARGET, len(usable), MIN_USABLE_TARGETS))
 
     print("\n=== assignment at the declared operating point (z >= %.1f) ===" % Z_THRESHOLD)
     for k in ("cells_total", "cells_judged", "cells_assigned", "cells_multiplet",
