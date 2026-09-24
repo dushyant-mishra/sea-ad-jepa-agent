@@ -1,0 +1,36 @@
+name: GSE254205 assay-versus-detection semantics
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_gse254205_drug_response_v2.py'
+      - 'analysis/therapeutic_perturbation_etl/BENCHMARKING_SPECIFICATION_V1_20260923.md'
+      - 'analysis/therapeutic_perturbation_etl/STUDY_READINESS_AND_UNRESOLVED_ISSUES_20260923.md'
+      - 'tests/test_gse254205_assay_detection_v2.py'
+      - '.github/workflows/gse254205-assay-detection-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-v1-v2-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CPU test dependencies
+        run: python -m pip install --disable-pip-version-check numpy pytest
+      - name: Execute V1/V2 numerical and provenance controls
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_gse254205_assay_detection_v2.py | tee /tmp/gse254205-v2.txt
+      - name: Fail closed on skipped tests
+        run: |
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/gse254205-v2.txt; then
+            echo 'GSE254205 V2 TESTS SKIPPED — STOP'
+            exit 1
+          fi
