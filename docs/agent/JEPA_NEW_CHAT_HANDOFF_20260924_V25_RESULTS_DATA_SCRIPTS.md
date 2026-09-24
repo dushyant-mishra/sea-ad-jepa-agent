@@ -17,10 +17,10 @@ Re-fetch live GitHub heads and verify receipts/physical assets before any action
 ## Current live GitHub state at this handoff
 
 - `main` contains V24 docs, not the new experimental physical binaries.
-- Active experimental PR **#77**, branch `analysis/perturbation-etl-gse301119-claude-20260923`, audited head **`5c5649def828b3e087e239acca26ec317683c426`**, DRAFT, base `analysis/therapeutic-perturbation-etl-20260923`. Re-fetch before editing. All six pull-request workflows on that exact SHA were SUCCESS.
+- Active experimental PR **#77**, branch `analysis/perturbation-etl-gse301119-claude-20260923`, audited head **`0e0f47b133a87c64496367385083208442748e25`**, DRAFT, base `analysis/therapeutic-perturbation-etl-20260923`. Re-fetch before editing. All **nine** pull-request workflows on that exact SHA were SUCCESS. New integration after the earlier audit: previously reviewed PR #84 -> #88 -> #90 baseline/exposure code was integrated from PR #99; see benchmark section below.
 - Claude's 58 MB data commit `52f20a7a` is an ancestor of that head (12 commits behind, zero divergent commits). Physical output binaries, receipts and producers are already on GitHub under `analysis/therapeutic_perturbation_etl/`. Do not re-upload duplicate binaries or merge development results into main merely to make them accessible.
 - PR #83 plus #85 red-team merged into its parent at `64148023740d57777666faff15395262d4b0e3da`. N1 remains unauthorized.
-- PR #105 domain-transfer and gene-authority design merged into experimental PR #77. PR #104 count binding was closed as superseded because its source/test/workflow blobs were already integrated by Claude. PR #99 is stale; PR #100 superseded by #102.
+- PR #105 domain-transfer and gene-authority design merged into experimental PR #77. PR #104 count binding was closed as superseded because its source/test/workflow blobs were already integrated by Claude. PR #99's previously reviewed benchmark/exposure chain was selectively integrated as byte-exact code/tests/workflows; do not merge the old PR wholesale. PR #100 superseded by #102.
 - Independent open reviews: #86 GSE254205 assay-detection/schema V2; #91 GSE301119 donor-guide support; #92 GSE311359 duplicate-BIN1 STOP; #94 GSE240609 GEO source-identity V2. Re-fetch each live head before merging.
 
 ## Permanent project boundaries
@@ -74,6 +74,16 @@ The current `src/sea_ad_jepa/perturbation/cross_study_feature_contract_v1.py` al
 
 `docs/agent/CROSS_STUDY_GENE_ID_AUTHORITY_20260924.md` freezes the planned authority: HGNC archived complete snapshot (proposed 2026-07-07) + Ensembl human release 116 GRCh38.p14, **proposed until actual source files are downloaded and hashed**. Build a SHA-bound versioned crosswalk, report mapped/unmapped/ambiguous/alias counts per study, use reviewed unique aliases only, and never treat a symbol guess as a gene-identity PASS. The eight stale aliases (including ATP5A1 -> ATP5F1A) must go through this frozen authority, not manual substitutions.
 
+## Newly integrated retrospective benchmark and exposure safeguards (latest PR #77)
+
+At `0e0f47b133a87c64496367385083208442748e25`, the reviewed #84 -> #88 -> #90 code/tests/workflows were integrated from PR #99 without wholesale merging its stale branch. `analysis/therapeutic_perturbation_etl/BENCHMARK_BASELINE_INTEGRATION_20260924.md` documents the integration.
+
+- `src/sea_ad_jepa/perturbation/benchmark_target_holdout_v1.py`: target-heldout benchmark framework with donor-aware components only when real independent donors exist; GSE178317 10X wells must NEVER be relabeled donors.
+- `src/sea_ad_jepa/perturbation/outcome_exposure_ledger_v1.py`: immutable outcome-exposure accounting. GSE178317 target engagement, DE and same-experiment CRISPRbrain reference are **INSPECTED/DEVELOPMENT**, never untouched confirmation.
+- `src/sea_ad_jepa/perturbation/benchmark_screen_profile_baselines_v1.py` and `analysis/therapeutic_perturbation_etl/scripts/run_crisprbrain_target_profile_baselines_v1.py`: two simple same-screen retrospective comparators, zero predicted log2FC and mean profile of OTHER training targets. Five deterministic target-disjoint folds, exclude each target's own gene from scoring, intersect measured genes rather than imputing missing as zero, macro-average targets. No invented biological error bars.
+- `.github/workflows/perturbation-screen-profile-baselines.yml`, `perturbation-target-heldout-benchmark.yml`, `perturbation-outcome-exposure.yml` plus strict test suites. **Nine** workflows SUCCESS at the audited head, including a DEVELOPMENT-only baseline report on the already-inspected committed Day-8 CRISPRbrain screen. The report's numeric results are not copied into this handoff because the workflow artifact has not been independently inspected here. Do not invent a performance result.
+- Source published uncompressed Day-8 screen SHA-256 required by baseline: `41eb533dfd50852d0ebd8f2c27d42d5f6bb3b1f1264ab0c721106cfbaed9fc39`. It is the SAME experiment as GSE178317, not an independent train/test cohort.
+
 ## Next exact work, ordered
 
 1. Re-fetch live PR #77 and read its `outputs/README.md`, producer scripts, physical receipts and six CI workflow results.
@@ -81,7 +91,7 @@ The current `src/sea_ad_jepa/perturbation/cross_study_feature_contract_v1.py` al
 3. Audit the legacy CRISPRbrain comparison receipt's stale independence claim and publish an explicit versioned correction so machine consumers cannot accidentally read it as external validation.
 4. Freeze/physically authenticate the HGNC/Ensembl mapping source files, build and test the actual crosswalk, apply to all eight studies, report missing/collision/assay masks.
 5. Build an outcome-blind baseline brain-vs-culture control-state distance audit, with frozen shared genes, covariate/QC stratification and donor/cell-line disjointness checks. Do not open protected JEPA outcomes.
-6. Establish trivial/no-skill and non-JEPA baselines for perturbation response, then evaluate with study/target/donor-aware splits, exposure ledger and uncertainty qualified to actual independent biological units.
+6. **Baseline infrastructure is now integrated and tested** (see section below). Inspect the generated DEVELOPMENT report, validate score/holdout/exposure semantics and run actual benchmarks only on qualified screen inputs. Add further non-JEPA comparators and study/target/donor-aware validation only where independent biological units exist.
 7. Physically rerun GSE254205 and GSE240609 corrected V2, process remaining GSE254205 assays, resolve GSE311359 feature identity, and retain GSE175721 STOP.
 8. Continue FULL104 Stage-A target semantics/masking/production geometry qualification; training remains OFF until those existing gates are actually closed.
 
