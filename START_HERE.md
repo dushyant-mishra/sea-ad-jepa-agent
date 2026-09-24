@@ -1,31 +1,29 @@
 # START HERE — JEPA PROJECT
 
 Date: 2026-09-24
-Status: `CURRENT_V24__EXPERIMENTAL_REDTEAM_INTEGRATED__FULL104_ADAPTER_CONSOLIDATED__NO_TRAINING_OR_N1_AUTHORITY`
+Status: `CURRENT_V25__RESULTS_DATA_SCRIPTS_ON_GITHUB__NO_TRAINING_OR_N1_AUTHORITY`
 
-## Read first — V24 canonical current takeover
+## Read first — V25 canonical takeover
 
-The latest operational authority is V24. It supersedes V23 as the startup snapshot, not as historical evidence.
-
-Read in this order:
+V25 supersedes V24 as the startup snapshot. V24/V23 remain historical evidence, not current live branch status. Read in order:
 
 1. `docs/agent/JEPA_LATEST_HANDOFF_POINTER.json`
-2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V24_CURRENT.md`
-3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260924_V24.json`
-4. `docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260924_V24.md`
-5. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
-6. V23/V22 and earlier frozen formula/heavy-asset references only as historical support.
+2. `docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V25_RESULTS_DATA_SCRIPTS.md`
+3. `docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260924_V25.json`
+4. `docs/agent/JEPA_RUNTIME_ASSET_MANIFEST_20260924_V25.md`
+5. `docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260924_V25.md`
+6. `docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md`
+7. V24/V23 and frozen formula/heavy-asset references only as historical support.
 
-Before acting, re-fetch live branch heads. Branch names, commit messages, receipts and synthetic CI do not by themselves confer scientific authority.
+Re-fetch live GitHub heads before acting.
 
-Current September 24 headline:
-- Experimental PR #77 current audited head: `c81ad41b485f16d4aa82dbe4cffca5d23aa93927`.
-- GSE178317 V2 is DEVELOPMENT only. Matched target/NTC support in the same lanes is required; four 10X lanes are not biological replicates and lane spread is not biological uncertainty.
-- Full physical GSE178317 V2 result was not qualified at the audited head.
-- PR #99 is stale and must not be merged as-is. PR #100 is superseded by integrated PR #102.
-- FULL104 PR #83 plus #85 red-team was consolidated into its parent at `64148023740d57777666faff15395262d4b0e3da`; N1 remains unauthorized and all-104 raw-count reaggregation remains unproved.
-- CRISPRbrain is now reference/benchmark evidence, not independent re-derived truth. FULL104 donor/cell-line and barcode overlap with benchmark data remain NOT_CHECKED.
-- `TRAINING=OFF | AUDIT_B_N1=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED | D_SHARED_G5=UNOPENED | RARE_TAIL_MOLECULAR=UNOPENED | THERAPEUTIC_RANKING=OFF`.
+**Current audited September 24 state:** Experimental draft PR #77 @ `5c5649def828b3e087e239acca26ec317683c426` includes all 58 MB of committed perturbation outputs from `52f20a7a`, the GSE178317 58,302 x 81 count matrix, 11,775 lane-gated assignments, 39 target effects, five CRISPRbrain microglia tables, producer scripts, receipts and six green CI workflows. Four neuron/iPSC reference tables are regenerate-on-demand with exact sizes/full SHA-256 in `analysis/therapeutic_perturbation_etl/outputs/README.md`. Do not duplicate large binaries or merge development data into main simply to expose them.
+
+**Scientific scope:** GSE178317 is DEVELOPMENT ONLY. Four capture wells are not biological replicates; biological uncertainty is not estimable. Its CRISPRbrain comparison is the depositors' analysis of the SAME experiment, not independent replication. Existing legacy NPZ is committed but predates safe-format contract; the authenticated safe-format reissue script and synthetic CI are ready, but the physical reissued NPZ/receipt were NOT committed at the audited head. Preserve old artifact and perform versioned format-only conversion, not another 221M-spot SRA extraction.
+
+**Architecture:** No restart/redesign. FULL104 4,553,407 cells / 104 donors / 42 operators. Existing target semantics, masking and production qualification remain the training prerequisites. The #83/#85 adapter was consolidated into its parent, but real N1 and all-104 raw-count reaggregation remain unauthorized/unproved. The culture-vs-brain transport gate is integrated; actual brain/culture baseline distance and frozen HGNC/Ensembl annotation crosswalk remain to be measured/materialized.
+
+`TRAINING=OFF | AUDIT_B_N1=UNOPENED | PROTECTED_FULL104_OUTCOMES=UNOPENED | D_SHARED_G5=UNOPENED | RARE_TAIL_MOLECULAR=UNOPENED | THERAPEUTIC_RANKING=OFF`.
 
 ## Permanent boundaries
 `DATA -> SUPPORT/ESTIMABILITY -> SCIENTIFIC ESTIMAND -> TARGET SEMANTICS -> PRODUCTION GEOMETRY -> MODEL`
@@ -38,7 +36,7 @@ Current September 24 headline:
 
 Do not inspect protected/pathology/DEV/SEALED outcomes, D_private, D_obs outcomes, TD60, or other confirmation data while design choices remain open.
 
-## September 23 operational headline (V23 supersedes V22 for startup status)
+## Historical September 23 operational headline (superseded; not current startup state)
 
 - **V23 FULL handoff:** all latest live PR heads, eight-study status, source SHA roots and ordered parallel work documented together. PR #77 physical bulk V1 includes GSE241858 clone-by-cytokine and GSE240609 purified-microglia post-coculture. PR #94 public-GEO reviewed V2 has CPU CI only; physical V2 rerun pending. PR #92 BIN1 guide-ID STOP still applies to GSE311359. All code review PRs remain separate drafts unless a new live GitHub check proves otherwise.
 
