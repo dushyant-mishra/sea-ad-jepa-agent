@@ -41,7 +41,7 @@ def test_unmeasured_baseline_similarity_stays_explicit():
 def test_same_domain_can_be_labeled_same_domain_only():
     q = qualify_domain(brain(), brain(), baseline_state_similarity_measured=True)
     assert q.claim_scope == ClaimScope.SAME_DOMAIN
-    assert q.direct_brain_generalization_authorized is True
+    assert q.direct_brain_generalization_authorized is False  # metadata labels cannot authorize causal transport
 
 
 def test_cross_species_is_not_qualified():
