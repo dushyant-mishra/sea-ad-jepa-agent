@@ -1,6 +1,6 @@
 # JEPA V25 — current results, data, scripts and provenance manifest
 
-As-of: 2026-09-24. **Source of truth for binaries is experimental PR #77 @ `0e0f47b133a87c64496367385083208442748e25`, not `main`.** Re-fetch live heads before acting.
+As-of: 2026-09-24. **Source of truth for binaries is experimental PR #77 @ `67981c8ef6e158d865470e70bca81cbe289be3dd`, not `main`.** Re-fetch live heads before acting.
 
 Repository: `dushyant-mishra/sea-ad-jepa-agent`.
 Root for everything below: `analysis/therapeutic_perturbation_etl/`.
@@ -47,17 +47,22 @@ Regeneration: `pip install crisprbrain && python analysis/therapeutic_perturbati
 - `scripts/validate_gse178317_against_crisprbrain_v1.py`: SAME-experiment reference comparison, not independent replication.
 - `scripts/acquire_crisprbrain_screens_v1.py`: 54-screen catalog acquisition, nine transcriptomic screens and overlap receipt; five microglia tables committed.
 - `src/sea_ad_jepa/perturbation/cross_study_feature_contract_v1.py`: existing Ensembl/HGNC/Entrez identity + assay-mask contract.
-- `src/sea_ad_jepa/perturbation/benchmark_domain_contract_v1.py`: cultured-vs-brain transport claim-scope gate; matching labels alone never authorize in-brain causal generalization.\n- `src/sea_ad_jepa/perturbation/benchmark_target_holdout_v1.py`: reviewed target-heldout/donor-aware benchmark scaffold; only real donor units.\n- `src/sea_ad_jepa/perturbation/outcome_exposure_ledger_v1.py`: frozen INSPECTED/DEVELOPMENT vs untouched outcome accounting.\n- `src/sea_ad_jepa/perturbation/benchmark_screen_profile_baselines_v1.py` and `scripts/run_crisprbrain_target_profile_baselines_v1.py`: zero and other-target mean profile baselines, five target-disjoint folds, no own-target gene scoring.\n- `BENCHMARK_BASELINE_INTEGRATION_20260924.md`: scope, provenance and stop conditions.\n- `.github/workflows/perturbation-outcome-exposure.yml`, `perturbation-screen-profile-baselines.yml`, `perturbation-target-heldout-benchmark.yml`: integrated and green on audited experimental head.
+- `src/sea_ad_jepa/perturbation/benchmark_domain_contract_v1.py`: cultured-vs-brain transport claim-scope gate; matching labels alone never authorize in-brain causal generalization.
+- `src/sea_ad_jepa/perturbation/benchmark_target_holdout_v1.py`: reviewed target-heldout/donor-aware benchmark scaffold; only real donor units.
+- `src/sea_ad_jepa/perturbation/outcome_exposure_ledger_v1.py`: frozen INSPECTED/DEVELOPMENT vs untouched outcome accounting.
+- `src/sea_ad_jepa/perturbation/benchmark_screen_profile_baselines_v1.py` and `scripts/run_crisprbrain_target_profile_baselines_v1.py`: zero and other-target mean profile baselines, five target-disjoint folds, no own-target gene scoring.
+- `BENCHMARK_BASELINE_INTEGRATION_20260924.md`: scope, provenance and stop conditions.
+- `.github/workflows/perturbation-outcome-exposure.yml`, `perturbation-screen-profile-baselines.yml`, `perturbation-target-heldout-benchmark.yml`: integrated and green on audited experimental head.
 
 ## Receipts and authoritative interpretations
 
-`evidence/gse178317_recovery/`: `gse178317_count_stage_receipt_v2.json`, `gse178317_guide_assignment_receipt_v2_lanegate.json`, `gse178317_intervention_effects_receipt_v2.json`, `gse178317_crisprbrain_validation_receipt_v1.json`, per-target engagement/reference CSVs. **The last original comparison receipt retains a superseded 'share no intermediate' assertion; use the corrected recovery document and outputs README, not that assertion.**
+`evidence/gse178317_recovery/`: `gse178317_count_stage_receipt_v2.json`, `gse178317_guide_assignment_receipt_v2_lanegate.json`, `gse178317_intervention_effects_receipt_v2.json`, `gse178317_crisprbrain_validation_receipt_v1.json`, per-target engagement/reference CSVs. **The original V1 comparison receipt retains a superseded 'share no intermediate' assertion. Use `gse178317_crisprbrain_reference_comparison_receipt_v2.json` for machine-readable interpretation; V1 is historical only.**
 
 Frozen count source roots: sgRNA library SHA `8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942`; GEX L1 `0b1fd0ad00f3fabf170c4207ef3886c3bdc955256a59c10949dfa3b110cc82de`, L2 `6cb4df62065006d18cc3f0d3df42d7ac3ce875a41cbc59d7814e855862abb754`, L3 `1197f21919162472db9c7e998b1e16a422e18b86c78893d8fb669c6509a6b5f9`, L4 `9e9046e893c9f15e1697dcd55df8595890c38a407ea68a091286acaa28abfc86`.
 
 ## Automated test workflows on experimental head
 
-At `0e0f47b133a87c64496367385083208442748e25`, all nine completed SUCCESS:
+At `67981c8ef6e158d865470e70bca81cbe289be3dd`, all nine completed SUCCESS:
 `Perturbation domain and gene-authority contracts`; `GSE178317 design-authority red-team`; `Cross-study feature-identity contract`; `GSE178317 authenticated safe count reissue`; `GSE178317 V2 lane-support independent red-team`; `Perturbation physical-authority red-team`; `Experimental outcome exposure ledger`; `Perturbation target-heldout synthetic benchmark`; `Perturbation screen-profile retrospective baseline`.
 
 These are code/synthetic tests, not a physical safe-reissue receipt or scientific confirmation.
