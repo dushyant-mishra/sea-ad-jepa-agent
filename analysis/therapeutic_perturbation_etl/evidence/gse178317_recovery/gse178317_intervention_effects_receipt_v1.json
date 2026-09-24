@@ -1,0 +1,25 @@
+{
+  "schema": "GSE178317_INTERVENTION_EFFECTS_V1",
+  "study": "GSE178317",
+  "system": "iPSC-derived microglia (iTF-Microglia)",
+  "modality": "CROP-seq CRISPRi (dCas9-KRAB), druggable-genome subset",
+  "experimental_unit": "(lane, target) pseudobulk; cells within a lane are not independent replicates",
+  "guide_identity_provenance": "recovered from SRA raw reads plus Suppl. Table 5 of Draeger et al. 2022; absent from the processed GEO deposit",
+  "assignments_sha256": "3719a109f18ce9f5b10cf01b3e35aa670ed1e68d35d8ff77bf04efe2c48d3214",
+  "declared_before_inspection": {
+    "min_cells_per_unit": 10,
+    "min_lanes_for_spread": 3,
+    "pseudocount": 1.0,
+    "crispri_engagement_direction": "targeted gene expected to DECREASE"
+  },
+  "jepa_prediction_used": false,
+  "simulated_erasure_used": false,
+  "therapeutic_ranking": false,
+  "targets_analyzed": 39,
+  "targets_with_engagement_measured": 39,
+  "targets_knocked_down": 39,
+  "targets_with_estimable_uncertainty": 37,
+  "median_engagement_log2fc": -0.7146,
+  "target_engagement_csv_sha256": "dc1b322fd2b1590e5c99e567a924c4bb58e04fd55549c9f062b9ad179224be9f",
+  "top_effects_csv_sha256": "a022e4709d9a18bd52876600d0842a748c1735e08638fae0f09ce36180fb26c2"
+}
