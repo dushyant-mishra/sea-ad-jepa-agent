@@ -1,0 +1,36 @@
+name: Perturbation full binary SHA-256 integrity
+on:
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/verify_committed_outputs_full_sha256_v1.py'
+      - 'tests/test_committed_outputs_full_sha256_v1.py'
+      - '.github/workflows/perturbation-committed-binary-sha256.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  hash-exact-physical-outputs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused tests
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Adversarial tests with zero skips
+        run: |
+          set -o pipefail
+          python -m pytest -q -W error tests/test_committed_outputs_full_sha256_v1.py | tee /tmp/full-sha-tests.log
+          if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/full-sha-tests.log; then exit 1; fi
+      - name: Independently hash all ten checked-out committed outputs
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/verify_committed_outputs_full_sha256_v1.py \
+            --repo-root . --out /tmp/committed_outputs_full_sha256_v1.json
+          python -c 'import json; j=json.load(open("/tmp/committed_outputs_full_sha256_v1.json")); assert j["n_committed_output_binaries"] == 10 and j["source_git_blob_verified"]'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: perturbation-full-sha256-verified-development
+          path: /tmp/committed_outputs_full_sha256_v1.json
+          if-no-files-found: error
