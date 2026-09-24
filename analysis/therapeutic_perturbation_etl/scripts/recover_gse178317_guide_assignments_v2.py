@@ -129,6 +129,78 @@ MIN_CELLS_PER_USABLE_TARGET = 40      # ~10 cells x 4 lanes
 MIN_USABLE_TARGETS = 30               # of the 39 non-control targets
 
 
+MIN_CELLS_PER_MATCHED_LANE = 10     # downstream pseudobulk requirement
+MIN_MATCHED_LANES = 3             # technical repeatability, NOT biological n
+
+
+def evaluate_matched_lane_support(assignments):
+    """Fail closed on unusable target/control distribution across 10x wells.
+
+    Aggregate target counts alone are insufficient: the downstream analysis
+    contrasts target versus NTC *within each lane*. Sequencing wells are not
+    independently documented biological replicates; this is a descriptive
+    technical-support gate, never a biological uncertainty authorization.
+    """
+    lanes = tuple(spec["lane"] for spec in LANES)
+    counts = collections.Counter()
+    pooled = collections.Counter()
+    observed_cells = set()
+    for row in assignments:
+        lane, target, cell = row["lane"], row["target_gene"], row["cell_id"]
+        if lane not in lanes or not target:
+            raise ValueError("unknown lane or empty target in assigned-cell record")
+        if cell in observed_cells:
+            raise ValueError("duplicate cell identity in assigned-cell records")
+        observed_cells.add(cell)
+        counts[(lane, target)] += 1
+        pooled[target] += 1
+
+    ntc_by_lane = {lane: counts[(lane, "NTC")] for lane in lanes}
+    control_supported_lanes = tuple(
+        lane for lane in lanes if ntc_by_lane[lane] >= MIN_CELLS_PER_MATCHED_LANE
+    )
+    matched_lanes = {}
+    usable = []
+    for target in sorted(t for t in pooled if t != "NTC"):
+        matched = tuple(lane for lane in control_supported_lanes
+                        if counts[(lane, target)] >= MIN_CELLS_PER_MATCHED_LANE)
+        matched_lanes[target] = matched
+        if (pooled[target] >= MIN_CELLS_PER_USABLE_TARGET
+                and len(matched) >= MIN_MATCHED_LANES):
+            usable.append(target)
+
+    ntc_ok = (pooled["NTC"] >= MIN_CELLS_PER_USABLE_TARGET
+              and len(control_supported_lanes) >= MIN_MATCHED_LANES)
+    reasons = []
+    if len(usable) < MIN_USABLE_TARGETS:
+        reasons.append(
+            f"only {len(usable)} targets have >= {MIN_CELLS_PER_USABLE_TARGET} "
+            f"pooled cells and >= {MIN_CELLS_PER_MATCHED_LANE} target/NTC "
+            f"cells in each of >= {MIN_MATCHED_LANES} matched lanes "
+            f"(need {MIN_USABLE_TARGETS} targets)"
+        )
+    if not ntc_ok:
+        reasons.append(
+            f"NTC has {pooled['NTC']} pooled cells and "
+            f"{len(control_supported_lanes)} supported lanes; "
+            f"requires >= {MIN_CELLS_PER_USABLE_TARGET} pooled cells and "
+            f">= {MIN_MATCHED_LANES} lanes with >= {MIN_CELLS_PER_MATCHED_LANE}"
+        )
+    return {
+        "verdict": "PASS" if not reasons else "FAIL",
+        "usable": usable,
+        "ntc_ok": ntc_ok,
+        "reasons": reasons,
+        "ntc_by_lane": ntc_by_lane,
+        "matched_lane_count_by_target": {
+            target: len(matched) for target, matched in matched_lanes.items()
+        },
+        "matched_lane_names_by_target": {
+            target: list(matched) for target, matched in matched_lanes.items()
+        },
+    }
+
+
 def sha256_file(path):
     h = hashlib.sha256()
     with open(path, "rb") as fh:
@@ -391,29 +463,27 @@ def stage_call(a):
     by_gene = collections.Counter(r["target_gene"] for r in rows)
     vals = sorted(by_gene.values())
 
-    # Usability verdict, against the floor declared at the top of this file.
-    usable = sorted(g for g, n in by_gene.items()
-                    if g != "NTC" and n >= MIN_CELLS_PER_USABLE_TARGET)
-    ntc_ok = by_gene.get("NTC", 0) >= MIN_CELLS_PER_USABLE_TARGET
-    verdict_pass = len(usable) >= MIN_USABLE_TARGETS and ntc_ok
-    reasons = []
-    if len(usable) < MIN_USABLE_TARGETS:
-        reasons.append("only %d of %d targets reach %d cells (need %d)"
-                       % (len(usable), MIN_USABLE_TARGETS,
-                          MIN_CELLS_PER_USABLE_TARGET, MIN_USABLE_TARGETS))
-    if not ntc_ok:
-        reasons.append("non-targeting controls have %d cells, below the %d "
-                       "needed for a comparison group"
-                       % (by_gene.get("NTC", 0), MIN_CELLS_PER_USABLE_TARGET))
+    # Match the downstream per-lane pseudobulk design before issuing PASS.
+    support = evaluate_matched_lane_support(rows)
+    usable = support["usable"]
+    ntc_ok = support["ntc_ok"]
+    verdict_pass = support["verdict"] == "PASS"
+    reasons = support["reasons"]
 
     receipt = {
         "schema": "GSE178317_GUIDE_ASSIGNMENT_V2",
-        "verdict": "PASS" if verdict_pass else "FAIL",
+        "verdict": support["verdict"],
         "verdict_basis": {
             "min_cells_per_usable_target": MIN_CELLS_PER_USABLE_TARGET,
             "min_usable_targets": MIN_USABLE_TARGETS,
             "usable_targets": len(usable),
             "ntc_cells_sufficient": bool(ntc_ok),
+            "min_cells_per_matched_lane": MIN_CELLS_PER_MATCHED_LANE,
+            "min_matched_lanes": MIN_MATCHED_LANES,
+            "ntc_cells_by_lane": support["ntc_by_lane"],
+            "matched_lane_count_by_target": support["matched_lane_count_by_target"],
+            "technical_support_only": True,
+            "biological_uncertainty_estimable_from_10x_wells": False,
             "failure_reasons": reasons,
             "note": ("the floor comes from what the downstream pseudobulk "
                      "analysis needs, not from any published count of assigned "
@@ -421,6 +491,10 @@ def stage_call(a):
                      "analysis it feeds must say so itself"),
         },
         "counts_npz_sha256": sha256_file(a.counts_npz),
+        "qualification_scope": "ASSIGNMENT_AND_TECHNICAL_SUPPORT_ONLY",
+        "physical_execution_independently_verified": False,
+        "prospective_blind_method_validation": False,
+        "biological_uncertainty_estimable": False,
         "method": ("agreement of a per-guide robust z-score on cell fraction "
                    "with a Poisson test against an ambient expectation; a cell "
                    "is assigned only if exactly one guide passes both"),
