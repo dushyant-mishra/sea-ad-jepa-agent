@@ -99,7 +99,7 @@ def test_wrong_legacy_digest_rejected_before_pickle_read(tmp_path, monkeypatch):
     def forbid_load(*args, **kwargs):
         raise AssertionError("pickle-backed load attempted before source authentication")
     monkeypatch.setattr(np, "load", forbid_load)
-    with pytest.raises(SystemExit, match="NPZ digest"):
+    with pytest.raises(SystemExit, match="reviewed historical NPZ"):
         reissue.reissue(str(old), str(receipt), str(tmp_path / "out"))
 
 
