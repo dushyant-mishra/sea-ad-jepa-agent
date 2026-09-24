@@ -10,7 +10,8 @@ cell-to-guide assignment (v2)       PASS_LANE_SUPPORT_ONLY
                                     11,775 of 58,302 cells, 39/39 targets
 target engagement                   39/39 knocked down, median log2FC -0.7146
 biological uncertainty              NOT ESTIMABLE
-comparison vs CRISPRbrain           35/35 direction, Spearman 0.720
+comparison vs CRISPRbrain           33/33 direction, Spearman 0.7473
+                                    matched-well support-qualified (V3)
                                     reference comparison, NOT replication
 scope                               DEVELOPMENT, not prospective confirmation
 ```
@@ -139,31 +140,52 @@ calling, pseudobulk and normalisation; theirs is their pipeline on the same
 reads. Agreement therefore tests **our pipeline**, not whether the biology
 reproduces.
 
+Statistics are the **matched-well support-qualified V3** figures. Two of the 35
+comparable targets are excluded because the authenticated lane-support receipt
+marks them unsupported: AARS (42 cells, paired lanes `['L3']`) and LSM6 (33
+cells, paired lanes `['L2']`), each holding one of the three required matched
+wells. The superseded 35-target figures are retained only in the v1 and v2
+receipts as historical evidence and must not be inherited.
+
 ```
 targets comparable            35
-direction agreement        35/35
-Spearman rho               0.720
-Pearson r                  0.598
-median ours / reference   -0.715 / -0.233
-magnitude ratio            3.07x
+support-qualified             33
+direction agreement        33/33
+Spearman rho              0.7473     (35-target figure was 0.7199)
+Pearson r                 0.6398     (35-target figure was 0.5975)
+median ours / reference  -0.7146 / -0.2437
+magnitude ratio            2.932     (35-target figure was 3.07)
 ```
 
-The informative part is the behaviour on their own nulls. Of the 35, eighteen
+Both correlations rise once the unsupported targets are dropped, consistent with
+AARS and LSM6 contributing noise rather than signal.
+
+The informative part is the behaviour on their own nulls. Of the 33, sixteen
 carry FDR >= 0.05 in the reference. On those, median |log2FC| is 0.399 for us
-against 0.168 for them, a ratio of 2.37x, *below* the 3.07x overall scaling. A
+against 0.168 for them, a ratio of 2.369x, *below* the 2.932x overall scaling. A
 pipeline manufacturing signal would inflate nulls more than hits, not less.
 
 Magnitude was declared in advance as not expected to match: a stricter caller
 admits fewer cells and so carries fewer misassigned cells diluting each estimate
 toward zero.
 
-Restricted to the 17 targets called at FDR < 0.05 in the reference, all 17 agree
-in direction and Spearman falls to 0.306, because restricting to hits truncates
-the range. Recorded rather than omitted.
+Restricted to the 17 support-qualified targets called at FDR < 0.05 in the
+reference, all 17 agree in direction and Spearman falls to 0.306, because
+restricting to hits truncates the range. Recorded rather than omitted.
 
-The one visible outlier is **AARS**: -1.56 from 18 cells for us against -0.225 at
-FDR 1 for them. Eighteen cells is below the declared 40-cell floor, so the gate
-identified it without being asked to.
+**The two excluded targets, and why totals mislead.** Both clear the 40-cell
+total but fail the matched-well requirement, which is the point of having it:
+
+```
+AARS   42 cells   L1 8 | L2 7 | L3 18 | L4 9    paired lanes ['L3']
+LSM6   33 cells   L1 4 | L2 13 | L3 9 | L4 7    paired lanes ['L2']
+```
+
+An earlier version of this document called AARS "the one visible outlier" at
+"-1.56 from 18 cells". That figure was wrong: 18 was its L3 count, not its
+total of 42. The real defect was never the count but its concentration — a fold
+change resting on a single capture well. Both targets are now excluded by the
+authenticated receipt rather than by inspection of how their values looked.
 
 ## What this study contributes, and what it does not
 

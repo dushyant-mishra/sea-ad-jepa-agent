@@ -71,9 +71,19 @@ show the biology reproducing.
 ## Reading the two together
 
 `gse178317_vs_crisprbrain_engagement_v1.csv` joins our per-target engagement to
-the published value for the 35 comparable targets. All 35 agree in direction,
-Spearman 0.720. Our magnitudes run 3.07x larger, the expected consequence of a
-stricter guide caller carrying fewer misassigned cells to dilute each estimate.
+the published value. Read it together with
+`../evidence/gse178317_recovery/gse178317_vs_crisprbrain_support_qualified_v3.csv`,
+which carries the authoritative figures.
+
+Two of the 35 comparable targets lack matched-well support and are excluded by
+the authenticated lane-support receipt: AARS (42 cells, one paired well) and
+LSM6 (33 cells, one paired well). Over the **33 support-qualified** targets all
+33 agree in direction, Spearman 0.7473, Pearson 0.6398, magnitude ratio 2.932x.
+The larger magnitudes are the expected consequence of a stricter guide caller
+carrying fewer misassigned cells to dilute each estimate.
+
+The superseded 35-target figures (Spearman 0.720, 3.07x) survive only in the v1
+and v2 receipts as historical evidence and must not be inherited.
 
 ```
 TRAINING=OFF · AUDIT_B_N1=UNOPENED · PROTECTED_OUTCOMES=UNOPENED · THERAPEUTIC_RANKING=OFF

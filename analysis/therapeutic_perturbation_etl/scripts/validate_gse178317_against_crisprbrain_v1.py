@@ -58,6 +58,18 @@ def sha256_file(path):
 
 
 def main():
+    raise SystemExit(
+        "STOP_GSE178317_CRISPRBRAIN_VALIDATION_V1_SUPERSEDED: this producer "
+        "asserts that the two analyses 'share no intermediate' and labels the "
+        "result external validation. Both claims are false: the analyses derive "
+        "from the same GSE178317 experiment and the same raw reads, so the "
+        "comparison tests pipeline reproduction, not independent validation and "
+        "not biological replication. Its statistics also span 35 targets, two "
+        "of which (AARS, LSM6) lack matched-well support. Use "
+        "compare_gse178317_vs_crisprbrain_support_qualified_v3.py, whose "
+        "exclusions are read from the authenticated lane-support receipt. The "
+        "v1 receipt is retained as historical evidence only."
+    )
     ap = argparse.ArgumentParser()
     ap.add_argument("--engagement", required=True,
                     help="gse178317_target_engagement_v1.csv from our recovery")
