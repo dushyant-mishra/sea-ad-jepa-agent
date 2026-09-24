@@ -5,6 +5,7 @@ on:
     paths:
       - 'analysis/therapeutic_perturbation_etl/scripts/recover_gse178317_guide_assignments_v2.py'
       - 'tests/test_gse178317_v2_lane_support_redteam_20260924.py'
+      - 'tests/test_gse178317_v2_count_binding_redteam_20260924.py'
       - '.github/workflows/gse178317-v2-lane-support-redteam.yml'
   workflow_dispatch:
 
@@ -25,7 +26,7 @@ jobs:
       - name: Execute fail-closed paired-lane tests
         run: |
           set -o pipefail
-          python -m pytest -q -W error tests/test_gse178317_v2_lane_support_redteam_20260924.py | tee /tmp/gse178317-lane-redteam.log
+          python -m pytest -q -W error tests/test_gse178317_v2_lane_support_redteam_20260924.py tests/test_gse178317_v2_count_binding_redteam_20260924.py | tee /tmp/gse178317-lane-redteam.log
       - name: Reject skipped mandatory checks
         run: |
           if grep -qiE '^SKIPPED|[0-9]+ skipped' /tmp/gse178317-lane-redteam.log; then
