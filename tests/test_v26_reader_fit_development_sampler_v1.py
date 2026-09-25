@@ -22,12 +22,12 @@ def fixture():
 
 
 def large_fixture():
-    counts = {"SYNTH_A": 12000, "SYNTH_B": 15000, "SYNTH_C": 20000}
+    counts = {"SYNTH_A": 50000, "SYNTH_B": 60000, "SYNTH_C": 70000}
     ids = np.array(["SYNTH_B", "SYNTH_C", "SYNTH_A"], dtype="U7")
     codes = np.concatenate([
-        np.full(15000, 0, dtype=np.int64),
-        np.full(20000, 1, dtype=np.int64),
-        np.full(12000, 2, dtype=np.int64),
+        np.full(60000, 0, dtype=np.int64),
+        np.full(70000, 1, dtype=np.int64),
+        np.full(50000, 2, dtype=np.int64),
     ])
     return counts, ids, codes
 
@@ -159,7 +159,7 @@ def test_change_in_source_root_changes_rng_stream():
 
 def test_oversubscribed_donor_slots_stop_before_returning_selection():
     counts, ids, codes = fixture()
-    with pytest.raises(ValueError, match="exceed unique frozen donor cells"):
+    with pytest.raises(ValueError, match="exceed smallest donor"):
         _propose_structural(
             cell_donor=codes, donor_ids=ids, expected_counts=counts,
             run_seed=7, update_index=0, presentations=11,
@@ -225,3 +225,13 @@ def test_synthetic_output_writer_rejects_selection_digest_mismatch(tmp_path):
     with pytest.raises(ValueError, match="selection rows differ"):
         _write_synthetic_safe(out_dir=tmp_path / "forged", proposal=u, receipt=bad)
     assert not (tmp_path / "forged").exists()
+
+
+def test_even_potential_capacity_oversubscription_rejected_before_draw():
+    counts, ids, codes = fixture()  # minimum donor has only two cells
+    with pytest.raises(ValueError, match="cannot certify exact q=p"):
+        _propose_structural(
+            cell_donor=codes, donor_ids=ids, expected_counts=counts,
+            run_seed=7, update_index=0, presentations=3,
+            source_digest="a" * 64,
+        )
