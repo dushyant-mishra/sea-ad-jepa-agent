@@ -37,7 +37,7 @@ we have published rests on them. The cost is the plan, not any finished work.
   *does* show that knocking a gene down reduces that gene's own transcript, in
   17 of 39 genes. So the problem is specific to these two screens, not to
   CRISPRbrain, not to the file format, and not to how we measured it.
-* The whole analysis is reproducible from a clean checkout and is defended by 24
+* The whole analysis is reproducible from a clean checkout and is defended by 26
   adversarial tests, including controls that prove the analysis can detect
   agreement when agreement is really there.
 
@@ -250,9 +250,19 @@ FDR cut   sig iTF   sig iPSC   both   iTF->iPSC   iPSC->iTF   sign agr (iTF sig)
 0.25        1,336      4,162    128      0.0958      0.0308               0.5225                0.5000
 ```
 
-54 jointly significant rows is 12.8× more than the 4.2 expected if the two
-screens were independent (hypergeometric p = 5.6e-41). That is the *only*
-statistic in this report that looks favourable, and the next line destroys it.
+**Units first, because this number is easy to misread.** The 54 are
+(target, readout gene) **rows**, not 54 genes validated across the screens.
+They happen to involve 54 distinct readout genes, but only **3 distinct
+targets**.
+
+54 jointly significant rows is 12.8× more than the 4.2 expected under a
+hypergeometric null (p = 5.6e-41). That is the *only* statistic in this report
+that looks favourable, and it deserves two qualifications before the next line
+destroys it. First, that null treats the rows as independent exchangeable
+draws, and they are not: rows within a target share the same cells, and rows
+for one gene across targets share the same gene. It is an enrichment
+description under a deliberately wrong null, not evidence of replication — the
+comparator that respects the dependence is the permutation null above. Second:
 
 **All of the apparent overlap is one target.**
 
@@ -613,6 +623,30 @@ and its HEAD matches, checks the producer file's SHA-256 against the receipt, ru
 it, and then compares every output CSV digest and every scientific field of the
 receipt. The receipt records `git_dirty: false` and the anchor commit, so the
 result is bound to a commit rather than to a working directory.
+
+### Two corrections this work made to itself
+
+**The first receipt was produced from a dirty tree and could not be anchored.**
+It recorded `git_dirty: true`, and the producer did not exist at the commit that
+receipt named. An independent review lane (PR #134) confirmed that gap against
+this lane's own artifact. It is fixed: the current receipt records
+`git_dirty: false` at a commit that contains the producer, and the reproducer
+refuses any receipt that does not.
+
+**The reproducer found a real defect the first time it ran.** It reported only
+"producer exited 1". The cause was that the producer recorded output paths with
+`Path.relative_to(repo)`, which raises when the output directory sits outside the
+repository — which is exactly where a replay must write, so that it cannot
+disturb the tree it is replaying. Fixed in the producer and guarded by a test.
+This is the reproduction step doing the job it exists for.
+
+**Two points from the PR #134 review were adopted.** The 54 jointly significant
+results are (target, readout gene) rows, not 54 validated genes, and the receipt
+now carries the distinct-gene and distinct-target counts beside the row count.
+And the hypergeometric p-value assumes independent exchangeable rows, which these
+are not; it is now labelled as an enrichment description under a wrong null,
+pointing to the permutation control as the comparator that respects the
+dependence.
 
 ```
 TRAINING=OFF · AUDIT_B_N1=UNOPENED · PROTECTED_FULL104_OUTCOMES=UNOPENED ·
