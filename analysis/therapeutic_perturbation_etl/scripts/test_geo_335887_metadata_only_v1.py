@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from geo_335887_metadata_only_v1 import parse_header_only,build_from_source
 def fixture(corrupt=False):
-    rows=["^SERIES = GSE335887","!Series_title = fake metadata","!Series_sample_id = GSM0001"]
+    rows=["^SERIES = GSE335887","!Series_title = fake metadata"]+[f"!Series_sample_id = GSM{i:04d}" for i in range(1,9)]
     if corrupt:rows.append("!Series_sample_id = GSM9999")
     for i in range(1,9):
         rows.extend([f"^SAMPLE = GSM{i:04d}",f"!Sample_title = biological metadata {i}",
