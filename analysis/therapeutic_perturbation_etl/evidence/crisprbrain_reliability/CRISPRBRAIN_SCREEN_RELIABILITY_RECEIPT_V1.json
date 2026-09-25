@@ -1,6 +1,6 @@
 {
   "schema": "CRISPRBRAIN_SCREEN_RELIABILITY_V1",
-  "generated_utc": "2026-09-25T22:05:03Z",
+  "generated_utc": "2026-09-25T22:37:40Z",
   "producer": "analysis/therapeutic_perturbation_etl/scripts/assess_crisprbrain_screen_reliability_v1.py",
   "status": "COMPLETE",
   "fdr_alpha": 0.05,
@@ -12,9 +12,9 @@
     "scipy": "1.10.1"
   },
   "governance": "TRAINING=OFF - AUDIT_B_N1=UNOPENED - PROTECTED_FULL104_OUTCOMES=UNOPENED - D_SHARED_G5=UNOPENED - RARE_TAIL_MOLECULAR=UNOPENED - THERAPEUTIC_RANKING=OFF",
-  "git_head": "b2ae68e03a96e45b6d1963ca86ae3d7b646c19a3",
-  "git_dirty": true,
-  "producer_sha256": "633e1a841104183f11f4acf59f1eee0819d645e532592ad4435e2021fd9a6093",
+  "git_head": "87988f2d1742e0cc0d775c8b596d20dd5998288b",
+  "git_dirty": false,
+  "producer_sha256": "9cb75b624adae857681de83e40b99aa8d04a10ca476b412e4acbdfd8672504fa",
   "inputs": [
     {
       "key": "iTF_CROPseq",
