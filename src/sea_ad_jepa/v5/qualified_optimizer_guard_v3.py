@@ -48,6 +48,9 @@ class CurrentOptimizerStepGuardV3:
         self._training_authority_digest = self.training_authority.canonical_digest()
         self._armed_cursor = None
         self._consumed_cursor = None
+        # A completed optimizer hook is evidence for exactly one schedule cursor.
+        # It must be acknowledged before the next cursor may be armed.
+        self._last_asserted_cursor = None
         self._closed = False
         self._pre_handle = self.optimizer.register_step_pre_hook(self._pre_step)
         self._post_handle = self.optimizer.register_step_post_hook(self._post_step)
@@ -86,8 +89,14 @@ class CurrentOptimizerStepGuardV3:
         cursor = _cursor(schedule_cursor)
         if self._armed_cursor is not None:
             raise RuntimeError(f"{STOP}: guard is already armed")
+        if self._consumed_cursor is not None:
+            raise RuntimeError(f"{STOP}: previous completed step has not been acknowledged")
+        if self._last_asserted_cursor is not None and cursor != self._last_asserted_cursor + 1:
+            raise RuntimeError(
+                f"{STOP}: nonsequential schedule cursor; "
+                f"expected {self._last_asserted_cursor + 1}, got {cursor}"
+            )
         self._armed_cursor = cursor
-        self._consumed_cursor = None
         return {
             "armed": True,
             "schedule_cursor": cursor,
@@ -130,9 +139,13 @@ class CurrentOptimizerStepGuardV3:
         self._armed_cursor = None
 
     def assert_step_completed(self, *, schedule_cursor: int) -> dict[str, Any]:
+        """Consume one post-hook receipt; this alone does NOT prove parameter movement."""
+        self._ensure_open()
         cursor = _cursor(schedule_cursor)
         if self._consumed_cursor != cursor or self._armed_cursor is not None:
             raise RuntimeError(f"{STOP}: expected guarded optimizer step did not complete")
+        self._consumed_cursor = None
+        self._last_asserted_cursor = cursor
         return {
             "guarded_optimizer_step": True,
             "schedule_cursor": cursor,
@@ -147,6 +160,7 @@ class CurrentOptimizerStepGuardV3:
         self._pre_handle.remove()
         self._post_handle.remove()
         self._armed_cursor = None
+        self._consumed_cursor = None
         self._closed = True
 
 
