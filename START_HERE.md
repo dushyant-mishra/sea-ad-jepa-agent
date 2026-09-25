@@ -1,5 +1,15 @@
 # START HERE — JEPA PROJECT
 
+## September 25 V26 docs-only handoff — PR #123 review branch
+
+This branch contains a NEW V26 successor that consolidates previously completed FULL104 ETL/training infrastructure, GSE301119 physical NT-null results, the recovered September 15 LODO code, holdout-budget discussions, CRISPRbrain concordance concern and one-cycle real reader_fit diagnostic priority. Main remains V25 until review/merge. This documentation does NOT authorize current V5 training, Audit-B N1, protected outcome access, D_shared or therapeutic ranking. No historical experiments or binaries were rerun for the handoff.
+
+Read docs/agent/JEPA_SUCCESSOR_HANDOFF_POINTER_20260925.json, docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_V26_EXECUTION_VALIDATION.md, docs/agent/JEPA_V26_EXECUTION_VALIDATION_STATE_20260925.json, docs/agent/JEPA_V26_EVIDENCE_SCRIPT_DATA_LEDGER_20260925.md, then the previous PR123 handoff and its 29-file SHA asset inventory. Read the historical audit index before proposing repeated work. Re-fetch live PR77, PR120, PR121, PR125/127, PR126 and PR128 heads before acting. Note PR77 now includes safe-format GSE178317 output files, superseding the frozen September 24 no-reissue snapshot.
+
+---
+
+# START HERE — JEPA PROJECT
+
 Date: 2026-09-24
 Status: `CURRENT_V25__RESULTS_DATA_SCRIPTS_ON_GITHUB__NO_TRAINING_OR_N1_AUTHORITY`
 

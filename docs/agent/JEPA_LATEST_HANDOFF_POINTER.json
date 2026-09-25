@@ -1,17 +1,28 @@
 {
-  "schema": "JEPA_LATEST_HANDOFF_POINTER_V25",
-  "date": "2026-09-24",
-  "status": "CURRENT_V25__RESULTS_DATA_SCRIPTS_ON_GITHUB__DEVELOPMENT_ONLY__NO_TRAINING_OR_N1_AUTHORITY",
-  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V25_RESULTS_DATA_SCRIPTS.md",
+  "schema": "JEPA_LATEST_HANDOFF_POINTER_V26_DRAFT",
+  "date": "2026-09-25",
+  "status": "V26_DOCS_ONLY_ON_PR123_NOT_YET_MERGED__DEVELOPMENT_ONLY_NO_TRAINING_OR_N1_AUTHORITY",
+  "handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_V26_EXECUTION_VALIDATION.md",
+  "state_path": "docs/agent/JEPA_V26_EXECUTION_VALIDATION_STATE_20260925.json",
+  "evidence_ledger_path": "docs/agent/JEPA_V26_EVIDENCE_SCRIPT_DATA_LEDGER_20260925.md",
+  "prior_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_PR121_N1_RUNTIME.md",
+  "prior_v25_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V25_RESULTS_DATA_SCRIPTS.md",
+  "prior_v25_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260924_V25.json",
+  "prior_v25_pointer_status": "CURRENT_V25__RESULTS_DATA_SCRIPTS_ON_GITHUB__DEVELOPMENT_ONLY__NO_TRAINING_OR_N1_AUTHORITY",
   "historical_audits_path": "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
-  "prior_layer2_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_LAYER2_MASKING_CURRENT.md",
-  "current_work_ledger_path": "docs/agent/JEPA_WORK_LEDGER_AND_FINDINGS_20260915_CURRENT.md",
-  "state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260924_V25.json",
-  "prior_integrated_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260911_TARGET_DISCOVERY_V5_INTEGRATED_CURRENT.md",
-  "runtime_asset_status_path": "docs/agent/JEPA_RUNTIME_ASSET_STATUS_20260910_CURRENT.json",
-  "formulas_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
+  "local_assets_manifest_path": "docs/agent/JEPA_RUNTIME_LOCAL_ASSETS_SHA256_20260925.json",
+  "runtime_asset_manifest_path": "docs/agent/JEPA_RUNTIME_ASSET_MANIFEST_20260924_V25.md",
+  "formula_authority_path": "docs/agent/JEPA_FORMULAS_AND_AUTHORITY_LEDGER_20260909_FINAL_R4.md",
   "heavy_asset_reference_path": "docs/agent/JEPA_HEAVY_ASSET_REFERENCE_20260909_FINAL_R4.md",
-  "live_evidence_lanes": {
+  "source_scientific_scope": "No new current V5 training, N1 physical run, protected outcome opening, D_shared outcome, or therapeutic ranking authorized by documentation.",
+  "data_status": {
+    "pr77": "Experimental producer-backed ETL outputs and CRISPRbrain screens remain on open draft PR77, current audited head 9a2a30e4c4c99be2a8f948aba680524c786d2737",
+    "gse178317_safe": "Safe-format output files now present on PR77 tree; inspect receipts before asserting scientific parity",
+    "gse301119": "Physical two-arm NT null executed on result branch from 5260e70c, old CPM effects not scientifically qualified",
+    "crisprbrain": "31-shared-target low-concordance numbers are user/Opus reported and not independently replayed in V26",
+    "readers": "Nested 104/22/23 inside 166 foundation/train; separate foundation 24+24 and reserved Siletti"
+  },
+  "prior_v25_live_evidence_lanes_HISTORICAL_ONLY": {
     "experimental_pr77": "67981c8ef6e158d865470e70bca81cbe289be3dd",
     "experimental_outputs_commit": "52f20a7a",
     "gse178317_legacy_npz_sha256": "170a16797d681124a9083eb4170794b0f377b8a64ec3603e63b3435567fe3b4c",
@@ -26,14 +37,15 @@
     "gse178317_reference_receipt_v2": "SAME_EXPERIMENT_PIPELINE_REFERENCE_NOT_INDEPENDENT_VALIDATION",
     "benchmark_integration": "RETROSPECTIVE_DEVELOPMENT_BASELINES_AND_EXPOSURE_LEDGER_INTEGRATED"
   },
-  "instruction": "Read START_HERE, V25 handoff/state/manifest/takeover, historical audits; re-fetch live GitHub heads and CI. GSE178317 remains DEVELOPMENT only; use V2 same-experiment reference receipt; no duplicate 58MB upload; training/N1/protected outcomes remain unopened.",
-  "prior_september15_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260915_V5_TARGET_AUTHORITY_CURRENT.md",
-  "prior_full_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_PARALLEL_V21.md",
-  "prior_full_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V21.json",
-  "takeover_instructions_path": "docs/agent/JEPA_NEW_CHAT_TAKEOVER_INSTRUCTIONS_20260924_V25.md",
-  "prior_v22_addendum_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260923_V22_BULK_GEO_ADDENDUM.md",
-  "prior_v22_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260923_V22.json",
-  "runtime_asset_manifest_path": "docs/agent/JEPA_RUNTIME_ASSET_MANIFEST_20260924_V25.md",
-  "prior_v24_handoff_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V24_CURRENT.md",
-  "prior_v24_state_path": "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260924_V24.json"
+  "read_order": [
+    "START_HERE.md",
+    "docs/agent/JEPA_SUCCESSOR_HANDOFF_POINTER_20260925.json",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_V26_EXECUTION_VALIDATION.md",
+    "docs/agent/JEPA_V26_EXECUTION_VALIDATION_STATE_20260925.json",
+    "docs/agent/JEPA_V26_EVIDENCE_SCRIPT_DATA_LEDGER_20260925.md",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_PR121_N1_RUNTIME.md",
+    "docs/agent/JEPA_RUNTIME_LOCAL_ASSETS_SHA256_20260925.json",
+    "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md"
+  ],
+  "instruction": "Re-fetch main and live PR heads, honor source SHA/lineage, no duplicate binary uploads, keep fit discovery versus outcome-responsive target search and reserved evaluation distinction; next major milestone: bounded real reader_fit diagnostic using existing training framework under its OWN named diagnostic authorization."
 }
