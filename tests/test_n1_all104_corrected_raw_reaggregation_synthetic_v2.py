@@ -118,6 +118,16 @@ class SyntheticFullCoverage(unittest.TestCase):
         self.meta[1][0]["selection_row"]="1"
         self.make_blocks()
         self.run_it("selection_row")
+    def test_duplicate_sparse_cell_address_rejected(self):
+        # Two stored entries at the same cell/address must not masquerade as
+        # two detected cells. Reject instead of quietly counting CSR entries.
+        m=sp.csr_matrix((np.array([1,1,4],dtype=np.int64),
+              np.array([0,0,2],dtype=np.int32),
+              np.array([0,2,3],dtype=np.int32)),shape=(2,4))
+        self.assertFalse(m.has_canonical_format)
+        self.counts[0]=m
+        self.make_blocks()
+        self.run_it("noncanonical or duplicate CSR address")
     def test_negative_count_rejected(self):
         self.counts[0][0,0]=-2
         self.make_blocks()
