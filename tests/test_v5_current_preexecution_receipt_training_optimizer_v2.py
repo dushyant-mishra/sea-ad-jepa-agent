@@ -234,3 +234,82 @@ def test_optimizer_v3_requires_v2_receipt_and_explicit_matching_training_authori
             expected_authority_roots=expected_roots,
             expected_closure_v2_sha256=closure["closure_digest"],
         )
+
+
+def _guard_for_cursor_redteam():
+    roots = roots_v2()
+    closure = closure_for(roots)
+    pre = make_preexecution(roots)
+    pre.bind_closure_v2(closure)
+    receipt = make_receipt(roots, pre)
+    authority = issue_training_authority_v1(
+        closure_v2=closure,
+        preexecution=pre,
+        receipt_v2=receipt,
+        expected_target_package_root=h("target-package"),
+        critical_test=critical_for(roots),
+        runtime_source=runtime_for(roots),
+    )
+    receipt_roots = dict(roots)
+    receipt_roots["preexecution_authority_sha256"] = pre.canonical_digest()
+    optimizer = FakeOptimizer()
+    guard = install_current_optimizer_guard_v3(
+        optimizer,
+        receipt,
+        training_authority=authority,
+        expected_target_package_root=h("target-package"),
+        expected_authority_roots=receipt_roots,
+        expected_closure_v2_sha256=closure["closure_digest"],
+    )
+    return optimizer, guard
+
+
+def test_optimizer_v3_step_proof_is_single_use_and_rejects_replayed_cursor() -> None:
+    optimizer, guard = _guard_for_cursor_redteam()
+    guard.arm_for_step(schedule_cursor=3)
+    optimizer.step(v5_current_guard_schedule_cursor=3)
+    assert guard.assert_step_completed(schedule_cursor=3)["guarded_optimizer_step"]
+    with pytest.raises(RuntimeError, match="did not complete"):
+        guard.assert_step_completed(schedule_cursor=3)
+    with pytest.raises(RuntimeError, match="nonsequential"):
+        guard.arm_for_step(schedule_cursor=3)
+    with pytest.raises(RuntimeError, match="nonsequential"):
+        guard.arm_for_step(schedule_cursor=2)
+    with pytest.raises(RuntimeError, match="nonsequential"):
+        guard.arm_for_step(schedule_cursor=5)
+    guard.arm_for_step(schedule_cursor=4)
+    optimizer.step(v5_current_guard_schedule_cursor=4)
+    assert guard.assert_step_completed(schedule_cursor=4)["schedule_cursor"] == 4
+
+
+def test_optimizer_v3_must_acknowledge_completed_step_before_arming_next() -> None:
+    optimizer, guard = _guard_for_cursor_redteam()
+    guard.arm_for_step(schedule_cursor=10)
+    optimizer.step(v5_current_guard_schedule_cursor=10)
+    with pytest.raises(RuntimeError, match="not been acknowledged"):
+        guard.arm_for_step(schedule_cursor=11)
+    with pytest.raises(RuntimeError, match="no uncompleted authorization"):
+        guard.disarm_uncompleted_step(schedule_cursor=10, reason="completed")
+    assert guard.assert_step_completed(schedule_cursor=10)["schedule_cursor"] == 10
+    guard.arm_for_step(schedule_cursor=11)
+    with pytest.raises(RuntimeError, match="already armed"):
+        guard.arm_for_step(schedule_cursor=12)
+    assert guard.disarm_uncompleted_step(schedule_cursor=11, reason="no optimizer step")["disarmed"]
+    guard.arm_for_step(schedule_cursor=11)  # aborted-but-unstepped cursor can be retried
+    optimizer.step(v5_current_guard_schedule_cursor=11)
+    assert guard.assert_step_completed(schedule_cursor=11)["schedule_cursor"] == 11
+
+
+def test_optimizer_v3_wrong_step_cursor_fails_before_step_and_does_not_advance() -> None:
+    optimizer, guard = _guard_for_cursor_redteam()
+    guard.arm_for_step(schedule_cursor=0)
+    with pytest.raises(RuntimeError, match="schedule cursor mismatch"):
+        optimizer.step(v5_current_guard_schedule_cursor=1)
+    with pytest.raises(RuntimeError, match="did not complete"):
+        guard.assert_step_completed(schedule_cursor=0)
+    guard.arm_for_step(schedule_cursor=0)
+    optimizer.step(v5_current_guard_schedule_cursor=0)
+    assert guard.assert_step_completed(schedule_cursor=0)["schedule_cursor"] == 0
+    guard.close()
+    with pytest.raises(RuntimeError, match="closed"):
+        guard.assert_step_completed(schedule_cursor=0)
