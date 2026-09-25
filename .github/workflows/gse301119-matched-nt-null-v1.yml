@@ -1,0 +1,76 @@
+name: GSE301119 matched-NT descriptive null (synthetic ONLY)
+
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/gse301119_matched_nt_null_v1.py'
+      - 'tests/test_gse301119_matched_nt_null_v1.py'
+      - '.github/workflows/gse301119-matched-nt-null-v1.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/gse301119_matched_nt_null_v1.py'
+      - 'tests/test_gse301119_matched_nt_null_v1.py'
+      - '.github/workflows/gse301119-matched-nt-null-v1.yml'
+  workflow_dispatch:
+
+jobs:
+  synthetic-negative-control:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --quiet numpy pytest
+      - name: Run all 21 positive and adversarial fixtures
+        run: |
+          python -m pytest tests/test_gse301119_matched_nt_null_v1.py \
+            --tb=short -v -p no:cacheprovider --junitxml=matched_nt_null.xml
+      - name: Refuse skips, failures, or silent shrinkage
+        if: always()
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          root = ET.parse("matched_nt_null.xml").getroot()
+          cases = root.findall(".//testcase")
+          names = {c.get("name") for c in cases}
+          must = {
+              "test_positive_control_complete_both_modalities",
+              "test_exposes_existing_flat_gene_sign_fixture_failure",
+              "test_true_identical_profiles_are_zero",
+              "test_depth_only_binomial_thinning_preserves_composition_in_expectation",
+              "test_depth_only_null_rejects_impossible_or_zero_target_depth",
+              "test_median_centred_sensitivity_recovers_flat_when_positivity_holds",
+              "test_not_enough_shared_detected_genes_is_missing_not_zero",
+              "test_pseudo_target_never_overlaps_its_reference",
+              "test_wrong_cell_count_is_not_silently_matched",
+              "test_wrong_source_digest_stops",
+              "test_tampered_count_byte_stops",
+              "test_duplicate_guide_identity_stops",
+              "test_undersupported_target_fails_closed",
+              "test_missing_sentinel_is_reported",
+              "test_cli_fails_on_occupied_output_and_never_overwrites",
+              "test_cli_writes_small_development_only_receipt",
+              "test_metadata_donor_swap_without_count_change_fails_source_binding",
+              "test_feature_order_swap_without_count_change_fails_source_binding",
+              "test_source_certification_missing_stops_cli",
+              "test_certification_wrong_source_digest_stops",
+              "test_cli_receipt_records_v2_identity_certificate_digest",
+          }
+          fail = [c.get("name") for c in cases if c.find("failure") is not None or c.find("error") is not None]
+          skip = [c.get("name") for c in cases if c.find("skipped") is not None]
+          assert names == must and len(cases) == len(must), ("SUITE_SHRANK", names ^ must)
+          assert not fail and not skip, ("FAIL_OR_SKIP", fail, skip)
+          print(f"PASS: {len(cases)} ran; zero skips. PHYSICAL NULL NOT EXECUTED.")
+          PY
+
+  r-identity-certifier-parse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+      - name: Parse source-backed identity certifier without opening any physical data
+        run: |
+          Rscript --vanilla -e 'parse(file="analysis/therapeutic_perturbation_etl/scripts/r/certify_gse301119_neutral_identity_v2.R");cat("PASS_R_CERTIFIER_SYNTAX_ONLY__PHYSICAL_NOT_EXECUTED\\n")'
