@@ -32,6 +32,7 @@ import os
 import sys
 
 SIDECAR_SUFFIXES = (".sha256", ".verification.json")
+EXPECTED_MANIFEST_SCHEMA = "PERTURBATION_EXPECTED_SOURCE_ROOTS_REVIEW_V1"
 
 MAGIC = [
     (b"\x1f\x8b", "gzip"),
@@ -80,9 +81,36 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--store", required=True, help="authenticated source store root")
     ap.add_argument("--out-dir", required=True)
+    ap.add_argument("--expected-manifest", required=True,
+                    help="separately reviewed exact study/asset/byte/SHA-256 inventory")
     ap.add_argument("--readiness", required=True,
                     help="JSON of per-study scientific readiness assertions")
     a = ap.parse_args()
+    with open(a.expected_manifest, encoding="utf-8") as fh:
+        expected = json.load(fh)
+    if expected.get("schema") != EXPECTED_MANIFEST_SCHEMA:
+        raise SystemExit("STOP_EXPECTED_SOURCE_MANIFEST_SCHEMA")
+    expected_rows = expected.get("assets")
+    if not isinstance(expected_rows, list) or not expected_rows:
+        raise SystemExit("STOP_EMPTY_EXPECTED_SOURCE_MANIFEST")
+    expected_by_key = {}
+    for row in expected_rows:
+        if set(row) != {"study", "asset", "bytes", "sha256"}:
+            raise SystemExit("STOP_BAD_EXPECTED_SOURCE_ROW")
+        key = (row["study"], row["asset"])
+        if key in expected_by_key or "/" in key[1] or "\\" in key[1] or key[1] in (".", ".."):
+            raise SystemExit("STOP_DUPLICATE_OR_UNSAFE_EXPECTED_SOURCE")
+        if type(row["bytes"]) is not int or row["bytes"] < 0 or len(row["sha256"]) != 64:
+            raise SystemExit("STOP_BAD_EXPECTED_SIZE_OR_SHA")
+        expected_by_key[key] = row
+    out_path = os.path.abspath(a.out_dir)
+    source_path = os.path.abspath(a.store)
+    if os.path.commonpath((out_path, source_path)) == source_path:
+        raise SystemExit("STOP_OUTPUT_INSIDE_SOURCE_STORE")
+    if os.path.exists(a.out_dir) and os.listdir(a.out_dir):
+        raise SystemExit("STOP_OUTPUT_EXISTS")
+    if not os.path.isdir(a.store):
+        raise SystemExit("STOP_SOURCE_STORE_MISSING")
     os.makedirs(a.out_dir, exist_ok=True)
 
     with open(a.readiness) as fh:
@@ -91,7 +119,8 @@ def main():
     studies = sorted(d for d in os.listdir(a.store)
                      if os.path.isdir(os.path.join(a.store, d)))
     rows, per_study = [], {}
-    mismatches, unverified = [], []
+    mismatches, unverified, unexpected = [], [], []
+    actual_keys = set()
 
     for study in studies:
         sdir = os.path.join(a.store, study)
@@ -109,14 +138,24 @@ def main():
 
         for name in assets:
             full = os.path.join(sdir, name)
+            key = (study, name)
+            actual_keys.add(key)
+            reviewed = expected_by_key.get(key)
+            if reviewed is None:
+                unexpected.append("%s/%s" % key)
             size = os.path.getsize(full)
             print("  hashing %-58s %14d B" % (name[:58], size), flush=True)
             actual = sha256_file(full)
             recorded = read_sidecar_digest(full)
-            if recorded is None:
+            if reviewed is None:
+                status = "UNREVIEWED_SOURCE"
+            elif size != reviewed["bytes"] or actual != reviewed["sha256"]:
+                status = "REVIEWED_SOURCE_ROOT_MISMATCH"
+                mismatches.append("%s/%s" % key)
+            elif recorded is None:
                 status = "NO_SIDECAR_DIGEST"
                 unverified.append("%s/%s" % (study, name))
-            elif recorded == actual:
+            elif recorded == actual and reviewed is not None:
                 status = "VERIFIED"
             else:
                 status = "DIGEST_MISMATCH"
@@ -151,6 +190,14 @@ def main():
             "blocking_missing_source": r.get("blocking_missing_source", ""),
         }
 
+    missing = ["%s/%s" % key for key in sorted(set(expected_by_key) - actual_keys)]
+    unexpected_studies = sorted(set(studies) - {k[0] for k in expected_by_key})
+    if missing or unexpected or unexpected_studies or mismatches or unverified:
+        raise SystemExit("STOP_INVENTORY_SOURCE_CENSUS_OR_AUTHENTICITY:" + json.dumps({
+            "missing": missing, "unexpected": unexpected, "unexpected_studies": unexpected_studies,
+            "mismatch": mismatches, "no_sidecar": unverified}, sort_keys=True))
+    if len(rows) != len(expected_by_key) or sum(x["bytes"] for x in rows) != expected["total_primary_bytes"]:
+        raise SystemExit("STOP_INVENTORY_COUNT_OR_BYTES_MISMATCH")
     csv_path = os.path.join(a.out_dir, "STUDY_SOURCE_INVENTORY_VNEXT.csv")
     with open(csv_path, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
@@ -162,6 +209,9 @@ def main():
         "studies": len(studies),
         "primary_assets": len(rows),
         "total_primary_bytes": sum(r["bytes"] for r in rows),
+        "expected_manifest_sha256": sha256_file(a.expected_manifest),
+        "expected_manifest_review_status": expected.get("review_status", "UNREVIEWED"),
+        "readiness_assertions_are_self_reported_not_reconciled": True,
         "authenticity_summary": {
             "verified": sum(1 for r in rows if r["authenticity"] == "VERIFIED"),
             "digest_mismatch": len(mismatches),
@@ -199,7 +249,7 @@ def main():
               % (st, v["primary_assets"], v["physical_authenticity"],
                  v["etl_status"], v["biological_estimability"]))
     print("\nwrote %s\nwrote %s" % (csv_path, rp))
-    return 1 if mismatches else 0
+    return 0  # All known failure states exited before emitting a receipt.
 
 
 if __name__ == "__main__":
