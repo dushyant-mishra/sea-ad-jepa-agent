@@ -1,0 +1,170 @@
+{
+  "schema": "JEPA_CURRENT_CHAT_RUNTIME_INVENTORY_20260925_V1",
+  "date": "2026-09-25",
+  "source": "Files physically hashed in this ChatGPT container /mnt/data, not evidence they are already committed to GitHub or physically available to a future chat.",
+  "file_count": 29,
+  "total_bytes": 1329773116,
+  "repository_upload_status": "MANIFEST_ONLY; binary assets and original local text/CSV bytes were not transferred by this connector; use exact hashes to recover from current conversation attachments or the authenticated GPU laptop. Existing independently committed results/scripts remain on the cited PRs.",
+  "files": [
+    {
+      "path": "66e64913-959f-4a7c-bbfe-6ff906fb281d.npz",
+      "bytes": 1531109,
+      "sha256": "001375ec77c5b606ad0972073c1daa6ad14b0e517f05ea23c6c9b3110203ff70"
+    },
+    {
+      "path": "CLAUDE_JEPA_PHYSICAL_ETL_HANDOFF_20260924.md",
+      "bytes": 14100,
+      "sha256": "e28ef0c71e728b9a89a10961af996430a0468bc4a3f431e20cb4acd86b78c554"
+    },
+    {
+      "path": "CLAUDE_PR118_INDEPENDENT_AUDIT_AND_FIX_INSTRUCTIONS_20260924.md",
+      "bytes": 14533,
+      "sha256": "0d20139b00a9ab02480a759a4055f2579d58afa7a34de0fa2cfab082d0366602"
+    },
+    {
+      "path": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+      "bytes": 410278055,
+      "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444"
+    },
+    {
+      "path": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "bytes": 303979881,
+      "sha256": "b8163f53a27f7cb1b526f8311d1b46b599502596c5d0be74fa588747a4e72b2e"
+    },
+    {
+      "path": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002",
+      "bytes": 303979880,
+      "sha256": "5bc2ec30fb374b15f1c5a4764e1856b0664c13513462ef2f7e224c4b6f856875"
+    },
+    {
+      "path": "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.parts.sha256.csv",
+      "bytes": 437,
+      "sha256": "fd003bc8f2f34ac856791dfcf6b0e3b7d81eddfffb8b256d23c3e4a5d40f3356"
+    },
+    {
+      "path": "GSE335887_GEO_METADATA_ONLY.zip",
+      "bytes": 3897,
+      "sha256": "fefe4eb6c737d3c1c7b934bd7303724b3cf97dea742a4dd508da077d1abf6aba"
+    },
+    {
+      "path": "Status and Repair Plan.txt",
+      "bytes": 5233,
+      "sha256": "cb2befc374e4b594fb6d04bbb7c30a0ca702913ddc9d568fbfbf8ebca7bb7c56"
+    },
+    {
+      "path": "WSL execution issue.txt",
+      "bytes": 14576,
+      "sha256": "cd1c50bbec4c80b9b35f1824bba9112c7dbb357ede586b0a46e98532f57e474e"
+    },
+    {
+      "path": "checkpoints.zip",
+      "bytes": 71356460,
+      "sha256": "ab2885f98793fdb11b695371e981ca34677af83d2d196f33ff33fdf98686ef4c"
+    },
+    {
+      "path": "cross_geo_31target_metadata.zip",
+      "bytes": 1348,
+      "sha256": "e86eda9c9436cf855076c2ed3cd902662ef872d84ac34a61bdc02aeac985ae7f"
+    },
+    {
+      "path": "day8_exposed_descriptive_20260924.zip",
+      "bytes": 21667,
+      "sha256": "b0dd17baedd40f11e02cda177d525ac3534a770910aa46a5116ed66a286f32ea"
+    },
+    {
+      "path": "expression.zip",
+      "bytes": 3599456,
+      "sha256": "1098fd4c3fac7a991f2d51ac86ecd0a7ae94be9373e5cc30b9d81be392d32fd4"
+    },
+    {
+      "path": "gse178317-RETROSPECTIVE-development-baselines.zip",
+      "bytes": 4816,
+      "sha256": "53641df7ca829c317b2fe1befebbe833f84ba2c26b3e1f09df1ca87ffaa8c038"
+    },
+    {
+      "path": "hgnc_2026q3_frozen_annotation_verified.zip",
+      "bytes": 333699,
+      "sha256": "e6e229db93b46f1500125de3c5533517f55a4ad653aca87b96ce8dc23f41f724"
+    },
+    {
+      "path": "hgnc_2026q3_metadata_crosswalk.zip",
+      "bytes": 163188,
+      "sha256": "548746fe8929464eb7dd83aec0c093e4af73f777237b3903402f379a888e646f"
+    },
+    {
+      "path": "jepa_etl_verified_closure_20260924.zip",
+      "bytes": 343454,
+      "sha256": "458eba7c7d3fda852a40c630496fea260f3375fd12442c6a564b74d6ef2c626a"
+    },
+    {
+      "path": "jepa_etl_verified_closure_20260924_v2.zip",
+      "bytes": 344140,
+      "sha256": "6e76e40ef4cbe55945c7a6169355209a28a57dda44438579863d7e1d9611bf4b"
+    },
+    {
+      "path": "microglia_assay_target_metadata_v2.zip",
+      "bytes": 2754,
+      "sha256": "2fb0bed43db4c134e5eb24ae306f0c0d51c16f5fd41cfadb841cdab42be54843"
+    },
+    {
+      "path": "microglia_metadata_overlap_20260924.zip",
+      "bytes": 2227,
+      "sha256": "c6c49a4e8582c67c66a313c1b33735756ec827f9d7a4b5bea42eab06ae31ef40"
+    },
+    {
+      "path": "microglia_selfrow_metadata_verified.zip",
+      "bytes": 2844,
+      "sha256": "7afb45ce28b1eb181ab653f1d1213abe1b912070d1c32a4785b7a6db7d01d89d"
+    },
+    {
+      "path": "t1_checkpoint_u0200.zip",
+      "bytes": 233729581,
+      "sha256": "0ec44d004b34d77ccc10445210fedafe5302b6482e509f9ed5752a5691c83a1c"
+    },
+    {
+      "path": "jepa_cross_study_audit_20260924/CROSS_STUDY_ETL_ASSESSMENT.md",
+      "bytes": 9764,
+      "sha256": "3e178ff6952cec5d5de5f6e538cf512221e3162f79dcde587595425bedcf78c3"
+    },
+    {
+      "path": "jepa_cross_study_audit_20260924/crisprbrain_metadata_pair_screen.csv",
+      "bytes": 7167,
+      "sha256": "091045a4389a5fe79b0869e60cf253a1bbeb60af41964776d52307464a21c874"
+    },
+    {
+      "path": "jepa_cross_study_audit_20260924/crisprbrain_screen_metadata.csv",
+      "bytes": 1127,
+      "sha256": "c9b670279d1c554ba82357a22e3165bd5054533fc2af1e7c928d2385f2277968"
+    },
+    {
+      "path": "jepa_cross_study_audit_20260924/jepa_cross_study_metadata_audit_20260924.zip",
+      "bytes": 14457,
+      "sha256": "8d8cce879dbf35f5f9bdc74965bd57e317b609dd97faa3ec6d3a216f61e178cd"
+    },
+    {
+      "path": "jepa_cross_study_audit_20260924/microglia_source_verified_metadata_20260924.zip",
+      "bytes": 8864,
+      "sha256": "ac4ac484ec74760dc6e7246307aad0bbb7565063142b516d2f253f57122754f4"
+    },
+    {
+      "path": "jepa_cross_study_audit_20260924/study_etl_readiness.csv",
+      "bytes": 4402,
+      "sha256": "0c56bb4a52b76d536e9708979f355e3fbfd59c4c3d79a15c51d8ce2db3b91a58"
+    }
+  ],
+  "reassembly": {
+    "parts": [
+      "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part001",
+      "FOUNDATION_DISCOVERY_EXPRESSION_41K_LOG1P10K.zip.part002"
+    ],
+    "expected_combined_bytes": 607959761,
+    "expected_combined_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
+    "verification": "Concatenated locally, exact combined SHA and zip CRC verified; temporary reconstructed file deleted."
+  },
+  "known_qualifiers": [
+    "FOUNDATION_CALIBRATION_BUNDLE contains 60 ZIP members (2,777,579,957 uncompressed bytes), not independently qualified for N1 use by this inventory.",
+    "checkpoints.zip contains t1 u0000 and u0205; t1_checkpoint_u0200.zip contains u0010,u0025,u0050,u0100,u0200; historical T1 checkpoints, not evidence of current training.",
+    "66e64913...npz contains object-array metadata; no pickle loading was performed. Its contents/role remain unqualified by this inventory.",
+    "The runtime inventory does not include Claude's >30GB original physical dataset, RDS source files or N1 corrected 363MB derivative."
+  ]
+}
