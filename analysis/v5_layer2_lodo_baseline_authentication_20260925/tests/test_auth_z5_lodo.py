@@ -142,6 +142,21 @@ def test_repoint_changes_exactly_one_line_and_no_estimator_constant():
         assert token in out, token
 
 
+def test_repoint_survives_a_windows_backslash_path():
+    r"""Regression: the real scratchpad path is a Windows path, so the repointed
+    directory reaches re.subn full of backslashes.  With a STRING replacement
+    those are read as regex escapes and the replay either raises (bad escape
+    \s) or silently rewrites the path (\U).  Caught by this suite before any
+    replay was possible; the replacement is now a function."""
+    src = A.git_show(REPO, A.HISTORICAL_COMMIT,
+                     A.ANALYSIS_DIR + "/scripts/z5_lodo.py").decode()
+    target = Path(r"C:\Users\dushy\AppData\Local\Temp\scratchpad")
+    out = A.repoint(src, target)
+    line = [ln for ln in out.splitlines() if ln.startswith("S = pathlib.Path(")]
+    assert len(line) == 1, line
+    assert str(target) in line[0], line[0]
+
+
 def test_repoint_refuses_when_anchor_absent():
     """If the S-line is not exactly where expected, the replay must abort rather
     than silently run against whatever path happens to be baked in."""

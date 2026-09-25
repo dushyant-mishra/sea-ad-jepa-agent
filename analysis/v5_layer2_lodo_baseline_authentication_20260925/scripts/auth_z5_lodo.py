@@ -214,9 +214,13 @@ def repoint(script_source: str, scratch: Path) -> str:
     """Repoint only the input directory `S`, which the historical README
     explicitly permits ("repoint S to relocate the inputs").  Everything else --
     estimator, population, target, ridge lambda -- is left byte-identical."""
+    replacement = "S = pathlib.Path(r'" + str(scratch) + "')"
+    # A function replacement, not a string: a Windows path such as
+    # C:\Users\... would otherwise be interpreted as regex escapes ("\U",
+    # "\s") and either raise or silently mangle the input directory.
     patched, n = re.subn(
         r"^S = pathlib\.Path\(r'[^']*'\)$",
-        "S = pathlib.Path(r'" + str(scratch) + "')",
+        lambda _m: replacement,
         script_source, count=1, flags=re.M,
     )
     if n != 1:
