@@ -2,7 +2,7 @@
 
 No training authority. Source gate reuses the frozen pass1/calibration bridge.
 No expression, masks, protected labels or historical V4 defaults are loaded.
-The proposal is EXACTLY the scientific p=1/(D*n_d), so p/q=1.
+The marginal per-slot proposal is the scientific p=1/(D*n_d), so p/q=1.\nCells are unique within each update; donor slots remain independent.
 """
 from __future__ import annotations
 
@@ -64,7 +64,7 @@ class ProposedDevelopmentUpdate:
             "presentations": len(rows),
             "selection_rows_sha256": hashlib.sha256(rows.tobytes()).hexdigest(),
             "donor_codes_sha256": hashlib.sha256(donors.tobytes()).hexdigest(),
-            "sampling_with_replacement": True,
+            "donor_slots_with_replacement": True,\n            "cells_within_donor_without_replacement_per_update": True,
             "importance_weights_all_one": bool(np.all(self.importance_weights == 1.0)),
             "raw_level4_lineage_verified_here": False,
             "target_mask_model_qualified_here": False,
@@ -105,13 +105,23 @@ def _propose_structural(
     material = f"{SCHEMA}|{POLICY}|{source_digest}|{seed}|{index}".encode("ascii")
     seed_digest = hashlib.sha256(material).hexdigest()
     rng = np.random.Generator(np.random.PCG64(int.from_bytes(bytes.fromhex(seed_digest), "big")))
-    # Every presentation samples a donor uniformly, then one of its frozen rows
-    # uniformly. Nothing uses source/operator or a cell's measured value.
+    # Donor slots are sampled uniformly with replacement. Inside one update,
+    # sample unique cells without replacement within each donor: the existing
+    # V5 mechanics runner REQUIRES unique stable_cell_keys per update. Each slot
+    # retains unconditional marginal q_i=1/(D*n_d), but slots are dependent.
+    # If more slots than eligible donor cells occur, STOP rather than
+    # silently redrawing donors and changing the proposal distribution.
     draw_donors = rng.integers(0, len(names), size=n, dtype=np.int64)
-    # Per-presentation integer rejection sampling avoids floating-point endpoint
-    # effects and implements exact discrete uniform choice within each donor.
-    within = rng.integers(low=0, high=counts[draw_donors], dtype=np.int64)
-    rows = ranked_rows[offsets[draw_donors] + within]
+    requested = np.bincount(draw_donors, minlength=len(names))
+    if np.any(requested > counts):
+        raise ValueError("requested donor slots exceed unique frozen donor cells in one update")
+    rows = np.empty(n, dtype=np.int64)
+    for donor in np.flatnonzero(requested):
+        slots = np.flatnonzero(draw_donors == donor)
+        within = rng.choice(int(counts[donor]), size=len(slots), replace=False)
+        rows[slots] = ranked_rows[offsets[donor] + within]
+    if len(np.unique(rows)) != n:
+        raise RuntimeError("duplicate stable selection_row within one update")
     if not np.array_equal(codes[rows].astype(np.int64), draw_donors):
         raise RuntimeError("sampled selection_row donor mismatch")
     q = 1.0 / (len(names) * counts[draw_donors].astype(np.float64))
