@@ -1,0 +1,35 @@
+name: N1 ALL104 corrected raw counts SYNTHETIC ONLY
+on:
+  push:
+    paths:
+      - 'analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_all104_corrected_raw_reaggregation_v2.py'
+      - 'tests/test_n1_all104_corrected_raw_reaggregation_synthetic_v2.py'
+      - '.github/workflows/n1-all104-corrected-raw-audit-synthetic.yml'
+  pull_request:
+    paths:
+      - 'analysis/v5_full104_information_channel_redteam_20260920/scripts/qualify_all104_corrected_raw_reaggregation_v2.py'
+      - 'tests/test_n1_all104_corrected_raw_reaggregation_synthetic_v2.py'
+      - '.github/workflows/n1-all104-corrected-raw-audit-synthetic.yml'
+  workflow_dispatch:
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Dependencies for test fixtures only
+        run: python -m pip install 'numpy>=1.24,<3' 'scipy>=1.11,<2'
+      - name: Synthetic adversarial controls, zero skip, never real data
+        run: |
+          python - <<'PY'
+          import unittest
+          s=unittest.defaultTestLoader.discover('tests',pattern='test_n1_all104_corrected_raw_reaggregation_synthetic_v2.py')
+          n=s.countTestCases()
+          assert n>=9,n
+          r=unittest.TextTestRunner(verbosity=2).run(s)
+          assert r.wasSuccessful() and r.testsRun==n and not r.skipped
+          print('SYNTHETIC_ONLY_PASS',r.testsRun,'zero skipped; PHYSICAL_ALL104_NOT_RUN')
+          PY
