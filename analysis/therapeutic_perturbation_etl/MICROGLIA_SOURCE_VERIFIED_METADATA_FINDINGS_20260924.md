@@ -20,3 +20,14 @@ All four Day-12/Day-28 RNA and CITE screens carry the same 31 perturbation *labe
 **Next gate:** authenticated parental cell line/clone, guide-library/sample identities, independent biological preparations, feature crosswalk and rechecked exposure ledger. Only then freeze a study-pair estimand and evaluation design before opening reserved transcriptome response values.
 
 Authority: `METADATA_ONLY__NOT_BIOLOGICAL_COMPARABILITY__NO_PREDICTION_OR_TRAINING`. All FULL104, N1, D_shared and therapeutic ranking stops unchanged.
+
+
+## Self-gene row addendum — distinct from whole-screen gene presence
+
+Re-ran the physical five-screen source-hash check with a metadata-only **per-target own-gene row** census. [Successful GitHub Actions run 36087371680](https://github.com/dushyant-mishra/sea-ad-jepa-agent/actions/runs/36087371680), artifact ID `10844756520`, JSON SHA-256 `8bd4cc3ad9002d8439c0378e7c60df28ef4c73ba1499839d7e8caa24b2bde834` (21,776 bytes). This read only `Gene` and `name` labels and did not inspect effect or FDR columns.
+
+- Already-inspected Day8 RNA: 36/39 target names occur in the whole screen gene universe but only **35/39** have an own-gene row. **AURKB** appears somewhere in the screen but has **no AURKB×AURKB row**; EPOR, PLK1 and RPS6KA6 are absent from the overall gene universe. A global feature census is insufficient to assert direct-target engagement measurability.
+- Day12 iTF RNA: **30/31** own rows, POU5F1 absent.
+- Day28 cytokine iMG RNA: **29/31** own rows, POU5F1 and SMAD3 absent.
+
+These are observed structural-presence facts, not inferred low expression or negative engagement. Any subsequent engagement QC must fail closed on a missing own row rather than zero-fill it; no new downstream response values were exposed by this metadata audit.
