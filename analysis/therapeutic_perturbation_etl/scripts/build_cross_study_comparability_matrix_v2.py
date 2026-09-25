@@ -72,6 +72,17 @@ def load_targets(paths):
         or len(target_counts)!=30 or set(target_counts.values())!={2}
         or any(not r["target_gene_id"] for r in rows if r["target_gene_name"]!="Non-Targeting")):
         raise ValueError("STOP_GSE335887_GUIDE_REFERENCE_INTEGRITY")
+    target_to_ensg={}
+    ensg_to_target={}
+    for row in rows:
+        if row["target_gene_name"]=="Non-Targeting":continue
+        target,ensg=row["target_gene_name"],row["target_gene_id"]
+        if target in target_to_ensg and target_to_ensg[target]!=ensg:
+            raise ValueError("STOP_GSE335887_TARGET_ID_DRIFT")
+        if ensg in ensg_to_target and ensg_to_target[ensg]!=target:
+            raise ValueError("STOP_GSE335887_TARGET_ENSG_COLLISION")
+        target_to_ensg[target]=ensg
+        ensg_to_target[ensg]=target
     t["GSE335887"] = set(target_counts)
 
     t["GSE178317"] = {r["target_gene"] for r in
