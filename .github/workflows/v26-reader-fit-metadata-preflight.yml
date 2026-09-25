@@ -1,0 +1,61 @@
+name: V26 frozen reader-fit metadata preflight
+
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/reader_fit_population_preflight_v1.py'
+      - 'tests/test_v26_reader_fit_population_preflight_v1.py'
+      - '.github/workflows/v26-reader-fit-metadata-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-metadata-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Exact adversarial metadata-only test suite
+        shell: bash
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q -p no:randomly --strict-markers \
+            tests/test_v26_reader_fit_population_preflight_v1.py \
+            --junitxml=/tmp/v26-reader-fit.xml | tee /tmp/v26-reader-fit.txt
+      - name: Fail closed on skips, failures, or missing named tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          doc = ET.parse('/tmp/v26-reader-fit.xml').getroot()
+          suite = doc if doc.tag == 'testsuite' else doc.find('testsuite')
+          if suite is None:
+              raise SystemExit('STOP_READER_FIT_NO_TEST_SUITE')
+          counts = {k: int(suite.attrib.get(k, 0)) for k in ('tests', 'errors', 'failures', 'skipped')}
+          required = {
+              'test_structural_synthetic_fixture_proves_exact_donor_mass_not_authority',
+              'test_synthetic_structural_report_never_emits_bound_source_hashes',
+              'test_synthetic_data_cannot_claim_exact_frozen_reader_fit_authority',
+              'test_oracle_donor_substituted_into_fit_metadata_rejected',
+              'test_historical_continuation_donor_cannot_enter_fit_metadata',
+              'test_wrong_total_cell_count_rejected',
+              'test_bad_or_synthetic_zip_is_rejected_before_opening_members',
+              'test_synthetic_zip_uses_single_descriptor_and_read_allowlist',
+              'test_changed_member_rejected_even_if_outer_synthetic_zip_hash_is_accepted',
+              'test_duplicate_zip_member_rejected_with_exact_synthetic_hashes',
+          }
+          observed = {case.attrib.get('name', '').split('[')[0] for case in suite.iter('testcase')}
+          if counts['tests'] < 25 or any(counts[k] for k in ('errors', 'failures', 'skipped')) or not required <= observed:
+              raise SystemExit(f'STOP_READER_FIT_INCOMPLETE counts={counts} missing={sorted(required-observed)}')
+          print(f"PASS_V26_FROZEN_METADATA_SYNTHETIC_ONLY {counts['tests']} passed, zero skipped")
+          PY
