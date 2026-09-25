@@ -1,0 +1,75 @@
+name: PR121 V3 readiness and immutable V2 provenance
+
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/evidence/CURATOR_ASSERTION_REGISTRY_V3.json'
+      - 'analysis/therapeutic_perturbation_etl/scripts/publish_current_readiness_v3.py'
+      - 'tests/test_current_readiness_v3.py'
+      - '.github/workflows/pr121-v3-current-readiness.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/evidence/CURATOR_ASSERTION_REGISTRY_V3.json'
+      - 'analysis/therapeutic_perturbation_etl/scripts/publish_current_readiness_v3.py'
+      - 'tests/test_current_readiness_v3.py'
+      - '.github/workflows/pr121-v3-current-readiness.yml'
+  workflow_dispatch:
+
+jobs:
+  readiness-v3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --quiet pytest
+      - name: Check positive fixture, historical known-red and all 14 adversarial gates
+        run: python -m pytest tests/test_current_readiness_v3.py --tb=short -v --junitxml=v3-tests.xml -p no:cacheprovider
+      - name: Enforce exact mandatory test collection; no skip or xfail
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          if not Path('v3-tests.xml').is_file():
+              raise SystemExit('STOP_MISSING_V3_TEST_REPORT')
+          c = ET.parse('v3-tests.xml').getroot().findall('.//testcase')
+          must = {
+            'test_real_committed_v3_all_four_receipts_green',
+            'test_historical_v2_fails_exactly_six_stale_assertions',
+            'test_overlay_csv_and_receipt_published_without_physical_recompute',
+            'test_no_overwrite_after_first_publication',
+            'test_cannot_promote_implementation_to_independent',
+            'test_protected_exposure_cannot_change',
+            'test_unrelated_biological_status_cannot_change',
+            'test_old_registry_digest_mismatch_stops',
+            'test_receipt_blob_substitution_stops',
+            'test_cross_study_computed_matrix_changed_stops',
+            'test_historical_inventory_embedded_registry_tamper_stops',
+            'test_missing_physical_receipt_refuses_publication',
+            'test_v3_gse301119_estimand_hold_explicit',
+            'test_v3_does_not_claim_full_precision',
+          }
+          seen = {x.get('name') for x in c}
+          fail = [x.get('name') for x in c if any(x.find(t) is not None for t in ('error','failure','skipped'))]
+          assert seen == must and len(c) == len(must) and not fail, ('STOP_SUITE_FAILURE', seen ^ must, fail)
+          print(f'PASS {len(c)} tests, zero skipped. CPU metadata statuses ONLY.')
+          PY
+      - name: Publish V3 metadata-only output to ephemeral GitHub Actions artifact
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/publish_current_readiness_v3.py \
+            --out-dir /tmp/jepa_current_readiness_v3
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/jepa_current_readiness_v3/CURRENT_READINESS_OVERLAY_RECEIPT_V3.json').read_text())
+          assert r['computed_matrix_rederived'] is False
+          assert r['training_authorized'] is False
+          print('PASS V3 metadata overlay:', r['v3_current_registry_sha256'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PR121-V3-current-readiness-metadata-only
+          path: /tmp/jepa_current_readiness_v3/
+          if-no-files-found: error
