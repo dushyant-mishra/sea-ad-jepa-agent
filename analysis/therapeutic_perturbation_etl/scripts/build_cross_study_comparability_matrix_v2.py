@@ -45,95 +45,12 @@ import sys
 
 # Curator assertions. Each carries its own source; none is a computed value.
 # Outcome exposure is deliberately ABSENT here - it lives only in the registry.
-ASSERTIONS = {
-    "GSE178317": {
-        "intervention": "CRISPRi (dCas9-KRAB), CROP-seq pMK1334",
-        "cell_model": "iTF-MG iPSC-derived microglia",
-        "protocol_and_time": "six-TF doxycycline induction, Day 8",
-        "biological_units": "1 pooled preparation across 4 capture wells",
-        "controls": "non-targeting guides, same wells",
-        "assay_readout": "scRNA + sgRNA enrichment library",
-        "source": "GEO GSE335887/GSE178317 sample records; Draeger et al. 2022 Nat Neurosci",
-    },
-    "GSE335887": {
-        "intervention": "CRISPRi, CROP-seq pMK1334",
-        "cell_model": "iTF-MG and iMG, parental line WTC11",
-        "protocol_and_time": "SOURCE_CONFLICT_PENDING_RUN_LEVEL_AUTHORITY",
-        "biological_units": "one parental line; independent preparation census unverified",
-        "controls": "5 non-targeting guides",
-        "assay_readout": "scRNA + CITE-seq 180-antibody panel + sgRNA",
-        "source": "GEO GSE335887 series and sample SOFT records",
-        "conflict_detail": ("series overall design states Day 12 for ~20,000 "
-                            "microglia; prior catalog and handoff descriptions "
-                            "reference Day 28 for cytokine-directed iMG. "
-                            "Differentiation protocol and age change together "
-                            "between the two models and are not separately "
-                            "identifiable. No age is chosen here."),
-    },
-    "GSE301119": {
-        "intervention": "CRISPRi and CRISPRa, separate strata",
-        "cell_model": "primary human macrophages",
-        "protocol_and_time": "primary donor-derived cells",
-        "biological_units": "2 independent donors",
-        "controls": "donor-matched non-targeting guides",
-        "assay_readout": "scRNA, guide x donor pseudobulk",
-        "source": "GEO GSE301119 sample records; PR #91 support census",
-    },
-    "GSE311359": {
-        "intervention": "CRISPRi, cis-regulatory elements and TSS",
-        "cell_model": "iPSC-derived microglia",
-        "protocol_and_time": "7 samples, single timepoint",
-        "biological_units": "7 samples; guide independence pending ID-keyed rebuild",
-        "controls": "17 non-targeting guides",
-        "assay_readout": "scRNA + guide capture in one matrix",
-        "source": "GEO GSE311359 deposited features.tsv and matrices",
-    },
-    "GSE293118": {
-        "intervention": "CRISPRi, genes and noncoding elements",
-        "cell_model": "HMC3 immortalized line",
-        "protocol_and_time": "single timepoint",
-        "biological_units": "immortalized line; no donor axis",
-        "controls": "non-targeting guides",
-        "assay_readout": "scRNA + guide capture",
-        "source": "GEO GSE293118 feature reference and sample records",
-    },
-    "GSE254205": {
-        "intervention": "drug GNE-317 plus fibrillar amyloid-beta",
-        "cell_model": "APOE4/4 iPSC-derived microglia",
-        "protocol_and_time": "one model, one timepoint",
-        "biological_units": "9 bulk samples, 3 per condition",
-        "controls": "untreated (NT) arm",
-        "assay_readout": "bulk RNA-seq, STAR ReadsPerGene",
-        "source": "GEO GSE254205 sample records; PR #86",
-    },
-    "GSE240609": {
-        "intervention": "genotype contrast, APOE3 vs APOE3ch x WT vs PSEN1",
-        "cell_model": "CD11b-purified microglia recovered after neuron coculture",
-        "protocol_and_time": "post-coculture recovery",
-        "biological_units": "1 sample per 2x2 design cell",
-        "controls": "genotype contrast only; no treatment control",
-        "assay_readout": "bulk RNA-seq",
-        "source": "NCBI GEO GSE240609 public sample titles; PR #94 frozen identity",
-    },
-    "GSE241858": {
-        "intervention": "genotype TREM2 R47H x cytokine context",
-        "cell_model": "iPSC-derived microglia",
-        "protocol_and_time": "untreated / LPS / IFN-gamma",
-        "biological_units": "2 independent clones per genotype",
-        "controls": "untreated arm within clone",
-        "assay_readout": "bulk RNA-seq",
-        "source": "GEO GSE241858 sample records",
-    },
-    "GSE175721": {
-        "intervention": "CRISPRi (intended)",
-        "cell_model": "microglia-containing cortical organoids",
-        "protocol_and_time": "2 samples",
-        "biological_units": "NOT_ESTABLISHED - no per-cell guide assignment",
-        "controls": "unknown",
-        "assay_readout": "scRNA only; no guide-enrichment library",
-        "source": "GEO GSE175721 deposit; Cakir et al. 2022 Nat Commun PMC8776770",
-    },
-}
+# Curator assertions are NOT defined here. Self-audit S3 found that v2 merely
+# relocated them into a second OUTPUT file while they still lived in this
+# source, so they could not be reviewed or signed off independently of the
+# code. They now load from an external digested contract, and the producer
+# fails closed if it is absent or does not cover every study it must describe.
+ASSERTIONS = None  # populated in main() from --metadata-contract
 
 COMPUTED_FIELDS = ["authenticated_direct_targets"]
 ASSERTION_FIELDS = ["intervention", "cell_model", "protocol_and_time",
@@ -157,13 +74,17 @@ def main():
     ap.add_argument("--gse311359-identity", required=True)
     ap.add_argument("--assertion-registry", required=True,
                     help="single source of truth for outcome exposure")
+    ap.add_argument("--metadata-contract", required=True,
+                    help="external digested curator/literature assertion contract")
     ap.add_argument("--out-dir", required=True)
     a = ap.parse_args()
 
     if os.path.exists(a.out_dir) and os.listdir(a.out_dir):
         raise SystemExit("STOP_COMPARABILITY_V2_OUTPUT_EXISTS__NEW_VERSIONED_DIR_REQUIRED")
 
+    global ASSERTIONS
     inputs = {
+        "metadata_contract": a.metadata_contract,
         "gse335887_ref": a.gse335887_ref,
         "gse178317_lib": a.gse178317_lib,
         "gse301119_crispri": a.gse301119_crispri,
@@ -178,6 +99,16 @@ def main():
     # Digest BEFORE opening. v1 digested afterwards, so a file swapped mid-run
     # would have been recorded in its new state.
     digests_before = {k: sha256_file(p) for k, p in inputs.items()}
+
+    with open(a.metadata_contract) as fh:
+        contract = json.load(fh)
+    ASSERTIONS = contract.get("assertions") or {}
+    if not ASSERTIONS:
+        raise SystemExit("STOP_METADATA_CONTRACT_EMPTY")
+    for _s, _v in ASSERTIONS.items():
+        for _f in ASSERTION_FIELDS + ["source"]:
+            if not _v.get(_f):
+                raise SystemExit("STOP_METADATA_CONTRACT_FIELD_MISSING: %s.%s" % (_s, _f))
 
     with open(a.assertion_registry) as fh:
         registry = json.load(fh)
@@ -261,6 +192,7 @@ def main():
             "inputs digested before opening and re-verified after reading",
             "refuses an occupied output directory",
         ],
+        "metadata_contract_sha256": digests_before["metadata_contract"],
         "input_digests_before_open": digests_before,
         "input_digests_after_read": digests_after,
         "authenticated_direct_target_counts": {k: len(v) for k, v in direct.items()},

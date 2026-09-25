@@ -46,6 +46,8 @@ jobs:
               "test_comparability_rejects_study_missing_from_registry",
               "test_comparability_rejects_blank_exposure",
               "test_comparability_refuses_occupied_output",
+              "test_comparability_rejects_empty_metadata_contract",
+              "test_comparability_rejects_incomplete_metadata_contract",
           }
           # fully synthetic: these must ALWAYS run, anywhere
           MUST_RUN = {

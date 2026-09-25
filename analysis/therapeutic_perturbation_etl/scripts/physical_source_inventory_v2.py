@@ -182,6 +182,24 @@ def main():
         "assets_found": len(present),
         "assets_verified": sum(1 for r in rows if r["machine_verdict"] == "VERIFIED"),
         "failures": failures,
+        "independence_basis": {
+            "note": ("self-audit S1: the frozen manifest was GENERATED from an "
+                     "earlier inventory run by this same lane, so it is not an "
+                     "independent third source. Its authority comes from the "
+                     "three-way agreement asserted below, in which the "
+                     "acquisition-time sidecars are the only component written "
+                     "before this work began."),
+            "three_way_agreement_required": [
+                "bytes on disk (recomputed here)",
+                "acquisition-time .sha256 sidecar",
+                "frozen expected manifest",
+            ],
+            "assets_where_all_three_agree": sum(
+                1 for r in rows
+                if r["sha256_recomputed"] == r["sha256_sidecar"]
+                and r["sha256_recomputed"] == r["sha256_frozen_manifest"]),
+            "assets_total": len(rows),
+        },
         "machine_checked": {
             "note": ("every field in the inventory CSV is measured from bytes on "
                      "disk or compared against the frozen manifest"),

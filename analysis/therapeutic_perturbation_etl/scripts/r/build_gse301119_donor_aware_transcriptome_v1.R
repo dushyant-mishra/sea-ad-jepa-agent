@@ -88,8 +88,8 @@ for (mod in modalities) {
   if (any(counts < 0)) stop("negative counts in pseudobulk")
   if (any(counts != floor(counts))) stop("non-integer raw counts in pseudobulk")
 
-  donors  <- sort(unique(as.character(meta$donor)))
-  targets <- sort(unique(as.character(meta$Gene_Targeted[meta$crispr == "Perturbed"])))
+  donors  <- sort(unique(as.character(meta$donor)), method = "radix")
+  targets <- sort(unique(as.character(meta$Gene_Targeted[meta$crispr == "Perturbed"])), method = "radix")
   message(sprintf("  %d genes x %d guide-donor groups | donors %s | %d targets",
                   nrow(counts), ncol(counts), paste(donors, collapse=","),
                   length(targets)))

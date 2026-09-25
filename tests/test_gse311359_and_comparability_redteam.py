@@ -241,6 +241,8 @@ def _registry(tmp, studies, drop_exposure=None, drop_study=None):
 
 
 REAL = os.path.join(REPO, "analysis", "therapeutic_perturbation_etl")
+METADATA_CONTRACT = os.path.join(REAL, "evidence",
+                                 "CROSS_STUDY_METADATA_ASSERTION_CONTRACT_V1.json")
 REAL_INPUTS = [
     "--gse335887-ref", os.path.join(REAL, "reference", "gse335887",
                                     "GSE335887_itf_feature_reference.csv.gz"),
@@ -257,13 +259,30 @@ inputs_present = all(os.path.exists(REAL_INPUTS[i]) for i in (1, 3, 5)) and \
     os.path.exists(os.path.join(PB, "CRISPRi_guide_donor_meta.csv"))
 
 
-def runcmp(registry, out_dir):
+def runcmp(registry, out_dir, contract=None):
     return subprocess.run(
         [sys.executable, COMPARABILITY, *REAL_INPUTS,
          "--gse301119-crispri", os.path.join(PB, "CRISPRi_guide_donor_meta.csv"),
          "--gse301119-crispra", os.path.join(PB, "CRISPRa_guide_donor_meta.csv"),
-         "--assertion-registry", registry, "--out-dir", out_dir],
+         "--assertion-registry", registry,
+         "--metadata-contract", contract or METADATA_CONTRACT,
+         "--out-dir", out_dir],
         capture_output=True, text=True).returncode
+
+
+def _contract(tmp, drop_field=None, empty=False):
+    """Copy the real metadata contract, optionally damaged."""
+    with open(METADATA_CONTRACT) as fh:
+        c = json.load(fh)
+    if empty:
+        c["assertions"] = {}
+    elif drop_field:
+        first = sorted(c["assertions"])[0]
+        c["assertions"][first][drop_field] = ""
+    p = os.path.join(tmp, "contract.json")
+    with open(p, "w") as fh:
+        json.dump(c, fh)
+    return p
 
 
 @pytest.mark.skipif(not inputs_present, reason="real inputs not on this machine")
@@ -295,3 +314,20 @@ def test_comparability_refuses_occupied_output():
         with open(os.path.join(out, "prior.csv"), "w") as fh:
             fh.write("x")
         assert runcmp(_registry(tmp, ALL_STUDIES), out) != 0
+
+
+@pytest.mark.skipif(not inputs_present, reason="real inputs not on this machine")
+def test_comparability_rejects_empty_metadata_contract():
+    with tempfile.TemporaryDirectory() as tmp:
+        assert runcmp(_registry(tmp, ALL_STUDIES), os.path.join(tmp, "o"),
+                      contract=_contract(tmp, empty=True)) != 0
+
+
+@pytest.mark.skipif(not inputs_present, reason="real inputs not on this machine")
+@pytest.mark.parametrize("field", ["intervention", "cell_model", "controls",
+                                   "assay_readout", "source"])
+def test_comparability_rejects_incomplete_metadata_contract(field):
+    """Self-audit S3: assertions live in an external contract and must be complete."""
+    with tempfile.TemporaryDirectory() as tmp:
+        assert runcmp(_registry(tmp, ALL_STUDIES), os.path.join(tmp, "o"),
+                      contract=_contract(tmp, drop_field=field)) != 0

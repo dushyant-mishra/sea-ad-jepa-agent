@@ -85,7 +85,7 @@ validate <- function(obj, mod, rds_path) {
   if (nrow(cnt) != length(feats))              add("feature count mismatch")
   if (ncol(cnt) != nrow(meta))                 add("group count mismatch")
 
-  don <- sort(unique(as.character(meta$donor)))
+  don <- sort(unique(as.character(meta$donor)), method = "radix")
   if (!identical(don, EXPECTED_DONORS))
     add(sprintf("donor labels %s != expected %s",
                 paste(don, collapse=","), paste(EXPECTED_DONORS, collapse=",")))
@@ -143,7 +143,7 @@ for (mod in modalities) {
 
   counts <- obj$counts; feats <- obj$features; meta <- obj$gd_meta
   donors <- EXPECTED_DONORS
-  targets <- sort(unique(as.character(meta$Gene_Targeted[meta$crispr == "Perturbed"])))
+  targets <- sort(unique(as.character(meta$Gene_Targeted[meta$crispr == "Perturbed"])), method = "radix")
 
   nt_logcpm <- list(); nt_cells <- list(); nt_guides <- list()
   for (d in donors) {
