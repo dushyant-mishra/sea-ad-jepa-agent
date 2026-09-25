@@ -37,6 +37,11 @@ jobs:
           import json
           x=json.load(open("microglia_metadata_overlap_ci_v1.json"))
           assert len(x["screens"])==5 and len(x["pairs"])==10
+          expected={"day8_iTF_CROP_RNA":35,"day12_iTF_CROP_RNA":30,"day28_iPSC_CROP_RNA":29}
+          for key,n in expected.items():
+              j=x["screens"][key]
+              assert sum(j["per_target_self_row_present"].values())==n
+              assert all((not found) or j["per_target_assay_label_present"][target] for target,found in j["per_target_self_row_present"].items())
           assert x["no_numeric_outcome_columns_inspected"] is True
           assert x["training_authority"] is False
           assert all(v["biological_preparation_independence"]=="NOT_VERIFIED" for v in x["pairs"])
