@@ -55,8 +55,20 @@ def test_structural_synthetic_fixture_proves_exact_donor_mass_not_authority():
     )
     assert sum((n * result.provisional_p_for_claimed_donor(d)
                 for d, n in result.donor_counts.items()), Fraction()) == 1
-    assert result.metadata_receipt()["training_authorized"] is False
-    assert result.metadata_receipt()["raw_full104_block_validation"] == "NOT_PERFORMED"
+    assert result.structural_report()["training_authorized"] is False
+    assert result.structural_report()["status"] == "STRUCTURAL_ONLY_UNBOUND"
+    assert result.structural_report()["raw_full104_block_validation"] == "NOT_PERFORMED"
+
+
+def test_synthetic_structural_report_never_emits_bound_source_hashes():
+    split, donors = fixture_rows()
+    result = _structural_audit(*raw(split, donors))
+    report = result.structural_report()
+    assert report["schema"] == "V26_READER_FIT_STRUCTURAL_ONLY_V1"
+    assert report["status"] == "STRUCTURAL_ONLY_UNBOUND"
+    assert not any("sha256" in name or name.endswith("_digest") for name in report)
+    assert not hasattr(result, "metadata_receipt")
+    assert report["training_authorized"] is False
 
 
 def test_synthetic_data_cannot_claim_exact_frozen_reader_fit_authority():
