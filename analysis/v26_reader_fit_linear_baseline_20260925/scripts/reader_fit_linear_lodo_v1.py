@@ -34,6 +34,10 @@ EXPECTED_ROWS, EXPECTED_DONORS = 4_553_407, 104
 EXPECTED_SHAPE = (EXPECTED_ROWS, 512)
 EXPECTED_SOURCE_COUNTS = {"HVS": 41, "NPH52": 17, "SEA_AD": 46}
 SOURCE_NAMES = ("HVS", "NPH52", "SEA_AD")
+# Frozen roots from the independently authored FULL104 pass1 physical verifier.
+BLOCK_MANIFEST_SHA256 = "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29"
+CANONICAL_REGISTRY_SHA256 = "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+OBSERVATION_STATE_SHA256 = "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537"
 WIDTH = 256
 RIDGE = 0.01
 
@@ -139,10 +143,23 @@ def score_moments(test: Moments, B: np.ndarray, b: np.ndarray,
            + 2 * b @ (test.sx @ B) + test.n * (b @ b))
     mu = np.asarray(train_target_mean)
     sst = test.yy - 2 * mu @ test.sy + test.n * (mu @ mu)
-    tol = 1e-8 * max(test.yy, 1.0)
-    if sse < -tol or sst < -tol:
-        raise ValueError("material negative held-out quadratic score")
-    return max(0., float(sse)), max(0., float(sst))
+    # A large target offset can make quadratic sums cancel catastrophically.
+    # Never turn a numerically unresolved SSE into a spurious perfect R2.
+    sse_terms = (
+        test.yy, -2 * np.einsum("ij,ij->", B, test.xy),
+        -2 * b @ test.sy, np.einsum("ij,ij->", B, test.xx @ B),
+        2 * b @ (test.sx @ B), test.n * (b @ b),
+    )
+    sst_terms = (test.yy, -2 * mu @ test.sy, test.n * (mu @ mu))
+    sse_roundoff = 64 * np.finfo(np.float64).eps * sum(abs(float(v)) for v in sse_terms)
+    sst_roundoff = 64 * np.finfo(np.float64).eps * sum(abs(float(v)) for v in sst_terms)
+    if not np.isfinite(sse) or not np.isfinite(sst):
+        raise ValueError("nonfinite held-out quadratic score")
+    if sse <= sse_roundoff or sst <= sst_roundoff:
+        raise ValueError("SCORE_NUMERICALLY_UNRESOLVED: cancellation in quadratic moments")
+    if sse < 0 or sst < 0:
+        raise ValueError("negative held-out quadratic score")
+    return float(sse), float(sst)
 
 
 def train_target_mean(moments: list[Moments], donor_uniform: bool) -> np.ndarray:
@@ -185,8 +202,14 @@ def gather_moments(V0: np.ndarray, V1: np.ndarray, cell_donor: np.ndarray,
         raise ValueError("source view width insufficient")
     if chunk_rows < 1:
         raise ValueError("chunk_rows must be positive")
+    if donor_ids.ndim != 1 or donor_ids.dtype.kind not in "US":
+        raise ValueError("donor IDs must be one-dimensional non-object strings")
     if len(set(map(str, donor_ids))) != len(donor_ids):
         raise ValueError("duplicate donor IDs")
+    if cell_donor.ndim != 1 or cell_donor.dtype.kind not in 'iu':
+        raise ValueError("donor codes must be a one-dimensional integer vector")
+    if np.any(cell_donor < 0) or np.any(cell_donor >= len(donor_ids)):
+        raise ValueError("donor code outside authenticated roster")
     out = {str(d): Moments.empty(WIDTH) for d in donor_ids}
     # Crucial: the first 256 columns alone. Visibility columns are QC-bearing.
     for start in range(0, len(cell_donor), chunk_rows):
@@ -213,7 +236,29 @@ def verify_binding_receipt(path: Path, expected_sha256: str) -> dict[str, object
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("schema") != "V5_FULL104_PASS1_PHYSICAL_BINDING_RECEIPT_V1":
         raise ValueError("not a physical pass1-to-Level4 receipt")
-    if (payload.get("pass1_npz_sha256") != FROZEN_PASS1_SHA256
+    roots = {
+        'pass1_npz_sha256': FROZEN_PASS1_SHA256,
+        'full104_block_manifest_sha256': BLOCK_MANIFEST_SHA256,
+        'canonical_registry_sha256': CANONICAL_REGISTRY_SHA256,
+        'observation_state_sha256': OBSERVATION_STATE_SHA256,
+    }
+    semantic_roots = (
+        'cell_donor_semantic_sha256', 'cell_nnz_core_semantic_sha256',
+        'donor_core_nnz_semantic_sha256', 'donor_ids_semantic_sha256',
+        'donor_source_semantic_sha256', 'strict_core_cols_semantic_sha256',
+    )
+    if (any(payload.get(k) != v for k, v in roots.items())
+        or any(not isinstance(payload.get(k), str)
+               or len(payload[k]) != 64
+               or any(c not in '0123456789abcdef' for c in payload[k])
+               for k in semantic_roots)
+        or payload.get('source_names') != list(SOURCE_NAMES)
+        or payload.get('operator_count') != 42
+        or payload.get('address_count') != 41238
+        or not isinstance(payload.get('strict_core_state_code'), int)
+        or isinstance(payload.get('strict_core_state_code'), bool)
+        or payload['strict_core_state_code'] <= 0
+        or payload.get('terminal_masking_outcomes_inspected') is not False
         or payload.get("block_count") != 8915
         or payload.get("row_count") != EXPECTED_ROWS
         or payload.get("donor_count") != EXPECTED_DONORS
@@ -251,15 +296,19 @@ def run(*, pass1: Path, v0: Path, v1: Path, physical_receipt: Path,
     Y = np.load(v1, mmap_mode='r', allow_pickle=False)
     if X.shape != EXPECTED_SHAPE or Y.shape != EXPECTED_SHAPE or X.dtype != np.float32 or Y.dtype != np.float32:
         raise ValueError('VIEW arrays are not exact current FULL104 512-column float32')
-    # Binding receipt plus exact view hashes enforce selection_row agreement with
-    # authenticated FULL104 assembly. Caller must independently attest the
-    # assembled-view row-order lineage; raw pass1 receipt alone does not prove it.
+    # Exact view hashes prove byte identity, NOT selection_row agreement with
+    # frozen pass1. An independent row-order attestation is separately required.
     mom = gather_moments(X, Y, codes, ids, chunk_rows=chunk_rows)
     results = {}
     for si, name in enumerate(SOURCE_NAMES):
         roster = {str(ids[d]): mom[str(ids[d])] for d in range(EXPECTED_DONORS)
                   if int(sources[d]) == si}
         results[name] = evaluate_donor_lodo(roster)
+    # Check identity again after every input has been consumed. This catches
+    # persistent path replacement or in-place corruption between hash and read.
+    # It does NOT replace independent view selection_row lineage attestation.
+    for path, digest in ((pass1, FROZEN_PASS1_SHA256), (v0, V0_SHA256), (v1, V1_SHA256)):
+        require_exact_file(path, digest)
     commit = subprocess.run(['git', 'rev-parse', 'HEAD'], check=False,
                             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
                             text=True).stdout.strip()

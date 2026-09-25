@@ -149,3 +149,114 @@ def test_no_overwrite_even_before_input_probe(tmp_path):
         mod.run(pass1=tmp_path/'absent1',v0=tmp_path/'absent2',v1=tmp_path/'absent3',
                 physical_receipt=tmp_path/'absent4',physical_receipt_sha='0'*64,out=x)
     assert x.read_text()=='preserve'
+
+
+# Independent red-team successor. Synthetic fixtures NEVER certify physical FULL104.
+def _synthetic_physical_receipt():
+    return {
+        'schema': 'V5_FULL104_PASS1_PHYSICAL_BINDING_RECEIPT_V1',
+        'pass1_npz_sha256': mod.FROZEN_PASS1_SHA256,
+        'full104_block_manifest_sha256': mod.BLOCK_MANIFEST_SHA256,
+        'canonical_registry_sha256': mod.CANONICAL_REGISTRY_SHA256,
+        'observation_state_sha256': mod.OBSERVATION_STATE_SHA256,
+        **{k: '1'*64 for k in (
+            'cell_donor_semantic_sha256', 'cell_nnz_core_semantic_sha256',
+            'donor_core_nnz_semantic_sha256', 'donor_ids_semantic_sha256',
+            'donor_source_semantic_sha256', 'strict_core_cols_semantic_sha256')},
+        'source_names': list(mod.SOURCE_NAMES), 'operator_count': 42,
+        'address_count': 41238, 'strict_core_state_code': 2,
+        'block_count': 8915, 'row_count': mod.EXPECTED_ROWS,
+        'donor_count': mod.EXPECTED_DONORS,
+        'terminal_masking_outcomes_inspected': False,
+        'protected_outcomes_authorized': False, 'training_authorized': False,
+    }
+
+
+def _signed_fixture(tmp_path, payload):
+    p = tmp_path / 'synthetic_receipt.json'
+    p.write_text(json.dumps(payload, sort_keys=True))
+    import hashlib
+    return p, hashlib.sha256(p.read_bytes()).hexdigest()
+
+
+def test_positive_synthetic_binding_receipt_structure(tmp_path):
+    p, sha = _signed_fixture(tmp_path, _synthetic_physical_receipt())
+    assert mod.verify_binding_receipt(p, sha)['donor_count'] == mod.EXPECTED_DONORS
+
+
+@pytest.mark.parametrize('field,value', [
+    ('full104_block_manifest_sha256', 'a'*64),
+    ('canonical_registry_sha256', 'b'*64),
+    ('observation_state_sha256', 'c'*64),
+    ('source_names', ['SEA_AD', 'NPH52', 'HVS']),
+    ('donor_source_semantic_sha256', 'INVALID'),
+    ('terminal_masking_outcomes_inspected', True),
+])
+def test_internally_bad_but_sha_pinned_receipt_rejected(tmp_path, field, value):
+    payload = _synthetic_physical_receipt()
+    payload[field] = value
+    p, sha = _signed_fixture(tmp_path, payload)
+    with pytest.raises(ValueError, match='scope mismatch'):
+        mod.verify_binding_receipt(p, sha)
+
+
+def test_donor_code_negative_and_out_of_range_fail_before_indexing(monkeypatch):
+    monkeypatch.setattr(mod, 'WIDTH', 3)
+    x = np.ones((3, 6))
+    y = x.copy()
+    ids = np.array(['a', 'b', 'c'])
+    for codes in [np.array([-1, 1, 2]), np.array([0, 1, 3])]:
+        with pytest.raises(ValueError, match='outside authenticated roster'):
+            mod.gather_moments(x, y, codes, ids, chunk_rows=2)
+    with pytest.raises(ValueError, match='non-object strings'):
+        mod.gather_moments(x, y, np.array([0, 1, 2]),
+                           np.array(['a', 'b', 'c'], dtype=object), chunk_rows=2)
+
+
+def test_large_offset_cancellation_fails_instead_of_perfect_r2():
+    x = np.arange(30., dtype=np.float64).reshape(10, 3)
+    y = 1e9 + np.arange(30., dtype=np.float64).reshape(10, 3)
+    m = mod.Moments.empty(3)
+    m.add_block(x, y)
+    with pytest.raises(ValueError, match='SCORE_NUMERICALLY_UNRESOLVED'):
+        mod.score_moments(m, np.zeros((3, 3)), np.full(3, 1e9),
+                          train_target_mean=np.full(3, 1e9))
+
+
+def test_postread_rehash_refuses_changed_input_without_receipt(tmp_path, monkeypatch):
+    # Fake tiny geometry. Simulate source replacement AFTER the first valid
+    # SHA read; require another digest check BEFORE result publication.
+    monkeypatch.setattr(mod, 'EXPECTED_ROWS', 45)
+    monkeypatch.setattr(mod, 'EXPECTED_DONORS', 9)
+    monkeypatch.setattr(mod, 'EXPECTED_SHAPE', (45, 6))
+    monkeypatch.setattr(mod, 'EXPECTED_SOURCE_COUNTS',
+                        {'HVS': 3, 'NPH52': 3, 'SEA_AD': 3})
+    monkeypatch.setattr(mod, 'WIDTH', 3)
+    p = tmp_path / 'pass1.npz'
+    np.savez(p, cell_donor=np.repeat(np.arange(9), 5),
+             duniq=np.array([f'd{i}' for i in range(9)]),
+             donor_src=np.repeat(np.arange(3), 3))
+    rng = np.random.default_rng(34)
+    X = rng.normal(size=(45, 6)).astype(np.float32)
+    Y = np.zeros((45, 6), dtype=np.float32)
+    Y[:, :3] = X[:, :3] @ np.array(
+        [[.2, .3, .1], [-.1, .5, .2], [.4, .1, .7]],
+        dtype=np.float32) + rng.normal(scale=.1, size=(45, 3))
+    v0 = tmp_path / 'v0.npy'
+    v1 = tmp_path / 'v1.npy'
+    np.save(v0, X)
+    np.save(v1, Y)
+    monkeypatch.setattr(mod, 'verify_binding_receipt',
+                        lambda *a, **kw: {'schema': 'V5_FULL104_PASS1_PHYSICAL_BINDING_RECEIPT_V1'})
+    seen = []
+    def synthetic_verifier(path, expected):
+        seen.append(path.name)
+        if len(seen) == 6:
+            raise ValueError('SHA-256 mismatch: source changed after initial verification')
+    monkeypatch.setattr(mod, 'require_exact_file', synthetic_verifier)
+    out = tmp_path / 'must_not_exist.json'
+    with pytest.raises(ValueError, match='changed after initial verification'):
+        mod.run(pass1=p, v0=v0, v1=v1, physical_receipt=tmp_path/'fake',
+                physical_receipt_sha='f'*64, out=out, chunk_rows=8)
+    assert seen == [p.name, v0.name, v1.name, p.name, v0.name, v1.name]
+    assert not out.exists()
