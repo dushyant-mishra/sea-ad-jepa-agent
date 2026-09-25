@@ -21,3 +21,22 @@ Every draw is keyed by a SHA-256 over explicit `run_seed`, `update_index`, the f
 **Red-team self-check:** The first proposal draft sampled cells *with replacement* and could yield duplicate `stable_cell_keys` in one update, which the existing V5 inactive reference explicitly rejects. Corrected to donor slots with replacement, cells within donor **without** replacement, with a hard oversubscription stop and adversarial tests. Its numeric per-presentation marginal remains donor-uniform, and the returned receipt explicitly identifies the dependence. That correction is necessary before any end-to-end V5 diagnostic integration.
 
 Run synthetic test suite in `.github/workflows/v26-reader-fit-development-proposal.yml`; CI rejects skipped/missing positive and negative controls. A physical CPU selection operation on the GPU laptop remains a separately scheduled read-only execution using actual frozen source paths after all roots match. Even physical success is a **proposal/sample receipt**, not authorization to train JEPA or claim biological results.
+
+## Read-only GPU-laptop CPU command (after recovering exact physical paths)
+
+The *new* `scripts/agent/run_v26_reader_fit_development_proposal.py` wraps the byte-authenticated PR132 bridge and writes a **small sample NPZ plus SHA-256-bound JSON receipt** under an exclusive new directory. It requires an existing runtime parent and refuses overwriting any directory. It does not load expression or train JEPA.
+
+```powershell
+$env:PYTHONPATH = "src;."
+python scripts/agent/run_v26_reader_fit_development_proposal.py `
+  --pass1 "<FROZEN_PASS1_NPZ_WITH_SHA_37f79...>" `
+  --calibration-zip "<AUTHENTIC_AUG24_ZIP_WITH_SHA_07748...>" `
+  --run-seed <PROSPECTIVELY_FROZEN_NONNEGATIVE_INTEGER> `
+  --update-index <FROZEN_NONNEGATIVE_CURSOR> `
+  --presentations <EXPLICIT_AUTHORIZED_POSITIVE_UPDATE_SIZE> `
+  --out-dir "<NEW_VERSIONED_RUNTIME_PARENT>/reader_fit_selection_u0000"
+```
+
+The command arguments above are **placeholders, not permission to invent hyperparameters**. First authenticate exact paths and select numeric values only under the separately frozen *development* run contract. The source binding is limited to the frozen pass1 and archived roster, not an independently proven Level-4 per-cell physical receipt. The written NPZ contains only selection-row identities, donor codes, proposal probabilities and p/q weights; no donor IDs, expression, masking outcomes, pathology or labels. Preserve the receipt plus NPZ SHA-256 for a later consumer with *separate* current-V5 real-data execution authority. Record NumPy version and PCG64 bit generator: cross-version bit-identical RNG replay is not assumed.
+
+The CI's positive output-writing test uses **synthetic 3-donor arrays and emits no frozen source roots**. A passing synthetic file-writing test is not a real-source selection result. No live physical pass1 was opened in this ChatGPT workspace.
