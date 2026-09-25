@@ -15,6 +15,13 @@ class MetadataFirewall(unittest.TestCase):
         self.assertEqual(out["targets"],{"T1","T2"})
         self.assertEqual(out["features"],{"G1","G2"})
         self.assertNotIn("SECRET",str(out))
+    def test_global_feature_presence_is_not_same_as_target_self_row(self):
+        raw,compressed,plain=fixture([["T1","0","0.1","T2","2"],["G1","0","0.1","T1","3"],["T1","0","0.1","T1","3"]])
+        j=scan_identifiers(raw,compressed,plain)
+        self.assertIn("T1",j["features"])
+        self.assertIn("T1",j["own_target_rows"])
+        self.assertNotIn("T2",j["own_target_rows"])
+        self.assertEqual(j["targets"],{"T1","T2"})
     def test_both_digests_and_size_change(self):
         raw,compressed,plain=fixture([["G1","0","0.1","T1","8"]])
         alternate,_,_=fixture([["G1","1","0.1","T1","8"]])
