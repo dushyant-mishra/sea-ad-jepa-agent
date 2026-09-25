@@ -1,0 +1,57 @@
+{
+  "schema": "GSE301119_DONOR_AWARE_TRANSCRIPTOME_ETL_V1",
+  "scope": "DEVELOPMENT_ETL_TWO_DONORS_NOT_POPULATION_GENERALIZABLE",
+  "biological_unit": "donor",
+  "n_biological_donors": 2,
+  "population_standard_error_produced": false,
+  "crispri_crispra_pooled": false,
+  "controls": "donor-matched non-targeting guides, aggregated at raw-count level",
+  "declared_before_inspection": {
+    "pseudocount": 1,
+    "min_cells_per_unit": 10,
+    "donors_required_for_cross_donor_mean": 2,
+    "aggregation": "raw integer counts summed across a target's guides within a donor BEFORE normalisation, so a 6-cell guide does not weigh equally with a 200-cell guide"
+  },
+  "missingness_semantics": {
+    "structurally_unmeasured": "gene absent from the 36,601-feature space",
+    "assayed_undetected": "gene present with zero counts in the compared groups",
+    "never_collapsed_to_zero_effect": true
+  },
+  "modalities": {
+    "CRISPRi": {
+      "guide_donor_groups": 2137,
+      "genes_assayed": 36601,
+      "genes_detected_in_perturbed": 29378,
+      "genes_assayed_undetected": 7223,
+      "donors": ["D1", "D2"],
+      "targets": 206,
+      "nt_guides_by_donor": [98, 90],
+      "nt_cells_by_donor": [1425, 759],
+      "total_cells": 28466,
+      "log2fc_matrix_path": "D:/jepa_perturb_outputs_20260923/gse301119_donor_aware_v1/CRISPRi_donor_aware_log2fc_matrix.rds",
+      "log2fc_matrix_bytes": 29391063,
+      "log2fc_matrix_sha256": "7f550f436333cf6159f54ff7b3221617952fcc13ac2b9d68c4cf572d53b39e43"
+    },
+    "CRISPRa": {
+      "guide_donor_groups": 2098,
+      "genes_assayed": 19162,
+      "genes_detected_in_perturbed": 17432,
+      "genes_assayed_undetected": 1730,
+      "donors": ["D1", "D2"],
+      "targets": 206,
+      "nt_guides_by_donor": [99, 93],
+      "nt_cells_by_donor": [1446, 671],
+      "total_cells": 23584,
+      "log2fc_matrix_path": "D:/jepa_perturb_outputs_20260923/gse301119_donor_aware_v1/CRISPRa_donor_aware_log2fc_matrix.rds",
+      "log2fc_matrix_bytes": 21338886,
+      "log2fc_matrix_sha256": "474202c0705a57bdc939ce483fe7612d9082fb57d80d94eefd8bd3d3c509ba93"
+    }
+  },
+  "target_summary_csv": "D:/jepa_perturb_outputs_20260923/gse301119_donor_aware_v1/gse301119_donor_aware_target_summary_v1.csv",
+  "top_effects_csv": "D:/jepa_perturb_outputs_20260923/gse301119_donor_aware_v1/gse301119_donor_aware_top_effects_v1.csv",
+  "jepa_prediction_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false,
+  "r_version": "R version 4.6.1 (2026-06-24 ucrt)",
+  "seurat_object_version": "5.4.0"
+}
