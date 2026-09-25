@@ -44,6 +44,7 @@ jobs:
           counts = {k: int(suite.attrib.get(k, 0)) for k in ('tests', 'errors', 'failures', 'skipped')}
           required = {
               'test_structural_synthetic_fixture_proves_exact_donor_mass_not_authority',
+              'test_synthetic_structural_report_never_emits_bound_source_hashes',
               'test_synthetic_data_cannot_claim_exact_frozen_reader_fit_authority',
               'test_oracle_donor_substituted_into_fit_metadata_rejected',
               'test_historical_continuation_donor_cannot_enter_fit_metadata',
@@ -51,7 +52,7 @@ jobs:
               'test_bad_or_synthetic_zip_is_rejected_before_opening_members',
           }
           observed = {case.attrib.get('name', '').split('[')[0] for case in suite.iter('testcase')}
-          if counts['tests'] < 21 or any(counts[k] for k in ('errors', 'failures', 'skipped')) or not required <= observed:
+          if counts['tests'] < 22 or any(counts[k] for k in ('errors', 'failures', 'skipped')) or not required <= observed:
               raise SystemExit(f'STOP_READER_FIT_INCOMPLETE counts={counts} missing={sorted(required-observed)}')
           print(f"PASS_V26_FROZEN_METADATA_SYNTHETIC_ONLY {counts['tests']} passed, zero skipped")
           PY
