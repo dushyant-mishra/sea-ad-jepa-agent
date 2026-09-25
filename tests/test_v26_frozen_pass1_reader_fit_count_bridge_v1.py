@@ -45,6 +45,20 @@ def test_donor_count_swap_with_unchanged_total_is_rejected():
         bridge._compare_structural(changed, ids, counts)
 
 
+def test_balanced_reciprocal_cell_swap_requires_separate_physical_row_binding():
+    # Count-only verification MUST NOT claim to catch an exchange of two
+    # individual cells between donors; physical cell_donor[selection_row]
+    # rederivation in existing full104_pass1_physical_binding_v1 is required.
+    codes, ids, counts = case()
+    swapped = codes.copy()
+    swapped[0], swapped[2] = swapped[2], swapped[0]
+    assert not np.array_equal(swapped, codes)
+    assert bridge._compare_structural(swapped, ids, counts).matched
+    report = bridge._compare_structural(swapped, ids, counts).structural_report()
+    assert report["per_cell_donor_lineage_validation"] == "NOT_PERFORMED"
+    assert report["balanced_reciprocal_cell_swaps"] == "NOT_DETECTABLE_BY_HISTOGRAM"
+
+
 def test_unknown_heldout_donor_replacing_fit_donor_rejected():
     codes, ids, counts = case()
     ids[0] = "O"
@@ -131,6 +145,8 @@ def test_toy_npz_file_descriptor_hash_and_schema_path(monkeypatch, tmp_path):
         pass1_path=path, calibration_zip=tmp_path / "NOT_A_REAL_CALIBRATION.zip"
     )
     assert receipt["per_donor_exact_count_match"] is True
+    assert receipt["balanced_reciprocal_cell_swaps"] == "NOT_DETECTABLE_BY_HISTOGRAM"
+    assert receipt["per_cell_donor_lineage_validation"] == "NOT_PERFORMED_BY_THIS_GATE"
     assert receipt["pass1_to_raw_level4_binding"] == "NOT_REVALIDATED_BY_THIS_GATE"
     assert receipt["raw_level4_blocks_opened"] == 0
     assert receipt["proposal_q_validation"] == "NOT_PERFORMED"
