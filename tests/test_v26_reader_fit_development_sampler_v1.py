@@ -19,8 +19,19 @@ def fixture():
     return counts, ids, codes
 
 
+def large_fixture():
+    counts = {"SYNTH_A": 12000, "SYNTH_B": 15000, "SYNTH_C": 20000}
+    ids = np.array(["SYNTH_B", "SYNTH_C", "SYNTH_A"], dtype="U7")
+    codes = np.concatenate([
+        np.full(15000, 0, dtype=np.int64),
+        np.full(20000, 1, dtype=np.int64),
+        np.full(12000, 2, dtype=np.int64),
+    ])
+    return counts, ids, codes
+
+
 def select(seed=7, index=0, n=100):
-    counts, ids, codes = fixture()
+    counts, ids, codes = large_fixture()
     return _propose_structural(
         cell_donor=codes, donor_ids=ids, expected_counts=counts,
         run_seed=seed, update_index=index, presentations=n,
@@ -30,7 +41,7 @@ def select(seed=7, index=0, n=100):
 
 def test_exact_positive_control_and_no_training_authority():
     got = select()
-    counts, ids, codes = fixture()
+    counts, ids, codes = large_fixture()
     assert len(got.selection_rows) == 100
     assert np.array_equal(codes[got.selection_rows], got.donor_codes)
     expected = np.array([1 / (3 * counts[ids[d]]) for d in got.donor_codes])
@@ -63,10 +74,12 @@ def test_exact_donor_uniform_not_cell_uniform_large_draw():
     assert np.max(np.abs(observed - 1 / 3)) < 0.02
 
 
-def test_repeated_cells_allowed_and_counted_as_presentations():
+def test_cells_unique_per_update_and_donor_draws_remain_with_replacement():
     got = select(n=100)
-    assert len(set(got.selection_rows.tolist())) < len(got.selection_rows)
+    assert len(set(got.selection_rows.tolist())) == len(got.selection_rows)
+    assert len(set(got.donor_codes.tolist())) <= 3
     assert got.nontraining_report()["presentations"] == 100
+    assert got.nontraining_report()["cells_within_donor_without_replacement_per_update"] is True
 
 
 @pytest.mark.parametrize("seed,index,presentations", [
@@ -131,7 +144,7 @@ def test_bad_pass1_donor_code_or_type_fails(bad):
 
 
 def test_change_in_source_root_changes_rng_stream():
-    counts, ids, codes = fixture()
+    counts, ids, codes = large_fixture()
     a = select(n=100)
     b = _propose_structural(
         cell_donor=codes, donor_ids=ids, expected_counts=counts,
@@ -140,6 +153,16 @@ def test_change_in_source_root_changes_rng_stream():
     )
     assert a.seed_sha256 != b.seed_sha256
     assert not np.array_equal(a.selection_rows, b.selection_rows)
+
+
+def test_oversubscribed_donor_slots_stop_before_returning_selection():
+    counts, ids, codes = fixture()
+    with pytest.raises(ValueError, match="exceed unique frozen donor cells"):
+        _propose_structural(
+            cell_donor=codes, donor_ids=ids, expected_counts=counts,
+            run_seed=7, update_index=0, presentations=11,
+            source_digest="a" * 64,
+        )
 
 
 def test_no_real_file_implies_no_real_selection(tmp_path):
