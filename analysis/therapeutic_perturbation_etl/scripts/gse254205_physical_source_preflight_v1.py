@@ -16,8 +16,8 @@ ARCHIVE_SHA256="ae3761514b5ac0bf37ae727ab956f6e6bee70c4dab52519ab2f20cc9a322d569
 N_EXPECTED=9
 def sha_bytes(raw):return hashlib.sha256(raw).hexdigest()
 def git_blob(raw):return hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\x00"+raw).hexdigest()
-def parse_frozen_inventory(raw, *, fake_fixture=False):
-    if not fake_fixture and git_blob(raw)!=SOURCE_GIT_BLOB_ID:
+def parse_frozen_inventory(raw):
+    if git_blob(raw)!=SOURCE_GIT_BLOB_ID:
         raise ValueError("STOP: frozen PR77 nine-sample source inventory blob differs")
     rd=csv.DictReader(io.StringIO(raw.decode("utf-8-sig"),newline=""))
     expected=("sample_id","condition","replicate","amyloid","compound","file","file_sha256","total_counts","genes_detected")
@@ -30,6 +30,8 @@ def parse_frozen_inventory(raw, *, fake_fixture=False):
         if name!=f"{cond}_{rep}ReadsPerGene.out.tab" or sid!=f"{cond}_{rep}":
             raise ValueError("STOP: source file/sample/condition identity mismatch")
         if name in parsed or sid in samples:raise ValueError("STOP: duplicate source sample")
+        if row["amyloid"]!=("False" if cond=="NT" else "True") or row["compound"]!=("GNE-317" if cond=="AB_GNE" else ""):
+            raise ValueError("STOP: design metadata chemistry/treatment mismatch")
         if len(row["file_sha256"])!=64 or not all(c in "0123456789abcdef" for c in row["file_sha256"]):
             raise ValueError("STOP: invalid source file digest")
         try:tot=int(row["total_counts"]);det=int(row["genes_detected"])
@@ -44,15 +46,15 @@ def parse_frozen_inventory(raw, *, fake_fixture=False):
                                               "AB_GNE":{"rep1","rep2","rep3"}}:
         raise ValueError("STOP: expected 3×3 biological design incomplete")
     return parsed
-def validate_inputs(meta,counts_dir,archive_path,*,fake_archive_sha=None):
+def validate_inputs(meta,counts_dir,archive_path):
     if not counts_dir.is_dir():raise ValueError("STOP: counts directory missing")
     matches={p.name for p in counts_dir.glob("*ReadsPerGene.out.tab") if p.is_file()}
     if matches!=set(meta):raise ValueError("STOP: missing/extra nine count inputs")
     if not archive_path.is_file():raise ValueError("STOP: parent source archive missing")
     actual_archive_bytes=archive_path.stat().st_size
     actual_archive_sha=sha_bytes(archive_path.read_bytes())
-    expected_archive_sha=ARCHIVE_SHA256 if fake_archive_sha is None else fake_archive_sha
-    expected_archive_bytes=ARCHIVE_BYTES if fake_archive_sha is None else actual_archive_bytes
+    expected_archive_sha=ARCHIVE_SHA256
+    expected_archive_bytes=ARCHIVE_BYTES
     if actual_archive_sha!=expected_archive_sha or actual_archive_bytes!=expected_archive_bytes:
         raise ValueError("STOP: parent archive source digest/bytes mismatch")
     outputs={};inputs={}
