@@ -88,6 +88,26 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def git_provenance(script_path):
+    """Self-measured execution provenance. Never estimated: UNMEASURED if unknown."""
+    import subprocess
+    repo = Path(script_path).resolve().parent
+    out = {"executing_script": Path(script_path).name,
+           "executing_script_sha256": sha256_file(Path(script_path))}
+    for key, args in (("git_commit", ["rev-parse", "HEAD"]),
+                      ("git_status_porcelain", ["status", "--porcelain"])):
+        try:
+            r = subprocess.run(["git", "-C", str(repo)] + args,
+                               capture_output=True, text=True, timeout=30)
+            out[key] = r.stdout.strip() if r.returncode == 0 else "UNMEASURED"
+        except Exception:
+            out[key] = "UNMEASURED"
+    status = out["git_status_porcelain"]
+    out["worktree_clean_at_execution"] = (
+        "UNMEASURED" if status == "UNMEASURED" else status == "")
+    return out
+
+
 def genotypes_from_filename(name: str) -> dict:
     """Derive the design cell from the GEO filename, independently of the producer.
 
@@ -128,7 +148,14 @@ def read_headerless_counts(path: Path, consume_first_line: bool = False):
         if len(parts) < 2:
             raise SystemExit(f"STOP_MALFORMED_ROW:{path.name}:{ln[:40]}")
         genes.append(parts[0])
-        vals.append(float(parts[-1]))
+        try:
+            vals.append(float(parts[-1]))
+        except ValueError:
+            # A textual value here is how a header line announces itself in a
+            # file declared to have none. Refuse rather than raise a traceback.
+            raise SystemExit(
+                f"STOP_UNPARSEABLE_COUNT:{path.name}:{parts[-1]!r} -- these files "
+                f"are headerless and every line must be a gene row")
     arr = np.asarray(vals, dtype=np.float64)
     if not np.all(np.isfinite(arr)):
         raise SystemExit(f"STOP_NONFINITE_COUNT:{path.name}")
@@ -470,6 +497,7 @@ def main() -> int:
             "SCREEN, not scientific effect qualification. Nothing here qualifies "
             "these effects biologically."),
         "biological_qualification": "NOT_QUALIFIED_THIS_IS_IMPLEMENTATION_REPRODUCTION_ONLY",
+        "execution_provenance": git_provenance(__file__),
         "input_sha256": digests,
         "source_byte_roots_verified": not a.skip_source_root_check,
         "jepa_prediction_used": False,

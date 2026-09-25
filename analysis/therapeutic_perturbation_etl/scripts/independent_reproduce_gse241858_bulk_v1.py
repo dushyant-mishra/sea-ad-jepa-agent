@@ -109,6 +109,26 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def git_provenance(script_path):
+    """Self-measured execution provenance. Never estimated: UNMEASURED if unknown."""
+    import subprocess
+    repo = Path(script_path).resolve().parent
+    out = {"executing_script": Path(script_path).name,
+           "executing_script_sha256": sha256_file(Path(script_path))}
+    for key, args in (("git_commit", ["rev-parse", "HEAD"]),
+                      ("git_status_porcelain", ["status", "--porcelain"])):
+        try:
+            r = subprocess.run(["git", "-C", str(repo)] + args,
+                               capture_output=True, text=True, timeout=30)
+            out[key] = r.stdout.strip() if r.returncode == 0 else "UNMEASURED"
+        except Exception:
+            out[key] = "UNMEASURED"
+    status = out["git_status_porcelain"]
+    out["worktree_clean_at_execution"] = (
+        "UNMEASURED" if status == "UNMEASURED" else status == "")
+    return out
+
+
 def parse_sample_id(sample: str) -> dict:
     """CTRL_A_1 / R47H_B_2_IFN -> genotype, clone, replicate, treatment."""
     m = SAMPLE_RE.match(sample)
@@ -138,7 +158,10 @@ def read_count_matrix(path: Path):
                 raise SystemExit(f"STOP_RAGGED_ROW:{path.name}:{parts[0]}")
             entrez.append(parts[0])
             symbols.append(parts[1])
-            rows.append([float(x) for x in parts[2:]])
+            try:
+                rows.append([float(x) for x in parts[2:]])
+            except ValueError:
+                raise SystemExit(f"STOP_UNPARSEABLE_COUNT:{path.name}:{parts[0]}")
     counts = np.asarray(rows, dtype=np.float64).T          # samples x genes
     if not np.all(np.isfinite(counts)):
         raise SystemExit(f"STOP_NONFINITE_COUNT:{path.name}")
@@ -246,6 +269,18 @@ def main() -> int:
         print(f"  [{arm}] units: " + ", ".join(
             f"{u['clone']}/{u['treatment']}:n={u['n_within_clone_replicates']}"
             for u in umeta))
+
+    # ------------------------------------------------------- degenerate preflight
+    # Every declared contrast must have a non-empty numerator AND denominator
+    # BEFORE any control runs. Without this the sign control dereferences a
+    # None difference and dies with a TypeError instead of a named refusal --
+    # still fail-closed, but an unnamed stop is not an answer.
+    for name, arm, num_pred, den_pred in CONTRAST_SPEC:
+        d = arms[arm]
+        if not [u for u in d["umeta"] if num_pred(u)]:
+            raise SystemExit(f"STOP_CONTRAST_HAS_EMPTY_GROUP:{name}:numerator")
+        if not [u for u in d["umeta"] if den_pred(u)]:
+            raise SystemExit(f"STOP_CONTRAST_HAS_EMPTY_GROUP:{name}:denominator")
 
     # ------------------------------------------------------------------ controls
     # 1. Sign control: a reversed contrast must come out exactly negated.
@@ -504,6 +539,7 @@ def main() -> int:
             "SCREEN, not scientific effect qualification. Nothing here qualifies "
             "these effects biologically."),
         "biological_qualification": "NOT_QUALIFIED_THIS_IS_IMPLEMENTATION_REPRODUCTION_ONLY",
+        "execution_provenance": git_provenance(__file__),
         "input_sha256": digests,
         "source_byte_roots_verified": not a.skip_source_root_check,
         "jepa_prediction_used": False,
