@@ -624,6 +624,18 @@ it, and then compares every output CSV digest and every scientific field of the
 receipt. The receipt records `git_dirty: false` and the anchor commit, so the
 result is bound to a commit rather than to a working directory.
 
+### The replay actually ran, and passed
+
+```
+anchor commit          : 1cdc85fa97a915df972f4c3a4a9291a8e7dacdd3
+worktree HEAD          : 1cdc85fa97a915df972f4c3a4a9291a8e7dacdd3
+worktree clean         : True
+producer sha256        : edf78bf839b7c99c4dd99c3d7da76f5eca2458dbb2420cd337122254116c2985
+output files compared  : 7
+receipt fields compared: 540
+REPRODUCTION OK: every output digest and every scientific field matched.
+```
+
 ### Two corrections this work made to itself
 
 **The first receipt was produced from a dirty tree and could not be anchored.**
