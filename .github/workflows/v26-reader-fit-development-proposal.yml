@@ -44,12 +44,14 @@ jobs:
             "test_exact_positive_control_and_no_training_authority",
             "test_same_seed_index_and_population_replay_bit_identical",
             "test_exact_donor_uniform_not_cell_uniform_large_draw",
+            "test_cells_unique_per_update_and_donor_draws_remain_with_replacement",
+            "test_oversubscribed_donor_slots_stop_before_returning_selection",
             "test_unchanged_global_total_but_swapped_donor_masses_fails",
             "test_heldout_or_continuation_donor_identity_fails",
             "test_change_in_source_root_changes_rng_stream",
             "test_no_real_file_implies_no_real_selection",
           }
-          if counts["tests"] < 72 or any(counts[k] for k in ("skipped","failures","errors")) or not required<=cases:
+          if counts["tests"] < 74 or any(counts[k] for k in ("skipped","failures","errors")) or not required<=cases:
             raise SystemExit(f"STOP_PROPOSAL_INCOMPLETE {counts} missing={sorted(required-cases)}")
           print(f"PASS_V26_READER_FIT_PROPOSAL_SYNTHETIC_ONLY {counts['tests']} passed, zero skipped")
           PY
