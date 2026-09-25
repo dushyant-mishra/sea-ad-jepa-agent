@@ -36,6 +36,8 @@ def derive(loaded):
     day8={r["target_gene"] for r in loaded["GSE178317"] if r["target_gene"]!="NTC"}
     direct_hmc3={r["target_id"] for r in loaded["GSE293118"] if r["target_class"]=="gene"}
     nominated_ms={r["nominated_gene"] for r in loaded["GSE311359"] if r["nominated_gene"]}
+    bin1_duplicate_labels=sum(r["guide_id"]=="BIN1" for r in loaded["GSE311359"])
+    if bin1_duplicate_labels!=3:raise ValueError("STOP: GSE311359 BIN1 duplicate identity census changed")
     out={}
     for key,s,scope in [
         ("GSE178317",day8,"DIRECT_CRISPRI_TARGET"),
@@ -47,7 +49,8 @@ def derive(loaded):
         if not s or any(not v for v in s):raise ValueError("STOP: missing source target identity "+key)
         hits=sorted(t&s)
         out[key]={"source_target_count":len(s),"shared_exact_labels":hits,"shared_exact_label_count":len(hits),
-                  "comparison_scope":scope,"same_biological_intervention_proved":False}
+                  "comparison_scope":scope,"same_biological_intervention_proved":False,
+                  "BIN1_duplicate_guide_label_stop":bin1_duplicate_labels if key=="GSE311359" else None}
     if len(day8)!=39 or len(direct_hmc3)!=6:raise ValueError("STOP: historic guide-target census changed")
     return out
 def build(repo):
