@@ -117,6 +117,38 @@ def test_true_identical_profiles_are_zero():
     assert np.max(np.abs(nt.effects([40, 20, 80], [400, 200, 800]))) < 1e-12
 
 
+
+def test_all_zero_effect_genes_never_become_top25_recurrent_hits():
+    values = np.zeros(100, dtype=np.float64)
+    found = nt.top_extremes(values, {"CLU": 0, "CXCL10": 50, "MT1G": 99})
+    assert all(not v["down"] and not v["up"] for v in found.values())
+
+
+def test_tied_nonzero_boundary_is_ambiguous_not_arbitrarily_selected():
+    values = np.zeros(100, dtype=np.float64)
+    values[:24] = -np.arange(1, 25, dtype=np.float64)
+    values[24:27] = -0.5  # three tied for exactly one bottom-25 slot
+    values[50:74] = np.arange(1, 25, dtype=np.float64)
+    values[74:77] = 0.5   # three tied for exactly one top-25 slot
+    found = nt.top_extremes(values, {
+        "strict_down": 0, "tied_down_1": 24, "tied_down_2": 25,
+        "strict_up": 50, "tied_up_1": 74, "tied_up_2": 75,
+        "zero": 90})
+    assert found["strict_down"]["down"] and not found["strict_down"]["up"]
+    assert found["strict_up"]["up"] and not found["strict_up"]["down"]
+    for gene in ("tied_down_1", "tied_down_2", "tied_up_1", "tied_up_2", "zero"):
+        assert not found[gene]["up"] and not found[gene]["down"]
+
+
+def test_singleton_signed_kth_cutoff_is_included():
+    values = np.zeros(100, dtype=np.float64)
+    values[:25] = -np.arange(1, 26, dtype=np.float64)
+    values[50:75] = np.arange(1, 26, dtype=np.float64)
+    found = nt.top_extremes(values, {"kth_down": 0, "kth_up": 50, "zero": 99})
+    assert found["kth_down"] == {"down": True, "up": False}
+    assert found["kth_up"] == {"down": False, "up": True}
+    assert found["zero"] == {"down": False, "up": False}
+
 def test_depth_only_binomial_thinning_preserves_composition_in_expectation():
     full = np.array([100000, 50000, 25000], dtype=np.int64)
     rng = np.random.default_rng(99)
