@@ -177,6 +177,19 @@ def main() -> int:
         cells_consumed += sel.size
         if not np.array_equal(dcodes, cell_donor[sel]):
             raise SystemExit(f"donor identity mismatch vs pass1 at {row['block_key']}")
+        # A donor ID matching pass1 is insufficient: source_library is a
+        # separate physical metadata assertion and must match the corrected
+        # donor→source registry for EVERY row. Otherwise a same-donor source
+        # relabeling can pass the all-104 count audit despite false provenance.
+        expected_sources = [source_names[int(donor_src[d])] for d in dcodes]
+        physical_sources = [rec["source_library"] for rec in recs]
+        if physical_sources != expected_sources:
+            bad = next(i for i, (actual, expected) in enumerate(
+                zip(physical_sources, expected_sources)) if actual != expected)
+            raise SystemExit(
+                f"source_library mismatch vs corrected donor registry at "
+                f"{row['block_key']} row {bad}: "
+                f"{physical_sources[bad]!r} != {expected_sources[bad]!r}")
         blocks_read += 1
 
         local = np.arange(len(recs),dtype=np.int64)

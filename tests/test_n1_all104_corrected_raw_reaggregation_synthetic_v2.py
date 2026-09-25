@@ -114,6 +114,20 @@ class SyntheticFullCoverage(unittest.TestCase):
     def test_same_census_wrong_donor_source_rejected(self):
         self.make_art(source_override=np.array([1,0,2],dtype=np.int64))
         self.run_it("corrected cell")
+    def test_source_library_swapped_without_donor_swap_rejected(self):
+        # Same donors and counts. A wrong per-row source_library once slipped
+        # through because only the donor ID was checked against frozen pass1.
+        # Regenerate the toy block manifest so this tests SEMANTICS rather
+        # than failing trivially on the metadata digest.
+        self.meta[0][0]["source_library"] = "NPH52"
+        self.make_blocks()
+        self.run_it("source_library mismatch")
+
+    def test_unknown_source_library_rejected(self):
+        self.meta[1][1]["source_library"] = "UNREGISTERED_SOURCE"
+        self.make_blocks()
+        self.run_it("source_library mismatch")
+
     def test_duplicate_selection_row_rejected(self):
         self.meta[1][0]["selection_row"]="1"
         self.make_blocks()
