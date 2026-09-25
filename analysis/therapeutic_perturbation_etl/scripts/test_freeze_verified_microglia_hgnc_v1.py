@@ -9,7 +9,7 @@ def receipt():
     return {"schema":"HGNC_2026Q3_MICROGLIA_31TARGET_METADATA_CROSSWALK_V1",
         "HGNC_download_sha256":PARENT_SHA,"HGNC_download_bytes":16913890,
         "response_values_inspected":False,"training_authorized":False,
-        "screens":{k:{"source_compressed_sha256":v} for k,v in EXPECTED_SOURCE_SHAS.items()},
+        "screens":{k:dict(v) for k,v in EXPECTED_SOURCE_SHAS.items()},
         "crosswalk":{"collision_free_shared_feature_map":{"G1":x(1),"G2":x(2)},
                      "target_primary_map":{"G1":x(1),"T2":x(3)},
                      "labels_absent_from_primary_release":["UNKNOWN"],
@@ -34,6 +34,8 @@ class FreezeContractTests(unittest.TestCase):
             r=receipt();r[edit[0]]=edit[1]
             with self.assertRaises(ValueError):freeze_verified_report(r,require_real_census=False)
         r=receipt();r["screens"]["day12_iTF_CROP_RNA"]["source_compressed_sha256"]="1"*64
+        with self.assertRaises(ValueError):freeze_verified_report(r,require_real_census=False)
+        r=receipt();r["screens"]["day12_iTF_CROP_RNA"]["source_uncompressed_sha256"]="2"*64
         with self.assertRaises(ValueError):freeze_verified_report(r,require_real_census=False)
     def test_malformed_missing_or_duplicate_canonical_fail(self):
         r=receipt();r["crosswalk"]["collision_free_shared_feature_map"]["G2"]["ensembl"]="ENSG00000000001"
