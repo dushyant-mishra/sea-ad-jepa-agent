@@ -17,7 +17,7 @@ def load(data,compressed_sha=COMPRESSED_SHA,uncompressed_sha=UNCOMPRESSED_SHA):
     if len(rd.fieldnames)!=len(set(rd.fieldnames)):raise ValueError("STOP: duplicate column")
     profiles=defaultdict(dict);rows=0;missing_fdr=0
     for item in rd:
-        gene,target=(item.get(k) or "").strip() for k in ("Gene","name")
+        gene,target=((item.get(k) or "").strip() for k in ("Gene","name"))
         if not gene or not target or gene in profiles[target]:raise ValueError("STOP: blank/duplicate identity")
         try:
             fc=float(item["Log2FC"])
