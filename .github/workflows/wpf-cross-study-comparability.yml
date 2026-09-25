@@ -4,6 +4,7 @@ on:
     paths:
       - 'analysis/therapeutic_perturbation_etl/scripts/build_wpf_comparability_matrix_v1.py'
       - 'analysis/therapeutic_perturbation_etl/scripts/test_build_wpf_comparability_matrix_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/independent_verify_wpf_comparability_v1.py'
       - '.github/workflows/wpf-cross-study-comparability.yml'
   pull_request:
     paths:
@@ -44,6 +45,10 @@ jobs:
           assert all(not p["automatically_pool"] and not p["independent_confirmation_authorized"] for p in x["pairs"])
           print("PASS: 13 strata; 78 pairs; no target/prediction/training leakage")
           PY
+      - name: Independent recomputation and 17 receipt-tamper adversaries
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/independent_verify_wpf_comparability_v1.py \
+            --receipt WPF_COMPARABILITY_MATRIX_V1.json --adversarial
       - uses: actions/upload-artifact@v4
         with:
           name: WP-F-cross-study-comparability-metadata-only
