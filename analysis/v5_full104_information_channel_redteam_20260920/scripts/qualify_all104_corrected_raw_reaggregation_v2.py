@@ -186,6 +186,8 @@ def main() -> int:
         if sha256_file(counts_path) != row["counts_sha256"]:
             raise SystemExit(f"count-block hash mismatch: {row['block_key']}")
         matrix = sp.load_npz(counts_path).tocsr()
+        if not matrix.has_canonical_format:
+            raise SystemExit(f"noncanonical or duplicate CSR address at {row['block_key']}")
         if matrix.shape != (len(recs), N_LEDGER):
             raise SystemExit(f"block geometry mismatch: {row['block_key']} {matrix.shape}")
 
