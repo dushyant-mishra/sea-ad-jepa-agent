@@ -111,7 +111,41 @@ def top_extremes(effect, gene_indices):
             for gene, index in gene_indices.items()}
 
 
-def load_modality(root, mod, receipt):
+def verify_identity_cert(root, mod, v1_receipt_path, cert):
+    """Require a *separately rederived* original-RDS identity certification.
+
+    Metadata hashes alone do not establish biological truth; the v2 R certifier
+    must have reconstructed all four neutral files from the authenticated RDS.
+    The CPU fixtures exercise this contract using synthetic certificates only.
+    """
+    if (cert.get("schema") != "GSE301119_NEUTRAL_IDENTITY_CERTIFICATION_V2"
+        or cert.get("v1_export_receipt_sha256") != sha256(v1_receipt_path)
+        or cert.get("protected_outcome_opened") is not False
+        or cert.get("training_authorized") is not False
+        or cert.get("therapeutic_ranking") is not False):
+        raise ValueError("STOP_NEUTRAL_IDENTITY_CERT_SCHEMA_OR_SCOPE_UNBOUND")
+    entry = cert.get("file_validation", {}).get(mod, {})
+    if (entry.get("source_rds_sha256") != EXPECTED_RDS[mod]
+        or entry.get("equality") !=
+            "ALL_FOUR_NEUTRAL_EXPORT_FILES_RECONSTRUCTED_BYTE_IDENTICAL_FROM_ORIGINAL_RDS"):
+        raise ValueError(f"{mod}: STOP_NEUTRAL_IDENTITY_CERT_SOURCE_UNBOUND")
+    paths = {
+        "counts_bin": root / f"{mod}_counts_int32.bin",
+        "shape": root / f"{mod}_shape.txt",
+        "features": root / f"{mod}_features.txt",
+        "gd_meta": root / f"{mod}_gd_meta.csv",
+    }
+    expected_hashes = entry.get("exported_file_sha256", {})
+    if set(expected_hashes) != set(paths):
+        raise ValueError(f"{mod}: STOP_NEUTRAL_IDENTITY_FILES_INCOMPLETE")
+    for name, path in paths.items():
+        if not path.is_file() or sha256(path) != expected_hashes[name]:
+            raise ValueError(f"{mod}: STOP_NEUTRAL_IDENTITY_FILE_DIGEST_{name}")
+    return entry
+
+
+def load_modality(root, mod, receipt, identity_cert):
+    verify_identity_cert(root, mod, root / "NEUTRAL_EXPORT_RECEIPT_V1.json", identity_cert)
     r = receipt.get("exports", {}).get(mod, {})
     if r.get("source_rds_sha256_after_export") != EXPECTED_RDS[mod]:
         raise ValueError(f"{mod}: SOURCE_RDS_DIGEST_NOT_AUTHENTICATED")
@@ -143,8 +177,8 @@ def load_modality(root, mod, receipt):
     return counts, feats, meta, n_cells
 
 
-def audit_modality(root, mod, receipt, draws, max_cell_ratio, rng):
-    counts, feats, meta, cell = load_modality(root, mod, receipt)
+def audit_modality(root, mod, receipt, draws, max_cell_ratio, rng, identity_cert):
+    counts, feats, meta, cell = load_modality(root, mod, receipt, identity_cert)
     index = {gene: i for i, gene in enumerate(feats) if gene in SENTINELS}
     donor = np.array([m["donor"] for m in meta])
     role = np.array([m["crispr"] for m in meta])
@@ -283,6 +317,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--neutral-dir", required=True, type=Path)
     parser.add_argument("--out-dir", required=True, type=Path)
+    parser.add_argument("--identity-cert", required=True, type=Path,
+                        help="V2 certification rederived from original authenticated RDS by certify_gse301119_neutral_identity_v2.R")
     parser.add_argument("--draws", type=int, default=64)
     parser.add_argument("--max-cell-ratio", type=float, default=1.5)
     args = parser.parse_args(argv)
@@ -296,6 +332,9 @@ def main(argv=None):
     receipt = json.loads(receipt_path.read_text(encoding="utf-8-sig"))
     if receipt.get("schema") != "GSE301119_NEUTRAL_ARRAY_EXPORT_V1":
         raise SystemExit("STOP_UNEXPECTED_NEUTRAL_EXPORT_SCHEMA")
+    if not args.identity_cert.is_file():
+        raise SystemExit("STOP_MISSING_RDS_BACKED_NEUTRAL_IDENTITY_CERT_V2")
+    cert = json.loads(args.identity_cert.read_text(encoding="utf-8-sig"))
     report = {
         "schema": "GSE301119_MATCHED_NT_DESCRIPTIVE_NULL_V1",
         "status": "DEVELOPMENT_ONLY_NO_SCIENTIFIC_QUALIFICATION",
@@ -306,6 +345,7 @@ def main(argv=None):
                         "seed": SEED, "pseudocount": PSEUDOCOUNT,
                         "top_k_each_tail": TOP_K, "sentinels": SENTINELS},
         "neutral_export_receipt_sha256": sha256(receipt_path),
+        "neutral_identity_certification_v2_sha256": sha256(args.identity_cert),
         "script_sha256": sha256(Path(__file__)),
         "modalities": {},
         "limitations": [
@@ -322,7 +362,7 @@ def main(argv=None):
     rng = np.random.default_rng(SEED)
     for mod in MODALITIES:
         report["modalities"][mod] = audit_modality(
-            args.neutral_dir, mod, receipt, args.draws, args.max_cell_ratio, rng)
+            args.neutral_dir, mod, receipt, args.draws, args.max_cell_ratio, rng, cert)
     args.out_dir.mkdir(parents=True, exist_ok=False)
     out = args.out_dir / "GSE301119_MATCHED_NT_DESCRIPTIVE_NULL_V1.json"
     out.write_text(json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8")
