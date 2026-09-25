@@ -56,7 +56,7 @@ def derive(a,b, approved_primary=None, *, expected_targets=31, expected_common=1
         })
     return {"schema":"GSE335887_TARGET_SPECIFIC_PUBLISHED_DE_ROW_SUPPORT_V1",
        "source_role":"METADATA_ONLY_TWO_RESERVED_SCREENS_NUMERIC_RESPONSE_VALUES_UNREAD",
-       "targets":31,"same_target_set_sha256":digest_members(a),
+       "targets":len(a),"same_target_set_sha256":digest_members(a),
        "shared_screenwide_published_gene_label_count":len(common),
        "shared_screenwide_published_gene_label_sha256":digest_members(common),
        "shared_primary_HGNC_count":len(primary) if primary is not None else None,
