@@ -460,6 +460,26 @@ def main() -> int:
             "sample": fabricated_sample,
             "passed": bool(no_fabricated_replication),
         },
+        "depth_ratios_measured_here": {
+            "study_wide_max_over_min_library": float(max(libs.values()) / min(libs.values())),
+            "within_contrast_pair_max_over_min": {
+                f"APOE3ch_vs_APOE3_microglia_in_{neuron}_neurons": float(
+                    max(libs[meta[cells[(neuron, "APOE3ch")]]["gsm"]],
+                        libs[meta[cells[(neuron, "APOE3")]]["gsm"]])
+                    / min(libs[meta[cells[(neuron, "APOE3ch")]]["gsm"]],
+                          libs[meta[cells[(neuron, "APOE3")]]["gsm"]]))
+                for neuron in sorted({m["neuron_genotype"] for m in meta})},
+            "definition_note": (
+                "the previously cited 1.2509x for this study is the STUDY-WIDE "
+                "max/min over all four libraries, not a within-contrast pair "
+                "ratio. Both are reported here. The study-wide figure is an upper "
+                "bound on every within-contrast pair, so the screen's conclusion "
+                "is unaffected and is if anything conservative."),
+            "screening_status": (
+                "SUSCEPTIBILITY_SCREEN_ONLY -- a depth ratio bears on whether the "
+                "artifact that invalidated GSE301119 could apply. It is NOT "
+                "scientific qualification of any effect."),
+        },
         "samples": int(counts.shape[0]),
         "library_sizes": libs,
         "genes_detected_anywhere": int(detected.sum()),

@@ -330,6 +330,35 @@ def main() -> int:
     if not se_control_ok:
         raise SystemExit("STOP_SE_CONTROL_CANNOT_DISTINGUISH_CLONE_UNITS")
 
+    # ------------------------------------------------------------ depth ratios
+    # A depth ratio bears only on whether the GSE301119 artifact could apply. It
+    # is a susceptibility screen, never qualification. Three definitions are
+    # reported because they differ by a lot here and the distinction matters:
+    # the group-MEAN ratio is the statistic previously cited for this study, and
+    # it averages over a much wider per-sample spread.
+    depth = {}
+    for name, arm, num_pred, den_pred in CONTRAST_SPEC:
+        d = arms[arm]
+        libs = {m["sample_id"]: float(t)
+                for m, t in zip(d["meta"], d["counts"].sum(axis=1))}
+        unit_lib = {}
+        for m in d["meta"]:
+            unit_lib.setdefault((m["clone"], m["treatment"]), []).append(libs[m["sample_id"]])
+        # Select units by their IDENTITY key (clone, treatment), never by dict
+        # insertion order: `unit_lib` is built in sample-column order while
+        # `umeta` is sorted, and for the cytokine arm those two orders differ.
+        nu = [(u["clone"], u["treatment"]) for u in d["umeta"] if num_pred(u)]
+        du = [(u["clone"], u["treatment"]) for u in d["umeta"] if den_pred(u)]
+        n_s = [v for k in nu for v in unit_lib[k]]
+        d_s = [v for k in du for v in unit_lib[k]]
+        n_mean, d_mean = sum(n_s) / len(n_s), sum(d_s) / len(d_s)
+        clone_means = [sum(unit_lib[k]) / len(unit_lib[k]) for k in nu + du]
+        depth[name] = {
+            "group_mean_library_ratio": max(n_mean, d_mean) / min(n_mean, d_mean),
+            "worst_sample_pair_ratio": max(n_s + d_s) / min(n_s + d_s),
+            "clone_mean_library_spread": max(clone_means) / min(clone_means),
+        }
+
     # ------------------------------------------------- independent recomputation
     mine = {}
     unit_counts = {}
@@ -487,6 +516,23 @@ def main() -> int:
                 "there; clone-blindness is detectable in the baseline STANDARD "
                 "ERROR and in the UNBALANCED cytokine LPS-in-CTRL point estimate, "
                 "both of which are checked before the comparison is believed"),
+        },
+        "depth_ratios_measured_here": {
+            "per_contrast": depth,
+            "worst_group_mean_library_ratio": max(v["group_mean_library_ratio"]
+                                                  for v in depth.values()),
+            "worst_sample_pair_ratio": max(v["worst_sample_pair_ratio"]
+                                           for v in depth.values()),
+            "definition_note": (
+                "the previously cited 1.370x for this study is the worst "
+                "GROUP-MEAN library ratio (R47H_vs_CTRL_baseline). The worst "
+                "individual SAMPLE-PAIR ratio inside a contrast is much larger, "
+                "and both are reported so the screen is read against the "
+                "definition that produced it."),
+            "screening_status": (
+                "SUSCEPTIBILITY_SCREEN_ONLY -- a depth ratio bears on whether the "
+                "artifact that invalidated GSE301119 could apply. It is NOT "
+                "scientific qualification of any effect."),
         },
         "rows_compared_per_contrast": seen,
         "max_abs_delta_log2fc": {k: float(v) for k, v in dmax.items()},
