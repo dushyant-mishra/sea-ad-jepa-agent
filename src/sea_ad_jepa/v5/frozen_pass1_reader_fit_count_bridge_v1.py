@@ -45,6 +45,8 @@ class StructuralCountComparison:
             "total_cells": self.total_cells,
             "matched": self.matched,
             "full104_raw_block_validation": "NOT_PERFORMED",
+            "per_cell_donor_lineage_validation": "NOT_PERFORMED",
+            "balanced_reciprocal_cell_swaps": "NOT_DETECTABLE_BY_HISTOGRAM",
             "training_authorized": False,
         }
 
@@ -146,6 +148,8 @@ def verify_frozen_pass1_reader_fit_count_bridge(
         "donor_count": comparison.donor_count,
         "cell_count": comparison.total_cells,
         "per_donor_exact_count_match": comparison.matched,
+        "per_cell_donor_lineage_validation": "NOT_PERFORMED_BY_THIS_GATE",
+        "balanced_reciprocal_cell_swaps": "NOT_DETECTABLE_BY_HISTOGRAM",
         "pass1_to_raw_level4_binding": "NOT_REVALIDATED_BY_THIS_GATE",
         "raw_level4_blocks_opened": 0,
         "source_library_validation": "NOT_PERFORMED",
