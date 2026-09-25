@@ -4,6 +4,8 @@ on:
     paths:
       - 'analysis/therapeutic_perturbation_etl/scripts/hgnc_2026q3_microglia_metadata_crosswalk_v1.py'
       - 'analysis/therapeutic_perturbation_etl/scripts/test_hgnc_2026q3_microglia_metadata_crosswalk_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/freeze_verified_microglia_hgnc_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_freeze_verified_microglia_hgnc_v1.py'
       - '.github/workflows/hgnc-2026q3-microglia-metadata.yml'
   workflow_dispatch:
 jobs:
@@ -17,11 +19,32 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install minimal frozen-contract dependency
+        run: python -m pip install 'numpy>=1.24,<3'
       - name: Run tests
         run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_hgnc_2026q3_microglia_metadata_crosswalk_v1.py
+      - name: FrozenAnnotation contract tests
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_freeze_verified_microglia_hgnc_v1.py
       - name: Check published sources
         run: python analysis/therapeutic_perturbation_etl/scripts/hgnc_2026q3_microglia_metadata_crosswalk_v1.py --repo . --out HGNC_2026Q3_MICROGLIA_METADATA_CROSSWALK_V1.json
+      - name: Freeze verified HGNC primary IDs through existing feature contract
+        run: python analysis/therapeutic_perturbation_etl/scripts/freeze_verified_microglia_hgnc_v1.py --crosswalk-json HGNC_2026Q3_MICROGLIA_METADATA_CROSSWALK_V1.json --out GSE335887_PRIMARY_HGNC_FROZEN_ANNOTATION_V1.json
+      - name: Assert no invented assay or training authority
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('GSE335887_PRIMARY_HGNC_FROZEN_ANNOTATION_V1.json'))
+          assert x['HGNC_source_sha256']=='e73e9259177884b5994fc81ed733c1b3d4df34c84290bc9dddc86e960d5d6419'
+          assert x['mapped_common_measured_feature_labels']==13373
+          assert x['unresolved_shared_feature_count']==116
+          assert x['mapped_common_intervention_target_labels']==31
+          assert not x['full104_alignment_authorized'] and not x['training_authorized']
+          assert not x['assay_detection_masks_verified'] and not x['perturbation_prediction_authorized']
+          print('PASS: source-pinned existing feature contract, no biological/prediction authority')
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: HGNC-2026Q3-MICROGLIA-METADATA
-          path: HGNC_2026Q3_MICROGLIA_METADATA_CROSSWALK_V1.json
+          path: |
+            HGNC_2026Q3_MICROGLIA_METADATA_CROSSWALK_V1.json
+            GSE335887_PRIMARY_HGNC_FROZEN_ANNOTATION_V1.json
