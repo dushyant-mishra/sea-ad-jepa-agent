@@ -1,6 +1,6 @@
 {
   "schema": "CRISPRBRAIN_SCREEN_RELIABILITY_V1",
-  "generated_utc": "2026-09-25T22:37:40Z",
+  "generated_utc": "2026-09-25T22:51:02Z",
   "producer": "analysis/therapeutic_perturbation_etl/scripts/assess_crisprbrain_screen_reliability_v1.py",
   "status": "COMPLETE",
   "fdr_alpha": 0.05,
@@ -12,9 +12,9 @@
     "scipy": "1.10.1"
   },
   "governance": "TRAINING=OFF - AUDIT_B_N1=UNOPENED - PROTECTED_FULL104_OUTCOMES=UNOPENED - D_SHARED_G5=UNOPENED - RARE_TAIL_MOLECULAR=UNOPENED - THERAPEUTIC_RANKING=OFF",
-  "git_head": "87988f2d1742e0cc0d775c8b596d20dd5998288b",
+  "git_head": "1cdc85fa97a915df972f4c3a4a9291a8e7dacdd3",
   "git_dirty": false,
-  "producer_sha256": "9cb75b624adae857681de83e40b99aa8d04a10ca476b412e4acbdfd8672504fa",
+  "producer_sha256": "edf78bf839b7c99c4dd99c3d7da76f5eca2458dbb2420cd337122254116c2985",
   "inputs": [
     {
       "key": "iTF_CROPseq",
@@ -375,6 +375,11 @@
     "spearman_among_jointly_significant": 0.3777015437392795,
     "expected_n_sig_both_if_independent": 4.2288054210845125,
     "hypergeom_sf_p": 5.627667065152195e-41,
+    "hypergeom_caveat": "This p-value treats the target x readout rows as exchangeable and independent draws.  They are neither: rows within one target share the same cells, and rows for one gene across targets share the same gene.  It is therefore an enrichment description under a deliberately wrong null, NOT evidence of biological replication.  The comparator that respects the dependence is the target-label permutation null reported in this same section.",
+    "n_jointly_significant_rows": 54,
+    "n_distinct_readout_genes_among_jointly_significant": 54,
+    "n_distinct_targets_among_jointly_significant": 3,
+    "joint_count_unit": "rows = (target, readout gene) pairs; see the distinct-gene and distinct-target counts beside it",
     "jointly_significant_rows_by_target": {
       "ZNF644": 50,
       "ZNF532": 3,
@@ -769,36 +774,43 @@
   "outputs": [
     {
       "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/concordance_by_abundance.csv",
+      "name": "concordance_by_abundance.csv",
       "rows": 7,
       "sha256": "574d453b2885abf53a27f45d5a5a38f999969f3c32f0bbe2997f60d22e929fa1"
     },
     {
       "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/fdr_threshold_sensitivity.csv",
+      "name": "fdr_threshold_sensitivity.csv",
       "rows": 3,
       "sha256": "3432f93b29c3346ba122f9c339ef6c1e2ba52d2461ebfee9470a4f18fe07df83"
     },
     {
       "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/jointly_significant_rows.csv",
+      "name": "jointly_significant_rows.csv",
       "rows": 54,
       "sha256": "cf4e2abf568d61f194f45901da1f085d28807f89a3e3df43e8b87b5d9029f69a"
     },
     {
       "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/non_replication_classification.csv",
+      "name": "non_replication_classification.csv",
       "rows": 2757,
       "sha256": "3f97caa695b4aeee8b940552790e455cce11f30957b1c9ca09ab0488e8190e40"
     },
     {
       "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/per_target_concordance.csv",
+      "name": "per_target_concordance.csv",
       "rows": 31,
       "sha256": "20115662655d440c6a08738ddc47a7d2ad6f111bac2b8ec3766f35d4019c31fc"
     },
     {
       "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/target_engagement.csv",
+      "name": "target_engagement.csv",
       "rows": 31,
       "sha256": "69ac16ea8846aadd95e1ccaad2fc5f1772387b3206d975e1aa0b6daeb8d6a5b9"
     },
     {
       "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/target_identity.csv",
+      "name": "target_identity.csv",
       "rows": 31,
       "sha256": "691dce1fcb1c403a7cc8adb2afc6be1347fd2e4ad23ba20d308f70df898e0282"
     }
