@@ -17,6 +17,8 @@ Date: 2026-09-25. Status: **CODE + SYNTHETIC CI REVIEW, PHYSICAL FROZEN PASS1 FI
 - noninteger/out-of-range donor codes, corrupt/pass1 altered after a recorded old hash, a missing NPZ key or object-array metadata;
 - stale or mismatching frozen metadata fingerprints.
 
+A second adversarial control demonstrates its **scope limit**: an equal-count reciprocal exchange of two cells between donors leaves every donor histogram unchanged, so the histogram gate deliberately reports `balanced_reciprocal_cell_swaps=NOT_DETECTABLE_BY_HISTOGRAM` and `per_cell_donor_lineage_validation=NOT_PERFORMED_BY_THIS_GATE`. Only the existing physical pass1 binder's selection-row-level rederivation can detect that specific form of swapped identity. The whole-file pass1 SHA prevents unrecorded post-freeze swaps, but **does not replace a separate physical raw-source audit**.
+
 No donor IDs appear in the machine-readable receipt. The helper exposing synthetic structure never emits a frozen byte-authority receipt; the full caller uses frozen source SHAs and is **not** a production input.
 
 ## Exact physical invocation, only when the genuine source file is available
