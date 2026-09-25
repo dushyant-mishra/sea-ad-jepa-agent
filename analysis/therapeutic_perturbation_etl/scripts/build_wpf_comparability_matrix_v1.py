@@ -65,11 +65,21 @@ def read_public_guide_refs(repo):
     if len({x["sequence"] for x in guides})!=65:raise ValueError("STOP: duplicate protospacers")
     if len({x["id"] for x in antibodies})!=180 or len({x["sequence"] for x in antibodies})!=180:
         raise ValueError("STOP: duplicate antibody ID/barcode")
-    t=Counter(x["target_gene_name"] for x in guides if x["target_gene_id"])
+    # Public NTC identity is encoded by the authentic guide feature ID.
+    # NTC's target_gene_id field is a label and is not guaranteed blank.
+    nt=[x for x in guides if x["id"].startswith("non-targeting_")]
+    if len(nt)!=5 or len({x["id"] for x in nt})!=5:
+        raise ValueError("STOP: wrong source-authenticated NTC feature IDs")
+    if {x["id"] for x in nt}!={"non-targeting_h3_532","non-targeting_h6_711",
+                              "non-targeting_h3_594","non-targeting_h5_749",
+                              "non-targeting_h5_546"}:
+        raise ValueError("STOP: NTC guide library identity changed")
+    pert=[x for x in guides if x not in nt]
+    if len(pert)!=60 or any(not x["target_gene_id"] or not x["target_gene_name"] for x in pert):
+        raise ValueError("STOP: source protein/guide classification or target identity")
+    t=Counter(x["target_gene_name"] for x in pert)
     if len(t)!=30 or set(t.values())!={2} or "ARID5B" in t:
-        raise ValueError("STOP: source guide target/protospacer census")
-    if sum(not x["target_gene_id"] for x in guides)!=5:
-        raise ValueError("STOP: non-targeting guide census")
+        raise ValueError("STOP: source guide target/protospacer census "+str(dict(t)))
     return {"targets":set(t),"target_per_guide":dict(t),"guide_id_set_sha256":members_root(x["id"] for x in guides),
       "targets_sha256":members_root(t),"antibodies":180,"guides":65,
       "source_ref":physical,"raw_protein_panel_authority":"180_CATALOG_IDS_NOT_PROCESSED_ASSAY_ID_CROSSWALK"}
