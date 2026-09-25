@@ -1,0 +1,108 @@
+{
+  "schema": "GSE240609_BULK_INDEPENDENT_REPRODUCTION_V1",
+  "verdict": "IMPLEMENTATION_REPRODUCED_TO_STORED_PRECISION",
+  "audit_item": "P1-6 INDEPENDENT_PHYSICAL_RECOMPUTATION",
+  "study": "GSE240609",
+  "design": "2x2 neuron genotype (WT/PSEN) x microglia genotype (APOE3/APOE3ch), ONE sample per design cell",
+  "replicates_per_design_cell": 1,
+  "uncertainty_estimable": false,
+  "uncertainty_note": "one sample per design cell: differences are descriptive only. No standard error and no p-value is computed here, and the producer is REQUIRED to have emitted none. A within-sample SE would describe sequencing noise in a single library and would read as biological replication that does not exist.",
+  "material": "CD11B_PURIFIED_MICROGLIA_AFTER_NEURON_COCULTURE",
+  "interpretation_limit": "RNA is from CD11b-purified microglia recovered AFTER neuron coculture, so a difference is a property of the coculture and not a cell-autonomous microglial effect.",
+  "declared_tolerance": 1e-09,
+  "declared_tolerance_met_at_full_precision": false,
+  "rounding_fully_explains_every_delta": true,
+  "stored_decimals": 6,
+  "precision_limitation": "the producer writes log2fc rounded to 6 decimals, so the declared 1e-9 tolerance is NOT testable against its CSV. The tolerance was not widened. Every delta is instead required to be exactly explained by rounding: round(independent_value, 6) must equal the stored value on every row.",
+  "controls": {
+    "sign_control_reversed_contrast_negates": true,
+    "genes_parsed": 27154,
+    "expected_genes": 27154,
+    "gene_count_assertion_held": true,
+    "first_physical_line_is_gene_row": true,
+    "first_gene": "A1BG",
+    "header_consuming_parse_gene_count": 27153,
+    "header_consuming_parse_drops_A1BG": true,
+    "max_abs_gap_correct_minus_header_consuming_lfc": 7.611702638334798,
+    "header_bug_detectable_by_this_comparator": true,
+    "control_note": "the four count files are headerless; the first physical line is the A1BG gene row (71 counts in GSM7703564, 63 in GSM7703571). Consuming it as a header yields 27,153 genes and shifts every gene label by one. The comparator is shown to detect that before its agreement is believed."
+  },
+  "fabricated_replication_guard": {
+    "rows_with_numeric_se": 0,
+    "rows_with_n_greater_than_one": 0,
+    "rows_claiming_uncertainty_estimable": 0,
+    "sample": [],
+    "passed": true
+  },
+  "depth_ratios_measured_here": {
+    "study_wide_max_over_min_library": 1.250856106810149,
+    "within_contrast_pair_max_over_min": {
+      "APOE3ch_vs_APOE3_microglia_in_PSEN_neurons": 1.1447919746509794,
+      "APOE3ch_vs_APOE3_microglia_in_WT_neurons": 1.1520044541168466
+    },
+    "definition_note": "the previously cited 1.2509x for this study is the STUDY-WIDE max/min over all four libraries, not a within-contrast pair ratio. Both are reported here. The study-wide figure is an upper bound on every within-contrast pair, so the screen's conclusion is unaffected and is if anything conservative.",
+    "screening_status": "SUSCEPTIBILITY_SCREEN_ONLY -- a depth ratio bears on whether the artifact that invalidated GSE301119 could apply. It is NOT scientific qualification of any effect."
+  },
+  "samples": 4,
+  "library_sizes": {
+    "GSM7703564": 17235291,
+    "GSM7703567": 21558869,
+    "GSM7703569": 19855132,
+    "GSM7703571": 18832128
+  },
+  "genes_detected_anywhere": 19045,
+  "genes_assayed_undetected": 8109,
+  "design_cells": {
+    "WT|APOE3ch": "GSM7703564",
+    "PSEN|APOE3ch": "GSM7703567",
+    "WT|APOE3": "GSM7703569",
+    "PSEN|APOE3": "GSM7703571"
+  },
+  "rows_compared_per_contrast": {
+    "APOE3ch_vs_APOE3_microglia_in_PSEN_neurons": 19045,
+    "APOE3ch_vs_APOE3_microglia_in_WT_neurons": 19045
+  },
+  "max_abs_delta_log2fc": {
+    "APOE3ch_vs_APOE3_microglia_in_PSEN_neurons": 4.999108200731683e-07,
+    "APOE3ch_vs_APOE3_microglia_in_WT_neurons": 4.999712226727571e-07
+  },
+  "rows_where_round_to_stored_decimals_matches_exactly": {
+    "APOE3ch_vs_APOE3_microglia_in_PSEN_neurons": 19045,
+    "APOE3ch_vs_APOE3_microglia_in_WT_neurons": 19045
+  },
+  "rounding_violations_sample": [],
+  "structural": {
+    "genes_in_producer_absent_from_source": 0,
+    "unknown_contrasts_in_producer_output": 0,
+    "rows_emitted_for_undetected_genes": 0,
+    "material_label_mismatches": 0,
+    "neuron_label_mismatches": 0,
+    "sample_identity_rows": 4,
+    "sample_identity_mismatches": [],
+    "sample_identity_reproduced": true
+  },
+  "not_a_v1_v2_parity_check": "V1==V2 shows V2 changed no number; it does not show either was right. This recomputes from the four authenticated GEO count files.",
+  "implementation": "python, independently authored; derives the design cell from the GEO filename, recomputes library sizes, log2(CPM+1), per-context differences and detection",
+  "identity_derivation_note": "the design cell is derived here from the GEO filename and then required to agree with the producer's GEO-title-derived identity table; a disagreement is a stop, not a warning.",
+  "depth_susceptibility_screen_note": "an earlier depth check measured the worst within-contrast library ratio at 1.2509x, so this study is NOT susceptible to the depth artifact that invalidated GSE301119. That is a SUSCEPTIBILITY SCREEN, not scientific effect qualification. Nothing here qualifies these effects biologically.",
+  "biological_qualification": "NOT_QUALIFIED_THIS_IS_IMPLEMENTATION_REPRODUCTION_ONLY",
+  "execution_provenance": {
+    "executing_script": "independent_reproduce_gse240609_bulk_v1.py",
+    "executing_script_sha256": "3f45f73812b274a836b9ad003bb133cb4541bee169e0144aa5c01e44002c4ab8",
+    "git_commit": "e3b453321b1662f5e6d1044f3a0916b13b7e623c",
+    "git_status_porcelain": "",
+    "worktree_clean_at_execution": true
+  },
+  "input_sha256": {
+    "GSM7703564_45229_14048iN_APOEChurchMG_gene_counts.txt.gz": "f61d1ba45877aca810a962c59bb7e5fece5448c5bc23fe69b921dfc12d1615be",
+    "GSM7703567_45232_14048PSEN_iN_APOECHurchMG_gene_counts.txt.gz": "b7d48bdf0987c888d1563d3ea6da4fcedd817b3ede3d1bcd49439ce4748058e3",
+    "GSM7703569_45227_14048iN_APOE3MG_gene_counts.txt.gz": "46db9651d4792bf193eb470827daab4a05f22c11368c054ccb0fab105483ada9",
+    "GSM7703571_45230_14048PSEN_iN_APOE3MG_gene_counts.txt.gz": "28cbe1b2b5d3dcdcf0085de59b351b41cc91c6cc8cfd6c78f03b6512c1ea9198",
+    "producer_effects": "ebcc63ae10b57e14ba11fcf7bec237f4341aac69685388a182d9bebae74b3d8f",
+    "producer_sample_identity": "8282e9180a7f7a35aeb4240e44fb3434c386eeecda3911353fb95fdcde574b99"
+  },
+  "source_byte_roots_verified": true,
+  "jepa_prediction_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false
+}

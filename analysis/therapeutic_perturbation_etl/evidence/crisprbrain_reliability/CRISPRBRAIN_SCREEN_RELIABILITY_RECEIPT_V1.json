@@ -1,0 +1,806 @@
+{
+  "schema": "CRISPRBRAIN_SCREEN_RELIABILITY_V1",
+  "generated_utc": "2026-09-25T22:05:03Z",
+  "producer": "analysis/therapeutic_perturbation_etl/scripts/assess_crisprbrain_screen_reliability_v1.py",
+  "status": "COMPLETE",
+  "fdr_alpha": 0.05,
+  "environment": {
+    "python": "3.9.7",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "numpy": "1.24.2",
+    "pandas": "1.5.3",
+    "scipy": "1.10.1"
+  },
+  "governance": "TRAINING=OFF - AUDIT_B_N1=UNOPENED - PROTECTED_FULL104_OUTCOMES=UNOPENED - D_SHARED_G5=UNOPENED - RARE_TAIL_MOLECULAR=UNOPENED - THERAPEUTIC_RANKING=OFF",
+  "git_head": "b2ae68e03a96e45b6d1963ca86ae3d7b646c19a3",
+  "git_dirty": true,
+  "producer_sha256": "633e1a841104183f11f4acf59f1eee0819d645e532592ad4435e2021fd9a6093",
+  "inputs": [
+    {
+      "key": "iTF_CROPseq",
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF-Microglia-CROP-seq-CRISPRi.csv.gz",
+      "bytes_on_disk": 20358929,
+      "sha256_gzip_container": "58c48fa4400d469a0e616940070bb426a71df77ff12e6de2bbf8efb119ff884e",
+      "sha256_decompressed": "6f65d728699863d207012227c72ac88cc2033cc1277ee6a74132bac8f3afbea8",
+      "sha256_decompressed_expected": "6f65d728699863d207012227c72ac88cc2033cc1277ee6a74132bac8f3afbea8",
+      "digest_match": true
+    },
+    {
+      "key": "iPSC_CROPseq",
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iPSC-Microglia-CROP-seq-CRISPRi.csv.gz",
+      "bytes_on_disk": 16133002,
+      "sha256_gzip_container": "818ae3c383811c94ab56ea588d34fbaaeaa1c808673125f68d62644e6ca19606",
+      "sha256_decompressed": "1efd4d840a46f0de32ce7839043df33e07db04d92f826855923e24f8fd36cdd2",
+      "sha256_decompressed_expected": "1efd4d840a46f0de32ce7839043df33e07db04d92f826855923e24f8fd36cdd2",
+      "digest_match": true
+    },
+    {
+      "key": "iTF_CITEseq",
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF-Microglia-CITE-seq-CRISPRi.csv.gz",
+      "bytes_on_disk": 187443,
+      "sha256_gzip_container": "dcc204e858264e1e63959c628ebfaabee8249d86aac2d6fe637d8e7b872d3434",
+      "sha256_decompressed": "7b97a1098fb6144ba5c053620a18d6ab9d9fcb9fc50cf07124c6e3139c8014c8",
+      "sha256_decompressed_expected": "7b97a1098fb6144ba5c053620a18d6ab9d9fcb9fc50cf07124c6e3139c8014c8",
+      "digest_match": true
+    },
+    {
+      "key": "iPSC_CITEseq",
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iPSC-Microglia-CITE-seq-CRISPRi.csv.gz",
+      "bytes_on_disk": 188965,
+      "sha256_gzip_container": "d032364a457e1406b61a5109256953c9be5c90ee52236a1d3b885b790a51baaf",
+      "sha256_decompressed": "94cee8ca5ccb24057dcd98226f8fd58472151e6799d3aa7e46491d152f64f412",
+      "sha256_decompressed_expected": "94cee8ca5ccb24057dcd98226f8fd58472151e6799d3aa7e46491d152f64f412",
+      "digest_match": true
+    },
+    {
+      "key": "Day8_CROPseq",
+      "path": "analysis/therapeutic_perturbation_etl/outputs/crisprbrain/iTF_Microglia-Day-8-CROP-seq-CRISPRi.csv.gz",
+      "bytes_on_disk": 13586532,
+      "sha256_gzip_container": "201e8fb28a63dfb91ae5f37a77f9641a90c3cdf4c618943a55699c512227079f",
+      "sha256_decompressed": "41eb533dfd50852d0ebd8f2c27d42d5f6bb3b1f1264ab0c721106cfbaed9fc39",
+      "sha256_decompressed_expected": "41eb533dfd50852d0ebd8f2c27d42d5f6bb3b1f1264ab0c721106cfbaed9fc39",
+      "digest_match": true
+    },
+    {
+      "key": "itf_feature_reference",
+      "path": "analysis/therapeutic_perturbation_etl/reference/gse335887/GSE335887_itf_feature_reference.csv.gz",
+      "bytes_on_disk": 4381,
+      "sha256_gzip_container": "fd2c3fa5b517c81bbd158516dacb00416f1883a654c795e126916620f77f225f",
+      "sha256_gzip_container_expected": "fd2c3fa5b517c81bbd158516dacb00416f1883a654c795e126916620f77f225f",
+      "sha256_decompressed": "8e9c4c73cb64f55c304222cbcce90dc5fd25d2e84be453c6ed77e002794377bc",
+      "digest_match": true
+    },
+    {
+      "key": "img_feature_reference",
+      "path": "analysis/therapeutic_perturbation_etl/reference/gse335887/GSE335887_img_feature_reference.csv.gz",
+      "bytes_on_disk": 4381,
+      "sha256_gzip_container": "cbc733178cefa49f660e2728debb834eed4520a3691834ba212102b3a0f6c533",
+      "sha256_gzip_container_expected": "cbc733178cefa49f660e2728debb834eed4520a3691834ba212102b3a0f6c533",
+      "sha256_decompressed": "8e9c4c73cb64f55c304222cbcce90dc5fd25d2e84be453c6ed77e002794377bc",
+      "digest_match": true
+    },
+    {
+      "key": "crisprbrain_catalog",
+      "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain/crisprbrain_catalog_v1.json",
+      "bytes_on_disk": 139789,
+      "sha256": "1b1cc32aa67cafe2cd2fcb7eb1ff80bf273c96ca38baa7473e272b1c57f2ae56",
+      "sha256_expected": "1b1cc32aa67cafe2cd2fcb7eb1ff80bf273c96ca38baa7473e272b1c57f2ae56",
+      "digest_match": true
+    }
+  ],
+  "S1_identity": {
+    "target_identity_rule": "Target identity = Ensembl gene ID in the GSE335887 CRISPR Guide Capture feature reference column `target_gene_id`, joined on `target_gene_name`.  Display-symbol matching is reported beside it so the two rules can be compared.",
+    "readout_identity_rule": "NOT UPGRADEABLE.  The deposited CRISPRbrain tables carry the readout gene as a display symbol only (column `Gene`); no Ensembl, Entrez or HGNC id is deposited.  Readout matching is therefore symbol-based, and that is a limitation of the deposit, recorded here as a finding.",
+    "feature_references_row_for_row_identical": true,
+    "feature_reference_rows": 245,
+    "crispr_guide_features": 65,
+    "distinct_protospacers": 65,
+    "non_targeting_guides": 5,
+    "targets_with_deposited_guides": 30,
+    "symbols_mapping_to_multiple_ensembl_ids": {},
+    "guides_per_target_min": 2,
+    "guides_per_target_max": 2,
+    "n_targets_iTF_CROPseq": 31,
+    "n_targets_iPSC_CROPseq": 31,
+    "n_targets_Day8_CROPseq": 39,
+    "shared_targets_by_display_name": 31,
+    "shared_targets_by_ensembl_id": 30,
+    "targets_without_deposited_guide_evidence_iTF": [
+      "ARID5B"
+    ],
+    "targets_without_deposited_guide_evidence_iPSC": [
+      "ARID5B"
+    ],
+    "shared_target_symbols": [
+      "ARID2",
+      "ARID5B",
+      "ATMIN",
+      "BHLHE40",
+      "BHLHE41",
+      "BPTF",
+      "CEBPD",
+      "CNOT10",
+      "DEAF1",
+      "DNMT1",
+      "FOXK1",
+      "IRF9",
+      "MAF",
+      "MEF2C",
+      "MEF2D",
+      "MITF",
+      "POU5F1",
+      "PRDM1",
+      "RELA",
+      "RUNX1",
+      "SALL4",
+      "SMAD3",
+      "SPI1",
+      "SREBF1",
+      "STAT1",
+      "STAT2",
+      "TCF4",
+      "ZNF148",
+      "ZNF532",
+      "ZNF644",
+      "ZNF783"
+    ],
+    "shared_targets_Day8_vs_iTF": [],
+    "shared_targets_Day8_vs_iPSC": [],
+    "readout_universe_iTF": {
+      "n": 16398,
+      "n_case_insensitive": 16398,
+      "n_ensembl_style": 0,
+      "n_versioned_suffix": 3,
+      "n_whitespace_padded": 0
+    },
+    "readout_universe_iPSC": {
+      "n": 13936,
+      "n_case_insensitive": 13936,
+      "n_ensembl_style": 0,
+      "n_versioned_suffix": 2,
+      "n_whitespace_padded": 0
+    },
+    "readout_shared": 13489,
+    "readout_iTF_only": 2909,
+    "readout_iPSC_only": 447,
+    "readout_iPSC_is_subset_of_iTF": false
+  },
+  "S2_engagement": {
+    "iTF_CROPseq": {
+      "n_targets": 31,
+      "self_row_present": 30,
+      "self_row_absent_not_measurable": [
+        "POU5F1"
+      ],
+      "n_self_row_absent": 1,
+      "self_log2fc_negative": 27,
+      "engaged_fdr_lt_0.05_and_down": 3,
+      "engaged_targets": [
+        "DNMT1",
+        "MEF2C",
+        "STAT2"
+      ],
+      "median_self_log2fc": -0.32963981059214353,
+      "engagement_rate_of_all_targets": 0.0967741935483871
+    },
+    "iPSC_CROPseq": {
+      "n_targets": 31,
+      "self_row_present": 29,
+      "self_row_absent_not_measurable": [
+        "POU5F1",
+        "SMAD3"
+      ],
+      "n_self_row_absent": 2,
+      "self_log2fc_negative": 27,
+      "engaged_fdr_lt_0.05_and_down": 3,
+      "engaged_targets": [
+        "STAT2",
+        "ZNF532",
+        "ZNF644"
+      ],
+      "median_self_log2fc": -0.607688198126683,
+      "engagement_rate_of_all_targets": 0.0967741935483871
+    },
+    "Day8_CROPseq": {
+      "n_targets": 39,
+      "self_row_present": 35,
+      "self_row_absent_not_measurable": [
+        "AURKB",
+        "EPOR",
+        "PLK1",
+        "RPS6KA6"
+      ],
+      "n_self_row_absent": 4,
+      "self_log2fc_negative": 35,
+      "engaged_fdr_lt_0.05_and_down": 17,
+      "engaged_targets": [
+        "ATP1A1",
+        "CDC25B",
+        "CDK12",
+        "CSF2RA",
+        "CSNK2A1",
+        "DCPS",
+        "IFNAR2",
+        "INPP5D",
+        "MAP2K6",
+        "MAPK14",
+        "NDUFA8",
+        "NDUFS5",
+        "NDUFV2",
+        "PFN2",
+        "PKM",
+        "RPS6KB1",
+        "SPTLC2"
+      ],
+      "median_self_log2fc": -0.232778706398166,
+      "engagement_rate_of_all_targets": 0.4358974358974359
+    },
+    "iTF_CITEseq": {
+      "n_targets": 31,
+      "self_row_present": 0,
+      "self_row_absent_not_measurable": [
+        "ARID2",
+        "ARID5B",
+        "ATMIN",
+        "BHLHE40",
+        "BHLHE41",
+        "BPTF",
+        "CEBPD",
+        "CNOT10",
+        "DEAF1",
+        "DNMT1",
+        "FOXK1",
+        "IRF9",
+        "MAF",
+        "MEF2C",
+        "MEF2D",
+        "MITF",
+        "POU5F1",
+        "PRDM1",
+        "RELA",
+        "RUNX1",
+        "SALL4",
+        "SMAD3",
+        "SPI1",
+        "SREBF1",
+        "STAT1",
+        "STAT2",
+        "TCF4",
+        "ZNF148",
+        "ZNF532",
+        "ZNF644",
+        "ZNF783"
+      ],
+      "n_self_row_absent": 31,
+      "self_log2fc_negative": 0,
+      "engaged_fdr_lt_0.05_and_down": 0,
+      "engaged_targets": [],
+      "median_self_log2fc": null,
+      "engagement_rate_of_all_targets": 0.0
+    },
+    "iPSC_CITEseq": {
+      "n_targets": 31,
+      "self_row_present": 0,
+      "self_row_absent_not_measurable": [
+        "ARID2",
+        "ARID5B",
+        "ATMIN",
+        "BHLHE40",
+        "BHLHE41",
+        "BPTF",
+        "CEBPD",
+        "CNOT10",
+        "DEAF1",
+        "DNMT1",
+        "FOXK1",
+        "IRF9",
+        "MAF",
+        "MEF2C",
+        "MEF2D",
+        "MITF",
+        "POU5F1",
+        "PRDM1",
+        "RELA",
+        "RUNX1",
+        "SALL4",
+        "SMAD3",
+        "SPI1",
+        "SREBF1",
+        "STAT1",
+        "STAT2",
+        "TCF4",
+        "ZNF148",
+        "ZNF532",
+        "ZNF644",
+        "ZNF783"
+      ],
+      "n_self_row_absent": 31,
+      "self_log2fc_negative": 0,
+      "engaged_fdr_lt_0.05_and_down": 0,
+      "engaged_targets": [],
+      "median_self_log2fc": null,
+      "engagement_rate_of_all_targets": 0.0
+    },
+    "JOINT_CROPseq": {
+      "shared_targets": 31,
+      "measurable_in_both": 29,
+      "not_measurable_in_at_least_one": [
+        "POU5F1",
+        "SMAD3"
+      ],
+      "jointly_engaged_targets": [
+        "STAT2"
+      ],
+      "n_jointly_engaged": 1,
+      "engaged_in_exactly_one": [
+        "DNMT1",
+        "MEF2C",
+        "ZNF532",
+        "ZNF644"
+      ],
+      "self_log2fc_pearson": 0.0618941705024364,
+      "self_log2fc_spearman": -0.00985221674876847,
+      "self_log2fc_n": 29,
+      "self_log2fc_sign_agreement": 0.8275862068965517,
+      "self_log2cpm_pearson": 0.22206829057571617,
+      "self_log2cpm_spearman": 0.5113300492610836
+    }
+  },
+  "S3_concordance": {
+    "paired_rows_target_x_readout": 406118,
+    "pooled_pearson_log2fc": 0.07230969210219096,
+    "pooled_spearman_log2fc": 0.04382448201835485,
+    "pooled_n": 406118,
+    "pooled_sign_agreement_all_rows": 0.5180563284562615,
+    "per_target_pearson_median": 0.027658392592749673,
+    "per_target_pearson_min": -0.02795567526436992,
+    "per_target_pearson_max": 0.2116842211390401,
+    "per_target_pearson_n_positive": 26,
+    "per_target_pearson_n_negative": 5,
+    "per_target_spearman_median": 0.018586240400205036,
+    "per_target_sign_agreement_median": 0.5116084341934993,
+    "per_target_sign_agreement_max": 0.691517305315204,
+    "per_target_best": "CEBPD",
+    "per_target_worst": "ZNF532",
+    "n_sig_itf": 854,
+    "n_sig_ipsc": 2011,
+    "n_sig_both": 54,
+    "overlap_itf_to_ipsc": 0.06323185011709602,
+    "overlap_ipsc_to_itf": 0.026852312282446545,
+    "jaccard_sig": 0.0192102454642476,
+    "sign_agreement_among_itf_significant": 0.5187353629976581,
+    "sign_agreement_among_ipsc_significant": 0.5226255594231726,
+    "sign_agreement_among_jointly_significant": 0.3888888888888889,
+    "pearson_among_jointly_significant": 0.4749504083985261,
+    "spearman_among_jointly_significant": 0.3777015437392795,
+    "expected_n_sig_both_if_independent": 4.2288054210845125,
+    "hypergeom_sf_p": 5.627667065152195e-41,
+    "jointly_significant_rows_by_target": {
+      "ZNF644": 50,
+      "ZNF532": 3,
+      "STAT2": 1
+    },
+    "n_targets_with_any_jointly_significant_row": 3,
+    "n_targets_with_zero_jointly_significant_rows": 28,
+    "largest_target_share_of_jointly_significant_rows": 0.9259259259259259,
+    "median_abs_log2fc_itf_all_rows": 0.129314937743978,
+    "median_abs_log2fc_ipsc_all_rows": 0.37904930430914496,
+    "median_abs_log2fc_ratio_ipsc_over_itf_all_rows": 2.931210507633691,
+    "median_abs_log2fc_itf_sign_agreeing_joint": 0.15217741561293,
+    "median_abs_log2fc_ipsc_sign_agreeing_joint": 0.872260672438058,
+    "ols_slope_ipsc_on_itf": 0.19707700726662136,
+    "ols_intercept_ipsc_on_itf": 0.3097129383518153,
+    "fdr_threshold_sensitivity": [
+      {
+        "fdr_alpha": 0.05,
+        "n_sig_itf": 854,
+        "n_sig_ipsc": 2011,
+        "n_sig_both": 54,
+        "overlap_itf_to_ipsc": 0.06323185011709602,
+        "overlap_ipsc_to_itf": 0.026852312282446545,
+        "sign_agreement_among_itf_significant": 0.5187353629976581,
+        "sign_agreement_among_jointly_significant": 0.3888888888888889
+      },
+      {
+        "fdr_alpha": 0.1,
+        "n_sig_itf": 1000,
+        "n_sig_ipsc": 2580,
+        "n_sig_both": 72,
+        "overlap_itf_to_ipsc": 0.072,
+        "overlap_ipsc_to_itf": 0.027906976744186046,
+        "sign_agreement_among_itf_significant": 0.518,
+        "sign_agreement_among_jointly_significant": 0.4583333333333333
+      },
+      {
+        "fdr_alpha": 0.25,
+        "n_sig_itf": 1336,
+        "n_sig_ipsc": 4162,
+        "n_sig_both": 128,
+        "overlap_itf_to_ipsc": 0.09580838323353294,
+        "overlap_ipsc_to_itf": 0.030754444978375782,
+        "sign_agreement_among_itf_significant": 0.5224550898203593,
+        "sign_agreement_among_jointly_significant": 0.5
+      }
+    ],
+    "mean_per_target_pearson_observed": 0.046890453333403206,
+    "mean_per_target_pearson_permuted_mean": 0.025651809138661035,
+    "mean_per_target_pearson_permuted_sd": 0.004915794729453044,
+    "mean_per_target_pearson_permuted_p": 0.004975124378109453,
+    "n_permutations": 200,
+    "permutation_seed": 20260925
+  },
+  "S4_power": {
+    "cell_and_guide_counts_per_target": "NOT_DEPOSITED",
+    "cell_and_guide_counts_note": "The CRISPRbrain deposit contains only (target, readout gene, Log2CPM, Log2FC, P Value, FDR).  Per-target cell counts, per-target guide counts and per-cell detection rates are NOT in any deposited table, so they are UNMEASURED here.  What can be computed from the deposit is the number of readout genes retained per target (a detection-breadth proxy) and the standard error implied by each screen's own p-values.",
+    "depositor_stated_counts_NOT_MEASURED_HERE": {
+      "iTF-Microglia-CROP-seq-CRISPRi": {
+        "single_sgrna_cells": "23,826",
+        "mean_reads_per_cell": "8,975",
+        "median_genes_per_cell": "3,150",
+        "tenx_chemistry": "v3",
+        "harvest_day": "12",
+        "libraries_screened": "31 transcription factors and transcriptional regulators",
+        "lab": "Kampmann (UCSF)",
+        "reference": "McQuade et al. 2026"
+      },
+      "iPSC-Microglia-CROP-seq-CRISPRi": {
+        "single_sgrna_cells": "8,349",
+        "mean_reads_per_cell": "2,870",
+        "median_genes_per_cell": "1,400",
+        "tenx_chemistry": "v2",
+        "harvest_day": "28",
+        "libraries_screened": "31 transcription factors and transcriptional regulators",
+        "lab": "Kampmann (UCSF)",
+        "reference": "McQuade et al. 2026"
+      }
+    },
+    "depositor_stated_counts_status": "DEPOSITOR_PROSE_READ_VERBATIM_FROM_AUTHENTICATED_CATALOGUE.  These are the depositors' own claims about their experiment, not measurements made by this script, and no statistic in this receipt is derived from them.  They are recorded because they are the only per-screen cell-count and depth evidence that exists anywhere in the deposit.",
+    "readout_genes_per_target_iTF_min": 16244,
+    "readout_genes_per_target_iTF_median": 16302.0,
+    "readout_genes_per_target_iTF_max": 16394,
+    "median_log2cpm_per_target_iTF_median": 0.6192321233395883,
+    "min_p_value_iTF": 2.4973507322997e-91,
+    "total_rows_iTF": 505527,
+    "readout_genes_per_target_iPSC_min": 13292,
+    "readout_genes_per_target_iPSC_median": 13462.0,
+    "readout_genes_per_target_iPSC_max": 13836,
+    "median_log2cpm_per_target_iPSC_median": 0.4063809613357762,
+    "min_p_value_iPSC": 1.16105716424033e-65,
+    "total_rows_iPSC": 417630,
+    "implied_se_iTF_median": 0.5218664768714196,
+    "implied_se_iTF_finite_frac": 1.0,
+    "implied_se_iTF_spearman_with_log2cpm_on_p_lt_0.1": -0.7680895905927251,
+    "implied_se_iTF_validation_rows": 4510,
+    "implied_se_iPSC_median": 0.7854234437978623,
+    "implied_se_iPSC_finite_frac": 1.0,
+    "implied_se_iPSC_spearman_with_log2cpm_on_p_lt_0.1": -0.68873756649801,
+    "implied_se_iPSC_validation_rows": 17735,
+    "implied_se_validation_rule": "The Wald reconstruction SE=|beta|/Phi^-1(1-p/2) is accepted only if the implied SE falls with baseline abundance on well-determined rows (Spearman(log SE, Log2CPM) < 0 on rows with p<0.1).  Both screens are checked; the pass field records the result.",
+    "implied_se_validation_pass": true,
+    "median_abs_z_iTF": 0.2553137349987118,
+    "inflation_vs_null_median_iTF": 0.3785287099240415,
+    "median_abs_z_iPSC": 0.4326865977929296,
+    "inflation_vs_null_median_iPSC": 0.6415021098054385,
+    "inflation_note": "Median |z| under a global null is 0.6745.  This statistic does NOT separate genuine signal from an anticonservative test and must not be read as evidence of either; it is reported because the two screens differ on it, which means their FDR columns are not interchangeable.",
+    "non_replication_itf_sig_not_ipsc_sig": 800,
+    "non_replication_classification": {
+      "UNDERPOWERED_OR_CONSISTENT": 577,
+      "DISAGREEMENT": 223
+    },
+    "non_replication_frac_attributable_to_disagreement": 0.27875,
+    "non_replication_ipsc_sig_not_itf_sig": 1957,
+    "non_replication_reverse_classification": {
+      "DISAGREEMENT": 1176,
+      "UNDERPOWERED_OR_CONSISTENT": 781
+    },
+    "jointly_significant_classification": {
+      "DISAGREEMENT": 50,
+      "CONSISTENT": 4
+    },
+    "z_crit": 1.9599639845400545
+  },
+  "S5_abundance": {
+    "baseline_log2cpm_pearson_between_screens": 0.8260615111834568,
+    "baseline_log2cpm_spearman_between_screens": 0.7983959292431804,
+    "baseline_log2cpm_n": 406118,
+    "median_log2cpm_itf": 1.0060207170039024,
+    "median_log2cpm_ipsc": 0.4143469451036975,
+    "bins": [
+      {
+        "cpm_bin": "<0.5",
+        "n_rows": 163299,
+        "pearson": 0.060484861518217824,
+        "spearman": 0.04519341345620013,
+        "sign_agreement": 0.5214177674082511,
+        "frac_sig_itf": 0.00023882571234361508,
+        "frac_sig_ipsc": 0.0018309971279677156,
+        "frac_sig_both": 0.0
+      },
+      {
+        "cpm_bin": "0.5-1",
+        "n_rows": 72499,
+        "pearson": 0.058297254530259184,
+        "spearman": 0.038509566728575875,
+        "sign_agreement": 0.5161174636891543,
+        "frac_sig_itf": 0.000951737265341591,
+        "frac_sig_ipsc": 0.003806949061366364,
+        "frac_sig_both": 0.0
+      },
+      {
+        "cpm_bin": "1-2",
+        "n_rows": 78053,
+        "pearson": 0.06364908290564704,
+        "spearman": 0.02789354090453629,
+        "sign_agreement": 0.5150602795536366,
+        "frac_sig_itf": 0.0016270995349313927,
+        "frac_sig_ipsc": 0.005778125120110694,
+        "frac_sig_both": 8.968265153165157e-05
+      },
+      {
+        "cpm_bin": "2-3",
+        "n_rows": 38690,
+        "pearson": 0.0795115996096754,
+        "spearman": 0.038502306934186666,
+        "sign_agreement": 0.5138537089687257,
+        "frac_sig_itf": 0.004006203153269578,
+        "frac_sig_ipsc": 0.007960713362626002,
+        "frac_sig_both": 0.00012923235978288964
+      },
+      {
+        "cpm_bin": "3-4",
+        "n_rows": 22053,
+        "pearson": 0.06474614927891299,
+        "spearman": 0.028178735070041365,
+        "sign_agreement": 0.5182061397542285,
+        "frac_sig_itf": 0.00562281775722124,
+        "frac_sig_ipsc": 0.0112909808189362,
+        "frac_sig_both": 0.00027207182696231805
+      },
+      {
+        "cpm_bin": "4-5",
+        "n_rows": 12015,
+        "pearson": 0.10292139682989879,
+        "spearman": 0.05397804255351783,
+        "sign_agreement": 0.5094465251768623,
+        "frac_sig_itf": 0.009488139825218476,
+        "frac_sig_ipsc": 0.014481897627965043,
+        "frac_sig_both": 0.0004161464835622139
+      },
+      {
+        "cpm_bin": ">5",
+        "n_rows": 19509,
+        "pearson": 0.08484844954937151,
+        "spearman": 0.054722798543706354,
+        "sign_agreement": 0.5225793223640371,
+        "frac_sig_itf": 0.011584396944999744,
+        "frac_sig_ipsc": 0.013019631964734225,
+        "frac_sig_both": 0.0015890102004203189
+      }
+    ],
+    "pearson_highest_bin": 0.08484844954937151,
+    "pearson_lowest_bin": 0.060484861518217824,
+    "abundance_vs_pearson_spearman_across_bins": 0.8928571428571429,
+    "concordance_increases_with_abundance": true
+  },
+  "S6_independence": {
+    "shared_guide_library_row_for_row_identical": true,
+    "guide_library_features": 245,
+    "distinct_protospacers_in_library": 65,
+    "guides_per_target_median": 2.0,
+    "n_targeting_genes_in_library": 30,
+    "non_targeting_guides": 5,
+    "guides_per_target_distribution": {
+      "2": 30
+    },
+    "shared_vector_and_parental_line": "Both screens state the same CROP-seq vector pMK1334 and the same CRISPRi iPSC starting material in the CRISPRbrain deposit prose.  Parental line WTC11 for both models is recorded in this repo's GSE335887 metadata-identity contract, sourced from the GEO SOFT records.  NOT recomputed here: no GEO access was made in this run, so that one statement is cited, not measured.",
+    "what_differs_between_the_two_screens": "Only the differentiation route and its age: iTF-MG is six-TF doxycycline-induced (Draeger et al. 2022), harvested Day 12; iPSC-MG is cytokine-directed (McQuade et al. 2018), harvested Day 28.  10x chemistry and sequencing depth also differ per the deposit prose.",
+    "independent_replication": false,
+    "independence_verdict": "NOT INDEPENDENT REPLICATION.  Same lab, same publication, same sgRNA library (row-for-row identical feature reference), same vector, same parental line, same analysis pipeline, same non-targeting control design.  The pair is a within-study protocol contrast, not a between-study replication.",
+    "differentiation_preparations_per_model": "UNMEASURED_NOT_IN_DEPOSIT",
+    "cells_per_target": "UNMEASURED_NOT_IN_DEPOSIT"
+  },
+  "S7_cross_screen_overlap": {
+    "cropseq_paired_rows_compared": 406118,
+    "cropseq_rows_with_bitwise_identical_log2fc": 0,
+    "cropseq_rows_with_log2fc_within_1e-12": 0,
+    "citeseq_paired_rows_compared": 5177,
+    "citeseq_rows_with_bitwise_identical_log2fc": 0,
+    "interpretation": "Zero identical rows means the two deposited tables are separate numerical outputs, i.e. the screens are not one table served twice.  It does NOT make them independent experiments; see S6."
+  },
+  "POSITIVE_CONTROLS": {
+    "self_concordance_pearson_must_be_1": 0.9999999999999969,
+    "self_concordance_spearman_must_be_1": 1.0,
+    "self_concordance_sign_agreement_must_be_1": 1.0,
+    "self_concordance_n": 505527,
+    "day8_format_control_targets": 39,
+    "day8_format_control_self_rows": 35,
+    "day8_format_control_engaged": 17,
+    "day8_format_control_engaged_targets": [
+      "ATP1A1",
+      "CDC25B",
+      "CDK12",
+      "CSF2RA",
+      "CSNK2A1",
+      "DCPS",
+      "IFNAR2",
+      "INPP5D",
+      "MAP2K6",
+      "MAPK14",
+      "NDUFA8",
+      "NDUFS5",
+      "NDUFV2",
+      "PFN2",
+      "PKM",
+      "RPS6KB1",
+      "SPTLC2"
+    ],
+    "day8_format_control_engagement_rate": 0.4358974358974359,
+    "day8_format_control_meaning": "A CRISPRbrain CROP-seq table in the identical six-column schema, served by the same portal, does demonstrate per-target engagement at a far higher rate.  The low engagement measured in the McQuade pair is therefore a property of those two screens, not an artefact of the deposit format or of this script's engagement definition.",
+    "negative_control_permutation": "see S3_concordance.mean_per_target_pearson_permuted_*"
+  },
+  "PRELIMINARY_CLAIMS_CHECK": {
+    "rule": "Every number below was recomputed in this run from the digest-verified tables.  The 'reported_unverified' column is recorded only so the comparison is auditable; it was never used in a computation.",
+    "checks": [
+      {
+        "claim": "shared_targets",
+        "reported_unverified": 31,
+        "recomputed_here": 31,
+        "recomputed_at_fdr_alpha": null,
+        "verdict": "CONFIRMED_WITH_CORRECTION",
+        "note": "31 shared target SYMBOLS is right, but only 30 carry a deposited Ensembl-anchored protospacer.  ARID5B has no guide in either feature reference, so it is a name in the analysis output with no authenticated intervention evidence behind it."
+      },
+      {
+        "claim": "sig_hit_overlap_itf_to_ipsc",
+        "reported_unverified": 0.072,
+        "recomputed_here": 0.06323185011709602,
+        "recomputed_at_fdr_alpha": 0.05,
+        "verdict": "DISCREPANCY_EXPLAINED",
+        "note": "At FDR<0.05 this run measures 0.0632, not 0.072.  The reported 0.072 is reproduced exactly at FDR<0.10 (0.0720), so the preliminary figure was computed at a 10% FDR cut."
+      },
+      {
+        "claim": "sig_hit_overlap_ipsc_to_itf",
+        "reported_unverified": 0.028,
+        "recomputed_here": 0.026852312282446545,
+        "recomputed_at_fdr_alpha": 0.05,
+        "verdict": "DISCREPANCY_EXPLAINED",
+        "note": "At FDR<0.05 this run measures 0.0269; at FDR<0.10 it measures 0.0279, which rounds to the reported 0.028."
+      },
+      {
+        "claim": "sign_agreement_among_itf_significant",
+        "reported_unverified": 0.52,
+        "recomputed_here": 0.5187353629976581,
+        "recomputed_at_fdr_alpha": 0.05,
+        "verdict": "CONFIRMED",
+        "note": "Stable across FDR cuts (0.5187 at 0.05, 0.5180 at 0.10).  Both are a coin flip."
+      },
+      {
+        "claim": "sign_agreement_among_jointly_significant",
+        "reported_unverified": 0.458,
+        "recomputed_here": 0.3888888888888889,
+        "recomputed_at_fdr_alpha": 0.05,
+        "verdict": "DISCREPANCY_EXPLAINED_WORSE_THAN_REPORTED",
+        "note": "At FDR<0.05 this run measures 0.3889, below the reported 0.458; the reported value is reproduced at FDR<0.10 (0.4583).  At the stricter cut the two screens point in OPPOSITE directions on the majority of rows they both call significant."
+      },
+      {
+        "claim": "n_jointly_significant_rows",
+        "reported_unverified": 72,
+        "recomputed_here": 54,
+        "recomputed_at_fdr_alpha": 0.05,
+        "verdict": "DISCREPANCY_EXPLAINED",
+        "note": "At FDR<0.05 this run counts 54 rows; the reported 72 is reproduced exactly at FDR<0.10 (72).  Either way the count is concentrated: 3 of 31 targets contribute any jointly significant row at all, and the largest single target accounts for 92.6% of them."
+      },
+      {
+        "claim": "jointly_engaged_targets",
+        "reported_unverified": [
+          "STAT2"
+        ],
+        "recomputed_here": [
+          "STAT2"
+        ],
+        "recomputed_at_fdr_alpha": 0.05,
+        "verdict": "CONFIRMED",
+        "note": "STAT2 is the only target whose own transcript falls significantly in both screens.  4 targets are engaged in exactly one screen and 2 target(s) cannot be assessed because a self-row is missing."
+      }
+    ],
+    "n_confirmed": 3,
+    "n_discrepant": 4,
+    "root_cause_of_discrepancies": "The preliminary overlap, joint-count and joint-sign figures were computed at FDR<0.10; this run's headline figures use FDR<0.05.  Every discrepant value is reproduced exactly at the looser cut, so the disagreement is a threshold difference, not an arithmetic error.  The looser cut flatters the screens: at FDR<0.05 overlap and sign agreement are both worse."
+  },
+  "VERDICT": {
+    "question": "Can the iTF-Microglia and iPSC-Microglia CROP-seq CRISPRi screens serve as BENCHMARK TRUTH for scoring a machine-learning model?",
+    "answer": "NO",
+    "criteria": [
+      {
+        "id": "C1_engagement",
+        "requirement": "at least half the shared targets engaged in BOTH screens",
+        "threshold": 0.5,
+        "observed": 0.03225806451612903,
+        "pass": false
+      },
+      {
+        "id": "C2_profile_concordance",
+        "requirement": "median per-target Pearson of the response profiles >= 0.30",
+        "threshold": 0.3,
+        "observed": 0.027658392592749673,
+        "pass": false
+      },
+      {
+        "id": "C3_direction",
+        "requirement": "pooled sign agreement >= 0.70",
+        "threshold": 0.7,
+        "observed": 0.5180563284562615,
+        "pass": false
+      },
+      {
+        "id": "C4_breadth",
+        "requirement": "at least half the shared targets contribute a jointly significant readout gene",
+        "threshold": 0.5,
+        "observed": 0.0967741935483871,
+        "pass": false
+      },
+      {
+        "id": "C5_independence",
+        "requirement": "the two screens are independent experiments, so that agreement between them is replication rather than a shared-pipeline artefact",
+        "threshold": true,
+        "observed": false,
+        "pass": false
+      }
+    ],
+    "criteria_passed": 0,
+    "criteria_total": 5,
+    "qualifying_subset_targets": [],
+    "qualifying_subset_size": 0,
+    "subset_rule": "A target qualifies only if its own transcript falls significantly in BOTH screens AND its transcriptome-wide response profiles correlate at Pearson >= 0.30 between screens.  Five qualifying targets would be the minimum for a subset answer.",
+    "threshold_provenance": "POST_HOC_DESCRIPTIVE, NOT A PROSPECTIVE FREEZE.  These cuts were chosen after the statistics were computed and are stated so the verdict is reproducible, not because they carry independent authority.  The verdict does not depend on them: the highest per-target Pearson observed anywhere is 0.2117, so C2 fails for every threshold above that; the jointly engaged count is 1 of 31, so C1 fails for every threshold above 0.032; and C5 is a design fact, not a measured quantity.",
+    "answer_scope": "NO for transcriptome-wide perturbation-response benchmarking on this pair.  Not 'only for a subset' either: 0 target(s) satisfy both the engagement and the profile-concordance requirement, against a minimum of 5.",
+    "decisive_reasons": [
+      "Target engagement is not demonstrated: 3/31 targets in iTF and 3/31 in iPSC significantly reduce their own transcript (FDR<0.05, Log2FC<0); 1 target(s) in both.",
+      "Continuous concordance over shared targets is near zero: pooled Pearson 0.0723, Spearman 0.0438, median per-target Pearson 0.0277, pooled sign agreement 0.5181 against a 0.50 coin flip.",
+      "What agreement exists is one target, not a weak broad signal: 50 of the 54 jointly significant rows come from ZNF644; 28 of 31 shared targets have no jointly significant readout gene at all.",
+      "Non-replication is not only a power problem.  Of 800 rows significant in iTF but not iPSC, 223 are formally inconsistent between the two screens (|z_diff|>1.96), and of 54 rows significant in BOTH screens, 50 are formally inconsistent.  Low power explains part of the gap; the screens also actively contradict each other.",
+      "The pair is not independent replication: NOT INDEPENDENT REPLICATION.  Same lab, same publication, same sgRNA library (row-for-row identical feature reference), same vector, same parental line, same analysis pipeline, same non-targeting control design.  The pair is a within-study protocol contrast, not a between-study replication."
+    ],
+    "what_is_still_usable": [
+      "Target identity is resolvable: 30 of 31 shared target symbols carry a deposited Ensembl-anchored protospacer.",
+      "The tables remain valid as an exposure-free covariate source (which genes were targeted, with which guides, in which cell models) and as a negative control: a model must not be rewarded for reproducing them."
+    ],
+    "measurement_failure_vs_biological_disagreement": "BOTH, AND THEY CANNOT BE FULLY SEPARATED WITH THE DEPOSITED DATA.  Per-target cell counts, guide-level counts and per-cell detection are not deposited, so the power side can only be bounded through the standard errors implied by each screen's own p-values.  Under that reconstruction a majority of the iTF-only hits are consistent with insufficient power in iPSC, but a substantial minority, and most of the jointly significant rows, are formally inconsistent.  Neither 'the screens disagree biologically' nor 'the screens are merely underpowered' is established alone; the honest statement is that the deposit cannot separate them, and that either one disqualifies the pair as a truth standard."
+  },
+  "outputs": [
+    {
+      "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/concordance_by_abundance.csv",
+      "rows": 7,
+      "sha256": "574d453b2885abf53a27f45d5a5a38f999969f3c32f0bbe2997f60d22e929fa1"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/fdr_threshold_sensitivity.csv",
+      "rows": 3,
+      "sha256": "3432f93b29c3346ba122f9c339ef6c1e2ba52d2461ebfee9470a4f18fe07df83"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/jointly_significant_rows.csv",
+      "rows": 54,
+      "sha256": "cf4e2abf568d61f194f45901da1f085d28807f89a3e3df43e8b87b5d9029f69a"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/non_replication_classification.csv",
+      "rows": 2757,
+      "sha256": "3f97caa695b4aeee8b940552790e455cce11f30957b1c9ca09ab0488e8190e40"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/per_target_concordance.csv",
+      "rows": 31,
+      "sha256": "20115662655d440c6a08738ddc47a7d2ad6f111bac2b8ec3766f35d4019c31fc"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/target_engagement.csv",
+      "rows": 31,
+      "sha256": "69ac16ea8846aadd95e1ccaad2fc5f1772387b3206d975e1aa0b6daeb8d6a5b9"
+    },
+    {
+      "path": "analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability/target_identity.csv",
+      "rows": 31,
+      "sha256": "691dce1fcb1c403a7cc8adb2afc6be1347fd2e4ad23ba20d308f70df898e0282"
+    }
+  ]
+}
