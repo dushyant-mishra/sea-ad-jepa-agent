@@ -50,9 +50,12 @@ jobs:
               'test_historical_continuation_donor_cannot_enter_fit_metadata',
               'test_wrong_total_cell_count_rejected',
               'test_bad_or_synthetic_zip_is_rejected_before_opening_members',
+              'test_synthetic_zip_uses_single_descriptor_and_read_allowlist',
+              'test_changed_member_rejected_even_if_outer_synthetic_zip_hash_is_accepted',
+              'test_duplicate_zip_member_rejected_with_exact_synthetic_hashes',
           }
           observed = {case.attrib.get('name', '').split('[')[0] for case in suite.iter('testcase')}
-          if counts['tests'] < 22 or any(counts[k] for k in ('errors', 'failures', 'skipped')) or not required <= observed:
+          if counts['tests'] < 25 or any(counts[k] for k in ('errors', 'failures', 'skipped')) or not required <= observed:
               raise SystemExit(f'STOP_READER_FIT_INCOMPLETE counts={counts} missing={sorted(required-observed)}')
           print(f"PASS_V26_FROZEN_METADATA_SYNTHETIC_ONLY {counts['tests']} passed, zero skipped")
           PY
