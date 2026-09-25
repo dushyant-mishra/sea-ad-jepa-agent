@@ -565,6 +565,28 @@ def s3_concordance(m, receipt, tables, rng):
     if N and K and n_draw:
         out["expected_n_sig_both_if_independent"] = jnum(K * n_draw / N)
         out["hypergeom_sf_p"] = jnum(stats.hypergeom.sf(k - 1, N, K, n_draw))
+        out["hypergeom_caveat"] = (
+            "This p-value treats the target x readout rows as exchangeable and "
+            "independent draws.  They are neither: rows within one target share "
+            "the same cells, and rows for one gene across targets share the same "
+            "gene.  It is therefore an enrichment description under a "
+            "deliberately wrong null, NOT evidence of biological replication.  "
+            "The comparator that respects the dependence is the target-label "
+            "permutation null reported in this same section."
+        )
+
+    # The joint count is a count of ROWS, i.e. (target, readout gene) pairs.
+    # Reporting it without the distinct-gene count invites reading it as a
+    # number of genes, which it is not.
+    out["n_jointly_significant_rows"] = int(len(both))
+    out["n_distinct_readout_genes_among_jointly_significant"] = int(
+        both["Gene"].nunique()
+    )
+    out["n_distinct_targets_among_jointly_significant"] = int(both["name"].nunique())
+    out["joint_count_unit"] = (
+        "rows = (target, readout gene) pairs; see the distinct-gene and "
+        "distinct-target counts beside it"
+    )
 
     # Is the joint signal spread across targets, or is it one target?
     conc = both.groupby("name").size().sort_values(ascending=False)
