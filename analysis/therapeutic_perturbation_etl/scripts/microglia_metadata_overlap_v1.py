@@ -64,7 +64,8 @@ def build(repo):
        "authority":"METADATA_ONLY_NOT_BIOLOGICAL_COMPARABILITY",
        "no_numeric_outcome_columns_inspected":True,"training_authority":False,
        "screens":{k:{a:b for a,b in s.items() if a not in ("targets","features")}|
-                   {"target_count":len(s["targets"]),"feature_count":len(s["features"])} for k,s in screens.items()},
+                   {"target_count":len(s["targets"]),"feature_count":len(s["features"]),
+                    "per_target_assay_label_present":{t:t in s["features"] for t in sorted(s["targets"])}} for k,s in screens.items()},
        "pairs":compare_screen_metadata(screens)}
 def main():
     p=argparse.ArgumentParser();p.add_argument("--repo",required=True,type=Path);p.add_argument("--out",required=True,type=Path)
