@@ -210,6 +210,7 @@ def build(repo):
     ]
     strata_out={k:{"study":study,"biological_system":system,"intervention":intervention,"readout":readout,
                    "authenticated_direct_targets":None if targets is None else len(targets),
+                   "authenticated_direct_target_labels":None if targets is None else sorted(targets),
                    "target_set_sha256":None if targets is None else members_root(targets),
                    "independent_unit_caveat":unit,"outcome_exposure":exposure}
                 for k,study,system,intervention,readout,targets,unit,exposure in strata}
@@ -233,6 +234,7 @@ def build(repo):
         else:
             scope="TARGET_LABEL_OVERLAP_ONLY__CROSS_STUDY_BIOLOGY_AND_UNIT_UNVERIFIED"
         pairs.append({"a":ak,"b":bk,"shared_direct_target_labels":overlap,
+                      "shared_direct_target_names":None if targA is None or targB is None else sorted(targA&targB),
                       "comparison_scope":scope,"automatically_pool":False,
                       "independent_confirmation_authorized":False})
     pair_idx={(p["a"],p["b"]):p for p in pairs}
