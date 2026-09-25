@@ -70,8 +70,11 @@ def test_positive_control_complete_both_modalities(tmp_path):
             got = report["donors"][d]["targets"][target]
             assert got["status"] == "MATCHED_DESCRIPTIVE_NULL_ONLY"
             assert got["matched_null_draws"] >= 8
+            assert got["depth_only_null_draws"] >= 8
             assert got["cells"] == 20 and got["guides"] == 2
             assert got["null_max_abs_fc_median"] > 0
+            assert got["depth_only_max_abs_fc_median"] >= 0
+            assert got["depth_only_expected_raw_total"] == got["unit_raw_depth"]
     assert report["missing_sentinel_genes"] == []
 
 
@@ -85,6 +88,27 @@ def test_exposes_existing_flat_gene_sign_fixture_failure():
 
 def test_true_identical_profiles_are_zero():
     assert np.max(np.abs(nt.effects([40, 20, 80], [400, 200, 800]))) < 1e-12
+
+
+def test_depth_only_binomial_thinning_preserves_composition_in_expectation():
+    full = np.array([100000, 50000, 25000], dtype=np.int64)
+    rng = np.random.default_rng(99)
+    vals = []
+    for _ in range(200):
+        thin = nt.depth_only_null(full, 17500, rng)
+        assert thin is not None
+        vals.append(thin / thin.sum())
+    got = np.mean(vals, axis=0)
+    want = full / full.sum()
+    assert np.max(np.abs(got - want)) < 0.005
+
+
+def test_depth_only_null_rejects_impossible_or_zero_target_depth():
+    rng = np.random.default_rng(2)
+    full = np.array([20, 30, 50], dtype=np.int64)
+    assert nt.depth_only_null(full, 0, rng) is None
+    assert nt.depth_only_null(full, 100, rng) is None
+    assert nt.depth_only_null(full, 150, rng) is None
 
 
 def test_median_centred_sensitivity_recovers_flat_when_positivity_holds():
