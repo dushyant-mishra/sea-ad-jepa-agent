@@ -104,11 +104,28 @@ def depth_only_null(full_nt, target_depth, rng):
 
 
 def top_extremes(effect, gene_indices):
-    k = min(TOP_K, len(effect))
-    down = set(np.argpartition(effect, k - 1)[:k].tolist())
-    up = set(np.argpartition(effect, -k)[-k:].tolist())
-    return {gene: {"down": index in down, "up": index in up}
-            for gene, index in gene_indices.items()}
+    """Strict signed top/bottom-K membership; never break threshold ties randomly.
+
+    All-zero/unmeasured-effect ties are ineligible. If multiple features tie at
+    the K-th nonzero rank, NONE of those boundary features is selected; the
+    strictly more extreme features remain eligible. This is intentionally
+    conservative because arbitrary tie-breaking fabricates recurrent markers
+    when thousands of genes have identical zero-valued effects.
+    """
+    values = np.asarray(effect, dtype=np.float64)
+    if values.ndim != 1 or not len(values) or not np.all(np.isfinite(values)):
+        raise ValueError("STOP_TOP_EXTREMES_NONFINITE_OR_INVALID")
+    if any(ix < 0 or ix >= len(values) for ix in gene_indices.values()):
+        raise ValueError("STOP_SENTINEL_FEATURE_INDEX_OUT_OF_RANGE")
+    k = min(TOP_K, len(values))
+    lo = float(np.partition(values, k - 1)[k - 1])
+    hi = float(np.partition(values, len(values) - k)[len(values) - k])
+    lo_unique = int(np.count_nonzero(values == lo)) == 1
+    hi_unique = int(np.count_nonzero(values == hi)) == 1
+    down = ((values < lo) | ((values == lo) & lo_unique)) & (values < 0)
+    up = ((values > hi) | ((values == hi) & hi_unique)) & (values > 0)
+    return {gene: {"down": bool(down[ix]), "up": bool(up[ix])}
+            for gene, ix in gene_indices.items()}
 
 
 def verify_identity_cert(root, mod, v1_receipt_path, cert):
