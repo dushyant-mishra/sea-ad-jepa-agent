@@ -81,14 +81,11 @@ class StructuralReaderFitAudit:
             raise ValueError("unknown or non-reader-fit donor")
         return Fraction(1, 104 * self.donor_counts[donor_id])
 
-    def metadata_receipt(self) -> dict[str, object]:
+    def structural_report(self) -> dict[str, object]:
+        """Unbound report. A synthetic test MUST NOT emit frozen-source receipt fields."""
         return {
-            "schema": "V26_READER_FIT_METADATA_PREFLIGHT_V1",
-            "scope": "FROZEN_AUG24_METADATA_ONLY",
-            "reader_split_sha256": READER_SPLIT_SHA256,
-            "donor_metadata_sha256": DONOR_METADATA_SHA256,
-            "fit_membership_digest": self.fit_membership_digest,
-            "fit_count_map_digest": self.fit_count_map_digest,
+            "schema": "V26_READER_FIT_STRUCTURAL_ONLY_V1",
+            "status": "STRUCTURAL_ONLY_UNBOUND",
             "partition_counts": dict(sorted(self.partition_counts.items())),
             "reader_fit_cell_count": self.fit_cell_count,
             "raw_full104_block_validation": "NOT_PERFORMED",
@@ -179,7 +176,23 @@ def verify_frozen_calibration_bundle(archive_path: str | Path) -> dict[str, obje
                 raise ValueError("metadata ZIP member exceeds one-megabyte bound")
             values.append(archive.read(info))
     result = verify_frozen_reader_fit_bytes(*values)
-    return {"source_bundle_sha256": ARCHIVE_SHA256, **result.metadata_receipt()}
+    return {
+        "schema": "V26_READER_FIT_METADATA_PREFLIGHT_V1",
+        "scope": "FROZEN_AUG24_METADATA_ONLY",
+        "status": "BYTE_AUTHENTICATED_METADATA_ONLY",
+        "source_bundle_sha256": ARCHIVE_SHA256,
+        "reader_split_sha256": READER_SPLIT_SHA256,
+        "donor_metadata_sha256": DONOR_METADATA_SHA256,
+        "fit_membership_digest": result.fit_membership_digest,
+        "fit_count_map_digest": result.fit_count_map_digest,
+        "partition_counts": dict(sorted(result.partition_counts.items())),
+        "reader_fit_cell_count": result.fit_cell_count,
+        "raw_full104_block_validation": "NOT_PERFORMED",
+        "cell_to_donor_lineage_validation": "NOT_PERFORMED",
+        "proposal_q_validation": "NOT_PERFORMED",
+        "training_authorized": False,
+        "protected_outcomes_opened": False,
+    }
 
 
 def main() -> None:
