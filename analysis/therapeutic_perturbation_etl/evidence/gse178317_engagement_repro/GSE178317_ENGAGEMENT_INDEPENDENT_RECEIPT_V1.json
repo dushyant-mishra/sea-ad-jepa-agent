@@ -1,0 +1,25 @@
+{
+  "schema": "GSE178317_ENGAGEMENT_INDEPENDENT_REPRODUCTION_V1",
+  "self_audit_item": "S6",
+  "verdict": "IMPLEMENTATION_REPRODUCED_TO_STORED_PRECISION",
+  "why": "the 33-target support-qualified comparison inherited an unverified upstream produced by PR #102; this recomputes it from the assignments and the deposited matrices",
+  "tolerance": 1e-09,
+  "targets_compared": 39,
+  "max_abs_delta": 4.974836997262422e-05,
+  "declared_tolerance_met": false,
+  "stored_decimals_observed": [
+    2,
+    3,
+    4
+  ],
+  "rounding_explains_every_delta": true,
+  "rows_exact_on_round": 39,
+  "targets_in_producer_absent_from_independent": [],
+  "null_disagreements": 0,
+  "assignments_sha256": "3719a109f18ce9f5b10cf01b3e35aa670ed1e68d35d8ff77bf04efe2c48d3214",
+  "producer_engagement_sha256": "c6d6f0013d7911477d51fb1c178e23af8806c2df48a2b60cb7b2de3e62f2d4df",
+  "comparison_csv_sha256": "e77a830343a6386b3e4949b0ef5a1bd5cd9fe989189e954e2e816e27bf21d88e",
+  "biological_caveat": "the four wells are capture wells from ONE pooled preparation; agreement here is about software, not biology, and creates no replicate",
+  "jepa_prediction_used": false,
+  "training_authorized": false
+}

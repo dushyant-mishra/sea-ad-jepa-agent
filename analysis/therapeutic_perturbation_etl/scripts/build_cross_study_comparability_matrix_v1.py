@@ -114,6 +114,17 @@ HEADER = ["study", "intervention", "cell_model", "protocol_and_time",
 
 
 def main():
+    raise SystemExit(
+        "STOP_COMPARABILITY_MATRIX_V1_SUPERSEDED: this producer hard-codes "
+        "outcome exposure and recorded GSE240609 as UNOPENED_RESERVED while the "
+        "same PR physically executed its four-sample contrasts and reported "
+        "38,090 rows. It also wrote a chosen GSE335887 differentiation age where "
+        "sources disagree, merged computed counts with unbound curator "
+        "assertions in one table, digested its inputs only after reading them, "
+        "and would overwrite a previous receipt. Use "
+        "build_cross_study_comparability_matrix_v2.py, which reads exposure from "
+        "CURATOR_ASSERTION_REGISTRY_V2.json. Retained for provenance only."
+    )
     ap = argparse.ArgumentParser()
     ap.add_argument("--gse335887-ref", required=True)
     ap.add_argument("--gse178317-lib", required=True)

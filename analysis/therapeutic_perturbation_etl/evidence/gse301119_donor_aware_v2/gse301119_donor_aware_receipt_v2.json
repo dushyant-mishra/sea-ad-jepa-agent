@@ -1,0 +1,56 @@
+{
+  "schema": "GSE301119_DONOR_AWARE_TRANSCRIPTOME_ETL_V2",
+  "supersedes": "build_gse301119_donor_aware_transcriptome_v1.R",
+  "scope": "DEVELOPMENT_ETL_TWO_DONORS_NOT_POPULATION_GENERALIZABLE",
+  "biological_unit": "donor",
+  "n_biological_donors": 2,
+  "population_standard_error_produced": false,
+  "guide_level_variance_computed": false,
+  "guide_count_flag_is_not_variance": "guide_count_support_ge2_both_donors counts guides; it does NOT measure guide-level variance, which is not computed anywhere in this producer",
+  "crispri_crispra_pooled": false,
+  "validation_performed_before_any_output": true,
+  "atomic_publish": true,
+  "declared_before_inspection": {
+    "pseudocount": 1,
+    "min_cells_per_unit": 10,
+    "expected_donors": ["D1", "D2"]
+  },
+  "donor_wise_matrices_persisted": true,
+  "modalities": {
+    "CRISPRi": {
+      "source_rds": "D:/jepa_perturb_outputs_20260923/gse301119_rawpb_v1/CRISPRi_guide_donor_raw_counts.rds",
+      "source_rds_sha256": "e796504f41ddd65f3a5b72699d12431ce664974e0860ecb255858bd084283549",
+      "guide_donor_groups": 2137,
+      "genes_assayed": 36601,
+      "genes_detected_in_perturbed": 29378,
+      "genes_assayed_undetected": 7223,
+      "targets": 206,
+      "total_cells": 28466,
+      "nt_guides_by_donor": [98, 90],
+      "nt_cells_by_donor": [1425, 759],
+      "effects_rds": "CRISPRi_donor_aware_effects_v2.rds",
+      "effects_rds_bytes": 72869462,
+      "effects_rds_sha256": "3925d5071a86dbe63d897edd06d489bc33bb86bfc8154f1b41949ed306630649"
+    },
+    "CRISPRa": {
+      "source_rds": "D:/jepa_perturb_outputs_20260923/gse301119_rawpb_v1/CRISPRa_guide_donor_raw_counts.rds",
+      "source_rds_sha256": "9fe028f508ce33a8c968ab05c363c345135b0b6227db4476838c70fb9d874d90",
+      "guide_donor_groups": 2098,
+      "genes_assayed": 19162,
+      "genes_detected_in_perturbed": 17432,
+      "genes_assayed_undetected": 1730,
+      "targets": 206,
+      "total_cells": 23584,
+      "nt_guides_by_donor": [99, 93],
+      "nt_cells_by_donor": [1446, 671],
+      "effects_rds": "CRISPRa_donor_aware_effects_v2.rds",
+      "effects_rds_bytes": 54845447,
+      "effects_rds_sha256": "ccb5db2855959f4594a6bdd79660c82366ab894959d3a5c4bf451723a70fb877"
+    }
+  },
+  "r_version": "R version 4.6.1 (2026-06-24 ucrt)",
+  "seurat_object_version": "5.4.0",
+  "jepa_prediction_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false
+}

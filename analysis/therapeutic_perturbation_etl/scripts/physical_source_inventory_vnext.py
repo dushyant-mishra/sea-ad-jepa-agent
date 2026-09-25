@@ -77,6 +77,19 @@ def read_sidecar_digest(asset_path):
 
 
 def main():
+    raise SystemExit(
+        "STOP_PHYSICAL_SOURCE_INVENTORY_VNEXT_SUPERSEDED: this producer FAILS "
+        "OPEN. It returns exit 0 whenever no digest mismatch is found, even "
+        "with assets that have no .sha256 sidecar and are therefore "
+        "unverifiable; demonstrated on a byte-correct asset with the sidecar "
+        "removed, where it printed NO DIGEST and exited 0. It also inventories "
+        "whatever directories happen to exist rather than requiring a frozen "
+        "expected set, and it emits hand-authored scientific status in the same "
+        "JSON as measured digests, which went stale within a single PR. Use "
+        "physical_source_inventory_v2.py, which binds to "
+        "FROZEN_EXPECTED_16_ASSET_MANIFEST_V1.json and keeps curator assertions "
+        "in a separate registry. Retained for provenance only."
+    )
     ap = argparse.ArgumentParser()
     ap.add_argument("--store", required=True, help="authenticated source store root")
     ap.add_argument("--out-dir", required=True)

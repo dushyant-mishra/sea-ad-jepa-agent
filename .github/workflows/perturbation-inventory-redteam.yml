@@ -1,0 +1,86 @@
+name: Perturbation inventory red-team (zero skips)
+
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/physical_source_inventory_v2.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/physical_source_inventory_vnext.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/FROZEN_EXPECTED_16_ASSET_MANIFEST_V1.json'
+      - 'analysis/therapeutic_perturbation_etl/evidence/CURATOR_ASSERTION_REGISTRY_V2.json'
+      - 'tests/test_physical_source_inventory_v2_redteam.py'
+      - '.github/workflows/perturbation-inventory-redteam.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/physical_source_inventory_v2.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/FROZEN_EXPECTED_16_ASSET_MANIFEST_V1.json'
+      - 'analysis/therapeutic_perturbation_etl/evidence/CURATOR_ASSERTION_REGISTRY_V2.json'
+      - 'tests/test_physical_source_inventory_v2_redteam.py'
+      - '.github/workflows/perturbation-inventory-redteam.yml'
+  workflow_dispatch:
+
+jobs:
+  inventory-redteam:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install --quiet pytest
+
+      # -W error: a DeprecationWarning must not pass silently.
+      # -p no:randomly keeps the positive control ordering deterministic.
+      - name: Adversarial suite, warnings as errors
+        run: |
+          python -m pytest tests/test_physical_source_inventory_v2_redteam.py \
+            -v -W error::UserWarning --tb=short -p no:cacheprovider \
+            --junitxml=redteam.xml
+
+      # A suite that silently skips its adversaries is a false green. Parse the
+      # JUnit report and fail on ANY skip, and on an unexpectedly small suite.
+      - name: Reject silent skips and a shrunken suite
+        if: always()
+        run: |
+          python - <<'PY'
+          import sys, xml.etree.ElementTree as ET
+          root = ET.parse("redteam.xml").getroot()
+          suites = root.findall(".//testsuite") or [root]
+          tests = sum(int(s.get("tests", 0)) for s in suites)
+          skipped = sum(int(s.get("skipped", 0)) for s in suites)
+          failures = sum(int(s.get("failures", 0)) for s in suites)
+          errors = sum(int(s.get("errors", 0)) for s in suites)
+          print(f"tests={tests} passed={tests-skipped-failures-errors} "
+                f"failed={failures} errors={errors} skipped={skipped}")
+          bad = []
+          if skipped:
+              bad.append(f"{skipped} test(s) skipped; a skipped adversary is a false green")
+          if failures or errors:
+              bad.append(f"{failures} failure(s), {errors} error(s)")
+          if tests < 14:
+              bad.append(f"only {tests} tests collected; the suite has shrunk "
+                         f"below its declared 14 adversaries")
+          if bad:
+              for b in bad:
+                  print("FAIL:", b)
+              sys.exit(1)
+          print("PASS: every adversary ran and none was skipped")
+          PY
+
+      # The superseded producer must stay fail-closed; if someone removes the
+      # STOP it would silently fail open again.
+      - name: Superseded v1 inventory must remain fail-closed
+        run: |
+          python - <<'PY'
+          import subprocess, sys
+          p = ("analysis/therapeutic_perturbation_etl/scripts/"
+               "physical_source_inventory_vnext.py")
+          r = subprocess.run([sys.executable, p, "--store", "x",
+                              "--out-dir", "y", "--readiness", "z"],
+                             capture_output=True, text=True)
+          out = (r.stdout + r.stderr)
+          if r.returncode == 0 or "SUPERSEDED" not in out:
+              print("FAIL: v1 inventory is no longer fail-closed")
+              print(out[:400])
+              sys.exit(1)
+          print("PASS: v1 inventory refuses to run and names its successor")
+          PY

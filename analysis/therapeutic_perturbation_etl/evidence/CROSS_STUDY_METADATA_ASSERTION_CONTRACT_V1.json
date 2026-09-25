@@ -1,0 +1,90 @@
+{
+  "contract_id": "CROSS_STUDY_METADATA_ASSERTION_CONTRACT_V1",
+  "_purpose": "Curator/literature assertions about each study's design. These are NOT computed values and are NOT machine-checked. Externalised from build_cross_study_comparability_matrix_v2.py so they can be reviewed and signed off independently of the producer code, per self-audit S3. Outcome exposure is deliberately absent: it lives only in CURATOR_ASSERTION_REGISTRY_V2.json.",
+  "reviewer": "claude-physical-etl-lane",
+  "asserted_on": "2026-09-25",
+  "assertions": {
+    "GSE178317": {
+      "intervention": "CRISPRi (dCas9-KRAB), CROP-seq pMK1334",
+      "cell_model": "iTF-MG iPSC-derived microglia",
+      "protocol_and_time": "six-TF doxycycline induction, Day 8",
+      "biological_units": "1 pooled preparation across 4 capture wells",
+      "controls": "non-targeting guides, same wells",
+      "assay_readout": "scRNA + sgRNA enrichment library",
+      "source": "GEO GSE335887/GSE178317 sample records; Draeger et al. 2022 Nat Neurosci"
+    },
+    "GSE335887": {
+      "intervention": "CRISPRi, CROP-seq pMK1334",
+      "cell_model": "iTF-MG and iMG, parental line WTC11",
+      "protocol_and_time": "SOURCE_CONFLICT_PENDING_RUN_LEVEL_AUTHORITY",
+      "biological_units": "one parental line; independent preparation census unverified",
+      "controls": "5 non-targeting guides",
+      "assay_readout": "scRNA + CITE-seq 180-antibody panel + sgRNA",
+      "source": "GEO GSE335887 series and sample SOFT records",
+      "conflict_detail": "series overall design states Day 12 for ~20,000 microglia; prior catalog and handoff descriptions reference Day 28 for cytokine-directed iMG. Differentiation protocol and age change together between the two models and are not separately identifiable. No age is chosen here."
+    },
+    "GSE301119": {
+      "intervention": "CRISPRi and CRISPRa, separate strata",
+      "cell_model": "primary human macrophages",
+      "protocol_and_time": "primary donor-derived cells",
+      "biological_units": "2 independent donors",
+      "controls": "donor-matched non-targeting guides",
+      "assay_readout": "scRNA, guide x donor pseudobulk",
+      "source": "GEO GSE301119 sample records; PR #91 support census"
+    },
+    "GSE311359": {
+      "intervention": "CRISPRi, cis-regulatory elements and TSS",
+      "cell_model": "iPSC-derived microglia",
+      "protocol_and_time": "7 samples, single timepoint",
+      "biological_units": "7 samples; guide independence pending ID-keyed rebuild",
+      "controls": "17 non-targeting guides",
+      "assay_readout": "scRNA + guide capture in one matrix",
+      "source": "GEO GSE311359 deposited features.tsv and matrices"
+    },
+    "GSE293118": {
+      "intervention": "CRISPRi, genes and noncoding elements",
+      "cell_model": "HMC3 immortalized line",
+      "protocol_and_time": "single timepoint",
+      "biological_units": "immortalized line; no donor axis",
+      "controls": "non-targeting guides",
+      "assay_readout": "scRNA + guide capture",
+      "source": "GEO GSE293118 feature reference and sample records"
+    },
+    "GSE254205": {
+      "intervention": "drug GNE-317 plus fibrillar amyloid-beta",
+      "cell_model": "APOE4/4 iPSC-derived microglia",
+      "protocol_and_time": "one model, one timepoint",
+      "biological_units": "9 bulk samples, 3 per condition",
+      "controls": "untreated (NT) arm",
+      "assay_readout": "bulk RNA-seq, STAR ReadsPerGene",
+      "source": "GEO GSE254205 sample records; PR #86"
+    },
+    "GSE240609": {
+      "intervention": "genotype contrast, APOE3 vs APOE3ch x WT vs PSEN1",
+      "cell_model": "CD11b-purified microglia recovered after neuron coculture",
+      "protocol_and_time": "post-coculture recovery",
+      "biological_units": "1 sample per 2x2 design cell",
+      "controls": "genotype contrast only; no treatment control",
+      "assay_readout": "bulk RNA-seq",
+      "source": "NCBI GEO GSE240609 public sample titles; PR #94 frozen identity"
+    },
+    "GSE241858": {
+      "intervention": "genotype TREM2 R47H x cytokine context",
+      "cell_model": "iPSC-derived microglia",
+      "protocol_and_time": "untreated / LPS / IFN-gamma",
+      "biological_units": "2 independent clones per genotype",
+      "controls": "untreated arm within clone",
+      "assay_readout": "bulk RNA-seq",
+      "source": "GEO GSE241858 sample records"
+    },
+    "GSE175721": {
+      "intervention": "CRISPRi (intended)",
+      "cell_model": "microglia-containing cortical organoids",
+      "protocol_and_time": "2 samples",
+      "biological_units": "NOT_ESTABLISHED - no per-cell guide assignment",
+      "controls": "unknown",
+      "assay_readout": "scRNA only; no guide-enrichment library",
+      "source": "GEO GSE175721 deposit; Cakir et al. 2022 Nat Commun PMC8776770"
+    }
+  }
+}

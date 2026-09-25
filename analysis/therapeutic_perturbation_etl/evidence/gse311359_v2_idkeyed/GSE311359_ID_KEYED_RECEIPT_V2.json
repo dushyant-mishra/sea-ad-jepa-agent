@@ -1,0 +1,87 @@
+{
+  "schema": "GSE311359_ID_KEYED_EFFECTS_V2",
+  "supersedes_keying_of": "build_gse311359_intervention_effects_v1.py",
+  "keyed_on": "feature ROW index carrying the feature ID from features.tsv column 1",
+  "v1_defect": "V1 keyed pseudobulk on the display name; three BIN1 capture features shared that name, producing 14 phantom rows that reported cells while holding zero counts",
+  "feature_table_identical_across_samples": true,
+  "feature_table_sha256": "4cdcb73ae3e3f4031187855bc48bf26d5658a9f8d2700561aa481a97760440cd",
+  "features": 36982,
+  "guide_features": 381,
+  "gene_features": 36601,
+  "unique_guide_feature_ids": 381,
+  "display_name_collisions": {
+    "BIN1": [
+      "BIN1_enh_1",
+      "BIN1_enh_2",
+      "BIN1_enh_2_AS"
+    ]
+  },
+  "bin1_cis_elements_kept_separate": [
+    "BIN1_enh_1",
+    "BIN1_enh_2",
+    "BIN1_enh_2_AS"
+  ],
+  "phantom_units_detected": 0,
+  "units_with_cells": 2455,
+  "perturbed_units": 2360,
+  "nt_units": 95,
+  "per_sample": {
+    "S1": {
+      "cells": 14638,
+      "guide_called": 14616,
+      "singly_assigned": 3943
+    },
+    "S2": {
+      "cells": 13593,
+      "guide_called": 13532,
+      "singly_assigned": 3845
+    },
+    "S3": {
+      "cells": 15793,
+      "guide_called": 15761,
+      "singly_assigned": 3861
+    },
+    "S4": {
+      "cells": 17463,
+      "guide_called": 17443,
+      "singly_assigned": 4013
+    },
+    "S5": {
+      "cells": 15054,
+      "guide_called": 15019,
+      "singly_assigned": 3769
+    },
+    "S6": {
+      "cells": 15132,
+      "guide_called": 15116,
+      "singly_assigned": 4054
+    },
+    "S7": {
+      "cells": 13836,
+      "guide_called": 13795,
+      "singly_assigned": 3774
+    }
+  },
+  "declared_before_inspection": {
+    "min_top_guide_umi": 5,
+    "min_top_fraction": 0.7,
+    "pseudocount": 1.0,
+    "note": "identical to the V1 calling rule, so the comparison isolates the keying change"
+  },
+  "what_this_does_not_establish": [
+    "no protospacer SEQUENCE is proven for any feature; the deposit carries no guide sequence table, so sequence identity remains open",
+    "no perturbation EFFICIENCY is measured for any element",
+    "no cis causality: BIN1 is the depositors' nominated label, carried forward as an assertion, not verified here"
+  ],
+  "outputs": {
+    "unit_meta_csv_sha256": "cb349967123bdccbfc120c41bbc5d6614b58a9eebd8dc4b0a7886469e855a347",
+    "unit_effects_csv_sha256": "b68c0bf3581f1e1d9c0b27365f1406d0fa81fabac7857500f1f232d982fbd0e3",
+    "logcpm_npz_sha256": "577af0fbc123311ff5231e2ef6943f39966db6a68fde8479aec15e66375fee13",
+    "logcpm_npz_bytes": 38565922
+  },
+  "v1_artifacts_overwritten": false,
+  "v1_bin1_outcomes_reused": false,
+  "jepa_prediction_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false
+}
