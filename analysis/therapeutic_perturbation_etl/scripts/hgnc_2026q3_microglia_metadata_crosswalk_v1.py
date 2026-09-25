@@ -77,6 +77,7 @@ def build(repo,download):
         "HGNC_download_sha256":hashlib.sha256(download).hexdigest(),
         "HGNC_download_bytes":len(download),"HGNC_rows":n,
         "screens":{k:{"source_compressed_sha256":next(x for x in m["files"] if x["path"].endswith(SCREENS[k][0]))["sha256"],
+                     "source_uncompressed_sha256":SCREENS[k][3],
                      "target_set_sha256":v["target_set_sha256"],"feature_set_sha256":v["feature_set_sha256"]} for k,v in screens.items()},
         "response_values_inspected":False,"mapping_scope":"PRIMARY_HGNC_EXACT_ONLY",
         "annotation_source_root_physically_measured":True,
