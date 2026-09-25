@@ -1,0 +1,65 @@
+name: V26 frozen pass1 donor-count bridge (synthetic)
+
+on:
+  pull_request:
+    paths:
+      - 'src/sea_ad_jepa/v5/reader_fit_population_preflight_v1.py'
+      - 'src/sea_ad_jepa/v5/frozen_pass1_reader_fit_count_bridge_v1.py'
+      - 'tests/test_v26_reader_fit_population_preflight_v1.py'
+      - 'tests/test_v26_frozen_pass1_reader_fit_count_bridge_v1.py'
+      - '.github/workflows/v26-pass1-donor-count-bridge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-pass1-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CPU-only dependencies
+        run: python -m pip install --disable-pip-version-check pytest numpy
+      - name: Execute existing metadata gate plus pass1 histogram adversaries
+        shell: bash
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q -p no:randomly --strict-markers \
+            tests/test_v26_reader_fit_population_preflight_v1.py \
+            tests/test_v26_frozen_pass1_reader_fit_count_bridge_v1.py \
+            --junitxml=/tmp/v26-pass1-bridge.xml | tee /tmp/v26-pass1-bridge.txt
+      - name: Exact named test and zero-skip census
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          root = ET.parse('/tmp/v26-pass1-bridge.xml').getroot()
+          suite = root if root.tag == 'testsuite' else root.find('testsuite')
+          if suite is None:
+              raise SystemExit('STOP_V26_PASS1_NO_TEST_SUITE')
+          counts = {k: int(suite.attrib.get(k, 0)) for k in ('tests','failures','errors','skipped')}
+          required = {
+              'test_synthetic_structural_report_never_emits_bound_source_hashes',
+              'test_synthetic_zip_uses_single_descriptor_and_read_allowlist',
+              'test_structural_exact_per_donor_counts_and_total_match',
+              'test_donor_count_swap_with_unchanged_total_is_rejected',
+              'test_unknown_heldout_donor_replacing_fit_donor_rejected',
+              'test_shorter_historical_run_not_accepted_as_full_population',
+              'test_toy_npz_file_descriptor_hash_and_schema_path',
+              'test_toy_npz_path_replacement_after_hash_still_reads_same_descriptor',
+              'test_unpatched_synthetic_pass1_never_matches_actual_frozen_full104_sha',
+          }
+          observed = {n.attrib.get('name','').split('[')[0] for n in suite.iter('testcase')}
+          if (counts['tests'] < 45
+              or any(counts[k] for k in ('failures','errors','skipped'))
+              or not required <= observed):
+              raise SystemExit(f'STOP_V26_PASS1_INCOMPLETE {counts}; missing={sorted(required-observed)}')
+          print(f"PASS_V26_PASS1_SYNTHETIC_ONLY {counts['tests']} passed, 0 skipped")
+          PY
