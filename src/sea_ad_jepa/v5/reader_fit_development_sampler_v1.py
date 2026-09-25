@@ -108,8 +108,9 @@ def _propose_structural(
     # Every presentation samples a donor uniformly, then one of its frozen rows
     # uniformly. Nothing uses source/operator or a cell's measured value.
     draw_donors = rng.integers(0, len(names), size=n, dtype=np.int64)
-    draw_units = rng.random(size=n)
-    within = np.floor(draw_units * counts[draw_donors]).astype(np.int64)
+    # Per-presentation integer rejection sampling avoids floating-point endpoint
+    # effects and implements exact discrete uniform choice within each donor.
+    within = rng.integers(low=0, high=counts[draw_donors], dtype=np.int64)
     rows = ranked_rows[offsets[draw_donors] + within]
     if not np.array_equal(codes[rows].astype(np.int64), draw_donors):
         raise RuntimeError("sampled selection_row donor mismatch")
