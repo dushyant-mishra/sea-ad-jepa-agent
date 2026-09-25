@@ -194,9 +194,9 @@ def _patch_synthetic_fixture_hashes(monkeypatch, archive_path, split_raw, donor_
     """TEST ONLY; production module retains pinned immutable source-file digests."""
     split, _ = fixture_rows()
     fit_ids = sorted(d for d, partition in split if partition == "reader_fit")
-    membership = hashlib.sha256(("\\n".join(fit_ids) + "\\n").encode()).hexdigest()
+    membership = hashlib.sha256(("\n".join(fit_ids) + "\n").encode()).hexdigest()
     counts = {d: int(n) for d, n, _ in donor_rows}
-    canonical = "".join(f"{d}\\t{counts[d]}\\n" for d in sorted(counts))
+    canonical = "".join(f"{d}\t{counts[d]}\n" for d in sorted(counts))
     for name, value in {
         "ARCHIVE_SHA256": hashlib.sha256(archive_path.read_bytes()).hexdigest(),
         "READER_SPLIT_SHA256": hashlib.sha256(split_raw).hexdigest(),
@@ -236,7 +236,7 @@ def test_changed_member_rejected_even_if_outer_synthetic_zip_hash_is_accepted(mo
     split_raw, donor_raw = raw(split, donors)
     path = tmp_path / "wrong_member.zip"
     with zipfile.ZipFile(path, "w") as archive:
-        archive.writestr("allowed/splits/reader_donor_split.csv", split_raw + b"\\n")
+        archive.writestr("allowed/splits/reader_donor_split.csv", split_raw + b"\n")
         archive.writestr("allowed/metadata/FOUNDATION_METADATA_DONOR.csv", donor_raw)
     _patch_synthetic_fixture_hashes(monkeypatch, path, split_raw, donor_raw, donors)
     with pytest.raises(ValueError, match="reader split byte SHA"):
