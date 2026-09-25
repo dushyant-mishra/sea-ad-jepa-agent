@@ -4,6 +4,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+from scripts.agent.run_v26_reader_fit_development_proposal import _write_synthetic_safe
+
 from sea_ad_jepa.v5.reader_fit_development_sampler_v1 import (
     _propose_structural,
     propose_from_frozen_pass1,
@@ -180,3 +182,46 @@ def test_synthetic_helper_does_not_emit_frozen_pass1_or_calibration_roots():
     assert "frozen_calibration_zip_sha256" not in report
     assert report["status"] == "DETERMINISTIC_PROPOSAL_ONLY"
     assert report["training_authorized"] is False
+
+
+def test_synthetic_output_writer_records_npz_hash_without_training(tmp_path):
+    """File-writing fixture ONLY; not a physical frozen-pass1 execution."""
+    update = select(n=100)
+    out = tmp_path / "new_versioned"
+    receipt = _write_synthetic_safe(
+        out_dir=out, proposal=update, receipt=update.nontraining_report(),
+    )
+    assert receipt["training_authorized"] is False
+    assert receipt["selection_npz_sha256"]
+    with np.load(out / "development_update_selection.npz", allow_pickle=False) as data:
+        assert set(data.files) == {
+            "selection_rows", "donor_codes",
+            "proposal_probabilities", "importance_weights",
+        }
+        assert np.array_equal(data["selection_rows"], update.selection_rows)
+    assert (out / "development_update_receipt.json").is_file()
+    assert "frozen_pass1_sha256" not in receipt
+
+
+def test_synthetic_output_writer_refuses_existing_output_dir(tmp_path):
+    out = tmp_path / "existing"
+    out.mkdir()
+    u = select(n=10)
+    with pytest.raises(FileExistsError, match="existing result directory"):
+        _write_synthetic_safe(out_dir=out, proposal=u, receipt=u.nontraining_report())
+
+
+def test_synthetic_output_writer_rejects_forged_training_receipt(tmp_path):
+    u = select(n=10)
+    bad = {**u.nontraining_report(), "training_authorized": True}
+    with pytest.raises(ValueError, match="training-authorized"):
+        _write_synthetic_safe(out_dir=tmp_path / "forged", proposal=u, receipt=bad)
+    assert not (tmp_path / "forged").exists()
+
+
+def test_synthetic_output_writer_rejects_selection_digest_mismatch(tmp_path):
+    u = select(n=10)
+    bad = {**u.nontraining_report(), "selection_rows_sha256": "f" * 64}
+    with pytest.raises(ValueError, match="selection rows differ"):
+        _write_synthetic_safe(out_dir=tmp_path / "forged", proposal=u, receipt=bad)
+    assert not (tmp_path / "forged").exists()
