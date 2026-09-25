@@ -1,0 +1,65 @@
+name: PR118 comparability V2 metadata-only source roots
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_cross_study_comparability_matrix_v2.py'
+      - 'tests/test_pr118_comparability_v2_metadata.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/STUDY_SCIENTIFIC_READINESS_ASSERTIONS_VNEXT.json'
+      - '.github/workflows/pr118-comparability-v2-metadata.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_cross_study_comparability_matrix_v2.py'
+      - 'tests/test_pr118_comparability_v2_metadata.py'
+      - '.github/workflows/pr118-comparability-v2-metadata.yml'
+  workflow_dispatch:
+jobs:
+  metadata-only:
+    runs-on: ubuntu-latest
+    permissions: {contents: read}
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Source-verified identity-only comparability on six committed GEO assets
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/build_cross_study_comparability_matrix_v2.py \
+            --gse335887-ref analysis/therapeutic_perturbation_etl/reference/gse335887/GSE335887_itf_feature_reference.csv.gz \
+            --gse178317-lib analysis/therapeutic_perturbation_etl/reference/GSE178317_sgrna_library_suppl_table5.csv \
+            --gse301119-crispri analysis/therapeutic_perturbation_etl/evidence/gse301119_rawpb_v1/CRISPRi_guide_donor_meta.csv \
+            --gse301119-crispra analysis/therapeutic_perturbation_etl/evidence/gse301119_rawpb_v1/CRISPRa_guide_donor_meta.csv \
+            --gse311359-identity analysis/therapeutic_perturbation_etl/evidence/gse311359/GSE311359_perturbation_identity.csv \
+            --gse293118-identity analysis/therapeutic_perturbation_etl/evidence/gse293118/GSE293118_perturbation_identity.csv \
+            --out-dir comparability_v2_metadata_only
+      - name: Block outcome/training promotion and known false study descriptions
+        run: |
+          python - <<'PY'
+          import csv,json
+          d=json.load(open('comparability_v2_metadata_only/CROSS_STUDY_COMPARABILITY_RECEIPT_V2.json'))
+          assert d['physical_metadata_sources_preflight_sha_authenticated']
+          assert d['gse301119_per_modality']['intersection']==204
+          assert d['gse301119_per_modality']['union']==208
+          assert d['authenticated_direct_target_counts']['GSE335887']==30
+          assert d['authenticated_direct_target_counts']['GSE293118']==6
+          assert d['shared_direct_targets']['GSE178317|GSE301119']==['CSF1R','CSF2RA','CSF2RB','TGFBR1','TGFBR2']
+          assert not d['training_authorized'] and not d['independent_biological_replication']
+          rows={r['study']:r for r in csv.DictReader(open('comparability_v2_metadata_only/CROSS_STUDY_COMPARABILITY_MATRIX_V2.csv'))}
+          assert 'Day12' in rows['GSE335887']['protocol_and_time'] and 'Day28' in rows['GSE335887']['protocol_and_time']
+          assert rows['GSE240609']['response_outcome_exposure']=='EFFECTS_EXECUTED_LEDGER_REVIEW_REQUIRED'
+          print('METADATA_ONLY_PASS: 30 authentic guided targets, 5 Day8-macrophage overlaps, zero outcome data opened')
+          PY
+      - name: Adversarial unit checks with zero skips
+        run: |
+          python - <<'PY'
+          import unittest
+          s=unittest.defaultTestLoader.discover('tests',pattern='test_pr118_comparability_v2_metadata.py')
+          assert s.countTestCases()>=7
+          r=unittest.TextTestRunner(verbosity=2).run(s)
+          assert r.wasSuccessful() and not r.skipped
+          print('METADATA_ADVERSARIES_PASS',r.testsRun)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PR118-CROSS-STUDY-METADATA-V2-ONLY
+          path: comparability_v2_metadata_only/
+          retention-days: 30
