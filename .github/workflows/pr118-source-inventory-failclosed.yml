@@ -1,0 +1,49 @@
+name: PR118 physical source inventory fail-closed
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/physical_source_inventory_vnext.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/physical_inventory/EXPECTED_SOURCE_ROOTS_REVIEW_V1.json'
+      - 'tests/test_pr118_source_inventory_failclosed_v1.py'
+      - '.github/workflows/pr118-source-inventory-failclosed.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/physical_source_inventory_vnext.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/physical_inventory/EXPECTED_SOURCE_ROOTS_REVIEW_V1.json'
+      - 'tests/test_pr118_source_inventory_failclosed_v1.py'
+      - '.github/workflows/pr118-source-inventory-failclosed.yml'
+  workflow_dispatch:
+jobs:
+  negative-controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run adversarial inventory tests with zero skipped allowed
+        run: |
+          python - <<'PY'
+          import pathlib, subprocess, sys, unittest
+          suite=unittest.defaultTestLoader.discover('tests',pattern='test_pr118_source_inventory_failclosed_v1.py')
+          count=suite.countTestCases()
+          assert count>=10, count
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          assert result.wasSuccessful() and len(result.skipped)==0
+          print(f'PASS {result.testsRun} tests, ZERO skipped')
+          PY
+      - name: Assert expected source ledger is exactly the previously reported 16 candidate assets
+        run: |
+          python - <<'PY'
+          import json
+          p='analysis/therapeutic_perturbation_etl/evidence/physical_inventory/EXPECTED_SOURCE_ROOTS_REVIEW_V1.json'
+          d=json.load(open(p))
+          assert d['schema']=='PERTURBATION_EXPECTED_SOURCE_ROOTS_REVIEW_V1'
+          assert len(d['assets'])==16 and d['total_primary_bytes']==4450940052
+          assert d['independent_authentication'] is False
+          assert len(set((x['study'],x['asset']) for x in d['assets']))==16
+          print('PASS: expected 16 roots, candidate-only until independent physical source audit')
+          PY
