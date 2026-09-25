@@ -1368,14 +1368,16 @@ def main() -> int:
             "D_SHARED_G5=UNOPENED - RARE_TAIL_MOLECULAR=UNOPENED - THERAPEUTIC_RANKING=OFF"
         ),
     }
+    # -c safe.directory is passed per invocation rather than written into the
+    # user's global config: several of this repo's worktrees live on volumes
+    # that do not record ownership, and git refuses to read them otherwise.
+    git_base = ["git", "-c", "safe.directory=%s" % repo.as_posix(), "-C", str(repo)]
     try:
         receipt["git_head"] = subprocess.check_output(
-            ["git", "-C", str(repo), "rev-parse", "HEAD"], text=True
+            git_base + ["rev-parse", "HEAD"], text=True
         ).strip()
         receipt["git_dirty"] = bool(
-            subprocess.check_output(
-                ["git", "-C", str(repo), "status", "--porcelain"], text=True
-            ).strip()
+            subprocess.check_output(git_base + ["status", "--porcelain"], text=True).strip()
         )
     except Exception as exc:  # pragma: no cover
         receipt["git_head"] = "UNAVAILABLE: %s" % exc

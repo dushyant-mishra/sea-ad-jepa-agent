@@ -56,8 +56,14 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def _git_argv(repo: Path):
+    # See the note in the producer: -c safe.directory is supplied per
+    # invocation so no global git config is mutated.
+    return ["git", "-c", "safe.directory=%s" % Path(repo).as_posix(), "-C", str(repo)]
+
+
 def git(repo: Path, *args: str) -> str:
-    return subprocess.check_output(["git", "-C", str(repo)] + list(args), text=True).strip()
+    return subprocess.check_output(_git_argv(repo) + list(args), text=True).strip()
 
 
 def flatten(obj, prefix=""):
@@ -114,7 +120,7 @@ def main() -> int:
     try:
         print("anchor commit          : %s" % anchor)
         subprocess.check_call(
-            ["git", "-C", str(repo), "worktree", "add", "--detach", str(wt), anchor],
+            _git_argv(repo) + ["worktree", "add", "--detach", str(wt), anchor],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.STDOUT,
         )
@@ -194,7 +200,7 @@ def main() -> int:
     finally:
         if not args.keep:
             subprocess.call(
-                ["git", "-C", str(repo), "worktree", "remove", "--force", str(wt)],
+                _git_argv(repo) + ["worktree", "remove", "--force", str(wt)],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.STDOUT,
             )
