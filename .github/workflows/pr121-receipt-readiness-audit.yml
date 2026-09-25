@@ -1,0 +1,74 @@
+name: PR121 receipt/readiness consistency (historical V2 known-red)
+
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/audit_receipt_readiness_consistency_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/CURATOR_ASSERTION_REGISTRY_V2.json'
+      - 'analysis/therapeutic_perturbation_etl/evidence/gse301119_independent_repro/**'
+      - 'analysis/therapeutic_perturbation_etl/evidence/gse254205_independent_repro/**'
+      - 'analysis/therapeutic_perturbation_etl/evidence/gse311359_v2_idkeyed/**'
+      - 'analysis/therapeutic_perturbation_etl/evidence/gse178317_engagement_repro/**'
+      - 'tests/test_pr121_receipt_readiness_consistency_v1.py'
+      - '.github/workflows/pr121-receipt-readiness-audit.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/audit_receipt_readiness_consistency_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/**'
+      - 'tests/test_pr121_receipt_readiness_consistency_v1.py'
+      - '.github/workflows/pr121-receipt-readiness-audit.yml'
+  workflow_dispatch:
+
+jobs:
+  receipt-readiness-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --quiet pytest
+      - name: Ten tests with mandatory positive control, zero skips
+        run: |
+          python -m pytest tests/test_pr121_receipt_readiness_consistency_v1.py -v \
+            --tb=short -p no:cacheprovider --junitxml=receipt_readiness.xml
+      - name: Enforce suite ran and no skips
+        if: always()
+        run: |
+          python - <<'PY'
+          import sys, xml.etree.ElementTree as ET
+          root = ET.parse("receipt_readiness.xml").getroot()
+          cases = root.findall(".//testcase")
+          names = {c.attrib.get("name") for c in cases}
+          must = {
+              "test_positive_control_corrected_fixture_passes",
+              "test_real_v2_currently_fails_for_expected_stale_claims",
+              "test_false_independence_promotion_rejected",
+              "test_numerical_receipt_tamper_rejected",
+              "test_swapped_sign_control_missing_rejected",
+              "test_rounding_is_not_full_precision",
+              "test_bin1_phantom_reappearance_rejected",
+              "test_preserve_reserved_and_author_stop",
+              "test_missing_receipt_fail_closed",
+              "test_cli_exit_codes_and_no_rewrite",
+          }
+          failures = [c.attrib.get("name") for c in cases
+                      if c.find("failure") is not None or c.find("error") is not None]
+          skips = [c.attrib.get("name") for c in cases if c.find("skipped") is not None]
+          assert names == must and len(cases) == len(must), (names, must)
+          assert not failures and not skips, (failures, skips)
+          print(f"PASS: {len(cases)} executed; 0 failures; 0 skips")
+          PY
+      - name: Confirm historical V2 FAILS, not silently green
+        run: |
+          set +e
+          python analysis/therapeutic_perturbation_etl/scripts/audit_receipt_readiness_consistency_v1.py > current_v2_audit.log 2>&1
+          code=$?
+          cat current_v2_audit.log
+          if [ "$code" -eq 0 ]; then
+            echo 'ERROR: historical V2 unexpectedly passes; review assertions and update the named test'
+            exit 1
+          fi
+          grep -q 'GSE301119_STATUS_MUST_BE_IMPLEMENTATION_REPRODUCED_NOT_INDEPENDENT' current_v2_audit.log
+          grep -q 'GSE311359_V2_REBUILD_STATUS_STALE' current_v2_audit.log
+          echo 'KNOWN-RED correctly detected. Green CI certifies detector only, not registry closure.'
