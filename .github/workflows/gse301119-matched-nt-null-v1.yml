@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install --quiet numpy pytest
-      - name: Run all 14 positive and adversarial fixtures
+      - name: Run all 16 positive and adversarial fixtures
         run: |
           python -m pytest tests/test_gse301119_matched_nt_null_v1.py \
             --tb=short -v -p no:cacheprovider --junitxml=matched_nt_null.xml
@@ -38,6 +38,8 @@ jobs:
               "test_positive_control_complete_both_modalities",
               "test_exposes_existing_flat_gene_sign_fixture_failure",
               "test_true_identical_profiles_are_zero",
+              "test_depth_only_binomial_thinning_preserves_composition_in_expectation",
+              "test_depth_only_null_rejects_impossible_or_zero_target_depth",
               "test_median_centred_sensitivity_recovers_flat_when_positivity_holds",
               "test_not_enough_shared_detected_genes_is_missing_not_zero",
               "test_pseudo_target_never_overlaps_its_reference",
