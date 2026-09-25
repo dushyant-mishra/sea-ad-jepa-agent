@@ -92,8 +92,20 @@ the NT-versus-NT draws beat the real perturbation.
 | top-25 **up** | 3.62 % | **4.83 %** | 0.10 % |
 | top-25 **down** | 17.69 % | **17.69 %** | 0.31 % |
 
-The down-tail recurrence rate is *identical* to two decimal places, and the
+The down-tail recurrence rate agrees to four significant figures, and the
 up-tail rate is *higher* under the null than under the real data.
+
+**These two quantities were checked for collapse and are genuinely distinct.**
+Two separately computed numbers agreeing that closely warranted confirming that
+the comparator was not returning the same array twice — this project has
+previously found a comparator computing the wrong object. It is not:
+`observed_top25_down` is a boolean (1002/5663 = 0.176938018718) while
+`null_top25_down_fraction` is a float with **118 distinct values**, 3,049 of them
+strictly interior to (0, 1), summing to 0.176865600035. They differ by
+**7.24e-05**, correlate at 0.548 rather than 1.0, and 4 observations sit in the
+observed tail with a null fraction of exactly zero. The agreement is a real
+coincidence of two independent computations, not an aliasing artifact. An earlier
+draft of this document called them "identical"; they are not.
 
 ## Mechanism
 
@@ -134,6 +146,35 @@ So **cell-state under-sampling is the leading explanation**, and depth/zero/
 pseudocount behaviour is a smaller but independently non-clean second artifact.
 Neither branch of the frozen rule fits alone; reporting only the first would
 overstate how clean the depth-only arm is.
+
+### The components have been sized independently
+
+An independent simulation of this null under **pure Poisson counting** at the
+measured 19.8x gap — same expression profile, no true effect, only depth varying
+— reproduces the depth-only arm at **-0.074** against the **-0.046** measured
+here: the same phenomenon at the right order of magnitude. It comes nowhere near
+the cell-sampling arm. Counting statistics alone account for roughly **5 %** of
+the -1.504 measured. The simulation contains no cell-to-cell structure, so the
+missing twenty-fold is exactly what Poisson noise cannot generate: genuine
+cell-state heterogeneity between a 53-cell draw and the 1,425-cell pool.
+
+That decomposition rules out two corrections that would otherwise look right:
+
+* **Stratifying by baseline expression** would clean the depth arm convincingly —
+  the depth component is strongly expression-dependent, with genes at 50 CPM or
+  above carrying a median bias of -0.001 at 19.8x and only -0.007 even at 50x,
+  while the bottom deciles carry -0.1 to -0.47. But the composition term does not
+  behave that way: genes whose high expression is confined to a subpopulation,
+  which is precisely what CLU, CXCL10 and MT1G are, carry large composition
+  variance regardless of overall abundance. The correction would have passed its
+  own diagnostic and left the dominant term in place.
+* **A negative-binomial GLM with library-size offsets** fixes the depth term and
+  models the zeros properly, but between-cell state variance is not in that model
+  either, so it does not address about 95 % of what was measured.
+
+This is therefore not a parametric estimator swap. See
+`GSE301119_EMPIRICAL_NULL_CALIBRATION_DIRECTION_20260925.md` for the direction
+that does address the dominant term.
 
 ## Consequences
 
