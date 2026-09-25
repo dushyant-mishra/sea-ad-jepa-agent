@@ -1,0 +1,129 @@
+{
+  "registry_id": "PERTURBATION_CURATOR_ASSERTION_REGISTRY_V2",
+  "_purpose": "Scientific status assertions, kept OUT of the machine-checked inventory so they cannot be mistaken for measured columns. Every entry names the source that supports it, who asserted it and when. The v1 file this replaces was hand-authored, carried no source reference, and went stale inside a single PR: it still claimed GSE301119 donor-aware work was pending after that work had been committed, GSE240609 was pending with outcomes UNOPENED_RESERVED after its contrasts had been physically executed, GSE254205 V2 was pending after it had run, and GSE311359 needed an external author source after the deposited feature IDs were shown to resolve the collision.",
+  "_status_vocabulary": "PHYSICAL_DATA_VERIFIED, CODE_TEST_PASS, INDEPENDENT_REPRODUCED, NOT_ESTIMABLE, UNOPENED_RESERVED, and STOP_* variants. Each is asserted only for the specific evidence supporting it. No study carries a blanket ETL_COMPLETE.",
+  "_reviewer_note": "reviewer 'claude-physical-etl-lane' denotes this execution lane. An assertion reviewed by this lane alone is NOT independently reproduced; INDEPENDENT_REPRODUCED requires a separately authored implementation.",
+
+  "assertions": {
+    "GSE175721": {
+      "etl_status": "STOP_AUTHOR_SOURCE_MISSING",
+      "biological_estimability": "NOT_ESTIMABLE_NO_CELL_GUIDE_ASSIGNMENT",
+      "outcome_exposure": "UNOPENED_RESERVED",
+      "independent_reproduction": "NOT_APPLICABLE_NOTHING_COMPUTABLE",
+      "independent_units": "undetermined; no per-cell perturbation identity exists",
+      "limitation": "14-guide FASTA and matrices in hand. The depositor-described per-cell cell-to-guide TSV was never deposited at series, SuperSeries or sample level. The unenriched BAM carries roughly 4 vector-scaffold reads per 400,000 unplaced reads, far too few to assign about 10,000 cells. No join may be invented.",
+      "blocking_missing_source": "authentic per-cell guide assignment TSV, a Seurat object carrying assignments, or genuine guide-enrichment reads",
+      "source_reference": "GSE175721_GUIDE_JOIN_DETERMINATION_20260924.md; CROSS_STUDY_COMPARABILITY_20260924.md (PMC8776770 re-search, 2026-09-24)",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25"
+    },
+
+    "GSE178317": {
+      "etl_status": "PASS_DEVELOPMENT_ETL",
+      "biological_estimability": "NOT_ESTIMABLE_ONE_POOLED_PREPARATION",
+      "outcome_exposure": "INSPECTED_DEVELOPMENT",
+      "independent_reproduction": "NOT_DONE",
+      "independent_units": "1 pooled biological preparation split across 4 10x capture wells; wells are technical replicates",
+      "limitation": "11,775 of 58,302 cells assigned across 39 targets; 39/39 knocked down. Capture-well spread is technical, not biological. Zero directly overlapping targets with the GSE335887 31-target screens.",
+      "blocking_missing_source": "",
+      "source_reference": "GSE178317_RECOVERY_QUALIFIED_20260924.md; evidence/gse178317_recovery/",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25"
+    },
+
+    "GSE240609": {
+      "etl_status": "PASS_DEVELOPMENT_ETL",
+      "biological_estimability": "NOT_ESTIMABLE_ONE_SAMPLE_PER_DESIGN_CELL",
+      "outcome_exposure": "INSPECTED_DEVELOPMENT",
+      "independent_reproduction": "NOT_DONE",
+      "independent_units": "1 physical sample per 2x2 design cell, 4 total",
+      "limitation": "Source RNA is CD11b-purified microglia recovered AFTER neuron coculture, not unfractionated coculture. Descriptive genotype contrasts only; no factorial biological standard error and no cell-autonomous claim.",
+      "blocking_missing_source": "",
+      "source_reference": "BULK_PHYSICAL_V2_EXECUTION_20260924.md; PR #94 frozen GSM identity, all four digests verified against physical bytes",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25",
+      "_corrected_from_v1": "v1 asserted PENDING_PHYSICAL_V2 with outcome_exposure UNOPENED_RESERVED. Both were stale: 38,090 contrast rows were physically produced in the same PR."
+    },
+
+    "GSE241858": {
+      "etl_status": "PASS_DEVELOPMENT_ETL",
+      "biological_estimability": "CLONE_LEVEL_ESTIMABLE",
+      "outcome_exposure": "INSPECTED_DEVELOPMENT",
+      "independent_reproduction": "NOT_DONE",
+      "independent_units": "2 independent clones per genotype; within-clone replicates collapse beneath the clone",
+      "limitation": "Bulk genotype by cytokine-context design. NOT a CRISPR perturbation study. The CTRL_A:LPS cell is unbalanced at one replicate where others carry two, and is recorded rather than padded.",
+      "blocking_missing_source": "",
+      "source_reference": "BULK_PHYSICAL_V2_EXECUTION_20260924.md; evidence/bulk_physical_v2/GSE241858_sample_identity.csv",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25"
+    },
+
+    "GSE254205": {
+      "etl_status": "PASS_DEVELOPMENT_ETL_BULK_ONLY",
+      "biological_estimability": "TREATMENT_CONTRAST_WITHIN_ONE_MODEL_AND_TIMEPOINT",
+      "outcome_exposure": "INSPECTED_DEVELOPMENT_BULK_THREE_CONTRASTS_ONLY",
+      "independent_reproduction": "NOT_DONE",
+      "independent_units": "9 bulk samples, 3 per condition across 3 conditions",
+      "limitation": "58,395 genes assayed, 36,117 detected anywhere, 22,278 assayed-but-undetected rather than structurally missing. V1 to V2 effect parity is exact, which shows V2 corrected a label and not a number; it does NOT show V1 was right. The snRNA h5ad, ATAC and LD-sort assets remain UNOPENED_RESERVED. Drug-induced change is not evidence of disease rescue.",
+      "blocking_missing_source": "",
+      "source_reference": "BULK_PHYSICAL_V2_EXECUTION_20260924.md; PR #86 V2 producer executed on the physical nine-sample assay",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25",
+      "_corrected_from_v1": "v1 asserted PENDING_PHYSICAL_V2_BULK. Stale: the bulk V2 ran in the same PR."
+    },
+
+    "GSE293118": {
+      "etl_status": "PASS_DEVELOPMENT_ETL_PARTIAL",
+      "biological_estimability": "SIX_DIRECT_TARGETS_ONLY_SINGLE_GUIDE_LIMITS",
+      "outcome_exposure": "INSPECTED_DEVELOPMENT",
+      "independent_reproduction": "NOT_DONE",
+      "independent_units": "HMC3 immortalized line; no donor axis. Single-guide SYVN1 supplies no independent guide variance.",
+      "limitation": "Six directly measurable target engagements verified with multiplet filtering and non-targeting controls. The remaining 77 noncoding or unmatched elements have no authenticated direct cis-target assignment; no nearest-gene mapping may be invented.",
+      "blocking_missing_source": "authenticated cis-target assignment for the 77 noncoding or unmatched elements",
+      "source_reference": "evidence/gse293118/GSE293118_target_engagement.csv; PERTURBATION_ETL_AUDIT_AND_WORKPLAN_20260923.md",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25"
+    },
+
+    "GSE301119": {
+      "etl_status": "PASS_DEVELOPMENT_ETL",
+      "biological_estimability": "TWO_DONORS_ONLY_LIMITED_TRANSPORT",
+      "outcome_exposure": "INSPECTED_DEVELOPMENT",
+      "independent_reproduction": "PENDING_P0_3",
+      "independent_units": "2 independent primary-macrophage donors. CRISPRa HEXA carries one guide per donor, so its within-donor guide variance is not estimable.",
+      "limitation": "CRISPRi and CRISPRa are separate strata and do NOT share a feature space, 36,601 against 19,162 genes; cross-modal scores require the actual feature intersection. The two modalities also target different gene sets: union 208, intersection 204. Cells are not donors. Two donors permit only limited transport inference.",
+      "blocking_missing_source": "",
+      "source_reference": "GSE301119_DONOR_AWARE_TRANSCRIPTOME_ETL_20260924.md; evidence/gse301119_donor_aware_v1/",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25",
+      "_corrected_from_v1": "v1 asserted PENDING_DONOR_AWARE_TRANSCRIPTOME_WIDE_ETL. Stale: the donor-aware ETL ran in the same PR. Independent reproduction of its effect matrices remains genuinely outstanding and is now tracked explicitly."
+    },
+
+    "GSE311359": {
+      "etl_status": "STOP_PENDING_PHYSICAL_V2_REBUILD",
+      "biological_estimability": "BIN1_NOT_ESTIMABLE_UNTIL_ID_KEYED_REBUILD",
+      "outcome_exposure": "INSPECTED_DEVELOPMENT",
+      "independent_reproduction": "PENDING_P1_7",
+      "independent_units": "7 samples. The three BIN1 features are three distinct cis-regulatory element interventions, not replicates.",
+      "limitation": "Deposited features.tsv column 1 distinguishes BIN1_enh_1, BIN1_enh_2 and BIN1_enh_2_AS, which removes the label collision without any author request. It does NOT prove each protospacer sequence, perturbation efficiency, or direct BIN1 cis causality; those remain separate open questions. V1 BIN1 outcomes are invalid and no BIN1 row may be selected or averaged. The other 82 targets are confirmed unaffected by this collision but still inherit name-keyed aggregation and must be reproduced under ID keying.",
+      "blocking_missing_source": "none for the identity fix; a protospacer-sequence source is still needed to prove guide sequence identity",
+      "source_reference": "GSE311359_BIN1_IDENTITY_RESOLVED_20260924.md; deposited GSM9324129_S1_features.tsv.gz",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25",
+      "_corrected_from_v1": "v1 asserted STOP_AUTHOR_SOURCE_MISSING_FOR_BIN1. Superseded: the authentic feature identity is present in the deposit."
+    },
+
+    "GSE335887": {
+      "etl_status": "PASS_PHYSICAL_QC_ONLY",
+      "biological_estimability": "NOT_ESTIMABLE_ONE_PARENTAL_LINE_PROTOCOL_AND_AGE_CONFOUNDED",
+      "outcome_exposure": "UNOPENED_RESERVED",
+      "independent_reproduction": "NOT_APPLICABLE_METADATA_ONLY",
+      "independent_units": "one parental line WTC11; eight GSM accessions are assay libraries, not donors. Independent differentiation-preparation census unverified.",
+      "limitation": "Deposited guide library is 30 targets x 2 guides plus 5 non-targeting controls, 65 guide features, NOT 31 targets. ARID5B appears in CRISPRbrain processed labels and in the deposit's own prose but has no authenticated guide in either feature reference: TARGET_IDENTITY_PENDING. Antibody panel is 180 features with unique TotalSeq catalog IDs; cross-assay protein work must key on catalog ID, never display name. Differentiation protocol and age change together between iTF-MG and iMG and are not separately identifiable. 10x chemistry is SOURCE_CONFLICT_PENDING_RUN_LEVEL_AUTHORITY.",
+      "blocking_missing_source": "ARID5B guide sequence from the publication Table S2; run-level 10x chemistry evidence; independent preparation census",
+      "source_reference": "GSE335887_METADATA_IDENTITY_CONTRACT_20260924.md; reference/gse335887/ feature references",
+      "reviewer": "claude-physical-etl-lane",
+      "asserted_on": "2026-09-25"
+    }
+  }
+}
