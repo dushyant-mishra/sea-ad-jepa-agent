@@ -1,0 +1,488 @@
+{
+  "schema": "GSE301119_INDEPENDENT_REPRODUCTION_V1",
+  "implementation": "python, vectorised group indexing; shares no code with the R producer",
+  "tolerance": 1e-09,
+  "declared_before_run": true,
+  "synthetic_sign_checks": {
+    "planted_fixture_ok": true,
+    "planted_max_abs_delta_vs_hand_computation": 0.0,
+    "planted_signs": {
+      "gUP": 1.1926426433997648,
+      "gDOWN": -2.8073289538584856,
+      "gFLAT": -0.8073516760071513
+    },
+    "swapped_numerator_denominator_negates_ok": true,
+    "note": "CRISPRi-down / CRISPRa-up is NOT used as a sign check; a contrast-direction error would flip both together"
+  },
+  "modalities": {
+    "CRISPRi": {
+      "verdict": "AGREE",
+      "genes": 36601,
+      "targets": 206,
+      "donors": [
+        "D1",
+        "D2"
+      ],
+      "target_order_matches": true,
+      "feature_order_matches": true,
+      "per_donor_max_abs_delta": {
+        "D1": 1.7763568394002505e-15,
+        "D2": 1.7763568394002505e-15
+      },
+      "per_donor_cells_compared": {
+        "D1": 7503205,
+        "D2": 7466604
+      },
+      "per_donor_support_mask_mismatches": {
+        "D1": 0,
+        "D2": 0
+      },
+      "cross_donor_mean_max_abs_delta": 8.881784197001252e-16,
+      "cross_donor_mean_cells_compared": 7466604,
+      "cross_donor_mean_mask_mismatches": 0,
+      "predeclared_targets": {
+        "HEXA": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 50,
+            "D2": 38
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -1.28102,
+            "D2": -0.951456
+          }
+        },
+        "FCGR2C": {
+          "in_targets": true,
+          "own_gene_in_features": false,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 87,
+            "D2": 56
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": null
+        },
+        "HAVCR1": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": false
+          },
+          "cells": {
+            "D1": 17,
+            "D2": 7
+          },
+          "guides": {
+            "D1": 3,
+            "D2": 2
+          },
+          "own_gene_effect_by_donor": {
+            "D1": 1.093575,
+            "D2": null
+          }
+        },
+        "SYK": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": false,
+            "D2": false
+          },
+          "cells": {
+            "D1": 7,
+            "D2": 4
+          },
+          "guides": {
+            "D1": 3,
+            "D2": 4
+          },
+          "own_gene_effect_by_donor": {
+            "D1": null,
+            "D2": null
+          }
+        },
+        "CLDN7": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 63,
+            "D2": 25
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -0.785393,
+            "D2": -1.094034
+          }
+        },
+        "TYROBP": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 97,
+            "D2": 51
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -1.621781,
+            "D2": -1.385631
+          }
+        },
+        "CSF1R": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 108,
+            "D2": 63
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -0.62277,
+            "D2": -0.387306
+          }
+        },
+        "TGFBR2": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 82,
+            "D2": 39
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -0.958736,
+            "D2": -0.589606
+          }
+        },
+        "SPI1": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 69,
+            "D2": 33
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 4
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -1.792342,
+            "D2": -1.171857
+          }
+        },
+        "DNMT1": {
+          "in_targets": false,
+          "present_as_downstream_gene": true
+        },
+        "ACTB": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 122,
+            "D2": 60
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -0.295199,
+            "D2": -0.537714
+          }
+        },
+        "GAPDH": {
+          "in_targets": false,
+          "present_as_downstream_gene": true
+        }
+      }
+    },
+    "CRISPRa": {
+      "verdict": "AGREE",
+      "genes": 19162,
+      "targets": 206,
+      "donors": [
+        "D1",
+        "D2"
+      ],
+      "target_order_matches": true,
+      "feature_order_matches": true,
+      "per_donor_max_abs_delta": {
+        "D1": 1.7763568394002505e-15,
+        "D2": 1.7763568394002505e-15
+      },
+      "per_donor_cells_compared": {
+        "D1": 3947372,
+        "D2": 3794076
+      },
+      "per_donor_support_mask_mismatches": {
+        "D1": 0,
+        "D2": 0
+      },
+      "cross_donor_mean_max_abs_delta": 8.881784197001252e-16,
+      "cross_donor_mean_cells_compared": 3794076,
+      "cross_donor_mean_mask_mismatches": 0,
+      "predeclared_targets": {
+        "HEXA": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": false
+          },
+          "cells": {
+            "D1": 21,
+            "D2": 9
+          },
+          "guides": {
+            "D1": 1,
+            "D2": 1
+          },
+          "own_gene_effect_by_donor": {
+            "D1": 0.352962,
+            "D2": null
+          }
+        },
+        "FCGR2C": {
+          "in_targets": true,
+          "own_gene_in_features": false,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 58,
+            "D2": 21
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 4
+          },
+          "own_gene_effect_by_donor": null
+        },
+        "HAVCR1": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 104,
+            "D2": 30
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -0.525465,
+            "D2": 0.48243
+          }
+        },
+        "SYK": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 62,
+            "D2": 26
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": 1.197002,
+            "D2": 1.395081
+          }
+        },
+        "CLDN7": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": false
+          },
+          "cells": {
+            "D1": 21,
+            "D2": 7
+          },
+          "guides": {
+            "D1": 3,
+            "D2": 3
+          },
+          "own_gene_effect_by_donor": {
+            "D1": -2.344602,
+            "D2": null
+          }
+        },
+        "TYROBP": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": false
+          },
+          "cells": {
+            "D1": 43,
+            "D2": 9
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 4
+          },
+          "own_gene_effect_by_donor": {
+            "D1": 0.577419,
+            "D2": null
+          }
+        },
+        "CSF1R": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 96,
+            "D2": 50
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": 0.633533,
+            "D2": 0.449905
+          }
+        },
+        "TGFBR2": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 93,
+            "D2": 61
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 5
+          },
+          "own_gene_effect_by_donor": {
+            "D1": 1.267545,
+            "D2": 0.937377
+          }
+        },
+        "SPI1": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 59,
+            "D2": 38
+          },
+          "guides": {
+            "D1": 4,
+            "D2": 3
+          },
+          "own_gene_effect_by_donor": {
+            "D1": 0.81469,
+            "D2": 0.690018
+          }
+        },
+        "DNMT1": {
+          "in_targets": false,
+          "present_as_downstream_gene": true
+        },
+        "ACTB": {
+          "in_targets": true,
+          "own_gene_in_features": true,
+          "donor_support": {
+            "D1": true,
+            "D2": true
+          },
+          "cells": {
+            "D1": 89,
+            "D2": 43
+          },
+          "guides": {
+            "D1": 5,
+            "D2": 4
+          },
+          "own_gene_effect_by_donor": {
+            "D1": 0.90822,
+            "D2": 1.55833
+          }
+        },
+        "GAPDH": {
+          "in_targets": false,
+          "present_as_downstream_gene": true
+        }
+      }
+    }
+  },
+  "overall_verdict": "INDEPENDENT_REPRODUCED",
+  "jepa_prediction_used": false,
+  "training_authorized": false
+}
