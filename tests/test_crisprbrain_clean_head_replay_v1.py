@@ -68,7 +68,7 @@ def test_05_scientific_value_change_is_never_silently_ignored():
     new = {"S3": {"effect": .073, "target": ["STAT2", "ZNF644"]}, "generated_utc": "t1"}
     result = clean.compare_scientific_fields(old, new)
     assert not result["fields_exact_match"]
-    assert result["different_field_paths"] == ["/S3/effect"]
+    assert result["different_field_paths"] == ["value changed: /S3/effect"]
 
 
 def test_06_only_four_declared_volatile_keys_excluded():
@@ -93,7 +93,7 @@ def test_06_only_four_declared_volatile_keys_excluded():
 def test_07_field_deletion_is_not_treated_as_equality():
     result = clean.compare_scientific_fields({"S3": {"pooled_n": 406118}}, {"S3": {}})
     assert result["different_field_count"] == 1
-    assert result["different_field_paths"] == ["/S3/pooled_n"]
+    assert result["different_field_paths"] == ["only in historical result: /S3/pooled_n"]
 
 
 def test_08_no_false_equality_between_bool_and_int():
