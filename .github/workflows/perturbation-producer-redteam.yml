@@ -1,0 +1,105 @@
+name: Perturbation producer red-team (bounded skips)
+
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_gse311359_id_keyed_effects_v2.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_cross_study_comparability_matrix_v2.py'
+      - 'tests/test_gse311359_and_comparability_redteam.py'
+      - '.github/workflows/perturbation-producer-redteam.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_gse311359_id_keyed_effects_v2.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_cross_study_comparability_matrix_v2.py'
+      - 'tests/test_gse311359_and_comparability_redteam.py'
+      - '.github/workflows/perturbation-producer-redteam.yml'
+  workflow_dispatch:
+
+jobs:
+  producer-redteam:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install --quiet pytest numpy
+
+      - name: Adversarial suite
+        run: |
+          python -m pytest tests/test_gse311359_and_comparability_redteam.py \
+            -v --tb=short -p no:cacheprovider --junitxml=producer_redteam.xml
+
+      # The audit requires that no CRITICAL test skip silently. Four tests need
+      # heavy inputs that exist only on the physical laptop; they legitimately
+      # skip here. That is allowed ONLY because they are named in advance. Any
+      # skip outside this allowlist, or a shrunken suite, fails the build.
+      - name: Bounded skips - every skip must be pre-declared
+        if: always()
+        run: |
+          python - <<'PY'
+          import sys, xml.etree.ElementTree as ET
+
+          # environment-dependent by design, and ONLY these
+          ALLOWED_SKIPS = {
+              "test_comparability_positive_control",
+              "test_comparability_rejects_study_missing_from_registry",
+              "test_comparability_rejects_blank_exposure",
+              "test_comparability_refuses_occupied_output",
+          }
+          # fully synthetic: these must ALWAYS run, anywhere
+          MUST_RUN = {
+              "test_positive_control_healthy_fixture_exits_zero",
+              "test_phantom_unit_signature_rejected",
+              "test_duplicate_feature_ids_rejected",
+              "test_feature_tables_differing_across_samples_rejected",
+              "test_feature_row_order_swap_rejected",
+              "test_negative_count_rejected",
+              "test_nnz_header_mismatch_rejected",
+              "test_wrong_feature_dimension_rejected",
+              "test_missing_sample_rejected",
+              "test_occupied_output_directory_rejected",
+              "test_not_matrixmarket_rejected",
+              "test_colliding_display_names_do_not_collapse",
+          }
+
+          root = ET.parse("producer_redteam.xml").getroot()
+          cases = root.findall(".//testcase")
+          ran, skipped, failed = set(), set(), set()
+          for c in cases:
+              name = c.get("name", "").split("[")[0]
+              if c.find("skipped") is not None:
+                  skipped.add(name)
+              elif c.find("failure") is not None or c.find("error") is not None:
+                  failed.add(name)
+              else:
+                  ran.add(name)
+
+          print(f"collected={len(cases)} ran={len(ran)} skipped={len(skipped)} failed={len(failed)}")
+          if skipped:
+              print("skipped (must all be pre-declared):")
+              for s in sorted(skipped):
+                  print("   ", s, "OK" if s in ALLOWED_SKIPS else "*** NOT DECLARED ***")
+
+          bad = []
+          if failed:
+              bad.append(f"{len(failed)} failed: {sorted(failed)}")
+          undeclared = skipped - ALLOWED_SKIPS
+          if undeclared:
+              bad.append(f"undeclared skip(s): {sorted(undeclared)}")
+          missing = MUST_RUN - ran
+          if missing:
+              bad.append(f"synthetic test(s) did not run: {sorted(missing)}")
+          if len(cases) < len(MUST_RUN) + len(ALLOWED_SKIPS):
+              bad.append(f"suite shrank: {len(cases)} collected, expected at least "
+                         f"{len(MUST_RUN) + len(ALLOWED_SKIPS)}")
+
+          if bad:
+              print("\n=== VERDICT: FAIL ===")
+              for b in bad:
+                  print("  " + b)
+              sys.exit(1)
+          print("\n=== VERDICT: PASS ===")
+          print(f"  all {len(MUST_RUN)} synthetic adversaries ran; "
+                f"{len(skipped)} skip(s), all pre-declared as needing heavy inputs")
+          PY
