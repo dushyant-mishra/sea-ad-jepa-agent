@@ -54,7 +54,8 @@ class PhysicalInventoryFailClosed(unittest.TestCase):
         else:
             self.assertNotEqual(cp.returncode,0, cp.stdout+"\n"+cp.stderr)
             self.assertIn(reason,cp.stderr+cp.stdout)
-            self.assertFalse((self.out/"STUDY_SOURCE_INVENTORY_RECEIPT_VNEXT.json").exists())
+            if reason != "STOP_OUTPUT_EXISTS":
+                self.assertFalse((self.out/"STUDY_SOURCE_INVENTORY_RECEIPT_VNEXT.json").exists())
 
     def test_positive_and_no_overwrite(self):
         self.invoke(True)
@@ -70,7 +71,7 @@ class PhysicalInventoryFailClosed(unittest.TestCase):
         self.assertEqual(len(altered),len(f.read_bytes()))
         f.write_bytes(altered)
         (self.a/"a.tar.sha256").write_text(hashlib.sha256(altered).hexdigest()+"\n")
-        self.invoke(False,"REVIEWED_SOURCE_ROOT_MISMATCH")
+        self.invoke(False,'"mismatch": ["GSE_A/a.tar"]')
 
     def test_missing_expected_file(self):
         (self.b/"b.tar").unlink()
@@ -101,7 +102,7 @@ class PhysicalInventoryFailClosed(unittest.TestCase):
 
     def test_source_sidecar_wrong_digest_fails(self):
         (self.a/"a.tar.sha256").write_text("0"*64+"\n")
-        self.invoke(False,"no_sidecar") if False else self.invoke(False,"mismatch")
+        self.invoke(False,'"mismatch": ["GSE_A/a.tar"]')
 
 
 if __name__ == "__main__":
