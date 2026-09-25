@@ -1,0 +1,53 @@
+{
+  "schema": "GSE254205_BULK_INDEPENDENT_REPRODUCTION_V1",
+  "verdict": "IMPLEMENTATION_REPRODUCED_TO_STORED_PRECISION",
+  "declared_tolerance_met_at_full_precision": false,
+  "rounding_fully_explains_every_delta": true,
+  "rows_where_round_to_stored_decimals_matches_exactly": {
+    "AB_vs_NT": 36117,
+    "AB_GNE_vs_AB": 36117,
+    "AB_GNE_vs_NT": 36117
+  },
+  "rounding_violations_sample": [],
+  "precision_limitation": "the producer writes log2fc rounded to 6 decimals, so the declared 1e-9 tolerance is NOT testable against its CSV. The tolerance was not widened. Instead every delta is required to be exactly explained by rounding: round(independent_value, stored_decimals) must equal the stored value for every row. Verifying at 1e-9 requires the producer to emit full precision.",
+  "implementation": "python, independently authored; recomputes library sizes, logCPM, contrast means, replicate SE and detection status from the nine STAR tables",
+  "not_a_v1_v2_parity_check": "V1==V2 shows V2 changed no number; it does not show either was right. This recomputes from source.",
+  "tolerance": 1e-09,
+  "sign_control_reversed_contrast_negates": true,
+  "samples": 9,
+  "genes_parsed_from_star": 58395,
+  "library_sizes": {
+    "NT_rep1": 23843722,
+    "NT_rep2": 22801044,
+    "NT_rep3": 27329928,
+    "AB_rep1": 22173446,
+    "AB_rep2": 22442832,
+    "AB_rep3": 28100004,
+    "AB_GNE_rep1": 20160036,
+    "AB_GNE_rep2": 26939565,
+    "AB_GNE_rep3": 30701152
+  },
+  "genes_detected_anywhere": 36117,
+  "genes_assayed_undetected": 22278,
+  "rows_compared_per_contrast": {
+    "AB_vs_NT": 36117,
+    "AB_GNE_vs_AB": 36117,
+    "AB_GNE_vs_NT": 36117
+  },
+  "max_abs_delta_log2fc": {
+    "AB_vs_NT": 4.999956893514401e-07,
+    "AB_GNE_vs_AB": 4.999542872197171e-07,
+    "AB_GNE_vs_NT": 4.999987774922943e-07
+  },
+  "max_abs_delta_se": {
+    "AB_vs_NT": 4.999062008514965e-07,
+    "AB_GNE_vs_AB": 4.999855725204561e-07,
+    "AB_GNE_vs_NT": 4.999689037360477e-07
+  },
+  "genes_in_producer_absent_from_star": 0,
+  "unknown_contrasts_in_producer_output": 0,
+  "v2_effects_sha256": "ebbdff66af55104fdbb1ffca9f548916a353fcbeb5c1f2d12a098da908cf1f18",
+  "jepa_prediction_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false
+}
