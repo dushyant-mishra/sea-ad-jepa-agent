@@ -34,10 +34,16 @@ The ten physically mounted files in the current chat runtime were independently 
 
 ## Exact next execution boundary
 
-The next *development-only* scientific action requires a separately named diagnostic authorization, one prospectively fixed current target and mask, authenticated 104-`reader_fit` donor inputs and sampler/importance weights (`p_i = 1 / (104 n_{d(i)})`, exact `p_i / q_i` correction under any unequal proposal), and a current-V5 source-bound update/checkpoint path that **does not call** historical V4 `production_update`. Mechanically check gradients, update beyond weight decay, both Adam moments, teacher eval/no-grad and post-step EMA before accepting a healthy step. Freeze evaluation on DEVELOPMENT `reader_fit` donor-held-out folds and matched source/support/depth attacks; compare to the authenticated 94-donor historical Layer-2 linear proxy **only with population/estimand scope disclosed**. Stop if an upstream current masking/teacher-target authority remains unqualified; do not bypass a production stop to show a convenient learning curve.
+The next *development-only* scientific action requires a separately named diagnostic authorization, one prospectively fixed current target and mask, authenticated 104-`reader_fit` donor inputs and sampler/importance weights (`p_i = 1 / (104 n_{d(i)})`, exact `p_i / q_i` correction under any unequal proposal), and a current-V5 source-bound update/checkpoint path that **does not call** historical V4 `production_update`. Mechanically check gradients, update beyond weight decay, both Adam moments, teacher eval/no-grad and post-step EMA before accepting a healthy step. Freeze evaluation on DEVELOPMENT `reader_fit` donor-held-out folds and matched source/support/depth attacks; compare to the authenticated 94-donor historical Layer-2 linear proxy **only with population/estimand scope disclosed**. If production masking or teacher-target qualification is still open, the first diagnostic can use exactly ONE prospectively declared existing candidate ONLY inside a separately named and explicitly authorized DEVELOPMENT diagnostic lane. Its exploratory result cannot qualify that candidate or unlock production. Never weaken the production stop, substitute the inactive harness as current V5, or inspect sealed outcomes for a convenient learning curve.
 
 Reader-validation 22, oracle 23, foundation development 24, sealed foundation holdout 24 and whole-study Siletti remain outside this work. No N1, D_shared, protected inspection, perturbation-effect promotion or therapeutic ranking was opened by this audit or guard patch. No real-data JEPA run was claimed.
 
 ## Audit/review boundary
 
 Review this branch as a **small stacked code fix on PR #77**, not as a merge of divergent historical work and not as the complete V5 execution-seam integration. The prior PR #123 V26 handoff remains the successor navigation package. Do not merge or expand scientific execution permissions on the strength of these tests.
+
+## Observed CI at code+workflow head `6794e70827cbf7582433c99c51cda0a99bf1133f`
+
+- GitHub V5 runtime closure: 43 passed, zero skipped (original guard-code head run `36193171552`).
+- New dedicated V26 CPU synthetic mechanics workflow: 20 passed, zero skipped (`36193320862`) including exact regression names and inactive reference checkpoint/EMA smoke. This is engineering mechanics only, not an authenticated real-data scientific diagnostic.
+
