@@ -50,6 +50,7 @@ jobs:
               'test_synthetic_zip_uses_single_descriptor_and_read_allowlist',
               'test_structural_exact_per_donor_counts_and_total_match',
               'test_donor_count_swap_with_unchanged_total_is_rejected',
+              'test_balanced_reciprocal_cell_swap_requires_separate_physical_row_binding',
               'test_unknown_heldout_donor_replacing_fit_donor_rejected',
               'test_shorter_historical_run_not_accepted_as_full_population',
               'test_toy_npz_file_descriptor_hash_and_schema_path',
@@ -57,7 +58,7 @@ jobs:
               'test_unpatched_synthetic_pass1_never_matches_actual_frozen_full104_sha',
           }
           observed = {n.attrib.get('name','').split('[')[0] for n in suite.iter('testcase')}
-          if (counts['tests'] < 45
+          if (counts['tests'] < 51
               or any(counts[k] for k in ('failures','errors','skipped'))
               or not required <= observed):
               raise SystemExit(f'STOP_V26_PASS1_INCOMPLETE {counts}; missing={sorted(required-observed)}')
