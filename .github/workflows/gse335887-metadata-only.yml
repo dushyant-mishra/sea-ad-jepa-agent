@@ -1,0 +1,44 @@
+name: GEO GSE335887 physical sample metadata only
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/geo_335887_metadata_only_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_geo_335887_metadata_only_v1.py'
+      - '.github/workflows/gse335887-metadata-only.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/geo_335887_metadata_only_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_geo_335887_metadata_only_v1.py'
+      - '.github/workflows/gse335887-metadata-only.yml'
+  workflow_dispatch:
+jobs:
+  geo-source-lineage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions: { contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Metadata firewall adversaries
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_geo_335887_metadata_only_v1.py
+      - name: Acquire public GEO sample metadata only
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/geo_335887_metadata_only_v1.py \
+            --out GSE335887_GEO_METADATA_ONLY_V1.json
+      - name: Assert scope
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('GSE335887_GEO_METADATA_ONLY_V1.json'))
+          assert x['sample_count']==8
+          assert x['sample_expression_values_inspected'] is False
+          assert x['jepa_training_authorized'] is False
+          assert len(x['soft_gzip_sha256'])==64
+          print('PASS: authenticated public GEO metadata, 8 GSM, no expression table exposure')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GSE335887-PUBLIC-METADATA-ONLY
+          path: GSE335887_GEO_METADATA_ONLY_V1.json
+          retention-days: 30

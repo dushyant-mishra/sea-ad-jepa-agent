@@ -1,0 +1,38 @@
+name: Source-verified cross-GEO perturbation target overlap
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/verify_gse335887_cross_geo_target_overlap_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_verify_gse335887_cross_geo_target_overlap_v1.py'
+      - '.github/workflows/gse335887-cross-geo-target-overlap.yml'
+  workflow_dispatch:
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Synthetic integrity and scientific-scope tests
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_verify_gse335887_cross_geo_target_overlap_v1.py
+      - name: Physically verify all five prior source CSV blobs and overlaps
+        run: python analysis/therapeutic_perturbation_etl/scripts/verify_gse335887_cross_geo_target_overlap_v1.py --repo . --out GSE335887_CROSS_GEO_TARGET_OVERLAP_V1.json
+      - name: Confirm expected target-only scope
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('GSE335887_CROSS_GEO_TARGET_OVERLAP_V1.json'))
+          assert j['numeric_outcomes_inspected'] is False
+          assert j['prediction_authorized'] is False and j['training_authorized'] is False
+          assert j['overlaps']['GSE178317']['shared_exact_labels']==[]
+          assert j['overlaps']['GSE301119_CRISPRi']['shared_exact_labels']==['SPI1']
+          assert j['overlaps']['GSE311359']['comparison_scope']=='NOMINATED_GENE_ONLY_NOT_EQUAL_DIRECT_INTERVENTION'
+          assert j['overlaps']['GSE311359']['BIN1_duplicate_guide_label_stop']==3
+          print('PASS: five source datasets SHA-bound, no numeric outcomes inspected')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GSE335887-CROSS-GEO-TARGET-METADATA-ONLY
+          path: GSE335887_CROSS_GEO_TARGET_OVERLAP_V1.json
+          retention-days: 30

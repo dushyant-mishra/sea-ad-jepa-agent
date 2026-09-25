@@ -1,0 +1,45 @@
+name: Day8 spent response ETL characterization only
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/describe_spent_day8_transcriptome_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_describe_spent_day8_transcriptome_v1.py'
+      - '.github/workflows/day8-exposed-descriptive-etl.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/describe_spent_day8_transcriptome_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_describe_spent_day8_transcriptome_v1.py'
+      - '.github/workflows/day8-exposed-descriptive-etl.yml'
+  workflow_dispatch:
+jobs:
+  descriptive-exposed-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Adversarial source and estimand tests
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_describe_spent_day8_transcriptome_v1.py
+      - name: Analyze only previously inspected Day8 published DE
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/describe_spent_day8_transcriptome_v1.py \
+            --repo . --out DAY8_EXPOSED_TRANSCRIPTOME_CHARACTERIZATION_V1.json
+      - name: Enforce historical census and development-only status
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("DAY8_EXPOSED_TRANSCRIPTOME_CHARACTERIZATION_V1.json"))
+          assert x["targets"]==39 and x["unique_measured_genes"]==10549 and x["target_pairs"]==741
+          assert x["source_binding"]["rows"]==343707
+          assert x["exposure"]=="DEVELOPMENT_INSPECTED_DAY8_ONLY"
+          assert not x["outcomes_other_than_day8_inspected"] and not x["prediction_metric_selected"]
+          assert not x["biological_uncertainty_estimable"] and not x["model_trained"]
+          print("PASS: Day8 descriptive only, outcomes on reserved screens unopened")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Day8-EXPOSED-DESCRIPTIVE-ONLY
+          path: DAY8_EXPOSED_TRANSCRIPTOME_CHARACTERIZATION_V1.json
+          retention-days: 30
