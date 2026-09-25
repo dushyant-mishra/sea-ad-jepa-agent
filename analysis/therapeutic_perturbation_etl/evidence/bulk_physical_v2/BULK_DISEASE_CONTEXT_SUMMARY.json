@@ -1,0 +1,56 @@
+{
+  "schema": "BULK_DISEASE_CONTEXT_EFFECTS_V2",
+  "GSE241858": {
+    "baseline": {
+      "samples": 12,
+      "genes": 28395,
+      "genes_detected": 20509,
+      "clone_treatment_units": 4,
+      "clones_per_genotype": 2,
+      "design_note": "clone is the biological replicate; within-clone replicates are averaged before contrast estimation",
+      "unbalanced": [
+        "CTRL_A:BASELINE:3",
+        "CTRL_B:BASELINE:3",
+        "R47H_A:BASELINE:3",
+        "R47H_B:BASELINE:3"
+      ]
+    },
+    "cytokine": {
+      "samples": 23,
+      "genes": 28395,
+      "genes_detected": 24157,
+      "clone_treatment_units": 12,
+      "clones_per_genotype": 2,
+      "design_note": "clone is the biological replicate; within-clone replicates are averaged before contrast estimation",
+      "unbalanced": [
+        "CTRL_A:IFN:2",
+        "CTRL_A:LPS:1",
+        "CTRL_A:UNTR:2",
+        "CTRL_B:IFN:2",
+        "CTRL_B:LPS:2",
+        "CTRL_B:UNTR:2",
+        "R47H_A:IFN:2",
+        "R47H_A:LPS:2",
+        "R47H_A:UNTR:2",
+        "R47H_B:IFN:2",
+        "R47H_B:LPS:2",
+        "R47H_B:UNTR:2"
+      ]
+    }
+  },
+  "GSE240609": {
+    "samples": 4,
+    "genes": 27154,
+    "genes_detected": 19045,
+    "design": "2x2 neuron genotype (WT/PSEN) x microglia genotype (APOE3/APOE3ch)",
+    "replicates_per_design_cell": 1,
+    "uncertainty_estimable": false,
+    "interpretation_limit": "CD11b-purified microglia recovered AFTER neuron-microglia coculture. Response may depend on neuron context; one sample per genotype cross forbids biological SE.",
+    "sample_identity_authority": "NCBI_GEO_GSE240609_PUBLIC_SAMPLE_TITLES",
+    "source_file_byte_roots_checked": true,
+    "contrast_rows": 38090
+  },
+  "assay_schema": "bulk RNA-seq, genotype-by-context; NOT CRISPR perturbation",
+  "jepa_prediction_used": false,
+  "therapeutic_ranking": false
+}

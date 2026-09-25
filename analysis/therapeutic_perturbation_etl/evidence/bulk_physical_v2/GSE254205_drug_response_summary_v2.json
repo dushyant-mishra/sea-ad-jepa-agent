@@ -1,0 +1,50 @@
+{
+  "schema": "GSE254205_BULK_DRUG_RESPONSE_V2",
+  "study": "GSE254205",
+  "assay": "bulk_RNAseq_STAR_ReadsPerGene",
+  "system": "APOE4/4 iPSC-derived microglia",
+  "compound": "GNE-317",
+  "design": "3 conditions x 3 replicates; one cell model; one timepoint",
+  "conditions": {
+    "NT": "untreated APOE4/4 iPSC-derived microglia",
+    "AB": "fibrillar amyloid-beta",
+    "AB_GNE": "fibrillar amyloid-beta plus GNE-317"
+  },
+  "samples": 9,
+  "genes_in_annotation": 58395,
+  "genes_detected_anywhere": 36117,
+  "genes_assayed": 58395,
+  "genes_assayed_but_undetected": 22278,
+  "genes_structurally_unmeasured_within_reference": 0,
+  "genes_excluded_from_effects_by_detection_filter": 22278,
+  "detection_filter": "DETECTED_ANYWHERE_ACROSS_NINE_SAMPLES",
+  "v1_scientific_contrasts_preserved": true,
+  "v1_result_replaced": false,
+  "feature_namespace": "Ensembl gene ID",
+  "contrasts": {
+    "AB_vs_NT": {
+      "genes_scored": 36117,
+      "median_log2fc": -0.0404,
+      "n_abs_gt_1": 2253,
+      "n_abs_gt_2": 109
+    },
+    "AB_GNE_vs_AB": {
+      "genes_scored": 36117,
+      "median_log2fc": 0.0499,
+      "n_abs_gt_1": 3840,
+      "n_abs_gt_2": 481
+    },
+    "AB_GNE_vs_NT": {
+      "genes_scored": 36117,
+      "median_log2fc": 0.0037,
+      "n_abs_gt_1": 2030,
+      "n_abs_gt_2": 300
+    }
+  },
+  "replicates_preserved_before_aggregation": true,
+  "measured_drug_induced_expression": true,
+  "annotation_or_hypothesis_only": false,
+  "rescue_or_reversal_claim_computed": false,
+  "therapeutic_ranking": false,
+  "jepa_prediction_used": false
+}
