@@ -1,0 +1,27 @@
+name: HGNC 2026 microglia mapping check
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/hgnc_2026q3_microglia_metadata_crosswalk_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_hgnc_2026q3_microglia_metadata_crosswalk_v1.py'
+      - '.github/workflows/hgnc-2026q3-microglia-metadata.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run tests
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_hgnc_2026q3_microglia_metadata_crosswalk_v1.py
+      - name: Check published sources
+        run: python analysis/therapeutic_perturbation_etl/scripts/hgnc_2026q3_microglia_metadata_crosswalk_v1.py --repo . --out HGNC_2026Q3_MICROGLIA_METADATA_CROSSWALK_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HGNC-2026Q3-MICROGLIA-METADATA
+          path: HGNC_2026Q3_MICROGLIA_METADATA_CROSSWALK_V1.json
