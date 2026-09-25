@@ -1,24 +1,34 @@
 {
-  "schema": "JEPA_SUCCESSOR_HANDOFF_POINTER_V1",
+  "schema": "JEPA_SUCCESSOR_HANDOFF_POINTER_V26",
   "date": "2026-09-25",
-  "status": "DOCS_ONLY_DRAFT__NO_EXECUTION_AUTHORITY",
+  "status": "V26_DOCS_ONLY_DRAFT__NO_NEW_EXECUTION_AUTHORITY",
   "branch": "handoff/jepa-20260925-pr121-runtime-inventory",
   "base_main_at_creation": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
-  "handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_PR121_N1_RUNTIME.md",
+  "handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_V26_EXECUTION_VALIDATION.md",
   "local_asset_manifest": "docs/agent/JEPA_RUNTIME_LOCAL_ASSETS_SHA256_20260925.json",
   "read_before": [
     "START_HERE.md",
     "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
     "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V25_RESULTS_DATA_SCRIPTS.md",
     "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260924_V25.json",
-    "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md"
+    "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_PR121_N1_RUNTIME.md",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_V26_EXECUTION_VALIDATION.md"
   ],
   "controlling_prs": {
     "etl": 121,
     "n1": 120,
     "inventory_independent": 119,
-    "physical_etl_prior": 118
+    "physical_etl_prior": 118,
+    "experimental_data": 77,
+    "matched_nt_null": 125,
+    "nt_tail_redteam": 127,
+    "evidence_readiness_v3": 126,
+    "transport_preflight": 128
   },
-  "governance": "V25 remains canonical on main until this docs-only successor is reviewed and merged; no training authorization.",
-  "runtime_assets": "29 files / 1329773116 bytes are SHA-bound references, NOT binary uploads"
+  "governance": "V25 remains canonical on main until PR123 is reviewed/merged. V26 references previously published data/scripts/receipts, records recent discussion corrections and holdout budget; no training/N1/protected release.",
+  "runtime_assets": "The prior 29 local assets / 1,329,773,116 bytes retain their SHA manifests on this branch. No heavy binaries uploaded in V26.",
+  "prior_pr123_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_PR121_N1_RUNTIME.md",
+  "v26_evidence_ledger": "docs/agent/JEPA_V26_EVIDENCE_SCRIPT_DATA_LEDGER_20260925.md",
+  "v26_state": "docs/agent/JEPA_V26_EXECUTION_VALIDATION_STATE_20260925.json"
 }
