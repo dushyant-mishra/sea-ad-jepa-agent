@@ -1,0 +1,174 @@
+{
+  "schema": "JEPA_V26_EXECUTION_VALIDATION_STATE",
+  "date": "2026-09-25",
+  "status": "DOCS_ONLY_SUCCESSOR__UNMERGED__NO_NEW_EXECUTION_AUTHORITY",
+  "repository": "dushyant-mishra/sea-ad-jepa-agent",
+  "prior_authority": {
+    "main_head_at_audit": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+    "main_start_here": "START_HERE.md",
+    "main_pointer": "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
+    "main_v25": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V25_RESULTS_DATA_SCRIPTS.md",
+    "prior_pr123_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_PR121_N1_RUNTIME.md",
+    "prior_29_asset_sha_manifest": "docs/agent/JEPA_RUNTIME_LOCAL_ASSETS_SHA256_20260925.json"
+  },
+  "new_handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_V26_EXECUTION_VALIDATION.md",
+  "evidence_ledger": "docs/agent/JEPA_V26_EVIDENCE_SCRIPT_DATA_LEDGER_20260925.md",
+  "data_release": {
+    "reader_fit": {
+      "n": 104,
+      "role": "discovery/development",
+      "current_training_authorized": false,
+      "restriction": "no outcome-responsive target/hypothesis search; real training requires separately explicit diagnostic contract"
+    },
+    "reader_validation": {
+      "n": 22,
+      "current": "CLOSED_READER_SELECTION",
+      "source_counts_user_reported": {
+        "SEA_AD": 12,
+        "HVS": 10,
+        "NPH52": 0
+      },
+      "source_counts_independent_verification": "NOT_DONE_IN_V26",
+      "release": "exact frozen candidate/evaluator/metrics and named authority"
+    },
+    "reader_oracle": {
+      "n": 23,
+      "current": "SEALED_INTERNAL_ORACLE",
+      "historical_T1_access": true,
+      "release": "after candidate/analysis frozen and validation selection concluded; named one-way authority"
+    },
+    "foundation_development": {
+      "n": 24,
+      "current": "CLOSED_DEVELOPMENT",
+      "composition": {
+        "foundation": 19,
+        "continuation": 5
+      }
+    },
+    "foundation_sealed_holdout": {
+      "n": 24,
+      "current": "SEALED_FOUNDATION_HOLDOUT",
+      "composition": {
+        "foundation": 19,
+        "continuation": 5
+      }
+    },
+    "external_study": {
+      "id": "siletti_human_brain_cell_atlas_v1",
+      "current": "SEALED_EXTERNAL_REPLICATION",
+      "unscheduled": true
+    }
+  },
+  "execution": {
+    "training": "OFF",
+    "audit_b_n1": "UNOPENED",
+    "protected_full104_outcomes": "UNOPENED",
+    "d_shared_g5": "UNOPENED",
+    "rare_tail_molecular": "UNOPENED",
+    "therapeutic_ranking": "OFF",
+    "v26_new_runs": 0,
+    "proposed_next": "bounded reader_fit real-data diagnostic using existing V5 framework after distinct authorization; no synthetic scientific validation claim"
+  },
+  "existing_physical_evidence": {
+    "full104_etl": {
+      "cells": 4553407,
+      "fit_donors": 104,
+      "operators": 42,
+      "addresses": 41238,
+      "core": 17186,
+      "blocks": 8915,
+      "sql_byte_identical": 11,
+      "atlas_byte_identical": 13
+    },
+    "historical_lodo": {
+      "branch": "analysis/v5-layer2-cross-view-shortcut-claude-20260915",
+      "script": "analysis/v5_layer2_cross_view_shortcut_20260915/scripts/z5_lodo.py",
+      "results": "analysis/v5_layer2_cross_view_shortcut_20260915/results/z_lodo.json",
+      "model": "LINEAR_PROXY_NOT_TRAINED_JEPA",
+      "donors": {
+        "SEA_AD": 36,
+        "HVS": 41,
+        "NPH52": 17
+      },
+      "pooled_r2": {
+        "SEA_AD": 0.2410121580995348,
+        "HVS": 0.04508741749145817,
+        "NPH52": 0.05462934735003744
+      },
+      "original_binary_replay": "PENDING_PHYSICAL_INPUT_AUTHENTICATION"
+    },
+    "gse301119_null": {
+      "physical_head": "5260e70ce3c325b8c9fb4edc70ee54e1c915cc03",
+      "result_branch": "result/gse301119-nt-null-executed-20260925",
+      "estimable_units": 809,
+      "sentinel_observations": 5663,
+      "draws_per_arm": 64,
+      "observed_median": -1.3446,
+      "cell_sampling_null_median": -1.504,
+      "depth_only_null_median": -0.0461,
+      "consequence": "CURRENT_CPM_EFFECTS_NOT_BIOLOGICALLY_QUALIFIED",
+      "corrected_PR127_physical_rerun": "NOT_DONE"
+    },
+    "gse178317": {
+      "counts_shape": [
+        58302,
+        81
+      ],
+      "assigned_cells": 11775,
+      "biological_pools": 1,
+      "data_branch": "analysis/perturbation-etl-gse301119-claude-20260923",
+      "safe_npz_visible_in_tree": true
+    },
+    "bulk_depth_screen": {
+      "GSE241858_max_within_contrast": 1.37,
+      "GSE240609_max_within_contrast": 1.2509,
+      "independent_P1_6_recomputation": "OPEN"
+    }
+  },
+  "reported_unverified": {
+    "crisprbrain_pair_significant_overlap_itf_to_ipsc": 0.072,
+    "reverse": 0.028,
+    "sign_agreement_significant_itf": 0.52,
+    "joint_sign_agreement": 0.458,
+    "joint_significant_rows": 72,
+    "shared_targets": 31,
+    "jointly_engaged_reported": [
+      "STAT2"
+    ],
+    "status": "USER_OPUS_REPORTED_NOT_INDEPENDENTLY_REPLAYED_BY_V26"
+  },
+  "branch_snapshots": {
+    "pr77": "9a2a30e4c4c99be2a8f948aba680524c786d2737",
+    "pr120": "136d1257467a7d80690d9f287ca7399c7138e038",
+    "pr121": "aaf561cfdc60ffe29c4d79094c16ce5e524f7d2d",
+    "pr125": "0978fbd0321f80d2d272dc73070c5f232d7c4277",
+    "pr126": "32582e23235d3417d62938459fc3b2311968222b",
+    "pr127": "1317d54d6ab61687015edd9a46c14a85401fd25d",
+    "pr128": "be676442bab703eecb063d1fe9c40c4f8fba91d3"
+  },
+  "critical_path": [
+    "audit live integrated V5 execution seam and exact inputs",
+    "run existing synthetic mechanics only as quick safety gate, not scientific proof",
+    "authorize and run bounded real reader_fit diagnostic with single fixed candidate",
+    "compare development metrics against authentic historical proxy and source/support/depth controls"
+  ],
+  "parallel_off_critical_path": [
+    "independent iTF vs iPSC shared-target external benchmark concordance and provenance",
+    "independent GSE241858/GSE240609 bulk P1-6 recomputation",
+    "independent PR120 all-104 read-only N1 physical verifier after its own authorization"
+  ],
+  "deferred": [
+    "new external perturbation collection",
+    "GSE301119 effect promotion without calibrated independent null",
+    "Siletti external outcome inspection",
+    "reader_validation/reader_oracle release",
+    "full production training without frozen upstream authority"
+  ],
+  "checks_to_avoid_status_inflation": [
+    "historical 205-step T1 loss is not a healthy resumed model",
+    "old null tail fraction predates PR127 corrected physical rerun",
+    "main pointer remains V25 until PR123 merges",
+    "no 1.3GB chat binaries were newly uploaded",
+    "all user/Opus benchmark concordance figures must be reproduced"
+  ]
+}
