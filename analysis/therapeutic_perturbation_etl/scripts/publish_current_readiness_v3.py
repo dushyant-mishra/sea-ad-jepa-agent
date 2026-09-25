@@ -57,7 +57,7 @@ def sha256(path: Path) -> str:
 
 def git_blob_sha(path: Path) -> str:
     raw = path.read_bytes()
-    return hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
 
 
 def verified_inputs(root: Path) -> dict:
@@ -126,7 +126,7 @@ def publish(root: Path, out_dir: Path) -> Path:
     try:
         csv_path = staging / "CURRENT_CURATOR_ASSERTIONS_V3.csv"
         with open(csv_path, "w", encoding="utf-8", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=COLUMNS, lineterminator="\\n")
+            w = csv.DictWriter(f, fieldnames=COLUMNS, lineterminator="\n")
             w.writeheader()
             for study, a in sorted(status["assertions"].items()):
                 w.writerow({key: study if key == "study" else a.get(key, "") for key in COLUMNS})
@@ -153,7 +153,7 @@ def publish(root: Path, out_dir: Path) -> Path:
             "therapeutic_ranking": False,
         }
         (staging / "CURRENT_READINESS_OVERLAY_RECEIPT_V3.json").write_text(
-            json.dumps(receipt, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+            json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         staging.rename(out_dir)
     except BaseException:
         shutil.rmtree(staging, ignore_errors=True)
