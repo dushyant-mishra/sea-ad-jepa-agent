@@ -13,7 +13,7 @@ The new `scripts/qualify_all104_corrected_raw_reaggregation_v2.py` requires:
 - frozen Level-4 manifest SHA-256 `66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29`;
 - canonical corrected source names HVS/NPH52/SEA_AD (41/17/46 donors), all 4,553,407 cells, strict-core ordered 17,186 addresses, 8,915 authentic metadata and **8,915 authentic raw count blocks**;
 - exact cell→donor→corrected source consistency, each selection row exactly once, no negative/fractional/nonfinite or >2^53-1 raw counts, no loss of integer precision in weighted reduction;
-- exact integer equality of **both** full `donor_nnz` and `donor_umi`, shape 104×17,186 (1,787,? entries per array: exactly 1,787,344), no tolerance. Output file must not preexist.
+- exact integer equality of **both** full `donor_nnz` and `donor_umi`, shape 104×17,186 (1,787,344 entries per array), no tolerance. Output file must not preexist.
 
 The resulting receipt is `V5_FULL104_ALL104_CORRECTED_RAW_COUNT_AUDIT_V2` with a pass **only if both whole matrices match**. A mismatch is a signed failure, never qualification. The entire computation is an independent read-only reaggregation, no monolithic FULL104 matrix, no masks, burden, precision, teacher/student model or protected result.
 
