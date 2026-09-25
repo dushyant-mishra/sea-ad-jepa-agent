@@ -1,0 +1,51 @@
+name: WP-F cross-study source-bound comparability
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_wpf_comparability_matrix_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_build_wpf_comparability_matrix_v1.py'
+      - '.github/workflows/wpf-cross-study-comparability.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_wpf_comparability_matrix_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_build_wpf_comparability_matrix_v1.py'
+      - '.github/workflows/wpf-cross-study-comparability.yml'
+  workflow_dispatch:
+jobs:
+  wpf-metadata-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Adversarial metadata-only synthetic cases
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_build_wpf_comparability_matrix_v1.py
+      - name: Full physically committed source and metadata-only comparison
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/build_wpf_comparability_matrix_v1.py \
+             --repo . --out WPF_COMPARABILITY_MATRIX_V1.json
+      - name: Fail closed on scientific misinterpretation
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("WPF_COMPARABILITY_MATRIX_V1.json"))
+          assert len(x["strata"])==13 and x["pair_count"]==78
+          assert x["gse335887"]["authenticated_guide_targets"]==30
+          assert x["gse335887"]["unauthenticated_published_targets"]==["ARID5B"]
+          assert x["gse301119"]["shared_CRISPRi_CRISPRa_target_names"]==204
+          assert x["gse175721"]["cell_guide_join_authenticated"] is False
+          assert x["gse311359"]["physical_V2_id_keyed_rebuild_completed"] is False
+          assert x["no_protected_numeric_response_values_inspected"] is True
+          assert x["no_perturbation_predictor_fitted"] is True
+          assert x["jepa_training_authorized"] is False
+          assert x["therapeutic_ranking_authorized"] is False
+          assert all(not p["automatically_pool"] and not p["independent_confirmation_authorized"] for p in x["pairs"])
+          print("PASS: 13 strata; 78 pairs; no target/prediction/training leakage")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WP-F-cross-study-comparability-metadata-only
+          path: WPF_COMPARABILITY_MATRIX_V1.json
+          retention-days: 45
