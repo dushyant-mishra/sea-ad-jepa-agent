@@ -36,11 +36,43 @@ A median-centred normalization that attenuates apparent effects is a sensitivity
 
 **Never tune pseudocount, cell-matching tolerance, tail cutoffs, or sentinel selection after examining the null receipt and call that a predeclared result.** A future alternative-normalization full-matrix analysis must be separately versioned.
 
+## Mandatory source-backed neutral-export identity certification
+
+Independent CPU review found that the historical V1 neutral export receipt authenticated
+the count binary and original RDS SHA, **but not the gene feature file or guide/donor
+metadata bytes**. A donor swap or feature-name permutation could therefore pass
+count-only integrity checks and change the biological comparison. This is a physical
+input-integrity blocker, separate from the scientific CPM-estimand uncertainty.
+
+Before executing the first physical null, run
+`scripts/r/certify_gse301119_neutral_identity_v2.R` against the original
+SHA-pinned CRISPRi and CRISPRa guide-donor raw-pseudobulk RDS objects.
+It reserializes and **byte-compares all four neutral files per modality**
+(count binary, shape, features, guide/donor metadata CSV) from the original
+RDS rather than merely hashing untrusted neutral sidecars. A different
+R/environment CSV encoding may require resolving the byte-level disagreement
+before publication; NEVER silently skip the metadata check.
+
+The certifier publishes only a new small
+`NEUTRAL_EXPORT_IDENTITY_CERTIFICATION_V2.json` in a fresh output directory.
+The Python null rejects absent, malformed, mismatched, or wrong-source
+certification and pins its own copy of the certificate by SHA-256. This
+attestation is a source-identity check, **not independent biological replication
+or proof that the chosen CPM estimand is scientifically correct**.
+
 ## GPU laptop invocation
 
-From the PR121-descendant branch, after verifying the source RDS and existing PR121 export receipt hashes:
+From the PR121-descendant branch, after verifying the source RDS and existing
+PR121 export receipt hashes, first certify the EXISTING export against the original
+RDS (illustrative physical paths; replace with verified local paths):
 
 ```powershell
+Rscript analysis/therapeutic_perturbation_etl/scripts/r/certify_gse301119_neutral_identity_v2.R \`
+  --pseudobulk-dir "D:/jepa_perturb_outputs_20260923/gse301119_rawpb_v1" \`
+  --neutral-dir "D:/jepa_perturb_outputs_20260923/gse301119_neutral_export_v1" \`
+  --out-dir "D:/jepa_perturb_outputs_20260923/gse301119_neutral_identity_cert_v2" \`
+  --rlib "D:/jepa_rlib46"
+
 python analysis/therapeutic_perturbation_etl/scripts/gse301119_matched_nt_null_v1.py `
   --neutral-dir "D:/jepa_perturb_outputs_20260923/gse301119_neutral_export_v1" `
   --out-dir "D:/jepa_perturb_outputs_20260923/gse301119_matched_nt_null_v1" `
