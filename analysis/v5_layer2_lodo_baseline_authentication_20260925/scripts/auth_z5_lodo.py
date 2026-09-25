@@ -87,6 +87,125 @@ DECLARED_SUBSTRATE = {
 }
 SUBSTRATE_DIR = Path(r"D:\jepa_v5_substrate_20260914")
 
+# Producer scripts named in results/aud_hashes.json at HISTORICAL_COMMIT for the
+# frozen Layer-1 artifacts.  Listed so that whether they still exist is MEASURED
+# rather than asserted: if they are gone, the frozen screen cannot be rebuilt
+# even though the upstream substrate survives.
+DECLARED_PRODUCERS = {
+    "screen.py": {
+        "sha256": "d0fe0ab135585586b27c2c23af0cacc0ea3380ccf3eb270a3c640f4c41976fd6",
+        "produces": "screen_out.npz",
+    },
+    "rebuild.py": {
+        "sha256": "abe8ecff642af47e07e9657835a88d4ca0c90a0fe97de111f353ea4cf7e8297b",
+        "produces": "final_manifest.csv (frozen sample manifest)",
+    },
+}
+
+# What the replayed number actually IS.  Recorded in the receipt so a later
+# comparison cannot be made against an incompatible baseline by accident.
+BASELINE_DEFINITION = {
+    "model_class": (
+        "Ridge linear map, closed-form, lambda = 1e-2 * n_train, refit "
+        "completely for every held-out donor. NOT a trained JEPA."
+    ),
+    "representation": (
+        "256-dimensional VALUE_ONLY channels of the V5 disjoint-view substrate. "
+        "The substrate is (4553407, 512) float32 per view = 256 value + 256 "
+        "visibility channels; only the 256 value channels are used."
+    ),
+    "features_X": "p100_v0 - view-0 VALUE_ONLY vector of a cell, at full depth p=1.00",
+    "target_Y": (
+        "p100_v1 - view-1 VALUE_ONLY vector of the SAME CELL, at full depth, "
+        "operator-mean-centred. The target is the other molecular view of the "
+        "same cell. It is NOT pathology, NOT a donor-level outcome, and NOT a "
+        "reader_fit target."
+    ),
+    "metric": (
+        "Pooled total-variance-explained R2 = 1 - sum||y-yhat||^2 / "
+        "sum||y-ybar||^2, summed over all 256 output dimensions and all "
+        "held-out CELLS of the held-out donor."
+    ),
+    "unit_of_evaluation": "CELL (many cells per held-out donor), not donor",
+    "held_out_split": (
+        "Leave-one-donor-out. For each donor, every cell of that donor is "
+        "removed from training and the entire pipeline - operator means, "
+        "standardisation and the ridge solution - is refit from scratch."
+    ),
+    "population": (
+        "SELECTED 94-donor BASE_MECHANICS stratum: 196,817 cells, 42 operators. "
+        "SEA_AD 36 donors / 67,584 cells; HVS 41 donors / 88,015 cells; "
+        "NPH52 17 donors / 41,218 cells. 36+41+17 = 94, NOT 104."
+    ),
+    "population_is_a_probability_sample": (
+        "Cells enter by an operator-stratified whole-block hash-rank sample with "
+        "unequal inclusion probability q_i = min(12,B_o)/B_o (q_min 0.008386, "
+        "q_median 0.406897, q_max 1.0). z5_lodo.py applies NO weights, so these "
+        "R2 values are UNWEIGHTED SAMPLE quantities, not FULL104 population "
+        "quantities. The historical audits index records that the molecular "
+        "increment over context moved from +0.0311 unweighted to +0.1207 under "
+        "empirical FULL104 weighting, so the unweighted/weighted distinction is "
+        "known to be material on this substrate."
+    ),
+    "donor_identity_rule": (
+        "z5_lodo.py takes donor identity from B['donor_code'] in "
+        "bind_population.npz and applies pd.factorize to it within each source "
+        "stratum. Because bind_population.npz is ABSENT, it could NOT be "
+        "verified in this run that donor_code is a 1:1 encoding of the donor ID "
+        "STRING rather than a storage position. This is UNVERIFIED, not assumed "
+        "correct, and must be checked against the physical source before the "
+        "baseline is used."
+    ),
+    "cell_identity_rule": (
+        "Cells are selected by B['base_index'] into the frozen screen arrays. "
+        "Whether that index resolves cells by selection_row rather than block "
+        "order could NOT be verified in this run, because the artifact is absent."
+    ),
+    "stress_strata": "excluded from the LODO population",
+}
+
+# What a later comparison against a trained JEPA would have to satisfy.
+VALID_COMPARISON_REQUIREMENTS = {
+    "population": (
+        "The SAME 94 donors and the SAME 196,817 BASE_MECHANICS cells, keyed by "
+        "donor ID string and by selection_row. A trained JEPA evaluated on all "
+        "104 donors is a DIFFERENT population and is not comparable to this "
+        "number. If the JEPA population differs, the baseline must be recomputed "
+        "on the JEPA's population, not the number quoted across."
+    ),
+    "target": (
+        "The SAME estimand: predict the 256-dim VALUE_ONLY view-1 vector of the "
+        "same cell from view-0, operator-mean-centred, pooled total-variance R2 "
+        "over cells. A JEPA scored on a donor-level pathology outcome, on a "
+        "reader_fit target, or on a different embedding dimensionality is "
+        "measuring a different quantity and the two numbers must not be placed "
+        "in the same column."
+    ),
+    "held_out_split": (
+        "Leave-one-donor-out with COMPLETE refit per held-out donor, including "
+        "the operator means and the standardisation. A JEPA evaluated under a "
+        "5-fold donor split, or one whose normalisation statistics were fit on "
+        "all donors, is not comparable. Any JEPA whose pretraining saw cells "
+        "from the held-out donor voids the comparison entirely."
+    ),
+    "weighting": (
+        "Both sides must use the same weighting. These values are unweighted on "
+        "a probability sample with unequal inclusion probabilities; a "
+        "population-weighted JEPA number is not comparable to them."
+    ),
+    "reporting": (
+        "Report per source. Pooling across sources inflates R2 through "
+        "between-source mean structure: pooled ALL is 0.0687 while SEA_AD alone "
+        "is 0.2410. A single pooled headline number would misrepresent both."
+    ),
+    "direction_of_evidence": (
+        "The historical closeout records SEA_AD as demonstrating donor-"
+        "generalisable linear cross-view signal at this model class, and HVS and "
+        "NPH52 as NOT demonstrating it. Non-demonstration is not absence. A JEPA "
+        "beating 0.045 on HVS is not thereby shown to be finding biology."
+    ),
+}
+
 # Historical values, restated here so the comparison target is frozen before any
 # replayed number exists.  Source: results/z_lodo.json at HISTORICAL_COMMIT.
 HISTORICAL_R2 = {
@@ -210,6 +329,69 @@ def authenticate_code(repo: Path):
     return out
 
 
+def assess_recovery(repo: Path, search_roots):
+    """Measure whether the absent inputs could be REBUILT.
+
+    The substrate surviving is not sufficient: the frozen screen can only be
+    regenerated if the code that produced it also survives.  This checks for the
+    producer scripts in git history and on disk, and checks whether any committed
+    script actually WRITES bind_population.npz, whose regenerability
+    LARGE_ARTIFACT_REFERENCES.json asserts.
+    """
+    producers = {}
+    for name, spec in DECLARED_PRODUCERS.items():
+        in_git = subprocess.run(
+            ["git", "log", "--all", "--format=%H", "--", "*" + name],
+            cwd=str(repo), stdout=subprocess.PIPE,
+        ).stdout.decode().split()
+        on_disk = []
+        for root in search_roots:
+            p = Path(root) / name
+            if p.is_file():
+                on_disk.append(str(p))
+        producers[name] = {
+            "produces": spec["produces"],
+            "sha256_recorded_in_aud_hashes": spec["sha256"],
+            "commits_touching_this_filename": in_git,
+            "found_on_disk": on_disk,
+            "status": "PRESENT" if (in_git or on_disk) else "NOT_IN_GIT_AND_NOT_ON_DISK",
+        }
+
+    # Does any committed file in the historical analysis dir WRITE bind_population?
+    listing = subprocess.run(
+        ["git", "ls-tree", "-r", "--name-only", HISTORICAL_COMMIT, "--", ANALYSIS_DIR],
+        cwd=str(repo), check=True, stdout=subprocess.PIPE,
+    ).stdout.decode().split()
+    reads, writes = [], []
+    for rel in listing:
+        if not rel.endswith(".py"):
+            continue
+        body = git_show(repo, HISTORICAL_COMMIT, rel).decode("utf-8", "replace")
+        if "bind_population" not in body:
+            continue
+        for line in body.splitlines():
+            if "bind_population" not in line:
+                continue
+            if "savez" in line or "open(" in line and "'w'" in line:
+                writes.append(rel + ": " + line.strip())
+            else:
+                reads.append(rel + ": " + line.strip())
+
+    return {
+        "producer_scripts": producers,
+        "bind_population_write_sites_in_committed_code": writes,
+        "bind_population_read_sites_in_committed_code": reads,
+        "regenerability_claim_in_manifest": (
+            "bind_population.npz is described as 'deterministically regenerable "
+            "from final_manifest.csv'"
+        ),
+        "regenerability_claim_status": (
+            "DISCHARGED" if writes else "UNDISCHARGED_NO_COMMITTED_PRODUCER"
+        ),
+        "conclusion": None,  # filled by build_receipt once substrate state is known
+    }
+
+
 def repoint(script_source: str, scratch: Path) -> str:
     """Repoint only the input directory `S`, which the historical README
     explicitly permits ("repoint S to relocate the inputs").  Everything else --
@@ -249,6 +431,32 @@ def build_receipt(repo: Path, search_roots, skip_substrate_hash=False):
     code = authenticate_code(repo)
     inputs = authenticate_inputs(search_roots)
     substrate = {} if skip_substrate_hash else authenticate_substrate()
+    recovery = assess_recovery(repo, list(search_roots) + [SUBSTRATE_DIR])
+
+    substrate_ok = bool(substrate) and all(
+        v["status"] == "MATCH" for v in substrate.values())
+    producers_gone = all(
+        v["status"] == "NOT_IN_GIT_AND_NOT_ON_DISK"
+        for v in recovery["producer_scripts"].values())
+    if substrate_ok and producers_gone:
+        recovery["conclusion"] = (
+            "NOT_REBUILDABLE_FROM_WHAT_SURVIVES: the upstream V0/V1 substrate "
+            "authenticates, but the scripts that cut the frozen screen from it "
+            "(screen.py, rebuild.py) are in neither git history nor on disk, and "
+            "no committed code writes bind_population.npz. Recovering this "
+            "baseline requires locating the original artifacts themselves, not "
+            "re-deriving them."
+        )
+    elif not substrate_ok:
+        recovery["conclusion"] = (
+            "SUBSTRATE_NOT_AUTHENTICATED: rebuild feasibility cannot be assessed "
+            "because the upstream substrate did not verify or was not hashed."
+        )
+    else:
+        recovery["conclusion"] = (
+            "PARTIAL: some producer code survives; rebuild feasibility needs "
+            "case-by-case review against the entries above."
+        )
 
     all_inputs_ok = all(v["status"] == "MATCH" for v in inputs.values())
     code_ok = all(v["status"] == "MATCH" for v in code.values())
@@ -277,6 +485,9 @@ def build_receipt(repo: Path, search_roots, skip_substrate_hash=False):
         "code_and_result_authentication": code,
         "physical_input_authentication": inputs,
         "upstream_substrate_authentication": substrate,
+        "recovery_feasibility": recovery,
+        "baseline_definition": BASELINE_DEFINITION,
+        "valid_future_comparison_requirements": VALID_COMPARISON_REQUIREMENTS,
         "search_roots": [str(r) for r in search_roots],
         "replay": None,
         "historical_values": HISTORICAL_R2,
@@ -360,6 +571,10 @@ def main() -> int:
         print("  input     %-24s %s" % (name, e["status"]))
     for name, e in receipt["upstream_substrate_authentication"].items():
         print("  substrate %-24s %s" % (name, e["status"]))
+    for name, e in receipt["recovery_feasibility"]["producer_scripts"].items():
+        print("  producer  %-24s %s" % (name, e["status"]))
+    print("  regenerability claim:",
+          receipt["recovery_feasibility"]["regenerability_claim_status"])
     print("replay executed:", receipt["replay"]["executed"])
     print("receipt ->", out)
     return 0 if receipt["verdict"] == "AUTHENTICATED" else 2

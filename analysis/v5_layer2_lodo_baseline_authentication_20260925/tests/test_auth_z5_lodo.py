@@ -227,7 +227,58 @@ def test_code_digest_check_can_fail():
 
 
 # --------------------------------------------------------------------------
-# 6. The recorded historical head is the live head.
+# 6. The producer-script search is a measurement, not a stuck output.
+# --------------------------------------------------------------------------
+
+def test_producer_search_finds_a_script_that_really_exists():
+    """Positive control for assess_recovery.
+
+    'screen.py and rebuild.py are NOT_IN_GIT_AND_NOT_ON_DISK' is only evidence
+    if the same search finds a file that IS there. z5_lodo.py is committed on
+    the historical branch, so the search must report it PRESENT.
+    """
+    saved = dict(A.DECLARED_PRODUCERS)
+    try:
+        A.DECLARED_PRODUCERS.clear()
+        A.DECLARED_PRODUCERS["z5_lodo.py"] = {
+            "sha256": A.EXPECTED_CODE_AND_RESULT_DIGESTS["scripts/z5_lodo.py"],
+            "produces": "z_lodo.json",
+        }
+        rec = A.assess_recovery(REPO, [])
+    finally:
+        A.DECLARED_PRODUCERS.clear()
+        A.DECLARED_PRODUCERS.update(saved)
+    e = rec["producer_scripts"]["z5_lodo.py"]
+    assert e["status"] == "PRESENT", e
+    assert e["commits_touching_this_filename"], e
+
+
+def test_producer_search_finds_a_file_placed_on_disk():
+    """The on-disk half of the same search must also be live."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        (root / "screen.py").write_text("# decoy\n")
+        rec = A.assess_recovery(REPO, [root])
+        e = rec["producer_scripts"]["screen.py"]
+        assert e["status"] == "PRESENT", e
+        assert e["found_on_disk"], e
+
+
+def test_real_producers_are_absent_and_claim_is_undischarged():
+    """The observed state: neither producer survives, and no committed code
+    writes bind_population.npz despite the manifest calling it regenerable."""
+    rec = A.assess_recovery(REPO, [])
+    for name in ("screen.py", "rebuild.py"):
+        assert rec["producer_scripts"][name]["status"] == \
+            "NOT_IN_GIT_AND_NOT_ON_DISK", rec["producer_scripts"][name]
+    assert rec["bind_population_write_sites_in_committed_code"] == []
+    assert rec["bind_population_read_sites_in_committed_code"], \
+        "read sites must be found, or the scanner is not looking at the right tree"
+    assert rec["regenerability_claim_status"] == "UNDISCHARGED_NO_COMMITTED_PRODUCER"
+
+
+# --------------------------------------------------------------------------
+# 7. The recorded historical head is the live head.
 # --------------------------------------------------------------------------
 
 def test_live_head_equals_recorded_head():
