@@ -107,7 +107,7 @@ reproduce_one <- function(mod,raw_file,matrix_file,expected=EXPECTED[[mod]]) {
     x<-independent_target(raw,tg)
     if (x$eligible) eligible<-eligible+1L
     a<-x$mean;b<-X[,tg]
-    if (!identical(is.na(a),is.na(b)))
+    if (!identical(unname(is.na(a)),unname(is.na(b))))
       stop("STOP_OUTPUT_MISSINGNESS_MISMATCH:",mod,":",tg,call.=FALSE)
     both<-is.finite(a)&is.finite(b)
     stop_if(any(is.infinite(b)) || any(is.nan(b)),
