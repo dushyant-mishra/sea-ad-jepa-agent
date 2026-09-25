@@ -206,7 +206,7 @@ Searches performed, and their exact scope:
 | `bind_population*`, `screen_out*`, `final_manifest*` | `D:\`, depth ≤ 10 | no hits |
 | `screen.py`, `rebuild.py` | `D:\` and Claude temp tree, depth ≤ 8 | no hits |
 | producer filenames | entire git history, all refs | no hits |
-| all three input filenames | unbounded full-depth scan of `D:\` and `C:\Users` | **still running when this document was written — no hits reported so far** |
+| `bind_population*`, `screen_out*`, `final_manifest*` | unbounded full-depth scan of **all of `D:\` and `C:\Users`** (9.5 TB + 1.86 TB used) | **completed, exit 0, zero hits** |
 
 The single hit anywhere was a committed copy of `y_source.json` — a *result*
 file, not one of the three binary inputs — inside the `/d/jepa_layer2_20260915`
@@ -215,9 +215,12 @@ entries from adjacent sessions; the four inputs are specifically not among them,
 which is consistent with routine temp-directory cleanup of large files rather
 than loss of the whole folder.
 
-The unbounded scan not having finished does not weaken the verdict: it could only
-ever *upgrade* the result by finding a file, and the authenticator can be re-run
-against any candidate with `--search-root`.
+The unbounded scan has now completed with zero hits, so the absence is
+established across both drives in their entirety rather than only within a
+bounded search depth. The three inputs are not on this machine. That does not
+close the recovery routes below — the files may exist on another machine, a
+backup or a cloud volume — and the authenticator can be re-run against any
+candidate with `--search-root`.
 
 ### Producers of the absent inputs
 
