@@ -25,3 +25,15 @@ F4 TIME-OF-CHECK MEDIUM: run verified pass1 and V0/V1 SHA once, then reopened/mm
 1. Independent review of this successor and GitHub zero-skip CI; do not merge directly into main without its PR136 base lineage.
 2. If existing full pass1→Level4 evidence and V0/V1 selection_row certificates become physically available on the GPU machine, run the NEW 104-donor comparator once, attach new small receipt + executable commit + full SHA. The historical 94-donor scratchpad search is separate and should not block it.
 3. Keep first real V5 diagnostic with Claude/other chat (#135) as critical path. Never run all-104 raw Level4 checks again merely for this new linear comparator.
+
+## Additional provenance red-team: A_full/B_full are NOT the V0/V1 inputs
+
+The authentic published Level-4 feature-matrix manifest at `docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/feature_matrix_level4/PHASE2_FEATURE_MATRIX_MANIFEST.csv` records:
+- `A_full.npy`: SHA256 `ea60949152369d4aef28dff0e77230854255a45b0535400b7d7fc07798956aa7`;
+- `B_full.npy`: SHA256 `11076b973e14e6b9d6bc232db9b1ca7d7e9e23c784a5e5db294f993bbf54af02`;
+- `PHASE2_FEATURE_ROWS.csv`: SHA256 `9c734945925c04dd7b108d0f37e39d9ea49687b4701ebce6b94b01c2ed09ac59`;
+- `ASSEMBLY_SEEN.npy`: SHA256 `0339d2e79599419f369d78cddf14448019f89476eb674000437b72a1b4fb640e`.
+
+But the FULL104 disjoint-view substrate consumed by the original September 15 Layer-2 audit and the NEW PR136 comparator instead has `V0_full.npy` SHA256 `3b3f102c6767727ca4ab56832f8e70baf203676d6b65973c42903b22b6d56ada` and `V1_full.npy` SHA256 `c41df46d842d643f04566b8523a8aa711fa54bec1c836e0b394c0146017f231c`. **Neither V0 nor V1 is byte-identical to either Level-4 A_full/B_full file.** A superficial claim that the published `PHASE2_FEATURE_ROWS.csv` automatically binds V0/V1 selection-row order would be INVALID. The historic V0/V1 builder/rebuild-to-source lineage and the physical V0/V1 selection-row map must be authenticated separately. The historical Layer-2 PR133 documents that the scratchpad `rebuild.py` and `screen.py` producers for its 94-donor derived sample have disappeared; do not assume those scripts are or are not the producers of the full V0/V1 files without further evidence.
+
+This mismatch is NOT proof that the V0/V1 rows are wrong: disjoint molecular views are allowed to differ in content from A/B. It is proof that **whole-array SHA + a different upstream manifest alone cannot certify matching row semantics.** The comparator stays `NEW_DEVELOPMENT_BASELINE_NOT_HISTORICAL_REPLAY` and its existing `view_selection_row_lineage=MUST_BE_INDEPENDENTLY_ATTESTED_BEFORE_SCIENTIFIC_PROMOTION` cannot be cleared by repointing a manifest or rehashing the same arrays. This audit did not consume the 18.7GB arrays or protected data. No new 8,915-block raw scan is warranted until the specific V0/V1 derivation path is identified.
