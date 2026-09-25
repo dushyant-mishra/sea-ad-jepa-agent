@@ -153,8 +153,12 @@ def verify_frozen_reader_fit_bytes(reader_raw: bytes, donor_raw: bytes) -> Struc
     return result
 
 
-def verify_frozen_calibration_bundle(archive_path: str | Path) -> dict[str, object]:
-    """Read only two explicitly allowlisted CSV members after whole-ZIP hashing."""
+def load_frozen_reader_fit_from_bundle(archive_path: str | Path) -> StructuralReaderFitAudit:
+    """Return verified donor counts after ONE-descriptor whole-ZIP and member hashing.
+
+    This exposes no execution authority. The caller must independently bind
+    each FULL104 cell and any sampling proposal before an optimizer step.
+    """
     path = Path(archive_path)
     digest = hashlib.sha256()
     # Hash and read through ONE open file descriptor: a pathname replacement
@@ -178,7 +182,12 @@ def verify_frozen_calibration_bundle(archive_path: str | Path) -> dict[str, obje
                 if info.file_size > 1_000_000:
                     raise ValueError("metadata ZIP member exceeds one-megabyte bound")
                 values.append(archive.read(info))
-    result = verify_frozen_reader_fit_bytes(*values)
+    return verify_frozen_reader_fit_bytes(*values)
+
+
+def verify_frozen_calibration_bundle(archive_path: str | Path) -> dict[str, object]:
+    """Read-only metadata receipt; never physical FULL104 or training proof."""
+    result = load_frozen_reader_fit_from_bundle(archive_path)
     return {
         "schema": "V26_READER_FIT_METADATA_PREFLIGHT_V1",
         "scope": "FROZEN_AUG24_METADATA_ONLY",
