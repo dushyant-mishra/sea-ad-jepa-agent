@@ -86,6 +86,23 @@ def matched_subset(nt_indices, cell_counts, n_guides, target_cells, rng,
     return np.sort(best), best_cells
 
 
+def depth_only_null(full_nt, target_depth, rng):
+    """Binomially thin the SAME pooled NT transcript counts to target-depth expectation.
+
+    This preserves the aggregate NT molecular composition in expectation and changes
+    only read sampling/depth. It is a diagnostic, not an independent sample.
+    """
+    full_nt = np.asarray(full_nt, dtype=np.int64)
+    total = int(full_nt.sum())
+    if target_depth <= 0 or total <= 0 or target_depth >= total:
+        return None
+    p = float(target_depth / total)
+    thinned = rng.binomial(full_nt, p).astype(np.int64)
+    if int(thinned.sum()) <= 0:
+        return None
+    return thinned
+
+
 def top_extremes(effect, gene_indices):
     k = min(TOP_K, len(effect))
     down = set(np.argpartition(effect, k - 1)[:k].tolist())
@@ -165,8 +182,10 @@ def audit_modality(root, mod, receipt, draws, max_cell_ratio, rng):
             obs_top = top_extremes(observed, index)
             null_values = {gene: [] for gene in index}
             null_top = {gene: {"down": 0, "up": 0} for gene in index}
+            depth_values = {gene: [] for gene in index}
+            depth_top = {gene: {"down": 0, "up": 0} for gene in index}
             subset_signatures = set()
-            matched_cells, null_absmax = [], []
+            matched_cells, null_absmax, depth_absmax, depth_totals = [], [], [], []
             for _ in range(draws):
                 selection, selected_cells = matched_subset(
                     nt, cell[nt], len(ti), n_cells, rng,
@@ -190,15 +209,37 @@ def audit_modality(root, mod, receipt, draws, max_cell_ratio, rng):
                     null_values[gene].append(float(null[ix]))
                     null_top[gene]["down"] += int(extrema[gene]["down"])
                     null_top[gene]["up"] += int(extrema[gene]["up"])
+            # Independent diagnostic arm: same pooled NT composition, binomially
+            # thinned in read space to the actual target unit's raw depth.
+            for _ in range(draws):
+                thin = depth_only_null(nt_total, int(raw.sum()), rng)
+                if thin is None:
+                    break
+                de = effects(thin, nt_total)
+                extrema = top_extremes(de, index)
+                depth_totals.append(int(thin.sum()))
+                depth_absmax.append(float(np.max(np.abs(de))))
+                for gene, ix in index.items():
+                    depth_values[gene].append(float(de[ix]))
+                    depth_top[gene]["down"] += int(extrema[gene]["down"])
+                    depth_top[gene]["up"] += int(extrema[gene]["up"])
+
             n = len(matched_cells)
+            dn = len(depth_totals)
             if n < draws // 2:
                 target_rows[target] = {"status": "NOT_ESTIMABLE_INSUFFICIENT_MATCHED_NT_NULL",
                                        "cells": n_cells, "guides": len(ti),
                                        "matched_null_draws": n}
                 continue
+            if dn < draws // 2:
+                target_rows[target] = {"status": "NOT_ESTIMABLE_INSUFFICIENT_DEPTH_ONLY_NULL",
+                                       "cells": n_cells, "guides": len(ti),
+                                       "depth_null_draws": dn}
+                continue
             details = {}
             for gene, ix in index.items():
                 null = np.asarray(null_values[gene], dtype=float)
+                dnull = np.asarray(depth_values[gene], dtype=float)
                 obs = float(observed[ix])
                 details[gene] = {
                     "observed_log2cpm_fc": obs,
@@ -209,6 +250,11 @@ def audit_modality(root, mod, receipt, draws, max_cell_ratio, rng):
                     "observed_top25_up": bool(obs_top[gene]["up"]),
                     "null_top25_down_fraction": null_top[gene]["down"] / n,
                     "null_top25_up_fraction": null_top[gene]["up"] / n,
+                    "depth_only_null_median": float(np.median(dnull)),
+                    "depth_only_null_q025_q975": [float(x) for x in np.quantile(dnull, [0.025, 0.975])],
+                    "depth_only_null_exceedance_fraction_abs": float(np.mean(np.abs(dnull) >= abs(obs))),
+                    "depth_only_top25_down_fraction": depth_top[gene]["down"] / dn,
+                    "depth_only_top25_up_fraction": depth_top[gene]["up"] / dn,
                     "median_centred_log_ratio_sensitivity": (
                         float(obs_median[ix]) if np.isfinite(obs_median[ix]) else None),
                 }
@@ -221,6 +267,10 @@ def audit_modality(root, mod, receipt, draws, max_cell_ratio, rng):
                 "matched_null_draws": n, "matched_null_cells_min_max": [
                     int(min(matched_cells)), int(max(matched_cells))],
                 "null_max_abs_fc_median": float(np.median(null_absmax)),
+                "depth_only_null_draws": dn,
+                "depth_only_raw_total_min_max": [int(min(depth_totals)), int(max(depth_totals))],
+                "depth_only_expected_raw_total": int(raw.sum()),
+                "depth_only_max_abs_fc_median": float(np.median(depth_absmax)),
                 "sentinel_genes": details,
             }
         report["donors"][d] = {
@@ -252,6 +302,7 @@ def main(argv=None):
         "predeclared": {"draws": args.draws, "max_cell_ratio": args.max_cell_ratio,
                         "matching_variables": ["donor", "guide_count_exact", "cell_count_ratio"],
                         "selection_does_not_use_RNA_or_depth": True,
+                        "depth_only_arm": "binomial thinning of full donor NT pooled counts to target raw-depth expectation",
                         "seed": SEED, "pseudocount": PSEUDOCOUNT,
                         "top_k_each_tail": TOP_K, "sentinels": SENTINELS},
         "neutral_export_receipt_sha256": sha256(receipt_path),
@@ -260,6 +311,7 @@ def main(argv=None):
         "limitations": [
             "NT guide resamples overlap; they are not independent biological replicates or p-values",
             "Matching on guide/cell counts does not balance cell-state composition",
+            "Depth-only binomial draws preserve aggregate NT composition only in expectation and share the full NT source",
             "Pseudo-target NT excludes its guides from its own donor NT comparator",
             "Median-centred log ratio is exploratory only; zeros are missing, not true zero effects",
             "No claim of real intervention causality or transport to adult brain",
