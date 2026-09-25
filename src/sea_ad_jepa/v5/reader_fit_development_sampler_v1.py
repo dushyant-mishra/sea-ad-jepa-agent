@@ -102,6 +102,12 @@ def _propose_structural(
     codes = np.asarray(cell_donor)
     names = np.asarray(donor_ids).astype(str)
     counts = np.asarray([expected_counts[d] for d in names], dtype=np.int64)
+    # Crucial: conditionally accepting only draws that fit a small donor
+    # biases the claimed q=p marginal. Require capacity for EVERY possible
+    # donor-slot sequence, before touching the RNG. The authenticated frozen
+    # roster contains an 81-cell donor; no default update size is invented.
+    if n > int(counts.min()):
+        raise ValueError("update presentations exceed smallest donor; cannot certify exact q=p")
     # One stable sort, one prefix-sum: O(N log N), not 104 full-dataset scans.
     ranked_rows = np.argsort(codes, kind="stable").astype(np.int64, copy=False)
     offsets = np.concatenate(([0], np.cumsum(counts)))
