@@ -157,24 +157,27 @@ def verify_frozen_calibration_bundle(archive_path: str | Path) -> dict[str, obje
     """Read only two explicitly allowlisted CSV members after whole-ZIP hashing."""
     path = Path(archive_path)
     digest = hashlib.sha256()
+    # Hash and read through ONE open file descriptor: a pathname replacement
+    # between separate opens must never splice a new archive into this receipt.
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(8 << 20), b""):
             digest.update(chunk)
-    if digest.hexdigest() != ARCHIVE_SHA256:
-        raise ValueError("calibration ZIP byte SHA-256 mismatch")
-    with zipfile.ZipFile(path) as archive:
-        names = archive.namelist()
-        if len(names) != len(set(names)):
-            raise ValueError("ZIP duplicate member name")
-        values = []
-        for suffix in (READER_SUFFIX, DONOR_SUFFIX):
-            matching = [name for name in names if name.endswith(suffix)]
-            if len(matching) != 1:
-                raise ValueError("frozen metadata ZIP member missing or ambiguous")
-            info = archive.getinfo(matching[0])
-            if info.file_size > 1_000_000:
-                raise ValueError("metadata ZIP member exceeds one-megabyte bound")
-            values.append(archive.read(info))
+        if digest.hexdigest() != ARCHIVE_SHA256:
+            raise ValueError("calibration ZIP byte SHA-256 mismatch")
+        stream.seek(0)
+        with zipfile.ZipFile(stream) as archive:
+            names = archive.namelist()
+            if len(names) != len(set(names)):
+                raise ValueError("ZIP duplicate member name")
+            values = []
+            for suffix in (READER_SUFFIX, DONOR_SUFFIX):
+                matching = [name for name in names if name.endswith(suffix)]
+                if len(matching) != 1:
+                    raise ValueError("frozen metadata ZIP member missing or ambiguous")
+                info = archive.getinfo(matching[0])
+                if info.file_size > 1_000_000:
+                    raise ValueError("metadata ZIP member exceeds one-megabyte bound")
+                values.append(archive.read(info))
     result = verify_frozen_reader_fit_bytes(*values)
     return {
         "schema": "V26_READER_FIT_METADATA_PREFLIGHT_V1",
