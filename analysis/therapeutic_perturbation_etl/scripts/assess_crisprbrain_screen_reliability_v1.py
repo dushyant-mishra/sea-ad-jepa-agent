@@ -155,12 +155,18 @@ def wald_se(log2fc, pval):
     which correctly means "this screen's estimate carries no information about
     this effect", and NaN where beta == 0 and z == 0 (0/0, genuinely undefined).
     """
-    p = np.clip(np.asarray(pval, dtype=float), 1e-300, 1.0 - 1e-16)
+    p_raw = np.asarray(pval, dtype=float)
+    p = np.clip(p_raw, 1e-300, 1.0)
     z = stats.norm.isf(p / 2.0)
     b = np.abs(np.asarray(log2fc, dtype=float))
     with np.errstate(divide="ignore", invalid="ignore"):
         se = b / z
+    # p == 1 carries no information about the effect.  Record that as infinite
+    # uncertainty, not as a very large finite number: a finite value would look
+    # like a measurement when none was made, and would let a downstream
+    # heterogeneity test treat an uninformative row as informative.
     se = np.where((z <= 0) & (b > 0), np.inf, se)
+    se = np.where((b == 0) & (z <= 0), np.nan, se)
     return se
 
 
