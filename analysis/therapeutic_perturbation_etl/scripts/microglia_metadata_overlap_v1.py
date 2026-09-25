@@ -24,14 +24,16 @@ def scan_identifiers(raw,compressed_sha,uncompressed_sha):
     except StopIteration as exc: raise ValueError("STOP: empty file") from exc
     if header.count("Gene")!=1 or header.count("name")!=1: raise ValueError("STOP: missing or duplicate identifiers")
     gi,ti=header.index("Gene"),header.index("name")
-    genes,targets=set(),set();n=0
+    genes,targets,self_rows=set(),set(),set();n=0
     for row in reader:
         if len(row)!=len(header): raise ValueError("STOP: malformed row")
         gene,target=row[gi].strip(),row[ti].strip()
         if not gene or not target: raise ValueError("STOP: empty identifier")
         genes.add(gene);targets.add(target);n+=1
+        if gene==target:self_rows.add(target)
     if n==0: raise ValueError("STOP: no data rows")
-    return {"rows":n,"targets":targets,"features":genes,"target_set_sha256":digest_members(targets),"feature_set_sha256":digest_members(genes)}
+    return {"rows":n,"targets":targets,"features":genes,"target_set_sha256":digest_members(targets),"feature_set_sha256":digest_members(genes),
+            "own_target_rows":self_rows}
 def compare_screen_metadata(screens):
     pairs=[]
     for (a,x),(b,y) in combinations(sorted(screens.items()),2):
@@ -63,9 +65,10 @@ def build(repo):
     return {"schema":"CRISPRBRAIN_MICROGLIA_METADATA_OVERLAP_V1",
        "authority":"METADATA_ONLY_NOT_BIOLOGICAL_COMPARABILITY",
        "no_numeric_outcome_columns_inspected":True,"training_authority":False,
-       "screens":{k:{a:b for a,b in s.items() if a not in ("targets","features")}|
+       "screens":{k:{a:b for a,b in s.items() if a not in ("targets","features","own_target_rows")}|
                    {"target_count":len(s["targets"]),"feature_count":len(s["features"]),
-                    "per_target_assay_label_present":{t:t in s["features"] for t in sorted(s["targets"])}} for k,s in screens.items()},
+                    "per_target_assay_label_present":{t:t in s["features"] for t in sorted(s["targets"])},
+                    "per_target_self_row_present":{t:t in s["own_target_rows"] for t in sorted(s["targets"])}} for k,s in screens.items()},
        "pairs":compare_screen_metadata(screens)}
 def main():
     p=argparse.ArgumentParser();p.add_argument("--repo",required=True,type=Path);p.add_argument("--out",required=True,type=Path)
