@@ -1,0 +1,64 @@
+name: PR118 Independent WP-F Source and Exposure Audit
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_cross_study_comparability_matrix_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/independently_verify_claude_wpf_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_independently_verify_claude_wpf_v1.py'
+      - '.github/workflows/wpf-pr118-independent-review.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/build_cross_study_comparability_matrix_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/independently_verify_claude_wpf_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_independently_verify_claude_wpf_v1.py'
+      - '.github/workflows/wpf-pr118-independent-review.yml'
+  workflow_dispatch:
+jobs:
+  independent-source-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independent source integrity unit tests
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_independently_verify_claude_wpf_v1.py
+      - name: Regenerate Claude nine-study matrix from five previously authenticated sources
+        run: |
+          mkdir -p audit_runs
+          python analysis/therapeutic_perturbation_etl/scripts/build_cross_study_comparability_matrix_v1.py \
+            --gse335887-ref analysis/therapeutic_perturbation_etl/reference/gse335887/GSE335887_itf_feature_reference.csv.gz \
+            --gse178317-lib analysis/therapeutic_perturbation_etl/reference/GSE178317_sgrna_library_suppl_table5.csv \
+            --gse301119-crispri analysis/therapeutic_perturbation_etl/evidence/gse301119/CRISPRi_guide_donor_meta.csv \
+            --gse301119-crispra analysis/therapeutic_perturbation_etl/evidence/gse301119/CRISPRa_guide_donor_meta.csv \
+            --gse311359-identity analysis/therapeutic_perturbation_etl/evidence/gse311359/GSE311359_perturbation_identity.csv \
+            --out-dir audit_runs
+      - name: Independently verify five developmental engagement signs, 30 guides, and exposure
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/independently_verify_claude_wpf_v1.py \
+            --repo . \
+            --wp-receipt audit_runs/CROSS_STUDY_COMPARABILITY_RECEIPT_V1.json \
+            --wp-matrix audit_runs/CROSS_STUDY_COMPARABILITY_MATRIX_V1.csv \
+            --out audit_runs/CLAUDE_WPF_INDEPENDENT_REVIEW_V1.json --adversarial
+      - name: Verify explicit review terminal states
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("audit_runs/CLAUDE_WPF_INDEPENDENT_REVIEW_V1.json"))
+          assert len(x["five_target_development_engagement_direction_check"])==5
+          assert x["adversarial_forged_receipts_stopped"]==7
+          assert x["gse240609_exposure"]=="WP_D_INSPECTED_DEVELOPMENT"
+          assert x["GSE335887_numeric_outcome_unopened"] is True
+          assert x["GSE175721_author_guide_assignment_still_missing"] is True
+          assert x["GSE311359_BIN1_physical_V2_pending"] is True
+          assert x["jepa_training_authorized"] is False
+          print("PASS: source-pinned exact 5/5 cross-experiment own-gene signs; no downstream prediction")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PR118-SOURCE-PINNED-INDEPENDENT-WPF-REVIEW
+          path: audit_runs/
+          retention-days: 30
