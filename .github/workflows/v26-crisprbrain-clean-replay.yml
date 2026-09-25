@@ -55,7 +55,10 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
-          fetch-depth: 0
+          fetch-depth: 1
+          sparse-checkout: |
+            analysis/therapeutic_perturbation_etl
+          sparse-checkout-cone-mode: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.9"
