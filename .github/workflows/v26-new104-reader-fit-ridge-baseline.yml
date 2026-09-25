@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: "3.11"
       - run: python -m pip install numpy pytest
-      - name: Execute 14 independent numerical and adversarial tests
+      - name: Execute 24 independent numerical and adversarial tests
         run: |
           python -m pytest analysis/v26_reader_fit_linear_baseline_20260925/tests/test_reader_fit_linear_lodo_v1.py \
             -q --strict-markers --junitxml=v26_new104_junit.xml
@@ -25,8 +25,8 @@ jobs:
           root = ET.parse("v26_new104_junit.xml").getroot()
           suite = root if root.tag == "testsuite" else root.find("testsuite")
           counts = {key: int(suite.attrib.get(key, "0")) for key in ("tests","errors","failures","skipped")}
-          assert counts["tests"] == 14 and all(counts[k] == 0 for k in ("errors","failures","skipped")), counts
-          print("PASS_V26_NEW104_RIDGE_SYNTHETIC_14_OF_14_ZERO_SKIPPED")
+          assert counts["tests"] == 24 and all(counts[k] == 0 for k in ("errors","failures","skipped")), counts
+          print("PASS_V26_NEW104_RIDGE_SYNTHETIC_24_OF_24_ZERO_SKIPPED")
           PY
       - uses: actions/upload-artifact@v4
         if: always()
