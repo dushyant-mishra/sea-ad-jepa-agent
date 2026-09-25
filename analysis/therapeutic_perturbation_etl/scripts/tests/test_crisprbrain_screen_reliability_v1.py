@@ -511,3 +511,39 @@ def test_24_independence_claim_is_negative_and_justified(receipt):
     assert set(s6["guides_per_target_distribution"]) == {"2"}
     # and the cited-not-measured statement must be marked as such
     assert "NOT recomputed here" in s6["shared_vector_and_parental_line"]
+
+def test_25_producer_writes_to_an_out_dir_outside_the_repo(tmp_path):
+    """The clean-checkout reproducer writes to a scratch directory beside the
+    worktree, precisely so a replay cannot disturb the tree it is replaying.
+    The producer crashed on that (ValueError from Path.relative_to) and the
+    failure surfaced only as 'producer exited 1'.  Guard it: a run whose --out
+    lies outside --repo must succeed and must still record a digest per file."""
+    out = tmp_path / "outside"
+    proc = subprocess.run(
+        [sys.executable, str(PRODUCER), "--repo", str(REPO), "--out", str(out)],
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stdout[-2000:] + proc.stderr[-2000:]
+    rp = out / "CRISPRBRAIN_SCREEN_RELIABILITY_RECEIPT_V1.json"
+    assert rp.is_file()
+    fresh = json.loads(rp.read_text(encoding="utf-8"))
+    assert fresh["status"] == "COMPLETE"
+    assert len(fresh["outputs"]) >= 7
+    for rec in fresh["outputs"]:
+        assert len(rec["sha256"]) == 64
+        assert rec["name"].endswith(".csv")
+
+
+def test_26_joint_count_unit_and_hypergeometric_caveat_are_stated(receipt):
+    """A count of (target, readout gene) rows must not be reportable as a count
+    of genes, and an enrichment p-value computed under an independence
+    assumption that is false must say so."""
+    s3 = receipt["S3_concordance"]
+    assert s3["n_jointly_significant_rows"] == s3["n_sig_both"]
+    assert "n_distinct_readout_genes_among_jointly_significant" in s3
+    assert "n_distinct_targets_among_jointly_significant" in s3
+    assert s3["n_distinct_targets_among_jointly_significant"] <= s3["n_sig_both"]
+    assert "rows" in s3["joint_count_unit"]
+    assert "NOT evidence of biological replication" in s3["hypergeom_caveat"]
+    assert "permutation" in s3["hypergeom_caveat"]

@@ -1426,9 +1426,17 @@ def main() -> int:
     for name in sorted(tables):
         p = outdir / name
         tables[name].to_csv(p, index=False)
+        try:
+            shown = str(p.relative_to(repo)).replace("\\", "/")
+        except ValueError:
+            # --out may legitimately point outside the repository: the clean
+            # checkout reproducer writes to a scratch directory beside the
+            # worktree so the replay cannot disturb the tree it is replaying.
+            shown = p.as_posix()
         written.append(
             {
-                "path": str(p.relative_to(repo)).replace("\\", "/"),
+                "path": shown,
+                "name": name,
                 "rows": int(len(tables[name])),
                 "sha256": sha256_file(p),
             }

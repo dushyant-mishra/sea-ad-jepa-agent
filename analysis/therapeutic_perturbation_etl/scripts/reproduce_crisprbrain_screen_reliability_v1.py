@@ -166,7 +166,7 @@ def main() -> int:
 
         # 1. every output CSV must be byte-identical
         for rec in committed.get("outputs", []):
-            name = Path(rec["path"]).name
+            name = rec.get("name") or Path(rec["path"]).name
             p = out / name
             if not p.is_file():
                 failures.append("output missing in replay: %s" % name)
