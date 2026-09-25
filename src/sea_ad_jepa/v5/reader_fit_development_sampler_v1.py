@@ -28,7 +28,7 @@ from .reader_fit_population_preflight_v1 import (
 )
 
 SCHEMA = "V26_READER_FIT_DEVELOPMENT_PROPOSAL_V1"
-POLICY = "DONOR_UNIFORM__CELL_UNIFORM_WITHIN_DONOR__WITH_REPLACEMENT_V1"
+POLICY = "DONOR_SLOTS_WITH_REPLACEMENT__CELLS_WITHOUT_REPLACEMENT_PER_UPDATE_V1"
 
 
 def _positive_exact(value: object, name: str, *, allow_zero: bool = False) -> int:
@@ -60,6 +60,8 @@ class ProposedDevelopmentUpdate:
             "status": "DETERMINISTIC_PROPOSAL_ONLY",
             "policy": self.proposal_policy_id,
             "seed_sha256": self.seed_sha256,
+            "numpy_version": np.__version__,
+            "rng_bit_generator": "PCG64",
             "update_index": self.update_index,
             "presentations": len(rows),
             "selection_rows_sha256": hashlib.sha256(rows.tobytes()).hexdigest(),
@@ -91,9 +93,11 @@ def _propose_structural(
     if not isinstance(source_digest, str) or len(source_digest) != 64:
         raise ValueError("source_digest must be an explicit SHA-256")
     try:
-        bytes.fromhex(source_digest)
+        digest_bytes = bytes.fromhex(source_digest)
     except ValueError as exc:
         raise ValueError("source_digest must be an explicit SHA-256") from exc
+    if digest_bytes.hex() != source_digest:
+        raise ValueError("source_digest must be canonical lowercase hexadecimal")
     _compare_structural(cell_donor, donor_ids, expected_counts)
     codes = np.asarray(cell_donor)
     names = np.asarray(donor_ids).astype(str)
