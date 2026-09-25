@@ -14,8 +14,12 @@ from sea_ad_jepa.perturbation.cross_study_feature_contract_v1 import (
 
 PARENT_SHA="e73e9259177884b5994fc81ed733c1b3d4df34c84290bc9dddc86e960d5d6419"
 EXPECTED_SOURCE_SHAS={
- "day12_iTF_CROP_RNA":"6f65d728699863d207012227c72ac88cc2033cc1277ee6a74132bac8f3afbea8",
- "day28_iPSC_CROP_RNA":"1efd4d840a46f0de32ce7839043df33e07db04d92f826855923e24f8fd36cdd2",
+ "day12_iTF_CROP_RNA":{
+   "source_compressed_sha256":"58c48fa4400d469a0e616940070bb426a71df77ff12e6de2bbf8efb119ff884e",
+   "source_uncompressed_sha256":"6f65d728699863d207012227c72ac88cc2033cc1277ee6a74132bac8f3afbea8"},
+ "day28_iPSC_CROP_RNA":{
+   "source_compressed_sha256":"818ae3c383811c94ab56ea588d34fbaaeaa1c808673125f68d62644e6ca19606",
+   "source_uncompressed_sha256":"1efd4d840a46f0de32ce7839043df33e07db04d92f826855923e24f8fd36cdd2"},
 }
 HGNC_ID=re.compile(r"^HGNC:[1-9]\d*$")
 ENSG=re.compile(r"^ENSG\d{11}$")
@@ -26,9 +30,11 @@ def freeze_verified_report(report, *, require_real_census=True):
         raise ValueError("STOP: frozen HGNC source bytes/digest mismatch")
     if report.get("response_values_inspected") is not False or report.get("training_authorized") is not False:
         raise ValueError("STOP: crosswalk is not metadata-only")
-    for screen,sha in EXPECTED_SOURCE_SHAS.items():
-        if report.get("screens",{}).get(screen,{}).get("source_compressed_sha256")!=sha:
-            raise ValueError("STOP: wrong CRISPRbrain source SHA")
+    for screen,expected in EXPECTED_SOURCE_SHAS.items():
+        observed=report.get("screens",{}).get(screen,{})
+        for namespace,sha in expected.items():
+            if observed.get(namespace)!=sha:
+                raise ValueError("STOP: wrong CRISPRbrain "+namespace+" for "+screen)
     data=report["crosswalk"]
     feature_map=data["collision_free_shared_feature_map"]
     target_map=data["target_primary_map"]
