@@ -3,8 +3,11 @@ from __future__ import annotations
 
 import csv
 from fractions import Fraction
+import hashlib
 import io
 import zipfile
+
+import sea_ad_jepa.v5.reader_fit_population_preflight_v1 as preflight
 
 import pytest
 
@@ -185,3 +188,69 @@ def test_malformed_csv_row_rejected():
     split_raw, donor_raw = raw(split, donors)
     with pytest.raises(ValueError, match="malformed"):
         _structural_audit(split_raw + b"bad,trailing,extra\n", donor_raw)
+
+
+def _patch_synthetic_fixture_hashes(monkeypatch, archive_path, split_raw, donor_raw, donor_rows):
+    """TEST ONLY; production module retains pinned immutable source-file digests."""
+    split, _ = fixture_rows()
+    fit_ids = sorted(d for d, partition in split if partition == "reader_fit")
+    membership = hashlib.sha256(("\\n".join(fit_ids) + "\\n").encode()).hexdigest()
+    counts = {d: int(n) for d, n, _ in donor_rows}
+    canonical = "".join(f"{d}\\t{counts[d]}\\n" for d in sorted(counts))
+    for name, value in {
+        "ARCHIVE_SHA256": hashlib.sha256(archive_path.read_bytes()).hexdigest(),
+        "READER_SPLIT_SHA256": hashlib.sha256(split_raw).hexdigest(),
+        "DONOR_METADATA_SHA256": hashlib.sha256(donor_raw).hexdigest(),
+        "FIT_MEMBERSHIP_SHA256": membership,
+        "FIT_COUNTS_SHA256": hashlib.sha256(canonical.encode()).hexdigest(),
+    }.items():
+        monkeypatch.setattr(preflight, name, value)
+
+
+def test_synthetic_zip_uses_single_descriptor_and_read_allowlist(monkeypatch, tmp_path):
+    split, donor = fixture_rows()
+    split_raw, donor_raw = raw(split, donor)
+    path = tmp_path / "test_only.zip"
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr("allowed/splits/reader_donor_split.csv", split_raw)
+        archive.writestr("allowed/metadata/FOUNDATION_METADATA_DONOR.csv", donor_raw)
+        archive.writestr("forbidden/pathology_or_expression.bin", b"DO_NOT_OPEN")
+    _patch_synthetic_fixture_hashes(monkeypatch, path, split_raw, donor_raw, donor)
+
+    # Try to catch a future broad/recursive extractor silently reading a sealed member.
+    real_read = zipfile.ZipFile.read
+    def guarded_read(archive, name, *args, **kwargs):
+        member = name.filename if isinstance(name, zipfile.ZipInfo) else name
+        if "forbidden" in member:
+            raise AssertionError("non-allowlisted member was read")
+        return real_read(archive, name, *args, **kwargs)
+    monkeypatch.setattr(zipfile.ZipFile, "read", guarded_read)
+    receipt = preflight.verify_frozen_calibration_bundle(path)
+    assert receipt["status"] == "BYTE_AUTHENTICATED_METADATA_ONLY"
+    assert receipt["training_authorized"] is False
+    assert receipt["raw_full104_block_validation"] == "NOT_PERFORMED"
+
+
+def test_changed_member_rejected_even_if_outer_synthetic_zip_hash_is_accepted(monkeypatch, tmp_path):
+    split, donors = fixture_rows()
+    split_raw, donor_raw = raw(split, donors)
+    path = tmp_path / "wrong_member.zip"
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr("allowed/splits/reader_donor_split.csv", split_raw + b"\\n")
+        archive.writestr("allowed/metadata/FOUNDATION_METADATA_DONOR.csv", donor_raw)
+    _patch_synthetic_fixture_hashes(monkeypatch, path, split_raw, donor_raw, donors)
+    with pytest.raises(ValueError, match="reader split byte SHA"):
+        preflight.verify_frozen_calibration_bundle(path)
+
+
+def test_duplicate_zip_member_rejected_with_exact_synthetic_hashes(monkeypatch, tmp_path):
+    split, donors = fixture_rows()
+    split_raw, donor_raw = raw(split, donors)
+    path = tmp_path / "duplicate_member.zip"
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr("allowed/splits/reader_donor_split.csv", split_raw)
+        archive.writestr("allowed/metadata/FOUNDATION_METADATA_DONOR.csv", donor_raw)
+        archive.writestr("allowed/splits/reader_donor_split.csv", split_raw)
+    _patch_synthetic_fixture_hashes(monkeypatch, path, split_raw, donor_raw, donors)
+    with pytest.raises(ValueError, match="duplicate member"):
+        preflight.verify_frozen_calibration_bundle(path)
