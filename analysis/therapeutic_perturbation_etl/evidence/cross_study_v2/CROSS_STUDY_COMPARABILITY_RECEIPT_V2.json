@@ -1,0 +1,84 @@
+{
+  "schema": "CROSS_STUDY_COMPARABILITY_MATRIX_V2",
+  "supersedes": "build_cross_study_comparability_matrix_v1.py",
+  "fixes": [
+    "outcome exposure read from the assertion registry, never hard-coded",
+    "GSE335887 age recorded as SOURCE_CONFLICT_PENDING_RUN_LEVEL_AUTHORITY",
+    "computed columns and curator assertions emitted as separate files",
+    "inputs digested before opening and re-verified after reading",
+    "refuses an occupied output directory"
+  ],
+  "input_digests_before_open": {
+    "gse335887_ref": "fd2c3fa5b517c81bbd158516dacb00416f1883a654c795e126916620f77f225f",
+    "gse178317_lib": "8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942",
+    "gse301119_crispri": "ce96daa64413a238173b485a91037df02824e85bc071e715292aa800dee7abe8",
+    "gse301119_crispra": "e13c3bb2741824139d5adb91b22ad725956078ede98f59cf74a5c1abe96e3397",
+    "gse311359_identity": "1eeb4e40f14ec2ebe7472d7bb80769ae35bdb8df8ccbf4308493c8441eb363b5",
+    "assertion_registry": "7141c2cd4c675cb99cd3e64baf04d6ef348cf403bb0b6a5ee4ac3b212d7af763"
+  },
+  "input_digests_after_read": {
+    "gse335887_ref": "fd2c3fa5b517c81bbd158516dacb00416f1883a654c795e126916620f77f225f",
+    "gse178317_lib": "8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942",
+    "gse301119_crispri": "ce96daa64413a238173b485a91037df02824e85bc071e715292aa800dee7abe8",
+    "gse301119_crispra": "e13c3bb2741824139d5adb91b22ad725956078ede98f59cf74a5c1abe96e3397",
+    "gse311359_identity": "1eeb4e40f14ec2ebe7472d7bb80769ae35bdb8df8ccbf4308493c8441eb363b5",
+    "assertion_registry": "7141c2cd4c675cb99cd3e64baf04d6ef348cf403bb0b6a5ee4ac3b212d7af763"
+  },
+  "authenticated_direct_target_counts": {
+    "GSE335887": 30,
+    "GSE178317": 39,
+    "GSE301119": 208
+  },
+  "gse301119_per_modality": {
+    "CRISPRi": 206,
+    "CRISPRa": 206,
+    "union": 208,
+    "intersection": 204,
+    "crispri_only": [
+      "RPL11",
+      "RPL7"
+    ],
+    "crispra_only": [
+      "CDKN2A",
+      "TP53"
+    ],
+    "note": "modalities do not target identical gene sets and do not share a feature space; cross-modal scores require the actual feature intersection"
+  },
+  "shared_direct_targets": {
+    "GSE178317|GSE335887": [],
+    "GSE178317|GSE301119": [
+      "CSF1R",
+      "CSF2RA",
+      "CSF2RB",
+      "TGFBR1",
+      "TGFBR2"
+    ],
+    "GSE335887|GSE301119": [
+      "SPI1"
+    ]
+  },
+  "shared_with_nominated_only": {
+    "GSE178317|GSE311359_NOMINATED": [],
+    "GSE335887|GSE311359_NOMINATED": [
+      "MAF"
+    ],
+    "GSE301119|GSE311359_NOMINATED": [
+      "BIN1",
+      "CD86",
+      "IFNGR1",
+      "IRF5",
+      "MERTK"
+    ]
+  },
+  "nominated_is_not_direct": "a nominated cis gene is an assertion about which gene an element may regulate; never counted as a shared intervention target",
+  "gse335887_target_identity": {
+    "authenticated_guide_targets": 30,
+    "ARID5B": "TARGET_IDENTITY_PENDING - present as a CRISPRbrain processed label, no authenticated guide in the deposited GEO feature reference"
+  },
+  "overlap_scope_warning": "the five shared Day-8 / GSE301119 direct targets do NOT involve GSE335887; these overlap queries must never be conflated",
+  "computed_matrix_csv_sha256": "e781d5c3e94df01b50d60a6b73ef080a65ecb4213fea5e08eaab86a04f9f9e8a",
+  "curator_assertions_csv_sha256": "c2a0ba12f0c39445736f31018029c2ec8cf7e375b4795a51e97c6d97f6a8d1bc",
+  "jepa_prediction_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false
+}
