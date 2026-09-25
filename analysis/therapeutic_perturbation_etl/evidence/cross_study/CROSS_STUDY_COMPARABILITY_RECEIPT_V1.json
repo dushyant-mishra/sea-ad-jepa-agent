@@ -1,0 +1,63 @@
+{
+  "schema": "CROSS_STUDY_COMPARABILITY_MATRIX_V1",
+  "shared_identities_recomputed_from_source": true,
+  "authenticated_direct_target_counts": {
+    "GSE335887": 30,
+    "GSE178317": 39,
+    "GSE301119": 208
+  },
+  "gse301119_per_modality": {
+    "CRISPRi": 206,
+    "CRISPRa": 206,
+    "union": 208,
+    "intersection": 204,
+    "crispri_only": [
+      "RPL11",
+      "RPL7"
+    ],
+    "crispra_only": [
+      "CDKN2A",
+      "TP53"
+    ],
+    "note": "the two modalities do NOT target identical gene sets, so a paired CRISPRi/CRISPRa comparison is possible only on the intersection"
+  },
+  "shared_direct_targets": {
+    "GSE178317|GSE335887": [],
+    "GSE178317|GSE301119": [
+      "CSF1R",
+      "CSF2RA",
+      "CSF2RB",
+      "TGFBR1",
+      "TGFBR2"
+    ],
+    "GSE335887|GSE301119": [
+      "SPI1"
+    ]
+  },
+  "shared_with_nominated_only": {
+    "GSE178317|GSE311359_NOMINATED": [],
+    "GSE335887|GSE311359_NOMINATED": [
+      "MAF"
+    ],
+    "GSE301119|GSE311359_NOMINATED": [
+      "BIN1",
+      "CD86",
+      "IFNGR1",
+      "IRF5",
+      "MERTK"
+    ]
+  },
+  "nominated_is_not_direct": "a nominated cis gene is an assertion about which gene an element may regulate; it is not an authenticated direct gene intervention and must never be counted as a shared target",
+  "pooling_warning": "a shared gene symbol is not experimental comparability: cell model, protocol, differentiation age, control design and readout all differ across these studies",
+  "source_digests": {
+    "gse335887_ref": "fd2c3fa5b517c81bbd158516dacb00416f1883a654c795e126916620f77f225f",
+    "gse178317_lib": "8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942",
+    "gse301119_crispri": "ce96daa64413a238173b485a91037df02824e85bc071e715292aa800dee7abe8",
+    "gse301119_crispra": "e13c3bb2741824139d5adb91b22ad725956078ede98f59cf74a5c1abe96e3397",
+    "gse311359_identity": "1eeb4e40f14ec2ebe7472d7bb80769ae35bdb8df8ccbf4308493c8441eb363b5"
+  },
+  "matrix_csv_sha256": "f0eda718f2e2e347d633d794a87024d568a8e36879e60de534e355a1f13b3aac",
+  "jepa_prediction_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false
+}
