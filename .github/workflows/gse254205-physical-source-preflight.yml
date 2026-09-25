@@ -1,0 +1,37 @@
+name: GSE254205 physical source-preflight adversaries
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/gse254205_physical_source_preflight_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_gse254205_physical_source_preflight_v1.py'
+      - '.github/workflows/gse254205-physical-source-preflight.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/gse254205_physical_source_preflight_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_gse254205_physical_source_preflight_v1.py'
+      - '.github/workflows/gse254205-physical-source-preflight.yml'
+  workflow_dispatch:
+jobs:
+  source-preflight-synthetic:
+    runs-on: ubuntu-latest
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Seven independent synthetic integrity cases
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_gse254205_physical_source_preflight_v1.py
+      - name: Check authoritative nine-sample metadata blob, not physical archive
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'analysis/therapeutic_perturbation_etl/scripts')
+          import gse254205_physical_source_preflight_v1 as p
+          raw=Path(p.SOURCE_INVENTORY).read_bytes()
+          rows=p.parse_frozen_inventory(raw)
+          assert len(rows)==9
+          assert p.git_blob(raw)=='4e0296a6aedeb31b36d1dc2361b451f334b2588e'
+          assert p.ARCHIVE_SHA256=='ae3761514b5ac0bf37ae727ab956f6e6bee70c4dab52519ab2f20cc9a322d569'
+          print('PASS: exact prior source metadata + synthetic archive; real physical input still Claude task')
+          PY
