@@ -10,6 +10,8 @@ from microglia_metadata_overlap_v1 import SCREENS,scan_identifiers,digest_member
 ROOT=Path("analysis/therapeutic_perturbation_etl")
 HGNC_URL="https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2026-07-07.tsv"
 RELEASE="HGNC_COMPLETE_SET_QUARTERLY_2026-07-07"
+EXPECTED_HGNC_SHA256="e73e9259177884b5994fc81ed733c1b3d4df34c84290bc9dddc86e960d5d6419"
+EXPECTED_HGNC_BYTES=16913890
 ENSG=re.compile(r"^ENSG[0-9]{11}$")
 SOURCES=("day12_iTF_CROP_RNA","day28_iPSC_CROP_RNA")
 def source_rows(data):
@@ -53,6 +55,8 @@ def map_features(a,b,approved,ambiguous):
         "aliases_auto_mapped":False,"unresolved_features_treated_as_zero":False}
 def build(repo,download):
     if len(download)>30000000:raise ValueError("STOP: unexpectedly large HGNC input")
+    if len(download)!=EXPECTED_HGNC_BYTES or hashlib.sha256(download).hexdigest()!=EXPECTED_HGNC_SHA256:
+        raise ValueError("STOP: HGNC physical bytes differ from verified frozen July 2026 source")
     approved,ambig,n=source_rows(download)
     m=json.loads((repo/ROOT/"evidence/COMMITTED_OUTPUTS_SHA256_MANIFEST_V1.json").read_text())
     digest_map={x["path"]:x for x in m["files"]}; screens={}
