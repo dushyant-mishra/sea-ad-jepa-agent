@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'src/sea_ad_jepa/v5/reader_fit_development_sampler_v1.py'
+      - 'scripts/agent/run_v26_reader_fit_development_proposal.py'
       - 'tests/test_v26_reader_fit_development_sampler_v1.py'
       - '.github/workflows/v26-reader-fit-development-proposal.yml'
   workflow_dispatch:
@@ -50,8 +51,12 @@ jobs:
             "test_heldout_or_continuation_donor_identity_fails",
             "test_change_in_source_root_changes_rng_stream",
             "test_no_real_file_implies_no_real_selection",
+            "test_synthetic_output_writer_records_npz_hash_without_training",
+            "test_synthetic_output_writer_refuses_existing_output_dir",
+            "test_synthetic_output_writer_rejects_forged_training_receipt",
+            "test_synthetic_output_writer_rejects_selection_digest_mismatch",
           }
-          if counts["tests"] < 74 or any(counts[k] for k in ("skipped","failures","errors")) or not required<=cases:
+          if counts["tests"] < 78 or any(counts[k] for k in ("skipped","failures","errors")) or not required<=cases:
             raise SystemExit(f"STOP_PROPOSAL_INCOMPLETE {counts} missing={sorted(required-cases)}")
           print(f"PASS_V26_READER_FIT_PROPOSAL_SYNTHETIC_ONLY {counts['tests']} passed, zero skipped")
           PY
