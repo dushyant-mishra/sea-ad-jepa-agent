@@ -80,7 +80,8 @@ class SyntheticFullCoverage(unittest.TestCase):
             if expect:
                 with self.assertRaises(SystemExit) as err:mod.main()
                 self.assertIn(expect,str(err.exception))
-                self.assertFalse(self.out.exists())
+                if expect != "STOP_OUTPUT_EXISTS":
+                    self.assertFalse(self.out.exists())
             else:
                 self.assertEqual(mod.main(),0)
                 obj=json.loads(self.out.read_text())
