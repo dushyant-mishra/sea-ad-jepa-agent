@@ -49,9 +49,6 @@ check(receipt$independent_effect_reproduction=="PASS" &&
       receipt$compared_finite_effects==3L &&
       receipt$confirmed_identical_missingness)
 # A same-size or differently serialized rewrite invalidates the independent SHA.
-bad<-readBin(rp,"raw",n=file.info(rp)$size)
-bad[length(bad)]<-as.raw(bitwXor(as.integer(bad[length(bad)]),1L))
-writeBin(bad,rp)
 # Independent fixed expected root, not dynamically refreshed after mutation.
 write_pair(); fixed<-expected()
 bad<-readBin(rp,"raw",n=file.info(rp)$size)
