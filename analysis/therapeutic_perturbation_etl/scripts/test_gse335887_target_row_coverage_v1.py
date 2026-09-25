@@ -12,9 +12,9 @@ class PerTargetPublishedRowSupport(unittest.TestCase):
     def test_per_target_missing_not_zero_and_hgnc_filter(self):
         a={"T1":{"T1","G1","G2"},"T2":{"T2","G3"}}
         b={"T1":{"G1","G2"},"T2":{"T2","G3"}}
-        x=derive(a,b,{"G1","G2"},expected_targets=2,expected_common=3,expected_primary=2)
+        x=derive(a,b,{"G1","G2"},expected_targets=2,expected_common=4,expected_primary=2)
         self.assertEqual(x["targets"],2)
-        self.assertEqual(x["shared_screenwide_published_gene_label_count"],3)
+        self.assertEqual(x["shared_screenwide_published_gene_label_count"],4)
         t={p["perturbed_target"]:p for p in x["per_target"]}
         self.assertEqual(t["T1"]["both_published_de_row_count"],2)
         self.assertFalse(t["T1"]["iMG_published_self_row"])
