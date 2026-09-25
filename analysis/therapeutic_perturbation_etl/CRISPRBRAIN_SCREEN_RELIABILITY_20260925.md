@@ -520,10 +520,11 @@ above 0.032; and C5 is a fact about the experimental design, not a measurement.
 
 **Is there a usable subset?** A target would qualify only if it is engaged in
 both screens **and** its two response profiles correlate at ≥ 0.30. **Zero
-targets qualify.** STAT2 is engaged in both but its profiles correlate at 0.051;
-CEBPD has the best profile correlation (0.212) but is engaged in neither. So
-"only for this subset" was genuinely available as an answer and the data did not
-support it.
+targets qualify.** STAT2 — the one target engaged in both screens — has a
+profile correlation of **0.0093**, with 109 significant readout genes in iTF
+against 1 in iPSC. CEBPD has the best profile correlation anywhere (0.212) and
+is engaged in neither screen. So "only for this subset" was genuinely available
+as an answer and the data did not support it.
 
 ---
 
