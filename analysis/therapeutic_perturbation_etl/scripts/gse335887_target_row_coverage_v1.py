@@ -29,14 +29,14 @@ def scan_pair_rows(data,expected_compressed,expected_plain):
         dest.add(gene);total+=1
     if not total:raise ValueError("STOP: empty source table")
     return target_gene,total
-def derive(a,b, approved_primary=None):
-    if set(a)!=set(b) or len(a)!=31:
+def derive(a,b, approved_primary=None, *, expected_targets=31, expected_common=13489, expected_primary=13373):
+    if set(a)!=set(b) or len(a)!=expected_targets:
         raise ValueError("STOP: 31 common target identities required")
     primary=set(approved_primary) if approved_primary is not None else None
     all_a=set().union(*a.values());all_b=set().union(*b.values())
     common=all_a&all_b
-    if len(common)!=13489:raise ValueError("STOP: published union intersection changed")
-    if primary is not None and (len(primary)!=13373 or not primary<=common):
+    if len(common)!=expected_common:raise ValueError("STOP: published union intersection changed")
+    if primary is not None and (len(primary)!=expected_primary or not primary<=common):
         raise ValueError("STOP: wrong frozen primary gene universe")
     per=[]
     for target in sorted(a):
@@ -88,10 +88,7 @@ def build(repo,frozen=None):
             raise ValueError("STOP: frozen annotation root mismatch")
         if j.get("training_authorized") is not False or j.get("mapped_common_measured_feature_labels")!=13373:
             raise ValueError("STOP: wrong frozen crosswalk scope")
-        approved={x["source_id"] for x in j["frozen_annotation_body"]["entries"]}
-        target_set=set(scans[KEYS[0]])
-        approved-=target_set
-        # Restore all mapped feature labels that overlap the common screenwide feature set.
+        # Map only exact approved primary names appearing in both released DE tables.
         common=set().union(*scans[KEYS[0]].values())&set().union(*scans[KEYS[1]].values())
         approved={x["source_id"] for x in j["frozen_annotation_body"]["entries"] if x["source_id"] in common}
         if len(approved)!=13373:raise ValueError("STOP: primary common measured set drift")
