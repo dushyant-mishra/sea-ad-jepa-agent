@@ -1,0 +1,24 @@
+{
+  "schema": "JEPA_SUCCESSOR_HANDOFF_POINTER_V1",
+  "date": "2026-09-25",
+  "status": "DOCS_ONLY_DRAFT__NO_EXECUTION_AUTHORITY",
+  "branch": "handoff/jepa-20260925-pr121-runtime-inventory",
+  "base_main_at_creation": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260925_PR121_N1_RUNTIME.md",
+  "local_asset_manifest": "docs/agent/JEPA_RUNTIME_LOCAL_ASSETS_SHA256_20260925.json",
+  "read_before": [
+    "START_HERE.md",
+    "docs/agent/JEPA_LATEST_HANDOFF_POINTER.json",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260924_V25_RESULTS_DATA_SCRIPTS.md",
+    "docs/agent/JEPA_NEW_CHAT_HANDOFF_STATE_20260924_V25.json",
+    "docs/agent/JEPA_HISTORICAL_AUDITS_INDEX_20260915.md"
+  ],
+  "controlling_prs": {
+    "etl": 121,
+    "n1": 120,
+    "inventory_independent": 119,
+    "physical_etl_prior": 118
+  },
+  "governance": "V25 remains canonical on main until this docs-only successor is reviewed and merged; no training authorization.",
+  "runtime_assets": "29 files / 1329773116 bytes are SHA-bound references, NOT binary uploads"
+}
