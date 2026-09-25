@@ -1,0 +1,49 @@
+name: CRISPRbrain microglia metadata-only overlap
+on:
+  push:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/microglia_metadata_overlap_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_microglia_metadata_overlap_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/COMMITTED_OUTPUTS_SHA256_MANIFEST_V1.json'
+      - 'analysis/therapeutic_perturbation_etl/outputs/crisprbrain/**'
+      - '.github/workflows/crisprbrain-microglia-metadata-only.yml'
+  pull_request:
+    paths:
+      - 'analysis/therapeutic_perturbation_etl/scripts/microglia_metadata_overlap_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/scripts/test_microglia_metadata_overlap_v1.py'
+      - 'analysis/therapeutic_perturbation_etl/evidence/COMMITTED_OUTPUTS_SHA256_MANIFEST_V1.json'
+      - 'analysis/therapeutic_perturbation_etl/outputs/crisprbrain/**'
+      - '.github/workflows/crisprbrain-microglia-metadata-only.yml'
+  workflow_dispatch:
+jobs:
+  metadata-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Adversarial metadata-only tests
+        run: python -m unittest -v analysis/therapeutic_perturbation_etl/scripts/test_microglia_metadata_overlap_v1.py
+      - name: Physical metadata-only overlap on five SHA-verified screens
+        run: |
+          python analysis/therapeutic_perturbation_etl/scripts/microglia_metadata_overlap_v1.py \
+            --repo . --out microglia_metadata_overlap_ci_v1.json
+      - name: Validate no biological or model authority
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("microglia_metadata_overlap_ci_v1.json"))
+          assert len(x["screens"])==5 and len(x["pairs"])==10
+          assert x["no_numeric_outcome_columns_inspected"] is True
+          assert x["training_authority"] is False
+          assert all(v["biological_preparation_independence"]=="NOT_VERIFIED" for v in x["pairs"])
+          print("PASS: metadata-only, 5 screens, 10 pairs; no training or independence authority")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CRISPRbrain-five-screen-METADATA-ONLY-overlap
+          path: microglia_metadata_overlap_ci_v1.json
+          retention-days: 30
