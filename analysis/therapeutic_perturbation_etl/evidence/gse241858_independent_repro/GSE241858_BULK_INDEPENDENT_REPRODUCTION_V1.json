@@ -1,0 +1,246 @@
+{
+  "schema": "GSE241858_BULK_INDEPENDENT_REPRODUCTION_V1",
+  "verdict": "IMPLEMENTATION_REPRODUCED_TO_STORED_PRECISION",
+  "audit_item": "P1-6 INDEPENDENT_PHYSICAL_RECOMPUTATION",
+  "study": "GSE241858",
+  "design": "TREM2 R47H vs CTRL iPSC-derived microglia, 2 independent clones per genotype, baseline arm plus IFN/LPS cytokine arm",
+  "experimental_unit": "iPSC clone",
+  "clone_aware": true,
+  "declared_tolerance": 1e-09,
+  "declared_tolerance_met_at_full_precision": false,
+  "rounding_fully_explains_every_delta": true,
+  "stored_decimals": 6,
+  "precision_limitation": "the producer writes log2fc and se_clone_level rounded to 6 decimals, so the declared 1e-9 tolerance is NOT testable against its CSV. The tolerance was not widened. Every delta is instead required to be exactly explained by rounding: round(independent_value, 6) must equal the stored value on every row. Verifying at 1e-9 requires the producer to emit full precision.",
+  "controls": {
+    "sign_control_reversed_contrast_negates": true,
+    "clone_blindness_detectable_in_point_estimate": true,
+    "max_abs_gap_clone_aware_minus_clone_blind_lfc_LPS_in_CTRL": 0.9666608561111818,
+    "balanced_arm_lfc_gap_clone_aware_minus_flat": 3.552713678800501e-15,
+    "balanced_arm_se_gap_clone_aware_minus_flat": 0.7622364666115815,
+    "se_control_distinguishes_clone_units": true,
+    "control_note": "the baseline arm is balanced at 3 replicates per clone, so a clone-blind point estimate coincides with the clone-aware one there; clone-blindness is detectable in the baseline STANDARD ERROR and in the UNBALANCED cytokine LPS-in-CTRL point estimate, both of which are checked before the comparison is believed"
+  },
+  "depth_ratios_measured_here": {
+    "per_contrast": {
+      "R47H_vs_CTRL_baseline": {
+        "group_mean_library_ratio": 1.3704792819512936,
+        "worst_sample_pair_ratio": 2.8624188350498705,
+        "clone_mean_library_spread": 1.9199403631821732
+      },
+      "IFN_vs_UNTR_in_CTRL": {
+        "group_mean_library_ratio": 1.3203536717973219,
+        "worst_sample_pair_ratio": 6.02193496225826,
+        "clone_mean_library_spread": 2.324867021293533
+      },
+      "IFN_vs_UNTR_in_R47H": {
+        "group_mean_library_ratio": 1.1376534088897357,
+        "worst_sample_pair_ratio": 1.8550713292885237,
+        "clone_mean_library_spread": 1.3688034226875363
+      },
+      "LPS_vs_UNTR_in_CTRL": {
+        "group_mean_library_ratio": 1.0422073761137303,
+        "worst_sample_pair_ratio": 6.02193496225826,
+        "clone_mean_library_spread": 2.324867021293533
+      },
+      "LPS_vs_UNTR_in_R47H": {
+        "group_mean_library_ratio": 1.0356133232034863,
+        "worst_sample_pair_ratio": 1.724905158346359,
+        "clone_mean_library_spread": 1.38032572266687
+      },
+      "R47H_vs_CTRL_untreated": {
+        "group_mean_library_ratio": 1.0562572169511157,
+        "worst_sample_pair_ratio": 6.02193496225826,
+        "clone_mean_library_spread": 2.324867021293533
+      }
+    },
+    "worst_group_mean_library_ratio": 1.3704792819512936,
+    "worst_sample_pair_ratio": 6.02193496225826,
+    "definition_note": "the previously cited 1.370x for this study is the worst GROUP-MEAN library ratio (R47H_vs_CTRL_baseline). The worst individual SAMPLE-PAIR ratio inside a contrast is much larger, and both are reported so the screen is read against the definition that produced it.",
+    "screening_status": "SUSCEPTIBILITY_SCREEN_ONLY -- a depth ratio bears on whether the artifact that invalidated GSE301119 could apply. It is NOT scientific qualification of any effect."
+  },
+  "rows_compared_per_contrast": {
+    "R47H_vs_CTRL_baseline": 20509,
+    "IFN_vs_UNTR_in_CTRL": 24157,
+    "IFN_vs_UNTR_in_R47H": 24157,
+    "LPS_vs_UNTR_in_CTRL": 24157,
+    "LPS_vs_UNTR_in_R47H": 24157,
+    "R47H_vs_CTRL_untreated": 24157
+  },
+  "max_abs_delta_log2fc": {
+    "R47H_vs_CTRL_baseline": 4.998727165528294e-07,
+    "IFN_vs_UNTR_in_CTRL": 4.999965445007248e-07,
+    "IFN_vs_UNTR_in_R47H": 4.999935021426927e-07,
+    "LPS_vs_UNTR_in_CTRL": 4.999593024301863e-07,
+    "LPS_vs_UNTR_in_R47H": 4.999182944831482e-07,
+    "R47H_vs_CTRL_untreated": 4.999918676307225e-07
+  },
+  "max_abs_delta_se_clone_level": {
+    "R47H_vs_CTRL_baseline": 4.999599213795225e-07,
+    "IFN_vs_UNTR_in_CTRL": 4.999930663940333e-07,
+    "IFN_vs_UNTR_in_R47H": 4.999641944058997e-07,
+    "LPS_vs_UNTR_in_CTRL": 4.99999257885797e-07,
+    "LPS_vs_UNTR_in_R47H": 4.999176033138042e-07,
+    "R47H_vs_CTRL_untreated": 4.999857363824356e-07
+  },
+  "rows_with_se_compared": {
+    "R47H_vs_CTRL_baseline": 20509,
+    "IFN_vs_UNTR_in_CTRL": 24157,
+    "IFN_vs_UNTR_in_R47H": 24157,
+    "LPS_vs_UNTR_in_CTRL": 24157,
+    "LPS_vs_UNTR_in_R47H": 24157,
+    "R47H_vs_CTRL_untreated": 24157
+  },
+  "rows_where_round_to_stored_decimals_matches_exactly_log2fc": {
+    "R47H_vs_CTRL_baseline": 20509,
+    "IFN_vs_UNTR_in_CTRL": 24157,
+    "IFN_vs_UNTR_in_R47H": 24157,
+    "LPS_vs_UNTR_in_CTRL": 24157,
+    "LPS_vs_UNTR_in_R47H": 24157,
+    "R47H_vs_CTRL_untreated": 24157
+  },
+  "rows_where_round_to_stored_decimals_matches_exactly_se": {
+    "R47H_vs_CTRL_baseline": 20509,
+    "IFN_vs_UNTR_in_CTRL": 24157,
+    "IFN_vs_UNTR_in_R47H": 24157,
+    "LPS_vs_UNTR_in_CTRL": 24157,
+    "LPS_vs_UNTR_in_R47H": 24157,
+    "R47H_vs_CTRL_untreated": 24157
+  },
+  "rounding_violations_sample": [],
+  "clone_units_per_contrast": {
+    "R47H_vs_CTRL_baseline": {
+      "n_numerator_clone_units": 2,
+      "n_denominator_clone_units": 2
+    },
+    "IFN_vs_UNTR_in_CTRL": {
+      "n_numerator_clone_units": 2,
+      "n_denominator_clone_units": 2
+    },
+    "IFN_vs_UNTR_in_R47H": {
+      "n_numerator_clone_units": 2,
+      "n_denominator_clone_units": 2
+    },
+    "LPS_vs_UNTR_in_CTRL": {
+      "n_numerator_clone_units": 2,
+      "n_denominator_clone_units": 2
+    },
+    "LPS_vs_UNTR_in_R47H": {
+      "n_numerator_clone_units": 2,
+      "n_denominator_clone_units": 2
+    },
+    "R47H_vs_CTRL_untreated": {
+      "n_numerator_clone_units": 2,
+      "n_denominator_clone_units": 2
+    }
+  },
+  "clone_unit_count_mismatches_sample": [],
+  "per_arm": {
+    "baseline": {
+      "samples": 12,
+      "genes_parsed": 28395,
+      "genes_detected": 20509,
+      "genes_assayed_undetected": 7886,
+      "clone_treatment_units": 4,
+      "raw_counts_all_integral": true,
+      "unit_replicate_counts": {
+        "CTRL_A/BASELINE": 3,
+        "CTRL_B/BASELINE": 3,
+        "R47H_A/BASELINE": 3,
+        "R47H_B/BASELINE": 3
+      },
+      "library_sizes": {
+        "CTRL_A_1": 8504775,
+        "CTRL_A_2": 8873847,
+        "CTRL_A_3": 9636921,
+        "CTRL_B_1": 9738881,
+        "CTRL_B_2": 5646834,
+        "CTRL_B_3": 8895875,
+        "R47H_A_1": 13926649,
+        "R47H_A_2": 16135003,
+        "R47H_A_3": 16163604,
+        "R47H_B_1": 7978973,
+        "R47H_B_2": 8319104,
+        "R47H_B_3": 7778325
+      }
+    },
+    "cytokine": {
+      "samples": 23,
+      "genes_parsed": 28395,
+      "genes_detected": 24157,
+      "genes_assayed_undetected": 4238,
+      "clone_treatment_units": 12,
+      "raw_counts_all_integral": true,
+      "unit_replicate_counts": {
+        "CTRL_A/IFN": 2,
+        "CTRL_A/LPS": 1,
+        "CTRL_A/UNTR": 2,
+        "CTRL_B/IFN": 2,
+        "CTRL_B/LPS": 2,
+        "CTRL_B/UNTR": 2,
+        "R47H_A/IFN": 2,
+        "R47H_A/LPS": 2,
+        "R47H_A/UNTR": 2,
+        "R47H_B/IFN": 2,
+        "R47H_B/LPS": 2,
+        "R47H_B/UNTR": 2
+      },
+      "library_sizes": {
+        "CTRL_A_1_UNTR": 23476954,
+        "CTRL_A_2_UNTR": 23630964,
+        "CTRL_A_1_IFN": 26422382,
+        "CTRL_A_2_IFN": 29812134,
+        "CTRL_A_2_LPS": 42385531,
+        "CTRL_B_1_UNTR": 93922855,
+        "CTRL_B_2_UNTR": 15596790,
+        "CTRL_B_1_IFN": 30082577,
+        "CTRL_B_2_IFN": 32308368,
+        "CTRL_B_1_LPS": 35880215,
+        "CTRL_B_2_LPS": 34447592,
+        "R47H_A_1_UNTR": 31859008,
+        "R47H_A_2_UNTR": 34799745,
+        "R47H_A_1_IFN": 25651805,
+        "R47H_A_2_IFN": 33981801,
+        "R47H_A_1_LPS": 32566434,
+        "R47H_A_2_LPS": 27587562,
+        "R47H_B_1_UNTR": 34040756,
+        "R47H_B_2_UNTR": 47585928,
+        "R47H_B_1_IFN": 36647256,
+        "R47H_B_2_IFN": 34062383,
+        "R47H_B_1_LPS": 40631183,
+        "R47H_B_2_LPS": 42400925
+      }
+    }
+  },
+  "structural": {
+    "genes_in_producer_absent_from_source": 0,
+    "unknown_contrasts_in_producer_output": 0,
+    "arm_label_mismatches": 0,
+    "gene_symbol_mismatches": 0,
+    "rows_emitted_for_undetected_genes": 0,
+    "sample_identity_rows": 35,
+    "sample_identity_library_mismatches": [],
+    "sample_identity_reproduced": true
+  },
+  "not_a_v1_v2_parity_check": "V1==V2 shows V2 changed no number; it does not show either was right. This recomputes from the authenticated GEO count matrices.",
+  "implementation": "python, independently authored; recomputes library sizes, log2(CPM+1), clone-level unit means, contrast differences, clone-level SE and per-arm detection from the two GEO count matrices",
+  "float_order_note": "summation follows source column order, the only canonical choice; permuting it would inject last-ulp noise that is not a disagreement",
+  "depth_susceptibility_screen_note": "an earlier depth check measured the worst within-contrast library ratio at 1.370x, so this study is NOT susceptible to the depth artifact that invalidated GSE301119. That is a SUSCEPTIBILITY SCREEN, not scientific effect qualification. Nothing here qualifies these effects biologically.",
+  "biological_qualification": "NOT_QUALIFIED_THIS_IS_IMPLEMENTATION_REPRODUCTION_ONLY",
+  "execution_provenance": {
+    "executing_script": "independent_reproduce_gse241858_bulk_v1.py",
+    "executing_script_sha256": "9ca458cfab31760f8b117e83e1166f4a33d5dfd9bc00f36b9016c75193f1cefb",
+    "git_commit": "e3b453321b1662f5e6d1044f3a0916b13b7e623c",
+    "git_status_porcelain": "",
+    "worktree_clean_at_execution": true
+  },
+  "input_sha256": {
+    "baseline_counts": "2c7811e25e6283dbb9f0149e71c7dea55e00d9a20ed279d4b7bbe5f8bd049496",
+    "cytokine_counts": "50f1e487226a491009a62a0f362e20b41871118a964ebeebf3f28a97e3dd2a03",
+    "producer_effects": "1b6916e5fc2f0190ccff096950e970bfadc88e117fa10cbbde3ed67a8efe1488",
+    "producer_sample_identity": "90948d7085f3ff5e1476c7b920da0e6873116c80e1a3c413336d52c0cf77685c"
+  },
+  "source_byte_roots_verified": true,
+  "jepa_prediction_used": false,
+  "training_authorized": false,
+  "therapeutic_ranking": false
+}
