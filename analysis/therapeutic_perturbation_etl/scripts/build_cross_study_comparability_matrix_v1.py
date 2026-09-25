@@ -40,6 +40,29 @@ def sha256_file(p):
     return h.hexdigest()
 
 
+# Source digests were independently measured at the original ETL authority.
+# A newly computed hash of an arbitrary input is NOT source authentication.
+PINNED_SOURCE_SHA256 = {
+    "gse335887_ref": "fd2c3fa5b517c81bbd158516dacb00416f1883a654c795e126916620f77f225f",
+    "gse178317_lib": "8de1e7e737c8c42ec9a7feff0d6e198b4f09808f09b6238e8b9dfbe276774942",
+    "gse301119_crispri": "ce96daa64413a238173b485a91037df02824e85bc071e715292aa800dee7abe8",
+    "gse301119_crispra": "e13c3bb2741824139d5adb91b22ad725956078ede98f59cf74a5c1abe96e3397",
+    "gse311359_identity": "1eeb4e40f14ec2ebe7472d7bb80769ae35bdb8df8ccbf4308493c8441eb363b5",
+}
+
+def authenticate_inputs(paths):
+    if set(paths)!=set(PINNED_SOURCE_SHA256):
+        raise ValueError("STOP: missing or unexpected source families")
+    receipts={}
+    for role,expected in PINNED_SOURCE_SHA256.items():
+        actual=sha256_file(paths[role])
+        if actual!=expected:
+            raise ValueError("STOP: physical source SHA mismatch for "+role+
+                             "; got "+actual+", expected "+expected)
+        receipts[role]=actual
+    return receipts
+
+
 def load_targets(paths):
     """Authenticated DIRECT gene-intervention targets, per study."""
     t = {}
@@ -74,7 +97,7 @@ STUDIES = [
      "non-targeting guides, same wells", "scRNA + sgRNA enrichment library",
      "INSPECTED_DEVELOPMENT", "capture wells are not biological replicates; no biological error bar"),
     ("GSE335887", "CRISPRi, CROP-seq pMK1334", "iTF-MG and iMG, WTC11",
-     "six-TF induction vs cytokine-directed; Day 12 per series",
+     "six-TF induction vs cytokine-directed; age/timepoint authority conflicts across source descriptions",
      "one parental line WTC11; independent preparation census unverified",
      "5 non-targeting guides", "scRNA + CITE-seq 180-antibody panel + sgRNA",
      "UNOPENED_RESERVED", "protocol and differentiation age change together; not separately identifiable"),
@@ -97,7 +120,7 @@ STUDIES = [
     ("GSE240609", "genotype contrast (APOE3 vs APOE3ch x WT vs PSEN1)",
      "CD11b-purified microglia after neuron coculture", "post-coculture recovery",
      "1 sample per 2x2 design cell", "none; genotype contrast only", "bulk RNA-seq",
-     "UNOPENED_RESERVED", "one sample per design cell forbids biological SE; not cell-autonomous"),
+     "DERIVED_DEVELOPMENT_V2_NOT_RESERVED_CONFIRMATION", "one sample per design cell forbids biological SE; not cell-autonomous"),
     ("GSE241858", "genotype (TREM2 R47H) x cytokine context", "iPSC microglia",
      "untreated / LPS / IFN-gamma", "2 independent clones per genotype",
      "untreated arm within clone", "bulk RNA-seq",
@@ -122,8 +145,6 @@ def main():
     ap.add_argument("--gse311359-identity", required=True)
     ap.add_argument("--out-dir", required=True)
     a = ap.parse_args()
-    os.makedirs(a.out_dir, exist_ok=True)
-
     paths = {
         "gse335887_ref": a.gse335887_ref,
         "gse178317_lib": a.gse178317_lib,
@@ -131,6 +152,8 @@ def main():
         "gse301119_crispra": a.gse301119_crispra,
         "gse311359_identity": a.gse311359_identity,
     }
+    pinned_receipt = authenticate_inputs(paths)
+    os.makedirs(a.out_dir, exist_ok=True)
     direct = load_targets(paths)
     nominated = load_nominated(paths)
     per_mod = direct.pop("_gse301119_per_modality")
@@ -179,7 +202,8 @@ def main():
             "a shared gene symbol is not experimental comparability: cell model, "
             "protocol, differentiation age, control design and readout all "
             "differ across these studies"),
-        "source_digests": {k: sha256_file(v) for k, v in paths.items()},
+        "source_digests": pinned_receipt,
+        "source_digests_match_previously_authenticated_origins": True,
         "matrix_csv_sha256": None,
         "jepa_prediction_used": False,
         "training_authorized": False,
