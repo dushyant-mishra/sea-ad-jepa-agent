@@ -7,7 +7,7 @@ import sys
 import numpy as np
 import pytest
 
-MODULE = Path(__file__).resolve().parents[1] / 'src' / 'reader_fit_linear_lodo_v1.py'
+MODULE = Path(__file__).resolve().parents[1] / 'scripts' / 'reader_fit_linear_lodo_v1.py'
 spec = importlib.util.spec_from_file_location('reader_fit_linear_lodo_v1', MODULE)
 mod = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = mod
