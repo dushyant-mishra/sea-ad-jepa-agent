@@ -79,9 +79,33 @@ def load_targets(paths):
 
     per_mod = {}
     for mod in ("CRISPRi", "CRISPRa"):
-        rows = [r for r in csv.DictReader(open(paths["gse301119_%s" % mod.lower()]))
-                if r["crispr"] == "Perturbed"]
-        per_mod[mod] = {r["Gene_Targeted"] for r in rows}
+        with open(paths["gse301119_%s" % mod.lower()],newline="",encoding="utf-8") as fh:
+            full=list(csv.DictReader(fh))
+        if not full or {r["donor"] for r in full}!={"D1","D2"}:
+            raise ValueError("STOP_GSE301119_DONOR_CENSUS: "+mod)
+        seen=set();guide_map={};control={"D1":0,"D2":0}
+        for row in full:
+            donor=row["donor"];gid=row["guide_identity"]
+            if not gid or row["guide_donor"]!=gid+"||"+donor:
+                raise ValueError("STOP_GSE301119_GUIDE_DONOR_JOIN: "+mod)
+            key=row["guide_donor"]
+            if key in seen:raise ValueError("STOP_GSE301119_DUPLICATE_GUIDE_DONOR: "+mod)
+            seen.add(key)
+            try:n=int(row["n_cells"])
+            except ValueError:raise ValueError("STOP_GSE301119_INVALID_CELL_COUNT: "+mod)
+            if n<=0:raise ValueError("STOP_GSE301119_NONPOSITIVE_CELL_COUNT: "+mod)
+            role=row["crispr"];target=row["Gene_Targeted"]
+            if role=="NT":control[donor]+=n
+            elif role!="Perturbed" or not target:raise ValueError("STOP_GSE301119_INVALID_ROLE_TARGET: "+mod)
+            if gid in guide_map and guide_map[gid]!=(target,role):
+                raise ValueError("STOP_GSE301119_GUIDE_TARGET_DRIFT: "+mod)
+            guide_map[gid]=(target,role)
+        if not all(control.values()):raise ValueError("STOP_GSE301119_MISSING_DONOR_MATCHED_CONTROL: "+mod)
+        rows=[r for r in full if r["crispr"]=="Perturbed"]
+        targets={r["Gene_Targeted"] for r in rows}
+        if len(targets)!=206 or any({r["donor"] for r in rows if r["Gene_Targeted"]==tg}!={"D1","D2"} for tg in targets):
+            raise ValueError("STOP_GSE301119_TARGET_DONOR_COVERAGE: "+mod)
+        per_mod[mod]=targets
     t["GSE301119"] = per_mod["CRISPRi"] | per_mod["CRISPRa"]
     hmc = list(csv.DictReader(open(paths["gse293118_identity"])))
     direct = {r["target_id"] for r in hmc if r["target_class"]=="gene"}
@@ -213,6 +237,7 @@ def main():
         },
         "shared_direct_targets": shared,
         "shared_with_nominated_only": nom_shared,
+        "target_join": "EXACT_LITERAL_TARGET_LABELS_ONLY_NO_ALIAS_OR_INTERVENTION_EQUIVALENCE",
         "nominated_is_not_direct": (
             "a nominated cis gene is an assertion about which gene an element "
             "may regulate; it is not an authenticated direct gene intervention "
