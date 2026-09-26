@@ -1,0 +1,49 @@
+name: V29 exact class-compatibility red-team (non-authorizing)
+on:
+  pull_request:
+    paths:
+      - 'scripts/v5/v29_class_compatibility_audit.py'
+      - 'tests/test_v29_class_compatibility.py'
+      - 'docs/agent/JEPA_V29_EXACT_CLASS_COMPATIBILITY_AUDIT_20260926.md'
+      - '.github/workflows/v29-class-compatibility-no-spillover.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checked-and-still-blocked:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Revalidate all six actual original candidate instances
+        run: PYTHONPATH=src:. python scripts/v5/v27_six_candidate_authority_audit_v1.py . /tmp/v29_original_six_candidate_report.json
+      - name: Exact-source consumer class compatibility audit
+        run: PYTHONPATH=src:. python scripts/v5/v29_class_compatibility_audit.py . --out /tmp/v29_exact_class_report.json
+      - name: Twelve independent positive and adversarial fixtures
+        run: PYTHONPATH=src:. python -m pytest -q tests/test_v29_class_compatibility.py --junitxml=/tmp/v29_class_junit.xml
+      - name: Fail closed on missing, skipped or vacuous tests and false closure
+        run: |
+          python - <<'PY'
+          import json, xml.etree.ElementTree as ET
+          d=json.load(open('/tmp/v29_exact_class_report.json'))
+          if d['class_conflicts']!=2 or d['own_schema_candidates']!=6 or d['fully_closed_roots']!=0 or d['training_authorized'] is not False:
+              raise SystemExit('STOP_V29_FALSE_GREEN_REPORT')
+          root=ET.parse('/tmp/v29_class_junit.xml').getroot()
+          if root.tag!='testsuite':root=root.find('testsuite')
+          n={k:int(root.attrib.get(k,0)) for k in ('tests','skipped','errors','failures')}
+          names={t.attrib.get('name') for t in root.iter('testcase')}
+          required={'test_original_positive_six_candidates_and_zero_closure','test_exact_two_v3_v1_incompatibilities','test_fabricated_one_closed_root_fails_closed','test_matching_class_is_not_equivalent_to_full_authority'}
+          if n!={'tests':12,'skipped':0,'errors':0,'failures':0} or not required<=names:
+              raise SystemExit(f'STOP_V29_TEST_CENSUS {n} missing={required-names}')
+          print('PASS_V29_CLASS_AUDIT 12/12 synthetic/static checks; STILL_BLOCKED_FOR_REAL_TRAINING')
+          PY
+      - name: Strict readiness gate must demonstrably refuse
+        run: |
+          if PYTHONPATH=src:. python scripts/v5/v29_class_compatibility_audit.py . --require-closure > /tmp/strict.log 2>&1; then
+            echo 'STOP_FALSE_CLOSURE_GREEN'; exit 1
+          fi
+          grep -q 'STOP_V29_CLASS_CONFLICTS_AND_MISSING_PARENT_VALIDATION' /tmp/strict.log
