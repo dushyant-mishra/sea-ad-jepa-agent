@@ -1,0 +1,90 @@
+name: V26 independent PR131 PR137 existing CRISPRbrain evidence reconciliation
+
+on:
+  pull_request:
+    paths:
+      - "analysis/therapeutic_perturbation_etl/reviews/pr131_pr137_provenance_20260925/**"
+      - ".github/workflows/v26-crisprbrain-cross-pr-existing-evidence-parity.yml"
+  workflow_dispatch:
+
+jobs:
+  strict-synthetic-and-real-existing-artifact-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact proposed audit code
+        uses: actions/checkout@v4
+        with:
+          path: audit
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          sparse-checkout: |
+            analysis/therapeutic_perturbation_etl/reviews/pr131_pr137_provenance_20260925
+          sparse-checkout-cone-mode: false
+      - name: Checkout exact historical PR131 commit
+        uses: actions/checkout@v4
+        with:
+          path: original
+          ref: 8647d21174c5e7eab2ad01fc6b9251b069ba0e03
+          fetch-depth: 50
+          sparse-checkout: |
+            analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability
+            analysis/therapeutic_perturbation_etl/scripts/assess_crisprbrain_screen_reliability_v1.py
+          sparse-checkout-cone-mode: false
+      - name: Checkout exact clean PR137 commit
+        uses: actions/checkout@v4
+        with:
+          path: clean
+          ref: e130f55c7471b74b387f0bd0aca586c4a1614921
+          fetch-depth: 50
+          sparse-checkout: |
+            analysis/therapeutic_perturbation_etl/evidence/crisprbrain_reliability
+            analysis/therapeutic_perturbation_etl/scripts/assess_crisprbrain_screen_reliability_v1.py
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run ten pure synthetic and adversarial fixtures
+        run: |
+          cd audit/analysis/therapeutic_perturbation_etl/reviews/pr131_pr137_provenance_20260925
+          python -m unittest -v test_reconcile_existing_results_v1.py > "$GITHUB_WORKSPACE/fixtures.log" 2>&1
+          cat "$GITHUB_WORKSPACE/fixtures.log"
+          grep -q "Ran 10 tests" "$GITHUB_WORKSPACE/fixtures.log"
+          grep -q "^OK$" "$GITHUB_WORKSPACE/fixtures.log"
+      - name: Independently compare exact previously committed results and authentic producer SHA
+        run: |
+          python audit/analysis/therapeutic_perturbation_etl/reviews/pr131_pr137_provenance_20260925/reconcile_existing_results_v1.py \
+            --original-root original --clean-root clean \
+            --out "$RUNNER_TEMP/V26_PR131_PR137_EXISTING_EVIDENCE_PARITY_V1.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"]) / "V26_PR131_PR137_EXISTING_EVIDENCE_PARITY_V1.json"
+          x = json.loads(p.read_text())
+          assert x["status"] == "PASS_EXISTING_OUTPUT_BYTES_AND_COMMON_SCIENCE_MATCH"
+          assert x["clean_source_at_declared_anchor_verified"] is True
+          assert x["all_existing_output_csvs_byte_identical"] is True
+          assert len(x["output_files"]) == 7
+          assert x["joint_table_crosscheck"]["target_gene_rows"] == 54
+          assert x["joint_table_crosscheck"]["distinct_targets"] == 3
+          assert x["historical_original_dirty_producer_replay"] == "NOT_REPRODUCED"
+          assert x["raw_deposited_screens_reexecuted_by_this_script"] is False
+          print("PASS_PR131_PR137_EXISTING_EVIDENCE_PARITY__OLD_DIRTY_ORIGIN_NOT_REPLAYED")
+          PY
+      - name: Assert generated real evidence JSON is EXACTLY the durable committed result
+        run: |
+          committed="audit/analysis/therapeutic_perturbation_etl/reviews/pr131_pr137_provenance_20260925/results/V26_PR131_PR137_EXISTING_EVIDENCE_PARITY_V1.json"
+          generated="$RUNNER_TEMP/V26_PR131_PR137_EXISTING_EVIDENCE_PARITY_V1.json"
+          printf '%s  %s\n' '3fd0a9bbc2dfde8c2ceea3447c97033dddbf69e33320732c2d245aa8b59d9107' "$committed" | sha256sum -c -
+          cmp "$committed" "$generated"
+          echo "PASS_EXACT_BYTE_CI_REPLAY_OF_DURABLE_CROSS_PR_RECEIPT"
+      - name: Upload independent small audit receipt, even on unexpected failure
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v26-pr131-pr137-independent-parity
+          path: |
+            ${{ runner.temp }}/V26_PR131_PR137_EXISTING_EVIDENCE_PARITY_V1.json
+            fixtures.log
+          if-no-files-found: warn
