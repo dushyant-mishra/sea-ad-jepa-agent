@@ -43,7 +43,7 @@ class PreparedReaderFitProposal:
     ordered_rows: np.ndarray
     offsets: np.ndarray
     source_digest: str
-    frozen_inputs_authenticated: bool = False
+    # No public flag can promote a synthetic snapshot to byte authority.
     training_authorized: bool = False
 
     @classmethod
@@ -139,10 +139,10 @@ class PreparedReaderFitProposal:
             "proposal_policy_id": POLICY,
             "numpy_version": np.__version__,
             "rng_bit_generator": "PCG64",
-            "input_authentication": (
-                "BYTE_BOUND_FROZEN_PASS1_AND_CALIBRATION_ONLY"
-                if self.frozen_inputs_authenticated else "SYNTHETIC_STRUCTURAL_ONLY"
-            ),
+            # No editable object flag or caller-supplied constructor argument
+            # can issue a physical source receipt. The separately archived PR132
+            # byte-authority evidence MUST be carried into any later adapter.
+            "input_authentication": "STRUCTURAL_SNAPSHOT_NO_BYTE_AUTHORITY_RECEIPT",
             "source_mutations_after_snapshot_detected_here": False,
             "raw_level4_per_cell_binding_here": False,
             "training_authorized": False,
@@ -180,5 +180,5 @@ def prepare_from_frozen_pass1(
     return PreparedReaderFitProposal(
         prepared.donor_codes, prepared.donor_names, prepared.donor_counts,
         prepared.ordered_rows, prepared.offsets, prepared.source_digest,
-        frozen_inputs_authenticated=True, training_authorized=False,
+        training_authorized=False,
     )
