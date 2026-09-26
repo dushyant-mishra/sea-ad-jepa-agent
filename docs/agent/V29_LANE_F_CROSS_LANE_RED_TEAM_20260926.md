@@ -66,17 +66,35 @@ baseline — the actual failure was worse.
 
 ```
 41,238 canonical addresses
-   → matched external RNA                         UNKNOWN  (Agent 2, interrupted)
-   → gene-mapped ATAC                             38,838 of 41,238 claimed by Lane D
-                                                  (94.18%) - UNVERIFIED BY LANE F
+   → structurally measured in Morabito RNA        39,081  (94.77%)   Agent 2, PR #175
+        MEASURED_DETECTED          31,455  (76.28%)
+        MEASURED_BUT_UNDETECTED     7,626  (18.49%)
+        UNMEASURED                  2,122  ( 5.15%)  <- NOT converted to zero
+        AMBIGUOUSLY_MAPPED             35  ( 0.08%)
+   → gene-mapped ATAC                             25,966 accessible promoter
+                                                  13,814 distal-only (PROVISIONAL)
+                                                     698 no assayed region
+                                                     755 UNKNOWN
+   → matched RNA-ATAC eligible                    37,966  (donor/pseudobulk level only)
    → context-specific ATAC activity               UNKNOWN
-   → motif-supported regulatory candidates        UNKNOWN  (Agent 4, interrupted)
+   → motif-supported regulatory candidates        UNKNOWN  (Agent 4, stopped)
    → independently evaluable genes                UNKNOWN
 ```
 
 **No transition may be reported as zero.** The assignment's immediate milestone —
-a defensible, measured answer to how much of FULL104 can be covered — is **NOT
-YET ANSWERED**. The only defensible statement today is that the historical pilot
+a defensible, measured answer to how much of FULL104 can be covered — is now
+**ANSWERED for the first two transitions**: **94.77 % structurally measured**,
+with 37,966 addresses matched-RNA-ATAC eligible at donor level. The later
+transitions remain **UNKNOWN**.
+
+**VERIFIED_BY_ME:** the prohibited 41,238-vs-61,770 comparison was a *category
+error*, not imprecision. `matrix/shape = [58721, 61770]`: **58,721 features,
+61,770 barcodes**. Comparing the address count to 61,770 compares genes against
+nuclei. Re-read directly from the RNA h5 this session.
+
+**VERIFIED_BY_ME (arithmetic):** the four states sum to exactly 41,238, and
+31,455 + 7,626 = 39,081 = 94.77 %. Had UNMEASURED been collapsed into zero the
+figure would have read **99.9 %** on 2,122 fabricated zeros. The only defensible statement today is that the historical pilot
 covers 10 regulators and 96 TF–target rows, and that this is not a measurement of
 available coverage.
 
