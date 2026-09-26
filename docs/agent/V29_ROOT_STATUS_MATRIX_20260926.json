@@ -10,7 +10,8 @@
     "own_schema_validator_passed": 6,
     "own_schema_passed_but_consumer_class_conflict": 2,
     "raw_digest_slots": 2,
-    "raw_digest_value_and_bytes_authenticated": 1
+    "raw_digest_value_and_bytes_authenticated": 1,
+    "_subset_note": "own_schema_passed_but_consumer_class_conflict (2) is a SUBSET of own_schema_validator_passed (6), not additional to it. 6 candidates passed their own validator; 2 of those 6 additionally have a confirmed consumer-class conflict. fully_closed remains 0."
   },
   "correction_absorbed": {
     "source": "owner audit 2026-09-26",
@@ -40,7 +41,10 @@
       "authenticated_file": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
       "authenticated_bytes": 2372002,
       "level": "Level-4, consistent with the 8,915 Level-4 block population",
-      "also_bound_as": ["block_manifest_sha256 (9 committed occurrences)", "full104_manifest_sha256 (3 committed occurrences)"],
+      "also_bound_as": [
+        "block_manifest_sha256 (9 committed occurrences)",
+        "full104_manifest_sha256 (3 committed occurrences)"
+      ],
       "placeholder_seen": "one draft carries UNRESOLVED_BIND_AT_CANONICAL_EXECUTION and correctly declines to bind",
       "decoy_warning": {
         "finding": "files with the IDENTICAL name and different bytes exist in two history trees",
@@ -68,18 +72,57 @@
   },
   "six_own_schema_candidates": {
     "note": "all six passed their OWN defining-class validator under PR149. NONE is closed.",
-    "representation_authority_sha256": {"own_validator": "PASS", "consumer_class_conflict": false, "closed": false, "blocking": "parent-source bytes and cross-bindings unqualified"},
-    "support_estimability_authority_sha256": {"own_validator": "PASS", "consumer_class_conflict": false, "closed": false, "blocking": "parent-source bytes and cross-bindings unqualified; must carry substrate root 66f589e5"},
-    "canonical_address_registry_authority_sha256": {"own_validator": "PASS", "consumer_class_conflict": false, "closed": false, "blocking": "parent-source bytes and cross-bindings unqualified"},
-    "base_training_estimand_sha256": {"own_validator": "PASS", "consumer_class_conflict": false, "closed": false, "blocking": "parent-source bytes and cross-bindings unqualified"},
-    "masking_rng_replay_authority_sha256": {"own_validator": "PASS_AS_V3", "consumer_class_conflict": true, "conflict": "closure V2 requires MaskingRngReplayAuthorityV1 via isinstance; a self-valid V3 is not an instance of V1", "closed": false, "prohibited_remedy": "casting the digest or supplying a V1-shaped placeholder"},
-    "masking_qualification_parameters_authority_sha256": {"own_validator": "PASS_AS_V3", "consumer_class_conflict": true, "conflict": "closure V2 requires MaskingQualificationParametersAuthorityV1 via isinstance", "closed": false, "prohibited_remedy": "casting the digest or supplying a V1-shaped placeholder"}
+    "representation_authority_sha256": {
+      "own_validator": "PASS",
+      "consumer_class_conflict": false,
+      "closed": false,
+      "blocking": "parent-source bytes and cross-bindings unqualified"
+    },
+    "support_estimability_authority_sha256": {
+      "own_validator": "PASS",
+      "consumer_class_conflict": false,
+      "closed": false,
+      "blocking": "parent-source bytes and cross-bindings unqualified; must carry substrate root 66f589e5"
+    },
+    "canonical_address_registry_authority_sha256": {
+      "own_validator": "PASS",
+      "consumer_class_conflict": false,
+      "closed": false,
+      "blocking": "parent-source bytes and cross-bindings unqualified"
+    },
+    "base_training_estimand_sha256": {
+      "own_validator": "PASS",
+      "consumer_class_conflict": false,
+      "closed": false,
+      "blocking": "parent-source bytes and cross-bindings unqualified"
+    },
+    "masking_rng_replay_authority_sha256": {
+      "own_validator": "PASS_AS_V3",
+      "consumer_class_conflict": true,
+      "conflict": "closure V2 requires MaskingRngReplayAuthorityV1 via isinstance; a self-valid V3 is not an instance of V1",
+      "closed": false,
+      "prohibited_remedy": "casting the digest or supplying a V1-shaped placeholder"
+    },
+    "masking_qualification_parameters_authority_sha256": {
+      "own_validator": "PASS_AS_V3",
+      "consumer_class_conflict": true,
+      "conflict": "closure V2 requires MaskingQualificationParametersAuthorityV1 via isinstance",
+      "closed": false,
+      "prohibited_remedy": "casting the digest or supplying a V1-shaped placeholder"
+    }
   },
   "remaining_roots": {
     "count": 25,
     "status": "NO_COMMITTED_ARTIFACT_OF_THE_DEFINING_CLASS_SCHEMA",
-    "search_scope_exhausted": ["all 114 open PR tips (PR154)", "all 232 live branch tips (PR155)", "non-git GPU output directories (this lane)"],
-    "search_scope_NOT_exhausted": ["full historical commit graph", "external drives or backups not mounted on this machine"],
+    "search_scope_exhausted": [
+      "all 114 open PR tips (PR154)",
+      "all 232 live branch tips (PR155)",
+      "non-git GPU output directories (this lane)"
+    ],
+    "search_scope_NOT_exhausted": [
+      "full historical commit graph",
+      "external drives or backups not mounted on this machine"
+    ],
     "caution": "absence within the searched scope is not proof of global absence"
   },
   "gpu_disk_sweep": {
@@ -87,8 +130,7 @@
     "directories_checked": [
       "D:/jepa_v5_outputs_20260925",
       "D:/jepa_perturb_outputs_20260923",
-      "D:/jepa_full104_preterminal_20260919_a51cdbe8_outputs",
-      "D:/jepa_n1_all104_exec_20260925"
+      "D:/jepa_full104_preterminal_20260919_a51cdbe8_outputs"
     ],
     "authority_named_json_found": 1,
     "artifact": "D:/jepa_full104_preterminal_20260919_a51cdbe8_outputs/census_authority_v2/full104_census_authority_v2.json",
@@ -102,7 +144,13 @@
       "pass1_physical_binding_sha256": "4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602",
       "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
     },
-    "promotion": "NONE - a census authority is not one of the 33 training-authority roots and is not promoted to one"
+    "promotion": "NONE - a census authority is not one of the 33 training-authority roots and is not promoted to one",
+    "directories_claimed_but_not_swept": {
+      "path": "D:/jepa_n1_all104_exec_20260925",
+      "reason": "the directory does not exist on this machine; it was a locked worktree of the FULL104 raw-count lane that has since been removed",
+      "how_the_error_happened": "the sweep loop skipped nonexistent paths silently with `[ -d \"$d\" ] || continue`, and the matrix transcribed the COMMAND's directory list rather than the OUTPUT's",
+      "correction": "removed from directories_checked; recorded here instead"
+    }
   },
   "prohibited_actions_observed": {
     "placeholder_digest": "none written",
@@ -118,5 +166,21 @@
     "D_SHARED_G5": "UNOPENED",
     "RARE_TAIL_MOLECULAR": "UNOPENED",
     "THERAPEUTIC_RANKING": "OFF"
+  },
+  "self_audit": {
+    "S17": {
+      "finding": "published matrix listed a directory in gpu_disk_sweep.directories_checked that does not exist and was never swept",
+      "severity": "provenance - a record asserting work that did not happen",
+      "caught_by": "my own re-verification pass, before any downstream lane consumed it",
+      "status": "corrected in this commit"
+    },
+    "S18": {
+      "finding": "ledger counts 6 and 2 were adjacent keys with no stated relationship and could be read as 8",
+      "status": "corrected: explicit subset note added"
+    },
+    "reverified_and_correct": [
+      "full104_substrate_sha256 bytes 2372002 and digest 66f589e5... re-hashed independently, exact match",
+      "decoy bytes 2380918 and digest e482d9da21232bdeb6b3f198f42b9fbcf1530ba1b3e86e104ffbb651ca9df808, exact match"
+    ]
   }
 }
