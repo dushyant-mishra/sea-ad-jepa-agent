@@ -111,15 +111,15 @@ class PreparedReaderFitProposal:
 
     def plan(self, *, run_seed: int, first_update_index: int,
              update_count: int, presentations_per_update: int,
-             maximum_authorized_presentations: int,
+             maximum_declared_presentations: int,
              ) -> tuple[ProposedDevelopmentUpdate, ...]:
         """Materialize only an explicitly bounded trajectory; no guessed defaults."""
         start = _positive_exact(first_update_index, "first_update_index", allow_zero=True)
         n_updates = _positive_exact(update_count, "update_count")
         n_presentations = _positive_exact(presentations_per_update, "presentations_per_update")
-        cap = _positive_exact(maximum_authorized_presentations, "maximum_authorized_presentations")
+        cap = _positive_exact(maximum_declared_presentations, "maximum_declared_presentations")
         if n_updates * n_presentations > cap:
-            raise ValueError("planned presentations exceed explicit authorized materialization limit")
+            raise ValueError("planned presentations exceed explicit declared materialization limit")
         if n_presentations > int(self.donor_counts.min()):
             raise ValueError("scheduled presentations exceed smallest frozen donor")
         if start + n_updates > (1 << 63) - 1:
