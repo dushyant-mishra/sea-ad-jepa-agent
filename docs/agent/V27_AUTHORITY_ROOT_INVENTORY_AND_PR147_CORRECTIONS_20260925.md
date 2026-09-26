@@ -130,6 +130,59 @@ entry is empty. An empty verifier outcome is a failure to verify, never
 
 ---
 
+## 2b. A third correction, found while implementing the audit's item 4 — and it reverses one of my own claims
+
+The audit asked me to move the gradient predicate inline, on the finding that
+PR #147 applied it retrospectively. Investigating where to put it produced two
+results, one reassuring and one not.
+
+**The gate is already enforced inline.** `_gradient_report` raises *before*
+`modules.optimizer.step()`:
+
+```python
+if missing or nonfinite or exact_zero or teacher_grads:
+    raise RuntimeError(f'V5 reference gradient gate failed: ...')
+return {'missing':0,'nonfinite':0,'exact_zero':0,'teacher_gradients':0,
+        'max_abs_gradient':maximum}
+```
+
+So no new inline runner is needed, and my post-hoc wrapper was redundant rather
+than the only line of defence. `inactive_update_reference.py` is **not** in the
+V4 freeze (that manifest covers 21 V4-era files), but no modification to it was
+required.
+
+**My published "protected gradient gate 40/40 affirmative" is vacuous, and I am
+withdrawing it.** On the healthy path those four counters are returned as
+hard-coded literal zeros; the function raises otherwise. Asserting they are zero
+asserts that a function which can only return zeros returned zeros. My "strict"
+predicate in §4 of the contract — `missing==0 and nonfinite==0 and
+exact_zero==0 and teacher_gradients==0` — is therefore a **tautology by
+construction**, the exact failure mode I claimed to have fixed when I replaced
+`is not None`. I replaced one check that could not fail with another.
+
+**What is actually evidence, and stands:**
+
+1. the harness **raises** on each damaged condition before the optimizer steps —
+   now proved by negative controls rather than assumed;
+2. 40 consecutive updates completed **without raising**, which is a real
+   observation about the run;
+3. `max_abs_gradient` ranged **0.065887–0.189149** — a measurement, not a
+   literal.
+
+**New negative controls**, `tests/test_v5_inline_gradient_gate_negative_controls.py`,
+**6 passed, 0 skipped**:
+
+| test | proves |
+|---|---|
+| positive control | a healthy update is accepted — without it every refusal below could be firing for an unrelated reason |
+| counters-are-literals | the vacuity claim above is checkable, not merely asserted |
+| planted **zero** gradient | refuses, **and** optimizer step count unchanged **and** teacher EMA did not advance |
+| planted **non-finite** gradient | same |
+| planted **teacher** gradient | firewall breach refused, nothing advanced |
+| refusal is clean | the optimizer still works on the next healthy update |
+
+The historical 40-update receipt is unmodified and is **not** relabelled.
+
 ## 3. Scientifically unapproved choices — the decision surface
 
 None of these is mine to settle. Listed so approval can be sought explicitly.
