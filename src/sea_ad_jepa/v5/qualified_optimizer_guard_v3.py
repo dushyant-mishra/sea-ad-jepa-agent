@@ -5,7 +5,8 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 from .current_teacher_target_receipt_v2 import validate_current_teacher_target_receipt_v2
-from .current_training_authority_v1 import CurrentTrainingAuthorityV1
+from .current_training_authority_v1 import CurrentTrainingAuthorityV1, issue_training_authority_v1
+from .current_trainer_preexecution_contract_v2 import CurrentTrainerPreexecutionAuthorityV2
 
 STOP = "STOP_V5_CURRENT_OPTIMIZER_V3_AUTHORITY_NOT_ARMED"
 CURSOR_KWARG = "v5_current_guard_schedule_cursor"
@@ -25,9 +26,40 @@ class CurrentOptimizerStepGuardV3:
     expected_target_package_root: str
     expected_authority_roots: Mapping[str, str]
     expected_closure_v2_sha256: str
+    closure_v2: Mapping[str, Any]
+    preexecution: CurrentTrainerPreexecutionAuthorityV2
+    critical_test: Any
+    runtime_source: Any
+    closure_inputs: Mapping[str, Any]
+
+    def _require_fresh_issuance(self) -> str:
+        # A self-consistent public dataclass and matching receipt can be forged.
+        # The guard must freshly execute the REAL issuer's full 32-role typed
+        # graph validation, not merely inspect the presented token's hashes.
+        if not isinstance(self.closure_inputs, Mapping):
+            raise ValueError("optimizer V3 requires live closure_inputs")
+        if not isinstance(self.preexecution, CurrentTrainerPreexecutionAuthorityV2):
+            raise ValueError("optimizer V3 requires current typed preexecution")
+        newly_issued = issue_training_authority_v1(
+            closure_v2=self.closure_v2,
+            preexecution=self.preexecution,
+            receipt_v2=self.receipt,
+            expected_target_package_root=self.expected_target_package_root,
+            critical_test=self.critical_test,
+            runtime_source=self.runtime_source,
+            closure_inputs=self.closure_inputs,
+        )
+        presented = self.training_authority.canonical_digest()
+        if newly_issued.canonical_digest() != presented:
+            raise ValueError("optimizer V3 training authority was not authenticated by live issuance")
+        if self.closure_v2["closure_digest"] != self.expected_closure_v2_sha256:
+            raise ValueError("optimizer V3 submitted closure differs from expected closure")
+        if self.preexecution.canonical_digest() != self.expected_authority_roots["preexecution_authority_sha256"]:
+            raise ValueError("optimizer V3 preexecution root differs from receipt")
+        return presented
 
     def __post_init__(self) -> None:
-        self.training_authority.validate()
+        self._issuer_verified_digest = self._require_fresh_issuance()
         verified = validate_current_teacher_target_receipt_v2(
             self.receipt,
             expected_target_package_root=self.expected_target_package_root,
@@ -69,7 +101,7 @@ class CurrentOptimizerStepGuardV3:
 
     def _assert_authorities_unchanged(self) -> None:
         try:
-            self.training_authority.validate()
+            verified_issued_digest = self._require_fresh_issuance()
             verified = validate_current_teacher_target_receipt_v2(
                 self.receipt,
                 expected_target_package_root=self.expected_target_package_root,
@@ -78,6 +110,8 @@ class CurrentOptimizerStepGuardV3:
             )
         except Exception as exc:
             raise RuntimeError(f"{STOP}: authority chain is no longer valid") from exc
+        if verified_issued_digest != self._issuer_verified_digest:
+            raise RuntimeError(f"{STOP}: live issuer authority changed after guard installation")
         if verified["receipt_digest"] != self._receipt_digest:
             raise RuntimeError(f"{STOP}: receipt changed after guard installation")
         if self.training_authority.canonical_digest() != self._training_authority_digest:
@@ -164,9 +198,51 @@ class CurrentOptimizerStepGuardV3:
         self._closed = True
 
 
-def install_current_optimizer_guard_v3(optimizer: Any, receipt: Mapping[str, Any], *, training_authority: CurrentTrainingAuthorityV1, expected_target_package_root: str, expected_authority_roots: Mapping[str, str], expected_closure_v2_sha256: str) -> CurrentOptimizerStepGuardV3:
+def install_current_optimizer_guard_v3(
+    optimizer: Any,
+    receipt: Mapping[str, Any],
+    *,
+    training_authority: CurrentTrainingAuthorityV1,
+    expected_target_package_root: str,
+    expected_authority_roots: Mapping[str, str],
+    expected_closure_v2_sha256: str,
+    closure_v2: Mapping[str, Any] | None = None,
+    preexecution: CurrentTrainerPreexecutionAuthorityV2 | None = None,
+    critical_test: Any = None,
+    runtime_source: Any = None,
+    closure_inputs: Mapping[str, Any] | None = None,
+) -> CurrentOptimizerStepGuardV3:
     if not isinstance(training_authority, CurrentTrainingAuthorityV1):
         raise ValueError("optimizer V3 requires CurrentTrainingAuthorityV1")
+    # Legacy callers fail closed before registering any hooks. No synthetic
+    # checksum-only authority may be installed on the production entrypoint.
+    if not isinstance(closure_inputs, Mapping):
+        raise ValueError("optimizer V3 requires live closure_inputs")
+    if not isinstance(closure_v2, Mapping):
+        raise ValueError("optimizer V3 requires live closure_v2")
+    if not isinstance(preexecution, CurrentTrainerPreexecutionAuthorityV2):
+        raise ValueError("optimizer V3 requires current typed preexecution")
+    if critical_test is None or runtime_source is None:
+        raise ValueError("optimizer V3 requires live critical and runtime authorities")
+    existing = getattr(optimizer, "_v5_current_optimizer_guard_v3", None)
+    if existing is not None:
+        # Refuse a cross-session or caller-spliced live evidence replacement,
+        # even if the caller supplies the same digest strings.
+        if (
+            existing.closure_v2 is not closure_v2
+            or existing.closure_inputs is not closure_inputs
+            or existing.preexecution is not preexecution
+            or existing.critical_test is not critical_test
+            or existing.runtime_source is not runtime_source
+        ):
+            raise ValueError("optimizer V3 live evidence changed since guard installation")
+        if (
+            existing.receipt_digest != receipt.get("receipt_digest")
+            or existing.training_authority_digest != training_authority.canonical_digest()
+        ):
+            raise ValueError("optimizer V3 installed guard authority mismatch")
+        existing._assert_authorities_unchanged()
+        return existing
     guard = CurrentOptimizerStepGuardV3(
         optimizer=optimizer,
         receipt=receipt,
@@ -174,14 +250,11 @@ def install_current_optimizer_guard_v3(optimizer: Any, receipt: Mapping[str, Any
         expected_target_package_root=expected_target_package_root,
         expected_authority_roots=expected_authority_roots,
         expected_closure_v2_sha256=expected_closure_v2_sha256,
+        closure_v2=closure_v2,
+        preexecution=preexecution,
+        critical_test=critical_test,
+        runtime_source=runtime_source,
+        closure_inputs=closure_inputs,
     )
-    existing = getattr(optimizer, "_v5_current_optimizer_guard_v3", None)
-    if existing is not None:
-        if existing.receipt_digest != guard.receipt_digest or existing.training_authority_digest != guard.training_authority_digest:
-            guard.close()
-            raise RuntimeError(f"{STOP}: installed guard authority mismatch")
-        guard.close()
-        existing._assert_authorities_unchanged()
-        return existing
     setattr(optimizer, "_v5_current_optimizer_guard_v3", guard)
     return guard
