@@ -52,7 +52,23 @@
         "base_JEPA_all_cell_1/(D*n_d)",
         "D1_equal_donor_operator_1/(D*O_d*n_do)",
         "V2_relational_eligible_anchor_1/(D*e_d)"
-      ]
+      ],
+      "independent_v28_exact_replay": {
+        "scope": "FULL104_METADATA_ONLY__NOT_ACTUAL_TRIPLET_SAMPLING_OR_TRAINING",
+        "producer": "analysis/v28_full104_relational_independent_replay/independent_v2_relational_mass_replay.py",
+        "tests": "analysis/v28_full104_relational_independent_replay/test_independent_v2_relational_mass_replay.py",
+        "receipt": "analysis/v28_full104_relational_independent_replay/V28_INDEPENDENT_RELATIONAL_V2_REPLAY_RECEIPT.json",
+        "source_root_pr146": "8369efe5839f9aca5912cc8280a05330b2b104a3",
+        "source_donor_csv_sha256": "386e52ecb56031fba7bde855c7af314b08f1773427d367e0679e6de47f79c7b7",
+        "source_group_csv_sha256": "e40acc06844f4a13cb956453fe54e74abed357c3777a80ec6c4a2778dcae8f65",
+        "independent_rebuilt_output_sha256": "af718d6963906a7c65bf394d1f8d4bd0a62b7a0580d27128523996879e416b94",
+        "whole_output_byte_identical_to_PR149": true,
+        "local_tests": "6 passed; 0 skipped",
+        "hosted_ci": "CHECK_EXACT_LATEST_PR150_HEAD",
+        "self_audit": "First independent Fraction-reduced CSV was scientifically equal but byte-mismatched; restored explicit unreduced numerator/denominator canonical storage, then full SHA matched with no tolerance widening.",
+        "training_authorized": false,
+        "protected_outcomes_opened": false
+      }
     },
     "authority": {
       "upstream_slots": 32,
@@ -122,7 +138,8 @@
     "assets": "docs/agent/JEPA_V28_LOCAL_ASSETS_SHA256_20260926.json",
     "index": "docs/agent/JEPA_V28_RESULTS_SCRIPTS_DATA_INDEX_20260926.md",
     "source_pr149": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/149",
-    "source_pr146": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/146"
+    "source_pr146": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/146",
+    "independent_v2_replay": "analysis/v28_full104_relational_independent_replay/"
   },
   "no_spillover": [
     "never import historical94/50k/synthetic values into fit104",
