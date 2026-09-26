@@ -1,0 +1,36 @@
+name: V29 all-open-PR root sweep no-spillover
+on:
+  pull_request:
+    paths:
+      - 'docs/agent/JEPA_V29_ALL_OPEN_PR_AUTHORITY_CANDIDATE_SWEEP_20260926.json'
+      - 'docs/agent/JEPA_V29_OPEN_PR_SWEEP_REVIEW_20260926.md'
+      - 'tests/test_v29_open_pr_artifact_sweep.py'
+      - '.github/workflows/v29-open-pr-root-sweep.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scoped-immutable-snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest==8.3.4
+      - name: Fourteen positive and fail-closed inventory adversaries
+        run: PYTHONPATH=. python -m pytest -q tests/test_v29_open_pr_artifact_sweep.py --junitxml=/tmp/v29_sweep.xml
+      - name: Fail closed on absent vacuous skipped or missing named adversaries
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as E
+          x=E.parse('/tmp/v29_sweep.xml').getroot()
+          if x.tag!='testsuite':x=x.find('testsuite')
+          c={k:int(x.get(k,0)) for k in ('tests','skipped','errors','failures')}
+          names={v.get('name') for v in x.iter('testcase')}
+          required={'test_positive_original_snapshot_has_full_scoped_inventory','test_scope_splicing_n1_as_v5_detected','test_claimed_closed_root_fails','test_false_all_branch_scan_fails','test_false_training_authority_fails'}
+          if c!={'tests':14,'skipped':0,'errors':0,'failures':0} or not required<=names:
+              raise SystemExit(f'STOP_V29_VACUOUS_SWEEP {c} missing={required-names}')
+          print('PASS_14_14_SCOPED_PR_HEAD_INVENTORY__NO_AUTHORITY')
+          PY
