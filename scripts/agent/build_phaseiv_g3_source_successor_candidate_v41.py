@@ -17,6 +17,7 @@ from typing import Any, Mapping
 ROOT = Path(__file__).resolve().parents[2]
 ORIGINAL = Path("analysis/v5_full104_information_channel_redteam_20260920/evidence/phase_iv/AUDIT_B_FROZEN_TARGET_SAMPLE.json")
 OLD_FREEZE_DIGEST = "c2c5e1b5addc50db7e9676ebf59e9c63b5d0b9eee882ef78aff5baa9d4a3b0ac"
+ORIGINAL_FREEZE_GIT_BLOB = "8e005dcd619804bf54a2b6e858f8f4dcc382bfff"
 OLD_PLANNER_SHA = "143645becff6f6142d99224bfe188702b2400228b4af121738341ed4e3ebb86d"
 G3_PLANNER_SHA = "de2f019e28675e3258cfeede65f77557210f5fcd083f94ae09f97b1c8629f9f8"
 EXPECTED_ROLES = (
@@ -26,12 +27,17 @@ EXPECTED_ROLES = (
 )
 EXPECTED_LADDER = {"N1": 256, "N2": 1024, "N3": 4096}
 G3_PARITY_TEST = Path("tests/test_v40_g3_historical_default_exact_parity.py")
-G3_PARITY_TEST_SHA = None  # Read actual test source bytes, not a fabricated root.
+G3_PARITY_TEST_GIT_BLOB = "8d2f4c6a448fe374fdaa27fff68cdb93933a02ad"
+G3_PARITY_TEST_COMMIT = "c98348eac1dc8ea5c70054a8b95c5088067f5a2c"
 PARITY_RUN_ID = 36250218148  # Sept26 hosted 7/7, independently reviewed; snapshot not credential.
 
 
 def digest(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
+
+
+def git_blob_digest(raw: bytes) -> str:
+    return hashlib.sha1(b'blob ' + str(len(raw)).encode('ascii') + b'\\0' + raw).hexdigest()
 
 
 def canonical(value: Mapping[str, Any]) -> bytes:
@@ -77,6 +83,8 @@ def _check_frozen(freeze: Mapping[str, Any]) -> None:
 def build_candidate(repo_root: Path = ROOT, *, freeze_override: Mapping[str, Any] | None = None) -> dict[str, Any]:
     root = repo_root.resolve()
     original_bytes = (root / ORIGINAL).read_bytes()
+    if git_blob_digest(original_bytes) != ORIGINAL_FREEZE_GIT_BLOB:
+        raise ValueError('original Phase-IV frozen sample physical Git blob differs')
     old = json.loads(original_bytes) if freeze_override is None else freeze_override
     _check_frozen(old)
     changed = {}
@@ -97,8 +105,8 @@ def build_candidate(repo_root: Path = ROOT, *, freeze_override: Mapping[str, Any
         for k in EXPECTED_LADDER
     }
     v40 = root / G3_PARITY_TEST
-    if not v40.is_file() or b"historical_source.run_primary_fold_streaming" not in v40.read_bytes():
-        raise ValueError("V40 independent physical historical-default parity test missing")
+    if not v40.is_file() or git_blob_digest(v40.read_bytes()) != G3_PARITY_TEST_GIT_BLOB:
+        raise ValueError("V40 independently hosted test bytes differ from pinned commit")
     payload = {
         "schema": "V5_PHASE_IV_G3_SOURCE_SUCCESSOR_PROPOSAL_V1",
         "status": "DRAFT_REVIEW_REQUIRED__NOT_A_SAMPLE_FREEZE",
@@ -114,6 +122,8 @@ def build_candidate(repo_root: Path = ROOT, *, freeze_override: Mapping[str, Any
         "synthetic_functional_parity": {
             "test_source_path": G3_PARITY_TEST.as_posix(),
             "test_source_sha256": digest(v40.read_bytes()),
+            "test_source_git_blob_sha1": G3_PARITY_TEST_GIT_BLOB,
+            "test_source_commit": G3_PARITY_TEST_COMMIT,
             "hosted_workflow_run_id": PARITY_RUN_ID,
             "hosted_7_of_7_reported_pass": True,
             "evidence_scope": "SYNTHETIC_12_DONORS_48_CELLS_8_COLUMNS__NOT_REAL_FULL104",
@@ -136,8 +146,8 @@ def main() -> None:
     if args.output is not None:
         out = args.output.resolve()
         old = (ROOT / ORIGINAL).resolve()
-        if out == old or old in out.parents:
-            raise ValueError("cannot write an original Phase-IV freeze or its children")
+        if out == old or old.parent == out.parent or old.parent in out.parents:
+            raise ValueError("cannot write inside the original Phase-IV freeze directory")
         if out.exists():
             raise FileExistsError("refuse overwriting an existing candidate: version instead")
         out.parent.mkdir(parents=True, exist_ok=True)
