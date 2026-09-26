@@ -1,0 +1,76 @@
+name: V40 remote critical JUnit evidence experiment (NOT B2)
+on:
+  pull_request:
+    paths:
+      - 'scripts/agent/verify_remote_critical_junit_v40.py'
+      - 'tests/test_v40_remote_critical_junit_provenance.py'
+      - 'tests/test_v39_critical_evidence_physical_provenance.py'
+      - '.github/workflows/v40-remote-critical-provenance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  produce-seven-exact-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest==8.3.4
+      - name: Run seven unchanged V39 controls and produce physical JUnit
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q -s tests/test_v39_critical_evidence_physical_provenance.py --junitxml=v40-junit.xml | tee /tmp/v40-producing.log
+          grep -q 'V39_PHANTOM_EXECUTED_PASS_ACCEPTED_BY_CURRENT_TYPED_CLASS__NOT_B2' /tmp/v40-producing.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v40-critical-junit
+          path: v40-junit.xml
+          if-no-files-found: error
+          retention-days: 7
+  verify-remotely-after-upload:
+    runs-on: ubuntu-latest
+    needs: produce-seven-exact-tests
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest==8.3.4
+      - uses: actions/download-artifact@v4
+        with:
+          name: v40-critical-junit
+          path: /tmp/v40-download
+      - name: Exact fifteen TEST-ONLY transport and redirect adversaries
+        env:
+          PYTHONPATH: src:.
+        run: |
+          set -euo pipefail
+          python -m pytest -q tests/test_v40_remote_critical_junit_provenance.py --junitxml=/tmp/v40-offline.xml | tee /tmp/v40-offline.log
+          python - <<'PY'
+          from xml.etree import ElementTree as ET
+          root=ET.parse('/tmp/v40-offline.xml').getroot()
+          if root.tag!='testsuite': root=root.find('testsuite')
+          values={k:int(root.get(k,0)) for k in ('tests','errors','failures','skipped')}
+          if values!={'tests':15,'errors':0,'failures':0,'skipped':0}:
+              raise SystemExit(f'STOP_V40_TEST_COUNT: {values}')
+          print('V40_OFFLINE_FIFTEEN_EXACT_NO_SKIPS')
+          PY
+      - name: Refetch run/job/artifact metadata and source via API; verify original JUnit delivered by official GitHub action
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python scripts/agent/verify_remote_critical_junit_v40.py --run-id "$GITHUB_RUN_ID" --expected-sha "$EXPECTED_SHA" --downloaded-junit /tmp/v40-download/v40-junit.xml | tee /tmp/v40-remote.log
+          grep -q 'V40_REMOTE_GITHUB_RUN_JOB_JUNIT_SOURCE_VERIFIED__NO_B2' /tmp/v40-remote.log
