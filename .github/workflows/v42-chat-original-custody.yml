@@ -21,6 +21,6 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/agent/verify_v42_chat_original_files.py | tee /tmp/v42_custody.log
-          grep -q 'V42_EXACT_10_OF_10_ORIGINAL_SHA256_AND_GIT_BLOB_MATCH' /tmp/v42_custody.log
-          grep -q 'V42_8_BINARY_FILES_MANIFEST_ONLY_NOT_FALSELY_REPORTED_AS_GITHUB_UPLOADS' /tmp/v42_custody.log
+          grep -q 'V42_EXACT_11_OF_11_ORIGINAL_SHA256_AND_GIT_BLOB_MATCH' /tmp/v42_custody.log
+          grep -q 'V42_7_BINARY_FILES_MANIFEST_ONLY_NOT_FALSELY_REPORTED_AS_GITHUB_UPLOADS' /tmp/v42_custody.log
           grep -q 'V42_TRAINING_AUTHORIZED_FALSE' /tmp/v42_custody.log
