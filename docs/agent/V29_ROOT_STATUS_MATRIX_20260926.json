@@ -1,0 +1,122 @@
+{
+  "schema": "JEPA_V29_AUTHORITY_ROOT_STATUS_MATRIX_V1",
+  "date": "2026-09-26",
+  "status": "NO_ROOT_FULLY_CLOSED__NO_TRAINING_AUTHORITY",
+  "ledger": {
+    "upstream_roots": 32,
+    "receipt_roots": 33,
+    "receipt_adds": "preexecution_authority_sha256",
+    "fully_closed": 0,
+    "own_schema_validator_passed": 6,
+    "own_schema_passed_but_consumer_class_conflict": 2,
+    "raw_digest_slots": 2,
+    "raw_digest_value_and_bytes_authenticated": 1
+  },
+  "correction_absorbed": {
+    "source": "owner audit 2026-09-26",
+    "statement": "the six candidates passed their individual validators but NONE has passed full closure; zero roots are closed"
+  },
+  "prior_lanes_relied_on_not_repeated": {
+    "PR149": "exact-role validation of the six candidates against their own defining classes",
+    "PR151": "consumer-class compatibility; confirmed two V3-vs-V1 isinstance conflicts",
+    "PR154": "all 114 open PR tips swept; 18 unique path+blob pairs; zero new own-class validations; zero new closure roots",
+    "PR155": "all 232 live branch tips swept; 49 unique path+blob variants; zero new own-class validations; zero new closure roots"
+  },
+  "this_lane_new_work": [
+    "GPU-disk sweep of non-git output directories (the scope PR154/PR155 explicitly excluded)",
+    "resolution of the two raw-digest slots as cross-binding constants rather than missing dataclasses",
+    "byte authentication of the FULL104 substrate root",
+    "identification of near-identical decoy block manifests in two history trees"
+  ],
+  "raw_digest_slots": {
+    "full104_substrate_sha256": {
+      "closure_consumption": "str argument, then equality-enforced against support_estimability, outer_split, target_panel and masking_qualification_design",
+      "is_missing_dataclass": false,
+      "note": "not a missing artifact; a cross-binding constant every consuming authority must agree on",
+      "committed_bindings_observed": 4,
+      "distinct_values_observed": 1,
+      "value": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "bytes_authenticated": true,
+      "authenticated_file": "D:/Jepa project/outputs/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+      "authenticated_bytes": 2372002,
+      "level": "Level-4, consistent with the 8,915 Level-4 block population",
+      "also_bound_as": ["block_manifest_sha256 (9 committed occurrences)", "full104_manifest_sha256 (3 committed occurrences)"],
+      "placeholder_seen": "one draft carries UNRESOLVED_BIND_AT_CANONICAL_EXECUTION and correctly declines to bind",
+      "decoy_warning": {
+        "finding": "files with the IDENTICAL name and different bytes exist in two history trees",
+        "paths": [
+          "D:/jepa_ppa_20260904/docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv",
+          "D:/jepa_f1b_20260905/docs/history/full104_v014_20260826/03_phase2_state_derivation_v1/expression_level4/PHASE2_EXPRESSION_BLOCK_MANIFEST.csv"
+        ],
+        "decoy_bytes": 2380918,
+        "decoy_sha256_prefix": "e482d9da21232bde",
+        "consequence": "binding the substrate root from a history copy would silently bind the WRONG substrate; the filename is not the identity"
+      },
+      "status": "VALUE_AND_BYTES_AUTHENTICATED__ROOT_STILL_NOT_CLOSED",
+      "why_not_closed": "closure additionally requires every consuming authority to exist and carry this same value; four of those consumers have no committed artifact"
+    },
+    "observation_gradient_firewall_authority_sha256": {
+      "closure_consumption": "str argument, then equality-enforced against anti_cheat.observation_gradient_firewall_authority_sha256",
+      "is_missing_dataclass": false,
+      "committed_bindings_observed": 0,
+      "value": null,
+      "bytes_authenticated": false,
+      "status": "UNBOUND",
+      "why": "no committed artifact anywhere carries this key, and its only consumer (anti_cheat) has no committed artifact either; the root is open on both sides",
+      "prohibited": "do not synthesise a value; there is no authority to invent a missing dataclass or digest"
+    }
+  },
+  "six_own_schema_candidates": {
+    "note": "all six passed their OWN defining-class validator under PR149. NONE is closed.",
+    "representation_authority_sha256": {"own_validator": "PASS", "consumer_class_conflict": false, "closed": false, "blocking": "parent-source bytes and cross-bindings unqualified"},
+    "support_estimability_authority_sha256": {"own_validator": "PASS", "consumer_class_conflict": false, "closed": false, "blocking": "parent-source bytes and cross-bindings unqualified; must carry substrate root 66f589e5"},
+    "canonical_address_registry_authority_sha256": {"own_validator": "PASS", "consumer_class_conflict": false, "closed": false, "blocking": "parent-source bytes and cross-bindings unqualified"},
+    "base_training_estimand_sha256": {"own_validator": "PASS", "consumer_class_conflict": false, "closed": false, "blocking": "parent-source bytes and cross-bindings unqualified"},
+    "masking_rng_replay_authority_sha256": {"own_validator": "PASS_AS_V3", "consumer_class_conflict": true, "conflict": "closure V2 requires MaskingRngReplayAuthorityV1 via isinstance; a self-valid V3 is not an instance of V1", "closed": false, "prohibited_remedy": "casting the digest or supplying a V1-shaped placeholder"},
+    "masking_qualification_parameters_authority_sha256": {"own_validator": "PASS_AS_V3", "consumer_class_conflict": true, "conflict": "closure V2 requires MaskingQualificationParametersAuthorityV1 via isinstance", "closed": false, "prohibited_remedy": "casting the digest or supplying a V1-shaped placeholder"}
+  },
+  "remaining_roots": {
+    "count": 25,
+    "status": "NO_COMMITTED_ARTIFACT_OF_THE_DEFINING_CLASS_SCHEMA",
+    "search_scope_exhausted": ["all 114 open PR tips (PR154)", "all 232 live branch tips (PR155)", "non-git GPU output directories (this lane)"],
+    "search_scope_NOT_exhausted": ["full historical commit graph", "external drives or backups not mounted on this machine"],
+    "caution": "absence within the searched scope is not proof of global absence"
+  },
+  "gpu_disk_sweep": {
+    "scope": "non-git output directories on D:, the scope PR154/PR155 excluded",
+    "directories_checked": [
+      "D:/jepa_v5_outputs_20260925",
+      "D:/jepa_perturb_outputs_20260923",
+      "D:/jepa_full104_preterminal_20260919_a51cdbe8_outputs",
+      "D:/jepa_n1_all104_exec_20260925"
+    ],
+    "authority_named_json_found": 1,
+    "artifact": "D:/jepa_full104_preterminal_20260919_a51cdbe8_outputs/census_authority_v2/full104_census_authority_v2.json",
+    "artifact_schema": "V5_FULL104_READONLY_CENSUS_AUTHORITY_V2",
+    "artifact_status": "FULL104_READONLY_CENSUS_EXECUTION_RECEIPTS_BOUND__TERMINAL_MASKING_OUTCOMES_UNOPENED",
+    "artifact_training_authorized": false,
+    "substrate_block_it_carries": {
+      "full104_block_manifest_sha256": "66f589e56badb1487058f2c95940c3e4b37196e3ab5e9c6ea1ffbe7098d2ea29",
+      "operator_address_observation_state_sha256": "852cb3ec6365cbd326dc6d5e8c8d885656f383b8f75b6e7a8d7aab72d9a42537",
+      "pass1_npz_sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+      "pass1_physical_binding_sha256": "4c44b89e91e85b762224a6c2cf7e5cd88956a1726f57a52c03ddcab4ad0c3602",
+      "canonical_registry_sha256": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd"
+    },
+    "promotion": "NONE - a census authority is not one of the 33 training-authority roots and is not promoted to one"
+  },
+  "prohibited_actions_observed": {
+    "placeholder_digest": "none written",
+    "role_substitution": "none; two automated mappings that produced role-confused matches were discarded and reported as rejected method",
+    "version_cast": "none; the V3-vs-V1 conflicts are reported, not cast",
+    "protected_data_opened": false
+  },
+  "training_authorized": false,
+  "flags": {
+    "TRAINING": "OFF",
+    "AUDIT_B_N1": "UNOPENED",
+    "PROTECTED_FULL104_OUTCOMES": "UNOPENED",
+    "D_SHARED_G5": "UNOPENED",
+    "RARE_TAIL_MOLECULAR": "UNOPENED",
+    "THERAPEUTIC_RANKING": "OFF"
+  }
+}
