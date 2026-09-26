@@ -35,11 +35,12 @@
     },
     "v36_guard_fix": {
       "number": 165,
-      "head": "40e1c2ef65b2de828d61f46320c02e24d5776131",
-      "hosted_run": 36231230575,
+      "head": "25447126e3cf269b8416b52b1bbb98deebaa5d64",
+      "hosted_run": 36231569310,
       "exact_tests": 20,
       "other_hosted_workflows_passed": 4,
-      "role": "reissue_from_real_live_graph_at_guard_install_arm_prehook"
+      "role": "reissue_from_real_live_graph_at_guard_install_arm_prehook",
+      "exact_test_identities_pinned": true
     },
     "v26_g3_runner": {
       "number": 144,
