@@ -47,7 +47,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install pytest==8.3.4
-      - name: Exact ten TEST-ONLY synthetic transport adversaries
+      - name: Exact twelve TEST-ONLY transport and redirect adversaries
         env:
           PYTHONPATH: src:.
         run: |
@@ -58,9 +58,9 @@ jobs:
           root=ET.parse('/tmp/v40-offline.xml').getroot()
           if root.tag!='testsuite': root=root.find('testsuite')
           values={k:int(root.get(k,0)) for k in ('tests','errors','failures','skipped')}
-          if values!={'tests':10,'errors':0,'failures':0,'skipped':0}:
+          if values!={'tests':12,'errors':0,'failures':0,'skipped':0}:
               raise SystemExit(f'STOP_V40_TEST_COUNT: {values}')
-          print('V40_OFFLINE_TEN_EXACT_NO_SKIPS')
+          print('V40_OFFLINE_TWELVE_EXACT_NO_SKIPS')
           PY
       - name: Independently refetch actual workflow, producing job, JUnit and pinned test source via GitHub API
         env:
