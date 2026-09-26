@@ -72,6 +72,13 @@ jobs:
           assert x["raw_deposited_screens_reexecuted_by_this_script"] is False
           print("PASS_PR131_PR137_EXISTING_EVIDENCE_PARITY__OLD_DIRTY_ORIGIN_NOT_REPLAYED")
           PY
+      - name: Assert generated real evidence JSON is EXACTLY the durable committed result
+        run: |
+          committed="audit/analysis/therapeutic_perturbation_etl/reviews/pr131_pr137_provenance_20260925/results/V26_PR131_PR137_EXISTING_EVIDENCE_PARITY_V1.json"
+          generated="$RUNNER_TEMP/V26_PR131_PR137_EXISTING_EVIDENCE_PARITY_V1.json"
+          printf '%s  %s\n' '3fd0a9bbc2dfde8c2ceea3447c97033dddbf69e33320732c2d245aa8b59d9107' "$committed" | sha256sum -c -
+          cmp "$committed" "$generated"
+          echo "PASS_EXACT_BYTE_CI_REPLAY_OF_DURABLE_CROSS_PR_RECEIPT"
       - name: Upload independent small audit receipt, even on unexpected failure
         uses: actions/upload-artifact@v4
         if: always()
