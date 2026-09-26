@@ -172,6 +172,8 @@ def checked_payload(transport, *, run_id: int, expected_sha: str,
     if downloaded_junit is None:
         # Preferred path: independently download the exact GitHub API artifact.
         archive = transport.read(f"{API}/actions/artifacts/{artifact_id}/zip", binary=True)
+        if digest is None or digest != "sha256:" + sha256(archive):
+            fail("remotely downloaded ZIP does not match GitHub artifact SHA-256")
         with zipfile.ZipFile(io.BytesIO(archive)) as z:
             names = z.namelist()
             if names != ["v40-junit.xml"]:
