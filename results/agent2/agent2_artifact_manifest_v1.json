@@ -1,0 +1,42 @@
+{
+  "agent2_test_report_v1.json": {
+    "bytes": 4840,
+    "sha256": "c41bc2a22174d13688704e2e90d9a1d6cf38b695b93c4279194d12f7403cc079"
+  },
+  "full/agent2_ambiguous_address_report_v1.csv": {
+    "bytes": 4607,
+    "sha256": "ba51ef810ea27b9570a08f8ba980bb2893ca40de61e7f9283e225dd7662a5d12"
+  },
+  "full/agent2_collision_report_v1.csv": {
+    "bytes": 60517,
+    "sha256": "55e704f23fd984d00e533b858193e9fe36daacabfb6682684de34fc324774961"
+  },
+  "full/agent2_coverage_matrix_summary_v1.json": {
+    "bytes": 1380,
+    "sha256": "33acd47367ad286f829bb21a34cdc290f6c91e5fd29a21feeab7792335bce60f"
+  },
+  "full/agent2_coverage_matrix_v1.csv": {
+    "bytes": 6427,
+    "sha256": "c05d7922bcdfe10000da15815cb56f24e5284ea65105bc0efd7ebfc8a605b31d"
+  },
+  "full/agent2_coverage_provenance_v1.json": {
+    "bytes": 10929,
+    "sha256": "2606f73c399a213f3477aa8751e83a1e122246b2b6a60d57d975edbdde98f11e"
+  },
+  "full/agent2_full104_feature_crosswalk_v1.csv": {
+    "bytes": 16383559,
+    "sha256": "4afff98d219450bef8d9ffff156c2190275254d1660657ab2d732ae6b48cf8ac"
+  },
+  "full/agent2_query_panel_coverage_v1.csv": {
+    "bytes": 9207,
+    "sha256": "0df97c56cc17ff6f99a303b6811858bcfc18f21a26c7f833f0576d5af64f6e13"
+  },
+  "full/agent2_tf_coverage_v1.csv": {
+    "bytes": 832,
+    "sha256": "35a63b65beb950d6f97518ca358c8d116a8627efba2b70569cec930698fa2749"
+  },
+  "full_run.log": {
+    "bytes": 3650,
+    "sha256": "076c264d2303dec8ad474da6b279e22cc337e1848426d5100fe6050e54d5ed68"
+  }
+}
