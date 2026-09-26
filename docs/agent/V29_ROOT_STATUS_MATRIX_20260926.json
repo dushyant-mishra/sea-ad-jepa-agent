@@ -237,6 +237,13 @@
       "finding": "my earlier framing implied that populating the 33 roots would make issuance meaningful",
       "correction": "populating the roots is necessary but NOT sufficient: the critical-test root can be satisfied by a caller-written string, so root population alone cannot establish that required tests ran",
       "status": "recorded"
+    },
+    "S21": {
+      "finding": "my red-team sweep initially read as '90 forgeable authorities'",
+      "why_that_would_have_been_wrong": "the regex detected a design property (digest-passing) and I would have reported it as a defect count",
+      "what_I_did": "verified one sound case and the one broken case against the repository before reporting, and narrowed the claim to a single module",
+      "pattern": "same family as S17 and S19 - do not report a pattern-match as a finding until the mechanism is checked",
+      "status": "caught before reporting"
     }
   },
   "verified_findings_from_lane_b": {
@@ -282,6 +289,48 @@
       "consequence": "even if all 33 roots were populated, issuance would NOT prove the critical tests ever executed; the authority records a CLAIM, not an EXECUTION",
       "this_is_the_pattern": "a check that cannot fail, now located at the authorization boundary rather than in a test",
       "action_taken": "REPORTED, NOT PATCHED - deciding what a valid test-run binding must be is an owner scientific/governance decision, and editing the gate to look stronger would be the same error this project has repeatedly warned against"
+    }
+  },
+  "red_team_sweep_authorization_boundary": {
+    "question": "is the forgeable pattern found in critical_test systemic across the V5 authorities?",
+    "measurement": {
+      "authority_modules_validating_sha_shaped_fields": 96,
+      "of_those_that_never_read_or_hash_a_file": 90
+    },
+    "ANSWER": "NO - and reporting 90 forgeable authorities would have been a serious overstatement",
+    "why": "the V5 authority layer is BY DESIGN a digest-passing architecture: authorities carry digests, while producers elsewhere compute them from real bytes. An authority class not hashing a file is correct separation of concerns, not a defect. The measurement found a structural property, not 90 defects.",
+    "verified_example_of_the_sound_case": {
+      "root": "canonical_address_registry",
+      "digest": "7d61ed7bb649d129496c45cdf49adbb8b85faf7330803803287a2ec93631e4fd",
+      "evidence": "appears in at least 3 committed receipts produced by real producers that hashed real files",
+      "verdict": "digest binds to an artifact that exists - acceptable"
+    },
+    "the_genuine_defect_is_confined_to_one_module": {
+      "module": "critical_test_execution_authority_v1.py",
+      "why_different": "what it attests is EXECUTION, and no execution artifact exists anywhere for either of its fields to bind to",
+      "field_1": {
+        "name": "test_suite_source_sha256",
+        "finding": "never computed from an actual suite file anywhere in the repository",
+        "evidence": "repo-wide grep returns only this matrix describing the problem"
+      },
+      "field_2": {
+        "name": "status_by_test",
+        "finding": "no committed artifact anywhere records an EXECUTED_PASS status",
+        "evidence": "repo-wide grep returns only this matrix describing the problem"
+      },
+      "verdict": "both fields are free-floating; the gate attests a claim with no artifact in existence"
+    },
+    "adjacent_but_NOT_the_same_risk": {
+      "modules": [
+        "masking_qualification_decision_v1/v2",
+        "masking_qualification_execution_authority_v1..v4",
+        "targeting_complexity_materiality_v1"
+      ],
+      "literal_statuses": [
+        "NO_POLICY_QUALIFIED",
+        "UNIFORM_RANDOM"
+      ],
+      "note": "these require a literal status too, but the status they enforce is a NEGATIVE outcome - asserting that nothing qualified. Forging that direction withholds permission rather than granting it, so the risk is not symmetric. Recorded, not flagged."
     }
   }
 }
