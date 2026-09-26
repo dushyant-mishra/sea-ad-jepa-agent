@@ -87,6 +87,49 @@ def main() -> None:
     for phrase in ("Stage69","Stage70","Stage71","#163","#169","UNSET_REQUIRES_APPROVAL","TRAINING=OFF","AUDIT_B_N1=UNOPENED"):
         if phrase not in text:
             raise ValueError(f"missing research provenance: {phrase}")
+    # New-chat provenance is checked even though V42's original files live
+    # on a distinct, nonmerged custody PR rather than in this branch.
+    machine=json.loads((ROOT/"docs/agent/JEPA_V43_NEW_CHAT_MACHINE_STATE_20260926.json").read_text())
+    if machine.get("governance",{}).get("training_authorized") is not False:
+        raise ValueError("V43 machine-state training authority erroneously elevated")
+    if machine["governance"]["current_v5_scientific_authority_roots_fully_closed"]!=0:
+        raise ValueError("current V5 root closure incorrectly promoted")
+    files=machine["exclusive_original_files"]
+    originals=files["github_original_files"]+files["local_only_binaries"]
+    if len(originals)!=18 or len({r["name"] for r in originals})!=18:
+        raise ValueError("V43 must inventory exactly 18 distinct original files")
+    if files["github_exact_originals"]!=11 or files["local_only_binary_count"]!=7:
+        raise ValueError("exact remote versus local custody count drift")
+    for original in originals:
+        if not original.get("sha256") or len(original["sha256"])!=64 or original.get("bytes",0)<=0:
+            raise ValueError("original custody has invalid hash or byte size")
+    if files["public_release_authorized_for_missing_seven"] is not False:
+        raise ValueError("missing unreviewed original data released without authority")
+    if machine["github"]["v42_original_manifest_git_blob_sha"]!="198e8f9b2f7c718a5e47b620309a032bc346affc":
+        raise ValueError("V42 exact original manifest root has drifted")
+    if machine["github"]["hosted_exact_synthetic_tests_passed"]!=60:
+        raise ValueError("no completed V43 original synthetic test scope")
+    original=json.loads((ROOT/"docs/agent/JEPA_V43_ORIGINAL_HISTORICAL_84_CELL_SUPPORT_RECEIPT_20260926.json").read_text())
+    if original["source"]["sha256"]!=files["local_only_binaries"][next(i for i,r in enumerate(files["local_only_binaries"]) if r["name"]=="FOUNDATION_CALIBRATION_BUNDLE_20260824.zip")]["sha256"]:
+        raise ValueError("original historical calibration bundle does not match V42 custody")
+    if original["physical_measurements"]["all_42_operator_common_measured_addresses"]!=17186:
+        raise ValueError("historical support proof changed")
+    if original["scope"]["biological_target_fidelity_established"] is not False:
+        raise ValueError("historical mechanics promoted into biological fidelity")
+    if original["scientific_authority"]["training_authorized"] is not False:
+        raise ValueError("historical original promoted to training")
+    if not (ROOT/"scripts/agent/v43_original_84_cell_support_preflight_research.py").is_file():
+        raise ValueError("missing historical 84 original-data reproducer")
+    papers=(ROOT/"docs/agent/JEPA_V43_EXTERNAL_METHODS_AND_LEAKAGE_BOUNDARIES_20260926.md").read_text()
+    for token in ("Theia","M3-JEPA","MultiVI","scGLUE","Cell-JEPA","CoMAD","GSE174367","separate nuclei"):
+        if token not in papers:
+            raise ValueError("missing review literature or independent ATAC gate: "+token)
+    takeover=(ROOT/"docs/agent/JEPA_V43_NEW_CHAT_TAKEOVER_AND_EXCLUSIVE_FILES_20260926.md").read_text()
+    for token in ("#176","#174","36258217079","18 individual ORIGINAL","SEVEN","TRAINING=OFF"):
+        if token not in takeover:
+            raise ValueError("incomplete new-chat takeover: "+token)
+    print("V43_LITERATURE_AND_84_ORIGINAL_RECEIPT_SCOPE_VERIFIED")
+    print("V43_EXACT_18_ORIGINAL_CUSTODY_11_GITHUB_7_LOCAL")
     print("V43_EXACT_THREE_ARMS_AND_15_MANDATORY_CONTROLS")
     print("V43_ALL_UNAPPROVED_PARAMETERS_UNSET_AND_ALL_AUTHORITIES_FALSE")
     print("V43_HISTORICAL_NEGATIVE_RESULTS_AND_PROVENANCE_PRESERVED")
