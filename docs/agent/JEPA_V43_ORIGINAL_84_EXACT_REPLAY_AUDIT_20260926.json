@@ -1,0 +1,57 @@
+{
+  "schema": "JEPA_V43_ORIGINAL_84_EXACT_GITHUB_SOURCE_REPLAY_AUDIT_V1",
+  "date": "2026-09-26",
+  "purpose": "Independently rerun EXACT V43 original-data preflight GitHub bytes and original historical user-supplied calibration ZIP, with fail-closed physical SHA mutation controls",
+  "source_script": {
+    "git_path": "scripts/agent/v43_original_84_cell_support_preflight_research.py",
+    "git_blob_sha1": "4a17ec41778dc214cc52726e003734c99d18e314",
+    "exact_local_copy_bytes": 4899,
+    "local_git_blob_sha1": "4a17ec41778dc214cc52726e003734c99d18e314",
+    "exact_github_source_replay": true
+  },
+  "receipt": {
+    "git_path": "docs/agent/JEPA_V43_ORIGINAL_HISTORICAL_84_CELL_SUPPORT_RECEIPT_20260926.json",
+    "git_blob_sha1": "4e336208b98ff27c6e4aade3ebb422a362241391",
+    "exact_local_copy_bytes": 2437,
+    "local_git_blob_sha1": "4e336208b98ff27c6e4aade3ebb422a362241391",
+    "byte_identical_to_committed_receipt": true
+  },
+  "original_bundle": {
+    "filename": "FOUNDATION_CALIBRATION_BUNDLE_20260824.zip",
+    "bytes": 410278055,
+    "sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+    "source_class": "historical_84_cell_mechanics",
+    "uploaded_to_github": false
+  },
+  "exact_positive": {
+    "exit_code": 0,
+    "markers": [
+      "V43_PHYSICAL_ORIGINAL_84_CELL_42_OPERATOR_SUPPORT_REPLAY_EXACT",
+      "V43_HISTORICAL_COMMON_CORE_17186__NO_FULL104_SCIENTIFIC_PROMOTION",
+      "V43_HIDDEN_VALUES_ZERO_ONLY_WHERE_ACTUALLY_MASKED_AND_MEASURED"
+    ],
+    "rows": 84,
+    "operators": 42,
+    "common_core": 17186
+  },
+  "physical_negative_controls": [
+    {
+      "mutation": "wrong original full bundle SHA256 in separate temporary receipt",
+      "expected_refusal": "original bundle bytes or SHA256 mismatch",
+      "observed_refusal": true,
+      "failed_closed": true
+    },
+    {
+      "mutation": "wrong original internal truth-table NPZ SHA256 in separate temporary receipt",
+      "expected_refusal": "original member SHA/size mismatch",
+      "observed_refusal": true,
+      "failed_closed": true
+    }
+  ],
+  "negative_controls_passed": 2,
+  "original_bytes_mutated": false,
+  "training_authorized": false,
+  "protected_opened": false,
+  "scientific_target_or_rare_teacher_qualified": false,
+  "authority_boundary": "Exact replay proves only historical original support and masking mechanics; not current FULL104 biology, independent donor heldout, query target fidelity, actual multi-teacher or 33-root closure. GH hosted CI cannot rerun this 410MB local original."
+}
