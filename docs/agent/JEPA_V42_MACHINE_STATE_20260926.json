@@ -1,7 +1,7 @@
 {
   "schema": "JEPA_V42_NEW_CHAT_STATE_NONAUTHORIZING",
   "date": "2026-09-26",
-  "status": "10_OF_18_EXACT_CHAT_SOURCE_FILES_GITHUB_8_BINARY_ORIGINALS_MANIFEST_ONLY_NO_TRAINING",
+  "status": "ELEVEN_OF_18_EXACT_ORIGINALS_GITHUB_SEVEN_BINARY_MANIFEST_ONLY_NO_TRAINING",
   "main_sha_at_snapshot": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
   "canonical_main_read_order": [
     "START_HERE.md",
@@ -14,10 +14,13 @@
   "asset_custody": {
     "physical_local": 18,
     "uploaded_exact_text": 10,
-    "binary_not_transferred": 8,
+    "binary_not_transferred": 7,
     "combined_discovery_zip_sha256": "63239898b9c93f29c20b62b84dc9b94c2c87e3e3f2b7958b7435847e3b9541f7",
     "v33_zip_crc_pass": true,
-    "notes": "See exact manifest for actual binary SHA; never infer file from path or marker"
+    "notes": "See exact manifest for actual binary SHA; never infer file from path or marker",
+    "uploaded_exact_historical_binary_zip": 1,
+    "originals_in_github_verified": 11,
+    "original_v33_zip_git_blob_sha1": "fdfa36e5a54c29b6fa10d6dff306630daf41ecc5"
   },
   "authorization": {
     "training": false,
