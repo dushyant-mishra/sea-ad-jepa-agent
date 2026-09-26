@@ -1,0 +1,144 @@
+{
+  "schema": "JEPA_V28_VERIFIED_HANDOFF_STATE_V1",
+  "date": "2026-09-26",
+  "scope": "DOCS_ONLY__UNMERGED__NO_TRAINING_AUTHORITY",
+  "main_controlling_head": "c49b13bd75c2d23716c777336db8fbfc78c09cd0",
+  "main_governance": "V25_START_HERE_AND_LATEST_POINTER_UNCHANGED_UNTIL_REVIEWED_MERGE",
+  "handoff_branch": "handoff/jepa-v28-verified-evidence-and-new-chat-20260926",
+  "live_heads_snapshot": {
+    "PR149_independent_physical_and_root_audit": "938fe5d3a7288826fef86b2650fb3a9a21fd3794",
+    "PR146_authenticated_full104_metadata": "8369efe5839f9aca5912cc8280a05330b2b104a3",
+    "PR147_original_immutable_execution": "9f7818472bdf515680b85eddbbf761eae2208020",
+    "PR148_independent_audit": "081091fef050a78f6e02ff6a86d1c2d01801b6f2",
+    "S9_environment_retraction_parent_review_branch": "e00ba4ad3f6cb536a65fb25b5f80621c631893c5",
+    "PR143_G3_reference": "8776d27384a1543bb6716ad724eb2a521fb7c4ac",
+    "PR144_G3_integration": "21efb1047c73cfe7b88047f0aeee1978b035971f",
+    "PR139_prepared_sampler": "9a36c7c71d5d0b10baef9db2fce232c99c200c5f",
+    "PR120_raw_all104_incomplete": "136d1257467a7d80690d9f287ca7399c7138e038"
+  },
+  "heads_are_snapshot_only": true,
+  "evidence": {
+    "fit_metadata": {
+      "physical_source_zip_sha256": "07748d5bd21fe0857ccad3002fba3946d1791d25898b841d41056a3707117444",
+      "expanded_sqlite_sha256": "a771f08be31a840b5472448c438a153fbca7de93ba2ed31fe692eaeda02e6913",
+      "fit_cells": 4553407,
+      "fit_donors": 104,
+      "operators": 42,
+      "donor_operator_groups": 1400,
+      "eligible_groups_ge3": 1361,
+      "eligible_cells": 4553348,
+      "source": "PR146 complete published CSVs and PR149 second physical five-output replay",
+      "original_local_archive_members": 9,
+      "pr146_individual_original_files": 10,
+      "scope": "METADATA_ONLY_NOT_RAW_LEVEL4"
+    },
+    "pass1_bridge": {
+      "sha256": "37f79e49f11364daa487ad9e5a5680f72378daf338852765d2f52e1e98d90ba1",
+      "per_donor_exact_count_match": true,
+      "donors": 104,
+      "cells": 4553407,
+      "raw_level4_blocks_opened": 0,
+      "per_cell_lineage_proven": false,
+      "source_library_proven": false,
+      "proposal_q_proven": false,
+      "scope": "COUNT_HISTOGRAM_ONLY"
+    },
+    "relational_v2": {
+      "csv_sha256": "af718d6963906a7c65bf394d1f8d4bd0a62b7a0580d27128523996879e416b94",
+      "receipt": "results/v27/FULL104_RELATIONAL_V2_METADATA_RECEIPT.json on PR149",
+      "derived_from": "PR146 exact two CSV SHAs",
+      "status": "PHYSICAL_METADATA_DERIVED_NOT_TRAINING_AUTHORITY",
+      "distinct_weight_laws": [
+        "base_JEPA_all_cell_1/(D*n_d)",
+        "D1_equal_donor_operator_1/(D*O_d*n_do)",
+        "V2_relational_eligible_anchor_1/(D*e_d)"
+      ]
+    },
+    "authority": {
+      "upstream_slots": 32,
+      "receipt_slots": 33,
+      "own_schema_validated_candidates": 6,
+      "full_closure_roots": 0,
+      "unmatched_at_reviewed_head": 25,
+      "no_single_defining_module": 2,
+      "full_package_frozen": false,
+      "training_contract_issued": false,
+      "source": "PR149 33-root ledger at original review head ed9df043; other heads may contain more artifacts"
+    },
+    "tests": {
+      "github_pr146_original_evidence": "run 36213175528: 24 passed 0 skipped",
+      "github_pr149_candidate_and_proposal": "run 36220989431: 18 passed 0 skipped exact JUnit",
+      "github_pr149_freeze_history": "run 36220989436: 11 passed 3 superseded xfailed zero ordinary skips",
+      "historical_v5_suite": "1620 collected,1617 passed,3 superseded tests failed,0 skipped before later explicit expected-failure repair",
+      "six_inline_negative_controls": "published on review parent; these prove damaged gradients refuse update before step or EMA"
+    },
+    "synthetic_mechanics": {
+      "updates": 40,
+      "execution_device": "CPU",
+      "real_reader_fit_expression_consumed": false,
+      "measured_max_abs_gradient_range": [
+        0.065887,
+        0.189149
+      ],
+      "all_steps_completed_without_gate_exception": true,
+      "success_counter_40of40_claim": "RETRACTED_VACUOUS_HARDCODED_ZERO",
+      "numerical_settings_role": "SYNTHETIC_ONLY_NOT_FULL104_PARAMETER_AUTHORITY"
+    },
+    "environment": {
+      "S9": "RETRACTED_FALSE_ALARM__ALREADY_QUALIFIED_20260920",
+      "canonical_invocation": "<env>/Library/bin on PATH BEFORE interpreter starts",
+      "same_env_physical_probe": "without PATH dies 127; with PATH numpy matmul solve svd scipy pass",
+      "reexecution_due_to_S9": "NOT_REQUIRED",
+      "remote_correction": "docs/agent/V27_ENVIRONMENT_AUDIT_AND_S9_RETRACTION_20260926.md on review/v27-authority-root-inventory-20260925 at e00ba4ad"
+    },
+    "raw_level4": {
+      "all104_verdict": "NOT_EXECUTED_TO_COMPLETION__SESSION_LIMIT",
+      "blocks_required": 8915,
+      "terminal_masking": "UNOPENED"
+    },
+    "evaluation": {
+      "G3_donor_objective_corrected": "PR143/144 synthetic-tested only",
+      "six_state_real_fit_qualification": "NOT_COMPLETED",
+      "GSE301119": "NEGATIVE_CONTROL_FAILS__NOT_BENCHMARK_TRUTH",
+      "CRISPRbrain": "NOT_INDEPENDENT_BENCHMARK_TRUTH",
+      "layer2_old94": "HISTORICAL_LINEAR_PROXY__MISSING_ORIGINAL_REPLAY_INPUTS"
+    }
+  },
+  "protected": {
+    "training": "OFF",
+    "reader_validation_22": "CLOSED",
+    "reader_oracle_23": "SEALED",
+    "foundation_development_24": "CLOSED",
+    "foundation_sealed_24": "SEALED",
+    "siletti_external": "SEALED",
+    "pathology": "CLOSED",
+    "D_shared_G5": "SEALED",
+    "N1_terminal_outcomes": "UNOPENED",
+    "therapeutic_ranking": "OFF"
+  },
+  "navigation": {
+    "handoff": "docs/agent/JEPA_NEW_CHAT_HANDOFF_20260926_V28_VERIFIED_GITHUB_PUBLICATION.md",
+    "next_steps": "docs/agent/JEPA_V28_NEXT_CHAT_TAKEOVER_20260926.md",
+    "assets": "docs/agent/JEPA_V28_LOCAL_ASSETS_SHA256_20260926.json",
+    "index": "docs/agent/JEPA_V28_RESULTS_SCRIPTS_DATA_INDEX_20260926.md",
+    "source_pr149": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/149",
+    "source_pr146": "https://github.com/dushyant-mishra/sea-ad-jepa-agent/pull/146"
+  },
+  "no_spillover": [
+    "never import historical94/50k/synthetic values into fit104",
+    "distinct base JEPA,D1,V2 relational laws",
+    "never treat metadata zip as expression manifest",
+    "never use matching-schema as fully closed authority",
+    "never treat xfail as pass or no-run as no defects",
+    "do not invoke canonical CUDA env without Library/bin PATH",
+    "no protected data access or training absent valid authority"
+  ],
+  "next_named_actions": [
+    "re-fetch all live heads and compare main",
+    "validate remaining upstream roots using exact-role source validators and other branch inventories, then remote disk",
+    "finish prospective teacher-target and reader_fit contract science review",
+    "finish missing-report/partial-checkpoint/cursor negative controls",
+    "complete all104 raw-level4 verification only under separate scoped permission with resumable block receipts",
+    "after documented approvals and full closure build current-V5 adapter and run exactly bounded development diagnostic"
+  ]
+}
