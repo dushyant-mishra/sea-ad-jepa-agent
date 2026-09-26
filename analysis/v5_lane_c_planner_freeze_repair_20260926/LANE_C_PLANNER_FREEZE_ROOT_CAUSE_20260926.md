@@ -231,6 +231,31 @@ each downstream gate's own refusal must stay reachable.
 
 ---
 
+## 6b. Regression results
+
+Complete affected suite = all **106** test files invoked by
+`.github/workflows/v5-full104-masking-runner.yml`, run on the canonical
+environment (`C:/Users/dushy/anaconda3/envs/sea-ad-jepa/python.exe`, Python
+3.11.15, numpy 1.26.4, scipy 1.15.3, `Library/bin` on PATH).
+
+| run | files | passed | failed | skipped | xfailed | xpassed | deselected | errors |
+|---|---|---|---|---|---|---|---|---|
+| baseline, PR #144 head `21efb104` | 103 | 826 | **5** | 0 | 0 | 0 | 0 | 0 |
+| hosted CI 36208393701, same head | 103 | 826 | **5** | 0 | 0 | 0 | 0 | 0 |
+| after repair, before adversaries | 105 | 904 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **final, complete suite** | **106** | **924** | **0** | **0** | **0** | **0** | **0** | **0** |
+
+The local baseline reproduces the hosted failure exactly, so the repair is
+measured against the same 826/5 starting point rather than a subset. The final
+run is the whole workflow list, not a focused selection; `-rs` emitted no short
+summary, which is why every non-passed column is zero. The workflow's separate
+"fail closed on skips" step is satisfied for the same reason.
+
+Wall-clock times are not comparable between these runs: the machine was running
+other lanes' work concurrently. The counts are the measurement.
+
+---
+
 ## 7. Evidence class
 
 **PHYSICAL** — real repository bytes, real git history, real executions:
