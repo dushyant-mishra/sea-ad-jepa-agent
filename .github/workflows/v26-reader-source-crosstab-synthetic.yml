@@ -1,0 +1,64 @@
+name: V26 independent reader-source metadata cross-tab synthetic proof
+
+on:
+  pull_request:
+    paths:
+      - "analysis/v26_reader_source_crosstab_20260925/**"
+      - ".github/workflows/v26-reader-source-crosstab-synthetic.yml"
+  workflow_dispatch:
+
+jobs:
+  synthetic-anti-spillover-and-physical-receipt-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Authenticate exact committed historical producer, tests and physical result bytes
+        shell: bash
+        run: |
+          printf '%s  %s\n' \
+            'f1cd7ba6999666736a8021f961b1e83a5c4c66d369374d9635e77e15b66ff7e4' 'analysis/v26_reader_source_crosstab_20260925/verify_reader_split_source_crosstab_v1.py' \
+            'dba553e5bff857aebbb8df63dc147b9580dbfce479d874e617ea17062d34eebd' 'analysis/v26_reader_source_crosstab_20260925/test_reader_split_source_crosstab_v1.py' \
+            'c40eab5aad962d51bc43a93b8a9a23fb761ff97e66609d28190f4439d312dd9f' 'analysis/v26_reader_source_crosstab_20260925/results/V26_INDEPENDENT_READER_SOURCE_CROSSTAB_RECEIPT_R2.json' \
+            | sha256sum -c -
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('analysis/v26_reader_source_crosstab_20260925/results/V26_INDEPENDENT_READER_SOURCE_CROSSTAB_RECEIPT_R2.json')
+          x=json.loads(p.read_text())
+          assert x['schema']=='JEPA_V26_INDEPENDENT_READER_SOURCE_CROSSTAB_V1'
+          assert x['status']=='PASS_FROZEN_READER_SOURCE_METADATA_CROSSCHECK'
+          assert x['scope']=='FROZEN_METADATA_ONLY_NO_RESERVED_OUTCOME_ACCESS'
+          assert x['metadata_csv_members_opened']==4
+          assert x['level4_blocks_opened']==0
+          assert x['training_authorized'] is False
+          assert x['reader_validation_outcomes_accessed'] is False
+          assert x['reader_oracle_outcomes_accessed'] is False
+          assert x['reader_source_crosstab']=={
+             'reader_fit':{'HVS':41,'NPH52':17,'SEA_AD':46},
+             'reader_validation':{'HVS':10,'NPH52':0,'SEA_AD':12},
+             'reader_oracle':{'HVS':11,'NPH52':2,'SEA_AD':10}}
+          assert x['fit_cell_count_total']==4553407
+          print('PASS_COMMITTED_PHYSICAL_RECEIPT_EXACT_BYTES_METADATA_ONLY')
+          PY
+      - name: Run all 18 synthetic and adversarial controls with exact census
+        shell: bash
+        run: |
+          python -m unittest discover \
+            -s analysis/v26_reader_source_crosstab_20260925 \
+            -p test_reader_split_source_crosstab_v1.py \
+            -v > reader_source_synthetic.log 2>&1
+          cat reader_source_synthetic.log
+          grep -q 'Ran 18 tests' reader_source_synthetic.log
+          grep -q '^OK$' reader_source_synthetic.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v26-reader-source-synthetic-log
+          path: reader_source_synthetic.log
+          if-no-files-found: warn
